@@ -1,19 +1,19 @@
 @interface VUIDownloadTableViewController
-- (BOOL)_downloadEntityShouldShowRenewOption:(id)a3;
-- (VUIDownloadTableViewController)initWithDataSource:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_configureAlertControllerForIndexPath:(id)a3 withCompletion:(id)a4;
-- (id)_configureRenewAlertControllerForIndexPath:(id)a3 forPreferredStyle:(int64_t)a4 withCompletion:(id)a5;
+- (BOOL)_downloadEntityShouldShowRenewOption:(id)option;
+- (VUIDownloadTableViewController)initWithDataSource:(id)source;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_configureAlertControllerForIndexPath:(id)path withCompletion:(id)completion;
+- (id)_configureRenewAlertControllerForIndexPath:(id)path forPreferredStyle:(int64_t)style withCompletion:(id)completion;
 - (id)_createDiffableDataSource;
 - (id)_createDiffableDataSourceSnapshot;
 - (id)_createIdentifierToDownloadEntityDictionary;
 - (id)_identifiersForDownloadEntities;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
 - (void)_batchSelectToggled;
 - (void)_clearSelections;
-- (void)_clearTableViewSelections:(BOOL)a3;
-- (void)_deleteDownloadEntities:(id)a3;
-- (void)_deleteMediaEntitiesInDownloadEntities:(id)a3;
+- (void)_clearTableViewSelections:(BOOL)selections;
+- (void)_deleteDownloadEntities:(id)entities;
+- (void)_deleteMediaEntitiesInDownloadEntities:(id)entities;
 - (void)_editToggled;
 - (void)_exitEditingMode;
 - (void)_popIfNeeded;
@@ -21,38 +21,38 @@
 - (void)_toggleRightBarEditItemIfNeeded;
 - (void)_updateNavigationBarPadding;
 - (void)dealloc;
-- (void)downloadCellDidRequestCancelDownload:(id)a3;
-- (void)downloadManager:(id)a3 downloadedFetchDidFinishWithEntities:(id)a4;
-- (void)downloadManager:(id)a3 downloadsDidChange:(id)a4;
-- (void)fullscreenPlaybackUIDidChangeNotification:(id)a3;
+- (void)downloadCellDidRequestCancelDownload:(id)download;
+- (void)downloadManager:(id)manager downloadedFetchDidFinishWithEntities:(id)entities;
+- (void)downloadManager:(id)manager downloadsDidChange:(id)change;
+- (void)fullscreenPlaybackUIDidChangeNotification:(id)notification;
 - (void)loadView;
-- (void)setDownloadEntities:(id)a3;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setDownloadEntities:(id)entities;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VUIDownloadTableViewController
 
-- (VUIDownloadTableViewController)initWithDataSource:(id)a3
+- (VUIDownloadTableViewController)initWithDataSource:(id)source
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = VUIDownloadTableViewController;
   v5 = [(VUIDownloadTableViewController *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    [(VUIDownloadTableViewController *)v5 setDownloadDataSource:v4];
+    [(VUIDownloadTableViewController *)v5 setDownloadDataSource:sourceCopy];
     v7 = objc_alloc_init(VUIViewControllerContentPresenter);
     contentPresenter = v6->_contentPresenter;
     v6->_contentPresenter = v7;
@@ -86,8 +86,8 @@ void __53__VUIDownloadTableViewController_initWithDataSource___block_invoke(uint
   v43.receiver = self;
   v43.super_class = VUIDownloadTableViewController;
   [(VUIDownloadTableViewController *)&v43 loadView];
-  v3 = [(VUIDownloadTableViewController *)self contentPresenter];
-  [v3 setRootViewForViewController:self];
+  contentPresenter = [(VUIDownloadTableViewController *)self contentPresenter];
+  [contentPresenter setRootViewForViewController:self];
 
   v4 = objc_alloc(MEMORY[0x1E69DD020]);
   v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -107,8 +107,8 @@ void __53__VUIDownloadTableViewController_initWithDataSource___block_invoke(uint
   v12 = objc_opt_new();
   [(UITableView *)v11 setTableFooterView:v12];
 
-  v13 = [(VUIDownloadTableViewController *)self _createDiffableDataSource];
-  [(VUIDownloadTableViewController *)self setDiffableDataSource:v13];
+  _createDiffableDataSource = [(VUIDownloadTableViewController *)self _createDiffableDataSource];
+  [(VUIDownloadTableViewController *)self setDiffableDataSource:_createDiffableDataSource];
 
   if (([MEMORY[0x1E69DC668] isRunningInStoreDemoMode] & 1) == 0)
   {
@@ -119,8 +119,8 @@ void __53__VUIDownloadTableViewController_initWithDataSource___block_invoke(uint
     rightBarButtonItem = self->_rightBarButtonItem;
     self->_rightBarButtonItem = v17;
 
-    v19 = [(VUIDownloadTableViewController *)self navigationItem];
-    [v19 setRightBarButtonItem:self->_rightBarButtonItem];
+    navigationItem = [(VUIDownloadTableViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:self->_rightBarButtonItem];
 
     v20 = objc_alloc(MEMORY[0x1E69DC708]);
     v21 = +[VUILocalizationManager sharedInstance];
@@ -130,10 +130,10 @@ void __53__VUIDownloadTableViewController_initWithDataSource___block_invoke(uint
     self->_selectAllBarButtonItem = v23;
   }
 
-  v25 = [(VUIDownloadTableViewController *)self navigationItem];
-  v26 = [v25 leftBarButtonItem];
+  navigationItem2 = [(VUIDownloadTableViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
   backBarButtonItem = self->_backBarButtonItem;
-  self->_backBarButtonItem = v26;
+  self->_backBarButtonItem = leftBarButtonItem;
 
   v28 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelPressed];
   leftBarButtonItem = self->_leftBarButtonItem;
@@ -176,14 +176,14 @@ void __53__VUIDownloadTableViewController_initWithDataSource___block_invoke(uint
     _os_log_impl(&dword_1E323F000, v33, OS_LOG_TYPE_INFO, "[VUIDownloadTableViewController] - load view - update content view type to loading", v37, 2u);
   }
 
-  v34 = [(VUIDownloadTableViewController *)self contentPresenter];
-  [v34 setCurrentContentViewType:1];
+  contentPresenter2 = [(VUIDownloadTableViewController *)self contentPresenter];
+  [contentPresenter2 setCurrentContentViewType:1];
 
-  v35 = [(VUIDownloadTableViewController *)self contentPresenter];
-  [v35 setContentView:self->_downloadEntitiesTableView];
+  contentPresenter3 = [(VUIDownloadTableViewController *)self contentPresenter];
+  [contentPresenter3 setContentView:self->_downloadEntitiesTableView];
 
-  v36 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v36 addObserver:self selector:sel_fullscreenPlaybackUIDidChangeNotification_ name:VUIPlaybackManagerFullscreenPlaybackUIDidChangeNotification[0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_fullscreenPlaybackUIDidChangeNotification_ name:VUIPlaybackManagerFullscreenPlaybackUIDidChangeNotification[0] object:0];
 
   objc_destroyWeak(&v41);
   objc_destroyWeak(&location);
@@ -273,20 +273,20 @@ void __42__VUIDownloadTableViewController_loadView__block_invoke_62(uint64_t a1,
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = VUIDownloadTableViewController;
   [(VUIDownloadTableViewController *)&v5 viewWillAppear:?];
-  [(VUIDownloadTableViewController *)self _clearTableViewSelections:v3];
+  [(VUIDownloadTableViewController *)self _clearTableViewSelections:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VUIDownloadTableViewController;
-  [(VUIDownloadTableViewController *)&v4 viewDidAppear:a3];
+  [(VUIDownloadTableViewController *)&v4 viewDidAppear:appear];
   [VUILibraryMetrics recordPageEventWithPageType:@"LibraryDownloaded"];
   [(VUIDownloadTableViewController *)self _updateNavigationBarPadding];
 }
@@ -303,34 +303,34 @@ void __42__VUIDownloadTableViewController_loadView__block_invoke_62(uint64_t a1,
   [(VUIDownloadDataSource *)self->_downloadDataSource setDownloadDelegate:self];
   if ([(VUILibraryDataSource *)self->_downloadDataSource hasCompletedInitialFetch])
   {
-    v5 = [(VUIDownloadTableViewController *)self downloadDataSource];
-    v6 = [v5 downloadEntities];
-    v7 = [v6 mutableCopy];
+    downloadDataSource = [(VUIDownloadTableViewController *)self downloadDataSource];
+    downloadEntities = [downloadDataSource downloadEntities];
+    v7 = [downloadEntities mutableCopy];
     [(VUIDownloadTableViewController *)self setDownloadEntities:v7];
 
-    v8 = [(VUIDownloadTableViewController *)self downloadEntities];
-    v9 = [v8 count];
+    downloadEntities2 = [(VUIDownloadTableViewController *)self downloadEntities];
+    v9 = [downloadEntities2 count];
 
-    v10 = [(VUIDownloadTableViewController *)self contentPresenter];
-    v11 = v10;
+    contentPresenter = [(VUIDownloadTableViewController *)self contentPresenter];
+    diffableDataSource = contentPresenter;
     if (v9)
     {
-      v12 = [v10 currentContentViewType];
+      currentContentViewType = [contentPresenter currentContentViewType];
 
-      if (v12 != 3)
+      if (currentContentViewType != 3)
       {
-        v13 = [(VUIDownloadTableViewController *)self contentPresenter];
-        [v13 setCurrentContentViewType:3];
+        contentPresenter2 = [(VUIDownloadTableViewController *)self contentPresenter];
+        [contentPresenter2 setCurrentContentViewType:3];
       }
 
-      v11 = [(VUIDownloadTableViewController *)self diffableDataSource];
-      v14 = [(VUIDownloadTableViewController *)self _createDiffableDataSourceSnapshot];
-      [v11 applySnapshot:v14 animatingDifferences:v12 == 3 completion:0];
+      diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+      _createDiffableDataSourceSnapshot = [(VUIDownloadTableViewController *)self _createDiffableDataSourceSnapshot];
+      [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:currentContentViewType == 3 completion:0];
     }
 
     else
     {
-      [v10 setCurrentContentViewType:2];
+      [contentPresenter setCurrentContentViewType:2];
     }
 
     [(VUIDownloadTableViewController *)self _toggleRightBarEditItemIfNeeded];
@@ -341,9 +341,9 @@ void __42__VUIDownloadTableViewController_loadView__block_invoke_62(uint64_t a1,
     [(VUIDownloadDataSource *)self->_downloadDataSource startFetch];
   }
 
-  v15 = [(VUIDownloadTableViewController *)self view];
+  view = [(VUIDownloadTableViewController *)self view];
   v16 = [MEMORY[0x1E69DF678] makeAccessibilityIdentifierString:*MEMORY[0x1E69DF7C8] additionalString:@"Library.id=Downloaded"];
-  [v15 setAccessibilityIdentifier:v16];
+  [view setAccessibilityIdentifier:v16];
 }
 
 - (void)viewWillLayoutSubviews
@@ -351,10 +351,10 @@ void __42__VUIDownloadTableViewController_loadView__block_invoke_62(uint64_t a1,
   v5.receiver = self;
   v5.super_class = VUIDownloadTableViewController;
   [(VUIDownloadTableViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(VUIDownloadTableViewController *)self contentPresenter];
-  v4 = [(VUIDownloadTableViewController *)self view];
-  [v4 bounds];
-  [v3 configureCurrentViewFrameForBounds:?];
+  contentPresenter = [(VUIDownloadTableViewController *)self contentPresenter];
+  view = [(VUIDownloadTableViewController *)self view];
+  [view bounds];
+  [contentPresenter configureCurrentViewFrameForBounds:?];
 }
 
 - (void)viewDidLayoutSubviews
@@ -367,33 +367,33 @@ void __42__VUIDownloadTableViewController_loadView__block_invoke_62(uint64_t a1,
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIDownloadTableViewController;
   [(VUIDownloadTableViewController *)&v4 dealloc];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = VUIDownloadTableViewController;
-  v7 = a4;
-  [(VUIDownloadTableViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(VUIDownloadTableViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__VUIDownloadTableViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E872E788;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (!self->_sizingCell)
   {
     v6 = objc_alloc_init(VUIDownloadEntityTableViewCell);
@@ -401,86 +401,86 @@ void __42__VUIDownloadTableViewController_loadView__block_invoke_62(uint64_t a1,
     self->_sizingCell = v6;
   }
 
-  v8 = [(VUIDownloadTableViewController *)self diffableDataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v5];
+  diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+  v9 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v10 = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
-  v11 = [v10 objectForKey:v9];
+  identifierToDownloadEntityDictionary = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
+  v11 = [identifierToDownloadEntityDictionary objectForKey:v9];
 
   [VUIDownloadEntityTableViewCell configureVUIDownloadEntityTableViewCell:self->_sizingCell withDownloadEntity:v11 forMetrics:1];
   v12 = self->_sizingCell;
-  v13 = [(VUIDownloadTableViewController *)self view];
-  [v13 bounds];
+  view = [(VUIDownloadTableViewController *)self view];
+  [view bounds];
   [(VUIDownloadEntityTableViewCell *)v12 sizeThatFits:CGRectGetWidth(v17), 1.79769313e308];
   v15 = v14;
 
   return v15;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (![(UITableView *)self->_downloadEntitiesTableView isEditing])
   {
-    v11 = [(VUIDownloadTableViewController *)self diffableDataSource];
-    v10 = [v11 itemIdentifierForIndexPath:v7];
+    diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+    rightBarButtonItem2 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-    v12 = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
-    v13 = [v12 objectForKey:v10];
+    identifierToDownloadEntityDictionary = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
+    v13 = [identifierToDownloadEntityDictionary objectForKey:rightBarButtonItem2];
 
     if ([v13 downloadType])
     {
       if ([v13 downloadType] == 1 || objc_msgSend(v13, "downloadType") == 2)
       {
-        v14 = [v13 mediaEntities];
-        v15 = [v14 firstObject];
+        mediaEntities = [v13 mediaEntities];
+        firstObject = [mediaEntities firstObject];
 
-        [VUILibraryMetrics recordClickOnMediaEntity:v15];
-        v16 = [[VUIDownloadShowDataSource alloc] initWithMediaEntity:v15];
-        v17 = [v15 showIdentifier];
-        v18 = [VUIMediaEntityFetchRequest seasonsFetchRequestWithShowIdentifier:v17];
-        v19 = [v15 mediaLibrary];
-        v20 = [VUIMediaEntitiesDataSourceFactory dataSourceForFetchRequest:v18 withLibrary:v19];
+        [VUILibraryMetrics recordClickOnMediaEntity:firstObject];
+        v16 = [[VUIDownloadShowDataSource alloc] initWithMediaEntity:firstObject];
+        showIdentifier = [firstObject showIdentifier];
+        v18 = [VUIMediaEntityFetchRequest seasonsFetchRequestWithShowIdentifier:showIdentifier];
+        mediaLibrary = [firstObject mediaLibrary];
+        v20 = [VUIMediaEntitiesDataSourceFactory dataSourceForFetchRequest:v18 withLibrary:mediaLibrary];
 
         v21 = [[VUIDownloadShowTableViewController alloc] initWithDataSource:v16 seasonsDataSource:v20];
-        v22 = [v15 showTitle];
+        showTitle = [firstObject showTitle];
 
-        if (v22)
+        if (showTitle)
         {
-          v23 = [(VUIDownloadShowTableViewController *)v21 navigationItem];
-          v24 = [v15 showTitle];
-          [v23 setTitle:v24];
+          navigationItem = [(VUIDownloadShowTableViewController *)v21 navigationItem];
+          showTitle2 = [firstObject showTitle];
+          [navigationItem setTitle:showTitle2];
         }
 
-        v25 = [(VUIDownloadTableViewController *)self navigationController];
-        [v25 pushViewController:v21 animated:1];
+        navigationController = [(VUIDownloadTableViewController *)self navigationController];
+        [navigationController pushViewController:v21 animated:1];
 
-        v10 = v36;
+        rightBarButtonItem2 = v36;
       }
     }
 
     else
     {
-      v26 = [v13 mediaEntities];
-      v27 = [v26 firstObject];
+      mediaEntities2 = [v13 mediaEntities];
+      firstObject2 = [mediaEntities2 firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = v27;
-        v29 = [v28 downloadExpirationDate];
-        v30 = v29;
-        if (v29 && ![v29 vui_isInTheFuture])
+        v28 = firstObject2;
+        downloadExpirationDate = [v28 downloadExpirationDate];
+        v30 = downloadExpirationDate;
+        if (downloadExpirationDate && ![downloadExpirationDate vui_isInTheFuture])
         {
-          v35 = [(VUIDownloadTableViewController *)self _configureRenewAlertControllerForIndexPath:v7 forPreferredStyle:1 withCompletion:0];
+          v35 = [(VUIDownloadTableViewController *)self _configureRenewAlertControllerForIndexPath:pathCopy forPreferredStyle:1 withCompletion:0];
           if (v35)
           {
             [(VUIDownloadTableViewController *)self presentViewController:v35 animated:1 completion:0];
           }
 
-          [v6 deselectRowAtIndexPath:v7 animated:1];
+          [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         }
 
         else
@@ -518,57 +518,57 @@ void __42__VUIDownloadTableViewController_loadView__block_invoke_62(uint64_t a1,
     goto LABEL_24;
   }
 
-  v8 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
-  v9 = [v8 isEnabled];
+  rightBarButtonItem = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+  isEnabled = [rightBarButtonItem isEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
-    v10 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
-    [v10 setEnabled:1];
+    rightBarButtonItem2 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+    [rightBarButtonItem2 setEnabled:1];
 LABEL_24:
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView:a3];
-  v6 = [v5 isEditing];
+  v5 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView:view];
+  isEditing = [v5 isEditing];
 
-  if (v6)
+  if (isEditing)
   {
-    v7 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-    v8 = [v7 indexPathsForSelectedRows];
-    v9 = [v8 count];
+    downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+    indexPathsForSelectedRows = [downloadEntitiesTableView indexPathsForSelectedRows];
+    v9 = [indexPathsForSelectedRows count];
 
     if (!v9)
     {
-      v10 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
-      [v10 setEnabled:0];
+      rightBarButtonItem = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+      [rightBarButtonItem setEnabled:0];
     }
   }
 }
 
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path
 {
-  v6 = [(VUIDownloadTableViewController *)self rightBarButtonItem:a3];
+  v6 = [(VUIDownloadTableViewController *)self rightBarButtonItem:view];
   v4 = +[VUILocalizationManager sharedInstance];
   v5 = [v4 localizedStringForKey:@"DONE"];
   [v6 setTitle:v5];
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
-  v6 = [(VUIDownloadTableViewController *)self rightBarButtonItem:a3];
+  v6 = [(VUIDownloadTableViewController *)self rightBarButtonItem:view];
   v4 = +[VUILocalizationManager sharedInstance];
   v5 = [v4 localizedStringForKey:@"EDIT"];
   [v6 setTitle:v5];
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v46 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([MEMORY[0x1E69DC668] isRunningInStoreDemoMode])
   {
     v7 = 0;
@@ -586,18 +586,18 @@ LABEL_24:
     v41[2] = __95__VUIDownloadTableViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
     v41[3] = &unk_1E872E7B0;
     objc_copyWeak(&v43, &location);
-    v11 = v6;
+    v11 = pathCopy;
     v42 = v11;
     v31 = [v8 contextualActionWithStyle:1 title:v10 handler:v41];
 
     [v33 addObject:v31];
     if (v11)
     {
-      v12 = [(VUIDownloadTableViewController *)self diffableDataSource];
-      v13 = [v12 itemIdentifierForIndexPath:v11];
+      diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+      indexPathsForSelectedRows = [diffableDataSource itemIdentifierForIndexPath:v11];
 
-      v14 = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
-      v15 = [v14 objectForKey:v13];
+      identifierToDownloadEntityDictionary = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
+      v15 = [identifierToDownloadEntityDictionary objectForKey:indexPathsForSelectedRows];
     }
 
     else
@@ -606,11 +606,11 @@ LABEL_24:
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v16 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-      v13 = [v16 indexPathsForSelectedRows];
+      downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+      indexPathsForSelectedRows = [downloadEntitiesTableView indexPathsForSelectedRows];
 
       v15 = 0;
-      v17 = [v13 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      v17 = [indexPathsForSelectedRows countByEnumeratingWithState:&v37 objects:v45 count:16];
       if (v17)
       {
         v18 = *v38;
@@ -622,7 +622,7 @@ LABEL_24:
           {
             if (*v38 != v18)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(indexPathsForSelectedRows);
             }
 
             v15 = -[NSMutableArray objectAtIndex:](self->_downloadEntities, "objectAtIndex:", [*(*(&v37 + 1) + 8 * v19) row]);
@@ -632,7 +632,7 @@ LABEL_24:
           }
 
           while (v17 != v19);
-          v17 = [v13 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          v17 = [indexPathsForSelectedRows countByEnumeratingWithState:&v37 objects:v45 count:16];
         }
 
         while (v17);
@@ -641,14 +641,14 @@ LABEL_24:
 
     if ([(VUIDownloadTableViewController *)self _downloadEntityShouldShowRenewOption:v15])
     {
-      v21 = [v15 mediaEntities];
-      v22 = [v21 firstObject];
+      mediaEntities = [v15 mediaEntities];
+      firstObject = [mediaEntities firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [v22 downloadExpirationDate];
-        if (v23)
+        downloadExpirationDate = [firstObject downloadExpirationDate];
+        if (downloadExpirationDate)
         {
           v24 = MEMORY[0x1E69DC8E8];
           v25 = +[VUILocalizationManager sharedInstance];
@@ -706,44 +706,44 @@ void __95__VUIDownloadTableViewController_tableView_trailingSwipeActionsConfigur
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   if (self->_isSelectingAll)
   {
-    [a4 setSelected:1];
+    [cell setSelected:1];
   }
 }
 
-- (void)downloadManager:(id)a3 downloadedFetchDidFinishWithEntities:(id)a4
+- (void)downloadManager:(id)manager downloadedFetchDidFinishWithEntities:(id)entities
 {
-  v5 = [(VUIDownloadTableViewController *)self downloadDataSource:a3];
-  v6 = [v5 downloadEntities];
-  v7 = [v6 mutableCopy];
+  v5 = [(VUIDownloadTableViewController *)self downloadDataSource:manager];
+  downloadEntities = [v5 downloadEntities];
+  v7 = [downloadEntities mutableCopy];
   [(VUIDownloadTableViewController *)self setDownloadEntities:v7];
 
-  v8 = [(VUIDownloadTableViewController *)self downloadEntities];
-  v9 = [v8 count];
+  downloadEntities2 = [(VUIDownloadTableViewController *)self downloadEntities];
+  v9 = [downloadEntities2 count];
 
-  v10 = [(VUIDownloadTableViewController *)self contentPresenter];
-  v11 = v10;
+  contentPresenter = [(VUIDownloadTableViewController *)self contentPresenter];
+  v11 = contentPresenter;
   if (v9)
   {
-    v12 = [v10 currentContentViewType];
+    currentContentViewType = [contentPresenter currentContentViewType];
 
-    if (v12 != 3)
+    if (currentContentViewType != 3)
     {
-      v13 = [(VUIDownloadTableViewController *)self contentPresenter];
-      [v13 setCurrentContentViewType:3];
+      contentPresenter2 = [(VUIDownloadTableViewController *)self contentPresenter];
+      [contentPresenter2 setCurrentContentViewType:3];
     }
 
-    v15 = [(VUIDownloadTableViewController *)self diffableDataSource];
-    v14 = [(VUIDownloadTableViewController *)self _createDiffableDataSourceSnapshot];
-    [v15 applySnapshot:v14 animatingDifferences:v12 == 3 completion:0];
+    diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+    _createDiffableDataSourceSnapshot = [(VUIDownloadTableViewController *)self _createDiffableDataSourceSnapshot];
+    [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:currentContentViewType == 3 completion:0];
   }
 
   else
   {
-    [v10 setCurrentContentViewType:2];
+    [contentPresenter setCurrentContentViewType:2];
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -754,30 +754,30 @@ void __95__VUIDownloadTableViewController_tableView_trailingSwipeActionsConfigur
   }
 }
 
-- (void)downloadManager:(id)a3 downloadsDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadsDidChange:(id)change
 {
-  v5 = [(VUIDownloadTableViewController *)self downloadDataSource:a3];
-  v6 = [v5 downloadEntities];
-  v7 = [v6 mutableCopy];
+  v5 = [(VUIDownloadTableViewController *)self downloadDataSource:manager];
+  downloadEntities = [v5 downloadEntities];
+  v7 = [downloadEntities mutableCopy];
   [(VUIDownloadTableViewController *)self setDownloadEntities:v7];
 
-  v8 = [(VUIDownloadTableViewController *)self downloadEntities];
-  v9 = [v8 count];
+  downloadEntities2 = [(VUIDownloadTableViewController *)self downloadEntities];
+  v9 = [downloadEntities2 count];
 
-  v10 = [(VUIDownloadTableViewController *)self contentPresenter];
-  v11 = v10;
+  contentPresenter = [(VUIDownloadTableViewController *)self contentPresenter];
+  v11 = contentPresenter;
   if (v9)
   {
-    [v10 setCurrentContentViewType:3];
+    [contentPresenter setCurrentContentViewType:3];
 
-    v13 = [(VUIDownloadTableViewController *)self diffableDataSource];
-    v12 = [(VUIDownloadTableViewController *)self _createDiffableDataSourceSnapshot];
-    [v13 applySnapshot:v12 animatingDifferences:1 completion:0];
+    diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+    _createDiffableDataSourceSnapshot = [(VUIDownloadTableViewController *)self _createDiffableDataSourceSnapshot];
+    [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:1 completion:0];
   }
 
   else
   {
-    [v10 setCurrentContentViewType:2];
+    [contentPresenter setCurrentContentViewType:2];
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -788,60 +788,60 @@ void __95__VUIDownloadTableViewController_tableView_trailingSwipeActionsConfigur
   }
 }
 
-- (void)setDownloadEntities:(id)a3
+- (void)setDownloadEntities:(id)entities
 {
-  objc_storeStrong(&self->_downloadEntities, a3);
-  v4 = [(VUIDownloadTableViewController *)self _createIdentifierToDownloadEntityDictionary];
-  [(VUIDownloadTableViewController *)self setIdentifierToDownloadEntityDictionary:v4];
+  objc_storeStrong(&self->_downloadEntities, entities);
+  _createIdentifierToDownloadEntityDictionary = [(VUIDownloadTableViewController *)self _createIdentifierToDownloadEntityDictionary];
+  [(VUIDownloadTableViewController *)self setIdentifierToDownloadEntityDictionary:_createIdentifierToDownloadEntityDictionary];
 
   [(VUIDownloadTableViewController *)self _toggleRightBarEditItemIfNeeded];
 }
 
 - (void)_popIfNeeded
 {
-  v3 = [(VUIDownloadTableViewController *)self navigationController];
-  v7 = [v3 childViewControllers];
+  navigationController = [(VUIDownloadTableViewController *)self navigationController];
+  childViewControllers = [navigationController childViewControllers];
 
-  v4 = [(VUIDownloadTableViewController *)self downloadEntities];
-  if (![v4 count] && objc_msgSend(v7, "count") >= 2)
+  downloadEntities = [(VUIDownloadTableViewController *)self downloadEntities];
+  if (![downloadEntities count] && objc_msgSend(childViewControllers, "count") >= 2)
   {
-    v5 = [v7 lastObject];
+    lastObject = [childViewControllers lastObject];
 
-    if (v5 != self)
+    if (lastObject != self)
     {
       goto LABEL_6;
     }
 
-    v4 = [(VUIDownloadTableViewController *)self navigationController];
-    v6 = [v4 popViewControllerAnimated:1];
+    downloadEntities = [(VUIDownloadTableViewController *)self navigationController];
+    v6 = [downloadEntities popViewControllerAnimated:1];
   }
 
 LABEL_6:
 }
 
-- (void)downloadCellDidRequestCancelDownload:(id)a3
+- (void)downloadCellDidRequestCancelDownload:(id)download
 {
-  v4 = a3;
-  v5 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-  v14 = [v5 indexPathForCell:v4];
+  downloadCopy = download;
+  downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+  v14 = [downloadEntitiesTableView indexPathForCell:downloadCopy];
 
   v6 = v14;
   if (v14)
   {
     v7 = -[NSMutableArray objectAtIndex:](self->_downloadEntities, "objectAtIndex:", [v14 row]);
-    v8 = [v7 mediaEntities];
-    v9 = [v8 firstObject];
+    mediaEntities = [v7 mediaEntities];
+    firstObject = [mediaEntities firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = firstObject;
       if (([v10 markedAsDeleted] & 1) != 0 || (objc_msgSend(v10, "downloadExpirationDate"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
       {
         -[NSMutableArray removeObjectAtIndex:](self->_downloadEntities, "removeObjectAtIndex:", [v14 row]);
-        v12 = [(VUIDownloadTableViewController *)self diffableDataSource];
-        v13 = [(VUIDownloadTableViewController *)self _createDiffableDataSourceSnapshot];
-        [v12 applySnapshot:v13 animatingDifferences:1 completion:0];
+        diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+        _createDiffableDataSourceSnapshot = [(VUIDownloadTableViewController *)self _createDiffableDataSourceSnapshot];
+        [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:1 completion:0];
       }
     }
 
@@ -852,11 +852,11 @@ LABEL_6:
 - (void)_toggleRightBarEditItemIfNeeded
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIDownloadTableViewController *)self downloadEntities];
-  v4 = [v3 count];
+  downloadEntities = [(VUIDownloadTableViewController *)self downloadEntities];
+  v4 = [downloadEntities count];
 
-  v5 = [(VUIDownloadTableViewController *)self navigationItem];
-  v6 = v5;
+  navigationItem = [(VUIDownloadTableViewController *)self navigationItem];
+  v6 = navigationItem;
   if (v4)
   {
     v8[0] = self->_rightBarButtonItem;
@@ -866,7 +866,7 @@ LABEL_6:
 
   else
   {
-    [v5 setRightBarButtonItems:MEMORY[0x1E695E0F0]];
+    [navigationItem setRightBarButtonItems:MEMORY[0x1E695E0F0]];
   }
 }
 
@@ -874,9 +874,9 @@ LABEL_6:
 {
   if ([(UITableView *)self->_downloadEntitiesTableView isEditing])
   {
-    v3 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-    v4 = [v3 indexPathsForSelectedRows];
-    v5 = [v4 count];
+    downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+    indexPathsForSelectedRows = [downloadEntitiesTableView indexPathsForSelectedRows];
+    v5 = [indexPathsForSelectedRows count];
 
     if (v5)
     {
@@ -906,13 +906,13 @@ LABEL_6:
     v10 = [v9 localizedStringForKey:@"DELETE"];
     [(UIBarButtonItem *)rightBarButtonItem setTitle:v10];
 
-    v11 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
-    [v11 setEnabled:0];
+    rightBarButtonItem = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
 
-    v12 = [(VUIDownloadTableViewController *)self selectAllBarButtonItem];
+    selectAllBarButtonItem = [(VUIDownloadTableViewController *)self selectAllBarButtonItem];
     v13 = +[VUILocalizationManager sharedInstance];
     v14 = [v13 localizedStringForKey:@"SELECT_ALL"];
-    [v12 setTitle:v14];
+    [selectAllBarButtonItem setTitle:v14];
 
     v18 = objc_opt_new();
     if (self->_rightBarButtonItem)
@@ -925,12 +925,12 @@ LABEL_6:
       [v18 addObject:?];
     }
 
-    v15 = [(VUIDownloadTableViewController *)self navigationItem];
+    navigationItem = [(VUIDownloadTableViewController *)self navigationItem];
     v16 = [v18 copy];
-    [v15 setRightBarButtonItems:v16];
+    [navigationItem setRightBarButtonItems:v16];
 
-    v17 = [(VUIDownloadTableViewController *)self navigationItem];
-    [v17 setLeftBarButtonItem:self->_leftBarButtonItem];
+    navigationItem2 = [(VUIDownloadTableViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:self->_leftBarButtonItem];
   }
 }
 
@@ -940,10 +940,10 @@ LABEL_6:
   if (isSelectingAll)
   {
     [(VUIDownloadTableViewController *)self setIsSelectingAll:0];
-    v4 = [(VUIDownloadTableViewController *)self selectAllBarButtonItem];
+    selectAllBarButtonItem = [(VUIDownloadTableViewController *)self selectAllBarButtonItem];
     v5 = +[VUILocalizationManager sharedInstance];
     v6 = [v5 localizedStringForKey:@"SELECT_ALL"];
-    [v4 setTitle:v6];
+    [selectAllBarButtonItem setTitle:v6];
 
     [(VUIDownloadTableViewController *)self _clearSelections];
   }
@@ -951,29 +951,29 @@ LABEL_6:
   else
   {
     [(VUIDownloadTableViewController *)self setIsSelectingAll:1];
-    v7 = [(VUIDownloadTableViewController *)self selectAllBarButtonItem];
+    selectAllBarButtonItem2 = [(VUIDownloadTableViewController *)self selectAllBarButtonItem];
     v8 = +[VUILocalizationManager sharedInstance];
     v9 = [v8 localizedStringForKey:@"DESELECT_ALL"];
-    [v7 setTitle:v9];
+    [selectAllBarButtonItem2 setTitle:v9];
 
     [(VUIDownloadTableViewController *)self _selectAllCells];
   }
 
-  v10 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
-  [v10 setEnabled:!isSelectingAll];
+  rightBarButtonItem = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+  [rightBarButtonItem setEnabled:!isSelectingAll];
 }
 
 - (void)_clearSelections
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+  indexPathsForSelectedRows = [downloadEntitiesTableView indexPathsForSelectedRows];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = indexPathsForSelectedRows;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -990,11 +990,11 @@ LABEL_6:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-        [v11 deselectRowAtIndexPath:v10 animated:1];
+        downloadEntitiesTableView2 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+        [downloadEntitiesTableView2 deselectRowAtIndexPath:v10 animated:1];
 
-        v12 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-        v13 = [v12 cellForRowAtIndexPath:v10];
+        downloadEntitiesTableView3 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+        v13 = [downloadEntitiesTableView3 cellForRowAtIndexPath:v10];
 
         [v13 setSelected:0 animated:1];
         ++v9;
@@ -1011,14 +1011,14 @@ LABEL_6:
 - (void)_selectAllCells
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-  v4 = [v3 indexPathsForVisibleRows];
+  downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+  indexPathsForVisibleRows = [downloadEntitiesTableView indexPathsForVisibleRows];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = indexPathsForVisibleRows;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1035,11 +1035,11 @@ LABEL_6:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-        [v11 selectRowAtIndexPath:v10 animated:1 scrollPosition:0];
+        downloadEntitiesTableView2 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+        [downloadEntitiesTableView2 selectRowAtIndexPath:v10 animated:1 scrollPosition:0];
 
-        v12 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-        v13 = [v12 cellForRowAtIndexPath:v10];
+        downloadEntitiesTableView3 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+        v13 = [downloadEntitiesTableView3 cellForRowAtIndexPath:v10];
 
         [v13 setSelected:1 animated:1];
         ++v9;
@@ -1053,13 +1053,13 @@ LABEL_6:
   }
 }
 
-- (id)_configureAlertControllerForIndexPath:(id)a3 withCompletion:(id)a4
+- (id)_configureAlertControllerForIndexPath:(id)path withCompletion:(id)completion
 {
   v84 = *MEMORY[0x1E69E9840];
-  v61 = a3;
-  v56 = a4;
-  v6 = [(UITableView *)self->_downloadEntitiesTableView indexPathsForSelectedRows];
-  v58 = [v6 count];
+  pathCopy = path;
+  completionCopy = completion;
+  indexPathsForSelectedRows = [(UITableView *)self->_downloadEntitiesTableView indexPathsForSelectedRows];
+  v58 = [indexPathsForSelectedRows count];
 
   v7 = +[VUILocalizationManager sharedInstance];
   v60 = [v7 localizedStringForKey:@"DELETE_EXPLANATION"];
@@ -1067,21 +1067,21 @@ LABEL_6:
   v8 = +[VUILocalizationManager sharedInstance];
   v59 = [v8 localizedStringForKey:@"DELETE_DOWNLOAD"];
 
-  if (v61)
+  if (pathCopy)
   {
-    v9 = [(VUIDownloadTableViewController *)self diffableDataSource];
-    v10 = [v9 itemIdentifierForIndexPath:v61];
+    diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+    v10 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-    v11 = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
-    v12 = [v11 objectForKey:v10];
+    identifierToDownloadEntityDictionary = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
+    v12 = [identifierToDownloadEntityDictionary objectForKey:v10];
 
-    v13 = [v12 numberOfMediaItems];
-    v14 = [v13 unsignedIntegerValue];
+    numberOfMediaItems = [v12 numberOfMediaItems];
+    unsignedIntegerValue = [numberOfMediaItems unsignedIntegerValue];
   }
 
   else if (self->_isSelectingAll)
   {
-    v14 = [(NSMutableArray *)self->_downloadEntities count];
+    unsignedIntegerValue = [(NSMutableArray *)self->_downloadEntities count];
   }
 
   else
@@ -1090,11 +1090,11 @@ LABEL_6:
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v15 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-    v16 = [v15 indexPathsForSelectedRows];
+    downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+    indexPathsForSelectedRows2 = [downloadEntitiesTableView indexPathsForSelectedRows];
 
-    v14 = 0;
-    v17 = [v16 countByEnumeratingWithState:&v78 objects:v83 count:16];
+    unsignedIntegerValue = 0;
+    v17 = [indexPathsForSelectedRows2 countByEnumeratingWithState:&v78 objects:v83 count:16];
     if (v17)
     {
       v18 = *v79;
@@ -1104,24 +1104,24 @@ LABEL_6:
         {
           if (*v79 != v18)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(indexPathsForSelectedRows2);
           }
 
           v20 = -[NSMutableArray objectAtIndex:](self->_downloadEntities, "objectAtIndex:", [*(*(&v78 + 1) + 8 * i) row]);
-          v21 = [v20 numberOfMediaItems];
-          v22 = [v21 unsignedIntegerValue];
+          numberOfMediaItems2 = [v20 numberOfMediaItems];
+          unsignedIntegerValue2 = [numberOfMediaItems2 unsignedIntegerValue];
 
-          v14 += v22;
+          unsignedIntegerValue += unsignedIntegerValue2;
         }
 
-        v17 = [v16 countByEnumeratingWithState:&v78 objects:v83 count:16];
+        v17 = [indexPathsForSelectedRows2 countByEnumeratingWithState:&v78 objects:v83 count:16];
       }
 
       while (v17);
     }
   }
 
-  if (v14 >= 2)
+  if (unsignedIntegerValue >= 2)
   {
     v23 = +[VUILocalizationManager sharedInstance];
     v24 = [v23 localizedStringForKey:@"DELETES_EXPLANATION"];
@@ -1129,27 +1129,27 @@ LABEL_6:
     v25 = MEMORY[0x1E696AEC0];
     v26 = +[VUILocalizationManager sharedInstance];
     v27 = [v26 localizedStringForKey:@"DELETE_%U_DOWNLOADS"];
-    v28 = [v25 localizedStringWithValidatedFormat:v27 validFormatSpecifiers:@"%u" error:0, v14];
+    v28 = [v25 localizedStringWithValidatedFormat:v27 validFormatSpecifiers:@"%u" error:0, unsignedIntegerValue];
 
     v59 = v28;
     v60 = v24;
   }
 
   v29 = objc_opt_new();
-  if (v61)
+  if (pathCopy)
   {
-    v30 = [(VUIDownloadTableViewController *)self diffableDataSource];
-    v31 = [v30 itemIdentifierForIndexPath:v61];
+    diffableDataSource2 = [(VUIDownloadTableViewController *)self diffableDataSource];
+    indexPathsForSelectedRows3 = [diffableDataSource2 itemIdentifierForIndexPath:pathCopy];
 
-    v32 = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
-    v33 = [v32 objectForKey:v31];
+    identifierToDownloadEntityDictionary2 = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
+    v33 = [identifierToDownloadEntityDictionary2 objectForKey:indexPathsForSelectedRows3];
 
     [(NSMutableArray *)v29 addObject:v33];
   }
 
   else if (self->_isSelectingAll)
   {
-    v31 = v29;
+    indexPathsForSelectedRows3 = v29;
     v29 = self->_downloadEntities;
   }
 
@@ -1159,10 +1159,10 @@ LABEL_6:
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v34 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-    v31 = [v34 indexPathsForSelectedRows];
+    downloadEntitiesTableView2 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+    indexPathsForSelectedRows3 = [downloadEntitiesTableView2 indexPathsForSelectedRows];
 
-    v35 = [v31 countByEnumeratingWithState:&v74 objects:v82 count:16];
+    v35 = [indexPathsForSelectedRows3 countByEnumeratingWithState:&v74 objects:v82 count:16];
     if (v35)
     {
       v36 = *v75;
@@ -1172,14 +1172,14 @@ LABEL_6:
         {
           if (*v75 != v36)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(indexPathsForSelectedRows3);
           }
 
           v38 = -[NSMutableArray objectAtIndex:](self->_downloadEntities, "objectAtIndex:", [*(*(&v74 + 1) + 8 * j) row]);
           [(NSMutableArray *)v29 addObject:v38];
         }
 
-        v35 = [v31 countByEnumeratingWithState:&v74 objects:v82 count:16];
+        v35 = [indexPathsForSelectedRows3 countByEnumeratingWithState:&v74 objects:v82 count:16];
       }
 
       while (v35);
@@ -1194,7 +1194,7 @@ LABEL_6:
   objc_copyWeak(&v72, &location);
   v39 = v29;
   v70 = v39;
-  v40 = v56;
+  v40 = completionCopy;
   v71 = v40;
   v57 = _Block_copy(aBlock);
   v66[0] = MEMORY[0x1E69E9820];
@@ -1212,7 +1212,7 @@ LABEL_6:
 
   else
   {
-    v43 = v61 != 0;
+    v43 = pathCopy != 0;
   }
 
   if (v43)
@@ -1239,15 +1239,15 @@ LABEL_6:
     v51 = [v48 actionWithTitle:v50 style:1 handler:v62];
 
     [v44 addAction:v51];
-    v52 = [MEMORY[0x1E69DC938] currentDevice];
-    LODWORD(v49) = [v52 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    LODWORD(v49) = [currentDevice userInterfaceIdiom] == 1;
 
     if (v49)
     {
       [v44 setModalPresentationStyle:7];
-      v53 = [v44 popoverPresentationController];
-      v54 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
-      [v53 setBarButtonItem:v54];
+      popoverPresentationController = [v44 popoverPresentationController];
+      rightBarButtonItem = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+      [popoverPresentationController setBarButtonItem:rightBarButtonItem];
     }
   }
 
@@ -1291,18 +1291,18 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
   }
 }
 
-- (id)_configureRenewAlertControllerForIndexPath:(id)a3 forPreferredStyle:(int64_t)a4 withCompletion:(id)a5
+- (id)_configureRenewAlertControllerForIndexPath:(id)path forPreferredStyle:(int64_t)style withCompletion:(id)completion
 {
   v99 = *MEMORY[0x1E69E9840];
-  v74 = a3;
-  v75 = a5;
-  if (v74)
+  pathCopy = path;
+  completionCopy = completion;
+  if (pathCopy)
   {
-    v8 = [(VUIDownloadTableViewController *)self diffableDataSource];
-    v9 = [v8 itemIdentifierForIndexPath:v74];
+    diffableDataSource = [(VUIDownloadTableViewController *)self diffableDataSource];
+    v9 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-    v10 = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
-    v11 = [v10 objectForKey:v9];
+    identifierToDownloadEntityDictionary = [(VUIDownloadTableViewController *)self identifierToDownloadEntityDictionary];
+    v11 = [identifierToDownloadEntityDictionary objectForKey:v9];
   }
 
   else
@@ -1311,11 +1311,11 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
     v97 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v12 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-    v13 = [v12 indexPathsForSelectedRows];
+    downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+    indexPathsForSelectedRows = [downloadEntitiesTableView indexPathsForSelectedRows];
 
     v11 = 0;
-    v14 = [v13 countByEnumeratingWithState:&v94 objects:v98 count:16];
+    v14 = [indexPathsForSelectedRows countByEnumeratingWithState:&v94 objects:v98 count:16];
     if (v14)
     {
       v15 = *v95;
@@ -1327,7 +1327,7 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
         {
           if (*v95 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(indexPathsForSelectedRows);
           }
 
           v11 = -[NSMutableArray objectAtIndex:](self->_downloadEntities, "objectAtIndex:", [*(*(&v94 + 1) + 8 * v16) row]);
@@ -1337,22 +1337,22 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
         }
 
         while (v14 != v16);
-        v14 = [v13 countByEnumeratingWithState:&v94 objects:v98 count:16];
+        v14 = [indexPathsForSelectedRows countByEnumeratingWithState:&v94 objects:v98 count:16];
       }
 
       while (v14);
     }
   }
 
-  v18 = [v11 mediaEntities];
-  v19 = [v18 firstObject];
+  mediaEntities = [v11 mediaEntities];
+  firstObject = [mediaEntities firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v72 = v19;
-    v73 = [v72 availabilityEndDate];
-    if (v73 && ![v73 vui_isInTheFuture])
+    v72 = firstObject;
+    availabilityEndDate = [v72 availabilityEndDate];
+    if (availabilityEndDate && ![availabilityEndDate vui_isInTheFuture])
     {
       objc_initWeak(&location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -1360,15 +1360,15 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
       aBlock[2] = __110__VUIDownloadTableViewController__configureRenewAlertControllerForIndexPath_forPreferredStyle_withCompletion___block_invoke_5;
       aBlock[3] = &unk_1E872DFB8;
       objc_copyWeak(&v82, &location);
-      v79 = v74;
+      v79 = pathCopy;
       v80 = v11;
-      v81 = v75;
+      v81 = completionCopy;
       v71 = _Block_copy(aBlock);
       v36 = MEMORY[0x1E696AEC0];
       v37 = +[VUILocalizationManager sharedInstance];
       v38 = [v37 localizedStringForKey:@"DOWNLOAD_MESSAGE_NO_LONGER_AVAILABLE"];
-      v39 = [v72 brandName];
-      v40 = [v36 stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, v39];
+      brandName = [v72 brandName];
+      v40 = [v36 stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, brandName];
 
       v41 = MEMORY[0x1E69DC650];
       v42 = +[VUILocalizationManager sharedInstance];
@@ -1393,9 +1393,9 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
 
     else if (+[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable])
     {
-      v20 = [v72 allowsManualDownloadRenewal];
-      v21 = v20;
-      if (v20)
+      allowsManualDownloadRenewal = [v72 allowsManualDownloadRenewal];
+      v21 = allowsManualDownloadRenewal;
+      if (allowsManualDownloadRenewal)
       {
         v22 = @"RENEW_DOWNLOAD";
       }
@@ -1405,7 +1405,7 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
         v22 = @"DOWNLOAD_AGAIN_BUTTON_TITLE";
       }
 
-      if (v20)
+      if (allowsManualDownloadRenewal)
       {
         v23 = @"DOWNLOAD_MESSAGE_RENEW";
       }
@@ -1415,9 +1415,9 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
         v23 = @"DOWNLOAD_MESSAGE_REDOWNLOAD";
       }
 
-      if (a4 == 1)
+      if (style == 1)
       {
-        if (v20)
+        if (allowsManualDownloadRenewal)
         {
           v24 = @"RENEW_DOWNLOAD";
         }
@@ -1442,10 +1442,10 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
       v50 = MEMORY[0x1E696AEC0];
       v51 = +[VUILocalizationManager sharedInstance];
       v52 = [v51 localizedStringForKey:v23];
-      v53 = [v72 brandName];
-      v68 = [v50 stringWithValidatedFormat:v52 validFormatSpecifiers:@"%@" error:0, v53];
+      brandName2 = [v72 brandName];
+      v68 = [v50 stringWithValidatedFormat:v52 validFormatSpecifiers:@"%@" error:0, brandName2];
 
-      v26 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v70 message:v68 preferredStyle:a4];
+      v26 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v70 message:v68 preferredStyle:style];
       objc_initWeak(&location, self);
       v54 = MEMORY[0x1E69DC648];
       v87[0] = MEMORY[0x1E69E9820];
@@ -1456,8 +1456,8 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
       v55 = v72;
       v92 = v21;
       v88 = v55;
-      v89 = self;
-      v56 = v75;
+      selfCopy = self;
+      v56 = completionCopy;
       v90 = v56;
       v57 = [v54 actionWithTitle:v69 style:0 handler:v87];
       [v26 addAction:v57];
@@ -1492,7 +1492,7 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
       v83[1] = 3221225472;
       v83[2] = __110__VUIDownloadTableViewController__configureRenewAlertControllerForIndexPath_forPreferredStyle_withCompletion___block_invoke_4;
       v83[3] = &unk_1E872E850;
-      v84 = v75;
+      v84 = completionCopy;
       v35 = [v32 actionWithTitle:v34 style:1 handler:v83];
 
       [v26 addAction:v35];
@@ -1501,23 +1501,23 @@ void __87__VUIDownloadTableViewController__configureAlertControllerForIndexPath_
 
   else
   {
-    if (v75)
+    if (completionCopy)
     {
-      v75[2]();
+      completionCopy[2]();
     }
 
     v26 = 0;
   }
 
-  v62 = [MEMORY[0x1E69DC938] currentDevice];
-  v64 = [v62 userInterfaceIdiom] == 1 && v26 != 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v64 = [currentDevice userInterfaceIdiom] == 1 && v26 != 0;
 
   if (v64)
   {
     [v26 setModalPresentationStyle:7];
-    v65 = [v26 popoverPresentationController];
-    v66 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
-    [v65 setBarButtonItem:v66];
+    popoverPresentationController = [v26 popoverPresentationController];
+    rightBarButtonItem = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+    [popoverPresentationController setBarButtonItem:rightBarButtonItem];
   }
 
   return v26;
@@ -1614,22 +1614,22 @@ void __110__VUIDownloadTableViewController__configureRenewAlertControllerForInde
 
 - (void)_exitEditingMode
 {
-  v3 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
-  [v3 setEnabled:1];
+  rightBarButtonItem = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 
-  v4 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
-  [v4 setEditing:0 animated:1];
+  downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+  [downloadEntitiesTableView setEditing:0 animated:1];
 
-  v5 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
+  rightBarButtonItem2 = [(VUIDownloadTableViewController *)self rightBarButtonItem];
   v6 = +[VUILocalizationManager sharedInstance];
   v7 = [v6 localizedStringForKey:@"EDIT"];
-  [v5 setTitle:v7];
+  [rightBarButtonItem2 setTitle:v7];
 
   [(VUIDownloadTableViewController *)self setIsSelectingAll:0];
-  v8 = [(VUIDownloadTableViewController *)self selectAllBarButtonItem];
+  selectAllBarButtonItem = [(VUIDownloadTableViewController *)self selectAllBarButtonItem];
   v9 = +[VUILocalizationManager sharedInstance];
   v10 = [v9 localizedStringForKey:@"SELECT_ALL"];
-  [v8 setTitle:v10];
+  [selectAllBarButtonItem setTitle:v10];
 
   v17 = objc_opt_new();
   if (self->_rightBarButtonItem)
@@ -1637,33 +1637,33 @@ void __110__VUIDownloadTableViewController__configureRenewAlertControllerForInde
     [v17 addObject:?];
   }
 
-  v11 = [(VUIDownloadTableViewController *)self navigationItem];
+  navigationItem = [(VUIDownloadTableViewController *)self navigationItem];
   v12 = [v17 copy];
-  [v11 setRightBarButtonItems:v12];
+  [navigationItem setRightBarButtonItems:v12];
 
-  v13 = [(VUIDownloadTableViewController *)self navigationItem];
-  v14 = [(VUIDownloadTableViewController *)self backBarButtonItem];
-  [v13 setLeftBarButtonItem:v14];
+  navigationItem2 = [(VUIDownloadTableViewController *)self navigationItem];
+  backBarButtonItem = [(VUIDownloadTableViewController *)self backBarButtonItem];
+  [navigationItem2 setLeftBarButtonItem:backBarButtonItem];
 
-  v15 = [(VUIDownloadTableViewController *)self alertController];
+  alertController = [(VUIDownloadTableViewController *)self alertController];
 
-  if (v15)
+  if (alertController)
   {
-    v16 = [(VUIDownloadTableViewController *)self alertController];
-    [v16 dismissViewControllerAnimated:0 completion:0];
+    alertController2 = [(VUIDownloadTableViewController *)self alertController];
+    [alertController2 dismissViewControllerAnimated:0 completion:0];
   }
 }
 
-- (void)_deleteDownloadEntities:(id)a3
+- (void)_deleteDownloadEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   v7 = MEMORY[0x1E69E9820];
   v8 = __58__VUIDownloadTableViewController__deleteDownloadEntities___block_invoke;
   v9 = &unk_1E872D990;
-  v10 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = entitiesCopy;
   v5 = MEMORY[0x1E696AF00];
-  v6 = v4;
+  v6 = entitiesCopy;
   if ([v5 isMainThread])
   {
     v8(&v7);
@@ -1724,10 +1724,10 @@ void __58__VUIDownloadTableViewController__deleteDownloadEntities___block_invoke
   [v9 applySnapshot:v10 animatingDifferences:1 completion:v12];
 }
 
-- (void)_deleteMediaEntitiesInDownloadEntities:(id)a3
+- (void)_deleteMediaEntitiesInDownloadEntities:(id)entities
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entitiesCopy = entities;
   v5 = objc_opt_new();
   assetControllersToRemove = self->_assetControllersToRemove;
   self->_assetControllersToRemove = v5;
@@ -1736,7 +1736,7 @@ void __58__VUIDownloadTableViewController__deleteDownloadEntities___block_invoke
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = entitiesCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
@@ -1757,8 +1757,8 @@ void __58__VUIDownloadTableViewController__deleteDownloadEntities___block_invoke
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v12 = [v11 mediaEntities];
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        mediaEntities = [v11 mediaEntities];
+        v13 = [mediaEntities countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1770,19 +1770,19 @@ void __58__VUIDownloadTableViewController__deleteDownloadEntities___block_invoke
             {
               if (*v21 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(mediaEntities);
               }
 
-              v17 = [*(*(&v20 + 1) + 8 * v16) assetController];
-              v18 = [(VUIDownloadTableViewController *)self assetControllersToRemove];
-              [v18 addObject:v17];
+              assetController = [*(*(&v20 + 1) + 8 * v16) assetController];
+              assetControllersToRemove = [(VUIDownloadTableViewController *)self assetControllersToRemove];
+              [assetControllersToRemove addObject:assetController];
 
-              [v17 cancelAndRemoveDownload];
+              [assetController cancelAndRemoveDownload];
               ++v16;
             }
 
             while (v14 != v16);
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v14 = [mediaEntities countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v14);
@@ -1799,29 +1799,29 @@ void __58__VUIDownloadTableViewController__deleteDownloadEntities___block_invoke
   }
 }
 
-- (BOOL)_downloadEntityShouldShowRenewOption:(id)a3
+- (BOOL)_downloadEntityShouldShowRenewOption:(id)option
 {
-  v3 = a3;
-  v4 = [v3 mediaEntities];
-  v5 = [v4 firstObject];
+  optionCopy = option;
+  mediaEntities = [optionCopy mediaEntities];
+  firstObject = [mediaEntities firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 availabilityEndDate];
-    v8 = [v6 downloadExpirationDate];
-    v9 = v8;
-    if (!v8 || [v8 vui_isInTheFuture])
+    v6 = firstObject;
+    availabilityEndDate = [v6 availabilityEndDate];
+    downloadExpirationDate = [v6 downloadExpirationDate];
+    v9 = downloadExpirationDate;
+    if (!downloadExpirationDate || [downloadExpirationDate vui_isInTheFuture])
     {
-      v10 = [v6 brandID];
-      if ([v10 length])
+      brandID = [v6 brandID];
+      if ([brandID length])
       {
         v11 = +[VUIFeaturesConfiguration sharedInstance];
-        v12 = [v11 downloadConfig];
-        v13 = [v12 blacklistedEarlyRenewalBrands];
+        downloadConfig = [v11 downloadConfig];
+        blacklistedEarlyRenewalBrands = [downloadConfig blacklistedEarlyRenewalBrands];
 
-        LOBYTE(v11) = [v13 containsObject:v10];
+        LOBYTE(v11) = [blacklistedEarlyRenewalBrands containsObject:brandID];
         if (v11)
         {
 
@@ -1830,9 +1830,9 @@ void __58__VUIDownloadTableViewController__deleteDownloadEntities___block_invoke
       }
     }
 
-    if ((!v7 || [v7 vui_isInTheFuture]) && (objc_msgSend(v6, "renewsOfflineKeysAutomatically") & 1) == 0)
+    if ((!availabilityEndDate || [availabilityEndDate vui_isInTheFuture]) && (objc_msgSend(v6, "renewsOfflineKeysAutomatically") & 1) == 0)
     {
-      v14 = [v3 downloadType] == 0;
+      v14 = [optionCopy downloadType] == 0;
       goto LABEL_14;
     }
 
@@ -1852,13 +1852,13 @@ LABEL_15:
 - (id)_createDiffableDataSource
 {
   v3 = objc_alloc(MEMORY[0x1E69DD040]);
-  v4 = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
+  downloadEntitiesTableView = [(VUIDownloadTableViewController *)self downloadEntitiesTableView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__VUIDownloadTableViewController__createDiffableDataSource__block_invoke;
   v7[3] = &unk_1E8732100;
   v7[4] = self;
-  v5 = [v3 initWithTableView:v4 cellProvider:v7];
+  v5 = [v3 initWithTableView:downloadEntitiesTableView cellProvider:v7];
 
   return v5;
 }
@@ -1921,8 +1921,8 @@ id __59__VUIDownloadTableViewController__createDiffableDataSource__block_invoke(
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   [v3 appendSectionsWithIdentifiers:v4];
 
-  v5 = [(VUIDownloadTableViewController *)self _identifiersForDownloadEntities];
-  [v3 appendItemsWithIdentifiers:v5 intoSectionWithIdentifier:@"DownloadTableViewMainSection"];
+  _identifiersForDownloadEntities = [(VUIDownloadTableViewController *)self _identifiersForDownloadEntities];
+  [v3 appendItemsWithIdentifiers:_identifiersForDownloadEntities intoSectionWithIdentifier:@"DownloadTableViewMainSection"];
 
   return v3;
 }
@@ -1935,8 +1935,8 @@ id __59__VUIDownloadTableViewController__createDiffableDataSource__block_invoke(
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(VUIDownloadTableViewController *)self downloadEntities];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  downloadEntities = [(VUIDownloadTableViewController *)self downloadEntities];
+  v5 = [downloadEntities countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1947,18 +1947,18 @@ id __59__VUIDownloadTableViewController__createDiffableDataSource__block_invoke(
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(downloadEntities);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        if (v10)
+        identifier = [v9 identifier];
+        if (identifier)
         {
-          [v3 setValue:v9 forKey:v10];
+          [v3 setValue:v9 forKey:identifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [downloadEntities countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1977,8 +1977,8 @@ id __59__VUIDownloadTableViewController__createDiffableDataSource__block_invoke(
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(VUIDownloadTableViewController *)self downloadEntities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  downloadEntities = [(VUIDownloadTableViewController *)self downloadEntities];
+  v5 = [downloadEntities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1989,41 +1989,41 @@ id __59__VUIDownloadTableViewController__createDiffableDataSource__block_invoke(
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(downloadEntities);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) identifier];
-        if (v9)
+        identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+        if (identifier)
         {
-          [v3 addObject:v9];
+          [v3 addObject:identifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [downloadEntities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [v3 array];
+  array = [v3 array];
 
-  return v10;
+  return array;
 }
 
 - (void)_updateNavigationBarPadding
 {
   v3 = MEMORY[0x1E69DD2E8];
-  v4 = [(VUIDownloadTableViewController *)self view];
-  [v4 bounds];
+  view = [(VUIDownloadTableViewController *)self view];
+  [view bounds];
   [v3 vui_paddingForWindowWidth:CGRectGetWidth(v27)];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(VUIDownloadTableViewController *)self navigationController];
-  v14 = [v13 navigationBar];
-  [v14 layoutMargins];
+  navigationController = [(VUIDownloadTableViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar layoutMargins];
   if (v8 == v18 && v6 == v15 && v12 == v17)
   {
     v21 = v16;
@@ -2038,45 +2038,45 @@ id __59__VUIDownloadTableViewController__createDiffableDataSource__block_invoke(
   {
   }
 
-  v22 = [(VUIDownloadTableViewController *)self navigationController];
-  v23 = [v22 navigationBar];
-  [v23 setLayoutMargins:{v6, v8, v10, v12}];
+  navigationController2 = [(VUIDownloadTableViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setLayoutMargins:{v6, v8, v10, v12}];
 
-  v25 = [(VUIDownloadTableViewController *)self navigationController];
-  v24 = [v25 navigationBar];
-  [v24 setNeedsLayout];
+  navigationController3 = [(VUIDownloadTableViewController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
+  [navigationBar3 setNeedsLayout];
 }
 
-- (void)_clearTableViewSelections:(BOOL)a3
+- (void)_clearTableViewSelections:(BOOL)selections
 {
   v5 = self->_downloadEntitiesTableView;
-  v6 = [(UITableView *)v5 indexPathsForSelectedRows];
-  v7 = [v6 firstObject];
+  indexPathsForSelectedRows = [(UITableView *)v5 indexPathsForSelectedRows];
+  firstObject = [indexPathsForSelectedRows firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(VUIDownloadTableViewController *)self transitionCoordinator];
-    if (v8)
+    transitionCoordinator = [(VUIDownloadTableViewController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __60__VUIDownloadTableViewController__clearTableViewSelections___block_invoke;
       v12[3] = &unk_1E872D878;
       v13 = v5;
-      v14 = v7;
-      v15 = a3;
+      v14 = firstObject;
+      selectionsCopy = selections;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __60__VUIDownloadTableViewController__clearTableViewSelections___block_invoke_2;
       v9[3] = &unk_1E872D8A0;
       v10 = v13;
       v11 = v14;
-      [v8 animateAlongsideTransition:v12 completion:v9];
+      [transitionCoordinator animateAlongsideTransition:v12 completion:v9];
     }
 
     else
     {
-      [(UITableView *)v5 deselectRowAtIndexPath:v7 animated:1];
+      [(UITableView *)v5 deselectRowAtIndexPath:firstObject animated:1];
     }
   }
 }
@@ -2095,12 +2095,12 @@ uint64_t __60__VUIDownloadTableViewController__clearTableViewSelections___block_
   return result;
 }
 
-- (void)fullscreenPlaybackUIDidChangeNotification:(id)a3
+- (void)fullscreenPlaybackUIDidChangeNotification:(id)notification
 {
   v4 = +[VUIPlaybackManager sharedInstance];
-  v5 = [v4 isFullscreenPlaybackUIBeingShown];
+  isFullscreenPlaybackUIBeingShown = [v4 isFullscreenPlaybackUIBeingShown];
 
-  if ((v5 & 1) == 0)
+  if ((isFullscreenPlaybackUIBeingShown & 1) == 0)
   {
 
     [(VUIDownloadTableViewController *)self _clearTableViewSelections:1];

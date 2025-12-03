@@ -6,8 +6,8 @@
 
 - (BOOL)_accessibilityIgnoreInternalLabels
 {
-  v2 = [(UITableViewCellAccessibility__PhotoLibrary__UIKit *)self accessibilityIdentification];
-  v3 = [v2 isEqualToString:@"CloudCreateCell"];
+  accessibilityIdentification = [(UITableViewCellAccessibility__PhotoLibrary__UIKit *)self accessibilityIdentification];
+  v3 = [accessibilityIdentification isEqualToString:@"CloudCreateCell"];
 
   return v3;
 }

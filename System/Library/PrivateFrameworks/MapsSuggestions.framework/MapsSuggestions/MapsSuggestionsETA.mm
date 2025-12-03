@@ -1,34 +1,34 @@
 @interface MapsSuggestionsETA
-+ (id)ETAWithData:(id)a3;
-- (BOOL)isBetterThanETA:(id)a3 requirements:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToETA:(id)a3;
-- (BOOL)isValidForLocation:(id)a3 requirements:(id)a4;
-- (MapsSuggestionsETA)initWithCoder:(id)a3;
-- (MapsSuggestionsETA)initWithSeconds:(double)a3 shortTrafficString:(id)a4 longTrafficString:(id)a5 writtenRouteName:(id)a6 spokenRouteName:(id)a7 transportType:(int)a8 location:(id)a9 time:(id)a10;
-- (MapsSuggestionsETA)initWithSeconds:(double)a3 shortTrafficString:(id)a4 longTrafficString:(id)a5 writtenRouteName:(id)a6 spokenRouteName:(id)a7 transportType:(int)a8 location:(id)a9 time:(id)a10 originator:(id)a11;
-- (MapsSuggestionsETA)initWithSeconds:(double)a3 trafficString:(id)a4 transportType:(int)a5 location:(id)a6;
-- (MapsSuggestionsETA)initWithTrafficAndETAResult:(id)a3 transportType:(int)a4 location:(id)a5 time:(id)a6;
++ (id)ETAWithData:(id)data;
+- (BOOL)isBetterThanETA:(id)a requirements:(id)requirements;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToETA:(id)a;
+- (BOOL)isValidForLocation:(id)location requirements:(id)requirements;
+- (MapsSuggestionsETA)initWithCoder:(id)coder;
+- (MapsSuggestionsETA)initWithSeconds:(double)seconds shortTrafficString:(id)string longTrafficString:(id)trafficString writtenRouteName:(id)name spokenRouteName:(id)routeName transportType:(int)type location:(id)location time:(id)self0;
+- (MapsSuggestionsETA)initWithSeconds:(double)seconds shortTrafficString:(id)string longTrafficString:(id)trafficString writtenRouteName:(id)name spokenRouteName:(id)routeName transportType:(int)type location:(id)location time:(id)self0 originator:(id)self1;
+- (MapsSuggestionsETA)initWithSeconds:(double)seconds trafficString:(id)string transportType:(int)type location:(id)location;
+- (MapsSuggestionsETA)initWithTrafficAndETAResult:(id)result transportType:(int)type location:(id)location time:(id)time;
 - (NSString)description;
 - (double)age;
 - (id)data;
 - (id)objectForJSON;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MapsSuggestionsETA
 
-- (MapsSuggestionsETA)initWithSeconds:(double)a3 shortTrafficString:(id)a4 longTrafficString:(id)a5 writtenRouteName:(id)a6 spokenRouteName:(id)a7 transportType:(int)a8 location:(id)a9 time:(id)a10 originator:(id)a11
+- (MapsSuggestionsETA)initWithSeconds:(double)seconds shortTrafficString:(id)string longTrafficString:(id)trafficString writtenRouteName:(id)name spokenRouteName:(id)routeName transportType:(int)type location:(id)location time:(id)self0 originator:(id)self1
 {
   v53 = *MEMORY[0x1E69E9840];
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  if (!v22)
+  stringCopy = string;
+  trafficStringCopy = trafficString;
+  nameCopy = name;
+  routeNameCopy = routeName;
+  locationCopy = location;
+  timeCopy = time;
+  originatorCopy = originator;
+  if (!locationCopy)
   {
     v42 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -47,7 +47,7 @@
     goto LABEL_11;
   }
 
-  if (!v23)
+  if (!timeCopy)
   {
     v42 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -65,7 +65,7 @@
 
 LABEL_11:
 
-    v41 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -75,102 +75,102 @@ LABEL_11:
   v26 = v25;
   if (v25)
   {
-    v25->_seconds = a3;
-    v27 = [v18 copy];
+    v25->_seconds = seconds;
+    v27 = [stringCopy copy];
     shortTrafficString = v26->_shortTrafficString;
     v26->_shortTrafficString = v27;
 
-    v29 = [v19 copy];
+    v29 = [trafficStringCopy copy];
     longTrafficString = v26->_longTrafficString;
     v26->_longTrafficString = v29;
 
-    v31 = [v20 copy];
+    v31 = [nameCopy copy];
     writtenRouteName = v26->_writtenRouteName;
     v26->_writtenRouteName = v31;
 
-    v33 = [v21 copy];
+    v33 = [routeNameCopy copy];
     spokenRouteName = v26->_spokenRouteName;
     v26->_spokenRouteName = v33;
 
-    v26->_transportType = a8;
-    v35 = [v22 copy];
+    v26->_transportType = type;
+    v35 = [locationCopy copy];
     location = v26->_location;
     v26->_location = v35;
 
-    v37 = [v23 copy];
+    v37 = [timeCopy copy];
     time = v26->_time;
     v26->_time = v37;
 
-    v39 = [v24 copy];
+    v39 = [originatorCopy copy];
     originator = v26->_originator;
     v26->_originator = v39;
   }
 
   self = v26;
-  v41 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v41;
+  return selfCopy;
 }
 
-- (MapsSuggestionsETA)initWithSeconds:(double)a3 shortTrafficString:(id)a4 longTrafficString:(id)a5 writtenRouteName:(id)a6 spokenRouteName:(id)a7 transportType:(int)a8 location:(id)a9 time:(id)a10
+- (MapsSuggestionsETA)initWithSeconds:(double)seconds shortTrafficString:(id)string longTrafficString:(id)trafficString writtenRouteName:(id)name spokenRouteName:(id)routeName transportType:(int)type location:(id)location time:(id)self0
 {
-  v11 = *&a8;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
-  v23 = [MEMORY[0x1E696AE30] processInfo];
-  v24 = [v23 processName];
-  v25 = [(MapsSuggestionsETA *)self initWithSeconds:v17 shortTrafficString:v18 longTrafficString:v19 writtenRouteName:v20 spokenRouteName:v11 transportType:v21 location:a3 time:v22 originator:v24];
+  v11 = *&type;
+  stringCopy = string;
+  trafficStringCopy = trafficString;
+  nameCopy = name;
+  routeNameCopy = routeName;
+  locationCopy = location;
+  timeCopy = time;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v25 = [(MapsSuggestionsETA *)self initWithSeconds:stringCopy shortTrafficString:trafficStringCopy longTrafficString:nameCopy writtenRouteName:routeNameCopy spokenRouteName:v11 transportType:locationCopy location:seconds time:timeCopy originator:processName];
 
   return v25;
 }
 
-- (MapsSuggestionsETA)initWithSeconds:(double)a3 trafficString:(id)a4 transportType:(int)a5 location:(id)a6
+- (MapsSuggestionsETA)initWithSeconds:(double)seconds trafficString:(id)string transportType:(int)type location:(id)location
 {
-  v7 = *&a5;
-  v10 = a4;
-  v11 = a6;
+  v7 = *&type;
+  stringCopy = string;
+  locationCopy = location;
   v12 = MapsSuggestionsNow();
-  v13 = [(MapsSuggestionsETA *)self initWithSeconds:v10 shortTrafficString:v10 longTrafficString:0 writtenRouteName:0 spokenRouteName:v7 transportType:v11 location:a3 time:v12];
+  v13 = [(MapsSuggestionsETA *)self initWithSeconds:stringCopy shortTrafficString:stringCopy longTrafficString:0 writtenRouteName:0 spokenRouteName:v7 transportType:locationCopy location:seconds time:v12];
 
   return v13;
 }
 
-- (MapsSuggestionsETA)initWithTrafficAndETAResult:(id)a3 transportType:(int)a4 location:(id)a5 time:(id)a6
+- (MapsSuggestionsETA)initWithTrafficAndETAResult:(id)result transportType:(int)type location:(id)location time:(id)time
 {
-  v7 = *&a4;
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  v7 = *&type;
+  resultCopy = result;
+  locationCopy = location;
+  if (resultCopy)
   {
-    [v9 seconds];
+    [resultCopy seconds];
     v12 = v11;
-    v13 = [v9 shortTrafficString];
-    v14 = [v9 longTrafficString];
-    v15 = [v9 writtenRouteName];
-    v16 = [v9 spokenRouteName];
+    shortTrafficString = [resultCopy shortTrafficString];
+    longTrafficString = [resultCopy longTrafficString];
+    writtenRouteName = [resultCopy writtenRouteName];
+    spokenRouteName = [resultCopy spokenRouteName];
     v17 = MapsSuggestionsNow();
-    self = [(MapsSuggestionsETA *)self initWithSeconds:v13 shortTrafficString:v14 longTrafficString:v15 writtenRouteName:v16 spokenRouteName:v7 transportType:v10 location:v12 time:v17];
+    self = [(MapsSuggestionsETA *)self initWithSeconds:shortTrafficString shortTrafficString:longTrafficString longTrafficString:writtenRouteName writtenRouteName:spokenRouteName spokenRouteName:v7 transportType:locationCopy location:v12 time:v17];
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -178,19 +178,19 @@ LABEL_12:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MapsSuggestionsETA *)self isEqualToETA:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MapsSuggestionsETA *)self isEqualToETA:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToETA:(id)a3
+- (BOOL)isEqualToETA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   v18 = 1;
-  if (self != v4)
+  if (self != aCopy)
   {
-    if ((-[MapsSuggestionsETA seconds](self, "seconds"), v6 = v5, -[MapsSuggestionsETA seconds](v4, "seconds"), vabdd_f64(v6, v7) > 2.22044605e-16) || (-[MapsSuggestionsETA shortTrafficString](self, "shortTrafficString"), v8 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsETA shortTrafficString](v4, "shortTrafficString"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v8 != v9) && (-[MapsSuggestionsETA shortTrafficString](self, "shortTrafficString"), v10 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsETA shortTrafficString](v4, "shortTrafficString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqualToString:v11], v11, v10, (v12 & 1) == 0) || (-[MapsSuggestionsETA longTrafficString](self, "longTrafficString"), v13 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsETA longTrafficString](v4, "longTrafficString"), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v13 != v14) && (-[MapsSuggestionsETA longTrafficString](self, "longTrafficString"), v15 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsETA longTrafficString](v4, "longTrafficString"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, v15, (v17 & 1) == 0))
+    if ((-[MapsSuggestionsETA seconds](self, "seconds"), v6 = v5, -[MapsSuggestionsETA seconds](aCopy, "seconds"), vabdd_f64(v6, v7) > 2.22044605e-16) || (-[MapsSuggestionsETA shortTrafficString](self, "shortTrafficString"), v8 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsETA shortTrafficString](aCopy, "shortTrafficString"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v8 != v9) && (-[MapsSuggestionsETA shortTrafficString](self, "shortTrafficString"), v10 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsETA shortTrafficString](aCopy, "shortTrafficString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqualToString:v11], v11, v10, (v12 & 1) == 0) || (-[MapsSuggestionsETA longTrafficString](self, "longTrafficString"), v13 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsETA longTrafficString](aCopy, "longTrafficString"), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v13 != v14) && (-[MapsSuggestionsETA longTrafficString](self, "longTrafficString"), v15 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsETA longTrafficString](aCopy, "longTrafficString"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, v15, (v17 & 1) == 0))
     {
       v18 = 0;
     }
@@ -202,41 +202,41 @@ LABEL_12:
 - (double)age
 {
   v3 = MapsSuggestionsNow();
-  v4 = [(MapsSuggestionsETA *)self time];
-  [v3 timeIntervalSinceDate:v4];
+  time = [(MapsSuggestionsETA *)self time];
+  [v3 timeIntervalSinceDate:time];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)isValidForLocation:(id)a3 requirements:(id)a4
+- (BOOL)isValidForLocation:(id)location requirements:(id)requirements
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  locationCopy = location;
+  requirementsCopy = requirements;
+  if (requirementsCopy)
   {
     [(MapsSuggestionsETA *)self age];
     v9 = v8;
-    [v7 maxAge];
+    [requirementsCopy maxAge];
     if (v9 <= v10)
     {
-      v16 = [(MapsSuggestionsETA *)self location];
-      [v16 horizontalAccuracy];
+      location = [(MapsSuggestionsETA *)self location];
+      [location horizontalAccuracy];
       v18 = v17;
 
-      [v7 minAccuracy];
+      [requirementsCopy minAccuracy];
       if (v18 <= v19)
       {
-        if (!v6)
+        if (!locationCopy)
         {
           goto LABEL_21;
         }
 
-        v22 = [(MapsSuggestionsETA *)self location];
-        v23 = MapsSuggestionsBestLocation(v6, v22);
+        location2 = [(MapsSuggestionsETA *)self location];
+        v23 = MapsSuggestionsBestLocation(locationCopy, location2);
 
-        if (v23 != v6)
+        if (v23 != locationCopy)
         {
           v11 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -249,11 +249,11 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        v24 = [(MapsSuggestionsETA *)self location];
-        [v24 distanceFromLocation:v6];
+        location3 = [(MapsSuggestionsETA *)self location];
+        [location3 distanceFromLocation:locationCopy];
         v26 = v25;
 
-        [v7 maxDistance];
+        [requirementsCopy maxDistance];
         if (v26 <= v27)
         {
 LABEL_21:
@@ -330,12 +330,12 @@ LABEL_14:
   return v20;
 }
 
-- (BOOL)isBetterThanETA:(id)a3 requirements:(id)a4
+- (BOOL)isBetterThanETA:(id)a requirements:(id)requirements
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  aCopy = a;
+  requirementsCopy = requirements;
+  if (!requirementsCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -354,41 +354,41 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (v6)
+  if (aCopy)
   {
-    v8 = [(MapsSuggestionsETA *)self location];
-    v9 = [v6 location];
-    v10 = MapsSuggestionsBestLocation(v8, v9);
+    location = [(MapsSuggestionsETA *)self location];
+    location2 = [aCopy location];
+    v10 = MapsSuggestionsBestLocation(location, location2);
 
-    if (([v6 isValidForLocation:v10 requirements:v7] & 1) == 0)
+    if (([aCopy isValidForLocation:v10 requirements:requirementsCopy] & 1) == 0)
     {
       v23 = 1;
       goto LABEL_12;
     }
 
-    if ([(MapsSuggestionsETA *)self isValidForLocation:v10 requirements:v7])
+    if ([(MapsSuggestionsETA *)self isValidForLocation:v10 requirements:requirementsCopy])
     {
-      v11 = v6;
-      v12 = v7;
-      v13 = [(MapsSuggestionsETA *)self location];
-      [v13 coordinate];
+      v11 = aCopy;
+      v12 = requirementsCopy;
+      location3 = [(MapsSuggestionsETA *)self location];
+      [location3 coordinate];
       *buf = v14;
       *&buf[8] = v15;
 
-      v16 = [v11 location];
-      [v16 coordinate];
+      location4 = [v11 location];
+      [location4 coordinate];
       v28 = v17;
       v29 = v18;
 
       CLLocationCoordinate2DGetDistanceFrom();
       v20 = v19;
       [v12 maxDistance];
-      LODWORD(v16) = v20 > v21;
+      LODWORD(location4) = v20 > v21;
 
-      if (v16)
+      if (location4)
       {
-        v22 = [(MapsSuggestionsETA *)self location];
-        v23 = v10 == v22;
+        location5 = [(MapsSuggestionsETA *)self location];
+        v23 = v10 == location5;
       }
 
       else
@@ -415,40 +415,40 @@ LABEL_13:
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeDouble:@"MapsSuggestionsETASecondsKey" forKey:self->_seconds];
-  [v4 encodeObject:self->_shortTrafficString forKey:@"MapsSuggestionsETAShortTrafficStringKey"];
-  [v4 encodeObject:self->_longTrafficString forKey:@"MapsSuggestionsETALongTrafficStringKey"];
-  [v4 encodeObject:self->_writtenRouteName forKey:@"MapsSuggestionsETAWrittenRouteNameKey"];
-  [v4 encodeObject:self->_spokenRouteName forKey:@"MapsSuggestionsETASpokenRouteNameKey"];
-  [v4 encodeInteger:self->_transportType forKey:@"MapsSuggestionsETATransportTypeKey"];
-  [v4 encodeObject:self->_time forKey:@"MapsSuggestionsETATimeKey"];
-  [v4 encodeObject:self->_location forKey:@"MapsSuggestionsETALocationKey"];
-  [v4 encodeObject:self->_originator forKey:@"MapsSuggestionsETAOriginatorKey"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"MapsSuggestionsETASecondsKey" forKey:self->_seconds];
+  [coderCopy encodeObject:self->_shortTrafficString forKey:@"MapsSuggestionsETAShortTrafficStringKey"];
+  [coderCopy encodeObject:self->_longTrafficString forKey:@"MapsSuggestionsETALongTrafficStringKey"];
+  [coderCopy encodeObject:self->_writtenRouteName forKey:@"MapsSuggestionsETAWrittenRouteNameKey"];
+  [coderCopy encodeObject:self->_spokenRouteName forKey:@"MapsSuggestionsETASpokenRouteNameKey"];
+  [coderCopy encodeInteger:self->_transportType forKey:@"MapsSuggestionsETATransportTypeKey"];
+  [coderCopy encodeObject:self->_time forKey:@"MapsSuggestionsETATimeKey"];
+  [coderCopy encodeObject:self->_location forKey:@"MapsSuggestionsETALocationKey"];
+  [coderCopy encodeObject:self->_originator forKey:@"MapsSuggestionsETAOriginatorKey"];
 }
 
-- (MapsSuggestionsETA)initWithCoder:(id)a3
+- (MapsSuggestionsETA)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"MapsSuggestionsETASecondsKey"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"MapsSuggestionsETASecondsKey"];
   v6 = v5;
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETAShortTrafficStringKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETALongTrafficStringKey"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETAWrittenRouteNameKey"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETASpokenRouteNameKey"];
-  v10 = [v4 decodeIntegerForKey:@"MapsSuggestionsETATransportTypeKey"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETATimeKey"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETALocationKey"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETAOriginatorKey"];
-  if (!v13)
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETAShortTrafficStringKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETALongTrafficStringKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETAWrittenRouteNameKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETASpokenRouteNameKey"];
+  v10 = [coderCopy decodeIntegerForKey:@"MapsSuggestionsETATransportTypeKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETATimeKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETALocationKey"];
+  processName = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsETAOriginatorKey"];
+  if (!processName)
   {
-    v14 = [MEMORY[0x1E696AE30] processInfo];
-    v13 = [v14 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
   }
 
-  v15 = [(MapsSuggestionsETA *)self initWithSeconds:v17 shortTrafficString:v7 longTrafficString:v8 writtenRouteName:v9 spokenRouteName:v10 transportType:v12 location:v6 time:v11 originator:v13];
+  v15 = [(MapsSuggestionsETA *)self initWithSeconds:v17 shortTrafficString:v7 longTrafficString:v8 writtenRouteName:v9 spokenRouteName:v10 transportType:v12 location:v6 time:v11 originator:processName];
 
   return v15;
 }
@@ -459,11 +459,11 @@ LABEL_13:
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:*MEMORY[0x1E696A508]];
   [v3 finishEncoding];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  if (v4)
+  if (encodedData)
   {
-    v5 = [v3 encodedData];
+    encodedData2 = [v3 encodedData];
   }
 
   else
@@ -472,31 +472,31 @@ LABEL_13:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_ERROR, "Could not serialize ETA: %@", &v8, 0xCu);
     }
 
-    v5 = 0;
+    encodedData2 = 0;
   }
 
-  return v5;
+  return encodedData2;
 }
 
-+ (id)ETAWithData:(id)a3
++ (id)ETAWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v12 = 0;
-    v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:&v12];
+    v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v12];
     v5 = v12;
     [v4 setRequiresSecureCoding:1];
     [v4 setDecodingFailurePolicy:1];
     v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E696A508]];
     [v4 finishDecoding];
-    v7 = [v4 error];
-    if (v7 | v5)
+    error = [v4 error];
+    if (error | v5)
     {
     }
 
@@ -511,14 +511,14 @@ LABEL_15:
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = v5;
+      error2 = v5;
       if (!v5)
       {
-        v10 = [v4 error];
+        error2 = [v4 error];
       }
 
       *buf = 138412290;
-      v14 = v10;
+      v14 = error2;
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "Could not deserialize MapsSuggestionsETA, error: %@", buf, 0xCu);
       if (!v5)
       {
@@ -553,16 +553,16 @@ LABEL_16:
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v14[0] = @"value";
-  v3 = [(MapsSuggestionsETA *)self seconds];
-  v5 = MSg::jsonFor(v3, v4);
+  seconds = [(MapsSuggestionsETA *)self seconds];
+  v5 = MSg::jsonFor(seconds, v4);
   v15[0] = v5;
   v14[1] = @"age";
   v6 = [(MapsSuggestionsETA *)self age];
   v8 = MSg::jsonFor(v6, v7);
   v15[1] = v8;
   v14[2] = @"from";
-  v9 = [(MapsSuggestionsETA *)self location];
-  v11 = MSg::jsonFor(v9, v10);
+  location = [(MapsSuggestionsETA *)self location];
+  v11 = MSg::jsonFor(location, v10);
   v15[2] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
@@ -577,31 +577,31 @@ LABEL_16:
   v4 = [(MapsSuggestionsETA *)&v24 description];
   [(MapsSuggestionsETA *)self seconds];
   v6 = v5;
-  v7 = [(MapsSuggestionsETA *)self writtenRouteName];
-  v8 = [(MapsSuggestionsETA *)self trafficString];
-  v9 = [(MapsSuggestionsETA *)self transportType];
-  if (v9 >= 7)
+  writtenRouteName = [(MapsSuggestionsETA *)self writtenRouteName];
+  trafficString = [(MapsSuggestionsETA *)self trafficString];
+  transportType = [(MapsSuggestionsETA *)self transportType];
+  if (transportType >= 7)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v9];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v10 = off_1E81F5D20[v9];
+    v10 = off_1E81F5D20[transportType];
   }
 
-  v11 = [(MapsSuggestionsETA *)self location];
-  [v11 coordinate];
+  location = [(MapsSuggestionsETA *)self location];
+  [location coordinate];
   v13 = v12;
-  v14 = [(MapsSuggestionsETA *)self location];
-  [v14 coordinate];
+  location2 = [(MapsSuggestionsETA *)self location];
+  [location2 coordinate];
   v16 = v15;
-  v17 = [(MapsSuggestionsETA *)self location];
-  [v17 horizontalAccuracy];
+  location3 = [(MapsSuggestionsETA *)self location];
+  [location3 horizontalAccuracy];
   v19 = v18;
-  v20 = [(MapsSuggestionsETA *)self time];
-  v21 = [(MapsSuggestionsETA *)self originator];
-  v22 = [v3 initWithFormat:@"%@ %.0fs over @%@, %@ (%@ / <%.8f, %.8f> ±%.2fm / %@ / %@)", v4, v6, v7, v8, v10, v13, v16, v19, v20, v21];
+  time = [(MapsSuggestionsETA *)self time];
+  originator = [(MapsSuggestionsETA *)self originator];
+  v22 = [v3 initWithFormat:@"%@ %.0fs over @%@, %@ (%@ / <%.8f, %.8f> ±%.2fm / %@ / %@)", v4, v6, writtenRouteName, trafficString, v10, v13, v16, v19, time, originator];
 
   return v22;
 }

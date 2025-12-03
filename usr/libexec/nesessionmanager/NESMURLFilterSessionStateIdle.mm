@@ -1,14 +1,14 @@
 @interface NESMURLFilterSessionStateIdle
 - (NESMURLFilterSessionStateIdle)init;
-- (void)enterWithSession:(id)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)enterWithSession:(id)session;
+- (void)handleStartMessage:(id)message;
 @end
 
 @implementation NESMURLFilterSessionStateIdle
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v13 = a3;
+  messageCopy = message;
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -43,11 +43,11 @@ LABEL_6:
   sub_10006DE84(v9, v10);
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = NESMURLFilterSessionStateIdle;
-  [(NESMURLFilterSessionState *)&v3 enterWithSession:a3];
+  [(NESMURLFilterSessionState *)&v3 enterWithSession:session];
 }
 
 - (NESMURLFilterSessionStateIdle)init

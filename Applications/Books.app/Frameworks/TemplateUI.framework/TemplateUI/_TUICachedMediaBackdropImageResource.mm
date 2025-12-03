@@ -1,20 +1,20 @@
 @interface _TUICachedMediaBackdropImageResource
-+ (id)sizedKeyForNaturalSize:(CGSize)a3 contentsScale:(double)a4 imageResource:(id)a5;
-+ (id)unsizedKeyForContentsScale:(double)a3 imageResource:(id)a4;
-- (_TUICachedMediaBackdropImageResource)initWithCache:(id)a3 unsizedCacheSet:(id)a4 queue:(id)a5 naturalSize:(CGSize)a6 contentsScale:(double)a7 resource:(id)a8;
++ (id)sizedKeyForNaturalSize:(CGSize)size contentsScale:(double)scale imageResource:(id)resource;
++ (id)unsizedKeyForContentsScale:(double)scale imageResource:(id)resource;
+- (_TUICachedMediaBackdropImageResource)initWithCache:(id)cache unsizedCacheSet:(id)set queue:(id)queue naturalSize:(CGSize)size contentsScale:(double)scale resource:(id)resource;
 - (id)debugFunctionalDescription;
 - (id)sizedKey;
 - (id)unsizedKey;
-- (void)applyToImage:(id)a3 completion:(id)a4;
+- (void)applyToImage:(id)image completion:(id)completion;
 @end
 
 @implementation _TUICachedMediaBackdropImageResource
 
-- (_TUICachedMediaBackdropImageResource)initWithCache:(id)a3 unsizedCacheSet:(id)a4 queue:(id)a5 naturalSize:(CGSize)a6 contentsScale:(double)a7 resource:(id)a8
+- (_TUICachedMediaBackdropImageResource)initWithCache:(id)cache unsizedCacheSet:(id)set queue:(id)queue naturalSize:(CGSize)size contentsScale:(double)scale resource:(id)resource
 {
   v9.receiver = self;
   v9.super_class = _TUICachedMediaBackdropImageResource;
-  result = [(_TUICachedPipelineImageResource *)&v9 initWithCache:a3 unsizedCacheSet:a4 queue:a5 naturalSize:a8 contentsScale:a6.width resource:a6.height, a7];
+  result = [(_TUICachedPipelineImageResource *)&v9 initWithCache:cache unsizedCacheSet:set queue:queue naturalSize:resource contentsScale:size.width resource:size.height, scale];
   if (result)
   {
     result->_operationLock._os_unfair_lock_opaque = 0;
@@ -25,17 +25,17 @@
 
 - (id)debugFunctionalDescription
 {
-  v2 = [(_TUICachedPipelineImageResource *)self imageResource];
-  v3 = [v2 debugFunctionalDescription];
-  v4 = [NSString stringWithFormat:@"(%@).MediaBackdropSnapshot", v3];
+  imageResource = [(_TUICachedPipelineImageResource *)self imageResource];
+  debugFunctionalDescription = [imageResource debugFunctionalDescription];
+  v4 = [NSString stringWithFormat:@"(%@).MediaBackdropSnapshot", debugFunctionalDescription];
 
   return v4;
 }
 
-- (void)applyToImage:(id)a3 completion:(id)a4
+- (void)applyToImage:(id)image completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  imageCopy = image;
   [(_TUICachedImageResource *)self contentsScale];
   v9 = v8;
   [(_TUICachedImageResource *)self naturalSize];
@@ -47,24 +47,24 @@
   v15[3] = &unk_260B70;
   v13 = v9 * v12;
   v15[4] = self;
-  v16 = v6;
+  v16 = completionCopy;
   v17 = v9;
-  v14 = v6;
-  [TUIMediaBackdropSnapshotRenderer renderWithContent:v7 size:v15 contentScale:v11 completionHandler:v13, v9];
+  v14 = completionCopy;
+  [TUIMediaBackdropSnapshotRenderer renderWithContent:imageCopy size:v15 contentScale:v11 completionHandler:v13, v9];
 }
 
 - (id)sizedKey
 {
   v13.receiver = self;
   v13.super_class = _TUICachedMediaBackdropImageResource;
-  v3 = [(_TUICachedPipelineImageResource *)&v13 sizedKey];
+  sizedKey = [(_TUICachedPipelineImageResource *)&v13 sizedKey];
   v4 = [_TUICachedImageFilterInfo alloc];
   [(_TUICachedImageResource *)self naturalSize];
   v6 = v5;
   v8 = v7;
   [(_TUICachedImageResource *)self contentsScale];
   v10 = [(_TUICachedImageFilterInfo *)v4 initWithFilter:0 naturalSize:v6 contentsScale:v8, v9];
-  v11 = [v3 cacheKeyWithFilterInfo:v10];
+  v11 = [sizedKey cacheKeyWithFilterInfo:v10];
 
   return v11;
 }
@@ -73,31 +73,31 @@
 {
   v9.receiver = self;
   v9.super_class = _TUICachedMediaBackdropImageResource;
-  v3 = [(_TUICachedPipelineImageResource *)&v9 unsizedKey];
+  unsizedKey = [(_TUICachedPipelineImageResource *)&v9 unsizedKey];
   v4 = [_TUICachedImageFilterInfo alloc];
   [(_TUICachedImageResource *)self contentsScale];
   v6 = [(_TUICachedImageFilterInfo *)v4 initWithFilter:0 naturalSize:CGSizeZero.width contentsScale:CGSizeZero.height, v5];
-  v7 = [v3 cacheKeyWithFilterInfo:v6];
+  v7 = [unsizedKey cacheKeyWithFilterInfo:v6];
 
   return v7;
 }
 
-+ (id)sizedKeyForNaturalSize:(CGSize)a3 contentsScale:(double)a4 imageResource:(id)a5
++ (id)sizedKeyForNaturalSize:(CGSize)size contentsScale:(double)scale imageResource:(id)resource
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [a5 sizedKey];
-  v9 = [[_TUICachedImageFilterInfo alloc] initWithFilter:0 naturalSize:width contentsScale:height, a4];
-  v10 = [v8 cacheKeyWithFilterInfo:v9];
+  height = size.height;
+  width = size.width;
+  sizedKey = [resource sizedKey];
+  scale = [[_TUICachedImageFilterInfo alloc] initWithFilter:0 naturalSize:width contentsScale:height, scale];
+  v10 = [sizedKey cacheKeyWithFilterInfo:scale];
 
   return v10;
 }
 
-+ (id)unsizedKeyForContentsScale:(double)a3 imageResource:(id)a4
++ (id)unsizedKeyForContentsScale:(double)scale imageResource:(id)resource
 {
-  v5 = [a4 unsizedKey];
-  v6 = [[_TUICachedImageFilterInfo alloc] initWithFilter:0 naturalSize:CGSizeZero.width contentsScale:CGSizeZero.height, a3];
-  v7 = [v5 cacheKeyWithFilterInfo:v6];
+  unsizedKey = [resource unsizedKey];
+  scale = [[_TUICachedImageFilterInfo alloc] initWithFilter:0 naturalSize:CGSizeZero.width contentsScale:CGSizeZero.height, scale];
+  v7 = [unsizedKey cacheKeyWithFilterInfo:scale];
 
   return v7;
 }

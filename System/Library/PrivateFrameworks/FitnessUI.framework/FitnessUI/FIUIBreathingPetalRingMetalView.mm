@@ -1,35 +1,35 @@
 @interface FIUIBreathingPetalRingMetalView
 - (CGPoint)ringCenter;
-- (FIUIBreathingPetalRingMetalView)initWithFrame:(CGRect)a3 petalColor:(int64_t)a4 numberOfPetals:(int64_t)a5 showBlurTrails:(BOOL)a6 device:(id)a7;
+- (FIUIBreathingPetalRingMetalView)initWithFrame:(CGRect)frame petalColor:(int64_t)color numberOfPetals:(int64_t)petals showBlurTrails:(BOOL)trails device:(id)device;
 - (FIUIDeepBreathingPetalRingViewDelegate)petalRingDelegate;
-- (void)importDataFromPetalRing:(id)a3;
+- (void)importDataFromPetalRing:(id)ring;
 - (void)layoutSubviews;
 @end
 
 @implementation FIUIBreathingPetalRingMetalView
 
-- (FIUIBreathingPetalRingMetalView)initWithFrame:(CGRect)a3 petalColor:(int64_t)a4 numberOfPetals:(int64_t)a5 showBlurTrails:(BOOL)a6 device:(id)a7
+- (FIUIBreathingPetalRingMetalView)initWithFrame:(CGRect)frame petalColor:(int64_t)color numberOfPetals:(int64_t)petals showBlurTrails:(BOOL)trails device:(id)device
 {
-  v7 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a7;
+  trailsCopy = trails;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v32.receiver = self;
   v32.super_class = FIUIBreathingPetalRingMetalView;
-  v16 = [(FIUIBreathingPetalRingMetalView *)&v32 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(FIUIBreathingPetalRingMetalView *)&v32 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    [(FIUIBreathingPetalRingMetalView *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(FIUIBreathingPetalRingMetalView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
     [(FIUIBreathingPetalRingMetalView *)v17 setAutoresizingMask:18];
     [(FIUIBreathingPetalRingMetalView *)v17 setAutoresizesSubviews:1];
-    v17->_numberOfPetals = a5;
-    v17->_showBlurTrails = v7;
-    if (v15)
+    v17->_numberOfPetals = petals;
+    v17->_showBlurTrails = trailsCopy;
+    if (deviceCopy)
     {
-      v18 = v15;
+      v18 = deviceCopy;
     }
 
     else
@@ -42,11 +42,11 @@
     mtkView = v17->_mtkView;
     v17->_mtkView = v20;
 
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(MTKView *)v17->_mtkView setBackgroundColor:v22];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MTKView *)v17->_mtkView setBackgroundColor:clearColor];
 
     [(MTKView *)v17->_mtkView setFramebufferOnly:1];
-    v23 = [[FIUIBreathingPetalRingMetalRenderer alloc] initWithMetalKitView:v17->_mtkView petalColor:a4 numberOfPetals:a5 showBlurTrails:v7];
+    v23 = [[FIUIBreathingPetalRingMetalRenderer alloc] initWithMetalKitView:v17->_mtkView petalColor:color numberOfPetals:petals showBlurTrails:trailsCopy];
     renderer = v17->_renderer;
     v17->_renderer = v23;
 
@@ -83,8 +83,8 @@ void __97__FIUIBreathingPetalRingMetalView_initWithFrame_petalColor_numberOfPeta
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(FIUIBreathingPetalRingMetalView *)self mtkView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  mtkView = [(FIUIBreathingPetalRingMetalView *)self mtkView];
+  [mtkView setFrame:{v4, v6, v8, v10}];
 }
 
 - (CGPoint)ringCenter
@@ -95,11 +95,11 @@ void __97__FIUIBreathingPetalRingMetalView_initWithFrame_petalColor_numberOfPeta
   return result;
 }
 
-- (void)importDataFromPetalRing:(id)a3
+- (void)importDataFromPetalRing:(id)ring
 {
-  if (a3)
+  if (ring)
   {
-    [(FIUIBreathingPetalRingMetalRenderer *)self->_renderer importDataFromPetalRingMetalRenderer:*(a3 + 55)];
+    [(FIUIBreathingPetalRingMetalRenderer *)self->_renderer importDataFromPetalRingMetalRenderer:*(ring + 55)];
   }
 }
 

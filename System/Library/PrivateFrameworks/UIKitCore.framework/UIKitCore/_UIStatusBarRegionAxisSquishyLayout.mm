@@ -1,9 +1,9 @@
 @interface _UIStatusBarRegionAxisSquishyLayout
 - (_UIStatusBarRegionAxisSquishyLayout)init;
 - (_UIStatusBarRegionAxisSquishyLayoutDynamicHidingDelegate)dynamicHidingDelegate;
-- (id)constraintsForDisplayItems:(id)a3 layoutGuides:(id)a4 inContainerItem:(id)a5 axis:(int64_t)a6;
-- (void)setMinInterspaceDynamicScale:(double)a3;
-- (void)setMinItemDynamicScale:(double)a3;
+- (id)constraintsForDisplayItems:(id)items layoutGuides:(id)guides inContainerItem:(id)item axis:(int64_t)axis;
+- (void)setMinInterspaceDynamicScale:(double)scale;
+- (void)setMinItemDynamicScale:(double)scale;
 @end
 
 @implementation _UIStatusBarRegionAxisSquishyLayout
@@ -21,44 +21,44 @@
   return result;
 }
 
-- (void)setMinItemDynamicScale:(double)a3
+- (void)setMinItemDynamicScale:(double)scale
 {
-  v3 = fmax(fmin(a3, 1.0), 0.0);
+  v3 = fmax(fmin(scale, 1.0), 0.0);
   if (v3 != self->_minItemDynamicScale)
   {
     self->_minItemDynamicScale = v3;
   }
 }
 
-- (void)setMinInterspaceDynamicScale:(double)a3
+- (void)setMinInterspaceDynamicScale:(double)scale
 {
-  v3 = fmax(fmin(a3, 1.0), 0.0);
+  v3 = fmax(fmin(scale, 1.0), 0.0);
   if (v3 != self->_minInterspaceDynamicScale)
   {
     self->_minInterspaceDynamicScale = v3;
   }
 }
 
-- (id)constraintsForDisplayItems:(id)a3 layoutGuides:(id)a4 inContainerItem:(id)a5 axis:(int64_t)a6
+- (id)constraintsForDisplayItems:(id)items layoutGuides:(id)guides inContainerItem:(id)item axis:(int64_t)axis
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  guidesCopy = guides;
+  itemCopy = item;
+  array = [MEMORY[0x1E695DF70] array];
   alignment = self->_alignment;
-  v56 = v12;
-  v58 = v11;
-  v55 = v13;
-  if (a6 == 1)
+  v56 = itemCopy;
+  v58 = guidesCopy;
+  v55 = array;
+  if (axis == 1)
   {
     if (alignment > 3)
     {
       if ((alignment - 6) < 2)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSLayoutAttribute _UIStatusBarRegionAxisLayoutAttributeForAlignmentAndAxis(_UIStatusBarRegionAxisLayoutAlignment, UILayoutConstraintAxis)"}];
         v20 = @"Mixed alignments must be resolved before getting the attribute";
-        v21 = v18;
+        v21 = currentHandler;
         v22 = v19;
         v23 = 102;
 LABEL_30:
@@ -96,21 +96,21 @@ LABEL_30:
       }
     }
 
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSLayoutAttribute _UIStatusBarRegionAxisLayoutAttributeForAlignmentAndAxis(_UIStatusBarRegionAxisLayoutAlignment, UILayoutConstraintAxis)"}];
     v20 = @"Horizontal alignment given for vertical axis: %ld";
     v53 = alignment;
-    v21 = v18;
+    v21 = currentHandler;
     v22 = v19;
     v23 = 105;
     goto LABEL_30;
   }
 
-  if (a6)
+  if (axis)
   {
 LABEL_21:
-    v15 = a6 == 1;
-    v17 = 8 * (a6 == 1);
+    v15 = axis == 1;
+    v17 = 8 * (axis == 1);
     v60 = 3;
     v16 = 4;
     goto LABEL_36;
@@ -155,9 +155,9 @@ LABEL_28:
       }
 
 LABEL_25:
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSLayoutAttribute _UIStatusBarRegionAxisLayoutAttributeForAlignmentAndAxis(_UIStatusBarRegionAxisLayoutAlignment, UILayoutConstraintAxis)"}];
-      [v18 handleFailureInFunction:v19 file:@"_UIStatusBarRegionAxisLayout_Internal.h" lineNumber:83 description:{@"Vertical alignment given for horizontal axis: %ld", alignment}];
+      [currentHandler handleFailureInFunction:v19 file:@"_UIStatusBarRegionAxisLayout_Internal.h" lineNumber:83 description:{@"Vertical alignment given for horizontal axis: %ld", alignment}];
 LABEL_31:
 
       alignment = 0;
@@ -169,10 +169,10 @@ LABEL_31:
 
 LABEL_32:
   v16 = alignment;
-  v15 = a6 == 1;
-  if (a6)
+  v15 = axis == 1;
+  if (axis)
   {
-    v17 = 8 * (a6 == 1);
+    v17 = 8 * (axis == 1);
   }
 
   else
@@ -212,13 +212,13 @@ LABEL_36:
 
   if ((alignment | 2) == 6)
   {
-    v28 = [v10 reverseObjectEnumerator];
-    v29 = [v28 allObjects];
+    reverseObjectEnumerator = [itemsCopy reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v10 = v29;
+    itemsCopy = allObjects;
   }
 
-  v30 = v10;
+  v30 = itemsCopy;
   maxNumberOfVisibleItems = self->_maxNumberOfVisibleItems;
   if (maxNumberOfVisibleItems >= [v30 count])
   {
@@ -255,7 +255,7 @@ LABEL_36:
   v68 = v76;
   v70 = v25;
   v63 = v36;
-  v64 = self;
+  selfCopy = self;
   v37 = v55;
   v71 = v16;
   v72 = v60;
@@ -271,11 +271,11 @@ LABEL_36:
   [v36 enumerateObjectsUsingBlock:v61];
   if ([v35 count])
   {
-    v39 = [v35 firstObject];
-    v57 = [v39 layoutItem];
+    firstObject = [v35 firstObject];
+    layoutItem = [firstObject layoutItem];
 
-    v40 = [v35 lastObject];
-    v41 = [v40 layoutItem];
+    lastObject = [v35 lastObject];
+    layoutItem2 = [lastObject layoutItem];
 
     if (v15)
     {
@@ -288,10 +288,10 @@ LABEL_36:
     }
 
     v43 = objc_alloc_init(UILayoutGuide);
-    v44 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:v16 relatedBy:0 toItem:v57 attribute:v16 multiplier:1.0 constant:0.0];
+    v44 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:v16 relatedBy:0 toItem:layoutItem attribute:v16 multiplier:1.0 constant:0.0];
     [v37 addObject:v44];
 
-    v45 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:v60 relatedBy:0 toItem:v41 attribute:v60 multiplier:1.0 constant:0.0];
+    v45 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:v60 relatedBy:0 toItem:layoutItem2 attribute:v60 multiplier:1.0 constant:0.0];
     [v37 addObject:v45];
 
     v46 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:v42 relatedBy:0 toItem:v38 attribute:v42 multiplier:1.0 constant:(1.0 - v24) * (v25 * self->_interspace)];
@@ -308,7 +308,7 @@ LABEL_36:
       v47 = 1;
     }
 
-    v48 = [MEMORY[0x1E69977A0] constraintWithItem:v41 attribute:v60 relatedBy:v47 toItem:v38 attribute:v60 multiplier:? constant:?];
+    v48 = [MEMORY[0x1E69977A0] constraintWithItem:layoutItem2 attribute:v60 relatedBy:v47 toItem:v38 attribute:v60 multiplier:? constant:?];
     LODWORD(v49) = 1111752704;
     [v48 setPriority:v49];
     [v37 addObject:v48];

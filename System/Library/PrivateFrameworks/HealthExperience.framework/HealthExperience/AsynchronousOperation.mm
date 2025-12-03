@@ -9,7 +9,7 @@
 
 - (BOOL)isFinished
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D0F1A6CC();
 
   return v3 & 1;
@@ -17,7 +17,7 @@
 
 - (BOOL)isCancelled
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D0FF4908();
 
   return v4;
@@ -25,7 +25,7 @@
 
 - (BOOL)isExecuting
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D0FF4908();
   if (v5 && v5 == 1)
   {
@@ -42,7 +42,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D0F45278();
 
   v3 = sub_1D0FF53E8();

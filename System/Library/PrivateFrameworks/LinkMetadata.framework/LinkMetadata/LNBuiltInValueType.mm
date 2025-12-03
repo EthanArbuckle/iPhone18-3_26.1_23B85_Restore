@@ -4,13 +4,13 @@
 + (LNBuiltInValueType)photoItemCollectionValueType;
 + (id)objectClassesForCoding;
 + (id)supportedClassesByTypeIdentifier;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)objectClass;
-- (LNBuiltInValueType)initWithBuiltInType:(int64_t)a3;
-- (LNBuiltInValueType)initWithCoder:(id)a3;
+- (LNBuiltInValueType)initWithBuiltInType:(int64_t)type;
+- (LNBuiltInValueType)initWithCoder:(id)coder;
 - (id)typeIdentifierAsString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNBuiltInValueType
@@ -37,10 +37,10 @@
 
 + (id)objectClassesForCoding
 {
-  v2 = [a1 supportedClassesByTypeIdentifier];
-  v3 = [v2 allValues];
+  supportedClassesByTypeIdentifier = [self supportedClassesByTypeIdentifier];
+  allValues = [supportedClassesByTypeIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 + (id)supportedClassesByTypeIdentifier
@@ -103,17 +103,17 @@ uint64_t __48__LNBuiltInValueType_intentToggleStateValueType__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -130,40 +130,40 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(LNBuiltInValueType *)self builtInType];
-  v8 = v7 == [(LNBuiltInValueType *)v6 builtInType];
+  builtInType = [(LNBuiltInValueType *)self builtInType];
+  v8 = builtInType == [(LNBuiltInValueType *)v6 builtInType];
 LABEL_8:
 
 LABEL_10:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = LNBuiltInValueType;
-  v4 = a3;
-  [(LNValueType *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[LNBuiltInValueType builtInType](self forKey:{"builtInType", v5.receiver, v5.super_class), @"builtInType"}];
+  coderCopy = coder;
+  [(LNValueType *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[LNBuiltInValueType builtInType](self forKey:{"builtInType", v5.receiver, v5.super_class), @"builtInType"}];
 }
 
-- (LNBuiltInValueType)initWithCoder:(id)a3
+- (LNBuiltInValueType)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"builtInType"];
+  v4 = [coder decodeIntegerForKey:@"builtInType"];
 
   return [(LNBuiltInValueType *)self initWithBuiltInType:v4];
 }
 
 - (id)typeIdentifierAsString
 {
-  v2 = [(LNBuiltInValueType *)self builtInType];
+  builtInType = [(LNBuiltInValueType *)self builtInType];
   v3 = @"Intent Change Operation";
-  if (v2 == 1)
+  if (builtInType == 1)
   {
     v3 = @"Toggle Activation";
   }
 
-  if (v2 == 2)
+  if (builtInType == 2)
   {
     v4 = @"Photo Collection";
   }
@@ -178,14 +178,14 @@ LABEL_10:
 
 - (Class)objectClass
 {
-  v3 = [objc_opt_class() supportedClassesByTypeIdentifier];
+  supportedClassesByTypeIdentifier = [objc_opt_class() supportedClassesByTypeIdentifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[LNBuiltInValueType builtInType](self, "builtInType")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [supportedClassesByTypeIdentifier objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (LNBuiltInValueType)initWithBuiltInType:(int64_t)a3
+- (LNBuiltInValueType)initWithBuiltInType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = LNBuiltInValueType;
@@ -193,7 +193,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v4->_builtInType = a3;
+    v4->_builtInType = type;
     v6 = v4;
   }
 

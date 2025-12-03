@@ -1,13 +1,13 @@
 @interface TRIDServer
 + (id)_triPath;
 + (id)sharedServer;
-- (BOOL)_handleUserSettingsNotificationWithContext:(id)a3;
-- (TRIDServer)initWithPath:(id)a3;
+- (BOOL)_handleUserSettingsNotificationWithContext:(id)context;
+- (TRIDServer)initWithPath:(id)path;
 - (unint64_t)_getDiskUsageInBytes;
-- (void)_asyncStartWithMetrics:(id)a3;
-- (void)_dispatchWhenUnlocked:(id)a3;
+- (void)_asyncStartWithMetrics:(id)metrics;
+- (void)_dispatchWhenUnlocked:(id)unlocked;
 - (void)_excludeUserLevelTrialFromTimeMachineBackups;
-- (void)_logMetrics:(id)a3;
+- (void)_logMetrics:(id)metrics;
 - (void)_registerExternalParamChangeHandler;
 - (void)_registerSetupAssistantFetchActivityOnce;
 - (void)_registerXpcStreamEventHandler;
@@ -18,10 +18,10 @@
 
 + (id)_triPath
 {
-  v2 = [MEMORY[0x277D737E0] sharedPaths];
-  v3 = [v2 trialRootDir];
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  trialRootDir = [mEMORY[0x277D737E0] trialRootDir];
 
-  return v3;
+  return trialRootDir;
 }
 
 + (id)sharedServer
@@ -30,7 +30,7 @@
   v8 = 3221225472;
   v9 = __26__TRIDServer_sharedServer__block_invoke;
   v10 = &__block_descriptor_40_e5_v8__0l;
-  v11 = a1;
+  selfCopy = self;
   if (qword_2815978B0 != -1)
   {
     dispatch_once(&qword_2815978B0, &block);
@@ -39,8 +39,8 @@
   v4 = _MergedGlobals_43;
   if (!v4)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"TRIDServer.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"result", block, v8, v9, v10, v11}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDServer.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"result", block, v8, v9, v10, selfCopy}];
   }
 
   return v4;
@@ -58,13 +58,13 @@ void __26__TRIDServer_sharedServer__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (TRIDServer)initWithPath:(id)a3
+- (TRIDServer)initWithPath:(id)path
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIDServer.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDServer.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v18.receiver = self;
@@ -99,7 +99,7 @@ void __26__TRIDServer_sharedServer__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_asyncStartWithMetrics:(id)a3
+- (void)_asyncStartWithMetrics:(id)metrics
 {
   v4 = TRILogCategory_Server();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -168,31 +168,31 @@ void __37__TRIDServer__asyncStartWithMetrics___block_invoke(uint64_t a1)
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277D73660] client];
+  client = [MEMORY[0x277D73660] client];
   if ([MEMORY[0x277D73660] requiresLogging])
   {
-    v6 = [[TRILogger alloc] initWithClient:v5 projectId:1];
-    [v5 setLogger:v6];
+    v6 = [[TRILogger alloc] initWithClient:client projectId:1];
+    [client setLogger:v6];
   }
 
   if (+[TRIIntegrationTestLogHandler shouldUseOverrideLogHandler])
   {
-    [TRIIntegrationTestLogHandler addTestLoggerInPlaceOnClient:v5];
+    [TRIIntegrationTestLogHandler addTestLoggerInPlaceOnClient:client];
   }
 
-  if (!v5)
+  if (!client)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRIDServer.m" lineNumber:232 description:@"Failed to initialize TRIClient"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDServer.m" lineNumber:232 description:@"Failed to initialize TRIClient"];
   }
 
   [TRIXPCServices registerTrialServicesWithPromise:self->_promise];
   v7 = TRILogCategory_Server();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277D42598] isClassCLocked];
+    isClassCLocked = [MEMORY[0x277D42598] isClassCLocked];
     v9 = @"class C unlocked";
-    if (v8)
+    if (isClassCLocked)
     {
       v9 = @"class C locked";
     }
@@ -206,15 +206,15 @@ void __37__TRIDServer__asyncStartWithMetrics___block_invoke(uint64_t a1)
   v26 = 3221225472;
   v27 = __19__TRIDServer_start__block_invoke;
   v28 = &unk_279DDF7A0;
-  v29 = self;
-  v30 = v5;
-  v10 = v5;
+  selfCopy = self;
+  v30 = client;
+  v10 = client;
   [(TRIDServer *)self _dispatchWhenUnlocked:&v25];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __19__TRIDServer_start__block_invoke_376;
   v22 = &unk_279DDEE68;
-  v23 = self;
+  selfCopy2 = self;
   v24 = a2;
   if (start__pasOnceToken21 != -1)
   {
@@ -226,9 +226,9 @@ void __37__TRIDServer__asyncStartWithMetrics___block_invoke(uint64_t a1)
   do
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = [MEMORY[0x277CBEB88] currentRunLoop];
-    v14 = [MEMORY[0x277CBEAA8] distantFuture];
-    v15 = [v13 runMode:v11 beforeDate:v14];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v15 = [currentRunLoop runMode:v11 beforeDate:distantFuture];
 
     objc_autoreleasePoolPop(v12);
   }
@@ -511,16 +511,16 @@ void __19__TRIDServer_start__block_invoke_2_393(uint64_t a1, void *a2, uint64_t 
   }
 }
 
-- (void)_logMetrics:(id)a3
+- (void)_logMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __26__TRIDServer__logMetrics___block_invoke;
   v6[3] = &unk_279DDF7A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = metricsCopy;
+  v5 = metricsCopy;
   [(TRIDServer *)self _dispatchWhenUnlocked:v6];
 }
 
@@ -539,9 +539,9 @@ void __26__TRIDServer__logMetrics___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_dispatchWhenUnlocked:(id)a3
+- (void)_dispatchWhenUnlocked:(id)unlocked
 {
-  v4 = a3;
+  unlockedCopy = unlocked;
   if (qword_2815978C0 != -1)
   {
     dispatch_once(&qword_2815978C0, &__block_literal_global_565);
@@ -553,8 +553,8 @@ void __26__TRIDServer__logMetrics___block_invoke(uint64_t a1)
   v7[2] = __36__TRIDServer__dispatchWhenUnlocked___block_invoke;
   v7[3] = &unk_279DE57D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = unlockedCopy;
+  v6 = unlockedCopy;
   dispatch_async(v5, v7);
 }
 
@@ -592,13 +592,13 @@ void __36__TRIDServer__dispatchWhenUnlocked___block_invoke(uint64_t a1)
   }
 
   Helper_x8__OBJC_CLASS___ACXPCEventSubscriber = gotLoadHelper_x8__OBJC_CLASS___ACXPCEventSubscriber(v5);
-  v8 = [*(v7 + 4032) sharedSubscriber];
+  sharedSubscriber = [*(v7 + 4032) sharedSubscriber];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__TRIDServer__registerXpcStreamEventHandler__block_invoke_486;
   v9[3] = &unk_279DE58E8;
   v9[4] = self;
-  [v8 registerAccountChangeEventHandler:v9];
+  [sharedSubscriber registerAccountChangeEventHandler:v9];
 }
 
 void __44__TRIDServer__registerXpcStreamEventHandler__block_invoke(uint64_t a1, void *a2)
@@ -1400,9 +1400,9 @@ void __49__TRIDServer__registerExternalParamChangeHandler__block_invoke(uint64_t
   context = self->_context;
   if (context)
   {
-    v4 = [(TRIServerContext *)context keyValueStore];
+    keyValueStore = [(TRIServerContext *)context keyValueStore];
     v18 = 0;
-    v5 = [TRISetupAssistantFetchUtils getValueInKeyValueStore:v4 key:@"setup-assistant-fetch-activity-deadline-date" error:&v18];
+    v5 = [TRISetupAssistantFetchUtils getValueInKeyValueStore:keyValueStore key:@"setup-assistant-fetch-activity-deadline-date" error:&v18];
     v6 = v18;
 
     if (v5)
@@ -1445,10 +1445,10 @@ void __49__TRIDServer__registerExternalParamChangeHandler__block_invoke(uint64_t
 
       [v8 timeIntervalSince1970];
       v11 = v10;
-      v12 = [(TRIServerContext *)self->_context keyValueStore];
+      keyValueStore2 = [(TRIServerContext *)self->_context keyValueStore];
       v13 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
       v17 = 0;
-      v14 = [TRISetupAssistantFetchUtils setValueInKeyValueStore:v12 key:@"setup-assistant-fetch-activity-deadline-date" value:v13 error:&v17];
+      v14 = [TRISetupAssistantFetchUtils setValueInKeyValueStore:keyValueStore2 key:@"setup-assistant-fetch-activity-deadline-date" value:v13 error:&v17];
       v6 = v17;
 
       if (v14)
@@ -1484,27 +1484,27 @@ void __49__TRIDServer__registerExternalParamChangeHandler__block_invoke(uint64_t
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_handleUserSettingsNotificationWithContext:(id)a3
+- (BOOL)_handleUserSettingsNotificationWithContext:(id)context
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  contextCopy = context;
+  if (!contextCopy)
   {
     __assert_rtn("[TRIDServer _handleUserSettingsNotificationWithContext:]", "TRIDServer.m", 817, "context");
   }
 
-  v32 = v3;
-  v4 = [v3 keyValueStore];
-  v5 = [TRIPersistentUserSettings settingsWithKeyValueStore:v4];
+  v32 = contextCopy;
+  keyValueStore = [contextCopy keyValueStore];
+  v5 = [TRIPersistentUserSettings settingsWithKeyValueStore:keyValueStore];
 
   v6 = [TRISystemConfiguration alloc];
-  v7 = [MEMORY[0x277D737E0] sharedPaths];
-  v8 = [(TRISystemConfiguration *)v6 initWithPaths:v7];
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  v8 = [(TRISystemConfiguration *)v6 initWithPaths:mEMORY[0x277D737E0]];
 
-  v9 = [(TRISystemConfiguration *)v8 userSettingsSiriLocale];
-  if (v9)
+  userSettingsSiriLocale = [(TRISystemConfiguration *)v8 userSettingsSiriLocale];
+  if (userSettingsSiriLocale)
   {
-    v10 = v9;
+    v10 = userSettingsSiriLocale;
   }
 
   else
@@ -1523,19 +1523,19 @@ void __49__TRIDServer__registerExternalParamChangeHandler__block_invoke(uint64_t
   }
 
   v31 = v8;
-  v12 = [(TRISystemConfiguration *)v8 activeDictationLocales];
-  v13 = [v5 persistedSiriLocale];
-  v14 = [v13 isEqual:v10];
+  activeDictationLocales = [(TRISystemConfiguration *)v8 activeDictationLocales];
+  persistedSiriLocale = [v5 persistedSiriLocale];
+  v14 = [persistedSiriLocale isEqual:v10];
 
-  v15 = [v5 persistedIsSiriEnabled];
+  persistedIsSiriEnabled = [v5 persistedIsSiriEnabled];
   v16 = objc_autoreleasePoolPush();
   v17 = objc_alloc(MEMORY[0x277CBEB98]);
-  v18 = [v5 persistedActiveDictationLocales];
-  v19 = [v17 initWithObjects:{v18, 0}];
+  persistedActiveDictationLocales = [v5 persistedActiveDictationLocales];
+  v19 = [v17 initWithObjects:{persistedActiveDictationLocales, 0}];
 
   objc_autoreleasePoolPop(v16);
   v20 = objc_autoreleasePoolPush();
-  v21 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v12, 0}];
+  v21 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{activeDictationLocales, 0}];
   objc_autoreleasePoolPop(v20);
   v22 = [v19 isEqualToSet:v21];
 
@@ -1544,7 +1544,7 @@ void __49__TRIDServer__registerExternalParamChangeHandler__block_invoke(uint64_t
     [v5 persistSiriLocale:v10];
   }
 
-  if (v15 != v11)
+  if (persistedIsSiriEnabled != v11)
   {
     [v5 persistIsSiriEnabled:v11];
   }
@@ -1552,11 +1552,11 @@ void __49__TRIDServer__registerExternalParamChangeHandler__block_invoke(uint64_t
   v23 = v14 ^ 1;
   if ((v22 & 1) == 0)
   {
-    [v5 persistActiveDictationLocales:v12];
+    [v5 persistActiveDictationLocales:activeDictationLocales];
   }
 
-  v24 = v15 == v11;
-  v25 = v15 != v11;
+  v24 = persistedIsSiriEnabled == v11;
+  v25 = persistedIsSiriEnabled != v11;
   if (v24)
   {
     v26 = v14 ^ 1;
@@ -1589,33 +1589,33 @@ void __49__TRIDServer__registerExternalParamChangeHandler__block_invoke(uint64_t
 - (unint64_t)_getDiskUsageInBytes
 {
   context = objc_autoreleasePoolPush();
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [objc_opt_class() _triPath];
-  v4 = [v2 enumeratorAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _triPath = [objc_opt_class() _triPath];
+  v4 = [defaultManager enumeratorAtPath:_triPath];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 nextObject];
-  if (v6)
+  nextObject = [v4 nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject2 = nextObject;
     v8 = 0;
     v9 = *MEMORY[0x277CCA1C0];
     do
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [objc_opt_class() _triPath];
-      v12 = [v10 stringWithFormat:@"%@/%@", v11, v7];
+      _triPath2 = [objc_opt_class() _triPath];
+      v12 = [v10 stringWithFormat:@"%@/%@", _triPath2, nextObject2];
 
-      v13 = [v2 attributesOfItemAtPath:v12 error:0];
+      v13 = [defaultManager attributesOfItemAtPath:v12 error:0];
       v14 = [v13 objectForKeyedSubscript:v9];
 
       v8 += [v14 intValue];
       objc_autoreleasePoolPop(v5);
       v5 = objc_autoreleasePoolPush();
-      v7 = [v4 nextObject];
+      nextObject2 = [v4 nextObject];
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
   else
@@ -1632,9 +1632,9 @@ void __49__TRIDServer__registerExternalParamChangeHandler__block_invoke(uint64_t
 - (void)_excludeUserLevelTrialFromTimeMachineBackups
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [MEMORY[0x277D737E0] sharedPaths];
-  v4 = [v3 trialRootDir];
-  v5 = [v2 fileURLWithPath:v4 isDirectory:1];
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  trialRootDir = [mEMORY[0x277D737E0] trialRootDir];
+  v5 = [v2 fileURLWithPath:trialRootDir isDirectory:1];
 
   [v5 setResourceValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBE878] error:0];
 }

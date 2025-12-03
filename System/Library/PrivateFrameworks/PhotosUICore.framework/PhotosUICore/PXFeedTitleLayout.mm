@@ -1,44 +1,44 @@
 @interface PXFeedTitleLayout
 - (PXFeedTitleLayout)init;
-- (PXFeedTitleLayout)initWithViewModel:(id)a3;
+- (PXFeedTitleLayout)initWithViewModel:(id)model;
 - (id)axSpriteIndexes;
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)_invalidateAttributes;
 - (void)_invalidateTitle;
 - (void)_updateAttributes;
 - (void)_updateTitle;
 - (void)displayScaleDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
 - (void)update;
 @end
 
 @implementation PXFeedTitleLayout
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ViewModelObservationContext_179046 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ViewModelObservationContext_179046 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXFeedTitleLayout.m" lineNumber:163 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedTitleLayout.m" lineNumber:163 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v11 = v9;
-  if ((v6 & 8) != 0)
+  v11 = observableCopy;
+  if ((changeCopy & 8) != 0)
   {
     [(PXFeedTitleLayout *)self _invalidateAttributes];
     [(PXFeedTitleLayout *)self _invalidateTitleContentVersion];
-    v9 = v11;
+    observableCopy = v11;
   }
 
-  if ((v6 & 0x10) != 0)
+  if ((changeCopy & 0x10) != 0)
   {
     [(PXFeedTitleLayout *)self _invalidateTitleContentVersion];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
@@ -49,26 +49,26 @@
   return v2;
 }
 
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = [(PXFeedTitleLayout *)self viewModel:*&a3];
-  v5 = [v4 subtitle];
+  v4 = [(PXFeedTitleLayout *)self viewModel:*&index];
+  subtitle = [v4 subtitle];
 
-  return v5;
+  return subtitle;
 }
 
 - (void)_updateTitle
 {
-  v3 = [(PXFeedTitleLayout *)self viewModel];
+  viewModel = [(PXFeedTitleLayout *)self viewModel];
   [(PXFeedTitleLayout *)self displayScale];
-  v4 = [v3 spec];
-  [v4 subtitleInsets];
+  spec = [viewModel spec];
+  [spec subtitleInsets];
   v6 = v5;
   v8 = v7;
 
-  v9 = [v3 subtitle];
+  subtitle = [viewModel subtitle];
   [(PXFeedTitleLayout *)self referenceSize];
-  [v9 boundingRectWithSize:1 options:self->_subtitleAttributes attributes:0 context:{v10 - (v6 + v8), 1.79769313e308}];
+  [subtitle boundingRectWithSize:1 options:self->_subtitleAttributes attributes:0 context:{v10 - (v6 + v8), 1.79769313e308}];
   [(PXFeedTitleLayout *)self displayScale];
   PXSizeCeilingToPixel();
 }
@@ -130,9 +130,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedTitleLayout _invalidateTitle]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedTitleLayout.m" lineNumber:104 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedTitleLayout.m" lineNumber:104 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -157,15 +157,15 @@ LABEL_5:
 - (void)_updateAttributes
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXFeedTitleLayout *)self viewModel];
-  v4 = [v3 spec];
+  viewModel = [(PXFeedTitleLayout *)self viewModel];
+  spec = [viewModel spec];
 
   v9[0] = *MEMORY[0x1E69DB650];
-  v5 = [v4 subtitleColor];
-  v10[0] = v5;
+  subtitleColor = [spec subtitleColor];
+  v10[0] = subtitleColor;
   v9[1] = *MEMORY[0x1E69DB648];
-  v6 = [v4 subtitleFont];
-  v10[1] = v6;
+  subtitleFont = [spec subtitleFont];
+  v10[1] = subtitleFont;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   subtitleAttributes = self->_subtitleAttributes;
   self->_subtitleAttributes = v7;
@@ -189,9 +189,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedTitleLayout _invalidateAttributes]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedTitleLayout.m" lineNumber:86 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedTitleLayout.m" lineNumber:86 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -222,9 +222,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedTitleLayout update]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedTitleLayout.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedTitleLayout.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -237,9 +237,9 @@ LABEL_5:
       [(PXFeedTitleLayout *)self _updateAttributes];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedTitleLayout update]"];
-        [v8 handleFailureInFunction:v9 file:@"PXFeedTitleLayout.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v9 file:@"PXFeedTitleLayout.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -255,9 +255,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v5)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedTitleLayout update]"];
-      [v10 handleFailureInFunction:v11 file:@"PXFeedTitleLayout.m" lineNumber:81 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler3 handleFailureInFunction:v11 file:@"PXFeedTitleLayout.m" lineNumber:81 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -282,16 +282,16 @@ LABEL_5:
   [(PXFeedTitleLayout *)self _invalidateTitleContentVersion];
 }
 
-- (PXFeedTitleLayout)initWithViewModel:(id)a3
+- (PXFeedTitleLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXFeedTitleLayout;
   v6 = [(PXFeedTitleLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXFeedViewModel *)v7->_viewModel registerChangeObserver:v7 context:ViewModelObservationContext_179046];
     v7->_titleSpriteIndex = [(PXFeedTitleLayout *)v7 addSpriteWithInitialState:&__block_literal_global_179077];
     [(PXFeedTitleLayout *)v7 setContentSource:v7];
@@ -332,8 +332,8 @@ __n128 __39__PXFeedTitleLayout_initWithViewModel___block_invoke(uint64_t a1, uin
 
 - (PXFeedTitleLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedTitleLayout.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXFeedTitleLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedTitleLayout.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXFeedTitleLayout init]"}];
 
   abort();
 }

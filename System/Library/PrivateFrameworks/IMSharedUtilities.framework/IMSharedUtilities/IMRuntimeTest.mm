@@ -1,14 +1,14 @@
 @interface IMRuntimeTest
 + (id)logHandle;
 + (id)testName;
-+ (void)testLog:(id)a3;
++ (void)testLog:(id)log;
 - (id)logHandle;
 - (id)testName;
-- (void)dispatchAfter:(double)a3 block:(id)a4;
+- (void)dispatchAfter:(double)after block:(id)block;
 - (void)finishTest;
-- (void)finishTestAfterInterval:(double)a3;
-- (void)runTest:(id)a3;
-- (void)testLog:(id)a3;
+- (void)finishTestAfterInterval:(double)interval;
+- (void)runTest:(id)test;
+- (void)testLog:(id)log;
 @end
 
 @implementation IMRuntimeTest
@@ -35,31 +35,31 @@
 - (void)finishTest
 {
   [(IMRuntimeTest *)self tearDown];
-  v3 = [(IMRuntimeTest *)self testRun];
-  [v3 stop];
+  testRun = [(IMRuntimeTest *)self testRun];
+  [testRun stop];
 
-  v5 = [(IMRuntimeTest *)self completion];
+  completion = [(IMRuntimeTest *)self completion];
   [(IMRuntimeTest *)self setCompletion:0];
   [(IMRuntimeTest *)self testLog:@"Finished test"];
-  if (v5)
+  if (completion)
   {
-    v4 = [(IMRuntimeTest *)self testRun];
-    v5[2](v5, v4);
+    testRun2 = [(IMRuntimeTest *)self testRun];
+    completion[2](completion, testRun2);
   }
 }
 
-- (void)runTest:(id)a3
+- (void)runTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   [(IMRuntimeTest *)self testLog:@"Starting test"];
-  [(IMRuntimeTest *)self setCompletion:v4];
+  [(IMRuntimeTest *)self setCompletion:testCopy];
 
   v5 = [objc_alloc(-[IMRuntimeTest testRunClass](self "testRunClass"))];
   [(IMRuntimeTest *)self setTestRun:v5];
 
   [(IMRuntimeTest *)self setUp];
-  v6 = [(IMRuntimeTest *)self testRun];
-  [v6 start];
+  testRun = [(IMRuntimeTest *)self testRun];
+  [testRun start];
 
   MEMORY[0x1EEE66B58](self, sel_startTest);
 }
@@ -78,50 +78,50 @@
   return NSStringFromClass(v2);
 }
 
-- (void)dispatchAfter:(double)a3 block:(id)a4
+- (void)dispatchAfter:(double)after block:(id)block
 {
-  block = a4;
-  [(IMRuntimeTest *)self testLog:@"Scheduling test block for %f seconds", *&a3];
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
+  block = block;
+  [(IMRuntimeTest *)self testLog:@"Scheduling test block for %f seconds", *&after];
+  v6 = dispatch_time(0, (after * 1000000000.0));
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)finishTestAfterInterval:(double)a3
+- (void)finishTestAfterInterval:(double)interval
 {
-  [(IMRuntimeTest *)self testLog:@"Will finish test in %f seconds", *&a3];
+  [(IMRuntimeTest *)self testLog:@"Will finish test in %f seconds", *&interval];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_1A8675A00;
   v5[3] = &unk_1E7828050;
   v5[4] = self;
-  [(IMRuntimeTest *)self dispatchAfter:v5 block:a3];
+  [(IMRuntimeTest *)self dispatchAfter:v5 block:interval];
 }
 
-- (void)testLog:(id)a3
+- (void)testLog:(id)log
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithFormat:v4 arguments:&v6];
+  logCopy = log;
+  v5 = [[v3 alloc] initWithFormat:logCopy arguments:&v6];
 
   [objc_opt_class() testLog:{@"%@", v5}];
 }
 
-+ (void)testLog:(id)a3
++ (void)testLog:(id)log
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v14];
+  logCopy = log;
+  v6 = [[v4 alloc] initWithFormat:logCopy arguments:&v14];
 
-  v7 = [a1 logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  logHandle = [self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    v8 = [a1 testName];
+    testName = [self testName];
     *buf = 138412546;
-    v10 = v8;
+    v10 = testName;
     v11 = 2112;
     v12 = v6;
-    _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "%@: %@", buf, 0x16u);
+    _os_log_impl(&dword_1A85E5000, logHandle, OS_LOG_TYPE_INFO, "%@: %@", buf, 0x16u);
   }
 }
 

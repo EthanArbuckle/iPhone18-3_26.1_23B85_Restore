@@ -1,16 +1,16 @@
 @interface FCCKZoneSchema
-+ (id)defaultZoneWithStaticRecordNames:(int)a3 shouldUseSecureContainer:;
-+ (id)zoneWithName:(char)a3 options:(void *)a4 staticRecordNames:;
-+ (id)zoneWithName:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
++ (id)defaultZoneWithStaticRecordNames:(int)names shouldUseSecureContainer:;
++ (id)zoneWithName:(char)name options:(void *)options staticRecordNames:;
++ (id)zoneWithName:(uint64_t)name;
+- (BOOL)isEqual:(id)equal;
 - (FCCKZoneSchema)init;
-- (id)initWithZoneName:(char)a3 options:(void *)a4 staticRecordNames:;
+- (id)initWithZoneName:(char)name options:(void *)options staticRecordNames:;
 - (unint64_t)hash;
 @end
 
 @implementation FCCKZoneSchema
 
-+ (id)zoneWithName:(uint64_t)a1
++ (id)zoneWithName:(uint64_t)name
 {
   v15 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -36,19 +36,19 @@
   return v3;
 }
 
-- (id)initWithZoneName:(char)a3 options:(void *)a4 staticRecordNames:
+- (id)initWithZoneName:(char)name options:(void *)options staticRecordNames:
 {
   v27 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a4;
-  if (a1)
+  optionsCopy = options;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = FCCKZoneSchema;
-    a1 = objc_msgSendSuper2(&v18, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v18, sel_init);
+    if (self)
     {
-      if ((a3 & 6) == 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if ((name & 6) == 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"zone-wide PCS is required for the secure container"];
         *buf = 136315906;
@@ -62,31 +62,31 @@
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
       }
 
-      objc_storeStrong(a1 + 2, a2);
+      objc_storeStrong(self + 2, a2);
       v10 = objc_alloc(MEMORY[0x1E695BA90]);
       v11 = [v10 initWithZoneName:v8 ownerName:*MEMORY[0x1E695B728]];
-      v12 = a1[3];
-      a1[3] = v11;
+      v12 = self[3];
+      self[3] = v11;
 
-      v13 = [MEMORY[0x1E695DFD8] setWithArray:v9];
-      v14 = a1[4];
-      a1[4] = v13;
+      v13 = [MEMORY[0x1E695DFD8] setWithArray:optionsCopy];
+      v14 = self[4];
+      self[4] = v13;
 
-      *(a1 + 8) = a3 & 1;
-      *(a1 + 9) = (a3 & 2) != 0;
-      *(a1 + 10) = (a3 & 4) != 0;
+      *(self + 8) = name & 1;
+      *(self + 9) = (name & 2) != 0;
+      *(self + 10) = (name & 4) != 0;
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-+ (id)zoneWithName:(char)a3 options:(void *)a4 staticRecordNames:
++ (id)zoneWithName:(char)name options:(void *)options staticRecordNames:
 {
   v20 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a4;
+  optionsCopy = options;
   objc_opt_self();
   if ([v6 isEqualToString:*MEMORY[0x1E695B800]] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -102,19 +102,19 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v12, 0x26u);
   }
 
-  v8 = [[FCCKZoneSchema alloc] initWithZoneName:v6 options:a3 staticRecordNames:v7];
+  v8 = [[FCCKZoneSchema alloc] initWithZoneName:v6 options:name staticRecordNames:optionsCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (id)defaultZoneWithStaticRecordNames:(int)a3 shouldUseSecureContainer:
++ (id)defaultZoneWithStaticRecordNames:(int)names shouldUseSecureContainer:
 {
   v4 = a2;
   objc_opt_self();
   v5 = [FCCKZoneSchema alloc];
-  if (a3)
+  if (names)
   {
     v6 = 6;
   }
@@ -155,15 +155,15 @@
   objc_exception_throw(v6);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -235,16 +235,16 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_zoneName;
   }
 
   v3 = [(FCCKZoneSchema *)self hash];
-  if (v2)
+  if (selfCopy)
   {
-    shouldEncryptRecordNames = v2->_shouldEncryptRecordNames;
+    shouldEncryptRecordNames = selfCopy->_shouldEncryptRecordNames;
   }
 
   else
@@ -254,9 +254,9 @@ LABEL_20:
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:shouldEncryptRecordNames];
   v6 = [v5 hash];
-  if (v2)
+  if (selfCopy)
   {
-    shouldUseZoneWidePCS = v2->_shouldUseZoneWidePCS;
+    shouldUseZoneWidePCS = selfCopy->_shouldUseZoneWidePCS;
   }
 
   else
@@ -266,9 +266,9 @@ LABEL_20:
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:shouldUseZoneWidePCS];
   v9 = [v8 hash];
-  if (v2)
+  if (selfCopy)
   {
-    shouldUseSecureContainer = v2->_shouldUseSecureContainer;
+    shouldUseSecureContainer = selfCopy->_shouldUseSecureContainer;
   }
 
   else

@@ -1,32 +1,32 @@
 @interface CaptureMTLTensor
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasResource:(id)a3;
-- (CaptureMTLTensor)initWithBaseObject:(id)a3 captureBuffer:(id)a4;
-- (CaptureMTLTensor)initWithBaseObject:(id)a3 captureDevice:(id)a4;
-- (CaptureMTLTensor)initWithBaseObject:(id)a3 captureTensor:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasResource:(id)resource;
+- (CaptureMTLTensor)initWithBaseObject:(id)object captureBuffer:(id)buffer;
+- (CaptureMTLTensor)initWithBaseObject:(id)object captureDevice:(id)device;
+- (CaptureMTLTensor)initWithBaseObject:(id)object captureTensor:(id)tensor;
 - (NSString)description;
-- (id)newTensorViewWithReshapedDescriptor:(id)a3 error:(id *)a4;
-- (id)newTensorViewWithSlice:(MTLTensorSlice)a3 error:(id *)a4;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (id)newTensorViewWithReshapedDescriptor:(id)descriptor error:(id *)error;
+- (id)newTensorViewWithSlice:(MTLTensorSlice)slice error:(id *)error;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)streamReference;
 - (void)dealloc;
 - (void)makeAliasable;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)touch;
 @end
 
 @implementation CaptureMTLTensor
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  v6 = [(MTLResourceSPI *)self->_baseObject setPurgeableState:a3];
+  v6 = [(MTLResourceSPI *)self->_baseObject setPurgeableState:state];
   v7 = v18;
   *(v18 + 8) = -14933;
   v8 = BYTE9(v19);
@@ -46,10 +46,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLTensor *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLTensor *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -59,7 +59,7 @@
 
   *v9 = var0;
   *(v9 + 1) = v6;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = state;
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v19);
@@ -67,20 +67,20 @@
   return v6;
 }
 
-- (id)newTensorViewWithSlice:(MTLTensorSlice)a3 error:(id *)a4
+- (id)newTensorViewWithSlice:(MTLTensorSlice)slice error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = slice.var1;
+  var0 = slice.var0;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLTensor_newTensorViewWithSlice_error", "Tensor", 0, 0);
   baseObject = self->_baseObject;
   v9 = var0;
   v10 = var1;
   if (baseObject)
   {
-    v11 = [(MTLResourceSPI *)baseObject newTensorViewWithSlice:var0 error:var1, a4];
-    if (v11)
+    error = [(MTLResourceSPI *)baseObject newTensorViewWithSlice:var0 error:var1, error];
+    if (error)
     {
-      v12 = [[CaptureMTLTensor alloc] initWithBaseObject:v11 captureTensor:self];
+      v12 = [[CaptureMTLTensor alloc] initWithBaseObject:error captureTensor:self];
     }
 
     else
@@ -93,17 +93,17 @@
   {
 
     v12 = 0;
-    v11 = 0;
+    error = 0;
   }
 
   return v12;
 }
 
-- (id)newTensorViewWithReshapedDescriptor:(id)a3 error:(id *)a4
+- (id)newTensorViewWithReshapedDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLTensor_newTensorViewWithReshapedDescriptor_error", "Tensor", 0, 0);
-  v7 = [(MTLResourceSPI *)self->_baseObject newTensorViewWithReshapedDescriptor:v6 error:a4];
+  v7 = [(MTLResourceSPI *)self->_baseObject newTensorViewWithReshapedDescriptor:descriptorCopy error:error];
 
   if (v7)
   {
@@ -145,10 +145,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLTensor *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLTensor *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -163,61 +163,61 @@
   *(v14 + 15) |= 8u;
 }
 
-- (BOOL)doesAliasResource:(id)a3
+- (BOOL)doesAliasResource:(id)resource
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  LOBYTE(baseObject) = [(MTLResourceSPI *)baseObject doesAliasResource:v4];
+  baseObject = [resource baseObject];
+  LOBYTE(baseObject) = [(MTLResourceSPI *)baseObject doesAliasResource:baseObject];
 
   return baseObject;
 }
 
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLResourceSPI *)baseObject doesAliasAnyResources:v8 count:a4];
+  return [(MTLResourceSPI *)baseObject doesAliasAnyResources:v8 count:count];
 }
 
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLResourceSPI *)baseObject doesAliasAllResources:v8 count:a4];
+  return [(MTLResourceSPI *)baseObject doesAliasAllResources:v8 count:count];
 }
 
 - (void)dealloc
@@ -246,10 +246,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLTensor *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLTensor *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -268,15 +268,15 @@
   [(CaptureMTLTensor *)&v13 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLResourceSPI *)self->_baseObject setLabel:v4];
+  [(MTLResourceSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -14950;
   v7 = BYTE9(v20);
@@ -296,10 +296,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLTensor *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLTensor *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -307,16 +307,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -325,13 +325,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLResourceSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLResourceSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -386,70 +386,70 @@
   }
 }
 
-- (CaptureMTLTensor)initWithBaseObject:(id)a3 captureTensor:(id)a4
+- (CaptureMTLTensor)initWithBaseObject:(id)object captureTensor:(id)tensor
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  tensorCopy = tensor;
   v16.receiver = self;
   v16.super_class = CaptureMTLTensor;
   v9 = [(CaptureMTLTensor *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [tensorCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    v13 = [v8 traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v13, v14, v10);
+    traceContext = [tensorCopy traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v14, v10);
   }
 
   return v10;
 }
 
-- (CaptureMTLTensor)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLTensor)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLTensor;
   v9 = [(CaptureMTLTensor *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;
 }
 
-- (CaptureMTLTensor)initWithBaseObject:(id)a3 captureBuffer:(id)a4
+- (CaptureMTLTensor)initWithBaseObject:(id)object captureBuffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  bufferCopy = buffer;
   v16.receiver = self;
   v16.super_class = CaptureMTLTensor;
   v9 = [(CaptureMTLTensor *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 captureDevice];
+    objc_storeStrong(&v9->_baseObject, object);
+    captureDevice = [bufferCopy captureDevice];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = captureDevice;
 
-    v13 = [v8 traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v13, v14, v10);
+    traceContext = [bufferCopy traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v14, v10);
   }
 
   return v10;

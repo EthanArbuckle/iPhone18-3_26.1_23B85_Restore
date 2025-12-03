@@ -1,63 +1,63 @@
 @interface DockAccessoryHelper
-- (void)actuatorFeedbackWithInfo:(id)a3 system:(id)a4 actuators:(id)a5 positions:(id)a6 velocities:(id)a7 timestamp:(double)a8;
-- (void)batteryStateDataWithInfo:(id)a3 data:(id)a4;
-- (void)disconnectedWithErr:(id)a3;
-- (void)systemEventDataWithInfo:(id)a3 data:(id)a4;
-- (void)trackingSummaryDataWithInfo:(id)a3 data:(id)a4;
-- (void)trajectoryProgressFeedbackWithInfo:(id)a3 system:(id)a4 progress:(id)a5;
+- (void)actuatorFeedbackWithInfo:(id)info system:(id)system actuators:(id)actuators positions:(id)positions velocities:(id)velocities timestamp:(double)timestamp;
+- (void)batteryStateDataWithInfo:(id)info data:(id)data;
+- (void)disconnectedWithErr:(id)err;
+- (void)systemEventDataWithInfo:(id)info data:(id)data;
+- (void)trackingSummaryDataWithInfo:(id)info data:(id)data;
+- (void)trajectoryProgressFeedbackWithInfo:(id)info system:(id)system progress:(id)progress;
 @end
 
 @implementation DockAccessoryHelper
 
-- (void)actuatorFeedbackWithInfo:(id)a3 system:(id)a4 actuators:(id)a5 positions:(id)a6 velocities:(id)a7 timestamp:(double)a8
+- (void)actuatorFeedbackWithInfo:(id)info system:(id)system actuators:(id)actuators positions:(id)positions velocities:(id)velocities timestamp:(double)timestamp
 {
   v11 = sub_2381CA1DC();
   v12 = sub_2381CA1DC();
   v13 = sub_2381CA1DC();
-  v14 = a3;
-  v15 = self;
-  sub_2381C4270(a8, v14, v11, v12, v13);
+  infoCopy = info;
+  selfCopy = self;
+  sub_2381C4270(timestamp, infoCopy, v11, v12, v13);
 }
 
-- (void)systemEventDataWithInfo:(id)a3 data:(id)a4
+- (void)systemEventDataWithInfo:(id)info data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2381A6870(v6, v7);
+  infoCopy = info;
+  dataCopy = data;
+  selfCopy = self;
+  sub_2381A6870(infoCopy, dataCopy);
 }
 
-- (void)batteryStateDataWithInfo:(id)a3 data:(id)a4
+- (void)batteryStateDataWithInfo:(id)info data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2381A69EC(v6, v7);
+  infoCopy = info;
+  dataCopy = data;
+  selfCopy = self;
+  sub_2381A69EC(infoCopy, dataCopy);
 }
 
-- (void)trackingSummaryDataWithInfo:(id)a3 data:(id)a4
+- (void)trackingSummaryDataWithInfo:(id)info data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  infoCopy = info;
+  dataCopy = data;
+  selfCopy = self;
   sub_2381A6CDC();
 }
 
-- (void)trajectoryProgressFeedbackWithInfo:(id)a3 system:(id)a4 progress:(id)a5
+- (void)trajectoryProgressFeedbackWithInfo:(id)info system:(id)system progress:(id)progress
 {
   v8 = sub_2381CA0FC();
   v10 = v9;
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
-  sub_2381C4420(v8, v10, v12);
+  infoCopy = info;
+  progressCopy = progress;
+  selfCopy = self;
+  sub_2381C4420(v8, v10, progressCopy);
 }
 
-- (void)disconnectedWithErr:(id)a3
+- (void)disconnectedWithErr:(id)err
 {
-  v4 = self;
-  v5 = a3;
-  sub_2381A7058(a3);
+  selfCopy = self;
+  errCopy = err;
+  sub_2381A7058(err);
 }
 
 @end

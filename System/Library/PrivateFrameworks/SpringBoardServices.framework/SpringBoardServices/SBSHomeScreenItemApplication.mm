@@ -1,23 +1,23 @@
 @interface SBSHomeScreenItemApplication
-- (BOOL)isEqual:(id)a3;
-- (SBSHomeScreenItemApplication)initWithBSXPCCoder:(id)a3;
-- (SBSHomeScreenItemApplication)initWithBundleIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSHomeScreenItemApplication)initWithBSXPCCoder:(id)coder;
+- (SBSHomeScreenItemApplication)initWithBundleIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SBSHomeScreenItemApplication
 
-- (SBSHomeScreenItemApplication)initWithBundleIdentifier:(id)a3
+- (SBSHomeScreenItemApplication)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBSHomeScreenItemApplication;
   v5 = [(SBSHomeScreenItemApplication *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
   }
@@ -25,24 +25,24 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SBSHomeScreenItemApplication;
-  v4 = a3;
-  [(SBSHomeScreenItem *)&v5 encodeWithBSXPCCoder:v4];
-  [v4 encodeObject:self->_bundleIdentifier forKey:{@"bundleIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SBSHomeScreenItem *)&v5 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:{@"bundleIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (SBSHomeScreenItemApplication)initWithBSXPCCoder:(id)a3
+- (SBSHomeScreenItemApplication)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SBSHomeScreenItemApplication;
-  v5 = [(SBSHomeScreenItem *)&v9 initWithBSXPCCoder:v4];
+  v5 = [(SBSHomeScreenItem *)&v9 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeStringForKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
   }
@@ -62,16 +62,16 @@
   return v6 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x1E698E6A0] builderWithObject:self ofExpectedClass:objc_opt_class()];
   bundleIdentifier = self->_bundleIdentifier;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __40__SBSHomeScreenItemApplication_isEqual___block_invoke;
   v12[3] = &unk_1E735F618;
-  v7 = v4;
+  v7 = equalCopy;
   v13 = v7;
   v8 = [v5 appendObject:bundleIdentifier counterpart:v12];
   v11.receiver = self;
@@ -93,9 +93,9 @@
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_bundleIdentifier withName:@"bundleIdentifier"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

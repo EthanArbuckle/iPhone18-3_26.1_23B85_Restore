@@ -1,43 +1,43 @@
 @interface ASVRubberBand
-- (ASVRubberBand)initWithRubberBandFactor:(float)a3 minOffset:(float)a4 maxOffset:(float)a5 overshoot:(float)a6;
-- (BOOL)offsetIsWithinRubberBandedRange:(float)a3;
-- (float)offsetForRubberBandOffset:(float)a3;
-- (float)rubberBandOffsetForOffset:(float)a3;
+- (ASVRubberBand)initWithRubberBandFactor:(float)factor minOffset:(float)offset maxOffset:(float)maxOffset overshoot:(float)overshoot;
+- (BOOL)offsetIsWithinRubberBandedRange:(float)range;
+- (float)offsetForRubberBandOffset:(float)offset;
+- (float)rubberBandOffsetForOffset:(float)offset;
 @end
 
 @implementation ASVRubberBand
 
-- (ASVRubberBand)initWithRubberBandFactor:(float)a3 minOffset:(float)a4 maxOffset:(float)a5 overshoot:(float)a6
+- (ASVRubberBand)initWithRubberBandFactor:(float)factor minOffset:(float)offset maxOffset:(float)maxOffset overshoot:(float)overshoot
 {
   v11.receiver = self;
   v11.super_class = ASVRubberBand;
   result = [(ASVRubberBand *)&v11 init];
   if (result)
   {
-    result->_rubberBandFactor = a3;
-    result->_minOffset = a4;
-    result->_maxOffset = a5;
-    result->_overshoot = a6;
+    result->_rubberBandFactor = factor;
+    result->_minOffset = offset;
+    result->_maxOffset = maxOffset;
+    result->_overshoot = overshoot;
   }
 
   return result;
 }
 
-- (float)rubberBandOffsetForOffset:(float)a3
+- (float)rubberBandOffsetForOffset:(float)offset
 {
   [(ASVRubberBand *)self maxOffset];
-  if (v5 >= a3)
+  if (v5 >= offset)
   {
     [(ASVRubberBand *)self minOffset];
-    if (v16 <= a3)
+    if (v16 <= offset)
     {
-      return a3;
+      return offset;
     }
 
     else
     {
       [(ASVRubberBand *)self minOffset];
-      v18 = v17 - a3;
+      v18 = v17 - offset;
       [(ASVRubberBand *)self overshoot];
       v20 = v18 / v19;
       [(ASVRubberBand *)self rubberBandFactor];
@@ -52,7 +52,7 @@
   else
   {
     [(ASVRubberBand *)self maxOffset];
-    v7 = a3 - v6;
+    v7 = offset - v6;
     [(ASVRubberBand *)self overshoot];
     v9 = v7 / v8;
     [(ASVRubberBand *)self rubberBandFactor];
@@ -64,16 +64,16 @@
   }
 }
 
-- (float)offsetForRubberBandOffset:(float)a3
+- (float)offsetForRubberBandOffset:(float)offset
 {
   [(ASVRubberBand *)self maxOffset];
-  if (v5 >= a3)
+  if (v5 >= offset)
   {
     [(ASVRubberBand *)self minOffset];
-    if (v17 > a3)
+    if (v17 > offset)
     {
       [(ASVRubberBand *)self minOffset];
-      v19 = v18 - a3;
+      v19 = v18 - offset;
       [(ASVRubberBand *)self overshoot];
       v21 = (v19 / v20) + -1.0;
       if (v21 != 0.0)
@@ -92,7 +92,7 @@
   else
   {
     [(ASVRubberBand *)self maxOffset];
-    v7 = a3 - v6;
+    v7 = offset - v6;
     [(ASVRubberBand *)self overshoot];
     v9 = (v7 / v8) + -1.0;
     if (v9 != 0.0)
@@ -107,19 +107,19 @@
     }
   }
 
-  return a3;
+  return offset;
 }
 
-- (BOOL)offsetIsWithinRubberBandedRange:(float)a3
+- (BOOL)offsetIsWithinRubberBandedRange:(float)range
 {
   [(ASVRubberBand *)self maxOffset];
-  if (v5 < a3)
+  if (v5 < range)
   {
     return 1;
   }
 
   [(ASVRubberBand *)self minOffset];
-  return v7 > a3;
+  return v7 > range;
 }
 
 @end

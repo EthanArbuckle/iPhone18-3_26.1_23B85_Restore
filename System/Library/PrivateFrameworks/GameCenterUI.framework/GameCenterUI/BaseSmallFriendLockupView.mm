@@ -1,20 +1,20 @@
 @interface BaseSmallFriendLockupView
 - (BOOL)accessibilityActivate;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilitySubtitleLabel;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel;
 - (void)didTapAccessoryButton;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation BaseSmallFriendLockupView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1E7F6C();
   v4 = v3;
   v6 = v5;
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E1E7F88();
   v5 = v4;
   v7 = v6;
@@ -40,11 +40,11 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_24E1E7FEC(a4);
+  selfCopy = self;
+  sub_24E1E7FEC(in);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -64,13 +64,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1E80F8();
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1E864C();
 
   return 1;
@@ -78,7 +78,7 @@
 
 - (void)didTapAccessoryButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1E597C();
 }
 
@@ -96,11 +96,11 @@
   return v2;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E1E8748(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E1E8748(change);
 }
 
 @end

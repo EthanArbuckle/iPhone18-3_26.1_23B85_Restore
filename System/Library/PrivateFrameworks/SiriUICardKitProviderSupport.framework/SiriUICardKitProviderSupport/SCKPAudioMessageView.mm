@@ -1,24 +1,24 @@
 @interface SCKPAudioMessageView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SCKPAudioMessageView)initWithAudioMessageURL:(id)a3 delegate:(id)a4;
-- (void)_playButtonPressed:(id)a3;
+- (SCKPAudioMessageView)initWithAudioMessageURL:(id)l delegate:(id)delegate;
+- (void)_playButtonPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setPlayButtonState:(int64_t)a3;
+- (void)setPlayButtonState:(int64_t)state;
 @end
 
 @implementation SCKPAudioMessageView
 
-- (SCKPAudioMessageView)initWithAudioMessageURL:(id)a3 delegate:(id)a4
+- (SCKPAudioMessageView)initWithAudioMessageURL:(id)l delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = SCKPAudioMessageView;
   v8 = [(SCKPAudioMessageView *)&v32 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = [MEMORY[0x277D755D0] configurationWithPointSize:38.0];
     v11 = [MEMORY[0x277D755B8] systemImageNamed:@"play.circle.fill" withConfiguration:v10];
     playImage = v9->_playImage;
@@ -42,8 +42,8 @@
 
     [(UIButton *)v9->_playButton setImage:v9->_playImage forState:0];
     v21 = v9->_playButton;
-    v22 = [MEMORY[0x277D75348] labelColor];
-    v23 = [v22 colorWithAlphaComponent:0.5];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v23 = [labelColor colorWithAlphaComponent:0.5];
     [(UIButton *)v21 setTintColor:v23];
 
     [(UIButton *)v9->_playButton addTarget:v9 action:sel__playButtonPressed_ forControlEvents:64];
@@ -67,8 +67,8 @@
 
     v25 = v24;
     _Block_object_dispose(&v34, 8);
-    v26 = [v24 sharedInstance];
-    v27 = [v26 mediaObjectWithFileURL:v6 filename:0 transcoderUserInfo:0];
+    sharedInstance = [v24 sharedInstance];
+    v27 = [sharedInstance mediaObjectWithFileURL:lCopy filename:0 transcoderUserInfo:0];
     v28 = [v27 composeWaveformForWidth:1 orientation:300.0];
     v29 = objc_alloc_init(MEMORY[0x277D755E8]);
     waveformImageView = v9->_waveformImageView;
@@ -81,18 +81,18 @@
   return v9;
 }
 
-- (void)setPlayButtonState:(int64_t)a3
+- (void)setPlayButtonState:(int64_t)state
 {
-  if (self->_playButtonState != a3)
+  if (self->_playButtonState != state)
   {
-    self->_playButtonState = a3;
-    if (!a3)
+    self->_playButtonState = state;
+    if (!state)
     {
       v3 = &OBJC_IVAR___SCKPAudioMessageView__playImage;
       goto LABEL_7;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
       v3 = &OBJC_IVAR___SCKPAudioMessageView__pauseImage;
 LABEL_7:
@@ -122,7 +122,7 @@ LABEL_7:
   return result;
 }
 
-- (void)_playButtonPressed:(id)a3
+- (void)_playButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained audioMessagePlayButtonTapped:self];

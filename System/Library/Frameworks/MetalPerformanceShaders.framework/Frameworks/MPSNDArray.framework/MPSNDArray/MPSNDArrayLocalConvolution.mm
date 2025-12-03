@@ -1,20 +1,20 @@
 @interface MPSNDArrayLocalConvolution
 - (MPSNDArrayConvolutionSizes)dilationRates;
 - (MPSNDArrayConvolutionSizes)kernelSizes;
-- (MPSNDArrayLocalConvolution)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayLocalConvolution)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayLocalConvolution)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayLocalConvolution)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayLocalConvolution
 
-- (MPSNDArrayLocalConvolution)initWithDevice:(id)a3
+- (MPSNDArrayLocalConvolution)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayLocalConvolution;
-  result = [(MPSNDArrayBinaryKernel *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayBinaryKernel *)&v4 initWithDevice:device];
   result->super.super._encode = EncodeLocalConvolution;
   result->super.super.super._encodeGradient = EncodeLocalConvolutionGradient;
   result->super.super.super._encodeData = result;
@@ -24,54 +24,54 @@
   return result;
 }
 
-- (MPSNDArrayLocalConvolution)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayLocalConvolution)initWithCoder:(id)coder device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayLocalConvolution;
-  v5 = [(MPSNDArrayBinaryKernel *)&v8 initWithCoder:a3 device:a4];
+  v5 = [(MPSNDArrayBinaryKernel *)&v8 initWithCoder:coder device:device];
   v6 = v5;
   if (v5)
   {
     v5->super.super._encode = EncodeLocalConvolution;
     v5->super.super.super._encodeGradient = EncodeLocalConvolutionGradient;
     v5->super.super.super._encodeData = v5;
-    v5->_dataFormat = [a3 decodeIntegerForKey:@"MPSNDArrayLocalConvolution.dataFormat"];
-    v6->_kernelSizes.size[0] = [a3 decodeIntegerForKey:@"MPSNDArrayLocalConvolution.kernelsizesX"];
-    v6->_kernelSizes.size[1] = [a3 decodeIntegerForKey:@"MPSNDArrayLocalConvolution.kernelsizesY"];
-    v6->_dilationRates.size[0] = [a3 decodeIntegerForKey:@"MPSNDArrayLocalConvolution.kDilationRateX"];
-    v6->_dilationRates.size[1] = [a3 decodeIntegerForKey:@"MPSNDArrayLocalConvolution.kDilationRateY"];
+    v5->_dataFormat = [coder decodeIntegerForKey:@"MPSNDArrayLocalConvolution.dataFormat"];
+    v6->_kernelSizes.size[0] = [coder decodeIntegerForKey:@"MPSNDArrayLocalConvolution.kernelsizesX"];
+    v6->_kernelSizes.size[1] = [coder decodeIntegerForKey:@"MPSNDArrayLocalConvolution.kernelsizesY"];
+    v6->_dilationRates.size[0] = [coder decodeIntegerForKey:@"MPSNDArrayLocalConvolution.kDilationRateX"];
+    v6->_dilationRates.size[1] = [coder decodeIntegerForKey:@"MPSNDArrayLocalConvolution.kDilationRateY"];
   }
 
   return v6;
 }
 
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state
 {
-  v4 = [a3 objectAtIndexedSubscript:{0, a4}];
+  v4 = [arrays objectAtIndexedSubscript:{0, state}];
 
   return [v4 descriptor];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v5.receiver = self;
   v5.super_class = MPSNDArrayLocalConvolution;
   [(MPSNDArrayMultiaryBase *)&v5 encodeWithCoder:?];
-  [a3 encodeInteger:v4->_dataFormat forKey:@"MPSNDArrayLocalConvolution.dataFormat"];
-  [a3 encodeInteger:v4->_kernelSizes.size[0] forKey:@"MPSNDArrayLocalConvolution.kernelsizesX"];
-  [a3 encodeInteger:v4->_kernelSizes.size[1] forKey:@"MPSNDArrayLocalConvolution.kernelsizesY"];
-  v4 = (v4 + 168);
-  [a3 encodeInteger:v4->super.super.super.super.super.isa forKey:@"MPSNDArrayLocalConvolution.kDilationRateX"];
-  [a3 encodeInteger:v4->super.super.super.super._options forKey:@"MPSNDArrayLocalConvolution.kDilationRateY"];
+  [coder encodeInteger:selfCopy->_dataFormat forKey:@"MPSNDArrayLocalConvolution.dataFormat"];
+  [coder encodeInteger:selfCopy->_kernelSizes.size[0] forKey:@"MPSNDArrayLocalConvolution.kernelsizesX"];
+  [coder encodeInteger:selfCopy->_kernelSizes.size[1] forKey:@"MPSNDArrayLocalConvolution.kernelsizesY"];
+  selfCopy = (selfCopy + 168);
+  [coder encodeInteger:selfCopy->super.super.super.super.super.isa forKey:@"MPSNDArrayLocalConvolution.kDilationRateX"];
+  [coder encodeInteger:selfCopy->super.super.super.super._options forKey:@"MPSNDArrayLocalConvolution.kDilationRateY"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayLocalConvolution;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 36) = self->_dataFormat;

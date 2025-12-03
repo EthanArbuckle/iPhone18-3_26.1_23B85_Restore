@@ -1,25 +1,25 @@
 @interface CRLTraceableResourceToken
-+ (id)callStackDescriptionWithAction:(id)a3 callStackSymbols:(id)a4 index:(id)a5;
-+ (id)p_formattedDateStringFromTimeInterval:(double)a3;
++ (id)callStackDescriptionWithAction:(id)action callStackSymbols:(id)symbols index:(id)index;
++ (id)p_formattedDateStringFromTimeInterval:(double)interval;
 - (BOOL)isTimeoutPaused;
 - (CRLTraceableResourceToken)init;
-- (CRLTraceableResourceToken)initWithIntent:(id)a3 timeout:(unint64_t)a4 parent:(id)a5 context:(id)a6 acquireCallStack:(id)a7 acquireTime:(double)a8 logContext:(id)a9;
+- (CRLTraceableResourceToken)initWithIntent:(id)intent timeout:(unint64_t)timeout parent:(id)parent context:(id)context acquireCallStack:(id)stack acquireTime:(double)time logContext:(id)logContext;
 - (NSArray)acquireCallStack;
 - (NSArray)relinquishCallStack;
 - (NSString)acquireCallStackDescription;
 - (NSString)description;
 - (NSString)relinquishCallStackDescription;
-- (id)acquireCallStackDescriptionWithIndex:(id)a3;
-- (id)breadcrumbsDescriptionWithIndex:(id)a3;
-- (id)metadataDescriptionWithIndex:(id)a3;
-- (id)parentDescriptionWithIndex:(id)a3;
+- (id)acquireCallStackDescriptionWithIndex:(id)index;
+- (id)breadcrumbsDescriptionWithIndex:(id)index;
+- (id)metadataDescriptionWithIndex:(id)index;
+- (id)parentDescriptionWithIndex:(id)index;
 - (unint64_t)hash;
-- (void)addBreadcrumb:(id)a3;
+- (void)addBreadcrumb:(id)breadcrumb;
 - (void)dealloc;
 - (void)didAcquire;
-- (void)extendTimeout:(unint64_t)a3 updateParent:(BOOL)a4;
+- (void)extendTimeout:(unint64_t)timeout updateParent:(BOOL)parent;
 - (void)resumeTimeout;
-- (void)setRelinquishCallStackIfNeeded:(id)a3 relinquishTime:(double)a4;
+- (void)setRelinquishCallStackIfNeeded:(id)needed relinquishTime:(double)time;
 @end
 
 @implementation CRLTraceableResourceToken
@@ -74,13 +74,13 @@
   objc_exception_throw(v10);
 }
 
-- (CRLTraceableResourceToken)initWithIntent:(id)a3 timeout:(unint64_t)a4 parent:(id)a5 context:(id)a6 acquireCallStack:(id)a7 acquireTime:(double)a8 logContext:(id)a9
+- (CRLTraceableResourceToken)initWithIntent:(id)intent timeout:(unint64_t)timeout parent:(id)parent context:(id)context acquireCallStack:(id)stack acquireTime:(double)time logContext:(id)logContext
 {
-  v16 = a3;
-  v27 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
+  intentCopy = intent;
+  parentCopy = parent;
+  contextCopy = context;
+  stackCopy = stack;
+  logContextCopy = logContext;
   v28.receiver = self;
   v28.super_class = CRLTraceableResourceToken;
   v20 = [(CRLTraceableResourceToken *)&v28 init];
@@ -88,20 +88,20 @@
   if (v20)
   {
     atomic_store(0, &v20->_state);
-    v22 = [v16 copy];
+    v22 = [intentCopy copy];
     intent = v21->_intent;
     v21->_intent = v22;
 
-    objc_storeStrong(&v21->_parent, a5);
-    atomic_store(a4, &v21->_timeout);
-    objc_storeStrong(&v21->_context, a6);
-    objc_storeStrong(&v21->_acquireCallStack, a7);
-    v21->_acquireTime = a8;
+    objc_storeStrong(&v21->_parent, parent);
+    atomic_store(timeout, &v21->_timeout);
+    objc_storeStrong(&v21->_context, context);
+    objc_storeStrong(&v21->_acquireCallStack, stack);
+    v21->_acquireTime = time;
     v24 = objc_opt_new();
     breadcrumbs = v21->_breadcrumbs;
     v21->_breadcrumbs = v24;
 
-    objc_storeStrong(&v21->_logContext, a9);
+    objc_storeStrong(&v21->_logContext, logContext);
   }
 
   return v21;
@@ -222,18 +222,18 @@
   [(CRLTraceableResourceToken *)self->_parent resumeTimeout];
 }
 
-- (void)extendTimeout:(unint64_t)a3 updateParent:(BOOL)a4
+- (void)extendTimeout:(unint64_t)timeout updateParent:(BOOL)parent
 {
-  atomic_fetch_add(&self->_timeout, a3);
-  if (a4)
+  atomic_fetch_add(&self->_timeout, timeout);
+  if (parent)
   {
     [(CRLTraceableResourceToken *)self->_parent extendTimeout:?];
   }
 }
 
-- (void)addBreadcrumb:(id)a3
+- (void)addBreadcrumb:(id)breadcrumb
 {
-  v4 = a3;
+  breadcrumbCopy = breadcrumb;
   if (qword_101AD5A48 != -1)
   {
     sub_101384C5C();
@@ -244,23 +244,23 @@
   {
     logContext = self->_logContext;
     v7 = v5;
-    v8 = [(CRLLogContext *)logContext publicString];
-    v9 = [(CRLLogContext *)self->_logContext privateString];
-    v10 = [(CRLTraceableResourceToken *)self intent];
+    publicString = [(CRLLogContext *)logContext publicString];
+    privateString = [(CRLLogContext *)self->_logContext privateString];
+    intent = [(CRLTraceableResourceToken *)self intent];
     v11 = 138544386;
-    v12 = v8;
+    v12 = publicString;
     v13 = 2112;
-    v14 = v9;
+    v14 = privateString;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v10;
+    v18 = intent;
     v19 = 2114;
-    v20 = v4;
+    v20 = breadcrumbCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%{public}@ %@ Resource %p with '%{public}@' intent added breadcrumb: %{public}@", &v11, 0x34u);
   }
 
-  [(NSMutableArray *)self->_breadcrumbs addObject:v4];
+  [(NSMutableArray *)self->_breadcrumbs addObject:breadcrumbCopy];
   [(CRLTraceableResourceToken *)self extendTimeout:1 updateParent:1];
 }
 
@@ -330,9 +330,9 @@
   }
 }
 
-- (void)setRelinquishCallStackIfNeeded:(id)a3 relinquishTime:(double)a4
+- (void)setRelinquishCallStackIfNeeded:(id)needed relinquishTime:(double)time
 {
-  v7 = a3;
+  neededCopy = needed;
   v8 = 1;
   atomic_compare_exchange_strong(&self->_state, &v8, 2uLL);
   if (v8 != 1)
@@ -367,8 +367,8 @@
 
   if (!self->_relinquishCallStack)
   {
-    objc_storeStrong(&self->_relinquishCallStack, a3);
-    self->_relinquishTime = a4;
+    objc_storeStrong(&self->_relinquishCallStack, needed);
+    self->_relinquishTime = time;
   }
 }
 
@@ -379,9 +379,9 @@
   return [(CRLTraceableResourceToken *)&v3 hash];
 }
 
-+ (id)p_formattedDateStringFromTimeInterval:(double)a3
++ (id)p_formattedDateStringFromTimeInterval:(double)interval
 {
-  v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+  v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:interval];
   v4 = objc_alloc_init(NSDateFormatter);
   v5 = +[NSLocale currentLocale];
   [v4 setLocale:v5];
@@ -392,35 +392,35 @@
   return v6;
 }
 
-- (id)metadataDescriptionWithIndex:(id)a3
+- (id)metadataDescriptionWithIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   v5 = objc_opt_class();
   [(CRLTraceableResourceToken *)self acquireTime];
   v6 = [v5 p_formattedDateStringFromTimeInterval:?];
-  v7 = [(CRLTraceableResourceToken *)self state];
+  state = [(CRLTraceableResourceToken *)self state];
   v8 = @"WAITING";
-  if (v7 == 1)
+  if (state == 1)
   {
     v8 = @"ACTIVE";
   }
 
-  if (v7 == 2)
+  if (state == 2)
   {
     v8 = @"DONE";
   }
 
   v9 = v8;
-  v10 = [(CRLTraceableResourceToken *)self intent];
-  v11 = v10;
-  if (v4)
+  intent = [(CRLTraceableResourceToken *)self intent];
+  v11 = intent;
+  if (indexCopy)
   {
-    [NSString stringWithFormat:@"[%@] %@ '%@' %@", v4, v9, v10, v6];
+    [NSString stringWithFormat:@"[%@] %@ '%@' %@", indexCopy, v9, intent, v6];
   }
 
   else
   {
-    [NSString stringWithFormat:@"'%@' %@ %@", v9, v10, v6, v14];
+    [NSString stringWithFormat:@"'%@' %@ %@", v9, intent, v6, v14];
   }
   v12 = ;
 
@@ -430,8 +430,8 @@
 - (NSString)acquireCallStackDescription
 {
   v3 = objc_opt_class();
-  v4 = [(CRLTraceableResourceToken *)self acquireCallStack];
-  v5 = [v3 callStackDescriptionWithAction:&stru_1018BCA28 callStackSymbols:v4 index:0];
+  acquireCallStack = [(CRLTraceableResourceToken *)self acquireCallStack];
+  v5 = [v3 callStackDescriptionWithAction:&stru_1018BCA28 callStackSymbols:acquireCallStack index:0];
 
   return v5;
 }
@@ -439,64 +439,64 @@
 - (NSString)relinquishCallStackDescription
 {
   v3 = objc_opt_class();
-  v4 = [(CRLTraceableResourceToken *)self relinquishCallStack];
-  v5 = [v3 callStackDescriptionWithAction:&stru_1018BCA28 callStackSymbols:v4 index:0];
+  relinquishCallStack = [(CRLTraceableResourceToken *)self relinquishCallStack];
+  v5 = [v3 callStackDescriptionWithAction:&stru_1018BCA28 callStackSymbols:relinquishCallStack index:0];
 
   return v5;
 }
 
-- (id)acquireCallStackDescriptionWithIndex:(id)a3
+- (id)acquireCallStackDescriptionWithIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   v5 = objc_opt_class();
-  v6 = [(CRLTraceableResourceToken *)self acquireCallStack];
-  v7 = [v5 callStackDescriptionWithAction:&stru_1018BCA28 callStackSymbols:v6 index:v4];
+  acquireCallStack = [(CRLTraceableResourceToken *)self acquireCallStack];
+  v7 = [v5 callStackDescriptionWithAction:&stru_1018BCA28 callStackSymbols:acquireCallStack index:indexCopy];
 
   return v7;
 }
 
-+ (id)callStackDescriptionWithAction:(id)a3 callStackSymbols:(id)a4 index:(id)a5
++ (id)callStackDescriptionWithAction:(id)action callStackSymbols:(id)symbols index:(id)index
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  indexCopy = index;
+  symbolsCopy = symbols;
+  actionCopy = action;
   v10 = objc_opt_new();
-  v11 = [v9 length];
+  v11 = [actionCopy length];
   v12 = @" ";
   if (!v11)
   {
     v12 = &stru_1018BCA28;
   }
 
-  if (v7)
+  if (indexCopy)
   {
-    [v10 appendFormat:@"[%@] %@%@backtrace:", v7, v9, v12];
+    [v10 appendFormat:@"[%@] %@%@backtrace:", indexCopy, actionCopy, v12];
   }
 
   else
   {
-    [v10 appendFormat:@"%@%@backtrace:", v9, v12, v15];
+    [v10 appendFormat:@"%@%@backtrace:", actionCopy, v12, v15];
   }
 
-  v13 = [CRLAssertionHandler packedBacktraceStringWithReturnAddresses:v8];
+  v13 = [CRLAssertionHandler packedBacktraceStringWithReturnAddresses:symbolsCopy];
 
   [v10 appendFormat:@" %@", v13];
 
   return v10;
 }
 
-- (id)breadcrumbsDescriptionWithIndex:(id)a3
+- (id)breadcrumbsDescriptionWithIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   v5 = [(NSMutableArray *)self->_breadcrumbs count];
   if (v5)
   {
     v6 = v5;
     v7 = objc_opt_new();
     v8 = v7;
-    if (v4)
+    if (indexCopy)
     {
-      objc_msgSend(v7, "appendFormat:", @"[%@] %tu breadcrumb(s): ("), v4, v6;
+      objc_msgSend(v7, "appendFormat:", @"[%@] %tu breadcrumb(s): ("), indexCopy, v6;
     }
 
     else
@@ -523,23 +523,23 @@
   return v9;
 }
 
-- (id)parentDescriptionWithIndex:(id)a3
+- (id)parentDescriptionWithIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   if (self->_parent)
   {
     v5 = [NSString alloc];
     parent = self->_parent;
-    v7 = [(CRLTraceableResourceToken *)parent intent];
-    v8 = v7;
-    if (v4)
+    intent = [(CRLTraceableResourceToken *)parent intent];
+    v8 = intent;
+    if (indexCopy)
     {
-      v9 = [v5 initWithFormat:@"[%@] parent: %p '%@'", v4, parent, v7];
+      v9 = [v5 initWithFormat:@"[%@] parent: %p '%@'", indexCopy, parent, intent];
     }
 
     else
     {
-      v9 = [v5 initWithFormat:@"parent: %p '%@'", parent, v7, v12];
+      v9 = [v5 initWithFormat:@"parent: %p '%@'", parent, intent, v12];
     }
 
     v10 = v9;
@@ -555,15 +555,15 @@
 
 - (NSString)description
 {
-  v3 = [(CRLTraceableResourceToken *)self relinquishCallStack];
-  v4 = [(CRLTraceableResourceToken *)self context];
-  v28 = v4;
-  if (v4)
+  relinquishCallStack = [(CRLTraceableResourceToken *)self relinquishCallStack];
+  context = [(CRLTraceableResourceToken *)self context];
+  v28 = context;
+  if (context)
   {
-    v5 = [v4 description];
+    v5 = [context description];
     v27 = [NSString stringWithFormat:@"context: %@\n", v5];
 
-    if (v3)
+    if (relinquishCallStack)
     {
 LABEL_3:
       v6 = objc_opt_class();
@@ -571,21 +571,21 @@ LABEL_3:
       v7 = [v6 p_formattedDateStringFromTimeInterval:?];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [(CRLTraceableResourceToken *)self metadataDescriptionWithIndex:0];
+      acquireCallStack2 = [(CRLTraceableResourceToken *)self metadataDescriptionWithIndex:0];
       v11 = objc_opt_class();
-      v26 = [(CRLTraceableResourceToken *)self acquireCallStack];
-      v12 = [v11 callStackDescriptionWithAction:@"Acquire" callStackSymbols:v26 index:0];
-      v13 = [objc_opt_class() callStackDescriptionWithAction:@"Relinquish" callStackSymbols:v3 index:0];
+      acquireCallStack = [(CRLTraceableResourceToken *)self acquireCallStack];
+      v12 = [v11 callStackDescriptionWithAction:@"Acquire" callStackSymbols:acquireCallStack index:0];
+      v13 = [objc_opt_class() callStackDescriptionWithAction:@"Relinquish" callStackSymbols:relinquishCallStack index:0];
       v14 = [(CRLTraceableResourceToken *)self breadcrumbsDescriptionWithIndex:0];
       [(CRLTraceableResourceToken *)self parentDescriptionWithIndex:0];
-      v16 = v15 = v3;
+      v16 = v15 = relinquishCallStack;
       v17 = v27;
-      v25 = self;
+      selfCopy = self;
       v18 = v9;
-      v19 = [NSString stringWithFormat:@"<%@: %p>\n%@%@\n%@\n%@\n%@\n%@\n%@", v9, v25, v27, v10, v12, v7, v13, v14, v16];
+      v19 = [NSString stringWithFormat:@"<%@: %p>\n%@%@\n%@\n%@\n%@\n%@\n%@", v9, selfCopy, v27, acquireCallStack2, v12, v7, v13, v14, v16];
 
-      v3 = v15;
-      v20 = v26;
+      relinquishCallStack = v15;
+      v20 = acquireCallStack;
 
       v21 = v18;
       goto LABEL_6;
@@ -595,7 +595,7 @@ LABEL_3:
   else
   {
     v27 = &stru_1018BCA28;
-    if (v3)
+    if (relinquishCallStack)
     {
       goto LABEL_3;
     }
@@ -605,8 +605,8 @@ LABEL_3:
   v7 = NSStringFromClass(v22);
   v21 = [(CRLTraceableResourceToken *)self metadataDescriptionWithIndex:0];
   v23 = objc_opt_class();
-  v10 = [(CRLTraceableResourceToken *)self acquireCallStack];
-  v20 = [v23 callStackDescriptionWithAction:@"Acquire" callStackSymbols:v10 index:0];
+  acquireCallStack2 = [(CRLTraceableResourceToken *)self acquireCallStack];
+  v20 = [v23 callStackDescriptionWithAction:@"Acquire" callStackSymbols:acquireCallStack2 index:0];
   v12 = [(CRLTraceableResourceToken *)self breadcrumbsDescriptionWithIndex:0];
   v13 = [(CRLTraceableResourceToken *)self parentDescriptionWithIndex:0];
   v17 = v27;

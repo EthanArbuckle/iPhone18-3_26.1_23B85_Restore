@@ -1,18 +1,18 @@
 @interface EQKitMathMLMAction
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMAction
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v10.receiver = self;
   v10.super_class = EQKitMathMLMAction;
   v6 = [(EQKitMathMLMAction *)&v10 init];
   if (v6)
   {
-    v7 = [a4 parseChildrenAsArrayFromXMLNode:a3];
+    v7 = [parser parseChildrenAsArrayFromXMLNode:node];
     if ([v7 count])
     {
       v8 = [v7 objectAtIndex:0];
@@ -22,7 +22,7 @@
 
     else
     {
-      [a4 reportError:5 withNode:a3];
+      [parser reportError:5 withNode:node];
 
       return 0;
     }

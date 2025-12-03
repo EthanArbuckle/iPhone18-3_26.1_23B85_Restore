@@ -1,6 +1,6 @@
 @interface VTUIEnrollmentSetupIntroViewControllerOrb
-- (VTUIEnrollmentSetupIntroViewControllerOrb)initWithDelegate:(id)a3;
-- (void)_continuePressed:(id)a3;
+- (VTUIEnrollmentSetupIntroViewControllerOrb)initWithDelegate:(id)delegate;
+- (void)_continuePressed:(id)pressed;
 - (void)_fadeInSubViews;
 - (void)_setupContent;
 - (void)enrollmentWillAppear;
@@ -10,34 +10,34 @@
 
 - (void)enrollmentWillAppear
 {
-  v2 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self view];
-  [v2 removeFromSuperview];
+  view = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self view];
+  [view removeFromSuperview];
 }
 
-- (VTUIEnrollmentSetupIntroViewControllerOrb)initWithDelegate:(id)a3
+- (VTUIEnrollmentSetupIntroViewControllerOrb)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[VTUIStyle sharedStyle];
-  v6 = [v5 shouldSetupForMultipleTriggerPhrases];
+  shouldSetupForMultipleTriggerPhrases = [v5 shouldSetupForMultipleTriggerPhrases];
   self->_showSiriConversations = [v5 supportsSiriConversationsAndBargeIn];
   self->_isPostUpgradeDisclosure = [v5 shouldPresentDisclosureForCompactVoiceTrigger];
-  self->_includeHomePodInDisclosure = [v5 shouldIncludeHomePodInCompactTriggerDisclosure] & (v6 ^ 1);
-  if ((v6 ^ 1))
+  self->_includeHomePodInDisclosure = [v5 shouldIncludeHomePodInCompactTriggerDisclosure] & (shouldSetupForMultipleTriggerPhrases ^ 1);
+  if ((shouldSetupForMultipleTriggerPhrases ^ 1))
   {
-    v7 = 0;
+    allLanguageOptionsSupportCompactTrigger = 0;
   }
 
   else
   {
-    v7 = [v4 allLanguageOptionsSupportCompactTrigger];
+    allLanguageOptionsSupportCompactTrigger = [delegateCopy allLanguageOptionsSupportCompactTrigger];
   }
 
-  self->_showMultitriggerForSetup = v7;
-  v8 = [v5 enrollmentMode];
-  if (v8 == 3)
+  self->_showMultitriggerForSetup = allLanguageOptionsSupportCompactTrigger;
+  enrollmentMode = [v5 enrollmentMode];
+  if (enrollmentMode == 3)
   {
     v11 = @"ASSISTANT_DESCRIPTION";
-    if (v6)
+    if (shouldSetupForMultipleTriggerPhrases)
     {
       v11 = @"ASSISTANT_DESCRIPTION_SHORT";
     }
@@ -45,7 +45,7 @@
 
   else
   {
-    if (v8 == 4)
+    if (enrollmentMode == 4)
     {
       if (self->_showMultitriggerForSetup)
       {
@@ -115,14 +115,14 @@ LABEL_16:
     v15 = v18;
   }
 
-  v19 = [v5 siriIconImage];
+  siriIconImage = [v5 siriIconImage];
   v22.receiver = self;
   v22.super_class = VTUIEnrollmentSetupIntroViewControllerOrb;
-  v20 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)&v22 initWithTitle:v14 detailText:v15 icon:v19];
+  v20 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)&v22 initWithTitle:v14 detailText:v15 icon:siriIconImage];
 
   if (v20)
   {
-    objc_storeWeak(&v20->_delegate, v4);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
     [(VTUIEnrollmentSetupIntroViewControllerOrb *)v20 _setupContent];
   }
 
@@ -140,21 +140,21 @@ LABEL_16:
     _os_log_impl(&dword_2728BC000, v3, OS_LOG_TYPE_DEFAULT, "%s Setup content", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  v5 = [v4 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
   languageCode = self->_languageCode;
-  self->_languageCode = v5;
+  self->_languageCode = languageCode;
 
   v7 = +[VTUIStyle sharedStyle];
-  v8 = [v7 enrollmentMode];
-  v9 = v8;
+  enrollmentMode = [v7 enrollmentMode];
+  v9 = enrollmentMode;
   if (self->_isPostUpgradeDisclosure)
   {
     v10 = [MEMORY[0x277D755B8] systemImageNamed:@"quote.bubble"];
     v11 = [v7 VTUIDeviceSpecificString:@"SAY_SIRI_OR_HS_BULLET_TITLE"];
     v12 = [v7 VTUIDeviceSpecificString:@"SAY_SIRI_OR_HS_BULLET_DESC"];
-    v13 = [MEMORY[0x277D75348] systemBlueColor];
-    [(VTUIEnrollmentSetupIntroViewControllerOrb *)self addBulletedListItemWithTitle:v11 description:v12 image:v10 tintColor:v13];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(VTUIEnrollmentSetupIntroViewControllerOrb *)self addBulletedListItemWithTitle:v11 description:v12 image:v10 tintColor:systemBlueColor];
 
     if (!self->_showSiriConversations)
     {
@@ -166,22 +166,22 @@ LABEL_20:
     v14 = [MEMORY[0x277D755B8] systemImageNamed:@"person.wave.2"];
     v15 = [v7 VTUIDeviceSpecificString:@"SPEAK_FREELY_BULLET_TITLE"];
     v16 = [v7 VTUIDeviceSpecificString:@"SPEAK_FREELY_BULLET_DESC"];
-    v17 = [MEMORY[0x277D75348] systemBlueColor];
-    [(VTUIEnrollmentSetupIntroViewControllerOrb *)self addBulletedListItemWithTitle:v15 description:v16 image:v14 tintColor:v17];
+    systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+    [(VTUIEnrollmentSetupIntroViewControllerOrb *)self addBulletedListItemWithTitle:v15 description:v16 image:v14 tintColor:systemBlueColor2];
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  if (self->_showMultitriggerForSetup && v8 != 4)
+  if (self->_showMultitriggerForSetup && enrollmentMode != 4)
   {
     v10 = [MEMORY[0x277D755B8] systemImageNamed:@"quote.bubble"];
     v15 = [MEMORY[0x277D755B8] _systemImageNamed:@"iphone.side.button.arrow.left"];
     if ([v7 isIpad])
     {
-      v19 = [v7 supportsSideButtonActivation];
+      supportsSideButtonActivation = [v7 supportsSideButtonActivation];
       v20 = MEMORY[0x277D755B8];
-      if (v19)
+      if (supportsSideButtonActivation)
       {
         v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v22 = [v20 imageNamed:@"ipad.top.button.arrow.down" inBundle:v21 compatibleWithTraitCollection:0];
@@ -191,13 +191,13 @@ LABEL_19:
 LABEL_18:
         v26 = [v7 VTUIDeviceSpecificString:@"JUST_SAY_SIRI_BULLET_TITLE"];
         v27 = [v7 VTUIDeviceSpecificString:@"JUST_SAY_SIRI_BULLET_DESC"];
-        v28 = [MEMORY[0x277D75348] systemBlueColor];
-        [(VTUIEnrollmentSetupIntroViewControllerOrb *)self addBulletedListItemWithTitle:v26 description:v27 image:v10 tintColor:v28];
+        systemBlueColor3 = [MEMORY[0x277D75348] systemBlueColor];
+        [(VTUIEnrollmentSetupIntroViewControllerOrb *)self addBulletedListItemWithTitle:v26 description:v27 image:v10 tintColor:systemBlueColor3];
 
         v16 = [v7 VTUIDeviceSpecificString:v14];
-        v17 = [v7 VTUIDeviceSpecificString:@"PRESS_AND_HOLD_BULLET_DESC"];
-        v29 = [MEMORY[0x277D75348] systemBlueColor];
-        [(VTUIEnrollmentSetupIntroViewControllerOrb *)self addBulletedListItemWithTitle:v16 description:v17 image:v15 tintColor:v29];
+        systemBlueColor2 = [v7 VTUIDeviceSpecificString:@"PRESS_AND_HOLD_BULLET_DESC"];
+        systemBlueColor4 = [MEMORY[0x277D75348] systemBlueColor];
+        [(VTUIEnrollmentSetupIntroViewControllerOrb *)self addBulletedListItemWithTitle:v16 description:systemBlueColor2 image:v15 tintColor:systemBlueColor4];
 
         goto LABEL_19;
       }
@@ -227,7 +227,7 @@ LABEL_18:
 
 LABEL_21:
   v30 = self->_isPostUpgradeDisclosure && self->_includeHomePodInDisclosure;
-  v31 = [v7 enrollmentMode];
+  enrollmentMode2 = [v7 enrollmentMode];
   v32 = @"BUTTON_CONTINUE_LATER";
   if (v30)
   {
@@ -235,13 +235,13 @@ LABEL_21:
   }
 
   v33 = @"BUTTON_CONTINUE_SETUP";
-  if (v31 == 3)
+  if (enrollmentMode2 == 3)
   {
     v32 = @"BUTTON_CONTINUE_LATER";
     v33 = @"BUTTON_TURN_ON_SIRI";
   }
 
-  if (v31 == 4)
+  if (enrollmentMode2 == 4)
   {
     v34 = @"BUTTON_SET_UP_LATER";
   }
@@ -251,7 +251,7 @@ LABEL_21:
     v34 = v32;
   }
 
-  if (v31 == 4)
+  if (enrollmentMode2 == 4)
   {
     v35 = @"BUTTON_CONTINUE_SETUP";
   }
@@ -261,29 +261,29 @@ LABEL_21:
     v35 = v33;
   }
 
-  v36 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v37 = [v7 VTUIDeviceSpecificString:v35];
-  [v36 setTitle:v37 forState:0];
+  [boldButton setTitle:v37 forState:0];
 
-  [v36 addTarget:self action:sel__continuePressed_ forControlEvents:64];
-  v38 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self buttonTray];
-  [v38 addButton:v36];
+  [boldButton addTarget:self action:sel__continuePressed_ forControlEvents:64];
+  buttonTray = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  objc_storeStrong(&self->_continueButton, v36);
+  objc_storeStrong(&self->_continueButton, boldButton);
   if ((v30 || !self->_isPostUpgradeDisclosure) && [v7 isBuddyOrFollowUp])
   {
-    v39 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     v40 = [v7 VTUIDeviceSpecificString:v34];
-    [(VTUIButton *)v39 setTitle:v40 forState:0];
+    [(VTUIButton *)linkButton setTitle:v40 forState:0];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [(VTUIButton *)v39 addTarget:WeakRetained action:sel_siriIntroViewControllerLaterPressed_ forControlEvents:64];
+    [(VTUIButton *)linkButton addTarget:WeakRetained action:sel_siriIntroViewControllerLaterPressed_ forControlEvents:64];
 
-    v42 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self buttonTray];
-    [v42 addButton:v39];
+    buttonTray2 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self buttonTray];
+    [buttonTray2 addButton:linkButton];
 
     laterButton = self->_laterButton;
-    self->_laterButton = v39;
+    self->_laterButton = linkButton;
   }
 
   if (self->_isPostUpgradeDisclosure)
@@ -298,26 +298,26 @@ LABEL_21:
       v44 = @"POST_UPGRADE_FOOTER";
     }
 
-    v45 = [v7 VTUIDeviceSpecificString:v44];
-    v46 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self buttonTray];
-    [v46 setCaptionText:v45];
+    buttonTray4 = [v7 VTUIDeviceSpecificString:v44];
+    buttonTray3 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self buttonTray];
+    [buttonTray3 setCaptionText:buttonTray4];
 
     goto LABEL_45;
   }
 
   if (v9 != 4)
   {
-    v45 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self buttonTray];
-    [v45 setPrivacyLinkForBundles:&unk_2881EEE00];
+    buttonTray4 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self buttonTray];
+    [buttonTray4 setPrivacyLinkForBundles:&unk_2881EEE00];
 LABEL_45:
   }
 
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_continuePressed:(id)a3
+- (void)_continuePressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -330,7 +330,7 @@ LABEL_45:
     v7[2] = __62__VTUIEnrollmentSetupIntroViewControllerOrb__continuePressed___block_invoke;
     v7[3] = &unk_279E541F8;
     objc_copyWeak(&v8, &location);
-    [v6 siriIntroViewControllerContinuePressed:v4 completion:v7];
+    [v6 siriIntroViewControllerContinuePressed:pressedCopy completion:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -350,11 +350,11 @@ void __62__VTUIEnrollmentSetupIntroViewControllerOrb__continuePressed___block_in
 
 - (void)_fadeInSubViews
 {
-  v3 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self headerView];
-  [v3 setAlpha:0.0];
+  headerView = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self headerView];
+  [headerView setAlpha:0.0];
 
-  v4 = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self contentView];
-  [v4 setAlpha:0.0];
+  contentView = [(VTUIEnrollmentSetupIntroViewControllerOrb *)self contentView];
+  [contentView setAlpha:0.0];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;

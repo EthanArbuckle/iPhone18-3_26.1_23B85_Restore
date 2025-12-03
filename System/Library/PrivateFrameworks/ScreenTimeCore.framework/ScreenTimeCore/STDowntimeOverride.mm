@@ -1,88 +1,88 @@
 @interface STDowntimeOverride
-+ (STDowntimeOverride)overrideWithState:(int64_t)a3 creationDate:(id)a4 calendar:(id)a5 endDate:(id)a6;
-+ (STDowntimeOverride)overrideWithState:(int64_t)a3 creationDate:(id)a4 calendar:(id)a5 fixedDuration:(id)a6;
-- (BOOL)isActiveAtDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDowntimeOverride:(id)a3;
-- (BOOL)isExpiredAtDate:(id)a3;
-- (id)_initWithType:(int64_t)a3 state:(int64_t)a4 creationDate:(id)a5 calendar:(id)a6 endDate:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (STDowntimeOverride)overrideWithState:(int64_t)state creationDate:(id)date calendar:(id)calendar endDate:(id)endDate;
++ (STDowntimeOverride)overrideWithState:(int64_t)state creationDate:(id)date calendar:(id)calendar fixedDuration:(id)duration;
+- (BOOL)isActiveAtDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDowntimeOverride:(id)override;
+- (BOOL)isExpiredAtDate:(id)date;
+- (id)_initWithType:(int64_t)type state:(int64_t)state creationDate:(id)date calendar:(id)calendar endDate:(id)endDate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation STDowntimeOverride
 
-- (id)_initWithType:(int64_t)a3 state:(int64_t)a4 creationDate:(id)a5 calendar:(id)a6 endDate:(id)a7
+- (id)_initWithType:(int64_t)type state:(int64_t)state creationDate:(id)date calendar:(id)calendar endDate:(id)endDate
 {
   v22.receiver = self;
   v22.super_class = STDowntimeOverride;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
+  endDateCopy = endDate;
+  calendarCopy = calendar;
+  dateCopy = date;
   v14 = [(STDowntimeOverride *)&v22 init];
-  v14->_type = a3;
-  v14->_state = a4;
-  v15 = [v13 copy];
+  v14->_type = type;
+  v14->_state = state;
+  v15 = [dateCopy copy];
 
   creationDate = v14->_creationDate;
   v14->_creationDate = v15;
 
-  v17 = [v12 copy];
+  v17 = [calendarCopy copy];
   calendar = v14->_calendar;
   v14->_calendar = v17;
 
-  v19 = [v11 copy];
+  v19 = [endDateCopy copy];
   endDate = v14->_endDate;
   v14->_endDate = v19;
 
   return v14;
 }
 
-+ (STDowntimeOverride)overrideWithState:(int64_t)a3 creationDate:(id)a4 calendar:(id)a5 fixedDuration:(id)a6
++ (STDowntimeOverride)overrideWithState:(int64_t)state creationDate:(id)date calendar:(id)calendar fixedDuration:(id)duration
 {
-  v10 = a5;
-  v11 = a4;
-  [a6 doubleValue];
-  v12 = [v11 dateByAddingTimeInterval:?];
-  v13 = [[a1 alloc] _initWithType:1 state:a3 creationDate:v11 calendar:v10 endDate:v12];
+  calendarCopy = calendar;
+  dateCopy = date;
+  [duration doubleValue];
+  v12 = [dateCopy dateByAddingTimeInterval:?];
+  v13 = [[self alloc] _initWithType:1 state:state creationDate:dateCopy calendar:calendarCopy endDate:v12];
 
   return v13;
 }
 
-+ (STDowntimeOverride)overrideWithState:(int64_t)a3 creationDate:(id)a4 calendar:(id)a5 endDate:(id)a6
++ (STDowntimeOverride)overrideWithState:(int64_t)state creationDate:(id)date calendar:(id)calendar endDate:(id)endDate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[a1 alloc] _initWithType:0 state:a3 creationDate:v12 calendar:v11 endDate:v10];
+  endDateCopy = endDate;
+  calendarCopy = calendar;
+  dateCopy = date;
+  v13 = [[self alloc] _initWithType:0 state:state creationDate:dateCopy calendar:calendarCopy endDate:endDateCopy];
 
   return v13;
 }
 
-- (BOOL)isActiveAtDate:(id)a3
+- (BOOL)isActiveAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(STDowntimeOverride *)self creationDate];
-  if ([v5 compare:v4] == 1)
+  dateCopy = date;
+  creationDate = [(STDowntimeOverride *)self creationDate];
+  if ([creationDate compare:dateCopy] == 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(STDowntimeOverride *)self endDate];
-    v6 = [v7 compare:v4] != -1;
+    endDate = [(STDowntimeOverride *)self endDate];
+    v6 = [endDate compare:dateCopy] != -1;
   }
 
   return v6;
 }
 
-- (BOOL)isExpiredAtDate:(id)a3
+- (BOOL)isExpiredAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(STDowntimeOverride *)self endDate];
-  v6 = [v5 compare:v4];
+  dateCopy = date;
+  endDate = [(STDowntimeOverride *)self endDate];
+  v6 = [endDate compare:dateCopy];
 
   return v6 != 1;
 }
@@ -92,9 +92,9 @@
   if ([(STDowntimeOverride *)self type]== 1)
   {
     v3 = MEMORY[0x1E696AD98];
-    v4 = [(STDowntimeOverride *)self endDate];
-    v5 = [(STDowntimeOverride *)self creationDate];
-    [v4 timeIntervalSinceDate:v5];
+    endDate = [(STDowntimeOverride *)self endDate];
+    creationDate = [(STDowntimeOverride *)self creationDate];
+    [endDate timeIntervalSinceDate:creationDate];
     v6 = [v3 numberWithDouble:?];
   }
 
@@ -125,16 +125,16 @@
     v10 = @"Disabled";
   }
 
-  v11 = [(STDowntimeOverride *)self creationDate];
-  v12 = [(STDowntimeOverride *)self calendar];
-  v13 = [v12 calendarIdentifier];
-  v14 = [(STDowntimeOverride *)self endDate];
-  v15 = [v7 stringWithFormat:@"<%@: %p { Type: %@, State: %@, CreationDate: %@, Calendar: %@, FixedDuration: %@, EndDate: %@ }>", v8, self, v9, v10, v11, v13, v6, v14];
+  creationDate2 = [(STDowntimeOverride *)self creationDate];
+  calendar = [(STDowntimeOverride *)self calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  endDate2 = [(STDowntimeOverride *)self endDate];
+  v15 = [v7 stringWithFormat:@"<%@: %p { Type: %@, State: %@, CreationDate: %@, Calendar: %@, FixedDuration: %@, EndDate: %@ }>", v8, self, v9, v10, creationDate2, calendarIdentifier, v6, endDate2];
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   type = self->_type;
@@ -146,10 +146,10 @@
   return [v4 _initWithType:type state:state creationDate:creationDate calendar:calendar endDate:endDate];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -157,38 +157,38 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STDowntimeOverride *)self isEqualToDowntimeOverride:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STDowntimeOverride *)self isEqualToDowntimeOverride:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToDowntimeOverride:(id)a3
+- (BOOL)isEqualToDowntimeOverride:(id)override
 {
-  v4 = a3;
-  if (v4 == self)
+  overrideCopy = override;
+  if (overrideCopy == self)
   {
     v15 = 1;
   }
 
   else
   {
-    v5 = [(STDowntimeOverride *)self type];
-    if (v5 == [(STDowntimeOverride *)v4 type]&& (v6 = [(STDowntimeOverride *)self state], v6 == [(STDowntimeOverride *)v4 state]))
+    type = [(STDowntimeOverride *)self type];
+    if (type == [(STDowntimeOverride *)overrideCopy type]&& (v6 = [(STDowntimeOverride *)self state], v6 == [(STDowntimeOverride *)overrideCopy state]))
     {
-      v7 = [(STDowntimeOverride *)self creationDate];
-      v8 = [(STDowntimeOverride *)v4 creationDate];
-      if ([v7 isEqualToDate:v8])
+      creationDate = [(STDowntimeOverride *)self creationDate];
+      creationDate2 = [(STDowntimeOverride *)overrideCopy creationDate];
+      if ([creationDate isEqualToDate:creationDate2])
       {
-        v9 = [(STDowntimeOverride *)self calendar];
-        v10 = [v9 calendarIdentifier];
-        v11 = [(STDowntimeOverride *)v4 calendar];
-        v12 = [v11 calendarIdentifier];
-        if ([v10 isEqualToString:v12])
+        calendar = [(STDowntimeOverride *)self calendar];
+        calendarIdentifier = [calendar calendarIdentifier];
+        calendar2 = [(STDowntimeOverride *)overrideCopy calendar];
+        calendarIdentifier2 = [calendar2 calendarIdentifier];
+        if ([calendarIdentifier isEqualToString:calendarIdentifier2])
         {
-          v13 = [(STDowntimeOverride *)self endDate];
-          v14 = [(STDowntimeOverride *)v4 endDate];
-          v15 = [v13 isEqualToDate:v14];
+          endDate = [(STDowntimeOverride *)self endDate];
+          endDate2 = [(STDowntimeOverride *)overrideCopy endDate];
+          v15 = [endDate isEqualToDate:endDate2];
         }
 
         else
@@ -214,14 +214,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STDowntimeOverride *)self type];
-  v4 = [(STDowntimeOverride *)self state]^ v3;
-  v5 = [(STDowntimeOverride *)self calendar];
-  v6 = v4 ^ [v5 hash];
-  v7 = [(STDowntimeOverride *)self creationDate];
-  v8 = [v7 hash];
-  v9 = [(STDowntimeOverride *)self endDate];
-  v10 = v8 ^ [v9 hash];
+  type = [(STDowntimeOverride *)self type];
+  v4 = [(STDowntimeOverride *)self state]^ type;
+  calendar = [(STDowntimeOverride *)self calendar];
+  v6 = v4 ^ [calendar hash];
+  creationDate = [(STDowntimeOverride *)self creationDate];
+  v8 = [creationDate hash];
+  endDate = [(STDowntimeOverride *)self endDate];
+  v10 = v8 ^ [endDate hash];
 
   return v6 ^ v10;
 }

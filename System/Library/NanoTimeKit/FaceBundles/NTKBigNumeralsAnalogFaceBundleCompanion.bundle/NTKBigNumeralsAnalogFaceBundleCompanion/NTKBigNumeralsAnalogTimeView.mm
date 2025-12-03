@@ -3,7 +3,7 @@
 - (id)createMinuteHandView;
 - (id)createSecondHandView;
 - (id)hourHandConfiguration;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)minuteHandConfiguration;
 - (id)secondHandConfiguration;
 - (void)layoutSubviews;
@@ -11,11 +11,11 @@
 
 @implementation NTKBigNumeralsAnalogTimeView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NTKBigNumeralsAnalogTimeView;
-  v3 = [(NTKBigNumeralsAnalogTimeView *)&v6 initForDevice:a3];
+  v3 = [(NTKBigNumeralsAnalogTimeView *)&v6 initForDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -34,11 +34,11 @@
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = [(NTKBigNumeralsAnalogTimeView *)self device];
-  sub_33B0(v3, &v7);
+  device = [(NTKBigNumeralsAnalogTimeView *)self device];
+  sub_33B0(device, &v7);
 
-  v4 = [(NTKBigNumeralsAnalogTimeView *)self device];
-  v5 = [CLKUIAnalogHandConfiguration defaultHourConfigurationForDevice:v4];
+  device2 = [(NTKBigNumeralsAnalogTimeView *)self device];
+  v5 = [CLKUIAnalogHandConfiguration defaultHourConfigurationForDevice:device2];
 
   [v5 setHandWidth:*(&v7 + 1)];
   [v5 setArmWidth:*&v8];
@@ -63,11 +63,11 @@
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = [(NTKBigNumeralsAnalogTimeView *)self device];
-  sub_33B0(v3, &v7);
+  device = [(NTKBigNumeralsAnalogTimeView *)self device];
+  sub_33B0(device, &v7);
 
-  v4 = [(NTKBigNumeralsAnalogTimeView *)self device];
-  v5 = [CLKUIAnalogHandConfiguration defaultMinuteConfigurationForDevice:v4];
+  device2 = [(NTKBigNumeralsAnalogTimeView *)self device];
+  v5 = [CLKUIAnalogHandConfiguration defaultMinuteConfigurationForDevice:device2];
 
   [v5 setHandWidth:*(&v7 + 1)];
   [v5 setArmWidth:*&v8];
@@ -90,8 +90,8 @@
   v3 = [(NTKBigNumeralsAnalogTimeView *)self device:0];
   sub_33B0(v3, &v7);
 
-  v4 = [(NTKBigNumeralsAnalogTimeView *)self device];
-  v5 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:v4];
+  device = [(NTKBigNumeralsAnalogTimeView *)self device];
+  v5 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:device];
 
   [v5 setHandWidth:*&v8];
   [v5 setHandLength:*(&v8 + 1)];
@@ -108,33 +108,33 @@
 {
   v5.receiver = self;
   v5.super_class = NTKBigNumeralsAnalogTimeView;
-  v3 = [(NTKBigNumeralsAnalogTimeView *)&v5 createHourHandView];
+  createHourHandView = [(NTKBigNumeralsAnalogTimeView *)&v5 createHourHandView];
   [(NTKBigNumeralsAnalogTimeView *)self _largeHandAlpha];
-  [v3 setAlpha:?];
+  [createHourHandView setAlpha:?];
 
-  return v3;
+  return createHourHandView;
 }
 
 - (id)createMinuteHandView
 {
   v5.receiver = self;
   v5.super_class = NTKBigNumeralsAnalogTimeView;
-  v3 = [(NTKBigNumeralsAnalogTimeView *)&v5 createMinuteHandView];
+  createMinuteHandView = [(NTKBigNumeralsAnalogTimeView *)&v5 createMinuteHandView];
   [(NTKBigNumeralsAnalogTimeView *)self _largeHandAlpha];
-  [v3 setAlpha:?];
+  [createMinuteHandView setAlpha:?];
 
-  return v3;
+  return createMinuteHandView;
 }
 
 - (id)createSecondHandView
 {
   v5.receiver = self;
   v5.super_class = NTKBigNumeralsAnalogTimeView;
-  v2 = [(NTKBigNumeralsAnalogTimeView *)&v5 createSecondHandView];
+  createSecondHandView = [(NTKBigNumeralsAnalogTimeView *)&v5 createSecondHandView];
   v3 = +[UIColor systemOrangeColor];
-  [v2 setColor:v3];
+  [createSecondHandView setColor:v3];
 
-  return v2;
+  return createSecondHandView;
 }
 
 - (void)layoutSubviews
@@ -143,14 +143,14 @@
   v4 = v3 * 0.5;
   [(NTKBigNumeralsAnalogTimeView *)self bounds];
   v6 = v5 * 0.5;
-  v7 = [(NTKBigNumeralsAnalogTimeView *)self minuteHandView];
-  [v7 setCenter:{v4, v6}];
+  minuteHandView = [(NTKBigNumeralsAnalogTimeView *)self minuteHandView];
+  [minuteHandView setCenter:{v4, v6}];
 
-  v8 = [(NTKBigNumeralsAnalogTimeView *)self hourHandView];
-  [v8 setCenter:{v4, v6}];
+  hourHandView = [(NTKBigNumeralsAnalogTimeView *)self hourHandView];
+  [hourHandView setCenter:{v4, v6}];
 
-  v9 = [(NTKBigNumeralsAnalogTimeView *)self secondHandView];
-  [v9 setCenter:{v4, v6}];
+  secondHandView = [(NTKBigNumeralsAnalogTimeView *)self secondHandView];
+  [secondHandView setCenter:{v4, v6}];
 
   [(NTKBigNumeralsAnalogTimeView *)self layoutShadowViews];
 }

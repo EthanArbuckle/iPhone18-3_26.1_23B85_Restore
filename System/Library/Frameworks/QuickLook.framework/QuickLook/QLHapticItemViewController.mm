@@ -1,17 +1,17 @@
 @interface QLHapticItemViewController
 - (BOOL)canPlayHaptics;
 - (BOOL)play;
-- (id)filterPatternDictionary:(id)a3;
-- (id)makeAVAssetFromAHAP:(id)a3 error:(id *)a4;
+- (id)filterPatternDictionary:(id)dictionary;
+- (id)makeAVAssetFromAHAP:(id)p error:(id *)error;
 - (id)playbackObserverBlock;
 - (id)player;
 - (id)playerItem;
-- (id)stringFromTimeInterval:(double)a3;
-- (id)toolbarButtonsForTraitCollection:(id)a3;
-- (opaqueCMSampleBuffer)createSampleBufferFromAHAP:(id)a3 error:(id *)a4;
+- (id)stringFromTimeInterval:(double)interval;
+- (id)toolbarButtonsForTraitCollection:(id)collection;
+- (opaqueCMSampleBuffer)createSampleBufferFromAHAP:(id)p error:(id *)error;
 - (void)_setupMissingAudioCustomLabel;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 - (void)setupConstraints;
 - (void)showTimeLabelIfNeeded;
 - (void)viewDidLoad;
@@ -19,11 +19,11 @@
 
 @implementation QLHapticItemViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contentsCopy = contents;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D43EF8];
   v12 = *MEMORY[0x277D43EF8];
   if (!*MEMORY[0x277D43EF8])
@@ -40,10 +40,10 @@
 
   [(QLHapticItemViewController *)self setHasAudioCustom:0];
   objc_initWeak(buf, self);
-  v13 = v8;
+  v13 = contentsCopy;
   objc_copyWeak(&v16, buf);
-  v15 = v10;
-  v14 = v9;
+  v15 = handlerCopy;
+  v14 = contextCopy;
   QLRunInBackgroundThread();
 
   objc_destroyWeak(&v16);
@@ -228,16 +228,16 @@ LABEL_10:
   [(UILabel *)v5 setFont:v6];
 
   v7 = self->_missingAudioCustomLabel;
-  v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)v7 setTextColor:v8];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)v7 setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_missingAudioCustomLabel setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)self->_missingAudioCustomLabel setTextAlignment:1];
   [(UILabel *)self->_missingAudioCustomLabel setNumberOfLines:0];
   [(UILabel *)self->_missingAudioCustomLabel setLineBreakMode:0];
   v9 = self->_missingAudioCustomLabel;
-  v10 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)v9 setBackgroundColor:v10];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)v9 setBackgroundColor:clearColor];
 
   [(UILabel *)self->_missingAudioCustomLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v11 = MEMORY[0x277CCACA8];
@@ -245,13 +245,13 @@ LABEL_10:
   v13 = [v11 localizedStringWithFormat:v12];
   [(UILabel *)self->_missingAudioCustomLabel setText:v13];
 
-  v14 = [(QLHapticItemViewController *)self view];
-  [v14 addSubview:self->_missingAudioCustomLabel];
+  view = [(QLHapticItemViewController *)self view];
+  [view addSubview:self->_missingAudioCustomLabel];
 }
 
 - (BOOL)canPlayHaptics
 {
-  v2 = [(QLHapticItemViewController *)self playerItem];
+  playerItem = [(QLHapticItemViewController *)self playerItem];
   v3 = objc_opt_respondsToSelector();
 
   if ((v3 & 1) == 0)
@@ -259,10 +259,10 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [MEMORY[0x277CBF6B0] capabilitiesForHardware];
-  v5 = [v4 supportsHaptics];
+  capabilitiesForHardware = [MEMORY[0x277CBF6B0] capabilitiesForHardware];
+  supportsHaptics = [capabilitiesForHardware supportsHaptics];
 
-  return v5;
+  return supportsHaptics;
 }
 
 - (id)playerItem
@@ -295,13 +295,13 @@ LABEL_10:
   {
     if (self->super.super.super._mediaAsset)
     {
-      v4 = [(QLHapticItemViewController *)self playerItem];
+      playerItem = [(QLHapticItemViewController *)self playerItem];
       if (objc_opt_respondsToSelector())
       {
-        [v4 setPlayHapticTracks:1];
+        [playerItem setPlayHapticTracks:1];
       }
 
-      v5 = [MEMORY[0x277CE6598] playerWithPlayerItem:v4];
+      v5 = [MEMORY[0x277CE6598] playerWithPlayerItem:playerItem];
       v6 = self->super.super.super._player;
       self->super.super.super._player = v5;
 
@@ -324,18 +324,18 @@ LABEL_10:
     return;
   }
 
-  v6 = [(QLItemViewController *)self appearance];
-  if ([v6 presentationMode] != 4)
+  appearance = [(QLItemViewController *)self appearance];
+  if ([appearance presentationMode] != 4)
   {
-    v3 = [(QLItemViewController *)self appearance];
-    if ([v3 presentationMode] != 3)
+    appearance2 = [(QLItemViewController *)self appearance];
+    if ([appearance2 presentationMode] != 3)
     {
-      v4 = [(QLItemViewController *)self appearance];
-      if ([v4 presentationMode])
+      appearance3 = [(QLItemViewController *)self appearance];
+      if ([appearance3 presentationMode])
       {
-        v5 = [(QLHapticItemViewController *)self canPlayHaptics];
+        canPlayHaptics = [(QLHapticItemViewController *)self canPlayHaptics];
 
-        if (v5)
+        if (canPlayHaptics)
         {
 
           [(QLMediaItemViewController *)self showTimeLabel];
@@ -355,23 +355,23 @@ LABEL_10:
   v5 = 0x277CBE000;
   if (missingAudioCustomLabel)
   {
-    v6 = [(UILabel *)missingAudioCustomLabel topAnchor];
-    v7 = [(QLHapticItemViewController *)self view];
-    v8 = [v7 layoutMarginsGuide];
-    v9 = [v8 topAnchor];
-    v10 = [v6 constraintEqualToAnchor:v9 constant:8.0];
+    topAnchor = [(UILabel *)missingAudioCustomLabel topAnchor];
+    view = [(QLHapticItemViewController *)self view];
+    layoutMarginsGuide = [view layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
 
-    v11 = [(UILabel *)self->_missingAudioCustomLabel leftAnchor];
-    v12 = [(QLHapticItemViewController *)self view];
-    v13 = [v12 layoutMarginsGuide];
-    v14 = [v13 leftAnchor];
-    v15 = [v11 constraintEqualToAnchor:v14];
+    leftAnchor = [(UILabel *)self->_missingAudioCustomLabel leftAnchor];
+    view2 = [(QLHapticItemViewController *)self view];
+    layoutMarginsGuide2 = [view2 layoutMarginsGuide];
+    leftAnchor2 = [layoutMarginsGuide2 leftAnchor];
+    v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
 
-    v16 = [(UILabel *)self->_missingAudioCustomLabel rightAnchor];
-    v17 = [(QLHapticItemViewController *)self view];
-    v18 = [v17 layoutMarginsGuide];
-    v19 = [v18 rightAnchor];
-    v20 = [v16 constraintEqualToAnchor:v19];
+    rightAnchor = [(UILabel *)self->_missingAudioCustomLabel rightAnchor];
+    view3 = [(QLHapticItemViewController *)self view];
+    layoutMarginsGuide3 = [view3 layoutMarginsGuide];
+    rightAnchor2 = [layoutMarginsGuide3 rightAnchor];
+    v20 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
 
     v5 = 0x277CBE000uLL;
     [(UILabel *)self->_missingAudioCustomLabel sizeToFit];
@@ -385,23 +385,23 @@ LABEL_10:
   backgroundIconImageView = self->super._backgroundIconImageView;
   if (backgroundIconImageView)
   {
-    v23 = [(UIImageView *)backgroundIconImageView centerXAnchor];
-    v24 = [(QLHapticItemViewController *)self view];
-    v25 = [v24 centerXAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    centerXAnchor = [(UIImageView *)backgroundIconImageView centerXAnchor];
+    view4 = [(QLHapticItemViewController *)self view];
+    centerXAnchor2 = [view4 centerXAnchor];
+    v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v27 = [(UIImageView *)self->super._backgroundIconImageView centerYAnchor];
-    v28 = [(QLHapticItemViewController *)self view];
-    v29 = [v28 centerYAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    centerYAnchor = [(UIImageView *)self->super._backgroundIconImageView centerYAnchor];
+    view5 = [(QLHapticItemViewController *)self view];
+    centerYAnchor2 = [view5 centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     if (self->_missingAudioCustomLabel)
     {
       LODWORD(v31) = 1131741184;
       [v30 setPriority:v31];
-      v32 = [(UIImageView *)self->super._backgroundIconImageView topAnchor];
-      v33 = [(UILabel *)self->_missingAudioCustomLabel bottomAnchor];
-      v34 = [v32 constraintGreaterThanOrEqualToAnchor:v33 constant:8.0];
+      topAnchor3 = [(UIImageView *)self->super._backgroundIconImageView topAnchor];
+      bottomAnchor = [(UILabel *)self->_missingAudioCustomLabel bottomAnchor];
+      v34 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:8.0];
       [v3 addObject:v34];
     }
 
@@ -414,12 +414,12 @@ LABEL_10:
     playButton = self->super._playButton;
     if (playButton)
     {
-      v38 = [(QLOverlayPlayButton *)playButton centerYAnchor];
-      v39 = [(UIImageView *)self->super._backgroundIconImageView centerYAnchor];
-      v40 = [v38 constraintEqualToAnchor:v39];
-      v41 = [(QLOverlayPlayButton *)self->super._playButton centerXAnchor];
-      v42 = [(UIImageView *)self->super._backgroundIconImageView centerXAnchor];
-      v43 = [v41 constraintEqualToAnchor:v42];
+      centerYAnchor3 = [(QLOverlayPlayButton *)playButton centerYAnchor];
+      centerYAnchor4 = [(UIImageView *)self->super._backgroundIconImageView centerYAnchor];
+      v40 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+      centerXAnchor3 = [(QLOverlayPlayButton *)self->super._playButton centerXAnchor];
+      centerXAnchor4 = [(UIImageView *)self->super._backgroundIconImageView centerXAnchor];
+      v43 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       v46[1] = v43;
       v44 = [*(v36 + 2656) arrayWithObjects:v46 count:2];
       [v3 addObjectsFromArray:v44];
@@ -467,53 +467,53 @@ uint64_t __41__QLHapticItemViewController_viewDidLoad__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, WeakRetained);
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
   if (![(QLHapticItemViewController *)self canPlayHaptics])
   {
-    v10 = [MEMORY[0x277D75390] emptyProminentConfiguration];
+    emptyProminentConfiguration = [MEMORY[0x277D75390] emptyProminentConfiguration];
     v4 = MEMORY[0x277CCACA8];
     v5 = QLLocalizedString();
     v6 = [v4 localizedStringWithFormat:v5];
-    [v10 setText:v6];
+    [emptyProminentConfiguration setText:v6];
 
     v7 = MEMORY[0x277CCACA8];
     v8 = QLLocalizedString();
     v9 = [v7 localizedStringWithFormat:v8];
-    [v10 setSecondaryText:v9];
+    [emptyProminentConfiguration setSecondaryText:v9];
 
-    [(QLHapticItemViewController *)self _setContentUnavailableConfiguration:v10];
+    [(QLHapticItemViewController *)self _setContentUnavailableConfiguration:emptyProminentConfiguration];
   }
 }
 
 - (BOOL)play
 {
-  v3 = [(QLMediaItemBaseViewController *)self isVisible];
-  if (v3)
+  isVisible = [(QLMediaItemBaseViewController *)self isVisible];
+  if (isVisible)
   {
-    v4 = [(QLHapticItemViewController *)self player];
-    v5 = [v4 status];
+    player = [(QLHapticItemViewController *)self player];
+    status = [player status];
 
-    if (v5 == 1)
+    if (status == 1)
     {
-      v6 = [(QLHapticItemViewController *)self player];
+      player2 = [(QLHapticItemViewController *)self player];
       v9 = *MEMORY[0x277CC08F0];
       v10 = *(MEMORY[0x277CC08F0] + 16);
-      [v6 seekToTime:&v9];
+      [player2 seekToTime:&v9];
 
-      v7 = [(QLHapticItemViewController *)self player];
-      [v7 play];
+      player3 = [(QLHapticItemViewController *)self player];
+      [player3 play];
 
-      LOBYTE(v3) = 1;
+      LOBYTE(isVisible) = 1;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isVisible) = 0;
     }
   }
 
-  return v3;
+  return isVisible;
 }
 
 - (id)playbackObserverBlock
@@ -561,7 +561,7 @@ void __51__QLHapticItemViewController_playbackObserverBlock__block_invoke(uint64
   *(*(a1 + 32) + 1480) = Seconds - v12;
 }
 
-- (id)stringFromTimeInterval:(double)a3
+- (id)stringFromTimeInterval:(double)interval
 {
   if (stringFromTimeInterval__onceToken != -1)
   {
@@ -569,10 +569,10 @@ void __51__QLHapticItemViewController_playbackObserverBlock__block_invoke(uint64
   }
 
   HIDWORD(v4) = 1078853632;
-  if (a3 <= 60.0)
+  if (interval <= 60.0)
   {
     v6 = stringFromTimeInterval__millisecondTimeFormatter;
-    *&v4 = a3;
+    *&v4 = interval;
     v7 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
     v8 = [v6 stringFromNumber:v7];
 
@@ -583,7 +583,7 @@ void __51__QLHapticItemViewController_playbackObserverBlock__block_invoke(uint64
 
   else
   {
-    v5 = [stringFromTimeInterval__minuteSecondFormatter stringFromTimeInterval:a3];
+    v5 = [stringFromTimeInterval__minuteSecondFormatter stringFromTimeInterval:interval];
   }
 
   return v5;
@@ -621,7 +621,7 @@ void __53__QLHapticItemViewController_stringFromTimeInterval___block_invoke()
   [stringFromTimeInterval__millisecondTimeFormatter setMaximumFractionDigits:1];
 }
 
-- (id)toolbarButtonsForTraitCollection:(id)a3
+- (id)toolbarButtonsForTraitCollection:(id)collection
 {
   v9[1] = *MEMORY[0x277D85DE8];
   if ([(QLMediaItemBaseViewController *)self shouldDisplayPlayButtonInNavigationBar]&& [(QLMediaItemBaseViewController *)self playable])
@@ -656,31 +656,31 @@ void __53__QLHapticItemViewController_stringFromTimeInterval___block_invoke()
   return v6;
 }
 
-- (id)makeAVAssetFromAHAP:(id)a3 error:(id *)a4
+- (id)makeAVAssetFromAHAP:(id)p error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [(QLHapticItemViewController *)self createSampleBufferFromAHAP:a3 error:?];
-  if (v5 && !*a4)
+  v5 = [(QLHapticItemViewController *)self createSampleBufferFromAHAP:p error:?];
+  if (v5 && !*error)
   {
     v10 = v5;
     v11 = MEMORY[0x277CE6560];
     v12 = [MEMORY[0x277CBEA90] dataWithBytes:&movieHeaderMPEG4 length:148];
-    v13 = [v11 movieWithData:v12 options:0 error:a4];
+    v13 = [v11 movieWithData:v12 options:0 error:error];
 
-    if (v13 && !*a4)
+    if (v13 && !*error)
     {
-      v17 = [MEMORY[0x277CBEBC0] _QLCreateTemporaryDirectory:a4];
-      if (v17 && !*a4)
+      v17 = [MEMORY[0x277CBEBC0] _QLCreateTemporaryDirectory:error];
+      if (v17 && !*error)
       {
-        v21 = [MEMORY[0x277CCAD78] UUID];
-        v22 = [v21 UUIDString];
-        v23 = [v17 URLByAppendingPathComponent:v22];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        v23 = [v17 URLByAppendingPathComponent:uUIDString];
 
         v24 = [objc_alloc(MEMORY[0x277CE64F0]) initWithURL:v23 options:0];
         [v13 setDefaultMediaDataStorage:v24];
 
         v25 = [v13 addMutableTrackWithMediaType:*MEMORY[0x277CE5E68] copySettingsFromTrack:0 options:0];
-        if ([v25 appendSampleBuffer:v10 decodeTime:0 presentationTime:0 error:a4])
+        if ([v25 appendSampleBuffer:v10 decodeTime:0 presentationTime:0 error:error])
         {
           memset(&buf, 0, sizeof(buf));
           CMSampleBufferGetDuration(&duration.start, v10);
@@ -698,7 +698,7 @@ void __53__QLHapticItemViewController_stringFromTimeInterval___block_invoke()
           v26 = QLSLogHandle();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
-            v27 = *a4;
+            v27 = *error;
             LODWORD(buf.start.value) = 138412290;
             *(&buf.start.value + 4) = v27;
             _os_log_impl(&dword_23A714000, v26, OS_LOG_TYPE_ERROR, "Failed to create an AVMutableMovieTrack for haptics: %@ #AnyItemViewController", &buf, 0xCu);
@@ -720,7 +720,7 @@ void __53__QLHapticItemViewController_stringFromTimeInterval___block_invoke()
 
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v20 = *a4;
+          v20 = *error;
           LODWORD(buf.start.value) = 138412290;
           *(&buf.start.value + 4) = v20;
           _os_log_impl(&dword_23A714000, v19, OS_LOG_TYPE_ERROR, "Failed to create a temporary directory: %@ #AnyItemViewController", &buf, 0xCu);
@@ -742,7 +742,7 @@ void __53__QLHapticItemViewController_stringFromTimeInterval___block_invoke()
 
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = *a4;
+        v16 = *error;
         LODWORD(buf.start.value) = 138412290;
         *(&buf.start.value + 4) = v16;
         _os_log_impl(&dword_23A714000, v15, OS_LOG_TYPE_ERROR, "Failed to create an AVMutableMovie: %@ #AnyItemViewController", &buf, 0xCu);
@@ -764,7 +764,7 @@ void __53__QLHapticItemViewController_stringFromTimeInterval___block_invoke()
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = *a4;
+      v8 = *error;
       LODWORD(buf.start.value) = 138412290;
       *(&buf.start.value + 4) = v8;
       _os_log_impl(&dword_23A714000, v7, OS_LOG_TYPE_ERROR, "Failed to create a sample buffer with AHAP contents: %@ #AnyItemViewController", &buf, 0xCu);
@@ -778,20 +778,20 @@ void __53__QLHapticItemViewController_stringFromTimeInterval___block_invoke()
   return v9;
 }
 
-- (id)filterPatternDictionary:(id)a3
+- (id)filterPatternDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Pattern"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"Pattern"];
   v6 = [v5 indexesOfObjectsPassingTest:&__block_literal_global_78];
   if ([v6 count])
   {
     self->_hasAudioCustom = 1;
     v7 = [MEMORY[0x277CBEB18] arrayWithArray:v5];
     [v7 removeObjectsAtIndexes:v6];
-    [v4 setObject:v7 forKey:@"Pattern"];
+    [dictionaryCopy setObject:v7 forKey:@"Pattern"];
   }
 
-  v8 = [v4 copy];
+  v8 = [dictionaryCopy copy];
 
   return v8;
 }
@@ -805,20 +805,20 @@ uint64_t __54__QLHapticItemViewController_filterPatternDictionary___block_invoke
   return v4;
 }
 
-- (opaqueCMSampleBuffer)createSampleBufferFromAHAP:(id)a3 error:(id *)a4
+- (opaqueCMSampleBuffer)createSampleBufferFromAHAP:(id)p error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pCopy = p;
   formatDescriptionOut = 0;
   v7 = *MEMORY[0x277CBECE8];
   v8 = CMFormatDescriptionCreate(*MEMORY[0x277CBECE8], 0x68617074u, 0x61686172u, 0, &formatDescriptionOut);
   if (!v8)
   {
-    v13 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:4 error:a4];
+    v13 = [MEMORY[0x277CCAAA0] JSONObjectWithData:pCopy options:4 error:error];
     v14 = [v13 mutableCopy];
     v15 = [(QLHapticItemViewController *)self filterPatternDictionary:v14];
 
-    v16 = [objc_alloc(MEMORY[0x277CBF6D0]) initWithDictionary:v15 error:a4];
+    v16 = [objc_alloc(MEMORY[0x277CBF6D0]) initWithDictionary:v15 error:error];
     memset(&v38, 0, sizeof(v38));
     [v16 duration];
     CMTimeMakeWithSeconds(&v38, v17, 10000);
@@ -833,7 +833,7 @@ uint64_t __54__QLHapticItemViewController_filterPatternDictionary___block_invoke
       v42 = @"Computed negative pattern duration, which is not possible.";
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v26 = objc_alloc(MEMORY[0x277CCA9B8]);
-      *a4 = [v26 initWithDomain:*MEMORY[0x277D43FD0] code:-1 userInfo:v25];
+      *error = [v26 initWithDomain:*MEMORY[0x277D43FD0] code:-1 userInfo:v25];
       v27 = MEMORY[0x277D43EF8];
       v28 = *MEMORY[0x277D43EF8];
       if (!*MEMORY[0x277D43EF8])
@@ -852,10 +852,10 @@ uint64_t __54__QLHapticItemViewController_filterPatternDictionary___block_invoke
     }
 
     theBuffer = 0;
-    v19 = CMBlockBufferCreateWithMemoryBlock(v7, [v6 bytes], objc_msgSend(v6, "length"), v7, 0, 0, objc_msgSend(v6, "length"), 0, &theBuffer);
+    v19 = CMBlockBufferCreateWithMemoryBlock(v7, [pCopy bytes], objc_msgSend(pCopy, "length"), v7, 0, 0, objc_msgSend(pCopy, "length"), 0, &theBuffer);
     if (v19)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v19 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v19 userInfo:0];
       v20 = MEMORY[0x277D43EF8];
       v21 = *MEMORY[0x277D43EF8];
       if (!*MEMORY[0x277D43EF8])
@@ -869,7 +869,7 @@ uint64_t __54__QLHapticItemViewController_filterPatternDictionary___block_invoke
         goto LABEL_24;
       }
 
-      v22 = *a4;
+      v22 = *error;
       LODWORD(buf.duration.value) = 138412290;
       *(&buf.duration.value + 4) = v22;
       v23 = "Failed to allocate memory block: %@ #AnyItemViewController";
@@ -891,7 +891,7 @@ uint64_t __54__QLHapticItemViewController_filterPatternDictionary___block_invoke
         goto LABEL_25;
       }
 
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v29 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v29 userInfo:0];
       v30 = MEMORY[0x277D43EF8];
       v21 = *MEMORY[0x277D43EF8];
       if (!*MEMORY[0x277D43EF8])
@@ -909,7 +909,7 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v31 = *a4;
+      v31 = *error;
       LODWORD(time2.value) = 138412290;
       *(&time2.value + 4) = v31;
       v23 = "Failed to create sample buffer: %@ #AnyItemViewController";
@@ -920,7 +920,7 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v8 userInfo:0];
+  *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v8 userInfo:0];
   v9 = MEMORY[0x277D43EF8];
   v10 = *MEMORY[0x277D43EF8];
   if (!*MEMORY[0x277D43EF8])
@@ -931,7 +931,7 @@ LABEL_25:
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = *a4;
+    v11 = *error;
     LODWORD(buf.duration.value) = 138412290;
     *(&buf.duration.value + 4) = v11;
     _os_log_impl(&dword_23A714000, v10, OS_LOG_TYPE_ERROR, "Failed to get format descriptor: %@ #AnyItemViewController", &buf, 0xCu);

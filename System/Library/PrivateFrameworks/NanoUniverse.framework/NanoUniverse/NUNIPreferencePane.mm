@@ -1,45 +1,45 @@
 @interface NUNIPreferencePane
-- (NUNIPreferencePane)initWithPreferencePane:(id)a3;
-- (NUNIPreferencePane)initWithSliders:(id)a3 toggles:(id)a4 pickerOptions:(id)a5 pickerSelections:(id)a6;
+- (NUNIPreferencePane)initWithPreferencePane:(id)pane;
+- (NUNIPreferencePane)initWithSliders:(id)sliders toggles:(id)toggles pickerOptions:(id)options pickerSelections:(id)selections;
 - (NUNIPreferencePaneDelegate)delegate;
-- (void)preferencePaneDidChangeWithPreference:(id)a3;
+- (void)preferencePaneDidChangeWithPreference:(id)preference;
 @end
 
 @implementation NUNIPreferencePane
 
-- (NUNIPreferencePane)initWithSliders:(id)a3 toggles:(id)a4 pickerOptions:(id)a5 pickerSelections:(id)a6
+- (NUNIPreferencePane)initWithSliders:(id)sliders toggles:(id)toggles pickerOptions:(id)options pickerSelections:(id)selections
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  selectionsCopy = selections;
+  optionsCopy = options;
+  togglesCopy = toggles;
+  slidersCopy = sliders;
   v14 = [_TtC12NanoUniverse14PreferencePane alloc];
-  v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v16 = [(PreferencePane *)v14 initWithName:&stru_286CF8610 userDefaults:v15 sliders:v13 toggles:v12 pickerOptions:v11 pickerSelections:v10];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v16 = [(PreferencePane *)v14 initWithName:&stru_286CF8610 userDefaults:standardUserDefaults sliders:slidersCopy toggles:togglesCopy pickerOptions:optionsCopy pickerSelections:selectionsCopy];
 
   v17 = [(NUNIPreferencePane *)self initWithPreferencePane:v16];
   return v17;
 }
 
-- (NUNIPreferencePane)initWithPreferencePane:(id)a3
+- (NUNIPreferencePane)initWithPreferencePane:(id)pane
 {
-  v5 = a3;
+  paneCopy = pane;
   v9.receiver = self;
   v9.super_class = NUNIPreferencePane;
   v6 = [(NUNIPreferencePane *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preference, a3);
+    objc_storeStrong(&v6->_preference, pane);
   }
 
   return v7;
 }
 
-- (void)preferencePaneDidChangeWithPreference:(id)a3
+- (void)preferencePaneDidChangeWithPreference:(id)preference
 {
-  v4 = [(NUNIPreferencePane *)self delegate];
-  [v4 preferencePaneDidChange:self];
+  delegate = [(NUNIPreferencePane *)self delegate];
+  [delegate preferencePaneDidChange:self];
 }
 
 - (NUNIPreferencePaneDelegate)delegate

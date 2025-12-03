@@ -1,21 +1,21 @@
 @interface INOpenSettingIntent
-- (INOpenSettingIntent)initWithSettingMetadata:(id)a3 searchQuery:(id)a4;
+- (INOpenSettingIntent)initWithSettingMetadata:(id)metadata searchQuery:(id)query;
 - (INSettingMetadata)settingMetadata;
 - (INSpeakableString)searchQuery;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setSearchQuery:(id)a3;
-- (void)setSettingMetadata:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setSearchQuery:(id)query;
+- (void)setSettingMetadata:(id)metadata;
 @end
 
 @implementation INOpenSettingIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INOpenSettingIntent *)self _typedBackingStore:a3];
+  v6 = [(INOpenSettingIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"settingMetadata";
-  v3 = [(INOpenSettingIntent *)self settingMetadata];
-  v4 = v3;
-  if (!v3)
+  settingMetadata = [(INOpenSettingIntent *)self settingMetadata];
+  null = settingMetadata;
+  if (!settingMetadata)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"searchQuery";
-  v11[0] = v4;
-  v5 = [(INOpenSettingIntent *)self searchQuery];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  searchQuery = [(INOpenSettingIntent *)self searchQuery];
+  null2 = searchQuery;
+  if (!searchQuery)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!searchQuery)
   {
   }
 
-  if (!v3)
+  if (!settingMetadata)
   {
   }
 
@@ -55,81 +55,81 @@
   return v7;
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
-  v4 = a3;
-  v6 = [(INOpenSettingIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  queryCopy = query;
+  _typedBackingStore = [(INOpenSettingIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(queryCopy);
 
-  [v6 setSearchQuery:v5];
+  [_typedBackingStore setSearchQuery:v5];
 }
 
 - (INSpeakableString)searchQuery
 {
-  v2 = [(INOpenSettingIntent *)self _typedBackingStore];
-  v3 = [v2 searchQuery];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INOpenSettingIntent *)self _typedBackingStore];
+  searchQuery = [_typedBackingStore searchQuery];
+  v4 = INIntentSlotValueTransformFromDataString(searchQuery);
 
   return v4;
 }
 
-- (void)setSettingMetadata:(id)a3
+- (void)setSettingMetadata:(id)metadata
 {
-  v4 = a3;
-  v6 = [(INOpenSettingIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToSettingMetadata(v4);
+  metadataCopy = metadata;
+  _typedBackingStore = [(INOpenSettingIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToSettingMetadata(metadataCopy);
 
-  [v6 setSettingMetadata:v5];
+  [_typedBackingStore setSettingMetadata:v5];
 }
 
 - (INSettingMetadata)settingMetadata
 {
-  v2 = [(INOpenSettingIntent *)self _typedBackingStore];
-  v3 = [v2 settingMetadata];
-  v4 = INIntentSlotValueTransformFromSettingMetadata(v3);
+  _typedBackingStore = [(INOpenSettingIntent *)self _typedBackingStore];
+  settingMetadata = [_typedBackingStore settingMetadata];
+  v4 = INIntentSlotValueTransformFromSettingMetadata(settingMetadata);
 
   return v4;
 }
 
-- (INOpenSettingIntent)initWithSettingMetadata:(id)a3 searchQuery:(id)a4
+- (INOpenSettingIntent)initWithSettingMetadata:(id)metadata searchQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  queryCopy = query;
   v11.receiver = self;
   v11.super_class = INOpenSettingIntent;
   v8 = [(INIntent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(INOpenSettingIntent *)v8 setSettingMetadata:v6];
-    [(INOpenSettingIntent *)v9 setSearchQuery:v7];
+    [(INOpenSettingIntent *)v8 setSettingMetadata:metadataCopy];
+    [(INOpenSettingIntent *)v9 setSearchQuery:queryCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INOpenSettingIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INOpenSettingIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INOpenSettingIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INOpenSettingIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

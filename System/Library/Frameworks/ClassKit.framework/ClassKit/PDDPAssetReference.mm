@@ -1,22 +1,22 @@
 @interface PDDPAssetReference
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsParentEntityType:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsParentEntityType:(id)type;
+- (int)StringAsType:(id)type;
 - (int)parentEntityType;
 - (int)type;
 - (unint64_t)hash;
-- (void)addClassIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDisplayOrder:(BOOL)a3;
-- (void)setHasFileSizeBytes:(BOOL)a3;
-- (void)setHasIsOriginal:(BOOL)a3;
-- (void)setHasParentEntityType:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDisplayOrder:(BOOL)order;
+- (void)setHasFileSizeBytes:(BOOL)bytes;
+- (void)setHasIsOriginal:(BOOL)original;
+- (void)setHasParentEntityType:(BOOL)type;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPAssetReference
@@ -34,9 +34,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -49,25 +49,25 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ICLOUD_DRIVE"])
+  else if ([typeCopy isEqualToString:@"ICLOUD_DRIVE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WEB_URL"])
+  else if ([typeCopy isEqualToString:@"WEB_URL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CLOUDKIT_ASSET"])
+  else if ([typeCopy isEqualToString:@"CLOUDKIT_ASSET"])
   {
     v4 = 3;
   }
@@ -93,9 +93,9 @@
   }
 }
 
-- (void)setHasParentEntityType:(BOOL)a3
+- (void)setHasParentEntityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -108,40 +108,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsParentEntityType:(id)a3
+- (int)StringAsParentEntityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_PARENT_ENTITY_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_PARENT_ENTITY_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HANDOUT"])
+  else if ([typeCopy isEqualToString:@"HANDOUT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HANDOUT_ATTACHMENT"])
+  else if ([typeCopy isEqualToString:@"HANDOUT_ATTACHMENT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY_STEP"])
+  else if ([typeCopy isEqualToString:@"SURVEY_STEP"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY_STEP_ANSWER"])
+  else if ([typeCopy isEqualToString:@"SURVEY_STEP_ANSWER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MULTIPLE_CHOICE_OPTION_ITEM"])
+  else if ([typeCopy isEqualToString:@"MULTIPLE_CHOICE_OPTION_ITEM"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"STATE_CHANGE_PAYLOAD"])
+  else if ([typeCopy isEqualToString:@"STATE_CHANGE_PAYLOAD"])
   {
     v4 = 6;
   }
@@ -154,9 +154,9 @@
   return v4;
 }
 
-- (void)setHasIsOriginal:(BOOL)a3
+- (void)setHasIsOriginal:(BOOL)original
 {
-  if (a3)
+  if (original)
   {
     v3 = 32;
   }
@@ -169,27 +169,27 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)addClassIds:(id)a3
+- (void)addClassIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   classIds = self->_classIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!classIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_classIds;
     self->_classIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     classIds = self->_classIds;
   }
 
-  [(NSMutableArray *)classIds addObject:v4];
+  [(NSMutableArray *)classIds addObject:idsCopy];
 }
 
-- (void)setHasFileSizeBytes:(BOOL)a3
+- (void)setHasFileSizeBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }
@@ -202,9 +202,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDisplayOrder:(BOOL)a3
+- (void)setHasDisplayOrder:(BOOL)order
 {
-  if (a3)
+  if (order)
   {
     v3 = 4;
   }
@@ -222,8 +222,8 @@
   v7.receiver = self;
   v7.super_class = PDDPAssetReference;
   v3 = [(PDDPAssetReference *)&v7 description];
-  v4 = [(PDDPAssetReference *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPAssetReference *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -292,15 +292,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v14 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v16 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -412,9 +412,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
     type = self->_type;
@@ -578,157 +578,157 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[48] = self->_type;
-    *(v4 + 212) |= 0x10u;
+    toCopy[48] = self->_type;
+    *(toCopy + 212) |= 0x10u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v11;
+    [toCopy setObjectId:?];
+    toCopy = v11;
   }
 
   if (self->_parentObjectId)
   {
     [v11 setParentObjectId:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_ckZoneName)
   {
     [v11 setCkZoneName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_ckOwnerName)
   {
     [v11 setCkOwnerName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_ckUuid)
   {
     [v11 setCkUuid:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_icloudDriveContainerName)
   {
     [v11 setIcloudDriveContainerName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_icloudDriveRelativeFilePath)
   {
     [v11 setIcloudDriveRelativeFilePath:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_fileUrl)
   {
     [v11 setFileUrl:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_appIdentifier)
   {
     [v11 setAppIdentifier:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_ownerId)
   {
     [v11 setOwnerId:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_ckShareZoneName)
   {
     [v11 setCkShareZoneName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_ckShareOwnerName)
   {
     [v11 setCkShareOwnerName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_ckShareRecordName)
   {
     [v11 setCkShareRecordName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(v4 + 208) = self->_isOriginal;
-    *(v4 + 212) |= 0x20u;
+    *(toCopy + 208) = self->_isOriginal;
+    *(toCopy + 212) |= 0x20u;
   }
 
   if (self->_title)
   {
     [v11 setTitle:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_fileSizeBytes;
-    *(v4 + 212) |= 2u;
+    *(toCopy + 2) = self->_fileSizeBytes;
+    *(toCopy + 212) |= 2u;
   }
 
   if (self->_fileUttype)
   {
     [v11 setFileUttype:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[26] = self->_displayOrder;
-    *(v4 + 212) |= 4u;
+    toCopy[26] = self->_displayOrder;
+    *(toCopy + 212) |= 4u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[42] = self->_parentEntityType;
-    *(v4 + 212) |= 8u;
+    toCopy[42] = self->_parentEntityType;
+    *(toCopy + 212) |= 8u;
   }
 
   if (self->_webUrl)
   {
     [v11 setWebUrl:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_originalFilename)
   {
     [v11 setOriginalFilename:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_durationSeconds;
-    *(v4 + 212) |= 1u;
+    *(toCopy + 1) = *&self->_durationSeconds;
+    *(toCopy + 212) |= 1u;
   }
 
   if ([(PDDPAssetReference *)self classIdsCount])
   {
     [v11 clearClassIds];
-    v6 = [(PDDPAssetReference *)self classIdsCount];
-    if (v6)
+    classIdsCount = [(PDDPAssetReference *)self classIdsCount];
+    if (classIdsCount)
     {
-      v7 = v6;
+      v7 = classIdsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPAssetReference *)self classIdsAtIndex:i];
@@ -750,9 +750,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -760,55 +760,55 @@
     *(v5 + 212) |= 0x10u;
   }
 
-  v7 = [(NSString *)self->_objectId copyWithZone:a3];
+  v7 = [(NSString *)self->_objectId copyWithZone:zone];
   v8 = v6[18];
   v6[18] = v7;
 
-  v9 = [(NSString *)self->_parentObjectId copyWithZone:a3];
+  v9 = [(NSString *)self->_parentObjectId copyWithZone:zone];
   v10 = v6[22];
   v6[22] = v9;
 
-  v11 = [(NSString *)self->_ckZoneName copyWithZone:a3];
+  v11 = [(NSString *)self->_ckZoneName copyWithZone:zone];
   v12 = v6[9];
   v6[9] = v11;
 
-  v13 = [(NSString *)self->_ckOwnerName copyWithZone:a3];
+  v13 = [(NSString *)self->_ckOwnerName copyWithZone:zone];
   v14 = v6[4];
   v6[4] = v13;
 
-  v15 = [(NSString *)self->_ckUuid copyWithZone:a3];
+  v15 = [(NSString *)self->_ckUuid copyWithZone:zone];
   v16 = v6[8];
   v6[8] = v15;
 
-  v17 = [(NSString *)self->_icloudDriveContainerName copyWithZone:a3];
+  v17 = [(NSString *)self->_icloudDriveContainerName copyWithZone:zone];
   v18 = v6[16];
   v6[16] = v17;
 
-  v19 = [(NSString *)self->_icloudDriveRelativeFilePath copyWithZone:a3];
+  v19 = [(NSString *)self->_icloudDriveRelativeFilePath copyWithZone:zone];
   v20 = v6[17];
   v6[17] = v19;
 
-  v21 = [(NSString *)self->_fileUrl copyWithZone:a3];
+  v21 = [(NSString *)self->_fileUrl copyWithZone:zone];
   v22 = v6[14];
   v6[14] = v21;
 
-  v23 = [(NSString *)self->_appIdentifier copyWithZone:a3];
+  v23 = [(NSString *)self->_appIdentifier copyWithZone:zone];
   v24 = v6[3];
   v6[3] = v23;
 
-  v25 = [(NSString *)self->_ownerId copyWithZone:a3];
+  v25 = [(NSString *)self->_ownerId copyWithZone:zone];
   v26 = v6[20];
   v6[20] = v25;
 
-  v27 = [(NSString *)self->_ckShareZoneName copyWithZone:a3];
+  v27 = [(NSString *)self->_ckShareZoneName copyWithZone:zone];
   v28 = v6[7];
   v6[7] = v27;
 
-  v29 = [(NSString *)self->_ckShareOwnerName copyWithZone:a3];
+  v29 = [(NSString *)self->_ckShareOwnerName copyWithZone:zone];
   v30 = v6[5];
   v6[5] = v29;
 
-  v31 = [(NSString *)self->_ckShareRecordName copyWithZone:a3];
+  v31 = [(NSString *)self->_ckShareRecordName copyWithZone:zone];
   v32 = v6[6];
   v6[6] = v31;
 
@@ -818,7 +818,7 @@
     *(v6 + 212) |= 0x20u;
   }
 
-  v33 = [(NSString *)self->_title copyWithZone:a3];
+  v33 = [(NSString *)self->_title copyWithZone:zone];
   v34 = v6[23];
   v6[23] = v33;
 
@@ -828,7 +828,7 @@
     *(v6 + 212) |= 2u;
   }
 
-  v35 = [(NSString *)self->_fileUttype copyWithZone:a3];
+  v35 = [(NSString *)self->_fileUttype copyWithZone:zone];
   v36 = v6[15];
   v6[15] = v35;
 
@@ -846,11 +846,11 @@
     *(v6 + 212) |= 8u;
   }
 
-  v38 = [(NSString *)self->_webUrl copyWithZone:a3];
+  v38 = [(NSString *)self->_webUrl copyWithZone:zone];
   v39 = v6[25];
   v6[25] = v38;
 
-  v40 = [(NSString *)self->_originalFilename copyWithZone:a3];
+  v40 = [(NSString *)self->_originalFilename copyWithZone:zone];
   v41 = v6[19];
   v6[19] = v40;
 
@@ -879,7 +879,7 @@
           objc_enumerationMutation(v42);
         }
 
-        v47 = [*(*(&v53 + 1) + 8 * i) copyWithZone:{a3, v53}];
+        v47 = [*(*(&v53 + 1) + 8 * i) copyWithZone:{zone, v53}];
         [v6 addClassIds:v47];
       }
 
@@ -889,47 +889,47 @@
     while (v44);
   }
 
-  v48 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v48 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v49 = v6[11];
   v6[11] = v48;
 
-  v50 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v50 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v51 = v6[12];
   v6[12] = v50;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
-  v5 = *(v4 + 212);
+  v5 = *(equalCopy + 212);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 212) & 0x10) == 0 || self->_type != *(v4 + 48))
+    if ((*(equalCopy + 212) & 0x10) == 0 || self->_type != *(equalCopy + 48))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 212) & 0x10) != 0)
+  else if ((*(equalCopy + 212) & 0x10) != 0)
   {
     goto LABEL_77;
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 18) && ![(NSString *)objectId isEqual:?])
+  if (objectId | *(equalCopy + 18) && ![(NSString *)objectId isEqual:?])
   {
     goto LABEL_77;
   }
 
   parentObjectId = self->_parentObjectId;
-  if (parentObjectId | *(v4 + 22))
+  if (parentObjectId | *(equalCopy + 22))
   {
     if (![(NSString *)parentObjectId isEqual:?])
     {
@@ -938,7 +938,7 @@
   }
 
   ckZoneName = self->_ckZoneName;
-  if (ckZoneName | *(v4 + 9))
+  if (ckZoneName | *(equalCopy + 9))
   {
     if (![(NSString *)ckZoneName isEqual:?])
     {
@@ -947,7 +947,7 @@
   }
 
   ckOwnerName = self->_ckOwnerName;
-  if (ckOwnerName | *(v4 + 4))
+  if (ckOwnerName | *(equalCopy + 4))
   {
     if (![(NSString *)ckOwnerName isEqual:?])
     {
@@ -956,7 +956,7 @@
   }
 
   ckUuid = self->_ckUuid;
-  if (ckUuid | *(v4 + 8))
+  if (ckUuid | *(equalCopy + 8))
   {
     if (![(NSString *)ckUuid isEqual:?])
     {
@@ -965,7 +965,7 @@
   }
 
   icloudDriveContainerName = self->_icloudDriveContainerName;
-  if (icloudDriveContainerName | *(v4 + 16))
+  if (icloudDriveContainerName | *(equalCopy + 16))
   {
     if (![(NSString *)icloudDriveContainerName isEqual:?])
     {
@@ -974,7 +974,7 @@
   }
 
   icloudDriveRelativeFilePath = self->_icloudDriveRelativeFilePath;
-  if (icloudDriveRelativeFilePath | *(v4 + 17))
+  if (icloudDriveRelativeFilePath | *(equalCopy + 17))
   {
     if (![(NSString *)icloudDriveRelativeFilePath isEqual:?])
     {
@@ -983,7 +983,7 @@
   }
 
   fileUrl = self->_fileUrl;
-  if (fileUrl | *(v4 + 14))
+  if (fileUrl | *(equalCopy + 14))
   {
     if (![(NSString *)fileUrl isEqual:?])
     {
@@ -992,7 +992,7 @@
   }
 
   appIdentifier = self->_appIdentifier;
-  if (appIdentifier | *(v4 + 3))
+  if (appIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)appIdentifier isEqual:?])
     {
@@ -1001,7 +1001,7 @@
   }
 
   ownerId = self->_ownerId;
-  if (ownerId | *(v4 + 20))
+  if (ownerId | *(equalCopy + 20))
   {
     if (![(NSString *)ownerId isEqual:?])
     {
@@ -1010,7 +1010,7 @@
   }
 
   ckShareZoneName = self->_ckShareZoneName;
-  if (ckShareZoneName | *(v4 + 7))
+  if (ckShareZoneName | *(equalCopy + 7))
   {
     if (![(NSString *)ckShareZoneName isEqual:?])
     {
@@ -1019,7 +1019,7 @@
   }
 
   ckShareOwnerName = self->_ckShareOwnerName;
-  if (ckShareOwnerName | *(v4 + 5))
+  if (ckShareOwnerName | *(equalCopy + 5))
   {
     if (![(NSString *)ckShareOwnerName isEqual:?])
     {
@@ -1028,7 +1028,7 @@
   }
 
   ckShareRecordName = self->_ckShareRecordName;
-  if (ckShareRecordName | *(v4 + 6))
+  if (ckShareRecordName | *(equalCopy + 6))
   {
     if (![(NSString *)ckShareRecordName isEqual:?])
     {
@@ -1037,36 +1037,36 @@
   }
 
   has = self->_has;
-  v20 = *(v4 + 212);
+  v20 = *(equalCopy + 212);
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 212) & 0x20) == 0)
+    if ((*(equalCopy + 212) & 0x20) == 0)
     {
       goto LABEL_77;
     }
 
-    v22 = *(v4 + 208);
+    v22 = *(equalCopy + 208);
     if (self->_isOriginal)
     {
-      if ((*(v4 + 208) & 1) == 0)
+      if ((*(equalCopy + 208) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(v4 + 208))
+    else if (*(equalCopy + 208))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 212) & 0x20) != 0)
+  else if ((*(equalCopy + 212) & 0x20) != 0)
   {
     goto LABEL_77;
   }
 
   title = self->_title;
-  if (title | *(v4 + 23))
+  if (title | *(equalCopy + 23))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -1074,12 +1074,12 @@
     }
 
     has = self->_has;
-    v20 = *(v4 + 212);
+    v20 = *(equalCopy + 212);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v20 & 2) == 0 || self->_fileSizeBytes != *(v4 + 2))
+    if ((v20 & 2) == 0 || self->_fileSizeBytes != *(equalCopy + 2))
     {
       goto LABEL_77;
     }
@@ -1091,12 +1091,12 @@
   }
 
   fileUttype = self->_fileUttype;
-  if (fileUttype | *(v4 + 15))
+  if (fileUttype | *(equalCopy + 15))
   {
     if ([(NSString *)fileUttype isEqual:?])
     {
       has = self->_has;
-      v20 = *(v4 + 212);
+      v20 = *(equalCopy + 212);
       goto LABEL_50;
     }
 
@@ -1108,7 +1108,7 @@ LABEL_77:
 LABEL_50:
   if ((has & 4) != 0)
   {
-    if ((v20 & 4) == 0 || self->_displayOrder != *(v4 + 26))
+    if ((v20 & 4) == 0 || self->_displayOrder != *(equalCopy + 26))
     {
       goto LABEL_77;
     }
@@ -1121,7 +1121,7 @@ LABEL_50:
 
   if ((has & 8) != 0)
   {
-    if ((v20 & 8) == 0 || self->_parentEntityType != *(v4 + 42))
+    if ((v20 & 8) == 0 || self->_parentEntityType != *(equalCopy + 42))
     {
       goto LABEL_77;
     }
@@ -1133,13 +1133,13 @@ LABEL_50:
   }
 
   webUrl = self->_webUrl;
-  if (webUrl | *(v4 + 25) && ![(NSString *)webUrl isEqual:?])
+  if (webUrl | *(equalCopy + 25) && ![(NSString *)webUrl isEqual:?])
   {
     goto LABEL_77;
   }
 
   originalFilename = self->_originalFilename;
-  if (originalFilename | *(v4 + 19))
+  if (originalFilename | *(equalCopy + 19))
   {
     if (![(NSString *)originalFilename isEqual:?])
     {
@@ -1147,28 +1147,28 @@ LABEL_50:
     }
   }
 
-  v26 = *(v4 + 212);
+  v26 = *(equalCopy + 212);
   if (*&self->_has)
   {
-    if ((*(v4 + 212) & 1) == 0 || self->_durationSeconds != *(v4 + 1))
+    if ((*(equalCopy + 212) & 1) == 0 || self->_durationSeconds != *(equalCopy + 1))
     {
       goto LABEL_77;
     }
   }
 
-  else if (*(v4 + 212))
+  else if (*(equalCopy + 212))
   {
     goto LABEL_77;
   }
 
   classIds = self->_classIds;
-  if (classIds | *(v4 + 10) && ![(NSMutableArray *)classIds isEqual:?])
+  if (classIds | *(equalCopy + 10) && ![(NSMutableArray *)classIds isEqual:?])
   {
     goto LABEL_77;
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 11))
+  if (dateCreated | *(equalCopy + 11))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -1177,7 +1177,7 @@ LABEL_50:
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 12))
+  if (dateLastModified | *(equalCopy + 12))
   {
     v30 = [(PDDPDate *)dateLastModified isEqual:?];
   }
@@ -1302,17 +1302,17 @@ LABEL_15:
   return v16 ^ v18 ^ [(PDDPDate *)self->_dateLastModified hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[53] & 0x10) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[53] & 0x10) != 0)
   {
-    self->_type = v4[48];
+    self->_type = fromCopy[48];
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(PDDPAssetReference *)self setObjectId:?];
   }

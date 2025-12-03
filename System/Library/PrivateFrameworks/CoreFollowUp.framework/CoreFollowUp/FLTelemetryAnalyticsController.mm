@@ -1,32 +1,32 @@
 @interface FLTelemetryAnalyticsController
-- (void)_captureItem:(id)a3 event:(id)a4 source:(id)a5;
-- (void)captureActionForItem:(id)a3 withEvent:(unint64_t)a4 source:(unint64_t)a5;
-- (void)captureCurrentState:(id)a3;
+- (void)_captureItem:(id)item event:(id)event source:(id)source;
+- (void)captureActionForItem:(id)item withEvent:(unint64_t)event source:(unint64_t)source;
+- (void)captureCurrentState:(id)state;
 @end
 
 @implementation FLTelemetryAnalyticsController
 
-- (void)captureActionForItem:(id)a3 withEvent:(unint64_t)a4 source:(unint64_t)a5
+- (void)captureActionForItem:(id)item withEvent:(unint64_t)event source:(unint64_t)source
 {
-  v13 = a3;
-  v8 = [v13 clientIdentifier];
-  v9 = [v8 isEqualToString:@"com.apple.followup.tests"];
+  itemCopy = item;
+  clientIdentifier = [itemCopy clientIdentifier];
+  v9 = [clientIdentifier isEqualToString:@"com.apple.followup.tests"];
 
   if ((v9 & 1) == 0)
   {
     v10 = @"other";
     v11 = @"other";
-    if (a5 - 1 <= 3)
+    if (source - 1 <= 3)
     {
-      v11 = off_278852C70[a5 - 1];
+      v11 = off_278852C70[source - 1];
     }
 
-    if (a4 == 2)
+    if (event == 2)
     {
       v10 = @"userActivate";
     }
 
-    if (a4 == 1)
+    if (event == 1)
     {
       v12 = @"userClear";
     }
@@ -36,21 +36,21 @@
       v12 = v10;
     }
 
-    [(FLTelemetryAnalyticsController *)self _captureItem:v13 event:v12 source:v11];
+    [(FLTelemetryAnalyticsController *)self _captureItem:itemCopy event:v12 source:v11];
   }
 }
 
-- (void)captureCurrentState:(id)a3
+- (void)captureCurrentState:(id)state
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stateCopy = state;
   v4 = objc_alloc(MEMORY[0x277CCA940]);
-  v5 = [v3 fl_map:&__block_literal_global_6];
+  v5 = [stateCopy fl_map:&__block_literal_global_6];
   v6 = [v4 initWithArray:v5];
 
   v28 = @"all";
-  v20 = v3;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "count")}];
+  v20 = stateCopy;
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(stateCopy, "count")}];
   v29[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
   v9 = [v8 mutableCopy];
@@ -97,21 +97,21 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_captureItem:(id)a3 event:(id)a4 source:(id)a5
+- (void)_captureItem:(id)item event:(id)event source:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  eventCopy = event;
+  sourceCopy = source;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__FLTelemetryAnalyticsController__captureItem_event_source___block_invoke;
   v13[3] = &unk_278852C50;
-  v14 = v7;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = v7;
+  v14 = itemCopy;
+  v15 = eventCopy;
+  v16 = sourceCopy;
+  v10 = sourceCopy;
+  v11 = eventCopy;
+  v12 = itemCopy;
   [FLTelemetryAnalyticsSender sendAnalyticsForEvent:@"com.apple.followup.items" builder:v13];
 }
 

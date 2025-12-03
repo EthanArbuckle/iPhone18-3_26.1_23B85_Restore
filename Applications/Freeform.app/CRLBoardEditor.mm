@@ -1,23 +1,23 @@
 @interface CRLBoardEditor
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5;
-- (CRLBoardEditor)initWithInteractiveCanvasController:(id)a3;
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors;
+- (CRLBoardEditor)initWithInteractiveCanvasController:(id)controller;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator;
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5;
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path;
 @end
 
 @implementation CRLBoardEditor
 
-- (CRLBoardEditor)initWithInteractiveCanvasController:(id)a3
+- (CRLBoardEditor)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLBoardEditor;
   v5 = [(CRLBoardEditor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
   }
 
   return v6;
@@ -25,23 +25,23 @@
 
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator
 {
-  v2 = [(CRLBoardEditor *)self interactiveCanvasController];
-  v3 = [v2 editingCoordinator];
+  interactiveCanvasController = [(CRLBoardEditor *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
 
-  return v3;
+  return editingCoordinator;
 }
 
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path
 {
-  v5 = [(CRLBoardEditor *)self interactiveCanvasController:a3];
-  v6 = [v5 canvasEditor];
+  v5 = [(CRLBoardEditor *)self interactiveCanvasController:selection];
+  canvasEditor = [v5 canvasEditor];
 
-  return v6;
+  return canvasEditor;
 }
 
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors
 {
-  v5 = a3;
+  selectionCopy = selection;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

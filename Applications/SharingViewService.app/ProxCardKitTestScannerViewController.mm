@@ -1,35 +1,35 @@
 @interface ProxCardKitTestScannerViewController
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ProxCardKitTestScannerViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ProxCardKitTestScannerViewController;
-  [(ProxCardKitTestScannerViewController *)&v3 viewDidAppear:a3];
+  [(ProxCardKitTestScannerViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ProxCardKitTestScannerViewController;
-  [(ProxCardKitTestScannerViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(ProxCardKitTestScannerViewController *)self scannerEngine];
-  [v4 stop];
+  [(ProxCardKitTestScannerViewController *)&v5 viewDidDisappear:disappear];
+  scannerEngine = [(ProxCardKitTestScannerViewController *)self scannerEngine];
+  [scannerEngine stop];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ProxCardKitTestScannerViewController;
-  [(ProxCardKitTestScannerViewController *)&v5 viewWillAppear:a3];
-  v4 = [(ProxCardKitTestScannerViewController *)self scannerEngine];
-  [v4 start];
+  [(ProxCardKitTestScannerViewController *)&v5 viewWillAppear:appear];
+  scannerEngine = [(ProxCardKitTestScannerViewController *)self scannerEngine];
+  [scannerEngine start];
 }
 
 - (void)viewDidLoad

@@ -1,42 +1,42 @@
 @interface STFamilySettingsManager
-+ (BOOL)_updateScreenTimeSettingsForAppAndWebsiteActivityStateTransition:(int64_t)a3 managementStateTransition:(int64_t)a4 withFamilySettings:(id)a5 inContext:(id)a6 error:(id *)a7;
-+ (id)_childPresentedContactManagementNotificationForTransition:(int64_t)a3 childIsManaged:(BOOL)a4;
++ (BOOL)_updateScreenTimeSettingsForAppAndWebsiteActivityStateTransition:(int64_t)transition managementStateTransition:(int64_t)stateTransition withFamilySettings:(id)settings inContext:(id)context error:(id *)error;
++ (id)_childPresentedContactManagementNotificationForTransition:(int64_t)transition childIsManaged:(BOOL)managed;
 + (id)_notificationForClearingChildContactManagementUserNotification;
-+ (id)_notificationForClearingParentContactManagementUserNotificiationAboutChildWithName:(id)a3;
-+ (id)_parentPresentedContactManagementNotificationForTransition:(int64_t)a3 childName:(id)a4;
-+ (id)_processFamilySettings:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)_screenTimeManagementNotificationForTransition:(int64_t)a3;
-+ (int64_t)_appAndWebsiteActivityStateTransitionFromOldAppAndWebsiteActivityState:(id)a3 toNewAppAndWebsiteActivityState:(id)a4;
-+ (int64_t)_contactManagementStateTransitionFromOldManagementState:(int64_t)a3 toNewContactManagementState:(int64_t)a4;
-+ (int64_t)_screenTimeManagementStateTransitionFromOldManagementState:(BOOL)a3 toNewManagementState:(BOOL)a4;
-+ (void)_postScreenTimeManagementEnabledNotification:(id)a3;
-+ (void)_updateScreenTimeEnabledNotificationShownUserDefaultForTransition:(int64_t)a3;
-- (STFamilySettingsManager)initWithCapabilities:(id)a3 persistenceController:(id)a4;
-- (id)handleFamilySettings:(id)a3 inContext:(id)a4;
-- (void)_handleApproveNotificationForManageContactsRequest:(id)a3;
-- (void)_handleDontApproveNotificationForManageContactsRequest:(id)a3;
-- (void)_performEffectsForProcessSettingsResult:(id)a3 localUserDSID:(id)a4 localUserIsParent:(BOOL)a5 context:(id)a6;
-- (void)_postContactManagementNotification:(id)a3 notificationIsForParent:(BOOL)a4;
-- (void)_updateContactManagementToState:(int64_t)a3;
-- (void)handleFamilySettingsPayload:(id)a3 withCompletion:(id)a4;
-- (void)prepareSettingsPayloadsWithCompletion:(id)a3;
-- (void)registerFamilyMembers:(id)a3;
++ (id)_notificationForClearingParentContactManagementUserNotificiationAboutChildWithName:(id)name;
++ (id)_parentPresentedContactManagementNotificationForTransition:(int64_t)transition childName:(id)name;
++ (id)_processFamilySettings:(id)settings inContext:(id)context error:(id *)error;
++ (id)_screenTimeManagementNotificationForTransition:(int64_t)transition;
++ (int64_t)_appAndWebsiteActivityStateTransitionFromOldAppAndWebsiteActivityState:(id)state toNewAppAndWebsiteActivityState:(id)activityState;
++ (int64_t)_contactManagementStateTransitionFromOldManagementState:(int64_t)state toNewContactManagementState:(int64_t)managementState;
++ (int64_t)_screenTimeManagementStateTransitionFromOldManagementState:(BOOL)state toNewManagementState:(BOOL)managementState;
++ (void)_postScreenTimeManagementEnabledNotification:(id)notification;
++ (void)_updateScreenTimeEnabledNotificationShownUserDefaultForTransition:(int64_t)transition;
+- (STFamilySettingsManager)initWithCapabilities:(id)capabilities persistenceController:(id)controller;
+- (id)handleFamilySettings:(id)settings inContext:(id)context;
+- (void)_handleApproveNotificationForManageContactsRequest:(id)request;
+- (void)_handleDontApproveNotificationForManageContactsRequest:(id)request;
+- (void)_performEffectsForProcessSettingsResult:(id)result localUserDSID:(id)d localUserIsParent:(BOOL)parent context:(id)context;
+- (void)_postContactManagementNotification:(id)notification notificationIsForParent:(BOOL)parent;
+- (void)_updateContactManagementToState:(int64_t)state;
+- (void)handleFamilySettingsPayload:(id)payload withCompletion:(id)completion;
+- (void)prepareSettingsPayloadsWithCompletion:(id)completion;
+- (void)registerFamilyMembers:(id)members;
 @end
 
 @implementation STFamilySettingsManager
 
-- (STFamilySettingsManager)initWithCapabilities:(id)a3 persistenceController:(id)a4
+- (STFamilySettingsManager)initWithCapabilities:(id)capabilities persistenceController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  capabilitiesCopy = capabilities;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = STFamilySettingsManager;
   v9 = [(STFamilySettingsManager *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_capabilities, a3);
-    objc_storeStrong(&v10->_persistenceController, a4);
+    objc_storeStrong(&v9->_capabilities, capabilities);
+    objc_storeStrong(&v10->_persistenceController, controller);
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 addObserver:v10 selector:"_handleApproveNotificationForManageContactsRequest:" name:STUserNotificationAskToManageContactsResponseReceivedApprove object:0];
     [v11 addObserver:v10 selector:"_handleDontApproveNotificationForManageContactsRequest:" name:STUserNotificationAskToManageContactsResponseReceivedDontApprove object:0];
@@ -45,9 +45,9 @@
   return v10;
 }
 
-- (void)registerFamilyMembers:(id)a3
+- (void)registerFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v5 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -60,7 +60,7 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = membersCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v8)
   {
@@ -78,12 +78,12 @@
         v12 = *(*(&v15 + 1) + 8 * i);
         if (([v12 isMe] & 1) == 0)
         {
-          v13 = [v12 appleID];
+          appleID = [v12 appleID];
 
-          if (v13)
+          if (appleID)
           {
-            v14 = [v12 appleID];
-            [v6 setObject:v12 forKeyedSubscript:v14];
+            appleID2 = [v12 appleID];
+            [v6 setObject:v12 forKeyedSubscript:appleID2];
           }
         }
       }
@@ -97,9 +97,9 @@
   [(STFamilySettingsManager *)self setFamilyMemberByAppleID:v6];
 }
 
-- (void)prepareSettingsPayloadsWithCompletion:(id)a3
+- (void)prepareSettingsPayloadsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -109,51 +109,51 @@
   }
 
   v6 = os_transaction_create();
-  v7 = [(STFamilySettingsManager *)self persistenceController];
+  persistenceController = [(STFamilySettingsManager *)self persistenceController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100039E80;
   v10[3] = &unk_1001A3EE0;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
-  [v7 performBackgroundTaskAndWait:v10];
+  [persistenceController performBackgroundTaskAndWait:v10];
 }
 
-- (void)handleFamilySettingsPayload:(id)a3 withCompletion:(id)a4
+- (void)handleFamilySettingsPayload:(id)payload withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   v8 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = payloadCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Handling settings payload: %@", buf, 0xCu);
   }
 
-  v9 = [v6 payloadType];
-  if ([v9 isEqualToString:@"RMUnifiedTransportPayloadTypeFamilySettings"])
+  payloadType = [payloadCopy payloadType];
+  if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeFamilySettings"])
   {
-    v10 = [v6 payloadDictionary];
-    v11 = [v10 objectForKeyedSubscript:@"Settings"];
+    payloadDictionary = [payloadCopy payloadDictionary];
+    v11 = [payloadDictionary objectForKeyedSubscript:@"Settings"];
 
     if ([v11 count])
     {
       v12 = os_transaction_create();
-      v13 = [(STFamilySettingsManager *)self persistenceController];
+      persistenceController = [(STFamilySettingsManager *)self persistenceController];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10003A970;
       v17[3] = &unk_1001A3F08;
       v18 = v12;
-      v19 = v6;
-      v20 = self;
+      v19 = payloadCopy;
+      selfCopy = self;
       v21 = v11;
-      v22 = v7;
+      v22 = completionCopy;
       v14 = v12;
-      [v13 performBackgroundTaskAndWait:v17];
+      [persistenceController performBackgroundTaskAndWait:v17];
     }
 
     else
@@ -165,7 +165,7 @@
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Settings payload contained no settings, aborting.", buf, 2u);
       }
 
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -177,29 +177,29 @@
       sub_1001164E8();
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (id)handleFamilySettings:(id)a3 inContext:(id)a4
+- (id)handleFamilySettings:(id)settings inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  contextCopy = context;
   v8 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v34 = [v6 count];
+    v34 = [settingsCopy count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling (%lu) settings dictionaries", buf, 0xCu);
   }
 
   v30 = 0;
-  v9 = [STCoreUser fetchLocalUserInContext:v7 error:&v30];
+  v9 = [STCoreUser fetchLocalUserInContext:contextCopy error:&v30];
   v10 = v30;
   if (v9)
   {
     v29 = 0;
-    v11 = [STFamilySettingsManager _processFamilySettings:v6 inContext:v7 error:&v29];
+    v11 = [STFamilySettingsManager _processFamilySettings:settingsCopy inContext:contextCopy error:&v29];
     v12 = v29;
     if (!v11)
     {
@@ -237,13 +237,13 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Processed family settings: Performing effects", buf, 2u);
     }
 
-    v14 = [v9 dsid];
-    -[STFamilySettingsManager _performEffectsForProcessSettingsResult:localUserDSID:localUserIsParent:context:](self, "_performEffectsForProcessSettingsResult:localUserDSID:localUserIsParent:context:", v11, v14, [v9 isParent], v7);
+    dsid = [v9 dsid];
+    -[STFamilySettingsManager _performEffectsForProcessSettingsResult:localUserDSID:localUserIsParent:context:](self, "_performEffectsForProcessSettingsResult:localUserDSID:localUserIsParent:context:", v11, dsid, [v9 isParent], contextCopy);
 
-    if ([v7 hasChanges])
+    if ([contextCopy hasChanges])
     {
       v28 = 0;
-      v15 = [v7 save:&v28];
+      v15 = [contextCopy save:&v28];
       v16 = v28;
       if ((v15 & 1) == 0)
       {
@@ -290,10 +290,10 @@ LABEL_27:
   return v23;
 }
 
-+ (id)_processFamilySettings:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)_processFamilySettings:(id)settings inContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v55 = a4;
+  settingsCopy = settings;
+  contextCopy = context;
   v8 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -301,7 +301,7 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Processing family settings", buf, 2u);
   }
 
-  v9 = [v7 count];
+  v9 = [settingsCopy count];
   v10 = [NSMutableDictionary dictionaryWithCapacity:v9];
   v11 = [NSMutableDictionary dictionaryWithCapacity:v9];
   v12 = [NSMutableDictionary dictionaryWithCapacity:v9];
@@ -311,7 +311,7 @@ LABEL_27:
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v7;
+  obj = settingsCopy;
   v51 = [obj countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (!v51)
   {
@@ -322,7 +322,7 @@ LABEL_27:
 
   v15 = 0;
   v50 = *v58;
-  v46 = a5;
+  errorCopy = error;
   v53 = v11;
   v54 = v10;
   v48 = v14;
@@ -341,13 +341,13 @@ LABEL_27:
 
       v18 = *(*(&v57 + 1) + 8 * v16);
       v56 = v17;
-      v19 = [STFamilyOrganizationSettings fetchOrCreateWithDictionaryRepresentation:v18 inContext:v55 error:&v56, v46];
+      errorCopy = [STFamilyOrganizationSettings fetchOrCreateWithDictionaryRepresentation:v18 inContext:contextCopy error:&v56, errorCopy];
       v15 = v56;
 
-      if (!v19)
+      if (!errorCopy)
       {
-        v19 = +[STLog familySettingsManager];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        errorCopy = +[STLog familySettingsManager];
+        if (os_log_type_enabled(errorCopy, OS_LOG_TYPE_ERROR))
         {
           sub_10011680C();
         }
@@ -355,10 +355,10 @@ LABEL_27:
         goto LABEL_35;
       }
 
-      v20 = [v19 isManaged];
-      v21 = [v19 isAppAndWebsiteActivityEnabled];
-      v22 = [v19 contactManagementState];
-      if (([v19 updateWithDictionaryRepresentation:v18]& 1) == 0)
+      isManaged = [errorCopy isManaged];
+      isAppAndWebsiteActivityEnabled = [errorCopy isAppAndWebsiteActivityEnabled];
+      contactManagementState = [errorCopy contactManagementState];
+      if (([errorCopy updateWithDictionaryRepresentation:v18]& 1) == 0)
       {
         v42 = +[STLog familySettingsManager];
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -367,7 +367,7 @@ LABEL_27:
         }
 
 LABEL_35:
-        a5 = v46;
+        error = errorCopy;
         v11 = v53;
         v10 = v54;
         v12 = v52;
@@ -377,11 +377,11 @@ LABEL_35:
       }
 
       v23 = [v18 objectForKeyedSubscript:@"user"];
-      [v14 setObject:v19 forKeyedSubscript:v23];
-      v24 = [v19 isManaged];
-      v25 = [v19 isAppAndWebsiteActivityEnabled];
-      v26 = [v19 contactManagementState];
-      v27 = [STFamilySettingsManager _screenTimeManagementStateTransitionFromOldManagementState:v20 toNewManagementState:v24];
+      [v14 setObject:errorCopy forKeyedSubscript:v23];
+      isManaged2 = [errorCopy isManaged];
+      isAppAndWebsiteActivityEnabled2 = [errorCopy isAppAndWebsiteActivityEnabled];
+      contactManagementState2 = [errorCopy contactManagementState];
+      v27 = [STFamilySettingsManager _screenTimeManagementStateTransitionFromOldManagementState:isManaged toNewManagementState:isManaged2];
       v28 = [NSNumber numberWithInteger:v27];
       [v54 setObject:v28 forKeyedSubscript:v23];
 
@@ -406,7 +406,7 @@ LABEL_35:
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Computed ScreenTime Management State transition: %{public}@ for user: %{private}@", buf, 0x16u);
       }
 
-      v31 = [STFamilySettingsManager _appAndWebsiteActivityStateTransitionFromOldAppAndWebsiteActivityState:v21 toNewAppAndWebsiteActivityState:v25];
+      v31 = [STFamilySettingsManager _appAndWebsiteActivityStateTransitionFromOldAppAndWebsiteActivityState:isAppAndWebsiteActivityEnabled toNewAppAndWebsiteActivityState:isAppAndWebsiteActivityEnabled2];
       v32 = [NSNumber numberWithInteger:v31];
       [v53 setObject:v32 forKeyedSubscript:v23];
 
@@ -431,7 +431,7 @@ LABEL_35:
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Computed App & Website Activity State transition: %{public}@ for user: %{private}@", buf, 0x16u);
       }
 
-      v35 = [STFamilySettingsManager _contactManagementStateTransitionFromOldManagementState:v22 toNewContactManagementState:v26];
+      v35 = [STFamilySettingsManager _contactManagementStateTransitionFromOldManagementState:contactManagementState toNewContactManagementState:contactManagementState2];
       v36 = [NSNumber numberWithInteger:v35];
       [v52 setObject:v36 forKeyedSubscript:v23];
 
@@ -452,9 +452,9 @@ LABEL_35:
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Computed Contact Management State transition: %{public}@ for user: %{private}@", buf, 0x16u);
       }
 
-      v39 = [v19 user];
-      v40 = [v39 givenName];
-      [v49 setObject:v40 forKeyedSubscript:v23];
+      user = [errorCopy user];
+      givenName = [user givenName];
+      [v49 setObject:givenName forKeyedSubscript:v23];
 
       v16 = v16 + 1;
       v17 = v15;
@@ -463,7 +463,7 @@ LABEL_35:
 
     while (v51 != v16);
     v41 = 1;
-    a5 = v46;
+    error = errorCopy;
     v11 = v53;
     v10 = v54;
     v51 = [obj countByEnumeratingWithState:&v57 objects:v65 count:16];
@@ -478,10 +478,10 @@ LABEL_35:
 
 LABEL_36:
 
-  if (a5)
+  if (error)
   {
     v43 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   if (v41)
@@ -497,11 +497,11 @@ LABEL_36:
   return v44;
 }
 
-- (void)_performEffectsForProcessSettingsResult:(id)a3 localUserDSID:(id)a4 localUserIsParent:(BOOL)a5 context:(id)a6
+- (void)_performEffectsForProcessSettingsResult:(id)result localUserDSID:(id)d localUserIsParent:(BOOL)parent context:(id)context
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
+  dCopy = d;
+  contextCopy = context;
+  resultCopy = result;
   v13 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -509,42 +509,42 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Performing effects for processed settings", buf, 2u);
   }
 
-  v14 = [v12 screenTimeManagementStateTransitionsByDSID];
-  v15 = [v12 appAndWebsiteActivityStateTransitionsByDSID];
-  v16 = [v12 contactManagementStateTransitionsByDSID];
-  v17 = [v12 givenChildNamesByDSID];
-  v18 = [v12 updatedSettingsByUserDSID];
+  screenTimeManagementStateTransitionsByDSID = [resultCopy screenTimeManagementStateTransitionsByDSID];
+  appAndWebsiteActivityStateTransitionsByDSID = [resultCopy appAndWebsiteActivityStateTransitionsByDSID];
+  contactManagementStateTransitionsByDSID = [resultCopy contactManagementStateTransitionsByDSID];
+  givenChildNamesByDSID = [resultCopy givenChildNamesByDSID];
+  updatedSettingsByUserDSID = [resultCopy updatedSettingsByUserDSID];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10003B83C;
   v25[3] = &unk_1001A3F30;
-  v26 = v10;
-  v27 = v14;
-  v28 = v11;
-  v29 = v15;
-  v33 = a5;
-  v30 = v16;
-  v31 = v17;
-  v32 = self;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v11;
-  v23 = v14;
-  v24 = v10;
-  [v18 enumerateKeysAndObjectsUsingBlock:v25];
+  v26 = dCopy;
+  v27 = screenTimeManagementStateTransitionsByDSID;
+  v28 = contextCopy;
+  v29 = appAndWebsiteActivityStateTransitionsByDSID;
+  parentCopy = parent;
+  v30 = contactManagementStateTransitionsByDSID;
+  v31 = givenChildNamesByDSID;
+  selfCopy = self;
+  v19 = givenChildNamesByDSID;
+  v20 = contactManagementStateTransitionsByDSID;
+  v21 = appAndWebsiteActivityStateTransitionsByDSID;
+  v22 = contextCopy;
+  v23 = screenTimeManagementStateTransitionsByDSID;
+  v24 = dCopy;
+  [updatedSettingsByUserDSID enumerateKeysAndObjectsUsingBlock:v25];
 }
 
-+ (int64_t)_screenTimeManagementStateTransitionFromOldManagementState:(BOOL)a3 toNewManagementState:(BOOL)a4
++ (int64_t)_screenTimeManagementStateTransitionFromOldManagementState:(BOOL)state toNewManagementState:(BOOL)managementState
 {
   v4 = 1;
-  if (a3 && !a4)
+  if (state && !managementState)
   {
     v4 = 2;
   }
 
-  if (a3 != a4)
+  if (state != managementState)
   {
     return v4;
   }
@@ -555,18 +555,18 @@ LABEL_36:
   }
 }
 
-+ (id)_screenTimeManagementNotificationForTransition:(int64_t)a3
++ (id)_screenTimeManagementNotificationForTransition:(int64_t)transition
 {
   v4 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = @"None";
-    if (a3 == 1)
+    if (transition == 1)
     {
       v5 = @"Became Managed";
     }
 
-    if (a3 == 2)
+    if (transition == 2)
     {
       v5 = @"Request Unmanged";
     }
@@ -576,13 +576,13 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Generating notification for Screen Time management state transition: %@", &v10, 0xCu);
   }
 
-  if (a3 == 1)
+  if (transition == 1)
   {
     v6 = off_1001A6310;
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (transition == 2)
   {
     v6 = off_1001A6318;
 LABEL_11:
@@ -598,11 +598,11 @@ LABEL_13:
   return v8;
 }
 
-+ (void)_postScreenTimeManagementEnabledNotification:(id)a3
++ (void)_postScreenTimeManagementEnabledNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
-    v3 = a3;
+    notificationCopy = notification;
     v4 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -611,22 +611,22 @@ LABEL_13:
     }
 
     v5 = +[NSNotificationCenter defaultCenter];
-    [v5 postNotification:v3];
+    [v5 postNotification:notificationCopy];
   }
 }
 
-+ (void)_updateScreenTimeEnabledNotificationShownUserDefaultForTransition:(int64_t)a3
++ (void)_updateScreenTimeEnabledNotificationShownUserDefaultForTransition:(int64_t)transition
 {
   v4 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = @"None";
-    if (a3 == 1)
+    if (transition == 1)
     {
       v5 = @"Became Managed";
     }
 
-    if (a3 == 2)
+    if (transition == 2)
     {
       v5 = @"Request Unmanged";
     }
@@ -636,7 +636,7 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Updating Screen Time Enabled 'hasShown' default for Screen Time management state transition: %@", &v9, 0xCu);
   }
 
-  if (a3 == 2)
+  if (transition == 2)
   {
     v8 = +[STLog familySettingsManager];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -651,7 +651,7 @@ LABEL_13:
 
   else
   {
-    if (a3 != 1)
+    if (transition != 1)
     {
       return;
     }
@@ -668,15 +668,15 @@ LABEL_13:
   }
 }
 
-+ (int64_t)_appAndWebsiteActivityStateTransitionFromOldAppAndWebsiteActivityState:(id)a3 toNewAppAndWebsiteActivityState:(id)a4
++ (int64_t)_appAndWebsiteActivityStateTransitionFromOldAppAndWebsiteActivityState:(id)state toNewAppAndWebsiteActivityState:(id)activityState
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  stateCopy = state;
+  activityStateCopy = activityState;
+  v7 = activityStateCopy;
+  if (stateCopy)
   {
-    v8 = [v5 BOOLValue];
-    if (v8 == [v7 BOOLValue])
+    bOOLValue = [stateCopy BOOLValue];
+    if (bOOLValue == [v7 BOOLValue])
     {
 LABEL_3:
       v9 = 0;
@@ -684,7 +684,7 @@ LABEL_3:
     }
   }
 
-  else if (!v6)
+  else if (!activityStateCopy)
   {
     goto LABEL_3;
   }
@@ -704,35 +704,35 @@ LABEL_8:
   return v9;
 }
 
-+ (BOOL)_updateScreenTimeSettingsForAppAndWebsiteActivityStateTransition:(int64_t)a3 managementStateTransition:(int64_t)a4 withFamilySettings:(id)a5 inContext:(id)a6 error:(id *)a7
++ (BOOL)_updateScreenTimeSettingsForAppAndWebsiteActivityStateTransition:(int64_t)transition managementStateTransition:(int64_t)stateTransition withFamilySettings:(id)settings inContext:(id)context error:(id *)error
 {
-  v11 = a5;
-  if (a3 || a4 == 1)
+  settingsCopy = settings;
+  if (transition || stateTransition == 1)
   {
     v24 = 0;
-    v13 = [STScreenTimeSettings fetchScreenTimeSettingsInContext:a6 error:&v24];
+    v13 = [STScreenTimeSettings fetchScreenTimeSettingsInContext:context error:&v24];
     v14 = v24;
     v12 = v13 != 0;
     if (v13)
     {
-      if (a4 == 1)
+      if (stateTransition == 1)
       {
-        v15 = [v11 isAppAndWebsiteActivityEnabled];
-        if ([v15 BOOLValue])
+        isAppAndWebsiteActivityEnabled = [settingsCopy isAppAndWebsiteActivityEnabled];
+        if ([isAppAndWebsiteActivityEnabled BOOLValue])
         {
           v16 = 1;
         }
 
         else
         {
-          v19 = [v11 isAppAndWebsiteActivityEnabled];
-          v16 = v19 == 0;
+          isAppAndWebsiteActivityEnabled2 = [settingsCopy isAppAndWebsiteActivityEnabled];
+          v16 = isAppAndWebsiteActivityEnabled2 == 0;
         }
       }
 
       else
       {
-        v16 = a3 == 1;
+        v16 = transition == 1;
       }
 
       v20 = +[STLog familySettingsManager];
@@ -753,7 +753,7 @@ LABEL_8:
       [v13 setScreenTimeEnabled:v16];
     }
 
-    else if (a7)
+    else if (error)
     {
       v17 = +[STLog familySettingsManager];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -762,7 +762,7 @@ LABEL_8:
       }
 
       v18 = v14;
-      *a7 = v14;
+      *error = v14;
     }
   }
 
@@ -774,13 +774,13 @@ LABEL_8:
   return v12;
 }
 
-+ (int64_t)_contactManagementStateTransitionFromOldManagementState:(int64_t)a3 toNewContactManagementState:(int64_t)a4
++ (int64_t)_contactManagementStateTransitionFromOldManagementState:(int64_t)state toNewContactManagementState:(int64_t)managementState
 {
-  if (a3 == 2)
+  if (state == 2)
   {
-    if (a4)
+    if (managementState)
     {
-      return a4 == 1;
+      return managementState == 1;
     }
 
     else
@@ -789,28 +789,28 @@ LABEL_8:
     }
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
-    if (a4 >= 3)
+    if (managementState >= 3)
     {
       return 0;
     }
 
     else
     {
-      return qword_10013F260[a4];
+      return qword_10013F260[managementState];
     }
   }
 
   else
   {
-    v4 = a4 == 1;
-    if (a4 == 2)
+    v4 = managementState == 1;
+    if (managementState == 2)
     {
       v4 = 4;
     }
 
-    if (a3)
+    if (state)
     {
       return 0;
     }
@@ -822,20 +822,20 @@ LABEL_8:
   }
 }
 
-+ (id)_parentPresentedContactManagementNotificationForTransition:(int64_t)a3 childName:(id)a4
++ (id)_parentPresentedContactManagementNotificationForTransition:(int64_t)transition childName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v6 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if ((a3 - 1) > 4)
+    if ((transition - 1) > 4)
     {
       v7 = @"None";
     }
 
     else
     {
-      v7 = off_1001A3FF0[a3 - 1];
+      v7 = off_1001A3FF0[transition - 1];
     }
 
     v13 = 138412290;
@@ -843,8 +843,8 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Generating parent-presented Contact Management notification for transition: %@", &v13, 0xCu);
   }
 
-  v8 = a3 - 1;
-  if ((a3 - 1) > 4)
+  v8 = transition - 1;
+  if ((transition - 1) > 4)
   {
     v11 = 0;
     v10 = 0;
@@ -853,31 +853,31 @@ LABEL_8:
   else
   {
     v9 = off_1001A3FC8[v8];
-    v10 = [objc_alloc(*off_1001A3FA0[v8]) initWithChildName:v5];
+    v10 = [objc_alloc(*off_1001A3FA0[v8]) initWithChildName:nameCopy];
     v11 = [[NSNotification alloc] initWithName:*v9 object:v10 userInfo:0];
   }
 
   return v11;
 }
 
-+ (id)_childPresentedContactManagementNotificationForTransition:(int64_t)a3 childIsManaged:(BOOL)a4
++ (id)_childPresentedContactManagementNotificationForTransition:(int64_t)transition childIsManaged:(BOOL)managed
 {
-  v4 = a4;
+  managedCopy = managed;
   v6 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if ((a3 - 1) > 4)
+    if ((transition - 1) > 4)
     {
       v7 = @"None";
     }
 
     else
     {
-      v7 = off_1001A3FF0[a3 - 1];
+      v7 = off_1001A3FF0[transition - 1];
     }
 
     v8 = @"NO";
-    if (v4)
+    if (managedCopy)
     {
       v8 = @"YES";
     }
@@ -890,9 +890,9 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Generating child-presented Contact Management notification for transition: %{public}@, childIsManaged: %{public}@", &v16, 0x16u);
   }
 
-  if (v4)
+  if (managedCopy)
   {
-    if ((a3 - 1) > 4)
+    if ((transition - 1) > 4)
     {
       v12 = 0;
       v11 = 0;
@@ -900,7 +900,7 @@ LABEL_8:
 
     else
     {
-      v10 = off_1001A4018[a3 - 1];
+      v10 = off_1001A4018[transition - 1];
       v11 = objc_opt_new();
       v12 = [[NSNotification alloc] initWithName:*v10 object:v11 userInfo:0];
     }
@@ -919,21 +919,21 @@ LABEL_8:
   return v13;
 }
 
-- (void)_postContactManagementNotification:(id)a3 notificationIsForParent:(BOOL)a4
+- (void)_postContactManagementNotification:(id)notification notificationIsForParent:(BOOL)parent
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  parentCopy = parent;
+  notificationCopy = notification;
+  v7 = notificationCopy;
+  if (notificationCopy)
   {
-    if (v4)
+    if (parentCopy)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10003C738;
       block[3] = &unk_1001A3020;
       block[4] = self;
-      v12 = v6;
+      v12 = notificationCopy;
       dispatch_async(&_dispatch_main_q, block);
     }
 
@@ -952,10 +952,10 @@ LABEL_8:
   }
 }
 
-+ (id)_notificationForClearingParentContactManagementUserNotificiationAboutChildWithName:(id)a3
++ (id)_notificationForClearingParentContactManagementUserNotificiationAboutChildWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[STAskToManageContactsApprovedResponseReceivedUserNotificationContext alloc] initWithChildName:v3];
+  nameCopy = name;
+  v4 = [[STAskToManageContactsApprovedResponseReceivedUserNotificationContext alloc] initWithChildName:nameCopy];
 
   v5 = [[NSNotification alloc] initWithName:@"STUserNotificationManagerShouldRemoveNotification" object:v4 userInfo:0];
 
@@ -970,19 +970,19 @@ LABEL_8:
   return v3;
 }
 
-- (void)_updateContactManagementToState:(int64_t)a3
+- (void)_updateContactManagementToState:(int64_t)state
 {
-  v5 = [(STFamilySettingsManager *)self persistenceController];
+  persistenceController = [(STFamilySettingsManager *)self persistenceController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10003CA28;
   v6[3] = &unk_1001A3F80;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 performBackgroundTask:v6];
+  v6[5] = state;
+  [persistenceController performBackgroundTask:v6];
 }
 
-- (void)_handleApproveNotificationForManageContactsRequest:(id)a3
+- (void)_handleApproveNotificationForManageContactsRequest:(id)request
 {
   v4 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -994,7 +994,7 @@ LABEL_8:
   [(STFamilySettingsManager *)self _updateContactManagementToState:2];
 }
 
-- (void)_handleDontApproveNotificationForManageContactsRequest:(id)a3
+- (void)_handleDontApproveNotificationForManageContactsRequest:(id)request
 {
   v4 = +[STLog familySettingsManager];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

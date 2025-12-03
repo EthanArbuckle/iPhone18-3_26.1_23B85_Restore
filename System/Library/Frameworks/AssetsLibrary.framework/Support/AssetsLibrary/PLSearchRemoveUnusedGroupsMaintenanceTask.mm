@@ -1,15 +1,15 @@
 @interface PLSearchRemoveUnusedGroupsMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLSearchRemoveUnusedGroupsMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v3 = [(PLMaintenanceTask *)self photoLibrary];
-  v4 = [v3 libraryServicesManager];
-  v5 = [v4 searchIndexingEngine];
-  [v5 removeUnusedGroupsFromPSI];
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  searchIndexingEngine = [libraryServicesManager searchIndexingEngine];
+  [searchIndexingEngine removeUnusedGroupsFromPSI];
 
   return 1;
 }

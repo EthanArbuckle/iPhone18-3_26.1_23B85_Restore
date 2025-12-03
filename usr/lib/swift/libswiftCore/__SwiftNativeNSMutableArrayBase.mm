@@ -1,12 +1,12 @@
 @interface __SwiftNativeNSMutableArrayBase
-- (__SwiftNativeNSMutableArrayBase)initWithCoder:(id)a3;
+- (__SwiftNativeNSMutableArrayBase)initWithCoder:(id)coder;
 - (void)_noteAssociatedObjects;
 - (void)_setWeaklyReferenced;
 @end
 
 @implementation __SwiftNativeNSMutableArrayBase
 
-- (__SwiftNativeNSMutableArrayBase)initWithCoder:(id)a3
+- (__SwiftNativeNSMutableArrayBase)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = __SwiftNativeNSMutableArrayBase;

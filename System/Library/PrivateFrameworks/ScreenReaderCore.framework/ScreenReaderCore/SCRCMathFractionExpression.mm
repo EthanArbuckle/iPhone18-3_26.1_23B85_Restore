@@ -1,38 +1,38 @@
 @interface SCRCMathFractionExpression
 - (BOOL)isSimpleNumericalFraction;
-- (SCRCMathFractionExpression)initWithDictionary:(id)a3;
-- (id)_dollarCodeDescriptionAsBinomialCoefficient:(BOOL)a3 orMixedNumberFraction:(BOOL)a4 withNumberOfOuterRadicals:(unint64_t)a5 treePosition:(id)a6;
-- (id)_speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4 asBinomialCoefficient:(BOOL)a5;
-- (id)_speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5 asBinomialCoefficient:(BOOL)a6;
+- (SCRCMathFractionExpression)initWithDictionary:(id)dictionary;
+- (id)_dollarCodeDescriptionAsBinomialCoefficient:(BOOL)coefficient orMixedNumberFraction:(BOOL)fraction withNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position;
+- (id)_speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed asBinomialCoefficient:(BOOL)coefficient;
+- (id)_speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position asBinomialCoefficient:(BOOL)coefficient;
 - (id)description;
 - (id)latexMathModeDescription;
 - (id)mathMLString;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
 - (id)subExpressions;
 @end
 
 @implementation SCRCMathFractionExpression
 
-- (SCRCMathFractionExpression)initWithDictionary:(id)a3
+- (SCRCMathFractionExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = SCRCMathFractionExpression;
-  v5 = [(SCRCMathExpression *)&v20 initWithDictionary:v4];
+  v5 = [(SCRCMathExpression *)&v20 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AXMNumeratorObject"];
+    v6 = [dictionaryCopy objectForKey:@"AXMNumeratorObject"];
     if (!v6)
     {
       v7 = [@"Term" stringByAppendingString:@"1"];
-      v6 = [v4 objectForKey:v7];
+      v6 = [dictionaryCopy objectForKey:v7];
     }
 
-    v8 = [v4 objectForKey:@"AXMDenominatorObject"];
+    v8 = [dictionaryCopy objectForKey:@"AXMDenominatorObject"];
     if (!v8)
     {
       v9 = [@"Term" stringByAppendingString:@"2"];
-      v8 = [v4 objectForKey:v9];
+      v8 = [dictionaryCopy objectForKey:v9];
     }
 
     v10 = [SCRCMathExpression mathExpressionWithDictionary:v6];
@@ -58,11 +58,11 @@
     {
       [(SCRCMathFractionExpression *)v5 setNumerator:v10];
       [(SCRCMathFractionExpression *)v5 setDenominator:v12];
-      v15 = [v4 objectForKey:@"AXMOperator"];
+      v15 = [dictionaryCopy objectForKey:@"AXMOperator"];
       v16 = [SCRCMathExpression mathExpressionWithDictionary:v15];
       [(SCRCMathFractionExpression *)v5 setOperator:v16];
 
-      v17 = [v4 objectForKey:@"AXMLineThickness"];
+      v17 = [dictionaryCopy objectForKey:@"AXMLineThickness"];
       v14 = v17;
       if (v17)
       {
@@ -86,51 +86,51 @@
   v10.receiver = self;
   v10.super_class = SCRCMathFractionExpression;
   v3 = [(SCRCMathFractionExpression *)&v10 description];
-  v4 = [(SCRCMathFractionExpression *)self numerator];
-  v5 = [(SCRCMathFractionExpression *)self denominator];
-  v6 = [(SCRCMathFractionExpression *)self operator];
+  numerator = [(SCRCMathFractionExpression *)self numerator];
+  denominator = [(SCRCMathFractionExpression *)self denominator];
+  operator = [(SCRCMathFractionExpression *)self operator];
   [(SCRCMathFractionExpression *)self lineThickness];
-  v8 = [v3 stringByAppendingFormat:@" - numerator %@, denominator %@, operator %@, line thickness %f", v4, v5, v6, v7];
+  v8 = [v3 stringByAppendingFormat:@" - numerator %@, denominator %@, operator %@, line thickness %f", numerator, denominator, operator, v7];
 
   return v8;
 }
 
 - (id)subExpressions
 {
-  v3 = [(SCRCMathFractionExpression *)self numerator];
-  v4 = [(SCRCMathFractionExpression *)self denominator];
-  v5 = [(SCRCMathExpression *)self arrayWithoutNilsFromFirstChild:v3 secondChild:v4 thirdChild:0];
+  numerator = [(SCRCMathFractionExpression *)self numerator];
+  denominator = [(SCRCMathFractionExpression *)self denominator];
+  v5 = [(SCRCMathExpression *)self arrayWithoutNilsFromFirstChild:numerator secondChild:denominator thirdChild:0];
 
   return v5;
 }
 
 - (BOOL)isSimpleNumericalFraction
 {
-  v3 = [(SCRCMathFractionExpression *)self numerator];
-  if ([v3 isNumber])
+  numerator = [(SCRCMathFractionExpression *)self numerator];
+  if ([numerator isNumber])
   {
-    v4 = [(SCRCMathFractionExpression *)self denominator];
-    v5 = [v4 isNumber];
+    denominator = [(SCRCMathFractionExpression *)self denominator];
+    isNumber = [denominator isNumber];
   }
 
   else
   {
-    v5 = 0;
+    isNumber = 0;
   }
 
-  return v5;
+  return isNumber;
 }
 
-- (id)_speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4 asBinomialCoefficient:(BOOL)a5
+- (id)_speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed asBinomialCoefficient:(BOOL)coefficient
 {
-  v6 = a4;
-  v9 = [(SCRCMathFractionExpression *)self numerator];
-  v10 = [v9 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v6];
+  allowedCopy = allowed;
+  numerator = [(SCRCMathFractionExpression *)self numerator];
+  v10 = [numerator speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
 
-  v11 = [(SCRCMathFractionExpression *)self denominator];
-  v12 = [v11 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v6];
+  denominator = [(SCRCMathFractionExpression *)self denominator];
+  v12 = [denominator speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
 
-  if (a5)
+  if (coefficient)
   {
     v13 = @"binomial.coefficient.formatter";
   }
@@ -151,53 +151,53 @@
   return v15;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v7 = [(SCRCMathFractionExpression *)self isUnlinedFraction];
+  allowedCopy = allowed;
+  isUnlinedFraction = [(SCRCMathFractionExpression *)self isUnlinedFraction];
 
-  return [(SCRCMathFractionExpression *)self _speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4 asBinomialCoefficient:v7];
+  return [(SCRCMathFractionExpression *)self _speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy asBinomialCoefficient:isUnlinedFraction];
 }
 
-- (id)_speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5 asBinomialCoefficient:(BOOL)a6
+- (id)_speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position asBinomialCoefficient:(BOOL)coefficient
 {
-  v6 = a6;
+  coefficientCopy = coefficient;
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  if (a4)
+  positionCopy = position;
+  if (depth)
   {
-    v11 = a4 - 1;
-    if (a4 == 1)
+    v11 = depth - 1;
+    if (depth == 1)
     {
       v41.receiver = self;
       v41.super_class = SCRCMathFractionExpression;
-      v12 = [(SCRCMathExpression *)&v41 speakableSegmentsWithSpeakingStyle:a3 upToDepth:1 treePosition:v10];
+      array = [(SCRCMathExpression *)&v41 speakableSegmentsWithSpeakingStyle:style upToDepth:1 treePosition:positionCopy];
     }
 
     else
     {
       v13 = @"segment.";
-      if (v6)
+      if (coefficientCopy)
       {
         v13 = @"segment.binomial.coefficient.";
       }
 
       v14 = v13;
-      v15 = [(SCRCMathFractionExpression *)self numerator];
-      v16 = [v10 indexPathByAddingIndex:0];
+      numerator = [(SCRCMathFractionExpression *)self numerator];
+      v16 = [positionCopy indexPathByAddingIndex:0];
       v17 = [(__CFString *)v14 stringByAppendingString:@"numerator.prefix"];
       v18 = [(__CFString *)v14 stringByAppendingString:@"numerator.suffix"];
-      v19 = [v15 speakableSegmentsWithSpeakingStyle:a3 upToDepth:a4 - 1 treePosition:v16 localizablePrefix:v17 localizableSuffix:v18];
+      v19 = [numerator speakableSegmentsWithSpeakingStyle:style upToDepth:depth - 1 treePosition:v16 localizablePrefix:v17 localizableSuffix:v18];
 
-      v20 = [(SCRCMathFractionExpression *)self denominator];
-      v36 = v10;
-      v21 = [v10 indexPathByAddingIndex:1];
+      denominator = [(SCRCMathFractionExpression *)self denominator];
+      v36 = positionCopy;
+      v21 = [positionCopy indexPathByAddingIndex:1];
       v22 = [(__CFString *)v14 stringByAppendingString:@"denominator.prefix"];
       v35 = v14;
       v23 = [(__CFString *)v14 stringByAppendingString:@"denominator.suffix"];
-      v24 = [v20 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v11 treePosition:v21 localizablePrefix:v22 localizableSuffix:v23];
+      v24 = [denominator speakableSegmentsWithSpeakingStyle:style upToDepth:v11 treePosition:v21 localizablePrefix:v22 localizableSuffix:v23];
 
-      v12 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
@@ -230,7 +230,7 @@
               }
             }
 
-            [v12 addObjectsFromArray:v32];
+            [array addObjectsFromArray:v32];
           }
 
           v27 = [v25 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -239,23 +239,23 @@
         while (v27);
       }
 
-      v10 = v36;
+      positionCopy = v36;
     }
   }
 
   else
   {
-    v12 = 0;
+    array = 0;
   }
 
-  return v12;
+  return array;
 }
 
-- (id)_dollarCodeDescriptionAsBinomialCoefficient:(BOOL)a3 orMixedNumberFraction:(BOOL)a4 withNumberOfOuterRadicals:(unint64_t)a5 treePosition:(id)a6
+- (id)_dollarCodeDescriptionAsBinomialCoefficient:(BOOL)coefficient orMixedNumberFraction:(BOOL)fraction withNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position
 {
-  v8 = a3;
-  v10 = a6;
-  if (v8)
+  coefficientCopy = coefficient;
+  positionCopy = position;
+  if (coefficientCopy)
   {
     v11 = @"nr";
   }
@@ -265,7 +265,7 @@
     v11 = @"fl";
   }
 
-  if (v8)
+  if (coefficientCopy)
   {
     v12 = 0;
   }
@@ -275,7 +275,7 @@
     v12 = @"fe0";
   }
 
-  if (v8)
+  if (coefficientCopy)
   {
     v13 = 0;
   }
@@ -285,21 +285,21 @@
     v13 = @"fs0";
   }
 
-  if (!v8 && !a4)
+  if (!coefficientCopy && !fraction)
   {
-    v14 = [(SCRCMathFractionExpression *)self fractionLevel];
+    fractionLevel = [(SCRCMathFractionExpression *)self fractionLevel];
     v12 = @"fe2";
     v15 = @"fs";
     v16 = @"fe";
     v17 = @"fl";
-    if (v14 == 2)
+    if (fractionLevel == 2)
     {
       v17 = @"fl1";
       v16 = @"fe1";
       v15 = @"fs1";
     }
 
-    if (v14 == 3)
+    if (fractionLevel == 3)
     {
       v11 = @"fl2";
     }
@@ -309,7 +309,7 @@
       v11 = v17;
     }
 
-    if (v14 == 3)
+    if (fractionLevel == 3)
     {
       v13 = @"fs2";
     }
@@ -322,44 +322,44 @@
   }
 
   v29 = v12;
-  v18 = [MEMORY[0x277CCAB48] scrcString];
-  if (!v8)
+  scrcString = [MEMORY[0x277CCAB48] scrcString];
+  if (!coefficientCopy)
   {
-    v19 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v13 treePosition:v10];
-    [v18 appendAttributedString:v19];
+    v19 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v13 treePosition:positionCopy];
+    [scrcString appendAttributedString:v19];
   }
 
-  v20 = [(SCRCMathFractionExpression *)self numerator];
-  v21 = [v10 indexPathByAddingIndex:0];
-  v22 = [v20 dollarCodeDescriptionWithNumberOfOuterRadicals:a5 treePosition:v21];
-  [v18 appendAttributedString:v22];
+  numerator = [(SCRCMathFractionExpression *)self numerator];
+  v21 = [positionCopy indexPathByAddingIndex:0];
+  v22 = [numerator dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:v21];
+  [scrcString appendAttributedString:v22];
 
-  v23 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v11 treePosition:v10];
-  [v18 appendAttributedString:v23];
+  v23 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v11 treePosition:positionCopy];
+  [scrcString appendAttributedString:v23];
 
-  v24 = [(SCRCMathFractionExpression *)self denominator];
-  v25 = [v10 indexPathByAddingIndex:1];
-  v26 = [v24 dollarCodeDescriptionWithNumberOfOuterRadicals:a5 treePosition:v25];
-  [v18 appendAttributedString:v26];
+  denominator = [(SCRCMathFractionExpression *)self denominator];
+  v25 = [positionCopy indexPathByAddingIndex:1];
+  v26 = [denominator dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:v25];
+  [scrcString appendAttributedString:v26];
 
-  if (!v8)
+  if (!coefficientCopy)
   {
-    v27 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v29 treePosition:v10];
-    [v18 appendAttributedString:v27];
+    v27 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v29 treePosition:positionCopy];
+    [scrcString appendAttributedString:v27];
   }
 
-  return v18;
+  return scrcString;
 }
 
 - (id)mathMLString
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCRCMathFractionExpression *)self numerator];
-  v5 = [v4 mathMLString];
-  v6 = [(SCRCMathFractionExpression *)self denominator];
-  v7 = [v6 mathMLString];
-  v8 = [v3 stringWithFormat:@"%@%@", v5, v7];
+  numerator = [(SCRCMathFractionExpression *)self numerator];
+  mathMLString = [numerator mathMLString];
+  denominator = [(SCRCMathFractionExpression *)self denominator];
+  mathMLString2 = [denominator mathMLString];
+  v8 = [v3 stringWithFormat:@"%@%@", mathMLString, mathMLString2];
   v15[0] = @"linethickness";
   v9 = MEMORY[0x277CCACA8];
   [(SCRCMathFractionExpression *)self lineThickness];

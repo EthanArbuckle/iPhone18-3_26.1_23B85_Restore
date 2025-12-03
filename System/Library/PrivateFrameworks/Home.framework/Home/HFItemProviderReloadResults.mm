@@ -1,35 +1,35 @@
 @interface HFItemProviderReloadResults
 - (HFItemProviderReloadResults)init;
-- (HFItemProviderReloadResults)initWithAddedItems:(id)a3 removedItems:(id)a4 existingItems:(id)a5;
+- (HFItemProviderReloadResults)initWithAddedItems:(id)items removedItems:(id)removedItems existingItems:(id)existingItems;
 - (NSSet)allItems;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)resultsByMergingWithResults:(id)a3;
+- (id)resultsByMergingWithResults:(id)results;
 @end
 
 @implementation HFItemProviderReloadResults
 
 - (HFItemProviderReloadResults)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFItemProvider.m" lineNumber:48 description:@"HFItemProviderReloadResults should only be instantiated by subclasses of HFItemProvider"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemProvider.m" lineNumber:48 description:@"HFItemProviderReloadResults should only be instantiated by subclasses of HFItemProvider"];
 
   return 0;
 }
 
-- (HFItemProviderReloadResults)initWithAddedItems:(id)a3 removedItems:(id)a4 existingItems:(id)a5
+- (HFItemProviderReloadResults)initWithAddedItems:(id)items removedItems:(id)removedItems existingItems:(id)existingItems
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  removedItemsCopy = removedItems;
+  existingItemsCopy = existingItems;
   v19.receiver = self;
   v19.super_class = HFItemProviderReloadResults;
   v11 = [(HFItemProviderReloadResults *)&v19 init];
   if (v11)
   {
-    if (v8)
+    if (itemsCopy)
     {
-      v12 = v8;
+      v12 = itemsCopy;
     }
 
     else
@@ -40,9 +40,9 @@
     addedItems = v11->_addedItems;
     v11->_addedItems = v12;
 
-    if (v9)
+    if (removedItemsCopy)
     {
-      v14 = v9;
+      v14 = removedItemsCopy;
     }
 
     else
@@ -53,9 +53,9 @@
     removedItems = v11->_removedItems;
     v11->_removedItems = v14;
 
-    if (v10)
+    if (existingItemsCopy)
     {
-      v16 = v10;
+      v16 = existingItemsCopy;
     }
 
     else
@@ -70,31 +70,31 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFItemProviderReloadResults *)self addedItems];
-  v6 = [(HFItemProviderReloadResults *)self removedItems];
-  v7 = [(HFItemProviderReloadResults *)self existingItems];
-  v8 = [v4 initWithAddedItems:v5 removedItems:v6 existingItems:v7];
+  addedItems = [(HFItemProviderReloadResults *)self addedItems];
+  removedItems = [(HFItemProviderReloadResults *)self removedItems];
+  existingItems = [(HFItemProviderReloadResults *)self existingItems];
+  v8 = [v4 initWithAddedItems:addedItems removedItems:removedItems existingItems:existingItems];
 
   return v8;
 }
 
-- (id)resultsByMergingWithResults:(id)a3
+- (id)resultsByMergingWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFItemProviderReloadResults *)self addedItems];
-  v7 = [v4 addedItems];
-  v8 = [v6 setByAddingObjectsFromSet:v7];
-  v9 = [(HFItemProviderReloadResults *)self removedItems];
-  v10 = [v4 removedItems];
-  v11 = [v9 setByAddingObjectsFromSet:v10];
-  v12 = [(HFItemProviderReloadResults *)self existingItems];
-  v13 = [v4 existingItems];
+  addedItems = [(HFItemProviderReloadResults *)self addedItems];
+  addedItems2 = [resultsCopy addedItems];
+  v8 = [addedItems setByAddingObjectsFromSet:addedItems2];
+  removedItems = [(HFItemProviderReloadResults *)self removedItems];
+  removedItems2 = [resultsCopy removedItems];
+  v11 = [removedItems setByAddingObjectsFromSet:removedItems2];
+  existingItems = [(HFItemProviderReloadResults *)self existingItems];
+  existingItems2 = [resultsCopy existingItems];
 
-  v14 = [v12 setByAddingObjectsFromSet:v13];
+  v14 = [existingItems setByAddingObjectsFromSet:existingItems2];
   v15 = [v5 initWithAddedItems:v8 removedItems:v11 existingItems:v14];
 
   return v15;
@@ -102,9 +102,9 @@
 
 - (NSSet)allItems
 {
-  v3 = [(HFItemProviderReloadResults *)self existingItems];
-  v4 = [(HFItemProviderReloadResults *)self addedItems];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  existingItems = [(HFItemProviderReloadResults *)self existingItems];
+  addedItems = [(HFItemProviderReloadResults *)self addedItems];
+  v5 = [existingItems setByAddingObjectsFromSet:addedItems];
 
   return v5;
 }
@@ -114,10 +114,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFItemProviderReloadResults *)self addedItems];
-  v7 = [(HFItemProviderReloadResults *)self removedItems];
-  v8 = [(HFItemProviderReloadResults *)self existingItems];
-  v9 = [v3 stringWithFormat:@"<%@: %p, Added: %@ Removed: %@ Existing:%@>", v5, self, v6, v7, v8];
+  addedItems = [(HFItemProviderReloadResults *)self addedItems];
+  removedItems = [(HFItemProviderReloadResults *)self removedItems];
+  existingItems = [(HFItemProviderReloadResults *)self existingItems];
+  v9 = [v3 stringWithFormat:@"<%@: %p, Added: %@ Removed: %@ Existing:%@>", v5, self, addedItems, removedItems, existingItems];
 
   return v9;
 }

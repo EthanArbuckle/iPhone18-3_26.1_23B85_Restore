@@ -1,43 +1,43 @@
 @interface DNDSAppSpecificSettingsTypeAppConfigurationPredicate
-+ (id)appSpecificSettingsForManagedObject:(id)a3;
-+ (id)appSpecificSettingsFromDictionaryRepresentation:(id)a3;
-+ (id)dictionaryRepresentationForAppSpecificSettings:(id)a3;
-+ (void)completeManagedObject:(id)a3 forAppSpecificSettings:(id)a4;
++ (id)appSpecificSettingsForManagedObject:(id)object;
++ (id)appSpecificSettingsFromDictionaryRepresentation:(id)representation;
++ (id)dictionaryRepresentationForAppSpecificSettings:(id)settings;
++ (void)completeManagedObject:(id)object forAppSpecificSettings:(id)settings;
 @end
 
 @implementation DNDSAppSpecificSettingsTypeAppConfigurationPredicate
 
-+ (id)appSpecificSettingsForManagedObject:(id)a3
++ (id)appSpecificSettingsForManagedObject:(id)object
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = [a3 predicateFormat];
+  predicateFormat = [object predicateFormat];
+  v5 = [v3 predicateWithFormat:predicateFormat];
+
+  return v5;
+}
+
++ (void)completeManagedObject:(id)object forAppSpecificSettings:(id)settings
+{
+  objectCopy = object;
+  predicateFormat = [settings predicateFormat];
+  [objectCopy setPredicateFormat:predicateFormat];
+}
+
++ (id)appSpecificSettingsFromDictionaryRepresentation:(id)representation
+{
+  v3 = MEMORY[0x277CCAC30];
+  v4 = [representation objectForKeyedSubscript:@"AppConfigurationActionPredicate"];
   v5 = [v3 predicateWithFormat:v4];
 
   return v5;
 }
 
-+ (void)completeManagedObject:(id)a3 forAppSpecificSettings:(id)a4
++ (id)dictionaryRepresentationForAppSpecificSettings:(id)settings
 {
-  v5 = a3;
-  v6 = [a4 predicateFormat];
-  [v5 setPredicateFormat:v6];
-}
-
-+ (id)appSpecificSettingsFromDictionaryRepresentation:(id)a3
-{
-  v3 = MEMORY[0x277CCAC30];
-  v4 = [a3 objectForKeyedSubscript:@"AppConfigurationActionPredicate"];
-  v5 = [v3 predicateWithFormat:v4];
-
-  return v5;
-}
-
-+ (id)dictionaryRepresentationForAppSpecificSettings:(id)a3
-{
-  v3 = a3;
+  settingsCopy = settings;
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
-  v5 = [v3 predicateFormat];
-  [v4 setObject:v5 forKeyedSubscript:@"AppConfigurationActionPredicate"];
+  predicateFormat = [settingsCopy predicateFormat];
+  [v4 setObject:predicateFormat forKeyedSubscript:@"AppConfigurationActionPredicate"];
 
   v6 = [v4 copy];
 

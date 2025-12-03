@@ -2,7 +2,7 @@
 - (BOOL)resetLocked;
 - (PETAggregateStateStorageInMemory)init;
 - (void)dealloc;
-- (void)expand:(unint64_t)a3 andRunWithLock:(id)a4;
+- (void)expand:(unint64_t)expand andRunWithLock:(id)lock;
 - (void)reset;
 @end
 
@@ -27,20 +27,20 @@
   return 1;
 }
 
-- (void)expand:(unint64_t)a3 andRunWithLock:(id)a4
+- (void)expand:(unint64_t)expand andRunWithLock:(id)lock
 {
-  v7 = a4;
-  if (!v7)
+  lockCopy = lock;
+  if (!lockCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PETAggregateStateStorage.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PETAggregateStateStorage.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   pthread_mutex_lock(&self->_lock);
-  if (a3)
+  if (expand)
   {
     v8 = [(NSMutableData *)self->_data length];
-    [(NSMutableData *)self->_data increaseLengthBy:a3];
+    [(NSMutableData *)self->_data increaseLengthBy:expand];
   }
 
   else
@@ -49,10 +49,10 @@
   }
 
   v13 = 0;
-  v9 = v7[2](v7, [(NSMutableData *)self->_data mutableBytes], [(NSMutableData *)self->_data length], v8, &v13);
-  if (a3 && (v9 & 1) == 0)
+  v9 = lockCopy[2](lockCopy, [(NSMutableData *)self->_data mutableBytes], [(NSMutableData *)self->_data length], v8, &v13);
+  if (expand && (v9 & 1) == 0)
   {
-    [(NSMutableData *)self->_data replaceBytesInRange:[(NSMutableData *)self->_data length]- a3 withBytes:a3 length:0, 0];
+    [(NSMutableData *)self->_data replaceBytesInRange:[(NSMutableData *)self->_data length]- expand withBytes:expand length:0, 0];
   }
 
   if (v13 == 1)

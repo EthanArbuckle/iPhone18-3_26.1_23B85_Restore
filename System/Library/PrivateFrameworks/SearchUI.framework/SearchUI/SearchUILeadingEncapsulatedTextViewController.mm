@@ -1,15 +1,15 @@
 @interface SearchUILeadingEncapsulatedTextViewController
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (id)setupView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUILeadingEncapsulatedTextViewController
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = [a3 pinText];
-  v4 = [v3 length] != 0;
+  pinText = [model pinText];
+  v4 = [pinText length] != 0;
 
   return v4;
 }
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v16.receiver = self;
   v16.super_class = SearchUILeadingEncapsulatedTextViewController;
-  v4 = a3;
-  [(SearchUILeadingViewController *)&v16 updateWithRowModel:v4];
-  v5 = [v4 pinText];
+  modelCopy = model;
+  [(SearchUILeadingViewController *)&v16 updateWithRowModel:modelCopy];
+  pinText = [modelCopy pinText];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [v5 lowercaseString];
-  v8 = [v6 stringWithFormat:@"%@.square.fill", v7];
+  lowercaseString = [pinText lowercaseString];
+  v8 = [v6 stringWithFormat:@"%@.square.fill", lowercaseString];
 
   v9 = [SearchUISymbolImage uiImageWithSymbolName:v8];
 
@@ -46,17 +46,17 @@
 
   else
   {
-    [v10 setText:v5];
+    [v10 setText:pinText];
     [v11 setEncapsulationStyle:2];
     [v11 setIsEmphasized:1];
     v12 = [MEMORY[0x1E69D9138] preferredMonospacedFontForTextStyle:*MEMORY[0x1E69DDD40]];
   }
 
-  v14 = [(SearchUILeadingViewController *)self view];
-  [v14 setSfText:v11];
+  view = [(SearchUILeadingViewController *)self view];
+  [view setSfText:v11];
 
-  v15 = [(SearchUILeadingViewController *)self view];
-  [v15 setFont:v12];
+  view2 = [(SearchUILeadingViewController *)self view];
+  [view2 setFont:v12];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface _TVRoundButtonContent
-- (CGRect)_frameForImageView:(id)a3;
+- (CGRect)_frameForImageView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation _TVRoundButtonContent
 
-- (CGRect)_frameForImageView:(id)a3
+- (CGRect)_frameForImageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_TVRoundButtonContent *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 bounds];
+  [viewCopy bounds];
   v14 = v13;
   v16 = v15;
   v33.origin.x = v6;
@@ -26,7 +26,7 @@
   v34.size.width = v10;
   v34.size.height = v12;
   MidY = CGRectGetMidY(v34);
-  [v4 tv_margin];
+  [viewCopy tv_margin];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -68,10 +68,10 @@
   v5.receiver = self;
   v5.super_class = _TVRoundButtonContent;
   [(TVButtonContent *)&v5 layoutSubviews];
-  v3 = [(TVButtonContent *)self imageView];
-  v4 = [(TVButtonContent *)self imageView];
-  [(_TVRoundButtonContent *)self _frameForImageView:v4];
-  [v3 setFrame:?];
+  imageView = [(TVButtonContent *)self imageView];
+  imageView2 = [(TVButtonContent *)self imageView];
+  [(_TVRoundButtonContent *)self _frameForImageView:imageView2];
+  [imageView setFrame:?];
 }
 
 @end

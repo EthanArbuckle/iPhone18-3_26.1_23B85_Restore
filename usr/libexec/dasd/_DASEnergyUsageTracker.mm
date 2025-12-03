@@ -1,21 +1,21 @@
 @interface _DASEnergyUsageTracker
-+ (BOOL)shouldTrackActivity:(id)a3;
-+ (id)instanceWithReportingHandler:(id)a3;
++ (BOOL)shouldTrackActivity:(id)activity;
++ (id)instanceWithReportingHandler:(id)handler;
 + (id)sharedInstance;
 - (_DASEnergyUsageTracker)init;
-- (double)accountedNewEnergy:(id)a3;
+- (double)accountedNewEnergy:(id)energy;
 - (double)dailyBudget;
-- (double)energyConsumed:(id)a3;
-- (double)energyConsumedFrom:(double)a3;
-- (id)bundleInformationWithNetworkQuality:(id)a3;
-- (id)nameStringForActivity:(id)a3;
-- (id)trackingBundlesWithParameters:(id)a3;
-- (void)energyConsumptionHandler:(id)a3;
+- (double)energyConsumed:(id)consumed;
+- (double)energyConsumedFrom:(double)from;
+- (id)bundleInformationWithNetworkQuality:(id)quality;
+- (id)nameStringForActivity:(id)activity;
+- (id)trackingBundlesWithParameters:(id)parameters;
+- (void)energyConsumptionHandler:(id)handler;
 - (void)initializePluginTrigger;
-- (void)startTrackingActivity:(id)a3;
-- (void)startTrackingActivityWithParameters:(id)a3;
-- (void)stopTrackingActivity:(id)a3;
-- (void)stopTrackingActivityWithParameters:(id)a3;
+- (void)startTrackingActivity:(id)activity;
+- (void)startTrackingActivityWithParameters:(id)parameters;
+- (void)stopTrackingActivity:(id)activity;
+- (void)stopTrackingActivityWithParameters:(id)parameters;
 @end
 
 @implementation _DASEnergyUsageTracker
@@ -77,42 +77,42 @@
   return v3;
 }
 
-+ (id)instanceWithReportingHandler:(id)a3
++ (id)instanceWithReportingHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[_DASEnergyUsageTracker sharedInstance];
-  [v4 setHandler:v3];
+  [v4 setHandler:handlerCopy];
 
   return v4;
 }
 
-+ (BOOL)shouldTrackActivity:(id)a3
++ (BOOL)shouldTrackActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = +[_CDClientContext userContext];
-  if ([_DASPhotosPolicy isActivity:v3 consideredNonDiscretionary:v4])
+  if ([_DASPhotosPolicy isActivity:activityCopy consideredNonDiscretionary:v4])
   {
     goto LABEL_10;
   }
 
   v5 = +[_CDContextQueries keyPathForPluginStatus];
   v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     goto LABEL_10;
   }
 
-  v8 = [v3 schedulingPriority];
-  if (v8 != _DASSchedulingPriorityUtility)
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority != _DASSchedulingPriorityUtility)
   {
     goto LABEL_7;
   }
 
-  v9 = [v3 widgetID];
+  widgetID = [activityCopy widgetID];
 
-  if (v9)
+  if (widgetID)
   {
     goto LABEL_10;
   }
@@ -120,47 +120,47 @@
   if (![_DASEnergyBudgetPolicy budgetIsPositive:v4])
   {
 LABEL_7:
-    v11 = [v3 launchReason];
-    v12 = [v11 isEqualToString:_DASLaunchReasonBackgroundRemoteNotification];
+    launchReason = [activityCopy launchReason];
+    v12 = [launchReason isEqualToString:_DASLaunchReasonBackgroundRemoteNotification];
 
     if (!v12)
     {
       goto LABEL_9;
     }
 
-    v13 = v3;
+    v13 = activityCopy;
     objc_sync_enter(v13);
-    v14 = [v13 policyResponseMetadata];
-    v15 = [v14 objectForKeyedSubscript:@"Application Policy"];
-    v16 = [v15 reason];
+    policyResponseMetadata = [v13 policyResponseMetadata];
+    v15 = [policyResponseMetadata objectForKeyedSubscript:@"Application Policy"];
+    reason = [v15 reason];
 
     objc_sync_exit(v13);
-    if ((v16 & 2) == 0)
+    if ((reason & 2) == 0)
     {
 LABEL_9:
-      v10 = [v3 budgeted];
+      budgeted = [activityCopy budgeted];
       goto LABEL_11;
     }
 
 LABEL_10:
-    v10 = 0;
+    budgeted = 0;
     goto LABEL_11;
   }
 
-  v10 = 1;
+  budgeted = 1;
 LABEL_11:
 
-  return v10;
+  return budgeted;
 }
 
-- (void)energyConsumptionHandler:(id)a3
+- (void)energyConsumptionHandler:(id)handler
 {
-  [(_DASEnergyUsageTracker *)self energyConsumed:a3];
+  [(_DASEnergyUsageTracker *)self energyConsumed:handler];
   if (v4 > 0.0)
   {
     v5 = v4;
-    v6 = [(_DASEnergyUsageTracker *)self handler];
-    v6[2](v5);
+    handler = [(_DASEnergyUsageTracker *)self handler];
+    handler[2](v5);
   }
 }
 
@@ -184,9 +184,9 @@ LABEL_11:
   [(_CDContext *)self->_context registerCallback:v9];
 }
 
-- (id)bundleInformationWithNetworkQuality:(id)a3
+- (id)bundleInformationWithNetworkQuality:(id)quality
 {
-  v3 = a3;
+  qualityCopy = quality;
   v4 = +[_CDClientContext userContext];
   if ([_CDNetworkContext cellInterfaceUp:v4])
   {
@@ -201,13 +201,13 @@ LABEL_11:
       v6 = *(&off_1001B58E8 + v5);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"cell"];
+    [qualityCopy setObject:v6 forKeyedSubscript:@"cell"];
     v7 = [_CDNetworkContext cellQuality:v4];
   }
 
   else
   {
-    [v3 setObject:@"Wifi" forKeyedSubscript:@"wifi"];
+    [qualityCopy setObject:@"Wifi" forKeyedSubscript:@"wifi"];
     v7 = [_CDNetworkContext wifiQuality:v4];
   }
 
@@ -246,20 +246,20 @@ LABEL_14:
   }
 
 LABEL_17:
-  [v3 setObject:v8 forKeyedSubscript:@"quality"];
+  [qualityCopy setObject:v8 forKeyedSubscript:@"quality"];
 
-  return v3;
+  return qualityCopy;
 }
 
-- (double)energyConsumed:(id)a3
+- (double)energyConsumed:(id)consumed
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"BLMUUIDForDuet"];
-  v6 = [v4 objectForKeyedSubscript:@"BLMEnergyForDuet"];
-  v7 = [v4 objectForKeyedSubscript:@"totalAccumulatedEnergy"];
-  v8 = [v4 objectForKeyedSubscript:@"BLMEnergyResponseTimestamp"];
+  consumedCopy = consumed;
+  v5 = [consumedCopy objectForKeyedSubscript:@"BLMUUIDForDuet"];
+  v6 = [consumedCopy objectForKeyedSubscript:@"BLMEnergyForDuet"];
+  v7 = [consumedCopy objectForKeyedSubscript:@"totalAccumulatedEnergy"];
+  v8 = [consumedCopy objectForKeyedSubscript:@"BLMEnergyResponseTimestamp"];
 
-  if (v4 && v6 && v5 && v7)
+  if (consumedCopy && v6 && v5 && v7)
   {
     pllReportID = self->_pllReportID;
     if (!pllReportID || ([(NSString *)pllReportID isEqual:v5]& 1) == 0)
@@ -308,11 +308,11 @@ LABEL_17:
   return v18;
 }
 
-- (double)energyConsumedFrom:(double)a3
+- (double)energyConsumedFrom:(double)from
 {
   if (self->_initialReading)
   {
-    self->_discEnergyConsumed = a3;
+    self->_discEnergyConsumed = from;
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
@@ -328,11 +328,11 @@ LABEL_17:
 
   else
   {
-    v8 = a3 - self->_discEnergyConsumed;
+    v8 = from - self->_discEnergyConsumed;
     result = 0.0;
     if (v8 >= 0.0)
     {
-      self->_discEnergyConsumed = a3;
+      self->_discEnergyConsumed = from;
       v9 = self->_log;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -386,52 +386,52 @@ LABEL_8:
   return v5;
 }
 
-- (id)nameStringForActivity:(id)a3
+- (id)nameStringForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 name];
-  if (v4)
+  activityCopy = activity;
+  name = [activityCopy name];
+  if (name)
   {
-    v5 = [v3 uuid];
+    uuid = [activityCopy uuid];
 
-    if (v5)
+    if (uuid)
     {
-      v6 = [v3 name];
-      v7 = [v3 uuid];
-      v8 = [v7 UUIDString];
-      v9 = [v8 substringToIndex:6];
-      v4 = [NSString stringWithFormat:@"%@:%@", v6, v9];
+      name2 = [activityCopy name];
+      uuid2 = [activityCopy uuid];
+      uUIDString = [uuid2 UUIDString];
+      v9 = [uUIDString substringToIndex:6];
+      name = [NSString stringWithFormat:@"%@:%@", name2, v9];
     }
 
     else
     {
-      v4 = 0;
+      name = 0;
     }
   }
 
-  return v4;
+  return name;
 }
 
-- (void)startTrackingActivity:(id)a3
+- (void)startTrackingActivity:(id)activity
 {
-  v4 = a3;
-  if ([_DASEnergyUsageTracker shouldTrackActivity:v4])
+  activityCopy = activity;
+  if ([_DASEnergyUsageTracker shouldTrackActivity:activityCopy])
   {
-    v5 = [_DASSystemBudgetManager identifierWithActivity:v4];
-    v6 = [_DASSystemBudgetManager involvedProcessesForActivity:v4 withIdentifier:v5];
+    v5 = [_DASSystemBudgetManager identifierWithActivity:activityCopy];
+    v6 = [_DASSystemBudgetManager involvedProcessesForActivity:activityCopy withIdentifier:v5];
     if ([v6 count])
     {
-      v7 = [(_DASEnergyUsageTracker *)self nameStringForActivity:v4];
+      v7 = [(_DASEnergyUsageTracker *)self nameStringForActivity:activityCopy];
       if (v7)
       {
         v8 = self->_startedDASActivities;
         objc_sync_enter(v8);
-        [(NSMutableSet *)self->_startedDASActivities addObject:v4];
+        [(NSMutableSet *)self->_startedDASActivities addObject:activityCopy];
         objc_sync_exit(v8);
 
         v9 = +[NSMutableDictionary dictionary];
         [v9 setObject:v6 forKeyedSubscript:@"involvedIdentifiers"];
-        if ([v4 requiresNetwork])
+        if ([activityCopy requiresNetwork])
         {
           [v9 setObject:&__kCFBooleanTrue forKeyedSubscript:@"requiresNetwork"];
           v10 = [(_DASEnergyUsageTracker *)self bundleInformationWithNetworkQuality:v9];
@@ -443,17 +443,17 @@ LABEL_8:
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
         {
           v12 = log;
-          v13 = [v4 bundleId];
-          v14 = [v4 relatedApplications];
-          v15 = [v4 involvedProcesses];
+          bundleId = [activityCopy bundleId];
+          relatedApplications = [activityCopy relatedApplications];
+          involvedProcesses = [activityCopy involvedProcesses];
           v30 = 138413314;
           v31 = v7;
           v32 = 2112;
-          v33 = v13;
+          v33 = bundleId;
           v34 = 2112;
-          v35 = v14;
+          v35 = relatedApplications;
           v36 = 2112;
-          v37 = v15;
+          v37 = involvedProcesses;
           v38 = 2112;
           v39 = v9;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Report to PowerLog start tracking activity (from daemon) %@ with bundle name %@, relatedApplications %@, and involvedProcesses %@ with info %@", &v30, 0x34u);
@@ -467,7 +467,7 @@ LABEL_8:
         v23 = self->_log;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          sub_10011C9E0(v4, v23, v24, v25, v26, v27, v28, v29);
+          sub_10011C9E0(activityCopy, v23, v24, v25, v26, v27, v28, v29);
         }
       }
     }
@@ -477,16 +477,16 @@ LABEL_8:
       v16 = self->_log;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        sub_10011CA4C(v4, v16, v17, v18, v19, v20, v21, v22);
+        sub_10011CA4C(activityCopy, v16, v17, v18, v19, v20, v21, v22);
       }
     }
   }
 }
 
-- (void)stopTrackingActivity:(id)a3
+- (void)stopTrackingActivity:(id)activity
 {
-  v4 = a3;
-  v26 = [(_DASEnergyUsageTracker *)self nameStringForActivity:v4];
+  activityCopy = activity;
+  v26 = [(_DASEnergyUsageTracker *)self nameStringForActivity:activityCopy];
   if (v26)
   {
     obj = self->_startedDASActivities;
@@ -511,9 +511,9 @@ LABEL_8:
           }
 
           v10 = *(*(&v27 + 1) + 8 * i);
-          v11 = [v4 uuid];
-          v12 = [v10 uuid];
-          v13 = [v11 isEqual:v12];
+          uuid = [activityCopy uuid];
+          uuid2 = [v10 uuid];
+          v13 = [uuid isEqual:uuid2];
 
           if (v13)
           {
@@ -521,7 +521,7 @@ LABEL_8:
 
             objc_sync_exit(obj);
             v14 = +[NSMutableDictionary dictionary];
-            if ([v4 requiresNetwork])
+            if ([activityCopy requiresNetwork])
             {
               [v14 setObject:&__kCFBooleanTrue forKeyedSubscript:@"requiresNetwork"];
             }
@@ -530,11 +530,11 @@ LABEL_8:
             if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
             {
               v16 = log;
-              v17 = [v4 bundleId];
+              bundleId = [activityCopy bundleId];
               *buf = 138412802;
               v32 = v26;
               v33 = 2112;
-              v34 = v17;
+              v34 = bundleId;
               v35 = 2112;
               v36 = v14;
               _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Report to PowerLog stop tracking activity (from daemon) %@ with bundle name %@ and info %@", buf, 0x20u);
@@ -564,21 +564,21 @@ LABEL_8:
     v18 = self->_log;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_10011CAB8(v4, v18, v19, v20, v21, v22, v23, v24);
+      sub_10011CAB8(activityCopy, v18, v19, v20, v21, v22, v23, v24);
     }
   }
 
 LABEL_18:
 }
 
-- (double)accountedNewEnergy:(id)a3
+- (double)accountedNewEnergy:(id)energy
 {
-  v3 = a3;
+  energyCopy = energy;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  v4 = [energyCopy countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (!v4)
   {
     v10 = 0.0;
@@ -599,12 +599,12 @@ LABEL_18:
       v12 = v9;
       if (*v28 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(energyCopy);
       }
 
       v13 = *(*(&v27 + 1) + 8 * i);
       v14 = [v13 objectForKeyedSubscript:{@"updateType", v25}];
-      v15 = [v14 unsignedCharValue];
+      unsignedCharValue = [v14 unsignedCharValue];
 
       v16 = [v13 objectForKeyedSubscript:@"energy"];
       [v16 doubleValue];
@@ -616,9 +616,9 @@ LABEL_18:
       }
 
       v9 = v12;
-      if (v15 != 2)
+      if (unsignedCharValue != 2)
       {
-        if (v15 != 1)
+        if (unsignedCharValue != 1)
         {
           continue;
         }
@@ -655,7 +655,7 @@ LABEL_17:
       v10 = v10 + v18;
     }
 
-    v6 = [v3 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    v6 = [energyCopy countByEnumeratingWithState:&v27 objects:v33 count:16];
   }
 
   while (v6);
@@ -670,12 +670,12 @@ LABEL_23:
   return v10;
 }
 
-- (id)trackingBundlesWithParameters:(id)a3
+- (id)trackingBundlesWithParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:kDASBudgetKeyBundleIDs];
-  v5 = [v3 objectForKeyedSubscript:kDASBudgetKeyPIDs];
-  v6 = [v3 objectForKeyedSubscript:kDASBudgetKeyProcessNames];
+  parametersCopy = parameters;
+  v4 = [parametersCopy objectForKeyedSubscript:kDASBudgetKeyBundleIDs];
+  v5 = [parametersCopy objectForKeyedSubscript:kDASBudgetKeyPIDs];
+  v6 = [parametersCopy objectForKeyedSubscript:kDASBudgetKeyProcessNames];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -761,17 +761,17 @@ LABEL_10:
   return v9;
 }
 
-- (void)startTrackingActivityWithParameters:(id)a3
+- (void)startTrackingActivityWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   context = self->_context;
   v6 = +[_CDContextQueries keyPathForPluginStatus];
   v7 = [(_CDContext *)context objectForKeyedSubscript:v6];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if ((v8 & 1) == 0 && [_DASEnergyBudgetPolicy budgetIsPositive:self->_context])
+  if ((bOOLValue & 1) == 0 && [_DASEnergyBudgetPolicy budgetIsPositive:self->_context])
   {
-    v9 = [(_DASEnergyUsageTracker *)self trackingBundlesWithParameters:v4];
+    v9 = [(_DASEnergyUsageTracker *)self trackingBundlesWithParameters:parametersCopy];
     if (v9)
     {
       v10 = self->_startedActivities;
@@ -793,7 +793,7 @@ LABEL_10:
         v20 = 138412546;
         v21 = v17;
         v22 = 2112;
-        v23 = v4;
+        v23 = parametersCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Report to PowerLog start tracking activity %@ from parameters %@", &v20, 0x16u);
       }
 
@@ -804,10 +804,10 @@ LABEL_10:
   }
 }
 
-- (void)stopTrackingActivityWithParameters:(id)a3
+- (void)stopTrackingActivityWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(_DASEnergyUsageTracker *)self trackingBundlesWithParameters:v4];
+  parametersCopy = parameters;
+  v5 = [(_DASEnergyUsageTracker *)self trackingBundlesWithParameters:parametersCopy];
   if (v5)
   {
     v6 = self->_startedActivities;
@@ -831,7 +831,7 @@ LABEL_10:
         v15 = 138412546;
         v16 = v5;
         v17 = 2112;
-        v18 = v4;
+        v18 = parametersCopy;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Report to PowerLog stop tracking activity %@ from parameters %@", &v15, 0x16u);
       }
 

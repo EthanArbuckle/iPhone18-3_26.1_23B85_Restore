@@ -1,30 +1,30 @@
 @interface AWDMMCSGetRequestInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAuthHttpInfos:(id)a3;
-- (void)addCancelError:(id)a3;
-- (void)addCompleteHttpInfos:(id)a3;
-- (void)addContainerHttpInfos:(id)a3;
-- (void)addError:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addAuthHttpInfos:(id)infos;
+- (void)addCancelError:(id)error;
+- (void)addCompleteHttpInfos:(id)infos;
+- (void)addContainerHttpInfos:(id)infos;
+- (void)addError:(id)error;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAllItemsFailed:(BOOL)a3;
-- (void)setHasAllItemsSuccessful:(BOOL)a3;
-- (void)setHasCancelledErrorCode:(BOOL)a3;
-- (void)setHasItemCount:(BOOL)a3;
-- (void)setHasItemCountFailed:(BOOL)a3;
-- (void)setHasItemCountSuccessful:(BOOL)a3;
-- (void)setHasItemsNeedingChunks:(BOOL)a3;
-- (void)setHasLocalBytes:(BOOL)a3;
-- (void)setHasRequestErrorCode:(BOOL)a3;
-- (void)setHasResumedBytes:(BOOL)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAllItemsFailed:(BOOL)failed;
+- (void)setHasAllItemsSuccessful:(BOOL)successful;
+- (void)setHasCancelledErrorCode:(BOOL)code;
+- (void)setHasItemCount:(BOOL)count;
+- (void)setHasItemCountFailed:(BOOL)failed;
+- (void)setHasItemCountSuccessful:(BOOL)successful;
+- (void)setHasItemsNeedingChunks:(BOOL)chunks;
+- (void)setHasLocalBytes:(BOOL)bytes;
+- (void)setHasRequestErrorCode:(BOOL)code;
+- (void)setHasResumedBytes:(BOOL)bytes;
+- (void)setHasStartTime:(BOOL)time;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMMCSGetRequestInfo
@@ -45,9 +45,9 @@
   [(AWDMMCSGetRequestInfo *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 8;
   }
@@ -75,9 +75,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasCancelledErrorCode:(BOOL)a3
+- (void)setHasCancelledErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 32;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRequestErrorCode:(BOOL)a3
+- (void)setHasRequestErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 1024;
   }
@@ -105,9 +105,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasItemCount:(BOOL)a3
+- (void)setHasItemCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -120,9 +120,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasItemsNeedingChunks:(BOOL)a3
+- (void)setHasItemsNeedingChunks:(BOOL)chunks
 {
-  if (a3)
+  if (chunks)
   {
     v3 = 512;
   }
@@ -135,9 +135,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasLocalBytes:(BOOL)a3
+- (void)setHasLocalBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 2;
   }
@@ -150,9 +150,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasResumedBytes:(BOOL)a3
+- (void)setHasResumedBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 4;
   }
@@ -165,7 +165,7 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)addAuthHttpInfos:(id)a3
+- (void)addAuthHttpInfos:(id)infos
 {
   authHttpInfos = self->_authHttpInfos;
   if (!authHttpInfos)
@@ -174,10 +174,10 @@
     self->_authHttpInfos = authHttpInfos;
   }
 
-  [(NSMutableArray *)authHttpInfos addObject:a3];
+  [(NSMutableArray *)authHttpInfos addObject:infos];
 }
 
-- (void)addContainerHttpInfos:(id)a3
+- (void)addContainerHttpInfos:(id)infos
 {
   containerHttpInfos = self->_containerHttpInfos;
   if (!containerHttpInfos)
@@ -186,10 +186,10 @@
     self->_containerHttpInfos = containerHttpInfos;
   }
 
-  [(NSMutableArray *)containerHttpInfos addObject:a3];
+  [(NSMutableArray *)containerHttpInfos addObject:infos];
 }
 
-- (void)addCompleteHttpInfos:(id)a3
+- (void)addCompleteHttpInfos:(id)infos
 {
   completeHttpInfos = self->_completeHttpInfos;
   if (!completeHttpInfos)
@@ -198,10 +198,10 @@
     self->_completeHttpInfos = completeHttpInfos;
   }
 
-  [(NSMutableArray *)completeHttpInfos addObject:a3];
+  [(NSMutableArray *)completeHttpInfos addObject:infos];
 }
 
-- (void)addCancelError:(id)a3
+- (void)addCancelError:(id)error
 {
   cancelErrors = self->_cancelErrors;
   if (!cancelErrors)
@@ -210,10 +210,10 @@
     self->_cancelErrors = cancelErrors;
   }
 
-  [(NSMutableArray *)cancelErrors addObject:a3];
+  [(NSMutableArray *)cancelErrors addObject:error];
 }
 
-- (void)addError:(id)a3
+- (void)addError:(id)error
 {
   errors = self->_errors;
   if (!errors)
@@ -222,12 +222,12 @@
     self->_errors = errors;
   }
 
-  [(NSMutableArray *)errors addObject:a3];
+  [(NSMutableArray *)errors addObject:error];
 }
 
-- (void)setHasAllItemsSuccessful:(BOOL)a3
+- (void)setHasAllItemsSuccessful:(BOOL)successful
 {
-  if (a3)
+  if (successful)
   {
     v3 = 4096;
   }
@@ -240,9 +240,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasItemCountSuccessful:(BOOL)a3
+- (void)setHasItemCountSuccessful:(BOOL)successful
 {
-  if (a3)
+  if (successful)
   {
     v3 = 256;
   }
@@ -255,9 +255,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasAllItemsFailed:(BOOL)a3
+- (void)setHasAllItemsFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 2048;
   }
@@ -270,9 +270,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasItemCountFailed:(BOOL)a3
+- (void)setHasItemCountFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 128;
   }
@@ -295,51 +295,51 @@
 - (id)dictionaryRepresentation
 {
   v68 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   clientId = self->_clientId;
   if (clientId)
   {
-    [v3 setObject:clientId forKey:@"clientId"];
+    [dictionary setObject:clientId forKey:@"clientId"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_startTime), @"startTime"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_startTime), @"startTime"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_duration), @"duration"}];
   }
 
   cancelledErrorDomain = self->_cancelledErrorDomain;
   if (cancelledErrorDomain)
   {
-    [v3 setObject:cancelledErrorDomain forKey:@"cancelledErrorDomain"];
+    [dictionary setObject:cancelledErrorDomain forKey:@"cancelledErrorDomain"];
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cancelledErrorCode), @"cancelledErrorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_cancelledErrorCode), @"cancelledErrorCode"}];
   }
 
   requestErrorDomain = self->_requestErrorDomain;
   if (requestErrorDomain)
   {
-    [v3 setObject:requestErrorDomain forKey:@"requestErrorDomain"];
+    [dictionary setObject:requestErrorDomain forKey:@"requestErrorDomain"];
   }
 
   v8 = self->_has;
   if ((v8 & 0x400) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_requestErrorCode), @"requestErrorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_requestErrorCode), @"requestErrorCode"}];
     v8 = self->_has;
     if ((v8 & 0x40) == 0)
     {
@@ -358,7 +358,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_itemCount), @"itemCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_itemCount), @"itemCount"}];
   v8 = self->_has;
   if ((v8 & 0x200) == 0)
   {
@@ -372,7 +372,7 @@ LABEL_18:
   }
 
 LABEL_76:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_itemsNeedingChunks), @"itemsNeedingChunks"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_itemsNeedingChunks), @"itemsNeedingChunks"}];
   v8 = self->_has;
   if ((v8 & 2) == 0)
   {
@@ -386,11 +386,11 @@ LABEL_19:
   }
 
 LABEL_77:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_localBytes), @"localBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_localBytes), @"localBytes"}];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_20:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_resumedBytes), @"resumedBytes"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_resumedBytes), @"resumedBytes"}];
   }
 
 LABEL_21:
@@ -425,7 +425,7 @@ LABEL_21:
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"authHttpInfos"];
+    [dictionary setObject:v9 forKey:@"authHttpInfos"];
   }
 
   if ([(NSMutableArray *)self->_containerHttpInfos count])
@@ -459,7 +459,7 @@ LABEL_21:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"containerHttpInfos"];
+    [dictionary setObject:v15 forKey:@"containerHttpInfos"];
   }
 
   if ([(NSMutableArray *)self->_completeHttpInfos count])
@@ -493,7 +493,7 @@ LABEL_21:
       while (v24);
     }
 
-    [v3 setObject:v21 forKey:@"completeHttpInfos"];
+    [dictionary setObject:v21 forKey:@"completeHttpInfos"];
   }
 
   if ([(NSMutableArray *)self->_cancelErrors count])
@@ -527,7 +527,7 @@ LABEL_21:
       while (v30);
     }
 
-    [v3 setObject:v27 forKey:@"cancelError"];
+    [dictionary setObject:v27 forKey:@"cancelError"];
   }
 
   if ([(NSMutableArray *)self->_errors count])
@@ -561,13 +561,13 @@ LABEL_21:
       while (v36);
     }
 
-    [v3 setObject:v33 forKey:@"error"];
+    [dictionary setObject:v33 forKey:@"error"];
   }
 
   v39 = self->_has;
   if ((v39 & 0x1000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_allItemsSuccessful), @"allItemsSuccessful"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_allItemsSuccessful), @"allItemsSuccessful"}];
     v39 = self->_has;
     if ((v39 & 0x100) == 0)
     {
@@ -586,7 +586,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_itemCountSuccessful), @"itemCountSuccessful"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_itemCountSuccessful), @"itemCountSuccessful"}];
   v39 = self->_has;
   if ((v39 & 0x800) == 0)
   {
@@ -600,25 +600,25 @@ LABEL_69:
   }
 
 LABEL_81:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_allItemsFailed), @"allItemsFailed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_allItemsFailed), @"allItemsFailed"}];
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_70:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_itemCountFailed), @"itemCountFailed"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_itemCountFailed), @"itemCountFailed"}];
   }
 
 LABEL_71:
   ckContainerId = self->_ckContainerId;
   if (ckContainerId)
   {
-    [v3 setObject:ckContainerId forKey:@"ckContainerId"];
+    [dictionary setObject:ckContainerId forKey:@"ckContainerId"];
   }
 
   v41 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v76 = *MEMORY[0x29EDCA608];
   if ((*&self->_has & 0x10) != 0)
@@ -926,54 +926,54 @@ LABEL_61:
   v43 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 0x10) != 0)
   {
-    *(a3 + 5) = self->_timestamp;
-    *(a3 + 78) |= 0x10u;
+    *(to + 5) = self->_timestamp;
+    *(to + 78) |= 0x10u;
   }
 
   if (self->_clientId)
   {
-    [a3 setClientId:?];
+    [to setClientId:?];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 4) = self->_startTime;
-    *(a3 + 78) |= 8u;
+    *(to + 4) = self->_startTime;
+    *(to + 78) |= 8u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_duration;
-    *(a3 + 78) |= 1u;
+    *(to + 1) = self->_duration;
+    *(to + 78) |= 1u;
   }
 
   if (self->_cancelledErrorDomain)
   {
-    [a3 setCancelledErrorDomain:?];
+    [to setCancelledErrorDomain:?];
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(a3 + 16) = self->_cancelledErrorCode;
-    *(a3 + 78) |= 0x20u;
+    *(to + 16) = self->_cancelledErrorCode;
+    *(to + 78) |= 0x20u;
   }
 
   if (self->_requestErrorDomain)
   {
-    [a3 setRequestErrorDomain:?];
+    [to setRequestErrorDomain:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x400) != 0)
   {
-    *(a3 + 34) = self->_requestErrorCode;
-    *(a3 + 78) |= 0x400u;
+    *(to + 34) = self->_requestErrorCode;
+    *(to + 78) |= 0x400u;
     v6 = self->_has;
     if ((v6 & 0x40) == 0)
     {
@@ -992,8 +992,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(a3 + 30) = self->_itemCount;
-  *(a3 + 78) |= 0x40u;
+  *(to + 30) = self->_itemCount;
+  *(to + 78) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 0x200) == 0)
   {
@@ -1004,8 +1004,8 @@ LABEL_18:
     }
 
 LABEL_53:
-    *(a3 + 2) = self->_localBytes;
-    *(a3 + 78) |= 2u;
+    *(to + 2) = self->_localBytes;
+    *(to + 78) |= 2u;
     if ((*&self->_has & 4) == 0)
     {
       goto LABEL_21;
@@ -1015,8 +1015,8 @@ LABEL_53:
   }
 
 LABEL_52:
-  *(a3 + 33) = self->_itemsNeedingChunks;
-  *(a3 + 78) |= 0x200u;
+  *(to + 33) = self->_itemsNeedingChunks;
+  *(to + 78) |= 0x200u;
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
@@ -1027,77 +1027,77 @@ LABEL_19:
   if ((v6 & 4) != 0)
   {
 LABEL_20:
-    *(a3 + 3) = self->_resumedBytes;
-    *(a3 + 78) |= 4u;
+    *(to + 3) = self->_resumedBytes;
+    *(to + 78) |= 4u;
   }
 
 LABEL_21:
   if ([(AWDMMCSGetRequestInfo *)self authHttpInfosCount])
   {
-    [a3 clearAuthHttpInfos];
-    v7 = [(AWDMMCSGetRequestInfo *)self authHttpInfosCount];
-    if (v7)
+    [to clearAuthHttpInfos];
+    authHttpInfosCount = [(AWDMMCSGetRequestInfo *)self authHttpInfosCount];
+    if (authHttpInfosCount)
     {
-      v8 = v7;
+      v8 = authHttpInfosCount;
       for (i = 0; i != v8; ++i)
       {
-        [a3 addAuthHttpInfos:{-[AWDMMCSGetRequestInfo authHttpInfosAtIndex:](self, "authHttpInfosAtIndex:", i)}];
+        [to addAuthHttpInfos:{-[AWDMMCSGetRequestInfo authHttpInfosAtIndex:](self, "authHttpInfosAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDMMCSGetRequestInfo *)self containerHttpInfosCount])
   {
-    [a3 clearContainerHttpInfos];
-    v10 = [(AWDMMCSGetRequestInfo *)self containerHttpInfosCount];
-    if (v10)
+    [to clearContainerHttpInfos];
+    containerHttpInfosCount = [(AWDMMCSGetRequestInfo *)self containerHttpInfosCount];
+    if (containerHttpInfosCount)
     {
-      v11 = v10;
+      v11 = containerHttpInfosCount;
       for (j = 0; j != v11; ++j)
       {
-        [a3 addContainerHttpInfos:{-[AWDMMCSGetRequestInfo containerHttpInfosAtIndex:](self, "containerHttpInfosAtIndex:", j)}];
+        [to addContainerHttpInfos:{-[AWDMMCSGetRequestInfo containerHttpInfosAtIndex:](self, "containerHttpInfosAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDMMCSGetRequestInfo *)self completeHttpInfosCount])
   {
-    [a3 clearCompleteHttpInfos];
-    v13 = [(AWDMMCSGetRequestInfo *)self completeHttpInfosCount];
-    if (v13)
+    [to clearCompleteHttpInfos];
+    completeHttpInfosCount = [(AWDMMCSGetRequestInfo *)self completeHttpInfosCount];
+    if (completeHttpInfosCount)
     {
-      v14 = v13;
+      v14 = completeHttpInfosCount;
       for (k = 0; k != v14; ++k)
       {
-        [a3 addCompleteHttpInfos:{-[AWDMMCSGetRequestInfo completeHttpInfosAtIndex:](self, "completeHttpInfosAtIndex:", k)}];
+        [to addCompleteHttpInfos:{-[AWDMMCSGetRequestInfo completeHttpInfosAtIndex:](self, "completeHttpInfosAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDMMCSGetRequestInfo *)self cancelErrorsCount])
   {
-    [a3 clearCancelErrors];
-    v16 = [(AWDMMCSGetRequestInfo *)self cancelErrorsCount];
-    if (v16)
+    [to clearCancelErrors];
+    cancelErrorsCount = [(AWDMMCSGetRequestInfo *)self cancelErrorsCount];
+    if (cancelErrorsCount)
     {
-      v17 = v16;
+      v17 = cancelErrorsCount;
       for (m = 0; m != v17; ++m)
       {
-        [a3 addCancelError:{-[AWDMMCSGetRequestInfo cancelErrorAtIndex:](self, "cancelErrorAtIndex:", m)}];
+        [to addCancelError:{-[AWDMMCSGetRequestInfo cancelErrorAtIndex:](self, "cancelErrorAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDMMCSGetRequestInfo *)self errorsCount])
   {
-    [a3 clearErrors];
-    v19 = [(AWDMMCSGetRequestInfo *)self errorsCount];
-    if (v19)
+    [to clearErrors];
+    errorsCount = [(AWDMMCSGetRequestInfo *)self errorsCount];
+    if (errorsCount)
     {
-      v20 = v19;
+      v20 = errorsCount;
       for (n = 0; n != v20; ++n)
       {
-        [a3 addError:{-[AWDMMCSGetRequestInfo errorAtIndex:](self, "errorAtIndex:", n)}];
+        [to addError:{-[AWDMMCSGetRequestInfo errorAtIndex:](self, "errorAtIndex:", n)}];
       }
     }
   }
@@ -1105,8 +1105,8 @@ LABEL_21:
   v22 = self->_has;
   if ((v22 & 0x1000) != 0)
   {
-    *(a3 + 153) = self->_allItemsSuccessful;
-    *(a3 + 78) |= 0x1000u;
+    *(to + 153) = self->_allItemsSuccessful;
+    *(to + 78) |= 0x1000u;
     v22 = self->_has;
     if ((v22 & 0x100) == 0)
     {
@@ -1125,8 +1125,8 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  *(a3 + 32) = self->_itemCountSuccessful;
-  *(a3 + 78) |= 0x100u;
+  *(to + 32) = self->_itemCountSuccessful;
+  *(to + 78) |= 0x100u;
   v22 = self->_has;
   if ((v22 & 0x800) == 0)
   {
@@ -1140,27 +1140,27 @@ LABEL_44:
   }
 
 LABEL_57:
-  *(a3 + 152) = self->_allItemsFailed;
-  *(a3 + 78) |= 0x800u;
+  *(to + 152) = self->_allItemsFailed;
+  *(to + 78) |= 0x800u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_45:
-    *(a3 + 31) = self->_itemCountFailed;
-    *(a3 + 78) |= 0x80u;
+    *(to + 31) = self->_itemCountFailed;
+    *(to + 78) |= 0x80u;
   }
 
 LABEL_46:
   if (self->_ckContainerId)
   {
 
-    [a3 setCkContainerId:?];
+    [to setCkContainerId:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v67 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -1168,7 +1168,7 @@ LABEL_46:
     *(v5 + 156) |= 0x10u;
   }
 
-  *(v6 + 88) = [(NSString *)self->_clientId copyWithZone:a3];
+  *(v6 + 88) = [(NSString *)self->_clientId copyWithZone:zone];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -1183,14 +1183,14 @@ LABEL_46:
     *(v6 + 156) |= 1u;
   }
 
-  *(v6 + 72) = [(NSString *)self->_cancelledErrorDomain copyWithZone:a3];
+  *(v6 + 72) = [(NSString *)self->_cancelledErrorDomain copyWithZone:zone];
   if ((*&self->_has & 0x20) != 0)
   {
     *(v6 + 64) = self->_cancelledErrorCode;
     *(v6 + 156) |= 0x20u;
   }
 
-  *(v6 + 144) = [(NSString *)self->_requestErrorDomain copyWithZone:a3];
+  *(v6 + 144) = [(NSString *)self->_requestErrorDomain copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x400) != 0)
   {
@@ -1273,7 +1273,7 @@ LABEL_15:
           objc_enumerationMutation(authHttpInfos);
         }
 
-        v14 = [*(*(&v58 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v58 + 1) + 8 * i) copyWithZone:zone];
         [v6 addAuthHttpInfos:v14];
       }
 
@@ -1302,7 +1302,7 @@ LABEL_15:
           objc_enumerationMutation(containerHttpInfos);
         }
 
-        v20 = [*(*(&v54 + 1) + 8 * j) copyWithZone:a3];
+        v20 = [*(*(&v54 + 1) + 8 * j) copyWithZone:zone];
         [v6 addContainerHttpInfos:v20];
       }
 
@@ -1331,7 +1331,7 @@ LABEL_15:
           objc_enumerationMutation(completeHttpInfos);
         }
 
-        v26 = [*(*(&v50 + 1) + 8 * k) copyWithZone:a3];
+        v26 = [*(*(&v50 + 1) + 8 * k) copyWithZone:zone];
         [v6 addCompleteHttpInfos:v26];
       }
 
@@ -1360,7 +1360,7 @@ LABEL_15:
           objc_enumerationMutation(cancelErrors);
         }
 
-        v32 = [*(*(&v46 + 1) + 8 * m) copyWithZone:a3];
+        v32 = [*(*(&v46 + 1) + 8 * m) copyWithZone:zone];
         [v6 addCancelError:v32];
       }
 
@@ -1389,7 +1389,7 @@ LABEL_15:
           objc_enumerationMutation(errors);
         }
 
-        v38 = [*(*(&v42 + 1) + 8 * n) copyWithZone:a3];
+        v38 = [*(*(&v42 + 1) + 8 * n) copyWithZone:zone];
         [v6 addError:v38];
       }
 
@@ -1448,21 +1448,21 @@ LABEL_54:
 
 LABEL_55:
 
-  *(v6 + 80) = [(NSString *)self->_ckContainerId copyWithZone:a3];
+  *(v6 + 80) = [(NSString *)self->_ckContainerId copyWithZone:zone];
   v40 = *MEMORY[0x29EDCA608];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 78);
+    v7 = *(equal + 78);
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_timestamp != *(a3 + 5))
+      if ((v7 & 0x10) == 0 || self->_timestamp != *(equal + 5))
       {
         goto LABEL_93;
       }
@@ -1474,7 +1474,7 @@ LABEL_55:
     }
 
     clientId = self->_clientId;
-    if (clientId | *(a3 + 11))
+    if (clientId | *(equal + 11))
     {
       v5 = [(NSString *)clientId isEqual:?];
       if (!v5)
@@ -1485,10 +1485,10 @@ LABEL_55:
       has = self->_has;
     }
 
-    v9 = *(a3 + 78);
+    v9 = *(equal + 78);
     if ((has & 8) != 0)
     {
-      if ((v9 & 8) == 0 || self->_startTime != *(a3 + 4))
+      if ((v9 & 8) == 0 || self->_startTime != *(equal + 4))
       {
         goto LABEL_93;
       }
@@ -1501,7 +1501,7 @@ LABEL_55:
 
     if (has)
     {
-      if ((v9 & 1) == 0 || self->_duration != *(a3 + 1))
+      if ((v9 & 1) == 0 || self->_duration != *(equal + 1))
       {
         goto LABEL_93;
       }
@@ -1513,7 +1513,7 @@ LABEL_55:
     }
 
     cancelledErrorDomain = self->_cancelledErrorDomain;
-    if (cancelledErrorDomain | *(a3 + 9))
+    if (cancelledErrorDomain | *(equal + 9))
     {
       v5 = [(NSString *)cancelledErrorDomain isEqual:?];
       if (!v5)
@@ -1524,10 +1524,10 @@ LABEL_55:
       has = self->_has;
     }
 
-    v11 = *(a3 + 78);
+    v11 = *(equal + 78);
     if ((has & 0x20) != 0)
     {
-      if ((v11 & 0x20) == 0 || self->_cancelledErrorCode != *(a3 + 16))
+      if ((v11 & 0x20) == 0 || self->_cancelledErrorCode != *(equal + 16))
       {
         goto LABEL_93;
       }
@@ -1539,7 +1539,7 @@ LABEL_55:
     }
 
     requestErrorDomain = self->_requestErrorDomain;
-    if (requestErrorDomain | *(a3 + 18))
+    if (requestErrorDomain | *(equal + 18))
     {
       v5 = [(NSString *)requestErrorDomain isEqual:?];
       if (!v5)
@@ -1550,23 +1550,23 @@ LABEL_55:
       has = self->_has;
     }
 
-    v13 = *(a3 + 78);
+    v13 = *(equal + 78);
     if ((has & 0x400) != 0)
     {
-      if ((*(a3 + 78) & 0x400) == 0 || self->_requestErrorCode != *(a3 + 34))
+      if ((*(equal + 78) & 0x400) == 0 || self->_requestErrorCode != *(equal + 34))
       {
         goto LABEL_93;
       }
     }
 
-    else if ((*(a3 + 78) & 0x400) != 0)
+    else if ((*(equal + 78) & 0x400) != 0)
     {
       goto LABEL_93;
     }
 
     if ((has & 0x40) != 0)
     {
-      if ((v13 & 0x40) == 0 || self->_itemCount != *(a3 + 30))
+      if ((v13 & 0x40) == 0 || self->_itemCount != *(equal + 30))
       {
         goto LABEL_93;
       }
@@ -1579,20 +1579,20 @@ LABEL_55:
 
     if ((has & 0x200) != 0)
     {
-      if ((*(a3 + 78) & 0x200) == 0 || self->_itemsNeedingChunks != *(a3 + 33))
+      if ((*(equal + 78) & 0x200) == 0 || self->_itemsNeedingChunks != *(equal + 33))
       {
         goto LABEL_93;
       }
     }
 
-    else if ((*(a3 + 78) & 0x200) != 0)
+    else if ((*(equal + 78) & 0x200) != 0)
     {
       goto LABEL_93;
     }
 
     if ((has & 2) != 0)
     {
-      if ((v13 & 2) == 0 || self->_localBytes != *(a3 + 2))
+      if ((v13 & 2) == 0 || self->_localBytes != *(equal + 2))
       {
         goto LABEL_93;
       }
@@ -1605,7 +1605,7 @@ LABEL_55:
 
     if ((has & 4) != 0)
     {
-      if ((v13 & 4) == 0 || self->_resumedBytes != *(a3 + 3))
+      if ((v13 & 4) == 0 || self->_resumedBytes != *(equal + 3))
       {
         goto LABEL_93;
       }
@@ -1617,70 +1617,70 @@ LABEL_55:
     }
 
     authHttpInfos = self->_authHttpInfos;
-    if (!(authHttpInfos | *(a3 + 6)) || (v5 = [(NSMutableArray *)authHttpInfos isEqual:?]) != 0)
+    if (!(authHttpInfos | *(equal + 6)) || (v5 = [(NSMutableArray *)authHttpInfos isEqual:?]) != 0)
     {
       containerHttpInfos = self->_containerHttpInfos;
-      if (!(containerHttpInfos | *(a3 + 13)) || (v5 = [(NSMutableArray *)containerHttpInfos isEqual:?]) != 0)
+      if (!(containerHttpInfos | *(equal + 13)) || (v5 = [(NSMutableArray *)containerHttpInfos isEqual:?]) != 0)
       {
         completeHttpInfos = self->_completeHttpInfos;
-        if (!(completeHttpInfos | *(a3 + 12)) || (v5 = [(NSMutableArray *)completeHttpInfos isEqual:?]) != 0)
+        if (!(completeHttpInfos | *(equal + 12)) || (v5 = [(NSMutableArray *)completeHttpInfos isEqual:?]) != 0)
         {
           cancelErrors = self->_cancelErrors;
-          if (!(cancelErrors | *(a3 + 7)) || (v5 = [(NSMutableArray *)cancelErrors isEqual:?]) != 0)
+          if (!(cancelErrors | *(equal + 7)) || (v5 = [(NSMutableArray *)cancelErrors isEqual:?]) != 0)
           {
             errors = self->_errors;
-            if (!(errors | *(a3 + 14)) || (v5 = [(NSMutableArray *)errors isEqual:?]) != 0)
+            if (!(errors | *(equal + 14)) || (v5 = [(NSMutableArray *)errors isEqual:?]) != 0)
             {
               v19 = self->_has;
-              v20 = *(a3 + 78);
+              v20 = *(equal + 78);
               if ((v19 & 0x1000) != 0)
               {
-                if ((*(a3 + 78) & 0x1000) == 0)
+                if ((*(equal + 78) & 0x1000) == 0)
                 {
                   goto LABEL_93;
                 }
 
-                v21 = *(a3 + 153);
+                v21 = *(equal + 153);
                 if (self->_allItemsSuccessful)
                 {
-                  if ((*(a3 + 153) & 1) == 0)
+                  if ((*(equal + 153) & 1) == 0)
                   {
                     goto LABEL_93;
                   }
                 }
 
-                else if (*(a3 + 153))
+                else if (*(equal + 153))
                 {
                   goto LABEL_93;
                 }
               }
 
-              else if ((*(a3 + 78) & 0x1000) != 0)
+              else if ((*(equal + 78) & 0x1000) != 0)
               {
                 goto LABEL_93;
               }
 
               if ((*&self->_has & 0x100) != 0)
               {
-                if ((*(a3 + 78) & 0x100) == 0 || self->_itemCountSuccessful != *(a3 + 32))
+                if ((*(equal + 78) & 0x100) == 0 || self->_itemCountSuccessful != *(equal + 32))
                 {
                   goto LABEL_93;
                 }
               }
 
-              else if ((*(a3 + 78) & 0x100) != 0)
+              else if ((*(equal + 78) & 0x100) != 0)
               {
                 goto LABEL_93;
               }
 
               if ((*&self->_has & 0x800) != 0)
               {
-                if ((*(a3 + 78) & 0x800) != 0)
+                if ((*(equal + 78) & 0x800) != 0)
                 {
-                  v22 = *(a3 + 152);
+                  v22 = *(equal + 152);
                   if (self->_allItemsFailed)
                   {
-                    if ((*(a3 + 152) & 1) == 0)
+                    if ((*(equal + 152) & 1) == 0)
                     {
                       goto LABEL_93;
                     }
@@ -1688,12 +1688,12 @@ LABEL_55:
                     goto LABEL_79;
                   }
 
-                  if ((*(a3 + 152) & 1) == 0)
+                  if ((*(equal + 152) & 1) == 0)
                   {
 LABEL_79:
                     if ((v19 & 0x80) != 0)
                     {
-                      if ((v20 & 0x80) == 0 || self->_itemCountFailed != *(a3 + 31))
+                      if ((v20 & 0x80) == 0 || self->_itemCountFailed != *(equal + 31))
                       {
                         goto LABEL_93;
                       }
@@ -1705,7 +1705,7 @@ LABEL_79:
                     }
 
                     ckContainerId = self->_ckContainerId;
-                    if (ckContainerId | *(a3 + 10))
+                    if (ckContainerId | *(equal + 10))
                     {
 
                       LOBYTE(v5) = [(NSString *)ckContainerId isEqual:?];
@@ -1721,7 +1721,7 @@ LABEL_79:
                 }
               }
 
-              else if ((*(a3 + 78) & 0x800) == 0)
+              else if ((*(equal + 78) & 0x800) == 0)
               {
                 goto LABEL_79;
               }
@@ -1909,56 +1909,56 @@ LABEL_27:
   return v26 ^ v27 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v14 ^ v15 ^ v16 ^ v17 ^ [(NSString *)self->_ckContainerId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v59 = *MEMORY[0x29EDCA608];
-  if ((*(a3 + 78) & 0x10) != 0)
+  if ((*(from + 78) & 0x10) != 0)
   {
-    self->_timestamp = *(a3 + 5);
+    self->_timestamp = *(from + 5);
     *&self->_has |= 0x10u;
   }
 
-  if (*(a3 + 11))
+  if (*(from + 11))
   {
     [(AWDMMCSGetRequestInfo *)self setClientId:?];
   }
 
-  v5 = *(a3 + 78);
+  v5 = *(from + 78);
   if ((v5 & 8) != 0)
   {
-    self->_startTime = *(a3 + 4);
+    self->_startTime = *(from + 4);
     *&self->_has |= 8u;
-    v5 = *(a3 + 78);
+    v5 = *(from + 78);
   }
 
   if (v5)
   {
-    self->_duration = *(a3 + 1);
+    self->_duration = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 9))
+  if (*(from + 9))
   {
     [(AWDMMCSGetRequestInfo *)self setCancelledErrorDomain:?];
   }
 
-  if ((*(a3 + 78) & 0x20) != 0)
+  if ((*(from + 78) & 0x20) != 0)
   {
-    self->_cancelledErrorCode = *(a3 + 16);
+    self->_cancelledErrorCode = *(from + 16);
     *&self->_has |= 0x20u;
   }
 
-  if (*(a3 + 18))
+  if (*(from + 18))
   {
     [(AWDMMCSGetRequestInfo *)self setRequestErrorDomain:?];
   }
 
-  v6 = *(a3 + 78);
+  v6 = *(from + 78);
   if ((v6 & 0x400) != 0)
   {
-    self->_requestErrorCode = *(a3 + 34);
+    self->_requestErrorCode = *(from + 34);
     *&self->_has |= 0x400u;
-    v6 = *(a3 + 78);
+    v6 = *(from + 78);
     if ((v6 & 0x40) == 0)
     {
 LABEL_17:
@@ -1976,9 +1976,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  self->_itemCount = *(a3 + 30);
+  self->_itemCount = *(from + 30);
   *&self->_has |= 0x40u;
-  v6 = *(a3 + 78);
+  v6 = *(from + 78);
   if ((v6 & 0x200) == 0)
   {
 LABEL_18:
@@ -1991,9 +1991,9 @@ LABEL_18:
   }
 
 LABEL_66:
-  self->_itemsNeedingChunks = *(a3 + 33);
+  self->_itemsNeedingChunks = *(from + 33);
   *&self->_has |= 0x200u;
-  v6 = *(a3 + 78);
+  v6 = *(from + 78);
   if ((v6 & 2) == 0)
   {
 LABEL_19:
@@ -2006,12 +2006,12 @@ LABEL_19:
   }
 
 LABEL_67:
-  self->_localBytes = *(a3 + 2);
+  self->_localBytes = *(from + 2);
   *&self->_has |= 2u;
-  if ((*(a3 + 78) & 4) != 0)
+  if ((*(from + 78) & 4) != 0)
   {
 LABEL_20:
-    self->_resumedBytes = *(a3 + 3);
+    self->_resumedBytes = *(from + 3);
     *&self->_has |= 4u;
   }
 
@@ -2020,7 +2020,7 @@ LABEL_21:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v7 = *(a3 + 6);
+  v7 = *(from + 6);
   v8 = [v7 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v8)
   {
@@ -2048,7 +2048,7 @@ LABEL_21:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v12 = *(a3 + 13);
+  v12 = *(from + 13);
   v13 = [v12 countByEnumeratingWithState:&v46 objects:v57 count:16];
   if (v13)
   {
@@ -2076,7 +2076,7 @@ LABEL_21:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = *(a3 + 12);
+  v17 = *(from + 12);
   v18 = [v17 countByEnumeratingWithState:&v42 objects:v56 count:16];
   if (v18)
   {
@@ -2104,7 +2104,7 @@ LABEL_21:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v22 = *(a3 + 7);
+  v22 = *(from + 7);
   v23 = [v22 countByEnumeratingWithState:&v38 objects:v55 count:16];
   if (v23)
   {
@@ -2132,7 +2132,7 @@ LABEL_21:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = *(a3 + 14);
+  v27 = *(from + 14);
   v28 = [v27 countByEnumeratingWithState:&v34 objects:v54 count:16];
   if (v28)
   {
@@ -2156,12 +2156,12 @@ LABEL_21:
     while (v29);
   }
 
-  v32 = *(a3 + 78);
+  v32 = *(from + 78);
   if ((v32 & 0x1000) != 0)
   {
-    self->_allItemsSuccessful = *(a3 + 153);
+    self->_allItemsSuccessful = *(from + 153);
     *&self->_has |= 0x1000u;
-    v32 = *(a3 + 78);
+    v32 = *(from + 78);
     if ((v32 & 0x100) == 0)
     {
 LABEL_58:
@@ -2174,14 +2174,14 @@ LABEL_58:
     }
   }
 
-  else if ((*(a3 + 78) & 0x100) == 0)
+  else if ((*(from + 78) & 0x100) == 0)
   {
     goto LABEL_58;
   }
 
-  self->_itemCountSuccessful = *(a3 + 32);
+  self->_itemCountSuccessful = *(from + 32);
   *&self->_has |= 0x100u;
-  v32 = *(a3 + 78);
+  v32 = *(from + 78);
   if ((v32 & 0x800) == 0)
   {
 LABEL_59:
@@ -2194,17 +2194,17 @@ LABEL_59:
   }
 
 LABEL_71:
-  self->_allItemsFailed = *(a3 + 152);
+  self->_allItemsFailed = *(from + 152);
   *&self->_has |= 0x800u;
-  if ((*(a3 + 78) & 0x80) != 0)
+  if ((*(from + 78) & 0x80) != 0)
   {
 LABEL_60:
-    self->_itemCountFailed = *(a3 + 31);
+    self->_itemCountFailed = *(from + 31);
     *&self->_has |= 0x80u;
   }
 
 LABEL_61:
-  if (*(a3 + 10))
+  if (*(from + 10))
   {
     [(AWDMMCSGetRequestInfo *)self setCkContainerId:?];
   }

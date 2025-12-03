@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInTotalAssets
-- (PKPaymentSetupFieldBuiltInTotalAssets)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInTotalAssets)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInTotalAssets
 
-- (PKPaymentSetupFieldBuiltInTotalAssets)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInTotalAssets)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = PKPaymentSetupFieldBuiltInTotalAssets;
-  v9 = [(PKPaymentSetupFieldText *)&v12 initWithIdentifier:@"totalAssets" type:a4];
+  v9 = [(PKPaymentSetupFieldText *)&v12 initWithIdentifier:@"totalAssets" type:type];
   if (v9)
   {
     v10 = PKLocalizedFeatureString(@"TOTAL_ASSETS", 2, 0, v4, v5, v6, v7, v8, v12.receiver);

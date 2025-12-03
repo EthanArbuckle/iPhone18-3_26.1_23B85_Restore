@@ -1,20 +1,20 @@
 @interface VUIPostPlayUpsellConfig
 + (id)sharedInstance;
-- (BOOL)_canShowUpsellForChannelId:(id)a3 showId:(id)a4 duration:(double)a5 elapsedTime:(double)a6;
-- (BOOL)_isHistoryArrayFull:(id)a3 forMaxCount:(unint64_t)a4 inDurationWindow:(double)a5;
-- (id)_cleanupHistory:(id)a3 atCurrentDate:(id)a4 isShow:(BOOL)a5;
-- (id)_trimHistoryArray:(id)a3 forMaxCount:(unint64_t)a4 inDurationWindow:(double)a5 atCurrentDate:(id)a6;
+- (BOOL)_canShowUpsellForChannelId:(id)id showId:(id)showId duration:(double)duration elapsedTime:(double)time;
+- (BOOL)_isHistoryArrayFull:(id)full forMaxCount:(unint64_t)count inDurationWindow:(double)window;
+- (id)_cleanupHistory:(id)history atCurrentDate:(id)date isShow:(BOOL)show;
+- (id)_trimHistoryArray:(id)array forMaxCount:(unint64_t)count inDurationWindow:(double)window atCurrentDate:(id)date;
 - (id)appContext;
-- (void)_canShowUpsellForPolicy:(id)a3 duration:(double)a4 elapsedTime:(double)a5 completion:(id)a6;
-- (void)_recordUpsellHistoryForShowId:(id)a3 onChannelId:(id)a4;
-- (void)canShowUpsellForMediaItem:(id)a3 withElapsedTime:(double)a4 completion:(id)a5;
-- (void)configureUsingDictionary:(id)a3;
-- (void)disableUpsellOnPlaybackExit:(BOOL)a3;
-- (void)enableUpsellOnPIPPlaybackExit:(BOOL)a3;
-- (void)setChannelLevelUpsellRateOfMaxCount:(unint64_t)a3 inHours:(double)a4;
-- (void)setHasShownPostPlay:(BOOL)a3;
-- (void)setMinPlaybackProgressPercentageForUpsellOnExit:(double)a3;
-- (void)setShowLevelUpsellRateOfMaxCount:(unint64_t)a3 inHours:(double)a4;
+- (void)_canShowUpsellForPolicy:(id)policy duration:(double)duration elapsedTime:(double)time completion:(id)completion;
+- (void)_recordUpsellHistoryForShowId:(id)id onChannelId:(id)channelId;
+- (void)canShowUpsellForMediaItem:(id)item withElapsedTime:(double)time completion:(id)completion;
+- (void)configureUsingDictionary:(id)dictionary;
+- (void)disableUpsellOnPlaybackExit:(BOOL)exit;
+- (void)enableUpsellOnPIPPlaybackExit:(BOOL)exit;
+- (void)setChannelLevelUpsellRateOfMaxCount:(unint64_t)count inHours:(double)hours;
+- (void)setHasShownPostPlay:(BOOL)play;
+- (void)setMinPlaybackProgressPercentageForUpsellOnExit:(double)exit;
+- (void)setShowLevelUpsellRateOfMaxCount:(unint64_t)count inHours:(double)hours;
 @end
 
 @implementation VUIPostPlayUpsellConfig
@@ -44,23 +44,23 @@ uint64_t __41__VUIPostPlayUpsellConfig_sharedInstance__block_invoke()
   return [v2 setMinPlaybackProgressPercentageForUpsellOnExit:0.85];
 }
 
-- (void)configureUsingDictionary:(id)a3
+- (void)configureUsingDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
     v5 = VUIDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = dictionaryCopy;
       _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellConfig - setting via JS %@", &v14, 0xCu);
     }
 
-    -[VUIPostPlayUpsellConfig disableUpsellOnPlaybackExit:](self, "disableUpsellOnPlaybackExit:", [v4 vui_BOOLForKey:@"isDisabled" defaultValue:0]);
-    -[VUIPostPlayUpsellConfig enableUpsellOnPIPPlaybackExit:](self, "enableUpsellOnPIPPlaybackExit:", [v4 vui_BOOLForKey:@"isPIPEnabled" defaultValue:0]);
-    v6 = [v4 vui_numberForKey:@"minPlaybackProgressPercentage"];
+    -[VUIPostPlayUpsellConfig disableUpsellOnPlaybackExit:](self, "disableUpsellOnPlaybackExit:", [dictionaryCopy vui_BOOLForKey:@"isDisabled" defaultValue:0]);
+    -[VUIPostPlayUpsellConfig enableUpsellOnPIPPlaybackExit:](self, "enableUpsellOnPIPPlaybackExit:", [dictionaryCopy vui_BOOLForKey:@"isPIPEnabled" defaultValue:0]);
+    v6 = [dictionaryCopy vui_numberForKey:@"minPlaybackProgressPercentage"];
     v7 = v6;
     if (v6)
     {
@@ -68,37 +68,37 @@ uint64_t __41__VUIPostPlayUpsellConfig_sharedInstance__block_invoke()
       [(VUIPostPlayUpsellConfig *)self setMinPlaybackProgressPercentageForUpsellOnExit:?];
     }
 
-    v8 = [v4 vui_numberForKey:@"maxCountPerChannel"];
+    v8 = [dictionaryCopy vui_numberForKey:@"maxCountPerChannel"];
     if (v8)
     {
-      v9 = [v4 vui_numberForKey:@"countDurationHrsPerChannel"];
-      v10 = [v8 unsignedIntegerValue];
+      v9 = [dictionaryCopy vui_numberForKey:@"countDurationHrsPerChannel"];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
       [v9 doubleValue];
-      [(VUIPostPlayUpsellConfig *)self setChannelLevelUpsellRateOfMaxCount:v10 inHours:?];
+      [(VUIPostPlayUpsellConfig *)self setChannelLevelUpsellRateOfMaxCount:unsignedIntegerValue inHours:?];
     }
 
-    v11 = [v4 vui_numberForKey:@"maxCountPerShow"];
+    v11 = [dictionaryCopy vui_numberForKey:@"maxCountPerShow"];
     if (v11)
     {
-      v12 = [v4 vui_numberForKey:@"countDurationHrsPerShow"];
-      v13 = [v11 unsignedIntegerValue];
+      v12 = [dictionaryCopy vui_numberForKey:@"countDurationHrsPerShow"];
+      unsignedIntegerValue2 = [v11 unsignedIntegerValue];
       [v12 doubleValue];
-      [(VUIPostPlayUpsellConfig *)self setShowLevelUpsellRateOfMaxCount:v13 inHours:?];
+      [(VUIPostPlayUpsellConfig *)self setShowLevelUpsellRateOfMaxCount:unsignedIntegerValue2 inHours:?];
     }
   }
 }
 
-- (void)disableUpsellOnPlaybackExit:(BOOL)a3
+- (void)disableUpsellOnPlaybackExit:(BOOL)exit
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_isUpsellOnPlaybackExitDisabled != a3)
+  if (self->_isUpsellOnPlaybackExitDisabled != exit)
   {
-    v3 = a3;
+    exitCopy = exit;
     v5 = VUIDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "enable";
-      if (v3)
+      if (exitCopy)
       {
         v6 = "disable";
       }
@@ -108,21 +108,21 @@ uint64_t __41__VUIPostPlayUpsellConfig_sharedInstance__block_invoke()
       _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellConfig - %s upsell on pb exit", &v7, 0xCu);
     }
 
-    self->_isUpsellOnPlaybackExitDisabled = v3;
+    self->_isUpsellOnPlaybackExitDisabled = exitCopy;
   }
 }
 
-- (void)enableUpsellOnPIPPlaybackExit:(BOOL)a3
+- (void)enableUpsellOnPIPPlaybackExit:(BOOL)exit
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_isUpsellOnPIPPlaybackExitEnabled != a3)
+  if (self->_isUpsellOnPIPPlaybackExitEnabled != exit)
   {
-    v3 = a3;
+    exitCopy = exit;
     v5 = VUIDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "disable";
-      if (v3)
+      if (exitCopy)
       {
         v6 = "enable";
       }
@@ -132,47 +132,47 @@ uint64_t __41__VUIPostPlayUpsellConfig_sharedInstance__block_invoke()
       _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellConfig - %s upsell on pip pb exit", &v7, 0xCu);
     }
 
-    self->_isUpsellOnPIPPlaybackExitEnabled = v3;
+    self->_isUpsellOnPIPPlaybackExitEnabled = exitCopy;
   }
 }
 
-- (void)setMinPlaybackProgressPercentageForUpsellOnExit:(double)a3
+- (void)setMinPlaybackProgressPercentageForUpsellOnExit:(double)exit
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_minPlaybackProgressPercentage != a3)
+  if (self->_minPlaybackProgressPercentage != exit)
   {
     v5 = VUIDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = a3;
+      exitCopy = exit;
       _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellConfig - set progress percentage for upsell on exit: %lf", &v6, 0xCu);
     }
 
-    self->_minPlaybackProgressPercentage = a3;
+    self->_minPlaybackProgressPercentage = exit;
   }
 }
 
-- (void)setShowLevelUpsellRateOfMaxCount:(unint64_t)a3 inHours:(double)a4
+- (void)setShowLevelUpsellRateOfMaxCount:(unint64_t)count inHours:(double)hours
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 && a4 >= 0.001 || self->_upsellMaxCountPerShow != a3 || self->_upsellCountDurationPerShow != a4)
+  if (count && hours >= 0.001 || self->_upsellMaxCountPerShow != count || self->_upsellCountDurationPerShow != hours)
   {
     v7 = VUIDefaultLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134218240;
-      v9 = a3;
+      countCopy = count;
       v10 = 2048;
-      v11 = a4;
+      hoursCopy = hours;
       _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellConfig - set show level rate: %ld per %f hrs", &v8, 0x16u);
     }
 
-    if (a3)
+    if (count)
     {
       self->_isUpsellLimitedPerShow = 1;
-      self->_upsellMaxCountPerShow = a3;
-      self->_upsellCountDurationPerShow = a4;
+      self->_upsellMaxCountPerShow = count;
+      self->_upsellCountDurationPerShow = hours;
     }
 
     else
@@ -182,26 +182,26 @@ uint64_t __41__VUIPostPlayUpsellConfig_sharedInstance__block_invoke()
   }
 }
 
-- (void)setChannelLevelUpsellRateOfMaxCount:(unint64_t)a3 inHours:(double)a4
+- (void)setChannelLevelUpsellRateOfMaxCount:(unint64_t)count inHours:(double)hours
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 && a4 >= 0.001 || self->_upsellMaxCountPerChannel != a3 || self->_upsellCountDurationPerChannel != a4)
+  if (count && hours >= 0.001 || self->_upsellMaxCountPerChannel != count || self->_upsellCountDurationPerChannel != hours)
   {
     v7 = VUIDefaultLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134218240;
-      v9 = a3;
+      countCopy = count;
       v10 = 2048;
-      v11 = a4;
+      hoursCopy = hours;
       _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellConfig - set channel level rate: %ld per %f hrs", &v8, 0x16u);
     }
 
-    if (a3)
+    if (count)
     {
       self->_isUpsellLimitedPerChannel = 1;
-      self->_upsellMaxCountPerChannel = a3;
-      self->_upsellCountDurationPerChannel = a4;
+      self->_upsellMaxCountPerChannel = count;
+      self->_upsellCountDurationPerChannel = hours;
     }
 
     else
@@ -214,13 +214,13 @@ uint64_t __41__VUIPostPlayUpsellConfig_sharedInstance__block_invoke()
 - (id)appContext
 {
   v2 = +[VUITVAppLauncher sharedInstance];
-  v3 = [v2 appController];
-  v4 = [v3 appContext];
+  appController = [v2 appController];
+  appContext = [appController appContext];
 
-  return v4;
+  return appContext;
 }
 
-- (void)setHasShownPostPlay:(BOOL)a3
+- (void)setHasShownPostPlay:(BOOL)play
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = VUIDefaultLogObject();
@@ -232,50 +232,50 @@ uint64_t __41__VUIPostPlayUpsellConfig_sharedInstance__block_invoke()
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellConfig - setHasShownPostPlay=%@", &v7, 0xCu);
   }
 
-  self->_hasShownPostPlay = a3;
+  self->_hasShownPostPlay = play;
 }
 
-- (void)canShowUpsellForMediaItem:(id)a3 withElapsedTime:(double)a4 completion:(id)a5
+- (void)canShowUpsellForMediaItem:(id)item withElapsedTime:(double)time completion:(id)completion
 {
-  v13 = a3;
-  v8 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   if ([(VUIPostPlayUpsellConfig *)self hasShownPostPlay])
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v9 = [v13 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellPolicy"];
-    v10 = [v13 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B70]];
+    v9 = [itemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellPolicy"];
+    v10 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5B70]];
     [v10 doubleValue];
     v12 = v11;
 
-    [(VUIPostPlayUpsellConfig *)self _canShowUpsellForPolicy:v9 duration:v8 elapsedTime:v12 completion:a4];
+    [(VUIPostPlayUpsellConfig *)self _canShowUpsellForPolicy:v9 duration:completionCopy elapsedTime:v12 completion:time];
   }
 }
 
-- (void)_canShowUpsellForPolicy:(id)a3 duration:(double)a4 elapsedTime:(double)a5 completion:(id)a6
+- (void)_canShowUpsellForPolicy:(id)policy duration:(double)duration elapsedTime:(double)time completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  if ([v10 showUpsell])
+  policyCopy = policy;
+  completionCopy = completion;
+  if ([policyCopy showUpsell])
   {
-    v12 = [(VUIPostPlayUpsellConfig *)self appContext];
+    appContext = [(VUIPostPlayUpsellConfig *)self appContext];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __83__VUIPostPlayUpsellConfig__canShowUpsellForPolicy_duration_elapsedTime_completion___block_invoke;
     v13[3] = &unk_1E8734960;
-    v16 = a5;
-    v17 = a4;
-    v14 = v10;
-    v15 = v11;
-    [v12 evaluate:v13];
+    timeCopy = time;
+    durationCopy = duration;
+    v14 = policyCopy;
+    v15 = completionCopy;
+    [appContext evaluate:v13];
   }
 
   else
   {
-    (*(v11 + 2))(v11, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -321,18 +321,18 @@ void __83__VUIPostPlayUpsellConfig__canShowUpsellForPolicy_duration_elapsedTime_
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (BOOL)_canShowUpsellForChannelId:(id)a3 showId:(id)a4 duration:(double)a5 elapsedTime:(double)a6
+- (BOOL)_canShowUpsellForChannelId:(id)id showId:(id)showId duration:(double)duration elapsedTime:(double)time
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v13 = [v12 dictionaryForKey:@"PostPlayUpsellConfig"];
+  idCopy = id;
+  showIdCopy = showId;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v13 = [standardUserDefaults dictionaryForKey:@"PostPlayUpsellConfig"];
 
   if (self->_isUpsellLimitedPerChannel)
   {
     v14 = [v13 vui_dictionaryForKey:@"PostPlayUpsellChannelHistory"];
-    v15 = [v14 vui_arrayForKey:v10];
+    v15 = [v14 vui_arrayForKey:idCopy];
     if ([(VUIPostPlayUpsellConfig *)self _isHistoryArrayFull:v15 forMaxCount:self->_upsellMaxCountPerChannel inDurationWindow:self->_upsellCountDurationPerChannel])
     {
       v16 = VUIDefaultLogObject();
@@ -345,7 +345,7 @@ void __83__VUIPostPlayUpsellConfig__canShowUpsellForPolicy_duration_elapsedTime_
         v30 = 2048;
         v31 = upsellCountDurationPerChannel;
         v32 = 2112;
-        v33 = v10;
+        v33 = idCopy;
         v19 = "VUIPostPlayUpsellConfig - post play upsell reached its per channel rate(%lu/%fhrs) limit for channel %@";
 LABEL_10:
         _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_DEFAULT, v19, &v28, 0x20u);
@@ -359,7 +359,7 @@ LABEL_10:
   if (self->_isUpsellLimitedPerShow)
   {
     v14 = [v13 vui_dictionaryForKey:@"PostPlayUpsellShowHistory"];
-    v15 = [v14 vui_arrayForKey:v11];
+    v15 = [v14 vui_arrayForKey:showIdCopy];
     if ([(VUIPostPlayUpsellConfig *)self _isHistoryArrayFull:v15 forMaxCount:self->_upsellMaxCountPerShow inDurationWindow:self->_upsellCountDurationPerShow])
     {
       v16 = VUIDefaultLogObject();
@@ -372,7 +372,7 @@ LABEL_10:
         v30 = 2048;
         v31 = upsellCountDurationPerShow;
         v32 = 2112;
-        v33 = v11;
+        v33 = showIdCopy;
         v19 = "VUIPostPlayUpsellConfig - post play upsell reached its per show rate(%lu/%fhrs) limit for show %@";
         goto LABEL_10;
       }
@@ -389,7 +389,7 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  if (*MEMORY[0x1E69D5A80] == a5)
+  if (*MEMORY[0x1E69D5A80] == duration)
   {
     v23 = VUIDefaultLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -401,11 +401,11 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  v25 = a6 / a5;
+  v25 = time / duration;
   if (v25 >= minPlaybackProgressPercentage)
   {
 LABEL_21:
-    [(VUIPostPlayUpsellConfig *)self _recordUpsellHistoryForShowId:v11 onChannelId:v10];
+    [(VUIPostPlayUpsellConfig *)self _recordUpsellHistoryForShowId:showIdCopy onChannelId:idCopy];
     v24 = 1;
     goto LABEL_22;
   }
@@ -430,15 +430,15 @@ LABEL_22:
   return v24;
 }
 
-- (void)_recordUpsellHistoryForShowId:(id)a3 onChannelId:(id)a4
+- (void)_recordUpsellHistoryForShowId:(id)id onChannelId:(id)channelId
 {
-  v31 = a3;
-  v6 = a4;
-  if (v31 && v6)
+  idCopy = id;
+  channelIdCopy = channelId;
+  if (idCopy && channelIdCopy)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v9 = [v8 dictionaryForKey:@"PostPlayUpsellConfig"];
+    date = [MEMORY[0x1E695DF00] date];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v9 = [standardUserDefaults dictionaryForKey:@"PostPlayUpsellConfig"];
 
     v30 = v9;
     if (v9)
@@ -478,7 +478,7 @@ LABEL_22:
     }
 
     v17 = v16;
-    v18 = [v14 vui_arrayForKey:v6];
+    v18 = [v14 vui_arrayForKey:channelIdCopy];
     v27 = v18;
     if (v18)
     {
@@ -491,9 +491,9 @@ LABEL_22:
     }
 
     v20 = v19;
-    [v19 addObject:v7];
-    [v14 setValue:v20 forKey:v6];
-    v21 = [v17 vui_arrayForKey:v31];
+    [v19 addObject:date];
+    [v14 setValue:v20 forKey:channelIdCopy];
+    v21 = [v17 vui_arrayForKey:idCopy];
     if (v21)
     {
       v22 = [MEMORY[0x1E695DF70] arrayWithArray:v21];
@@ -505,26 +505,26 @@ LABEL_22:
     }
 
     v23 = v22;
-    [v22 addObject:v7];
-    [v17 setValue:v23 forKey:v31];
-    v24 = [(VUIPostPlayUpsellConfig *)self _cleanupHistory:v17 atCurrentDate:v7 isShow:1];
+    [v22 addObject:date];
+    [v17 setValue:v23 forKey:idCopy];
+    v24 = [(VUIPostPlayUpsellConfig *)self _cleanupHistory:v17 atCurrentDate:date isShow:1];
 
-    v25 = [(VUIPostPlayUpsellConfig *)self _cleanupHistory:v14 atCurrentDate:v7 isShow:0];
+    v25 = [(VUIPostPlayUpsellConfig *)self _cleanupHistory:v14 atCurrentDate:date isShow:0];
 
     [v11 setValue:v25 forKey:@"PostPlayUpsellChannelHistory"];
     [v11 setValue:v24 forKey:@"PostPlayUpsellShowHistory"];
-    v26 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v26 setValue:v11 forKey:@"PostPlayUpsellConfig"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 setValue:v11 forKey:@"PostPlayUpsellConfig"];
   }
 }
 
-- (id)_cleanupHistory:(id)a3 atCurrentDate:(id)a4 isShow:(BOOL)a5
+- (id)_cleanupHistory:(id)history atCurrentDate:(id)date isShow:(BOOL)show
 {
-  v5 = a5;
+  showCopy = show;
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v22 = a4;
-  [v8 allKeys];
+  historyCopy = history;
+  dateCopy = date;
+  [historyCopy allKeys];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -535,13 +535,13 @@ LABEL_22:
     v10 = v9;
     v11 = *v24;
     v12 = 40;
-    if (v5)
+    if (showCopy)
     {
       v12 = 24;
     }
 
     v21 = v12;
-    if (v5)
+    if (showCopy)
     {
       v13 = 32;
     }
@@ -561,20 +561,20 @@ LABEL_22:
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v8 vui_arrayForKey:v15];
+        v16 = [historyCopy vui_arrayForKey:v15];
         if (v16)
         {
           v17 = [MEMORY[0x1E695DF70] arrayWithArray:v16];
-          v18 = [(VUIPostPlayUpsellConfig *)self _trimHistoryArray:v17 forMaxCount:*(&self->super.isa + v21) inDurationWindow:v22 atCurrentDate:*(&self->super.isa + v13)];
+          v18 = [(VUIPostPlayUpsellConfig *)self _trimHistoryArray:v17 forMaxCount:*(&self->super.isa + v21) inDurationWindow:dateCopy atCurrentDate:*(&self->super.isa + v13)];
 
           if ([v18 count])
           {
-            [v8 setValue:v18 forKey:v15];
+            [historyCopy setValue:v18 forKey:v15];
           }
 
           else
           {
-            [v8 removeObjectForKey:v15];
+            [historyCopy removeObjectForKey:v15];
           }
         }
       }
@@ -585,18 +585,18 @@ LABEL_22:
     while (v10);
   }
 
-  return v8;
+  return historyCopy;
 }
 
-- (BOOL)_isHistoryArrayFull:(id)a3 forMaxCount:(unint64_t)a4 inDurationWindow:(double)a5
+- (BOOL)_isHistoryArrayFull:(id)full forMaxCount:(unint64_t)count inDurationWindow:(double)window
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = [v7 count];
+  fullCopy = full;
+  date = [MEMORY[0x1E695DF00] date];
+  v9 = [fullCopy count];
   if (v9)
   {
     v10 = 0;
-    v11 = a5 * 60.0 * 60.0;
+    v11 = window * 60.0 * 60.0;
     v12 = v9 - 1;
     do
     {
@@ -606,8 +606,8 @@ LABEL_22:
         break;
       }
 
-      v14 = [v7 objectAtIndexedSubscript:v12];
-      [v8 timeIntervalSinceDate:v14];
+      v14 = [fullCopy objectAtIndexedSubscript:v12];
+      [date timeIntervalSinceDate:v14];
       v16 = v15;
       ++v10;
 
@@ -615,7 +615,7 @@ LABEL_22:
     }
 
     while (v16 <= v11);
-    v17 = v13 >= a4;
+    v17 = v13 >= count;
   }
 
   else
@@ -626,40 +626,40 @@ LABEL_22:
   return v17;
 }
 
-- (id)_trimHistoryArray:(id)a3 forMaxCount:(unint64_t)a4 inDurationWindow:(double)a5 atCurrentDate:(id)a6
+- (id)_trimHistoryArray:(id)array forMaxCount:(unint64_t)count inDurationWindow:(double)window atCurrentDate:(id)date
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 count];
+  arrayCopy = array;
+  dateCopy = date;
+  v11 = [arrayCopy count];
   if (v11)
   {
     v12 = v11;
-    v13 = a5 * 60.0 * 60.0;
+    v13 = window * 60.0 * 60.0;
     v14 = v11;
     while ((--v14 & 0x8000000000000000) == 0)
     {
-      v15 = [v9 objectAtIndexedSubscript:v14];
-      [v10 timeIntervalSinceDate:v15];
+      v15 = [arrayCopy objectAtIndexedSubscript:v14];
+      [dateCopy timeIntervalSinceDate:v15];
       v17 = v16;
 
       if (v17 > v13)
       {
         if (v14 < v12)
         {
-          [v9 removeObjectsInRange:{0, v14 + 1}];
+          [arrayCopy removeObjectsInRange:{0, v14 + 1}];
         }
 
         break;
       }
     }
 
-    if (([v9 count] - a4) >= 1)
+    if (([arrayCopy count] - count) >= 1)
     {
-      [v9 removeObjectsInRange:0];
+      [arrayCopy removeObjectsInRange:0];
     }
   }
 
-  return v9;
+  return arrayCopy;
 }
 
 @end

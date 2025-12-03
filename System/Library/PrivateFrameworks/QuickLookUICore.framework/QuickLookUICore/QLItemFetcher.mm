@@ -1,9 +1,9 @@
 @interface QLItemFetcher
 - (QLItemFetcher)init;
-- (QLItemFetcher)initWithCoder:(id)a3;
+- (QLItemFetcher)initWithCoder:(id)coder;
 - (void)_notifyObservers;
-- (void)encodeWithCoder:(id)a3;
-- (void)registerObserver:(id)a3 withBlock:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)registerObserver:(id)observer withBlock:(id)block;
 @end
 
 @implementation QLItemFetcher
@@ -15,9 +15,9 @@
   v2 = [(QLItemFetcher *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     observersToBlocks = v2->_observersToBlocks;
-    v2->_observersToBlocks = v3;
+    v2->_observersToBlocks = weakToStrongObjectsMapTable;
 
     [(QLItemFetcher *)v2 setFetchingState:0];
   }
@@ -25,31 +25,31 @@
   return v2;
 }
 
-- (void)registerObserver:(id)a3 withBlock:(id)a4
+- (void)registerObserver:(id)observer withBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_observersToBlocks objectForKey:v9];
+  observerCopy = observer;
+  blockCopy = block;
+  v7 = [(NSMapTable *)self->_observersToBlocks objectForKey:observerCopy];
   if (!v7)
   {
     v7 = objc_opt_new();
-    [(NSMapTable *)self->_observersToBlocks setObject:v7 forKey:v9];
+    [(NSMapTable *)self->_observersToBlocks setObject:v7 forKey:observerCopy];
   }
 
-  v8 = MEMORY[0x266708AD0](v6);
+  v8 = MEMORY[0x266708AD0](blockCopy);
   [v7 addObject:v8];
 }
 
 - (void)_notifyObservers
 {
-  v3 = [(NSMapTable *)self->_observersToBlocks keyEnumerator];
-  v4 = [v3 allObjects];
+  keyEnumerator = [(NSMapTable *)self->_observersToBlocks keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __33__QLItemFetcher__notifyObservers__block_invoke;
   v5[3] = &unk_279AE1078;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [allObjects enumerateObjectsUsingBlock:v5];
 }
 
 void __33__QLItemFetcher__notifyObservers__block_invoke(uint64_t a1, uint64_t a2)
@@ -89,19 +89,19 @@ void __33__QLItemFetcher__notifyObservers__block_invoke(uint64_t a1, uint64_t a2
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[QLItemFetcher fetchingState](self forKey:{"fetchingState"), @"fetchingState"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[QLItemFetcher fetchingState](self forKey:{"fetchingState"), @"fetchingState"}];
 }
 
-- (QLItemFetcher)initWithCoder:(id)a3
+- (QLItemFetcher)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(QLItemFetcher *)self init];
   if (v5)
   {
-    -[QLItemFetcher setFetchingState:](v5, "setFetchingState:", [v4 decodeIntegerForKey:@"fetchingState"]);
+    -[QLItemFetcher setFetchingState:](v5, "setFetchingState:", [coderCopy decodeIntegerForKey:@"fetchingState"]);
     v6 = v5;
   }
 

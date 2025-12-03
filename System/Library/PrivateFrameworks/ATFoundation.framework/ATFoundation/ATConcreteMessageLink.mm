@@ -1,50 +1,50 @@
 @interface ATConcreteMessageLink
-- (ATConcreteMessageLink)initWithSocket:(id)a3;
-- (BOOL)_isWriterPendingStopForforMessage:(id)a3;
-- (BOOL)_sendMessage:(id)a3 error:(id *)a4;
+- (ATConcreteMessageLink)initWithSocket:(id)socket;
+- (BOOL)_isWriterPendingStopForforMessage:(id)message;
+- (BOOL)_sendMessage:(id)message error:(id *)error;
 - (BOOL)open;
 - (NSString)description;
 - (id)_getObservers;
 - (void)_checkMessageTimeouts;
-- (void)_invokeCompletionHandlerForResponseID:(unint64_t)a3 withError:(id)a4;
-- (void)_prepareStreamReaderForMessage:(id)a3 withProgress:(id)a4;
-- (void)_processIncomingDataRequest:(id)a3;
-- (void)_processIncomingDataResponse:(id)a3;
-- (void)_processIncomingMessage:(id)a3;
-- (void)_processIncomingPartialResponse:(id)a3;
-- (void)_processIncomingRequest:(id)a3;
-- (void)_processIncomingResponse:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addRequestHandler:(id)a3 forDataClass:(id)a4;
+- (void)_invokeCompletionHandlerForResponseID:(unint64_t)d withError:(id)error;
+- (void)_prepareStreamReaderForMessage:(id)message withProgress:(id)progress;
+- (void)_processIncomingDataRequest:(id)request;
+- (void)_processIncomingDataResponse:(id)response;
+- (void)_processIncomingMessage:(id)message;
+- (void)_processIncomingPartialResponse:(id)response;
+- (void)_processIncomingRequest:(id)request;
+- (void)_processIncomingResponse:(id)response;
+- (void)addObserver:(id)observer;
+- (void)addRequestHandler:(id)handler forDataClass:(id)class;
 - (void)addTimeoutException;
 - (void)close;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)removeRequestHandlerForDataClass:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)removeRequestHandlerForDataClass:(id)class;
 - (void)removeTimeoutException;
-- (void)sendPartialResponse:(id)a3 withCompletion:(id)a4;
-- (void)sendRequest:(id)a3 withCompletion:(id)a4;
-- (void)sendResponse:(id)a3 withProgress:(id)a4 completion:(id)a5;
-- (void)setInitialized:(BOOL)a3;
-- (void)socket:(id)a3 hasDataAvailable:(const char *)a4 length:(int64_t)a5;
-- (void)socketDidClose:(id)a3;
+- (void)sendPartialResponse:(id)response withCompletion:(id)completion;
+- (void)sendRequest:(id)request withCompletion:(id)completion;
+- (void)sendResponse:(id)response withProgress:(id)progress completion:(id)completion;
+- (void)setInitialized:(BOOL)initialized;
+- (void)socket:(id)socket hasDataAvailable:(const char *)available length:(int64_t)length;
+- (void)socketDidClose:(id)close;
 @end
 
 @implementation ATConcreteMessageLink
 
-- (BOOL)_isWriterPendingStopForforMessage:(id)a3
+- (BOOL)_isWriterPendingStopForforMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 messageType];
-  if (v5 > 4)
+  messageCopy = message;
+  messageType = [messageCopy messageType];
+  if (messageType > 4)
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = *(&self->super.super.isa + *off_2784E9348[v5]);
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "messageID")}];
+    v6 = *(&self->super.super.isa + *off_2784E9348[messageType]);
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(messageCopy, "messageID")}];
     v8 = [v6 containsObject:v7];
   }
 
@@ -129,7 +129,7 @@ void __78__ATConcreteMessageLink__stopWriter_byInjectingStreamError_forMessageId
   {
     v5 = [v11[5] count];
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 1024;
     v19 = v5;
     _os_log_impl(&dword_22392A000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Returning %d observers", buf, 0x12u);
@@ -153,19 +153,19 @@ uint64_t __38__ATConcreteMessageLink__getObservers__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_sendMessage:(id)a3 error:(id *)a4
+- (BOOL)_sendMessage:(id)message error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ATConcreteMessageLink *)self socket];
-  v8 = [v7 isOpen];
+  messageCopy = message;
+  socket = [(ATConcreteMessageLink *)self socket];
+  isOpen = [socket isOpen];
 
-  if ((v8 & 1) == 0)
+  if ((isOpen & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       [ATInternalError errorWithCode:3 format:@"underlying socket for link closed"];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -177,24 +177,24 @@ uint64_t __38__ATConcreteMessageLink__getObservers__block_invoke(uint64_t a1)
   }
 
   self->_lastActivityTime = CFAbsoluteTimeGetCurrent();
-  if (![v6 messageType] || objc_msgSend(v6, "messageType") == 1 || objc_msgSend(v6, "messageType") == 2)
+  if (![messageCopy messageType] || objc_msgSend(messageCopy, "messageType") == 1 || objc_msgSend(messageCopy, "messageType") == 2)
   {
     v9 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_6:
-      v10 = [v6 formattedDescription];
+      formattedDescription = [messageCopy formattedDescription];
       *v22 = 138543618;
       *&v22[4] = self;
       *&v22[12] = 2114;
-      *&v22[14] = v10;
+      *&v22[14] = formattedDescription;
       _os_log_impl(&dword_22392A000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ ---> %{public}@", v22, 0x16u);
     }
   }
 
   else
   {
-    if ([v6 hasAdditionalPayload])
+    if ([messageCopy hasAdditionalPayload])
     {
       goto LABEL_8;
     }
@@ -207,41 +207,41 @@ LABEL_6:
   }
 
 LABEL_8:
-  v11 = [v6 data];
-  [v11 length];
+  data = [messageCopy data];
+  [data length];
   v12 = PBDataWriterWriteBareVarint();
   v13 = objc_opt_new();
   [v13 appendBytes:v22 length:v12];
-  [v13 appendData:v11];
-  v14 = [(ATConcreteMessageLink *)self socket];
-  v15 = [v14 writeAllData:v13 error:a4];
+  [v13 appendData:data];
+  socket2 = [(ATConcreteMessageLink *)self socket];
+  v15 = [socket2 writeAllData:v13 error:error];
 
   if (v15)
   {
-    if ([v6 hasAdditionalPayload])
+    if ([messageCopy hasAdditionalPayload])
     {
       v16 = 1;
     }
 
     else
     {
-      v17 = [(ATConcreteMessageLink *)self socket];
-      v18 = [v17 flush];
+      socket3 = [(ATConcreteMessageLink *)self socket];
+      flush = [socket3 flush];
 
-      v16 = v18 == 0;
-      if (a4 && v18)
+      v16 = flush == 0;
+      if (error && flush)
       {
-        v19 = v18;
-        *a4 = v18;
+        v19 = flush;
+        *error = flush;
       }
     }
   }
 
   else
   {
-    if (a4 && !*a4)
+    if (error && !*error)
     {
-      *a4 = [ATInternalError errorWithCode:3 format:@"failed to write message to socket"];
+      *error = [ATInternalError errorWithCode:3 format:@"failed to write message to socket"];
     }
 
     [(ATConcreteMessageLink *)self close];
@@ -263,7 +263,7 @@ LABEL_23:
     lastActivityTime = self->_lastActivityTime;
     idleTimeoutExceptionCount = self->_idleTimeoutExceptionCount;
     *buf = 138544130;
-    v78 = self;
+    selfCopy8 = self;
     v79 = 2048;
     v80 = lastActivityTime;
     v81 = 2048;
@@ -273,13 +273,13 @@ LABEL_23:
     _os_log_impl(&dword_22392A000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Checking for message timeouts. _lastActivityTime=%f (%fs ago), idleTimeoutExceptionCount = %d", buf, 0x26u);
   }
 
-  v7 = [(NSMutableDictionary *)self->_sentRequestsByID allKeys];
+  allKeys = [(NSMutableDictionary *)self->_sentRequestsByID allKeys];
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 count];
+    v9 = [allKeys count];
     *buf = 138543618;
-    v78 = self;
+    selfCopy8 = self;
     v79 = 2048;
     v80 = *&v9;
     _os_log_impl(&dword_22392A000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Checking %lu sent requests waiting for a reply", buf, 0x16u);
@@ -289,7 +289,7 @@ LABEL_23:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v7;
+  obj = allKeys;
   v10 = [obj countByEnumeratingWithState:&v70 objects:v76 count:16];
   if (v10)
   {
@@ -316,7 +316,7 @@ LABEL_23:
           {
             [v16 timestamp];
             *buf = 138543874;
-            v78 = self;
+            selfCopy8 = self;
             v79 = 2114;
             v80 = *&v16;
             v81 = 2048;
@@ -328,9 +328,9 @@ LABEL_23:
           v21 = v20;
           if (v20)
           {
-            v22 = [v20 didEncounterErrorBlock];
+            didEncounterErrorBlock = [v20 didEncounterErrorBlock];
             v23 = [ATInternalError errorWithCode:2 format:@"request timed out"];
-            (v22)[2](v22, v23);
+            (didEncounterErrorBlock)[2](didEncounterErrorBlock, v23);
           }
 
           [(NSMutableDictionary *)self->_sentRequestsByID removeObjectForKey:v15];
@@ -341,11 +341,11 @@ LABEL_23:
             v25 = _ATLogCategoryFramework();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [v15 longLongValue];
+              longLongValue = [v15 longLongValue];
               *buf = v54;
-              v78 = self;
+              selfCopy8 = self;
               v79 = 2048;
-              v80 = *&v26;
+              v80 = *&longLongValue;
               _os_log_impl(&dword_22392A000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ Calling completion block for timed out messgage if %lld", buf, 0x16u);
             }
 
@@ -372,7 +372,7 @@ LABEL_23:
   {
     v29 = [(NSMutableDictionary *)self->_streamReadersByID count];
     *buf = 138543618;
-    v78 = self;
+    selfCopy8 = self;
     v79 = 2048;
     v80 = *&v29;
     _os_log_impl(&dword_22392A000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ Checking %lu active stream readers", buf, 0x16u);
@@ -382,8 +382,8 @@ LABEL_23:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v30 = [(NSMutableDictionary *)self->_streamReadersByID allKeys];
-  v31 = [v30 countByEnumeratingWithState:&v63 objects:v75 count:16];
+  allKeys2 = [(NSMutableDictionary *)self->_streamReadersByID allKeys];
+  v31 = [allKeys2 countByEnumeratingWithState:&v63 objects:v75 count:16];
   if (v31)
   {
     v32 = v31;
@@ -394,7 +394,7 @@ LABEL_23:
       {
         if (*v64 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(allKeys2);
         }
 
         v35 = [(NSMutableDictionary *)self->_streamReadersByID objectForKey:*(*(&v63 + 1) + 8 * j)];
@@ -406,7 +406,7 @@ LABEL_23:
           {
             [v35 timestamp];
             *buf = 138543874;
-            v78 = self;
+            selfCopy8 = self;
             v79 = 2114;
             v80 = *&v35;
             v81 = 2048;
@@ -424,7 +424,7 @@ LABEL_23:
         }
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v63 objects:v75 count:16];
+      v32 = [allKeys2 countByEnumeratingWithState:&v63 objects:v75 count:16];
     }
 
     while (v32);
@@ -435,7 +435,7 @@ LABEL_23:
   {
     v41 = [(NSMutableDictionary *)self->_receivedRequestsByID count];
     *buf = 138543618;
-    v78 = self;
+    selfCopy8 = self;
     v79 = 2048;
     v80 = *&v41;
     _os_log_impl(&dword_22392A000, v40, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending partial responses for %lu requests in progress", buf, 0x16u);
@@ -496,7 +496,7 @@ LABEL_23:
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v78 = self;
+      selfCopy8 = self;
       _os_log_impl(&dword_22392A000, v52, OS_LOG_TYPE_ERROR, "%{public}@ idle timeout expired - closing", buf, 0xCu);
     }
 
@@ -543,12 +543,12 @@ void __46__ATConcreteMessageLink__checkMessageTimeouts__block_invoke_77(uint64_t
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processIncomingDataResponse:(id)a3
+- (void)_processIncomingDataResponse:(id)response
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   receivedResponsesByID = self->_receivedResponsesByID;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "messageID")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(responseCopy, "messageID")}];
   v7 = [(NSMutableDictionary *)receivedResponsesByID objectForKey:v6];
 
   if (!v7)
@@ -567,27 +567,27 @@ void __46__ATConcreteMessageLink__checkMessageTimeouts__block_invoke_77(uint64_t
   }
 
   signatureProvider = self->_signatureProvider;
-  v9 = [v4 payloadSignature];
-  v10 = [v4 payload];
-  v11 = [(ATSignatureProvider *)signatureProvider verifySignature:v9 forData:v10];
+  payloadSignature = [responseCopy payloadSignature];
+  payload = [responseCopy payload];
+  v11 = [(ATSignatureProvider *)signatureProvider verifySignature:payloadSignature forData:payload];
 
   if (!v11)
   {
 LABEL_8:
     responseWritersByID = self->_responseWritersByID;
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "messageID")}];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(responseCopy, "messageID")}];
     v11 = [(NSMutableDictionary *)responseWritersByID objectForKey:v14];
 
-    if (!v11 || [(ATConcreteMessageLink *)self _isWriterPendingStopForforMessage:v4])
+    if (!v11 || [(ATConcreteMessageLink *)self _isWriterPendingStopForforMessage:responseCopy])
     {
       goto LABEL_24;
     }
 
-    if ([v4 hasPayload])
+    if ([responseCopy hasPayload])
     {
-      v15 = [v4 payload];
+      payload2 = [responseCopy payload];
       v36 = 0;
-      v16 = [v11 writeAllData:v15 error:&v36];
+      v16 = [v11 writeAllData:payload2 error:&v36];
       v17 = v36;
 
       if ((v16 & 1) == 0)
@@ -595,7 +595,7 @@ LABEL_8:
         v18 = _ATLogCategoryFramework();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v19 = [v4 messageID];
+          messageID = [responseCopy messageID];
           *buf = 138544130;
           *&buf[4] = self;
           *&buf[12] = 2114;
@@ -603,7 +603,7 @@ LABEL_8:
           v38 = 2048;
           v39 = *&v11;
           v40 = 1024;
-          LODWORD(v41) = v19;
+          LODWORD(v41) = messageID;
           _os_log_impl(&dword_22392A000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Error=%{public}@ writing to data stream, stopping %p for response=%u", buf, 0x26u);
         }
 
@@ -616,7 +616,7 @@ LABEL_8:
       v17 = 0;
     }
 
-    if ([v4 additionalPayload])
+    if ([responseCopy additionalPayload])
     {
 LABEL_23:
 
@@ -630,44 +630,44 @@ LABEL_23:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = Current - v22;
-      v25 = [v11 bytesWritten];
+      bytesWritten = [v11 bytesWritten];
       v26 = [v11 bytesWritten] / v24;
-      v27 = [v4 messageID];
+      messageID2 = [responseCopy messageID];
       *buf = 138544386;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v25;
+      *&buf[14] = bytesWritten;
       v38 = 2048;
       v39 = v24;
       v40 = 2048;
       v41 = v26;
       v42 = 1024;
-      v43 = v27;
+      v43 = messageID2;
       _os_log_impl(&dword_22392A000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Finished streaming %llu bytes in %.2f seconds (%.2f b/s) for response %u", buf, 0x30u);
     }
 
-    if ([v4 hasStreamError])
+    if ([responseCopy hasStreamError])
     {
       *&buf[8] = 0;
-      v28 = [v4 streamError];
-      *buf = [v28 domainCode];
-      v29 = [v4 streamError];
-      *&buf[8] = [v29 code];
+      streamError = [responseCopy streamError];
+      *buf = [streamError domainCode];
+      streamError2 = [responseCopy streamError];
+      *&buf[8] = [streamError2 code];
 
-      v30 = [v4 messageID];
-      v31 = [v4 messageType];
+      messageID3 = [responseCopy messageID];
+      messageType = [responseCopy messageType];
       v32 = buf;
-      v33 = self;
+      selfCopy2 = self;
       v34 = v11;
 LABEL_22:
-      [(ATConcreteMessageLink *)v33 _stopWriter:v34 byInjectingStreamError:v32 forMessageId:v30 type:v31];
+      [(ATConcreteMessageLink *)selfCopy2 _stopWriter:v34 byInjectingStreamError:v32 forMessageId:messageID3 type:messageType];
       goto LABEL_23;
     }
 
 LABEL_21:
-    v30 = [v4 messageID];
-    v31 = [v4 messageType];
-    v33 = self;
+    messageID3 = [responseCopy messageID];
+    messageType = [responseCopy messageType];
+    selfCopy2 = self;
     v34 = v11;
     v32 = 0;
     goto LABEL_22;
@@ -689,12 +689,12 @@ LABEL_24:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processIncomingPartialResponse:(id)a3
+- (void)_processIncomingPartialResponse:(id)response
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   sentRequestsByID = self->_sentRequestsByID;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "messageID")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(responseCopy, "messageID")}];
   v7 = [(NSMutableDictionary *)sentRequestsByID objectForKey:v6];
 
   if (v7)
@@ -708,9 +708,9 @@ LABEL_24:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 1024;
-      v13 = [v4 messageID];
+      messageID = [responseCopy messageID];
       _os_log_impl(&dword_22392A000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Received incoming partial response for unknown message ID %d", &v10, 0x12u);
     }
   }
@@ -718,22 +718,22 @@ LABEL_24:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processIncomingResponse:(id)a3
+- (void)_processIncomingResponse:(id)response
 {
   *&v36[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 formattedDescription];
+    formattedDescription = [responseCopy formattedDescription];
     *buf = 138543618;
-    v34 = self;
+    selfCopy3 = self;
     v35 = 2114;
-    *v36 = v6;
+    *v36 = formattedDescription;
     _os_log_impl(&dword_22392A000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ <--- %{public}@", buf, 0x16u);
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CEA460]) initWithATPMessage:v4];
+  v7 = [objc_alloc(MEMORY[0x277CEA460]) initWithATPMessage:responseCopy];
   sentRequestsByID = self->_sentRequestsByID;
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "messageID")}];
   v10 = [(NSMutableDictionary *)sentRequestsByID objectForKey:v9];
@@ -748,12 +748,12 @@ LABEL_24:
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "messageID")}];
     [(NSMutableDictionary *)receivedResponsesByID setObject:v7 forKey:v14];
 
-    if ([v4 additionalPayload])
+    if ([responseCopy additionalPayload])
     {
       v15 = [objc_alloc(MEMORY[0x277D27F28]) initWithQueue:self->_queue];
       [v15 setCompressed:{(objc_msgSend(v7, "options") >> 1) & 1}];
-      v16 = [v15 inputStream];
-      [v7 setDataStream:v16];
+      inputStream = [v15 inputStream];
+      [v7 setDataStream:inputStream];
 
       responseWritersByID = self->_responseWritersByID;
       v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "messageID")}];
@@ -763,14 +763,14 @@ LABEL_24:
       v19 = _ATLogCategoryFramework();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v4 messageID];
-        v21 = [v15 isCompressed];
+        messageID = [responseCopy messageID];
+        isCompressed = [v15 isCompressed];
         *buf = 138543874;
-        v34 = self;
+        selfCopy3 = self;
         v35 = 1024;
-        *v36 = v20;
+        *v36 = messageID;
         v36[2] = 1024;
-        *&v36[3] = v21;
+        *&v36[3] = isCompressed;
         _os_log_impl(&dword_22392A000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Opened data stream for response ID %d, isCompressed=%{BOOL}u", buf, 0x18u);
       }
     }
@@ -802,11 +802,11 @@ LABEL_24:
     v24 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v7 messageID];
+      messageID2 = [v7 messageID];
       *buf = 138543618;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 1024;
-      *v36 = v28;
+      *v36 = messageID2;
       _os_log_impl(&dword_22392A000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ Received incoming response for unknown message ID %d", buf, 0x12u);
     }
   }
@@ -814,23 +814,23 @@ LABEL_24:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processIncomingDataRequest:(id)a3
+- (void)_processIncomingDataRequest:(id)request
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 formattedDescription];
+    formattedDescription = [requestCopy formattedDescription];
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = formattedDescription;
     _os_log_impl(&dword_22392A000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ <--- %{public}@", buf, 0x16u);
   }
 
   receivedRequestsByID = self->_receivedRequestsByID;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "messageID")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(requestCopy, "messageID")}];
   v9 = [(NSMutableDictionary *)receivedRequestsByID objectForKey:v8];
 
   if (!v9)
@@ -849,27 +849,27 @@ LABEL_24:
   }
 
   signatureProvider = self->_signatureProvider;
-  v11 = [v4 payloadSignature];
-  v12 = [v4 payload];
-  v13 = [(ATSignatureProvider *)signatureProvider verifySignature:v11 forData:v12];
+  payloadSignature = [requestCopy payloadSignature];
+  payload = [requestCopy payload];
+  v13 = [(ATSignatureProvider *)signatureProvider verifySignature:payloadSignature forData:payload];
 
   if (!v13)
   {
 LABEL_10:
     requestWritersByID = self->_requestWritersByID;
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "messageID")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(requestCopy, "messageID")}];
     v13 = [(NSMutableDictionary *)requestWritersByID objectForKey:v16];
 
-    if (!v13 || [(ATConcreteMessageLink *)self _isWriterPendingStopForforMessage:v4])
+    if (!v13 || [(ATConcreteMessageLink *)self _isWriterPendingStopForforMessage:requestCopy])
     {
       goto LABEL_26;
     }
 
-    if ([v4 hasPayload])
+    if ([requestCopy hasPayload])
     {
-      v17 = [v4 payload];
+      payload2 = [requestCopy payload];
       v38 = 0;
-      v18 = [v13 writeAllData:v17 error:&v38];
+      v18 = [v13 writeAllData:payload2 error:&v38];
       v19 = v38;
 
       if ((v18 & 1) == 0)
@@ -877,7 +877,7 @@ LABEL_10:
         v20 = _ATLogCategoryFramework();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v21 = [v4 messageID];
+          messageID = [requestCopy messageID];
           *buf = 138544130;
           *&buf[4] = self;
           *&buf[12] = 2114;
@@ -885,7 +885,7 @@ LABEL_10:
           v40 = 2048;
           v41 = *&v13;
           v42 = 1024;
-          LODWORD(v43) = v21;
+          LODWORD(v43) = messageID;
           _os_log_impl(&dword_22392A000, v20, OS_LOG_TYPE_ERROR, "%{public}@ Error=%{public}@ writing to data stream, stopping %p for request=%u", buf, 0x26u);
         }
 
@@ -898,7 +898,7 @@ LABEL_10:
       v19 = 0;
     }
 
-    if ([v4 additionalPayload])
+    if ([requestCopy additionalPayload])
     {
 LABEL_25:
 
@@ -912,44 +912,44 @@ LABEL_25:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       v26 = Current - v24;
-      v27 = [v13 bytesWritten];
+      bytesWritten = [v13 bytesWritten];
       v28 = [v13 bytesWritten] / v26;
-      v29 = [v4 messageID];
+      messageID2 = [requestCopy messageID];
       *buf = 138544386;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v27;
+      *&buf[14] = bytesWritten;
       v40 = 2048;
       v41 = v26;
       v42 = 2048;
       v43 = v28;
       v44 = 1024;
-      v45 = v29;
+      v45 = messageID2;
       _os_log_impl(&dword_22392A000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ Finished streaming %llu bytes in %.2f seconds (%.2f b/s) for request %u", buf, 0x30u);
     }
 
-    if ([v4 hasStreamError])
+    if ([requestCopy hasStreamError])
     {
       *&buf[8] = 0;
-      v30 = [v4 streamError];
-      *buf = [v30 domainCode];
-      v31 = [v4 streamError];
-      *&buf[8] = [v31 code];
+      streamError = [requestCopy streamError];
+      *buf = [streamError domainCode];
+      streamError2 = [requestCopy streamError];
+      *&buf[8] = [streamError2 code];
 
-      v32 = [v4 messageID];
-      v33 = [v4 messageType];
+      messageID3 = [requestCopy messageID];
+      messageType = [requestCopy messageType];
       v34 = buf;
-      v35 = self;
+      selfCopy2 = self;
       v36 = v13;
 LABEL_24:
-      [(ATConcreteMessageLink *)v35 _stopWriter:v36 byInjectingStreamError:v34 forMessageId:v32 type:v33];
+      [(ATConcreteMessageLink *)selfCopy2 _stopWriter:v36 byInjectingStreamError:v34 forMessageId:messageID3 type:messageType];
       goto LABEL_25;
     }
 
 LABEL_23:
-    v32 = [v4 messageID];
-    v33 = [v4 messageType];
-    v35 = self;
+    messageID3 = [requestCopy messageID];
+    messageType = [requestCopy messageType];
+    selfCopy2 = self;
     v36 = v13;
     v34 = 0;
     goto LABEL_24;
@@ -971,40 +971,40 @@ LABEL_26:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processIncomingRequest:(id)a3
+- (void)_processIncomingRequest:(id)request
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 formattedDescription];
+    formattedDescription = [requestCopy formattedDescription];
     *buf = 138543618;
-    v38 = self;
+    selfCopy4 = self;
     v39 = 2114;
-    *v40 = v6;
+    *v40 = formattedDescription;
     _os_log_impl(&dword_22392A000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ <--- %{public}@", buf, 0x16u);
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CEA458]) initWithATPMessage:v4];
+  v7 = [objc_alloc(MEMORY[0x277CEA458]) initWithATPMessage:requestCopy];
   [v7 setTimestamp:CFAbsoluteTimeGetCurrent()];
   receivedRequestsByID = self->_receivedRequestsByID;
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "messageID")}];
   [(NSMutableDictionary *)receivedRequestsByID setObject:v7 forKey:v9];
 
   requestHandlersByDataClass = self->_requestHandlersByDataClass;
-  v11 = [v7 dataClass];
-  v12 = [(NSMutableDictionary *)requestHandlersByDataClass objectForKey:v11];
+  dataClass = [v7 dataClass];
+  v12 = [(NSMutableDictionary *)requestHandlersByDataClass objectForKey:dataClass];
 
   if (v12)
   {
-    if ([v4 additionalPayload])
+    if ([requestCopy additionalPayload])
     {
       v13 = [objc_alloc(MEMORY[0x277D27F28]) initWithQueue:self->_queue];
       [v13 setCompressed:{(objc_msgSend(v7, "options") >> 1) & 1}];
       [v13 start];
-      v14 = [v13 inputStream];
-      [v7 setDataStream:v14];
+      inputStream = [v13 inputStream];
+      [v7 setDataStream:inputStream];
 
       requestWritersByID = self->_requestWritersByID;
       v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "messageID")}];
@@ -1013,14 +1013,14 @@ LABEL_26:
       v17 = _ATLogCategoryFramework();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v4 messageID];
-        v19 = [v13 isCompressed];
+        messageID = [requestCopy messageID];
+        isCompressed = [v13 isCompressed];
         *buf = 138543874;
-        v38 = self;
+        selfCopy4 = self;
         v39 = 1024;
-        *v40 = v18;
+        *v40 = messageID;
         *&v40[4] = 1024;
-        *&v40[6] = v19;
+        *&v40[6] = isCompressed;
         _os_log_impl(&dword_22392A000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Opened data stream for request ID %d, isCompressed=%{BOOL}u", buf, 0x18u);
       }
     }
@@ -1030,7 +1030,7 @@ LABEL_26:
     v33[2] = __49__ATConcreteMessageLink__processIncomingRequest___block_invoke_64;
     v33[3] = &unk_2784E92D8;
     v34 = v12;
-    v35 = self;
+    selfCopy3 = self;
     v20 = MEMORY[0x223DED9F0](v33);
     v21 = v20;
     if (self->_initialized)
@@ -1053,8 +1053,8 @@ LABEL_26:
 
   else
   {
-    v23 = [v7 command];
-    v24 = [v23 isEqualToString:@"Ping"];
+    command = [v7 command];
+    v24 = [command isEqualToString:@"Ping"];
 
     if (v24)
     {
@@ -1072,11 +1072,11 @@ LABEL_26:
       v26 = _ATLogCategoryFramework();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v7 dataClass];
+        dataClass2 = [v7 dataClass];
         *buf = 138543618;
-        v38 = self;
+        selfCopy4 = self;
         v39 = 2114;
-        *v40 = v27;
+        *v40 = dataClass2;
         _os_log_impl(&dword_22392A000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ Dropping message for unhandled dataclass %{public}@", buf, 0x16u);
       }
 
@@ -1112,17 +1112,17 @@ void __49__ATConcreteMessageLink__processIncomingRequest___block_invoke(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processIncomingMessage:(id)a3
+- (void)_processIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__ATConcreteMessageLink__processIncomingMessage___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1208,17 +1208,17 @@ LABEL_21:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invokeCompletionHandlerForResponseID:(unint64_t)a3 withError:(id)a4
+- (void)_invokeCompletionHandlerForResponseID:(unint64_t)d withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   completionHandlersByResponseID = self->_completionHandlersByResponseID;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
   v9 = [(NSMutableDictionary *)completionHandlersByResponseID objectForKey:v8];
 
   if (v9)
   {
     v10 = self->_completionHandlersByResponseID;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
     [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
     callbackQueue = self->_callbackQueue;
@@ -1227,22 +1227,22 @@ LABEL_21:
     v13[2] = __73__ATConcreteMessageLink__invokeCompletionHandlerForResponseID_withError___block_invoke;
     v13[3] = &unk_2784E91E8;
     v15 = v9;
-    v14 = v6;
+    v14 = errorCopy;
     dispatch_async(callbackQueue, v13);
   }
 }
 
-- (void)_prepareStreamReaderForMessage:(id)a3 withProgress:(id)a4
+- (void)_prepareStreamReaderForMessage:(id)message withProgress:(id)progress
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  progressCopy = progress;
   v8 = objc_alloc(MEMORY[0x277D27F20]);
-  v9 = [v6 dataStream];
-  v10 = [v8 initWithInputStream:v9 queue:self->_queue];
+  dataStream = [messageCopy dataStream];
+  v10 = [v8 initWithInputStream:dataStream queue:self->_queue];
 
   [v10 setMaximumBufferSize:{-[ATSocket suggestedBufferSize](self->_socket, "suggestedBufferSize")}];
-  [v10 setCompress:{(objc_msgSend(v6, "options") >> 1) & 1}];
-  v11 = [v6 messageID];
+  [v10 setCompress:{(objc_msgSend(messageCopy, "options") >> 1) & 1}];
+  messageID = [messageCopy messageID];
   v37[0] = 0;
   v37[1] = v37;
   v37[2] = 0x2020000000;
@@ -1260,11 +1260,11 @@ LABEL_21:
   objc_copyWeak(&v31, &from);
   objc_copyWeak(v32, &location);
   v29 = v37;
-  v12 = v6;
+  v12 = messageCopy;
   v27 = v12;
   v30 = v35;
-  v32[1] = v11;
-  v13 = v7;
+  v32[1] = messageID;
+  v13 = progressCopy;
   v28 = v13;
   [v10 setDidReadDataBlock:v26];
   v21[0] = MEMORY[0x277D85DD0];
@@ -1273,7 +1273,7 @@ LABEL_21:
   v21[3] = &unk_2784E9288;
   objc_copyWeak(v25, &from);
   v23 = v37;
-  v25[1] = v11;
+  v25[1] = messageID;
   v14 = v12;
   v22 = v14;
   v24 = v35;
@@ -1283,12 +1283,12 @@ LABEL_21:
   v18[2] = __69__ATConcreteMessageLink__prepareStreamReaderForMessage_withProgress___block_invoke_2;
   v18[3] = &unk_2784E92B0;
   objc_copyWeak(v20, &from);
-  v20[1] = v11;
+  v20[1] = messageID;
   v15 = v14;
   v19 = v15;
   [v10 setDidFinishReadingBlock:v18];
   streamReadersByID = self->_streamReadersByID;
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:messageID];
   [(NSMutableDictionary *)streamReadersByID setObject:v10 forKey:v17];
 
   [v10 start];
@@ -1555,23 +1555,23 @@ void __69__ATConcreteMessageLink__prepareStreamReaderForMessage_withProgress___b
   dispatch_group_leave(v6);
 }
 
-- (void)socket:(id)a3 hasDataAvailable:(const char *)a4 length:(int64_t)a5
+- (void)socket:(id)socket hasDataAvailable:(const char *)available length:(int64_t)length
 {
-  v9 = a3;
+  socketCopy = socket;
   self->_lastActivityTime = CFAbsoluteTimeGetCurrent();
   v8 = objc_autoreleasePoolPush();
-  [(ATMessageParser *)self->_parser processData:a4 length:a5];
+  [(ATMessageParser *)self->_parser processData:available length:length];
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)socketDidClose:(id)a3
+- (void)socketDidClose:(id)close
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22392A000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Underlying socket closed", &v6, 0xCu);
   }
 
@@ -1585,8 +1585,8 @@ void __69__ATConcreteMessageLink__prepareStreamReaderForMessage_withProgress___b
   idleTimeoutExceptionCount = self->_idleTimeoutExceptionCount;
   if (idleTimeoutExceptionCount <= 0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ATConcreteMessageLink.m" lineNumber:510 description:@"timeout exception already at 0!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATConcreteMessageLink.m" lineNumber:510 description:@"timeout exception already at 0!"];
 
     idleTimeoutExceptionCount = self->_idleTimeoutExceptionCount;
   }
@@ -1597,7 +1597,7 @@ void __69__ATConcreteMessageLink__prepareStreamReaderForMessage_withProgress___b
   {
     v5 = self->_idleTimeoutExceptionCount;
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
     v12 = v5;
     _os_log_impl(&dword_22392A000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing idleTimeoutException - count %d", &v9, 0x12u);
@@ -1615,7 +1615,7 @@ void __69__ATConcreteMessageLink__prepareStreamReaderForMessage_withProgress___b
   {
     idleTimeoutExceptionCount = self->_idleTimeoutExceptionCount;
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 1024;
     v9 = idleTimeoutExceptionCount;
     _os_log_impl(&dword_22392A000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding idleTimeoutException - count %d", &v6, 0x12u);
@@ -1629,28 +1629,28 @@ void __69__ATConcreteMessageLink__prepareStreamReaderForMessage_withProgress___b
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ATConcreteMessageLink *)self endpointType];
-  v7 = [(ATConcreteMessageLink *)self isOpen];
-  v8 = [(ATConcreteMessageLink *)self identifier];
-  v9 = [v3 stringWithFormat:@"<%@: %p, type=%d, open=%d identifier=%@>", v5, self, v6, v7, v8];
+  endpointType = [(ATConcreteMessageLink *)self endpointType];
+  isOpen = [(ATConcreteMessageLink *)self isOpen];
+  identifier = [(ATConcreteMessageLink *)self identifier];
+  v9 = [v3 stringWithFormat:@"<%@: %p, type=%d, open=%d identifier=%@>", v5, self, endpointType, isOpen, identifier];
 
   return v9;
 }
 
-- (void)sendPartialResponse:(id)a3 withCompletion:(id)a4
+- (void)sendPartialResponse:(id)response withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__ATConcreteMessageLink_sendPartialResponse_withCompletion___block_invoke;
   block[3] = &unk_2784E96A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = responseCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = responseCopy;
   dispatch_async(queue, block);
 }
 
@@ -1758,23 +1758,23 @@ uint64_t __60__ATConcreteMessageLink_sendPartialResponse_withCompletion___block_
   return result;
 }
 
-- (void)sendResponse:(id)a3 withProgress:(id)a4 completion:(id)a5
+- (void)sendResponse:(id)response withProgress:(id)progress completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  progressCopy = progress;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__ATConcreteMessageLink_sendResponse_withProgress_completion___block_invoke;
   v15[3] = &unk_2784E9210;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = responseCopy;
+  v17 = completionCopy;
+  v18 = progressCopy;
+  v12 = progressCopy;
+  v13 = completionCopy;
+  v14 = responseCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1940,20 +1940,20 @@ uint64_t __62__ATConcreteMessageLink_sendResponse_withProgress_completion___bloc
   return result;
 }
 
-- (void)sendRequest:(id)a3 withCompletion:(id)a4
+- (void)sendRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ATConcreteMessageLink_sendRequest_withCompletion___block_invoke;
   block[3] = &unk_2784E96A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -2083,25 +2083,25 @@ LABEL_23:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInitialized:(BOOL)a3
+- (void)setInitialized:(BOOL)initialized
 {
-  v3 = a3;
+  initializedCopy = initialized;
   v19 = *MEMORY[0x277D85DE8];
   if (self->_initialized)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ATConcreteMessageLink.m" lineNumber:340 description:@"we should not be initializing twice"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATConcreteMessageLink.m" lineNumber:340 description:@"we should not be initializing twice"];
   }
 
-  self->_initialized = v3;
-  if (v3)
+  self->_initialized = initializedCopy;
+  if (initializedCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(ATConcreteMessageLink *)self _getObservers];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    _getObservers = [(ATConcreteMessageLink *)self _getObservers];
+    v6 = [_getObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2113,7 +2113,7 @@ LABEL_23:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_getObservers);
           }
 
           v10 = *(*(&v14 + 1) + 8 * v9);
@@ -2126,7 +2126,7 @@ LABEL_23:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [_getObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -2136,17 +2136,17 @@ LABEL_23:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   handlerAccessQueue = self->_handlerAccessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__ATConcreteMessageLink_removeObserver___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(handlerAccessQueue, v7);
 }
 
@@ -2169,17 +2169,17 @@ void __40__ATConcreteMessageLink_removeObserver___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   handlerAccessQueue = self->_handlerAccessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ATConcreteMessageLink_addObserver___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(handlerAccessQueue, v7);
 }
 
@@ -2202,17 +2202,17 @@ void __37__ATConcreteMessageLink_addObserver___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeRequestHandlerForDataClass:(id)a3
+- (void)removeRequestHandlerForDataClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   handlerAccessQueue = self->_handlerAccessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ATConcreteMessageLink_removeRequestHandlerForDataClass___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = classCopy;
+  v6 = classCopy;
   dispatch_sync(handlerAccessQueue, v7);
 }
 
@@ -2235,20 +2235,20 @@ void __58__ATConcreteMessageLink_removeRequestHandlerForDataClass___block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRequestHandler:(id)a3 forDataClass:(id)a4
+- (void)addRequestHandler:(id)handler forDataClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  classCopy = class;
   handlerAccessQueue = self->_handlerAccessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__ATConcreteMessageLink_addRequestHandler_forDataClass___block_invoke;
   block[3] = &unk_2784E9568;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = handlerCopy;
+  v13 = classCopy;
+  v9 = classCopy;
+  v10 = handlerCopy;
   dispatch_sync(handlerAccessQueue, block);
 }
 
@@ -2845,7 +2845,7 @@ void __29__ATConcreteMessageLink_open__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22392A000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ getting dealloced", buf, 0xCu);
   }
 
@@ -2876,13 +2876,13 @@ void __29__ATConcreteMessageLink_open__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (ATConcreteMessageLink)initWithSocket:(id)a3
+- (ATConcreteMessageLink)initWithSocket:(id)socket
 {
-  v6 = a3;
-  if (!v6)
+  socketCopy = socket;
+  if (!socketCopy)
   {
-    v49 = [MEMORY[0x277CCA890] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"ATConcreteMessageLink.m" lineNumber:117 description:@"socket is nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATConcreteMessageLink.m" lineNumber:117 description:@"socket is nil"];
   }
 
   v56.receiver = self;
@@ -2890,10 +2890,10 @@ void __29__ATConcreteMessageLink_open__block_invoke(uint64_t a1)
   v7 = [(ATMessageLink *)&v56 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     guid = v7->_guid;
-    v7->_guid = v9;
+    v7->_guid = uUIDString;
 
     v11 = dispatch_queue_create("com.apple.amp.AirTraffic.ATFoundation.ATConcreteMessageLink.queue", 0);
     queue = v7->_queue;
@@ -2911,17 +2911,17 @@ void __29__ATConcreteMessageLink_open__block_invoke(uint64_t a1)
     outputStreamsToInputStreams = v7->_outputStreamsToInputStreams;
     v7->_outputStreamsToInputStreams = v17;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     requestWritersByID = v7->_requestWritersByID;
-    v7->_requestWritersByID = v19;
+    v7->_requestWritersByID = dictionary;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     responseWritersByID = v7->_responseWritersByID;
-    v7->_responseWritersByID = v21;
+    v7->_responseWritersByID = dictionary2;
 
-    v23 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     streamReadersByID = v7->_streamReadersByID;
-    v7->_streamReadersByID = v23;
+    v7->_streamReadersByID = dictionary3;
 
     v25 = [MEMORY[0x277CBEB58] set];
     requestWritersPendingStopByID = v7->_requestWritersPendingStopByID;
@@ -2935,25 +2935,25 @@ void __29__ATConcreteMessageLink_open__block_invoke(uint64_t a1)
     requestReadersPendingStopByID = v7->_requestReadersPendingStopByID;
     v7->_requestReadersPendingStopByID = v29;
 
-    v31 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     sentRequestsByID = v7->_sentRequestsByID;
-    v7->_sentRequestsByID = v31;
+    v7->_sentRequestsByID = dictionary4;
 
-    v33 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     receivedRequestsByID = v7->_receivedRequestsByID;
-    v7->_receivedRequestsByID = v33;
+    v7->_receivedRequestsByID = dictionary5;
 
-    v35 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary6 = [MEMORY[0x277CBEB38] dictionary];
     completionHandlersByRequestID = v7->_completionHandlersByRequestID;
-    v7->_completionHandlersByRequestID = v35;
+    v7->_completionHandlersByRequestID = dictionary6;
 
-    v37 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary7 = [MEMORY[0x277CBEB38] dictionary];
     completionHandlersByResponseID = v7->_completionHandlersByResponseID;
-    v7->_completionHandlersByResponseID = v37;
+    v7->_completionHandlersByResponseID = dictionary7;
 
-    v39 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary8 = [MEMORY[0x277CBEB38] dictionary];
     requestHandlersByDataClass = v7->_requestHandlersByDataClass;
-    v7->_requestHandlersByDataClass = v39;
+    v7->_requestHandlersByDataClass = dictionary8;
 
     v41 = dispatch_group_create();
     stopReadersAndWritersGroup = v7->_stopReadersAndWritersGroup;
@@ -2971,12 +2971,12 @@ void __29__ATConcreteMessageLink_open__block_invoke(uint64_t a1)
     v53 = &unk_2784E9170;
     objc_copyWeak(&v54, &location);
     [(ATMessageParser *)v45 setObjectParsedBlock:&v50];
-    v46 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v46;
+    v7->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v7->_socket, a3);
-    [v6 addDelegate:v7];
+    objc_storeStrong(&v7->_socket, socket);
+    [socketCopy addDelegate:v7];
     v7->_endpointType = 0;
     v7->_lastActivityTime = CFAbsoluteTimeGetCurrent();
     v7->_idleTimeoutExceptionCount = 0;

@@ -1,18 +1,18 @@
 @interface FCKeyValueStoreSavePolicyAppBackground
-- (FCKeyValueStoreSavePolicyAppBackground)initWithActivityMonitor:(id)a3 backgroundTaskable:(id)a4;
+- (FCKeyValueStoreSavePolicyAppBackground)initWithActivityMonitor:(id)monitor backgroundTaskable:(id)taskable;
 - (void)_saveIfNeeded;
 - (void)activityObservingApplicationDidEnterBackground;
-- (void)activityObservingApplicationWillResignActiveWithSceneID:(id)a3;
+- (void)activityObservingApplicationWillResignActiveWithSceneID:(id)d;
 - (void)activityObservingApplicationWillTerminate;
-- (void)scheduleSaveOnQueue:(id)a3 handler:(id)a4;
+- (void)scheduleSaveOnQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation FCKeyValueStoreSavePolicyAppBackground
 
-- (FCKeyValueStoreSavePolicyAppBackground)initWithActivityMonitor:(id)a3 backgroundTaskable:(id)a4
+- (FCKeyValueStoreSavePolicyAppBackground)initWithActivityMonitor:(id)monitor backgroundTaskable:(id)taskable
 {
-  v6 = a3;
-  v7 = a4;
+  monitorCopy = monitor;
+  taskableCopy = taskable;
   v14.receiver = self;
   v14.super_class = FCKeyValueStoreSavePolicyAppBackground;
   v8 = [(FCKeyValueStoreSavePolicyAppBackground *)&v14 init];
@@ -20,12 +20,12 @@
   if (v8)
   {
     v8->_inBackground = 1;
-    objc_storeStrong(&v8->_backgroundTaskable, a4);
+    objc_storeStrong(&v8->_backgroundTaskable, taskable);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __85__FCKeyValueStoreSavePolicyAppBackground_initWithActivityMonitor_backgroundTaskable___block_invoke;
     v11[3] = &unk_1E7C36C58;
-    v12 = v6;
+    v12 = monitorCopy;
     v13 = v9;
     FCPerformBlockOnMainThread(v11);
   }
@@ -50,19 +50,19 @@ unint64_t __85__FCKeyValueStoreSavePolicyAppBackground_initWithActivityMonitor_b
   return result;
 }
 
-- (void)scheduleSaveOnQueue:(id)a3 handler:(id)a4
+- (void)scheduleSaveOnQueue:(id)queue handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__FCKeyValueStoreSavePolicyAppBackground_scheduleSaveOnQueue_handler___block_invoke;
   v10[3] = &unk_1E7C38FF0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = queueCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = queueCopy;
   FCPerformBlockOnMainThread(v10);
 }
 
@@ -109,7 +109,7 @@ void __70__FCKeyValueStoreSavePolicyAppBackground_scheduleSaveOnQueue_handler___
   [(FCKeyValueStoreSavePolicyAppBackground *)self _saveIfNeeded];
 }
 
-- (void)activityObservingApplicationWillResignActiveWithSceneID:(id)a3
+- (void)activityObservingApplicationWillResignActiveWithSceneID:(id)d
 {
   [MEMORY[0x1E696AF00] isMainThread];
   self->_inBackground = 1;

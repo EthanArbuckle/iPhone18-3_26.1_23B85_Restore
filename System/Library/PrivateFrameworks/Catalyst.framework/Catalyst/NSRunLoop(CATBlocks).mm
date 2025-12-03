@@ -11,16 +11,16 @@
 {
   v3 = MEMORY[0x277CBEB88];
   v4 = a3;
-  v5 = [v3 currentRunLoop];
-  [v5 cat_performBlock:v4];
+  currentRunLoop = [v3 currentRunLoop];
+  [currentRunLoop cat_performBlock:v4];
 }
 
 + (void)cat_performBlockOnMainRunLoop:()CATBlocks
 {
   v3 = MEMORY[0x277CBEB88];
   v4 = a3;
-  v5 = [v3 mainRunLoop];
-  [v5 cat_performBlock:v4];
+  mainRunLoop = [v3 mainRunLoop];
+  [mainRunLoop cat_performBlock:v4];
 }
 
 - (void)cat_performBlock:()CATBlocks
@@ -32,13 +32,13 @@
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v7 = [v5 arrayWithArray:v6];
 
-  v8 = [a1 currentMode];
-  if (v8)
+  currentMode = [self currentMode];
+  if (currentMode)
   {
-    [v7 addObject:v8];
+    [v7 addObject:currentMode];
   }
 
-  [a1 cat_performInModes:v7 block:v4];
+  [self cat_performInModes:v7 block:v4];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -47,10 +47,10 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 getCFRunLoop];
-  CFRunLoopPerformBlock(v8, v7, v6);
+  getCFRunLoop = [self getCFRunLoop];
+  CFRunLoopPerformBlock(getCFRunLoop, v7, v6);
 
-  CFRunLoopWakeUp(v8);
+  CFRunLoopWakeUp(getCFRunLoop);
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface SiriSharedUICompactView
 - (BOOL)alwaysShowRecognizedSpeech;
-- (BOOL)hasContentAtPoint:(CGPoint)a3;
+- (BOOL)hasContentAtPoint:(CGPoint)point;
 - (CGSize)conversationViewContentSize;
 - (CGSize)resultViewContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriSharedUICompactView)initWithFrame:(CGRect)a3 backgroundBlurView:(id)a4 navigationView:(id)a5 resultView:(id)a6 conversationView:(id)a7 additionalContentViews:(id)a8 textRequestView:(id)a9 viewStackContainer:(id)a10;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriSharedUICompactView)initWithFrame:(CGRect)frame backgroundBlurView:(id)view navigationView:(id)navigationView resultView:(id)resultView conversationView:(id)conversationView additionalContentViews:(id)views textRequestView:(id)requestView viewStackContainer:(id)self0;
 - (SiriSharedUICompactViewDelegate)delegate;
-- (UIEdgeInsets)contentInsetsForResultView:(id)a3;
-- (double)expectedExpandedHeightForConversationView:(id)a3;
-- (double)maximumHeightForConversationView:(id)a3;
-- (double)maximumHeightForResultView:(id)a3;
-- (id)parserSpeakableObjectProviderForConversationView:(id)a3;
+- (UIEdgeInsets)contentInsetsForResultView:(id)view;
+- (double)expectedExpandedHeightForConversationView:(id)view;
+- (double)maximumHeightForConversationView:(id)view;
+- (double)maximumHeightForResultView:(id)view;
+- (id)parserSpeakableObjectProviderForConversationView:(id)view;
 - (int64_t)_resultViewAttachmentType;
 - (void)_addContentViewsToViewStackContainer;
 - (void)_clearAppIconView;
@@ -19,68 +19,68 @@
 - (void)_snapshotContentViewFramesForTransition;
 - (void)_textRequestViewVisibilityDidChange;
 - (void)_updateBottomPadding;
-- (void)_updateBottomPaddingAnimatedWithContext:(id)a3 alongsideAnimations:(id)a4;
-- (void)_updateExpansionConstraints:(BOOL)a3;
-- (void)configureAmbientAppIconForBundleIdentifier:(id)a3;
-- (void)contentDidUpdate:(BOOL)a3;
-- (void)contentDidUpdateForAdditionalContentView:(BOOL)a3;
-- (void)conversationView:(id)a3 didUpdateHeightDuringExpansionTransition:(double)a4 didCompleteGesture:(BOOL)a5;
-- (void)conversationView:(id)a3 viewDidAppearForAceObject:(id)a4;
-- (void)conversationView:(id)a3 viewDidDisappearForAceObject:(id)a4;
-- (void)conversationViewContentScrolled:(id)a3 toContentOffset:(CGPoint)a4;
-- (void)conversationViewDidTransitionToCollapsedState:(id)a3;
-- (void)conversationViewDidTransitionToExpandedState:(id)a3;
-- (void)conversationViewDidUpdatePresentedContentHeight:(id)a3;
+- (void)_updateBottomPaddingAnimatedWithContext:(id)context alongsideAnimations:(id)animations;
+- (void)_updateExpansionConstraints:(BOOL)constraints;
+- (void)configureAmbientAppIconForBundleIdentifier:(id)identifier;
+- (void)contentDidUpdate:(BOOL)update;
+- (void)contentDidUpdateForAdditionalContentView:(BOOL)view;
+- (void)conversationView:(id)view didUpdateHeightDuringExpansionTransition:(double)transition didCompleteGesture:(BOOL)gesture;
+- (void)conversationView:(id)view viewDidAppearForAceObject:(id)object;
+- (void)conversationView:(id)view viewDidDisappearForAceObject:(id)object;
+- (void)conversationViewContentScrolled:(id)scrolled toContentOffset:(CGPoint)offset;
+- (void)conversationViewDidTransitionToCollapsedState:(id)state;
+- (void)conversationViewDidTransitionToExpandedState:(id)state;
+- (void)conversationViewDidUpdatePresentedContentHeight:(id)height;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)prepareForUpdatesWithDiff:(unint64_t)a3 updateBlock:(id)a4;
-- (void)resultViewContentDidLoad:(id)a3;
-- (void)resultViewContentDidScroll:(id)a3;
-- (void)resultViewContentScrolled:(id)a3 toContentOffset:(CGPoint)a4;
-- (void)resultViewContentScrolling:(id)a3 didBegin:(BOOL)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setAdditionalContentSnippetViews:(id)a3;
-- (void)setBottomContentInset:(double)a3;
-- (void)setConversationSnippetViews:(id)a3;
-- (void)setConversationViewHidden:(BOOL)a3;
-- (void)setHidesTextRequestView:(BOOL)a3;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setIsInAmbientInteractivity:(BOOL)a3;
-- (void)setResultViewAlpha:(double)a3;
-- (void)setServerUtterances:(id)a3;
-- (void)showFullScreenEffect:(id)a3;
-- (void)snippetLayoutDidUpdateForView:(id)a3 isEditing:(BOOL)a4;
-- (void)tapToEditRequestedFromView:(id)a3;
+- (void)prepareForUpdatesWithDiff:(unint64_t)diff updateBlock:(id)block;
+- (void)resultViewContentDidLoad:(id)load;
+- (void)resultViewContentDidScroll:(id)scroll;
+- (void)resultViewContentScrolled:(id)scrolled toContentOffset:(CGPoint)offset;
+- (void)resultViewContentScrolling:(id)scrolling didBegin:(BOOL)begin;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setAdditionalContentSnippetViews:(id)views;
+- (void)setBottomContentInset:(double)inset;
+- (void)setConversationSnippetViews:(id)views;
+- (void)setConversationViewHidden:(BOOL)hidden;
+- (void)setHidesTextRequestView:(BOOL)view;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity;
+- (void)setResultViewAlpha:(double)alpha;
+- (void)setServerUtterances:(id)utterances;
+- (void)showFullScreenEffect:(id)effect;
+- (void)snippetLayoutDidUpdateForView:(id)view isEditing:(BOOL)editing;
+- (void)tapToEditRequestedFromView:(id)view;
 @end
 
 @implementation SiriSharedUICompactView
 
-- (SiriSharedUICompactView)initWithFrame:(CGRect)a3 backgroundBlurView:(id)a4 navigationView:(id)a5 resultView:(id)a6 conversationView:(id)a7 additionalContentViews:(id)a8 textRequestView:(id)a9 viewStackContainer:(id)a10
+- (SiriSharedUICompactView)initWithFrame:(CGRect)frame backgroundBlurView:(id)view navigationView:(id)navigationView resultView:(id)resultView conversationView:(id)conversationView additionalContentViews:(id)views textRequestView:(id)requestView viewStackContainer:(id)self0
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v76 = *MEMORY[0x277D85DE8];
-  v66 = a4;
-  v20 = a5;
-  v65 = a6;
-  v21 = a6;
-  obj = a7;
-  v22 = a7;
-  v64 = a8;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
+  viewCopy = view;
+  navigationViewCopy = navigationView;
+  resultViewCopy = resultView;
+  resultViewCopy2 = resultView;
+  obj = conversationView;
+  conversationViewCopy = conversationView;
+  viewsCopy = views;
+  viewsCopy2 = views;
+  requestViewCopy = requestView;
+  containerCopy = container;
   v71.receiver = self;
   v71.super_class = SiriSharedUICompactView;
-  v26 = [(SiriSharedUICompactView *)&v71 initWithFrame:x, y, width, height];
-  if (v26)
+  height = [(SiriSharedUICompactView *)&v71 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v61 = v24;
-    v62 = v23;
+    v61 = requestViewCopy;
+    v62 = viewsCopy2;
     v27 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
@@ -89,66 +89,66 @@
       _os_log_impl(&dword_21E3EB000, v27, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
     }
 
-    v60 = v25;
-    v26->_hidesTextRequestView = 1;
-    v26->_reducedOrbOpacity = 0;
-    [(SiriSharedUICompactView *)v26 bounds];
-    [v66 setFrame:?];
-    [v66 setAutoresizingMask:18];
-    [(SiriSharedUICompactView *)v26 addSubview:v66];
-    [(SiriSharedUICompactView *)v26 bounds];
-    [v20 setFrame:?];
-    [v20 setAutoresizingMask:18];
-    [(SiriSharedUICompactView *)v26 addSubview:v20];
-    objc_storeStrong(&v26->_textRequestView, a9);
-    [(UIView *)v26->_textRequestView setTranslatesAutoresizingMaskIntoConstraints:0];
-    if (v26->_textRequestView)
+    v60 = containerCopy;
+    height->_hidesTextRequestView = 1;
+    height->_reducedOrbOpacity = 0;
+    [(SiriSharedUICompactView *)height bounds];
+    [viewCopy setFrame:?];
+    [viewCopy setAutoresizingMask:18];
+    [(SiriSharedUICompactView *)height addSubview:viewCopy];
+    [(SiriSharedUICompactView *)height bounds];
+    [navigationViewCopy setFrame:?];
+    [navigationViewCopy setAutoresizingMask:18];
+    [(SiriSharedUICompactView *)height addSubview:navigationViewCopy];
+    objc_storeStrong(&height->_textRequestView, requestView);
+    [(UIView *)height->_textRequestView setTranslatesAutoresizingMaskIntoConstraints:0];
+    if (height->_textRequestView)
     {
-      [(SiriSharedUICompactView *)v26 addSubview:?];
-      v28 = [(SiriSharedUICompactView *)v26 bottomAnchor];
-      v29 = [(UIView *)v26->_textRequestView bottomAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
-      textRequestViewBottomConstraint = v26->_textRequestViewBottomConstraint;
-      v26->_textRequestViewBottomConstraint = v30;
+      [(SiriSharedUICompactView *)height addSubview:?];
+      bottomAnchor = [(SiriSharedUICompactView *)height bottomAnchor];
+      bottomAnchor2 = [(UIView *)height->_textRequestView bottomAnchor];
+      v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+      textRequestViewBottomConstraint = height->_textRequestViewBottomConstraint;
+      height->_textRequestViewBottomConstraint = v30;
 
       v58 = MEMORY[0x277CCAAD0];
-      v32 = [(UIView *)v26->_textRequestView leadingAnchor];
-      v33 = [(SiriSharedUICompactView *)v26 leadingAnchor];
-      v34 = [v32 constraintEqualToAnchor:v33];
+      leadingAnchor = [(UIView *)height->_textRequestView leadingAnchor];
+      leadingAnchor2 = [(SiriSharedUICompactView *)height leadingAnchor];
+      v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v73[0] = v34;
-      v73[1] = v26->_textRequestViewBottomConstraint;
-      [(UIView *)v26->_textRequestView trailingAnchor];
-      v35 = v59 = v20;
-      v36 = [(SiriSharedUICompactView *)v26 trailingAnchor];
-      v37 = [v35 constraintEqualToAnchor:v36];
+      v73[1] = height->_textRequestViewBottomConstraint;
+      [(UIView *)height->_textRequestView trailingAnchor];
+      v35 = v59 = navigationViewCopy;
+      trailingAnchor = [(SiriSharedUICompactView *)height trailingAnchor];
+      v37 = [v35 constraintEqualToAnchor:trailingAnchor];
       v73[2] = v37;
       [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:3];
-      v38 = v22;
-      v40 = v39 = v21;
+      v38 = conversationViewCopy;
+      v40 = v39 = resultViewCopy2;
       [v58 activateConstraints:v40];
 
-      v21 = v39;
-      v22 = v38;
+      resultViewCopy2 = v39;
+      conversationViewCopy = v38;
 
-      v20 = v59;
+      navigationViewCopy = v59;
     }
 
-    objc_storeStrong(&v26->_conversationView, obj);
-    [(SiriSharedUICompactConversationViewHosting *)v26->_conversationView setDelegate:v26];
-    [(SiriSharedUICompactConversationViewHosting *)v26->_conversationView setAttachmentType:[(SiriSharedUICompactView *)v26 _conversationViewAttachmentType]];
-    v41 = [(SiriSharedUICompactConversationViewHosting *)v26->_conversationView hostingView];
-    SiriSharedUISetContentHuggingPriority(v41, 1);
+    objc_storeStrong(&height->_conversationView, obj);
+    [(SiriSharedUICompactConversationViewHosting *)height->_conversationView setDelegate:height];
+    [(SiriSharedUICompactConversationViewHosting *)height->_conversationView setAttachmentType:[(SiriSharedUICompactView *)height _conversationViewAttachmentType]];
+    hostingView = [(SiriSharedUICompactConversationViewHosting *)height->_conversationView hostingView];
+    SiriSharedUISetContentHuggingPriority(hostingView, 1);
 
-    v42 = [(SiriSharedUICompactConversationViewHosting *)v26->_conversationView hostingView];
-    SiriSharedUISetContentCompressionResistancePriority(v42, 1);
+    hostingView2 = [(SiriSharedUICompactConversationViewHosting *)height->_conversationView hostingView];
+    SiriSharedUISetContentCompressionResistancePriority(hostingView2, 1);
 
-    [(SiriSharedUICompactConversationViewHosting *)v26->_conversationView setUseLowerPriorityHeightConstraint:1];
-    objc_storeStrong(&v26->_additionalContentViews, v64);
+    [(SiriSharedUICompactConversationViewHosting *)height->_conversationView setUseLowerPriorityHeightConstraint:1];
+    objc_storeStrong(&height->_additionalContentViews, viewsCopy);
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v43 = v26->_additionalContentViews;
+    v43 = height->_additionalContentViews;
     v44 = [(NSArray *)v43 countByEnumeratingWithState:&v67 objects:v72 count:16];
     if (v44)
     {
@@ -164,13 +164,13 @@
           }
 
           v48 = *(*(&v67 + 1) + 8 * i);
-          [v48 setDelegate:v26];
-          [v48 setAttachmentType:{-[SiriSharedUICompactView _conversationViewAttachmentType](v26, "_conversationViewAttachmentType")}];
-          v49 = [v48 hostingView];
-          SiriSharedUISetContentHuggingPriority(v49, 1);
+          [v48 setDelegate:height];
+          [v48 setAttachmentType:{-[SiriSharedUICompactView _conversationViewAttachmentType](height, "_conversationViewAttachmentType")}];
+          hostingView3 = [v48 hostingView];
+          SiriSharedUISetContentHuggingPriority(hostingView3, 1);
 
-          v50 = [v48 hostingView];
-          SiriSharedUISetContentCompressionResistancePriority(v50, 1);
+          hostingView4 = [v48 hostingView];
+          SiriSharedUISetContentCompressionResistancePriority(hostingView4, 1);
 
           [v48 setAttachmentYOffset:-8.0];
         }
@@ -181,54 +181,54 @@
       while (v45);
     }
 
-    objc_storeStrong(&v26->_resultView, v65);
-    v51 = [(SiriSharedUICompactResultViewHosting *)v26->_resultView hostingView];
-    [v51 setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+    objc_storeStrong(&height->_resultView, resultViewCopy);
+    hostingView5 = [(SiriSharedUICompactResultViewHosting *)height->_resultView hostingView];
+    [hostingView5 setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
     if (SiriSharedUIDeviceIsMac())
     {
-      [(SiriSharedUICompactResultViewHosting *)v26->_resultView setAttachmentYOffset:8.0];
+      [(SiriSharedUICompactResultViewHosting *)height->_resultView setAttachmentYOffset:8.0];
     }
 
-    [(SiriSharedUICompactResultViewHosting *)v26->_resultView setDelegate:v26];
-    v52 = [(SiriSharedUICompactResultViewHosting *)v26->_resultView hostingView];
-    SiriSharedUISetContentHuggingPriority(v52, 1);
+    [(SiriSharedUICompactResultViewHosting *)height->_resultView setDelegate:height];
+    hostingView6 = [(SiriSharedUICompactResultViewHosting *)height->_resultView hostingView];
+    SiriSharedUISetContentHuggingPriority(hostingView6, 1);
 
-    v53 = [(SiriSharedUICompactResultViewHosting *)v26->_resultView hostingView];
-    SiriSharedUISetContentCompressionResistancePriority(v53, 1);
+    hostingView7 = [(SiriSharedUICompactResultViewHosting *)height->_resultView hostingView];
+    SiriSharedUISetContentCompressionResistancePriority(hostingView7, 1);
 
-    [(SiriSharedUICompactResultViewHosting *)v26->_resultView setAttachmentType:[(SiriSharedUICompactView *)v26 _resultViewAttachmentType]];
-    [(SiriSharedUICompactView *)v26 _configureResultViewCustomConstraints];
-    v25 = v60;
-    v24 = v61;
+    [(SiriSharedUICompactResultViewHosting *)height->_resultView setAttachmentType:[(SiriSharedUICompactView *)height _resultViewAttachmentType]];
+    [(SiriSharedUICompactView *)height _configureResultViewCustomConstraints];
+    containerCopy = v60;
+    requestViewCopy = v61;
     if (v60)
     {
-      v54 = v60;
+      height2 = v60;
     }
 
     else
     {
       v56 = [SiriSharedUIViewStackContainer alloc];
-      v54 = [(SiriSharedUIViewStackContainer *)v56 initWithFrame:MEMORY[0x277CBEBF8] contentViews:x, y, width, height];
+      height2 = [(SiriSharedUIViewStackContainer *)v56 initWithFrame:MEMORY[0x277CBEBF8] contentViews:x, y, width, height];
     }
 
-    viewStackContainer = v26->_viewStackContainer;
-    v26->_viewStackContainer = v54;
-    v23 = v62;
+    viewStackContainer = height->_viewStackContainer;
+    height->_viewStackContainer = height2;
+    viewsCopy2 = v62;
 
-    [(SiriSharedUICompactView *)v26 _addContentViewsToViewStackContainer];
-    [(SiriSharedUICompactView *)v26 _updateBottomPadding];
-    [(SiriSharedUICompactView *)v26 _textRequestViewVisibilityDidChange];
+    [(SiriSharedUICompactView *)height _addContentViewsToViewStackContainer];
+    [(SiriSharedUICompactView *)height _updateBottomPadding];
+    [(SiriSharedUICompactView *)height _textRequestViewVisibilityDidChange];
   }
 
-  return v26;
+  return height;
 }
 
 - (void)didMoveToWindow
 {
-  v4 = [(SiriSharedUICompactView *)self delegate];
-  v3 = [(SiriSharedUICompactView *)self window];
-  [v4 compactView:self viewDidChangeWindow:v3];
+  delegate = [(SiriSharedUICompactView *)self delegate];
+  window = [(SiriSharedUICompactView *)self window];
+  [delegate compactView:self viewDidChangeWindow:window];
 }
 
 - (void)layoutSubviews
@@ -245,20 +245,20 @@
   v7.receiver = self;
   v7.super_class = SiriSharedUICompactView;
   [(SiriSharedUICompactView *)&v7 layoutSubviews];
-  v4 = [(SiriSharedUICompactView *)self viewStackContainer];
-  v5 = [v4 hostingView];
+  viewStackContainer = [(SiriSharedUICompactView *)self viewStackContainer];
+  hostingView = [viewStackContainer hostingView];
   [(SiriSharedUICompactView *)self bounds];
-  [v5 setFrame:?];
+  [hostingView setFrame:?];
 
   fullScreenEffectContainerView = self->_fullScreenEffectContainerView;
   [(SiriSharedUICompactView *)self bounds];
   [(UIView *)fullScreenEffectContainerView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v43 = *MEMORY[0x277D85DE8];
   v37 = 0u;
   v38 = 0u;
@@ -296,12 +296,12 @@
 
   if (SiriSharedUIDeviceIsMac() && ![(SiriSharedUICompactResultViewHosting *)self->_resultView attachmentType]&& (([(SiriSharedUICompactConversationViewHosting *)self->_conversationView attachmentType]== 0) & v10) == 1)
   {
-    v12 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-    [v12 sizeThatFits:{width, height}];
+    hostingView = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+    [hostingView sizeThatFits:{width, height}];
     v14 = v13;
 
-    v15 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
-    [v15 sizeThatFits:{width, height}];
+    hostingView2 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
+    [hostingView2 sizeThatFits:{width, height}];
     v17 = v16;
 
     v35 = 0u;
@@ -324,8 +324,8 @@
             objc_enumerationMutation(v18);
           }
 
-          v24 = [*(*(&v33 + 1) + 8 * j) hostingView];
-          [v24 sizeThatFits:{width, height}];
+          hostingView3 = [*(*(&v33 + 1) + 8 * j) hostingView];
+          [hostingView3 sizeThatFits:{width, height}];
           v26 = v25;
 
           v22 = v22 + v26 + 8.0;
@@ -363,8 +363,8 @@
 {
   v33 = *MEMORY[0x277D85DE8];
   viewStackContainer = self->_viewStackContainer;
-  v4 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
-  [(SiriSharedUIViewStackContainerHosting *)viewStackContainer addContentView:v4];
+  hostingView = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
+  [(SiriSharedUIViewStackContainerHosting *)viewStackContainer addContentView:hostingView];
 
   v29 = 0u;
   v30 = 0u;
@@ -387,8 +387,8 @@
         }
 
         v10 = self->_viewStackContainer;
-        v11 = [*(*(&v27 + 1) + 8 * v9) hostingView];
-        [(SiriSharedUIViewStackContainerHosting *)v10 addContentView:v11];
+        hostingView2 = [*(*(&v27 + 1) + 8 * v9) hostingView];
+        [(SiriSharedUIViewStackContainerHosting *)v10 addContentView:hostingView2];
 
         ++v9;
       }
@@ -401,12 +401,12 @@
   }
 
   v12 = self->_viewStackContainer;
-  v13 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-  [(SiriSharedUIViewStackContainerHosting *)v12 addContentView:v13];
+  hostingView3 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+  [(SiriSharedUIViewStackContainerHosting *)v12 addContentView:hostingView3];
 
   v14 = self->_viewStackContainer;
-  v15 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
-  [(SiriSharedUIViewStackContainerHosting *)v14 bringSubviewToFront:v15];
+  hostingView4 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
+  [(SiriSharedUIViewStackContainerHosting *)v14 bringSubviewToFront:hostingView4];
 
   v25 = 0u;
   v26 = 0u;
@@ -429,8 +429,8 @@
         }
 
         v21 = self->_viewStackContainer;
-        v22 = [*(*(&v23 + 1) + 8 * v20) hostingView];
-        [(SiriSharedUIViewStackContainerHosting *)v21 bringSubviewToFront:v22];
+        hostingView5 = [*(*(&v23 + 1) + 8 * v20) hostingView];
+        [(SiriSharedUIViewStackContainerHosting *)v21 bringSubviewToFront:hostingView5];
 
         ++v20;
       }
@@ -449,8 +449,8 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   viewStackContainer = self->_viewStackContainer;
-  v4 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
-  [(SiriSharedUIViewStackContainerHosting *)viewStackContainer removeContentView:v4];
+  hostingView = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
+  [(SiriSharedUIViewStackContainerHosting *)viewStackContainer removeContentView:hostingView];
 
   v25 = 0u;
   v26 = 0u;
@@ -473,8 +473,8 @@
         }
 
         v10 = self->_viewStackContainer;
-        v11 = [*(*(&v23 + 1) + 8 * v9) hostingView];
-        [(SiriSharedUIViewStackContainerHosting *)v10 removeContentView:v11];
+        hostingView2 = [*(*(&v23 + 1) + 8 * v9) hostingView];
+        [(SiriSharedUIViewStackContainerHosting *)v10 removeContentView:hostingView2];
 
         ++v9;
       }
@@ -487,8 +487,8 @@
   }
 
   v12 = self->_viewStackContainer;
-  v13 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-  [(SiriSharedUIViewStackContainerHosting *)v12 removeContentView:v13];
+  hostingView3 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+  [(SiriSharedUIViewStackContainerHosting *)v12 removeContentView:hostingView3];
 
   [(SiriSharedUICompactResultViewHosting *)self->_resultView relayout];
   v21 = 0u;
@@ -524,24 +524,24 @@
   [(SiriSharedUICompactConversationViewHosting *)self->_conversationView relayout];
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
   v53 = *MEMORY[0x277D85DE8];
-  if (self->_isInAmbient != a3)
+  if (self->_isInAmbient != ambient)
   {
-    self->_isInAmbient = a3;
-    if (a3)
+    self->_isInAmbient = ambient;
+    if (ambient)
     {
-      v4 = [(SiriSharedUIViewStackContainerHosting *)self->_viewStackContainer scrollView];
-      [v4 setDelegate:self];
+      scrollView = [(SiriSharedUIViewStackContainerHosting *)self->_viewStackContainer scrollView];
+      [scrollView setDelegate:self];
     }
 
     [(SiriSharedUICompactView *)self _removeContentViewsFromViewStackContainer];
     [(SiriSharedUIViewStackContainerHosting *)self->_viewStackContainer setIsInAmbient:self->_isInAmbient];
     if (self->_isInAmbient)
     {
-      v5 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView stackConstraints];
-      [v5 setHeightConstraint:0];
+      stackConstraints = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView stackConstraints];
+      [stackConstraints setHeightConstraint:0];
 
       v47 = 0u;
       v48 = 0u;
@@ -563,8 +563,8 @@
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(*(&v45 + 1) + 8 * v10) stackConstraints];
-            [v11 setHeightConstraint:0];
+            stackConstraints2 = [*(*(&v45 + 1) + 8 * v10) stackConstraints];
+            [stackConstraints2 setHeightConstraint:0];
 
             ++v10;
           }
@@ -576,8 +576,8 @@
         while (v8);
       }
 
-      v12 = [(SiriSharedUICompactResultViewHosting *)self->_resultView stackConstraints];
-      [v12 setHeightConstraint:0];
+      stackConstraints3 = [(SiriSharedUICompactResultViewHosting *)self->_resultView stackConstraints];
+      [stackConstraints3 setHeightConstraint:0];
 
       [(SiriSharedUICompactResultViewHosting *)self->_resultView setCustomAttachmentConstraints:MEMORY[0x277CBEBF8]];
       [(SiriSharedUICompactConversationViewHosting *)self->_conversationView setAttachmentType:3];
@@ -612,15 +612,15 @@
       }
 
       resultView = self->_resultView;
-      v19 = 3;
+      _resultViewAttachmentType = 3;
     }
 
     else
     {
       [(SiriSharedUICompactView *)self _clearAppIconView];
       [(SiriSharedUICompactView *)self _configureResultViewCustomConstraints];
-      v20 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView stackConstraints];
-      [v20 setHeightConstraint:0];
+      stackConstraints4 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView stackConstraints];
+      [stackConstraints4 setHeightConstraint:0];
 
       v39 = 0u;
       v40 = 0u;
@@ -642,8 +642,8 @@
               objc_enumerationMutation(v21);
             }
 
-            v26 = [*(*(&v37 + 1) + 8 * v25) stackConstraints];
-            [v26 setHeightConstraint:0];
+            stackConstraints5 = [*(*(&v37 + 1) + 8 * v25) stackConstraints];
+            [stackConstraints5 setHeightConstraint:0];
 
             ++v25;
           }
@@ -687,32 +687,32 @@
       }
 
       v32 = self->_resultView;
-      v19 = [(SiriSharedUICompactView *)self _resultViewAttachmentType];
+      _resultViewAttachmentType = [(SiriSharedUICompactView *)self _resultViewAttachmentType];
       resultView = v32;
     }
 
-    [(SiriSharedUICompactResultViewHosting *)resultView setAttachmentType:v19, v33];
+    [(SiriSharedUICompactResultViewHosting *)resultView setAttachmentType:_resultViewAttachmentType, v33];
     [(SiriSharedUICompactView *)self _addContentViewsToViewStackContainer];
     [(SiriSharedUICompactView *)self _updateBottomPadding];
   }
 }
 
-- (void)setIsInAmbientInteractivity:(BOOL)a3
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity
 {
   if (self->_isInAmbient)
   {
-    self->_isInAmbientInteractivity = a3;
+    self->_isInAmbientInteractivity = interactivity;
     [(SiriSharedUICompactConversationViewHosting *)self->_conversationView relayout];
   }
 }
 
-- (void)configureAmbientAppIconForBundleIdentifier:(id)a3
+- (void)configureAmbientAppIconForBundleIdentifier:(id)identifier
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([SiriSharedUIUtilities applicationBundleIdentifierIsThirdParty:v4]&& self->_isInAmbient)
+  identifierCopy = identifier;
+  if ([SiriSharedUIUtilities applicationBundleIdentifierIsThirdParty:identifierCopy]&& self->_isInAmbient)
   {
-    v21 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v4];
+    v21 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:identifierCopy];
     v20 = [MEMORY[0x277D755B8] _iconForResourceProxy:v21 format:2];
     v5 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v20];
     appIconView = self->_appIconView;
@@ -720,23 +720,23 @@
 
     [(SiriSharedUICompactView *)self addSubview:self->_appIconView];
     [(UIView *)self->_appIconView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(UIView *)self->_appIconView layer];
-    [v7 setOpacity:0.0];
+    layer = [(UIView *)self->_appIconView layer];
+    [layer setOpacity:0.0];
 
     v17 = MEMORY[0x277CCAAD0];
-    v19 = [(UIView *)self->_appIconView trailingAnchor];
-    v18 = [(SiriSharedUICompactView *)self trailingAnchor];
-    v8 = [v19 constraintEqualToAnchor:v18 constant:-49.0];
+    trailingAnchor = [(UIView *)self->_appIconView trailingAnchor];
+    trailingAnchor2 = [(SiriSharedUICompactView *)self trailingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-49.0];
     v22[0] = v8;
-    v9 = [(UIView *)self->_appIconView bottomAnchor];
-    v10 = [(SiriSharedUICompactView *)self bottomAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:-49.0];
+    bottomAnchor = [(UIView *)self->_appIconView bottomAnchor];
+    bottomAnchor2 = [(SiriSharedUICompactView *)self bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-49.0];
     v22[1] = v11;
-    v12 = [(UIView *)self->_appIconView heightAnchor];
-    v13 = [v12 constraintEqualToConstant:40.0];
+    heightAnchor = [(UIView *)self->_appIconView heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:40.0];
     v22[2] = v13;
-    v14 = [(UIView *)self->_appIconView widthAnchor];
-    v15 = [v14 constraintEqualToConstant:40.0];
+    widthAnchor = [(UIView *)self->_appIconView widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:40.0];
     v22[3] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
     [v17 activateConstraints:v16];
@@ -758,38 +758,38 @@
 - (void)_configureResultViewCustomConstraints
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
-  v4 = [(NSArray *)self->_additionalContentViews firstObject];
-  if (v4)
+  hostingView = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
+  firstObject = [(NSArray *)self->_additionalContentViews firstObject];
+  if (firstObject)
   {
-    v5 = v4;
-    v6 = [(NSArray *)self->_additionalContentViews firstObject];
-    v7 = [v6 snippetViews];
-    v8 = [v7 count];
+    v5 = firstObject;
+    firstObject2 = [(NSArray *)self->_additionalContentViews firstObject];
+    snippetViews = [firstObject2 snippetViews];
+    v8 = [snippetViews count];
 
     if (v8)
     {
-      v9 = [(NSArray *)self->_additionalContentViews firstObject];
-      v10 = [v9 hostingView];
+      firstObject3 = [(NSArray *)self->_additionalContentViews firstObject];
+      hostingView2 = [firstObject3 hostingView];
 
-      v3 = v10;
+      hostingView = hostingView2;
     }
   }
 
   if (SiriSharedUIDeviceIsPad() || SiriSharedUIDeviceIsMac())
   {
-    v11 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-    v12 = [v11 bottomAnchor];
-    v13 = [v3 topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:-8.0];
+    hostingView3 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+    bottomAnchor = [hostingView3 bottomAnchor];
+    topAnchor = [hostingView topAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-8.0];
   }
 
   else
   {
-    v11 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-    v12 = [v11 bottomAnchor];
-    v13 = [v3 topAnchor];
-    v14 = [v12 constraintLessThanOrEqualToAnchor:v13 constant:-8.0];
+    hostingView3 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+    bottomAnchor = [hostingView3 bottomAnchor];
+    topAnchor = [hostingView topAnchor];
+    v14 = [bottomAnchor constraintLessThanOrEqualToAnchor:topAnchor constant:-8.0];
   }
 
   v15 = v14;
@@ -831,13 +831,13 @@
   return result;
 }
 
-- (void)setResultViewAlpha:(double)a3
+- (void)setResultViewAlpha:(double)alpha
 {
-  v4 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-  [v4 setAlpha:a3];
+  hostingView = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+  [hostingView setAlpha:alpha];
 }
 
-- (void)setConversationViewHidden:(BOOL)a3
+- (void)setConversationViewHidden:(BOOL)hidden
 {
   v5 = objc_alloc_init(SiriSharedUIAnimationContext);
   [(SiriSharedUIAnimationContext *)v5 setAnimationDuration:0.3];
@@ -846,13 +846,13 @@
   v8[2] = __53__SiriSharedUICompactView_setConversationViewHidden___block_invoke;
   v8[3] = &unk_2783547B8;
   v8[4] = self;
-  v9 = a3;
+  hiddenCopy = hidden;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__SiriSharedUICompactView_setConversationViewHidden___block_invoke_2;
   v6[3] = &unk_2783547E0;
   v6[4] = self;
-  v7 = a3;
+  hiddenCopy2 = hidden;
   [SiriSharedUIAnimationUtilities perfomAnimationBlockWithAnimationBlock:v8 context:v5 completion:v6];
 }
 
@@ -875,19 +875,19 @@ void __53__SiriSharedUICompactView_setConversationViewHidden___block_invoke_2(ui
   [v2 setUserInteractionEnabled:(*(a1 + 40) & 1) == 0];
 }
 
-- (void)snippetLayoutDidUpdateForView:(id)a3 isEditing:(BOOL)a4
+- (void)snippetLayoutDidUpdateForView:(id)view isEditing:(BOOL)editing
 {
-  v4 = a4;
+  editingCopy = editing;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SiriSharedUICompactResultViewHosting *)self->_resultView snippetView];
-  v8 = [v7 contentViews];
-  v9 = [v8 containsObject:v6];
+  viewCopy = view;
+  snippetView = [(SiriSharedUICompactResultViewHosting *)self->_resultView snippetView];
+  contentViews = [snippetView contentViews];
+  v9 = [contentViews containsObject:viewCopy];
 
   if (v9)
   {
-    [(SiriSharedUICompactResultViewHosting *)self->_resultView snippetContentDidUpdateWhileEditing:v4];
-    [v6 frame];
+    [(SiriSharedUICompactResultViewHosting *)self->_resultView snippetContentDidUpdateWhileEditing:editingCopy];
+    [viewCopy frame];
     if (v11 == 0.0 || v10 == 0.0)
     {
       [(SiriSharedUICompactView *)self resultViewContentDidLoad:self->_resultView];
@@ -896,12 +896,12 @@ void __53__SiriSharedUICompactView_setConversationViewHidden___block_invoke_2(ui
 
   else
   {
-    v12 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView conversationSnippetViews];
-    v13 = [v12 containsObject:v6];
+    conversationSnippetViews = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView conversationSnippetViews];
+    v13 = [conversationSnippetViews containsObject:viewCopy];
 
     if (v13)
     {
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 isHint])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [viewCopy isHint])
       {
         [(SiriSharedUICompactConversationViewHosting *)self->_conversationView snippetContentDidUpdateForHint];
       }
@@ -934,8 +934,8 @@ void __53__SiriSharedUICompactView_setConversationViewHidden___block_invoke_2(ui
             }
 
             v19 = *(*(&v22 + 1) + 8 * i);
-            v20 = [v19 snippetViews];
-            v21 = [v20 containsObject:v6];
+            snippetViews = [v19 snippetViews];
+            v21 = [snippetViews containsObject:viewCopy];
 
             if (v21)
             {
@@ -952,45 +952,45 @@ void __53__SiriSharedUICompactView_setConversationViewHidden___block_invoke_2(ui
   }
 }
 
-- (void)setServerUtterances:(id)a3
+- (void)setServerUtterances:(id)utterances
 {
-  if (self->_serverUtterances != a3)
+  if (self->_serverUtterances != utterances)
   {
-    v6 = a3;
-    v4 = [v6 copy];
+    utterancesCopy = utterances;
+    v4 = [utterancesCopy copy];
     serverUtterances = self->_serverUtterances;
     self->_serverUtterances = v4;
 
-    [(SiriSharedUICompactConversationViewHosting *)self->_conversationView setServerUtterances:v6];
+    [(SiriSharedUICompactConversationViewHosting *)self->_conversationView setServerUtterances:utterancesCopy];
   }
 }
 
-- (void)setConversationSnippetViews:(id)a3
+- (void)setConversationSnippetViews:(id)views
 {
-  v6 = a3;
+  viewsCopy = views;
   if (![(NSArray *)self->_conversationSnippetViews isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [viewsCopy copy];
     conversationSnippetViews = self->_conversationSnippetViews;
     self->_conversationSnippetViews = v4;
 
-    [(SiriSharedUICompactConversationViewHosting *)self->_conversationView setConversationSnippetViews:v6];
+    [(SiriSharedUICompactConversationViewHosting *)self->_conversationView setConversationSnippetViews:viewsCopy];
     [(SiriSharedUICompactView *)self setNeedsLayout];
   }
 }
 
-- (void)setAdditionalContentSnippetViews:(id)a3
+- (void)setAdditionalContentSnippetViews:(id)views
 {
-  v4 = a3;
-  v5 = [v4 count];
+  viewsCopy = views;
+  v5 = [viewsCopy count];
   v6 = +[SiriSharedUITranscriptItem additionalContentViewPlatterCategories];
   v7 = [v6 count];
 
   if (v5 == v7)
   {
-    if (![(NSArray *)self->_additionalContentSnippetViews isEqualToArray:v4])
+    if (![(NSArray *)self->_additionalContentSnippetViews isEqualToArray:viewsCopy])
     {
-      v8 = [v4 copy];
+      v8 = [viewsCopy copy];
       additionalContentSnippetViews = self->_additionalContentSnippetViews;
       self->_additionalContentSnippetViews = v8;
 
@@ -999,7 +999,7 @@ void __53__SiriSharedUICompactView_setConversationViewHidden___block_invoke_2(ui
       v11[2] = __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invoke;
       v11[3] = &unk_278354808;
       v11[4] = self;
-      [v4 enumerateObjectsUsingBlock:v11];
+      [viewsCopy enumerateObjectsUsingBlock:v11];
       [(SiriSharedUICompactView *)self _removeContentViewsFromViewStackContainer];
       [(SiriSharedUICompactView *)self _configureResultViewCustomConstraints];
       [(SiriSharedUICompactView *)self _addContentViewsToViewStackContainer];
@@ -1024,12 +1024,12 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   [v6 setSnippetViews:v5];
 }
 
-- (BOOL)hasContentAtPoint:(CGPoint)a3
+- (BOOL)hasContentAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SiriSharedUICompactView *)self _transitionalContentViewFrames];
-  v7 = [v6 containsPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  _transitionalContentViewFrames = [(SiriSharedUICompactView *)self _transitionalContentViewFrames];
+  v7 = [_transitionalContentViewFrames containsPoint:{x, y}];
 
   if (v7)
   {
@@ -1051,37 +1051,37 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
     }
   }
 
-  v10 = [(SiriSharedUICompactView *)self viewStackContainer];
-  v11 = [v10 hostingView];
+  viewStackContainer = [(SiriSharedUICompactView *)self viewStackContainer];
+  hostingView = [viewStackContainer hostingView];
 
-  [v11 convertPoint:self fromView:{x, y}];
+  [hostingView convertPoint:self fromView:{x, y}];
   v13 = v12;
   v15 = v14;
-  v16 = [(SiriSharedUICompactView *)self viewStackContainer];
-  LOBYTE(v10) = [v16 hasContentAtPoint:{v13, v15}];
+  viewStackContainer2 = [(SiriSharedUICompactView *)self viewStackContainer];
+  LOBYTE(viewStackContainer) = [viewStackContainer2 hasContentAtPoint:{v13, v15}];
 
-  return v10;
+  return viewStackContainer;
 }
 
-- (void)setBottomContentInset:(double)a3
+- (void)setBottomContentInset:(double)inset
 {
   v5 = objc_alloc_init(SiriSharedUIAnimationContext);
   [(SiriSharedUIAnimationContext *)v5 setAnimationDuration:0.0];
-  [(SiriSharedUICompactView *)self setBottomContentInset:v5 animatedWithContext:a3];
+  [(SiriSharedUICompactView *)self setBottomContentInset:v5 animatedWithContext:inset];
 }
 
 - (BOOL)alwaysShowRecognizedSpeech
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 alwaysShowRecognizedSpeech];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  alwaysShowRecognizedSpeech = [mEMORY[0x277CEF368] alwaysShowRecognizedSpeech];
 
-  return v3;
+  return alwaysShowRecognizedSpeech;
 }
 
-- (void)prepareForUpdatesWithDiff:(unint64_t)a3 updateBlock:(id)a4
+- (void)prepareForUpdatesWithDiff:(unint64_t)diff updateBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1102,7 +1102,7 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v16 + 1) + 8 * v11++) prepareForUpdatesToSnippetViews:(a3 >> 5) & 1];
+        [*(*(&v16 + 1) + 8 * v11++) prepareForUpdatesToSnippetViews:(diff >> 5) & 1];
       }
 
       while (v9 != v11);
@@ -1117,14 +1117,14 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   v14[1] = 3221225472;
   v14[2] = __65__SiriSharedUICompactView_prepareForUpdatesWithDiff_updateBlock___block_invoke;
   v14[3] = &unk_278354830;
-  v15 = v6;
-  v13 = v6;
-  [(SiriSharedUICompactConversationViewHosting *)conversationView prepareForUpdatesToServerUtterance:(a3 >> 2) & 1 conversationSnippetViews:(a3 >> 1) & 1 speechRecognitionHypothesis:(a3 >> 3) & 1 latencyViewModel:0 updateBlock:v14];
+  v15 = blockCopy;
+  v13 = blockCopy;
+  [(SiriSharedUICompactConversationViewHosting *)conversationView prepareForUpdatesToServerUtterance:(diff >> 2) & 1 conversationSnippetViews:(diff >> 1) & 1 speechRecognitionHypothesis:(diff >> 3) & 1 latencyViewModel:0 updateBlock:v14];
 }
 
-- (void)contentDidUpdate:(BOOL)a3
+- (void)contentDidUpdate:(BOOL)update
 {
-  if (!a3)
+  if (!update)
   {
     [(SiriSharedUICompactConversationViewHosting *)self->_conversationView transitionToExpandablePlatterStyle:4];
     conversationView = self->_conversationView;
@@ -1133,10 +1133,10 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   }
 }
 
-- (void)contentDidUpdateForAdditionalContentView:(BOOL)a3
+- (void)contentDidUpdateForAdditionalContentView:(BOOL)view
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!view)
   {
     v10 = 0u;
     v11 = 0u;
@@ -1170,28 +1170,28 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   }
 }
 
-- (void)_updateExpansionConstraints:(BOOL)a3
+- (void)_updateExpansionConstraints:(BOOL)constraints
 {
   conversationExpansionConstraint = self->_conversationExpansionConstraint;
-  if (a3)
+  if (constraints)
   {
     if (!conversationExpansionConstraint)
     {
-      v5 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
-      v6 = [v5 heightAnchor];
-      v7 = [v6 constraintEqualToConstant:0.0];
+      hostingView = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
+      heightAnchor = [hostingView heightAnchor];
+      v7 = [heightAnchor constraintEqualToConstant:0.0];
       v8 = self->_conversationExpansionConstraint;
       self->_conversationExpansionConstraint = v7;
 
       conversationExpansionConstraint = self->_conversationExpansionConstraint;
     }
 
-    v9 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
-    [v9 frame];
+    hostingView2 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
+    [hostingView2 frame];
     [(NSLayoutConstraint *)conversationExpansionConstraint setConstant:CGRectGetHeight(v12)];
 
     v10 = self->_conversationExpansionConstraint;
-    *&a3 = 1;
+    *&constraints = 1;
   }
 
   else
@@ -1199,13 +1199,13 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
     v10 = self->_conversationExpansionConstraint;
   }
 
-  [(NSLayoutConstraint *)v10 setActive:a3];
+  [(NSLayoutConstraint *)v10 setActive:constraints];
 }
 
-- (void)showFullScreenEffect:(id)a3
+- (void)showFullScreenEffect:(id)effect
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  effectCopy = effect;
   fullScreenEffectContainerView = self->_fullScreenEffectContainerView;
   if (!fullScreenEffectContainerView)
   {
@@ -1223,8 +1223,8 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(UIView *)fullScreenEffectContainerView subviews];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  subviews = [(UIView *)fullScreenEffectContainerView subviews];
+  v10 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1236,21 +1236,21 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v18 + 1) + 8 * v13++) removeFromSuperview];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
   }
 
-  [v4 prepareSoundEffect];
-  v14 = objc_alloc([v4 effectViewClass]);
+  [effectCopy prepareSoundEffect];
+  v14 = objc_alloc([effectCopy effectViewClass]);
   [(UIView *)self->_fullScreenEffectContainerView bounds];
   v15 = [v14 initWithFrame:?];
   [(UIView *)self->_fullScreenEffectContainerView addSubview:v15];
@@ -1261,35 +1261,35 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   [v15 setFocusPoint:MidX];
   [v15 setMessageRect:{MidX - 10.0 * 0.5, v17, 10.0, 10.0}];
   [v15 startAnimation];
-  [v4 playSoundEffect];
+  [effectCopy playSoundEffect];
 }
 
-- (void)tapToEditRequestedFromView:(id)a3
+- (void)tapToEditRequestedFromView:(id)view
 {
-  v4 = [(SiriSharedUICompactView *)self delegate];
-  [v4 tapToEditRequestedFromView:self];
+  delegate = [(SiriSharedUICompactView *)self delegate];
+  [delegate tapToEditRequestedFromView:self];
 }
 
-- (void)conversationViewContentScrolled:(id)a3 toContentOffset:(CGPoint)a4
+- (void)conversationViewContentScrolled:(id)scrolled toContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  v6 = [(SiriSharedUICompactView *)self _instrumentationManager:a3];
+  y = offset.y;
+  v6 = [(SiriSharedUICompactView *)self _instrumentationManager:scrolled];
   [v6 emitUserViewRegionInteractionEventWithViewRegion:1 userViewInteraction:3];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  [v11 setValue:v8 forKey:@"identifier"];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v11 setValue:uUIDString forKey:@"identifier"];
 
   [v11 setValue:@"ConversationView" forKey:@"viewClass"];
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:y];
   [v11 setValue:v9 forKey:@"contentOffset"];
 
-  v10 = [(SiriSharedUICompactView *)self _analytics];
-  [v10 logEventWithType:1456 context:v11];
+  _analytics = [(SiriSharedUICompactView *)self _analytics];
+  [_analytics logEventWithType:1456 context:v11];
 }
 
-- (void)conversationViewDidTransitionToCollapsedState:(id)a3
+- (void)conversationViewDidTransitionToCollapsedState:(id)state
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF098];
@@ -1302,21 +1302,21 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
 
   [(SiriSharedUICompactResultViewHosting *)self->_resultView setShowDimmingView:0 animated:1];
   [(SiriSharedUICompactView *)self _updateExpansionConstraints:0];
-  v5 = [(SiriSharedUICompactView *)self _instrumentationManager];
-  [v5 emitUserViewRegionInteractionEventWithViewRegion:1 userViewInteraction:2];
+  _instrumentationManager = [(SiriSharedUICompactView *)self _instrumentationManager];
+  [_instrumentationManager emitUserViewRegionInteractionEventWithViewRegion:1 userViewInteraction:2];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  [v6 setValue:v8 forKey:@"identifier"];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v6 setValue:uUIDString forKey:@"identifier"];
 
   [v6 setValue:@"ConversationView" forKey:@"viewClass"];
   [v6 setValue:@"Collapsed" forKey:@"expansionState"];
-  v9 = [(SiriSharedUICompactView *)self _analytics];
-  [v9 logEventWithType:1455 context:v6];
+  _analytics = [(SiriSharedUICompactView *)self _analytics];
+  [_analytics logEventWithType:1455 context:v6];
 }
 
-- (void)conversationViewDidTransitionToExpandedState:(id)a3
+- (void)conversationViewDidTransitionToExpandedState:(id)state
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF098];
@@ -1328,26 +1328,26 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   }
 
   [(SiriSharedUICompactResultViewHosting *)self->_resultView setShowDimmingView:1 animated:1];
-  v5 = [(SiriSharedUICompactView *)self _instrumentationManager];
-  [v5 emitUserViewRegionInteractionEventWithViewRegion:1 userViewInteraction:1];
+  _instrumentationManager = [(SiriSharedUICompactView *)self _instrumentationManager];
+  [_instrumentationManager emitUserViewRegionInteractionEventWithViewRegion:1 userViewInteraction:1];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  [v6 setValue:v8 forKey:@"identifier"];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v6 setValue:uUIDString forKey:@"identifier"];
 
   [v6 setValue:@"ConversationView" forKey:@"viewClass"];
   [v6 setValue:@"Expanded" forKey:@"expansionState"];
-  v9 = [(SiriSharedUICompactView *)self _analytics];
-  [v9 logEventWithType:1455 context:v6];
+  _analytics = [(SiriSharedUICompactView *)self _analytics];
+  [_analytics logEventWithType:1455 context:v6];
 }
 
-- (void)conversationView:(id)a3 didUpdateHeightDuringExpansionTransition:(double)a4 didCompleteGesture:(BOOL)a5
+- (void)conversationView:(id)view didUpdateHeightDuringExpansionTransition:(double)transition didCompleteGesture:(BOOL)gesture
 {
-  if (!a5)
+  if (!gesture)
   {
-    [(SiriSharedUICompactView *)self expectedExpandedHeightForConversationView:a3];
-    v8 = a4 - (v7 - 100.0);
+    [(SiriSharedUICompactView *)self expectedExpandedHeightForConversationView:view];
+    v8 = transition - (v7 - 100.0);
     if (v8 < 0.0)
     {
       v8 = 0.0;
@@ -1358,14 +1358,14 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
 
   conversationExpansionConstraint = self->_conversationExpansionConstraint;
 
-  [(NSLayoutConstraint *)conversationExpansionConstraint setConstant:a3, a4];
+  [(NSLayoutConstraint *)conversationExpansionConstraint setConstant:view, transition];
 }
 
-- (double)expectedExpandedHeightForConversationView:(id)a3
+- (double)expectedExpandedHeightForConversationView:(id)view
 {
-  v4 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-  v5 = [v4 superview];
-  [v5 frame];
+  hostingView = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+  superview = [hostingView superview];
+  [superview frame];
   Height = CGRectGetHeight(v10);
 
   if (SiriSharedUIDeviceIsPad())
@@ -1373,31 +1373,31 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
     return Height - 80.0;
   }
 
-  v8 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-  [v8 frame];
+  hostingView2 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+  [hostingView2 frame];
   v7 = Height - CGRectGetMinY(v11) - 80.0;
 
   return v7;
 }
 
-- (void)conversationView:(id)a3 viewDidAppearForAceObject:(id)a4
+- (void)conversationView:(id)view viewDidAppearForAceObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained compactView:self viewDidAppearForAceObject:v5];
+  [WeakRetained compactView:self viewDidAppearForAceObject:objectCopy];
 }
 
-- (void)conversationView:(id)a3 viewDidDisappearForAceObject:(id)a4
+- (void)conversationView:(id)view viewDidDisappearForAceObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained compactView:self viewDidDisappearForAceObject:v5];
+  [WeakRetained compactView:self viewDidDisappearForAceObject:objectCopy];
 }
 
-- (void)conversationViewDidUpdatePresentedContentHeight:(id)a3
+- (void)conversationViewDidUpdatePresentedContentHeight:(id)height
 {
   [(SiriSharedUICompactResultViewHosting *)self->_resultView relayout];
-  v4 = [(SiriSharedUICompactView *)self delegate];
+  delegate = [(SiriSharedUICompactView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
@@ -1407,7 +1407,7 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   }
 }
 
-- (id)parserSpeakableObjectProviderForConversationView:(id)a3
+- (id)parserSpeakableObjectProviderForConversationView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained parserSpeakableObjectProviderForCompactView:self];
@@ -1415,10 +1415,10 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   return v5;
 }
 
-- (double)maximumHeightForConversationView:(id)a3
+- (double)maximumHeightForConversationView:(id)view
 {
-  v4 = [(SiriSharedUICompactView *)self delegate];
-  [v4 maximumHeightForCompactView:self];
+  delegate = [(SiriSharedUICompactView *)self delegate];
+  [delegate maximumHeightForCompactView:self];
   v6 = v5;
 
   [(SiriSharedUIViewStackContainerHosting *)self->_viewStackContainer topPadding];
@@ -1427,10 +1427,10 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   return v6 - (v8 + v9) + -8.0;
 }
 
-- (void)resultViewContentDidLoad:(id)a3
+- (void)resultViewContentDidLoad:(id)load
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loadCopy = load;
   v5 = MEMORY[0x277CEF098];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -1438,7 +1438,7 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
     *buf = 136315394;
     v27 = "[SiriSharedUICompactView resultViewContentDidLoad:]";
     v28 = 2112;
-    v29 = v4;
+    v29 = loadCopy;
     _os_log_impl(&dword_21E3EB000, v6, OS_LOG_TYPE_DEFAULT, "%s #compact: resultViewContentDidLoad: %@", buf, 0x16u);
   }
 
@@ -1476,20 +1476,20 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   appIconView = self->_appIconView;
   if (appIconView)
   {
-    v13 = [(UIView *)appIconView layer];
-    [v13 opacity];
+    layer = [(UIView *)appIconView layer];
+    [layer opacity];
     v15 = v14;
 
     if (v15 == 0.0)
     {
       [MEMORY[0x277CD9FF0] begin];
-      v16 = [(UIView *)self->_appIconView layer];
+      layer2 = [(UIView *)self->_appIconView layer];
       v17 = [SiriSharedUIAnimationUtilities animationForStyle:3 expectedWidthForStyle:&unk_282F90F90 presentationType:[(SiriSharedUICompactView *)self _animatedPresentationType]];
-      [v16 addAnimation:v17 forKey:@"conversationAppearance"];
+      [layer2 addAnimation:v17 forKey:@"conversationAppearance"];
 
-      v18 = [(UIView *)self->_appIconView layer];
+      layer3 = [(UIView *)self->_appIconView layer];
       LODWORD(v19) = 1.0;
-      [v18 setOpacity:v19];
+      [layer3 setOpacity:v19];
 
       [MEMORY[0x277CD9FF0] commit];
     }
@@ -1504,16 +1504,16 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_isInAmbient && !a4 && self->_reducedOrbOpacity)
+  draggingCopy = dragging;
+  v7 = draggingCopy;
+  if (self->_isInAmbient && !decelerate && self->_reducedOrbOpacity)
   {
-    v9 = v6;
-    v6 = SiriSharedUIIsTextInputEnabled();
+    v9 = draggingCopy;
+    draggingCopy = SiriSharedUIIsTextInputEnabled();
     v7 = v9;
-    if ((v6 & 1) == 0)
+    if ((draggingCopy & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained scrollDidEndFromView:self];
@@ -1523,19 +1523,19 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
     }
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](draggingCopy, v7);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = v4;
+  deceleratingCopy = decelerating;
+  v5 = deceleratingCopy;
   if (self->_isInAmbient && self->_reducedOrbOpacity)
   {
-    v7 = v4;
-    v4 = SiriSharedUIIsTextInputEnabled();
+    v7 = deceleratingCopy;
+    deceleratingCopy = SiriSharedUIIsTextInputEnabled();
     v5 = v7;
-    if ((v4 & 1) == 0)
+    if ((deceleratingCopy & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained scrollDidEndFromView:self];
@@ -1545,19 +1545,19 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](deceleratingCopy, v5);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = v4;
+  draggingCopy = dragging;
+  v5 = draggingCopy;
   if (self->_isInAmbient && !self->_reducedOrbOpacity)
   {
-    v7 = v4;
-    v4 = SiriSharedUIIsTextInputEnabled();
+    v7 = draggingCopy;
+    draggingCopy = SiriSharedUIIsTextInputEnabled();
     v5 = v7;
-    if ((v4 & 1) == 0)
+    if ((draggingCopy & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained scrollDidBeginFromView:self];
@@ -1567,10 +1567,10 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](draggingCopy, v5);
 }
 
-- (void)resultViewContentDidScroll:(id)a3
+- (void)resultViewContentDidScroll:(id)scroll
 {
   if (([(SiriSharedUICompactConversationViewHosting *)self->_conversationView isCurrentlyTrackingGesture]& 1) == 0 && [(SiriSharedUICompactConversationViewHosting *)self->_conversationView willAutomaticallyCollapseWhenResultIsScrolled])
   {
@@ -1580,15 +1580,15 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   }
 }
 
-- (double)maximumHeightForResultView:(id)a3
+- (double)maximumHeightForResultView:(id)view
 {
   if (self->_isInAmbient)
   {
     return 1.79769313e308;
   }
 
-  v5 = [(SiriSharedUICompactView *)self delegate];
-  [v5 maximumHeightForCompactView:self];
+  delegate = [(SiriSharedUICompactView *)self delegate];
+  [delegate maximumHeightForCompactView:self];
   v7 = v6;
 
   [(SiriSharedUIViewStackContainerHosting *)self->_viewStackContainer topPadding];
@@ -1597,16 +1597,16 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   return v7 - (v9 + v10);
 }
 
-- (UIEdgeInsets)contentInsetsForResultView:(id)a3
+- (UIEdgeInsets)contentInsetsForResultView:(id)view
 {
-  v4 = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
-  [v4 frame];
+  hostingView = [(SiriSharedUICompactConversationViewHosting *)self->_conversationView hostingView];
+  [hostingView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
-  [v13 frame];
+  hostingView2 = [(SiriSharedUICompactResultViewHosting *)self->_resultView hostingView];
+  [hostingView2 frame];
   v25.origin.x = v14;
   v25.origin.y = v15;
   v25.size.width = v16;
@@ -1637,31 +1637,31 @@ void __60__SiriSharedUICompactView_setAdditionalContentSnippetViews___block_invo
   return result;
 }
 
-- (void)resultViewContentScrolled:(id)a3 toContentOffset:(CGPoint)a4
+- (void)resultViewContentScrolled:(id)scrolled toContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  v6 = [(SiriSharedUICompactView *)self _instrumentationManager:a3];
+  y = offset.y;
+  v6 = [(SiriSharedUICompactView *)self _instrumentationManager:scrolled];
   [v6 emitUserViewRegionInteractionEventWithViewRegion:2 userViewInteraction:3];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  [v11 setValue:v8 forKey:@"identifier"];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v11 setValue:uUIDString forKey:@"identifier"];
 
   [v11 setValue:@"ResultView" forKey:@"viewClass"];
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:y];
   [v11 setValue:v9 forKey:@"contentOffset"];
 
-  v10 = [(SiriSharedUICompactView *)self _analytics];
-  [v10 logEventWithType:1456 context:v11];
+  _analytics = [(SiriSharedUICompactView *)self _analytics];
+  [_analytics logEventWithType:1456 context:v11];
 }
 
-- (void)resultViewContentScrolling:(id)a3 didBegin:(BOOL)a4
+- (void)resultViewContentScrolling:(id)scrolling didBegin:(BOOL)begin
 {
-  v4 = a4;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
-  if (v4)
+  if (beginCopy)
   {
     [WeakRetained scrollDidBeginFromView:self];
   }
@@ -1699,11 +1699,11 @@ uint64_t __62__SiriSharedUICompactView__textRequestViewVisibilityDidChange__bloc
   return result;
 }
 
-- (void)setHidesTextRequestView:(BOOL)a3
+- (void)setHidesTextRequestView:(BOOL)view
 {
-  if (self->_hidesTextRequestView != a3)
+  if (self->_hidesTextRequestView != view)
   {
-    self->_hidesTextRequestView = a3;
+    self->_hidesTextRequestView = view;
     [(SiriSharedUICompactView *)self _textRequestViewVisibilityDidChange];
   }
 }
@@ -1726,16 +1726,16 @@ uint64_t __62__SiriSharedUICompactView__textRequestViewVisibilityDidChange__bloc
   [(SiriSharedUICompactView *)self _setTransitionalContentViewFrames:v4];
 }
 
-- (void)_updateBottomPaddingAnimatedWithContext:(id)a3 alongsideAnimations:(id)a4
+- (void)_updateBottomPaddingAnimatedWithContext:(id)context alongsideAnimations:(id)animations
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  animationsCopy = animations;
   v8 = 14.0;
   if (self->_isInAmbient)
   {
-    v9 = [(SiriSharedUICompactView *)self hidesTextRequestView];
+    hidesTextRequestView = [(SiriSharedUICompactView *)self hidesTextRequestView];
     v8 = 14.0;
-    if (v9)
+    if (hidesTextRequestView)
     {
       v8 = 0.0;
     }
@@ -1745,7 +1745,7 @@ uint64_t __62__SiriSharedUICompactView__textRequestViewVisibilityDidChange__bloc
   [(NSLayoutConstraint *)self->_textRequestViewBottomConstraint setConstant:v10];
   if ([(SiriSharedUICompactView *)self hidesTextRequestView])
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(animationsCopy);
     v12 = 0;
   }
 
@@ -1759,7 +1759,7 @@ uint64_t __62__SiriSharedUICompactView__textRequestViewVisibilityDidChange__bloc
     aBlock[2] = __87__SiriSharedUICompactView__updateBottomPaddingAnimatedWithContext_alongsideAnimations___block_invoke;
     aBlock[3] = &unk_278354880;
     aBlock[4] = self;
-    v18 = v7;
+    v18 = animationsCopy;
     v11 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -1770,10 +1770,10 @@ uint64_t __62__SiriSharedUICompactView__textRequestViewVisibilityDidChange__bloc
   }
 
   viewStackContainer = self->_viewStackContainer;
-  [v6 animationDuration];
-  -[SiriSharedUIViewStackContainerHosting setBottomPadding:animatedWithDuration:animationOptions:alongsideAnimations:completion:](viewStackContainer, "setBottomPadding:animatedWithDuration:animationOptions:alongsideAnimations:completion:", [v6 animationOptions], v11, v12, v10, v14);
-  v15 = [(SiriSharedUICompactView *)self delegate];
-  [v15 compactView:self didChangeEffectiveBottomContentInsetAnimatedWithContext:v6];
+  [contextCopy animationDuration];
+  -[SiriSharedUIViewStackContainerHosting setBottomPadding:animatedWithDuration:animationOptions:alongsideAnimations:completion:](viewStackContainer, "setBottomPadding:animatedWithDuration:animationOptions:alongsideAnimations:completion:", [contextCopy animationOptions], v11, v12, v10, v14);
+  delegate = [(SiriSharedUICompactView *)self delegate];
+  [delegate compactView:self didChangeEffectiveBottomContentInsetAnimatedWithContext:contextCopy];
 }
 
 uint64_t __87__SiriSharedUICompactView__updateBottomPaddingAnimatedWithContext_alongsideAnimations___block_invoke(uint64_t a1)

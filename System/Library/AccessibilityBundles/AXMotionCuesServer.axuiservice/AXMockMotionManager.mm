@@ -12,7 +12,7 @@
 
 - (id)deviceMotionNoSim
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_87D0();
 
   return v3;
@@ -20,19 +20,19 @@
 
 - (void)startDeviceMotionUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_8D14(sub_9BE0, &unk_458C0);
 }
 
 - (void)startDeviceMotionUpdatesNoSim
 {
-  v2 = self;
+  selfCopy = self;
   sub_8D14(sub_9788, &unk_45898);
 }
 
 - (void)stopDeviceMotionUpdates
 {
-  v1 = a1;
+  selfCopy = self;
   sub_8EA0();
 }
 

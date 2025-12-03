@@ -1,15 +1,15 @@
 @interface HDMetadataValueStatement
-+ (HDMetadataValueStatement)metadataValueStatementWithTransaction:(id)a3;
-- (BOOL)enumerateResultsForObjectID:(int64_t)a3 error:(id *)a4 block:(id)a5;
++ (HDMetadataValueStatement)metadataValueStatementWithTransaction:(id)transaction;
+- (BOOL)enumerateResultsForObjectID:(int64_t)d error:(id *)error block:(id)block;
 @end
 
 @implementation HDMetadataValueStatement
 
-+ (HDMetadataValueStatement)metadataValueStatementWithTransaction:(id)a3
++ (HDMetadataValueStatement)metadataValueStatementWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = [HDMetadataValueStatement alloc];
-  v6 = v4;
+  v6 = transactionCopy;
   if (v5)
   {
     v7 = MEMORY[0x277CCACA8];
@@ -23,7 +23,7 @@
 
     if (v11)
     {
-      objc_storeStrong(v11 + 3, a3);
+      objc_storeStrong(v11 + 3, transaction);
     }
 
     v12 = v11;
@@ -37,22 +37,22 @@
   return v12;
 }
 
-- (BOOL)enumerateResultsForObjectID:(int64_t)a3 error:(id *)a4 block:(id)a5
+- (BOOL)enumerateResultsForObjectID:(int64_t)d error:(id *)error block:(id)block
 {
-  v11 = a5;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__HDMetadataValueStatement_enumerateResultsForObjectID_error_block___block_invoke;
   v12[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-  v12[4] = a3;
+  v12[4] = d;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__HDMetadataValueStatement_enumerateResultsForObjectID_error_block___block_invoke_2;
   v10[3] = &unk_278613B30;
-  v8 = v11;
-  LOBYTE(a4) = [(HDSQLiteStatement *)self enumerateStatementWithError:a4 bindingHandler:v12 block:v10];
+  v8 = blockCopy;
+  LOBYTE(error) = [(HDSQLiteStatement *)self enumerateStatementWithError:error bindingHandler:v12 block:v10];
 
-  return a4;
+  return error;
 }
 
 uint64_t __68__HDMetadataValueStatement_enumerateResultsForObjectID_error_block___block_invoke_2(uint64_t a1, uint64_t a2)

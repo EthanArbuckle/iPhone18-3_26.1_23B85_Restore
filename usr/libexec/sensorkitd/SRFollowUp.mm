@@ -1,17 +1,17 @@
 @interface SRFollowUp
 + (void)initialize;
 - (SRFollowUp)init;
-- (void)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)a3 completion:(id)a4;
+- (void)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)identifiers completion:(id)completion;
 - (void)dealloc;
-- (void)pendingFollowUpItemsWithCompletion:(id)a3;
-- (void)postFollowUpItem:(id)a3 completion:(id)a4;
+- (void)pendingFollowUpItemsWithCompletion:(id)completion;
+- (void)postFollowUpItem:(id)item completion:(id)completion;
 @end
 
 @implementation SRFollowUp
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071AB8 = os_log_create("com.apple.SensorKit", "SRFollowUp");
   }
@@ -41,33 +41,33 @@
   [(SRFollowUp *)&v3 dealloc];
 }
 
-- (void)postFollowUpItem:(id)a3 completion:(id)a4
+- (void)postFollowUpItem:(id)item completion:(id)completion
 {
   v7 = qword_100071AB8;
   if (os_log_type_enabled(qword_100071AB8, OS_LOG_TYPE_INFO))
   {
     v8 = 138543362;
-    v9 = a3;
+    itemCopy = item;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Attempting to post follow up item: %{public}@", &v8, 0xCu);
   }
 
-  [(FLFollowUpController *)self->_followUpController postFollowUpItem:a3 completion:a4];
+  [(FLFollowUpController *)self->_followUpController postFollowUpItem:item completion:completion];
 }
 
-- (void)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)a3 completion:(id)a4
+- (void)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)identifiers completion:(id)completion
 {
   v7 = qword_100071AB8;
   if (os_log_type_enabled(qword_100071AB8, OS_LOG_TYPE_INFO))
   {
     v8 = 138543362;
-    v9 = a3;
+    identifiersCopy = identifiers;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Attempting to clear follow up identifiers: %{public}@", &v8, 0xCu);
   }
 
-  [(FLFollowUpController *)self->_followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:a3 completion:a4];
+  [(FLFollowUpController *)self->_followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:identifiers completion:completion];
 }
 
-- (void)pendingFollowUpItemsWithCompletion:(id)a3
+- (void)pendingFollowUpItemsWithCompletion:(id)completion
 {
   v5 = qword_100071AB8;
   if (os_log_type_enabled(qword_100071AB8, OS_LOG_TYPE_INFO))
@@ -77,7 +77,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Retrieving follow items for %{public}@", &v6, 0xCu);
   }
 
-  [(FLFollowUpController *)self->_followUpController pendingFollowUpItemsWithCompletion:a3];
+  [(FLFollowUpController *)self->_followUpController pendingFollowUpItemsWithCompletion:completion];
 }
 
 @end

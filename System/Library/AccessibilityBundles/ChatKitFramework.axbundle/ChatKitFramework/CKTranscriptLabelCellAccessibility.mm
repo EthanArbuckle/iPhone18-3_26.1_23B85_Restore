@@ -1,18 +1,18 @@
 @interface CKTranscriptLabelCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)didMoveToWindow;
 @end
 
 @implementation CKTranscriptLabelCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptLabelCell" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptLabelCell" isKindOfClass:@"CKTranscriptCell"];
-  [v3 validateClass:@"CKTranscriptCell" isKindOfClass:@"CKEditableCollectionViewCell"];
-  [v3 validateClass:@"CKEditableCollectionViewCell" hasInstanceMethod:@"orientation" withFullSignature:{"c", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptLabelCell" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptLabelCell" isKindOfClass:@"CKTranscriptCell"];
+  [validationsCopy validateClass:@"CKTranscriptCell" isKindOfClass:@"CKEditableCollectionViewCell"];
+  [validationsCopy validateClass:@"CKEditableCollectionViewCell" hasInstanceMethod:@"orientation" withFullSignature:{"c", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

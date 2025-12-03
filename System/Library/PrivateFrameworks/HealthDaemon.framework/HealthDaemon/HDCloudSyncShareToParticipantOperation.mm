@@ -1,12 +1,12 @@
 @interface HDCloudSyncShareToParticipantOperation
-- (HDCloudSyncShareToParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncShareToParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 identityLookupInfo:(id)a5 requireExistingRelationship:(BOOL)a6 requireZoneDeviceMode:(id)a7;
+- (HDCloudSyncShareToParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncShareToParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state identityLookupInfo:(id)info requireExistingRelationship:(BOOL)relationship requireZoneDeviceMode:(id)mode;
 - (void)main;
 @end
 
 @implementation HDCloudSyncShareToParticipantOperation
 
-- (HDCloudSyncShareToParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncShareToParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,23 +16,23 @@
   return 0;
 }
 
-- (HDCloudSyncShareToParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 identityLookupInfo:(id)a5 requireExistingRelationship:(BOOL)a6 requireZoneDeviceMode:(id)a7
+- (HDCloudSyncShareToParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state identityLookupInfo:(id)info requireExistingRelationship:(BOOL)relationship requireZoneDeviceMode:(id)mode
 {
-  v12 = a5;
-  v13 = a7;
+  infoCopy = info;
+  modeCopy = mode;
   v21.receiver = self;
   v21.super_class = HDCloudSyncShareToParticipantOperation;
-  v14 = [(HDCloudSyncOperation *)&v21 initWithConfiguration:a3 cloudState:a4];
+  v14 = [(HDCloudSyncOperation *)&v21 initWithConfiguration:configuration cloudState:state];
   v15 = v14;
   if (v14)
   {
     v14->_lock._os_unfair_lock_opaque = 0;
-    v16 = [v12 copy];
+    v16 = [infoCopy copy];
     identityLookupInfo = v15->_identityLookupInfo;
     v15->_identityLookupInfo = v16;
 
-    v15->_requireExistingRelationship = a6;
-    v18 = [v13 copy];
+    v15->_requireExistingRelationship = relationship;
+    v18 = [modeCopy copy];
     expectedDeviceMode = v15->_expectedDeviceMode;
     v15->_expectedDeviceMode = v18;
   }
@@ -44,17 +44,17 @@
 {
   v50[1] = *MEMORY[0x277D85DE8];
   v3 = [HDCloudSyncCompoundOperation alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncCompoundOperation *)v3 initWithConfiguration:v4 cloudState:0 name:@"Add Sharing Participant" continueOnSubOperationError:0];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  v5 = [(HDCloudSyncCompoundOperation *)v3 initWithConfiguration:configuration cloudState:0 name:@"Add Sharing Participant" continueOnSubOperationError:0];
 
   v6 = [HDCloudSyncLookupParticipantOperation alloc];
-  v7 = [(HDCloudSyncOperation *)self configuration];
-  v8 = [(HDCloudSyncLookupParticipantOperation *)v6 initWithConfiguration:v7 cloudState:0 identityLookupInfo:self->_identityLookupInfo];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  v8 = [(HDCloudSyncLookupParticipantOperation *)v6 initWithConfiguration:configuration2 cloudState:0 identityLookupInfo:self->_identityLookupInfo];
 
   [(HDCloudSyncCompoundOperation *)v5 addOperation:v8 transitionHandler:0];
   v9 = [HDCloudSyncRemoveInvalidShareParticipantsOperation alloc];
-  v10 = [(HDCloudSyncOperation *)self configuration];
-  v11 = [(HDCloudSyncRemoveInvalidShareParticipantsOperation *)v9 initWithConfiguration:v10 cloudState:0];
+  configuration3 = [(HDCloudSyncOperation *)self configuration];
+  v11 = [(HDCloudSyncRemoveInvalidShareParticipantsOperation *)v9 initWithConfiguration:configuration3 cloudState:0];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -67,25 +67,25 @@
   [(HDCloudSyncCompoundOperation *)v5 addOperation:v39 transitionHandler:v47];
   v13 = objc_alloc(MEMORY[0x277CBC5E8]);
   v14 = MEMORY[0x277CBC5F8];
-  v15 = [(HDCloudSyncOperation *)self configuration];
-  v16 = [v15 repository];
-  v17 = [v16 syncCircleIdentifier];
-  v18 = [v14 hd_unifiedSyncZoneIDForSyncCircleIdentifier:v17];
+  configuration4 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration4 repository];
+  syncCircleIdentifier = [repository syncCircleIdentifier];
+  v18 = [v14 hd_unifiedSyncZoneIDForSyncCircleIdentifier:syncCircleIdentifier];
   v19 = [v13 initWithZoneID:v18];
 
   v20 = [HDCloudSyncCreateZonesOperation alloc];
-  v21 = [(HDCloudSyncOperation *)self configuration];
+  configuration5 = [(HDCloudSyncOperation *)self configuration];
   v50[0] = v19;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
-  v23 = [(HDCloudSyncOperation *)self configuration];
-  v24 = [v23 repository];
-  v25 = [v24 primaryCKContainer];
-  v26 = [(HDCloudSyncCreateZonesOperation *)v20 initWithConfiguration:v21 cloudState:0 zones:v22 container:v25];
+  configuration6 = [(HDCloudSyncOperation *)self configuration];
+  repository2 = [configuration6 repository];
+  primaryCKContainer = [repository2 primaryCKContainer];
+  v26 = [(HDCloudSyncCreateZonesOperation *)v20 initWithConfiguration:configuration5 cloudState:0 zones:v22 container:primaryCKContainer];
 
   [(HDCloudSyncCompoundOperation *)v5 addOperation:v26 transitionHandler:0];
   v27 = [HDCloudSyncAddSharingParticipantOperation alloc];
-  v28 = [(HDCloudSyncOperation *)self configuration];
-  v29 = [(HDCloudSyncAddSharingParticipantOperation *)v27 initWithConfiguration:v28 cloudState:0];
+  configuration7 = [(HDCloudSyncOperation *)self configuration];
+  v29 = [(HDCloudSyncAddSharingParticipantOperation *)v27 initWithConfiguration:configuration7 cloudState:0];
 
   [(HDCloudSyncAddSharingParticipantOperation *)v29 setRequireExistingRelationship:self->_requireExistingRelationship];
   v43[0] = MEMORY[0x277D85DD0];
@@ -95,7 +95,7 @@
   v30 = v29;
   v44 = v30;
   v45 = v12;
-  v46 = self;
+  selfCopy = self;
   v31 = v12;
   [(HDCloudSyncCompoundOperation *)v5 addOperation:v30 transitionHandler:v43];
   v41[0] = MEMORY[0x277D85DD0];
@@ -113,15 +113,15 @@
   v40[4] = self;
   [(HDCloudSyncOperation *)v5 setOnError:v40];
   [(HDCloudSyncCompoundOperation *)v5 start];
-  v33 = [(HDCloudSyncOperation *)v5 progress];
-  v34 = [v33 totalUnitCount];
+  progress = [(HDCloudSyncOperation *)v5 progress];
+  totalUnitCount = [progress totalUnitCount];
 
-  v35 = [(HDCloudSyncOperation *)self progress];
-  [v35 setTotalUnitCount:{objc_msgSend(v35, "totalUnitCount") + v34}];
+  progress2 = [(HDCloudSyncOperation *)self progress];
+  [progress2 setTotalUnitCount:{objc_msgSend(progress2, "totalUnitCount") + totalUnitCount}];
 
-  v36 = [(HDCloudSyncOperation *)self progress];
-  v37 = [(HDCloudSyncOperation *)v5 progress];
-  [v36 addChild:v37 withPendingUnitCount:v34];
+  progress3 = [(HDCloudSyncOperation *)self progress];
+  progress4 = [(HDCloudSyncOperation *)v5 progress];
+  [progress3 addChild:progress4 withPendingUnitCount:totalUnitCount];
 
   v38 = *MEMORY[0x277D85DE8];
 }

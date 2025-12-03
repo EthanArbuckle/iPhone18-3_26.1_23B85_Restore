@@ -1,28 +1,28 @@
 @interface PLLocalVideoKeyFrameGenerationJob
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToJob:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToJob:(id)job;
 - (PLLocalVideoKeyFrameGenerationJob)init;
 - (unint64_t)hash;
-- (void)addCompletionHandler:(id)a3;
-- (void)callCompletionHandlersWithMutatedMoc:(id)a3 error:(id)a4 storedRecipes:(id)a5 affectedRecipes:(id)a6 sourceMetadata:(id)a7;
+- (void)addCompletionHandler:(id)handler;
+- (void)callCompletionHandlersWithMutatedMoc:(id)moc error:(id)error storedRecipes:(id)recipes affectedRecipes:(id)affectedRecipes sourceMetadata:(id)metadata;
 @end
 
 @implementation PLLocalVideoKeyFrameGenerationJob
 
-- (void)callCompletionHandlersWithMutatedMoc:(id)a3 error:(id)a4 storedRecipes:(id)a5 affectedRecipes:(id)a6 sourceMetadata:(id)a7
+- (void)callCompletionHandlersWithMutatedMoc:(id)moc error:(id)error storedRecipes:(id)recipes affectedRecipes:(id)affectedRecipes sourceMetadata:(id)metadata
 {
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  mocCopy = moc;
+  errorCopy = error;
+  recipesCopy = recipes;
+  affectedRecipesCopy = affectedRecipes;
+  metadataCopy = metadata;
   os_unfair_lock_lock(&self->_handlerLock);
   v17 = [(NSMutableArray *)self->_completionHandlers copy];
   os_unfair_lock_unlock(&self->_handlerLock);
-  if (v14)
+  if (recipesCopy)
   {
-    if (v15)
+    if (affectedRecipesCopy)
     {
       goto LABEL_3;
     }
@@ -30,14 +30,14 @@
 
   else
   {
-    v14 = [MEMORY[0x1E695DFD8] set];
-    if (v15)
+    recipesCopy = [MEMORY[0x1E695DFD8] set];
+    if (affectedRecipesCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x1E695DFB8] orderedSet];
+  affectedRecipesCopy = [MEMORY[0x1E695DFB8] orderedSet];
 LABEL_3:
   v25 = 0u;
   v26 = 0u;
@@ -71,12 +71,12 @@ LABEL_3:
   }
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_handlerLock);
   completionHandlers = self->_completionHandlers;
-  v6 = _Block_copy(v4);
+  v6 = _Block_copy(handlerCopy);
 
   [(NSMutableArray *)completionHandlers addObject:v6];
 
@@ -85,26 +85,26 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v2 = [(PLLocalVideoKeyFrameGenerationJob *)self assetObjectID];
-  v3 = [v2 hash];
+  assetObjectID = [(PLLocalVideoKeyFrameGenerationJob *)self assetObjectID];
+  v3 = [assetObjectID hash];
 
   return v3;
 }
 
-- (BOOL)isEqualToJob:(id)a3
+- (BOOL)isEqualToJob:(id)job
 {
-  v4 = a3;
-  v5 = [(PLLocalVideoKeyFrameGenerationJob *)self assetObjectID];
-  v6 = [v4 assetObjectID];
+  jobCopy = job;
+  assetObjectID = [(PLLocalVideoKeyFrameGenerationJob *)self assetObjectID];
+  assetObjectID2 = [jobCopy assetObjectID];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(jobCopy) = [assetObjectID isEqual:assetObjectID2];
+  return jobCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -112,7 +112,7 @@ LABEL_3:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PLLocalVideoKeyFrameGenerationJob *)self isEqualToJob:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PLLocalVideoKeyFrameGenerationJob *)self isEqualToJob:equalCopy];
   }
 
   return v5;

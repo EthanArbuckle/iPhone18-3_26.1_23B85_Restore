@@ -1,26 +1,26 @@
 @interface CKDPSubscription
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)evaluationTypeAsString:(int)a3;
-- (id)mutationTriggersAsString:(int)a3;
-- (id)ownerAsString:(int)a3;
-- (int)StringAsEvaluationType:(id)a3;
-- (int)StringAsMutationTriggers:(id)a3;
-- (int)StringAsOwner:(id)a3;
+- (id)evaluationTypeAsString:(int)string;
+- (id)mutationTriggersAsString:(int)string;
+- (id)ownerAsString:(int)string;
+- (int)StringAsEvaluationType:(id)type;
+- (int)StringAsMutationTriggers:(id)triggers;
+- (int)StringAsOwner:(id)owner;
 - (int)evaluationType;
-- (int)mutationTriggersAtIndex:(unint64_t)a3;
+- (int)mutationTriggersAtIndex:(unint64_t)index;
 - (int)owner;
 - (unint64_t)hash;
-- (void)addFilters:(id)a3;
-- (void)addRecordTypes:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addFilters:(id)filters;
+- (void)addRecordTypes:(id)types;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFireOnce:(BOOL)a3;
-- (void)setHasOwner:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasFireOnce:(BOOL)once;
+- (void)setHasOwner:(BOOL)owner;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPSubscription
@@ -46,35 +46,35 @@
   }
 }
 
-- (id)evaluationTypeAsString:(int)a3
+- (id)evaluationTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CD38[a3 - 1];
+    v4 = off_27854CD38[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsEvaluationType:(id)a3
+- (int)StringAsEvaluationType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"trigger"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"trigger"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"sync"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"sync"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"metasync"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"metasync"))
   {
     v6 = 3;
   }
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)setHasOwner:(BOOL)a3
+- (void)setHasOwner:(BOOL)owner
 {
-  if (a3)
+  if (owner)
   {
     v3 = 2;
   }
@@ -115,33 +115,33 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)ownerAsString:(int)a3
+- (id)ownerAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"user";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"device";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsOwner:(id)a3
+- (int)StringAsOwner:(id)owner
 {
-  v3 = a3;
+  ownerCopy = owner;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"user") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(ownerCopy, v4, @"user") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"device"))
+    if (objc_msgSend_isEqualToString_(ownerCopy, v5, @"device"))
     {
       v6 = 2;
     }
@@ -155,51 +155,51 @@
   return v6;
 }
 
-- (int)mutationTriggersAtIndex:(unint64_t)a3
+- (int)mutationTriggersAtIndex:(unint64_t)index
 {
   p_mutationTriggers = &self->_mutationTriggers;
   count = self->_mutationTriggers.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_mutationTriggers->list[a3];
+  return p_mutationTriggers->list[index];
 }
 
-- (id)mutationTriggersAsString:(int)a3
+- (id)mutationTriggersAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CD50[a3 - 1];
+    v4 = off_27854CD50[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsMutationTriggers:(id)a3
+- (int)StringAsMutationTriggers:(id)triggers
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"insert"))
+  triggersCopy = triggers;
+  if (objc_msgSend_isEqualToString_(triggersCopy, v4, @"insert"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"update"))
+  else if (objc_msgSend_isEqualToString_(triggersCopy, v5, @"update"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"remove"))
+  else if (objc_msgSend_isEqualToString_(triggersCopy, v7, @"remove"))
   {
     v6 = 3;
   }
@@ -212,45 +212,45 @@
   return v6;
 }
 
-- (void)addFilters:(id)a3
+- (void)addFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   filters = self->_filters;
-  v8 = v4;
+  v8 = filtersCopy;
   if (!filters)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_filters;
     self->_filters = v6;
 
-    v4 = v8;
+    filtersCopy = v8;
     filters = self->_filters;
   }
 
-  objc_msgSend_addObject_(filters, v4, v4);
+  objc_msgSend_addObject_(filters, filtersCopy, filtersCopy);
 }
 
-- (void)addRecordTypes:(id)a3
+- (void)addRecordTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   recordTypes = self->_recordTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!recordTypes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_recordTypes;
     self->_recordTypes = v6;
 
-    v4 = v8;
+    typesCopy = v8;
     recordTypes = self->_recordTypes;
   }
 
-  objc_msgSend_addObject_(recordTypes, v4, v4);
+  objc_msgSend_addObject_(recordTypes, typesCopy, typesCopy);
 }
 
-- (void)setHasFireOnce:(BOOL)a3
+- (void)setHasFireOnce:(BOOL)once
 {
-  if (a3)
+  if (once)
   {
     v3 = 4;
   }
@@ -458,10 +458,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteSubmessage();
@@ -571,29 +571,29 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   identifier = self->_identifier;
-  v38 = v4;
+  v38 = toCopy;
   if (identifier)
   {
-    objc_msgSend_setIdentifier_(v4, v5, identifier);
-    v4 = v38;
+    objc_msgSend_setIdentifier_(toCopy, v5, identifier);
+    toCopy = v38;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 8) = self->_evaluationType;
-    v4[92] |= 1u;
+    *(toCopy + 8) = self->_evaluationType;
+    toCopy[92] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 16) = self->_owner;
-    v4[92] |= 2u;
+    *(toCopy + 16) = self->_owner;
+    toCopy[92] |= 2u;
   }
 
   if (objc_msgSend_mutationTriggersCount(self, v5, identifier))
@@ -662,13 +662,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v51 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, zone);
   v13 = *(v10 + 48);
   *(v10 + 48) = v12;
 
@@ -687,7 +687,7 @@
   }
 
   PBRepeatedInt32Copy();
-  v16 = objc_msgSend_copyWithZone_(self->_notification, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_notification, v15, zone);
   v17 = *(v10 + 56);
   *(v10 + 56) = v16;
 
@@ -710,7 +710,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v25 = objc_msgSend_copyWithZone_(*(*(&v45 + 1) + 8 * i), v21, a3);
+        v25 = objc_msgSend_copyWithZone_(*(*(&v45 + 1) + 8 * i), v21, zone);
         objc_msgSend_addFilters_(v10, v26, v25);
       }
 
@@ -739,7 +739,7 @@
           objc_enumerationMutation(v27);
         }
 
-        v34 = objc_msgSend_copyWithZone_(*(*(&v41 + 1) + 8 * j), v30, a3, v41);
+        v34 = objc_msgSend_copyWithZone_(*(*(&v41 + 1) + 8 * j), v30, zone, v41);
         objc_msgSend_addRecordTypes_(v10, v35, v34);
       }
 
@@ -755,7 +755,7 @@
     *(v10 + 92) |= 4u;
   }
 
-  v37 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v36, a3, v41);
+  v37 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v36, zone, v41);
   v38 = *(v10 + 80);
   *(v10 + 80) = v37;
 
@@ -763,17 +763,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_26;
   }
 
   identifier = self->_identifier;
-  v9 = v4[6];
+  v9 = equalCopy[6];
   if (identifier | v9)
   {
     if (!objc_msgSend_isEqual_(identifier, v7, v9))
@@ -782,29 +782,29 @@
     }
   }
 
-  v10 = *(v4 + 92);
+  v10 = *(equalCopy + 92);
   if (*&self->_has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_evaluationType != *(v4 + 8))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_evaluationType != *(equalCopy + 8))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_owner != *(v4 + 16))
+    if ((*(equalCopy + 92) & 2) == 0 || self->_owner != *(equalCopy + 16))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
     goto LABEL_26;
   }
@@ -815,7 +815,7 @@
   }
 
   notification = self->_notification;
-  v13 = v4[7];
+  v13 = equalCopy[7];
   if (notification | v13)
   {
     if (!objc_msgSend_isEqual_(notification, v11, v13))
@@ -825,7 +825,7 @@
   }
 
   filters = self->_filters;
-  v15 = v4[5];
+  v15 = equalCopy[5];
   if (filters | v15)
   {
     if (!objc_msgSend_isEqual_(filters, v11, v15))
@@ -835,7 +835,7 @@
   }
 
   recordTypes = self->_recordTypes;
-  v17 = v4[9];
+  v17 = equalCopy[9];
   if (recordTypes | v17)
   {
     if (!objc_msgSend_isEqual_(recordTypes, v11, v17))
@@ -844,10 +844,10 @@
     }
   }
 
-  v18 = *(v4 + 92);
+  v18 = *(equalCopy + 92);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 92) & 4) == 0)
+    if ((*(equalCopy + 92) & 4) == 0)
     {
       goto LABEL_23;
     }
@@ -857,28 +857,28 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 92) & 4) == 0)
+  if ((*(equalCopy + 92) & 4) == 0)
   {
     goto LABEL_26;
   }
 
-  v23 = *(v4 + 88);
+  v23 = *(equalCopy + 88);
   if (self->_fireOnce)
   {
-    if ((v4[11] & 1) == 0)
+    if ((equalCopy[11] & 1) == 0)
     {
       goto LABEL_26;
     }
   }
 
-  else if (v4[11])
+  else if (equalCopy[11])
   {
     goto LABEL_26;
   }
 
 LABEL_23:
   zoneIdentifier = self->_zoneIdentifier;
-  v20 = v4[10];
+  v20 = equalCopy[10];
   if (zoneIdentifier | v20)
   {
     isEqual = objc_msgSend_isEqual_(zoneIdentifier, v11, v20);
@@ -936,12 +936,12 @@ LABEL_6:
   return v5 ^ v4 ^ v6 ^ v7 ^ v10 ^ v13 ^ v16 ^ v19 ^ objc_msgSend_hash(self->_zoneIdentifier, v17, v18);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   identifier = self->_identifier;
-  v7 = *(v5 + 6);
+  v7 = *(fromCopy + 6);
   if (identifier)
   {
     if (v7)
@@ -955,33 +955,33 @@ LABEL_6:
     objc_msgSend_setIdentifier_(self, v4, v7);
   }
 
-  v8 = *(v5 + 92);
+  v8 = *(fromCopy + 92);
   if (v8)
   {
-    self->_evaluationType = *(v5 + 8);
+    self->_evaluationType = *(fromCopy + 8);
     *&self->_has |= 1u;
-    v8 = *(v5 + 92);
+    v8 = *(fromCopy + 92);
   }
 
   if ((v8 & 2) != 0)
   {
-    self->_owner = *(v5 + 16);
+    self->_owner = *(fromCopy + 16);
     *&self->_has |= 2u;
   }
 
-  v9 = objc_msgSend_mutationTriggersCount(v5, v4, v7);
+  v9 = objc_msgSend_mutationTriggersCount(fromCopy, v4, v7);
   if (v9)
   {
     v11 = v9;
     for (i = 0; i != v11; ++i)
     {
-      v13 = objc_msgSend_mutationTriggersAtIndex_(v5, v10, i);
+      v13 = objc_msgSend_mutationTriggersAtIndex_(fromCopy, v10, i);
       objc_msgSend_addMutationTriggers_(self, v14, v13);
     }
   }
 
   notification = self->_notification;
-  v16 = *(v5 + 7);
+  v16 = *(fromCopy + 7);
   if (notification)
   {
     if (v16)
@@ -999,7 +999,7 @@ LABEL_6:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v17 = *(v5 + 5);
+  v17 = *(fromCopy + 5);
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v39, v44, 16);
   if (v19)
   {
@@ -1027,7 +1027,7 @@ LABEL_6:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v24 = *(v5 + 9);
+  v24 = *(fromCopy + 9);
   v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v25, &v35, v43, 16);
   if (v26)
   {
@@ -1051,14 +1051,14 @@ LABEL_6:
     while (v28);
   }
 
-  if ((*(v5 + 92) & 4) != 0)
+  if ((*(fromCopy + 92) & 4) != 0)
   {
-    self->_fireOnce = *(v5 + 88);
+    self->_fireOnce = *(fromCopy + 88);
     *&self->_has |= 4u;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v33 = *(v5 + 10);
+  v33 = *(fromCopy + 10);
   if (zoneIdentifier)
   {
     if (v33)

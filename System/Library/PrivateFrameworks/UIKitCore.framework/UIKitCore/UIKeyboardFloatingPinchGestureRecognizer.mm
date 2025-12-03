@@ -1,18 +1,18 @@
 @interface UIKeyboardFloatingPinchGestureRecognizer
-- (UIKeyboardFloatingPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIKeyboardFloatingPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation UIKeyboardFloatingPinchGestureRecognizer
 
-- (UIKeyboardFloatingPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIKeyboardFloatingPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = UIKeyboardFloatingPinchGestureRecognizer;
-  v4 = [(UIPinchGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(UIPinchGestureRecognizer *)&v8 initWithTarget:target action:action];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:2];
@@ -23,56 +23,56 @@
   return v4;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  [(NSMutableSet *)self->_activeTouches unionSet:v6];
+  beganCopy = began;
+  eventCopy = event;
+  [(NSMutableSet *)self->_activeTouches unionSet:beganCopy];
   if ([(NSMutableSet *)self->_activeTouches count]< 3)
   {
     v10.receiver = self;
     v10.super_class = UIKeyboardFloatingPinchGestureRecognizer;
-    [(UIGestureRecognizer *)&v10 touchesBegan:v6 withEvent:v7];
+    [(UIGestureRecognizer *)&v10 touchesBegan:beganCopy withEvent:eventCopy];
   }
 
   else
   {
     if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged)
     {
-      v8 = self;
+      selfCopy2 = self;
       v9 = 3;
     }
 
     else
     {
-      v8 = self;
+      selfCopy2 = self;
       v9 = 5;
     }
 
-    [(UIGestureRecognizer *)v8 setState:v9];
+    [(UIGestureRecognizer *)selfCopy2 setState:v9];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   activeTouches = self->_activeTouches;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableSet *)activeTouches minusSet:v8];
+  eventCopy = event;
+  endedCopy = ended;
+  [(NSMutableSet *)activeTouches minusSet:endedCopy];
   v9.receiver = self;
   v9.super_class = UIKeyboardFloatingPinchGestureRecognizer;
-  [(UIGestureRecognizer *)&v9 touchesEnded:v8 withEvent:v7];
+  [(UIGestureRecognizer *)&v9 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   activeTouches = self->_activeTouches;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableSet *)activeTouches minusSet:v8];
+  eventCopy = event;
+  cancelledCopy = cancelled;
+  [(NSMutableSet *)activeTouches minusSet:cancelledCopy];
   v9.receiver = self;
   v9.super_class = UIKeyboardFloatingPinchGestureRecognizer;
-  [(UIGestureRecognizer *)&v9 touchesCancelled:v8 withEvent:v7];
+  [(UIGestureRecognizer *)&v9 touchesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
 - (void)reset

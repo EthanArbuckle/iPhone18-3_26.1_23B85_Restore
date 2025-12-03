@@ -1,9 +1,9 @@
 @interface PLIntensiveResourceTaskResponder
-- (PLIntensiveResourceTaskResponder)initWithTrackingIdentifier:(id)a3 completionHandler:(id)a4;
+- (PLIntensiveResourceTaskResponder)initWithTrackingIdentifier:(id)identifier completionHandler:(id)handler;
 - (PLIntensiveResourceTaskResponderDelegate)delegate;
 - (id)description;
-- (void)attachToSourceProgress:(id)a3;
-- (void)callCompletionWithResult:(id)a3;
+- (void)attachToSourceProgress:(id)progress;
+- (void)callCompletionWithResult:(id)result;
 - (void)cancel;
 @end
 
@@ -16,10 +16,10 @@
   return WeakRetained;
 }
 
-- (void)callCompletionWithResult:(id)a3
+- (void)callCompletionWithResult:(id)result
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -33,13 +33,13 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v4;
+      v19 = resultCopy;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "[RTM] %@ completing with result: %@", buf, 0x16u);
     }
 
-    (*(v11[5] + 16))(v11[5], v4, v6, v7, v8, v9);
+    (*(v11[5] + 16))(v11[5], resultCopy, v6, v7, v8, v9);
   }
 
   _Block_object_dispose(&v10, 8);
@@ -64,14 +64,14 @@ void __61__PLIntensiveResourceTaskResponder_callCompletionWithResult___block_inv
 - (void)cancel
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(PLIntensiveResourceTaskResponder *)self delegate];
-  [v3 taskResponderDidCancel:self];
+  delegate = [(PLIntensiveResourceTaskResponder *)self delegate];
+  [delegate taskResponderDidCancel:self];
 
   v4 = PLImageManagerGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEBUG, "[RTM] %@ cancelling", &v7, 0xCu);
   }
 
@@ -80,18 +80,18 @@ void __61__PLIntensiveResourceTaskResponder_callCompletionWithResult___block_inv
   [(PLIntensiveResourceTaskResponder *)self callCompletionWithResult:v6];
 }
 
-- (void)attachToSourceProgress:(id)a3
+- (void)attachToSourceProgress:(id)progress
 {
-  if (a3)
+  if (progress)
   {
-    v4 = a3;
+    progressCopy = progress;
     v5 = [PLProgressFollower alloc];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__PLIntensiveResourceTaskResponder_attachToSourceProgress___block_invoke;
     v8[3] = &unk_1E75788E8;
     v8[4] = self;
-    v6 = [(PLProgressFollower *)v5 initWithSourceProgress:v4 progressHandler:v8];
+    v6 = [(PLProgressFollower *)v5 initWithSourceProgress:progressCopy progressHandler:v8];
 
     progressFollower = self->_progressFollower;
     self->_progressFollower = v6;
@@ -117,14 +117,14 @@ uint64_t __59__PLIntensiveResourceTaskResponder_attachToSourceProgress___block_i
   return v6;
 }
 
-- (PLIntensiveResourceTaskResponder)initWithTrackingIdentifier:(id)a3 completionHandler:(id)a4
+- (PLIntensiveResourceTaskResponder)initWithTrackingIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLIntensiveResourceTaskResponder.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLIntensiveResourceTaskResponder.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v21.receiver = self;
@@ -132,12 +132,12 @@ uint64_t __59__PLIntensiveResourceTaskResponder_attachToSourceProgress___block_i
   v9 = [(PLIntensiveResourceTaskResponder *)&v21 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [identifierCopy copy];
     trackingIdentifier = v9->_trackingIdentifier;
     v9->_trackingIdentifier = v10;
 
     v9->_lock._os_unfair_lock_opaque = 0;
-    v12 = [v8 copy];
+    v12 = [handlerCopy copy];
     lock_completionHandler = v9->_lock_completionHandler;
     v9->_lock_completionHandler = v12;
 

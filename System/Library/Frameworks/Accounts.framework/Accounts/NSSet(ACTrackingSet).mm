@@ -13,7 +13,7 @@
     +[NSSet(ACTrackingSet) setWithTrackedSet:];
   }
 
-  v5 = [[a1 alloc] initWithTrackedSet:v4];
+  v5 = [[self alloc] initWithTrackedSet:v4];
 
   return v5;
 }
@@ -27,7 +27,7 @@
   }
 
   v5 = [v4[1] copy];
-  v6 = [a1 initWithSet:v5];
+  v6 = [self initWithSet:v5];
 
   return v6;
 }

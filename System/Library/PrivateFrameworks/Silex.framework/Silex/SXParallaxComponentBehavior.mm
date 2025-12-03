@@ -1,26 +1,26 @@
 @interface SXParallaxComponentBehavior
-- (int)directionWithValue:(id)a3 withType:(int)a4;
+- (int)directionWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXParallaxComponentBehavior
 
-- (int)directionWithValue:(id)a3 withType:(int)a4
+- (int)directionWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
+  valueCopy = value;
   if (![(SXParallaxComponentBehavior *)self cachedDirection])
   {
     self->_cachedDirection = 1;
-    if ([v5 isEqualToString:@"down"])
+    if ([valueCopy isEqualToString:@"down"])
     {
       v7 = 3;
     }
 
     else
     {
-      if (![v5 isEqualToString:@"up"])
+      if (![valueCopy isEqualToString:@"up"])
       {
 LABEL_8:
-        v6 = 1;
+        cachedDirection = 1;
         goto LABEL_9;
       }
 
@@ -31,10 +31,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v6 = [(SXParallaxComponentBehavior *)self cachedDirection];
+  cachedDirection = [(SXParallaxComponentBehavior *)self cachedDirection];
 LABEL_9:
 
-  return v6;
+  return cachedDirection;
 }
 
 @end

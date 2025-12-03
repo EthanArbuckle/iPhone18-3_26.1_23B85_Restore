@@ -1,86 +1,86 @@
 @interface MFTransferSplitViewPresentationAnimationController
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation MFTransferSplitViewPresentationAnimationController
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v61 = v4;
-  v60 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v59 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v5 = [v59 rootViewController];
-  v58 = v5;
+  transitionCopy = transition;
+  v61 = transitionCopy;
+  v60 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v59 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  rootViewController = [v59 rootViewController];
+  v58 = rootViewController;
   v57 = objc_opt_new();
   v6 = +[UIColor clearColor];
   [v57 setBorderColor:v6];
 
   [v60 setConfiguration:v57];
-  v56 = [v4 containerView];
-  v7 = [v60 view];
-  [v56 addSubview:v7];
+  containerView = [transitionCopy containerView];
+  view = [v60 view];
+  [containerView addSubview:view];
 
-  v55 = [v5 viewControllerForColumn:0];
-  v8 = [v55 view];
-  v65 = [v8 snapshotViewAfterScreenUpdates:0];
+  v55 = [rootViewController viewControllerForColumn:0];
+  view2 = [v55 view];
+  v65 = [view2 snapshotViewAfterScreenUpdates:0];
 
   v9 = [v60 viewControllerForColumn:0];
-  v10 = [v9 view];
+  view3 = [v9 view];
 
-  v66 = v10;
-  v11 = [v10 superview];
-  [v11 insertSubview:v65 below:v10];
+  v66 = view3;
+  superview = [view3 superview];
+  [superview insertSubview:v65 below:view3];
 
-  v12 = [v10 superview];
-  [v12 setClipsToBounds:1];
+  superview2 = [view3 superview];
+  [superview2 setClipsToBounds:1];
 
-  v54 = [v5 viewControllerForColumn:1];
-  v13 = [v54 view];
-  v64 = [v13 snapshotViewAfterScreenUpdates:0];
+  v54 = [rootViewController viewControllerForColumn:1];
+  view4 = [v54 view];
+  v64 = [view4 snapshotViewAfterScreenUpdates:0];
 
   v14 = [v60 viewControllerForColumn:1];
-  v15 = [v14 view];
+  view5 = [v14 view];
 
-  v16 = [v15 superview];
-  [v16 insertSubview:v64 below:v15];
+  superview3 = [view5 superview];
+  [superview3 insertSubview:v64 below:view5];
 
-  v17 = [v15 superview];
-  [v17 setClipsToBounds:1];
+  superview4 = [view5 superview];
+  [superview4 setClipsToBounds:1];
 
-  v18 = [v56 _shouldReverseLayoutDirection];
-  sub_1002261EC(v15, v18 ^ 1);
-  [v10 frame];
+  _shouldReverseLayoutDirection = [containerView _shouldReverseLayoutDirection];
+  sub_1002261EC(view5, _shouldReverseLayoutDirection ^ 1);
+  [view3 frame];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  [v15 frame];
+  [view5 frame];
   v62 = v28;
   v63 = v27;
   v30 = v29;
   v32 = v31;
   v33 = -v24;
-  if (v18)
+  if (_shouldReverseLayoutDirection)
   {
     v33 = v24;
   }
 
-  [v10 setFrame:{v20 + v33, v22, v24, v26}];
+  [view3 setFrame:{v20 + v33, v22, v24, v26}];
   v34 = v24 + v32;
-  if (!v18)
+  if (!_shouldReverseLayoutDirection)
   {
     v34 = -(v24 + v32);
   }
 
-  [v15 setFrame:{v30 + v34, v63, v32, v62}];
-  v35 = [v5 messageDetailNavController];
-  v36 = [v35 view];
-  [v36 setAlpha:0.0];
+  [view5 setFrame:{v30 + v34, v63, v32, v62}];
+  messageDetailNavController = [rootViewController messageDetailNavController];
+  view6 = [messageDetailNavController view];
+  [view6 setAlpha:0.0];
   v37 = v20;
 
   v38 = [UIViewPropertyAnimator alloc];
-  [(MFTransferSplitViewPresentationAnimationController *)self transitionDuration:v4];
+  [(MFTransferSplitViewPresentationAnimationController *)self transitionDuration:transitionCopy];
   v40 = v39;
   v79[0] = _NSConcreteStackBlock;
   v79[1] = 3221225472;
@@ -92,7 +92,7 @@
   v83 = v22;
   v84 = v24;
   v85 = v26;
-  v41 = v15;
+  v41 = view5;
   v81 = v41;
   v86 = v30;
   v87 = v63;

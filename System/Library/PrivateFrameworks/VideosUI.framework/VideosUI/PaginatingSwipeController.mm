@@ -1,21 +1,21 @@
 @interface PaginatingSwipeController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (void)didPanOnView:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (void)didPanOnView:(id)view;
 @end
 
 @implementation PaginatingSwipeController
 
-- (void)didPanOnView:(id)a3
+- (void)didPanOnView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E4142514(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1E4142514(viewCopy);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
+  beginCopy = begin;
+  selfCopy = self;
   LOBYTE(self) = sub_1E4144874();
 
   return self & 1;

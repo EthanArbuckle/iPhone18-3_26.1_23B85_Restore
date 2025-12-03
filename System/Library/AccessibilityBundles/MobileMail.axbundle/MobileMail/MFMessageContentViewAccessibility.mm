@@ -1,41 +1,41 @@
 @interface MFMessageContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (MFMessageContentViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (MFMessageContentViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)generateSnapshotImageWithCompletion:(id)a3;
+- (void)generateSnapshotImageWithCompletion:(id)completion;
 @end
 
 @implementation MFMessageContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFMessageContentView" hasInstanceMethod:@"webView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"MFMessageContentView" hasInstanceMethod:@"generateSnapshotImageWithCompletion:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"MFMessageContentView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFMessageContentView" hasInstanceMethod:@"webView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"MFMessageContentView" hasInstanceMethod:@"generateSnapshotImageWithCompletion:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"MFMessageContentView" isKindOfClass:@"UIView"];
 }
 
-- (MFMessageContentViewAccessibility)initWithFrame:(CGRect)a3
+- (MFMessageContentViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = MFMessageContentViewAccessibility;
-  v3 = [(MFMessageContentViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFMessageContentViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MFMessageContentViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
 }
 
-- (void)generateSnapshotImageWithCompletion:(id)a3
+- (void)generateSnapshotImageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __73__MFMessageContentViewAccessibility_generateSnapshotImageWithCompletion___block_invoke;
   v8[3] = &unk_29F2D4198;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x29C2DFCD0](v8);
   v7.receiver = self;
   v7.super_class = MFMessageContentViewAccessibility;
@@ -79,8 +79,8 @@ void __73__MFMessageContentViewAccessibility_generateSnapshotImageWithCompletion
   v3 = [(MFMessageContentViewAccessibility *)self safeValueForKey:@"webView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 scrollView];
-  [v5 accessibilitySetIdentification:@"kAXMailContentViewWebViewIdentifier"];
+  scrollView = [v4 scrollView];
+  [scrollView accessibilitySetIdentification:@"kAXMailContentViewWebViewIdentifier"];
 }
 
 void __73__MFMessageContentViewAccessibility_generateSnapshotImageWithCompletion___block_invoke_cold_1(uint64_t a1, NSObject *a2)

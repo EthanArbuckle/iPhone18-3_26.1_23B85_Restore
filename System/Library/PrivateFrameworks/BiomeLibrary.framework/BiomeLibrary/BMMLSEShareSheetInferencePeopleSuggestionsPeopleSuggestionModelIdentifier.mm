@@ -1,41 +1,41 @@
 @interface BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier)initWithModelType:(int)a3 trialIdentifier:(id)a4 otherModelTypeName:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier)initWithModelType:(int)type trialIdentifier:(id)identifier otherModelTypeName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self modelType];
-    if (v6 == [v5 modelType])
+    v5 = equalCopy;
+    modelType = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self modelType];
+    if (modelType == [v5 modelType])
     {
-      v7 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self trialIdentifier];
-      v8 = [v5 trialIdentifier];
-      v9 = v8;
-      if (v7 == v8)
+      trialIdentifier = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self trialIdentifier];
+      trialIdentifier2 = [v5 trialIdentifier];
+      v9 = trialIdentifier2;
+      if (trialIdentifier == trialIdentifier2)
       {
       }
 
       else
       {
-        v10 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self trialIdentifier];
-        v11 = [v5 trialIdentifier];
-        v12 = [v10 isEqual:v11];
+        trialIdentifier3 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self trialIdentifier];
+        trialIdentifier4 = [v5 trialIdentifier];
+        v12 = [trialIdentifier3 isEqual:trialIdentifier4];
 
         if (!v12)
         {
@@ -43,18 +43,18 @@
         }
       }
 
-      v14 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self otherModelTypeName];
-      v15 = [v5 otherModelTypeName];
-      if (v14 == v15)
+      otherModelTypeName = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self otherModelTypeName];
+      otherModelTypeName2 = [v5 otherModelTypeName];
+      if (otherModelTypeName == otherModelTypeName2)
       {
         v13 = 1;
       }
 
       else
       {
-        v16 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self otherModelTypeName];
-        v17 = [v5 otherModelTypeName];
-        v13 = [v16 isEqual:v17];
+        otherModelTypeName3 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self otherModelTypeName];
+        otherModelTypeName4 = [v5 otherModelTypeName];
+        v13 = [otherModelTypeName3 isEqual:otherModelTypeName4];
       }
 
       goto LABEL_12;
@@ -77,38 +77,38 @@ LABEL_13:
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier modelType](self, "modelType")}];
-  v4 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self trialIdentifier];
-  v5 = [v4 jsonDictionary];
+  trialIdentifier = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self trialIdentifier];
+  jsonDictionary = [trialIdentifier jsonDictionary];
 
-  v6 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self otherModelTypeName];
+  otherModelTypeName = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self otherModelTypeName];
   v13[0] = @"modelType";
-  v7 = v3;
+  null = v3;
   if (!v3)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v7;
+  v14[0] = null;
   v13[1] = @"trialIdentifier";
-  v8 = v5;
-  if (!v5)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v8;
+  v14[1] = null2;
   v13[2] = @"otherModelTypeName";
-  v9 = v6;
-  if (!v6)
+  null3 = otherModelTypeName;
+  if (!otherModelTypeName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v9;
+  v14[2] = null3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
-  if (v6)
+  if (otherModelTypeName)
   {
-    if (v5)
+    if (jsonDictionary)
     {
       goto LABEL_9;
     }
@@ -123,7 +123,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v5)
+  if (!jsonDictionary)
   {
     goto LABEL_14;
   }
@@ -142,11 +142,11 @@ LABEL_10:
   return v10;
 }
 
-- (BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"modelType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"modelType"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -160,10 +160,10 @@ LABEL_10:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_19;
         }
 
@@ -175,8 +175,8 @@ LABEL_10:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
         v24 = [v22 initWithDomain:v23 code:2 userInfo:v11];
         v8 = 0;
-        v13 = 0;
-        *a4 = v24;
+        selfCopy = 0;
+        *error = v24;
         goto LABEL_17;
       }
 
@@ -191,7 +191,7 @@ LABEL_10:
     v8 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"trialIdentifier"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"trialIdentifier"];
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v11 = 0;
@@ -207,25 +207,25 @@ LABEL_10:
     v17 = v28;
     if (v17)
     {
-      if (a4)
+      if (error)
       {
         v17 = v17;
-        *a4 = v17;
+        *error = v17;
       }
 
-      v13 = 0;
+      selfCopy = 0;
       v10 = v16;
       goto LABEL_17;
     }
 
 LABEL_12:
-    v12 = [v6 objectForKeyedSubscript:@"otherModelTypeName"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"otherModelTypeName"];
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v27 = objc_alloc(MEMORY[0x1E696ABC0]);
           v25 = *MEMORY[0x1E698F240];
@@ -233,33 +233,33 @@ LABEL_12:
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"otherModelTypeName"];
           v30 = v20;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-          *a4 = [v27 initWithDomain:v25 code:2 userInfo:v21];
+          *error = [v27 initWithDomain:v25 code:2 userInfo:v21];
 
-          a4 = 0;
+          error = 0;
         }
 
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_16;
       }
 
-      a4 = v12;
+      error = v12;
     }
 
     else
     {
-      a4 = 0;
+      error = 0;
     }
 
-    self = -[BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier initWithModelType:trialIdentifier:otherModelTypeName:](self, "initWithModelType:trialIdentifier:otherModelTypeName:", [v8 intValue], v11, a4);
-    v13 = self;
+    self = -[BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier initWithModelType:trialIdentifier:otherModelTypeName:](self, "initWithModelType:trialIdentifier:otherModelTypeName:", [v8 intValue], v11, error);
+    selfCopy = self;
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  if (!a4)
+  if (!error)
   {
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -269,36 +269,36 @@ LABEL_16:
   v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"trialIdentifier"];
   v32 = v11;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-  *a4 = [v26 initWithDomain:v18 code:2 userInfo:v19];
+  *error = [v26 initWithDomain:v18 code:2 userInfo:v19];
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_17:
 
 LABEL_18:
 LABEL_19:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   modelType = self->_modelType;
   PBDataWriterWriteUint32Field();
   if (self->_trialIdentifier)
   {
     PBDataWriterPlaceMark();
-    [(BMTrialIdentifier *)self->_trialIdentifier writeTo:v4];
+    [(BMTrialIdentifier *)self->_trialIdentifier writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -308,9 +308,9 @@ LABEL_19:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v30.receiver = self;
   v30.super_class = BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier;
   v5 = [(BMEventBase *)&v30 init];
@@ -319,12 +319,12 @@ LABEL_19:
     goto LABEL_43;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -335,18 +335,18 @@ LABEL_19:
       while (1)
       {
         LOBYTE(v31[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v31 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v31 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v31[0] & 0x7F) << v7;
@@ -363,9 +363,9 @@ LABEL_19:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -387,7 +387,7 @@ LABEL_16:
           goto LABEL_42;
         }
 
-        v23 = [[BMTrialIdentifier alloc] initByReadFrom:v4];
+        v23 = [[BMTrialIdentifier alloc] initByReadFrom:fromCopy];
         if (!v23)
         {
           goto LABEL_42;
@@ -407,18 +407,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v31[0]) = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:v31 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v31 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v31[0] & 0x7F) << v16;
@@ -434,7 +434,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 0x1D)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 0x1D)
         {
 LABEL_38:
           LODWORD(v18) = 0;
@@ -448,13 +448,13 @@ LABEL_38:
         goto LABEL_42;
       }
 
-      v27 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v27 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_42:
     v28 = 0;
@@ -473,26 +473,26 @@ LABEL_43:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifierModelTypeAsString([(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self modelType]);
-  v5 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self trialIdentifier];
-  v6 = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self otherModelTypeName];
-  v7 = [v3 initWithFormat:@"BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier with modelType: %@, trialIdentifier: %@, otherModelTypeName: %@", v4, v5, v6];
+  trialIdentifier = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self trialIdentifier];
+  otherModelTypeName = [(BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier *)self otherModelTypeName];
+  v7 = [v3 initWithFormat:@"BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier with modelType: %@, trialIdentifier: %@, otherModelTypeName: %@", v4, trialIdentifier, otherModelTypeName];
 
   return v7;
 }
 
-- (BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier)initWithModelType:(int)a3 trialIdentifier:(id)a4 otherModelTypeName:(id)a5
+- (BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier)initWithModelType:(int)type trialIdentifier:(id)identifier otherModelTypeName:(id)name
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier;
   v11 = [(BMEventBase *)&v13 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    v11->_modelType = a3;
-    objc_storeStrong(&v11->_trialIdentifier, a4);
-    objc_storeStrong(&v11->_otherModelTypeName, a5);
+    v11->_modelType = type;
+    objc_storeStrong(&v11->_trialIdentifier, identifier);
+    objc_storeStrong(&v11->_otherModelTypeName, name);
   }
 
   return v11;
@@ -539,9 +539,9 @@ id __84__BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifi
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -549,8 +549,8 @@ id __84__BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifi
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMLSEShareSheetInferencePeopleSuggestionsPeopleSuggestionModelIdentifier alloc] initByReadFrom:v7];
     v4 = v8;

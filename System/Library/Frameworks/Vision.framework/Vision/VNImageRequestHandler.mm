@@ -1,219 +1,219 @@
 @interface VNImageRequestHandler
 + (void)forcedCleanup;
-+ (void)forcedCleanupWithOptions:(id)a3;
++ (void)forcedCleanupWithOptions:(id)options;
 + (void)requestForcedCleanup;
-+ (void)requestForcedCleanupWithOptions:(id)a3;
-+ (void)requestForcedCleanupWithOptions:(id)a3 completion:(id)a4;
-- (BOOL)performRequests:(id)a3 gatheredForensics:(id *)a4 error:(id *)a5;
-- (VNImageRequestHandler)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
++ (void)requestForcedCleanupWithOptions:(id)options;
++ (void)requestForcedCleanupWithOptions:(id)options completion:(id)completion;
+- (BOOL)performRequests:(id)requests gatheredForensics:(id *)forensics error:(id *)error;
+- (VNImageRequestHandler)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(id)options session:(id)session;
 - (VNImageRequestHandler)initWithCGImage:(CGImageRef)image orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
 - (VNImageRequestHandler)initWithCIImage:(CIImage *)image orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
-- (VNImageRequestHandler)initWithCIImage:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
+- (VNImageRequestHandler)initWithCIImage:(id)image orientation:(unsigned int)orientation options:(id)options session:(id)session;
 - (VNImageRequestHandler)initWithCMSampleBuffer:(CMSampleBufferRef)sampleBuffer depthData:(AVDepthData *)depthData orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
 - (VNImageRequestHandler)initWithCMSampleBuffer:(CMSampleBufferRef)sampleBuffer orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
-- (VNImageRequestHandler)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6 session:(id)a7;
-- (VNImageRequestHandler)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
+- (VNImageRequestHandler)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageRequestHandler)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session;
 - (VNImageRequestHandler)initWithCVPixelBuffer:(CVPixelBufferRef)pixelBuffer depthData:(AVDepthData *)depthData orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
 - (VNImageRequestHandler)initWithCVPixelBuffer:(CVPixelBufferRef)pixelBuffer orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
-- (VNImageRequestHandler)initWithCVPixelBuffer:(__CVBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6 session:(id)a7;
-- (VNImageRequestHandler)initWithCVPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
+- (VNImageRequestHandler)initWithCVPixelBuffer:(__CVBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageRequestHandler)initWithCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session;
 - (VNImageRequestHandler)initWithData:(NSData *)imageData orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
-- (VNImageRequestHandler)initWithData:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
-- (VNImageRequestHandler)initWithSession:(id)a3 imageBuffer:(id)a4;
+- (VNImageRequestHandler)initWithData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageRequestHandler)initWithSession:(id)session imageBuffer:(id)buffer;
 - (VNImageRequestHandler)initWithURL:(NSURL *)imageURL orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
-- (VNImageRequestHandler)initWithURL:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
+- (VNImageRequestHandler)initWithURL:(id)l orientation:(unsigned int)orientation options:(id)options session:(id)session;
 @end
 
 @implementation VNImageRequestHandler
 
-- (VNImageRequestHandler)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6 session:(id)a7
+- (VNImageRequestHandler)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v9 = *&a5;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  v9 = *&orientation;
+  dataCopy = data;
+  optionsCopy = options;
+  sessionCopy = session;
   v15 = objc_autoreleasePoolPush();
-  v16 = [[VNImageBuffer alloc] initWithCMSampleBuffer:a3 depthData:v12 orientation:v9 options:v13 session:v14];
+  v16 = [[VNImageBuffer alloc] initWithCMSampleBuffer:buffer depthData:dataCopy orientation:v9 options:optionsCopy session:sessionCopy];
   if (v16)
   {
-    self = [(VNImageRequestHandler *)self initWithSession:v14 imageBuffer:v16];
-    v17 = self;
+    self = [(VNImageRequestHandler *)self initWithSession:sessionCopy imageBuffer:v16];
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v15);
-  return v17;
+  return selfCopy;
 }
 
-- (VNImageRequestHandler)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageRequestHandler)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v7 = *&a4;
-  v10 = a5;
-  v11 = a6;
+  v7 = *&orientation;
+  optionsCopy = options;
+  sessionCopy = session;
   v12 = objc_autoreleasePoolPush();
-  v13 = [[VNImageBuffer alloc] initWithCMSampleBuffer:a3 orientation:v7 options:v10 session:v11];
+  v13 = [[VNImageBuffer alloc] initWithCMSampleBuffer:buffer orientation:v7 options:optionsCopy session:sessionCopy];
   if (v13)
   {
-    self = [(VNImageRequestHandler *)self initWithSession:v11 imageBuffer:v13];
-    v14 = self;
+    self = [(VNImageRequestHandler *)self initWithSession:sessionCopy imageBuffer:v13];
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v12);
-  return v14;
+  return selfCopy;
 }
 
-- (VNImageRequestHandler)initWithData:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageRequestHandler)initWithData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  v8 = *&orientation;
+  dataCopy = data;
+  optionsCopy = options;
+  sessionCopy = session;
   v13 = objc_autoreleasePoolPush();
-  v14 = [[VNImageBuffer alloc] initWithData:v10 orientation:v8 options:v11 session:v12];
+  v14 = [[VNImageBuffer alloc] initWithData:dataCopy orientation:v8 options:optionsCopy session:sessionCopy];
   if (v14)
   {
-    self = [(VNImageRequestHandler *)self initWithSession:v12 imageBuffer:v14];
-    v15 = self;
+    self = [(VNImageRequestHandler *)self initWithSession:sessionCopy imageBuffer:v14];
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v13);
-  return v15;
+  return selfCopy;
 }
 
-- (VNImageRequestHandler)initWithURL:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageRequestHandler)initWithURL:(id)l orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  v8 = *&orientation;
+  lCopy = l;
+  optionsCopy = options;
+  sessionCopy = session;
   v13 = objc_autoreleasePoolPush();
-  v14 = [[VNImageBuffer alloc] initWithURL:v10 orientation:v8 options:v11 session:v12];
+  v14 = [[VNImageBuffer alloc] initWithURL:lCopy orientation:v8 options:optionsCopy session:sessionCopy];
   if (v14)
   {
-    self = [(VNImageRequestHandler *)self initWithSession:v12 imageBuffer:v14];
-    v15 = self;
+    self = [(VNImageRequestHandler *)self initWithSession:sessionCopy imageBuffer:v14];
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v13);
-  return v15;
+  return selfCopy;
 }
 
-- (VNImageRequestHandler)initWithCIImage:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageRequestHandler)initWithCIImage:(id)image orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  v8 = *&orientation;
+  imageCopy = image;
+  optionsCopy = options;
+  sessionCopy = session;
   v13 = objc_autoreleasePoolPush();
-  v14 = [[VNImageBuffer alloc] initWithCIImage:v10 orientation:v8 options:v11 session:v12];
+  v14 = [[VNImageBuffer alloc] initWithCIImage:imageCopy orientation:v8 options:optionsCopy session:sessionCopy];
   if (v14)
   {
-    self = [(VNImageRequestHandler *)self initWithSession:v12 imageBuffer:v14];
-    v15 = self;
+    self = [(VNImageRequestHandler *)self initWithSession:sessionCopy imageBuffer:v14];
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v13);
-  return v15;
+  return selfCopy;
 }
 
-- (VNImageRequestHandler)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageRequestHandler)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v7 = *&a4;
-  v10 = a5;
-  v11 = a6;
+  v7 = *&orientation;
+  optionsCopy = options;
+  sessionCopy = session;
   v12 = objc_autoreleasePoolPush();
-  v13 = [[VNImageBuffer alloc] initWithCGImage:a3 orientation:v7 options:v10 session:v11];
+  v13 = [[VNImageBuffer alloc] initWithCGImage:image orientation:v7 options:optionsCopy session:sessionCopy];
   if (v13)
   {
-    self = [(VNImageRequestHandler *)self initWithSession:v11 imageBuffer:v13];
-    v14 = self;
+    self = [(VNImageRequestHandler *)self initWithSession:sessionCopy imageBuffer:v13];
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v12);
-  return v14;
+  return selfCopy;
 }
 
-- (VNImageRequestHandler)initWithCVPixelBuffer:(__CVBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6 session:(id)a7
+- (VNImageRequestHandler)initWithCVPixelBuffer:(__CVBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v9 = *&a5;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  v9 = *&orientation;
+  dataCopy = data;
+  optionsCopy = options;
+  sessionCopy = session;
   v15 = objc_autoreleasePoolPush();
-  v16 = [[VNImageBuffer alloc] initWithCVPixelBuffer:a3 depthData:v12 orientation:v9 options:v13 session:v14];
+  v16 = [[VNImageBuffer alloc] initWithCVPixelBuffer:buffer depthData:dataCopy orientation:v9 options:optionsCopy session:sessionCopy];
   if (v16)
   {
-    self = [(VNImageRequestHandler *)self initWithSession:v14 imageBuffer:v16];
-    v17 = self;
+    self = [(VNImageRequestHandler *)self initWithSession:sessionCopy imageBuffer:v16];
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v15);
-  return v17;
+  return selfCopy;
 }
 
-- (VNImageRequestHandler)initWithCVPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageRequestHandler)initWithCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v7 = *&a4;
-  v10 = a5;
-  v11 = a6;
+  v7 = *&orientation;
+  optionsCopy = options;
+  sessionCopy = session;
   v12 = objc_autoreleasePoolPush();
-  v13 = [[VNImageBuffer alloc] initWithCVPixelBuffer:a3 orientation:v7 options:v10 session:v11];
+  v13 = [[VNImageBuffer alloc] initWithCVPixelBuffer:buffer orientation:v7 options:optionsCopy session:sessionCopy];
   if (v13)
   {
-    self = [(VNImageRequestHandler *)self initWithSession:v11 imageBuffer:v13];
-    v14 = self;
+    self = [(VNImageRequestHandler *)self initWithSession:sessionCopy imageBuffer:v13];
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v12);
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)performRequests:(id)a3 gatheredForensics:(id *)a4 error:(id *)a5
+- (BOOL)performRequests:(id)requests gatheredForensics:(id *)forensics error:(id *)error
 {
-  v8 = a3;
-  if (a4)
+  requestsCopy = requests;
+  if (forensics)
   {
-    v9 = [[VNRequestForensics alloc] initWithOriginalRequests:v8];
-    *a4 = v9;
+    v9 = [[VNRequestForensics alloc] initWithOriginalRequests:requestsCopy];
+    *forensics = v9;
     v10 = v9;
   }
 
@@ -227,11 +227,11 @@
   [(VNRequestPerformingContext *)v12 qosClass];
   requestPerformer = self->_requestPerformer;
   v19 = 0;
-  v14 = [(VNRequestPerformer *)requestPerformer performRequests:v8 inContext:v12 error:&v19];
+  v14 = [(VNRequestPerformer *)requestPerformer performRequests:requestsCopy inContext:v12 error:&v19];
   v15 = v19;
 
   objc_autoreleasePoolPop(v11);
-  if (a5)
+  if (error)
   {
     v16 = v14;
   }
@@ -244,7 +244,7 @@
   if ((v16 & 1) == 0)
   {
     v17 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   return v14;
@@ -335,18 +335,18 @@
   return v10;
 }
 
-- (VNImageRequestHandler)initWithSession:(id)a3 imageBuffer:(id)a4
+- (VNImageRequestHandler)initWithSession:(id)session imageBuffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  bufferCopy = buffer;
   v16.receiver = self;
   v16.super_class = VNImageRequestHandler;
   v9 = [(VNImageRequestHandler *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    objc_storeStrong(&v10->_imageBuffer, a4);
+    objc_storeStrong(&v9->_session, session);
+    objc_storeStrong(&v10->_imageBuffer, buffer);
     v11 = objc_alloc_init(VNRequestPerformer);
     requestPerformer = v10->_requestPerformer;
     v10->_requestPerformer = v11;
@@ -359,27 +359,27 @@
   return v10;
 }
 
-+ (void)forcedCleanupWithOptions:(id)a3
++ (void)forcedCleanupWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v3 = +[VNSession globalSession];
-  [v3 legacyForcedCleanupWithOptions:v4];
+  [v3 legacyForcedCleanupWithOptions:optionsCopy];
 }
 
-+ (void)requestForcedCleanupWithOptions:(id)a3 completion:(id)a4
++ (void)requestForcedCleanupWithOptions:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v6 = +[VNSession globalSession];
-  [v6 legacyForcedCleanupWithOptions:v7];
-  v5[2](v5);
+  [v6 legacyForcedCleanupWithOptions:optionsCopy];
+  completionCopy[2](completionCopy);
 }
 
-+ (void)requestForcedCleanupWithOptions:(id)a3
++ (void)requestForcedCleanupWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v3 = +[VNSession globalSession];
-  [v3 legacyForcedCleanupWithOptions:v4];
+  [v3 legacyForcedCleanupWithOptions:optionsCopy];
 }
 
 + (void)forcedCleanup

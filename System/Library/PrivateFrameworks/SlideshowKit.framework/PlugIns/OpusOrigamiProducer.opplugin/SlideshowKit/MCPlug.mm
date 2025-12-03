@@ -1,55 +1,55 @@
 @interface MCPlug
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (MCContainer)container;
 - (MCPlug)init;
-- (MCPlug)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCPlug)initWithImprint:(id)imprint andMontage:(id)montage;
 - (NSDictionary)actions;
 - (NSSet)animationPaths;
-- (id)actionForKey:(id)a3;
-- (id)animationPathForKey:(id)a3;
+- (id)actionForKey:(id)key;
+- (id)animationPathForKey:(id)key;
 - (id)imprint;
 - (id)imprintsForActions;
 - (id)imprintsForAnimationPaths;
 - (unint64_t)countOfActions;
 - (unint64_t)countOfAnimationPaths;
-- (void)_copySelfToSnapshot:(id)a3;
-- (void)addAnimationPath:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
+- (void)addAnimationPath:(id)path;
 - (void)demolish;
 - (void)demolishActions;
 - (void)demolishAnimationPaths;
-- (void)initActionsWithImprints:(id)a3;
-- (void)initAnimationPathsWithImprints:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeActionForKey:(id)a3;
+- (void)initActionsWithImprints:(id)imprints;
+- (void)initAnimationPathsWithImprints:(id)imprints;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeActionForKey:(id)key;
 - (void)removeAllActions;
 - (void)removeAllAnimationPaths;
-- (void)removeAnimationPathForKey:(id)a3;
-- (void)setAction:(id)a3 forKey:(id)a4;
-- (void)setContainer:(id)a3;
-- (void)setLoopDuration:(double)a3;
-- (void)setNumberOfLoops:(double)a3;
-- (void)setPhaseInDuration:(double)a3;
-- (void)setPhaseOutDuration:(double)a3;
-- (void)setPreactivatesWithParent:(BOOL)a3;
+- (void)removeAnimationPathForKey:(id)key;
+- (void)setAction:(id)action forKey:(id)key;
+- (void)setContainer:(id)container;
+- (void)setLoopDuration:(double)duration;
+- (void)setNumberOfLoops:(double)loops;
+- (void)setPhaseInDuration:(double)duration;
+- (void)setPhaseOutDuration:(double)duration;
+- (void)setPreactivatesWithParent:(BOOL)parent;
 @end
 
 @implementation MCPlug
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"fullDuration"])
+  if ([key isEqualToString:@"fullDuration"])
   {
     return [NSSet setWithObjects:@"phaseInDuration", @"loopDuration", @"phaseOutDuration", 0];
   }
 
-  if ([a3 isEqualToString:@"orderedFilters"])
+  if ([key isEqualToString:@"orderedFilters"])
   {
     return [NSSet setWithObjects:@"filters", 0, v6, v7];
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___MCPlug;
-  return objc_msgSendSuper2(&v8, "keyPathsForValuesAffectingValueForKey:", a3);
+  return objc_msgSendSuper2(&v8, "keyPathsForValuesAffectingValueForKey:", key);
 }
 
 - (MCPlug)init
@@ -65,30 +65,30 @@
   return result;
 }
 
-- (MCPlug)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCPlug)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v21.receiver = self;
   v21.super_class = MCPlug;
-  v5 = [(MCObject *)&v21 initWithImprint:a3 andMontage:a4];
+  v5 = [(MCObject *)&v21 initWithImprint:imprint andMontage:montage];
   v6 = v5;
   if (v5)
   {
-    v7 = -[MCMontage containerForObjectID:](v5->super.mMontage, "containerForObjectID:", [a3 objectForKey:@"containerID"]);
+    v7 = -[MCMontage containerForObjectID:](v5->super.mMontage, "containerForObjectID:", [imprint objectForKey:@"containerID"]);
     v6->mContainer = v7;
     [(MCContainer *)v7 referenceByPlug:v6];
-    v8 = [a3 objectForKey:@"animationPaths"];
+    v8 = [imprint objectForKey:@"animationPaths"];
     if (v8)
     {
       [(MCPlug *)v6 initAnimationPathsWithImprints:v8];
     }
 
-    v9 = [a3 objectForKey:@"actions"];
+    v9 = [imprint objectForKey:@"actions"];
     if (v9)
     {
       [(MCPlug *)v6 initActionsWithImprints:v9];
     }
 
-    v10 = [a3 objectForKey:@"phaseInDuration"];
+    v10 = [imprint objectForKey:@"phaseInDuration"];
     v11 = 0.0;
     v12 = 0.0;
     if (v10)
@@ -97,7 +97,7 @@
     }
 
     v6->mPhaseInDuration = v12;
-    v13 = [a3 objectForKey:@"loopDuration"];
+    v13 = [imprint objectForKey:@"loopDuration"];
     if (v13)
     {
       [v13 doubleValue];
@@ -105,7 +105,7 @@
     }
 
     v6->mLoopDuration = v11;
-    v15 = [a3 objectForKey:@"phaseOutDuration"];
+    v15 = [imprint objectForKey:@"phaseOutDuration"];
     if (v15)
     {
       [v15 doubleValue];
@@ -117,7 +117,7 @@
     }
 
     v6->mPhaseOutDuration = v16;
-    v17 = [a3 objectForKey:@"numberOfLoops"];
+    v17 = [imprint objectForKey:@"numberOfLoops"];
     if (v17)
     {
       [v17 doubleValue];
@@ -129,7 +129,7 @@
     }
 
     v6->mNumberOfLoops = v18;
-    v19 = [a3 objectForKey:@"flags"];
+    v19 = [imprint objectForKey:@"flags"];
     if (v19)
     {
       LODWORD(v19) = [v19 unsignedIntegerValue];
@@ -155,54 +155,54 @@
 {
   v6.receiver = self;
   v6.super_class = MCPlug;
-  v3 = [(MCObject *)&v6 imprint];
+  imprint = [(MCObject *)&v6 imprint];
   mContainer = self->mContainer;
   if (mContainer)
   {
-    [v3 setObject:-[MCObject objectID](mContainer forKey:{"objectID"), @"containerID"}];
+    [imprint setObject:-[MCObject objectID](mContainer forKey:{"objectID"), @"containerID"}];
   }
 
   if ([(NSMutableSet *)self->mAnimationPaths count])
   {
-    [v3 setObject:-[MCPlug imprintsForAnimationPaths](self forKey:{"imprintsForAnimationPaths"), @"animationPaths"}];
+    [imprint setObject:-[MCPlug imprintsForAnimationPaths](self forKey:{"imprintsForAnimationPaths"), @"animationPaths"}];
   }
 
   if ([(NSMutableDictionary *)self->mActions count])
   {
-    [v3 setObject:-[MCPlug imprintsForActions](self forKey:{"imprintsForActions"), @"actions"}];
+    [imprint setObject:-[MCPlug imprintsForActions](self forKey:{"imprintsForActions"), @"actions"}];
   }
 
   if (self->mPhaseInDuration != 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"phaseInDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"phaseInDuration"}];
   }
 
   if (self->mLoopDuration != 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"loopDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"loopDuration"}];
   }
 
   if (self->mPhaseOutDuration != 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"phaseOutDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"phaseOutDuration"}];
   }
 
   if (self->mNumberOfLoops != 1.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"numberOfLoops"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"numberOfLoops"}];
   }
 
   if (self->mFlags)
   {
-    [v3 setObject:+[NSNumber numberWithUnsignedChar:](NSNumber forKey:{"numberWithUnsignedChar:", self->mFlags), @"flags"}];
+    [imprint setObject:+[NSNumber numberWithUnsignedChar:](NSNumber forKey:{"numberWithUnsignedChar:", self->mFlags), @"flags"}];
   }
 
-  return v3;
+  return imprint;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"keyframes", a4, a5, a6}])
+  if ([path isEqualToString:{@"keyframes", object, change, context}])
   {
     v7 = @"animationPaths";
   }
@@ -230,17 +230,17 @@
   return v3;
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
-  if (self->mContainer != a3)
+  if (self->mContainer != container)
   {
     objc_sync_enter(self);
     mContainer = self->mContainer;
-    if (a3)
+    if (container)
     {
-      v6 = a3;
-      self->mContainer = v6;
-      [(MCContainer *)v6 referenceByPlug:self];
+      containerCopy = container;
+      self->mContainer = containerCopy;
+      [(MCContainer *)containerCopy referenceByPlug:self];
     }
 
     else
@@ -255,49 +255,49 @@
   }
 }
 
-- (void)setPhaseInDuration:(double)a3
+- (void)setPhaseInDuration:(double)duration
 {
-  if (a3 < 0.0)
+  if (duration < 0.0)
   {
-    a3 = 0.0;
+    duration = 0.0;
   }
 
-  self->mPhaseInDuration = a3;
+  self->mPhaseInDuration = duration;
 }
 
-- (void)setLoopDuration:(double)a3
+- (void)setLoopDuration:(double)duration
 {
-  if (a3 < 0.0)
+  if (duration < 0.0)
   {
-    a3 = 0.0;
+    duration = 0.0;
   }
 
-  self->mLoopDuration = a3;
+  self->mLoopDuration = duration;
 }
 
-- (void)setPhaseOutDuration:(double)a3
+- (void)setPhaseOutDuration:(double)duration
 {
-  if (a3 < 0.0)
+  if (duration < 0.0)
   {
-    a3 = 0.0;
+    duration = 0.0;
   }
 
-  self->mPhaseOutDuration = a3;
+  self->mPhaseOutDuration = duration;
 }
 
-- (void)setNumberOfLoops:(double)a3
+- (void)setNumberOfLoops:(double)loops
 {
-  if (a3 <= 0.0)
+  if (loops <= 0.0)
   {
-    a3 = 1.0;
+    loops = 1.0;
   }
 
-  self->mNumberOfLoops = a3;
+  self->mNumberOfLoops = loops;
 }
 
-- (void)setPreactivatesWithParent:(BOOL)a3
+- (void)setPreactivatesWithParent:(BOOL)parent
 {
-  if (a3)
+  if (parent)
   {
     v3 = 8;
   }
@@ -310,19 +310,19 @@
   self->mFlags = self->mFlags & 0xFFFFFFF7 | v3;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   if (self->mAnimationPaths)
   {
-    v5 = [(MCPlug *)self animationPaths];
-    if ([(NSSet *)v5 count])
+    animationPaths = [(MCPlug *)self animationPaths];
+    if ([(NSSet *)animationPaths count])
     {
-      *(a3 + 4) = [[NSMutableSet alloc] initWithCapacity:{-[NSSet count](v5, "count")}];
+      *(snapshot + 4) = [[NSMutableSet alloc] initWithCapacity:{-[NSSet count](animationPaths, "count")}];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v6 = [(NSSet *)v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [(NSSet *)animationPaths countByEnumeratingWithState:&v19 objects:v24 count:16];
       if (v6)
       {
         v7 = v6;
@@ -334,15 +334,15 @@
           {
             if (*v20 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(animationPaths);
             }
 
-            [*(a3 + 4) addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v9), "snapshot")}];
+            [*(snapshot + 4) addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v9), "snapshot")}];
             v9 = v9 + 1;
           }
 
           while (v7 != v9);
-          v7 = [(NSSet *)v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+          v7 = [(NSSet *)animationPaths countByEnumeratingWithState:&v19 objects:v24 count:16];
         }
 
         while (v7);
@@ -352,15 +352,15 @@
 
   if (self->mActions)
   {
-    v10 = [(MCPlug *)self actions];
-    if ([(NSDictionary *)v10 count])
+    actions = [(MCPlug *)self actions];
+    if ([(NSDictionary *)actions count])
     {
-      *(a3 + 5) = [[NSMutableDictionary alloc] initWithCapacity:{-[NSDictionary count](v10, "count")}];
+      *(snapshot + 5) = [[NSMutableDictionary alloc] initWithCapacity:{-[NSDictionary count](actions, "count")}];
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v11 = [(NSDictionary *)v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v11 = [(NSDictionary *)actions countByEnumeratingWithState:&v15 objects:v23 count:16];
       if (v11)
       {
         v12 = v11;
@@ -372,15 +372,15 @@
           {
             if (*v16 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(actions);
             }
 
-            [*(a3 + 5) setObject:objc_msgSend(-[NSDictionary objectForKey:](v10 forKey:{"objectForKey:", *(*(&v15 + 1) + 8 * v14)), "snapshot"), *(*(&v15 + 1) + 8 * v14)}];
+            [*(snapshot + 5) setObject:objc_msgSend(-[NSDictionary objectForKey:](actions forKey:{"objectForKey:", *(*(&v15 + 1) + 8 * v14)), "snapshot"), *(*(&v15 + 1) + 8 * v14)}];
             v14 = v14 + 1;
           }
 
           while (v12 != v14);
-          v12 = [(NSDictionary *)v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+          v12 = [(NSDictionary *)actions countByEnumeratingWithState:&v15 objects:v23 count:16];
         }
 
         while (v12);
@@ -388,25 +388,25 @@
     }
   }
 
-  *(a3 + 7) = *&self->mPhaseInDuration;
-  *(a3 + 8) = *&self->mLoopDuration;
-  *(a3 + 9) = *&self->mPhaseOutDuration;
-  *(a3 + 10) = *&self->mNumberOfLoops;
-  *(a3 + 6) = self->mFlags;
+  *(snapshot + 7) = *&self->mPhaseInDuration;
+  *(snapshot + 8) = *&self->mLoopDuration;
+  *(snapshot + 9) = *&self->mPhaseOutDuration;
+  *(snapshot + 10) = *&self->mNumberOfLoops;
+  *(snapshot + 6) = self->mFlags;
 }
 
-- (void)initAnimationPathsWithImprints:(id)a3
+- (void)initAnimationPathsWithImprints:(id)imprints
 {
-  if (a3)
+  if (imprints)
   {
-    if ([a3 count])
+    if ([imprints count])
     {
       self->mAnimationPaths = objc_alloc_init(NSMutableSet);
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [imprints countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         v6 = v5;
@@ -418,7 +418,7 @@
           {
             if (*v13 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(imprints);
             }
 
             v9 = [MCObjectLight objectWithImprint:*(*(&v12 + 1) + 8 * v8)];
@@ -448,7 +448,7 @@ LABEL_13:
           }
 
           while (v6 != v8);
-          v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [imprints countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v6);
@@ -532,8 +532,8 @@ LABEL_14:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(MCPlug *)self animationPaths];
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  animationPaths = [(MCPlug *)self animationPaths];
+  v5 = [(NSSet *)animationPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -545,7 +545,7 @@ LABEL_14:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animationPaths);
         }
 
         [v3 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8), "imprint")}];
@@ -553,7 +553,7 @@ LABEL_14:
       }
 
       while (v6 != v8);
-      v6 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSSet *)animationPaths countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -565,9 +565,9 @@ LABEL_14:
 - (NSSet)animationPaths
 {
   v3 = sEmptySet;
-  v4 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mAnimationPaths = self->mAnimationPaths;
-  if ((v4 & 1) == 0)
+  if ((isSnapshot & 1) == 0)
   {
     if (mAnimationPaths)
     {
@@ -588,9 +588,9 @@ LABEL_14:
 
 - (unint64_t)countOfAnimationPaths
 {
-  v3 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mAnimationPaths = self->mAnimationPaths;
-  if (v3)
+  if (isSnapshot)
   {
     v5 = self->mAnimationPaths;
 
@@ -611,7 +611,7 @@ LABEL_14:
   }
 }
 
-- (id)animationPathForKey:(id)a3
+- (id)animationPathForKey:(id)key
 {
   if ([(MCObject *)self isSnapshot])
   {
@@ -709,9 +709,9 @@ LABEL_24:
   return v9;
 }
 
-- (void)addAnimationPath:(id)a3
+- (void)addAnimationPath:(id)path
 {
-  -[MCPlug removeAnimationPathForKey:](self, "removeAnimationPathForKey:", [a3 key]);
+  -[MCPlug removeAnimationPathForKey:](self, "removeAnimationPathForKey:", [path key]);
   if (!self->mAnimationPaths)
   {
     objc_sync_enter(self);
@@ -719,11 +719,11 @@ LABEL_24:
     objc_sync_exit(self);
   }
 
-  v7 = [[NSSet alloc] initWithObjects:{a3, 0}];
+  v7 = [[NSSet alloc] initWithObjects:{path, 0}];
   [(MCPlug *)self willChangeValueForKey:@"animationPaths" withSetMutation:1 usingObjects:?];
   mAnimationPaths = self->mAnimationPaths;
   objc_sync_enter(mAnimationPaths);
-  [(NSMutableSet *)self->mAnimationPaths addObject:a3];
+  [(NSMutableSet *)self->mAnimationPaths addObject:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -738,17 +738,17 @@ LABEL_24:
       goto LABEL_8;
     }
 
-    [a3 addObserver:self forKeyPath:@"combineOperation" options:0 context:0];
+    [path addObserver:self forKeyPath:@"combineOperation" options:0 context:0];
     v6 = @"animationPaths";
   }
 
-  [a3 addObserver:self forKeyPath:v6 options:0 context:0];
+  [path addObserver:self forKeyPath:v6 options:0 context:0];
 LABEL_8:
   objc_sync_exit(mAnimationPaths);
   [(MCPlug *)self didChangeValueForKey:@"animationPaths" withSetMutation:1 usingObjects:v7];
 }
 
-- (void)removeAnimationPathForKey:(id)a3
+- (void)removeAnimationPathForKey:(id)key
 {
   mAnimationPaths = self->mAnimationPaths;
   if (!mAnimationPaths)
@@ -892,18 +892,18 @@ LABEL_13:
   }
 }
 
-- (void)initActionsWithImprints:(id)a3
+- (void)initActionsWithImprints:(id)imprints
 {
-  if (a3)
+  if (imprints)
   {
-    if ([a3 count])
+    if ([imprints count])
     {
       self->mActions = objc_alloc_init(NSMutableDictionary);
       v9 = 0u;
       v10 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [imprints countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         v6 = v5;
@@ -915,15 +915,15 @@ LABEL_13:
           {
             if (*v10 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(imprints);
             }
 
-            -[NSMutableDictionary setObject:forKey:](self->mActions, "setObject:forKey:", +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [a3 objectForKey:*(*(&v9 + 1) + 8 * v8)]), *(*(&v9 + 1) + 8 * v8));
+            -[NSMutableDictionary setObject:forKey:](self->mActions, "setObject:forKey:", +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [imprints objectForKey:*(*(&v9 + 1) + 8 * v8)]), *(*(&v9 + 1) + 8 * v8));
             v8 = v8 + 1;
           }
 
           while (v6 != v8);
-          v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+          v6 = [imprints countByEnumeratingWithState:&v9 objects:v13 count:16];
         }
 
         while (v6);
@@ -976,12 +976,12 @@ LABEL_13:
 - (id)imprintsForActions
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MCPlug *)self actions];
+  actions = [(MCPlug *)self actions];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSDictionary *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [(NSDictionary *)actions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -993,15 +993,15 @@ LABEL_13:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actions);
         }
 
-        [v3 setObject:objc_msgSend(-[NSDictionary objectForKey:](v4 forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * v8)), "imprint"), *(*(&v10 + 1) + 8 * v8)}];
+        [v3 setObject:objc_msgSend(-[NSDictionary objectForKey:](actions forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * v8)), "imprint"), *(*(&v10 + 1) + 8 * v8)}];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSDictionary *)actions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1013,9 +1013,9 @@ LABEL_13:
 - (NSDictionary)actions
 {
   v3 = sEmptyDictionary;
-  v4 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mActions = self->mActions;
-  if ((v4 & 1) == 0)
+  if ((isSnapshot & 1) == 0)
   {
     if (mActions)
     {
@@ -1036,9 +1036,9 @@ LABEL_13:
 
 - (unint64_t)countOfActions
 {
-  v3 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mActions = self->mActions;
-  if (v3)
+  if (isSnapshot)
   {
     v5 = self->mActions;
 
@@ -1059,15 +1059,15 @@ LABEL_13:
   }
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  v5 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mActions = self->mActions;
-  if (v5)
+  if (isSnapshot)
   {
     v7 = self->mActions;
 
-    return [(NSMutableDictionary *)v7 objectForKey:a3];
+    return [(NSMutableDictionary *)v7 objectForKey:key];
   }
 
   else
@@ -1078,13 +1078,13 @@ LABEL_13:
     }
 
     objc_sync_enter(self->mActions);
-    v9 = [(NSMutableDictionary *)self->mActions objectForKey:a3];
+    v9 = [(NSMutableDictionary *)self->mActions objectForKey:key];
     objc_sync_exit(mActions);
     return v9;
   }
 }
 
-- (void)setAction:(id)a3 forKey:(id)a4
+- (void)setAction:(id)action forKey:(id)key
 {
   [(MCPlug *)self willChangeValueForKey:@"actions"];
   mActions = self->mActions;
@@ -1097,20 +1097,20 @@ LABEL_13:
   }
 
   objc_sync_enter(mActions);
-  [(NSMutableDictionary *)self->mActions setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)self->mActions setObject:action forKey:key];
   objc_sync_exit(mActions);
 
   [(MCPlug *)self didChangeValueForKey:@"actions"];
 }
 
-- (void)removeActionForKey:(id)a3
+- (void)removeActionForKey:(id)key
 {
   if (self->mActions)
   {
     [(MCPlug *)self willChangeValueForKey:@"actions"];
     mActions = self->mActions;
     objc_sync_enter(mActions);
-    [(NSMutableDictionary *)self->mActions removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->mActions removeObjectForKey:key];
     objc_sync_exit(mActions);
 
     [(MCPlug *)self didChangeValueForKey:@"actions"];

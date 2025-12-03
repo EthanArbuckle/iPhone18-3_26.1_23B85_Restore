@@ -1,5 +1,5 @@
 @interface VideosUI_CanonicalFooterSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHeaderElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,12 +7,12 @@
 
 @implementation VideosUI_CanonicalFooterSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIImageView"];
-  [v3 validateClass:@"VUIImageView" hasProperty:@"image" withType:"@"];
-  [v3 validateClass:@"VideosUI.CanonicalFooterSectionView" hasSwiftField:@"headerView" withSwiftType:"Optional<UIView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIImageView"];
+  [validationsCopy validateClass:@"VUIImageView" hasProperty:@"image" withType:"@"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalFooterSectionView" hasSwiftField:@"headerView" withSwiftType:"Optional<UIView>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -21,8 +21,8 @@
   v20.receiver = self;
   v20.super_class = VideosUI_CanonicalFooterSectionViewAccessibility;
   [(VideosUI_CanonicalFooterSectionViewAccessibility *)&v20 _accessibilityLoadAccessibilityInformation];
-  v3 = [(VideosUI_CanonicalFooterSectionViewAccessibility *)self _axHeaderView];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
+  _axHeaderView = [(VideosUI_CanonicalFooterSectionViewAccessibility *)self _axHeaderView];
+  [_axHeaderView setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
 
   v18 = 0u;
   v19 = 0u;
@@ -30,9 +30,9 @@
   v17 = 0u;
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
-  v5 = [v4 subviews];
+  subviews = [v4 subviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v6 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -43,7 +43,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -51,15 +51,15 @@
         if (objc_opt_isKindOfClass())
         {
           v11 = [v10 safeValueForKey:@"image"];
-          v12 = [v11 accessibilityIdentifier];
+          accessibilityIdentifier = [v11 accessibilityIdentifier];
 
-          v13 = [MEMORY[0x29EDBDDF0] sharedInstance];
-          v14 = [v13 accessibilityLabelForID:v12];
+          mEMORY[0x29EDBDDF0] = [MEMORY[0x29EDBDDF0] sharedInstance];
+          v14 = [mEMORY[0x29EDBDDF0] accessibilityLabelForID:accessibilityIdentifier];
           [v10 setAccessibilityLabel:v14];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v7);
@@ -71,8 +71,8 @@
 - (id)accessibilityHeaderElements
 {
   v2 = MEMORY[0x29EDB8D80];
-  v3 = [(VideosUI_CanonicalFooterSectionViewAccessibility *)self _axHeaderView];
-  v4 = [v2 axArrayByIgnoringNilElementsWithCount:{1, v3}];
+  _axHeaderView = [(VideosUI_CanonicalFooterSectionViewAccessibility *)self _axHeaderView];
+  v4 = [v2 axArrayByIgnoringNilElementsWithCount:{1, _axHeaderView}];
 
   return v4;
 }

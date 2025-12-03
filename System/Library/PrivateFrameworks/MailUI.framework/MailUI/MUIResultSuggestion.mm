@@ -1,25 +1,25 @@
 @interface MUIResultSuggestion
-- (MUIResultSuggestion)initWithObjectID:(id)a3 messageList:(id)a4 authors:(id)a5 authorEmailAddresses:(id)a6;
+- (MUIResultSuggestion)initWithObjectID:(id)d messageList:(id)list authors:(id)authors authorEmailAddresses:(id)addresses;
 @end
 
 @implementation MUIResultSuggestion
 
-- (MUIResultSuggestion)initWithObjectID:(id)a3 messageList:(id)a4 authors:(id)a5 authorEmailAddresses:(id)a6
+- (MUIResultSuggestion)initWithObjectID:(id)d messageList:(id)list authors:(id)authors authorEmailAddresses:(id)addresses
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  listCopy = list;
+  authorsCopy = authors;
+  addressesCopy = addresses;
   v18.receiver = self;
   v18.super_class = MUIResultSuggestion;
   v15 = [(MUIResultSuggestion *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_authors, a5);
-    objc_storeStrong(&v16->_authorEmailAddresses, a6);
-    objc_storeStrong(&v16->_objectID, a3);
-    objc_storeStrong(&v16->_messageList, a4);
+    objc_storeStrong(&v15->_authors, authors);
+    objc_storeStrong(&v16->_authorEmailAddresses, addresses);
+    objc_storeStrong(&v16->_objectID, d);
+    objc_storeStrong(&v16->_messageList, list);
   }
 
   return v16;

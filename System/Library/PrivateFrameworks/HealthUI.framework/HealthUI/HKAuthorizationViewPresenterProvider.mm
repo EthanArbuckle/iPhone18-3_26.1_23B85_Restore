@@ -1,26 +1,26 @@
 @interface HKAuthorizationViewPresenterProvider
-- (id)hkAuthorizationViewControllerPresenter:(id)a3;
+- (id)hkAuthorizationViewControllerPresenter:(id)presenter;
 @end
 
 @implementation HKAuthorizationViewPresenterProvider
 
-- (id)hkAuthorizationViewControllerPresenter:(id)a3
+- (id)hkAuthorizationViewControllerPresenter:(id)presenter
 {
-  v3 = a3;
-  v4 = [v3 presentedViewController];
+  presenterCopy = presenter;
+  presentedViewController = [presenterCopy presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = v3;
+    rootViewController = presenterCopy;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
-    v5 = [v6 rootViewController];
+    _applicationKeyWindow = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
+    rootViewController = [_applicationKeyWindow rootViewController];
   }
 
-  return v5;
+  return rootViewController;
 }
 
 @end

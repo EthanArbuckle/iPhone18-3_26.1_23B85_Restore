@@ -1,18 +1,18 @@
 @interface TRTransferBrowser
 - (TRTransferBrowser)init;
 - (TRTransferBrowserDelegate)delegate;
-- (id)_didReceiveEncryptedData:(id)a3;
-- (id)transferDidReceiveData:(id)a3;
-- (int)_runSetupStepWithInput:(const void *)a3 inputLength:(unint64_t)a4 outputData:(id *)a5;
-- (int)_runVerifyStepWithInput:(const void *)a3 inputLength:(unint64_t)a4 outputData:(id *)a5;
+- (id)_didReceiveEncryptedData:(id)data;
+- (id)transferDidReceiveData:(id)data;
+- (int)_runSetupStepWithInput:(const void *)input inputLength:(unint64_t)length outputData:(id *)data;
+- (int)_runVerifyStepWithInput:(const void *)input inputLength:(unint64_t)length outputData:(id *)data;
 - (void)_beginScanningIfPowered;
 - (void)_didFinishPairing;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
 - (void)transferComplete;
-- (void)transferDidFailWithError:(id)a3;
-- (void)transferDidUpdateScannerState:(id)a3;
+- (void)transferDidFailWithError:(id)error;
+- (void)transferDidUpdateScannerState:(id)state;
 @end
 
 @implementation TRTransferBrowser
@@ -55,16 +55,16 @@
   [(TRTransferBrowser *)&v4 dealloc];
 }
 
-- (void)transferDidUpdateScannerState:(id)a3
+- (void)transferDidUpdateScannerState:(id)state
 {
-  v4 = [a3 scannerState];
+  scannerState = [state scannerState];
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__TRTransferBrowser_transferDidUpdateScannerState___block_invoke;
   v6[3] = &unk_279DCEB80;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = scannerState;
   dispatch_async(queue, v6);
 }
 
@@ -80,9 +80,9 @@ _BYTE *__51__TRTransferBrowser_transferDidUpdateScannerState___block_invoke(uint
   return result;
 }
 
-- (id)transferDidReceiveData:(id)a3
+- (id)transferDidReceiveData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -95,7 +95,7 @@ _BYTE *__51__TRTransferBrowser_transferDidUpdateScannerState___block_invoke(uint
   block[2] = __44__TRTransferBrowser_transferDidReceiveData___block_invoke;
   block[3] = &unk_279DCEBD0;
   v10 = v4;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   v6 = v4;
   dispatch_sync(queue, block);
@@ -540,17 +540,17 @@ void __44__TRTransferBrowser_transferDidReceiveData___block_invoke_124(uint64_t 
   dispatch_semaphore_signal(*(*(a1 + 32) + 40));
 }
 
-- (void)transferDidFailWithError:(id)a3
+- (void)transferDidFailWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = errorCopy;
       _os_log_impl(&dword_26F2A2000, v5, OS_LOG_TYPE_DEFAULT, "[TRTransferBrowser] Transfer failed with error: %@", buf, 0xCu);
     }
   }
@@ -803,21 +803,21 @@ LABEL_19:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_didReceiveEncryptedData:(id)a3
+- (id)_didReceiveEncryptedData:(id)data
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     v6 = 0;
     goto LABEL_19;
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(v4, "length")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(dataCopy, "length")}];
   if (self->_aesContext)
   {
-    [v4 bytes];
-    [v4 length];
+    [dataCopy bytes];
+    [dataCopy length];
     [v5 mutableBytes];
     if (!AES_CTR_Update())
     {
@@ -925,19 +925,19 @@ void __46__TRTransferBrowser__didReceiveEncryptedData___block_invoke(uint64_t a1
   dispatch_semaphore_signal(*(*(a1 + 32) + 40));
 }
 
-- (int)_runSetupStepWithInput:(const void *)a3 inputLength:(unint64_t)a4 outputData:(id *)a5
+- (int)_runSetupStepWithInput:(const void *)input inputLength:(unint64_t)length outputData:(id *)data
 {
   v23 = *MEMORY[0x277D85DE8];
   memset(v22, 0, sizeof(v22));
-  if (a4 == 1)
+  if (length == 1)
   {
-    v7 = *a3 != 0;
-    *a3;
+    lengthCopy = *input != 0;
+    *input;
   }
 
   else
   {
-    v7 = a4;
+    lengthCopy = length;
   }
 
   if (_TRLogEnabled == 1)
@@ -946,7 +946,7 @@ void __46__TRTransferBrowser__didReceiveEncryptedData___block_invoke(uint64_t a1
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = v7;
+      v19 = lengthCopy;
       _os_log_impl(&dword_26F2A2000, v8, OS_LOG_TYPE_DEFAULT, "[TRTransferBrowser] Setup input data length: %ld", buf, 0xCu);
     }
   }
@@ -971,15 +971,15 @@ void __46__TRTransferBrowser__didReceiveEncryptedData___block_invoke(uint64_t a1
 
     else
     {
-      if (a5)
+      if (data)
       {
-        *a5 = [MEMORY[0x277CBEA90] dataWithBytes:v22 length:0];
+        *data = [MEMORY[0x277CBEA90] dataWithBytes:v22 length:0];
         if (_TRLogEnabled == 1)
         {
           v14 = TRLogHandle();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = *a5;
+            v15 = *data;
             *buf = 138412546;
             v19 = v15;
             v20 = 2048;
@@ -1015,19 +1015,19 @@ void __46__TRTransferBrowser__didReceiveEncryptedData___block_invoke(uint64_t a1
   return v10;
 }
 
-- (int)_runVerifyStepWithInput:(const void *)a3 inputLength:(unint64_t)a4 outputData:(id *)a5
+- (int)_runVerifyStepWithInput:(const void *)input inputLength:(unint64_t)length outputData:(id *)data
 {
   v21 = *MEMORY[0x277D85DE8];
   memset(v20, 0, sizeof(v20));
-  if (a4 == 1)
+  if (length == 1)
   {
-    v7 = *a3 != 0;
-    *a3;
+    lengthCopy = *input != 0;
+    *input;
   }
 
   else
   {
-    v7 = a4;
+    lengthCopy = length;
   }
 
   if (_TRLogEnabled == 1)
@@ -1036,7 +1036,7 @@ void __46__TRTransferBrowser__didReceiveEncryptedData___block_invoke(uint64_t a1
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = v7;
+      v19 = lengthCopy;
       _os_log_impl(&dword_26F2A2000, v8, OS_LOG_TYPE_DEFAULT, "[TRTransferBrowser] Verify input data length: %ld", buf, 0xCu);
     }
   }
@@ -1061,15 +1061,15 @@ void __46__TRTransferBrowser__didReceiveEncryptedData___block_invoke(uint64_t a1
 
     else
     {
-      if (a5)
+      if (data)
       {
-        *a5 = [MEMORY[0x277CBEA90] dataWithBytes:v20 length:0];
+        *data = [MEMORY[0x277CBEA90] dataWithBytes:v20 length:0];
         if (_TRLogEnabled == 1)
         {
           v16 = TRLogHandle();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = *a5;
+            v17 = *data;
             *buf = 138412290;
             v19 = v17;
             _os_log_impl(&dword_26F2A2000, v16, OS_LOG_TYPE_DEFAULT, "[TRTransferBrowser] Writing verify exchange data: %@", buf, 0xCu);

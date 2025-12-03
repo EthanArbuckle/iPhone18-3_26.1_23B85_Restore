@@ -1,5 +1,5 @@
 @interface PLFeatureProcessingAlgorithmVersionProvider
-+ (id)descriptionForVersionProvider:(id)a3;
++ (id)descriptionForVersionProvider:(id)provider;
 + (id)provider;
 - (PLFeatureProcessingAlgorithmVersionProvider)init;
 @end
@@ -20,58 +20,58 @@
   return v3;
 }
 
-+ (id)descriptionForVersionProvider:(id)a3
++ (id)descriptionForVersionProvider:(id)provider
 {
   v27[15] = *MEMORY[0x1E69E9840];
   v26[0] = @"scene";
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
-  v25 = [v3 numberWithShort:{objc_msgSend(v4, "sceneAnalysisVersion")}];
+  providerCopy = provider;
+  v25 = [v3 numberWithShort:{objc_msgSend(providerCopy, "sceneAnalysisVersion")}];
   v27[0] = v25;
   v26[1] = @"face";
-  v24 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "faceAnalysisVersion")}];
+  v24 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "faceAnalysisVersion")}];
   v27[1] = v24;
   v26[2] = @"ocr";
-  v23 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "characterRecognitionAlgorithmVersion")}];
+  v23 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "characterRecognitionAlgorithmVersion")}];
   v27[2] = v23;
   v26[3] = @"tu";
-  v22 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "textUnderstandingAlgorithmVersion")}];
+  v22 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "textUnderstandingAlgorithmVersion")}];
   v27[3] = v22;
   v26[4] = @"tugate";
-  v21 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "textUnderstandingGatingVersion")}];
+  v21 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "textUnderstandingGatingVersion")}];
   v27[4] = v21;
   v26[5] = @"vsearch";
-  v20 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "visualSearchAlgorithmVersion")}];
+  v20 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "visualSearchAlgorithmVersion")}];
   v27[5] = v20;
   v26[6] = @"sticker";
-  v19 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "stickerConfidenceAlgorithmVersion")}];
+  v19 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "stickerConfidenceAlgorithmVersion")}];
   v27[6] = v19;
   v26[7] = @"va";
-  v5 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "vaAnalysisVersion")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "vaAnalysisVersion")}];
   v27[7] = v5;
   v26[8] = @"valoc";
-  v6 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "vaLocationAnalysisVersion")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "vaLocationAnalysisVersion")}];
   v27[8] = v6;
   v26[9] = @"media";
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "mediaAnalysisVersion")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(providerCopy, "mediaAnalysisVersion")}];
   v27[9] = v7;
   v26[10] = @"mediai";
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "mediaAnalysisImageVersion")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "mediaAnalysisImageVersion")}];
   v27[10] = v8;
   v26[11] = @"caption";
-  v9 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "captionGenerationVersion")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "captionGenerationVersion")}];
   v27[11] = v9;
   v26[12] = @"embed";
-  v10 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "imageEmbeddingVersion")}];
+  v10 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "imageEmbeddingVersion")}];
   v27[12] = v10;
   v26[13] = @"vembed";
-  v11 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "videoEmbeddingVersion")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(providerCopy, "videoEmbeddingVersion")}];
   v27[13] = v11;
   v26[14] = @"vsens";
   v12 = MEMORY[0x1E696AD98];
-  v13 = [v4 videoSensitivityAnalysisVersion];
+  videoSensitivityAnalysisVersion = [providerCopy videoSensitivityAnalysisVersion];
 
-  v14 = [v12 numberWithShort:v13];
+  v14 = [v12 numberWithShort:videoSensitivityAnalysisVersion];
   v27[14] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:15];
 
@@ -83,7 +83,7 @@
 
 + (id)provider
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = +[PLMediaAnalysisServiceRequestAdapter currentSceneVersion];
   [v2 setSceneAnalysisVersion:{objc_msgSend(v3, "shortValue")}];
 

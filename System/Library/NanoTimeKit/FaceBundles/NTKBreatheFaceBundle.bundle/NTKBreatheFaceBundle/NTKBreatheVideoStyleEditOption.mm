@@ -1,37 +1,37 @@
 @interface NTKBreatheVideoStyleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)localizedNameForValidValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)localizedNameForValidValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKBreatheVideoStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_8278 + a3);
+    return *(&off_8278 + value);
   }
 }
 
-+ (id)localizedNameForValidValue:(unint64_t)a3 forDevice:(id)a4
++ (id)localizedNameForValidValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 > 3)
+  deviceCopy = device;
+  v6 = deviceCopy;
+  if (value > 3)
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = *(&off_8298 + a3);
-    if ([v5 supportsPDRCapability:4094027452])
+    v7 = *(&off_8298 + value);
+    if ([deviceCopy supportsPDRCapability:4094027452])
     {
       v7 = [v7 stringByAppendingString:@"_2021"];
     }

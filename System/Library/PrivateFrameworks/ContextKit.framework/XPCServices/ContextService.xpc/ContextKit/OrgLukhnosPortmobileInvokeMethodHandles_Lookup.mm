@@ -1,12 +1,12 @@
 @interface OrgLukhnosPortmobileInvokeMethodHandles_Lookup
-- (id)findConstructorWithIOSClass:(id)a3 withOrgLukhnosPortmobileInvokeMethodType:(id)a4;
+- (id)findConstructorWithIOSClass:(id)class withOrgLukhnosPortmobileInvokeMethodType:(id)type;
 @end
 
 @implementation OrgLukhnosPortmobileInvokeMethodHandles_Lookup
 
-- (id)findConstructorWithIOSClass:(id)a3 withOrgLukhnosPortmobileInvokeMethodType:(id)a4
+- (id)findConstructorWithIOSClass:(id)class withOrgLukhnosPortmobileInvokeMethodType:(id)type
 {
-  v4 = new_OrgLukhnosPortmobileInvokeMethodHandle_NoArgsConstructor_initWithIOSClass_(a3);
+  v4 = new_OrgLukhnosPortmobileInvokeMethodHandle_NoArgsConstructor_initWithIOSClass_(class);
 
   return v4;
 }

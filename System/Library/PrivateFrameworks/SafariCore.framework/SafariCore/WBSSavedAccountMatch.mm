@@ -1,57 +1,57 @@
 @interface WBSSavedAccountMatch
 - (NSDate)lastUsedDateAffectingAutoFillSortOrder;
-- (WBSSavedAccountMatch)initWithSavedAccount:(id)a3 protectionSpace:(id)a4 context:(id)a5 matchLevel:(int64_t)a6 autoFillPasskey:(id)a7;
+- (WBSSavedAccountMatch)initWithSavedAccount:(id)account protectionSpace:(id)space context:(id)context matchLevel:(int64_t)level autoFillPasskey:(id)passkey;
 - (id)_simplifiedHost;
 - (id)debugDescription;
-- (id)userVisibleDomainForAutoFillWithPageURL:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)userVisibleDomainForAutoFillWithPageURL:(id)l;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation WBSSavedAccountMatch
 
-- (WBSSavedAccountMatch)initWithSavedAccount:(id)a3 protectionSpace:(id)a4 context:(id)a5 matchLevel:(int64_t)a6 autoFillPasskey:(id)a7
+- (WBSSavedAccountMatch)initWithSavedAccount:(id)account protectionSpace:(id)space context:(id)context matchLevel:(int64_t)level autoFillPasskey:(id)passkey
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  accountCopy = account;
+  spaceCopy = space;
+  contextCopy = context;
+  passkeyCopy = passkey;
   v28.receiver = self;
   v28.super_class = WBSSavedAccountMatch;
   v17 = [(WBSSavedAccountMatch *)&v28 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_savedAccount, a3);
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_savedAccount, account);
+    v19 = [spaceCopy copy];
     protectionSpace = v18->_protectionSpace;
     v18->_protectionSpace = v19;
 
-    objc_storeStrong(&v18->_context, a5);
-    v18->_matchLevel = a6;
-    v21 = [v14 host];
+    objc_storeStrong(&v18->_context, context);
+    v18->_matchLevel = level;
+    host = [spaceCopy host];
     host = v18->_host;
-    v18->_host = v21;
+    v18->_host = host;
 
     if (!v18->_host)
     {
-      v23 = [v16 relyingPartyIdentifier];
-      v24 = [v23 copy];
+      relyingPartyIdentifier = [passkeyCopy relyingPartyIdentifier];
+      v24 = [relyingPartyIdentifier copy];
       v25 = v18->_host;
       v18->_host = v24;
     }
 
-    objc_storeStrong(&v18->_autoFillPasskey, a7);
+    objc_storeStrong(&v18->_autoFillPasskey, passkey);
     v26 = v18;
   }
 
   return v18;
 }
 
-- (id)userVisibleDomainForAutoFillWithPageURL:(id)a3
+- (id)userVisibleDomainForAutoFillWithPageURL:(id)l
 {
-  v4 = [MEMORY[0x1E695AC58] safari_HTMLFormProtectionSpaceForURL:a3];
-  v5 = [(WBSSavedAccount *)self->_savedAccount protectionSpaces];
-  v6 = [v5 containsObject:v4];
+  v4 = [MEMORY[0x1E695AC58] safari_HTMLFormProtectionSpaceForURL:l];
+  protectionSpaces = [(WBSSavedAccount *)self->_savedAccount protectionSpaces];
+  v6 = [protectionSpaces containsObject:v4];
 
   if (v6)
   {
@@ -70,34 +70,34 @@
 - (NSDate)lastUsedDateAffectingAutoFillSortOrder
 {
   savedAccount = self->_savedAccount;
-  v4 = [(WBSSavedAccountMatch *)self _simplifiedHost];
-  v5 = [(WBSSavedAccount *)savedAccount lastUsedDateForSite:v4 inContext:self->_context];
+  _simplifiedHost = [(WBSSavedAccountMatch *)self _simplifiedHost];
+  v5 = [(WBSSavedAccount *)savedAccount lastUsedDateForSite:_simplifiedHost inContext:self->_context];
 
   return v5;
 }
 
 - (id)_simplifiedHost
 {
-  v2 = [(NSURLProtectionSpace *)self->_protectionSpace host];
-  v3 = [v2 safari_simplifiedSiteNameForCredentialLookup];
+  host = [(NSURLProtectionSpace *)self->_protectionSpace host];
+  safari_simplifiedSiteNameForCredentialLookup = [host safari_simplifiedSiteNameForCredentialLookup];
 
-  return v3;
+  return safari_simplifiedSiteNameForCredentialLookup;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WBSSavedAccountMatch *)self savedAccount];
-  v6 = [v5 isAppleIDPasskey];
+  compareCopy = compare;
+  savedAccount = [(WBSSavedAccountMatch *)self savedAccount];
+  isAppleIDPasskey = [savedAccount isAppleIDPasskey];
 
-  if ((v6 & 1) == 0)
+  if ((isAppleIDPasskey & 1) == 0)
   {
-    v8 = [(WBSSavedAccountMatch *)self lastUsedDateAffectingAutoFillSortOrder];
-    v9 = [v4 lastUsedDateAffectingAutoFillSortOrder];
-    v10 = v9;
-    if (v8 && v9)
+    lastUsedDateAffectingAutoFillSortOrder = [(WBSSavedAccountMatch *)self lastUsedDateAffectingAutoFillSortOrder];
+    lastUsedDateAffectingAutoFillSortOrder2 = [compareCopy lastUsedDateAffectingAutoFillSortOrder];
+    v10 = lastUsedDateAffectingAutoFillSortOrder2;
+    if (lastUsedDateAffectingAutoFillSortOrder && lastUsedDateAffectingAutoFillSortOrder2)
     {
-      if ([v8 compare:v9] == -1)
+      if ([lastUsedDateAffectingAutoFillSortOrder compare:lastUsedDateAffectingAutoFillSortOrder2] == -1)
       {
         v7 = 1;
       }
@@ -110,7 +110,7 @@
       goto LABEL_21;
     }
 
-    if (v8)
+    if (lastUsedDateAffectingAutoFillSortOrder)
     {
       v7 = -1;
     }
@@ -120,14 +120,14 @@
       v7 = 1;
     }
 
-    if (v8 | v9)
+    if (lastUsedDateAffectingAutoFillSortOrder | lastUsedDateAffectingAutoFillSortOrder2)
     {
       goto LABEL_21;
     }
 
     v11 = [(WBSSavedAccount *)self->_savedAccount isDefaultCredentialForFullyQualifiedHostname:self->_host];
-    v12 = [v4 savedAccount];
-    v13 = [v12 isDefaultCredentialForFullyQualifiedHostname:self->_host];
+    savedAccount2 = [compareCopy savedAccount];
+    v13 = [savedAccount2 isDefaultCredentialForFullyQualifiedHostname:self->_host];
 
     if (v11 && !v13)
     {
@@ -136,11 +136,11 @@
 
     if (v11 || (v13 & 1) == 0)
     {
-      v14 = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
-      v15 = [v4 savedAccount];
-      v16 = [v15 credentialTypes];
+      credentialTypes = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
+      savedAccount3 = [compareCopy savedAccount];
+      credentialTypes2 = [savedAccount3 credentialTypes];
 
-      if ((v14 & 2) != 0 && (v16 & 2) == 0)
+      if ((credentialTypes & 2) != 0 && (credentialTypes2 & 2) == 0)
       {
 LABEL_14:
         v7 = -1;
@@ -149,11 +149,11 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      if ((v14 & 2) != 0 || (v16 & 2) == 0)
+      if ((credentialTypes & 2) != 0 || (credentialTypes2 & 2) == 0)
       {
         savedAccount = self->_savedAccount;
-        v19 = [v4 savedAccount];
-        v7 = [(WBSSavedAccount *)savedAccount compare:v19];
+        savedAccount4 = [compareCopy savedAccount];
+        v7 = [(WBSSavedAccount *)savedAccount compare:savedAccount4];
 
         goto LABEL_21;
       }
@@ -176,8 +176,8 @@ LABEL_22:
   v5 = NSStringFromClass(v4);
   savedAccount = self->_savedAccount;
   protectionSpace = self->_protectionSpace;
-  v8 = [(WBSAutoFillPasskey *)self->_autoFillPasskey identifier];
-  v9 = [v3 stringWithFormat:@"<%@: %p savedAccount = %@; protection space = %@; passkey identifier = %@>", v5, self, savedAccount, protectionSpace, v8];;
+  identifier = [(WBSAutoFillPasskey *)self->_autoFillPasskey identifier];
+  v9 = [v3 stringWithFormat:@"<%@: %p savedAccount = %@; protection space = %@; passkey identifier = %@>", v5, self, savedAccount, protectionSpace, identifier];;
 
   return v9;
 }

@@ -5,16 +5,16 @@
 - (MFAPSManager)init;
 - (id)copyDeviceToken;
 - (id)copyDiagnosticInformation;
-- (id)enabledTopicsWithTopics:(id)a3;
+- (id)enabledTopicsWithTopics:(id)topics;
 - (void)_startAPS_nts;
 - (void)_stopAPS_nts;
 - (void)connect;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)setLaunchMachServiceName:(id)a3;
-- (void)startWatchingForTopic:(id)a3;
-- (void)stopWatchingForTopic:(id)a3;
-- (void)swapTopic:(id)a3 forNewTopic:(id)a4;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)setLaunchMachServiceName:(id)name;
+- (void)startWatchingForTopic:(id)topic;
+- (void)stopWatchingForTopic:(id)topic;
+- (void)swapTopic:(id)topic forNewTopic:(id)newTopic;
 @end
 
 @implementation MFAPSManager
@@ -22,9 +22,9 @@
 + (id)sharedManager
 {
   v2 = MFUserAgent();
-  v3 = [v2 canRegisterForAPSPush];
+  canRegisterForAPSPush = [v2 canRegisterForAPSPush];
 
-  if (v3)
+  if (canRegisterForAPSPush)
   {
     if (sharedManager_onceToken != -1)
     {
@@ -85,8 +85,8 @@ void __29__MFAPSManager_sharedManager__block_invoke()
     deviceTokenLock = v2->_deviceTokenLock;
     v2->_deviceTokenLock = v11;
 
-    v13 = [MEMORY[0x1E69AD6C0] sharedController];
-    [v13 addDiagnosticsGenerator:v2];
+    mEMORY[0x1E69AD6C0] = [MEMORY[0x1E69AD6C0] sharedController];
+    [mEMORY[0x1E69AD6C0] addDiagnosticsGenerator:v2];
 
     v14 = v2;
   }
@@ -94,10 +94,10 @@ void __29__MFAPSManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)setLaunchMachServiceName:(id)a3
+- (void)setLaunchMachServiceName:(id)name
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  nameCopy = name;
+  v4 = [nameCopy copy];
   launchMachServiceName = self->_launchMachServiceName;
   self->_launchMachServiceName = v4;
 }
@@ -136,8 +136,8 @@ void __29__MFAPSManager_APSConnection__block_invoke()
 
 + (id)apsEnvironment
 {
-  v2 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v2 BOOLForKey:@"MFUseAPSDevelopmentEnvironment"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults BOOLForKey:@"MFUseAPSDevelopmentEnvironment"];
 
   if (v3)
   {
@@ -155,8 +155,8 @@ void __29__MFAPSManager_APSConnection__block_invoke()
   v16 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   v3 = self->_pushService == 0;
-  v4 = MFLogGeneral();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
+  publicToken = MFLogGeneral();
+  v5 = os_log_type_enabled(publicToken, OS_LOG_TYPE_INFO);
   if (v3)
   {
     if (v5)
@@ -164,7 +164,7 @@ void __29__MFAPSManager_APSConnection__block_invoke()
       v6 = +[MFAPSManager apsEnvironment];
       v14 = 138412290;
       v15 = v6;
-      _os_log_impl(&dword_1B0389000, v4, OS_LOG_TYPE_INFO, "#aps-push Using %@ APS environment.", &v14, 0xCu);
+      _os_log_impl(&dword_1B0389000, publicToken, OS_LOG_TYPE_INFO, "#aps-push Using %@ APS environment.", &v14, 0xCu);
     }
 
     if (self->_launchMachServiceName)
@@ -186,8 +186,8 @@ void __29__MFAPSManager_APSConnection__block_invoke()
     }
 
     [(APSConnection *)self->_pushService setDelegate:self];
-    v4 = [(APSConnection *)self->_pushService publicToken];
-    if (v4)
+    publicToken = [(APSConnection *)self->_pushService publicToken];
+    if (publicToken)
     {
       v11 = MFLogGeneral();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -196,7 +196,7 @@ void __29__MFAPSManager_APSConnection__block_invoke()
         _os_log_impl(&dword_1B0389000, v11, OS_LOG_TYPE_INFO, "#aps-push Starting MFAPSManager.", &v14, 2u);
       }
 
-      [(MFAPSManager *)self connection:self->_pushService didReceivePublicToken:v4];
+      [(MFAPSManager *)self connection:self->_pushService didReceivePublicToken:publicToken];
     }
 
     else
@@ -217,7 +217,7 @@ void __29__MFAPSManager_APSConnection__block_invoke()
   else if (v5)
   {
     LOWORD(v14) = 0;
-    _os_log_impl(&dword_1B0389000, v4, OS_LOG_TYPE_INFO, "#aps-push Push service already running.", &v14, 2u);
+    _os_log_impl(&dword_1B0389000, publicToken, OS_LOG_TYPE_INFO, "#aps-push Push service already running.", &v14, 2u);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -237,17 +237,17 @@ void __29__MFAPSManager_APSConnection__block_invoke()
   }
 }
 
-- (void)startWatchingForTopic:(id)a3
+- (void)startWatchingForTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__MFAPSManager_startWatchingForTopic___block_invoke;
   v7[3] = &unk_1E7AA26E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = topicCopy;
+  v6 = topicCopy;
   dispatch_async(queue, v7);
 }
 
@@ -281,11 +281,11 @@ void __38__MFAPSManager_startWatchingForTopic___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopWatchingForTopic:(id)a3
+- (void)stopWatchingForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  topicCopy = topic;
+  v5 = topicCopy;
+  if (topicCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -293,7 +293,7 @@ void __38__MFAPSManager_startWatchingForTopic___block_invoke(uint64_t a1)
     v7[2] = __37__MFAPSManager_stopWatchingForTopic___block_invoke;
     v7[3] = &unk_1E7AA26E0;
     v7[4] = self;
-    v8 = v4;
+    v8 = topicCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -327,31 +327,31 @@ void __37__MFAPSManager_stopWatchingForTopic___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)enabledTopicsWithTopics:(id)a3
+- (id)enabledTopicsWithTopics:(id)topics
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E699B550] cloudKitAPSTopics];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count") + objc_msgSend(v4, "count")}];
-  [v5 addObjectsFromArray:v3];
-  [v5 addObjectsFromArray:v4];
+  topicsCopy = topics;
+  cloudKitAPSTopics = [MEMORY[0x1E699B550] cloudKitAPSTopics];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(topicsCopy, "count") + objc_msgSend(cloudKitAPSTopics, "count")}];
+  [v5 addObjectsFromArray:topicsCopy];
+  [v5 addObjectsFromArray:cloudKitAPSTopics];
 
   return v5;
 }
 
-- (void)swapTopic:(id)a3 forNewTopic:(id)a4
+- (void)swapTopic:(id)topic forNewTopic:(id)newTopic
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  newTopicCopy = newTopic;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__MFAPSManager_swapTopic_forNewTopic___block_invoke;
   block[3] = &unk_1E7AA42D8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = topicCopy;
+  v13 = newTopicCopy;
+  selfCopy = self;
+  v9 = newTopicCopy;
+  v10 = topicCopy;
   dispatch_async(queue, block);
 }
 
@@ -450,12 +450,12 @@ void *__23__MFAPSManager_connect__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && [(NSCountedSet *)self->_watchedTopics containsObject:@"com.apple.mobilemail.dummyTopicToForceServerConnection"])
+  connectionCopy = connection;
+  tokenCopy = token;
+  if (tokenCopy && [(NSCountedSet *)self->_watchedTopics containsObject:@"com.apple.mobilemail.dummyTopicToForceServerConnection"])
   {
     [(MFAPSManager *)self stopWatchingForTopic:@"com.apple.mobilemail.dummyTopicToForceServerConnection"];
   }
@@ -463,21 +463,21 @@ void *__23__MFAPSManager_connect__block_invoke(uint64_t a1)
   v8 = MFLogGeneral();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(NSData *)v7 ef_hexString];
+    ef_hexString = [(NSData *)tokenCopy ef_hexString];
     v11 = 138412290;
-    v12 = v9;
+    v12 = ef_hexString;
     _os_log_impl(&dword_1B0389000, v8, OS_LOG_TYPE_INFO, "#aps-push Received public token '%@'.", &v11, 0xCu);
   }
 
   [(NSConditionLock *)self->_deviceTokenLock lock];
-  if (self->_deviceToken == v7)
+  if (self->_deviceToken == tokenCopy)
   {
     [(NSConditionLock *)self->_deviceTokenLock unlock];
   }
 
   else
   {
-    objc_storeStrong(&self->_deviceToken, a4);
+    objc_storeStrong(&self->_deviceToken, token);
     [(NSConditionLock *)self->_deviceTokenLock unlockWithCondition:self->_deviceToken != 0];
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_60);
   }
@@ -491,26 +491,26 @@ void __49__MFAPSManager_connection_didReceivePublicToken___block_invoke()
   [v0 postNotificationName:@"MFAPSManagerDeviceTokenChangedNote" object:0];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [v4 topic];
-  v6 = [v4 userInfo];
-  v7 = [v4 wasFromStorage];
+  messageCopy = message;
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
+  wasFromStorage = [messageCopy wasFromStorage];
   v8 = MFLogGeneral();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v16 = 138412546;
-    v17 = v5;
+    v17 = topic;
     v18 = 2112;
-    v19 = v6;
+    v19 = userInfo;
     _os_log_impl(&dword_1B0389000, v8, OS_LOG_TYPE_INFO, "#aps-push received notification on topic '%@', userInfo=%@", &v16, 0x16u);
   }
 
-  if (([v5 hasPrefix:@"com.apple.mobilemail.push."] & 1) != 0 || objc_msgSend(v5, "hasPrefix:", @"com.apple.mail."))
+  if (([topic hasPrefix:@"com.apple.mobilemail.push."] & 1) != 0 || objc_msgSend(topic, "hasPrefix:", @"com.apple.mail."))
   {
-    v9 = [v6 objectForKey:@"aps"];
+    defaultCenter = [userInfo objectForKey:@"aps"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -519,15 +519,15 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v10 = [v9 objectForKey:@"account-id"];
+    userInfo2 = [defaultCenter objectForKey:@"account-id"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [MailAccount accountWithUniqueId:v10];
+      v11 = [MailAccount accountWithUniqueId:userInfo2];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v9 objectForKey:@"m"];
+        v12 = [defaultCenter objectForKey:@"m"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -535,7 +535,7 @@ LABEL_15:
           v12 = 0;
         }
 
-        [v11 handlePushNotificationOnMailboxes:v12 missedNotifications:v7];
+        [v11 handlePushNotificationOnMailboxes:v12 missedNotifications:wasFromStorage];
       }
     }
 
@@ -544,14 +544,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v13 = [MEMORY[0x1E699B550] cloudKitAPSTopics];
-  v14 = [v13 containsObject:v5];
+  cloudKitAPSTopics = [MEMORY[0x1E699B550] cloudKitAPSTopics];
+  v14 = [cloudKitAPSTopics containsObject:topic];
 
   if (v14)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    v10 = [v4 userInfo];
-    [v9 postNotificationName:*MEMORY[0x1E699B398] object:0 userInfo:v10];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    userInfo2 = [messageCopy userInfo];
+    [defaultCenter postNotificationName:*MEMORY[0x1E699B398] object:0 userInfo:userInfo2];
     goto LABEL_14;
   }
 

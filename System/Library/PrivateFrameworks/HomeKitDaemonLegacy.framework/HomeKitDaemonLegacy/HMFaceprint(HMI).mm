@@ -8,11 +8,11 @@
 - (id)createHMIFaceprint
 {
   v2 = objc_alloc(MEMORY[0x277D14D88]);
-  v3 = [a1 UUID];
-  v4 = [a1 data];
-  v5 = [a1 modelUUID];
-  v6 = [a1 faceCropUUID];
-  v7 = [v2 initWithUUID:v3 data:v4 modelUUID:v5 faceCropUUID:v6];
+  uUID = [self UUID];
+  data = [self data];
+  modelUUID = [self modelUUID];
+  faceCropUUID = [self faceCropUUID];
+  v7 = [v2 initWithUUID:uUID data:data modelUUID:modelUUID faceCropUUID:faceCropUUID];
 
   return v7;
 }
@@ -20,12 +20,12 @@
 - (uint64_t)initWithHMIFaceprint:()HMI
 {
   v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [v4 data];
-  v7 = [v4 modelUUID];
-  v8 = [v4 faceCropUUID];
+  uUID = [v4 UUID];
+  data = [v4 data];
+  modelUUID = [v4 modelUUID];
+  faceCropUUID = [v4 faceCropUUID];
 
-  v9 = [a1 initWithUUID:v5 data:v6 modelUUID:v7 faceCropUUID:v8];
+  v9 = [self initWithUUID:uUID data:data modelUUID:modelUUID faceCropUUID:faceCropUUID];
   return v9;
 }
 

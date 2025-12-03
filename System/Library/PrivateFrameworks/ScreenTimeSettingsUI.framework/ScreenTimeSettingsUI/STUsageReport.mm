@@ -1,31 +1,31 @@
 @interface STUsageReport
 - (NSDateInterval)maxPickupsDateInterval;
 - (STUsageReport)init;
-- (STUsageReport)initWithCoder:(id)a3;
-- (STUsageReport)initWithReportType:(unint64_t)a3 startDate:(id)a4 lastUpdatedDate:(id)a5 firstPickup:(id)a6 usageItems:(id)a7;
+- (STUsageReport)initWithCoder:(id)coder;
+- (STUsageReport)initWithReportType:(unint64_t)type startDate:(id)date lastUpdatedDate:(id)updatedDate firstPickup:(id)pickup usageItems:(id)items;
 - (STUsageReportGraphDataSet)pickupsDataSet;
 - (STUsageReportGraphDataSet)screenTimeDataSet;
-- (id)_countedDataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4 includeIndicatorImageName:(BOOL)a5;
-- (id)_dataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4 includeIndicatorImageName:(BOOL)a5 useDarkColors:(BOOL)a6;
-- (id)_timedDataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4;
-- (id)_timedDataSetForItemType:(unint64_t)a3 useDarkColors:(BOOL)a4;
-- (id)dataSetWithUsageItem:(id)a3;
+- (id)_countedDataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier includeIndicatorImageName:(BOOL)name;
+- (id)_dataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier includeIndicatorImageName:(BOOL)name useDarkColors:(BOOL)colors;
+- (id)_timedDataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier;
+- (id)_timedDataSetForItemType:(unint64_t)type useDarkColors:(BOOL)colors;
+- (id)dataSetWithUsageItem:(id)item;
 - (id)description;
-- (id)topUsageItemsWithMaxCount:(unint64_t)a3 type:(unint64_t)a4 includeAggregateItem:(BOOL)a5 nonAggregateItems:(id *)a6 darkColors:(BOOL)a7;
-- (void)encodeWithCoder:(id)a3;
+- (id)topUsageItemsWithMaxCount:(unint64_t)count type:(unint64_t)type includeAggregateItem:(BOOL)item nonAggregateItems:(id *)items darkColors:(BOOL)colors;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STUsageReport
 
-- (STUsageReport)initWithReportType:(unint64_t)a3 startDate:(id)a4 lastUpdatedDate:(id)a5 firstPickup:(id)a6 usageItems:(id)a7
+- (STUsageReport)initWithReportType:(unint64_t)type startDate:(id)date lastUpdatedDate:(id)updatedDate firstPickup:(id)pickup usageItems:(id)items
 {
   v421 = *MEMORY[0x277D85DE8];
-  v315 = a4;
-  v310 = a5;
-  v322 = a5;
-  v309 = a6;
-  v312 = a6;
-  v323 = a7;
+  dateCopy = date;
+  updatedDateCopy = updatedDate;
+  updatedDateCopy2 = updatedDate;
+  pickupCopy = pickup;
+  pickupCopy2 = pickup;
+  itemsCopy = items;
   v402.receiver = self;
   v402.super_class = STUsageReport;
   v355 = [(STUsageReport *)&v402 init];
@@ -38,54 +38,54 @@
   dataSetByUsageIdentifier = v355->_dataSetByUsageIdentifier;
   v355->_dataSetByUsageIdentifier = v11;
 
-  v362 = [MEMORY[0x277CBEA80] currentCalendar];
-  if (a3)
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       v351 = 0;
-      v15 = 0;
+      hour = 0;
       v343 = 0;
       v13 = 0;
       goto LABEL_8;
     }
 
-    v13 = [v362 startOfDayForDate:v315];
-    v343 = [v362 dateByAddingUnit:16 value:1 toDate:v13 options:0];
-    v14 = [v362 components:32 fromDate:v13 toDate:v343 options:0];
-    v15 = [v14 hour];
+    v13 = [currentCalendar startOfDayForDate:dateCopy];
+    v343 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v13 options:0];
+    v14 = [currentCalendar components:32 fromDate:v13 toDate:v343 options:0];
+    hour = [v14 hour];
     v16 = 32;
   }
 
   else
   {
-    v13 = [v362 startOfDayForDate:v315];
-    v343 = [v362 dateByAddingUnit:0x2000 value:1 toDate:v13 options:0];
-    v14 = [v362 components:16 fromDate:v13 toDate:v343 options:0];
-    v15 = [v14 day];
+    v13 = [currentCalendar startOfDayForDate:dateCopy];
+    v343 = [currentCalendar dateByAddingUnit:0x2000 value:1 toDate:v13 options:0];
+    v14 = [currentCalendar components:16 fromDate:v13 toDate:v343 options:0];
+    hour = [v14 day];
     v16 = 16;
   }
 
   v351 = v16;
 
 LABEL_8:
-  v345 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v15];
+  v345 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:hour];
   v17 = v13;
   v344 = v17;
-  if (v15)
+  if (hour)
   {
     v18 = v17;
     do
     {
-      v17 = [v362 dateByAddingUnit:v351 value:1 toDate:v18 options:0];
+      v17 = [currentCalendar dateByAddingUnit:v351 value:1 toDate:v18 options:0];
       v19 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v18 endDate:v17];
       [v345 addObject:v19];
 
       v18 = v17;
-      --v15;
+      --hour;
     }
 
-    while (v15);
+    while (hour);
   }
 
   v308 = v17;
@@ -98,7 +98,7 @@ LABEL_8:
   v325 = objc_opt_new();
   v326 = objc_opt_new();
   v324 = objc_opt_new();
-  if (a3)
+  if (type)
   {
     v321 = objc_opt_new();
     v320 = objc_opt_new();
@@ -129,7 +129,7 @@ LABEL_8:
   v401 = 0u;
   v398 = 0u;
   v399 = 0u;
-  obj = v323;
+  obj = itemsCopy;
   v342 = [obj countByEnumeratingWithState:&v398 objects:v420 count:16];
   if (!v342)
   {
@@ -155,32 +155,32 @@ LABEL_8:
 
       v349 = v20;
       v22 = *(*(&v398 + 1) + 8 * v20);
-      v23 = [v22 startDate];
-      v360 = [v362 components:v351 | 0x221E fromDate:v23];
+      startDate = [v22 startDate];
+      v360 = [currentCalendar components:v351 | 0x221E fromDate:startDate];
 
-      v365 = [v362 dateFromComponents:v360];
+      v365 = [currentCalendar dateFromComponents:v360];
       if ([v343 compare:v365] != 1)
       {
 
         goto LABEL_84;
       }
 
-      v24 = [v22 itemType];
-      if ((v24 - 1) > 5)
+      itemType = [v22 itemType];
+      if ((itemType - 1) > 5)
       {
         v25 = 0;
       }
 
       else
       {
-        v25 = *(&off_279B7EAD0 + v24 - 1);
+        v25 = *(&off_279B7EAD0 + itemType - 1);
       }
 
-      v356 = [v22 totalUsage];
-      v363 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
+      totalUsage = [v22 totalUsage];
+      v363 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:itemType];
       if ([v365 compare:v344] == -1)
       {
-        switch(v24)
+        switch(itemType)
         {
           case 6:
             v358 = v326;
@@ -188,25 +188,25 @@ LABEL_8:
             v333 = v320;
             v28 = v313;
             v83 = v22;
-            v346 = v360;
+            currentCalendar3 = v360;
             v29 = v83;
-            v84 = [v83 totalUsage];
-            [v84 doubleValue];
+            totalUsage2 = [v83 totalUsage];
+            [totalUsage2 doubleValue];
             v86 = v85;
 
-            v339 = [MEMORY[0x277CBEA80] currentCalendar];
-            v87 = [v29 startDate];
-            v336 = [v339 startOfDayForDate:v87];
+            currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+            startDate2 = [v29 startDate];
+            v336 = [currentCalendar2 startOfDayForDate:startDate2];
 
-            v337 = [v339 components:8766 fromDate:v336];
+            v337 = [currentCalendar2 components:8766 fromDate:v336];
             v88 = [v358 objectForKeyedSubscript:v337];
             v89 = MEMORY[0x277CCABB0];
             [v88 doubleValue];
             v37 = [v89 numberWithDouble:v86 + v90];
 
             [v358 setObject:v37 forKeyedSubscript:v337];
-            v38 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v346, "weekday")}];
-            v39 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v346, "hour")}];
+            v38 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(currentCalendar3, "weekday")}];
+            v39 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(currentCalendar3, "hour")}];
             v43 = [v353 objectForKeyedSubscript:v38];
             if (!v43)
             {
@@ -220,12 +220,12 @@ LABEL_8:
             v44 = [v92 numberWithDouble:v86 + v93];
 
             [v43 setObject:v44 forKeyedSubscript:v39];
-            if ([v28 containsObject:v346])
+            if ([v28 containsObject:currentCalendar3])
             {
               goto LABEL_72;
             }
 
-            [v28 addObject:v346];
+            [v28 addObject:currentCalendar3];
             v46 = [v333 objectForKeyedSubscript:v38];
             if (!v46)
             {
@@ -240,25 +240,25 @@ LABEL_8:
             v333 = v319;
             v28 = v314;
             v72 = v22;
-            v346 = v360;
+            currentCalendar3 = v360;
             v29 = v72;
-            v73 = [v72 totalUsage];
-            [v73 doubleValue];
+            totalUsage3 = [v72 totalUsage];
+            [totalUsage3 doubleValue];
             v75 = v74;
 
-            v339 = [MEMORY[0x277CBEA80] currentCalendar];
-            v76 = [v29 startDate];
-            v336 = [v339 startOfDayForDate:v76];
+            currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+            startDate3 = [v29 startDate];
+            v336 = [currentCalendar2 startOfDayForDate:startDate3];
 
-            v337 = [v339 components:8766 fromDate:v336];
+            v337 = [currentCalendar2 components:8766 fromDate:v336];
             v77 = [v358 objectForKeyedSubscript:v337];
             v78 = MEMORY[0x277CCABB0];
             [v77 doubleValue];
             v37 = [v78 numberWithDouble:v75 + v79];
 
             [v358 setObject:v37 forKeyedSubscript:v337];
-            v38 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v346, "weekday")}];
-            v39 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v346, "hour")}];
+            v38 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(currentCalendar3, "weekday")}];
+            v39 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(currentCalendar3, "hour")}];
             v43 = [v353 objectForKeyedSubscript:v38];
             if (!v43)
             {
@@ -272,12 +272,12 @@ LABEL_8:
             v44 = [v81 numberWithDouble:v75 + v82];
 
             [v43 setObject:v44 forKeyedSubscript:v39];
-            if ([v28 containsObject:v346])
+            if ([v28 containsObject:currentCalendar3])
             {
               goto LABEL_72;
             }
 
-            [v28 addObject:v346];
+            [v28 addObject:currentCalendar3];
             v46 = [v333 objectForKeyedSubscript:v38];
             if (!v46)
             {
@@ -292,15 +292,15 @@ LABEL_8:
             v333 = v321;
             v28 = v22;
             v29 = v360;
-            v30 = [v28 totalUsage];
-            [v30 doubleValue];
+            totalUsage4 = [v28 totalUsage];
+            [totalUsage4 doubleValue];
             v32 = v31;
 
-            v346 = [MEMORY[0x277CBEA80] currentCalendar];
-            v33 = [v28 startDate];
-            v339 = [v346 startOfDayForDate:v33];
+            currentCalendar3 = [MEMORY[0x277CBEA80] currentCalendar];
+            startDate4 = [v28 startDate];
+            currentCalendar2 = [currentCalendar3 startOfDayForDate:startDate4];
 
-            v336 = [v346 components:8766 fromDate:v339];
+            v336 = [currentCalendar3 components:8766 fromDate:currentCalendar2];
             v34 = [v358 objectForKeyedSubscript:v336];
             v35 = MEMORY[0x277CCABB0];
             [v34 doubleValue];
@@ -357,10 +357,10 @@ LABEL_73:
       }
 
       v26 = [v348 objectForKeyedSubscript:v363];
-      v358 = (*(v25 + 16))(v25, v26, v356);
+      v358 = (*(v25 + 16))(v25, v26, totalUsage);
 
       [v348 setObject:v358 forKeyedSubscript:v363];
-      if (v24 != 1)
+      if (itemType != 1)
       {
         v47 = [v335 objectForKeyedSubscript:v363];
         if (!v47)
@@ -375,10 +375,10 @@ LABEL_73:
         if (!v49)
         {
           v50 = [v22 copy];
-          v51 = [v22 identifier];
-          v52 = [v51 componentsSeparatedByString:@"-"];
-          v53 = [v52 firstObject];
-          [v50 setIdentifier:v53];
+          identifier = [v22 identifier];
+          v52 = [identifier componentsSeparatedByString:@"-"];
+          firstObject = [v52 firstObject];
+          [v50 setIdentifier:firstObject];
 
           [v50 setTotalUsage:&unk_28769D670];
           [v50 setMaxUsage:&unk_28769D670];
@@ -388,13 +388,13 @@ LABEL_73:
         }
 
         v340 = v49;
-        v54 = [v49 totalUsage];
-        v55 = [v22 totalUsage];
-        v56 = (*(v25 + 16))(v25, v54, v55);
+        totalUsage5 = [v49 totalUsage];
+        totalUsage6 = [v22 totalUsage];
+        v56 = (*(v25 + 16))(v25, totalUsage5, totalUsage6);
         [v340 setTotalUsage:v56];
 
-        v347 = [v22 budgetItemIdentifier];
-        if (v347)
+        budgetItemIdentifier = [v22 budgetItemIdentifier];
+        if (budgetItemIdentifier)
         {
           v57 = [v331 objectForKeyedSubscript:v363];
           if (!v57)
@@ -403,7 +403,7 @@ LABEL_73:
             [v331 setObject:v57 forKeyedSubscript:v363];
           }
 
-          v338 = [objc_alloc(MEMORY[0x277D4BAD0]) initWithIdentifier:v347 usageTrusted:{objc_msgSend(v22, "usageTrusted")}];
+          v338 = [objc_alloc(MEMORY[0x277D4BAD0]) initWithIdentifier:budgetItemIdentifier usageTrusted:{objc_msgSend(v22, "usageTrusted")}];
           v58 = [v57 objectForKeyedSubscript:v338];
           if (!v58)
           {
@@ -414,9 +414,9 @@ LABEL_73:
             [v57 setObject:v58 forKeyedSubscript:v338];
           }
 
-          v59 = [v58 totalUsage];
-          v60 = [v22 totalUsage];
-          v61 = (*(v25 + 16))(v25, v59, v60);
+          totalUsage7 = [v58 totalUsage];
+          totalUsage8 = [v22 totalUsage];
+          v61 = (*(v25 + 16))(v25, totalUsage7, totalUsage8);
           [v58 setTotalUsage:v61];
 
           v62 = [v330 objectForKeyedSubscript:v363];
@@ -443,13 +443,13 @@ LABEL_73:
             [v63 setObject:v64 forKeyedSubscript:v365];
           }
 
-          v65 = [v64 totalUsage];
-          v66 = [v22 totalUsage];
-          v67 = (*(v25 + 16))(v25, v65, v66);
+          totalUsage9 = [v64 totalUsage];
+          totalUsage10 = [v22 totalUsage];
+          v67 = (*(v25 + 16))(v25, totalUsage9, totalUsage10);
           [v64 setTotalUsage:v67];
         }
 
-        if (v24 == 6)
+        if (itemType == 6)
         {
           if (v329)
           {
@@ -475,7 +475,7 @@ LABEL_77:
 
         else
         {
-          if (v24 != 5)
+          if (itemType != 5)
           {
             goto LABEL_77;
           }
@@ -503,7 +503,7 @@ LABEL_76:
       }
 
       v27 = [v334 objectForKeyedSubscript:v365];
-      v353 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v356, "unsignedIntegerValue") + objc_msgSend(v27, "unsignedIntegerValue")}];
+      v353 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(totalUsage, "unsignedIntegerValue") + objc_msgSend(v27, "unsignedIntegerValue")}];
 
       [v334 setObject:v353 forKeyedSubscript:v365];
 LABEL_78:
@@ -529,9 +529,9 @@ LABEL_84:
   v419[0] = v366;
   v419[1] = v364;
   v97 = [MEMORY[0x277CBEA60] arrayWithObjects:v419 count:2];
-  v355->_type = a3;
+  v355->_type = type;
   objc_storeStrong(&v355->_reportDateInterval, v311);
-  objc_storeStrong(&v355->_lastUpdatedDate, v310);
+  objc_storeStrong(&v355->_lastUpdatedDate, updatedDateCopy);
   v98 = [v345 copy];
   dateIntervals = v355->_dateIntervals;
   v355->_dateIntervals = v98;
@@ -544,8 +544,8 @@ LABEL_84:
   screenTimeByStartOfDateInterval = v355->_screenTimeByStartOfDateInterval;
   v355->_screenTimeByStartOfDateInterval = v102;
 
-  v104 = [(NSDictionary *)v355->_screenTimeByStartOfDateInterval allValues];
-  v105 = [v104 valueForKeyPath:@"@max.self"];
+  allValues = [(NSDictionary *)v355->_screenTimeByStartOfDateInterval allValues];
+  v105 = [allValues valueForKeyPath:@"@max.self"];
   [v105 doubleValue];
   v355->_maxScreenTime = v106;
 
@@ -567,8 +567,8 @@ LABEL_84:
   pickupsByStartOfDateIntervalByTrustIdentifier = v355->_pickupsByStartOfDateIntervalByTrustIdentifier;
   v355->_pickupsByStartOfDateIntervalByTrustIdentifier = v115;
 
-  v117 = [(NSDictionary *)v355->_pickupsByTrustIdentifier allValues];
-  v118 = [v117 sortedArrayUsingDescriptors:v97];
+  allValues2 = [(NSDictionary *)v355->_pickupsByTrustIdentifier allValues];
+  v118 = [allValues2 sortedArrayUsingDescriptors:v97];
   v119 = v118;
   v120 = MEMORY[0x277CBEBF8];
   if (v118)
@@ -608,7 +608,7 @@ LABEL_84:
   v352 = v329;
   v375 = v352;
   v378 = &v394;
-  v124 = v322;
+  v124 = updatedDateCopy2;
   v376 = v124;
   v379 = &v390;
   v354 = v122;
@@ -633,7 +633,7 @@ LABEL_84:
   v395[3] = v128;
   if (v355->_type == 1)
   {
-    if (v312)
+    if (pickupCopy2)
     {
       [v124 timeIntervalSinceDate:?];
       activePickupDateIntervals = v129 / 3600.0;
@@ -672,7 +672,7 @@ LABEL_84:
     }
 
     [v132 setDay:-v134];
-    v135 = [v362 dateByAddingComponents:v133 toDate:v124 options:0];
+    v135 = [currentCalendar dateByAddingComponents:v133 toDate:v124 options:0];
     [v124 timeIntervalSinceDate:v135];
 
     v125 = v355;
@@ -687,7 +687,7 @@ LABEL_84:
 
   v125->_pickupRate = v139;
   v125->_maxPickupDateIntervalIndex = v383[3];
-  objc_storeStrong(&v125->_firstPickup, v309);
+  objc_storeStrong(&v125->_firstPickup, pickupCopy);
   v355->_maxPickups = v387[3];
   pickups = v355->_pickups;
   v141 = [MEMORY[0x277CCACA8] stringWithFormat:@"@max.%@", @"totalUsage"];
@@ -743,8 +743,8 @@ LABEL_84:
 
   objc_storeStrong(&v355->_notificationsByStartOfDateIntervalByTrustIdentifier, v155);
 
-  v156 = [(NSDictionary *)v355->_notificationsByTrustIdentifier allValues];
-  v157 = [v156 sortedArrayUsingDescriptors:v97];
+  allValues3 = [(NSDictionary *)v355->_notificationsByTrustIdentifier allValues];
+  v157 = [allValues3 sortedArrayUsingDescriptors:v97];
   v158 = v157;
   if (v157)
   {
@@ -867,8 +867,8 @@ LABEL_84:
 
   objc_storeStrong(&v355->_applicationUsageByStartOfDateIntervalByTrustIdentifier, v184);
 
-  v185 = [(NSDictionary *)v355->_applicationUsageByTrustIdentifier allValues];
-  v186 = [v185 sortedArrayUsingDescriptors:v97];
+  allValues4 = [(NSDictionary *)v355->_applicationUsageByTrustIdentifier allValues];
+  v186 = [allValues4 sortedArrayUsingDescriptors:v97];
   appUsages = v355->_appUsages;
   v355->_appUsages = v186;
 
@@ -921,17 +921,17 @@ LABEL_84:
 
   objc_storeStrong(&v355->_webUsageByStartOfDateIntervalByTrustIdentifier, v201);
 
-  v202 = [(NSDictionary *)v355->_webUsageByTrustIdentifier allValues];
-  v203 = [v202 sortedArrayUsingDescriptors:v97];
+  allValues5 = [(NSDictionary *)v355->_webUsageByTrustIdentifier allValues];
+  v203 = [allValues5 sortedArrayUsingDescriptors:v97];
   webUsages = v355->_webUsages;
   v355->_webUsages = v203;
 
   v205 = objc_opt_new();
-  v206 = [(NSDictionary *)v355->_applicationUsageByTrustIdentifier allValues];
-  [v205 addObjectsFromArray:v206];
+  allValues6 = [(NSDictionary *)v355->_applicationUsageByTrustIdentifier allValues];
+  [v205 addObjectsFromArray:allValues6];
 
-  v207 = [(NSDictionary *)v355->_webUsageByTrustIdentifier allValues];
-  [v205 addObjectsFromArray:v207];
+  allValues7 = [(NSDictionary *)v355->_webUsageByTrustIdentifier allValues];
+  [v205 addObjectsFromArray:allValues7];
 
   v208 = [v205 sortedArrayUsingDescriptors:v97];
   v209 = v208;
@@ -1001,8 +1001,8 @@ LABEL_84:
 
   objc_storeStrong(&v355->_categoryUsageByStartOfDateIntervalByTrustIdentifier, v226);
 
-  v227 = [(NSDictionary *)v355->_categoryUsageByTrustIdentifier allValues];
-  v228 = [v227 sortedArrayUsingDescriptors:v97];
+  allValues8 = [(NSDictionary *)v355->_categoryUsageByTrustIdentifier allValues];
+  v228 = [allValues8 sortedArrayUsingDescriptors:v97];
   v229 = v228;
   if (v228)
   {
@@ -1021,13 +1021,13 @@ LABEL_84:
   v233 = [(NSArray *)categoryUsages valueForKeyPath:v232];
 
   [(NSArray *)v355->_categoryUsages setValue:v233 forKeyPath:@"maxUsage"];
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v234 = [v362 components:544 fromDate:v344];
+      v234 = [currentCalendar components:544 fromDate:v344];
       v235 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v234, "weekday")}];
-      v236 = [v362 rangeOfUnit:32 inUnit:16 forDate:v344];
+      v236 = [currentCalendar rangeOfUnit:32 inUnit:16 forDate:v344];
       v237 = objc_alloc(MEMORY[0x277CCAA78]);
       v238 = [v237 initWithIndexesInRange:{v236, v391[3] + 1}];
       totalScreenTime = v355->_totalScreenTime;
@@ -1156,8 +1156,8 @@ LABEL_84:
 
   else
   {
-    v249 = [v311 startDate];
-    v250 = [v362 startOfDayForDate:v249];
+    startDate5 = [v311 startDate];
+    v250 = [currentCalendar startOfDayForDate:startDate5];
 
     v251 = objc_alloc(MEMORY[0x277CCAA78]);
     v252 = [v251 initWithIndexesInRange:{0, v391[3] + 1}];
@@ -1165,8 +1165,8 @@ LABEL_84:
     v254 = v317;
     v255 = v250;
     v256 = v252;
-    v257 = [MEMORY[0x277CBEA80] currentCalendar];
-    v258 = [v257 dateByAddingUnit:0x2000 value:-1 toDate:v255 options:0];
+    currentCalendar4 = [MEMORY[0x277CBEA80] currentCalendar];
+    v258 = [currentCalendar4 dateByAddingUnit:0x2000 value:-1 toDate:v255 options:0];
     v415 = 0;
     v416 = &v415;
     v417 = 0x2020000000;
@@ -1175,7 +1175,7 @@ LABEL_84:
     v408 = 3221225472;
     v409 = __weeklyUsageDeltaFromHistoricalAverage_block_invoke;
     v410 = &unk_279B7EAB0;
-    v259 = v257;
+    v259 = currentCalendar4;
     v411 = v259;
     v260 = v258;
     v412 = v260;
@@ -1200,8 +1200,8 @@ LABEL_84:
     v266 = v326;
     v267 = v255;
     v268 = v256;
-    v269 = [MEMORY[0x277CBEA80] currentCalendar];
-    v270 = [v269 dateByAddingUnit:0x2000 value:-1 toDate:v267 options:0];
+    currentCalendar5 = [MEMORY[0x277CBEA80] currentCalendar];
+    v270 = [currentCalendar5 dateByAddingUnit:0x2000 value:-1 toDate:v267 options:0];
     v415 = 0;
     v416 = &v415;
     v417 = 0x2020000000;
@@ -1210,7 +1210,7 @@ LABEL_84:
     v408 = 3221225472;
     v409 = __weeklyUsageDeltaFromHistoricalAverage_block_invoke;
     v410 = &unk_279B7EAB0;
-    v271 = v269;
+    v271 = currentCalendar5;
     v411 = v271;
     v272 = v270;
     v412 = v272;
@@ -1235,8 +1235,8 @@ LABEL_84:
     v278 = v316;
     v234 = v267;
     v235 = v268;
-    v279 = [MEMORY[0x277CBEA80] currentCalendar];
-    v280 = [v279 dateByAddingUnit:0x2000 value:-1 toDate:v234 options:0];
+    currentCalendar6 = [MEMORY[0x277CBEA80] currentCalendar];
+    v280 = [currentCalendar6 dateByAddingUnit:0x2000 value:-1 toDate:v234 options:0];
     v415 = 0;
     v416 = &v415;
     v417 = 0x2020000000;
@@ -1245,7 +1245,7 @@ LABEL_84:
     v408 = 3221225472;
     v409 = __weeklyUsageDeltaFromHistoricalAverage_block_invoke;
     v410 = &unk_279B7EAB0;
-    v281 = v279;
+    v281 = currentCalendar6;
     v411 = v281;
     v282 = v280;
     v412 = v282;
@@ -1397,41 +1397,41 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
   return [(STUsageReport *)&v3 init];
 }
 
-- (STUsageReport)initWithCoder:(id)a3
+- (STUsageReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v167.receiver = self;
   v167.super_class = STUsageReport;
   v5 = [(STUsageReport *)&v167 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
     v5->_type = [v8 unsignedIntegerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_reportDateInterval"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_reportDateInterval"];
     reportDateInterval = v5->_reportDateInterval;
     v5->_reportDateInterval = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastUpdatedDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v11;
 
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"_dateIntervals"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"_dateIntervals"];
     dateIntervals = v5->_dateIntervals;
     v5->_dateIntervals = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_totalScreenTime"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_totalScreenTime"];
     [v18 doubleValue];
     v5->_totalScreenTime = v19;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maxScreenTime"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maxScreenTime"];
     [v20 doubleValue];
     v5->_maxScreenTime = v21;
 
@@ -1439,22 +1439,22 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v22 setWithObjects:{v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"_screenTimeByStartOfDateInterval"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"_screenTimeByStartOfDateInterval"];
     screenTimeByStartOfDateInterval = v5->_screenTimeByStartOfDateInterval;
     v5->_screenTimeByStartOfDateInterval = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_screenTimeDeltaFromHistoricalAverage"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_screenTimeDeltaFromHistoricalAverage"];
     [v28 doubleValue];
     v5->_screenTimeDeltaFromHistoricalAverage = v29;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_totalPickups"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_totalPickups"];
     v5->_totalPickups = [v30 unsignedIntegerValue];
 
     v31 = MEMORY[0x277CBEB98];
     v32 = objc_opt_class();
     v33 = objc_opt_class();
     v34 = [v31 setWithObjects:{v32, v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"_pickupsByTrustIdentifier"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"_pickupsByTrustIdentifier"];
     pickupsByTrustIdentifier = v5->_pickupsByTrustIdentifier;
     v5->_pickupsByTrustIdentifier = v35;
 
@@ -1462,7 +1462,7 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v38 = objc_opt_class();
     v39 = objc_opt_class();
     v40 = [v37 setWithObjects:{v38, v39, objc_opt_class(), 0}];
-    v41 = [v4 decodeObjectOfClasses:v40 forKey:@"_pickupsByStartOfDateInterval"];
+    v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"_pickupsByStartOfDateInterval"];
     pickupsByStartOfDateInterval = v5->_pickupsByStartOfDateInterval;
     v5->_pickupsByStartOfDateInterval = v41;
 
@@ -1471,36 +1471,36 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v45 = objc_opt_class();
     v46 = objc_opt_class();
     v47 = [v43 setWithObjects:{v44, v45, v46, objc_opt_class(), 0}];
-    v48 = [v4 decodeObjectOfClasses:v47 forKey:@"_pickupsByStartOfDateIntervalByTrustIdentifier"];
+    v48 = [coderCopy decodeObjectOfClasses:v47 forKey:@"_pickupsByStartOfDateIntervalByTrustIdentifier"];
     pickupsByStartOfDateIntervalByTrustIdentifier = v5->_pickupsByStartOfDateIntervalByTrustIdentifier;
     v5->_pickupsByStartOfDateIntervalByTrustIdentifier = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_pickupRate"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pickupRate"];
     [v50 doubleValue];
     v5->_pickupRate = v51;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_activePickupDateIntervals"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_activePickupDateIntervals"];
     [v52 doubleValue];
     v5->_activePickupDateIntervals = v53;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maxPickups"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maxPickups"];
     v5->_maxPickups = [v54 unsignedIntegerValue];
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maxPickupDateIntervalIndex"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maxPickupDateIntervalIndex"];
     v5->_maxPickupDateIntervalIndex = [v55 unsignedIntegerValue];
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_pickupDeltaFromHistoricalAverage"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pickupDeltaFromHistoricalAverage"];
     [v56 doubleValue];
     v5->_pickupDeltaFromHistoricalAverage = v57;
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_totalNotifications"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_totalNotifications"];
     v5->_totalNotifications = [v58 unsignedIntegerValue];
 
     v59 = MEMORY[0x277CBEB98];
     v60 = objc_opt_class();
     v61 = objc_opt_class();
     v62 = [v59 setWithObjects:{v60, v61, objc_opt_class(), 0}];
-    v63 = [v4 decodeObjectOfClasses:v62 forKey:@"_notificationsByTrustIdentifier"];
+    v63 = [coderCopy decodeObjectOfClasses:v62 forKey:@"_notificationsByTrustIdentifier"];
     notificationsByTrustIdentifier = v5->_notificationsByTrustIdentifier;
     v5->_notificationsByTrustIdentifier = v63;
 
@@ -1508,7 +1508,7 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v66 = objc_opt_class();
     v67 = objc_opt_class();
     v68 = [v65 setWithObjects:{v66, v67, objc_opt_class(), 0}];
-    v69 = [v4 decodeObjectOfClasses:v68 forKey:@"_notificationsByStartOfDateInterval"];
+    v69 = [coderCopy decodeObjectOfClasses:v68 forKey:@"_notificationsByStartOfDateInterval"];
     notificationsByStartOfDateInterval = v5->_notificationsByStartOfDateInterval;
     v5->_notificationsByStartOfDateInterval = v69;
 
@@ -1517,26 +1517,26 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v73 = objc_opt_class();
     v74 = objc_opt_class();
     v75 = [v71 setWithObjects:{v72, v73, v74, objc_opt_class(), 0}];
-    v76 = [v4 decodeObjectOfClasses:v75 forKey:@"_notificationsByStartOfDateIntervalByTrustIdentifier"];
+    v76 = [coderCopy decodeObjectOfClasses:v75 forKey:@"_notificationsByStartOfDateIntervalByTrustIdentifier"];
     notificationsByStartOfDateIntervalByTrustIdentifier = v5->_notificationsByStartOfDateIntervalByTrustIdentifier;
     v5->_notificationsByStartOfDateIntervalByTrustIdentifier = v76;
 
     v78 = MEMORY[0x277CBEB98];
     v79 = objc_opt_class();
     v80 = [v78 setWithObjects:{v79, objc_opt_class(), 0}];
-    v81 = [v4 decodeObjectOfClasses:v80 forKey:@"_notifications"];
+    v81 = [coderCopy decodeObjectOfClasses:v80 forKey:@"_notifications"];
     notifications = v5->_notifications;
     v5->_notifications = v81;
 
-    v83 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_notificationRate"];
+    v83 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_notificationRate"];
     [v83 doubleValue];
     v5->_notificationRate = v84;
 
-    v85 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_notificationDeltaFromHistoricalAverage"];
+    v85 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_notificationDeltaFromHistoricalAverage"];
     [v85 doubleValue];
     v5->_notificationDeltaFromHistoricalAverage = v86;
 
-    v87 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_totalAppUsage"];
+    v87 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_totalAppUsage"];
     [v87 doubleValue];
     v5->_totalAppUsage = v88;
 
@@ -1544,7 +1544,7 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v90 = objc_opt_class();
     v91 = objc_opt_class();
     v92 = [v89 setWithObjects:{v90, v91, objc_opt_class(), 0}];
-    v93 = [v4 decodeObjectOfClasses:v92 forKey:@"_applicationUsageByTrustIdentifier"];
+    v93 = [coderCopy decodeObjectOfClasses:v92 forKey:@"_applicationUsageByTrustIdentifier"];
     applicationUsageByTrustIdentifier = v5->_applicationUsageByTrustIdentifier;
     v5->_applicationUsageByTrustIdentifier = v93;
 
@@ -1552,7 +1552,7 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v96 = objc_opt_class();
     v97 = objc_opt_class();
     v98 = [v95 setWithObjects:{v96, v97, objc_opt_class(), 0}];
-    v99 = [v4 decodeObjectOfClasses:v98 forKey:@"_appUsageByStartOfDateInterval"];
+    v99 = [coderCopy decodeObjectOfClasses:v98 forKey:@"_appUsageByStartOfDateInterval"];
     appUsageByStartOfDateInterval = v5->_appUsageByStartOfDateInterval;
     v5->_appUsageByStartOfDateInterval = v99;
 
@@ -1561,18 +1561,18 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v103 = objc_opt_class();
     v104 = objc_opt_class();
     v105 = [v101 setWithObjects:{v102, v103, v104, objc_opt_class(), 0}];
-    v106 = [v4 decodeObjectOfClasses:v105 forKey:@"_applicationUsageByStartOfDateIntervalByTrustIdentifier"];
+    v106 = [coderCopy decodeObjectOfClasses:v105 forKey:@"_applicationUsageByStartOfDateIntervalByTrustIdentifier"];
     applicationUsageByStartOfDateIntervalByTrustIdentifier = v5->_applicationUsageByStartOfDateIntervalByTrustIdentifier;
     v5->_applicationUsageByStartOfDateIntervalByTrustIdentifier = v106;
 
     v108 = MEMORY[0x277CBEB98];
     v109 = objc_opt_class();
     v110 = [v108 setWithObjects:{v109, objc_opt_class(), 0}];
-    v111 = [v4 decodeObjectOfClasses:v110 forKey:@"_appUsages"];
+    v111 = [coderCopy decodeObjectOfClasses:v110 forKey:@"_appUsages"];
     appUsages = v5->_appUsages;
     v5->_appUsages = v111;
 
-    v113 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_totalWebUsage"];
+    v113 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_totalWebUsage"];
     [v113 doubleValue];
     v5->_totalWebUsage = v114;
 
@@ -1580,7 +1580,7 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v116 = objc_opt_class();
     v117 = objc_opt_class();
     v118 = [v115 setWithObjects:{v116, v117, objc_opt_class(), 0}];
-    v119 = [v4 decodeObjectOfClasses:v118 forKey:@"_webUsageByTrustIdentifier"];
+    v119 = [coderCopy decodeObjectOfClasses:v118 forKey:@"_webUsageByTrustIdentifier"];
     webUsageByTrustIdentifier = v5->_webUsageByTrustIdentifier;
     v5->_webUsageByTrustIdentifier = v119;
 
@@ -1588,7 +1588,7 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v122 = objc_opt_class();
     v123 = objc_opt_class();
     v124 = [v121 setWithObjects:{v122, v123, objc_opt_class(), 0}];
-    v125 = [v4 decodeObjectOfClasses:v124 forKey:@"_webUsageByStartOfDateInterval"];
+    v125 = [coderCopy decodeObjectOfClasses:v124 forKey:@"_webUsageByStartOfDateInterval"];
     webUsageByStartOfDateInterval = v5->_webUsageByStartOfDateInterval;
     v5->_webUsageByStartOfDateInterval = v125;
 
@@ -1597,18 +1597,18 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v129 = objc_opt_class();
     v130 = objc_opt_class();
     v131 = [v127 setWithObjects:{v128, v129, v130, objc_opt_class(), 0}];
-    v132 = [v4 decodeObjectOfClasses:v131 forKey:@"_webUsageByStartOfDateIntervalByTrustIdentifier"];
+    v132 = [coderCopy decodeObjectOfClasses:v131 forKey:@"_webUsageByStartOfDateIntervalByTrustIdentifier"];
     webUsageByStartOfDateIntervalByTrustIdentifier = v5->_webUsageByStartOfDateIntervalByTrustIdentifier;
     v5->_webUsageByStartOfDateIntervalByTrustIdentifier = v132;
 
     v134 = MEMORY[0x277CBEB98];
     v135 = objc_opt_class();
     v136 = [v134 setWithObjects:{v135, objc_opt_class(), 0}];
-    v137 = [v4 decodeObjectOfClasses:v136 forKey:@"_appAndWebUsages"];
+    v137 = [coderCopy decodeObjectOfClasses:v136 forKey:@"_appAndWebUsages"];
     appAndWebUsages = v5->_appAndWebUsages;
     v5->_appAndWebUsages = v137;
 
-    v139 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_totalCategoryUsage"];
+    v139 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_totalCategoryUsage"];
     [v139 doubleValue];
     v5->_totalCategoryUsage = v140;
 
@@ -1616,7 +1616,7 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v142 = objc_opt_class();
     v143 = objc_opt_class();
     v144 = [v141 setWithObjects:{v142, v143, objc_opt_class(), 0}];
-    v145 = [v4 decodeObjectOfClasses:v144 forKey:@"_categoryUsageByTrustIdentifier"];
+    v145 = [coderCopy decodeObjectOfClasses:v144 forKey:@"_categoryUsageByTrustIdentifier"];
     categoryUsageByTrustIdentifier = v5->_categoryUsageByTrustIdentifier;
     v5->_categoryUsageByTrustIdentifier = v145;
 
@@ -1625,7 +1625,7 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v149 = objc_opt_class();
     v150 = objc_opt_class();
     v151 = [v147 setWithObjects:{v148, v149, v150, objc_opt_class(), 0}];
-    v152 = [v4 decodeObjectOfClasses:v151 forKey:@"_categoryUsageByStartOfDateInterval"];
+    v152 = [coderCopy decodeObjectOfClasses:v151 forKey:@"_categoryUsageByStartOfDateInterval"];
     categoryUsageByStartOfDateInterval = v5->_categoryUsageByStartOfDateInterval;
     v5->_categoryUsageByStartOfDateInterval = v152;
 
@@ -1634,14 +1634,14 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
     v156 = objc_opt_class();
     v157 = objc_opt_class();
     v158 = [v154 setWithObjects:{v155, v156, v157, objc_opt_class(), 0}];
-    v159 = [v4 decodeObjectOfClasses:v158 forKey:@"_categoryUsageByStartOfDateIntervalByTrustIdentifier"];
+    v159 = [coderCopy decodeObjectOfClasses:v158 forKey:@"_categoryUsageByStartOfDateIntervalByTrustIdentifier"];
     categoryUsageByStartOfDateIntervalByTrustIdentifier = v5->_categoryUsageByStartOfDateIntervalByTrustIdentifier;
     v5->_categoryUsageByStartOfDateIntervalByTrustIdentifier = v159;
 
     v161 = MEMORY[0x277CBEB98];
     v162 = objc_opt_class();
     v163 = [v161 setWithObjects:{v162, objc_opt_class(), 0}];
-    v164 = [v4 decodeObjectOfClasses:v163 forKey:@"_categoryUsages"];
+    v164 = [coderCopy decodeObjectOfClasses:v163 forKey:@"_categoryUsages"];
     categoryUsages = v5->_categoryUsages;
     v5->_categoryUsages = v164;
   }
@@ -1649,82 +1649,82 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayName = self->_displayName;
-  v21 = a3;
-  [v21 encodeObject:displayName forKey:@"_displayName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:displayName forKey:@"_displayName"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_type];
-  [v21 encodeObject:v5 forKey:@"_type"];
+  [coderCopy encodeObject:v5 forKey:@"_type"];
 
-  [v21 encodeObject:self->_reportDateInterval forKey:@"_reportDateInterval"];
-  [v21 encodeObject:self->_lastUpdatedDate forKey:@"_lastUpdatedDate"];
-  [v21 encodeObject:self->_dateIntervals forKey:@"_dateIntervals"];
+  [coderCopy encodeObject:self->_reportDateInterval forKey:@"_reportDateInterval"];
+  [coderCopy encodeObject:self->_lastUpdatedDate forKey:@"_lastUpdatedDate"];
+  [coderCopy encodeObject:self->_dateIntervals forKey:@"_dateIntervals"];
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalScreenTime];
-  [v21 encodeObject:v6 forKey:@"_totalScreenTime"];
+  [coderCopy encodeObject:v6 forKey:@"_totalScreenTime"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_maxScreenTime];
-  [v21 encodeObject:v7 forKey:@"_maxScreenTime"];
+  [coderCopy encodeObject:v7 forKey:@"_maxScreenTime"];
 
-  [v21 encodeObject:self->_screenTimeByStartOfDateInterval forKey:@"_screenTimeByStartOfDateInterval"];
+  [coderCopy encodeObject:self->_screenTimeByStartOfDateInterval forKey:@"_screenTimeByStartOfDateInterval"];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_screenTimeDeltaFromHistoricalAverage];
-  [v21 encodeObject:v8 forKey:@"_screenTimeDeltaFromHistoricalAverage"];
+  [coderCopy encodeObject:v8 forKey:@"_screenTimeDeltaFromHistoricalAverage"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_totalPickups];
-  [v21 encodeObject:v9 forKey:@"_totalPickups"];
+  [coderCopy encodeObject:v9 forKey:@"_totalPickups"];
 
-  [v21 encodeObject:self->_pickupsByTrustIdentifier forKey:@"_pickupsByTrustIdentifier"];
-  [v21 encodeObject:self->_pickupsByStartOfDateInterval forKey:@"_pickupsByStartOfDateInterval"];
-  [v21 encodeObject:self->_pickupsByStartOfDateIntervalByTrustIdentifier forKey:@"_pickupsByStartOfDateIntervalByTrustIdentifier"];
+  [coderCopy encodeObject:self->_pickupsByTrustIdentifier forKey:@"_pickupsByTrustIdentifier"];
+  [coderCopy encodeObject:self->_pickupsByStartOfDateInterval forKey:@"_pickupsByStartOfDateInterval"];
+  [coderCopy encodeObject:self->_pickupsByStartOfDateIntervalByTrustIdentifier forKey:@"_pickupsByStartOfDateIntervalByTrustIdentifier"];
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_pickupRate];
-  [v21 encodeObject:v10 forKey:@"_pickupRate"];
+  [coderCopy encodeObject:v10 forKey:@"_pickupRate"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_activePickupDateIntervals];
-  [v21 encodeObject:v11 forKey:@"_activePickupDateIntervals"];
+  [coderCopy encodeObject:v11 forKey:@"_activePickupDateIntervals"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_maxPickups];
-  [v21 encodeObject:v12 forKey:@"_maxPickups"];
+  [coderCopy encodeObject:v12 forKey:@"_maxPickups"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_maxPickupDateIntervalIndex];
-  [v21 encodeObject:v13 forKey:@"_maxPickupDateIntervalIndex"];
+  [coderCopy encodeObject:v13 forKey:@"_maxPickupDateIntervalIndex"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_pickupDeltaFromHistoricalAverage];
-  [v21 encodeObject:v14 forKey:@"_pickupDeltaFromHistoricalAverage"];
+  [coderCopy encodeObject:v14 forKey:@"_pickupDeltaFromHistoricalAverage"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_totalNotifications];
-  [v21 encodeObject:v15 forKey:@"_totalNotifications"];
+  [coderCopy encodeObject:v15 forKey:@"_totalNotifications"];
 
-  [v21 encodeObject:self->_notificationsByTrustIdentifier forKey:@"_notificationsByTrustIdentifier"];
-  [v21 encodeObject:self->_notificationsByStartOfDateInterval forKey:@"_notificationsByStartOfDateInterval"];
-  [v21 encodeObject:self->_notificationsByStartOfDateIntervalByTrustIdentifier forKey:@"_notificationsByStartOfDateIntervalByTrustIdentifier"];
-  [v21 encodeObject:self->_notifications forKey:@"_notifications"];
+  [coderCopy encodeObject:self->_notificationsByTrustIdentifier forKey:@"_notificationsByTrustIdentifier"];
+  [coderCopy encodeObject:self->_notificationsByStartOfDateInterval forKey:@"_notificationsByStartOfDateInterval"];
+  [coderCopy encodeObject:self->_notificationsByStartOfDateIntervalByTrustIdentifier forKey:@"_notificationsByStartOfDateIntervalByTrustIdentifier"];
+  [coderCopy encodeObject:self->_notifications forKey:@"_notifications"];
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_notificationRate];
-  [v21 encodeObject:v16 forKey:@"_notificationRate"];
+  [coderCopy encodeObject:v16 forKey:@"_notificationRate"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:self->_notificationDeltaFromHistoricalAverage];
-  [v21 encodeObject:v17 forKey:@"_notificationDeltaFromHistoricalAverage"];
+  [coderCopy encodeObject:v17 forKey:@"_notificationDeltaFromHistoricalAverage"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalAppUsage];
-  [v21 encodeObject:v18 forKey:@"_totalAppUsage"];
+  [coderCopy encodeObject:v18 forKey:@"_totalAppUsage"];
 
-  [v21 encodeObject:self->_applicationUsageByTrustIdentifier forKey:@"_applicationUsageByTrustIdentifier"];
-  [v21 encodeObject:self->_appUsageByStartOfDateInterval forKey:@"_appUsageByStartOfDateInterval"];
-  [v21 encodeObject:self->_applicationUsageByStartOfDateIntervalByTrustIdentifier forKey:@"_applicationUsageByStartOfDateIntervalByTrustIdentifier"];
-  [v21 encodeObject:self->_appUsages forKey:@"_appUsages"];
+  [coderCopy encodeObject:self->_applicationUsageByTrustIdentifier forKey:@"_applicationUsageByTrustIdentifier"];
+  [coderCopy encodeObject:self->_appUsageByStartOfDateInterval forKey:@"_appUsageByStartOfDateInterval"];
+  [coderCopy encodeObject:self->_applicationUsageByStartOfDateIntervalByTrustIdentifier forKey:@"_applicationUsageByStartOfDateIntervalByTrustIdentifier"];
+  [coderCopy encodeObject:self->_appUsages forKey:@"_appUsages"];
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalWebUsage];
-  [v21 encodeObject:v19 forKey:@"_totalWebUsage"];
+  [coderCopy encodeObject:v19 forKey:@"_totalWebUsage"];
 
-  [v21 encodeObject:self->_webUsageByTrustIdentifier forKey:@"_webUsageByTrustIdentifier"];
-  [v21 encodeObject:self->_webUsageByStartOfDateInterval forKey:@"_webUsageByStartOfDateInterval"];
-  [v21 encodeObject:self->_webUsageByStartOfDateIntervalByTrustIdentifier forKey:@"_webUsageByStartOfDateIntervalByTrustIdentifier"];
-  [v21 encodeObject:self->_appAndWebUsages forKey:@"_appAndWebUsages"];
+  [coderCopy encodeObject:self->_webUsageByTrustIdentifier forKey:@"_webUsageByTrustIdentifier"];
+  [coderCopy encodeObject:self->_webUsageByStartOfDateInterval forKey:@"_webUsageByStartOfDateInterval"];
+  [coderCopy encodeObject:self->_webUsageByStartOfDateIntervalByTrustIdentifier forKey:@"_webUsageByStartOfDateIntervalByTrustIdentifier"];
+  [coderCopy encodeObject:self->_appAndWebUsages forKey:@"_appAndWebUsages"];
   v20 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalCategoryUsage];
-  [v21 encodeObject:v20 forKey:@"_totalCategoryUsage"];
+  [coderCopy encodeObject:v20 forKey:@"_totalCategoryUsage"];
 
-  [v21 encodeObject:self->_categoryUsageByTrustIdentifier forKey:@"_categoryUsageByTrustIdentifier"];
-  [v21 encodeObject:self->_categoryUsageByStartOfDateInterval forKey:@"_categoryUsageByStartOfDateInterval"];
-  [v21 encodeObject:self->_categoryUsageByStartOfDateIntervalByTrustIdentifier forKey:@"_categoryUsageByStartOfDateIntervalByTrustIdentifier"];
-  [v21 encodeObject:self->_categoryUsages forKey:@"_categoryUsages"];
+  [coderCopy encodeObject:self->_categoryUsageByTrustIdentifier forKey:@"_categoryUsageByTrustIdentifier"];
+  [coderCopy encodeObject:self->_categoryUsageByStartOfDateInterval forKey:@"_categoryUsageByStartOfDateInterval"];
+  [coderCopy encodeObject:self->_categoryUsageByStartOfDateIntervalByTrustIdentifier forKey:@"_categoryUsageByStartOfDateIntervalByTrustIdentifier"];
+  [coderCopy encodeObject:self->_categoryUsages forKey:@"_categoryUsages"];
 }
 
 - (id)description
@@ -1750,16 +1750,16 @@ void __85__STUsageReport_initWithReportType_startDate_lastUpdatedDate_firstPicku
   maxPickupsDateInterval = self->_maxPickupsDateInterval;
   if (!maxPickupsDateInterval)
   {
-    v4 = [(STUsageReport *)self maxPickupDateIntervalIndex];
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    maxPickupDateIntervalIndex = [(STUsageReport *)self maxPickupDateIntervalIndex];
+    if (maxPickupDateIntervalIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v5 = 0;
       goto LABEL_6;
     }
 
-    v6 = v4;
-    v7 = [(STUsageReport *)self dateIntervals];
-    v8 = [v7 objectAtIndexedSubscript:v6];
+    v6 = maxPickupDateIntervalIndex;
+    dateIntervals = [(STUsageReport *)self dateIntervals];
+    v8 = [dateIntervals objectAtIndexedSubscript:v6];
     v9 = self->_maxPickupsDateInterval;
     self->_maxPickupsDateInterval = v8;
 
@@ -1772,28 +1772,28 @@ LABEL_6:
   return v5;
 }
 
-- (id)topUsageItemsWithMaxCount:(unint64_t)a3 type:(unint64_t)a4 includeAggregateItem:(BOOL)a5 nonAggregateItems:(id *)a6 darkColors:(BOOL)a7
+- (id)topUsageItemsWithMaxCount:(unint64_t)count type:(unint64_t)type includeAggregateItem:(BOOL)item nonAggregateItems:(id *)items darkColors:(BOOL)colors
 {
-  if (!a3)
+  if (!count)
   {
     v14 = MEMORY[0x277CBEBF8];
     goto LABEL_46;
   }
 
-  v9 = a5;
+  itemCopy = item;
   v13 = 0;
   v14 = MEMORY[0x277CBEBF8];
-  if (a4 <= 3)
+  if (type <= 3)
   {
-    switch(a4)
+    switch(type)
     {
       case 1uLL:
         goto LABEL_46;
       case 2uLL:
-        v15 = [(STUsageReport *)self appUsages];
+        appUsages = [(STUsageReport *)self appUsages];
         break;
       case 3uLL:
-        v15 = [(STUsageReport *)self categoryUsages];
+        appUsages = [(STUsageReport *)self categoryUsages];
         break;
       default:
         goto LABEL_13;
@@ -1802,30 +1802,30 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (a4 - 5 < 2)
+  if (type - 5 < 2)
   {
     goto LABEL_46;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
-    v15 = [(STUsageReport *)self webUsages];
+    appUsages = [(STUsageReport *)self webUsages];
 LABEL_12:
-    v13 = v15;
+    v13 = appUsages;
   }
 
 LABEL_13:
   v16 = [v13 count];
-  v18 = v16 >= a3 || v16 == 0;
-  v19 = v9 && v18;
-  if (v16 >= a3)
+  v18 = v16 >= count || v16 == 0;
+  v19 = itemCopy && v18;
+  if (v16 >= count)
   {
-    v20 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v20 = v16;
+    countCopy = v16;
   }
 
   if (v16)
@@ -1838,8 +1838,8 @@ LABEL_13:
     v21 = 0;
   }
 
-  v22 = v20 - v21;
-  v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
+  v22 = countCopy - v21;
+  v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
   v23 = [v13 subarrayWithRange:{0, v22}];
   [v14 addObjectsFromArray:v23];
 
@@ -1853,9 +1853,9 @@ LABEL_13:
   v38 = v26;
   v39 = v25;
   [v14 enumerateObjectsUsingBlock:v37];
-  if (a6)
+  if (items)
   {
-    *a6 = [v14 copy];
+    *items = [v14 copy];
   }
 
   if (!v19)
@@ -1864,7 +1864,7 @@ LABEL_13:
   }
 
   v27 = objc_opt_new();
-  if (a7)
+  if (colors)
   {
     [MEMORY[0x277D75348] systemGrayColor];
   }
@@ -1879,16 +1879,16 @@ LABEL_13:
   v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"@sum.%@", @"totalUsage"];
   v30 = [v14 valueForKeyPath:v29];
 
-  if (a4 > 2)
+  if (type > 2)
   {
-    if (a4 == 3)
+    if (type == 3)
     {
       v31 = MEMORY[0x277CCABB0];
       [(STUsageReport *)self totalCategoryUsage];
       goto LABEL_43;
     }
 
-    if (a4 == 4)
+    if (type == 4)
     {
       v31 = MEMORY[0x277CCABB0];
       [(STUsageReport *)self totalWebUsage];
@@ -1898,14 +1898,14 @@ LABEL_13:
 
   else
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v31 = MEMORY[0x277CCABB0];
       [(STUsageReport *)self totalScreenTime];
       goto LABEL_43;
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       v31 = MEMORY[0x277CCABB0];
       [(STUsageReport *)self totalAppUsage];
@@ -1937,16 +1937,16 @@ void __98__STUsageReport_topUsageItemsWithMaxCount_type_includeAggregateItem_non
 - (STUsageReportGraphDataSet)screenTimeDataSet
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = [(STUsageReport *)self type];
+  type = [(STUsageReport *)self type];
   [(STUsageReport *)self maxScreenTime];
   v5 = v4;
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  [v6 maximumRangeOfUnit:128];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  [currentCalendar maximumRangeOfUnit:128];
   v8 = v7;
-  [v6 maximumRangeOfUnit:64];
+  [currentCalendar maximumRangeOfUnit:64];
   v10 = v8 * v9;
   v11 = v10 * 2uLL;
-  if (!v3 || (v12 = 0.0, v3 == 1) && (v12 = v10, v10 < v5))
+  if (!type || (v12 = 0.0, type == 1) && (v12 = v10, v10 < v5))
   {
     v13 = v11 * ceil(v5 / v11);
     if (v13 >= v11)
@@ -1960,22 +1960,22 @@ void __98__STUsageReport_topUsageItemsWithMaxCount_type_includeAggregateItem_non
     }
   }
 
-  v14 = 2 * (v3 == 0);
-  if (v3 == 1)
+  v14 = 2 * (type == 0);
+  if (type == 1)
   {
     v14 = 1;
   }
 
   v48 = v14;
-  v49 = [(STUsageReport *)self screenTimeByStartOfDateInterval];
-  v46 = self;
-  v15 = [(STUsageReport *)self dateIntervals];
-  v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  screenTimeByStartOfDateInterval = [(STUsageReport *)self screenTimeByStartOfDateInterval];
+  selfCopy = self;
+  dateIntervals = [(STUsageReport *)self dateIntervals];
+  v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dateIntervals, "count")}];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v15;
+  obj = dateIntervals;
   v17 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v17)
   {
@@ -1993,20 +1993,20 @@ void __98__STUsageReport_topUsageItemsWithMaxCount_type_includeAggregateItem_non
         }
 
         v23 = *(*(&v51 + 1) + 8 * i);
-        v50 = [v23 startDate];
-        v24 = [v49 objectForKeyedSubscript:?];
+        startDate = [v23 startDate];
+        v24 = [screenTimeByStartOfDateInterval objectForKeyedSubscript:?];
         [v24 doubleValue];
         v26 = v25;
         v27 = v19;
         if (v25 > 0.0)
         {
           v28 = [STUsageReportGraphSegment alloc];
-          v29 = [MEMORY[0x277D75348] systemTealColor];
+          systemTealColor = [MEMORY[0x277D75348] systemTealColor];
           v30 = v18;
           v31 = v20;
           v32 = v16;
           v33 = v19;
-          v34 = [(STUsageReportGraphSegment *)v28 initWithAmount:v24 amountAsPercentageOfDataPointTotal:v29 color:1.0];
+          v34 = [(STUsageReportGraphSegment *)v28 initWithAmount:v24 amountAsPercentageOfDataPointTotal:systemTealColor color:1.0];
 
           v55 = v34;
           v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
@@ -2029,9 +2029,9 @@ void __98__STUsageReport_topUsageItemsWithMaxCount_type_includeAggregateItem_non
     while (v18);
   }
 
-  [(STUsageReport *)v46 totalScreenTime];
+  [(STUsageReport *)selfCopy totalScreenTime];
   v37 = v36;
-  [(STUsageReport *)v46 activePickupDateIntervals];
+  [(STUsageReport *)selfCopy activePickupDateIntervals];
   if (v38 <= 0.0)
   {
     v39 = 0.0;
@@ -2058,30 +2058,30 @@ void __98__STUsageReport_topUsageItemsWithMaxCount_type_includeAggregateItem_non
   return [(STUsageReport *)self _dataSetForItemType:6 trustIdentifier:0 includeIndicatorImageName:v3 useDarkColors:0];
 }
 
-- (id)dataSetWithUsageItem:(id)a3
+- (id)dataSetWithUsageItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 itemType];
-  v6 = [v4 trustIdentifier];
+  itemCopy = item;
+  itemType = [itemCopy itemType];
+  trustIdentifier = [itemCopy trustIdentifier];
 
-  v7 = [(STUsageReport *)self _dataSetForItemType:v5 trustIdentifier:v6 includeIndicatorImageName:0 useDarkColors:0];
+  v7 = [(STUsageReport *)self _dataSetForItemType:itemType trustIdentifier:trustIdentifier includeIndicatorImageName:0 useDarkColors:0];
 
   return v7;
 }
 
-- (id)_dataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4 includeIndicatorImageName:(BOOL)a5 useDarkColors:(BOOL)a6
+- (id)_dataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier includeIndicatorImageName:(BOOL)name useDarkColors:(BOOL)colors
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = a4;
-  if (a3 == 1)
+  colorsCopy = colors;
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (type == 1)
   {
     [STUsageReport _dataSetForItemType:a2 trustIdentifier:self includeIndicatorImageName:? useDarkColors:?];
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu-%@", a3, v11];
-  v13 = [(STUsageReport *)self dataSetByUsageIdentifier];
-  v14 = [v13 objectForKey:v12];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu-%@", type, identifierCopy];
+  dataSetByUsageIdentifier = [(STUsageReport *)self dataSetByUsageIdentifier];
+  v14 = [dataSetByUsageIdentifier objectForKey:identifierCopy];
 
   if (v14)
   {
@@ -2089,24 +2089,24 @@ void __98__STUsageReport_topUsageItemsWithMaxCount_type_includeAggregateItem_non
     goto LABEL_17;
   }
 
-  if (a3 - 2 < 3)
+  if (type - 2 < 3)
   {
-    if (v11)
+    if (identifierCopy)
     {
-      [(STUsageReport *)self _timedDataSetForItemType:a3 trustIdentifier:v11];
+      [(STUsageReport *)self _timedDataSetForItemType:type trustIdentifier:identifierCopy];
     }
 
     else
     {
-      [(STUsageReport *)self _timedDataSetForItemType:a3 useDarkColors:v6];
+      [(STUsageReport *)self _timedDataSetForItemType:type useDarkColors:colorsCopy];
     }
     v16 = ;
     goto LABEL_14;
   }
 
-  if (a3 - 5 < 2)
+  if (type - 5 < 2)
   {
-    v16 = [(STUsageReport *)self _countedDataSetForItemType:a3 trustIdentifier:v11 includeIndicatorImageName:v7];
+    v16 = [(STUsageReport *)self _countedDataSetForItemType:type trustIdentifier:identifierCopy includeIndicatorImageName:nameCopy];
 LABEL_14:
     v15 = v16;
     if (!v16)
@@ -2114,15 +2114,15 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    v17 = [(STUsageReport *)self dataSetByUsageIdentifier];
-    [v17 setObject:v15 forKey:v12];
+    dataSetByUsageIdentifier2 = [(STUsageReport *)self dataSetByUsageIdentifier];
+    [dataSetByUsageIdentifier2 setObject:v15 forKey:identifierCopy];
     goto LABEL_16;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"STUsageReport.m" lineNumber:815 description:{@"Cannot generate data set for %ld", 1}];
+    dataSetByUsageIdentifier2 = [MEMORY[0x277CCA890] currentHandler];
+    [dataSetByUsageIdentifier2 handleFailureInMethod:a2 object:self file:@"STUsageReport.m" lineNumber:815 description:{@"Cannot generate data set for %ld", 1}];
     v15 = 0;
 LABEL_16:
 
@@ -2135,95 +2135,95 @@ LABEL_17:
   return v15;
 }
 
-- (id)_countedDataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4 includeIndicatorImageName:(BOOL)a5
+- (id)_countedDataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier includeIndicatorImageName:(BOOL)name
 {
-  v5 = a5;
+  nameCopy = name;
   v84 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (a3 - 1 < 4)
+  identifierCopy = identifier;
+  if (type - 1 < 4)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"STUsageReport.m" lineNumber:877 description:{@"Cannot generate counted data set for %ld", a3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STUsageReport.m" lineNumber:877 description:{@"Cannot generate counted data set for %ld", type}];
 
 LABEL_3:
-    v69 = 0;
-    v70 = 0;
-    v11 = 0;
+    pickupsByStartOfDateInterval = 0;
+    systemTealColor = 0;
+    systemGrayColor = 0;
     v67 = 0;
-    v12 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_4;
   }
 
-  if (a3 == 6)
+  if (type == 6)
   {
-    v70 = [MEMORY[0x277D75348] systemTealColor];
-    if (v9)
+    systemTealColor = [MEMORY[0x277D75348] systemTealColor];
+    if (identifierCopy)
     {
-      v55 = [(STUsageReport *)self pickupsByTrustIdentifier];
-      v56 = [v55 objectForKeyedSubscript:v9];
-      v57 = [v56 totalUsage];
-      v12 = [v57 unsignedIntegerValue];
+      pickupsByTrustIdentifier = [(STUsageReport *)self pickupsByTrustIdentifier];
+      v56 = [pickupsByTrustIdentifier objectForKeyedSubscript:identifierCopy];
+      totalUsage = [v56 totalUsage];
+      unsignedIntegerValue = [totalUsage unsignedIntegerValue];
     }
 
     else
     {
-      v12 = [(STUsageReport *)self totalPickups];
+      unsignedIntegerValue = [(STUsageReport *)self totalPickups];
     }
 
     v58 = @"PickupArrowSmall";
-    if (!v5)
+    if (!nameCopy)
     {
       v58 = 0;
     }
 
     v67 = v58;
-    v11 = [MEMORY[0x277D75348] systemGrayColor];
-    if (v9)
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    if (identifierCopy)
     {
-      v59 = [(STUsageReport *)self pickupsByStartOfDateIntervalByTrustIdentifier];
-      v69 = [v59 objectForKeyedSubscript:v9];
+      pickupsByStartOfDateIntervalByTrustIdentifier = [(STUsageReport *)self pickupsByStartOfDateIntervalByTrustIdentifier];
+      pickupsByStartOfDateInterval = [pickupsByStartOfDateIntervalByTrustIdentifier objectForKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      v69 = [(STUsageReport *)self pickupsByStartOfDateInterval];
+      pickupsByStartOfDateInterval = [(STUsageReport *)self pickupsByStartOfDateInterval];
     }
   }
 
   else
   {
-    if (a3 != 5)
+    if (type != 5)
     {
       goto LABEL_3;
     }
 
-    v70 = [MEMORY[0x277D75348] systemRedColor];
-    if (v9)
+    systemTealColor = [MEMORY[0x277D75348] systemRedColor];
+    if (identifierCopy)
     {
-      v15 = [(STUsageReport *)self notificationsByTrustIdentifier];
-      v16 = [v15 objectForKeyedSubscript:v9];
-      v17 = [v16 totalUsage];
-      v12 = [v17 unsignedIntegerValue];
+      notificationsByTrustIdentifier = [(STUsageReport *)self notificationsByTrustIdentifier];
+      v16 = [notificationsByTrustIdentifier objectForKeyedSubscript:identifierCopy];
+      totalUsage2 = [v16 totalUsage];
+      unsignedIntegerValue = [totalUsage2 unsignedIntegerValue];
 
-      v18 = [(STUsageReport *)self notificationsByStartOfDateIntervalByTrustIdentifier];
-      v69 = [v18 objectForKeyedSubscript:v9];
+      notificationsByStartOfDateIntervalByTrustIdentifier = [(STUsageReport *)self notificationsByStartOfDateIntervalByTrustIdentifier];
+      pickupsByStartOfDateInterval = [notificationsByStartOfDateIntervalByTrustIdentifier objectForKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      v12 = [(STUsageReport *)self totalNotifications];
-      v69 = [(STUsageReport *)self notificationsByStartOfDateInterval];
+      unsignedIntegerValue = [(STUsageReport *)self totalNotifications];
+      pickupsByStartOfDateInterval = [(STUsageReport *)self notificationsByStartOfDateInterval];
     }
 
-    v11 = 0;
+    systemGrayColor = 0;
     v67 = 0;
   }
 
 LABEL_4:
-  v13 = [(STUsageReport *)self type];
-  if (v13)
+  type = [(STUsageReport *)self type];
+  if (type)
   {
-    if (v13 != 1)
+    if (type != 1)
     {
       v65 = 0;
       v68 = 0;
@@ -2245,15 +2245,15 @@ LABEL_4:
 
   v68 = v14;
 LABEL_14:
-  v19 = [(STUsageReport *)self dateIntervals];
-  v72 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v19, "count")}];
+  dateIntervals = [(STUsageReport *)self dateIntervals];
+  v72 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dateIntervals, "count")}];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v20 = v19;
+  v20 = dateIntervals;
   v21 = [v20 countByEnumeratingWithState:&v77 objects:v83 count:16];
-  v71 = a3;
+  typeCopy = type;
   obj = v20;
   if (!v21)
   {
@@ -2262,10 +2262,10 @@ LABEL_14:
   }
 
   v22 = v21;
-  v60 = v11;
-  v61 = v12;
-  v62 = self;
-  v63 = v9;
+  v60 = systemGrayColor;
+  v61 = unsignedIntegerValue;
+  selfCopy = self;
+  v63 = identifierCopy;
   v23 = 0;
   v24 = *v78;
   do
@@ -2278,22 +2278,22 @@ LABEL_14:
       }
 
       v26 = *(*(&v77 + 1) + 8 * i);
-      v27 = [v26 startDate];
-      v28 = [v69 objectForKeyedSubscript:v27];
-      v29 = [v28 totalUsage];
-      v30 = [v29 unsignedIntegerValue];
+      startDate = [v26 startDate];
+      v28 = [pickupsByStartOfDateInterval objectForKeyedSubscript:startDate];
+      totalUsage3 = [v28 totalUsage];
+      unsignedIntegerValue2 = [totalUsage3 unsignedIntegerValue];
 
-      v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v30];
-      if (v23 <= v30)
+      v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2];
+      if (v23 <= unsignedIntegerValue2)
       {
-        v23 = v30;
+        v23 = unsignedIntegerValue2;
       }
 
-      v32 = [[STUsageReportGraphSegment alloc] initWithAmount:v31 amountAsPercentageOfDataPointTotal:v70 color:1.0];
+      v32 = [[STUsageReportGraphSegment alloc] initWithAmount:v31 amountAsPercentageOfDataPointTotal:systemTealColor color:1.0];
       v33 = [STUsageReportGraphDataPoint alloc];
       v82 = v32;
       v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
-      v35 = [(STUsageReportGraphDataPoint *)v33 initWithTimePeriod:v68 itemType:v71 dateInterval:v26 total:v31 totalAsPercentageOfMax:v34 segments:0.0];
+      v35 = [(STUsageReportGraphDataPoint *)v33 initWithTimePeriod:v68 itemType:typeCopy dateInterval:v26 total:v31 totalAsPercentageOfMax:v34 segments:0.0];
 
       [v72 addObject:v35];
     }
@@ -2306,10 +2306,10 @@ LABEL_14:
   if (!v23)
   {
     v39 = 10;
-    self = v62;
-    v9 = v63;
-    v11 = v60;
-    v12 = v61;
+    self = selfCopy;
+    identifierCopy = v63;
+    systemGrayColor = v60;
+    unsignedIntegerValue = v61;
     goto LABEL_48;
   }
 
@@ -2319,8 +2319,8 @@ LABEL_14:
   v74 = 0u;
   v20 = v72;
   v36 = [v20 countByEnumeratingWithState:&v73 objects:v81 count:16];
-  self = v62;
-  v11 = v60;
+  self = selfCopy;
+  systemGrayColor = v60;
   if (!v36)
   {
     v39 = 10 * (v23 / 0xA) + 10;
@@ -2340,16 +2340,16 @@ LABEL_14:
       }
 
       v41 = *(*(&v73 + 1) + 8 * j);
-      v42 = [v41 total];
-      v43 = [v42 unsignedIntegerValue];
+      total = [v41 total];
+      unsignedIntegerValue3 = [total unsignedIntegerValue];
 
-      [v41 setTotalAsPercentageOfMax:v43 / v39];
+      [v41 setTotalAsPercentageOfMax:unsignedIntegerValue3 / v39];
       if (!v67)
       {
         goto LABEL_39;
       }
 
-      if (v43)
+      if (unsignedIntegerValue3)
       {
         v44 = v65;
       }
@@ -2359,7 +2359,7 @@ LABEL_14:
         v44 = 0;
       }
 
-      if (v43 == v39)
+      if (unsignedIntegerValue3 == v39)
       {
         v45 = v64;
       }
@@ -2373,8 +2373,8 @@ LABEL_14:
       {
         [v41 setIndicatorImageName:v67];
 
-        [v41 setIndicatorImageColor:v11];
-        v11 = 0;
+        [v41 setIndicatorImageColor:systemGrayColor];
+        systemGrayColor = 0;
 LABEL_39:
         v67 = 0;
         continue;
@@ -2386,8 +2386,8 @@ LABEL_39:
 
   while (v37);
 LABEL_46:
-  v9 = v63;
-  v12 = v61;
+  identifierCopy = v63;
+  unsignedIntegerValue = v61;
 LABEL_47:
 
 LABEL_48:
@@ -2396,7 +2396,7 @@ LABEL_48:
   v48 = 0.0;
   if (v46 > 0.0)
   {
-    v48 = v12 / v46;
+    v48 = unsignedIntegerValue / v46;
   }
 
   if (v39)
@@ -2405,91 +2405,91 @@ LABEL_48:
   }
 
   v49 = [STUsageReportGraphDataSet alloc];
-  v50 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
+  v50 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
   v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v39];
   v52 = [MEMORY[0x277CCABB0] numberWithDouble:v48];
-  v53 = [(STUsageReportGraphDataSet *)v49 initWithTimePeriod:v68 itemType:v71 total:v50 max:v51 average:v52 averageAsPercentageOfMax:v72 dataPoints:v47];
+  v53 = [(STUsageReportGraphDataSet *)v49 initWithTimePeriod:v68 itemType:typeCopy total:v50 max:v51 average:v52 averageAsPercentageOfMax:v72 dataPoints:v47];
 
   return v53;
 }
 
-- (id)_timedDataSetForItemType:(unint64_t)a3 useDarkColors:(BOOL)a4
+- (id)_timedDataSetForItemType:(unint64_t)type useDarkColors:(BOOL)colors
 {
-  v69 = a4;
-  v4 = self;
+  colorsCopy = colors;
+  selfCopy3 = self;
   v73 = 0;
   v112[2] = *MEMORY[0x277D85DE8];
-  if (a3 > 6)
+  if (type > 6)
   {
     v77 = 0;
   }
 
   else
   {
-    if (((1 << a3) & 0x62) != 0)
+    if (((1 << type) & 0x62) != 0)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      v4 = self;
-      [v14 handleFailureInMethod:a2 object:self file:@"STUsageReport.m" lineNumber:958 description:{@"Cannot generate timed data set for %ld", a3}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      selfCopy3 = self;
+      [currentHandler handleFailureInMethod:a2 object:self file:@"STUsageReport.m" lineNumber:958 description:{@"Cannot generate timed data set for %ld", type}];
 
       v73 = 0;
       v77 = 0;
       goto LABEL_33;
     }
 
-    if (((1 << a3) & 0x14) != 0)
+    if (((1 << type) & 0x14) != 0)
     {
       v111[0] = &unk_28769D6D0;
-      v5 = [(STUsageReport *)self appUsageByStartOfDateInterval];
-      v6 = v5;
-      if (!v5)
+      appUsageByStartOfDateInterval = [(STUsageReport *)self appUsageByStartOfDateInterval];
+      v6 = appUsageByStartOfDateInterval;
+      if (!appUsageByStartOfDateInterval)
       {
         v6 = objc_opt_new();
       }
 
       v111[1] = &unk_28769D6E8;
       v112[0] = v6;
-      v7 = [(STUsageReport *)self webUsageByStartOfDateInterval];
-      v8 = v7;
-      if (!v7)
+      webUsageByStartOfDateInterval = [(STUsageReport *)self webUsageByStartOfDateInterval];
+      v8 = webUsageByStartOfDateInterval;
+      if (!webUsageByStartOfDateInterval)
       {
         v8 = objc_opt_new();
       }
 
       v112[1] = v8;
       v77 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v112 forKeys:v111 count:2];
-      if (!v7)
+      if (!webUsageByStartOfDateInterval)
       {
       }
 
-      if (!v5)
+      if (!appUsageByStartOfDateInterval)
       {
       }
 
       v109[0] = &unk_28769D6D0;
-      v9 = [(STUsageReport *)self applicationUsageByStartOfDateIntervalByTrustIdentifier];
-      v10 = v9;
-      if (!v9)
+      applicationUsageByStartOfDateIntervalByTrustIdentifier = [(STUsageReport *)self applicationUsageByStartOfDateIntervalByTrustIdentifier];
+      v10 = applicationUsageByStartOfDateIntervalByTrustIdentifier;
+      if (!applicationUsageByStartOfDateIntervalByTrustIdentifier)
       {
         v10 = objc_opt_new();
       }
 
       v109[1] = &unk_28769D6E8;
       v110[0] = v10;
-      v11 = [(STUsageReport *)self webUsageByStartOfDateIntervalByTrustIdentifier];
-      v12 = v11;
-      if (!v11)
+      webUsageByStartOfDateIntervalByTrustIdentifier = [(STUsageReport *)self webUsageByStartOfDateIntervalByTrustIdentifier];
+      v12 = webUsageByStartOfDateIntervalByTrustIdentifier;
+      if (!webUsageByStartOfDateIntervalByTrustIdentifier)
       {
         v12 = objc_opt_new();
       }
 
       v110[1] = v12;
       v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v110 forKeys:v109 count:2];
-      if (!v11)
+      if (!webUsageByStartOfDateIntervalByTrustIdentifier)
       {
       }
 
-      if (!v9)
+      if (!applicationUsageByStartOfDateIntervalByTrustIdentifier)
       {
       }
     }
@@ -2497,54 +2497,54 @@ LABEL_48:
     else
     {
       v77 = 0;
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_33;
       }
 
       v107 = &unk_28769D700;
-      v15 = [(STUsageReport *)self categoryUsageByStartOfDateInterval];
-      v16 = v15;
-      if (!v15)
+      categoryUsageByStartOfDateInterval = [(STUsageReport *)self categoryUsageByStartOfDateInterval];
+      v16 = categoryUsageByStartOfDateInterval;
+      if (!categoryUsageByStartOfDateInterval)
       {
         v16 = objc_opt_new();
       }
 
       v108 = v16;
       v77 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-      if (!v15)
+      if (!categoryUsageByStartOfDateInterval)
       {
       }
 
       v105 = &unk_28769D700;
-      v17 = [(STUsageReport *)self categoryUsageByStartOfDateIntervalByTrustIdentifier];
-      v18 = v17;
-      if (!v17)
+      categoryUsageByStartOfDateIntervalByTrustIdentifier = [(STUsageReport *)self categoryUsageByStartOfDateIntervalByTrustIdentifier];
+      v18 = categoryUsageByStartOfDateIntervalByTrustIdentifier;
+      if (!categoryUsageByStartOfDateIntervalByTrustIdentifier)
       {
         v18 = objc_opt_new();
       }
 
       v106 = v18;
       v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v106 forKeys:&v105 count:1];
-      if (!v17)
+      if (!categoryUsageByStartOfDateIntervalByTrustIdentifier)
       {
       }
     }
 
-    v4 = self;
+    selfCopy3 = self;
   }
 
 LABEL_33:
-  v19 = [(STUsageReport *)v4 type];
-  v20 = 2 * (v19 == 0);
-  if (v19 == 1)
+  type = [(STUsageReport *)selfCopy3 type];
+  v20 = 2 * (type == 0);
+  if (type == 1)
   {
     v20 = 1;
   }
 
   v76 = v20;
   v72 = +[STUsageColors orderedUsageColors];
-  v71 = [(STUsageReport *)self topUsageItemsWithMaxCount:3 type:a3 includeAggregateItem:0 nonAggregateItems:0 darkColors:v69];
+  v71 = [(STUsageReport *)self topUsageItemsWithMaxCount:3 type:type includeAggregateItem:0 nonAggregateItems:0 darkColors:colorsCopy];
   v21 = [v71 count];
   v22 = [v72 count];
   if (v21 >= v22)
@@ -2563,18 +2563,18 @@ LABEL_33:
   }
 
   v70 = v23;
-  v24 = [(STUsageReport *)self dateIntervals];
-  v78 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v24, "count")}];
+  dateIntervals = [(STUsageReport *)self dateIntervals];
+  v78 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dateIntervals, "count")}];
   [(STUsageReport *)self maxScreenTime];
   v26 = v25;
-  v27 = [(STUsageReport *)self type];
-  v28 = [MEMORY[0x277CBEA80] currentCalendar];
-  [v28 maximumRangeOfUnit:128];
+  type2 = [(STUsageReport *)self type];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  [currentCalendar maximumRangeOfUnit:128];
   v30 = v29;
-  [v28 maximumRangeOfUnit:64];
+  [currentCalendar maximumRangeOfUnit:64];
   v32 = v30 * v31;
   v33 = v32 * 2uLL;
-  if (!v27 || (v34 = 0.0, v27 == 1) && (v34 = v30 * v31, v32 < v26))
+  if (!type2 || (v34 = 0.0, type2 == 1) && (v34 = v30 * v31, v32 < v26))
   {
     v35 = v33 * ceil(v26 / v33);
     if (v35 >= v33)
@@ -2592,7 +2592,7 @@ LABEL_33:
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  obj = v24;
+  obj = dateIntervals;
   v36 = [obj countByEnumeratingWithState:&v100 objects:v104 count:16];
   if (v36)
   {
@@ -2607,9 +2607,9 @@ LABEL_33:
         }
 
         v38 = *(*(&v100 + 1) + 8 * i);
-        v39 = [v38 startDate];
-        v40 = [(STUsageReport *)self screenTimeByStartOfDateInterval];
-        v41 = [v40 objectForKeyedSubscript:v39];
+        startDate = [v38 startDate];
+        screenTimeByStartOfDateInterval = [(STUsageReport *)self screenTimeByStartOfDateInterval];
+        v41 = [screenTimeByStartOfDateInterval objectForKeyedSubscript:startDate];
         [v41 doubleValue];
         v43 = v42;
 
@@ -2622,7 +2622,7 @@ LABEL_33:
         v93[2] = __56__STUsageReport__timedDataSetForItemType_useDarkColors___block_invoke;
         v93[3] = &unk_279B7EA38;
         v95 = &v96;
-        v44 = v39;
+        v44 = startDate;
         v94 = v44;
         [v77 enumerateKeysAndObjectsUsingBlock:v93];
         v45 = v97[3];
@@ -2658,7 +2658,7 @@ LABEL_33:
           {
             v50 = v49 - v48;
             v51 = [MEMORY[0x277CCABB0] numberWithDouble:v49 - v48];
-            if (v69)
+            if (colorsCopy)
             {
               [MEMORY[0x277D75348] systemGrayColor];
             }
@@ -2687,7 +2687,7 @@ LABEL_33:
 
         v55 = [STUsageReportGraphDataPoint alloc];
         v56 = [MEMORY[0x277CCABB0] numberWithDouble:v43];
-        v57 = [(STUsageReportGraphDataPoint *)v55 initWithTimePeriod:v76 itemType:a3 dateInterval:v38 total:v56 totalAsPercentageOfMax:v46 segments:v54];
+        v57 = [(STUsageReportGraphDataPoint *)v55 initWithTimePeriod:v76 itemType:type dateInterval:v38 total:v56 totalAsPercentageOfMax:v46 segments:v54];
 
         [v78 addObject:v57];
         _Block_object_dispose(&v96, 8);
@@ -2726,7 +2726,7 @@ LABEL_33:
   v64 = [MEMORY[0x277CCABB0] numberWithDouble:v59];
   v65 = [MEMORY[0x277CCABB0] numberWithDouble:v34];
   v66 = [MEMORY[0x277CCABB0] numberWithDouble:v61];
-  v67 = [(STUsageReportGraphDataSet *)v63 initWithTimePeriod:v76 itemType:a3 total:v64 max:v65 average:v66 averageAsPercentageOfMax:v78 dataPoints:v62];
+  v67 = [(STUsageReportGraphDataSet *)v63 initWithTimePeriod:v76 itemType:type total:v64 max:v65 average:v66 averageAsPercentageOfMax:v78 dataPoints:v62];
 
   return v67;
 }
@@ -2776,84 +2776,84 @@ void __56__STUsageReport__timedDataSetForItemType_useDarkColors___block_invoke_2
   }
 }
 
-- (id)_timedDataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4
+- (id)_timedDataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier
 {
   v86 = *MEMORY[0x277D85DE8];
-  v73 = a4;
+  identifierCopy = identifier;
   v75 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
-        v7 = [(STUsageReport *)self applicationUsageByTrustIdentifier];
-        v8 = [(STUsageReport *)self applicationUsageByStartOfDateIntervalByTrustIdentifier];
+        applicationUsageByTrustIdentifier = [(STUsageReport *)self applicationUsageByTrustIdentifier];
+        applicationUsageByStartOfDateIntervalByTrustIdentifier = [(STUsageReport *)self applicationUsageByStartOfDateIntervalByTrustIdentifier];
       }
 
       else
       {
-        v7 = 0;
-        if (a3 != 3)
+        applicationUsageByTrustIdentifier = 0;
+        if (type != 3)
         {
           goto LABEL_12;
         }
 
-        v7 = [(STUsageReport *)self categoryUsageByTrustIdentifier];
-        v8 = [(STUsageReport *)self categoryUsageByStartOfDateIntervalByTrustIdentifier];
+        applicationUsageByTrustIdentifier = [(STUsageReport *)self categoryUsageByTrustIdentifier];
+        applicationUsageByStartOfDateIntervalByTrustIdentifier = [(STUsageReport *)self categoryUsageByStartOfDateIntervalByTrustIdentifier];
       }
 
       goto LABEL_11;
     }
 
 LABEL_7:
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"STUsageReport.m" lineNumber:1071 description:{@"Cannot generate timed data set for %ld", a3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STUsageReport.m" lineNumber:1071 description:{@"Cannot generate timed data set for %ld", type}];
 
     v75 = 0;
-    v7 = 0;
+    applicationUsageByTrustIdentifier = 0;
     goto LABEL_12;
   }
 
-  if (a3 - 5 < 2)
+  if (type - 5 < 2)
   {
     goto LABEL_7;
   }
 
-  v7 = 0;
-  if (a3 != 4)
+  applicationUsageByTrustIdentifier = 0;
+  if (type != 4)
   {
     goto LABEL_12;
   }
 
-  v7 = [(STUsageReport *)self webUsageByTrustIdentifier];
-  v8 = [(STUsageReport *)self webUsageByStartOfDateIntervalByTrustIdentifier];
+  applicationUsageByTrustIdentifier = [(STUsageReport *)self webUsageByTrustIdentifier];
+  applicationUsageByStartOfDateIntervalByTrustIdentifier = [(STUsageReport *)self webUsageByStartOfDateIntervalByTrustIdentifier];
 LABEL_11:
-  v75 = v8;
+  v75 = applicationUsageByStartOfDateIntervalByTrustIdentifier;
 LABEL_12:
-  v10 = [(STUsageReport *)self type];
-  v11 = 2 * (v10 == 0);
-  if (v10 == 1)
+  type = [(STUsageReport *)self type];
+  v11 = 2 * (type == 0);
+  if (type == 1)
   {
     v11 = 1;
   }
 
   v72 = v11;
-  v70 = [MEMORY[0x277D75348] systemBlueColor];
-  v12 = [(STUsageReport *)self dateIntervals];
-  v74 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v12, "count")}];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  dateIntervals = [(STUsageReport *)self dateIntervals];
+  v74 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dateIntervals, "count")}];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v13 = v12;
+  v13 = dateIntervals;
   v14 = [v13 countByEnumeratingWithState:&v80 objects:v85 count:16];
   obj = v13;
   if (v14)
   {
     v15 = v14;
-    v68 = self;
-    v69 = v7;
+    selfCopy = self;
+    v69 = applicationUsageByTrustIdentifier;
     v16 = *v81;
     v17 = 0.0;
     do
@@ -2866,12 +2866,12 @@ LABEL_12:
         }
 
         v19 = *(*(&v80 + 1) + 8 * i);
-        v20 = [v19 startDate];
-        v21 = [v75 objectForKeyedSubscript:v73];
-        v22 = [v21 objectForKeyedSubscript:v20];
-        v23 = [v22 totalUsage];
+        startDate = [v19 startDate];
+        v21 = [v75 objectForKeyedSubscript:identifierCopy];
+        v22 = [v21 objectForKeyedSubscript:startDate];
+        totalUsage = [v22 totalUsage];
 
-        [v23 doubleValue];
+        [totalUsage doubleValue];
         v25 = v24;
         if (v17 < v24)
         {
@@ -2881,11 +2881,11 @@ LABEL_12:
         v26 = objc_opt_new();
         if (v25 > 0.0)
         {
-          v27 = [[STUsageReportGraphSegment alloc] initWithAmount:v23 amountAsPercentageOfDataPointTotal:v70 color:1.0];
+          v27 = [[STUsageReportGraphSegment alloc] initWithAmount:totalUsage amountAsPercentageOfDataPointTotal:systemBlueColor color:1.0];
           [v26 addObject:v27];
         }
 
-        v28 = [[STUsageReportGraphDataPoint alloc] initWithTimePeriod:v72 itemType:a3 dateInterval:v19 total:v23 totalAsPercentageOfMax:v26 segments:0.0];
+        v28 = [[STUsageReportGraphDataPoint alloc] initWithTimePeriod:v72 itemType:type dateInterval:v19 total:totalUsage totalAsPercentageOfMax:v26 segments:0.0];
         [v74 addObject:v28];
       }
 
@@ -2896,19 +2896,19 @@ LABEL_12:
 
     if (v17 != 0.0)
     {
-      self = v68;
-      v38 = [(STUsageReport *)v68 type];
-      v39 = [MEMORY[0x277CBEA80] currentCalendar];
-      [v39 maximumRangeOfUnit:128];
+      self = selfCopy;
+      type2 = [(STUsageReport *)selfCopy type];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      [currentCalendar maximumRangeOfUnit:128];
       v41 = v40;
-      [v39 maximumRangeOfUnit:64];
+      [currentCalendar maximumRangeOfUnit:64];
       v43 = v41 * v42;
       v44 = v43 * 2uLL;
-      if (v38)
+      if (type2)
       {
         v36 = 0.0;
-        v7 = v69;
-        if (v38 == 1)
+        applicationUsageByTrustIdentifier = v69;
+        if (type2 == 1)
         {
           v36 = v43;
           if (v43 < v17)
@@ -2940,15 +2940,15 @@ LABEL_12:
           v36 = v44;
         }
 
-        v7 = v69;
+        applicationUsageByTrustIdentifier = v69;
       }
 
       v78 = 0u;
       v79 = 0u;
       v76 = 0u;
       v77 = 0u;
-      v30 = v74;
-      v47 = [v30 countByEnumeratingWithState:&v76 objects:v84 count:16];
+      currentCalendar2 = v74;
+      v47 = [currentCalendar2 countByEnumeratingWithState:&v76 objects:v84 count:16];
       if (v47)
       {
         v48 = v47;
@@ -2959,18 +2959,18 @@ LABEL_12:
           {
             if (*v77 != v49)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(currentCalendar2);
             }
 
             v51 = *(*(&v76 + 1) + 8 * j);
-            v52 = [v51 total];
-            [v52 doubleValue];
+            total = [v51 total];
+            [total doubleValue];
             v54 = v53;
 
             [v51 setTotalAsPercentageOfMax:v54 / v36];
           }
 
-          v48 = [v30 countByEnumeratingWithState:&v76 objects:v84 count:16];
+          v48 = [currentCalendar2 countByEnumeratingWithState:&v76 objects:v84 count:16];
         }
 
         while (v48);
@@ -2979,8 +2979,8 @@ LABEL_12:
       goto LABEL_52;
     }
 
-    self = v68;
-    v7 = v69;
+    self = selfCopy;
+    applicationUsageByTrustIdentifier = v69;
   }
 
   else
@@ -2989,20 +2989,20 @@ LABEL_12:
     v17 = 0.0;
   }
 
-  v29 = [(STUsageReport *)self type];
-  v30 = [MEMORY[0x277CBEA80] currentCalendar];
-  [v30 maximumRangeOfUnit:128];
+  type3 = [(STUsageReport *)self type];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  [currentCalendar2 maximumRangeOfUnit:128];
   v32 = v31;
-  [v30 maximumRangeOfUnit:64];
+  [currentCalendar2 maximumRangeOfUnit:64];
   v34 = v32 * v33;
   v35 = v34 * 2uLL;
-  if (!v29)
+  if (!type3)
   {
     goto LABEL_31;
   }
 
   v36 = 0.0;
-  if (v29 == 1)
+  if (type3 == 1)
   {
     if (v34 < v17)
     {
@@ -3026,9 +3026,9 @@ LABEL_31:
 
 LABEL_52:
 
-  v55 = [v7 objectForKeyedSubscript:v73];
-  v56 = [v55 totalUsage];
-  [v56 doubleValue];
+  v55 = [applicationUsageByTrustIdentifier objectForKeyedSubscript:identifierCopy];
+  totalUsage2 = [v55 totalUsage];
+  [totalUsage2 doubleValue];
   v58 = v57;
 
   [(STUsageReport *)self activePickupDateIntervals];
@@ -3056,7 +3056,7 @@ LABEL_52:
   v63 = [MEMORY[0x277CCABB0] numberWithDouble:v58];
   v64 = [MEMORY[0x277CCABB0] numberWithDouble:v36];
   v65 = [MEMORY[0x277CCABB0] numberWithDouble:v60];
-  v66 = [(STUsageReportGraphDataSet *)v62 initWithTimePeriod:v72 itemType:a3 total:v63 max:v64 average:v65 averageAsPercentageOfMax:v74 dataPoints:v61];
+  v66 = [(STUsageReportGraphDataSet *)v62 initWithTimePeriod:v72 itemType:type total:v63 max:v64 average:v65 averageAsPercentageOfMax:v74 dataPoints:v61];
 
   return v66;
 }

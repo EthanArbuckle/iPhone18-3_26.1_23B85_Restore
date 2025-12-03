@@ -1,27 +1,27 @@
 @interface VSAccountChannelsCenter
-+ (id)_accountChannelsWithProviderID:(id)a3;
++ (id)_accountChannelsWithProviderID:(id)d;
 + (id)sharedCenter;
-+ (void)_startOperationAndWaitForCompletion:(id)a3;
++ (void)_startOperationAndWaitForCompletion:(id)completion;
 - (NSString)fileName;
 - (NSURL)directoryURL;
 - (NSURL)fileURL;
 - (NSUndoManager)undoManager;
 - (VSAccountChannelsCenter)init;
-- (VSAccountChannelsCenter)initWithAccountStore:(id)a3;
+- (VSAccountChannelsCenter)initWithAccountStore:(id)store;
 - (id)_removeLocallySavedAccountChannels;
 - (id)_removeSavedAccountChannels;
-- (id)_saveAccountChannels:(id)a3;
+- (id)_saveAccountChannels:(id)channels;
 - (id)_savedAccountChannels;
-- (id)_savedAccountChannelsForIdentityProviderID:(id)a3 storeIdentityProvider:(id)a4;
-- (id)_storeIdentityProviderForAccount:(id)a3;
+- (id)_savedAccountChannelsForIdentityProviderID:(id)d storeIdentityProvider:(id)provider;
+- (id)_storeIdentityProviderForAccount:(id)account;
 - (void)_enqueueRemoveSavedAccountChannelsAndWait;
-- (void)_enqueueSaveAccountChannelsAndWait:(id)a3;
+- (void)_enqueueSaveAccountChannelsAndWait:(id)wait;
 - (void)_removeLocallySavedAccountChannels;
-- (void)_removeSavedAccountChannelsWithCompletionHandler:(id)a3;
-- (void)_saveAccountChannels:(id)a3 withCompletionHandler:(id)a4;
+- (void)_removeSavedAccountChannelsWithCompletionHandler:(id)handler;
+- (void)_saveAccountChannels:(id)channels withCompletionHandler:(id)handler;
 - (void)_snapshotPreviousChannels;
-- (void)fetchAccountChannelsWithCompletionHandler:(id)a3;
-- (void)setUndoManager:(id)a3;
+- (void)fetchAccountChannelsWithCompletionHandler:(id)handler;
+- (void)setUndoManager:(id)manager;
 @end
 
 @implementation VSAccountChannelsCenter
@@ -36,10 +36,10 @@
   return 0;
 }
 
-- (VSAccountChannelsCenter)initWithAccountStore:(id)a3
+- (VSAccountChannelsCenter)initWithAccountStore:(id)store
 {
-  v5 = a3;
-  if (!v5)
+  storeCopy = store;
+  if (!storeCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The accountStore parameter must not be nil."];
   }
@@ -50,7 +50,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
     v8 = dispatch_queue_create("VSAccountChannelsCenter Serial Queue", 0);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v8;
@@ -82,26 +82,26 @@ void __39__VSAccountChannelsCenter_sharedCenter__block_invoke()
 
 - (void)_snapshotPreviousChannels
 {
-  v3 = [(VSAccountChannelsCenter *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v4 = [(VSAccountChannelsCenter *)self undoManager];
-  if (v4)
+  undoManager = [(VSAccountChannelsCenter *)self undoManager];
+  if (undoManager)
   {
-    v5 = [(VSAccountChannelsCenter *)self _savedAccountChannels];
+    _savedAccountChannels = [(VSAccountChannelsCenter *)self _savedAccountChannels];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __52__VSAccountChannelsCenter__snapshotPreviousChannels__block_invoke;
     v9[3] = &unk_278B748E8;
-    v10 = v4;
-    v11 = self;
+    v10 = undoManager;
+    selfCopy = self;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __52__VSAccountChannelsCenter__snapshotPreviousChannels__block_invoke_2;
     v6[3] = &unk_278B74910;
     v7 = v10;
-    v8 = self;
-    [v5 unwrapObject:v9 error:v6];
+    selfCopy2 = self;
+    [_savedAccountChannels unwrapObject:v9 error:v6];
   }
 }
 
@@ -120,30 +120,30 @@ void __52__VSAccountChannelsCenter__snapshotPreviousChannels__block_invoke_2(uin
   [v1 _enqueueRemoveSavedAccountChannelsAndWait];
 }
 
-- (id)_storeIdentityProviderForAccount:(id)a3
+- (id)_storeIdentityProviderForAccount:(id)account
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSAccountChannelsCenter *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  accountCopy = account;
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [v4 identityProviderID];
+  identityProviderID = [accountCopy identityProviderID];
 
-  v7 = [v6 forceUnwrapObject];
+  forceUnwrapObject = [identityProviderID forceUnwrapObject];
 
   v24 = 0;
   v8 = VSLoadInterfaceFramework(&v24);
   v9 = v24;
   if (v8)
   {
-    v10 = [objc_alloc(NSClassFromString(@"VSIdentityProviderFetchOperation")) initWithIdentityProviderID:v7];
+    v10 = [objc_alloc(NSClassFromString(@"VSIdentityProviderFetchOperation")) initWithIdentityProviderID:forceUnwrapObject];
     [v10 setFetchFromStoreOnly:1];
-    v11 = [(VSAccountChannelsCenter *)self identityProviderFetchOperationBlock];
+    identityProviderFetchOperationBlock = [(VSAccountChannelsCenter *)self identityProviderFetchOperationBlock];
 
-    if (v11)
+    if (identityProviderFetchOperationBlock)
     {
-      v12 = [(VSAccountChannelsCenter *)self identityProviderFetchOperationBlock];
-      v13 = v12[2]();
+      identityProviderFetchOperationBlock2 = [(VSAccountChannelsCenter *)self identityProviderFetchOperationBlock];
+      v13 = identityProviderFetchOperationBlock2[2]();
 
       v10 = v13;
     }
@@ -152,23 +152,23 @@ void __52__VSAccountChannelsCenter__snapshotPreviousChannels__block_invoke_2(uin
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v7;
+      v26 = forceUnwrapObject;
       _os_log_impl(&dword_23AB8E000, v14, OS_LOG_TYPE_DEFAULT, "Fetching store identity provider for ID: %@", buf, 0xCu);
     }
 
     [objc_opt_class() _startOperationAndWaitForCompletion:v10];
-    v15 = [v10 result];
-    v16 = [v15 forceUnwrapObject];
+    result = [v10 result];
+    forceUnwrapObject2 = [result forceUnwrapObject];
 
-    v17 = [v16 object];
+    object = [forceUnwrapObject2 object];
     v18 = VSDefaultLogObject();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-    if (v17)
+    if (object)
     {
       if (v19)
       {
         *buf = 138412290;
-        v26 = v7;
+        v26 = forceUnwrapObject;
         v20 = "Successfully fetched identity provider for ID: %@";
         v21 = v18;
         v22 = 12;
@@ -195,18 +195,18 @@ LABEL_14:
     [VSAccountChannelsCenter _storeIdentityProviderForAccount:];
   }
 
-  v17 = 0;
+  object = 0;
 LABEL_16:
 
-  return v17;
+  return object;
 }
 
-- (id)_savedAccountChannelsForIdentityProviderID:(id)a3 storeIdentityProvider:(id)a4
+- (id)_savedAccountChannelsForIdentityProviderID:(id)d storeIdentityProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSAccountChannelsCenter *)self serialQueue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  providerCopy = provider;
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v31 = 0;
   v32 = &v31;
@@ -214,32 +214,32 @@ LABEL_16:
   v34 = __Block_byref_object_copy__10;
   v35 = __Block_byref_object_dispose__10;
   v36 = 0;
-  v9 = [(VSAccountChannelsCenter *)self _savedAccountChannels];
+  _savedAccountChannels = [(VSAccountChannelsCenter *)self _savedAccountChannels];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __92__VSAccountChannelsCenter__savedAccountChannelsForIdentityProviderID_storeIdentityProvider___block_invoke;
   v27[3] = &unk_278B74938;
-  v29 = self;
+  selfCopy = self;
   v30 = &v31;
-  v28 = v6;
+  v28 = dCopy;
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __92__VSAccountChannelsCenter__savedAccountChannelsForIdentityProviderID_storeIdentityProvider___block_invoke_19;
   v23 = &unk_278B74960;
-  v24 = self;
+  selfCopy2 = self;
   v26 = &v31;
   v10 = v28;
   v25 = v10;
-  [v9 unwrapObject:v27 error:&v20];
+  [_savedAccountChannels unwrapObject:v27 error:&v20];
   v11 = v32[5];
-  v12 = [v7 uniqueID];
-  v13 = [v12 forceUnwrapObject];
-  [v11 setAdamID:v13];
+  uniqueID = [providerCopy uniqueID];
+  forceUnwrapObject = [uniqueID forceUnwrapObject];
+  [v11 setAdamID:forceUnwrapObject];
 
   v14 = v32[5];
-  v15 = [v7 providerInfo];
-  v16 = [v15 forceUnwrapObject];
-  [v14 setProviderInfo:v16];
+  providerInfo = [providerCopy providerInfo];
+  forceUnwrapObject2 = [providerInfo forceUnwrapObject];
+  [v14 setProviderInfo:forceUnwrapObject2];
 
   v17 = v32[5];
   if (!v17)
@@ -311,8 +311,8 @@ void __92__VSAccountChannelsCenter__savedAccountChannelsForIdentityProviderID_st
 - (id)_savedAccountChannels
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(VSAccountChannelsCenter *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -334,15 +334,15 @@ void __92__VSAccountChannelsCenter__savedAccountChannelsForIdentityProviderID_st
   v28 = __Block_byref_object_copy__10;
   v29 = __Block_byref_object_dispose__10;
   v30 = 0;
-  v5 = [(VSAccountChannelsCenter *)self accountStore];
-  v6 = [v5 firstAccount];
+  accountStore = [(VSAccountChannelsCenter *)self accountStore];
+  firstAccount = [accountStore firstAccount];
 
-  if (v6)
+  if (firstAccount)
   {
-    v7 = [(VSAccountChannelsCenter *)self accountStore];
-    v8 = [v7 firstAccount];
-    v9 = [v8 channelsData];
-    v10 = [VSOptional optionalWithObject:v9];
+    accountStore2 = [(VSAccountChannelsCenter *)self accountStore];
+    firstAccount2 = [accountStore2 firstAccount];
+    channelsData = [firstAccount2 channelsData];
+    v10 = [VSOptional optionalWithObject:channelsData];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -356,20 +356,20 @@ void __92__VSAccountChannelsCenter__savedAccountChannelsForIdentityProviderID_st
   v11 = *(*(&buf + 1) + 40);
   if (!v11)
   {
-    v12 = [(VSAccountChannelsCenter *)self fileURL];
+    fileURL = [(VSAccountChannelsCenter *)self fileURL];
     v13 = objc_alloc_init(VSFileReadOperation);
-    [(VSFileReadOperation *)v13 setSource:v12];
+    [(VSFileReadOperation *)v13 setSource:fileURL];
     v14 = VSDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *v31 = 138412290;
-      v32 = v12;
+      v32 = fileURL;
       _os_log_impl(&dword_23AB8E000, v14, OS_LOG_TYPE_DEFAULT, "Reading account channels archive at: %@", v31, 0xCu);
     }
 
     [objc_opt_class() _startOperationAndWaitForCompletion:v13];
-    v15 = [(VSFileReadOperation *)v13 result];
-    v16 = [v15 forceUnwrapObject];
+    result = [(VSFileReadOperation *)v13 result];
+    forceUnwrapObject = [result forceUnwrapObject];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -381,7 +381,7 @@ void __92__VSAccountChannelsCenter__savedAccountChannelsForIdentityProviderID_st
     v22[2] = __48__VSAccountChannelsCenter__savedAccountChannels__block_invoke_2;
     v22[3] = &unk_278B73450;
     v22[4] = &v25;
-    [v16 unwrapObject:v23 error:v22];
+    [forceUnwrapObject unwrapObject:v23 error:v22];
 
     v11 = *(*(&buf + 1) + 40);
   }
@@ -517,19 +517,19 @@ void __48__VSAccountChannelsCenter__savedAccountChannels__block_invoke_32(uint64
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Will enqueue removing saved account channels.", buf, 2u);
   }
 
-  v4 = [(VSAccountChannelsCenter *)self serialQueue];
-  dispatch_assert_queue_not_V2(v4);
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
+  dispatch_assert_queue_not_V2(serialQueue);
 
   v5 = objc_alloc_init(VSSemaphore);
-  v6 = [(VSAccountChannelsCenter *)self serialQueue];
+  serialQueue2 = [(VSAccountChannelsCenter *)self serialQueue];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __68__VSAccountChannelsCenter__enqueueRemoveSavedAccountChannelsAndWait__block_invoke;
   v11 = &unk_278B73708;
-  v12 = self;
+  selfCopy = self;
   v13 = v5;
   v7 = v5;
-  dispatch_async(v6, &v8);
+  dispatch_async(serialQueue2, &v8);
 
   [(VSSemaphore *)v7 wait:v8];
 }
@@ -545,8 +545,8 @@ uint64_t __68__VSAccountChannelsCenter__enqueueRemoveSavedAccountChannelsAndWait
 - (id)_removeSavedAccountChannels
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(VSAccountChannelsCenter *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -557,38 +557,38 @@ uint64_t __68__VSAccountChannelsCenter__enqueueRemoveSavedAccountChannelsAndWait
   }
 
   [(VSAccountChannelsCenter *)self _snapshotPreviousChannels];
-  v5 = [(VSAccountChannelsCenter *)self accountStore];
-  v6 = [v5 firstAccount];
+  accountStore = [(VSAccountChannelsCenter *)self accountStore];
+  firstAccount = [accountStore firstAccount];
 
-  if (v6)
+  if (firstAccount)
   {
-    v7 = [(VSAccountChannelsCenter *)self accountStore];
-    v8 = [v7 firstAccount];
-    [v8 setChannelsData:0];
+    accountStore2 = [(VSAccountChannelsCenter *)self accountStore];
+    firstAccount2 = [accountStore2 firstAccount];
+    [firstAccount2 setChannelsData:0];
   }
 
-  v9 = [(VSAccountChannelsCenter *)self _removeLocallySavedAccountChannels];
+  _removeLocallySavedAccountChannels = [(VSAccountChannelsCenter *)self _removeLocallySavedAccountChannels];
 
-  return v9;
+  return _removeLocallySavedAccountChannels;
 }
 
 - (id)_removeLocallySavedAccountChannels
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(VSAccountChannelsCenter *)self fileURL];
+  fileURL = [(VSAccountChannelsCenter *)self fileURL];
   v3 = objc_alloc_init(VSFileRemoveOperation);
-  [(VSFileRemoveOperation *)v3 setFileURL:v2];
+  [(VSFileRemoveOperation *)v3 setFileURL:fileURL];
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v2;
+    v9 = fileURL;
     _os_log_impl(&dword_23AB8E000, v4, OS_LOG_TYPE_DEFAULT, "Removing account channels archive at: %@", &v8, 0xCu);
   }
 
   [objc_opt_class() _startOperationAndWaitForCompletion:v3];
-  v5 = [(VSFileRemoveOperation *)v3 error];
-  if (v5)
+  error = [(VSFileRemoveOperation *)v3 error];
+  if (error)
   {
     v6 = VSErrorLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -607,12 +607,12 @@ uint64_t __68__VSAccountChannelsCenter__enqueueRemoveSavedAccountChannelsAndWait
     }
   }
 
-  return v5;
+  return error;
 }
 
-- (void)_enqueueSaveAccountChannelsAndWait:(id)a3
+- (void)_enqueueSaveAccountChannelsAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -620,21 +620,21 @@ uint64_t __68__VSAccountChannelsCenter__enqueueRemoveSavedAccountChannelsAndWait
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Will enqueue saving account channels.", buf, 2u);
   }
 
-  v6 = [(VSAccountChannelsCenter *)self serialQueue];
-  dispatch_assert_queue_not_V2(v6);
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
+  dispatch_assert_queue_not_V2(serialQueue);
 
   v7 = objc_alloc_init(VSSemaphore);
-  v8 = [(VSAccountChannelsCenter *)self serialQueue];
+  serialQueue2 = [(VSAccountChannelsCenter *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__VSAccountChannelsCenter__enqueueSaveAccountChannelsAndWait___block_invoke;
   block[3] = &unk_278B73A28;
   block[4] = self;
-  v12 = v4;
+  v12 = waitCopy;
   v13 = v7;
   v9 = v7;
-  v10 = v4;
-  dispatch_async(v8, block);
+  v10 = waitCopy;
+  dispatch_async(serialQueue2, block);
 
   [(VSSemaphore *)v9 wait];
 }
@@ -647,12 +647,12 @@ uint64_t __62__VSAccountChannelsCenter__enqueueSaveAccountChannelsAndWait___bloc
   return [v3 signal];
 }
 
-- (id)_saveAccountChannels:(id)a3
+- (id)_saveAccountChannels:(id)channels
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSAccountChannelsCenter *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  channelsCopy = channels;
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -669,7 +669,7 @@ uint64_t __62__VSAccountChannelsCenter__enqueueSaveAccountChannelsAndWait___bloc
   v14 = __Block_byref_object_copy__10;
   v15 = __Block_byref_object_dispose__10;
   v16 = 0;
-  v7 = [v4 serializationResult];
+  serializationResult = [channelsCopy serializationResult];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__VSAccountChannelsCenter__saveAccountChannels___block_invoke;
@@ -680,7 +680,7 @@ uint64_t __62__VSAccountChannelsCenter__enqueueSaveAccountChannelsAndWait___bloc
   v10[2] = __48__VSAccountChannelsCenter__saveAccountChannels___block_invoke_42;
   v10[3] = &unk_278B73450;
   v10[4] = &buf;
-  [v7 unwrapObject:v11 error:v10];
+  [serializationResult unwrapObject:v11 error:v10];
   v8 = *(*(&buf + 1) + 40);
 
   _Block_object_dispose(&buf, 8);
@@ -750,10 +750,10 @@ void __48__VSAccountChannelsCenter__saveAccountChannels___block_invoke_2(uint64_
   v6[4] = self;
   v6[5] = &v7;
   [v3 conditionallyUnwrapObject:&__block_literal_global_45 otherwise:v6];
-  v4 = [v8[5] forceUnwrapObject];
+  forceUnwrapObject = [v8[5] forceUnwrapObject];
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return forceUnwrapObject;
 }
 
 void __34__VSAccountChannelsCenter_fileURL__block_invoke_2(uint64_t a1)
@@ -767,9 +767,9 @@ void __34__VSAccountChannelsCenter_fileURL__block_invoke_2(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-+ (void)_startOperationAndWaitForCompletion:(id)a3
++ (void)_startOperationAndWaitForCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(VSSemaphore);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -777,26 +777,26 @@ void __34__VSAccountChannelsCenter_fileURL__block_invoke_2(uint64_t a1)
   v6[3] = &unk_278B733D8;
   v7 = v4;
   v5 = v4;
-  [v3 setCompletionBlock:v6];
-  [v3 start];
+  [completionCopy setCompletionBlock:v6];
+  [completionCopy start];
 
   [(VSSemaphore *)v5 wait];
 }
 
-+ (id)_accountChannelsWithProviderID:(id)a3
++ (id)_accountChannelsWithProviderID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(VSAccountChannels);
-  [(VSAccountChannels *)v4 setProviderID:v3];
+  [(VSAccountChannels *)v4 setProviderID:dCopy];
 
   return v4;
 }
 
-- (void)_saveAccountChannels:(id)a3 withCompletionHandler:(id)a4
+- (void)_saveAccountChannels:(id)channels withCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  channelsCopy = channels;
+  handlerCopy = handler;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -805,17 +805,17 @@ void __34__VSAccountChannelsCenter_fileURL__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v9 = [(VSAccountChannelsCenter *)self serialQueue];
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__VSAccountChannelsCenter__saveAccountChannels_withCompletionHandler___block_invoke;
   block[3] = &unk_278B73848;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = channelsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = channelsCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __70__VSAccountChannelsCenter__saveAccountChannels_withCompletionHandler___block_invoke(uint64_t a1)
@@ -834,10 +834,10 @@ void __70__VSAccountChannelsCenter__saveAccountChannels_withCompletionHandler___
   }
 }
 
-- (void)_removeSavedAccountChannelsWithCompletionHandler:(id)a3
+- (void)_removeSavedAccountChannelsWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -846,15 +846,15 @@ void __70__VSAccountChannelsCenter__saveAccountChannels_withCompletionHandler___
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v6 = [(VSAccountChannelsCenter *)self serialQueue];
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__VSAccountChannelsCenter__removeSavedAccountChannelsWithCompletionHandler___block_invoke;
   v8[3] = &unk_278B73758;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(serialQueue, v8);
 }
 
 void __76__VSAccountChannelsCenter__removeSavedAccountChannelsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -875,65 +875,65 @@ void __76__VSAccountChannelsCenter__removeSavedAccountChannelsWithCompletionHand
 
 - (NSURL)directoryURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_directoryURL;
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _defaultDirectoryURL = selfCopy->_directoryURL;
+  if (!_defaultDirectoryURL)
   {
-    v3 = [objc_opt_class() _defaultDirectoryURL];
-    objc_storeStrong(&v2->_directoryURL, v3);
+    _defaultDirectoryURL = [objc_opt_class() _defaultDirectoryURL];
+    objc_storeStrong(&selfCopy->_directoryURL, _defaultDirectoryURL);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  if (!v3)
+  if (!_defaultDirectoryURL)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The __orNil parameter must not be nil."];
   }
 
-  return v3;
+  return _defaultDirectoryURL;
 }
 
 - (NSString)fileName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fileName;
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _defaultFileName = selfCopy->_fileName;
+  if (!_defaultFileName)
   {
-    v3 = [objc_opt_class() _defaultFileName];
-    objc_storeStrong(&v2->_fileName, v3);
+    _defaultFileName = [objc_opt_class() _defaultFileName];
+    objc_storeStrong(&selfCopy->_fileName, _defaultFileName);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  if (!v3)
+  if (!_defaultFileName)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The __orNil parameter must not be nil."];
   }
 
-  return v3;
+  return _defaultFileName;
 }
 
 - (NSUndoManager)undoManager
 {
-  v2 = [(VSAccountChannelsCenter *)self accountStore];
-  v3 = [v2 undoManager];
+  accountStore = [(VSAccountChannelsCenter *)self accountStore];
+  undoManager = [accountStore undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (void)setUndoManager:(id)a3
+- (void)setUndoManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(VSAccountChannelsCenter *)self accountStore];
-  [v5 setUndoManager:v4];
+  managerCopy = manager;
+  accountStore = [(VSAccountChannelsCenter *)self accountStore];
+  [accountStore setUndoManager:managerCopy];
 }
 
-- (void)fetchAccountChannelsWithCompletionHandler:(id)a3
+- (void)fetchAccountChannelsWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -942,20 +942,20 @@ void __76__VSAccountChannelsCenter__removeSavedAccountChannelsWithCompletionHand
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!handlerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
   }
 
-  v6 = [(VSAccountChannelsCenter *)self serialQueue];
+  serialQueue = [(VSAccountChannelsCenter *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__VSAccountChannelsCenter_fetchAccountChannelsWithCompletionHandler___block_invoke;
   v8[3] = &unk_278B73758;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(serialQueue, v8);
 }
 
 void __69__VSAccountChannelsCenter_fetchAccountChannelsWithCompletionHandler___block_invoke(uint64_t a1)

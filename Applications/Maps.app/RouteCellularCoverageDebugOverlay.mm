@@ -2,7 +2,7 @@
 - ($873BFAB23BBB6E2F0B0288ED2F935688)boundingMapRect;
 - (CLLocationCoordinate2D)coordinate;
 - (RouteCellularCoverageDebugOverlay)init;
-- (RouteCellularCoverageDebugOverlay)initWithRoute:(id)a3;
+- (RouteCellularCoverageDebugOverlay)initWithRoute:(id)route;
 @end
 
 @implementation RouteCellularCoverageDebugOverlay
@@ -30,17 +30,17 @@
   return result;
 }
 
-- (RouteCellularCoverageDebugOverlay)initWithRoute:(id)a3
+- (RouteCellularCoverageDebugOverlay)initWithRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v22.receiver = self;
   v22.super_class = RouteCellularCoverageDebugOverlay;
   v6 = [(RouteCellularCoverageDebugOverlay *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_route, a3);
-    v8 = [v5 boundingMapRegion];
+    objc_storeStrong(&v6->_route, route);
+    boundingMapRegion = [routeCopy boundingMapRegion];
     GEOMapRectForMapRegion();
     v7->_boundingMapRect.origin.x = v9;
     v7->_boundingMapRect.origin.y = v10;

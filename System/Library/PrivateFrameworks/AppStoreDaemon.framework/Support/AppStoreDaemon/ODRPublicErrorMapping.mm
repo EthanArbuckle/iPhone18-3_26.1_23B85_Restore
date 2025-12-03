@@ -1,14 +1,14 @@
 @interface ODRPublicErrorMapping
-+ (id)publicErrorForError:(id)a3;
++ (id)publicErrorForError:(id)error;
 - (_TtC9appstored21ODRPublicErrorMapping)init;
 @end
 
 @implementation ODRPublicErrorMapping
 
-+ (id)publicErrorForError:(id)a3
++ (id)publicErrorForError:(id)error
 {
-  v4 = a3;
-  v5 = sub_10018E060(a3);
+  errorCopy = error;
+  v5 = sub_10018E060(error);
 
   return v5;
 }

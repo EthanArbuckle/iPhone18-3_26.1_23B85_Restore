@@ -1,19 +1,19 @@
 @interface WFOpacitySlider
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 @end
 
 @implementation WFOpacitySlider
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
   v16.receiver = self;
   v16.super_class = WFOpacitySlider;
-  [(WFOpacitySlider *)&v16 trackRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(WFOpacitySlider *)&v16 trackRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = 2.0 / v10;
 
   v12 = v4;

@@ -1,5 +1,5 @@
 @interface UIView
-- (id)superviewWithClass:(Class)a3;
+- (id)superviewWithClass:(Class)class;
 - (void)shake;
 @end
 
@@ -13,22 +13,22 @@
 
   [v5 setDuration:0.6];
   [v5 setValues:&off_1000E5F60];
-  v4 = [(UIView *)self layer];
-  [v4 addAnimation:v5 forKey:@"shake"];
+  layer = [(UIView *)self layer];
+  [layer addAnimation:v5 forKey:@"shake"];
 }
 
-- (id)superviewWithClass:(Class)a3
+- (id)superviewWithClass:(Class)class
 {
-  v3 = [(UIView *)self superview];
-  if (v3)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v5;
-      if (!v5)
+      v4 = superview2;
+      if (!superview2)
       {
         v6 = 0;
         goto LABEL_8;
@@ -36,13 +36,13 @@
     }
 
     v6 = v4;
-    v5 = v6;
+    superview2 = v6;
   }
 
   else
   {
     v6 = 0;
-    v5 = 0;
+    superview2 = 0;
   }
 
 LABEL_8:

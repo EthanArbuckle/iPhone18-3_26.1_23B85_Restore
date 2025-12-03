@@ -1,25 +1,25 @@
 @interface PFPhotosFaceUtilities
-+ (BOOL)getCropRectForPortraitImage:(CGRect *)a3 size:(double)a4 imgWidth:(double)a5 imgHeight:(double)a6 centerX:(double)a7 centerY:(double)a8;
-+ (CGSize)faceTileSizeAdjustingForImageAspectRatio:(CGSize)result imgWidth:(double)a4 imgHeight:(double)a5;
-+ (id)bestMergeCandidateFaceFor:(id)a3 from:(id)a4 ignoreSourceAssetDimensions:(BOOL)a5;
-+ (id)selectRepresentativeFromFaces:(id)a3 qualityMeasureByLocalIdentifier:(id)a4 representativenessByCSN:(id)a5 candidateFaces:(id)a6;
-+ (id)sortedViableMergeCandidateFacesFor:(id)a3 from:(id)a4 ignoreSourceAssetDimensions:(BOOL)a5 matchScores:(id *)a6;
-+ (id)sortedViableMergeCandidateTorsosFor:(id)a3 from:(id)a4 ignoreSourceAssetDimensions:(BOOL)a5 matchScores:(id *)a6;
-+ (int64_t)qualityMeasureForFace:(id)a3 countOfFacesOnAsset:(unint64_t)a4;
++ (BOOL)getCropRectForPortraitImage:(CGRect *)image size:(double)size imgWidth:(double)width imgHeight:(double)height centerX:(double)x centerY:(double)y;
++ (CGSize)faceTileSizeAdjustingForImageAspectRatio:(CGSize)result imgWidth:(double)width imgHeight:(double)height;
++ (id)bestMergeCandidateFaceFor:(id)for from:(id)from ignoreSourceAssetDimensions:(BOOL)dimensions;
++ (id)selectRepresentativeFromFaces:(id)faces qualityMeasureByLocalIdentifier:(id)identifier representativenessByCSN:(id)n candidateFaces:(id)candidateFaces;
++ (id)sortedViableMergeCandidateFacesFor:(id)for from:(id)from ignoreSourceAssetDimensions:(BOOL)dimensions matchScores:(id *)scores;
++ (id)sortedViableMergeCandidateTorsosFor:(id)for from:(id)from ignoreSourceAssetDimensions:(BOOL)dimensions matchScores:(id *)scores;
++ (int64_t)qualityMeasureForFace:(id)face countOfFacesOnAsset:(unint64_t)asset;
 @end
 
 @implementation PFPhotosFaceUtilities
 
-+ (CGSize)faceTileSizeAdjustingForImageAspectRatio:(CGSize)result imgWidth:(double)a4 imgHeight:(double)a5
++ (CGSize)faceTileSizeAdjustingForImageAspectRatio:(CGSize)result imgWidth:(double)width imgHeight:(double)height
 {
-  if (a4 <= a5)
+  if (width <= height)
   {
-    result.width = result.height * (a5 / a4);
+    result.width = result.height * (height / width);
   }
 
   else
   {
-    result.height = result.width * (a4 / a5);
+    result.height = result.width * (width / height);
   }
 
   if (result.width > 1.0)
@@ -37,11 +37,11 @@
   return result;
 }
 
-+ (BOOL)getCropRectForPortraitImage:(CGRect *)a3 size:(double)a4 imgWidth:(double)a5 imgHeight:(double)a6 centerX:(double)a7 centerY:(double)a8
++ (BOOL)getCropRectForPortraitImage:(CGRect *)image size:(double)size imgWidth:(double)width imgHeight:(double)height centerX:(double)x centerY:(double)y
 {
-  [a1 faceTileSizeAdjustingForImageAspectRatio:a4 * 0.5 imgWidth:a4 * 0.5 imgHeight:{a5, a6}];
-  v13 = v12 * -1.63999999 + a7 - v12 * 0.5;
-  v14 = 1.0 - a8 - v11 * 0.5 - v11 * 1.91999996;
+  [self faceTileSizeAdjustingForImageAspectRatio:size * 0.5 imgWidth:size * 0.5 imgHeight:{width, height}];
+  v13 = v12 * -1.63999999 + x - v12 * 0.5;
+  v14 = 1.0 - y - v11 * 0.5 - v11 * 1.91999996;
   v15 = v12 - (v12 * -1.63999999 + v12 * -1.63999999);
   v16 = v11 - (v11 * 1.91999996 * -1.10000002 - v11 * 1.91999996);
   if (v14 >= 0.0)
@@ -99,8 +99,8 @@ LABEL_9:
     v21 = 0.0;
   }
 
-  a3->origin.x = v21;
-  a3->origin.y = v17;
+  image->origin.x = v21;
+  image->origin.y = v17;
   if (v22)
   {
     v23 = 1.0;
@@ -111,27 +111,27 @@ LABEL_9:
     v23 = v15;
   }
 
-  a3->size.width = v23;
-  a3->size.height = v16;
+  image->size.width = v23;
+  image->size.height = v16;
   return v20;
 }
 
-+ (id)selectRepresentativeFromFaces:(id)a3 qualityMeasureByLocalIdentifier:(id)a4 representativenessByCSN:(id)a5 candidateFaces:(id)a6
++ (id)selectRepresentativeFromFaces:(id)faces qualityMeasureByLocalIdentifier:(id)identifier representativenessByCSN:(id)n candidateFaces:(id)candidateFaces
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = ([v9 count] * 0.7);
+  facesCopy = faces;
+  identifierCopy = identifier;
+  nCopy = n;
+  candidateFacesCopy = candidateFaces;
+  v13 = ([facesCopy count] * 0.7);
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasureByLocalIdentifier_representativenessByCSN_candidateFaces___block_invoke;
   v47[3] = &unk_1E7B65038;
-  v14 = v11;
+  v14 = nCopy;
   v48 = v14;
-  v15 = [v9 sortedArrayUsingComparator:v47];
-  v16 = [v15 subarrayWithRange:{v13, objc_msgSend(v9, "count") - v13}];
+  v15 = [facesCopy sortedArrayUsingComparator:v47];
+  v16 = [v15 subarrayWithRange:{v13, objc_msgSend(facesCopy, "count") - v13}];
   v17 = [v16 count];
   if (!v17)
   {
@@ -141,8 +141,8 @@ LABEL_9:
   v18 = v17;
   v42 = v15;
   v43 = v14;
-  v44 = v9;
-  v19 = 0;
+  v44 = facesCopy;
+  lastObject = 0;
   v20 = 0;
   v21 = -1.79769313e308;
   do
@@ -151,27 +151,27 @@ LABEL_9:
     [v22 photosFaceRepresentationRoll];
     if (fabs(v23) <= 0.785398163)
     {
-      if (v10)
+      if (identifierCopy)
       {
-        v24 = [v22 photosFaceRepresentationLocalIdentifier];
-        v25 = [v10 objectForKey:v24];
-        v26 = [v25 integerValue];
+        photosFaceRepresentationLocalIdentifier = [v22 photosFaceRepresentationLocalIdentifier];
+        v25 = [identifierCopy objectForKey:photosFaceRepresentationLocalIdentifier];
+        integerValue = [v25 integerValue];
       }
 
       else
       {
-        v26 = [v22 photosFaceRepresentationClusterSequenceNumber];
+        integerValue = [v22 photosFaceRepresentationClusterSequenceNumber];
       }
 
       memset(v46, 0, sizeof(v46));
       [v22 photosFaceRepresentationSize];
       v28 = v27;
-      v29 = [v22 photosFaceRepresentationSourceWidth];
-      v30 = [v22 photosFaceRepresentationSourceHeight];
+      photosFaceRepresentationSourceWidth = [v22 photosFaceRepresentationSourceWidth];
+      photosFaceRepresentationSourceHeight = [v22 photosFaceRepresentationSourceHeight];
       [v22 photosFaceRepresentationCenterX];
       v32 = v31;
       [v22 photosFaceRepresentationCenterY];
-      if ([a1 getCropRectForPortraitImage:v46 size:v28 imgWidth:v29 imgHeight:v30 centerX:v32 centerY:v33])
+      if ([self getCropRectForPortraitImage:v46 size:v28 imgWidth:photosFaceRepresentationSourceWidth imgHeight:photosFaceRepresentationSourceHeight centerX:v32 centerY:v33])
       {
         v34 = 1.0;
       }
@@ -181,26 +181,26 @@ LABEL_9:
         v34 = 0.8;
       }
 
-      v35 = v34 * v26;
+      v35 = v34 * integerValue;
       if (v35 >= v21)
       {
         v36 = v22;
 
-        v19 = v36;
+        lastObject = v36;
         v21 = v35;
       }
 
-      if (v12)
+      if (candidateFacesCopy)
       {
         v49[0] = @"localIdentifier";
-        v37 = [v22 photosFaceRepresentationLocalIdentifier];
+        photosFaceRepresentationLocalIdentifier2 = [v22 photosFaceRepresentationLocalIdentifier];
         v49[1] = @"qualityMeasure";
-        v50[0] = v37;
+        v50[0] = photosFaceRepresentationLocalIdentifier2;
         v38 = [MEMORY[0x1E696AD98] numberWithDouble:v35];
         v50[1] = v38;
         v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:2];
 
-        [v12 addObject:v39];
+        [candidateFacesCopy addObject:v39];
       }
     }
 
@@ -209,17 +209,17 @@ LABEL_9:
 
   while (v18 != v20);
   v14 = v43;
-  v9 = v44;
+  facesCopy = v44;
   v15 = v42;
-  if (!v19)
+  if (!lastObject)
   {
 LABEL_16:
-    v19 = [v16 lastObject];
+    lastObject = [v16 lastObject];
   }
 
-  v40 = v19;
+  v40 = lastObject;
 
-  return v19;
+  return lastObject;
 }
 
 uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasureByLocalIdentifier_representativenessByCSN_candidateFaces___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -265,36 +265,36 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
   return v21;
 }
 
-+ (int64_t)qualityMeasureForFace:(id)a3 countOfFacesOnAsset:(unint64_t)a4
++ (int64_t)qualityMeasureForFace:(id)face countOfFacesOnAsset:(unint64_t)asset
 {
-  v5 = a3;
-  v6 = [v5 photosFaceRepresentationSourceWidth];
-  v7 = [v5 photosFaceRepresentationSourceHeight];
-  [v5 photosFaceRepresentationSize];
+  faceCopy = face;
+  photosFaceRepresentationSourceWidth = [faceCopy photosFaceRepresentationSourceWidth];
+  photosFaceRepresentationSourceHeight = [faceCopy photosFaceRepresentationSourceHeight];
+  [faceCopy photosFaceRepresentationSize];
   v9 = v8;
-  [v5 photosFaceRepresentationBlurScore];
+  [faceCopy photosFaceRepresentationBlurScore];
   v11 = v10;
-  v12 = [v5 photosFaceRepresentationHasSmile];
-  v13 = [v5 photosFaceRepresentationIsLeftEyeClosed];
+  photosFaceRepresentationHasSmile = [faceCopy photosFaceRepresentationHasSmile];
+  photosFaceRepresentationIsLeftEyeClosed = [faceCopy photosFaceRepresentationIsLeftEyeClosed];
   LODWORD(v14) = 0.5;
-  if ((v13 & 1) == 0)
+  if ((photosFaceRepresentationIsLeftEyeClosed & 1) == 0)
   {
-    v15 = [v5 photosFaceRepresentationIsRightEyeClosed];
+    photosFaceRepresentationIsRightEyeClosed = [faceCopy photosFaceRepresentationIsRightEyeClosed];
     LODWORD(v14) = 2.0;
-    if (v15)
+    if (photosFaceRepresentationIsRightEyeClosed)
     {
       *&v14 = 0.5;
     }
   }
 
-  if (v6 <= v7)
+  if (photosFaceRepresentationSourceWidth <= photosFaceRepresentationSourceHeight)
   {
-    v16 = v7;
+    v16 = photosFaceRepresentationSourceHeight;
   }
 
   else
   {
-    v16 = v6;
+    v16 = photosFaceRepresentationSourceWidth;
   }
 
   v17 = 0.25;
@@ -307,7 +307,7 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
     }
   }
 
-  if (a4)
+  if (asset)
   {
     v18 = v9;
     v19 = v18 > 0.5 || v18 < 0.1;
@@ -318,20 +318,20 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
       v20 = 0.8;
     }
 
-    if (v12)
+    if (photosFaceRepresentationHasSmile)
     {
       v21 = 1.0;
     }
 
     v22 = (1.0 - v11) * 5.0;
     v23 = *&v14 * (v21 * ((v20 * v22) * v17));
-    v24 = 3;
-    if (a4 < 3)
+    assetCopy = 3;
+    if (asset < 3)
     {
-      v24 = a4;
+      assetCopy = asset;
     }
 
-    v25 = (v23 * PFFaceCountPenalties[v24 - 1]) * 100.0;
+    v25 = (v23 * PFFaceCountPenalties[assetCopy - 1]) * 100.0;
   }
 
   else
@@ -349,27 +349,27 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
   return v26;
 }
 
-+ (id)bestMergeCandidateFaceFor:(id)a3 from:(id)a4 ignoreSourceAssetDimensions:(BOOL)a5
++ (id)bestMergeCandidateFaceFor:(id)for from:(id)from ignoreSourceAssetDimensions:(BOOL)dimensions
 {
-  v5 = [a1 sortedViableMergeCandidateFacesFor:a3 from:a4 ignoreSourceAssetDimensions:a5 matchScores:0];
-  v6 = [v5 firstObject];
+  v5 = [self sortedViableMergeCandidateFacesFor:for from:from ignoreSourceAssetDimensions:dimensions matchScores:0];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-+ (id)sortedViableMergeCandidateTorsosFor:(id)a3 from:(id)a4 ignoreSourceAssetDimensions:(BOOL)a5 matchScores:(id *)a6
++ (id)sortedViableMergeCandidateTorsosFor:(id)for from:(id)from ignoreSourceAssetDimensions:(BOOL)dimensions matchScores:(id *)scores
 {
-  point_12 = a5;
+  point_12 = dimensions;
   v73 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  forCopy = for;
+  fromCopy = from;
+  if (forCopy)
   {
-    v57 = v8;
-    if ([v7 conformsToProtocol:&unk_1F2AC9C88])
+    v57 = fromCopy;
+    if ([forCopy conformsToProtocol:&unk_1F2AC9C88])
     {
-      v58 = [MEMORY[0x1E695DF70] array];
-      v59 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       context = objc_autoreleasePoolPush();
       v68 = 0u;
       v69 = 0u;
@@ -390,9 +390,9 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
             }
 
             v13 = *(*(&v68 + 1) + 8 * i);
-            if (v13 != v7 && ([*(*(&v68 + 1) + 8 * i) conformsToProtocol:{&unk_1F2AC9C88, context}] & 1) != 0)
+            if (v13 != forCopy && ([*(*(&v68 + 1) + 8 * i) conformsToProtocol:{&unk_1F2AC9C88, context}] & 1) != 0)
             {
-              v14 = v7;
+              v14 = forCopy;
               v15 = v13;
               v16 = v15;
               if (v15 && (!point_12 ? (v17 = [v14 photosFaceRepresentationSourceWidth], v18 = objc_msgSend(v14, "photosFaceRepresentationSourceHeight")) : (v17 = objc_msgSend(v15, "photosFaceRepresentationSourceWidth"), v18 = objc_msgSend(v16, "photosFaceRepresentationSourceHeight")), (v19 = v18, v20 = v17, v17 == objc_msgSend(v16, "photosFaceRepresentationSourceWidth")) && (v21 = v19, v19 == objc_msgSend(v16, "photosFaceRepresentationSourceHeight")) && (v20 >= v21 ? (v22 = v17) : (v22 = v19), objc_msgSend(v14, "photosFaceRepresentationBodyCenterX"), pointa = v23, objc_msgSend(v14, "photosFaceRepresentationBodyCenterY"), v63 = v24, objc_msgSend(v14, "photosFaceRepresentationBodyWidth"), v26 = v25, objc_msgSend(v14, "photosFaceRepresentationBodyHeight"), v28 = v27, objc_msgSend(v16, "photosFaceRepresentationBodyCenterX"), v30 = v29, objc_msgSend(v16, "photosFaceRepresentationBodyCenterY"), v32 = v31, objc_msgSend(v16, "photosFaceRepresentationBodyWidth"), v34 = v33, objc_msgSend(v16, "photosFaceRepresentationBodyHeight"), v35 = v63 * v21, v36 = v22 * v26, v37 = v22 * v28, v38 = v30 * v20, v39 = v32 * v21, v40 = v22 * v34, v42 = v22 * v41, v62 = v35, v64 = pointa * v20, v43 = pointa * v20 - v36 * 0.5, v44 = v35 - v37 * 0.5, point = v38, v81.origin.x = v38 - v40 * 0.5, v81.origin.y = v39 - v42 * 0.5, v77.origin.x = v43, v77.origin.y = v44, v77.size.width = v36, v77.size.height = v37, y = v81.origin.y, x = v81.origin.x, v81.size.width = v40, v81.size.height = v42, v78 = CGRectIntersection(v77, v81), v45 = v78.size.height * v78.size.width, v78.size.height * v78.size.width > 0.0)))
@@ -431,12 +431,12 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
                 if (v48 >= 0.39)
                 {
                   v49 = [MEMORY[0x1E696AD98] numberWithDouble:v48];
-                  v50 = [v59 indexOfObject:v49 inSortedRange:0 options:objc_msgSend(v59 usingComparator:{"count"), 1024, &__block_literal_global_171}];
+                  v50 = [array2 indexOfObject:v49 inSortedRange:0 options:objc_msgSend(array2 usingComparator:{"count"), 1024, &__block_literal_global_171}];
 
                   v51 = [MEMORY[0x1E696AD98] numberWithDouble:v48];
-                  [v59 insertObject:v51 atIndex:v50];
+                  [array2 insertObject:v51 atIndex:v50];
 
-                  [v58 insertObject:v16 atIndex:v50];
+                  [array insertObject:v16 atIndex:v50];
                 }
               }
 
@@ -453,44 +453,44 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
       }
 
       objc_autoreleasePoolPop(context);
-      v52 = v59;
-      if (a6)
+      v52 = array2;
+      if (scores)
       {
-        v53 = v59;
-        v52 = v59;
-        *a6 = v59;
+        v53 = array2;
+        v52 = array2;
+        *scores = array2;
       }
     }
 
     else
     {
-      v58 = 0;
+      array = 0;
     }
 
-    v8 = v57;
+    fromCopy = v57;
   }
 
   else
   {
-    v58 = 0;
+    array = 0;
   }
 
-  return v58;
+  return array;
 }
 
-+ (id)sortedViableMergeCandidateFacesFor:(id)a3 from:(id)a4 ignoreSourceAssetDimensions:(BOOL)a5 matchScores:(id *)a6
++ (id)sortedViableMergeCandidateFacesFor:(id)for from:(id)from ignoreSourceAssetDimensions:(BOOL)dimensions matchScores:(id *)scores
 {
-  point_12 = a5;
+  point_12 = dimensions;
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  forCopy = for;
+  fromCopy = from;
+  if (forCopy)
   {
-    v53 = v8;
-    if ([v7 conformsToProtocol:&unk_1F2AC9C88])
+    v53 = fromCopy;
+    if ([forCopy conformsToProtocol:&unk_1F2AC9C88])
     {
-      v54 = [MEMORY[0x1E695DF70] array];
-      v55 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       context = objc_autoreleasePoolPush();
       v59 = 0u;
       v60 = 0u;
@@ -511,9 +511,9 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
             }
 
             v13 = *(*(&v59 + 1) + 8 * i);
-            if (v13 != v7 && ([*(*(&v59 + 1) + 8 * i) conformsToProtocol:{&unk_1F2AC9C88, context}] & 1) != 0)
+            if (v13 != forCopy && ([*(*(&v59 + 1) + 8 * i) conformsToProtocol:{&unk_1F2AC9C88, context}] & 1) != 0)
             {
-              v14 = v7;
+              v14 = forCopy;
               v15 = v13;
               v16 = v15;
               if (v15 && (!point_12 ? (v17 = [v14 photosFaceRepresentationSourceWidth], v18 = objc_msgSend(v14, "photosFaceRepresentationSourceHeight")) : (v17 = objc_msgSend(v15, "photosFaceRepresentationSourceWidth"), v18 = objc_msgSend(v16, "photosFaceRepresentationSourceHeight")), (v19 = v18, v20 = v17, v17 == objc_msgSend(v16, "photosFaceRepresentationSourceWidth")) && (v21 = v19, v19 == objc_msgSend(v16, "photosFaceRepresentationSourceHeight")) && (v20 >= v21 ? (v22 = v17) : (v22 = v19), objc_msgSend(v14, "photosFaceRepresentationCenterX"), v24 = v23, objc_msgSend(v14, "photosFaceRepresentationCenterY"), v26 = v25, objc_msgSend(v14, "photosFaceRepresentationSize"), v28 = v27, objc_msgSend(v16, "photosFaceRepresentationCenterX"), v30 = v29, objc_msgSend(v16, "photosFaceRepresentationCenterY"), v32 = v31, objc_msgSend(v16, "photosFaceRepresentationSize"), v33 = v24 * v20, v34 = v26 * v21, v35 = v22 * v28, v36 = v30 * v20, v37 = v32 * v21, v39 = v22 * v38, v56 = v34, point = v33, v40 = v33 - v35 * 0.5, v41 = v34 - v35 * 0.5, v72.origin.x = v36 - v39 * 0.5, v68.origin.x = v40, v68.origin.y = v41, v68.size.width = v35, v68.size.height = v35, v72.origin.y = v37 - v39 * 0.5, v72.size.width = v39, v72.size.height = v39, v69 = CGRectIntersection(v68, v72), v42 = v69.size.height * v69.size.width, v69.size.height * v69.size.width > 0.0)))
@@ -542,12 +542,12 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
                 if (v43 >= 0.39)
                 {
                   v45 = [MEMORY[0x1E696AD98] numberWithDouble:v43];
-                  v46 = [v55 indexOfObject:v45 inSortedRange:0 options:objc_msgSend(v55 usingComparator:{"count"), 1024, &__block_literal_global_4304}];
+                  v46 = [array2 indexOfObject:v45 inSortedRange:0 options:objc_msgSend(array2 usingComparator:{"count"), 1024, &__block_literal_global_4304}];
 
                   v47 = [MEMORY[0x1E696AD98] numberWithDouble:v43];
-                  [v55 insertObject:v47 atIndex:v46];
+                  [array2 insertObject:v47 atIndex:v46];
 
-                  [v54 insertObject:v16 atIndex:v46];
+                  [array insertObject:v16 atIndex:v46];
                 }
               }
 
@@ -564,29 +564,29 @@ uint64_t __126__PFPhotosFaceUtilities_selectRepresentativeFromFaces_qualityMeasu
       }
 
       objc_autoreleasePoolPop(context);
-      v48 = v55;
-      if (a6)
+      v48 = array2;
+      if (scores)
       {
-        v49 = v55;
-        v48 = v55;
-        *a6 = v55;
+        v49 = array2;
+        v48 = array2;
+        *scores = array2;
       }
     }
 
     else
     {
-      v54 = 0;
+      array = 0;
     }
 
-    v8 = v53;
+    fromCopy = v53;
   }
 
   else
   {
-    v54 = 0;
+    array = 0;
   }
 
-  return v54;
+  return array;
 }
 
 @end

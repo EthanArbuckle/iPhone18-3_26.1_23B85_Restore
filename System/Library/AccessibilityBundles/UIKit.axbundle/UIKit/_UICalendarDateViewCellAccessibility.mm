@@ -1,20 +1,20 @@
 @interface _UICalendarDateViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
-- (void)configureWithDay:(id)a3 formatter:(id)a4 fontDesign:(id)a5 decorations:(id)a6 outOfRange:(BOOL)a7 renderOverhangDays:(BOOL)a8 highlightsToday:(BOOL)a9;
+- (void)configureWithDay:(id)day formatter:(id)formatter fontDesign:(id)design decorations:(id)decorations outOfRange:(BOOL)range renderOverhangDays:(BOOL)days highlightsToday:(BOOL)today;
 - (void)prepareForReuse;
 @end
 
 @implementation _UICalendarDateViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = @"_UICalendarDateViewCell";
   [location[0] validateClass:? isKindOfClass:?];
   v3 = @"UICollectionViewCell";
@@ -28,24 +28,24 @@
   objc_storeStrong(v8, v7);
 }
 
-- (void)configureWithDay:(id)a3 formatter:(id)a4 fontDesign:(id)a5 decorations:(id)a6 outOfRange:(BOOL)a7 renderOverhangDays:(BOOL)a8 highlightsToday:(BOOL)a9
+- (void)configureWithDay:(id)day formatter:(id)formatter fontDesign:(id)design decorations:(id)decorations outOfRange:(BOOL)range renderOverhangDays:(BOOL)days highlightsToday:(BOOL)today
 {
-  v71 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, day);
   v69 = 0;
-  objc_storeStrong(&v69, a4);
+  objc_storeStrong(&v69, formatter);
   v68 = 0;
-  objc_storeStrong(&v68, a5);
+  objc_storeStrong(&v68, design);
   v67 = 0;
-  objc_storeStrong(&v67, a6);
-  v66 = a7;
-  v65 = a8;
-  v64 = a9;
-  v63.receiver = v71;
+  objc_storeStrong(&v67, decorations);
+  rangeCopy = range;
+  daysCopy = days;
+  todayCopy = today;
+  v63.receiver = selfCopy;
   v63.super_class = _UICalendarDateViewCellAccessibility;
-  [(_UICalendarDateViewCellAccessibility *)&v63 configureWithDay:location[0] formatter:v69 fontDesign:v68 decorations:v67 outOfRange:a7 renderOverhangDays:a8 highlightsToday:a9];
+  [(_UICalendarDateViewCellAccessibility *)&v63 configureWithDay:location[0] formatter:v69 fontDesign:v68 decorations:v67 outOfRange:range renderOverhangDays:days highlightsToday:today];
   v61 = 0;
   objc_opt_class();
   v24 = [location[0] safeValueForKey:@"date"];
@@ -67,9 +67,9 @@
     MEMORY[0x29EDC9740](v18);
   }
 
-  [(_UICalendarDateViewCellAccessibility *)v71 setAccessibilityLabel:v58, v11, v12];
+  [(_UICalendarDateViewCellAccessibility *)selfCopy setAccessibilityLabel:v58, v11, v12];
   objc_initWeak(&v57, v67);
-  v17 = v71;
+  v17 = selfCopy;
   v51 = MEMORY[0x29EDCA5F8];
   v52 = -1073741824;
   v53 = 0;
@@ -77,7 +77,7 @@
   v55 = &unk_29F30C9E8;
   objc_copyWeak(&v56, &v57);
   [(_UICalendarDateViewCellAccessibility *)v17 _setAccessibilityValueBlock:&v51];
-  v16 = v71;
+  v16 = selfCopy;
   v45 = MEMORY[0x29EDCA5F8];
   v46 = -1073741824;
   v47 = 0;
@@ -85,8 +85,8 @@
   v49 = &unk_29F30C9E8;
   objc_copyWeak(v50, &v57);
   [(_UICalendarDateViewCellAccessibility *)v16 _setAccessibilityHintBlock:&v45];
-  objc_initWeak(&v44, v71);
-  v15 = v71;
+  objc_initWeak(&v44, selfCopy);
+  v15 = selfCopy;
   v38 = MEMORY[0x29EDCA5F8];
   v39 = -1073741824;
   v40 = 0;
@@ -94,7 +94,7 @@
   v42 = &unk_29F30C7F0;
   objc_copyWeak(&v43, &v44);
   [(_UICalendarDateViewCellAccessibility *)v15 _setIsAccessibilityElementBlock:&v38];
-  v14 = v71;
+  v14 = selfCopy;
   v32 = MEMORY[0x29EDCA5F8];
   v33 = -1073741824;
   v34 = 0;
@@ -102,14 +102,14 @@
   v36 = &unk_29F30C7F0;
   objc_copyWeak(&v37, &v44);
   [(_UICalendarDateViewCellAccessibility *)v14 _setAccessibilityElementsHiddenBlock:&v32];
-  v13 = v71;
+  v13 = selfCopy;
   v25 = MEMORY[0x29EDCA5F8];
   v26 = -1073741824;
   v27 = 0;
   v28 = __136___UICalendarDateViewCellAccessibility_configureWithDay_formatter_fontDesign_decorations_outOfRange_renderOverhangDays_highlightsToday___block_invoke_5;
   v29 = &unk_29F30CA10;
   objc_copyWeak(&v30, &v44);
-  v31 = v66;
+  v31 = rangeCopy;
   [(_UICalendarDateViewCellAccessibility *)v13 _setAccessibilityTraitsBlock:&v25];
   objc_destroyWeak(&v30);
   objc_destroyWeak(&v37);
@@ -128,33 +128,33 @@
 
 - (void)prepareForReuse
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UICalendarDateViewCellAccessibility;
   [(_UICalendarDateViewCellAccessibility *)&v2 prepareForReuse];
-  [(_UICalendarDateViewCellAccessibility *)v4 _setIsAccessibilityElementBlock:?];
-  [(_UICalendarDateViewCellAccessibility *)v4 setAccessibilityLabel:0];
-  [(_UICalendarDateViewCellAccessibility *)v4 _setAccessibilityTraitsBlock:0];
+  [(_UICalendarDateViewCellAccessibility *)selfCopy _setIsAccessibilityElementBlock:?];
+  [(_UICalendarDateViewCellAccessibility *)selfCopy setAccessibilityLabel:0];
+  [(_UICalendarDateViewCellAccessibility *)selfCopy _setAccessibilityTraitsBlock:0];
 }
 
 - (BOOL)canBecomeFocused
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   if (([(_UICalendarDateViewCellAccessibility *)self _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    v3 = [(_UICalendarDateViewCellAccessibility *)v6 isAccessibilityElement];
+    isAccessibilityElement = [(_UICalendarDateViewCellAccessibility *)selfCopy isAccessibilityElement];
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = _UICalendarDateViewCellAccessibility;
-    v3 = [(_UICalendarDateViewCellAccessibility *)&v4 canBecomeFocused];
+    isAccessibilityElement = [(_UICalendarDateViewCellAccessibility *)&v4 canBecomeFocused];
   }
 
-  return v3 != 0;
+  return isAccessibilityElement != 0;
 }
 
 @end

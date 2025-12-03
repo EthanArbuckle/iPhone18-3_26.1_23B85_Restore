@@ -1,30 +1,30 @@
 @interface CPLineBreaker
-+ (void)breakLinesInPage:(id)a3;
-- (void)breakLinesIn:(id)a3;
-- (void)breakLinesInParagraph:(id)a3;
++ (void)breakLinesInPage:(id)page;
+- (void)breakLinesIn:(id)in;
+- (void)breakLinesInParagraph:(id)paragraph;
 @end
 
 @implementation CPLineBreaker
 
-- (void)breakLinesIn:(id)a3
+- (void)breakLinesIn:(id)in
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    [(CPLineBreaker *)self breakLinesInParagraph:a3];
+    [(CPLineBreaker *)self breakLinesInParagraph:in];
   }
 
   else
   {
-    v5 = [a3 count];
+    v5 = [in count];
     if (v5)
     {
       v6 = v5;
       v7 = 0;
       do
       {
-        v8 = [a3 childAtIndex:v7];
+        v8 = [in childAtIndex:v7];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -39,12 +39,12 @@
   }
 }
 
-- (void)breakLinesInParagraph:(id)a3
+- (void)breakLinesInParagraph:(id)paragraph
 {
-  [a3 bounds];
+  [paragraph bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [a3 count];
+  v8 = [paragraph count];
   if (v8)
   {
     v9 = v8;
@@ -54,14 +54,14 @@
     do
     {
       v13 = v11;
-      v11 = [a3 childAtIndex:v10];
+      v11 = [paragraph childAtIndex:v10];
       if (v10)
       {
-        v14 = [v13 charSequence];
-        if (v14)
+        charSequence = [v13 charSequence];
+        if (charSequence)
         {
-          v15 = v14;
-          v16 = [v14 length];
+          v15 = charSequence;
+          v16 = [charSequence length];
           if (v16)
           {
             v17 = [v15 charAtIndex:(v16 - 1)];
@@ -77,10 +77,10 @@
               v20 = 0.0;
             }
 
-            v21 = [v11 firstWord];
-            if (v21)
+            firstWord = [v11 firstWord];
+            if (firstWord)
             {
-              v22 = v21;
+              v22 = firstWord;
               [v13 bounds];
               if (*(v22 + 32) + v20 + v23 + v24 <= v12)
               {
@@ -98,10 +98,10 @@
   }
 }
 
-+ (void)breakLinesInPage:(id)a3
++ (void)breakLinesInPage:(id)page
 {
   v4 = objc_alloc_init(CPLineBreaker);
-  [(CPLineBreaker *)v4 breakLinesIn:a3];
+  [(CPLineBreaker *)v4 breakLinesIn:page];
 }
 
 @end

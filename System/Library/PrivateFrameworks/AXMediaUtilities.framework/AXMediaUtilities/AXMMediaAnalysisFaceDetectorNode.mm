@@ -1,55 +1,55 @@
 @interface AXMMediaAnalysisFaceDetectorNode
-- (AXMMediaAnalysisFaceDetectorNode)initWithCoder:(id)a3;
-- (id)_faceResultForUUID:(id)a3 inFaceDictionary:(id)a4;
-- (void)_addFaceDetectionFeaturesToContext:(id)a3 fromResults:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (AXMMediaAnalysisFaceDetectorNode)initWithCoder:(id)coder;
+- (id)_faceResultForUUID:(id)d inFaceDictionary:(id)dictionary;
+- (void)_addFaceDetectionFeaturesToContext:(id)context fromResults:(id)results;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMMediaAnalysisFaceDetectorNode
 
-- (AXMMediaAnalysisFaceDetectorNode)initWithCoder:(id)a3
+- (AXMMediaAnalysisFaceDetectorNode)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = AXMMediaAnalysisFaceDetectorNode;
-  return [(AXMEvaluationNode *)&v4 initWithCoder:a3];
+  return [(AXMEvaluationNode *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = AXMMediaAnalysisFaceDetectorNode;
-  [(AXMEvaluationNode *)&v3 encodeWithCoder:a3];
+  [(AXMEvaluationNode *)&v3 encodeWithCoder:coder];
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  evaluateCopy = evaluate;
   v40.receiver = self;
   v40.super_class = AXMMediaAnalysisFaceDetectorNode;
-  v30 = a4;
-  [(AXMEvaluationNode *)&v40 evaluate:v6 metrics:?];
-  v7 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceNameHelper];
-  LODWORD(a4) = v7 == 0;
+  metricsCopy = metrics;
+  [(AXMEvaluationNode *)&v40 evaluate:evaluateCopy metrics:?];
+  _faceNameHelper = [(AXMMediaAnalysisFaceDetectorNode *)self _faceNameHelper];
+  LODWORD(metrics) = _faceNameHelper == 0;
 
-  if (a4)
+  if (metrics)
   {
     v8 = objc_alloc_init(AXMVisionFaceNameHelper);
     [(AXMMediaAnalysisFaceDetectorNode *)self set_faceNameHelper:v8];
   }
 
-  v9 = [v6 sourceInput];
-  v33 = [v9 phAssetLocalIdentifier];
+  sourceInput = [evaluateCopy sourceInput];
+  phAssetLocalIdentifier = [sourceInput phAssetLocalIdentifier];
 
-  v10 = [v6 sourceInput];
-  v34 = [v10 photoLibraryURL];
+  sourceInput2 = [evaluateCopy sourceInput];
+  photoLibraryURL = [sourceInput2 photoLibraryURL];
 
-  v11 = [v6 sourceInput];
-  v32 = [v11 ciImage];
+  sourceInput3 = [evaluateCopy sourceInput];
+  ciImage = [sourceInput3 ciImage];
 
-  v12 = [v6 sourceInput];
-  v31 = [v12 pixelBuffer];
+  sourceInput4 = [evaluateCopy sourceInput];
+  pixelBuffer = [sourceInput4 pixelBuffer];
 
   *buf = 0;
   v43 = buf;
@@ -79,38 +79,38 @@
   objc_copyWeak(&v39, location);
   v17 = v15;
   v36 = v17;
-  v29 = v6;
+  v29 = evaluateCopy;
   v37 = v29;
   v18 = v16;
   v38 = v18;
   v19 = MEMORY[0x1B2700900](v35);
   v20 = +[AXMMADSService sharedInstance];
-  v21 = [v20 service];
+  service = [v20 service];
 
-  if (v34 && v33)
+  if (photoLibraryURL && phAssetLocalIdentifier)
   {
     v48[0] = v17;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
-    v23 = [v21 performRequests:v22 onAssetWithLocalIdentifier:v33 fromPhotoLibraryWithURL:v34 completionHandler:v19];
+    v23 = [service performRequests:v22 onAssetWithLocalIdentifier:phAssetLocalIdentifier fromPhotoLibraryWithURL:photoLibraryURL completionHandler:v19];
 LABEL_12:
     v24 = v23;
 
     goto LABEL_13;
   }
 
-  if (v32)
+  if (ciImage)
   {
     v47 = v17;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
-    v23 = [v21 performRequests:v22 onCIImage:v32 withOrientation:1 andIdentifier:&stru_1F23EA908 completionHandler:v19];
+    v23 = [service performRequests:v22 onCIImage:ciImage withOrientation:1 andIdentifier:&stru_1F23EA908 completionHandler:v19];
     goto LABEL_12;
   }
 
-  if (v31)
+  if (pixelBuffer)
   {
     v46 = v17;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
-    v23 = [v21 performRequests:v22 onPixelBuffer:objc_msgSend(v31 withOrientation:"pixelBuffer") andIdentifier:objc_msgSend(v31 completionHandler:{"orientation"), &stru_1F23EA908, v19}];
+    v23 = [service performRequests:v22 onPixelBuffer:objc_msgSend(pixelBuffer withOrientation:"pixelBuffer") andIdentifier:objc_msgSend(pixelBuffer completionHandler:{"orientation"), &stru_1F23EA908, v19}];
     goto LABEL_12;
   }
 
@@ -130,7 +130,7 @@ LABEL_13:
           [(AXMMediaAnalysisFaceDetectorNode *)buf evaluate:v27 metrics:?];
         }
 
-        [v21 cancelRequestID:v24];
+        [service cancelRequestID:v24];
       }
 
       v28 = dispatch_time(0, 100000000);
@@ -190,15 +190,15 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)_addFaceDetectionFeaturesToContext:(id)a3 fromResults:(id)a4
+- (void)_addFaceDetectionFeaturesToContext:(id)context fromResults:(id)results
 {
   v105 = *MEMORY[0x1E69E9840];
-  v69 = a3;
-  v70 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v70 count])
+  contextCopy = context;
+  resultsCopy = results;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([resultsCopy count])
   {
-    v7 = [v70 firstObject];
+    firstObject = [resultsCopy firstObject];
     v96 = 0;
     v97 = &v96;
     v98 = 0x2050000000;
@@ -222,13 +222,13 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
 
     if (isKindOfClass)
     {
-      v68 = [v70 firstObject];
+      firstObject2 = [resultsCopy firstObject];
       v93 = 0u;
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v11 = [v68 faceRectanglesObservations];
-      v12 = [v11 countByEnumeratingWithState:&v91 objects:v104 count:16];
+      faceRectanglesObservations = [firstObject2 faceRectanglesObservations];
+      v12 = [faceRectanglesObservations countByEnumeratingWithState:&v91 objects:v104 count:16];
       if (v12)
       {
         v13 = *v92;
@@ -238,16 +238,16 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
           {
             if (*v92 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(faceRectanglesObservations);
             }
 
             v15 = *(*(&v91 + 1) + 8 * i);
-            v16 = [v15 uuid];
-            v17 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:v16 inFaceDictionary:v6];
+            uuid = [v15 uuid];
+            v17 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:uuid inFaceDictionary:dictionary];
 
             [v17 setFaceId:{objc_msgSend(v15, "faceId")}];
-            v18 = [v15 uuid];
-            [v17 setUuid:v18];
+            uuid2 = [v15 uuid];
+            [v17 setUuid:uuid2];
 
             [v15 boundingBox];
             [v17 setFrame:?];
@@ -255,26 +255,26 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
             [v17 setRectanglesConfidence:v19];
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v91 objects:v104 count:16];
+          v12 = [faceRectanglesObservations countByEnumeratingWithState:&v91 objects:v104 count:16];
         }
 
         while (v12);
       }
 
-      v20 = [v69 sourceInput];
-      v66 = [v20 photoLibraryURL];
+      sourceInput = [contextCopy sourceInput];
+      photoLibraryURL = [sourceInput photoLibraryURL];
 
-      v21 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceNameHelper];
-      LODWORD(v20) = [v21 prepareForLookupWithPhotoLibraryURL:v66];
+      _faceNameHelper = [(AXMMediaAnalysisFaceDetectorNode *)self _faceNameHelper];
+      LODWORD(sourceInput) = [_faceNameHelper prepareForLookupWithPhotoLibraryURL:photoLibraryURL];
 
-      if (v20)
+      if (sourceInput)
       {
         v89 = 0u;
         v90 = 0u;
         v87 = 0u;
         v88 = 0u;
-        v22 = [v68 faceprintObservations];
-        v23 = [v22 countByEnumeratingWithState:&v87 objects:v103 count:16];
+        faceprintObservations = [firstObject2 faceprintObservations];
+        v23 = [faceprintObservations countByEnumeratingWithState:&v87 objects:v103 count:16];
         if (v23)
         {
           v24 = *v88;
@@ -284,22 +284,22 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
             {
               if (*v88 != v24)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(faceprintObservations);
               }
 
               v26 = *(*(&v87 + 1) + 8 * j);
-              v27 = [v26 uuid];
-              v28 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:v27 inFaceDictionary:v6];
+              uuid3 = [v26 uuid];
+              v28 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:uuid3 inFaceDictionary:dictionary];
 
-              v29 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceNameHelper];
-              v30 = [v29 nameForFaceObservation:v26];
+              _faceNameHelper2 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceNameHelper];
+              v30 = [_faceNameHelper2 nameForFaceObservation:v26];
               [v28 setName:v30];
 
               [v26 confidence];
               [v28 setNameConfidence:v31];
             }
 
-            v23 = [v22 countByEnumeratingWithState:&v87 objects:v103 count:16];
+            v23 = [faceprintObservations countByEnumeratingWithState:&v87 objects:v103 count:16];
           }
 
           while (v23);
@@ -310,7 +310,7 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      obj = [v68 faceAttributesObservations];
+      obj = [firstObject2 faceAttributesObservations];
       v32 = [obj countByEnumeratingWithState:&v83 objects:v102 count:16];
       if (v32)
       {
@@ -325,17 +325,17 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
             }
 
             v35 = *(*(&v83 + 1) + 8 * k);
-            v36 = [v35 uuid];
-            v37 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:v36 inFaceDictionary:v6];
+            uuid4 = [v35 uuid];
+            v37 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:uuid4 inFaceDictionary:dictionary];
 
             v38 = [AXMVisionFeatureFaceAttributes alloc];
-            v39 = [v35 faceAttributes];
-            v40 = [(AXMVisionFeatureFaceAttributes *)v38 initWithVisionFaceAttributes:v39];
+            faceAttributes = [v35 faceAttributes];
+            v40 = [(AXMVisionFeatureFaceAttributes *)v38 initWithVisionFaceAttributes:faceAttributes];
             [v37 setAttributes:v40];
 
             v41 = +[AXMVisionFeatureFaceAttributes defaultExcludeOptions];
-            v42 = [v37 attributes];
-            [v42 setExcludeOptions:v41];
+            attributes = [v37 attributes];
+            [attributes setExcludeOptions:v41];
 
             [v35 confidence];
             [v37 setAttributesConfidence:v43];
@@ -351,8 +351,8 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v44 = [v68 faceExpressionsObservations];
-      v45 = [v44 countByEnumeratingWithState:&v79 objects:v101 count:16];
+      faceExpressionsObservations = [firstObject2 faceExpressionsObservations];
+      v45 = [faceExpressionsObservations countByEnumeratingWithState:&v79 objects:v101 count:16];
       if (v45)
       {
         v46 = *v80;
@@ -362,18 +362,18 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
           {
             if (*v80 != v46)
             {
-              objc_enumerationMutation(v44);
+              objc_enumerationMutation(faceExpressionsObservations);
             }
 
             v48 = *(*(&v79 + 1) + 8 * m);
-            v49 = [v48 uuid];
-            v50 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:v49 inFaceDictionary:v6];
+            uuid5 = [v48 uuid];
+            v50 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:uuid5 inFaceDictionary:dictionary];
 
-            v51 = [v48 expressionsAndConfidence];
-            [v50 setExpressionsAndConfidence:v51];
+            expressionsAndConfidence = [v48 expressionsAndConfidence];
+            [v50 setExpressionsAndConfidence:expressionsAndConfidence];
           }
 
-          v45 = [v44 countByEnumeratingWithState:&v79 objects:v101 count:16];
+          v45 = [faceExpressionsObservations countByEnumeratingWithState:&v79 objects:v101 count:16];
         }
 
         while (v45);
@@ -383,7 +383,7 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      obja = [v68 faceLandmarksObservations];
+      obja = [firstObject2 faceLandmarksObservations];
       v52 = [obja countByEnumeratingWithState:&v75 objects:v100 count:16];
       if (v52)
       {
@@ -398,17 +398,17 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
             }
 
             v55 = *(*(&v75 + 1) + 8 * n);
-            v56 = [v55 uuid];
-            v57 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:v56 inFaceDictionary:v6];
+            uuid6 = [v55 uuid];
+            v57 = [(AXMMediaAnalysisFaceDetectorNode *)self _faceResultForUUID:uuid6 inFaceDictionary:dictionary];
 
             v58 = [AXMVisionFeatureFaceLandmarks alloc];
-            v59 = [v55 landmarks];
-            v60 = [(AXMVisionFeatureFaceLandmarks *)v58 initWithVisionFaceLandmarks:v59];
+            landmarks = [v55 landmarks];
+            v60 = [(AXMVisionFeatureFaceLandmarks *)v58 initWithVisionFaceLandmarks:landmarks];
             [v57 setLandmarks:v60];
 
             v61 = [AXMVisionFeatureFaceLandmarks alloc];
-            v62 = [v55 landmarks3d];
-            v63 = [(AXMVisionFeatureFaceLandmarks *)v61 initWithVisionFaceLandmarks:v62];
+            landmarks3d = [v55 landmarks3d];
+            v63 = [(AXMVisionFeatureFaceLandmarks *)v61 initWithVisionFaceLandmarks:landmarks3d];
             [v57 setLandmarks3d:v63];
 
             [v55 confidence];
@@ -427,9 +427,9 @@ void __53__AXMMediaAnalysisFaceDetectorNode_evaluate_metrics___block_invoke(uint
   v73[1] = 3221225472;
   v73[2] = __83__AXMMediaAnalysisFaceDetectorNode__addFaceDetectionFeaturesToContext_fromResults___block_invoke;
   v73[3] = &unk_1E7A1C9D8;
-  v74 = v69;
-  v65 = v69;
-  [v6 enumerateKeysAndObjectsUsingBlock:v73];
+  v74 = contextCopy;
+  v65 = contextCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v73];
   [v65 addEvaluatedFeatureType:31];
 }
 
@@ -448,15 +448,15 @@ void __83__AXMMediaAnalysisFaceDetectorNode__addFaceDetectionFeaturesToContext_f
   [v6 appendFeature:v7];
 }
 
-- (id)_faceResultForUUID:(id)a3 inFaceDictionary:(id)a4
+- (id)_faceResultForUUID:(id)d inFaceDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = [a3 UUIDString];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  dictionaryCopy = dictionary;
+  uUIDString = [d UUIDString];
+  v7 = [dictionaryCopy objectForKeyedSubscript:uUIDString];
   if (!v7)
   {
     v7 = objc_alloc_init(AXMVisionFeatureFaceDetectionResult);
-    [v5 setObject:v7 forKeyedSubscript:v6];
+    [dictionaryCopy setObject:v7 forKeyedSubscript:uUIDString];
   }
 
   return v7;

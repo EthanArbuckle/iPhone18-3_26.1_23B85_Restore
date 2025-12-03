@@ -1,37 +1,37 @@
 @interface URLCompletionProvider
-- (URLCompletionProvider)initWithBookmarkProvider:(id)a3 cloudTabStore:(id)a4 profileIdentifier:(id)a5 maxResults:(unint64_t)a6 searchableCollectionsMask:(int)a7;
-- (id)_doUpdateForPrefix:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 withSearchParameters:(id)a5;
-- (id)completionsForQuery:(id)a3 isCFSearch:(BOOL)a4;
-- (id)findCompletionsForKey:(id)a3 isCFSearch:(BOOL)a4;
-- (id)getKeyForQueryString:(id)a3 isCFSearch:(BOOL)a4;
-- (unint64_t)cfErrorForQuery:(id)a3;
+- (URLCompletionProvider)initWithBookmarkProvider:(id)provider cloudTabStore:(id)store profileIdentifier:(id)identifier maxResults:(unint64_t)results searchableCollectionsMask:(int)mask;
+- (id)_doUpdateForPrefix:(id)prefix filterResultsUsingProfileIdentifier:(id)identifier withSearchParameters:(id)parameters;
+- (id)completionsForQuery:(id)query isCFSearch:(BOOL)search;
+- (id)findCompletionsForKey:(id)key isCFSearch:(BOOL)search;
+- (id)getKeyForQueryString:(id)string isCFSearch:(BOOL)search;
+- (unint64_t)cfErrorForQuery:(id)query;
 - (unint64_t)maximumCachedCompletionCount;
-- (void)_applicationDidEnterBackground:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
 - (void)_endURLCompletionBackgroundTask;
 - (void)clearCachedCompletions;
 - (void)dealloc;
-- (void)setQueryToComplete:(id)a3;
+- (void)setQueryToComplete:(id)complete;
 @end
 
 @implementation URLCompletionProvider
 
-- (URLCompletionProvider)initWithBookmarkProvider:(id)a3 cloudTabStore:(id)a4 profileIdentifier:(id)a5 maxResults:(unint64_t)a6 searchableCollectionsMask:(int)a7
+- (URLCompletionProvider)initWithBookmarkProvider:(id)provider cloudTabStore:(id)store profileIdentifier:(id)identifier maxResults:(unint64_t)results searchableCollectionsMask:(int)mask
 {
-  v7 = *&a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  v7 = *&mask;
+  providerCopy = provider;
+  storeCopy = store;
+  identifierCopy = identifier;
   v30.receiver = self;
   v30.super_class = URLCompletionProvider;
   v16 = [(CompletionProvider *)&v30 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_bookmarkProvider, a3);
-    v17->_maxResults = a6;
+    objc_storeStrong(&v16->_bookmarkProvider, provider);
+    v17->_maxResults = results;
     pthread_mutex_init(&v17->_prefixMutex, 0);
     v17->_urlCompletionBackgroundTaskIdentifier = *MEMORY[0x277D767B0];
-    v18 = [[URLCompletionDatabase alloc] initWithCloudTabStore:v14 profileIdentifier:v15 searchableCollectionsMask:v7 bookmarkProvider:v13];
+    v18 = [[URLCompletionDatabase alloc] initWithCloudTabStore:storeCopy profileIdentifier:identifierCopy searchableCollectionsMask:v7 bookmarkProvider:providerCopy];
     completionDatabase = v17->_completionDatabase;
     v17->_completionDatabase = v18;
 
@@ -45,16 +45,16 @@
     cfCompletionQueue = v17->_cfCompletionQueue;
     v17->_cfCompletionQueue = v24;
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v27 = +[History sharedHistory];
-    [v26 addObserver:v17 selector:sel__historyDidChange_ name:*MEMORY[0x277D4A248] object:v27];
-    [v26 addObserver:v17 selector:sel__historyDidChange_ name:*MEMORY[0x277D4A240] object:v27];
-    [v26 addObserver:v17 selector:sel__historyDidChange_ name:*MEMORY[0x277D4A228] object:v27];
-    [v26 addObserver:v17 selector:sel__historyDidChange_ name:*MEMORY[0x277D4A230] object:v27];
-    [v26 addObserver:v17 selector:sel__bookmarksDidChange_ name:*MEMORY[0x277D7B618] object:0];
-    [v26 addObserver:v17 selector:sel__bookmarksDidChange_ name:*MEMORY[0x277D7B608] object:0];
-    [v26 addObserver:v17 selector:sel__bookmarksDidChange_ name:*MEMORY[0x277D7B640] object:0];
-    [v26 addObserver:v17 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v17 selector:sel__historyDidChange_ name:*MEMORY[0x277D4A248] object:v27];
+    [defaultCenter addObserver:v17 selector:sel__historyDidChange_ name:*MEMORY[0x277D4A240] object:v27];
+    [defaultCenter addObserver:v17 selector:sel__historyDidChange_ name:*MEMORY[0x277D4A228] object:v27];
+    [defaultCenter addObserver:v17 selector:sel__historyDidChange_ name:*MEMORY[0x277D4A230] object:v27];
+    [defaultCenter addObserver:v17 selector:sel__bookmarksDidChange_ name:*MEMORY[0x277D7B618] object:0];
+    [defaultCenter addObserver:v17 selector:sel__bookmarksDidChange_ name:*MEMORY[0x277D7B608] object:0];
+    [defaultCenter addObserver:v17 selector:sel__bookmarksDidChange_ name:*MEMORY[0x277D7B640] object:0];
+    [defaultCenter addObserver:v17 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
     v28 = v17;
   }
 
@@ -63,8 +63,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   pthread_mutex_destroy(&self->_prefixMutex);
   if (self->_urlCompletionBackgroundTaskIdentifier != *MEMORY[0x277D767B0])
@@ -77,12 +77,12 @@
   [(URLCompletionProvider *)&v4 dealloc];
 }
 
-- (id)_doUpdateForPrefix:(id)a3 filterResultsUsingProfileIdentifier:(id)a4 withSearchParameters:(id)a5
+- (id)_doUpdateForPrefix:(id)prefix filterResultsUsingProfileIdentifier:(id)identifier withSearchParameters:(id)parameters
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  prefixCopy = prefix;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   if (self->_bookmarksWereModified)
   {
     [(WBSURLCompletionDatabase *)self->_completionDatabase clearBookmarkMatchesCachesKeepingEmptyValues:0];
@@ -118,7 +118,7 @@
 
   completionDatabase = self->_completionDatabase;
   v34 = 0;
-  [(WBSURLCompletionDatabase *)completionDatabase getBestMatchesForTypedString:v8 filterResultsUsingProfileIdentifier:v9 topHits:v12 matches:&v34 limit:self->_maxResults forQueryID:[(WBSCompletionQuery *)self->_query queryID] withSearchParameters:v10];
+  [(WBSURLCompletionDatabase *)completionDatabase getBestMatchesForTypedString:prefixCopy filterResultsUsingProfileIdentifier:identifierCopy topHits:v12 matches:&v34 limit:self->_maxResults forQueryID:[(WBSCompletionQuery *)self->_query queryID] withSearchParameters:parametersCopy];
   if (providesTopHits)
   {
     v14 = v35;
@@ -201,32 +201,32 @@
   }
 }
 
-- (id)completionsForQuery:(id)a3 isCFSearch:(BOOL)a4
+- (id)completionsForQuery:(id)query isCFSearch:(BOOL)search
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_query, a3);
+  searchCopy = search;
+  queryCopy = query;
+  objc_storeStrong(&self->_query, query);
   v10.receiver = self;
   v10.super_class = URLCompletionProvider;
-  v8 = [(CompletionProvider *)&v10 completionsForQuery:v7 isCFSearch:v4];
+  v8 = [(CompletionProvider *)&v10 completionsForQuery:queryCopy isCFSearch:searchCopy];
 
   return v8;
 }
 
-- (id)findCompletionsForKey:(id)a3 isCFSearch:(BOOL)a4
+- (id)findCompletionsForKey:(id)key isCFSearch:(BOOL)search
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(URLCompletionProvider *)self getKeyForQueryString:v6 isCFSearch:0];
+  searchCopy = search;
+  keyCopy = key;
+  v7 = [(URLCompletionProvider *)self getKeyForQueryString:keyCopy isCFSearch:0];
   v18.receiver = self;
   v18.super_class = URLCompletionProvider;
   v8 = [(CompletionProvider *)&v18 findCompletionsForKey:v7 isCFSearch:0];
-  v9 = [(NSArray *)self->_searchParametersList firstObject];
-  v10 = [v9 isCFSearch];
+  firstObject = [(NSArray *)self->_searchParametersList firstObject];
+  isCFSearch = [firstObject isCFSearch];
 
-  if (v10)
+  if (isCFSearch)
   {
-    v11 = [(URLCompletionProvider *)self getKeyForQueryString:v6 isCFSearch:1];
+    v11 = [(URLCompletionProvider *)self getKeyForQueryString:keyCopy isCFSearch:1];
 
     v17.receiver = self;
     v17.super_class = URLCompletionProvider;
@@ -249,7 +249,7 @@
     v13 = 0;
   }
 
-  if (v4)
+  if (searchCopy)
   {
     v14 = v13;
   }
@@ -273,19 +273,19 @@
   self->_currentPrefix = 0;
 }
 
-- (void)setQueryToComplete:(id)a3
+- (void)setQueryToComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   pthread_mutex_lock(&self->_prefixMutex);
   currentPrefix = self->_currentPrefix;
-  v6 = [v4 queryString];
-  LOBYTE(currentPrefix) = [(NSString *)currentPrefix isEqualToString:v6];
+  queryString = [completeCopy queryString];
+  LOBYTE(currentPrefix) = [(NSString *)currentPrefix isEqualToString:queryString];
 
   if ((currentPrefix & 1) == 0)
   {
     v7 = self->_query;
-    v8 = [v4 queryString];
-    v9 = [v8 copy];
+    queryString2 = [completeCopy queryString];
+    v9 = [queryString2 copy];
     v10 = self->_currentPrefix;
     self->_currentPrefix = v9;
 
@@ -297,7 +297,7 @@
     v15[2] = __44__URLCompletionProvider_setQueryToComplete___block_invoke;
     v15[3] = &unk_2781D6180;
     v15[4] = self;
-    v16 = v4;
+    v16 = completeCopy;
     v17 = v7;
     v18 = v11;
     v13 = v11;
@@ -480,18 +480,18 @@ uint64_t __44__URLCompletionProvider_setQueryToComplete___block_invoke_2(uint64_
   return [*v6 _endURLCompletionBackgroundTask];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   if (self->_needScheduleBackgroundTaskOnAppSuspend && self->_urlCompletionBackgroundTaskIdentifier == *MEMORY[0x277D767B0])
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __56__URLCompletionProvider__applicationDidEnterBackground___block_invoke;
     v6[3] = &unk_2781D60B8;
     v6[4] = self;
-    self->_urlCompletionBackgroundTaskIdentifier = [v5 beginBackgroundTaskWithName:@"com.apple.mobilesafari.URLCompletionTask" expirationHandler:v6];
+    self->_urlCompletionBackgroundTaskIdentifier = [mEMORY[0x277D75128] beginBackgroundTaskWithName:@"com.apple.mobilesafari.URLCompletionTask" expirationHandler:v6];
   }
 }
 
@@ -501,36 +501,36 @@ uint64_t __44__URLCompletionProvider_setQueryToComplete___block_invoke_2(uint64_
   v2 = *MEMORY[0x277D767B0];
   if (self->_urlCompletionBackgroundTaskIdentifier != *MEMORY[0x277D767B0])
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    [v4 endBackgroundTask:self->_urlCompletionBackgroundTaskIdentifier];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] endBackgroundTask:self->_urlCompletionBackgroundTaskIdentifier];
 
     self->_urlCompletionBackgroundTaskIdentifier = v2;
   }
 }
 
-- (id)getKeyForQueryString:(id)a3 isCFSearch:(BOOL)a4
+- (id)getKeyForQueryString:(id)string isCFSearch:(BOOL)search
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSArray *)self->_searchParametersList firstObject];
-  v8 = [v7 isCFSearch];
+  searchCopy = search;
+  stringCopy = string;
+  firstObject = [(NSArray *)self->_searchParametersList firstObject];
+  isCFSearch = [firstObject isCFSearch];
 
-  if (v8)
+  if (isCFSearch)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-    v11 = [v9 stringWithFormat:@"%lu-%@", objc_msgSend(v10, "integerValue"), v6];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:searchCopy];
+    stringCopy = [v9 stringWithFormat:@"%lu-%@", objc_msgSend(v10, "integerValue"), stringCopy];
 
-    v6 = v11;
+    stringCopy = stringCopy;
   }
 
-  return v6;
+  return stringCopy;
 }
 
-- (unint64_t)cfErrorForQuery:(id)a3
+- (unint64_t)cfErrorForQuery:(id)query
 {
-  v4 = [a3 queryString];
-  v5 = [(URLCompletionProvider *)self findCompletionsForKey:v4 isCFSearch:1];
+  queryString = [query queryString];
+  v5 = [(URLCompletionProvider *)self findCompletionsForKey:queryString isCFSearch:1];
 
   if ([v5 count] == 1)
   {

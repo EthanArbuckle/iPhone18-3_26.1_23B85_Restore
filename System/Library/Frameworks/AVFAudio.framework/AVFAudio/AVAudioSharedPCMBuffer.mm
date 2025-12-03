@@ -1,7 +1,7 @@
 @interface AVAudioSharedPCMBuffer
 - (AVAudioSharedBufferToken)sharedBufferToken;
-- (AVAudioSharedPCMBuffer)initWithPCMFormat:(id)a3 frameCapacity:(unsigned int)a4;
-- (AVAudioSharedPCMBuffer)initWithPCMFormat:(id)a3 sharedBufferToken:(id)a4;
+- (AVAudioSharedPCMBuffer)initWithPCMFormat:(id)format frameCapacity:(unsigned int)capacity;
+- (AVAudioSharedPCMBuffer)initWithPCMFormat:(id)format sharedBufferToken:(id)token;
 @end
 
 @implementation AVAudioSharedPCMBuffer
@@ -47,14 +47,14 @@
   return v8;
 }
 
-- (AVAudioSharedPCMBuffer)initWithPCMFormat:(id)a3 sharedBufferToken:(id)a4
+- (AVAudioSharedPCMBuffer)initWithPCMFormat:(id)format sharedBufferToken:(id)token
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 streamDescription];
-  v5 = *(v4 + 16);
-  v9[0] = *v4;
+  streamDescription = [format streamDescription];
+  v5 = *(streamDescription + 16);
+  v9[0] = *streamDescription;
   v9[1] = v5;
-  v10 = *(v4 + 32);
+  v10 = *(streamDescription + 32);
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -86,14 +86,14 @@
   std::vector<char>::vector[abi:ne200100](&__p);
 }
 
-- (AVAudioSharedPCMBuffer)initWithPCMFormat:(id)a3 frameCapacity:(unsigned int)a4
+- (AVAudioSharedPCMBuffer)initWithPCMFormat:(id)format frameCapacity:(unsigned int)capacity
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 streamDescription];
-  v5 = *(v4 + 16);
-  v8[0] = *v4;
+  streamDescription = [format streamDescription];
+  v5 = *(streamDescription + 16);
+  v8[0] = *streamDescription;
   v8[1] = v5;
-  v9 = *(v4 + 32);
+  v9 = *(streamDescription + 32);
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {

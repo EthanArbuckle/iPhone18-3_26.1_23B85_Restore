@@ -1,6 +1,6 @@
 @interface HUDLoadingController
-- (_TtC23ShelfKitCollectionViews20HUDLoadingController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC23ShelfKitCollectionViews20HUDLoadingController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -8,17 +8,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_25ACB8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = type metadata accessor for HUDLoadingController(0);
   v4 = v10.receiver;
-  [(HUDLoadingController *)&v10 viewDidAppear:v3];
+  [(HUDLoadingController *)&v10 viewDidAppear:appearCopy];
   v5 = objc_opt_self();
   v6 = swift_allocObject();
   *(v6 + 16) = v4;
@@ -35,7 +35,7 @@
   _Block_release(v7);
 }
 
-- (_TtC23ShelfKitCollectionViews20HUDLoadingController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews20HUDLoadingController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

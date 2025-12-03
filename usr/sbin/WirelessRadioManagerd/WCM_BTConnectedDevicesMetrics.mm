@@ -1,28 +1,28 @@
 @interface WCM_BTConnectedDevicesMetrics
-- (WCM_BTConnectedDevicesMetrics)initWithBTConnections:(WCM_BTConnections *)a3 at:(double)a4;
+- (WCM_BTConnectedDevicesMetrics)initWithBTConnections:(WCM_BTConnections *)connections at:(double)at;
 - (id)getEnumerationString;
 - (void)dealloc;
-- (void)startTimer:(double)a3;
-- (void)stopTimer:(double)a3 wifi2GStartTime:(double)a4;
-- (void)stopWiFi2GTimer:(double)a3 wifi2GStartTime:(double)mTimestamp;
+- (void)startTimer:(double)timer;
+- (void)stopTimer:(double)timer wifi2GStartTime:(double)time;
+- (void)stopWiFi2GTimer:(double)timer wifi2GStartTime:(double)mTimestamp;
 @end
 
 @implementation WCM_BTConnectedDevicesMetrics
 
-- (WCM_BTConnectedDevicesMetrics)initWithBTConnections:(WCM_BTConnections *)a3 at:(double)a4
+- (WCM_BTConnectedDevicesMetrics)initWithBTConnections:(WCM_BTConnections *)connections at:(double)at
 {
   v10.receiver = self;
   v10.super_class = WCM_BTConnectedDevicesMetrics;
   result = [(WCM_BTConnectedDevicesMetrics *)&v10 init];
   if (result)
   {
-    v7 = *&a3->numA2DP;
-    v8 = *&a3->numeSCO;
-    numLEA = a3->numLEA;
-    *&result->mBTConnections.numHID = *&a3->numHID;
+    v7 = *&connections->numA2DP;
+    v8 = *&connections->numeSCO;
+    numLEA = connections->numLEA;
+    *&result->mBTConnections.numHID = *&connections->numHID;
     *&result->mBTConnections.numeSCO = v8;
     *&result->mBTConnections.numA2DP = v7;
-    result->mTimestamp = a4;
+    result->mTimestamp = at;
     result->mBTConnections.numLEA = numLEA;
     result->mDuration = 0.0;
   }
@@ -37,7 +37,7 @@
   [(WCM_BTConnectedDevicesMetrics *)&v2 dealloc];
 }
 
-- (void)stopWiFi2GTimer:(double)a3 wifi2GStartTime:(double)mTimestamp
+- (void)stopWiFi2GTimer:(double)timer wifi2GStartTime:(double)mTimestamp
 {
   if (mTimestamp != 0.0)
   {
@@ -46,26 +46,26 @@
       mTimestamp = self->mTimestamp;
     }
 
-    self->mDurInWiFi2G = a3 - mTimestamp + self->mDurInWiFi2G;
+    self->mDurInWiFi2G = timer - mTimestamp + self->mDurInWiFi2G;
   }
 }
 
-- (void)stopTimer:(double)a3 wifi2GStartTime:(double)a4
+- (void)stopTimer:(double)timer wifi2GStartTime:(double)time
 {
   mTimestamp = self->mTimestamp;
   if (mTimestamp != 0.0)
   {
-    self->mDuration = a3 - mTimestamp + self->mDuration;
+    self->mDuration = timer - mTimestamp + self->mDuration;
     [WCM_BTConnectedDevicesMetrics stopWiFi2GTimer:"stopWiFi2GTimer:wifi2GStartTime:" wifi2GStartTime:?];
     self->mTimestamp = 0.0;
   }
 }
 
-- (void)startTimer:(double)a3
+- (void)startTimer:(double)timer
 {
   if (self->mTimestamp == 0.0)
   {
-    self->mTimestamp = a3;
+    self->mTimestamp = timer;
   }
 }
 

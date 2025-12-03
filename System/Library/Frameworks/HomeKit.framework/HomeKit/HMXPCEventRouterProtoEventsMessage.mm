@@ -1,26 +1,26 @@
 @interface HMXPCEventRouterProtoEventsMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addCachedEvents:(id)a3;
-- (void)addEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCachedEvents:(id)events;
+- (void)addEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMXPCEventRouterProtoEventsMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -50,7 +50,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -79,13 +79,13 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((events = self->_events, !(events | v4[2])) || -[NSMutableArray isEqual:](events, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((events = self->_events, !(events | equalCopy[2])) || -[NSMutableArray isEqual:](events, "isEqual:")))
   {
     cachedEvents = self->_cachedEvents;
-    if (cachedEvents | v4[1])
+    if (cachedEvents | equalCopy[1])
     {
       v7 = [(NSMutableArray *)cachedEvents isEqual:?];
     }
@@ -104,10 +104,10 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -128,7 +128,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addEvents:v11];
 
         ++v10;
@@ -161,7 +161,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addCachedEvents:v17];
 
         ++v16;
@@ -178,44 +178,44 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(HMXPCEventRouterProtoEventsMessage *)self eventsCount])
   {
-    [v12 clearEvents];
-    v4 = [(HMXPCEventRouterProtoEventsMessage *)self eventsCount];
-    if (v4)
+    [toCopy clearEvents];
+    eventsCount = [(HMXPCEventRouterProtoEventsMessage *)self eventsCount];
+    if (eventsCount)
     {
-      v5 = v4;
+      v5 = eventsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMXPCEventRouterProtoEventsMessage *)self eventsAtIndex:i];
-        [v12 addEvents:v7];
+        [toCopy addEvents:v7];
       }
     }
   }
 
   if ([(HMXPCEventRouterProtoEventsMessage *)self cachedEventsCount])
   {
-    [v12 clearCachedEvents];
-    v8 = [(HMXPCEventRouterProtoEventsMessage *)self cachedEventsCount];
-    if (v8)
+    [toCopy clearCachedEvents];
+    cachedEventsCount = [(HMXPCEventRouterProtoEventsMessage *)self cachedEventsCount];
+    if (cachedEventsCount)
     {
-      v9 = v8;
+      v9 = cachedEventsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HMXPCEventRouterProtoEventsMessage *)self cachedEventsAtIndex:j];
-        [v12 addCachedEvents:v11];
+        [toCopy addCachedEvents:v11];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -286,7 +286,7 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_events count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_events, "count")}];
@@ -309,8 +309,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -319,7 +319,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"events"];
+    [dictionary setObject:v4 forKey:@"events"];
   }
 
   if ([(NSMutableArray *)self->_cachedEvents count])
@@ -344,8 +344,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -354,12 +354,12 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"cachedEvents"];
+    [dictionary setObject:v11 forKey:@"cachedEvents"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -368,46 +368,46 @@
   v8.receiver = self;
   v8.super_class = HMXPCEventRouterProtoEventsMessage;
   v4 = [(HMXPCEventRouterProtoEventsMessage *)&v8 description];
-  v5 = [(HMXPCEventRouterProtoEventsMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMXPCEventRouterProtoEventsMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addCachedEvents:(id)a3
+- (void)addCachedEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   cachedEvents = self->_cachedEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!cachedEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_cachedEvents;
     self->_cachedEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     cachedEvents = self->_cachedEvents;
   }
 
-  [(NSMutableArray *)cachedEvents addObject:v4];
+  [(NSMutableArray *)cachedEvents addObject:eventsCopy];
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   events = self->_events;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!events)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventsCopy];
 }
 
 @end

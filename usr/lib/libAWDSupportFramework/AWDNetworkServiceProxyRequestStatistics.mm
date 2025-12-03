@@ -1,28 +1,28 @@
 @interface AWDNetworkServiceProxyRequestStatistics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInterfaceType:(id)a3;
-- (int)StringAsProtocolType:(id)a3;
+- (int)StringAsInterfaceType:(id)type;
+- (int)StringAsProtocolType:(id)type;
 - (int)interfaceType;
 - (int)protocolType;
 - (unint64_t)hash;
-- (unsigned)directConnectionFirstByteBucketsAtIndex:(unint64_t)a3;
-- (unsigned)directConnectionLastByteBucketsAtIndex:(unint64_t)a3;
-- (unsigned)firstByteBucketsAtIndex:(unint64_t)a3;
-- (unsigned)lastByteBucketsAtIndex:(unint64_t)a3;
-- (unsigned)udpRttBucketsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)directConnectionFirstByteBucketsAtIndex:(unint64_t)index;
+- (unsigned)directConnectionLastByteBucketsAtIndex:(unint64_t)index;
+- (unsigned)firstByteBucketsAtIndex:(unint64_t)index;
+- (unsigned)lastByteBucketsAtIndex:(unint64_t)index;
+- (unsigned)udpRttBucketsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDirectConnectionCount:(BOOL)a3;
-- (void)setHasDirectConnectionFailedCount:(BOOL)a3;
-- (void)setHasInterfaceType:(BOOL)a3;
-- (void)setHasProtocolType:(BOOL)a3;
-- (void)setHasRequestCount:(BOOL)a3;
-- (void)setHasRequestFailedCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDirectConnectionCount:(BOOL)count;
+- (void)setHasDirectConnectionFailedCount:(BOOL)count;
+- (void)setHasInterfaceType:(BOOL)type;
+- (void)setHasProtocolType:(BOOL)type;
+- (void)setHasRequestCount:(BOOL)count;
+- (void)setHasRequestFailedCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNetworkServiceProxyRequestStatistics
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)setHasInterfaceType:(BOOL)a3
+- (void)setHasInterfaceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -68,24 +68,24 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsInterfaceType:(id)a3
+- (int)StringAsInterfaceType:(id)type
 {
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_WIFI"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_WIFI"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_CELLULAR"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_CELLULAR"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_WIRED"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_WIRED"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_VIRTUAL"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_VIRTUAL"])
   {
     return 4;
   }
@@ -93,9 +93,9 @@
   return 1;
 }
 
-- (void)setHasRequestCount:(BOOL)a3
+- (void)setHasRequestCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasRequestFailedCount:(BOOL)a3
+- (void)setHasRequestFailedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -123,9 +123,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasDirectConnectionCount:(BOOL)a3
+- (void)setHasDirectConnectionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -138,9 +138,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDirectConnectionFailedCount:(BOOL)a3
+- (void)setHasDirectConnectionFailedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -153,64 +153,64 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)firstByteBucketsAtIndex:(unint64_t)a3
+- (unsigned)firstByteBucketsAtIndex:(unint64_t)index
 {
   p_firstByteBuckets = &self->_firstByteBuckets;
   count = self->_firstByteBuckets.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_firstByteBuckets->list[a3];
+  return p_firstByteBuckets->list[index];
 }
 
-- (unsigned)lastByteBucketsAtIndex:(unint64_t)a3
+- (unsigned)lastByteBucketsAtIndex:(unint64_t)index
 {
   p_lastByteBuckets = &self->_lastByteBuckets;
   count = self->_lastByteBuckets.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_lastByteBuckets->list[a3];
+  return p_lastByteBuckets->list[index];
 }
 
-- (unsigned)directConnectionFirstByteBucketsAtIndex:(unint64_t)a3
+- (unsigned)directConnectionFirstByteBucketsAtIndex:(unint64_t)index
 {
   p_directConnectionFirstByteBuckets = &self->_directConnectionFirstByteBuckets;
   count = self->_directConnectionFirstByteBuckets.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_directConnectionFirstByteBuckets->list[a3];
+  return p_directConnectionFirstByteBuckets->list[index];
 }
 
-- (unsigned)directConnectionLastByteBucketsAtIndex:(unint64_t)a3
+- (unsigned)directConnectionLastByteBucketsAtIndex:(unint64_t)index
 {
   p_directConnectionLastByteBuckets = &self->_directConnectionLastByteBuckets;
   count = self->_directConnectionLastByteBuckets.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_directConnectionLastByteBuckets->list[a3];
+  return p_directConnectionLastByteBuckets->list[index];
 }
 
-- (unsigned)udpRttBucketsAtIndex:(unint64_t)a3
+- (unsigned)udpRttBucketsAtIndex:(unint64_t)index
 {
   p_udpRttBuckets = &self->_udpRttBuckets;
   count = self->_udpRttBuckets.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_udpRttBuckets->list[a3];
+  return p_udpRttBuckets->list[index];
 }
 
 - (int)protocolType
@@ -226,9 +226,9 @@
   }
 }
 
-- (void)setHasProtocolType:(BOOL)a3
+- (void)setHasProtocolType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -241,19 +241,19 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsProtocolType:(id)a3
+- (int)StringAsProtocolType:(id)type
 {
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_IPv4"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_IPv4"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_IPv6"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_IPv6"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_NAT64"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_NAT64"])
   {
     return 3;
   }
@@ -270,11 +270,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
@@ -291,19 +291,19 @@
       v6 = off_29EE32AF0[v5];
     }
 
-    [v3 setObject:v6 forKey:@"interface_type"];
+    [dictionary setObject:v6 forKey:@"interface_type"];
   }
 
   firstPartyServiceName = self->_firstPartyServiceName;
   if (firstPartyServiceName)
   {
-    [v3 setObject:firstPartyServiceName forKey:@"first_party_service_name"];
+    [dictionary setObject:firstPartyServiceName forKey:@"first_party_service_name"];
   }
 
   v8 = self->_has;
   if ((v8 & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_requestCount), @"request_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_requestCount), @"request_count"}];
     v8 = self->_has;
     if ((v8 & 0x40) == 0)
     {
@@ -322,7 +322,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_requestFailedCount), @"request_failed_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_requestFailedCount), @"request_failed_count"}];
   v8 = self->_has;
   if ((v8 & 2) == 0)
   {
@@ -336,19 +336,19 @@ LABEL_13:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_directConnectionCount), @"direct_connection_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_directConnectionCount), @"direct_connection_count"}];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_directConnectionFailedCount), @"direct_connection_failed_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_directConnectionFailedCount), @"direct_connection_failed_count"}];
   }
 
 LABEL_15:
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"first_byte_buckets"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"last_byte_buckets"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"direct_connection_first_byte_buckets"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"direct_connection_last_byte_buckets"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"udp_rtt_buckets"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"first_byte_buckets"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"last_byte_buckets"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"direct_connection_first_byte_buckets"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"direct_connection_last_byte_buckets"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"udp_rtt_buckets"];
   if ((*&self->_has & 0x10) != 0)
   {
     v9 = self->_protocolType - 1;
@@ -362,13 +362,13 @@ LABEL_15:
       v10 = off_29EE32B10[v9];
     }
 
-    [v3 setObject:v10 forKey:@"protocol_type"];
+    [dictionary setObject:v10 forKey:@"protocol_type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -510,32 +510,32 @@ LABEL_12:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 16) = self->_timestamp;
-    *(a3 + 168) |= 1u;
+    *(to + 16) = self->_timestamp;
+    *(to + 168) |= 1u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    *(a3 + 38) = self->_interfaceType;
-    *(a3 + 168) |= 8u;
+    *(to + 38) = self->_interfaceType;
+    *(to + 168) |= 8u;
   }
 
   if (self->_firstPartyServiceName)
   {
-    [a3 setFirstPartyServiceName:?];
+    [to setFirstPartyServiceName:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x20) != 0)
   {
-    *(a3 + 40) = self->_requestCount;
-    *(a3 + 168) |= 0x20u;
+    *(to + 40) = self->_requestCount;
+    *(to + 168) |= 0x20u;
     v6 = self->_has;
     if ((v6 & 0x40) == 0)
     {
@@ -546,8 +546,8 @@ LABEL_9:
       }
 
 LABEL_37:
-      *(a3 + 34) = self->_directConnectionCount;
-      *(a3 + 168) |= 2u;
+      *(to + 34) = self->_directConnectionCount;
+      *(to + 168) |= 2u;
       if ((*&self->_has & 4) == 0)
       {
         goto LABEL_12;
@@ -562,8 +562,8 @@ LABEL_37:
     goto LABEL_9;
   }
 
-  *(a3 + 41) = self->_requestFailedCount;
-  *(a3 + 168) |= 0x40u;
+  *(to + 41) = self->_requestFailedCount;
+  *(to + 168) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
@@ -574,91 +574,91 @@ LABEL_10:
   if ((v6 & 4) != 0)
   {
 LABEL_11:
-    *(a3 + 35) = self->_directConnectionFailedCount;
-    *(a3 + 168) |= 4u;
+    *(to + 35) = self->_directConnectionFailedCount;
+    *(to + 168) |= 4u;
   }
 
 LABEL_12:
   if ([(AWDNetworkServiceProxyRequestStatistics *)self firstByteBucketsCount])
   {
-    [a3 clearFirstByteBuckets];
-    v7 = [(AWDNetworkServiceProxyRequestStatistics *)self firstByteBucketsCount];
-    if (v7)
+    [to clearFirstByteBuckets];
+    firstByteBucketsCount = [(AWDNetworkServiceProxyRequestStatistics *)self firstByteBucketsCount];
+    if (firstByteBucketsCount)
     {
-      v8 = v7;
+      v8 = firstByteBucketsCount;
       for (i = 0; i != v8; ++i)
       {
-        [a3 addFirstByteBuckets:{-[AWDNetworkServiceProxyRequestStatistics firstByteBucketsAtIndex:](self, "firstByteBucketsAtIndex:", i)}];
+        [to addFirstByteBuckets:{-[AWDNetworkServiceProxyRequestStatistics firstByteBucketsAtIndex:](self, "firstByteBucketsAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDNetworkServiceProxyRequestStatistics *)self lastByteBucketsCount])
   {
-    [a3 clearLastByteBuckets];
-    v10 = [(AWDNetworkServiceProxyRequestStatistics *)self lastByteBucketsCount];
-    if (v10)
+    [to clearLastByteBuckets];
+    lastByteBucketsCount = [(AWDNetworkServiceProxyRequestStatistics *)self lastByteBucketsCount];
+    if (lastByteBucketsCount)
     {
-      v11 = v10;
+      v11 = lastByteBucketsCount;
       for (j = 0; j != v11; ++j)
       {
-        [a3 addLastByteBuckets:{-[AWDNetworkServiceProxyRequestStatistics lastByteBucketsAtIndex:](self, "lastByteBucketsAtIndex:", j)}];
+        [to addLastByteBuckets:{-[AWDNetworkServiceProxyRequestStatistics lastByteBucketsAtIndex:](self, "lastByteBucketsAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDNetworkServiceProxyRequestStatistics *)self directConnectionFirstByteBucketsCount])
   {
-    [a3 clearDirectConnectionFirstByteBuckets];
-    v13 = [(AWDNetworkServiceProxyRequestStatistics *)self directConnectionFirstByteBucketsCount];
-    if (v13)
+    [to clearDirectConnectionFirstByteBuckets];
+    directConnectionFirstByteBucketsCount = [(AWDNetworkServiceProxyRequestStatistics *)self directConnectionFirstByteBucketsCount];
+    if (directConnectionFirstByteBucketsCount)
     {
-      v14 = v13;
+      v14 = directConnectionFirstByteBucketsCount;
       for (k = 0; k != v14; ++k)
       {
-        [a3 addDirectConnectionFirstByteBuckets:{-[AWDNetworkServiceProxyRequestStatistics directConnectionFirstByteBucketsAtIndex:](self, "directConnectionFirstByteBucketsAtIndex:", k)}];
+        [to addDirectConnectionFirstByteBuckets:{-[AWDNetworkServiceProxyRequestStatistics directConnectionFirstByteBucketsAtIndex:](self, "directConnectionFirstByteBucketsAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDNetworkServiceProxyRequestStatistics *)self directConnectionLastByteBucketsCount])
   {
-    [a3 clearDirectConnectionLastByteBuckets];
-    v16 = [(AWDNetworkServiceProxyRequestStatistics *)self directConnectionLastByteBucketsCount];
-    if (v16)
+    [to clearDirectConnectionLastByteBuckets];
+    directConnectionLastByteBucketsCount = [(AWDNetworkServiceProxyRequestStatistics *)self directConnectionLastByteBucketsCount];
+    if (directConnectionLastByteBucketsCount)
     {
-      v17 = v16;
+      v17 = directConnectionLastByteBucketsCount;
       for (m = 0; m != v17; ++m)
       {
-        [a3 addDirectConnectionLastByteBuckets:{-[AWDNetworkServiceProxyRequestStatistics directConnectionLastByteBucketsAtIndex:](self, "directConnectionLastByteBucketsAtIndex:", m)}];
+        [to addDirectConnectionLastByteBuckets:{-[AWDNetworkServiceProxyRequestStatistics directConnectionLastByteBucketsAtIndex:](self, "directConnectionLastByteBucketsAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDNetworkServiceProxyRequestStatistics *)self udpRttBucketsCount])
   {
-    [a3 clearUdpRttBuckets];
-    v19 = [(AWDNetworkServiceProxyRequestStatistics *)self udpRttBucketsCount];
-    if (v19)
+    [to clearUdpRttBuckets];
+    udpRttBucketsCount = [(AWDNetworkServiceProxyRequestStatistics *)self udpRttBucketsCount];
+    if (udpRttBucketsCount)
     {
-      v20 = v19;
+      v20 = udpRttBucketsCount;
       for (n = 0; n != v20; ++n)
       {
-        [a3 addUdpRttBuckets:{-[AWDNetworkServiceProxyRequestStatistics udpRttBucketsAtIndex:](self, "udpRttBucketsAtIndex:", n)}];
+        [to addUdpRttBuckets:{-[AWDNetworkServiceProxyRequestStatistics udpRttBucketsAtIndex:](self, "udpRttBucketsAtIndex:", n)}];
       }
     }
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(a3 + 39) = self->_protocolType;
-    *(a3 + 168) |= 0x10u;
+    *(to + 39) = self->_protocolType;
+    *(to + 168) |= 0x10u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -674,7 +674,7 @@ LABEL_12:
     *(v5 + 168) |= 8u;
   }
 
-  *(v6 + 144) = [(NSString *)self->_firstPartyServiceName copyWithZone:a3];
+  *(v6 + 144) = [(NSString *)self->_firstPartyServiceName copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x20) != 0)
   {
@@ -737,22 +737,22 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
     has = self->_has;
-    v7 = *(a3 + 168);
+    v7 = *(equal + 168);
     if (has)
     {
-      if ((*(a3 + 168) & 1) == 0 || self->_timestamp != *(a3 + 16))
+      if ((*(equal + 168) & 1) == 0 || self->_timestamp != *(equal + 16))
       {
         goto LABEL_44;
       }
     }
 
-    else if (*(a3 + 168))
+    else if (*(equal + 168))
     {
 LABEL_44:
       LOBYTE(IsEqual) = 0;
@@ -761,19 +761,19 @@ LABEL_44:
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 168) & 8) == 0 || self->_interfaceType != *(a3 + 38))
+      if ((*(equal + 168) & 8) == 0 || self->_interfaceType != *(equal + 38))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 168) & 8) != 0)
+    else if ((*(equal + 168) & 8) != 0)
     {
       goto LABEL_44;
     }
 
     firstPartyServiceName = self->_firstPartyServiceName;
-    if (firstPartyServiceName | *(a3 + 18))
+    if (firstPartyServiceName | *(equal + 18))
     {
       IsEqual = [(NSString *)firstPartyServiceName isEqual:?];
       if (!IsEqual)
@@ -784,55 +784,55 @@ LABEL_44:
       has = self->_has;
     }
 
-    v9 = *(a3 + 168);
+    v9 = *(equal + 168);
     if ((has & 0x20) != 0)
     {
-      if ((*(a3 + 168) & 0x20) == 0 || self->_requestCount != *(a3 + 40))
+      if ((*(equal + 168) & 0x20) == 0 || self->_requestCount != *(equal + 40))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 168) & 0x20) != 0)
+    else if ((*(equal + 168) & 0x20) != 0)
     {
       goto LABEL_44;
     }
 
     if ((has & 0x40) != 0)
     {
-      if ((*(a3 + 168) & 0x40) == 0 || self->_requestFailedCount != *(a3 + 41))
+      if ((*(equal + 168) & 0x40) == 0 || self->_requestFailedCount != *(equal + 41))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 168) & 0x40) != 0)
+    else if ((*(equal + 168) & 0x40) != 0)
     {
       goto LABEL_44;
     }
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 168) & 2) == 0 || self->_directConnectionCount != *(a3 + 34))
+      if ((*(equal + 168) & 2) == 0 || self->_directConnectionCount != *(equal + 34))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 168) & 2) != 0)
+    else if ((*(equal + 168) & 2) != 0)
     {
       goto LABEL_44;
     }
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 168) & 4) == 0 || self->_directConnectionFailedCount != *(a3 + 35))
+      if ((*(equal + 168) & 4) == 0 || self->_directConnectionFailedCount != *(equal + 35))
       {
         goto LABEL_44;
       }
     }
 
-    else if ((*(a3 + 168) & 4) != 0)
+    else if ((*(equal + 168) & 4) != 0)
     {
       goto LABEL_44;
     }
@@ -852,10 +852,10 @@ LABEL_44:
             IsEqual = PBRepeatedUInt32IsEqual();
             if (IsEqual)
             {
-              LOBYTE(IsEqual) = (*(a3 + 168) & 0x10) == 0;
+              LOBYTE(IsEqual) = (*(equal + 168) & 0x10) == 0;
               if ((*&self->_has & 0x10) != 0)
               {
-                if ((*(a3 + 168) & 0x10) == 0 || self->_protocolType != *(a3 + 39))
+                if ((*(equal + 168) & 0x10) == 0 || self->_protocolType != *(equal + 39))
                 {
                   goto LABEL_44;
                 }
@@ -965,33 +965,33 @@ LABEL_15:
   return v15 ^ v16 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v14 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 168);
+  v5 = *(from + 168);
   if (v5)
   {
-    self->_timestamp = *(a3 + 16);
+    self->_timestamp = *(from + 16);
     *&self->_has |= 1u;
-    v5 = *(a3 + 168);
+    v5 = *(from + 168);
   }
 
   if ((v5 & 8) != 0)
   {
-    self->_interfaceType = *(a3 + 38);
+    self->_interfaceType = *(from + 38);
     *&self->_has |= 8u;
   }
 
-  if (*(a3 + 18))
+  if (*(from + 18))
   {
     [(AWDNetworkServiceProxyRequestStatistics *)self setFirstPartyServiceName:?];
   }
 
-  v6 = *(a3 + 168);
+  v6 = *(from + 168);
   if ((v6 & 0x20) != 0)
   {
-    self->_requestCount = *(a3 + 40);
+    self->_requestCount = *(from + 40);
     *&self->_has |= 0x20u;
-    v6 = *(a3 + 168);
+    v6 = *(from + 168);
     if ((v6 & 0x40) == 0)
     {
 LABEL_9:
@@ -1004,14 +1004,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(a3 + 168) & 0x40) == 0)
+  else if ((*(from + 168) & 0x40) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_requestFailedCount = *(a3 + 41);
+  self->_requestFailedCount = *(from + 41);
   *&self->_has |= 0x40u;
-  v6 = *(a3 + 168);
+  v6 = *(from + 168);
   if ((v6 & 2) == 0)
   {
 LABEL_10:
@@ -1024,69 +1024,69 @@ LABEL_10:
   }
 
 LABEL_32:
-  self->_directConnectionCount = *(a3 + 34);
+  self->_directConnectionCount = *(from + 34);
   *&self->_has |= 2u;
-  if ((*(a3 + 168) & 4) != 0)
+  if ((*(from + 168) & 4) != 0)
   {
 LABEL_11:
-    self->_directConnectionFailedCount = *(a3 + 35);
+    self->_directConnectionFailedCount = *(from + 35);
     *&self->_has |= 4u;
   }
 
 LABEL_12:
-  v7 = [a3 firstByteBucketsCount];
-  if (v7)
+  firstByteBucketsCount = [from firstByteBucketsCount];
+  if (firstByteBucketsCount)
   {
-    v8 = v7;
+    v8 = firstByteBucketsCount;
     for (i = 0; i != v8; ++i)
     {
-      -[AWDNetworkServiceProxyRequestStatistics addFirstByteBuckets:](self, "addFirstByteBuckets:", [a3 firstByteBucketsAtIndex:i]);
+      -[AWDNetworkServiceProxyRequestStatistics addFirstByteBuckets:](self, "addFirstByteBuckets:", [from firstByteBucketsAtIndex:i]);
     }
   }
 
-  v10 = [a3 lastByteBucketsCount];
-  if (v10)
+  lastByteBucketsCount = [from lastByteBucketsCount];
+  if (lastByteBucketsCount)
   {
-    v11 = v10;
+    v11 = lastByteBucketsCount;
     for (j = 0; j != v11; ++j)
     {
-      -[AWDNetworkServiceProxyRequestStatistics addLastByteBuckets:](self, "addLastByteBuckets:", [a3 lastByteBucketsAtIndex:j]);
+      -[AWDNetworkServiceProxyRequestStatistics addLastByteBuckets:](self, "addLastByteBuckets:", [from lastByteBucketsAtIndex:j]);
     }
   }
 
-  v13 = [a3 directConnectionFirstByteBucketsCount];
-  if (v13)
+  directConnectionFirstByteBucketsCount = [from directConnectionFirstByteBucketsCount];
+  if (directConnectionFirstByteBucketsCount)
   {
-    v14 = v13;
+    v14 = directConnectionFirstByteBucketsCount;
     for (k = 0; k != v14; ++k)
     {
-      -[AWDNetworkServiceProxyRequestStatistics addDirectConnectionFirstByteBuckets:](self, "addDirectConnectionFirstByteBuckets:", [a3 directConnectionFirstByteBucketsAtIndex:k]);
+      -[AWDNetworkServiceProxyRequestStatistics addDirectConnectionFirstByteBuckets:](self, "addDirectConnectionFirstByteBuckets:", [from directConnectionFirstByteBucketsAtIndex:k]);
     }
   }
 
-  v16 = [a3 directConnectionLastByteBucketsCount];
-  if (v16)
+  directConnectionLastByteBucketsCount = [from directConnectionLastByteBucketsCount];
+  if (directConnectionLastByteBucketsCount)
   {
-    v17 = v16;
+    v17 = directConnectionLastByteBucketsCount;
     for (m = 0; m != v17; ++m)
     {
-      -[AWDNetworkServiceProxyRequestStatistics addDirectConnectionLastByteBuckets:](self, "addDirectConnectionLastByteBuckets:", [a3 directConnectionLastByteBucketsAtIndex:m]);
+      -[AWDNetworkServiceProxyRequestStatistics addDirectConnectionLastByteBuckets:](self, "addDirectConnectionLastByteBuckets:", [from directConnectionLastByteBucketsAtIndex:m]);
     }
   }
 
-  v19 = [a3 udpRttBucketsCount];
-  if (v19)
+  udpRttBucketsCount = [from udpRttBucketsCount];
+  if (udpRttBucketsCount)
   {
-    v20 = v19;
+    v20 = udpRttBucketsCount;
     for (n = 0; n != v20; ++n)
     {
-      -[AWDNetworkServiceProxyRequestStatistics addUdpRttBuckets:](self, "addUdpRttBuckets:", [a3 udpRttBucketsAtIndex:n]);
+      -[AWDNetworkServiceProxyRequestStatistics addUdpRttBuckets:](self, "addUdpRttBuckets:", [from udpRttBucketsAtIndex:n]);
     }
   }
 
-  if ((*(a3 + 168) & 0x10) != 0)
+  if ((*(from + 168) & 0x10) != 0)
   {
-    self->_protocolType = *(a3 + 39);
+    self->_protocolType = *(from + 39);
     *&self->_has |= 0x10u;
   }
 }

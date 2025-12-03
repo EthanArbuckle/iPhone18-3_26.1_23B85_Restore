@@ -1,10 +1,10 @@
 @interface HDActivitySummaryBuilder
-- (BOOL)enumerateActivitySummariesWithPredicate:(id)a3 error:(id *)a4 handler:(id)a5;
+- (BOOL)enumerateActivitySummariesWithPredicate:(id)predicate error:(id *)error handler:(id)handler;
 - (HDActivitySummaryBuilder)init;
-- (HDActivitySummaryBuilder)initWithProfile:(id)a3 filter:(id)a4;
-- (uint64_t)_enumerateActivitySummariesAndCachesWithPredicate:(void *)a3 largestAnchor:(uint64_t)a4 error:(void *)a5 handler:;
-- (void)activitySummariesWithPredicate:(id)a3 handler:(id)a4;
-- (void)batchedActivitySummariesWithPredicate:(id)a3 maxBatchSize:(unint64_t)a4 handler:(id)a5;
+- (HDActivitySummaryBuilder)initWithProfile:(id)profile filter:(id)filter;
+- (uint64_t)_enumerateActivitySummariesAndCachesWithPredicate:(void *)predicate largestAnchor:(uint64_t)anchor error:(void *)error handler:;
+- (void)activitySummariesWithPredicate:(id)predicate handler:(id)handler;
+- (void)batchedActivitySummariesWithPredicate:(id)predicate maxBatchSize:(unint64_t)size handler:(id)handler;
 @end
 
 @implementation HDActivitySummaryBuilder
@@ -19,18 +19,18 @@
   return 0;
 }
 
-- (HDActivitySummaryBuilder)initWithProfile:(id)a3 filter:(id)a4
+- (HDActivitySummaryBuilder)initWithProfile:(id)profile filter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  filterCopy = filter;
   v11.receiver = self;
   v11.super_class = HDActivitySummaryBuilder;
   v8 = [(HDActivitySummaryBuilder *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_filter, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_filter, filter);
     *&v9->_shouldIncludePrivateProperties = 1;
     v9->_orderByDateAscending = 1;
     v9->_limit = 0;
@@ -39,59 +39,59 @@
   return v9;
 }
 
-- (BOOL)enumerateActivitySummariesWithPredicate:(id)a3 error:(id *)a4 handler:(id)a5
+- (BOOL)enumerateActivitySummariesWithPredicate:(id)predicate error:(id *)error handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__HDActivitySummaryBuilder_enumerateActivitySummariesWithPredicate_error_handler___block_invoke;
   v11[3] = &unk_27861E9D0;
-  v12 = v8;
-  v9 = v8;
-  LOBYTE(a4) = [(HDActivitySummaryBuilder *)self _enumerateActivitySummariesAndCachesWithPredicate:a3 largestAnchor:0 error:a4 handler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  LOBYTE(error) = [(HDActivitySummaryBuilder *)self _enumerateActivitySummariesAndCachesWithPredicate:predicate largestAnchor:0 error:error handler:v11];
 
-  return a4;
+  return error;
 }
 
-- (uint64_t)_enumerateActivitySummariesAndCachesWithPredicate:(void *)a3 largestAnchor:(uint64_t)a4 error:(void *)a5 handler:
+- (uint64_t)_enumerateActivitySummariesAndCachesWithPredicate:(void *)predicate largestAnchor:(uint64_t)anchor error:(void *)error handler:
 {
   v53[1] = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a5;
-  if (a1)
+  errorCopy = error;
+  if (self)
   {
     v52[0] = 0;
     v52[1] = v52;
     v52[2] = 0x2020000000;
     v52[3] = 0;
-    v10 = [*(a1 + 16) filterIgnoringActivityCacheIndexFilter];
+    filterIgnoringActivityCacheIndexFilter = [*(self + 16) filterIgnoringActivityCacheIndexFilter];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __106__HDActivitySummaryBuilder__enumerateActivitySummariesAndCachesWithPredicate_largestAnchor_error_handler___block_invoke;
     aBlock[3] = &unk_27861EA48;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v51 = v52;
-    v27 = v10;
+    v27 = filterIgnoringActivityCacheIndexFilter;
     v49 = v27;
-    v50 = v9;
+    v50 = errorCopy;
     v11 = _Block_copy(aBlock);
-    v12 = [MEMORY[0x277CCD720] activityCacheType];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v14 = [HDSampleEntity entityEnumeratorWithType:v12 profile:WeakRetained];
+    activityCacheType = [MEMORY[0x277CCD720] activityCacheType];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    v14 = [HDSampleEntity entityEnumeratorWithType:activityCacheType profile:WeakRetained];
 
     [v14 setPredicate:v8];
-    v15 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 24)];
+    v15 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 24)];
     [v14 setEncodingOption:v15 forKey:@"IncludePrivateActivityCacheProperties"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 25)];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 25)];
     [v14 setEncodingOption:v16 forKey:@"IncludeActivityCacheStatistics"];
 
-    v17 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"cache_index" entityClass:objc_opt_class() ascending:*(a1 + 26)];
+    v17 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"cache_index" entityClass:objc_opt_class() ascending:*(self + 26)];
     v53[0] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
     [v14 setOrderingTerms:v18];
 
-    [v14 setDatabaseTransactionContext:*(a1 + 40)];
+    [v14 setDatabaseTransactionContext:*(self + 40)];
     v44 = 0;
     v45 = &v44;
     v46 = 0x2020000000;
@@ -121,16 +121,16 @@
     v29 = v21;
     v33 = &v35;
     v34 = &v40;
-    if ([v14 enumerateWithError:a4 handler:v28])
+    if ([v14 enumerateWithError:anchor handler:v28])
     {
       v22 = [v21 copy];
       (*(v20 + 2))(v20, v22);
 
-      *(a1 + 48) = v36[3];
+      *(self + 48) = v36[3];
       v21 = 0;
-      if (a3)
+      if (predicate)
       {
-        *a3 = v41[3];
+        *predicate = v41[3];
       }
 
       v23 = 1;
@@ -158,11 +158,11 @@
   return v23 & 1;
 }
 
-- (void)activitySummariesWithPredicate:(id)a3 handler:(id)a4
+- (void)activitySummariesWithPredicate:(id)predicate handler:(id)handler
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  predicateCopy = predicate;
   v9 = objc_alloc_init(v6);
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0;
@@ -175,17 +175,17 @@
   v16 = v11;
   v12 = v9;
   v17 = v12;
-  v13 = [(HDActivitySummaryBuilder *)self _enumerateActivitySummariesAndCachesWithPredicate:v8 largestAnchor:&v19 error:&v18 handler:v15];
+  v13 = [(HDActivitySummaryBuilder *)self _enumerateActivitySummariesAndCachesWithPredicate:predicateCopy largestAnchor:&v19 error:&v18 handler:v15];
 
   v14 = v18;
   if (v13)
   {
-    v7[2](v7, v11, v12, v19, 0);
+    handlerCopy[2](handlerCopy, v11, v12, v19, 0);
   }
 
   else
   {
-    (v7)[2](v7, 0, 0, 0, v14);
+    (handlerCopy)[2](handlerCopy, 0, 0, 0, v14);
   }
 }
 
@@ -203,10 +203,10 @@ void __67__HDActivitySummaryBuilder_activitySummariesWithPredicate_handler___blo
   [v8 setObject:v6 forKeyedSubscript:v11];
 }
 
-- (void)batchedActivitySummariesWithPredicate:(id)a3 maxBatchSize:(unint64_t)a4 handler:(id)a5
+- (void)batchedActivitySummariesWithPredicate:(id)predicate maxBatchSize:(unint64_t)size handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v43 = 0;
   v37 = 0;
   v38 = &v37;
@@ -229,18 +229,18 @@ void __67__HDActivitySummaryBuilder_activitySummariesWithPredicate_handler___blo
   v18[1] = 3221225472;
   v18[2] = __87__HDActivitySummaryBuilder_batchedActivitySummariesWithPredicate_maxBatchSize_handler___block_invoke;
   v18[3] = &unk_27861EA20;
-  v24 = a4;
+  sizeCopy = size;
   v21 = &v31;
   v22 = &v27;
-  v10 = v9;
+  v10 = handlerCopy;
   v23 = &v37;
   v25 = 0;
   v19 = 0;
   v20 = v10;
-  LODWORD(v9) = [(HDActivitySummaryBuilder *)self _enumerateActivitySummariesAndCachesWithPredicate:v8 largestAnchor:&v43 error:&v26 handler:v18];
+  LODWORD(handlerCopy) = [(HDActivitySummaryBuilder *)self _enumerateActivitySummariesAndCachesWithPredicate:predicateCopy largestAnchor:&v43 error:&v26 handler:v18];
   v11 = v26;
   v12 = v11;
-  if (v9)
+  if (handlerCopy)
   {
     v13 = 0;
     v14 = v32[5];

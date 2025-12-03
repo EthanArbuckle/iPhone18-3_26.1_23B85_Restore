@@ -1,21 +1,21 @@
 @interface AAUIBadgeImageFactory
 - (AAUIBadgeImageFactory)init;
-- (BOOL)hasCachedThumbnailImageForAchievement:(id)a3 size:(CGSize)a4;
-- (BOOL)hasCachedThumbnailImageForAchievements:(id)a3 size:(CGSize)a4 alignment:(int)a5 stackType:(int)a6;
+- (BOOL)hasCachedThumbnailImageForAchievement:(id)achievement size:(CGSize)size;
+- (BOOL)hasCachedThumbnailImageForAchievements:(id)achievements size:(CGSize)size alignment:(int)alignment stackType:(int)type;
 - (CGGradient)_makeShadowGradient;
 - (CGGradient)_makeShadowSolidGradient;
-- (CGRect)_initialFrameForSize:(CGSize)a3 isRTL:(BOOL)a4 isStack:(BOOL)a5;
-- (double)_stackBadgeOverlapForStackType:(int)a3;
-- (id)_availableAchievementsForStackType:(int)a3 andAchievements:(id)a4;
-- (id)_makeGradientImage:(id)a3 solidGradient:(CGGradient *)a4 gradient:(CGGradient *)a5 isRTL:(BOOL)a6;
-- (id)_perfectCropForImage:(id)a3 andDirections:(unint64_t)a4;
-- (id)_queue_generateImageForConfiguration:(id)a3 size:(CGSize)a4 stackType:(int)a5 isRTL:(BOOL)a6 unearned:(BOOL)a7;
-- (id)_queue_thumbnailImageForAchievements:(id)a3 size:(CGSize)a4 alignment:(int)a5 stackType:(int)a6;
-- (id)thumbnailImageForAchievement:(id)a3 size:(CGSize)a4;
-- (id)thumbnailImageForAchievements:(id)a3 size:(CGSize)a4 alignment:(int)a5 stackType:(int)a6;
+- (CGRect)_initialFrameForSize:(CGSize)size isRTL:(BOOL)l isStack:(BOOL)stack;
+- (double)_stackBadgeOverlapForStackType:(int)type;
+- (id)_availableAchievementsForStackType:(int)type andAchievements:(id)achievements;
+- (id)_makeGradientImage:(id)image solidGradient:(CGGradient *)gradient gradient:(CGGradient *)a5 isRTL:(BOOL)l;
+- (id)_perfectCropForImage:(id)image andDirections:(unint64_t)directions;
+- (id)_queue_generateImageForConfiguration:(id)configuration size:(CGSize)size stackType:(int)type isRTL:(BOOL)l unearned:(BOOL)unearned;
+- (id)_queue_thumbnailImageForAchievements:(id)achievements size:(CGSize)size alignment:(int)alignment stackType:(int)type;
+- (id)thumbnailImageForAchievement:(id)achievement size:(CGSize)size;
+- (id)thumbnailImageForAchievements:(id)achievements size:(CGSize)size alignment:(int)alignment stackType:(int)type;
 - (void)clearAllCachedImages;
-- (void)thumbnailImageForAchievement:(id)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)thumbnailImageForAchievements:(id)a3 size:(CGSize)a4 alignment:(int)a5 stackType:(int)a6 completion:(id)a7;
+- (void)thumbnailImageForAchievement:(id)achievement size:(CGSize)size completion:(id)completion;
+- (void)thumbnailImageForAchievements:(id)achievements size:(CGSize)size alignment:(int)alignment stackType:(int)type completion:(id)completion;
 @end
 
 @implementation AAUIBadgeImageFactory
@@ -52,45 +52,45 @@
   return v2;
 }
 
-- (id)thumbnailImageForAchievement:(id)a3 size:(CGSize)a4
+- (id)thumbnailImageForAchievement:(id)achievement size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  achievementCopy = achievement;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
-  v9 = [v7 arrayWithObjects:&v12 count:1];
+  achievementCopy2 = achievement;
+  v9 = [v7 arrayWithObjects:&achievementCopy count:1];
 
-  v10 = [(AAUIBadgeImageFactory *)self thumbnailImageForAchievements:v9 size:0 alignment:0 stackType:width, height, v12, v13];
+  v10 = [(AAUIBadgeImageFactory *)self thumbnailImageForAchievements:v9 size:0 alignment:0 stackType:width, height, achievementCopy, v13];
 
   return v10;
 }
 
-- (id)thumbnailImageForAchievements:(id)a3 size:(CGSize)a4 alignment:(int)a5 stackType:(int)a6
+- (id)thumbnailImageForAchievements:(id)achievements size:(CGSize)size alignment:(int)alignment stackType:(int)type
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  if ([v11 count])
+  v6 = *&type;
+  v7 = *&alignment;
+  height = size.height;
+  width = size.width;
+  achievementsCopy = achievements;
+  if ([achievementsCopy count])
   {
-    v12 = AAUIAchievementBadgeCacheKey(v11, v7, v6);
+    v12 = AAUIAchievementBadgeCacheKey(achievementsCopy, v7, v6);
     os_unfair_lock_lock(&self->_cacheLock);
-    v13 = [(AAUIBadgeImageFactory *)self cache];
-    v14 = [v13 objectForKey:v12];
+    cache = [(AAUIBadgeImageFactory *)self cache];
+    v14 = [cache objectForKey:v12];
 
     os_unfair_lock_unlock(&self->_cacheLock);
     if (v14)
     {
-      v15 = v14;
+      height = v14;
     }
 
     else
     {
-      v16 = [(AAUIBadgeImageFactory *)self _availableAchievementsForStackType:v6 andAchievements:v11];
-      v15 = 0;
+      v16 = [(AAUIBadgeImageFactory *)self _availableAchievementsForStackType:v6 andAchievements:achievementsCopy];
+      height = 0;
       if ([v16 count])
       {
         if (!v6)
@@ -101,12 +101,12 @@
 
         if (width > 0.0 && height > 0.0)
         {
-          v15 = [(AAUIBadgeImageFactory *)self _queue_thumbnailImageForAchievements:v16 size:v7 alignment:v6 stackType:width, height];
-          if (v15)
+          height = [(AAUIBadgeImageFactory *)self _queue_thumbnailImageForAchievements:v16 size:v7 alignment:v6 stackType:width, height];
+          if (height)
           {
             os_unfair_lock_lock(&self->_cacheLock);
-            v17 = [(AAUIBadgeImageFactory *)self cache];
-            [v17 setObject:v15 forKey:v12];
+            cache2 = [(AAUIBadgeImageFactory *)self cache];
+            [cache2 setObject:height forKey:v12];
 
             os_unfair_lock_unlock(&self->_cacheLock);
           }
@@ -116,7 +116,7 @@
             v18 = ACHLogDefault();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              [AAUIBadgeImageFactory thumbnailImageForAchievements:v11 size:v18 alignment:width stackType:height];
+              [AAUIBadgeImageFactory thumbnailImageForAchievements:achievementsCopy size:v18 alignment:width stackType:height];
             }
           }
         }
@@ -126,33 +126,33 @@
 
   else
   {
-    v15 = 0;
+    height = 0;
   }
 
-  return v15;
+  return height;
 }
 
-- (void)thumbnailImageForAchievement:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)thumbnailImageForAchievement:(id)achievement size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  achievementCopy = achievement;
   v9 = MEMORY[0x277CBEA60];
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 arrayWithObjects:&v13 count:1];
+  completionCopy = completion;
+  achievementCopy2 = achievement;
+  v12 = [v9 arrayWithObjects:&achievementCopy count:1];
 
-  [(AAUIBadgeImageFactory *)self thumbnailImageForAchievements:v12 size:0 alignment:0 stackType:v10 completion:width, height, v13, v14];
+  [(AAUIBadgeImageFactory *)self thumbnailImageForAchievements:v12 size:0 alignment:0 stackType:completionCopy completion:width, height, achievementCopy, v14];
 }
 
-- (void)thumbnailImageForAchievements:(id)a3 size:(CGSize)a4 alignment:(int)a5 stackType:(int)a6 completion:(id)a7
+- (void)thumbnailImageForAchievements:(id)achievements size:(CGSize)size alignment:(int)alignment stackType:(int)type completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a7;
-  if (v14)
+  height = size.height;
+  width = size.width;
+  achievementsCopy = achievements;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v15 = dispatch_get_global_queue(21, 0);
     v16[0] = MEMORY[0x277D85DD0];
@@ -160,12 +160,12 @@
     v16[2] = __91__AAUIBadgeImageFactory_thumbnailImageForAchievements_size_alignment_stackType_completion___block_invoke;
     v16[3] = &unk_278C43570;
     v16[4] = self;
-    v17 = v13;
+    v17 = achievementsCopy;
     v19 = width;
     v20 = height;
-    v21 = a5;
-    v22 = a6;
-    v18 = v14;
+    alignmentCopy = alignment;
+    typeCopy = type;
+    v18 = completionCopy;
     dispatch_async(v15, v16);
   }
 }
@@ -176,26 +176,26 @@ void __91__AAUIBadgeImageFactory_thumbnailImageForAchievements_size_alignment_st
   (*(*(a1 + 48) + 16))();
 }
 
-- (BOOL)hasCachedThumbnailImageForAchievement:(id)a3 size:(CGSize)a4
+- (BOOL)hasCachedThumbnailImageForAchievement:(id)achievement size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  achievementCopy = achievement;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
-  v9 = [v7 arrayWithObjects:&v11 count:1];
+  achievementCopy2 = achievement;
+  v9 = [v7 arrayWithObjects:&achievementCopy count:1];
 
-  LOBYTE(self) = [(AAUIBadgeImageFactory *)self hasCachedThumbnailImageForAchievements:v9 size:0 alignment:0 stackType:width, height, v11, v12];
+  LOBYTE(self) = [(AAUIBadgeImageFactory *)self hasCachedThumbnailImageForAchievements:v9 size:0 alignment:0 stackType:width, height, achievementCopy, v12];
   return self;
 }
 
-- (BOOL)hasCachedThumbnailImageForAchievements:(id)a3 size:(CGSize)a4 alignment:(int)a5 stackType:(int)a6
+- (BOOL)hasCachedThumbnailImageForAchievements:(id)achievements size:(CGSize)size alignment:(int)alignment stackType:(int)type
 {
-  v7 = AAUIAchievementBadgeCacheKey(a3, *&a5, *&a6);
+  v7 = AAUIAchievementBadgeCacheKey(achievements, *&alignment, *&type);
   os_unfair_lock_lock(&self->_cacheLock);
-  v8 = [(AAUIBadgeImageFactory *)self cache];
-  v9 = [v8 objectForKey:v7];
+  cache = [(AAUIBadgeImageFactory *)self cache];
+  v9 = [cache objectForKey:v7];
 
   os_unfair_lock_unlock(&self->_cacheLock);
   return v9 != 0;
@@ -204,36 +204,36 @@ void __91__AAUIBadgeImageFactory_thumbnailImageForAchievements_size_alignment_st
 - (void)clearAllCachedImages
 {
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(AAUIBadgeImageFactory *)self cache];
-  [v3 removeAllObjects];
+  cache = [(AAUIBadgeImageFactory *)self cache];
+  [cache removeAllObjects];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (id)_queue_thumbnailImageForAchievements:(id)a3 size:(CGSize)a4 alignment:(int)a5 stackType:(int)a6
+- (id)_queue_thumbnailImageForAchievements:(id)achievements size:(CGSize)size alignment:(int)alignment stackType:(int)type
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  achievementsCopy = achievements;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy_;
   v25 = __Block_byref_object_dispose_;
   v26 = 0;
-  v11 = [(AAUIBadgeImageFactory *)self imageCreationQueue];
+  imageCreationQueue = [(AAUIBadgeImageFactory *)self imageCreationQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__AAUIBadgeImageFactory__queue_thumbnailImageForAchievements_size_alignment_stackType___block_invoke;
   v15[3] = &unk_278C435C0;
-  v20 = a6;
+  typeCopy = type;
   v18 = width;
   v19 = height;
   v15[4] = self;
-  v16 = v10;
+  v16 = achievementsCopy;
   v17 = &v21;
-  v12 = v10;
-  dispatch_sync(v11, v15);
+  v12 = achievementsCopy;
+  dispatch_sync(imageCreationQueue, v15);
 
   v13 = v22[5];
   _Block_object_dispose(&v21, 8);
@@ -404,17 +404,17 @@ void __87__AAUIBadgeImageFactory__queue_thumbnailImageForAchievements_size_align
   objc_autoreleasePoolPop(v7);
 }
 
-- (id)_availableAchievementsForStackType:(int)a3 andAchievements:(id)a4
+- (id)_availableAchievementsForStackType:(int)type andAchievements:(id)achievements
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = [a4 hk_filter:&__block_literal_global];
+  v6 = [achievements hk_filter:&__block_literal_global];
   if (![v6 count])
   {
     v4 = MEMORY[0x277CBEBF8];
     goto LABEL_13;
   }
 
-  if ((a3 - 2) < 2)
+  if ((type - 2) < 2)
   {
     v8 = [v6 count];
     v9 = v8 >= 3;
@@ -434,7 +434,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v8 = [v6 count];
     v9 = v8 >= 5;
@@ -442,7 +442,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!type)
   {
     v7 = [v6 objectAtIndexedSubscript:0];
     v13[0] = v7;
@@ -471,44 +471,44 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
   return v3 != 0;
 }
 
-- (double)_stackBadgeOverlapForStackType:(int)a3
+- (double)_stackBadgeOverlapForStackType:(int)type
 {
   result = 0.0;
-  if ((a3 - 1) <= 2)
+  if ((type - 1) <= 2)
   {
-    return dbl_23E4DFA28[a3 - 1];
+    return dbl_23E4DFA28[type - 1];
   }
 
   return result;
 }
 
-- (CGRect)_initialFrameForSize:(CGSize)a3 isRTL:(BOOL)a4 isStack:(BOOL)a5
+- (CGRect)_initialFrameForSize:(CGSize)size isRTL:(BOOL)l isStack:(BOOL)stack
 {
-  height = a3.height;
+  height = size.height;
   v6 = 0.0;
-  if (!a5 || a4)
+  if (!stack || l)
   {
-    a3.width = 0.0;
+    size.width = 0.0;
   }
 
   v7 = height;
-  result.origin.x = a3.width;
+  result.origin.x = size.width;
   result.size.height = v7;
   result.size.width = height;
   result.origin.y = v6;
   return result;
 }
 
-- (id)_makeGradientImage:(id)a3 solidGradient:(CGGradient *)a4 gradient:(CGGradient *)a5 isRTL:(BOOL)a6
+- (id)_makeGradientImage:(id)image solidGradient:(CGGradient *)gradient gradient:(CGGradient *)a5 isRTL:(BOOL)l
 {
-  v6 = a6;
-  [a3 size];
+  lCopy = l;
+  [image size];
   width = v20.width;
   height = v20.height;
   UIGraphicsBeginImageContextWithOptions(v20, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   v12 = CurrentContext;
-  if (v6)
+  if (lCopy)
   {
     v13 = 0.0;
   }
@@ -518,7 +518,7 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
     v13 = width;
   }
 
-  if (v6)
+  if (lCopy)
   {
     v14 = width - width * 0.25;
   }
@@ -528,7 +528,7 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
     v14 = width * 0.25;
   }
 
-  if (v6)
+  if (lCopy)
   {
     v15 = width;
   }
@@ -541,7 +541,7 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
   v16 = height * 0.5;
   v22.x = v14;
   v22.y = height * 0.5;
-  CGContextDrawLinearGradient(CurrentContext, a4, *&v15, v22, 3u);
+  CGContextDrawLinearGradient(CurrentContext, gradient, *&v15, v22, 3u);
   v21.x = v14;
   v21.y = height * 0.5;
   v23.x = v13;
@@ -553,14 +553,14 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
   return v17;
 }
 
-- (id)_queue_generateImageForConfiguration:(id)a3 size:(CGSize)a4 stackType:(int)a5 isRTL:(BOOL)a6 unearned:(BOOL)a7
+- (id)_queue_generateImageForConfiguration:(id)configuration size:(CGSize)size stackType:(int)type isRTL:(BOOL)l unearned:(BOOL)unearned
 {
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = [(AAUIBadgeImageFactory *)self imageCreationQueue];
-  dispatch_assert_queue_V2(v14);
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
+  imageCreationQueue = [(AAUIBadgeImageFactory *)self imageCreationQueue];
+  dispatch_assert_queue_V2(imageCreationQueue);
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -568,7 +568,7 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
   v16 = height * 1.4;
   v17 = *MEMORY[0x277CBF3A0];
   v18 = *(MEMORY[0x277CBF3A0] + 8);
-  if (a7)
+  if (unearned)
   {
     [(AAUIBadgeImageFactory *)self unearnedBadgeView];
   }
@@ -578,15 +578,15 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
     [(AAUIBadgeImageFactory *)self earnedBadgeView];
   }
   v19 = ;
-  [v19 setConfiguration:v13];
+  [v19 setConfiguration:configurationCopy];
 
   [v19 setFrame:{v17, v18, v15, v16}];
   [v19 resizeBadgeForCurrentViewSize];
-  v20 = [v19 snapshot];
+  snapshot = [v19 snapshot];
   [v19 cleanupAfterSnapshot];
-  if (a5)
+  if (type)
   {
-    if (v8)
+    if (lCopy)
     {
       v21 = 13;
     }
@@ -596,21 +596,21 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
       v21 = 14;
     }
 
-    v22 = [(AAUIBadgeImageFactory *)self _perfectCropForImage:v20 andDirections:v21];
+    v22 = [(AAUIBadgeImageFactory *)self _perfectCropForImage:snapshot andDirections:v21];
 
-    v20 = v22;
+    snapshot = v22;
   }
 
   [MEMORY[0x277CD9FF0] commit];
 
-  return v20;
+  return snapshot;
 }
 
 - (CGGradient)_makeShadowSolidGradient
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D75348] whiteColor];
-  v3 = [v2 colorWithAlphaComponent:0.0];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v3 = [whiteColor colorWithAlphaComponent:0.0];
 
   v8[0] = [v3 CGColor];
   v8[1] = [v3 CGColor];
@@ -625,12 +625,12 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
 - (CGGradient)_makeShadowGradient
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D75348] whiteColor];
-  v3 = [v2 colorWithAlphaComponent:0.0];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v3 = [whiteColor colorWithAlphaComponent:0.0];
 
-  v4 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
   v9[0] = [v3 CGColor];
-  v9[1] = [v4 CGColor];
+  v9[1] = [whiteColor2 CGColor];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v7 = CGGradientCreateWithColors(DeviceRGB, v5, 0);
@@ -639,15 +639,15 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
   return v7;
 }
 
-- (id)_perfectCropForImage:(id)a3 andDirections:(unint64_t)a4
+- (id)_perfectCropForImage:(id)image andDirections:(unint64_t)directions
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 CGImage];
-  Width = CGImageGetWidth(v6);
-  Height = CGImageGetHeight(v6);
+  directionsCopy = directions;
+  imageCopy = image;
+  cGImage = [imageCopy CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v9 = 4 * Width;
-  ColorSpace = CGImageGetColorSpace(v6);
+  ColorSpace = CGImageGetColorSpace(cGImage);
   v11 = CGBitmapContextCreate(0, Width, Height, 8uLL, 4 * Width, ColorSpace, 1u);
   if (v11)
   {
@@ -656,10 +656,10 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
     v50.origin.y = 0.0;
     v50.size.width = Width;
     v50.size.height = Height;
-    CGContextDrawImage(v11, v50, v6);
+    CGContextDrawImage(v11, v50, cGImage);
     Data = CGBitmapContextGetData(v12);
     v14 = 0;
-    if ((v4 & 1) != 0 && Width >= 1)
+    if ((directionsCopy & 1) != 0 && Width >= 1)
     {
       v14 = 0;
       v15 = 0;
@@ -696,7 +696,7 @@ BOOL __76__AAUIBadgeImageFactory__availableAchievementsForStackType_andAchieveme
 
 LABEL_12:
     v20 = 0;
-    if ((v4 & 2) != 0 && Width >= 1)
+    if ((directionsCopy & 2) != 0 && Width >= 1)
     {
       v20 = 0;
       v21 = &Data[8 * Width - 1];
@@ -733,7 +733,7 @@ LABEL_12:
 
 LABEL_23:
     v27 = 0;
-    if ((v4 & 4) != 0 && Height >= 1)
+    if ((directionsCopy & 4) != 0 && Height >= 1)
     {
       v27 = 0;
       v28 = 0;
@@ -771,7 +771,7 @@ LABEL_23:
     }
 
 LABEL_36:
-    if ((v4 & 8) != 0)
+    if ((directionsCopy & 8) != 0)
     {
       v34 = 0;
       if (Height >= 1)
@@ -818,8 +818,8 @@ LABEL_36:
 
 LABEL_49:
     CGContextRelease(v12);
-    v41 = [MEMORY[0x277D759A0] mainScreen];
-    [v41 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v43 = v42;
 
     v44 = (Width - (v14 + v20)) / v43;
@@ -839,7 +839,7 @@ LABEL_49:
       UIGraphicsBeginImageContextWithOptions(*&v44, 0, 0.0);
       CurrentContext = UIGraphicsGetCurrentContext();
       CGContextSetInterpolationQuality(CurrentContext, kCGInterpolationHigh);
-      [v5 drawInRect:{-v14 / v43, -v27 / v43, Width / v43, Height / v43}];
+      [imageCopy drawInRect:{-v14 / v43, -v27 / v43, Width / v43, Height / v43}];
       v33 = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
     }
@@ -847,7 +847,7 @@ LABEL_49:
 
   else
   {
-    v33 = v5;
+    v33 = imageCopy;
   }
 
   return v33;

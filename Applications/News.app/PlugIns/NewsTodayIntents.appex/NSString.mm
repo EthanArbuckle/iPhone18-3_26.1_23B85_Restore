@@ -1,8 +1,8 @@
 @interface NSString
-- (BOOL)fr_hasPrefixEquivalentToString:(id)a3;
-- (double)heightConstrainedToWidth:(double)a3 font:(id)a4 singleLine:(BOOL)a5;
+- (BOOL)fr_hasPrefixEquivalentToString:(id)string;
+- (double)heightConstrainedToWidth:(double)width font:(id)font singleLine:(BOOL)line;
 - (id)fr_StringByTrimmingLeadingWhiteSpace;
-- (id)fr_accessibilityAttributedStringWithLowPitchPrefix:(id)a3;
+- (id)fr_accessibilityAttributedStringWithLowPitchPrefix:(id)prefix;
 - (id)fr_convertNewlinesToPTags;
 - (id)fr_encodeHTMLEntities;
 - (id)fr_lowerCaseStringByTrimmingWhiteSpace;
@@ -51,8 +51,8 @@
         if ([v14 length])
         {
           v15 = [v14 substringWithRange:{0, 1}];
-          v16 = [v15 uppercaseString];
-          [v3 appendString:v16];
+          uppercaseString = [v15 uppercaseString];
+          [v3 appendString:uppercaseString];
         }
       }
 
@@ -125,11 +125,11 @@
   v6 = objc_alloc_init(FRHTMLStrippingXMLDelegate);
   [v5 setDelegate:v6];
   [v5 parse];
-  v7 = [(FRHTMLStrippingXMLDelegate *)v6 strippedString];
-  v8 = [v7 fr_stringByDecodingHTMLEntities];
+  strippedString = [(FRHTMLStrippingXMLDelegate *)v6 strippedString];
+  fr_stringByDecodingHTMLEntities = [strippedString fr_stringByDecodingHTMLEntities];
 
   v9 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v10 = [v8 stringByTrimmingCharactersInSet:v9];
+  v10 = [fr_stringByDecodingHTMLEntities stringByTrimmingCharactersInSet:v9];
 
   return v10;
 }
@@ -156,7 +156,7 @@
         goto LABEL_29;
       }
 
-      v7 = [v4 scanLocation];
+      scanLocation = [v4 scanLocation];
       if ([v4 scanString:@"#" intoString:0])
       {
         if ([v4 scanString:@"x" intoString:0])
@@ -205,7 +205,7 @@
 LABEL_27:
           v6 = v13;
 LABEL_28:
-          v17 = -[NSString substringWithRange:](self, "substringWithRange:", v7, [v4 scanLocation] - v7);
+          v17 = -[NSString substringWithRange:](self, "substringWithRange:", scanLocation, [v4 scanLocation] - scanLocation);
           [v3 appendString:v17];
 
           goto LABEL_29;
@@ -249,16 +249,16 @@ LABEL_29:
   return v3;
 }
 
-- (id)fr_accessibilityAttributedStringWithLowPitchPrefix:(id)a3
+- (id)fr_accessibilityAttributedStringWithLowPitchPrefix:(id)prefix
 {
-  v10[0] = a3;
+  v10[0] = prefix;
   v10[1] = self;
-  v3 = a3;
+  prefixCopy = prefix;
   v4 = [NSArray arrayWithObjects:v10 count:2];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
   v6 = [[NSMutableAttributedString alloc] initWithString:v5];
-  v7 = [v3 length];
+  v7 = [prefixCopy length];
 
   [v6 fr_accessibilityApplyLowerPitchTokenToRange:{0, v7}];
   v8 = [v6 copy];
@@ -306,32 +306,32 @@ LABEL_29:
   {
     v3 = +[NSCharacterSet whitespaceCharacterSet];
     v4 = [(NSString *)self stringByTrimmingCharactersInSet:v3];
-    v5 = [v4 lowercaseString];
+    lowercaseString = [v4 lowercaseString];
   }
 
   else
   {
-    v5 = [(NSString *)self copy];
+    lowercaseString = [(NSString *)self copy];
   }
 
-  return v5;
+  return lowercaseString;
 }
 
-- (BOOL)fr_hasPrefixEquivalentToString:(id)a3
+- (BOOL)fr_hasPrefixEquivalentToString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 length];
-  v6 = v5 <= -[NSString length](self, "length") && -[NSString compare:options:range:](self, "compare:options:range:", v4, 385, 0, [v4 length]) == NSOrderedSame;
+  stringCopy = string;
+  v5 = [stringCopy length];
+  v6 = v5 <= -[NSString length](self, "length") && -[NSString compare:options:range:](self, "compare:options:range:", stringCopy, 385, 0, [stringCopy length]) == NSOrderedSame;
 
   return v6;
 }
 
-- (double)heightConstrainedToWidth:(double)a3 font:(id)a4 singleLine:(BOOL)a5
+- (double)heightConstrainedToWidth:(double)width font:(id)font singleLine:(BOOL)line
 {
-  v5 = a5;
-  v8 = a4;
+  lineCopy = line;
+  fontCopy = font;
   v9 = objc_alloc_init(NSStringDrawingContext);
-  if (v5)
+  if (lineCopy)
   {
     v10 = 1;
   }
@@ -342,10 +342,10 @@ LABEL_29:
   }
 
   v15 = NSFontAttributeName;
-  v16 = v8;
+  v16 = fontCopy;
   v11 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
-  [(NSString *)self boundingRectWithSize:v10 options:v11 attributes:v9 context:a3, 1.79769313e308];
+  [(NSString *)self boundingRectWithSize:v10 options:v11 attributes:v9 context:width, 1.79769313e308];
   v13 = v12;
 
   return v13;

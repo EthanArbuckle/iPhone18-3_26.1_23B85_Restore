@@ -2,27 +2,27 @@
 + (id)_thumbnailCreationOperationQueue;
 + (id)_thumbnailFetchOperationQueue;
 + (id)_thumbnailSelectionQueue;
-- (PXPlacesMapThumbnailAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4 extendedTraitCollection:(id)a5 imageCache:(id)a6 countLabelStyle:(int64_t)a7;
+- (PXPlacesMapThumbnailAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier extendedTraitCollection:(id)collection imageCache:(id)cache countLabelStyle:(int64_t)style;
 - (PXPlacesMapThumbnailLocationCurator)thumbnailLocationCurator;
 - (UIImageView)countLabelBackgroundImageView;
 - (id)_countLabelBackgroundColor;
-- (id)preferredGeotaggableWithFallbackGeotaggable:(id)a3;
+- (id)preferredGeotaggableWithFallbackGeotaggable:(id)geotaggable;
 - (id)primaryGeotaggable;
 - (id)renderToImage;
 - (id)userCacheKey;
-- (void)_fetchImageForGeotaggable:(id)a3 renderer:(id)a4 networkAccessAllowed:(BOOL)a5;
-- (void)_fetchImageWithNetworkAccessAllowed:(BOOL)a3;
+- (void)_fetchImageForGeotaggable:(id)geotaggable renderer:(id)renderer networkAccessAllowed:(BOOL)allowed;
+- (void)_fetchImageWithNetworkAccessAllowed:(BOOL)allowed;
 - (void)_hideCountLabel;
-- (void)_processGeotaggable:(id)a3 withImage:(CGImage *)a4 popoverImageType:(int64_t)a5 imageOptions:(unint64_t)a6 shouldCache:(BOOL)a7 expectedGeotaggable:(id)a8;
+- (void)_processGeotaggable:(id)geotaggable withImage:(CGImage *)image popoverImageType:(int64_t)type imageOptions:(unint64_t)options shouldCache:(BOOL)cache expectedGeotaggable:(id)expectedGeotaggable;
 - (void)_processPostImage;
-- (void)_reloadCount:(int64_t)a3;
-- (void)_reloadData:(BOOL)a3;
+- (void)_reloadCount:(int64_t)count;
+- (void)_reloadData:(BOOL)data;
 - (void)_showCountLabel;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)setAnnotation:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setAnnotation:(id)annotation;
+- (void)setImage:(id)image;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation PXPlacesMapThumbnailAnnotationView
@@ -39,8 +39,8 @@
   [(PXPlacesMapThumbnailAnnotationView *)self frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
-  [v7 frame];
+  countLabel = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
+  [countLabel frame];
   v9 = v8;
   v11 = v10;
 
@@ -49,8 +49,8 @@
   UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextTranslateCTM(CurrentContext, 0.0, v11 * 0.5);
-  v13 = [(PXPlacesMapThumbnailAnnotationView *)self layer];
-  [v13 renderInContext:CurrentContext];
+  layer = [(PXPlacesMapThumbnailAnnotationView *)self layer];
+  [layer renderInContext:CurrentContext];
 
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -60,56 +60,56 @@
 
 - (void)_hideCountLabel
 {
-  v3 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
-  v4 = [v3 isHidden];
+  countLabel = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
+  isHidden = [countLabel isHidden];
 
-  if ((v4 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v5 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
-    [v5 setHidden:1];
+    countLabel2 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
+    [countLabel2 setHidden:1];
 
-    v6 = [(PXPlacesMapThumbnailAnnotationView *)self countLabelBackgroundImageView];
-    [v6 setHidden:1];
+    countLabelBackgroundImageView = [(PXPlacesMapThumbnailAnnotationView *)self countLabelBackgroundImageView];
+    [countLabelBackgroundImageView setHidden:1];
   }
 }
 
 - (void)_showCountLabel
 {
-  v3 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
-  v4 = [v3 isHidden];
+  countLabel = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
+  isHidden = [countLabel isHidden];
 
-  if (v4)
+  if (isHidden)
   {
-    v5 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
-    [v5 setHidden:0];
+    countLabel2 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
+    [countLabel2 setHidden:0];
 
-    v6 = [(PXPlacesMapThumbnailAnnotationView *)self countLabelBackgroundImageView];
-    [v6 setHidden:0];
+    countLabelBackgroundImageView = [(PXPlacesMapThumbnailAnnotationView *)self countLabelBackgroundImageView];
+    [countLabelBackgroundImageView setHidden:0];
   }
 }
 
-- (void)_reloadCount:(int64_t)a3
+- (void)_reloadCount:(int64_t)count
 {
-  if (a3 > 1)
+  if (count > 1)
   {
-    v5 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
+    countLabel = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
     v6 = MEMORY[0x1E696ADA0];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v8 = [v6 localizedStringFromNumber:v7 numberStyle:1];
 
-    v9 = [v5 text];
-    v10 = v9;
-    if (v8 == v9)
+    text = [countLabel text];
+    v10 = text;
+    if (v8 == text)
     {
     }
 
     else
     {
-      v11 = [v8 isEqualToString:v9];
+      v11 = [v8 isEqualToString:text];
 
       if ((v11 & 1) == 0)
       {
-        [v5 setText:v8];
+        [countLabel setText:v8];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __51__PXPlacesMapThumbnailAnnotationView__reloadCount___block_invoke;
@@ -120,14 +120,14 @@
           dispatch_once(&_reloadCount__onceToken, block);
         }
 
-        v12 = [(MKAnnotationView *)self image];
-        [v12 size];
+        image = [(MKAnnotationView *)self image];
+        [image size];
         v14 = v13;
 
         if ([(PXPlacesMapThumbnailAnnotationView *)self countLabelStyle])
         {
-          [v5 intrinsicContentSize];
-          [v5 setFrame:{10.0, v14 - v15 + -10.0, v14 + -20.0, v15}];
+          [countLabel intrinsicContentSize];
+          [countLabel setFrame:{10.0, v14 - v15 + -10.0, v14 + -20.0, v15}];
         }
 
         else
@@ -139,17 +139,17 @@
             v16 = v17 + 10.0;
           }
 
-          [v5 frame];
+          [countLabel frame];
           if (v18 != v16)
           {
-            [v5 setFrame:{v14 + v16 * -3.0 * 0.25, -13.0, v16, 26.0}];
-            [v5 frame];
+            [countLabel setFrame:{v14 + v16 * -3.0 * 0.25, -13.0, v16, 26.0}];
+            [countLabel frame];
             v20 = v19;
             v22 = v21;
             v24 = v23;
             v26 = v25;
-            v27 = [(PXPlacesMapThumbnailAnnotationView *)self countLabelBackgroundImageView];
-            [v27 setFrame:{v20, v22, v24, v26}];
+            countLabelBackgroundImageView = [(PXPlacesMapThumbnailAnnotationView *)self countLabelBackgroundImageView];
+            [countLabelBackgroundImageView setFrame:{v20, v22, v24, v26}];
           }
         }
 
@@ -176,38 +176,38 @@ void __51__PXPlacesMapThumbnailAnnotationView__reloadCount___block_invoke(uint64
   _reloadCount__countAttributes = v2;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
+  selectedCopy = selected;
   v11.receiver = self;
   v11.super_class = PXPlacesMapThumbnailAnnotationView;
-  [(MKAnnotationView *)&v11 setSelected:a3 animated:a4];
-  if (v4)
+  [(MKAnnotationView *)&v11 setSelected:selected animated:animated];
+  if (selectedCopy)
   {
-    v6 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
+    layer2 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
     v7 = [MEMORY[0x1E69DC888] colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
-    v8 = [v7 CGColor];
+    cGColor = [v7 CGColor];
 
-    [v6 setValue:v8 forKey:@"inputColor"];
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v6, 0}];
-    v10 = [(PXPlacesMapThumbnailAnnotationView *)self layer];
-    [v10 setFilters:v9];
+    [layer2 setValue:cGColor forKey:@"inputColor"];
+    v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:{layer2, 0}];
+    layer = [(PXPlacesMapThumbnailAnnotationView *)self layer];
+    [layer setFilters:v9];
   }
 
   else
   {
-    v6 = [(PXPlacesMapThumbnailAnnotationView *)self layer];
-    [v6 setFilters:0];
+    layer2 = [(PXPlacesMapThumbnailAnnotationView *)self layer];
+    [layer2 setFilters:0];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v7.receiver = self;
   v7.super_class = PXPlacesMapThumbnailAnnotationView;
-  [(MKAnnotationView *)&v7 setImage:a3];
-  v4 = [(MKAnnotationView *)self image];
-  [v4 size];
+  [(MKAnnotationView *)&v7 setImage:image];
+  image = [(MKAnnotationView *)self image];
+  [image size];
   v6 = v5;
 
   [(MKAnnotationView *)self setCenterOffset:0.0, v6 * -0.5];
@@ -239,27 +239,27 @@ void __55__PXPlacesMapThumbnailAnnotationView__processPostImage__block_invoke(ui
   }
 }
 
-- (void)_processGeotaggable:(id)a3 withImage:(CGImage *)a4 popoverImageType:(int64_t)a5 imageOptions:(unint64_t)a6 shouldCache:(BOOL)a7 expectedGeotaggable:(id)a8
+- (void)_processGeotaggable:(id)geotaggable withImage:(CGImage *)image popoverImageType:(int64_t)type imageOptions:(unint64_t)options shouldCache:(BOOL)cache expectedGeotaggable:(id)expectedGeotaggable
 {
-  v14 = a3;
-  v15 = a8;
-  if (a4 && (Width = CGImageGetWidth(a4), Height = CGImageGetHeight(a4), Width) && Height)
+  geotaggableCopy = geotaggable;
+  expectedGeotaggableCopy = expectedGeotaggable;
+  if (image && (Width = CGImageGetWidth(image), Height = CGImageGetHeight(image), Width) && Height)
   {
-    CFRetain(a4);
+    CFRetain(image);
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __130__PXPlacesMapThumbnailAnnotationView__processGeotaggable_withImage_popoverImageType_imageOptions_shouldCache_expectedGeotaggable___block_invoke;
     aBlock[3] = &unk_1E77492F8;
     objc_copyWeak(v25, &location);
-    v22 = v14;
-    v25[1] = a4;
-    v25[2] = a5;
-    v25[3] = a6;
-    v18 = v15;
-    v26 = a7;
+    v22 = geotaggableCopy;
+    v25[1] = image;
+    v25[2] = type;
+    v25[3] = options;
+    v18 = expectedGeotaggableCopy;
+    cacheCopy = cache;
     v23 = v18;
-    v24 = self;
+    selfCopy = self;
     v19 = _Block_copy(aBlock);
     v20 = +[PXPlacesMapThumbnailAnnotationView _thumbnailCreationOperationQueue];
     [v20 addOperationWithBlock:v19];
@@ -268,7 +268,7 @@ void __55__PXPlacesMapThumbnailAnnotationView__processPostImage__block_invoke(ui
     objc_destroyWeak(&location);
   }
 
-  else if ([v14 isEqual:v15])
+  else if ([geotaggableCopy isEqual:expectedGeotaggableCopy])
   {
     [(PXPlacesMapThumbnailAnnotationView *)self _processPostImage];
   }
@@ -348,36 +348,36 @@ void __69__PXPlacesMapThumbnailAnnotationView__updatePlaceholderImageIfNeeded__b
   }
 }
 
-- (void)_fetchImageForGeotaggable:(id)a3 renderer:(id)a4 networkAccessAllowed:(BOOL)a5
+- (void)_fetchImageForGeotaggable:(id)geotaggable renderer:(id)renderer networkAccessAllowed:(BOOL)allowed
 {
-  v8 = a3;
-  v9 = a4;
+  geotaggableCopy = geotaggable;
+  rendererCopy = renderer;
   if ([(PXPlacesMapThumbnailAnnotationView *)self countLabelStyle]== 1)
   {
-    v10 = 3;
+    popoverImageType = 3;
   }
 
   else
   {
-    v10 = 2;
+    popoverImageType = 2;
   }
 
-  v11 = v9;
+  v11 = rendererCopy;
   v12 = +[PXPlacesPopoverImageFactory sharedInstance];
-  v13 = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
-  [v12 thumbnailImageSizeForImageType:v10 usingTraitCollection:v13 includeScale:1];
+  extendedTraitCollection = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
+  [v12 thumbnailImageSizeForImageType:popoverImageType usingTraitCollection:extendedTraitCollection includeScale:1];
   v15 = v14;
   v17 = v16;
 
   if ([v11 conformsToProtocol:&unk_1F1AB2F20])
   {
-    v10 = [v11 popoverImageType];
-    v18 = [v11 imageOptions];
+    popoverImageType = [v11 popoverImageType];
+    imageOptions = [v11 imageOptions];
   }
 
   else
   {
-    v18 = 0;
+    imageOptions = 0;
   }
 
   objc_initWeak(&location, self);
@@ -387,16 +387,16 @@ void __69__PXPlacesMapThumbnailAnnotationView__updatePlaceholderImageIfNeeded__b
   v22[2] = __94__PXPlacesMapThumbnailAnnotationView__fetchImageForGeotaggable_renderer_networkAccessAllowed___block_invoke;
   v22[3] = &unk_1E77492A8;
   v23 = v11;
-  v20 = v8;
+  v20 = geotaggableCopy;
   v24 = v20;
   v26[1] = v15;
   v26[2] = v17;
-  v27 = a5;
+  allowedCopy = allowed;
   objc_copyWeak(v26, &location);
   v21 = v23;
   v25 = v21;
-  v26[3] = v10;
-  v26[4] = v18;
+  v26[3] = popoverImageType;
+  v26[4] = imageOptions;
   [v19 addOperationWithBlock:v22];
 
   objc_destroyWeak(v26);
@@ -489,12 +489,12 @@ void __94__PXPlacesMapThumbnailAnnotationView__fetchImageForGeotaggable_renderer
   }
 }
 
-- (void)_fetchImageWithNetworkAccessAllowed:(BOOL)a3
+- (void)_fetchImageWithNetworkAccessAllowed:(BOOL)allowed
 {
-  v5 = [(MKAnnotationView *)self annotation];
+  annotation = [(MKAnnotationView *)self annotation];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = v5;
+    v6 = annotation;
   }
 
   else
@@ -502,18 +502,18 @@ void __94__PXPlacesMapThumbnailAnnotationView__fetchImageForGeotaggable_renderer
     v6 = 0;
   }
 
-  v7 = [v6 renderer];
+  renderer = [v6 renderer];
   objc_initWeak(&location, self);
-  v8 = [objc_opt_class() _thumbnailSelectionQueue];
+  _thumbnailSelectionQueue = [objc_opt_class() _thumbnailSelectionQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__PXPlacesMapThumbnailAnnotationView__fetchImageWithNetworkAccessAllowed___block_invoke;
   v10[3] = &unk_1E7749CD8;
   objc_copyWeak(&v12, &location);
-  v11 = v7;
-  v13 = a3;
-  v9 = v7;
-  dispatch_async(v8, v10);
+  v11 = renderer;
+  allowedCopy = allowed;
+  v9 = renderer;
+  dispatch_async(_thumbnailSelectionQueue, v10);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -533,23 +533,23 @@ void __74__PXPlacesMapThumbnailAnnotationView__fetchImageWithNetworkAccessAllowe
   }
 }
 
-- (id)preferredGeotaggableWithFallbackGeotaggable:(id)a3
+- (id)preferredGeotaggableWithFallbackGeotaggable:(id)geotaggable
 {
-  v4 = a3;
-  v5 = [(MKAnnotationView *)self annotation];
+  geotaggableCopy = geotaggable;
+  annotation = [(MKAnnotationView *)self annotation];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = v5;
+    v6 = annotation;
 
     if (v6)
     {
-      v7 = [(PXPlacesMapThumbnailAnnotationView *)self thumbnailLocationCurator];
+      thumbnailLocationCurator = [(PXPlacesMapThumbnailAnnotationView *)self thumbnailLocationCurator];
 
-      if (v7)
+      if (thumbnailLocationCurator)
       {
-        v8 = [v6 geotaggables];
-        v9 = [(PXPlacesMapThumbnailAnnotationView *)self thumbnailLocationCurator];
-        v10 = [v9 curatedGeotaggableFromSet:v8];
+        geotaggables = [v6 geotaggables];
+        thumbnailLocationCurator2 = [(PXPlacesMapThumbnailAnnotationView *)self thumbnailLocationCurator];
+        v10 = [thumbnailLocationCurator2 curatedGeotaggableFromSet:geotaggables];
 
         if (v10)
         {
@@ -558,7 +558,7 @@ void __74__PXPlacesMapThumbnailAnnotationView__fetchImageWithNetworkAccessAllowe
 
         else
         {
-          v11 = v4;
+          v11 = geotaggableCopy;
         }
 
         v12 = v11;
@@ -574,13 +574,13 @@ void __74__PXPlacesMapThumbnailAnnotationView__fetchImageWithNetworkAccessAllowe
     v6 = 0;
   }
 
-  v12 = v4;
+  v12 = geotaggableCopy;
 LABEL_11:
 
   return v12;
 }
 
-- (void)_reloadData:(BOOL)a3
+- (void)_reloadData:(BOOL)data
 {
   if (!self->_geotaggablesCount)
   {
@@ -593,21 +593,21 @@ LABEL_11:
     px_dispatch_on_main_queue();
   }
 
-  if (!a3)
+  if (!data)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(v9, &location);
     px_dispatch_on_main_queue();
   }
 
-  v4 = [(PXPlacesMapThumbnailAnnotationView *)self primaryGeotaggable];
-  v5 = [(PXPlacesMapThumbnailAnnotationView *)self imageCache];
+  primaryGeotaggable = [(PXPlacesMapThumbnailAnnotationView *)self primaryGeotaggable];
+  imageCache = [(PXPlacesMapThumbnailAnnotationView *)self imageCache];
 
-  if (v5)
+  if (imageCache)
   {
-    v6 = [(PXPlacesMapThumbnailAnnotationView *)self userCacheKey];
-    v7 = [(PXPlacesMapThumbnailAnnotationView *)self imageCache];
-    v8 = [v7 cachedRenderedImageForGeotaggble:v4 andKey:v6];
+    userCacheKey = [(PXPlacesMapThumbnailAnnotationView *)self userCacheKey];
+    imageCache2 = [(PXPlacesMapThumbnailAnnotationView *)self imageCache];
+    v8 = [imageCache2 cachedRenderedImageForGeotaggble:primaryGeotaggable andKey:userCacheKey];
 
     if (v8)
     {
@@ -671,9 +671,9 @@ void __64__PXPlacesMapThumbnailAnnotationView__countLabelBackgroundColor__block_
 
 - (UIImageView)countLabelBackgroundImageView
 {
-  v3 = [(UIImageView *)self->_countLabelBackgroundImageView image];
+  image = [(UIImageView *)self->_countLabelBackgroundImageView image];
 
-  if (!v3)
+  if (!image)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -717,23 +717,23 @@ void __67__PXPlacesMapThumbnailAnnotationView_countLabelBackgroundImageView__blo
 - (id)userCacheKey
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
-  [v4 displayScale];
+  extendedTraitCollection = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
+  [extendedTraitCollection displayScale];
   v6 = v5;
-  v7 = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
-  v8 = [v7 layoutSizeClass];
-  v9 = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
-  v10 = [v3 stringWithFormat:@"%f-%ld-%ld", v6, v8, objc_msgSend(v9, "layoutSizeSubclass")];
+  extendedTraitCollection2 = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
+  layoutSizeClass = [extendedTraitCollection2 layoutSizeClass];
+  extendedTraitCollection3 = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
+  v10 = [v3 stringWithFormat:@"%f-%ld-%ld", v6, layoutSizeClass, objc_msgSend(extendedTraitCollection3, "layoutSizeSubclass")];
 
   return v10;
 }
 
 - (id)primaryGeotaggable
 {
-  v2 = [(MKAnnotationView *)self annotation];
+  annotation = [(MKAnnotationView *)self annotation];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v3 = v2;
+    v3 = annotation;
   }
 
   else
@@ -741,10 +741,10 @@ void __67__PXPlacesMapThumbnailAnnotationView_countLabelBackgroundImageView__blo
     v3 = 0;
   }
 
-  v4 = [v3 geotaggables];
-  v5 = [v4 firstObject];
+  geotaggables = [v3 geotaggables];
+  firstObject = [geotaggables firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (void)prepareForReuse
@@ -753,29 +753,29 @@ void __67__PXPlacesMapThumbnailAnnotationView_countLabelBackgroundImageView__blo
   v5.super_class = PXPlacesMapThumbnailAnnotationView;
   [(MKAnnotationView *)&v5 prepareForReuse];
   [(PXPlacesMapThumbnailAnnotationView *)self setImage:0];
-  v3 = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
-  [v3 setText:&stru_1F1741150];
+  countLabel = [(PXPlacesMapThumbnailAnnotationView *)self countLabel];
+  [countLabel setText:&stru_1F1741150];
 
   [(PXPlacesMapThumbnailAnnotationView *)self _hideCountLabel];
-  v4 = [(PXPlacesMapThumbnailAnnotationView *)self displayCompletion];
+  displayCompletion = [(PXPlacesMapThumbnailAnnotationView *)self displayCompletion];
 
-  if (v4)
+  if (displayCompletion)
   {
     [(PXPlacesMapThumbnailAnnotationView *)self setDisplayCompletion:0];
   }
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   v14.receiver = self;
   v14.super_class = PXPlacesMapThumbnailAnnotationView;
-  [(MKAnnotationView *)&v14 setAnnotation:v4];
-  v5 = [(MKAnnotationView *)self annotation];
-  v6 = [(MKAnnotationView *)self annotation];
+  [(MKAnnotationView *)&v14 setAnnotation:annotationCopy];
+  annotation = [(MKAnnotationView *)self annotation];
+  annotation2 = [(MKAnnotationView *)self annotation];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v7 = v6;
+    v7 = annotation2;
   }
 
   else
@@ -783,16 +783,16 @@ void __67__PXPlacesMapThumbnailAnnotationView_countLabelBackgroundImageView__blo
     v7 = 0;
   }
 
-  v8 = [v7 geotaggables];
-  self->_geotaggablesCount = [v8 count];
-  v9 = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
+  geotaggables = [v7 geotaggables];
+  self->_geotaggablesCount = [geotaggables count];
+  extendedTraitCollection = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
 
-  if (v9)
+  if (extendedTraitCollection)
   {
-    v10 = [(PXPlacesMapThumbnailAnnotationView *)self thumbnailLocationCurator];
-    if (!v10 && ([(MKAnnotationView *)self image], v10 = objc_claimAutoreleasedReturnValue(), (v11 = v10) != 0) && v5)
+    thumbnailLocationCurator = [(PXPlacesMapThumbnailAnnotationView *)self thumbnailLocationCurator];
+    if (!thumbnailLocationCurator && ([(MKAnnotationView *)self image], thumbnailLocationCurator = objc_claimAutoreleasedReturnValue(), (v11 = thumbnailLocationCurator) != 0) && annotation)
     {
-      v12 = [v5 isEqual:v4];
+      v12 = [annotation isEqual:annotationCopy];
 
       v13 = v12 ^ 1;
     }
@@ -807,22 +807,22 @@ void __67__PXPlacesMapThumbnailAnnotationView_countLabelBackgroundImageView__blo
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXExtendedTraitCollectionObservationContext_235019 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXExtendedTraitCollectionObservationContext_235019 != context)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailAnnotationView.m" lineNumber:163 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailAnnotationView.m" lineNumber:163 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x422) != 0)
+  if ((changeCopy & 0x422) != 0)
   {
-    v21 = v9;
-    v10 = v9;
+    v21 = observableCopy;
+    v10 = observableCopy;
     if (v10)
     {
       objc_opt_class();
@@ -831,76 +831,76 @@ void __67__PXPlacesMapThumbnailAnnotationView_countLabelBackgroundImageView__blo
         goto LABEL_5;
       }
 
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = objc_opt_class();
       v17 = NSStringFromClass(v18);
-      v19 = [v10 px_descriptionForAssertionMessage];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailAnnotationView.m" lineNumber:143 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v17, v19}];
+      px_descriptionForAssertionMessage = [v10 px_descriptionForAssertionMessage];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailAnnotationView.m" lineNumber:143 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v17, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailAnnotationView.m" lineNumber:143 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v17}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailAnnotationView.m" lineNumber:143 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v17}];
     }
 
 LABEL_5:
     [(PXPlacesMapThumbnailAnnotationView *)self setExtendedTraitCollection:v10];
     [(PXPlacesMapThumbnailAnnotationView *)self _updatePlaceholderImageIfNeeded];
-    v11 = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
-    [v11 displayScale];
+    extendedTraitCollection = [(PXPlacesMapThumbnailAnnotationView *)self extendedTraitCollection];
+    [extendedTraitCollection displayScale];
     v13 = v12;
 
     if (v13 != 0.0)
     {
-      v14 = [(MKAnnotationView *)self image];
+      image = [(MKAnnotationView *)self image];
 
-      if (v14)
+      if (image)
       {
         [(PXPlacesMapThumbnailAnnotationView *)self _reloadData:1];
       }
     }
 
-    v9 = v21;
+    observableCopy = v21;
   }
 }
 
-- (PXPlacesMapThumbnailAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4 extendedTraitCollection:(id)a5 imageCache:(id)a6 countLabelStyle:(int64_t)a7
+- (PXPlacesMapThumbnailAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier extendedTraitCollection:(id)collection imageCache:(id)cache countLabelStyle:(int64_t)style
 {
-  v13 = a5;
-  v14 = a6;
+  collectionCopy = collection;
+  cacheCopy = cache;
   v29.receiver = self;
   v29.super_class = PXPlacesMapThumbnailAnnotationView;
-  v15 = [(MKAnnotationView *)&v29 initWithAnnotation:a3 reuseIdentifier:a4];
+  v15 = [(MKAnnotationView *)&v29 initWithAnnotation:annotation reuseIdentifier:identifier];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_extendedTraitCollection, a5);
-    objc_storeStrong(&v16->_imageCache, a6);
+    objc_storeStrong(&v15->_extendedTraitCollection, collection);
+    objc_storeStrong(&v16->_imageCache, cache);
     v16->_geotaggablesCount = 0;
-    v16->_countLabelStyle = a7;
+    v16->_countLabelStyle = style;
     v17 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
     countLabel = v16->_countLabel;
     v16->_countLabel = v17;
 
-    v19 = _FontForCountLabelStyle(a7);
+    v19 = _FontForCountLabelStyle(style);
     [(UILabel *)v16->_countLabel setFont:v19];
 
-    if (a7)
+    if (style)
     {
-      if (a7 == 1)
+      if (style == 1)
       {
         v20 = 4;
       }
 
       else
       {
-        v21 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSTextAlignment _TextAlignmentForCountLabelStyle(PXPlacesMapCountLabelStyle)"];
-        v23 = [MEMORY[0x1E696AD98] numberWithInteger:a7];
-        [v21 handleFailureInFunction:v22 file:@"PXPlacesMapThumbnailAnnotationView.m" lineNumber:56 description:{@"Unsupported style: %@", v23}];
+        v23 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+        [currentHandler handleFailureInFunction:v22 file:@"PXPlacesMapThumbnailAnnotationView.m" lineNumber:56 description:{@"Unsupported style: %@", v23}];
 
         v20 = 0;
       }
@@ -912,11 +912,11 @@ LABEL_5:
     }
 
     [(UILabel *)v16->_countLabel setTextAlignment:v20];
-    v24 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v16->_countLabel setTextColor:v24];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v16->_countLabel setTextColor:whiteColor];
 
     [(UILabel *)v16->_countLabel setHidden:1];
-    if (!a7)
+    if (!style)
     {
       v25 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v26 = [v25 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];

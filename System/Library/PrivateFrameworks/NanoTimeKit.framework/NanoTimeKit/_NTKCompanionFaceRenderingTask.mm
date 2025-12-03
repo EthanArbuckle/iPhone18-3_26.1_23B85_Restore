@@ -1,22 +1,22 @@
 @interface _NTKCompanionFaceRenderingTask
-- (_NTKCompanionFaceRenderingTask)initWithFace:(id)a3 detailMode:(int64_t)a4 completionHandler:(id)a5;
+- (_NTKCompanionFaceRenderingTask)initWithFace:(id)face detailMode:(int64_t)mode completionHandler:(id)handler;
 @end
 
 @implementation _NTKCompanionFaceRenderingTask
 
-- (_NTKCompanionFaceRenderingTask)initWithFace:(id)a3 detailMode:(int64_t)a4 completionHandler:(id)a5
+- (_NTKCompanionFaceRenderingTask)initWithFace:(id)face detailMode:(int64_t)mode completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  faceCopy = face;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = _NTKCompanionFaceRenderingTask;
   v11 = [(_NTKCompanionFaceRenderingTask *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_face, a3);
-    v12->_detailMode = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_face, face);
+    v12->_detailMode = mode;
+    v13 = [handlerCopy copy];
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v13;
   }

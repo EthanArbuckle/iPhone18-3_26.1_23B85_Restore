@@ -1,21 +1,21 @@
 @interface WGWidgetVisibilityManager
-- (BOOL)_updateWidgetVisibilityPreference:(id)a3;
+- (BOOL)_updateWidgetVisibilityPreference:(id)preference;
 - (BOOL)_updateWidgetVisibilityPreferences;
-- (BOOL)isWidgetWithIdentifierVisible:(id)a3;
+- (BOOL)isWidgetWithIdentifierVisible:(id)visible;
 - (WGWidgetVisibilityDelegate)delegate;
 - (WGWidgetVisibilityManager)init;
 - (id)_allWidgetTags;
-- (id)_widgetTagsForWidgetExtensionInfoDictionary:(id)a3;
+- (id)_widgetTagsForWidgetExtensionInfoDictionary:(id)dictionary;
 - (void)_registerForVisiblityPreferenceChanges;
 - (void)_unregisterForVisiblityPreferenceChanges;
 - (void)_updateMobileGestaltQuestions;
-- (void)_updateWidgetTagsAndIconVisibilityForExtension:(id)a3;
-- (void)_updateWidgetTagsAndVisibilityForExtensions:(id)a3;
+- (void)_updateWidgetTagsAndIconVisibilityForExtension:(id)extension;
+- (void)_updateWidgetTagsAndVisibilityForExtensions:(id)extensions;
 - (void)_widgetVisibilityChanged;
 - (void)_widgetVisibilityPreferencesChanged;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)updateVisibilityForExtensions:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)updateVisibilityForExtensions:(id)extensions;
 @end
 
 @implementation WGWidgetVisibilityManager
@@ -75,14 +75,14 @@
   [(WGWidgetVisibilityManager *)&v3 dealloc];
 }
 
-- (BOOL)isWidgetWithIdentifierVisible:(id)a3
+- (BOOL)isWidgetWithIdentifierVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v5 = [(NSMutableDictionary *)self->_widgetTagsByIdentifier objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_widgetTagsByIdentifier objectForKey:visibleCopy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invoke;
@@ -90,21 +90,21 @@
   v13[4] = self;
   v13[5] = &v14;
   [v5 enumerateObjectsUsingBlock:v13];
-  if (*(v15 + 24) == 1 && [(NSMutableSet *)self->_visibilityOverridenIdentifiers containsObject:v4])
+  if (*(v15 + 24) == 1 && [(NSMutableSet *)self->_visibilityOverridenIdentifiers containsObject:visibleCopy])
   {
-    v6 = [(NSMutableDictionary *)self->_visibilityPreferenceByIdentifier objectForKey:v4];
+    v6 = [(NSMutableDictionary *)self->_visibilityPreferenceByIdentifier objectForKey:visibleCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 BOOLValue];
-      *(v15 + 24) = v8;
+      bOOLValue = [v6 BOOLValue];
+      *(v15 + 24) = bOOLValue;
     }
 
     else
     {
-      v9 = [(NSMutableDictionary *)self->_visibilityDefaultValueByIdentifier objectForKey:v4];
-      v10 = [v9 BOOLValue];
-      *(v15 + 24) = v10;
+      v9 = [(NSMutableDictionary *)self->_visibilityDefaultValueByIdentifier objectForKey:visibleCopy];
+      bOOLValue2 = [v9 BOOLValue];
+      *(v15 + 24) = bOOLValue2;
     }
   }
 
@@ -129,35 +129,35 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
   }
 }
 
-- (void)updateVisibilityForExtensions:(id)a3
+- (void)updateVisibilityForExtensions:(id)extensions
 {
-  [(WGWidgetVisibilityManager *)self _updateWidgetTagsAndVisibilityForExtensions:a3];
+  [(WGWidgetVisibilityManager *)self _updateWidgetTagsAndVisibilityForExtensions:extensions];
 
   [(WGWidgetVisibilityManager *)self _updateMobileGestaltQuestions];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   self->_delegateRespondsToWidgetVisibilityDidChange = v5 & 1;
 }
 
-- (id)_widgetTagsForWidgetExtensionInfoDictionary:(id)a3
+- (id)_widgetTagsForWidgetExtensionInfoDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 bs_safeObjectForKey:@"SBAppTags" ofType:objc_opt_class()];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy bs_safeObjectForKey:@"SBAppTags" ofType:objc_opt_class()];
   if ([v4 count])
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
   v15 = 0u;
@@ -183,7 +183,7 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && MGIsQuestionValid())
         {
-          [v5 addObject:{v11, v13}];
+          [array addObject:{v11, v13}];
         }
       }
 
@@ -193,7 +193,7 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (id)_allWidgetTags
@@ -206,8 +206,8 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSMutableDictionary *)self->_widgetTagsByIdentifier allValues];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allValues = [(NSMutableDictionary *)self->_widgetTagsByIdentifier allValues];
+    v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -218,13 +218,13 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [v3 addObjectsFromArray:*(*(&v10 + 1) + 8 * i)];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -239,18 +239,18 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
   return v3;
 }
 
-- (void)_updateWidgetTagsAndVisibilityForExtensions:(id)a3
+- (void)_updateWidgetTagsAndVisibilityForExtensions:(id)extensions
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_extensionHashByIdentifier allKeys];
-  v6 = [v5 mutableCopy];
+  extensionsCopy = extensions;
+  allKeys = [(NSMutableDictionary *)self->_extensionHashByIdentifier allKeys];
+  v6 = [allKeys mutableCopy];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = extensionsCopy;
   v7 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -266,16 +266,16 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [(NSMutableDictionary *)self->_extensionHashByIdentifier objectForKey:v12];
+        identifier = [v11 identifier];
+        v13 = [(NSMutableDictionary *)self->_extensionHashByIdentifier objectForKey:identifier];
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "hash")}];
         if (([v13 isEqual:v14] & 1) == 0)
         {
           [(WGWidgetVisibilityManager *)self _updateWidgetTagsAndIconVisibilityForExtension:v11];
         }
 
-        [(NSMutableDictionary *)self->_extensionHashByIdentifier setObject:v14 forKey:v12];
-        [v6 removeObject:v12];
+        [(NSMutableDictionary *)self->_extensionHashByIdentifier setObject:v14 forKey:identifier];
+        [v6 removeObject:identifier];
       }
 
       v8 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -318,41 +318,41 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
   [(NSMutableDictionary *)self->_visibilityPreferenceByIdentifier removeObjectsForKeys:v15];
 }
 
-- (void)_updateWidgetTagsAndIconVisibilityForExtension:(id)a3
+- (void)_updateWidgetTagsAndIconVisibilityForExtension:(id)extension
 {
-  v17 = a3;
-  v4 = [v17 identifier];
-  if ([v4 hasPrefix:@"com.apple."])
+  extensionCopy = extension;
+  identifier = [extensionCopy identifier];
+  if ([identifier hasPrefix:@"com.apple."])
   {
-    v5 = [v17 infoDictionary];
+    infoDictionary = [extensionCopy infoDictionary];
   }
 
   else
   {
-    v5 = 0;
+    infoDictionary = 0;
   }
 
-  v6 = [(WGWidgetVisibilityManager *)self _widgetTagsForWidgetExtensionInfoDictionary:v5];
+  v6 = [(WGWidgetVisibilityManager *)self _widgetTagsForWidgetExtensionInfoDictionary:infoDictionary];
   if (v6)
   {
-    [(NSMutableDictionary *)self->_widgetTagsByIdentifier setObject:v6 forKey:v4];
+    [(NSMutableDictionary *)self->_widgetTagsByIdentifier setObject:v6 forKey:identifier];
   }
 
-  v7 = [v5 objectForKey:@"SBIconVisibilitySetByAppPreference"];
-  v8 = [v7 BOOLValue];
+  v7 = [infoDictionary objectForKey:@"SBIconVisibilitySetByAppPreference"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    [(NSMutableSet *)self->_visibilityOverridenIdentifiers addObject:v4];
-    v9 = [v5 objectForKey:@"SBIconVisibilityDefaultVisible"];
+    [(NSMutableSet *)self->_visibilityOverridenIdentifiers addObject:identifier];
+    v9 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisible"];
     if (v9)
     {
-      [(NSMutableDictionary *)self->_visibilityDefaultValueByIdentifier setObject:v9 forKey:v4];
+      [(NSMutableDictionary *)self->_visibilityDefaultValueByIdentifier setObject:v9 forKey:identifier];
     }
 
     else
     {
-      v10 = [v5 objectForKey:@"SBIconVisibilityDefaultVisibleInstallTypes"];
+      v10 = [infoDictionary objectForKey:@"SBIconVisibilityDefaultVisibleInstallTypes"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -374,36 +374,36 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
         v12 = [v10 containsObject:v11];
         visibilityDefaultValueByIdentifier = self->_visibilityDefaultValueByIdentifier;
         v14 = [MEMORY[0x277CCABB0] numberWithBool:v12];
-        [(NSMutableDictionary *)visibilityDefaultValueByIdentifier setObject:v14 forKey:v4];
+        [(NSMutableDictionary *)visibilityDefaultValueByIdentifier setObject:v14 forKey:identifier];
       }
     }
 
-    [(WGWidgetVisibilityManager *)self _updateWidgetVisibilityPreference:v4];
+    [(WGWidgetVisibilityManager *)self _updateWidgetVisibilityPreference:identifier];
   }
 
   if (_os_feature_enabled_impl())
   {
     v15 = WGWidgetVisibilityManagerFirstPartyAvocadoBlackList();
-    v16 = [v15 containsObject:v4];
+    v16 = [v15 containsObject:identifier];
 
     if (v16)
     {
-      [(NSMutableSet *)self->_visibilityOverridenIdentifiers addObject:v4];
-      [(WGWidgetVisibilityManager *)self _updateWidgetVisibilityPreference:v4];
+      [(NSMutableSet *)self->_visibilityOverridenIdentifiers addObject:identifier];
+      [(WGWidgetVisibilityManager *)self _updateWidgetVisibilityPreference:identifier];
     }
   }
 }
 
-- (BOOL)_updateWidgetVisibilityPreference:(id)a3
+- (BOOL)_updateWidgetVisibilityPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_visibilityPreferenceByIdentifier objectForKey:v4];
-  v6 = [v5 BOOLValue];
+  preferenceCopy = preference;
+  v5 = [(NSMutableDictionary *)self->_visibilityPreferenceByIdentifier objectForKey:preferenceCopy];
+  bOOLValue = [v5 BOOLValue];
   keyExistsAndHasValidFormat = 0;
   if (_os_feature_enabled_impl())
   {
     v7 = WGWidgetVisibilityManagerFirstPartyAvocadoBlackList();
-    v8 = [v7 containsObject:v4];
+    v8 = [v7 containsObject:preferenceCopy];
 
     if (v8)
     {
@@ -412,14 +412,14 @@ void __59__WGWidgetVisibilityManager_isWidgetWithIdentifierVisible___block_invok
 LABEL_5:
       visibilityPreferenceByIdentifier = self->_visibilityPreferenceByIdentifier;
       v12 = [MEMORY[0x277CCABB0] numberWithBool:v9];
-      [(NSMutableDictionary *)visibilityPreferenceByIdentifier setObject:v12 forKey:v4];
+      [(NSMutableDictionary *)visibilityPreferenceByIdentifier setObject:v12 forKey:preferenceCopy];
 
       v10 = keyExistsAndHasValidFormat;
       goto LABEL_6;
     }
   }
 
-  v9 = CFPreferencesGetAppBooleanValue(@"SBIconVisibility", v4, &keyExistsAndHasValidFormat) != 0;
+  v9 = CFPreferencesGetAppBooleanValue(@"SBIconVisibility", preferenceCopy, &keyExistsAndHasValidFormat) != 0;
   v10 = keyExistsAndHasValidFormat;
   if (keyExistsAndHasValidFormat)
   {
@@ -427,7 +427,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v13 = v10 != (v5 != 0) || v6 != v9;
+  v13 = v10 != (v5 != 0) || bOOLValue != v9;
 
   return v13;
 }
@@ -475,8 +475,8 @@ LABEL_6:
 - (void)_updateMobileGestaltQuestions
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(WGWidgetVisibilityManager *)self _allWidgetTags];
-  if (([(NSMutableSet *)self->_mobileGestaltQuestions isEqualToSet:v3]& 1) == 0)
+  _allWidgetTags = [(WGWidgetVisibilityManager *)self _allWidgetTags];
+  if (([(NSMutableSet *)self->_mobileGestaltQuestions isEqualToSet:_allWidgetTags]& 1) == 0)
   {
     [(NSMutableDictionary *)self->_mobileGestaltAnswerByWidgetTag removeAllObjects];
     [(NSMutableSet *)self->_mobileGestaltQuestions removeAllObjects];
@@ -485,9 +485,9 @@ LABEL_6:
       MGCancelNotifications();
     }
 
-    if ([v3 count])
+    if ([_allWidgetTags count])
     {
-      [(NSMutableSet *)self->_mobileGestaltQuestions unionSet:v3];
+      [(NSMutableSet *)self->_mobileGestaltQuestions unionSet:_allWidgetTags];
       objc_initWeak(&location, self);
       [(NSMutableSet *)self->_mobileGestaltQuestions allObjects];
       v4 = MEMORY[0x277D85CD0];
@@ -498,7 +498,7 @@ LABEL_6:
       objc_copyWeak(&v24, &location);
       self->_mobileGestaltNotificationToken = MGRegisterForUpdates();
 
-      [v3 allObjects];
+      [_allWidgetTags allObjects];
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;

@@ -1,44 +1,44 @@
 @interface HDSHPluginServer
 + (id)requiredEntitlements;
 + (id)taskIdentifier;
-- (BOOL)_deleteSamples:(id)a3 error:(id *)a4;
-- (BOOL)_insertSamplesWithClientSource:(id)a3 error:(id *)a4;
-- (BOOL)_populateSamplesToInsert:(id)a3 samplesToDelete:(id)a4 forSleepDurationGoal:(id)a5 error:(id *)a6;
-- (BOOL)_populateSamplesToInsert:(id)a3 samplesToDelete:(id)a4 forSleepSchedules:(id)a5 error:(id *)a6;
-- (BOOL)_replaceSamples:(id)a3 withSamples:(id)a4 error:(id *)a5;
-- (HDSHPluginServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (void)_saveSleepTrackingSamplesAfterFirstUnlock:(id)a3 replacingSamplesInDateInterval:(id)a4 completion:(id)a5;
-- (void)remote_saveSleepTrackingSamples:(id)a3 replacingSamplesInDateInterval:(id)a4 completion:(id)a5;
+- (BOOL)_deleteSamples:(id)samples error:(id *)error;
+- (BOOL)_insertSamplesWithClientSource:(id)source error:(id *)error;
+- (BOOL)_populateSamplesToInsert:(id)insert samplesToDelete:(id)delete forSleepDurationGoal:(id)goal error:(id *)error;
+- (BOOL)_populateSamplesToInsert:(id)insert samplesToDelete:(id)delete forSleepSchedules:(id)schedules error:(id *)error;
+- (BOOL)_replaceSamples:(id)samples withSamples:(id)withSamples error:(id *)error;
+- (HDSHPluginServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (void)_saveSleepTrackingSamplesAfterFirstUnlock:(id)unlock replacingSamplesInDateInterval:(id)interval completion:(id)completion;
+- (void)remote_saveSleepTrackingSamples:(id)samples replacingSamplesInDateInterval:(id)interval completion:(id)completion;
 - (void)remote_startSleepTrackingSession;
 - (void)remote_stopSleepTrackingSession;
-- (void)remote_updateCurrentSleepSchedules:(id)a3 sleepDurationGoal:(id)a4 completion:(id)a5;
+- (void)remote_updateCurrentSleepSchedules:(id)schedules sleepDurationGoal:(id)goal completion:(id)completion;
 @end
 
 @implementation HDSHPluginServer
 
-- (HDSHPluginServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSHPluginServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v11 = a5;
+  clientCopy = client;
   v21.receiver = self;
   v21.super_class = HDSHPluginServer;
-  v12 = [(HDStandardTaskServer *)&v21 initWithUUID:a3 configuration:a4 client:v11 delegate:a6];
+  v12 = [(HDStandardTaskServer *)&v21 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v12)
   {
-    v13 = [v11 profile];
-    objc_storeWeak(&v12->_profile, v13);
+    profile = [clientCopy profile];
+    objc_storeWeak(&v12->_profile, profile);
 
-    v14 = [v11 profile];
-    v15 = [v14 profileExtensionWithIdentifier:*MEMORY[0x277D62658]];
+    profile2 = [clientCopy profile];
+    v15 = [profile2 profileExtensionWithIdentifier:*MEMORY[0x277D62658]];
     profileExtension = v12->_profileExtension;
     v12->_profileExtension = v15;
 
-    objc_storeStrong(&v12->_client, a5);
+    objc_storeStrong(&v12->_client, client);
     v17 = dispatch_queue_create("com.apple.HDSHPluginServer.serial", 0);
     serializer = v12->_serializer;
     v12->_serializer = v17;
 
-    v19 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v19 addObject:v12];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v12];
   }
 
   return v12;
@@ -61,23 +61,23 @@
   return v2;
 }
 
-- (void)remote_updateCurrentSleepSchedules:(id)a3 sleepDurationGoal:(id)a4 completion:(id)a5
+- (void)remote_updateCurrentSleepSchedules:(id)schedules sleepDurationGoal:(id)goal completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  schedulesCopy = schedules;
+  goalCopy = goal;
+  completionCopy = completion;
   serializer = self->_serializer;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__HDSHPluginServer_remote_updateCurrentSleepSchedules_sleepDurationGoal_completion___block_invoke;
   v15[3] = &unk_279C83130;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = schedulesCopy;
+  selfCopy = self;
+  v18 = goalCopy;
+  v19 = completionCopy;
+  v12 = goalCopy;
+  v13 = completionCopy;
+  v14 = schedulesCopy;
   dispatch_async(serializer, v15);
 }
 
@@ -181,14 +181,14 @@ LABEL_15:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_populateSamplesToInsert:(id)a3 samplesToDelete:(id)a4 forSleepSchedules:(id)a5 error:(id *)a6
+- (BOOL)_populateSamplesToInsert:(id)insert samplesToDelete:(id)delete forSleepSchedules:(id)schedules error:(id *)error
 {
   v134 = *MEMORY[0x277D85DE8];
-  v94 = a3;
-  v101 = a4;
-  v91 = a5;
-  v9 = [v91 firstObject];
-  v93 = [v9 startDate];
+  insertCopy = insert;
+  deleteCopy = delete;
+  schedulesCopy = schedules;
+  firstObject = [schedulesCopy firstObject];
+  startDate = [firstObject startDate];
 
   v10 = *MEMORY[0x277CCCDD0];
   v11 = HKSleepScheduleWeekdayArrayFromWeekdays();
@@ -210,7 +210,7 @@ LABEL_15:
   }
 
   v16 = v15;
-  v99 = a6;
+  errorCopy = error;
   v96 = 0;
   v17 = *v122;
   while (2)
@@ -224,11 +224,11 @@ LABEL_15:
 
       v19 = *(*(&v121 + 1) + 8 * i);
       v20 = MEMORY[0x277D10870];
-      v21 = [v19 integerValue];
+      integerValue = [v19 integerValue];
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v23 = [MEMORY[0x277D10690] hk_timeZoneEncodingOptions];
+      hk_timeZoneEncodingOptions = [MEMORY[0x277D10690] hk_timeZoneEncodingOptions];
       v120 = v96;
-      v24 = [v20 mostRecentSleepScheduleForWeekday:v21 beforeDate:0 profile:WeakRetained encodingOptions:v23 error:&v120];
+      v24 = [v20 mostRecentSleepScheduleForWeekday:integerValue beforeDate:0 profile:WeakRetained encodingOptions:hk_timeZoneEncodingOptions error:&v120];
       v25 = v120;
 
       v13 = v97;
@@ -249,11 +249,11 @@ LABEL_15:
         if (![v25 hk_isDatabaseAccessibilityError])
         {
           v31 = v25;
-          if (v99)
+          if (errorCopy)
           {
             v32 = v25;
             v33 = 0;
-            *v99 = v25;
+            *errorCopy = v25;
           }
 
           else
@@ -314,7 +314,7 @@ LABEL_19:
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v100 = v91;
+  v100 = schedulesCopy;
   v36 = [v100 countByEnumeratingWithState:&v116 objects:v128 count:16];
   if (v36)
   {
@@ -355,8 +355,8 @@ LABEL_19:
 
               if (v46)
               {
-                v47 = [MEMORY[0x277CCA890] currentHandler];
-                [v47 handleFailureInMethod:a2 object:self file:@"HDSHPluginServer.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"newSchedulesByWeekday[weekdayNumber] == nil"}];
+                currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler handleFailureInMethod:a2 object:self file:@"HDSHPluginServer.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"newSchedulesByWeekday[weekdayNumber] == nil"}];
               }
 
               [v35 setObject:v39 forKeyedSubscript:v45];
@@ -423,19 +423,19 @@ LABEL_19:
               goto LABEL_51;
             }
 
-            v59 = [v57 bedTimeComponents];
-            if (v59)
+            bedTimeComponents = [v57 bedTimeComponents];
+            if (bedTimeComponents)
             {
 
               goto LABEL_51;
             }
 
-            v60 = [v57 wakeTimeComponents];
+            wakeTimeComponents = [v57 wakeTimeComponents];
 
-            if (v60)
+            if (wakeTimeComponents)
             {
 LABEL_51:
-              [v94 addObject:v57];
+              [insertCopy addObject:v57];
               [v57 weekdays];
               v61 = HKSleepScheduleWeekdayArrayFromWeekdays();
               [v49 addObjectsFromArray:v61];
@@ -491,7 +491,7 @@ LABEL_51:
         v69 = [v35 objectForKeyedSubscript:v67];
         if (v68)
         {
-          if (([v101 containsObject:v68] & 1) == 0)
+          if (([deleteCopy containsObject:v68] & 1) == 0)
           {
             v70 = MEMORY[0x277CBEB98];
             [v68 weekdays];
@@ -503,13 +503,13 @@ LABEL_51:
             v13 = v97;
             if (!v74 && ([v68 weekdays] || objc_msgSend(v68, "hasEquivalentOverrideDayToSleepSchedule:", v69)))
             {
-              v75 = [v68 startDate];
-              [v75 timeIntervalSinceDate:v93];
+              startDate2 = [v68 startDate];
+              [startDate2 timeIntervalSinceDate:startDate];
               v77 = v76;
 
               if (v77 > -3600.0)
               {
-                [v101 addObject:v68];
+                [deleteCopy addObject:v68];
               }
             }
           }
@@ -535,17 +535,17 @@ LABEL_75:
   return v33;
 }
 
-- (BOOL)_populateSamplesToInsert:(id)a3 samplesToDelete:(id)a4 forSleepDurationGoal:(id)a5 error:(id *)a6
+- (BOOL)_populateSamplesToInsert:(id)insert samplesToDelete:(id)delete forSleepDurationGoal:(id)goal error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  insertCopy = insert;
+  deleteCopy = delete;
+  goalCopy = goal;
   v13 = MEMORY[0x277D10810];
-  v14 = [MEMORY[0x277CCD720] sleepDurationGoalType];
+  sleepDurationGoalType = [MEMORY[0x277CCD720] sleepDurationGoalType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v39 = 0;
-  v16 = [v13 mostRecentSampleWithType:v14 profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v39];
+  v16 = [v13 mostRecentSampleWithType:sleepDurationGoalType profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v39];
   v17 = v39;
 
   if (v16)
@@ -561,9 +561,9 @@ LABEL_75:
   v19 = v18;
   if (v18)
   {
-    v20 = [v16 quantity];
-    v21 = [v12 quantity];
-    v22 = [v20 isEqual:v21];
+    quantity = [v16 quantity];
+    quantity2 = [goalCopy quantity];
+    v22 = [quantity isEqual:quantity2];
 
     if (v22)
     {
@@ -582,17 +582,17 @@ LABEL_75:
 
     else
     {
-      [v10 addObject:v12];
+      [insertCopy addObject:goalCopy];
       if (v16)
       {
-        v30 = [v16 startDate];
-        v31 = [v12 startDate];
-        [v30 timeIntervalSinceDate:v31];
+        startDate = [v16 startDate];
+        startDate2 = [goalCopy startDate];
+        [startDate timeIntervalSinceDate:startDate2];
         v33 = v32;
 
         if (v33 > -3600.0)
         {
-          [v11 addObject:v16];
+          [deleteCopy addObject:v16];
         }
       }
     }
@@ -614,10 +614,10 @@ LABEL_75:
       _os_log_error_impl(&dword_269C02000, v36, OS_LOG_TYPE_ERROR, "[%{public}@] Error retrieving latest sleep duration goal: %{public}@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v29 = v17;
-      *a6 = v17;
+      *error = v17;
     }
 
     else
@@ -644,8 +644,8 @@ LABEL_75:
     _os_log_impl(&dword_269C02000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep tracking session started", v8, 0xCu);
   }
 
-  v6 = [(HDSHProfileExtension *)self->_profileExtension accessibilityAssertionManager];
-  [v6 beginObservingContentProtectionState];
+  accessibilityAssertionManager = [(HDSHProfileExtension *)self->_profileExtension accessibilityAssertionManager];
+  [accessibilityAssertionManager beginObservingContentProtectionState];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -664,46 +664,46 @@ LABEL_75:
     _os_log_impl(&dword_269C02000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep tracking session stopped", v9, 0xCu);
   }
 
-  v6 = [(HDSHProfileExtension *)self->_profileExtension accessibilityAssertionManager];
-  [v6 stopObservingContentProtectionState];
+  accessibilityAssertionManager = [(HDSHProfileExtension *)self->_profileExtension accessibilityAssertionManager];
+  [accessibilityAssertionManager stopObservingContentProtectionState];
 
-  v7 = [(HDSHProfileExtension *)self->_profileExtension accessibilityAssertionManager];
-  [v7 invalidateAccessibilityAssertion];
+  accessibilityAssertionManager2 = [(HDSHProfileExtension *)self->_profileExtension accessibilityAssertionManager];
+  [accessibilityAssertionManager2 invalidateAccessibilityAssertion];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_saveSleepTrackingSamples:(id)a3 replacingSamplesInDateInterval:(id)a4 completion:(id)a5
+- (void)remote_saveSleepTrackingSamples:(id)samples replacingSamplesInDateInterval:(id)interval completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  samplesCopy = samples;
+  intervalCopy = interval;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained database];
+  database = [WeakRetained database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __94__HDSHPluginServer_remote_saveSleepTrackingSamples_replacingSamplesInDateInterval_completion___block_invoke;
   v16[3] = &unk_279C83130;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  [v12 performWhenDataProtectedByFirstUnlockIsAvailable:v16];
+  v17 = samplesCopy;
+  v18 = intervalCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = intervalCopy;
+  v15 = samplesCopy;
+  [database performWhenDataProtectedByFirstUnlockIsAvailable:v16];
 }
 
-- (void)_saveSleepTrackingSamplesAfterFirstUnlock:(id)a3 replacingSamplesInDateInterval:(id)a4 completion:(id)a5
+- (void)_saveSleepTrackingSamplesAfterFirstUnlock:(id)unlock replacingSamplesInDateInterval:(id)interval completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  unlockCopy = unlock;
+  intervalCopy = interval;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC320];
   v12 = os_log_type_enabled(*MEMORY[0x277CCC320], OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (intervalCopy)
   {
     if (v12)
     {
@@ -711,9 +711,9 @@ LABEL_75:
       *buf = 138543874;
       v28 = objc_opt_class();
       v29 = 2112;
-      v30 = v9;
+      v30 = intervalCopy;
       v31 = 2112;
-      v32 = v8;
+      v32 = unlockCopy;
       v14 = v28;
       v15 = "[%{public}@] replacing sleep tracking samples in %@ with %@";
       v16 = v13;
@@ -729,7 +729,7 @@ LABEL_6:
     *buf = 138543618;
     v28 = objc_opt_class();
     v29 = 2112;
-    v30 = v8;
+    v30 = unlockCopy;
     v14 = v28;
     v15 = "[%{public}@] saving sleep tracking samples %@";
     v16 = v13;
@@ -737,25 +737,25 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v18 = [(HDSHProfileExtension *)self->_profileExtension accessibilityAssertionManager];
-  v19 = [v18 accessibilityAssertion];
+  accessibilityAssertionManager = [(HDSHProfileExtension *)self->_profileExtension accessibilityAssertionManager];
+  accessibilityAssertion = [accessibilityAssertionManager accessibilityAssertion];
 
   v20 = [MEMORY[0x277CCDA00] hd_sourceForClient:self->_client bundleIdentifier:0];
-  v21 = [[HDSHReplaceSleepSamplesOperation alloc] initWithSleepSamplesToInsert:v8 source:v20 replacementInterval:v9 accessibilityAssertion:v19];
+  v21 = [[HDSHReplaceSleepSamplesOperation alloc] initWithSleepSamplesToInsert:unlockCopy source:v20 replacementInterval:intervalCopy accessibilityAssertion:accessibilityAssertion];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v26 = 0;
   v23 = [(HDJournalableOperation *)v21 performOrJournalWithProfile:WeakRetained error:&v26];
   v24 = v26;
 
-  v10[2](v10, v23, v24);
+  completionCopy[2](completionCopy, v23, v24);
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_replaceSamples:(id)a3 withSamples:(id)a4 error:(id *)a5
+- (BOOL)_replaceSamples:(id)samples withSamples:(id)withSamples error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  samplesCopy = samples;
+  withSamplesCopy = withSamples;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC320];
   if (os_log_type_enabled(*MEMORY[0x277CCC320], OS_LOG_TYPE_DEFAULT))
@@ -764,21 +764,21 @@ LABEL_6:
     *buf = 138543874;
     v25 = objc_opt_class();
     v26 = 2112;
-    v27 = v8;
+    v27 = samplesCopy;
     v28 = 2112;
-    v29 = v9;
+    v29 = withSamplesCopy;
     v12 = v25;
     _os_log_impl(&dword_269C02000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Replacing old samples: %@ with new samples: %@", buf, 0x20u);
   }
 
   v23 = 0;
-  v13 = [(HDSHPluginServer *)self _insertSamplesWithClientSource:v9 error:&v23];
+  v13 = [(HDSHPluginServer *)self _insertSamplesWithClientSource:withSamplesCopy error:&v23];
   v14 = v23;
   v15 = v14;
   if (v13)
   {
     v22 = v14;
-    v16 = [(HDSHPluginServer *)self _deleteSamples:v8 error:&v22];
+    v16 = [(HDSHPluginServer *)self _deleteSamples:samplesCopy error:&v22];
     v17 = v22;
 
     v15 = v17;
@@ -792,10 +792,10 @@ LABEL_6:
   v18 = v15;
   if (v18)
   {
-    if (a5)
+    if (error)
     {
       v19 = v18;
-      *a5 = v18;
+      *error = v18;
     }
 
     else
@@ -808,10 +808,10 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)_deleteSamples:(id)a3 error:(id *)a4
+- (BOOL)_deleteSamples:(id)samples error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = [a3 hk_map:&__block_literal_global];
+  v6 = [samples hk_map:&__block_literal_global];
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC320];
   if (os_log_type_enabled(*MEMORY[0x277CCC320], OS_LOG_TYPE_DEFAULT))
@@ -826,21 +826,21 @@ LABEL_6:
   }
 
   v10 = [(HDStandardTaskServer *)self profile:*v16];
-  v11 = [v10 dataManager];
+  dataManager = [v10 dataManager];
   v12 = objc_alloc_init(MEMORY[0x277D10688]);
-  v13 = [v11 deleteObjectsWithUUIDCollection:v6 configuration:v12 error:a4];
+  v13 = [dataManager deleteObjectsWithUUIDCollection:v6 configuration:v12 error:error];
 
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (BOOL)_insertSamplesWithClientSource:(id)a3 error:(id *)a4
+- (BOOL)_insertSamplesWithClientSource:(id)source error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained sourceManager];
-  v9 = [v8 createOrUpdateSourceForClient:self->_client error:a4];
+  sourceManager = [WeakRetained sourceManager];
+  v9 = [sourceManager createOrUpdateSourceForClient:self->_client error:error];
 
   _HKInitializeLogging();
   v10 = MEMORY[0x277CCC320];
@@ -863,12 +863,12 @@ LABEL_6:
   if (v9)
   {
     v16 = objc_loadWeakRetained(&self->_profile);
-    v17 = [v16 dataProvenanceManager];
-    v18 = [v17 localDataProvenanceForSourceEntity:v9 version:0 deviceEntity:0];
+    dataProvenanceManager = [v16 dataProvenanceManager];
+    v18 = [dataProvenanceManager localDataProvenanceForSourceEntity:v9 version:0 deviceEntity:0];
 
     v19 = objc_loadWeakRetained(&self->_profile);
-    v20 = [v19 dataManager];
-    v21 = [v20 insertDataObjects:v6 withProvenance:v18 creationDate:0 skipInsertionFilter:a4 error:CFAbsoluteTimeGetCurrent()];
+    dataManager = [v19 dataManager];
+    v21 = [dataManager insertDataObjects:sourceCopy withProvenance:v18 creationDate:0 skipInsertionFilter:error error:CFAbsoluteTimeGetCurrent()];
 
     _HKInitializeLogging();
     v22 = *v10;

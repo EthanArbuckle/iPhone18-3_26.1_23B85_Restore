@@ -1,9 +1,9 @@
 @interface AVPlayerView
-- (AVPlayerView)initWithFrame:(CGRect)a3 contentView:(id)a4;
+- (AVPlayerView)initWithFrame:(CGRect)frame contentView:(id)view;
 - (void)_beginManagingContentViewIfNeeded;
 - (void)_stopManagingContentView;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation AVPlayerView
@@ -21,44 +21,44 @@
 
 - (void)_beginManagingContentViewIfNeeded
 {
-  v3 = [(AVPlayerView *)self contentView];
-  if (v3)
+  contentView = [(AVPlayerView *)self contentView];
+  if (contentView)
   {
-    v12 = v3;
-    v4 = [(AVPlayerView *)self contentView];
-    if ([v4 isDescendantOfView:self])
+    contentView8 = contentView;
+    contentView2 = [(AVPlayerView *)self contentView];
+    if ([contentView2 isDescendantOfView:self])
     {
     }
 
     else
     {
-      v5 = [(AVPlayerView *)self needsInitialLayout];
+      needsInitialLayout = [(AVPlayerView *)self needsInitialLayout];
 
-      if (v5)
+      if (needsInitialLayout)
       {
         return;
       }
 
-      v6 = [(AVPlayerView *)self contentView];
-      v7 = [v6 superview];
+      contentView3 = [(AVPlayerView *)self contentView];
+      superview = [contentView3 superview];
 
-      if (v7)
+      if (superview)
       {
-        v8 = [(AVPlayerView *)self contentView];
-        [v8 removeFromSuperview];
+        contentView4 = [(AVPlayerView *)self contentView];
+        [contentView4 removeFromSuperview];
       }
 
-      v9 = [(AVPlayerView *)self contentView];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:1];
+      contentView5 = [(AVPlayerView *)self contentView];
+      [contentView5 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-      v10 = [(AVPlayerView *)self contentView];
-      [v10 setAutoresizingMask:18];
+      contentView6 = [(AVPlayerView *)self contentView];
+      [contentView6 setAutoresizingMask:18];
 
-      v11 = [(AVPlayerView *)self contentView];
+      contentView7 = [(AVPlayerView *)self contentView];
       [(AVPlayerView *)self bounds];
-      [v11 setFrame:?];
+      [contentView7 setFrame:?];
 
-      v12 = [(AVPlayerView *)self contentView];
+      contentView8 = [(AVPlayerView *)self contentView];
       [AVPlayerView insertSubview:"insertSubview:atIndex:" atIndex:?];
     }
   }
@@ -79,33 +79,33 @@
   kdebug_trace();
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
-  if (self->_contentView != v5)
+  viewCopy = view;
+  if (self->_contentView != viewCopy)
   {
     [(AVPlayerView *)self _stopManagingContentView];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
   }
 
   [(AVPlayerView *)self _beginManagingContentViewIfNeeded];
 }
 
-- (AVPlayerView)initWithFrame:(CGRect)a3 contentView:(id)a4
+- (AVPlayerView)initWithFrame:(CGRect)frame contentView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = AVPlayerView;
-  v11 = [(AVPlayerView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(AVPlayerView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_contentView, a4);
-    [(AVPresentationContainerView *)v12 setPresentationContainerContentView:v10];
+    objc_storeStrong(&height->_contentView, view);
+    [(AVPresentationContainerView *)v12 setPresentationContainerContentView:viewCopy];
     v12->_needsInitialLayout = 1;
   }
 

@@ -1,27 +1,27 @@
 @interface TKSmartCardSlotNFCSession
-- (BOOL)updateWithMessage:(id)a3 error:(id *)a4;
-- (TKSmartCardSlotNFCSession)initWithSlotName:(id)a3 nfcSlotManager:(id)a4;
+- (BOOL)updateWithMessage:(id)message error:(id *)error;
+- (TKSmartCardSlotNFCSession)initWithSlotName:(id)name nfcSlotManager:(id)manager;
 - (void)endSession;
 @end
 
 @implementation TKSmartCardSlotNFCSession
 
-- (TKSmartCardSlotNFCSession)initWithSlotName:(id)a3 nfcSlotManager:(id)a4
+- (TKSmartCardSlotNFCSession)initWithSlotName:(id)name nfcSlotManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = TKSmartCardSlotNFCSession;
   v9 = [(TKSmartCardSlotNFCSession *)&v14 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"smartCardSlotNFCSession.%@", v7];
-    v11 = dispatch_queue_create([v10 UTF8String], 0);
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"smartCardSlotNFCSession.%@", nameCopy];
+    v11 = dispatch_queue_create([nameCopy UTF8String], 0);
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeWeak(&v9->_nfcSlotManager, v8);
-    objc_storeStrong(&v9->_slotName, a3);
+    objc_storeWeak(&v9->_nfcSlotManager, managerCopy);
+    objc_storeStrong(&v9->_slotName, name);
   }
 
   return v9;
@@ -69,9 +69,9 @@ void __39__TKSmartCardSlotNFCSession_endSession__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)updateWithMessage:(id)a3 error:(id *)a4
+- (BOOL)updateWithMessage:(id)message error:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -82,10 +82,10 @@ void __39__TKSmartCardSlotNFCSession_endSession__block_invoke(uint64_t a1)
   v10[2] = __53__TKSmartCardSlotNFCSession_updateWithMessage_error___block_invoke;
   v10[3] = &unk_1E86B8308;
   v10[4] = self;
-  v11 = v6;
+  v11 = messageCopy;
   v12 = &v14;
-  v13 = a4;
-  v8 = v6;
+  errorCopy = error;
+  v8 = messageCopy;
   dispatch_sync(queue, v10);
   LOBYTE(self) = *(v15 + 24);
 

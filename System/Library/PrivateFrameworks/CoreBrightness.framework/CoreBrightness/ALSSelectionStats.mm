@@ -1,48 +1,48 @@
 @interface ALSSelectionStats
 - (ALSSelectionStats)init;
-- (int)calculateIndexForOrientation:(int)a3 placement:(int)a4;
-- (int)validateOrientation:(int)a3;
-- (int)validatePlacement:(int)a3;
+- (int)calculateIndexForOrientation:(int)orientation placement:(int)placement;
+- (int)validateOrientation:(int)orientation;
+- (int)validatePlacement:(int)placement;
 - (void)dealloc;
-- (void)recordALSSwapWithOrientation:(int)a3 andPlacement:(int)a4 andLux:(float)a5;
+- (void)recordALSSwapWithOrientation:(int)orientation andPlacement:(int)placement andLux:(float)lux;
 - (void)recordTimeForCurrentALS;
 - (void)resetStats;
 - (void)submit;
 - (void)updateStatsDisplayOff;
-- (void)updateStatsWithOrientation:(int)a3 andLux:(float)a4 andPlacement:(int)a5;
-- (void)updateTimeWithOrientation:(int)a3 andPlacement:(int)a4 andLux:(float)a5;
+- (void)updateStatsWithOrientation:(int)orientation andLux:(float)lux andPlacement:(int)placement;
+- (void)updateTimeWithOrientation:(int)orientation andPlacement:(int)placement andLux:(float)lux;
 @end
 
 @implementation ALSSelectionStats
 
 - (ALSSelectionStats)init
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = ALSSelectionStats;
-  v9 = [(ALSSelectionStats *)&v7 init];
-  if (v9)
+  selfCopy = [(ALSSelectionStats *)&v7 init];
+  if (selfCopy)
   {
     context = objc_autoreleasePoolPush();
     v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v9->samples = v2;
+    selfCopy->samples = v2;
     for (i = 0; i < 18; ++i)
     {
       v3 = [[CBHistogramBuilder alloc] initWithEdges:&unk_1F59C9420];
-      v9->luxTimeHistograms[i] = v3;
+      selfCopy->luxTimeHistograms[i] = v3;
     }
 
-    v9->currentALSOrientation = -1;
-    v9->currentALSPlacement = 0;
-    v9->currentLux = 0.0;
+    selfCopy->currentALSOrientation = -1;
+    selfCopy->currentALSPlacement = 0;
+    selfCopy->currentLux = 0.0;
     __memset_chk();
     __memset_chk();
-    v9->nSwaps = 0;
+    selfCopy->nSwaps = 0;
     objc_autoreleasePoolPop(context);
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)recordTimeForCurrentALS
@@ -79,41 +79,41 @@
   [(NSMutableDictionary *)self->samples removeAllObjects];
 }
 
-- (void)updateTimeWithOrientation:(int)a3 andPlacement:(int)a4 andLux:(float)a5
+- (void)updateTimeWithOrientation:(int)orientation andPlacement:(int)placement andLux:(float)lux
 {
   if (self->currentALSOrientation < 0)
   {
     self->startTime = mach_time_now_in_seconds();
   }
 
-  self->currentALSOrientation = [(ALSSelectionStats *)self validateOrientation:a3];
-  self->currentALSPlacement = [(ALSSelectionStats *)self validatePlacement:a4];
-  self->currentLux = a5;
+  self->currentALSOrientation = [(ALSSelectionStats *)self validateOrientation:orientation];
+  self->currentALSPlacement = [(ALSSelectionStats *)self validatePlacement:placement];
+  self->currentLux = lux;
 }
 
-- (void)recordALSSwapWithOrientation:(int)a3 andPlacement:(int)a4 andLux:(float)a5
+- (void)recordALSSwapWithOrientation:(int)orientation andPlacement:(int)placement andLux:(float)lux
 {
   context = objc_autoreleasePoolPush();
   v6 = mach_time_now_in_seconds();
   [(ALSSelectionStats *)self recordTimeForCurrentALS];
-  self->currentALSOrientation = [(ALSSelectionStats *)self validateOrientation:a3];
-  self->currentALSPlacement = [(ALSSelectionStats *)self validatePlacement:a4];
-  self->currentLux = a5;
+  self->currentALSOrientation = [(ALSSelectionStats *)self validateOrientation:orientation];
+  self->currentALSPlacement = [(ALSSelectionStats *)self validatePlacement:placement];
+  self->currentLux = lux;
   self->startTime = v6;
   ++self->nSwaps;
   objc_autoreleasePoolPop(context);
 }
 
-- (void)updateStatsWithOrientation:(int)a3 andLux:(float)a4 andPlacement:(int)a5
+- (void)updateStatsWithOrientation:(int)orientation andLux:(float)lux andPlacement:(int)placement
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
+  orientationCopy = orientation;
+  luxCopy = lux;
+  placementCopy = placement;
   context = objc_autoreleasePoolPush();
   v23 = mach_time_now_in_seconds();
-  if ([(NSMutableDictionary *)v28->samples count])
+  if ([(NSMutableDictionary *)selfCopy->samples count])
   {
     v18 = 0;
     v19 = &v18;
@@ -125,8 +125,8 @@
     v15 = 0x20000000;
     v16 = 32;
     v17 = 1259902592;
-    [(NSMutableDictionary *)v28->samples enumerateKeysAndObjectsUsingBlock:?];
-    v12 = (v23 - v28->lastEvalTime);
+    [(NSMutableDictionary *)selfCopy->samples enumerateKeysAndObjectsUsingBlock:?];
+    v12 = (v23 - selfCopy->lastEvalTime);
     if (v19[6] > 5.0)
     {
       v11 = ((log10((v19[6] + 1.0) / (v14[6] + 1.0)) + 0.25) * 2.0) + 1;
@@ -144,20 +144,20 @@
 
     if ((v11 & 0x80000000) == 0)
     {
-      v28->deltas[v11] = v28->deltas[v11] + v12;
+      selfCopy->deltas[v11] = selfCopy->deltas[v11] + v12;
     }
 
     _Block_object_dispose(&v13, 8);
     _Block_object_dispose(&v18, 8);
   }
 
-  v10 = [(ALSSelectionStats *)v28 validateOrientation:v26];
-  v9 = [(ALSSelectionStats *)v28 calculateIndexForOrientation:v10 placement:[(ALSSelectionStats *)v28 validatePlacement:v24]];
-  samples = v28->samples;
-  *&v5 = v25;
+  v10 = [(ALSSelectionStats *)selfCopy validateOrientation:orientationCopy];
+  v9 = [(ALSSelectionStats *)selfCopy calculateIndexForOrientation:v10 placement:[(ALSSelectionStats *)selfCopy validatePlacement:placementCopy]];
+  samples = selfCopy->samples;
+  *&v5 = luxCopy;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
   -[NSMutableDictionary setObject:forKey:](samples, "setObject:forKey:", v6, [MEMORY[0x1E696AD98] numberWithInt:v9]);
-  v28->lastEvalTime = v23;
+  selfCopy->lastEvalTime = v23;
   objc_autoreleasePoolPop(context);
 }
 
@@ -190,51 +190,51 @@ float __68__ALSSelectionStats_updateStatsWithOrientation_andLux_andPlacement___b
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v2 = MEMORY[0x1E69E5920](self->samples).n128_u64[0];
   for (i = 0; i < 18; ++i)
   {
-    v2 = MEMORY[0x1E69E5920](v6->luxTimeHistograms[i]).n128_u64[0];
+    v2 = MEMORY[0x1E69E5920](selfCopy->luxTimeHistograms[i]).n128_u64[0];
   }
 
-  v3.receiver = v6;
+  v3.receiver = selfCopy;
   v3.super_class = ALSSelectionStats;
   [(ALSSelectionStats *)&v3 dealloc];
 }
 
-- (int)validateOrientation:(int)a3
+- (int)validateOrientation:(int)orientation
 {
-  if (a3 < 0)
+  if (orientation < 0)
   {
     return 0;
   }
 
-  if (a3 < 9)
+  if (orientation < 9)
   {
-    return a3;
+    return orientation;
   }
 
   return 8;
 }
 
-- (int)validatePlacement:(int)a3
+- (int)validatePlacement:(int)placement
 {
-  if (a3 < 0 || a3 > 2)
+  if (placement < 0 || placement > 2)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return placement;
   }
 }
 
-- (int)calculateIndexForOrientation:(int)a3 placement:(int)a4
+- (int)calculateIndexForOrientation:(int)orientation placement:(int)placement
 {
-  v6 = [(ALSSelectionStats *)self validateOrientation:a3];
-  if ([(ALSSelectionStats *)self validatePlacement:a4]== 2)
+  v6 = [(ALSSelectionStats *)self validateOrientation:orientation];
+  if ([(ALSSelectionStats *)self validatePlacement:placement]== 2)
   {
     v5 = v6 + 9;
   }

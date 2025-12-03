@@ -1,13 +1,13 @@
 @interface HFDiscoveredAccessoryItem
 - (HFDiscoveredAccessoryItem)init;
-- (HFDiscoveredAccessoryItem)initWithDiscoveredAccessory:(id)a3;
-- (HFDiscoveredAccessoryItem)initWithDiscoveredAccessory:(id)a3 valueSource:(id)a4;
+- (HFDiscoveredAccessoryItem)initWithDiscoveredAccessory:(id)accessory;
+- (HFDiscoveredAccessoryItem)initWithDiscoveredAccessory:(id)accessory valueSource:(id)source;
 - (HMHome)home;
 - (NSSet)services;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)namingComponentForHomeKitObject;
 @end
 
@@ -15,63 +15,63 @@
 
 - (HFDiscoveredAccessoryItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithDiscoveredAccessory_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFDiscoveredAccessoryItem.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HFDiscoveredAccessoryItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFDiscoveredAccessoryItem.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HFDiscoveredAccessoryItem init]", v5}];
 
   return 0;
 }
 
-- (HFDiscoveredAccessoryItem)initWithDiscoveredAccessory:(id)a3
+- (HFDiscoveredAccessoryItem)initWithDiscoveredAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v9.receiver = self;
   v9.super_class = HFDiscoveredAccessoryItem;
   v6 = [(HFDiscoveredAccessoryItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_discoveredAccessory, a3);
+    objc_storeStrong(&v6->_discoveredAccessory, accessory);
   }
 
   return v7;
 }
 
-- (HFDiscoveredAccessoryItem)initWithDiscoveredAccessory:(id)a3 valueSource:(id)a4
+- (HFDiscoveredAccessoryItem)initWithDiscoveredAccessory:(id)accessory valueSource:(id)source
 {
-  v7 = a4;
-  v8 = [(HFDiscoveredAccessoryItem *)self initWithDiscoveredAccessory:a3];
+  sourceCopy = source;
+  v8 = [(HFDiscoveredAccessoryItem *)self initWithDiscoveredAccessory:accessory];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_valueSource, a4);
+    objc_storeStrong(&v8->_valueSource, source);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFDiscoveredAccessoryItem *)self valueSource];
-  v5 = [(HFDiscoveredAccessoryItem *)self copyWithValueSource:v4];
+  valueSource = [(HFDiscoveredAccessoryItem *)self valueSource];
+  v5 = [(HFDiscoveredAccessoryItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-  v3 = [HFNamingComponents namingComponentFromDiscoveredAccessory:v2];
+  discoveredAccessory = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  v3 = [HFNamingComponents namingComponentFromDiscoveredAccessory:discoveredAccessory];
 
   return v3;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-  v7 = [v5 initWithDiscoveredAccessory:v6 valueSource:v4];
+  discoveredAccessory = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  v7 = [v5 initWithDiscoveredAccessory:discoveredAccessory valueSource:sourceCopy];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
@@ -79,34 +79,34 @@
 
 - (HMHome)home
 {
-  v2 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-  v3 = [v2 accessory];
-  v4 = [v3 home];
-  v5 = v4;
-  if (v4)
+  discoveredAccessory = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  accessory = [discoveredAccessory accessory];
+  home = [accessory home];
+  v5 = home;
+  if (home)
   {
-    v6 = v4;
+    home2 = home;
   }
 
   else
   {
     v7 = +[HFHomeKitDispatcher sharedDispatcher];
-    v6 = [v7 home];
+    home2 = [v7 home];
   }
 
-  return v6;
+  return home2;
 }
 
 - (NSSet)services
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-  v4 = [v3 accessory];
-  v5 = [v4 services];
-  v6 = v5;
-  if (v5)
+  discoveredAccessory = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  accessory = [discoveredAccessory accessory];
+  services = [accessory services];
+  v6 = services;
+  if (services)
   {
-    v7 = v5;
+    v7 = services;
   }
 
   else
@@ -122,25 +122,25 @@
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-  v4 = [v3 accessory];
-  v5 = [v2 na_setWithSafeObject:v4];
+  discoveredAccessory = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  accessory = [discoveredAccessory accessory];
+  v5 = [v2 na_setWithSafeObject:accessory];
 
   return v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  discoveredAccessory = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
 
-  if (!v4)
+  if (!discoveredAccessory)
   {
     NSLog(&cfstr_Discoveredacce.isa);
   }
 
-  v5 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  discoveredAccessory2 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
 
-  if (!v5)
+  if (!discoveredAccessory2)
   {
     v27 = MEMORY[0x277D2C900];
     v6 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
@@ -150,39 +150,39 @@
 
   v6 = objc_alloc_init(HFMutableItemUpdateOutcome);
   [(HFMutableItemUpdateOutcome *)v6 setObject:&unk_2825250C8 forKeyedSubscript:@"state"];
-  v7 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-  v8 = [v7 name];
+  discoveredAccessory3 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  name = [discoveredAccessory3 name];
 
-  if (v8)
+  if (name)
   {
     v9 = [HFServiceNameComponents alloc];
-    v10 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-    v11 = [v10 name];
-    v12 = [(HFServiceNameComponents *)v9 initWithRawServiceName:v11 rawRoomName:0];
+    discoveredAccessory4 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+    name2 = [discoveredAccessory4 name];
+    v12 = [(HFServiceNameComponents *)v9 initWithRawServiceName:name2 rawRoomName:0];
 
     [(HFMutableItemUpdateOutcome *)v6 setObject:v12 forKeyedSubscript:@"serviceNameComponents"];
-    v13 = [(HFServiceNameComponents *)v12 composedString];
-    [(HFMutableItemUpdateOutcome *)v6 setObject:v13 forKeyedSubscript:@"title"];
+    composedString = [(HFServiceNameComponents *)v12 composedString];
+    [(HFMutableItemUpdateOutcome *)v6 setObject:composedString forKeyedSubscript:@"title"];
   }
 
   v14 = MEMORY[0x277D755D0];
-  v15 = [MEMORY[0x277D75348] systemGrayColor];
-  v16 = [v14 configurationWithHierarchicalColor:v15];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  v16 = [v14 configurationWithHierarchicalColor:systemGrayColor];
 
   v17 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76A08] scale:3];
   v18 = [v17 configurationByApplyingConfiguration:v16];
-  v19 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-  v20 = [v19 sharingDevice];
-  v21 = [v20 deviceActionType];
+  discoveredAccessory5 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  sharingDevice = [discoveredAccessory5 sharingDevice];
+  deviceActionType = [sharingDevice deviceActionType];
 
-  if (v21 == 33 || v21 == 11)
+  if (deviceActionType == 33 || deviceActionType == 11)
   {
-    v22 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-    v23 = [v22 sharingDevice];
-    v24 = [v23 deviceModelCode];
+    discoveredAccessory6 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+    sharingDevice2 = [discoveredAccessory6 sharingDevice];
+    deviceModelCode = [sharingDevice2 deviceModelCode];
 
     v25 = [HFImageIconDescriptor alloc];
-    if (v24 == 5)
+    if (deviceModelCode == 5)
     {
       v26 = HFSymbolIconIdentifierHomePodMiniSingle;
     }
@@ -195,11 +195,11 @@
     goto LABEL_14;
   }
 
-  v29 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-  v30 = [v29 sharingDevice];
-  v31 = [v30 deviceActionType];
+  discoveredAccessory7 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+  sharingDevice3 = [discoveredAccessory7 sharingDevice];
+  deviceActionType2 = [sharingDevice3 deviceActionType];
 
-  if (v31 == 6)
+  if (deviceActionType2 == 6)
   {
     v25 = [HFImageIconDescriptor alloc];
     v26 = HFSymbolIconIdentifierAppleTV;
@@ -212,19 +212,19 @@ LABEL_14:
 
   if (!v33)
   {
-    v34 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-    v35 = [v34 category];
+    discoveredAccessory8 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+    category = [discoveredAccessory8 category];
 
-    if (v35)
+    if (category)
     {
-      v46 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-      v45 = [v46 category];
-      v44 = [v45 categoryType];
-      v36 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
-      v37 = [v36 accessory];
-      v38 = [v37 matterDeviceTypeID];
-      v39 = [HFAccessoryType matterDeviceType:v38];
-      [HFServiceIconFactory iconDescriptorForAccessoryCategoryOrServiceType:v44 matterDeviceType:v39];
+      discoveredAccessory9 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+      category2 = [discoveredAccessory9 category];
+      categoryType = [category2 categoryType];
+      discoveredAccessory10 = [(HFDiscoveredAccessoryItem *)self discoveredAccessory];
+      accessory = [discoveredAccessory10 accessory];
+      matterDeviceTypeID = [accessory matterDeviceTypeID];
+      v39 = [HFAccessoryType matterDeviceType:matterDeviceTypeID];
+      [HFServiceIconFactory iconDescriptorForAccessoryCategoryOrServiceType:categoryType matterDeviceType:v39];
       v40 = v18;
       v42 = v41 = v16;
       [(HFMutableItemUpdateOutcome *)v6 setObject:v42 forKeyedSubscript:@"icon"];

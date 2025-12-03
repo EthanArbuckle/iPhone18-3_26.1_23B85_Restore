@@ -1,11 +1,11 @@
 @interface PKListTextFieldContentConfiguration
 + (id)cellConfiguration;
 + (id)valueCellConfiguration;
-- (BOOL)_isEqualToListTextFieldContentConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isEqualToListTextFieldContentConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)directionalLayoutMargins;
-- (PKListTextFieldContentConfiguration)initWithBackingConfig:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKListTextFieldContentConfiguration)initWithBackingConfig:(id)config;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeContentView;
 - (unint64_t)hash;
 @end
@@ -14,54 +14,54 @@
 
 + (id)cellConfiguration
 {
-  v2 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-  v3 = [v2 secondaryTextProperties];
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v3 setColor:v4];
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  v5 = [objc_alloc(objc_opt_class()) initWithBackingConfig:v2];
+  v5 = [objc_alloc(objc_opt_class()) initWithBackingConfig:subtitleCellConfiguration];
   [v5 setReturnKeyType:0];
   [v5 setClearsOnBeginEditing:0];
   [v5 setClearsOnInsertion:0];
   [v5 setFocusTextField:1];
-  v6 = [v5 textProperties];
-  [v6 setNumberOfLines:0];
+  textProperties = [v5 textProperties];
+  [textProperties setNumberOfLines:0];
 
-  v7 = [v5 secondaryTextProperties];
-  [v7 setNumberOfLines:0];
+  secondaryTextProperties2 = [v5 secondaryTextProperties];
+  [secondaryTextProperties2 setNumberOfLines:0];
 
-  v8 = [MEMORY[0x1E69DC888] systemRedColor];
-  [v5 setErrorColor:v8];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  [v5 setErrorColor:systemRedColor];
 
   return v5;
 }
 
 + (id)valueCellConfiguration
 {
-  v2 = [a1 cellConfiguration];
-  [v2 setMode:1];
-  [v2 setFocusTextField:0];
-  v3 = [v2 textProperties];
-  v4 = [v2 secondaryTextProperties];
+  cellConfiguration = [self cellConfiguration];
+  [cellConfiguration setMode:1];
+  [cellConfiguration setFocusTextField:0];
+  textProperties = [cellConfiguration textProperties];
+  secondaryTextProperties = [cellConfiguration secondaryTextProperties];
   v5 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC70], 2, 0);
-  [v4 setFont:v5];
+  [secondaryTextProperties setFont:v5];
 
-  v6 = [v3 color];
-  [v4 setColor:v6];
+  color = [textProperties color];
+  [secondaryTextProperties setColor:color];
 
-  return v2;
+  return cellConfiguration;
 }
 
-- (PKListTextFieldContentConfiguration)initWithBackingConfig:(id)a3
+- (PKListTextFieldContentConfiguration)initWithBackingConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = PKListTextFieldContentConfiguration;
   v6 = [(PKListTextFieldContentConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingConfig, a3);
+    objc_storeStrong(&v6->_backingConfig, config);
   }
 
   return v7;
@@ -84,10 +84,10 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(UIListContentConfiguration *)self->_backingConfig copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(UIListContentConfiguration *)self->_backingConfig copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -97,29 +97,29 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKListTextFieldContentConfiguration *)self _isEqualToListTextFieldContentConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKListTextFieldContentConfiguration *)self _isEqualToListTextFieldContentConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)_isEqualToListTextFieldContentConfiguration:(id)a3
+- (BOOL)_isEqualToListTextFieldContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && PKEqualObjects())
+  configurationCopy = configuration;
+  if (configurationCopy && PKEqualObjects())
   {
-    v5 = v4[3];
+    v5 = configurationCopy[3];
     v6 = self->_placeholderText;
     v7 = v5;
     v8 = v7;
@@ -144,7 +144,7 @@
     }
 
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_focusTextField];
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:*(v4 + 18)];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:*(configurationCopy + 18)];
     LOBYTE(v9) = PKEqualObjects();
 LABEL_11:
 

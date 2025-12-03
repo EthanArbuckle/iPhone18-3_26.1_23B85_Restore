@@ -1,16 +1,16 @@
 @interface iOSSetupStartViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation iOSSetupStartViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"iOSSetupStartViewController" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
-  [v3 validateClass:@"iOSSetupStartViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"iOSSetupStartViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"iOSSetupStartViewController" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"iOSSetupStartViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"iOSSetupStartViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

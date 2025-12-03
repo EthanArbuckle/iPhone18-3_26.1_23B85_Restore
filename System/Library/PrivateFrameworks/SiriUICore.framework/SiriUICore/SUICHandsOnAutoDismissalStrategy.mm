@@ -2,7 +2,7 @@
 - (BOOL)shouldDismiss;
 - (double)idleTimeInterval;
 - (id)_mapsNavigationStatusIsActiveBlock;
-- (void)_setMapsNavigationStatusIsActiveBlock:(id)a3;
+- (void)_setMapsNavigationStatusIsActiveBlock:(id)block;
 @end
 
 @implementation SUICHandsOnAutoDismissalStrategy
@@ -30,8 +30,8 @@
 
   else
   {
-    v6 = [(SUICHandsOnAutoDismissalStrategy *)self _mapsNavigationStatusIsActiveBlock];
-    v3 = v6[2]();
+    _mapsNavigationStatusIsActiveBlock = [(SUICHandsOnAutoDismissalStrategy *)self _mapsNavigationStatusIsActiveBlock];
+    v3 = _mapsNavigationStatusIsActiveBlock[2]();
 
     v4 = v3;
   }
@@ -55,9 +55,9 @@
   return v4;
 }
 
-- (void)_setMapsNavigationStatusIsActiveBlock:(id)a3
+- (void)_setMapsNavigationStatusIsActiveBlock:(id)block
 {
-  self->_mapsNavigationStatusIsActiveBlock = MEMORY[0x1C6937B00](a3, a2);
+  self->_mapsNavigationStatusIsActiveBlock = MEMORY[0x1C6937B00](block, a2);
 
   MEMORY[0x1EEE66BB8]();
 }

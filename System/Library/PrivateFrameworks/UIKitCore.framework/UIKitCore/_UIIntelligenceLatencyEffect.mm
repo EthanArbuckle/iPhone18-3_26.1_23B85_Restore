@@ -1,38 +1,38 @@
 @interface _UIIntelligenceLatencyEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIIntelligenceLatencyEffect)init;
-- (_UIIntelligenceLatencyEffect)initWithCoder:(id)a3;
-- (_UIIntelligenceLatencyEffect)initWithMode:(unint64_t)a3;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
+- (_UIIntelligenceLatencyEffect)initWithCoder:(id)coder;
+- (_UIIntelligenceLatencyEffect)initWithMode:(unint64_t)mode;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
 @end
 
 @implementation _UIIntelligenceLatencyEffect
 
-- (_UIIntelligenceLatencyEffect)initWithMode:(unint64_t)a3
+- (_UIIntelligenceLatencyEffect)initWithMode:(unint64_t)mode
 {
-  *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceLatencyEffect_mode) = a3;
+  *(&self->super.super.isa + OBJC_IVAR____UIIntelligenceLatencyEffect_mode) = mode;
   v4.receiver = self;
   v4.super_class = _UIIntelligenceLatencyEffect;
   return [(_UIIntelligenceLatencyEffect *)&v4 init];
 }
 
-- (_UIIntelligenceLatencyEffect)initWithCoder:(id)a3
+- (_UIIntelligenceLatencyEffect)initWithCoder:(id)coder
 {
   type metadata accessor for _UIIntelligenceLatencyEffect();
   swift_deallocPartialClassInstance();
   return 0;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
-  if (a5 == 1)
+  if (usage == 1)
   {
-    if (a3)
+    if (descriptor)
     {
       v6 = objc_allocWithZone(type metadata accessor for _UILatencyEmitterViewEntry());
-      v8 = a3;
+      descriptorCopy = descriptor;
       v7 = [v6 init];
-      [v8 addOverlay_];
+      [descriptorCopy addOverlay_];
     }
 
     else
@@ -42,11 +42,11 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -55,7 +55,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _UIIntelligenceLatencyEffect.isEqual(_:)(v8);

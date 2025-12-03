@@ -1,29 +1,29 @@
 @interface MOSuggestionCollectionView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (_TtC16MomentsUIService26MOSuggestionCollectionView)initWithFrame:(CGRect)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (_TtC16MomentsUIService26MOSuggestionCollectionView)initWithFrame:(CGRect)frame;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)handlePullToRefreshTrigger;
 - (void)layoutSubviews;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)shieldViewUnlockButtonPressed:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)shieldViewUnlockButtonPressed:(id)pressed;
 @end
 
 @implementation MOSuggestionCollectionView
 
-- (void)shieldViewUnlockButtonPressed:(id)a3
+- (void)shieldViewUnlockButtonPressed:(id)pressed
 {
   v3 = *((swift_isaMask & self->super.super.super.isa) + 0x100);
-  v4 = self;
+  selfCopy = self;
   if (v3())
   {
     MOSuggestionCollectionViewModel.initiateAuthentication()();
@@ -32,31 +32,31 @@
 
 - (void)handlePullToRefreshTrigger
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionCollectionView.handlePullToRefreshTrigger()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionCollectionView.layoutSubviews()();
 }
 
-- (_TtC16MomentsUIService26MOSuggestionCollectionView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService26MOSuggestionCollectionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v5 = *((swift_isaMask & self->super.super.super.isa) + 0x100);
-  v6 = self;
+  selfCopy = self;
   v7 = v5();
   if (v7)
   {
-    v8 = (*(*v7 + 664))(a4);
+    v8 = (*(*v7 + 664))(section);
   }
 
   else
@@ -67,26 +67,26 @@
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = MOSuggestionCollectionView.collectionView(_:cellForItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = MOSuggestionCollectionView.collectionView(_:cellForItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   v3 = *((swift_isaMask & self->super.super.super.isa) + 0x100);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   if (v5)
   {
@@ -101,7 +101,7 @@
   return v6;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
@@ -110,40 +110,40 @@
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a3;
-  v15 = self;
-  v16 = MOSuggestionCollectionView.collectionView(_:viewForSupplementaryElementOfKind:at:)(v14, v11, v13, v10);
+  viewCopy = view;
+  selfCopy = self;
+  v16 = MOSuggestionCollectionView.collectionView(_:viewForSupplementaryElementOfKind:at:)(viewCopy, v11, v13, v10);
 
   (*(v8 + 8))(v10, v7);
 
   return v16;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized MOSuggestionCollectionView.collectionView(_:didSelectItemAt:)(v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v20 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = MOSuggestionCollectionView.collectionView(_:layout:sizeForItemAt:)(v12, v13, v11);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  v15 = MOSuggestionCollectionView.collectionView(_:layout:sizeForItemAt:)(viewCopy, layoutCopy, v11);
   v17 = v16;
 
   (*(v9 + 8))(v11, v8);
@@ -154,12 +154,12 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  specialized MOSuggestionCollectionView.collectionView(_:layout:referenceSizeForHeaderInSection:)(v8, a5);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  specialized MOSuggestionCollectionView.collectionView(_:layout:referenceSizeForHeaderInSection:)(viewCopy, section);
   v12 = v11;
   v14 = v13;
 
@@ -170,11 +170,11 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
   v7 = *((swift_isaMask & self->super.super.super.isa) + 0x100);
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   v10 = v7();
   if (!v10)
   {
@@ -185,7 +185,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (((*(*v10 + 720))(a5) & 1) == 0)
+  if (((*(*v10 + 720))(section) & 1) == 0)
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -193,7 +193,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [v8 frame];
+  [viewCopy frame];
   width = v11;
 
   height = 80.0;
@@ -205,12 +205,12 @@ LABEL_7:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  specialized MOSuggestionCollectionView.collectionView(_:layout:insetForSectionAt:)(v9, a5);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  specialized MOSuggestionCollectionView.collectionView(_:layout:insetForSectionAt:)(layoutCopy, index);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -227,7 +227,7 @@ LABEL_7:
   return result;
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path
 {
   v9 = type metadata accessor for IndexPath();
   v10 = *(v9 - 8);
@@ -236,15 +236,15 @@ LABEL_7:
   v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v16 = a3;
-  v17 = a4;
-  v18 = self;
-  specialized MOSuggestionCollectionView.collectionView(_:didEndDisplayingSupplementaryView:forElementOfKind:at:)(v17, v13, v15);
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  selfCopy = self;
+  specialized MOSuggestionCollectionView.collectionView(_:didEndDisplayingSupplementaryView:forElementOfKind:at:)(supplementaryViewCopy, v13, v15);
 
   (*(v10 + 8))(v12, v9);
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -264,7 +264,7 @@ LABEL_7:
   *(v16 + 16) = v13;
   (*(v7 + 32))(v16 + v14, v10, v6);
   *(v16 + v15) = self;
-  v17 = self;
+  selfCopy = self;
 
   v18 = UIContextMenuConfiguration.init(identifier:previewProvider:actionProvider:)(0, 0, 0, closure #1 in MOSuggestionCollectionView.collectionView(_:contextMenuConfigurationForItemAt:point:)partial apply, v16);
   (*(v7 + 8))(v12, v6);
@@ -272,25 +272,25 @@ LABEL_7:
   return v18;
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   specialized MOSuggestionCollectionView.collectionView(_:didEndDisplaying:forItemAt:)(v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v3 = *((swift_isaMask & self->super.super.super.isa) + 0x258);
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 

@@ -1,36 +1,36 @@
 @interface ETUtility
 + (BOOL)shouldArchiveSentMessages;
-+ (id)dateFormatWithMilliseconds:(id)a3;
-+ (id)destinationFromMessageIdentifier:(id)a3 keepPrefix:(BOOL)a4;
-+ (id)imageWithEllipseDiameter:(double)a3 strokeWidth:(double)a4 strokeColor:(id)a5 fillDiameter:(double)a6 fillColor:(id)a7 edgeOverlap:(double)a8;
-+ (id)removePrefixFromDestination:(id)a3;
++ (id)dateFormatWithMilliseconds:(id)milliseconds;
++ (id)destinationFromMessageIdentifier:(id)identifier keepPrefix:(BOOL)prefix;
++ (id)imageWithEllipseDiameter:(double)diameter strokeWidth:(double)width strokeColor:(id)color fillDiameter:(double)fillDiameter fillColor:(id)fillColor edgeOverlap:(double)overlap;
++ (id)removePrefixFromDestination:(id)destination;
 + (int64_t)lastInteractiveZoomLevel;
 @end
 
 @implementation ETUtility
 
-+ (id)dateFormatWithMilliseconds:(id)a3
++ (id)dateFormatWithMilliseconds:(id)milliseconds
 {
   v3 = dateFormatterWithMilliseconds_createFormatterOnceToken;
-  v4 = a3;
+  millisecondsCopy = milliseconds;
   if (v3 != -1)
   {
     +[ETUtility dateFormatWithMilliseconds:];
   }
 
-  v5 = [dateFormatterWithMilliseconds_dateFormatter stringFromDate:v4];
+  v5 = [dateFormatterWithMilliseconds_dateFormatter stringFromDate:millisecondsCopy];
 
   return v5;
 }
 
-+ (id)destinationFromMessageIdentifier:(id)a3 keepPrefix:(BOOL)a4
++ (id)destinationFromMessageIdentifier:(id)identifier keepPrefix:(BOOL)prefix
 {
-  v4 = a4;
-  v5 = [a3 pathComponents];
-  if ([v5 count] == 2)
+  prefixCopy = prefix;
+  pathComponents = [identifier pathComponents];
+  if ([pathComponents count] == 2)
   {
-    [v5 objectAtIndexedSubscript:0];
-    if (v4)
+    [pathComponents objectAtIndexedSubscript:0];
+    if (prefixCopy)
       v6 = {;
     }
 
@@ -48,18 +48,18 @@
   return v6;
 }
 
-+ (id)removePrefixFromDestination:(id)a3
++ (id)removePrefixFromDestination:(id)destination
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"mailto:"];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL && (v4 = [v3 rangeOfString:@"tel:"], v4 == 0x7FFFFFFFFFFFFFFFLL))
+  destinationCopy = destination;
+  v4 = [destinationCopy rangeOfString:@"mailto:"];
+  if (v4 == 0x7FFFFFFFFFFFFFFFLL && (v4 = [destinationCopy rangeOfString:@"tel:"], v4 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v6 = v3;
+    v6 = destinationCopy;
   }
 
   else
   {
-    v6 = [v3 substringFromIndex:v5 + v4];
+    v6 = [destinationCopy substringFromIndex:v5 + v4];
   }
 
   v7 = v6;
@@ -69,25 +69,25 @@
 
 + (BOOL)shouldArchiveSentMessages
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.ET"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.ET"];
   v4 = [v3 objectForKey:@"ETArchiveSentMessages"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (int64_t)lastInteractiveZoomLevel
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.ET"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.ET"];
   v4 = [v3 objectForKey:@"ETLastInteractiveZoomLevel"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
   v6 = 3;
-  if (v5 < 3)
+  if (integerValue < 3)
   {
-    v6 = v5;
+    v6 = integerValue;
   }
 
   if (v6 <= 1)
@@ -101,22 +101,22 @@
   }
 }
 
-+ (id)imageWithEllipseDiameter:(double)a3 strokeWidth:(double)a4 strokeColor:(id)a5 fillDiameter:(double)a6 fillColor:(id)a7 edgeOverlap:(double)a8
++ (id)imageWithEllipseDiameter:(double)diameter strokeWidth:(double)width strokeColor:(id)color fillDiameter:(double)fillDiameter fillColor:(id)fillColor edgeOverlap:(double)overlap
 {
-  v13 = a5;
-  v14 = a7;
-  v15 = a3 + a8;
+  colorCopy = color;
+  fillColorCopy = fillColor;
+  v15 = diameter + overlap;
   v22.width = v15;
   v22.height = v15;
   UIGraphicsBeginImageContextWithOptions(v22, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   v17 = CurrentContext;
-  if (a4 != 0.0)
+  if (width != 0.0)
   {
-    v18 = a8 * 0.5 + a4;
+    v18 = overlap * 0.5 + width;
     CGContextSetLineWidth(CurrentContext, v18);
-    CGContextSetStrokeColorWithColor(v17, [v13 CGColor]);
-    v23.origin.x = (v18 - a8) * 0.5;
+    CGContextSetStrokeColorWithColor(v17, [colorCopy CGColor]);
+    v23.origin.x = (v18 - overlap) * 0.5;
     v23.size.width = v15 - v18;
     v23.origin.y = v23.origin.x;
     v23.size.height = v15 - v18;
@@ -124,13 +124,13 @@
     CGContextStrokePath(v17);
   }
 
-  if (a6 != 0.0)
+  if (fillDiameter != 0.0)
   {
-    CGContextSetFillColorWithColor(v17, [v14 CGColor]);
-    v24.origin.x = (v15 - a8 - a6) * 0.5;
+    CGContextSetFillColorWithColor(v17, [fillColorCopy CGColor]);
+    v24.origin.x = (v15 - overlap - fillDiameter) * 0.5;
     v24.origin.y = v24.origin.x;
-    v24.size.width = a6;
-    v24.size.height = a6;
+    v24.size.width = fillDiameter;
+    v24.size.height = fillDiameter;
     CGContextAddEllipseInRect(v17, v24);
     CGContextFillPath(v17);
   }

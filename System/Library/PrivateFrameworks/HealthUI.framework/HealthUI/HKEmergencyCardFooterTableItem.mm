@@ -1,18 +1,18 @@
 @interface HKEmergencyCardFooterTableItem
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (UIEdgeInsets)separatorInset;
 - (id)_cell;
-- (id)initInEditMode:(BOOL)a3;
-- (void)setAttributedTitleForFooter:(id)a3;
+- (id)initInEditMode:(BOOL)mode;
+- (void)setAttributedTitleForFooter:(id)footer;
 @end
 
 @implementation HKEmergencyCardFooterTableItem
 
-- (id)initInEditMode:(BOOL)a3
+- (id)initInEditMode:(BOOL)mode
 {
   v4.receiver = self;
   v4.super_class = HKEmergencyCardFooterTableItem;
-  return [(HKEmergencyCardTableItem *)&v4 initInEditMode:a3];
+  return [(HKEmergencyCardTableItem *)&v4 initInEditMode:mode];
 }
 
 - (UIEdgeInsets)separatorInset
@@ -28,13 +28,13 @@
   return result;
 }
 
-- (void)setAttributedTitleForFooter:(id)a3
+- (void)setAttributedTitleForFooter:(id)footer
 {
-  objc_storeStrong(&self->_attributedTitleForFooter, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_attributedTitleForFooter, footer);
+  footerCopy = footer;
   attributedTitleForFooter = self->_attributedTitleForFooter;
-  v7 = [(HKEmergencyCardFooterCell *)self->_cell textLabel];
-  [v7 setAttributedText:attributedTitleForFooter];
+  textLabel = [(HKEmergencyCardFooterCell *)self->_cell textLabel];
+  [textLabel setAttributedText:attributedTitleForFooter];
 }
 
 - (id)_cell
@@ -54,12 +54,12 @@
   return cell;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   shouldInteractWithURLBlock = self->_shouldInteractWithURLBlock;
   if (shouldInteractWithURLBlock)
   {
-    return shouldInteractWithURLBlock[2](shouldInteractWithURLBlock, a4);
+    return shouldInteractWithURLBlock[2](shouldInteractWithURLBlock, l);
   }
 
   else

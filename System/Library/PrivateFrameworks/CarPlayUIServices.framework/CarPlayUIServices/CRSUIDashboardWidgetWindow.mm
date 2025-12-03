@@ -1,34 +1,34 @@
 @interface CRSUIDashboardWidgetWindow
 - (BOOL)invalidated;
-- (CRSUIDashboardWidgetWindow)initWithWindowScene:(id)a3;
+- (CRSUIDashboardWidgetWindow)initWithWindowScene:(id)scene;
 - (UIColor)focusHighlightColor;
-- (id)_clientFocusableItemForItem:(id)a3;
-- (id)_focusableItemForClientItem:(id)a3;
+- (id)_clientFocusableItemForItem:(id)item;
+- (id)_focusableItemForClientItem:(id)item;
 - (void)_invalidateConnection;
 - (void)_lock_invalidateConnection;
 - (void)_lock_invalidateCurrentFocusableItems;
-- (void)_windowDidCreateContext:(id)a3;
+- (void)_windowDidCreateContext:(id)context;
 - (void)dealloc;
-- (void)hostFocusableItem:(id)a3 focused:(BOOL)a4;
-- (void)hostFocusableItem:(id)a3 pressed:(BOOL)a4;
-- (void)hostSelectedFocusableItem:(id)a3;
-- (void)hostSetWidgetSizes:(id)a3;
+- (void)hostFocusableItem:(id)item focused:(BOOL)focused;
+- (void)hostFocusableItem:(id)item pressed:(BOOL)pressed;
+- (void)hostSelectedFocusableItem:(id)item;
+- (void)hostSetWidgetSizes:(id)sizes;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)setContentReady;
-- (void)setFocusableViews:(id)a3;
-- (void)setInvalidated:(BOOL)a3;
+- (void)setFocusableViews:(id)views;
+- (void)setInvalidated:(BOOL)invalidated;
 @end
 
 @implementation CRSUIDashboardWidgetWindow
 
-- (CRSUIDashboardWidgetWindow)initWithWindowScene:(id)a3
+- (CRSUIDashboardWidgetWindow)initWithWindowScene:(id)scene
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sceneCopy = scene;
   v31.receiver = self;
   v31.super_class = CRSUIDashboardWidgetWindow;
-  v5 = [(CRSUIWindow *)&v31 initWithWindowScene:v4];
+  v5 = [(CRSUIWindow *)&v31 initWithWindowScene:sceneCopy];
   v6 = v5;
   if (v5)
   {
@@ -38,11 +38,11 @@
     v6->_exportedObject = v7;
 
     objc_opt_class();
-    v9 = [v4 _FBSScene];
-    v10 = [v9 settings];
-    if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
+    _FBSScene = [sceneCopy _FBSScene];
+    settings = [_FBSScene settings];
+    if (settings && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v11 = v10;
+      v11 = settings;
     }
 
     else
@@ -53,8 +53,8 @@
     if (v11)
     {
       v25 = objc_alloc_init(MEMORY[0x277CCAEA0]);
-      v12 = [v11 endpoint];
-      [v25 _setEndpoint:v12];
+      endpoint = [v11 endpoint];
+      [v25 _setEndpoint:endpoint];
 
       v13 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v25];
       v24 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2856090D0];
@@ -89,8 +89,8 @@
       [v13 setInvalidationHandler:v26];
       [v13 resume];
       [(CRSUIDashboardWidgetWindow *)v6 setDashboardWindowServiceConnection:v13];
-      v21 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v21 addObserver:v6 selector:sel__windowDidCreateContext_ name:@"_UIWindowDidCreateContextNotification" object:v6];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel__windowDidCreateContext_ name:@"_UIWindowDidCreateContextNotification" object:v6];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(&v29);
@@ -122,10 +122,10 @@ void __50__CRSUIDashboardWidgetWindow_initWithWindowScene___block_invoke_2(uint6
   return invalidated;
 }
 
-- (void)setInvalidated:(BOOL)a3
+- (void)setInvalidated:(BOOL)invalidated
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_invalidated = a3;
+  self->_invalidated = invalidated;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -134,15 +134,15 @@ void __50__CRSUIDashboardWidgetWindow_initWithWindowScene___block_invoke_2(uint6
 {
   v10 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(CRSUIDashboardWidgetWindow *)self invalidated];
+  invalidated = [(CRSUIDashboardWidgetWindow *)self invalidated];
   v4 = CRSUILogForCategory(3uLL);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (invalidated)
   {
     if (v5)
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_243218000, v4, OS_LOG_TYPE_DEFAULT, "Window: %{public}@ already invalidated", &v8, 0xCu);
     }
   }
@@ -152,15 +152,15 @@ void __50__CRSUIDashboardWidgetWindow_initWithWindowScene___block_invoke_2(uint6
     if (v5)
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_243218000, v4, OS_LOG_TYPE_DEFAULT, "Invalidating window: %{public}@", &v8, 0xCu);
     }
 
     [(CRSUIDashboardWidgetWindow *)self setInvalidated:1];
     os_unfair_lock_lock(&self->_lock);
     [(CRSUIDashboardWidgetWindow *)self _lock_invalidateCurrentFocusableItems];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     [(CRSUIDashboardWidgetWindow *)self _lock_invalidateConnection];
     os_unfair_lock_unlock(&self->_lock);
@@ -178,7 +178,7 @@ void __50__CRSUIDashboardWidgetWindow_initWithWindowScene___block_invoke_2(uint6
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Window: %{public}@ not invalidated in dealloc", buf, 0xCu);
     }
 
@@ -191,9 +191,9 @@ void __50__CRSUIDashboardWidgetWindow_initWithWindowScene___block_invoke_2(uint6
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFocusableViews:(id)a3
+- (void)setFocusableViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   if ([(CRSUIDashboardWidgetWindow *)self invalidated])
   {
     v5 = CRSUILogForCategory(3uLL);
@@ -213,16 +213,16 @@ void __50__CRSUIDashboardWidgetWindow_initWithWindowScene___block_invoke_2(uint6
     v11 = 3221225472;
     v12 = __48__CRSUIDashboardWidgetWindow_setFocusableViews___block_invoke;
     v13 = &unk_278DA11E0;
-    v14 = self;
+    selfCopy = self;
     v15 = v6;
     v5 = v6;
-    [v4 enumerateObjectsUsingBlock:&v10];
+    [viewsCopy enumerateObjectsUsingBlock:&v10];
     os_unfair_lock_lock(&self->_lock);
-    [(CRSUIDashboardWidgetWindow *)self setFocusableItems:v5, v10, v11, v12, v13, v14];
-    v7 = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
-    v8 = [v7 remoteObjectProxy];
-    v9 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
-    [v8 clientSetFocusableItems:v9];
+    [(CRSUIDashboardWidgetWindow *)self setFocusableItems:v5, v10, v11, v12, v13, selfCopy];
+    dashboardWindowServiceConnection = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
+    remoteObjectProxy = [dashboardWindowServiceConnection remoteObjectProxy];
+    focusableItems = [(CRSUIDashboardWidgetWindow *)self focusableItems];
+    [remoteObjectProxy clientSetFocusableItems:focusableItems];
 
     os_unfair_lock_unlock(&self->_lock);
     [(CRSUIDashboardWidgetWindow *)self setContentReady];
@@ -265,14 +265,14 @@ void __48__CRSUIDashboardWidgetWindow_setFocusableViews___block_invoke(uint64_t 
 - (void)setContentReady
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(CRSUIDashboardWidgetWindow *)self invalidated];
+  invalidated = [(CRSUIDashboardWidgetWindow *)self invalidated];
   v4 = CRSUILogForCategory(3uLL);
-  v5 = v4;
-  if (v3)
+  dashboardWindowServiceConnection = v4;
+  if (invalidated)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(CRSUIDashboardWidgetWindow *)v5 setContentReady];
+      [(CRSUIDashboardWidgetWindow *)dashboardWindowServiceConnection setContentReady];
     }
   }
 
@@ -281,41 +281,41 @@ void __48__CRSUIDashboardWidgetWindow_setFocusableViews___block_invoke(uint64_t 
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = self;
-      _os_log_impl(&dword_243218000, v5, OS_LOG_TYPE_DEFAULT, "Window: %{public}@ has content ready", &v8, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_243218000, dashboardWindowServiceConnection, OS_LOG_TYPE_DEFAULT, "Window: %{public}@ has content ready", &v8, 0xCu);
     }
 
-    v5 = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
-    v6 = [v5 remoteObjectProxy];
-    [v6 clientSetContentReady];
+    dashboardWindowServiceConnection = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
+    remoteObjectProxy = [dashboardWindowServiceConnection remoteObjectProxy];
+    [remoteObjectProxy clientSetContentReady];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_windowDidCreateContext:(id)a3
+- (void)_windowDidCreateContext:(id)context
 {
-  v4 = [a3 object];
-  if (v4 == self)
+  object = [context object];
+  if (object == self)
   {
-    v7 = v4;
-    v5 = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
-    v6 = [v5 remoteObjectProxy];
-    [v6 updateContextId:{-[CRSUIDashboardWidgetWindow _contextId](self, "_contextId")}];
+    v7 = object;
+    dashboardWindowServiceConnection = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
+    remoteObjectProxy = [dashboardWindowServiceConnection remoteObjectProxy];
+    [remoteObjectProxy updateContextId:{-[CRSUIDashboardWidgetWindow _contextId](self, "_contextId")}];
 
-    v4 = v7;
+    object = v7;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"frame"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"frame"])
   {
     objc_opt_class();
-    v13 = v11;
+    v13 = objectCopy;
     if (v13 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v14 = v13;
@@ -331,10 +331,10 @@ void __48__CRSUIDashboardWidgetWindow_setFocusableViews___block_invoke(uint64_t 
     [(CRSUIDashboardWidgetWindow *)self convertRect:v14 fromView:?];
     [v15 setFrameInWindow:?];
     os_unfair_lock_lock(&self->_lock);
-    v16 = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
-    v17 = [v16 remoteObjectProxy];
-    v18 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
-    [v17 clientSetFocusableItems:v18];
+    dashboardWindowServiceConnection = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
+    remoteObjectProxy = [dashboardWindowServiceConnection remoteObjectProxy];
+    focusableItems = [(CRSUIDashboardWidgetWindow *)self focusableItems];
+    [remoteObjectProxy clientSetFocusableItems:focusableItems];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -343,21 +343,21 @@ void __48__CRSUIDashboardWidgetWindow_setFocusableViews___block_invoke(uint64_t 
   {
     v19.receiver = self;
     v19.super_class = CRSUIDashboardWidgetWindow;
-    [(CRSUIDashboardWidgetWindow *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CRSUIDashboardWidgetWindow *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)hostFocusableItem:(id)a3 focused:(BOOL)a4
+- (void)hostFocusableItem:(id)item focused:(BOOL)focused
 {
-  v6 = a3;
+  itemCopy = item;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__CRSUIDashboardWidgetWindow_hostFocusableItem_focused___block_invoke;
   block[3] = &unk_278DA1208;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = itemCopy;
+  focusedCopy = focused;
+  v7 = itemCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -372,17 +372,17 @@ void __56__CRSUIDashboardWidgetWindow_hostFocusableItem_focused___block_invoke(u
   }
 }
 
-- (void)hostFocusableItem:(id)a3 pressed:(BOOL)a4
+- (void)hostFocusableItem:(id)item pressed:(BOOL)pressed
 {
-  v6 = a3;
+  itemCopy = item;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__CRSUIDashboardWidgetWindow_hostFocusableItem_pressed___block_invoke;
   block[3] = &unk_278DA1208;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = itemCopy;
+  pressedCopy = pressed;
+  v7 = itemCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -397,16 +397,16 @@ void __56__CRSUIDashboardWidgetWindow_hostFocusableItem_pressed___block_invoke(u
   }
 }
 
-- (void)hostSelectedFocusableItem:(id)a3
+- (void)hostSelectedFocusableItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__CRSUIDashboardWidgetWindow_hostSelectedFocusableItem___block_invoke;
   v6[3] = &unk_278DA0D18;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = itemCopy;
+  v5 = itemCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -421,16 +421,16 @@ void __56__CRSUIDashboardWidgetWindow_hostSelectedFocusableItem___block_invoke(u
   }
 }
 
-- (void)hostSetWidgetSizes:(id)a3
+- (void)hostSetWidgetSizes:(id)sizes
 {
-  v4 = a3;
+  sizesCopy = sizes;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__CRSUIDashboardWidgetWindow_hostSetWidgetSizes___block_invoke;
   v6[3] = &unk_278DA0D18;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sizesCopy;
+  v5 = sizesCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -440,18 +440,18 @@ void __64__CRSUIDashboardWidgetWindow_hostSetUseSystemPrimaryFocusColor___block_
   [v2 postNotificationName:CRSUIDashboardWidgetWindowFocusHighlightColorDidChangeNotification object:*(a1 + 32)];
 }
 
-- (id)_focusableItemForClientItem:(id)a3
+- (id)_focusableItemForClientItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
+  focusableItems = [(CRSUIDashboardWidgetWindow *)self focusableItems];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__CRSUIDashboardWidgetWindow__focusableItemForClientItem___block_invoke;
   v11[3] = &unk_278DA1230;
-  v12 = v4;
-  v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v11];
+  v12 = itemCopy;
+  v6 = itemCopy;
+  v7 = [focusableItems indexOfObjectPassingTest:v11];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -460,8 +460,8 @@ void __64__CRSUIDashboardWidgetWindow_hostSetUseSystemPrimaryFocusColor___block_
 
   else
   {
-    v9 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
-    v8 = [v9 objectAtIndex:v7];
+    focusableItems2 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
+    v8 = [focusableItems2 objectAtIndex:v7];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -477,34 +477,34 @@ BOOL __58__CRSUIDashboardWidgetWindow__focusableItemForClientItem___block_invoke
   return v4;
 }
 
-- (id)_clientFocusableItemForItem:(id)a3
+- (id)_clientFocusableItemForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
+  focusableItems = [(CRSUIDashboardWidgetWindow *)self focusableItems];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__CRSUIDashboardWidgetWindow__clientFocusableItemForItem___block_invoke;
   v12[3] = &unk_278DA1230;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v12];
+  v13 = itemCopy;
+  v6 = itemCopy;
+  v7 = [focusableItems indexOfObjectPassingTest:v12];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = 0;
+    focusProvidingItem = 0;
   }
 
   else
   {
-    v9 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
-    v10 = [v9 objectAtIndex:v7];
-    v8 = [v10 focusProvidingItem];
+    focusableItems2 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
+    v10 = [focusableItems2 objectAtIndex:v7];
+    focusProvidingItem = [v10 focusProvidingItem];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return focusProvidingItem;
 }
 
 uint64_t __58__CRSUIDashboardWidgetWindow__clientFocusableItemForItem___block_invoke(uint64_t a1, void *a2)
@@ -527,13 +527,13 @@ uint64_t __58__CRSUIDashboardWidgetWindow__clientFocusableItemForItem___block_in
     _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating focusable items", buf, 2u);
   }
 
-  v4 = [(CRSUIDashboardWidgetWindow *)self focusableItems];
+  focusableItems = [(CRSUIDashboardWidgetWindow *)self focusableItems];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __67__CRSUIDashboardWidgetWindow__lock_invalidateCurrentFocusableItems__block_invoke;
   v5[3] = &unk_278DA1258;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [focusableItems enumerateObjectsUsingBlock:v5];
 
   [(CRSUIDashboardWidgetWindow *)self setFocusableItems:0];
 }
@@ -561,11 +561,11 @@ void __67__CRSUIDashboardWidgetWindow__lock_invalidateCurrentFocusableItems__blo
     _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating connection", v6, 2u);
   }
 
-  v4 = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
-  [v4 setExportedObject:0];
+  dashboardWindowServiceConnection = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
+  [dashboardWindowServiceConnection setExportedObject:0];
 
-  v5 = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
-  [v5 invalidate];
+  dashboardWindowServiceConnection2 = [(CRSUIDashboardWidgetWindow *)self dashboardWindowServiceConnection];
+  [dashboardWindowServiceConnection2 invalidate];
 
   [(CRSUIDashboardWidgetWindow *)self setDashboardWindowServiceConnection:0];
 }

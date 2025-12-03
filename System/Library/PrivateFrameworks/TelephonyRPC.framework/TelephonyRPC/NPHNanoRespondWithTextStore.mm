@@ -1,8 +1,8 @@
 @interface NPHNanoRespondWithTextStore
 - (NPHNanoRespondWithTextStore)init;
-- (id)cannedRepliesForLanguage:(id)a3;
+- (id)cannedRepliesForLanguage:(id)language;
 - (id)customReplies;
-- (id)defaultRepliesForLanguage:(id)a3;
+- (id)defaultRepliesForLanguage:(id)language;
 - (unint64_t)count;
 @end
 
@@ -38,7 +38,7 @@
   return 3;
 }
 
-- (id)defaultRepliesForLanguage:(id)a3
+- (id)defaultRepliesForLanguage:(id)language
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = nph_general_log();
@@ -76,35 +76,35 @@
     _os_log_impl(&dword_26D269000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v10, 0xCu);
   }
 
-  v4 = [(NSUserDefaults *)self->_userDefaults objectForKey:@"TUReplyWithMessageStoreReplyArray"];
-  if (!v4)
+  array = [(NSUserDefaults *)self->_userDefaults objectForKey:@"TUReplyWithMessageStoreReplyArray"];
+  if (!array)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v5 = [v4 count];
+  v5 = [array count];
   if (v5 < [(NPHNanoRespondWithTextStore *)self count])
   {
     do
     {
-      [v4 addObject:&stru_287EA4AF8];
-      v6 = [v4 count];
+      [array addObject:&stru_287EA4AF8];
+      v6 = [array count];
     }
 
     while (v6 < [(NPHNanoRespondWithTextStore *)self count]);
   }
 
-  v7 = [MEMORY[0x277CBEA60] arrayWithArray:v4];
+  v7 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)cannedRepliesForLanguage:(id)a3
+- (id)cannedRepliesForLanguage:(id)language
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -114,18 +114,18 @@
   }
 
   v6 = MEMORY[0x277CBEB18];
-  v7 = [(NPHNanoRespondWithTextStore *)self defaultRepliesForLanguage:v4];
+  v7 = [(NPHNanoRespondWithTextStore *)self defaultRepliesForLanguage:languageCopy];
 
   v8 = [v6 arrayWithArray:v7];
 
-  v9 = [(NPHNanoRespondWithTextStore *)self customReplies];
+  customReplies = [(NPHNanoRespondWithTextStore *)self customReplies];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__NPHNanoRespondWithTextStore_cannedRepliesForLanguage___block_invoke;
   v14[3] = &unk_279D96060;
   v15 = v8;
   v10 = v8;
-  [v9 enumerateObjectsUsingBlock:v14];
+  [customReplies enumerateObjectsUsingBlock:v14];
   v11 = [MEMORY[0x277CBEA60] arrayWithArray:v10];
 
   v12 = *MEMORY[0x277D85DE8];

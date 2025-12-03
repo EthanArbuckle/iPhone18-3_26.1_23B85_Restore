@@ -1,12 +1,12 @@
 @interface HKUserDomainConceptProperty
-+ (id)mergeListsOfPropertiesWithType:(int64_t)a3 intoListOfProperties:(id)a4 fromListOfProperties:(id)a5 options:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)mergeListsOfPropertiesWithType:(int64_t)type intoListOfProperties:(id)properties fromListOfProperties:(id)ofProperties options:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
 - (HKUserDomainConceptProperty)init;
-- (HKUserDomainConceptProperty)initWithCoder:(id)a3;
-- (HKUserDomainConceptProperty)initWithType:(int64_t)a3 version:(int64_t)a4 timestamp:(double)a5 deleted:(BOOL)a6;
+- (HKUserDomainConceptProperty)initWithCoder:(id)coder;
+- (HKUserDomainConceptProperty)initWithType:(int64_t)type version:(int64_t)version timestamp:(double)timestamp deleted:(BOOL)deleted;
 - (id)description;
 - (id)valueDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUserDomainConceptProperty
@@ -21,12 +21,12 @@
   return 0;
 }
 
-- (HKUserDomainConceptProperty)initWithType:(int64_t)a3 version:(int64_t)a4 timestamp:(double)a5 deleted:(BOOL)a6
+- (HKUserDomainConceptProperty)initWithType:(int64_t)type version:(int64_t)version timestamp:(double)timestamp deleted:(BOOL)deleted
 {
   v12.receiver = self;
   v12.super_class = HKUserDomainConceptProperty;
   v10 = [(HKUserDomainConceptProperty *)&v12 init];
-  if (HKIsDeprecatedPropertyType(a3))
+  if (HKIsDeprecatedPropertyType(type))
   {
     [HKUserDomainConceptProperty initWithType:version:timestamp:deleted:];
     if (!v10)
@@ -40,10 +40,10 @@
   if (v10)
   {
 LABEL_3:
-    v10->_type = a3;
-    v10->_version = a4;
-    v10->_timestamp = a5;
-    v10->_deleted = a6;
+    v10->_type = type;
+    v10->_version = version;
+    v10->_timestamp = timestamp;
+    v10->_deleted = deleted;
   }
 
   return v10;
@@ -66,24 +66,24 @@ LABEL_3:
   version = self->_version;
   v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:self->_timestamp];
   v8 = HKDiagnosticStringFromDate(v7);
-  v9 = [(HKUserDomainConceptProperty *)self valueDescription];
-  v10 = [v3 stringWithFormat:@"<%@%@ %ld, (%@), %@>", v4, v5, version, v8, v9];
+  valueDescription = [(HKUserDomainConceptProperty *)self valueDescription];
+  v10 = [v3 stringWithFormat:@"<%@%@ %ld, (%@), %@>", v4, v5, version, v8, valueDescription];
 
   return v10;
 }
 
-+ (id)mergeListsOfPropertiesWithType:(int64_t)a3 intoListOfProperties:(id)a4 fromListOfProperties:(id)a5 options:(unint64_t)a6
++ (id)mergeListsOfPropertiesWithType:(int64_t)type intoListOfProperties:(id)properties fromListOfProperties:(id)ofProperties options:(unint64_t)options
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
+  optionsCopy = options;
+  propertiesCopy = properties;
+  ofPropertiesCopy = ofProperties;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __112__HKUserDomainConceptProperty_mergeListsOfPropertiesWithType_intoListOfProperties_fromListOfProperties_options___block_invoke;
   v22[3] = &__block_descriptor_48_e37_B16__0__HKUserDomainConceptProperty_8l;
-  v22[4] = a3;
-  v22[5] = a1;
-  if (([v10 hk_allObjectsPassTest:v22] & 1) == 0)
+  v22[4] = type;
+  v22[5] = self;
+  if (([propertiesCopy hk_allObjectsPassTest:v22] & 1) == 0)
   {
     +[HKUserDomainConceptProperty mergeListsOfPropertiesWithType:intoListOfProperties:fromListOfProperties:options:];
   }
@@ -92,34 +92,34 @@ LABEL_3:
   v21[1] = 3221225472;
   v21[2] = __112__HKUserDomainConceptProperty_mergeListsOfPropertiesWithType_intoListOfProperties_fromListOfProperties_options___block_invoke_2;
   v21[3] = &__block_descriptor_48_e37_B16__0__HKUserDomainConceptProperty_8l;
-  v21[4] = a3;
-  v21[5] = a1;
-  if (([v11 hk_allObjectsPassTest:v21] & 1) == 0)
+  v21[4] = type;
+  v21[5] = self;
+  if (([ofPropertiesCopy hk_allObjectsPassTest:v21] & 1) == 0)
   {
     +[HKUserDomainConceptProperty mergeListsOfPropertiesWithType:intoListOfProperties:fromListOfProperties:options:];
   }
 
-  v12 = v10;
-  if ([v11 count])
+  v12 = propertiesCopy;
+  if ([ofPropertiesCopy count])
   {
-    v12 = v11;
-    if ([v10 count])
+    v12 = ofPropertiesCopy;
+    if ([propertiesCopy count])
     {
-      v13 = MaximumVersionForListOfProperties(v10);
-      v14 = MaximumVersionForListOfProperties(v11);
-      v15 = MaximumTimestampForListOfProperties(v10);
-      v16 = MaximumTimestampForListOfProperties(v11);
-      v12 = v11;
+      v13 = MaximumVersionForListOfProperties(propertiesCopy);
+      v14 = MaximumVersionForListOfProperties(ofPropertiesCopy);
+      v15 = MaximumTimestampForListOfProperties(propertiesCopy);
+      v16 = MaximumTimestampForListOfProperties(ofPropertiesCopy);
+      v12 = ofPropertiesCopy;
       if (v14 <= v13)
       {
-        if (v16 > v15 && v14 == v13 && (v6 & 1) == 0)
+        if (v16 > v15 && v14 == v13 && (optionsCopy & 1) == 0)
         {
-          v12 = v11;
+          v12 = ofPropertiesCopy;
         }
 
         else
         {
-          v12 = v10;
+          v12 = propertiesCopy;
         }
       }
     }
@@ -164,10 +164,10 @@ uint64_t __112__HKUserDomainConceptProperty_mergeListsOfPropertiesWithType_intoL
   return isKindOfClass & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -177,7 +177,7 @@ uint64_t __112__HKUserDomainConceptProperty_mergeListsOfPropertiesWithType_intoL
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_type == v5->_type && self->_version == v5->_version && self->_timestamp == v5->_timestamp && self->_deleted == v5->_deleted;
     }
 
@@ -190,19 +190,19 @@ uint64_t __112__HKUserDomainConceptProperty_mergeListsOfPropertiesWithType_intoL
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_version forKey:@"version"];
-  [v5 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [v5 encodeBool:self->_deleted forKey:@"deleted"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_version forKey:@"version"];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeBool:self->_deleted forKey:@"deleted"];
 }
 
-- (HKUserDomainConceptProperty)initWithCoder:(id)a3
+- (HKUserDomainConceptProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKUserDomainConceptProperty;
   v5 = [(HKUserDomainConceptProperty *)&v10 init];
@@ -211,14 +211,14 @@ uint64_t __112__HKUserDomainConceptProperty_mergeListsOfPropertiesWithType_intoL
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeIntegerForKey:@"type"];
   if (!HKIsDeprecatedPropertyType(v6))
   {
     v5->_type = v6;
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    [v4 decodeDoubleForKey:@"timestamp"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v8;
-    v5->_deleted = [v4 decodeBoolForKey:@"deleted"];
+    v5->_deleted = [coderCopy decodeBoolForKey:@"deleted"];
 LABEL_5:
     v7 = v5;
     goto LABEL_6;

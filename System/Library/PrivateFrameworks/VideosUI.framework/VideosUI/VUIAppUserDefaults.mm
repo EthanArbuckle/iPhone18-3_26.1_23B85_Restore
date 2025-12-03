@@ -1,8 +1,8 @@
 @interface VUIAppUserDefaults
 + (id)sharedUserDefaults;
-- (id)dataForKey:(id)a3;
-- (void)removeDataForKey:(id)a3;
-- (void)setData:(id)a3 forKey:(id)a4;
+- (id)dataForKey:(id)key;
+- (void)removeDataForKey:(id)key;
+- (void)setData:(id)data forKey:(id)key;
 @end
 
 @implementation VUIAppUserDefaults
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __40__VUIAppUserDefaults_sharedUserDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedUserDefaults_onceToken != -1)
   {
     dispatch_once(&sharedUserDefaults_onceToken, block);
@@ -32,10 +32,10 @@ void __40__VUIAppUserDefaults_sharedUserDefaults__block_invoke()
   sharedUserDefaults_userDefaults = v0;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
-  if ([(VUIAppUserDefaults *)self _isWLKDomain:v4])
+  keyCopy = key;
+  if ([(VUIAppUserDefaults *)self _isWLKDomain:keyCopy])
   {
     [MEMORY[0x1E695E000] wlk_userDefaults];
   }
@@ -45,27 +45,27 @@ void __40__VUIAppUserDefaults_sharedUserDefaults__block_invoke()
     [MEMORY[0x1E695E000] standardUserDefaults];
   }
   v5 = ;
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setData:(id)a3 forKey:(id)a4
+- (void)setData:(id)data forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  if ([(VUIAppUserDefaults *)self _isWLKDomain:v6])
+  keyCopy = key;
+  dataCopy = data;
+  if ([(VUIAppUserDefaults *)self _isWLKDomain:keyCopy])
   {
-    v8 = [MEMORY[0x1E695E000] wlk_userDefaults];
-    [v8 setObject:v7 forKey:v6];
+    wlk_userDefaults = [MEMORY[0x1E695E000] wlk_userDefaults];
+    [wlk_userDefaults setObject:dataCopy forKey:keyCopy];
 
     [MEMORY[0x1E695E000] wlk_userDefaults];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v9 setObject:v7 forKey:v6];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setObject:dataCopy forKey:keyCopy];
 
     [MEMORY[0x1E695E000] standardUserDefaults];
   }
@@ -73,21 +73,21 @@ void __40__VUIAppUserDefaults_sharedUserDefaults__block_invoke()
   [v10 synchronize];
 }
 
-- (void)removeDataForKey:(id)a3
+- (void)removeDataForKey:(id)key
 {
-  v4 = a3;
-  if ([(VUIAppUserDefaults *)self _isWLKDomain:v4])
+  keyCopy = key;
+  if ([(VUIAppUserDefaults *)self _isWLKDomain:keyCopy])
   {
-    v5 = [MEMORY[0x1E695E000] wlk_userDefaults];
-    [v5 removeObjectForKey:v4];
+    wlk_userDefaults = [MEMORY[0x1E695E000] wlk_userDefaults];
+    [wlk_userDefaults removeObjectForKey:keyCopy];
 
     [MEMORY[0x1E695E000] wlk_userDefaults];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v6 removeObjectForKey:v4];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults removeObjectForKey:keyCopy];
 
     [MEMORY[0x1E695E000] standardUserDefaults];
   }

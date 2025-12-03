@@ -1,46 +1,46 @@
 @interface NPTOLibraryChanges
-- (id)_initWithMasterLibrary:(id)a3 clientLibrary:(id)a4 excludedAssets:(id)a5;
+- (id)_initWithMasterLibrary:(id)library clientLibrary:(id)clientLibrary excludedAssets:(id)assets;
 @end
 
 @implementation NPTOLibraryChanges
 
-- (id)_initWithMasterLibrary:(id)a3 clientLibrary:(id)a4 excludedAssets:(id)a5
+- (id)_initWithMasterLibrary:(id)library clientLibrary:(id)clientLibrary excludedAssets:(id)assets
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  clientLibraryCopy = clientLibrary;
+  assetsCopy = assets;
   v224.receiver = self;
   v224.super_class = NPTOLibraryChanges;
   v12 = [(NPTOLibraryChanges *)&v224 init];
   v13 = v12;
   if (v12)
   {
-    v181 = v11;
-    v182 = v10;
-    v183 = v9;
-    objc_storeStrong(&v12->_masterLibrary, a3);
-    objc_storeStrong(&v13->_clientLibrary, a4);
-    objc_storeStrong(&v13->_excludedAssets, a5);
+    v181 = assetsCopy;
+    v182 = clientLibraryCopy;
+    v183 = libraryCopy;
+    objc_storeStrong(&v12->_masterLibrary, library);
+    objc_storeStrong(&v13->_clientLibrary, clientLibrary);
+    objc_storeStrong(&v13->_excludedAssets, assets);
     v14 = +[NSMutableDictionary dictionary];
-    v15 = [(NPTOLibrary *)v13->_masterLibrary assets];
+    assets = [(NPTOLibrary *)v13->_masterLibrary assets];
     v222[0] = _NSConcreteStackBlock;
     v222[1] = 3221225472;
     v222[2] = sub_10005FB74;
     v222[3] = &unk_10008B858;
     v16 = v14;
     v223 = v16;
-    [v15 enumerateObjectsUsingBlock:v222];
+    [assets enumerateObjectsUsingBlock:v222];
 
     v17 = objc_autoreleasePoolPush();
     v18 = sub_100052768();
     v186 = v13;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v16 allValues];
-      v20 = [v19 count];
-      v21 = [v16 allValues];
-      v22 = [v16 allValues];
-      v23 = [v22 count];
+      allValues = [v16 allValues];
+      v20 = [allValues count];
+      allValues2 = [v16 allValues];
+      allValues3 = [v16 allValues];
+      v23 = [allValues3 count];
 
       if (v23 >= 0x3E8)
       {
@@ -52,7 +52,7 @@
         v24 = v23;
       }
 
-      v25 = [v21 subarrayWithRange:{0, v24}];
+      v25 = [allValues2 subarrayWithRange:{0, v24}];
       v26 = [v25 valueForKeyPath:@"uuidData.npto_uuid"];
       *buf = 138412802;
       v226 = @"Master assets";
@@ -67,24 +67,24 @@
 
     objc_autoreleasePoolPop(v17);
     v27 = +[NSMutableDictionary dictionary];
-    v28 = [(NPTOLibrary *)v13->_clientLibrary assets];
+    assets2 = [(NPTOLibrary *)v13->_clientLibrary assets];
     v220[0] = _NSConcreteStackBlock;
     v220[1] = 3221225472;
     v220[2] = sub_10005FBF0;
     v220[3] = &unk_10008B858;
     v29 = v27;
     v221 = v29;
-    [v28 enumerateObjectsUsingBlock:v220];
+    [assets2 enumerateObjectsUsingBlock:v220];
 
     v30 = objc_autoreleasePoolPush();
     v31 = sub_100052768();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v29 allValues];
-      v33 = [v32 count];
-      v34 = [v29 allValues];
-      v35 = [v29 allValues];
-      v36 = [v35 count];
+      allValues4 = [v29 allValues];
+      v33 = [allValues4 count];
+      allValues5 = [v29 allValues];
+      allValues6 = [v29 allValues];
+      v36 = [allValues6 count];
 
       if (v36 >= 0x3E8)
       {
@@ -96,7 +96,7 @@
         v37 = v36;
       }
 
-      v38 = [v34 subarrayWithRange:{0, v37}];
+      v38 = [allValues5 subarrayWithRange:{0, v37}];
       v39 = [v38 valueForKeyPath:@"uuidData.npto_uuid"];
       *buf = 138412802;
       v226 = @"Client assets";
@@ -111,7 +111,7 @@
 
     objc_autoreleasePoolPop(v30);
     v40 = +[NSMutableArray array];
-    v41 = [(NPTOLibrary *)v13->_clientLibrary assets];
+    assets3 = [(NPTOLibrary *)v13->_clientLibrary assets];
     v217[0] = _NSConcreteStackBlock;
     v217[1] = 3221225472;
     v217[2] = sub_10005FC6C;
@@ -120,7 +120,7 @@
     v218 = v175;
     v42 = v40;
     v219 = v42;
-    [v41 enumerateObjectsUsingBlock:v217];
+    [assets3 enumerateObjectsUsingBlock:v217];
 
     v43 = objc_autoreleasePoolPush();
     v44 = sub_100052768();
@@ -156,7 +156,7 @@
     v13->_deletedAssets = v50;
 
     v52 = +[NSMutableArray array];
-    v53 = [(NPTOLibrary *)v13->_masterLibrary assets];
+    assets4 = [(NPTOLibrary *)v13->_masterLibrary assets];
     v213[0] = _NSConcreteStackBlock;
     v213[1] = 3221225472;
     v213[2] = sub_10005FD00;
@@ -167,7 +167,7 @@
     v215 = v55;
     v56 = v52;
     v216 = v56;
-    [v53 enumerateObjectsUsingBlock:v213];
+    [assets4 enumerateObjectsUsingBlock:v213];
 
     v57 = objc_autoreleasePoolPush();
     v58 = sub_100052768();
@@ -204,7 +204,7 @@
     v55->_updatedAssets = v64;
 
     v66 = +[NSMutableArray array];
-    v67 = [(NPTOLibrary *)v13->_masterLibrary assets];
+    assets5 = [(NPTOLibrary *)v13->_masterLibrary assets];
     v209[0] = _NSConcreteStackBlock;
     v209[1] = 3221225472;
     v209[2] = sub_10005FDF0;
@@ -215,7 +215,7 @@
     v211 = v184;
     v68 = v66;
     v212 = v68;
-    [v67 enumerateObjectsUsingBlock:v209];
+    [assets5 enumerateObjectsUsingBlock:v209];
 
     v69 = objc_autoreleasePoolPush();
     v70 = sub_100052768();
@@ -256,11 +256,11 @@
     v79 = sub_100052768();
     if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
     {
-      v80 = [(NSSet *)v13->_excludedAssets allObjects];
-      v81 = [v80 count];
-      v82 = [(NSSet *)v13->_excludedAssets allObjects];
-      v83 = [(NSSet *)v13->_excludedAssets allObjects];
-      v84 = [v83 count];
+      allObjects = [(NSSet *)v13->_excludedAssets allObjects];
+      v81 = [allObjects count];
+      allObjects2 = [(NSSet *)v13->_excludedAssets allObjects];
+      allObjects3 = [(NSSet *)v13->_excludedAssets allObjects];
+      v84 = [allObjects3 count];
 
       if (v84 >= 0x3E8)
       {
@@ -272,7 +272,7 @@
         v85 = v84;
       }
 
-      v86 = [v82 subarrayWithRange:{0, v85}];
+      v86 = [allObjects2 subarrayWithRange:{0, v85}];
       v87 = [v86 valueForKeyPath:@"uuidData.npto_uuid"];
       *buf = 138412802;
       v226 = @"Excluded assets";
@@ -285,24 +285,24 @@
 
     objc_autoreleasePoolPop(v78);
     v88 = +[NSMutableDictionary dictionary];
-    v89 = [(NPTOLibrary *)v13->_masterLibrary assetCollections];
+    assetCollections = [(NPTOLibrary *)v13->_masterLibrary assetCollections];
     v207[0] = _NSConcreteStackBlock;
     v207[1] = 3221225472;
     v207[2] = sub_10005FE98;
     v207[3] = &unk_10008B8D0;
     v90 = v88;
     v208 = v90;
-    [v89 enumerateObjectsUsingBlock:v207];
+    [assetCollections enumerateObjectsUsingBlock:v207];
 
     v91 = objc_autoreleasePoolPush();
     v92 = sub_100052768();
     if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
     {
-      v93 = [v90 allValues];
-      v94 = [v93 count];
-      v95 = [v90 allValues];
-      v96 = [v90 allValues];
-      v97 = [v96 count];
+      allValues7 = [v90 allValues];
+      v94 = [allValues7 count];
+      allValues8 = [v90 allValues];
+      allValues9 = [v90 allValues];
+      v97 = [allValues9 count];
 
       if (v97 >= 0x3E8)
       {
@@ -314,7 +314,7 @@
         v98 = v97;
       }
 
-      v99 = [v95 subarrayWithRange:{0, v98}];
+      v99 = [allValues8 subarrayWithRange:{0, v98}];
       v100 = [v99 valueForKeyPath:@"uuidData.npto_uuid"];
       *buf = 138412802;
       v226 = @"Master asset collections";
@@ -329,24 +329,24 @@
 
     objc_autoreleasePoolPop(v91);
     v101 = +[NSMutableDictionary dictionary];
-    v102 = [(NPTOLibrary *)v13->_clientLibrary assetCollections];
+    assetCollections2 = [(NPTOLibrary *)v13->_clientLibrary assetCollections];
     v205[0] = _NSConcreteStackBlock;
     v205[1] = 3221225472;
     v205[2] = sub_10005FF14;
     v205[3] = &unk_10008B8D0;
     v103 = v101;
     v206 = v103;
-    [v102 enumerateObjectsUsingBlock:v205];
+    [assetCollections2 enumerateObjectsUsingBlock:v205];
 
     v104 = objc_autoreleasePoolPush();
     v105 = sub_100052768();
     if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
     {
-      v106 = [v103 allValues];
-      v107 = [v106 count];
-      v108 = [v103 allValues];
-      v109 = [v103 allValues];
-      v110 = [v109 count];
+      allValues10 = [v103 allValues];
+      v107 = [allValues10 count];
+      allValues11 = [v103 allValues];
+      allValues12 = [v103 allValues];
+      v110 = [allValues12 count];
 
       if (v110 >= 0x3E8)
       {
@@ -358,7 +358,7 @@
         v111 = v110;
       }
 
-      v112 = [v108 subarrayWithRange:{0, v111}];
+      v112 = [allValues11 subarrayWithRange:{0, v111}];
       v113 = [v112 valueForKeyPath:@"uuidData.npto_uuid"];
       *buf = 138412802;
       v226 = @"Client asset collections";
@@ -373,7 +373,7 @@
 
     objc_autoreleasePoolPop(v104);
     v114 = +[NSMutableArray array];
-    v115 = [(NPTOLibrary *)v13->_clientLibrary assetCollections];
+    assetCollections3 = [(NPTOLibrary *)v13->_clientLibrary assetCollections];
     v202[0] = _NSConcreteStackBlock;
     v202[1] = 3221225472;
     v202[2] = sub_10005FF90;
@@ -382,7 +382,7 @@
     v203 = v172;
     v116 = v114;
     v204 = v116;
-    [v115 enumerateObjectsUsingBlock:v202];
+    [assetCollections3 enumerateObjectsUsingBlock:v202];
 
     v117 = objc_autoreleasePoolPush();
     v118 = sub_100052768();
@@ -420,7 +420,7 @@
     v126 = +[NSMapTable strongToStrongObjectsMapTable];
     v127 = +[NSMapTable strongToStrongObjectsMapTable];
     v128 = +[NSMutableArray array];
-    v129 = [(NPTOLibrary *)v13->_masterLibrary assetCollections];
+    assetCollections4 = [(NPTOLibrary *)v13->_masterLibrary assetCollections];
     v194[0] = _NSConcreteStackBlock;
     v194[1] = 3221225472;
     v194[2] = sub_100060024;
@@ -439,7 +439,7 @@
     v200 = v185;
     v135 = v127;
     v201 = v135;
-    [v129 enumerateObjectsUsingBlock:v194];
+    [assetCollections4 enumerateObjectsUsingBlock:v194];
 
     v136 = objc_autoreleasePoolPush();
     v137 = sub_100052768();
@@ -485,7 +485,7 @@
     v131->_updatedAssetCollections = v147;
 
     v149 = +[NSMutableArray array];
-    v150 = [(NPTOLibrary *)v186->_masterLibrary assetCollections];
+    assetCollections5 = [(NPTOLibrary *)v186->_masterLibrary assetCollections];
     v187[0] = _NSConcreteStackBlock;
     v187[1] = 3221225472;
     v187[2] = sub_10006043C;
@@ -502,7 +502,7 @@
     v192 = v154;
     v155 = v135;
     v193 = v155;
-    [v150 enumerateObjectsUsingBlock:v187];
+    [assetCollections5 enumerateObjectsUsingBlock:v187];
 
     v156 = objc_autoreleasePoolPush();
     v157 = sub_100052768();
@@ -549,10 +549,10 @@
     v152->_addedAssetCollectionAssets = v155;
     v169 = v155;
 
-    v10 = v182;
-    v9 = v183;
+    clientLibraryCopy = v182;
+    libraryCopy = v183;
     v13 = v186;
-    v11 = v181;
+    assetsCopy = v181;
   }
 
   return v13;

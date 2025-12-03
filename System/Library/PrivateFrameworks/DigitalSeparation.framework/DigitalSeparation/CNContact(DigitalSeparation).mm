@@ -17,12 +17,12 @@
     goto LABEL_12;
   }
 
-  v6 = [v4 identifier];
-  if ([v6 length])
+  identifier = [v4 identifier];
+  if ([identifier length])
   {
-    v7 = [a1 identifier];
-    v8 = [v5 identifier];
-    v9 = [v7 isEqualToString:v8];
+    identifier2 = [self identifier];
+    identifier3 = [v5 identifier];
+    v9 = [identifier2 isEqualToString:identifier3];
 
     if (v9)
     {
@@ -34,18 +34,18 @@
   {
   }
 
-  v10 = [v5 ds_name];
-  if (![v10 length] || (objc_msgSend(a1, "ds_name"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqual:", v11), v11, (v12 & 1) == 0))
+  ds_name = [v5 ds_name];
+  if (![ds_name length] || (objc_msgSend(self, "ds_name"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(ds_name, "isEqual:", v11), v11, (v12 & 1) == 0))
   {
-    v13 = [v5 ds_emailAddresses];
-    v14 = [a1 ds_emailAddresses];
-    v15 = [v13 intersectsSet:v14];
+    ds_emailAddresses = [v5 ds_emailAddresses];
+    ds_emailAddresses2 = [self ds_emailAddresses];
+    v15 = [ds_emailAddresses intersectsSet:ds_emailAddresses2];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [v5 ds_phoneNumbers];
-      v17 = [a1 ds_phoneNumbers];
-      v18 = [v16 intersectsSet:v17];
+      ds_phoneNumbers = [v5 ds_phoneNumbers];
+      ds_phoneNumbers2 = [self ds_phoneNumbers];
+      v18 = [ds_phoneNumbers intersectsSet:ds_phoneNumbers2];
 
       if (v18)
       {
@@ -69,12 +69,12 @@ LABEL_13:
 {
   v38 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 unifiedContactIdentifier];
-  if ([v5 length])
+  unifiedContactIdentifier = [v4 unifiedContactIdentifier];
+  if ([unifiedContactIdentifier length])
   {
-    v6 = [a1 identifier];
-    v7 = [v4 unifiedContactIdentifier];
-    v8 = [v6 isEqualToString:v7];
+    identifier = [self identifier];
+    unifiedContactIdentifier2 = [v4 unifiedContactIdentifier];
+    v8 = [identifier isEqualToString:unifiedContactIdentifier2];
 
     if (v8)
     {
@@ -86,9 +86,9 @@ LABEL_13:
   {
   }
 
-  v9 = [MEMORY[0x277CCAC00] componentsForContact:a1];
-  v10 = [v4 nameComponents];
-  v11 = [v9 isEqual:v10];
+  v9 = [MEMORY[0x277CCAC00] componentsForContact:self];
+  nameComponents = [v4 nameComponents];
+  v11 = [v9 isEqual:nameComponents];
 
   if (v11)
   {
@@ -97,12 +97,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [v4 emailAddress];
-  if ([v12 length])
+  emailAddress = [v4 emailAddress];
+  if ([emailAddress length])
   {
-    v13 = [a1 ds_emailAddresses];
-    v14 = [v4 emailAddress];
-    v15 = [v13 containsObject:v14];
+    ds_emailAddresses = [self ds_emailAddresses];
+    emailAddress2 = [v4 emailAddress];
+    v15 = [ds_emailAddresses containsObject:emailAddress2];
 
     if (v15)
     {
@@ -114,21 +114,21 @@ LABEL_8:
   {
   }
 
-  v19 = [v4 phoneNumber];
-  v20 = [v19 length];
+  phoneNumber = [v4 phoneNumber];
+  v20 = [phoneNumber length];
 
   if (v20)
   {
     v21 = MEMORY[0x277CBDB70];
-    v22 = [v4 phoneNumber];
-    v23 = [v21 phoneNumberWithStringValue:v22];
+    phoneNumber2 = [v4 phoneNumber];
+    v23 = [v21 phoneNumberWithStringValue:phoneNumber2];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v24 = [a1 phoneNumbers];
-    v25 = [v24 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    phoneNumbers = [self phoneNumbers];
+    v25 = [phoneNumbers countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v25)
     {
       v26 = v25;
@@ -140,11 +140,11 @@ LABEL_8:
         {
           if (*v34 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(phoneNumbers);
           }
 
-          v29 = [*(*(&v33 + 1) + 8 * v28) value];
-          v30 = [v23 isLikePhoneNumber:v29];
+          value = [*(*(&v33 + 1) + 8 * v28) value];
+          v30 = [v23 isLikePhoneNumber:value];
 
           if (v30)
           {
@@ -156,7 +156,7 @@ LABEL_8:
         }
 
         while (v26 != v28);
-        v26 = [v24 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v26 = [phoneNumbers countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v26)
         {
           continue;
@@ -166,10 +166,10 @@ LABEL_8:
       }
     }
 
-    v24 = [a1 ds_phoneNumbers];
-    v31 = [v4 phoneNumber];
-    v32 = [v31 ds_formattedPotentialPhoneNumber];
-    v16 = [v24 containsObject:v32];
+    phoneNumbers = [self ds_phoneNumbers];
+    phoneNumber3 = [v4 phoneNumber];
+    ds_formattedPotentialPhoneNumber = [phoneNumber3 ds_formattedPotentialPhoneNumber];
+    v16 = [phoneNumbers containsObject:ds_formattedPotentialPhoneNumber];
 
 LABEL_22:
   }
@@ -189,13 +189,13 @@ LABEL_9:
 {
   v21 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CBEB58] set];
-  v3 = [a1 phoneNumbers];
-  v4 = [v3 count];
+  phoneNumbers = [self phoneNumbers];
+  v4 = [phoneNumbers count];
 
   if (v4)
   {
-    v5 = [a1 phoneNumbers];
-    v6 = [v5 valueForKey:@"value"];
+    phoneNumbers2 = [self phoneNumbers];
+    v6 = [phoneNumbers2 valueForKey:@"value"];
     v7 = [v6 valueForKey:@"stringValue"];
 
     v18 = 0u;
@@ -217,8 +217,8 @@ LABEL_9:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) ds_formattedPotentialPhoneNumber];
-          [v2 addObject:v13];
+          ds_formattedPotentialPhoneNumber = [*(*(&v16 + 1) + 8 * i) ds_formattedPotentialPhoneNumber];
+          [v2 addObject:ds_formattedPotentialPhoneNumber];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -237,13 +237,13 @@ LABEL_9:
 {
   v19 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CBEB58] set];
-  v3 = [a1 emailAddresses];
-  v4 = [v3 count];
+  emailAddresses = [self emailAddresses];
+  v4 = [emailAddresses count];
 
   if (v4)
   {
-    v5 = [a1 emailAddresses];
-    v6 = [v5 valueForKey:@"value"];
+    emailAddresses2 = [self emailAddresses];
+    v6 = [emailAddresses2 valueForKey:@"value"];
 
     v16 = 0u;
     v17 = 0u;
@@ -281,7 +281,7 @@ LABEL_9:
 
 - (id)ds_name
 {
-  v1 = [MEMORY[0x277CCAC00] componentsForContact:a1];
+  v1 = [MEMORY[0x277CCAC00] componentsForContact:self];
   if (v1)
   {
     v2 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v1 style:3 options:0];

@@ -1,9 +1,9 @@
 @interface CLSNSOperationsManager
 - (CLSNSOperationsManager)init;
 - (unint64_t)count;
-- (void)addOperation:(id)a3;
-- (void)performOperation:(id)a3 onOperationQueue:(id)a4 withTimeOut:(double)a5;
-- (void)removeOperation:(id)a3;
+- (void)addOperation:(id)operation;
+- (void)performOperation:(id)operation onOperationQueue:(id)queue withTimeOut:(double)out;
+- (void)removeOperation:(id)operation;
 @end
 
 @implementation CLSNSOperationsManager
@@ -25,12 +25,12 @@
   return v2;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   objc_msgSend_lock(self, v5, v6);
-  objc_msgSend_addObject_(self->_operations, v7, v4);
+  objc_msgSend_addObject_(self->_operations, v7, operationCopy);
   if (qword_280B2A720 != -1)
   {
     dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -42,7 +42,7 @@
     operations = self->_operations;
     v12 = v8;
     v16 = 138412546;
-    v17 = v4;
+    v17 = operationCopy;
     v18 = 2048;
     v19 = objc_msgSend_count(operations, v13, v14);
     _os_log_impl(&dword_236F71000, v12, OS_LOG_TYPE_DEFAULT, "CLSNSOperationsManager: Added operation: %@ [Pending count: %lu].", &v16, 0x16u);
@@ -53,14 +53,14 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeOperation:(id)a3
+- (void)removeOperation:(id)operation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   objc_msgSend_lock(self, v5, v6);
-  if (objc_msgSend_containsObject_(self->_operations, v7, v4))
+  if (objc_msgSend_containsObject_(self->_operations, v7, operationCopy))
   {
-    objc_msgSend_removeObject_(self->_operations, v8, v4);
+    objc_msgSend_removeObject_(self->_operations, v8, operationCopy);
     if (qword_280B2A720 != -1)
     {
       dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -72,7 +72,7 @@
       operations = self->_operations;
       v13 = v9;
       *v22 = 138412546;
-      *&v22[4] = v4;
+      *&v22[4] = operationCopy;
       *&v22[12] = 2048;
       *&v22[14] = objc_msgSend_count(operations, v14, v15);
       v16 = "CLSNSOperationsManager: Removed operation: %@ [Pending count: %lu].";
@@ -94,7 +94,7 @@ LABEL_10:
       v18 = self->_operations;
       v13 = v17;
       *v22 = 138412546;
-      *&v22[4] = v4;
+      *&v22[4] = operationCopy;
       *&v22[12] = 2048;
       *&v22[14] = objc_msgSend_count(v18, v19, v20);
       v16 = "CLSNSOperationsManager: Cannot remove unknown operation: %@ [Pending count: %lu].";
@@ -115,22 +115,22 @@ LABEL_10:
   return v6;
 }
 
-- (void)performOperation:(id)a3 onOperationQueue:(id)a4 withTimeOut:(double)a5
+- (void)performOperation:(id)operation onOperationQueue:(id)queue withTimeOut:(double)out
 {
-  v8 = a3;
-  objc_msgSend_addOperation_(a4, v9, v8);
-  objc_msgSend_addOperation_(self, v10, v8);
-  v11 = dispatch_time(0, (a5 * 1000000000.0));
+  operationCopy = operation;
+  objc_msgSend_addOperation_(queue, v9, operationCopy);
+  objc_msgSend_addOperation_(self, v10, operationCopy);
+  v11 = dispatch_time(0, (out * 1000000000.0));
   v12 = qos_class_self();
   v13 = dispatch_get_global_queue(v12, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_236F91820;
   block[3] = &unk_278A181A0;
-  v17 = a5;
+  outCopy = out;
   block[4] = self;
-  v16 = v8;
-  v14 = v8;
+  v16 = operationCopy;
+  v14 = operationCopy;
   dispatch_after(v11, v13, block);
 }
 

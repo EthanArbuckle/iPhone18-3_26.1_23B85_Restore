@@ -1,9 +1,9 @@
 @interface NTKRichComplicationCornerGaugeSwiftUIView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (id)_outerView;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -14,9 +14,9 @@
   swiftUIView = self->_swiftUIView;
   if (!swiftUIView)
   {
-    v4 = [off_27877BE70 async];
+    async = [off_27877BE70 async];
     v5 = self->_swiftUIView;
-    self->_swiftUIView = v4;
+    self->_swiftUIView = async;
 
     [(CDComplicationHostingView *)self->_swiftUIView setFilterProvider:self];
     objc_initWeak(&location, self);
@@ -41,35 +41,35 @@ void __55__NTKRichComplicationCornerGaugeSwiftUIView__outerView__block_invoke(ui
   [v5 complicationDisplay:WeakRetained renderStatsWithTime:a2 cost:a3];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationCornerGaugeSwiftUIView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDComplicationHostingView *)self->_swiftUIView setPaused:v3];
+  [(CDComplicationHostingView *)self->_swiftUIView setPaused:pausedCopy];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [v5 labelData];
-  [(CDComplicationHostingView *)self->_swiftUIView setViewData:v6];
+  templateCopy = template;
+  labelData = [templateCopy labelData];
+  [(CDComplicationHostingView *)self->_swiftUIView setViewData:labelData];
 
-  v9 = [v5 gaugeProvider];
-  v7 = [v5 leadingTextProvider];
-  v8 = [v5 trailingTextProvider];
+  gaugeProvider = [templateCopy gaugeProvider];
+  leadingTextProvider = [templateCopy leadingTextProvider];
+  trailingTextProvider = [templateCopy trailingTextProvider];
 
-  [(CDRichComplicationCornerBaseGaugeView *)self handleGaugeProvider:v9 leftTextProvider:v7 rightTextProvider:v8];
+  [(CDRichComplicationCornerBaseGaugeView *)self handleGaugeProvider:gaugeProvider leftTextProvider:leadingTextProvider rightTextProvider:trailingTextProvider];
 }
 
 - (void)updateMonochromeColor
@@ -80,12 +80,12 @@ void __55__NTKRichComplicationCornerGaugeSwiftUIView__outerView__block_invoke(ui
   [(CDComplicationHostingView *)self->_swiftUIView updateMonochromeColor];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationCornerGaugeSwiftUIView;
   [(CDRichComplicationCornerBaseGaugeView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CDComplicationHostingView *)self->_swiftUIView transitionToMonochromeWithFraction:a3];
+  [(CDComplicationHostingView *)self->_swiftUIView transitionToMonochromeWithFraction:fraction];
 }
 
 @end

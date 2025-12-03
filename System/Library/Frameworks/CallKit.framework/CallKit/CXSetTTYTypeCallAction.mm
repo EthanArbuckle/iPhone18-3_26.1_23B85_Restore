@@ -1,21 +1,21 @@
 @interface CXSetTTYTypeCallAction
-- (CXSetTTYTypeCallAction)initWithCallUUID:(id)a3 ttyType:(int64_t)a4;
-- (CXSetTTYTypeCallAction)initWithCoder:(id)a3;
+- (CXSetTTYTypeCallAction)initWithCallUUID:(id)d ttyType:(int64_t)type;
+- (CXSetTTYTypeCallAction)initWithCoder:(id)coder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSetTTYTypeCallAction
 
-- (CXSetTTYTypeCallAction)initWithCallUUID:(id)a3 ttyType:(int64_t)a4
+- (CXSetTTYTypeCallAction)initWithCallUUID:(id)d ttyType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = CXSetTTYTypeCallAction;
-  result = [(CXCallAction *)&v6 initWithCallUUID:a3];
+  result = [(CXCallAction *)&v6 initWithCallUUID:d];
   if (result)
   {
-    result->_ttyType = a4;
+    result->_ttyType = type;
   }
 
   return result;
@@ -25,45 +25,45 @@
 {
   v5.receiver = self;
   v5.super_class = CXSetTTYTypeCallAction;
-  v3 = [(CXCallAction *)&v5 customDescription];
-  [v3 appendFormat:@" ttyType=%ld", -[CXSetTTYTypeCallAction ttyType](self, "ttyType")];
+  customDescription = [(CXCallAction *)&v5 customDescription];
+  [customDescription appendFormat:@" ttyType=%ld", -[CXSetTTYTypeCallAction ttyType](self, "ttyType")];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXSetTTYTypeCallAction;
-  v6 = a3;
-  [(CXAction *)&v7 updateCopy:v6 withZone:a4];
-  [v6 setTtyType:{-[CXSetTTYTypeCallAction ttyType](self, "ttyType", v7.receiver, v7.super_class)}];
+  copyCopy = copy;
+  [(CXAction *)&v7 updateCopy:copyCopy withZone:zone];
+  [copyCopy setTtyType:{-[CXSetTTYTypeCallAction ttyType](self, "ttyType", v7.receiver, v7.super_class)}];
 }
 
-- (CXSetTTYTypeCallAction)initWithCoder:(id)a3
+- (CXSetTTYTypeCallAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CXSetTTYTypeCallAction;
-  v5 = [(CXCallAction *)&v8 initWithCoder:v4];
+  v5 = [(CXCallAction *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_ttyType);
-    v5->_ttyType = [v4 decodeIntegerForKey:v6];
+    v5->_ttyType = [coderCopy decodeIntegerForKey:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXSetTTYTypeCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXSetTTYTypeCallAction *)self ttyType:v7.receiver];
   v6 = NSStringFromSelector(sel_ttyType);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:v5 forKey:v6];
 }
 
 @end

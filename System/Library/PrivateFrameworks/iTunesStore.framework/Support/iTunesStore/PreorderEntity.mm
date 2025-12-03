@@ -1,37 +1,37 @@
 @interface PreorderEntity
-+ (id)newClientPreorderWithPersistentID:(int64_t)a3 allValues:(const void *)a4;
-+ (id)newValueDictionaryWithItem:(id)a3;
-- (void)setValuesWithItem:(id)a3;
++ (id)newClientPreorderWithPersistentID:(int64_t)d allValues:(const void *)values;
++ (id)newValueDictionaryWithItem:(id)item;
+- (void)setValuesWithItem:(id)item;
 @end
 
 @implementation PreorderEntity
 
-+ (id)newClientPreorderWithPersistentID:(int64_t)a3 allValues:(const void *)a4
++ (id)newClientPreorderWithPersistentID:(int64_t)d allValues:(const void *)values
 {
-  v5 = [[SSPreorder alloc] _initWithPersistentIdentifier:a3];
-  [v5 _setArtistName:*a4];
-  [v5 _setItemKind:a4[2]];
-  [v5 _setReleaseDateString:a4[4]];
-  [v5 _setStoreAccountIdentifier:a4[5]];
-  [v5 _setTitle:a4[8]];
-  v6 = a4[3];
+  v5 = [[SSPreorder alloc] _initWithPersistentIdentifier:d];
+  [v5 _setArtistName:*values];
+  [v5 _setItemKind:values[2]];
+  [v5 _setReleaseDateString:values[4]];
+  [v5 _setStoreAccountIdentifier:values[5]];
+  [v5 _setTitle:values[8]];
+  v6 = values[3];
   if (v6)
   {
     [v6 doubleValue];
     [v5 _setReleaseDate:{+[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:")}];
   }
 
-  if (a4[6])
+  if (values[6])
   {
     [v5 _setStoreItemIdentifier:SSGetItemIdentifierFromValue()];
   }
 
-  if (a4[7])
+  if (values[7])
   {
     [v5 _setStorePreorderIdentifier:SSGetItemIdentifierFromValue()];
   }
 
-  if (a4[1])
+  if (values[1])
   {
     objc_opt_class();
     ObjectWithArchivedData = SSCodingCreateObjectWithArchivedData();
@@ -41,53 +41,53 @@
   return v5;
 }
 
-+ (id)newValueDictionaryWithItem:(id)a3
++ (id)newValueDictionaryWithItem:(id)item
 {
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [a3 artistName];
-  if (v5)
+  artistName = [item artistName];
+  if (artistName)
   {
-    [v4 setObject:v5 forKey:@"artist_name"];
+    [v4 setObject:artistName forKey:@"artist_name"];
   }
 
-  v6 = [a3 itemKind];
-  if (v6)
+  itemKind = [item itemKind];
+  if (itemKind)
   {
-    [v4 setObject:v6 forKey:@"kind"];
+    [v4 setObject:itemKind forKey:@"kind"];
   }
 
-  v7 = [a3 releaseDate];
-  if (v7)
+  releaseDate = [item releaseDate];
+  if (releaseDate)
   {
-    [v7 timeIntervalSinceReferenceDate];
+    [releaseDate timeIntervalSinceReferenceDate];
     [v4 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"release_date"}];
   }
 
-  v8 = [a3 releaseDateString];
-  if (v8)
+  releaseDateString = [item releaseDateString];
+  if (releaseDateString)
   {
-    [v4 setObject:v8 forKey:@"release_date_string"];
+    [v4 setObject:releaseDateString forKey:@"release_date_string"];
   }
 
-  v9 = [a3 ITunesStoreIdentifier];
-  if (v9)
+  iTunesStoreIdentifier = [item ITunesStoreIdentifier];
+  if (iTunesStoreIdentifier)
   {
-    [v4 setObject:v9 forKey:@"store_item_id"];
+    [v4 setObject:iTunesStoreIdentifier forKey:@"store_item_id"];
   }
 
-  v10 = [a3 preOrderIdentifier];
-  if (v10)
+  preOrderIdentifier = [item preOrderIdentifier];
+  if (preOrderIdentifier)
   {
-    [v4 setObject:v10 forKey:@"store_preorder_id"];
+    [v4 setObject:preOrderIdentifier forKey:@"store_preorder_id"];
   }
 
-  v11 = [a3 itemTitle];
-  if (v11)
+  itemTitle = [item itemTitle];
+  if (itemTitle)
   {
-    [v4 setObject:v11 forKey:@"title"];
+    [v4 setObject:itemTitle forKey:@"title"];
   }
 
-  if ([a3 imageCollection])
+  if ([item imageCollection])
   {
     ArchivableData = SSCodingCreateArchivableData();
     if (ArchivableData)
@@ -100,9 +100,9 @@
   return v4;
 }
 
-- (void)setValuesWithItem:(id)a3
+- (void)setValuesWithItem:(id)item
 {
-  v4 = [objc_opt_class() newValueDictionaryWithItem:a3];
+  v4 = [objc_opt_class() newValueDictionaryWithItem:item];
   [(PreorderEntity *)self setValuesWithDictionary:v4];
 }
 

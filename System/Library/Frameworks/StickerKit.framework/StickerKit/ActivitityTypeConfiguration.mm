@@ -1,40 +1,40 @@
 @interface ActivitityTypeConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC10StickerKit27ActivitityTypeConfiguration)init;
-- (_TtC10StickerKit27ActivitityTypeConfiguration)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (_TtC10StickerKit27ActivitityTypeConfiguration)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation ActivitityTypeConfiguration
 
-- (_TtC10StickerKit27ActivitityTypeConfiguration)initWithBSXPCCoder:(id)a3
+- (_TtC10StickerKit27ActivitityTypeConfiguration)initWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  sub_19A716EC8(a3);
+  sub_19A716EC8(coder);
   v5 = v4;
   swift_unknownObjectRelease();
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_beginAccess();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
 
   v6 = sub_19A7AAFE4();
 
   v7 = sub_19A7AAFE4();
-  [a3 encodeObject:v6 forKey:v7];
+  [coder encodeObject:v6 forKey:v7];
 
   swift_unknownObjectRelease();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_19A7ABB44();
     swift_unknownObjectRelease();
@@ -43,7 +43,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ActivitityTypeConfiguration.isEqual(_:)(v8);

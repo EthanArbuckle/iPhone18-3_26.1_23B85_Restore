@@ -11,7 +11,7 @@
 
 - (NSString)activityType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24F92B098();
 
   return v3;
@@ -27,7 +27,7 @@
 
 - (UIImage)activityImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24F8BA920();
 
   return v3;
@@ -35,7 +35,7 @@
 
 - (id)_systemImageName
 {
-  v2 = self;
+  selfCopy = self;
   sub_24F8BA9EC();
   v4 = v3;
 
@@ -54,7 +54,7 @@
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_24F8BAD6C();
 }
 

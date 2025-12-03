@@ -2,54 +2,54 @@
 + (CRKCourseEnrollmentController)sharedEnrollmentController;
 + (void)sharedEnrollmentController;
 - (BOOL)canBrowseForInvitations;
-- (BOOL)instructor:(id)a3 isForCourse:(id)a4;
-- (BOOL)isCourseActive:(id)a3;
-- (BOOL)isInstructorWithIdentifier:(id)a3 activeForCourse:(id)a4;
-- (BOOL)isInstructorWithIdentifier:(id)a3 disconnectableForCourse:(id)a4;
-- (BOOL)isInstructorWithIdentifier:(id)a3 observingStudentScreenForCourse:(id)a4;
-- (BOOL)isStudentScreenBeingObservedForCourse:(id)a3;
+- (BOOL)instructor:(id)instructor isForCourse:(id)course;
+- (BOOL)isCourseActive:(id)active;
+- (BOOL)isInstructorWithIdentifier:(id)identifier activeForCourse:(id)course;
+- (BOOL)isInstructorWithIdentifier:(id)identifier disconnectableForCourse:(id)course;
+- (BOOL)isInstructorWithIdentifier:(id)identifier observingStudentScreenForCourse:(id)course;
+- (BOOL)isStudentScreenBeingObservedForCourse:(id)course;
 - (BOOL)updateScreenObservingInstructors;
 - (CRKCourseEnrollmentController)init;
-- (CRKCourseEnrollmentController)initWithStudentDaemonProxy:(id)a3;
+- (CRKCourseEnrollmentController)initWithStudentDaemonProxy:(id)proxy;
 - (id)activeCourseIdentifiers;
 - (id)activeCourses;
-- (id)activeInstructorsWithIdentifier:(id)a3 forCourse:(id)a4;
-- (id)anonymousInstructorUsersForCourse:(id)a3;
-- (id)courseWithIdentifier:(id)a3;
-- (id)coursesBySortingCourses:(id)a3;
-- (id)instructorUsersForCourse:(id)a3;
-- (id)invitationWithCourseIdentifier:(id)a3;
-- (id)observersRespondingToSelector:(SEL)a3;
-- (id)syntheticUserForAnonymousInstructor:(id)a3;
-- (void)addEnrollmentObserver:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)daemonProxy:(id)a3 didReceiveNotificationWithName:(id)a4 userInfo:(id)a5;
-- (void)daemonProxyDidConnect:(id)a3;
+- (id)activeInstructorsWithIdentifier:(id)identifier forCourse:(id)course;
+- (id)anonymousInstructorUsersForCourse:(id)course;
+- (id)courseWithIdentifier:(id)identifier;
+- (id)coursesBySortingCourses:(id)courses;
+- (id)instructorUsersForCourse:(id)course;
+- (id)invitationWithCourseIdentifier:(id)identifier;
+- (id)observersRespondingToSelector:(SEL)selector;
+- (id)syntheticUserForAnonymousInstructor:(id)instructor;
+- (void)addEnrollmentObserver:(id)observer;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)daemonProxy:(id)proxy didReceiveNotificationWithName:(id)name userInfo:(id)info;
+- (void)daemonProxyDidConnect:(id)connect;
 - (void)dealloc;
 - (void)didUpdateActiveCourses;
 - (void)didUpdateCourses;
 - (void)didUpdateInvitations;
 - (void)didUpdateSettingsUIVisibility;
-- (void)disconnectInstructorWithIdentifier:(id)a3 forCourse:(id)a4;
-- (void)disconnectOperationDidFinish:(id)a3;
+- (void)disconnectInstructorWithIdentifier:(id)identifier forCourse:(id)course;
+- (void)disconnectOperationDidFinish:(id)finish;
 - (void)fetchActiveInstructors;
-- (void)fetchActiveInstructorsOperationDidFinish:(id)a3;
+- (void)fetchActiveInstructorsOperationDidFinish:(id)finish;
 - (void)fetchConfiguration;
-- (void)fetchConfigurationTypeOperationDidFinish:(id)a3;
+- (void)fetchConfigurationTypeOperationDidFinish:(id)finish;
 - (void)fetchCourseInvitations;
-- (void)fetchCourseInvitationsOperationDidFinish:(id)a3;
+- (void)fetchCourseInvitationsOperationDidFinish:(id)finish;
 - (void)fetchCourses;
-- (void)fetchCoursesOperationDidFinish:(id)a3;
+- (void)fetchCoursesOperationDidFinish:(id)finish;
 - (void)fetchStoredCourses;
-- (void)invitationWithIdentifierDidFail:(id)a3 withLocalizedReason:(id)a4;
-- (void)notifyDaemonOfSettingsPaneActivationOperationDidFail:(id)a3;
-- (void)setCourses:(id)a3;
+- (void)invitationWithIdentifierDidFail:(id)fail withLocalizedReason:(id)reason;
+- (void)notifyDaemonOfSettingsPaneActivationOperationDidFail:(id)fail;
+- (void)setCourses:(id)courses;
 - (void)startBrowsingForInvitations;
 - (void)startLongRunningOperations;
 - (void)stopBrowsingForInvitations;
 - (void)storeCourses;
-- (void)taskOperation:(id)a3 didPostNotificationWithName:(id)a4 userInfo:(id)a5;
+- (void)taskOperation:(id)operation didPostNotificationWithName:(id)name userInfo:(id)info;
 - (void)updateInvitationBrowsingStatus;
 - (void)updateSettingsUIVisibility;
 - (void)userDidActivateSettingsPane;
@@ -82,11 +82,11 @@
   return v4;
 }
 
-- (CRKCourseEnrollmentController)initWithStudentDaemonProxy:(id)a3
+- (CRKCourseEnrollmentController)initWithStudentDaemonProxy:(id)proxy
 {
   v21[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  proxyCopy = proxy;
+  if (!proxyCopy)
   {
     [CRKCourseEnrollmentController initWithStudentDaemonProxy:];
   }
@@ -109,33 +109,33 @@
     mStoredCourses = v6->mStoredCourses;
     v6->mStoredCourses = v11;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v13;
+    v6->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v6->_studentDaemonProxy, a3);
+    objc_storeStrong(&v6->_studentDaemonProxy, proxy);
     v15 = objc_opt_new();
     activeInstructors = v6->_activeInstructors;
     v6->_activeInstructors = v15;
 
     v6->_iCloudAccountStatus = 0;
-    [v5 addObserver:v6];
-    if ([v5 isConnected])
+    [proxyCopy addObserver:v6];
+    if ([proxyCopy isConnected])
     {
-      [(CRKCourseEnrollmentController *)v6 daemonProxyDidConnect:v5];
+      [(CRKCourseEnrollmentController *)v6 daemonProxyDidConnect:proxyCopy];
     }
 
     else
     {
-      [v5 connect];
+      [proxyCopy connect];
     }
 
     [(CRKCourseEnrollmentController *)v6 fetchStoredCourses];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v6 selector:sel_applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v6 selector:sel_applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel_applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
   }
 
   return v6;
@@ -143,33 +143,33 @@
 
 - (void)dealloc
 {
-  v3 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
-  [(CRKCourseEnrollmentController *)self daemonProxyDidDisconnect:v3];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  [(CRKCourseEnrollmentController *)self daemonProxyDidDisconnect:studentDaemonProxy];
 
   v4.receiver = self;
   v4.super_class = CRKCourseEnrollmentController;
   [(CRKCourseEnrollmentController *)&v4 dealloc];
 }
 
-- (void)addEnrollmentObserver:(id)a3
+- (void)addEnrollmentObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRKCourseEnrollmentController *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(CRKCourseEnrollmentController *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (id)courseWithIdentifier:(id)a3
+- (id)courseWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(CRKCourseEnrollmentController *)self courses];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    courses = [(CRKCourseEnrollmentController *)self courses];
+    v6 = [courses countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -179,12 +179,12 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(courses);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 courseIdentifier];
-          v11 = [v10 isEqual:v4];
+          courseIdentifier = [v9 courseIdentifier];
+          v11 = [courseIdentifier isEqual:identifierCopy];
 
           if (v11)
           {
@@ -193,7 +193,7 @@
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [courses countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -214,18 +214,18 @@ LABEL_12:
   return v6;
 }
 
-- (id)invitationWithCourseIdentifier:(id)a3
+- (id)invitationWithCourseIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(CRKCourseEnrollmentController *)self courseInvitations];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    courseInvitations = [(CRKCourseEnrollmentController *)self courseInvitations];
+    v6 = [courseInvitations countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -235,12 +235,12 @@ LABEL_12:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(courseInvitations);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 courseIdentifier];
-          v11 = [v10 isEqual:v4];
+          courseIdentifier = [v9 courseIdentifier];
+          v11 = [courseIdentifier isEqual:identifierCopy];
 
           if (v11)
           {
@@ -249,7 +249,7 @@ LABEL_12:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [courseInvitations countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -270,51 +270,51 @@ LABEL_12:
   return v6;
 }
 
-- (id)instructorUsersForCourse:(id)a3
+- (id)instructorUsersForCourse:(id)course
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
-  v6 = [v5 instructorsByIdentifier];
-  v7 = [v6 allValues];
-  v8 = [v4 crk_setByCopyingObjectsFromArray:v7];
+  courseCopy = course;
+  instructorsByIdentifier = [courseCopy instructorsByIdentifier];
+  allValues = [instructorsByIdentifier allValues];
+  v8 = [v4 crk_setByCopyingObjectsFromArray:allValues];
 
-  v9 = [(CRKCourseEnrollmentController *)self anonymousInstructorUsersForCourse:v5];
+  v9 = [(CRKCourseEnrollmentController *)self anonymousInstructorUsersForCourse:courseCopy];
 
   v10 = [v8 setByAddingObjectsFromSet:v9];
 
   return v10;
 }
 
-- (BOOL)isCourseActive:(id)a3
+- (BOOL)isCourseActive:(id)active
 {
-  v4 = a3;
-  v5 = [(CRKCourseEnrollmentController *)self activeInstructors];
+  activeCopy = active;
+  activeInstructors = [(CRKCourseEnrollmentController *)self activeInstructors];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__CRKCourseEnrollmentController_isCourseActive___block_invoke;
   v8[3] = &unk_278DC1CC8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  LOBYTE(v4) = [v5 crk_containsObjectMatchingPredicate:v8];
+  v9 = activeCopy;
+  v6 = activeCopy;
+  LOBYTE(activeCopy) = [activeInstructors crk_containsObjectMatchingPredicate:v8];
 
-  return v4;
+  return activeCopy;
 }
 
-- (BOOL)isStudentScreenBeingObservedForCourse:(id)a3
+- (BOOL)isStudentScreenBeingObservedForCourse:(id)course
 {
-  v4 = a3;
-  v5 = [(CRKCourseEnrollmentController *)self activeInstructors];
+  courseCopy = course;
+  activeInstructors = [(CRKCourseEnrollmentController *)self activeInstructors];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCourse___block_invoke;
   v8[3] = &unk_278DC1CC8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  LOBYTE(v4) = [v5 crk_containsObjectMatchingPredicate:v8];
+  v9 = courseCopy;
+  v6 = courseCopy;
+  LOBYTE(courseCopy) = [activeInstructors crk_containsObjectMatchingPredicate:v8];
 
-  return v4;
+  return courseCopy;
 }
 
 uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCourse___block_invoke(uint64_t a1, void *a2)
@@ -333,59 +333,59 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
   return v4;
 }
 
-- (BOOL)isInstructorWithIdentifier:(id)a3 disconnectableForCourse:(id)a4
+- (BOOL)isInstructorWithIdentifier:(id)identifier disconnectableForCourse:(id)course
 {
-  v4 = [(CRKCourseEnrollmentController *)self activeInstructorsWithIdentifier:a3 forCourse:a4];
+  v4 = [(CRKCourseEnrollmentController *)self activeInstructorsWithIdentifier:identifier forCourse:course];
   v5 = [v4 crk_containsObjectMatchingPredicate:&__block_literal_global_34];
 
   return v5;
 }
 
-- (BOOL)isInstructorWithIdentifier:(id)a3 activeForCourse:(id)a4
+- (BOOL)isInstructorWithIdentifier:(id)identifier activeForCourse:(id)course
 {
-  v4 = [(CRKCourseEnrollmentController *)self activeInstructorsWithIdentifier:a3 forCourse:a4];
+  v4 = [(CRKCourseEnrollmentController *)self activeInstructorsWithIdentifier:identifier forCourse:course];
   v5 = [v4 count] != 0;
 
   return v5;
 }
 
-- (BOOL)isInstructorWithIdentifier:(id)a3 observingStudentScreenForCourse:(id)a4
+- (BOOL)isInstructorWithIdentifier:(id)identifier observingStudentScreenForCourse:(id)course
 {
-  v4 = [(CRKCourseEnrollmentController *)self activeInstructorsWithIdentifier:a3 forCourse:a4];
+  v4 = [(CRKCourseEnrollmentController *)self activeInstructorsWithIdentifier:identifier forCourse:course];
   v5 = [v4 crk_containsObjectMatchingPredicate:&__block_literal_global_38];
 
   return v5;
 }
 
-- (void)disconnectInstructorWithIdentifier:(id)a3 forCourse:(id)a4
+- (void)disconnectInstructorWithIdentifier:(id)identifier forCourse:(id)course
 {
-  v6 = a4;
-  v7 = a3;
+  courseCopy = course;
+  identifierCopy = identifier;
   v11 = objc_opt_new();
-  [v11 setInstructorIdentifier:v7];
+  [v11 setInstructorIdentifier:identifierCopy];
 
-  v8 = [v6 courseIdentifier];
+  courseIdentifier = [courseCopy courseIdentifier];
 
-  [v11 setCourseIdentifier:v8];
-  v9 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
-  v10 = [v9 enqueuedOperationForRequest:v11];
+  [v11 setCourseIdentifier:courseIdentifier];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  v10 = [studentDaemonProxy enqueuedOperationForRequest:v11];
 
   [v10 addTarget:self selector:sel_disconnectOperationDidFinish_ forOperationEvents:6];
 }
 
-- (void)disconnectOperationDidFinish:(id)a3
+- (void)disconnectOperationDidFinish:(id)finish
 {
-  v3 = a3;
-  v4 = [v3 request];
+  finishCopy = finish;
+  request = [finishCopy request];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [CRKCourseEnrollmentController disconnectOperationDidFinish:];
   }
 
-  v5 = [v3 error];
+  error = [finishCopy error];
 
-  if (v5)
+  if (error)
   {
     v6 = _CRKLogSettings();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -405,23 +405,23 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
   }
 
   v4 = objc_opt_new();
-  v5 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
-  v6 = [v5 enqueuedOperationForRequest:v4];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  v6 = [studentDaemonProxy enqueuedOperationForRequest:v4];
 
   [v6 addTarget:self selector:sel_notifyDaemonOfSettingsPaneActivationOperationDidFail_ forOperationEvents:4];
 }
 
-- (void)notifyDaemonOfSettingsPaneActivationOperationDidFail:(id)a3
+- (void)notifyDaemonOfSettingsPaneActivationOperationDidFail:(id)fail
 {
-  v3 = a3;
+  failCopy = fail;
   v4 = _CRKLogGeneral_2();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [CRKCourseEnrollmentController notifyDaemonOfSettingsPaneActivationOperationDidFail:v3];
+    [CRKCourseEnrollmentController notifyDaemonOfSettingsPaneActivationOperationDidFail:failCopy];
   }
 }
 
-- (void)daemonProxyDidConnect:(id)a3
+- (void)daemonProxyDidConnect:(id)connect
 {
   [(CRKCourseEnrollmentController *)self fetchCourses];
   [(CRKCourseEnrollmentController *)self fetchCourseInvitations];
@@ -430,11 +430,11 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
   [(CRKCourseEnrollmentController *)self startLongRunningOperations];
 }
 
-- (void)daemonProxy:(id)a3 didReceiveNotificationWithName:(id)a4 userInfo:(id)a5
+- (void)daemonProxy:(id)proxy didReceiveNotificationWithName:(id)name userInfo:(id)info
 {
-  v8 = a4;
+  nameCopy = name;
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"com.apple.studentd.configuration.didchange"];
-  v7 = [v8 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
@@ -442,13 +442,13 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
     [(CRKCourseEnrollmentController *)self fetchCourses];
   }
 
-  else if ([v8 isEqualToString:@"CRKActiveInstructorsDidChange"])
+  else if ([nameCopy isEqualToString:@"CRKActiveInstructorsDidChange"])
   {
     [(CRKCourseEnrollmentController *)self fetchActiveInstructors];
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v4 = _CRKLogSettings();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -457,11 +457,11 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
     _os_log_impl(&dword_243550000, v4, OS_LOG_TYPE_DEFAULT, "Connecting to studentd because Settings will enter the foreground", v6, 2u);
   }
 
-  v5 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
-  [v5 connect];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  [studentDaemonProxy connect];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v4 = _CRKLogSettings();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -470,8 +470,8 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
     _os_log_impl(&dword_243550000, v4, OS_LOG_TYPE_DEFAULT, "Disconnecting from studentd because Settings entered the background", v6, 2u);
   }
 
-  v5 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
-  [v5 disconnect];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  [studentDaemonProxy disconnect];
 }
 
 - (void)startLongRunningOperations
@@ -502,29 +502,29 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
 - (BOOL)canBrowseForInvitations
 {
   v3 = +[CRKSystemInfo sharedSystemInfo];
-  v4 = [v3 isEphemeralMultiUser];
+  isEphemeralMultiUser = [v3 isEphemeralMultiUser];
 
-  if (v4)
+  if (isEphemeralMultiUser)
   {
     return 0;
   }
 
-  v5 = [(CRKCourseEnrollmentController *)self configurationType];
+  configurationType = [(CRKCourseEnrollmentController *)self configurationType];
   if (!self->mConfigurationFetched)
   {
     return 0;
   }
 
-  v6 = (v5 >> 1) & 1;
+  v6 = (configurationType >> 1) & 1;
   return ![(CRKCourseEnrollmentController *)self configurationType]|| v6;
 }
 
 - (void)startBrowsingForInvitations
 {
   [(CRKCourseEnrollmentController *)self stopBrowsingForInvitations];
-  v3 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
   v4 = objc_opt_new();
-  v5 = [v3 enqueuedOperationForRequest:v4];
+  v5 = [studentDaemonProxy enqueuedOperationForRequest:v4];
   mBrowseOperation = self->mBrowseOperation;
   self->mBrowseOperation = v5;
 
@@ -544,36 +544,36 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
 - (void)fetchConfiguration
 {
   v5 = objc_opt_new();
-  v3 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
-  v4 = [v3 enqueuedOperationForRequest:v5];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  v4 = [studentDaemonProxy enqueuedOperationForRequest:v5];
 
   [v4 addTarget:self selector:sel_fetchConfigurationTypeOperationDidFinish_ forOperationEvents:6];
 }
 
-- (void)fetchConfigurationTypeOperationDidFinish:(id)a3
+- (void)fetchConfigurationTypeOperationDidFinish:(id)finish
 {
-  v4 = a3;
-  if (!v4)
+  finishCopy = finish;
+  if (!finishCopy)
   {
     [CRKCourseEnrollmentController fetchConfigurationTypeOperationDidFinish:];
   }
 
-  v5 = [v4 error];
+  error = [finishCopy error];
 
-  if (v5)
+  if (error)
   {
     v6 = _CRKLogSettings();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [CRKCourseEnrollmentController fetchConfigurationTypeOperationDidFinish:v4];
+      [CRKCourseEnrollmentController fetchConfigurationTypeOperationDidFinish:finishCopy];
     }
   }
 
   else
   {
-    v7 = [v4 resultObject];
-    -[CRKCourseEnrollmentController setConfigurationType:](self, "setConfigurationType:", [v7 configurationType]);
-    -[CRKCourseEnrollmentController setSignedInToStudentMAID:](self, "setSignedInToStudentMAID:", [v7 isSignedInToStudentMAID]);
+    resultObject = [finishCopy resultObject];
+    -[CRKCourseEnrollmentController setConfigurationType:](self, "setConfigurationType:", [resultObject configurationType]);
+    -[CRKCourseEnrollmentController setSignedInToStudentMAID:](self, "setSignedInToStudentMAID:", [resultObject isSignedInToStudentMAID]);
     self->mConfigurationFetched = 1;
     [(CRKCourseEnrollmentController *)self updateInvitationBrowsingStatus];
     [(CRKCourseEnrollmentController *)self updateSettingsUIVisibility];
@@ -582,23 +582,23 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
 
 - (void)fetchCourses
 {
-  v3 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
   v4 = objc_opt_new();
-  v5 = [v3 enqueuedOperationForRequest:v4];
+  v5 = [studentDaemonProxy enqueuedOperationForRequest:v4];
 
   [v5 addTarget:self selector:sel_fetchCoursesOperationDidFinish_ forOperationEvents:6];
 }
 
-- (void)fetchCoursesOperationDidFinish:(id)a3
+- (void)fetchCoursesOperationDidFinish:(id)finish
 {
-  v8 = [a3 resultObject];
-  v4 = [v8 courses];
-  v5 = [(CRKCourseEnrollmentController *)self coursesBySortingCourses:v4];
-  v6 = [(CRKCourseEnrollmentController *)self activeCourseIdentifiers];
+  resultObject = [finish resultObject];
+  courses = [resultObject courses];
+  v5 = [(CRKCourseEnrollmentController *)self coursesBySortingCourses:courses];
+  activeCourseIdentifiers = [(CRKCourseEnrollmentController *)self activeCourseIdentifiers];
   [(CRKCourseEnrollmentController *)self setCourses:v5];
-  v7 = [(CRKCourseEnrollmentController *)self activeCourseIdentifiers];
+  activeCourseIdentifiers2 = [(CRKCourseEnrollmentController *)self activeCourseIdentifiers];
   [(CRKCourseEnrollmentController *)self didUpdateCourses];
-  if (v6 | v7 && ([v6 isEqual:v7] & 1) == 0)
+  if (activeCourseIdentifiers | activeCourseIdentifiers2 && ([activeCourseIdentifiers isEqual:activeCourseIdentifiers2] & 1) == 0)
   {
     [(CRKCourseEnrollmentController *)self didUpdateActiveCourses];
   }
@@ -606,9 +606,9 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
   [(CRKCourseEnrollmentController *)self updateSettingsUIVisibility];
 }
 
-- (void)setCourses:(id)a3
+- (void)setCourses:(id)courses
 {
-  objc_storeStrong(&self->_courses, a3);
+  objc_storeStrong(&self->_courses, courses);
 
   [(CRKCourseEnrollmentController *)self storeCourses];
 }
@@ -622,10 +622,10 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
 
 - (void)storeCourses
 {
-  v4 = [(CRKCourseEnrollmentController *)self courses];
-  if ([v4 count])
+  courses = [(CRKCourseEnrollmentController *)self courses];
+  if ([courses count])
   {
-    v3 = v4;
+    v3 = courses;
   }
 
   else
@@ -638,19 +638,19 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
 
 - (void)fetchCourseInvitations
 {
-  v3 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
   v4 = objc_opt_new();
-  v5 = [v3 enqueuedOperationForRequest:v4];
+  v5 = [studentDaemonProxy enqueuedOperationForRequest:v4];
 
   [v5 addTarget:self selector:sel_fetchCourseInvitationsOperationDidFinish_ forOperationEvents:6];
 }
 
-- (void)fetchCourseInvitationsOperationDidFinish:(id)a3
+- (void)fetchCourseInvitationsOperationDidFinish:(id)finish
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 resultObject];
-  v5 = [v4 courseInvitations];
-  v6 = [v5 mutableCopy];
+  resultObject = [finish resultObject];
+  courseInvitations = [resultObject courseInvitations];
+  v6 = [courseInvitations mutableCopy];
 
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"courseName" ascending:1 selector:sel_localizedStandardCompare_];
   v10[0] = v7;
@@ -658,8 +658,8 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
   [v6 sortUsingDescriptors:v8];
 
   [(CRKCourseEnrollmentController *)self setCourseInvitations:v6];
-  v9 = [v4 acceptedInvitationIdentifiers];
-  [(CRKCourseEnrollmentController *)self setAcceptedInvitationIdentifiers:v9];
+  acceptedInvitationIdentifiers = [resultObject acceptedInvitationIdentifiers];
+  [(CRKCourseEnrollmentController *)self setAcceptedInvitationIdentifiers:acceptedInvitationIdentifiers];
 
   [(CRKCourseEnrollmentController *)self didUpdateInvitations];
   [(CRKCourseEnrollmentController *)self updateSettingsUIVisibility];
@@ -667,68 +667,68 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
 
 - (void)fetchActiveInstructors
 {
-  v3 = [(CRKCourseEnrollmentController *)self fetchActiveInstructorsOperation];
-  [v3 cancel];
+  fetchActiveInstructorsOperation = [(CRKCourseEnrollmentController *)self fetchActiveInstructorsOperation];
+  [fetchActiveInstructorsOperation cancel];
 
-  v4 = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
+  studentDaemonProxy = [(CRKCourseEnrollmentController *)self studentDaemonProxy];
   v5 = objc_opt_new();
-  v6 = [v4 enqueuedOperationForRequest:v5];
+  v6 = [studentDaemonProxy enqueuedOperationForRequest:v5];
   [(CRKCourseEnrollmentController *)self setFetchActiveInstructorsOperation:v6];
 
-  v7 = [(CRKCourseEnrollmentController *)self fetchActiveInstructorsOperation];
-  [v7 addTarget:self selector:sel_fetchActiveInstructorsOperationDidFinish_ forOperationEvents:6];
+  fetchActiveInstructorsOperation2 = [(CRKCourseEnrollmentController *)self fetchActiveInstructorsOperation];
+  [fetchActiveInstructorsOperation2 addTarget:self selector:sel_fetchActiveInstructorsOperationDidFinish_ forOperationEvents:6];
 }
 
-- (void)fetchActiveInstructorsOperationDidFinish:(id)a3
+- (void)fetchActiveInstructorsOperationDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(CRKCourseEnrollmentController *)self fetchActiveInstructorsOperation];
+  finishCopy = finish;
+  fetchActiveInstructorsOperation = [(CRKCourseEnrollmentController *)self fetchActiveInstructorsOperation];
 
-  if (v5 == v4)
+  if (fetchActiveInstructorsOperation == finishCopy)
   {
     [(CRKCourseEnrollmentController *)self setFetchActiveInstructorsOperation:0];
-    v6 = [v4 error];
-    if (v6)
+    error = [finishCopy error];
+    if (error)
     {
       v7 = _CRKLogGeneral_2();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [(CRKCourseEnrollmentController *)v6 fetchActiveInstructorsOperationDidFinish:v7];
+        [(CRKCourseEnrollmentController *)error fetchActiveInstructorsOperationDidFinish:v7];
       }
     }
 
     else
     {
-      v8 = [v4 resultObject];
+      resultObject = [finishCopy resultObject];
       v9 = MEMORY[0x277CBEB98];
-      v10 = [v8 instructors];
-      v11 = [v9 setWithArray:v10];
+      instructors = [resultObject instructors];
+      v11 = [v9 setWithArray:instructors];
 
-      v12 = [(CRKCourseEnrollmentController *)self activeInstructors];
-      if (v12 | v11)
+      activeInstructors = [(CRKCourseEnrollmentController *)self activeInstructors];
+      if (activeInstructors | v11)
       {
-        v13 = v12;
-        v14 = [(CRKCourseEnrollmentController *)self activeInstructors];
-        v15 = [v14 isEqual:v11];
+        v13 = activeInstructors;
+        activeInstructors2 = [(CRKCourseEnrollmentController *)self activeInstructors];
+        v15 = [activeInstructors2 isEqual:v11];
 
         if ((v15 & 1) == 0)
         {
           [(CRKCourseEnrollmentController *)self willChangeValueForKey:@"activeInstructors"];
-          v16 = [(CRKCourseEnrollmentController *)self activeCourseIdentifiers];
+          activeCourseIdentifiers = [(CRKCourseEnrollmentController *)self activeCourseIdentifiers];
           objc_storeStrong(&self->_activeInstructors, v11);
-          v17 = [(CRKCourseEnrollmentController *)self activeCourseIdentifiers];
-          v18 = [(CRKCourseEnrollmentController *)self updateScreenObservingInstructors];
+          activeCourseIdentifiers2 = [(CRKCourseEnrollmentController *)self activeCourseIdentifiers];
+          updateScreenObservingInstructors = [(CRKCourseEnrollmentController *)self updateScreenObservingInstructors];
           [(CRKCourseEnrollmentController *)self didChangeValueForKey:@"activeInstructors"];
-          if (v16 != v17)
+          if (activeCourseIdentifiers != activeCourseIdentifiers2)
           {
-            v19 = [(CRKCourseEnrollmentController *)self courses];
-            v20 = [(CRKCourseEnrollmentController *)self coursesBySortingCourses:v19];
+            courses = [(CRKCourseEnrollmentController *)self courses];
+            v20 = [(CRKCourseEnrollmentController *)self coursesBySortingCourses:courses];
             [(CRKCourseEnrollmentController *)self setCourses:v20];
 
             [(CRKCourseEnrollmentController *)self didUpdateActiveCourses];
           }
 
-          if (v18)
+          if (updateScreenObservingInstructors)
           {
             [(CRKCourseEnrollmentController *)self didUpdateCourses];
           }
@@ -746,9 +746,9 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = self;
-  v4 = [(CRKCourseEnrollmentController *)self activeInstructors];
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  selfCopy = self;
+  activeInstructors = [(CRKCourseEnrollmentController *)self activeInstructors];
+  v5 = [activeInstructors countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v5)
   {
     v6 = v5;
@@ -759,29 +759,29 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeInstructors);
         }
 
         v9 = *(*(&v32 + 1) + 8 * i);
         if ([v9 isObservingStudentScreen])
         {
-          v10 = [v9 sessionIdentifier];
-          v11 = [v10 groupIdentifier];
-          v12 = [v11 stringValue];
+          sessionIdentifier = [v9 sessionIdentifier];
+          groupIdentifier = [sessionIdentifier groupIdentifier];
+          stringValue = [groupIdentifier stringValue];
 
-          v13 = [v3 objectForKeyedSubscript:v12];
+          v13 = [v3 objectForKeyedSubscript:stringValue];
           if (!v13)
           {
             v13 = objc_opt_new();
-            [v3 setObject:v13 forKeyedSubscript:v12];
+            [v3 setObject:v13 forKeyedSubscript:stringValue];
           }
 
-          v14 = [v9 userIdentifier];
-          [v13 addObject:v14];
+          userIdentifier = [v9 userIdentifier];
+          [v13 addObject:userIdentifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v6 = [activeInstructors countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v6);
@@ -791,8 +791,8 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v15 = [v3 allValues];
-  v16 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  allValues = [v3 allValues];
+  v16 = [allValues countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v16)
   {
     v17 = v16;
@@ -803,23 +803,23 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
       {
         if (*v29 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v28 + 1) + 8 * j) sortUsingSelector:sel_compare_];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v17 = [allValues countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v17);
   }
 
   v20 = [v3 copy];
-  v21 = [(CRKCourseEnrollmentController *)v27 observingInstructorIdentifiersByCourseIdentifiers];
-  if (v21 | v20 && (v22 = v21, -[CRKCourseEnrollmentController observingInstructorIdentifiersByCourseIdentifiers](v27, "observingInstructorIdentifiersByCourseIdentifiers"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 isEqual:v20], v23, v22, (v24 & 1) == 0))
+  observingInstructorIdentifiersByCourseIdentifiers = [(CRKCourseEnrollmentController *)selfCopy observingInstructorIdentifiersByCourseIdentifiers];
+  if (observingInstructorIdentifiersByCourseIdentifiers | v20 && (v22 = observingInstructorIdentifiersByCourseIdentifiers, -[CRKCourseEnrollmentController observingInstructorIdentifiersByCourseIdentifiers](selfCopy, "observingInstructorIdentifiersByCourseIdentifiers"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 isEqual:v20], v23, v22, (v24 & 1) == 0))
   {
-    [(CRKCourseEnrollmentController *)v27 setObservingInstructorIdentifiersByCourseIdentifiers:v20];
+    [(CRKCourseEnrollmentController *)selfCopy setObservingInstructorIdentifiersByCourseIdentifiers:v20];
     v25 = 1;
   }
 
@@ -831,14 +831,14 @@ uint64_t __71__CRKCourseEnrollmentController_isStudentScreenBeingObservedForCour
   return v25;
 }
 
-- (id)coursesBySortingCourses:(id)a3
+- (id)coursesBySortingCourses:(id)courses
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__CRKCourseEnrollmentController_coursesBySortingCourses___block_invoke;
   v5[3] = &unk_278DC1D10;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [courses sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -882,13 +882,13 @@ uint64_t __57__CRKCourseEnrollmentController_coursesBySortingCourses___block_inv
 - (id)activeCourses
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(CRKCourseEnrollmentController *)self courses];
+  courses = [(CRKCourseEnrollmentController *)self courses];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__CRKCourseEnrollmentController_activeCourses__block_invoke;
   v8[3] = &unk_278DC1D38;
   v8[4] = self;
-  v5 = [v4 crk_filterUsingBlock:v8];
+  v5 = [courses crk_filterUsingBlock:v8];
   v6 = [v3 setWithArray:v5];
 
   return v6;
@@ -896,27 +896,27 @@ uint64_t __57__CRKCourseEnrollmentController_coursesBySortingCourses___block_inv
 
 - (id)activeCourseIdentifiers
 {
-  v2 = [(CRKCourseEnrollmentController *)self activeCourses];
-  v3 = [v2 crk_mapUsingBlock:&__block_literal_global_87];
+  activeCourses = [(CRKCourseEnrollmentController *)self activeCourses];
+  v3 = [activeCourses crk_mapUsingBlock:&__block_literal_global_87];
 
   return v3;
 }
 
-- (id)activeInstructorsWithIdentifier:(id)a3 forCourse:(id)a4
+- (id)activeInstructorsWithIdentifier:(id)identifier forCourse:(id)course
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRKCourseEnrollmentController *)self activeInstructors];
+  identifierCopy = identifier;
+  courseCopy = course;
+  activeInstructors = [(CRKCourseEnrollmentController *)self activeInstructors];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__CRKCourseEnrollmentController_activeInstructorsWithIdentifier_forCourse___block_invoke;
   v13[3] = &unk_278DC1D80;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = [v8 crk_filterUsingBlock:v13];
+  v14 = courseCopy;
+  v15 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = courseCopy;
+  v11 = [activeInstructors crk_filterUsingBlock:v13];
 
   return v11;
 }
@@ -934,36 +934,36 @@ uint64_t __75__CRKCourseEnrollmentController_activeInstructorsWithIdentifier_for
   return v3 & v2;
 }
 
-- (BOOL)instructor:(id)a3 isForCourse:(id)a4
+- (BOOL)instructor:(id)instructor isForCourse:(id)course
 {
-  v5 = a4;
-  v6 = [a3 sessionIdentifier];
-  v7 = [v6 groupIdentifier];
-  v8 = [v5 courseIdentifier];
+  courseCopy = course;
+  sessionIdentifier = [instructor sessionIdentifier];
+  groupIdentifier = [sessionIdentifier groupIdentifier];
+  courseIdentifier = [courseCopy courseIdentifier];
 
-  LOBYTE(v5) = [v7 isEqual:v8];
-  return v5;
+  LOBYTE(courseCopy) = [groupIdentifier isEqual:courseIdentifier];
+  return courseCopy;
 }
 
-- (id)anonymousInstructorUsersForCourse:(id)a3
+- (id)anonymousInstructorUsersForCourse:(id)course
 {
-  v4 = a3;
+  courseCopy = course;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 instructorsByIdentifier];
-  v7 = [v6 allKeys];
-  v8 = [v5 setWithArray:v7];
+  instructorsByIdentifier = [courseCopy instructorsByIdentifier];
+  allKeys = [instructorsByIdentifier allKeys];
+  v8 = [v5 setWithArray:allKeys];
 
-  v9 = [(CRKCourseEnrollmentController *)self activeInstructors];
+  activeInstructors = [(CRKCourseEnrollmentController *)self activeInstructors];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__CRKCourseEnrollmentController_anonymousInstructorUsersForCourse___block_invoke;
   v14[3] = &unk_278DC1DA8;
-  v15 = v4;
+  v15 = courseCopy;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v10 = v8;
-  v11 = v4;
-  v12 = [v9 crk_mapUsingBlock:v14];
+  v11 = courseCopy;
+  v12 = [activeInstructors crk_mapUsingBlock:v14];
 
   return v12;
 }
@@ -1026,16 +1026,16 @@ LABEL_13:
   return v14;
 }
 
-- (id)syntheticUserForAnonymousInstructor:(id)a3
+- (id)syntheticUserForAnonymousInstructor:(id)instructor
 {
-  v3 = a3;
+  instructorCopy = instructor;
   v4 = objc_opt_new();
-  v5 = [v3 userIdentifier];
-  [v4 setUserIdentifier:v5];
+  userIdentifier = [instructorCopy userIdentifier];
+  [v4 setUserIdentifier:userIdentifier];
 
-  v6 = [v3 displayName];
+  displayName = [instructorCopy displayName];
 
-  [v4 setDisplayName:v6];
+  [v4 setDisplayName:displayName];
   [v4 setRole:2];
 
   return v4;
@@ -1043,63 +1043,63 @@ LABEL_13:
 
 - (void)updateSettingsUIVisibility
 {
-  v3 = [(CRKCourseEnrollmentController *)self courses];
-  if ([v3 count])
+  courses = [(CRKCourseEnrollmentController *)self courses];
+  if ([courses count])
   {
-    v4 = 1;
+    isSignedInToStudentMAID = 1;
   }
 
   else
   {
-    v5 = [(CRKCourseEnrollmentController *)self courseInvitations];
-    if ([v5 count])
+    courseInvitations = [(CRKCourseEnrollmentController *)self courseInvitations];
+    if ([courseInvitations count])
     {
-      v4 = 1;
+      isSignedInToStudentMAID = 1;
     }
 
     else
     {
-      v4 = [(CRKCourseEnrollmentController *)self isSignedInToStudentMAID];
+      isSignedInToStudentMAID = [(CRKCourseEnrollmentController *)self isSignedInToStudentMAID];
     }
   }
 
-  v6 = [(CRKCourseEnrollmentController *)self settingsUIVisible];
-  if (!v6 || (v7 = v6, -[CRKCourseEnrollmentController settingsUIVisible](self, "settingsUIVisible"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 BOOLValue], v8, v7, v4 != v9))
+  settingsUIVisible = [(CRKCourseEnrollmentController *)self settingsUIVisible];
+  if (!settingsUIVisible || (v7 = settingsUIVisible, -[CRKCourseEnrollmentController settingsUIVisible](self, "settingsUIVisible"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 BOOLValue], v8, v7, isSignedInToStudentMAID != v9))
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:isSignedInToStudentMAID];
     [(CRKCourseEnrollmentController *)self setSettingsUIVisible:v10];
 
     [(CRKCourseEnrollmentController *)self didUpdateSettingsUIVisibility];
   }
 }
 
-- (void)taskOperation:(id)a3 didPostNotificationWithName:(id)a4 userInfo:(id)a5
+- (void)taskOperation:(id)operation didPostNotificationWithName:(id)name userInfo:(id)info
 {
-  v10 = a4;
-  v7 = a5;
-  if ([v10 isEqualToString:@"CRKCourseInvitationsUpdatedNotification"])
+  nameCopy = name;
+  infoCopy = info;
+  if ([nameCopy isEqualToString:@"CRKCourseInvitationsUpdatedNotification"])
   {
     [(CRKCourseEnrollmentController *)self fetchCourseInvitations];
   }
 
-  else if ([v10 isEqualToString:@"CRKCourseInvitationDidFailNotification"])
+  else if ([nameCopy isEqualToString:@"CRKCourseInvitationDidFailNotification"])
   {
-    v8 = [v7 objectForKeyedSubscript:@"Course"];
-    v9 = [v7 objectForKeyedSubscript:@"Reason"];
+    v8 = [infoCopy objectForKeyedSubscript:@"Course"];
+    v9 = [infoCopy objectForKeyedSubscript:@"Reason"];
     [(CRKCourseEnrollmentController *)self invitationWithIdentifierDidFail:v8 withLocalizedReason:v9];
   }
 }
 
-- (id)observersRespondingToSelector:(SEL)a3
+- (id)observersRespondingToSelector:(SEL)selector
 {
-  v4 = [(CRKCourseEnrollmentController *)self observers];
-  v5 = [v4 allObjects];
+  observers = [(CRKCourseEnrollmentController *)self observers];
+  allObjects = [observers allObjects];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__CRKCourseEnrollmentController_observersRespondingToSelector___block_invoke;
   v8[3] = &__block_descriptor_40_e57_B16__0__NSObject_CRKCourseEnrollmentControllerObserver__8l;
-  v8[4] = a3;
-  v6 = [v5 crk_filterUsingBlock:v8];
+  v8[4] = selector;
+  v6 = [allObjects crk_filterUsingBlock:v8];
 
   return v6;
 }
@@ -1240,11 +1240,11 @@ LABEL_13:
   }
 }
 
-- (void)invitationWithIdentifierDidFail:(id)a3 withLocalizedReason:(id)a4
+- (void)invitationWithIdentifierDidFail:(id)fail withLocalizedReason:(id)reason
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  failCopy = fail;
+  reasonCopy = reason;
   v8 = [(CRKCourseEnrollmentController *)self observersRespondingToSelector:sel_enrollmentController_invitationWithIdentifierDidFail_localizedReason_];
   v13 = 0u;
   v14 = 0u;
@@ -1265,7 +1265,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) enrollmentController:self invitationWithIdentifierDidFail:v6 localizedReason:v7];
+        [*(*(&v13 + 1) + 8 * v12++) enrollmentController:self invitationWithIdentifierDidFail:failCopy localizedReason:reasonCopy];
       }
 
       while (v10 != v12);
@@ -1279,9 +1279,9 @@ LABEL_13:
 + (void)sharedEnrollmentController
 {
   OUTLINED_FUNCTION_1_0();
-  v3 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v2 = NSStringFromSelector(v1);
-  [v3 handleFailureInMethod:v1 object:v0 file:@"CRKCourseEnrollmentController.m" lineNumber:60 description:{@"%@ must be called from the main thread", v2}];
+  [currentHandler handleFailureInMethod:v1 object:v0 file:@"CRKCourseEnrollmentController.m" lineNumber:60 description:{@"%@ must be called from the main thread", v2}];
 }
 
 - (void)initWithStudentDaemonProxy:.cold.1()

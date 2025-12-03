@@ -1,29 +1,29 @@
 @interface CRRRecommendation
 - (BOOL)isFoundInAppsSuggestion;
-- (CRRRecommendation)initWithFullyResolvedPerson:(id)a3;
-- (CRRRecommendation)initWithPerson:(id)a3;
-- (CRRRecommendation)initWithRecommendationType:(int64_t)a3 persons:(id)a4;
-- (CRRRecommendation)initWithSiriInferencePerson:(id)a3;
+- (CRRRecommendation)initWithFullyResolvedPerson:(id)person;
+- (CRRRecommendation)initWithPerson:(id)person;
+- (CRRRecommendation)initWithRecommendationType:(int64_t)type persons:(id)persons;
+- (CRRRecommendation)initWithSiriInferencePerson:(id)person;
 - (id)recommendedResult;
 @end
 
 @implementation CRRRecommendation
 
-- (CRRRecommendation)initWithPerson:(id)a3
+- (CRRRecommendation)initWithPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 personHandle];
-  v6 = [v5 value];
-  v7 = [v6 length];
+  personCopy = person;
+  personHandle = [personCopy personHandle];
+  value = [personHandle value];
+  v7 = [value length];
 
   if (v7)
   {
-    v8 = [(CRRRecommendation *)self initWithFullyResolvedPerson:v4];
+    v8 = [(CRRRecommendation *)self initWithFullyResolvedPerson:personCopy];
   }
 
   else
   {
-    v8 = [(CRRRecommendation *)self initWithSiriInferencePerson:v4];
+    v8 = [(CRRRecommendation *)self initWithSiriInferencePerson:personCopy];
   }
 
   v9 = v8;
@@ -31,61 +31,61 @@
   return v9;
 }
 
-- (CRRRecommendation)initWithSiriInferencePerson:(id)a3
+- (CRRRecommendation)initWithSiriInferencePerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 scoredAlternatives];
-  v6 = [v5 firstObject];
+  personCopy = person;
+  scoredAlternatives = [personCopy scoredAlternatives];
+  firstObject = [scoredAlternatives firstObject];
 
-  v7 = [v6 recommendation];
-  v8 = [v4 alternatives];
+  recommendation = [firstObject recommendation];
+  alternatives = [personCopy alternatives];
 
   v9 = &__NSArray0__struct;
-  if (v8)
+  if (alternatives)
   {
-    v9 = v8;
+    v9 = alternatives;
   }
 
   v10 = v9;
 
-  if (![v6 recommendation])
+  if (![firstObject recommendation])
   {
-    v11 = [v6 person];
-    v12 = [v11 personHandle];
-    v13 = [v12 isSuggested];
+    person = [firstObject person];
+    personHandle = [person personHandle];
+    isSuggested = [personHandle isSuggested];
 
-    if (v13)
+    if (isSuggested)
     {
-      v7 = 1;
+      recommendation = 1;
     }
   }
 
-  v14 = [(CRRRecommendation *)self initWithRecommendationType:v7 persons:v10];
+  v14 = [(CRRRecommendation *)self initWithRecommendationType:recommendation persons:v10];
 
   return v14;
 }
 
-- (CRRRecommendation)initWithFullyResolvedPerson:(id)a3
+- (CRRRecommendation)initWithFullyResolvedPerson:(id)person
 {
-  v8 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v8 count:1];
+  personCopy = person;
+  personCopy2 = person;
+  v5 = [NSArray arrayWithObjects:&personCopy count:1];
 
-  v6 = [(CRRRecommendation *)self initWithRecommendationType:0 persons:v5, v8];
-  return v6;
+  personCopy = [(CRRRecommendation *)self initWithRecommendationType:0 persons:v5, personCopy];
+  return personCopy;
 }
 
-- (CRRRecommendation)initWithRecommendationType:(int64_t)a3 persons:(id)a4
+- (CRRRecommendation)initWithRecommendationType:(int64_t)type persons:(id)persons
 {
-  v7 = a4;
+  personsCopy = persons;
   v11.receiver = self;
   v11.super_class = CRRRecommendation;
   v8 = [(CRRRecommendation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_recommendationType = a3;
-    objc_storeStrong(&v8->_persons, a4);
+    v8->_recommendationType = type;
+    objc_storeStrong(&v8->_persons, persons);
   }
 
   return v9;
@@ -93,33 +93,33 @@
 
 - (BOOL)isFoundInAppsSuggestion
 {
-  v2 = [(CRRRecommendation *)self persons];
-  v3 = [v2 firstObject];
-  v4 = [v3 personHandle];
-  v5 = [v4 isSuggested];
+  persons = [(CRRRecommendation *)self persons];
+  firstObject = [persons firstObject];
+  personHandle = [firstObject personHandle];
+  isSuggested = [personHandle isSuggested];
 
-  return v5;
+  return isSuggested;
 }
 
 - (id)recommendedResult
 {
-  v3 = [(CRRRecommendation *)self persons];
-  v4 = [v3 count];
+  persons = [(CRRRecommendation *)self persons];
+  v4 = [persons count];
 
   if (v4)
   {
-    v5 = [(CRRRecommendation *)self persons];
-    v6 = [v5 count];
+    persons2 = [(CRRRecommendation *)self persons];
+    v6 = [persons2 count];
 
     if (v6 == 1)
     {
-      v7 = [(CRRRecommendation *)self persons];
-      v8 = [v7 objectAtIndexedSubscript:0];
+      persons3 = [(CRRRecommendation *)self persons];
+      v8 = [persons3 objectAtIndexedSubscript:0];
 
-      v9 = [(CRRRecommendation *)self recommendationType];
-      if ((v9 - 1) >= 2)
+      recommendationType = [(CRRRecommendation *)self recommendationType];
+      if ((recommendationType - 1) >= 2)
       {
-        if (v9)
+        if (recommendationType)
         {
           v13 = IntentHandlerDefaultLog();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -146,8 +146,8 @@
 
     else
     {
-      v12 = [(CRRRecommendation *)self persons];
-      v11 = [INPersonResolutionResult disambiguationWithPeopleToDisambiguate:v12];
+      persons4 = [(CRRRecommendation *)self persons];
+      v11 = [INPersonResolutionResult disambiguationWithPeopleToDisambiguate:persons4];
     }
   }
 

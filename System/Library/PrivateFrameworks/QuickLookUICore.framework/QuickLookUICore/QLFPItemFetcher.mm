@@ -1,36 +1,36 @@
 @interface QLFPItemFetcher
 - (BOOL)isLongFetchOperation;
-- (QLFPItemFetcher)initWithCoder:(id)a3;
+- (QLFPItemFetcher)initWithCoder:(id)coder;
 - (void)_registerItemCollectionIfNeeded;
 - (void)_unregisterItemCollectionIfNeeded;
-- (void)_urlHandler:(id)a3;
+- (void)_urlHandler:(id)handler;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6;
-- (void)prepareShareableItem:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock;
+- (void)prepareShareableItem:(id)item;
 @end
 
 @implementation QLFPItemFetcher
 
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  classesCopy = classes;
+  queueCopy = queue;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __92__QLFPItemFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke;
   v18[3] = &unk_279AE12E8;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = classesCopy;
+  v20 = queueCopy;
+  v21 = blockCopy;
+  v22 = completionBlockCopy;
+  v14 = completionBlockCopy;
+  v15 = blockCopy;
+  v16 = queueCopy;
+  v17 = classesCopy;
   [(QLFPItemFetcher *)self _urlHandler:v18];
 }
 
@@ -83,9 +83,9 @@ void __92__QLFPItemFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBl
 
   else
   {
-    v2 = [MEMORY[0x277CC6408] defaultManager];
-    v3 = [(FPItem *)obj->_fpItem itemID];
-    v4 = [v2 newCollectionWithItemID:v3];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
+    itemID = [(FPItem *)obj->_fpItem itemID];
+    v4 = [defaultManager newCollectionWithItemID:itemID];
     itemCollection = obj->_itemCollection;
     obj->_itemCollection = v4;
 
@@ -113,13 +113,13 @@ uint64_t __50__QLFPItemFetcher__registerItemCollectionIfNeeded__block_invoke(uin
 
 - (void)_unregisterItemCollectionIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_itemCollection;
-  itemCollection = v2->_itemCollection;
-  v2->_itemCollection = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_itemCollection;
+  itemCollection = selfCopy->_itemCollection;
+  selfCopy->_itemCollection = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (v3)
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -139,19 +139,19 @@ uint64_t __52__QLFPItemFetcher__unregisterItemCollectionIfNeeded__block_invoke(u
   return [v2 stopObserving];
 }
 
-- (void)_urlHandler:(id)a3
+- (void)_urlHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   fetchedURLHandler = self->_fetchedURLHandler;
   if (fetchedURLHandler)
   {
-    (*(v4 + 2))(v4, fetchedURLHandler, 0);
+    (*(handlerCopy + 2))(handlerCopy, fetchedURLHandler, 0);
   }
 
   else
   {
-    v7 = [MEMORY[0x277CC6408] defaultManager];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
     fpItem = self->_fpItem;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -159,7 +159,7 @@ uint64_t __52__QLFPItemFetcher__unregisterItemCollectionIfNeeded__block_invoke(u
     v9[3] = &unk_279AE1310;
     v9[4] = self;
     v10 = v5;
-    [v7 fetchURLForItem:fpItem completionHandler:v9];
+    [defaultManager fetchURLForItem:fpItem completionHandler:v9];
   }
 }
 
@@ -219,24 +219,24 @@ void __31__QLFPItemFetcher__urlHandler___block_invoke(uint64_t a1, void *a2, voi
 
 - (BOOL)isLongFetchOperation
 {
-  v3 = [(FPItem *)self->_fpItem isCloudItem];
-  if (v3)
+  isCloudItem = [(FPItem *)self->_fpItem isCloudItem];
+  if (isCloudItem)
   {
-    LOBYTE(v3) = [(FPItem *)self->_fpItem isDownloaded]^ 1;
+    LOBYTE(isCloudItem) = [(FPItem *)self->_fpItem isDownloaded]^ 1;
   }
 
-  return v3;
+  return isCloudItem;
 }
 
-- (void)prepareShareableItem:(id)a3
+- (void)prepareShareableItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__QLFPItemFetcher_prepareShareableItem___block_invoke;
   v6[3] = &unk_279AE1360;
-  v7 = v4;
-  v5 = v4;
+  v7 = itemCopy;
+  v5 = itemCopy;
   [(QLFPItemFetcher *)self _urlHandler:v6];
 }
 
@@ -250,24 +250,24 @@ void __40__QLFPItemFetcher_prepareShareableItem___block_invoke(uint64_t a1)
   QLRunInMainThread(v1);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = QLFPItemFetcher;
-  v4 = a3;
-  [(QLUbiquitousItemFetcher *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_fpItem forKey:{@"fpItem", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(QLUbiquitousItemFetcher *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_fpItem forKey:{@"fpItem", v5.receiver, v5.super_class}];
 }
 
-- (QLFPItemFetcher)initWithCoder:(id)a3
+- (QLFPItemFetcher)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = QLFPItemFetcher;
-  v5 = [(QLUbiquitousItemFetcher *)&v10 initWithCoder:v4];
+  v5 = [(QLUbiquitousItemFetcher *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpItem"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpItem"];
     fpItem = v5->_fpItem;
     v5->_fpItem = v6;
 

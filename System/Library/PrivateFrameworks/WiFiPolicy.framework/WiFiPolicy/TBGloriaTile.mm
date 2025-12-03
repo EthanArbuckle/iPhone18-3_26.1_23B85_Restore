@@ -1,20 +1,20 @@
 @interface TBGloriaTile
-- (TBGloriaTile)initWithEncodedKey:(unint64_t)a3 zoom:(unsigned __int8)a4;
-- (TBGloriaTile)initWithLat:(double)a3 lng:(double)a4 zoom:(unsigned __int8)a5;
-- (id)adjacentTileKeysWithLevel:(unsigned int)a3;
-- (id)neighborTileKeysWithRadius:(double)a3;
+- (TBGloriaTile)initWithEncodedKey:(unint64_t)key zoom:(unsigned __int8)zoom;
+- (TBGloriaTile)initWithLat:(double)lat lng:(double)lng zoom:(unsigned __int8)zoom;
+- (id)adjacentTileKeysWithLevel:(unsigned int)level;
+- (id)neighborTileKeysWithRadius:(double)radius;
 @end
 
 @implementation TBGloriaTile
 
-- (TBGloriaTile)initWithEncodedKey:(unint64_t)a3 zoom:(unsigned __int8)a4
+- (TBGloriaTile)initWithEncodedKey:(unint64_t)key zoom:(unsigned __int8)zoom
 {
   v18.receiver = self;
   v18.super_class = TBGloriaTile;
   v6 = [(TBGloriaTile *)&v18 init];
-  v6->_key = a3;
-  v6->_zoom = a4;
-  gloria::TileId::TileId(v17, a3);
+  v6->_key = key;
+  v6->_zoom = zoom;
+  gloria::TileId::TileId(v17, key);
   v16[0] = gloria::TileId::ToBBOX(v17);
   *&v16[1] = v7;
   *&v16[2] = v8;
@@ -58,32 +58,32 @@ LABEL_7:
   return v6;
 }
 
-- (TBGloriaTile)initWithLat:(double)a3 lng:(double)a4 zoom:(unsigned __int8)a5
+- (TBGloriaTile)initWithLat:(double)lat lng:(double)lng zoom:(unsigned __int8)zoom
 {
-  v17 = a3;
-  v16 = a4;
-  v15 = a5;
+  latCopy = lat;
+  lngCopy = lng;
+  zoomCopy = zoom;
   v14.receiver = self;
   v14.super_class = TBGloriaTile;
   v8 = [(TBGloriaTile *)&v14 init];
-  v8->_lat = a3;
-  v8->_lng = a4;
-  v8->_zoom = a5;
-  gloria::TileId::FromLatLng(&v17, &v16, &v15, v13);
+  v8->_lat = lat;
+  v8->_lng = lng;
+  v8->_zoom = zoom;
+  gloria::TileId::FromLatLng(&latCopy, &lngCopy, &zoomCopy, v13);
   v8->_key = gloria::TileId::GetEncodedTileId(v13);
   v8->_tileSize = gloria::TileId::TileSize(v13);
-  v8->_north = _TBGloriaBoundingBoxFromLocation(v17, v16, v15);
+  v8->_north = _TBGloriaBoundingBoxFromLocation(latCopy, lngCopy, zoomCopy);
   v8->_south = v9;
   v8->_east = v10;
   v8->_west = v11;
   return v8;
 }
 
-- (id)adjacentTileKeysWithLevel:(unsigned int)a3
+- (id)adjacentTileKeysWithLevel:(unsigned int)level
 {
   v5 = [MEMORY[0x277CBEB58] set];
   gloria::TileId::TileId(v14, [(TBGloriaTile *)self key]);
-  gloria::TileId::Neighbors(v14, a3, &v12);
+  gloria::TileId::Neighbors(v14, level, &v12);
   v6 = v12;
   if (v12 != v13)
   {
@@ -127,11 +127,11 @@ LABEL_7:
   return v5;
 }
 
-- (id)neighborTileKeysWithRadius:(double)a3
+- (id)neighborTileKeysWithRadius:(double)radius
 {
   v5 = [MEMORY[0x277CBEB58] set];
   gloria::TileId::TileId(v14, [(TBGloriaTile *)self key]);
-  gloria::TileId::NeighborsWithinRadius(v14, a3, &v12);
+  gloria::TileId::NeighborsWithinRadius(v14, radius, &v12);
   v6 = v12;
   if (v12 != v13)
   {

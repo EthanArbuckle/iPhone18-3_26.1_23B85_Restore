@@ -1,15 +1,15 @@
 @interface SKUISpacePageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUISpacePageSection)initWithPageComponent:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (void)willAppearInContext:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUISpacePageSection)initWithPageComponent:(id)component;
+- (id)cellForIndexPath:(id)path;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SKUISpacePageSection
 
-- (SKUISpacePageSection)initWithPageComponent:(id)a3
+- (SKUISpacePageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISpacePageSection initWithPageComponent:];
@@ -17,36 +17,36 @@
 
   v7.receiver = self;
   v7.super_class = SKUISpacePageSection;
-  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:componentCopy];
 
   return v5;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v3 = [a3 collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUISpacePageSectionReuseIdentifier"];
+  collectionView = [context collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUISpacePageSectionReuseIdentifier"];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SKUISpacePageSectionReuseIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUISpacePageSectionReuseIdentifier" forIndexPath:pathCopy];
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SKUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
-  [v5 bounds];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  [collectionView bounds];
   v7 = v6;
 
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  [v8 height];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  [pageComponent height];
   v10 = v9;
 
   v11 = v7;

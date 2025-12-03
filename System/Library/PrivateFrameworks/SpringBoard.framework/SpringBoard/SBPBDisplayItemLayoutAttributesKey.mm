@@ -1,17 +1,17 @@
 @interface SBPBDisplayItemLayoutAttributesKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)displayItem;
 - (uint64_t)displayOrdinal;
-- (uint64_t)mergeFrom:(uint64_t)a1;
+- (uint64_t)mergeFrom:(uint64_t)from;
 - (uint64_t)orientation;
 - (uint64_t)setDisplayOrdinal:(uint64_t)result;
 - (uint64_t)setOrientation:(uint64_t)result;
-- (void)copyTo:(uint64_t)a1;
-- (void)setDisplayItem:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)setDisplayItem:(uint64_t)item;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SBPBDisplayItemLayoutAttributesKey
@@ -22,49 +22,49 @@
   v8.receiver = self;
   v8.super_class = SBPBDisplayItemLayoutAttributesKey;
   v4 = [(SBPBDisplayItemLayoutAttributesKey *)&v8 description];
-  v5 = [(SBPBDisplayItemLayoutAttributesKey *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SBPBDisplayItemLayoutAttributesKey *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   displayItem = self->_displayItem;
   if (displayItem)
   {
-    v5 = [(SBPBDisplayItem *)displayItem dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"displayItem"];
+    dictionaryRepresentation = [(SBPBDisplayItem *)displayItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"displayItem"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_displayOrdinal];
-  [v3 setObject:v6 forKey:@"displayOrdinal"];
+  [dictionary setObject:v6 forKey:@"displayOrdinal"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInt:self->_orientation];
-  [v3 setObject:v7 forKey:@"orientation"];
+  [dictionary setObject:v7 forKey:@"orientation"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_displayItem)
   {
     [SBPBDisplayItemLayoutAttributesKey writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteInt32Field();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SBPBDisplayItem *)self->_displayItem copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SBPBDisplayItem *)self->_displayItem copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -73,41 +73,41 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((displayItem = self->_displayItem, !(displayItem | *(v4 + 1))) || -[SBPBDisplayItem isEqual:](displayItem, "isEqual:")) && self->_displayOrdinal == *(v4 + 4) && self->_orientation == *(v4 + 5);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((displayItem = self->_displayItem, !(displayItem | *(equalCopy + 1))) || -[SBPBDisplayItem isEqual:](displayItem, "isEqual:")) && self->_displayOrdinal == *(equalCopy + 4) && self->_orientation == *(equalCopy + 5);
 
   return v6;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
-  if (a1)
+  if (to)
   {
-    v3 = *(a1 + 8);
+    v3 = *(to + 8);
     v4 = a2;
     [(SBPBDisplayItemLayoutAttributesKey *)v4 setDisplayItem:v3];
-    v4[4] = *(a1 + 16);
-    v4[5] = *(a1 + 20);
+    v4[4] = *(to + 16);
+    v4[5] = *(to + 20);
   }
 }
 
-- (void)setDisplayItem:(uint64_t)a1
+- (void)setDisplayItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((item + 8), a2);
   }
 }
 
-- (uint64_t)mergeFrom:(uint64_t)a1
+- (uint64_t)mergeFrom:(uint64_t)from
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (from)
   {
-    v3 = *(a1 + 8);
+    v3 = *(from + 8);
     v5 = v4[1];
     if (v3)
     {
@@ -123,12 +123,12 @@ LABEL_7:
     else if (v5)
     {
       v7 = v4;
-      objc_storeStrong((a1 + 8), v5);
+      objc_storeStrong((from + 8), v5);
       goto LABEL_7;
     }
 
-    *(a1 + 16) = *(v4 + 4);
-    *(a1 + 20) = *(v4 + 5);
+    *(from + 16) = *(v4 + 4);
+    *(from + 20) = *(v4 + 5);
   }
 
   return MEMORY[0x2821F9730](v3);

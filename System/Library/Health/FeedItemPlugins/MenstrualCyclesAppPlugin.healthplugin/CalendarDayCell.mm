@@ -1,15 +1,15 @@
 @interface CalendarDayCell
 - (NSString)axDayLocalizedText;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation CalendarDayCell
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_29E265B40(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_29E265B40(attributesCopy);
 }
 
 - (NSString)axDayLocalizedText

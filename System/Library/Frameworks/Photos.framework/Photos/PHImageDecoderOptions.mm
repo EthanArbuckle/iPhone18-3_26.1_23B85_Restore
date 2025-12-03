@@ -3,7 +3,7 @@
 - (CGRect)normalizedCropRect;
 - (CGSize)targetSize;
 - (PHImageDecoderOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)maximumLongSideLength;
 @end
 
@@ -83,9 +83,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 8) = self->_shouldLoadGainMap;
   *(result + 4) = self->_resizeMode;
   *(result + 9) = self->_optimizeForDrawing;

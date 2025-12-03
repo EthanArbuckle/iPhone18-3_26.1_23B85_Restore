@@ -1,28 +1,28 @@
 @interface HULockAccessUpdateViewController
-- (HULockAccessUpdateViewController)initWithHome:(id)a3;
+- (HULockAccessUpdateViewController)initWithHome:(id)home;
 @end
 
 @implementation HULockAccessUpdateViewController
 
-- (HULockAccessUpdateViewController)initWithHome:(id)a3
+- (HULockAccessUpdateViewController)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v16.receiver = self;
   v16.super_class = HULockAccessUpdateViewController;
   v6 = [(HULockAccessUpdateViewController *)&v16 initWithTitle:&stru_2823E0EE8 detailText:0 icon:0 contentLayout:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     objc_initWeak(&location, v7);
-    v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __49__HULockAccessUpdateViewController_initWithHome___block_invoke;
     v12[3] = &unk_277DC2648;
     objc_copyWeak(&v14, &location);
-    v13 = v5;
-    v9 = [v8 flatMap:v12];
+    v13 = homeCopy;
+    v9 = [futureWithNoResult flatMap:v12];
     preloadFuture = v7->_preloadFuture;
     v7->_preloadFuture = v9;
 

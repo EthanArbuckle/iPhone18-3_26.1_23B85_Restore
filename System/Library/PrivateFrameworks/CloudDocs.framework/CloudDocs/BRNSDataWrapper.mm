@@ -1,12 +1,12 @@
 @interface BRNSDataWrapper
-+ (id)dataWithContentsOfURL:(id)a3;
++ (id)dataWithContentsOfURL:(id)l;
 @end
 
 @implementation BRNSDataWrapper
 
-+ (id)dataWithContentsOfURL:(id)a3
++ (id)dataWithContentsOfURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:?];
   }

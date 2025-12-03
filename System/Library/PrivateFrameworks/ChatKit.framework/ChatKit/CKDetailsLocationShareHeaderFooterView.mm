@@ -1,22 +1,22 @@
 @interface CKDetailsLocationShareHeaderFooterView
 - (void)layoutSubviews;
-- (void)setLocationSharingTextView:(id)a3;
+- (void)setLocationSharingTextView:(id)view;
 @end
 
 @implementation CKDetailsLocationShareHeaderFooterView
 
-- (void)setLocationSharingTextView:(id)a3
+- (void)setLocationSharingTextView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   if (self->_locationSharingTextView)
   {
-    v5 = [(CKDetailsLocationShareHeaderFooterView *)self locationSharingTextView];
-    [v5 removeFromSuperview];
+    locationSharingTextView = [(CKDetailsLocationShareHeaderFooterView *)self locationSharingTextView];
+    [locationSharingTextView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_locationSharingTextView, a3);
-  v6 = [(CKDetailsLocationShareHeaderFooterView *)self contentView];
-  [v6 addSubview:self->_locationSharingTextView];
+  objc_storeStrong(&self->_locationSharingTextView, view);
+  contentView = [(CKDetailsLocationShareHeaderFooterView *)self contentView];
+  [contentView addSubview:self->_locationSharingTextView];
 
   [(CKDetailsLocationShareHeaderFooterView *)self setNeedsLayout];
 }
@@ -26,28 +26,28 @@
   v30.receiver = self;
   v30.super_class = CKDetailsLocationShareHeaderFooterView;
   [(CKDetailsLocationShareHeaderFooterView *)&v30 layoutSubviews];
-  v3 = [(CKDetailsLocationShareHeaderFooterView *)self contentView];
+  contentView = [(CKDetailsLocationShareHeaderFooterView *)self contentView];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 detailsHeaderFooterContentViewBackgroundColor];
-  [v3 setBackgroundColor:v6];
+  theme = [v4 theme];
+  detailsHeaderFooterContentViewBackgroundColor = [theme detailsHeaderFooterContentViewBackgroundColor];
+  [contentView setBackgroundColor:detailsHeaderFooterContentViewBackgroundColor];
 
-  v7 = [(CKDetailsLocationShareHeaderFooterView *)self backgroundView];
+  backgroundView = [(CKDetailsLocationShareHeaderFooterView *)self backgroundView];
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 theme];
-  v10 = [v9 detailsHeaderFooterContentViewBackgroundColor];
-  [v7 setBackgroundColor:v10];
+  theme2 = [v8 theme];
+  detailsHeaderFooterContentViewBackgroundColor2 = [theme2 detailsHeaderFooterContentViewBackgroundColor];
+  [backgroundView setBackgroundColor:detailsHeaderFooterContentViewBackgroundColor2];
 
-  v11 = [(CKDetailsLocationShareHeaderFooterView *)self contentView];
-  [v11 bounds];
+  contentView2 = [(CKDetailsLocationShareHeaderFooterView *)self contentView];
+  [contentView2 bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(CKDetailsLocationShareHeaderFooterView *)self locationSharingTextView];
-  v21 = [(CKDetailsLocationShareHeaderFooterView *)self contentView];
-  [v21 layoutMargins];
+  locationSharingTextView = [(CKDetailsLocationShareHeaderFooterView *)self locationSharingTextView];
+  contentView3 = [(CKDetailsLocationShareHeaderFooterView *)self contentView];
+  [contentView3 layoutMargins];
   v23 = v22;
   v25 = v24;
 
@@ -55,7 +55,7 @@
   v31.origin.y = v15;
   v31.size.width = v17;
   v31.size.height = v19;
-  [v20 sizeThatFits:{CGRectGetWidth(v31) - (v23 + v25), 1.79769313e308}];
+  [locationSharingTextView sizeThatFits:{CGRectGetWidth(v31) - (v23 + v25), 1.79769313e308}];
   v27 = v26;
   v29 = v28;
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection])
@@ -68,7 +68,7 @@
     v23 = v25;
   }
 
-  [v20 setFrame:{v23, 8.0, v27, v29}];
+  [locationSharingTextView setFrame:{v23, 8.0, v27, v29}];
 }
 
 @end

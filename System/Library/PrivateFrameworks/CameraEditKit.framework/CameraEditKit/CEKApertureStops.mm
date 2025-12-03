@@ -1,9 +1,9 @@
 @interface CEKApertureStops
-+ (BOOL)isValidApertureIndex:(unint64_t)a3;
-+ (id)closestValidValueForAperture:(double)a3;
++ (BOOL)isValidApertureIndex:(unint64_t)index;
++ (id)closestValidValueForAperture:(double)aperture;
 + (id)validApertureValues;
-+ (unint64_t)firstFullStopIndexAfterOrIncludingIndex:(unint64_t)a3;
-+ (unint64_t)indexOfClosestValidValueForAperture:(double)a3;
++ (unint64_t)firstFullStopIndexAfterOrIncludingIndex:(unint64_t)index;
++ (unint64_t)indexOfClosestValidValueForAperture:(double)aperture;
 @end
 
 @implementation CEKApertureStops
@@ -26,28 +26,28 @@ void __39__CEKApertureStops_validApertureValues__block_invoke()
   return v3;
 }
 
-+ (unint64_t)firstFullStopIndexAfterOrIncludingIndex:(unint64_t)a3
++ (unint64_t)firstFullStopIndexAfterOrIncludingIndex:(unint64_t)index
 {
-  v3 = ((a3 + 1) % 3) ^ 3;
-  if (!((a3 + 1) % 3))
+  v3 = ((index + 1) % 3) ^ 3;
+  if (!((index + 1) % 3))
   {
     v3 = 0;
   }
 
-  return v3 + a3;
+  return v3 + index;
 }
 
-+ (BOOL)isValidApertureIndex:(unint64_t)a3
++ (BOOL)isValidApertureIndex:(unint64_t)index
 {
-  v4 = [objc_opt_class() validApertureValues];
-  LOBYTE(a3) = [v4 count] > a3;
+  validApertureValues = [objc_opt_class() validApertureValues];
+  LOBYTE(index) = [validApertureValues count] > index;
 
-  return a3;
+  return index;
 }
 
-+ (unint64_t)indexOfClosestValidValueForAperture:(double)a3
++ (unint64_t)indexOfClosestValidValueForAperture:(double)aperture
 {
-  v4 = [objc_opt_class() validApertureValues];
+  validApertureValues = [objc_opt_class() validApertureValues];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -60,10 +60,10 @@ void __39__CEKApertureStops_validApertureValues__block_invoke()
   v7[1] = 3221225472;
   v7[2] = __56__CEKApertureStops_indexOfClosestValidValueForAperture___block_invoke;
   v7[3] = &unk_1E7CC6C28;
-  *&v7[6] = a3;
+  *&v7[6] = aperture;
   v7[4] = v8;
   v7[5] = &v9;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [validApertureValues enumerateObjectsUsingBlock:v7];
   v5 = v10[3];
   _Block_object_dispose(v8, 8);
   _Block_object_dispose(&v9, 8);
@@ -90,10 +90,10 @@ uint64_t __56__CEKApertureStops_indexOfClosestValidValueForAperture___block_invo
   return result;
 }
 
-+ (id)closestValidValueForAperture:(double)a3
++ (id)closestValidValueForAperture:(double)aperture
 {
-  v4 = [objc_opt_class() validApertureValues];
-  v5 = [v4 objectAtIndexedSubscript:{objc_msgSend(objc_opt_class(), "indexOfClosestValidValueForAperture:", a3)}];
+  validApertureValues = [objc_opt_class() validApertureValues];
+  v5 = [validApertureValues objectAtIndexedSubscript:{objc_msgSend(objc_opt_class(), "indexOfClosestValidValueForAperture:", aperture)}];
 
   return v5;
 }

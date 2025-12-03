@@ -1,24 +1,24 @@
 @interface UISCompatibilityContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (UISCompatibilityContext)initWithBSXPCCoder:(id)a3;
-- (UISCompatibilityContext)initWithSupportedDisplaySizes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (UISCompatibilityContext)initWithBSXPCCoder:(id)coder;
+- (UISCompatibilityContext)initWithSupportedDisplaySizes:(id)sizes;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation UISCompatibilityContext
 
-- (UISCompatibilityContext)initWithSupportedDisplaySizes:(id)a3
+- (UISCompatibilityContext)initWithSupportedDisplaySizes:(id)sizes
 {
-  v4 = a3;
+  sizesCopy = sizes;
   v9.receiver = self;
   v9.super_class = UISCompatibilityContext;
   v5 = [(UISCompatibilityContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [sizesCopy copy];
     supportedDisplaySizes = v5->_supportedDisplaySizes;
     v5->_supportedDisplaySizes = v6;
   }
@@ -26,16 +26,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_7;
@@ -44,9 +44,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(UISCompatibilityContext *)self supportedDisplaySizes];
-    v7 = [(UISCompatibilityContext *)v5 supportedDisplaySizes];
-    v8 = [v6 isEqual:v7];
+    supportedDisplaySizes = [(UISCompatibilityContext *)self supportedDisplaySizes];
+    supportedDisplaySizes2 = [(UISCompatibilityContext *)v5 supportedDisplaySizes];
+    v8 = [supportedDisplaySizes isEqual:supportedDisplaySizes2];
   }
 
   else
@@ -64,47 +64,47 @@ LABEL_7:
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_supportedDisplaySizes withName:@"SupportedDisplaySizes"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UISCompatibilityContext alloc];
-  v5 = [(UISCompatibilityContext *)self supportedDisplaySizes];
-  v6 = [(UISCompatibilityContext *)v4 initWithSupportedDisplaySizes:v5];
+  supportedDisplaySizes = [(UISCompatibilityContext *)self supportedDisplaySizes];
+  v6 = [(UISCompatibilityContext *)v4 initWithSupportedDisplaySizes:supportedDisplaySizes];
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UISMutableCompatibilityContext alloc];
-  v5 = [(UISCompatibilityContext *)self supportedDisplaySizes];
-  v6 = [(UISCompatibilityContext *)v4 initWithSupportedDisplaySizes:v5];
+  supportedDisplaySizes = [(UISCompatibilityContext *)self supportedDisplaySizes];
+  v6 = [(UISCompatibilityContext *)v4 initWithSupportedDisplaySizes:supportedDisplaySizes];
 
   return v6;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UISCompatibilityContext *)self supportedDisplaySizes];
-  [v4 encodeCollection:v5 forKey:@"DisplaySizes"];
+  coderCopy = coder;
+  supportedDisplaySizes = [(UISCompatibilityContext *)self supportedDisplaySizes];
+  [coderCopy encodeCollection:supportedDisplaySizes forKey:@"DisplaySizes"];
 }
 
-- (UISCompatibilityContext)initWithBSXPCCoder:(id)a3
+- (UISCompatibilityContext)initWithBSXPCCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = UISCompatibilityContext;
   v5 = [(UISCompatibilityContext *)&v25 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"DisplaySizes"];
+    [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"DisplaySizes"];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;

@@ -1,39 +1,39 @@
 @interface THWGalleryItem
 - (CGRect)cropRect;
-- (THWGalleryItem)initWithContext:(id)a3 imageData:(id)a4 thumbnailData:(id)a5 captionStorage:(id)a6 cropRect:(CGRect)a7 accessibilityDescriptions:(id)a8;
+- (THWGalleryItem)initWithContext:(id)context imageData:(id)data thumbnailData:(id)thumbnailData captionStorage:(id)storage cropRect:(CGRect)rect accessibilityDescriptions:(id)descriptions;
 - (id)childEnumerator;
 - (void)dealloc;
 @end
 
 @implementation THWGalleryItem
 
-- (THWGalleryItem)initWithContext:(id)a3 imageData:(id)a4 thumbnailData:(id)a5 captionStorage:(id)a6 cropRect:(CGRect)a7 accessibilityDescriptions:(id)a8
+- (THWGalleryItem)initWithContext:(id)context imageData:(id)data thumbnailData:(id)thumbnailData captionStorage:(id)storage cropRect:(CGRect)rect accessibilityDescriptions:(id)descriptions
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v22.receiver = self;
   v22.super_class = THWGalleryItem;
   v17 = [(THWGalleryItem *)&v22 init];
   if (v17)
   {
-    v18 = a6;
-    v17->_captionStorage = v18;
-    [(THWPStorage *)v18 setPreventHighlighting:1];
+    storageCopy = storage;
+    v17->_captionStorage = storageCopy;
+    [(THWPStorage *)storageCopy setPreventHighlighting:1];
     v17->_cropRect.origin.x = x;
     v17->_cropRect.origin.y = y;
     v17->_cropRect.size.width = width;
     v17->_cropRect.size.height = height;
-    v17->_accessibilityDescriptions = a8;
-    v19 = [[TSDMediaStyle alloc] initWithContext:a3 name:0 overridePropertyMap:0 isVariation:0];
-    v17->_imageInfo = [[THImageInfo alloc] initWithContext:a3 geometry:0 style:v19 imageData:a4 originalImageData:0];
-    v20 = [[TSDMaskInfo alloc] initWithContext:a3 geometry:0 pathSource:{+[TSDScalarPathSource rectangleWithNaturalSize:](TSDScalarPathSource, "rectangleWithNaturalSize:", 100.0, 100.0)}];
+    v17->_accessibilityDescriptions = descriptions;
+    v19 = [[TSDMediaStyle alloc] initWithContext:context name:0 overridePropertyMap:0 isVariation:0];
+    v17->_imageInfo = [[THImageInfo alloc] initWithContext:context geometry:0 style:v19 imageData:data originalImageData:0];
+    v20 = [[TSDMaskInfo alloc] initWithContext:context geometry:0 pathSource:{+[TSDScalarPathSource rectangleWithNaturalSize:](TSDScalarPathSource, "rectangleWithNaturalSize:", 100.0, 100.0)}];
     [(THImageInfo *)v17->_imageInfo setMaskInfo:v20];
 
-    if (a5)
+    if (thumbnailData)
     {
-      v17->_thumbnailImageData = a5;
+      v17->_thumbnailImageData = thumbnailData;
     }
   }
 

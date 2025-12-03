@@ -1,7 +1,7 @@
 @interface EKSerializableRecurrenceRule
 + (id)classesForKey;
-- (EKSerializableRecurrenceRule)initWithRecurrenceRule:(id)a3;
-- (id)createRecurrenceRule:(id *)a3;
+- (EKSerializableRecurrenceRule)initWithRecurrenceRule:(id)rule;
+- (id)createRecurrenceRule:(id *)rule;
 @end
 
 @implementation EKSerializableRecurrenceRule
@@ -62,55 +62,55 @@
   return v11;
 }
 
-- (EKSerializableRecurrenceRule)initWithRecurrenceRule:(id)a3
+- (EKSerializableRecurrenceRule)initWithRecurrenceRule:(id)rule
 {
-  v4 = a3;
+  ruleCopy = rule;
   v34.receiver = self;
   v34.super_class = EKSerializableRecurrenceRule;
   v5 = [(EKSerializableRecurrenceRule *)&v34 init];
   if (v5)
   {
-    v5->_frequency = [v4 frequency];
-    v5->_interval = [v4 interval];
-    v6 = [v4 recurrenceEnd];
-    v7 = [v6 copy];
+    v5->_frequency = [ruleCopy frequency];
+    v5->_interval = [ruleCopy interval];
+    recurrenceEnd = [ruleCopy recurrenceEnd];
+    v7 = [recurrenceEnd copy];
     recurrenceEnd = v5->_recurrenceEnd;
     v5->_recurrenceEnd = v7;
 
-    v5->_firstDayOfTheWeek = [v4 firstDayOfTheWeek];
+    v5->_firstDayOfTheWeek = [ruleCopy firstDayOfTheWeek];
     v9 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v10 = [v4 daysOfTheWeek];
-    v11 = [v9 initWithArray:v10 copyItems:1];
+    daysOfTheWeek = [ruleCopy daysOfTheWeek];
+    v11 = [v9 initWithArray:daysOfTheWeek copyItems:1];
     daysOfTheWeek = v5->_daysOfTheWeek;
     v5->_daysOfTheWeek = v11;
 
     v13 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v14 = [v4 daysOfTheMonth];
-    v15 = [v13 initWithArray:v14 copyItems:1];
+    daysOfTheMonth = [ruleCopy daysOfTheMonth];
+    v15 = [v13 initWithArray:daysOfTheMonth copyItems:1];
     daysOfTheMonth = v5->_daysOfTheMonth;
     v5->_daysOfTheMonth = v15;
 
     v17 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v18 = [v4 daysOfTheYear];
-    v19 = [v17 initWithArray:v18 copyItems:1];
+    daysOfTheYear = [ruleCopy daysOfTheYear];
+    v19 = [v17 initWithArray:daysOfTheYear copyItems:1];
     daysOfTheYear = v5->_daysOfTheYear;
     v5->_daysOfTheYear = v19;
 
     v21 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v22 = [v4 weeksOfTheYear];
-    v23 = [v21 initWithArray:v22 copyItems:1];
+    weeksOfTheYear = [ruleCopy weeksOfTheYear];
+    v23 = [v21 initWithArray:weeksOfTheYear copyItems:1];
     weeksOfTheYear = v5->_weeksOfTheYear;
     v5->_weeksOfTheYear = v23;
 
     v25 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v26 = [v4 monthsOfTheYear];
-    v27 = [v25 initWithArray:v26 copyItems:1];
+    monthsOfTheYear = [ruleCopy monthsOfTheYear];
+    v27 = [v25 initWithArray:monthsOfTheYear copyItems:1];
     monthsOfTheYear = v5->_monthsOfTheYear;
     v5->_monthsOfTheYear = v27;
 
     v29 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v30 = [v4 setPositions];
-    v31 = [v29 initWithArray:v30 copyItems:1];
+    setPositions = [ruleCopy setPositions];
+    v31 = [v29 initWithArray:setPositions copyItems:1];
     setPositions = v5->_setPositions;
     v5->_setPositions = v31;
   }
@@ -118,7 +118,7 @@
   return v5;
 }
 
-- (id)createRecurrenceRule:(id *)a3
+- (id)createRecurrenceRule:(id *)rule
 {
   if ([(EKSerializableRecurrenceRule *)self interval]<= 0)
   {
@@ -134,16 +134,16 @@
   else
   {
     v16 = [EKRecurrenceRule alloc];
-    v4 = [(EKSerializableRecurrenceRule *)self frequency];
-    v5 = [(EKSerializableRecurrenceRule *)self interval];
-    v6 = [(EKSerializableRecurrenceRule *)self daysOfTheWeek];
-    v7 = [(EKSerializableRecurrenceRule *)self daysOfTheMonth];
-    v8 = [(EKSerializableRecurrenceRule *)self monthsOfTheYear];
-    v9 = [(EKSerializableRecurrenceRule *)self weeksOfTheYear];
-    v10 = [(EKSerializableRecurrenceRule *)self daysOfTheYear];
-    v11 = [(EKSerializableRecurrenceRule *)self setPositions];
-    v12 = [(EKSerializableRecurrenceRule *)self recurrenceEnd];
-    v13 = [(EKRecurrenceRule *)v16 initRecurrenceWithFrequency:v4 interval:v5 daysOfTheWeek:v6 daysOfTheMonth:v7 monthsOfTheYear:v8 weeksOfTheYear:v9 daysOfTheYear:v10 setPositions:v11 end:v12];
+    frequency = [(EKSerializableRecurrenceRule *)self frequency];
+    interval = [(EKSerializableRecurrenceRule *)self interval];
+    daysOfTheWeek = [(EKSerializableRecurrenceRule *)self daysOfTheWeek];
+    daysOfTheMonth = [(EKSerializableRecurrenceRule *)self daysOfTheMonth];
+    monthsOfTheYear = [(EKSerializableRecurrenceRule *)self monthsOfTheYear];
+    weeksOfTheYear = [(EKSerializableRecurrenceRule *)self weeksOfTheYear];
+    daysOfTheYear = [(EKSerializableRecurrenceRule *)self daysOfTheYear];
+    setPositions = [(EKSerializableRecurrenceRule *)self setPositions];
+    recurrenceEnd = [(EKSerializableRecurrenceRule *)self recurrenceEnd];
+    v13 = [(EKRecurrenceRule *)v16 initRecurrenceWithFrequency:frequency interval:interval daysOfTheWeek:daysOfTheWeek daysOfTheMonth:daysOfTheMonth monthsOfTheYear:monthsOfTheYear weeksOfTheYear:weeksOfTheYear daysOfTheYear:daysOfTheYear setPositions:setPositions end:recurrenceEnd];
   }
 
   return v13;

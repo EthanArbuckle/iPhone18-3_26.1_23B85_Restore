@@ -1,14 +1,14 @@
 @interface SUUIRatingStarsCache
-+ (id)cacheWithProperties:(int64_t)a3;
-- (SUUIRatingStarsCache)initWithProperties:(int64_t)a3;
-- (id)ratingStarsImageForRating:(double)a3;
++ (id)cacheWithProperties:(int64_t)properties;
+- (SUUIRatingStarsCache)initWithProperties:(int64_t)properties;
+- (id)ratingStarsImageForRating:(double)rating;
 @end
 
 @implementation SUUIRatingStarsCache
 
-- (SUUIRatingStarsCache)initWithProperties:(int64_t)a3
+- (SUUIRatingStarsCache)initWithProperties:(int64_t)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v27.receiver = self;
   v27.super_class = SUUIRatingStarsCache;
   v4 = [(SUUIRatingStarsCache *)&v27 init];
@@ -16,12 +16,12 @@
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = @"Small";
-    if ((v3 & 1) == 0)
+    if ((propertiesCopy & 1) == 0)
     {
       v6 = &stru_286AECDE0;
     }
 
-    if ((v3 & 4) != 0)
+    if ((propertiesCopy & 4) != 0)
     {
       v7 = @"Large";
     }
@@ -31,7 +31,7 @@
       v7 = v6;
     }
 
-    if ((v3 & 0x10) != 0)
+    if ((propertiesCopy & 0x10) != 0)
     {
       v8 = @"Selected";
     }
@@ -43,22 +43,22 @@
 
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@StarEmpty%@", v7, v8];
     v10 = [MEMORY[0x277D755B8] imageNamed:v9 inBundle:v5];
-    v11 = [MEMORY[0x277D75348] systemOrangeColor];
-    v12 = [v10 _flatImageWithColor:v11];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    v12 = [v10 _flatImageWithColor:systemOrangeColor];
     emptyStarImage = v4->_emptyStarImage;
     v4->_emptyStarImage = v12;
 
     v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@StarFull%@", v7, v8];
     v15 = [MEMORY[0x277D755B8] imageNamed:v14 inBundle:v5];
-    v16 = [MEMORY[0x277D75348] systemOrangeColor];
-    v17 = [v15 _flatImageWithColor:v16];
+    systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+    v17 = [v15 _flatImageWithColor:systemOrangeColor2];
     filledStarImage = v4->_filledStarImage;
     v4->_filledStarImage = v17;
 
     v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@StarHalf%@", v7, v8];
     v20 = [MEMORY[0x277D755B8] imageNamed:v19 inBundle:v5];
-    v21 = [MEMORY[0x277D75348] systemOrangeColor];
-    v22 = [v20 _flatImageWithColor:v21];
+    systemOrangeColor3 = [MEMORY[0x277D75348] systemOrangeColor];
+    v22 = [v20 _flatImageWithColor:systemOrangeColor3];
     halfStarImage = v4->_halfStarImage;
     v4->_halfStarImage = v22;
 
@@ -70,7 +70,7 @@
   return v4;
 }
 
-+ (id)cacheWithProperties:(int64_t)a3
++ (id)cacheWithProperties:(int64_t)properties
 {
   if (!cacheWithProperties__sCaches)
   {
@@ -79,20 +79,20 @@
     cacheWithProperties__sCaches = v5;
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:properties];
   v8 = [cacheWithProperties__sCaches objectForKey:v7];
   if (!v8)
   {
-    v8 = [[a1 alloc] initWithProperties:a3];
+    v8 = [[self alloc] initWithProperties:properties];
     [cacheWithProperties__sCaches setObject:v8 forKey:v7];
   }
 
   return v8;
 }
 
-- (id)ratingStarsImageForRating:(double)a3
+- (id)ratingStarsImageForRating:(double)rating
 {
-  v4 = a3 * 10.0;
+  v4 = rating * 10.0;
   v5 = rintf(v4);
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:v5];
   v7 = [(NSMutableDictionary *)self->_cachedImages objectForKey:v6];
@@ -104,8 +104,8 @@
     [(UIImage *)self->_filledStarImage size];
     v13 = v12;
     v15 = v14;
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    [v16 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v18 = v17;
     v28.width = v9 * 5.0;
     v28.height = v11;
@@ -145,9 +145,9 @@
     }
   }
 
-  v25 = [v7 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v7 imageFlippedForRightToLeftLayoutDirection];
 
-  return v25;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface MADPersonIdentificationResult
-- (MADPersonIdentificationResult)initWithCoder:(id)a3;
-- (MADPersonIdentificationResult)initWithResultItems:(id)a3 frontCameraCaptureState:(int64_t)a4;
+- (MADPersonIdentificationResult)initWithCoder:(id)coder;
+- (MADPersonIdentificationResult)initWithResultItems:(id)items frontCameraCaptureState:(int64_t)state;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADPersonIdentificationResult
 
-- (MADPersonIdentificationResult)initWithResultItems:(id)a3 frontCameraCaptureState:(int64_t)a4
+- (MADPersonIdentificationResult)initWithResultItems:(id)items frontCameraCaptureState:(int64_t)state
 {
-  v7 = a3;
+  itemsCopy = items;
   v11.receiver = self;
   v11.super_class = MADPersonIdentificationResult;
   v8 = [(MADResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_resultItems, a3);
-    v9->_frontCameraCaptureState = a4;
+    objc_storeStrong(&v8->_resultItems, items);
+    v9->_frontCameraCaptureState = state;
   }
 
   return v9;
 }
 
-- (MADPersonIdentificationResult)initWithCoder:(id)a3
+- (MADPersonIdentificationResult)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MADPersonIdentificationResult;
-  v5 = [(MADResult *)&v12 initWithCoder:v4];
+  v5 = [(MADResult *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -38,37 +38,37 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ResultItems"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ResultItems"];
     resultItems = v5->_resultItems;
     v5->_resultItems = v9;
 
-    v5->_frontCameraCaptureState = [v4 decodeInt64ForKey:@"FrontCameraCaptureState"];
+    v5->_frontCameraCaptureState = [coderCopy decodeInt64ForKey:@"FrontCameraCaptureState"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADPersonIdentificationResult;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_resultItems forKey:@"ResultItems"];
-  [v4 encodeInt64:self->_frontCameraCaptureState forKey:@"FrontCameraCaptureState"];
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_resultItems forKey:@"ResultItems"];
+  [coderCopy encodeInt64:self->_frontCameraCaptureState forKey:@"FrontCameraCaptureState"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"frontCameraCapture: %ld, ", self->_frontCameraCaptureState];
-  [v3 appendFormat:@"result items: %@>", self->_resultItems];
+  [string appendFormat:@"frontCameraCapture: %ld, ", self->_frontCameraCaptureState];
+  [string appendFormat:@"result items: %@>", self->_resultItems];
 
-  return v3;
+  return string;
 }
 
 @end

@@ -11,12 +11,12 @@
   v7 = a5;
   v8 = a3;
   v9 = dispatch_group_create();
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __113__NSItemProvider_MobileSafariFrameworkExtras__safari_loadObjectsFromItemProviders_usingLoader_completionHandler___block_invoke;
   aBlock[3] = &unk_1E721ED98;
-  v11 = v10;
+  v11 = dictionary;
   v28 = v11;
   v12 = _Block_copy(aBlock);
   v23[0] = MEMORY[0x1E69E9820];
@@ -69,14 +69,14 @@
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        if ([a1 canLoadObjectOfClass:v13])
+        if ([self canLoadObjectOfClass:v13])
         {
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __92__NSItemProvider_MobileSafariFrameworkExtras__safari_loadObjectOfClasses_completionHandler___block_invoke;
           v18[3] = &unk_1E721EE10;
           v19 = v7;
-          v17 = [a1 loadObjectOfClass:v13 completionHandler:v18];
+          v17 = [self loadObjectOfClass:v13 completionHandler:v18];
 
           goto LABEL_13;
         }
@@ -109,17 +109,17 @@ LABEL_13:
 - (void)safari_registerFileRepresentationForQuickLookDocument:()MobileSafariFrameworkExtras
 {
   v4 = a3;
-  v5 = [v4 fileName];
-  [a1 setSuggestedName:v5];
+  fileName = [v4 fileName];
+  [self setSuggestedName:fileName];
 
-  v6 = [v4 inferredUTI];
+  inferredUTI = [v4 inferredUTI];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __101__NSItemProvider_MobileSafariFrameworkExtras__safari_registerFileRepresentationForQuickLookDocument___block_invoke;
   v8[3] = &unk_1E721EE60;
   v9 = v4;
   v7 = v4;
-  [a1 registerFileRepresentationForTypeIdentifier:v6 fileOptions:0 visibility:0 loadHandler:v8];
+  [self registerFileRepresentationForTypeIdentifier:inferredUTI fileOptions:0 visibility:0 loadHandler:v8];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface OSLogEventLiveStream
-- (OSLogEventLiveStream)initWithLiveSource:(id)a3;
+- (OSLogEventLiveStream)initWithLiveSource:(id)source;
 - (void)_activateLiveStream;
-- (void)_handleStreamedObject:(id)a3 usingProxy:(id)a4;
+- (void)_handleStreamedObject:(id)object usingProxy:(id)proxy;
 - (void)activate;
 - (void)invalidate;
-- (void)setDroppedEventHandler:(id)a3;
-- (void)setFilterPredicate:(id)a3;
+- (void)setDroppedEventHandler:(id)handler;
+- (void)setFilterPredicate:(id)predicate;
 @end
 
 @implementation OSLogEventLiveStream
@@ -131,13 +131,13 @@ LABEL_17:
   v5.receiver = self;
   v5.super_class = OSLogEventLiveStream;
   [(OSLogEventStreamBase *)&v5 invalidate];
-  v3 = [(OSLogEventStreamBase *)self queue];
+  queue = [(OSLogEventStreamBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__OSLogEventLiveStream_invalidate__block_invoke;
   block[3] = &unk_2787AE2F0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __34__OSLogEventLiveStream_invalidate__block_invoke(uint64_t a1)
@@ -151,35 +151,35 @@ void __34__OSLogEventLiveStream_invalidate__block_invoke(uint64_t a1)
 
 - (void)activate
 {
-  v3 = [(OSLogEventStreamBase *)self queue];
+  queue = [(OSLogEventStreamBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__OSLogEventLiveStream_activate__block_invoke;
   block[3] = &unk_2787AE2F0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_activateLiveStream
 {
-  v3 = [(OSLogEventStreamBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(OSLogEventStreamBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(OSLogEventStreamBase *)self streamHandler];
+  streamHandler = [(OSLogEventStreamBase *)self streamHandler];
 
-  if (v4)
+  if (streamHandler)
   {
     if ([(OSLogEventStreamBase *)self invalidated])
     {
       self->_reason = 4;
-      v5 = [(OSLogEventStreamBase *)self invalidationHandler];
+      invalidationHandler = [(OSLogEventStreamBase *)self invalidationHandler];
 
-      if (v5)
+      if (invalidationHandler)
       {
-        v6 = [(OSLogEventStreamBase *)self invalidationHandler];
+        invalidationHandler2 = [(OSLogEventStreamBase *)self invalidationHandler];
         reason = self->_reason;
         v8 = [OSLogEventStreamPosition alloc];
-        (v6)[2](v6, reason, v8);
+        (invalidationHandler2)[2](invalidationHandler2, reason, v8);
 
         [(OSLogEventStreamBase *)self setInvalidationHandler:0];
       }
@@ -187,8 +187,8 @@ void __34__OSLogEventLiveStream_invalidate__block_invoke(uint64_t a1)
 
     else
     {
-      v9 = [(OSLogEventStreamBase *)self queue];
-      mach_service = xpc_connection_create_mach_service("com.apple.diagnosticd", v9, 2uLL);
+      queue2 = [(OSLogEventStreamBase *)self queue];
+      mach_service = xpc_connection_create_mach_service("com.apple.diagnosticd", queue2, 2uLL);
       diagdconn = self->_diagdconn;
       self->_diagdconn = mach_service;
 
@@ -210,29 +210,29 @@ void __34__OSLogEventLiveStream_invalidate__block_invoke(uint64_t a1)
       xpc_dictionary_set_uint64(v13, "action", 3uLL);
       [v32[3] _setIncludeSensitive:1];
       xpc_dictionary_set_uint64(v13, "flags", (16 * [(OSLogEventStreamBase *)self flags]) & 0x20 | (([(OSLogEventStreamBase *)self flags]& 1) << 8));
-      v14 = [(OSLogEventStreamBase *)self flags];
-      v15 = [(OSLogEventStreamBase *)self flags];
-      v16 = [(OSLogEventStreamBase *)self flags];
-      v17 = [(OSLogEventStreamBase *)self flags];
-      v18 = [(OSLogEventStreamBase *)self flags];
+      flags = [(OSLogEventStreamBase *)self flags];
+      flags2 = [(OSLogEventStreamBase *)self flags];
+      flags3 = [(OSLogEventStreamBase *)self flags];
+      flags4 = [(OSLogEventStreamBase *)self flags];
+      flags5 = [(OSLogEventStreamBase *)self flags];
       v19 = 15;
-      if ((v14 & 0x20) == 0)
+      if ((flags & 0x20) == 0)
       {
         v19 = 7;
       }
 
-      v20 = (v15 >> 6) & 0x10 | v19;
-      if (v16 < 0)
+      v20 = (flags2 >> 6) & 0x10 | v19;
+      if (flags3 < 0)
       {
         v20 &= 0x1Eu;
       }
 
-      if ((v17 & 0x100) != 0)
+      if ((flags4 & 0x100) != 0)
       {
         v20 &= ~2uLL;
       }
 
-      if ((v18 & 0x200) != 0)
+      if ((flags5 & 0x200) != 0)
       {
         v21 = v20 & 0xFFFFFFFFFFFFFFFBLL;
       }
@@ -247,10 +247,10 @@ void __34__OSLogEventLiveStream_invalidate__block_invoke(uint64_t a1)
       streamFilter = self->_streamFilter;
       if (streamFilter)
       {
-        v23 = [(_OSLogStreamFilter *)streamFilter data];
-        v24 = [v23 bytes];
-        v25 = [(_OSLogStreamFilter *)self->_streamFilter data];
-        xpc_dictionary_set_data(v13, "stream_filter", v24, [v25 length]);
+        data = [(_OSLogStreamFilter *)streamFilter data];
+        bytes = [data bytes];
+        data2 = [(_OSLogStreamFilter *)self->_streamFilter data];
+        xpc_dictionary_set_data(v13, "stream_filter", bytes, [data2 length]);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -260,13 +260,13 @@ void __34__OSLogEventLiveStream_invalidate__block_invoke(uint64_t a1)
       }
 
       v26 = self->_diagdconn;
-      v27 = [(OSLogEventStreamBase *)self queue];
+      queue3 = [(OSLogEventStreamBase *)self queue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __43__OSLogEventLiveStream__activateLiveStream__block_invoke_10;
       v28[3] = &unk_2787AE2C8;
       v28[4] = self;
-      xpc_connection_send_message_with_reply(v26, v13, v27, v28);
+      xpc_connection_send_message_with_reply(v26, v13, queue3, v28);
 
       _Block_object_dispose(&v31, 8);
     }
@@ -315,49 +315,49 @@ LABEL_7:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStreamedObject:(id)a3 usingProxy:(id)a4
+- (void)_handleStreamedObject:(id)object usingProxy:(id)proxy
 {
-  v11 = a3;
-  v6 = a4;
-  [v6 _fillFromOSLogMessage:v11];
-  v7 = [(OSLogEventStreamBase *)self filterPredicate];
+  objectCopy = object;
+  proxyCopy = proxy;
+  [proxyCopy _fillFromOSLogMessage:objectCopy];
+  filterPredicate = [(OSLogEventStreamBase *)self filterPredicate];
 
-  if (!v7 || (-[OSLogEventStreamBase filterPredicate](self, "filterPredicate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 evaluateWithObject:v6], v8, (v9 & 1) != 0))
+  if (!filterPredicate || (-[OSLogEventStreamBase filterPredicate](self, "filterPredicate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 evaluateWithObject:proxyCopy], v8, (v9 & 1) != 0))
   {
-    v10 = [(OSLogEventStreamBase *)self streamHandler];
-    (v10)[2](v10, v6);
+    streamHandler = [(OSLogEventStreamBase *)self streamHandler];
+    (streamHandler)[2](streamHandler, proxyCopy);
   }
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
   v8.receiver = self;
   v8.super_class = OSLogEventLiveStream;
-  [(OSLogEventStreamBase *)&v8 setFilterPredicate:a3];
+  [(OSLogEventStreamBase *)&v8 setFilterPredicate:predicate];
   v4 = [_OSLogStreamFilter alloc];
-  v5 = [(OSLogEventStreamBase *)self filterPredicate];
-  v6 = [(_OSLogStreamFilter *)v4 initWithPredicate:v5];
+  filterPredicate = [(OSLogEventStreamBase *)self filterPredicate];
+  v6 = [(_OSLogStreamFilter *)v4 initWithPredicate:filterPredicate];
   streamFilter = self->_streamFilter;
   self->_streamFilter = v6;
 }
 
-- (void)setDroppedEventHandler:(id)a3
+- (void)setDroppedEventHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   dropnoteHandler = self->_dropnoteHandler;
   self->_dropnoteHandler = v4;
 
   MEMORY[0x2821F96F8](v4, dropnoteHandler);
 }
 
-- (OSLogEventLiveStream)initWithLiveSource:(id)a3
+- (OSLogEventLiveStream)initWithLiveSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = [(OSLogEventStreamBase *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_source, a3);
+    objc_storeStrong(&v6->_source, source);
   }
 
   return v7;

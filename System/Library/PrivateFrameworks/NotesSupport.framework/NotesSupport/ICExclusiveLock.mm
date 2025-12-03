@@ -1,9 +1,9 @@
 @interface ICExclusiveLock
 - (BOOL)tryLock;
-- (ICExclusiveLock)initWithName:(id)a3 cachePath:(id)a4;
+- (ICExclusiveLock)initWithName:(id)name cachePath:(id)path;
 - (void)dealloc;
 - (void)lock;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 - (void)unlock;
 @end
 
@@ -34,24 +34,24 @@
   [(ICExclusiveLock *)&v2 dealloc];
 }
 
-- (ICExclusiveLock)initWithName:(id)a3 cachePath:(id)a4
+- (ICExclusiveLock)initWithName:(id)name cachePath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = ICExclusiveLock;
   v9 = [(ICExclusiveLock *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7 || !v8)
+    if (!nameCopy || !pathCopy)
     {
       v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"You must pass a name cachePath into initWithName:" userInfo:0];
       objc_exception_throw(v14);
     }
 
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_cachePath, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_cachePath, path);
     v11 = [(NSString *)v10->_cachePath stringByAppendingPathComponent:v10->_name];
     fullPath = v10->_fullPath;
     v10->_fullPath = v11;
@@ -74,10 +74,10 @@
   return v4 != -1;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   p_name = &self->_name;
-  v12 = a3;
+  nameCopy = name;
   if (![(NSString *)*p_name isEqualToString:?])
   {
     if (self->_fd != -1)
@@ -86,13 +86,13 @@
       name = self->_name;
       v8 = v7[1];
       v9 = [(NSString *)v8 stringByAppendingPathComponent:name];
-      v10 = [(NSString *)v8 stringByAppendingPathComponent:v12];
+      v10 = [(NSString *)v8 stringByAppendingPathComponent:nameCopy];
 
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      [v11 moveItemAtPath:v9 toPath:v10 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager moveItemAtPath:v9 toPath:v10 error:0];
     }
 
-    objc_storeStrong(p_name, a3);
+    objc_storeStrong(p_name, name);
   }
 }
 

@@ -1,16 +1,16 @@
 @interface UIFont
-- (id)bkEffectiveFontForText:(id)a3;
+- (id)bkEffectiveFontForText:(id)text;
 @end
 
 @implementation UIFont
 
-- (id)bkEffectiveFontForText:(id)a3
+- (id)bkEffectiveFontForText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
-    v10.length = [(__CFString *)v4 length];
+    v10.length = [(__CFString *)textCopy length];
     v10.location = 0;
     v6 = CTFontCreateForString(self, v5, v10);
     if (v6)
@@ -34,7 +34,7 @@
     self = v7;
   }
 
-  v8 = self;
+  selfCopy = self;
 
   return self;
 }

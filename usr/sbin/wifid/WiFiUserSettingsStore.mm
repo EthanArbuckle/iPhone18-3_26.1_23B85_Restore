@@ -1,10 +1,10 @@
 @interface WiFiUserSettingsStore
 - (WiFiUserSettingsStore)init;
-- (void)_kvsDidChangeWithKeys:(id)a3 isExternal:(BOOL)a4;
+- (void)_kvsDidChangeWithKeys:(id)keys isExternal:(BOOL)external;
 - (void)_setupKVSHandler;
-- (void)setAskToJoinMode:(int64_t)a3;
-- (void)setAutoInstantHotspotMode:(int64_t)a3;
-- (void)setSyncingEnabled:(BOOL)a3;
+- (void)setAskToJoinMode:(int64_t)mode;
+- (void)setAutoInstantHotspotMode:(int64_t)mode;
+- (void)setSyncingEnabled:(BOOL)enabled;
 @end
 
 @implementation WiFiUserSettingsStore
@@ -48,9 +48,9 @@ LABEL_6:
   objc_destroyWeak(&from);
 }
 
-- (void)_kvsDidChangeWithKeys:(id)a3 isExternal:(BOOL)a4
+- (void)_kvsDidChangeWithKeys:(id)keys isExternal:(BOOL)external
 {
-  v6 = a3;
+  keysCopy = keys;
   if (![(WiFiUserSettingsStore *)self syncingEnabled])
   {
     sub_1001ABAE0();
@@ -59,9 +59,9 @@ LABEL_23:
     goto LABEL_20;
   }
 
-  if (!a4)
+  if (!external)
   {
-    sub_1001ABB4C(v6);
+    sub_1001ABB4C(keysCopy);
     goto LABEL_23;
   }
 
@@ -70,8 +70,8 @@ LABEL_23:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v20 = v6;
-  v8 = v6;
+  v20 = keysCopy;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v9)
   {
@@ -128,63 +128,63 @@ LABEL_23:
   while (v10);
 LABEL_17:
 
-  v18 = [(WiFiUserSettingsStore *)self keyDidChangeHandler];
+  keyDidChangeHandler = [(WiFiUserSettingsStore *)self keyDidChangeHandler];
 
-  if (v18)
+  if (keyDidChangeHandler)
   {
-    v19 = [(WiFiUserSettingsStore *)self keyDidChangeHandler];
-    (v19)[2](v19, v7);
+    keyDidChangeHandler2 = [(WiFiUserSettingsStore *)self keyDidChangeHandler];
+    (keyDidChangeHandler2)[2](keyDidChangeHandler2, v7);
   }
 
-  v6 = v20;
+  keysCopy = v20;
 LABEL_20:
 }
 
-- (void)setAutoInstantHotspotMode:(int64_t)a3
+- (void)setAutoInstantHotspotMode:(int64_t)mode
 {
   if ([(WiFiUserSettingsStore *)self syncingEnabled])
   {
-    v5 = [(WiFiUserSettingsStore *)self userSettingsKVS];
-    v6 = [NSNumber numberWithInteger:a3];
-    [v5 setObject:v6 forKey:CWFUserSettingsStoreAutoHotspotModeKey];
+    userSettingsKVS = [(WiFiUserSettingsStore *)self userSettingsKVS];
+    v6 = [NSNumber numberWithInteger:mode];
+    [userSettingsKVS setObject:v6 forKey:CWFUserSettingsStoreAutoHotspotModeKey];
 
-    v7 = [(WiFiUserSettingsStore *)self userSettingsKVS];
-    [v7 synchronize];
+    userSettingsKVS2 = [(WiFiUserSettingsStore *)self userSettingsKVS];
+    [userSettingsKVS2 synchronize];
   }
 
   else
   {
-    sub_1001ABBBC(a3);
+    sub_1001ABBBC(mode);
   }
 }
 
-- (void)setAskToJoinMode:(int64_t)a3
+- (void)setAskToJoinMode:(int64_t)mode
 {
   if ([(WiFiUserSettingsStore *)self syncingEnabled])
   {
-    v5 = [(WiFiUserSettingsStore *)self userSettingsKVS];
-    v6 = [NSNumber numberWithInteger:a3];
-    [v5 setObject:v6 forKey:CWFUserSettingsStoreAskToJoinModeKey];
+    userSettingsKVS = [(WiFiUserSettingsStore *)self userSettingsKVS];
+    v6 = [NSNumber numberWithInteger:mode];
+    [userSettingsKVS setObject:v6 forKey:CWFUserSettingsStoreAskToJoinModeKey];
 
-    v7 = [(WiFiUserSettingsStore *)self userSettingsKVS];
-    [v7 synchronize];
+    userSettingsKVS2 = [(WiFiUserSettingsStore *)self userSettingsKVS];
+    [userSettingsKVS2 synchronize];
   }
 
   else
   {
-    sub_1001ABC2C(a3);
+    sub_1001ABC2C(mode);
   }
 }
 
-- (void)setSyncingEnabled:(BOOL)a3
+- (void)setSyncingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_syncingEnabled = a3;
+  enabledCopy = enabled;
+  self->_syncingEnabled = enabled;
   v4 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
     v5 = @"not enabled";
-    if (v3)
+    if (enabledCopy)
     {
       v5 = @"enabled";
     }

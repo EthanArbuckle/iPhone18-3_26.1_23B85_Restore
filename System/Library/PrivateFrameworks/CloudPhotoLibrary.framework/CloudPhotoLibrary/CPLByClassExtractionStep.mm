@@ -1,18 +1,18 @@
 @interface CPLByClassExtractionStep
-- (BOOL)extractToBatch:(id)a3 maximumCount:(unint64_t)a4 maximumResourceSize:(unint64_t)a5 error:(id *)a6;
-- (CPLByClassExtractionStep)initWithStorage:(id)a3 scopeIdentifier:(id)a4 description:(id)a5 class:(Class)a6 maximumCount:(unint64_t)a7 query:(void *)a8;
+- (BOOL)extractToBatch:(id)batch maximumCount:(unint64_t)count maximumResourceSize:(unint64_t)size error:(id *)error;
+- (CPLByClassExtractionStep)initWithStorage:(id)storage scopeIdentifier:(id)identifier description:(id)description class:(Class)class maximumCount:(unint64_t)count query:(void *)query;
 @end
 
 @implementation CPLByClassExtractionStep
 
-- (BOOL)extractToBatch:(id)a3 maximumCount:(unint64_t)a4 maximumResourceSize:(unint64_t)a5 error:(id *)a6
+- (BOOL)extractToBatch:(id)batch maximumCount:(unint64_t)count maximumResourceSize:(unint64_t)size error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(CPLBatchExtractionStep *)self storage];
-  if (self->_maximumCount >= a4)
+  batchCopy = batch;
+  storage = [(CPLBatchExtractionStep *)self storage];
+  if (self->_maximumCount >= count)
   {
-    maximumCount = a4;
+    maximumCount = count;
   }
 
   else
@@ -28,14 +28,14 @@
   v38 = [v13 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v38)
   {
-    v31 = a6;
+    errorCopy = error;
     v14 = 0;
     v15 = 0;
     v16 = *v41;
-    v33 = v10;
+    v33 = batchCopy;
     v34 = v13;
-    v36 = v11;
-    v37 = a5;
+    v36 = storage;
+    sizeCopy = size;
     while (2)
     {
       v17 = 0;
@@ -52,47 +52,47 @@
         v20 = *(*(&v40 + 1) + 8 * v17);
         if ([v20 supportsResources] && objc_msgSend(v20, "hasChangeType:", 8))
         {
-          v21 = [v20 effectiveResourceSizeToUploadUsingStorage:v11];
-          if (v21 > v37)
+          v21 = [v20 effectiveResourceSizeToUploadUsingStorage:storage];
+          if (v21 > sizeCopy)
           {
-            v22 = [v10 batch];
-            v35 = [v22 count];
+            batch = [batchCopy batch];
+            v35 = [batch count];
 
-            v10 = v33;
+            batchCopy = v33;
             v13 = v34;
             if (v35)
             {
               v15 = v19;
-              v11 = v36;
+              storage = v36;
 LABEL_27:
-              [v10 setFull:1];
+              [batchCopy setFull:1];
               goto LABEL_28;
             }
           }
 
-          v23 = v37 - v21;
-          if (v37 < v21)
+          v23 = sizeCopy - v21;
+          if (sizeCopy < v21)
           {
             v23 = 0;
           }
 
-          v37 = v23;
-          v11 = v36;
+          sizeCopy = v23;
+          storage = v36;
         }
 
-        [v10 addChange:v20 fromStorage:v11];
+        [batchCopy addChange:v20 fromStorage:storage];
         v39 = v19;
-        v24 = [v11 removeChange:v20 error:&v39];
+        v24 = [storage removeChange:v20 error:&v39];
         v15 = v39;
 
         if (!v24)
         {
 
-          if (v31)
+          if (errorCopy)
           {
             v26 = v15;
             v27 = 0;
-            *v31 = v15;
+            *errorCopy = v15;
           }
 
           else
@@ -142,21 +142,21 @@ LABEL_29:
   return v27;
 }
 
-- (CPLByClassExtractionStep)initWithStorage:(id)a3 scopeIdentifier:(id)a4 description:(id)a5 class:(Class)a6 maximumCount:(unint64_t)a7 query:(void *)a8
+- (CPLByClassExtractionStep)initWithStorage:(id)storage scopeIdentifier:(id)identifier description:(id)description class:(Class)class maximumCount:(unint64_t)count query:(void *)query
 {
-  v14 = a5;
+  descriptionCopy = description;
   v19.receiver = self;
   v19.super_class = CPLByClassExtractionStep;
-  v15 = [(CPLBatchExtractionStep *)&v19 initWithStorage:a3 scopeIdentifier:a4];
+  v15 = [(CPLBatchExtractionStep *)&v19 initWithStorage:storage scopeIdentifier:identifier];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [descriptionCopy copy];
     queryDescription = v15->_queryDescription;
     v15->_queryDescription = v16;
 
-    v15->_extractionClass = a6;
-    v15->_maximumCount = a7;
-    v15->_query = a8;
+    v15->_extractionClass = class;
+    v15->_maximumCount = count;
+    v15->_query = query;
   }
 
   return v15;

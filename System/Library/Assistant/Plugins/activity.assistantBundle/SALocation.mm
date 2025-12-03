@@ -1,5 +1,5 @@
 @interface SALocation
-+ (SALocation)locationWithContactDictionary:(id)a3 coordinate:(CLLocationCoordinate2D)a4;
++ (SALocation)locationWithContactDictionary:(id)dictionary coordinate:(CLLocationCoordinate2D)coordinate;
 - (BOOL)hasLocationData;
 - (CLLocationCoordinate2D)coordinate;
 - (id)addressDictionary;
@@ -8,13 +8,13 @@
 
 @implementation SALocation
 
-+ (SALocation)locationWithContactDictionary:(id)a3 coordinate:(CLLocationCoordinate2D)a4
++ (SALocation)locationWithContactDictionary:(id)dictionary coordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v6 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  dictionaryCopy = dictionary;
   v7 = objc_alloc_init(SALocation);
-  v8 = [v6 allKeys];
+  allKeys = [dictionaryCopy allKeys];
   v25.latitude = latitude;
   v25.longitude = longitude;
   if (CLLocationCoordinate2DIsValid(v25))
@@ -27,63 +27,63 @@
   }
 
   v11 = +[NSUUID UUID];
-  v12 = [v11 UUIDString];
-  [v7 setAceId:v12];
+  uUIDString = [v11 UUIDString];
+  [v7 setAceId:uUIDString];
 
-  if ([v8 containsObject:@"latitude"])
+  if ([allKeys containsObject:@"latitude"])
   {
-    v13 = [v6 valueForKey:@"latitude"];
+    v13 = [dictionaryCopy valueForKey:@"latitude"];
     [v7 setLatitude:v13];
   }
 
-  if ([v8 containsObject:@"longitude"])
+  if ([allKeys containsObject:@"longitude"])
   {
-    v14 = [v6 valueForKey:@"longitude"];
+    v14 = [dictionaryCopy valueForKey:@"longitude"];
     [v7 setLongitude:v14];
   }
 
-  if ([v8 containsObject:@"name"])
+  if ([allKeys containsObject:@"name"])
   {
-    v15 = [v6 valueForKey:@"name"];
+    v15 = [dictionaryCopy valueForKey:@"name"];
     [v7 setLabel:v15];
   }
 
-  if ([v8 containsObject:CNPostalAddressStreetKey])
+  if ([allKeys containsObject:CNPostalAddressStreetKey])
   {
-    v16 = [v6 valueForKey:CNPostalAddressStreetKey];
+    v16 = [dictionaryCopy valueForKey:CNPostalAddressStreetKey];
     [v7 setStreet:v16];
 
-    v17 = [v6 valueForKey:CNPostalAddressStreetKey];
+    v17 = [dictionaryCopy valueForKey:CNPostalAddressStreetKey];
     [v7 setThoroughfare:v17];
   }
 
-  if ([v8 containsObject:CNPostalAddressCityKey])
+  if ([allKeys containsObject:CNPostalAddressCityKey])
   {
-    v18 = [v6 valueForKey:CNPostalAddressCityKey];
+    v18 = [dictionaryCopy valueForKey:CNPostalAddressCityKey];
     [v7 setCity:v18];
   }
 
-  if ([v8 containsObject:CNPostalAddressStateKey])
+  if ([allKeys containsObject:CNPostalAddressStateKey])
   {
-    v19 = [v6 valueForKey:CNPostalAddressStateKey];
+    v19 = [dictionaryCopy valueForKey:CNPostalAddressStateKey];
     [v7 setStateCode:v19];
   }
 
-  if ([v8 containsObject:CNPostalAddressCountryKey])
+  if ([allKeys containsObject:CNPostalAddressCountryKey])
   {
-    v20 = [v6 valueForKey:CNPostalAddressCountryKey];
+    v20 = [dictionaryCopy valueForKey:CNPostalAddressCountryKey];
     [v7 setCountryCode:v20];
   }
 
-  if ([v8 containsObject:CNPostalAddressPostalCodeKey])
+  if ([allKeys containsObject:CNPostalAddressPostalCodeKey])
   {
-    v21 = [v6 valueForKey:CNPostalAddressPostalCodeKey];
+    v21 = [dictionaryCopy valueForKey:CNPostalAddressPostalCodeKey];
     [v7 setPostalCode:v21];
   }
 
-  if ([v8 containsObject:CNPostalAddressPostalCodeKey])
+  if ([allKeys containsObject:CNPostalAddressPostalCodeKey])
   {
-    v22 = [v6 valueForKey:CNPostalAddressPostalCodeKey];
+    v22 = [dictionaryCopy valueForKey:CNPostalAddressPostalCodeKey];
     [v7 setPostalCode:v22];
   }
 
@@ -93,39 +93,39 @@
 - (id)addressDictionary
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(SALocation *)self street];
-  if (v4)
+  street = [(SALocation *)self street];
+  if (street)
   {
-    [v3 setObject:v4 forKeyedSubscript:CNPostalAddressStreetKey];
+    [v3 setObject:street forKeyedSubscript:CNPostalAddressStreetKey];
   }
 
   else
   {
-    v5 = [(SALocation *)self thoroughfare];
-    [v3 setObject:v5 forKeyedSubscript:CNPostalAddressStreetKey];
+    thoroughfare = [(SALocation *)self thoroughfare];
+    [v3 setObject:thoroughfare forKeyedSubscript:CNPostalAddressStreetKey];
   }
 
-  v6 = [(SALocation *)self city];
-  [v3 setObject:v6 forKeyedSubscript:CNPostalAddressCityKey];
+  city = [(SALocation *)self city];
+  [v3 setObject:city forKeyedSubscript:CNPostalAddressCityKey];
 
-  v7 = [(SALocation *)self stateCode];
-  [v3 setObject:v7 forKeyedSubscript:CNPostalAddressStateKey];
+  stateCode = [(SALocation *)self stateCode];
+  [v3 setObject:stateCode forKeyedSubscript:CNPostalAddressStateKey];
 
-  v8 = [(SALocation *)self postalCode];
-  [v3 setObject:v8 forKeyedSubscript:CNPostalAddressPostalCodeKey];
+  postalCode = [(SALocation *)self postalCode];
+  [v3 setObject:postalCode forKeyedSubscript:CNPostalAddressPostalCodeKey];
 
-  v9 = [(SALocation *)self countryCode];
-  [v3 setObject:v9 forKeyedSubscript:CNPostalAddressCountryKey];
+  countryCode = [(SALocation *)self countryCode];
+  [v3 setObject:countryCode forKeyedSubscript:CNPostalAddressCountryKey];
 
   return v3;
 }
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(SALocation *)self latitude];
-  v4 = [(SALocation *)self longitude];
-  v5 = v4;
-  if (!v3 || !v4 || ([v3 floatValue], v7 = v6, objc_msgSend(v5, "floatValue"), v13 = CLLocationCoordinate2DMake(v7, v8), latitude = v13.latitude, longitude = v13.longitude, !CLLocationCoordinate2DIsValid(v13)))
+  latitude = [(SALocation *)self latitude];
+  longitude = [(SALocation *)self longitude];
+  v5 = longitude;
+  if (!latitude || !longitude || ([latitude floatValue], v7 = v6, objc_msgSend(v5, "floatValue"), v13 = CLLocationCoordinate2DMake(v7, v8), latitude = v13.latitude, longitude = v13.longitude, !CLLocationCoordinate2DIsValid(v13)))
   {
     latitude = kCLLocationCoordinate2DInvalid.latitude;
     longitude = kCLLocationCoordinate2DInvalid.longitude;
@@ -143,18 +143,18 @@
   [(SALocation *)self coordinate];
   if (!CLLocationCoordinate2DIsValid(v8))
   {
-    v4 = [(SALocation *)self street];
-    if (v4 && ([(SALocation *)self city], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    street = [(SALocation *)self street];
+    if (street && ([(SALocation *)self city], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [(SALocation *)self postalCode];
-      v3 = v6 != 0;
+      postalCode = [(SALocation *)self postalCode];
+      v3 = postalCode != 0;
 
-      if (!v4)
+      if (!street)
       {
 LABEL_9:
 
@@ -178,12 +178,12 @@ LABEL_9:
     [(SALocation *)self coordinate];
     v5 = v4;
     v7 = v6;
-    v8 = [(SALocation *)self addressDictionary];
-    v9 = [v3 initWithCoordinate:v8 addressDictionary:{v5, v7}];
+    addressDictionary = [(SALocation *)self addressDictionary];
+    v9 = [v3 initWithCoordinate:addressDictionary addressDictionary:{v5, v7}];
 
     v10 = [[MKMapItem alloc] initWithPlacemark:v9];
-    v11 = [(SALocation *)self label];
-    [v10 setName:v11];
+    label = [(SALocation *)self label];
+    [v10 setName:label];
   }
 
   else

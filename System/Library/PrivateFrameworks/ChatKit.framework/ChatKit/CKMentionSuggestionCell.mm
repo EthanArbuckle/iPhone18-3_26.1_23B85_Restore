@@ -1,22 +1,22 @@
 @interface CKMentionSuggestionCell
-- (CKMentionSuggestionCell)initWithFrame:(CGRect)a3;
+- (CKMentionSuggestionCell)initWithFrame:(CGRect)frame;
 - (UIView)hoverView;
-- (void)didHoverOverCell:(id)a3;
-- (void)setSuggestedEntity:(id)a3;
+- (void)didHoverOverCell:(id)cell;
+- (void)setSuggestedEntity:(id)entity;
 @end
 
 @implementation CKMentionSuggestionCell
 
-- (CKMentionSuggestionCell)initWithFrame:(CGRect)a3
+- (CKMentionSuggestionCell)initWithFrame:(CGRect)frame
 {
   v102[13] = *MEMORY[0x1E69E9840];
   v101.receiver = self;
   v101.super_class = CKMentionSuggestionCell;
-  v3 = [(CKMentionSuggestionCell *)&v101 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKMentionSuggestionCell *)&v101 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(CKMentionSuggestionCell *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CKMentionSuggestionCell *)v3 setBackgroundColor:clearColor];
 
     v5 = [MEMORY[0x1E69DC730] effectWithStyle:8];
     v6 = objc_alloc(MEMORY[0x1E69DD298]);
@@ -24,141 +24,141 @@
     v7 = [MEMORY[0x1E69DD248] effectForBlurEffect:v5 style:6];
     v8 = [v6 initWithEffect:v7];
 
-    v9 = [v8 contentView];
+    contentView = [v8 contentView];
     v10 = +[CKUIBehavior sharedBehaviors];
-    v11 = [v10 theme];
-    v12 = [v11 paddleSelectionColor];
-    [v9 setBackgroundColor:v12];
+    theme = [v10 theme];
+    paddleSelectionColor = [theme paddleSelectionColor];
+    [contentView setBackgroundColor:paddleSelectionColor];
 
     v99 = v8;
     [(CKMentionSuggestionCell *)v3 setSelectedBackgroundView:v8];
     v13 = objc_alloc_init(CKAvatarView);
     [(CKMentionSuggestionCell *)v3 setAvatarView:v13];
 
-    v14 = [(CKMentionSuggestionCell *)v3 avatarView];
-    [v14 setAsynchronousRendering:1];
+    avatarView = [(CKMentionSuggestionCell *)v3 avatarView];
+    [avatarView setAsynchronousRendering:1];
 
-    v15 = [(CKMentionSuggestionCell *)v3 avatarView];
-    [v15 setUserInteractionEnabled:0];
+    avatarView2 = [(CKMentionSuggestionCell *)v3 avatarView];
+    [avatarView2 setUserInteractionEnabled:0];
 
-    v16 = [(CKMentionSuggestionCell *)v3 avatarView];
-    [v16 setShowsContactOnTap:0];
+    avatarView3 = [(CKMentionSuggestionCell *)v3 avatarView];
+    [avatarView3 setShowsContactOnTap:0];
 
-    v17 = [(CKMentionSuggestionCell *)v3 avatarView];
-    [v17 setBypassActionValidation:1];
+    avatarView4 = [(CKMentionSuggestionCell *)v3 avatarView];
+    [avatarView4 setBypassActionValidation:1];
 
-    v18 = [(CKMentionSuggestionCell *)v3 avatarView];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    avatarView5 = [(CKMentionSuggestionCell *)v3 avatarView];
+    [avatarView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v19 = [(CKMentionSuggestionCell *)v3 contentView];
-    v20 = [(CKMentionSuggestionCell *)v3 avatarView];
-    [v19 addSubview:v20];
+    contentView2 = [(CKMentionSuggestionCell *)v3 contentView];
+    avatarView6 = [(CKMentionSuggestionCell *)v3 avatarView];
+    [contentView2 addSubview:avatarView6];
 
     v21 = [CKLabel alloc];
     v22 = [(CKLabel *)v21 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CKMentionSuggestionCell *)v3 setHandleLabel:v22];
 
-    v23 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    handleLabel = [(CKMentionSuggestionCell *)v3 handleLabel];
     v24 = +[CKUIBehavior sharedBehaviors];
-    v25 = [v24 mentionsCellNameFont];
-    [v23 setFont:v25];
+    mentionsCellNameFont = [v24 mentionsCellNameFont];
+    [handleLabel setFont:mentionsCellNameFont];
 
-    v26 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    handleLabel2 = [(CKMentionSuggestionCell *)v3 handleLabel];
     v27 = +[CKUIBehavior sharedBehaviors];
-    v28 = [v27 theme];
-    v29 = [v28 paddleNameColor];
-    [v26 setTextColor:v29];
+    theme2 = [v27 theme];
+    paddleNameColor = [theme2 paddleNameColor];
+    [handleLabel2 setTextColor:paddleNameColor];
 
-    v30 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    [v30 setLineBreakMode:4];
+    handleLabel3 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    [handleLabel3 setLineBreakMode:4];
 
-    v31 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    [v31 setNumberOfLines:2];
+    handleLabel4 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    [handleLabel4 setNumberOfLines:2];
 
-    v32 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    [v32 setTextAlignment:1];
+    handleLabel5 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    [handleLabel5 setTextAlignment:1];
 
-    v33 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+    handleLabel6 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    [handleLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v34 = [(CKMentionSuggestionCell *)v3 contentView];
-    v35 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    [v34 addSubview:v35];
+    contentView3 = [(CKMentionSuggestionCell *)v3 contentView];
+    handleLabel7 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    [contentView3 addSubview:handleLabel7];
 
-    v36 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    handleLabel8 = [(CKMentionSuggestionCell *)v3 handleLabel];
     LODWORD(v37) = 1148846080;
-    [v36 setContentCompressionResistancePriority:1 forAxis:v37];
+    [handleLabel8 setContentCompressionResistancePriority:1 forAxis:v37];
 
     v76 = MEMORY[0x1E696ACD8];
-    v98 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    v97 = [v98 widthAnchor];
-    v96 = [v97 constraintLessThanOrEqualToConstant:96.0];
+    handleLabel9 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    widthAnchor = [handleLabel9 widthAnchor];
+    v96 = [widthAnchor constraintLessThanOrEqualToConstant:96.0];
     v102[0] = v96;
-    v95 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    v94 = [v95 widthAnchor];
-    v93 = [v94 constraintGreaterThanOrEqualToConstant:62.0];
+    handleLabel10 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    widthAnchor2 = [handleLabel10 widthAnchor];
+    v93 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:62.0];
     v102[1] = v93;
-    v92 = [(CKMentionSuggestionCell *)v3 avatarView];
-    v90 = [v92 topAnchor];
-    v91 = [(CKMentionSuggestionCell *)v3 contentView];
-    v89 = [v91 topAnchor];
-    v88 = [v90 constraintEqualToAnchor:v89 constant:16.0];
+    avatarView7 = [(CKMentionSuggestionCell *)v3 avatarView];
+    topAnchor = [avatarView7 topAnchor];
+    contentView4 = [(CKMentionSuggestionCell *)v3 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v88 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     v102[2] = v88;
-    v87 = [(CKMentionSuggestionCell *)v3 avatarView];
-    v85 = [v87 centerXAnchor];
-    v86 = [(CKMentionSuggestionCell *)v3 contentView];
-    v84 = [v86 centerXAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    avatarView8 = [(CKMentionSuggestionCell *)v3 avatarView];
+    centerXAnchor = [avatarView8 centerXAnchor];
+    contentView5 = [(CKMentionSuggestionCell *)v3 contentView];
+    centerXAnchor2 = [contentView5 centerXAnchor];
+    v83 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v102[3] = v83;
-    v82 = [(CKMentionSuggestionCell *)v3 avatarView];
-    v80 = [v82 leadingAnchor];
-    v81 = [(CKMentionSuggestionCell *)v3 contentView];
-    v79 = [v81 leadingAnchor];
-    v78 = [v80 constraintGreaterThanOrEqualToAnchor:v79 constant:12.0];
+    avatarView9 = [(CKMentionSuggestionCell *)v3 avatarView];
+    leadingAnchor = [avatarView9 leadingAnchor];
+    contentView6 = [(CKMentionSuggestionCell *)v3 contentView];
+    leadingAnchor2 = [contentView6 leadingAnchor];
+    v78 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:12.0];
     v102[4] = v78;
-    v77 = [(CKMentionSuggestionCell *)v3 avatarView];
-    v74 = [v77 trailingAnchor];
-    v75 = [(CKMentionSuggestionCell *)v3 contentView];
-    v73 = [v75 trailingAnchor];
-    v72 = [v74 constraintLessThanOrEqualToAnchor:v73 constant:-12.0];
+    avatarView10 = [(CKMentionSuggestionCell *)v3 avatarView];
+    trailingAnchor = [avatarView10 trailingAnchor];
+    contentView7 = [(CKMentionSuggestionCell *)v3 contentView];
+    trailingAnchor2 = [contentView7 trailingAnchor];
+    v72 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-12.0];
     v102[5] = v72;
-    v71 = [(CKMentionSuggestionCell *)v3 avatarView];
-    v70 = [v71 heightAnchor];
-    v69 = [v70 constraintEqualToConstant:40.0];
+    avatarView11 = [(CKMentionSuggestionCell *)v3 avatarView];
+    heightAnchor = [avatarView11 heightAnchor];
+    v69 = [heightAnchor constraintEqualToConstant:40.0];
     v102[6] = v69;
-    v68 = [(CKMentionSuggestionCell *)v3 avatarView];
-    v67 = [v68 widthAnchor];
-    v66 = [v67 constraintEqualToConstant:40.0];
+    avatarView12 = [(CKMentionSuggestionCell *)v3 avatarView];
+    widthAnchor3 = [avatarView12 widthAnchor];
+    v66 = [widthAnchor3 constraintEqualToConstant:40.0];
     v102[7] = v66;
-    v65 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    v63 = [v65 topAnchor];
-    v64 = [(CKMentionSuggestionCell *)v3 avatarView];
-    v62 = [v64 bottomAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:8.0];
+    handleLabel11 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    topAnchor3 = [handleLabel11 topAnchor];
+    avatarView13 = [(CKMentionSuggestionCell *)v3 avatarView];
+    bottomAnchor = [avatarView13 bottomAnchor];
+    v61 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:8.0];
     v102[8] = v61;
-    v60 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    v58 = [v60 leadingAnchor];
-    v59 = [(CKMentionSuggestionCell *)v3 contentView];
-    v57 = [v59 leadingAnchor];
-    v56 = [v58 constraintGreaterThanOrEqualToAnchor:v57 constant:12.0];
+    handleLabel12 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    leadingAnchor3 = [handleLabel12 leadingAnchor];
+    contentView8 = [(CKMentionSuggestionCell *)v3 contentView];
+    leadingAnchor4 = [contentView8 leadingAnchor];
+    v56 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:12.0];
     v102[9] = v56;
-    v55 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    v53 = [v55 trailingAnchor];
-    v54 = [(CKMentionSuggestionCell *)v3 contentView];
-    v52 = [v54 trailingAnchor];
-    v51 = [v53 constraintLessThanOrEqualToAnchor:v52 constant:-12.0];
+    handleLabel13 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    trailingAnchor3 = [handleLabel13 trailingAnchor];
+    contentView9 = [(CKMentionSuggestionCell *)v3 contentView];
+    trailingAnchor4 = [contentView9 trailingAnchor];
+    v51 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-12.0];
     v102[10] = v51;
-    v50 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    v49 = [v50 centerXAnchor];
-    v38 = [(CKMentionSuggestionCell *)v3 contentView];
-    v39 = [v38 centerXAnchor];
-    v40 = [v49 constraintEqualToAnchor:v39];
+    handleLabel14 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    centerXAnchor3 = [handleLabel14 centerXAnchor];
+    contentView10 = [(CKMentionSuggestionCell *)v3 contentView];
+    centerXAnchor4 = [contentView10 centerXAnchor];
+    v40 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v102[11] = v40;
-    v41 = [(CKMentionSuggestionCell *)v3 handleLabel];
-    v42 = [v41 bottomAnchor];
-    v43 = [(CKMentionSuggestionCell *)v3 contentView];
-    v44 = [v43 bottomAnchor];
-    v45 = [v42 constraintLessThanOrEqualToAnchor:v44 constant:-12.0];
+    handleLabel15 = [(CKMentionSuggestionCell *)v3 handleLabel];
+    bottomAnchor2 = [handleLabel15 bottomAnchor];
+    contentView11 = [(CKMentionSuggestionCell *)v3 contentView];
+    bottomAnchor3 = [contentView11 bottomAnchor];
+    v45 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3 constant:-12.0];
     v102[12] = v45;
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:13];
     [v76 activateConstraints:v46];
@@ -174,42 +174,42 @@
   return v3;
 }
 
-- (void)setSuggestedEntity:(id)a3
+- (void)setSuggestedEntity:(id)entity
 {
-  v5 = a3;
-  if (self->_suggestedEntity != v5)
+  entityCopy = entity;
+  if (self->_suggestedEntity != entityCopy)
   {
-    v6 = [(CKMentionSuggestionCell *)self avatarView];
+    avatarView = [(CKMentionSuggestionCell *)self avatarView];
 
-    if (v6)
+    if (avatarView)
     {
-      v7 = [(CKEntity *)v5 cnContactWithKeys:MEMORY[0x1E695E0F0]];
+      v7 = [(CKEntity *)entityCopy cnContactWithKeys:MEMORY[0x1E695E0F0]];
       if (v7)
       {
-        v8 = [(CKMentionSuggestionCell *)self avatarView];
-        [v8 setContact:v7];
+        avatarView2 = [(CKMentionSuggestionCell *)self avatarView];
+        [avatarView2 setContact:v7];
       }
 
       else
       {
-        v8 = IMLogHandleForCategory();
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        avatarView2 = IMLogHandleForCategory();
+        if (os_log_type_enabled(avatarView2, OS_LOG_TYPE_ERROR))
         {
-          [CKMentionSuggestionCell setSuggestedEntity:v8];
+          [CKMentionSuggestionCell setSuggestedEntity:avatarView2];
         }
       }
     }
 
-    v9 = [(CKMentionSuggestionCell *)self handleLabel];
+    handleLabel = [(CKMentionSuggestionCell *)self handleLabel];
 
-    if (v9)
+    if (handleLabel)
     {
-      v10 = [(CKMentionSuggestionCell *)self handleLabel];
-      v11 = [(CKEntity *)v5 fullName];
-      [v10 setText:v11];
+      handleLabel2 = [(CKMentionSuggestionCell *)self handleLabel];
+      fullName = [(CKEntity *)entityCopy fullName];
+      [handleLabel2 setText:fullName];
     }
 
-    objc_storeStrong(&self->_suggestedEntity, a3);
+    objc_storeStrong(&self->_suggestedEntity, entity);
   }
 }
 
@@ -226,9 +226,9 @@
 
     v6 = self->_hoverView;
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 theme];
-    v9 = [v8 appTintColor];
-    [(UIView *)v6 setBackgroundColor:v9];
+    theme = [v7 theme];
+    appTintColor = [theme appTintColor];
+    [(UIView *)v6 setBackgroundColor:appTintColor];
 
     [(UIView *)self->_hoverView _setContinuousCornerRadius:5.0];
     hoverView = self->_hoverView;
@@ -237,34 +237,34 @@
   return hoverView;
 }
 
-- (void)didHoverOverCell:(id)a3
+- (void)didHoverOverCell:(id)cell
 {
-  v4 = [a3 state];
-  if (v4 == 3)
+  state = [cell state];
+  if (state == 3)
   {
-    v7 = [(CKMentionSuggestionCell *)self hoverView];
-    [v7 removeFromSuperview];
+    hoverView = [(CKMentionSuggestionCell *)self hoverView];
+    [hoverView removeFromSuperview];
 
-    v10 = [(CKMentionSuggestionCell *)self handleLabel];
-    v6 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v6 theme];
-    v9 = [v8 paddleNameColor];
-    [v10 setTextColor:v9];
+    handleLabel = [(CKMentionSuggestionCell *)self handleLabel];
+    whiteColor = +[CKUIBehavior sharedBehaviors];
+    theme = [whiteColor theme];
+    paddleNameColor = [theme paddleNameColor];
+    [handleLabel setTextColor:paddleNameColor];
   }
 
   else
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
 
-    v5 = [(CKMentionSuggestionCell *)self hoverView];
-    [(CKMentionSuggestionCell *)self insertSubview:v5 atIndex:0];
+    hoverView2 = [(CKMentionSuggestionCell *)self hoverView];
+    [(CKMentionSuggestionCell *)self insertSubview:hoverView2 atIndex:0];
 
-    v10 = [(CKMentionSuggestionCell *)self handleLabel];
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [v10 setTextColor:v6];
+    handleLabel = [(CKMentionSuggestionCell *)self handleLabel];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [handleLabel setTextColor:whiteColor];
   }
 }
 

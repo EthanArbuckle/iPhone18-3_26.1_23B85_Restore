@@ -1,15 +1,15 @@
 @interface CAMSmartStyleSettingsResourceLoadingManager
-- (BOOL)isWaitingOnLoadingForAssetIdentifiers:(id)a3;
+- (BOOL)isWaitingOnLoadingForAssetIdentifiers:(id)identifiers;
 - (CAMSmartStyleSettingsResourceLoadingManager)init;
 - (CAMSmartStyleSettingsResourceLoadingManagerDelegate)delegate;
-- (id)logIdentifierForAssetIdentifier:(id)a3;
-- (id)logIdentifierForAssetIdentifiers:(id)a3;
-- (id)resourceLoaderForAssetIdentifier:(id)a3;
+- (id)logIdentifierForAssetIdentifier:(id)identifier;
+- (id)logIdentifierForAssetIdentifiers:(id)identifiers;
+- (id)resourceLoaderForAssetIdentifier:(id)identifier;
 - (void)_loadNextResourceIfPossible;
-- (void)_unloadResourcesForAssetIdentifier:(id)a3 allowLoadingNextResource:(BOOL)a4;
-- (void)loadResourcesForAssetIdentifier:(id)a3;
-- (void)loadResourcesForAssetIdentifiers:(id)a3 unloadAllOthers:(BOOL)a4;
-- (void)smartStyleSettingsResourceLoaderDidFinishLoading:(id)a3;
+- (void)_unloadResourcesForAssetIdentifier:(id)identifier allowLoadingNextResource:(BOOL)resource;
+- (void)loadResourcesForAssetIdentifier:(id)identifier;
+- (void)loadResourcesForAssetIdentifiers:(id)identifiers unloadAllOthers:(BOOL)others;
+- (void)smartStyleSettingsResourceLoaderDidFinishLoading:(id)loading;
 @end
 
 @implementation CAMSmartStyleSettingsResourceLoadingManager
@@ -44,15 +44,15 @@
   return v2;
 }
 
-- (void)loadResourcesForAssetIdentifier:(id)a3
+- (void)loadResourcesForAssetIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _allResourceLoaders = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
+  v6 = [_allResourceLoaders objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
-    v7 = [(CAMSmartStyleSettingsResourceLoadingManager *)self logIdentifierForAssetIdentifier:v4];
+    v7 = [(CAMSmartStyleSettingsResourceLoadingManager *)self logIdentifierForAssetIdentifier:identifierCopy];
     v8 = os_log_create("com.apple.camera", "SmartStyleSettings");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -60,31 +60,31 @@
     }
 
     v9 = [CAMSmartStyleSettingsResourceLoader alloc];
-    v10 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _loadingQueue];
-    v11 = [(CAMSmartStyleSettingsResourceLoader *)v9 initWithDelegate:self loadingQueue:v10 assetIdentifier:v4 logIdentifier:v7];
+    _loadingQueue = [(CAMSmartStyleSettingsResourceLoadingManager *)self _loadingQueue];
+    v11 = [(CAMSmartStyleSettingsResourceLoader *)v9 initWithDelegate:self loadingQueue:_loadingQueue assetIdentifier:identifierCopy logIdentifier:v7];
 
-    v12 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _pendingResourceLoaders];
-    [v12 addObject:v11];
+    _pendingResourceLoaders = [(CAMSmartStyleSettingsResourceLoadingManager *)self _pendingResourceLoaders];
+    [_pendingResourceLoaders addObject:v11];
 
-    v13 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
-    [v13 setObject:v11 forKeyedSubscript:v4];
+    _allResourceLoaders2 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
+    [_allResourceLoaders2 setObject:v11 forKeyedSubscript:identifierCopy];
 
     [(CAMSmartStyleSettingsResourceLoadingManager *)self _loadNextResourceIfPossible];
   }
 }
 
-- (void)loadResourcesForAssetIdentifiers:(id)a3 unloadAllOthers:(BOOL)a4
+- (void)loadResourcesForAssetIdentifiers:(id)identifiers unloadAllOthers:(BOOL)others
 {
-  v4 = a4;
+  othersCopy = others;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v4)
+  identifiersCopy = identifiers;
+  if (othersCopy)
   {
-    v7 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v7 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
     v8 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v9 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
-    v10 = [v9 allKeys];
-    v11 = [v8 initWithArray:v10];
+    _allResourceLoaders = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
+    allKeys = [_allResourceLoaders allKeys];
+    v11 = [v8 initWithArray:allKeys];
 
     [v11 minusSet:v7];
     v28 = 0u;
@@ -122,7 +122,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v17 = v6;
+  v17 = identifiersCopy;
   v18 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v18)
   {
@@ -151,29 +151,29 @@
   [(CAMSmartStyleSettingsResourceLoadingManager *)self _loadNextResourceIfPossible];
 }
 
-- (void)_unloadResourcesForAssetIdentifier:(id)a3 allowLoadingNextResource:(BOOL)a4
+- (void)_unloadResourcesForAssetIdentifier:(id)identifier allowLoadingNextResource:(BOOL)resource
 {
-  v4 = a4;
+  resourceCopy = resource;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CAMSmartStyleSettingsResourceLoadingManager *)self logIdentifierForAssetIdentifier:v6];
-  v8 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  v7 = [(CAMSmartStyleSettingsResourceLoadingManager *)self logIdentifierForAssetIdentifier:identifierCopy];
+  _allResourceLoaders = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
+  v9 = [_allResourceLoaders objectForKeyedSubscript:identifierCopy];
 
   if (v9)
   {
     [v9 setDelegate:0];
-    v10 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _pendingResourceLoaders];
-    [v10 removeObject:v9];
+    _pendingResourceLoaders = [(CAMSmartStyleSettingsResourceLoadingManager *)self _pendingResourceLoaders];
+    [_pendingResourceLoaders removeObject:v9];
 
-    v11 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
-    [v11 setObject:0 forKeyedSubscript:v6];
+    _allResourceLoaders2 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
+    [_allResourceLoaders2 setObject:0 forKeyedSubscript:identifierCopy];
 
-    v12 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _activeResourceLoader];
+    _activeResourceLoader = [(CAMSmartStyleSettingsResourceLoadingManager *)self _activeResourceLoader];
 
     v13 = os_log_create("com.apple.camera", "SmartStyleSettings");
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
-    if (v12 == v9)
+    if (_activeResourceLoader == v9)
     {
       if (v14)
       {
@@ -181,7 +181,7 @@
       }
 
       [(CAMSmartStyleSettingsResourceLoadingManager *)self set_activeResourceLoader:0];
-      if (v4)
+      if (resourceCopy)
       {
         [(CAMSmartStyleSettingsResourceLoadingManager *)self _loadNextResourceIfPossible];
       }
@@ -211,29 +211,29 @@
 - (void)_loadNextResourceIfPossible
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = [a1 logIdentifier];
+  logIdentifier = [self logIdentifier];
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(&dword_1A3640000, a2, OS_LOG_TYPE_DEBUG, "ResourceLoadingManager (%{public}@): starting load", v4, 0xCu);
 }
 
-- (id)resourceLoaderForAssetIdentifier:(id)a3
+- (id)resourceLoaderForAssetIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _allResourceLoaders = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
+  v6 = [_allResourceLoaders objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isWaitingOnLoadingForAssetIdentifiers:(id)a3
+- (BOOL)isWaitingOnLoadingForAssetIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  identifiersCopy = identifiers;
+  v5 = [identifiersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -244,12 +244,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        _allResourceLoaders = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
+        v11 = [_allResourceLoaders objectForKeyedSubscript:v9];
 
         if (([v11 status] | 2) == 2)
         {
@@ -259,7 +259,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       v12 = 0;
       if (v6)
       {
@@ -280,17 +280,17 @@ LABEL_12:
   return v12;
 }
 
-- (id)logIdentifierForAssetIdentifier:(id)a3
+- (id)logIdentifierForAssetIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _logIdentifiers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _logIdentifiers = [(CAMSmartStyleSettingsResourceLoadingManager *)self _logIdentifiers];
+  v6 = [_logIdentifiers objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _logIdentifiers];
-    v6 = [v7 stringWithFormat:@"Asset:%ld", objc_msgSend(v8, "count")];
+    _logIdentifiers2 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _logIdentifiers];
+    v6 = [v7 stringWithFormat:@"Asset:%ld", objc_msgSend(_logIdentifiers2, "count")];
 
     v9 = os_log_create("com.apple.camera", "SmartStyleSettings");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -298,23 +298,23 @@ LABEL_12:
       [CAMSmartStyleSettingsResourceLoadingManager logIdentifierForAssetIdentifier:];
     }
 
-    v10 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _logIdentifiers];
-    [v10 setObject:v6 forKeyedSubscript:v4];
+    _logIdentifiers3 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _logIdentifiers];
+    [_logIdentifiers3 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
   return v6;
 }
 
-- (id)logIdentifierForAssetIdentifiers:(id)a3
+- (id)logIdentifierForAssetIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -344,21 +344,21 @@ LABEL_12:
   return v12;
 }
 
-- (void)smartStyleSettingsResourceLoaderDidFinishLoading:(id)a3
+- (void)smartStyleSettingsResourceLoaderDidFinishLoading:(id)loading
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
-  v6 = [v4 assetIdentifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  loadingCopy = loading;
+  _allResourceLoaders = [(CAMSmartStyleSettingsResourceLoadingManager *)self _allResourceLoaders];
+  assetIdentifier = [loadingCopy assetIdentifier];
+  v7 = [_allResourceLoaders objectForKeyedSubscript:assetIdentifier];
 
-  v8 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _activeResourceLoader];
+  _activeResourceLoader = [(CAMSmartStyleSettingsResourceLoadingManager *)self _activeResourceLoader];
 
-  v9 = os_log_create("com.apple.camera", "SmartStyleSettings");
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8 != v4)
+  delegate = os_log_create("com.apple.camera", "SmartStyleSettings");
+  v10 = os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT);
+  if (_activeResourceLoader != loadingCopy)
   {
-    if (v7 != v4)
+    if (v7 != loadingCopy)
     {
       if (!v10)
       {
@@ -367,14 +367,14 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v11 = [v4 logIdentifier];
-      v12 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _activeResourceLoader];
-      v13 = [v12 logIdentifier];
+      logIdentifier = [loadingCopy logIdentifier];
+      _activeResourceLoader2 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _activeResourceLoader];
+      logIdentifier2 = [_activeResourceLoader2 logIdentifier];
       v18 = 138543618;
-      v19 = v11;
+      v19 = logIdentifier;
       v20 = 2114;
-      v21 = v13;
-      _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "ResourceLoadingManager (%{public}@): Did finish loading for asset that was not activeResourceLoader %{public}@. Will not notify delegate.", &v18, 0x16u);
+      v21 = logIdentifier2;
+      _os_log_impl(&dword_1A3640000, delegate, OS_LOG_TYPE_DEFAULT, "ResourceLoadingManager (%{public}@): Did finish loading for asset that was not activeResourceLoader %{public}@. Will not notify delegate.", &v18, 0x16u);
 
 LABEL_13:
       goto LABEL_14;
@@ -382,33 +382,33 @@ LABEL_13:
 
     if (v10)
     {
-      v15 = [v4 logIdentifier];
-      v16 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _activeResourceLoader];
-      v17 = [v16 logIdentifier];
+      logIdentifier3 = [loadingCopy logIdentifier];
+      _activeResourceLoader3 = [(CAMSmartStyleSettingsResourceLoadingManager *)self _activeResourceLoader];
+      logIdentifier4 = [_activeResourceLoader3 logIdentifier];
       v18 = 138543618;
-      v19 = v15;
+      v19 = logIdentifier3;
       v20 = 2114;
-      v21 = v17;
-      _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "ResourceLoadingManager (%{public}@): Did finish loading for asset that was not activeResourceLoader %{public}@", &v18, 0x16u);
+      v21 = logIdentifier4;
+      _os_log_impl(&dword_1A3640000, delegate, OS_LOG_TYPE_DEFAULT, "ResourceLoadingManager (%{public}@): Did finish loading for asset that was not activeResourceLoader %{public}@", &v18, 0x16u);
     }
 
 LABEL_12:
-    v9 = [(CAMSmartStyleSettingsResourceLoadingManager *)self delegate];
-    v11 = [v4 assetIdentifier];
-    [v9 smartStyleSettingsResourceLoadingManager:self didFinishLoadingForAssetIdentifier:v11];
+    delegate = [(CAMSmartStyleSettingsResourceLoadingManager *)self delegate];
+    logIdentifier = [loadingCopy assetIdentifier];
+    [delegate smartStyleSettingsResourceLoadingManager:self didFinishLoadingForAssetIdentifier:logIdentifier];
     goto LABEL_13;
   }
 
   if (v10)
   {
-    v14 = [v4 logIdentifier];
+    logIdentifier5 = [loadingCopy logIdentifier];
     v18 = 138543362;
-    v19 = v14;
-    _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "ResourceLoadingManager (%{public}@): Did finish loading", &v18, 0xCu);
+    v19 = logIdentifier5;
+    _os_log_impl(&dword_1A3640000, delegate, OS_LOG_TYPE_DEFAULT, "ResourceLoadingManager (%{public}@): Did finish loading", &v18, 0xCu);
   }
 
   [(CAMSmartStyleSettingsResourceLoadingManager *)self set_activeResourceLoader:0];
-  if (v7 == v4)
+  if (v7 == loadingCopy)
   {
     goto LABEL_12;
   }

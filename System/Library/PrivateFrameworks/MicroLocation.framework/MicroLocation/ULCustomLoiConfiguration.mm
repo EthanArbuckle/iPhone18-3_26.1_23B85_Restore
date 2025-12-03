@@ -1,34 +1,34 @@
 @interface ULCustomLoiConfiguration
-- (ULCustomLoiConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ULCustomLoiConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULCustomLoiConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   isInRoomDetectionEnabled = self->_isInRoomDetectionEnabled;
 
   return [v4 initWithEnableInRoomDetection:isInRoomDetectionEnabled];
 }
 
-- (ULCustomLoiConfiguration)initWithCoder:(id)a3
+- (ULCustomLoiConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ULCustomLoiConfiguration;
   v5 = [(ULCustomLoiConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isInRoomDetectionEnabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isInRoomDetectionEnabled"];
     v7 = v6;
     if (v6)
     {
-      v8 = [(ULCustomLoiConfiguration *)v6 BOOLValue];
+      bOOLValue = [(ULCustomLoiConfiguration *)v6 BOOLValue];
 
-      v5->_isInRoomDetectionEnabled = v8;
+      v5->_isInRoomDetectionEnabled = bOOLValue;
       v7 = v5;
     }
   }
@@ -41,13 +41,13 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   isInRoomDetectionEnabled = self->_isInRoomDetectionEnabled;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithBool:isInRoomDetectionEnabled];
-  [v5 encodeObject:v6 forKey:@"isInRoomDetectionEnabled"];
+  [coderCopy encodeObject:v6 forKey:@"isInRoomDetectionEnabled"];
 }
 
 @end

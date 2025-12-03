@@ -1,22 +1,22 @@
 @interface CAMLibrarySelectionSession
-- (BOOL)_applyAutoResetModeAndNotify:(BOOL)a3;
-- (BOOL)_canResetDuringSessionWithResult:(id)a3;
+- (BOOL)_applyAutoResetModeAndNotify:(BOOL)notify;
+- (BOOL)_canResetDuringSessionWithResult:(id)result;
 - (BOOL)_canTransitionToAutoOn;
-- (BOOL)_shouldResetDuringSessionWithResult:(id)a3;
-- (BOOL)_shouldResetSessionBasedOnTimeoutDuringTrip:(BOOL)a3 atSameLocation:(BOOL)a4;
+- (BOOL)_shouldResetDuringSessionWithResult:(id)result;
+- (BOOL)_shouldResetSessionBasedOnTimeoutDuringTrip:(BOOL)trip atSameLocation:(BOOL)location;
 - (BOOL)_userWasPreviouslyOnTrip;
 - (BOOL)notifyResetIfNeeded;
-- (BOOL)updateWithMode:(int64_t)a3;
-- (BOOL)updateWithResult:(id)a3;
+- (BOOL)updateWithMode:(int64_t)mode;
+- (BOOL)updateWithResult:(id)result;
 - (CAMLibrarySelectionDelegate)delegate;
-- (CAMLibrarySelectionSession)initWithMode:(int64_t)a3;
+- (CAMLibrarySelectionSession)initWithMode:(int64_t)mode;
 - (int64_t)_autoResetMode;
 - (int64_t)_defaultMode;
 @end
 
 @implementation CAMLibrarySelectionSession
 
-- (CAMLibrarySelectionSession)initWithMode:(int64_t)a3
+- (CAMLibrarySelectionSession)initWithMode:(int64_t)mode
 {
   v27 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -25,12 +25,12 @@
   if (v4)
   {
     v5 = +[CAMUserPreferences preferences];
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     launchDate = v4->_launchDate;
-    v4->_launchDate = v6;
+    v4->_launchDate = date;
 
-    v4->_initialMode = a3;
-    v4->_currentMode = a3;
+    v4->_initialMode = mode;
+    v4->_currentMode = mode;
     v4->_userInteractionsCount = 0;
     v4->_restoredFromPreferences = +[CAMUserPreferences hasSharedLibraryAlgorithmsPreferences];
     initialMode = v4->_initialMode;
@@ -42,9 +42,9 @@
 
     v4->_overriddenByUser = CAMSharedLibraryModeIsUserState(v4->_currentMode);
     v4->_userWasPreviouslyOnTrip = [(CAMLibrarySelectionSession *)v4 _userWasPreviouslyOnTrip];
-    v9 = [v5 sharedLibraryLastLocation];
+    sharedLibraryLastLocation = [v5 sharedLibraryLastLocation];
 
-    if (v4->_canResetToDefaultMode && [(CAMLibrarySelectionSession *)v4 _shouldResetSessionBasedOnTimeoutDuringTrip:v4->_userWasPreviouslyOnTrip atSameLocation:v9 != 0])
+    if (v4->_canResetToDefaultMode && [(CAMLibrarySelectionSession *)v4 _shouldResetSessionBasedOnTimeoutDuringTrip:v4->_userWasPreviouslyOnTrip atSameLocation:sharedLibraryLastLocation != 0])
     {
       [(CAMLibrarySelectionSession *)v4 _applyAutoResetModeAndNotify:0];
     }
@@ -75,15 +75,15 @@
   return v4;
 }
 
-- (BOOL)updateWithMode:(int64_t)a3
+- (BOOL)updateWithMode:(int64_t)mode
 {
   v15 = *MEMORY[0x1E69E9840];
   currentMode = self->_currentMode;
-  if (currentMode != a3)
+  if (currentMode != mode)
   {
-    self->_currentMode = a3;
+    self->_currentMode = mode;
     self->_canResetToDefaultMode = 0;
-    IsUserState = CAMSharedLibraryModeIsUserState(a3);
+    IsUserState = CAMSharedLibraryModeIsUserState(mode);
     self->_overriddenByUser = IsUserState;
     if (IsUserState)
     {
@@ -96,7 +96,7 @@
       }
     }
 
-    if (self->_timeForSmartSharingAutoDecision < 0.0 && CAMSharedLibraryModeIsAutoState(a3))
+    if (self->_timeForSmartSharingAutoDecision < 0.0 && CAMSharedLibraryModeIsAutoState(mode))
     {
       [(NSDate *)self->_launchDate timeIntervalSinceNow];
       self->_timeForSmartSharingAutoDecision = fabs(v8);
@@ -106,28 +106,28 @@
     v9 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = CAMSharedLibraryModeDescription(a3);
+      v10 = CAMSharedLibraryModeDescription(mode);
       v13 = 138543362;
       v14 = v10;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "[CAMLibrarySelectionSession] setSharedLibraryMode: %{public}@", &v13, 0xCu);
     }
 
-    v11 = [(CAMLibrarySelectionSession *)self delegate];
-    [v11 librarySelectionDidChangeSharedLibraryMode:a3];
+    delegate = [(CAMLibrarySelectionSession *)self delegate];
+    [delegate librarySelectionDidChangeSharedLibraryMode:mode];
   }
 
-  return currentMode != a3;
+  return currentMode != mode;
 }
 
-- (BOOL)updateWithResult:(id)a3
+- (BOOL)updateWithResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
+  resultCopy = result;
+  v5 = resultCopy;
   if (self->_timeToAcquireFirstLocation < 0.0)
   {
-    v6 = [v4 currentLocation];
+    currentLocation = [resultCopy currentLocation];
 
-    if (v6)
+    if (currentLocation)
     {
       [(NSDate *)self->_launchDate timeIntervalSinceNow];
       self->_timeToAcquireFirstLocation = fabs(v7);
@@ -136,12 +136,12 @@
 
   if (self->_timeToAcquireFirstPreciseLocation < 0.0)
   {
-    v8 = [v5 currentLocation];
-    if (v8)
+    currentLocation2 = [v5 currentLocation];
+    if (currentLocation2)
     {
-      v9 = v8;
-      v10 = [v5 currentLocation];
-      [v10 horizontalAccuracy];
+      v9 = currentLocation2;
+      currentLocation3 = [v5 currentLocation];
+      [currentLocation3 horizontalAccuracy];
       v12 = v11;
 
       if (v12 < 50.0)
@@ -154,8 +154,8 @@
 
   if (self->_timeToDetectDevicesInProximity < 0.0)
   {
-    v14 = [v5 identitiesInProximity];
-    v15 = [v14 count];
+    identitiesInProximity = [v5 identitiesInProximity];
+    v15 = [identitiesInProximity count];
 
     if (v15)
     {
@@ -206,28 +206,28 @@ LABEL_21:
     return 0;
   }
 
-  v4 = [(CAMLibrarySelectionSession *)self delegate];
-  [v4 librarySelectionDidChangeSharedLibraryMode:self->_currentMode];
+  delegate = [(CAMLibrarySelectionSession *)self delegate];
+  [delegate librarySelectionDidChangeSharedLibraryMode:self->_currentMode];
 
   return 1;
 }
 
-- (BOOL)_applyAutoResetModeAndNotify:(BOOL)a3
+- (BOOL)_applyAutoResetModeAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v17 = *MEMORY[0x1E69E9840];
   currentMode = self->_currentMode;
   if (currentMode < 5)
   {
-    v6 = [(CAMLibrarySelectionSession *)self _autoResetMode];
+    _autoResetMode = [(CAMLibrarySelectionSession *)self _autoResetMode];
 LABEL_3:
-    v7 = v6;
+    v7 = _autoResetMode;
     goto LABEL_4;
   }
 
   if (currentMode == 5)
   {
-    v6 = [(CAMLibrarySelectionSession *)self _defaultMode];
+    _autoResetMode = [(CAMLibrarySelectionSession *)self _defaultMode];
     goto LABEL_3;
   }
 
@@ -245,14 +245,14 @@ LABEL_4:
       v13 = 138543618;
       v14 = v10;
       v15 = 1026;
-      v16 = v3;
+      v16 = notifyCopy;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "[CAMLibrarySelectionSession] autoResetModeAndNotify: %{public}@, notify: %{public}d", &v13, 0x12u);
     }
 
-    if (v3)
+    if (notifyCopy)
     {
-      v11 = [(CAMLibrarySelectionSession *)self delegate];
-      [v11 librarySelectionDidChangeSharedLibraryMode:v7];
+      delegate = [(CAMLibrarySelectionSession *)self delegate];
+      [delegate librarySelectionDidChangeSharedLibraryMode:v7];
     }
   }
 
@@ -262,9 +262,9 @@ LABEL_4:
 - (int64_t)_defaultMode
 {
   v2 = +[CAMUserPreferences preferences];
-  v3 = [v2 defaultToSharedLibraryEnabled];
+  defaultToSharedLibraryEnabled = [v2 defaultToSharedLibraryEnabled];
 
-  return v3;
+  return defaultToSharedLibraryEnabled;
 }
 
 - (int64_t)_autoResetMode
@@ -310,10 +310,10 @@ LABEL_4:
   return v7 & 1;
 }
 
-- (BOOL)_canResetDuringSessionWithResult:(id)a3
+- (BOOL)_canResetDuringSessionWithResult:(id)result
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   [(NSDate *)self->_launchDate timeIntervalSinceNow];
   if (fabs(v5) > 25.0)
   {
@@ -336,7 +336,7 @@ LABEL_4:
     goto LABEL_25;
   }
 
-  if (([v4 cameraHasAccessToLocation] & 1) == 0 && !CAMLocationAccessPendingOrNotDeterminedWithAuthorizationStatus(objc_msgSend(v4, "locationAuthorizationStatus")))
+  if (([resultCopy cameraHasAccessToLocation] & 1) == 0 && !CAMLocationAccessPendingOrNotDeterminedWithAuthorizationStatus(objc_msgSend(resultCopy, "locationAuthorizationStatus")))
   {
     v6 = os_log_create("com.apple.camera", "SharedLibrary");
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -355,9 +355,9 @@ LABEL_4:
   v6 = v11;
   if (self->_overriddenByUser)
   {
-    v12 = [v11 sharedLibraryLastUserActionLocation];
+    sharedLibraryLastUserActionLocation = [v11 sharedLibraryLastUserActionLocation];
 
-    if (!v12)
+    if (!sharedLibraryLastUserActionLocation)
     {
       v14 = os_log_create("com.apple.camera", "SharedLibrary");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -372,9 +372,9 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v13 = [v6 sharedLibraryLastUserActionDate];
+    sharedLibraryLastUserActionDate = [v6 sharedLibraryLastUserActionDate];
 
-    if (!v13)
+    if (!sharedLibraryLastUserActionDate)
     {
       v14 = os_log_create("com.apple.camera", "SharedLibrary");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -392,9 +392,9 @@ LABEL_23:
 
   else
   {
-    v16 = [v11 sharedLibraryLastDiscoveryLocation];
+    sharedLibraryLastDiscoveryLocation = [v11 sharedLibraryLastDiscoveryLocation];
 
-    if (!v16)
+    if (!sharedLibraryLastDiscoveryLocation)
     {
       v14 = os_log_create("com.apple.camera", "SharedLibrary");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -407,9 +407,9 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v17 = [v6 sharedLibraryLastDiscoveryDate];
+    sharedLibraryLastDiscoveryDate = [v6 sharedLibraryLastDiscoveryDate];
 
-    if (!v17)
+    if (!sharedLibraryLastDiscoveryDate)
     {
       v14 = os_log_create("com.apple.camera", "SharedLibrary");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -434,9 +434,9 @@ LABEL_26:
   v2 = +[CAMUserPreferences preferences];
   if ([v2 sharedLibraryLastLocationAcquiredDuringTrip])
   {
-    v3 = [v2 sharedLibraryLastLocation];
-    v4 = [v3 timestamp];
-    [v4 timeIntervalSinceNow];
+    sharedLibraryLastLocation = [v2 sharedLibraryLastLocation];
+    timestamp = [sharedLibraryLastLocation timestamp];
+    [timestamp timeIntervalSinceNow];
     v6 = fabs(v5);
 
     v7 = +[CAMCaptureCapabilities capabilities];
@@ -452,19 +452,19 @@ LABEL_26:
   return v9;
 }
 
-- (BOOL)_shouldResetSessionBasedOnTimeoutDuringTrip:(BOOL)a3 atSameLocation:(BOOL)a4
+- (BOOL)_shouldResetSessionBasedOnTimeoutDuringTrip:(BOOL)trip atSameLocation:(BOOL)location
 {
-  v4 = a4;
-  v5 = a3;
+  locationCopy = location;
+  tripCopy = trip;
   v23 = *MEMORY[0x1E69E9840];
   v7 = +[CAMCaptureCapabilities capabilities];
   v8 = +[CAMUserPreferences preferences];
-  if (v5)
+  if (tripCopy)
   {
     [v7 librarySelectionTripResetTimeout];
   }
 
-  else if (v4)
+  else if (locationCopy)
   {
     [v7 librarySelectionSameLocationResetTimeout];
   }
@@ -533,12 +533,12 @@ LABEL_21:
   return v17;
 }
 
-- (BOOL)_shouldResetDuringSessionWithResult:(id)a3
+- (BOOL)_shouldResetDuringSessionWithResult:(id)result
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentLocation];
-  if (v5 && ([v4 isOnTrip] & 1) == 0)
+  resultCopy = result;
+  currentLocation = [resultCopy currentLocation];
+  if (currentLocation && ([resultCopy isOnTrip] & 1) == 0)
   {
     if (self->_userWasPreviouslyOnTrip && [(CAMLibrarySelectionSession *)self _shouldResetSessionBasedOnTimeoutDuringTrip:0 atSameLocation:0])
     {
@@ -576,8 +576,8 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v10 = [v4 frequentLocationRegionContainingLocation:v9];
-    v11 = [v4 frequentLocationRegionContainingLocation:v5];
+    v10 = [resultCopy frequentLocationRegionContainingLocation:v9];
+    v11 = [resultCopy frequentLocationRegionContainingLocation:currentLocation];
     v12 = v11;
     if (!v10 && v11)
     {
@@ -619,8 +619,8 @@ LABEL_17:
       }
     }
 
-    [v5 coordinate];
-    [v5 horizontalAccuracy];
+    [currentLocation coordinate];
+    [currentLocation horizontalAccuracy];
     v18 = v17;
     CLLocationCoordinate2DGetDistanceFrom();
     v20 = v19 - v18;
@@ -635,14 +635,14 @@ LABEL_17:
       [v7 sharedLibraryLastDiscoveryDate];
     }
     v22 = ;
-    v23 = [MEMORY[0x1E695DF00] date];
-    [v23 timeIntervalSinceDate:v22];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v22];
     v25 = v24;
 
-    LODWORD(v23) = [(CAMLibrarySelectionSession *)self _shouldResetSessionBasedOnTimeoutDuringTrip:0 atSameLocation:v21 <= 350.0];
+    LODWORD(date) = [(CAMLibrarySelectionSession *)self _shouldResetSessionBasedOnTimeoutDuringTrip:0 atSameLocation:v21 <= 350.0];
     v26 = os_log_create("com.apple.camera", "SharedLibrary");
     v27 = v26;
-    if (v23)
+    if (date)
     {
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {

@@ -1,31 +1,31 @@
 @interface MOEventBundle
-+ (id)getInterfaceTypeString:(unint64_t)a3 superType:(unint64_t)a4;
-+ (unint64_t)castEvergreenSubType:(unint64_t)a3;
-+ (unint64_t)convertNSNumberToContactType:(id)a3;
-+ (unint64_t)convertNSNumberToRoadType:(id)a3;
-+ (unint64_t)convertNSNumberToSensitiveLocationType:(id)a3;
-+ (unint64_t)convertNSNumberToUninterestingLocationType:(id)a3;
-+ (unint64_t)getSuperTypeEnum:(id)a3;
-- (BOOL)containTheSameEventSet:(id)a3;
-- (BOOL)hasAppEntryEngagementEvent:(id)a3;
-- (BOOL)hasSuggestionEngagementEvent:(id)a3;
-- (BOOL)intersectedActivityOrVisitForObject:(id)a3 other:(id)a4;
-- (BOOL)intersectedSubBundleIDForObject:(id)a3 other:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualBaseActionForObject:(id)a3 other:(id)a4;
-- (BOOL)isEqualBasicPropertiesForObject:(id)a3 other:(id)a4;
-- (BOOL)isEqualPersonsForObject:(id)a3 other:(id)a4;
-- (BOOL)isEqualPropertyForObject:(id)a3 other:(id)a4 propertyPath:(id)a5 threshold:(double)a6;
-- (BOOL)isEqualResourcesForObject:(id)a3 other:(id)a4 resourceType:(unint64_t)a5;
-- (BOOL)isEqualToEventBundle:(id)a3;
-- (BOOL)shareEvents:(id)a3;
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 bundleType:(id)a4 creationDate:(id)a5 endDate:(id)a6 expirationDate:(id)a7 events:(id)a8 filtered:(BOOL)a9 interfaceType:(unint64_t)a10 photoSource:(unint64_t)a11 promptLanguage:(id)a12 source:(unint64_t)a13 startDate:(id)a14 action:(id)a15 concurrentMediaAction:(id)a16 actions:(id)a17 persons:(id)a18 place:(id)a19 predominantWeather:(id)a20 resources:(id)a21 time:(id)a22 metaDataForRank:(id)a23 suggestionEngagements:(id)a24 suggestionEngagementViewCount:(unint64_t)a25 appEntryEngagements:(id)a26 isAggregatedAndSuppressed:(BOOL)a27 summarizationGranularity:(unint64_t)a28 places:(id)a29 subBundleIDs:(id)a30 subSuggestionIDs:(id)a31 includedInSummaryBundleOnly:(BOOL)a32 bundleSubType:(unint64_t)a33 bundleSuperType:(unint64_t)a34 photoTraits:(id)a35 isSensitive:(BOOL)a36;
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 bundleType:(id)a4 creationDate:(id)a5 endDate:(id)a6 expirationDate:(id)a7 events:(id)a8 filtered:(BOOL)a9 interfaceType:(unint64_t)a10 photoSource:(unint64_t)a11 promptLanguage:(id)a12 source:(unint64_t)a13 startDate:(id)a14 action:(id)a15 concurrentMediaAction:(id)a16 actions:(id)a17 persons:(id)a18 place:(id)a19 predominantWeather:(id)a20 resources:(id)a21 time:(id)a22 metaDataForRank:(id)a23 suggestionEngagements:(id)a24 suggestionEngagementViewCount:(unint64_t)a25 appEntryEngagements:(id)a26 isAggregatedAndSuppressed:(BOOL)a27 summarizationGranularity:(unint64_t)a28 places:(id)a29 subBundleIDs:(id)a30 subSuggestionIDs:(id)a31 photoTraits:(id)a32 isSensitive:(BOOL)a33;
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 suggestionID:(id)a4 bundleType:(id)a5 creationDate:(id)a6 firstCreationDate:(id)a7 endDate:(id)a8 expirationDate:(id)a9 events:(id)a10 filtered:(BOOL)a11 interfaceType:(unint64_t)a12 photoSource:(unint64_t)a13 promptLanguage:(id)a14 source:(unint64_t)a15 startDate:(id)a16 action:(id)a17 concurrentMediaAction:(id)a18 actions:(id)a19 persons:(id)a20 place:(id)a21 predominantWeather:(id)a22 resources:(id)a23 time:(id)a24 metaDataForRank:(id)a25 suggestionEngagements:(id)a26 suggestionEngagementViewCount:(unint64_t)a27 appEntryEngagements:(id)a28 isAggregatedAndSuppressed:(BOOL)a29 summarizationGranularity:(unint64_t)a30 places:(id)a31 subBundleIDs:(id)a32 subSuggestionIDs:(id)a33 includedInSummaryBundleOnly:(BOOL)a34 bundleSubType:(unint64_t)a35 bundleSuperType:(unint64_t)a36 photoTraits:(id)a37 isSensitive:(BOOL)a38;
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 suggestionID:(id)a4 startDate:(id)a5 endDate:(id)a6 creationDate:(id)a7;
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 usingBundle:(id)a4;
-- (MOEventBundle)initWithCoder:(id)a3;
-- (MOEventBundle)initWithEventSet:(id)a3 filtered:(BOOL)a4;
++ (id)getInterfaceTypeString:(unint64_t)string superType:(unint64_t)type;
++ (unint64_t)castEvergreenSubType:(unint64_t)type;
++ (unint64_t)convertNSNumberToContactType:(id)type;
++ (unint64_t)convertNSNumberToRoadType:(id)type;
++ (unint64_t)convertNSNumberToSensitiveLocationType:(id)type;
++ (unint64_t)convertNSNumberToUninterestingLocationType:(id)type;
++ (unint64_t)getSuperTypeEnum:(id)enum;
+- (BOOL)containTheSameEventSet:(id)set;
+- (BOOL)hasAppEntryEngagementEvent:(id)event;
+- (BOOL)hasSuggestionEngagementEvent:(id)event;
+- (BOOL)intersectedActivityOrVisitForObject:(id)object other:(id)other;
+- (BOOL)intersectedSubBundleIDForObject:(id)object other:(id)other;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualBaseActionForObject:(id)object other:(id)other;
+- (BOOL)isEqualBasicPropertiesForObject:(id)object other:(id)other;
+- (BOOL)isEqualPersonsForObject:(id)object other:(id)other;
+- (BOOL)isEqualPropertyForObject:(id)object other:(id)other propertyPath:(id)path threshold:(double)threshold;
+- (BOOL)isEqualResourcesForObject:(id)object other:(id)other resourceType:(unint64_t)type;
+- (BOOL)isEqualToEventBundle:(id)bundle;
+- (BOOL)shareEvents:(id)events;
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier bundleType:(id)type creationDate:(id)date endDate:(id)endDate expirationDate:(id)expirationDate events:(id)events filtered:(BOOL)filtered interfaceType:(unint64_t)self0 photoSource:(unint64_t)self1 promptLanguage:(id)self2 source:(unint64_t)self3 startDate:(id)self4 action:(id)self5 concurrentMediaAction:(id)self6 actions:(id)self7 persons:(id)self8 place:(id)self9 predominantWeather:(id)weather resources:(id)resources time:(id)time metaDataForRank:(id)rank suggestionEngagements:(id)engagements suggestionEngagementViewCount:(unint64_t)count appEntryEngagements:(id)entryEngagements isAggregatedAndSuppressed:(BOOL)suppressed summarizationGranularity:(unint64_t)granularity places:(id)places subBundleIDs:(id)identifier0 subSuggestionIDs:(id)identifier1 includedInSummaryBundleOnly:(BOOL)identifier2 bundleSubType:(unint64_t)identifier3 bundleSuperType:(unint64_t)identifier4 photoTraits:(id)identifier5 isSensitive:(BOOL)identifier6;
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier bundleType:(id)type creationDate:(id)date endDate:(id)endDate expirationDate:(id)expirationDate events:(id)events filtered:(BOOL)filtered interfaceType:(unint64_t)self0 photoSource:(unint64_t)self1 promptLanguage:(id)self2 source:(unint64_t)self3 startDate:(id)self4 action:(id)self5 concurrentMediaAction:(id)self6 actions:(id)self7 persons:(id)self8 place:(id)self9 predominantWeather:(id)weather resources:(id)resources time:(id)time metaDataForRank:(id)rank suggestionEngagements:(id)engagements suggestionEngagementViewCount:(unint64_t)count appEntryEngagements:(id)entryEngagements isAggregatedAndSuppressed:(BOOL)suppressed summarizationGranularity:(unint64_t)granularity places:(id)places subBundleIDs:(id)identifier0 subSuggestionIDs:(id)identifier1 photoTraits:(id)identifier2 isSensitive:(BOOL)identifier3;
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier suggestionID:(id)d bundleType:(id)type creationDate:(id)date firstCreationDate:(id)creationDate endDate:(id)endDate expirationDate:(id)expirationDate events:(id)self0 filtered:(BOOL)self1 interfaceType:(unint64_t)self2 photoSource:(unint64_t)self3 promptLanguage:(id)self4 source:(unint64_t)self5 startDate:(id)self6 action:(id)self7 concurrentMediaAction:(id)self8 actions:(id)self9 persons:(id)persons place:(id)place predominantWeather:(id)weather resources:(id)resources time:(id)time metaDataForRank:(id)rank suggestionEngagements:(id)engagements suggestionEngagementViewCount:(unint64_t)count appEntryEngagements:(id)entryEngagements isAggregatedAndSuppressed:(BOOL)suppressed summarizationGranularity:(unint64_t)identifier0 places:(id)identifier1 subBundleIDs:(id)identifier2 subSuggestionIDs:(id)identifier3 includedInSummaryBundleOnly:(BOOL)identifier4 bundleSubType:(unint64_t)identifier5 bundleSuperType:(unint64_t)identifier6 photoTraits:(id)identifier7 isSensitive:(BOOL)identifier8;
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier suggestionID:(id)d startDate:(id)date endDate:(id)endDate creationDate:(id)creationDate;
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier usingBundle:(id)bundle;
+- (MOEventBundle)initWithCoder:(id)coder;
+- (MOEventBundle)initWithEventSet:(id)set filtered:(BOOL)filtered;
 - (NSSet)getCategories;
 - (double)duration;
 - (id)_allResourcesImpl;
@@ -34,48 +34,48 @@
 - (id)displayEndDate;
 - (id)displayStartDate;
 - (id)getBundleType;
-- (id)getCustomLabelsForMetaData:(id)a3 labelFormatter:(id)a4;
-- (id)getCustomLabelsForMetaData:(id)a3 templateFilePath:(id)a4;
-- (id)getCustomPromptsForMetaData:(id)a3 labelFormatter:(id)a4;
-- (id)getCustomPromptsForMetaData:(id)a3 templateFilePath:(id)a4;
+- (id)getCustomLabelsForMetaData:(id)data labelFormatter:(id)formatter;
+- (id)getCustomLabelsForMetaData:(id)data templateFilePath:(id)path;
+- (id)getCustomPromptsForMetaData:(id)data labelFormatter:(id)formatter;
+- (id)getCustomPromptsForMetaData:(id)data templateFilePath:(id)path;
 - (id)getSubTypeString;
 - (id)getSuperTypeString;
 - (id)localEndDate;
 - (id)localStartDate;
 - (id)shortDescription;
-- (unint64_t)getInterfaceTypeEnum:(id)a3;
+- (unint64_t)getInterfaceTypeEnum:(id)enum;
 - (unint64_t)hash;
-- (void)addAction:(id)a3;
-- (void)addBackgroundAction:(id)a3;
-- (void)addEvent:(id)a3;
-- (void)addEvents:(id)a3;
-- (void)addMetaDataForRankForKey:(id)a3 value:(id)a4;
-- (void)addPerson:(id)a3;
-- (void)addPhotoTraits:(id)a3;
-- (void)addResource:(id)a3;
-- (void)addResources:(id)a3;
+- (void)addAction:(id)action;
+- (void)addBackgroundAction:(id)action;
+- (void)addEvent:(id)event;
+- (void)addEvents:(id)events;
+- (void)addMetaDataForRankForKey:(id)key value:(id)value;
+- (void)addPerson:(id)person;
+- (void)addPhotoTraits:(id)traits;
+- (void)addResource:(id)resource;
+- (void)addResources:(id)resources;
 - (void)buildResources;
-- (void)clearAppEntryEngagementEvent:(id)a3;
-- (void)clearSuggestionEngagementEvent:(id)a3;
+- (void)clearAppEntryEngagementEvent:(id)event;
+- (void)clearSuggestionEngagementEvent:(id)event;
 - (void)dateInterval;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppEntryEngagementEvent:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppEntryEngagementEvent:(id)event;
 - (void)setPropertiesBasedOnEvents;
-- (void)setSuggestionEngagementEvent:(id)a3;
-- (void)withResourcesUsingBlock:(id)a3;
+- (void)setSuggestionEngagementEvent:(id)event;
+- (void)withResourcesUsingBlock:(id)block;
 @end
 
 @implementation MOEventBundle
 
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 suggestionID:(id)a4 startDate:(id)a5 endDate:(id)a6 creationDate:(id)a7
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier suggestionID:(id)d startDate:(id)date endDate:(id)endDate creationDate:(id)creationDate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v23 = v17;
-  if (!v13)
+  identifierCopy = identifier;
+  dCopy = d;
+  dateCopy = date;
+  endDateCopy = endDate;
+  creationDateCopy = creationDate;
+  v23 = creationDateCopy;
+  if (!identifierCopy)
   {
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -86,7 +86,7 @@
     goto LABEL_19;
   }
 
-  if (!v14)
+  if (!dCopy)
   {
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -97,7 +97,7 @@
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!dateCopy)
   {
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -108,7 +108,7 @@
     goto LABEL_19;
   }
 
-  if (!v16)
+  if (!endDateCopy)
   {
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -119,7 +119,7 @@
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!creationDateCopy)
   {
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -129,7 +129,7 @@
 
 LABEL_19:
 
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
@@ -139,248 +139,248 @@ LABEL_19:
   p_isa = &v18->super.isa;
   if (v18)
   {
-    objc_storeStrong(&v18->_bundleIdentifier, a3);
-    objc_storeStrong(p_isa + 3, a4);
-    objc_storeStrong(p_isa + 4, a5);
-    objc_storeStrong(p_isa + 5, a6);
-    objc_storeStrong(p_isa + 6, a7);
+    objc_storeStrong(&v18->_bundleIdentifier, identifier);
+    objc_storeStrong(p_isa + 3, d);
+    objc_storeStrong(p_isa + 4, date);
+    objc_storeStrong(p_isa + 5, endDate);
+    objc_storeStrong(p_isa + 6, creationDate);
   }
 
   self = p_isa;
-  v20 = self;
+  selfCopy = self;
 LABEL_20:
 
-  return v20;
+  return selfCopy;
 }
 
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 suggestionID:(id)a4 bundleType:(id)a5 creationDate:(id)a6 firstCreationDate:(id)a7 endDate:(id)a8 expirationDate:(id)a9 events:(id)a10 filtered:(BOOL)a11 interfaceType:(unint64_t)a12 photoSource:(unint64_t)a13 promptLanguage:(id)a14 source:(unint64_t)a15 startDate:(id)a16 action:(id)a17 concurrentMediaAction:(id)a18 actions:(id)a19 persons:(id)a20 place:(id)a21 predominantWeather:(id)a22 resources:(id)a23 time:(id)a24 metaDataForRank:(id)a25 suggestionEngagements:(id)a26 suggestionEngagementViewCount:(unint64_t)a27 appEntryEngagements:(id)a28 isAggregatedAndSuppressed:(BOOL)a29 summarizationGranularity:(unint64_t)a30 places:(id)a31 subBundleIDs:(id)a32 subSuggestionIDs:(id)a33 includedInSummaryBundleOnly:(BOOL)a34 bundleSubType:(unint64_t)a35 bundleSuperType:(unint64_t)a36 photoTraits:(id)a37 isSensitive:(BOOL)a38
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier suggestionID:(id)d bundleType:(id)type creationDate:(id)date firstCreationDate:(id)creationDate endDate:(id)endDate expirationDate:(id)expirationDate events:(id)self0 filtered:(BOOL)self1 interfaceType:(unint64_t)self2 photoSource:(unint64_t)self3 promptLanguage:(id)self4 source:(unint64_t)self5 startDate:(id)self6 action:(id)self7 concurrentMediaAction:(id)self8 actions:(id)self9 persons:(id)persons place:(id)place predominantWeather:(id)weather resources:(id)resources time:(id)time metaDataForRank:(id)rank suggestionEngagements:(id)engagements suggestionEngagementViewCount:(unint64_t)count appEntryEngagements:(id)entryEngagements isAggregatedAndSuppressed:(BOOL)suppressed summarizationGranularity:(unint64_t)identifier0 places:(id)identifier1 subBundleIDs:(id)identifier2 subSuggestionIDs:(id)identifier3 includedInSummaryBundleOnly:(BOOL)identifier4 bundleSubType:(unint64_t)identifier5 bundleSuperType:(unint64_t)identifier6 photoTraits:(id)identifier7 isSensitive:(BOOL)identifier8
 {
-  v88 = a5;
-  obj = a7;
-  v87 = a7;
-  v86 = a9;
-  v39 = a10;
-  v85 = a14;
-  v84 = a17;
-  v83 = a18;
-  v40 = a19;
-  v41 = a20;
-  v82 = a21;
-  v81 = a22;
-  v42 = a23;
-  v80 = a24;
-  v43 = a25;
-  v44 = a26;
-  v90 = a28;
-  v45 = a31;
-  v46 = a32;
-  v47 = a33;
-  v89 = a37;
-  v48 = [(MOEventBundle *)self initWithBundleIdentifier:a3 suggestionID:a4 startDate:a16 endDate:a8 creationDate:a6];
+  typeCopy = type;
+  obj = creationDate;
+  creationDateCopy = creationDate;
+  expirationDateCopy = expirationDate;
+  eventsCopy = events;
+  languageCopy = language;
+  actionCopy = action;
+  mediaActionCopy = mediaAction;
+  actionsCopy = actions;
+  personsCopy = persons;
+  placeCopy = place;
+  weatherCopy = weather;
+  resourcesCopy = resources;
+  timeCopy = time;
+  rankCopy = rank;
+  engagementsCopy = engagements;
+  entryEngagementsCopy = entryEngagements;
+  placesCopy = places;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  traitsCopy = traits;
+  v48 = [(MOEventBundle *)self initWithBundleIdentifier:identifier suggestionID:d startDate:startDate endDate:endDate creationDate:date];
   v49 = v48;
   if (v48)
   {
     objc_storeStrong(&v48->_firstCreationDate, obj);
-    objc_storeStrong(&v49->_bundleType, a5);
-    objc_storeStrong(&v49->_expirationDate, a9);
-    v50 = [v39 copy];
+    objc_storeStrong(&v49->_bundleType, type);
+    objc_storeStrong(&v49->_expirationDate, expirationDate);
+    v50 = [eventsCopy copy];
     events = v49->_events;
     v49->_events = v50;
 
-    v49->_filtered = a11;
-    v49->_interfaceType = a12;
-    v49->_photoSource = a13;
-    objc_storeStrong(&v49->_promptLanguage, a14);
+    v49->_filtered = filtered;
+    v49->_interfaceType = interfaceType;
+    v49->_photoSource = source;
+    objc_storeStrong(&v49->_promptLanguage, language);
     v49->_source = a15;
-    objc_storeStrong(&v49->_action, a17);
-    objc_storeStrong(&v49->_concurrentMediaAction, a18);
-    v52 = [v40 copy];
+    objc_storeStrong(&v49->_action, action);
+    objc_storeStrong(&v49->_concurrentMediaAction, mediaAction);
+    v52 = [actionsCopy copy];
     actions = v49->_actions;
     v49->_actions = v52;
 
-    v54 = [v41 copy];
+    v54 = [personsCopy copy];
     persons = v49->_persons;
     v49->_persons = v54;
 
-    objc_storeStrong(&v49->_place, a21);
-    objc_storeStrong(&v49->_predominantWeather, a22);
-    v56 = [v42 copy];
+    objc_storeStrong(&v49->_place, place);
+    objc_storeStrong(&v49->_predominantWeather, weather);
+    v56 = [resourcesCopy copy];
     resources = v49->_resources;
     v49->_resources = v56;
 
-    objc_storeStrong(&v49->_time, a24);
-    v58 = [v43 copy];
+    objc_storeStrong(&v49->_time, time);
+    v58 = [rankCopy copy];
     metaDataForRank = v49->_metaDataForRank;
     v49->_metaDataForRank = v58;
 
-    v60 = [v44 mutableCopy];
+    v60 = [engagementsCopy mutableCopy];
     suggestionEngagementEvents = v49->_suggestionEngagementEvents;
     v49->_suggestionEngagementEvents = v60;
 
-    v49->_suggestionEngagementViewCount = a27;
-    v62 = [v90 mutableCopy];
+    v49->_suggestionEngagementViewCount = count;
+    v62 = [entryEngagementsCopy mutableCopy];
     appEntryEngagementEvents = v49->_appEntryEngagementEvents;
     v49->_appEntryEngagementEvents = v62;
 
-    v49->_isAggregatedAndSuppressed = a29;
-    v49->_summarizationGranularity = a30;
-    v64 = [v45 copy];
+    v49->_isAggregatedAndSuppressed = suppressed;
+    v49->_summarizationGranularity = granularity;
+    v64 = [placesCopy copy];
     places = v49->_places;
     v49->_places = v64;
 
-    v66 = [v46 copy];
+    v66 = [dsCopy copy];
     subBundleIDs = v49->_subBundleIDs;
     v49->_subBundleIDs = v66;
 
-    v68 = [v47 copy];
+    v68 = [iDsCopy copy];
     subSuggestionIDs = v49->_subSuggestionIDs;
     v49->_subSuggestionIDs = v68;
 
-    v49->_includedInSummaryBundleOnly = a34;
-    v49->_bundleSubType = a35;
-    v49->_bundleSuperType = a36;
-    v70 = [v89 copy];
+    v49->_includedInSummaryBundleOnly = only;
+    v49->_bundleSubType = subType;
+    v49->_bundleSuperType = superType;
+    v70 = [traitsCopy copy];
     photoTraits = v49->_photoTraits;
     v49->_photoTraits = v70;
 
-    v49->_isSensitive = a38;
+    v49->_isSensitive = sensitive;
   }
 
   return v49;
 }
 
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 usingBundle:(id)a4
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier usingBundle:(id)bundle
 {
-  v5 = a4;
-  v33 = a3;
-  v47 = [v5 suggestionID];
-  v46 = [v5 bundleType];
-  v45 = [v5 creationDate];
-  v44 = [v5 firstCreationDate];
-  v43 = [v5 endDate];
-  v42 = [v5 expirationDate];
-  v41 = [v5 events];
-  v32 = [v5 filtered];
-  v31 = [v5 interfaceType];
-  v30 = [v5 photoSource];
-  v39 = [v5 promptLanguage];
-  v29 = [v5 source];
-  v40 = [v5 startDate];
-  v38 = [v5 action];
-  v28 = [v5 concurrentMediaAction];
-  v37 = [v5 actions];
-  v27 = [v5 persons];
-  v26 = [v5 place];
-  v25 = [v5 predominantWeather];
-  v24 = [v5 resources];
-  v36 = [v5 time];
-  v23 = [v5 metaDataForRank];
-  v22 = [v5 suggestionEngagementEvents];
-  v21 = [v5 suggestionEngagementViewCount];
-  v17 = [v5 appEntryEngagementEvents];
-  v20 = [v5 isAggregatedAndSuppressed];
-  v19 = [v5 summarizationGranularity];
-  v18 = [v5 places];
-  v16 = [v5 subBundleIDs];
-  v6 = [v5 subSuggestionIDs];
-  LOBYTE(a3) = [v5 includedInSummaryBundleOnly];
-  v7 = [v5 bundleSubType];
-  v8 = [v5 bundleSuperType];
-  v9 = [v5 photoTraits];
-  v10 = [v5 isSensitive];
+  bundleCopy = bundle;
+  identifierCopy = identifier;
+  suggestionID = [bundleCopy suggestionID];
+  bundleType = [bundleCopy bundleType];
+  creationDate = [bundleCopy creationDate];
+  firstCreationDate = [bundleCopy firstCreationDate];
+  endDate = [bundleCopy endDate];
+  expirationDate = [bundleCopy expirationDate];
+  events = [bundleCopy events];
+  filtered = [bundleCopy filtered];
+  interfaceType = [bundleCopy interfaceType];
+  photoSource = [bundleCopy photoSource];
+  promptLanguage = [bundleCopy promptLanguage];
+  source = [bundleCopy source];
+  startDate = [bundleCopy startDate];
+  action = [bundleCopy action];
+  concurrentMediaAction = [bundleCopy concurrentMediaAction];
+  actions = [bundleCopy actions];
+  persons = [bundleCopy persons];
+  place = [bundleCopy place];
+  predominantWeather = [bundleCopy predominantWeather];
+  resources = [bundleCopy resources];
+  time = [bundleCopy time];
+  metaDataForRank = [bundleCopy metaDataForRank];
+  suggestionEngagementEvents = [bundleCopy suggestionEngagementEvents];
+  suggestionEngagementViewCount = [bundleCopy suggestionEngagementViewCount];
+  appEntryEngagementEvents = [bundleCopy appEntryEngagementEvents];
+  isAggregatedAndSuppressed = [bundleCopy isAggregatedAndSuppressed];
+  summarizationGranularity = [bundleCopy summarizationGranularity];
+  places = [bundleCopy places];
+  subBundleIDs = [bundleCopy subBundleIDs];
+  subSuggestionIDs = [bundleCopy subSuggestionIDs];
+  LOBYTE(identifier) = [bundleCopy includedInSummaryBundleOnly];
+  bundleSubType = [bundleCopy bundleSubType];
+  bundleSuperType = [bundleCopy bundleSuperType];
+  photoTraits = [bundleCopy photoTraits];
+  isSensitive = [bundleCopy isSensitive];
 
-  LOBYTE(v15) = v10;
-  LOBYTE(v14) = a3;
-  LOBYTE(v13) = v20;
-  LOBYTE(v12) = v32;
-  v35 = [(MOEventBundle *)self initWithBundleIdentifier:v33 suggestionID:v47 bundleType:v46 creationDate:v45 firstCreationDate:v44 endDate:v43 expirationDate:v42 events:v41 filtered:v12 interfaceType:v31 photoSource:v30 promptLanguage:v39 source:v29 startDate:v40 action:v38 concurrentMediaAction:v28 actions:v37 persons:v27 place:v26 predominantWeather:v25 resources:v24 time:v36 metaDataForRank:v23 suggestionEngagements:v22 suggestionEngagementViewCount:v21 appEntryEngagements:v17 isAggregatedAndSuppressed:v13 summarizationGranularity:v19 places:v18 subBundleIDs:v16 subSuggestionIDs:v6 includedInSummaryBundleOnly:v14 bundleSubType:v7 bundleSuperType:v8 photoTraits:v9 isSensitive:v15];
+  LOBYTE(v15) = isSensitive;
+  LOBYTE(v14) = identifier;
+  LOBYTE(v13) = isAggregatedAndSuppressed;
+  LOBYTE(v12) = filtered;
+  v35 = [(MOEventBundle *)self initWithBundleIdentifier:identifierCopy suggestionID:suggestionID bundleType:bundleType creationDate:creationDate firstCreationDate:firstCreationDate endDate:endDate expirationDate:expirationDate events:events filtered:v12 interfaceType:interfaceType photoSource:photoSource promptLanguage:promptLanguage source:source startDate:startDate action:action concurrentMediaAction:concurrentMediaAction actions:actions persons:persons place:place predominantWeather:predominantWeather resources:resources time:time metaDataForRank:metaDataForRank suggestionEngagements:suggestionEngagementEvents suggestionEngagementViewCount:suggestionEngagementViewCount appEntryEngagements:appEntryEngagementEvents isAggregatedAndSuppressed:v13 summarizationGranularity:summarizationGranularity places:places subBundleIDs:subBundleIDs subSuggestionIDs:subSuggestionIDs includedInSummaryBundleOnly:v14 bundleSubType:bundleSubType bundleSuperType:bundleSuperType photoTraits:photoTraits isSensitive:v15];
 
   return v35;
 }
 
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 bundleType:(id)a4 creationDate:(id)a5 endDate:(id)a6 expirationDate:(id)a7 events:(id)a8 filtered:(BOOL)a9 interfaceType:(unint64_t)a10 photoSource:(unint64_t)a11 promptLanguage:(id)a12 source:(unint64_t)a13 startDate:(id)a14 action:(id)a15 concurrentMediaAction:(id)a16 actions:(id)a17 persons:(id)a18 place:(id)a19 predominantWeather:(id)a20 resources:(id)a21 time:(id)a22 metaDataForRank:(id)a23 suggestionEngagements:(id)a24 suggestionEngagementViewCount:(unint64_t)a25 appEntryEngagements:(id)a26 isAggregatedAndSuppressed:(BOOL)a27 summarizationGranularity:(unint64_t)a28 places:(id)a29 subBundleIDs:(id)a30 subSuggestionIDs:(id)a31 includedInSummaryBundleOnly:(BOOL)a32 bundleSubType:(unint64_t)a33 bundleSuperType:(unint64_t)a34 photoTraits:(id)a35 isSensitive:(BOOL)a36
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier bundleType:(id)type creationDate:(id)date endDate:(id)endDate expirationDate:(id)expirationDate events:(id)events filtered:(BOOL)filtered interfaceType:(unint64_t)self0 photoSource:(unint64_t)self1 promptLanguage:(id)self2 source:(unint64_t)self3 startDate:(id)self4 action:(id)self5 concurrentMediaAction:(id)self6 actions:(id)self7 persons:(id)self8 place:(id)self9 predominantWeather:(id)weather resources:(id)resources time:(id)time metaDataForRank:(id)rank suggestionEngagements:(id)engagements suggestionEngagementViewCount:(unint64_t)count appEntryEngagements:(id)entryEngagements isAggregatedAndSuppressed:(BOOL)suppressed summarizationGranularity:(unint64_t)granularity places:(id)places subBundleIDs:(id)identifier0 subSuggestionIDs:(id)identifier1 includedInSummaryBundleOnly:(BOOL)identifier2 bundleSubType:(unint64_t)identifier3 bundleSuperType:(unint64_t)identifier4 photoTraits:(id)identifier5 isSensitive:(BOOL)identifier6
 {
-  v54 = a35;
-  v36 = a31;
-  v52 = a30;
-  v51 = a29;
-  v37 = a26;
-  v38 = a23;
-  v49 = a22;
-  v48 = a21;
-  v47 = a20;
-  v46 = a19;
-  v44 = a18;
-  v45 = a17;
-  v72 = a16;
-  v71 = a15;
-  v70 = a14;
-  v69 = a12;
-  v68 = a8;
-  v66 = a7;
-  v64 = a6;
-  v62 = a5;
-  v60 = a4;
-  v58 = a3;
-  v53 = [NSMutableSet setWithSet:a24];
-  v50 = [NSMutableSet setWithSet:v37];
+  traitsCopy = traits;
+  iDsCopy = iDs;
+  dsCopy = ds;
+  placesCopy = places;
+  entryEngagementsCopy = entryEngagements;
+  rankCopy = rank;
+  timeCopy = time;
+  resourcesCopy = resources;
+  weatherCopy = weather;
+  placeCopy = place;
+  personsCopy = persons;
+  actionsCopy = actions;
+  mediaActionCopy = mediaAction;
+  actionCopy = action;
+  startDateCopy = startDate;
+  languageCopy = language;
+  eventsCopy = events;
+  expirationDateCopy = expirationDate;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
+  identifierCopy = identifier;
+  v53 = [NSMutableSet setWithSet:engagements];
+  v50 = [NSMutableSet setWithSet:entryEngagementsCopy];
 
-  LOBYTE(v43) = a36;
-  LOBYTE(v42) = a32;
-  LOBYTE(v41) = a27;
-  LOBYTE(v40) = a9;
-  v56 = [(MOEventBundle *)self initWithBundleIdentifier:v58 suggestionID:v58 bundleType:v60 creationDate:v62 firstCreationDate:0 endDate:v64 expirationDate:v66 events:v68 filtered:v40 interfaceType:a10 photoSource:a11 promptLanguage:v69 source:a13 startDate:v70 action:v71 concurrentMediaAction:v72 actions:v45 persons:v44 place:v46 predominantWeather:v47 resources:v48 time:v49 metaDataForRank:v38 suggestionEngagements:v53 suggestionEngagementViewCount:a25 appEntryEngagements:v50 isAggregatedAndSuppressed:v41 summarizationGranularity:a28 places:v51 subBundleIDs:v52 subSuggestionIDs:v36 includedInSummaryBundleOnly:v42 bundleSubType:a33 bundleSuperType:a34 photoTraits:v54 isSensitive:v43];
+  LOBYTE(v43) = sensitive;
+  LOBYTE(v42) = only;
+  LOBYTE(v41) = suppressed;
+  LOBYTE(v40) = filtered;
+  v56 = [(MOEventBundle *)self initWithBundleIdentifier:identifierCopy suggestionID:identifierCopy bundleType:typeCopy creationDate:dateCopy firstCreationDate:0 endDate:endDateCopy expirationDate:expirationDateCopy events:eventsCopy filtered:v40 interfaceType:interfaceType photoSource:source promptLanguage:languageCopy source:a13 startDate:startDateCopy action:actionCopy concurrentMediaAction:mediaActionCopy actions:actionsCopy persons:personsCopy place:placeCopy predominantWeather:weatherCopy resources:resourcesCopy time:timeCopy metaDataForRank:rankCopy suggestionEngagements:v53 suggestionEngagementViewCount:count appEntryEngagements:v50 isAggregatedAndSuppressed:v41 summarizationGranularity:granularity places:placesCopy subBundleIDs:dsCopy subSuggestionIDs:iDsCopy includedInSummaryBundleOnly:v42 bundleSubType:subType bundleSuperType:superType photoTraits:traitsCopy isSensitive:v43];
 
   return v56;
 }
 
-- (MOEventBundle)initWithBundleIdentifier:(id)a3 bundleType:(id)a4 creationDate:(id)a5 endDate:(id)a6 expirationDate:(id)a7 events:(id)a8 filtered:(BOOL)a9 interfaceType:(unint64_t)a10 photoSource:(unint64_t)a11 promptLanguage:(id)a12 source:(unint64_t)a13 startDate:(id)a14 action:(id)a15 concurrentMediaAction:(id)a16 actions:(id)a17 persons:(id)a18 place:(id)a19 predominantWeather:(id)a20 resources:(id)a21 time:(id)a22 metaDataForRank:(id)a23 suggestionEngagements:(id)a24 suggestionEngagementViewCount:(unint64_t)a25 appEntryEngagements:(id)a26 isAggregatedAndSuppressed:(BOOL)a27 summarizationGranularity:(unint64_t)a28 places:(id)a29 subBundleIDs:(id)a30 subSuggestionIDs:(id)a31 photoTraits:(id)a32 isSensitive:(BOOL)a33
+- (MOEventBundle)initWithBundleIdentifier:(id)identifier bundleType:(id)type creationDate:(id)date endDate:(id)endDate expirationDate:(id)expirationDate events:(id)events filtered:(BOOL)filtered interfaceType:(unint64_t)self0 photoSource:(unint64_t)self1 promptLanguage:(id)self2 source:(unint64_t)self3 startDate:(id)self4 action:(id)self5 concurrentMediaAction:(id)self6 actions:(id)self7 persons:(id)self8 place:(id)self9 predominantWeather:(id)weather resources:(id)resources time:(id)time metaDataForRank:(id)rank suggestionEngagements:(id)engagements suggestionEngagementViewCount:(unint64_t)count appEntryEngagements:(id)entryEngagements isAggregatedAndSuppressed:(BOOL)suppressed summarizationGranularity:(unint64_t)granularity places:(id)places subBundleIDs:(id)identifier0 subSuggestionIDs:(id)identifier1 photoTraits:(id)identifier2 isSensitive:(BOOL)identifier3
 {
-  v50 = a32;
-  v49 = a31;
-  v33 = a30;
-  v48 = a29;
-  v34 = a26;
-  v35 = a23;
-  v46 = a22;
-  v45 = a21;
-  v44 = a20;
-  v43 = a19;
-  v41 = a18;
-  v42 = a17;
-  v69 = a16;
-  v68 = a15;
-  v67 = a14;
-  v66 = a12;
-  v65 = a8;
-  v63 = a7;
-  v61 = a6;
-  v59 = a5;
-  v57 = a4;
-  v55 = a3;
-  v51 = [NSMutableSet setWithSet:a24];
-  v47 = [NSMutableSet setWithSet:v34];
+  traitsCopy = traits;
+  iDsCopy = iDs;
+  dsCopy = ds;
+  placesCopy = places;
+  entryEngagementsCopy = entryEngagements;
+  rankCopy = rank;
+  timeCopy = time;
+  resourcesCopy = resources;
+  weatherCopy = weather;
+  placeCopy = place;
+  personsCopy = persons;
+  actionsCopy = actions;
+  mediaActionCopy = mediaAction;
+  actionCopy = action;
+  startDateCopy = startDate;
+  languageCopy = language;
+  eventsCopy = events;
+  expirationDateCopy = expirationDate;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
+  identifierCopy = identifier;
+  v51 = [NSMutableSet setWithSet:engagements];
+  v47 = [NSMutableSet setWithSet:entryEngagementsCopy];
 
   LOBYTE(v40) = 0;
   LOBYTE(v39) = 0;
-  LOBYTE(v38) = a27;
-  LOBYTE(v37) = a9;
-  v53 = [(MOEventBundle *)self initWithBundleIdentifier:v55 suggestionID:v55 bundleType:v57 creationDate:v59 firstCreationDate:0 endDate:v61 expirationDate:v63 events:v65 filtered:v37 interfaceType:a10 photoSource:a11 promptLanguage:v66 source:a13 startDate:v67 action:v68 concurrentMediaAction:v69 actions:v42 persons:v41 place:v43 predominantWeather:v44 resources:v45 time:v46 metaDataForRank:v35 suggestionEngagements:v51 suggestionEngagementViewCount:a25 appEntryEngagements:v47 isAggregatedAndSuppressed:v38 summarizationGranularity:a28 places:v48 subBundleIDs:v33 subSuggestionIDs:v49 includedInSummaryBundleOnly:v39 bundleSubType:0 bundleSuperType:0 photoTraits:v50 isSensitive:v40];
+  LOBYTE(v38) = suppressed;
+  LOBYTE(v37) = filtered;
+  v53 = [(MOEventBundle *)self initWithBundleIdentifier:identifierCopy suggestionID:identifierCopy bundleType:typeCopy creationDate:dateCopy firstCreationDate:0 endDate:endDateCopy expirationDate:expirationDateCopy events:eventsCopy filtered:v37 interfaceType:interfaceType photoSource:source promptLanguage:languageCopy source:a13 startDate:startDateCopy action:actionCopy concurrentMediaAction:mediaActionCopy actions:actionsCopy persons:personsCopy place:placeCopy predominantWeather:weatherCopy resources:resourcesCopy time:timeCopy metaDataForRank:rankCopy suggestionEngagements:v51 suggestionEngagementViewCount:count appEntryEngagements:v47 isAggregatedAndSuppressed:v38 summarizationGranularity:granularity places:placesCopy subBundleIDs:dsCopy subSuggestionIDs:iDsCopy includedInSummaryBundleOnly:v39 bundleSubType:0 bundleSuperType:0 photoTraits:traitsCopy isSensitive:v40];
 
   return v53;
 }
 
 - (id)getBundleType
 {
-  v3 = [(MOEventBundle *)self interfaceType];
-  v4 = [(MOEventBundle *)self bundleSuperType];
+  interfaceType = [(MOEventBundle *)self interfaceType];
+  bundleSuperType = [(MOEventBundle *)self bundleSuperType];
 
-  return [MOEventBundle getInterfaceTypeString:v3 superType:v4];
+  return [MOEventBundle getInterfaceTypeString:interfaceType superType:bundleSuperType];
 }
 
-+ (id)getInterfaceTypeString:(unint64_t)a3 superType:(unint64_t)a4
++ (id)getInterfaceTypeString:(unint64_t)string superType:(unint64_t)type
 {
-  switch(a3)
+  switch(string)
   {
     case 1uLL:
       v5 = @"activity";
@@ -415,10 +415,10 @@ LABEL_20:
 
       break;
     case 9uLL:
-      if (a4)
+      if (type)
       {
         v7 = @"workoutTrend";
-        if (a4 == 3)
+        if (type == 3)
         {
           v7 = @"conversationTrend";
         }
@@ -471,53 +471,53 @@ LABEL_20:
 
 - (id)getSuperTypeString
 {
-  v2 = [(MOEventBundle *)self bundleSuperType];
-  if (v2 - 1 > 0xA)
+  bundleSuperType = [(MOEventBundle *)self bundleSuperType];
+  if (bundleSuperType - 1 > 0xA)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1000B6788[v2 - 1];
+    return off_1000B6788[bundleSuperType - 1];
   }
 }
 
 - (id)getSubTypeString
 {
-  v2 = [(MOEventBundle *)self bundleSubType];
+  bundleSubType = [(MOEventBundle *)self bundleSubType];
   result = @"unknown";
-  if (v2 <= 600)
+  if (bundleSubType <= 600)
   {
-    if (v2 <= 301)
+    if (bundleSubType <= 301)
     {
-      if (v2 <= 201)
+      if (bundleSubType <= 201)
       {
         v4 = @"pre_onboarded_visit";
         v21 = @"workout";
-        if (v2 != 201)
+        if (bundleSubType != 201)
         {
           v21 = @"unknown";
         }
 
-        if (v2 != 106)
+        if (bundleSubType != 106)
         {
           v4 = v21;
         }
 
         v22 = @"shopping";
         v23 = @"trip";
-        if (v2 != 105)
+        if (bundleSubType != 105)
         {
           v23 = @"unknown";
         }
 
-        if (v2 != 104)
+        if (bundleSubType != 104)
         {
           v22 = v23;
         }
 
-        if (v2 <= 105)
+        if (bundleSubType <= 105)
         {
           v4 = v22;
         }
@@ -525,225 +525,225 @@ LABEL_20:
         v7 = @"visit";
         v24 = @"flight";
         v25 = @"dining";
-        if (v2 != 103)
+        if (bundleSubType != 103)
         {
           v25 = @"unknown";
         }
 
-        if (v2 != 102)
+        if (bundleSubType != 102)
         {
           v24 = v25;
         }
 
-        if (v2 != 101)
+        if (bundleSubType != 101)
         {
           v7 = v24;
         }
 
-        v10 = v2 <= 103;
+        v10 = bundleSubType <= 103;
       }
 
-      else if (v2 > 205)
+      else if (bundleSubType > 205)
       {
         v4 = @"motion_activity_mixed_running_walking";
         v38 = @"contact";
-        if (v2 != 301)
+        if (bundleSubType != 301)
         {
           v38 = @"unknown";
         }
 
-        if (v2 != 208)
+        if (bundleSubType != 208)
         {
           v4 = v38;
         }
 
         v7 = @"motion_activity_transit";
         v39 = @"motion_activity_running";
-        if (v2 != 207)
+        if (bundleSubType != 207)
         {
           v39 = @"unknown";
         }
 
-        if (v2 != 206)
+        if (bundleSubType != 206)
         {
           v7 = v39;
         }
 
-        v10 = v2 <= 207;
+        v10 = bundleSubType <= 207;
       }
 
       else
       {
         v4 = @"motion_activity_walking";
         v13 = @"workout_transit";
-        if (v2 != 205)
+        if (bundleSubType != 205)
         {
           v13 = @"unknown";
         }
 
-        if (v2 != 204)
+        if (bundleSubType != 204)
         {
           v4 = v13;
         }
 
         v7 = @"workout_weekly_summary";
         v14 = @"workout_routine";
-        if (v2 != 203)
+        if (bundleSubType != 203)
         {
           v14 = @"unknown";
         }
 
-        if (v2 != 202)
+        if (bundleSubType != 202)
         {
           v7 = v14;
         }
 
-        v10 = v2 <= 203;
+        v10 = bundleSubType <= 203;
       }
     }
 
-    else if (v2 > 406)
+    else if (bundleSubType > 406)
     {
-      if (v2 > 500)
+      if (bundleSubType > 500)
       {
         v4 = @"hosting_at_home";
         v42 = @"evergreen_at_home";
-        if (v2 != 504)
+        if (bundleSubType != 504)
         {
           v42 = @"unknown";
         }
 
-        if (v2 != 503)
+        if (bundleSubType != 503)
         {
           v4 = v42;
         }
 
         v7 = @"time_at_home";
         v43 = @"photos_at_home";
-        if (v2 != 502)
+        if (bundleSubType != 502)
         {
           v43 = @"unknown";
         }
 
-        if (v2 != 501)
+        if (bundleSubType != 501)
         {
           v7 = v43;
         }
 
-        v10 = v2 <= 502;
+        v10 = bundleSubType <= 502;
       }
 
       else
       {
         v4 = @"media_on_repeat_weekly_summary_third_party";
         v19 = @"played_media_weekly_summary_third_party";
-        if (v2 != 410)
+        if (bundleSubType != 410)
         {
           v19 = @"unknown";
         }
 
-        if (v2 != 409)
+        if (bundleSubType != 409)
         {
           v4 = v19;
         }
 
         v7 = @"media_on_repeat_third_party";
         v20 = @"played_media_third_party";
-        if (v2 != 408)
+        if (bundleSubType != 408)
         {
           v20 = @"unknown";
         }
 
-        if (v2 != 407)
+        if (bundleSubType != 407)
         {
           v7 = v20;
         }
 
-        v10 = v2 <= 408;
+        v10 = bundleSubType <= 408;
       }
     }
 
-    else if (v2 > 402)
+    else if (bundleSubType > 402)
     {
       v4 = @"played_media_weekly_summary";
       v40 = @"media_suppressed";
-      if (v2 != 406)
+      if (bundleSubType != 406)
       {
         v40 = @"unknown";
       }
 
-      if (v2 != 405)
+      if (bundleSubType != 405)
       {
         v4 = v40;
       }
 
       v7 = @"played_podcast";
       v41 = @"media_on_repeat_weekly_summary";
-      if (v2 != 404)
+      if (bundleSubType != 404)
       {
         v41 = @"unknown";
       }
 
-      if (v2 != 403)
+      if (bundleSubType != 403)
       {
         v7 = v41;
       }
 
-      v10 = v2 <= 404;
+      v10 = bundleSubType <= 404;
     }
 
     else
     {
       v4 = @"song_on_repeat";
       v11 = @"played_song";
-      if (v2 != 402)
+      if (bundleSubType != 402)
       {
         v11 = @"unknown";
       }
 
-      if (v2 != 401)
+      if (bundleSubType != 401)
       {
         v4 = v11;
       }
 
       v7 = @"contact_weekly_summary";
       v12 = @"contact_trend";
-      if (v2 != 303)
+      if (bundleSubType != 303)
       {
         v12 = @"unknown";
       }
 
-      if (v2 != 302)
+      if (bundleSubType != 302)
       {
         v7 = v12;
       }
 
-      v10 = v2 <= 400;
+      v10 = bundleSubType <= 400;
     }
 
     goto LABEL_151;
   }
 
-  if (v2 > 706)
+  if (bundleSubType > 706)
   {
-    if (v2 > 907)
+    if (bundleSubType > 907)
     {
-      if (v2 > 1003)
+      if (bundleSubType > 1003)
       {
         v4 = @"personalized_reflection_outing";
         v34 = @"personalized_reflection_contact";
         v35 = @"personalized_reflection_activity";
-        if (v2 != 1103)
+        if (bundleSubType != 1103)
         {
           v35 = @"unknown";
         }
 
-        if (v2 != 1102)
+        if (bundleSubType != 1102)
         {
           v34 = v35;
         }
 
-        if (v2 != 1101)
+        if (bundleSubType != 1101)
         {
           v4 = v34;
         }
@@ -751,22 +751,22 @@ LABEL_20:
         v7 = @"thematic_summary_common_place";
         v36 = @"thematic_summary_photo_subject";
         v37 = @"thematic_summary_state_of_mind";
-        if (v2 != 1006)
+        if (bundleSubType != 1006)
         {
           v37 = @"unknown";
         }
 
-        if (v2 != 1005)
+        if (bundleSubType != 1005)
         {
           v36 = v37;
         }
 
-        if (v2 != 1004)
+        if (bundleSubType != 1004)
         {
           v7 = v36;
         }
 
-        v10 = v2 <= 1100;
+        v10 = bundleSubType <= 1100;
       }
 
       else
@@ -774,17 +774,17 @@ LABEL_20:
         v4 = @"thematic_summary_holiday";
         v15 = @"thematic_summary_social";
         v16 = @"thematic_summary_common_activity";
-        if (v2 != 1003)
+        if (bundleSubType != 1003)
         {
           v16 = @"unknown";
         }
 
-        if (v2 != 1002)
+        if (bundleSubType != 1002)
         {
           v15 = v16;
         }
 
-        if (v2 != 1001)
+        if (bundleSubType != 1001)
         {
           v4 = v15;
         }
@@ -792,41 +792,41 @@ LABEL_20:
         v7 = @"clustering_thematic_grouping";
         v17 = @"clustering_time_at_home_grouping";
         v18 = @"clustering_unspecified_grouping";
-        if (v2 != 910)
+        if (bundleSubType != 910)
         {
           v18 = @"unknown";
         }
 
-        if (v2 != 909)
+        if (bundleSubType != 909)
         {
           v17 = v18;
         }
 
-        if (v2 != 908)
+        if (bundleSubType != 908)
         {
           v7 = v17;
         }
 
-        v10 = v2 <= 1000;
+        v10 = bundleSubType <= 1000;
       }
     }
 
-    else if (v2 > 901)
+    else if (bundleSubType > 901)
     {
       v4 = @"clustering_location_grouping";
       v30 = @"clustering_activity_grouping";
       v31 = @"clustering_contact_grouping";
-      if (v2 != 907)
+      if (bundleSubType != 907)
       {
         v31 = @"unknown";
       }
 
-      if (v2 != 906)
+      if (bundleSubType != 906)
       {
         v30 = v31;
       }
 
-      if (v2 != 905)
+      if (bundleSubType != 905)
       {
         v4 = v30;
       }
@@ -834,22 +834,22 @@ LABEL_20:
       v7 = @"clustering_activity_routine";
       v32 = @"clustering_contact_routine";
       v33 = @"clustering_time_at_home_routine";
-      if (v2 != 904)
+      if (bundleSubType != 904)
       {
         v33 = @"unknown";
       }
 
-      if (v2 != 903)
+      if (bundleSubType != 903)
       {
         v32 = v33;
       }
 
-      if (v2 != 902)
+      if (bundleSubType != 902)
       {
         v7 = v32;
       }
 
-      v10 = v2 <= 904;
+      v10 = bundleSubType <= 904;
     }
 
     else
@@ -857,17 +857,17 @@ LABEL_20:
       v4 = @"daily_mood";
       v5 = @"momentary_emotion";
       v6 = @"clustering_outing_routine";
-      if (v2 != 901)
+      if (bundleSubType != 901)
       {
         v6 = @"unknown";
       }
 
-      if (v2 != 802)
+      if (bundleSubType != 802)
       {
         v5 = v6;
       }
 
-      if (v2 != 801)
+      if (bundleSubType != 801)
       {
         v4 = v5;
       }
@@ -875,22 +875,22 @@ LABEL_20:
       v7 = @"evergreen_gratitude";
       v8 = @"evergreen_resilience";
       v9 = @"evergreen_purpose";
-      if (v2 != 709)
+      if (bundleSubType != 709)
       {
         v9 = @"unknown";
       }
 
-      if (v2 != 708)
+      if (bundleSubType != 708)
       {
         v8 = v9;
       }
 
-      if (v2 != 707)
+      if (bundleSubType != 707)
       {
         v7 = v8;
       }
 
-      v10 = v2 <= 800;
+      v10 = bundleSubType <= 800;
     }
 
 LABEL_151:
@@ -905,22 +905,22 @@ LABEL_151:
     }
   }
 
-  if (v2 > 700)
+  if (bundleSubType > 700)
   {
     v4 = @"evergreen_creativity";
     v26 = @"evergreen_kindness";
     v27 = @"evergreen_purpose";
-    if (v2 != 706)
+    if (bundleSubType != 706)
     {
       v27 = @"unknown";
     }
 
-    if (v2 != 705)
+    if (bundleSubType != 705)
     {
       v26 = v27;
     }
 
-    if (v2 != 704)
+    if (bundleSubType != 704)
     {
       v4 = v26;
     }
@@ -928,26 +928,26 @@ LABEL_151:
     v7 = @"evergreen_gratitude";
     v28 = @"evergreen_wisdom";
     v29 = @"evergreen_resillience";
-    if (v2 != 703)
+    if (bundleSubType != 703)
     {
       v29 = @"unknown";
     }
 
-    if (v2 != 702)
+    if (bundleSubType != 702)
     {
       v28 = v29;
     }
 
-    if (v2 != 701)
+    if (bundleSubType != 701)
     {
       v7 = v28;
     }
 
-    v10 = v2 <= 703;
+    v10 = bundleSubType <= 703;
     goto LABEL_151;
   }
 
-  switch(v2)
+  switch(bundleSubType)
   {
     case 601:
       result = @"photo_memory_single_moment";
@@ -1007,80 +1007,80 @@ LABEL_151:
   return result;
 }
 
-- (unint64_t)getInterfaceTypeEnum:(id)a3
+- (unint64_t)getInterfaceTypeEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"unknown"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"activity"])
+  else if ([enumCopy isEqualToString:@"activity"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"outing"])
+  else if ([enumCopy isEqualToString:@"outing"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"photo_moment"])
+  else if ([enumCopy isEqualToString:@"photo_moment"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"significant_contact"])
+  else if ([enumCopy isEqualToString:@"significant_contact"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"media"])
+  else if ([enumCopy isEqualToString:@"media"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"shared_content"])
+  else if ([enumCopy isEqualToString:@"shared_content"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"time_at_home"])
+  else if ([enumCopy isEqualToString:@"time_at_home"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"evergreen"])
+  else if ([enumCopy isEqualToString:@"evergreen"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"topics_of_interest"])
+  else if ([enumCopy isEqualToString:@"topics_of_interest"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"trend"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"workoutTrend") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"conversationTrend"))
+  else if ([enumCopy isEqualToString:@"trend"] & 1) != 0 || (objc_msgSend(enumCopy, "isEqualToString:", @"workoutTrend") & 1) != 0 || (objc_msgSend(enumCopy, "isEqualToString:", @"conversationTrend"))
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"photo_memory"])
+  else if ([enumCopy isEqualToString:@"photo_memory"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"timeContext"])
+  else if ([enumCopy isEqualToString:@"timeContext"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"trip"])
+  else if ([enumCopy isEqualToString:@"trip"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"state_of_mind"])
+  else if ([enumCopy isEqualToString:@"state_of_mind"])
   {
     v4 = 14;
   }
@@ -1093,60 +1093,60 @@ LABEL_151:
   return v4;
 }
 
-+ (unint64_t)getSuperTypeEnum:(id)a3
++ (unint64_t)getSuperTypeEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"unknown"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"outing"])
+  else if ([enumCopy isEqualToString:@"outing"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"activity"])
+  else if ([enumCopy isEqualToString:@"activity"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"contact"])
+  else if ([enumCopy isEqualToString:@"contact"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"media"])
+  else if ([enumCopy isEqualToString:@"media"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"time_at_home"])
+  else if ([enumCopy isEqualToString:@"time_at_home"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"photo_memory"])
+  else if ([enumCopy isEqualToString:@"photo_memory"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"evergreen"])
+  else if ([enumCopy isEqualToString:@"evergreen"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"state_of_mind"])
+  else if ([enumCopy isEqualToString:@"state_of_mind"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"clustering"])
+  else if ([enumCopy isEqualToString:@"clustering"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"personalized_reflection"])
+  else if ([enumCopy isEqualToString:@"personalized_reflection"])
   {
     v4 = 11;
   }
@@ -1162,20 +1162,20 @@ LABEL_151:
 - (id)description
 {
   v40 = objc_autoreleasePoolPush();
-  v57 = [(MOEventBundle *)self bundleIdentifier];
-  v55 = [(MOEventBundle *)self suggestionID];
-  v56 = [(MOEventBundle *)self subSuggestionIDs];
-  v54 = [(MOEventBundle *)self startDate];
-  v53 = [(MOEventBundle *)self endDate];
-  v52 = [(MOEventBundle *)self creationDate];
-  v51 = [(MOEventBundle *)self expirationDate];
-  v50 = [(MOEventBundle *)self firstCreationDate];
-  v49 = [(MOEventBundle *)self displayStartDate];
-  v48 = [(MOEventBundle *)self displayEndDate];
-  v37 = [(MOEventBundle *)self source];
-  v36 = [(MOEventBundle *)self interfaceType];
-  v35 = [(MOEventBundle *)self bundleSubType];
-  v34 = [(MOEventBundle *)self bundleSuperType];
+  bundleIdentifier = [(MOEventBundle *)self bundleIdentifier];
+  suggestionID = [(MOEventBundle *)self suggestionID];
+  subSuggestionIDs = [(MOEventBundle *)self subSuggestionIDs];
+  startDate = [(MOEventBundle *)self startDate];
+  endDate = [(MOEventBundle *)self endDate];
+  creationDate = [(MOEventBundle *)self creationDate];
+  expirationDate = [(MOEventBundle *)self expirationDate];
+  firstCreationDate = [(MOEventBundle *)self firstCreationDate];
+  displayStartDate = [(MOEventBundle *)self displayStartDate];
+  displayEndDate = [(MOEventBundle *)self displayEndDate];
+  source = [(MOEventBundle *)self source];
+  interfaceType = [(MOEventBundle *)self interfaceType];
+  bundleSubType = [(MOEventBundle *)self bundleSubType];
+  bundleSuperType = [(MOEventBundle *)self bundleSuperType];
   if ([(MOEventBundle *)self filtered])
   {
     v3 = @"Yes";
@@ -1198,7 +1198,7 @@ LABEL_151:
   }
 
   v31 = v4;
-  v29 = [(MOEventBundle *)self summarizationGranularity];
+  summarizationGranularity = [(MOEventBundle *)self summarizationGranularity];
   if ([(MOEventBundle *)self includedInSummaryBundleOnly])
   {
     v5 = @"Yes";
@@ -1210,38 +1210,38 @@ LABEL_151:
   }
 
   v28 = v5;
-  v39 = [(MOEventBundle *)self promptLanguage];
-  v46 = [v39 mask];
-  v27 = [(MOEventBundle *)self photoSource];
-  v47 = [(MOEventBundle *)self photoTraits];
-  v45 = [(MOEventBundle *)self action];
-  v44 = [(MOEventBundle *)self concurrentMediaAction];
-  v43 = [(MOEventBundle *)self place];
-  v26 = [(MOEventBundle *)self time];
-  v42 = [(MOEventBundle *)self predominantWeather];
-  v24 = [(MOEventBundle *)self actions];
-  v41 = [(MOEventBundle *)self persons];
-  v22 = [(MOEventBundle *)self places];
-  v16 = [(MOEventBundle *)self subBundleIDs];
-  v33 = [(MOEventBundle *)self metaData];
-  v17 = [v33 count];
-  v30 = [(MOEventBundle *)self events];
-  v6 = [v30 count];
-  v19 = [(MOEventBundle *)self labels];
-  v18 = [(MOEventBundle *)self promptLanguages];
-  v15 = [(MOEventBundle *)self _allResourcesImpl];
-  v25 = [(MOEventBundle *)self metaData];
-  v23 = [v25 allKeys];
-  v7 = [v23 count];
-  v21 = [(MOEventBundle *)self metaData];
-  v8 = [v21 allKeys];
-  v20 = [(MOEventBundle *)self metaDataForRank];
-  v9 = [v20 allKeys];
-  v10 = [(MOEventBundle *)self rankingDictionary];
-  v11 = [(MOEventBundle *)self suggestionEngagementEvents];
-  v12 = [(MOEventBundle *)self suggestionEngagementViewCount];
-  v13 = [(MOEventBundle *)self appEntryEngagementEvents];
-  v38 = [NSString stringWithFormat:@"<MOEventBundle bundleIdentifier, %@, suggestionID, %@, sub Suggestion IDs, %@, startDate, %@, endDate, %@, creationDate, %@, expirationDate, %@, firstCreationDate, %@, displayStartDate, %@, displayEndDate, %@, source, %lu, interfaceType, %lu, bundleSubType, %lu, bundleSuperType, %lu, filtered, %@, agg./suppressed, %@, sum. granularity, %lu, includedInSummaryOnly, %@, promptLanguage, %@, photoSource, %lu, traits, %@, action, %@, concurrentMediaAction, %@, place, %@, time, %@, predominantWeather %@, actions, %@, persons, %@, places, %@, sub bundle IDs, %@, metaData.count, %lu, events.count, %lu, labels, %@, prompts, %@, allResources, %@, meta, %lu, meta keywords, %@, metaDataForRank, %@, rankings, %@, suggestionEngagements, %@, suggestionEngagementViewCount, %lu, appEntryEngagementEvents %@>", v57, v55, v56, v54, v53, v52, v51, v50, v49, v48, v37, v36, v35, v34, v32, v31, v29, v28, v46, v27, v47, v45, v44, v43, v26, v42, v24, v41, v22, v16, v17, v6, v19, v18, v15, v7, v8, v9, v10, v11, v12, v13];
+  promptLanguage = [(MOEventBundle *)self promptLanguage];
+  mask = [promptLanguage mask];
+  photoSource = [(MOEventBundle *)self photoSource];
+  photoTraits = [(MOEventBundle *)self photoTraits];
+  action = [(MOEventBundle *)self action];
+  concurrentMediaAction = [(MOEventBundle *)self concurrentMediaAction];
+  place = [(MOEventBundle *)self place];
+  time = [(MOEventBundle *)self time];
+  predominantWeather = [(MOEventBundle *)self predominantWeather];
+  actions = [(MOEventBundle *)self actions];
+  persons = [(MOEventBundle *)self persons];
+  places = [(MOEventBundle *)self places];
+  subBundleIDs = [(MOEventBundle *)self subBundleIDs];
+  metaData = [(MOEventBundle *)self metaData];
+  v17 = [metaData count];
+  events = [(MOEventBundle *)self events];
+  v6 = [events count];
+  labels = [(MOEventBundle *)self labels];
+  promptLanguages = [(MOEventBundle *)self promptLanguages];
+  _allResourcesImpl = [(MOEventBundle *)self _allResourcesImpl];
+  metaData2 = [(MOEventBundle *)self metaData];
+  allKeys = [metaData2 allKeys];
+  v7 = [allKeys count];
+  metaData3 = [(MOEventBundle *)self metaData];
+  allKeys2 = [metaData3 allKeys];
+  metaDataForRank = [(MOEventBundle *)self metaDataForRank];
+  allKeys3 = [metaDataForRank allKeys];
+  rankingDictionary = [(MOEventBundle *)self rankingDictionary];
+  suggestionEngagementEvents = [(MOEventBundle *)self suggestionEngagementEvents];
+  suggestionEngagementViewCount = [(MOEventBundle *)self suggestionEngagementViewCount];
+  appEntryEngagementEvents = [(MOEventBundle *)self appEntryEngagementEvents];
+  v38 = [NSString stringWithFormat:@"<MOEventBundle bundleIdentifier, %@, suggestionID, %@, sub Suggestion IDs, %@, startDate, %@, endDate, %@, creationDate, %@, expirationDate, %@, firstCreationDate, %@, displayStartDate, %@, displayEndDate, %@, source, %lu, interfaceType, %lu, bundleSubType, %lu, bundleSuperType, %lu, filtered, %@, agg./suppressed, %@, sum. granularity, %lu, includedInSummaryOnly, %@, promptLanguage, %@, photoSource, %lu, traits, %@, action, %@, concurrentMediaAction, %@, place, %@, time, %@, predominantWeather %@, actions, %@, persons, %@, places, %@, sub bundle IDs, %@, metaData.count, %lu, events.count, %lu, labels, %@, prompts, %@, allResources, %@, meta, %lu, meta keywords, %@, metaDataForRank, %@, rankings, %@, suggestionEngagements, %@, suggestionEngagementViewCount, %lu, appEntryEngagementEvents %@>", bundleIdentifier, suggestionID, subSuggestionIDs, startDate, endDate, creationDate, expirationDate, firstCreationDate, displayStartDate, displayEndDate, source, interfaceType, bundleSubType, bundleSuperType, v32, v31, summarizationGranularity, v28, mask, photoSource, photoTraits, action, concurrentMediaAction, place, time, predominantWeather, actions, persons, places, subBundleIDs, v17, v6, labels, promptLanguages, _allResourcesImpl, v7, allKeys2, allKeys3, rankingDictionary, suggestionEngagementEvents, suggestionEngagementViewCount, appEntryEngagementEvents];
 
   objc_autoreleasePoolPop(v40);
 
@@ -1251,16 +1251,16 @@ LABEL_151:
 - (id)shortDescription
 {
   v32 = objc_autoreleasePoolPush();
-  v30 = [(MOEventBundle *)self bundleIdentifier];
-  v29 = [(MOEventBundle *)self suggestionID];
-  v35 = [(MOEventBundle *)self subSuggestionIDs];
-  v28 = [(MOEventBundle *)self startDate];
-  v34 = [(MOEventBundle *)self endDate];
-  v26 = [(MOEventBundle *)self creationDate];
-  v24 = [(MOEventBundle *)self firstCreationDate];
-  v25 = [(MOEventBundle *)self interfaceType];
-  v23 = [(MOEventBundle *)self bundleSubType];
-  v22 = [(MOEventBundle *)self bundleSuperType];
+  bundleIdentifier = [(MOEventBundle *)self bundleIdentifier];
+  suggestionID = [(MOEventBundle *)self suggestionID];
+  subSuggestionIDs = [(MOEventBundle *)self subSuggestionIDs];
+  startDate = [(MOEventBundle *)self startDate];
+  endDate = [(MOEventBundle *)self endDate];
+  creationDate = [(MOEventBundle *)self creationDate];
+  firstCreationDate = [(MOEventBundle *)self firstCreationDate];
+  interfaceType = [(MOEventBundle *)self interfaceType];
+  bundleSubType = [(MOEventBundle *)self bundleSubType];
+  bundleSuperType = [(MOEventBundle *)self bundleSuperType];
   if ([(MOEventBundle *)self filtered])
   {
     v3 = @"Yes";
@@ -1283,7 +1283,7 @@ LABEL_151:
   }
 
   v20 = v4;
-  v19 = [(MOEventBundle *)self summarizationGranularity];
+  summarizationGranularity = [(MOEventBundle *)self summarizationGranularity];
   if ([(MOEventBundle *)self includedInSummaryBundleOnly])
   {
     v5 = @"Yes";
@@ -1295,39 +1295,39 @@ LABEL_151:
   }
 
   v18 = v5;
-  v27 = [(MOEventBundle *)self promptLanguage];
-  v33 = [v27 mask];
-  v17 = [(MOEventBundle *)self photoSource];
-  v16 = [(MOEventBundle *)self action];
-  v15 = [(MOEventBundle *)self concurrentMediaAction];
-  v14 = [(MOEventBundle *)self place];
-  v13 = [(MOEventBundle *)self time];
-  v6 = [(MOEventBundle *)self subBundleIDs];
-  v12 = [(MOEventBundle *)self labels];
-  v7 = [(MOEventBundle *)self rankingDictionary];
-  v8 = [v7 objectForKeyedSubscript:@"visibilityCategoryForUI"];
-  v9 = [(MOEventBundle *)self rankingDictionary];
-  v10 = [v9 objectForKeyedSubscript:@"bundleGoodnessScore"];
-  v31 = [NSString stringWithFormat:@"<MOEventBundle bundleIdentifier, %@, suggestionID, %@, sub Suggestion IDs, %@, startDate, %@, endDate, %@, creationDate, %@, firstCreationDate, %@, interfaceType, %lu, bundleSubType, %lu, bundleSuperType, %lu, filtered, %@, agg./suppressed, %@, sum. granularity, %lu, includedInSummaryOnly, %@, promptLanguage, %@, photoSource, %lu, action, %@, concurrentMediaAction, %@, place, %@, time, %@, sub bundle IDs, %@, labels, %@, rankingVisibilityCategoryForUI, %@, rankingBundleGoodnessScore, %@ >", v30, v29, v35, v28, v34, v26, v24, v25, v23, v22, v21, v20, v19, v18, v33, v17, v16, v15, v14, v13, v6, v12, v8, v10];
+  promptLanguage = [(MOEventBundle *)self promptLanguage];
+  mask = [promptLanguage mask];
+  photoSource = [(MOEventBundle *)self photoSource];
+  action = [(MOEventBundle *)self action];
+  concurrentMediaAction = [(MOEventBundle *)self concurrentMediaAction];
+  place = [(MOEventBundle *)self place];
+  time = [(MOEventBundle *)self time];
+  subBundleIDs = [(MOEventBundle *)self subBundleIDs];
+  labels = [(MOEventBundle *)self labels];
+  rankingDictionary = [(MOEventBundle *)self rankingDictionary];
+  v8 = [rankingDictionary objectForKeyedSubscript:@"visibilityCategoryForUI"];
+  rankingDictionary2 = [(MOEventBundle *)self rankingDictionary];
+  v10 = [rankingDictionary2 objectForKeyedSubscript:@"bundleGoodnessScore"];
+  v31 = [NSString stringWithFormat:@"<MOEventBundle bundleIdentifier, %@, suggestionID, %@, sub Suggestion IDs, %@, startDate, %@, endDate, %@, creationDate, %@, firstCreationDate, %@, interfaceType, %lu, bundleSubType, %lu, bundleSuperType, %lu, filtered, %@, agg./suppressed, %@, sum. granularity, %lu, includedInSummaryOnly, %@, promptLanguage, %@, photoSource, %lu, action, %@, concurrentMediaAction, %@, place, %@, time, %@, sub bundle IDs, %@, labels, %@, rankingVisibilityCategoryForUI, %@, rankingBundleGoodnessScore, %@ >", bundleIdentifier, suggestionID, subSuggestionIDs, startDate, endDate, creationDate, firstCreationDate, interfaceType, bundleSubType, bundleSuperType, v21, v20, summarizationGranularity, v18, mask, photoSource, action, concurrentMediaAction, place, time, subBundleIDs, labels, v8, v10];
 
   objc_autoreleasePoolPop(v32);
 
   return v31;
 }
 
-- (MOEventBundle)initWithEventSet:(id)a3 filtered:(BOOL)a4
+- (MOEventBundle)initWithEventSet:(id)set filtered:(BOOL)filtered
 {
-  v6 = a3;
+  setCopy = set;
   v7 = +[NSDate date];
   v8 = +[NSUUID UUID];
   v9 = [(MOEventBundle *)self initWithBundleIdentifier:v8 suggestionID:v8 startDate:v7 endDate:v7 creationDate:v7];
   if (v9)
   {
-    v10 = [v6 allObjects];
+    allObjects = [setCopy allObjects];
     events = v9->_events;
-    v9->_events = v10;
+    v9->_events = allObjects;
 
-    v9->_filtered = a4;
+    v9->_filtered = filtered;
     [(MOEventBundle *)v9 setPropertiesBasedOnEvents];
   }
 
@@ -1336,8 +1336,8 @@ LABEL_151:
 
 - (NSSet)getCategories
 {
-  v2 = [(MOEventBundle *)self events];
-  v3 = [v2 valueForKeyPath:@"@distinctUnionOfObjects.category"];
+  events = [(MOEventBundle *)self events];
+  v3 = [events valueForKeyPath:@"@distinctUnionOfObjects.category"];
   v4 = [NSSet setWithArray:v3];
 
   return v4;
@@ -1361,8 +1361,8 @@ LABEL_151:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = [(MOEventBundle *)self events];
-  v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  events = [(MOEventBundle *)self events];
+  v10 = [events countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1373,41 +1373,41 @@ LABEL_151:
       {
         if (*v32 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(events);
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
         v15 = self->_startDate;
-        v16 = [v14 startDate];
-        LODWORD(v15) = [(NSDate *)v15 isAfterDate:v16];
+        startDate = [v14 startDate];
+        LODWORD(v15) = [(NSDate *)v15 isAfterDate:startDate];
 
         if (v15)
         {
-          v17 = [v14 startDate];
-          v18 = [v17 copy];
+          startDate2 = [v14 startDate];
+          v18 = [startDate2 copy];
           v19 = self->_startDate;
           self->_startDate = v18;
         }
 
-        v20 = [v14 endDate];
-        v21 = [v20 isAfterDate:self->_endDate];
+        endDate = [v14 endDate];
+        v21 = [endDate isAfterDate:self->_endDate];
 
         if (v21)
         {
-          v22 = [v14 endDate];
-          v23 = [v22 copy];
+          endDate2 = [v14 endDate];
+          v23 = [endDate2 copy];
           v24 = self->_endDate;
           self->_endDate = v23;
         }
 
         v25 = self->_expirationDate;
-        v26 = [v14 expirationDate];
-        LODWORD(v25) = [(NSDate *)v25 isAfterDate:v26];
+        expirationDate = [v14 expirationDate];
+        LODWORD(v25) = [(NSDate *)v25 isAfterDate:expirationDate];
 
         if (v25)
         {
-          v27 = [v14 expirationDate];
-          v28 = [v27 copy];
+          expirationDate2 = [v14 expirationDate];
+          v28 = [expirationDate2 copy];
           v29 = self->_expirationDate;
           self->_expirationDate = v28;
         }
@@ -1419,36 +1419,36 @@ LABEL_151:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v11 = [events countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)addBackgroundAction:(id)a3
+- (void)addBackgroundAction:(id)action
 {
-  v6 = a3;
-  v4 = [(MOEventBundle *)self backgroundActions];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  actionCopy = action;
+  backgroundActions = [(MOEventBundle *)self backgroundActions];
+  v5 = [NSMutableArray arrayWithArray:backgroundActions];
 
-  if (v6)
+  if (actionCopy)
   {
-    [v5 addObject:v6];
+    [v5 addObject:actionCopy];
   }
 
   [(MOEventBundle *)self setBackgroundActions:v5];
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v6 = a3;
-  v4 = [(MOEventBundle *)self actions];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  actionCopy = action;
+  actions = [(MOEventBundle *)self actions];
+  v5 = [NSMutableArray arrayWithArray:actions];
 
-  if (v6)
+  if (actionCopy)
   {
-    [v5 addObject:v6];
+    [v5 addObject:actionCopy];
   }
 
   [(MOEventBundle *)self setActions:v5];
@@ -1456,66 +1456,66 @@ LABEL_151:
 
 - (id)localStartDate
 {
-  v3 = [(MOEventBundle *)self time];
-  if (!v3)
+  time = [(MOEventBundle *)self time];
+  if (!time)
   {
     goto LABEL_4;
   }
 
-  v4 = v3;
-  v5 = [(MOEventBundle *)self time];
-  v6 = [v5 timeZone];
+  v4 = time;
+  time2 = [(MOEventBundle *)self time];
+  timeZone = [time2 timeZone];
 
-  if (v6)
+  if (timeZone)
   {
     v7 = [NSTimeZone alloc];
-    v8 = [(MOEventBundle *)self time];
-    v9 = [v8 timeZone];
-    v10 = [v7 initWithName:v9];
+    time3 = [(MOEventBundle *)self time];
+    timeZone2 = [time3 timeZone];
+    v10 = [v7 initWithName:timeZone2];
 
-    v11 = [(MOEventBundle *)self startDate];
-    v12 = [MOTime localTimeOfDate:v11 timeZone:v10];
+    startDate = [(MOEventBundle *)self startDate];
+    startDate2 = [MOTime localTimeOfDate:startDate timeZone:v10];
   }
 
   else
   {
 LABEL_4:
-    v12 = [(MOEventBundle *)self startDate];
+    startDate2 = [(MOEventBundle *)self startDate];
   }
 
-  return v12;
+  return startDate2;
 }
 
 - (id)localEndDate
 {
-  v3 = [(MOEventBundle *)self time];
-  if (!v3)
+  time = [(MOEventBundle *)self time];
+  if (!time)
   {
     goto LABEL_4;
   }
 
-  v4 = v3;
-  v5 = [(MOEventBundle *)self time];
-  v6 = [v5 timeZone];
+  v4 = time;
+  time2 = [(MOEventBundle *)self time];
+  timeZone = [time2 timeZone];
 
-  if (v6)
+  if (timeZone)
   {
     v7 = [NSTimeZone alloc];
-    v8 = [(MOEventBundle *)self time];
-    v9 = [v8 timeZone];
-    v10 = [v7 initWithName:v9];
+    time3 = [(MOEventBundle *)self time];
+    timeZone2 = [time3 timeZone];
+    v10 = [v7 initWithName:timeZone2];
 
-    v11 = [(MOEventBundle *)self endDate];
-    v12 = [MOTime localTimeOfDate:v11 timeZone:v10];
+    endDate = [(MOEventBundle *)self endDate];
+    endDate2 = [MOTime localTimeOfDate:endDate timeZone:v10];
   }
 
   else
   {
 LABEL_4:
-    v12 = [(MOEventBundle *)self endDate];
+    endDate2 = [(MOEventBundle *)self endDate];
   }
 
-  return v12;
+  return endDate2;
 }
 
 - (id)displayStartDate
@@ -1527,8 +1527,8 @@ LABEL_4:
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v4 = [(MOEventBundle *)self events];
-    v5 = [v4 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    events = [(MOEventBundle *)self events];
+    v5 = [events countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1539,73 +1539,73 @@ LABEL_4:
         {
           if (*v56 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(events);
           }
 
           v9 = *(*(&v55 + 1) + 8 * i);
           if (([v9 category] == 2 || objc_msgSend(v9, "category") == 4) && objc_msgSend(v9, "provider") != 5)
           {
-            v10 = [v9 startDate];
-            v11 = [v3 isAfterDate:v10];
+            startDate = [v9 startDate];
+            v11 = [v3 isAfterDate:startDate];
 
             if (v11)
             {
-              v12 = [v9 startDate];
+              startDate2 = [v9 startDate];
 
-              v3 = v12;
+              v3 = startDate2;
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        v6 = [events countByEnumeratingWithState:&v55 objects:v61 count:16];
       }
 
       while (v6);
     }
 
-    v13 = [(MOEventBundle *)self time];
-    if (!v13)
+    time = [(MOEventBundle *)self time];
+    if (!time)
     {
       goto LABEL_19;
     }
 
-    v14 = v13;
-    v15 = [(MOEventBundle *)self time];
-    v16 = [v15 timeZone];
+    v14 = time;
+    time2 = [(MOEventBundle *)self time];
+    timeZone = [time2 timeZone];
 
-    if (v16)
+    if (timeZone)
     {
       v17 = [NSTimeZone alloc];
-      v18 = [(MOEventBundle *)self time];
-      v19 = [v18 timeZone];
-      v20 = [v17 initWithName:v19];
+      time3 = [(MOEventBundle *)self time];
+      timeZone2 = [time3 timeZone];
+      v20 = [v17 initWithName:timeZone2];
 
-      v21 = [MOTime localTimeOfDate:v3 timeZone:v20];
+      startDate3 = [MOTime localTimeOfDate:v3 timeZone:v20];
     }
 
     else
     {
 LABEL_19:
-      v21 = v3;
+      startDate3 = v3;
     }
   }
 
   else if ([(MOEventBundle *)self bundleSubType]== 203)
   {
-    v21 = [(MOEventBundle *)self startDate];
+    startDate3 = [(MOEventBundle *)self startDate];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v23 = [(MOEventBundle *)self events];
-    v24 = [v23 countByEnumeratingWithState:&v51 objects:v60 count:16];
+    events2 = [(MOEventBundle *)self events];
+    v24 = [events2 countByEnumeratingWithState:&v51 objects:v60 count:16];
     if (v24)
     {
       v25 = v24;
       v26 = *v52;
       v27 = @"kEventResourcePatternWorkoutInfoDictArray";
       v44 = *v52;
-      v45 = v23;
+      v45 = events2;
       v43 = @"kEventResourcePatternWorkoutInfoDictArray";
       do
       {
@@ -1615,14 +1615,14 @@ LABEL_19:
         {
           if (*v52 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(events2);
           }
 
           v29 = *(*(&v51 + 1) + 8 * v28);
           if ([v29 provider] == 5 && objc_msgSend(v29, "category") == 2)
           {
-            v30 = [v29 patterns];
-            v31 = [v30 objectForKey:v27];
+            patterns = [v29 patterns];
+            v31 = [patterns objectForKey:v27];
 
             if (v31)
             {
@@ -1630,8 +1630,8 @@ LABEL_19:
               v50 = 0u;
               v47 = 0u;
               v48 = 0u;
-              v32 = [v29 patterns];
-              v33 = [v32 objectForKeyedSubscript:v27];
+              patterns2 = [v29 patterns];
+              v33 = [patterns2 objectForKeyedSubscript:v27];
 
               v34 = [v33 countByEnumeratingWithState:&v47 objects:v59 count:16];
               if (v34)
@@ -1652,11 +1652,11 @@ LABEL_19:
                     v40 = v39;
 
                     v41 = [NSDate dateWithTimeIntervalSince1970:v40];
-                    if ([v21 isAfterDate:v41])
+                    if ([startDate3 isAfterDate:v41])
                     {
                       v42 = v41;
 
-                      v21 = v42;
+                      startDate3 = v42;
                     }
                   }
 
@@ -1667,7 +1667,7 @@ LABEL_19:
               }
 
               v26 = v44;
-              v23 = v45;
+              events2 = v45;
               v27 = v43;
             }
 
@@ -1678,7 +1678,7 @@ LABEL_19:
         }
 
         while (v28 != v25);
-        v25 = [v23 countByEnumeratingWithState:&v51 objects:v60 count:16];
+        v25 = [events2 countByEnumeratingWithState:&v51 objects:v60 count:16];
       }
 
       while (v25);
@@ -1687,10 +1687,10 @@ LABEL_19:
 
   else
   {
-    v21 = [(MOEventBundle *)self localStartDate];
+    startDate3 = [(MOEventBundle *)self localStartDate];
   }
 
-  return v21;
+  return startDate3;
 }
 
 - (id)displayEndDate
@@ -1702,8 +1702,8 @@ LABEL_19:
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v4 = [(MOEventBundle *)self events];
-    v5 = [v4 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    events = [(MOEventBundle *)self events];
+    v5 = [events countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1714,73 +1714,73 @@ LABEL_19:
         {
           if (*v56 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(events);
           }
 
           v9 = *(*(&v55 + 1) + 8 * i);
           if (([v9 category] == 2 || objc_msgSend(v9, "category") == 4) && objc_msgSend(v9, "provider") != 5)
           {
-            v10 = [v9 endDate];
-            v11 = [v3 isBeforeDate:v10];
+            endDate = [v9 endDate];
+            v11 = [v3 isBeforeDate:endDate];
 
             if (v11)
             {
-              v12 = [v9 endDate];
+              endDate2 = [v9 endDate];
 
-              v3 = v12;
+              v3 = endDate2;
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        v6 = [events countByEnumeratingWithState:&v55 objects:v61 count:16];
       }
 
       while (v6);
     }
 
-    v13 = [(MOEventBundle *)self time];
-    if (!v13)
+    time = [(MOEventBundle *)self time];
+    if (!time)
     {
       goto LABEL_19;
     }
 
-    v14 = v13;
-    v15 = [(MOEventBundle *)self time];
-    v16 = [v15 timeZone];
+    v14 = time;
+    time2 = [(MOEventBundle *)self time];
+    timeZone = [time2 timeZone];
 
-    if (v16)
+    if (timeZone)
     {
       v17 = [NSTimeZone alloc];
-      v18 = [(MOEventBundle *)self time];
-      v19 = [v18 timeZone];
-      v20 = [v17 initWithName:v19];
+      time3 = [(MOEventBundle *)self time];
+      timeZone2 = [time3 timeZone];
+      v20 = [v17 initWithName:timeZone2];
 
-      v21 = [MOTime localTimeOfDate:v3 timeZone:v20];
+      endDate3 = [MOTime localTimeOfDate:v3 timeZone:v20];
     }
 
     else
     {
 LABEL_19:
-      v21 = v3;
+      endDate3 = v3;
     }
   }
 
   else if ([(MOEventBundle *)self bundleSubType]== 203)
   {
-    v21 = [(MOEventBundle *)self endDate];
+    endDate3 = [(MOEventBundle *)self endDate];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v23 = [(MOEventBundle *)self events];
-    v24 = [v23 countByEnumeratingWithState:&v51 objects:v60 count:16];
+    events2 = [(MOEventBundle *)self events];
+    v24 = [events2 countByEnumeratingWithState:&v51 objects:v60 count:16];
     if (v24)
     {
       v25 = v24;
       v26 = *v52;
       v27 = @"kEventResourcePatternWorkoutInfoDictArray";
       v44 = *v52;
-      v45 = v23;
+      v45 = events2;
       v43 = @"kEventResourcePatternWorkoutInfoDictArray";
       do
       {
@@ -1790,14 +1790,14 @@ LABEL_19:
         {
           if (*v52 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(events2);
           }
 
           v29 = *(*(&v51 + 1) + 8 * v28);
           if ([v29 provider] == 5 && objc_msgSend(v29, "category") == 2)
           {
-            v30 = [v29 patterns];
-            v31 = [v30 objectForKey:v27];
+            patterns = [v29 patterns];
+            v31 = [patterns objectForKey:v27];
 
             if (v31)
             {
@@ -1805,8 +1805,8 @@ LABEL_19:
               v50 = 0u;
               v47 = 0u;
               v48 = 0u;
-              v32 = [v29 patterns];
-              v33 = [v32 objectForKeyedSubscript:v27];
+              patterns2 = [v29 patterns];
+              v33 = [patterns2 objectForKeyedSubscript:v27];
 
               v34 = [v33 countByEnumeratingWithState:&v47 objects:v59 count:16];
               if (v34)
@@ -1827,11 +1827,11 @@ LABEL_19:
                     v40 = v39;
 
                     v41 = [NSDate dateWithTimeIntervalSince1970:v40];
-                    if ([v21 isBeforeDate:v41])
+                    if ([endDate3 isBeforeDate:v41])
                     {
                       v42 = v41;
 
-                      v21 = v42;
+                      endDate3 = v42;
                     }
                   }
 
@@ -1842,7 +1842,7 @@ LABEL_19:
               }
 
               v26 = v44;
-              v23 = v45;
+              events2 = v45;
               v27 = v43;
             }
 
@@ -1853,7 +1853,7 @@ LABEL_19:
         }
 
         while (v28 != v25);
-        v25 = [v23 countByEnumeratingWithState:&v51 objects:v60 count:16];
+        v25 = [events2 countByEnumeratingWithState:&v51 objects:v60 count:16];
       }
 
       while (v25);
@@ -1862,76 +1862,76 @@ LABEL_19:
 
   else
   {
-    v21 = [(MOEventBundle *)self localEndDate];
+    endDate3 = [(MOEventBundle *)self localEndDate];
   }
 
-  return v21;
+  return endDate3;
 }
 
-- (void)addPerson:(id)a3
+- (void)addPerson:(id)person
 {
-  v6 = a3;
-  v4 = [(MOEventBundle *)self persons];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  personCopy = person;
+  persons = [(MOEventBundle *)self persons];
+  v5 = [NSMutableArray arrayWithArray:persons];
 
-  if (v6)
+  if (personCopy)
   {
-    [v5 addObject:v6];
+    [v5 addObject:personCopy];
   }
 
   [(MOEventBundle *)self setPersons:v5];
 }
 
-- (void)addResource:(id)a3
+- (void)addResource:(id)resource
 {
-  v6 = a3;
-  v4 = [(MOEventBundle *)self resources];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  resourceCopy = resource;
+  resources = [(MOEventBundle *)self resources];
+  v5 = [NSMutableArray arrayWithArray:resources];
 
-  if (v6)
+  if (resourceCopy)
   {
-    [v5 addObject:v6];
+    [v5 addObject:resourceCopy];
   }
 
   [(MOEventBundle *)self setResources:v5];
 }
 
-- (void)addPhotoTraits:(id)a3
+- (void)addPhotoTraits:(id)traits
 {
-  v6 = a3;
-  v4 = [(MOEventBundle *)self photoTraits];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  traitsCopy = traits;
+  photoTraits = [(MOEventBundle *)self photoTraits];
+  v5 = [NSMutableArray arrayWithArray:photoTraits];
 
   if ([v5 count])
   {
-    [v5 addObjectsFromArray:v6];
+    [v5 addObjectsFromArray:traitsCopy];
   }
 
   [(MOEventBundle *)self setPhotoTraits:v5];
 }
 
-- (void)addResources:(id)a3
+- (void)addResources:(id)resources
 {
-  v6 = a3;
-  v4 = [(MOEventBundle *)self resources];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  resourcesCopy = resources;
+  resources = [(MOEventBundle *)self resources];
+  v5 = [NSMutableArray arrayWithArray:resources];
 
-  if ([v6 count])
+  if ([resourcesCopy count])
   {
-    [v5 addObjectsFromArray:v6];
+    [v5 addObjectsFromArray:resourcesCopy];
   }
 
   [(MOEventBundle *)self setResources:v5];
 }
 
-- (void)addMetaDataForRankForKey:(id)a3 value:(id)a4
+- (void)addMetaDataForRankForKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MOEventBundle *)self metaDataForRank];
-  v10 = [NSMutableDictionary dictionaryWithDictionary:v8];
+  valueCopy = value;
+  keyCopy = key;
+  metaDataForRank = [(MOEventBundle *)self metaDataForRank];
+  v10 = [NSMutableDictionary dictionaryWithDictionary:metaDataForRank];
 
-  [v10 setObject:v6 forKey:v7];
+  [v10 setObject:valueCopy forKey:keyCopy];
   v9 = [v10 copy];
   [(MOEventBundle *)self setMetaDataForRank:v9];
 }
@@ -1949,23 +1949,23 @@ LABEL_19:
   return v3;
 }
 
-- (void)withResourcesUsingBlock:(id)a3
+- (void)withResourcesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
   v63 = 0;
-  v48 = self;
-  v5 = [(MOEventBundle *)self resources];
+  selfCopy = self;
+  resources = [(MOEventBundle *)self resources];
   v57[0] = _NSConcreteStackBlock;
   v57[1] = 3221225472;
   v57[2] = __41__MOEventBundle_withResourcesUsingBlock___block_invoke;
   v57[3] = &unk_1000B6768;
-  v6 = v4;
+  v6 = blockCopy;
   v58 = v6;
   v59 = &v60;
-  [v5 enumerateObjectsUsingBlock:v57];
+  [resources enumerateObjectsUsingBlock:v57];
 
   if ((v61[3] & 1) == 0)
   {
@@ -1973,8 +1973,8 @@ LABEL_19:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v7 = [(MOEventBundle *)v48 persons];
-    v8 = [v7 countByEnumeratingWithState:&v53 objects:v65 count:16];
+    persons = [(MOEventBundle *)selfCopy persons];
+    v8 = [persons countByEnumeratingWithState:&v53 objects:v65 count:16];
     if (v8)
     {
       v9 = *v54;
@@ -1984,7 +1984,7 @@ LABEL_4:
       {
         if (*v54 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(persons);
         }
 
         v11 = *(*(&v53 + 1) + 8 * v10);
@@ -1995,8 +1995,8 @@ LABEL_4:
           goto LABEL_10;
         }
 
-        v14 = [v11 sourceEventIdentifier];
-        [(MOResource *)v13 setSourceEventIdentifier:v14];
+        sourceEventIdentifier = [v11 sourceEventIdentifier];
+        [(MOResource *)v13 setSourceEventIdentifier:sourceEventIdentifier];
 
         (*(v6 + 2))(v6, v13, v61 + 3);
         if (v61[3])
@@ -2018,7 +2018,7 @@ LABEL_10:
 
         if (v8 == ++v10)
         {
-          v8 = [v7 countByEnumeratingWithState:&v53 objects:v65 count:16];
+          v8 = [persons countByEnumeratingWithState:&v53 objects:v65 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -2029,14 +2029,14 @@ LABEL_10:
       }
     }
 
-    v16 = [(MOEventBundle *)v48 place];
-    if (!v16)
+    place = [(MOEventBundle *)selfCopy place];
+    if (!place)
     {
       goto LABEL_25;
     }
 
-    v17 = [(MOEventBundle *)v48 places];
-    v18 = [v17 count] == 0;
+    places = [(MOEventBundle *)selfCopy places];
+    v18 = [places count] == 0;
 
     if (!v18)
     {
@@ -2044,34 +2044,34 @@ LABEL_10:
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = [(MOEventBundle *)v48 place];
-    v21 = [v20 startDate];
+    place2 = [(MOEventBundle *)selfCopy place];
+    startDate = [place2 startDate];
 
-    if (!v21)
+    if (!startDate)
     {
-      v21 = [(MOEventBundle *)v48 startDate];
+      startDate = [(MOEventBundle *)selfCopy startDate];
     }
 
-    v22 = [(MOEventBundle *)v48 place];
-    v23 = [v22 endDate];
+    place3 = [(MOEventBundle *)selfCopy place];
+    endDate = [place3 endDate];
 
-    if (!v23)
+    if (!endDate)
     {
-      v23 = [(MOEventBundle *)v48 endDate];
+      endDate = [(MOEventBundle *)selfCopy endDate];
     }
 
     v24 = [MOResource alloc];
-    v25 = [(MOEventBundle *)v48 place];
-    v26 = [(MOResource *)v24 initWithPlace:v25 startDate:v21 endDate:v23];
+    place4 = [(MOEventBundle *)selfCopy place];
+    v26 = [(MOResource *)v24 initWithPlace:place4 startDate:startDate endDate:endDate];
 
     if (!v26)
     {
       goto LABEL_23;
     }
 
-    v27 = [(MOEventBundle *)v48 place];
-    v28 = [v27 sourceEventIdentifier];
-    [(MOResource *)v26 setSourceEventIdentifier:v28];
+    place5 = [(MOEventBundle *)selfCopy place];
+    sourceEventIdentifier2 = [place5 sourceEventIdentifier];
+    [(MOResource *)v26 setSourceEventIdentifier:sourceEventIdentifier2];
 
     (*(v6 + 2))(v6, v26, v61 + 3);
     if (v61[3])
@@ -2093,8 +2093,8 @@ LABEL_25:
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v7 = [(MOEventBundle *)v48 places];
-      v30 = [v7 countByEnumeratingWithState:&v49 objects:v64 count:16];
+      persons = [(MOEventBundle *)selfCopy places];
+      v30 = [persons countByEnumeratingWithState:&v49 objects:v64 count:16];
       if (v30)
       {
         v31 = *v50;
@@ -2105,29 +2105,29 @@ LABEL_27:
         {
           if (*v50 != v31)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(persons);
           }
 
           v33 = *(*(&v49 + 1) + 8 * v32);
           v34 = objc_autoreleasePoolPush();
-          v35 = [v33 startDate];
-          if (!v35)
+          startDate2 = [v33 startDate];
+          if (!startDate2)
           {
-            v35 = [(MOEventBundle *)v48 startDate];
+            startDate2 = [(MOEventBundle *)selfCopy startDate];
           }
 
-          v36 = [v33 endDate];
-          if (!v36)
+          endDate2 = [v33 endDate];
+          if (!endDate2)
           {
-            v36 = [(MOEventBundle *)v48 endDate];
+            endDate2 = [(MOEventBundle *)selfCopy endDate];
           }
 
-          v37 = [[MOResource alloc] initWithPlace:v33 startDate:v35 endDate:v36];
+          v37 = [[MOResource alloc] initWithPlace:v33 startDate:startDate2 endDate:endDate2];
           v39 = 1;
           if (v37)
           {
-            v38 = [v33 sourceEventIdentifier];
-            [(MOResource *)v37 setSourceEventIdentifier:v38];
+            sourceEventIdentifier3 = [v33 sourceEventIdentifier];
+            [(MOResource *)v37 setSourceEventIdentifier:sourceEventIdentifier3];
 
             (*(v6 + 2))(v6, v37, v61 + 3);
             if (v61[3])
@@ -2144,7 +2144,7 @@ LABEL_27:
 
           if (v30 == ++v32)
           {
-            v30 = [v7 countByEnumeratingWithState:&v49 objects:v64 count:16];
+            v30 = [persons countByEnumeratingWithState:&v49 objects:v64 count:16];
             if (v30)
             {
               goto LABEL_27;
@@ -2161,20 +2161,20 @@ LABEL_45:
 
 LABEL_41:
 
-      v40 = [(MOEventBundle *)v48 predominantWeather];
+      predominantWeather = [(MOEventBundle *)selfCopy predominantWeather];
 
-      if (v40)
+      if (predominantWeather)
       {
         v41 = objc_autoreleasePoolPush();
         v42 = [MOResource alloc];
-        v43 = [(MOEventBundle *)v48 predominantWeather];
-        v44 = [(MOResource *)v42 initWithWeather:v43];
+        predominantWeather2 = [(MOEventBundle *)selfCopy predominantWeather];
+        v44 = [(MOResource *)v42 initWithWeather:predominantWeather2];
 
         if (v44)
         {
-          v45 = [(MOEventBundle *)v48 predominantWeather];
-          v46 = [v45 sourceEventIdentifier];
-          [(MOResource *)v44 setSourceEventIdentifier:v46];
+          predominantWeather3 = [(MOEventBundle *)selfCopy predominantWeather];
+          sourceEventIdentifier4 = [predominantWeather3 sourceEventIdentifier];
+          [(MOResource *)v44 setSourceEventIdentifier:sourceEventIdentifier4];
 
           (*(v6 + 2))(v6, v44, v61 + 3);
         }
@@ -2203,22 +2203,22 @@ uint64_t __41__MOEventBundle_withResourcesUsingBlock___block_invoke(uint64_t a1,
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v78 = self;
-  v5 = [(MOEventBundle *)self persons];
-  v6 = [v5 countByEnumeratingWithState:&v88 objects:v94 count:16];
+  selfCopy = self;
+  persons = [(MOEventBundle *)self persons];
+  v6 = [persons countByEnumeratingWithState:&v88 objects:v94 count:16];
   p_cache = MOEventMotionActivity.cache;
   if (v6)
   {
     v8 = v6;
     v9 = 0;
-    v2 = *v89;
+    place4 = *v89;
     do
     {
       for (i = 0; i != v8; i = i + 1)
       {
-        if (*v89 != v2)
+        if (*v89 != place4)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(persons);
         }
 
         v11 = *(*(&v88 + 1) + 8 * i);
@@ -2226,12 +2226,12 @@ uint64_t __41__MOEventBundle_withResourcesUsingBlock___block_invoke(uint64_t a1,
         v13 = v12;
         if (v12)
         {
-          v14 = [(MOResource *)v12 identifier];
+          identifier = [(MOResource *)v12 identifier];
 
-          if (v14)
+          if (identifier)
           {
-            v15 = [v11 sourceEventIdentifier];
-            [(MOResource *)v13 setSourceEventIdentifier:v15];
+            sourceEventIdentifier = [v11 sourceEventIdentifier];
+            [(MOResource *)v13 setSourceEventIdentifier:sourceEventIdentifier];
 
             [(MOResource *)v13 priorityScore];
             if (v16 <= 0.0)
@@ -2244,7 +2244,7 @@ uint64_t __41__MOEventBundle_withResourcesUsingBlock___block_invoke(uint64_t a1,
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v88 objects:v94 count:16];
+      v8 = [persons countByEnumeratingWithState:&v88 objects:v94 count:16];
     }
 
     while (v8);
@@ -2255,13 +2255,13 @@ uint64_t __41__MOEventBundle_withResourcesUsingBlock___block_invoke(uint64_t a1,
     v9 = 0;
   }
 
-  v17 = v78;
-  if ([(MOEventBundle *)v78 interfaceType]!= 7)
+  v17 = selfCopy;
+  if ([(MOEventBundle *)selfCopy interfaceType]!= 7)
   {
-    v18 = [(MOEventBundle *)v78 interfaceType];
-    if (v18 == 1)
+    interfaceType = [(MOEventBundle *)selfCopy interfaceType];
+    if (interfaceType == 1)
     {
-      obj = [(MOEventBundle *)v78 place];
+      obj = [(MOEventBundle *)selfCopy place];
       if ([obj placeUserType] == 1)
       {
 LABEL_95:
@@ -2270,17 +2270,17 @@ LABEL_95:
       }
     }
 
-    v19 = [(MOEventBundle *)v78 interfaceType];
-    if (v19 == 1)
+    interfaceType2 = [(MOEventBundle *)selfCopy interfaceType];
+    if (interfaceType2 == 1)
     {
-      v20 = [(MOEventBundle *)v78 place];
-      if ([v20 placeUserType] == 2)
+      place = [(MOEventBundle *)selfCopy place];
+      if ([place placeUserType] == 2)
       {
         v21 = 0;
 LABEL_46:
 
 LABEL_47:
-        if (v18 == 1)
+        if (interfaceType == 1)
         {
 
           if (!v21)
@@ -2294,16 +2294,16 @@ LABEL_47:
           goto LABEL_96;
         }
 
-        v29 = [(MOEventBundle *)v17 place];
-        [v29 priorityScore];
+        place2 = [(MOEventBundle *)v17 place];
+        [place2 priorityScore];
         if (v30 < 20000.0)
         {
-          v31 = [(MOEventBundle *)v17 place];
-          if (v31)
+          place3 = [(MOEventBundle *)v17 place];
+          if (place3)
           {
-            v32 = v31;
-            v33 = [(MOEventBundle *)v17 places];
-            v34 = [v33 count];
+            v32 = place3;
+            places = [(MOEventBundle *)v17 places];
+            v34 = [places count];
 
             if (v34)
             {
@@ -2334,13 +2334,13 @@ LABEL_64:
                   [v48 priorityScore];
                   if (v49 < 20000.0)
                   {
-                    v50 = [(MOEventBundle *)v17 interfaceType];
-                    if (v50 == 12)
+                    interfaceType3 = [(MOEventBundle *)v17 interfaceType];
+                    if (interfaceType3 == 12)
                     {
-                      v2 = [(MOEventBundle *)v17 place];
-                      if ([v2 placeUserType] == 1)
+                      place4 = [(MOEventBundle *)v17 place];
+                      if ([place4 placeUserType] == 1)
                       {
-                        v51 = v2;
+                        startDate = place4;
 LABEL_92:
 
                         continue;
@@ -2349,16 +2349,16 @@ LABEL_92:
                       if ([(MOEventBundle *)v17 interfaceType]== 12)
                       {
 LABEL_76:
-                        v52 = v2;
-                        v53 = [(MOEventBundle *)v17 place];
-                        v54 = [v53 placeUserType];
+                        v52 = place4;
+                        place5 = [(MOEventBundle *)v17 place];
+                        placeUserType = [place5 placeUserType];
 
-                        if (v50 == 12)
+                        if (interfaceType3 == 12)
                         {
 
-                          v28 = v54 == 2;
-                          v2 = v52;
-                          v17 = v78;
+                          v28 = placeUserType == 2;
+                          place4 = v52;
+                          v17 = selfCopy;
                           if (v28)
                           {
                             goto LABEL_81;
@@ -2367,9 +2367,9 @@ LABEL_76:
 
                         else
                         {
-                          v28 = v54 == 2;
-                          v17 = v78;
-                          v2 = v52;
+                          v28 = placeUserType == 2;
+                          v17 = selfCopy;
+                          place4 = v52;
                           if (v28)
                           {
 LABEL_81:
@@ -2389,24 +2389,24 @@ LABEL_81:
                       goto LABEL_76;
                     }
 
-                    v55 = v2;
-                    v51 = [v48 startDate];
-                    if (!v51)
+                    v55 = place4;
+                    startDate = [v48 startDate];
+                    if (!startDate)
                     {
-                      v51 = [(MOEventBundle *)v17 startDate];
+                      startDate = [(MOEventBundle *)v17 startDate];
                     }
 
-                    v56 = [v48 endDate];
-                    if (!v56)
+                    endDate = [v48 endDate];
+                    if (!endDate)
                     {
-                      v56 = [(MOEventBundle *)v17 endDate];
+                      endDate = [(MOEventBundle *)v17 endDate];
                     }
 
-                    v57 = [[MOResource alloc] initWithPlace:v48 startDate:v51 endDate:v56];
+                    v57 = [[MOResource alloc] initWithPlace:v48 startDate:startDate endDate:endDate];
                     if (v57)
                     {
-                      v58 = [v48 sourceEventIdentifier];
-                      [(MOResource *)v57 setSourceEventIdentifier:v58];
+                      sourceEventIdentifier2 = [v48 sourceEventIdentifier];
+                      [(MOResource *)v57 setSourceEventIdentifier:sourceEventIdentifier2];
 
                       [(MOResource *)v57 priorityScore];
                       if (v59 <= 0.0)
@@ -2417,8 +2417,8 @@ LABEL_81:
                       [v4 addObject:v57];
                     }
 
-                    v17 = v78;
-                    v2 = v55;
+                    v17 = selfCopy;
+                    place4 = v55;
                     p_cache = MOEventMotionActivity.cache;
                     goto LABEL_92;
                   }
@@ -2432,31 +2432,31 @@ LABEL_81:
               }
             }
 
-            v35 = [(MOEventBundle *)v17 place];
-            v29 = [v35 startDate];
+            place6 = [(MOEventBundle *)v17 place];
+            place2 = [place6 startDate];
 
-            if (!v29)
+            if (!place2)
             {
-              v29 = [(MOEventBundle *)v17 startDate];
+              place2 = [(MOEventBundle *)v17 startDate];
             }
 
-            v36 = [(MOEventBundle *)v17 place];
-            v37 = [v36 endDate];
+            place7 = [(MOEventBundle *)v17 place];
+            endDate2 = [place7 endDate];
 
-            if (!v37)
+            if (!endDate2)
             {
-              v37 = [(MOEventBundle *)v17 endDate];
+              endDate2 = [(MOEventBundle *)v17 endDate];
             }
 
             v38 = [MOResource alloc];
-            v39 = [(MOEventBundle *)v17 place];
-            v40 = [(MOResource *)v38 initWithPlace:v39 startDate:v29 endDate:v37];
+            place8 = [(MOEventBundle *)v17 place];
+            v40 = [(MOResource *)v38 initWithPlace:place8 startDate:place2 endDate:endDate2];
 
             if (v40)
             {
-              v41 = [(MOEventBundle *)v17 place];
-              v42 = [v41 sourceEventIdentifier];
-              [(MOResource *)v40 setSourceEventIdentifier:v42];
+              place9 = [(MOEventBundle *)v17 place];
+              sourceEventIdentifier3 = [place9 sourceEventIdentifier];
+              [(MOResource *)v40 setSourceEventIdentifier:sourceEventIdentifier3];
 
               [(MOResource *)v40 priorityScore];
               if (v43 <= 0.0)
@@ -2472,21 +2472,21 @@ LABEL_81:
         goto LABEL_64;
       }
 
-      v77 = v20;
+      v77 = place;
     }
 
-    v2 = [(MOEventBundle *)v78 interfaceType];
-    if (v2 == 12)
+    place4 = [(MOEventBundle *)selfCopy interfaceType];
+    if (place4 == 12)
     {
-      v76 = [(MOEventBundle *)v78 place];
-      if ([v76 placeUserType] == 1)
+      place10 = [(MOEventBundle *)selfCopy place];
+      if ([place10 placeUserType] == 1)
       {
         v21 = 0;
 LABEL_44:
 
 LABEL_45:
-        v20 = v77;
-        if (v19 != 1)
+        place = v77;
+        if (interfaceType2 != 1)
         {
           goto LABEL_47;
         }
@@ -2495,35 +2495,35 @@ LABEL_45:
       }
     }
 
-    v22 = v78;
-    v23 = [(MOEventBundle *)v78 interfaceType];
-    if (v23 == 12)
+    v22 = selfCopy;
+    interfaceType4 = [(MOEventBundle *)selfCopy interfaceType];
+    if (interfaceType4 == 12)
     {
-      v24 = [(MOEventBundle *)v78 place];
-      if ([v24 placeUserType] == 2)
+      place11 = [(MOEventBundle *)selfCopy place];
+      if ([place11 placeUserType] == 2)
       {
         v21 = 0;
         goto LABEL_42;
       }
 
-      v75 = v24;
-      v22 = v78;
+      v75 = place11;
+      v22 = selfCopy;
     }
 
-    v25 = [(MOEventBundle *)v22 interfaceType];
-    if (v25 == 16)
+    interfaceType5 = [(MOEventBundle *)v22 interfaceType];
+    if (interfaceType5 == 16)
     {
-      v26 = [(MOEventBundle *)v22 place];
-      if ([v26 placeUserType] == 1)
+      place12 = [(MOEventBundle *)v22 place];
+      if ([place12 placeUserType] == 1)
       {
 
         v21 = 0;
-        v24 = v75;
-        if (v23 != 12)
+        place11 = v75;
+        if (interfaceType4 != 12)
         {
 LABEL_43:
-          v17 = v78;
-          if (v2 != 12)
+          v17 = selfCopy;
+          if (place4 != 12)
           {
             goto LABEL_45;
           }
@@ -2536,33 +2536,33 @@ LABEL_42:
         goto LABEL_43;
       }
 
-      v74 = v26;
+      v74 = place12;
       if ([(MOEventBundle *)v22 interfaceType]!= 16)
       {
         v21 = 1;
-        v24 = v75;
+        place11 = v75;
         goto LABEL_40;
       }
 
-      v22 = v78;
+      v22 = selfCopy;
     }
 
     else if ([(MOEventBundle *)v22 interfaceType]!= 16)
     {
       v21 = 1;
-      v24 = v75;
+      place11 = v75;
       goto LABEL_41;
     }
 
-    v27 = [(MOEventBundle *)v22 place];
-    v21 = [v27 placeUserType] != 2;
+    place13 = [(MOEventBundle *)v22 place];
+    v21 = [place13 placeUserType] != 2;
 
-    v28 = v25 == 16;
-    v24 = v75;
+    v28 = interfaceType5 == 16;
+    place11 = v75;
     if (!v28)
     {
 LABEL_41:
-      if (v23 != 12)
+      if (interfaceType4 != 12)
       {
         goto LABEL_43;
       }
@@ -2576,19 +2576,19 @@ LABEL_40:
   }
 
 LABEL_96:
-  v60 = [(MOEventBundle *)v17 predominantWeather];
+  predominantWeather = [(MOEventBundle *)v17 predominantWeather];
 
-  if (v60)
+  if (predominantWeather)
   {
     v61 = objc_alloc((p_cache + 8));
-    v62 = [(MOEventBundle *)v17 predominantWeather];
-    v63 = [v61 initWithWeather:v62];
+    predominantWeather2 = [(MOEventBundle *)v17 predominantWeather];
+    v63 = [v61 initWithWeather:predominantWeather2];
 
     if (v63)
     {
-      v64 = [(MOEventBundle *)v17 predominantWeather];
-      v65 = [v64 sourceEventIdentifier];
-      [v63 setSourceEventIdentifier:v65];
+      predominantWeather3 = [(MOEventBundle *)v17 predominantWeather];
+      sourceEventIdentifier4 = [predominantWeather3 sourceEventIdentifier];
+      [v63 setSourceEventIdentifier:sourceEventIdentifier4];
 
       [v63 priorityScore];
       if (v66 <= 0.0)
@@ -2604,8 +2604,8 @@ LABEL_96:
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v67 = [(MOEventBundle *)v17 resources];
-  v68 = [v67 countByEnumeratingWithState:&v80 objects:v92 count:16];
+  resources = [(MOEventBundle *)v17 resources];
+  v68 = [resources countByEnumeratingWithState:&v80 objects:v92 count:16];
   if (v68)
   {
     v69 = v68;
@@ -2616,7 +2616,7 @@ LABEL_96:
       {
         if (*v81 != v70)
         {
-          objc_enumerationMutation(v67);
+          objc_enumerationMutation(resources);
         }
 
         v72 = *(*(&v80 + 1) + 8 * k);
@@ -2629,7 +2629,7 @@ LABEL_96:
         [v4 addObject:v72];
       }
 
-      v69 = [v67 countByEnumeratingWithState:&v80 objects:v92 count:16];
+      v69 = [resources countByEnumeratingWithState:&v80 objects:v92 count:16];
     }
 
     while (v69);
@@ -2638,46 +2638,46 @@ LABEL_96:
   [(MOEventBundle *)v17 setResources:v4];
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v5 = [(MOEventBundle *)self events];
+    events = [(MOEventBundle *)self events];
 
-    if (v5)
+    if (events)
     {
-      v6 = [(MOEventBundle *)self events];
-      v7 = [NSMutableArray arrayWithArray:v6];
+      events2 = [(MOEventBundle *)self events];
+      v7 = [NSMutableArray arrayWithArray:events2];
 
-      [v7 addObject:v4];
+      [v7 addObject:eventCopy];
       v8 = [v7 copy];
       [(MOEventBundle *)self setEvents:v8];
     }
 
     else
     {
-      v9 = v4;
+      v9 = eventCopy;
       v7 = [NSArray arrayWithObjects:&v9 count:1];
       [(MOEventBundle *)self setEvents:v7];
     }
   }
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
-  if (v4)
+  eventsCopy = events;
+  if (eventsCopy)
   {
-    v9 = v4;
-    if ([v4 count])
+    v9 = eventsCopy;
+    if ([eventsCopy count])
     {
-      v5 = [(MOEventBundle *)self events];
+      events = [(MOEventBundle *)self events];
 
-      if (v5)
+      if (events)
       {
-        v6 = [(MOEventBundle *)self events];
-        v7 = [NSMutableArray arrayWithArray:v6];
+        events2 = [(MOEventBundle *)self events];
+        v7 = [NSMutableArray arrayWithArray:events2];
 
         if ([v9 count])
         {
@@ -2698,11 +2698,11 @@ LABEL_96:
   _objc_release_x1();
 }
 
-- (MOEventBundle)initWithCoder:(id)a3
+- (MOEventBundle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   v7 = v6;
   if (v5)
   {
@@ -2716,7 +2716,7 @@ LABEL_96:
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -2725,248 +2725,248 @@ LABEL_96:
     v11 = v10;
     if (v10)
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
       startDate = v11->_startDate;
       v11->_startDate = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
       endDate = v11->_endDate;
       v11->_endDate = v14;
 
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstCreationDate"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstCreationDate"];
       firstCreationDate = v11->_firstCreationDate;
       v11->_firstCreationDate = v16;
 
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
       expirationDate = v11->_expirationDate;
       v11->_expirationDate = v18;
 
-      v11->_source = [v4 decodeIntegerForKey:@"source"];
-      v11->_interfaceType = [v4 decodeIntegerForKey:@"interfaceType"];
-      v11->_photoSource = [v4 decodeIntegerForKey:@"photoSource"];
+      v11->_source = [coderCopy decodeIntegerForKey:@"source"];
+      v11->_interfaceType = [coderCopy decodeIntegerForKey:@"interfaceType"];
+      v11->_photoSource = [coderCopy decodeIntegerForKey:@"photoSource"];
       v20 = objc_opt_class();
       v21 = [NSSet setWithObjects:v20, objc_opt_class(), 0];
-      v22 = [v4 decodeObjectOfClasses:v21 forKey:@"events"];
+      v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"events"];
       events = v11->_events;
       v11->_events = v22;
 
-      v11->_filtered = [v4 decodeBoolForKey:@"filtered"];
-      v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"promptLanguage"];
+      v11->_filtered = [coderCopy decodeBoolForKey:@"filtered"];
+      v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"promptLanguage"];
       promptLanguage = v11->_promptLanguage;
       v11->_promptLanguage = v24;
 
-      v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+      v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
       action = v11->_action;
       v11->_action = v26;
 
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"concurrentMediaAction"];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"concurrentMediaAction"];
       concurrentMediaAction = v11->_concurrentMediaAction;
       v11->_concurrentMediaAction = v28;
 
       v30 = objc_opt_class();
       v31 = [NSSet setWithObjects:v30, objc_opt_class(), 0];
-      v32 = [v4 decodeObjectOfClasses:v31 forKey:@"actions"];
+      v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"actions"];
       actions = v11->_actions;
       v11->_actions = v32;
 
       v34 = objc_opt_class();
       v35 = [NSSet setWithObjects:v34, objc_opt_class(), 0];
-      v36 = [v4 decodeObjectOfClasses:v35 forKey:@"backgroundActions"];
+      v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"backgroundActions"];
       backgroundActions = v11->_backgroundActions;
       v11->_backgroundActions = v36;
 
       v38 = objc_opt_class();
       v39 = [NSSet setWithObjects:v38, objc_opt_class(), 0];
-      v40 = [v4 decodeObjectOfClasses:v39 forKey:@"persons"];
+      v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"persons"];
       persons = v11->_persons;
       v11->_persons = v40;
 
-      v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"place"];
+      v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"place"];
       place = v11->_place;
       v11->_place = v42;
 
-      v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"weather"];
+      v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"weather"];
       predominantWeather = v11->_predominantWeather;
       v11->_predominantWeather = v44;
 
-      v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+      v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
       time = v11->_time;
       v11->_time = v46;
 
       v48 = objc_opt_class();
       v49 = [NSSet setWithObjects:v48, objc_opt_class(), 0];
-      v50 = [v4 decodeObjectOfClasses:v49 forKey:@"resources"];
+      v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"resources"];
       resources = v11->_resources;
       v11->_resources = v50;
 
-      v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rankingDictionary"];
+      v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rankingDictionary"];
       v53 = [MODictionaryEncoder decodeToDictionary:v52];
       rankingDictionary = v11->_rankingDictionary;
       v11->_rankingDictionary = v53;
 
       v55 = objc_opt_class();
       v56 = [NSSet setWithObjects:v55, objc_opt_class(), 0];
-      v57 = [v4 decodeObjectOfClasses:v56 forKey:@"labels"];
+      v57 = [coderCopy decodeObjectOfClasses:v56 forKey:@"labels"];
       labels = v11->_labels;
       v11->_labels = v57;
 
       v59 = objc_opt_class();
       v60 = [NSSet setWithObjects:v59, objc_opt_class(), 0];
-      v61 = [v4 decodeObjectOfClasses:v60 forKey:@"promptLanguages"];
+      v61 = [coderCopy decodeObjectOfClasses:v60 forKey:@"promptLanguages"];
       promptLanguages = v11->_promptLanguages;
       v11->_promptLanguages = v61;
 
       v63 = [NSMutableDictionary alloc];
-      v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metaData"];
+      v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metaData"];
       v65 = [MODictionaryEncoder decodeToDictionary:v64];
       v66 = [v63 initWithDictionary:v65];
       metaData = v11->_metaData;
       v11->_metaData = v66;
 
-      v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metaDataForRank"];
+      v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metaDataForRank"];
       v69 = [MODictionaryEncoder decodeToDictionary:v68];
       metaDataForRank = v11->_metaDataForRank;
       v11->_metaDataForRank = v69;
 
-      v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestionID"];
+      v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestionID"];
       suggestionID = v11->_suggestionID;
       v11->_suggestionID = v71;
 
       v73 = objc_opt_class();
       v74 = [NSSet setWithObjects:v73, objc_opt_class(), 0];
-      v75 = [v4 decodeObjectOfClasses:v74 forKey:@"suggestionEngagements"];
+      v75 = [coderCopy decodeObjectOfClasses:v74 forKey:@"suggestionEngagements"];
       v76 = [NSMutableSet setWithArray:v75];
       suggestionEngagementEvents = v11->_suggestionEngagementEvents;
       v11->_suggestionEngagementEvents = v76;
 
       v78 = objc_opt_class();
       v79 = [NSSet setWithObjects:v78, objc_opt_class(), 0];
-      v80 = [v4 decodeObjectOfClasses:v79 forKey:@"places"];
+      v80 = [coderCopy decodeObjectOfClasses:v79 forKey:@"places"];
       places = v11->_places;
       v11->_places = v80;
 
-      v11->_isAggregatedAndSuppressed = [v4 decodeBoolForKey:@"isAggregatedAndSuppressed"];
-      v11->_summarizationGranularity = [v4 decodeIntegerForKey:@"summarizationGranularity"];
-      v82 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"subBundleIDs"];
+      v11->_isAggregatedAndSuppressed = [coderCopy decodeBoolForKey:@"isAggregatedAndSuppressed"];
+      v11->_summarizationGranularity = [coderCopy decodeIntegerForKey:@"summarizationGranularity"];
+      v82 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"subBundleIDs"];
       subBundleIDs = v11->_subBundleIDs;
       v11->_subBundleIDs = v82;
 
-      v84 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"subSuggestionIDs"];
+      v84 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"subSuggestionIDs"];
       subSuggestionIDs = v11->_subSuggestionIDs;
       v11->_subSuggestionIDs = v84;
 
-      v11->_suggestionEngagementViewCount = [v4 decodeIntegerForKey:@"suggestionViewCount"];
+      v11->_suggestionEngagementViewCount = [coderCopy decodeIntegerForKey:@"suggestionViewCount"];
       v86 = objc_opt_class();
       v87 = [NSSet setWithObjects:v86, objc_opt_class(), 0];
-      v88 = [v4 decodeObjectOfClasses:v87 forKey:@"appEntryEngagements"];
+      v88 = [coderCopy decodeObjectOfClasses:v87 forKey:@"appEntryEngagements"];
       v89 = [NSMutableSet setWithArray:v88];
       appEntryEngagementEvents = v11->_appEntryEngagementEvents;
       v11->_appEntryEngagementEvents = v89;
 
       v91 = objc_opt_class();
       v92 = [NSSet setWithObjects:v91, objc_opt_class(), 0];
-      v93 = [v4 decodeObjectOfClasses:v92 forKey:@"visitEventsRejectedByWatchLocation"];
+      v93 = [coderCopy decodeObjectOfClasses:v92 forKey:@"visitEventsRejectedByWatchLocation"];
       visitEventsRejectedByWatchLocation = v11->_visitEventsRejectedByWatchLocation;
       v11->_visitEventsRejectedByWatchLocation = v93;
 
-      v11->_bundleSubType = [v4 decodeIntegerForKey:@"bundleSubType"];
-      v11->_bundleSuperType = [v4 decodeIntegerForKey:@"bundleSuperType"];
-      v95 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterMetadata"];
+      v11->_bundleSubType = [coderCopy decodeIntegerForKey:@"bundleSubType"];
+      v11->_bundleSuperType = [coderCopy decodeIntegerForKey:@"bundleSuperType"];
+      v95 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterMetadata"];
       clusterMetadata = v11->_clusterMetadata;
       v11->_clusterMetadata = v95;
 
-      v97 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outlierMetadata"];
+      v97 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outlierMetadata"];
       outlierMetadata = v11->_outlierMetadata;
       v11->_outlierMetadata = v97;
 
       v99 = objc_opt_class();
       v100 = [NSSet setWithObjects:v99, objc_opt_class(), 0];
-      v101 = [v4 decodeObjectOfClasses:v100 forKey:@"photoTraits"];
+      v101 = [coderCopy decodeObjectOfClasses:v100 forKey:@"photoTraits"];
       photoTraits = v11->_photoTraits;
       v11->_photoTraits = v101;
 
-      v11->_isSensitive = [v4 decodeBoolForKey:@"isSensitive"];
+      v11->_isSensitive = [coderCopy decodeBoolForKey:@"isSensitive"];
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v12 = a3;
-  [v12 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v12 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v12 encodeObject:self->_firstCreationDate forKey:@"firstCreationDate"];
-  [v12 encodeObject:self->_startDate forKey:@"startDate"];
-  [v12 encodeObject:self->_endDate forKey:@"endDate"];
-  [v12 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v12 encodeInteger:self->_source forKey:@"source"];
-  [v12 encodeInteger:self->_interfaceType forKey:@"interfaceType"];
-  [v12 encodeInteger:self->_photoSource forKey:@"photoSource"];
-  [v12 encodeObject:self->_events forKey:@"events"];
-  [v12 encodeBool:self->_filtered forKey:@"filtered"];
-  [v12 encodeObject:self->_promptLanguage forKey:@"promptLanguage"];
-  [v12 encodeObject:self->_action forKey:@"action"];
-  [v12 encodeObject:self->_concurrentMediaAction forKey:@"concurrentMediaAction"];
-  [v12 encodeObject:self->_actions forKey:@"actions"];
-  [v12 encodeObject:self->_backgroundActions forKey:@"backgroundActions"];
-  [v12 encodeObject:self->_persons forKey:@"persons"];
-  [v12 encodeObject:self->_place forKey:@"place"];
-  [v12 encodeObject:self->_predominantWeather forKey:@"weather"];
-  [v12 encodeObject:self->_time forKey:@"time"];
-  [v12 encodeObject:self->_resources forKey:@"resources"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_firstCreationDate forKey:@"firstCreationDate"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
+  [coderCopy encodeInteger:self->_interfaceType forKey:@"interfaceType"];
+  [coderCopy encodeInteger:self->_photoSource forKey:@"photoSource"];
+  [coderCopy encodeObject:self->_events forKey:@"events"];
+  [coderCopy encodeBool:self->_filtered forKey:@"filtered"];
+  [coderCopy encodeObject:self->_promptLanguage forKey:@"promptLanguage"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
+  [coderCopy encodeObject:self->_concurrentMediaAction forKey:@"concurrentMediaAction"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
+  [coderCopy encodeObject:self->_backgroundActions forKey:@"backgroundActions"];
+  [coderCopy encodeObject:self->_persons forKey:@"persons"];
+  [coderCopy encodeObject:self->_place forKey:@"place"];
+  [coderCopy encodeObject:self->_predominantWeather forKey:@"weather"];
+  [coderCopy encodeObject:self->_time forKey:@"time"];
+  [coderCopy encodeObject:self->_resources forKey:@"resources"];
   v5 = [MODictionaryEncoder encodeDictionary:self->_rankingDictionary];
-  [v12 encodeObject:v5 forKey:@"rankingDictionary"];
+  [coderCopy encodeObject:v5 forKey:@"rankingDictionary"];
 
-  [v12 encodeObject:self->_labels forKey:@"labels"];
-  [v12 encodeObject:self->_promptLanguages forKey:@"promptLanguages"];
+  [coderCopy encodeObject:self->_labels forKey:@"labels"];
+  [coderCopy encodeObject:self->_promptLanguages forKey:@"promptLanguages"];
   v6 = [MODictionaryEncoder encodeDictionary:self->_metaData];
-  [v12 encodeObject:v6 forKey:@"metaData"];
+  [coderCopy encodeObject:v6 forKey:@"metaData"];
 
   v7 = [MODictionaryEncoder encodeDictionary:self->_metaDataForRank];
-  [v12 encodeObject:v7 forKey:@"metaDataForRank"];
+  [coderCopy encodeObject:v7 forKey:@"metaDataForRank"];
 
-  [v12 encodeObject:self->_suggestionID forKey:@"suggestionID"];
-  v8 = [(MOEventBundle *)self suggestionEngagementEvents];
-  v9 = [v8 allObjects];
-  [v12 encodeObject:v9 forKey:@"suggestionEngagements"];
+  [coderCopy encodeObject:self->_suggestionID forKey:@"suggestionID"];
+  suggestionEngagementEvents = [(MOEventBundle *)self suggestionEngagementEvents];
+  allObjects = [suggestionEngagementEvents allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"suggestionEngagements"];
 
-  [v12 encodeObject:self->_places forKey:@"places"];
-  [v12 encodeBool:self->_isAggregatedAndSuppressed forKey:@"isAggregatedAndSuppressed"];
-  [v12 encodeInteger:self->_summarizationGranularity forKey:@"summarizationGranularity"];
-  [v12 encodeObject:self->_subBundleIDs forKey:@"subBundleIDs"];
-  [v12 encodeObject:self->_subSuggestionIDs forKey:@"subSuggestionIDs"];
-  [v12 encodeInteger:self->_suggestionEngagementViewCount forKey:@"suggestionViewCount"];
-  [v12 encodeObject:self->_visitEventsRejectedByWatchLocation forKey:@"visitEventsRejectedByWatchLocation"];
-  v10 = [(MOEventBundle *)self appEntryEngagementEvents];
-  v11 = [v10 allObjects];
-  [v12 encodeObject:v11 forKey:@"appEntryEngagements"];
+  [coderCopy encodeObject:self->_places forKey:@"places"];
+  [coderCopy encodeBool:self->_isAggregatedAndSuppressed forKey:@"isAggregatedAndSuppressed"];
+  [coderCopy encodeInteger:self->_summarizationGranularity forKey:@"summarizationGranularity"];
+  [coderCopy encodeObject:self->_subBundleIDs forKey:@"subBundleIDs"];
+  [coderCopy encodeObject:self->_subSuggestionIDs forKey:@"subSuggestionIDs"];
+  [coderCopy encodeInteger:self->_suggestionEngagementViewCount forKey:@"suggestionViewCount"];
+  [coderCopy encodeObject:self->_visitEventsRejectedByWatchLocation forKey:@"visitEventsRejectedByWatchLocation"];
+  appEntryEngagementEvents = [(MOEventBundle *)self appEntryEngagementEvents];
+  allObjects2 = [appEntryEngagementEvents allObjects];
+  [coderCopy encodeObject:allObjects2 forKey:@"appEntryEngagements"];
 
-  [v12 encodeInteger:self->_bundleSubType forKey:@"bundleSubType"];
-  [v12 encodeInteger:self->_bundleSuperType forKey:@"bundleSuperType"];
-  [v12 encodeObject:self->_clusterMetadata forKey:@"clusterMetadata"];
-  [v12 encodeObject:self->_outlierMetadata forKey:@"outlierMetadata"];
-  [v12 encodeObject:self->_photoTraits forKey:@"photoTraits"];
-  [v12 encodeBool:self->_isSensitive forKey:@"isSensitive"];
+  [coderCopy encodeInteger:self->_bundleSubType forKey:@"bundleSubType"];
+  [coderCopy encodeInteger:self->_bundleSuperType forKey:@"bundleSuperType"];
+  [coderCopy encodeObject:self->_clusterMetadata forKey:@"clusterMetadata"];
+  [coderCopy encodeObject:self->_outlierMetadata forKey:@"outlierMetadata"];
+  [coderCopy encodeObject:self->_photoTraits forKey:@"photoTraits"];
+  [coderCopy encodeBool:self->_isSensitive forKey:@"isSensitive"];
 }
 
 - (id)dateInterval
 {
-  v3 = [(MOEventBundle *)self startDate];
-  if (v3)
+  startDate = [(MOEventBundle *)self startDate];
+  if (startDate)
   {
   }
 
   else
   {
-    v4 = [(MOEventBundle *)self endDate];
+    endDate = [(MOEventBundle *)self endDate];
 
-    if (!v4)
+    if (!endDate)
     {
 LABEL_11:
       v15 = 0;
@@ -2974,28 +2974,28 @@ LABEL_11:
     }
   }
 
-  v5 = [(MOEventBundle *)self endDate];
+  endDate2 = [(MOEventBundle *)self endDate];
 
-  v6 = [(MOEventBundle *)self startDate];
-  v7 = v6;
-  if (!v5)
+  startDate2 = [(MOEventBundle *)self startDate];
+  endDate3 = startDate2;
+  if (!endDate2)
   {
-    [(MOEventBundle *)self setEndDate:v6];
+    [(MOEventBundle *)self setEndDate:startDate2];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!endDate3)
   {
-    v7 = [(MOEventBundle *)self endDate];
-    [(MOEventBundle *)self setStartDate:v7];
+    endDate3 = [(MOEventBundle *)self endDate];
+    [(MOEventBundle *)self setStartDate:endDate3];
     goto LABEL_14;
   }
 
-  v8 = [(MOEventBundle *)self startDate];
-  v9 = [(MOEventBundle *)self endDate];
-  v10 = [v8 isOnOrBefore:v9];
+  startDate3 = [(MOEventBundle *)self startDate];
+  endDate4 = [(MOEventBundle *)self endDate];
+  v10 = [startDate3 isOnOrBefore:endDate4];
 
   if ((v10 & 1) == 0)
   {
@@ -3006,9 +3006,9 @@ LABEL_14:
     }
   }
 
-  v12 = [(MOEventBundle *)self startDate];
-  v13 = [(MOEventBundle *)self endDate];
-  v14 = [v12 isBeforeDate:v13];
+  startDate4 = [(MOEventBundle *)self startDate];
+  endDate5 = [(MOEventBundle *)self endDate];
+  v14 = [startDate4 isBeforeDate:endDate5];
 
   if ((v14 & 1) == 0)
   {
@@ -3017,9 +3017,9 @@ LABEL_14:
 
 LABEL_15:
   v16 = [NSDateInterval alloc];
-  v17 = [(MOEventBundle *)self startDate];
-  v18 = [(MOEventBundle *)self endDate];
-  v15 = [v16 initWithStartDate:v17 endDate:v18];
+  startDate5 = [(MOEventBundle *)self startDate];
+  endDate6 = [(MOEventBundle *)self endDate];
+  v15 = [v16 initWithStartDate:startDate5 endDate:endDate6];
 
 LABEL_16:
 
@@ -3028,40 +3028,40 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(MOEventBundle *)self bundleIdentifier];
-  v3 = [v2 hash];
+  bundleIdentifier = [(MOEventBundle *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqualToEventBundle:(id)a3
+- (BOOL)isEqualToEventBundle:(id)bundle
 {
-  v4 = a3;
-  if (self == v4)
+  bundleCopy = bundle;
+  if (self == bundleCopy)
   {
     goto LABEL_3;
   }
 
-  v5 = [(MOEventBundle *)self bundleIdentifier];
-  v6 = [(MOEventBundle *)v4 bundleIdentifier];
-  v7 = [v5 isEqual:v6];
+  bundleIdentifier = [(MOEventBundle *)self bundleIdentifier];
+  bundleIdentifier2 = [(MOEventBundle *)bundleCopy bundleIdentifier];
+  v7 = [bundleIdentifier isEqual:bundleIdentifier2];
 
   if (v7)
   {
     goto LABEL_3;
   }
 
-  v10 = [(MOEventBundle *)self suggestionID];
-  if (v10)
+  suggestionID = [(MOEventBundle *)self suggestionID];
+  if (suggestionID)
   {
-    v11 = v10;
-    v12 = [(MOEventBundle *)v4 suggestionID];
-    if (v12)
+    v11 = suggestionID;
+    suggestionID2 = [(MOEventBundle *)bundleCopy suggestionID];
+    if (suggestionID2)
     {
-      v13 = v12;
-      v14 = [(MOEventBundle *)self suggestionID];
-      v15 = [(MOEventBundle *)v4 suggestionID];
-      v16 = [v14 isEqual:v15];
+      v13 = suggestionID2;
+      suggestionID3 = [(MOEventBundle *)self suggestionID];
+      suggestionID4 = [(MOEventBundle *)bundleCopy suggestionID];
+      v16 = [suggestionID3 isEqual:suggestionID4];
 
       if (v16)
       {
@@ -3076,8 +3076,8 @@ LABEL_3:
     }
   }
 
-  v17 = [(MOEventBundle *)self interfaceType];
-  if (v17 != [(MOEventBundle *)v4 interfaceType])
+  interfaceType = [(MOEventBundle *)self interfaceType];
+  if (interfaceType != [(MOEventBundle *)bundleCopy interfaceType])
   {
 LABEL_84:
     LOBYTE(v8) = 0;
@@ -3085,10 +3085,10 @@ LABEL_84:
   }
 
   LOBYTE(v8) = 0;
-  switch([(MOEventBundle *)v4 interfaceType])
+  switch([(MOEventBundle *)bundleCopy interfaceType])
   {
     case 0uLL:
-      if (![(MOEventBundle *)self isEqualPropertyForObject:self other:v4 propertyPath:@"startDate" threshold:60.0])
+      if (![(MOEventBundle *)self isEqualPropertyForObject:self other:bundleCopy propertyPath:@"startDate" threshold:60.0])
       {
         goto LABEL_84;
       }
@@ -3098,43 +3098,43 @@ LABEL_84:
       goto LABEL_42;
     case 1uLL:
     case 2uLL:
-      if (![(MOEventBundle *)self isEqualPropertyForObject:self other:v4 propertyPath:@"startDate" threshold:600.0])
+      if (![(MOEventBundle *)self isEqualPropertyForObject:self other:bundleCopy propertyPath:@"startDate" threshold:600.0])
       {
         goto LABEL_84;
       }
 
       v18 = @"endDate";
-      v19 = self;
-      v20 = self;
-      v21 = v4;
+      selfCopy3 = self;
+      selfCopy4 = self;
+      v21 = bundleCopy;
       v22 = 600.0;
       goto LABEL_43;
     case 4uLL:
-      if (![(MOEventBundle *)self isEqualBasicPropertiesForObject:self other:v4])
+      if (![(MOEventBundle *)self isEqualBasicPropertiesForObject:self other:bundleCopy])
       {
         goto LABEL_84;
       }
 
-      v43 = [(MOEventBundle *)self startDate];
-      v44 = [(MOEventBundle *)v4 startDate];
-      v8 = [v43 isSameDayWithDate:v44];
+      startDate = [(MOEventBundle *)self startDate];
+      startDate2 = [(MOEventBundle *)bundleCopy startDate];
+      v8 = [startDate isSameDayWithDate:startDate2];
 
       if (!v8)
       {
         goto LABEL_4;
       }
 
-      v26 = [(MOEventBundle *)self isEqualPersonsForObject:self other:v4];
+      v26 = [(MOEventBundle *)self isEqualPersonsForObject:self other:bundleCopy];
       goto LABEL_44;
     case 5uLL:
-      if (![(MOEventBundle *)self isEqualBasicPropertiesForObject:self other:v4])
+      if (![(MOEventBundle *)self isEqualBasicPropertiesForObject:self other:bundleCopy])
       {
         goto LABEL_84;
       }
 
-      v27 = [(MOEventBundle *)self startDate];
-      v28 = [(MOEventBundle *)v4 startDate];
-      v8 = [v27 isSameDayWithDate:v28];
+      startDate3 = [(MOEventBundle *)self startDate];
+      startDate4 = [(MOEventBundle *)bundleCopy startDate];
+      v8 = [startDate3 isSameDayWithDate:startDate4];
 
       if (!v8)
       {
@@ -3145,8 +3145,8 @@ LABEL_84:
       v109 = 0u;
       v106 = 0u;
       v107 = 0u;
-      v29 = [(MOEventBundle *)self resources];
-      v30 = [v29 countByEnumeratingWithState:&v106 objects:v113 count:16];
+      resources = [(MOEventBundle *)self resources];
+      v30 = [resources countByEnumeratingWithState:&v106 objects:v113 count:16];
       if (v30)
       {
         v31 = v30;
@@ -3158,22 +3158,22 @@ LABEL_84:
           {
             if (*v107 != v33)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(resources);
             }
 
             v35 = *(*(&v106 + 1) + 8 * i);
             v36 = objc_autoreleasePoolPush();
             if ([v35 type] == 3)
             {
-              v37 = [v35 getDictionary];
+              getDictionary = [v35 getDictionary];
 
-              v32 = v37;
+              v32 = getDictionary;
             }
 
             objc_autoreleasePoolPop(v36);
           }
 
-          v31 = [v29 countByEnumeratingWithState:&v106 objects:v113 count:16];
+          v31 = [resources countByEnumeratingWithState:&v106 objects:v113 count:16];
         }
 
         while (v31);
@@ -3188,8 +3188,8 @@ LABEL_84:
       v105 = 0u;
       v102 = 0u;
       v103 = 0u;
-      v83 = [(MOEventBundle *)v4 resources];
-      v84 = [v83 countByEnumeratingWithState:&v102 objects:v112 count:16];
+      resources2 = [(MOEventBundle *)bundleCopy resources];
+      v84 = [resources2 countByEnumeratingWithState:&v102 objects:v112 count:16];
       if (!v84)
       {
         v86 = 0;
@@ -3207,34 +3207,34 @@ LABEL_106:
         {
           if (*v103 != v87)
           {
-            objc_enumerationMutation(v83);
+            objc_enumerationMutation(resources2);
           }
 
           v89 = *(*(&v102 + 1) + 8 * j);
           v90 = objc_autoreleasePoolPush();
           if ([v89 type] == 3)
           {
-            v91 = [v89 getDictionary];
+            getDictionary2 = [v89 getDictionary];
 
-            v86 = v91;
+            v86 = getDictionary2;
           }
 
           objc_autoreleasePoolPop(v90);
         }
 
-        v85 = [v83 countByEnumeratingWithState:&v102 objects:v112 count:16];
+        v85 = [resources2 countByEnumeratingWithState:&v102 objects:v112 count:16];
       }
 
       while (v85);
 
       if (v32 && v86)
       {
-        v83 = [v32 objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
+        resources2 = [v32 objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
         v92 = [v86 objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
         v93 = v92;
-        if (v83 && v92)
+        if (resources2 && v92)
         {
-          [v83 isEqualToString:v92];
+          [resources2 isEqualToString:v92];
         }
 
         goto LABEL_106;
@@ -3247,35 +3247,35 @@ LABEL_107:
       v18 = @"dateInterval";
       v22 = 0.8;
 LABEL_42:
-      v19 = self;
-      v20 = self;
-      v21 = v4;
+      selfCopy3 = self;
+      selfCopy4 = self;
+      v21 = bundleCopy;
 LABEL_43:
-      v26 = [(MOEventBundle *)v19 isEqualPropertyForObject:v20 other:v21 propertyPath:v18 threshold:v22];
+      v26 = [(MOEventBundle *)selfCopy3 isEqualPropertyForObject:selfCopy4 other:v21 propertyPath:v18 threshold:v22];
       goto LABEL_44;
     case 7uLL:
-      v45 = [(MOEventBundle *)self bundleSubType];
-      if (v45 != [(MOEventBundle *)v4 bundleSubType])
+      bundleSubType = [(MOEventBundle *)self bundleSubType];
+      if (bundleSubType != [(MOEventBundle *)bundleCopy bundleSubType])
       {
         goto LABEL_84;
       }
 
       goto LABEL_83;
     case 8uLL:
-      if (![(MOEventBundle *)self isEqualPropertyForObject:self other:v4 propertyPath:@"dateInterval" threshold:0.8])
+      if (![(MOEventBundle *)self isEqualPropertyForObject:self other:bundleCopy propertyPath:@"dateInterval" threshold:0.8])
       {
         goto LABEL_84;
       }
 
-      v26 = [(MOEventBundle *)self isEqualResourcesForObject:self other:v4 resourceType:8];
+      v26 = [(MOEventBundle *)self isEqualResourcesForObject:self other:bundleCopy resourceType:8];
       goto LABEL_44;
     case 0xAuLL:
       v100 = 0u;
       v101 = 0u;
       v98 = 0u;
       v99 = 0u;
-      v46 = [(MOEventBundle *)self resources];
-      v47 = [v46 countByEnumeratingWithState:&v98 objects:v111 count:16];
+      resources3 = [(MOEventBundle *)self resources];
+      v47 = [resources3 countByEnumeratingWithState:&v98 objects:v111 count:16];
       if (v47)
       {
         v48 = v47;
@@ -3287,22 +3287,22 @@ LABEL_43:
           {
             if (*v99 != v50)
             {
-              objc_enumerationMutation(v46);
+              objc_enumerationMutation(resources3);
             }
 
             v52 = *(*(&v98 + 1) + 8 * k);
             v53 = objc_autoreleasePoolPush();
             if ([v52 type] == 15)
             {
-              v54 = [v52 getDictionary];
+              getDictionary3 = [v52 getDictionary];
 
-              v49 = v54;
+              v49 = getDictionary3;
             }
 
             objc_autoreleasePoolPop(v53);
           }
 
-          v48 = [v46 countByEnumeratingWithState:&v98 objects:v111 count:16];
+          v48 = [resources3 countByEnumeratingWithState:&v98 objects:v111 count:16];
         }
 
         while (v48);
@@ -3317,14 +3317,14 @@ LABEL_43:
       v97 = 0u;
       v94 = 0u;
       v95 = 0u;
-      v55 = [(MOEventBundle *)v4 resources];
-      v56 = [v55 countByEnumeratingWithState:&v94 objects:v110 count:16];
+      resources4 = [(MOEventBundle *)bundleCopy resources];
+      v56 = [resources4 countByEnumeratingWithState:&v94 objects:v110 count:16];
       if (!v56)
       {
 
         v58 = 0;
 LABEL_76:
-        LOBYTE(v8) = [(MOEventBundle *)self isEqualBaseActionForObject:self other:v4];
+        LOBYTE(v8) = [(MOEventBundle *)self isEqualBaseActionForObject:self other:bundleCopy];
 
         goto LABEL_4;
       }
@@ -3338,22 +3338,22 @@ LABEL_76:
         {
           if (*v95 != v59)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(resources4);
           }
 
           v61 = *(*(&v94 + 1) + 8 * m);
           v62 = objc_autoreleasePoolPush();
           if ([v61 type] == 15)
           {
-            v63 = [v61 getDictionary];
+            getDictionary4 = [v61 getDictionary];
 
-            v58 = v63;
+            v58 = getDictionary4;
           }
 
           objc_autoreleasePoolPop(v62);
         }
 
-        v57 = [v55 countByEnumeratingWithState:&v94 objects:v110 count:16];
+        v57 = [resources4 countByEnumeratingWithState:&v94 objects:v110 count:16];
       }
 
       while (v57);
@@ -3373,7 +3373,7 @@ LABEL_76:
       }
 
 LABEL_88:
-      v82 = [objc_opt_class() castEvergreenSubType:{-[MOEventBundle bundleSubType](v4, "bundleSubType")}];
+      v82 = [objc_opt_class() castEvergreenSubType:{-[MOEventBundle bundleSubType](bundleCopy, "bundleSubType")}];
       LOBYTE(v8) = v82 == [objc_opt_class() castEvergreenSubType:{-[MOEventBundle bundleSubType](self, "bundleSubType")}];
 LABEL_4:
 
@@ -3381,61 +3381,61 @@ LABEL_4:
     case 0xBuLL:
       goto LABEL_88;
     case 0xCuLL:
-      v23 = [(MOEventBundle *)self summarizationGranularity];
-      if (v23 != [(MOEventBundle *)v4 summarizationGranularity])
+      summarizationGranularity = [(MOEventBundle *)self summarizationGranularity];
+      if (summarizationGranularity != [(MOEventBundle *)bundleCopy summarizationGranularity])
       {
         goto LABEL_84;
       }
 
-      if ([(MOEventBundle *)self isEqualPropertyForObject:self other:v4 propertyPath:@"startDate" threshold:600.0])
+      if ([(MOEventBundle *)self isEqualPropertyForObject:self other:bundleCopy propertyPath:@"startDate" threshold:600.0])
       {
         goto LABEL_3;
       }
 
-      v24 = [(MOEventBundle *)self subBundleIDs];
-      v25 = [v24 count];
+      subBundleIDs = [(MOEventBundle *)self subBundleIDs];
+      v25 = [subBundleIDs count];
 
       if (v25)
       {
-        if ([(MOEventBundle *)self intersectedSubBundleIDForObject:self other:v4])
+        if ([(MOEventBundle *)self intersectedSubBundleIDForObject:self other:bundleCopy])
         {
           goto LABEL_3;
         }
       }
 
-      v26 = [(MOEventBundle *)self intersectedActivityOrVisitForObject:self other:v4];
+      v26 = [(MOEventBundle *)self intersectedActivityOrVisitForObject:self other:bundleCopy];
 LABEL_44:
       LOBYTE(v8) = v26;
       goto LABEL_4;
     case 0xDuLL:
-      v38 = [(MOEventBundle *)self place];
-      if (!v38)
+      place = [(MOEventBundle *)self place];
+      if (!place)
       {
         goto LABEL_84;
       }
 
-      v39 = v38;
-      v40 = [(MOEventBundle *)v4 place];
+      v39 = place;
+      place2 = [(MOEventBundle *)bundleCopy place];
 
-      if (!v40)
+      if (!place2)
       {
         goto LABEL_84;
       }
 
-      v41 = [(MOEventBundle *)self place];
-      v42 = [v41 placeType];
-      if (v42 > 0x64 || (-[MOEventBundle place](v4, "place"), v40 = objc_claimAutoreleasedReturnValue(), [v40 placeType] > 0x64))
+      place3 = [(MOEventBundle *)self place];
+      placeType = [place3 placeType];
+      if (placeType > 0x64 || (-[MOEventBundle place](bundleCopy, "place"), place2 = objc_claimAutoreleasedReturnValue(), [place2 placeType] > 0x64))
       {
-        v67 = [(MOEventBundle *)self place];
-        v68 = [v67 placeType];
-        v69 = [(MOEventBundle *)v4 place];
-        v70 = [v69 placeType];
+        place4 = [(MOEventBundle *)self place];
+        placeType2 = [place4 placeType];
+        place5 = [(MOEventBundle *)bundleCopy place];
+        placeType3 = [place5 placeType];
 
-        if (v42 <= 0x64)
+        if (placeType <= 0x64)
         {
         }
 
-        if (v68 != v70)
+        if (placeType2 != placeType3)
         {
           goto LABEL_84;
         }
@@ -3446,35 +3446,35 @@ LABEL_44:
       }
 
       v71 = [NSDateInterval alloc];
-      v72 = [(MOEventBundle *)self startDate];
-      v73 = [(MOEventBundle *)self endDate];
-      v74 = [v71 initWithStartDate:v72 endDate:v73];
+      startDate5 = [(MOEventBundle *)self startDate];
+      endDate = [(MOEventBundle *)self endDate];
+      v74 = [v71 initWithStartDate:startDate5 endDate:endDate];
 
       v75 = [NSDateInterval alloc];
-      v76 = [(MOEventBundle *)v4 startDate];
-      v77 = [(MOEventBundle *)v4 endDate];
-      v78 = [v75 initWithStartDate:v76 endDate:v77];
+      startDate6 = [(MOEventBundle *)bundleCopy startDate];
+      endDate2 = [(MOEventBundle *)bundleCopy endDate];
+      v78 = [v75 initWithStartDate:startDate6 endDate:endDate2];
 
-      LOBYTE(v76) = [v74 intersectsDateInterval:v78];
-      if (v76)
+      LOBYTE(startDate6) = [v74 intersectsDateInterval:v78];
+      if (startDate6)
       {
         goto LABEL_3;
       }
 
 LABEL_81:
-      if ([(MOEventBundle *)self bundleSubType]== 801 && [(MOEventBundle *)v4 bundleSubType]== 801)
+      if ([(MOEventBundle *)self bundleSubType]== 801 && [(MOEventBundle *)bundleCopy bundleSubType]== 801)
       {
 LABEL_83:
-        v79 = [(MOEventBundle *)self startDate];
-        v80 = [(MOEventBundle *)v4 startDate];
-        LOBYTE(v8) = [v79 isSameDayWithDate:v80];
+        startDate7 = [(MOEventBundle *)self startDate];
+        startDate8 = [(MOEventBundle *)bundleCopy startDate];
+        LOBYTE(v8) = [startDate7 isSameDayWithDate:startDate8];
       }
 
       else
       {
-        v79 = [(MOEventBundle *)self startDate];
-        v81 = [(MOEventBundle *)v4 startDate];
-        LOBYTE(v8) = v79 == v81;
+        startDate7 = [(MOEventBundle *)self startDate];
+        startDate9 = [(MOEventBundle *)bundleCopy startDate];
+        LOBYTE(v8) = startDate7 == startDate9;
       }
 
       goto LABEL_4;
@@ -3485,26 +3485,26 @@ LABEL_83:
   }
 }
 
-+ (unint64_t)castEvergreenSubType:(unint64_t)a3
++ (unint64_t)castEvergreenSubType:(unint64_t)type
 {
-  result = a3;
-  if (a3 - 707 <= 2)
+  result = type;
+  if (type - 707 <= 2)
   {
-    return qword_1000A7790[a3 - 707];
+    return qword_1000A7790[type - 707];
   }
 
   return result;
 }
 
-- (BOOL)intersectedSubBundleIDForObject:(id)a3 other:(id)a4
+- (BOOL)intersectedSubBundleIDForObject:(id)object other:(id)other
 {
-  v5 = a4;
+  otherCopy = other;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [a3 subBundleIDs];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  subBundleIDs = [object subBundleIDs];
+  v7 = [subBundleIDs countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3515,7 +3515,7 @@ LABEL_83:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subBundleIDs);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
@@ -3523,8 +3523,8 @@ LABEL_83:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v12 = [v5 subBundleIDs];
-        v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        subBundleIDs2 = [otherCopy subBundleIDs];
+        v13 = [subBundleIDs2 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v13)
         {
           v14 = v13;
@@ -3535,7 +3535,7 @@ LABEL_83:
             {
               if (*v20 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(subBundleIDs2);
               }
 
               if ([v11 isEqualToString:*(*(&v19 + 1) + 8 * j)])
@@ -3546,7 +3546,7 @@ LABEL_83:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v14 = [subBundleIDs2 countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v14)
             {
               continue;
@@ -3557,7 +3557,7 @@ LABEL_83:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v8 = [subBundleIDs countByEnumeratingWithState:&v23 objects:v28 count:16];
       v17 = 0;
     }
 
@@ -3574,21 +3574,21 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)intersectedActivityOrVisitForObject:(id)a3 other:(id)a4
+- (BOOL)intersectedActivityOrVisitForObject:(id)object other:(id)other
 {
-  v6 = a4;
+  otherCopy = other;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [a3 events];
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  events = [object events];
+  v8 = [events countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v32;
-    v25 = v7;
-    v26 = v6;
+    v25 = events;
+    v26 = otherCopy;
     v23 = *v32;
     do
     {
@@ -3598,7 +3598,7 @@ LABEL_19:
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(events);
         }
 
         v12 = *(*(&v31 + 1) + 8 * v11);
@@ -3608,8 +3608,8 @@ LABEL_19:
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v13 = [v6 events];
-          v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          events2 = [otherCopy events];
+          v14 = [events2 countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v14)
           {
             v15 = v14;
@@ -3620,7 +3620,7 @@ LABEL_19:
               {
                 if (*v28 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(events2);
                 }
 
                 v18 = *(*(&v27 + 1) + 8 * i);
@@ -3630,14 +3630,14 @@ LABEL_19:
                   {
 
                     v21 = 1;
-                    v7 = v25;
-                    v6 = v26;
+                    events = v25;
+                    otherCopy = v26;
                     goto LABEL_29;
                   }
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v15 = [events2 countByEnumeratingWithState:&v27 objects:v35 count:16];
               if (v15)
               {
                 continue;
@@ -3647,8 +3647,8 @@ LABEL_19:
             }
           }
 
-          v7 = v25;
-          v6 = v26;
+          events = v25;
+          otherCopy = v26;
           v10 = v23;
           v9 = v24;
         }
@@ -3657,7 +3657,7 @@ LABEL_19:
       }
 
       while (v11 != v9);
-      v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v9 = [events countByEnumeratingWithState:&v31 objects:v36 count:16];
       v21 = 0;
     }
 
@@ -3674,15 +3674,15 @@ LABEL_29:
   return v21;
 }
 
-- (BOOL)isEqualBasicPropertiesForObject:(id)a3 other:(id)a4
+- (BOOL)isEqualBasicPropertiesForObject:(id)object other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bundleSuperType];
-  if (v7 == [v6 bundleSuperType] && (v8 = objc_msgSend(v5, "bundleSubType"), v8 == objc_msgSend(v6, "bundleSubType")) && (v9 = objc_msgSend(v5, "interfaceType"), v9 == objc_msgSend(v6, "interfaceType")))
+  objectCopy = object;
+  otherCopy = other;
+  bundleSuperType = [objectCopy bundleSuperType];
+  if (bundleSuperType == [otherCopy bundleSuperType] && (v8 = objc_msgSend(objectCopy, "bundleSubType"), v8 == objc_msgSend(otherCopy, "bundleSubType")) && (v9 = objc_msgSend(objectCopy, "interfaceType"), v9 == objc_msgSend(otherCopy, "interfaceType")))
   {
-    v10 = [v5 summarizationGranularity];
-    v11 = v10 == [v6 summarizationGranularity];
+    summarizationGranularity = [objectCopy summarizationGranularity];
+    v11 = summarizationGranularity == [otherCopy summarizationGranularity];
   }
 
   else
@@ -3693,13 +3693,13 @@ LABEL_29:
   return v11;
 }
 
-- (BOOL)isEqualPropertyForObject:(id)a3 other:(id)a4 propertyPath:(id)a5 threshold:(double)a6
+- (BOOL)isEqualPropertyForObject:(id)object other:(id)other propertyPath:(id)path threshold:(double)threshold
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 valueForKeyPath:v11];
-  v13 = [v10 valueForKeyPath:v11];
+  objectCopy = object;
+  otherCopy = other;
+  pathCopy = path;
+  v12 = [objectCopy valueForKeyPath:pathCopy];
+  v13 = [otherCopy valueForKeyPath:pathCopy];
 
   if (!(v12 | v13))
   {
@@ -3716,7 +3716,7 @@ LABEL_29:
       [v12 timeIntervalSinceDate:v13];
       v16 = fabs(v15);
 LABEL_7:
-      v14 = v16 < a6;
+      v14 = v16 < threshold;
       goto LABEL_22;
     }
 
@@ -3749,7 +3749,7 @@ LABEL_7:
           goto LABEL_7;
         }
 
-        v25 = [v9 isEqual:v10];
+        v25 = [objectCopy isEqual:otherCopy];
       }
 
       v14 = v25;
@@ -3779,7 +3779,7 @@ LABEL_14:
 
     else
     {
-      v14 = v21 / v24 > a6;
+      v14 = v21 / v24 > threshold;
     }
   }
 
@@ -3788,19 +3788,19 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)isEqualResourcesForObject:(id)a3 other:(id)a4 resourceType:(unint64_t)a5
+- (BOOL)isEqualResourcesForObject:(id)object other:(id)other resourceType:(unint64_t)type
 {
-  v7 = a3;
-  v33 = a4;
+  objectCopy = object;
+  otherCopy = other;
   v35 = objc_opt_new();
   v34 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v32 = v7;
-  v8 = [v7 resources];
-  v9 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  v32 = objectCopy;
+  resources = [objectCopy resources];
+  v9 = [resources countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3811,17 +3811,17 @@ LABEL_22:
       {
         if (*v41 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(resources);
         }
 
         v13 = *(*(&v40 + 1) + 8 * i);
-        if ([v13 type] == a5)
+        if ([v13 type] == type)
         {
           v14 = [NSString alloc];
-          v15 = [v13 name];
-          v16 = [v13 assets];
+          name = [v13 name];
+          assets = [v13 assets];
           [v13 value];
-          v18 = [v14 initWithFormat:@"%@, %@, %f", v15, v16, v17];
+          v18 = [v14 initWithFormat:@"%@, %@, %f", name, assets, v17];
 
           if (v18)
           {
@@ -3830,7 +3830,7 @@ LABEL_22:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v10 = [resources countByEnumeratingWithState:&v40 objects:v45 count:16];
     }
 
     while (v10);
@@ -3840,8 +3840,8 @@ LABEL_22:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v19 = [v33 resources];
-  v20 = [v19 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  resources2 = [otherCopy resources];
+  v20 = [resources2 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v20)
   {
     v21 = v20;
@@ -3852,17 +3852,17 @@ LABEL_22:
       {
         if (*v37 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(resources2);
         }
 
         v24 = *(*(&v36 + 1) + 8 * j);
-        if ([v24 type] == a5)
+        if ([v24 type] == type)
         {
           v25 = [NSString alloc];
-          v26 = [v24 name];
-          v27 = [v24 assets];
+          name2 = [v24 name];
+          assets2 = [v24 assets];
           [v24 value];
-          v29 = [v25 initWithFormat:@"%@, %@, %f", v26, v27, v28];
+          v29 = [v25 initWithFormat:@"%@, %@, %f", name2, assets2, v28];
 
           if (v29)
           {
@@ -3871,7 +3871,7 @@ LABEL_22:
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v36 objects:v44 count:16];
+      v21 = [resources2 countByEnumeratingWithState:&v36 objects:v44 count:16];
     }
 
     while (v21);
@@ -3881,18 +3881,18 @@ LABEL_22:
   return v30;
 }
 
-- (BOOL)isEqualPersonsForObject:(id)a3 other:(id)a4
+- (BOOL)isEqualPersonsForObject:(id)object other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  otherCopy = other;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = [v5 persons];
-  v10 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  persons = [objectCopy persons];
+  v10 = [persons countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3903,20 +3903,20 @@ LABEL_22:
       {
         if (*v32 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(persons);
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        v15 = [v14 contactIdentifier];
+        contactIdentifier = [v14 contactIdentifier];
 
-        if (v15)
+        if (contactIdentifier)
         {
-          v16 = [v14 contactIdentifier];
-          [v7 addObject:v16];
+          contactIdentifier2 = [v14 contactIdentifier];
+          [v7 addObject:contactIdentifier2];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v11 = [persons countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v11);
@@ -3926,8 +3926,8 @@ LABEL_22:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v17 = [v6 persons];
-  v18 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  persons2 = [otherCopy persons];
+  v18 = [persons2 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v18)
   {
     v19 = v18;
@@ -3938,20 +3938,20 @@ LABEL_22:
       {
         if (*v28 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(persons2);
         }
 
         v22 = *(*(&v27 + 1) + 8 * j);
-        v23 = [v22 contactIdentifier];
+        contactIdentifier3 = [v22 contactIdentifier];
 
-        if (v23)
+        if (contactIdentifier3)
         {
-          v24 = [v22 contactIdentifier];
-          [v8 addObject:v24];
+          contactIdentifier4 = [v22 contactIdentifier];
+          [v8 addObject:contactIdentifier4];
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v19 = [persons2 countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v19);
@@ -3961,28 +3961,28 @@ LABEL_22:
   return v25;
 }
 
-- (BOOL)isEqualBaseActionForObject:(id)a3 other:(id)a4
+- (BOOL)isEqualBaseActionForObject:(id)object other:(id)other
 {
-  v5 = a4;
-  v6 = [a3 action];
-  v7 = [v5 action];
+  otherCopy = other;
+  action = [object action];
+  action2 = [otherCopy action];
 
-  if (v6 | v7)
+  if (action | action2)
   {
     v8 = 0;
-    if (v7)
+    if (action2)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v6 != 0;
+      v10 = action != 0;
     }
 
-    if (v7)
+    if (action2)
     {
-      v11 = v6 == 0;
+      v11 = action == 0;
     }
 
     else
@@ -3992,12 +3992,12 @@ LABEL_22:
 
     if (!v11 && !v10)
     {
-      v12 = [v6 actionType];
-      if (v12 == [v7 actionType])
+      actionType = [action actionType];
+      if (actionType == [action2 actionType])
       {
-        v13 = [v6 actionName];
-        v14 = [v7 actionName];
-        v8 = [v13 isEqualToString:v14];
+        actionName = [action actionName];
+        actionName2 = [action2 actionName];
+        v8 = [actionName isEqualToString:actionName2];
       }
 
       else
@@ -4015,31 +4015,31 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOEventBundle *)self bundleIdentifier];
-        if (v8 || ([(MOEventBundle *)v7 bundleIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        bundleIdentifier = [(MOEventBundle *)self bundleIdentifier];
+        if (bundleIdentifier || ([(MOEventBundle *)v7 bundleIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOEventBundle *)self bundleIdentifier];
-          v10 = [(MOEventBundle *)v7 bundleIdentifier];
-          v11 = [v9 isEqual:v10];
+          bundleIdentifier2 = [(MOEventBundle *)self bundleIdentifier];
+          bundleIdentifier3 = [(MOEventBundle *)v7 bundleIdentifier];
+          v11 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
-          if (v8)
+          if (bundleIdentifier)
           {
 LABEL_12:
 
@@ -4064,18 +4064,18 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)containTheSameEventSet:(id)a3
+- (BOOL)containTheSameEventSet:(id)set
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  setCopy = set;
+  if (setCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(MOEventBundle *)self events];
-    v7 = [v6 mutableCopy];
+    v5 = setCopy;
+    events = [(MOEventBundle *)self events];
+    v7 = [events mutableCopy];
 
-    v8 = [v5 events];
+    events2 = [v5 events];
 
-    v9 = [v8 mutableCopy];
+    v9 = [events2 mutableCopy];
     v10 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
     v18 = v10;
     v11 = [NSArray arrayWithObjects:&v18 count:1];
@@ -4096,21 +4096,21 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)shareEvents:(id)a3
+- (BOOL)shareEvents:(id)events
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  eventsCopy = events;
+  if (eventsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v31 = v4;
-    v5 = v4;
+    v31 = eventsCopy;
+    v5 = eventsCopy;
     v6 = objc_opt_new();
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v30 = v5;
-    v7 = [v5 events];
-    v8 = [v7 countByEnumeratingWithState:&v43 objects:v49 count:16];
+    events = [v5 events];
+    v8 = [events countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v8)
     {
       v9 = v8;
@@ -4121,20 +4121,20 @@ LABEL_13:
         {
           if (*v44 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(events);
           }
 
           v12 = *(*(&v43 + 1) + 8 * i);
-          v13 = [v12 eventIdentifier];
+          eventIdentifier = [v12 eventIdentifier];
 
-          if (v13)
+          if (eventIdentifier)
           {
-            v14 = [v12 eventIdentifier];
-            [v6 addObject:v14];
+            eventIdentifier2 = [v12 eventIdentifier];
+            [v6 addObject:eventIdentifier2];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        v9 = [events countByEnumeratingWithState:&v43 objects:v49 count:16];
       }
 
       while (v9);
@@ -4182,8 +4182,8 @@ LABEL_13:
                 }
 
                 v25 = *(*(&v35 + 1) + 8 * k);
-                v26 = [v18 eventIdentifier];
-                v27 = [v25 compare:v26];
+                eventIdentifier3 = [v18 eventIdentifier];
+                v27 = [v25 compare:eventIdentifier3];
 
                 if (!v27)
                 {
@@ -4217,7 +4217,7 @@ LABEL_27:
       v33 = 0;
     }
 
-    v4 = v31;
+    eventsCopy = v31;
     v28 = v33;
   }
 
@@ -4229,13 +4229,13 @@ LABEL_27:
   return v28 & 1;
 }
 
-- (id)getCustomLabelsForMetaData:(id)a3 templateFilePath:(id)a4
+- (id)getCustomLabelsForMetaData:(id)data templateFilePath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  pathCopy = path;
+  dataCopy = data;
+  if (pathCopy)
   {
-    v8 = [[MOEventBundleLabelFormatter alloc] initWithTemplatePath:v6];
+    v8 = [[MOEventBundleLabelFormatter alloc] initWithTemplatePath:pathCopy];
   }
 
   else
@@ -4244,40 +4244,40 @@ LABEL_27:
   }
 
   v9 = v8;
-  v10 = [(MOEventBundle *)self getCustomLabelsForMetaData:v7 labelFormatter:v8];
+  v10 = [(MOEventBundle *)self getCustomLabelsForMetaData:dataCopy labelFormatter:v8];
 
   return v10;
 }
 
-- (id)getCustomLabelsForMetaData:(id)a3 labelFormatter:(id)a4
+- (id)getCustomLabelsForMetaData:(id)data labelFormatter:(id)formatter
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  formatterCopy = formatter;
+  if (dataCopy)
   {
-    v8 = [(MOEventBundle *)self getBundleType];
-    v9 = [v7 formattedBundleLabelsForMetaData:v6 bundleType:v8];
+    getBundleType = [(MOEventBundle *)self getBundleType];
+    v9 = [formatterCopy formattedBundleLabelsForMetaData:dataCopy bundleType:getBundleType];
   }
 
   else
   {
-    v8 = [(MOEventBundle *)self metaData];
-    v10 = [(MOEventBundle *)self getBundleType];
-    v9 = [v7 formattedBundleLabelsForMetaData:v8 bundleType:v10];
+    getBundleType = [(MOEventBundle *)self metaData];
+    getBundleType2 = [(MOEventBundle *)self getBundleType];
+    v9 = [formatterCopy formattedBundleLabelsForMetaData:getBundleType bundleType:getBundleType2];
 
-    v7 = v10;
+    formatterCopy = getBundleType2;
   }
 
   return v9;
 }
 
-- (id)getCustomPromptsForMetaData:(id)a3 templateFilePath:(id)a4
+- (id)getCustomPromptsForMetaData:(id)data templateFilePath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  pathCopy = path;
+  dataCopy = data;
+  if (pathCopy)
   {
-    v8 = [[MOEventBundleLabelFormatter alloc] initWithTemplatePath:v6];
+    v8 = [[MOEventBundleLabelFormatter alloc] initWithTemplatePath:pathCopy];
   }
 
   else
@@ -4286,120 +4286,120 @@ LABEL_27:
   }
 
   v9 = v8;
-  v10 = [(MOEventBundle *)self getCustomPromptsForMetaData:v7 labelFormatter:v8];
+  v10 = [(MOEventBundle *)self getCustomPromptsForMetaData:dataCopy labelFormatter:v8];
 
   return v10;
 }
 
-- (id)getCustomPromptsForMetaData:(id)a3 labelFormatter:(id)a4
+- (id)getCustomPromptsForMetaData:(id)data labelFormatter:(id)formatter
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  formatterCopy = formatter;
+  if (dataCopy)
   {
-    v8 = [(MOEventBundle *)self getBundleType];
-    v9 = [v7 formattedBundlePromptsForMetaData:v6 bundleType:v8];
+    getBundleType = [(MOEventBundle *)self getBundleType];
+    v9 = [formatterCopy formattedBundlePromptsForMetaData:dataCopy bundleType:getBundleType];
   }
 
   else
   {
-    v8 = [(MOEventBundle *)self metaData];
-    v10 = [(MOEventBundle *)self getBundleType];
-    v9 = [v7 formattedBundlePromptsForMetaData:v8 bundleType:v10];
+    getBundleType = [(MOEventBundle *)self metaData];
+    getBundleType2 = [(MOEventBundle *)self getBundleType];
+    v9 = [formatterCopy formattedBundlePromptsForMetaData:getBundleType bundleType:getBundleType2];
 
-    v7 = v10;
+    formatterCopy = getBundleType2;
   }
 
   return v9;
 }
 
-- (BOOL)hasSuggestionEngagementEvent:(id)a3
+- (BOOL)hasSuggestionEngagementEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(MOEventBundle *)self suggestionEngagementEvents];
-  v6 = [v5 containsObject:v4];
+  eventCopy = event;
+  suggestionEngagementEvents = [(MOEventBundle *)self suggestionEngagementEvents];
+  v6 = [suggestionEngagementEvents containsObject:eventCopy];
 
   return v6;
 }
 
-- (void)setSuggestionEngagementEvent:(id)a3
+- (void)setSuggestionEngagementEvent:(id)event
 {
-  v8 = a3;
-  v4 = [(MOEventBundle *)self suggestionEngagementEvents];
+  eventCopy = event;
+  suggestionEngagementEvents = [(MOEventBundle *)self suggestionEngagementEvents];
 
-  if (!v4)
+  if (!suggestionEngagementEvents)
   {
     v5 = objc_opt_new();
     [(MOEventBundle *)self setSuggestionEngagementEvents:v5];
   }
 
-  v6 = v8;
-  if (v8)
+  v6 = eventCopy;
+  if (eventCopy)
   {
-    v7 = [(MOEventBundle *)self suggestionEngagementEvents];
-    [v7 addObject:v8];
+    suggestionEngagementEvents2 = [(MOEventBundle *)self suggestionEngagementEvents];
+    [suggestionEngagementEvents2 addObject:eventCopy];
 
-    v6 = v8;
+    v6 = eventCopy;
   }
 }
 
-- (void)clearSuggestionEngagementEvent:(id)a3
+- (void)clearSuggestionEngagementEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(MOEventBundle *)self suggestionEngagementEvents];
-  [v5 removeObject:v4];
+  eventCopy = event;
+  suggestionEngagementEvents = [(MOEventBundle *)self suggestionEngagementEvents];
+  [suggestionEngagementEvents removeObject:eventCopy];
 }
 
-- (BOOL)hasAppEntryEngagementEvent:(id)a3
+- (BOOL)hasAppEntryEngagementEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(MOEventBundle *)self appEntryEngagementEvents];
-  v6 = [v5 containsObject:v4];
+  eventCopy = event;
+  appEntryEngagementEvents = [(MOEventBundle *)self appEntryEngagementEvents];
+  v6 = [appEntryEngagementEvents containsObject:eventCopy];
 
   return v6;
 }
 
-- (void)setAppEntryEngagementEvent:(id)a3
+- (void)setAppEntryEngagementEvent:(id)event
 {
-  v8 = a3;
-  v4 = [(MOEventBundle *)self appEntryEngagementEvents];
+  eventCopy = event;
+  appEntryEngagementEvents = [(MOEventBundle *)self appEntryEngagementEvents];
 
-  if (!v4)
+  if (!appEntryEngagementEvents)
   {
     v5 = objc_opt_new();
     [(MOEventBundle *)self setAppEntryEngagementEvents:v5];
   }
 
-  v6 = v8;
-  if (v8)
+  v6 = eventCopy;
+  if (eventCopy)
   {
-    v7 = [(MOEventBundle *)self appEntryEngagementEvents];
-    [v7 addObject:v8];
+    appEntryEngagementEvents2 = [(MOEventBundle *)self appEntryEngagementEvents];
+    [appEntryEngagementEvents2 addObject:eventCopy];
 
-    v6 = v8;
+    v6 = eventCopy;
   }
 }
 
-- (void)clearAppEntryEngagementEvent:(id)a3
+- (void)clearAppEntryEngagementEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(MOEventBundle *)self appEntryEngagementEvents];
-  [v5 removeObject:v4];
+  eventCopy = event;
+  appEntryEngagementEvents = [(MOEventBundle *)self appEntryEngagementEvents];
+  [appEntryEngagementEvents removeObject:eventCopy];
 }
 
 - (double)duration
 {
-  v3 = [(MOEventBundle *)self endDate];
-  v4 = [(MOEventBundle *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(MOEventBundle *)self endDate];
+  startDate = [(MOEventBundle *)self startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v6 = v5;
 
   return v6;
 }
 
-+ (unint64_t)convertNSNumberToSensitiveLocationType:(id)a3
++ (unint64_t)convertNSNumberToSensitiveLocationType:(id)type
 {
-  result = [a3 integerValue];
+  result = [type integerValue];
   if (result - 1 >= 5)
   {
     return 0;
@@ -4408,9 +4408,9 @@ LABEL_27:
   return result;
 }
 
-+ (unint64_t)convertNSNumberToUninterestingLocationType:(id)a3
++ (unint64_t)convertNSNumberToUninterestingLocationType:(id)type
 {
-  result = [a3 integerValue];
+  result = [type integerValue];
   if (result - 1 >= 5)
   {
     return 0;
@@ -4419,9 +4419,9 @@ LABEL_27:
   return result;
 }
 
-+ (unint64_t)convertNSNumberToContactType:(id)a3
++ (unint64_t)convertNSNumberToContactType:(id)type
 {
-  result = [a3 integerValue];
+  result = [type integerValue];
   if (result - 1 >= 4)
   {
     return 0;
@@ -4430,9 +4430,9 @@ LABEL_27:
   return result;
 }
 
-+ (unint64_t)convertNSNumberToRoadType:(id)a3
++ (unint64_t)convertNSNumberToRoadType:(id)type
 {
-  result = [a3 integerValue];
+  result = [type integerValue];
   if (result - 1 >= 4)
   {
     return 0;
@@ -4444,7 +4444,7 @@ LABEL_27:
 - (void)dateInterval
 {
   v2 = 138412802;
-  v3 = a1;
+  selfCopy = self;
   v4 = 2080;
   v5 = "[MOEventBundle dateInterval]";
   v6 = 1024;

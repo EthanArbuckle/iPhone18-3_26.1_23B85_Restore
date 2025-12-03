@@ -10,16 +10,16 @@
 {
   if (a5)
   {
-    v8 = [a1 array];
-    v9 = [a3 array];
+    array = [self array];
+    array2 = [a3 array];
 
-    return [v8 differenceFromArray:v9 withOptions:a4 usingEquivalenceTest:a5];
+    return [array differenceFromArray:array2 withOptions:a4 usingEquivalenceTest:a5];
   }
 
   else
   {
 
-    return [a1 differenceFromOrderedSet:? withOptions:?];
+    return [self differenceFromOrderedSet:? withOptions:?];
   }
 }
 
@@ -30,9 +30,9 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot diff nil parameter" userInfo:0]);
   }
 
-  v6 = a1;
+  selfCopy = self;
   v7 = MEMORY[0x1E695DF70];
-  v8 = [a1 count];
+  v8 = [self count];
   v9 = [a3 count];
   v10 = v8 - v9;
   if (v8 - v9 < 0)
@@ -42,7 +42,7 @@
 
   if (v10 >= 0x10)
   {
-    v12 = [v6 count];
+    v12 = [selfCopy count];
     v13 = [a3 count];
     if (v12 - v13 >= 0)
     {
@@ -79,7 +79,7 @@
   v19 = 0x7FFFFFFFFFFFFFFFLL;
   v20 = 0x7FFFFFFFFFFFFFFFLL;
   v57 = v14;
-  v60 = v6;
+  v60 = selfCopy;
   while (2)
   {
     v21 = -v19;
@@ -128,7 +128,7 @@
           v17 = v23 + v25;
 LABEL_71:
           v14 = v57;
-          v6 = v60;
+          selfCopy = v60;
           goto LABEL_72;
         }
       }
@@ -308,7 +308,7 @@ LABEL_61:
     v38 = [a3 count];
     v19 = v23 + v25;
     v14 = v57;
-    v6 = v60;
+    selfCopy = v60;
     v20 = v54;
     if (v18 < v38)
     {
@@ -324,7 +324,7 @@ LABEL_72:
     v41 = [a3 objectAtIndexedSubscript:v18];
     if ((a4 & 4) != 0)
     {
-      v42 = [v6 indexOfObject:v41];
+      v42 = [selfCopy indexOfObject:v41];
     }
 
     else
@@ -345,9 +345,9 @@ LABEL_72:
     [v14 addObject:{+[NSOrderedCollectionChange changeWithObject:type:index:associatedIndex:](NSOrderedCollectionChange, "changeWithObject:type:index:associatedIndex:", v43, 1, v18++, v42)}];
   }
 
-  for (; v17 < [v6 count]; ++v17)
+  for (; v17 < [selfCopy count]; ++v17)
   {
-    v44 = [v6 objectAtIndexedSubscript:v17];
+    v44 = [selfCopy objectAtIndexedSubscript:v17];
     if ((a4 & 4) != 0)
     {
       v45 = [a3 indexOfObject:v44];
@@ -379,7 +379,7 @@ LABEL_72:
 - (id)orderedSetByApplyingDifference:()NSOrderedSetDiffing
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -399,12 +399,12 @@ LABEL_72:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 changeType];
-        v11 = [v9 index];
+        changeType = [v9 changeType];
+        index = [v9 index];
         v12 = [v4 count];
-        if (v10 == 1)
+        if (changeType == 1)
         {
-          if (v11 >= v12)
+          if (index >= v12)
           {
             return 0;
           }
@@ -414,7 +414,7 @@ LABEL_72:
 
         else
         {
-          if (v11 > v12)
+          if (index > v12)
           {
             return 0;
           }

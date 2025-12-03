@@ -1,32 +1,32 @@
 @interface HKMedicationsCriticalNotificationsStore
 + (id)sharedInstance;
-- (BOOL)containsAtLeastOneOfIdentifiers:(id)a3;
-- (BOOL)containsAtLeastOneOfMedications:(id)a3;
+- (BOOL)containsAtLeastOneOfIdentifiers:(id)identifiers;
+- (BOOL)containsAtLeastOneOfMedications:(id)medications;
 - (HKMedicationsCriticalNotificationsStore)init;
-- (HKMedicationsCriticalNotificationsStore)initWithUserDefaults:(id)a3;
+- (HKMedicationsCriticalNotificationsStore)initWithUserDefaults:(id)defaults;
 - (id)_lock_getIdentifiersSet;
 - (int64_t)identifiersCount;
-- (void)_lock_removeMedication:(id)a3;
-- (void)_lock_syncUserDefaultUpdateToNanoPreferences:(id)a3;
-- (void)_lock_writeToUserDefaultsWithNewIdentifier:(id)a3;
-- (void)addMedications:(id)a3;
+- (void)_lock_removeMedication:(id)medication;
+- (void)_lock_syncUserDefaultUpdateToNanoPreferences:(id)preferences;
+- (void)_lock_writeToUserDefaultsWithNewIdentifier:(id)identifier;
+- (void)addMedications:(id)medications;
 - (void)removeAll;
-- (void)removeMedication:(id)a3;
-- (void)setMedications:(id)a3;
+- (void)removeMedication:(id)medication;
+- (void)setMedications:(id)medications;
 @end
 
 @implementation HKMedicationsCriticalNotificationsStore
 
-- (HKMedicationsCriticalNotificationsStore)initWithUserDefaults:(id)a3
+- (HKMedicationsCriticalNotificationsStore)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = HKMedicationsCriticalNotificationsStore;
   v6 = [(HKMedicationsCriticalNotificationsStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_medicationsUserDefaults, a3);
+    objc_storeStrong(&v6->_medicationsUserDefaults, defaults);
     v7->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -60,28 +60,28 @@ uint64_t __57__HKMedicationsCriticalNotificationsStore_sharedInstance__block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addMedications:(id)a3
+- (void)addMedications:(id)medications
 {
-  v6 = [(HKMedicationsCriticalNotificationsStore *)self _getIdentifiersSetFromMedications:a3];
+  v6 = [(HKMedicationsCriticalNotificationsStore *)self _getIdentifiersSetFromMedications:medications];
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(HKMedicationsCriticalNotificationsStore *)self _lock_getIdentifiersSet];
-  v5 = [v6 setByAddingObjectsFromSet:v4];
+  _lock_getIdentifiersSet = [(HKMedicationsCriticalNotificationsStore *)self _lock_getIdentifiersSet];
+  v5 = [v6 setByAddingObjectsFromSet:_lock_getIdentifiersSet];
   [(HKMedicationsCriticalNotificationsStore *)self _lock_writeToUserDefaultsWithNewIdentifier:v5];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeMedication:(id)a3
+- (void)removeMedication:(id)medication
 {
-  v4 = a3;
+  medicationCopy = medication;
   os_unfair_lock_lock(&self->_lock);
-  [(HKMedicationsCriticalNotificationsStore *)self _lock_removeMedication:v4];
+  [(HKMedicationsCriticalNotificationsStore *)self _lock_removeMedication:medicationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setMedications:(id)a3
+- (void)setMedications:(id)medications
 {
-  v4 = [(HKMedicationsCriticalNotificationsStore *)self _getIdentifiersSetFromMedications:a3];
+  v4 = [(HKMedicationsCriticalNotificationsStore *)self _getIdentifiersSetFromMedications:medications];
   os_unfair_lock_lock(&self->_lock);
   [(HKMedicationsCriticalNotificationsStore *)self _lock_writeToUserDefaultsWithNewIdentifier:v4];
   os_unfair_lock_unlock(&self->_lock);
@@ -99,16 +99,16 @@ uint64_t __57__HKMedicationsCriticalNotificationsStore_sharedInstance__block_inv
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)containsAtLeastOneOfIdentifiers:(id)a3
+- (BOOL)containsAtLeastOneOfIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HKMedicationsCriticalNotificationsStore *)self _lock_getIdentifiersSet];
+  _lock_getIdentifiersSet = [(HKMedicationsCriticalNotificationsStore *)self _lock_getIdentifiersSet];
   os_unfair_lock_unlock(&self->_lock);
-  if ([v5 count])
+  if ([_lock_getIdentifiersSet count])
   {
-    v6 = [MEMORY[0x277CBEB98] setWithArray:v4];
-    v7 = [v5 intersectsSet:v6];
+    v6 = [MEMORY[0x277CBEB98] setWithArray:identifiersCopy];
+    v7 = [_lock_getIdentifiersSet intersectsSet:v6];
   }
 
   else
@@ -119,9 +119,9 @@ uint64_t __57__HKMedicationsCriticalNotificationsStore_sharedInstance__block_inv
   return v7;
 }
 
-- (BOOL)containsAtLeastOneOfMedications:(id)a3
+- (BOOL)containsAtLeastOneOfMedications:(id)medications
 {
-  v4 = [a3 hk_map:&__block_literal_global_297];
+  v4 = [medications hk_map:&__block_literal_global_297];
   LOBYTE(self) = [(HKMedicationsCriticalNotificationsStore *)self containsAtLeastOneOfIdentifiers:v4];
 
   return self;
@@ -138,41 +138,41 @@ id __75__HKMedicationsCriticalNotificationsStore_containsAtLeastOneOfMedications
 - (int64_t)identifiersCount
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKMedicationsCriticalNotificationsStore *)self _lock_getIdentifiersSet];
+  _lock_getIdentifiersSet = [(HKMedicationsCriticalNotificationsStore *)self _lock_getIdentifiersSet];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 count];
+  v4 = [_lock_getIdentifiersSet count];
 
   return v4;
 }
 
-- (void)_lock_removeMedication:(id)a3
+- (void)_lock_removeMedication:(id)medication
 {
-  v8 = a3;
+  medicationCopy = medication;
   os_unfair_lock_assert_owner(&self->_lock);
-  v4 = [(HKMedicationsCriticalNotificationsStore *)self _lock_getIdentifiersSet];
-  v5 = [v4 mutableCopy];
+  _lock_getIdentifiersSet = [(HKMedicationsCriticalNotificationsStore *)self _lock_getIdentifiersSet];
+  v5 = [_lock_getIdentifiersSet mutableCopy];
 
   if ([v5 count])
   {
-    v6 = [v8 semanticIdentifier];
-    v7 = [v6 stringValue];
-    [v5 removeObject:v7];
+    semanticIdentifier = [medicationCopy semanticIdentifier];
+    stringValue = [semanticIdentifier stringValue];
+    [v5 removeObject:stringValue];
 
     [(HKMedicationsCriticalNotificationsStore *)self _lock_writeToUserDefaultsWithNewIdentifier:v5];
   }
 }
 
-- (void)_lock_writeToUserDefaultsWithNewIdentifier:(id)a3
+- (void)_lock_writeToUserDefaultsWithNewIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __86__HKMedicationsCriticalNotificationsStore__lock_writeToUserDefaultsWithNewIdentifier___block_invoke;
   v6[3] = &unk_2796CA0A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(HKMedicationsCriticalNotificationsStore *)self _lock_syncUserDefaultUpdateToNanoPreferences:v6];
 }
 
@@ -183,11 +183,11 @@ void __86__HKMedicationsCriticalNotificationsStore__lock_writeToUserDefaultsWith
   [v1 setObject:v2 forKey:@"MedicationsCriticalNotificationIdentifiersSet"];
 }
 
-- (void)_lock_syncUserDefaultUpdateToNanoPreferences:(id)a3
+- (void)_lock_syncUserDefaultUpdateToNanoPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   os_unfair_lock_assert_owner(&self->_lock);
-  v4[2](v4);
+  preferencesCopy[2](preferencesCopy);
 
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{@"MedicationsFollowUpNotificationsEnabled", @"MedicationsCriticalNotificationIdentifiersSet", 0}];
   HKSynchronizeNanoPreferencesUserDefaults();

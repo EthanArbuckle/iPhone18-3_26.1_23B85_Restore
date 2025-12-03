@@ -1,7 +1,7 @@
 @interface PKBusinessChatController
 - (PKBusinessChatController)init;
-- (void)_generateAuthBagWithCompletion:(id)a3;
-- (void)openBusinessChatWithContext:(id)a3 completion:(id)a4;
+- (void)_generateAuthBagWithCompletion:(id)completion;
+- (void)openBusinessChatWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation PKBusinessChatController
@@ -25,21 +25,21 @@
   return v2;
 }
 
-- (void)openBusinessChatWithContext:(id)a3 completion:(id)a4
+- (void)openBusinessChatWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 businessIdentifier];
-  if (v8)
+  contextCopy = context;
+  completionCopy = completion;
+  businessIdentifier = [contextCopy businessIdentifier];
+  if (businessIdentifier)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __67__PKBusinessChatController_openBusinessChatWithContext_completion___block_invoke;
     aBlock[3] = &unk_1E80132D8;
-    v9 = v6;
+    v9 = contextCopy;
     v17 = v9;
-    v18 = v8;
-    v10 = v7;
+    v18 = businessIdentifier;
+    v10 = completionCopy;
     v19 = v10;
     v11 = _Block_copy(aBlock);
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 requiresAuthorization])
@@ -165,17 +165,17 @@ void __67__PKBusinessChatController_openBusinessChatWithContext_completion___blo
 LABEL_6:
 }
 
-- (void)_generateAuthBagWithCompletion:(id)a3
+- (void)_generateAuthBagWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [MEMORY[0x1E698DC80] sharedInstance];
-    v6 = [v5 primaryAuthKitAccount];
-    v7 = [v5 altDSIDForAccount:v6];
-    v8 = [MEMORY[0x1E6959A48] defaultStore];
-    v9 = [v8 aida_accountForPrimaryiCloudAccount];
-    v10 = [v9 aida_tokenForService:@"com.apple.gs.global.auth"];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
+    v7 = [mEMORY[0x1E698DC80] altDSIDForAccount:primaryAuthKitAccount];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aida_accountForPrimaryiCloudAccount = [defaultStore aida_accountForPrimaryiCloudAccount];
+    v10 = [aida_accountForPrimaryiCloudAccount aida_tokenForService:@"com.apple.gs.global.auth"];
     if (v10)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AppleToken %@:%@", v7, v10];
@@ -192,7 +192,7 @@ LABEL_6:
     v14[2] = __59__PKBusinessChatController__generateAuthBagWithCompletion___block_invoke;
     v14[3] = &unk_1E8013328;
     v15 = v11;
-    v16 = v4;
+    v16 = completionCopy;
     v13 = v11;
     [(AKAnisetteProvisioningController *)provisioningController anisetteDataWithCompletion:v14];
   }

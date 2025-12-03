@@ -1,39 +1,39 @@
 @interface SBHWidgetStackDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)sbh_appName;
 - (NSString)sbh_galleryItemIdentifier;
 - (NSString)sbh_widgetDescription;
-- (SBHWidgetStackDescriptor)initWithSmallStackDescriptors:(id)a3 mediumStackDescriptors:(id)a4 largeStackDescriptors:(id)a5 extraLargeStackDescriptors:(id)a6;
-- (id)descriptorsForSizeClass:(int64_t)a3;
+- (SBHWidgetStackDescriptor)initWithSmallStackDescriptors:(id)descriptors mediumStackDescriptors:(id)stackDescriptors largeStackDescriptors:(id)largeStackDescriptors extraLargeStackDescriptors:(id)extraLargeStackDescriptors;
+- (id)descriptorsForSizeClass:(int64_t)class;
 - (unint64_t)sbh_supportedSizeClasses;
 @end
 
 @implementation SBHWidgetStackDescriptor
 
-- (SBHWidgetStackDescriptor)initWithSmallStackDescriptors:(id)a3 mediumStackDescriptors:(id)a4 largeStackDescriptors:(id)a5 extraLargeStackDescriptors:(id)a6
+- (SBHWidgetStackDescriptor)initWithSmallStackDescriptors:(id)descriptors mediumStackDescriptors:(id)stackDescriptors largeStackDescriptors:(id)largeStackDescriptors extraLargeStackDescriptors:(id)extraLargeStackDescriptors
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  descriptorsCopy = descriptors;
+  stackDescriptorsCopy = stackDescriptors;
+  largeStackDescriptorsCopy = largeStackDescriptors;
+  extraLargeStackDescriptorsCopy = extraLargeStackDescriptors;
   v24.receiver = self;
   v24.super_class = SBHWidgetStackDescriptor;
   v14 = [(SBHWidgetStackDescriptor *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [descriptorsCopy copy];
     smallStackDescriptors = v14->_smallStackDescriptors;
     v14->_smallStackDescriptors = v15;
 
-    v17 = [v11 copy];
+    v17 = [stackDescriptorsCopy copy];
     mediumStackDescriptors = v14->_mediumStackDescriptors;
     v14->_mediumStackDescriptors = v17;
 
-    v19 = [v12 copy];
+    v19 = [largeStackDescriptorsCopy copy];
     largeStackDescriptors = v14->_largeStackDescriptors;
     v14->_largeStackDescriptors = v19;
 
-    v21 = [v13 copy];
+    v21 = [extraLargeStackDescriptorsCopy copy];
     extraLargeStackDescriptors = v14->_extraLargeStackDescriptors;
     v14->_extraLargeStackDescriptors = v21;
   }
@@ -41,16 +41,16 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x1E698E6A0] builderWithObject:self ofExpectedClass:objc_opt_class()];
   smallStackDescriptors = self->_smallStackDescriptors;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __36__SBHWidgetStackDescriptor_isEqual___block_invoke;
   v28[3] = &unk_1E80896E8;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendObject:smallStackDescriptors counterpart:v28];
   mediumStackDescriptors = self->_mediumStackDescriptors;
@@ -82,16 +82,16 @@
   return extraLargeStackDescriptors;
 }
 
-- (id)descriptorsForSizeClass:(int64_t)a3
+- (id)descriptorsForSizeClass:(int64_t)class
 {
-  if ((a3 - 1) > 3)
+  if ((class - 1) > 3)
   {
     v4 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v4 = *(&self->_sbh_galleryItemIdentifier + a3);
+    v4 = *(&self->_sbh_galleryItemIdentifier + class);
   }
 
   return v4;
@@ -148,10 +148,10 @@
   if (!sbh_galleryItemIdentifier)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(SBHWidgetStackDescriptor *)self sbh_appName];
-    v6 = [(SBHWidgetStackDescriptor *)self sbh_widgetName];
-    v7 = [(SBHWidgetStackDescriptor *)self sbh_widgetDescription];
-    v8 = [v4 stringWithFormat:@"'%@'-'%@'-'%@'-%lu", v5, v6, v7, -[SBHWidgetStackDescriptor sbh_supportedSizeClasses](self, "sbh_supportedSizeClasses")];
+    sbh_appName = [(SBHWidgetStackDescriptor *)self sbh_appName];
+    sbh_widgetName = [(SBHWidgetStackDescriptor *)self sbh_widgetName];
+    sbh_widgetDescription = [(SBHWidgetStackDescriptor *)self sbh_widgetDescription];
+    v8 = [v4 stringWithFormat:@"'%@'-'%@'-'%@'-%lu", sbh_appName, sbh_widgetName, sbh_widgetDescription, -[SBHWidgetStackDescriptor sbh_supportedSizeClasses](self, "sbh_supportedSizeClasses")];
     v9 = self->_sbh_galleryItemIdentifier;
     self->_sbh_galleryItemIdentifier = v8;
 

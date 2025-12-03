@@ -1,7 +1,7 @@
 @interface NTKWatchConnectivityMultiplexer
 - (NTKWatchConnectivityMultiplexer)init;
 - (void)activate;
-- (void)registerClient:(id)a3;
+- (void)registerClient:(id)client;
 @end
 
 @implementation NTKWatchConnectivityMultiplexer
@@ -18,17 +18,17 @@
   return [(NTKWatchConnectivityMultiplexer *)&v5 init];
 }
 
-- (void)registerClient:(id)a3
+- (void)registerClient:(id)client
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  WatchConnectivityMultiplexer.registerClient(_:)(a3);
+  selfCopy = self;
+  WatchConnectivityMultiplexer.registerClient(_:)(client);
   swift_unknownObjectRelease();
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   WatchConnectivityMultiplexer.activate()();
 }
 

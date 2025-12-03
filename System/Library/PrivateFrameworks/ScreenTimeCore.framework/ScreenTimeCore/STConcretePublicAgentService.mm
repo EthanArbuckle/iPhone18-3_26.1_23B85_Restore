@@ -1,73 +1,73 @@
 @interface STConcretePublicAgentService
 - (STPublicAgentServiceDelegate)delegate;
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7;
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7;
-- (void)fetchAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6;
-- (void)fetchHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7;
-- (void)requestConfigurationWithReplyHandler:(id)a3;
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)fetchAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)fetchHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)requestConfigurationWithReplyHandler:(id)handler;
 @end
 
 @implementation STConcretePublicAgentService
 
-- (void)fetchHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7
+- (void)fetchHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(STConcretePublicAgentService *)self delegate];
-  [v17 fetchHistoryDuringInterval:v16 webApplication:v15 profileIdentifier:v14 clientBundleURLWrapper:v13 replyHandler:v12];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  intervalCopy = interval;
+  delegate = [(STConcretePublicAgentService *)self delegate];
+  [delegate fetchHistoryDuringInterval:intervalCopy webApplication:applicationCopy profileIdentifier:identifierCopy clientBundleURLWrapper:wrapperCopy replyHandler:handlerCopy];
 }
 
-- (void)fetchAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6
+- (void)fetchAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STConcretePublicAgentService *)self delegate];
-  [v14 fetchAllWebApplicationHistory:v13 profileIdentifier:v12 clientBundleURLWrapper:v11 replyHandler:v10];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  historyCopy = history;
+  delegate = [(STConcretePublicAgentService *)self delegate];
+  [delegate fetchAllWebApplicationHistory:historyCopy profileIdentifier:identifierCopy clientBundleURLWrapper:wrapperCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STConcretePublicAgentService *)self delegate];
-  [v14 deleteAllWebApplicationHistory:v13 profileIdentifier:v12 clientBundleURLWrapper:v11 replyHandler:v10];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  historyCopy = history;
+  delegate = [(STConcretePublicAgentService *)self delegate];
+  [delegate deleteAllWebApplicationHistory:historyCopy profileIdentifier:identifierCopy clientBundleURLWrapper:wrapperCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(STConcretePublicAgentService *)self delegate];
-  [v17 deleteWebHistoryDuringInterval:v16 webApplication:v15 profileIdentifier:v14 clientBundleURLWrapper:v13 replyHandler:v12];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  intervalCopy = interval;
+  delegate = [(STConcretePublicAgentService *)self delegate];
+  [delegate deleteWebHistoryDuringInterval:intervalCopy webApplication:applicationCopy profileIdentifier:identifierCopy clientBundleURLWrapper:wrapperCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(STConcretePublicAgentService *)self delegate];
-  [v17 deleteWebHistoryForURL:v16 webApplication:v15 profileIdentifier:v14 clientBundleURLWrapper:v13 replyHandler:v12];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  lCopy = l;
+  delegate = [(STConcretePublicAgentService *)self delegate];
+  [delegate deleteWebHistoryForURL:lCopy webApplication:applicationCopy profileIdentifier:identifierCopy clientBundleURLWrapper:wrapperCopy replyHandler:handlerCopy];
 }
 
-- (void)requestConfigurationWithReplyHandler:(id)a3
+- (void)requestConfigurationWithReplyHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePublicAgentService *)self delegate];
-  [v5 requestConfigurationWithReplyHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePublicAgentService *)self delegate];
+  [delegate requestConfigurationWithReplyHandler:handlerCopy];
 }
 
 - (STPublicAgentServiceDelegate)delegate

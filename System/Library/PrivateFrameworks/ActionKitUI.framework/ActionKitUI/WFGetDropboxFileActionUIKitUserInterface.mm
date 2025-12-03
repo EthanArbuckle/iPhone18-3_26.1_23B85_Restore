@@ -1,31 +1,31 @@
 @interface WFGetDropboxFileActionUIKitUserInterface
-- (id)selectedStorageServiceForName:(id)a3;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithResults:(id)a3 error:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showWithServiceName:(id)a3 directoryPath:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
+- (id)selectedStorageServiceForName:(id)name;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithResults:(id)results error:(id)error;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showWithServiceName:(id)name directoryPath:(id)path options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation WFGetDropboxFileActionUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFGetDropboxFileActionUIKitUserInterface *)self finishWithResults:0 error:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFGetDropboxFileActionUIKitUserInterface *)self finishWithResults:0 error:userCancelledError];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__WFGetDropboxFileActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFGetDropboxFileActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -40,16 +40,16 @@ uint64_t __84__WFGetDropboxFileActionUIKitUserInterface_cancelPresentationWithCo
   return v4();
 }
 
-- (void)finishWithResults:(id)a3 error:(id)a4
+- (void)finishWithResults:(id)results error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFGetDropboxFileActionUIKitUserInterface *)self completionHandler];
+  resultsCopy = results;
+  errorCopy = error;
+  completionHandler = [(WFGetDropboxFileActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFGetDropboxFileActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFGetDropboxFileActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, resultsCopy, errorCopy);
   }
 
   else
@@ -58,26 +58,26 @@ uint64_t __84__WFGetDropboxFileActionUIKitUserInterface_cancelPresentationWithCo
   }
 }
 
-- (void)showWithServiceName:(id)a3 directoryPath:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)showWithServiceName:(id)name directoryPath:(id)path options:(unint64_t)options completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [(WFGetDropboxFileActionUIKitUserInterface *)self setCompletionHandler:v12];
-  v13 = [MEMORY[0x277D79D80] accessSpecifierForCurrentConnection];
-  v14 = [v13 bundleIdentifier];
+  nameCopy = name;
+  pathCopy = path;
+  handlerCopy = handler;
+  [(WFGetDropboxFileActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
+  accessSpecifierForCurrentConnection = [MEMORY[0x277D79D80] accessSpecifierForCurrentConnection];
+  bundleIdentifier = [accessSpecifierForCurrentConnection bundleIdentifier];
 
-  if (!v14)
+  if (!bundleIdentifier)
   {
     v15 = getWFActionsLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
-      v16 = [MEMORY[0x277CCAE80] currentConnection];
+      currentConnection = [MEMORY[0x277CCAE80] currentConnection];
       *buf = 136315394;
       v30 = "[WFGetDropboxFileActionUIKitUserInterface showWithServiceName:directoryPath:options:completionHandler:]";
       v31 = 2112;
-      v32 = v16;
+      v32 = currentConnection;
       _os_log_impl(&dword_23E342000, v15, OS_LOG_TYPE_FAULT, "%s Could not get bundle identifier for the calling process. +[NSXPCConnection currentConnection] is %@", buf, 0x16u);
     }
 
@@ -85,18 +85,18 @@ uint64_t __84__WFGetDropboxFileActionUIKitUserInterface_cancelPresentationWithCo
     [(WFGetDropboxFileActionUIKitUserInterface *)self finishWithResults:0 error:v17];
   }
 
-  v18 = [(WFGetDropboxFileActionUIKitUserInterface *)self selectedStorageServiceForName:v10];
+  v18 = [(WFGetDropboxFileActionUIKitUserInterface *)self selectedStorageServiceForName:nameCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__WFGetDropboxFileActionUIKitUserInterface_showWithServiceName_directoryPath_options_completionHandler___block_invoke;
   block[3] = &unk_278C36960;
-  v27 = v12;
-  v28 = a5;
+  v27 = handlerCopy;
+  optionsCopy = options;
   v24 = v18;
-  v25 = self;
-  v26 = v11;
-  v19 = v11;
-  v20 = v12;
+  selfCopy = self;
+  v26 = pathCopy;
+  v19 = pathCopy;
+  v20 = handlerCopy;
   v21 = v18;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -173,12 +173,12 @@ id __104__WFGetDropboxFileActionUIKitUserInterface_showWithServiceName_directory
   return v6;
 }
 
-- (id)selectedStorageServiceForName:(id)a3
+- (id)selectedStorageServiceForName:(id)name
 {
   v3 = MEMORY[0x277CE8890];
-  v4 = a3;
-  v5 = [v3 sharedRegistry];
-  v6 = [v5 storageServiceWithName:v4];
+  nameCopy = name;
+  sharedRegistry = [v3 sharedRegistry];
+  v6 = [sharedRegistry storageServiceWithName:nameCopy];
 
   return v6;
 }

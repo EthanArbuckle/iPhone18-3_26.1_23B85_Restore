@@ -1,89 +1,89 @@
 @interface PKPassTileGroupView
-+ (void)extractSupportedVehicleFunction:(id *)a3 action:(id *)a4 forTile:(id)a5 applicationIdentifier:(id)a6 keyIdentifier:(id)a7;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (void)extractSupportedVehicleFunction:(id *)function action:(id *)action forTile:(id)tile applicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKPassTileGroupView)init;
 - (PKPassTileGroupViewDelegate)delegate;
 - (UIEdgeInsets)contentInset;
 - (_BYTE)_updateSubviewsAnimated:(_BYTE *)result;
-- (double)_populateHandleSizeCachesWithWidth:(double)a3 recompute:;
-- (id)passTileViewRequestsBeginSuppressingCardEmulation:(id)a3;
-- (void)_displayViewController:(void *)a1;
-- (void)_performDisplayAuxiliaryPassInformationItemAction:(void *)a1;
-- (void)_performDisplayTileContextAction:(uint64_t)a1;
-- (void)_performOpenBusinessChat:(void *)a1;
+- (double)_populateHandleSizeCachesWithWidth:(double)width recompute:;
+- (id)passTileViewRequestsBeginSuppressingCardEmulation:(id)emulation;
+- (void)_displayViewController:(void *)controller;
+- (void)_performDisplayAuxiliaryPassInformationItemAction:(void *)action;
+- (void)_performDisplayTileContextAction:(uint64_t)action;
+- (void)_performOpenBusinessChat:(void *)chat;
 - (void)_performShareFlightStatus;
-- (void)_performViewImageAction:(void *)a3 sourceImageView:;
-- (void)_tileViewPinched:(id)a3;
-- (void)_tileViewTapped:(id)a3;
-- (void)_updateRowItemViews:(void *)a3 withRowItems:(char)a4 isLastRow:(int)a5 animated:;
-- (void)layoutIfNeededAnimated:(BOOL)a3;
+- (void)_performViewImageAction:(void *)action sourceImageView:;
+- (void)_tileViewPinched:(id)pinched;
+- (void)_tileViewTapped:(id)tapped;
+- (void)_updateRowItemViews:(void *)views withRowItems:(char)items isLastRow:(int)row animated:;
+- (void)layoutIfNeededAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)performBatchUpdates:(id)a3 animated:(BOOL)a4;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setPass:(id)a3 content:(id)a4 passState:(id)a5 context:(id *)a6 animated:(BOOL)a7;
+- (void)performBatchUpdates:(id)updates animated:(BOOL)animated;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setPass:(id)pass content:(id)content passState:(id)state context:(id *)context animated:(BOOL)animated;
 @end
 
 @implementation PKPassTileGroupView
 
-+ (void)extractSupportedVehicleFunction:(id *)a3 action:(id *)a4 forTile:(id)a5 applicationIdentifier:(id)a6 keyIdentifier:(id)a7
++ (void)extractSupportedVehicleFunction:(id *)function action:(id *)action forTile:(id)tile applicationIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier
 {
   v63 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = v13;
-  v15 = 0;
-  if (!v11 || !v12)
+  tileCopy = tile;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  v14 = keyIdentifierCopy;
+  vehicleFunctionActions = 0;
+  if (!tileCopy || !identifierCopy)
   {
-    v16 = 0;
+    vehicleFunctions = 0;
     goto LABEL_29;
   }
 
-  v16 = 0;
-  if (!v13)
+  vehicleFunctions = 0;
+  if (!keyIdentifierCopy)
   {
 LABEL_29:
-    v36 = *a3;
-    *a3 = 0;
+    v36 = *function;
+    *function = 0;
 
-    v37 = *a4;
-    *a4 = 0;
+    v37 = *action;
+    *action = 0;
     goto LABEL_30;
   }
 
-  v17 = [v11 metadata];
-  v18 = [v17 metadataTypeVehicleFunction];
-  v16 = [v18 vehicleFunctions];
+  metadata = [tileCopy metadata];
+  metadataTypeVehicleFunction = [metadata metadataTypeVehicleFunction];
+  vehicleFunctions = [metadataTypeVehicleFunction vehicleFunctions];
 
-  if (![v16 count])
+  if (![vehicleFunctions count])
   {
     v22 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v57 = v12;
+      v57 = identifierCopy;
       v58 = 2112;
       v59 = v14;
       _os_log_impl(&dword_1BD026000, v22, OS_LOG_TYPE_DEFAULT, "PKPassTileGroupView: no vehicle functions to check for (%@: %@).", buf, 0x16u);
     }
 
-    v15 = 0;
+    vehicleFunctionActions = 0;
     goto LABEL_28;
   }
 
   v19 = MEMORY[0x1E69B8D10];
-  v20 = [v11 state];
-  v21 = [v20 actions];
-  v22 = [v19 effectiveActionForActions:v21];
+  state = [tileCopy state];
+  actions = [state actions];
+  v22 = [v19 effectiveActionForActions:actions];
 
-  v15 = [v22 vehicleFunctionActions];
-  if (![v15 count])
+  vehicleFunctionActions = [v22 vehicleFunctionActions];
+  if (![vehicleFunctionActions count])
   {
     v35 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v57 = v12;
+      v57 = identifierCopy;
       v58 = 2112;
       v59 = v14;
       _os_log_impl(&dword_1BD026000, v35, OS_LOG_TYPE_DEFAULT, "PKPassTileGroupView: no vehicle function action map for (%@: %@).", buf, 0x16u);
@@ -93,7 +93,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v49 = a4;
+  actionCopy = action;
 
   v55 = 0;
   v23 = [PKGetClassNFDigitalCarKeySession() vehicleReports:&v55];
@@ -111,7 +111,7 @@ LABEL_28:
     }
 
     *buf = 138412802;
-    v57 = v12;
+    v57 = identifierCopy;
     v58 = 2112;
     v59 = v14;
     v60 = 2112;
@@ -126,7 +126,7 @@ LABEL_28:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v26 = v16;
+  v26 = vehicleFunctions;
   v27 = [v26 countByEnumeratingWithState:&v51 objects:v62 count:16];
   if (!v27)
   {
@@ -139,7 +139,7 @@ LABEL_35:
     }
 
     *buf = 138412546;
-    v57 = v12;
+    v57 = identifierCopy;
     v58 = 2112;
     v59 = v50;
     v34 = "PKPassTileGroupView: failed to identify supported function for (%@: %@).";
@@ -147,8 +147,8 @@ LABEL_35:
   }
 
   v28 = v27;
-  v45 = a3;
-  v46 = v12;
+  functionCopy = function;
+  v46 = identifierCopy;
   v29 = 0;
   v30 = *v52;
   while (2)
@@ -161,15 +161,15 @@ LABEL_35:
       }
 
       v32 = *(*(&v51 + 1) + 8 * i);
-      if ([v25 isRKEFunctionSupported:{v32, v45, v46, v47}])
+      if ([v25 isRKEFunctionSupported:{v32, functionCopy, v46, v47}])
       {
-        v33 = [v15 objectForKeyedSubscript:v32];
+        v33 = [vehicleFunctionActions objectForKeyedSubscript:v32];
         if (v33)
         {
           v40 = v33;
           v41 = v32;
-          a3 = v45;
-          v12 = v46;
+          function = functionCopy;
+          identifierCopy = v46;
           goto LABEL_40;
         }
 
@@ -186,8 +186,8 @@ LABEL_35:
     break;
   }
 
-  a3 = v45;
-  v12 = v46;
+  function = functionCopy;
+  identifierCopy = v46;
   if ((v29 & 1) == 0)
   {
     goto LABEL_35;
@@ -214,12 +214,12 @@ LABEL_39:
   v41 = 0;
 LABEL_40:
 
-  v42 = *a3;
-  *a3 = v41;
+  v42 = *function;
+  *function = v41;
   v37 = v41;
 
-  v43 = *v49;
-  *v49 = v40;
+  v43 = *actionCopy;
+  *actionCopy = v40;
   v44 = v40;
 
   v14 = v50;
@@ -243,9 +243,9 @@ LABEL_30:
   return v2;
 }
 
-- (double)_populateHandleSizeCachesWithWidth:(double)a3 recompute:
+- (double)_populateHandleSizeCachesWithWidth:(double)width recompute:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -258,14 +258,14 @@ LABEL_30:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = *(a1 + 504);
+  v3 = *(self + 504);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___block_invoke;
   v8[3] = &unk_1E8015790;
-  *&v8[7] = a3;
+  *&v8[7] = width;
   v9 = a2;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v10;
   v8[6] = &v14;
   [v3 enumerateObjectsUsingBlock:v8];
@@ -402,10 +402,10 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  if ([(NSArray *)self->_content count:a3.width])
+  width = fits.width;
+  if ([(NSArray *)self->_content count:fits.width])
   {
     v5 = [(PKPassTileGroupView *)self _populateHandleSizeCachesWithWidth:width - (self->_contentInset.left + self->_contentInset.right) recompute:?];
   }
@@ -437,8 +437,8 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
   self->_boundsSize.width = v6;
   self->_boundsSize.height = v8;
   [(PKPassTileGroupView *)self _populateHandleSizeCachesWithWidth:v9 recompute:v3 - (left + right)];
-  v10 = [(PKPassTileGroupView *)self _shouldReverseLayoutDirection];
-  if (v10)
+  _shouldReverseLayoutDirection = [(PKPassTileGroupView *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v11 = CGRectMaxXEdge;
   }
@@ -458,8 +458,8 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
   if (v53)
   {
     v16 = 0;
-    v56 = v10;
-    v17 = (v10 ^ 1);
+    v56 = _shouldReverseLayoutDirection;
+    v17 = (_shouldReverseLayoutDirection ^ 1);
     do
     {
       v18 = [(NSMutableArray *)self->_itemViewsByRows objectAtIndexedSubscript:v16];
@@ -555,22 +555,22 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
           }
 
           v37 = v34;
-          v38 = [v37 layer];
-          [v38 anchorPoint];
+          layer = [v37 layer];
+          [layer anchorPoint];
           v41 = v40;
           v42 = v39;
           if (v36 != v40 || v39 != 0.0)
           {
-            [v38 bounds];
+            [layer bounds];
             v44 = v43;
             v46 = v45;
-            [v38 position];
+            [layer position];
             v48 = v47;
             v50 = v49;
-            [v38 setAnchorPoint:{v36, 0.0}];
+            [layer setAnchorPoint:{v36, 0.0}];
             if ((v33 & 1) == 0)
             {
-              [v38 setPosition:{v48 - v41 * v44 + v36 * v44, v50 - v42 * v46 + v46 * 0.0}];
+              [layer setPosition:{v48 - v41 * v44 + v36 * v44, v50 - v42 * v46 + v46 * 0.0}];
             }
           }
 
@@ -613,34 +613,34 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
   }
 }
 
-- (void)performBatchUpdates:(id)a3 animated:(BOOL)a4
+- (void)performBatchUpdates:(id)updates animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  updatesCopy = updates;
+  if (updatesCopy)
   {
-    v7 = v6;
+    v7 = updatesCopy;
     if (self->_deferringUpdate)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"PKPassTileGroupView recursive batch updates are not supported."];
-      v6 = v7;
+      updatesCopy = v7;
     }
 
     self->_deferringUpdate = 1;
-    v6[2]();
+    updatesCopy[2]();
     self->_deferringUpdate = 0;
     if (self->_deferredSubviewUpdate)
     {
       self->_deferredSubviewUpdate = 0;
-      [(PKPassTileGroupView *)self _updateSubviewsAnimated:v4];
+      [(PKPassTileGroupView *)self _updateSubviewsAnimated:animatedCopy];
     }
 
     else
     {
-      [(PKPassTileGroupView *)self layoutIfNeededAnimated:v4];
+      [(PKPassTileGroupView *)self layoutIfNeededAnimated:animatedCopy];
     }
 
-    v6 = v7;
+    updatesCopy = v7;
   }
 }
 
@@ -698,23 +698,23 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
   return result;
 }
 
-- (void)layoutIfNeededAnimated:(BOOL)a3
+- (void)layoutIfNeededAnimated:(BOOL)animated
 {
-  self->_animated = a3;
+  self->_animated = animated;
   [(PKPassTileGroupView *)self layoutIfNeeded];
   self->_animated = 0;
 }
 
-- (void)_updateRowItemViews:(void *)a3 withRowItems:(char)a4 isLastRow:(int)a5 animated:
+- (void)_updateRowItemViews:(void *)views withRowItems:(char)items isLastRow:(int)row animated:
 {
   v80 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v53 = [v8 count];
+  viewsCopy = views;
+  v53 = [viewsCopy count];
   v56 = v7;
-  v52 = v8;
+  v52 = viewsCopy;
   v50 = [v7 pk_createArrayByApplyingBlock:&__block_literal_global_60];
-  [v8 differenceFromArray:? withOptions:? usingEquivalenceTest:?];
+  [viewsCopy differenceFromArray:? withOptions:? usingEquivalenceTest:?];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
@@ -737,12 +737,12 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
         }
 
         v14 = *(*(&v70 + 1) + 8 * v12);
-        v15 = [v14 index];
-        v16 = [v14 changeType];
-        if (v16 == 1)
+        index = [v14 index];
+        changeType = [v14 changeType];
+        if (changeType == 1)
         {
-          v23 = [v56 objectAtIndexedSubscript:v15];
-          [v56 removeObjectAtIndex:v15];
+          v23 = [v56 objectAtIndexedSubscript:index];
+          [v56 removeObjectAtIndex:index];
           if (v23)
           {
             constraintsExceptingSubviewAutoresizingConstraints = v23->super.super.super._constraintsExceptingSubviewAutoresizingConstraints;
@@ -754,15 +754,15 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
           }
 
           v26 = constraintsExceptingSubviewAutoresizingConstraints;
-          [a1 sendSubviewToBack:v26];
+          [self sendSubviewToBack:v26];
           v27 = v13;
-          [(NSMutableArray *)v26 removeTarget:a1 action:v13 forControlEvents:64];
+          [(NSMutableArray *)v26 removeTarget:self action:v13 forControlEvents:64];
           v69 = 0u;
           v67 = 0u;
           v68 = 0u;
           v66 = 0u;
-          v28 = [(NSMutableArray *)v26 gestureRecognizers];
-          v29 = [v28 countByEnumeratingWithState:&v66 objects:v78 count:16];
+          gestureRecognizers = [(NSMutableArray *)v26 gestureRecognizers];
+          v29 = [gestureRecognizers countByEnumeratingWithState:&v66 objects:v78 count:16];
           if (v29)
           {
             v30 = v29;
@@ -773,13 +773,13 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
               {
                 if (*v67 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(gestureRecognizers);
                 }
 
                 [(NSMutableArray *)v26 removeGestureRecognizer:*(*(&v66 + 1) + 8 * i)];
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v66 objects:v78 count:16];
+              v30 = [gestureRecognizers countByEnumeratingWithState:&v66 objects:v78 count:16];
             }
 
             while (v30);
@@ -787,11 +787,11 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
 
           v33 = v26;
           v22 = v33;
-          if (a5)
+          if (row)
           {
-            v34 = [(PKPassTileGroupView_ViewHandle *)v33 layer];
+            layer = [(PKPassTileGroupView_ViewHandle *)v33 layer];
             v35 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
-            [v34 opacity];
+            [layer opacity];
             [v35 pkui_updateForAdditiveAnimationFromScalar:v36 toScalar:0.0];
             v74.receiver = MEMORY[0x1E69E9820];
             v74.super_class = 3221225472;
@@ -799,8 +799,8 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
             v76 = &unk_1E8011D28;
             v77 = v22;
             [v35 pkui_setCompletionHandler:&v74];
-            [v34 setOpacity:0.0];
-            v37 = [v34 pkui_addAdditiveAnimation:v35];
+            [layer setOpacity:0.0];
+            v37 = [layer pkui_addAdditiveAnimation:v35];
             [v35 duration];
           }
 
@@ -816,24 +816,24 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
 
         else
         {
-          if (v16)
+          if (changeType)
           {
             goto LABEL_28;
           }
 
           v17 = objc_alloc_init(PKPassTileView);
-          [(PKPassTileView *)v17 setDelegate:a1];
-          [(PKPassTileView *)v17 addTarget:a1 action:v13 forControlEvents:64];
-          v18 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:a1 action:sel__tileViewPinched_];
+          [(PKPassTileView *)v17 setDelegate:self];
+          [(PKPassTileView *)v17 addTarget:self action:v13 forControlEvents:64];
+          v18 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:self action:sel__tileViewPinched_];
           [(PKPassTileView *)v17 addGestureRecognizer:v18];
 
-          [a1 insertSubview:v17 atIndex:0];
-          if (a5)
+          [self insertSubview:v17 atIndex:0];
+          if (row)
           {
             v19 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
             [v19 pkui_updateForAdditiveAnimationFromScalar:0.0 toScalar:1.0];
-            v20 = [(PKPassTileView *)v17 layer];
-            v21 = [v20 pkui_addAdditiveAnimation:v19];
+            layer2 = [(PKPassTileView *)v17 layer];
+            v21 = [layer2 pkui_addAdditiveAnimation:v19];
           }
 
           v22 = [PKPassTileGroupView_ViewHandle alloc];
@@ -851,7 +851,7 @@ double __68__PKPassTileGroupView__populateHandleSizeCachesWithWidth_recompute___
             }
           }
 
-          [v56 insertObject:v22 atIndex:v15];
+          [v56 insertObject:v22 atIndex:index];
         }
 
 LABEL_28:
@@ -866,9 +866,9 @@ LABEL_28:
     while (v38);
   }
 
-  v39 = [a1[57] metadata];
-  v40 = [v39 metadataTypeHorizontalFlowGroup];
-  v41 = [v40 groupStyle];
+  metadata = [self[57] metadata];
+  metadataTypeHorizontalFlowGroup = [metadata metadataTypeHorizontalFlowGroup];
+  groupStyle = [metadataTypeHorizontalFlowGroup groupStyle];
 
   if (v53)
   {
@@ -892,25 +892,25 @@ LABEL_28:
       v58[2] = __75__PKPassTileGroupView__updateRowItemViews_withRowItems_isLastRow_animated___block_invoke_3;
       v58[3] = &unk_1E80157F8;
       v47 = v52;
-      v65 = a4;
+      itemsCopy = items;
       v59 = v47;
-      v60 = a1;
+      selfCopy = self;
       v61 = v46;
       v62 = j;
-      v48 = a5;
+      rowCopy2 = row;
       v63 = v53;
-      v64 = v41;
+      v64 = groupStyle;
       if (v44)
       {
-        v48 = a5;
-        if (a5)
+        rowCopy2 = row;
+        if (row)
         {
-          v48 = v44[8] ^ 1;
+          rowCopy2 = v44[8] ^ 1;
         }
       }
 
       v49 = v46;
-      [v49 performBatchUpdates:v58 animated:v48 & 1];
+      [v49 performBatchUpdates:v58 animated:rowCopy2 & 1];
     }
   }
 }
@@ -1179,21 +1179,21 @@ LABEL_37:
   [*v43 setOverflowType:v45];
 }
 
-- (void)_performDisplayAuxiliaryPassInformationItemAction:(void *)a1
+- (void)_performDisplayAuxiliaryPassInformationItemAction:(void *)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
-    v4 = a1[67];
+    v4 = action[67];
     if (v4)
     {
-      v5 = [v4 uniqueID];
-      if (v5)
+      uniqueID = [v4 uniqueID];
+      if (uniqueID)
       {
-        v6 = v5;
-        v7 = [v3 auxiliaryPassInformationIdentifier];
-        v8 = [v3 auxiliaryPassInformationItemIdentifier];
-        if (!v8)
+        v6 = uniqueID;
+        auxiliaryPassInformationIdentifier = [v3 auxiliaryPassInformationIdentifier];
+        auxiliaryPassInformationItemIdentifier = [v3 auxiliaryPassInformationItemIdentifier];
+        if (!auxiliaryPassInformationItemIdentifier)
         {
 LABEL_14:
 
@@ -1212,13 +1212,13 @@ LABEL_14:
           [v9 setPath:v12];
 
           v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          if (v7)
+          if (auxiliaryPassInformationIdentifier)
           {
-            v14 = [MEMORY[0x1E696AF60] queryItemWithName:*MEMORY[0x1E69BC658] value:v7];
+            v14 = [MEMORY[0x1E696AF60] queryItemWithName:*MEMORY[0x1E69BC658] value:auxiliaryPassInformationIdentifier];
             [v13 addObject:v14];
           }
 
-          v15 = [MEMORY[0x1E696AF60] queryItemWithName:*MEMORY[0x1E69BC660] value:v8];
+          v15 = [MEMORY[0x1E696AF60] queryItemWithName:*MEMORY[0x1E69BC660] value:auxiliaryPassInformationItemIdentifier];
           [v13 addObject:v15];
 
           v16 = [v13 copy];
@@ -1232,65 +1232,65 @@ LABEL_14:
 
           v18 = v17;
           v19 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithExternalURL:v17 title:0];
-          v20 = [a1 window];
-          PKPaymentPassActionPerformOpenExternalURL(v19, v20);
+          window = [action window];
+          PKPaymentPassActionPerformOpenExternalURL(v19, window);
         }
 
         else
         {
-          v21 = a1[67];
+          v21 = action[67];
           if (!v21)
           {
             goto LABEL_14;
           }
 
-          v22 = [v21 secureElementPass];
-          if (!v22)
+          secureElementPass = [v21 secureElementPass];
+          if (!secureElementPass)
           {
             goto LABEL_14;
           }
 
-          v9 = v22;
-          v23 = [v22 auxiliaryPassInformation];
-          v13 = v23;
-          if (!v23 || ![v23 count])
+          v9 = secureElementPass;
+          auxiliaryPassInformation = [secureElementPass auxiliaryPassInformation];
+          v13 = auxiliaryPassInformation;
+          if (!auxiliaryPassInformation || ![auxiliaryPassInformation count])
           {
             goto LABEL_13;
           }
 
-          if (v7)
+          if (auxiliaryPassInformationIdentifier)
           {
             v28[0] = MEMORY[0x1E69E9820];
             v28[1] = 3221225472;
             v28[2] = __73__PKPassTileGroupView__performDisplayAuxiliaryPassInformationItemAction___block_invoke;
             v28[3] = &unk_1E8015820;
-            v28[4] = v7;
-            v24 = [v13 pk_firstObjectPassingTest:v28];
+            v28[4] = auxiliaryPassInformationIdentifier;
+            firstObject = [v13 pk_firstObjectPassingTest:v28];
           }
 
           else
           {
-            v24 = [v13 firstObject];
+            firstObject = [v13 firstObject];
           }
 
-          v18 = v24;
-          if (!v24)
+          v18 = firstObject;
+          if (!firstObject)
           {
             goto LABEL_12;
           }
 
-          v25 = [v24 items];
+          items = [firstObject items];
           v27[0] = MEMORY[0x1E69E9820];
           v27[1] = 3221225472;
           v27[2] = __73__PKPassTileGroupView__performDisplayAuxiliaryPassInformationItemAction___block_invoke_2;
           v27[3] = &unk_1E8015848;
-          v27[4] = v8;
-          v19 = [v25 pk_firstObjectPassingTest:v27];
+          v27[4] = auxiliaryPassInformationItemIdentifier;
+          v19 = [items pk_firstObjectPassingTest:v27];
 
           if (v19)
           {
             v26 = [[PKDashboardAuxiliaryPassInformationViewController alloc] initWithItem:v19 forPass:v9];
-            [(PKPassTileGroupView *)a1 _displayViewController:v26];
+            [(PKPassTileGroupView *)action _displayViewController:v26];
           }
         }
 
@@ -1353,18 +1353,18 @@ uint64_t __73__PKPassTileGroupView__performDisplayAuxiliaryPassInformationItemAc
   return v8;
 }
 
-- (void)_displayViewController:(void *)a1
+- (void)_displayViewController:(void *)controller
 {
   v8 = a2;
-  v3 = [a1 pkui_viewControllerFromResponderChain];
-  v4 = v3;
-  if (v3)
+  pkui_viewControllerFromResponderChain = [controller pkui_viewControllerFromResponderChain];
+  v4 = pkui_viewControllerFromResponderChain;
+  if (pkui_viewControllerFromResponderChain)
   {
-    v5 = [v3 navigationController];
-    v6 = v5;
-    if (v5)
+    navigationController = [pkui_viewControllerFromResponderChain navigationController];
+    v6 = navigationController;
+    if (navigationController)
     {
-      [v5 pushViewController:v8 animated:1];
+      [navigationController pushViewController:v8 animated:1];
     }
 
     else
@@ -1375,49 +1375,49 @@ uint64_t __73__PKPassTileGroupView__performDisplayAuxiliaryPassInformationItemAc
   }
 }
 
-- (void)_performDisplayTileContextAction:(uint64_t)a1
+- (void)_performDisplayTileContextAction:(uint64_t)action
 {
-  if (a1)
+  if (action)
   {
-    v3 = [a2 context];
-    WeakRetained = objc_loadWeakRetained((a1 + 544));
-    [WeakRetained passTileGroupView:a1 displayTileContext:v3 tile:0 overrideMaximumRows:0];
+    context = [a2 context];
+    WeakRetained = objc_loadWeakRetained((action + 544));
+    [WeakRetained passTileGroupView:action displayTileContext:context tile:0 overrideMaximumRows:0];
   }
 }
 
 - (void)_performShareFlightStatus
 {
-  if (a1)
+  if (self)
   {
-    v8 = [a1 pass];
-    v2 = [a1[51] flight];
+    pass = [self pass];
+    flight = [self[51] flight];
     v3 = objc_alloc(MEMORY[0x1E69B88D8]);
-    v4 = [v8 uniqueID];
-    v5 = [v3 initWithFlight:v2 passUniqueIdentifier:v4];
+    uniqueID = [pass uniqueID];
+    v5 = [v3 initWithFlight:flight passUniqueIdentifier:uniqueID];
 
     v6 = [[PKFlightShareComposeViewController alloc] initWithInvitation:v5 delegate:0];
-    v7 = [a1 pkui_viewControllerFromResponderChain];
-    [v7 presentViewController:v6 animated:0 completion:0];
+    pkui_viewControllerFromResponderChain = [self pkui_viewControllerFromResponderChain];
+    [pkui_viewControllerFromResponderChain presentViewController:v6 animated:0 completion:0];
   }
 }
 
-- (void)_performOpenBusinessChat:(void *)a1
+- (void)_performOpenBusinessChat:(void *)chat
 {
   v3 = a2;
-  if (a1 && +[PKBusinessChatController deviceSupportsBusinessChat])
+  if (chat && +[PKBusinessChatController deviceSupportsBusinessChat])
   {
-    v4 = [v3 businessChatIdentifier];
-    if (v4)
+    businessChatIdentifier = [v3 businessChatIdentifier];
+    if (businessChatIdentifier)
     {
       v5 = objc_alloc_init(PKBusinessChatController);
-      v6 = [[PKBusinessChatEmptyContext alloc] initWithBusinessIdentifier:v4];
-      objc_initWeak(&location, a1);
+      v6 = [[PKBusinessChatEmptyContext alloc] initWithBusinessIdentifier:businessChatIdentifier];
+      objc_initWeak(&location, chat);
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __48__PKPassTileGroupView__performOpenBusinessChat___block_invoke;
       v7[3] = &unk_1E8013F58;
       objc_copyWeak(&v8, &location);
-      v7[4] = a1;
+      v7[4] = chat;
       [(PKBusinessChatController *)v5 openBusinessChatWithContext:v6 completion:v7];
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -1463,78 +1463,78 @@ void __48__PKPassTileGroupView__performOpenBusinessChat___block_invoke_2(void **
   }
 }
 
-- (void)_performViewImageAction:(void *)a3 sourceImageView:
+- (void)_performViewImageAction:(void *)action sourceImageView:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    v7 = [a2 title];
-    v6 = [a1 pkui_viewControllerFromResponderChain];
-    [PKTileImagePreviewViewController presentWithImageView:v5 title:v7 presenting:v6];
+    actionCopy = action;
+    title = [a2 title];
+    pkui_viewControllerFromResponderChain = [self pkui_viewControllerFromResponderChain];
+    [PKTileImagePreviewViewController presentWithImageView:actionCopy title:title presenting:pkui_viewControllerFromResponderChain];
   }
 }
 
-- (void)setPass:(id)a3 content:(id)a4 passState:(id)a5 context:(id *)a6 animated:(BOOL)a7
+- (void)setPass:(id)pass content:(id)content passState:(id)state context:(id *)context animated:(BOOL)animated
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a6->var0)
+  animatedCopy = animated;
+  passCopy = pass;
+  contentCopy = content;
+  stateCopy = state;
+  if (context->var0)
   {
-    [(PKPass *)v13 prearmTiles];
+    [(PKPass *)contentCopy prearmTiles];
   }
 
   else
   {
-    [(PKPass *)v13 tiles];
+    [(PKPass *)contentCopy tiles];
   }
   v15 = ;
-  if (!v13)
+  if (!contentCopy)
   {
-    v13 = v12;
+    contentCopy = passCopy;
 LABEL_8:
 
-    v13 = 0;
-    v12 = 0;
+    contentCopy = 0;
+    passCopy = 0;
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!passCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
   v50 = v15;
-  if (self->_pass != v12 || !PKEqualObjects() || (v16 = self->_content, v51[0] = MEMORY[0x1E69E9820], v51[1] = 3221225472, v51[2] = __66__PKPassTileGroupView_setPass_content_passState_context_animated___block_invoke, v51[3] = &unk_1E8015870, v52 = v14, v53 = self, [v50 differenceFromArray:v16 withOptions:0 usingEquivalenceTest:v51], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "hasChanges"), v17, v15 = v50, v52, v18))
+  if (self->_pass != passCopy || !PKEqualObjects() || (v16 = self->_content, v51[0] = MEMORY[0x1E69E9820], v51[1] = 3221225472, v51[2] = __66__PKPassTileGroupView_setPass_content_passState_context_animated___block_invoke, v51[3] = &unk_1E8015870, v52 = stateCopy, v53 = self, [v50 differenceFromArray:v16 withOptions:0 usingEquivalenceTest:v51], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "hasChanges"), v17, v15 = v50, v52, v18))
   {
-    objc_storeStrong(&self->_pass, v12);
-    objc_storeStrong(&self->_passState, a5);
-    self->_lastPassStateHash = [v14 hash];
-    objc_storeStrong(&self->_groupTile, v13);
+    objc_storeStrong(&self->_pass, passCopy);
+    objc_storeStrong(&self->_passState, state);
+    self->_lastPassStateHash = [stateCopy hash];
+    objc_storeStrong(&self->_groupTile, contentCopy);
     objc_storeStrong(&self->_content, v15);
-    v19 = [(PKPass *)v13 metadata];
-    v20 = [v19 metadataTypeHorizontalFlowGroup];
-    self->_columns = [v20 columns];
+    metadata = [(PKPass *)contentCopy metadata];
+    metadataTypeHorizontalFlowGroup = [metadata metadataTypeHorizontalFlowGroup];
+    self->_columns = [metadataTypeHorizontalFlowGroup columns];
 
-    v21 = [(PKPass *)v13 maximumRows];
-    v22 = [v21 unsignedIntegerValue];
+    maximumRows = [(PKPass *)contentCopy maximumRows];
+    unsignedIntegerValue = [maximumRows unsignedIntegerValue];
 
-    var2 = a6->var2;
+    var2 = context->var2;
     if (!var2)
     {
-      var2 = a6->var1;
-      if (v22)
+      var2 = context->var1;
+      if (unsignedIntegerValue)
       {
-        if (v22 >= var2)
+        if (unsignedIntegerValue >= var2)
         {
-          var1 = a6->var1;
+          var1 = context->var1;
         }
 
         else
         {
-          var1 = v22;
+          var1 = unsignedIntegerValue;
         }
 
         if (var2)
@@ -1544,7 +1544,7 @@ LABEL_9:
 
         else
         {
-          var2 = v22;
+          var2 = unsignedIntegerValue;
         }
       }
 
@@ -1574,9 +1574,9 @@ LABEL_9:
     v27 = self->_content;
     if (v27)
     {
-      v28 = [(NSArray *)v27 firstObject];
-      v29 = [v28 metadata];
-      self->_selectable = [v29 isSelectable];
+      firstObject = [(NSArray *)v27 firstObject];
+      metadata2 = [firstObject metadata];
+      self->_selectable = [metadata2 isSelectable];
     }
 
     else
@@ -1599,18 +1599,18 @@ LABEL_9:
     if (v30 > maximumRows)
     {
       v33 = v30;
-      v34 = [(PKPassTile *)self->_groupTile metadata];
-      v48 = [v34 metadataTypeHorizontalFlowGroup];
+      metadata3 = [(PKPassTile *)self->_groupTile metadata];
+      metadataTypeHorizontalFlowGroup2 = [metadata3 metadataTypeHorizontalFlowGroup];
 
-      v35 = [v48 groupStyle];
+      groupStyle = [metadataTypeHorizontalFlowGroup2 groupStyle];
       v36 = 1;
-      if (v35 != 1)
+      if (groupStyle != 1)
       {
         v36 = 2;
       }
 
       self->_overflowType = v36;
-      if ([v48 columns] >= 2 && objc_msgSend(v48, "widthClass") == 1)
+      if ([metadataTypeHorizontalFlowGroup2 columns] >= 2 && objc_msgSend(metadataTypeHorizontalFlowGroup2, "widthClass") == 1)
       {
         v37 = self->_content;
         if (v37)
@@ -1659,14 +1659,14 @@ LABEL_9:
     {
       self->_overflowType = 0;
       objc_storeStrong(&self->_effectiveContentByRows, self->_contentByRows);
-      v48 = self->_effectiveDroppedContent;
+      metadataTypeHorizontalFlowGroup2 = self->_effectiveDroppedContent;
       self->_effectiveDroppedContent = 0;
     }
 
-    v14 = v49;
+    stateCopy = v49;
 
     self->_effectiveSelectable = self->_selectable;
-    [(PKPassTileGroupView *)self _updateSubviewsAnimated:v7];
+    [(PKPassTileGroupView *)self _updateSubviewsAnimated:animatedCopy];
     v15 = v50;
   }
 }
@@ -1739,27 +1739,27 @@ BOOL __66__PKPassTileGroupView_setPass_content_passState_context_animated___bloc
   return v12;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(PKPassTileGroupView *)self setNeedsLayout];
   }
 }
 
-- (void)_tileViewTapped:(id)a3
+- (void)_tileViewTapped:(id)tapped
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 content];
-  if (v5)
+  tappedCopy = tapped;
+  content = [tappedCopy content];
+  if (content)
   {
-    if ([v4 overflowType] == 2)
+    if ([tappedCopy overflowType] == 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained passTileGroupView:self displayTileContext:1 tile:self->_groupTile overrideMaximumRows:1];
@@ -1767,47 +1767,47 @@ BOOL __66__PKPassTileGroupView_setPass_content_passState_context_animated___bloc
 
     else
     {
-      v7 = [v5 state];
+      state = [content state];
       v8 = MEMORY[0x1E69B8D10];
-      v9 = [v7 actions];
-      v10 = [v8 effectiveActionForActions:v9];
+      actions = [state actions];
+      v10 = [v8 effectiveActionForActions:actions];
 
       if (v10)
       {
-        v11 = [v5 metadata];
-        if ([v5 supportsPaymentPassAction:v10])
+        metadata = [content metadata];
+        if ([content supportsPaymentPassAction:v10])
         {
-          v12 = [v10 type];
-          if (v12 > 8)
+          type = [v10 type];
+          if (type > 8)
           {
-            if (v12 > 12)
+            if (type > 12)
             {
-              if (v12 == 13)
+              if (type == 13)
               {
                 [(PKPassTileGroupView *)&self->super.super.super.isa _performShareFlightStatus];
               }
 
-              else if (v12 == 14)
+              else if (type == 14)
               {
                 [(PKPassTileGroupView *)self _performOpenBusinessChat:v10];
               }
             }
 
-            else if (v12 == 9)
+            else if (type == 9)
             {
-              v25 = [v4 viewImageActionView];
-              [(PKPassTileGroupView *)self _performViewImageAction:v10 sourceImageView:v25];
+              viewImageActionView = [tappedCopy viewImageActionView];
+              [(PKPassTileGroupView *)self _performViewImageAction:v10 sourceImageView:viewImageActionView];
             }
 
-            else if (v12 == 10)
+            else if (type == 10)
             {
               PKPaymentPassActionPerformOpenAppClip(v10);
             }
           }
 
-          else if (v12 > 6)
+          else if (type > 6)
           {
-            if (v12 == 7)
+            if (type == 7)
             {
               [(PKPassTileGroupView *)self _performDisplayAuxiliaryPassInformationItemAction:v10];
             }
@@ -1818,13 +1818,13 @@ BOOL __66__PKPassTileGroupView_setPass_content_passState_context_animated___bloc
             }
           }
 
-          else if (v12 == 3)
+          else if (type == 3)
           {
-            v24 = [(PKPassTileGroupView *)self window];
-            PKPaymentPassActionPerformOpenExternalURL(v10, v24);
+            window = [(PKPassTileGroupView *)self window];
+            PKPaymentPassActionPerformOpenExternalURL(v10, window);
           }
 
-          else if (v12 == 4)
+          else if (type == 4)
           {
             v13 = objc_loadWeakRetained(&self->_delegate);
             if ([(PKPass *)self->_pass passType]== PKPassTypeSecureElement)
@@ -1841,7 +1841,7 @@ BOOL __66__PKPassTileGroupView_setPass_content_passState_context_animated___bloc
                 aBlock[2] = __39__PKPassTileGroupView__tileViewTapped___block_invoke;
                 aBlock[3] = &unk_1E8015898;
                 v36 = v37;
-                v26 = v4;
+                v26 = tappedCopy;
                 v35 = v26;
                 v15 = _Block_copy(aBlock);
                 v16 = objc_alloc(MEMORY[0x1E69B8798]);
@@ -1867,7 +1867,7 @@ BOOL __66__PKPassTileGroupView_setPass_content_passState_context_animated___bloc
                 v29 = v19;
                 v20 = v27;
                 v30 = v20;
-                [v13 passTileGroupView:self executeSEActionForPass:v14 tile:v5 withCompletion:v28];
+                [v13 passTileGroupView:self executeSEActionForPass:v14 tile:content withCompletion:v28];
                 if ((*(*&v37[8] + 24) & 1) == 0)
                 {
                   [v26 setInActionState:1 animated:1];
@@ -1889,12 +1889,12 @@ BOOL __66__PKPassTileGroupView_setPass_content_passState_context_animated___bloc
           v21 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v11 identifier];
-            v23 = [v5 stateIdentifier];
+            identifier = [metadata identifier];
+            stateIdentifier = [content stateIdentifier];
             *v37 = 138412546;
-            *&v37[4] = v22;
+            *&v37[4] = identifier;
             *&v37[12] = 2112;
-            *&v37[14] = v23;
+            *&v37[14] = stateIdentifier;
             _os_log_impl(&dword_1BD026000, v21, OS_LOG_TYPE_DEFAULT, "PKPassTileGroupView: ignoring tap on tile (%@: %@) due to unsupported action.", v37, 0x16u);
           }
         }
@@ -1921,26 +1921,26 @@ uint64_t __39__PKPassTileGroupView__tileViewTapped___block_invoke_130(uint64_t a
   return v2();
 }
 
-- (void)_tileViewPinched:(id)a3
+- (void)_tileViewPinched:(id)pinched
 {
-  v12 = a3;
-  [v12 scale];
-  v4 = v12;
+  pinchedCopy = pinched;
+  [pinchedCopy scale];
+  v4 = pinchedCopy;
   if (v5 > 0.0)
   {
-    v6 = [v12 view];
-    v7 = [v6 content];
-    v8 = [v7 state];
+    view = [pinchedCopy view];
+    content = [view content];
+    state = [content state];
     v9 = MEMORY[0x1E69B8D10];
-    v10 = [v8 actions];
-    v11 = [v9 effectiveActionForActions:v10];
+    actions = [state actions];
+    v11 = [v9 effectiveActionForActions:actions];
 
     if ([v11 type] == 9)
     {
-      [(PKPassTileGroupView *)self _tileViewTapped:v6];
+      [(PKPassTileGroupView *)self _tileViewTapped:view];
     }
 
-    v4 = v12;
+    v4 = pinchedCopy;
   }
 }
 
@@ -2006,7 +2006,7 @@ LABEL_17:
 LABEL_18:
 }
 
-- (id)passTileViewRequestsBeginSuppressingCardEmulation:(id)a3
+- (id)passTileViewRequestsBeginSuppressingCardEmulation:(id)emulation
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained passTileGroupViewRequestsBeginSuppressingCardEmulation:self];

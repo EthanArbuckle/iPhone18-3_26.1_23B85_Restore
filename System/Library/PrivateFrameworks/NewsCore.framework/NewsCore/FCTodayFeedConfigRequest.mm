@@ -1,35 +1,35 @@
 @interface FCTodayFeedConfigRequest
-- (BOOL)isEqual:(id)a3;
-- (FCTodayFeedConfigRequest)initWithCoder:(id)a3;
-- (FCTodayFeedConfigRequest)initWithFeedType:(unint64_t)a3 forYouConfigID:(id)a4 formatVersion:(id)a5 additionalRecordIDs:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (FCTodayFeedConfigRequest)initWithCoder:(id)coder;
+- (FCTodayFeedConfigRequest)initWithFeedType:(unint64_t)type forYouConfigID:(id)d formatVersion:(id)version additionalRecordIDs:(id)ds;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCTodayFeedConfigRequest
 
-- (FCTodayFeedConfigRequest)initWithFeedType:(unint64_t)a3 forYouConfigID:(id)a4 formatVersion:(id)a5 additionalRecordIDs:(id)a6
+- (FCTodayFeedConfigRequest)initWithFeedType:(unint64_t)type forYouConfigID:(id)d formatVersion:(id)version additionalRecordIDs:(id)ds
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  versionCopy = version;
+  dsCopy = ds;
   v22.receiver = self;
   v22.super_class = FCTodayFeedConfigRequest;
   v13 = [(FCTodayFeedConfigRequest *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_feedType = a3;
-    v15 = [v10 copy];
+    v13->_feedType = type;
+    v15 = [dCopy copy];
     forYouConfigID = v14->_forYouConfigID;
     v14->_forYouConfigID = v15;
 
-    v17 = [v11 copy];
+    v17 = [versionCopy copy];
     formatVersion = v14->_formatVersion;
     v14->_formatVersion = v17;
 
-    v19 = [v12 copy];
+    v19 = [dsCopy copy];
     additionalRecordIDs = v14->_additionalRecordIDs;
     v14->_additionalRecordIDs = v19;
   }
@@ -37,15 +37,15 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -63,20 +63,20 @@
 
   if (v6 && (v7 = -[FCTodayFeedConfigRequest feedType](self, "feedType"), v7 == [v6 feedType]))
   {
-    v8 = [(FCTodayFeedConfigRequest *)self forYouConfigID];
-    v9 = [v6 forYouConfigID];
-    if ([v8 isEqualToString:v9])
+    forYouConfigID = [(FCTodayFeedConfigRequest *)self forYouConfigID];
+    forYouConfigID2 = [v6 forYouConfigID];
+    if ([forYouConfigID isEqualToString:forYouConfigID2])
     {
-      v10 = [(FCTodayFeedConfigRequest *)self formatVersion];
-      v11 = [v6 formatVersion];
-      if ([v10 isEqualToString:v11])
+      formatVersion = [(FCTodayFeedConfigRequest *)self formatVersion];
+      formatVersion2 = [v6 formatVersion];
+      if ([formatVersion isEqualToString:formatVersion2])
       {
         v12 = MEMORY[0x1E695DFD8];
-        v13 = [(FCTodayFeedConfigRequest *)self additionalRecordIDs];
-        v14 = [v12 setWithArray:v13];
+        additionalRecordIDs = [(FCTodayFeedConfigRequest *)self additionalRecordIDs];
+        v14 = [v12 setWithArray:additionalRecordIDs];
         v15 = MEMORY[0x1E695DFD8];
-        v16 = [v6 additionalRecordIDs];
-        v17 = [v15 setWithArray:v16];
+        additionalRecordIDs2 = [v6 additionalRecordIDs];
+        v17 = [v15 setWithArray:additionalRecordIDs2];
         v18 = [v14 isEqualToSet:v17];
       }
 
@@ -104,12 +104,12 @@
 {
   v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FCTodayFeedConfigRequest feedType](self, "feedType")}];
   v4 = [v3 hash];
-  v5 = [(FCTodayFeedConfigRequest *)self forYouConfigID];
-  v6 = [v5 hash];
-  v7 = [(FCTodayFeedConfigRequest *)self formatVersion];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(FCTodayFeedConfigRequest *)self additionalRecordIDs];
-  v10 = v8 ^ [v9 hash];
+  forYouConfigID = [(FCTodayFeedConfigRequest *)self forYouConfigID];
+  v6 = [forYouConfigID hash];
+  formatVersion = [(FCTodayFeedConfigRequest *)self formatVersion];
+  v8 = v6 ^ [formatVersion hash];
+  additionalRecordIDs = [(FCTodayFeedConfigRequest *)self additionalRecordIDs];
+  v10 = v8 ^ [additionalRecordIDs hash];
 
   return v10 ^ v4;
 }
@@ -117,14 +117,14 @@
 - (id)description
 {
   v3 = [[FCDescription alloc] initWithObject:self];
-  v4 = [(FCTodayFeedConfigRequest *)self feedType];
+  feedType = [(FCTodayFeedConfigRequest *)self feedType];
   v5 = @"regular";
-  if (v4 == 1)
+  if (feedType == 1)
   {
     v5 = @"premium";
   }
 
-  if (v4 == 2)
+  if (feedType == 2)
   {
     v6 = @"premium_lite";
   }
@@ -135,18 +135,18 @@
   }
 
   [(FCDescription *)v3 addField:@"feedType" object:v6];
-  v7 = [(FCTodayFeedConfigRequest *)self forYouConfigID];
-  [(FCDescription *)v3 addField:@"forYouConfigID" object:v7];
+  forYouConfigID = [(FCTodayFeedConfigRequest *)self forYouConfigID];
+  [(FCDescription *)v3 addField:@"forYouConfigID" object:forYouConfigID];
 
-  v8 = [(FCTodayFeedConfigRequest *)self formatVersion];
-  [(FCDescription *)v3 addField:@"formatVersion" object:v8];
+  formatVersion = [(FCTodayFeedConfigRequest *)self formatVersion];
+  [(FCDescription *)v3 addField:@"formatVersion" object:formatVersion];
 
-  v9 = [(FCTodayFeedConfigRequest *)self additionalRecordIDs];
-  [(FCDescription *)v3 addField:@"additionalRecordIDs" object:v9];
+  additionalRecordIDs = [(FCTodayFeedConfigRequest *)self additionalRecordIDs];
+  [(FCDescription *)v3 addField:@"additionalRecordIDs" object:additionalRecordIDs];
 
-  v10 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v10;
+  return descriptionString;
 }
 
 __CFString *__39__FCTodayFeedConfigRequest_description__block_invoke(uint64_t a1)
@@ -169,81 +169,81 @@ __CFString *__39__FCTodayFeedConfigRequest_description__block_invoke(uint64_t a1
   }
 }
 
-- (FCTodayFeedConfigRequest)initWithCoder:(id)a3
+- (FCTodayFeedConfigRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"version"] == 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"version"] == 1)
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"feedType"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"feedType"];
     v6 = v5;
     if (v5)
     {
       v7 = v5;
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"forYouConfigID"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"forYouConfigID"];
       v9 = v8;
       if (v8)
       {
         v10 = v8;
-        v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formatVersion"];
+        v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formatVersion"];
         if (v11)
         {
           v12 = MEMORY[0x1E695DFD8];
           v13 = objc_opt_class();
           v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-          v15 = [v4 decodeObjectOfClasses:v14 forKey:@"additionalRecordIDs"];
+          v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"additionalRecordIDs"];
           if (v15)
           {
             self = -[FCTodayFeedConfigRequest initWithFeedType:forYouConfigID:formatVersion:additionalRecordIDs:](self, "initWithFeedType:forYouConfigID:formatVersion:additionalRecordIDs:", [v7 unsignedIntegerValue], v10, v11, v15);
-            v16 = self;
+            selfCopy = self;
           }
 
           else
           {
-            v16 = 0;
+            selfCopy = 0;
           }
         }
 
         else
         {
-          v16 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v16 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v16 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:1 forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"version"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FCTodayFeedConfigRequest feedType](self, "feedType")}];
-  [v4 encodeObject:v5 forKey:@"feedType"];
+  [coderCopy encodeObject:v5 forKey:@"feedType"];
 
-  v6 = [(FCTodayFeedConfigRequest *)self forYouConfigID];
-  [v4 encodeObject:v6 forKey:@"forYouConfigID"];
+  forYouConfigID = [(FCTodayFeedConfigRequest *)self forYouConfigID];
+  [coderCopy encodeObject:forYouConfigID forKey:@"forYouConfigID"];
 
-  v7 = [(FCTodayFeedConfigRequest *)self formatVersion];
-  [v4 encodeObject:v7 forKey:@"formatVersion"];
+  formatVersion = [(FCTodayFeedConfigRequest *)self formatVersion];
+  [coderCopy encodeObject:formatVersion forKey:@"formatVersion"];
 
-  v8 = [(FCTodayFeedConfigRequest *)self additionalRecordIDs];
-  [v4 encodeObject:v8 forKey:@"additionalRecordIDs"];
+  additionalRecordIDs = [(FCTodayFeedConfigRequest *)self additionalRecordIDs];
+  [coderCopy encodeObject:additionalRecordIDs forKey:@"additionalRecordIDs"];
 }
 
 @end

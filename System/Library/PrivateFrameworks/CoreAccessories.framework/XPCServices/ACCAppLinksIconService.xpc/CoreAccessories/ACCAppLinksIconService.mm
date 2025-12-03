@@ -1,42 +1,42 @@
 @interface ACCAppLinksIconService
-+ (id)iconImageFromUnmaskedImage:(id)a3;
-- (void)_getIconDataForBundleID:(id)a3 forIconSize:(double)a4 withReply:(id)a5;
-- (void)getIconDataForBundleID:(id)a3 forIconSize:(double)a4 withReply:(id)a5;
++ (id)iconImageFromUnmaskedImage:(id)image;
+- (void)_getIconDataForBundleID:(id)d forIconSize:(double)size withReply:(id)reply;
+- (void)getIconDataForBundleID:(id)d forIconSize:(double)size withReply:(id)reply;
 @end
 
 @implementation ACCAppLinksIconService
 
-+ (id)iconImageFromUnmaskedImage:(id)a3
++ (id)iconImageFromUnmaskedImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = [IFImage alloc];
-  v5 = [v3 CGImage];
-  [v3 scale];
-  v6 = [v4 initWithCGImage:v5 scale:?];
+  cGImage = [imageCopy CGImage];
+  [imageCopy scale];
+  v6 = [v4 initWithCGImage:cGImage scale:?];
   v7 = [ISIcon alloc];
   v23 = v6;
   v8 = [NSArray arrayWithObjects:&v23 count:1];
   v9 = [v7 initWithImages:v8];
 
   v10 = [ISImageDescriptor alloc];
-  [v3 size];
+  [imageCopy size];
   v12 = v11;
   v14 = v13;
-  [v3 scale];
+  [imageCopy scale];
   v16 = [v10 initWithSize:v12 scale:{v14, v15}];
   [v16 setShape:1];
   v17 = [v9 imageForImageDescriptor:v16];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 CGImage];
+    cGImage2 = [v17 CGImage];
     [v18 scale];
-    v20 = [UIImage imageWithCGImage:v19 scale:0 orientation:?];
+    v20 = [UIImage imageWithCGImage:cGImage2 scale:0 orientation:?];
   }
 
   else
   {
-    v20 = v3;
+    v20 = imageCopy;
   }
 
   v21 = v20;
@@ -44,26 +44,26 @@
   return v21;
 }
 
-- (void)getIconDataForBundleID:(id)a3 forIconSize:(double)a4 withReply:(id)a5
+- (void)getIconDataForBundleID:(id)d forIconSize:(double)size withReply:(id)reply
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __71__ACCAppLinksIconService_getIconDataForBundleID_forIconSize_withReply___block_invoke;
   v9[3] = &unk_1000042A0;
   v9[4] = self;
-  v10 = a3;
-  v12 = a4;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
+  dCopy = d;
+  sizeCopy = size;
+  replyCopy = reply;
+  v7 = replyCopy;
+  v8 = dCopy;
   dispatch_sync(&_dispatch_main_q, v9);
 }
 
-- (void)_getIconDataForBundleID:(id)a3 forIconSize:(double)a4 withReply:(id)a5
+- (void)_getIconDataForBundleID:(id)d forIconSize:(double)size withReply:(id)reply
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[ISIcon alloc] initWithBundleIdentifier:v8];
+  replyCopy = reply;
+  dCopy = d;
+  v9 = [[ISIcon alloc] initWithBundleIdentifier:dCopy];
 
   if (!v9)
   {
@@ -74,7 +74,7 @@
     goto LABEL_14;
   }
 
-  v10 = [[ISImageDescriptor alloc] initWithSize:a4 scale:{a4, 1.2}];
+  v10 = [[ISImageDescriptor alloc] initWithSize:size scale:{size, 1.2}];
   v11 = v10;
   if (!v10)
   {
@@ -111,12 +111,12 @@ LABEL_14:
   v30 = v18;
   size = v17;
   [v16 size];
-  v20 = a4 / v19;
+  v20 = size / v19;
   v21 = +[UIScreen mainScreen];
   [v21 scale];
   v23 = v20 / v22;
   [v16 size];
-  v25 = a4 / v24;
+  v25 = size / v24;
   v26 = +[UIScreen mainScreen];
   [v26 scale];
   CGAffineTransformMakeScale(&v33, v23, v25 / v27);
@@ -141,7 +141,7 @@ LABEL_14:
 
   v28 = UIImagePNGRepresentation(v29);
 LABEL_9:
-  v7[2](v7, v28);
+  replyCopy[2](replyCopy, v28);
 }
 
 @end

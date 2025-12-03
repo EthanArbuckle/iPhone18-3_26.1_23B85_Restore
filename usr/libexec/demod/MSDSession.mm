@@ -1,35 +1,35 @@
 @interface MSDSession
-- (id)getServerErrorMessage:(id)a3 withDefault:(id)a4;
-- (id)parseResponseHeader:(id)a3 statusCode:(int64_t)a4;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)dispatchSessionTask:(id)a3;
-- (void)dispatchSessionTask:(id)a3 withError:(id *)a4;
-- (void)handleDownloadAborted:(id)a3;
-- (void)handleDownloadPaused:(id)a3;
+- (id)getServerErrorMessage:(id)message withDefault:(id)default;
+- (id)parseResponseHeader:(id)header statusCode:(int64_t)code;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)dispatchSessionTask:(id)task;
+- (void)dispatchSessionTask:(id)task withError:(id *)error;
+- (void)handleDownloadAborted:(id)aborted;
+- (void)handleDownloadPaused:(id)paused;
 - (void)invalidate;
-- (void)launchTaskWithInfo:(id)a3;
-- (void)logDownloadTaskLaunch:(id)a3;
-- (void)retrySessionTask:(id)a3;
+- (void)launchTaskWithInfo:(id)info;
+- (void)logDownloadTaskLaunch:(id)launch;
+- (void)retrySessionTask:(id)task;
 @end
 
 @implementation MSDSession
 
 - (void)invalidate
 {
-  v2 = [(MSDSession *)self session];
-  [v2 invalidateAndCancel];
+  session = [(MSDSession *)self session];
+  [session invalidateAndCancel];
 }
 
-- (void)launchTaskWithInfo:(id)a3
+- (void)launchTaskWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[MSDSessionTask alloc] initFromTaskInfo:v4];
+  infoCopy = info;
+  v5 = [[MSDSessionTask alloc] initFromTaskInfo:infoCopy];
 
-  v6 = [(MSDSession *)self demuxQueue];
+  demuxQueue = [(MSDSession *)self demuxQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006FFE4;
@@ -37,16 +37,16 @@
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_sync(v6, v8);
+  dispatch_sync(demuxQueue, v8);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MSDSession *)self taskManager];
-  v13 = [v12 getSessionTask:v9];
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  taskManager = [(MSDSession *)self taskManager];
+  v13 = [taskManager getSessionTask:taskCopy];
 
   if (!v13)
   {
@@ -77,9 +77,9 @@ LABEL_20:
     if (v25)
     {
       v29 = +[NSFileManager defaultManager];
-      v30 = [v13 info];
-      v31 = [v30 savePath];
-      [v29 removeItemAtPath:v31 error:0];
+      info = [v13 info];
+      savePath = [info savePath];
+      [v29 removeItemAtPath:savePath error:0];
 
       [v13 resetFileHandle];
     }
@@ -87,26 +87,26 @@ LABEL_20:
     v32 = sub_100063A54();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v14 statusCode];
-      v34 = [v13 state];
+      statusCode = [v14 statusCode];
+      state = [v13 state];
       v35 = 134218240;
-      v36 = v33;
+      v36 = statusCode;
       v37 = 1024;
-      LODWORD(v38) = v34 == 2;
+      LODWORD(v38) = state == 2;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Cancelling download task on status code: %ld; should retry=%d", &v35, 0x12u);
     }
 
 LABEL_26:
 
-    v11[2](v11, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_27;
   }
 
-  v14 = v10;
-  v15 = [v13 info];
-  v16 = [v15 savePath];
+  v14 = responseCopy;
+  info2 = [v13 info];
+  savePath2 = [info2 savePath];
 
-  if (v16)
+  if (savePath2)
   {
     if ([v14 statusCode] != 200 && objc_msgSend(v14, "statusCode") != 206)
     {
@@ -120,18 +120,18 @@ LABEL_26:
       goto LABEL_20;
     }
 
-    v17 = [v14 allHeaderFields];
-    v18 = [v17 objectForKey:@"Content-Range"];
+    allHeaderFields = [v14 allHeaderFields];
+    v18 = [allHeaderFields objectForKey:@"Content-Range"];
 
     if (!v18)
     {
       v26 = sub_100063A54();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v13 info];
-        v28 = [v27 savePath];
+        info3 = [v13 info];
+        savePath3 = [info3 savePath];
         v35 = 138543618;
-        v36 = v28;
+        v36 = savePath3;
         v37 = 2114;
         v38 = @"Content-Range";
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "HTTP response header for %{public}@ does not contain key %{public}@; cannot proceed with download", &v35, 0x16u);
@@ -142,21 +142,21 @@ LABEL_26:
       goto LABEL_20;
     }
 
-    v19 = [v13 contentRange];
-    [v19 processServerRangeResponse:v18];
+    contentRange = [v13 contentRange];
+    [contentRange processServerRangeResponse:v18];
 
-    v20 = [v13 contentRange];
-    v21 = [v20 isDownloadComplete];
+    contentRange2 = [v13 contentRange];
+    isDownloadComplete = [contentRange2 isDownloadComplete];
 
-    if (v21)
+    if (isDownloadComplete)
     {
       v22 = sub_100063A54();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v13 info];
-        v24 = [v23 savePath];
+        info4 = [v13 info];
+        savePath4 = [info4 savePath];
         v35 = 138543362;
-        v36 = v24;
+        v36 = savePath4;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Download for %{public}@ is already complete, no need to continue with download task", &v35, 0xCu);
       }
 
@@ -170,20 +170,20 @@ LABEL_26:
     v18 = 0;
   }
 
-  v11[2](v11, 1);
+  handlerCopy[2](handlerCopy, 1);
 LABEL_27:
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v9 response];
-  v13 = [v12 statusCode];
-  v14 = [(MSDSession *)self taskManager];
-  v15 = [v14 getSessionTask:v9];
+  response = [taskCopy response];
+  statusCode = [response statusCode];
+  taskManager = [(MSDSession *)self taskManager];
+  v15 = [taskManager getSessionTask:taskCopy];
 
   if (!v15)
   {
@@ -193,65 +193,65 @@ LABEL_27:
       sub_1000D9694();
     }
 
-    v19 = 0;
+    outData = 0;
     goto LABEL_15;
   }
 
-  v16 = [v15 info];
-  v17 = [v16 savePath];
-  if (!v17)
+  info = [v15 info];
+  savePath = [info savePath];
+  if (!savePath)
   {
 
 LABEL_8:
-    v19 = [v15 outData];
-    [v19 appendData:v10];
+    outData = [v15 outData];
+    [outData appendData:dataCopy];
     goto LABEL_9;
   }
 
-  if (v13 != 206 && v13 != 200)
+  if (statusCode != 206 && statusCode != 200)
   {
     goto LABEL_8;
   }
 
-  v18 = [v15 fileHandle];
+  fileHandle = [v15 fileHandle];
   v21 = 0;
-  [v18 writeData:v10 error:&v21];
-  v19 = v21;
+  [fileHandle writeData:dataCopy error:&v21];
+  outData = v21;
 
-  if (v19)
+  if (outData)
   {
-    [v15 setError:v19];
+    [v15 setError:outData];
     v20 = sub_100063A54();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      sub_1000D96FC(v15, v19, v20);
+      sub_1000D96FC(v15, outData, v20);
     }
 
 LABEL_15:
 
-    [v9 cancel];
+    [taskCopy cancel];
     goto LABEL_9;
   }
 
-  v19 = [v15 contentRange];
-  [v19 appendDownloadedFileSize:{objc_msgSend(v10, "length")}];
+  outData = [v15 contentRange];
+  [outData appendDownloadedFileSize:{objc_msgSend(dataCopy, "length")}];
 LABEL_9:
 
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MSDSession *)self taskManager];
-  v13 = [v12 getSessionTask:v9];
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  taskManager = [(MSDSession *)self taskManager];
+  v13 = [taskManager getSessionTask:taskCopy];
 
   if (v13)
   {
-    v14 = [v10 protectionSpace];
-    v15 = [v14 authenticationMethod];
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
 
     v16 = sub_100063A54();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -259,9 +259,9 @@ LABEL_9:
       sub_1000D97B8(v13);
     }
 
-    if ([v15 isEqualToString:NSURLAuthenticationMethodServerTrust])
+    if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
     {
-      [(MSDSession *)self authenticate:v10 forTask:v13 completion:v11];
+      [(MSDSession *)self authenticate:challengeCopy forTask:v13 completion:handlerCopy];
     }
 
     else
@@ -272,7 +272,7 @@ LABEL_9:
         sub_1000D985C();
       }
 
-      v11[2](v11, 2, 0);
+      handlerCopy[2](handlerCopy, 2, 0);
     }
   }
 
@@ -282,43 +282,43 @@ LABEL_9:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v9;
+      v20 = taskCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Untracked task: %{public}@; canceling...", &v19, 0xCu);
     }
 
-    v11[2](v11, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(MSDSession *)self taskManager];
-  v14 = [v13 getSessionTask:v10];
+  taskCopy = task;
+  requestCopy = request;
+  handlerCopy = handler;
+  taskManager = [(MSDSession *)self taskManager];
+  v14 = [taskManager getSessionTask:taskCopy];
 
   if (v14)
   {
     [v14 setRedirected:1];
-    v15 = [v11 URL];
+    v15 = [requestCopy URL];
     v16 = [NSMutableURLRequest requestWithURL:v15 cachePolicy:1 timeoutInterval:30.0];
 
-    v17 = [v14 info];
-    v18 = [v17 savePath];
+    info = [v14 info];
+    savePath = [info savePath];
 
-    if (v18)
+    if (savePath)
     {
-      v19 = [v14 contentRange];
-      v20 = [v19 getRangeHeaderForDownload];
+      contentRange = [v14 contentRange];
+      getRangeHeaderForDownload = [contentRange getRangeHeaderForDownload];
 
-      if (v20)
+      if (getRangeHeaderForDownload)
       {
-        [v16 setValue:v20 forHTTPHeaderField:@"Range"];
+        [v16 setValue:getRangeHeaderForDownload forHTTPHeaderField:@"Range"];
       }
     }
 
-    v12[2](v12, v16);
+    handlerCopy[2](handlerCopy, v16);
   }
 
   else
@@ -327,24 +327,24 @@ LABEL_9:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138543362;
-      v23 = v10;
+      v23 = taskCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Untracked task: %{public}@; canceling...", &v22, 0xCu);
     }
 
-    [v10 cancel];
-    v12[2](v12, 0);
+    [taskCopy cancel];
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v109 = a5;
-  v8 = [(MSDSession *)self taskManager];
-  v9 = [v8 getSessionTask:v7];
+  taskCopy = task;
+  errorCopy = error;
+  taskManager = [(MSDSession *)self taskManager];
+  v9 = [taskManager getSessionTask:taskCopy];
 
-  v10 = [v7 response];
-  v11 = [v10 statusCode];
+  response = [taskCopy response];
+  statusCode = [response statusCode];
   v12 = objc_alloc_init(NSMutableDictionary);
   if (!v9)
   {
@@ -352,7 +352,7 @@ LABEL_9:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v116 = v7;
+      v116 = taskCopy;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Untracked task: %{public}@ done.", buf, 0xCu);
     }
 
@@ -362,42 +362,42 @@ LABEL_9:
 
   if (!-[MSDSession getIsFileDownload](self, "getIsFileDownload") || [v9 state] != 1)
   {
-    if ([v109 code] == -999 && objc_msgSend(v9, "state") != 3)
+    if ([errorCopy code] == -999 && objc_msgSend(v9, "state") != 3)
     {
-      v103 = v10;
+      v103 = response;
       v106 = v12;
-      v32 = [v9 info];
-      v33 = [v32 savePath];
-      if (v33)
+      info = [v9 info];
+      savePath = [info savePath];
+      if (savePath)
       {
-        v34 = v33;
+        v34 = savePath;
         [v9 contentRange];
-        v36 = v35 = v11;
-        v37 = [v36 isDownloadComplete];
+        v36 = v35 = statusCode;
+        isDownloadComplete = [v36 isDownloadComplete];
 
-        v11 = v35;
-        if (v37)
+        statusCode = v35;
+        if (isDownloadComplete)
         {
           v38 = sub_100063A54();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
-            v39 = [v9 info];
-            v40 = [v39 description];
-            v41 = [v9 info];
-            v42 = [v41 savePath];
+            info2 = [v9 info];
+            v40 = [info2 description];
+            info3 = [v9 info];
+            savePath2 = [info3 savePath];
             *buf = 138543618;
             v116 = v40;
             v117 = 2114;
-            v118 = v42;
+            v118 = savePath2;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "SessionTask %{public}@ for file %{public}@ is cancelled but it is already complete, ignoring cancellation", buf, 0x16u);
 
-            v11 = v35;
+            statusCode = v35;
           }
 
           v27 = 0;
           v28 = 0;
           v29 = 0;
-          v10 = v103;
+          response = v103;
           v12 = v106;
           goto LABEL_61;
         }
@@ -407,58 +407,58 @@ LABEL_9:
       {
       }
 
-      v54 = [v9 error];
-      if (v54)
+      error = [v9 error];
+      if (error)
       {
-        v55 = [v9 error];
+        error2 = [v9 error];
       }
 
       else
       {
-        v55 = v109;
+        error2 = errorCopy;
       }
 
-      v27 = v55;
-      v10 = v103;
+      v27 = error2;
+      response = v103;
 
       v28 = 0;
       v29 = [v9 state] == 2;
       goto LABEL_46;
     }
 
-    if (!v10)
+    if (!response)
     {
-      if (v109)
+      if (errorCopy)
       {
-        v107 = v7;
+        v107 = taskCopy;
         v31 = v12;
-        v27 = v109;
+        v27 = errorCopy;
         v29 = 1;
 LABEL_58:
         v61 = sub_100063A54();
         if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
         {
           [v9 info];
-          v62 = v104 = v10;
+          v62 = v104 = response;
           [v62 description];
-          v64 = v63 = v11;
-          v65 = [v27 localizedDescription];
-          v66 = [v27 code];
+          v64 = v63 = statusCode;
+          localizedDescription = [v27 localizedDescription];
+          code = [v27 code];
           *buf = 138543874;
           v116 = v64;
           v117 = 2114;
-          v118 = v65;
+          v118 = localizedDescription;
           v119 = 2048;
-          v120 = v66;
+          v120 = code;
           _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "Session task %{public}@ did fail with error: %{public}@(0x%tx)", buf, 0x20u);
 
-          v10 = v104;
-          v11 = v63;
+          response = v104;
+          statusCode = v63;
         }
 
         v28 = 0;
         v12 = v31;
-        v7 = v107;
+        taskCopy = v107;
         goto LABEL_61;
       }
 
@@ -485,12 +485,12 @@ LABEL_56:
       goto LABEL_52;
     }
 
-    if (v11 <= 205)
+    if (statusCode <= 205)
     {
       v29 = 0;
       v27 = 0;
       v28 = 1;
-      if ((v11 - 200) < 3 || v11 == 204)
+      if ((statusCode - 200) < 3 || statusCode == 204)
       {
         goto LABEL_61;
       }
@@ -498,13 +498,13 @@ LABEL_56:
       goto LABEL_53;
     }
 
-    if (v11 > 403)
+    if (statusCode > 403)
     {
-      if (v11 != 404)
+      if (statusCode != 404)
       {
-        if (v11 == 408)
+        if (statusCode == 408)
         {
-          v43 = v10;
+          v43 = response;
           v51 = [(MSDSession *)self getServerErrorMessage:v9 withDefault:@"Connection with server is broken."];
           v112 = 0;
           sub_1000C1390(&v112, 3727740931, v51);
@@ -515,7 +515,7 @@ LABEL_56:
         goto LABEL_53;
       }
 
-      v43 = v10;
+      v43 = response;
       v44 = [(MSDSession *)self getServerErrorMessage:v9 withDefault:@"Requested asset not found"];
       v113 = 0;
       sub_1000C1390(&v113, 3727740934, v44);
@@ -523,17 +523,17 @@ LABEL_56:
       goto LABEL_51;
     }
 
-    if (v11 != 206)
+    if (statusCode != 206)
     {
-      if (v11 != 403)
+      if (statusCode != 403)
       {
 LABEL_53:
-        v43 = v10;
+        v43 = response;
         v60 = sub_100063A54();
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v116 = v11;
+          v116 = statusCode;
           _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "Unrecognized status code %ld; will attempt to retry task", buf, 0xCu);
         }
 
@@ -544,7 +544,7 @@ LABEL_53:
         goto LABEL_56;
       }
 
-      v43 = v10;
+      v43 = response;
       v44 = [(MSDSession *)self getServerErrorMessage:v9 withDefault:@"Cannot authenticate with server."];
       v114 = 0;
       sub_1000C1390(&v114, 3727740933, v44);
@@ -556,62 +556,62 @@ LABEL_51:
       if (v27)
       {
 LABEL_57:
-        v107 = v7;
+        v107 = taskCopy;
         v31 = v12;
-        v10 = v43;
+        response = v43;
         goto LABEL_58;
       }
 
 LABEL_52:
       v28 = 0;
-      v10 = v43;
+      response = v43;
       goto LABEL_61;
     }
 
-    v43 = v10;
-    v56 = [v9 info];
-    v57 = [v56 savePath];
+    v43 = response;
+    info4 = [v9 info];
+    savePath3 = [info4 savePath];
 
-    if (v57)
+    if (savePath3)
     {
-      v58 = [v9 contentRange];
-      v59 = [v58 isDownloadComplete];
+      contentRange = [v9 contentRange];
+      isDownloadComplete2 = [contentRange isDownloadComplete];
 
-      if (v59)
+      if (isDownloadComplete2)
       {
         v29 = 0;
         goto LABEL_83;
       }
 
-      v94 = [v9 contentRange];
-      v95 = [v94 didProgress];
+      contentRange2 = [v9 contentRange];
+      didProgress = [contentRange2 didProgress];
 
-      if (v95)
+      if (didProgress)
       {
         v96 = sub_100063A54();
         if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
         {
-          v97 = [v9 info];
-          [v97 savePath];
-          v98 = v7;
+          info5 = [v9 info];
+          [info5 savePath];
+          v98 = taskCopy;
           v100 = v99 = v12;
           *buf = 138543362;
           v116 = v100;
           _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "Allowing partial download of %{public}@ to progress without retry penalty", buf, 0xCu);
 
           v12 = v99;
-          v7 = v98;
+          taskCopy = v98;
         }
 
         [v9 setCurrentRetry:{objc_msgSend(v9, "currentRetry") - 1}];
-        v101 = [v9 contentRange];
-        [v101 recordDownloadedBytes];
+        contentRange3 = [v9 contentRange];
+        [contentRange3 recordDownloadedBytes];
       }
     }
 
     v29 = 1;
 LABEL_83:
-    v27 = v109;
+    v27 = errorCopy;
     if (v27)
     {
       goto LABEL_57;
@@ -621,27 +621,27 @@ LABEL_83:
   }
 
   v106 = v12;
-  v13 = [v9 contentRange];
-  v14 = [v13 isDownloadComplete];
+  contentRange4 = [v9 contentRange];
+  isDownloadComplete3 = [contentRange4 isDownloadComplete];
 
   v15 = sub_100063A54();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if ((v14 & 1) == 0)
+  if ((isDownloadComplete3 & 1) == 0)
   {
     if (v16)
     {
-      v46 = [v9 info];
-      [v46 description];
-      v48 = v47 = v10;
-      v49 = [v9 info];
-      v50 = [v49 savePath];
+      info6 = [v9 info];
+      [info6 description];
+      v48 = v47 = response;
+      info7 = [v9 info];
+      savePath4 = [info7 savePath];
       *buf = 138543618;
       v116 = v48;
       v117 = 2114;
-      v118 = v50;
+      v118 = savePath4;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "SessionTask %{public}@ with savePath: %{public}@ paused, waiting to be resumed", buf, 0x16u);
 
-      v10 = v47;
+      response = v47;
     }
 
     v27 = 0;
@@ -651,35 +651,35 @@ LABEL_83:
 
   if (v16)
   {
-    v17 = [v9 info];
-    [v17 savePath];
-    v19 = v18 = v11;
+    info8 = [v9 info];
+    [info8 savePath];
+    v19 = v18 = statusCode;
     *buf = 138543362;
     v116 = v19;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Not pausing task for %{public}@ because download is already complete", buf, 0xCu);
 
-    v11 = v18;
+    statusCode = v18;
   }
 
   v20 = sub_100063BEC();
-  v21 = [(MSDSession *)self signpostId];
-  if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(MSDSession *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v22 = v21;
+    v22 = signpostId;
     if (os_signpost_enabled(v20))
     {
-      v23 = [v9 info];
-      v24 = [v23 description];
+      info9 = [v9 info];
+      v24 = [info9 description];
       [v9 info];
-      v25 = v102 = v11;
-      v26 = [v25 savePath];
+      v25 = v102 = statusCode;
+      savePath5 = [v25 savePath];
       *buf = 138412546;
       v116 = v24;
       v117 = 2112;
-      v118 = v26;
+      v118 = savePath5;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v20, OS_SIGNPOST_EVENT, v22, "Resume Session Task", "Not Pausing Completed Session Task: %{xcode:string}@ with save path: %{xcode:string}@", buf, 0x16u);
 
-      v11 = v102;
+      statusCode = v102;
     }
   }
 
@@ -689,125 +689,125 @@ LABEL_83:
 LABEL_46:
   v12 = v106;
 LABEL_61:
-  v67 = [(MSDSession *)self taskManager];
-  [v67 removeSessionTask:v9];
+  taskManager2 = [(MSDSession *)self taskManager];
+  [taskManager2 removeSessionTask:v9];
 
-  [(MSDSession *)self collectTimingDataForTask:v9 withNetworkError:v109];
+  [(MSDSession *)self collectTimingDataForTask:v9 withNetworkError:errorCopy];
   if (v29)
   {
-    v105 = v11;
-    v68 = v7;
+    v105 = statusCode;
+    v68 = taskCopy;
     v69 = v12;
-    v70 = v10;
-    v71 = [v9 currentRetry];
-    v72 = [v9 info];
-    v73 = [v72 maxRetry];
+    v70 = response;
+    currentRetry = [v9 currentRetry];
+    info10 = [v9 info];
+    maxRetry = [info10 maxRetry];
 
-    if (v71 <= v73)
+    if (currentRetry <= maxRetry)
     {
       [(MSDSession *)self retrySessionTask:v9];
-      v10 = v70;
+      response = v70;
       v12 = v69;
-      v7 = v68;
+      taskCopy = v68;
       goto LABEL_77;
     }
 
     v74 = sub_100063A54();
     if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
     {
-      v108 = [v9 info];
-      v75 = [v108 description];
-      v76 = [v9 info];
-      v77 = [v76 maxRetry];
+      info11 = [v9 info];
+      v75 = [info11 description];
+      info12 = [v9 info];
+      maxRetry2 = [info12 maxRetry];
       *buf = 138543618;
       v116 = v75;
       v117 = 2048;
-      v118 = v77;
+      v118 = maxRetry2;
       _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "%{public}@ exceeded maximum retry %ld", buf, 0x16u);
     }
 
-    v10 = v70;
+    response = v70;
     v12 = v69;
-    v7 = v68;
-    v11 = v105;
+    taskCopy = v68;
+    statusCode = v105;
   }
 
-  v78 = [NSNumber numberWithInteger:v11];
+  v78 = [NSNumber numberWithInteger:statusCode];
   [v12 setObject:v78 forKey:@"statusCode"];
 
   if (v28)
   {
-    v79 = [v10 allHeaderFields];
-    v80 = [(MSDSession *)self parseResponseHeader:v79 statusCode:v11];
+    allHeaderFields = [response allHeaderFields];
+    v80 = [(MSDSession *)self parseResponseHeader:allHeaderFields statusCode:statusCode];
     [v12 addEntriesFromDictionary:v80];
   }
 
-  v81 = [v9 outData];
+  outData = [v9 outData];
 
-  if (v81)
+  if (outData)
   {
-    v82 = [v9 outData];
-    [v12 setObject:v82 forKey:@"data"];
+    outData2 = [v9 outData];
+    [v12 setObject:outData2 forKey:@"data"];
   }
 
-  v83 = [v9 info];
-  v84 = [v83 savePath];
+  info13 = [v9 info];
+  savePath6 = [info13 savePath];
 
-  if (v84)
+  if (savePath6)
   {
-    v85 = [v9 contentRange];
-    v86 = [v85 downloadedBytes];
+    contentRange5 = [v9 contentRange];
+    downloadedBytes = [contentRange5 downloadedBytes];
 
-    v87 = [NSNumber numberWithInteger:v86];
+    v87 = [NSNumber numberWithInteger:downloadedBytes];
     [v12 setObject:v87 forKey:@"fileSize"];
   }
 
-  v88 = [v9 fileHandle];
+  fileHandle = [v9 fileHandle];
 
-  if (v88)
+  if (fileHandle)
   {
-    v89 = [v9 fileHandle];
-    [v89 closeFile];
+    fileHandle2 = [v9 fileHandle];
+    [fileHandle2 closeFile];
   }
 
-  v90 = [v9 info];
-  v91 = [v90 handler];
+  info14 = [v9 info];
+  handler = [info14 handler];
 
-  if (v91)
+  if (handler)
   {
-    v92 = [v9 info];
-    v93 = [v92 handler];
-    (v93)[2](v93, v27, v12);
+    info15 = [v9 info];
+    handler2 = [info15 handler];
+    (handler2)[2](handler2, v27, v12);
   }
 
 LABEL_77:
 }
 
-- (void)handleDownloadPaused:(id)a3
+- (void)handleDownloadPaused:(id)paused
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"kMSDDownloadPausedKey"];
-  v6 = [v5 BOOLValue];
+  userInfo = [paused userInfo];
+  v5 = [userInfo objectForKey:@"kMSDDownloadPausedKey"];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v66 = self;
+    selfCopy4 = self;
     v67 = 1024;
-    LODWORD(v68) = v6;
+    LODWORD(v68) = bOOLValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Session received background download paused notification; pause=%d", buf, 0x12u);
   }
 
-  if (v6 == [(MSDSession *)self isDownloadPaused])
+  if (bOOLValue == [(MSDSession *)self isDownloadPaused])
   {
     v30 = sub_100063A54();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v66 = self;
+      selfCopy4 = self;
       v67 = 1024;
-      LODWORD(v68) = v6;
+      LODWORD(v68) = bOOLValue;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: downloadPaused = %d, ignoring notification...", buf, 0x12u);
     }
 
@@ -816,12 +816,12 @@ LABEL_77:
 
   else
   {
-    [(MSDSession *)self setIsDownloadPaused:v6];
-    v8 = [(MSDSession *)self taskManager];
-    v9 = v8;
-    if (v6)
+    [(MSDSession *)self setIsDownloadPaused:bOOLValue];
+    taskManager = [(MSDSession *)self taskManager];
+    v9 = taskManager;
+    if (bOOLValue)
     {
-      v10 = [v8 getTaskInState:0];
+      v10 = [taskManager getTaskInState:0];
 
       v11 = sub_100063A54();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -851,47 +851,47 @@ LABEL_77:
             v15 = sub_100063A54();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v14 info];
-              v17 = [v16 description];
+              info = [v14 info];
+              v17 = [info description];
               *buf = 138543618;
-              v66 = self;
+              selfCopy4 = self;
               v67 = 2114;
               v68 = v17;
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Canceling task %{public}@", buf, 0x16u);
             }
 
             v18 = sub_100063BEC();
-            v19 = [(MSDSession *)self signpostId];
-            if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+            signpostId = [(MSDSession *)self signpostId];
+            if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
             {
-              v20 = v19;
+              v20 = signpostId;
               if (os_signpost_enabled(v18))
               {
-                v21 = [v14 info];
-                v22 = [v21 description];
-                v23 = [v14 info];
-                v24 = [v23 savePath];
+                info2 = [v14 info];
+                v22 = [info2 description];
+                info3 = [v14 info];
+                savePath = [info3 savePath];
                 *buf = 138412546;
-                v66 = v22;
+                selfCopy4 = v22;
                 v67 = 2112;
-                v68 = v24;
+                v68 = savePath;
                 _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_EVENT, v20, "Pause Session Task", "Pause Session Task: %{xcode:string}@ with save path: %{xcode:string}@", buf, 0x16u);
               }
             }
 
             [v14 setState:1];
-            v25 = [v14 task];
-            [v25 cancel];
+            task = [v14 task];
+            [task cancel];
 
             if (os_variant_has_internal_content())
             {
-              v26 = [v14 info];
-              v27 = [v26 savePath];
-              v28 = [v14 contentRange];
-              [v28 setFileDownloading:v27];
+              info4 = [v14 info];
+              savePath2 = [info4 savePath];
+              contentRange = [v14 contentRange];
+              [contentRange setFileDownloading:savePath2];
 
-              v29 = [v14 contentRange];
-              [v29 pushToTestLog:0];
+              contentRange2 = [v14 contentRange];
+              [contentRange2 pushToTestLog:0];
             }
           }
 
@@ -904,7 +904,7 @@ LABEL_77:
 
     else
     {
-      v31 = [v8 getTaskInState:1];
+      v31 = [taskManager getTaskInState:1];
 
       v32 = sub_100063A54();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -936,39 +936,39 @@ LABEL_77:
             }
 
             v38 = *(*(&v56 + 1) + 8 * v37);
-            v39 = [(MSDSession *)self taskManager];
-            [v39 removeSessionTask:v38];
+            taskManager2 = [(MSDSession *)self taskManager];
+            [taskManager2 removeSessionTask:v38];
 
             [v38 setState:0];
             [v38 setCurrentRetry:0];
             v40 = sub_100063A54();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
             {
-              v41 = [v38 info];
-              v42 = [v41 description];
+              info5 = [v38 info];
+              v42 = [info5 description];
               *buf = 138543618;
-              v66 = self;
+              selfCopy4 = self;
               v67 = 2114;
               v68 = v42;
               _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%{public}@: Relaunching task %{public}@ to resume", buf, 0x16u);
             }
 
             v43 = sub_100063BEC();
-            v44 = [(MSDSession *)self signpostId];
-            if (v44 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+            signpostId2 = [(MSDSession *)self signpostId];
+            if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
             {
-              v45 = v44;
+              v45 = signpostId2;
               if (os_signpost_enabled(v43))
               {
-                v46 = [v38 info];
-                [v46 description];
+                info6 = [v38 info];
+                [info6 description];
                 v48 = v47 = v36;
-                v49 = [v38 info];
-                v50 = [v49 savePath];
+                info7 = [v38 info];
+                savePath3 = [info7 savePath];
                 *buf = v51;
-                v66 = v48;
+                selfCopy4 = v48;
                 v67 = 2112;
-                v68 = v50;
+                v68 = savePath3;
                 _os_signpost_emit_with_name_impl(&_mh_execute_header, v43, OS_SIGNPOST_EVENT, v45, "Resume Session Task", "Resuming Session Task: %{xcode:string}@ with save path: %{xcode:string}@", buf, 0x16u);
 
                 v36 = v47;
@@ -992,134 +992,134 @@ LABEL_77:
   }
 }
 
-- (void)handleDownloadAborted:(id)a3
+- (void)handleDownloadAborted:(id)aborted
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"kMSDDownloadAbortedKey"];
-  v6 = [v5 BOOLValue];
+  userInfo = [aborted userInfo];
+  v5 = [userInfo objectForKey:@"kMSDDownloadAbortedKey"];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = v6;
+    v12 = bOOLValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Session received timer expired notification; timerExpired=%d", &v9, 0x12u);
   }
 
-  if (v6)
+  if (bOOLValue)
   {
-    v8 = [(MSDSession *)self taskManager];
-    [v8 cancelAndRemoveAllSessionTask];
+    taskManager = [(MSDSession *)self taskManager];
+    [taskManager cancelAndRemoveAllSessionTask];
   }
 }
 
-- (void)dispatchSessionTask:(id)a3 withError:(id *)a4
+- (void)dispatchSessionTask:(id)task withError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 info];
-  v8 = [v7 postData];
+  taskCopy = task;
+  info = [taskCopy info];
+  postData = [info postData];
 
-  v9 = [v6 info];
-  v10 = [v9 postFile];
+  info2 = [taskCopy info];
+  postFile = [info2 postFile];
 
-  v11 = [v6 info];
-  v12 = [v11 getRequestForTimeout:30.0];
+  info3 = [taskCopy info];
+  v12 = [info3 getRequestForTimeout:30.0];
   v13 = [v12 mutableCopy];
 
-  v14 = [v6 info];
-  LOBYTE(v12) = [v14 isValid];
+  info4 = [taskCopy info];
+  LOBYTE(v12) = [info4 isValid];
 
   if ((v12 & 1) == 0)
   {
-    sub_1000D9A18(a4);
+    sub_1000D9A18(error);
     goto LABEL_25;
   }
 
   if (!v13)
   {
-    sub_1000D9C44(a4);
+    sub_1000D9C44(error);
     goto LABEL_25;
   }
 
-  [v6 resetData];
-  v15 = [v6 info];
-  v16 = [v15 savePath];
+  [taskCopy resetData];
+  info5 = [taskCopy info];
+  savePath = [info5 savePath];
 
-  if (v16)
+  if (savePath)
   {
-    v17 = [v6 fileHandle];
+    fileHandle = [taskCopy fileHandle];
 
-    if (!v17)
+    if (!fileHandle)
     {
-      sub_1000D9A90(a4);
+      sub_1000D9A90(error);
       goto LABEL_25;
     }
 
-    v18 = [v6 contentRange];
-    v19 = [v18 getRangeHeaderForDownload];
+    contentRange = [taskCopy contentRange];
+    getRangeHeaderForDownload = [contentRange getRangeHeaderForDownload];
 
-    if (v19)
+    if (getRangeHeaderForDownload)
     {
-      [v13 setValue:v19 forHTTPHeaderField:@"Range"];
+      [v13 setValue:getRangeHeaderForDownload forHTTPHeaderField:@"Range"];
     }
 
-    [(MSDSession *)self logDownloadTaskLaunch:v6];
+    [(MSDSession *)self logDownloadTaskLaunch:taskCopy];
   }
 
   else
   {
-    v19 = 0;
+    getRangeHeaderForDownload = 0;
   }
 
-  [v6 setCurrentRetry:{objc_msgSend(v6, "currentRetry") + 1}];
-  if (v8)
+  [taskCopy setCurrentRetry:{objc_msgSend(taskCopy, "currentRetry") + 1}];
+  if (postData)
   {
-    v20 = [(MSDSession *)self session];
-    v21 = [v20 uploadTaskWithRequest:v13 fromData:v8];
+    session = [(MSDSession *)self session];
+    v21 = [session uploadTaskWithRequest:v13 fromData:postData];
 LABEL_11:
     v22 = v21;
-    [v6 setTask:v21];
+    [taskCopy setTask:v21];
     goto LABEL_14;
   }
 
-  v23 = [(MSDSession *)self session];
-  v20 = v23;
-  if (!v10)
+  session2 = [(MSDSession *)self session];
+  session = session2;
+  if (!postFile)
   {
-    v21 = [v23 dataTaskWithRequest:v13];
+    v21 = [session2 dataTaskWithRequest:v13];
     goto LABEL_11;
   }
 
-  v22 = [NSURL URLWithString:v10];
-  v24 = [v20 uploadTaskWithRequest:v13 fromFile:v22];
-  [v6 setTask:v24];
+  v22 = [NSURL URLWithString:postFile];
+  v24 = [session uploadTaskWithRequest:v13 fromFile:v22];
+  [taskCopy setTask:v24];
 
 LABEL_14:
-  v25 = [v6 task];
+  task = [taskCopy task];
 
-  if (v25)
+  if (task)
   {
     if ([(MSDSession *)self isDownloadPaused]&& [(MSDSession *)self getIsFileDownload])
     {
       v26 = sub_100063A54();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000D9B08(v6);
+        sub_1000D9B08(taskCopy);
       }
 
       v27 = sub_100063BEC();
-      v28 = [(MSDSession *)self signpostId];
-      if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId = [(MSDSession *)self signpostId];
+      if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v29 = v28;
+        v29 = signpostId;
         if (os_signpost_enabled(v27))
         {
-          v35 = [v6 info];
-          v34 = [v35 description];
-          v30 = [v6 info];
-          [v30 savePath];
+          info6 = [taskCopy info];
+          v34 = [info6 description];
+          info7 = [taskCopy info];
+          [info7 savePath];
           *buf = 138412546;
           v37 = v34;
           v39 = v38 = 2112;
@@ -1128,100 +1128,100 @@ LABEL_14:
         }
       }
 
-      [v6 setState:1];
+      [taskCopy setState:1];
     }
 
     else
     {
-      [v6 setState:0];
-      v32 = [v6 task];
-      [v32 resume];
+      [taskCopy setState:0];
+      task2 = [taskCopy task];
+      [task2 resume];
     }
 
-    v33 = [(MSDSession *)self taskManager];
-    [v33 addSessionTask:v6];
+    taskManager = [(MSDSession *)self taskManager];
+    [taskManager addSessionTask:taskCopy];
   }
 
   else
   {
-    sub_1000D9BAC(a4, v19);
+    sub_1000D9BAC(error, getRangeHeaderForDownload);
   }
 
 LABEL_25:
 }
 
-- (void)dispatchSessionTask:(id)a3
+- (void)dispatchSessionTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v10 = 0;
-  [(MSDSession *)self dispatchSessionTask:v4 withError:&v10];
+  [(MSDSession *)self dispatchSessionTask:taskCopy withError:&v10];
   v5 = v10;
   if (v5)
   {
-    v6 = [v4 info];
-    v7 = [v6 handler];
+    info = [taskCopy info];
+    handler = [info handler];
 
-    if (v7)
+    if (handler)
     {
-      v8 = [v4 info];
-      v9 = [v8 handler];
-      (v9)[2](v9, v5, 0);
+      info2 = [taskCopy info];
+      handler2 = [info2 handler];
+      (handler2)[2](handler2, v5, 0);
     }
   }
 }
 
-- (void)retrySessionTask:(id)a3
+- (void)retrySessionTask:(id)task
 {
-  v4 = a3;
-  v5 = exp2([v4 currentRetry]);
+  taskCopy = task;
+  v5 = exp2([taskCopy currentRetry]);
   v6 = arc4random_uniform(0x1F4u) + v5 * 1000.0;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 info];
-    v9 = [v8 description];
-    v10 = [v4 info];
-    v11 = [v10 savePath];
-    v12 = [v4 currentRetry];
-    v13 = [v4 info];
+    info = [taskCopy info];
+    v9 = [info description];
+    info2 = [taskCopy info];
+    savePath = [info2 savePath];
+    currentRetry = [taskCopy currentRetry];
+    info3 = [taskCopy info];
     *buf = 138544386;
     v20 = v9;
     v21 = 2114;
-    v22 = v11;
+    v22 = savePath;
     v23 = 2048;
     v24 = v6;
     v25 = 2048;
-    v26 = v12;
+    v26 = currentRetry;
     v27 = 2048;
-    v28 = [v13 maxRetry];
+    maxRetry = [info3 maxRetry];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Retrying task %{public}@ with savePath: %{public}@ after %f ms; attempt %ld/%ld...", buf, 0x34u);
   }
 
   v14 = dispatch_time(0, (v6 * 1000000.0));
-  v15 = [(MSDSession *)self demuxQueue];
+  demuxQueue = [(MSDSession *)self demuxQueue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000725C0;
   v17[3] = &unk_10016A258;
   v17[4] = self;
-  v18 = v4;
-  v16 = v4;
-  dispatch_after(v14, v15, v17);
+  v18 = taskCopy;
+  v16 = taskCopy;
+  dispatch_after(v14, demuxQueue, v17);
 }
 
-- (id)parseResponseHeader:(id)a3 statusCode:(int64_t)a4
+- (id)parseResponseHeader:(id)header statusCode:(int64_t)code
 {
-  v5 = a3;
+  headerCopy = header;
   v6 = objc_alloc_init(NSMutableDictionary);
-  v7 = [v5 objectForKey:@"X-Protocol-Version"];
+  v7 = [headerCopy objectForKey:@"X-Protocol-Version"];
   if (v7)
   {
     [v6 setObject:v7 forKey:@"protocolVersion"];
   }
 
-  if (a4 == 202)
+  if (code == 202)
   {
-    v8 = [v5 objectForKey:@"Retry-After"];
+    v8 = [headerCopy objectForKey:@"Retry-After"];
     if (v8)
     {
       v9 = v8;
@@ -1233,75 +1233,75 @@ LABEL_25:
   return v6;
 }
 
-- (void)logDownloadTaskLaunch:(id)a3
+- (void)logDownloadTaskLaunch:(id)launch
 {
-  v4 = a3;
-  v5 = [v4 contentRange];
-  v6 = [v5 getRangeHeaderForDownload];
+  launchCopy = launch;
+  contentRange = [launchCopy contentRange];
+  getRangeHeaderForDownload = [contentRange getRangeHeaderForDownload];
 
-  v7 = [v4 contentRange];
-  v8 = [v7 downloadedBytes];
+  contentRange2 = [launchCopy contentRange];
+  downloadedBytes = [contentRange2 downloadedBytes];
 
-  v9 = [v4 contentRange];
-  v10 = [v9 existingFileSize];
+  contentRange3 = [launchCopy contentRange];
+  existingFileSize = [contentRange3 existingFileSize];
 
-  if (v8 + v10 >= 1)
+  if (downloadedBytes + existingFileSize >= 1)
   {
     v11 = sub_100063A54();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 info];
-      v13 = [v12 savePath];
+      info = [launchCopy info];
+      savePath = [info savePath];
       v19 = 138544130;
-      v20 = v13;
+      v20 = savePath;
       v21 = 2048;
-      v22 = v10;
+      v22 = existingFileSize;
       v23 = 2048;
-      v24 = v8;
+      v24 = downloadedBytes;
       v25 = 2114;
-      v26 = v6;
+      v26 = getRangeHeaderForDownload;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "File %{public}@ is partially downloaded with existing size = %ld, downloaded bytes = %ld; using range header %{public}@", &v19, 0x2Au);
     }
 
     v14 = sub_100063BEC();
-    v15 = [(MSDSession *)self signpostId];
-    if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId = [(MSDSession *)self signpostId];
+    if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v16 = v15;
+      v16 = signpostId;
       if (os_signpost_enabled(v14))
       {
-        v17 = [v4 info];
-        v18 = [v17 savePath];
+        info2 = [launchCopy info];
+        savePath2 = [info2 savePath];
         v19 = 138413058;
-        v20 = v18;
+        v20 = savePath2;
         v21 = 2048;
-        v22 = v10;
+        v22 = existingFileSize;
         v23 = 2048;
-        v24 = v8;
+        v24 = downloadedBytes;
         v25 = 2112;
-        v26 = v6;
+        v26 = getRangeHeaderForDownload;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_EVENT, v16, "Resume Partial Download", "Resuming partial download for: %{xcode:string}@, existing size = %{xcode:size-in-bytes}lu; downloaded bytes = %{xcode:size-in-bytes}lu; range header = %{xcode:string}@", &v19, 0x2Au);
       }
     }
   }
 }
 
-- (id)getServerErrorMessage:(id)a3 withDefault:(id)a4
+- (id)getServerErrorMessage:(id)message withDefault:(id)default
 {
-  v5 = a4;
-  v6 = [a3 outData];
-  if (!v6)
+  defaultCopy = default;
+  outData = [message outData];
+  if (!outData)
   {
     v9 = 0;
     v8 = 0;
     goto LABEL_10;
   }
 
-  v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:0];
+  v7 = [NSJSONSerialization JSONObjectWithData:outData options:0 error:0];
   v8 = v7;
   if (!v7)
   {
-    v10 = [[NSString alloc] initWithData:v6 encoding:4];
+    v10 = [[NSString alloc] initWithData:outData encoding:4];
 LABEL_6:
     v9 = v10;
     if (!v10)
@@ -1322,13 +1322,13 @@ LABEL_6:
 LABEL_7:
   if ([v9 length])
   {
-    v11 = [v5 stringByAppendingFormat:@": %@", v9];
+    v11 = [defaultCopy stringByAppendingFormat:@": %@", v9];
 
     goto LABEL_11;
   }
 
 LABEL_10:
-  v11 = v5;
+  v11 = defaultCopy;
 LABEL_11:
 
   return v11;

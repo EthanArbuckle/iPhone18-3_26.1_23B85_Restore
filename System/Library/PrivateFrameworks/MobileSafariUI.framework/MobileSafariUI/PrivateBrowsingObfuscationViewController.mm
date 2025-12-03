@@ -4,7 +4,7 @@
 - (UIVisualEffectView)capsuleBackground;
 - (UIVisualEffectView)topBarBackground;
 - (void)_updateTheme;
-- (void)setTheme:(id)a3;
+- (void)setTheme:(id)theme;
 - (void)viewDidLoad;
 @end
 
@@ -32,10 +32,10 @@
 
 - (void)_updateTheme
 {
-  v3 = [(PrivateBrowsingObfuscationViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(PrivateBrowsingObfuscationViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = 4;
   }
@@ -49,12 +49,12 @@
   [(PrivateBrowsingObfuscationViewController *)self setTheme:v6];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v7 = a3;
+  themeCopy = theme;
   if (([(SFCapsuleNavigationBarTheme *)self->_theme isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_theme, a3);
+    objc_storeStrong(&self->_theme, theme);
     theme = self->_theme;
     WeakRetained = objc_loadWeakRetained(&self->_capsuleBackground);
     [(SFCapsuleNavigationBarTheme *)theme applyBackdropEffectsToView:WeakRetained];

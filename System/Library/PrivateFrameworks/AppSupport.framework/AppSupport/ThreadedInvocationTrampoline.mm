@@ -1,12 +1,12 @@
 @interface ThreadedInvocationTrampoline
-- (ThreadedInvocationTrampoline)initWithTarget:(id)a3 thread:(id)a4 immediateForMatchingThread:(BOOL)a5;
+- (ThreadedInvocationTrampoline)initWithTarget:(id)target thread:(id)thread immediateForMatchingThread:(BOOL)matchingThread;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation ThreadedInvocationTrampoline
 
-- (ThreadedInvocationTrampoline)initWithTarget:(id)a3 thread:(id)a4 immediateForMatchingThread:(BOOL)a5
+- (ThreadedInvocationTrampoline)initWithTarget:(id)target thread:(id)thread immediateForMatchingThread:(BOOL)matchingThread
 {
   v11.receiver = self;
   v11.super_class = ThreadedInvocationTrampoline;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    [(InvocationTrampoline *)v8 setTarget:a3];
-    v9->_thread = a4;
-    v9->_immediateForMatchingThread = a5;
+    [(InvocationTrampoline *)v8 setTarget:target];
+    v9->_thread = thread;
+    v9->_immediateForMatchingThread = matchingThread;
   }
 
   return v9;
@@ -29,9 +29,9 @@
   [(InvocationTrampoline *)&v3 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 retainArguments];
+  [invocation retainArguments];
   thread = self->_thread;
   if (thread)
   {
@@ -40,20 +40,20 @@
       if ([objc_msgSend(MEMORY[0x1E696AF00] "currentThread")])
       {
 
-        [(InvocationTrampoline *)self performInvocation:a3];
+        [(InvocationTrampoline *)self performInvocation:invocation];
         return;
       }
 
       thread = self->_thread;
     }
 
-    [(ThreadedInvocationTrampoline *)self performSelector:sel_performInvocation_ onThread:thread withObject:a3 waitUntilDone:0];
+    [(ThreadedInvocationTrampoline *)self performSelector:sel_performInvocation_ onThread:thread withObject:invocation waitUntilDone:0];
   }
 
   else
   {
 
-    [(ThreadedInvocationTrampoline *)self performSelectorInBackground:sel_performInvocation_ withObject:a3];
+    [(ThreadedInvocationTrampoline *)self performSelectorInBackground:sel_performInvocation_ withObject:invocation];
   }
 }
 

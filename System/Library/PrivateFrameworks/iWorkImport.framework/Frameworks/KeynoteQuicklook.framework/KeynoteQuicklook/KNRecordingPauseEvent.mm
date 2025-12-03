@@ -1,31 +1,31 @@
 @interface KNRecordingPauseEvent
-- (BOOL)isEqual:(id)a3;
-- (KNRecordingPauseEvent)initWithStartTime:(double)a3 pauseEventType:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (KNRecordingPauseEvent)initWithStartTime:(double)time pauseEventType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation KNRecordingPauseEvent
 
-- (KNRecordingPauseEvent)initWithStartTime:(double)a3 pauseEventType:(int64_t)a4
+- (KNRecordingPauseEvent)initWithStartTime:(double)time pauseEventType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = KNRecordingPauseEvent;
-  result = [(KNRecordingEvent *)&v6 initWithStartTime:a3];
+  result = [(KNRecordingEvent *)&v6 initWithStartTime:time];
   if (result)
   {
-    result->_pauseEventType = a4;
+    result->_pauseEventType = type;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(KNRecordingPauseEvent, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(KNRecordingPauseEvent, a2, zone);
   objc_msgSend_startTime(self, v5, v6);
   v9 = objc_msgSend_pauseEventType(self, v7, v8);
 
@@ -54,12 +54,12 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = KNRecordingPauseEvent;
-  if ([(KNRecordingEvent *)&v13 isEqual:v4])
+  if ([(KNRecordingEvent *)&v13 isEqual:equalCopy])
   {
     objc_opt_class();
     v7 = TSUDynamicCast();
@@ -91,15 +91,15 @@
   return objc_msgSend_pauseEventType(self, v4, v5) ^ v3;
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track
 {
   v10.receiver = self;
   v10.super_class = KNRecordingPauseEvent;
-  [(KNRecordingEvent *)&v10 loadFromMessage:a3 unarchiver:a4 parentEventTrack:a5];
+  [(KNRecordingEvent *)&v10 loadFromMessage:message unarchiver:unarchiver parentEventTrack:track];
   v7 = &qword_2812EBA30;
-  if (*(a3 + 5))
+  if (*(message + 5))
   {
-    v7 = *(a3 + 5);
+    v7 = *(message + 5);
   }
 
   v8 = (*(v7 + 6) - 1);
@@ -116,24 +116,24 @@
   self->_pauseEventType = v9;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v13.receiver = self;
   v13.super_class = KNRecordingPauseEvent;
-  [(KNRecordingEvent *)&v13 saveToMessage:a3 archiver:v6];
-  *(a3 + 4) |= 4u;
-  v9 = *(a3 + 5);
+  [(KNRecordingEvent *)&v13 saveToMessage:message archiver:archiverCopy];
+  *(message + 4) |= 4u;
+  v9 = *(message + 5);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(message + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = sub_275E20FFC(v10);
-    *(a3 + 5) = v9;
+    *(message + 5) = v9;
   }
 
   v11 = objc_msgSend_pauseEventType(self, v7, v8);

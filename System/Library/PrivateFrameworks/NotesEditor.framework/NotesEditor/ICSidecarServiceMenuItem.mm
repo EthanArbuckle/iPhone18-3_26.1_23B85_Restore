@@ -1,6 +1,6 @@
 @interface ICSidecarServiceMenuItem
 - (ICSidecarServiceMenuItem)init;
-- (ICSidecarServiceMenuItem)initWithType:(id)a3 data:(id)a4;
+- (ICSidecarServiceMenuItem)initWithType:(id)type data:(id)data;
 - (NSData)data;
 - (NSString)type;
 @end
@@ -26,12 +26,12 @@
   return v4;
 }
 
-- (ICSidecarServiceMenuItem)initWithType:(id)a3 data:(id)a4
+- (ICSidecarServiceMenuItem)initWithType:(id)type data:(id)data
 {
   ObjectType = swift_getObjectType();
   v7 = sub_2154A1D6C();
   v9 = v8;
-  v10 = a4;
+  dataCopy = data;
   v11 = sub_21549E59C();
   v13 = v12;
 

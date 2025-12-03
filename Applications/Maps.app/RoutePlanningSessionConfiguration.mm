@@ -1,6 +1,6 @@
 @interface RoutePlanningSessionConfiguration
-- (BOOL)hasTransportType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasTransportType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNavigationTracePlayback;
 - (BOOL)isResumingMultipointRoute;
 - (BOOL)shouldAutoLaunchNavigation;
@@ -9,22 +9,22 @@
 - (GEOResumeRouteHandle)resumeRouteHandle;
 - (NSSet)supportedTransportTypes;
 - (NSString)tracePlaybackPath;
-- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)a3 routeLoadingTaskFactory:(id)a4 traits:(id)a5;
-- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)a3 routeLoadingTaskFactory:(id)a4 traits:(id)a5 companionContext:(id)a6 locationManager:(id)a7;
-- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)a3 traits:(id)a4 existingTiming:(id)a5 isResumingMultipointRoute:(BOOL)a6 resumeRouteHandle:(id)a7 persistentData:(id)a8;
-- (id)configurationByModifyingRouteLoadingTaskFactory:(id)a3 andDedupingWaypointRequests:(id)a4;
+- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)requests routeLoadingTaskFactory:(id)factory traits:(id)traits;
+- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)requests routeLoadingTaskFactory:(id)factory traits:(id)traits companionContext:(id)context locationManager:(id)manager;
+- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)requests traits:(id)traits existingTiming:(id)timing isResumingMultipointRoute:(BOOL)route resumeRouteHandle:(id)handle persistentData:(id)data;
+- (id)configurationByModifyingRouteLoadingTaskFactory:(id)factory andDedupingWaypointRequests:(id)requests;
 - (id)description;
 - (unint64_t)hash;
-- (void)setCountryConfiguration:(id)a3;
+- (void)setCountryConfiguration:(id)configuration;
 @end
 
 @implementation RoutePlanningSessionConfiguration
 
-- (id)configurationByModifyingRouteLoadingTaskFactory:(id)a3 andDedupingWaypointRequests:(id)a4
+- (id)configurationByModifyingRouteLoadingTaskFactory:(id)factory andDedupingWaypointRequests:(id)requests
 {
-  v5 = a3;
-  v23 = a4;
-  if (!v5)
+  factoryCopy = factory;
+  requestsCopy = requests;
+  if (!factoryCopy)
   {
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@
         v25[3] = &unk_101652A40;
         v25[4] = v9;
         v25[5] = buf;
-        [v23 enumerateKeysAndObjectsUsingBlock:v25];
+        [requestsCopy enumerateKeysAndObjectsUsingBlock:v25];
         if (*(*&buf[8] + 40))
         {
           v10 = *(*&buf[8] + 40);
@@ -106,42 +106,42 @@
     while (v6);
   }
 
-  v11 = [(RoutePlanningSessionConfiguration *)self traits];
-  v12 = [v11 copyByIncrementingSessionCounters];
+  traits = [(RoutePlanningSessionConfiguration *)self traits];
+  copyByIncrementingSessionCounters = [traits copyByIncrementingSessionCounters];
 
-  v13 = self;
-  v14 = [(RoutePlanningSessionConfiguration *)v13 companionContext];
+  selfCopy = self;
+  companionContext = [(RoutePlanningSessionConfiguration *)selfCopy companionContext];
   v15 = +[MKLocationManager sharedLocationManager];
-  v16 = [(RoutePlanningSessionConfiguration *)v13 initWithWaypointRequests:v24 routeLoadingTaskFactory:v5 traits:v12 companionContext:v14 locationManager:v15];
+  v16 = [(RoutePlanningSessionConfiguration *)selfCopy initWithWaypointRequests:v24 routeLoadingTaskFactory:factoryCopy traits:copyByIncrementingSessionCounters companionContext:companionContext locationManager:v15];
 
   return v16;
 }
 
-- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)a3 routeLoadingTaskFactory:(id)a4 traits:(id)a5
+- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)requests routeLoadingTaskFactory:(id)factory traits:(id)traits
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  traitsCopy = traits;
+  factoryCopy = factory;
+  requestsCopy = requests;
   v11 = +[GEOCompanionRouteContext context];
   v12 = +[MKLocationManager sharedLocationManager];
-  v13 = [(RoutePlanningSessionConfiguration *)self initWithWaypointRequests:v10 routeLoadingTaskFactory:v9 traits:v8 companionContext:v11 locationManager:v12];
+  v13 = [(RoutePlanningSessionConfiguration *)self initWithWaypointRequests:requestsCopy routeLoadingTaskFactory:factoryCopy traits:traitsCopy companionContext:v11 locationManager:v12];
 
   return v13;
 }
 
-- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)a3 traits:(id)a4 existingTiming:(id)a5 isResumingMultipointRoute:(BOOL)a6 resumeRouteHandle:(id)a7 persistentData:(id)a8
+- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)requests traits:(id)traits existingTiming:(id)timing isResumingMultipointRoute:(BOOL)route resumeRouteHandle:(id)handle persistentData:(id)data
 {
-  v9 = a6;
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  routeCopy = route;
+  dataCopy = data;
+  handleCopy = handle;
+  timingCopy = timing;
+  traitsCopy = traits;
+  requestsCopy = requests;
   v19 = [NavdRouteLoadingTaskFactory alloc];
   v20 = +[NSUserDefaults standardUserDefaults];
-  v21 = [(NavdRouteLoadingTaskFactory *)v19 initWithUserDefaults:v20 existingTiming:v16 traits:v17 isResumingMultipointRoute:v9 resumeRouteHandle:v15 persistentData:v14];
+  v21 = [(NavdRouteLoadingTaskFactory *)v19 initWithUserDefaults:v20 existingTiming:timingCopy traits:traitsCopy isResumingMultipointRoute:routeCopy resumeRouteHandle:handleCopy persistentData:dataCopy];
 
-  v22 = [(RoutePlanningSessionConfiguration *)self initWithWaypointRequests:v18 routeLoadingTaskFactory:v21 traits:v17];
+  v22 = [(RoutePlanningSessionConfiguration *)self initWithWaypointRequests:requestsCopy routeLoadingTaskFactory:v21 traits:traitsCopy];
   return v22;
 }
 
@@ -154,10 +154,10 @@
   return v6 ^ [(NSNumber *)self->_navigationAutoLaunchDelay hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (v7 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -167,12 +167,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [(RoutePlanningSessionConfiguration *)v8 waypointRequests];
-      if (v9 || self->_waypointRequests)
+      v8 = equalCopy;
+      waypointRequests = [(RoutePlanningSessionConfiguration *)v8 waypointRequests];
+      if (waypointRequests || self->_waypointRequests)
       {
-        v3 = [(RoutePlanningSessionConfiguration *)v8 waypointRequests];
-        if (![v3 isEqual:self->_waypointRequests])
+        waypointRequests2 = [(RoutePlanningSessionConfiguration *)v8 waypointRequests];
+        if (![waypointRequests2 isEqual:self->_waypointRequests])
         {
           v11 = 0;
           goto LABEL_48;
@@ -186,11 +186,11 @@
         v10 = 0;
       }
 
-      v12 = [(RoutePlanningSessionConfiguration *)v8 routeLoadingTaskFactory];
-      if (v12 || self->_routeLoadingTaskFactory)
+      routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)v8 routeLoadingTaskFactory];
+      if (routeLoadingTaskFactory || self->_routeLoadingTaskFactory)
       {
-        v4 = [(RoutePlanningSessionConfiguration *)v8 routeLoadingTaskFactory];
-        if (![v4 isEqual:self->_routeLoadingTaskFactory])
+        routeLoadingTaskFactory2 = [(RoutePlanningSessionConfiguration *)v8 routeLoadingTaskFactory];
+        if (![routeLoadingTaskFactory2 isEqual:self->_routeLoadingTaskFactory])
         {
           v11 = 0;
 LABEL_47:
@@ -215,11 +215,11 @@ LABEL_48:
         v23 = 0;
       }
 
-      v13 = [(RoutePlanningSessionConfiguration *)v8 traits];
-      if (v13 || self->_traits)
+      traits = [(RoutePlanningSessionConfiguration *)v8 traits];
+      if (traits || self->_traits)
       {
-        v5 = [(RoutePlanningSessionConfiguration *)v8 traits];
-        if (![v5 isEqual:self->_traits])
+        traits2 = [(RoutePlanningSessionConfiguration *)v8 traits];
+        if (![traits2 isEqual:self->_traits])
         {
           v11 = 0;
           goto LABEL_46;
@@ -233,11 +233,11 @@ LABEL_48:
         v22 = 0;
       }
 
-      v21 = [(RoutePlanningSessionConfiguration *)v8 companionContext];
-      if (v21 || self->_companionContext)
+      companionContext = [(RoutePlanningSessionConfiguration *)v8 companionContext];
+      if (companionContext || self->_companionContext)
       {
-        v20 = [(RoutePlanningSessionConfiguration *)v8 companionContext];
-        if (![v20 isEqual:self->_companionContext])
+        companionContext2 = [(RoutePlanningSessionConfiguration *)v8 companionContext];
+        if (![companionContext2 isEqual:self->_companionContext])
         {
           v11 = 0;
           goto LABEL_45;
@@ -251,11 +251,11 @@ LABEL_48:
         v19 = 0;
       }
 
-      v18 = [(RoutePlanningSessionConfiguration *)v8 navigationAutoLaunchDelay];
-      if (v18 || self->_navigationAutoLaunchDelay)
+      navigationAutoLaunchDelay = [(RoutePlanningSessionConfiguration *)v8 navigationAutoLaunchDelay];
+      if (navigationAutoLaunchDelay || self->_navigationAutoLaunchDelay)
       {
-        v17 = [(RoutePlanningSessionConfiguration *)v8 navigationAutoLaunchDelay];
-        if (![v17 isEqual:self->_navigationAutoLaunchDelay])
+        navigationAutoLaunchDelay2 = [(RoutePlanningSessionConfiguration *)v8 navigationAutoLaunchDelay];
+        if (![navigationAutoLaunchDelay2 isEqual:self->_navigationAutoLaunchDelay])
         {
           v11 = 0;
           goto LABEL_44;
@@ -352,61 +352,61 @@ LABEL_50:
 
 - (GEOComposedGeometryRoutePersistentData)persistentData
 {
-  v2 = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
-  v3 = [v2 persistentData];
+  routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
+  persistentData = [routeLoadingTaskFactory persistentData];
 
-  return v3;
+  return persistentData;
 }
 
 - (GEOResumeRouteHandle)resumeRouteHandle
 {
-  v2 = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
-  v3 = [v2 resumeRouteHandle];
+  routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
+  resumeRouteHandle = [routeLoadingTaskFactory resumeRouteHandle];
 
-  return v3;
+  return resumeRouteHandle;
 }
 
 - (BOOL)isResumingMultipointRoute
 {
-  v2 = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
-  v3 = [v2 isResumingMultipointRoute];
+  routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
+  isResumingMultipointRoute = [routeLoadingTaskFactory isResumingMultipointRoute];
 
-  return v3;
+  return isResumingMultipointRoute;
 }
 
 - (BOOL)shouldAutoLaunchNavigation
 {
-  v2 = [(RoutePlanningSessionConfiguration *)self navigationAutoLaunchDelay];
-  v3 = v2 != 0;
+  navigationAutoLaunchDelay = [(RoutePlanningSessionConfiguration *)self navigationAutoLaunchDelay];
+  v3 = navigationAutoLaunchDelay != 0;
 
   return v3;
 }
 
-- (BOOL)hasTransportType:(int64_t)a3
+- (BOOL)hasTransportType:(int64_t)type
 {
-  v4 = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
-  v5 = [v4 supportedTransportTypes];
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [v5 containsObject:v6];
+  routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
+  supportedTransportTypes = [routeLoadingTaskFactory supportedTransportTypes];
+  v6 = [NSNumber numberWithInteger:type];
+  v7 = [supportedTransportTypes containsObject:v6];
 
   return v7;
 }
 
 - (NSSet)supportedTransportTypes
 {
-  v2 = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
-  v3 = [v2 supportedTransportTypes];
+  routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
+  supportedTransportTypes = [routeLoadingTaskFactory supportedTransportTypes];
 
-  return v3;
+  return supportedTransportTypes;
 }
 
 - (NSString)tracePlaybackPath
 {
-  v2 = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
+  routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = routeLoadingTaskFactory;
   }
 
   else
@@ -416,14 +416,14 @@ LABEL_50:
 
   v4 = v3;
 
-  v5 = [v4 tracePath];
+  tracePath = [v4 tracePath];
 
-  return v5;
+  return tracePath;
 }
 
 - (BOOL)isNavigationTracePlayback
 {
-  v2 = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
+  routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -446,18 +446,18 @@ LABEL_50:
   return v3;
 }
 
-- (void)setCountryConfiguration:(id)a3
+- (void)setCountryConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_countryConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_countryConfiguration != configurationCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_countryConfiguration, a3);
+    v8 = configurationCopy;
+    objc_storeStrong(&self->_countryConfiguration, configuration);
     countryConfiguration = self->_countryConfiguration;
-    v7 = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
-    [v7 setCountryConfiguration:countryConfiguration];
+    routeLoadingTaskFactory = [(RoutePlanningSessionConfiguration *)self routeLoadingTaskFactory];
+    [routeLoadingTaskFactory setCountryConfiguration:countryConfiguration];
 
-    v5 = v8;
+    configurationCopy = v8;
   }
 }
 
@@ -485,8 +485,8 @@ LABEL_50:
   }
 
   [v5 appendFormat:@"\nisNavigationTracePlayback:(%@)", v6];
-  v7 = [(RoutePlanningSessionConfiguration *)self tracePlaybackPath];
-  [v5 appendFormat:@"\ntracePlaybackPath:(%@)", v7];
+  tracePlaybackPath = [(RoutePlanningSessionConfiguration *)self tracePlaybackPath];
+  [v5 appendFormat:@"\ntracePlaybackPath:(%@)", tracePlaybackPath];
 
   if ([(RoutePlanningSessionConfiguration *)self shouldAutoLaunchNavigation])
   {
@@ -534,31 +534,31 @@ LABEL_50:
   }
 
   [v5 appendFormat:@"\ninitialTransportType:(%@)", v12];
-  v13 = [(RoutePlanningSessionConfiguration *)self supportedTransportTypes];
-  [v5 appendFormat:@"\nsupportedTransportTypes:(%@)", v13];
+  supportedTransportTypes = [(RoutePlanningSessionConfiguration *)self supportedTransportTypes];
+  [v5 appendFormat:@"\nsupportedTransportTypes:(%@)", supportedTransportTypes];
 
-  v14 = [(RoutePlanningSessionConfiguration *)self automaticSharingContacts];
-  [v5 appendFormat:@"\nautomatic sharing:(%@)", v14];
+  automaticSharingContacts = [(RoutePlanningSessionConfiguration *)self automaticSharingContacts];
+  [v5 appendFormat:@"\nautomatic sharing:(%@)", automaticSharingContacts];
 
-  v15 = [(RoutePlanningSessionConfiguration *)self shortcutIdentifier];
-  [v5 appendFormat:@"\nshortcutIdentifier:(%@)", v15];
+  shortcutIdentifier = [(RoutePlanningSessionConfiguration *)self shortcutIdentifier];
+  [v5 appendFormat:@"\nshortcutIdentifier:(%@)", shortcutIdentifier];
 
-  v16 = [(RoutePlanningSessionConfiguration *)self originalHistoryEntryIdentifier];
-  [v5 appendFormat:@"\noriginalHistoryEntryIdentifier:(%@)", v16];
+  originalHistoryEntryIdentifier = [(RoutePlanningSessionConfiguration *)self originalHistoryEntryIdentifier];
+  [v5 appendFormat:@"\noriginalHistoryEntryIdentifier:(%@)", originalHistoryEntryIdentifier];
 
   v17 = [v5 copy];
 
   return v17;
 }
 
-- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)a3 routeLoadingTaskFactory:(id)a4 traits:(id)a5 companionContext:(id)a6 locationManager:(id)a7
+- (RoutePlanningSessionConfiguration)initWithWaypointRequests:(id)requests routeLoadingTaskFactory:(id)factory traits:(id)traits companionContext:(id)context locationManager:(id)manager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v12 count] <= 1)
+  requestsCopy = requests;
+  factoryCopy = factory;
+  traitsCopy = traits;
+  contextCopy = context;
+  managerCopy = manager;
+  if ([requestsCopy count] <= 1)
   {
     v25 = sub_10006D178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -587,7 +587,7 @@ LABEL_50:
     }
   }
 
-  if (!v13)
+  if (!factoryCopy)
   {
     v28 = sub_10006D178();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -616,7 +616,7 @@ LABEL_50:
     }
   }
 
-  if (!v14)
+  if (!traitsCopy)
   {
     v31 = sub_10006D178();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -645,7 +645,7 @@ LABEL_50:
     }
   }
 
-  if (!v15)
+  if (!contextCopy)
   {
     v34 = sub_10006D178();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -674,7 +674,7 @@ LABEL_50:
     }
   }
 
-  if (!v16)
+  if (!managerCopy)
   {
     v37 = sub_10006D178();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -708,22 +708,22 @@ LABEL_50:
   v17 = [(RoutePlanningSessionConfiguration *)&v40 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [requestsCopy copy];
     waypointRequests = v17->_waypointRequests;
     v17->_waypointRequests = v18;
 
-    objc_storeStrong(&v17->_routeLoadingTaskFactory, a4);
-    v20 = [v14 copy];
+    objc_storeStrong(&v17->_routeLoadingTaskFactory, factory);
+    v20 = [traitsCopy copy];
     traits = v17->_traits;
     v17->_traits = v20;
 
-    v22 = [v15 copy];
+    v22 = [contextCopy copy];
     companionContext = v17->_companionContext;
     v17->_companionContext = v22;
 
     v17->_ignoreMapType = 1;
     v17->_initialTransportType = 0;
-    objc_storeStrong(&v17->_locationManager, a7);
+    objc_storeStrong(&v17->_locationManager, manager);
   }
 
   return v17;

@@ -1,24 +1,24 @@
 @interface VCSleepDonationAction
-+ (id)identifierForShortcut:(id)a3;
-+ (id)sleepActionsDictionaryForShortcuts:(id)a3;
-+ (id)sleepActionsDictionaryForShortcutsByApp:(id)a3;
-+ (id)sleepActionsForShortcuts:(id)a3 bundleIdentifier:(id)a4;
-- (VCSleepDonationAction)initWithShortcut:(id)a3 bundleIdentifier:(id)a4;
++ (id)identifierForShortcut:(id)shortcut;
++ (id)sleepActionsDictionaryForShortcuts:(id)shortcuts;
++ (id)sleepActionsDictionaryForShortcutsByApp:(id)app;
++ (id)sleepActionsForShortcuts:(id)shortcuts bundleIdentifier:(id)identifier;
+- (VCSleepDonationAction)initWithShortcut:(id)shortcut bundleIdentifier:(id)identifier;
 @end
 
 @implementation VCSleepDonationAction
 
-+ (id)sleepActionsDictionaryForShortcutsByApp:(id)a3
++ (id)sleepActionsDictionaryForShortcutsByApp:(id)app
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appCopy = app;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [appCopy allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -29,17 +29,17 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v4 objectForKeyedSubscript:v11];
-        v13 = [a1 sleepActionsForShortcuts:v12 bundleIdentifier:v11];
+        v12 = [appCopy objectForKeyedSubscript:v11];
+        v13 = [self sleepActionsForShortcuts:v12 bundleIdentifier:v11];
 
         [v5 setObject:v13 forKeyedSubscript:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -50,13 +50,13 @@
   return v5;
 }
 
-+ (id)sleepActionsDictionaryForShortcuts:(id)a3
++ (id)sleepActionsDictionaryForShortcuts:(id)shortcuts
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  shortcutsCopy = shortcuts;
   v5 = objc_opt_new();
-  v20 = v4;
-  v6 = [a1 sleepActionsForShortcuts:v4 bundleIdentifier:0];
+  v20 = shortcutsCopy;
+  v6 = [self sleepActionsForShortcuts:shortcutsCopy bundleIdentifier:0];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -76,8 +76,8 @@
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 sourceAppBundleIdentifier];
-        v13 = [v5 objectForKey:v12];
+        sourceAppBundleIdentifier = [v11 sourceAppBundleIdentifier];
+        v13 = [v5 objectForKey:sourceAppBundleIdentifier];
         v14 = v13;
         if (v13)
         {
@@ -92,8 +92,8 @@
         v16 = v15;
 
         [v16 addObject:v11];
-        v17 = [v11 sourceAppBundleIdentifier];
-        [v5 setObject:v16 forKey:v17];
+        sourceAppBundleIdentifier2 = [v11 sourceAppBundleIdentifier];
+        [v5 setObject:v16 forKey:sourceAppBundleIdentifier2];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -107,16 +107,16 @@
   return v5;
 }
 
-+ (id)sleepActionsForShortcuts:(id)a3 bundleIdentifier:(id)a4
++ (id)sleepActionsForShortcuts:(id)shortcuts bundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__VCSleepDonationAction_INShortcut__sleepActionsForShortcuts_bundleIdentifier___block_invoke;
   v12[3] = &unk_1E7B019B0;
-  v13 = v5;
-  v6 = v5;
-  v7 = [a3 if_compactMap:v12];
+  v13 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [shortcuts if_compactMap:v12];
   v8 = v7;
   if (v7)
   {
@@ -141,67 +141,67 @@ VCSleepDonationAction *__79__VCSleepDonationAction_INShortcut__sleepActionsForSh
   return v4;
 }
 
-- (VCSleepDonationAction)initWithShortcut:(id)a3 bundleIdentifier:(id)a4
+- (VCSleepDonationAction)initWithShortcut:(id)shortcut bundleIdentifier:(id)identifier
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  shortcutCopy = shortcut;
+  identifierCopy = identifier;
+  if (!shortcutCopy)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"VCSleepDonationAction.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"shortcut"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCSleepDonationAction.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"shortcut"}];
   }
 
-  v9 = [v7 intent];
-  v10 = [v9 suggestedInvocationPhrase];
-  v11 = v10;
-  if (v10)
+  intent = [shortcutCopy intent];
+  suggestedInvocationPhrase = [intent suggestedInvocationPhrase];
+  v11 = suggestedInvocationPhrase;
+  if (suggestedInvocationPhrase)
   {
-    v12 = v10;
+    v12 = suggestedInvocationPhrase;
   }
 
   else
   {
-    v13 = [v7 userActivity];
-    v14 = [v13 suggestedInvocationPhrase];
-    v15 = v14;
-    if (v14)
+    userActivity = [shortcutCopy userActivity];
+    suggestedInvocationPhrase2 = [userActivity suggestedInvocationPhrase];
+    v15 = suggestedInvocationPhrase2;
+    if (suggestedInvocationPhrase2)
     {
-      v16 = v14;
+      _title = suggestedInvocationPhrase2;
     }
 
     else
     {
-      v16 = [v7 _title];
+      _title = [shortcutCopy _title];
     }
 
-    v12 = v16;
+    v12 = _title;
   }
 
-  if (v8)
+  if (identifierCopy)
   {
-    v17 = v8;
+    _associatedAppBundleIdentifier = identifierCopy;
   }
 
   else
   {
-    v17 = [v7 _associatedAppBundleIdentifier];
+    _associatedAppBundleIdentifier = [shortcutCopy _associatedAppBundleIdentifier];
   }
 
-  v18 = v17;
-  v19 = 0;
-  if ([v17 length] && v12)
+  v18 = _associatedAppBundleIdentifier;
+  selfCopy = 0;
+  if ([_associatedAppBundleIdentifier length] && v12)
   {
     v20 = objc_opt_new();
-    v21 = [v7 intent];
+    intent2 = [shortcutCopy intent];
 
-    if (v21)
+    if (intent2)
     {
       v22 = MEMORY[0x1E696ACC8];
-      v23 = [v7 intent];
+      intent3 = [shortcutCopy intent];
       v41 = 0;
-      v24 = [v22 archivedDataWithRootObject:v23 requiringSecureCoding:1 error:&v41];
-      v25 = v41;
+      v24 = [v22 archivedDataWithRootObject:intent3 requiringSecureCoding:1 error:&v41];
+      activityData = v41;
 
       if ([v24 length])
       {
@@ -210,56 +210,56 @@ VCSleepDonationAction *__79__VCSleepDonationAction_INShortcut__sleepActionsForSh
 
         v26 = @"is.workflow.actions.sirikit.donation.handle";
 LABEL_20:
-        v30 = [VCSleepDonationAction identifierForShortcut:v7];
+        v30 = [VCSleepDonationAction identifierForShortcut:shortcutCopy];
         v31 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v18 allowPlaceholder:1 error:0];
-        v32 = [v31 localizedName];
+        localizedName = [v31 localizedName];
 
         v40.receiver = self;
         v40.super_class = VCSleepDonationAction;
-        v33 = -[VCSleepAction initWithIdentifier:workflowActionIdentifier:sourceAppBundleIdentifier:bundleIdentifierForDisplay:title:subtitle:serializedParameters:shortcutAvailability:](&v40, sel_initWithIdentifier_workflowActionIdentifier_sourceAppBundleIdentifier_bundleIdentifierForDisplay_title_subtitle_serializedParameters_shortcutAvailability_, v30, v26, v18, v18, v12, v32, v20, [v7 wf_shortcutAvailability]);
+        v33 = -[VCSleepAction initWithIdentifier:workflowActionIdentifier:sourceAppBundleIdentifier:bundleIdentifierForDisplay:title:subtitle:serializedParameters:shortcutAvailability:](&v40, sel_initWithIdentifier_workflowActionIdentifier_sourceAppBundleIdentifier_bundleIdentifierForDisplay_title_subtitle_serializedParameters_shortcutAvailability_, v30, v26, v18, v18, v12, localizedName, v20, [shortcutCopy wf_shortcutAvailability]);
         self = v33;
         if (v33)
         {
           v34 = v33;
         }
 
-        v19 = self;
+        selfCopy = self;
         goto LABEL_27;
       }
 
       v35 = getWFVoiceShortcutClientLogObject();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v25 localizedDescription];
+        localizedDescription = [activityData localizedDescription];
         *buf = 136315394;
         v43 = "[VCSleepDonationAction initWithShortcut:bundleIdentifier:]";
         v44 = 2114;
-        v45 = v36;
+        v45 = localizedDescription;
         _os_log_impl(&dword_1B1DE3000, v35, OS_LOG_TYPE_ERROR, "%s Could not create intent data from intent with error: %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      v19 = [v7 userActivity];
+      selfCopy = [shortcutCopy userActivity];
 
-      if (!v19)
+      if (!selfCopy)
       {
 LABEL_27:
 
         goto LABEL_28;
       }
 
-      v25 = [v7 activityData];
-      if ([v25 length])
+      activityData = [shortcutCopy activityData];
+      if ([activityData length])
       {
-        [v20 setValue:v25 forKey:@"UserActivityData"];
-        v27 = [v7 activityImage];
-        v28 = [v27 _imageData];
-        [v20 setValue:v28 forKey:@"UserActivityImageData"];
+        [v20 setValue:activityData forKey:@"UserActivityData"];
+        activityImage = [shortcutCopy activityImage];
+        _imageData = [activityImage _imageData];
+        [v20 setValue:_imageData forKey:@"UserActivityImageData"];
 
-        v29 = [v7 activitySubtitle];
-        [v20 setValue:v29 forKey:@"UserActivitySubtitle"];
+        activitySubtitle = [shortcutCopy activitySubtitle];
+        [v20 setValue:activitySubtitle forKey:@"UserActivitySubtitle"];
 
         [v20 setValue:v18 forKey:@"AppBundleIdentifier"];
         v26 = @"is.workflow.actions.useractivity.open";
@@ -267,74 +267,74 @@ LABEL_27:
       }
     }
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_27;
   }
 
 LABEL_28:
 
   v37 = *MEMORY[0x1E69E9840];
-  return v19;
+  return selfCopy;
 }
 
-+ (id)identifierForShortcut:(id)a3
++ (id)identifierForShortcut:(id)shortcut
 {
-  v3 = a3;
-  v4 = [v3 intent];
+  shortcutCopy = shortcut;
+  intent = [shortcutCopy intent];
 
-  if (v4)
+  if (intent)
   {
-    v5 = [v3 intent];
-    v6 = [v5 _JSONDictionaryRepresentation];
+    intent2 = [shortcutCopy intent];
+    _JSONDictionaryRepresentation = [intent2 _JSONDictionaryRepresentation];
 
     v7 = objc_alloc_init(MEMORY[0x1E69AA8A0]);
     v8 = [v7 combine:@"is.workflow.actions.sirikit.donation.handle"];
-    v9 = [v7 combineContentsOfPropertyListObject:v6];
+    v9 = [v7 combineContentsOfPropertyListObject:_JSONDictionaryRepresentation];
     v10 = [v7 finalize];
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%2llX", v10];
   }
 
   else
   {
-    v12 = [v3 userActivity];
+    userActivity = [shortcutCopy userActivity];
 
-    if (v12)
+    if (userActivity)
     {
       v13 = objc_alloc_init(MEMORY[0x1E69AA8A0]);
       v14 = [v13 combine:@"is.workflow.actions.useractivity.open"];
-      v15 = [v3 userActivity];
-      v16 = [v15 activityType];
-      v17 = [v13 combine:v16];
+      userActivity2 = [shortcutCopy userActivity];
+      activityType = [userActivity2 activityType];
+      v17 = [v13 combine:activityType];
 
-      v18 = [v3 userActivity];
-      v19 = [v18 title];
+      userActivity3 = [shortcutCopy userActivity];
+      title = [userActivity3 title];
 
-      if (v19)
+      if (title)
       {
-        v20 = [v3 userActivity];
-        v21 = [v20 title];
-        v22 = [v13 combine:v21];
+        userActivity4 = [shortcutCopy userActivity];
+        title2 = [userActivity4 title];
+        v22 = [v13 combine:title2];
       }
 
-      v23 = [v3 activityBundleIdentifier];
+      activityBundleIdentifier = [shortcutCopy activityBundleIdentifier];
 
-      if (v23)
+      if (activityBundleIdentifier)
       {
-        v24 = [v3 activityBundleIdentifier];
-        v25 = [v13 combine:v24];
+        activityBundleIdentifier2 = [shortcutCopy activityBundleIdentifier];
+        v25 = [v13 combine:activityBundleIdentifier2];
       }
 
       v26 = objc_opt_new();
-      v27 = [v3 userActivity];
-      v28 = [v27 requiredUserInfoKeys];
+      userActivity5 = [shortcutCopy userActivity];
+      requiredUserInfoKeys = [userActivity5 requiredUserInfoKeys];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __47__VCSleepDonationAction_identifierForShortcut___block_invoke;
       v33[3] = &unk_1E7B027B8;
-      v34 = v3;
+      v34 = shortcutCopy;
       v35 = v26;
       v29 = v26;
-      [v28 enumerateObjectsUsingBlock:v33];
+      [requiredUserInfoKeys enumerateObjectsUsingBlock:v33];
 
       v30 = [v13 combineContentsOfPropertyListObject:v29];
       v31 = [v13 finalize];

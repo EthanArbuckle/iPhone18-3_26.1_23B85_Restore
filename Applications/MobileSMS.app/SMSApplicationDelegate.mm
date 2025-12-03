@@ -1,25 +1,25 @@
 @interface SMSApplicationDelegate
-+ (id)addMessagesFileProviderDomain:(id *)a3;
++ (id)addMessagesFileProviderDomain:(id *)domain;
 + (id)logHandle;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)isBulletinSuppressed:(id)a3 messageContexts:(id)a4;
-- (BOOL)isFromFilteredSender:(id)a3 fromSender:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)isBulletinSuppressed:(id)suppressed messageContexts:(id)contexts;
+- (BOOL)isFromFilteredSender:(id)sender fromSender:(id)fromSender;
 - (SMSApplicationDelegate)init;
-- (id)_sceneIDForChat:(id)a3;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (id)extractValueFromURL:(id)a3 forKey:(id)a4;
+- (id)_sceneIDForChat:(id)chat;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (id)extractValueFromURL:(id)l forKey:(id)key;
 - (id)logHandle;
 - (id)smsApplication;
 - (void)_clearFailureBadge;
-- (void)_messageReceived:(id)a3;
-- (void)_messageSendFailed:(id)a3;
-- (void)_messageSent:(id)a3;
-- (void)_playMessageReceivedForMessage:(id)a3 inChat:(id)a4;
+- (void)_messageReceived:(id)received;
+- (void)_messageSendFailed:(id)failed;
+- (void)_messageSent:(id)sent;
+- (void)_playMessageReceivedForMessage:(id)message inChat:(id)chat;
 - (void)_resetIdleTimer;
-- (void)applicationSignificantTimeChange:(id)a3;
+- (void)applicationSignificantTimeChange:(id)change;
 - (void)dealloc;
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5;
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error;
 @end
 
 @implementation SMSApplicationDelegate
@@ -40,8 +40,8 @@
     if (IMSupportsUserNotifications())
     {
       v5 = +[UNUserNotificationCenter currentNotificationCenter];
-      v6 = [(SMSApplicationDelegate *)v2 sceneController];
-      [v5 setDelegate:v6];
+      sceneController = [(SMSApplicationDelegate *)v2 sceneController];
+      [v5 setDelegate:sceneController];
     }
   }
 
@@ -84,68 +84,68 @@
   [(SMSApplicationDelegate *)&v4 dealloc];
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v45 = a3;
-  v47 = a4;
-  v46 = a5;
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v55 = v47;
+      v55 = sessionCopy;
       v56 = 2112;
-      v57 = v46;
+      v57 = optionsCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Application will create scene with session: %@ connectionOptions: %@", buf, 0x16u);
     }
   }
 
-  v9 = [v47 role];
-  v10 = [v9 isEqualToString:UIWindowSceneSessionRoleExternalDisplayNonInteractive];
+  role = [sessionCopy role];
+  v10 = [role isEqualToString:UIWindowSceneSessionRoleExternalDisplayNonInteractive];
 
   if (v10)
   {
     goto LABEL_10;
   }
 
-  v11 = [v47 role];
-  v12 = [v11 isEqualToString:@"CPTemplateApplicationSceneSessionRoleApplication"];
+  role2 = [sessionCopy role];
+  v12 = [role2 isEqualToString:@"CPTemplateApplicationSceneSessionRoleApplication"];
 
   if (v12)
   {
     goto LABEL_10;
   }
 
-  v13 = [v47 role];
-  v14 = [v13 isEqualToString:UIWindowSceneSessionRoleAssistiveAccessApplication];
+  role3 = [sessionCopy role];
+  v14 = [role3 isEqualToString:UIWindowSceneSessionRoleAssistiveAccessApplication];
 
-  if (v14 || ([v47 role], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", @"com.apple.PosterBoardUIServices.editor-overlay"), v15, v16))
+  if (v14 || ([sessionCopy role], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", @"com.apple.PosterBoardUIServices.editor-overlay"), v15, v16))
   {
 LABEL_10:
-    v17 = [v47 configuration];
+    configuration = [sessionCopy configuration];
     goto LABEL_11;
   }
 
   v19 = objc_opt_class();
-  v20 = [v46 URLContexts];
-  v44 = [v20 anyObject];
+  uRLContexts = [optionsCopy URLContexts];
+  anyObject = [uRLContexts anyObject];
 
-  v43 = [v44 URL];
+  v43 = [anyObject URL];
   v42 = [(SMSApplicationDelegate *)self extractValueFromURL:v43 forKey:@"overlay"];
   if ([v42 isEqualToString:@"1"])
   {
     v19 = objc_opt_class();
   }
 
-  v41 = [v46 userActivities];
+  userActivities = [optionsCopy userActivities];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v21 = [v41 allObjects];
-  v22 = [v21 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  allObjects = [userActivities allObjects];
+  v22 = [allObjects countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v22)
   {
     v23 = *v50;
@@ -157,12 +157,12 @@ LABEL_10:
       {
         if (*v50 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allObjects);
         }
 
         v26 = *(*(&v49 + 1) + 8 * i);
-        v27 = [v26 activityType];
-        v28 = [v27 isEqualToString:@"com.apple.Messages.StateRestoration"];
+        activityType = [v26 activityType];
+        v28 = [activityType isEqualToString:@"com.apple.Messages.StateRestoration"];
 
         if (v28)
         {
@@ -177,8 +177,8 @@ LABEL_10:
             }
           }
 
-          v30 = [v26 userInfo];
-          v31 = [v30 objectForKeyedSubscript:@"CKCanvasStateRestorationContainerType"];
+          userInfo = [v26 userInfo];
+          v31 = [userInfo objectForKeyedSubscript:@"CKCanvasStateRestorationContainerType"];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -199,15 +199,15 @@ LABEL_10:
 
         else
         {
-          v33 = [v26 activityType];
-          if ([v33 isEqualToString:v24])
+          activityType2 = [v26 activityType];
+          if ([activityType2 isEqualToString:v24])
           {
           }
 
           else
           {
-            v34 = [v26 activityType];
-            v35 = [v34 isEqualToString:v48];
+            activityType3 = [v26 activityType];
+            v35 = [activityType3 isEqualToString:v48];
 
             if (!v35)
             {
@@ -219,46 +219,46 @@ LABEL_10:
         }
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      v22 = [allObjects countByEnumeratingWithState:&v49 objects:v53 count:16];
     }
 
     while (v22);
   }
 
-  v36 = [v47 configuration];
+  configuration2 = [sessionCopy configuration];
   v37 = [UISceneConfiguration alloc];
-  v38 = [v36 name];
-  v39 = [v36 role];
-  v17 = [v37 initWithName:v38 sessionRole:v39];
+  name = [configuration2 name];
+  role4 = [configuration2 role];
+  configuration = [v37 initWithName:name sessionRole:role4];
 
-  [v17 setDelegateClass:v19];
-  [v17 setSceneClass:{objc_msgSend(v36, "sceneClass")}];
+  [configuration setDelegateClass:v19];
+  [configuration setSceneClass:{objc_msgSend(configuration2, "sceneClass")}];
   if (IMOSLoggingEnabled())
   {
     v40 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v55 = v17;
+      v55 = configuration;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "Returning scene configuration: %@", buf, 0xCu);
     }
   }
 
 LABEL_11:
 
-  return v17;
+  return configuration;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v4 = [NSUserDefaults standardUserDefaults:a3];
+  v4 = [NSUserDefaults standardUserDefaults:application];
   [v4 registerDefaults:&off_100034C80];
 
   [CKApplicationState setMainWindowForegroundActive:1];
   return 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   kdebug_trace();
   v5 = IMClientTelemetryLogHandle();
@@ -277,27 +277,27 @@ LABEL_11:
   v7 = dispatch_time(0, 2500000000);
   dispatch_after(v7, &_dispatch_main_q, &stru_100031110);
   v8 = [IMSWHighlightCenterController sharedControllerWithAppIdentifier:@"com.apple.MobileSMS"];
-  v9 = [(SMSApplicationDelegate *)self logHandle];
-  v10 = [(SMSApplicationDelegate *)self logHandle];
-  v11 = os_signpost_id_make_with_pointer(v10, "IMCoreSetup");
+  logHandle = [(SMSApplicationDelegate *)self logHandle];
+  logHandle2 = [(SMSApplicationDelegate *)self logHandle];
+  v11 = os_signpost_id_make_with_pointer(logHandle2, "IMCoreSetup");
 
-  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
+  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, v11, "IMCoreSetup", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, logHandle, OS_SIGNPOST_INTERVAL_BEGIN, v11, "IMCoreSetup", " enableTelemetry=YES ", buf, 2u);
   }
 
   v12 = +[IMDaemonController sharedController];
   [v12 blockUntilConnected];
 
-  v13 = [(SMSApplicationDelegate *)self logHandle];
-  v14 = [(SMSApplicationDelegate *)self logHandle];
-  v15 = os_signpost_id_make_with_pointer(v14, "IMCoreSetup");
+  logHandle3 = [(SMSApplicationDelegate *)self logHandle];
+  logHandle4 = [(SMSApplicationDelegate *)self logHandle];
+  v15 = os_signpost_id_make_with_pointer(logHandle4, "IMCoreSetup");
 
-  if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
+  if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle3))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_END, v15, "IMCoreSetup", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, logHandle3, OS_SIGNPOST_INTERVAL_END, v15, "IMCoreSetup", " enableTelemetry=YES ", buf, 2u);
   }
 
   v16 = +[IMSystemMonitor sharedInstance];
@@ -324,29 +324,29 @@ LABEL_11:
   return 1;
 }
 
-- (void)applicationSignificantTimeChange:(id)a3
+- (void)applicationSignificantTimeChange:(id)change
 {
   v3 = +[CKUIBehavior sharedBehaviors];
   [v3 invalidateTranscriptDrawerWidth];
 }
 
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error
 {
-  if (!a5)
+  if (!error)
   {
-    v6 = [NSUserDefaults standardUserDefaults:a3];
+    v6 = [NSUserDefaults standardUserDefaults:session];
     [v6 setBool:1 forKey:@"kHasSetupHashtagImages"];
   }
 }
 
-- (void)_messageReceived:(id)a3
+- (void)_messageReceived:(id)received
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:IMChatValueKey];
+  receivedCopy = received;
+  object = [receivedCopy object];
+  userInfo = [receivedCopy userInfo];
+  v7 = [userInfo objectForKey:IMChatValueKey];
 
-  v8 = [v7 guid];
+  guid = [v7 guid];
   if ([v7 isRead])
   {
     if (IMOSLoggingEnabled())
@@ -355,7 +355,7 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v20 = v8;
+        v20 = guid;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Not playing message receive sound for message that is already read: %@", buf, 0xCu);
       }
 
@@ -371,7 +371,7 @@ LABEL_15:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v20 = v8;
+        v20 = guid;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Not playing message receive sound for message that is from me: %@", buf, 0xCu);
       }
 
@@ -379,18 +379,18 @@ LABEL_15:
     }
   }
 
-  else if ([v5 isMuted])
+  else if ([object isMuted])
   {
     if (IMOSLoggingEnabled())
     {
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v5 guid];
+        guid2 = [object guid];
         *buf = 138412546;
-        v20 = v8;
+        v20 = guid;
         v21 = 2112;
-        v22 = v10;
+        v22 = guid2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Not playing message receive sound for chat that is muted. MessageGuid: %@ ChatGuid: %@", buf, 0x16u);
       }
 
@@ -400,17 +400,17 @@ LABEL_15:
 
   else
   {
-    v11 = [v7 sender];
-    if ([(SMSApplicationDelegate *)self isFromFilteredSender:v5 fromSender:v11])
+    sender = [v7 sender];
+    if ([(SMSApplicationDelegate *)self isFromFilteredSender:object fromSender:sender])
     {
       if (IMOSLoggingEnabled())
       {
         v12 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [v11 ID];
+          v13 = [sender ID];
           *buf = 138412546;
-          v20 = v8;
+          v20 = guid;
           v21 = 2112;
           v22 = v13;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Not playing message receive sound for message that is from a filtered sender. MessageGuid: %@ Sender: %@", buf, 0x16u);
@@ -420,7 +420,7 @@ LABEL_15:
 
     else if (+[NSThread isMainThread])
     {
-      [(SMSApplicationDelegate *)self _playMessageReceivedForMessage:v7 inChat:v5];
+      [(SMSApplicationDelegate *)self _playMessageReceivedForMessage:v7 inChat:object];
     }
 
     else
@@ -431,34 +431,34 @@ LABEL_15:
       block[3] = &unk_1000309E8;
       block[4] = self;
       v17 = v7;
-      v18 = v5;
+      v18 = object;
       dispatch_async(&_dispatch_main_q, block);
     }
 
     v14 = +[CKUIBehavior sharedBehaviors];
-    v15 = [v14 resetsIdleTimer];
+    resetsIdleTimer = [v14 resetsIdleTimer];
 
-    if (v15)
+    if (resetsIdleTimer)
     {
       [(SMSApplicationDelegate *)self _resetIdleTimer];
     }
   }
 }
 
-- (void)_messageSent:(id)a3
+- (void)_messageSent:(id)sent
 {
-  v3 = a3;
-  v4 = [v3 object];
-  if (([v4 isMuted] & 1) == 0)
+  sentCopy = sent;
+  object = [sentCopy object];
+  if (([object isMuted] & 1) == 0)
   {
-    v5 = [v3 userInfo];
-    v6 = [v5 objectForKeyedSubscript:IMChatRegistryMessageSendIsReplicatingKey];
-    v7 = [v6 BOOLValue];
+    userInfo = [sentCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:IMChatRegistryMessageSendIsReplicatingKey];
+    bOOLValue = [v6 BOOLValue];
 
-    if ((v7 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v8 = [v3 userInfo];
-      v9 = [v8 objectForKeyedSubscript:IMChatRegistryMessageSentMessageKey];
+      userInfo2 = [sentCopy userInfo];
+      v9 = [userInfo2 objectForKeyedSubscript:IMChatRegistryMessageSentMessageKey];
 
       v10 = v9;
       im_main_thread();
@@ -466,27 +466,27 @@ LABEL_15:
   }
 }
 
-- (void)_messageSendFailed:(id)a3
+- (void)_messageSendFailed:(id)failed
 {
-  v4 = [a3 userInfo];
-  v30 = [v4 objectForKey:IMChatValueKey];
+  userInfo = [failed userInfo];
+  v30 = [userInfo objectForKey:IMChatValueKey];
 
-  v5 = [v30 error];
-  v6 = [v5 code];
+  error = [v30 error];
+  code = [error code];
 
   v7 = v30;
-  if (v6)
+  if (code)
   {
-    v8 = [v30 sender];
-    v9 = [v8 service];
+    sender = [v30 sender];
+    service = [sender service];
 
     v10 = +[IMMobileNetworkManager sharedInstance];
-    v11 = [v10 isAirplaneModeEnabled];
-    v12 = [v10 isWiFiEnabled];
-    if (v11)
+    isAirplaneModeEnabled = [v10 isAirplaneModeEnabled];
+    isWiFiEnabled = [v10 isWiFiEnabled];
+    if (isAirplaneModeEnabled)
     {
-      v13 = v12;
-      if (([v9 __ck_isCarrierBased] & 1) != 0 || (v13 & 1) == 0 && objc_msgSend(v9, "__ck_isiMessage"))
+      v13 = isWiFiEnabled;
+      if (([service __ck_isCarrierBased] & 1) != 0 || (v13 & 1) == 0 && objc_msgSend(service, "__ck_isiMessage"))
       {
         v14 = MGGetBoolAnswer();
         v15 = CKFrameworkBundle();
@@ -514,12 +514,12 @@ LABEL_15:
 
         [v18 addAction:v21];
         [v18 addAction:v24];
-        v25 = [(SMSApplicationDelegate *)self sceneController];
-        v26 = [v25 messagesSceneDelegate];
-        v27 = [v26 window];
+        sceneController = [(SMSApplicationDelegate *)self sceneController];
+        messagesSceneDelegate = [sceneController messagesSceneDelegate];
+        window = [messagesSceneDelegate window];
 
-        v28 = [v27 rootViewController];
-        [v18 presentFromViewController:v28 animated:1 completion:0];
+        rootViewController = [window rootViewController];
+        [v18 presentFromViewController:rootViewController animated:1 completion:0];
         +[CKStarkManager isCarPlayConnected];
       }
     }
@@ -528,31 +528,31 @@ LABEL_15:
   }
 }
 
-- (void)_playMessageReceivedForMessage:(id)a3 inChat:(id)a4
+- (void)_playMessageReceivedForMessage:(id)message inChat:(id)chat
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  chatCopy = chat;
   if (!+[NSThread isMainThread])
   {
     sub_10001D614(a2, self);
   }
 
-  v9 = [v7 guid];
+  guid = [messageCopy guid];
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v48 = v9;
+      v48 = guid;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Message %@ received. Determining if we should play in-app message received sound", buf, 0xCu);
     }
   }
 
-  v11 = [(SMSApplicationDelegate *)self soundHelper];
-  [v11 stopPlayingAlert];
+  soundHelper = [(SMSApplicationDelegate *)self soundHelper];
+  [soundHelper stopPlayingAlert];
   v12 = +[UIApplication sharedApplication];
-  v13 = [v12 isSuspended];
+  isSuspended = [v12 isSuspended];
 
   v14 = +[CKApplicationState isApplicationActive];
   if (CKIsRunningInMacCatalyst())
@@ -562,7 +562,7 @@ LABEL_15:
 
   else
   {
-    v15 = (v13 ^ 1);
+    v15 = (isSuspended ^ 1);
   }
 
   if (IMOSLoggingEnabled())
@@ -573,7 +573,7 @@ LABEL_15:
       *buf = 134218496;
       v48 = v15;
       v49 = 2048;
-      v50 = v13;
+      v50 = isSuspended;
       v51 = 2048;
       v52 = v14;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "For receive sound playblack, Messages isActive: %ld. (isAppSuspended: %ld, isAppStateActive: %ld)", buf, 0x20u);
@@ -582,13 +582,13 @@ LABEL_15:
 
   if (v15)
   {
-    v17 = [v8 persistentID];
-    v18 = [v8 personCentricID];
+    persistentID = [chatCopy persistentID];
+    personCentricID = [chatCopy personCentricID];
     v19 = CKSuppressionContextsForIdentifiers();
-    v20 = [(SMSApplicationDelegate *)self sceneController];
-    v21 = [v20 alertSuppressionContextsFromForegroundActiveScenes];
+    sceneController = [(SMSApplicationDelegate *)self sceneController];
+    alertSuppressionContextsFromForegroundActiveScenes = [sceneController alertSuppressionContextsFromForegroundActiveScenes];
 
-    if (![(SMSApplicationDelegate *)self isBulletinSuppressed:v21 messageContexts:v19])
+    if (![(SMSApplicationDelegate *)self isBulletinSuppressed:alertSuppressionContextsFromForegroundActiveScenes messageContexts:v19])
     {
       if (!IMOSLoggingEnabled())
       {
@@ -601,7 +601,7 @@ LABEL_75:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v48 = v9;
+        v48 = guid;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "System notification is not suppressed for %@, letting notifications play sound", buf, 0xCu);
       }
 
@@ -610,7 +610,7 @@ LABEL_25:
       goto LABEL_75;
     }
 
-    v22 = [v11 allowedByScreenTimeToPlayReceiveSoundForChat:v8];
+    v22 = [soundHelper allowedByScreenTimeToPlayReceiveSoundForChat:chatCopy];
     v23 = CKIsSuppressingReceiveSoundForMessageGUID();
     if ((v22 & 1) == 0)
     {
@@ -623,7 +623,7 @@ LABEL_25:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v48 = v9;
+        v48 = guid;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Message %@ will not play sound due to screentime suppression", buf, 0xCu);
       }
 
@@ -644,7 +644,7 @@ LABEL_61:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v48 = v9;
+          v48 = guid;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Not playing sound for message: %@", buf, 0xCu);
         }
 
@@ -655,7 +655,7 @@ LABEL_61:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v48 = v9;
+        v48 = guid;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Message %@ will not play sound due to sound being suppressed for that message guid", buf, 0xCu);
       }
 
@@ -669,10 +669,10 @@ LABEL_21:
     {
 LABEL_37:
 
-      v31 = [v7 __ck_isAcknowledgmentMessage];
-      if ([v21 containsObject:v17])
+      __ck_isAcknowledgmentMessage = [messageCopy __ck_isAcknowledgmentMessage];
+      if ([alertSuppressionContextsFromForegroundActiveScenes containsObject:persistentID])
       {
-        if ((v31 & 1) == 0)
+        if ((__ck_isAcknowledgmentMessage & 1) == 0)
         {
 LABEL_51:
           v33 = 1;
@@ -682,9 +682,9 @@ LABEL_51:
 
       else
       {
-        v32 = [v21 containsObject:v18];
+        v32 = [alertSuppressionContextsFromForegroundActiveScenes containsObject:personCentricID];
         v33 = v32;
-        if ((v31 & 1) == 0)
+        if ((__ck_isAcknowledgmentMessage & 1) == 0)
         {
 LABEL_70:
           if (IMOSLoggingEnabled())
@@ -693,12 +693,12 @@ LABEL_70:
             if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v48 = v9;
+              v48 = guid;
               _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "Playing standard incoming message sound for message: %@", buf, 0xCu);
             }
           }
 
-          [v11 playIncomingMessageSoundAndHapticForMessage:v7 messageIsForCurrentTranscript:v33];
+          [soundHelper playIncomingMessageSoundAndHapticForMessage:messageCopy messageIsForCurrentTranscript:v33];
           goto LABEL_75;
         }
 
@@ -710,7 +710,7 @@ LABEL_70:
             if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v48 = v9;
+              v48 = guid;
               _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "Message %@ is a received tapback, but the chat for this message is not currently visible. Attempting fall back to standard incoming message sound.", buf, 0xCu);
             }
           }
@@ -726,12 +726,12 @@ LABEL_70:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v48 = v9;
+          v48 = guid;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "Playing tapback message sound for message: %@", buf, 0xCu);
         }
       }
 
-      if ([v11 playTapbackReceivedSoundForMessageInCurrentTranscript:v7])
+      if ([soundHelper playTapbackReceivedSoundForMessageInCurrentTranscript:messageCopy])
       {
         goto LABEL_75;
       }
@@ -742,7 +742,7 @@ LABEL_70:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v48 = v9;
+          v48 = guid;
           _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Message %@ is a received tapback, but did not generate a tapback sound. Attempting fall back to standard incoming message sound.", buf, 0xCu);
         }
       }
@@ -750,8 +750,8 @@ LABEL_70:
       goto LABEL_51;
     }
 
-    v26 = [v46 chatMatchesActiveFocusMode:v8];
-    v27 = [v46 senderMatchesActiveFocusModeForMessage:v7];
+    v26 = [v46 chatMatchesActiveFocusMode:chatCopy];
+    v27 = [v46 senderMatchesActiveFocusModeForMessage:messageCopy];
     v28 = IMOSLoggingEnabled();
     if (v26)
     {
@@ -762,11 +762,11 @@ LABEL_70:
           v29 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
-            v30 = [v8 guid];
+            guid2 = [chatCopy guid];
             *buf = 138412546;
-            v48 = v9;
+            v48 = guid;
             v49 = 2112;
-            v50 = v30;
+            v50 = guid2;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Conversations are being filtered by focus, but message %@ is part of chat %@ which is allowed in the active focus, so allowing received message sound to play.", buf, 0x16u);
           }
         }
@@ -779,17 +779,17 @@ LABEL_70:
         v36 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
         {
-          v38 = [v7 sender];
-          v45 = [v38 ID];
-          v39 = [v8 guid];
-          v44 = v38;
+          sender = [messageCopy sender];
+          v45 = [sender ID];
+          guid3 = [chatCopy guid];
+          v44 = sender;
           *buf = 138412802;
-          v48 = v9;
+          v48 = guid;
           v49 = 2112;
           v50 = v45;
           v51 = 2112;
-          v52 = v39;
-          v40 = v39;
+          v52 = guid3;
+          v40 = guid3;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "Conversations are being filtered by focus. Message %@ is from sender %@ in chat %@. The chat is allowed by focus, but this sender is not, so not allowing received message sound to play.", buf, 0x20u);
         }
 
@@ -802,11 +802,11 @@ LABEL_59:
       v36 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
-        v37 = [v8 guid];
+        guid4 = [chatCopy guid];
         *buf = 138412546;
-        v48 = v9;
+        v48 = guid;
         v49 = 2112;
-        v50 = v37;
+        v50 = guid4;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "Conversations are being filtered by focus. Message %@ is part of chat %@ which is not allowed in the active focus, so not allowing received message sound to play.", buf, 0x16u);
       }
 
@@ -822,7 +822,7 @@ LABEL_59:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v48 = v9;
+      v48 = guid;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "App is not active, letting Notifications play sound for %@", buf, 0xCu);
     }
   }
@@ -830,14 +830,14 @@ LABEL_59:
 LABEL_80:
 }
 
-- (BOOL)isBulletinSuppressed:(id)a3 messageContexts:(id)a4
+- (BOOL)isBulletinSuppressed:(id)suppressed messageContexts:(id)contexts
 {
-  v6 = a3;
-  v7 = a4;
+  suppressedCopy = suppressed;
+  contextsCopy = contexts;
   if ([(SMSApplicationDelegate *)self shouldGetBulletinSuppressedStateFromHelper])
   {
-    v8 = [(SMSApplicationDelegate *)self soundHelper];
-    LODWORD(self) = [v8 bulletinSuppressed];
+    soundHelper = [(SMSApplicationDelegate *)self soundHelper];
+    LODWORD(self) = [soundHelper bulletinSuppressed];
 
     if (IMOSLoggingEnabled())
     {
@@ -845,7 +845,7 @@ LABEL_80:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v12 = 134217984;
-        v13 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Forced notification suppression state is %ld. (This is a unit testing path).", &v12, 0xCu);
       }
     }
@@ -853,8 +853,8 @@ LABEL_80:
 
   else
   {
-    v10 = [(SMSApplicationDelegate *)self sceneController];
-    LOBYTE(self) = [v10 shouldSuppressNotificationForMessageWithRelevantContext:v7 withAlertSupressionContextForScenes:v6];
+    sceneController = [(SMSApplicationDelegate *)self sceneController];
+    LOBYTE(self) = [sceneController shouldSuppressNotificationForMessageWithRelevantContext:contextsCopy withAlertSupressionContextForScenes:suppressedCopy];
   }
 
   return self;
@@ -886,24 +886,24 @@ LABEL_80:
   return v3;
 }
 
-- (BOOL)isFromFilteredSender:(id)a3 fromSender:(id)a4
+- (BOOL)isFromFilteredSender:(id)sender fromSender:(id)fromSender
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 supportsFilteringExtensions];
-  v7 = [v5 lastFinishedMessageItem];
-  v8 = [v7 service];
-  v9 = [IMService serviceWithName:v8];
+  senderCopy = sender;
+  fromSenderCopy = fromSender;
+  [senderCopy supportsFilteringExtensions];
+  lastFinishedMessageItem = [senderCopy lastFinishedMessageItem];
+  service = [lastFinishedMessageItem service];
+  v9 = [IMService serviceWithName:service];
 
   [v9 supportsCapability:IMServiceCapabilitySpamFilteringExtensions];
-  if (([v5 isCategorized] & 1) == 0)
+  if (([senderCopy isCategorized] & 1) == 0)
   {
-    v10 = [v5 valueForChatProperty:kWasDetectedAsiMessageSpam];
+    v10 = [senderCopy valueForChatProperty:kWasDetectedAsiMessageSpam];
     [v10 BOOLValue];
   }
 
-  [v5 isFiltered];
-  v11 = [v6 cnContactWithKeys:&__NSArray0__struct];
+  [senderCopy isFiltered];
+  v11 = [fromSenderCopy cnContactWithKeys:&__NSArray0__struct];
 
   [IMContactStore isCNContactAKnownContact:v11];
   v12 = CKMessageIsFromFilteredSenderIsUnderFirstUnlock() != 0;
@@ -911,32 +911,32 @@ LABEL_80:
   return v12;
 }
 
-- (id)extractValueFromURL:(id)a3 forKey:(id)a4
+- (id)extractValueFromURL:(id)l forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  lCopy = l;
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [v6 resourceSpecifier];
+  resourceSpecifier = [lCopy resourceSpecifier];
 
-  if ([v8 hasPrefix:@"//"])
+  if ([resourceSpecifier hasPrefix:@"//"])
   {
-    v9 = [v8 substringFromIndex:2];
+    v9 = [resourceSpecifier substringFromIndex:2];
 
-    v8 = v9;
+    resourceSpecifier = v9;
   }
 
-  v10 = [NSString stringWithFormat:@"messages://%@", v8];
+  v10 = [NSString stringWithFormat:@"messages://%@", resourceSpecifier];
   v11 = [NSURL URLWithString:v10];
 
-  v12 = [v11 absoluteString];
+  absoluteString = [v11 absoluteString];
   v13 = ExtractURLQueries();
 
-  v14 = [v7 objectForKey:v5];
+  v14 = [v7 objectForKey:keyCopy];
 
   return v14;
 }
 
-+ (id)addMessagesFileProviderDomain:(id *)a3
++ (id)addMessagesFileProviderDomain:(id *)domain
 {
   v14 = 0;
   v15 = &v14;
@@ -958,7 +958,7 @@ LABEL_80:
   v7[5] = &v14;
   if (qword_10003A1C8 == -1)
   {
-    if (!a3)
+    if (!domain)
     {
       goto LABEL_4;
     }
@@ -967,10 +967,10 @@ LABEL_80:
   }
 
   dispatch_once(&qword_10003A1C8, v7);
-  if (a3)
+  if (domain)
   {
 LABEL_3:
-    *a3 = v15[5];
+    *domain = v15[5];
   }
 
 LABEL_4:
@@ -992,9 +992,9 @@ LABEL_4:
   return v5;
 }
 
-- (id)_sceneIDForChat:(id)a3
+- (id)_sceneIDForChat:(id)chat
 {
-  v32 = a3;
+  chatCopy = chat;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -1012,15 +1012,15 @@ LABEL_29:
       v26 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
-        v27 = [v32 chatIdentifier];
+        chatIdentifier = [chatCopy chatIdentifier];
         *buf = 138412290;
-        v40 = v27;
+        v40 = chatIdentifier;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "SMSApplication | Cant find sceneID for chatID: %@", buf, 0xCu);
       }
     }
 
-    v12 = 0;
-    v23 = 0;
+    persistentIdentifier = 0;
+    persistentIdentifier2 = 0;
     goto LABEL_40;
   }
 
@@ -1038,7 +1038,7 @@ LABEL_3:
     }
 
     v8 = *(*(&v35 + 1) + 8 * v7);
-    v9 = [v8 delegate];
+    delegate = [v8 delegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1047,16 +1047,16 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v11 = [v8 delegate];
-    if ([v11 type])
+    delegate2 = [v8 delegate];
+    if ([delegate2 type])
     {
-      v12 = v6;
+      persistentIdentifier = v6;
     }
 
     else
     {
-      v13 = [v8 session];
-      v12 = [v13 persistentIdentifier];
+      session = [v8 session];
+      persistentIdentifier = [session persistentIdentifier];
 
       if (IMOSLoggingEnabled())
       {
@@ -1064,24 +1064,24 @@ LABEL_3:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = v31;
-          v40 = v12;
+          v40 = persistentIdentifier;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Main window sceneID: %@", buf, 0xCu);
         }
       }
     }
 
-    v15 = [v11 conversation];
-    v16 = [v15 chat];
-    v17 = [v16 chatIdentifier];
-    v18 = [v32 chatIdentifier];
-    v19 = [v17 isEqualToString:v18];
+    conversation = [delegate2 conversation];
+    chat = [conversation chat];
+    chatIdentifier2 = [chat chatIdentifier];
+    chatIdentifier3 = [chatCopy chatIdentifier];
+    v19 = [chatIdentifier2 isEqualToString:chatIdentifier3];
 
     if (v19)
     {
       break;
     }
 
-    v6 = v12;
+    v6 = persistentIdentifier;
 LABEL_15:
     if (v4 == ++v7)
     {
@@ -1102,17 +1102,17 @@ LABEL_35:
         v28 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v29 = [v32 chatIdentifier];
+          chatIdentifier4 = [chatCopy chatIdentifier];
           *buf = 138412546;
-          v40 = v29;
+          v40 = chatIdentifier4;
           v41 = 2112;
           v42 = v6;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "No scene associated with chat %@, using main window sceneID: %@", buf, 0x16u);
         }
       }
 
-      v12 = v6;
-      v23 = v12;
+      persistentIdentifier = v6;
+      persistentIdentifier2 = persistentIdentifier;
       goto LABEL_40;
     }
   }
@@ -1122,20 +1122,20 @@ LABEL_35:
     v20 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [v11 type];
+      type = [delegate2 type];
       *buf = 134217984;
-      v40 = v21;
+      v40 = type;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "sceneDelegate type: %ld", buf, 0xCu);
     }
   }
 
-  v22 = [v8 session];
-  v23 = [v22 persistentIdentifier];
+  session2 = [v8 session];
+  persistentIdentifier2 = [session2 persistentIdentifier];
 
-  if (!v23)
+  if (!persistentIdentifier2)
   {
-    v6 = v12;
-    if (!v12)
+    v6 = persistentIdentifier;
+    if (!persistentIdentifier)
     {
       goto LABEL_29;
     }
@@ -1148,18 +1148,18 @@ LABEL_35:
     v24 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [v32 chatIdentifier];
+      chatIdentifier5 = [chatCopy chatIdentifier];
       *buf = 138412546;
-      v40 = v23;
+      v40 = persistentIdentifier2;
       v41 = 2112;
-      v42 = v25;
+      v42 = chatIdentifier5;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "found sceneID: %@ for chatID: %@", buf, 0x16u);
     }
   }
 
 LABEL_40:
 
-  return v23;
+  return persistentIdentifier2;
 }
 
 @end

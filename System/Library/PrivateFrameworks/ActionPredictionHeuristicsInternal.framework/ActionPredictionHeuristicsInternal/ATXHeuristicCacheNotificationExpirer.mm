@@ -1,12 +1,12 @@
 @interface ATXHeuristicCacheNotificationExpirer
-- (ATXHeuristicCacheNotificationExpirer)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXHeuristicCacheNotificationExpirer)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initDarwin:(id)a3;
-- (id)initLocal:(id)a3;
+- (id)initDarwin:(id)darwin;
+- (id)initLocal:(id)local;
 - (void)_start;
 - (void)_stop;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHeuristicCacheNotificationExpirer
@@ -18,23 +18,23 @@
   {
     if (self->_isLocal)
     {
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v5 removeObserver:self->_token];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self->_token];
     }
 
     else
     {
-      v4 = [token intValue];
+      intValue = [token intValue];
 
-      notify_cancel(v4);
+      notify_cancel(intValue);
     }
   }
 }
 
-- (id)initLocal:(id)a3
+- (id)initLocal:(id)local
 {
-  v5 = a3;
-  if (!v5)
+  localCopy = local;
+  if (!localCopy)
   {
     [ATXHeuristicCacheNotificationExpirer initLocal:];
   }
@@ -45,17 +45,17 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationName, a3);
+    objc_storeStrong(&v6->_notificationName, local);
     v7->_isLocal = 1;
   }
 
   return v7;
 }
 
-- (id)initDarwin:(id)a3
+- (id)initDarwin:(id)darwin
 {
-  v5 = a3;
-  if (!v5)
+  darwinCopy = darwin;
+  if (!darwinCopy)
   {
     [ATXHeuristicCacheNotificationExpirer initDarwin:];
   }
@@ -66,7 +66,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationName, a3);
+    objc_storeStrong(&v6->_notificationName, darwin);
     v7->_isLocal = 0;
   }
 
@@ -76,7 +76,7 @@
 - (void)_start
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 80);
+  v2 = *(self + 80);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_23E3EA000, a2, OS_LOG_TYPE_DEBUG, "Starting ATXHeuristicCacheNotificationExpirer for %@. We will now expire heuristics for this notification.", &v4, 0xCu);
@@ -125,10 +125,10 @@ void __46__ATXHeuristicCacheNotificationExpirer__start__block_invoke_82(uint64_t
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -138,7 +138,7 @@ void __46__ATXHeuristicCacheNotificationExpirer__start__block_invoke_82(uint64_t
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_notificationName;
       v7 = v6;
       if (v6 == v5->_notificationName)
@@ -170,27 +170,27 @@ LABEL_11:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   notificationName = self->_notificationName;
-  v5 = a3;
-  [v5 encodeObject:notificationName forKey:@"notificationName"];
-  [v5 encodeBool:self->_isLocal forKey:@"isLocal"];
+  coderCopy = coder;
+  [coderCopy encodeObject:notificationName forKey:@"notificationName"];
+  [coderCopy encodeBool:self->_isLocal forKey:@"isLocal"];
 }
 
-- (ATXHeuristicCacheNotificationExpirer)initWithCoder:(id)a3
+- (ATXHeuristicCacheNotificationExpirer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ATXHeuristicCacheNotificationExpirer;
-  v5 = [(ATXHeuristicCacheExpirer *)&v9 initWithCoder:v4];
+  v5 = [(ATXHeuristicCacheExpirer *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notificationName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notificationName"];
     notificationName = v5->_notificationName;
     v5->_notificationName = v6;
 
-    v5->_isLocal = [v4 decodeBoolForKey:@"isLocal"];
+    v5->_isLocal = [coderCopy decodeBoolForKey:@"isLocal"];
   }
 
   return v5;

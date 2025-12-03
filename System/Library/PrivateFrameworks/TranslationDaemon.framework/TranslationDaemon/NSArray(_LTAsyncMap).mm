@@ -9,7 +9,7 @@
 - (void)_ltAsyncMap:()_LTAsyncMap completion:
 {
   v7 = dispatch_get_global_queue(9, 0);
-  [a1 _ltAsyncMap:a3 queue:v7 completion:a4];
+  [self _ltAsyncMap:a3 queue:v7 completion:a4];
 }
 
 - (void)_ltAsyncMap:()_LTAsyncMap queue:completion:
@@ -17,19 +17,19 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [MEMORY[0x277CBEB18] array];
-  if ([a1 count])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([self count])
   {
     v12 = 0;
     do
     {
-      v13 = [MEMORY[0x277CBEB68] null];
-      [v11 addObject:v13];
+      null = [MEMORY[0x277CBEB68] null];
+      [array addObject:null];
 
       ++v12;
     }
 
-    while (v12 < [a1 count]);
+    while (v12 < [self count]);
   }
 
   v34[0] = 0;
@@ -53,9 +53,9 @@
   v33 = v34;
   v19 = v14;
   v30 = v19;
-  v20 = v11;
+  v20 = array;
   v31 = v20;
-  [a1 enumerateObjectsUsingBlock:v27];
+  [self enumerateObjectsUsingBlock:v27];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__NSArray__LTAsyncMap___ltAsyncMap_queue_completion___block_invoke_5;
@@ -74,8 +74,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [a1 objectEnumerator];
+  array = [MEMORY[0x277CBEB18] array];
+  objectEnumerator = [self objectEnumerator];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -86,11 +86,11 @@
   v17[1] = 3221225472;
   v17[2] = __52__NSArray__LTAsyncMap___ltSequentialMap_completion___block_invoke;
   v17[3] = &unk_2789B53C8;
-  v10 = v9;
+  v10 = objectEnumerator;
   v18 = v10;
   v11 = v7;
   v20 = v11;
-  v12 = v8;
+  v12 = array;
   v19 = v12;
   v22 = &v23;
   v13 = v6;

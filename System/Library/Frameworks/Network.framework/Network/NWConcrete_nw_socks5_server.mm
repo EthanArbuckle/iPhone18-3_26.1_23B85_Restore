@@ -1,6 +1,6 @@
 @interface NWConcrete_nw_socks5_server
 - (NSString)description;
-- (id)initWithParameters:(void *)a3 clientQueue:;
+- (id)initWithParameters:(void *)parameters clientQueue:;
 - (void)dealloc;
 @end
 
@@ -129,7 +129,7 @@ LABEL_25:
     *buf = 136446466;
     v27 = "[NWConcrete_nw_socks5_server dealloc]";
     v28 = 2114;
-    v29 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_181A37000, v3, OS_LOG_TYPE_INFO, "%{public}s %{public}@", buf, 0x16u);
   }
 
@@ -159,7 +159,7 @@ LABEL_25:
       v27 = "[NWConcrete_nw_socks5_server dealloc]";
       v28 = 2112;
       *buf = 136446978;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 1024;
       v31 = v6;
       v32 = 2048;
@@ -257,7 +257,7 @@ LABEL_26:
         *buf = 136446466;
         v27 = "[NWConcrete_nw_socks5_server dealloc]";
         v28 = 2082;
-        v29 = backtrace_string;
+        selfCopy2 = backtrace_string;
         _os_log_impl(&dword_181A37000, v13, v17, "%{public}s over-release of nw_socks5_server. Object should not be internally retained while deallocating, dumping backtrace:%{public}s", buf, 0x16u);
       }
 
@@ -277,19 +277,19 @@ LABEL_22:
   [(NWConcrete_nw_socks5_server *)&v23 dealloc:v21];
 }
 
-- (id)initWithParameters:(void *)a3 clientQueue:
+- (id)initWithParameters:(void *)parameters clientQueue:
 {
   v65 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  parametersCopy = parameters;
+  if (!self)
   {
 LABEL_106:
     v23 = 0;
     goto LABEL_71;
   }
 
-  v59.receiver = a1;
+  v59.receiver = self;
   v59.super_class = NWConcrete_nw_socks5_server;
   v7 = objc_msgSendSuper2(&v59, sel_init);
   if (!v7)
@@ -517,7 +517,7 @@ LABEL_104:
 
       if (*(v8 + 9))
       {
-        objc_storeStrong(v8 + 6, a3);
+        objc_storeStrong(v8 + 6, parameters);
         v21 = _nw_array_create();
         v22 = *(v8 + 10);
         *(v8 + 10) = v21;

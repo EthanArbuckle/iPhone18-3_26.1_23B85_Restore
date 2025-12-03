@@ -1,24 +1,24 @@
 @interface MIBUDataCollector
 + (id)sharedInstance;
-- (BOOL)_collectThermalDataWithKeys:(id)a3 interval:(int64_t)a4;
+- (BOOL)_collectThermalDataWithKeys:(id)keys interval:(int64_t)interval;
 - (BOOL)_prepare;
 - (BOOL)_prepareThermalDataFile;
 - (BOOL)_saveStats;
 - (BOOL)clear;
 - (BOOL)start;
 - (MIBUDataCollector)init;
-- (double)_doubleFromData:(id)a3;
-- (id)_convertTagName:(id)a3;
-- (id)_stringForDate:(id)a3;
-- (id)_stringForNumberinData:(id)a3 forKey:(id)a4;
+- (double)_doubleFromData:(id)data;
+- (id)_convertTagName:(id)name;
+- (id)_stringForDate:(id)date;
+- (id)_stringForNumberinData:(id)data forKey:(id)key;
 - (id)_thermalColumnNames;
 - (id)summaryReport;
 - (void)_collectThermalData;
 - (void)_finishCollectingThermalData;
 - (void)_loadStats;
 - (void)_startUpdate;
-- (void)_updateThermalSummary:(id)a3 withValue:(id)a4;
-- (void)addKeyEvent:(id)a3 additionalData:(id)a4;
+- (void)_updateThermalSummary:(id)summary withValue:(id)value;
+- (void)addKeyEvent:(id)event additionalData:(id)data;
 - (void)stop;
 @end
 
@@ -261,9 +261,9 @@ LABEL_16:
   return v8;
 }
 
-- (id)_convertTagName:(id)a3
+- (id)_convertTagName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v24[0] = @"ClientController";
   v23[0] = @"SSUNanMulticastInit";
   v23[1] = @"SSUNanMulticastStart";
@@ -280,9 +280,9 @@ LABEL_16:
   v25[1] = v5;
   v6 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
 
-  if ([v3 hasPrefix:@"SSU"])
+  if ([nameCopy hasPrefix:@"SSU"])
   {
-    v7 = v3;
+    v7 = nameCopy;
   }
 
   else
@@ -307,9 +307,9 @@ LABEL_16:
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          if ([v3 hasPrefix:{v13, v17}])
+          if ([nameCopy hasPrefix:{v13, v17}])
           {
-            v14 = [v3 substringFromIndex:{objc_msgSend(v13, "length")}];
+            v14 = [nameCopy substringFromIndex:{objc_msgSend(v13, "length")}];
             v7 = [@"SSU" stringByAppendingString:v14];
 
             v15 = [v8 objectForKey:v13];
@@ -351,13 +351,13 @@ LABEL_19:
   return v7;
 }
 
-- (void)addKeyEvent:(id)a3 additionalData:(id)a4
+- (void)addKeyEvent:(id)event additionalData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  dataCopy = data;
   if (self->_collectingKeyEvents)
   {
-    v8 = [(MIBUDataCollector *)self _convertTagName:v6];
+    v8 = [(MIBUDataCollector *)self _convertTagName:eventCopy];
 
     if (v8)
     {
@@ -374,11 +374,11 @@ LABEL_19:
       [v10 setObject:v12 forKey:@"Time"];
 
       [v10 setObject:v8 forKey:@"Tag"];
-      if (v7)
+      if (dataCopy)
       {
-        if ([NSJSONSerialization isValidJSONObject:v7])
+        if ([NSJSONSerialization isValidJSONObject:dataCopy])
         {
-          [v10 setObject:v7 forKey:@"Data"];
+          [v10 setObject:dataCopy forKey:@"Data"];
         }
 
         else
@@ -406,7 +406,7 @@ LABEL_19:
 
   else
   {
-    v8 = v6;
+    v8 = eventCopy;
   }
 }
 
@@ -472,15 +472,15 @@ LABEL_19:
 
 - (void)_loadStats
 {
-  v3 = [(MIBUDataCollector *)self _fileForStatsData];
-  if (v3)
+  _fileForStatsData = [(MIBUDataCollector *)self _fileForStatsData];
+  if (_fileForStatsData)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [v4 fileExistsAtPath:v3];
+    v5 = [v4 fileExistsAtPath:_fileForStatsData];
 
     if (v5)
     {
-      v6 = [NSData dataWithContentsOfFile:v3];
+      v6 = [NSData dataWithContentsOfFile:_fileForStatsData];
       v20 = 0;
       v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:&v20];
       v8 = v20;
@@ -558,8 +558,8 @@ LABEL_19:
 {
   v3 = self->_keyEvents;
   objc_sync_enter(v3);
-  v4 = [(MIBUDataCollector *)self _fileForStatsData];
-  if (v4)
+  _fileForStatsData = [(MIBUDataCollector *)self _fileForStatsData];
+  if (_fileForStatsData)
   {
     thermalHistory = self->_thermalHistory;
     if (thermalHistory)
@@ -590,9 +590,9 @@ LABEL_19:
     v14 = v22;
     if (v13)
     {
-      v15 = [(MIBUDataCollector *)self _fileForStatsData];
+      _fileForStatsData2 = [(MIBUDataCollector *)self _fileForStatsData];
       v21 = v14;
-      v10 = [v13 writeToFile:v15 options:0 error:&v21];
+      v10 = [v13 writeToFile:_fileForStatsData2 options:0 error:&v21];
       v16 = v21;
 
       if ((v10 & 1) == 0)
@@ -605,8 +605,8 @@ LABEL_19:
         v17 = qword_1000B84A0;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v16 localizedDescription];
-          sub_1000550D8(v18, v23, v17);
+          localizedDescription = [v16 localizedDescription];
+          sub_1000550D8(localizedDescription, v23, v17);
         }
       }
 
@@ -623,8 +623,8 @@ LABEL_19:
       v13 = qword_1000B84A0;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v14 localizedDescription];
-        sub_100055150(v19, v23, v13);
+        localizedDescription2 = [v14 localizedDescription];
+        sub_100055150(localizedDescription2, v23, v13);
       }
 
       v10 = 0;
@@ -681,17 +681,17 @@ LABEL_19:
 
 - (BOOL)_prepareThermalDataFile
 {
-  v3 = [(MIBUDataCollector *)self _fileForThermalData];
-  if (v3)
+  _fileForThermalData = [(MIBUDataCollector *)self _fileForThermalData];
+  if (_fileForThermalData)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [v4 fileExistsAtPath:v3];
+    v5 = [v4 fileExistsAtPath:_fileForThermalData];
     if ((v5 & 1) == 0)
     {
-      [v4 createFileAtPath:v3 contents:0 attributes:0];
+      [v4 createFileAtPath:_fileForThermalData contents:0 attributes:0];
     }
 
-    v6 = [NSFileHandle fileHandleForWritingAtPath:v3];
+    v6 = [NSFileHandle fileHandleForWritingAtPath:_fileForThermalData];
     thermalDataFile = self->_thermalDataFile;
     self->_thermalDataFile = v6;
 
@@ -708,8 +708,8 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v11 = [(MIBUDataCollector *)self _thermalColumnNames];
-      v12 = [NSString stringWithFormat:@"Time, %@\n", v11];
+      _thermalColumnNames = [(MIBUDataCollector *)self _thermalColumnNames];
+      v12 = [NSString stringWithFormat:@"Time, %@\n", _thermalColumnNames];
 
       v13 = self->_thermalDataFile;
       v14 = [v12 dataUsingEncoding:4];
@@ -753,7 +753,7 @@ LABEL_21:
       }
 
       *buf = 138412290;
-      v22 = v3;
+      v22 = _fileForThermalData;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "DataCollector: was not able to open %@ for writing", buf, 0xCu);
     }
 
@@ -767,11 +767,11 @@ LABEL_22:
   return v9;
 }
 
-- (BOOL)_collectThermalDataWithKeys:(id)a3 interval:(int64_t)a4
+- (BOOL)_collectThermalDataWithKeys:(id)keys interval:(int64_t)interval
 {
-  v7 = a3;
+  keysCopy = keys;
   objc_initWeak(&location, self);
-  objc_storeStrong(&self->_thermalKeyMapping, a3);
+  objc_storeStrong(&self->_thermalKeyMapping, keys);
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_create("com.apple.mobileinboxupdate.data_collection.thermal", v8);
   thermalCollectionQueue = self->_thermalCollectionQueue;
@@ -793,7 +793,7 @@ LABEL_22:
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v23 = a4;
+    intervalCopy = interval;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "DataCollector: start to collect thermal data every %ld seconds", buf, 0xCu);
   }
 
@@ -801,7 +801,7 @@ LABEL_22:
   thermalCollectionTimer = self->_thermalCollectionTimer;
   self->_thermalCollectionTimer = v13;
 
-  dispatch_source_set_timer(self->_thermalCollectionTimer, 0, 1000000000 * a4, 0);
+  dispatch_source_set_timer(self->_thermalCollectionTimer, 0, 1000000000 * interval, 0);
   v15 = self->_thermalCollectionTimer;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
@@ -817,32 +817,32 @@ LABEL_22:
   return 1;
 }
 
-- (id)_stringForDate:(id)a3
+- (id)_stringForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_alloc_init(NSDateFormatter);
   v5 = +[NSLocale currentLocale];
   [v4 setLocale:v5];
 
   [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v6 = [v4 stringFromDate:v3];
+  v6 = [v4 stringFromDate:dateCopy];
 
   return v6;
 }
 
-- (id)_stringForNumberinData:(id)a3 forKey:(id)a4
+- (id)_stringForNumberinData:(id)data forKey:(id)key
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"TG0V"])
+  dataCopy = data;
+  if ([key isEqualToString:@"TG0V"])
   {
-    +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%.2lf", *[v6 bytes] * 0.0000152587891);
+    +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%.2lf", *[dataCopy bytes] * 0.0000152587891);
     v8 = LABEL_6:;
     goto LABEL_7;
   }
 
-  if ([v6 length] == 4 || objc_msgSend(v6, "length") == 8)
+  if ([dataCopy length] == 4 || objc_msgSend(dataCopy, "length") == 8)
   {
-    [(MIBUDataCollector *)self _doubleFromData:v6];
+    [(MIBUDataCollector *)self _doubleFromData:dataCopy];
     [NSString stringWithFormat:@"%.2lf", v7];
     goto LABEL_6;
   }
@@ -853,20 +853,20 @@ LABEL_7:
   return v8;
 }
 
-- (double)_doubleFromData:(id)a3
+- (double)_doubleFromData:(id)data
 {
-  v3 = a3;
-  if ([v3 length] == 4)
+  dataCopy = data;
+  if ([dataCopy length] == 4)
   {
-    v4 = *[v3 bytes];
+    v4 = *[dataCopy bytes];
   }
 
   else
   {
     v4 = 0.0;
-    if ([v3 length] == 8)
+    if ([dataCopy length] == 8)
     {
-      v4 = *[v3 bytes];
+      v4 = *[dataCopy bytes];
     }
   }
 
@@ -946,23 +946,23 @@ LABEL_7:
   }
 }
 
-- (void)_updateThermalSummary:(id)a3 withValue:(id)a4
+- (void)_updateThermalSummary:(id)summary withValue:(id)value
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_thermalStart objectForKey:v13];
+  summaryCopy = summary;
+  valueCopy = value;
+  v7 = [(NSMutableDictionary *)self->_thermalStart objectForKey:summaryCopy];
 
   if (!v7)
   {
-    [(NSMutableDictionary *)self->_thermalStart setObject:v6 forKey:v13];
+    [(NSMutableDictionary *)self->_thermalStart setObject:valueCopy forKey:summaryCopy];
   }
 
-  [(NSMutableDictionary *)self->_thermalEnd setObject:v6 forKey:v13];
-  v8 = [(NSMutableDictionary *)self->_thermalPeak objectForKey:v13];
+  [(NSMutableDictionary *)self->_thermalEnd setObject:valueCopy forKey:summaryCopy];
+  v8 = [(NSMutableDictionary *)self->_thermalPeak objectForKey:summaryCopy];
   v9 = v8;
-  if (!v8 || ([v8 doubleValue], v11 = v10, objc_msgSend(v6, "doubleValue"), v11 < v12))
+  if (!v8 || ([v8 doubleValue], v11 = v10, objc_msgSend(valueCopy, "doubleValue"), v11 < v12))
   {
-    [(NSMutableDictionary *)self->_thermalPeak setObject:v6 forKey:v13];
+    [(NSMutableDictionary *)self->_thermalPeak setObject:valueCopy forKey:summaryCopy];
   }
 }
 

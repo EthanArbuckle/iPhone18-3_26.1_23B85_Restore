@@ -1,22 +1,22 @@
 @interface AVCacheLargestInscribedRectInBoundingPath
 - (AVCacheLargestInscribedRectInBoundingPath)init;
-- (CGRect)getLargestInscribableRectForView:(id)a3 withCenter:(CGPoint)a4 aspectRatio:(double)a5;
-- (id)retrieveCacheForCenter:(CGPoint)a3 aspectRatio:(double)a4;
-- (void)saveCacheFor:(CGPoint)a3 aspectRatio:(double)a4 value:(CGRect)a5;
+- (CGRect)getLargestInscribableRectForView:(id)view withCenter:(CGPoint)center aspectRatio:(double)ratio;
+- (id)retrieveCacheForCenter:(CGPoint)center aspectRatio:(double)ratio;
+- (void)saveCacheFor:(CGPoint)for aspectRatio:(double)ratio value:(CGRect)value;
 @end
 
 @implementation AVCacheLargestInscribedRectInBoundingPath
 
-- (CGRect)getLargestInscribableRectForView:(id)a3 withCenter:(CGPoint)a4 aspectRatio:(double)a5
+- (CGRect)getLargestInscribableRectForView:(id)view withCenter:(CGPoint)center aspectRatio:(double)ratio
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = [(AVCacheLargestInscribedRectInBoundingPath *)self retrieveCacheForCenter:x aspectRatio:y, a5];
-  v11 = v10;
-  if (v10)
+  y = center.y;
+  x = center.x;
+  viewCopy = view;
+  ratio = [(AVCacheLargestInscribedRectInBoundingPath *)self retrieveCacheForCenter:x aspectRatio:y, ratio];
+  v11 = ratio;
+  if (ratio)
   {
-    [v10 largestInscribedRect];
+    [ratio largestInscribedRect];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -25,12 +25,12 @@
 
   else
   {
-    [v9 avkit_largestInscribedRectInBoundingPathWithCenter:x aspectRatio:{y, a5}];
+    [viewCopy avkit_largestInscribedRectInBoundingPathWithCenter:x aspectRatio:{y, ratio}];
     v13 = v20;
     v15 = v21;
     v17 = v22;
     v19 = v23;
-    [(AVCacheLargestInscribedRectInBoundingPath *)self saveCacheFor:x aspectRatio:y value:a5, v20, v21, v22, v23];
+    [(AVCacheLargestInscribedRectInBoundingPath *)self saveCacheFor:x aspectRatio:y value:ratio, v20, v21, v22, v23];
   }
 
   v24 = v13;
@@ -44,14 +44,14 @@
   return result;
 }
 
-- (void)saveCacheFor:(CGPoint)a3 aspectRatio:(double)a4 value:(CGRect)a5
+- (void)saveCacheFor:(CGPoint)for aspectRatio:(double)ratio value:(CGRect)value
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = [[AVCacheLargestInscribedRectInBoundingPathKey alloc] initWithCenter:a3.x aspectRatio:a3.y, a4];
-  v11 = [[AVCacheLargestInscribedRectInBoundingPathValue alloc] initWithLargestInscribedRect:x, y, width, height];
+  height = value.size.height;
+  width = value.size.width;
+  y = value.origin.y;
+  x = value.origin.x;
+  ratio = [[AVCacheLargestInscribedRectInBoundingPathKey alloc] initWithCenter:for.x aspectRatio:for.y, ratio];
+  height = [[AVCacheLargestInscribedRectInBoundingPathValue alloc] initWithLargestInscribedRect:x, y, width, height];
   if ([(NSCache *)self->_cache countLimit]== 10)
   {
     v12 = _AVLog();
@@ -62,13 +62,13 @@
     }
   }
 
-  [(NSCache *)self->_cache setObject:v11 forKey:v10];
+  [(NSCache *)self->_cache setObject:height forKey:ratio];
 }
 
-- (id)retrieveCacheForCenter:(CGPoint)a3 aspectRatio:(double)a4
+- (id)retrieveCacheForCenter:(CGPoint)center aspectRatio:(double)ratio
 {
-  v5 = [[AVCacheLargestInscribedRectInBoundingPathKey alloc] initWithCenter:a3.x aspectRatio:a3.y, a4];
-  v6 = [(NSCache *)self->_cache objectForKey:v5];
+  ratio = [[AVCacheLargestInscribedRectInBoundingPathKey alloc] initWithCenter:center.x aspectRatio:center.y, ratio];
+  v6 = [(NSCache *)self->_cache objectForKey:ratio];
 
   return v6;
 }

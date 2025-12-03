@@ -1,8 +1,8 @@
 @interface TRIExperimentHistorySysdiagnoseProvider
 + (id)defaultProvider;
-- (id)_allHistoryRecordsWithError:(id *)a3;
+- (id)_allHistoryRecordsWithError:(id *)error;
 - (id)initIncompleteProvider;
-- (id)sysdiagnoseLinesWithError:(id *)a3;
+- (id)sysdiagnoseLinesWithError:(id *)error;
 @end
 
 @implementation TRIExperimentHistorySysdiagnoseProvider
@@ -16,8 +16,8 @@
 
 + (id)defaultProvider
 {
-  v2 = [[TRIExperimentHistorySysdiagnoseProvider alloc] initIncompleteProvider];
-  objc_initWeak(&location, v2);
+  initIncompleteProvider = [[TRIExperimentHistorySysdiagnoseProvider alloc] initIncompleteProvider];
+  objc_initWeak(&location, initIncompleteProvider);
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __58__TRIExperimentHistorySysdiagnoseProvider_defaultProvider__block_invoke;
@@ -25,12 +25,12 @@
   objc_copyWeak(&v10, &location);
   v3 = MEMORY[0x2318F2490](&v6);
   v4 = [TRIAllocationStatus syncProxyWithErrorHandler:v3, v6, v7, v8, v9];
-  [v2 setSyncStatusProvider:v4];
+  [initIncompleteProvider setSyncStatusProvider:v4];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 
-  return v2;
+  return initIncompleteProvider;
 }
 
 void __58__TRIExperimentHistorySysdiagnoseProvider_defaultProvider__block_invoke(uint64_t a1, void *a2)
@@ -44,9 +44,9 @@ void __58__TRIExperimentHistorySysdiagnoseProvider_defaultProvider__block_invoke
   }
 }
 
-- (id)sysdiagnoseLinesWithError:(id *)a3
+- (id)sysdiagnoseLinesWithError:(id *)error
 {
-  v3 = [(TRIExperimentHistorySysdiagnoseProvider *)self _allHistoryRecordsWithError:a3];
+  v3 = [(TRIExperimentHistorySysdiagnoseProvider *)self _allHistoryRecordsWithError:error];
   if (v3)
   {
     v4 = [TRISysdiagnoseOutputFormatter formatRecords:v3];
@@ -60,19 +60,19 @@ void __58__TRIExperimentHistorySysdiagnoseProvider_defaultProvider__block_invoke
   return v4;
 }
 
-- (id)_allHistoryRecordsWithError:(id *)a3
+- (id)_allHistoryRecordsWithError:(id *)error
 {
-  v5 = [(TRIExperimentHistorySysdiagnoseProvider *)self _experimentHistoryRecordsForEnvironment:0 error:a3];
+  v5 = [(TRIExperimentHistorySysdiagnoseProvider *)self _experimentHistoryRecordsForEnvironment:0 error:error];
   if (!v5)
   {
     v10 = 0;
     goto LABEL_16;
   }
 
-  v6 = [(TRIExperimentHistorySysdiagnoseProvider *)self _experimentHistoryRecordsForEnvironment:2 error:a3];
+  v6 = [(TRIExperimentHistorySysdiagnoseProvider *)self _experimentHistoryRecordsForEnvironment:2 error:error];
   if (v6)
   {
-    v7 = [(TRIExperimentHistorySysdiagnoseProvider *)self _experimentHistoryRecordsForEnvironment:3 error:a3];
+    v7 = [(TRIExperimentHistorySysdiagnoseProvider *)self _experimentHistoryRecordsForEnvironment:3 error:error];
     if (!v7)
     {
       v10 = 0;
@@ -81,15 +81,15 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v8 = [(TRIExperimentHistorySysdiagnoseProvider *)self _experimentHistoryRecordsForEnvironment:4 error:a3];
+    v8 = [(TRIExperimentHistorySysdiagnoseProvider *)self _experimentHistoryRecordsForEnvironment:4 error:error];
     if (!v8)
     {
       goto LABEL_11;
     }
 
-    v9 = [(TRIExperimentHistorySysdiagnoseProvider *)self xpcError];
+    xpcError = [(TRIExperimentHistorySysdiagnoseProvider *)self xpcError];
 
-    if (!v9)
+    if (!xpcError)
     {
       v11 = objc_opt_new();
       [v11 addObjectsFromArray:v5];
@@ -101,10 +101,10 @@ LABEL_14:
       goto LABEL_13;
     }
 
-    if (a3)
+    if (error)
     {
       [(TRIExperimentHistorySysdiagnoseProvider *)self xpcError];
-      *a3 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else

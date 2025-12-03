@@ -1,12 +1,12 @@
 @interface CarouselBalloonViewDataSource
 - (_TtC7ChatKit29CarouselBalloonViewDataSource)init;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 @end
 
 @implementation CarouselBalloonViewDataSource
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC7ChatKit29CarouselBalloonViewDataSource_items);
   if (!v3)
@@ -22,11 +22,11 @@
   return *((v3 & 0xFFFFFFFFFFFFFF8) + 0x10);
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  item = a3->item;
-  v4 = self;
-  v6 = sub_190CE8848(v4, v5, item);
+  item = path->item;
+  selfCopy = self;
+  v6 = sub_190CE8848(selfCopy, v5, item);
 
   return v6;
 }

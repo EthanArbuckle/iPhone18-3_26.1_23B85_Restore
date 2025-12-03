@@ -1,26 +1,26 @@
 @interface DSDictionaryTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 - (void)updateLabels;
 @end
 
 @implementation DSDictionaryTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DUDefinitionDictionary"];
-  [v3 validateClass:@"DSDictionaryTableCell" isKindOfClass:@"PSTableCell"];
-  [v3 validateClass:@"DSDictionaryTableCell" hasInstanceMethod:@"definitionDictionary" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DUDefinitionDictionary" hasInstanceMethod:@"definitionLanguage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DSDictionaryTableCell" hasInstanceMethod:@"updateLabels" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DUDefinitionDictionary"];
+  [validationsCopy validateClass:@"DSDictionaryTableCell" isKindOfClass:@"PSTableCell"];
+  [validationsCopy validateClass:@"DSDictionaryTableCell" hasInstanceMethod:@"definitionDictionary" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DUDefinitionDictionary" hasInstanceMethod:@"definitionLanguage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DSDictionaryTableCell" hasInstanceMethod:@"updateLabels" withFullSignature:{"v", 0}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v8.receiver = self;
   v8.super_class = DSDictionaryTableCellAccessibility;
-  v3 = [(DSDictionaryTableCellAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits = [(DSDictionaryTableCellAccessibility *)&v8 accessibilityTraits];
   v4 = [(DSDictionaryTableCellAccessibility *)self safeValueForKey:@"imageView"];
   v5 = __UIAccessibilitySafeClass();
 
@@ -31,7 +31,7 @@
     v6 = 0;
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 - (void)updateLabels
@@ -44,8 +44,8 @@
   v4 = [(DSDictionaryTableCellAccessibility *)self safeValueForKey:@"detailTextLabel"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 text];
-  v7 = [v3 axAttributedStringWithString:v6];
+  text = [v5 text];
+  v7 = [v3 axAttributedStringWithString:text];
 
   v8 = [(DSDictionaryTableCellAccessibility *)self safeValueForKey:@"definitionDictionary"];
   v9 = [v8 safeStringForKey:@"definitionLanguage"];

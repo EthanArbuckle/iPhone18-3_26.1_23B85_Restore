@@ -1,24 +1,24 @@
 @interface AudioAccessoryAssetManagementClientXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (BOOL)_isLanguageSuggested:(id)a3;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (BOOL)_isLanguageSuggested:(id)suggested;
 - (BOOL)_requestedAssetsDownloaded;
-- (id)_averageOfArray:(id)a3;
+- (id)_averageOfArray:(id)array;
 - (id)_getAAAssetManagementFBundle;
 - (void)_invalidateAssetManagementNotification;
-- (void)_monitorAssetsDownloadProgressWithObservations:(id)a3 completion:(id)a4;
-- (void)_postProgressUpdate:(unint64_t)a3 totalCount:(unint64_t)a4;
-- (void)_registerLaunchHandlerWithCompletion:(id)a3;
+- (void)_monitorAssetsDownloadProgressWithObservations:(id)observations completion:(id)completion;
+- (void)_postProgressUpdate:(unint64_t)update totalCount:(unint64_t)count;
+- (void)_registerLaunchHandlerWithCompletion:(id)completion;
 - (void)_showAssetManagementNotification;
-- (void)_showProgressBanner:(id)a3 totalCount:(id)a4;
+- (void)_showProgressBanner:(id)banner totalCount:(id)count;
 - (void)_submitBackgroundTask;
-- (void)getTranslationAssets:(id)a3;
-- (void)getTranslationAssetsDownloadSize:(id)a3 localeIdentifiers:(id)a4 completion:(id)a5;
+- (void)getTranslationAssets:(id)assets;
+- (void)getTranslationAssetsDownloadSize:(id)size localeIdentifiers:(id)identifiers completion:(id)completion;
 - (void)xpcConnectionInvalidated;
 @end
 
 @implementation AudioAccessoryAssetManagementClientXPCConnection
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -53,7 +53,7 @@
     if (dword_100010D38 <= 90 && (dword_100010D38 != -1 || _LogCategory_Initialize()))
     {
       sub_1000041FC(p_xpcCnx);
-      if (a3)
+      if (error)
       {
         goto LABEL_12;
       }
@@ -62,13 +62,13 @@
     else
     {
 LABEL_11:
-      if (a3)
+      if (error)
       {
 LABEL_12:
         v11 = NSErrorF();
         v12 = v11;
         result = 0;
-        *a3 = v11;
+        *error = v11;
         return result;
       }
     }
@@ -132,18 +132,18 @@ LABEL_12:
   _objc_release_x1();
 }
 
-- (id)_averageOfArray:(id)a3
+- (id)_averageOfArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = 0.0;
   v5 = [NSNumber numberWithDouble:0.0];
-  if ([v3 count])
+  if ([arrayCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v3;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -181,25 +181,25 @@ LABEL_12:
   return v5;
 }
 
-- (void)getTranslationAssetsDownloadSize:(id)a3 localeIdentifiers:(id)a4 completion:(id)a5
+- (void)getTranslationAssetsDownloadSize:(id)size localeIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sizeCopy = size;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  if (v9)
+  if (identifiersCopy)
   {
     v11 = [_LTLanguageStatus alloc];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100001DB4;
     v15[3] = &unk_10000C380;
-    v16 = v9;
+    v16 = identifiersCopy;
     v18 = &v19;
-    v17 = v10;
+    v17 = completionCopy;
     v12 = [v11 initWithTaskHint:1 useDedicatedMachPort:0 observations:v15];
     languageStatus = self->_languageStatus;
     self->_languageStatus = v12;
@@ -210,15 +210,15 @@ LABEL_12:
   else
   {
     v14 = NSErrorF();
-    (*(v10 + 2))(v10, v14, v20[3]);
+    (*(completionCopy + 2))(completionCopy, v14, v20[3]);
   }
 
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)getTranslationAssets:(id)a3
+- (void)getTranslationAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   if (dword_100010D38 <= 30 && (dword_100010D38 != -1 || _LogCategory_Initialize()))
   {
     sub_100004430();
@@ -240,9 +240,9 @@ LABEL_12:
   self->_languageStatus = v6;
 }
 
-- (BOOL)_isLanguageSuggested:(id)a3
+- (BOOL)_isLanguageSuggested:(id)suggested
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  v3 = [suggested stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
   +[NSLocale preferredLanguages];
   v9 = 0u;
   v10 = 0u;
@@ -302,26 +302,26 @@ LABEL_11:
   }
 }
 
-- (void)_monitorAssetsDownloadProgressWithObservations:(id)a3 completion:(id)a4
+- (void)_monitorAssetsDownloadProgressWithObservations:(id)observations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  observationsCopy = observations;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000026B8;
   block[3] = &unk_10000C438;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observationsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = observationsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_registerLaunchHandlerWithCompletion:(id)a3
+- (void)_registerLaunchHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[BGTaskScheduler sharedScheduler];
   taskIdentifier = self->_taskIdentifier;
   v9[0] = _NSConcreteStackBlock;
@@ -329,11 +329,11 @@ LABEL_11:
   v9[2] = sub_100002BDC;
   v9[3] = &unk_10000C4B0;
   v9[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
-  LOBYTE(v4) = [v5 registerForTaskWithIdentifier:taskIdentifier usingQueue:0 launchHandler:v9];
+  LOBYTE(completionCopy) = [v5 registerForTaskWithIdentifier:taskIdentifier usingQueue:0 launchHandler:v9];
 
-  if ((v4 & 1) == 0)
+  if ((completionCopy & 1) == 0)
   {
     v8 = NSErrorF();
     (*(v7 + 2))(v7, v8);
@@ -378,7 +378,7 @@ LABEL_11:
     [(AudioAccessoryAssetManagementClientXPCConnection *)self _invalidateAssetManagementNotification];
   }
 
-  v3 = [(AudioAccessoryAssetManagementClientXPCConnection *)self _getAAAssetManagementFBundle];
+  _getAAAssetManagementFBundle = [(AudioAccessoryAssetManagementClientXPCConnection *)self _getAAAssetManagementFBundle];
   v4 = objc_alloc_init(CUUserNotificationSession);
   uiNotificationAssetManagement = self->_uiNotificationAssetManagement;
   self->_uiNotificationAssetManagement = v4;
@@ -411,7 +411,7 @@ LABEL_11:
   [(CUUserNotificationSession *)v4 activate];
 }
 
-- (void)_postProgressUpdate:(unint64_t)a3 totalCount:(unint64_t)a4
+- (void)_postProgressUpdate:(unint64_t)update totalCount:(unint64_t)count
 {
   if (dword_100010D38 <= 30 && (dword_100010D38 != -1 || _LogCategory_Initialize()))
   {
@@ -428,7 +428,7 @@ LABEL_11:
   }
 
   maxCompleteDownloadUnits = self->_maxCompleteDownloadUnits;
-  if (maxCompleteDownloadUnits >= a3)
+  if (maxCompleteDownloadUnits >= update)
   {
     v12 = maxCompleteDownloadUnits + 1;
     self->_maxCompleteDownloadUnits = v12;
@@ -447,18 +447,18 @@ LABEL_11:
       v12 = self->_maxCompleteDownloadUnits;
     }
 
-    v18 = a3;
+    updateCopy3 = update;
     v19 = v12;
     goto LABEL_13;
   }
 
-  self->_maxCompleteDownloadUnits = a3;
+  self->_maxCompleteDownloadUnits = update;
   if (dword_100010D38 > 30)
   {
     goto LABEL_17;
   }
 
-  v11 = a3;
+  updateCopy2 = update;
   if (dword_100010D38 != -1)
   {
     goto LABEL_9;
@@ -466,19 +466,19 @@ LABEL_11:
 
   if (_LogCategory_Initialize())
   {
-    v11 = self->_maxCompleteDownloadUnits;
+    updateCopy2 = self->_maxCompleteDownloadUnits;
 LABEL_9:
-    v18 = a3;
-    v19 = v11;
+    updateCopy3 = update;
+    v19 = updateCopy2;
 LABEL_13:
     LogPrintF();
   }
 
 LABEL_17:
-  [(NSProgress *)self->_progress setCompletedUnitCount:self->_maxCompleteDownloadUnits, v18, v19];
+  [(NSProgress *)self->_progress setCompletedUnitCount:self->_maxCompleteDownloadUnits, updateCopy3, v19];
   [(NSProgress *)self->_progress setUserInfoObject:0 forKey:@"HideProgressCircleInUI"];
   [(_BGContinuedProcessingTask *)self->_processingTask updateProgress:self->_progress];
-  if (a4 != a3)
+  if (count != update)
   {
     v13 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);
     v14 = self->_artificialUpdateTimer;
@@ -493,22 +493,22 @@ LABEL_17:
     handler[2] = sub_1000038E4;
     handler[3] = &unk_10000C528;
     handler[4] = self;
-    handler[5] = a3;
-    handler[6] = a4;
+    handler[5] = update;
+    handler[6] = count;
     dispatch_source_set_event_handler(v17, handler);
     dispatch_resume(self->_artificialUpdateTimer);
   }
 }
 
-- (void)_showProgressBanner:(id)a3 totalCount:(id)a4
+- (void)_showProgressBanner:(id)banner totalCount:(id)count
 {
-  v24 = a4;
-  v6 = a3;
-  v7 = [v24 integerValue];
-  v8 = [v6 integerValue];
+  countCopy = count;
+  bannerCopy = banner;
+  integerValue = [countCopy integerValue];
+  integerValue2 = [bannerCopy integerValue];
 
-  v9 = v8 / 100.0;
-  v10 = [(AudioAccessoryAssetManagementClientXPCConnection *)self _getAAAssetManagementFBundle];
+  v9 = integerValue2 / 100.0;
+  _getAAAssetManagementFBundle = [(AudioAccessoryAssetManagementClientXPCConnection *)self _getAAAssetManagementFBundle];
   if (self->_downloadRequestedLanguagesCount <= 1u)
   {
     v13 = CULocalizedStringEx();
@@ -520,11 +520,11 @@ LABEL_17:
     v11 = CULocalizedStringEx();
   }
 
-  *&v12 = v9 * v7;
+  *&v12 = v9 * integerValue;
   v14 = [NSNumber numberWithFloat:v12];
   v15 = objc_alloc_init(NSByteCountFormatter);
   v16 = [v15 stringFromByteCount:{objc_msgSend(v14, "longLongValue")}];
-  v17 = [v15 stringFromByteCount:{objc_msgSend(v24, "longLongValue")}];
+  v17 = [v15 stringFromByteCount:{objc_msgSend(countCopy, "longLongValue")}];
   v18 = CULocalizedStringEx();
   v19 = [NSString stringWithFormat:v18, v16, v17];
 
@@ -536,12 +536,12 @@ LABEL_17:
     progress = self->_progress;
     if (progress)
     {
-      [(NSProgress *)progress setTotalUnitCount:v7];
+      [(NSProgress *)progress setTotalUnitCount:integerValue];
     }
 
     else
     {
-      v22 = [NSProgress progressWithTotalUnitCount:v7];
+      v22 = [NSProgress progressWithTotalUnitCount:integerValue];
       v23 = *p_progress;
       *p_progress = v22;
     }
@@ -554,7 +554,7 @@ LABEL_17:
     }
 
     [(_BGContinuedProcessingTask *)self->_processingTask updateTitle:self->_bannerTitle withReason:self->_bannerSubtitle];
-    -[AudioAccessoryAssetManagementClientXPCConnection _postProgressUpdate:totalCount:](self, "_postProgressUpdate:totalCount:", [v14 integerValue], objc_msgSend(v24, "integerValue"));
+    -[AudioAccessoryAssetManagementClientXPCConnection _postProgressUpdate:totalCount:](self, "_postProgressUpdate:totalCount:", [v14 integerValue], objc_msgSend(countCopy, "integerValue"));
   }
 }
 
@@ -586,7 +586,7 @@ LABEL_17:
   }
 
   v6 = [[_BGContinuedProcessingTaskRequest alloc] initWithIdentifier:self->_taskIdentifier iconBundleIdentifier:@"com.apple.Translate" onBehalfOf:self->_bundleIdentifier linkToBundleIdentifier:v5];
-  v7 = [(AudioAccessoryAssetManagementClientXPCConnection *)self _getAAAssetManagementFBundle];
+  _getAAAssetManagementFBundle = [(AudioAccessoryAssetManagementClientXPCConnection *)self _getAAAssetManagementFBundle];
   if (self->_downloadRequestedLanguagesCount > 1u)
   {
     v9 = CULocalizedStringEx();

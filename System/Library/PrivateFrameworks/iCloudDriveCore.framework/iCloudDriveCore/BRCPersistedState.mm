@@ -1,5 +1,5 @@
 @interface BRCPersistedState
-+ (id)loadFromClientStateInSession:(id)a3 options:(id)a4;
++ (id)loadFromClientStateInSession:(id)session options:(id)options;
 - (OS_dispatch_queue)assertionQueue;
 - (void)assertQueue;
 @end
@@ -17,11 +17,11 @@
   }
 }
 
-+ (id)loadFromClientStateInSession:(id)a3 options:(id)a4
++ (id)loadFromClientStateInSession:(id)session options:(id)options
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"+[BRCPersistedState loadFromClientStateInSession:options:]", a4}];
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"+[BRCPersistedState loadFromClientStateInSession:options:]", options}];
   [v4 raise:v5 format:{@"Implement %@ in a subclass.", v6}];
 
   return 0;

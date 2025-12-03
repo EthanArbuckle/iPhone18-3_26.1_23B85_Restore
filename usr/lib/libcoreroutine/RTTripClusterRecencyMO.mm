@@ -1,15 +1,15 @@
 @interface RTTripClusterRecencyMO
-+ (id)managedObjectWithTripClusterRecency:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithTripClusterRecency:(id)recency inManagedObjectContext:(id)context;
 @end
 
 @implementation RTTripClusterRecencyMO
 
-+ (id)managedObjectWithTripClusterRecency:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithTripClusterRecency:(id)recency inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  recencyCopy = recency;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!recencyCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -25,17 +25,17 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTTripClusterRecencyMO alloc] initWithContext:v6];
-    v9 = [v5 clusterID];
-    [(RTTripClusterRecencyMO *)v8 setClusterID:v9];
+    v8 = [[RTTripClusterRecencyMO alloc] initWithContext:contextCopy];
+    clusterID = [recencyCopy clusterID];
+    [(RTTripClusterRecencyMO *)v8 setClusterID:clusterID];
 
-    v10 = [v5 startTime];
-    [(RTTripClusterRecencyMO *)v8 setStartTime:v10];
+    startTime = [recencyCopy startTime];
+    [(RTTripClusterRecencyMO *)v8 setStartTime:startTime];
 
-    v11 = [v5 endTime];
-    [(RTTripClusterRecencyMO *)v8 setEndTime:v11];
+    endTime = [recencyCopy endTime];
+    [(RTTripClusterRecencyMO *)v8 setEndTime:endTime];
 
     goto LABEL_8;
   }

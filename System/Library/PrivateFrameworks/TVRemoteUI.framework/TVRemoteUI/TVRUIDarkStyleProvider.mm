@@ -22,26 +22,26 @@
 - (double)deviceSafeAreaInsetTop;
 - (double)topButtonPanelPadding;
 - (double)touchpadHeight;
-- (id)_darkTraitCollectionWithLevel:(int64_t)a3;
-- (id)_imageWithName:(id)a3;
-- (id)_symbolImageForMiniPlayerNamed:(id)a3 buttonType:(int64_t)a4;
-- (id)_symbolImageForTopControlPanelNamed:(id)a3;
+- (id)_darkTraitCollectionWithLevel:(int64_t)level;
+- (id)_imageWithName:(id)name;
+- (id)_symbolImageForMiniPlayerNamed:(id)named buttonType:(int64_t)type;
+- (id)_symbolImageForTopControlPanelNamed:(id)named;
 - (id)appleTVIcon;
-- (id)captionsButtonIcon:(BOOL)a3;
+- (id)captionsButtonIcon:(BOOL)icon;
 - (id)checkmarkImage;
 - (id)chevronImage;
 - (id)controlGlassVariant;
 - (id)defaultDeviceTitle;
-- (id)devicePickerIconForDeviceModel:(id)a3;
+- (id)devicePickerIconForDeviceModel:(id)model;
 - (id)fontForDeviceTitle;
-- (id)iconForButtonType:(int64_t)a3 buttonLocation:(int64_t)a4;
-- (id)iconForDeviceModel:(id)a3;
+- (id)iconForButtonType:(int64_t)type buttonLocation:(int64_t)location;
+- (id)iconForDeviceModel:(id)model;
 - (id)pagingButtonBackgroundColor;
 - (id)pagingButtonFont;
 - (id)rootBackgroundColor;
 - (id)rootBackgroundView;
 - (id)separatorView;
-- (id)textForButtonType:(int64_t)a3;
+- (id)textForButtonType:(int64_t)type;
 - (id)textForDeviceLockoutAlert;
 - (id)textForPairingAlert;
 - (id)textForPairingPasswordAlert;
@@ -56,8 +56,8 @@
 {
   if ([(TVRUIDarkStyleProvider *)self isPad])
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v4 = v3;
 
     v5 = 812.0;
@@ -112,8 +112,8 @@
 - (id)rootBackgroundColor
 {
   v2 = [(TVRUIDarkStyleProvider *)self _darkTraitCollectionWithLevel:0];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [v3 resolvedColorWithTraitCollection:v2];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  v4 = [systemBackgroundColor resolvedColorWithTraitCollection:v2];
 
   return v4;
 }
@@ -128,8 +128,8 @@
   else
   {
     v4 = [(TVRUIDarkStyleProvider *)self _darkTraitCollectionWithLevel:0];
-    v5 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    v3 = [v5 resolvedColorWithTraitCollection:v4];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    v3 = [secondarySystemBackgroundColor resolvedColorWithTraitCollection:v4];
   }
 
   return v3;
@@ -139,8 +139,8 @@
 {
   if ([(TVRUIDarkStyleProvider *)self isPhone])
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     v5 = v4;
 
     return v5 * 0.6;
@@ -164,10 +164,10 @@
 
   else
   {
-    v6 = [(TVRUIDarkStyleProvider *)self isPhone];
+    isPhone = [(TVRUIDarkStyleProvider *)self isPhone];
     v3 = 16.0;
     v5 = 22.0;
-    if (!v6)
+    if (!isPhone)
     {
       v5 = 16.0;
     }
@@ -222,8 +222,8 @@
     return 227.36;
   }
 
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v4 = v3;
 
   return v4 * 0.28;
@@ -314,14 +314,14 @@
   return result;
 }
 
-- (id)_symbolImageForMiniPlayerNamed:(id)a3 buttonType:(int64_t)a4
+- (id)_symbolImageForMiniPlayerNamed:(id)named buttonType:(int64_t)type
 {
-  v5 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  namedCopy = named;
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     v6 = MEMORY[0x277D755B8];
     v7 = *MEMORY[0x277D76A08];
-    v8 = v5;
+    v8 = namedCopy;
     v9 = 4;
     v10 = 2;
 LABEL_5:
@@ -329,11 +329,11 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ((a4 - 9993) <= 1)
+  if ((type - 9993) <= 1)
   {
     v6 = MEMORY[0x277D755B8];
     v7 = *MEMORY[0x277D769A8];
-    v8 = v5;
+    v8 = namedCopy;
     v9 = 7;
     v10 = 3;
     goto LABEL_5;
@@ -345,10 +345,10 @@ LABEL_7:
   return v11;
 }
 
-- (id)_symbolImageForTopControlPanelNamed:(id)a3
+- (id)_symbolImageForTopControlPanelNamed:(id)named
 {
   v3 = MEMORY[0x277D75520];
-  v4 = a3;
+  namedCopy = named;
   v5 = [v3 alloc];
   v6 = *MEMORY[0x277D76A28];
   v7 = [v5 initForTextStyle:*MEMORY[0x277D76A28]];
@@ -357,23 +357,23 @@ LABEL_7:
 
   v10 = MEMORY[0x277D755B8];
   [v9 pointSize];
-  v11 = [v10 tvrui_symbolImageWithName:v4 font:v9 fontSize:5 weight:2 scale:? maxPointSize:?];
+  v11 = [v10 tvrui_symbolImageWithName:namedCopy font:v9 fontSize:5 weight:2 scale:? maxPointSize:?];
 
   return v11;
 }
 
-- (id)iconForButtonType:(int64_t)a3 buttonLocation:(int64_t)a4
+- (id)iconForButtonType:(int64_t)type buttonLocation:(int64_t)location
 {
-  if (a3 <= 24)
+  if (type <= 24)
   {
-    if (a3 > 4)
+    if (type > 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
-        if (a3 == 6)
+        if (type == 6)
         {
           v5 = @"goforward.10";
-          if (a4 != 2)
+          if (location != 2)
           {
             goto LABEL_53;
           }
@@ -383,13 +383,13 @@ LABEL_7:
 
         else
         {
-          if (a3 != 7)
+          if (type != 7)
           {
             goto LABEL_37;
           }
 
           v5 = @"gobackward.10";
-          if (a4 != 2)
+          if (location != 2)
           {
             goto LABEL_53;
           }
@@ -398,7 +398,7 @@ LABEL_7:
         }
 
 LABEL_36:
-        v9 = [(TVRUIDarkStyleProvider *)self _symbolImageForMiniPlayerNamed:v5 buttonType:v8];
+        location = [(TVRUIDarkStyleProvider *)self _symbolImageForMiniPlayerNamed:v5 buttonType:v8];
         goto LABEL_54;
       }
 
@@ -423,46 +423,46 @@ LABEL_36:
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
           v21 = [MEMORY[0x277D755B8] tvrui_symbolImageWithName:@"tv" textStyle:*MEMORY[0x277D76A28] weight:5 scale:3 maxPointSize:31.0];
           v22 = MEMORY[0x277D755D0];
-          v23 = [MEMORY[0x277D75348] tintColor];
-          v24 = [v22 configurationWithHierarchicalColor:v23];
+          tintColor = [MEMORY[0x277D75348] tintColor];
+          v24 = [v22 configurationWithHierarchicalColor:tintColor];
 
           v25 = [v21 imageByApplyingSymbolConfiguration:v24];
 
           goto LABEL_55;
         }
 
-        if (a3 == 4)
+        if (type == 4)
         {
           v6 = @"mic.fill";
 LABEL_39:
-          v9 = [(TVRUIDarkStyleProvider *)self symbolImageForButtonPanelNamed:v6, a4];
+          location = [(TVRUIDarkStyleProvider *)self symbolImageForButtonPanelNamed:v6, location];
           goto LABEL_54;
         }
 
 LABEL_37:
-        if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0xA)
+        if ((type & 0xFFFFFFFFFFFFFFFELL) == 0xA)
         {
           v6 = @"speaker.wave.2.fill";
           goto LABEL_39;
         }
 
         v25 = 0;
-        if (a3 > 9994)
+        if (type > 9994)
         {
-          if (a3 == 9996)
+          if (type == 9996)
           {
             v5 = @"backward.fill";
           }
 
           else
           {
-            if (a3 != 9995)
+            if (type != 9995)
             {
               goto LABEL_55;
             }
@@ -473,7 +473,7 @@ LABEL_37:
           goto LABEL_53;
         }
 
-        if (a3 == 9993)
+        if (type == 9993)
         {
           v5 = @"play.fill";
           v8 = 9993;
@@ -481,7 +481,7 @@ LABEL_37:
 
         else
         {
-          if (a3 != 9994)
+          if (type != 9994)
           {
             goto LABEL_55;
           }
@@ -501,7 +501,7 @@ LABEL_37:
         v13 = 31.0;
         v14 = 3;
 LABEL_43:
-        v9 = [v10 tvrui_symbolImageWithName:v12 textStyle:v11 weight:4 scale:v14 maxPointSize:v13];
+        location = [v10 tvrui_symbolImageWithName:v12 textStyle:v11 weight:4 scale:v14 maxPointSize:v13];
         goto LABEL_54;
       }
 
@@ -518,9 +518,9 @@ LABEL_43:
     goto LABEL_55;
   }
 
-  if (a3 <= 29)
+  if (type <= 29)
   {
-    switch(a3)
+    switch(type)
     {
       case 25:
         v6 = @"info";
@@ -536,15 +536,15 @@ LABEL_43:
     goto LABEL_37;
   }
 
-  if (a3 > 9997)
+  if (type > 9997)
   {
-    if (a3 == 9998)
+    if (type == 9998)
     {
       v6 = @"magnifyingglass";
       goto LABEL_39;
     }
 
-    if (a3 == 9999)
+    if (type == 9999)
     {
       v6 = @"keyboard";
       goto LABEL_39;
@@ -553,13 +553,13 @@ LABEL_43:
     goto LABEL_37;
   }
 
-  if (a3 != 30)
+  if (type != 30)
   {
-    if (a3 == 9992)
+    if (type == 9992)
     {
       v5 = @"info.circle";
 LABEL_53:
-      v9 = [(TVRUIDarkStyleProvider *)self _symbolImageForMediaControlsNamed:v5, a4];
+      location = [(TVRUIDarkStyleProvider *)self _symbolImageForMediaControlsNamed:v5, location];
       goto LABEL_54;
     }
 
@@ -568,17 +568,17 @@ LABEL_53:
 
   v7 = @"power";
 LABEL_25:
-  v9 = [(TVRUIDarkStyleProvider *)self _symbolImageForTopControlPanelNamed:v7, a4];
+  location = [(TVRUIDarkStyleProvider *)self _symbolImageForTopControlPanelNamed:v7, location];
 LABEL_54:
-  v25 = v9;
+  v25 = location;
 LABEL_55:
 
   return v25;
 }
 
-- (id)captionsButtonIcon:(BOOL)a3
+- (id)captionsButtonIcon:(BOOL)icon
 {
-  if (a3)
+  if (icon)
   {
     v3 = @"captions.bubble.fill";
   }
@@ -595,15 +595,15 @@ LABEL_55:
 
 - (id)tintColorForHints
 {
-  v2 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  v3 = [v2 colorWithAlphaComponent:1.0];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  v3 = [tertiaryLabelColor colorWithAlphaComponent:1.0];
 
   return v3;
 }
 
-- (id)textForButtonType:(int64_t)a3
+- (id)textForButtonType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       v3 = @"TVRemoteUIMenuButtonText";
@@ -643,8 +643,8 @@ LABEL_9:
 
 - (id)tintColorForChevronImage
 {
-  v2 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  v3 = [v2 colorWithAlphaComponent:1.0];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  v3 = [tertiarySystemFillColor colorWithAlphaComponent:1.0];
 
   return v3;
 }
@@ -698,8 +698,8 @@ LABEL_9:
 - (id)separatorView
 {
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v4 = [(TVRUIDarkStyleProvider *)self cellSeparatorBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  cellSeparatorBackgroundColor = [(TVRUIDarkStyleProvider *)self cellSeparatorBackgroundColor];
+  [v3 setBackgroundColor:cellSeparatorBackgroundColor];
 
   return v3;
 }
@@ -728,20 +728,20 @@ LABEL_9:
   return v3;
 }
 
-- (id)devicePickerIconForDeviceModel:(id)a3
+- (id)devicePickerIconForDeviceModel:(id)model
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D6C590]])
+  modelCopy = model;
+  if ([modelCopy isEqualToString:*MEMORY[0x277D6C590]])
   {
     v4 = @"tv";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6C588]])
+  else if ([modelCopy isEqualToString:*MEMORY[0x277D6C588]])
   {
     v4 = @"mediastick";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6C580]])
+  else if ([modelCopy isEqualToString:*MEMORY[0x277D6C580]])
   {
     v4 = @"tv.and.mediabox";
   }
@@ -760,28 +760,28 @@ LABEL_9:
   v10 = MEMORY[0x277D755B8];
   [v9 pointSize];
   v11 = [v10 tvrui_symbolImageWithName:v4 font:v9 fontSize:5 weight:3 scale:? maxPointSize:?];
-  v12 = [MEMORY[0x277D755D0] configurationPreferringMonochrome];
-  v13 = [v11 imageByApplyingSymbolConfiguration:v12];
+  configurationPreferringMonochrome = [MEMORY[0x277D755D0] configurationPreferringMonochrome];
+  v13 = [v11 imageByApplyingSymbolConfiguration:configurationPreferringMonochrome];
 
   return v13;
 }
 
-- (id)iconForDeviceModel:(id)a3
+- (id)iconForDeviceModel:(id)model
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D6C590]])
+  modelCopy = model;
+  if ([modelCopy isEqualToString:*MEMORY[0x277D6C590]])
   {
-    v5 = [(TVRUIDarkStyleProvider *)self genericTVIcon];
+    genericTVIcon = [(TVRUIDarkStyleProvider *)self genericTVIcon];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x277D6C588]])
+  else if ([modelCopy isEqualToString:*MEMORY[0x277D6C588]])
   {
-    v5 = [(TVRUIDarkStyleProvider *)self airplayStickIcon];
+    genericTVIcon = [(TVRUIDarkStyleProvider *)self airplayStickIcon];
   }
 
   else
   {
-    if ([v4 isEqualToString:*MEMORY[0x277D6C580]])
+    if ([modelCopy isEqualToString:*MEMORY[0x277D6C580]])
     {
       [(TVRUIDarkStyleProvider *)self airplaySetTopBoxIcon];
     }
@@ -790,20 +790,20 @@ LABEL_9:
     {
       [(TVRUIDarkStyleProvider *)self appleTVIcon];
     }
-    v5 = ;
+    genericTVIcon = ;
   }
 
-  v6 = v5;
+  v6 = genericTVIcon;
 
   return v6;
 }
 
 - (id)appleTVIcon
 {
-  v2 = [(TVRUIDarkStyleProvider *)self fontForDeviceTitle];
+  fontForDeviceTitle = [(TVRUIDarkStyleProvider *)self fontForDeviceTitle];
   v3 = MEMORY[0x277D755B8];
-  [v2 pointSize];
-  v4 = [v3 tvrui_symbolImageWithName:@"appletv.fill" font:v2 fontSize:4 weight:2 scale:? maxPointSize:?];
+  [fontForDeviceTitle pointSize];
+  v4 = [v3 tvrui_symbolImageWithName:@"appletv.fill" font:fontForDeviceTitle fontSize:4 weight:2 scale:? maxPointSize:?];
 
   return v4;
 }
@@ -811,9 +811,9 @@ LABEL_9:
 - (double)deviceSafeAreaInsetTop
 {
   v3 = SBUIIsSystemApertureEnabled();
-  v4 = [(TVRUIDarkStyleProvider *)self isPad];
+  isPad = [(TVRUIDarkStyleProvider *)self isPad];
   result = 22.0;
-  if (!v4)
+  if (!isPad)
   {
     if (v3)
     {
@@ -825,9 +825,9 @@ LABEL_9:
       v6 = 53.0;
     }
 
-    v7 = [(TVRUIDarkStyleProvider *)self hasHomeButton];
+    hasHomeButton = [(TVRUIDarkStyleProvider *)self hasHomeButton];
     result = 22.0;
-    if (!v7)
+    if (!hasHomeButton)
     {
       return v6;
     }
@@ -838,13 +838,13 @@ LABEL_9:
 
 - (double)deviceSafeAreaInsetBottom
 {
-  v3 = [(TVRUIDarkStyleProvider *)self hasHomeButton];
+  hasHomeButton = [(TVRUIDarkStyleProvider *)self hasHomeButton];
   result = 0.0;
-  if (!v3)
+  if (!hasHomeButton)
   {
-    v5 = [(TVRUIDarkStyleProvider *)self isPad];
+    isPad = [(TVRUIDarkStyleProvider *)self isPad];
     result = 34.0;
-    if (v5)
+    if (isPad)
     {
       return 0.0;
     }
@@ -855,13 +855,13 @@ LABEL_9:
 
 - (double)topButtonPanelPadding
 {
-  v3 = [(TVRUIDarkStyleProvider *)self hasHomeButton];
+  hasHomeButton = [(TVRUIDarkStyleProvider *)self hasHomeButton];
   result = 4.0;
-  if (!v3)
+  if (!hasHomeButton)
   {
-    v5 = [(TVRUIDarkStyleProvider *)self isPad];
+    isPad = [(TVRUIDarkStyleProvider *)self isPad];
     result = 44.0;
-    if (v5)
+    if (isPad)
     {
       return 4.0;
     }
@@ -884,8 +884,8 @@ LABEL_9:
 - (id)pagingButtonBackgroundColor
 {
   v2 = [(TVRUIDarkStyleProvider *)self _darkTraitCollectionWithLevel:1];
-  v3 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  v4 = [v3 resolvedColorWithTraitCollection:v2];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  v4 = [secondarySystemBackgroundColor resolvedColorWithTraitCollection:v2];
 
   return v4;
 }
@@ -893,8 +893,8 @@ LABEL_9:
 - (BOOL)isSmallDevice
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
   if (v4 <= 667.0)
@@ -913,16 +913,16 @@ LABEL_9:
 
 - (BOOL)isPhone
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }
 
 - (BOOL)isPad
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
@@ -951,13 +951,13 @@ uint64_t __39__TVRUIDarkStyleProvider_hasHomeButton__block_invoke()
   return result;
 }
 
-- (id)_darkTraitCollectionWithLevel:(int64_t)a3
+- (id)_darkTraitCollectionWithLevel:(int64_t)level
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__TVRUIDarkStyleProvider__darkTraitCollectionWithLevel___block_invoke;
   v5[3] = &__block_descriptor_40_e27_v16__0___UIMutableTraits__8l;
-  v5[4] = a3;
+  v5[4] = level;
   v3 = [MEMORY[0x277D75C80] traitCollectionWithTraits:v5];
 
   return v3;
@@ -971,12 +971,12 @@ void __56__TVRUIDarkStyleProvider__darkTraitCollectionWithLevel___block_invoke(u
   [v3 setUserInterfaceStyle:2];
 }
 
-- (id)_imageWithName:(id)a3
+- (id)_imageWithName:(id)name
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [MEMORY[0x277D755B8] imageNamed:v4 inBundle:v5];
+  v6 = [MEMORY[0x277D755B8] imageNamed:nameCopy inBundle:v5];
 
   v7 = [v6 imageWithRenderingMode:2];
 

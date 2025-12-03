@@ -1,17 +1,17 @@
 @interface _EXHostViewController
 - (UIView)placeholderView;
 - (_EXHostViewController)init;
-- (_EXHostViewController)initWithConfiguration:(id)a3;
+- (_EXHostViewController)initWithConfiguration:(id)configuration;
 - (_EXHostViewControllerConfiguration)configuration;
 - (_EXHostViewControllerDelegate)delegate;
 - (_EXHostViewControllerSession)session;
 - (_UIRemoteSheet)_remoteSheet;
 - (void)dealloc;
 - (void)embedPlaceholder;
-- (void)embedViewController:(id)a3;
+- (void)embedViewController:(id)controller;
 - (void)loadView;
-- (void)setConfiguration:(id)a3;
-- (void)setSession:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setSession:(id)session;
 @end
 
 @implementation _EXHostViewController
@@ -31,14 +31,14 @@
   return v2;
 }
 
-- (_EXHostViewController)initWithConfiguration:(id)a3
+- (_EXHostViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(_EXHostViewController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(_EXHostViewController *)v5 setConfiguration:v4];
+    [(_EXHostViewController *)v5 setConfiguration:configurationCopy];
   }
 
   return v6;
@@ -55,13 +55,13 @@
 - (_EXHostViewControllerConfiguration)configuration
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(_EXHostSessionDriver *)self->_sessionDriver session];
-  v4 = [v3 configuration];
+  session = [(_EXHostSessionDriver *)self->_sessionDriver session];
+  configuration = [session configuration];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = configuration;
   }
 
   else
@@ -72,18 +72,18 @@
   return v5;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v8)
+  if (configurationCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E6966CC8]);
-    v5 = [v8 extensionIdentity];
-    v6 = [v8 instanceIdentifier];
-    v7 = [v4 initWithExtensionIdentity:v5 instanceIdentifier:v6];
+    extensionIdentity = [configurationCopy extensionIdentity];
+    instanceIdentifier = [configurationCopy instanceIdentifier];
+    v7 = [v4 initWithExtensionIdentity:extensionIdentity instanceIdentifier:instanceIdentifier];
 
-    [(_EXHostSessionDriver *)self->_sessionDriver startSessionWithProcessConfiguration:v7 configuration:v8];
+    [(_EXHostSessionDriver *)self->_sessionDriver startSessionWithProcessConfiguration:v7 configuration:configurationCopy];
   }
 
   else
@@ -100,11 +100,11 @@
   return [(_EXHostSessionDriver *)sessionDriver session];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4 && ([v4 detached] & 1) == 0)
+  if (sessionCopy && ([sessionCopy detached] & 1) == 0)
   {
     v5 = _EXDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -113,7 +113,7 @@
     }
   }
 
-  [(_EXHostSessionDriver *)self->_sessionDriver setSession:v4];
+  [(_EXHostSessionDriver *)self->_sessionDriver setSession:sessionCopy];
 }
 
 - (void)loadView
@@ -140,41 +140,41 @@
   return placeholderView;
 }
 
-- (void)embedViewController:(id)a3
+- (void)embedViewController:(id)controller
 {
-  v10 = a3;
-  v4 = [(_EXHostViewController *)self embededViewController];
-  if (v4 != v10)
+  controllerCopy = controller;
+  embededViewController = [(_EXHostViewController *)self embededViewController];
+  if (embededViewController != controllerCopy)
   {
-    if (v4)
+    if (embededViewController)
     {
       [(_EXHostViewController *)self setEmbededViewController:0];
-      [v4 removeFromParentViewController];
+      [embededViewController removeFromParentViewController];
     }
 
-    if (v10)
+    if (controllerCopy)
     {
-      v5 = [v10 view];
-      [(_EXHostViewController *)self setEmbededViewController:v10];
-      v6 = [(_EXHostSessionDriver *)self->_sessionDriver session];
-      v7 = [v6 requiresUIKitSceneHosting];
+      view = [controllerCopy view];
+      [(_EXHostViewController *)self setEmbededViewController:controllerCopy];
+      session = [(_EXHostSessionDriver *)self->_sessionDriver session];
+      requiresUIKitSceneHosting = [session requiresUIKitSceneHosting];
 
-      if (v7)
+      if (requiresUIKitSceneHosting)
       {
-        [(_EXHostViewController *)self addChildViewController:v10];
-        v8 = [(_EXHostViewController *)self view];
-        [v8 embedView:v5];
+        [(_EXHostViewController *)self addChildViewController:controllerCopy];
+        view2 = [(_EXHostViewController *)self view];
+        [view2 embedView:view];
       }
 
       else
       {
-        v9 = [(_EXHostViewController *)self view];
-        [v9 embedView:v5];
+        view3 = [(_EXHostViewController *)self view];
+        [view3 embedView:view];
 
-        [(_EXHostViewController *)self addChildViewController:v10];
+        [(_EXHostViewController *)self addChildViewController:controllerCopy];
       }
 
-      [v10 didMoveToParentViewController:self];
+      [controllerCopy didMoveToParentViewController:self];
     }
 
     else
@@ -186,32 +186,32 @@
 
 - (_UIRemoteSheet)_remoteSheet
 {
-  v2 = [(_EXHostViewController *)self session];
-  v3 = [v2 remoteSheet];
+  session = [(_EXHostViewController *)self session];
+  remoteSheet = [session remoteSheet];
 
-  return v3;
+  return remoteSheet;
 }
 
 - (void)embedPlaceholder
 {
-  v3 = [(_EXHostViewController *)self placeholderViewController];
+  placeholderViewController = [(_EXHostViewController *)self placeholderViewController];
 
-  if (v3)
+  if (placeholderViewController)
   {
-    v6 = [(_EXHostViewController *)self placeholderViewController];
-    v4 = [v6 view];
-    v5 = [(_EXHostViewController *)self view];
-    [v5 embedView:v4];
+    placeholderViewController2 = [(_EXHostViewController *)self placeholderViewController];
+    view = [placeholderViewController2 view];
+    view2 = [(_EXHostViewController *)self view];
+    [view2 embedView:view];
 
-    [(_EXHostViewController *)self setEmbededViewController:v6];
-    [(_EXHostViewController *)self addChildViewController:v6];
+    [(_EXHostViewController *)self setEmbededViewController:placeholderViewController2];
+    [(_EXHostViewController *)self addChildViewController:placeholderViewController2];
   }
 
   else
   {
-    v6 = [(_EXHostViewController *)self view];
-    v4 = [(_EXHostViewController *)self placeholderView];
-    [v6 embedView:v4];
+    placeholderViewController2 = [(_EXHostViewController *)self view];
+    view = [(_EXHostViewController *)self placeholderView];
+    [placeholderViewController2 embedView:view];
   }
 }
 

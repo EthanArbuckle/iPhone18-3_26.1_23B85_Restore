@@ -1,13 +1,13 @@
 @interface PersonalizedSensingServiceDelegate
-- (BOOL)isExecutableAllowed:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)isExecutableAllowed:(id)allowed;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PersonalizedSensingServiceDelegate)init;
-- (id)executablePathOfConnection:(id)a3;
-- (id)getClientAlternateIdentifierForConnection:(id)a3;
-- (id)getClientBundleIdentifierForConnection:(id)a3;
-- (id)processName:(id)a3;
-- (void)clientConnection:(id)a3 cacheContextRetrievalEntitlement:(id)a4;
-- (void)clientConnection:(id)a3 cachePersonalizedContextEntitlement:(id)a4;
+- (id)executablePathOfConnection:(id)connection;
+- (id)getClientAlternateIdentifierForConnection:(id)connection;
+- (id)getClientBundleIdentifierForConnection:(id)connection;
+- (id)processName:(id)name;
+- (void)clientConnection:(id)connection cacheContextRetrievalEntitlement:(id)entitlement;
+- (void)clientConnection:(id)connection cachePersonalizedContextEntitlement:(id)entitlement;
 @end
 
 @implementation PersonalizedSensingServiceDelegate
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (void)clientConnection:(id)a3 cachePersonalizedContextEntitlement:(id)a4
+- (void)clientConnection:(id)connection cachePersonalizedContextEntitlement:(id)entitlement
 {
-  v5 = [a3 valueForEntitlement:a4];
+  v5 = [connection valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)clientConnection:(id)a3 cacheContextRetrievalEntitlement:(id)a4
+- (void)clientConnection:(id)connection cacheContextRetrievalEntitlement:(id)entitlement
 {
-  v5 = [a3 valueForEntitlement:a4];
+  v5 = [connection valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -181,14 +181,14 @@ LABEL_16:
   }
 }
 
-- (id)executablePathOfConnection:(id)a3
+- (id)executablePathOfConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   bzero(buffer, 0x1000uLL);
   memset(&v6, 0, sizeof(v6));
-  if (v3)
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   if (proc_pidpath_audittoken(&v6, buffer, 0x1000u) < 1)
@@ -204,22 +204,22 @@ LABEL_16:
   return v4;
 }
 
-- (id)processName:(id)a3
+- (id)processName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   bzero(buffer, 0x1000uLL);
   memset(v9, 0, sizeof(v9));
-  if (v3)
+  if (nameCopy)
   {
-    v4 = [v3 processIdentifier];
+    processIdentifier = [nameCopy processIdentifier];
   }
 
   else
   {
-    v4 = getpid();
+    processIdentifier = getpid();
   }
 
-  proc_pidpath(v4, buffer, 0x1000u);
+  proc_pidpath(processIdentifier, buffer, 0x1000u);
   v5 = strlen(buffer);
   if ((v5 & 0x80000000) == 0)
   {
@@ -240,20 +240,20 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)isExecutableAllowed:(id)a3
+- (BOOL)isExecutableAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = [NSSet setWithObjects:@"photoanalysisd", @"momentsmotc", 0];
-  v6 = [(PersonalizedSensingServiceDelegate *)self processName:v4];
+  v6 = [(PersonalizedSensingServiceDelegate *)self processName:allowedCopy];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(allowedCopy) = [v5 containsObject:v6];
+  return allowedCopy;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(PersonalizedSensingServiceDelegate *)self processName:v5];
+  connectionCopy = connection;
+  v6 = [(PersonalizedSensingServiceDelegate *)self processName:connectionCopy];
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -262,11 +262,11 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "PSService, client name,%@", buf, 0xCu);
   }
 
-  [(PersonalizedSensingServiceDelegate *)self clientConnection:v5 cachePersonalizedContextEntitlement:@"com.apple.personalized-sensing-service"];
-  [(PersonalizedSensingServiceDelegate *)self clientConnection:v5 cacheContextRetrievalEntitlement:@"com.apple.personalized-sensing-service.data-access"];
-  if (v5)
+  [(PersonalizedSensingServiceDelegate *)self clientConnection:connectionCopy cachePersonalizedContextEntitlement:@"com.apple.personalized-sensing-service"];
+  [(PersonalizedSensingServiceDelegate *)self clientConnection:connectionCopy cacheContextRetrievalEntitlement:@"com.apple.personalized-sensing-service.data-access"];
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -274,7 +274,7 @@ LABEL_16:
     memset(buf, 0, sizeof(buf));
   }
 
-  v45 = self;
+  selfCopy = self;
   v46 = v6;
   v51 = 0;
   v8 = [LSBundleRecord bundleRecordForAuditToken:buf error:&v51];
@@ -282,14 +282,14 @@ LABEL_16:
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v8 bundleIdentifier];
-    v11 = [v5 processIdentifier];
+    bundleIdentifier = [v8 bundleIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     *buf = 138412802;
-    *&buf[4] = v10;
+    *&buf[4] = bundleIdentifier;
     *&buf[12] = 1024;
-    *&buf[14] = v11;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 2112;
-    *&buf[20] = v5;
+    *&buf[20] = connectionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "PSService,Accepting connection from process %@:%d (%@)", buf, 0x1Cu);
   }
 
@@ -332,13 +332,13 @@ LABEL_16:
   v37 = [NSSet setWithObjects:v34, v35, v36, objc_opt_class(), 0];
   [v12 setClasses:v37 forSelector:"fetchContextWithOptions:predicates:authorizedTypes:withReply:" argumentIndex:0 ofReply:1];
 
-  [v5 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
   v38 = [[PersonalizedSensingService alloc] initWithClientID:@"com.apple.photoanalysisd"];
-  [v5 setExportedObject:v38];
-  [(PersonalizedSensingService *)v38 setEntitlementsForNLData:v45->hasEntitlementForNLData];
-  [(PersonalizedSensingService *)v38 setEntitlementsForStructuredData:v45->hasEntitlementForStructuredData];
-  [(PersonalizedSensingService *)v38 setEntitlementsForDataAccess:v45->dataAccessEntitlements];
-  v39 = [(PersonalizedSensingServiceDelegate *)v45 getClientAlternateIdentifierForConnection:v5];
+  [connectionCopy setExportedObject:v38];
+  [(PersonalizedSensingService *)v38 setEntitlementsForNLData:selfCopy->hasEntitlementForNLData];
+  [(PersonalizedSensingService *)v38 setEntitlementsForStructuredData:selfCopy->hasEntitlementForStructuredData];
+  [(PersonalizedSensingService *)v38 setEntitlementsForDataAccess:selfCopy->dataAccessEntitlements];
+  v39 = [(PersonalizedSensingServiceDelegate *)selfCopy getClientAlternateIdentifierForConnection:connectionCopy];
   [(PersonalizedSensingService *)v38 setClientAlternateIdentifier:v39];
 
   v49[0] = _NSConcreteStackBlock;
@@ -347,26 +347,26 @@ LABEL_16:
   v49[3] = &unk_1000B7718;
   v40 = v38;
   v50 = v40;
-  [v5 setInterruptionHandler:v49];
+  [connectionCopy setInterruptionHandler:v49];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = __73__PersonalizedSensingServiceDelegate_listener_shouldAcceptNewConnection___block_invoke_2;
   v47[3] = &unk_1000B7718;
   v48 = v40;
   v41 = v40;
-  [v5 setInvalidationHandler:v47];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:v47];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (id)getClientBundleIdentifierForConnection:(id)a3
+- (id)getClientBundleIdentifierForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -411,10 +411,10 @@ LABEL_14:
   return v11;
 }
 
-- (id)getClientAlternateIdentifierForConnection:(id)a3
+- (id)getClientAlternateIdentifierForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"application-identifier"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"application-identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -423,7 +423,7 @@ LABEL_14:
 
   else
   {
-    v6 = [(PersonalizedSensingServiceDelegate *)self executablePathOfConnection:v4];
+    v6 = [(PersonalizedSensingServiceDelegate *)self executablePathOfConnection:connectionCopy];
   }
 
   v7 = v6;

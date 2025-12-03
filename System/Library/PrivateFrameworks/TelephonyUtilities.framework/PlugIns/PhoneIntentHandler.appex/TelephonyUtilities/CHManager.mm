@@ -1,13 +1,13 @@
 @interface CHManager
-+ (id)siriManagerForIntentType:(Class)a3;
++ (id)siriManagerForIntentType:(Class)type;
 @end
 
 @implementation CHManager
 
-+ (id)siriManagerForIntentType:(Class)a3
++ (id)siriManagerForIntentType:(Class)type
 {
   v4 = objc_alloc_init(CHManager);
-  if (objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == type || objc_opt_class() == type)
   {
     if (MGGetBoolAnswer())
     {

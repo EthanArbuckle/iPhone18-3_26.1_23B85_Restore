@@ -1,24 +1,24 @@
 @interface APSMetricLogger
 + (id)defaultLogger;
-+ (unsigned)dualChannelStateFrom:(id)a3 isPiggyBacking:(BOOL)a4;
-+ (void)filterSent:(id)a3 connectionType:(int64_t)a4;
-- (APSMetricLogger)initWithDomain:(id)a3;
-- (void)logMetric:(id)a3;
-- (void)logMetricWithFailures:(id)a3;
++ (unsigned)dualChannelStateFrom:(id)from isPiggyBacking:(BOOL)backing;
++ (void)filterSent:(id)sent connectionType:(int64_t)type;
+- (APSMetricLogger)initWithDomain:(id)domain;
+- (void)logMetric:(id)metric;
+- (void)logMetricWithFailures:(id)failures;
 @end
 
 @implementation APSMetricLogger
 
-- (APSMetricLogger)initWithDomain:(id)a3
+- (APSMetricLogger)initWithDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = APSMetricLogger;
   v6 = [(APSMetricLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_domain, a3);
+    objc_storeStrong(&v6->_domain, domain);
   }
 
   return v7;
@@ -26,89 +26,89 @@
 
 + (id)defaultLogger
 {
-  v2 = [[a1 alloc] initWithDomain:@"com.apple.APSD"];
+  v2 = [[self alloc] initWithDomain:@"com.apple.APSD"];
 
   return v2;
 }
 
-- (void)logMetric:(id)a3
+- (void)logMetric:(id)metric
 {
-  v4 = a3;
-  v5 = [(APSMetricLogger *)self domain];
-  v6 = [v4 name];
-  v7 = [NSString stringWithFormat:@"%@.%@", v5, v6];
+  metricCopy = metric;
+  domain = [(APSMetricLogger *)self domain];
+  name = [metricCopy name];
+  v7 = [NSString stringWithFormat:@"%@.%@", domain, name];
 
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 name];
-    v10 = [v4 dictionaryRepresentation];
+    name2 = [metricCopy name];
+    dictionaryRepresentation = [metricCopy dictionaryRepresentation];
     *buf = 138412546;
-    v14 = v9;
+    v14 = name2;
     v15 = 2112;
-    v16 = v10;
+    v16 = dictionaryRepresentation;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending %@ event to CA: %@", buf, 0x16u);
   }
 
-  v12 = v4;
-  v11 = v4;
+  v12 = metricCopy;
+  v11 = metricCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)logMetricWithFailures:(id)a3
+- (void)logMetricWithFailures:(id)failures
 {
-  v4 = a3;
-  [(APSMetricLogger *)self logMetric:v4];
-  v5 = [v4 failureMetric];
+  failuresCopy = failures;
+  [(APSMetricLogger *)self logMetric:failuresCopy];
+  failureMetric = [failuresCopy failureMetric];
 
   v6 = +[APSLog courier];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 name];
-    v8 = [v5 dictionaryRepresentation];
+    name = [failureMetric name];
+    dictionaryRepresentation = [failureMetric dictionaryRepresentation];
     *buf = 138412546;
-    v15 = v7;
+    v15 = name;
     v16 = 2112;
-    v17 = v8;
+    v17 = dictionaryRepresentation;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Sending %@ event to CA: %@", buf, 0x16u);
   }
 
-  v9 = [(APSMetricLogger *)self domain];
-  v10 = [v5 name];
-  v11 = [NSString stringWithFormat:@"%@.%@", v9, v10];
+  domain = [(APSMetricLogger *)self domain];
+  name2 = [failureMetric name];
+  v11 = [NSString stringWithFormat:@"%@.%@", domain, name2];
 
-  v13 = v5;
-  v12 = v5;
+  v13 = failureMetric;
+  v12 = failureMetric;
   AnalyticsSendExplodingEventLazy();
 }
 
-+ (void)filterSent:(id)a3 connectionType:(int64_t)a4
++ (void)filterSent:(id)sent connectionType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [NSString stringWithFormat:@"%@.%@", @"com.apple.APSD", kAPSPushFilterSentMetricName];
+  sentCopy = sent;
+  kAPSPushFilterSentMetricName = [NSString stringWithFormat:@"%@.%@", @"com.apple.APSD", kAPSPushFilterSentMetricName];
   v7 = +[NSMutableDictionary dictionary];
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 topicGroupChange]);
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sentCopy topicGroupChange]);
   if (v8)
   {
     CFDictionarySetValue(v7, @"changeType", v8);
   }
 
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 reason]);
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [sentCopy reason]);
   if (v9)
   {
     CFDictionarySetValue(v7, @"reason", v9);
   }
 
-  v10 = [NSNumber numberWithInteger:a4];
+  v10 = [NSNumber numberWithInteger:type];
   if (v10)
   {
     CFDictionarySetValue(v7, @"connectionType", v10);
   }
 
-  v11 = [v5 triggeringTopic];
-  if (v11)
+  triggeringTopic = [sentCopy triggeringTopic];
+  if (triggeringTopic)
   {
-    CFDictionarySetValue(v7, @"triggeringTopic", v11);
+    CFDictionarySetValue(v7, @"triggeringTopic", triggeringTopic);
   }
 
   v12 = +[APSLog courier];
@@ -122,26 +122,26 @@
   AnalyticsSendEvent();
 }
 
-+ (unsigned)dualChannelStateFrom:(id)a3 isPiggyBacking:(BOOL)a4
++ (unsigned)dualChannelStateFrom:(id)from isPiggyBacking:(BOOL)backing
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  backingCopy = backing;
+  fromCopy = from;
+  v6 = fromCopy;
+  if (fromCopy)
   {
-    if ([v5 isConnectedOnInterface:0] && !objc_msgSend(v6, "isConnectedOnInterface:", 1))
+    if ([fromCopy isConnectedOnInterface:0] && !objc_msgSend(v6, "isConnectedOnInterface:", 1))
     {
       v7 = 2;
     }
 
     else if (([v6 isConnectedOnInterface:0] & 1) != 0 || (objc_msgSend(v6, "isConnectedOnInterface:", 1) & 1) == 0)
     {
-      if ([v6 countConnectedInterfaces] >= 2 && v4)
+      if ([v6 countConnectedInterfaces] >= 2 && backingCopy)
       {
         v7 = 4;
       }
 
-      else if ([v6 countConnectedInterfaces] < 2 || v4)
+      else if ([v6 countConnectedInterfaces] < 2 || backingCopy)
       {
         v7 = 1;
       }

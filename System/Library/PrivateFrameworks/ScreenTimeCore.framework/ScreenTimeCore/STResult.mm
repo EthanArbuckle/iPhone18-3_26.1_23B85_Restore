@@ -1,52 +1,52 @@
 @interface STResult
-+ (id)failure:(id)a3;
++ (id)failure:(id)failure;
 + (id)success;
-+ (id)success:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResult:(id)a3;
-- (id)_initWithSuccessValue:(id)a3 failureError:(id)a4 type:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)success:(id)success;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResult:(id)result;
+- (id)_initWithSuccessValue:(id)value failureError:(id)error type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)flatMap:(id)a3;
-- (id)flatMapError:(id)a3;
-- (id)map:(id)a3;
-- (id)mapError:(id)a3;
+- (id)flatMap:(id)map;
+- (id)flatMapError:(id)error;
+- (id)map:(id)map;
+- (id)mapError:(id)error;
 - (unint64_t)hash;
-- (void)evaluateWithSuccess:(id)a3 failure:(id)a4;
+- (void)evaluateWithSuccess:(id)success failure:(id)failure;
 @end
 
 @implementation STResult
 
-- (id)_initWithSuccessValue:(id)a3 failureError:(id)a4 type:(int64_t)a5
+- (id)_initWithSuccessValue:(id)value failureError:(id)error type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = STResult;
   v10 = [(STResult *)&v15 init];
   value = v10->_value;
-  v10->_value = v8;
-  v12 = v8;
+  v10->_value = valueCopy;
+  v12 = valueCopy;
 
   error = v10->_error;
-  v10->_error = v9;
+  v10->_error = errorCopy;
 
-  v10->_type = a5;
+  v10->_type = type;
   return v10;
 }
 
-+ (id)success:(id)a3
++ (id)success:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 failure:v4];
+    v5 = [self failure:successCopy];
   }
 
   else
   {
-    v5 = [[a1 alloc] _initWithSuccessValue:v4 failureError:0 type:0];
+    v5 = [[self alloc] _initWithSuccessValue:successCopy failureError:0 type:0];
   }
 
   v6 = v5;
@@ -56,43 +56,43 @@
 
 + (id)success
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[NSNull null];
   v4 = [v2 _initWithSuccessValue:v3 failureError:0 type:0];
 
   return v4;
 }
 
-+ (id)failure:(id)a3
++ (id)failure:(id)failure
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithSuccessValue:0 failureError:v4 type:1];
+  failureCopy = failure;
+  v5 = [[self alloc] _initWithSuccessValue:0 failureError:failureCopy type:1];
 
   return v5;
 }
 
 - (id)description
 {
-  v4 = [(STResult *)self type];
-  if (v4 == 1)
+  type = [(STResult *)self type];
+  if (type == 1)
   {
     v8 = objc_opt_class();
     v6 = NSStringFromClass(v8);
-    v7 = [(STResult *)self error];
-    [NSString stringWithFormat:@"<%@:%p { Failure: %@ }>", v6, self, v7];
+    error = [(STResult *)self error];
+    [NSString stringWithFormat:@"<%@:%p { Failure: %@ }>", v6, self, error];
   }
 
   else
   {
-    if (v4)
+    if (type)
     {
       goto LABEL_6;
     }
 
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [(STResult *)self value];
-    [NSString stringWithFormat:@"<%@:%p { Success: %@ }>", v6, self, v7];
+    error = [(STResult *)self value];
+    [NSString stringWithFormat:@"<%@:%p { Success: %@ }>", v6, self, error];
   }
   v2 = ;
 
@@ -101,9 +101,9 @@ LABEL_6:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   value = self->_value;
   error = self->_error;
   type = self->_type;
@@ -111,26 +111,26 @@ LABEL_6:
   return [v4 _initWithSuccessValue:value failureError:error type:type];
 }
 
-- (void)evaluateWithSuccess:(id)a3 failure:(id)a4
+- (void)evaluateWithSuccess:(id)success failure:(id)failure
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(STResult *)self type];
-  if (v7 == 1)
+  successCopy = success;
+  failureCopy = failure;
+  type = [(STResult *)self type];
+  if (type == 1)
   {
-    v8 = [(STResult *)self error];
-    v9 = v6[2];
+    error = [(STResult *)self error];
+    v9 = failureCopy[2];
   }
 
   else
   {
-    if (v7)
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v8 = [(STResult *)self value];
-    v9 = v10[2];
+    error = [(STResult *)self value];
+    v9 = successCopy[2];
   }
 
   v9();
@@ -138,51 +138,51 @@ LABEL_6:
 LABEL_6:
 }
 
-- (id)map:(id)a3
+- (id)map:(id)map
 {
-  v5 = a3;
-  v6 = [(STResult *)self type];
-  if (v6 == 1)
+  mapCopy = map;
+  type = [(STResult *)self type];
+  if (type == 1)
   {
     v3 = [(STResult *)self copy];
   }
 
-  else if (!v6)
+  else if (!type)
   {
-    v7 = [(STResult *)self value];
-    v8 = v5[2](v5, v7);
+    value = [(STResult *)self value];
+    v8 = mapCopy[2](mapCopy, value);
     v3 = [STResult success:v8];
   }
 
   return v3;
 }
 
-- (id)flatMap:(id)a3
+- (id)flatMap:(id)map
 {
-  v5 = a3;
-  v6 = [(STResult *)self type];
-  if (v6 != 1)
+  mapCopy = map;
+  type = [(STResult *)self type];
+  if (type != 1)
   {
-    if (v6)
+    if (type)
     {
       goto LABEL_10;
     }
 
-    v7 = [(STResult *)self value];
-    v8 = v5[2](v5, v7);
+    value = [(STResult *)self value];
+    v8 = mapCopy[2](mapCopy, value);
 
-    v9 = [v8 type];
-    if (v9 == 1)
+    type2 = [v8 type];
+    if (type2 == 1)
     {
-      v10 = [v8 error];
-      v11 = [STResult failure:v10];
+      error = [v8 error];
+      v11 = [STResult failure:error];
       goto LABEL_7;
     }
 
-    if (!v9)
+    if (!type2)
     {
-      v10 = [v8 value];
-      v11 = [STResult success:v10];
+      error = [v8 value];
+      v11 = [STResult success:error];
 LABEL_7:
       v3 = v11;
 
@@ -196,18 +196,18 @@ LABEL_10:
   return v3;
 }
 
-- (id)mapError:(id)a3
+- (id)mapError:(id)error
 {
-  v5 = a3;
-  v6 = [(STResult *)self type];
-  if (v6 == 1)
+  errorCopy = error;
+  type = [(STResult *)self type];
+  if (type == 1)
   {
-    v7 = [(STResult *)self error];
-    v8 = v5[2](v5, v7);
+    error = [(STResult *)self error];
+    v8 = errorCopy[2](errorCopy, error);
     v3 = [STResult failure:v8];
   }
 
-  else if (!v6)
+  else if (!type)
   {
     v3 = [(STResult *)self copy];
   }
@@ -215,54 +215,54 @@ LABEL_10:
   return v3;
 }
 
-- (id)flatMapError:(id)a3
+- (id)flatMapError:(id)error
 {
-  v5 = a3;
-  v6 = [(STResult *)self type];
-  if (v6 == 1)
+  errorCopy = error;
+  type = [(STResult *)self type];
+  if (type == 1)
   {
-    v3 = [(STResult *)self error];
-    v7 = v5[2](v5, v3);
+    error = [(STResult *)self error];
+    v7 = errorCopy[2](errorCopy, error);
 
-    v8 = [v7 type];
-    if (v8 == 1)
+    type2 = [v7 type];
+    if (type2 == 1)
     {
-      v9 = [v7 error];
-      v10 = [STResult failure:v9];
+      error2 = [v7 error];
+      v10 = [STResult failure:error2];
     }
 
     else
     {
-      if (v8)
+      if (type2)
       {
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      v9 = [v7 value];
-      v10 = [STResult success:v9];
+      error2 = [v7 value];
+      v10 = [STResult success:error2];
     }
 
-    v3 = v10;
+    error = v10;
 
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!type)
   {
-    v3 = [(STResult *)self copy];
+    error = [(STResult *)self copy];
   }
 
 LABEL_10:
 
-  return v3;
+  return error;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -272,7 +272,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STResult *)self isEqualToResult:v4];
+      v5 = [(STResult *)self isEqualToResult:equalCopy];
     }
 
     else
@@ -284,28 +284,28 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqualToResult:(id)a3
+- (BOOL)isEqualToResult:(id)result
 {
-  v7 = a3;
-  if (self == v7)
+  resultCopy = result;
+  if (self == resultCopy)
   {
     v11 = 1;
     goto LABEL_19;
   }
 
-  v8 = [(STResult *)self type];
-  if (v8 != [(STResult *)v7 type])
+  type = [(STResult *)self type];
+  if (type != [(STResult *)resultCopy type])
   {
     v11 = 0;
     goto LABEL_19;
   }
 
-  v9 = [(STResult *)self value];
-  if (v9 || ([(STResult *)v7 value], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  value = [(STResult *)self value];
+  if (value || ([(STResult *)resultCopy value], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(STResult *)self value];
-    v4 = [(STResult *)v7 value];
-    if (([v3 isEqual:v4] & 1) == 0)
+    value2 = [(STResult *)self value];
+    value3 = [(STResult *)resultCopy value];
+    if (([value2 isEqual:value3] & 1) == 0)
     {
 
       v11 = 0;
@@ -321,11 +321,11 @@ LABEL_10:
     v10 = 0;
   }
 
-  v12 = [(STResult *)self error];
-  if (!v12)
+  error = [(STResult *)self error];
+  if (!error)
   {
-    v5 = [(STResult *)v7 error];
-    if (!v5)
+    error2 = [(STResult *)resultCopy error];
+    if (!error2)
     {
       v11 = 1;
 LABEL_21:
@@ -339,11 +339,11 @@ LABEL_21:
     }
   }
 
-  v13 = [(STResult *)self error];
-  v14 = [(STResult *)v7 error];
-  v11 = [v13 isEqual:v14];
+  error3 = [(STResult *)self error];
+  error4 = [(STResult *)resultCopy error];
+  v11 = [error3 isEqual:error4];
 
-  if (!v12)
+  if (!error)
   {
     goto LABEL_21;
   }
@@ -354,7 +354,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  if (!v9)
+  if (!value)
   {
   }
 
@@ -364,11 +364,11 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(STResult *)self type];
-  v4 = [(STResult *)self value];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(STResult *)self error];
-  v7 = [v6 hash];
+  type = [(STResult *)self type];
+  value = [(STResult *)self value];
+  v5 = [value hash] ^ type;
+  error = [(STResult *)self error];
+  v7 = [error hash];
 
   return v5 ^ v7;
 }

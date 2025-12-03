@@ -1,20 +1,20 @@
 @interface NTKAlbumEmptyView
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (void)layoutSubviews;
-- (void)setBodyLabelText:(id)a3;
+- (void)setBodyLabelText:(id)text;
 @end
 
 @implementation NTKAlbumEmptyView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKAlbumEmptyView;
   v6 = [(NTKAlbumEmptyView *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7 = objc_alloc(MEMORY[0x277D755E8]);
     NTKImageNamed(@"LargeIconPhoto");
   }
@@ -43,10 +43,10 @@
   [(UILabel *)self->_bodyLabel setCenter:v10, v13 + v14 * 0.5];
 }
 
-- (void)setBodyLabelText:(id)a3
+- (void)setBodyLabelText:(id)text
 {
-  v7 = a3;
-  objc_storeStrong(&self->_bodyLabelText, a3);
+  textCopy = text;
+  objc_storeStrong(&self->_bodyLabelText, text);
   bodyLabelText = self->_bodyLabelText;
   if (bodyLabelText)
   {

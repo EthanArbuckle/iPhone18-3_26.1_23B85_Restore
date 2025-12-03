@@ -1,12 +1,12 @@
 @interface SUUITabularLockupColumn
 - (CGSize)size;
-- (SUUITabularLockupColumn)initWithColumnIdentifier:(int64_t)a3;
+- (SUUITabularLockupColumn)initWithColumnIdentifier:(int64_t)identifier;
 - (id)description;
 @end
 
 @implementation SUUITabularLockupColumn
 
-- (SUUITabularLockupColumn)initWithColumnIdentifier:(int64_t)a3
+- (SUUITabularLockupColumn)initWithColumnIdentifier:(int64_t)identifier
 {
   v8.receiver = self;
   v8.super_class = SUUITabularLockupColumn;
@@ -17,7 +17,7 @@
     childViewElements = v4->_childViewElements;
     v4->_childViewElements = v5;
 
-    v4->_identifier = a3;
+    v4->_identifier = identifier;
   }
 
   return v4;

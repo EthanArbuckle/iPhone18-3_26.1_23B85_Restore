@@ -1,20 +1,20 @@
 @interface AVTPassthroughEventCoalescer
-- (void)eventDidOccur:(id)a3;
+- (void)eventDidOccur:(id)occur;
 @end
 
 @implementation AVTPassthroughEventCoalescer
 
-- (void)eventDidOccur:(id)a3
+- (void)eventDidOccur:(id)occur
 {
-  v6 = a3;
-  v4 = [(AVTPassthroughEventCoalescer *)self handler];
-  v4[2]();
+  occurCopy = occur;
+  handler = [(AVTPassthroughEventCoalescer *)self handler];
+  handler[2]();
 
-  v5 = v6;
-  if (v6)
+  v5 = occurCopy;
+  if (occurCopy)
   {
-    (*(v6 + 2))(v6, 1);
-    v5 = v6;
+    (*(occurCopy + 2))(occurCopy, 1);
+    v5 = occurCopy;
   }
 }
 

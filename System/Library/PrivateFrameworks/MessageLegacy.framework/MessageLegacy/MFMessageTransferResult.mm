@@ -1,12 +1,12 @@
 @interface MFMessageTransferResult
-- (MFMessageTransferResult)initWithResultCode:(unint64_t)a3 failedMessages:(id)a4 transferedMessage:(id)a5;
+- (MFMessageTransferResult)initWithResultCode:(unint64_t)code failedMessages:(id)messages transferedMessage:(id)message;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation MFMessageTransferResult
 
-- (MFMessageTransferResult)initWithResultCode:(unint64_t)a3 failedMessages:(id)a4 transferedMessage:(id)a5
+- (MFMessageTransferResult)initWithResultCode:(unint64_t)code failedMessages:(id)messages transferedMessage:(id)message
 {
   v11.receiver = self;
   v11.super_class = MFMessageTransferResult;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_resultCode = a3;
-    v8->_failedMessages = [a4 copy];
-    v9->_transferedMessages = [a5 copy];
+    v8->_resultCode = code;
+    v8->_failedMessages = [messages copy];
+    v9->_transferedMessages = [message copy];
   }
 
   return v9;
@@ -31,15 +31,15 @@
 
 - (id)debugDescription
 {
-  v3 = [(MFMessageTransferResult *)self resultCode];
-  if (v3 > 2)
+  resultCode = [(MFMessageTransferResult *)self resultCode];
+  if (resultCode > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_2798B6A08[v3];
+    v4 = off_2798B6A08[resultCode];
   }
 
   return [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p (\n\tresult:%@\n\ttransfered:%@\n\tfailed:%@)>", objc_opt_class(), self, v4, -[MFMessageTransferResult transferedMessages](self, "transferedMessages"), -[MFMessageTransferResult failedMessages](self, "failedMessages")];

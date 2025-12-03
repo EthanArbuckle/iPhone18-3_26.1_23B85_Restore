@@ -1,33 +1,33 @@
 @interface DiagnosticStorageManager
-- (DiagnosticStorageManager)initWithPersistentStoreController:(id)a3 logArchiveDirectory:(id)a4;
+- (DiagnosticStorageManager)initWithPersistentStoreController:(id)controller logArchiveDirectory:(id)directory;
 - (unint64_t)allowableDiskUsageSize;
-- (unint64_t)deleteAttachmentFiles:(id)a3;
+- (unint64_t)deleteAttachmentFiles:(id)files;
 - (unint64_t)performPeriodicPurge;
-- (unint64_t)performPurgeToMeetDiskUsageLimit:(unint64_t)a3 calculateOnly:(BOOL)a4;
-- (void)_autoBugCaptureDiskUsageSize:(id)a3;
-- (void)_calculatePurgableSizeForRequestedPurgeSize:(unint64_t)a3 reply:(id)a4;
-- (void)_inspectAutoBugCaptureDiskUsage:(id)a3;
-- (void)_performSizedPurge:(unint64_t)a3 reply:(id)a4;
-- (void)_purgeCasesWithCaseIDs:(id)a3;
-- (void)_sortedAutoBugCaptureDiskUsageByCase:(id)a3;
-- (void)cleanupCasesAfterACentralizedCacheDeletePurgeEvent:(id)a3;
-- (void)deleteAttachmentsAtPaths:(id)a3;
-- (void)deleteAttachmentsForCases:(id)a3;
+- (unint64_t)performPurgeToMeetDiskUsageLimit:(unint64_t)limit calculateOnly:(BOOL)only;
+- (void)_autoBugCaptureDiskUsageSize:(id)size;
+- (void)_calculatePurgableSizeForRequestedPurgeSize:(unint64_t)size reply:(id)reply;
+- (void)_inspectAutoBugCaptureDiskUsage:(id)usage;
+- (void)_performSizedPurge:(unint64_t)purge reply:(id)reply;
+- (void)_purgeCasesWithCaseIDs:(id)ds;
+- (void)_sortedAutoBugCaptureDiskUsageByCase:(id)case;
+- (void)cleanupCasesAfterACentralizedCacheDeletePurgeEvent:(id)event;
+- (void)deleteAttachmentsAtPaths:(id)paths;
+- (void)deleteAttachmentsForCases:(id)cases;
 - (void)didSaveDiagnosticCases;
 - (void)fileCleanupComplete;
 - (void)invalidateDiskUsageStatistics;
-- (void)purgeAttachmentsAtPaths:(id)a3;
+- (void)purgeAttachmentsAtPaths:(id)paths;
 - (void)purgeAttachmentsForAllCases;
-- (void)purgeDEPayloadForCase:(id)a3;
-- (void)removeCaseStorageAndAttachmentsForCasesWithUUIDs:(id)a3;
+- (void)purgeDEPayloadForCase:(id)case;
+- (void)removeCaseStorageAndAttachmentsForCasesWithUUIDs:(id)ds;
 @end
 
 @implementation DiagnosticStorageManager
 
-- (DiagnosticStorageManager)initWithPersistentStoreController:(id)a3 logArchiveDirectory:(id)a4
+- (DiagnosticStorageManager)initWithPersistentStoreController:(id)controller logArchiveDirectory:(id)directory
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  directoryCopy = directory;
   v14.receiver = self;
   v14.super_class = DiagnosticStorageManager;
   v9 = [(DiagnosticStorageManager *)&v14 init];
@@ -38,8 +38,8 @@
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeStrong(&v9->_storeController, a3);
-    objc_storeStrong(&v9->_logArchivePath, a4);
+    objc_storeStrong(&v9->_storeController, controller);
+    objc_storeStrong(&v9->_logArchivePath, directory);
   }
 
   return v9;
@@ -48,9 +48,9 @@
 - (unint64_t)allowableDiskUsageSize
 {
   v2 = +[SystemProperties sharedInstance];
-  v3 = [v2 deviceClass];
+  deviceClass = [v2 deviceClass];
 
-  if (v3 == 7)
+  if (deviceClass == 7)
   {
     return 0x40000000;
   }
@@ -244,21 +244,21 @@ LABEL_23:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)performPurgeToMeetDiskUsageLimit:(unint64_t)a3 calculateOnly:(BOOL)a4
+- (unint64_t)performPurgeToMeetDiskUsageLimit:(unint64_t)limit calculateOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v23 = *MEMORY[0x277D85DE8];
   v7 = storageLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = "NO";
-    if (v4)
+    if (onlyCopy)
     {
       v8 = "YES";
     }
 
     *buf = 134218242;
-    *&buf[4] = a3;
+    *&buf[4] = limit;
     *&buf[12] = 2080;
     *&buf[14] = v8;
     _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_INFO, "performPurgeToMeetDiskUsageLimit (%lu) calculateOnly:%s", buf, 0x16u);
@@ -274,9 +274,9 @@ LABEL_23:
   block[1] = 3221225472;
   block[2] = __75__DiagnosticStorageManager_performPurgeToMeetDiskUsageLimit_calculateOnly___block_invoke;
   block[3] = &unk_278CF1678;
-  v20 = v4;
+  v20 = onlyCopy;
   v18 = buf;
-  v19 = a3;
+  limitCopy = limit;
   block[4] = self;
   v17 = v9;
   v11 = v9;
@@ -364,17 +364,17 @@ void __75__DiagnosticStorageManager_performPurgeToMeetDiskUsageLimit_calculateOn
   }
 }
 
-- (void)_performSizedPurge:(unint64_t)a3 reply:(id)a4
+- (void)_performSizedPurge:(unint64_t)purge reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__DiagnosticStorageManager__performSizedPurge_reply___block_invoke;
   v8[3] = &unk_278CF16A0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(DiagnosticStorageManager *)self _calculatePurgableSizeForRequestedPurgeSize:a3 reply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [(DiagnosticStorageManager *)self _calculatePurgableSizeForRequestedPurgeSize:purge reply:v8];
 }
 
 uint64_t __53__DiagnosticStorageManager__performSizedPurge_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -391,16 +391,16 @@ uint64_t __53__DiagnosticStorageManager__performSizedPurge_reply___block_invoke(
   return result;
 }
 
-- (void)_calculatePurgableSizeForRequestedPurgeSize:(unint64_t)a3 reply:(id)a4
+- (void)_calculatePurgableSizeForRequestedPurgeSize:(unint64_t)size reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__DiagnosticStorageManager__calculatePurgableSizeForRequestedPurgeSize_reply___block_invoke;
   v8[3] = &unk_278CF16C8;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = replyCopy;
+  sizeCopy = size;
+  v7 = replyCopy;
   [(DiagnosticStorageManager *)self _sortedAutoBugCaptureDiskUsageByCase:v8];
 }
 
@@ -501,18 +501,18 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_purgeCasesWithCaseIDs:(id)a3
+- (void)_purgeCasesWithCaseIDs:(id)ds
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v4;
+    v6 = dsCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -553,18 +553,18 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCaseStorageAndAttachmentsForCasesWithUUIDs:(id)a3
+- (void)removeCaseStorageAndAttachmentsForCasesWithUUIDs:(id)ds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = v4;
+    v6 = dsCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -580,8 +580,8 @@ LABEL_14:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v18 + 1) + 8 * v10) UUIDString];
-          [v5 addObject:v11];
+          uUIDString = [*(*(&v18 + 1) + 8 * v10) UUIDString];
+          [v5 addObject:uUIDString];
 
           ++v10;
         }
@@ -618,17 +618,17 @@ void __77__DiagnosticStorageManager_removeCaseStorageAndAttachmentsForCasesWithU
   }
 }
 
-- (void)deleteAttachmentsForCases:(id)a3
+- (void)deleteAttachmentsForCases:(id)cases
 {
-  v4 = a3;
-  if ([v4 count])
+  casesCopy = cases;
+  if ([casesCopy count])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__DiagnosticStorageManager_deleteAttachmentsForCases___block_invoke;
     v6[3] = &unk_278CF1718;
     v6[4] = self;
-    [v4 enumerateObjectsUsingBlock:v6];
+    [casesCopy enumerateObjectsUsingBlock:v6];
   }
 
   else
@@ -684,10 +684,10 @@ LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAttachmentsAtPaths:(id)a3
+- (void)deleteAttachmentsAtPaths:(id)paths
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -698,7 +698,7 @@ LABEL_7:
   v8[3] = &unk_278CF1740;
   v8[4] = self;
   v8[5] = &v9;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [pathsCopy enumerateObjectsUsingBlock:v8];
   v5 = storageLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -740,10 +740,10 @@ void __53__DiagnosticStorageManager_deleteAttachmentsAtPaths___block_invoke(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)deleteAttachmentFiles:(id)a3
+- (unint64_t)deleteAttachmentFiles:(id)files
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  filesCopy = files;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -752,10 +752,10 @@ void __53__DiagnosticStorageManager_deleteAttachmentsAtPaths___block_invoke(uint
   v8[1] = 3221225472;
   v8[2] = __50__DiagnosticStorageManager_deleteAttachmentFiles___block_invoke;
   v8[3] = &unk_278CF0FF8;
-  v5 = v4;
+  v5 = defaultManager;
   v9 = v5;
   v10 = &v11;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [filesCopy enumerateObjectsUsingBlock:v8];
   v6 = v12[3];
 
   _Block_object_dispose(&v11, 8);
@@ -846,29 +846,29 @@ LABEL_13:
   [(ABCPersistentStoreController *)storeController caseAttachmentsForAllDiagnosticCasesWithQueue:queue reply:v4];
 }
 
-- (void)cleanupCasesAfterACentralizedCacheDeletePurgeEvent:(id)a3
+- (void)cleanupCasesAfterACentralizedCacheDeletePurgeEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v7 = storageLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = eventCopy;
     _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_INFO, "Cleanup cases after Centralized CD Purge for these files %@", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!eventCopy)
   {
     v8 = 0;
     goto LABEL_7;
   }
 
-  if ([v4 count])
+  if ([eventCopy count])
   {
-    v8 = [v4 copy];
+    v8 = [eventCopy copy];
 LABEL_7:
     queue = self->_queue;
     storeController = self->_storeController;
@@ -878,8 +878,8 @@ LABEL_7:
     v13[3] = &unk_278CF1790;
     v14 = v8;
     v15 = v5;
-    v16 = v6;
-    v17 = self;
+    v16 = defaultManager;
+    selfCopy = self;
     v11 = v8;
     [(ABCPersistentStoreController *)storeController caseAttachmentsForAllDiagnosticCasesWithQueue:queue reply:v13];
   }
@@ -1017,32 +1017,32 @@ LABEL_24:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)purgeDEPayloadForCase:(id)a3
+- (void)purgeDEPayloadForCase:(id)case
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  caseCopy = case;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 UUIDString];
+      uUIDString = [caseCopy UUIDString];
 
-      v4 = v5;
+      caseCopy = uUIDString;
     }
   }
 
   storeController = self->_storeController;
-  v13[0] = v4;
+  v13[0] = caseCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__DiagnosticStorageManager_purgeDEPayloadForCase___block_invoke;
   v11[3] = &unk_278CF1768;
-  v12 = v4;
-  v9 = v4;
+  v12 = caseCopy;
+  v9 = caseCopy;
   [(ABCPersistentStoreController *)storeController caseAttachmentsForDiagnosticCaseIDs:v7 queue:queue reply:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1236,15 +1236,15 @@ LABEL_35:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_autoBugCaptureDiskUsageSize:(id)a3
+- (void)_autoBugCaptureDiskUsageSize:(id)size
 {
-  v4 = a3;
-  v5 = v4;
+  sizeCopy = size;
+  v5 = sizeCopy;
   if (self->_lastCalculatedDiskUsageSize)
   {
-    if (v4)
+    if (sizeCopy)
     {
-      v4[2](v4);
+      sizeCopy[2](sizeCopy);
     }
   }
 
@@ -1255,7 +1255,7 @@ LABEL_35:
     v6[2] = __57__DiagnosticStorageManager__autoBugCaptureDiskUsageSize___block_invoke;
     v6[3] = &unk_278CF17B8;
     v6[4] = self;
-    v7 = v4;
+    v7 = sizeCopy;
     [(DiagnosticStorageManager *)self _inspectAutoBugCaptureDiskUsage:v6];
   }
 }
@@ -1319,14 +1319,14 @@ void __57__DiagnosticStorageManager__autoBugCaptureDiskUsageSize___block_invoke(
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sortedAutoBugCaptureDiskUsageByCase:(id)a3
+- (void)_sortedAutoBugCaptureDiskUsageByCase:(id)case
 {
-  v4 = a3;
-  v5 = v4;
+  caseCopy = case;
+  v5 = caseCopy;
   casesSortedByDate = self->_casesSortedByDate;
   if (casesSortedByDate)
   {
-    if (!v4)
+    if (!caseCopy)
     {
       goto LABEL_7;
     }
@@ -1419,16 +1419,16 @@ uint64_t __65__DiagnosticStorageManager__sortedAutoBugCaptureDiskUsageByCase___b
   return v7;
 }
 
-- (void)_inspectAutoBugCaptureDiskUsage:(id)a3
+- (void)_inspectAutoBugCaptureDiskUsage:(id)usage
 {
   v80[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  usageCopy = usage;
+  v5 = usageCopy;
   if (self->_payloadsByCaseID)
   {
-    if (v4)
+    if (usageCopy)
     {
-      (*(v4 + 2))(v4);
+      (*(usageCopy + 2))(usageCopy);
     }
 
     goto LABEL_40;
@@ -1440,7 +1440,7 @@ uint64_t __65__DiagnosticStorageManager__sortedAutoBugCaptureDiskUsageByCase___b
 
   v50 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v51 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = objc_autoreleasePoolPush();
   v55 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-3600.0];
   v10 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:self->_logArchivePath isDirectory:1];
@@ -1451,8 +1451,8 @@ uint64_t __65__DiagnosticStorageManager__sortedAutoBugCaptureDiskUsageByCase___b
   v59 = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:2];
   v74 = 0;
-  v54 = v8;
-  v13 = [v8 contentsOfDirectoryAtURL:v10 includingPropertiesForKeys:v12 options:1 error:&v74];
+  v54 = defaultManager;
+  v13 = [defaultManager contentsOfDirectoryAtURL:v10 includingPropertiesForKeys:v12 options:1 error:&v74];
   v14 = v74;
 
   v72 = 0u;
@@ -1468,7 +1468,7 @@ uint64_t __65__DiagnosticStorageManager__sortedAutoBugCaptureDiskUsageByCase___b
 
   v16 = v15;
   v47 = v9;
-  v48 = self;
+  selfCopy = self;
   v49 = v5;
   v17 = 0;
   v18 = 0;
@@ -1498,7 +1498,7 @@ uint64_t __65__DiagnosticStorageManager__sortedAutoBugCaptureDiskUsageByCase___b
       if (!v24 || [v17 compare:v55] != 1)
       {
         v68 = 0;
-        v26 = [v18 getResourceValue:&v68 forKey:v57 error:{0, v47, v48, v49}];
+        v26 = [v18 getResourceValue:&v68 forKey:v57 error:{0, v47, selfCopy, v49}];
         v27 = v68;
         v25 = v27;
         if (v26 && [v27 BOOLValue])
@@ -1530,19 +1530,19 @@ uint64_t __65__DiagnosticStorageManager__sortedAutoBugCaptureDiskUsageByCase___b
             _os_log_impl(&dword_241804000, v31, OS_LOG_TYPE_ERROR, "Unable to remove directory at %@ (%@)", buf, 0x16u);
           }
 
-          v32 = [v30 domain];
-          if ([v32 isEqualToString:v53] && objc_msgSend(v30, "code") == 513)
+          domain = [v30 domain];
+          if ([domain isEqualToString:v53] && objc_msgSend(v30, "code") == 513)
           {
 
             goto LABEL_35;
           }
 
-          v36 = [v30 domain];
-          if ([v36 isEqualToString:v52])
+          domain2 = [v30 domain];
+          if ([domain2 isEqualToString:v52])
           {
-            v37 = [v30 code];
+            code = [v30 code];
 
-            v38 = v37 == 13;
+            v38 = code == 13;
             v19 = v50;
             if (!v38)
             {
@@ -1550,8 +1550,8 @@ uint64_t __65__DiagnosticStorageManager__sortedAutoBugCaptureDiskUsageByCase___b
             }
 
 LABEL_35:
-            v32 = [v18 path];
-            [v51 addObject:v32];
+            domain = [v18 path];
+            [v51 addObject:domain];
           }
 
           else
@@ -1561,18 +1561,18 @@ LABEL_35:
 
         else
         {
-          v32 = [v18 path];
-          v33 = [v32 rangeOfString:@"/private"];
+          domain = [v18 path];
+          v33 = [domain rangeOfString:@"/private"];
           if (v33 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v35 = [v32 substringFromIndex:v33 + v34];
+            v35 = [domain substringFromIndex:v33 + v34];
 
-            v32 = v35;
+            domain = v35;
           }
 
-          if ([v32 length])
+          if ([domain length])
           {
-            [v19 addObject:v32];
+            [v19 addObject:domain];
           }
 
           v30 = v14;
@@ -1606,7 +1606,7 @@ LABEL_30:
 
   while (v39);
 
-  self = v48;
+  self = selfCopy;
   v5 = v49;
   v9 = v47;
 LABEL_39:
@@ -1620,7 +1620,7 @@ LABEL_39:
   v60[3] = &unk_278CF17E0;
   v61 = v54;
   v62 = v50;
-  v63 = self;
+  selfCopy2 = self;
   v64 = v14;
   v65 = v51;
   v66 = v5;
@@ -1939,22 +1939,22 @@ LABEL_55:
 
 - (void)didSaveDiagnosticCases
 {
-  v3 = [(DiagnosticStorageManager *)self allowableDiskUsageSize];
+  allowableDiskUsageSize = [(DiagnosticStorageManager *)self allowableDiskUsageSize];
 
-  [(DiagnosticStorageManager *)self performPurgeToMeetDiskUsageLimit:v3 calculateOnly:0];
+  [(DiagnosticStorageManager *)self performPurgeToMeetDiskUsageLimit:allowableDiskUsageSize calculateOnly:0];
 }
 
-- (void)purgeAttachmentsAtPaths:(id)a3
+- (void)purgeAttachmentsAtPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__DiagnosticStorageManager_purgeAttachmentsAtPaths___block_invoke;
   v7[3] = &unk_278CF04F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pathsCopy;
+  v6 = pathsCopy;
   dispatch_async(queue, v7);
 }
 

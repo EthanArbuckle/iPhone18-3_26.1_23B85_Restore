@@ -1,16 +1,16 @@
 @interface FCRemoveFromShortcutCategoryListCommand
-- (FCRemoveFromShortcutCategoryListCommand)initWithShortcutCategories:(id)a3;
+- (FCRemoveFromShortcutCategoryListCommand)initWithShortcutCategories:(id)categories;
 @end
 
 @implementation FCRemoveFromShortcutCategoryListCommand
 
-- (FCRemoveFromShortcutCategoryListCommand)initWithShortcutCategories:(id)a3
+- (FCRemoveFromShortcutCategoryListCommand)initWithShortcutCategories:(id)categories
 {
   v4 = MEMORY[0x1E695BA90];
-  v5 = a3;
+  categoriesCopy = categories;
   v6 = [v4 alloc];
   v7 = [v6 initWithZoneName:@"ShortcutCategories" ownerName:*MEMORY[0x1E695B728]];
-  v8 = [v5 fc_arrayByTransformingWithBlock:&__block_literal_global_36];
+  v8 = [categoriesCopy fc_arrayByTransformingWithBlock:&__block_literal_global_36];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;

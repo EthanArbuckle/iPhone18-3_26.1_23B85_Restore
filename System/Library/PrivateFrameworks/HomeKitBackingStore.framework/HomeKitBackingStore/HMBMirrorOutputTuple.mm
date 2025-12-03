@@ -1,5 +1,5 @@
 @interface HMBMirrorOutputTuple
-- (HMBMirrorOutputTuple)initWithOutputBlockRow:(unint64_t)a3 recordRow:(unint64_t)a4 model:(id)a5 queryTable:(id)a6 externalID:(id)a7 externalData:(id)a8;
+- (HMBMirrorOutputTuple)initWithOutputBlockRow:(unint64_t)row recordRow:(unint64_t)recordRow model:(id)model queryTable:(id)table externalID:(id)d externalData:(id)data;
 - (id)attributeDescriptions;
 @end
 
@@ -17,22 +17,22 @@
   v22 = [v4 initWithName:@"Record Row" value:v23];
   v26[1] = v22;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMBMirrorOutputTuple *)self model];
-  v6 = [v5 initWithName:@"Model" value:v21];
+  model = [(HMBMirrorOutputTuple *)self model];
+  v6 = [v5 initWithName:@"Model" value:model];
   v26[2] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMBMirrorOutputTuple *)self queryTable];
-  v9 = [v7 initWithName:@"Query Table" value:v8];
+  queryTable = [(HMBMirrorOutputTuple *)self queryTable];
+  v9 = [v7 initWithName:@"Query Table" value:queryTable];
   v26[3] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMBMirrorOutputTuple *)self externalID];
-  v12 = [v11 hmbDescription];
-  v13 = [v10 initWithName:@"External ID" value:v12];
+  externalID = [(HMBMirrorOutputTuple *)self externalID];
+  hmbDescription = [externalID hmbDescription];
+  v13 = [v10 initWithName:@"External ID" value:hmbDescription];
   v26[4] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
-  v15 = [(HMBMirrorOutputTuple *)self externalData];
-  v16 = [v15 hmbDescription];
-  v17 = [v14 initWithName:@"External Data" value:v16];
+  externalData = [(HMBMirrorOutputTuple *)self externalData];
+  hmbDescription2 = [externalData hmbDescription];
+  v17 = [v14 initWithName:@"External Data" value:hmbDescription2];
   v26[5] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:6];
 
@@ -41,24 +41,24 @@
   return v18;
 }
 
-- (HMBMirrorOutputTuple)initWithOutputBlockRow:(unint64_t)a3 recordRow:(unint64_t)a4 model:(id)a5 queryTable:(id)a6 externalID:(id)a7 externalData:(id)a8
+- (HMBMirrorOutputTuple)initWithOutputBlockRow:(unint64_t)row recordRow:(unint64_t)recordRow model:(id)model queryTable:(id)table externalID:(id)d externalData:(id)data
 {
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  modelCopy = model;
+  tableCopy = table;
+  dCopy = d;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = HMBMirrorOutputTuple;
   v18 = [(HMBMirrorOutputTuple *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    v18->_outputBlockRow = a3;
-    v18->_recordRow = a4;
-    objc_storeStrong(&v18->_model, a5);
-    objc_storeStrong(&v19->_queryTable, a6);
-    objc_storeStrong(&v19->_externalID, a7);
-    objc_storeStrong(&v19->_externalData, a8);
+    v18->_outputBlockRow = row;
+    v18->_recordRow = recordRow;
+    objc_storeStrong(&v18->_model, model);
+    objc_storeStrong(&v19->_queryTable, table);
+    objc_storeStrong(&v19->_externalID, d);
+    objc_storeStrong(&v19->_externalData, data);
   }
 
   return v19;

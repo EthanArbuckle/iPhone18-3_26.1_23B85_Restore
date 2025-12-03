@@ -1,46 +1,46 @@
 @interface STAirPlayStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
 - (STAirPlayStatusDomainDataDiff)init;
-- (STAirPlayStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (STAirPlayStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithChanges:(void *)a1;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithChanges:(void *)changes;
 @end
 
 @implementation STAirPlayStatusDomainDataDiff
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  toDataCopy = toData;
   v7 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v8 = [v6 airPlayState];
-  if ([v5 airPlayState] != v8)
+  airPlayState = [toDataCopy airPlayState];
+  if ([dataCopy airPlayState] != airPlayState)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:airPlayState];
     [v7 setObject:v9 forSetting:0];
   }
 
-  v10 = [v6 bundleIdentifier];
-  v11 = [v5 bundleIdentifier];
-  if (([v11 isEqualToString:v10] & 1) == 0)
+  bundleIdentifier = [toDataCopy bundleIdentifier];
+  bundleIdentifier2 = [dataCopy bundleIdentifier];
+  if (([bundleIdentifier2 isEqualToString:bundleIdentifier] & 1) == 0)
   {
-    if (v10)
+    if (bundleIdentifier)
     {
-      [v7 setObject:v10 forSetting:1];
+      [v7 setObject:bundleIdentifier forSetting:1];
     }
 
-    else if (v11)
+    else if (bundleIdentifier2)
     {
       [v7 setFlag:0 forSetting:1];
     }
@@ -51,23 +51,23 @@
   return v12;
 }
 
-- (void)initWithChanges:(void *)a1
+- (void)initWithChanges:(void *)changes
 {
   v3 = a2;
-  if (a1)
+  if (changes)
   {
-    v7.receiver = a1;
+    v7.receiver = changes;
     v7.super_class = STAirPlayStatusDomainDataDiff;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    changes = objc_msgSendSuper2(&v7, sel_init);
+    if (changes)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = changes[1];
+      changes[1] = v4;
     }
   }
 
-  return a1;
+  return changes;
 }
 
 - (STAirPlayStatusDomainDataDiff)init
@@ -78,17 +78,17 @@
   return v4;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STAirPlayStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     changes = self->_changes;
@@ -103,7 +103,7 @@
   v11[1] = 3221225472;
   v11[2] = __52__STAirPlayStatusDomainDataDiff_applyToMutableData___block_invoke;
   v11[3] = &unk_1E85DDF78;
-  v6 = v4;
+  v6 = dataCopy;
   v12 = v6;
   v7 = changes;
   [(BSSettings *)v7 enumerateFlagsWithBlock:v11];
@@ -170,9 +170,9 @@ LABEL_6:
   return [(STAirPlayStatusDomainDataDiff *)self isEmpty];
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -188,9 +188,9 @@ LABEL_6:
 
     v6 = changes;
     v7 = [(BSSettings *)v6 mutableCopy];
-    if (v4)
+    if (diffCopy)
     {
-      v8 = v4[1];
+      v8 = diffCopy[1];
     }
 
     else
@@ -214,26 +214,26 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STAirPlayStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   if (self)
   {
     self = self->_changes;
@@ -243,8 +243,8 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = __41__STAirPlayStatusDomainDataDiff_isEqual___block_invoke;
   v10[3] = &unk_1E85DDCD8;
-  v11 = v4;
-  v6 = v4;
+  v11 = equalCopy;
+  v6 = equalCopy;
   v7 = [v5 appendObject:self counterpart:v10];
   v8 = [v5 isEqual];
 
@@ -267,8 +267,8 @@ id __41__STAirPlayStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
     changes = self->_changes;
@@ -279,13 +279,13 @@ id __41__STAirPlayStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
     changes = 0;
   }
 
-  v6 = [v3 appendObject:changes];
+  v6 = [builder appendObject:changes];
   v7 = [v4 hash];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -297,13 +297,13 @@ id __41__STAirPlayStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
     changes = 0;
   }
 
-  [a3 encodeObject:changes forKey:@"changes"];
+  [coder encodeObject:changes forKey:@"changes"];
 }
 
-- (STAirPlayStatusDomainDataDiff)initWithCoder:(id)a3
+- (STAirPlayStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
 
   v6 = [(STAirPlayStatusDomainDataDiff *)self initWithChanges:v5];
   return v6;
@@ -311,54 +311,54 @@ id __41__STAirPlayStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(STAirPlayStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STAirPlayStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STAirPlayStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STAirPlayStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STAirPlayStatusDomainDataDiff *)&self->super.isa _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STAirPlayStatusDomainDataDiff *)&self->super.isa _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    v7 = v3[1];
-    v3 = v6;
+    v7 = selfCopy[1];
+    selfCopy = succinctDescriptionBuilder;
     if (([v7 isEmpty] & 1) == 0)
     {
-      v8 = [v3 activeMultilinePrefix];
+      activeMultilinePrefix = [selfCopy activeMultilinePrefix];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __69__STAirPlayStatusDomainDataDiff__appendChanges_toDescriptionBuilder___block_invoke;
       v10[3] = &unk_1E85DDD00;
       v11 = v7;
-      v12 = v3;
-      [v12 appendBodySectionWithName:0 multilinePrefix:v8 block:v10];
+      v12 = selfCopy;
+      [v12 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v10];
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __69__STAirPlayStatusDomainDataDiff__appendChanges_toDescriptionBuilder___block_invoke(uint64_t a1)

@@ -1,29 +1,29 @@
 @interface CMDPResult
-+ (vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>,)CMDPTokenSausageFromAFSpeechPhraseArray:(id)a2;
-+ (vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>,)CMDPTokenSausageFromCFTokenSausage:(id)a2;
-- (CMDPResult)initWithAFSpeechPhraseArray:(id)a3 forLocaleIdentifier:(id)a4;
-- (CMDPResult)initWithTokenSausage:(__CFArray *)a3 forLocaleIdentifier:(id)a4;
-- (CMDPResult)initWithTokenSausageVec:(void *)a3 forLocaleIdentifier:(id)a4;
++ (vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>,)CMDPTokenSausageFromAFSpeechPhraseArray:(id)array;
++ (vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>,)CMDPTokenSausageFromCFTokenSausage:(id)sausage;
+- (CMDPResult)initWithAFSpeechPhraseArray:(id)array forLocaleIdentifier:(id)identifier;
+- (CMDPResult)initWithTokenSausage:(__CFArray *)sausage forLocaleIdentifier:(id)identifier;
+- (CMDPResult)initWithTokenSausageVec:(void *)vec forLocaleIdentifier:(id)identifier;
 - (id).cxx_construct;
-- (id)createArrayFromNBestResults:(const void *)a3 withGrammarData:(id)a4;
+- (id)createArrayFromNBestResults:(const void *)results withGrammarData:(id)data;
 - (id)initWithTokenSausageVec:forLocaleIdentifier:;
-- (id)matchWithGrammars:(id)a3 winningIndex:(int *)a4 winningDistance:(float *)a5;
+- (id)matchWithGrammars:(id)grammars winningIndex:(int *)index winningDistance:(float *)distance;
 - (uint64_t)initWithTokenSausageVec:forLocaleIdentifier:;
 - (void)initWithTokenSausageVec:forLocaleIdentifier:;
 @end
 
 @implementation CMDPResult
 
-- (CMDPResult)initWithTokenSausage:(__CFArray *)a3 forLocaleIdentifier:(id)a4
+- (CMDPResult)initWithTokenSausage:(__CFArray *)sausage forLocaleIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CMDPResult;
   v7 = [(CMDPResult *)&v11 init];
   if (v7)
   {
-    [CMDPResult CMDPTokenSausageFromCFTokenSausage:a3];
-    v8 = [(CMDPResult *)v7 initWithTokenSausageVec:v10 forLocaleIdentifier:v6];
+    [CMDPResult CMDPTokenSausageFromCFTokenSausage:sausage];
+    v8 = [(CMDPResult *)v7 initWithTokenSausageVec:v10 forLocaleIdentifier:identifierCopy];
     v12 = v10;
     std::vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>>::__destroy_vector::operator()[abi:ne200100](&v12);
   }
@@ -36,17 +36,17 @@
   return v8;
 }
 
-- (CMDPResult)initWithAFSpeechPhraseArray:(id)a3 forLocaleIdentifier:(id)a4
+- (CMDPResult)initWithAFSpeechPhraseArray:(id)array forLocaleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CMDPResult;
   v8 = [(CMDPResult *)&v11 init];
   if (v8)
   {
-    [CMDPResult CMDPTokenSausageFromAFSpeechPhraseArray:v6];
-    v8 = [(CMDPResult *)v8 initWithTokenSausageVec:v10 forLocaleIdentifier:v7];
+    [CMDPResult CMDPTokenSausageFromAFSpeechPhraseArray:arrayCopy];
+    v8 = [(CMDPResult *)v8 initWithTokenSausageVec:v10 forLocaleIdentifier:identifierCopy];
     v12 = v10;
     std::vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>>::__destroy_vector::operator()[abi:ne200100](&v12);
   }
@@ -54,18 +54,18 @@
   return v8;
 }
 
-- (CMDPResult)initWithTokenSausageVec:(void *)a3 forLocaleIdentifier:(id)a4
+- (CMDPResult)initWithTokenSausageVec:(void *)vec forLocaleIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CMDPResult;
   if ([(CMDPResult *)&v9 init])
   {
     v6 = *MEMORY[0x277CBECE8];
-    if (v5)
+    if (identifierCopy)
     {
-      CFLocaleCreate(v6, v5);
+      CFLocaleCreate(v6, identifierCopy);
       operator new();
     }
 
@@ -77,17 +77,17 @@
   return 0;
 }
 
-- (id)matchWithGrammars:(id)a3 winningIndex:(int *)a4 winningDistance:(float *)a5
+- (id)matchWithGrammars:(id)grammars winningIndex:(int *)index winningDistance:(float *)distance
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  *a4 = -1;
-  *a5 = 3.4028e38;
+  grammarsCopy = grammars;
+  *index = -1;
+  *distance = 3.4028e38;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v8;
+  v9 = grammarsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -134,14 +134,14 @@
   return 0;
 }
 
-- (id)createArrayFromNBestResults:(const void *)a3 withGrammarData:(id)a4
+- (id)createArrayFromNBestResults:(const void *)results withGrammarData:(id)data
 {
   v55 = *MEMORY[0x277D85DE8];
-  v50 = a4;
+  dataCopy = data;
   v47 = objc_opt_new();
   v49 = objc_opt_new();
-  v5 = *a3;
-  if (*(a3 + 1) == *a3)
+  v5 = *results;
+  if (*(results + 1) == *results)
   {
     std::vector<std::vector<std::pair<std::string,std::string>>>::__throw_out_of_range[abi:ne200100]();
   }
@@ -227,7 +227,7 @@ LABEL_12:
     v16 = (v6 + v10 - 48);
     v15 = *(v6 + v10 - 71);
 LABEL_20:
-    v51 = [v50 objectAtIndex:atoi(v15)];
+    v51 = [dataCopy objectAtIndex:atoi(v15)];
     if (v45)
     {
 LABEL_23:
@@ -236,13 +236,13 @@ LABEL_23:
 
     else
     {
-      v17 = [v51 commandIdentifier];
-      v18 = v17 == 0;
+      commandIdentifier = [v51 commandIdentifier];
+      v18 = commandIdentifier == 0;
 
       if (!v18)
       {
-        v19 = [v51 commandIdentifier];
-        [v47 setObject:v19 forKey:kCMDPMatchedCommandIdentifier[0]];
+        commandIdentifier2 = [v51 commandIdentifier];
+        [v47 setObject:commandIdentifier2 forKey:kCMDPMatchedCommandIdentifier[0]];
 
         goto LABEL_23;
       }
@@ -303,11 +303,11 @@ LABEL_37:
     }
 
 LABEL_38:
-    v25 = [v51 builtInLMIdentifier];
+    builtInLMIdentifier = [v51 builtInLMIdentifier];
     if (0xAAAAAAAAAAAAAAABLL * ((v5[1] - *v5) >> 4) <= ++v7)
     {
 LABEL_47:
-      v46 = 0;
+      builtInLMIdentifier2 = 0;
       goto LABEL_51;
     }
 
@@ -344,16 +344,16 @@ LABEL_46:
     }
 
 LABEL_50:
-    v30 = [v50 objectAtIndex:atoi(v29)];
-    v46 = [v30 builtInLMIdentifier];
+    v30 = [dataCopy objectAtIndex:atoi(v29)];
+    builtInLMIdentifier2 = [v30 builtInLMIdentifier];
 
 LABEL_51:
-    v31 = [v51 word];
-    v32 = v31 == 0;
+    word = [v51 word];
+    v32 = word == 0;
 
     if (!v32)
     {
-      v33 = [v51 word];
+      word2 = [v51 word];
       goto LABEL_53;
     }
 
@@ -382,17 +382,17 @@ LABEL_51:
         p_buf = buf.__r_.__value_.__r.__words[0];
       }
 
-      v33 = [v34 stringWithUTF8String:p_buf];
+      word2 = [v34 stringWithUTF8String:p_buf];
       if (SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
       {
         operator delete(buf.__r_.__value_.__l.__data_);
       }
 
 LABEL_53:
-      if (v25)
+      if (builtInLMIdentifier)
       {
-        [v48 appendString:v33];
-        if (v46 && v25 == v46)
+        [v48 appendString:word2];
+        if (builtInLMIdentifier2 && builtInLMIdentifier == builtInLMIdentifier2)
         {
           [v48 appendString:@" "];
         }
@@ -401,7 +401,7 @@ LABEL_53:
         {
           v37 = MEMORY[0x277CBEAC0];
           v38 = [MEMORY[0x277CCACA8] stringWithString:v48];
-          v39 = [v37 dictionaryWithObjectsAndKeys:{v38, kCMDPMatchedElementText[0], v25, kCMDPMatchedElementCategoryIdentifier, 0}];
+          v39 = [v37 dictionaryWithObjectsAndKeys:{v38, kCMDPMatchedElementText[0], builtInLMIdentifier, kCMDPMatchedElementCategoryIdentifier, 0}];
 
           [v49 addObject:v39];
           [v48 setString:&stru_287C0A5E8];
@@ -410,7 +410,7 @@ LABEL_53:
 
       else
       {
-        v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v33, kCMDPMatchedElementText[0], 0}];
+        v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{word2, kCMDPMatchedElementText[0], 0}];
         [v49 addObject:v36];
       }
     }
@@ -422,7 +422,7 @@ LABEL_53:
         [CMDPResult createArrayFromNBestResults:v53 withGrammarData:?];
       }
 
-      v33 = 0;
+      word2 = 0;
     }
 
     v6 = *v5;
@@ -451,7 +451,7 @@ LABEL_76:
   return v47;
 }
 
-+ (vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>,)CMDPTokenSausageFromCFTokenSausage:(id)a2
++ (vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>,)CMDPTokenSausageFromCFTokenSausage:(id)sausage
 {
   v4 = a4;
   v5 = 0;
@@ -501,7 +501,7 @@ LABEL_76:
   return result;
 }
 
-+ (vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>,)CMDPTokenSausageFromAFSpeechPhraseArray:(id)a2
++ (vector<std::vector<std::vector<std::unique_ptr<CMDPToken>>>,)CMDPTokenSausageFromAFSpeechPhraseArray:(id)array
 {
   v45 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -531,12 +531,12 @@ LABEL_76:
 
         v7 = *(*(&v37 + 1) + 8 * v23);
         memset(v36, 0, sizeof(v36));
-        v8 = [v7 interpretations];
+        interpretations = [v7 interpretations];
         v34 = 0u;
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v24 = v8;
+        v24 = interpretations;
         v9 = [v24 countByEnumeratingWithState:&v32 objects:v43 count:16];
         if (v9)
         {
@@ -553,20 +553,20 @@ LABEL_76:
 
               v11 = *(*(&v32 + 1) + 8 * i);
               memset(v31, 0, sizeof(v31));
-              v12 = [v11 tokens];
+              tokens = [v11 tokens];
               v29 = 0u;
               v30 = 0u;
               v27 = 0u;
               v28 = 0u;
-              v13 = v12;
+              v13 = tokens;
               if ([v13 countByEnumeratingWithState:&v27 objects:v42 count:16])
               {
                 *v28;
                 *v28;
                 v14 = **(&v27 + 1);
-                v15 = [v14 text];
-                v16 = v15;
-                [v15 UTF8String];
+                text = [v14 text];
+                v16 = text;
+                [text UTF8String];
                 [v14 startTime];
                 [v14 endTime];
                 [v14 silenceStartTime];
@@ -618,14 +618,14 @@ LABEL_76:
 - (void)initWithTokenSausageVec:forLocaleIdentifier:
 {
   v2 = *a2;
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   operator new();
 }
 
 - (id)initWithTokenSausageVec:forLocaleIdentifier:
 {
   *a2 = &unk_287BF10F8;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
@@ -633,7 +633,7 @@ LABEL_76:
 - (uint64_t)initWithTokenSausageVec:forLocaleIdentifier:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

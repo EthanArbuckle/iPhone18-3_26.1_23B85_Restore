@@ -1,224 +1,224 @@
 @interface STTelephonyStatusDomainSIMInfo
-- (BOOL)isEqual:(id)a3;
-- (STTelephonyStatusDomainSIMInfo)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)initWithSIMInfo:(void *)a1;
-- (id)initWithSIMPresent:(char)a3 bootstrap:(void *)a4 label:(void *)a5 shortLabel:(uint64_t)a6 signalStrengthBars:(uint64_t)a7 maxSignalStrengthBars:(uint64_t)a8 serviceState:(uint64_t)a9 cellularServiceState:(void *)a10 serviceDescription:(void *)a11 secondaryServiceDescription:(uint64_t)a12 dataNetworkType:(char)a13 providingDataConnection:(char)a14 preferredForDataConnections:(char)a15 registeredWithoutCellular:(char)a16 callForwardingEnabled:;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (STTelephonyStatusDomainSIMInfo)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)initWithSIMInfo:(void *)info;
+- (id)initWithSIMPresent:(char)present bootstrap:(void *)bootstrap label:(void *)label shortLabel:(uint64_t)shortLabel signalStrengthBars:(uint64_t)bars maxSignalStrengthBars:(uint64_t)strengthBars serviceState:(uint64_t)state cellularServiceState:(void *)self0 serviceDescription:(void *)self1 secondaryServiceDescription:(uint64_t)self2 dataNetworkType:(char)self3 providingDataConnection:(char)self4 preferredForDataConnections:(char)self5 registeredWithoutCellular:(char)self6 callForwardingEnabled:;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STTelephonyStatusDomainSIMInfo
 
-- (id)initWithSIMInfo:(void *)a1
+- (id)initWithSIMInfo:(void *)info
 {
-  v2 = a1;
-  if (a1)
+  infoCopy = info;
+  if (info)
   {
     v3 = a2;
-    v19 = [v3 isSIMPresent];
-    v18 = [v3 isBootstrap];
-    v17 = [v3 label];
-    v16 = [v3 shortLabel];
-    v15 = [v3 signalStrengthBars];
-    v14 = [v3 maxSignalStrengthBars];
-    v13 = [v3 serviceState];
-    v4 = [v3 cellularServiceState];
-    v5 = [v3 serviceDescription];
-    v6 = [v3 secondaryServiceDescription];
-    v7 = [v3 dataNetworkType];
-    v8 = [v3 isProvidingDataConnection];
-    v9 = [v3 isPreferredForDataConnections];
-    v10 = [v3 isRegisteredWithoutCellular];
-    v11 = [v3 isCallForwardingEnabled];
+    isSIMPresent = [v3 isSIMPresent];
+    isBootstrap = [v3 isBootstrap];
+    label = [v3 label];
+    shortLabel = [v3 shortLabel];
+    signalStrengthBars = [v3 signalStrengthBars];
+    maxSignalStrengthBars = [v3 maxSignalStrengthBars];
+    serviceState = [v3 serviceState];
+    cellularServiceState = [v3 cellularServiceState];
+    serviceDescription = [v3 serviceDescription];
+    secondaryServiceDescription = [v3 secondaryServiceDescription];
+    dataNetworkType = [v3 dataNetworkType];
+    isProvidingDataConnection = [v3 isProvidingDataConnection];
+    isPreferredForDataConnections = [v3 isPreferredForDataConnections];
+    isRegisteredWithoutCellular = [v3 isRegisteredWithoutCellular];
+    isCallForwardingEnabled = [v3 isCallForwardingEnabled];
 
-    v2 = [(STTelephonyStatusDomainSIMInfo *)v2 initWithSIMPresent:v19 bootstrap:v18 label:v17 shortLabel:v16 signalStrengthBars:v15 maxSignalStrengthBars:v14 serviceState:v13 cellularServiceState:v4 serviceDescription:v5 secondaryServiceDescription:v6 dataNetworkType:v7 providingDataConnection:v8 preferredForDataConnections:v9 registeredWithoutCellular:v10 callForwardingEnabled:v11];
+    infoCopy = [(STTelephonyStatusDomainSIMInfo *)infoCopy initWithSIMPresent:isSIMPresent bootstrap:isBootstrap label:label shortLabel:shortLabel signalStrengthBars:signalStrengthBars maxSignalStrengthBars:maxSignalStrengthBars serviceState:serviceState cellularServiceState:cellularServiceState serviceDescription:serviceDescription secondaryServiceDescription:secondaryServiceDescription dataNetworkType:dataNetworkType providingDataConnection:isProvidingDataConnection preferredForDataConnections:isPreferredForDataConnections registeredWithoutCellular:isRegisteredWithoutCellular callForwardingEnabled:isCallForwardingEnabled];
   }
 
-  return v2;
+  return infoCopy;
 }
 
-- (id)initWithSIMPresent:(char)a3 bootstrap:(void *)a4 label:(void *)a5 shortLabel:(uint64_t)a6 signalStrengthBars:(uint64_t)a7 maxSignalStrengthBars:(uint64_t)a8 serviceState:(uint64_t)a9 cellularServiceState:(void *)a10 serviceDescription:(void *)a11 secondaryServiceDescription:(uint64_t)a12 dataNetworkType:(char)a13 providingDataConnection:(char)a14 preferredForDataConnections:(char)a15 registeredWithoutCellular:(char)a16 callForwardingEnabled:
+- (id)initWithSIMPresent:(char)present bootstrap:(void *)bootstrap label:(void *)label shortLabel:(uint64_t)shortLabel signalStrengthBars:(uint64_t)bars maxSignalStrengthBars:(uint64_t)strengthBars serviceState:(uint64_t)state cellularServiceState:(void *)self0 serviceDescription:(void *)self1 secondaryServiceDescription:(uint64_t)self2 dataNetworkType:(char)self3 providingDataConnection:(char)self4 preferredForDataConnections:(char)self5 registeredWithoutCellular:(char)self6 callForwardingEnabled:
 {
-  v23 = a4;
-  v24 = a5;
-  v25 = a10;
-  v26 = a11;
-  if (a1)
+  bootstrapCopy = bootstrap;
+  labelCopy = label;
+  serviceStateCopy = serviceState;
+  descriptionCopy = description;
+  if (self)
   {
-    v37.receiver = a1;
+    v37.receiver = self;
     v37.super_class = STTelephonyStatusDomainSIMInfo;
     v27 = objc_msgSendSuper2(&v37, sel_init);
-    a1 = v27;
+    self = v27;
     if (v27)
     {
       v27[8] = a2;
-      v27[9] = a3;
-      v28 = [v23 copy];
-      v29 = *(a1 + 2);
-      *(a1 + 2) = v28;
+      v27[9] = present;
+      v28 = [bootstrapCopy copy];
+      v29 = *(self + 2);
+      *(self + 2) = v28;
 
-      v30 = [v24 copy];
-      v31 = *(a1 + 3);
-      *(a1 + 3) = v30;
+      v30 = [labelCopy copy];
+      v31 = *(self + 3);
+      *(self + 3) = v30;
 
-      *(a1 + 4) = a6;
-      *(a1 + 5) = a7;
-      *(a1 + 6) = a8;
-      *(a1 + 7) = a9;
-      v32 = [v25 copy];
-      v33 = *(a1 + 8);
-      *(a1 + 8) = v32;
+      *(self + 4) = shortLabel;
+      *(self + 5) = bars;
+      *(self + 6) = strengthBars;
+      *(self + 7) = state;
+      v32 = [serviceStateCopy copy];
+      v33 = *(self + 8);
+      *(self + 8) = v32;
 
-      v34 = [v26 copy];
-      v35 = *(a1 + 9);
-      *(a1 + 9) = v34;
+      v34 = [descriptionCopy copy];
+      v35 = *(self + 9);
+      *(self + 9) = v34;
 
-      *(a1 + 10) = a12;
-      *(a1 + 88) = a13;
-      *(a1 + 89) = a14;
-      *(a1 + 90) = a15;
-      *(a1 + 91) = a16;
+      *(self + 10) = serviceDescription;
+      *(self + 88) = type;
+      *(self + 89) = connection;
+      *(self + 90) = connections;
+      *(self + 91) = cellular;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STTelephonyStatusDomainSIMInfo *)self isSIMPresent];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  isSIMPresent = [(STTelephonyStatusDomainSIMInfo *)self isSIMPresent];
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = 3221225472;
   v80[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke;
   v80[3] = &unk_1E85DDD50;
-  v7 = v4;
+  v7 = equalCopy;
   v81 = v7;
-  v8 = [v5 appendBool:v6 counterpart:v80];
-  v9 = [(STTelephonyStatusDomainSIMInfo *)self isBootstrap];
+  v8 = [v5 appendBool:isSIMPresent counterpart:v80];
+  isBootstrap = [(STTelephonyStatusDomainSIMInfo *)self isBootstrap];
   v78[0] = MEMORY[0x1E69E9820];
   v78[1] = 3221225472;
   v78[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_2;
   v78[3] = &unk_1E85DDD50;
   v10 = v7;
   v79 = v10;
-  v11 = [v5 appendBool:v9 counterpart:v78];
-  v12 = [(STTelephonyStatusDomainSIMInfo *)self label];
+  v11 = [v5 appendBool:isBootstrap counterpart:v78];
+  label = [(STTelephonyStatusDomainSIMInfo *)self label];
   v76[0] = MEMORY[0x1E69E9820];
   v76[1] = 3221225472;
   v76[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_3;
   v76[3] = &unk_1E85DDD28;
   v13 = v10;
   v77 = v13;
-  v14 = [v5 appendString:v12 counterpart:v76];
+  v14 = [v5 appendString:label counterpart:v76];
 
-  v15 = [(STTelephonyStatusDomainSIMInfo *)self shortLabel];
+  shortLabel = [(STTelephonyStatusDomainSIMInfo *)self shortLabel];
   v74[0] = MEMORY[0x1E69E9820];
   v74[1] = 3221225472;
   v74[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_4;
   v74[3] = &unk_1E85DDD28;
   v16 = v13;
   v75 = v16;
-  v17 = [v5 appendString:v15 counterpart:v74];
+  v17 = [v5 appendString:shortLabel counterpart:v74];
 
-  v18 = [(STTelephonyStatusDomainSIMInfo *)self signalStrengthBars];
+  signalStrengthBars = [(STTelephonyStatusDomainSIMInfo *)self signalStrengthBars];
   v72[0] = MEMORY[0x1E69E9820];
   v72[1] = 3221225472;
   v72[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_5;
   v72[3] = &unk_1E85DE2F8;
   v19 = v16;
   v73 = v19;
-  v20 = [v5 appendUnsignedInteger:v18 counterpart:v72];
-  v21 = [(STTelephonyStatusDomainSIMInfo *)self maxSignalStrengthBars];
+  v20 = [v5 appendUnsignedInteger:signalStrengthBars counterpart:v72];
+  maxSignalStrengthBars = [(STTelephonyStatusDomainSIMInfo *)self maxSignalStrengthBars];
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
   v70[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_6;
   v70[3] = &unk_1E85DE2F8;
   v22 = v19;
   v71 = v22;
-  v23 = [v5 appendUnsignedInteger:v21 counterpart:v70];
-  v24 = [(STTelephonyStatusDomainSIMInfo *)self serviceState];
+  v23 = [v5 appendUnsignedInteger:maxSignalStrengthBars counterpart:v70];
+  serviceState = [(STTelephonyStatusDomainSIMInfo *)self serviceState];
   v68[0] = MEMORY[0x1E69E9820];
   v68[1] = 3221225472;
   v68[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_7;
   v68[3] = &unk_1E85DE2F8;
   v25 = v22;
   v69 = v25;
-  v26 = [v5 appendUnsignedInteger:v24 counterpart:v68];
-  v27 = [(STTelephonyStatusDomainSIMInfo *)self cellularServiceState];
+  v26 = [v5 appendUnsignedInteger:serviceState counterpart:v68];
+  cellularServiceState = [(STTelephonyStatusDomainSIMInfo *)self cellularServiceState];
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_8;
   v66[3] = &unk_1E85DE2F8;
   v28 = v25;
   v67 = v28;
-  v29 = [v5 appendUnsignedInteger:v27 counterpart:v66];
-  v30 = [(STTelephonyStatusDomainSIMInfo *)self serviceDescription];
+  v29 = [v5 appendUnsignedInteger:cellularServiceState counterpart:v66];
+  serviceDescription = [(STTelephonyStatusDomainSIMInfo *)self serviceDescription];
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v64[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_9;
   v64[3] = &unk_1E85DDD28;
   v31 = v28;
   v65 = v31;
-  v32 = [v5 appendString:v30 counterpart:v64];
+  v32 = [v5 appendString:serviceDescription counterpart:v64];
 
-  v33 = [(STTelephonyStatusDomainSIMInfo *)self secondaryServiceDescription];
+  secondaryServiceDescription = [(STTelephonyStatusDomainSIMInfo *)self secondaryServiceDescription];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_10;
   v62[3] = &unk_1E85DDD28;
   v34 = v31;
   v63 = v34;
-  v35 = [v5 appendString:v33 counterpart:v62];
+  v35 = [v5 appendString:secondaryServiceDescription counterpart:v62];
 
-  v36 = [(STTelephonyStatusDomainSIMInfo *)self dataNetworkType];
+  dataNetworkType = [(STTelephonyStatusDomainSIMInfo *)self dataNetworkType];
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
   v60[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_11;
   v60[3] = &unk_1E85DE2F8;
   v37 = v34;
   v61 = v37;
-  v38 = [v5 appendUnsignedInteger:v36 counterpart:v60];
-  v39 = [(STTelephonyStatusDomainSIMInfo *)self isProvidingDataConnection];
+  v38 = [v5 appendUnsignedInteger:dataNetworkType counterpart:v60];
+  isProvidingDataConnection = [(STTelephonyStatusDomainSIMInfo *)self isProvidingDataConnection];
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
   v58[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_12;
   v58[3] = &unk_1E85DDD50;
   v40 = v37;
   v59 = v40;
-  v41 = [v5 appendBool:v39 counterpart:v58];
-  v42 = [(STTelephonyStatusDomainSIMInfo *)self isPreferredForDataConnections];
+  v41 = [v5 appendBool:isProvidingDataConnection counterpart:v58];
+  isPreferredForDataConnections = [(STTelephonyStatusDomainSIMInfo *)self isPreferredForDataConnections];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_13;
   v56[3] = &unk_1E85DDD50;
   v43 = v40;
   v57 = v43;
-  v44 = [v5 appendBool:v42 counterpart:v56];
-  v45 = [(STTelephonyStatusDomainSIMInfo *)self isRegisteredWithoutCellular];
+  v44 = [v5 appendBool:isPreferredForDataConnections counterpart:v56];
+  isRegisteredWithoutCellular = [(STTelephonyStatusDomainSIMInfo *)self isRegisteredWithoutCellular];
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
   v54[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_14;
   v54[3] = &unk_1E85DDD50;
   v46 = v43;
   v55 = v46;
-  v47 = [v5 appendBool:v45 counterpart:v54];
-  v48 = [(STTelephonyStatusDomainSIMInfo *)self isCallForwardingEnabled];
+  v47 = [v5 appendBool:isRegisteredWithoutCellular counterpart:v54];
+  isCallForwardingEnabled = [(STTelephonyStatusDomainSIMInfo *)self isCallForwardingEnabled];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __42__STTelephonyStatusDomainSIMInfo_isEqual___block_invoke_15;
   v52[3] = &unk_1E85DDD50;
   v53 = v46;
   v49 = v46;
-  v50 = [v5 appendBool:v48 counterpart:v52];
+  v50 = [v5 appendBool:isCallForwardingEnabled counterpart:v52];
   LOBYTE(v46) = [v5 isEqual];
 
   return v46;
@@ -226,81 +226,81 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:{-[STTelephonyStatusDomainSIMInfo isSIMPresent](self, "isSIMPresent")}];
-  v5 = [v3 appendBool:{-[STTelephonyStatusDomainSIMInfo isBootstrap](self, "isBootstrap")}];
-  v6 = [(STTelephonyStatusDomainSIMInfo *)self label];
-  v7 = [v3 appendString:v6];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:{-[STTelephonyStatusDomainSIMInfo isSIMPresent](self, "isSIMPresent")}];
+  v5 = [builder appendBool:{-[STTelephonyStatusDomainSIMInfo isBootstrap](self, "isBootstrap")}];
+  label = [(STTelephonyStatusDomainSIMInfo *)self label];
+  v7 = [builder appendString:label];
 
-  v8 = [(STTelephonyStatusDomainSIMInfo *)self shortLabel];
-  v9 = [v3 appendString:v8];
+  shortLabel = [(STTelephonyStatusDomainSIMInfo *)self shortLabel];
+  v9 = [builder appendString:shortLabel];
 
-  v10 = [v3 appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo signalStrengthBars](self, "signalStrengthBars")}];
-  v11 = [v3 appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo maxSignalStrengthBars](self, "maxSignalStrengthBars")}];
-  v12 = [v3 appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo serviceState](self, "serviceState")}];
-  v13 = [v3 appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo cellularServiceState](self, "cellularServiceState")}];
-  v14 = [(STTelephonyStatusDomainSIMInfo *)self serviceDescription];
-  v15 = [v3 appendString:v14];
+  v10 = [builder appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo signalStrengthBars](self, "signalStrengthBars")}];
+  v11 = [builder appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo maxSignalStrengthBars](self, "maxSignalStrengthBars")}];
+  v12 = [builder appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo serviceState](self, "serviceState")}];
+  v13 = [builder appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo cellularServiceState](self, "cellularServiceState")}];
+  serviceDescription = [(STTelephonyStatusDomainSIMInfo *)self serviceDescription];
+  v15 = [builder appendString:serviceDescription];
 
-  v16 = [(STTelephonyStatusDomainSIMInfo *)self secondaryServiceDescription];
-  v17 = [v3 appendString:v16];
+  secondaryServiceDescription = [(STTelephonyStatusDomainSIMInfo *)self secondaryServiceDescription];
+  v17 = [builder appendString:secondaryServiceDescription];
 
-  v18 = [v3 appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo dataNetworkType](self, "dataNetworkType")}];
-  v19 = [v3 appendBool:{-[STTelephonyStatusDomainSIMInfo isProvidingDataConnection](self, "isProvidingDataConnection")}];
-  v20 = [v3 appendBool:{-[STTelephonyStatusDomainSIMInfo isPreferredForDataConnections](self, "isPreferredForDataConnections")}];
-  v21 = [v3 appendBool:{-[STTelephonyStatusDomainSIMInfo isRegisteredWithoutCellular](self, "isRegisteredWithoutCellular")}];
-  v22 = [v3 appendBool:{-[STTelephonyStatusDomainSIMInfo isCallForwardingEnabled](self, "isCallForwardingEnabled")}];
-  v23 = [v3 hash];
+  v18 = [builder appendUnsignedInteger:{-[STTelephonyStatusDomainSIMInfo dataNetworkType](self, "dataNetworkType")}];
+  v19 = [builder appendBool:{-[STTelephonyStatusDomainSIMInfo isProvidingDataConnection](self, "isProvidingDataConnection")}];
+  v20 = [builder appendBool:{-[STTelephonyStatusDomainSIMInfo isPreferredForDataConnections](self, "isPreferredForDataConnections")}];
+  v21 = [builder appendBool:{-[STTelephonyStatusDomainSIMInfo isRegisteredWithoutCellular](self, "isRegisteredWithoutCellular")}];
+  v22 = [builder appendBool:{-[STTelephonyStatusDomainSIMInfo isCallForwardingEnabled](self, "isCallForwardingEnabled")}];
+  v23 = [builder hash];
 
   return v23;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableTelephonyStatusDomainSIMInfo allocWithZone:a3];
+  v4 = [STMutableTelephonyStatusDomainSIMInfo allocWithZone:zone];
 
   return [(STTelephonyStatusDomainSIMInfo *)v4 initWithSIMInfo:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STTelephonyStatusDomainSIMInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STTelephonyStatusDomainSIMInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStatusDomainSIMInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStatusDomainSIMInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStatusDomainSIMInfo *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStatusDomainSIMInfo *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __82__STTelephonyStatusDomainSIMInfo__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -372,13 +372,13 @@ id __82__STTelephonyStatusDomainSIMInfo__descriptionBuilderWithMultilinePrefix_f
   return [*(a1 + 32) appendBool:objc_msgSend(*(a1 + 40) withName:{"isCallForwardingEnabled"), @"callForwardingEnabled"}];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STTelephonyStatusDomainSIMInfoDiff diffFromInfo:v4 toInfo:self];
+    v5 = [STTelephonyStatusDomainSIMInfoDiff diffFromInfo:dataCopy toInfo:self];
   }
 
   else
@@ -389,13 +389,13 @@ id __82__STTelephonyStatusDomainSIMInfo__descriptionBuilderWithMultilinePrefix_f
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STTelephonyStatusDomainSIMInfo *)self copy];
     }
@@ -403,7 +403,7 @@ id __82__STTelephonyStatusDomainSIMInfo__descriptionBuilderWithMultilinePrefix_f
     else
     {
       v5 = [(STTelephonyStatusDomainSIMInfo *)self mutableCopy];
-      [v4 applyToMutableInfo:v5];
+      [diffCopy applyToMutableInfo:v5];
     }
   }
 
@@ -415,52 +415,52 @@ id __82__STTelephonyStatusDomainSIMInfo__descriptionBuilderWithMultilinePrefix_f
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeBool:-[STTelephonyStatusDomainSIMInfo isSIMPresent](self forKey:{"isSIMPresent"), @"SIMPresent"}];
-  [v8 encodeBool:-[STTelephonyStatusDomainSIMInfo isBootstrap](self forKey:{"isBootstrap"), @"bootstrap"}];
-  v4 = [(STTelephonyStatusDomainSIMInfo *)self label];
-  [v8 encodeObject:v4 forKey:@"label"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[STTelephonyStatusDomainSIMInfo isSIMPresent](self forKey:{"isSIMPresent"), @"SIMPresent"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainSIMInfo isBootstrap](self forKey:{"isBootstrap"), @"bootstrap"}];
+  label = [(STTelephonyStatusDomainSIMInfo *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
-  v5 = [(STTelephonyStatusDomainSIMInfo *)self shortLabel];
-  [v8 encodeObject:v5 forKey:@"shortLabel"];
+  shortLabel = [(STTelephonyStatusDomainSIMInfo *)self shortLabel];
+  [coderCopy encodeObject:shortLabel forKey:@"shortLabel"];
 
-  [v8 encodeInteger:-[STTelephonyStatusDomainSIMInfo signalStrengthBars](self forKey:{"signalStrengthBars"), @"signalStrengthBars"}];
-  [v8 encodeInteger:-[STTelephonyStatusDomainSIMInfo maxSignalStrengthBars](self forKey:{"maxSignalStrengthBars"), @"maxSignalStrengthBars"}];
-  [v8 encodeInteger:-[STTelephonyStatusDomainSIMInfo serviceState](self forKey:{"serviceState"), @"serviceState"}];
-  [v8 encodeInteger:-[STTelephonyStatusDomainSIMInfo cellularServiceState](self forKey:{"cellularServiceState"), @"cellularServiceState"}];
-  v6 = [(STTelephonyStatusDomainSIMInfo *)self serviceDescription];
-  [v8 encodeObject:v6 forKey:@"serviceDescription"];
+  [coderCopy encodeInteger:-[STTelephonyStatusDomainSIMInfo signalStrengthBars](self forKey:{"signalStrengthBars"), @"signalStrengthBars"}];
+  [coderCopy encodeInteger:-[STTelephonyStatusDomainSIMInfo maxSignalStrengthBars](self forKey:{"maxSignalStrengthBars"), @"maxSignalStrengthBars"}];
+  [coderCopy encodeInteger:-[STTelephonyStatusDomainSIMInfo serviceState](self forKey:{"serviceState"), @"serviceState"}];
+  [coderCopy encodeInteger:-[STTelephonyStatusDomainSIMInfo cellularServiceState](self forKey:{"cellularServiceState"), @"cellularServiceState"}];
+  serviceDescription = [(STTelephonyStatusDomainSIMInfo *)self serviceDescription];
+  [coderCopy encodeObject:serviceDescription forKey:@"serviceDescription"];
 
-  v7 = [(STTelephonyStatusDomainSIMInfo *)self secondaryServiceDescription];
-  [v8 encodeObject:v7 forKey:@"secondaryServiceDescription"];
+  secondaryServiceDescription = [(STTelephonyStatusDomainSIMInfo *)self secondaryServiceDescription];
+  [coderCopy encodeObject:secondaryServiceDescription forKey:@"secondaryServiceDescription"];
 
-  [v8 encodeInteger:-[STTelephonyStatusDomainSIMInfo dataNetworkType](self forKey:{"dataNetworkType"), @"dataNetworkType"}];
-  [v8 encodeBool:-[STTelephonyStatusDomainSIMInfo isProvidingDataConnection](self forKey:{"isProvidingDataConnection"), @"providingDataConnection"}];
-  [v8 encodeBool:-[STTelephonyStatusDomainSIMInfo isPreferredForDataConnections](self forKey:{"isPreferredForDataConnections"), @"preferredForDataConnections"}];
-  [v8 encodeBool:-[STTelephonyStatusDomainSIMInfo isRegisteredWithoutCellular](self forKey:{"isRegisteredWithoutCellular"), @"registeredWithoutCellular"}];
-  [v8 encodeBool:-[STTelephonyStatusDomainSIMInfo isCallForwardingEnabled](self forKey:{"isCallForwardingEnabled"), @"callForwardingEnabled"}];
+  [coderCopy encodeInteger:-[STTelephonyStatusDomainSIMInfo dataNetworkType](self forKey:{"dataNetworkType"), @"dataNetworkType"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainSIMInfo isProvidingDataConnection](self forKey:{"isProvidingDataConnection"), @"providingDataConnection"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainSIMInfo isPreferredForDataConnections](self forKey:{"isPreferredForDataConnections"), @"preferredForDataConnections"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainSIMInfo isRegisteredWithoutCellular](self forKey:{"isRegisteredWithoutCellular"), @"registeredWithoutCellular"}];
+  [coderCopy encodeBool:-[STTelephonyStatusDomainSIMInfo isCallForwardingEnabled](self forKey:{"isCallForwardingEnabled"), @"callForwardingEnabled"}];
 }
 
-- (STTelephonyStatusDomainSIMInfo)initWithCoder:(id)a3
+- (STTelephonyStatusDomainSIMInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v20 = [v3 decodeBoolForKey:@"SIMPresent"];
-  v19 = [v3 decodeBoolForKey:@"bootstrap"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"shortLabel"];
-  v17 = [v3 decodeIntegerForKey:@"signalStrengthBars"];
-  v16 = [v3 decodeIntegerForKey:@"maxSignalStrengthBars"];
-  v15 = [v3 decodeIntegerForKey:@"serviceState"];
-  v5 = [v3 decodeIntegerForKey:@"cellularServiceState"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"serviceDescription"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryServiceDescription"];
-  v8 = [v3 decodeIntegerForKey:@"dataNetworkType"];
-  v9 = [v3 decodeBoolForKey:@"providingDataConnection"];
-  v10 = [v3 decodeBoolForKey:@"preferredForDataConnections"];
-  v11 = [v3 decodeBoolForKey:@"registeredWithoutCellular"];
-  v12 = [v3 decodeBoolForKey:@"callForwardingEnabled"];
+  coderCopy = coder;
+  v20 = [coderCopy decodeBoolForKey:@"SIMPresent"];
+  v19 = [coderCopy decodeBoolForKey:@"bootstrap"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortLabel"];
+  v17 = [coderCopy decodeIntegerForKey:@"signalStrengthBars"];
+  v16 = [coderCopy decodeIntegerForKey:@"maxSignalStrengthBars"];
+  v15 = [coderCopy decodeIntegerForKey:@"serviceState"];
+  v5 = [coderCopy decodeIntegerForKey:@"cellularServiceState"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceDescription"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryServiceDescription"];
+  v8 = [coderCopy decodeIntegerForKey:@"dataNetworkType"];
+  v9 = [coderCopy decodeBoolForKey:@"providingDataConnection"];
+  v10 = [coderCopy decodeBoolForKey:@"preferredForDataConnections"];
+  v11 = [coderCopy decodeBoolForKey:@"registeredWithoutCellular"];
+  v12 = [coderCopy decodeBoolForKey:@"callForwardingEnabled"];
 
   v13 = [(STTelephonyStatusDomainSIMInfo *)self initWithSIMPresent:v20 bootstrap:v19 label:v18 shortLabel:v4 signalStrengthBars:v17 maxSignalStrengthBars:v16 serviceState:v15 cellularServiceState:v5 serviceDescription:v6 secondaryServiceDescription:v7 dataNetworkType:v8 providingDataConnection:v9 preferredForDataConnections:v10 registeredWithoutCellular:v11 callForwardingEnabled:v12];
   return v13;

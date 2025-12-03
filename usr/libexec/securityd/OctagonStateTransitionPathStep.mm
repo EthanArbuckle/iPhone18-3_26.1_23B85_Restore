@@ -1,35 +1,35 @@
 @interface OctagonStateTransitionPathStep
-+ (id)pathFromDictionary:(id)a3;
++ (id)pathFromDictionary:(id)dictionary;
 + (id)success;
-- (OctagonStateTransitionPathStep)initWithPath:(id)a3;
+- (OctagonStateTransitionPathStep)initWithPath:(id)path;
 - (id)description;
 - (id)initAsSuccess;
-- (id)nextStep:(id)a3;
+- (id)nextStep:(id)step;
 @end
 
 @implementation OctagonStateTransitionPathStep
 
 - (id)description
 {
-  v2 = [(OctagonStateTransitionPathStep *)self followStates];
-  v3 = [v2 allKeys];
-  v4 = [NSString stringWithFormat:@"<OSTPath(%@)>", v3];
+  followStates = [(OctagonStateTransitionPathStep *)self followStates];
+  allKeys = [followStates allKeys];
+  v4 = [NSString stringWithFormat:@"<OSTPath(%@)>", allKeys];
 
   return v4;
 }
 
-- (id)nextStep:(id)a3
+- (id)nextStep:(id)step
 {
-  v4 = a3;
-  v5 = [(OctagonStateTransitionPathStep *)self followStates];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  stepCopy = step;
+  followStates = [(OctagonStateTransitionPathStep *)self followStates];
+  v6 = [followStates objectForKeyedSubscript:stepCopy];
 
   return v6;
 }
 
-- (OctagonStateTransitionPathStep)initWithPath:(id)a3
+- (OctagonStateTransitionPathStep)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = OctagonStateTransitionPathStep;
   v6 = [(OctagonStateTransitionPathStep *)&v9 init];
@@ -37,7 +37,7 @@
   if (v6)
   {
     v6->_successState = 0;
-    objc_storeStrong(&v6->_followStates, a3);
+    objc_storeStrong(&v6->_followStates, path);
   }
 
   return v7;
@@ -59,33 +59,33 @@
   return v3;
 }
 
-+ (id)pathFromDictionary:(id)a3
++ (id)pathFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[NSMutableDictionary dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v23;
     v9 = &swift_errorRelease_ptr;
-    v21 = v5;
+    v21 = allKeys;
     do
     {
       for (i = 0; i != v7; i = i + 1)
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v3 objectForKeyedSubscript:v11];
+        v12 = [dictionaryCopy objectForKeyedSubscript:v11];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -103,12 +103,12 @@
             [v4 setObject:v15 forKeyedSubscript:v11];
 
             v9 = v14;
-            v5 = v21;
+            allKeys = v21;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
@@ -118,24 +118,24 @@
   v17 = [OctagonStateTransitionPathStep alloc];
   if (v16)
   {
-    v18 = [(OctagonStateTransitionPathStep *)v17 initWithPath:v4];
+    initAsSuccess = [(OctagonStateTransitionPathStep *)v17 initWithPath:v4];
   }
 
   else
   {
-    v18 = [(OctagonStateTransitionPathStep *)v17 initAsSuccess];
+    initAsSuccess = [(OctagonStateTransitionPathStep *)v17 initAsSuccess];
   }
 
-  v19 = v18;
+  v19 = initAsSuccess;
 
   return v19;
 }
 
 + (id)success
 {
-  v2 = [[OctagonStateTransitionPathStep alloc] initAsSuccess];
+  initAsSuccess = [[OctagonStateTransitionPathStep alloc] initAsSuccess];
 
-  return v2;
+  return initAsSuccess;
 }
 
 @end

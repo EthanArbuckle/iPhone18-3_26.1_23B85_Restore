@@ -1,11 +1,11 @@
 @interface SBFPhysicalButtonSceneTarget
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FBScene)scene;
-- (id)_initWithScene:(void *)a3 sceneIdentity:(void *)a4 targetsByButton:;
-- (id)buttonTargetForButton:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithScene:(void *)scene sceneIdentity:(void *)identity targetsByButton:;
+- (id)buttonTargetForButton:(unint64_t)button;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation SBFPhysicalButtonSceneTarget
@@ -17,19 +17,19 @@
   return WeakRetained;
 }
 
-- (id)buttonTargetForButton:(unint64_t)a3
+- (id)buttonTargetForButton:(unint64_t)button
 {
   targetsByButton = self->_targetsByButton;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:button];
   v5 = [(NSMutableDictionary *)targetsByButton objectForKey:v4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -41,7 +41,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       WeakRetained = objc_loadWeakRetained(&self->_scene);
       v9 = objc_loadWeakRetained(v7 + 2);
       v10 = BSEqualObjects();
@@ -76,56 +76,56 @@
   return v5 ^ v6;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v7 = a3;
+  streamCopy = stream;
   if ([(NSMutableDictionary *)self->_targetsByButton count])
   {
-    v4 = [(NSMutableDictionary *)self->_targetsByButton allValues];
+    allValues = [(NSMutableDictionary *)self->_targetsByButton allValues];
     v5 = [(FBSSceneIdentity *)self->_sceneIdentity description];
-    v6 = [v7 appendObject:v4 withName:v5];
+    v6 = [streamCopy appendObject:allValues withName:v5];
   }
 
   else
   {
-    [v7 appendString:@"(empty)" withName:0];
+    [streamCopy appendString:@"(empty)" withName:0];
   }
 }
 
-- (id)_initWithScene:(void *)a3 sceneIdentity:(void *)a4 targetsByButton:
+- (id)_initWithScene:(void *)scene sceneIdentity:(void *)identity targetsByButton:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  sceneCopy = scene;
+  identityCopy = identity;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = SBFPhysicalButtonSceneTarget;
     v10 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeWeak(v10 + 2, v7);
-      objc_storeStrong(a1 + 3, a3);
-      if (v9)
+      objc_storeStrong(self + 3, scene);
+      if (identityCopy)
       {
-        v11 = v9;
+        dictionary = identityCopy;
       }
 
       else
       {
-        v11 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v12 = a1[1];
-      a1[1] = v11;
+      v12 = self[1];
+      self[1] = dictionary;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBFMutablePhysicalButtonSceneTarget alloc];
   WeakRetained = objc_loadWeakRetained(&self->_scene);

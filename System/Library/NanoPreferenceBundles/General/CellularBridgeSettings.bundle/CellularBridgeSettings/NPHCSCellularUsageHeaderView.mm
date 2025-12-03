@@ -3,12 +3,12 @@
 - (UILabel)sortingTypeLabel;
 - (UILabel)titleLabel;
 - (UIStackView)sortControlsStackView;
-- (_TtC22CellularBridgeSettings28NPHCSCellularUsageHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC22CellularBridgeSettings28NPHCSCellularUsageHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)configureContents;
-- (void)setSortControlsStackView:(id)a3;
-- (void)setSortToggle:(id)a3;
-- (void)setSortingTypeLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
+- (void)setSortControlsStackView:(id)view;
+- (void)setSortToggle:(id)toggle;
+- (void)setSortingTypeLabel:(id)label;
+- (void)setTitleLabel:(id)label;
 - (void)setTitles;
 @end
 
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  sub_C444(v4);
+  labelCopy = label;
+  selfCopy = self;
+  sub_C444(labelCopy);
 }
 
 - (UIStackView)sortControlsStackView
@@ -35,11 +35,11 @@
   return v2;
 }
 
-- (void)setSortControlsStackView:(id)a3
+- (void)setSortControlsStackView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_C4EC(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_C4EC(viewCopy);
 }
 
 - (UILabel)sortingTypeLabel
@@ -49,11 +49,11 @@
   return v2;
 }
 
-- (void)setSortingTypeLabel:(id)a3
+- (void)setSortingTypeLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  sub_C594(v4);
+  labelCopy = label;
+  selfCopy = self;
+  sub_C594(labelCopy);
 }
 
 - (UIButton)sortToggle
@@ -63,16 +63,16 @@
   return v2;
 }
 
-- (void)setSortToggle:(id)a3
+- (void)setSortToggle:(id)toggle
 {
-  v4 = a3;
-  v5 = self;
-  sub_C63C(v4);
+  toggleCopy = toggle;
+  selfCopy = self;
+  sub_C63C(toggleCopy);
 }
 
-- (_TtC22CellularBridgeSettings28NPHCSCellularUsageHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC22CellularBridgeSettings28NPHCSCellularUsageHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_E418();
   }
@@ -88,13 +88,13 @@
 
 - (void)configureContents
 {
-  v2 = self;
+  selfCopy = self;
   sub_C808();
 }
 
 - (void)setTitles
 {
-  v2 = self;
+  selfCopy = self;
   sub_D130();
 }
 

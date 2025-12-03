@@ -1,14 +1,14 @@
 @interface _NSAuxiliaryUndoManagerReference
-- (_NSAuxiliaryUndoManagerReference)initWithCoder:(id)a3;
-- (id)_initWithEndpoint:(id)a3 manager:(id)a4;
+- (_NSAuxiliaryUndoManagerReference)initWithCoder:(id)coder;
+- (id)_initWithEndpoint:(id)endpoint manager:(id)manager;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSAuxiliaryUndoManagerReference
 
-- (id)_initWithEndpoint:(id)a3 manager:(id)a4
+- (id)_initWithEndpoint:(id)endpoint manager:(id)manager
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -16,8 +16,8 @@
   v6 = [(_NSAuxiliaryUndoManagerReference *)&v8 init];
   if (v6)
   {
-    v6->_endpoint = a3;
-    objc_storeWeak(&v6->_inProcessManager, a4);
+    v6->_endpoint = endpoint;
+    objc_storeWeak(&v6->_inProcessManager, manager);
   }
 
   return v6;
@@ -47,27 +47,27 @@
   return [NSString stringWithFormat:@"_NSAuxiliaryUndoManagerReference<%p> {endpoint = %@, in-process = %@}", self, self->_endpoint, v3];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"_NSAuxiliaryUndoManagerReference cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   endpoint = self->_endpoint;
 
-  [a3 encodeObject:endpoint forKey:@"NSEndpoint"];
+  [coder encodeObject:endpoint forKey:@"NSEndpoint"];
 }
 
-- (_NSAuxiliaryUndoManagerReference)initWithCoder:(id)a3
+- (_NSAuxiliaryUndoManagerReference)initWithCoder:(id)coder
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"_NSAuxiliaryUndoManagerReference cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSEndpoint"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSEndpoint"];
   if (v5)
   {
 
@@ -78,7 +78,7 @@
   {
     v7 = @"NSDebugDescription";
     v8[0] = @"Missing required key 'NSEndpoint'";
-    [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v8, &v7, 1))}];
+    [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v8, &v7, 1))}];
     return 0;
   }
 }

@@ -1,5 +1,5 @@
 @interface _MFAtomFieldEditorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityCanBeFirstResponder;
 - (id)_axAtomTextViewAncestor;
 - (id)accessibilityPlaceholderValue;
@@ -8,15 +8,15 @@
 
 @implementation _MFAtomFieldEditorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFAtomTextView"];
-  [v3 validateClass:@"MFAtomTextView" hasInstanceMethod:@"placeholderLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MFAtomFieldEditor" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFAtomTextView"];
+  [validationsCopy validateClass:@"MFAtomTextView" hasInstanceMethod:@"placeholderLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MFAtomFieldEditor" isKindOfClass:@"UIView"];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SBHomeScreenWindow" isKindOfClass:@"UIWindow"];
+    [validationsCopy validateClass:@"SBHomeScreenWindow" isKindOfClass:@"UIWindow"];
   }
 }
 
@@ -35,29 +35,29 @@
   [(_MFAtomFieldEditorAccessibility *)&v8 accessibilityTraits];
   v3 = *MEMORY[0x29EDBDC00];
   v4 = _AXTraitsRemoveTrait();
-  v5 = [(_MFAtomFieldEditorAccessibility *)self _axAtomTextViewAncestor];
-  v6 = [v5 accessibilityTraits];
+  _axAtomTextViewAncestor = [(_MFAtomFieldEditorAccessibility *)self _axAtomTextViewAncestor];
+  accessibilityTraits = [_axAtomTextViewAncestor accessibilityTraits];
 
-  return v6 | v4;
+  return accessibilityTraits | v4;
 }
 
 - (id)accessibilityPlaceholderValue
 {
-  v2 = [(_MFAtomFieldEditorAccessibility *)self _axAtomTextViewAncestor];
-  v3 = [v2 safeValueForKey:@"placeholderLabel"];
+  _axAtomTextViewAncestor = [(_MFAtomFieldEditorAccessibility *)self _axAtomTextViewAncestor];
+  v3 = [_axAtomTextViewAncestor safeValueForKey:@"placeholderLabel"];
   v4 = __UIAccessibilitySafeClass();
 
   if ([v4 _accessibilityViewIsVisible])
   {
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (BOOL)_accessibilityCanBeFirstResponder
@@ -70,20 +70,20 @@
   v8 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 window];
+  window = [v3 window];
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    _accessibilityCanBeFirstResponder = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _MFAtomFieldEditorAccessibility;
-    v5 = [(_MFAtomFieldEditorAccessibility *)&v7 _accessibilityCanBeFirstResponder];
+    _accessibilityCanBeFirstResponder = [(_MFAtomFieldEditorAccessibility *)&v7 _accessibilityCanBeFirstResponder];
   }
 
-  return v5;
+  return _accessibilityCanBeFirstResponder;
 }
 
 @end

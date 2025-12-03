@@ -1,24 +1,24 @@
 @interface AMSChannelLinkResult
-- (AMSChannelLinkResult)initWithCoder:(id)a3;
-- (AMSChannelLinkResult)initWithResponse:(id)a3 linkParams:(id)a4 supplementaryFields:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (AMSChannelLinkResult)initWithCoder:(id)coder;
+- (AMSChannelLinkResult)initWithResponse:(id)response linkParams:(id)params supplementaryFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSChannelLinkResult
 
-- (AMSChannelLinkResult)initWithResponse:(id)a3 linkParams:(id)a4 supplementaryFields:(id)a5
+- (AMSChannelLinkResult)initWithResponse:(id)response linkParams:(id)params supplementaryFields:(id)fields
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  responseCopy = response;
+  paramsCopy = params;
+  fieldsCopy = fields;
   v33.receiver = self;
   v33.super_class = AMSChannelLinkResult;
   v12 = [(AMSChannelLinkResult *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_response, a3);
-    v14 = [v9 objectForKeyedSubscript:@"channelCustomerId"];
+    objc_storeStrong(&v12->_response, response);
+    v14 = [responseCopy objectForKeyedSubscript:@"channelCustomerId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
     channelCustomerId = v13->_channelCustomerId;
     v13->_channelCustomerId = v15;
 
-    v17 = [v9 objectForKeyedSubscript:@"productCode"];
+    v17 = [responseCopy objectForKeyedSubscript:@"productCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
     productCode = v13->_productCode;
     v13->_productCode = v18;
 
-    v20 = [v9 objectForKeyedSubscript:@"status"];
+    v20 = [responseCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
     statusCode = v13->_statusCode;
     v13->_statusCode = v21;
 
-    v23 = [v9 objectForKeyedSubscript:@"subId"];
+    v23 = [responseCopy objectForKeyedSubscript:@"subId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,9 +78,9 @@
     subscriptionId = v13->_subscriptionId;
     v13->_subscriptionId = v24;
 
-    objc_storeStrong(&v13->_linkParams, a4);
-    objc_storeStrong(&v13->_supplementaryFields, a5);
-    postLinkingFields = [v9 objectForKeyedSubscript:@"postLinkingFields"];
+    objc_storeStrong(&v13->_linkParams, params);
+    objc_storeStrong(&v13->_supplementaryFields, fields);
+    postLinkingFields = [responseCopy objectForKeyedSubscript:@"postLinkingFields"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,7 +102,7 @@
     }
 
 LABEL_19:
-    error = [v9 objectForKeyedSubscript:@"error"];
+    error = [responseCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,75 +133,75 @@ LABEL_25:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSChannelLinkResult *)self channelCustomerId];
-  [v4 encodeObject:v5 forKey:@"channelCustomerId"];
+  coderCopy = coder;
+  channelCustomerId = [(AMSChannelLinkResult *)self channelCustomerId];
+  [coderCopy encodeObject:channelCustomerId forKey:@"channelCustomerId"];
 
-  v6 = [(AMSChannelLinkResult *)self error];
-  [v4 encodeObject:v6 forKey:@"error"];
+  error = [(AMSChannelLinkResult *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
-  v7 = [(AMSChannelLinkResult *)self linkParams];
-  [v4 encodeObject:v7 forKey:@"linkParams"];
+  linkParams = [(AMSChannelLinkResult *)self linkParams];
+  [coderCopy encodeObject:linkParams forKey:@"linkParams"];
 
-  v8 = [(AMSChannelLinkResult *)self postLinkingFields];
-  [v4 encodeObject:v8 forKey:@"postLinkingFields"];
+  postLinkingFields = [(AMSChannelLinkResult *)self postLinkingFields];
+  [coderCopy encodeObject:postLinkingFields forKey:@"postLinkingFields"];
 
-  v9 = [(AMSChannelLinkResult *)self productCode];
-  [v4 encodeObject:v9 forKey:@"productCode"];
+  productCode = [(AMSChannelLinkResult *)self productCode];
+  [coderCopy encodeObject:productCode forKey:@"productCode"];
 
-  v10 = [(AMSChannelLinkResult *)self response];
-  [v4 encodeObject:v10 forKey:@"response"];
+  response = [(AMSChannelLinkResult *)self response];
+  [coderCopy encodeObject:response forKey:@"response"];
 
-  v11 = [(AMSChannelLinkResult *)self statusCode];
-  [v4 encodeObject:v11 forKey:@"statusCode"];
+  statusCode = [(AMSChannelLinkResult *)self statusCode];
+  [coderCopy encodeObject:statusCode forKey:@"statusCode"];
 
-  v12 = [(AMSChannelLinkResult *)self subscriptionId];
-  [v4 encodeObject:v12 forKey:@"subscriptionId"];
+  subscriptionId = [(AMSChannelLinkResult *)self subscriptionId];
+  [coderCopy encodeObject:subscriptionId forKey:@"subscriptionId"];
 }
 
-- (AMSChannelLinkResult)initWithCoder:(id)a3
+- (AMSChannelLinkResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = AMSChannelLinkResult;
   v5 = [(AMSChannelLinkResult *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channelCustomerId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channelCustomerId"];
     channelCustomerId = v5->_channelCustomerId;
     v5->_channelCustomerId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkParams"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkParams"];
     linkParams = v5->_linkParams;
     v5->_linkParams = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"postLinkingFields"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"postLinkingFields"];
     postLinkingFields = v5->_postLinkingFields;
     v5->_postLinkingFields = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productCode"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productCode"];
     productCode = v5->_productCode;
     v5->_productCode = v17;
 
-    v19 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"response"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v20 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"response"];
     response = v5->_response;
     v5->_response = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusCode"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusCode"];
     statusCode = v5->_statusCode;
     v5->_statusCode = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subscriptionId"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subscriptionId"];
     subscriptionId = v5->_subscriptionId;
     v5->_subscriptionId = v24;
   }

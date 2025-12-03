@@ -1,24 +1,24 @@
 @interface HMDIDSInvitationManager
 + (id)logCategory;
-- (BOOL)_resolveAccountWithMergeID:(id)a3 fromAddress:(id)a4;
+- (BOOL)_resolveAccountWithMergeID:(id)d fromAddress:(id)address;
 - (HMDHomeManager)homeManager;
-- (HMDIDSInvitationManager)initWithHomeManager:(id)a3 messageDispatcher:(id)a4 queue:(id)a5 remoteAccountManager:(id)a6;
-- (HMDIDSInvitationManager)initWithHomeManager:(id)a3 messageDispatcher:(id)a4 queue:(id)a5 remoteAccountManager:(id)a6 idsInvitationManager:(id)a7;
-- (id)_receivedInvitationWithUniqueID:(id)a3;
-- (id)_sendOptions:(BOOL)a3;
-- (id)_sentInvitationWithUniqueID:(id)a3;
-- (void)_cancelIDSSentInvitations:(id)a3;
-- (void)_cancelPendingIDSSentInvitationForHomeInvitationID:(id)a3 completionBlock:(id)a4;
-- (void)acceptInvitationWithIDSIdentifier:(id)a3 homeInvitationID:(id)a4 dictionary:(id)a5 completionBlock:(id)a6;
-- (void)auditIDSSentInvitationsUsingCurrentInvitationUUIDs:(id)a3;
-- (void)cancelInvitationWithIDSIdentifier:(id)a3 homeInvitationID:(id)a4 completionBlock:(id)a5;
-- (void)declineInvitationWithIDSIdentifier:(id)a3 homeInvitationID:(id)a4 completionBlock:(id)a5;
-- (void)handleForwardedAcceptance:(id)a3;
-- (void)manager:(id)a3 incomingInvitation:(id)a4;
-- (void)manager:(id)a3 receiverDidAcceptInvitation:(id)a4;
-- (void)manager:(id)a3 receiverDidDeclineInvitation:(id)a4;
-- (void)manager:(id)a3 senderDidCancelInvitation:(id)a4;
-- (void)sendInvitationToDestination:(id)a3 expirationDate:(id)a4 dictionary:(id)a5 homeInvitationID:(id)a6 isRestrictedGuestInvitation:(BOOL)a7 completionBlock:(id)a8;
+- (HMDIDSInvitationManager)initWithHomeManager:(id)manager messageDispatcher:(id)dispatcher queue:(id)queue remoteAccountManager:(id)accountManager;
+- (HMDIDSInvitationManager)initWithHomeManager:(id)manager messageDispatcher:(id)dispatcher queue:(id)queue remoteAccountManager:(id)accountManager idsInvitationManager:(id)invitationManager;
+- (id)_receivedInvitationWithUniqueID:(id)d;
+- (id)_sendOptions:(BOOL)options;
+- (id)_sentInvitationWithUniqueID:(id)d;
+- (void)_cancelIDSSentInvitations:(id)invitations;
+- (void)_cancelPendingIDSSentInvitationForHomeInvitationID:(id)d completionBlock:(id)block;
+- (void)acceptInvitationWithIDSIdentifier:(id)identifier homeInvitationID:(id)d dictionary:(id)dictionary completionBlock:(id)block;
+- (void)auditIDSSentInvitationsUsingCurrentInvitationUUIDs:(id)ds;
+- (void)cancelInvitationWithIDSIdentifier:(id)identifier homeInvitationID:(id)d completionBlock:(id)block;
+- (void)declineInvitationWithIDSIdentifier:(id)identifier homeInvitationID:(id)d completionBlock:(id)block;
+- (void)handleForwardedAcceptance:(id)acceptance;
+- (void)manager:(id)manager incomingInvitation:(id)invitation;
+- (void)manager:(id)manager receiverDidAcceptInvitation:(id)invitation;
+- (void)manager:(id)manager receiverDidDeclineInvitation:(id)invitation;
+- (void)manager:(id)manager senderDidCancelInvitation:(id)invitation;
+- (void)sendInvitationToDestination:(id)destination expirationDate:(id)date dictionary:(id)dictionary homeInvitationID:(id)d isRestrictedGuestInvitation:(BOOL)invitation completionBlock:(id)block;
 @end
 
 @implementation HMDIDSInvitationManager
@@ -30,10 +30,10 @@
   return WeakRetained;
 }
 
-- (void)handleForwardedAcceptance:(id)a3
+- (void)handleForwardedAcceptance:(id)acceptance
 {
   v54[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  acceptanceCopy = acceptance;
   v5 = MEMORY[0x277CBEB98];
   v54[0] = objc_opt_class();
   v54[1] = objc_opt_class();
@@ -43,10 +43,10 @@
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:5];
   v7 = [v5 setWithArray:v6];
 
-  v8 = [v4 stringForKey:@"HMDInvitationForwardMessageHomeUUIDKey"];
-  v9 = [v4 stringForKey:@"HMDInvitationForwardMessageInvitationUUIDKey"];
-  v10 = [v4 stringForKey:@"HMDInvitationForwardMessageOriginKey"];
-  v11 = [v4 stringForKey:@"HMDInvitationForwardMessageOriginMergeIDKey"];
+  v8 = [acceptanceCopy stringForKey:@"HMDInvitationForwardMessageHomeUUIDKey"];
+  v9 = [acceptanceCopy stringForKey:@"HMDInvitationForwardMessageInvitationUUIDKey"];
+  v10 = [acceptanceCopy stringForKey:@"HMDInvitationForwardMessageOriginKey"];
+  v11 = [acceptanceCopy stringForKey:@"HMDInvitationForwardMessageOriginMergeIDKey"];
   if (v8)
   {
     v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v8];
@@ -57,7 +57,7 @@
     v12 = 0;
   }
 
-  v13 = [v4 dataForKey:@"HMDInvitationForwardMessageOriginPayloadKey"];
+  v13 = [acceptanceCopy dataForKey:@"HMDInvitationForwardMessageOriginPayloadKey"];
   if (v9)
   {
     v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
@@ -77,7 +77,7 @@
   if (!v10 || !v11 || !v12 || !v15 || !v14)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -106,7 +106,7 @@
 
   v16 = [(HMDIDSInvitationManager *)self _resolveAccountWithMergeID:v11 fromAddress:v10];
   context = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy2 = self;
   v18 = HMFGetOSLogHandle();
   v19 = v18;
   if (!v16)
@@ -140,18 +140,18 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(context);
-  v21 = [(HMDIDSInvitationManager *)v17 workQueue];
+  workQueue = [(HMDIDSInvitationManager *)selfCopy2 workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__HMDIDSInvitationManager_handleForwardedAcceptance___block_invoke;
   block[3] = &unk_278683598;
-  block[4] = v17;
+  block[4] = selfCopy2;
   v36 = v34;
   v37 = v12;
   v38 = v15;
   v39 = v10;
   v40 = v11;
-  dispatch_async(v21, block);
+  dispatch_async(workQueue, block);
 
 LABEL_23:
   v28 = *MEMORY[0x277D85DE8];
@@ -163,62 +163,62 @@ void __53__HMDIDSInvitationManager_handleForwardedAcceptance___block_invoke(uint
   [v2 handleAcceptRequestForIDSInvitationWithIdentifier:*(a1 + 40) homeUUID:*(a1 + 48) payload:*(a1 + 56) fromAddress:*(a1 + 64) fromMergeID:*(a1 + 72)];
 }
 
-- (void)manager:(id)a3 receiverDidDeclineInvitation:(id)a4
+- (void)manager:(id)manager receiverDidDeclineInvitation:(id)invitation
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  invitationCopy = invitation;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 senderMergeID];
+    senderMergeID = [invitationCopy senderMergeID];
     *buf = 138543874;
     v29 = v11;
     v30 = 2112;
-    v31 = v7;
+    v31 = invitationCopy;
     v32 = 2112;
-    v33 = v12;
+    v33 = senderMergeID;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Received incoming request to decline invitation %@ with mergeID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [v7 context];
+  context = [invitationCopy context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [v7 context];
-    v16 = [(HMDIDSInvitationManager *)v9 workQueue];
+    context2 = [invitationCopy context];
+    workQueue = [(HMDIDSInvitationManager *)selfCopy workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__HMDIDSInvitationManager_manager_receiverDidDeclineInvitation___block_invoke;
     block[3] = &unk_27868A010;
-    v25 = v7;
-    v26 = v15;
-    v27 = v9;
-    v17 = v15;
-    dispatch_async(v16, block);
+    v25 = invitationCopy;
+    v26 = context2;
+    v27 = selfCopy;
+    v17 = context2;
+    dispatch_async(workQueue, block);
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v9;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v7 uniqueID];
+      uniqueID = [invitationCopy uniqueID];
       *buf = 138543874;
       v29 = v21;
       v30 = 2112;
-      v31 = v22;
+      v31 = uniqueID;
       v32 = 2112;
-      v33 = v7;
+      v33 = invitationCopy;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Expected invitation (%@) with IDSDictionaryInvitationContext context but got different type %@. Dropping invitation", buf, 0x20u);
     }
 
@@ -244,48 +244,48 @@ void __64__HMDIDSInvitationManager_manager_receiverDidDeclineInvitation___block_
   [v8 handleDeclineRequestForIDSInvitationWithIdentifier:v9 fromAddress:v10 homeUUID:v7];
 }
 
-- (void)manager:(id)a3 receiverDidAcceptInvitation:(id)a4
+- (void)manager:(id)manager receiverDidAcceptInvitation:(id)invitation
 {
   v94 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  invitationCopy = invitation;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 senderMergeID];
+    senderMergeID = [invitationCopy senderMergeID];
     *buf = 138543874;
     v89 = v11;
     v90 = 2112;
-    v91 = v7;
+    v91 = invitationCopy;
     v92 = 2112;
-    v93 = v12;
+    v93 = senderMergeID;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Received incoming request to accept invitation %@ with mergeID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDIDSInvitationManager *)v9 homeManager];
-  v14 = [v7 context];
+  homeManager = [(HMDIDSInvitationManager *)selfCopy homeManager];
+  context = [invitationCopy context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    if (v13)
+    if (homeManager)
     {
-      v16 = [v7 destination];
-      v17 = [v16 destinationURIs];
-      v18 = [v17 anyObject];
+      destination = [invitationCopy destination];
+      destinationURIs = [destination destinationURIs];
+      anyObject = [destinationURIs anyObject];
 
-      v19 = [v7 senderMergeID];
-      LOBYTE(v17) = [(HMDIDSInvitationManager *)v9 _resolveAccountWithMergeID:v19 fromAddress:v18];
+      senderMergeID2 = [invitationCopy senderMergeID];
+      LOBYTE(destinationURIs) = [(HMDIDSInvitationManager *)selfCopy _resolveAccountWithMergeID:senderMergeID2 fromAddress:anyObject];
 
-      if ((v17 & 1) == 0)
+      if ((destinationURIs & 1) == 0)
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = v9;
+        v36 = selfCopy;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
@@ -299,34 +299,34 @@ void __64__HMDIDSInvitationManager_manager_receiverDidDeclineInvitation___block_
         goto LABEL_35;
       }
 
-      v20 = [v7 context];
-      v21 = [v20 dictionary];
+      context2 = [invitationCopy context];
+      dictionary = [context2 dictionary];
       v22 = objc_alloc(MEMORY[0x277CCAD78]);
-      v77 = v21;
-      v23 = [v21 hmf_stringForKey:*MEMORY[0x277CD0640]];
+      v77 = dictionary;
+      v23 = [dictionary hmf_stringForKey:*MEMORY[0x277CD0640]];
       v24 = [v22 initWithUUIDString:v23];
 
       v78 = v24;
-      v76 = [v13 _homeWithUUID:v24];
-      v25 = [v76 primaryResident];
-      v26 = v25;
-      if (v25)
+      v76 = [homeManager _homeWithUUID:v24];
+      primaryResident = [v76 primaryResident];
+      v26 = primaryResident;
+      if (primaryResident)
       {
-        if ([v25 isCurrentDevice])
+        if ([primaryResident isCurrentDevice])
         {
-          v27 = [(HMDIDSInvitationManager *)v9 workQueue];
+          workQueue = [(HMDIDSInvitationManager *)selfCopy workQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __63__HMDIDSInvitationManager_manager_receiverDidAcceptInvitation___block_invoke;
           block[3] = &unk_278689550;
-          v81 = v13;
-          v82 = v7;
+          v81 = homeManager;
+          v82 = invitationCopy;
           v28 = v78;
           v83 = v78;
           v29 = v77;
           v84 = v77;
-          v85 = v18;
-          dispatch_async(v27, block);
+          v85 = anyObject;
+          dispatch_async(workQueue, block);
 
 LABEL_34:
 LABEL_35:
@@ -334,15 +334,15 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v43 = [v26 device];
+        device = [v26 device];
 
         context = objc_autoreleasePoolPush();
-        v44 = v9;
+        v44 = selfCopy;
         v45 = HMFGetOSLogHandle();
         v46 = v45;
-        if (v43)
+        if (device)
         {
-          v74 = v20;
+          v74 = context2;
           if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
           {
             v47 = HMFGetLogIdentifier();
@@ -357,10 +357,10 @@ LABEL_35:
 
           objc_autoreleasePoolPop(context);
           v48 = [HMDRemoteDeviceMessageDestination alloc];
-          v49 = [v13 uuid];
+          uuid = [homeManager uuid];
           [v26 device];
           v50 = v67 = v44;
-          v51 = [(HMDRemoteDeviceMessageDestination *)v48 initWithTarget:v49 device:v50];
+          v51 = [(HMDRemoteDeviceMessageDestination *)v48 initWithTarget:uuid device:v50];
 
           v79 = 0;
           v29 = v77;
@@ -395,32 +395,32 @@ LABEL_35:
 
           else
           {
-            v87[0] = v18;
+            v87[0] = anyObject;
             v86[0] = @"HMDInvitationForwardMessageOriginKey";
             v86[1] = @"HMDInvitationForwardMessageOriginMergeIDKey";
-            v66 = [v7 senderMergeID];
-            v87[1] = v66;
+            senderMergeID3 = [invitationCopy senderMergeID];
+            v87[1] = senderMergeID3;
             v86[2] = @"HMDInvitationForwardMessageHomeUUIDKey";
             v28 = v78;
-            v59 = [v78 UUIDString];
-            v87[2] = v59;
+            uUIDString = [v78 UUIDString];
+            v87[2] = uUIDString;
             v87[3] = v52;
             v86[3] = @"HMDInvitationForwardMessageOriginPayloadKey";
             v86[4] = @"HMDInvitationForwardMessageInvitationUUIDKey";
-            v60 = [v7 uniqueID];
-            v61 = [v60 UUIDString];
-            v87[4] = v61;
+            uniqueID = [invitationCopy uniqueID];
+            uUIDString2 = [uniqueID UUIDString];
+            v87[4] = uUIDString2;
             v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:5];
 
             v57 = v70;
             v63 = [MEMORY[0x277D0F848] messageWithName:@"HMDInvitationForwardMessage" destination:v70 payload:v62];
-            v64 = [(HMDIDSInvitationManager *)v67 messageDispatcher];
-            [v64 sendMessage:v63 completionHandler:0];
+            messageDispatcher = [(HMDIDSInvitationManager *)v67 messageDispatcher];
+            [messageDispatcher sendMessage:v63 completionHandler:0];
 
             v29 = v77;
           }
 
-          v20 = v74;
+          context2 = v74;
           goto LABEL_34;
         }
 
@@ -442,19 +442,19 @@ LABEL_35:
       else
       {
         v39 = objc_autoreleasePoolPush();
-        v40 = v9;
+        v40 = selfCopy;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
-          v42 = v73 = v20;
+          v42 = v73 = context2;
           *buf = 138543618;
           v89 = v42;
           v90 = 2112;
           v91 = v78;
           _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_ERROR, "%{public}@Unable to process shared user invitation acceptance as there is no primary resident for home %@", buf, 0x16u);
 
-          v20 = v73;
+          context2 = v73;
         }
 
         objc_autoreleasePoolPop(v39);
@@ -466,7 +466,7 @@ LABEL_35:
     }
 
     v30 = objc_autoreleasePoolPush();
-    v31 = v9;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -474,7 +474,7 @@ LABEL_35:
       *buf = 138543618;
       v89 = v33;
       v90 = 2112;
-      v91 = v7;
+      v91 = invitationCopy;
       _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_ERROR, "%{public}@Received shared user invitation acceptance for invitation %@ but there's no home manager.", buf, 0x16u);
       goto LABEL_13;
     }
@@ -483,18 +483,18 @@ LABEL_35:
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = v9;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = [v7 uniqueID];
+      uniqueID2 = [invitationCopy uniqueID];
       *buf = 138543874;
       v89 = v33;
       v90 = 2112;
-      v91 = v34;
+      v91 = uniqueID2;
       v92 = 2112;
-      v93 = v7;
+      v93 = invitationCopy;
       _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_ERROR, "%{public}@Expected invitation (%@) with IDSDictionaryInvitationContext context but got different type %@. Dropping invitation", buf, 0x20u);
 
 LABEL_13:
@@ -518,13 +518,13 @@ void __63__HMDIDSInvitationManager_manager_receiverDidAcceptInvitation___block_i
   [v2 handleAcceptRequestForIDSInvitationWithIdentifier:v7 homeUUID:v5 payload:v3 fromAddress:v4 fromMergeID:v6];
 }
 
-- (void)manager:(id)a3 senderDidCancelInvitation:(id)a4
+- (void)manager:(id)manager senderDidCancelInvitation:(id)invitation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  invitationCopy = invitation;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -532,20 +532,20 @@ void __63__HMDIDSInvitationManager_manager_receiverDidAcceptInvitation___block_i
     *buf = 138543618;
     v18 = v11;
     v19 = 2112;
-    v20 = v7;
+    v20 = invitationCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Incoming request to cancel invitation %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDIDSInvitationManager *)v9 workQueue];
+  workQueue = [(HMDIDSInvitationManager *)selfCopy workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__HMDIDSInvitationManager_manager_senderDidCancelInvitation___block_invoke;
   v15[3] = &unk_27868A750;
-  v15[4] = v9;
-  v16 = v7;
-  v13 = v7;
-  dispatch_async(v12, v15);
+  v15[4] = selfCopy;
+  v16 = invitationCopy;
+  v13 = invitationCopy;
+  dispatch_async(workQueue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -557,67 +557,67 @@ void __61__HMDIDSInvitationManager_manager_senderDidCancelInvitation___block_inv
   [v3 handleCancelRequestForIDSInvitationWithIdentifier:v2];
 }
 
-- (void)manager:(id)a3 incomingInvitation:(id)a4
+- (void)manager:(id)manager incomingInvitation:(id)invitation
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  invitationCopy = invitation;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 fromID];
-    v13 = [v7 senderMergeID];
+    fromID = [invitationCopy fromID];
+    senderMergeID = [invitationCopy senderMergeID];
     *buf = 138544387;
     v30 = v11;
     v31 = 2112;
-    v32 = v7;
+    v32 = invitationCopy;
     v33 = 2160;
     v34 = 1752392040;
     v35 = 2112;
-    v36 = v12;
+    v36 = fromID;
     v37 = 2113;
-    v38 = v13;
+    v38 = senderMergeID;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Received incoming invitation %@ from user %{mask.hash}@ with mergeID %{private}@", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v14 = [v7 context];
+  context = [invitationCopy context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v16 = [v7 context];
-    v17 = [(HMDIDSInvitationManager *)v9 workQueue];
+    context2 = [invitationCopy context];
+    workQueue = [(HMDIDSInvitationManager *)selfCopy workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke;
     block[3] = &unk_27868A010;
-    v26 = v7;
-    v27 = v9;
-    v28 = v16;
-    v18 = v16;
-    dispatch_async(v17, block);
+    v26 = invitationCopy;
+    v27 = selfCopy;
+    v28 = context2;
+    v18 = context2;
+    dispatch_async(workQueue, block);
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v9;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v7 uniqueID];
+      uniqueID = [invitationCopy uniqueID];
       *buf = 138543874;
       v30 = v22;
       v31 = 2112;
-      v32 = v23;
+      v32 = uniqueID;
       v33 = 2112;
-      v34 = v7;
+      v34 = invitationCopy;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Expected invitation (%@) with IDSDictionaryInvitationContext context but got different type %@. Dropping invitation", buf, 0x20u);
     }
 
@@ -672,13 +672,13 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_resolveAccountWithMergeID:(id)a3 fromAddress:(id)a4
+- (BOOL)_resolveAccountWithMergeID:(id)d fromAddress:(id)address
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [HMDDeviceHandle deviceHandleForDestination:v7];
-  v9 = [HMDAccountHandle accountHandleForDestination:v7];
+  dCopy = d;
+  addressCopy = address;
+  v8 = [HMDDeviceHandle deviceHandleForDestination:addressCopy];
+  v9 = [HMDAccountHandle accountHandleForDestination:addressCopy];
   if (v9)
   {
     v10 = v8 == 0;
@@ -701,7 +701,7 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
       v23 = 2160;
       v24 = 1752392040;
       v25 = 2112;
-      v26 = v7;
+      v26 = addressCopy;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse sender address: %{mask.hash}@", &v21, 0x20u);
     }
 
@@ -711,10 +711,10 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
 
   else
   {
-    v14 = [HMDAccountIdentifier accountIdentifierForSenderCorrelationIdentifier:v6];
+    v14 = [HMDAccountIdentifier accountIdentifierForSenderCorrelationIdentifier:dCopy];
     v15 = [[HMDRemoteMessageSenderContext alloc] initWithDeviceHandle:v8 accountHandle:v9 accountIdentifier:v14 deviceVersion:0 pairingIdentityIdentifier:0];
-    v16 = [(HMDIDSInvitationManager *)self remoteAccountManager];
-    v17 = [v16 accountForSenderContext:v15];
+    remoteAccountManager = [(HMDIDSInvitationManager *)self remoteAccountManager];
+    v17 = [remoteAccountManager accountForSenderContext:v15];
     v18 = v17 != 0;
   }
 
@@ -722,14 +722,14 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
   return v18;
 }
 
-- (void)cancelInvitationWithIDSIdentifier:(id)a3 homeInvitationID:(id)a4 completionBlock:(id)a5
+- (void)cancelInvitationWithIDSIdentifier:(id)identifier homeInvitationID:(id)d completionBlock:(id)block
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  blockCopy = block;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -737,18 +737,18 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
     *buf = 138543874;
     v34 = v14;
     v35 = 2112;
-    v36 = v9;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v8;
+    v38 = identifierCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Request to cancelInvitationWithIdentifier (homeID:%@) idsID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  if (v8)
+  if (identifierCopy)
   {
-    v15 = [(HMDIDSInvitationManager *)v12 _sentInvitationWithUniqueID:v8];
+    v15 = [(HMDIDSInvitationManager *)selfCopy _sentInvitationWithUniqueID:identifierCopy];
     v16 = objc_autoreleasePoolPush();
-    v17 = v12;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     v19 = v18;
     if (v15)
@@ -759,7 +759,7 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
         *buf = 138543874;
         v34 = v20;
         v35 = 2112;
-        v36 = v9;
+        v36 = dCopy;
         v37 = 2112;
         v38 = v15;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Sending cancellation for invite (homeID:%@) %@", buf, 0x20u);
@@ -772,9 +772,9 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
       v29[2] = __94__HMDIDSInvitationManager_cancelInvitationWithIDSIdentifier_homeInvitationID_completionBlock___block_invoke;
       v29[3] = &unk_27868A528;
       v29[4] = v17;
-      v30 = v9;
-      v31 = v8;
-      v32 = v10;
+      v30 = dCopy;
+      v31 = identifierCopy;
+      v32 = blockCopy;
       [(IDSInvitationManager *)idsInvitationManager cancelInvitation:v15 serverAcknowledgedBlock:v29];
     }
 
@@ -786,15 +786,15 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
         *buf = 138543618;
         v34 = v26;
         v35 = 2112;
-        v36 = v8;
+        v36 = identifierCopy;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Could not find pending invite with ID %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
-      if (v10)
+      if (blockCopy)
       {
         v27 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:3 userInfo:0];
-        (*(v10 + 2))(v10, v8, v27);
+        (*(blockCopy + 2))(blockCopy, identifierCopy, v27);
       }
 
       v15 = 0;
@@ -804,7 +804,7 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = v12;
+  v23 = selfCopy;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
@@ -812,15 +812,15 @@ void __54__HMDIDSInvitationManager_manager_incomingInvitation___block_invoke(id 
     *buf = 138543618;
     v34 = v25;
     v35 = 2112;
-    v36 = v9;
+    v36 = dCopy;
     _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@A IDS invite must be provided for home invite %@, cannot cancel", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v22);
-  if (v10)
+  if (blockCopy)
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:20 userInfo:0];
-    (*(v10 + 2))(v10, 0, v15);
+    (*(blockCopy + 2))(blockCopy, 0, v15);
 LABEL_17:
   }
 
@@ -860,15 +860,15 @@ void __94__HMDIDSInvitationManager_cancelInvitationWithIDSIdentifier_homeInvitat
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptInvitationWithIDSIdentifier:(id)a3 homeInvitationID:(id)a4 dictionary:(id)a5 completionBlock:(id)a6
+- (void)acceptInvitationWithIDSIdentifier:(id)identifier homeInvitationID:(id)d dictionary:(id)dictionary completionBlock:(id)block
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  blockCopy = block;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -876,21 +876,21 @@ void __94__HMDIDSInvitationManager_cancelInvitationWithIDSIdentifier_homeInvitat
     *buf = 138544130;
     v38 = v17;
     v39 = 2112;
-    v40 = v11;
+    v40 = dCopy;
     v41 = 2112;
-    v42 = v10;
+    v42 = identifierCopy;
     v43 = 2112;
-    v44 = v12;
+    v44 = dictionaryCopy;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Request to acceptInvitationWithIDSIdentifier (homeID:%@) idsID %@ payload %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v14);
-  if (v10)
+  if (identifierCopy)
   {
-    v18 = [(HMDIDSInvitationManager *)v15 _receivedInvitationWithUniqueID:v10];
-    v19 = [objc_alloc(MEMORY[0x277D186F0]) initWithDictionary:v12 schema:@"hk-invite-v1"];
+    v18 = [(HMDIDSInvitationManager *)selfCopy _receivedInvitationWithUniqueID:identifierCopy];
+    v19 = [objc_alloc(MEMORY[0x277D186F0]) initWithDictionary:dictionaryCopy schema:@"hk-invite-v1"];
     v20 = objc_autoreleasePoolPush();
-    v21 = v15;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     v23 = v22;
     if (v18)
@@ -901,7 +901,7 @@ void __94__HMDIDSInvitationManager_cancelInvitationWithIDSIdentifier_homeInvitat
         *buf = 138543874;
         v38 = v24;
         v39 = 2112;
-        v40 = v11;
+        v40 = dCopy;
         v41 = 2112;
         v42 = v18;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_INFO, "%{public}@Sending accept for invite (homeID:%@) %@", buf, 0x20u);
@@ -914,9 +914,9 @@ void __94__HMDIDSInvitationManager_cancelInvitationWithIDSIdentifier_homeInvitat
       v33[2] = __105__HMDIDSInvitationManager_acceptInvitationWithIDSIdentifier_homeInvitationID_dictionary_completionBlock___block_invoke;
       v33[3] = &unk_27868A528;
       v33[4] = v21;
-      v34 = v11;
-      v35 = v10;
-      v36 = v13;
+      v34 = dCopy;
+      v35 = identifierCopy;
+      v36 = blockCopy;
       [(IDSInvitationManager *)idsInvitationManager acceptInvitation:v18 withContext:v19 serverAcknowledgedBlock:v33];
     }
 
@@ -928,15 +928,15 @@ void __94__HMDIDSInvitationManager_cancelInvitationWithIDSIdentifier_homeInvitat
         *buf = 138543618;
         v38 = v30;
         v39 = 2112;
-        v40 = v10;
+        v40 = identifierCopy;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Could not find received invite with ID %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v20);
-      if (v13)
+      if (blockCopy)
       {
         v31 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:3 userInfo:0];
-        (*(v13 + 2))(v13, v10, v31);
+        (*(blockCopy + 2))(blockCopy, identifierCopy, v31);
       }
     }
 
@@ -944,7 +944,7 @@ void __94__HMDIDSInvitationManager_cancelInvitationWithIDSIdentifier_homeInvitat
   }
 
   v26 = objc_autoreleasePoolPush();
-  v27 = v15;
+  v27 = selfCopy;
   v28 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
@@ -952,15 +952,15 @@ void __94__HMDIDSInvitationManager_cancelInvitationWithIDSIdentifier_homeInvitat
     *buf = 138543618;
     v38 = v29;
     v39 = 2112;
-    v40 = v11;
+    v40 = dCopy;
     _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_ERROR, "%{public}@A IDS invite must be provided for home invite %@, cannot accept", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v26);
-  if (v13)
+  if (blockCopy)
   {
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:20 userInfo:0];
-    (*(v13 + 2))(v13, 0, v18);
+    (*(blockCopy + 2))(blockCopy, 0, v18);
 LABEL_17:
   }
 
@@ -1000,14 +1000,14 @@ void __105__HMDIDSInvitationManager_acceptInvitationWithIDSIdentifier_homeInvita
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)declineInvitationWithIDSIdentifier:(id)a3 homeInvitationID:(id)a4 completionBlock:(id)a5
+- (void)declineInvitationWithIDSIdentifier:(id)identifier homeInvitationID:(id)d completionBlock:(id)block
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  blockCopy = block;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1015,18 +1015,18 @@ void __105__HMDIDSInvitationManager_acceptInvitationWithIDSIdentifier_homeInvita
     *buf = 138543874;
     v34 = v14;
     v35 = 2112;
-    v36 = v9;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v8;
+    v38 = identifierCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Request to declineInvitationWithIDSIdentifier (homeID:%@) idsID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  if (v8)
+  if (identifierCopy)
   {
-    v15 = [(HMDIDSInvitationManager *)v12 _receivedInvitationWithUniqueID:v8];
+    v15 = [(HMDIDSInvitationManager *)selfCopy _receivedInvitationWithUniqueID:identifierCopy];
     v16 = objc_autoreleasePoolPush();
-    v17 = v12;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     v19 = v18;
     if (v15)
@@ -1037,7 +1037,7 @@ void __105__HMDIDSInvitationManager_acceptInvitationWithIDSIdentifier_homeInvita
         *buf = 138543874;
         v34 = v20;
         v35 = 2112;
-        v36 = v9;
+        v36 = dCopy;
         v37 = 2112;
         v38 = v15;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Sending decline for invite (homeID:%@) %@", buf, 0x20u);
@@ -1050,9 +1050,9 @@ void __105__HMDIDSInvitationManager_acceptInvitationWithIDSIdentifier_homeInvita
       v29[2] = __95__HMDIDSInvitationManager_declineInvitationWithIDSIdentifier_homeInvitationID_completionBlock___block_invoke;
       v29[3] = &unk_27868A528;
       v29[4] = v17;
-      v30 = v9;
-      v31 = v8;
-      v32 = v10;
+      v30 = dCopy;
+      v31 = identifierCopy;
+      v32 = blockCopy;
       [(IDSInvitationManager *)idsInvitationManager declineInvitation:v15 serverAcknowledgedBlock:v29];
     }
 
@@ -1064,15 +1064,15 @@ void __105__HMDIDSInvitationManager_acceptInvitationWithIDSIdentifier_homeInvita
         *buf = 138543618;
         v34 = v26;
         v35 = 2112;
-        v36 = v8;
+        v36 = identifierCopy;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Could not find received invite with ID %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
-      if (v10)
+      if (blockCopy)
       {
         v27 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
-        (*(v10 + 2))(v10, v8, v27);
+        (*(blockCopy + 2))(blockCopy, identifierCopy, v27);
       }
 
       v15 = 0;
@@ -1082,7 +1082,7 @@ void __105__HMDIDSInvitationManager_acceptInvitationWithIDSIdentifier_homeInvita
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v12;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -1090,15 +1090,15 @@ void __105__HMDIDSInvitationManager_acceptInvitationWithIDSIdentifier_homeInvita
       *buf = 138543618;
       v34 = v25;
       v35 = 2112;
-      v36 = v9;
+      v36 = dCopy;
       _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@A IDS invite must be provided for home invite %@, cannot decline", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
-    if (v10)
+    if (blockCopy)
     {
-      (*(v10 + 2))(v10, 0, v15);
+      (*(blockCopy + 2))(blockCopy, 0, v15);
     }
   }
 
@@ -1138,13 +1138,13 @@ void __95__HMDIDSInvitationManager_declineInvitationWithIDSIdentifier_homeInvita
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelPendingIDSSentInvitationForHomeInvitationID:(id)a3 completionBlock:(id)a4
+- (void)_cancelPendingIDSSentInvitationForHomeInvitationID:(id)d completionBlock:(id)block
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1152,7 +1152,7 @@ void __95__HMDIDSInvitationManager_declineInvitationWithIDSIdentifier_homeInvita
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Checking for an existing IDSSentInvitation to cancel for homeInvitationID: %@", buf, 0x16u);
   }
 
@@ -1163,20 +1163,20 @@ void __95__HMDIDSInvitationManager_declineInvitationWithIDSIdentifier_homeInvita
   v41 = __Block_byref_object_copy__99142;
   v42 = __Block_byref_object_dispose__99143;
   v43 = 0;
-  v12 = [(IDSInvitationManager *)v9->_idsInvitationManager pendingInvitations];
+  pendingInvitations = [(IDSInvitationManager *)selfCopy->_idsInvitationManager pendingInvitations];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __94__HMDIDSInvitationManager__cancelPendingIDSSentInvitationForHomeInvitationID_completionBlock___block_invoke;
   v31[3] = &unk_278677D88;
-  v31[4] = v9;
-  v13 = v6;
+  v31[4] = selfCopy;
+  v13 = dCopy;
   v32 = v13;
   v33 = buf;
-  [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v31];
+  [pendingInvitations hmf_enumerateWithAutoreleasePoolUsingBlock:v31];
 
   v14 = *(*&buf[8] + 40) == 0;
   v15 = objc_autoreleasePoolPush();
-  v16 = v9;
+  v16 = selfCopy;
   if (v14)
   {
     v24 = HMFGetOSLogHandle();
@@ -1189,9 +1189,9 @@ void __95__HMDIDSInvitationManager_declineInvitationWithIDSIdentifier_homeInvita
     }
 
     objc_autoreleasePoolPop(v15);
-    if (v7)
+    if (blockCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0);
     }
   }
 
@@ -1212,8 +1212,8 @@ void __95__HMDIDSInvitationManager_declineInvitationWithIDSIdentifier_homeInvita
     }
 
     objc_autoreleasePoolPop(v15);
-    v20 = [*(*&buf[8] + 40) uniqueID];
-    idsInvitationManager = v9->_idsInvitationManager;
+    uniqueID = [*(*&buf[8] + 40) uniqueID];
+    idsInvitationManager = selfCopy->_idsInvitationManager;
     v22 = *(*&buf[8] + 40);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -1221,9 +1221,9 @@ void __95__HMDIDSInvitationManager_declineInvitationWithIDSIdentifier_homeInvita
     v27[3] = &unk_27868A528;
     v27[4] = v16;
     v28 = v13;
-    v23 = v20;
+    v23 = uniqueID;
     v29 = v23;
-    v30 = v7;
+    v30 = blockCopy;
     [(IDSInvitationManager *)idsInvitationManager cancelInvitation:v22 serverAcknowledgedBlock:v27];
   }
 
@@ -1296,16 +1296,16 @@ void __94__HMDIDSInvitationManager__cancelPendingIDSSentInvitationForHomeInvitat
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendInvitationToDestination:(id)a3 expirationDate:(id)a4 dictionary:(id)a5 homeInvitationID:(id)a6 isRestrictedGuestInvitation:(BOOL)a7 completionBlock:(id)a8
+- (void)sendInvitationToDestination:(id)destination expirationDate:(id)date dictionary:(id)dictionary homeInvitationID:(id)d isRestrictedGuestInvitation:(BOOL)invitation completionBlock:(id)block
 {
   v51 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  destinationCopy = destination;
+  dateCopy = date;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  blockCopy = block;
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -1313,43 +1313,43 @@ void __94__HMDIDSInvitationManager__cancelPendingIDSSentInvitationForHomeInvitat
     *buf = 138544386;
     v42 = v22;
     v43 = 2112;
-    v44 = v17;
+    v44 = dCopy;
     v45 = 2112;
-    v46 = v14;
+    v46 = destinationCopy;
     v47 = 2112;
-    v48 = v15;
+    v48 = dateCopy;
     v49 = 2112;
-    v50 = v16;
+    v50 = dictionaryCopy;
     _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Request to sendInvitationToDestination (homeID:%@) for destination %@ expirationDate %@, payload: %@", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v19);
-  v23 = [objc_alloc(MEMORY[0x277D186F0]) initWithDictionary:v16 schema:@"hk-invite-v1"];
+  v23 = [objc_alloc(MEMORY[0x277D186F0]) initWithDictionary:dictionaryCopy schema:@"hk-invite-v1"];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __142__HMDIDSInvitationManager_sendInvitationToDestination_expirationDate_dictionary_homeInvitationID_isRestrictedGuestInvitation_completionBlock___block_invoke;
   aBlock[3] = &unk_278677DB0;
-  aBlock[4] = v20;
-  v39 = v17;
-  v40 = v18;
-  v24 = v18;
-  v25 = v17;
+  aBlock[4] = selfCopy;
+  v39 = dCopy;
+  v40 = blockCopy;
+  v24 = blockCopy;
+  v25 = dCopy;
   v26 = _Block_copy(aBlock);
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __142__HMDIDSInvitationManager_sendInvitationToDestination_expirationDate_dictionary_homeInvitationID_isRestrictedGuestInvitation_completionBlock___block_invoke_37;
   v32[3] = &unk_278677DD8;
-  v32[4] = v20;
-  v33 = v14;
-  v34 = v15;
+  v32[4] = selfCopy;
+  v33 = destinationCopy;
+  v34 = dateCopy;
   v35 = v23;
-  v37 = a7;
+  invitationCopy = invitation;
   v36 = v26;
   v27 = v26;
   v28 = v23;
-  v29 = v15;
-  v30 = v14;
-  [(HMDIDSInvitationManager *)v20 _cancelPendingIDSSentInvitationForHomeInvitationID:v25 completionBlock:v32];
+  v29 = dateCopy;
+  v30 = destinationCopy;
+  [(HMDIDSInvitationManager *)selfCopy _cancelPendingIDSSentInvitationForHomeInvitationID:v25 completionBlock:v32];
 
   v31 = *MEMORY[0x277D85DE8];
 }
@@ -1399,12 +1399,12 @@ void __142__HMDIDSInvitationManager_sendInvitationToDestination_expirationDate_d
   [v6 sendInvitationToDestination:v4 expirationDate:v2 context:v3 options:v5 serverAcknowledgedBlock:*(a1 + 64)];
 }
 
-- (void)_cancelIDSSentInvitations:(id)a3
+- (void)_cancelIDSSentInvitations:(id)invitations
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSInvitationManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  invitationsCopy = invitations;
+  workQueue = [(HMDIDSInvitationManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v30[0] = 0;
   v30[1] = v30;
@@ -1415,7 +1415,7 @@ void __142__HMDIDSInvitationManager_sendInvitationToDestination_expirationDate_d
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v4;
+  obj = invitationsCopy;
   v7 = [obj countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v7)
   {
@@ -1432,7 +1432,7 @@ void __142__HMDIDSInvitationManager_sendInvitationToDestination_expirationDate_d
         v9 = *(*(&v26 + 1) + 8 * i);
         dispatch_group_enter(v6);
         v10 = objc_autoreleasePoolPush();
-        v11 = self;
+        selfCopy = self;
         v12 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
@@ -1451,7 +1451,7 @@ void __142__HMDIDSInvitationManager_sendInvitationToDestination_expirationDate_d
         v23[2] = __53__HMDIDSInvitationManager__cancelIDSSentInvitations___block_invoke;
         v23[3] = &unk_278688518;
         v23[4] = v9;
-        v23[5] = v11;
+        v23[5] = selfCopy;
         v25 = v30;
         v24 = v6;
         [(IDSInvitationManager *)idsInvitationManager cancelInvitation:v9 serverAcknowledgedBlock:v23];
@@ -1463,7 +1463,7 @@ void __142__HMDIDSInvitationManager_sendInvitationToDestination_expirationDate_d
     while (v7);
   }
 
-  v15 = [(HMDIDSInvitationManager *)self workQueue];
+  workQueue2 = [(HMDIDSInvitationManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__HMDIDSInvitationManager__cancelIDSSentInvitations___block_invoke_34;
@@ -1472,7 +1472,7 @@ void __142__HMDIDSInvitationManager_sendInvitationToDestination_expirationDate_d
   v21 = obj;
   v22 = v30;
   v16 = obj;
-  dispatch_group_notify(v6, v15, block);
+  dispatch_group_notify(v6, workQueue2, block);
 
   _Block_object_dispose(v30, 8);
   v17 = *MEMORY[0x277D85DE8];
@@ -1550,12 +1550,12 @@ void __53__HMDIDSInvitationManager__cancelIDSSentInvitations___block_invoke_34(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)auditIDSSentInvitationsUsingCurrentInvitationUUIDs:(id)a3
+- (void)auditIDSSentInvitationsUsingCurrentInvitationUUIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1563,7 +1563,7 @@ void __53__HMDIDSInvitationManager__cancelIDSSentInvitations___block_invoke_34(u
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = dsCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Auditing existing IDSSentInvitations using allow set: %@", buf, 0x16u);
   }
 
@@ -1573,26 +1573,26 @@ void __53__HMDIDSInvitationManager__cancelIDSSentInvitations___block_invoke_34(u
   *&buf[16] = 0x3032000000;
   v19 = __Block_byref_object_copy__99142;
   v20 = __Block_byref_object_dispose__99143;
-  v21 = [MEMORY[0x277CBEB18] array];
-  v9 = [(IDSInvitationManager *)v6->_idsInvitationManager pendingInvitations];
+  array = [MEMORY[0x277CBEB18] array];
+  pendingInvitations = [(IDSInvitationManager *)selfCopy->_idsInvitationManager pendingInvitations];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__HMDIDSInvitationManager_auditIDSSentInvitationsUsingCurrentInvitationUUIDs___block_invoke;
   v14[3] = &unk_278677D88;
-  v10 = v4;
+  v10 = dsCopy;
   v15 = v10;
-  v16 = v6;
+  v16 = selfCopy;
   v17 = buf;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
+  [pendingInvitations hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
 
-  v11 = [(HMDIDSInvitationManager *)v6 workQueue];
+  workQueue = [(HMDIDSInvitationManager *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__HMDIDSInvitationManager_auditIDSSentInvitationsUsingCurrentInvitationUUIDs___block_invoke_31;
   block[3] = &unk_27868A688;
-  block[4] = v6;
+  block[4] = selfCopy;
   block[5] = buf;
-  dispatch_async(v11, block);
+  dispatch_async(workQueue, block);
 
   _Block_object_dispose(buf, 8);
   v12 = *MEMORY[0x277D85DE8];
@@ -1636,48 +1636,48 @@ void __78__HMDIDSInvitationManager_auditIDSSentInvitationsUsingCurrentInvitation
   [v1 _cancelIDSSentInvitations:v2];
 }
 
-- (id)_sendOptions:(BOOL)a3
+- (id)_sendOptions:(BOOL)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v30 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-  if (v3)
+  if (optionsCopy)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D188F8]];
     [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277D18638]];
   }
 
-  v7 = [(HMDIDSInvitationManager *)self homeManager];
-  v8 = [v7 appleAccountManager];
-  v9 = [v8 account];
-  v10 = [v9 primaryDisplayHandle];
-  v11 = [v10 URI];
-  v12 = [v11 prefixedURI];
+  homeManager = [(HMDIDSInvitationManager *)self homeManager];
+  appleAccountManager = [homeManager appleAccountManager];
+  account = [appleAccountManager account];
+  primaryDisplayHandle = [account primaryDisplayHandle];
+  v11 = [primaryDisplayHandle URI];
+  prefixedURI = [v11 prefixedURI];
 
-  if (v12)
+  if (prefixedURI)
   {
-    [v5 setObject:v12 forKeyedSubscript:*MEMORY[0x277D185E0]];
+    [v5 setObject:prefixedURI forKeyedSubscript:*MEMORY[0x277D185E0]];
     v13 = v5;
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [(HMDIDSInvitationManager *)v15 homeManager];
-      v19 = [v18 appleAccountManager];
-      v20 = [v19 account];
-      v21 = [v20 primaryHandle];
+      homeManager2 = [(HMDIDSInvitationManager *)selfCopy homeManager];
+      appleAccountManager2 = [homeManager2 appleAccountManager];
+      account2 = [appleAccountManager2 account];
+      primaryHandle = [account2 primaryHandle];
       v24 = 138543874;
       v25 = v17;
       v26 = 2160;
       v27 = 1752392040;
       v28 = 2112;
-      v29 = v21;
+      v29 = primaryHandle;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to extract fromID for current account's primary handle: %{mask.hash}@", &v24, 0x20u);
     }
 
@@ -1690,25 +1690,25 @@ void __78__HMDIDSInvitationManager_auditIDSSentInvitationsUsingCurrentInvitation
   return v13;
 }
 
-- (id)_receivedInvitationWithUniqueID:(id)a3
+- (id)_receivedInvitationWithUniqueID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(IDSInvitationManager *)self->_idsInvitationManager receivedInvitations];
+    receivedInvitations = [(IDSInvitationManager *)self->_idsInvitationManager receivedInvitations];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__HMDIDSInvitationManager__receivedInvitationWithUniqueID___block_invoke;
     v13[3] = &unk_278677D60;
-    v14 = v4;
-    v6 = [v5 na_firstObjectPassingTest:v13];
+    v14 = dCopy;
+    v6 = [receivedInvitations na_firstObjectPassingTest:v13];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1735,25 +1735,25 @@ uint64_t __59__HMDIDSInvitationManager__receivedInvitationWithUniqueID___block_i
   return v4;
 }
 
-- (id)_sentInvitationWithUniqueID:(id)a3
+- (id)_sentInvitationWithUniqueID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(IDSInvitationManager *)self->_idsInvitationManager pendingInvitations];
+    pendingInvitations = [(IDSInvitationManager *)self->_idsInvitationManager pendingInvitations];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __55__HMDIDSInvitationManager__sentInvitationWithUniqueID___block_invoke;
     v13[3] = &unk_278677D38;
-    v14 = v4;
-    v6 = [v5 na_firstObjectPassingTest:v13];
+    v14 = dCopy;
+    v6 = [pendingInvitations na_firstObjectPassingTest:v13];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1780,28 +1780,28 @@ uint64_t __55__HMDIDSInvitationManager__sentInvitationWithUniqueID___block_invok
   return v4;
 }
 
-- (HMDIDSInvitationManager)initWithHomeManager:(id)a3 messageDispatcher:(id)a4 queue:(id)a5 remoteAccountManager:(id)a6 idsInvitationManager:(id)a7
+- (HMDIDSInvitationManager)initWithHomeManager:(id)manager messageDispatcher:(id)dispatcher queue:(id)queue remoteAccountManager:(id)accountManager idsInvitationManager:(id)invitationManager
 {
   v67 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v49 = a6;
-  v48 = a7;
+  managerCopy = manager;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
+  accountManagerCopy = accountManager;
+  invitationManagerCopy = invitationManager;
   v60.receiver = self;
   v60.super_class = HMDIDSInvitationManager;
   v15 = [(HMDIDSInvitationManager *)&v60 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    v45 = v14;
-    v46 = v13;
-    v47 = v12;
-    objc_storeWeak(&v15->_homeManager, v12);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    v45 = queueCopy;
+    v46 = dispatcherCopy;
+    v47 = managerCopy;
+    objc_storeWeak(&v15->_homeManager, managerCopy);
+    objc_storeStrong(p_isa + 3, queue);
+    objc_storeStrong(p_isa + 2, dispatcher);
+    objc_storeStrong(p_isa + 4, accountManager);
+    objc_storeStrong(p_isa + 5, invitationManager);
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -1828,12 +1828,12 @@ uint64_t __55__HMDIDSInvitationManager__sentInvitationWithUniqueID___block_invok
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
             v25 = HMFGetLogIdentifier();
-            v26 = [v21 uniqueID];
-            v27 = [v26 UUIDString];
+            uniqueID = [v21 uniqueID];
+            uUIDString = [uniqueID UUIDString];
             *buf = 138543618;
             v63 = v25;
             v64 = 2112;
-            v65 = v27;
+            v65 = uUIDString;
             _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Found pending sent invite: %@", buf, 0x16u);
           }
 
@@ -1872,12 +1872,12 @@ uint64_t __55__HMDIDSInvitationManager__sentInvitationWithUniqueID___block_invok
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
             v36 = HMFGetLogIdentifier();
-            v37 = [v32 uniqueID];
-            v38 = [v37 UUIDString];
+            uniqueID2 = [v32 uniqueID];
+            uUIDString2 = [uniqueID2 UUIDString];
             *buf = 138543618;
             v63 = v36;
             v64 = 2112;
-            v65 = v38;
+            v65 = uUIDString2;
             _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_INFO, "%{public}@Found pending received invite: %@", buf, 0x16u);
           }
 
@@ -1891,9 +1891,9 @@ uint64_t __55__HMDIDSInvitationManager__sentInvitationWithUniqueID___block_invok
     }
 
     [p_isa[5] setDelegate:p_isa queue:p_isa[3]];
-    v13 = v46;
-    v12 = v47;
-    v14 = v45;
+    dispatcherCopy = v46;
+    managerCopy = v47;
+    queueCopy = v45;
   }
 
   v39 = objc_autoreleasePoolPush();
@@ -1912,15 +1912,15 @@ uint64_t __55__HMDIDSInvitationManager__sentInvitationWithUniqueID___block_invok
   return v40;
 }
 
-- (HMDIDSInvitationManager)initWithHomeManager:(id)a3 messageDispatcher:(id)a4 queue:(id)a5 remoteAccountManager:(id)a6
+- (HMDIDSInvitationManager)initWithHomeManager:(id)manager messageDispatcher:(id)dispatcher queue:(id)queue remoteAccountManager:(id)accountManager
 {
   v10 = MEMORY[0x277D18730];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  accountManagerCopy = accountManager;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  managerCopy = manager;
   v15 = [[v10 alloc] initWithServiceIdentifier:@"com.apple.private.alloy.home.invite"];
-  v16 = [(HMDIDSInvitationManager *)self initWithHomeManager:v14 messageDispatcher:v13 queue:v12 remoteAccountManager:v11 idsInvitationManager:v15];
+  v16 = [(HMDIDSInvitationManager *)self initWithHomeManager:managerCopy messageDispatcher:dispatcherCopy queue:queueCopy remoteAccountManager:accountManagerCopy idsInvitationManager:v15];
 
   return v16;
 }

@@ -1,53 +1,53 @@
 @interface CNMedicalIDAction
 - (void)dismissMedicalID;
-- (void)presentMedicalIDViewControllerWithSender:(id)a3;
+- (void)presentMedicalIDViewControllerWithSender:(id)sender;
 @end
 
 @implementation CNMedicalIDAction
 
 - (void)dismissMedicalID
 {
-  v3 = [(CNContactAction *)self delegate];
-  [v3 actionDidFinish:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 
-  v4 = [(CNContactAction *)self delegate];
-  v5 = [(CNMedicalIDAction *)self medicalIDNavigationController];
-  [v4 action:self dismissViewController:v5 sender:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  medicalIDNavigationController = [(CNMedicalIDAction *)self medicalIDNavigationController];
+  [delegate2 action:self dismissViewController:medicalIDNavigationController sender:self];
 
   [(CNMedicalIDAction *)self setMedicalIDNavigationController:0];
 }
 
-- (void)presentMedicalIDViewControllerWithSender:(id)a3
+- (void)presentMedicalIDViewControllerWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(objc_class *)getMIUIDisplayConfigurationClass() standardConfiguration];
+  senderCopy = sender;
+  standardConfiguration = [(objc_class *)getMIUIDisplayConfigurationClass() standardConfiguration];
   if ([(CNMedicalIDAction *)self medicalIDActionType]!= 1 && [(CNMedicalIDAction *)self medicalIDActionType]!= 3)
   {
-    [v5 setIsEditingAvailable:0];
+    [standardConfiguration setIsEditingAvailable:0];
   }
 
   if ([(CNMedicalIDAction *)self medicalIDActionType]== 3)
   {
-    [v5 setIsDeletionAvailable:1];
+    [standardConfiguration setIsDeletionAvailable:1];
   }
 
-  v6 = [(CNMedicalIDAction *)self healthStoreManager];
-  v7 = [v6 healthStore];
+  healthStoreManager = [(CNMedicalIDAction *)self healthStoreManager];
+  healthStore = [healthStoreManager healthStore];
 
   objc_initWeak(&location, self);
-  v8 = [(CNMedicalIDAction *)self healthStoreManager];
+  healthStoreManager2 = [(CNMedicalIDAction *)self healthStoreManager];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__CNMedicalIDAction_presentMedicalIDViewControllerWithSender___block_invoke;
   v13[3] = &unk_1E74E2548;
   objc_copyWeak(&v17, &location);
-  v9 = v7;
+  v9 = healthStore;
   v14 = v9;
-  v10 = v5;
+  v10 = standardConfiguration;
   v15 = v10;
-  v11 = v4;
+  v11 = senderCopy;
   v16 = v11;
-  v12 = [v8 registerMedicalIDDataHandler:v13];
+  v12 = [healthStoreManager2 registerMedicalIDDataHandler:v13];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);

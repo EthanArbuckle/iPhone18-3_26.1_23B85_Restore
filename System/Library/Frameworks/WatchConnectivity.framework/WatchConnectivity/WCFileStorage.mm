@@ -1,37 +1,37 @@
 @interface WCFileStorage
 + (id)sharedInstance;
-- (BOOL)removeItemAtURL:(id)a3 numberOfRetries:(unint64_t)a4 error:(id *)a5;
+- (BOOL)removeItemAtURL:(id)l numberOfRetries:(unint64_t)retries error:(id *)error;
 - (WCFileStorage)init;
-- (id)appContextFolderURL:(BOOL)a3;
-- (id)appendPathForFileTransfer:(id)a3 toPath:(id)a4;
+- (id)appContextFolderURL:(BOOL)l;
+- (id)appendPathForFileTransfer:(id)transfer toPath:(id)path;
 - (id)homeDirectoryURL;
 - (id)loadAppContextDataFromInbox;
-- (id)loadAppContextReceived:(BOOL)a3;
+- (id)loadAppContextReceived:(BOOL)received;
 - (id)loadOutstandingFileTransfers;
-- (id)loadOutstandingUserInfoTransfersAndComplicationUserInfo:(id *)a3;
+- (id)loadOutstandingUserInfoTransfersAndComplicationUserInfo:(id *)info;
 - (id)localAppContextFolderURL;
 - (id)outgoingFileTransferPath;
-- (id)persistOutgoingUserInfoTransfer:(id)a3;
+- (id)persistOutgoingUserInfoTransfer:(id)transfer;
 - (id)receivedAppContextFolderURL;
-- (void)cleanUpOldPairingIDFolderInFolder:(id)a3 pairedDevicesPairingIDs:(id)a4;
-- (void)cleanUpOldPairingIDFoldersWithPairedDevicesPairingIDs:(id)a3;
-- (void)cleanUpWatchContentDirectoryWithCurrentAppInstallationID:(id)a3;
-- (void)cleanupSessionFileFromInbox:(id)a3;
-- (void)createWatchDirectoryIfNeeded:(id)a3;
+- (void)cleanUpOldPairingIDFolderInFolder:(id)folder pairedDevicesPairingIDs:(id)ds;
+- (void)cleanUpOldPairingIDFoldersWithPairedDevicesPairingIDs:(id)ds;
+- (void)cleanUpWatchContentDirectoryWithCurrentAppInstallationID:(id)d;
+- (void)cleanupSessionFileFromInbox:(id)inbox;
+- (void)createWatchDirectoryIfNeeded:(id)needed;
 - (void)deleteAppContextDataFromInbox;
-- (void)deleteFileFolderForSessionFileFromInbox:(id)a3;
-- (void)deleteOutstandingFileTransfer:(id)a3;
-- (void)deleteOutstandingUserInfoTransfer:(id)a3;
-- (void)deleteRelatedMetadataForSessionFileFromInbox:(id)a3;
-- (void)deleteUserInfoTransferFromInbox:(id)a3;
-- (void)enumerateFileTransferResultsWithBlock:(id)a3;
-- (void)enumerateIncomingFilesWithBlock:(id)a3;
-- (void)enumerateIncomingUserInfosWithBlock:(id)a3;
-- (void)enumerateUserInfoResultsWithBlock:(id)a3;
+- (void)deleteFileFolderForSessionFileFromInbox:(id)inbox;
+- (void)deleteOutstandingFileTransfer:(id)transfer;
+- (void)deleteOutstandingUserInfoTransfer:(id)transfer;
+- (void)deleteRelatedMetadataForSessionFileFromInbox:(id)inbox;
+- (void)deleteUserInfoTransferFromInbox:(id)inbox;
+- (void)enumerateFileTransferResultsWithBlock:(id)block;
+- (void)enumerateIncomingFilesWithBlock:(id)block;
+- (void)enumerateIncomingUserInfosWithBlock:(id)block;
+- (void)enumerateUserInfoResultsWithBlock:(id)block;
 - (void)loadAppContextDataFromInbox;
-- (void)persistOutgoingFileTransfer:(id)a3;
+- (void)persistOutgoingFileTransfer:(id)transfer;
 - (void)resetIndexes;
-- (void)setPairingID:(id)a3;
+- (void)setPairingID:(id)d;
 @end
 
 @implementation WCFileStorage
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __31__WCFileStorage_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -76,12 +76,12 @@ uint64_t __31__WCFileStorage_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setPairingID:(id)a3
+- (void)setPairingID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if (([(NSString *)self->_pairingID isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dCopy copy];
     pairingID = self->_pairingID;
     self->_pairingID = v4;
 
@@ -91,20 +91,20 @@ uint64_t __31__WCFileStorage_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)resetIndexes
 {
-  v3 = [(WCFileStorage *)self fileIndex];
-  [v3 invalidate];
+  fileIndex = [(WCFileStorage *)self fileIndex];
+  [fileIndex invalidate];
 
   [(WCFileStorage *)self setFileIndex:0];
-  v4 = [(WCFileStorage *)self fileResultsIndex];
-  [v4 invalidate];
+  fileResultsIndex = [(WCFileStorage *)self fileResultsIndex];
+  [fileResultsIndex invalidate];
 
   [(WCFileStorage *)self setFileResultsIndex:0];
-  v5 = [(WCFileStorage *)self userInfoIndex];
-  [v5 invalidate];
+  userInfoIndex = [(WCFileStorage *)self userInfoIndex];
+  [userInfoIndex invalidate];
 
   [(WCFileStorage *)self setUserInfoIndex:0];
-  v6 = [(WCFileStorage *)self userInfoResultsIndex];
-  [v6 invalidate];
+  userInfoResultsIndex = [(WCFileStorage *)self userInfoResultsIndex];
+  [userInfoResultsIndex invalidate];
 
   [(WCFileStorage *)self setUserInfoResultsIndex:0];
 }
@@ -113,29 +113,29 @@ uint64_t __31__WCFileStorage_sharedInstance__block_invoke(uint64_t a1)
 {
   v35[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(WCFileStorage *)self outgoingFileTransferPath];
-  v4 = [v2 fileURLWithPath:v3 isDirectory:1];
+  outgoingFileTransferPath = [(WCFileStorage *)self outgoingFileTransferPath];
+  v4 = [v2 fileURLWithPath:outgoingFileTransferPath isDirectory:1];
 
   v35[0] = *MEMORY[0x277CBE8A8];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 enumeratorAtURL:v4 includingPropertiesForKeys:v5 options:4 errorHandler:&__block_literal_global_3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager enumeratorAtURL:v4 includingPropertiesForKeys:v5 options:4 errorHandler:&__block_literal_global_3];
 
   v8 = objc_opt_new();
-  v9 = [v7 nextObject];
-  if (v9)
+  nextObject = [v7 nextObject];
+  if (nextObject)
   {
-    v10 = v9;
+    v10 = nextObject;
     do
     {
-      v11 = [v10 lastPathComponent];
-      v12 = [v11 isEqual:@"file-transfer-data"];
+      lastPathComponent = [v10 lastPathComponent];
+      v12 = [lastPathComponent isEqual:@"file-transfer-data"];
 
       if (v12)
       {
         v13 = MEMORY[0x277CBEA90];
-        v14 = [v10 path];
-        v15 = [v13 dataWithContentsOfFile:v14];
+        path = [v10 path];
+        v15 = [v13 dataWithContentsOfFile:path];
 
         if (v15)
         {
@@ -146,25 +146,25 @@ uint64_t __31__WCFileStorage_sharedInstance__block_invoke(uint64_t a1)
           v19 = v28;
           if (v18)
           {
-            v20 = [v18 transferIdentifier];
-            [v8 setObject:v18 forKeyedSubscript:v20];
+            transferIdentifier = [v18 transferIdentifier];
+            [v8 setObject:v18 forKeyedSubscript:transferIdentifier];
           }
 
           else
           {
-            v20 = wc_log();
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+            transferIdentifier = wc_log();
+            if (os_log_type_enabled(transferIdentifier, OS_LOG_TYPE_ERROR))
             {
-              v27 = [v10 path];
+              path2 = [v10 path];
               v25 = v19;
               v26 = NSPrintF();
               *buf = 136446722;
               v30 = "[WCFileStorage loadOutstandingFileTransfers]";
               v31 = 2114;
-              v32 = v27;
+              v32 = path2;
               v33 = 2114;
               v34 = v26;
-              _os_log_error_impl(&dword_23B2FA000, v20, OS_LOG_TYPE_ERROR, "%{public}s could not unarchive file at path %{public}@ due to %{public}@", buf, 0x20u);
+              _os_log_error_impl(&dword_23B2FA000, transferIdentifier, OS_LOG_TYPE_ERROR, "%{public}s could not unarchive file at path %{public}@ due to %{public}@", buf, 0x20u);
             }
           }
         }
@@ -174,22 +174,22 @@ uint64_t __31__WCFileStorage_sharedInstance__block_invoke(uint64_t a1)
           v19 = wc_log();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v21 = [v10 path];
+            path3 = [v10 path];
             *buf = 136446466;
             v30 = "[WCFileStorage loadOutstandingFileTransfers]";
             v31 = 2114;
-            v32 = v21;
+            v32 = path3;
             _os_log_error_impl(&dword_23B2FA000, v19, OS_LOG_TYPE_ERROR, "%{public}s could not find file at path %{public}@", buf, 0x16u);
           }
         }
       }
 
-      v22 = [v7 nextObject];
+      nextObject2 = [v7 nextObject];
 
-      v10 = v22;
+      v10 = nextObject2;
     }
 
-    while (v22);
+    while (nextObject2);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -212,15 +212,15 @@ uint64_t __45__WCFileStorage_loadOutstandingFileTransfers__block_invoke(uint64_t
   return 1;
 }
 
-- (void)persistOutgoingFileTransfer:(id)a3
+- (void)persistOutgoingFileTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [(WCFileStorage *)self outgoingFileTransferPath];
-  v6 = [(WCFileStorage *)self appendPathForFileTransfer:v4 toPath:v5];
+  transferCopy = transfer;
+  outgoingFileTransferPath = [(WCFileStorage *)self outgoingFileTransferPath];
+  v6 = [(WCFileStorage *)self appendPathForFileTransfer:transferCopy toPath:outgoingFileTransferPath];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = 0;
-  [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v16];
+  [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v16];
   v8 = v16;
 
   if (v8)
@@ -235,7 +235,7 @@ uint64_t __45__WCFileStorage_loadOutstandingFileTransfers__block_invoke(uint64_t
   else
   {
     v15 = 0;
-    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v15];
+    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:transferCopy requiringSecureCoding:1 error:&v15];
     v8 = v15;
     if (v9)
     {
@@ -266,15 +266,15 @@ uint64_t __45__WCFileStorage_loadOutstandingFileTransfers__block_invoke(uint64_t
   }
 }
 
-- (void)deleteOutstandingFileTransfer:(id)a3
+- (void)deleteOutstandingFileTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [(WCFileStorage *)self outgoingFileTransferPath];
-  v6 = [(WCFileStorage *)self appendPathForFileTransfer:v4 toPath:v5];
+  transferCopy = transfer;
+  outgoingFileTransferPath = [(WCFileStorage *)self outgoingFileTransferPath];
+  v6 = [(WCFileStorage *)self appendPathForFileTransfer:transferCopy toPath:outgoingFileTransferPath];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  v8 = [v7 removeItemAtPath:v6 error:&v11];
+  v8 = [defaultManager removeItemAtPath:v6 error:&v11];
   v9 = v11;
 
   if ((v8 & 1) == 0 && [v9 code] != -1100 && objc_msgSend(v9, "code") != 260 && objc_msgSend(v9, "code") != 4)
@@ -287,19 +287,19 @@ uint64_t __45__WCFileStorage_loadOutstandingFileTransfers__block_invoke(uint64_t
   }
 }
 
-- (id)persistOutgoingUserInfoTransfer:(id)a3
+- (id)persistOutgoingUserInfoTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v7 = WCUserInfoTransfersInContainer(v5, v6);
+  transferCopy = transfer;
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v7 = WCUserInfoTransfersInContainer(homeDirectoryURL, pairingID);
 
-  v8 = [v4 transferIdentifier];
-  v9 = [v7 URLByAppendingPathComponent:v8 isDirectory:1];
+  transferIdentifier = [transferCopy transferIdentifier];
+  v9 = [v7 URLByAppendingPathComponent:transferIdentifier isDirectory:1];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = 0;
-  LODWORD(v7) = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v25];
+  LODWORD(v7) = [defaultManager createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v25];
   v11 = v25;
 
   if (v7)
@@ -307,7 +307,7 @@ uint64_t __45__WCFileStorage_loadOutstandingFileTransfers__block_invoke(uint64_t
     v12 = [v9 URLByAppendingPathComponent:@"userinfo-transfer-object-data" isDirectory:0];
 
     v24 = 0;
-    v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v24];
+    v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:transferCopy requiringSecureCoding:1 error:&v24];
     v14 = v24;
     v11 = v14;
     if (v13)
@@ -318,8 +318,8 @@ uint64_t __45__WCFileStorage_loadOutstandingFileTransfers__block_invoke(uint64_t
 
       if (!v15)
       {
-        v18 = wc_log();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        protobufData = wc_log();
+        if (os_log_type_enabled(protobufData, OS_LOG_TYPE_ERROR))
         {
           [WCFileStorage persistOutgoingUserInfoTransfer:];
         }
@@ -330,9 +330,9 @@ uint64_t __45__WCFileStorage_loadOutstandingFileTransfers__block_invoke(uint64_t
       }
 
       v17 = [v9 URLByAppendingPathComponent:@"userinfo-transfer-wire-data" isDirectory:0];
-      v18 = [v4 protobufData];
+      protobufData = [transferCopy protobufData];
       v22 = v16;
-      v19 = [v18 writeToURL:v17 options:1073741825 error:&v22];
+      v19 = [protobufData writeToURL:v17 options:1073741825 error:&v22];
       v11 = v22;
 
       if (v19)
@@ -351,8 +351,8 @@ LABEL_17:
 
     else
     {
-      v18 = wc_log();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      protobufData = wc_log();
+      if (os_log_type_enabled(protobufData, OS_LOG_TYPE_ERROR))
       {
         [WCFileStorage persistOutgoingUserInfoTransfer:];
       }
@@ -374,34 +374,34 @@ LABEL_18:
   return v17;
 }
 
-- (id)loadOutstandingUserInfoTransfersAndComplicationUserInfo:(id *)a3
+- (id)loadOutstandingUserInfoTransfersAndComplicationUserInfo:(id *)info
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v7 = WCUserInfoTransfersInContainer(v5, v6);
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v7 = WCUserInfoTransfersInContainer(homeDirectoryURL, pairingID);
 
   v42[0] = *MEMORY[0x277CBE8A8];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v34 = v7;
-  v10 = [v9 enumeratorAtURL:v7 includingPropertiesForKeys:v8 options:4 errorHandler:&__block_literal_global_12];
+  v10 = [defaultManager enumeratorAtURL:v7 includingPropertiesForKeys:v8 options:4 errorHandler:&__block_literal_global_12];
 
   v11 = objc_opt_new();
-  v12 = [v10 nextObject];
-  if (v12)
+  nextObject = [v10 nextObject];
+  if (nextObject)
   {
-    v13 = v12;
+    v13 = nextObject;
     do
     {
-      v14 = [v13 lastPathComponent];
-      v15 = [v14 isEqual:@"userinfo-transfer-object-data"];
+      lastPathComponent = [v13 lastPathComponent];
+      v15 = [lastPathComponent isEqual:@"userinfo-transfer-object-data"];
 
       if (v15)
       {
         v16 = MEMORY[0x277CBEA90];
-        v17 = [v13 path];
-        v18 = [v16 dataWithContentsOfFile:v17];
+        path = [v13 path];
+        v18 = [v16 dataWithContentsOfFile:path];
 
         if (v18)
         {
@@ -412,14 +412,14 @@ LABEL_18:
           v22 = v35;
           if (v21)
           {
-            v23 = [v21 transferIdentifier];
-            [v11 setObject:v21 forKeyedSubscript:v23];
+            transferIdentifier = [v21 transferIdentifier];
+            [v11 setObject:v21 forKeyedSubscript:transferIdentifier];
 
-            v24 = [v21 isCurrentComplicationInfo];
-            if (a3 && v24)
+            isCurrentComplicationInfo = [v21 isCurrentComplicationInfo];
+            if (info && isCurrentComplicationInfo)
             {
               v25 = v21;
-              *a3 = v21;
+              *info = v21;
             }
           }
 
@@ -428,13 +428,13 @@ LABEL_18:
             v27 = wc_log();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
             {
-              v33 = [v13 path];
+              path2 = [v13 path];
               v31 = v22;
               v32 = NSPrintF();
               *buf = 136446722;
               v37 = "[WCFileStorage loadOutstandingUserInfoTransfersAndComplicationUserInfo:]";
               v38 = 2114;
-              v39 = v33;
+              v39 = path2;
               v40 = 2114;
               v41 = v32;
               _os_log_error_impl(&dword_23B2FA000, v27, OS_LOG_TYPE_ERROR, "%{public}s could not unarchive user info at path %{public}@ due to %{public}@", buf, 0x20u);
@@ -447,22 +447,22 @@ LABEL_18:
           v22 = wc_log();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v26 = [v13 path];
+            path3 = [v13 path];
             *buf = 136446466;
             v37 = "[WCFileStorage loadOutstandingUserInfoTransfersAndComplicationUserInfo:]";
             v38 = 2114;
-            v39 = v26;
+            v39 = path3;
             _os_log_error_impl(&dword_23B2FA000, v22, OS_LOG_TYPE_ERROR, "%{public}s could not find file at path %{public}@", buf, 0x16u);
           }
         }
       }
 
-      v28 = [v10 nextObject];
+      nextObject2 = [v10 nextObject];
 
-      v13 = v28;
+      v13 = nextObject2;
     }
 
-    while (v28);
+    while (nextObject2);
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -485,25 +485,25 @@ uint64_t __73__WCFileStorage_loadOutstandingUserInfoTransfersAndComplicationUser
   return 1;
 }
 
-- (void)deleteOutstandingUserInfoTransfer:(id)a3
+- (void)deleteOutstandingUserInfoTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [(WCFileStorage *)self pairingID];
+  transferCopy = transfer;
+  pairingID = [(WCFileStorage *)self pairingID];
 
-  if (v5)
+  if (pairingID)
   {
-    v6 = [(WCFileStorage *)self homeDirectoryURL];
-    v7 = [(WCFileStorage *)self pairingID];
-    v8 = WCUserInfoTransfersInContainer(v6, v7);
+    homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+    pairingID2 = [(WCFileStorage *)self pairingID];
+    v8 = WCUserInfoTransfersInContainer(homeDirectoryURL, pairingID2);
 
-    v9 = [v4 transferIdentifier];
-    v10 = [v8 URLByAppendingPathComponent:v9 isDirectory:1];
+    transferIdentifier = [transferCopy transferIdentifier];
+    v10 = [v8 URLByAppendingPathComponent:transferIdentifier isDirectory:1];
 
     v14 = 0;
-    LOBYTE(v9) = [(WCFileStorage *)self removeItemAtURL:v10 numberOfRetries:5 error:&v14];
+    LOBYTE(transferIdentifier) = [(WCFileStorage *)self removeItemAtURL:v10 numberOfRetries:5 error:&v14];
     v11 = v14;
     v12 = v11;
-    if ((v9 & 1) == 0 && [v11 code] != -1100 && objc_msgSend(v12, "code") != 260 && objc_msgSend(v12, "code") != 4)
+    if ((transferIdentifier & 1) == 0 && [v11 code] != -1100 && objc_msgSend(v12, "code") != 260 && objc_msgSend(v12, "code") != 4)
     {
       v13 = wc_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -514,36 +514,36 @@ uint64_t __73__WCFileStorage_loadOutstandingUserInfoTransfersAndComplicationUser
   }
 }
 
-- (void)enumerateFileTransferResultsWithBlock:(id)a3
+- (void)enumerateFileTransferResultsWithBlock:(id)block
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v7 = WCFileTransfersURLInContainer(v5, v6);
+  blockCopy = block;
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v7 = WCFileTransfersURLInContainer(homeDirectoryURL, pairingID);
 
   v8 = v7;
-  v9 = [(WCFileStorage *)self fileResultsIndex];
+  fileResultsIndex = [(WCFileStorage *)self fileResultsIndex];
 
-  if (!v9)
+  if (!fileResultsIndex)
   {
     v10 = [[WCContentIndex alloc] initWithContainingFolder:v7];
     [(WCFileStorage *)self setFileResultsIndex:v10];
   }
 
-  v11 = [(WCFileStorage *)self fileResultsIndex];
-  v12 = [v11 index];
+  fileResultsIndex2 = [(WCFileStorage *)self fileResultsIndex];
+  index = [fileResultsIndex2 index];
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v12;
+  obj = index;
   v48 = [obj countByEnumeratingWithState:&v56 objects:v67 count:16];
   if (v48)
   {
     v47 = *v57;
-    v43 = v4;
+    v43 = blockCopy;
     v44 = v7;
     do
     {
@@ -570,9 +570,9 @@ uint64_t __73__WCFileStorage_loadOutstandingUserInfoTransfersAndComplicationUser
         v17 = [v16 URLByAppendingPathComponent:@"file-transfer-result" isDirectory:0];
 
         v18 = MEMORY[0x277CBEA90];
-        v19 = [v17 path];
+        path = [v17 path];
         v55 = 0;
-        v20 = [v18 dataWithContentsOfFile:v19 options:2 error:&v55];
+        v20 = [v18 dataWithContentsOfFile:path options:2 error:&v55];
         v21 = v55;
 
         if (v20)
@@ -590,14 +590,14 @@ uint64_t __73__WCFileStorage_loadOutstandingUserInfoTransfersAndComplicationUser
           if (v25)
           {
             v46 = v25;
-            v26 = [v17 URLByDeletingLastPathComponent];
-            v27 = [v26 URLByAppendingPathComponent:@"file-transfer-data" isDirectory:0];
+            uRLByDeletingLastPathComponent = [v17 URLByDeletingLastPathComponent];
+            v27 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"file-transfer-data" isDirectory:0];
 
             v28 = MEMORY[0x277CBEA90];
             log = v27;
-            v29 = [v27 path];
+            path2 = [v27 path];
             v53 = 0;
-            v30 = [v28 dataWithContentsOfFile:v29 options:2 error:&v53];
+            v30 = [v28 dataWithContentsOfFile:path2 options:2 error:&v53];
             v21 = v53;
 
             v31 = v14;
@@ -637,9 +637,9 @@ uint64_t __73__WCFileStorage_loadOutstandingUserInfoTransfersAndComplicationUser
 
             else
             {
-              v36 = [v17 URLByDeletingLastPathComponent];
+              uRLByDeletingLastPathComponent2 = [v17 URLByDeletingLastPathComponent];
 
-              WCDeleteItemAtURL(v36);
+              WCDeleteItemAtURL(uRLByDeletingLastPathComponent2);
               v35 = wc_log();
               if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
               {
@@ -647,12 +647,12 @@ uint64_t __73__WCFileStorage_loadOutstandingUserInfoTransfersAndComplicationUser
               }
 
               v34 = 0;
-              v17 = v36;
+              v17 = uRLByDeletingLastPathComponent2;
 LABEL_24:
               v8 = v44;
             }
 
-            v4 = v43;
+            blockCopy = v43;
             v25 = v46;
           }
 
@@ -689,11 +689,11 @@ LABEL_24:
         v24 = wc_log();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v38 = [v17 path];
+          path3 = [v17 path];
           *buf = 136446466;
           v61 = "[WCFileStorage enumerateFileTransferResultsWithBlock:]";
           v62 = 2114;
-          v63 = v38;
+          v63 = path3;
           _os_log_error_impl(&dword_23B2FA000, v24, OS_LOG_TYPE_ERROR, "%{public}s could not load file data at path %{public}@", buf, 0x16u);
         }
 
@@ -701,7 +701,7 @@ LABEL_24:
 LABEL_30:
 
         buf[0] = 0;
-        (v4)[2](v4, v34, v31, buf);
+        (blockCopy)[2](blockCopy, v34, v31, buf);
         v37 = buf[0];
 
         if (v37)
@@ -725,7 +725,7 @@ LABEL_35:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadAppContextReceived:(BOOL)a3
+- (id)loadAppContextReceived:(BOOL)received
 {
   v3 = [(WCFileStorage *)self appContextFolderURL:?];
   v4 = [v3 URLByAppendingPathComponent:@"context" isDirectory:0];
@@ -780,9 +780,9 @@ LABEL_13:
 
 - (id)loadAppContextDataFromInbox
 {
-  v3 = [(WCFileStorage *)self homeDirectoryURL];
-  v4 = [(WCFileStorage *)self pairingID];
-  v5 = WCInboxAppContextFolderURLInContainer(v3, v4);
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v5 = WCInboxAppContextFolderURLInContainer(homeDirectoryURL, pairingID);
 
   v6 = [v5 URLByAppendingPathComponent:@"context" isDirectory:0];
   v12 = 0;
@@ -805,7 +805,7 @@ LABEL_13:
 {
   OUTLINED_FUNCTION_17();
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [v0 path];
+  path = [v0 path];
   v2 = NSPrintF();
   OUTLINED_FUNCTION_7();
   OUTLINED_FUNCTION_8_0();
@@ -815,30 +815,30 @@ LABEL_13:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateIncomingFilesWithBlock:(id)a3
+- (void)enumerateIncomingFilesWithBlock:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v33 = WCSessionFilesURLInContainer(v5, v6);
+  blockCopy = block;
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v33 = WCSessionFilesURLInContainer(homeDirectoryURL, pairingID);
 
-  v7 = [(WCFileStorage *)self fileIndex];
+  fileIndex = [(WCFileStorage *)self fileIndex];
 
-  if (!v7)
+  if (!fileIndex)
   {
     v8 = [[WCContentIndex alloc] initWithContainingFolder:v33];
     [(WCFileStorage *)self setFileIndex:v8];
   }
 
-  v9 = [(WCFileStorage *)self fileIndex];
-  v10 = [v9 index];
+  fileIndex2 = [(WCFileStorage *)self fileIndex];
+  index = [fileIndex2 index];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v10;
+  obj = index;
   v11 = [obj countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v11)
   {
@@ -869,9 +869,9 @@ LABEL_13:
         v17 = [v16 URLByAppendingPathComponent:@"session-file-data" isDirectory:0];
 
         v18 = MEMORY[0x277CBEA90];
-        v19 = [v17 path];
+        path = [v17 path];
         v35 = 0;
-        v20 = [v18 dataWithContentsOfFile:v19 options:2 error:&v35];
+        v20 = [v18 dataWithContentsOfFile:path options:2 error:&v35];
         v21 = v35;
 
         if (v20)
@@ -906,12 +906,12 @@ LABEL_13:
           v25 = wc_log();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v28 = [v17 path];
+            path2 = [v17 path];
             v30 = NSPrintF();
             *buf = 136446722;
             v41 = "[WCFileStorage enumerateIncomingFilesWithBlock:]";
             v42 = 2114;
-            v43 = v28;
+            v43 = path2;
             v44 = 2114;
             v45 = v30;
             _os_log_error_impl(&dword_23B2FA000, v25, OS_LOG_TYPE_ERROR, "%{public}s could not load file data at path %{public}@ due to %{public}@", buf, 0x20u);
@@ -921,7 +921,7 @@ LABEL_13:
         v24 = 0;
 LABEL_17:
         buf[0] = 0;
-        (v4)[2](v4, v24, v14, buf);
+        (blockCopy)[2](blockCopy, v24, v14, buf);
         v27 = buf[0];
 
         if (v27)
@@ -944,40 +944,40 @@ LABEL_20:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupSessionFileFromInbox:(id)a3
+- (void)cleanupSessionFileFromInbox:(id)inbox
 {
-  v4 = a3;
-  [(WCFileStorage *)self deleteRelatedMetadataForSessionFileFromInbox:v4];
-  [(WCFileStorage *)self deleteFileFolderForSessionFileFromInbox:v4];
+  inboxCopy = inbox;
+  [(WCFileStorage *)self deleteRelatedMetadataForSessionFileFromInbox:inboxCopy];
+  [(WCFileStorage *)self deleteFileFolderForSessionFileFromInbox:inboxCopy];
 }
 
-- (void)deleteRelatedMetadataForSessionFileFromInbox:(id)a3
+- (void)deleteRelatedMetadataForSessionFileFromInbox:(id)inbox
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v7 = WCSessionFilesURLInContainer(v5, v6);
+  inboxCopy = inbox;
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v7 = WCSessionFilesURLInContainer(homeDirectoryURL, pairingID);
 
-  v8 = [v4 fileIdentifier];
-  v9 = [v7 URLByAppendingPathComponent:v8 isDirectory:1];
+  fileIdentifier = [inboxCopy fileIdentifier];
+  v9 = [v7 URLByAppendingPathComponent:fileIdentifier isDirectory:1];
 
   v15 = 0;
-  LOBYTE(v8) = [(WCFileStorage *)self removeItemAtURL:v9 numberOfRetries:5 error:&v15];
+  LOBYTE(fileIdentifier) = [(WCFileStorage *)self removeItemAtURL:v9 numberOfRetries:5 error:&v15];
   v10 = v15;
-  if ((v8 & 1) == 0)
+  if ((fileIdentifier & 1) == 0)
   {
     v11 = wc_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v9 path];
+      path = [v9 path];
       v14 = NSPrintF();
       *buf = 136446978;
       v17 = "[WCFileStorage deleteRelatedMetadataForSessionFileFromInbox:]";
       v18 = 2114;
-      v19 = v4;
+      v19 = inboxCopy;
       v20 = 2114;
-      v21 = v13;
+      v21 = path;
       v22 = 2114;
       v23 = v14;
       _os_log_error_impl(&dword_23B2FA000, v11, OS_LOG_TYPE_ERROR, "%{public}s couldn't delete persistent session file %{public}@ %{public}@ %{public}@", buf, 0x2Au);
@@ -987,33 +987,33 @@ LABEL_20:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteFileFolderForSessionFileFromInbox:(id)a3
+- (void)deleteFileFolderForSessionFileFromInbox:(id)inbox
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v7 = WCTransferredFilesURLInContainer(v5, v6);
+  inboxCopy = inbox;
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v7 = WCTransferredFilesURLInContainer(homeDirectoryURL, pairingID);
 
-  v8 = [v4 fileIdentifier];
-  v9 = [v7 URLByAppendingPathComponent:v8 isDirectory:1];
+  fileIdentifier = [inboxCopy fileIdentifier];
+  v9 = [v7 URLByAppendingPathComponent:fileIdentifier isDirectory:1];
 
   v15 = 0;
-  LOBYTE(v8) = [(WCFileStorage *)self removeItemAtURL:v9 numberOfRetries:5 error:&v15];
+  LOBYTE(fileIdentifier) = [(WCFileStorage *)self removeItemAtURL:v9 numberOfRetries:5 error:&v15];
   v10 = v15;
-  if ((v8 & 1) == 0)
+  if ((fileIdentifier & 1) == 0)
   {
     v11 = wc_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v9 path];
+      path = [v9 path];
       v14 = NSPrintF();
       *buf = 136446978;
       v17 = "[WCFileStorage deleteFileFolderForSessionFileFromInbox:]";
       v18 = 2114;
-      v19 = v4;
+      v19 = inboxCopy;
       v20 = 2114;
-      v21 = v13;
+      v21 = path;
       v22 = 2114;
       v23 = v14;
       _os_log_error_impl(&dword_23B2FA000, v11, OS_LOG_TYPE_ERROR, "%{public}s couldn't delete file folder %{public}@ %{public}@ %{public}@", buf, 0x2Au);
@@ -1023,30 +1023,30 @@ LABEL_20:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateIncomingUserInfosWithBlock:(id)a3
+- (void)enumerateIncomingUserInfosWithBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v35 = WCTransferredUserInfoInboxURLInContainer(v5, v6);
+  blockCopy = block;
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v35 = WCTransferredUserInfoInboxURLInContainer(homeDirectoryURL, pairingID);
 
-  v7 = [(WCFileStorage *)self userInfoIndex];
+  userInfoIndex = [(WCFileStorage *)self userInfoIndex];
 
-  if (!v7)
+  if (!userInfoIndex)
   {
     v8 = [[WCContentIndex alloc] initWithContainingFolder:v35];
     [(WCFileStorage *)self setUserInfoIndex:v8];
   }
 
-  v9 = [(WCFileStorage *)self userInfoIndex];
-  v10 = [v9 index];
+  userInfoIndex2 = [(WCFileStorage *)self userInfoIndex];
+  index = [userInfoIndex2 index];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v10;
+  obj = index;
   v11 = [obj countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v11)
   {
@@ -1066,9 +1066,9 @@ LABEL_20:
         v16 = [v15 URLByAppendingPathComponent:@"userinfo-transfer-object-data" isDirectory:0];
 
         v17 = MEMORY[0x277CBEA90];
-        v18 = [v16 path];
+        path = [v16 path];
         v37 = 0;
-        v19 = [v17 dataWithContentsOfFile:v18 options:2 error:&v37];
+        v19 = [v17 dataWithContentsOfFile:path options:2 error:&v37];
         v20 = v37;
 
         if (!v19)
@@ -1076,13 +1076,13 @@ LABEL_20:
           v26 = wc_log();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
-            v28 = [v16 path];
+            path2 = [v16 path];
             v30 = v20;
             v32 = NSPrintF();
             *buf = 136446722;
             v43 = "[WCFileStorage enumerateIncomingUserInfosWithBlock:]";
             v44 = 2114;
-            v45 = v28;
+            v45 = path2;
             v46 = 2114;
             v47 = v32;
             _os_log_error_impl(&dword_23B2FA000, v26, OS_LOG_TYPE_ERROR, "%{public}s could not load user info data at path %{public}@ due to %{public}@", buf, 0x20u);
@@ -1118,7 +1118,7 @@ LABEL_17:
         }
 
         buf[0] = 0;
-        (v4)[2](v4, v23, v14, buf);
+        (blockCopy)[2](blockCopy, v23, v14, buf);
         v27 = buf[0];
 
         if (v27)
@@ -1138,21 +1138,21 @@ LABEL_21:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteUserInfoTransferFromInbox:(id)a3
+- (void)deleteUserInfoTransferFromInbox:(id)inbox
 {
-  v4 = a3;
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v7 = WCTransferredUserInfoInboxURLInContainer(v5, v6);
+  inboxCopy = inbox;
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v7 = WCTransferredUserInfoInboxURLInContainer(homeDirectoryURL, pairingID);
 
-  v8 = [v4 transferIdentifier];
+  transferIdentifier = [inboxCopy transferIdentifier];
 
-  v9 = [v7 URLByAppendingPathComponent:v8 isDirectory:0];
+  v9 = [v7 URLByAppendingPathComponent:transferIdentifier isDirectory:0];
 
   v12 = 0;
-  LOBYTE(v8) = [(WCFileStorage *)self removeItemAtURL:v9 numberOfRetries:5 error:&v12];
+  LOBYTE(transferIdentifier) = [(WCFileStorage *)self removeItemAtURL:v9 numberOfRetries:5 error:&v12];
   v10 = v12;
-  if ((v8 & 1) == 0)
+  if ((transferIdentifier & 1) == 0)
   {
     v11 = wc_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1162,35 +1162,35 @@ LABEL_21:
   }
 }
 
-- (void)enumerateUserInfoResultsWithBlock:(id)a3
+- (void)enumerateUserInfoResultsWithBlock:(id)block
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCFileStorage *)self homeDirectoryURL];
-  v6 = [(WCFileStorage *)self pairingID];
-  v7 = WCUserInfoTransfersInContainer(v5, v6);
+  blockCopy = block;
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v7 = WCUserInfoTransfersInContainer(homeDirectoryURL, pairingID);
 
-  v8 = [(WCFileStorage *)self userInfoResultsIndex];
+  userInfoResultsIndex = [(WCFileStorage *)self userInfoResultsIndex];
 
-  if (!v8)
+  if (!userInfoResultsIndex)
   {
     v9 = [[WCContentIndex alloc] initWithContainingFolder:v7];
     [(WCFileStorage *)self setUserInfoResultsIndex:v9];
   }
 
-  v10 = [(WCFileStorage *)self userInfoResultsIndex];
-  v11 = [v10 index];
+  userInfoResultsIndex2 = [(WCFileStorage *)self userInfoResultsIndex];
+  index = [userInfoResultsIndex2 index];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v11;
+  obj = index;
   v41 = [obj countByEnumeratingWithState:&v49 objects:v60 count:16];
   if (v41)
   {
     v40 = *v50;
-    v36 = v4;
+    v36 = blockCopy;
     v37 = v7;
 LABEL_5:
     v12 = 0;
@@ -1224,8 +1224,8 @@ LABEL_5:
         if (v21)
         {
           v39 = v21;
-          v22 = [v15 URLByDeletingLastPathComponent];
-          v23 = [v22 URLByAppendingPathComponent:@"userinfo-transfer-object-data" isDirectory:0];
+          uRLByDeletingLastPathComponent = [v15 URLByDeletingLastPathComponent];
+          v23 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"userinfo-transfer-object-data" isDirectory:0];
 
           v46 = 0;
           v24 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v23 options:2 error:&v46];
@@ -1263,9 +1263,9 @@ LABEL_5:
 
           else
           {
-            v31 = [v15 URLByDeletingLastPathComponent];
+            uRLByDeletingLastPathComponent2 = [v15 URLByDeletingLastPathComponent];
 
-            WCDeleteItemAtURL(v31);
+            WCDeleteItemAtURL(uRLByDeletingLastPathComponent2);
             v29 = wc_log();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
@@ -1273,8 +1273,8 @@ LABEL_5:
             }
 
             v28 = 0;
-            v15 = v31;
-            v4 = v36;
+            v15 = uRLByDeletingLastPathComponent2;
+            blockCopy = v36;
           }
 
           v7 = v37;
@@ -1325,7 +1325,7 @@ LABEL_5:
       }
 
       buf[0] = 0;
-      v4[2](v4, v28, v13, buf);
+      blockCopy[2](blockCopy, v28, v13, buf);
       v32 = buf[0];
 
       if (v32)
@@ -1349,13 +1349,13 @@ LABEL_5:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createWatchDirectoryIfNeeded:(id)a3
+- (void)createWatchDirectoryIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v13 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:&v13];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [neededCopy path];
+  v6 = [defaultManager fileExistsAtPath:path isDirectory:&v13];
 
   if (v6)
   {
@@ -1372,17 +1372,17 @@ LABEL_12:
       [WCFileStorage createWatchDirectoryIfNeeded:v7];
     }
 
-    WCDeleteItemAtURL(v3);
+    WCDeleteItemAtURL(neededCopy);
   }
 
-  if (!v3)
+  if (!neededCopy)
   {
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v12 = 0;
-  v9 = [v8 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:&v12];
+  v9 = [defaultManager2 createDirectoryAtURL:neededCopy withIntermediateDirectories:1 attributes:0 error:&v12];
   v10 = v12;
 
   if ((v9 & 1) == 0 && v10)
@@ -1390,28 +1390,28 @@ LABEL_12:
     v11 = wc_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [WCFileStorage createWatchDirectoryIfNeeded:v3];
+      [WCFileStorage createWatchDirectoryIfNeeded:neededCopy];
     }
   }
 
 LABEL_13:
 }
 
-- (void)cleanUpWatchContentDirectoryWithCurrentAppInstallationID:(id)a3
+- (void)cleanUpWatchContentDirectoryWithCurrentAppInstallationID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCFileStorage *)self pairingID];
+  dCopy = d;
+  pairingID = [(WCFileStorage *)self pairingID];
 
-  if (v5)
+  if (pairingID)
   {
-    v6 = [(WCFileStorage *)self homeDirectoryURL];
-    v7 = [(WCFileStorage *)self pairingID];
-    v8 = WCWatchDirectoryLocationInContainer(v6, v7);
+    homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+    pairingID2 = [(WCFileStorage *)self pairingID];
+    v8 = WCWatchDirectoryLocationInContainer(homeDirectoryURL, pairingID2);
 
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v26 = 0;
-    v10 = [v9 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:0 options:4 error:&v26];
+    v10 = [defaultManager contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:0 options:4 error:&v26];
     v11 = v26;
 
     if (v11)
@@ -1451,8 +1451,8 @@ LABEL_13:
             }
 
             v17 = *(*(&v22 + 1) + 8 * i);
-            v18 = [v17 lastPathComponent];
-            v19 = [v4 isEqual:v18];
+            lastPathComponent = [v17 lastPathComponent];
+            v19 = [dCopy isEqual:lastPathComponent];
 
             if ((v19 & 1) == 0)
             {
@@ -1474,32 +1474,32 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanUpOldPairingIDFoldersWithPairedDevicesPairingIDs:(id)a3
+- (void)cleanUpOldPairingIDFoldersWithPairedDevicesPairingIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(WCFileStorage *)self pairingID];
-  v6 = v5;
-  if (v4 && v5)
+  dsCopy = ds;
+  pairingID = [(WCFileStorage *)self pairingID];
+  v6 = pairingID;
+  if (dsCopy && pairingID)
   {
-    v7 = [(WCFileStorage *)self pairingID];
-    v8 = [v4 containsObject:v7];
+    pairingID2 = [(WCFileStorage *)self pairingID];
+    v8 = [dsCopy containsObject:pairingID2];
 
     if (v8)
     {
-      v9 = [(WCFileStorage *)self homeDirectoryURL];
-      v10 = [(WCFileStorage *)self pairingID];
-      v11 = WCInboxURLInContainer(v9, v10);
+      homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+      pairingID3 = [(WCFileStorage *)self pairingID];
+      v11 = WCInboxURLInContainer(homeDirectoryURL, pairingID3);
 
-      v12 = [v11 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent = [v11 URLByDeletingLastPathComponent];
 
-      v13 = [(WCFileStorage *)self homeDirectoryURL];
-      v14 = [(WCFileStorage *)self pairingID];
-      v15 = WCApplicationSupportURLInContainer(v13, v14);
+      homeDirectoryURL2 = [(WCFileStorage *)self homeDirectoryURL];
+      pairingID4 = [(WCFileStorage *)self pairingID];
+      v15 = WCApplicationSupportURLInContainer(homeDirectoryURL2, pairingID4);
 
-      v16 = [v15 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent2 = [v15 URLByDeletingLastPathComponent];
 
-      [(WCFileStorage *)self cleanUpOldPairingIDFolderInFolder:v12 pairedDevicesPairingIDs:v4];
-      [(WCFileStorage *)self cleanUpOldPairingIDFolderInFolder:v16 pairedDevicesPairingIDs:v4];
+      [(WCFileStorage *)self cleanUpOldPairingIDFolderInFolder:uRLByDeletingLastPathComponent pairedDevicesPairingIDs:dsCopy];
+      [(WCFileStorage *)self cleanUpOldPairingIDFolderInFolder:uRLByDeletingLastPathComponent2 pairedDevicesPairingIDs:dsCopy];
 
       goto LABEL_8;
     }
@@ -1509,8 +1509,8 @@ LABEL_18:
   {
   }
 
-  v12 = wc_log();
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  uRLByDeletingLastPathComponent = wc_log();
+  if (os_log_type_enabled(uRLByDeletingLastPathComponent, OS_LOG_TYPE_ERROR))
   {
     [WCFileStorage cleanUpOldPairingIDFoldersWithPairedDevicesPairingIDs:];
   }
@@ -1518,14 +1518,14 @@ LABEL_18:
 LABEL_8:
 }
 
-- (void)cleanUpOldPairingIDFolderInFolder:(id)a3 pairedDevicesPairingIDs:(id)a4
+- (void)cleanUpOldPairingIDFolderInFolder:(id)folder pairedDevicesPairingIDs:(id)ds
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  folderCopy = folder;
+  dsCopy = ds;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v26 = 0;
-  v8 = [v7 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:4 error:&v26];
+  v8 = [defaultManager contentsOfDirectoryAtURL:folderCopy includingPropertiesForKeys:0 options:4 error:&v26];
   v9 = v26;
 
   if (!v9)
@@ -1540,7 +1540,7 @@ LABEL_8:
     {
       v12 = v11;
       v20 = v8;
-      v21 = v5;
+      v21 = folderCopy;
       v13 = *v23;
       do
       {
@@ -1552,19 +1552,19 @@ LABEL_8:
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
-          v16 = [v15 lastPathComponent];
-          if (([v6 containsObject:v16] & 1) == 0)
+          lastPathComponent = [v15 lastPathComponent];
+          if (([dsCopy containsObject:lastPathComponent] & 1) == 0)
           {
             v17 = wc_log();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [v15 path];
+              path = [v15 path];
               *buf = 136446722;
               v28 = "[WCFileStorage cleanUpOldPairingIDFolderInFolder:pairedDevicesPairingIDs:]";
               v29 = 2114;
-              v30 = v6;
+              v30 = dsCopy;
               v31 = 2114;
-              v32 = v18;
+              v32 = path;
               _os_log_impl(&dword_23B2FA000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@, deleting %{public}@", buf, 0x20u);
             }
 
@@ -1577,7 +1577,7 @@ LABEL_8:
 
       while (v12);
       v8 = v20;
-      v5 = v21;
+      folderCopy = v21;
     }
 
     goto LABEL_18;
@@ -1597,15 +1597,15 @@ LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeItemAtURL:(id)a3 numberOfRetries:(unint64_t)a4 error:(id *)a5
+- (BOOL)removeItemAtURL:(id)l numberOfRetries:(unint64_t)retries error:(id *)error
 {
-  v8 = a3;
-  if (a4)
+  lCopy = l;
+  if (retries)
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v9 removeItemAtURL:v8 error:a5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [defaultManager removeItemAtURL:lCopy error:error];
 
-    v11 = (v10 & 1) != 0 || [(WCFileStorage *)self removeItemAtURL:v8 numberOfRetries:a4 - 1 error:a5];
+    v11 = (v10 & 1) != 0 || [(WCFileStorage *)self removeItemAtURL:lCopy numberOfRetries:retries - 1 error:error];
   }
 
   else
@@ -1616,23 +1616,23 @@ LABEL_18:
   return v11;
 }
 
-- (id)appendPathForFileTransfer:(id)a3 toPath:(id)a4
+- (id)appendPathForFileTransfer:(id)transfer toPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 transferIdentifier];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  pathCopy = path;
+  transferIdentifier = [transfer transferIdentifier];
+  v7 = [pathCopy stringByAppendingPathComponent:transferIdentifier];
 
   return v7;
 }
 
 - (id)outgoingFileTransferPath
 {
-  v3 = [(WCFileStorage *)self homeDirectoryURL];
-  v4 = [(WCFileStorage *)self pairingID];
-  v5 = WCFileTransfersURLInContainer(v3, v4);
-  v6 = [v5 path];
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v5 = WCFileTransfersURLInContainer(homeDirectoryURL, pairingID);
+  path = [v5 path];
 
-  return v6;
+  return path;
 }
 
 - (id)homeDirectoryURL
@@ -1644,9 +1644,9 @@ LABEL_18:
   return v4;
 }
 
-- (id)appContextFolderURL:(BOOL)a3
+- (id)appContextFolderURL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     [(WCFileStorage *)self receivedAppContextFolderURL];
   }
@@ -1662,9 +1662,9 @@ LABEL_18:
 
 - (id)localAppContextFolderURL
 {
-  v3 = [(WCFileStorage *)self homeDirectoryURL];
-  v4 = [(WCFileStorage *)self pairingID];
-  v5 = WCApplicationSupportURLInContainer(v3, v4);
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v5 = WCApplicationSupportURLInContainer(homeDirectoryURL, pairingID);
 
   v6 = [v5 URLByAppendingPathComponent:@"ApplicationContext" isDirectory:1];
 
@@ -1673,9 +1673,9 @@ LABEL_18:
 
 - (id)receivedAppContextFolderURL
 {
-  v3 = [(WCFileStorage *)self homeDirectoryURL];
-  v4 = [(WCFileStorage *)self pairingID];
-  v5 = WCApplicationSupportURLInContainer(v3, v4);
+  homeDirectoryURL = [(WCFileStorage *)self homeDirectoryURL];
+  pairingID = [(WCFileStorage *)self pairingID];
+  v5 = WCApplicationSupportURLInContainer(homeDirectoryURL, pairingID);
 
   v6 = [v5 URLByAppendingPathComponent:@"ReceivedApplicationContext" isDirectory:1];
 

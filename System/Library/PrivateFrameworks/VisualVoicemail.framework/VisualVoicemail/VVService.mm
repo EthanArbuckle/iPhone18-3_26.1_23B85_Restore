@@ -1,14 +1,14 @@
 @interface VVService
 + (__CTServerConnection)CTServerConnection;
-+ (id)accountDictionaryForURL:(id)a3;
-+ (id)serviceWithLabel:(id)a3 accountIdentifier:(id)a4 phoneNumber:(id)a5 name:(id)a6 isoCountryCode:(id)a7 countryCode:(id)a8 networkCode:(id)a9 contextInfo:(id)a10 telephonyClient:(id)a11 stateRequestController:(id)a12 newAccount:(BOOL)a13;
++ (id)accountDictionaryForURL:(id)l;
++ (id)serviceWithLabel:(id)label accountIdentifier:(id)identifier phoneNumber:(id)number name:(id)name isoCountryCode:(id)code countryCode:(id)countryCode networkCode:(id)networkCode contextInfo:(id)self0 telephonyClient:(id)self1 stateRequestController:(id)self2 newAccount:(BOOL)self3;
 + (unsigned)_voicemailPowerAssertion;
-+ (void)_acquireAssertionsForInsomniaState:(BOOL)a3;
-+ (void)_setInsomniaStateSupressed:(BOOL)a3;
++ (void)_acquireAssertionsForInsomniaState:(BOOL)state;
++ (void)_setInsomniaStateSupressed:(BOOL)supressed;
 + (void)obtainInsomniaAssertion;
 + (void)releaseInsomniaAssertion;
-- (BOOL)_isOfflineDueToRoamingWithDataStatusDict:(__CFDictionary *)a3;
-- (BOOL)doTrashCompaction:(id)a3;
+- (BOOL)_isOfflineDueToRoamingWithDataStatusDict:(__CFDictionary *)dict;
+- (BOOL)doTrashCompaction:(id)compaction;
 - (BOOL)ignoresRoamingSwitch;
 - (BOOL)isCellularNetworkAvailable;
 - (BOOL)isDelayedRetryScheduledGuarded;
@@ -21,28 +21,28 @@
 - (BOOL)isWiFiNetworkSupported;
 - (BOOL)lastUsedConnectionTypeWasCellular;
 - (BOOL)shouldImmediatelyRetrySyncOverCellular;
-- (BOOL)shouldTrashCompactRecord:(id)a3 record:(void *)a4;
+- (BOOL)shouldTrashCompactRecord:(id)record record:(void *)a4;
 - (BOOL)supportsDetachedStorage;
 - (Class)notificationInterpreterClass;
 - (NSMutableDictionary)stateRequestAttemptCount;
 - (NSString)smscAddress;
-- (VVService)initWithLabel:(id)a3 accountIdentifier:(id)a4 phoneNumber:(id)a5 isoCountryCode:(id)a6 countryCode:(id)a7 networkCode:(id)a8 contextInfo:(id)a9 telephonyClient:(id)a10 stateRequestController:(id)a11 newAccount:(BOOL)a12;
+- (VVService)initWithLabel:(id)label accountIdentifier:(id)identifier phoneNumber:(id)number isoCountryCode:(id)code countryCode:(id)countryCode networkCode:(id)networkCode contextInfo:(id)info telephonyClient:(id)self0 stateRequestController:(id)self1 newAccount:(BOOL)self2;
 - (__CFString)dataConnectionServiceTypeOverride;
 - (double)getTrashCompactionAge;
 - (double)trashCompactionAge;
 - (id)automatedTrashActivityIdentifier;
-- (id)carrierParameterValueForKey:(id)a3;
+- (id)carrierParameterValueForKey:(id)key;
 - (id)delayedRetryActivityIdentifier;
 - (id)fallbackActivityIdentifier;
-- (id)passwordIgnoringSubscription:(BOOL)a3;
+- (id)passwordIgnoringSubscription:(BOOL)subscription;
 - (id)provisionalPassword;
 - (id)retryIntervals;
-- (int64_t)attemptCountForStateRequest:(id)a3;
+- (int64_t)attemptCountForStateRequest:(id)request;
 - (unint64_t)getMailboxUsageCache;
 - (unint64_t)trashedCount;
 - (unint64_t)unreadCount;
 - (void)_attemptDelayedSynchronize;
-- (void)_attemptScheduledTrashCompaction:(id)a3;
+- (void)_attemptScheduledTrashCompaction:(id)compaction;
 - (void)_callStatusChanged;
 - (void)_cancelAutomatedTrashCompaction;
 - (void)_cancelIndicatorAction;
@@ -52,53 +52,53 @@
 - (void)_reactToIndicator;
 - (void)_scheduleAutomatedTrashCompaction;
 - (void)_scheduleFallbackActivityIfNecessary;
-- (void)_setOnline:(BOOL)a3 fallbackMode:(BOOL)a4;
+- (void)_setOnline:(BOOL)online fallbackMode:(BOOL)mode;
 - (void)_updateOnlineStatus;
-- (void)cancelDelayedSynchronize:(id)a3;
+- (void)cancelDelayedSynchronize:(id)synchronize;
 - (void)cancelNotificationFallback;
 - (void)cancelPasswordRequest;
 - (void)clearRemoteUIDsForDetachedMessages;
 - (void)dealloc;
 - (void)displayPasswordRequestIfNecessary;
-- (void)handleAirplaneModeChanged:(BOOL)a3;
-- (void)handleCallStatusDisconnected:(id)a3;
-- (void)handleVVServiceDataAvailableNotification:(id)a3;
-- (void)handleVoicemailInfoUpdate:(id)a3;
-- (void)incrementAttemptCountForStateRequest:(id)a3;
+- (void)handleAirplaneModeChanged:(BOOL)changed;
+- (void)handleCallStatusDisconnected:(id)disconnected;
+- (void)handleVVServiceDataAvailableNotification:(id)notification;
+- (void)handleVoicemailInfoUpdate:(id)update;
+- (void)incrementAttemptCountForStateRequest:(id)request;
 - (void)kill;
-- (void)performAtomicAccessorBlock:(id)a3;
-- (void)performSynchronousBlock:(id)a3;
-- (void)progressiveDataLengthsForRecord:(void *)a3 expected:(unsigned int *)a4 current:(unsigned int *)a5;
-- (void)removeAttemptCountForStateRequest:(id)a3;
+- (void)performAtomicAccessorBlock:(id)block;
+- (void)performSynchronousBlock:(id)block;
+- (void)progressiveDataLengthsForRecord:(void *)record expected:(unsigned int *)expected current:(unsigned int *)current;
+- (void)removeAttemptCountForStateRequest:(id)request;
 - (void)removeServiceInformation;
-- (void)reportError:(id)a3;
+- (void)reportError:(id)error;
 - (void)reportFailedToSyncOverWifi;
 - (void)reportSucessfulSync;
 - (void)resetCounts;
 - (void)resetDelayedSynchronizationAttemptCount;
 - (void)scheduleDelayedSynchronize;
 - (void)scheduleImmediateSynchronizeRetryOverCellular;
-- (void)setCellularNetworkAvailable:(BOOL)a3;
-- (void)setDelayedRetryImmediate:(BOOL)a3;
-- (void)setDelayedRetryScheduled:(BOOL)a3;
-- (void)setGreetingType:(int64_t)a3 data:(id)a4 duration:(unint64_t)a5;
-- (void)setLastUsedConnectionType:(__CFString *)a3;
-- (void)setMailboxRequiresSetup:(BOOL)a3;
-- (void)setMailboxUsageCache:(unint64_t)a3;
-- (void)setMailboxUsageUpdated:(BOOL)a3;
-- (void)setMessageWaiting:(BOOL)a3;
-- (void)setPassword:(id)a3;
-- (void)setProvisionalPassword:(id)a3;
-- (void)setSMSReady:(BOOL)a3;
-- (void)setSmscAddress:(id)a3;
-- (void)setSubscribed:(BOOL)a3;
-- (void)setTrashCompactionAge:(double)a3;
-- (void)setTrashedCount:(unint64_t)a3;
-- (void)setUnreadCount:(unint64_t)a3;
-- (void)setWiFiNetworkSupported:(BOOL)a3;
+- (void)setCellularNetworkAvailable:(BOOL)available;
+- (void)setDelayedRetryImmediate:(BOOL)immediate;
+- (void)setDelayedRetryScheduled:(BOOL)scheduled;
+- (void)setGreetingType:(int64_t)type data:(id)data duration:(unint64_t)duration;
+- (void)setLastUsedConnectionType:(__CFString *)type;
+- (void)setMailboxRequiresSetup:(BOOL)setup;
+- (void)setMailboxUsageCache:(unint64_t)cache;
+- (void)setMailboxUsageUpdated:(BOOL)updated;
+- (void)setMessageWaiting:(BOOL)waiting;
+- (void)setPassword:(id)password;
+- (void)setProvisionalPassword:(id)password;
+- (void)setSMSReady:(BOOL)ready;
+- (void)setSmscAddress:(id)address;
+- (void)setSubscribed:(BOOL)subscribed;
+- (void)setTrashCompactionAge:(double)age;
+- (void)setTrashedCount:(unint64_t)count;
+- (void)setUnreadCount:(unint64_t)count;
+- (void)setWiFiNetworkSupported:(BOOL)supported;
 - (void)start;
-- (void)stateChanged:(id)a3;
-- (void)updateCountsForChangedFlags:(unsigned int)a3 currentRecordFlags:(unsigned int)a4;
+- (void)stateChanged:(id)changed;
+- (void)updateCountsForChangedFlags:(unsigned int)flags currentRecordFlags:(unsigned int)recordFlags;
 @end
 
 @implementation VVService
@@ -109,13 +109,13 @@
   [(VVService *)self getTrashCompactionAge];
   if (v3 < 0.0)
   {
-    v4 = [(VVService *)self mailboxUsage];
-    v5 = v4;
+    mailboxUsage = [(VVService *)self mailboxUsage];
+    v5 = mailboxUsage;
     v6 = 3;
     while (1)
     {
       v7 = (&unk_1000C91D8 + 16 * v6);
-      if (*v7 <= v4)
+      if (*v7 <= mailboxUsage)
       {
         break;
       }
@@ -134,7 +134,7 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 136315906;
-      v12 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v13 = 2080;
       v14 = " ";
       v15 = 1024;
@@ -150,10 +150,10 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)shouldTrashCompactRecord:(id)a3 record:(void *)a4
+- (BOOL)shouldTrashCompactRecord:(id)record record:(void *)a4
 {
-  v6 = a3;
-  v7 = sub_100092B0C(v6, a4);
+  recordCopy = record;
+  v7 = sub_100092B0C(recordCopy, a4);
   if ((v7 & 0x4C) != 8)
   {
     v17 = v7;
@@ -164,7 +164,7 @@ LABEL_7:
     }
 
     v22 = 136315650;
-    v23 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v24 = 2080;
     v25 = " ";
     v26 = 2048;
@@ -188,7 +188,7 @@ LABEL_14:
     }
 
     v22 = 136315394;
-    v23 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v24 = 2080;
     v25 = " ";
     v18 = "#I %s%sCOMPACTION: shouldCompactTrashRecord = no, since compactionAge >= DBL_MAX";
@@ -197,7 +197,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = sub_1000928B0(v6, a4);
+  v10 = sub_1000928B0(recordCopy, a4);
   v11 = v10;
   Current = CFAbsoluteTimeGetCurrent();
   v13 = sub_100002674();
@@ -207,7 +207,7 @@ LABEL_14:
     if (v14)
     {
       v22 = 136316162;
-      v23 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v24 = 2080;
       v25 = " ";
       v26 = 2048;
@@ -230,7 +230,7 @@ LABEL_15:
   if (v14)
   {
     v22 = 136316162;
-    v23 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v24 = 2080;
     v25 = " ";
     v26 = 2048;
@@ -248,10 +248,10 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)doTrashCompaction:(id)a3
+- (BOOL)doTrashCompaction:(id)compaction
 {
-  v4 = a3;
-  v5 = sub_1000931D0(v4, 8, 68);
+  compactionCopy = compaction;
+  v5 = sub_1000931D0(compactionCopy, 8, 68);
   if (!v5)
   {
     goto LABEL_17;
@@ -272,9 +272,9 @@ LABEL_17:
   for (i = 0; i != v8; ++i)
   {
     ValueAtIndex = CFArrayGetValueAtIndex(v6, i);
-    if ([(VVService *)self shouldTrashCompactRecord:v4 record:ValueAtIndex])
+    if ([(VVService *)self shouldTrashCompactRecord:compactionCopy record:ValueAtIndex])
     {
-      v12 = sub_100092B0C(v4, ValueAtIndex);
+      v12 = sub_100092B0C(compactionCopy, ValueAtIndex);
       if (([(VVService *)self supportsDetachedStorage]& ((v12 & 2) >> 1)) != 0)
       {
         v13 = 64;
@@ -285,17 +285,17 @@ LABEL_17:
         v13 = 4;
       }
 
-      sub_100092B54(v4, ValueAtIndex, v13);
+      sub_100092B54(compactionCopy, ValueAtIndex, v13);
       v14 = VMStoreRecordCopyDescription(ValueAtIndex);
       v15 = sub_100002674();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(VVService *)self getServiceObjLogPrefix];
-        v17 = sub_10009278C(v4, ValueAtIndex);
+        getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
+        v17 = sub_10009278C(compactionCopy, ValueAtIndex);
         Current = CFAbsoluteTimeGetCurrent();
-        v19 = sub_1000928B0(v4, ValueAtIndex);
+        v19 = sub_1000928B0(compactionCopy, ValueAtIndex);
         *buf = 136316162;
-        v23 = v16;
+        v23 = getServiceObjLogPrefix;
         v24 = 2080;
         v25 = " ";
         v26 = 1024;
@@ -322,7 +322,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  [v4 save];
+  [compactionCopy save];
   v20 = 1;
 LABEL_18:
 
@@ -336,7 +336,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
-    v6 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v7 = 2080;
     v8 = " ";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sResetting cached carrier parameters", &v5, 0x16u);
@@ -359,33 +359,33 @@ LABEL_18:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-+ (id)serviceWithLabel:(id)a3 accountIdentifier:(id)a4 phoneNumber:(id)a5 name:(id)a6 isoCountryCode:(id)a7 countryCode:(id)a8 networkCode:(id)a9 contextInfo:(id)a10 telephonyClient:(id)a11 stateRequestController:(id)a12 newAccount:(BOOL)a13
++ (id)serviceWithLabel:(id)label accountIdentifier:(id)identifier phoneNumber:(id)number name:(id)name isoCountryCode:(id)code countryCode:(id)countryCode networkCode:(id)networkCode contextInfo:(id)self0 telephonyClient:(id)self1 stateRequestController:(id)self2 newAccount:(BOOL)self3
 {
-  HIDWORD(v29) = a13;
-  v30 = a3;
-  v31 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  HIDWORD(v29) = account;
+  labelCopy = label;
+  identifierCopy = identifier;
+  numberCopy = number;
+  nameCopy = name;
+  codeCopy = code;
+  countryCodeCopy = countryCode;
+  networkCodeCopy = networkCode;
+  infoCopy = info;
+  clientCopy = client;
+  controllerCopy = controller;
   v26 = vm_vmd_log();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v19;
+    v33 = nameCopy;
     v34 = 2112;
-    v35 = v23;
+    v35 = infoCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Creating a new service with name: %@, subscription %@", buf, 0x16u);
   }
 
-  if (v19 && [v19 isEqualToString:@"IMAP"])
+  if (nameCopy && [nameCopy isEqualToString:@"IMAP"])
   {
     LOBYTE(v29) = BYTE4(v29);
-    v27 = [[IMAPService alloc] initWithLabel:v30 accountIdentifier:v31 phoneNumber:v18 isoCountryCode:v20 countryCode:v21 networkCode:v22 contextInfo:v23 telephonyClient:v24 stateRequestController:v25 newAccount:v29];
+    v27 = [[IMAPService alloc] initWithLabel:labelCopy accountIdentifier:identifierCopy phoneNumber:numberCopy isoCountryCode:codeCopy countryCode:countryCodeCopy networkCode:networkCodeCopy contextInfo:infoCopy telephonyClient:clientCopy stateRequestController:controllerCopy newAccount:v29];
     [(VVService *)v27 start];
   }
 
@@ -397,17 +397,17 @@ LABEL_18:
   return v27;
 }
 
-- (VVService)initWithLabel:(id)a3 accountIdentifier:(id)a4 phoneNumber:(id)a5 isoCountryCode:(id)a6 countryCode:(id)a7 networkCode:(id)a8 contextInfo:(id)a9 telephonyClient:(id)a10 stateRequestController:(id)a11 newAccount:(BOOL)a12
+- (VVService)initWithLabel:(id)label accountIdentifier:(id)identifier phoneNumber:(id)number isoCountryCode:(id)code countryCode:(id)countryCode networkCode:(id)networkCode contextInfo:(id)info telephonyClient:(id)self0 stateRequestController:(id)self1 newAccount:(BOOL)self2
 {
-  v27 = a3;
-  v18 = a4;
-  v22 = a5;
-  v24 = a6;
-  v23 = a7;
-  v25 = a8;
-  v19 = a9;
-  v26 = a10;
-  v21 = a11;
+  labelCopy = label;
+  identifierCopy = identifier;
+  numberCopy = number;
+  codeCopy = code;
+  countryCodeCopy = countryCode;
+  networkCodeCopy = networkCode;
+  infoCopy = info;
+  clientCopy = client;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = VVService;
   if ([(VVService *)&v28 init])
@@ -420,13 +420,13 @@ LABEL_18:
 
 - (void)start
 {
-  v3 = [(VVService *)self serialDispatchQueue];
+  serialDispatchQueue = [(VVService *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004B430;
   block[3] = &unk_1000EDEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 - (void)dealloc
@@ -435,11 +435,11 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
-    v10 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v11 = 2080;
     v12 = " ";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sDeallocating service %@", buf, 0x20u);
   }
 
@@ -481,14 +481,14 @@ LABEL_18:
   return qword_10010D928;
 }
 
-- (void)setSubscribed:(BOOL)a3
+- (void)setSubscribed:(BOOL)subscribed
 {
-  v3 = a3;
+  subscribedCopy = subscribed;
   v5 = +[NSNotificationCenter defaultCenter];
   serviceFlags = self->_serviceFlags;
-  if (((((serviceFlags & 2) == 0) ^ v3) & 1) == 0)
+  if (((((serviceFlags & 2) == 0) ^ subscribedCopy) & 1) == 0)
   {
-    if (v3)
+    if (subscribedCopy)
     {
       v7 = 2;
     }
@@ -502,15 +502,15 @@ LABEL_18:
     v8 = sub_100026660(self->logger.__ptr_);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VVService *)self getServiceObjLogPrefix];
-      v10 = [(VVService *)self contextInfo];
-      v11 = v10;
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
+      contextInfo = [(VVService *)self contextInfo];
+      v11 = contextInfo;
       v12 = @"NOT SUBSCRIBED";
       *buf = 136315906;
-      v24 = v9;
+      v24 = getServiceObjLogPrefix;
       v25 = 2080;
       v26 = " ";
-      if (v3)
+      if (subscribedCopy)
       {
         v12 = @"SUBSCRIBED";
       }
@@ -518,11 +518,11 @@ LABEL_18:
       v27 = 2112;
       v28 = v12;
       v29 = 2112;
-      v30 = v10;
+      v30 = contextInfo;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%sVisual Voicemail Subscription State is now %@, subscription %@", buf, 0x2Au);
     }
 
-    if (v3)
+    if (subscribedCopy)
     {
       passwordError = self->_passwordError;
       self->_passwordError = 0;
@@ -538,13 +538,13 @@ LABEL_18:
     else
     {
       [objc_opt_class() _setInsomniaStateSupressed:1];
-      v15 = [(VVService *)self serialDispatchQueue];
+      serialDispatchQueue = [(VVService *)self serialDispatchQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10004BB14;
       block[3] = &unk_1000EDEC8;
       block[4] = self;
-      dispatch_async(v15, block);
+      dispatch_async(serialDispatchQueue, block);
 
       [(VVService *)self cancelAutomatedTrashCompaction];
     }
@@ -556,32 +556,32 @@ LABEL_18:
   v18[2] = sub_10004BB58;
   v18[3] = &unk_1000EDFC8;
   v19 = v5;
-  v20 = self;
-  v21 = v3;
+  selfCopy = self;
+  v21 = subscribedCopy;
   v17 = v5;
   dispatch_async(v16, v18);
 }
 
 - (void)kill
 {
-  v3 = [(VVService *)self serialDispatchQueue];
+  serialDispatchQueue = [(VVService *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004BD64;
   block[3] = &unk_1000EDEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialDispatchQueue, block);
 
   [(VVService *)self cancelAutomatedTrashCompaction];
   [(VVService *)self cancelNotificationFallback];
 }
 
-- (void)setMailboxRequiresSetup:(BOOL)a3
+- (void)setMailboxRequiresSetup:(BOOL)setup
 {
-  v3 = a3;
+  setupCopy = setup;
   [(NSRecursiveLock *)self->_lock lock];
   serviceFlags = self->_serviceFlags;
-  if ((((serviceFlags & 4) == 0) ^ v3))
+  if ((((serviceFlags & 4) == 0) ^ setupCopy))
   {
     lock = self->_lock;
 
@@ -590,7 +590,7 @@ LABEL_18:
 
   else
   {
-    if (v3)
+    if (setupCopy)
     {
       v7 = 4;
     }
@@ -603,7 +603,7 @@ LABEL_18:
     *&self->_serviceFlags = serviceFlags & 0xFB | v7;
     [(NSRecursiveLock *)self->_lock unlock];
     v8 = objc_opt_class();
-    if (v3)
+    if (setupCopy)
     {
       [v8 _setInsomniaStateSupressed:1];
       [(VVService *)self cancelNotificationFallback];
@@ -621,7 +621,7 @@ LABEL_18:
   }
 }
 
-- (void)updateCountsForChangedFlags:(unsigned int)a3 currentRecordFlags:(unsigned int)a4
+- (void)updateCountsForChangedFlags:(unsigned int)flags currentRecordFlags:(unsigned int)recordFlags
 {
   if ([(VVService *)self isOnline])
   {
@@ -633,8 +633,8 @@ LABEL_18:
     v7 = 2;
   }
 
-  v8 = VMStoreRecordCopyFlagsDescription(a3);
-  v9 = VMStoreRecordCopyFlagsDescription(a4);
+  v8 = VMStoreRecordCopyFlagsDescription(flags);
+  v9 = VMStoreRecordCopyFlagsDescription(recordFlags);
   v10 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -662,10 +662,10 @@ LABEL_18:
     CFRelease(v8);
   }
 
-  if (((v7 | 0xD) & a3) != 0)
+  if (((v7 | 0xD) & flags) != 0)
   {
-    v12 = a4 ^ a3;
-    v13 = (v7 | 5) & a4;
+    v12 = recordFlags ^ flags;
+    v13 = (v7 | 5) & recordFlags;
     if ((v13 == v7) == (((v7 | 5) & v12) != v7))
     {
       v14 = v13 == v7;
@@ -683,19 +683,19 @@ LABEL_18:
       [(VVService *)self setUnreadCount:v16];
     }
 
-    v17 = (v7 | 0xC) & a4;
+    v17 = (v7 | 0xC) & recordFlags;
     if ((v17 == (v7 | 8)) == (((v7 | 0xC) & v12) != (v7 | 8)))
     {
       v18 = v17 == (v7 | 8);
-      v19 = [(VVService *)self trashedCount];
+      trashedCount = [(VVService *)self trashedCount];
       if (v18)
       {
-        v20 = v19 + 1;
+        v20 = trashedCount + 1;
       }
 
       else
       {
-        v20 = v19 - 1;
+        v20 = trashedCount - 1;
       }
 
       [(VVService *)self setTrashedCount:v20, *v21, *&v21[8], v22, *v23, *&v23[8]];
@@ -715,11 +715,11 @@ LABEL_18:
     v3 = 2;
   }
 
-  v4 = [(VVService *)self serviceLabelID];
-  [(VVService *)self setTrashedCount:VMStoreCountOfRecordsWithFlags(v3 | 8u, 4, v4)];
+  serviceLabelID = [(VVService *)self serviceLabelID];
+  [(VVService *)self setTrashedCount:VMStoreCountOfRecordsWithFlags(v3 | 8u, 4, serviceLabelID)];
 
-  v5 = [(VVService *)self serviceLabelID];
-  [(VVService *)self setUnreadCount:VMStoreCountOfRecordsWithFlags(v3, 13, v5)];
+  serviceLabelID2 = [(VVService *)self serviceLabelID];
+  [(VVService *)self setUnreadCount:VMStoreCountOfRecordsWithFlags(v3, 13, serviceLabelID2)];
 }
 
 - (BOOL)isCellularNetworkAvailable
@@ -740,27 +740,27 @@ LABEL_18:
   return v2;
 }
 
-- (void)setCellularNetworkAvailable:(BOOL)a3
+- (void)setCellularNetworkAvailable:(BOOL)available
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004C2C0;
   v3[3] = &unk_1000ED8D8;
   v3[4] = self;
-  v4 = a3;
+  availableCopy = available;
   [(VVService *)self performAtomicAccessorBlock:v3];
 }
 
 - (BOOL)isWiFiNetworkAvailable
 {
-  v3 = [(VVService *)self isWiFiNetworkSupported];
-  if (v3)
+  isWiFiNetworkSupported = [(VVService *)self isWiFiNetworkSupported];
+  if (isWiFiNetworkSupported)
   {
 
-    LOBYTE(v3) = [(VVService *)self isWiFiNetworkReachable];
+    LOBYTE(isWiFiNetworkSupported) = [(VVService *)self isWiFiNetworkReachable];
   }
 
-  return v3;
+  return isWiFiNetworkSupported;
 }
 
 - (BOOL)isWiFiNetworkReachable
@@ -799,14 +799,14 @@ LABEL_18:
   return v2;
 }
 
-- (void)setWiFiNetworkSupported:(BOOL)a3
+- (void)setWiFiNetworkSupported:(BOOL)supported
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004C5D0;
   v3[3] = &unk_1000ED8D8;
   v3[4] = self;
-  v4 = a3;
+  supportedCopy = supported;
   [(VVService *)self performAtomicAccessorBlock:v3];
 }
 
@@ -828,14 +828,14 @@ LABEL_18:
   return v2;
 }
 
-- (void)setMailboxUsageUpdated:(BOOL)a3
+- (void)setMailboxUsageUpdated:(BOOL)updated
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004C880;
   v3[3] = &unk_1000ED8D8;
   v3[4] = self;
-  v4 = a3;
+  updatedCopy = updated;
   [(VVService *)self performAtomicAccessorBlock:v3];
 }
 
@@ -857,14 +857,14 @@ LABEL_18:
   return v2;
 }
 
-- (void)setMailboxUsageCache:(unint64_t)a3
+- (void)setMailboxUsageCache:(unint64_t)cache
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004C9DC;
   v3[3] = &unk_1000EE4D8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = cache;
   [(VVService *)self performAtomicAccessorBlock:v3];
 }
 
@@ -886,14 +886,14 @@ LABEL_18:
   return v2;
 }
 
-- (void)setTrashCompactionAge:(double)a3
+- (void)setTrashCompactionAge:(double)age
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004CB48;
   v3[3] = &unk_1000EE4D8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = age;
   [(VVService *)self performAtomicAccessorBlock:v3];
 }
 
@@ -918,16 +918,16 @@ LABEL_18:
   return v2;
 }
 
-- (void)setSmscAddress:(id)a3
+- (void)setSmscAddress:(id)address
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004CD44;
   v4[3] = &unk_1000EE260;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(VVService *)v5 performAtomicAccessorBlock:v4];
+  selfCopy = self;
+  addressCopy = address;
+  v3 = addressCopy;
+  [(VVService *)selfCopy performAtomicAccessorBlock:v4];
 }
 
 - (BOOL)isSMSReady
@@ -948,14 +948,14 @@ LABEL_18:
   return v2;
 }
 
-- (void)setSMSReady:(BOOL)a3
+- (void)setSMSReady:(BOOL)ready
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004CE94;
   v3[3] = &unk_1000ED8D8;
   v3[4] = self;
-  v4 = a3;
+  readyCopy = ready;
   [(VVService *)self performAtomicAccessorBlock:v3];
 }
 
@@ -977,14 +977,14 @@ LABEL_18:
   return v2;
 }
 
-- (void)setTrashedCount:(unint64_t)a3
+- (void)setTrashedCount:(unint64_t)count
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004CFF0;
   v3[3] = &unk_1000EE4D8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = count;
   [(VVService *)self performAtomicAccessorBlock:v3];
 }
 
@@ -1006,23 +1006,23 @@ LABEL_18:
   return v2;
 }
 
-- (void)setUnreadCount:(unint64_t)a3
+- (void)setUnreadCount:(unint64_t)count
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004D36C;
   v3[3] = &unk_1000EE4D8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = count;
   [(VVService *)self performAtomicAccessorBlock:v3];
 }
 
-- (void)_setOnline:(BOOL)a3 fallbackMode:(BOOL)a4
+- (void)_setOnline:(BOOL)online fallbackMode:(BOOL)mode
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(VVService *)self isOnline];
-  if (v4)
+  modeCopy = mode;
+  onlineCopy = online;
+  isOnline = [(VVService *)self isOnline];
+  if (modeCopy)
   {
     v8 = 64;
   }
@@ -1032,8 +1032,8 @@ LABEL_18:
     v8 = 0;
   }
 
-  *&self->_serviceFlags = v8 | !v5 | *&self->_serviceFlags & 0xBE;
-  if ((v5 & ~v4) != v7)
+  *&self->_serviceFlags = v8 | !onlineCopy | *&self->_serviceFlags & 0xBE;
+  if ((onlineCopy & ~modeCopy) != isOnline)
   {
     if ([(VVService *)self isSubscribed])
     {
@@ -1045,11 +1045,11 @@ LABEL_18:
   }
 }
 
-- (BOOL)_isOfflineDueToRoamingWithDataStatusDict:(__CFDictionary *)a3
+- (BOOL)_isOfflineDueToRoamingWithDataStatusDict:(__CFDictionary *)dict
 {
-  if (a3)
+  if (dict)
   {
-    Value = CFDictionaryGetValue(a3, kCTRegistrationDataAttached);
+    Value = CFDictionaryGetValue(dict, kCTRegistrationDataAttached);
     v6 = Value;
     if (Value)
     {
@@ -1064,14 +1064,14 @@ LABEL_18:
     {
       if (!v9)
       {
-        v8 = CFDictionaryGetValue(a3, kCTRegistrationDataIndicator);
+        v8 = CFDictionaryGetValue(dict, kCTRegistrationDataIndicator);
         if (v8)
         {
           v10 = v8;
           v11 = CFGetTypeID(v8);
           if (v11 == CFStringGetTypeID() && CFStringCompare(v10, kCTRegistrationDataIndicatorNone, 0) == kCFCompareEqualTo)
           {
-            v12 = CFDictionaryGetValue(a3, kCTRegistrationDataStatusInternationalRoaming);
+            v12 = CFDictionaryGetValue(dict, kCTRegistrationDataStatusInternationalRoaming);
             if (!v12 || (v13 = v12, v14 = CFGetTypeID(v12), v14 != CFBooleanGetTypeID()) || (LODWORD(v8) = CFEqual(v13, kCFBooleanFalse), v8))
             {
               LOBYTE(v8) = 1;
@@ -1113,25 +1113,25 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 136315394;
-    v23 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v24 = 2080;
     v25 = " ";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sUpdating online status", &v22, 0x16u);
   }
 
-  v4 = [(VVService *)self isCellularNetworkAvailable];
+  isCellularNetworkAvailable = [(VVService *)self isCellularNetworkAvailable];
   v5 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix2 = [(VVService *)self getServiceObjLogPrefix];
     v7 = @"unavailable";
-    if (v4)
+    if (isCellularNetworkAvailable)
     {
       v7 = @"available";
     }
 
     v22 = 136315650;
-    v23 = v6;
+    getServiceObjLogPrefix = getServiceObjLogPrefix2;
     v24 = 2080;
     v25 = " ";
     v26 = 2112;
@@ -1139,19 +1139,19 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sService over cellular network is %@", &v22, 0x20u);
   }
 
-  v8 = [(VVService *)self isWiFiNetworkSupported];
+  isWiFiNetworkSupported = [(VVService *)self isWiFiNetworkSupported];
   v9 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix3 = [(VVService *)self getServiceObjLogPrefix];
     v11 = @"unsupported";
-    if (v8)
+    if (isWiFiNetworkSupported)
     {
       v11 = @"supported";
     }
 
     v22 = 136315650;
-    v23 = v10;
+    getServiceObjLogPrefix = getServiceObjLogPrefix3;
     v24 = 2080;
     v25 = " ";
     v26 = 2112;
@@ -1159,21 +1159,21 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%sService over WiFi network is %@", &v22, 0x20u);
   }
 
-  if (v8)
+  if (isWiFiNetworkSupported)
   {
-    v8 = [(VVService *)self isWiFiNetworkReachable];
+    isWiFiNetworkSupported = [(VVService *)self isWiFiNetworkReachable];
     v12 = sub_100026660(self->logger.__ptr_);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix4 = [(VVService *)self getServiceObjLogPrefix];
       v14 = @"unreachable";
-      if (v8)
+      if (isWiFiNetworkSupported)
       {
         v14 = @"reachable";
       }
 
       v22 = 136315650;
-      v23 = v13;
+      getServiceObjLogPrefix = getServiceObjLogPrefix4;
       v24 = 2080;
       v25 = " ";
       v26 = 2112;
@@ -1185,15 +1185,15 @@ LABEL_18:
   v15 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix5 = [(VVService *)self getServiceObjLogPrefix];
     v17 = @"unavailable";
-    if (v8)
+    if (isWiFiNetworkSupported)
     {
       v17 = @"available";
     }
 
     v22 = 136315650;
-    v23 = v16;
+    getServiceObjLogPrefix = getServiceObjLogPrefix5;
     v24 = 2080;
     v25 = " ";
     v26 = 2112;
@@ -1202,10 +1202,10 @@ LABEL_18:
   }
 
   v18 = sub_100026660(self->logger.__ptr_);
-  v19 = v4 | v8;
+  v19 = isCellularNetworkAvailable | isWiFiNetworkSupported;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix6 = [(VVService *)self getServiceObjLogPrefix];
     v21 = @"offline";
     if (v19)
     {
@@ -1213,7 +1213,7 @@ LABEL_18:
     }
 
     v22 = 136315650;
-    v23 = v20;
+    getServiceObjLogPrefix = getServiceObjLogPrefix6;
     v24 = 2080;
     v25 = " ";
     v26 = 2112;
@@ -1226,8 +1226,8 @@ LABEL_18:
 
 - (id)fallbackActivityIdentifier
 {
-  v2 = [(VVService *)self serviceLabelID];
-  v3 = [NSString stringWithFormat:@"%@.%@", @"com.apple.voicemail.fallback", v2];
+  serviceLabelID = [(VVService *)self serviceLabelID];
+  v3 = [NSString stringWithFormat:@"%@.%@", @"com.apple.voicemail.fallback", serviceLabelID];
 
   return v3;
 }
@@ -1235,15 +1235,15 @@ LABEL_18:
 - (void)cancelNotificationFallback
 {
   [(NSRecursiveLock *)self->_lock lock];
-  v3 = [(VVService *)self fallbackActivityIdentifier];
-  xpc_activity_unregister([v3 UTF8String]);
+  fallbackActivityIdentifier = [(VVService *)self fallbackActivityIdentifier];
+  xpc_activity_unregister([fallbackActivityIdentifier UTF8String]);
 
   [(VVService *)self _setOnline:(*&self->_serviceFlags & 1) == 0 fallbackMode:0];
   v4 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
-    v6 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v7 = 2080;
     v8 = " ";
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#I %s%sCanceling fallback mode.", &v5, 0x16u);
@@ -1263,7 +1263,7 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
-    v7 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v8 = 2080;
     v9 = " ";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sDelivered fallback notification.", &v6, 0x16u);
@@ -1277,7 +1277,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136315394;
-    v5 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v6 = 2080;
     v7 = " ";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sEntered fallback mode.", &v4, 0x16u);
@@ -1294,40 +1294,40 @@ LABEL_18:
 
 - (void)_scheduleFallbackActivityIfNecessary
 {
-  v3 = [(VVService *)self messageNotificationFallbackTimeout];
-  v4 = v3;
-  if (v3)
+  messageNotificationFallbackTimeout = [(VVService *)self messageNotificationFallbackTimeout];
+  v4 = messageNotificationFallbackTimeout;
+  if (messageNotificationFallbackTimeout)
   {
-    v5 = [v3 unsignedIntegerValue];
-    if (v5)
+    unsignedIntegerValue = [messageNotificationFallbackTimeout unsignedIntegerValue];
+    if (unsignedIntegerValue)
     {
       v6 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_BOOL(v6, XPC_ACTIVITY_REPEATING, 0);
-      xpc_dictionary_set_int64(v6, XPC_ACTIVITY_DELAY, v5);
+      xpc_dictionary_set_int64(v6, XPC_ACTIVITY_DELAY, unsignedIntegerValue);
       xpc_dictionary_set_int64(v6, XPC_ACTIVITY_GRACE_PERIOD, XPC_ACTIVITY_INTERVAL_5_MIN);
       xpc_dictionary_set_string(v6, XPC_ACTIVITY_PRIORITY, XPC_ACTIVITY_PRIORITY_UTILITY);
       v7 = sub_100026660(self->logger.__ptr_);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315650;
-        v14 = [(VVService *)self getServiceObjLogPrefix];
+        getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
         v15 = 2080;
         v16 = " ";
         v17 = 2048;
-        v18 = v5;
+        v18 = unsignedIntegerValue;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#I %s%sScheduling fallback mode in %lu s", buf, 0x20u);
       }
 
       objc_initWeak(buf, self);
-      v8 = [(VVService *)self fallbackActivityIdentifier];
-      v9 = v8;
-      v10 = [v8 UTF8String];
+      fallbackActivityIdentifier = [(VVService *)self fallbackActivityIdentifier];
+      v9 = fallbackActivityIdentifier;
+      uTF8String = [fallbackActivityIdentifier UTF8String];
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_10004E440;
       handler[3] = &unk_1000EEB30;
       objc_copyWeak(&v12, buf);
-      xpc_activity_register(v10, v6, handler);
+      xpc_activity_register(uTF8String, v6, handler);
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(buf);
@@ -1335,14 +1335,14 @@ LABEL_18:
   }
 }
 
-- (void)setMessageWaiting:(BOOL)a3
+- (void)setMessageWaiting:(BOOL)waiting
 {
-  v3 = a3;
+  waitingCopy = waiting;
   [(NSRecursiveLock *)self->_lock lock];
   serviceFlags = self->_serviceFlags;
-  if (((((serviceFlags & 0x20) == 0) ^ v3) & 1) == 0)
+  if (((((serviceFlags & 0x20) == 0) ^ waitingCopy) & 1) == 0)
   {
-    if (v3)
+    if (waitingCopy)
     {
       v6 = 32;
     }
@@ -1356,15 +1356,15 @@ LABEL_18:
     v7 = sub_100026660(self->logger.__ptr_);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v9 = @"OFF";
-      if (v3)
+      if (waitingCopy)
       {
         v9 = @"ON";
       }
 
       v11 = 136315650;
-      v12 = v8;
+      v12 = getServiceObjLogPrefix;
       v13 = 2080;
       v14 = " ";
       v15 = 2112;
@@ -1385,7 +1385,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136315394;
-    v5 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v6 = 2080;
     v7 = " ";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sOOS: Acting on MWI.", &v4, 0x16u);
@@ -1400,7 +1400,7 @@ LABEL_18:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136315394;
-    v5 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v6 = 2080;
     v7 = " ";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sOOS: Cancelling MWI action.", &v4, 0x16u);
@@ -1444,15 +1444,15 @@ LABEL_6:
 
 - (BOOL)isPasswordReady
 {
-  v2 = [(VVService *)self mailboxName];
+  mailboxName = [(VVService *)self mailboxName];
 
-  return sub_100096C10(v2);
+  return sub_100096C10(mailboxName);
 }
 
-- (id)passwordIgnoringSubscription:(BOOL)a3
+- (id)passwordIgnoringSubscription:(BOOL)subscription
 {
-  v5 = [(VVService *)self mailboxName];
-  if (![(__CFString *)v5 length]|| !a3 && ![(VVService *)self isSubscribed])
+  mailboxName = [(VVService *)self mailboxName];
+  if (![(__CFString *)mailboxName length]|| !subscription && ![(VVService *)self isSubscribed])
   {
     password = self->_password;
     self->_password = 0;
@@ -1462,13 +1462,13 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (!self->_password || ([(__CFString *)v5 isEqualToString:self->_passwordMailboxName]& 1) == 0)
+  if (!self->_password || ([(__CFString *)mailboxName isEqualToString:self->_passwordMailboxName]& 1) == 0)
   {
-    v6 = sub_100096C00(v5);
+    v6 = sub_100096C00(mailboxName);
     v7 = self->_password;
     self->_password = v6;
 
-    v8 = v5;
+    v8 = mailboxName;
     passwordMailboxName = self->_passwordMailboxName;
     self->_passwordMailboxName = v8;
 LABEL_8:
@@ -1480,31 +1480,31 @@ LABEL_8:
   return v11;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v5 = a3;
+  passwordCopy = password;
   v6 = vm_vmd_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = sub_100096C00([(VVService *)self mailboxName]);
     if (v7)
     {
-      v8 = [(__CFString *)v5 isEqual:v7];
+      v8 = [(__CFString *)passwordCopy isEqual:v7];
       v9 = v6;
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
       if (v8)
       {
         if (v10)
         {
-          v11 = [(VVService *)self mailboxName];
-          sub_10009D168(v11, &v17, v9);
+          mailboxName = [(VVService *)self mailboxName];
+          sub_10009D168(mailboxName, &v17, v9);
         }
       }
 
       else if (v10)
       {
-        v13 = [(VVService *)self mailboxName];
-        sub_10009D110(v13, &v17, v9);
+        mailboxName2 = [(VVService *)self mailboxName];
+        sub_10009D110(mailboxName2, &v17, v9);
       }
     }
 
@@ -1513,20 +1513,20 @@ LABEL_8:
       v9 = vm_vmd_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(VVService *)self mailboxName];
+        mailboxName3 = [(VVService *)self mailboxName];
         v17 = 138412290;
-        v18 = v12;
+        v18 = mailboxName3;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[VVService setPassword:] called for mailbox named %@; old password for this mailbox was NULL", &v17, 0xCu);
       }
     }
   }
 
-  v14 = [(VVService *)self mailboxName];
+  mailboxName4 = [(VVService *)self mailboxName];
   passwordMailboxName = self->_passwordMailboxName;
-  self->_passwordMailboxName = v14;
+  self->_passwordMailboxName = mailboxName4;
 
-  objc_storeStrong(&self->_password, a3);
-  sub_100096EB4(v5, self->_passwordMailboxName);
+  objc_storeStrong(&self->_password, password);
+  sub_100096EB4(passwordCopy, self->_passwordMailboxName);
   passwordError = self->_passwordError;
   self->_passwordError = 0;
 
@@ -1536,22 +1536,22 @@ LABEL_8:
   }
 }
 
-- (void)setProvisionalPassword:(id)a3
+- (void)setProvisionalPassword:(id)password
 {
-  v5 = a3;
-  v4 = [(VVService *)self mailboxName];
-  if ([(__CFString *)v4 length])
+  passwordCopy = password;
+  mailboxName = [(VVService *)self mailboxName];
+  if ([(__CFString *)mailboxName length])
   {
-    sub_100097184(v5, v4);
+    sub_100097184(passwordCopy, mailboxName);
   }
 }
 
 - (id)provisionalPassword
 {
-  v2 = [(VVService *)self mailboxName];
-  if ([(__CFString *)v2 length])
+  mailboxName = [(VVService *)self mailboxName];
+  if ([(__CFString *)mailboxName length])
   {
-    v3 = sub_1000970D0(v2);
+    v3 = sub_1000970D0(mailboxName);
   }
 
   else
@@ -1568,8 +1568,8 @@ LABEL_8:
   {
     if ((*&self->_serviceFlags & 5) == 0)
     {
-      v5 = [(VVService *)self mailboxName];
-      v3 = [v5 length];
+      mailboxName = [(VVService *)self mailboxName];
+      v3 = [mailboxName length];
 
       if (v3)
       {
@@ -1587,14 +1587,14 @@ LABEL_8:
   [v3 postNotificationName:@"VVServicePasswordRequestCancelledNotification" object:self];
 }
 
-- (id)carrierParameterValueForKey:(id)a3
+- (id)carrierParameterValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSRecursiveLock *)self->_lock lock];
   carrierParameters = self->_carrierParameters;
   if (carrierParameters || (v6 = [[VVCarrierParameters alloc] initWithService:self], v7 = self->_carrierParameters, self->_carrierParameters = v6, v7, (carrierParameters = self->_carrierParameters) != 0))
   {
-    v8 = [carrierParameters parameterValueForKey:v4];
+    v8 = [carrierParameters parameterValueForKey:keyCopy];
   }
 
   else
@@ -1623,23 +1623,23 @@ LABEL_8:
   return v3;
 }
 
-- (void)progressiveDataLengthsForRecord:(void *)a3 expected:(unsigned int *)a4 current:(unsigned int *)a5
+- (void)progressiveDataLengthsForRecord:(void *)record expected:(unsigned int *)expected current:(unsigned int *)current
 {
-  if (a4)
+  if (expected)
   {
-    *a4 = 0;
+    *expected = 0;
   }
 
-  if (a5)
+  if (current)
   {
-    *a5 = 0;
+    *current = 0;
   }
 }
 
 - (void)clearRemoteUIDsForDetachedMessages
 {
-  v3 = [(VVService *)self serviceLabelID];
-  v4 = VMStoreCopyOfAllRecordsWithFlags(64, 0, v3);
+  serviceLabelID = [(VVService *)self serviceLabelID];
+  v4 = VMStoreCopyOfAllRecordsWithFlags(64, 0, serviceLabelID);
 
   if (v4)
   {
@@ -1647,14 +1647,14 @@ LABEL_8:
     v6 = sub_100026660(self->logger.__ptr_);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(VVService *)self getServiceObjLogPrefix];
-      v8 = [(VVService *)self serviceLabelID];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
+      serviceLabelID2 = [(VVService *)self serviceLabelID];
       v14 = 136315906;
-      v15 = v7;
+      v15 = getServiceObjLogPrefix;
       v16 = 2080;
       v17 = " ";
       v18 = 2112;
-      v19 = v8;
+      v19 = serviceLabelID2;
       v20 = 2112;
       v21 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#I %s%sClear remote UIDs for detached records, label %@ %@", &v14, 0x2Au);
@@ -1709,14 +1709,14 @@ LABEL_15:
   }
 }
 
-- (void)setGreetingType:(int64_t)a3 data:(id)a4 duration:(unint64_t)a5
+- (void)setGreetingType:(int64_t)type data:(id)data duration:(unint64_t)duration
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 == 2 && [v7 length])
+  dataCopy = data;
+  v8 = dataCopy;
+  if (type == 2 && [dataCopy length])
   {
-    v9 = [(VVService *)self accountDir];
-    v11 = sub_1000856A8(v9, v10);
+    accountDir = [(VVService *)self accountDir];
+    v11 = sub_1000856A8(accountDir, v10);
 
     v21 = 0;
     v12 = [v8 writeToURL:v11 options:0 error:&v21];
@@ -1727,14 +1727,14 @@ LABEL_15:
       v15 = sub_100026660(ptr);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(VVService *)self getServiceObjLogPrefix];
-        v17 = [v11 path];
+        getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
+        path = [v11 path];
         *buf = 136315650;
-        v23 = v16;
+        v23 = getServiceObjLogPrefix;
         v24 = 2080;
         v25 = " ";
         v26 = 2112;
-        v27 = v17;
+        v27 = path;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#I %s%sSaved custom greeting to file at %@", buf, 0x20u);
       }
     }
@@ -1744,14 +1744,14 @@ LABEL_15:
       v18 = sub_100026660(ptr);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(VVService *)self getServiceObjLogPrefix];
-        v20 = [v11 path];
+        getServiceObjLogPrefix2 = [(VVService *)self getServiceObjLogPrefix];
+        path2 = [v11 path];
         *buf = 136315906;
-        v23 = v19;
+        v23 = getServiceObjLogPrefix2;
         v24 = 2080;
         v25 = " ";
         v26 = 2112;
-        v27 = v20;
+        v27 = path2;
         v28 = 2112;
         v29 = v13;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#W %s%sCould not save custom greeting to file at %@ with error %@", buf, 0x2Au);
@@ -1762,21 +1762,21 @@ LABEL_15:
   }
 }
 
-- (void)reportError:(id)a3
+- (void)reportError:(id)error
 {
-  v5 = a3;
-  if ([(NSError *)v5 isPasswordMismatchError])
+  errorCopy = error;
+  if ([(NSError *)errorCopy isPasswordMismatchError])
   {
-    if (self->_passwordError != v5)
+    if (self->_passwordError != errorCopy)
     {
-      objc_storeStrong(&self->_passwordError, a3);
+      objc_storeStrong(&self->_passwordError, error);
     }
 
     [objc_opt_class() _setInsomniaStateSupressed:1];
     [(VVService *)self displayPasswordRequestIfNecessary];
   }
 
-  else if ([(NSError *)v5 isInvalidSubscriberError])
+  else if ([(NSError *)errorCopy isInvalidSubscriberError])
   {
     [(VVService *)self setSubscribed:0];
     [(VVService *)self removeServiceInformation];
@@ -1785,9 +1785,9 @@ LABEL_15:
   v6 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [(VVService *)self getServiceObjLogPrefix];
-    v8 = [(NSError *)v5 localizedDescription];
-    sub_10009D1C0(v7, v8, v9, v6);
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
+    localizedDescription = [(NSError *)errorCopy localizedDescription];
+    sub_10009D1C0(getServiceObjLogPrefix, localizedDescription, v9, v6);
   }
 }
 
@@ -1841,9 +1841,9 @@ LABEL_7:
   return dword_10010D93C;
 }
 
-+ (void)_acquireAssertionsForInsomniaState:(BOOL)a3
++ (void)_acquireAssertionsForInsomniaState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (pthread_mutex_trylock(&stru_10010D200) != 16)
   {
     sub_10009D23C();
@@ -1851,7 +1851,7 @@ LABEL_7:
 
   v5 = vm_vmd_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (stateCopy)
   {
     if (v6)
     {
@@ -1859,7 +1859,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Insomnia] Enabling voicemail power assertion and resetting time out", buf, 2u);
     }
 
-    IOPMAssertionSetProperty([a1 _voicemailPowerAssertion], @"AssertLevel", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", 255));
+    IOPMAssertionSetProperty([self _voicemailPowerAssertion], @"AssertLevel", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", 255));
     v7 = @"TimeoutSeconds";
     v8 = 600;
   }
@@ -1876,14 +1876,14 @@ LABEL_7:
     v7 = @"AssertLevel";
   }
 
-  IOPMAssertionSetProperty([a1 _voicemailPowerAssertion], v7, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v8));
+  IOPMAssertionSetProperty([self _voicemailPowerAssertion], v7, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v8));
 }
 
-+ (void)_setInsomniaStateSupressed:(BOOL)a3
++ (void)_setInsomniaStateSupressed:(BOOL)supressed
 {
-  v3 = a3;
+  supressedCopy = supressed;
   pthread_mutex_lock(&stru_10010D200);
-  if (byte_10010D940 != v3)
+  if (byte_10010D940 != supressedCopy)
   {
     v5 = vm_vmd_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1893,8 +1893,8 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Insomnia] setInsomniaStateSupressed [%s]", &v6, 0xCu);
     }
 
-    byte_10010D940 = v3;
-    [a1 _acquireAssertionsForInsomniaState:(dword_10010D944 > 0) & ~v3];
+    byte_10010D940 = supressedCopy;
+    [self _acquireAssertionsForInsomniaState:(dword_10010D944 > 0) & ~supressedCopy];
   }
 
   pthread_mutex_unlock(&stru_10010D200);
@@ -1914,7 +1914,7 @@ LABEL_7:
 
   if ((byte_10010D940 & 1) == 0 && dword_10010D944 == 1)
   {
-    [a1 _acquireAssertionsForInsomniaState:1];
+    [self _acquireAssertionsForInsomniaState:1];
   }
 
   pthread_mutex_unlock(&stru_10010D200);
@@ -1934,7 +1934,7 @@ LABEL_7:
 
   if (!dword_10010D944 && (byte_10010D940 & 1) == 0)
   {
-    [a1 _acquireAssertionsForInsomniaState:0];
+    [self _acquireAssertionsForInsomniaState:0];
   }
 
   pthread_mutex_unlock(&stru_10010D200);
@@ -1942,21 +1942,21 @@ LABEL_7:
 
 - (id)delayedRetryActivityIdentifier
 {
-  v2 = [(VVService *)self serviceLabelID];
-  v3 = [NSString stringWithFormat:@"%@.%@", @"com.apple.voicemail.SyncRetry", v2];
+  serviceLabelID = [(VVService *)self serviceLabelID];
+  v3 = [NSString stringWithFormat:@"%@.%@", @"com.apple.voicemail.SyncRetry", serviceLabelID];
 
   return v3;
 }
 
-- (void)setDelayedRetryScheduled:(BOOL)a3
+- (void)setDelayedRetryScheduled:(BOOL)scheduled
 {
-  if (self->_retryScheduled != a3)
+  if (self->_retryScheduled != scheduled)
   {
-    v3 = a3;
+    scheduledCopy = scheduled;
     v5 = sub_10004A3F0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       if (byte_10010D948)
       {
         v7 = 118;
@@ -1968,11 +1968,11 @@ LABEL_7:
       }
 
       v9 = 136315906;
-      v10 = v6;
+      v10 = getServiceObjLogPrefix;
       v8 = @"Scheduled";
       v11 = 2080;
       v12 = " ";
-      if (!v3)
+      if (!scheduledCopy)
       {
         v8 = @"Not Scheduled";
       }
@@ -1984,40 +1984,40 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s[%c] Set delayed sync retry state: %@", &v9, 0x26u);
     }
 
-    self->_retryScheduled = v3;
+    self->_retryScheduled = scheduledCopy;
   }
 }
 
 - (BOOL)isDelayedRetryScheduledGuarded
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(VVService *)self serialDispatchQueue];
+  serialDispatchQueue = [(VVService *)self serialDispatchQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100050064;
   v5[3] = &unk_1000EEAE0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialDispatchQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setDelayedRetryImmediate:(BOOL)a3
+- (void)setDelayedRetryImmediate:(BOOL)immediate
 {
-  if (self->_retryImmediate != a3)
+  if (self->_retryImmediate != immediate)
   {
-    v3 = a3;
+    immediateCopy = immediate;
     v5 = sub_10004A3F0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       if (byte_10010D948)
       {
         v7 = 118;
@@ -2029,11 +2029,11 @@ LABEL_7:
       }
 
       v9 = 136315906;
-      v10 = v6;
+      v10 = getServiceObjLogPrefix;
       v8 = @"Immediate";
       v11 = 2080;
       v12 = " ";
-      if (!v3)
+      if (!immediateCopy)
       {
         v8 = @"Continuous";
       }
@@ -2045,18 +2045,18 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s[%c] Set delayed sync retry mode: %@", &v9, 0x26u);
     }
 
-    self->_retryImmediate = v3;
+    self->_retryImmediate = immediateCopy;
   }
 }
 
-- (void)cancelDelayedSynchronize:(id)a3
+- (void)cancelDelayedSynchronize:(id)synchronize
 {
-  v4 = a3;
+  synchronizeCopy = synchronize;
   [(VVService *)self _cancelIndicatorAction];
   v5 = sub_10004A3F0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     retryIntervalIndex = self->_retryIntervalIndex;
     if (byte_10010D948)
     {
@@ -2069,7 +2069,7 @@ LABEL_7:
     }
 
     v11 = 136316162;
-    v12 = v6;
+    v12 = getServiceObjLogPrefix;
     v13 = 2080;
     v14 = " ";
     v15 = 1024;
@@ -2077,14 +2077,14 @@ LABEL_7:
     v17 = 1024;
     v18 = retryIntervalIndex;
     v19 = 2112;
-    v20 = v4;
+    v20 = synchronizeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s[%c] Delayed sync cancelled, next iteration %d, reason %@", &v11, 0x2Cu);
   }
 
   [(VVService *)self setDelayedRetryScheduled:0];
-  v9 = [(VVService *)self delayedRetryActivityIdentifier];
-  v10 = v9;
-  xpc_activity_unregister([v9 UTF8String]);
+  delayedRetryActivityIdentifier = [(VVService *)self delayedRetryActivityIdentifier];
+  v10 = delayedRetryActivityIdentifier;
+  xpc_activity_unregister([delayedRetryActivityIdentifier UTF8String]);
 }
 
 - (void)resetDelayedSynchronizationAttemptCount
@@ -2092,7 +2092,7 @@ LABEL_7:
   v3 = sub_10004A3F0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     retryIntervalIndex = self->_retryIntervalIndex;
     if (byte_10010D948)
     {
@@ -2105,7 +2105,7 @@ LABEL_7:
     }
 
     v7 = 136315906;
-    v8 = v4;
+    v8 = getServiceObjLogPrefix;
     v9 = 2080;
     v10 = " ";
     v11 = 1024;
@@ -2123,7 +2123,7 @@ LABEL_7:
   v3 = sub_10004A3F0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     retryIntervalIndex = self->_retryIntervalIndex;
     if (byte_10010D948)
     {
@@ -2136,7 +2136,7 @@ LABEL_7:
     }
 
     v7 = 136315906;
-    v8 = v4;
+    v8 = getServiceObjLogPrefix;
     v9 = 2080;
     v10 = " ";
     v11 = 1024;
@@ -2155,9 +2155,9 @@ LABEL_7:
   retryIntervals = self->_retryIntervals;
   if (!retryIntervals)
   {
-    v4 = [(VVService *)self getRetryIntervals];
-    v5 = v4;
-    if (v4 && [v4 count])
+    getRetryIntervals = [(VVService *)self getRetryIntervals];
+    v5 = getRetryIntervals;
+    if (getRetryIntervals && [getRetryIntervals count])
     {
       v6 = [v5 copy];
     }
@@ -2183,7 +2183,7 @@ LABEL_7:
     v3 = sub_10004A3F0();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       retryIntervalIndex = self->_retryIntervalIndex;
       if (byte_10010D948)
       {
@@ -2196,7 +2196,7 @@ LABEL_7:
       }
 
       *buf = 136315906;
-      v25 = v4;
+      v25 = getServiceObjLogPrefix;
       v26 = 2080;
       v27 = " ";
       v28 = 1024;
@@ -2209,17 +2209,17 @@ LABEL_7:
 
   else
   {
-    v7 = [(VVService *)self retryIntervals];
-    v3 = v7;
-    if (v7 && (v8 = self->_retryIntervalIndex, [v7 count]> v8))
+    retryIntervals = [(VVService *)self retryIntervals];
+    v3 = retryIntervals;
+    if (retryIntervals && (v8 = self->_retryIntervalIndex, [retryIntervals count]> v8))
     {
       v9 = [v3 objectAtIndex:self->_retryIntervalIndex];
-      v10 = [v9 unsignedIntValue];
+      unsignedIntValue = [v9 unsignedIntValue];
 
       v11 = sub_10004A3F0();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(VVService *)self getServiceObjLogPrefix];
+        getServiceObjLogPrefix2 = [(VVService *)self getServiceObjLogPrefix];
         v13 = self->_retryIntervalIndex;
         if (byte_10010D948)
         {
@@ -2232,13 +2232,13 @@ LABEL_7:
         }
 
         *buf = 136316162;
-        v25 = v12;
+        v25 = getServiceObjLogPrefix2;
         v26 = 2080;
         v27 = " ";
         v28 = 1024;
         v29 = v14;
         v30 = 1024;
-        v31 = v10;
+        v31 = unsignedIntValue;
         v32 = 1024;
         v33 = v13;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#I %s%s[%c] Scheduling delayed sync in %u s, iteration %d", buf, 0x28u);
@@ -2247,19 +2247,19 @@ LABEL_7:
       [(VVService *)self setDelayedRetryScheduled:1];
       v15 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_BOOL(v15, XPC_ACTIVITY_REPEATING, 0);
-      xpc_dictionary_set_int64(v15, XPC_ACTIVITY_DELAY, v10);
+      xpc_dictionary_set_int64(v15, XPC_ACTIVITY_DELAY, unsignedIntValue);
       xpc_dictionary_set_int64(v15, XPC_ACTIVITY_GRACE_PERIOD, XPC_ACTIVITY_INTERVAL_1_MIN);
       xpc_dictionary_set_string(v15, XPC_ACTIVITY_PRIORITY, XPC_ACTIVITY_PRIORITY_UTILITY);
       objc_initWeak(buf, self);
-      v16 = [(VVService *)self delayedRetryActivityIdentifier];
-      v17 = v16;
-      v18 = [v16 UTF8String];
+      delayedRetryActivityIdentifier = [(VVService *)self delayedRetryActivityIdentifier];
+      v17 = delayedRetryActivityIdentifier;
+      uTF8String = [delayedRetryActivityIdentifier UTF8String];
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_100050A50;
       handler[3] = &unk_1000EEB30;
       objc_copyWeak(&v23, buf);
-      xpc_activity_register(v18, v15, handler);
+      xpc_activity_register(uTF8String, v15, handler);
 
       ++self->_retryIntervalIndex;
       objc_destroyWeak(&v23);
@@ -2271,7 +2271,7 @@ LABEL_7:
       v19 = sub_10004A3F0();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(VVService *)self getServiceObjLogPrefix];
+        getServiceObjLogPrefix3 = [(VVService *)self getServiceObjLogPrefix];
         if (byte_10010D948)
         {
           v21 = 118;
@@ -2283,7 +2283,7 @@ LABEL_7:
         }
 
         *buf = 136315650;
-        v25 = v20;
+        v25 = getServiceObjLogPrefix3;
         v26 = 2080;
         v27 = " ";
         v28 = 1024;
@@ -2301,8 +2301,8 @@ LABEL_7:
 
 - (id)automatedTrashActivityIdentifier
 {
-  v2 = [(VVService *)self serviceLabelID];
-  v3 = [NSString stringWithFormat:@"%@.%@", @"com.apple.voicemail.autotrash", v2];
+  serviceLabelID = [(VVService *)self serviceLabelID];
+  v3 = [NSString stringWithFormat:@"%@.%@", @"com.apple.voicemail.autotrash", serviceLabelID];
 
   return v3;
 }
@@ -2316,24 +2316,24 @@ LABEL_7:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v39 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v40 = 2080;
       v41 = " ";
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "#W %s%sWe were asked to schedule trash compaction, but this class does't support this procedure", buf, 0x16u);
     }
 
-    v3 = 0;
+    getAccountStore = 0;
     goto LABEL_35;
   }
 
-  v3 = [(VVService *)self getAccountStore];
+  getAccountStore = [(VVService *)self getAccountStore];
   if (![(VVService *)self doesClientManageTrashCompaction])
   {
     v33 = sub_100026660(self->logger.__ptr_);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v39 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v40 = 2080;
       v41 = " ";
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "#W %s%sWe were asked to schedule trash compaction, but client doesn't manage trash", buf, 0x16u);
@@ -2344,7 +2344,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v4 = sub_1000931D0(v3, 8, 68);
+  v4 = sub_1000931D0(getAccountStore, 8, 68);
   v5 = v4;
   if (v4 && CFArrayGetCount(v4))
   {
@@ -2353,7 +2353,7 @@ LABEL_35:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
-      v39 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v40 = 2080;
       v41 = " ";
       v42 = 2112;
@@ -2374,14 +2374,14 @@ LABEL_35:
       do
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v5, v9);
-        v12 = sub_1000928B0(v3, ValueAtIndex);
+        v12 = sub_1000928B0(getAccountStore, ValueAtIndex);
         *&v13 = COERCE_DOUBLE(VMStoreRecordCopyDescription(ValueAtIndex));
         v14 = sub_100026660(self->logger.__ptr_);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [(VVService *)self getServiceObjLogPrefix];
+          getServiceObjLogPrefix2 = [(VVService *)self getServiceObjLogPrefix];
           *buf = 136315906;
-          v39 = v15;
+          getServiceObjLogPrefix = getServiceObjLogPrefix2;
           v40 = 2080;
           v41 = " ";
           v42 = 2112;
@@ -2401,9 +2401,9 @@ LABEL_35:
           v16 = sub_100026660(self->logger.__ptr_);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(VVService *)self getServiceObjLogPrefix];
+            getServiceObjLogPrefix3 = [(VVService *)self getServiceObjLogPrefix];
             *buf = 136315650;
-            v39 = v17;
+            getServiceObjLogPrefix = getServiceObjLogPrefix3;
             v40 = 2080;
             v41 = " ";
             v42 = 2048;
@@ -2428,9 +2428,9 @@ LABEL_35:
         v23 = v19 - (Current - v10) + 10.0;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(VVService *)self getServiceObjLogPrefix];
+          getServiceObjLogPrefix4 = [(VVService *)self getServiceObjLogPrefix];
           *buf = 136316418;
-          v39 = v24;
+          getServiceObjLogPrefix = getServiceObjLogPrefix4;
           v40 = 2080;
           v41 = " ";
           v42 = 2048;
@@ -2449,9 +2449,9 @@ LABEL_35:
           v25 = sub_100026660(self->logger.__ptr_);
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [(VVService *)self getServiceObjLogPrefix];
+            getServiceObjLogPrefix5 = [(VVService *)self getServiceObjLogPrefix];
             *buf = 136315394;
-            v39 = v26;
+            getServiceObjLogPrefix = getServiceObjLogPrefix5;
             v40 = 2080;
             v41 = " ";
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "#I %s%sCOMPACTION: Time until next compaction was less than one minute.  Increasing to one minute.", buf, 0x16u);
@@ -2466,22 +2466,22 @@ LABEL_35:
         xpc_dictionary_set_int64(v27, XPC_ACTIVITY_GRACE_PERIOD, XPC_ACTIVITY_INTERVAL_1_MIN);
         xpc_dictionary_set_string(v27, XPC_ACTIVITY_PRIORITY, XPC_ACTIVITY_PRIORITY_UTILITY);
         objc_initWeak(&location, self);
-        v28 = [(VVService *)self automatedTrashActivityIdentifier];
-        v29 = v28;
-        v30 = [v28 UTF8String];
+        automatedTrashActivityIdentifier = [(VVService *)self automatedTrashActivityIdentifier];
+        v29 = automatedTrashActivityIdentifier;
+        uTF8String = [automatedTrashActivityIdentifier UTF8String];
         handler[0] = _NSConcreteStackBlock;
         handler[1] = 3221225472;
         handler[2] = sub_100051610;
         handler[3] = &unk_1000EEB30;
         objc_copyWeak(&v36, &location);
-        xpc_activity_register(v30, v27, handler);
+        xpc_activity_register(uTF8String, v27, handler);
 
         v31 = sub_100026660(self->logger.__ptr_);
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [(VVService *)self getServiceObjLogPrefix];
+          getServiceObjLogPrefix6 = [(VVService *)self getServiceObjLogPrefix];
           *buf = 136315650;
-          v39 = v32;
+          getServiceObjLogPrefix = getServiceObjLogPrefix6;
           v40 = 2080;
           v41 = " ";
           v42 = 2048;
@@ -2503,7 +2503,7 @@ LABEL_35:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v39 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v40 = 2080;
       v41 = " ";
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "#W %s%sWe were asked to schedule trash compaction, but no records were eligible", buf, 0x16u);
@@ -2520,37 +2520,37 @@ LABEL_36:
 
 - (void)_cancelAutomatedTrashCompaction
 {
-  v3 = [(VVService *)self automatedTrashActivityIdentifier];
-  xpc_activity_unregister([v3 UTF8String]);
+  automatedTrashActivityIdentifier = [(VVService *)self automatedTrashActivityIdentifier];
+  xpc_activity_unregister([automatedTrashActivityIdentifier UTF8String]);
 
   v4 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
-    v6 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v7 = 2080;
     v8 = " ";
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#I %s%sAutomated trash compaction was cancelled.", &v5, 0x16u);
   }
 }
 
-- (void)_attemptScheduledTrashCompaction:(id)a3
+- (void)_attemptScheduledTrashCompaction:(id)compaction
 {
-  v4 = a3;
+  compactionCopy = compaction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(VVService *)self getAccountStore];
-    if (v5)
+    getAccountStore = [(VVService *)self getAccountStore];
+    if (getAccountStore)
     {
-      v6 = [(VVService *)self doTrashCompaction:v5];
-      if (!xpc_activity_set_state(v4, 5))
+      v6 = [(VVService *)self doTrashCompaction:getAccountStore];
+      if (!xpc_activity_set_state(compactionCopy, 5))
       {
         v7 = sub_100026660(self->logger.__ptr_);
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v13 = 136315650;
-          v14 = [(VVService *)self getServiceObjLogPrefix];
+          getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
           v15 = 2080;
           v16 = " ";
           v17 = 2112;
@@ -2562,7 +2562,7 @@ LABEL_36:
       v8 = sub_100026660(self->logger.__ptr_);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(VVService *)self getServiceObjLogPrefix];
+        getServiceObjLogPrefix2 = [(VVService *)self getServiceObjLogPrefix];
         v10 = @"but no records were compacted";
         if (v6)
         {
@@ -2570,7 +2570,7 @@ LABEL_36:
         }
 
         v13 = 136315650;
-        v14 = v9;
+        getServiceObjLogPrefix = getServiceObjLogPrefix2;
         v15 = 2080;
         v16 = " ";
         v17 = 2112;
@@ -2592,13 +2592,13 @@ LABEL_36:
     }
   }
 
-  if (!xpc_activity_set_state(v4, 5))
+  if (!xpc_activity_set_state(compactionCopy, 5))
   {
     v12 = sub_100026660(self->logger.__ptr_);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 136315650;
-      v14 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v15 = 2080;
       v16 = " ";
       v17 = 2112;
@@ -2607,7 +2607,7 @@ LABEL_36:
     }
   }
 
-  v5 = 0;
+  getAccountStore = 0;
 LABEL_20:
 }
 
@@ -2618,11 +2618,11 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136315650;
-    v5 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v6 = 2080;
     v7 = " ";
     v8 = 2048;
-    v9 = [(VVService *)self numFailedAttemptsToSyncOverWifi];
+    numFailedAttemptsToSyncOverWifi = [(VVService *)self numFailedAttemptsToSyncOverWifi];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sreportFailedToSyncOverWifi %ld", &v4, 0x20u);
   }
 }
@@ -2634,7 +2634,7 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136315394;
-    v5 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v6 = 2080;
     v7 = " ";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sreported successful sync", &v4, 0x16u);
@@ -2647,38 +2647,38 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315650;
-    v7 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v8 = 2080;
     v9 = " ";
     v10 = 2048;
-    v11 = [(VVService *)self numFailedAttemptsToSyncOverWifi];
+    numFailedAttemptsToSyncOverWifi = [(VVService *)self numFailedAttemptsToSyncOverWifi];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sshouldImmediatelyRetrySyncOverCellular %ld", &v6, 0x20u);
   }
 
-  v4 = [(VVService *)self numFailedAttemptsToSyncOverWifi];
-  if (v4)
+  numFailedAttemptsToSyncOverWifi2 = [(VVService *)self numFailedAttemptsToSyncOverWifi];
+  if (numFailedAttemptsToSyncOverWifi2)
   {
-    LOBYTE(v4) = ![(VVService *)self lastUsedConnectionTypeWasCellular];
+    LOBYTE(numFailedAttemptsToSyncOverWifi2) = ![(VVService *)self lastUsedConnectionTypeWasCellular];
   }
 
-  return v4;
+  return numFailedAttemptsToSyncOverWifi2;
 }
 
-- (void)setLastUsedConnectionType:(__CFString *)a3
+- (void)setLastUsedConnectionType:(__CFString *)type
 {
   v5 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315650;
-    v7 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v8 = 2080;
     v9 = " ";
     v10 = 2112;
-    v11 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%ssetLastUsedConnectionType: %@", &v6, 0x20u);
   }
 
-  self->_lastConnectionTypeUsed = a3;
+  self->_lastConnectionTypeUsed = type;
 }
 
 - (BOOL)lastUsedConnectionTypeWasCellular
@@ -2689,7 +2689,7 @@ LABEL_20:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315650;
-    v8 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v9 = 2080;
     v10 = " ";
     v11 = 1024;
@@ -2708,19 +2708,19 @@ LABEL_20:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v7 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v8 = 2080;
       v9 = " ";
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sattempting sync retry over cellular", buf, 0x16u);
     }
 
-    v4 = [(VVService *)self serialDispatchQueue];
+    serialDispatchQueue = [(VVService *)self serialDispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100052360;
     block[3] = &unk_1000EDEC8;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(serialDispatchQueue, block);
   }
 }
 
@@ -2737,9 +2737,9 @@ LABEL_20:
   }
 }
 
-- (void)handleVoicemailInfoUpdate:(id)a3
+- (void)handleVoicemailInfoUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2748,30 +2748,30 @@ LABEL_20:
     *&v21[12] = 2080;
     *&v21[14] = " ";
     *&v21[22] = 2112;
-    v22 = v4;
+    v22 = updateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sReceived voicemail info update: %@", v21, 0x20u);
   }
 
-  v6 = [(__CFString *)v4 isVoiceMailMWI];
-  v7 = [(__CFString *)v4 available];
-  v8 = [(__CFString *)v4 isNetworkOriginated];
+  isVoiceMailMWI = [(__CFString *)updateCopy isVoiceMailMWI];
+  available = [(__CFString *)updateCopy available];
+  isNetworkOriginated = [(__CFString *)updateCopy isNetworkOriginated];
   v9 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v11 = &stru_1000F0098;
-    if (v8)
+    if (isNetworkOriginated)
     {
       v11 = @" (from network)";
     }
 
     *v21 = 136315906;
-    *&v21[4] = v10;
+    *&v21[4] = getServiceObjLogPrefix;
     *&v21[12] = 2080;
     *&v21[14] = " ";
     *&v21[22] = 2112;
     v22 = v11;
-    if (v7)
+    if (available)
     {
       v12 = @"ON";
     }
@@ -2786,13 +2786,13 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%sVoicemail MWI%@ %@", v21, 0x2Au);
   }
 
-  v13 = v7 ^ ((*&self->_serviceFlags & 0x20) == 0);
-  if ((v13 & v8) == 1)
+  v13 = available ^ ((*&self->_serviceFlags & 0x20) == 0);
+  if ((v13 & isNetworkOriginated) == 1)
   {
-    v14 = [(__CFString *)v4 count];
-    v15 = [v14 integerValue];
+    v14 = [(__CFString *)updateCopy count];
+    integerValue = [v14 integerValue];
 
-    if (v15 >= 0)
+    if (integerValue >= 0)
     {
       goto LABEL_22;
     }
@@ -2803,16 +2803,16 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  if (v7)
+  if (available)
   {
     if ([(VVService *)self isSubscribed]&& [(VVService *)self isInSync])
     {
       v16 = sub_100026660(self->logger.__ptr_);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(VVService *)self getServiceObjLogPrefix];
+        getServiceObjLogPrefix2 = [(VVService *)self getServiceObjLogPrefix];
         *v21 = 136315394;
-        *&v21[4] = v17;
+        *&v21[4] = getServiceObjLogPrefix2;
         *&v21[12] = 2080;
         *&v21[14] = " ";
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#I %s%sOOS: MWI went ON but we were not out of sync; scheduling future check.", v21, 0x16u);
@@ -2827,9 +2827,9 @@ LABEL_20:
     [(VVService *)self _cancelIndicatorAction];
   }
 
-  [(VVService *)self setMessageWaiting:v7, *v21, *&v21[16], v22];
+  [(VVService *)self setMessageWaiting:available, *v21, *&v21[16], v22];
 LABEL_22:
-  if ((v7 & v8 & v6) == 1)
+  if ((available & isNetworkOriginated & isVoiceMailMWI) == 1)
   {
     if ((*&self->_serviceFlags & 0x40) != 0 && [(VVService *)self isSubscribed])
     {
@@ -2843,57 +2843,57 @@ LABEL_22:
   }
 
   v18 = objc_opt_class();
-  v19 = [(__CFString *)v4 url];
+  v19 = [(__CFString *)updateCopy url];
   v20 = [v18 accountDictionaryForURL:v19];
-  [(VVService *)self handleNotification:v20 isMWI:v6];
+  [(VVService *)self handleNotification:v20 isMWI:isVoiceMailMWI];
 }
 
-+ (id)accountDictionaryForURL:(id)a3
++ (id)accountDictionaryForURL:(id)l
 {
   v3 = VMCopyDictionaryForNotificationString();
 
   return v3;
 }
 
-- (void)handleVVServiceDataAvailableNotification:(id)a3
+- (void)handleVVServiceDataAvailableNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v7 = objc_opt_class();
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 136315906;
-    v10 = v6;
+    v10 = getServiceObjLogPrefix;
     v11 = 2080;
     v12 = " ";
     v13 = 2112;
     v14 = v7;
     v15 = 2112;
-    v16 = v8;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s==== %@ received deprecated <%@> notification", &v9, 0x2Au);
   }
 }
 
-- (void)handleAirplaneModeChanged:(BOOL)a3
+- (void)handleAirplaneModeChanged:(BOOL)changed
 {
-  v3 = a3;
-  v5 = [(VVService *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  serialDispatchQueue = [(VVService *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v8 = @"NO";
-    if (v3)
+    if (changedCopy)
     {
       v8 = @"YES";
     }
 
     v9 = 136315650;
-    v10 = v7;
+    v10 = getServiceObjLogPrefix;
     v11 = 2080;
     v12 = " ";
     v13 = 2112;
@@ -2901,31 +2901,31 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#I %s%sAirplaneMode changed to: %@", &v9, 0x20u);
   }
 
-  if (v3)
+  if (changedCopy)
   {
     [(VVService *)self cancelDelayedSynchronize:@"AirplaneMode"];
     [(VVService *)self resetDelayedSynchronizationAttemptCount];
   }
 }
 
-- (void)handleCallStatusDisconnected:(id)a3
+- (void)handleCallStatusDisconnected:(id)disconnected
 {
-  v4 = a3;
-  v5 = [(VVService *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  disconnectedCopy = disconnected;
+  serialDispatchQueue = [(VVService *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = sub_100026660(self->logger.__ptr_);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     [(VVService *)self isDelayedRetryScheduled];
     v8 = asNSStringBOOL();
     v15 = 136315906;
-    v16 = v7;
+    v16 = getServiceObjLogPrefix;
     v17 = 2080;
     v18 = " ";
     v19 = 2112;
-    v20 = v4;
+    v20 = disconnectedCopy;
     v21 = 2112;
     v22 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#I %s%sCallStatus Disconnected for uuid %@, delayed sync scheduled %@", &v15, 0x2Au);
@@ -2933,9 +2933,9 @@ LABEL_22:
 
   if (![(VVService *)self isDelayedRetryImmediate]&& [(VVService *)self isDelayedRetryScheduled])
   {
-    v9 = [(VVService *)self contextInfo];
-    v10 = [v9 uuid];
-    v11 = [v10 isEqual:v4];
+    contextInfo = [(VVService *)self contextInfo];
+    uuid = [contextInfo uuid];
+    v11 = [uuid isEqual:disconnectedCopy];
 
     if ((v11 & 1) == 0)
     {
@@ -2953,17 +2953,17 @@ LABEL_22:
   }
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 isActiveService:32])
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy && [changedCopy isActiveService:32])
   {
     v6 = sub_100026660(self->logger.__ptr_);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 136315394;
-      v8 = [(VVService *)self getServiceObjLogPrefix];
+      getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
       v9 = 2080;
       v10 = " ";
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#I %s%sSatSMS service activated - force IMAP to re-sync after getting on grid", &v7, 0x16u);
@@ -2973,7 +2973,7 @@ LABEL_22:
   }
 }
 
-- (int64_t)attemptCountForStateRequest:(id)a3
+- (int64_t)attemptCountForStateRequest:(id)request
 {
   v10 = 0;
   v11 = &v10;
@@ -2983,43 +2983,43 @@ LABEL_22:
   v6[1] = 3221225472;
   v6[2] = sub_100053010;
   v6[3] = &unk_1000EEB80;
-  v7 = self;
-  v8 = a3;
+  selfCopy = self;
+  requestCopy = request;
   v9 = &v10;
-  v3 = v8;
-  [(VVService *)v7 performSynchronousBlock:v6];
+  v3 = requestCopy;
+  [(VVService *)selfCopy performSynchronousBlock:v6];
   v4 = v11[3];
 
   _Block_object_dispose(&v10, 8);
   return v4;
 }
 
-- (void)incrementAttemptCountForStateRequest:(id)a3
+- (void)incrementAttemptCountForStateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VVService *)self serialDispatchQueue];
+  requestCopy = request;
+  serialDispatchQueue = [(VVService *)self serialDispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100053168;
   v7[3] = &unk_1000EE260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(serialDispatchQueue, v7);
 }
 
-- (void)removeAttemptCountForStateRequest:(id)a3
+- (void)removeAttemptCountForStateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(VVService *)self serialDispatchQueue];
+  requestCopy = request;
+  serialDispatchQueue = [(VVService *)self serialDispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005331C;
   v7[3] = &unk_1000EE260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(serialDispatchQueue, v7);
 }
 
 - (NSMutableDictionary)stateRequestAttemptCount
@@ -3043,13 +3043,13 @@ LABEL_22:
   return v2;
 }
 
-- (void)performAtomicAccessorBlock:(id)a3
+- (void)performAtomicAccessorBlock:(id)block
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock_with_options();
-    v6[2]();
+    blockCopy[2]();
     os_unfair_lock_unlock(&self->_accessorLock);
   }
 
@@ -3060,9 +3060,9 @@ LABEL_22:
   }
 }
 
-- (void)performSynchronousBlock:(id)a3
+- (void)performSynchronousBlock:(id)block
 {
-  block = a3;
+  block = block;
   if (dispatch_get_specific(off_10010D1F8) == self)
   {
     block[2]();
@@ -3070,8 +3070,8 @@ LABEL_22:
 
   else
   {
-    v4 = [(VVService *)self serialDispatchQueue];
-    dispatch_sync(v4, block);
+    serialDispatchQueue = [(VVService *)self serialDispatchQueue];
+    dispatch_sync(serialDispatchQueue, block);
   }
 }
 
@@ -3081,39 +3081,39 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
-    v23 = [(VVService *)self getServiceObjLogPrefix];
+    getServiceObjLogPrefix = [(VVService *)self getServiceObjLogPrefix];
     v24 = 2080;
     v25 = " ";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%sRemoving database records", buf, 0x16u);
   }
 
-  v4 = [(VVService *)self serviceLabelID];
-  sub_1000898BC(0, v4);
+  serviceLabelID = [(VVService *)self serviceLabelID];
+  sub_1000898BC(0, serviceLabelID);
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [(VVService *)self accountDir];
-  v7 = [v6 path];
-  v8 = [v5 fileExistsAtPath:v7];
+  accountDir = [(VVService *)self accountDir];
+  path = [accountDir path];
+  v8 = [v5 fileExistsAtPath:path];
 
   if (v8)
   {
     v9 = sub_100026660(self->logger.__ptr_);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(VVService *)self getServiceObjLogPrefix];
-      v11 = [(VVService *)self accountDir];
+      getServiceObjLogPrefix2 = [(VVService *)self getServiceObjLogPrefix];
+      accountDir2 = [(VVService *)self accountDir];
       *buf = 136315650;
-      v23 = v10;
+      getServiceObjLogPrefix = getServiceObjLogPrefix2;
       v24 = 2080;
       v25 = " ";
       v26 = 2112;
-      v27 = v11;
+      v27 = accountDir2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%sAttempting to remove service directory at %@", buf, 0x20u);
     }
 
-    v12 = [(VVService *)self accountDir];
+    accountDir3 = [(VVService *)self accountDir];
     v21 = 0;
-    v13 = [v5 removeItemAtURL:v12 error:&v21];
+    v13 = [v5 removeItemAtURL:accountDir3 error:&v21];
     v14 = v21;
 
     ptr = self->logger.__ptr_;
@@ -3122,14 +3122,14 @@ LABEL_22:
       v16 = sub_100026660(ptr);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(VVService *)self getServiceObjLogPrefix];
-        v18 = [(VVService *)self accountDir];
+        getServiceObjLogPrefix3 = [(VVService *)self getServiceObjLogPrefix];
+        accountDir4 = [(VVService *)self accountDir];
         *buf = 136315650;
-        v23 = v17;
+        getServiceObjLogPrefix = getServiceObjLogPrefix3;
         v24 = 2080;
         v25 = " ";
         v26 = 2112;
-        v27 = v18;
+        v27 = accountDir4;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#I %s%sRemoved service directory at %@", buf, 0x20u);
       }
     }
@@ -3139,14 +3139,14 @@ LABEL_22:
       v16 = sub_100026660(ptr);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v19 = [(VVService *)self getServiceObjLogPrefix];
-        v20 = [(VVService *)self accountDir];
+        getServiceObjLogPrefix4 = [(VVService *)self getServiceObjLogPrefix];
+        accountDir5 = [(VVService *)self accountDir];
         *buf = 136315906;
-        v23 = v19;
+        getServiceObjLogPrefix = getServiceObjLogPrefix4;
         v24 = 2080;
         v25 = " ";
         v26 = 2112;
-        v27 = v20;
+        v27 = accountDir5;
         v28 = 2112;
         v29 = v14;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "#E %s%sCould not remove service directory at %@ due to error %@", buf, 0x2Au);

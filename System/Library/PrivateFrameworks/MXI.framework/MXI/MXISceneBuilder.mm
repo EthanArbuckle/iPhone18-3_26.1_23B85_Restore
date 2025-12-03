@@ -1,28 +1,28 @@
 @interface MXISceneBuilder
-+ (id)compressScene:(id)a3 withOptions:(id)a4 error:(id *)a5;
++ (id)compressScene:(id)scene withOptions:(id)options error:(id *)error;
 - ($94F468A8D4C62B317260615823C2B210)depthRange;
-- ($94F468A8D4C62B317260615823C2B210)getLayerRange:(int64_t)a3;
-- (MXISceneBuilder)initWithType:(int64_t)a3 numberOfLayers:(int64_t)a4 depthRange:(id)a5 materialDescriptor:(id)a6 options:(id)a7;
-- (MXISceneBuilder)initWithType:(int64_t)a3 numberOfLayers:(int64_t)a4 depthRange:(id)a5 options:(id)a6;
-- (double)getLayerViewMatrix:(uint64_t)a3;
-- (float)getLayerProjectionMatrix:(uint64_t)a3;
+- ($94F468A8D4C62B317260615823C2B210)getLayerRange:(int64_t)range;
+- (MXISceneBuilder)initWithType:(int64_t)type numberOfLayers:(int64_t)layers depthRange:(id)range materialDescriptor:(id)descriptor options:(id)options;
+- (MXISceneBuilder)initWithType:(int64_t)type numberOfLayers:(int64_t)layers depthRange:(id)range options:(id)options;
+- (double)getLayerViewMatrix:(uint64_t)matrix;
+- (float)getLayerProjectionMatrix:(uint64_t)matrix;
 - (id).cxx_construct;
-- (id)buildSceneWithOptions:(id)a3 error:(id *)a4;
-- (id)initBuilderWithType:(int64_t)a3 numberOfLayers:(int64_t)a4 depthRange:(id)a5 materialDescriptor:(id)a6 options:(id)a7;
-- (void)process:(id)a3 layer:(int64_t)a4 face:(int64_t)a5 color:(id)a6 depth:(id)a7 error:(id *)a8;
-- (void)process:(id)a3 layer:(int64_t)a4 face:(int64_t)a5 color:(id)a6 depth:(id)a7 normal:(id)a8 extended:(id)a9 error:(id *)a10;
-- (void)process:(id)a3 layer:(int64_t)a4 face:(int64_t)a5 color:(id)a6 depth:(id)a7 params:(id)a8 error:(id *)a9;
-- (void)setAttribute:(id)a3 forKey:(id)a4;
+- (id)buildSceneWithOptions:(id)options error:(id *)error;
+- (id)initBuilderWithType:(int64_t)type numberOfLayers:(int64_t)layers depthRange:(id)range materialDescriptor:(id)descriptor options:(id)options;
+- (void)process:(id)process layer:(int64_t)layer face:(int64_t)face color:(id)color depth:(id)depth error:(id *)error;
+- (void)process:(id)process layer:(int64_t)layer face:(int64_t)face color:(id)color depth:(id)depth normal:(id)normal extended:(id)extended error:(id *)self0;
+- (void)process:(id)process layer:(int64_t)layer face:(int64_t)face color:(id)color depth:(id)depth params:(id)params error:(id *)error;
+- (void)setAttribute:(id)attribute forKey:(id)key;
 @end
 
 @implementation MXISceneBuilder
 
-- (MXISceneBuilder)initWithType:(int64_t)a3 numberOfLayers:(int64_t)a4 depthRange:(id)a5 options:(id)a6
+- (MXISceneBuilder)initWithType:(int64_t)type numberOfLayers:(int64_t)layers depthRange:(id)range options:(id)options
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v50 = *MEMORY[0x277D85DE8];
-  v11 = a6;
+  optionsCopy = options;
   v12 = _MXISignpostLogSystem();
   v13 = _MXISignpostCreate(v12);
   v14 = _MXISignpostLogSystem();
@@ -36,7 +36,7 @@
     *buf = 134218752;
     v41 = v38;
     v42 = 2048;
-    v43 = *(&v38 + 1);
+    layersCopy = *(&v38 + 1);
     v44 = 2048;
     v45 = *&v39;
     v46 = 2048;
@@ -47,10 +47,10 @@
   v21 = CFPreferencesCopyMultiple(0, @"com.apple.mxi", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (v21)
   {
-    if (v11)
+    if (optionsCopy)
     {
 LABEL_6:
-      v22 = objc_msgSend_mutableCopy(v11, v17, v18, v19, v20);
+      v22 = objc_msgSend_mutableCopy(optionsCopy, v17, v18, v19, v20);
       objc_msgSend_addEntriesFromDictionary_(v22, v23, v21, v24, v25);
 
       goto LABEL_9;
@@ -60,7 +60,7 @@ LABEL_6:
   else
   {
     v21 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-    if (v11)
+    if (optionsCopy)
     {
       goto LABEL_6;
     }
@@ -73,14 +73,14 @@ LABEL_9:
   {
     v27 = "MXITypeCube";
     *buf = 136316162;
-    if (!a3)
+    if (!type)
     {
       v27 = "MXITypePlane";
     }
 
     v41 = v27;
     v42 = 2048;
-    v43 = a4;
+    layersCopy = layers;
     v44 = 2048;
     v45 = var0;
     v46 = 2048;
@@ -93,7 +93,7 @@ LABEL_9:
   v28 = [MXISceneBuilderTiled alloc];
   *&v29 = var0;
   *&v30 = var1;
-  inited = objc_msgSend_initBuilderWithType_numberOfLayers_depthRange_materialDescriptor_options_(v28, v31, a3, a4, 0, v22, v29, v30);
+  inited = objc_msgSend_initBuilderWithType_numberOfLayers_depthRange_materialDescriptor_options_(v28, v31, type, layers, 0, v22, v29, v30);
 
   v33 = objc_opt_new();
   objc_msgSend_setAttributes_(inited, v34, v33, v35, v36);
@@ -101,7 +101,7 @@ LABEL_9:
   return inited;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)getLayerRange:(int64_t)a3
+- ($94F468A8D4C62B317260615823C2B210)getLayerRange:(int64_t)range
 {
   if (self->_overriddenLayerDepths)
   {
@@ -109,12 +109,12 @@ LABEL_9:
   }
 
   layerOverlap = self->_layerOverlap;
-  v8.f32[0] = a3 - layerOverlap;
+  v8.f32[0] = range - layerOverlap;
   *v3.i32 = self->_numLayers;
   v4.i32[0] = LODWORD(self->_depthRange.from);
   v5.i32[0] = LODWORD(self->_depthRange.to);
   *v6.i32 = 1.0 / *v4.i32;
-  v8.f32[1] = (a3 + 1.0) + layerOverlap;
+  v8.f32[1] = (range + 1.0) + layerOverlap;
   v9 = vdup_lane_s32(v3, 0);
   v10 = vadd_f32(vdup_lane_s32(v6, 0), vdiv_f32(vmul_n_f32(vbic_s8(vbsl_s8(vcgt_f32(v8, v9), v9, v8), vcltz_f32(v8)), (1.0 / *v5.i32) - (1.0 / *v4.i32)), v9));
   __asm { FMOV            V1.2S, #1.0 }
@@ -129,16 +129,16 @@ LABEL_9:
   return result;
 }
 
-- (double)getLayerViewMatrix:(uint64_t)a3
+- (double)getLayerViewMatrix:(uint64_t)matrix
 {
-  if (*(a1 + 40) == 1)
+  if (*(self + 40) == 1)
   {
     sub_22FA0635C();
   }
 
-  if (a3 > 2)
+  if (matrix > 2)
   {
-    if (a3 == 5)
+    if (matrix == 5)
     {
       *&result = 3212836864;
       return result;
@@ -149,12 +149,12 @@ LABEL_9:
     return result;
   }
 
-  if (!a3)
+  if (!matrix)
   {
     return 0.0;
   }
 
-  if (a3 != 1)
+  if (matrix != 1)
   {
     goto LABEL_9;
   }
@@ -162,32 +162,32 @@ LABEL_9:
   return 0.0;
 }
 
-- (float)getLayerProjectionMatrix:(uint64_t)a3
+- (float)getLayerProjectionMatrix:(uint64_t)matrix
 {
-  objc_msgSend_getLayerRange_(a1, a2, a3, a4, a5);
-  v6 = a1[16];
-  return (1.0 / tanf(a1[14] * 0.5)) / v6;
+  objc_msgSend_getLayerRange_(self, a2, matrix, a4, a5);
+  v6 = self[16];
+  return (1.0 / tanf(self[14] * 0.5)) / v6;
 }
 
-- (void)setAttribute:(id)a3 forKey:(id)a4
+- (void)setAttribute:(id)attribute forKey:(id)key
 {
-  v14 = a3;
-  v6 = a4;
+  attributeCopy = attribute;
+  keyCopy = key;
   v11 = objc_msgSend_attributes(self, v7, v8, v9, v10);
-  objc_msgSend_setObject_forKey_(v11, v12, v14, v6, v13);
+  objc_msgSend_setObject_forKey_(v11, v12, attributeCopy, keyCopy, v13);
 }
 
-- (id)buildSceneWithOptions:(id)a3 error:(id *)a4
+- (id)buildSceneWithOptions:(id)options error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   v10 = CFPreferencesCopyMultiple(0, @"com.apple.mxi", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (v10)
   {
-    if (v5)
+    if (optionsCopy)
     {
 LABEL_3:
-      v11 = objc_msgSend_mutableCopy(v5, v6, v7, v8, v9);
+      v11 = objc_msgSend_mutableCopy(optionsCopy, v6, v7, v8, v9);
       objc_msgSend_addEntriesFromDictionary_(v11, v12, v10, v13, v14);
 
       goto LABEL_6;
@@ -197,7 +197,7 @@ LABEL_3:
   else
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-    if (v5)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
@@ -225,16 +225,16 @@ LABEL_6:
   return 0;
 }
 
-+ (id)compressScene:(id)a3 withOptions:(id)a4 error:(id *)a5
++ (id)compressScene:(id)scene withOptions:(id)options error:(id *)error
 {
-  v7 = a3;
-  v12 = a4;
-  if (a5)
+  sceneCopy = scene;
+  optionsCopy = options;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  if (objc_msgSend_textureCompressionType(v7, v8, v9, v10, v11))
+  if (objc_msgSend_textureCompressionType(sceneCopy, v8, v9, v10, v11))
   {
     v13 = _mxi_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -243,7 +243,7 @@ LABEL_6:
       _os_log_impl(&dword_22F9C3000, v13, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderBase.mm:230] Cannot compress MXIScene: scene already compressed", buf, 2u);
     }
 
-    objc_msgSend_fillError_withDescription_(MXIUserError, v14, a5, @"Cannot compress MXIScene: scene already compressed", v15);
+    objc_msgSend_fillError_withDescription_(MXIUserError, v14, error, @"Cannot compress MXIScene: scene already compressed", v15);
     v16 = 0;
   }
 
@@ -252,72 +252,72 @@ LABEL_6:
     v16 = [MXIScene alloc];
     if (v16)
     {
-      v21 = objc_msgSend_type(v7, v17, v18, v19, v20);
+      v21 = objc_msgSend_type(sceneCopy, v17, v18, v19, v20);
       objc_msgSend_setType_(v16, v22, v21, v23, v24);
-      objc_msgSend_verticalFOV(v7, v25, v26, v27, v28);
+      objc_msgSend_verticalFOV(sceneCopy, v25, v26, v27, v28);
       objc_msgSend_setVerticalFOV_(v16, v29, v30, v31, v32);
-      objc_msgSend_effectiveVerticalFOV(v7, v33, v34, v35, v36);
+      objc_msgSend_effectiveVerticalFOV(sceneCopy, v33, v34, v35, v36);
       objc_msgSend_setEffectiveVerticalFOV_(v16, v37, v38, v39, v40);
-      objc_msgSend_aspectRatio(v7, v41, v42, v43, v44);
+      objc_msgSend_aspectRatio(sceneCopy, v41, v42, v43, v44);
       objc_msgSend_setAspectRatio_(v16, v45, v46, v47, v48);
-      objc_msgSend_effectiveAspectRatio(v7, v49, v50, v51, v52);
+      objc_msgSend_effectiveAspectRatio(sceneCopy, v49, v50, v51, v52);
       objc_msgSend_setEffectiveAspectRatio_(v16, v53, v54, v55, v56);
-      objc_msgSend_depthRange(v7, v57, v58, v59, v60);
+      objc_msgSend_depthRange(sceneCopy, v57, v58, v59, v60);
       objc_msgSend_setDepthRange_(v16, v61, v62, v63, v64);
-      v69 = objc_msgSend_resolutionWidth(v7, v65, v66, v67, v68);
+      v69 = objc_msgSend_resolutionWidth(sceneCopy, v65, v66, v67, v68);
       objc_msgSend_setResolutionWidth_(v16, v70, v69, v71, v72);
-      v77 = objc_msgSend_resolutionHeight(v7, v73, v74, v75, v76);
+      v77 = objc_msgSend_resolutionHeight(sceneCopy, v73, v74, v75, v76);
       objc_msgSend_setResolutionHeight_(v16, v78, v77, v79, v80);
-      isPremultipliedAlpha = objc_msgSend_isPremultipliedAlpha(v7, v81, v82, v83, v84);
+      isPremultipliedAlpha = objc_msgSend_isPremultipliedAlpha(sceneCopy, v81, v82, v83, v84);
       objc_msgSend_setIsPremultipliedAlpha_(v16, v86, isPremultipliedAlpha, v87, v88);
-      v93 = objc_msgSend_numOpaqueTriangles(v7, v89, v90, v91, v92);
+      v93 = objc_msgSend_numOpaqueTriangles(sceneCopy, v89, v90, v91, v92);
       objc_msgSend_setNumOpaqueTriangles_(v16, v94, v93, v95, v96);
-      v101 = objc_msgSend_numLayers(v7, v97, v98, v99, v100);
+      v101 = objc_msgSend_numLayers(sceneCopy, v97, v98, v99, v100);
       objc_msgSend_setNumLayers_(v16, v102, v101, v103, v104);
-      objc_msgSend_modelToWorldTransform(v7, v105, v106, v107, v108);
+      objc_msgSend_modelToWorldTransform(sceneCopy, v105, v106, v107, v108);
       objc_msgSend_setModelToWorldTransform_(v16, v109, v110, v111, v112);
-      v117 = objc_msgSend_userdata(v7, v113, v114, v115, v116);
+      v117 = objc_msgSend_userdata(sceneCopy, v113, v114, v115, v116);
       objc_msgSend_setUserdata_(v16, v118, v117, v119, v120);
 
-      v125 = objc_msgSend_numVertices(v7, v121, v122, v123, v124);
+      v125 = objc_msgSend_numVertices(sceneCopy, v121, v122, v123, v124);
       objc_msgSend_setNumVertices_(v16, v126, v125, v127, v128);
-      v133 = objc_msgSend_numTriangles(v7, v129, v130, v131, v132);
+      v133 = objc_msgSend_numTriangles(sceneCopy, v129, v130, v131, v132);
       objc_msgSend_setNumTriangles_(v16, v134, v133, v135, v136);
-      v141 = objc_msgSend_colorTextureSlices(v7, v137, v138, v139, v140);
+      v141 = objc_msgSend_colorTextureSlices(sceneCopy, v137, v138, v139, v140);
       objc_msgSend_setColorTextureSlices_(v16, v142, v141, v143, v144);
-      v149 = objc_msgSend_vertexPositions(v7, v145, v146, v147, v148);
+      v149 = objc_msgSend_vertexPositions(sceneCopy, v145, v146, v147, v148);
       objc_msgSend_setVertexPositions_(v16, v150, v149, v151, v152);
 
-      v157 = objc_msgSend_vertexUVs(v7, v153, v154, v155, v156);
+      v157 = objc_msgSend_vertexUVs(sceneCopy, v153, v154, v155, v156);
       objc_msgSend_setVertexUVs_(v16, v158, v157, v159, v160);
 
-      v165 = objc_msgSend_triangleSliceIndices(v7, v161, v162, v163, v164);
+      v165 = objc_msgSend_triangleSliceIndices(sceneCopy, v161, v162, v163, v164);
       objc_msgSend_setTriangleSliceIndices_(v16, v166, v165, v167, v168);
 
-      v173 = objc_msgSend_triangleIndices(v7, v169, v170, v171, v172);
+      v173 = objc_msgSend_triangleIndices(sceneCopy, v169, v170, v171, v172);
       objc_msgSend_setTriangleIndices_(v16, v174, v173, v175, v176);
 
-      v180 = objc_msgSend_valueForKey_(v12, v177, @"astc_block_size", v178, v179);
+      v180 = objc_msgSend_valueForKey_(optionsCopy, v177, @"astc_block_size", v178, v179);
       v183 = objc_msgSend_parseUInt_defaultValue_(MXIUtilities, v181, v180, 68, v182);
 
-      v187 = objc_msgSend_valueForKey_(v12, v184, @"compress_using_gpu", v185, v186);
+      v187 = objc_msgSend_valueForKey_(optionsCopy, v184, @"compress_using_gpu", v185, v186);
       LODWORD(v180) = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v188, v187, 0, v189);
 
       if (v180)
       {
-        v193 = objc_msgSend_valueForKey_(v12, v190, @"astc_gpu_rank_modes_count_ratio", v191, v192);
+        v193 = objc_msgSend_valueForKey_(optionsCopy, v190, @"astc_gpu_rank_modes_count_ratio", v191, v192);
         LODWORD(v194) = 1.0;
         objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v195, v193, v196, v197, v194);
         v199 = v198;
 
-        v203 = objc_msgSend_valueForKey_(v12, v200, @"astc_gpu_fast_skip_threshold", v201, v202);
+        v203 = objc_msgSend_valueForKey_(optionsCopy, v200, @"astc_gpu_fast_skip_threshold", v201, v202);
         v206 = objc_msgSend_parseUInt_defaultValue_(MXIUtilities, v204, v203, 5, v205);
 
-        v211 = objc_msgSend_colorTexture(v7, v207, v208, v209, v210);
+        v211 = objc_msgSend_colorTexture(sceneCopy, v207, v208, v209, v210);
 
         if (v211)
         {
-          v216 = objc_msgSend_colorTexture(v7, v212, v213, v214, v215);
+          v216 = objc_msgSend_colorTexture(sceneCopy, v212, v213, v214, v215);
           v217 = image::ToASTC(v216, v183 >> 4, v183 & 0xF, v206, v199);
           objc_msgSend_setColorTexture_(v16, v218, v217, v219, v220);
 
@@ -329,7 +329,7 @@ LABEL_6:
           v263 = objc_opt_new();
           for (i = 0; ; ++i)
           {
-            v265 = objc_msgSend_colorTextures(v7, v259, v260, v261, v262);
+            v265 = objc_msgSend_colorTextures(sceneCopy, v259, v260, v261, v262);
             v270 = objc_msgSend_count(v265, v266, v267, v268, v269);
 
             if (v270 <= i)
@@ -337,7 +337,7 @@ LABEL_6:
               break;
             }
 
-            v275 = objc_msgSend_colorTextures(v7, v271, v272, v273, v274);
+            v275 = objc_msgSend_colorTextures(sceneCopy, v271, v272, v273, v274);
             v279 = objc_msgSend_objectAtIndex_(v275, v276, i, v277, v278);
             v280 = image::ToASTC(v279, v183 >> 4, v183 & 0xF, v206, v199);
 
@@ -350,12 +350,12 @@ LABEL_6:
 
       else
       {
-        v228 = objc_msgSend_valueForKey_(v12, v190, @"texture_compression_quality", v191, v192);
+        v228 = objc_msgSend_valueForKey_(optionsCopy, v190, @"texture_compression_quality", v191, v192);
         LODWORD(v229) = 0.5;
         objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v230, v228, v231, v232, v229);
         v234 = v233;
 
-        v238 = objc_msgSend_valueForKey_(v12, v235, @"thread_pool_size", v236, v237);
+        v238 = objc_msgSend_valueForKey_(optionsCopy, v235, @"thread_pool_size", v236, v237);
         v241 = objc_msgSend_parseUInt_defaultValue_(MXIUtilities, v239, v238, 1, v240);
 
         if (v241 >= 2)
@@ -363,11 +363,11 @@ LABEL_6:
           operator new();
         }
 
-        v246 = objc_msgSend_colorTexture(v7, v242, v243, v244, v245);
+        v246 = objc_msgSend_colorTexture(sceneCopy, v242, v243, v244, v245);
 
         if (v246)
         {
-          v251 = objc_msgSend_colorTexture(v7, v247, v248, v249, v250);
+          v251 = objc_msgSend_colorTexture(sceneCopy, v247, v248, v249, v250);
           v252 = image::ToASTC(v251, v183 >> 4, v183 & 0xF, 0, v234);
           objc_msgSend_setColorTexture_(v16, v253, v252, v254, v255);
 
@@ -379,7 +379,7 @@ LABEL_6:
           v288 = objc_opt_new();
           for (j = 0; ; ++j)
           {
-            v290 = objc_msgSend_colorTextures(v7, v284, v285, v286, v287);
+            v290 = objc_msgSend_colorTextures(sceneCopy, v284, v285, v286, v287);
             v295 = objc_msgSend_count(v290, v291, v292, v293, v294);
 
             if (v295 <= j)
@@ -387,7 +387,7 @@ LABEL_6:
               break;
             }
 
-            v300 = objc_msgSend_colorTextures(v7, v296, v297, v298, v299);
+            v300 = objc_msgSend_colorTextures(sceneCopy, v296, v297, v298, v299);
             v304 = objc_msgSend_objectAtIndex_(v300, v301, j, v302, v303);
             v305 = image::ToASTC(v304, v183 >> 4, v183 & 0xF, 0, v234);
 
@@ -398,19 +398,19 @@ LABEL_6:
         }
       }
 
-      v309 = objc_msgSend_normalTexture(v7, v224, v225, v226, v227);
+      v309 = objc_msgSend_normalTexture(sceneCopy, v224, v225, v226, v227);
       objc_msgSend_setNormalTexture_(v16, v310, v309, v311, v312);
 
-      v317 = objc_msgSend_pbrTextures(v7, v313, v314, v315, v316);
+      v317 = objc_msgSend_pbrTextures(sceneCopy, v313, v314, v315, v316);
       objc_msgSend_setPbrTextures_(v16, v318, v317, v319, v320);
 
-      v325 = objc_msgSend_materialDescriptor(v7, v321, v322, v323, v324);
+      v325 = objc_msgSend_materialDescriptor(sceneCopy, v321, v322, v323, v324);
       objc_msgSend_setMaterialDescriptor_(v16, v326, v325, v327, v328);
 
-      v333 = objc_msgSend_iblFileName(v7, v329, v330, v331, v332);
+      v333 = objc_msgSend_iblFileName(sceneCopy, v329, v330, v331, v332);
       objc_msgSend_setIblFileName_(v16, v334, v333, v335, v336);
 
-      v341 = objc_msgSend_attributes(v7, v337, v338, v339, v340);
+      v341 = objc_msgSend_attributes(sceneCopy, v337, v338, v339, v340);
       objc_msgSend_setAttributes_(v16, v342, v341, v343, v344);
     }
   }
@@ -418,37 +418,37 @@ LABEL_6:
   return v16;
 }
 
-- (void)process:(id)a3 layer:(int64_t)a4 face:(int64_t)a5 color:(id)a6 depth:(id)a7 error:(id *)a8
+- (void)process:(id)process layer:(int64_t)layer face:(int64_t)face color:(id)color depth:(id)depth error:(id *)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  processCopy = process;
+  colorCopy = color;
+  depthCopy = depth;
   v17 = _mxi_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     v18 = " and depth";
     *buf = 134218498;
-    v72 = a4;
-    if (!v16)
+    layerCopy = layer;
+    if (!depthCopy)
     {
       v18 = "";
     }
 
     v73 = 2048;
-    v74 = a5;
+    faceCopy = face;
     v75 = 2080;
     v76 = v18;
     _os_log_impl(&dword_22F9C3000, v17, OS_LOG_TYPE_DEBUG, "[MXI.framework] [MXISceneBuilderBase] Processing layer %ld for face %ld with color %s", buf, 0x20u);
   }
 
-  v23 = objc_msgSend_width(v15, v19, v20, v21, v22);
-  *&v28 = v23 / objc_msgSend_height(v15, v24, v25, v26, v27);
+  v23 = objc_msgSend_width(colorCopy, v19, v20, v21, v22);
+  *&v28 = v23 / objc_msgSend_height(colorCopy, v24, v25, v26, v27);
   objc_msgSend_setAspectRatio_(self, v29, v30, v31, v32, v28);
   recording = self->_recording;
   if (recording)
   {
-    v39 = objc_msgSend_captureTexture_commandBuffer_(recording, v33, v15, v14, v34);
+    v39 = objc_msgSend_captureTexture_commandBuffer_(recording, v33, colorCopy, processCopy, v34);
     if (!v39)
     {
       v55 = _mxi_log();
@@ -458,14 +458,14 @@ LABEL_6:
         _os_log_impl(&dword_22F9C3000, v55, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderBase.mm:342] Could not capture color texture", buf, 2u);
       }
 
-      objc_msgSend_fillError_withDescription_(MXIInternalError, v56, a8, @"Could not capture color texture", v57);
+      objc_msgSend_fillError_withDescription_(MXIInternalError, v56, error, @"Could not capture color texture", v57);
       goto LABEL_18;
     }
 
     v40 = self->_recording;
-    if (v16)
+    if (depthCopy)
     {
-      v44 = objc_msgSend_captureTexture_commandBuffer_(self->_recording, v36, v16, v14, v38);
+      v44 = objc_msgSend_captureTexture_commandBuffer_(self->_recording, v36, depthCopy, processCopy, v38);
       if (!v44)
       {
         v64 = _mxi_log();
@@ -475,16 +475,16 @@ LABEL_6:
           _os_log_impl(&dword_22F9C3000, v64, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderBase.mm:349] Could not capture depth texture", buf, 2u);
         }
 
-        objc_msgSend_fillError_withDescription_(MXIInternalError, v65, a8, @"Could not capture depth texture", v66);
+        objc_msgSend_fillError_withDescription_(MXIInternalError, v65, error, @"Could not capture depth texture", v66);
         goto LABEL_18;
       }
 
       v45 = self->_recording;
       v69[0] = @"index";
-      v46 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v41, a4, v42, v43);
+      v46 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v41, layer, v42, v43);
       v70[0] = v46;
       v69[1] = @"face";
-      v50 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v47, a5, v48, v49);
+      v50 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v47, face, v48, v49);
       v70[1] = v50;
       v70[2] = v39;
       v69[2] = @"color";
@@ -496,10 +496,10 @@ LABEL_6:
 
     else
     {
-      v44 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v36, a4, v37, v38, @"index");
+      v44 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v36, layer, v37, v38, @"index");
       v68[0] = v44;
       v67[1] = @"face";
-      v46 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v58, a5, v59, v60);
+      v46 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v58, face, v59, v60);
       v67[2] = @"color";
       v68[1] = v46;
       v68[2] = v39;
@@ -511,38 +511,38 @@ LABEL_18:
   }
 }
 
-- (void)process:(id)a3 layer:(int64_t)a4 face:(int64_t)a5 color:(id)a6 depth:(id)a7 params:(id)a8 error:(id *)a9
+- (void)process:(id)process layer:(int64_t)layer face:(int64_t)face color:(id)color depth:(id)depth params:(id)params error:(id *)error
 {
   v140[6] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  processCopy = process;
+  colorCopy = color;
+  depthCopy = depth;
+  paramsCopy = params;
   v19 = _mxi_log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v20 = " and depth";
     *buf = 134218498;
-    *&buf[4] = a4;
-    if (!v17)
+    *&buf[4] = layer;
+    if (!depthCopy)
     {
       v20 = "";
     }
 
     *&buf[12] = 2048;
-    *&buf[14] = a5;
+    *&buf[14] = face;
     *&buf[22] = 2080;
     *&buf[24] = v20;
     _os_log_impl(&dword_22F9C3000, v19, OS_LOG_TYPE_DEBUG, "[MXI.framework] [MXISceneBuilderBase] Processing layer %ld for face %ld with color %s", buf, 0x20u);
   }
 
-  v25 = objc_msgSend_width(v16, v21, v22, v23, v24);
-  *&v30 = v25 / objc_msgSend_height(v16, v26, v27, v28, v29);
+  v25 = objc_msgSend_width(colorCopy, v21, v22, v23, v24);
+  *&v30 = v25 / objc_msgSend_height(colorCopy, v26, v27, v28, v29);
   objc_msgSend_setAspectRatio_(self, v31, v32, v33, v34, v30);
   recording = self->_recording;
   if (recording)
   {
-    v41 = objc_msgSend_captureTexture_commandBuffer_(recording, v35, v16, v15, v36);
+    v41 = objc_msgSend_captureTexture_commandBuffer_(recording, v35, colorCopy, processCopy, v36);
     if (!v41)
     {
       v77 = _mxi_log();
@@ -552,13 +552,13 @@ LABEL_18:
         _os_log_impl(&dword_22F9C3000, v77, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderBase.mm:377] Could not capture color texture", buf, 2u);
       }
 
-      objc_msgSend_fillError_withDescription_(MXIInternalError, v78, a9, @"Could not capture color texture", v79);
+      objc_msgSend_fillError_withDescription_(MXIInternalError, v78, error, @"Could not capture color texture", v79);
       goto LABEL_23;
     }
 
-    if (v17)
+    if (depthCopy)
     {
-      v45 = objc_msgSend_captureTexture_commandBuffer_(self->_recording, v38, v17, v15, v40);
+      v45 = objc_msgSend_captureTexture_commandBuffer_(self->_recording, v38, depthCopy, processCopy, v40);
       if (!v45)
       {
         v111 = _mxi_log();
@@ -568,25 +568,25 @@ LABEL_18:
           _os_log_impl(&dword_22F9C3000, v111, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderBase.mm:384] Could not capture depth texture", buf, 2u);
         }
 
-        objc_msgSend_fillError_withDescription_(MXIInternalError, v112, a9, @"Could not capture depth texture", v113);
+        objc_msgSend_fillError_withDescription_(MXIInternalError, v112, error, @"Could not capture depth texture", v113);
         goto LABEL_23;
       }
 
       v128 = self->_recording;
-      if (v18)
+      if (paramsCopy)
       {
         v139[0] = @"index";
-        v129 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v42, a4, v43, v44);
+        v129 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v42, layer, v43, v44);
         v140[0] = v129;
         v139[1] = @"face";
-        v49 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v46, a5, v47, v48);
+        v49 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v46, face, v47, v48);
         v140[1] = v49;
         v140[2] = v41;
         v139[2] = @"color";
         v139[3] = @"depth";
         v140[3] = v45;
         v139[4] = @"projection";
-        objc_msgSend_projection(v18, v50, v51, v52, v53);
+        objc_msgSend_projection(paramsCopy, v50, v51, v52, v53);
         *buf = v54;
         *&buf[16] = v55;
         v137 = v56;
@@ -595,7 +595,7 @@ LABEL_18:
         v140[4] = v62;
         v139[5] = @"linear_depth";
         v63 = MEMORY[0x277CCABB0];
-        v68 = objc_msgSend_linearDepth(v18, v64, v65, v66, v67);
+        v68 = objc_msgSend_linearDepth(paramsCopy, v64, v65, v66, v67);
         v72 = objc_msgSend_numberWithBool_(v63, v69, v68, v70, v71);
         v140[5] = v72;
         v74 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v73, v140, v139, 6);
@@ -605,10 +605,10 @@ LABEL_18:
       else
       {
         v134[0] = @"index";
-        v129 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v42, a4, v43, v44);
+        v129 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v42, layer, v43, v44);
         v135[0] = v129;
         v134[1] = @"face";
-        v49 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v114, a5, v115, v116);
+        v49 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v114, face, v115, v116);
         v135[1] = v49;
         v135[2] = v41;
         v134[2] = @"color";
@@ -622,18 +622,18 @@ LABEL_18:
     else
     {
       v80 = self->_recording;
-      if (v18)
+      if (paramsCopy)
       {
         v132[0] = @"index";
-        v45 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v38, a4, v39, v40);
+        v45 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v38, layer, v39, v40);
         v133[0] = v45;
         v132[1] = @"face";
-        v129 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v81, a5, v82, v83);
+        v129 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v81, face, v82, v83);
         v133[1] = v129;
         v133[2] = v41;
         v132[2] = @"color";
         v132[3] = @"projection";
-        objc_msgSend_projection(v18, v84, v85, v86, v87);
+        objc_msgSend_projection(paramsCopy, v84, v85, v86, v87);
         *buf = v88;
         *&buf[16] = v89;
         v137 = v90;
@@ -642,7 +642,7 @@ LABEL_18:
         v133[3] = v96;
         v132[4] = @"linear_depth";
         v97 = MEMORY[0x277CCABB0];
-        v102 = objc_msgSend_linearDepth(v18, v98, v99, v100, v101);
+        v102 = objc_msgSend_linearDepth(paramsCopy, v98, v99, v100, v101);
         v106 = objc_msgSend_numberWithBool_(v97, v103, v102, v104, v105);
         v133[4] = v106;
         v108 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v107, v133, v132, 5);
@@ -652,10 +652,10 @@ LABEL_18:
       else
       {
         v130[0] = @"index";
-        v45 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v38, a4, v39, v40);
+        v45 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v38, layer, v39, v40);
         v131[0] = v45;
         v130[1] = @"face";
-        objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v121, a5, v122, v123);
+        objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v121, face, v122, v123);
         v129 = v130[2] = @"color";
         v131[1] = v129;
         v131[2] = v41;
@@ -685,20 +685,20 @@ LABEL_23:
   return self;
 }
 
-- (MXISceneBuilder)initWithType:(int64_t)a3 numberOfLayers:(int64_t)a4 depthRange:(id)a5 materialDescriptor:(id)a6 options:(id)a7
+- (MXISceneBuilder)initWithType:(int64_t)type numberOfLayers:(int64_t)layers depthRange:(id)range materialDescriptor:(id)descriptor options:(id)options
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v46 = *MEMORY[0x277D85DE8];
-  v13 = a6;
-  v14 = a7;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
   v19 = CFPreferencesCopyMultiple(0, @"com.apple.mxi", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (v19)
   {
-    if (v14)
+    if (optionsCopy)
     {
 LABEL_3:
-      v20 = objc_msgSend_mutableCopy(v14, v15, v16, v17, v18);
+      v20 = objc_msgSend_mutableCopy(optionsCopy, v15, v16, v17, v18);
       objc_msgSend_addEntriesFromDictionary_(v20, v21, v19, v22, v23);
 
       goto LABEL_6;
@@ -708,7 +708,7 @@ LABEL_3:
   else
   {
     v19 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-    if (v14)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
@@ -721,14 +721,14 @@ LABEL_6:
   {
     v25 = "MXITypeCube";
     v36 = 136316162;
-    if (!a3)
+    if (!type)
     {
       v25 = "MXITypePlane";
     }
 
     v37 = v25;
     v38 = 2048;
-    v39 = a4;
+    layersCopy = layers;
     v40 = 2048;
     v41 = var0;
     v42 = 2048;
@@ -741,7 +741,7 @@ LABEL_6:
   v26 = [MXISceneBuilderTiled alloc];
   *&v27 = var0;
   *&v28 = var1;
-  inited = objc_msgSend_initBuilderWithType_numberOfLayers_depthRange_materialDescriptor_options_(v26, v29, a3, a4, v13, v20, v27, v28);
+  inited = objc_msgSend_initBuilderWithType_numberOfLayers_depthRange_materialDescriptor_options_(v26, v29, type, layers, descriptorCopy, v20, v27, v28);
 
   v31 = objc_opt_new();
   objc_msgSend_setAttributes_(inited, v32, v31, v33, v34);
@@ -749,13 +749,13 @@ LABEL_6:
   return inited;
 }
 
-- (id)initBuilderWithType:(int64_t)a3 numberOfLayers:(int64_t)a4 depthRange:(id)a5 materialDescriptor:(id)a6 options:(id)a7
+- (id)initBuilderWithType:(int64_t)type numberOfLayers:(int64_t)layers depthRange:(id)range materialDescriptor:(id)descriptor options:(id)options
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v338 = *MEMORY[0x277D85DE8];
-  v329 = a6;
-  v13 = a7;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
   v330.receiver = self;
   v330.super_class = MXISceneBuilder;
   v14 = [(MXISceneBuilder *)&v330 init];
@@ -765,32 +765,32 @@ LABEL_6:
     goto LABEL_80;
   }
 
-  objc_msgSend_setType_(v14, v15, a3, v16, v17);
-  objc_msgSend_setNumLayers_(v18, v19, a4, v20, v21);
+  objc_msgSend_setType_(v14, v15, type, v16, v17);
+  objc_msgSend_setNumLayers_(v18, v19, layers, v20, v21);
   *&v22 = var0;
   *&v23 = var1;
   objc_msgSend_setDepthRange_(v18, v24, v25, v26, v27, v22, v23);
-  v31 = objc_msgSend_valueForKey_(v13, v28, @"layer_ranges_overlap", v29, v30);
+  v31 = objc_msgSend_valueForKey_(optionsCopy, v28, @"layer_ranges_overlap", v29, v30);
   LODWORD(v32) = 1028443341;
   objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v33, v31, v34, v35, v32);
   objc_msgSend_setLayerOverlap_(v18, v36, v37, v38, v39);
 
-  v43 = objc_msgSend_valueForKey_(v13, v40, @"vertical_fov", v41, v42);
+  v43 = objc_msgSend_valueForKey_(optionsCopy, v40, @"vertical_fov", v41, v42);
   LODWORD(v44) = 1070141403;
   objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v45, v43, v46, v47, v44);
   objc_msgSend_setFovInRadians_(v18, v48, v49, v50, v51);
 
-  v55 = objc_msgSend_valueForKey_(v13, v52, @"effective_vertical_fov", v53, v54);
+  v55 = objc_msgSend_valueForKey_(optionsCopy, v52, @"effective_vertical_fov", v53, v54);
   objc_msgSend_fovInRadians(v18, v56, v57, v58, v59);
   objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v60, v55, v61, v62);
   objc_msgSend_setEffectiveFovInRadians_(v18, v63, v64, v65, v66);
 
-  v70 = objc_msgSend_valueForKey_(v13, v67, @"effective_aspect_ratio", v68, v69);
+  v70 = objc_msgSend_valueForKey_(optionsCopy, v67, @"effective_aspect_ratio", v68, v69);
   LODWORD(v71) = 2143289344;
   objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v72, v70, v73, v74, v71);
   objc_msgSend_setEffectiveAspectRatio_(v18, v75, v76, v77, v78);
 
-  v82 = objc_msgSend_valueForKey_(v13, v79, @"input_color_primaries", v80, v81);
+  v82 = objc_msgSend_valueForKey_(optionsCopy, v79, @"input_color_primaries", v80, v81);
   v85 = objc_msgSend_parseString_defaultValue_(MXIUtilities, v83, v82, @"color_primaries_p3", v84);
   objc_msgSend_setInputColorPrimaries_(v18, v86, v85, v87, v88);
 
@@ -826,7 +826,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v112 = objc_msgSend_valueForKey_(v13, v109, @"output_color_primaries", v110, v111);
+  v112 = objc_msgSend_valueForKey_(optionsCopy, v109, @"output_color_primaries", v110, v111);
   v117 = objc_msgSend_inputColorPrimaries(v18, v113, v114, v115, v116);
   v120 = objc_msgSend_parseString_defaultValue_(MXIUtilities, v118, v112, v117, v119);
   objc_msgSend_setOutputColorPrimaries_(v18, v121, v120, v122, v123);
@@ -866,23 +866,23 @@ LABEL_9:
 LABEL_10:
   LODWORD(v148) = 1.0;
   objc_msgSend_setAspectRatio_(v18, v144, v145, v146, v147, v148);
-  v152 = objc_msgSend_valueForKey_(v13, v149, @"premultiplied_alpha_input", v150, v151);
+  v152 = objc_msgSend_valueForKey_(optionsCopy, v149, @"premultiplied_alpha_input", v150, v151);
   v155 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v153, v152, 1, v154);
   objc_msgSend_setPremultipliedAlphaInput_(v18, v156, v155, v157, v158);
 
-  v162 = objc_msgSend_valueForKey_(v13, v159, @"premultiplied_alpha_output", v160, v161);
+  v162 = objc_msgSend_valueForKey_(optionsCopy, v159, @"premultiplied_alpha_output", v160, v161);
   v165 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v163, v162, 0, v164);
   objc_msgSend_setPremultipliedAlphaOutput_(v18, v166, v165, v167, v168);
 
-  v172 = objc_msgSend_valueForKey_(v13, v169, @"infill", v170, v171);
+  v172 = objc_msgSend_valueForKey_(optionsCopy, v169, @"infill", v170, v171);
   v175 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v173, v172, 1, v174);
   objc_msgSend_setInfill_(v18, v176, v175, v177, v178);
 
-  v182 = objc_msgSend_valueForKey_(v13, v179, @"srgb_blending", v180, v181);
+  v182 = objc_msgSend_valueForKey_(optionsCopy, v179, @"srgb_blending", v180, v181);
   v185 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v183, v182, 0, v184);
   objc_msgSend_setSrgbBlending_(v18, v186, v185, v187, v188);
 
-  v192 = objc_msgSend_valueForKey_(v13, v189, @"mip_levels_count", v190, v191);
+  v192 = objc_msgSend_valueForKey_(optionsCopy, v189, @"mip_levels_count", v190, v191);
   v195 = objc_msgSend_parseUInt_defaultValue_(MXIUtilities, v193, v192, 2, v194);
   if (v195 >= 4)
   {
@@ -904,7 +904,7 @@ LABEL_10:
     objc_msgSend_setMipLevelsCount_(v18, v196, 1, v197, v198);
   }
 
-  v328 = objc_msgSend_valueForKey_(v13, v200, @"override_layer_depths", v201, v202);
+  v328 = objc_msgSend_valueForKey_(optionsCopy, v200, @"override_layer_depths", v201, v202);
   if (v328)
   {
     objc_opt_class();
@@ -920,7 +920,7 @@ LABEL_10:
         if (numLayers)
         {
           v214 = 0;
-          v327 = a3;
+          typeCopy = type;
           while (1)
           {
             v219 = objc_msgSend_objectAtIndex_(v212, v209, v214, v210, v211);
@@ -988,7 +988,7 @@ LABEL_10:
                 operator delete(v237);
               }
 
-              a3 = v327;
+              type = typeCopy;
             }
 
             else
@@ -1119,8 +1119,8 @@ LABEL_60:
     }
   }
 
-  objc_msgSend_setMaterialDescriptor_(v18, v268, v329, v203, v204);
-  v282 = objc_msgSend_valueForKey_(v13, v279, @"debug_recording", v280, v281);
+  objc_msgSend_setMaterialDescriptor_(v18, v268, descriptorCopy, v203, v204);
+  v282 = objc_msgSend_valueForKey_(optionsCopy, v279, @"debug_recording", v280, v281);
   v285 = objc_msgSend_parseString_defaultValue_(MXIUtilities, v283, v282, 0, v284);
 
   if (v285)
@@ -1147,12 +1147,12 @@ LABEL_60:
   v300 = v18->_recording;
   if (v300)
   {
-    v301 = a4;
+    layersCopy = layers;
     v332[0] = @"type";
-    v302 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v286, a3, v287, v288);
+    v302 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v286, type, v287, v288);
     v333[0] = v302;
     v332[1] = @"layers";
-    v306 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v303, v301, v304, v305);
+    v306 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v303, layersCopy, v304, v305);
     v333[1] = v306;
     v332[2] = @"range";
     *&v307 = var0;
@@ -1164,7 +1164,7 @@ LABEL_60:
     v321 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v319, v331, 2, v320);
     v332[3] = @"options";
     v333[2] = v321;
-    v333[3] = v13;
+    v333[3] = optionsCopy;
     v323 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v322, v333, v332, 4);
     objc_msgSend_captureCommand_withArgs_(v300, v324, @"init_builder", v323, v325);
   }
@@ -1173,39 +1173,39 @@ LABEL_80:
   return v18;
 }
 
-- (void)process:(id)a3 layer:(int64_t)a4 face:(int64_t)a5 color:(id)a6 depth:(id)a7 normal:(id)a8 extended:(id)a9 error:(id *)a10
+- (void)process:(id)process layer:(int64_t)layer face:(int64_t)face color:(id)color depth:(id)depth normal:(id)normal extended:(id)extended error:(id *)self0
 {
   v65 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a6;
-  v17 = a8;
+  processCopy = process;
+  colorCopy = color;
+  normalCopy = normal;
   v18 = _mxi_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v62 = a4;
+    layerCopy = layer;
     v63 = 2048;
-    v64 = a5;
+    faceCopy = face;
     _os_log_impl(&dword_22F9C3000, v18, OS_LOG_TYPE_DEBUG, "[MXI.framework] [MXISceneBuilder] Processing layer %ld for face %ld with color with depth, normal and extended textures", buf, 0x16u);
   }
 
-  v23 = objc_msgSend_width(v16, v19, v20, v21, v22);
-  *&v28 = v23 / objc_msgSend_height(v16, v24, v25, v26, v27);
+  v23 = objc_msgSend_width(colorCopy, v19, v20, v21, v22);
+  *&v28 = v23 / objc_msgSend_height(colorCopy, v24, v25, v26, v27);
   objc_msgSend_setAspectRatio_(self, v29, v30, v31, v32, v28);
   recording = self->_recording;
   if (recording)
   {
-    v38 = objc_msgSend_captureTexture_commandBuffer_(recording, v33, v16, v15, v34);
+    v38 = objc_msgSend_captureTexture_commandBuffer_(recording, v33, colorCopy, processCopy, v34);
     if (v38)
     {
-      v42 = objc_msgSend_captureTexture_commandBuffer_(self->_recording, v36, v17, v15, v37);
+      v42 = objc_msgSend_captureTexture_commandBuffer_(self->_recording, v36, normalCopy, processCopy, v37);
       if (v42)
       {
         v43 = self->_recording;
-        v44 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v39, a4, v40, v41, @"index");
+        v44 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v39, layer, v40, v41, @"index");
         v60[0] = v44;
         v59[1] = @"face";
-        v48 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v45, a5, v46, v47);
+        v48 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v45, face, v46, v47);
         v60[1] = v48;
         v60[2] = v38;
         v59[2] = @"color";
@@ -1224,7 +1224,7 @@ LABEL_80:
           _os_log_impl(&dword_22F9C3000, v56, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderBase.mm:576] Could not capture normal texture", buf, 2u);
         }
 
-        objc_msgSend_fillError_withDescription_(MXIInternalError, v57, a10, @"Could not capture normal texture", v58);
+        objc_msgSend_fillError_withDescription_(MXIInternalError, v57, error, @"Could not capture normal texture", v58);
       }
     }
 
@@ -1237,7 +1237,7 @@ LABEL_80:
         _os_log_impl(&dword_22F9C3000, v53, OS_LOG_TYPE_ERROR, "[MXI.framework/MXISceneBuilderBase.mm:571] Could not capture color texture", buf, 2u);
       }
 
-      objc_msgSend_fillError_withDescription_(MXIInternalError, v54, a10, @"Could not capture color texture", v55);
+      objc_msgSend_fillError_withDescription_(MXIInternalError, v54, error, @"Could not capture color texture", v55);
     }
   }
 }

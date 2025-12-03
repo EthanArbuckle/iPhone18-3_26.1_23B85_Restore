@@ -1,43 +1,43 @@
 @interface IDSSKStatusClient
 - (BOOL)_isUnderFirstLock;
-- (BOOL)_shouldRetryForError:(id)a3;
-- (IDSSKStatusClient)initWithStatusTypeIdentifier:(id)a3 queue:(id)a4;
-- (IDSSKStatusClient)initWithStatusTypeIdentifier:(id)a3 statusPublishingService:(id)a4 queue:(id)a5;
+- (BOOL)_shouldRetryForError:(id)error;
+- (IDSSKStatusClient)initWithStatusTypeIdentifier:(id)identifier queue:(id)queue;
+- (IDSSKStatusClient)initWithStatusTypeIdentifier:(id)identifier statusPublishingService:(id)service queue:(id)queue;
 - (IDSSKStatusClientDelegate)delegate;
 - (NSString)description;
 - (double)_rateLimitTime;
 - (double)_retryMaximumTime;
 - (double)_retryMinimumTime;
-- (double)_retryTimeForAttempt:(int64_t)a3;
-- (id)_publishRequestForStatusPayload:(id)a3;
-- (id)_skHandlesForURIs:(id)a3;
-- (id)_skInvitationPayloadForDictionary:(id)a3;
+- (double)_retryTimeForAttempt:(int64_t)attempt;
+- (id)_publishRequestForStatusPayload:(id)payload;
+- (id)_skHandlesForURIs:(id)is;
+- (id)_skInvitationPayloadForDictionary:(id)dictionary;
 - (id)firstDataProtectionLockError;
 - (id)invalidPublishStatusPayloadError;
 - (id)invalidStatusPayloadError;
 - (id)invitedHandles;
-- (id)rateLimitErrorForItem:(id)a3;
+- (id)rateLimitErrorForItem:(id)item;
 - (id)requestInProgressError;
-- (id)statusPayloadForOffGridMode:(int64_t)a3;
+- (id)statusPayloadForOffGridMode:(int64_t)mode;
 - (unint64_t)_rateLimitCount;
 - (unint64_t)_retryMaximumAttempts;
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 withDictionaryPayload:(id)a5 completion:(id)a6;
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle withDictionaryPayload:(id)payload completion:(id)completion;
 - (void)invitedHandlesChanged;
-- (void)provisionStatusPayload:(id)a3 completion:(id)a4;
-- (void)publishStatus:(int64_t)a3 completion:(id)a4;
-- (void)publishingServiceDaemonDisconnected:(id)a3;
-- (void)removeAllInvitedHandlesWithCompletion:(id)a3;
-- (void)removeInvitedHandles:(id)a3 completion:(id)a4;
+- (void)provisionStatusPayload:(id)payload completion:(id)completion;
+- (void)publishStatus:(int64_t)status completion:(id)completion;
+- (void)publishingServiceDaemonDisconnected:(id)disconnected;
+- (void)removeAllInvitedHandlesWithCompletion:(id)completion;
+- (void)removeInvitedHandles:(id)handles completion:(id)completion;
 - (void)resetRateLimit;
-- (void)statusPublishRequestCompleted:(id)a3 successfully:(BOOL)a4 error:(id)a5;
+- (void)statusPublishRequestCompleted:(id)completed successfully:(BOOL)successfully error:(id)error;
 @end
 
 @implementation IDSSKStatusClient
 
-- (IDSSKStatusClient)initWithStatusTypeIdentifier:(id)a3 queue:(id)a4
+- (IDSSKStatusClient)initWithStatusTypeIdentifier:(id)identifier queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v8 = IMWeakLinkClass();
   v9 = +[IDSFoundationLog IDSSKStatusClient];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -48,9 +48,9 @@
       sub_100924AC0(v9, v11, v12, v13, v14, v15, v16, v17);
     }
 
-    v9 = [[v8 alloc] initWithStatusTypeIdentifier:v6];
-    self = [(IDSSKStatusClient *)self initWithStatusTypeIdentifier:v6 statusPublishingService:v9 queue:v7];
-    v18 = self;
+    v9 = [[v8 alloc] initWithStatusTypeIdentifier:identifierCopy];
+    self = [(IDSSKStatusClient *)self initWithStatusTypeIdentifier:identifierCopy statusPublishingService:v9 queue:queueCopy];
+    selfCopy = self;
   }
 
   else
@@ -60,26 +60,26 @@
       sub_100924AF8(v9, v11, v12, v13, v14, v15, v16, v17);
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (IDSSKStatusClient)initWithStatusTypeIdentifier:(id)a3 statusPublishingService:(id)a4 queue:(id)a5
+- (IDSSKStatusClient)initWithStatusTypeIdentifier:(id)identifier statusPublishingService:(id)service queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  serviceCopy = service;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = IDSSKStatusClient;
   v12 = [(IDSSKStatusClient *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_statusTypeIdentifier, a3);
-    objc_storeStrong(&v13->_queue, a5);
-    objc_storeStrong(&v13->_publishingService, a4);
+    objc_storeStrong(&v12->_statusTypeIdentifier, identifier);
+    objc_storeStrong(&v13->_queue, queue);
+    objc_storeStrong(&v13->_publishingService, service);
     [(SKStatusPublishingService *)v13->_publishingService addDelegate:v13 queue:v13->_queue];
     publishRetryHandler = v13->_publishRetryHandler;
     v13->_publishRetryHandler = 0;
@@ -89,9 +89,9 @@
 
     v13->_currentOffGridModeBeingPublished = 0;
     v16 = [IDSRateLimiter alloc];
-    v17 = [(IDSSKStatusClient *)v13 _rateLimitCount];
+    _rateLimitCount = [(IDSSKStatusClient *)v13 _rateLimitCount];
     [(IDSSKStatusClient *)v13 _rateLimitTime];
-    v18 = [v16 initWithLimit:v17 timeLimit:?];
+    v18 = [v16 initWithLimit:_rateLimitCount timeLimit:?];
     rateLimiter = v13->_rateLimiter;
     v13->_rateLimiter = v18;
   }
@@ -101,23 +101,23 @@
 
 - (NSString)description
 {
-  v3 = [(IDSSKStatusClient *)self statusTypeIdentifier];
-  v4 = [(IDSSKStatusClient *)self delegate];
+  statusTypeIdentifier = [(IDSSKStatusClient *)self statusTypeIdentifier];
+  delegate = [(IDSSKStatusClient *)self delegate];
   v5 = @"YES";
-  if (!v4)
+  if (!delegate)
   {
     v5 = @"NO";
   }
 
-  v6 = [NSString stringWithFormat:@"<IDSSKStatusClient %p>: statusTypeIdentifier %@ delegate %@", self, v3, v5];
+  v6 = [NSString stringWithFormat:@"<IDSSKStatusClient %p>: statusTypeIdentifier %@ delegate %@", self, statusTypeIdentifier, v5];
 
   return v6;
 }
 
-- (double)_retryTimeForAttempt:(int64_t)a3
+- (double)_retryTimeForAttempt:(int64_t)attempt
 {
   [(IDSSKStatusClient *)self _retryMinimumTime];
-  v6 = v5 * a3;
+  v6 = v5 * attempt;
   [(IDSSKStatusClient *)self _retryMaximumTime];
   if (v6 < result)
   {
@@ -127,44 +127,44 @@
   return result;
 }
 
-- (void)publishStatus:(int64_t)a3 completion:(id)a4
+- (void)publishStatus:(int64_t)status completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[IDSFoundationLog IDSSKStatusClient];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v30 = a3;
+    statusCopy = status;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Requesting publish for status : %ld", buf, 0xCu);
   }
 
   if (![(IDSSKStatusClient *)self _isUnderFirstLock])
   {
-    v8 = [(IDSSKStatusClient *)self statusPayloadForOffGridMode:a3];
-    if (v8)
+    firstDataProtectionLockError = [(IDSSKStatusClient *)self statusPayloadForOffGridMode:status];
+    if (firstDataProtectionLockError)
     {
       publishRetryHandler = self->_publishRetryHandler;
-      if (publishRetryHandler && [(IDSBlockRetryHandler *)publishRetryHandler isRunning]&& self->_currentOffGridModeBeingPublished == a3)
+      if (publishRetryHandler && [(IDSBlockRetryHandler *)publishRetryHandler isRunning]&& self->_currentOffGridModeBeingPublished == status)
       {
-        if (!v6)
+        if (!completionCopy)
         {
           goto LABEL_21;
         }
 
-        v10 = [(IDSSKStatusClient *)self requestInProgressError];
+        requestInProgressError = [(IDSSKStatusClient *)self requestInProgressError];
       }
 
       else
       {
-        v11 = [(IDSSKStatusClient *)self rateLimiter];
-        v12 = [v11 underLimitForItem:@"status publish"];
+        rateLimiter = [(IDSSKStatusClient *)self rateLimiter];
+        v12 = [rateLimiter underLimitForItem:@"status publish"];
 
         if (v12)
         {
-          v13 = [(IDSSKStatusClient *)self rateLimiter];
-          [v13 noteItem:@"status publish"];
+          rateLimiter2 = [(IDSSKStatusClient *)self rateLimiter];
+          [rateLimiter2 noteItem:@"status publish"];
 
-          self->_currentOffGridModeBeingPublished = a3;
+          self->_currentOffGridModeBeingPublished = status;
           v14 = self->_publishRetryHandler;
           if (v14)
           {
@@ -184,10 +184,10 @@
           v22 = 3221225472;
           v23 = sub_1004E6098;
           v24 = &unk_100BDEDB0;
-          v25 = self;
-          v8 = v8;
-          v26 = v8;
-          v27 = v6;
+          selfCopy = self;
+          firstDataProtectionLockError = firstDataProtectionLockError;
+          v26 = firstDataProtectionLockError;
+          v27 = completionCopy;
           v18 = [(IDSBlockRetryHandler *)v16 initWithQueue:queue backoffProvider:v28 block:&v21];
           v19 = self->_publishRetryHandler;
           self->_publishRetryHandler = v18;
@@ -196,57 +196,57 @@
           goto LABEL_21;
         }
 
-        if (!v6)
+        if (!completionCopy)
         {
 LABEL_21:
 
           goto LABEL_22;
         }
 
-        v10 = [(IDSSKStatusClient *)self rateLimitErrorForItem:@"status publish"];
+        requestInProgressError = [(IDSSKStatusClient *)self rateLimitErrorForItem:@"status publish"];
       }
     }
 
     else
     {
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_21;
       }
 
-      v10 = [(IDSSKStatusClient *)self invalidPublishStatusPayloadError];
+      requestInProgressError = [(IDSSKStatusClient *)self invalidPublishStatusPayloadError];
     }
 
-    v20 = v10;
-    (*(v6 + 2))(v6, v10);
+    v20 = requestInProgressError;
+    (*(completionCopy + 2))(completionCopy, requestInProgressError);
 
     goto LABEL_21;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v8 = [(IDSSKStatusClient *)self firstDataProtectionLockError];
-    (*(v6 + 2))(v6, v8);
+    firstDataProtectionLockError = [(IDSSKStatusClient *)self firstDataProtectionLockError];
+    (*(completionCopy + 2))(completionCopy, firstDataProtectionLockError);
     goto LABEL_21;
   }
 
 LABEL_22:
 }
 
-- (void)provisionStatusPayload:(id)a3 completion:(id)a4
+- (void)provisionStatusPayload:(id)payload completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  payloadCopy = payload;
+  completionCopy = completion;
+  if (payloadCopy && [payloadCopy count])
   {
     if ([(IDSSKStatusClient *)self _isUnderFirstLock])
     {
-      if (v7)
+      if (completionCopy)
       {
-        v8 = [(IDSSKStatusClient *)self firstDataProtectionLockError];
+        firstDataProtectionLockError = [(IDSSKStatusClient *)self firstDataProtectionLockError];
 LABEL_8:
-        v9 = v8;
-        v7[2](v7, 0, v8);
+        v9 = firstDataProtectionLockError;
+        completionCopy[2](completionCopy, 0, firstDataProtectionLockError);
       }
     }
 
@@ -255,37 +255,37 @@ LABEL_8:
       provisionRetryHandler = self->_provisionRetryHandler;
       if (provisionRetryHandler && [(IDSBlockRetryHandler *)provisionRetryHandler isRunning])
       {
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_9;
         }
 
-        v8 = [(IDSSKStatusClient *)self requestInProgressError];
+        firstDataProtectionLockError = [(IDSSKStatusClient *)self requestInProgressError];
         goto LABEL_8;
       }
 
-      v11 = [(IDSSKStatusClient *)self rateLimiter];
-      v12 = [v11 underLimitForItem:@"payload provision"];
+      rateLimiter = [(IDSSKStatusClient *)self rateLimiter];
+      v12 = [rateLimiter underLimitForItem:@"payload provision"];
 
       if ((v12 & 1) == 0)
       {
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_9;
         }
 
-        v8 = [(IDSSKStatusClient *)self rateLimitErrorForItem:@"payload provision"];
+        firstDataProtectionLockError = [(IDSSKStatusClient *)self rateLimitErrorForItem:@"payload provision"];
         goto LABEL_8;
       }
 
-      v13 = [(IDSSKStatusClient *)self rateLimiter];
-      [v13 noteItem:@"payload provision"];
+      rateLimiter2 = [(IDSSKStatusClient *)self rateLimiter];
+      [rateLimiter2 noteItem:@"payload provision"];
 
       v14 = +[IDSFoundationLog IDSSKStatusClient];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v30 = v6;
+        v30 = payloadCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Requesting provisioning for payloads: %@", buf, 0xCu);
       }
 
@@ -308,9 +308,9 @@ LABEL_8:
       v22 = 3221225472;
       v23 = sub_1004E6594;
       v24 = &unk_100BDEDB0;
-      v25 = self;
-      v26 = v6;
-      v27 = v7;
+      selfCopy = self;
+      v26 = payloadCopy;
+      v27 = completionCopy;
       v19 = [(IDSBlockRetryHandler *)v17 initWithQueue:queue backoffProvider:v28 block:&v21];
       v20 = self->_provisionRetryHandler;
       self->_provisionRetryHandler = v19;
@@ -319,9 +319,9 @@ LABEL_8:
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v8 = [(IDSSKStatusClient *)self invalidStatusPayloadError];
+    firstDataProtectionLockError = [(IDSSKStatusClient *)self invalidStatusPayloadError];
     goto LABEL_8;
   }
 
@@ -330,25 +330,25 @@ LABEL_9:
 
 - (id)invitedHandles
 {
-  v2 = [(SKStatusPublishingService *)self->_publishingService invitedHandles];
+  invitedHandles = [(SKStatusPublishingService *)self->_publishingService invitedHandles];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1004E685C;
   v5[3] = &unk_100BD8A48;
   v3 = objc_alloc_init(NSMutableSet);
   v6 = v3;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [invitedHandles enumerateObjectsUsingBlock:v5];
 
   return v3;
 }
 
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 withDictionaryPayload:(id)a5 completion:(id)a6
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle withDictionaryPayload:(id)payload completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10 || ![v10 count])
+  handlesCopy = handles;
+  handleCopy = handle;
+  payloadCopy = payload;
+  completionCopy = completion;
+  if (!handlesCopy || ![handlesCopy count])
   {
     v14 = +[IDSFoundationLog IDSSKStatusClient];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -363,23 +363,23 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_1004E6A60;
   block[3] = &unk_100BDA848;
-  v21 = v11;
-  v22 = self;
-  v23 = v10;
-  v24 = v12;
-  v25 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
-  v19 = v11;
+  v21 = handleCopy;
+  selfCopy = self;
+  v23 = handlesCopy;
+  v24 = payloadCopy;
+  v25 = completionCopy;
+  v16 = completionCopy;
+  v17 = payloadCopy;
+  v18 = handlesCopy;
+  v19 = handleCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeInvitedHandles:(id)a3 completion:(id)a4
+- (void)removeInvitedHandles:(id)handles completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || ![v6 count])
+  handlesCopy = handles;
+  completionCopy = completion;
+  if (!handlesCopy || ![handlesCopy count])
   {
     v8 = +[IDSFoundationLog IDSSKStatusClient];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -395,24 +395,24 @@ LABEL_9:
   block[2] = sub_1004E6FAC;
   block[3] = &unk_100BD8CB0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = handlesCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = handlesCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeAllInvitedHandlesWithCompletion:(id)a3
+- (void)removeAllInvitedHandlesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1004E7208;
   v7[3] = &unk_100BD9A30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -431,14 +431,14 @@ LABEL_9:
 - (BOOL)_isUnderFirstLock
 {
   v2 = +[IMSystemMonitor sharedInstance];
-  v3 = [v2 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v2 isUnderFirstDataProtectionLock];
 
-  return v3;
+  return isUnderFirstDataProtectionLock;
 }
 
-- (id)_skHandlesForURIs:(id)a3
+- (id)_skHandlesForURIs:(id)is
 {
-  v3 = a3;
+  isCopy = is;
   v4 = IMWeakLinkClass();
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
@@ -447,21 +447,21 @@ LABEL_9:
   v12 = objc_alloc_init(NSMutableArray);
   v13 = v4;
   v5 = v12;
-  [v3 enumerateObjectsUsingBlock:&v8];
+  [isCopy enumerateObjectsUsingBlock:&v8];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (id)_skInvitationPayloadForDictionary:(id)a3
+- (id)_skInvitationPayloadForDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = a3;
+    dictionaryCopy = dictionary;
     v4 = objc_alloc(IMWeakLinkClass());
     v5 = +[NSDate now];
-    v6 = [v4 initWithDictionary:v3 dateCreated:v5];
+    v6 = [v4 initWithDictionary:dictionaryCopy dateCreated:v5];
   }
 
   else
@@ -472,10 +472,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)_publishRequestForStatusPayload:(id)a3
+- (id)_publishRequestForStatusPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [objc_alloc(IMWeakLinkClass()) initWithStatusPayload:v3];
+  payloadCopy = payload;
+  v4 = [objc_alloc(IMWeakLinkClass()) initWithStatusPayload:payloadCopy];
 
   v5 = +[IDSFoundationLog IDSSKStatusClient];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -488,28 +488,28 @@ LABEL_9:
   return v4;
 }
 
-- (void)statusPublishRequestCompleted:(id)a3 successfully:(BOOL)a4 error:(id)a5
+- (void)statusPublishRequestCompleted:(id)completed successfully:(BOOL)successfully error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  successfullyCopy = successfully;
+  completedCopy = completed;
+  errorCopy = error;
   v10 = +[IDSFoundationLog IDSSKStatusClient];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    if (v6)
+    if (successfullyCopy)
     {
       v11 = @"YES";
     }
 
-    v15 = v8;
+    v15 = completedCopy;
     v16 = 2112;
     v17 = v11;
     v18 = 2112;
-    v19 = v9;
+    v19 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "statusPublishRequestCompleted %@: %@, successfully: %@, error: %@", &v12, 0x2Au);
   }
 }
@@ -520,31 +520,31 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "invitedHandlesChanged %@", &v4, 0xCu);
   }
 }
 
-- (void)publishingServiceDaemonDisconnected:(id)a3
+- (void)publishingServiceDaemonDisconnected:(id)disconnected
 {
-  v3 = a3;
+  disconnectedCopy = disconnected;
   v4 = +[IDSFoundationLog IDSSKStatusClient];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = disconnectedCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "publishingServiceDaemonDisconnected %@", &v5, 0xCu);
   }
 }
 
-- (BOOL)_shouldRetryForError:(id)a3
+- (BOOL)_shouldRetryForError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:APSErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:APSErrorDomain])
     {
       if ([v4 code] == 4)
       {
@@ -554,9 +554,9 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v7 = [v4 code];
+      code = [v4 code];
 
-      if (v7 == 5)
+      if (code == 5)
       {
         goto LABEL_8;
       }
@@ -573,18 +573,18 @@ LABEL_9:
   return v6;
 }
 
-- (id)statusPayloadForOffGridMode:(int64_t)a3
+- (id)statusPayloadForOffGridMode:(int64_t)mode
 {
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:mode];
   [v4 setObject:v5 forKey:IDSOffGridStatusPayloadStatusKey];
 
   v6 = +[IDSPushHandler sharedInstance];
-  v7 = [v6 pushToken];
+  pushToken = [v6 pushToken];
 
-  if (v7)
+  if (pushToken)
   {
-    v8 = v7;
+    v8 = pushToken;
     CFDictionarySetValue(v4, IDSOffGridStatusPayloadStatusTokenKey, v8);
   }
 
@@ -610,15 +610,15 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)_retryMinimumTime
@@ -685,15 +685,15 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 10;
+    integerValue = 10;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (id)firstDataProtectionLockError
@@ -726,11 +726,11 @@ LABEL_9:
   return v3;
 }
 
-- (id)rateLimitErrorForItem:(id)a3
+- (id)rateLimitErrorForItem:(id)item
 {
-  v3 = [NSString stringWithFormat:@"Rate limit reached for %@", a3];
+  item = [NSString stringWithFormat:@"Rate limit reached for %@", item];
   v7 = NSLocalizedDescriptionKey;
-  v8 = v3;
+  v8 = item;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v5 = [NSError errorWithDomain:IDSOffGridStatusErrorDomain code:11 userInfo:v4];
 

@@ -1,29 +1,29 @@
 @interface SCLSuppressSchoolModeAssertionClient
 - (NSString)description;
-- (SCLSuppressSchoolModeAssertionClient)initWithConnection:(id)a3;
+- (SCLSuppressSchoolModeAssertionClient)initWithConnection:(id)connection;
 - (SCLSuppressSchoolModeAssertionClientDelegate)delegate;
-- (void)acquireWithExplanation:(id)a3 UUID:(id)a4 completion:(id)a5;
+- (void)acquireWithExplanation:(id)explanation UUID:(id)d completion:(id)completion;
 - (void)connectionDidInvalidate;
 @end
 
 @implementation SCLSuppressSchoolModeAssertionClient
 
-- (SCLSuppressSchoolModeAssertionClient)initWithConnection:(id)a3
+- (SCLSuppressSchoolModeAssertionClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = SCLSuppressSchoolModeAssertionClient;
   v6 = [(SCLSuppressSchoolModeAssertionClient *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     [(NSXPCConnection *)v7->_connection setExportedObject:v7];
     connection = v7->_connection;
     v9 = SCLSuppressSchoolModeAssertionXPCServerInterface();
     [(NSXPCConnection *)connection setExportedInterface:v9];
 
-    v10 = [v5 valueForEntitlement:0x2876232C8];
+    v10 = [connectionCopy valueForEntitlement:0x2876232C8];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 BOOLValue])
     {
@@ -35,7 +35,7 @@
       v11 = scl_framework_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(SCLSuppressSchoolModeAssertionClient *)v5 initWithConnection:v11];
+        [(SCLSuppressSchoolModeAssertionClient *)connectionCopy initWithConnection:v11];
       }
     }
 
@@ -65,8 +65,8 @@ void __59__SCLSuppressSchoolModeAssertionClient_initWithConnection___block_invok
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SCLSuppressSchoolModeAssertionClient *)self explanation];
-  v7 = [v3 stringWithFormat:@"<%@ %p explanation: %@>", v5, self, v6];;
+  explanation = [(SCLSuppressSchoolModeAssertionClient *)self explanation];
+  v7 = [v3 stringWithFormat:@"<%@ %p explanation: %@>", v5, self, explanation];;
 
   return v7;
 }
@@ -74,14 +74,14 @@ void __59__SCLSuppressSchoolModeAssertionClient_initWithConnection___block_invok
 - (void)connectionDidInvalidate
 {
   [(SCLSuppressSchoolModeAssertionClient *)self setAcquired:0];
-  v3 = [(SCLSuppressSchoolModeAssertionClient *)self delegate];
-  [v3 clientDidInvalidate:self];
+  delegate = [(SCLSuppressSchoolModeAssertionClient *)self delegate];
+  [delegate clientDidInvalidate:self];
 }
 
-- (void)acquireWithExplanation:(id)a3 UUID:(id)a4 completion:(id)a5
+- (void)acquireWithExplanation:(id)explanation UUID:(id)d completion:(id)completion
 {
-  v11 = a5;
-  v7 = [a3 copy];
+  completionCopy = completion;
+  v7 = [explanation copy];
   explanation = self->_explanation;
   self->_explanation = v7;
 
@@ -90,17 +90,17 @@ void __59__SCLSuppressSchoolModeAssertionClient_initWithConnection___block_invok
     if (![(SCLSuppressSchoolModeAssertionClient *)self isAcquired])
     {
       [(SCLSuppressSchoolModeAssertionClient *)self setAcquired:1];
-      v9 = [(SCLSuppressSchoolModeAssertionClient *)self delegate];
-      [v9 clientDidAcquireAssertion:self];
+      delegate = [(SCLSuppressSchoolModeAssertionClient *)self delegate];
+      [delegate clientDidAcquireAssertion:self];
     }
 
-    v11[2](v11, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
     v10 = SCLEntitlementError(0x2876232C8);
-    (v11)[2](v11, 0, v10);
+    (completionCopy)[2](completionCopy, 0, v10);
   }
 }
 

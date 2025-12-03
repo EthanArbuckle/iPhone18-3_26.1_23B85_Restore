@@ -1,104 +1,104 @@
 @interface HFRangeControlItem
-+ (BOOL)_hasWritableCharacteristicsOfType:(id)a3 valueSource:(id)a4;
++ (BOOL)_hasWritableCharacteristicsOfType:(id)type valueSource:(id)source;
 + (id)readOnlyCharacteristicTypes;
 - (HFNumberValueConstraints)maximumValueConstraints;
 - (HFNumberValueConstraints)minimumValueConstraints;
 - (HFNumberValueConstraints)targetValueConstraints;
-- (HFRangeControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (HFRangeControlItem)initWithValueSource:(id)a3 targetCharacteristicTypes:(id)a4 minimumCharacteristicType:(id)a5 maximumCharacteristicType:(id)a6 displayResults:(id)a7;
+- (HFRangeControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (HFRangeControlItem)initWithValueSource:(id)source targetCharacteristicTypes:(id)types minimumCharacteristicType:(id)type maximumCharacteristicType:(id)characteristicType displayResults:(id)results;
 - (NSNumber)maximumValue;
 - (NSNumber)minimumValue;
 - (NSNumber)stepValue;
 - (id)_maximumCharacteristicTypeMetadata;
 - (id)_minimumCharacteristicTypeMetadata;
-- (id)_targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:(id)a3;
-- (id)characteristicValuesForValue:(id)a3;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (id)_targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:(id)type;
+- (id)characteristicValuesForValue:(id)value;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 - (id)maximumCharacteristicTypeStepValue;
 - (id)minimumCharacteristicTypeStepValue;
-- (id)resultsForBatchReadResponse:(id)a3;
-- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)a3;
-- (id)valueForCharacteristicValues:(id)a3;
-- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)a3;
+- (id)resultsForBatchReadResponse:(id)response;
+- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)type;
+- (id)valueForCharacteristicValues:(id)values;
+- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)type;
 @end
 
 @implementation HFRangeControlItem
 
-- (HFRangeControlItem)initWithValueSource:(id)a3 targetCharacteristicTypes:(id)a4 minimumCharacteristicType:(id)a5 maximumCharacteristicType:(id)a6 displayResults:(id)a7
+- (HFRangeControlItem)initWithValueSource:(id)source targetCharacteristicTypes:(id)types minimumCharacteristicType:(id)type maximumCharacteristicType:(id)characteristicType displayResults:(id)results
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13 && [v13 count])
+  sourceCopy = source;
+  typesCopy = types;
+  typeCopy = type;
+  characteristicTypeCopy = characteristicType;
+  resultsCopy = results;
+  if (typesCopy && [typesCopy count])
   {
-    obj = a6;
+    obj = characteristicType;
     v17 = [MEMORY[0x277CBEB58] set];
-    v30 = v14;
-    [v17 na_safeAddObject:v14];
-    v29 = v15;
-    [v17 na_safeAddObject:v15];
-    [v17 unionSet:v13];
+    v30 = typeCopy;
+    [v17 na_safeAddObject:typeCopy];
+    v29 = characteristicTypeCopy;
+    [v17 na_safeAddObject:characteristicTypeCopy];
+    [v17 unionSet:typesCopy];
     v18 = [HFControlItemCharacteristicOptions alloc];
     v32[0] = &unk_282523DF0;
     v32[1] = &unk_282523E08;
     v33[0] = v17;
-    v19 = [objc_opt_class() readOnlyCharacteristicTypes];
-    v33[1] = v19;
+    readOnlyCharacteristicTypes = [objc_opt_class() readOnlyCharacteristicTypes];
+    v33[1] = readOnlyCharacteristicTypes;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
-    v21 = v20 = v12;
+    v21 = v20 = sourceCopy;
     v22 = [(HFControlItemCharacteristicOptions *)v18 initWithCharacteristicTypesByUsage:v21];
 
-    v12 = v20;
+    sourceCopy = v20;
     v31.receiver = self;
     v31.super_class = HFRangeControlItem;
-    v23 = [(HFControlItem *)&v31 initWithValueSource:v20 characteristicOptions:v22 displayResults:v16];
+    v23 = [(HFControlItem *)&v31 initWithValueSource:v20 characteristicOptions:v22 displayResults:resultsCopy];
     p_isa = &v23->super.super.super.isa;
     if (v23)
     {
-      objc_storeStrong(&v23->_targetCharacteristicTypes, a4);
-      objc_storeStrong(p_isa + 11, a5);
+      objc_storeStrong(&v23->_targetCharacteristicTypes, types);
+      objc_storeStrong(p_isa + 11, type);
       objc_storeStrong(p_isa + 12, obj);
     }
 
     self = p_isa;
 
-    v25 = self;
-    v15 = v29;
-    v14 = v30;
+    selfCopy = self;
+    characteristicTypeCopy = v29;
+    typeCopy = v30;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v25;
+  return selfCopy;
 }
 
-- (HFRangeControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFRangeControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithValueSource_targetCharacteristicTypes_minimumCharacteristicType_maximumCharacteristicType_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFRangeControlItem.m" lineNumber:79 description:{@"%s is unavailable; use %@ instead", "-[HFRangeControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFRangeControlItem.m" lineNumber:79 description:{@"%s is unavailable; use %@ instead", "-[HFRangeControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v6 = a4;
-  if ([(HFControlItem *)self canCopyWithCharacteristicOptions:a3])
+  sourceCopy = source;
+  if ([(HFControlItem *)self canCopyWithCharacteristicOptions:options])
   {
     v7 = objc_alloc(objc_opt_class());
-    v8 = [(HFRangeControlItem *)self targetCharacteristicTypes];
-    v9 = [(HFRangeControlItem *)self minimumCharacteristicType];
-    v10 = [(HFRangeControlItem *)self maximumCharacteristicType];
-    v11 = [(HFControlItem *)self displayResults];
-    v12 = [v7 initWithValueSource:v6 targetCharacteristicTypes:v8 minimumCharacteristicType:v9 maximumCharacteristicType:v10 displayResults:v11];
+    targetCharacteristicTypes = [(HFRangeControlItem *)self targetCharacteristicTypes];
+    minimumCharacteristicType = [(HFRangeControlItem *)self minimumCharacteristicType];
+    maximumCharacteristicType = [(HFRangeControlItem *)self maximumCharacteristicType];
+    displayResults = [(HFControlItem *)self displayResults];
+    v12 = [v7 initWithValueSource:sourceCopy targetCharacteristicTypes:targetCharacteristicTypes minimumCharacteristicType:minimumCharacteristicType maximumCharacteristicType:maximumCharacteristicType displayResults:displayResults];
 
     [v12 copyLatestResultsFromItem:self];
   }
@@ -111,11 +111,11 @@
   return v12;
 }
 
-- (id)valueForCharacteristicValues:(id)a3
+- (id)valueForCharacteristicValues:(id)values
 {
-  v4 = a3;
-  v5 = [(HFItem *)self latestResults];
-  v6 = [v5 objectForKeyedSubscript:@"characteristicValuesByType"];
+  valuesCopy = values;
+  latestResults = [(HFItem *)self latestResults];
+  v6 = [latestResults objectForKeyedSubscript:@"characteristicValuesByType"];
   v7 = v6;
   if (!v6)
   {
@@ -124,39 +124,39 @@
 
   v8 = [v6 mutableCopy];
 
-  [v8 addEntriesFromDictionary:v4];
+  [v8 addEntriesFromDictionary:valuesCopy];
   v9 = objc_alloc_init(HFRangeControlItemValue);
   v10 = [(HFRangeControlItem *)self targetCharacteristicTypeWithCharacteristicValuesKeyedByType:v8];
   if (v10)
   {
-    v11 = [(HFRangeControlItem *)self targetCharacteristicTypes];
-    v12 = [v11 containsObject:v10];
+    targetCharacteristicTypes = [(HFRangeControlItem *)self targetCharacteristicTypes];
+    v12 = [targetCharacteristicTypes containsObject:v10];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [(HFRangeControlItem *)self targetCharacteristicTypes];
-      NSLog(&cfstr_Hfrangecontrol_1.isa, v10, v13, self);
+      targetCharacteristicTypes2 = [(HFRangeControlItem *)self targetCharacteristicTypes];
+      NSLog(&cfstr_Hfrangecontrol_1.isa, v10, targetCharacteristicTypes2, self);
     }
 
-    v14 = [v4 objectForKeyedSubscript:v10];
+    v14 = [valuesCopy objectForKeyedSubscript:v10];
     [(HFRangeControlItemValue *)v9 setTargetValue:v14];
   }
 
-  v15 = [(HFRangeControlItem *)self minimumCharacteristicType];
+  minimumCharacteristicType = [(HFRangeControlItem *)self minimumCharacteristicType];
 
-  if (v15)
+  if (minimumCharacteristicType)
   {
-    v16 = [(HFRangeControlItem *)self minimumCharacteristicType];
-    v17 = [v4 objectForKeyedSubscript:v16];
+    minimumCharacteristicType2 = [(HFRangeControlItem *)self minimumCharacteristicType];
+    v17 = [valuesCopy objectForKeyedSubscript:minimumCharacteristicType2];
     [(HFRangeControlItemValue *)v9 setMinimumValue:v17];
   }
 
-  v18 = [(HFRangeControlItem *)self maximumCharacteristicType];
+  maximumCharacteristicType = [(HFRangeControlItem *)self maximumCharacteristicType];
 
-  if (v18)
+  if (maximumCharacteristicType)
   {
-    v19 = [(HFRangeControlItem *)self maximumCharacteristicType];
-    v20 = [v4 objectForKeyedSubscript:v19];
+    maximumCharacteristicType2 = [(HFRangeControlItem *)self maximumCharacteristicType];
+    v20 = [valuesCopy objectForKeyedSubscript:maximumCharacteristicType2];
     [(HFRangeControlItemValue *)v9 setMaximumValue:v20];
   }
 
@@ -165,47 +165,47 @@
   return v9;
 }
 
-- (id)characteristicValuesForValue:(id)a3
+- (id)characteristicValuesForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  v6 = [(HFItem *)self latestResults];
-  v7 = [v6 objectForKeyedSubscript:@"characteristicValuesByType"];
+  latestResults = [(HFItem *)self latestResults];
+  v7 = [latestResults objectForKeyedSubscript:@"characteristicValuesByType"];
   v8 = [(HFRangeControlItem *)self targetCharacteristicTypeWithCharacteristicValuesKeyedByType:v7];
 
-  v9 = [v4 targetValue];
+  targetValue = [valueCopy targetValue];
 
-  if (v9 && v8)
+  if (targetValue && v8)
   {
-    v10 = [v4 targetValue];
-    [v5 setObject:v10 forKey:v8];
+    targetValue2 = [valueCopy targetValue];
+    [v5 setObject:targetValue2 forKey:v8];
   }
 
-  v11 = [v4 minimumValue];
-  if (v11)
+  minimumValue = [valueCopy minimumValue];
+  if (minimumValue)
   {
-    v12 = v11;
-    v13 = [(HFRangeControlItem *)self minimumCharacteristicType];
+    v12 = minimumValue;
+    minimumCharacteristicType = [(HFRangeControlItem *)self minimumCharacteristicType];
 
-    if (v13)
+    if (minimumCharacteristicType)
     {
-      v14 = [v4 minimumValue];
-      v15 = [(HFRangeControlItem *)self minimumCharacteristicType];
-      [v5 setObject:v14 forKey:v15];
+      minimumValue2 = [valueCopy minimumValue];
+      minimumCharacteristicType2 = [(HFRangeControlItem *)self minimumCharacteristicType];
+      [v5 setObject:minimumValue2 forKey:minimumCharacteristicType2];
     }
   }
 
-  v16 = [v4 maximumValue];
-  if (v16)
+  maximumValue = [valueCopy maximumValue];
+  if (maximumValue)
   {
-    v17 = v16;
-    v18 = [(HFRangeControlItem *)self maximumCharacteristicType];
+    v17 = maximumValue;
+    maximumCharacteristicType = [(HFRangeControlItem *)self maximumCharacteristicType];
 
-    if (v18)
+    if (maximumCharacteristicType)
     {
-      v19 = [v4 maximumValue];
-      v20 = [(HFRangeControlItem *)self maximumCharacteristicType];
-      [v5 setObject:v19 forKey:v20];
+      maximumValue2 = [valueCopy maximumValue];
+      maximumCharacteristicType2 = [(HFRangeControlItem *)self maximumCharacteristicType];
+      [v5 setObject:maximumValue2 forKey:maximumCharacteristicType2];
     }
   }
 
@@ -214,32 +214,32 @@
   return v21;
 }
 
-- (id)resultsForBatchReadResponse:(id)a3
+- (id)resultsForBatchReadResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v20.receiver = self;
   v20.super_class = HFRangeControlItem;
-  v5 = [(HFControlItem *)&v20 resultsForBatchReadResponse:v4];
+  v5 = [(HFControlItem *)&v20 resultsForBatchReadResponse:responseCopy];
   v6 = [v5 mutableCopy];
 
   [v6 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"preferLiveWritesDuringInteraction"];
   [v6 setObject:&unk_282523E08 forKeyedSubscript:@"preferredInteractionFidelity"];
-  v7 = [(HFRangeControlItem *)self numberValueFormatter];
-  if (v7)
+  numberValueFormatter = [(HFRangeControlItem *)self numberValueFormatter];
+  if (numberValueFormatter)
   {
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __50__HFRangeControlItem_resultsForBatchReadResponse___block_invoke;
     v17 = &unk_277DF78D8;
-    v18 = v4;
-    v19 = self;
+    v18 = responseCopy;
+    selfCopy = self;
     v8 = __50__HFRangeControlItem_resultsForBatchReadResponse___block_invoke(&v14);
     if (v8)
     {
       v9 = [HFNumberRangeFormatter alloc];
-      v10 = [(HFNumberRangeFormatter *)v9 initWithNumberFormatter:v7, v14, v15, v16, v17];
-      v11 = [v8 numberRange];
-      v12 = [(HFNumberRangeFormatter *)v10 stringForObjectValue:v11];
+      v10 = [(HFNumberRangeFormatter *)v9 initWithNumberFormatter:numberValueFormatter, v14, v15, v16, v17];
+      numberRange = [v8 numberRange];
+      v12 = [(HFNumberRangeFormatter *)v10 stringForObjectValue:numberRange];
       [v6 setObject:v12 forKeyedSubscript:@"description"];
     }
   }
@@ -291,177 +291,177 @@ id __50__HFRangeControlItem_resultsForBatchReadResponse___block_invoke(uint64_t 
 
 - (HFNumberValueConstraints)minimumValueConstraints
 {
-  v2 = [(HFRangeControlItem *)self _minimumCharacteristicTypeMetadata];
-  v3 = [v2 hf_numericValueConstraints];
+  _minimumCharacteristicTypeMetadata = [(HFRangeControlItem *)self _minimumCharacteristicTypeMetadata];
+  hf_numericValueConstraints = [_minimumCharacteristicTypeMetadata hf_numericValueConstraints];
 
-  return v3;
+  return hf_numericValueConstraints;
 }
 
 - (HFNumberValueConstraints)maximumValueConstraints
 {
-  v2 = [(HFRangeControlItem *)self _maximumCharacteristicTypeMetadata];
-  v3 = [v2 hf_numericValueConstraints];
+  _maximumCharacteristicTypeMetadata = [(HFRangeControlItem *)self _maximumCharacteristicTypeMetadata];
+  hf_numericValueConstraints = [_maximumCharacteristicTypeMetadata hf_numericValueConstraints];
 
-  return v3;
+  return hf_numericValueConstraints;
 }
 
 - (HFNumberValueConstraints)targetValueConstraints
 {
-  v3 = [(HFItem *)self latestResults];
-  v4 = [v3 objectForKeyedSubscript:@"characteristicValuesByType"];
+  latestResults = [(HFItem *)self latestResults];
+  v4 = [latestResults objectForKeyedSubscript:@"characteristicValuesByType"];
 
   v5 = [(HFRangeControlItem *)self _targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:v4];
-  v6 = [v5 hf_numericValueConstraints];
+  hf_numericValueConstraints = [v5 hf_numericValueConstraints];
 
-  return v6;
+  return hf_numericValueConstraints;
 }
 
 - (NSNumber)minimumValue
 {
-  v3 = [(HFItem *)self latestResults];
-  v4 = [v3 objectForKeyedSubscript:@"characteristicValuesByType"];
+  latestResults = [(HFItem *)self latestResults];
+  v4 = [latestResults objectForKeyedSubscript:@"characteristicValuesByType"];
 
   if ([(HFRangeControlItem *)self rangeModeWithCharacteristicValuesKeyedByType:v4]== 2)
   {
-    v5 = [(HFRangeControlItem *)self _minimumCharacteristicTypeMetadata];
-    v6 = [v5 minimumValue];
+    _minimumCharacteristicTypeMetadata = [(HFRangeControlItem *)self _minimumCharacteristicTypeMetadata];
+    minimumValue = [_minimumCharacteristicTypeMetadata minimumValue];
 
-    v7 = [(HFRangeControlItem *)self _maximumCharacteristicTypeMetadata];
-    v8 = [v7 minimumValue];
+    _maximumCharacteristicTypeMetadata = [(HFRangeControlItem *)self _maximumCharacteristicTypeMetadata];
+    minimumValue2 = [_maximumCharacteristicTypeMetadata minimumValue];
 
-    if ([v6 compare:v8] == -1)
+    if ([minimumValue compare:minimumValue2] == -1)
     {
-      v9 = v8;
+      v9 = minimumValue2;
     }
 
     else
     {
-      v9 = v6;
+      v9 = minimumValue;
     }
 
-    v10 = v9;
+    v6MinimumValue = v9;
   }
 
   else
   {
-    v6 = [(HFRangeControlItem *)self _targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:v4];
-    v10 = [v6 minimumValue];
+    minimumValue = [(HFRangeControlItem *)self _targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:v4];
+    v6MinimumValue = [minimumValue minimumValue];
   }
 
-  return v10;
+  return v6MinimumValue;
 }
 
 - (NSNumber)maximumValue
 {
-  v3 = [(HFItem *)self latestResults];
-  v4 = [v3 objectForKeyedSubscript:@"characteristicValuesByType"];
+  latestResults = [(HFItem *)self latestResults];
+  v4 = [latestResults objectForKeyedSubscript:@"characteristicValuesByType"];
 
   if ([(HFRangeControlItem *)self rangeModeWithCharacteristicValuesKeyedByType:v4]== 2)
   {
-    v5 = [(HFRangeControlItem *)self _minimumCharacteristicTypeMetadata];
-    v6 = [v5 maximumValue];
+    _minimumCharacteristicTypeMetadata = [(HFRangeControlItem *)self _minimumCharacteristicTypeMetadata];
+    maximumValue = [_minimumCharacteristicTypeMetadata maximumValue];
 
-    v7 = [(HFRangeControlItem *)self _maximumCharacteristicTypeMetadata];
-    v8 = [v7 maximumValue];
+    _maximumCharacteristicTypeMetadata = [(HFRangeControlItem *)self _maximumCharacteristicTypeMetadata];
+    maximumValue2 = [_maximumCharacteristicTypeMetadata maximumValue];
 
-    if ([v6 compare:v8] == 1)
+    if ([maximumValue compare:maximumValue2] == 1)
     {
-      v9 = v8;
+      v9 = maximumValue2;
     }
 
     else
     {
-      v9 = v6;
+      v9 = maximumValue;
     }
 
-    v10 = v9;
+    v6MaximumValue = v9;
   }
 
   else
   {
-    v6 = [(HFRangeControlItem *)self _targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:v4];
-    v10 = [v6 maximumValue];
+    maximumValue = [(HFRangeControlItem *)self _targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:v4];
+    v6MaximumValue = [maximumValue maximumValue];
   }
 
-  return v10;
+  return v6MaximumValue;
 }
 
 - (NSNumber)stepValue
 {
-  v3 = [(HFItem *)self latestResults];
-  v4 = [v3 objectForKeyedSubscript:@"characteristicValuesByType"];
+  latestResults = [(HFItem *)self latestResults];
+  v4 = [latestResults objectForKeyedSubscript:@"characteristicValuesByType"];
 
   if ([(HFRangeControlItem *)self rangeModeWithCharacteristicValuesKeyedByType:v4]== 2)
   {
-    v5 = [(HFRangeControlItem *)self minimumCharacteristicTypeStepValue];
-    v6 = [(HFRangeControlItem *)self maximumCharacteristicTypeStepValue];
-    if ([v5 compare:v6] == 1)
+    minimumCharacteristicTypeStepValue = [(HFRangeControlItem *)self minimumCharacteristicTypeStepValue];
+    maximumCharacteristicTypeStepValue = [(HFRangeControlItem *)self maximumCharacteristicTypeStepValue];
+    if ([minimumCharacteristicTypeStepValue compare:maximumCharacteristicTypeStepValue] == 1)
     {
-      v7 = v6;
+      v7 = maximumCharacteristicTypeStepValue;
     }
 
     else
     {
-      v7 = v5;
+      v7 = minimumCharacteristicTypeStepValue;
     }
 
-    v8 = v7;
+    stepValue = v7;
   }
 
   else
   {
-    v5 = [(HFRangeControlItem *)self _targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:v4];
-    v8 = [v5 stepValue];
+    minimumCharacteristicTypeStepValue = [(HFRangeControlItem *)self _targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:v4];
+    stepValue = [minimumCharacteristicTypeStepValue stepValue];
   }
 
-  return v8;
+  return stepValue;
 }
 
 - (id)maximumCharacteristicTypeStepValue
 {
-  v2 = [(HFRangeControlItem *)self _maximumCharacteristicTypeMetadata];
-  v3 = [v2 stepValue];
+  _maximumCharacteristicTypeMetadata = [(HFRangeControlItem *)self _maximumCharacteristicTypeMetadata];
+  stepValue = [_maximumCharacteristicTypeMetadata stepValue];
 
-  return v3;
+  return stepValue;
 }
 
 - (id)minimumCharacteristicTypeStepValue
 {
-  v2 = [(HFRangeControlItem *)self _minimumCharacteristicTypeMetadata];
-  v3 = [v2 stepValue];
+  _minimumCharacteristicTypeMetadata = [(HFRangeControlItem *)self _minimumCharacteristicTypeMetadata];
+  stepValue = [_minimumCharacteristicTypeMetadata stepValue];
 
-  return v3;
+  return stepValue;
 }
 
 + (id)readOnlyCharacteristicTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFRangeControlItem.m" lineNumber:276 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFRangeControlItem readOnlyCharacteristicTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFRangeControlItem.m" lineNumber:276 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFRangeControlItem readOnlyCharacteristicTypes]", objc_opt_class()}];
 
   v5 = MEMORY[0x277CBEB98];
 
   return [v5 set];
 }
 
-- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)a3
+- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)type
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFRangeControlItem.m" lineNumber:287 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFRangeControlItem rangeModeWithCharacteristicValuesKeyedByType:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFRangeControlItem.m" lineNumber:287 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFRangeControlItem rangeModeWithCharacteristicValuesKeyedByType:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)a3
+- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)type
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFRangeControlItem.m" lineNumber:293 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFRangeControlItem targetCharacteristicTypeWithCharacteristicValuesKeyedByType:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFRangeControlItem.m" lineNumber:293 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFRangeControlItem targetCharacteristicTypeWithCharacteristicValuesKeyedByType:]", objc_opt_class()}];
 
   return 0;
 }
 
-+ (BOOL)_hasWritableCharacteristicsOfType:(id)a3 valueSource:(id)a4
++ (BOOL)_hasWritableCharacteristicsOfType:(id)type valueSource:(id)source
 {
-  v4 = [a4 allCharacteristicsForCharacteristicType:a3];
+  v4 = [source allCharacteristicsForCharacteristicType:type];
   if ([v4 count])
   {
     v5 = [v4 na_all:&__block_literal_global_75];
@@ -493,29 +493,29 @@ uint64_t __68__HFRangeControlItem__hasWritableCharacteristicsOfType_valueSource_
 
 - (id)_minimumCharacteristicTypeMetadata
 {
-  v3 = [(HFControlItem *)self valueSource];
-  v4 = [(HFRangeControlItem *)self minimumCharacteristicType];
-  v5 = [v3 metadataForCharacteristicType:v4];
+  valueSource = [(HFControlItem *)self valueSource];
+  minimumCharacteristicType = [(HFRangeControlItem *)self minimumCharacteristicType];
+  v5 = [valueSource metadataForCharacteristicType:minimumCharacteristicType];
 
   return v5;
 }
 
 - (id)_maximumCharacteristicTypeMetadata
 {
-  v3 = [(HFControlItem *)self valueSource];
-  v4 = [(HFRangeControlItem *)self maximumCharacteristicType];
-  v5 = [v3 metadataForCharacteristicType:v4];
+  valueSource = [(HFControlItem *)self valueSource];
+  maximumCharacteristicType = [(HFRangeControlItem *)self maximumCharacteristicType];
+  v5 = [valueSource metadataForCharacteristicType:maximumCharacteristicType];
 
   return v5;
 }
 
-- (id)_targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:(id)a3
+- (id)_targetCharacteristicTypeMetadataWithCharacteristicValuesKeyedByType:(id)type
 {
-  v4 = [(HFRangeControlItem *)self targetCharacteristicTypeWithCharacteristicValuesKeyedByType:a3];
+  v4 = [(HFRangeControlItem *)self targetCharacteristicTypeWithCharacteristicValuesKeyedByType:type];
   if (v4)
   {
-    v5 = [(HFControlItem *)self valueSource];
-    v6 = [v5 metadataForCharacteristicType:v4];
+    valueSource = [(HFControlItem *)self valueSource];
+    v6 = [valueSource metadataForCharacteristicType:v4];
   }
 
   else

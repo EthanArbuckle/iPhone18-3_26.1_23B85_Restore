@@ -1,8 +1,8 @@
 @interface MX_HIDEventObserver
 - (MX_HIDEventObserver)init;
 - (void)dealloc;
-- (void)handleButtonEvent:(__IOHIDEvent *)a3;
-- (void)handleEvent:(__IOHIDEvent *)a3;
+- (void)handleButtonEvent:(__IOHIDEvent *)event;
+- (void)handleEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation MX_HIDEventObserver
@@ -49,7 +49,7 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)handleButtonEvent:(__IOHIDEvent *)a3
+- (void)handleButtonEvent:(__IOHIDEvent *)event
 {
   v11 = *MEMORY[0x1E69E9840];
   IntegerValue = IOHIDEventGetIntegerValue();
@@ -79,25 +79,25 @@ LABEL_10:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleEvent:(__IOHIDEvent *)a3
+- (void)handleEvent:(__IOHIDEvent *)event
 {
   v6[0] = 0;
   v6[1] = v6;
   v6[2] = 0x2020000000;
-  v6[3] = a3;
-  if (a3)
+  v6[3] = event;
+  if (event)
   {
-    CFRetain(a3);
+    CFRetain(event);
   }
 
-  v4 = [(MX_HIDEventObserver *)self accessQueue];
+  accessQueue = [(MX_HIDEventObserver *)self accessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __35__MX_HIDEventObserver_handleEvent___block_invoke;
   v5[3] = &unk_1E7AEA918;
   v5[4] = self;
   v5[5] = v6;
-  MXDispatchAsync("[MX_HIDEventObserver handleEvent:]", "MX_IOKit.m", 163, 0, 0, v4, v5);
+  MXDispatchAsync("[MX_HIDEventObserver handleEvent:]", "MX_IOKit.m", 163, 0, 0, accessQueue, v5);
   _Block_object_dispose(v6, 8);
 }
 

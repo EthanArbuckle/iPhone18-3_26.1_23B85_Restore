@@ -1,10 +1,10 @@
 @interface HKConceptAuthorizationRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKConceptAuthorizationRecord)init;
-- (HKConceptAuthorizationRecord)initWithCoder:(id)a3;
-- (HKConceptAuthorizationRecord)initWithHealthConceptIdentifier:(id)a3 semanticIdentifierString:(id)a4 sourceUUID:(id)a5 status:(int64_t)a6 modificationDate:(double)a7;
+- (HKConceptAuthorizationRecord)initWithCoder:(id)coder;
+- (HKConceptAuthorizationRecord)initWithHealthConceptIdentifier:(id)identifier semanticIdentifierString:(id)string sourceUUID:(id)d status:(int64_t)status modificationDate:(double)date;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKConceptAuthorizationRecord
@@ -19,54 +19,54 @@
   return 0;
 }
 
-- (HKConceptAuthorizationRecord)initWithHealthConceptIdentifier:(id)a3 semanticIdentifierString:(id)a4 sourceUUID:(id)a5 status:(int64_t)a6 modificationDate:(double)a7
+- (HKConceptAuthorizationRecord)initWithHealthConceptIdentifier:(id)identifier semanticIdentifierString:(id)string sourceUUID:(id)d status:(int64_t)status modificationDate:(double)date
 {
-  v11 = a3;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = [v13 underlyingIdentifier];
-  v17 = [v14 hk_SHA256Hash];
-  v18 = v17;
-  v34 = v13;
-  if (v16 == v17)
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  stringCopy = string;
+  dCopy = d;
+  underlyingIdentifier = [identifierCopy2 underlyingIdentifier];
+  hk_SHA256Hash = [stringCopy hk_SHA256Hash];
+  v18 = hk_SHA256Hash;
+  v34 = identifierCopy2;
+  if (underlyingIdentifier == hk_SHA256Hash)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v32 = self;
-  v19 = [v14 hk_SHA256Hash];
-  if (!v19)
+  selfCopy = self;
+  hk_SHA256Hash2 = [stringCopy hk_SHA256Hash];
+  if (!hk_SHA256Hash2)
   {
 
     goto LABEL_7;
   }
 
-  v20 = v19;
-  [v13 underlyingIdentifier];
-  v31 = v11;
-  v22 = v21 = a4;
-  [v14 hk_SHA256Hash];
-  v23 = v15;
-  v24 = a5;
-  v26 = v25 = a6;
+  v20 = hk_SHA256Hash2;
+  [identifierCopy2 underlyingIdentifier];
+  v31 = identifierCopy;
+  v22 = v21 = string;
+  [stringCopy hk_SHA256Hash];
+  v23 = dCopy;
+  dCopy2 = d;
+  v26 = v25 = status;
   v30 = [v22 isEqualToString:v26];
 
-  a6 = v25;
-  a5 = v24;
-  v15 = v23;
+  status = v25;
+  d = dCopy2;
+  dCopy = v23;
 
-  a4 = v21;
-  v11 = v31;
+  string = v21;
+  identifierCopy = v31;
 
-  self = v32;
+  self = selfCopy;
   if ((v30 & 1) == 0)
   {
 LABEL_7:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HKConceptAuthorizationRecord.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"HK_EQUAL_STRING(identifier.underlyingIdentifier, [semanticIdentifierString hk_SHA256Hash])"}];
+    underlyingIdentifier = [MEMORY[0x1E696AAA8] currentHandler];
+    [underlyingIdentifier handleFailureInMethod:a2 object:self file:@"HKConceptAuthorizationRecord.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"HK_EQUAL_STRING(identifier.underlyingIdentifier, [semanticIdentifierString hk_SHA256Hash])"}];
     goto LABEL_8;
   }
 
@@ -77,11 +77,11 @@ LABEL_9:
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_identifier, v11);
-    objc_storeStrong(&v28->_semanticIdentifierString, a4);
-    objc_storeStrong(&v28->_sourceUUID, a5);
-    v28->_status = a6;
-    v28->_modificationDate = a7;
+    objc_storeStrong(&v27->_identifier, identifierCopy);
+    objc_storeStrong(&v28->_semanticIdentifierString, string);
+    objc_storeStrong(&v28->_sourceUUID, d);
+    v28->_status = status;
+    v28->_modificationDate = date;
   }
 
   return v28;
@@ -92,18 +92,18 @@ LABEL_9:
   v3 = MEMORY[0x1E696AEC0];
   identifier = self->_identifier;
   semanticIdentifierString = self->_semanticIdentifierString;
-  v6 = [(NSUUID *)self->_sourceUUID UUIDString];
+  uUIDString = [(NSUUID *)self->_sourceUUID UUIDString];
   status = self->_status;
   v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:self->_modificationDate];
-  v9 = [v3 stringWithFormat:@"<Identifier: %@ Semantic Identifier String: %@ Source: %@ Status: %ld Modification Date: %@>", identifier, semanticIdentifierString, v6, status, v8];
+  v9 = [v3 stringWithFormat:@"<Identifier: %@ Semantic Identifier String: %@ Source: %@ Status: %ld Modification Date: %@>", identifier, semanticIdentifierString, uUIDString, status, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -113,26 +113,26 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKConceptAuthorizationRecord *)v5 identifier];
-      v7 = [(HKConceptAuthorizationRecord *)self identifier];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      identifier = [(HKConceptAuthorizationRecord *)v5 identifier];
+      identifier2 = [(HKConceptAuthorizationRecord *)self identifier];
+      v8 = identifier2;
+      if (identifier == identifier2)
       {
       }
 
       else
       {
-        v9 = [(HKConceptAuthorizationRecord *)self identifier];
-        if (!v9)
+        identifier3 = [(HKConceptAuthorizationRecord *)self identifier];
+        if (!identifier3)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
-        v11 = [(HKConceptAuthorizationRecord *)v5 identifier];
-        v12 = [(HKConceptAuthorizationRecord *)self identifier];
-        v13 = [v11 isEqual:v12];
+        v10 = identifier3;
+        identifier4 = [(HKConceptAuthorizationRecord *)v5 identifier];
+        identifier5 = [(HKConceptAuthorizationRecord *)self identifier];
+        v13 = [identifier4 isEqual:identifier5];
 
         if (!v13)
         {
@@ -140,15 +140,15 @@ LABEL_9:
         }
       }
 
-      v6 = [(HKConceptAuthorizationRecord *)v5 sourceUUID];
-      v15 = [(HKConceptAuthorizationRecord *)self sourceUUID];
-      v8 = v15;
-      if (v6 == v15)
+      identifier = [(HKConceptAuthorizationRecord *)v5 sourceUUID];
+      sourceUUID = [(HKConceptAuthorizationRecord *)self sourceUUID];
+      v8 = sourceUUID;
+      if (identifier == sourceUUID)
       {
 
 LABEL_16:
-        v21 = [(HKConceptAuthorizationRecord *)v5 status];
-        if (v21 == [(HKConceptAuthorizationRecord *)self status])
+        status = [(HKConceptAuthorizationRecord *)v5 status];
+        if (status == [(HKConceptAuthorizationRecord *)self status])
         {
           [(HKConceptAuthorizationRecord *)v5 modificationDate];
           v23 = v22;
@@ -164,13 +164,13 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v16 = [(HKConceptAuthorizationRecord *)self sourceUUID];
-      if (v16)
+      sourceUUID2 = [(HKConceptAuthorizationRecord *)self sourceUUID];
+      if (sourceUUID2)
       {
-        v17 = v16;
-        v18 = [(HKConceptAuthorizationRecord *)v5 sourceUUID];
-        v19 = [(HKConceptAuthorizationRecord *)self sourceUUID];
-        v20 = [v18 isEqual:v19];
+        v17 = sourceUUID2;
+        sourceUUID3 = [(HKConceptAuthorizationRecord *)v5 sourceUUID];
+        sourceUUID4 = [(HKConceptAuthorizationRecord *)self sourceUUID];
+        v20 = [sourceUUID3 isEqual:sourceUUID4];
 
         if (!v20)
         {
@@ -193,29 +193,29 @@ LABEL_20:
   return v14;
 }
 
-- (HKConceptAuthorizationRecord)initWithCoder:(id)a3
+- (HKConceptAuthorizationRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SemanticIdentifierStringKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceUUIDKey"];
-  v8 = [v4 decodeIntegerForKey:@"StatusKey"];
-  [v4 decodeDoubleForKey:@"ModificationDateKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IdentifierKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SemanticIdentifierStringKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceUUIDKey"];
+  v8 = [coderCopy decodeIntegerForKey:@"StatusKey"];
+  [coderCopy decodeDoubleForKey:@"ModificationDateKey"];
   v10 = v9;
 
   v11 = [(HKConceptAuthorizationRecord *)self initWithHealthConceptIdentifier:v5 semanticIdentifierString:v6 sourceUUID:v7 status:v8 modificationDate:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"IdentifierKey"];
-  [v5 encodeObject:self->_semanticIdentifierString forKey:@"SemanticIdentifierStringKey"];
-  [v5 encodeObject:self->_sourceUUID forKey:@"SourceUUIDKey"];
-  [v5 encodeInteger:self->_status forKey:@"StatusKey"];
-  [v5 encodeDouble:@"ModificationDateKey" forKey:self->_modificationDate];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"IdentifierKey"];
+  [coderCopy encodeObject:self->_semanticIdentifierString forKey:@"SemanticIdentifierStringKey"];
+  [coderCopy encodeObject:self->_sourceUUID forKey:@"SourceUUIDKey"];
+  [coderCopy encodeInteger:self->_status forKey:@"StatusKey"];
+  [coderCopy encodeDouble:@"ModificationDateKey" forKey:self->_modificationDate];
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface CATiledLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)canDrawRect:(CGRect)a3 levelOfDetail:(int)a4;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)canDrawRect:(CGRect)rect levelOfDetail:(int)detail;
 - (BOOL)isDrawingEnabled;
-- (BOOL)shouldArchiveValueForKey:(id)a3;
+- (BOOL)shouldArchiveValueForKey:(id)key;
 - (CGColor)fillColor;
 - (CGSize)tileSize;
 - (double)maximumTileScale;
@@ -13,32 +13,32 @@
 - (void)_dealloc;
 - (void)_display;
 - (void)dealloc;
-- (void)didChangeValueForKey:(id)a3;
-- (void)displayInRect:(CGRect)a3 levelOfDetail:(int)a4 options:(id)a5;
-- (void)setContents:(id)a3;
-- (void)setDrawingEnabled:(BOOL)a3;
-- (void)setFillColor:(CGColor *)a3;
+- (void)didChangeValueForKey:(id)key;
+- (void)displayInRect:(CGRect)rect levelOfDetail:(int)detail options:(id)options;
+- (void)setContents:(id)contents;
+- (void)setDrawingEnabled:(BOOL)enabled;
+- (void)setFillColor:(CGColor *)color;
 - (void)setLevelsOfDetail:(size_t)levelsOfDetail;
 - (void)setLevelsOfDetailBias:(size_t)levelsOfDetailBias;
-- (void)setMaximumTileScale:(double)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3 levelOfDetail:(int)a4 options:(id)a5;
+- (void)setMaximumTileScale:(double)scale;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setNeedsDisplayInRect:(CGRect)rect levelOfDetail:(int)detail options:(id)options;
 - (void)setTileSize:(CGSize)tileSize;
 @end
 
 @implementation CATiledLayer
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CATiledLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 - (void)setTileSize:(CGSize)tileSize
@@ -94,11 +94,11 @@
 - (void)_colorSpaceDidChange
 {
   +[CATransaction lock];
-  v3 = [(CALayer *)self contents];
-  if (v3)
+  contents = [(CALayer *)self contents];
+  if (contents)
   {
-    v4 = v3;
-    v5 = CFGetTypeID(v3);
+    v4 = contents;
+    v5 = CFGetTypeID(contents);
     if (CAImageProviderGetTypeID::once[0] != -1)
     {
       dispatch_once(CAImageProviderGetTypeID::once, &__block_literal_global_5_9450);
@@ -115,8 +115,8 @@
 
 - (void)_display
 {
-  v3 = [(CATiledLayer *)self levelsOfDetail];
-  v4 = [(CATiledLayer *)self levelsOfDetailBias];
+  levelsOfDetail = [(CATiledLayer *)self levelsOfDetail];
+  levelsOfDetailBias = [(CATiledLayer *)self levelsOfDetailBias];
   [(CALayer *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -192,29 +192,29 @@
     v21 = v20;
   }
 
-  if (v3 - v4 <= v21)
+  if (levelsOfDetail - levelsOfDetailBias <= v21)
   {
-    v22 = v3;
+    v22 = levelsOfDetail;
   }
 
   else
   {
-    v22 = v21 + v4;
+    v22 = v21 + levelsOfDetailBias;
   }
 
   +[CATransaction lock];
-  v23 = [(CALayer *)self contents];
-  if (!v23)
+  contents = [(CALayer *)self contents];
+  if (!contents)
   {
     goto LABEL_36;
   }
 
-  v24 = v23;
+  v24 = contents;
   v25 = v22;
   v26 = v18;
   v27 = v16;
   v28 = v14;
-  v29 = CFGetTypeID(v23);
+  v29 = CFGetTypeID(contents);
   if (CAImageProviderGetTypeID::once[0] != -1)
   {
     dispatch_once(CAImageProviderGetTypeID::once, &__block_literal_global_5_9450);
@@ -229,7 +229,7 @@
   {
     CFRetain(v24);
     +[CATransaction unlock];
-    if (*(v24 + 236) == v25 && *(v24 + 240) == v4 && *(v24 + 228) == v14 && *(v24 + 232) == v16 && *(v24 + 216) == v18)
+    if (*(v24 + 236) == v25 && *(v24 + 240) == levelsOfDetailBias && *(v24 + 228) == v14 && *(v24 + 232) == v16 && *(v24 + 216) == v18)
     {
       goto LABEL_39;
     }
@@ -244,7 +244,7 @@ LABEL_36:
   }
 
   [objc_opt_class() fadeDuration];
-  v32 = CAImageProviderCreate(v10, v11, v14, v16, v22, v4, v18, v31);
+  v32 = CAImageProviderCreate(v10, v11, v14, v16, v22, levelsOfDetailBias, v18, v31);
   if (v32)
   {
     v24 = v32;
@@ -292,14 +292,14 @@ LABEL_39:
   [(CALayer *)&v3 _dealloc];
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(CALayer *)self contents];
-  v6 = v5;
-  if (v5 && v5 != a3)
+  contents = [(CALayer *)self contents];
+  v6 = contents;
+  if (contents && contents != contents)
   {
-    v7 = CFGetTypeID(v5);
+    v7 = CFGetTypeID(contents);
     if (CAImageProviderGetTypeID::once[0] != -1)
     {
       dispatch_once(CAImageProviderGetTypeID::once, &__block_literal_global_5_9450);
@@ -314,12 +314,12 @@ LABEL_39:
 
   v14.receiver = self;
   v14.super_class = CATiledLayer;
-  [(CALayer *)&v14 setContents:a3];
-  v8 = [(CALayer *)self contents];
-  if (v8)
+  [(CALayer *)&v14 setContents:contents];
+  contents2 = [(CALayer *)self contents];
+  if (contents2)
   {
-    v9 = v8;
-    v10 = CFGetTypeID(v8);
+    v9 = contents2;
+    v10 = CFGetTypeID(contents2);
     if (CAImageProviderGetTypeID::once[0] != -1)
     {
       dispatch_once(CAImageProviderGetTypeID::once, &__block_literal_global_5_9450);
@@ -327,7 +327,7 @@ LABEL_39:
 
     if (v10 == CAImageProviderGetTypeID::type)
     {
-      if (v6 != a3)
+      if (v6 != contents)
       {
         os_unfair_lock_lock((v9 + 16));
         *(v9 + 32) = x_list_prepend(*(v9 + 32), self);
@@ -338,34 +338,34 @@ LABEL_39:
       {
         v11 = tiled_layer_render;
         v12 = v9;
-        v13 = self;
+        selfCopy = self;
       }
 
       else
       {
         v12 = v9;
         v11 = 0;
-        v13 = 0;
+        selfCopy = 0;
       }
 
-      CAImageProviderSetCallback(v12, v11, v13);
+      CAImageProviderSetCallback(v12, v11, selfCopy);
     }
   }
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v8 = [(CALayer *)self contents];
-  if (v8)
+  rectCopy = rect;
+  contents = [(CALayer *)self contents];
+  if (contents)
   {
-    v9 = v8;
-    v10 = CFGetTypeID(v8);
+    v9 = contents;
+    v10 = CFGetTypeID(contents);
     if (CAImageProviderGetTypeID::once[0] != -1)
     {
       dispatch_once(CAImageProviderGetTypeID::once, &__block_literal_global_5_9450);
@@ -375,7 +375,7 @@ LABEL_39:
     {
       v12 = 0;
       v13 = 0;
-      if (convertRectToImageCoordinates(self, *(v9 + 220), *(v9 + 224), &v14, &v12))
+      if (convertRectToImageCoordinates(self, *(v9 + 220), *(v9 + 224), &rectCopy, &v12))
       {
         CAImageProviderInvalidateLOD(v9, v12, HIDWORD(v12), v13, HIDWORD(v13), 0xFFFFFFFFLL, 0);
         [(CALayer *)self setContentsChanged];
@@ -388,23 +388,23 @@ LABEL_39:
   [(CALayer *)&v11 setNeedsDisplayInRect:x, y, width, height];
 }
 
-- (BOOL)shouldArchiveValueForKey:(id)a3
+- (BOOL)shouldArchiveValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"contents"])
+  if ([key isEqualToString:@"contents"])
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = CATiledLayer;
-  return [(CALayer *)&v6 shouldArchiveValueForKey:a3];
+  return [(CALayer *)&v6 shouldArchiveValueForKey:key];
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = v5;
   if (v5 <= 512)
   {
@@ -458,20 +458,20 @@ LABEL_9:
 LABEL_13:
   v12.receiver = self;
   v12.super_class = CATiledLayer;
-  [(CATiledLayer *)&v12 didChangeValueForKey:a3];
+  [(CATiledLayer *)&v12 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 <= 469)
   {
     if (v5 == 89)
     {
-      v8 = [a1 shouldDrawOnMainThread];
+      shouldDrawOnMainThread = [self shouldDrawOnMainThread];
       v7 = MEMORY[0x1E695E4C0];
-      if (!v8)
+      if (!shouldDrawOnMainThread)
       {
         v7 = MEMORY[0x1E695E4D0];
       }
@@ -521,19 +521,19 @@ LABEL_13:
       return result;
     default:
 LABEL_17:
-      v9.receiver = a1;
+      v9.receiver = self;
       v9.super_class = &OBJC_METACLASS___CATiledLayer;
-      return objc_msgSendSuper2(&v9, sel_defaultValueForKey_, a3);
+      return objc_msgSendSuper2(&v9, sel_defaultValueForKey_, key);
   }
 
   return result;
 }
 
-- (void)setDrawingEnabled:(BOOL)a3
+- (void)setDrawingEnabled:(BOOL)enabled
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0xD1, 7, &v3);
+  enabledCopy = enabled;
+  CA::Layer::setter(self->super._attr.layer, 0xD1, 7, &enabledCopy);
 }
 
 - (BOOL)isDrawingEnabled
@@ -544,10 +544,10 @@ LABEL_17:
   return v3 != 0;
 }
 
-- (void)setMaximumTileScale:(double)a3
+- (void)setMaximumTileScale:(double)scale
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = scale;
   CA::Layer::setter(self->super._attr.layer, 0x201, 0x12, v3);
 }
 
@@ -559,10 +559,10 @@ LABEL_17:
   return *v3;
 }
 
-- (void)setFillColor:(CGColor *)a3
+- (void)setFillColor:(CGColor *)color
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = color;
   CA::Layer::setter(self->super._attr.layer, 0xF6, 2, v3);
 }
 
@@ -574,18 +574,18 @@ LABEL_17:
   return v3[0];
 }
 
-- (void)displayInRect:(CGRect)a3 levelOfDetail:(int)a4 options:(id)a5
+- (void)displayInRect:(CGRect)rect levelOfDetail:(int)detail options:(id)options
 {
   v15 = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  rectCopy = rect;
   +[CATransaction begin];
   [(CATiledLayer *)self _display];
   +[CATransaction lock];
-  v8 = [(CALayer *)self contents];
+  contents = [(CALayer *)self contents];
   +[CATransaction unlock];
-  if (v8)
+  if (contents)
   {
-    v9 = CFGetTypeID(v8);
+    v9 = CFGetTypeID(contents);
     if (CAImageProviderGetTypeID::once[0] != -1)
     {
       dispatch_once(CAImageProviderGetTypeID::once, &__block_literal_global_5_9450);
@@ -595,18 +595,18 @@ LABEL_17:
     {
       v12 = 0;
       v13 = 0;
-      if (convertRectToImageCoordinates(self, v8[55], v8[56], &v14, &v12))
+      if (convertRectToImageCoordinates(self, contents[55], contents[56], &rectCopy, &v12))
       {
-        if (a5)
+        if (options)
         {
-          v10 = [objc_msgSend(a5 objectForKey:{@"uncollectable", "BOOLValue"}];
-          if ([objc_msgSend(a5 objectForKey:{@"disableFade", "BOOLValue"}] ? v10 | 4 : v10)
+          v10 = [objc_msgSend(options objectForKey:{@"uncollectable", "BOOLValue"}];
+          if ([objc_msgSend(options objectForKey:{@"disableFade", "BOOLValue"}] ? v10 | 4 : v10)
           {
             +[CATransaction setValue:forKey:](CATransaction, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:?], @"CATiledLayerFlags");
           }
         }
 
-        CAImageProviderDraw(v8, v12, SHIDWORD(v12), v13, SHIDWORD(v13), a4);
+        CAImageProviderDraw(contents, v12, SHIDWORD(v12), v13, SHIDWORD(v13), detail);
       }
     }
   }
@@ -614,19 +614,19 @@ LABEL_17:
   +[CATransaction commit];
 }
 
-- (BOOL)canDrawRect:(CGRect)a3 levelOfDetail:(int)a4
+- (BOOL)canDrawRect:(CGRect)rect levelOfDetail:(int)detail
 {
-  v4 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v4 = *&detail;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   +[CATransaction lock];
-  v10 = [(CALayer *)self delegate];
+  delegate = [(CALayer *)self delegate];
   +[CATransaction unlock];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 tiledLayer:self canDrawRect:v4 levelOfDetail:{x, y, width, height}];
+    v11 = [delegate tiledLayer:self canDrawRect:v4 levelOfDetail:{x, y, width, height}];
   }
 
   else
@@ -637,20 +637,20 @@ LABEL_17:
   return v11;
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3 levelOfDetail:(int)a4 options:(id)a5
+- (void)setNeedsDisplayInRect:(CGRect)rect levelOfDetail:(int)detail options:(id)options
 {
-  v6 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v6 = *&detail;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v12 = [(CALayer *)self contents];
-  if (v12)
+  rectCopy = rect;
+  contents = [(CALayer *)self contents];
+  if (contents)
   {
-    v13 = v12;
-    v14 = CFGetTypeID(v12);
+    v13 = contents;
+    v14 = CFGetTypeID(contents);
     if (CAImageProviderGetTypeID::once[0] != -1)
     {
       dispatch_once(CAImageProviderGetTypeID::once, &__block_literal_global_5_9450);
@@ -660,10 +660,10 @@ LABEL_17:
     {
       v18 = 0;
       v19 = 0;
-      if (convertRectToImageCoordinates(self, *(v13 + 220), *(v13 + 224), &v20, &v18))
+      if (convertRectToImageCoordinates(self, *(v13 + 220), *(v13 + 224), &rectCopy, &v18))
       {
-        v15 = [objc_msgSend(a5 objectForKey:{@"onlyIfNull", "BOOLValue"}];
-        if ([objc_msgSend(a5 objectForKey:{@"removeImmediately", "BOOLValue"}])
+        v15 = [objc_msgSend(options objectForKey:{@"onlyIfNull", "BOOLValue"}];
+        if ([objc_msgSend(options objectForKey:{@"removeImmediately", "BOOLValue"}])
         {
           v16 = v15 | 2;
         }

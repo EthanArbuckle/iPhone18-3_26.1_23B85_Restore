@@ -1,11 +1,11 @@
 @interface TTRIRemindersListReminderCell
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
 @end
 
 @implementation TTRIRemindersListReminderCell
 
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
   v5 = self + qword_280D131E0;
   swift_beginAccess();
@@ -14,13 +14,13 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 88);
-    v8 = self;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
   v5 = self + qword_280D131E0;
   swift_beginAccess();
@@ -29,7 +29,7 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 96);
-    v8 = self;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }

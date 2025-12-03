@@ -1,10 +1,10 @@
 @interface VSCacheUpdateListener
 + (id)sharedListener;
 - (id)_initShared;
-- (void)_enqueueRequest:(id)a3;
+- (void)_enqueueRequest:(id)request;
 - (void)_flush;
 - (void)dealloc;
-- (void)performUpdateForModelIdentifier:(id)a3 classIdentifier:(id)a4;
+- (void)performUpdateForModelIdentifier:(id)identifier classIdentifier:(id)classIdentifier;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -51,7 +51,7 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enqueueRequest:(id)a3
+- (void)_enqueueRequest:(id)request
 {
   v23 = *MEMORY[0x277D85DE8];
   [(NSLock *)self->_lock lock];
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v21 = 138412290;
-      v22 = a3;
+      requestCopy = request;
       _os_log_debug_impl(&dword_272850000, v5, OS_LOG_TYPE_DEBUG, "Enqueuing request: %@", &v21, 0xCu);
     }
 
@@ -75,7 +75,7 @@
       do
       {
         v11 = [(NSMutableArray *)self->_updateRequestQueue objectAtIndex:v9];
-        v12 = [v11 coalescedRequest:a3];
+        v12 = [v11 coalescedRequest:request];
         if (v12 == v11)
         {
           if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -94,17 +94,17 @@
             [(NSMutableArray *)self->_updateRequestQueue replaceObjectAtIndex:v9 withObject:v12];
             v8 = 1;
             v10 = v9;
-            a3 = v13;
+            request = v13;
           }
 
           else
           {
             updateRequestQueue = self->_updateRequestQueue;
-            if (v13 != a3)
+            if (v13 != request)
             {
               [(NSMutableArray *)updateRequestQueue replaceObjectAtIndex:v10 withObject:v13];
               updateRequestQueue = self->_updateRequestQueue;
-              a3 = v13;
+              request = v13;
             }
 
             [(NSMutableArray *)updateRequestQueue removeObjectAtIndex:v9--];
@@ -123,7 +123,7 @@
       }
     }
 
-    [(NSMutableArray *)self->_updateRequestQueue addObject:a3];
+    [(NSMutableArray *)self->_updateRequestQueue addObject:request];
 LABEL_18:
     flushTimer = self->_flushTimer;
     if (flushTimer)
@@ -134,8 +134,8 @@ LABEL_18:
     else
     {
       self->_flushTimer = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel__flush selector:0 userInfo:0 repeats:3.0];
-      v16 = [MEMORY[0x277CBEB88] mainRunLoop];
-      [v16 addTimer:self->_flushTimer forMode:*MEMORY[0x277CBE738]];
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      [mainRunLoop addTimer:self->_flushTimer forMode:*MEMORY[0x277CBE738]];
       v17 = self->_flushTimer;
     }
 
@@ -144,7 +144,7 @@ LABEL_18:
     {
       v20 = self->_updateRequestQueue;
       v21 = 138412290;
-      v22 = v20;
+      requestCopy = v20;
       _os_log_debug_impl(&dword_272850000, v18, OS_LOG_TYPE_DEBUG, "Queue is now:\n%@", &v21, 0xCu);
     }
   }
@@ -153,9 +153,9 @@ LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performUpdateForModelIdentifier:(id)a3 classIdentifier:(id)a4
+- (void)performUpdateForModelIdentifier:(id)identifier classIdentifier:(id)classIdentifier
 {
-  v5 = [[VSCacheUpdateRequest alloc] initWithModelIdentifier:a3 classIdentifier:a4];
+  v5 = [[VSCacheUpdateRequest alloc] initWithModelIdentifier:identifier classIdentifier:classIdentifier];
   [(VSCacheUpdateListener *)self _enqueueRequest:v5];
 }
 

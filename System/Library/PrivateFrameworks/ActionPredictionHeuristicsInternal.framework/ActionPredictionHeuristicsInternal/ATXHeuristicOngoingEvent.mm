@@ -1,5 +1,5 @@
 @interface ATXHeuristicOngoingEvent
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
 @end
 
@@ -17,10 +17,10 @@
   return v6;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v74 = *MEMORY[0x277D85DE8];
-  v58 = a3;
+  environmentCopy = environment;
   v3 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -28,16 +28,16 @@
     _os_log_impl(&dword_23E3EA000, v3, OS_LOG_TYPE_DEFAULT, "+[ATXHeuristicOngoingEvent produceSuggestions]", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v4 dateByAddingTimeInterval:7200.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [date dateByAddingTimeInterval:7200.0];
   v6 = [ATXCalendarEventsDataSource alloc];
-  v7 = [v58 heuristicDevice];
-  v8 = [(ATXCalendarEventsDataSource *)v6 initWithDevice:v7];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v8 = [(ATXCalendarEventsDataSource *)v6 initWithDevice:heuristicDevice];
 
   v52 = v8;
   v53 = v5;
-  v54 = v4;
-  v9 = [(ATXCalendarEventsDataSource *)v8 eventsFromStartDate:v4 endDate:v5 reason:@"ongoing event heuristic"];
+  v54 = date;
+  v9 = [(ATXCalendarEventsDataSource *)v8 eventsFromStartDate:date endDate:v5 reason:@"ongoing event heuristic"];
   v10 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_15];
   v51 = v9;
   v11 = [v9 filteredArrayUsingPredicate:v10];
@@ -73,49 +73,49 @@
 
         v20 = *(*(&v61 + 1) + 8 * v19);
         v21 = [*(v17 + 856) allowSuggestionsForEvent:v20];
-        v22 = __atxlog_handle_context_heuristic();
-        v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
+        startDate2 = __atxlog_handle_context_heuristic();
+        v23 = os_log_type_enabled(startDate2, OS_LOG_TYPE_DEFAULT);
         if (v21)
         {
           if (v23)
           {
-            v24 = [v20 eventIdentifier];
-            v25 = [v20 title];
-            v26 = [v25 hash];
-            v27 = [v20 startDate];
-            v28 = [v20 organizer];
+            eventIdentifier = [v20 eventIdentifier];
+            title = [v20 title];
+            v26 = [title hash];
+            startDate = [v20 startDate];
+            organizer = [v20 organizer];
             *buf = 138413058;
-            v66 = v24;
+            v66 = eventIdentifier;
             v67 = 2048;
             v68 = v26;
             v17 = 0x278C3C000;
             v69 = 2112;
-            v70 = v27;
+            v70 = startDate;
             v71 = 1024;
-            v72 = v28 != 0;
-            _os_log_impl(&dword_23E3EA000, v22, OS_LOG_TYPE_DEFAULT, "Event id: %@ title.hash: %lu start:%@ has organizer:%{BOOL}i", buf, 0x26u);
+            v72 = organizer != 0;
+            _os_log_impl(&dword_23E3EA000, startDate2, OS_LOG_TYPE_DEFAULT, "Event id: %@ title.hash: %lu start:%@ has organizer:%{BOOL}i", buf, 0x26u);
 
             v16 = v60;
           }
 
-          v22 = [v20 startDate];
-          v29 = [v20 endDate];
-          if ([v22 compare:v29]== 1)
+          startDate2 = [v20 startDate];
+          endDate = [v20 endDate];
+          if ([startDate2 compare:endDate]== 1)
           {
             v30 = __atxlog_handle_context_heuristic();
             if (os_log_type_enabled(&v30->super, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412546;
-              v66 = v22;
+              v66 = startDate2;
               v67 = 2112;
-              v68 = v29;
+              v68 = endDate;
               _os_log_fault_impl(&dword_23E3EA000, &v30->super, OS_LOG_TYPE_FAULT, "ATXHeuristicOngoingEvent: validStartDate %@ is after validEndDate %@. Skipping event", buf, 0x16u);
             }
           }
 
           else
           {
-            v30 = [[ATXContextEventSuggestionProducer alloc] initWithEvent:v20 validFromStartDate:v22 validToEndDate:v29 environment:v58];
+            v30 = [[ATXContextEventSuggestionProducer alloc] initWithEvent:v20 validFromStartDate:startDate2 validToEndDate:endDate environment:environmentCopy];
             v31 = [(ATXContextEventSuggestionProducer *)v30 suggestionForConferenceWithScore:0x200000 predictionReasons:80.0];
             v32 = __atxlog_handle_context_heuristic();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -142,8 +142,8 @@
 
             if (v34)
             {
-              v36 = [v58 heuristicDevice];
-              v37 = [ATXHeuristicNavigationUtilities navigationSuggestionActionForEvent:v20 schemaForEvent:0 transportType:@"AUTOMOBILE" predictionReasons:0x200000 heuristicDevice:v36 score:v22 validStartDate:80.0 validEndDate:v29];
+              heuristicDevice2 = [environmentCopy heuristicDevice];
+              v37 = [ATXHeuristicNavigationUtilities navigationSuggestionActionForEvent:v20 schemaForEvent:0 transportType:@"AUTOMOBILE" predictionReasons:0x200000 heuristicDevice:heuristicDevice2 score:startDate2 validStartDate:80.0 validEndDate:endDate];
 
               v13 = v57;
               if (v37)
@@ -220,7 +220,7 @@
         else if (v23)
         {
           *buf = 0;
-          _os_log_impl(&dword_23E3EA000, v22, OS_LOG_TYPE_DEFAULT, "Ongoing Event: Skipping event suggestions, event is a Unsupported", buf, 2u);
+          _os_log_impl(&dword_23E3EA000, startDate2, OS_LOG_TYPE_DEFAULT, "Ongoing Event: Skipping event suggestions, event is a Unsupported", buf, 2u);
         }
 
         ++v19;

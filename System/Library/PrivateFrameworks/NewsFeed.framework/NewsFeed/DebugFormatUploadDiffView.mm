@@ -1,9 +1,9 @@
 @interface DebugFormatUploadDiffView
-- (_TtC8NewsFeed25DebugFormatUploadDiffView)initWithFrame:(CGRect)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC8NewsFeed25DebugFormatUploadDiffView)initWithFrame:(CGRect)frame;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)layoutSubviews;
 @end
 
@@ -11,18 +11,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6BBCC18();
 }
 
-- (_TtC8NewsFeed25DebugFormatUploadDiffView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed25DebugFormatUploadDiffView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = OBJC_IVAR____TtC8NewsFeed25DebugFormatUploadDiffView_changeSet;
   swift_beginAccess();
@@ -38,15 +38,15 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v6 = OBJC_IVAR____TtC8NewsFeed25DebugFormatUploadDiffView_changeSet;
   result = swift_beginAccess();
   v8 = *(&self->super.super.super.isa + v6);
   if ((v8 & 0xC000000000000001) != 0)
   {
-    v13 = self;
-    v9 = MEMORY[0x1DA6FB460](a4, v8);
+    selfCopy = self;
+    v9 = MEMORY[0x1DA6FB460](section, v8);
 LABEL_5:
     swift_endAccess();
     v11 = *(v9 + 16);
@@ -64,16 +64,16 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_10;
   }
 
-  if (*((v8 & 0xFFFFFFFFFFFFFF8) + 0x10) > a4)
+  if (*((v8 & 0xFFFFFFFFFFFFFF8) + 0x10) > section)
   {
-    v9 = *(v8 + 8 * a4 + 32);
-    v10 = self;
+    v9 = *(v8 + 8 * section + 32);
+    selfCopy2 = self;
 
     goto LABEL_5;
   }
@@ -82,15 +82,15 @@ LABEL_10:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_1D6BBD004();
 
   (*(v7 + 8))(v10, v6);
@@ -98,11 +98,11 @@ LABEL_10:
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D6BBD9D8(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D6BBD9D8(section);
   v9 = v8;
 
   if (v9)

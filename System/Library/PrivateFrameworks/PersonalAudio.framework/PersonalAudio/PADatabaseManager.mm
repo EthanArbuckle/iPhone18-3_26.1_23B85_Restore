@@ -1,9 +1,9 @@
 @interface PADatabaseManager
 + (id)sharedManager;
-- (BOOL)saveConfiguration:(id)a3;
+- (BOOL)saveConfiguration:(id)configuration;
 - (id)currentConfiguration;
-- (void)contentDidUpdate:(id)a3;
-- (void)logMessage:(id)a3;
+- (void)contentDidUpdate:(id)update;
+- (void)logMessage:(id)message;
 @end
 
 @implementation PADatabaseManager
@@ -27,55 +27,55 @@ uint64_t __34__PADatabaseManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = HCLogAudioAccommodations();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = messageCopy;
     _os_log_impl(&dword_25E445000, v4, OS_LOG_TYPE_DEFAULT, "PA DB message %@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contentDidUpdate:(id)a3
+- (void)contentDidUpdate:(id)update
 {
   v8.receiver = self;
   v8.super_class = PADatabaseManager;
-  [(HCDatabaseManager *)&v8 contentDidUpdate:a3];
+  [(HCDatabaseManager *)&v8 contentDidUpdate:update];
   v4 = +[PASettings sharedInstance];
-  v5 = [v4 personalMediaConfiguration];
-  if (v5)
+  personalMediaConfiguration = [v4 personalMediaConfiguration];
+  if (personalMediaConfiguration)
   {
-    v6 = v5;
+    currentConfiguration2 = personalMediaConfiguration;
   }
 
   else
   {
-    v7 = [(PADatabaseManager *)self currentConfiguration];
+    currentConfiguration = [(PADatabaseManager *)self currentConfiguration];
 
-    if (!v7)
+    if (!currentConfiguration)
     {
       return;
     }
 
     v4 = +[PASettings sharedInstance];
-    v6 = [(PADatabaseManager *)self currentConfiguration];
-    [v4 setPersonalMediaConfiguration:v6];
+    currentConfiguration2 = [(PADatabaseManager *)self currentConfiguration];
+    [v4 setPersonalMediaConfiguration:currentConfiguration2];
   }
 }
 
-- (BOOL)saveConfiguration:(id)a3
+- (BOOL)saveConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   [(HCDatabaseManager *)self setupDatabase];
-  v5 = [(HCDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
 
-  if (v5)
+  if (managedObjectContext)
   {
     v14[0] = 0;
     v14[1] = v14;
@@ -84,27 +84,27 @@ uint64_t __34__PADatabaseManager_sharedManager__block_invoke()
     v14[4] = __Block_byref_object_dispose_;
     v15 = 0;
     v6 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    [v6 encodeObject:v4 forKey:*MEMORY[0x277CCA308]];
+    [v6 encodeObject:configurationCopy forKey:*MEMORY[0x277CCA308]];
     [v6 finishEncoding];
-    v7 = [v6 encodedData];
-    if ([v7 length])
+    encodedData = [v6 encodedData];
+    if ([encodedData length])
     {
-      v8 = [(HCDatabaseManager *)self managedObjectContext];
+      managedObjectContext2 = [(HCDatabaseManager *)self managedObjectContext];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __39__PADatabaseManager_saveConfiguration___block_invoke;
       v11[3] = &unk_279A1D8C0;
       v11[4] = self;
       v13 = v14;
-      v12 = v7;
-      [v8 performBlockAndWait:v11];
+      v12 = encodedData;
+      [managedObjectContext2 performBlockAndWait:v11];
 
-      v9 = [(HCDatabaseManager *)self saveIfPossible];
+      saveIfPossible = [(HCDatabaseManager *)self saveIfPossible];
     }
 
     else
     {
-      v9 = 0;
+      saveIfPossible = 0;
     }
 
     _Block_object_dispose(v14, 8);
@@ -113,10 +113,10 @@ uint64_t __34__PADatabaseManager_sharedManager__block_invoke()
   else
   {
     [(PADatabaseManager *)self logMessage:@"No context"];
-    v9 = 0;
+    saveIfPossible = 0;
   }
 
-  return v9;
+  return saveIfPossible;
 }
 
 void __39__PADatabaseManager_saveConfiguration___block_invoke(uint64_t a1)
@@ -166,7 +166,7 @@ void __39__PADatabaseManager_saveConfiguration___block_invoke(uint64_t a1)
   v26 = __Block_byref_object_copy_;
   v27 = __Block_byref_object_dispose_;
   v28 = 0;
-  v5 = [(HCDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __41__PADatabaseManager_currentConfiguration__block_invoke;
@@ -176,7 +176,7 @@ void __39__PADatabaseManager_saveConfiguration___block_invoke(uint64_t a1)
   v6 = v4;
   v20 = v6;
   v22 = &v29;
-  [v5 performBlockAndWait:v19];
+  [managedObjectContext performBlockAndWait:v19];
 
   if (v30[5])
   {
@@ -185,15 +185,15 @@ void __39__PADatabaseManager_saveConfiguration___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [v24[5] lastObject];
-    v9 = [v8 audioSettings];
-    if (v9 && ([v8 version], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToNumber:", &unk_28702BE08), v10, v9, v11))
+    lastObject = [v24[5] lastObject];
+    audioSettings = [lastObject audioSettings];
+    if (audioSettings && ([lastObject version], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToNumber:", &unk_28702BE08), v10, audioSettings, v11))
     {
       v12 = objc_alloc(MEMORY[0x277CCAAC8]);
-      v13 = [v8 audioSettings];
+      audioSettings2 = [lastObject audioSettings];
       v14 = (v30 + 5);
       obj = v30[5];
-      v15 = [v12 initForReadingFromData:v13 error:&obj];
+      v15 = [v12 initForReadingFromData:audioSettings2 error:&obj];
       objc_storeStrong(v14, obj);
 
       if (v30[5])

@@ -1,15 +1,15 @@
 @interface SegmentedControlCoordinator
 - (_TtC7SwiftUIP33_D74FE142C3C5A6C2CEA4987A69AEBD7527SegmentedControlCoordinator)init;
-- (void)selectionChanged:(id)a3;
+- (void)selectionChanged:(id)changed;
 @end
 
 @implementation SegmentedControlCoordinator
 
-- (void)selectionChanged:(id)a3
+- (void)selectionChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  SegmentedControlCoordinator.selectionChanged(_:)(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  SegmentedControlCoordinator.selectionChanged(_:)(changedCopy);
 }
 
 - (_TtC7SwiftUIP33_D74FE142C3C5A6C2CEA4987A69AEBD7527SegmentedControlCoordinator)init

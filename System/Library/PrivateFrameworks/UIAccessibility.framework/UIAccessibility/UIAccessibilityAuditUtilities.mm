@@ -1,62 +1,62 @@
 @interface UIAccessibilityAuditUtilities
-+ (BOOL)checkBoolValueForOptionsKey:(id)a3 inDictionary:(id)a4;
-+ (id)dictionaryWithAXAuditIssue:(int64_t)a3 element:(id)a4 additionalInfo:(id)a5 identifier:(id)a6 foregroundColor:(id)a7 backgroundColor:(id)a8 fontSize:(id)a9 elementRect:(id)a10 text:(id)a11;
-+ (id)optionsDictionaryForAuditTest:(id)a3 inDictionary:(id)a4;
++ (BOOL)checkBoolValueForOptionsKey:(id)key inDictionary:(id)dictionary;
++ (id)dictionaryWithAXAuditIssue:(int64_t)issue element:(id)element additionalInfo:(id)info identifier:(id)identifier foregroundColor:(id)color backgroundColor:(id)backgroundColor fontSize:(id)size elementRect:(id)self0 text:(id)self1;
++ (id)optionsDictionaryForAuditTest:(id)test inDictionary:(id)dictionary;
 @end
 
 @implementation UIAccessibilityAuditUtilities
 
-+ (id)dictionaryWithAXAuditIssue:(int64_t)a3 element:(id)a4 additionalInfo:(id)a5 identifier:(id)a6 foregroundColor:(id)a7 backgroundColor:(id)a8 fontSize:(id)a9 elementRect:(id)a10 text:(id)a11
++ (id)dictionaryWithAXAuditIssue:(int64_t)issue element:(id)element additionalInfo:(id)info identifier:(id)identifier foregroundColor:(id)color backgroundColor:(id)backgroundColor fontSize:(id)size elementRect:(id)self0 text:(id)self1
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = [MEMORY[0x1E695DF90] dictionary];
-  v25 = v24;
-  if (v16)
+  elementCopy = element;
+  infoCopy = info;
+  identifierCopy = identifier;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  sizeCopy = size;
+  rectCopy = rect;
+  textCopy = text;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v25 = dictionary;
+  if (elementCopy)
   {
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", a3];
-    [v25 setObject:v26 forKey:*MEMORY[0x1E6988CB0]];
+    issue = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", issue];
+    [v25 setObject:issue forKey:*MEMORY[0x1E6988CB0]];
 
-    [v25 setObject:v16 forKey:*MEMORY[0x1E6988C80]];
-    if (v17)
+    [v25 setObject:elementCopy forKey:*MEMORY[0x1E6988C80]];
+    if (infoCopy)
     {
-      [v25 setObject:v17 forKey:*MEMORY[0x1E6988C70]];
+      [v25 setObject:infoCopy forKey:*MEMORY[0x1E6988C70]];
     }
 
-    if (v18)
+    if (identifierCopy)
     {
-      [v25 setObject:v18 forKey:*MEMORY[0x1E6988CA0]];
+      [v25 setObject:identifierCopy forKey:*MEMORY[0x1E6988CA0]];
     }
 
-    if (v19)
+    if (colorCopy)
     {
-      [v25 setObject:v19 forKey:*MEMORY[0x1E6988C98]];
+      [v25 setObject:colorCopy forKey:*MEMORY[0x1E6988C98]];
     }
 
-    if (v20)
+    if (backgroundColorCopy)
     {
-      [v25 setObject:v20 forKey:*MEMORY[0x1E6988C78]];
+      [v25 setObject:backgroundColorCopy forKey:*MEMORY[0x1E6988C78]];
     }
 
-    if (v21)
+    if (sizeCopy)
     {
-      [v25 setObject:v21 forKey:*MEMORY[0x1E6988C90]];
+      [v25 setObject:sizeCopy forKey:*MEMORY[0x1E6988C90]];
     }
 
-    if (v22)
+    if (rectCopy)
     {
-      [v25 setObject:v22 forKey:*MEMORY[0x1E6988C88]];
+      [v25 setObject:rectCopy forKey:*MEMORY[0x1E6988C88]];
     }
 
-    if (v23)
+    if (textCopy)
     {
-      [v25 setObject:v23 forKey:*MEMORY[0x1E6988CA8]];
+      [v25 setObject:textCopy forKey:*MEMORY[0x1E6988CA8]];
     }
 
     v27 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v25];
@@ -64,7 +64,7 @@
 
   else
   {
-    v27 = v24;
+    v27 = dictionary;
   }
 
   v28 = v27;
@@ -72,41 +72,41 @@
   return v28;
 }
 
-+ (BOOL)checkBoolValueForOptionsKey:(id)a3 inDictionary:(id)a4
++ (BOOL)checkBoolValueForOptionsKey:(id)key inDictionary:(id)dictionary
 {
-  if (!a4)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = a3;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   objc_opt_class();
-  v7 = [v5 objectForKey:v6];
+  v7 = [dictionaryCopy objectForKey:keyCopy];
 
   v8 = __UIAccessibilityCastAsClass();
 
   if (v8)
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
-  return v9;
+  return bOOLValue;
 }
 
-+ (id)optionsDictionaryForAuditTest:(id)a3 inDictionary:(id)a4
++ (id)optionsDictionaryForAuditTest:(id)test inDictionary:(id)dictionary
 {
-  if (a4)
+  if (dictionary)
   {
-    v5 = a4;
-    v6 = a3;
+    dictionaryCopy = dictionary;
+    testCopy = test;
     objc_opt_class();
-    v7 = [v5 objectForKey:v6];
+    v7 = [dictionaryCopy objectForKey:testCopy];
 
     v8 = __UIAccessibilityCastAsClass();
   }

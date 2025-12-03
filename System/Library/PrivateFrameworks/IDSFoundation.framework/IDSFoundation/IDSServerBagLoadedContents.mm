@@ -1,13 +1,13 @@
 @interface IDSServerBagLoadedContents
-- (IDSServerBagLoadedContents)initWithDictionary:(id)a3;
+- (IDSServerBagLoadedContents)initWithDictionary:(id)dictionary;
 @end
 
 @implementation IDSServerBagLoadedContents
 
-- (IDSServerBagLoadedContents)initWithDictionary:(id)a3
+- (IDSServerBagLoadedContents)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (v5)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v10.receiver = self;
     v10.super_class = IDSServerBagLoadedContents;
@@ -15,19 +15,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_dictionary, a3);
+      objc_storeStrong(&v6->_dictionary, dictionary);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

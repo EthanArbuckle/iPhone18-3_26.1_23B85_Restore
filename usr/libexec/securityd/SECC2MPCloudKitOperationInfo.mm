@@ -1,44 +1,44 @@
 @interface SECC2MPCloudKitOperationInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOperationTriggered:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOperationTriggered:(BOOL)triggered;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECC2MPCloudKitOperationInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(SECC2MPCloudKitOperationInfo *)self setOperationId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SECC2MPCloudKitOperationInfo *)self setOperationType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_operationTriggered = *(v4 + 32);
+    self->_operationTriggered = *(fromCopy + 32);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_operationGroupIndex = *(v4 + 2);
+    self->_operationGroupIndex = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }
@@ -71,16 +71,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   operationId = self->_operationId;
-  if (operationId | *(v4 + 2))
+  if (operationId | *(equalCopy + 2))
   {
     if (![(NSString *)operationId isEqual:?])
     {
@@ -89,7 +89,7 @@ LABEL_3:
   }
 
   operationType = self->_operationType;
-  if (operationType | *(v4 + 3))
+  if (operationType | *(equalCopy + 3))
   {
     if (![(NSString *)operationType isEqual:?])
     {
@@ -99,35 +99,35 @@ LABEL_3:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_13;
     }
 
-    v9 = *(v4 + 32);
+    v9 = *(equalCopy + 32);
     if (self->_operationTriggered)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_13;
   }
 
-  v7 = (*(v4 + 36) & 1) == 0;
+  v7 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_operationGroupIndex == *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_operationGroupIndex == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_14;
@@ -142,14 +142,14 @@ LABEL_14:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_operationId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_operationId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_operationType copyWithZone:a3];
+  v8 = [(NSString *)self->_operationType copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -170,51 +170,51 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_operationId)
   {
-    [v4 setOperationId:?];
-    v4 = v6;
+    [toCopy setOperationId:?];
+    toCopy = v6;
   }
 
   if (self->_operationType)
   {
     [v6 setOperationType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 32) = self->_operationTriggered;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 32) = self->_operationTriggered;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 2) = self->_operationGroupIndex;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 2) = self->_operationGroupIndex;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_operationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_operationType)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -222,7 +222,7 @@ LABEL_14:
   {
     operationTriggered = self->_operationTriggered;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -230,7 +230,7 @@ LABEL_14:
   {
     operationGroupIndex = self->_operationGroupIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
@@ -273,15 +273,15 @@ LABEL_14:
   v7.receiver = self;
   v7.super_class = SECC2MPCloudKitOperationInfo;
   v3 = [(SECC2MPCloudKitOperationInfo *)&v7 description];
-  v4 = [(SECC2MPCloudKitOperationInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SECC2MPCloudKitOperationInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasOperationTriggered:(BOOL)a3
+- (void)setHasOperationTriggered:(BOOL)triggered
 {
-  if (a3)
+  if (triggered)
   {
     v3 = 2;
   }

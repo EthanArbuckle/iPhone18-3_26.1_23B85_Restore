@@ -1,21 +1,21 @@
 @interface GLKView
 - (BOOL)_presentFramebuffer;
 - (CGRect)viewBounds;
-- (GLKView)initWithCoder:(id)a3;
-- (GLKView)initWithFrame:(CGRect)a3;
+- (GLKView)initWithCoder:(id)coder;
+- (GLKView)initWithFrame:(CGRect)frame;
 - (GLKView)initWithFrame:(CGRect)frame context:(EAGLContext *)context;
 - (UIImage)snapshot;
 - (void)_createFramebuffer;
 - (void)_deleteFramebuffer;
-- (void)_display:(BOOL)a3;
+- (void)_display:(BOOL)_display;
 - (void)_initCommon;
 - (void)_resolveAndDiscard;
-- (void)_setFramebuffer:(BOOL *)a3;
+- (void)_setFramebuffer:(BOOL *)framebuffer;
 - (void)dealloc;
-- (void)displayLayer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)displayLayer:(id)layer;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setContentScaleFactor:(double)a3;
+- (void)setContentScaleFactor:(double)factor;
 - (void)setContext:(EAGLContext *)context;
 - (void)setDrawableColorFormat:(GLKViewDrawableColorFormat)drawableColorFormat;
 - (void)setDrawableDepthFormat:(GLKViewDrawableDepthFormat)drawableDepthFormat;
@@ -27,7 +27,7 @@
 
 - (void)_initCommon
 {
-  v3 = [(GLKView *)self layer];
+  layer = [(GLKView *)self layer];
   self->_enableSetNeedsDisplay = 1;
   self->_drawableColorFormat = 0;
   self->_drawableDepthFormat = 0;
@@ -37,8 +37,8 @@
   v5 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v6 = *MEMORY[0x277CD93C0];
   -[GLKView setDrawableProperties:](self, "setDrawableProperties:", [v4 dictionaryWithObjectsAndKeys:{v5, *MEMORY[0x277CD93C0], *MEMORY[0x277CD93A0], *MEMORY[0x277CD93B8], 0}]);
-  [v3 setDrawableProperties:self->_drawableProperties];
-  [v3 setOpaque:1];
+  [layer setDrawableProperties:self->_drawableProperties];
+  [layer setOpaque:1];
   [objc_msgSend(MEMORY[0x277D759A0] "mainScreen")];
   [(GLKView *)self setContentScaleFactor:?];
   if (!_drawRectUIViewIMP)
@@ -52,11 +52,11 @@
   }
 }
 
-- (GLKView)initWithFrame:(CGRect)a3
+- (GLKView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GLKView;
-  v3 = [(GLKView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GLKView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -81,7 +81,7 @@
   return v6;
 }
 
-- (GLKView)initWithCoder:(id)a3
+- (GLKView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = GLKView;
@@ -90,64 +90,64 @@
   if (v4)
   {
     [(GLKView *)v4 _initCommon];
-    if ([a3 containsValueForKey:@"GLKViewDrawableColorFormatCoderKey"])
+    if ([coder containsValueForKey:@"GLKViewDrawableColorFormatCoderKey"])
     {
-      v5->_drawableColorFormat = [a3 decodeIntForKey:@"GLKViewDrawableColorFormatCoderKey"];
+      v5->_drawableColorFormat = [coder decodeIntForKey:@"GLKViewDrawableColorFormatCoderKey"];
     }
 
-    if ([a3 containsValueForKey:@"GLKViewDrawableDepthFormatCoderKey"])
+    if ([coder containsValueForKey:@"GLKViewDrawableDepthFormatCoderKey"])
     {
-      v5->_drawableDepthFormat = [a3 decodeIntForKey:@"GLKViewDrawableDepthFormatCoderKey"];
+      v5->_drawableDepthFormat = [coder decodeIntForKey:@"GLKViewDrawableDepthFormatCoderKey"];
     }
 
-    if ([a3 containsValueForKey:@"GLKViewDrawableStencilFormatCoderKey"])
+    if ([coder containsValueForKey:@"GLKViewDrawableStencilFormatCoderKey"])
     {
-      v5->_drawableStencilFormat = [a3 decodeIntForKey:@"GLKViewDrawableStencilFormatCoderKey"];
+      v5->_drawableStencilFormat = [coder decodeIntForKey:@"GLKViewDrawableStencilFormatCoderKey"];
     }
 
-    if ([a3 containsValueForKey:@"GLKViewDrawableMultisampleCoderKey"])
+    if ([coder containsValueForKey:@"GLKViewDrawableMultisampleCoderKey"])
     {
-      v5->_drawableMultisample = [a3 decodeIntForKey:@"GLKViewDrawableMultisampleCoderKey"];
+      v5->_drawableMultisample = [coder decodeIntForKey:@"GLKViewDrawableMultisampleCoderKey"];
     }
 
-    if ([a3 containsValueForKey:@"GLKViewEnableSetNeedsDisplayCoderKey"])
+    if ([coder containsValueForKey:@"GLKViewEnableSetNeedsDisplayCoderKey"])
     {
-      v5->_enableSetNeedsDisplay = [a3 decodeBoolForKey:@"GLKViewEnableSetNeedsDisplayCoderKey"];
+      v5->_enableSetNeedsDisplay = [coder decodeBoolForKey:@"GLKViewEnableSetNeedsDisplayCoderKey"];
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GLKView;
   [(GLKView *)&v5 encodeWithCoder:?];
-  [a3 encodeInteger:self->_drawableColorFormat forKey:@"GLKViewDrawableColorFormatCoderKey"];
-  [a3 encodeInteger:self->_drawableDepthFormat forKey:@"GLKViewDrawableDepthFormatCoderKey"];
-  [a3 encodeInteger:self->_drawableStencilFormat forKey:@"GLKViewDrawableStencilFormatCoderKey"];
-  [a3 encodeInteger:self->_drawableMultisample forKey:@"GLKViewDrawableMultisampleCoderKey"];
-  [a3 encodeBool:self->_enableSetNeedsDisplay forKey:@"GLKViewEnableSetNeedsDisplayCoderKey"];
+  [coder encodeInteger:self->_drawableColorFormat forKey:@"GLKViewDrawableColorFormatCoderKey"];
+  [coder encodeInteger:self->_drawableDepthFormat forKey:@"GLKViewDrawableDepthFormatCoderKey"];
+  [coder encodeInteger:self->_drawableStencilFormat forKey:@"GLKViewDrawableStencilFormatCoderKey"];
+  [coder encodeInteger:self->_drawableMultisample forKey:@"GLKViewDrawableMultisampleCoderKey"];
+  [coder encodeBool:self->_enableSetNeedsDisplay forKey:@"GLKViewEnableSetNeedsDisplayCoderKey"];
 }
 
 - (void)dealloc
 {
   if (glkLinkedOSVersion() < 0x90000)
   {
-    v3 = 0;
+    currentContext = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CD9388] currentContext];
+    currentContext = [MEMORY[0x277CD9388] currentContext];
   }
 
   [(GLKView *)self _deleteFramebuffer];
 
   if (glkLinkedOSVersion() > 0x8FFFF)
   {
-    [MEMORY[0x277CD9388] setCurrentContext:v3];
+    [MEMORY[0x277CD9388] setCurrentContext:currentContext];
   }
 
   [(GLKView *)self setDrawableProperties:0];
@@ -161,7 +161,7 @@
   if (self->_context)
   {
     glPushGroupMarkerEXT(0, "Create Framebuffer");
-    v3 = [(GLKView *)self layer];
+    layer = [(GLKView *)self layer];
     glGenFramebuffers(1, &self->_resolveFramebuffer);
     glBindFramebuffer(0x8D40u, self->_resolveFramebuffer);
     v4 = self->_drawableColorFormat - 1;
@@ -176,12 +176,12 @@
     }
 
     [(NSMutableDictionary *)self->_drawableProperties setObject:*v5 forKey:*MEMORY[0x277CD93B8]];
-    [v3 setDrawableProperties:self->_drawableProperties];
+    [layer setDrawableProperties:self->_drawableProperties];
     glGenRenderbuffers(1, &self->_resolveColorRenderbuffer);
     glBindRenderbuffer(0x8D41u, self->_resolveColorRenderbuffer);
-    if (![(EAGLContext *)self->_context renderbufferStorage:36161 fromDrawable:v3])
+    if (![(EAGLContext *)self->_context renderbufferStorage:36161 fromDrawable:layer])
     {
-      NSLog(&cfstr_FailedToBindEa.isa, v3, self->_resolveColorRenderbuffer);
+      NSLog(&cfstr_FailedToBindEa.isa, layer, self->_resolveColorRenderbuffer);
     }
 
     *params = 0;
@@ -383,11 +383,11 @@ LABEL_28:
   }
 }
 
-- (void)_setFramebuffer:(BOOL *)a3
+- (void)_setFramebuffer:(BOOL *)framebuffer
 {
-  if (a3)
+  if (framebuffer)
   {
-    *a3 = 0;
+    *framebuffer = 0;
   }
 
   if (self->_context)
@@ -402,9 +402,9 @@ LABEL_28:
     if (!self->_resolveFramebuffer)
     {
       [(GLKView *)self _createFramebuffer];
-      if (a3)
+      if (framebuffer)
       {
-        *a3 = 1;
+        *framebuffer = 1;
       }
     }
 
@@ -453,12 +453,12 @@ LABEL_28:
   return [(EAGLContext *)context presentRenderbuffer:36161];
 }
 
-- (void)_display:(BOOL)a3
+- (void)_display:(BOOL)_display
 {
   self->_inDraw = 1;
   if (self->_context)
   {
-    v4 = a3;
+    _displayCopy = _display;
     v8 = 0;
     [(GLKView *)self _setFramebuffer:&v8];
     glPushGroupMarkerEXT(0, "Rendering");
@@ -496,7 +496,7 @@ LABEL_28:
     }
 
     [(GLKView *)self _resolveAndDiscard];
-    if (v4)
+    if (_displayCopy)
     {
       [(GLKView *)self _presentFramebuffer];
     }
@@ -509,13 +509,13 @@ LABEL_28:
 {
   if (self->_context != context)
   {
-    v5 = [MEMORY[0x277CD9388] currentContext];
+    currentContext = [MEMORY[0x277CD9388] currentContext];
     [(GLKView *)self _deleteFramebuffer];
 
     self->_context = context;
     v6 = MEMORY[0x277CD9388];
 
-    [v6 setCurrentContext:v5];
+    [v6 setCurrentContext:currentContext];
   }
 }
 
@@ -646,7 +646,7 @@ LABEL_28:
   return ImageFromCurrentImageContext;
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   if (self->_enableSetNeedsDisplay)
   {
@@ -654,11 +654,11 @@ LABEL_28:
   }
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
-  if (self->_viewContentScaleFactor != a3)
+  if (self->_viewContentScaleFactor != factor)
   {
-    self->_viewContentScaleFactor = a3;
+    self->_viewContentScaleFactor = factor;
     self->_shouldDeleteFramebuffer = 1;
   }
 

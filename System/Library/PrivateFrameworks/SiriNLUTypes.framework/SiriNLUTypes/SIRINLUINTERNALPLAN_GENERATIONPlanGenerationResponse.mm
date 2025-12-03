@@ -1,26 +1,26 @@
 @interface SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addMappings:(id)a3;
-- (void)addPlans:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMappings:(id)mappings;
+- (void)addPlans:(id)plans;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -50,7 +50,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -79,13 +79,13 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((plans = self->_plans, !(plans | v4[2])) || -[NSMutableArray isEqual:](plans, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((plans = self->_plans, !(plans | equalCopy[2])) || -[NSMutableArray isEqual:](plans, "isEqual:")))
   {
     mappings = self->_mappings;
-    if (mappings | v4[1])
+    if (mappings | equalCopy[1])
     {
       v7 = [(NSMutableArray *)mappings isEqual:?];
     }
@@ -104,10 +104,10 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -128,7 +128,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addPlans:v11];
 
         ++v10;
@@ -161,7 +161,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addMappings:v17];
 
         ++v16;
@@ -178,44 +178,44 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self plansCount])
   {
-    [v12 clearPlans];
-    v4 = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self plansCount];
-    if (v4)
+    [toCopy clearPlans];
+    plansCount = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self plansCount];
+    if (plansCount)
     {
-      v5 = v4;
+      v5 = plansCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self plansAtIndex:i];
-        [v12 addPlans:v7];
+        [toCopy addPlans:v7];
       }
     }
   }
 
   if ([(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self mappingsCount])
   {
-    [v12 clearMappings];
-    v8 = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self mappingsCount];
-    if (v8)
+    [toCopy clearMappings];
+    mappingsCount = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self mappingsCount];
+    if (mappingsCount)
     {
-      v9 = v8;
+      v9 = mappingsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self mappingsAtIndex:j];
-        [v12 addMappings:v11];
+        [toCopy addMappings:v11];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -286,12 +286,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   plans = self->_plans;
   if (plans)
   {
-    [v3 setObject:plans forKey:@"plans"];
+    [dictionary setObject:plans forKey:@"plans"];
   }
 
   if ([(NSMutableArray *)self->_mappings count])
@@ -316,8 +316,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -340,46 +340,46 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse;
   v4 = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)&v8 description];
-  v5 = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALPLAN_GENERATIONPlanGenerationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addMappings:(id)a3
+- (void)addMappings:(id)mappings
 {
-  v4 = a3;
+  mappingsCopy = mappings;
   mappings = self->_mappings;
-  v8 = v4;
+  v8 = mappingsCopy;
   if (!mappings)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_mappings;
     self->_mappings = v6;
 
-    v4 = v8;
+    mappingsCopy = v8;
     mappings = self->_mappings;
   }
 
-  [(NSMutableArray *)mappings addObject:v4];
+  [(NSMutableArray *)mappings addObject:mappingsCopy];
 }
 
-- (void)addPlans:(id)a3
+- (void)addPlans:(id)plans
 {
-  v4 = a3;
+  plansCopy = plans;
   plans = self->_plans;
-  v8 = v4;
+  v8 = plansCopy;
   if (!plans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_plans;
     self->_plans = v6;
 
-    v4 = v8;
+    plansCopy = v8;
     plans = self->_plans;
   }
 
-  [(NSMutableArray *)plans addObject:v4];
+  [(NSMutableArray *)plans addObject:plansCopy];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SPProtoAudioFilePlayerUpdateContainedIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)sockPuppetMessageForPlayerItemUpsertWithAsset;
@@ -8,9 +8,9 @@
 - (id)sockPuppetMessageForQueuePlayerRemoveItem;
 - (id)sockPuppetMessageForQueuePlayerReplaceCurrentItem;
 - (id)sockPuppetMessageForQueuePlayerSetCurrentItem;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoAudioFilePlayerUpdateContainedIdentifier
@@ -21,20 +21,20 @@
   v8.receiver = self;
   v8.super_class = SPProtoAudioFilePlayerUpdateContainedIdentifier;
   v4 = [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)&v8 description];
-  v5 = [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   containedIdentifier = self->_containedIdentifier;
@@ -46,11 +46,11 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   identifier = self->_identifier;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_containedIdentifier)
   {
@@ -58,37 +58,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setIdentifier:self->_identifier];
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
   if (self->_containedIdentifier)
   {
-    [v4 setContainedIdentifier:?];
+    [toCopy setContainedIdentifier:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_containedIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_containedIdentifier copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[2])) || -[NSString isEqual:](identifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[2])) || -[NSString isEqual:](identifier, "isEqual:")))
   {
     containedIdentifier = self->_containedIdentifier;
-    if (containedIdentifier | v4[1])
+    if (containedIdentifier | equalCopy[1])
     {
       v7 = [(NSString *)containedIdentifier isEqual:?];
     }
@@ -107,20 +107,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(SPProtoAudioFilePlayerUpdateContainedIdentifier *)self setContainedIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -128,45 +128,45 @@
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerItem);
   [(SPProtoAudioFilePlayerItem *)v3 setUpsertWithAsset:self];
-  v4 = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForQueuePlayerReplaceCurrentItem
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setReplaceCurrentItem:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForQueuePlayerAppendItem
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setAppendItem:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForQueuePlayerRemoveItem
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setRemoveItem:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForQueuePlayerSetCurrentItem
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setSetCurrentItem:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 @end

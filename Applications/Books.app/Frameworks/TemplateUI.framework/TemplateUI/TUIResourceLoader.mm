@@ -1,12 +1,12 @@
 @interface TUIResourceLoader
 + (void)incrementPostLaunchCacheCount;
-- (TUIResourceLoader)initWithProtocolClasses:(id)a3;
-- (id)_keyForSharedOfflineCacheURL:(id)a3;
-- (id)resourceLoaderTaskWithURL:(id)a3 priority:(double)a4 completion:(id)a5;
+- (TUIResourceLoader)initWithProtocolClasses:(id)classes;
+- (id)_keyForSharedOfflineCacheURL:(id)l;
+- (id)resourceLoaderTaskWithURL:(id)l priority:(double)priority completion:(id)completion;
 - (id)urlCache;
-- (void)_addURLToOfflineCache:(id)a3 response:(id)a4 data:(id)a5;
+- (void)_addURLToOfflineCache:(id)cache response:(id)response data:(id)data;
 - (void)clearCache;
-- (void)loadResourceWithURL:(id)a3 completion:(id)a4;
+- (void)loadResourceWithURL:(id)l completion:(id)completion;
 @end
 
 @implementation TUIResourceLoader
@@ -17,9 +17,9 @@
   [v2 incrementPostLaunchCacheCount];
 }
 
-- (TUIResourceLoader)initWithProtocolClasses:(id)a3
+- (TUIResourceLoader)initWithProtocolClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   kdebug_trace();
   v20.receiver = self;
   v20.super_class = TUIResourceLoader;
@@ -67,12 +67,12 @@ LABEL_11:
     v5->_sessionConfiguration = v13;
 
     [(NSURLSessionConfiguration *)v5->_sessionConfiguration setURLCache:v5->_urlCache];
-    if ([v4 count])
+    if ([classesCopy count])
     {
-      v15 = [(NSURLSessionConfiguration *)v5->_sessionConfiguration protocolClasses];
-      v16 = [v15 mutableCopy];
+      protocolClasses = [(NSURLSessionConfiguration *)v5->_sessionConfiguration protocolClasses];
+      v16 = [protocolClasses mutableCopy];
 
-      [v16 addObjectsFromArray:v4];
+      [v16 addObjectsFromArray:classesCopy];
       [(NSURLSessionConfiguration *)v5->_sessionConfiguration setProtocolClasses:v16];
     }
 
@@ -92,61 +92,61 @@ LABEL_16:
   if (self->_runFromOfflineCache)
   {
     v2 = +[_TUIResourceLoaderOfflineCache sharedOfflineCache];
-    v3 = [v2 urlCache];
+    urlCache = [v2 urlCache];
   }
 
   else
   {
-    v3 = self->_urlCache;
+    urlCache = self->_urlCache;
   }
 
-  return v3;
+  return urlCache;
 }
 
-- (void)loadResourceWithURL:(id)a3 completion:(id)a4
+- (void)loadResourceWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   if (self->_runFromOfflineCache)
   {
-    v8 = [NSURLRequest requestWithURL:v6];
-    v9 = [(TUIResourceLoader *)self urlCache];
-    v10 = [v9 cachedResponseForRequest:v8];
+    v8 = [NSURLRequest requestWithURL:lCopy];
+    urlCache = [(TUIResourceLoader *)self urlCache];
+    v10 = [urlCache cachedResponseForRequest:v8];
 
     if (v10)
     {
-      if (!v7)
+      if (!completionCopy)
       {
 LABEL_15:
 
         goto LABEL_16;
       }
 
-      v11 = [v10 data];
-      v7[2](v7, v11, 0);
+      data = [v10 data];
+      completionCopy[2](completionCopy, data, 0);
 LABEL_14:
 
       goto LABEL_15;
     }
 
-    v11 = [(TUIResourceLoader *)self _keyForSharedOfflineCacheURL:v6];
+    data = [(TUIResourceLoader *)self _keyForSharedOfflineCacheURL:lCopy];
     v15 = +[_TUIResourceLoaderOfflineCache sharedOfflineCache];
-    v10 = [v15 valueForKey:v11];
+    v10 = [v15 valueForKey:data];
 
     if (v10)
     {
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_14;
       }
 
-      v16 = [v10 data];
-      v7[2](v7, v16, 0);
+      data2 = [v10 data];
+      completionCopy[2](completionCopy, data2, 0);
     }
 
     else
     {
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_14;
       }
@@ -154,11 +154,11 @@ LABEL_14:
       v17 = TUIInstallBundleLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        sub_19A444(v6, v17);
+        sub_19A444(lCopy, v17);
       }
 
-      v16 = [NSError errorWithDomain:@"TUIErrorDomain" code:401 userInfo:0];
-      (v7)[2](v7, 0, v16);
+      data2 = [NSError errorWithDomain:@"TUIErrorDomain" code:401 userInfo:0];
+      (completionCopy)[2](completionCopy, 0, data2);
     }
 
     goto LABEL_14;
@@ -170,8 +170,8 @@ LABEL_14:
   v18[2] = sub_91724;
   v18[3] = &unk_260840;
   v18[4] = self;
-  v19 = v6;
-  v20 = v7;
+  v19 = lCopy;
+  v20 = completionCopy;
   v13 = [(NSURLSession *)session dataTaskWithURL:v19 completionHandler:v18];
   *&v14 = NSURLSessionTaskPriorityHigh;
   [v13 setPriority:v14];
@@ -180,19 +180,19 @@ LABEL_14:
 LABEL_16:
 }
 
-- (id)resourceLoaderTaskWithURL:(id)a3 priority:(double)a4 completion:(id)a5
+- (id)resourceLoaderTaskWithURL:(id)l priority:(double)priority completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [NSURLRequest requestWithURL:v7];
-  v10 = [(TUIResourceLoader *)self urlCache];
-  v11 = [v10 cachedResponseForRequest:v9];
+  lCopy = l;
+  completionCopy = completion;
+  v9 = [NSURLRequest requestWithURL:lCopy];
+  urlCache = [(TUIResourceLoader *)self urlCache];
+  v11 = [urlCache cachedResponseForRequest:v9];
 
   if (v11 || self->_runFromOfflineCache)
   {
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
 
     v12 = 0;
@@ -206,8 +206,8 @@ LABEL_16:
     v16[2] = sub_9194C;
     v16[3] = &unk_260840;
     v16[4] = self;
-    v17 = v7;
-    v18 = v8;
+    v17 = lCopy;
+    v18 = completionCopy;
     v15 = [(NSURLSession *)session dataTaskWithURL:v17 completionHandler:v16];
     v12 = [[_TUIResourceLoaderTask alloc] initWithSessionDataTask:v15];
   }
@@ -215,50 +215,50 @@ LABEL_16:
   return v12;
 }
 
-- (id)_keyForSharedOfflineCacheURL:(id)a3
+- (id)_keyForSharedOfflineCacheURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  if ([v3 isFileURL])
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  if ([lCopy isFileURL])
   {
-    v5 = [v3 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
 
-    v6 = [v3 pathComponents];
-    v7 = [v6 count];
+    pathComponents = [lCopy pathComponents];
+    v7 = [pathComponents count];
     if (v7 >= 2)
     {
       v8 = v7;
-      v9 = [v6 objectAtIndexedSubscript:v7 - 2];
-      v10 = [v6 objectAtIndexedSubscript:v8 - 1];
+      v9 = [pathComponents objectAtIndexedSubscript:v7 - 2];
+      v10 = [pathComponents objectAtIndexedSubscript:v8 - 1];
       v11 = [NSString stringWithFormat:@"%@/%@", v9, v10];
 
-      v5 = v11;
+      lastPathComponent = v11;
     }
 
-    v4 = v5;
+    absoluteString = lastPathComponent;
   }
 
-  return v4;
+  return absoluteString;
 }
 
-- (void)_addURLToOfflineCache:(id)a3 response:(id)a4 data:(id)a5
+- (void)_addURLToOfflineCache:(id)cache response:(id)response data:(id)data
 {
-  v14 = a4;
-  v8 = a5;
-  v9 = a3;
+  responseCopy = response;
+  dataCopy = data;
+  cacheCopy = cache;
   v10 = +[_TUIResourceLoaderOfflineCache sharedOfflineCache];
-  v11 = [(TUIResourceLoader *)self _keyForSharedOfflineCacheURL:v9];
+  v11 = [(TUIResourceLoader *)self _keyForSharedOfflineCacheURL:cacheCopy];
 
   v12 = [v10 valueForKey:v11];
   v13 = v12;
-  if (v8 && !v12)
+  if (dataCopy && !v12)
   {
-    if (!v14)
+    if (!responseCopy)
     {
       goto LABEL_6;
     }
 
-    v13 = [[NSCachedURLResponse alloc] initWithResponse:v14 data:v8];
+    v13 = [[NSCachedURLResponse alloc] initWithResponse:responseCopy data:dataCopy];
     [v10 setObject:v13 forKey:v11];
   }
 
@@ -267,8 +267,8 @@ LABEL_6:
 
 - (void)clearCache
 {
-  v2 = [(TUIResourceLoader *)self urlCache];
-  [v2 removeAllCachedResponses];
+  urlCache = [(TUIResourceLoader *)self urlCache];
+  [urlCache removeAllCachedResponses];
 }
 
 @end

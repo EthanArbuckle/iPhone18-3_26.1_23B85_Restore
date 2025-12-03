@@ -16,11 +16,11 @@
 - (NSString)executablePath;
 - (NSString)extensionPointIdentifier;
 - (NSURL)dataContainerURL;
-- (RBBundleProperties)initWithLSProvider:(id)a3 xpcProvider:(id)a4 processIdentity:(id)a5 processIdentifier:(id)a6;
+- (RBBundleProperties)initWithLSProvider:(id)provider xpcProvider:(id)xpcProvider processIdentity:(id)identity processIdentifier:(id)identifier;
 - (id)_bundleProperties;
 - (id)_lsBundleProperties;
 - (id)_xpcBundleProperties;
-- (id)bundleInfoValuesForKeys:(id)a3;
+- (id)bundleInfoValuesForKeys:(id)keys;
 - (int)preferredJetsamBand;
 @end
 
@@ -28,47 +28,47 @@
 
 - (id)_bundleProperties
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
-      [(RBBundleProperties *)a1 _xpcBundleProperties];
+      [(RBBundleProperties *)self _xpcBundleProperties];
     }
 
     else
     {
-      [(RBBundleProperties *)a1 _lsBundleProperties];
+      [(RBBundleProperties *)self _lsBundleProperties];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 bundleIdentifier];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  bundleIdentifier = [_bundleProperties bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)_xpcBundleProperties
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[6];
+    selfCopy = self;
+    v3 = self[6];
     if (!v3)
     {
-      if (a1[3])
+      if (self[3])
       {
-        v4 = [a1[2] propertiesForIdentifier:?];
-        v5 = v2[6];
-        v2[6] = v4;
+        v4 = [self[2] propertiesForIdentifier:?];
+        v5 = selfCopy[6];
+        selfCopy[6] = v4;
 
-        v3 = v2[6];
+        v3 = selfCopy[6];
       }
 
       else
@@ -77,84 +77,84 @@
       }
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)usesSocketMonitoring
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 usesSocketMonitoring];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  usesSocketMonitoring = [_bundleProperties usesSocketMonitoring];
 
-  return v3;
+  return usesSocketMonitoring;
 }
 
 - (NSString)bundlePath
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 bundlePath];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  bundlePath = [_bundleProperties bundlePath];
 
-  return v3;
+  return bundlePath;
 }
 
 - (NSString)executablePath
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 executablePath];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  executablePath = [_bundleProperties executablePath];
 
-  return v3;
+  return executablePath;
 }
 
 - (NSString)extensionPointIdentifier
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 extensionPointIdentifier];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  extensionPointIdentifier = [_bundleProperties extensionPointIdentifier];
 
-  return v3;
+  return extensionPointIdentifier;
 }
 
 - (BOOL)continuousBackgroundMode
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 continuousBackgroundMode];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  continuousBackgroundMode = [_bundleProperties continuousBackgroundMode];
 
-  return v3;
+  return continuousBackgroundMode;
 }
 
 - (BOOL)isExtension
 {
-  v2 = [(RBBundleProperties *)self extensionPointIdentifier];
-  v3 = v2 != 0;
+  extensionPointIdentifier = [(RBBundleProperties *)self extensionPointIdentifier];
+  v3 = extensionPointIdentifier != 0;
 
   return v3;
 }
 
 - (NSDictionary)environmentVariables
 {
-  v2 = [(RBBundleProperties *)&self->super.isa _lsBundleProperties];
-  v3 = [v2 environmentVariables];
+  _lsBundleProperties = [(RBBundleProperties *)&self->super.isa _lsBundleProperties];
+  environmentVariables = [_lsBundleProperties environmentVariables];
 
-  return v3;
+  return environmentVariables;
 }
 
 - (id)_lsBundleProperties
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[5];
+    selfCopy = self;
+    v3 = self[5];
     if (!v3)
     {
-      if (a1[4])
+      if (self[4])
       {
-        v4 = [a1[1] propertiesForIdentity:?];
-        v5 = v2[5];
-        v2[5] = v4;
+        v4 = [self[1] propertiesForIdentity:?];
+        v5 = selfCopy[5];
+        selfCopy[5] = v4;
 
-        v3 = v2[5];
+        v3 = selfCopy[5];
       }
 
       else
@@ -163,30 +163,30 @@
       }
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NSURL)dataContainerURL
 {
-  v2 = [(RBBundleProperties *)&self->super.isa _lsBundleProperties];
-  v3 = [v2 dataContainerURL];
+  _lsBundleProperties = [(RBBundleProperties *)&self->super.isa _lsBundleProperties];
+  dataContainerURL = [_lsBundleProperties dataContainerURL];
 
-  return v3;
+  return dataContainerURL;
 }
 
-- (RBBundleProperties)initWithLSProvider:(id)a3 xpcProvider:(id)a4 processIdentity:(id)a5 processIdentifier:(id)a6
+- (RBBundleProperties)initWithLSProvider:(id)provider xpcProvider:(id)xpcProvider processIdentity:(id)identity processIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v13 && ([v13 isAnonymous] & 1) != 0)
+  providerCopy = provider;
+  xpcProviderCopy = xpcProvider;
+  identityCopy = identity;
+  identifierCopy = identifier;
+  if (identityCopy && ([identityCopy isAnonymous] & 1) != 0)
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -197,17 +197,17 @@
     p_isa = &v16->super.isa;
     if (v16)
     {
-      objc_storeStrong(&v16->_lsProvider, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 4, a5);
-      objc_storeStrong(p_isa + 3, a6);
+      objc_storeStrong(&v16->_lsProvider, provider);
+      objc_storeStrong(p_isa + 2, xpcProvider);
+      objc_storeStrong(p_isa + 4, identity);
+      objc_storeStrong(p_isa + 3, identifier);
     }
 
     self = p_isa;
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (NSString)debugDescription
@@ -221,73 +221,73 @@
 
 - (BOOL)supportsBackgroundContentFetching
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 supportsBackgroundContentFetching];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  supportsBackgroundContentFetching = [_bundleProperties supportsBackgroundContentFetching];
 
-  return v3;
+  return supportsBackgroundContentFetching;
 }
 
 - (BOOL)supportsBackgroundNetworkAuthentication
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 supportsBackgroundNetworkAuthentication];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  supportsBackgroundNetworkAuthentication = [_bundleProperties supportsBackgroundNetworkAuthentication];
 
-  return v3;
+  return supportsBackgroundNetworkAuthentication;
 }
 
 - (BOOL)supportsBackgroundAudio
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 supportsBackgroundAudio];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  supportsBackgroundAudio = [_bundleProperties supportsBackgroundAudio];
 
-  return v3;
+  return supportsBackgroundAudio;
 }
 
 - (BOOL)supportsUnboundedTaskCompletion
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 supportsUnboundedTaskCompletion];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  supportsUnboundedTaskCompletion = [_bundleProperties supportsUnboundedTaskCompletion];
 
-  return v3;
+  return supportsUnboundedTaskCompletion;
 }
 
 - (BOOL)hasPreferredJetsamBand
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 hasPreferredJetsamBand];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  hasPreferredJetsamBand = [_bundleProperties hasPreferredJetsamBand];
 
-  return v3;
+  return hasPreferredJetsamBand;
 }
 
 - (int)preferredJetsamBand
 {
-  v2 = [(RBBundleProperties *)self _bundleProperties];
-  v3 = [v2 preferredJetsamBand];
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  preferredJetsamBand = [_bundleProperties preferredJetsamBand];
 
-  return v3;
+  return preferredJetsamBand;
 }
 
 - (NSString)containerOverrideIdentifier
 {
-  v2 = [(RBBundleProperties *)&self->super.isa _lsBundleProperties];
-  v3 = [v2 containerOverrideIdentifier];
+  _lsBundleProperties = [(RBBundleProperties *)&self->super.isa _lsBundleProperties];
+  containerOverrideIdentifier = [_lsBundleProperties containerOverrideIdentifier];
 
-  return v3;
+  return containerOverrideIdentifier;
 }
 
 - (NSSet)groupIdentifiers
 {
-  v2 = [(RBBundleProperties *)&self->super.isa _lsBundleProperties];
-  v3 = [v2 groupIdentifiers];
+  _lsBundleProperties = [(RBBundleProperties *)&self->super.isa _lsBundleProperties];
+  groupIdentifiers = [_lsBundleProperties groupIdentifiers];
 
-  return v3;
+  return groupIdentifiers;
 }
 
-- (id)bundleInfoValuesForKeys:(id)a3
+- (id)bundleInfoValuesForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(RBBundleProperties *)self _bundleProperties];
-  v6 = [v5 bundleInfoValuesForKeys:v4];
+  keysCopy = keys;
+  _bundleProperties = [(RBBundleProperties *)self _bundleProperties];
+  v6 = [_bundleProperties bundleInfoValuesForKeys:keysCopy];
 
   return v6;
 }

@@ -1,30 +1,30 @@
 @interface CompactDayViewController
 - (BOOL)shouldShowWeekDayLabel;
 - (BOOL)showWeekdayLabel;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)cellFactory;
 - (id)dayHeaderFrames;
-- (id)interactionControllerForPresentation:(id)a3;
-- (id)occurrenceViewForEvent:(id)a3;
-- (id)showDetailViewControllerForEvent:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (id)showDetailViewControllerForEvents:(id)a3 animated:(BOOL)a4;
+- (id)interactionControllerForPresentation:(id)presentation;
+- (id)occurrenceViewForEvent:(id)event;
+- (id)showDetailViewControllerForEvent:(id)event context:(id)context animated:(BOOL)animated;
+- (id)showDetailViewControllerForEvents:(id)events animated:(BOOL)animated;
 - (int64_t)contentInsetAdjustmentBehavior;
-- (void)_receivedSelectedDateChangeNotification:(id)a3;
+- (void)_receivedSelectedDateChangeNotification:(id)notification;
 - (void)_showWeekdayLabelPreferenceChanged;
-- (void)_updateBackButtonOnBackViewControllerToDate:(id)a3;
+- (void)_updateBackButtonOnBackViewControllerToDate:(id)date;
 - (void)_updateWeekDayHeaderDayFrames;
-- (void)dayViewController:(id)a3 didStartDeceleratingTargettingDate:(id)a4;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5;
+- (void)dayViewController:(id)controller didStartDeceleratingTargettingDate:(id)date;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler;
 - (void)loadView;
-- (void)showEditViewController:(id)a3;
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)updatePalette:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)showEditViewController:(id)controller;
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion;
+- (void)updatePalette:(id)palette;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation CompactDayViewController
@@ -32,8 +32,8 @@
 - (void)_updateWeekDayHeaderDayFrames
 {
   v2 = *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 1);
-  v3 = [(CompactDayViewController *)self dayHeaderFrames];
-  [v2 setDayHeaderFrames:v3];
+  dayHeaderFrames = [(CompactDayViewController *)self dayHeaderFrames];
+  [v2 setDayHeaderFrames:dayHeaderFrames];
 }
 
 - (id)dayHeaderFrames
@@ -134,19 +134,19 @@
   return 2;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = CompactDayViewController;
-  [(CompactDayViewController *)&v4 viewIsAppearing:a3];
+  [(CompactDayViewController *)&v4 viewIsAppearing:appearing];
   [(CompactDayViewController *)self ekui_adjustNavAndToolBarToTranslucentGrayStyles];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CompactDayViewController;
-  [(DayViewController *)&v10 viewDidAppear:a3];
+  [(DayViewController *)&v10 viewDidAppear:appear];
   v4 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
@@ -154,22 +154,22 @@
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = [(DayViewController *)self day];
-    v9 = [v8 date];
+    date = [v8 date];
     *buf = 138543618;
     v12 = v7;
     v13 = 2114;
-    v14 = v9;
+    v14 = date;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[UserStateLog] State -> %{public}@ viewDidAppear. date = %{public}@", buf, 0x16u);
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CompactDayViewController;
-  [(DayViewController *)&v9 viewWillTransitionToSize:a4 withTransitionCoordinator:?];
+  [(DayViewController *)&v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:?];
   if (height > width)
   {
     v7 = 1;
@@ -180,28 +180,28 @@
     v7 = 4;
   }
 
-  v8 = [(DayViewController *)self dayView];
-  [v8 validateInterfaceOrientationWithFutureOrientation:v7];
+  dayView = [(DayViewController *)self dayView];
+  [dayView validateInterfaceOrientationWithFutureOrientation:v7];
 }
 
-- (void)_updateBackButtonOnBackViewControllerToDate:(id)a3
+- (void)_updateBackButtonOnBackViewControllerToDate:(id)date
 {
-  v5 = a3;
-  v4 = [(CompactDayViewController *)self navigationController];
+  dateCopy = date;
+  navigationController = [(CompactDayViewController *)self navigationController];
   if ((objc_opt_respondsToSelector() & 1) != 0 && (CalSolariumEnabled() & 1) == 0)
   {
-    [v4 updateBackButtonToDate:v5];
+    [navigationController updateBackButtonToDate:dateCopy];
   }
 }
 
-- (void)_receivedSelectedDateChangeNotification:(id)a3
+- (void)_receivedSelectedDateChangeNotification:(id)notification
 {
   v6.receiver = self;
   v6.super_class = CompactDayViewController;
-  [(DayViewController *)&v6 _receivedSelectedDateChangeNotification:a3];
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 selectedDate];
-  [(CompactDayViewController *)self _updateBackButtonOnBackViewControllerToDate:v5];
+  [(DayViewController *)&v6 _receivedSelectedDateChangeNotification:notification];
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
+  [(CompactDayViewController *)self _updateBackButtonOnBackViewControllerToDate:selectedDate];
 }
 
 - (BOOL)shouldShowWeekDayLabel
@@ -209,16 +209,16 @@
   v2 = CUIKGetOverlayCalendar();
   if (v2)
   {
-    v3 = 1;
+    showWeekNumbers = 1;
   }
 
   else
   {
     v4 = +[CUIKPreferences sharedPreferences];
-    v3 = [v4 showWeekNumbers];
+    showWeekNumbers = [v4 showWeekNumbers];
   }
 
-  return v3;
+  return showWeekNumbers;
 }
 
 - (void)_showWeekdayLabelPreferenceChanged
@@ -228,38 +228,38 @@
   [(DayViewController *)&v2 _showWeekdayLabelPreferenceChanged];
 }
 
-- (void)dayViewController:(id)a3 didStartDeceleratingTargettingDate:(id)a4
+- (void)dayViewController:(id)controller didStartDeceleratingTargettingDate:(id)date
 {
   v11.receiver = self;
   v11.super_class = CompactDayViewController;
-  v6 = a4;
-  [(DayViewController *)&v11 dayViewController:a3 didStartDeceleratingTargettingDate:v6];
+  dateCopy = date;
+  [(DayViewController *)&v11 dayViewController:controller didStartDeceleratingTargettingDate:dateCopy];
   v7 = [(MainViewController *)self model:v11.receiver];
-  v8 = [v7 calendar];
-  v9 = [v8 timeZone];
-  v10 = [EKCalendarDate calendarDateWithDateComponents:v6 timeZone:v9];
+  calendar = [v7 calendar];
+  timeZone = [calendar timeZone];
+  v10 = [EKCalendarDate calendarDateWithDateComponents:dateCopy timeZone:timeZone];
 
   [(CompactDayViewController *)self _updateBackButtonOnBackViewControllerToDate:v10];
 }
 
-- (id)showDetailViewControllerForEvent:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (id)showDetailViewControllerForEvent:(id)event context:(id)context animated:(BOOL)animated
 {
-  v23 = a5;
-  v7 = a4;
-  v22 = a3;
-  v8 = [(CompactDayViewController *)self parentViewController];
-  v9 = [v8 navigationItem];
-  v10 = [(MainViewController *)self model];
-  v11 = [v10 selectedDate];
-  v12 = [v11 dayComponents];
-  v13 = [(MainViewController *)self model];
-  v14 = [v13 calendar];
+  animatedCopy = animated;
+  contextCopy = context;
+  eventCopy = event;
+  parentViewController = [(CompactDayViewController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
+  dayComponents = [selectedDate dayComponents];
+  model2 = [(MainViewController *)self model];
+  calendar = [model2 calendar];
   v15 = CUIKStringForDateComponents();
-  [v9 setBackButtonTitle:v15];
+  [navigationItem setBackButtonTitle:v15];
 
-  v16 = [(MainViewController *)self augmentEventDetailsContext:v7];
+  v16 = [(MainViewController *)self augmentEventDetailsContext:contextCopy];
 
-  v17 = [EKEventViewController eventDetailViewControllerWithEvent:v22 delegate:self context:v16 canvasView:0];
+  v17 = [EKEventViewController eventDetailViewControllerWithEvent:eventCopy delegate:self context:v16 canvasView:0];
 
   [(CompactDayViewController *)self ekui_adjustToolBarToTransparentStyle];
   if ((CalSystemSolariumEnabled() & 1) == 0)
@@ -269,101 +269,101 @@
 
   v18 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"Day" value:&stru_1002133B8 table:0];
-  v20 = [(CompactDayViewController *)self navigationItem];
-  [v20 setTitle:v19];
+  navigationItem2 = [(CompactDayViewController *)self navigationItem];
+  [navigationItem2 setTitle:v19];
 
-  [(CompactDayViewController *)self showViewController:v17 sender:self animated:v23 completion:0];
+  [(CompactDayViewController *)self showViewController:v17 sender:self animated:animatedCopy completion:0];
 
   return v17;
 }
 
-- (id)showDetailViewControllerForEvents:(id)a3 animated:(BOOL)a4
+- (id)showDetailViewControllerForEvents:(id)events animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[EKExpandedReminderStackViewController alloc] initWithEvents:v6 delegate:self];
+  animatedCopy = animated;
+  eventsCopy = events;
+  v7 = [[EKExpandedReminderStackViewController alloc] initWithEvents:eventsCopy delegate:self];
 
   [v7 setTransitioningDelegate:self];
   [v7 setPreferModalPresentation:1];
-  [(CompactDayViewController *)self showViewController:v7 sender:self animated:v4 completion:0];
+  [(CompactDayViewController *)self showViewController:v7 sender:self animated:animatedCopy completion:0];
 
   return v7;
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  senderCopy = sender;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v10 setPreferModalPresentation:1];
+    [controllerCopy setPreferModalPresentation:1];
   }
 
-  v13 = [(CompactDayViewController *)self presentedViewController];
+  presentedViewController = [(CompactDayViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [(CompactDayViewController *)self presentedViewController];
-    v16 = [v10 presentationController];
-    [v16 setDelegate:v15];
+    presentedViewController2 = [(CompactDayViewController *)self presentedViewController];
+    presentationController = [controllerCopy presentationController];
+    [presentationController setDelegate:presentedViewController2];
 
-    v17 = [(CompactDayViewController *)self presentedViewController];
-    [v17 presentViewController:v10 animated:1 completion:0];
+    presentedViewController3 = [(CompactDayViewController *)self presentedViewController];
+    [presentedViewController3 presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = CompactDayViewController;
-    [(MainViewController *)&v18 showViewController:v10 sender:v11 animated:v7 completion:v12];
+    [(MainViewController *)&v18 showViewController:controllerCopy sender:senderCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)showEditViewController:(id)a3
+- (void)showEditViewController:(id)controller
 {
-  v8 = a3;
-  v4 = [(DockableEventContainerController *)v8 event];
-  v5 = [v4 isNew];
+  controllerCopy = controller;
+  event = [(DockableEventContainerController *)controllerCopy event];
+  isNew = [event isNew];
 
-  if (v5)
+  if (isNew)
   {
-    [(DockableEventContainerController *)v8 setModalPresentationDelegate:self];
+    [(DockableEventContainerController *)controllerCopy setModalPresentationDelegate:self];
   }
 
-  v6 = v8;
+  v6 = controllerCopy;
   if (CalDraftUIEnabled())
   {
-    v6 = v8;
-    if ([(DockableEventContainerController *)v8 conformsToProtocol:&OBJC_PROTOCOL___DockableEventContainerControllerDelegate])
+    v6 = controllerCopy;
+    if ([(DockableEventContainerController *)controllerCopy conformsToProtocol:&OBJC_PROTOCOL___DockableEventContainerControllerDelegate])
     {
-      v6 = [[_TtC9MobileCal32DockableEventContainerController alloc] initWithFullViewController:v8];
+      v6 = [[_TtC9MobileCal32DockableEventContainerController alloc] initWithFullViewController:controllerCopy];
     }
   }
 
-  v7 = [(CompactDayViewController *)self navigationController];
-  [v7 presentViewController:v6 animated:1 completion:0];
+  navigationController = [(CompactDayViewController *)self navigationController];
+  [navigationController presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)occurrenceViewForEvent:(id)a3
+- (id)occurrenceViewForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(DayViewController *)self dayView];
-  v6 = [v5 occurrenceViewForEvent:v4];
+  eventCopy = event;
+  dayView = [(DayViewController *)self dayView];
+  v6 = [dayView occurrenceViewForEvent:eventCopy];
 
   return v6;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v5 = a3;
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
   {
-    v6 = v5;
+    v6 = controllerCopy;
   }
 
   else
@@ -374,12 +374,12 @@
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
   {
-    v4 = v3;
+    v4 = controllerCopy;
   }
 
   else
@@ -390,12 +390,12 @@
   return v4;
 }
 
-- (id)interactionControllerForPresentation:(id)a3
+- (id)interactionControllerForPresentation:(id)presentation
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerInteractiveTransitioning])
+  presentationCopy = presentation;
+  if ([presentationCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerInteractiveTransitioning])
   {
-    v4 = v3;
+    v4 = presentationCopy;
   }
 
   else
@@ -406,12 +406,12 @@
   return v4;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v4 = a3;
-  [v4 setTodayButtonVisible:0];
-  [v4 setDateStringVisible:0];
-  [v4 setDividerLineVisible:1];
+  paletteCopy = palette;
+  [paletteCopy setTodayButtonVisible:0];
+  [paletteCopy setDateStringVisible:0];
+  [paletteCopy setDividerLineVisible:1];
   if (CalSolariumEnabled())
   {
     v5 = 3;
@@ -422,14 +422,14 @@
     v5 = 1;
   }
 
-  [v4 setFocusBannerPlacement:v5];
+  [paletteCopy setFocusBannerPlacement:v5];
   v8.receiver = self;
   v8.super_class = CompactDayViewController;
-  [(DayViewController *)&v8 updatePalette:v4];
+  [(DayViewController *)&v8 updatePalette:paletteCopy];
   [(CompactDayViewController *)self _updateWeekDayHeaderDayFrames];
   v6 = *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 1);
-  *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 1) = v4;
-  v7 = v4;
+  *(&self->super._shouldRespondToApplicationDidBecomeActiveStateChange + 1) = paletteCopy;
+  v7 = paletteCopy;
 
   [v7 setNeedsLayout];
 }
@@ -442,39 +442,39 @@
   [(CompactDayViewController *)self _updateWeekDayHeaderDayFrames];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = CompactDayViewController;
   [(CompactDayViewController *)&v8 willMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
-    v5 = [(MainViewController *)self model];
-    v6 = [v5 selectedOccurrence];
+    model = [(MainViewController *)self model];
+    selectedOccurrence = [model selectedOccurrence];
 
-    if (v6)
+    if (selectedOccurrence)
     {
-      v7 = [(MainViewController *)self model];
-      [v7 setSelectedOccurrence:0];
+      model2 = [(MainViewController *)self model];
+      [model2 setSelectedOccurrence:0];
     }
   }
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MainViewController *)self model];
-  v11 = [v10 selectedOccurrence];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  model = [(MainViewController *)self model];
+  selectedOccurrence = [model selectedOccurrence];
 
   v13.receiver = self;
   v13.super_class = CompactDayViewController;
-  [(DayViewController *)&v13 eventEditViewController:v9 didCompleteWithAction:a4 completionHandler:v8];
+  [(DayViewController *)&v13 eventEditViewController:controllerCopy didCompleteWithAction:action completionHandler:handlerCopy];
 
-  if (!v11)
+  if (!selectedOccurrence)
   {
-    v12 = [(MainViewController *)self model];
-    [v12 setSelectedOccurrence:0];
+    model2 = [(MainViewController *)self model];
+    [model2 setSelectedOccurrence:0];
   }
 }
 

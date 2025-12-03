@@ -1,8 +1,8 @@
 @interface SHMediaItemSerialization
-+ (BOOL)isInternalMediaItemProperty:(id)a3;
++ (BOOL)isInternalMediaItemProperty:(id)property;
 + (id)dateFormatter;
-+ (id)serializedFormatFromArrayValues:(id)a3 property:(id)a4;
-+ (id)transformArrayValue:(id)a3 property:(id)a4 shouldSerialize:(BOOL)a5;
++ (id)serializedFormatFromArrayValues:(id)values property:(id)property;
++ (id)transformArrayValue:(id)value property:(id)property shouldSerialize:(BOOL)serialize;
 @end
 
 @implementation SHMediaItemSerialization
@@ -30,17 +30,17 @@ uint64_t __41__SHMediaItemSerialization_dateFormatter__block_invoke()
   return [v2 setFormatOptions:1907];
 }
 
-+ (id)transformArrayValue:(id)a3 property:(id)a4 shouldSerialize:(BOOL)a5
++ (id)transformArrayValue:(id)value property:(id)property shouldSerialize:(BOOL)serialize
 {
-  v5 = a5;
+  serializeCopy = serialize;
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [SHMediaItemPropertyUtilities categoryForShazamKitProperty:v9];
+  valueCopy = value;
+  propertyCopy = property;
+  v10 = [SHMediaItemPropertyUtilities categoryForShazamKitProperty:propertyCopy];
   v11 = v10;
-  if (!v5)
+  if (!serializeCopy)
   {
-    v20 = v8;
+    v20 = valueCopy;
     v21 = v20;
     if (v11 == 8)
     {
@@ -120,14 +120,14 @@ uint64_t __41__SHMediaItemSerialization_dateFormatter__block_invoke()
 
   if (v10 == 8)
   {
-    v27 = [a1 serializedFormatFromArrayValues:v8 property:v9];
+    v27 = [self serializedFormatFromArrayValues:valueCopy property:propertyCopy];
   }
 
   else
   {
     if (v10 == 6)
     {
-      v12 = v8;
+      v12 = valueCopy;
       v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
       v45 = 0u;
       v46 = 0u;
@@ -148,8 +148,8 @@ uint64_t __41__SHMediaItemSerialization_dateFormatter__block_invoke()
               objc_enumerationMutation(v14);
             }
 
-            v19 = [*(*(&v45 + 1) + 8 * k) serializedRepresentation];
-            [v13 addObject:v19];
+            serializedRepresentation = [*(*(&v45 + 1) + 8 * k) serializedRepresentation];
+            [v13 addObject:serializedRepresentation];
           }
 
           v16 = [v14 countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -164,7 +164,7 @@ LABEL_30:
       goto LABEL_33;
     }
 
-    v27 = v8;
+    v27 = valueCopy;
   }
 
   v21 = v27;
@@ -175,15 +175,15 @@ LABEL_33:
   return v21;
 }
 
-+ (id)serializedFormatFromArrayValues:(id)a3 property:(id)a4
++ (id)serializedFormatFromArrayValues:(id)values property:(id)property
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  if ([SHMediaItemPropertyUtilities categoryForShazamKitProperty:v6]== 8)
+  valuesCopy = values;
+  propertyCopy = property;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(valuesCopy, "count")}];
+  if ([SHMediaItemPropertyUtilities categoryForShazamKitProperty:propertyCopy]== 8)
   {
-    v8 = v5;
+    v8 = valuesCopy;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -202,8 +202,8 @@ LABEL_33:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) serializedRepresentation];
-          [v7 addObject:v13];
+          serializedRepresentation = [*(*(&v17 + 1) + 8 * i) serializedRepresentation];
+          [v7 addObject:serializedRepresentation];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -225,7 +225,7 @@ LABEL_33:
   return v14;
 }
 
-+ (BOOL)isInternalMediaItemProperty:(id)a3
++ (BOOL)isInternalMediaItemProperty:(id)property
 {
   v13 = *MEMORY[0x277D85DE8];
   v8 = @"sh_identifier";
@@ -234,9 +234,9 @@ LABEL_33:
   v11 = @"sh_matchLocationCoordinate";
   v12 = @"sh_matchLocationCoordinate_Swift";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  propertyCopy = property;
   v5 = [v3 arrayWithObjects:&v8 count:5];
-  LOBYTE(v3) = [v5 containsObject:{v4, v8, v9, v10, v11, v12, v13}];
+  LOBYTE(v3) = [v5 containsObject:{propertyCopy, v8, v9, v10, v11, v12, v13}];
 
   v6 = *MEMORY[0x277D85DE8];
   return v3;

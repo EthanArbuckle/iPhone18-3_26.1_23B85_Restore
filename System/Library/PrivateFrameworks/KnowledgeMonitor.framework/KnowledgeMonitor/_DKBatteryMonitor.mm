@@ -1,16 +1,16 @@
 @interface _DKBatteryMonitor
-+ (id)_eventWithBatteryPercentage:(double)a3 isFullyCharged:(BOOL)a4;
-+ (void)setCurrentBatteryPercentage:(double)a3;
-- (BOOL)adapterType:(id)a3 differsFrom:(id)a4;
-- (BOOL)externalConnected:(id)a3 differsFrom:(id)a4;
-- (BOOL)fullyCharged:(id)a3 differsFrom:(id)a4;
-- (BOOL)fullyChargedFromPowerSourceDictionary:(id)a3;
-- (BOOL)isCharging:(id)a3 differsFrom:(id)a4;
-- (BOOL)newBatteryState:(id)a3 differsSignificantlyFromState:(id)a4 currentBatteryPercentage:(double)a5 previousBatteryPercentage:(double)a6;
-- (BOOL)percentage:(double)a3 differsFrom:(double)a4;
-- (BOOL)temperature:(id)a3 differsFrom:(id)a4;
-- (BOOL)voltage:(id)a3 differsFrom:(id)a4;
-- (double)batteryPercentageFromPowerSourceDictionary:(id)a3;
++ (id)_eventWithBatteryPercentage:(double)percentage isFullyCharged:(BOOL)charged;
++ (void)setCurrentBatteryPercentage:(double)percentage;
+- (BOOL)adapterType:(id)type differsFrom:(id)from;
+- (BOOL)externalConnected:(id)connected differsFrom:(id)from;
+- (BOOL)fullyCharged:(id)charged differsFrom:(id)from;
+- (BOOL)fullyChargedFromPowerSourceDictionary:(id)dictionary;
+- (BOOL)isCharging:(id)charging differsFrom:(id)from;
+- (BOOL)newBatteryState:(id)state differsSignificantlyFromState:(id)fromState currentBatteryPercentage:(double)percentage previousBatteryPercentage:(double)batteryPercentage;
+- (BOOL)percentage:(double)percentage differsFrom:(double)from;
+- (BOOL)temperature:(id)temperature differsFrom:(id)from;
+- (BOOL)voltage:(id)voltage differsFrom:(id)from;
+- (double)batteryPercentageFromPowerSourceDictionary:(id)dictionary;
 - (double)currentBatteryPercentage;
 - (id)getBatteryProperties;
 - (void)_handleBatteryNotification;
@@ -21,24 +21,24 @@
 - (void)deactivate;
 - (void)dealloc;
 - (void)getBatteryProperties;
-- (void)postImminentShutdownNotification:(double)a3;
+- (void)postImminentShutdownNotification:(double)notification;
 - (void)start;
 - (void)stop;
 - (void)synchronouslyReflectCurrentValue;
-- (void)updateBatteryStateDictionary:(id)a3 currentBatteryPercentage:(double)a4;
+- (void)updateBatteryStateDictionary:(id)dictionary currentBatteryPercentage:(double)percentage;
 @end
 
 @implementation _DKBatteryMonitor
 
 - (void)batteryStateChangeHandler
 {
-  v10 = [(_DKBatteryMonitor *)self getBatteryProperties];
+  getBatteryProperties = [(_DKBatteryMonitor *)self getBatteryProperties];
   [(_DKBatteryMonitor *)self batteryPercentageFromPowerSourceDictionary:?];
   v4 = v3;
   if (v3 != -1.0)
   {
-    v5 = [(_DKBatteryMonitor *)self fullyChargedFromPowerSourceDictionary:v10];
-    [(_DKBatteryMonitor *)self updateBatteryStateDictionary:v10 currentBatteryPercentage:v4];
+    v5 = [(_DKBatteryMonitor *)self fullyChargedFromPowerSourceDictionary:getBatteryProperties];
+    [(_DKBatteryMonitor *)self updateBatteryStateDictionary:getBatteryProperties currentBatteryPercentage:v4];
     if (vabdd_f64(self->_previousPercentage, v4) >= 1.0 || self->_previouslyFullyCharged != v5)
     {
       v6 = objc_opt_class();
@@ -65,8 +65,8 @@
     properties = 0;
     if (IORegistryEntryCreateCFProperties(powerService, &properties, *MEMORY[0x277CBECE8], 0))
     {
-      v3 = [MEMORY[0x277CFE0C8] contextChannel];
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+      contextChannel = [MEMORY[0x277CFE0C8] contextChannel];
+      if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_ERROR))
       {
         [_DKBatteryMonitor getBatteryProperties];
       }
@@ -76,7 +76,7 @@
 
     else
     {
-      v3 = properties;
+      contextChannel = properties;
       v4 = [(__CFDictionary *)properties copy];
     }
   }
@@ -111,23 +111,23 @@
   [(_DKMonitor *)&v3 dealloc];
 }
 
-+ (void)setCurrentBatteryPercentage:(double)a3
++ (void)setCurrentBatteryPercentage:(double)percentage
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v3 = [MEMORY[0x277CFE318] userContext];
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  [v3 setObject:v5 forKeyedSubscript:v4];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:percentage];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForBatteryLevel = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  [userContext setObject:v5 forKeyedSubscript:keyPathForBatteryLevel];
 }
 
-+ (id)_eventWithBatteryPercentage:(double)a3 isFullyCharged:(BOOL)a4
++ (id)_eventWithBatteryPercentage:(double)percentage isFullyCharged:(BOOL)charged
 {
-  v4 = a4;
+  chargedCopy = charged;
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CFE190] withBatteryPercentage:a3];
-  if (v4)
+  v5 = [MEMORY[0x277CFE190] withBatteryPercentage:percentage];
+  if (chargedCopy)
   {
-    v6 = [MEMORY[0x277CFE1C0] fullyCharged];
-    v16 = v6;
+    fullyCharged = [MEMORY[0x277CFE1C0] fullyCharged];
+    v16 = fullyCharged;
     v7 = [MEMORY[0x277CCABB0] numberWithBool:1];
     v17[0] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
@@ -139,10 +139,10 @@
   }
 
   v9 = MEMORY[0x277CFE1D8];
-  v10 = [MEMORY[0x277CFE298] deviceBatteryPercentageStream];
-  v11 = [MEMORY[0x277CBEAA8] date];
-  v12 = [MEMORY[0x277CBEAA8] distantFuture];
-  v13 = [v9 eventWithStream:v10 startDate:v11 endDate:v12 value:v5 metadata:v8];
+  deviceBatteryPercentageStream = [MEMORY[0x277CFE298] deviceBatteryPercentageStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v13 = [v9 eventWithStream:deviceBatteryPercentageStream startDate:date endDate:distantFuture value:v5 metadata:v8];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -156,22 +156,22 @@
   if ([(_DKMonitor *)&v21 instantMonitorNeedsActivation])
   {
     v3 = BiomeLibrary();
-    v4 = [v3 Device];
-    v5 = [v4 Power];
-    v6 = [v5 BatteryLevel];
-    v7 = [v6 source];
+    device = [v3 Device];
+    power = [device Power];
+    batteryLevel = [power BatteryLevel];
+    source = [batteryLevel source];
     source = self->_source;
-    self->_source = v7;
+    self->_source = source;
 
-    v9 = [MEMORY[0x277CFE318] userContext];
-    v10 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+    v11 = [userContext objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
     previousBatteryState = self->_previousBatteryState;
     self->_previousBatteryState = v11;
 
     v13 = self->_previousBatteryState;
-    v14 = [MEMORY[0x277CFE338] batteryPercentageKey];
-    v15 = [(NSDictionary *)v13 objectForKeyedSubscript:v14];
+    batteryPercentageKey = [MEMORY[0x277CFE338] batteryPercentageKey];
+    v15 = [(NSDictionary *)v13 objectForKeyedSubscript:batteryPercentageKey];
     [v15 doubleValue];
     self->_previousPercentage = v16;
 
@@ -187,8 +187,8 @@
 
     else
     {
-      v20 = [MEMORY[0x277CFE0C8] contextChannel];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      contextChannel = [MEMORY[0x277CFE0C8] contextChannel];
+      if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_ERROR))
       {
         [_DKBatteryMonitor start];
       }
@@ -201,28 +201,28 @@
 - (void)_registerIOPSNotifyAttachListener
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_fault_impl(&dword_22595A000, log, OS_LOG_TYPE_FAULT, "Failed to register for battery attach notification: %@", buf, 0xCu);
 }
 
 - (void)completeStart
 {
-  v3 = a1;
+  selfCopy = self;
   v8 = *MEMORY[0x277D85DE8];
-  if (a1 == 256)
+  if (self == 256)
   {
     v4 = @"unable to get power service or notify port";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:a1];
+    v4 = [MEMORY[0x277CCABB0] numberWithInt:self];
   }
 
   v6 = 138412290;
   v7 = v4;
   _os_log_error_impl(&dword_22595A000, log, OS_LOG_TYPE_ERROR, "Unable to register for battery notifications: %@", &v6, 0xCu);
-  if (v3 != 256)
+  if (selfCopy != 256)
   {
   }
 
@@ -261,9 +261,9 @@
   }
 }
 
-- (void)postImminentShutdownNotification:(double)a3
+- (void)postImminentShutdownNotification:(double)notification
 {
-  if (self->_immediateShutdownThreshold <= a3 || (IOPSDrawingUnlimitedPower() & 1) != 0)
+  if (self->_immediateShutdownThreshold <= notification || (IOPSDrawingUnlimitedPower() & 1) != 0)
   {
     postImminentShutdownNotification__posted = 0;
   }
@@ -281,12 +281,12 @@
   if (self->_hasInternalBattery)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(_DKBatteryMonitor *)self getBatteryProperties];
-    [(_DKBatteryMonitor *)self batteryPercentageFromPowerSourceDictionary:v5];
+    getBatteryProperties = [(_DKBatteryMonitor *)self getBatteryProperties];
+    [(_DKBatteryMonitor *)self batteryPercentageFromPowerSourceDictionary:getBatteryProperties];
     v7 = v6;
     if (v6 != -1.0)
     {
-      [(_DKBatteryMonitor *)self updateBatteryStateDictionary:v5 currentBatteryPercentage:v6];
+      [(_DKBatteryMonitor *)self updateBatteryStateDictionary:getBatteryProperties currentBatteryPercentage:v6];
       if (vabdd_f64(self->_previousPercentage, v7) >= 1.0)
       {
         [_DKBatteryMonitor setCurrentBatteryPercentage:v7];
@@ -299,9 +299,9 @@
   }
 }
 
-- (BOOL)percentage:(double)a3 differsFrom:(double)a4
+- (BOOL)percentage:(double)percentage differsFrom:(double)from
 {
-  v4 = a3 - a4;
+  v4 = percentage - from;
   if (v4 < 0.0)
   {
     v4 = -v4;
@@ -310,19 +310,19 @@
   return v4 >= 1.0;
 }
 
-- (BOOL)temperature:(id)a3 differsFrom:(id)a4
+- (BOOL)temperature:(id)temperature differsFrom:(id)from
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  temperatureCopy = temperature;
+  fromCopy = from;
+  v7 = fromCopy;
+  if (temperatureCopy | fromCopy)
   {
     v8 = 1;
-    if (v5 && v6)
+    if (temperatureCopy && fromCopy)
     {
-      if (__ROR8__(0x8F5C28F5C28F5C29 * [v5 integerValue] + 0x51EB851EB851EB8, 2) > 0x28F5C28F5C28F5CuLL || __ROR8__(0x51EB851EB851EB8 - 0x70A3D70A3D70A3D7 * objc_msgSend(v7, "integerValue"), 2) <= 0x28F5C28F5C28F5CuLL)
+      if (__ROR8__(0x8F5C28F5C28F5C29 * [temperatureCopy integerValue] + 0x51EB851EB851EB8, 2) > 0x28F5C28F5C28F5CuLL || __ROR8__(0x51EB851EB851EB8 - 0x70A3D70A3D70A3D7 * objc_msgSend(v7, "integerValue"), 2) <= 0x28F5C28F5C28F5CuLL)
       {
-        [v5 doubleValue];
+        [temperatureCopy doubleValue];
         v10 = v9;
         [v7 doubleValue];
         v12 = v10 - v11;
@@ -349,24 +349,24 @@
   return v8;
 }
 
-- (BOOL)voltage:(id)a3 differsFrom:(id)a4
+- (BOOL)voltage:(id)voltage differsFrom:(id)from
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  voltageCopy = voltage;
+  fromCopy = from;
+  v7 = fromCopy;
+  if (voltageCopy | fromCopy)
   {
     v8 = 1;
-    if (v5 && v6)
+    if (voltageCopy && fromCopy)
     {
-      if (__ROR8__(0x8F5C28F5C28F5C29 * [v5 integerValue] + 0x51EB851EB851EB8, 1) > 0x51EB851EB851EB8uLL || __ROR8__(0x8F5C28F5C28F5C29 * objc_msgSend(v7, "integerValue") + 0x51EB851EB851EB8, 1) <= 0x51EB851EB851EB8uLL)
+      if (__ROR8__(0x8F5C28F5C28F5C29 * [voltageCopy integerValue] + 0x51EB851EB851EB8, 1) > 0x51EB851EB851EB8uLL || __ROR8__(0x8F5C28F5C28F5C29 * objc_msgSend(v7, "integerValue") + 0x51EB851EB851EB8, 1) <= 0x51EB851EB851EB8uLL)
       {
-        v9 = [v5 integerValue];
-        v10 = [v7 integerValue];
-        v11 = v9 - v10;
-        if (v9 - v10 < 0)
+        integerValue = [voltageCopy integerValue];
+        integerValue2 = [v7 integerValue];
+        v11 = integerValue - integerValue2;
+        if (integerValue - integerValue2 < 0)
         {
-          v11 = v10 - v9;
+          v11 = integerValue2 - integerValue;
         }
 
         v8 = v11 > 0x63;
@@ -387,96 +387,96 @@
   return v8;
 }
 
-- (BOOL)fullyCharged:(id)a3 differsFrom:(id)a4
+- (BOOL)fullyCharged:(id)charged differsFrom:(id)from
 {
-  v5 = a4;
-  LOBYTE(a3) = [a3 BOOLValue];
-  v6 = [v5 BOOLValue];
+  fromCopy = from;
+  LOBYTE(charged) = [charged BOOLValue];
+  bOOLValue = [fromCopy BOOLValue];
 
-  return a3 ^ v6;
+  return charged ^ bOOLValue;
 }
 
-- (BOOL)isCharging:(id)a3 differsFrom:(id)a4
+- (BOOL)isCharging:(id)charging differsFrom:(id)from
 {
-  v5 = a4;
-  LOBYTE(a3) = [a3 BOOLValue];
-  v6 = [v5 BOOLValue];
+  fromCopy = from;
+  LOBYTE(charging) = [charging BOOLValue];
+  bOOLValue = [fromCopy BOOLValue];
 
-  return a3 ^ v6;
+  return charging ^ bOOLValue;
 }
 
-- (BOOL)externalConnected:(id)a3 differsFrom:(id)a4
+- (BOOL)externalConnected:(id)connected differsFrom:(id)from
 {
-  v5 = a4;
-  LOBYTE(a3) = [a3 BOOLValue];
-  v6 = [v5 BOOLValue];
+  fromCopy = from;
+  LOBYTE(connected) = [connected BOOLValue];
+  bOOLValue = [fromCopy BOOLValue];
 
-  return a3 ^ v6;
+  return connected ^ bOOLValue;
 }
 
-- (BOOL)adapterType:(id)a3 differsFrom:(id)a4
+- (BOOL)adapterType:(id)type differsFrom:(id)from
 {
-  v5 = a4;
-  v6 = [a3 integerValue];
-  v7 = [v5 integerValue];
+  fromCopy = from;
+  integerValue = [type integerValue];
+  integerValue2 = [fromCopy integerValue];
 
-  return v6 != v7;
+  return integerValue != integerValue2;
 }
 
-- (BOOL)newBatteryState:(id)a3 differsSignificantlyFromState:(id)a4 currentBatteryPercentage:(double)a5 previousBatteryPercentage:(double)a6
+- (BOOL)newBatteryState:(id)state differsSignificantlyFromState:(id)fromState currentBatteryPercentage:(double)percentage previousBatteryPercentage:(double)batteryPercentage
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10 | v11)
+  stateCopy = state;
+  fromStateCopy = fromState;
+  v12 = fromStateCopy;
+  if (stateCopy | fromStateCopy)
   {
     v13 = 1;
-    if (v10 && v11)
+    if (stateCopy && fromStateCopy)
     {
-      v48 = [(_DKBatteryMonitor *)self percentage:a5 differsFrom:a6];
-      v14 = [MEMORY[0x277CFE338] batteryTemperatureKey];
-      v15 = [v10 objectForKeyedSubscript:v14];
-      v16 = [MEMORY[0x277CFE338] batteryTemperatureKey];
-      v17 = [v12 objectForKeyedSubscript:v16];
+      v48 = [(_DKBatteryMonitor *)self percentage:percentage differsFrom:batteryPercentage];
+      batteryTemperatureKey = [MEMORY[0x277CFE338] batteryTemperatureKey];
+      v15 = [stateCopy objectForKeyedSubscript:batteryTemperatureKey];
+      batteryTemperatureKey2 = [MEMORY[0x277CFE338] batteryTemperatureKey];
+      v17 = [v12 objectForKeyedSubscript:batteryTemperatureKey2];
       v47 = [(_DKBatteryMonitor *)self temperature:v15 differsFrom:v17];
 
-      v18 = [MEMORY[0x277CFE338] batteryVoltageKey];
-      v19 = [v10 objectForKeyedSubscript:v18];
-      v20 = [MEMORY[0x277CFE338] batteryVoltageKey];
-      v21 = [v12 objectForKeyedSubscript:v20];
+      batteryVoltageKey = [MEMORY[0x277CFE338] batteryVoltageKey];
+      v19 = [stateCopy objectForKeyedSubscript:batteryVoltageKey];
+      batteryVoltageKey2 = [MEMORY[0x277CFE338] batteryVoltageKey];
+      v21 = [v12 objectForKeyedSubscript:batteryVoltageKey2];
       v46 = [(_DKBatteryMonitor *)self voltage:v19 differsFrom:v21];
 
-      v22 = [MEMORY[0x277CFE338] batteryFullyChargedKey];
-      v23 = [v10 objectForKeyedSubscript:v22];
-      v24 = [MEMORY[0x277CFE338] batteryFullyChargedKey];
-      v25 = [v12 objectForKeyedSubscript:v24];
+      batteryFullyChargedKey = [MEMORY[0x277CFE338] batteryFullyChargedKey];
+      v23 = [stateCopy objectForKeyedSubscript:batteryFullyChargedKey];
+      batteryFullyChargedKey2 = [MEMORY[0x277CFE338] batteryFullyChargedKey];
+      v25 = [v12 objectForKeyedSubscript:batteryFullyChargedKey2];
       v45 = [(_DKBatteryMonitor *)self fullyCharged:v23 differsFrom:v25];
 
-      v26 = [MEMORY[0x277CFE338] batteryIsChargingKey];
-      v27 = [v10 objectForKeyedSubscript:v26];
-      v28 = [MEMORY[0x277CFE338] batteryIsChargingKey];
-      v29 = [v12 objectForKeyedSubscript:v28];
+      batteryIsChargingKey = [MEMORY[0x277CFE338] batteryIsChargingKey];
+      v27 = [stateCopy objectForKeyedSubscript:batteryIsChargingKey];
+      batteryIsChargingKey2 = [MEMORY[0x277CFE338] batteryIsChargingKey];
+      v29 = [v12 objectForKeyedSubscript:batteryIsChargingKey2];
       v44 = [(_DKBatteryMonitor *)self isCharging:v27 differsFrom:v29];
 
-      v30 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
-      v31 = [v10 objectForKeyedSubscript:v30];
-      v32 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
-      v33 = [v12 objectForKeyedSubscript:v32];
+      batteryExternalConnectedKey = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
+      v31 = [stateCopy objectForKeyedSubscript:batteryExternalConnectedKey];
+      batteryExternalConnectedKey2 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
+      v33 = [v12 objectForKeyedSubscript:batteryExternalConnectedKey2];
       LOBYTE(v27) = [(_DKBatteryMonitor *)self externalConnected:v31 differsFrom:v33];
 
-      v34 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
-      v35 = [v10 objectForKeyedSubscript:v34];
-      v36 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
-      v37 = [v12 objectForKeyedSubscript:v36];
-      LOBYTE(v32) = [(_DKBatteryMonitor *)self externalConnected:v35 differsFrom:v37];
+      batteryRawExternalConnectedKey = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
+      v35 = [stateCopy objectForKeyedSubscript:batteryRawExternalConnectedKey];
+      batteryRawExternalConnectedKey2 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
+      v37 = [v12 objectForKeyedSubscript:batteryRawExternalConnectedKey2];
+      LOBYTE(batteryExternalConnectedKey2) = [(_DKBatteryMonitor *)self externalConnected:v35 differsFrom:v37];
 
-      v38 = [MEMORY[0x277CFE338] batteryAdapterTypeKey];
-      v39 = [v10 objectForKeyedSubscript:v38];
-      v40 = [MEMORY[0x277CFE338] batteryAdapterTypeKey];
-      v41 = [v12 objectForKeyedSubscript:v40];
+      batteryAdapterTypeKey = [MEMORY[0x277CFE338] batteryAdapterTypeKey];
+      v39 = [stateCopy objectForKeyedSubscript:batteryAdapterTypeKey];
+      batteryAdapterTypeKey2 = [MEMORY[0x277CFE338] batteryAdapterTypeKey];
+      v41 = [v12 objectForKeyedSubscript:batteryAdapterTypeKey2];
       v42 = [(_DKBatteryMonitor *)self adapterType:v39 differsFrom:v41];
 
-      v13 = (v48 || v47 || v46 || v45) | v44 | v27 | v32 | v42;
+      v13 = (v48 || v47 || v46 || v45) | v44 | v27 | batteryExternalConnectedKey2 | v42;
     }
   }
 
@@ -497,8 +497,8 @@
   }
 
   v3 = v2;
-  v4 = [MEMORY[0x277CFE0C8] contextChannel];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  contextChannel = [MEMORY[0x277CFE0C8] contextChannel];
+  if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_ERROR))
   {
     [(_DKBatteryMonitor *)v3 currentBatteryPercentage];
   }
@@ -506,25 +506,25 @@
   return -1.0;
 }
 
-- (double)batteryPercentageFromPowerSourceDictionary:(id)a3
+- (double)batteryPercentageFromPowerSourceDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"MaxCapacity"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"MaxCapacity"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"CurrentCapacity"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"CurrentCapacity"];
     [v5 doubleValue];
     v7 = v6 * 100.0;
-    v8 = [v3 objectForKeyedSubscript:@"MaxCapacity"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"MaxCapacity"];
     [v8 doubleValue];
     v10 = v7 / v9;
   }
 
   else
   {
-    v11 = [MEMORY[0x277CFE0C8] contextChannel];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    contextChannel = [MEMORY[0x277CFE0C8] contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_ERROR))
     {
       [_DKBatteryMonitor batteryPercentageFromPowerSourceDictionary:];
     }
@@ -535,141 +535,141 @@
   return v10;
 }
 
-- (BOOL)fullyChargedFromPowerSourceDictionary:(id)a3
+- (BOOL)fullyChargedFromPowerSourceDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"FullyCharged"];
-  v4 = [v3 BOOLValue];
+  v3 = [dictionary objectForKeyedSubscript:@"FullyCharged"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)updateBatteryStateDictionary:(id)a3 currentBatteryPercentage:(double)a4
+- (void)updateBatteryStateDictionary:(id)dictionary currentBatteryPercentage:(double)percentage
 {
-  v63 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_autoreleasePoolPush();
-  v8 = [v63 objectForKeyedSubscript:@"ExternalConnected"];
-  v9 = [v8 BOOLValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"ExternalConnected"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4 > 0.0)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (percentage > 0.0)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    v12 = [MEMORY[0x277CFE338] batteryPercentageKey];
-    [v10 setObject:v11 forKeyedSubscript:v12];
+    v11 = [MEMORY[0x277CCABB0] numberWithDouble:percentage];
+    batteryPercentageKey = [MEMORY[0x277CFE338] batteryPercentageKey];
+    [dictionary setObject:v11 forKeyedSubscript:batteryPercentageKey];
   }
 
-  v13 = [v63 objectForKeyedSubscript:@"Voltage"];
-  v14 = [MEMORY[0x277CFE338] batteryVoltageKey];
-  [v10 setObject:v13 forKeyedSubscript:v14];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"Voltage"];
+  batteryVoltageKey = [MEMORY[0x277CFE338] batteryVoltageKey];
+  [dictionary setObject:v13 forKeyedSubscript:batteryVoltageKey];
 
-  v15 = [v63 objectForKeyedSubscript:@"Temperature"];
-  v16 = [MEMORY[0x277CFE338] batteryTemperatureKey];
-  [v10 setObject:v15 forKeyedSubscript:v16];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"Temperature"];
+  batteryTemperatureKey = [MEMORY[0x277CFE338] batteryTemperatureKey];
+  [dictionary setObject:v15 forKeyedSubscript:batteryTemperatureKey];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:v9];
-  v18 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
-  [v10 setObject:v17 forKeyedSubscript:v18];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+  batteryExternalConnectedKey = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
+  [dictionary setObject:v17 forKeyedSubscript:batteryExternalConnectedKey];
 
-  v19 = [v63 objectForKeyedSubscript:@"AppleRawExternalConnected"];
-  v20 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
-  [v10 setObject:v19 forKeyedSubscript:v20];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"AppleRawExternalConnected"];
+  batteryRawExternalConnectedKey = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
+  [dictionary setObject:v19 forKeyedSubscript:batteryRawExternalConnectedKey];
 
-  v21 = [v63 objectForKeyedSubscript:@"FullyCharged"];
-  v22 = [MEMORY[0x277CFE338] batteryFullyChargedKey];
-  [v10 setObject:v21 forKeyedSubscript:v22];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"FullyCharged"];
+  batteryFullyChargedKey = [MEMORY[0x277CFE338] batteryFullyChargedKey];
+  [dictionary setObject:v21 forKeyedSubscript:batteryFullyChargedKey];
 
-  v23 = [v63 objectForKeyedSubscript:@"IsCharging"];
-  v24 = [MEMORY[0x277CFE338] batteryIsChargingKey];
-  [v10 setObject:v23 forKeyedSubscript:v24];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"IsCharging"];
+  batteryIsChargingKey = [MEMORY[0x277CFE338] batteryIsChargingKey];
+  [dictionary setObject:v23 forKeyedSubscript:batteryIsChargingKey];
   context = v7;
 
-  previousBatteryState = v6->_previousBatteryState;
-  v26 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
-  v27 = [(NSDictionary *)previousBatteryState objectForKeyedSubscript:v26];
+  previousBatteryState = selfCopy->_previousBatteryState;
+  batteryExternalConnectedKey2 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
+  v27 = [(NSDictionary *)previousBatteryState objectForKeyedSubscript:batteryExternalConnectedKey2];
 
-  if (v27 && ([MEMORY[0x277CFE338] batteryExternalConnectedKey], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", v28), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isEqual:", v27), v29, v28, (v30 & 1) != 0))
+  if (v27 && ([MEMORY[0x277CFE338] batteryExternalConnectedKey], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dictionary, "objectForKeyedSubscript:", v28), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isEqual:", v27), v29, v28, (v30 & 1) != 0))
   {
-    v31 = v6->_previousBatteryState;
-    v32 = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
-    v33 = [(NSDictionary *)v31 objectForKeyedSubscript:v32];
-    v34 = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
-    [v10 setObject:v33 forKeyedSubscript:v34];
+    v31 = selfCopy->_previousBatteryState;
+    batteryExternalConnectedChangeDateKey = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
+    batteryExternalConnectedChangeDateKey3 = [(NSDictionary *)v31 objectForKeyedSubscript:batteryExternalConnectedChangeDateKey];
+    batteryExternalConnectedChangeDateKey2 = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
+    [dictionary setObject:batteryExternalConnectedChangeDateKey3 forKeyedSubscript:batteryExternalConnectedChangeDateKey2];
   }
 
   else
   {
-    v32 = [MEMORY[0x277CBEAA8] date];
-    v33 = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
-    [v10 setObject:v32 forKeyedSubscript:v33];
+    batteryExternalConnectedChangeDateKey = [MEMORY[0x277CBEAA8] date];
+    batteryExternalConnectedChangeDateKey3 = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
+    [dictionary setObject:batteryExternalConnectedChangeDateKey forKeyedSubscript:batteryExternalConnectedChangeDateKey3];
   }
 
-  v35 = v6->_previousBatteryState;
-  v36 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
-  v37 = [(NSDictionary *)v35 objectForKeyedSubscript:v36];
+  v35 = selfCopy->_previousBatteryState;
+  batteryRawExternalConnectedKey2 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
+  v37 = [(NSDictionary *)v35 objectForKeyedSubscript:batteryRawExternalConnectedKey2];
 
-  if (v37 && ([MEMORY[0x277CFE338] batteryRawExternalConnectedKey], v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", v38), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "isEqual:", v37), v39, v38, (v40 & 1) != 0))
+  if (v37 && ([MEMORY[0x277CFE338] batteryRawExternalConnectedKey], v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dictionary, "objectForKeyedSubscript:", v38), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "isEqual:", v37), v39, v38, (v40 & 1) != 0))
   {
-    v41 = v6->_previousBatteryState;
-    v42 = [MEMORY[0x277CFE338] batteryRawExternalConnectedChangeDateKey];
-    v43 = [(NSDictionary *)v41 objectForKeyedSubscript:v42];
-    v44 = [MEMORY[0x277CFE338] batteryRawExternalConnectedChangeDateKey];
-    [v10 setObject:v43 forKeyedSubscript:v44];
+    v41 = selfCopy->_previousBatteryState;
+    batteryRawExternalConnectedChangeDateKey = [MEMORY[0x277CFE338] batteryRawExternalConnectedChangeDateKey];
+    batteryRawExternalConnectedChangeDateKey3 = [(NSDictionary *)v41 objectForKeyedSubscript:batteryRawExternalConnectedChangeDateKey];
+    batteryRawExternalConnectedChangeDateKey2 = [MEMORY[0x277CFE338] batteryRawExternalConnectedChangeDateKey];
+    [dictionary setObject:batteryRawExternalConnectedChangeDateKey3 forKeyedSubscript:batteryRawExternalConnectedChangeDateKey2];
   }
 
   else
   {
-    v42 = [MEMORY[0x277CBEAA8] date];
-    v43 = [MEMORY[0x277CFE338] batteryRawExternalConnectedChangeDateKey];
-    [v10 setObject:v42 forKeyedSubscript:v43];
+    batteryRawExternalConnectedChangeDateKey = [MEMORY[0x277CBEAA8] date];
+    batteryRawExternalConnectedChangeDateKey3 = [MEMORY[0x277CFE338] batteryRawExternalConnectedChangeDateKey];
+    [dictionary setObject:batteryRawExternalConnectedChangeDateKey forKeyedSubscript:batteryRawExternalConnectedChangeDateKey3];
   }
 
-  v45 = [v63 objectForKeyedSubscript:@"BatteryInstalled"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"BatteryInstalled"];
 
   if (!v45)
   {
-    v46 = [MEMORY[0x277CFE338] batteryPercentageKey];
-    [v10 setObject:&unk_2838F7890 forKeyedSubscript:v46];
+    batteryPercentageKey2 = [MEMORY[0x277CFE338] batteryPercentageKey];
+    [dictionary setObject:&unk_2838F7890 forKeyedSubscript:batteryPercentageKey2];
 
-    v47 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
-    [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v47];
+    batteryExternalConnectedKey3 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:batteryExternalConnectedKey3];
 
-    v48 = [MEMORY[0x277CBEAA8] distantPast];
-    v49 = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
-    [v10 setObject:v48 forKeyedSubscript:v49];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    batteryExternalConnectedChangeDateKey4 = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
+    [dictionary setObject:distantPast forKeyedSubscript:batteryExternalConnectedChangeDateKey4];
 
-    v50 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
-    [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v50];
+    batteryRawExternalConnectedKey3 = [MEMORY[0x277CFE338] batteryRawExternalConnectedKey];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:batteryRawExternalConnectedKey3];
 
-    v51 = [MEMORY[0x277CBEAA8] distantPast];
-    v52 = [MEMORY[0x277CFE338] batteryRawExternalConnectedChangeDateKey];
-    [v10 setObject:v51 forKeyedSubscript:v52];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+    batteryRawExternalConnectedChangeDateKey4 = [MEMORY[0x277CFE338] batteryRawExternalConnectedChangeDateKey];
+    [dictionary setObject:distantPast2 forKeyedSubscript:batteryRawExternalConnectedChangeDateKey4];
 
-    v53 = [MEMORY[0x277CFE338] batteryFullyChargedKey];
-    [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v53];
+    batteryFullyChargedKey2 = [MEMORY[0x277CFE338] batteryFullyChargedKey];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:batteryFullyChargedKey2];
   }
 
-  v54 = [v63 objectForKeyedSubscript:@"AdapterDetails"];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"AdapterDetails"];
   v55 = [v54 objectForKeyedSubscript:@"FamilyCode"];
-  v56 = [MEMORY[0x277CFE338] batteryAdapterTypeKey];
-  [v10 setObject:v55 forKeyedSubscript:v56];
+  batteryAdapterTypeKey = [MEMORY[0x277CFE338] batteryAdapterTypeKey];
+  [dictionary setObject:v55 forKeyedSubscript:batteryAdapterTypeKey];
 
   v57 = [v54 objectForKeyedSubscript:@"IsWireless"];
-  v58 = [MEMORY[0x277CFE338] batteryAdapterIsWirelessKey];
-  [v10 setObject:v57 forKeyedSubscript:v58];
+  batteryAdapterIsWirelessKey = [MEMORY[0x277CFE338] batteryAdapterIsWirelessKey];
+  [dictionary setObject:v57 forKeyedSubscript:batteryAdapterIsWirelessKey];
 
-  if ([(_DKBatteryMonitor *)v6 newBatteryState:v10 differsSignificantlyFromState:v6->_previousBatteryState currentBatteryPercentage:a4 previousBatteryPercentage:v6->_previousPercentage])
+  if ([(_DKBatteryMonitor *)selfCopy newBatteryState:dictionary differsSignificantlyFromState:selfCopy->_previousBatteryState currentBatteryPercentage:percentage previousBatteryPercentage:selfCopy->_previousPercentage])
   {
-    objc_storeStrong(&v6->_previousBatteryState, v10);
-    v59 = v6->_previousBatteryState;
-    v60 = [MEMORY[0x277CFE318] userContext];
-    v61 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-    [v60 setObject:v59 forKeyedSubscript:v61];
+    objc_storeStrong(&selfCopy->_previousBatteryState, dictionary);
+    v59 = selfCopy->_previousBatteryState;
+    userContext = [MEMORY[0x277CFE318] userContext];
+    keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+    [userContext setObject:v59 forKeyedSubscript:keyPathForBatteryStateDataDictionary];
   }
 
   objc_autoreleasePoolPop(context);
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)getBatteryProperties
@@ -683,7 +683,7 @@
 - (void)currentBatteryPercentage
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCABB0] numberWithInt:a1];
+  v3 = [MEMORY[0x277CCABB0] numberWithInt:self];
   v5 = 138412290;
   v6 = v3;
   _os_log_error_impl(&dword_22595A000, a2, OS_LOG_TYPE_ERROR, "Unable to get valid battery level: %@", &v5, 0xCu);

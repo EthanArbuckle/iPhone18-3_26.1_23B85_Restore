@@ -1,14 +1,14 @@
 @interface DDDevicePickerViewControllerTV
 + (uint64_t)isSupportedForBrowseDescriptor:parameters:;
-- (DDDevicePickerViewControllerTV)initWithBrowseDescriptor:(id)a3 parameters:(id)a4;
+- (DDDevicePickerViewControllerTV)initWithBrowseDescriptor:(id)descriptor parameters:(id)parameters;
 - (id)_errorForDismissResult:(void *)error_with_inferred_domain;
-- (void)_invokeCompletionWithEndpoint:(void *)a3 orError:;
+- (void)_invokeCompletionWithEndpoint:(void *)endpoint orError:;
 - (void)_setupScene;
 - (void)_tearDownScene;
 - (void)dealloc;
-- (void)scene:(id)a3 didReceiveActions:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4;
+- (void)scene:(id)scene didReceiveActions:(id)actions;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error;
 @end
 
 @implementation DDDevicePickerViewControllerTV
@@ -30,10 +30,10 @@ void __76__DDDevicePickerViewControllerTV_isSupportedForBrowseDescriptor_paramet
   isSupportedForBrowseDescriptor_parameters__isSupported_0 = [v0 isEqual:{@"AppleTV5, 3"}] ^ 1;
 }
 
-- (DDDevicePickerViewControllerTV)initWithBrowseDescriptor:(id)a3 parameters:(id)a4
+- (DDDevicePickerViewControllerTV)initWithBrowseDescriptor:(id)descriptor parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  parametersCopy = parameters;
   v13.receiver = self;
   v13.super_class = DDDevicePickerViewControllerTV;
   v9 = [(DDDevicePickerViewControllerTV *)&v13 initWithNibName:0 bundle:0];
@@ -49,7 +49,7 @@ void __76__DDDevicePickerViewControllerTV_isSupportedForBrowseDescriptor_paramet
         }
 
         objc_storeStrong(&v9->_sceneWorkspace, initWithBrowseDescriptor_parameters__sceneWorkspace);
-        objc_storeStrong(&v9->_browseDescriptor, a3);
+        objc_storeStrong(&v9->_browseDescriptor, descriptor);
         [(DDDevicePickerViewControllerTV *)v9 setModalPresentationStyle:5];
         goto LABEL_7;
       }
@@ -66,7 +66,7 @@ void __76__DDDevicePickerViewControllerTV_isSupportedForBrowseDescriptor_paramet
       v11 = _DDUICoreLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [DDDevicePickerSceneViewController initWithBrowseDescriptor:v7 parameters:v11];
+        [DDDevicePickerSceneViewController initWithBrowseDescriptor:descriptorCopy parameters:v11];
       }
     }
 
@@ -96,12 +96,12 @@ uint64_t __70__DDDevicePickerViewControllerTV_initWithBrowseDescriptor_parameter
   sceneWorkspace = self->_sceneWorkspace;
   self->_sceneWorkspace = 0;
 
-  v4 = [(DDDevicePickerViewControllerTV *)self focusDeferralAssertion];
+  focusDeferralAssertion = [(DDDevicePickerViewControllerTV *)self focusDeferralAssertion];
 
-  if (v4)
+  if (focusDeferralAssertion)
   {
-    v5 = [(DDDevicePickerViewControllerTV *)self focusDeferralAssertion];
-    [v5 invalidate];
+    focusDeferralAssertion2 = [(DDDevicePickerViewControllerTV *)self focusDeferralAssertion];
+    [focusDeferralAssertion2 invalidate];
 
     focusDeferralAssertion = self->_focusDeferralAssertion;
     self->_focusDeferralAssertion = 0;
@@ -234,17 +234,17 @@ LABEL_7:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error
 {
-  v6 = a4;
-  if (self->_scene == a3 && ![(DDDevicePickerViewControllerTV *)self wasInvalidated])
+  errorCopy = error;
+  if (self->_scene == deactivate && ![(DDDevicePickerViewControllerTV *)self wasInvalidated])
   {
-    if (v6)
+    if (errorCopy)
     {
       v7 = _DDUICoreLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [(DDDevicePickerViewControllerTV *)self sceneDidDeactivate:v6 withError:v7];
+        [(DDDevicePickerViewControllerTV *)self sceneDidDeactivate:errorCopy withError:v7];
       }
     }
 
@@ -255,17 +255,17 @@ LABEL_7:
   }
 }
 
-- (void)scene:(id)a3 didReceiveActions:(id)a4
+- (void)scene:(id)scene didReceiveActions:(id)actions
 {
   v25 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  actionsCopy = actions;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
+  v7 = actionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v8)
   {
@@ -319,35 +319,35 @@ LABEL_7:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = [a3 clientSettings];
-  v8 = [v7 endpointUUID];
-  v9 = [v7 agentUUID];
-  if (v8 | v9)
+  clientSettings = [scene clientSettings];
+  endpointUUID = [clientSettings endpointUUID];
+  agentUUID = [clientSettings agentUUID];
+  if (endpointUUID | agentUUID)
   {
     v10 = _DDUICoreLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v8;
+      v19 = endpointUUID;
       v20 = 2112;
-      v21 = v9;
+      v21 = agentUUID;
       _os_log_impl(&dword_238060000, v10, OS_LOG_TYPE_DEFAULT, "%@ Did receive endpoint UUID %@ agent UUID %@", buf, 0x20u);
     }
 
-    if (v8 && v9)
+    if (endpointUUID && agentUUID)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __108__DDDevicePickerViewControllerTV_scene_didUpdateClientSettingsWithDiff_oldClientSettings_transitionContext___block_invoke;
       block[3] = &unk_278A484E0;
-      v13 = v8;
-      v14 = v9;
-      v15 = self;
+      v13 = endpointUUID;
+      v14 = agentUUID;
+      selfCopy2 = self;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
@@ -358,33 +358,33 @@ LABEL_7:
 - (void)_tearDownScene
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = _DDUICoreLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = a1[128];
+      v3 = self[128];
       v8 = 138412546;
       v9 = v3;
       v10 = 1024;
-      v11 = [v3 isValid];
+      isValid = [v3 isValid];
       _os_log_impl(&dword_238060000, v2, OS_LOG_TYPE_DEFAULT, "Destroying scene %@ isValid? %d", &v8, 0x12u);
     }
 
-    [a1 setWasInvalidated:1];
-    v4 = [a1 focusDeferralAssertion];
-    [v4 invalidate];
+    [self setWasInvalidated:1];
+    focusDeferralAssertion = [self focusDeferralAssertion];
+    [focusDeferralAssertion invalidate];
 
-    [a1 setFocusDeferralAssertion:0];
-    [a1[129] invalidate];
-    v5 = a1[129];
-    a1[129] = 0;
+    [self setFocusDeferralAssertion:0];
+    [self[129] invalidate];
+    v5 = self[129];
+    self[129] = 0;
 
-    [a1[128] setDelegate:0];
-    [a1[128] removeObserver:a1];
-    [a1[128] invalidate];
-    v6 = a1[128];
-    a1[128] = 0;
+    [self[128] setDelegate:0];
+    [self[128] removeObserver:self];
+    [self[128] invalidate];
+    v6 = self[128];
+    self[128] = 0;
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -392,56 +392,56 @@ LABEL_7:
 
 - (void)_setupScene
 {
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x277CCACA8];
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v2 stringWithFormat:@"scene::OneAPI::%@", v4];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [v2 stringWithFormat:@"scene::OneAPI::%@", bundleIdentifier];
 
     v6 = OUTLINED_FUNCTION_0_0();
     if (!v6)
     {
-      v7 = *(a1 + 1016);
+      v7 = *(self + 1016);
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __45__DDDevicePickerViewControllerTV__setupScene__block_invoke;
       v28[3] = &unk_278A483E0;
       v29 = v5;
       v8 = [v7 createScene:v28];
-      v9 = *(a1 + 1024);
-      *(a1 + 1024) = v8;
+      v9 = *(self + 1024);
+      *(self + 1024) = v8;
 
-      [OUTLINED_FUNCTION_0_0() setDelegate:a1];
-      [OUTLINED_FUNCTION_0_0() addObserver:a1];
+      [OUTLINED_FUNCTION_0_0() setDelegate:self];
+      [OUTLINED_FUNCTION_0_0() addObserver:self];
       v10 = OUTLINED_FUNCTION_0_0();
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __45__DDDevicePickerViewControllerTV__setupScene__block_invoke_2;
       v27[3] = &unk_278A48450;
-      v27[4] = a1;
+      v27[4] = self;
       [v10 configureParameters:v27];
-      v11 = [OUTLINED_FUNCTION_0_0() uiPresentationManager];
-      v12 = [v11 createPresenterWithIdentifier:@"default"];
-      v13 = *(a1 + 1032);
-      *(a1 + 1032) = v12;
+      uiPresentationManager = [OUTLINED_FUNCTION_0_0() uiPresentationManager];
+      v12 = [uiPresentationManager createPresenterWithIdentifier:@"default"];
+      v13 = *(self + 1032);
+      *(self + 1032) = v12;
 
-      [*(a1 + 1032) modifyPresentationContext:&__block_literal_global_44];
-      [*(a1 + 1032) activate];
-      v14 = [*(a1 + 1032) presentationView];
-      v15 = [a1 view];
-      [v15 insertSubview:v14 atIndex:0];
+      [*(self + 1032) modifyPresentationContext:&__block_literal_global_44];
+      [*(self + 1032) activate];
+      presentationView = [*(self + 1032) presentationView];
+      view = [self view];
+      [view insertSubview:presentationView atIndex:0];
 
-      v16 = [a1 view];
-      [v16 setNeedsLayout];
+      view2 = [self view];
+      [view2 setNeedsLayout];
 
-      [v14 setClipsToBounds:1];
-      v17 = [v14 layer];
-      [v17 setName:@"Scene View"];
+      [presentationView setClipsToBounds:1];
+      layer = [presentationView layer];
+      [layer setName:@"Scene View"];
 
-      v18 = *(a1 + 1040);
-      *(a1 + 1040) = v14;
-      v19 = v14;
+      v18 = *(self + 1040);
+      *(self + 1040) = presentationView;
+      v19 = presentationView;
 
       if (_UISolariumEnabled())
       {
@@ -457,12 +457,12 @@ LABEL_7:
       v22 = objc_alloc(MEMORY[0x277D75D68]);
 
       v23 = [v22 initWithEffect:v21];
-      v24 = [a1 view];
-      [v24 bounds];
+      view3 = [self view];
+      [view3 bounds];
       [v23 setFrame:?];
 
-      v25 = [a1 view];
-      [v25 insertSubview:v23 atIndex:0];
+      view4 = [self view];
+      [view4 insertSubview:v23 atIndex:0];
 
       v6 = OUTLINED_FUNCTION_0_0();
     }
@@ -471,10 +471,10 @@ LABEL_7:
     v26[1] = 3221225472;
     v26[2] = __45__DDDevicePickerViewControllerTV__setupScene__block_invoke_7;
     v26[3] = &unk_278A484B8;
-    v26[4] = a1;
+    v26[4] = self;
     [v6 performUpdate:&__block_literal_global_52 withCompletion:v26];
     [OUTLINED_FUNCTION_0_0() activateWithTransitionContext:0];
-    [a1 setWasInvalidated:0];
+    [self setWasInvalidated:0];
   }
 }
 
@@ -489,37 +489,37 @@ LABEL_7:
   return error_with_inferred_domain;
 }
 
-- (void)_invokeCompletionWithEndpoint:(void *)a3 orError:
+- (void)_invokeCompletionWithEndpoint:(void *)endpoint orError:
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  endpointCopy = endpoint;
+  if (self)
   {
-    v7 = [a1 devicePickerCompletionHandler];
-    if (v7)
+    devicePickerCompletionHandler = [self devicePickerCompletionHandler];
+    if (devicePickerCompletionHandler)
     {
-      v8 = v7;
-      v9 = [a1 finishedVendingEndpoint];
+      v8 = devicePickerCompletionHandler;
+      finishedVendingEndpoint = [self finishedVendingEndpoint];
 
-      if ((v9 & 1) == 0)
+      if ((finishedVendingEndpoint & 1) == 0)
       {
         v10 = _DDUICoreLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v13 = 134218498;
-          v14 = a1;
+          selfCopy = self;
           v15 = 2112;
           v16 = v5;
           v17 = 2112;
-          v18 = v6;
+          v18 = endpointCopy;
           _os_log_impl(&dword_238060000, v10, OS_LOG_TYPE_DEFAULT, "%p Invoking completion, with endpoint %@ or error %@", &v13, 0x20u);
         }
 
-        v11 = [a1 devicePickerCompletionHandler];
-        (v11)[2](v11, v5, v6);
+        devicePickerCompletionHandler2 = [self devicePickerCompletionHandler];
+        (devicePickerCompletionHandler2)[2](devicePickerCompletionHandler2, v5, endpointCopy);
 
-        [a1 setFinishedVendingEndpoint:1];
+        [self setFinishedVendingEndpoint:1];
       }
     }
   }

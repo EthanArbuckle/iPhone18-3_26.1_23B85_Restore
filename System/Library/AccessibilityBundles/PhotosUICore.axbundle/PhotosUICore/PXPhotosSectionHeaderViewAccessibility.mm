@@ -1,5 +1,5 @@
 @interface PXPhotosSectionHeaderViewAccessibility
-- (BOOL)_accessibilitySupportsContentSizeCategory:(id)a3;
+- (BOOL)_accessibilitySupportsContentSizeCategory:(id)category;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (id)automationElements;
@@ -36,11 +36,11 @@
 - (id)accessibilityLabel
 {
   v3 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_dateLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v7 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_locationsLabel"];
-  v10 = [v7 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
   v8 = __UIAXStringForVariables();
 
   return v8;
@@ -68,14 +68,14 @@
 
 - (id)automationElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_titleLabel"];
   v5 = __UIAccessibilitySafeClass();
-  v6 = [v5 isHidden];
+  isHidden = [v5 isHidden];
 
-  if ((v6 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    [v3 axSafelyAddObject:v4];
+    [array axSafelyAddObject:v4];
   }
 
   if (AXDeviceIsPad())
@@ -87,7 +87,7 @@
     if ((v7 & 1) == 0)
     {
       v9 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_locationsLabel"];
-      [v3 axSafelyAddObject:v9];
+      [array axSafelyAddObject:v9];
     }
 
     v10 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_dateLabel"];
@@ -97,7 +97,7 @@
     if ((v10 & 1) == 0)
     {
       v12 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_dateLabel"];
-      [v3 axSafelyAddObject:v12];
+      [array axSafelyAddObject:v12];
     }
 
     v13 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_actionButton"];
@@ -109,7 +109,7 @@
       v15 = @"_actionButton";
 LABEL_16:
       v24 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:v15];
-      [v3 axSafelyAddObject:v24];
+      [array axSafelyAddObject:v24];
     }
   }
 
@@ -122,7 +122,7 @@ LABEL_16:
     if ((v16 & 1) == 0)
     {
       v18 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_actionButton"];
-      [v3 axSafelyAddObject:v18];
+      [array axSafelyAddObject:v18];
     }
 
     v19 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_locationsLabel"];
@@ -132,7 +132,7 @@ LABEL_16:
     if ((v19 & 1) == 0)
     {
       v21 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_locationsLabel"];
-      [v3 axSafelyAddObject:v21];
+      [array axSafelyAddObject:v21];
     }
 
     v22 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_dateLabel"];
@@ -146,13 +146,13 @@ LABEL_16:
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)_accessibilitySupportsContentSizeCategory:(id)a3
+- (BOOL)_accessibilitySupportsContentSizeCategory:(id)category
 {
-  v3 = a3;
-  v4 = ([v3 isEqualToString:*MEMORY[0x29EDC80B8]] & 1) == 0 && UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x29EDC8068]) != NSOrderedDescending;
+  categoryCopy = category;
+  v4 = ([categoryCopy isEqualToString:*MEMORY[0x29EDC80B8]] & 1) == 0 && UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x29EDC8068]) != NSOrderedDescending;
 
   return v4;
 }
@@ -207,17 +207,17 @@ LABEL_16:
   v3 = [(PXPhotosSectionHeaderViewAccessibility *)self safeValueForKey:@"_sectionEndDate"];
   if (v20 && v3)
   {
-    v4 = [MEMORY[0x29EDB8D98] currentCalendar];
-    v5 = [v4 components:28 fromDate:v20];
+    currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+    v5 = [currentCalendar components:28 fromDate:v20];
 
-    v6 = [MEMORY[0x29EDB8D98] currentCalendar];
-    v7 = [v6 components:28 fromDate:v3];
+    currentCalendar2 = [MEMORY[0x29EDB8D98] currentCalendar];
+    v7 = [currentCalendar2 components:28 fromDate:v3];
 
-    v8 = [v5 year];
-    if (v8 == [v7 year] && (v9 = objc_msgSend(v5, "month"), v9 == objc_msgSend(v7, "month")) && (v10 = objc_msgSend(v5, "day"), v10 == objc_msgSend(v7, "day")))
+    year = [v5 year];
+    if (year == [v7 year] && (v9 = objc_msgSend(v5, "month"), v9 == objc_msgSend(v7, "month")) && (v10 = objc_msgSend(v5, "day"), v10 == objc_msgSend(v7, "day")))
     {
-      v11 = [v5 hour];
-      if (v11 != [v7 hour] || (v12 = objc_msgSend(v5, "minute"), v12 != objc_msgSend(v7, "minute")))
+      hour = [v5 hour];
+      if (hour != [v7 hour] || (v12 = objc_msgSend(v5, "minute"), v12 != objc_msgSend(v7, "minute")))
       {
         v19 = MEMORY[0x29EDBA0F8];
         v14 = accessibilityPhotosUICoreLocalizedString(@"photos.taken.date");

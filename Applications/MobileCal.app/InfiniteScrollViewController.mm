@@ -1,74 +1,74 @@
 @interface InfiniteScrollViewController
-+ (BOOL)_view:(id)a3 containsCalendarDate:(id)a4;
-- (BOOL)isDateVisible:(id)a3;
-- (CGPoint)nearestMajorBoundaryForPoint:(CGPoint)a3;
-- (CGPoint)nearestMajorBoundaryForPoint:(CGPoint)a3 date:(id *)a4;
++ (BOOL)_view:(id)_view containsCalendarDate:(id)date;
+- (BOOL)isDateVisible:(id)visible;
+- (CGPoint)nearestMajorBoundaryForPoint:(CGPoint)point;
+- (CGPoint)nearestMajorBoundaryForPoint:(CGPoint)point date:(id *)date;
 - (CGSize)_visibleSize;
-- (InfiniteScrollViewController)initWithCalendarDate:(id)a3 model:(id)a4 window:(id)a5;
+- (InfiniteScrollViewController)initWithCalendarDate:(id)date model:(id)model window:(id)window;
 - (NSString)description;
-- (double)heightForSubviewWithCalendarDate:(id)a3;
-- (double)topInsetForSubviewWithCalendarDate:(id)a3;
+- (double)heightForSubviewWithCalendarDate:(id)date;
+- (double)topInsetForSubviewWithCalendarDate:(id)date;
 - (double)unobstructedScrollViewHeight;
 - (id)_addNewBottomView;
 - (id)_addNewTopView;
 - (id)_lastViewOnScreen;
-- (id)calendarDateForSubviewAboveSubviewWithCalendarDate:(id)a3;
-- (id)calendarDateForSubviewBelowSubviewWithCalendarDate:(id)a3;
+- (id)calendarDateForSubviewAboveSubviewWithCalendarDate:(id)date;
+- (id)calendarDateForSubviewBelowSubviewWithCalendarDate:(id)date;
 - (id)centerViewOnScreen;
-- (id)createInitialViewForDate:(id)a3;
+- (id)createInitialViewForDate:(id)date;
 - (id)dateOfCenterViewInBuffer;
 - (id)dateOfCenterViewOnScreen;
-- (id)dateOfViewInBufferIndexRelativeToCenter:(int64_t)a3;
+- (id)dateOfViewInBufferIndexRelativeToCenter:(int64_t)center;
 - (id)dequeueReusableView;
 - (id)firstViewOnScreen;
-- (id)futureMajorBoundaryCalendarDateForCalendarDate:(id)a3;
-- (id)newBottomViewBelowViewWithCalendarDate:(id)a3;
-- (id)newTopViewAboveViewWithCalendarDate:(id)a3;
-- (id)pastMajorBoundaryCalendarDateForCalendarDate:(id)a3;
-- (id)subviewForDate:(id)a3;
-- (id)subviewForPoint:(CGPoint)a3;
+- (id)futureMajorBoundaryCalendarDateForCalendarDate:(id)date;
+- (id)newBottomViewBelowViewWithCalendarDate:(id)date;
+- (id)newTopViewAboveViewWithCalendarDate:(id)date;
+- (id)pastMajorBoundaryCalendarDateForCalendarDate:(id)date;
+- (id)subviewForDate:(id)date;
+- (id)subviewForPoint:(CGPoint)point;
 - (void)_layoutInitialSubviews;
-- (void)_recenterContentIfNeededWithForce:(BOOL)a3;
+- (void)_recenterContentIfNeededWithForce:(BOOL)force;
 - (void)_removeBottomView;
 - (void)_removeTopView;
-- (void)_setUpInitialViewWithDate:(id)a3;
+- (void)_setUpInitialViewWithDate:(id)date;
 - (void)_updateSelectedDateWithTopView;
 - (void)adjustLoadedViewRange;
-- (void)currentlyVisibleDateRangeFromStartDate:(id *)a3 toEndDate:(id *)a4;
+- (void)currentlyVisibleDateRangeFromStartDate:(id *)date toEndDate:(id *)endDate;
 - (void)didEndScrolling;
-- (void)enumerateScrollViewSubviews:(id)a3;
-- (void)insertViews:(id)a3;
+- (void)enumerateScrollViewSubviews:(id)subviews;
+- (void)insertViews:(id)views;
 - (void)loadView;
-- (void)reinitializeAllViewsWithCalendarDate:(id)a3;
-- (void)reloadDataForViews:(id)a3;
+- (void)reinitializeAllViewsWithCalendarDate:(id)date;
+- (void)reloadDataForViews:(id)views;
 - (void)resizeAllViews;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)showDate:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)showDate:(id)date animated:(BOOL)animated completionBlock:(id)block;
 - (void)showSelectedDateIfNeeded;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation InfiniteScrollViewController
 
-- (InfiniteScrollViewController)initWithCalendarDate:(id)a3 model:(id)a4 window:(id)a5
+- (InfiniteScrollViewController)initWithCalendarDate:(id)date model:(id)model window:(id)window
 {
-  v9 = a3;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = InfiniteScrollViewController;
-  v10 = [(MainViewController *)&v15 initWithWindow:a5 model:a4];
+  v10 = [(MainViewController *)&v15 initWithWindow:window model:model];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_startingDate, a3);
+    objc_storeStrong(&v10->_startingDate, date);
     v12 = objc_alloc_init(NSMutableArray);
     reusableViews = v11->_reusableViews;
     v11->_reusableViews = v12;
@@ -83,10 +83,10 @@
   v10.super_class = InfiniteScrollViewController;
   v3 = [(InfiniteScrollViewController *)&v10 description];
   startingDate = self->_startingDate;
-  v5 = [(MainViewController *)self model];
+  model = [(MainViewController *)self model];
   v6 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)self->_views count]];
   v7 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)self->_reusableViews count]];
-  v8 = [NSString stringWithFormat:@"%@ startingDate: [%@], model: [%@], views: [%@], _reusableViews: [%@]", v3, startingDate, v5, v6, v7];;
+  v8 = [NSString stringWithFormat:@"%@ startingDate: [%@], model: [%@], views: [%@], _reusableViews: [%@]", v3, startingDate, model, v6, v7];;
 
   return v8;
 }
@@ -102,16 +102,16 @@
   scrollView = self->_scrollView;
   self->_scrollView = v4;
 
-  v6 = [(InfiniteScrollViewController *)self scrollView];
-  [v6 setAutoresizingMask:18];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView setAutoresizingMask:18];
 
-  v7 = [(InfiniteScrollViewController *)self scrollView];
-  [(_InfiniteScrollViewController *)v3 setView:v7];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  [(_InfiniteScrollViewController *)v3 setView:scrollView2];
 
   [(InfiniteScrollViewController *)self addChildViewController:v3];
-  v8 = [(InfiniteScrollViewController *)self view];
-  v9 = [(InfiniteScrollViewController *)self scrollView];
-  [v8 addSubview:v9];
+  view = [(InfiniteScrollViewController *)self view];
+  scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+  [view addSubview:scrollView3];
 }
 
 - (void)viewDidLoad
@@ -119,40 +119,40 @@
   v12.receiver = self;
   v12.super_class = InfiniteScrollViewController;
   [(InfiniteScrollViewController *)&v12 viewDidLoad];
-  v3 = [(InfiniteScrollViewController *)self scrollView];
-  [v3 setClipsToBounds:0];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView setClipsToBounds:0];
 
-  v4 = [(InfiniteScrollViewController *)self scrollView];
-  [v4 setContentSize:{200.0, 400000.0}];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView2 setContentSize:{200.0, 400000.0}];
 
-  v5 = [(InfiniteScrollViewController *)self scrollView];
-  [v5 setShowsHorizontalScrollIndicator:0];
+  scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView3 setShowsHorizontalScrollIndicator:0];
 
-  v6 = [(InfiniteScrollViewController *)self scrollView];
-  [v6 setShowsVerticalScrollIndicator:0];
+  scrollView4 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView4 setShowsVerticalScrollIndicator:0];
 
-  v7 = [(InfiniteScrollViewController *)self scrollView];
-  [v7 setScrollsToTop:0];
+  scrollView5 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView5 setScrollsToTop:0];
 
   v8 = +[UIColor systemBackgroundColor];
-  v9 = [(InfiniteScrollViewController *)self scrollView];
-  [v9 setBackgroundColor:v8];
+  scrollView6 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView6 setBackgroundColor:v8];
 
-  v10 = [(InfiniteScrollViewController *)self scrollView];
-  [v10 setBounces:0];
+  scrollView7 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView7 setBounces:0];
 
-  v11 = [(InfiniteScrollViewController *)self scrollView];
-  [v11 setDelegate:self];
+  scrollView8 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView8 setDelegate:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = InfiniteScrollViewController;
-  [(InfiniteScrollViewController *)&v7 viewWillAppear:a3];
-  v4 = [(InfiniteScrollViewController *)self scrollView];
-  v5 = [v4 subviews];
-  v6 = [v5 count];
+  [(InfiniteScrollViewController *)&v7 viewWillAppear:appear];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  subviews = [scrollView subviews];
+  v6 = [subviews count];
 
   if (!v6)
   {
@@ -160,35 +160,35 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   self->_viewIsVisible = 1;
   v3.receiver = self;
   v3.super_class = InfiniteScrollViewController;
-  [(MainViewController *)&v3 viewDidAppear:a3];
+  [(MainViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = InfiniteScrollViewController;
-  [(InfiniteScrollViewController *)&v4 viewWillDisappear:a3];
+  [(InfiniteScrollViewController *)&v4 viewWillDisappear:disappear];
   self->_viewIsVisible = 0;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  self->_futureSize = a3;
+  height = size.height;
+  width = size.width;
+  self->_futureSize = size;
   self->_useFutureSize = 1;
-  v7 = a4;
+  coordinatorCopy = coordinator;
   if ([(InfiniteScrollViewController *)self isViewLoaded])
   {
-    v8 = [(InfiniteScrollViewController *)self view];
-    v9 = [v8 window];
+    view = [(InfiniteScrollViewController *)self view];
+    window = [view window];
 
-    if (v9)
+    if (window)
     {
       [(InfiniteScrollViewController *)self adjustLoadedViewRange];
     }
@@ -196,7 +196,7 @@
 
   v12.receiver = self;
   v12.super_class = InfiniteScrollViewController;
-  [(MainViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(MainViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v10[4] = self;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -207,17 +207,17 @@
   v10[1] = 3221225472;
   v10[2] = sub_100050998;
   v10[3] = &unk_10020F240;
-  [v7 animateAlongsideTransition:v11 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:v10];
 }
 
-- (void)_setUpInitialViewWithDate:(id)a3
+- (void)_setUpInitialViewWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 timeZone];
-  v6 = [(MainViewController *)self model];
-  v7 = [v6 calendar];
-  v8 = [v7 timeZone];
-  v9 = [v5 isEqualToTimeZone:v8];
+  dateCopy = date;
+  timeZone = [dateCopy timeZone];
+  model = [(MainViewController *)self model];
+  calendar = [model calendar];
+  timeZone2 = [calendar timeZone];
+  v9 = [timeZone isEqualToTimeZone:timeZone2];
 
   if ((v9 & 1) == 0)
   {
@@ -225,32 +225,32 @@
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v4 timeZone];
-      v13 = [v12 name];
-      v14 = [(MainViewController *)self model];
-      v15 = [v14 calendar];
-      v16 = [v15 timeZone];
-      v17 = [v16 name];
+      timeZone3 = [dateCopy timeZone];
+      name = [timeZone3 name];
+      model2 = [(MainViewController *)self model];
+      calendar2 = [model2 calendar];
+      timeZone4 = [calendar2 timeZone];
+      name2 = [timeZone4 name];
       *buf = 138412546;
-      v56 = v13;
+      v56 = name;
       v57 = 2112;
-      v58 = v17;
+      v58 = name2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Fixing mismatched timezone on date for reloading infinite scroll view (received %@, UI showing %@).", buf, 0x16u);
     }
 
-    v18 = [v4 date];
-    v19 = [(MainViewController *)self model];
-    v20 = [v19 calendar];
-    v21 = [v20 timeZone];
-    v22 = [EKCalendarDate calendarDateWithDate:v18 timeZone:v21];
+    date = [dateCopy date];
+    model3 = [(MainViewController *)self model];
+    calendar3 = [model3 calendar];
+    timeZone5 = [calendar3 timeZone];
+    v22 = [EKCalendarDate calendarDateWithDate:date timeZone:timeZone5];
 
-    v4 = v22;
+    dateCopy = v22;
   }
 
-  v23 = [(InfiniteScrollViewController *)self view];
-  if (v23)
+  view = [(InfiniteScrollViewController *)self view];
+  if (view)
   {
-    v24 = v23;
+    v24 = view;
     v25 = [(NSMutableArray *)self->_views count];
 
     if (v25)
@@ -294,38 +294,38 @@
   }
 
   self->_suppressViewAdjustmentsForInitialSetup = 1;
-  v32 = [(InfiniteScrollViewController *)self scrollView];
-  [v32 contentSize];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView contentSize];
   v34 = v33 * 0.5;
-  v35 = [(InfiniteScrollViewController *)self scrollView];
-  [v35 setContentOffset:{0.0, v34}];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView2 setContentOffset:{0.0, v34}];
 
   self->_suppressViewAdjustmentsForInitialSetup = 0;
   v36 = [[NSMutableArray alloc] initWithCapacity:3];
   v37 = self->_views;
   self->_views = v36;
 
-  v38 = [(InfiniteScrollViewController *)self createInitialViewForDate:v4];
-  v39 = [(InfiniteScrollViewController *)self scrollView];
-  [v39 addSubview:v38];
+  v38 = [(InfiniteScrollViewController *)self createInitialViewForDate:dateCopy];
+  scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView3 addSubview:v38];
 
   [(NSMutableArray *)self->_views addObject:v38];
   [v38 setAutoresizingMask:2];
   [v38 setHidden:0];
-  v40 = [(InfiniteScrollViewController *)self scrollView];
-  [v40 bounds];
+  scrollView4 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView4 bounds];
   [v38 sizeThatFits:{v41, v42}];
   v44 = v43;
   v46 = v45;
 
   [v38 frame];
   [v38 setFrame:{CGPointZero.x, CGPointZero.y, v44, v46}];
-  v47 = [(InfiniteScrollViewController *)self _addNewTopView];
-  v48 = [(InfiniteScrollViewController *)self _addNewBottomView];
+  _addNewTopView = [(InfiniteScrollViewController *)self _addNewTopView];
+  _addNewBottomView = [(InfiniteScrollViewController *)self _addNewBottomView];
   [(InfiniteScrollViewController *)self reloadDataForAllViews];
   [(InfiniteScrollViewController *)self _layoutInitialSubviews];
-  v49 = [(EKCalendarDate *)self->_startingDate date];
-  [(InfiniteScrollViewController *)self showDate:v49 animated:0];
+  date2 = [(EKCalendarDate *)self->_startingDate date];
+  [(InfiniteScrollViewController *)self showDate:date2 animated:0];
 }
 
 - (void)_layoutInitialSubviews
@@ -385,8 +385,8 @@
       while (v5);
     }
 
-    v22 = [(InfiniteScrollViewController *)self scrollView];
-    [v22 contentOffset];
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView contentOffset];
 
     v23 = [(NSMutableArray *)self->_views objectAtIndex:[(NSMutableArray *)self->_views count]>> 1];
     [v23 frame];
@@ -459,13 +459,13 @@
   [(InfiniteScrollViewController *)self _layoutInitialSubviews];
 }
 
-- (void)reinitializeAllViewsWithCalendarDate:(id)a3
+- (void)reinitializeAllViewsWithCalendarDate:(id)date
 {
-  v4 = a3;
-  v5 = [(InfiniteScrollViewController *)self view];
-  v6 = [v5 window];
+  dateCopy = date;
+  view = [(InfiniteScrollViewController *)self view];
+  window = [view window];
 
-  if (v6 || (-[InfiniteScrollViewController navigationController](self, "navigationController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 view], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "window"), v12 = objc_claimAutoreleasedReturnValue(), v9, v8, !v12))
+  if (window || (-[InfiniteScrollViewController navigationController](self, "navigationController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 view], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "window"), v12 = objc_claimAutoreleasedReturnValue(), v9, v8, !v12))
   {
     v12 = 0;
     v7 = 1;
@@ -479,8 +479,8 @@
 
   [(NSMutableArray *)self->_reusableViews removeAllObjects];
   startingDate = self->_startingDate;
-  self->_startingDate = v4;
-  v11 = v4;
+  self->_startingDate = dateCopy;
+  v11 = dateCopy;
 
   [(InfiniteScrollViewController *)self _setUpInitialViewWithDate:v11];
   [(InfiniteScrollViewController *)self adjustLoadedViewRange];
@@ -490,27 +490,27 @@
   }
 }
 
-- (void)_recenterContentIfNeededWithForce:(BOOL)a3
+- (void)_recenterContentIfNeededWithForce:(BOOL)force
 {
   if (![(InfiniteScrollViewController *)self suppressViewAdjustments]&& !self->_suppressViewAdjustmentsForInitialSetup)
   {
-    v5 = [(InfiniteScrollViewController *)self scrollView];
-    [v5 contentOffset];
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView contentOffset];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(InfiniteScrollViewController *)self scrollView];
-    [v10 contentSize];
+    scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView2 contentSize];
     v12 = v11;
 
-    v13 = [(InfiniteScrollViewController *)self scrollView];
-    [v13 bounds];
+    scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView3 bounds];
     v15 = (v12 - v14) * 0.5;
 
-    if (a3 || vabdd_f64(v9, v15) > v12 * 0.25)
+    if (force || vabdd_f64(v9, v15) > v12 * 0.25)
     {
-      v16 = [(InfiniteScrollViewController *)self scrollView];
-      [v16 setContentOffset:{v7, v15}];
+      scrollView4 = [(InfiniteScrollViewController *)self scrollView];
+      [scrollView4 setContentOffset:{v7, v15}];
 
       v25 = 0u;
       v26 = 0u;
@@ -549,35 +549,35 @@
 {
   if (![(InfiniteScrollViewController *)self suppressViewAdjustments]&& !self->_suppressViewAdjustmentsForInitialSetup)
   {
-    v3 = [(InfiniteScrollViewController *)self scrollView];
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
     [(InfiniteScrollViewController *)self _visibleSize];
     v5 = v4;
     [(InfiniteScrollViewController *)self subviewBufferExtensionMultiplier];
     v7 = v6;
-    [v3 contentOffset];
+    [scrollView contentOffset];
     v9 = v8;
-    [v3 contentOffset];
+    [scrollView contentOffset];
     v11 = v10;
     v12 = objc_alloc_init(NSMutableSet);
-    v13 = [(NSMutableArray *)self->_views firstObject];
-    v14 = [(NSMutableArray *)self->_views lastObject];
-    if (!v13)
+    firstObject = [(NSMutableArray *)self->_views firstObject];
+    lastObject = [(NSMutableArray *)self->_views lastObject];
+    if (!firstObject)
     {
       goto LABEL_38;
     }
 
     v15 = v9 - v5 * v7;
     v16 = v5 * v7 + v5 + v11;
-    [v13 frame];
+    [firstObject frame];
     MinY = CGRectGetMinY(v67);
-    [v14 frame];
+    [lastObject frame];
     MaxY = CGRectGetMaxY(v68);
     if (v16 < MinY)
     {
-      v19 = [v13 calendarDate];
-      [v13 frame];
+      calendarDate = [firstObject calendarDate];
+      [firstObject frame];
       v21 = v20;
-      [v13 topInset];
+      [firstObject topInset];
       v23 = v22;
       v24 = MinY;
       goto LABEL_8;
@@ -585,12 +585,12 @@
 
     if (v15 > MaxY)
     {
-      v19 = [v14 calendarDate];
-      [v14 frame];
+      calendarDate = [lastObject calendarDate];
+      [lastObject frame];
       v21 = v25;
-      [v14 topInset];
+      [lastObject topInset];
       v23 = v26;
-      [v14 frame];
+      [lastObject frame];
       v24 = CGRectGetMinY(v69);
       do
       {
@@ -599,12 +599,12 @@
 LABEL_8:
           if (v16 >= MinY)
           {
-            [(InfiniteScrollViewController *)self calendarDateForSubviewBelowSubviewWithCalendarDate:v19];
+            [(InfiniteScrollViewController *)self calendarDateForSubviewBelowSubviewWithCalendarDate:calendarDate];
           }
 
           else
           {
-            [(InfiniteScrollViewController *)self calendarDateForSubviewAboveSubviewWithCalendarDate:v19];
+            [(InfiniteScrollViewController *)self calendarDateForSubviewAboveSubviewWithCalendarDate:calendarDate];
           }
           v27 = ;
 
@@ -619,7 +619,7 @@ LABEL_8:
             break;
           }
 
-          v19 = v27;
+          calendarDate = v27;
           v23 = v30;
           v21 = v29;
           if (v31 <= v15)
@@ -628,7 +628,7 @@ LABEL_8:
           }
         }
 
-        v19 = v27;
+        calendarDate = v27;
         v23 = v30;
         v21 = v29;
       }
@@ -637,10 +637,10 @@ LABEL_8:
 LABEL_18:
       if ([(NSMutableArray *)self->_views count])
       {
-        v58 = v14;
-        v59 = v13;
-        v60 = v3;
-        v33 = [(InfiniteScrollViewController *)self maximumCachedReusableViews];
+        v58 = lastObject;
+        v59 = firstObject;
+        v60 = scrollView;
+        maximumCachedReusableViews = [(InfiniteScrollViewController *)self maximumCachedReusableViews];
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
@@ -661,7 +661,7 @@ LABEL_18:
               }
 
               v39 = *(*(&v62 + 1) + 8 * i);
-              if ([(NSMutableArray *)self->_reusableViews count]<= v33)
+              if ([(NSMutableArray *)self->_reusableViews count]<= maximumCachedReusableViews)
               {
                 [(NSMutableArray *)self->_reusableViews addObject:v39];
                 [v39 setHidden:1];
@@ -683,50 +683,50 @@ LABEL_18:
         views = self->_views;
         self->_views = v40;
 
-        v3 = v60;
-        v14 = v58;
-        v13 = v59;
+        scrollView = v60;
+        lastObject = v58;
+        firstObject = v59;
       }
 
       v42 = [(InfiniteScrollViewController *)self createInitialViewForDate:v27];
       [v42 setHidden:0];
       [(NSMutableArray *)self->_views addObject:v42];
-      [v3 addSubview:v42];
+      [scrollView addSubview:v42];
       [(InfiniteScrollViewController *)self _visibleSize];
       [v42 sizeThatFits:?];
-      [v3 frame];
+      [scrollView frame];
       [v42 setFrame:?];
       v43 = v42;
 
-      v14 = v43;
-      v13 = v43;
+      lastObject = v43;
+      firstObject = v43;
     }
 
-    if (v13 && v14)
+    if (firstObject && lastObject)
     {
-      [v13 frame];
+      [firstObject frame];
       if (CGRectGetMinY(v70) > v15)
       {
         while (1)
         {
-          v44 = v13;
-          v45 = [(InfiniteScrollViewController *)self _addNewTopView];
-          v13 = [(NSMutableArray *)self->_views firstObject];
+          v44 = firstObject;
+          _addNewTopView = [(InfiniteScrollViewController *)self _addNewTopView];
+          firstObject = [(NSMutableArray *)self->_views firstObject];
 
-          if (!v45)
+          if (!_addNewTopView)
           {
             break;
           }
 
-          [v45 frame];
+          [_addNewTopView frame];
           if (v46 < 0.0001)
           {
             break;
           }
 
-          [v12 addObject:v45];
+          [v12 addObject:_addNewTopView];
 
-          [v13 frame];
+          [firstObject frame];
           if (CGRectGetMinY(v71) <= v15)
           {
             goto LABEL_41;
@@ -735,29 +735,29 @@ LABEL_18:
       }
 
 LABEL_41:
-      [v14 frame];
+      [lastObject frame];
       if (CGRectGetMaxY(v72) < v16)
       {
         while (1)
         {
-          v48 = v14;
-          v49 = [(InfiniteScrollViewController *)self _addNewBottomView];
-          v14 = [(NSMutableArray *)self->_views lastObject];
+          v48 = lastObject;
+          _addNewBottomView = [(InfiniteScrollViewController *)self _addNewBottomView];
+          lastObject = [(NSMutableArray *)self->_views lastObject];
 
-          if (!v49)
+          if (!_addNewBottomView)
           {
             break;
           }
 
-          [v49 frame];
+          [_addNewBottomView frame];
           if (v50 < 0.0001)
           {
             break;
           }
 
-          [v12 addObject:v49];
+          [v12 addObject:_addNewBottomView];
 
-          [v14 frame];
+          [lastObject frame];
           if (CGRectGetMaxY(v73) >= v16)
           {
             goto LABEL_47;
@@ -770,22 +770,22 @@ LABEL_47:
       {
         if (!self->_viewCullingDisabledForScrollAnimation)
         {
-          v51 = [(NSMutableArray *)self->_views firstObject];
+          firstObject2 = [(NSMutableArray *)self->_views firstObject];
 
           if ([(NSMutableArray *)self->_views count])
           {
             while (1)
             {
-              [v51 frame];
+              [firstObject2 frame];
               if (CGRectGetMaxY(v74) >= v15)
               {
                 break;
               }
 
               [(InfiniteScrollViewController *)self _removeTopView];
-              v13 = [(NSMutableArray *)self->_views firstObject];
+              firstObject = [(NSMutableArray *)self->_views firstObject];
 
-              v51 = v13;
+              firstObject2 = firstObject;
               if (![(NSMutableArray *)self->_views count])
               {
                 goto LABEL_54;
@@ -793,24 +793,24 @@ LABEL_47:
             }
           }
 
-          v13 = v51;
+          firstObject = firstObject2;
 LABEL_54:
-          v52 = [(NSMutableArray *)self->_views lastObject];
+          lastObject2 = [(NSMutableArray *)self->_views lastObject];
 
           if ([(NSMutableArray *)self->_views count])
           {
             while (1)
             {
-              [v52 frame];
+              [lastObject2 frame];
               if (CGRectGetMinY(v75) <= v16)
               {
                 break;
               }
 
               [(InfiniteScrollViewController *)self _removeBottomView];
-              v14 = [(NSMutableArray *)self->_views lastObject];
+              lastObject = [(NSMutableArray *)self->_views lastObject];
 
-              v52 = v14;
+              lastObject2 = lastObject;
               if (![(NSMutableArray *)self->_views count])
               {
                 goto LABEL_59;
@@ -818,18 +818,18 @@ LABEL_54:
             }
           }
 
-          v14 = v52;
+          lastObject = lastObject2;
 LABEL_59:
           if (self->_viewIsVisible && [(InfiniteScrollViewController *)self shouldUpdatePreferredReloadDates]&& (objc_opt_respondsToSelector() & 1) != 0)
           {
-            v53 = [v13 calendarDate];
-            v54 = [v53 date];
+            calendarDate2 = [firstObject calendarDate];
+            date = [calendarDate2 date];
 
-            v55 = [v14 endCalendarDate];
-            v56 = [v55 date];
+            endCalendarDate = [lastObject endCalendarDate];
+            date2 = [endCalendarDate date];
 
-            v57 = [(MainViewController *)self model];
-            [v57 setPreferredReloadStartDate:v54 endDate:v56];
+            model = [(MainViewController *)self model];
+            [model setPreferredReloadStartDate:date endDate:date2];
           }
         }
 
@@ -854,14 +854,14 @@ LABEL_38:
   }
 }
 
-- (void)reloadDataForViews:(id)a3
+- (void)reloadDataForViews:(id)views
 {
-  v3 = a3;
+  viewsCopy = views;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [viewsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -873,7 +873,7 @@ LABEL_38:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -886,7 +886,7 @@ LABEL_38:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [viewsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -921,22 +921,22 @@ LABEL_38:
 
 - (void)_updateSelectedDateWithTopView
 {
-  v3 = [(InfiniteScrollViewController *)self firstViewOnScreen];
-  if (v3)
+  firstViewOnScreen = [(InfiniteScrollViewController *)self firstViewOnScreen];
+  if (firstViewOnScreen)
   {
-    v7 = v3;
-    v4 = [v3 calendarDate];
-    [(CUIKCalendarModel *)self->super._model setSelectedDate:v4];
+    v7 = firstViewOnScreen;
+    calendarDate = [firstViewOnScreen calendarDate];
+    [(CUIKCalendarModel *)self->super._model setSelectedDate:calendarDate];
 
-    v5 = [v7 calendarDate];
+    calendarDate2 = [v7 calendarDate];
     lastKnownShownDate = self->_lastKnownShownDate;
-    self->_lastKnownShownDate = v5;
+    self->_lastKnownShownDate = calendarDate2;
 
-    v3 = v7;
+    firstViewOnScreen = v7;
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (![(InfiniteScrollViewController *)self suppressViewAdjustments]&& !self->_suppressViewAdjustmentsForInitialSetup)
   {
@@ -945,7 +945,7 @@ LABEL_38:
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"EmptySearchBarNeedsResignFirstResponderNotification" object:self];
@@ -955,19 +955,19 @@ LABEL_38:
   [(InfiniteScrollViewController *)self willBeginDragging];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
+  decelerateCopy = decelerate;
   [(InfiniteScrollViewController *)self setIsUserFingerDown:0];
-  [(InfiniteScrollViewController *)self didEndDraggingWillDecelerate:v4];
-  if (!v4)
+  [(InfiniteScrollViewController *)self didEndDraggingWillDecelerate:decelerateCopy];
+  if (!decelerateCopy)
   {
 
     [(InfiniteScrollViewController *)self didEndScrolling];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   if (![(InfiniteScrollViewController *)self suppressViewAdjustments]&& !self->_suppressViewAdjustmentsForInitialSetup)
   {
@@ -1003,8 +1003,8 @@ LABEL_38:
 
   else
   {
-    v4 = [(InfiniteScrollViewController *)self scrollView];
-    [v4 bounds];
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView bounds];
     width = v5;
     height = v6;
   }
@@ -1016,9 +1016,9 @@ LABEL_38:
   return result;
 }
 
-- (void)insertViews:(id)a3
+- (void)insertViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -1039,10 +1039,10 @@ LABEL_38:
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [v10 superview];
-        v12 = [(InfiniteScrollViewController *)self scrollView];
+        superview = [v10 superview];
+        scrollView = [(InfiniteScrollViewController *)self scrollView];
 
-        if (v11 == v12)
+        if (superview == scrollView)
         {
           [v10 removeFromSuperview];
         }
@@ -1054,7 +1054,7 @@ LABEL_38:
     while (v7);
   }
 
-  v13 = [NSMutableArray arrayWithArray:v4];
+  v13 = [NSMutableArray arrayWithArray:viewsCopy];
   views = self->_views;
   self->_views = v13;
 
@@ -1079,8 +1079,8 @@ LABEL_38:
 
         v20 = *(*(&v22 + 1) + 8 * j);
         [v20 setHidden:{0, v22}];
-        v21 = [(InfiniteScrollViewController *)self scrollView];
-        [v21 addSubview:v20];
+        scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+        [scrollView2 addSubview:v20];
       }
 
       v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -1092,35 +1092,35 @@ LABEL_38:
 
 - (id)_addNewTopView
 {
-  v3 = [(NSMutableArray *)self->_views firstObject];
-  v4 = [v3 calendarDate];
-  v5 = [(InfiniteScrollViewController *)self newTopViewAboveViewWithCalendarDate:v4];
+  firstObject = [(NSMutableArray *)self->_views firstObject];
+  calendarDate = [firstObject calendarDate];
+  v5 = [(InfiniteScrollViewController *)self newTopViewAboveViewWithCalendarDate:calendarDate];
   [v5 setAutoresizingMask:2];
-  v6 = [v5 superview];
+  superview = [v5 superview];
 
-  v7 = [(InfiniteScrollViewController *)self scrollView];
-  v8 = v7;
-  if (v6)
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  v8 = scrollView;
+  if (superview)
   {
-    [v7 sendSubviewToBack:v5];
+    [scrollView sendSubviewToBack:v5];
   }
 
   else
   {
-    [v7 insertSubview:v5 atIndex:0];
+    [scrollView insertSubview:v5 atIndex:0];
   }
 
   [v5 setHidden:0];
-  v9 = [(InfiniteScrollViewController *)self scrollView];
-  [v9 bounds];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView2 bounds];
   [v5 sizeThatFits:{v10, v11}];
   v13 = v12;
   v15 = v14;
 
   [v5 frame];
-  [v3 frame];
+  [firstObject frame];
   v16 = CGRectGetMinY(v20) - v15;
-  [v3 topInset];
+  [firstObject topInset];
   [v5 setFrame:{0.0, v16 + v17, v13, v15}];
   [(NSMutableArray *)self->_views insertObject:v5 atIndex:0];
 
@@ -1129,35 +1129,35 @@ LABEL_38:
 
 - (id)_addNewBottomView
 {
-  v3 = [(NSMutableArray *)self->_views lastObject];
-  v4 = [v3 calendarDate];
-  v5 = [(InfiniteScrollViewController *)self newBottomViewBelowViewWithCalendarDate:v4];
+  lastObject = [(NSMutableArray *)self->_views lastObject];
+  calendarDate = [lastObject calendarDate];
+  v5 = [(InfiniteScrollViewController *)self newBottomViewBelowViewWithCalendarDate:calendarDate];
   [v5 setAutoresizingMask:2];
   if (v5)
   {
-    v6 = [v5 superview];
+    superview = [v5 superview];
 
-    v7 = [(InfiniteScrollViewController *)self scrollView];
-    v8 = v7;
-    if (v6)
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
+    v8 = scrollView;
+    if (superview)
     {
-      [v7 bringSubviewToFront:v5];
+      [scrollView bringSubviewToFront:v5];
     }
 
     else
     {
-      [v7 addSubview:v5];
+      [scrollView addSubview:v5];
     }
 
     [v5 setHidden:0];
-    v9 = [(InfiniteScrollViewController *)self scrollView];
-    [v9 bounds];
+    scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+    [scrollView2 bounds];
     [v5 sizeThatFits:{v10, v11}];
     v13 = v12;
     v15 = v14;
 
     [v5 frame];
-    [v3 frame];
+    [lastObject frame];
     MaxY = CGRectGetMaxY(v20);
     [v5 topInset];
     [v5 setFrame:{0.0, MaxY - v17, v13, v15}];
@@ -1169,28 +1169,28 @@ LABEL_38:
 
 - (void)_removeTopView
 {
-  v4 = [(NSMutableArray *)self->_views firstObject];
+  firstObject = [(NSMutableArray *)self->_views firstObject];
   v3 = [(NSMutableArray *)self->_reusableViews count];
   if (v3 <= [(InfiniteScrollViewController *)self maximumCachedReusableViews])
   {
-    [(NSMutableArray *)self->_reusableViews addObject:v4];
+    [(NSMutableArray *)self->_reusableViews addObject:firstObject];
   }
 
   else
   {
-    [v4 removeFromSuperview];
+    [firstObject removeFromSuperview];
   }
 
   [(NSMutableArray *)self->_views removeObjectAtIndex:0];
-  [v4 setHidden:1];
+  [firstObject setHidden:1];
 }
 
-+ (BOOL)_view:(id)a3 containsCalendarDate:(id)a4
++ (BOOL)_view:(id)_view containsCalendarDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 calendarDate];
-  v8 = [v7 compare:v6];
+  _viewCopy = _view;
+  dateCopy = date;
+  calendarDate = [_viewCopy calendarDate];
+  v8 = [calendarDate compare:dateCopy];
 
   if (v8 == 1)
   {
@@ -1199,8 +1199,8 @@ LABEL_38:
 
   else
   {
-    v10 = [v5 endCalendarDate];
-    v9 = [v10 compare:v6] != -1;
+    endCalendarDate = [_viewCopy endCalendarDate];
+    v9 = [endCalendarDate compare:dateCopy] != -1;
   }
 
   return v9;
@@ -1208,49 +1208,49 @@ LABEL_38:
 
 - (void)_removeBottomView
 {
-  v4 = [(NSMutableArray *)self->_views lastObject];
+  lastObject = [(NSMutableArray *)self->_views lastObject];
   v3 = [(NSMutableArray *)self->_reusableViews count];
   if (v3 <= [(InfiniteScrollViewController *)self maximumCachedReusableViews])
   {
-    [(NSMutableArray *)self->_reusableViews addObject:v4];
+    [(NSMutableArray *)self->_reusableViews addObject:lastObject];
   }
 
   else
   {
-    [v4 removeFromSuperview];
+    [lastObject removeFromSuperview];
   }
 
   [(NSMutableArray *)self->_views removeLastObject];
-  [v4 setHidden:1];
+  [lastObject setHidden:1];
 }
 
-- (BOOL)isDateVisible:(id)a3
+- (BOOL)isDateVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(InfiniteScrollViewController *)self firstViewOnScreen];
-  v6 = [(InfiniteScrollViewController *)self _lastViewOnScreen];
-  v7 = [v5 calendarDate];
-  v8 = [v6 endCalendarDate];
-  v9 = [v8 calendarDateForEndOfDay];
+  visibleCopy = visible;
+  firstViewOnScreen = [(InfiniteScrollViewController *)self firstViewOnScreen];
+  _lastViewOnScreen = [(InfiniteScrollViewController *)self _lastViewOnScreen];
+  calendarDate = [firstViewOnScreen calendarDate];
+  endCalendarDate = [_lastViewOnScreen endCalendarDate];
+  calendarDateForEndOfDay = [endCalendarDate calendarDateForEndOfDay];
 
-  [v7 absoluteTime];
+  [calendarDate absoluteTime];
   v11 = v10;
-  [v9 absoluteTime];
+  [calendarDateForEndOfDay absoluteTime];
   v13 = v12;
-  [v4 timeIntervalSinceReferenceDate];
+  [visibleCopy timeIntervalSinceReferenceDate];
   v15 = v14;
   v16 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     v17 = v16;
-    v18 = [v7 date];
-    v19 = [v9 date];
+    date = [calendarDate date];
+    date2 = [calendarDateForEndOfDay date];
     v22 = 138412802;
-    v23 = v4;
+    v23 = visibleCopy;
     v24 = 2112;
-    v25 = v18;
+    v25 = date;
     v26 = 2112;
-    v27 = v19;
+    v27 = date2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Infinite scroll view determining if date %@ is visible. Onscreen dates: %@ - %@", &v22, 0x20u);
   }
 
@@ -1259,42 +1259,42 @@ LABEL_38:
   return v20;
 }
 
-- (void)currentlyVisibleDateRangeFromStartDate:(id *)a3 toEndDate:(id *)a4
+- (void)currentlyVisibleDateRangeFromStartDate:(id *)date toEndDate:(id *)endDate
 {
-  v11 = [(InfiniteScrollViewController *)self firstViewOnScreen];
-  v7 = [(InfiniteScrollViewController *)self _lastViewOnScreen];
-  v8 = [v11 calendarDate];
-  v9 = [v7 endCalendarDate];
-  v10 = [v9 calendarDateForEndOfDay];
+  firstViewOnScreen = [(InfiniteScrollViewController *)self firstViewOnScreen];
+  _lastViewOnScreen = [(InfiniteScrollViewController *)self _lastViewOnScreen];
+  calendarDate = [firstViewOnScreen calendarDate];
+  endCalendarDate = [_lastViewOnScreen endCalendarDate];
+  calendarDateForEndOfDay = [endCalendarDate calendarDateForEndOfDay];
 
-  if (a3)
+  if (date)
   {
-    *a3 = [v8 date];
+    *date = [calendarDate date];
   }
 
-  if (a4)
+  if (endDate)
   {
-    *a4 = [v10 date];
+    *endDate = [calendarDateForEndOfDay date];
   }
 }
 
-- (void)showDate:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)showDate:(id)date animated:(BOOL)animated completionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  dateCopy = date;
+  blockCopy = block;
   v10 = &_s19RemindersAppIntents0A40InCalendarReminderEditingModuleInterfaceP036requiresUserConfirmationForCancelingG0SbvgTj_ptr;
-  v11 = [(MainViewController *)self model];
-  v12 = [v11 eventStore];
-  v13 = [v12 timeZone];
-  v14 = [EKCalendarDate calendarDateWithDate:v8 timeZone:v13];
+  model = [(MainViewController *)self model];
+  eventStore = [model eventStore];
+  timeZone = [eventStore timeZone];
+  v14 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone];
 
   if ([(InfiniteScrollViewController *)self isViewLoaded])
   {
     views = self->_views;
     if (views)
     {
-      v73 = v8;
+      v73 = dateCopy;
       v80 = 0u;
       v81 = 0u;
       v78 = 0u;
@@ -1343,24 +1343,24 @@ LABEL_15:
       }
 
       v72 = v21;
-      v69 = v6;
-      v24 = [(NSMutableArray *)self->_views firstObject];
-      v25 = [(NSMutableArray *)self->_views lastObject];
-      v26 = [v24 calendarDate];
-      v27 = [v26 date];
+      v69 = animatedCopy;
+      firstObject = [(NSMutableArray *)self->_views firstObject];
+      lastObject = [(NSMutableArray *)self->_views lastObject];
+      calendarDate = [firstObject calendarDate];
+      date = [calendarDate date];
 
-      v28 = [v25 calendarDate];
-      v29 = [v28 date];
+      calendarDate2 = [lastObject calendarDate];
+      date2 = [calendarDate2 date];
 
-      v71 = v27;
-      v30 = [v73 compare:v27];
-      v70 = v9;
-      v67 = v25;
-      v68 = v24;
+      v71 = date;
+      v30 = [v73 compare:date];
+      v70 = blockCopy;
+      v67 = lastObject;
+      v68 = firstObject;
       if (v30 == 1)
       {
-        v34 = v29;
-        if ([v73 compare:v29] == -1)
+        v34 = date2;
+        if ([v73 compare:date2] == -1)
         {
           v31 = v72;
           v45 = kCalUILogHandle;
@@ -1371,7 +1371,7 @@ LABEL_15:
             v84 = 2112;
             v85 = v71;
             v86 = 2112;
-            v87 = v29;
+            v87 = date2;
             _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEBUG, "Target view is not loaded. No view for date %@ in range %@ to %@", buf, 0x20u);
           }
 
@@ -1379,8 +1379,8 @@ LABEL_15:
         }
 
         v31 = v72;
-        v35 = [v25 calendarDate];
-        v36 = [(InfiniteScrollViewController *)self shouldAnimateScrollToDate:v14 fromClosestDate:v35];
+        calendarDate3 = [lastObject calendarDate];
+        v36 = [(InfiniteScrollViewController *)self shouldAnimateScrollToDate:v14 fromClosestDate:calendarDate3];
 
         if (!v36)
         {
@@ -1398,12 +1398,12 @@ LABEL_46:
             }
 
             v46 = kCalUILogHandle;
-            v9 = v70;
+            blockCopy = v70;
             if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
             {
               v47 = v46;
-              v48 = [v17 calendarDate];
-              v49 = [v48 date];
+              calendarDate4 = [v17 calendarDate];
+              date3 = [calendarDate4 date];
               *buf = 138544130;
               v83 = v73;
               v84 = 2114;
@@ -1411,14 +1411,14 @@ LABEL_46:
               v86 = 2114;
               v87 = v34;
               v88 = 2114;
-              v89 = v49;
+              v89 = date3;
               _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "No view for date %{public}@. Loaded range is %{public}@ to %{public}@. Not reinitalizing views because we were already doing that, so scrolling to %{public}@ instead", buf, 0x2Au);
 
               v10 = &_s19RemindersAppIntents0A40InCalendarReminderEditingModuleInterfaceP036requiresUserConfirmationForCancelingG0SbvgTj_ptr;
             }
 
             v23 = 0;
-            v6 = v69;
+            animatedCopy = v69;
             v22 = v72;
           }
 
@@ -1430,8 +1430,8 @@ LABEL_46:
             v17 = 0;
             self->_reinitializingViewsForNewDate = 0;
             v22 = v31;
-            v9 = v70;
-            v6 = v69;
+            blockCopy = v70;
+            animatedCopy = v69;
           }
 
           goto LABEL_54;
@@ -1441,10 +1441,10 @@ LABEL_46:
       else
       {
         v31 = v72;
-        v32 = [v24 calendarDate];
-        v33 = [(InfiniteScrollViewController *)self shouldAnimateScrollToDate:v14 fromClosestDate:v32];
+        calendarDate5 = [firstObject calendarDate];
+        v33 = [(InfiniteScrollViewController *)self shouldAnimateScrollToDate:v14 fromClosestDate:calendarDate5];
 
-        v34 = v29;
+        v34 = date2;
         if ((v33 & 1) == 0)
         {
           goto LABEL_46;
@@ -1457,23 +1457,23 @@ LABEL_46:
       {
         if (v30 == 1)
         {
-          v38 = [(InfiniteScrollViewController *)self _addNewBottomView];
-          [v38 endCalendarDate];
+          _addNewBottomView = [(InfiniteScrollViewController *)self _addNewBottomView];
+          [_addNewBottomView endCalendarDate];
         }
 
         else
         {
-          v38 = [(InfiniteScrollViewController *)self _addNewTopView];
-          [v38 calendarDate];
+          _addNewBottomView = [(InfiniteScrollViewController *)self _addNewTopView];
+          [_addNewBottomView calendarDate];
         }
         v39 = ;
 
-        if (v38)
+        if (_addNewBottomView)
         {
-          [v31 addObject:v38];
+          [v31 addObject:_addNewBottomView];
         }
 
-        v40 = [objc_opt_class() _view:v38 containsCalendarDate:v14];
+        v40 = [objc_opt_class() _view:_addNewBottomView containsCalendarDate:v14];
         v41 = [v14 compare:v39];
         v42 = v41 == -1 && v30 == 1;
 
@@ -1497,7 +1497,7 @@ LABEL_46:
 
       while (!v40);
       v44 = self->_views;
-      v6 = v69;
+      animatedCopy = v69;
       if (v30 == 1)
       {
         [(NSMutableArray *)v44 lastObject];
@@ -1512,15 +1512,15 @@ LABEL_46:
       v34 = v66;
 
       v23 = 1;
-      v9 = v70;
+      blockCopy = v70;
       v10 = &_s19RemindersAppIntents0A40InCalendarReminderEditingModuleInterfaceP036requiresUserConfirmationForCancelingG0SbvgTj_ptr;
 LABEL_54:
 
       if (!v17)
       {
-        if (v9)
+        if (blockCopy)
         {
-          v9[2](v9, 0);
+          blockCopy[2](blockCopy, 0);
         }
 
         v17 = 0;
@@ -1531,13 +1531,13 @@ LABEL_55:
       [v17 frame];
       v51 = v50;
       [(InfiniteScrollViewController *)self showDateVerticalOffsetForDate:v14];
-      v52 = [(InfiniteScrollViewController *)self scrollView];
-      [v52 safeAreaInsets];
+      scrollView = [(InfiniteScrollViewController *)self scrollView];
+      [scrollView safeAreaInsets];
 
       CalRoundToScreenScale();
       v54 = v53;
-      v55 = [(InfiniteScrollViewController *)self scrollView];
-      [v55 contentOffset];
+      scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+      [scrollView2 contentOffset];
       v57 = v54 - v56;
 
       v58 = -v57;
@@ -1546,13 +1546,13 @@ LABEL_55:
         v58 = v57;
       }
 
-      if (v6 && v58 < 1.0)
+      if (animatedCopy && v58 < 1.0)
       {
         v59 = v10[242];
         v60 = CUIKTodayDate();
-        v61 = [(CUIKCalendarModel *)self->super._model calendar];
-        v62 = [v61 timeZone];
-        v63 = [v59 calendarDateWithDate:v60 timeZone:v62];
+        calendar = [(CUIKCalendarModel *)self->super._model calendar];
+        timeZone2 = [calendar timeZone];
+        v63 = [v59 calendarDateWithDate:v60 timeZone:timeZone2];
 
         v64 = [(InfiniteScrollViewController *)self subviewForDate:v63];
         if (objc_opt_respondsToSelector())
@@ -1560,24 +1560,24 @@ LABEL_55:
           [v64 pulseTodayCircle];
         }
 
-        if (v9)
+        if (blockCopy)
         {
-          v9[2](v9, 1);
+          blockCopy[2](blockCopy, 1);
         }
       }
 
       else
       {
-        if (!v6)
+        if (!animatedCopy)
         {
-          v65 = [(InfiniteScrollViewController *)self scrollView];
-          [v65 setContentOffset:0 animated:{v51, v54}];
+          scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+          [scrollView3 setContentOffset:0 animated:{v51, v54}];
 
           [(InfiniteScrollViewController *)self adjustLoadedViewRange];
-          v8 = v73;
-          if (v9)
+          dateCopy = v73;
+          if (blockCopy)
           {
-            v9[2](v9, 1);
+            blockCopy[2](blockCopy, 1);
           }
 
           [(InfiniteScrollViewController *)self didEndScrolling];
@@ -1602,13 +1602,13 @@ LABEL_55:
         v74[2] = sub_100053370;
         v74[3] = &unk_10020F658;
         v74[4] = self;
-        v76 = v9;
+        v76 = blockCopy;
         v75 = v22;
         [UIView _animateUsingDefaultTimingWithOptions:0 animations:v77 completion:v74];
       }
 
 LABEL_74:
-      v8 = v73;
+      dateCopy = v73;
 LABEL_75:
       objc_storeStrong(&self->_lastKnownShownDate, v14);
 
@@ -1617,21 +1617,21 @@ LABEL_75:
   }
 
   objc_storeStrong(&self->_startingDate, v14);
-  if (v9)
+  if (blockCopy)
   {
-    v9[2](v9, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
 LABEL_76:
 }
 
-- (id)subviewForPoint:(CGPoint)a3
+- (id)subviewForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(InfiniteScrollViewController *)self scrollView];
-  v7 = [(InfiniteScrollViewController *)self view];
-  [v6 convertPoint:v7 fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  view = [(InfiniteScrollViewController *)self view];
+  [scrollView convertPoint:view fromView:{x, y}];
   CalRoundPointToScreenScale();
   v9 = v8;
   v11 = v10;
@@ -1680,13 +1680,13 @@ LABEL_11:
   return v13;
 }
 
-- (id)subviewForDate:(id)a3
+- (id)subviewForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (+[NSThread isMainThread])
   {
-    v5 = [(InfiniteScrollViewController *)self view];
-    [v5 layoutIfNeeded];
+    view = [(InfiniteScrollViewController *)self view];
+    [view layoutIfNeeded];
   }
 
   v16 = 0u;
@@ -1709,7 +1709,7 @@ LABEL_11:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([objc_opt_class() _view:v11 containsCalendarDate:{v4, v14}])
+        if ([objc_opt_class() _view:v11 containsCalendarDate:{dateCopy, v14}])
         {
           v12 = v11;
           goto LABEL_13;
@@ -1734,8 +1734,8 @@ LABEL_13:
 
 - (id)centerViewOnScreen
 {
-  v3 = [(InfiniteScrollViewController *)self view];
-  [v3 bounds];
+  view = [(InfiniteScrollViewController *)self view];
+  [view bounds];
   v5 = [(InfiniteScrollViewController *)self subviewForPoint:0.0, v4 * 0.5];
 
   return v5;
@@ -1743,12 +1743,12 @@ LABEL_13:
 
 - (id)firstViewOnScreen
 {
-  v3 = [(InfiniteScrollViewController *)self scrollView];
-  [v3 adjustedContentInset];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView adjustedContentInset];
   v5 = v4;
 
-  v6 = [(InfiniteScrollViewController *)self scrollView];
-  [v6 frame];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView2 frame];
   v7 = [(InfiniteScrollViewController *)self subviewForPoint:CGRectGetMidX(v10), v5];
 
   return v7;
@@ -1756,12 +1756,12 @@ LABEL_13:
 
 - (id)_lastViewOnScreen
 {
-  v3 = [(InfiniteScrollViewController *)self scrollView];
-  [v3 frame];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView frame];
   v5 = v4;
 
-  v6 = [(InfiniteScrollViewController *)self scrollView];
-  [v6 adjustedContentInset];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView2 adjustedContentInset];
   v8 = v5 - v7;
 
   return [(InfiniteScrollViewController *)self subviewForPoint:0.0, v8];
@@ -1769,24 +1769,24 @@ LABEL_13:
 
 - (id)dateOfCenterViewOnScreen
 {
-  v3 = [(InfiniteScrollViewController *)self centerViewOnScreen];
-  v4 = [v3 calendarDate];
-  if (v4)
+  centerViewOnScreen = [(InfiniteScrollViewController *)self centerViewOnScreen];
+  calendarDate = [centerViewOnScreen calendarDate];
+  if (calendarDate)
   {
     goto LABEL_2;
   }
 
-  v6 = [(InfiniteScrollViewController *)self firstViewOnScreen];
-  v5 = [v6 calendarDate];
+  firstViewOnScreen = [(InfiniteScrollViewController *)self firstViewOnScreen];
+  calendarDate2 = [firstViewOnScreen calendarDate];
 
-  if (!v5)
+  if (!calendarDate2)
   {
-    v4 = self->_startingDate;
+    calendarDate = self->_startingDate;
 LABEL_2:
-    v5 = v4;
+    calendarDate2 = calendarDate;
   }
 
-  return v5;
+  return calendarDate2;
 }
 
 - (id)dateOfCenterViewInBuffer
@@ -1800,26 +1800,26 @@ LABEL_2:
   return v3;
 }
 
-- (id)dateOfViewInBufferIndexRelativeToCenter:(int64_t)a3
+- (id)dateOfViewInBufferIndexRelativeToCenter:(int64_t)center
 {
   v5 = [(NSMutableArray *)self->_views count];
-  if (v5 && ([(NSMutableArray *)self->_views objectAtIndex:a3 + (v5 >> 1)], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v5 && ([(NSMutableArray *)self->_views objectAtIndex:center + (v5 >> 1)], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [v6 calendarDate];
+    calendarDate = [v6 calendarDate];
   }
 
   else
   {
-    v8 = 0;
+    calendarDate = 0;
   }
 
-  return v8;
+  return calendarDate;
 }
 
-- (void)enumerateScrollViewSubviews:(id)a3
+- (void)enumerateScrollViewSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1841,7 +1841,7 @@ LABEL_3:
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = 0;
-      v4[2](v4, v10, &v11);
+      subviewsCopy[2](subviewsCopy, v10, &v11);
       if (v11)
       {
         break;
@@ -1865,58 +1865,58 @@ LABEL_3:
 {
   if ([(NSMutableArray *)self->_reusableViews count])
   {
-    v3 = [(NSMutableArray *)self->_reusableViews firstObject];
+    firstObject = [(NSMutableArray *)self->_reusableViews firstObject];
     [(NSMutableArray *)self->_reusableViews removeObjectAtIndex:0];
     if (objc_opt_respondsToSelector())
     {
-      [v3 prepareForReuse];
+      [firstObject prepareForReuse];
     }
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (void)showSelectedDateIfNeeded
 {
-  v3 = [(MainViewController *)self model];
-  v4 = [v3 selectedDate];
-  v5 = [v4 isEqual:self->_lastKnownShownDate];
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
+  v5 = [selectedDate isEqual:self->_lastKnownShownDate];
 
   if ((v5 & 1) == 0)
   {
-    v8 = [(MainViewController *)self model];
-    v6 = [v8 selectedDate];
-    v7 = [v6 date];
-    [(InfiniteScrollViewController *)self showDate:v7 animated:0];
+    model2 = [(MainViewController *)self model];
+    selectedDate2 = [model2 selectedDate];
+    date = [selectedDate2 date];
+    [(InfiniteScrollViewController *)self showDate:date animated:0];
   }
 }
 
-- (CGPoint)nearestMajorBoundaryForPoint:(CGPoint)a3
+- (CGPoint)nearestMajorBoundaryForPoint:(CGPoint)point
 {
-  [(InfiniteScrollViewController *)self nearestMajorBoundaryForPoint:0 date:a3.x, a3.y];
+  [(InfiniteScrollViewController *)self nearestMajorBoundaryForPoint:0 date:point.x, point.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)nearestMajorBoundaryForPoint:(CGPoint)a3 date:(id *)a4
+- (CGPoint)nearestMajorBoundaryForPoint:(CGPoint)point date:(id *)date
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(InfiniteScrollViewController *)self scrollView];
-  [v7 safeAreaInsets];
+  y = point.y;
+  x = point.x;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView safeAreaInsets];
   v9 = v8;
 
   v10 = 0.0;
   v11 = [(InfiniteScrollViewController *)self subviewForPoint:0.0, v9];
-  v12 = [(InfiniteScrollViewController *)self scrollView];
-  v13 = [(InfiniteScrollViewController *)self view];
-  [v12 convertPoint:v13 fromView:{0.0, v9}];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  view = [(InfiniteScrollViewController *)self view];
+  [scrollView2 convertPoint:view fromView:{0.0, v9}];
   v15 = v14;
 
   LOBYTE(v16) = v15 > y;
@@ -1935,8 +1935,8 @@ LABEL_3:
     v11 = ;
   }
 
-  v55 = a4;
-  v18 = [v11 calendarDate];
+  dateCopy = date;
+  calendarDate = [v11 calendarDate];
   [v11 frame];
   MinY = CGRectGetMinY(v63);
   [v11 frame];
@@ -1950,9 +1950,9 @@ LABEL_3:
 LABEL_7:
   if (y >= MinY && y <= MaxY)
   {
-    v28 = [(InfiniteScrollViewController *)self pastMajorBoundaryCalendarDateForCalendarDate:v18];
+    v28 = [(InfiniteScrollViewController *)self pastMajorBoundaryCalendarDateForCalendarDate:calendarDate];
 
-    v29 = [(InfiniteScrollViewController *)self futureMajorBoundaryCalendarDateForCalendarDate:v18];
+    v29 = [(InfiniteScrollViewController *)self futureMajorBoundaryCalendarDateForCalendarDate:calendarDate];
 
     LOBYTE(v16) = 1;
     v24 = v28;
@@ -1966,7 +1966,7 @@ LABEL_7:
     {
       v27 = 0;
 LABEL_28:
-      v36 = [(InfiniteScrollViewController *)self calendarDateForSubviewAboveSubviewWithCalendarDate:v18];
+      v36 = [(InfiniteScrollViewController *)self calendarDateForSubviewAboveSubviewWithCalendarDate:calendarDate];
       v16 = 1;
       goto LABEL_32;
     }
@@ -1975,7 +1975,7 @@ LABEL_28:
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v59 = v18;
+      v59 = calendarDate;
       v49 = "Major boundary calculation failsafe triggered while searching upward.  Subview frame exceeds target point.  subviewCalendarDate: [%@]";
       goto LABEL_60;
     }
@@ -1989,7 +1989,7 @@ LABEL_28:
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v59 = v18;
+      v59 = calendarDate;
       v49 = "Major boundary calculation failsafe triggered while searching downward.  Subview frame exceeds target point.  subviewCalendarDate: [%@]";
 LABEL_60:
       v50 = v52;
@@ -2001,7 +2001,7 @@ LABEL_61:
 LABEL_62:
     v43 = 0;
 LABEL_63:
-    v41 = v18;
+    v41 = calendarDate;
 LABEL_64:
     v46 = v57;
     goto LABEL_65;
@@ -2010,7 +2010,7 @@ LABEL_64:
   v27 = 0;
   while (1)
   {
-    v36 = [(InfiniteScrollViewController *)self calendarDateForSubviewBelowSubviewWithCalendarDate:v18];
+    v36 = [(InfiniteScrollViewController *)self calendarDateForSubviewBelowSubviewWithCalendarDate:calendarDate];
     v16 = 0;
 LABEL_32:
     [(InfiniteScrollViewController *)self heightForSubviewWithCalendarDate:v36];
@@ -2046,7 +2046,7 @@ LABEL_32:
     MaxY = v38 + MinY;
 
     v22 = v40;
-    v18 = v41;
+    calendarDate = v41;
     if ((v27 & 1) == 0)
     {
       goto LABEL_7;
@@ -2058,7 +2058,7 @@ LABEL_15:
       v25 = 1;
     }
 
-    else if ((v30 = [v24 month], v30 == objc_msgSend(v18, "month")) && (v31 = objc_msgSend(v24, "day"), v31 == objc_msgSend(v18, "day")) || (v32 = objc_msgSend(v24, "compare:", v18)) == 0)
+    else if ((v30 = [v24 month], v30 == objc_msgSend(calendarDate, "month")) && (v31 = objc_msgSend(v24, "day"), v31 == objc_msgSend(calendarDate, "day")) || (v32 = objc_msgSend(v24, "compare:", calendarDate)) == 0)
     {
       LOBYTE(v16) = 0;
       v25 = 1;
@@ -2078,7 +2078,7 @@ LABEL_15:
         *buf = 138412546;
         v59 = v24;
         v60 = 2112;
-        v61 = v18;
+        v61 = calendarDate;
         v49 = "Major boundary calculation failsafe triggered while trying to find the subview matching a past major boundary calendar date.  pastMajorBoundaryCalendarDate: [%@] subviewCalendarDate: [%@]";
 LABEL_53:
         v50 = v48;
@@ -2089,17 +2089,17 @@ LABEL_53:
       v25 = 0;
     }
 
-    v33 = [v23 month];
-    if (v33 == [v18 month])
+    month = [v23 month];
+    if (month == [calendarDate month])
     {
       v34 = [v23 day];
-      if (v34 == [v18 day])
+      if (v34 == [calendarDate day])
       {
         break;
       }
     }
 
-    v35 = [v23 compare:v18];
+    v35 = [v23 compare:calendarDate];
     if (!v35)
     {
       break;
@@ -2116,7 +2116,7 @@ LABEL_53:
       *buf = 138412546;
       v59 = v23;
       v60 = 2112;
-      v61 = v18;
+      v61 = calendarDate;
       v49 = "Major boundary calculation failsafe triggered while trying to find the subview matching a future major boundary calendar date.  futureMajorBoundaryCalendarDate: [%@] subviewCalendarDate: [%@]";
       goto LABEL_53;
     }
@@ -2146,7 +2146,7 @@ LABEL_53:
   v43 = v44;
   [(InfiniteScrollViewController *)self showDateVerticalOffsetForDate:v43];
   y = v10 - v9 + v45;
-  if (!v55)
+  if (!dateCopy)
   {
     goto LABEL_63;
   }
@@ -2155,10 +2155,10 @@ LABEL_53:
   if (v43)
   {
     v47 = v43;
-    *v55 = v43;
+    *dateCopy = v43;
   }
 
-  v41 = v18;
+  v41 = calendarDate;
 LABEL_65:
 
   v53 = x;
@@ -2170,75 +2170,75 @@ LABEL_65:
 
 - (double)unobstructedScrollViewHeight
 {
-  v3 = [(InfiniteScrollViewController *)self scrollView];
-  [v3 safeAreaInsets];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView safeAreaInsets];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(InfiniteScrollViewController *)self scrollView];
-  [v8 bounds];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView2 bounds];
   v9 = CGRectGetHeight(v11) - v5 - v7;
 
   return v9;
 }
 
-- (id)pastMajorBoundaryCalendarDateForCalendarDate:(id)a3
+- (id)pastMajorBoundaryCalendarDateForCalendarDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();
   return 0;
 }
 
-- (id)futureMajorBoundaryCalendarDateForCalendarDate:(id)a3
+- (id)futureMajorBoundaryCalendarDateForCalendarDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();
   return 0;
 }
 
-- (id)createInitialViewForDate:(id)a3
+- (id)createInitialViewForDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();
   return 0;
 }
 
-- (id)newTopViewAboveViewWithCalendarDate:(id)a3
+- (id)newTopViewAboveViewWithCalendarDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();
   return 0;
 }
 
-- (id)newBottomViewBelowViewWithCalendarDate:(id)a3
+- (id)newBottomViewBelowViewWithCalendarDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();
   return 0;
 }
 
-- (id)calendarDateForSubviewAboveSubviewWithCalendarDate:(id)a3
+- (id)calendarDateForSubviewAboveSubviewWithCalendarDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();
   return 0;
 }
 
-- (id)calendarDateForSubviewBelowSubviewWithCalendarDate:(id)a3
+- (id)calendarDateForSubviewBelowSubviewWithCalendarDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();
   return 0;
 }
 
-- (double)heightForSubviewWithCalendarDate:(id)a3
+- (double)heightForSubviewWithCalendarDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();
   return 0.0;
 }
 
-- (double)topInsetForSubviewWithCalendarDate:(id)a3
+- (double)topInsetForSubviewWithCalendarDate:(id)date
 {
   sub_100026F48();
   sub_100026F2C();

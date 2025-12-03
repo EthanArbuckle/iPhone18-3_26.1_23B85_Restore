@@ -1,6 +1,6 @@
 @interface SKMutableTexture
 + (SKMutableTexture)mutableTextureWithSize:(CGSize)size;
-- (SKMutableTexture)initWithSize:(CGSize)a3 ioSurfaceBacked:(BOOL)a4 pixelFormat:(int)a5;
+- (SKMutableTexture)initWithSize:(CGSize)size ioSurfaceBacked:(BOOL)backed pixelFormat:(int)format;
 - (id)description;
 - (shared_ptr<jet_texture>)_backingTexture;
 - (void)dealloc;
@@ -9,11 +9,11 @@
 
 @implementation SKMutableTexture
 
-- (SKMutableTexture)initWithSize:(CGSize)a3 ioSurfaceBacked:(BOOL)a4 pixelFormat:(int)a5
+- (SKMutableTexture)initWithSize:(CGSize)size ioSurfaceBacked:(BOOL)backed pixelFormat:(int)format
 {
-  height = a3.height;
-  width = a3.width;
-  v38 = a5;
+  height = size.height;
+  width = size.width;
+  formatCopy = format;
   v37.receiver = self;
   v37.super_class = SKMutableTexture;
   v9 = [(SKTexture *)&v37 _initWithGLTextureId:0 size:?];
@@ -27,7 +27,7 @@
     v36 = v11;
     [(SKTexture *)v9 size];
     v14 = v13;
-    if (a5 == 1380410945)
+    if (format == 1380410945)
     {
       v15 = 4;
     }
@@ -37,29 +37,29 @@
       v15 = 2;
     }
 
-    if (a5 == 1380411457)
+    if (format == 1380411457)
     {
       v15 = 3;
     }
 
     valuePtr = v12 << v15;
     v35 = v13;
-    v16 = ((v12 << v15) & 0xC) == 0 && a4;
+    v16 = ((v12 << v15) & 0xC) == 0 && backed;
     v9->_ioSurface = 0;
     v9->_textureSize.width = width;
     v9->_textureSize.height = height;
     v9->_pixelData = 0;
     v9->_pixelDataLength = 0;
     v9->_ioSurfaceBacked = v16;
-    v9->_pixelFormat = a5;
-    v17 = [(SKTexture *)v9 _textureCache];
-    v18 = v17;
-    if (a5 == 1380410945)
+    v9->_pixelFormat = format;
+    _textureCache = [(SKTexture *)v9 _textureCache];
+    v18 = _textureCache;
+    if (format == 1380410945)
     {
       v19 = 10;
     }
 
-    else if (a5 == 1380411457)
+    else if (format == 1380411457)
     {
       v19 = 0;
     }
@@ -74,7 +74,7 @@
       v19 = 3;
     }
 
-    [v17 setTextureFormat:v19];
+    [_textureCache setTextureFormat:v19];
     v20 = valuePtr * v14;
     v33 = valuePtr * v14;
     if (v9->_ioSurfaceBacked)
@@ -95,7 +95,7 @@
       v26 = CFNumberCreate(v21, kCFNumberSInt32Type, &v35);
       CFDictionarySetValue(Mutable, *MEMORY[0x277CD2A28], v26);
       CFRelease(v26);
-      v27 = CFNumberCreate(v21, kCFNumberSInt32Type, &v38);
+      v27 = CFNumberCreate(v21, kCFNumberSInt32Type, &formatCopy);
       CFDictionarySetValue(Mutable, *MEMORY[0x277CD2A70], v27);
       CFRelease(v27);
       v28 = CFNumberCreate(v21, kCFNumberSInt32Type, &v33);
@@ -144,10 +144,10 @@
   else
   {
     (*(v4 + 2))(v4, self->_pixelData, self->_pixelDataLength);
-    v8 = [(SKTexture *)self _textureCache];
+    _textureCache = [(SKTexture *)self _textureCache];
     v9 = 0;
     v10 = 0;
-    [v8 setBackingTexture:&v9];
+    [_textureCache setBackingTexture:&v9];
     if (v10)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v10);
@@ -158,11 +158,11 @@
 - (shared_ptr<jet_texture>)_backingTexture
 {
   v4 = v2;
-  v5 = [(SKTexture *)self _textureCache];
-  v6 = v5;
-  if (v5)
+  _textureCache = [(SKTexture *)self _textureCache];
+  v6 = _textureCache;
+  if (_textureCache)
   {
-    [v5 backingTexture];
+    [_textureCache backingTexture];
   }
 
   else
@@ -180,12 +180,12 @@
 
   else
   {
-    v10 = [(SKTexture *)self _textureCache];
-    [v10 pixelSize];
+    _textureCache2 = [(SKTexture *)self _textureCache];
+    [_textureCache2 pixelSize];
     v12 = v11;
 
-    v13 = [(SKTexture *)self _textureCache];
-    [v13 pixelSize];
+    _textureCache3 = [(SKTexture *)self _textureCache];
+    [_textureCache3 pixelSize];
     v15 = vcvtpd_u64_f64(v14);
 
     v18[0] = MEMORY[0x277D85DD0];
@@ -196,11 +196,11 @@
     v19 = vcvtpd_u64_f64(v12);
     v20 = v15;
     SKCPerformResourceOperation(v18);
-    v16 = [(SKTexture *)self _textureCache];
-    v17 = v16;
-    if (v16)
+    _textureCache4 = [(SKTexture *)self _textureCache];
+    v17 = _textureCache4;
+    if (_textureCache4)
     {
-      [v16 backingTexture];
+      [_textureCache4 backingTexture];
     }
 
     else

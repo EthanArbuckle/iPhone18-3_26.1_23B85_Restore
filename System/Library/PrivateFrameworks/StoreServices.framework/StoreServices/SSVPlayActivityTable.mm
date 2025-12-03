@@ -1,28 +1,28 @@
 @interface SSVPlayActivityTable
-+ (BOOL)_setupDatabase:(id)a3;
++ (BOOL)_setupDatabase:(id)database;
 + (id)databasePath;
-- (BOOL)_getPlayActivityEvents:(id *)a3 relevantRevisionsIndexSet:(id *)a4 withStartRevision:(unint64_t)a5 endRevision:(unint64_t)a6 storeAccountID:(unint64_t)a7 shouldFilterStoreAccountID:(BOOL)a8 additionalRevisionsIndexSet:(id)a9 ignoredRevisionsIndexSet:(id)a10 error:(id *)a11;
-- (BOOL)_setValue:(id)a3 forDatabasePropertyKey:(id)a4;
-- (BOOL)insertPlayActivityEvent:(id)a3 withRevision:(unint64_t)a4 returningError:(id *)a5;
-- (BOOL)removePlayActivityEventsUpToRevision:(unint64_t)a3 returningError:(id *)a4;
+- (BOOL)_getPlayActivityEvents:(id *)events relevantRevisionsIndexSet:(id *)set withStartRevision:(unint64_t)revision endRevision:(unint64_t)endRevision storeAccountID:(unint64_t)d shouldFilterStoreAccountID:(BOOL)iD additionalRevisionsIndexSet:(id)indexSet ignoredRevisionsIndexSet:(id)self0 error:(id *)self1;
+- (BOOL)_setValue:(id)value forDatabasePropertyKey:(id)key;
+- (BOOL)insertPlayActivityEvent:(id)event withRevision:(unint64_t)revision returningError:(id *)error;
+- (BOOL)removePlayActivityEventsUpToRevision:(unint64_t)revision returningError:(id *)error;
 - (NSString)eventsRevisionVersionToken;
 - (SSVPlayActivityTable)init;
-- (id)_revisionsIndexSetUsingPersisentIDGenerationBlock:(id)a3 count:(unint64_t)a4;
-- (id)_valueForDatabasePropertyKey:(id)a3;
-- (id)revisionsIndexSetForPlayActivityEventPersistentIDs:(id)a3;
-- (id)revisionsIndexSetForPlayActivityEvents:(id)a3;
+- (id)_revisionsIndexSetUsingPersisentIDGenerationBlock:(id)block count:(unint64_t)count;
+- (id)_valueForDatabasePropertyKey:(id)key;
+- (id)revisionsIndexSetForPlayActivityEventPersistentIDs:(id)ds;
+- (id)revisionsIndexSetForPlayActivityEvents:(id)events;
 - (unint64_t)currentEventsRevision;
-- (void)performTransactionWithBlock:(id)a3;
-- (void)setCurrentEventsRevision:(unint64_t)a3;
+- (void)performTransactionWithBlock:(id)block;
+- (void)setCurrentEventsRevision:(unint64_t)revision;
 @end
 
 @implementation SSVPlayActivityTable
 
 - (SSVPlayActivityTable)init
 {
-  v3 = [objc_opt_class() databasePath];
+  databasePath = [objc_opt_class() databasePath];
   v4 = [SSSQLiteDatabase alloc];
-  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:0];
+  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:databasePath isDirectory:0];
   v6 = [(SSSQLiteDatabase *)v4 initWithDatabaseURL:v5 readOnly:0 protectionType:*MEMORY[0x1E696A388]];
 
   v7 = objc_opt_class();
@@ -47,15 +47,15 @@
 - (unint64_t)currentEventsRevision
 {
   v2 = [(SSVPlayActivityTable *)self _valueForDatabasePropertyKey:@"events_current_revision"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (void)setCurrentEventsRevision:(unint64_t)a3
+- (void)setCurrentEventsRevision:(unint64_t)revision
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a3];
-  [(SSVPlayActivityTable *)self _setValue:v4 forDatabasePropertyKey:@"events_current_revision"];
+  revision = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", revision];
+  [(SSVPlayActivityTable *)self _setValue:revision forDatabasePropertyKey:@"events_current_revision"];
 }
 
 + (id)databasePath
@@ -85,22 +85,22 @@
   return &v4->isa;
 }
 
-- (BOOL)insertPlayActivityEvent:(id)a3 withRevision:(unint64_t)a4 returningError:(id *)a5
+- (BOOL)insertPlayActivityEvent:(id)event withRevision:(unint64_t)revision returningError:(id *)error
 {
-  v8 = a3;
+  eventCopy = event;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
-  v36 = v8 == 0;
+  v36 = eventCopy == 0;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__88;
   v31 = __Block_byref_object_dispose__88;
   v32 = 0;
-  v9 = [objc_opt_class() _eventsDatabaseTableName];
+  _eventsDatabaseTableName = [objc_opt_class() _eventsDatabaseTableName];
   v10 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"INSERT OR REPLACE INTO "];
-  [v10 appendString:v9];
+  [v10 appendString:_eventsDatabaseTableName];
   objc_msgSend(v10, "appendString:", @" (");
   [v10 appendString:@"pid"];
   v11 = 0;
@@ -126,12 +126,12 @@
   v20[1] = 3221225472;
   v20[2] = __76__SSVPlayActivityTable_insertPlayActivityEvent_withRevision_returningError___block_invoke;
   v20[3] = &unk_1E84B3F18;
-  v26 = a4;
-  v14 = v8;
+  revisionCopy = revision;
+  v14 = eventCopy;
   v24 = &v27;
   v25 = &v33;
   v21 = v14;
-  v22 = self;
+  selfCopy = self;
   v15 = v10;
   v23 = v15;
   [(SSSQLiteDatabase *)database prepareStatementForSQL:v15 cache:1 usingBlock:v20];
@@ -142,9 +142,9 @@
     v28[5] = v16;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
   v18 = *(v34 + 24);
@@ -256,37 +256,37 @@ LABEL_24:
   *(*(*(a1 + 64) + 8) + 24) = 0;
 }
 
-- (void)performTransactionWithBlock:(id)a3
+- (void)performTransactionWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     database = self->_database;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __52__SSVPlayActivityTable_performTransactionWithBlock___block_invoke;
     v7[3] = &unk_1E84B3F40;
-    v8 = v4;
+    v8 = blockCopy;
     [(SSSQLiteDatabase *)database performTransactionWithBlock:v7];
   }
 }
 
-- (BOOL)removePlayActivityEventsUpToRevision:(unint64_t)a3 returningError:(id *)a4
+- (BOOL)removePlayActivityEventsUpToRevision:(unint64_t)revision returningError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  v7 = [objc_opt_class() _eventsDatabaseTableName];
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM %@ WHERE %@ <= ?;", v7, @"revision_id"];
+  _eventsDatabaseTableName = [objc_opt_class() _eventsDatabaseTableName];
+  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM %@ WHERE %@ <= ?;", _eventsDatabaseTableName, @"revision_id"];
   database = self->_database;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__SSVPlayActivityTable_removePlayActivityEventsUpToRevision_returningError___block_invoke;
   v15[3] = &unk_1E84B3F68;
   v17 = &v19;
-  v18 = a3;
+  revisionCopy = revision;
   v15[4] = self;
   v10 = v8;
   v16 = v10;
@@ -294,7 +294,7 @@ LABEL_24:
   if ((v20[3] & 1) == 0)
   {
     v11 = SSError(@"SSErrorDomain", 100, 0, 0);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -303,11 +303,11 @@ LABEL_24:
   }
 
   v11 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_4:
@@ -426,15 +426,15 @@ LABEL_24:
   }
 }
 
-- (id)revisionsIndexSetForPlayActivityEvents:(id)a3
+- (id)revisionsIndexSetForPlayActivityEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__SSVPlayActivityTable_revisionsIndexSetForPlayActivityEvents___block_invoke;
   v8[3] = &unk_1E84B3F90;
-  v9 = v4;
-  v5 = v4;
+  v9 = eventsCopy;
+  v5 = eventsCopy;
   v6 = -[SSVPlayActivityTable _revisionsIndexSetUsingPersisentIDGenerationBlock:count:](self, "_revisionsIndexSetUsingPersisentIDGenerationBlock:count:", v8, [v5 count]);
 
   return v6;
@@ -448,15 +448,15 @@ uint64_t __63__SSVPlayActivityTable_revisionsIndexSetForPlayActivityEvents___blo
   return v3;
 }
 
-- (id)revisionsIndexSetForPlayActivityEventPersistentIDs:(id)a3
+- (id)revisionsIndexSetForPlayActivityEventPersistentIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__SSVPlayActivityTable_revisionsIndexSetForPlayActivityEventPersistentIDs___block_invoke;
   v8[3] = &unk_1E84B3F90;
-  v9 = v4;
-  v5 = v4;
+  v9 = dsCopy;
+  v5 = dsCopy;
   v6 = -[SSVPlayActivityTable _revisionsIndexSetUsingPersisentIDGenerationBlock:count:](self, "_revisionsIndexSetUsingPersisentIDGenerationBlock:count:", v8, [v5 count]);
 
   return v6;
@@ -470,10 +470,10 @@ uint64_t __75__SSVPlayActivityTable_revisionsIndexSetForPlayActivityEventPersist
   return v3;
 }
 
-+ (BOOL)_setupDatabase:(id)a3
++ (BOOL)_setupDatabase:(id)database
 {
-  v4 = a3;
-  if (!v4)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
     v22 = 0;
     goto LABEL_33;
@@ -483,60 +483,60 @@ uint64_t __75__SSVPlayActivityTable_revisionsIndexSetForPlayActivityEventPersist
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 0;
-  v5 = [a1 _eventsDatabaseTableName];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ INTEGER PRIMARY KEY, %@ INTEGER, %@ INTEGER, %@ BLOB)", v5, @"pid", @"revision_id", @"store_account_id", @"event_data"];;
-  v7 = [a1 _propertiesDatabaseTableName];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY, %@ TEXT)", v7, @"key", @"value"];;
-  v9 = [v4 executeSQL:@"PRAGMA legacy_file_format = 0;"];
+  _eventsDatabaseTableName = [self _eventsDatabaseTableName];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ INTEGER PRIMARY KEY, %@ INTEGER, %@ INTEGER, %@ BLOB)", _eventsDatabaseTableName, @"pid", @"revision_id", @"store_account_id", @"event_data"];;
+  _propertiesDatabaseTableName = [self _propertiesDatabaseTableName];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY, %@ TEXT)", _propertiesDatabaseTableName, @"key", @"value"];;
+  v9 = [databaseCopy executeSQL:@"PRAGMA legacy_file_format = 0;"];
   *(v36 + 24) = v9;
   if ((v9 & 1) == 0)
   {
     goto LABEL_31;
   }
 
-  v10 = [v4 executeSQL:@"PRAGMA journal_mode=WAL;"];
+  v10 = [databaseCopy executeSQL:@"PRAGMA journal_mode=WAL;"];
   *(v36 + 24) = v10;
   if (!v10)
   {
     goto LABEL_31;
   }
 
-  v11 = [v4 executeSQL:v6];
+  v11 = [databaseCopy executeSQL:v6];
   *(v36 + 24) = v11;
   if (!v11)
   {
     goto LABEL_31;
   }
 
-  v12 = [v4 executeSQL:v8];
+  v12 = [databaseCopy executeSQL:v8];
   *(v36 + 24) = v12;
   if (!v12)
   {
     goto LABEL_31;
   }
 
-  v13 = [v4 userVersion];
-  if (!v13)
+  userVersion = [databaseCopy userVersion];
+  if (!userVersion)
   {
     if ((v36[3] & 1) == 0)
     {
       goto LABEL_31;
     }
 
-    v13 = 2005;
+    userVersion = 2005;
 LABEL_26:
-    v30 = [MEMORY[0x1E696AFB0] UUID];
-    v23 = [v30 UUIDString];
-    v24 = v23;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v24 = uUIDString;
     v25 = &stru_1F503F418;
-    if (v23)
+    if (uUIDString)
     {
-      v25 = v23;
+      v25 = uUIDString;
     }
 
     v29 = v25;
 
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT OR IGNORE INTO %@ (%@, %@) VALUES (?, ?)", v7, @"key", @"value"];;
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT OR IGNORE INTO %@ (%@, %@) VALUES (?, ?)", _propertiesDatabaseTableName, @"key", @"value"];;
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __39__SSVPlayActivityTable__setupDatabase___block_invoke;
@@ -545,7 +545,7 @@ LABEL_26:
     v32 = v27;
     v33 = @"events_revision_version_token";
     v34 = &v35;
-    [v4 prepareStatementForSQL:v26 cache:0 usingBlock:v31];
+    [databaseCopy prepareStatementForSQL:v26 cache:0 usingBlock:v31];
 
     if (v36[3])
     {
@@ -556,12 +556,12 @@ LABEL_26:
   }
 
   v14 = *(v36 + 24);
-  if (v13 < 1)
+  if (userVersion < 1)
   {
     if (v36[3])
     {
 LABEL_29:
-      [v4 setUserVersion:v13];
+      [databaseCopy setUserVersion:userVersion];
       v22 = 1;
       goto LABEL_32;
     }
@@ -572,7 +572,7 @@ LABEL_31:
   }
 
   v15 = 0;
-  if (!*(v36 + 24) || v13 > 0x7D4)
+  if (!*(v36 + 24) || userVersion > 0x7D4)
   {
 LABEL_20:
     if ((v14 & 1) == 0)
@@ -592,13 +592,13 @@ LABEL_20:
   v14 = 1;
   while (1)
   {
-    if ((v13 - 2000) > 4)
+    if ((userVersion - 2000) > 4)
     {
       goto LABEL_18;
     }
 
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", v7];;
-    v17 = [v4 executeSQL:v16];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", _propertiesDatabaseTableName];;
+    v17 = [databaseCopy executeSQL:v16];
     *(v36 + 24) = v17;
 
     v18 = v36;
@@ -607,8 +607,8 @@ LABEL_20:
       break;
     }
 
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", v5];;
-    v20 = [v4 executeSQL:v19];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", _eventsDatabaseTableName];;
+    v20 = [databaseCopy executeSQL:v19];
     *(v36 + 24) = v20;
 
     v18 = v36;
@@ -617,7 +617,7 @@ LABEL_20:
       goto LABEL_35;
     }
 
-    v21 = [v4 executeSQL:v6];
+    v21 = [databaseCopy executeSQL:v6];
     v18 = v36;
     *(v36 + 24) = v21;
     if (!v21)
@@ -625,16 +625,16 @@ LABEL_20:
       goto LABEL_36;
     }
 
-    v14 = [v4 executeSQL:v8];
+    v14 = [databaseCopy executeSQL:v8];
     *(v36 + 24) = v14 & 1;
     if (v14)
     {
-      v13 = 2005;
+      userVersion = 2005;
     }
 
     v15 = 1;
 LABEL_18:
-    if (v13 > 2004 || (v14 & 1) == 0)
+    if (userVersion > 2004 || (v14 & 1) == 0)
     {
       goto LABEL_20;
     }
@@ -674,18 +674,18 @@ BOOL __39__SSVPlayActivityTable__setupDatabase___block_invoke(uint64_t a1, sqlit
   return result;
 }
 
-- (BOOL)_getPlayActivityEvents:(id *)a3 relevantRevisionsIndexSet:(id *)a4 withStartRevision:(unint64_t)a5 endRevision:(unint64_t)a6 storeAccountID:(unint64_t)a7 shouldFilterStoreAccountID:(BOOL)a8 additionalRevisionsIndexSet:(id)a9 ignoredRevisionsIndexSet:(id)a10 error:(id *)a11
+- (BOOL)_getPlayActivityEvents:(id *)events relevantRevisionsIndexSet:(id *)set withStartRevision:(unint64_t)revision endRevision:(unint64_t)endRevision storeAccountID:(unint64_t)d shouldFilterStoreAccountID:(BOOL)iD additionalRevisionsIndexSet:(id)indexSet ignoredRevisionsIndexSet:(id)self0 error:(id *)self1
 {
-  v11 = a8;
-  v32 = a9;
-  v18 = a10;
-  v19 = v18;
-  if (a3 | a4)
+  iDCopy = iD;
+  indexSetCopy = indexSet;
+  revisionsIndexSetCopy = revisionsIndexSet;
+  v19 = revisionsIndexSetCopy;
+  if (events | set)
   {
-    v28 = a5;
-    v29 = a7;
-    v30 = a6;
-    v31 = v18;
+    revisionCopy = revision;
+    dCopy = d;
+    endRevisionCopy = endRevision;
+    v31 = revisionsIndexSetCopy;
     v52 = 0;
     v53 = &v52;
     v54 = 0x3032000000;
@@ -694,7 +694,7 @@ BOOL __39__SSVPlayActivityTable__setupDatabase___block_invoke(uint64_t a1, sqlit
     v57 = 0;
     v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"SELECT "];
     v21 = v20;
-    if (a3)
+    if (events)
     {
       v22 = 0;
       do
@@ -720,15 +720,15 @@ BOOL __39__SSVPlayActivityTable__setupDatabase___block_invoke(uint64_t a1, sqlit
       [v20 appendFormat:@"%@", @"revision_id"];
     }
 
-    v24 = [objc_opt_class() _eventsDatabaseTableName];
-    objc_msgSend(v21, "appendFormat:", @" FROM %@ WHERE ("), v24;
-    if (v11)
+    _eventsDatabaseTableName = [objc_opt_class() _eventsDatabaseTableName];
+    objc_msgSend(v21, "appendFormat:", @" FROM %@ WHERE ("), _eventsDatabaseTableName;
+    if (iDCopy)
     {
       objc_msgSend(v21, "appendFormat:", @"(%@ == ?) AND ("), CFSTR("store_account_id");
     }
 
     [v21 appendFormat:@"%@ BETWEEN ? AND ?", @"revision_id"];
-    v25 = [v32 count];
+    v25 = [indexSetCopy count];
     if (v25)
     {
       v50[0] = MEMORY[0x1E69E9820];
@@ -736,16 +736,16 @@ BOOL __39__SSVPlayActivityTable__setupDatabase___block_invoke(uint64_t a1, sqlit
       v50[2] = __204__SSVPlayActivityTable__getPlayActivityEvents_relevantRevisionsIndexSet_withStartRevision_endRevision_storeAccountID_shouldFilterStoreAccountID_additionalRevisionsIndexSet_ignoredRevisionsIndexSet_error___block_invoke;
       v50[3] = &unk_1E84B3FE0;
       v51 = v21;
-      [v32 enumerateRangesUsingBlock:v50];
+      [indexSetCopy enumerateRangesUsingBlock:v50];
     }
 
-    if (v11)
+    if (iDCopy)
     {
       [v21 appendString:@""]);
     }
 
     [v21 appendString:@" ORDER BY "]);
-    if (v11)
+    if (iDCopy)
     {
       [v21 appendFormat:@"%@, %@ ASC;", @"store_account_id", @"revision_id"];
     }
@@ -766,31 +766,31 @@ BOOL __39__SSVPlayActivityTable__setupDatabase___block_invoke(uint64_t a1, sqlit
     v33[1] = 3221225472;
     v33[2] = __204__SSVPlayActivityTable__getPlayActivityEvents_relevantRevisionsIndexSet_withStartRevision_endRevision_storeAccountID_shouldFilterStoreAccountID_additionalRevisionsIndexSet_ignoredRevisionsIndexSet_error___block_invoke_2;
     v33[3] = &unk_1E84B4030;
-    v43 = v11;
-    v38 = v29;
-    v39 = v28;
-    v40 = v30;
-    v34 = v32;
-    v41 = a3;
+    v43 = iDCopy;
+    v38 = dCopy;
+    v39 = revisionCopy;
+    v40 = endRevisionCopy;
+    v34 = indexSetCopy;
+    eventsCopy = events;
     v19 = v31;
     v35 = v31;
     v36 = &v52;
-    v42 = a4;
+    setCopy = set;
     v37 = &v44;
     [(SSSQLiteDatabase *)database prepareStatementForSQL:v21 cache:v25 == 0 usingBlock:v33];
-    if (a11)
+    if (error)
     {
-      *a11 = 0;
+      *error = 0;
     }
 
-    if (a3)
+    if (events)
     {
-      *a3 = v45[5];
+      *events = v45[5];
     }
 
-    if (a4)
+    if (set)
     {
-      *a4 = v53[5];
+      *set = v53[5];
     }
 
     _Block_object_dispose(&v44, 8);
@@ -973,18 +973,18 @@ uint64_t __204__SSVPlayActivityTable__getPlayActivityEvents_relevantRevisionsInd
   return result;
 }
 
-- (id)_revisionsIndexSetUsingPersisentIDGenerationBlock:(id)a3 count:(unint64_t)a4
+- (id)_revisionsIndexSetUsingPersisentIDGenerationBlock:(id)block count:(unint64_t)count
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = 0;
-  if (v6 && a4)
+  if (blockCopy && count)
   {
-    v8 = [objc_opt_class() _eventsDatabaseTableName];
-    v9 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithFormat:", @"SELECT DISTINCT %@ FROM %@ WHERE %@ IN ("), CFSTR("revision_id"), v8, CFSTR("pid");
+    _eventsDatabaseTableName = [objc_opt_class() _eventsDatabaseTableName];
+    v9 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithFormat:", @"SELECT DISTINCT %@ FROM %@ WHERE %@ IN ("), CFSTR("revision_id"), _eventsDatabaseTableName, CFSTR("pid");
     v10 = 0;
     do
     {
-      if (v10 >= a4 - 1)
+      if (v10 >= count - 1)
       {
         v11 = &stru_1F503F418;
       }
@@ -998,7 +998,7 @@ uint64_t __204__SSVPlayActivityTable__getPlayActivityEvents_relevantRevisionsInd
       ++v10;
     }
 
-    while (a4 != v10);
+    while (count != v10);
     [v9 appendString:@";"]);
     v18 = 0;
     v19 = &v18;
@@ -1011,8 +1011,8 @@ uint64_t __204__SSVPlayActivityTable__getPlayActivityEvents_relevantRevisionsInd
     v14[1] = 3221225472;
     v14[2] = __80__SSVPlayActivityTable__revisionsIndexSetUsingPersisentIDGenerationBlock_count___block_invoke;
     v14[3] = &unk_1E84B4058;
-    v17 = a4;
-    v15 = v6;
+    countCopy = count;
+    v15 = blockCopy;
     v16 = &v18;
     [(SSSQLiteDatabase *)database prepareStatementForSQL:v9 cache:0 usingBlock:v14];
     v7 = v19[5];
@@ -1066,29 +1066,29 @@ BOOL __80__SSVPlayActivityTable__revisionsIndexSetUsingPersisentIDGenerationBloc
   return result;
 }
 
-- (BOOL)_setValue:(id)a3 forDatabasePropertyKey:(id)a4
+- (BOOL)_setValue:(id)value forDatabasePropertyKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy)
   {
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
     v31 = 0;
-    v8 = [objc_opt_class() _propertiesDatabaseTableName];
-    if (v6)
+    _propertiesDatabaseTableName = [objc_opt_class() _propertiesDatabaseTableName];
+    if (valueCopy)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT OR REPLACE INTO %@ (%@, %@) VALUES (?, ?)", v8, @"key", @"value"];;
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT OR REPLACE INTO %@ (%@, %@) VALUES (?, ?)", _propertiesDatabaseTableName, @"key", @"value"];;
       database = self->_database;
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __57__SSVPlayActivityTable__setValue_forDatabasePropertyKey___block_invoke;
       v22[3] = &unk_1E84B4080;
-      v23 = v6;
+      v23 = valueCopy;
       v27 = &v28;
-      v24 = v7;
-      v25 = self;
+      v24 = keyCopy;
+      selfCopy = self;
       v11 = v9;
       v26 = v11;
       [(SSSQLiteDatabase *)database prepareStatementForSQL:v11 cache:1 usingBlock:v22];
@@ -1099,14 +1099,14 @@ BOOL __80__SSVPlayActivityTable__revisionsIndexSetUsingPersisentIDGenerationBloc
 
     else
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM %@ WHERE %@ = ?", v8, @"key"];;
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM %@ WHERE %@ = ?", _propertiesDatabaseTableName, @"key"];;
       v16 = self->_database;
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __57__SSVPlayActivityTable__setValue_forDatabasePropertyKey___block_invoke_148;
       v18[3] = &unk_1E84B40A8;
       v21 = &v28;
-      v19[0] = v7;
+      v19[0] = keyCopy;
       v19[1] = self;
       v11 = v15;
       v20 = v11;
@@ -1255,10 +1255,10 @@ LABEL_13:
   }
 }
 
-- (id)_valueForDatabasePropertyKey:(id)a3
+- (id)_valueForDatabasePropertyKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -1266,14 +1266,14 @@ LABEL_13:
     v16 = __Block_byref_object_copy__88;
     v17 = __Block_byref_object_dispose__88;
     v18 = 0;
-    v5 = [objc_opt_class() _propertiesDatabaseTableName];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ?", @"value", v5, @"key"];;
+    _propertiesDatabaseTableName = [objc_opt_class() _propertiesDatabaseTableName];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ?", @"value", _propertiesDatabaseTableName, @"key"];;
     database = self->_database;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__SSVPlayActivityTable__valueForDatabasePropertyKey___block_invoke;
     v10[3] = &unk_1E84B40D0;
-    v11 = v4;
+    v11 = keyCopy;
     v12 = &v13;
     [(SSSQLiteDatabase *)database prepareStatementForSQL:v6 cache:1 usingBlock:v10];
     v8 = v14[5];

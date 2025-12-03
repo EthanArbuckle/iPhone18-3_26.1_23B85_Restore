@@ -1,23 +1,23 @@
 @interface WebReportViewController
-- (_TtC28HealthExposureNotificationUI23WebReportViewController)initWithCoder:(id)a3;
-- (_TtC28HealthExposureNotificationUI23WebReportViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (_TtC28HealthExposureNotificationUI23WebReportViewController)initWithCoder:(id)coder;
+- (_TtC28HealthExposureNotificationUI23WebReportViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation WebReportViewController
 
-- (_TtC28HealthExposureNotificationUI23WebReportViewController)initWithCoder:(id)a3
+- (_TtC28HealthExposureNotificationUI23WebReportViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC28HealthExposureNotificationUI23WebReportViewController____lazy_storage___webView) = 0;
   v4 = OBJC_IVAR____TtC28HealthExposureNotificationUI23WebReportViewController_statusView;
-  v5 = [objc_opt_self() systemBackgroundColor];
+  systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
   v6 = objc_allocWithZone(type metadata accessor for LoadingStatusView());
-  *(&self->super.super.super.isa + v4) = LoadingStatusView.init(with:backgroundColor:)(0, 0xE000000000000000, v5);
+  *(&self->super.super.super.isa + v4) = LoadingStatusView.init(with:backgroundColor:)(0, 0xE000000000000000, systemBackgroundColor);
   result = sub_251703584();
   __break(1u);
   return result;
@@ -25,63 +25,63 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WebReportViewController.viewDidLoad()();
 }
 
-- (_TtC28HealthExposureNotificationUI23WebReportViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC28HealthExposureNotificationUI23WebReportViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_251698EEC(v7);
+  controllerCopy = controller;
+  messageCopy = message;
+  selfCopy = self;
+  sub_251698EEC(messageCopy);
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_25169935C(v10, v8);
+  viewCopy = view;
+  actionCopy = action;
+  selfCopy = self;
+  sub_25169935C(actionCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_25169994C(v10, v11, v8);
+  viewCopy = view;
+  responseCopy = response;
+  selfCopy = self;
+  sub_25169994C(responseCopy, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_251699B2C(v11);
+  viewCopy = view;
+  navigationCopy = navigation;
+  errorCopy = error;
+  selfCopy = self;
+  sub_251699B2C(errorCopy);
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC28HealthExposureNotificationUI23WebReportViewController_statusView);
   v5 = *&v4[OBJC_IVAR____TtC28HealthExposureNotificationUI17LoadingStatusView_spinnerView];
-  v6 = self;
+  selfCopy = self;
   [v5 stopAnimating];
   [v4 setHidden_];
 }

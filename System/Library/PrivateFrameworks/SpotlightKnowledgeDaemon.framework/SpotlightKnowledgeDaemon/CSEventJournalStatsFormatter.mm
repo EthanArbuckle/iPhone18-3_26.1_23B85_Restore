@@ -1,22 +1,22 @@
 @interface CSEventJournalStatsFormatter
-+ (id)tabulateStats:(id)a3;
++ (id)tabulateStats:(id)stats;
 @end
 
 @implementation CSEventJournalStatsFormatter
 
-+ (id)tabulateStats:(id)a3
++ (id)tabulateStats:(id)stats
 {
   v95 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  statsCopy = stats;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v3)
+  if (statsCopy)
   {
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v50 = v3;
-    obj = v3;
+    v50 = statsCopy;
+    obj = statsCopy;
     v52 = [obj countByEnumeratingWithState:&v87 objects:v94 count:16];
     if (v52)
     {
@@ -65,8 +65,8 @@
                 v12 = [obj objectForKeyedSubscript:v62];
                 v61 = v8;
                 v13 = [v12 objectForKeyedSubscript:v8];
-                v14 = [v13 allKeys];
-                v15 = [v14 sortedArrayUsingComparator:&__block_literal_global_3];
+                allKeys = [v13 allKeys];
+                v15 = [allKeys sortedArrayUsingComparator:&__block_literal_global_3];
 
                 v81 = 0u;
                 v82 = 0u;
@@ -94,11 +94,11 @@
                       v20 = [v19 objectForKeyedSubscript:v17];
 
                       v69 = v20;
-                      v21 = [v20 allKeys];
-                      v22 = [v21 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+                      allKeys2 = [v20 allKeys];
+                      v22 = [allKeys2 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
                       v23 = MEMORY[0x277CCACA8];
-                      v24 = [v17 UTF8String];
+                      uTF8String = [v17 UTF8String];
                       v25 = [v22 count];
                       v26 = &stru_2846CE8D8;
                       if (!v25)
@@ -106,7 +106,7 @@
                         v26 = @"\t<empty>";
                       }
 
-                      v27 = [v23 stringWithFormat:@"%s[%s]:%@", "    ", v24, v26];
+                      v27 = [v23 stringWithFormat:@"%s[%s]:%@", "    ", uTF8String, v26];
                       [v4 addObject:v27];
 
                       v77 = 0u;
@@ -237,7 +237,7 @@
     }
 
     v47 = [v4 componentsJoinedByString:@"\n"];
-    v3 = v50;
+    statsCopy = v50;
   }
 
   else

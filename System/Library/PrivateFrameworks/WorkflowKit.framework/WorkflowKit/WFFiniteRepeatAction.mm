@@ -1,36 +1,36 @@
 @interface WFFiniteRepeatAction
-- (BOOL)shouldRepeatWithVariableSource:(id)a3;
-- (id)outputVariableWithVariableProvider:(id)a3 UUIDProvider:(id)a4;
+- (BOOL)shouldRepeatWithVariableSource:(id)source;
+- (id)outputVariableWithVariableProvider:(id)provider UUIDProvider:(id)dProvider;
 - (id)repeatCountVariableName;
 - (id)repeatInputVariableName;
-- (id)repeatInputWithVariableSource:(id)a3;
-- (int64_t)repeatCountWithVariableSource:(id)a3;
-- (void)resetEvaluationCriteriaWithVariableSource:(id)a3;
-- (void)runWithInput:(id)a3 error:(id *)a4;
-- (void)runWithInput:(id)a3 userInterface:(id)a4 runningDelegate:(id)a5 variableSource:(id)a6 workQueue:(id)a7 completionHandler:(id)a8;
-- (void)setRepeatCount:(int64_t)a3 withVariableSource:(id)a4;
-- (void)setRepeatInput:(id)a3 withVariableSource:(id)a4;
+- (id)repeatInputWithVariableSource:(id)source;
+- (int64_t)repeatCountWithVariableSource:(id)source;
+- (void)resetEvaluationCriteriaWithVariableSource:(id)source;
+- (void)runWithInput:(id)input error:(id *)error;
+- (void)runWithInput:(id)input userInterface:(id)interface runningDelegate:(id)delegate variableSource:(id)source workQueue:(id)queue completionHandler:(id)handler;
+- (void)setRepeatCount:(int64_t)count withVariableSource:(id)source;
+- (void)setRepeatInput:(id)input withVariableSource:(id)source;
 @end
 
 @implementation WFFiniteRepeatAction
 
-- (void)runWithInput:(id)a3 error:(id *)a4
+- (void)runWithInput:(id)input error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  inputCopy = input;
   v25.receiver = self;
   v25.super_class = WFFiniteRepeatAction;
-  [(WFRepeatAction *)&v25 runWithInput:v6 error:a4];
-  v7 = [(WFAction *)self variableSource];
-  v8 = [(WFControlFlowAction *)self mode];
-  if (v8 == 2)
+  [(WFRepeatAction *)&v25 runWithInput:inputCopy error:error];
+  variableSource = [(WFAction *)self variableSource];
+  mode = [(WFControlFlowAction *)self mode];
+  if (mode == 2)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [v6 items];
-    v14 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    items = [inputCopy items];
+    v14 = [items countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v14)
     {
       v15 = v14;
@@ -41,49 +41,49 @@
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(items);
           }
 
           v18 = *(*(&v21 + 1) + 8 * i);
-          v19 = [(WFAction *)self output];
-          [v19 addItem:v18];
+          output = [(WFAction *)self output];
+          [output addItem:v18];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v15 = [items countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v15);
     }
   }
 
-  else if (!v8)
+  else if (!mode)
   {
-    v9 = [(WFFiniteRepeatAction *)self repeatInputWithVariableSource:v7];
+    v9 = [(WFFiniteRepeatAction *)self repeatInputWithVariableSource:variableSource];
 
     if (v9)
     {
 LABEL_6:
-      v12 = [(WFFiniteRepeatAction *)self repeatInputWithVariableSource:v7];
+      v12 = [(WFFiniteRepeatAction *)self repeatInputWithVariableSource:variableSource];
       [(WFAction *)self setOutput:v12];
 
-      [(WFFiniteRepeatAction *)self setRepeatCount:[(WFFiniteRepeatAction *)self repeatCountWithVariableSource:v7]- 1 withVariableSource:v7];
+      [(WFFiniteRepeatAction *)self setRepeatCount:[(WFFiniteRepeatAction *)self repeatCountWithVariableSource:variableSource]- 1 withVariableSource:variableSource];
       goto LABEL_15;
     }
 
     v10 = [(WFAction *)self parameterValueForKey:@"WFRepeatCount" ofClass:objc_opt_class()];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
 
-    if (v11)
+    if (integerValue)
     {
-      [(WFFiniteRepeatAction *)self setRepeatInput:v6 withVariableSource:v7];
-      [(WFFiniteRepeatAction *)self setRepeatCount:v11 withVariableSource:v7];
-      self->_numberOfLoops = v11;
+      [(WFFiniteRepeatAction *)self setRepeatInput:inputCopy withVariableSource:variableSource];
+      [(WFFiniteRepeatAction *)self setRepeatCount:integerValue withVariableSource:variableSource];
+      self->_numberOfLoops = integerValue;
       goto LABEL_6;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFActionErrorDomain" code:0 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFActionErrorDomain" code:0 userInfo:0];
     }
   }
 
@@ -92,29 +92,29 @@ LABEL_15:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)repeatCountWithVariableSource:(id)a3
+- (int64_t)repeatCountWithVariableSource:(id)source
 {
-  v4 = a3;
-  v5 = [(WFFiniteRepeatAction *)self repeatCountVariableName];
-  v6 = [v4 contentForVariableWithName:v5];
+  sourceCopy = source;
+  repeatCountVariableName = [(WFFiniteRepeatAction *)self repeatCountVariableName];
+  v6 = [sourceCopy contentForVariableWithName:repeatCountVariableName];
 
-  v7 = [v6 items];
-  v8 = [v7 firstObject];
-  v9 = [v8 number];
-  v10 = [v9 integerValue];
+  items = [v6 items];
+  firstObject = [items firstObject];
+  number = [firstObject number];
+  integerValue = [number integerValue];
 
-  return v10;
+  return integerValue;
 }
 
-- (void)setRepeatCount:(int64_t)a3 withVariableSource:(id)a4
+- (void)setRepeatCount:(int64_t)count withVariableSource:(id)source
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (a3)
+  sourceCopy = source;
+  if (count)
   {
     v10 = MEMORY[0x1E6996D40];
     v11 = MEMORY[0x1E6996D58];
-    v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v5 = [v11 itemWithObject:v4];
     v15[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
@@ -126,58 +126,58 @@ LABEL_15:
     v12 = 0;
   }
 
-  v13 = [(WFFiniteRepeatAction *)self repeatCountVariableName];
-  [v9 setContent:v12 forVariableWithName:v13];
+  repeatCountVariableName = [(WFFiniteRepeatAction *)self repeatCountVariableName];
+  [sourceCopy setContent:v12 forVariableWithName:repeatCountVariableName];
 
-  if (a3)
+  if (count)
   {
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)repeatInputWithVariableSource:(id)a3
+- (id)repeatInputWithVariableSource:(id)source
 {
-  v4 = a3;
-  v5 = [(WFFiniteRepeatAction *)self repeatInputVariableName];
-  v6 = [v4 contentForVariableWithName:v5];
+  sourceCopy = source;
+  repeatInputVariableName = [(WFFiniteRepeatAction *)self repeatInputVariableName];
+  v6 = [sourceCopy contentForVariableWithName:repeatInputVariableName];
 
   return v6;
 }
 
-- (void)setRepeatInput:(id)a3 withVariableSource:(id)a4
+- (void)setRepeatInput:(id)input withVariableSource:(id)source
 {
-  v6 = a4;
-  v8 = [a3 copy];
-  v7 = [(WFFiniteRepeatAction *)self repeatInputVariableName];
-  [v6 setContent:v8 forVariableWithName:v7];
+  sourceCopy = source;
+  v8 = [input copy];
+  repeatInputVariableName = [(WFFiniteRepeatAction *)self repeatInputVariableName];
+  [sourceCopy setContent:v8 forVariableWithName:repeatInputVariableName];
 }
 
 - (id)repeatCountVariableName
 {
-  v2 = [(WFAction *)self groupingIdentifier];
-  v3 = [v2 stringByAppendingString:@"-count"];
+  groupingIdentifier = [(WFAction *)self groupingIdentifier];
+  v3 = [groupingIdentifier stringByAppendingString:@"-count"];
 
   return v3;
 }
 
 - (id)repeatInputVariableName
 {
-  v2 = [(WFAction *)self groupingIdentifier];
-  v3 = [v2 stringByAppendingString:@"-input"];
+  groupingIdentifier = [(WFAction *)self groupingIdentifier];
+  v3 = [groupingIdentifier stringByAppendingString:@"-input"];
 
   return v3;
 }
 
-- (id)outputVariableWithVariableProvider:(id)a3 UUIDProvider:(id)a4
+- (id)outputVariableWithVariableProvider:(id)provider UUIDProvider:(id)dProvider
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  dProviderCopy = dProvider;
   if ([(WFControlFlowAction *)self mode]== 2)
   {
     v10.receiver = self;
     v10.super_class = WFFiniteRepeatAction;
-    v8 = [(WFAction *)&v10 outputVariableWithVariableProvider:v6 UUIDProvider:v7];
+    v8 = [(WFAction *)&v10 outputVariableWithVariableProvider:providerCopy UUIDProvider:dProviderCopy];
   }
 
   else
@@ -188,32 +188,32 @@ LABEL_15:
   return v8;
 }
 
-- (void)runWithInput:(id)a3 userInterface:(id)a4 runningDelegate:(id)a5 variableSource:(id)a6 workQueue:(id)a7 completionHandler:(id)a8
+- (void)runWithInput:(id)input userInterface:(id)interface runningDelegate:(id)delegate variableSource:(id)source workQueue:(id)queue completionHandler:(id)handler
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  inputCopy = input;
+  interfaceCopy = interface;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (![(WFControlFlowAction *)self mode])
   {
-    v20 = [(WFAction *)self processedParameters];
+    processedParameters = [(WFAction *)self processedParameters];
 
-    if (!v20)
+    if (!processedParameters)
     {
-      v28 = [(WFFiniteRepeatAction *)self repeatCountVariableName];
-      v21 = [v17 contentForVariableWithName:v28];
-      v22 = [v21 items];
-      v23 = [v22 firstObject];
+      repeatCountVariableName = [(WFFiniteRepeatAction *)self repeatCountVariableName];
+      v21 = [sourceCopy contentForVariableWithName:repeatCountVariableName];
+      items = [v21 items];
+      firstObject = [items firstObject];
 
-      v24 = v23;
-      if (v23)
+      v24 = firstObject;
+      if (firstObject)
       {
         v30 = @"WFRepeatCount";
-        v25 = [v23 number];
-        v31[0] = v25;
+        number = [firstObject number];
+        v31[0] = number;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
         [(WFAction *)self setProcessedParameters:v26];
       }
@@ -222,31 +222,31 @@ LABEL_15:
 
   v29.receiver = self;
   v29.super_class = WFFiniteRepeatAction;
-  [(WFAction *)&v29 runWithInput:v14 userInterface:v15 runningDelegate:v16 variableSource:v17 workQueue:v18 completionHandler:v19];
+  [(WFAction *)&v29 runWithInput:inputCopy userInterface:interfaceCopy runningDelegate:delegateCopy variableSource:sourceCopy workQueue:queueCopy completionHandler:handlerCopy];
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetEvaluationCriteriaWithVariableSource:(id)a3
+- (void)resetEvaluationCriteriaWithVariableSource:(id)source
 {
   v5.receiver = self;
   v5.super_class = WFFiniteRepeatAction;
-  v4 = a3;
-  [(WFRepeatAction *)&v5 resetEvaluationCriteriaWithVariableSource:v4];
-  [(WFFiniteRepeatAction *)self setRepeatInput:0 withVariableSource:v4, v5.receiver, v5.super_class];
-  [(WFFiniteRepeatAction *)self setRepeatCount:0 withVariableSource:v4];
+  sourceCopy = source;
+  [(WFRepeatAction *)&v5 resetEvaluationCriteriaWithVariableSource:sourceCopy];
+  [(WFFiniteRepeatAction *)self setRepeatInput:0 withVariableSource:sourceCopy, v5.receiver, v5.super_class];
+  [(WFFiniteRepeatAction *)self setRepeatCount:0 withVariableSource:sourceCopy];
 }
 
-- (BOOL)shouldRepeatWithVariableSource:(id)a3
+- (BOOL)shouldRepeatWithVariableSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   if ([(WFControlFlowAction *)self mode])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFFiniteRepeatAction.m" lineNumber:27 description:@"Only open action can determine control flow"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFiniteRepeatAction.m" lineNumber:27 description:@"Only open action can determine control flow"];
   }
 
-  v6 = [(WFFiniteRepeatAction *)self repeatCountWithVariableSource:v5]> 0;
+  v6 = [(WFFiniteRepeatAction *)self repeatCountWithVariableSource:sourceCopy]> 0;
 
   return v6;
 }

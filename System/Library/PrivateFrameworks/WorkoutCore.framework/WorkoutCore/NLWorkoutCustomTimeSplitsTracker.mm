@@ -1,21 +1,21 @@
 @interface NLWorkoutCustomTimeSplitsTracker
 - (NLWorkoutAlertDelegate)alertDelegate;
 - (NLWorkoutCustomTimeSplitsTracker)init;
-- (NLWorkoutCustomTimeSplitsTracker)initWithTimeSpan:(double)a3 formattingManager:(id)a4;
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4;
+- (NLWorkoutCustomTimeSplitsTracker)initWithTimeSpan:(double)span formattingManager:(id)manager;
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update;
 @end
 
 @implementation NLWorkoutCustomTimeSplitsTracker
 
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update
 {
-  if (a4 == 3)
+  if (update == 3)
   {
     swift_unknownObjectRetain();
-    v9 = self;
-    [a3 activityDuration];
+    selfCopy = self;
+    [provider activityDuration];
     v8 = v7;
-    [objc_msgSend(a3 distanceProvider)];
+    [objc_msgSend(provider distanceProvider)];
     swift_unknownObjectRelease();
     specialized CustomTimeSplitsTracker.handleElapsedTimeUpdate(elapsedTime:distance:)(v8);
     swift_unknownObjectRelease();
@@ -30,15 +30,15 @@
   return Strong;
 }
 
-- (NLWorkoutCustomTimeSplitsTracker)initWithTimeSpan:(double)a3 formattingManager:(id)a4
+- (NLWorkoutCustomTimeSplitsTracker)initWithTimeSpan:(double)span formattingManager:(id)manager
 {
   *(self + OBJC_IVAR___NLWorkoutCustomTimeSplitsTracker_splitCount) = 0;
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR___NLWorkoutCustomTimeSplitsTracker_timeSpan) = a3;
-  *(self + OBJC_IVAR___NLWorkoutCustomTimeSplitsTracker_formattingManager) = a4;
+  *(self + OBJC_IVAR___NLWorkoutCustomTimeSplitsTracker_timeSpan) = span;
+  *(self + OBJC_IVAR___NLWorkoutCustomTimeSplitsTracker_formattingManager) = manager;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CustomTimeSplitsTracker();
-  v7 = a4;
+  managerCopy = manager;
   return [(NLWorkoutCustomTimeSplitsTracker *)&v9 init];
 }
 

@@ -2,7 +2,7 @@
 + (double)pickerPillBottomTailBaseline;
 + (double)requiredDisplayHeight;
 + (double)topOffsetForUnobscuredTranscriptPresentation;
-+ (double)widthConstrainedBaselineWithDisplayConfiguration:(id)a3;
++ (double)widthConstrainedBaselineWithDisplayConfiguration:(id)configuration;
 - (CKTapbackPickerBalloonLayoutTemplate)init;
 @end
 
@@ -34,18 +34,18 @@
   return v2 + (v2 + 37.4 + *&qword_1EAD9E760) * 0.64278761 + 37.4;
 }
 
-+ (double)widthConstrainedBaselineWithDisplayConfiguration:(id)a3
++ (double)widthConstrainedBaselineWithDisplayConfiguration:(id)configuration
 {
-  v4 = (a3 + OBJC_IVAR___CKTapbackPickerBalloonDisplayConfiguration_pickerPillPreferredContentSize);
+  v4 = (configuration + OBJC_IVAR___CKTapbackPickerBalloonDisplayConfiguration_pickerPillPreferredContentSize);
   swift_beginAccess();
   v5 = v4[1];
   v6 = qword_1EAD520F0;
-  v7 = a3;
+  configurationCopy = configuration;
   if (v6 != -1)
   {
-    v10 = v7;
+    v10 = configurationCopy;
     swift_once();
-    v7 = v10;
+    configurationCopy = v10;
   }
 
   v8 = *&qword_1EAD9E728;

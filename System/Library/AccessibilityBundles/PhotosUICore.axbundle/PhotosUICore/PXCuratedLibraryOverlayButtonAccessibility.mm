@@ -1,5 +1,5 @@
 @interface PXCuratedLibraryOverlayButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
@@ -8,17 +8,17 @@
 
 @implementation PXCuratedLibraryOverlayButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXCuratedLibraryOverlayButton" hasInstanceMethod:@"userData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryOverlayButton" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"actionPerformer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"actionHandler" withFullSignature:{"@?", 0}];
-  [v3 validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"menuActionHandler" withFullSignature:{"@?", 0}];
-  [v3 validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"systemImageName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCuratedLibraryOverlayButton" isKindOfClass:@"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButton" hasInstanceMethod:@"userData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButton" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"actionPerformer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"actionHandler" withFullSignature:{"@?", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"menuActionHandler" withFullSignature:{"@?", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButtonConfiguration" hasInstanceMethod:@"systemImageName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCuratedLibraryOverlayButton" isKindOfClass:@"UIControl"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -29,20 +29,20 @@
 
   if (v5 == 2)
   {
-    v6 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
-    v7 = [v6 safeStringForKey:@"systemImageName"];
+    _axUserDataConfiguration = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
+    v7 = [_axUserDataConfiguration safeStringForKey:@"systemImageName"];
 
-    LOBYTE(v6) = [v7 hasPrefix:@"sidebar"];
-    return v6;
+    LOBYTE(_axUserDataConfiguration) = [v7 hasPrefix:@"sidebar"];
+    return _axUserDataConfiguration;
   }
 
   else
   {
     objc_opt_class();
     v9 = __UIAccessibilityCastAsClass();
-    v10 = [v9 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [v9 _accessibilityViewIsVisible];
 
-    return v10;
+    return _accessibilityViewIsVisible;
   }
 }
 
@@ -51,16 +51,16 @@
   v14.receiver = self;
   v14.super_class = PXCuratedLibraryOverlayButtonAccessibility;
   v3 = *MEMORY[0x29EDC7F70] | [(PXCuratedLibraryOverlayButtonAccessibility *)&v14 accessibilityTraits];
-  v4 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
-  v5 = [v4 safeValueForKey:@"actionPerformer"];
+  _axUserDataConfiguration = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
+  v5 = [_axUserDataConfiguration safeValueForKey:@"actionPerformer"];
   if (v5)
   {
   }
 
   else
   {
-    v6 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
-    v7 = [v6 safeValueForKey:@"actionHandler"];
+    _axUserDataConfiguration2 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
+    v7 = [_axUserDataConfiguration2 safeValueForKey:@"actionHandler"];
     if (v7)
     {
       v8 = 1;
@@ -68,8 +68,8 @@
 
     else
     {
-      v9 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
-      v10 = [v9 safeValueForKey:@"menuActionHandler"];
+      _axUserDataConfiguration3 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
+      v10 = [_axUserDataConfiguration3 safeValueForKey:@"menuActionHandler"];
       v8 = v10 != 0;
     }
 
@@ -79,8 +79,8 @@
     }
   }
 
-  v11 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
-  v12 = [v11 safeStringForKey:@"systemImageName"];
+  _axUserDataConfiguration4 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
+  v12 = [_axUserDataConfiguration4 safeStringForKey:@"systemImageName"];
 
   if ([v12 isEqualToString:@"PXCuratedLibraryFilterIndicatorInactiveIconImageName"])
   {
@@ -97,19 +97,19 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
-  v4 = [v3 safeStringForKey:@"title"];
+  _axUserDataConfiguration = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
+  v4 = [_axUserDataConfiguration safeStringForKey:@"title"];
 
   if (v4)
   {
-    v5 = v4;
+    accessibilityLabel = v4;
 LABEL_3:
-    v6 = v5;
+    v6 = accessibilityLabel;
     goto LABEL_26;
   }
 
-  v7 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
-  v8 = [v7 safeStringForKey:@"systemImageName"];
+  _axUserDataConfiguration2 = [(PXCuratedLibraryOverlayButtonAccessibility *)self _axUserDataConfiguration];
+  v8 = [_axUserDataConfiguration2 safeStringForKey:@"systemImageName"];
 
   if ([v8 isEqualToString:@"plus.slash.minus"])
   {
@@ -188,7 +188,7 @@ LABEL_3:
 
       v11.receiver = self;
       v11.super_class = PXCuratedLibraryOverlayButtonAccessibility;
-      v5 = [(PXCuratedLibraryOverlayButtonAccessibility *)&v11 accessibilityLabel];
+      accessibilityLabel = [(PXCuratedLibraryOverlayButtonAccessibility *)&v11 accessibilityLabel];
       goto LABEL_3;
     }
 
@@ -206,8 +206,8 @@ LABEL_26:
 {
   v5.receiver = self;
   v5.super_class = PXCuratedLibraryOverlayButtonAccessibility;
-  v3 = [(PXCuratedLibraryOverlayButtonAccessibility *)&v5 canBecomeFocused];
-  return ([(PXCuratedLibraryOverlayButtonAccessibility *)self _accessibilityIsFKARunningForFocusItem]| v3) & 1;
+  canBecomeFocused = [(PXCuratedLibraryOverlayButtonAccessibility *)&v5 canBecomeFocused];
+  return ([(PXCuratedLibraryOverlayButtonAccessibility *)self _accessibilityIsFKARunningForFocusItem]| canBecomeFocused) & 1;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface RMJSONUtilities
-+ (BOOL)serializeJSONDictionary:(id)a3 fileURL:(id)a4 error:(id *)a5;
-+ (id)deserializeJSONDictionaryAtFileURL:(id)a3 error:(id *)a4;
++ (BOOL)serializeJSONDictionary:(id)dictionary fileURL:(id)l error:(id *)error;
++ (id)deserializeJSONDictionaryAtFileURL:(id)l error:(id *)error;
 @end
 
 @implementation RMJSONUtilities
 
-+ (BOOL)serializeJSONDictionary:(id)a3 fileURL:(id)a4 error:(id *)a5
++ (BOOL)serializeJSONDictionary:(id)dictionary fileURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v20 = 0;
-  v9 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:11 error:&v20];
+  v9 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryCopy options:11 error:&v20];
   v10 = v20;
   v11 = v10;
   if (v9)
   {
     v19 = v10;
-    v12 = [v9 rm_atomicWriteToURL:v8 error:&v19];
+    v12 = [v9 rm_atomicWriteToURL:lCopy error:&v19];
     v13 = v19;
 
     if (v12)
@@ -32,7 +32,7 @@
     }
 
     v14 = 0;
-    if (a5)
+    if (error)
     {
       goto LABEL_11;
     }
@@ -49,14 +49,14 @@
 
     v14 = 0;
     v9 = 0;
-    if (a5)
+    if (error)
     {
 LABEL_11:
       if (v13)
       {
         v17 = v13;
         v14 = 0;
-        *a5 = v13;
+        *error = v13;
       }
     }
   }
@@ -66,18 +66,18 @@ LABEL_13:
   return v14;
 }
 
-+ (id)deserializeJSONDictionaryAtFileURL:(id)a3 error:(id *)a4
++ (id)deserializeJSONDictionaryAtFileURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v23 = 0;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:&v23];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v8 = [defaultManager fileExistsAtPath:path isDirectory:&v23];
 
   if (v8)
   {
     v22 = 0;
-    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:0 error:&v22];
+    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:0 error:&v22];
     v10 = v22;
     if (v9)
     {
@@ -101,13 +101,13 @@ LABEL_13:
             [RMJSONUtilities deserializeJSONDictionaryAtFileURL:v18 error:?];
           }
 
-          if (a4)
+          if (error)
           {
             v19 = +[RMErrorUtilities createInternalError];
             if (v19)
             {
               v19 = v19;
-              *a4 = v19;
+              *error = v19;
             }
           }
 
@@ -124,11 +124,11 @@ LABEL_13:
         }
 
         v13 = 0;
-        if (a4 && v12)
+        if (error && v12)
         {
           v17 = v12;
           v13 = 0;
-          *a4 = v12;
+          *error = v12;
         }
       }
     }
@@ -142,11 +142,11 @@ LABEL_13:
       }
 
       v13 = 0;
-      if (a4 && v10)
+      if (error && v10)
       {
         v15 = v10;
         v13 = 0;
-        *a4 = v10;
+        *error = v10;
       }
 
       v12 = v10;

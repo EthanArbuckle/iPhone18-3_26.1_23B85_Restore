@@ -1,37 +1,37 @@
 @interface PHMomentShare
-+ (id)_fetchLocalMomentShareWithUUID:(id)a3 error:(id *)a4;
++ (id)_fetchLocalMomentShareWithUUID:(id)d error:(id *)error;
 + (id)entityKeyMap;
-+ (id)fetchLocalMomentShareFromShareURL:(id)a3 error:(id *)a4 options:(id)a5;
-+ (id)fetchMomentSharesOverlappingAssetCollection:(id)a3 options:(id)a4;
-+ (id)invitedMomentSharesExpiringInDays:(unint64_t)a3;
-+ (id)localIdentifierWithUUID:(id)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-+ (void)fetchMomentShareFromShareURL:(id)a3 options:(id)a4 completionHandler:(id)a5;
++ (id)fetchLocalMomentShareFromShareURL:(id)l error:(id *)error options:(id)options;
++ (id)fetchMomentSharesOverlappingAssetCollection:(id)collection options:(id)options;
++ (id)invitedMomentSharesExpiringInDays:(unint64_t)days;
++ (id)localIdentifierWithUUID:(id)d;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
++ (void)fetchMomentShareFromShareURL:(id)l options:(id)options completionHandler:(id)handler;
 - (BOOL)shouldPromptUserToIgnoreBudgets;
 - (BOOL)shouldSuggestShareBack;
 - (NSString)description;
-- (PHMomentShare)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
-- (void)acceptMomentShareWithCompletion:(id)a3;
-- (void)forceSyncMomentShareWithCompletion:(id)a3;
-- (void)publishMomentShareWithCompletionHandler:(id)a3;
+- (PHMomentShare)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
+- (void)acceptMomentShareWithCompletion:(id)completion;
+- (void)forceSyncMomentShareWithCompletion:(id)completion;
+- (void)publishMomentShareWithCompletionHandler:(id)handler;
 @end
 
 @implementation PHMomentShare
 
-+ (id)invitedMomentSharesExpiringInDays:(unint64_t)a3
++ (id)invitedMomentSharesExpiringInDays:(unint64_t)days
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v4 setDay:a3];
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 dateByAddingComponents:v4 toDate:v6 options:0];
+  [v4 setDay:days];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [currentCalendar dateByAddingComponents:v4 toDate:date options:0];
 
   v8 = +[PHPhotoLibrary sharedMomentSharePhotoLibrary];
-  v9 = [v8 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [v8 librarySpecificFetchOptions];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"expiryDate <= %@ AND (status == %d OR status == %d)", v7, 2, 3];
-  [v9 setInternalPredicate:v10];
-  v11 = [(PHAssetCollection *)PHMomentShare fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:v9];
+  [librarySpecificFetchOptions setInternalPredicate:v10];
+  v11 = [(PHAssetCollection *)PHMomentShare fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
 
   return v11;
 }
@@ -41,7 +41,7 @@
   v10.receiver = self;
   v10.super_class = PHMomentShare;
   v3 = [(PHAssetCollection *)&v10 description];
-  v4 = [(PHMomentShare *)self scopeIdentifier];
+  scopeIdentifier = [(PHMomentShare *)self scopeIdentifier];
   v5 = [(PHMomentShare *)self status]- 1;
   if (v5 > 2)
   {
@@ -54,47 +54,47 @@
   }
 
   v7 = v6;
-  v8 = [v3 stringByAppendingFormat:@", scopeIdentifier: %@, status: %@", v4, v7];
+  v8 = [v3 stringByAppendingFormat:@", scopeIdentifier: %@, status: %@", scopeIdentifier, v7];
 
   return v8;
 }
 
-- (void)publishMomentShareWithCompletionHandler:(id)a3
+- (void)publishMomentShareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PHObject *)self photoLibrary];
-  v8 = [v5 cplStatus];
+  handlerCopy = handler;
+  photoLibrary = [(PHObject *)self photoLibrary];
+  cplStatus = [photoLibrary cplStatus];
 
-  if ([v8 isExceedingQuota])
+  if ([cplStatus isExceedingQuota])
   {
-    v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PHPhotosErrorDomain" code:6008 userInfo:0];
-    v7 = [PHShare PHShareErrorFromError:v6];
-    v4[2](v4, 0, v7);
+    uuid = [MEMORY[0x1E696ABC0] errorWithDomain:@"PHPhotosErrorDomain" code:6008 userInfo:0];
+    photoLibrary2 = [PHShare PHShareErrorFromError:uuid];
+    handlerCopy[2](handlerCopy, 0, photoLibrary2);
   }
 
   else
   {
-    v6 = [(PHObject *)self uuid];
-    v7 = [(PHObject *)self photoLibrary];
-    [PHShare publishShareWithUUID:v6 photoLibrary:v7 completion:v4];
+    uuid = [(PHObject *)self uuid];
+    photoLibrary2 = [(PHObject *)self photoLibrary];
+    [PHShare publishShareWithUUID:uuid photoLibrary:photoLibrary2 completion:handlerCopy];
   }
 }
 
-- (void)forceSyncMomentShareWithCompletion:(id)a3
+- (void)forceSyncMomentShareWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PHObject *)self uuid];
-  v6 = [(PHObject *)self photoLibrary];
-  v7 = [v6 assetsdClient];
+  completionCopy = completion;
+  uuid = [(PHObject *)self uuid];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v8 = [v7 cloudInternalClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__PHMomentShare_forceSyncMomentShareWithCompletion___block_invoke;
   v10[3] = &unk_1E75AAA50;
-  v11 = v4;
-  v9 = v4;
-  [v8 forceSyncMomentShare:v5 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [cloudInternalClient forceSyncMomentShare:uuid completionHandler:v10];
 }
 
 void __52__PHMomentShare_forceSyncMomentShareWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -104,12 +104,12 @@ void __52__PHMomentShare_forceSyncMomentShareWithCompletion___block_invoke(uint6
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)acceptMomentShareWithCompletion:(id)a3
+- (void)acceptMomentShareWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(PHObject *)self uuid];
-  v5 = [(PHObject *)self photoLibrary];
-  [PHShare acceptShareWithUUID:v6 photoLibrary:v5 completion:v4];
+  completionCopy = completion;
+  uuid = [(PHObject *)self uuid];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  [PHShare acceptShareWithUUID:uuid photoLibrary:photoLibrary completion:completionCopy];
 }
 
 - (BOOL)shouldSuggestShareBack
@@ -118,22 +118,22 @@ void __52__PHMomentShare_forceSyncMomentShareWithCompletion___block_invoke(uint6
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 1;
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 photoLibrary];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__PHMomentShare_shouldSuggestShareBack__block_invoke;
   v7[3] = &unk_1E75AA3F8;
   v7[4] = self;
-  v5 = v4;
+  v5 = v3PhotoLibrary;
   v8 = v5;
   v9 = &v10;
   [v5 performBlockAndWait:v7];
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(v3PhotoLibrary) = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
-  return v4;
+  return v3PhotoLibrary;
 }
 
 void __39__PHMomentShare_shouldSuggestShareBack__block_invoke(uint64_t a1)
@@ -179,22 +179,22 @@ void __39__PHMomentShare_shouldSuggestShareBack__block_invoke(uint64_t a1)
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 photoLibrary];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__PHMomentShare_shouldPromptUserToIgnoreBudgets__block_invoke;
   v7[3] = &unk_1E75AA3F8;
   v7[4] = self;
-  v5 = v4;
+  v5 = v3PhotoLibrary;
   v8 = v5;
   v9 = &v10;
   [v5 performBlockAndWait:v7];
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(v3PhotoLibrary) = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
-  return v4;
+  return v3PhotoLibrary;
 }
 
 void __48__PHMomentShare_shouldPromptUserToIgnoreBudgets__block_invoke(uint64_t a1)
@@ -222,82 +222,82 @@ void __48__PHMomentShare_shouldPromptUserToIgnoreBudgets__block_invoke(uint64_t 
   }
 }
 
-- (PHMomentShare)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHMomentShare)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v45.receiver = self;
   v45.super_class = PHMomentShare;
-  v9 = [(PHAssetCollection *)&v45 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHAssetCollection *)&v45 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     localizedTitle = v9->super._localizedTitle;
     v9->super._localizedTitle = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"creationDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"creationDate"];
     creationDate = v9->_creationDate;
     v9->_creationDate = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"shareURL"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"shareURL"];
     shareURL = v9->_shareURL;
     v9->_shareURL = v14;
 
-    v16 = [v8 objectForKeyedSubscript:@"status"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     v9->_status = [v16 integerValue];
 
-    v17 = [v8 objectForKeyedSubscript:@"trashedState"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"trashedState"];
     v9->_trashedState = [v17 unsignedIntegerValue];
 
-    v18 = [v8 objectForKeyedSubscript:@"assetCount"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"assetCount"];
     v9->_assetCount = [v18 unsignedIntegerValue];
 
-    v19 = [v8 objectForKeyedSubscript:@"photosCount"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"photosCount"];
     v9->_photosCount = [v19 unsignedIntegerValue];
 
-    v20 = [v8 objectForKeyedSubscript:@"videosCount"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"videosCount"];
     v9->_videosCount = [v20 unsignedIntegerValue];
 
-    v21 = [v8 objectForKeyedSubscript:@"cloudPhotoCount"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"cloudPhotoCount"];
     v9->_cloudPhotoCount = [v21 unsignedIntegerValue];
 
-    v22 = [v8 objectForKeyedSubscript:@"cloudVideoCount"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"cloudVideoCount"];
     v9->_cloudVideoCount = [v22 unsignedIntegerValue];
 
-    v23 = [v8 objectForKeyedSubscript:@"scopeIdentifier"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"scopeIdentifier"];
     scopeIdentifier = v9->_scopeIdentifier;
     v9->_scopeIdentifier = v23;
 
-    v25 = [v8 objectForKeyedSubscript:@"startDate"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
     startDate = v9->super._startDate;
     v9->super._startDate = v25;
 
-    v27 = [v8 objectForKeyedSubscript:@"endDate"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
     endDate = v9->super._endDate;
     v9->super._endDate = v27;
 
-    v29 = [v8 objectForKeyedSubscript:@"expiryDate"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"expiryDate"];
     expiryDate = v9->_expiryDate;
     v9->_expiryDate = v29;
 
-    v31 = [v8 objectForKeyedSubscript:@"ckShareData"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"ckShareData"];
     ckShareData = v9->_ckShareData;
     v9->_ckShareData = v31;
 
-    v33 = [v8 objectForKeyedSubscript:@"thumbnailImageData"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"thumbnailImageData"];
     thumbnailImageData = v9->_thumbnailImageData;
     v9->_thumbnailImageData = v33;
 
-    v35 = [v8 objectForKeyedSubscript:@"previewData"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"previewData"];
     previewData = v9->_previewData;
     v9->_previewData = v35;
 
-    v37 = [v8 objectForKeyedSubscript:@"shouldIgnoreBudgets"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"shouldIgnoreBudgets"];
     v9->_shouldIgnoreBudgets = [v37 BOOLValue];
 
-    v38 = [v8 objectForKeyedSubscript:@"shouldNotifyOnUploadCompletion"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"shouldNotifyOnUploadCompletion"];
     v9->_shouldNotifyOnUploadCompletion = [v38 BOOLValue];
 
-    v39 = [v8 objectForKeyedSubscript:@"localPublishState"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"localPublishState"];
     v9->_publishState = [v39 unsignedIntegerValue];
 
     v40 = [[PHMomentSharePreview alloc] initWithThumbnailImageData:v9->_thumbnailImageData previewData:v9->_previewData];
@@ -305,90 +305,90 @@ void __48__PHMomentShare_shouldPromptUserToIgnoreBudgets__block_invoke(uint64_t 
     v9->_preview = v40;
 
     v9->super._assetCollectionType = 7;
-    v42 = [v8 objectForKeyedSubscript:@"publicPermission"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"publicPermission"];
     v9->_publicPermission = [v42 integerValue];
 
-    v43 = [v8 objectForKeyedSubscript:@"compatibilityState"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"compatibilityState"];
     v9->_containsEPPAssets = [v43 integerValue] == 1;
   }
 
   return v9;
 }
 
-+ (id)fetchMomentSharesOverlappingAssetCollection:(id)a3 options:(id)a4
++ (id)fetchMomentSharesOverlappingAssetCollection:(id)collection options:(id)options
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 startDate];
-  if (!v8)
+  collectionCopy = collection;
+  optionsCopy = options;
+  startDate = [collectionCopy startDate];
+  if (!startDate)
   {
-    v9 = [v6 photoLibrary];
-    v10 = [v9 librarySpecificFetchOptions];
+    photoLibrary = [collectionCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v10 setFetchLimit:1];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v11 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
     v32[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
-    [v10 setSortDescriptors:v12];
+    [librarySpecificFetchOptions setSortDescriptors:v12];
 
-    v13 = [PHAsset fetchAssetsInAssetCollection:v6 options:v10];
-    v14 = [v13 firstObject];
+    v13 = [PHAsset fetchAssetsInAssetCollection:collectionCopy options:librarySpecificFetchOptions];
+    firstObject = [v13 firstObject];
 
-    v8 = [v14 creationDate];
+    startDate = [firstObject creationDate];
   }
 
-  v15 = [v6 endDate];
-  if (!v15)
+  endDate = [collectionCopy endDate];
+  if (!endDate)
   {
-    v16 = [v6 photoLibrary];
-    v17 = [v16 librarySpecificFetchOptions];
+    photoLibrary2 = [collectionCopy photoLibrary];
+    librarySpecificFetchOptions2 = [photoLibrary2 librarySpecificFetchOptions];
 
-    [v17 setFetchLimit:1];
+    [librarySpecificFetchOptions2 setFetchLimit:1];
     v18 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
     v31 = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
-    [v17 setSortDescriptors:v19];
+    [librarySpecificFetchOptions2 setSortDescriptors:v19];
 
-    v20 = [PHAsset fetchAssetsInAssetCollection:v6 options:v17];
-    v21 = [v20 firstObject];
+    v20 = [PHAsset fetchAssetsInAssetCollection:collectionCopy options:librarySpecificFetchOptions2];
+    firstObject2 = [v20 firstObject];
 
-    v15 = [v21 creationDate];
+    endDate = [firstObject2 creationDate];
   }
 
-  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"startDate <= %@ && endDate >= %@", v15, v8];
+  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"startDate <= %@ && endDate >= %@", endDate, startDate];
   v23 = +[PHPhotoLibrary sharedMomentSharePhotoLibrary];
-  v24 = [v23 librarySpecificFetchOptions];
-  [v24 setPredicate:v22];
-  v25 = [v7 photoLibrary];
-  v26 = [v24 photoLibrary];
+  librarySpecificFetchOptions3 = [v23 librarySpecificFetchOptions];
+  [librarySpecificFetchOptions3 setPredicate:v22];
+  photoLibrary3 = [optionsCopy photoLibrary];
+  photoLibrary4 = [librarySpecificFetchOptions3 photoLibrary];
 
-  if (v25 != v26)
+  if (photoLibrary3 != photoLibrary4)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"PHMomentShare.m" lineNumber:438 description:{@"Invalid parameter not satisfying: %@", @"options.photoLibrary == localOptions.photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMomentShare.m" lineNumber:438 description:{@"Invalid parameter not satisfying: %@", @"options.photoLibrary == localOptions.photoLibrary"}];
   }
 
-  [v24 mergeWithFetchOptions:v7];
-  v27 = [(PHAssetCollection *)PHMomentShare fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:v24];
+  [librarySpecificFetchOptions3 mergeWithFetchOptions:optionsCopy];
+  v27 = [(PHAssetCollection *)PHMomentShare fetchAssetCollectionsWithType:7 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions3];
 
   return v27;
 }
 
-+ (id)_fetchLocalMomentShareWithUUID:(id)a3 error:(id *)a4
++ (id)_fetchLocalMomentShareWithUUID:(id)d error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [PHMomentShare localIdentifierWithUUID:a3];
+  v5 = [PHMomentShare localIdentifierWithUUID:d];
   v6 = +[PHPhotoLibrary sharedMomentSharePhotoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [v6 librarySpecificFetchOptions];
 
   v20[0] = v5;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v9 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v8 options:v7];
+  v9 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v8 options:librarySpecificFetchOptions];
 
   if ([v9 count] == 1)
   {
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
   }
 
   else
@@ -401,25 +401,25 @@ void __48__PHMomentShare_shouldPromptUserToIgnoreBudgets__block_invoke(uint64_t 
     v14 = [v11 ph_errorWithDomain:v12 code:100 userInfo:v13];
     v15 = [PHShare PHShareErrorFromError:v14];
 
-    if (a4)
+    if (error)
     {
       v16 = v15;
-      *a4 = v15;
+      *error = v15;
     }
 
-    v10 = 0;
+    firstObject = 0;
   }
 
-  return v10;
+  return firstObject;
 }
 
-+ (void)fetchMomentShareFromShareURL:(id)a3 options:(id)a4 completionHandler:(id)a5
++ (void)fetchMomentShareFromShareURL:(id)l options:(id)options completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 photoLibrary];
+  lCopy = l;
+  handlerCopy = handler;
+  photoLibrary = [options photoLibrary];
   v14 = 0;
-  v10 = [v9 openAndWaitWithUpgrade:0 error:&v14];
+  v10 = [photoLibrary openAndWaitWithUpgrade:0 error:&v14];
   v11 = v14;
   if (v10)
   {
@@ -427,13 +427,13 @@ void __48__PHMomentShare_shouldPromptUserToIgnoreBudgets__block_invoke(uint64_t 
     v12[1] = 3221225472;
     v12[2] = __72__PHMomentShare_fetchMomentShareFromShareURL_options_completionHandler___block_invoke;
     v12[3] = &unk_1E75A9D80;
-    v13 = v8;
-    [PHShare fetchShareFromShareURL:v7 ignoreExistingShare:0 photoLibrary:v9 completionHandler:v12];
+    v13 = handlerCopy;
+    [PHShare fetchShareFromShareURL:lCopy ignoreExistingShare:0 photoLibrary:photoLibrary completionHandler:v12];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
@@ -455,13 +455,13 @@ void __72__PHMomentShare_fetchMomentShareFromShareURL_options_completionHandler_
   }
 }
 
-+ (id)fetchLocalMomentShareFromShareURL:(id)a3 error:(id *)a4 options:(id)a5
++ (id)fetchLocalMomentShareFromShareURL:(id)l error:(id *)error options:(id)options
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 photoLibrary];
+  lCopy = l;
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
   v36 = 0;
-  v10 = [v9 openAndWaitWithUpgrade:0 error:&v36];
+  v10 = [photoLibrary openAndWaitWithUpgrade:0 error:&v36];
   v11 = v36;
   v12 = v11;
   if (v10)
@@ -478,21 +478,21 @@ void __72__PHMomentShare_fetchMomentShareFromShareURL_options_completionHandler_
     v27 = __Block_byref_object_copy__46233;
     v28 = __Block_byref_object_dispose__46234;
     v29 = 0;
-    v13 = [v9 photoLibrary];
+    v9PhotoLibrary = [photoLibrary photoLibrary];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __65__PHMomentShare_fetchLocalMomentShareFromShareURL_error_options___block_invoke;
     v19[3] = &unk_1E75A9D58;
-    v20 = v7;
-    v14 = v13;
+    v20 = lCopy;
+    v14 = v9PhotoLibrary;
     v21 = v14;
     v22 = &v30;
     v23 = &v24;
     [v14 performBlockAndWait:v19];
     v15 = v31[5];
-    if (a4 && !v15)
+    if (error && !v15)
     {
-      *a4 = v25[5];
+      *error = v25[5];
       v15 = v31[5];
     }
 
@@ -502,11 +502,11 @@ void __72__PHMomentShare_fetchMomentShareFromShareURL_options_completionHandler_
     _Block_object_dispose(&v30, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     v17 = v11;
     v16 = 0;
-    *a4 = v12;
+    *error = v12;
   }
 
   else
@@ -570,33 +570,33 @@ void __65__PHMomentShare_fetchLocalMomentShareFromShareURL_error_options___block
   }
 }
 
-+ (id)localIdentifierWithUUID:(id)a3
++ (id)localIdentifierWithUUID:(id)d
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 identifierCode];
-  v7 = [v4 stringWithFormat:@"%@/L0/%@", v5, v6];
+  dCopy = d;
+  identifierCode = [self identifierCode];
+  v7 = [v4 stringWithFormat:@"%@/L0/%@", dCopy, identifierCode];
 
   return v7;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__PHMomentShare_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_46243 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_46243, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_46244 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_46244 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -745,7 +745,7 @@ void __29__PHMomentShare_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_46256 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_46264 != -1)
   {

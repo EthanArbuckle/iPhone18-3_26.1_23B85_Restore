@@ -1,31 +1,31 @@
 @interface BWVisionInferenceProvider
 + (void)initialize;
-- (BWVisionInferenceProvider)initWithConfiguration:(id)a3 requests:(id)a4 executesRequestsIndividually:(BOOL)a5 executionTarget:(int)a6 preventionReasons:(id)a7 resourceProvider:(id)a8;
-- (id)_validatedBoundingBoxInObservationsWithMetadata:(CGAffineTransform *)a3 exifOrientation:(uint64_t)a4 fromPreviousRequest:(uint64_t)a5 wasForwardedToCurrentRequest:(int)a6 didFallBackToISPFaces:(uint64_t)a7 forCaptureSettingsID:;
-- (id)bindIdealInputForRequest:(id)a3 fromAttachedMediaUsingKey:(id)a4;
-- (id)bindInputForRequest:(id)a3 fromAttachedMediaUsingKey:(id)a4 preparedByAttachedMediaKey:(id)a5 withVideoFormatProvider:(id)a6;
-- (id)bindInputForRequest:(id)a3 fromMetadataUsingKeys:(id)a4;
-- (id)bindOutputByCloningInputRequirement:(id)a3 toAttachedMediaUsingKey:(id)a4;
-- (id)bindOutputForRequest:(id)a3 asAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5;
-- (id)bindOutputForRequest:(id)a3 asConsolidatedMetadataUsingKeys:(id)a4;
-- (id)bindOutputForRequest:(id)a3 asMetadataUsingKey:(id)a4;
-- (id)bindOutputForRequest:(id)a3 asMetadataUsingKeys:(id)a4;
+- (BWVisionInferenceProvider)initWithConfiguration:(id)configuration requests:(id)requests executesRequestsIndividually:(BOOL)individually executionTarget:(int)target preventionReasons:(id)reasons resourceProvider:(id)provider;
+- (id)_validatedBoundingBoxInObservationsWithMetadata:(CGAffineTransform *)metadata exifOrientation:(uint64_t)orientation fromPreviousRequest:(uint64_t)request wasForwardedToCurrentRequest:(int)currentRequest didFallBackToISPFaces:(uint64_t)faces forCaptureSettingsID:;
+- (id)bindIdealInputForRequest:(id)request fromAttachedMediaUsingKey:(id)key;
+- (id)bindInputForRequest:(id)request fromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider;
+- (id)bindInputForRequest:(id)request fromMetadataUsingKeys:(id)keys;
+- (id)bindOutputByCloningInputRequirement:(id)requirement toAttachedMediaUsingKey:(id)key;
+- (id)bindOutputForRequest:(id)request asAttachedMediaUsingKey:(id)key withVideoFormat:(id)format;
+- (id)bindOutputForRequest:(id)request asConsolidatedMetadataUsingKeys:(id)keys;
+- (id)bindOutputForRequest:(id)request asMetadataUsingKey:(id)key;
+- (id)bindOutputForRequest:(id)request asMetadataUsingKeys:(id)keys;
 - (id)newStorage;
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6;
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler;
 - (int)prepareForExecution;
-- (int)prewarmUsingLimitedMemory:(BOOL)a3;
-- (int)reconcileWithPlaceholderProvider:(id)a3;
-- (void)_tapToRadarVisionTimeOutError:(uint64_t)a1 performingRequests:settingsID:;
+- (int)prewarmUsingLimitedMemory:(BOOL)memory;
+- (int)reconcileWithPlaceholderProvider:(id)provider;
+- (void)_tapToRadarVisionTimeOutError:(uint64_t)error performingRequests:settingsID:;
 - (void)dealloc;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
-- (void)setCustomInferenceIdentifier:(id)a3;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
+- (void)setCustomInferenceIdentifier:(id)identifier;
 @end
 
 @implementation BWVisionInferenceProvider
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -34,21 +34,21 @@
   }
 }
 
-- (BWVisionInferenceProvider)initWithConfiguration:(id)a3 requests:(id)a4 executesRequestsIndividually:(BOOL)a5 executionTarget:(int)a6 preventionReasons:(id)a7 resourceProvider:(id)a8
+- (BWVisionInferenceProvider)initWithConfiguration:(id)configuration requests:(id)requests executesRequestsIndividually:(BOOL)individually executionTarget:(int)target preventionReasons:(id)reasons resourceProvider:(id)provider
 {
-  v10 = *&a6;
+  v10 = *&target;
   v23.receiver = self;
   v23.super_class = BWVisionInferenceProvider;
   v14 = [(BWVisionInferenceProvider *)&v23 init];
   if (v14)
   {
-    v14->_configuration = a3;
+    v14->_configuration = configuration;
     objc_opt_class();
-    v15 = (objc_opt_isKindOfClass() & 1) != 0 ? a3 : 0;
-    v14->_executesRequestsIndividually = a5;
-    v14->_type = [a3 inferenceType];
+    v15 = (objc_opt_isKindOfClass() & 1) != 0 ? configuration : 0;
+    v14->_executesRequestsIndividually = individually;
+    v14->_type = [configuration inferenceType];
     v14->_executionTarget = v10;
-    v16 = [a7 copy];
+    v16 = [reasons copy];
     v17.f64[0] = NAN;
     v17.f64[1] = NAN;
     *&v14->_indexOfRequestForMergedFaceDetection = vnegq_f64(v17);
@@ -58,21 +58,21 @@
     v14->_clampToLargestMaximumNumberOfFaces = [v15 clampToLargestMaximumNumberOfFaces];
     v14->_considerISPRectsIfVisionFails = [v15 considerISPRectsIfVisionFails];
     v14->_alwaysExecuteForRedEyeReduction = [v15 alwaysExecuteForRedEyeReduction];
-    v14->_prototypeRequests = [a4 copy];
-    v14->_context = [a8 visionContextForExecutionTarget:v10];
+    v14->_prototypeRequests = [requests copy];
+    v14->_context = [provider visionContextForExecutionTarget:v10];
     v14->_requestIndexByRequirement = objc_alloc_init(MEMORY[0x1E695DF90]);
     v14->_inputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14->_outputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14->_cloneVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14->_inputMetadataRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14->_outputMetadataRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v14->_requestIndexByRequest = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:{objc_msgSend(a4, "count")}];
-    if ([a4 count])
+    v14->_requestIndexByRequest = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:{objc_msgSend(requests, "count")}];
+    if ([requests count])
     {
       v18 = 0;
       while (1)
       {
-        v19 = [a4 objectAtIndexedSubscript:v18];
+        v19 = [requests objectAtIndexedSubscript:v18];
         -[NSMapTable setObject:forKey:](v14->_requestIndexByRequest, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18], v19);
         getVNDetectFaceRectanglesRequestClass();
         objc_opt_class();
@@ -91,7 +91,7 @@
         }
 
 LABEL_11:
-        if (++v18 >= [a4 count])
+        if (++v18 >= [requests count])
         {
           return v14;
         }
@@ -117,17 +117,17 @@ LABEL_10:
 
 - (id)newStorage
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 addObjectsFromArray:self->_inputVideoRequirements];
-  [v3 addObjectsFromArray:self->_outputVideoRequirements];
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v4 addObjectsFromArray:self->_outputVideoRequirements];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:self->_inputVideoRequirements];
+  [array addObjectsFromArray:self->_outputVideoRequirements];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array2 addObjectsFromArray:self->_outputVideoRequirements];
   v5 = [BWVisionInferenceStorage alloc];
 
-  return [(BWVisionInferenceStorage *)v5 initWithRequirementsNeedingPixelBuffers:v3 requirementsNeedingPixelBufferPools:v4];
+  return [(BWVisionInferenceStorage *)v5 initWithRequirementsNeedingPixelBuffers:array requirementsNeedingPixelBufferPools:array2];
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -154,8 +154,8 @@ LABEL_10:
         }
 
         v15 = *(*(&v41 + 1) + 8 * i);
-        v16 = [a4 newSampleBufferSatisfyingRequirement:v15 withPropagationSampleBuffer:a6];
-        BWSampleBufferSetAttachedMedia(a6, [v15 attachedMediaKey], v16);
+        v16 = [storage newSampleBufferSatisfyingRequirement:v15 withPropagationSampleBuffer:sampleBuffer];
+        BWSampleBufferSetAttachedMedia(sampleBuffer, [v15 attachedMediaKey], v16);
         if (v16)
         {
           CFRelease(v16);
@@ -188,8 +188,8 @@ LABEL_10:
         }
 
         v22 = *(*(&v36 + 1) + 8 * j);
-        v23 = [a4 newSampleBufferSatisfyingCloneRequirement:v22];
-        BWSampleBufferSetAttachedMedia(a6, [v22 attachedMediaKey], v23);
+        v23 = [storage newSampleBufferSatisfyingCloneRequirement:v22];
+        BWSampleBufferSetAttachedMedia(sampleBuffer, [v22 attachedMediaKey], v23);
         if (v23)
         {
           CFRelease(v23);
@@ -221,8 +221,8 @@ LABEL_10:
           objc_enumerationMutation(outputMetadataRequirements);
         }
 
-        v29 = [a4 newMetadataDictionarySatisfyingRequirement:*(*(&v31 + 1) + 8 * k)];
-        [a3 addEntriesFromDictionary:v29];
+        v29 = [storage newMetadataDictionarySatisfyingRequirement:*(*(&v31 + 1) + 8 * k)];
+        [dictionary addEntriesFromDictionary:v29];
       }
 
       v26 = [(NSMutableArray *)outputMetadataRequirements countByEnumeratingWithState:&v31 objects:v30 count:16];
@@ -237,48 +237,48 @@ LABEL_10:
   }
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  v76 = a6;
+  handlerCopy = handler;
   if ([(BWVisionInferenceProvider *)self primaryInputVideoRequirement])
   {
-    v10 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v10 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     if (v10)
     {
       v11 = v10;
       v12 = [v10 objectForKeyedSubscript:*off_1E798A5B0];
-      if (v12 || (v12 = CMGetAttachment(a3, @"UprightExifOrientation", 0)) != 0)
+      if (v12 || (v12 = CMGetAttachment(buffer, @"UprightExifOrientation", 0)) != 0)
       {
-        v82 = [v12 intValue];
+        intValue = [v12 intValue];
       }
 
       else
       {
-        v82 = 1;
+        intValue = 1;
       }
 
-      v13 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
+      v13 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
       v14 = [v13 captureStreamSettingsForPortType:{objc_msgSend(v11, "objectForKeyedSubscript:", *off_1E798B540)}];
       v75 = v13;
       v73 = v11;
       v84 = [v13 captureType] == 2 && (objc_msgSend(v14, "captureFlags", v11) & 0x10000) != 0 && self->_alwaysExecuteForRedEyeReduction;
       v117[0] = 0;
-      v81 = [(BWVisionInferenceContext *)self->_context sequenceRequestHandler];
+      sequenceRequestHandler = [(BWVisionInferenceContext *)self->_context sequenceRequestHandler];
       v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:self->_prototypeRequests copyItems:1];
       v113 = 0u;
       v114 = 0u;
@@ -299,7 +299,7 @@ LABEL_10:
               objc_enumerationMutation(requestIndexByRequirement);
             }
 
-            [a4 setRequest:objc_msgSend(v15 forRequirement:{"objectAtIndexedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_requestIndexByRequirement, "objectForKeyedSubscript:", *(*(&v113 + 1) + 8 * i)), "unsignedIntegerValue")), *(*(&v113 + 1) + 8 * i)}];
+            [storage setRequest:objc_msgSend(v15 forRequirement:{"objectAtIndexedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_requestIndexByRequirement, "objectForKeyedSubscript:", *(*(&v113 + 1) + 8 * i)), "unsignedIntegerValue")), *(*(&v113 + 1) + 8 * i)}];
           }
 
           v18 = [(NSMutableDictionary *)requestIndexByRequirement countByEnumeratingWithState:&v113 objects:v112 count:16];
@@ -310,7 +310,7 @@ LABEL_10:
 
       if (self->_executesRequestsIndividually)
       {
-        v21 = [MEMORY[0x1E696AD50] indexSet];
+        indexSet = [MEMORY[0x1E696AD50] indexSet];
         if (self->_indexOfRequestForMergedFaceDetection == 0x7FFFFFFFFFFFFFFFLL || self->_indexOfRequestForMergedFoodAndDrinkRecognition == 0x7FFFFFFFFFFFFFFFLL)
         {
           v78 = 0;
@@ -331,24 +331,24 @@ LABEL_10:
           v80 = v41;
           v43 = 0;
           v44 = 0;
-          v77 = a3;
-          v83 = v21;
+          bufferCopy = buffer;
+          v83 = indexSet;
           while (1)
           {
             v45 = [v15 objectAtIndexedSubscript:v44];
-            if (([v21 containsIndex:v44] & 1) == 0)
+            if (([indexSet containsIndex:v44] & 1) == 0)
             {
               v86 = v45;
-              v46 = [v43 results];
-              v47 = self->_considerISPRectsIfVisionFails && (getVNDetectFaceRectanglesRequestClass(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v46 count] == 0;
+              results = [v43 results];
+              v47 = self->_considerISPRectsIfVisionFails && (getVNDetectFaceRectanglesRequestClass(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [results count] == 0;
               objc_opt_class();
-              v48 = (objc_opt_isKindOfClass() & 1) != 0 && (-[BWVisionInferenceConfiguration requestTypes](self->_configuration, "requestTypes") & 1) == 0 && [v46 count] == 0;
+              v48 = (objc_opt_isKindOfClass() & 1) != 0 && (-[BWVisionInferenceConfiguration requestTypes](self->_configuration, "requestTypes") & 1) == 0 && [results count] == 0;
               if ((v47 | v48))
               {
-                v70 = -[BWVisionInferenceProvider _validatedBoundingBoxInObservationsWithMetadata:exifOrientation:fromPreviousRequest:wasForwardedToCurrentRequest:didFallBackToISPFaces:forCaptureSettingsID:](self, v74, v82, v43, v86, v47, [v75 settingsID]);
+                v70 = -[BWVisionInferenceProvider _validatedBoundingBoxInObservationsWithMetadata:exifOrientation:fromPreviousRequest:wasForwardedToCurrentRequest:didFallBackToISPFaces:forCaptureSettingsID:](self, v74, intValue, v43, v86, v47, [v75 settingsID]);
                 if ([v70 count] != 0 || v48)
                 {
-                  v46 = v70;
+                  results = v70;
                 }
               }
 
@@ -358,13 +358,13 @@ LABEL_10:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass() & 1) != 0 || (getVNDetectFaceLandmarksRequestClass(), objc_opt_class(), (objc_opt_isKindOfClass()) || (getVNGenerateFaceSegmentsRequestClass(), objc_opt_class(), (objc_opt_isKindOfClass()))
                 {
-                  if ([v46 count] > self->_maximumNumberOfFaces)
+                  if ([results count] > self->_maximumNumberOfFaces)
                   {
                     v111 = 0u;
                     v110 = 0u;
                     v108 = 0u;
                     v109 = 0u;
-                    v49 = [v46 countByEnumeratingWithState:&v108 objects:v107 count:16];
+                    v49 = [results countByEnumeratingWithState:&v108 objects:v107 count:16];
                     if (v49)
                     {
                       v50 = v49;
@@ -373,12 +373,12 @@ LABEL_10:
                       {
                         if (*v109 != v51)
                         {
-                          objc_enumerationMutation(v46);
+                          objc_enumerationMutation(results);
                         }
 
                         if (!--v50)
                         {
-                          v50 = [v46 countByEnumeratingWithState:&v108 objects:v107 count:16];
+                          v50 = [results countByEnumeratingWithState:&v108 objects:v107 count:16];
                           if (!v50)
                           {
                             break;
@@ -387,13 +387,13 @@ LABEL_10:
                       }
                     }
 
-                    v52 = [v46 sortedArrayUsingComparator:&__block_literal_global_131];
-                    v46 = [objc_msgSend(v52 subarrayWithRange:{objc_msgSend(v52, "count") - self->_maximumNumberOfFaces), "copy"}];
+                    v52 = [results sortedArrayUsingComparator:&__block_literal_global_131];
+                    results = [objc_msgSend(v52 subarrayWithRange:{objc_msgSend(v52, "count") - self->_maximumNumberOfFaces), "copy"}];
                     v103 = 0u;
                     v104 = 0u;
                     v105 = 0u;
                     v106 = 0u;
-                    v53 = [v46 countByEnumeratingWithState:&v103 objects:v102 count:16];
+                    v53 = [results countByEnumeratingWithState:&v103 objects:v102 count:16];
                     if (v53)
                     {
                       v54 = v53;
@@ -402,12 +402,12 @@ LABEL_10:
                       {
                         if (*v104 != v55)
                         {
-                          objc_enumerationMutation(v46);
+                          objc_enumerationMutation(results);
                         }
 
                         if (!--v54)
                         {
-                          v54 = [v46 countByEnumeratingWithState:&v103 objects:v102 count:16];
+                          v54 = [results countByEnumeratingWithState:&v103 objects:v102 count:16];
                           if (!v54)
                           {
                             break;
@@ -419,15 +419,15 @@ LABEL_10:
                 }
               }
 
-              if (v43 && ![v46 count] || self->_maximumNumberOfFaces != 0 && !v84 && !self->_clampToLargestMaximumNumberOfFaces && objc_msgSend(objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", self->_indexOfRequestForMaximumNumberOfFaces), "results"), "count") > self->_maximumNumberOfFaces)
+              if (v43 && ![results count] || self->_maximumNumberOfFaces != 0 && !v84 && !self->_clampToLargestMaximumNumberOfFaces && objc_msgSend(objc_msgSend(objc_msgSend(v15, "objectAtIndexedSubscript:", self->_indexOfRequestForMaximumNumberOfFaces), "results"), "count") > self->_maximumNumberOfFaces)
               {
                 goto LABEL_126;
               }
 
-              if (-[BWVisionInferenceConfiguration shouldPreventRequestForSampleBuffer](self->_configuration, "shouldPreventRequestForSampleBuffer") && (v56 = -[BWVisionInferenceConfiguration shouldPreventRequestForSampleBuffer](self->_configuration, "shouldPreventRequestForSampleBuffer"), v56[2](v56, [v86 copy], a3)))
+              if (-[BWVisionInferenceConfiguration shouldPreventRequestForSampleBuffer](self->_configuration, "shouldPreventRequestForSampleBuffer") && (v56 = -[BWVisionInferenceConfiguration shouldPreventRequestForSampleBuffer](self->_configuration, "shouldPreventRequestForSampleBuffer"), v56[2](v56, [v86 copy], buffer)))
               {
-                [a4 removeRequest:v86];
-                v21 = v83;
+                [storage removeRequest:v86];
+                indexSet = v83;
                 v42 = v80;
               }
 
@@ -435,11 +435,11 @@ LABEL_10:
               {
                 if ([v86 conformsToProtocol:&unk_1F22C4730])
                 {
-                  [v86 setInputFaceObservations:v46];
+                  [v86 setInputFaceObservations:results];
                 }
 
                 v85 = v22;
-                v57 = [(BWVisionInferenceProvider *)self primaryInputVideoRequirement];
+                primaryInputVideoRequirement = [(BWVisionInferenceProvider *)self primaryInputVideoRequirement];
                 v98 = 0u;
                 v99 = 0u;
                 v100 = 0u;
@@ -462,7 +462,7 @@ LABEL_10:
                       v63 = *(*(&v98 + 1) + 8 * j);
                       if (v44 == [-[NSMutableDictionary objectForKeyedSubscript:](self->_requestIndexByRequirement objectForKeyedSubscript:{v63), "intValue"}])
                       {
-                        v57 = v63;
+                        primaryInputVideoRequirement = v63;
                       }
                     }
 
@@ -472,7 +472,7 @@ LABEL_10:
                   while (v60);
                 }
 
-                v64 = [a4 pixelBufferForRequirement:v57];
+                v64 = [storage pixelBufferForRequirement:primaryInputVideoRequirement];
                 if (!v64)
                 {
                   v79 = -31712;
@@ -481,14 +481,14 @@ LABEL_10:
                 }
 
                 v65 = v64;
-                if ([(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)v57 videoFormat] deviceOriented])
+                if ([(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)primaryInputVideoRequirement videoFormat] deviceOriented])
                 {
                   v66 = 1;
                 }
 
                 else
                 {
-                  v66 = v82;
+                  v66 = intValue;
                 }
 
                 v67 = [MEMORY[0x1E695DF70] arrayWithObject:v86];
@@ -496,7 +496,7 @@ LABEL_10:
                 v22 = v85;
                 if (v78 && v44 == self->_indexOfRequestForMergedFaceDetection)
                 {
-                  a3 = v77;
+                  buffer = bufferCopy;
                   if (v85)
                   {
                     [v67 addObject:v85];
@@ -508,22 +508,22 @@ LABEL_10:
 
                 else
                 {
-                  a3 = v77;
+                  buffer = bufferCopy;
                 }
 
-                v69 = [(VNSequenceRequestHandler *)v81 performRequests:v68 onCVPixelBuffer:v65 orientation:v66 error:v117];
+                v69 = [(VNSequenceRequestHandler *)sequenceRequestHandler performRequests:v68 onCVPixelBuffer:v65 orientation:v66 error:v117];
                 if (-[BWVisionInferenceConfiguration suppressTimeOutFailure](self->_configuration, "suppressTimeOutFailure") && [objc_msgSend(v117[0] "domain")] && objc_msgSend(v117[0], "code") == 20)
                 {
                   [v75 settingsID];
                   [BWVisionInferenceProvider _tapToRadarVisionTimeOutError:? performingRequests:? settingsID:?];
                   v42 = v80;
                   v44 = v80;
-                  v21 = v83;
+                  indexSet = v83;
                 }
 
                 else
                 {
-                  v21 = v83;
+                  indexSet = v83;
                   if (!v69)
                   {
                     v79 = -31710;
@@ -571,11 +571,11 @@ LABEL_125:
               }
 
               v28 = *(*(&v93 + 1) + 8 * k);
-              v29 = [(BWVisionInferenceConfiguration *)self->_configuration shouldPreventRequestForSampleBuffer];
-              if (v29[2](v29, [v28 copy], a3))
+              shouldPreventRequestForSampleBuffer = [(BWVisionInferenceConfiguration *)self->_configuration shouldPreventRequestForSampleBuffer];
+              if (shouldPreventRequestForSampleBuffer[2](shouldPreventRequestForSampleBuffer, [v28 copy], buffer))
               {
                 [v23 addObject:v28];
-                [a4 removeRequest:v28];
+                [storage removeRequest:v28];
               }
             }
 
@@ -590,7 +590,7 @@ LABEL_125:
 
       if ([(BWVisionInferenceConfiguration *)self->_configuration reuseUpstreamFaceObservations])
       {
-        AttachedInference = BWInferenceGetAttachedInference(a3, 802, 0x1F219E5F0);
+        AttachedInference = BWInferenceGetAttachedInference(buffer, 802, 0x1F219E5F0);
         v88 = 0u;
         v89 = 0u;
         v90 = 0u;
@@ -623,22 +623,22 @@ LABEL_125:
         }
       }
 
-      v36 = [(BWVisionInferenceProvider *)self primaryInputVideoRequirement];
-      v37 = [a4 pixelBufferForRequirement:v36];
+      primaryInputVideoRequirement2 = [(BWVisionInferenceProvider *)self primaryInputVideoRequirement];
+      v37 = [storage pixelBufferForRequirement:primaryInputVideoRequirement2];
       if (v37)
       {
         v38 = v37;
-        if ([(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)v36 videoFormat] deviceOriented])
+        if ([(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)primaryInputVideoRequirement2 videoFormat] deviceOriented])
         {
           v39 = 1;
         }
 
         else
         {
-          v39 = v82;
+          v39 = intValue;
         }
 
-        v40 = [(VNSequenceRequestHandler *)v81 performRequests:v15 onCVPixelBuffer:v38 orientation:v39 error:v117];
+        v40 = [(VNSequenceRequestHandler *)sequenceRequestHandler performRequests:v15 onCVPixelBuffer:v38 orientation:v39 error:v117];
         if (-[BWVisionInferenceConfiguration suppressTimeOutFailure](self->_configuration, "suppressTimeOutFailure") && [objc_msgSend(v117[0] "domain")] && objc_msgSend(v117[0], "code") == 20)
         {
           [v75 settingsID];
@@ -687,9 +687,9 @@ LABEL_126:
     kdebug_trace();
   }
 
-  if (v76)
+  if (handlerCopy)
   {
-    v76[2]();
+    handlerCopy[2]();
   }
 
   return v79;
@@ -720,23 +720,23 @@ uint64_t __100__BWVisionInferenceProvider_executeOnSampleBuffer_usingStorage_wit
   }
 }
 
-- (id)bindInputForRequest:(id)a3 fromAttachedMediaUsingKey:(id)a4 preparedByAttachedMediaKey:(id)a5 withVideoFormatProvider:(id)a6
+- (id)bindInputForRequest:(id)request fromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider
 {
-  v8 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:a4 preparedByAttachedMediaKey:a4 videoFormatProvider:a6];
+  v8 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:key preparedByAttachedMediaKey:key videoFormatProvider:provider];
   [(NSMutableArray *)self->_inputVideoRequirements addObject:v8];
   if (![(BWVisionInferenceProvider *)self primaryInputVideoRequirement]&& [(NSString *)[(BWInferenceMediaRequirement *)v8 attachedMediaKey] isEqualToString:@"PrimaryFormat"])
   {
     [(BWVisionInferenceProvider *)self setPrimaryInputVideoRequirement:v8];
   }
 
-  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:a3] forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:request] forKeyedSubscript:v8];
 
   return v8;
 }
 
-- (id)bindIdealInputForRequest:(id)a3 fromAttachedMediaUsingKey:(id)a4
+- (id)bindIdealInputForRequest:(id)request fromAttachedMediaUsingKey:(id)key
 {
-  v7 = [objc_msgSend(a3 "supportedImageSizeSet")];
+  v7 = [objc_msgSend(request "supportedImageSizeSet")];
   v8 = objc_alloc_init(BWInferenceVideoFormatRequirements);
   -[BWVideoFormatRequirements setWidth:](v8, "setWidth:", [objc_msgSend(v7 "pixelsWideRange")]);
   -[BWVideoFormatRequirements setHeight:](v8, "setHeight:", [objc_msgSend(v7 "pixelsHighRange")]);
@@ -747,74 +747,74 @@ uint64_t __100__BWVisionInferenceProvider_executeOnSampleBuffer_usingStorage_wit
   [(BWVideoFormatRequirements *)v8 setSupportedColorSpaceProperties:&unk_1F2249D68];
   [(BWVideoFormatRequirements *)v8 setBytesPerRowAlignment:64];
   v12 = v8;
-  v10 = -[BWInferenceVideoRequirement initWithAttachedMediaKey:videoFormat:]([BWInferenceVideoRequirement alloc], "initWithAttachedMediaKey:videoFormat:", a4, +[BWInferenceVideoFormat formatByResolvingRequirements:](BWInferenceVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1]));
+  v10 = -[BWInferenceVideoRequirement initWithAttachedMediaKey:videoFormat:]([BWInferenceVideoRequirement alloc], "initWithAttachedMediaKey:videoFormat:", key, +[BWInferenceVideoFormat formatByResolvingRequirements:](BWInferenceVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1]));
   [(NSMutableArray *)self->_inputVideoRequirements addObject:v10];
   if (![(BWVisionInferenceProvider *)self primaryInputVideoRequirement]&& [(NSString *)[(BWInferenceMediaRequirement *)v10 attachedMediaKey] isEqualToString:@"PrimaryFormat"])
   {
     [(BWVisionInferenceProvider *)self setPrimaryInputVideoRequirement:v10];
   }
 
-  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:a3] forKeyedSubscript:v10];
+  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:request] forKeyedSubscript:v10];
   return v10;
 }
 
-- (id)bindInputForRequest:(id)a3 fromMetadataUsingKeys:(id)a4
+- (id)bindInputForRequest:(id)request fromMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_inputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:a3] forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:request] forKeyedSubscript:v6];
 
   return v6;
 }
 
-- (id)bindOutputForRequest:(id)a3 asAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5
+- (id)bindOutputForRequest:(id)request asAttachedMediaUsingKey:(id)key withVideoFormat:(id)format
 {
-  v7 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:a4 videoFormat:a5];
+  v7 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:key videoFormat:format];
   [(NSMutableArray *)self->_outputVideoRequirements addObject:v7];
-  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:a3] forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:request] forKeyedSubscript:v7];
 
   return v7;
 }
 
-- (id)bindOutputByCloningInputRequirement:(id)a3 toAttachedMediaUsingKey:(id)a4
+- (id)bindOutputByCloningInputRequirement:(id)requirement toAttachedMediaUsingKey:(id)key
 {
-  v5 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:a4 sourceVideoRequirement:a3];
+  v5 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:key sourceVideoRequirement:requirement];
   [(NSMutableArray *)self->_cloneVideoRequirements addObject:v5];
 
   return v5;
 }
 
-- (id)bindOutputForRequest:(id)a3 asMetadataUsingKey:(id)a4
+- (id)bindOutputForRequest:(id)request asMetadataUsingKey:(id)key
 {
   v7 = [BWInferenceMetadataRequirement alloc];
-  v10 = a4;
-  v8 = -[BWInferenceMetadataRequirement initWithMetadataKeys:mappingOption:](v7, "initWithMetadataKeys:mappingOption:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1], 1);
+  keyCopy = key;
+  v8 = -[BWInferenceMetadataRequirement initWithMetadataKeys:mappingOption:](v7, "initWithMetadataKeys:mappingOption:", [MEMORY[0x1E695DEC8] arrayWithObjects:&keyCopy count:1], 1);
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v8];
-  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:a3] forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:request] forKeyedSubscript:v8];
   return v8;
 }
 
-- (id)bindOutputForRequest:(id)a3 asMetadataUsingKeys:(id)a4
+- (id)bindOutputForRequest:(id)request asMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:a3] forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:request] forKeyedSubscript:v6];
 
   return v6;
 }
 
-- (id)bindOutputForRequest:(id)a3 asConsolidatedMetadataUsingKeys:(id)a4
+- (id)bindOutputForRequest:(id)request asConsolidatedMetadataUsingKeys:(id)keys
 {
-  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4 mappingOption:2];
+  v6 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys mappingOption:2];
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v6];
-  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:a3] forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_requestIndexByRequirement setObject:[(NSMapTable *)self->_requestIndexByRequest objectForKey:request] forKeyedSubscript:v6];
 
   return v6;
 }
 
-- (void)_tapToRadarVisionTimeOutError:(uint64_t)a1 performingRequests:settingsID:
+- (void)_tapToRadarVisionTimeOutError:(uint64_t)error performingRequests:settingsID:
 {
-  if (a1)
+  if (error)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
@@ -825,13 +825,13 @@ uint64_t __100__BWVisionInferenceProvider_executeOnSampleBuffer_usingStorage_wit
   }
 }
 
-- (id)_validatedBoundingBoxInObservationsWithMetadata:(CGAffineTransform *)a3 exifOrientation:(uint64_t)a4 fromPreviousRequest:(uint64_t)a5 wasForwardedToCurrentRequest:(int)a6 didFallBackToISPFaces:(uint64_t)a7 forCaptureSettingsID:
+- (id)_validatedBoundingBoxInObservationsWithMetadata:(CGAffineTransform *)metadata exifOrientation:(uint64_t)orientation fromPreviousRequest:(uint64_t)request wasForwardedToCurrentRequest:(int)currentRequest didFallBackToISPFaces:(uint64_t)faces forCaptureSettingsID:
 {
-  HIDWORD(v72) = a6;
+  HIDWORD(v72) = currentRequest;
   if (result)
   {
-    HIDWORD(v68) = a3;
-    v8 = BWFaceDetectionObservationsFromISPDetectedFacesMetadata(a2, a3);
+    HIDWORD(v68) = metadata;
+    v8 = BWFaceDetectionObservationsFromISPDetectedFacesMetadata(a2, metadata);
     v9 = [objc_msgSend(objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B220), "objectForKeyedSubscript:", *off_1E798ACB8), "objectForKeyedSubscript:", *off_1E798ACE8}];
     v10 = FigCaptureUnityRect();
     v12 = v11;
@@ -843,12 +843,12 @@ uint64_t __100__BWVisionInferenceProvider_executeOnSampleBuffer_usingStorage_wit
       v78 = [a2 objectForKeyedSubscript:*off_1E798B218];
     }
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v138 = 0u;
     v139 = 0u;
     v140 = 0u;
     v141 = 0u;
-    v25 = OUTLINED_FUNCTION_7_80(v17, v18, v19, v20, v21, v22, v23, v24, v56, v58, v60, v62, v64, v66, v68, a4, v72, a7, a5, v78, v80, v82, v84, v86, v88, v90, v92, v94, v96, v98, v100, v102, v104, v106, v108, v110, v112, v114, v116, v118, v120, v122, v124, v126, v128, v130, v132, v134, *&recta.origin.x, *&recta.origin.y, *&recta.size.width, *&recta.size.height, v137);
+    v25 = OUTLINED_FUNCTION_7_80(array, v18, v19, v20, v21, v22, v23, v24, v56, v58, v60, v62, v64, v66, v68, orientation, v72, faces, request, v78, v80, v82, v84, v86, v88, v90, v92, v94, v96, v98, v100, v102, v104, v106, v108, v110, v112, v114, v116, v118, v120, v122, v124, v126, v128, v130, v132, v134, *&recta.origin.x, *&recta.origin.y, *&recta.size.width, *&recta.size.height, v137);
     if (v25)
     {
       v26 = v25;
@@ -883,7 +883,7 @@ uint64_t __100__BWVisionInferenceProvider_executeOnSampleBuffer_usingStorage_wit
               isKindOfClass = CGRectIntersectsRect(v143, v145);
               if (isKindOfClass)
               {
-                isKindOfClass = [v17 addObject:v29];
+                isKindOfClass = [array addObject:v29];
               }
             }
           }
@@ -897,7 +897,7 @@ uint64_t __100__BWVisionInferenceProvider_executeOnSampleBuffer_usingStorage_wit
 
     v42 = [v8 count];
     v43 = v77;
-    if (v42 != [v17 count] && objc_msgSend(v8, "count"))
+    if (v42 != [array count] && objc_msgSend(v8, "count"))
     {
       v44 = 0;
       v45 = *off_1E798D040;
@@ -970,47 +970,47 @@ uint64_t __100__BWVisionInferenceProvider_executeOnSampleBuffer_usingStorage_wit
       while ([v8 count] > v44);
     }
 
-    return [v17 copy];
+    return [array copy];
   }
 
   return result;
 }
 
-- (int)reconcileWithPlaceholderProvider:(id)a3
+- (int)reconcileWithPlaceholderProvider:(id)provider
 {
   type = self->_type;
-  if (type != [a3 type])
+  if (type != [provider type])
   {
     return -31783;
   }
 
-  [a3 customInferenceIdentifier];
+  [provider customInferenceIdentifier];
   if (![OUTLINED_FUNCTION_8() isEqualToString:?])
   {
     return -31783;
   }
 
   [(NSMutableArray *)self->_inputVideoRequirements removeAllObjects];
-  [a3 inputVideoRequirements];
+  [provider inputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_inputMetadataRequirements removeAllObjects];
-  [a3 inputMetadataRequirements];
+  [provider inputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputVideoRequirements removeAllObjects];
-  [a3 outputVideoRequirements];
+  [provider outputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputMetadataRequirements removeAllObjects];
-  [a3 outputMetadataRequirements];
+  [provider outputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_cloneVideoRequirements removeAllObjects];
-  [a3 cloneVideoRequirements];
+  [provider cloneVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
 
-  self->_primaryInputVideoRequirement = [a3 primaryInputVideoRequirement];
+  self->_primaryInputVideoRequirement = [provider primaryInputVideoRequirement];
   [(NSMutableDictionary *)self->_requestIndexByRequirement removeAllObjects];
-  if (a3)
+  if (provider)
   {
-    v6 = *(a3 + 13);
+    v6 = *(provider + 13);
   }
 
   else
@@ -1033,10 +1033,10 @@ uint64_t __100__BWVisionInferenceProvider_executeOnSampleBuffer_usingStorage_wit
 
   BWInferenceTypeDescription(self->_type);
   mach_absolute_time();
-  v4 = [(BWVisionInferenceContext *)self->_context prepareForInference];
-  if (v4)
+  prepareForInference = [(BWVisionInferenceContext *)self->_context prepareForInference];
+  if (prepareForInference)
   {
-    v7 = v4;
+    v7 = prepareForInference;
   }
 
   else
@@ -1048,11 +1048,11 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v5 = [(BWVisionInferenceContext *)self->_context sequenceRequestHandler];
-    if (v5)
+    sequenceRequestHandler = [(BWVisionInferenceContext *)self->_context sequenceRequestHandler];
+    if (sequenceRequestHandler)
     {
       v9 = 0;
-      if ([(VNSequenceRequestHandler *)v5 prepareForPerformingRequests:self->_prototypeRequests error:&v9])
+      if ([(VNSequenceRequestHandler *)sequenceRequestHandler prepareForPerformingRequests:self->_prototypeRequests error:&v9])
       {
         self->_didLoadResourcesForAllRequests = 1;
         if (dword_1EB58E2E0)
@@ -1084,37 +1084,37 @@ LABEL_10:
   return v7;
 }
 
-- (int)prewarmUsingLimitedMemory:(BOOL)a3
+- (int)prewarmUsingLimitedMemory:(BOOL)memory
 {
-  v3 = a3;
+  memoryCopy = memory;
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  v6 = [(BWVisionInferenceContext *)self->_context prepareForInference];
-  if (v6)
+  prepareForInference = [(BWVisionInferenceContext *)self->_context prepareForInference];
+  if (prepareForInference)
   {
-    v32 = v6;
+    v32 = prepareForInference;
   }
 
   else
   {
-    v7 = [(BWVisionInferenceContext *)self->_context sequenceRequestHandler];
-    if (v7)
+    sequenceRequestHandler = [(BWVisionInferenceContext *)self->_context sequenceRequestHandler];
+    if (sequenceRequestHandler)
     {
-      v8 = v7;
-      v9 = [MEMORY[0x1E695DF70] array];
-      v17 = v9;
-      if (v3)
+      v8 = sequenceRequestHandler;
+      array = [MEMORY[0x1E695DF70] array];
+      v17 = array;
+      if (memoryCopy)
       {
         v55 = 0u;
         v56 = 0u;
         v53 = 0u;
         v54 = 0u;
         prototypeRequests = self->_prototypeRequests;
-        v19 = OUTLINED_FUNCTION_17_0(v9, v10, v11, v12, v13, v14, v15, v16, v34, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, 0);
+        v19 = OUTLINED_FUNCTION_17_0(array, v10, v11, v12, v13, v14, v15, v16, v34, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, 0);
         if (v19)
         {
           v20 = v19;
@@ -1147,7 +1147,7 @@ LABEL_10:
 
       else
       {
-        [v9 addObjectsFromArray:self->_prototypeRequests];
+        [array addObjectsFromArray:self->_prototypeRequests];
       }
 
       v36 = 0;

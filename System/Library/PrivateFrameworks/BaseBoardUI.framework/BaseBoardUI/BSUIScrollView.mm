@@ -1,53 +1,53 @@
 @interface BSUIScrollView
 - ($57C6A38B097B1DD8ADCFE6DE7C16ED39)currentScrollContext;
-- (BOOL)setContentOffset:(CGPoint)a3 withAnimationSettings:(id)a4 completion:(id)a5;
-- (BSUIScrollView)initWithFrame:(CGRect)a3;
+- (BOOL)setContentOffset:(CGPoint)offset withAnimationSettings:(id)settings completion:(id)completion;
+- (BSUIScrollView)initWithFrame:(CGRect)frame;
 - (BSUIScrollViewDelegate)delegate;
-- (uint64_t)_setContentOffset:(void *)a3 animated:(void *)a4 withAnimation:(double)a5 completion:(double)a6;
+- (uint64_t)_setContentOffset:(void *)offset animated:(void *)animated withAnimation:(double)animation completion:(double)completion;
 - (uint64_t)_setCurrentContentOffsetImmediatelyIfScrollInterruptionAnimated:(uint64_t)result;
 - (void)_callScrollCompletionIfNecessary;
-- (void)_didEndDraggingNotification:(id)a3;
-- (void)_didEndScrollAnimationNotification:(id)a3;
+- (void)_didEndDraggingNotification:(id)notification;
+- (void)_didEndScrollAnimationNotification:(id)notification;
 - (void)_notifyDidScroll;
-- (void)_setContentOffset:(CGPoint)a3 animation:(id)a4;
-- (void)_setContentOffset:(_BYTE *)a1 withBlock:(void *)a2;
-- (void)_setScrolling:(uint64_t)a1;
+- (void)_setContentOffset:(CGPoint)offset animation:(id)animation;
+- (void)_setContentOffset:(_BYTE *)offset withBlock:(void *)block;
+- (void)_setScrolling:(uint64_t)scrolling;
 - (void)_updateScrolling;
 - (void)dealloc;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation BSUIScrollView
 
 - (void)_updateScrolling
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 isDragging] & 1) != 0 || (objc_msgSend(a1, "isDecelerating"))
+    if ([self isDragging] & 1) != 0 || (objc_msgSend(self, "isDecelerating"))
     {
-      v2 = 1;
+      isScrollAnimating = 1;
     }
 
     else
     {
-      v2 = [a1 isScrollAnimating];
+      isScrollAnimating = [self isScrollAnimating];
     }
 
-    [(BSUIScrollView *)a1 _setScrolling:v2];
+    [(BSUIScrollView *)self _setScrolling:isScrollAnimating];
 
-    [(BSUIScrollView *)a1 _callScrollCompletionIfNecessary];
+    [(BSUIScrollView *)self _callScrollCompletionIfNecessary];
   }
 }
 
 - (void)_callScrollCompletionIfNecessary
 {
-  if (([a1 isScrolling] & 1) == 0 && a1[270])
+  if (([self isScrolling] & 1) == 0 && self[270])
   {
     v3 = MEMORY[0x1A58E5D00]();
-    v2 = a1[270];
-    a1[270] = 0;
+    v2 = self[270];
+    self[270] = 0;
 
     v3[2](v3, 0);
   }
@@ -68,13 +68,13 @@
   v5 = v8;
   v6 = v9;
   [(BSUIScrollView *)self _bs_didScrollWithContext:&v4];
-  v3 = [(BSUIScrollView *)self delegate];
+  delegate = [(BSUIScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = v7;
     v5 = v8;
     v6 = v9;
-    [v3 scrollViewDidScroll:self withContext:&v4];
+    [delegate scrollViewDidScroll:self withContext:&v4];
   }
 
   [(BSUIScrollView *)self _updateScrolling];
@@ -84,25 +84,25 @@
 {
   v4.receiver = self;
   v4.super_class = BSUIScrollView;
-  v2 = [(BSUIScrollView *)&v4 delegate];
+  delegate = [(BSUIScrollView *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
 - ($57C6A38B097B1DD8ADCFE6DE7C16ED39)currentScrollContext
 {
-  v3 = self;
+  selfCopy = self;
   if (self && (self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)self isScrolling], self))
   {
-    self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)v3 isDragging];
-    if (self & 1) != 0 || (self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)v3 isTracking], (self))
+    self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)selfCopy isDragging];
+    if (self & 1) != 0 || (self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)selfCopy isTracking], (self))
     {
       v5 = 3;
     }
 
     else
     {
-      self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)v3 isScrollAnimating];
+      self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)selfCopy isScrollAnimating];
       if (self)
       {
         v5 = 2;
@@ -110,7 +110,7 @@
 
       else
       {
-        self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)v3 isDecelerating];
+        self = [($57C6A38B097B1DD8ADCFE6DE7C16ED39 *)selfCopy isDecelerating];
         v5 = 1;
         if (self)
         {
@@ -126,54 +126,54 @@
   }
 
   retstr->var0 = v5;
-  retstr->var1 = v3[54].var1;
-  retstr->var2 = v3[54].var2;
+  retstr->var1 = selfCopy[54].var1;
+  retstr->var2 = selfCopy[54].var2;
   return self;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = BSUIScrollView;
   [(BSUIScrollView *)&v4 dealloc];
 }
 
-- (BSUIScrollView)initWithFrame:(CGRect)a3
+- (BSUIScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BSUIScrollView;
-  v3 = [(BSUIScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__willBeginDraggingNotification_ name:*MEMORY[0x1E69DEA58] object:v3];
-    [v4 addObserver:v3 selector:sel__didEndDraggingNotification_ name:*MEMORY[0x1E69DEA48] object:v3];
-    [v4 addObserver:v3 selector:sel__didDidEndDeceleratingNotification_ name:*MEMORY[0x1E69DEA40] object:v3];
-    [v4 addObserver:v3 selector:sel__didEndScrollAnimationNotification_ name:@"_UIScrollViewAnimationEndedNotification" object:v3];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__willBeginDraggingNotification_ name:*MEMORY[0x1E69DEA58] object:v3];
+    [defaultCenter addObserver:v3 selector:sel__didEndDraggingNotification_ name:*MEMORY[0x1E69DEA48] object:v3];
+    [defaultCenter addObserver:v3 selector:sel__didDidEndDeceleratingNotification_ name:*MEMORY[0x1E69DEA40] object:v3];
+    [defaultCenter addObserver:v3 selector:sel__didEndScrollAnimationNotification_ name:@"_UIScrollViewAnimationEndedNotification" object:v3];
   }
 
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = BSUIScrollView;
-  [(BSUIScrollView *)&v3 setDelegate:a3];
+  [(BSUIScrollView *)&v3 setDelegate:delegate];
 }
 
-- (uint64_t)_setContentOffset:(void *)a3 animated:(void *)a4 withAnimation:(double)a5 completion:(double)a6
+- (uint64_t)_setContentOffset:(void *)offset animated:(void *)animated withAnimation:(double)animation completion:(double)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (a1)
+  offsetCopy = offset;
+  animatedCopy = animated;
+  v13 = animatedCopy;
+  if (self)
   {
-    v14 = v12;
-    v15 = MEMORY[0x1A58E5D00](*(a1 + 2160));
+    v14 = animatedCopy;
+    v15 = MEMORY[0x1A58E5D00](*(self + 2160));
     v16 = v15;
     if (v14 | v15)
     {
@@ -184,44 +184,44 @@
       v24 = v15;
       v25 = v14;
       v17 = [&v20 copy];
-      v18 = *(a1 + 2160);
-      *(a1 + 2160) = v17;
+      v18 = *(self + 2160);
+      *(self + 2160) = v17;
     }
 
-    *(a1 + 2154) = 0;
-    if (v11 && a2)
+    *(self + 2154) = 0;
+    if (offsetCopy && a2)
     {
-      [a1 _setContentOffset:v11 animation:{a5, a6}];
-    }
-
-    else
-    {
-      [a1 setContentOffset:a2 animated:{a5, a6, v20, v21, v22, v23}];
-    }
-
-    if (*(a1 + 2154))
-    {
-      a1 = 1;
+      [self _setContentOffset:offsetCopy animation:{animation, completion}];
     }
 
     else
     {
-      a1 = [a1 isScrolling];
+      [self setContentOffset:a2 animated:{animation, completion, v20, v21, v22, v23}];
+    }
+
+    if (*(self + 2154))
+    {
+      self = 1;
+    }
+
+    else
+    {
+      self = [self isScrolling];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)setContentOffset:(CGPoint)a3 withAnimationSettings:(id)a4 completion:(id)a5
+- (BOOL)setContentOffset:(CGPoint)offset withAnimationSettings:(id)settings completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  y = offset.y;
+  x = offset.x;
+  settingsCopy = settings;
+  completionCopy = completion;
+  if (settingsCopy)
   {
-    v11 = v9;
+    v11 = settingsCopy;
     v12 = v11;
     if (self)
     {
@@ -248,8 +248,8 @@
         [v13 setSpeed:?];
       }
 
-      v14 = [v12 timingFunction];
-      [v13 setTimingFunction:v14];
+      timingFunction = [v12 timingFunction];
+      [v13 setTimingFunction:timingFunction];
     }
 
     else
@@ -257,21 +257,21 @@
       v13 = 0;
     }
 
-    v15 = [(BSUIScrollView *)self _setContentOffset:v13 animated:v10 withAnimation:x completion:y];
+    v15 = [(BSUIScrollView *)self _setContentOffset:v13 animated:completionCopy withAnimation:x completion:y];
   }
 
   else
   {
-    v15 = [(BSUIScrollView *)self _setContentOffset:0 animated:v10 withAnimation:x completion:y];
+    v15 = [(BSUIScrollView *)self _setContentOffset:0 animated:completionCopy withAnimation:x completion:y];
   }
 
   return v15;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   p_previousContentOffset = &self->_previousContentOffset;
   [(BSUIScrollView *)self contentOffset];
   p_previousContentOffset->x = v7;
@@ -293,26 +293,26 @@ id __35__BSUIScrollView_setContentOffset___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v2, sel_setContentOffset_, *(a1 + 40), *(a1 + 48));
 }
 
-- (void)_setContentOffset:(_BYTE *)a1 withBlock:(void *)a2
+- (void)_setContentOffset:(_BYTE *)offset withBlock:(void *)block
 {
-  v6 = a2;
-  if (a1)
+  blockCopy = block;
+  if (offset)
   {
-    if (!v6)
+    if (!blockCopy)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel__setContentOffset_withBlock_ object:a1 file:@"BSUIScrollView.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setContentOffset_withBlock_ object:offset file:@"BSUIScrollView.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
     }
 
-    [a1 contentOffset];
+    [offset contentOffset];
     v3 = BSPointEqualToPoint();
-    v4 = [a1 isScrolling] | v3;
+    v4 = [offset isScrolling] | v3;
     if ((v4 & 1) == 0)
     {
-      [(BSUIScrollView *)a1 _setScrolling:?];
+      [(BSUIScrollView *)offset _setScrolling:?];
     }
 
-    v6[2]();
+    blockCopy[2]();
     if ((v4 & 1) == 0)
     {
       goto LABEL_10;
@@ -323,32 +323,32 @@ id __35__BSUIScrollView_setContentOffset___block_invoke(uint64_t a1)
       goto LABEL_11;
     }
 
-    if (a1[2155])
+    if (offset[2155])
     {
-      [(BSUIScrollView *)a1 _callScrollCompletionIfNecessary];
+      [(BSUIScrollView *)offset _callScrollCompletionIfNecessary];
     }
 
     else
     {
 LABEL_10:
-      [(BSUIScrollView *)a1 _updateScrolling];
+      [(BSUIScrollView *)offset _updateScrolling];
     }
   }
 
 LABEL_11:
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__BSUIScrollView_setContentOffset_animated___block_invoke;
   v8[3] = &unk_1E76B7F40;
   objc_copyWeak(v9, &location);
-  v10 = a4;
+  animatedCopy = animated;
   v9[1] = *&x;
   v9[2] = *&y;
   v8[4] = self;
@@ -388,11 +388,11 @@ id __44__BSUIScrollView_setContentOffset_animated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setContentOffset:(CGPoint)a3 animation:(id)a4
+- (void)_setContentOffset:(CGPoint)offset animation:(id)animation
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = offset.y;
+  x = offset.x;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -401,9 +401,9 @@ id __44__BSUIScrollView_setContentOffset_animated___block_invoke(uint64_t a1)
   objc_copyWeak(v12, &location);
   v12[1] = *&x;
   v12[2] = *&y;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = animationCopy;
+  selfCopy = self;
+  v8 = animationCopy;
   [BSUIScrollView _setContentOffset:v9 withBlock:?];
 
   objc_destroyWeak(v12);
@@ -421,43 +421,43 @@ id __46__BSUIScrollView__setContentOffset_animation___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v5, sel__setContentOffset_animation_, v3, *(a1 + 56), *(a1 + 64));
 }
 
-- (void)_setScrolling:(uint64_t)a1
+- (void)_setScrolling:(uint64_t)scrolling
 {
-  if (a1)
+  if (scrolling)
   {
     v2 = a2;
-    if (*(a1 + 2200) != a2)
+    if (*(scrolling + 2200) != a2)
     {
       if (a2)
       {
-        [a1 _bs_willBeginScrolling];
-        v8 = [a1 delegate];
+        [scrolling _bs_willBeginScrolling];
+        delegate = [scrolling delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v8 scrollViewWillBeginScrolling:a1];
+          [delegate scrollViewWillBeginScrolling:scrolling];
         }
       }
 
-      else if (*(a1 + 2153))
+      else if (*(scrolling + 2153))
       {
         return;
       }
 
-      *(a1 + 2200) = v2;
-      [a1 contentOffset];
-      *(a1 + 2184) = v4;
-      *(a1 + 2192) = v5;
+      *(scrolling + 2200) = v2;
+      [scrolling contentOffset];
+      *(scrolling + 2184) = v4;
+      *(scrolling + 2192) = v5;
       if ((v2 & 1) == 0)
       {
-        v9 = MEMORY[0x1A58E5D00](*(a1 + 2160));
-        v6 = *(a1 + 2160);
-        *(a1 + 2160) = 0;
+        v9 = MEMORY[0x1A58E5D00](*(scrolling + 2160));
+        v6 = *(scrolling + 2160);
+        *(scrolling + 2160) = 0;
 
-        [a1 _bs_didEndScrolling];
-        v7 = [a1 delegate];
+        [scrolling _bs_didEndScrolling];
+        delegate2 = [scrolling delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v7 scrollViewDidEndScrolling:a1];
+          [delegate2 scrollViewDidEndScrolling:scrolling];
         }
 
         if (v9)
@@ -488,20 +488,20 @@ uint64_t __39__BSUIScrollView__setScrollCompletion___block_invoke(uint64_t a1, u
   return result;
 }
 
-- (void)_didEndDraggingNotification:(id)a3
+- (void)_didEndDraggingNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [v7 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DEA50]];
-  v6 = [v5 BOOLValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DEA50]];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [(BSUIScrollView *)self _setScrolling:?];
   }
 }
 
-- (void)_didEndScrollAnimationNotification:(id)a3
+- (void)_didEndScrollAnimationNotification:(id)notification
 {
   self->_isHandlingAnimationEnded = 1;
   [(BSUIScrollView *)self _setScrolling:?];

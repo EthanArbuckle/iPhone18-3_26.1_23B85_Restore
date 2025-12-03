@@ -1,8 +1,8 @@
 @interface SCATCameraSwitchActionsDwellController
-- (double)valueForSpecifier:(id)a3;
+- (double)valueForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
 - (void)viewDidLoad;
 @end
 
@@ -13,10 +13,10 @@
   v6.receiver = self;
   v6.super_class = SCATCameraSwitchActionsDwellController;
   [(SCATCameraSwitchActionsDwellController *)&v6 viewDidLoad];
-  v3 = [(SCATCameraSwitchActionsDwellController *)self table];
+  table = [(SCATCameraSwitchActionsDwellController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTableCellWithStepper cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -35,24 +35,24 @@
     v9 = [NSArray arrayWithObjects:v20 count:2];
     [v5 addObjectsFromArray:v9];
 
-    v10 = [(SCATCameraSwitchActionsDwellController *)self _dwellMovementToleranceHelper];
+    _dwellMovementToleranceHelper = [(SCATCameraSwitchActionsDwellController *)self _dwellMovementToleranceHelper];
 
-    if (!v10)
+    if (!_dwellMovementToleranceHelper)
     {
       v11 = [[ASTDwellMovementToleranceHelper alloc] initWithClientType:1];
       [(SCATCameraSwitchActionsDwellController *)self set_dwellMovementToleranceHelper:v11];
 
-      v12 = [(SCATCameraSwitchActionsDwellController *)self _dwellMovementToleranceHelper];
-      [v12 setSettingsController:self];
+      _dwellMovementToleranceHelper2 = [(SCATCameraSwitchActionsDwellController *)self _dwellMovementToleranceHelper];
+      [_dwellMovementToleranceHelper2 setSettingsController:self];
 
       v13 = settingsLocString(@"MOUSE_POINTER_DWELL_TOLERANCE", @"HandSettings");
-      v14 = [(SCATCameraSwitchActionsDwellController *)self _dwellMovementToleranceHelper];
-      [v14 setToleranceSpecifierGroupTitle:v13];
+      _dwellMovementToleranceHelper3 = [(SCATCameraSwitchActionsDwellController *)self _dwellMovementToleranceHelper];
+      [_dwellMovementToleranceHelper3 setToleranceSpecifierGroupTitle:v13];
     }
 
-    v15 = [(SCATCameraSwitchActionsDwellController *)self _dwellMovementToleranceHelper];
-    v16 = [v15 dwellSpecifiers];
-    [v5 axSafelyAddObjectsFromArray:v16];
+    _dwellMovementToleranceHelper4 = [(SCATCameraSwitchActionsDwellController *)self _dwellMovementToleranceHelper];
+    dwellSpecifiers = [_dwellMovementToleranceHelper4 dwellSpecifiers];
+    [v5 axSafelyAddObjectsFromArray:dwellSpecifiers];
 
     v17 = [v5 copy];
     v18 = *&self->AXUISettingsBaseListController_opaque[v3];
@@ -64,7 +64,7 @@
   return v4;
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
   [v3 switchControlCameraPointPickerDwellActivationTimeout];
@@ -73,15 +73,15 @@
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
   v5 = +[AXSettings sharedInstance];
-  [v5 setSwitchControlCameraPointPickerDwellActivationTimeout:a4];
+  [v5 setSwitchControlCameraPointPickerDwellActivationTimeout:value];
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(SCATCameraSwitchActionsDwellController *)self valueForSpecifier:a3];
+  [(SCATCameraSwitchActionsDwellController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

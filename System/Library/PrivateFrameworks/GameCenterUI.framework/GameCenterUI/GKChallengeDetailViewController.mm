@@ -1,36 +1,36 @@
 @interface GKChallengeDetailViewController
-- (GKChallengeDetailViewController)initWithChallenge:(id)a3;
+- (GKChallengeDetailViewController)initWithChallenge:(id)challenge;
 - (id)delegate;
 - (id)title;
-- (void)adjustFontSizeForLabel:(id)a3 withTextStyle:(id)a4;
+- (void)adjustFontSizeForLabel:(id)label withTextStyle:(id)style;
 - (void)adjustLabelFonts;
 - (void)configureButtons;
 - (void)configureForChallenge;
-- (void)declinePressed:(id)a3;
-- (void)donePressed:(id)a3;
-- (void)playNowPressed:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateIconViewWithSubView:(id)a3 edgeInsets:(UIEdgeInsets)a4;
+- (void)declinePressed:(id)pressed;
+- (void)donePressed:(id)pressed;
+- (void)playNowPressed:(id)pressed;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateIconViewWithSubView:(id)view edgeInsets:(UIEdgeInsets)insets;
 - (void)updateLeaderboardImage;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation GKChallengeDetailViewController
 
-- (GKChallengeDetailViewController)initWithChallenge:(id)a3
+- (GKChallengeDetailViewController)initWithChallenge:(id)challenge
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _gkPlatformNibName];
+  challengeCopy = challenge;
+  _gkPlatformNibName = [objc_opt_class() _gkPlatformNibName];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9.receiver = self;
   v9.super_class = GKChallengeDetailViewController;
-  v7 = [(GKDashboardCollectionViewController *)&v9 initWithNibName:v5 bundle:v6];
+  v7 = [(GKDashboardCollectionViewController *)&v9 initWithNibName:_gkPlatformNibName bundle:v6];
 
   if (v7)
   {
-    [(GKChallengeDetailViewController *)v7 setChallenge:v4];
+    [(GKChallengeDetailViewController *)v7 setChallenge:challengeCopy];
   }
 
   return v7;
@@ -41,130 +41,130 @@
   v16.receiver = self;
   v16.super_class = GKChallengeDetailViewController;
   [(GKDashboardCollectionViewController *)&v16 viewDidLoad];
-  v3 = [MEMORY[0x277D0C1F8] reporter];
-  [v3 reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA08]];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA08]];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  v5 = [(GKChallengeDetailViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(GKChallengeDetailViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
-  v6 = [(GKChallengeDetailViewController *)self playerAvatarView];
-  [v6 setBackgroundColor:0];
+  playerAvatarView = [(GKChallengeDetailViewController *)self playerAvatarView];
+  [playerAvatarView setBackgroundColor:0];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  v8 = [(GKChallengeDetailViewController *)self iconView];
-  [v8 setBackgroundColor:v7];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  iconView = [(GKChallengeDetailViewController *)self iconView];
+  [iconView setBackgroundColor:clearColor2];
 
-  v9 = [MEMORY[0x277D75348] _gkSpeechViewTintColor];
-  v10 = [(GKChallengeDetailViewController *)self playerAvatarView];
-  [v10 setTintColor:v9];
+  _gkSpeechViewTintColor = [MEMORY[0x277D75348] _gkSpeechViewTintColor];
+  playerAvatarView2 = [(GKChallengeDetailViewController *)self playerAvatarView];
+  [playerAvatarView2 setTintColor:_gkSpeechViewTintColor];
 
   [(GKChallengeDetailViewController *)self configureForChallenge];
-  v11 = [(GKChallengeDetailViewController *)self navigationItem];
-  [v11 _setAutoScrollEdgeTransitionDistance:40.0];
+  navigationItem = [(GKChallengeDetailViewController *)self navigationItem];
+  [navigationItem _setAutoScrollEdgeTransitionDistance:40.0];
 
-  v12 = [(GKChallengeDetailViewController *)self navigationItem];
-  [v12 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem2 = [(GKChallengeDetailViewController *)self navigationItem];
+  [navigationItem2 _setManualScrollEdgeAppearanceEnabled:1];
 
-  v13 = [(GKChallengeDetailViewController *)self title];
-  v14 = [(GKChallengeDetailViewController *)self navigationItem];
-  [v14 setTitle:v13];
+  title = [(GKChallengeDetailViewController *)self title];
+  navigationItem3 = [(GKChallengeDetailViewController *)self navigationItem];
+  [navigationItem3 setTitle:title];
 
-  v15 = [(GKChallengeDetailViewController *)self navigationItem];
-  [v15 setLargeTitleDisplayMode:2];
+  navigationItem4 = [(GKChallengeDetailViewController *)self navigationItem];
+  [navigationItem4 setLargeTitleDisplayMode:2];
 
   [(GKChallengeDetailViewController *)self configureButtons];
   [(GKChallengeDetailViewController *)self adjustLabelFonts];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = GKChallengeDetailViewController;
-  [(GKDashboardCollectionViewController *)&v4 viewDidAppear:a3];
-  v3 = [MEMORY[0x277D0BFA8] reporter];
-  [v3 recordPageWithID:@"challengeDetail" pageContext:@"dashboard" pageType:@"challenge"];
+  [(GKDashboardCollectionViewController *)&v4 viewDidAppear:appear];
+  reporter = [MEMORY[0x277D0BFA8] reporter];
+  [reporter recordPageWithID:@"challengeDetail" pageContext:@"dashboard" pageType:@"challenge"];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v5 = [(GKChallengeDetailViewController *)self view];
-    [v5 bounds];
+    view = [(GKChallengeDetailViewController *)self view];
+    [view bounds];
     Height = CGRectGetHeight(v17);
-    v7 = [(GKChallengeDetailViewController *)self artworkStack];
-    [v7 bounds];
+    artworkStack = [(GKChallengeDetailViewController *)self artworkStack];
+    [artworkStack bounds];
     v8 = Height - CGRectGetHeight(v18);
-    v9 = [(GKChallengeDetailViewController *)self challengerStack];
-    [v9 bounds];
+    challengerStack = [(GKChallengeDetailViewController *)self challengerStack];
+    [challengerStack bounds];
     v10 = v8 - CGRectGetHeight(v19);
-    v11 = [(GKChallengeDetailViewController *)self actionStack];
-    [v11 bounds];
+    actionStack = [(GKChallengeDetailViewController *)self actionStack];
+    [actionStack bounds];
     v12 = v10 - CGRectGetHeight(v20);
 
     v13 = v12 / 3.0;
-    v14 = [(GKChallengeDetailViewController *)self artworkStackPortraitTopConstraint];
-    [v14 setConstant:v13];
+    artworkStackPortraitTopConstraint = [(GKChallengeDetailViewController *)self artworkStackPortraitTopConstraint];
+    [artworkStackPortraitTopConstraint setConstant:v13];
 
-    v15 = [(GKChallengeDetailViewController *)self actionStackPortraitBottomConstraint];
-    [v15 setConstant:v13];
+    actionStackPortraitBottomConstraint = [(GKChallengeDetailViewController *)self actionStackPortraitBottomConstraint];
+    [actionStackPortraitBottomConstraint setConstant:v13];
   }
 }
 
 - (void)adjustLabelFonts
 {
-  v3 = [(GKChallengeDetailViewController *)self challengeByNameLabel];
+  challengeByNameLabel = [(GKChallengeDetailViewController *)self challengeByNameLabel];
   v4 = *MEMORY[0x277D76918];
-  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:v3 withTextStyle:*MEMORY[0x277D76918]];
+  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:challengeByNameLabel withTextStyle:*MEMORY[0x277D76918]];
 
-  v5 = [(GKChallengeDetailViewController *)self titleLabel];
-  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:v5 withTextStyle:v4];
+  titleLabel = [(GKChallengeDetailViewController *)self titleLabel];
+  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:titleLabel withTextStyle:v4];
 
-  v6 = [(GKChallengeDetailViewController *)self descriptionLabel];
-  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:v6 withTextStyle:v4];
+  descriptionLabel = [(GKChallengeDetailViewController *)self descriptionLabel];
+  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:descriptionLabel withTextStyle:v4];
 
-  v7 = [(GKChallengeDetailViewController *)self playNowButton];
-  v8 = [v7 titleLabel];
-  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:v8 withTextStyle:v4];
+  playNowButton = [(GKChallengeDetailViewController *)self playNowButton];
+  titleLabel2 = [playNowButton titleLabel];
+  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:titleLabel2 withTextStyle:v4];
 
-  v10 = [(GKChallengeDetailViewController *)self declineButton];
-  v9 = [v10 titleLabel];
-  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:v9 withTextStyle:v4];
+  declineButton = [(GKChallengeDetailViewController *)self declineButton];
+  titleLabel3 = [declineButton titleLabel];
+  [(GKChallengeDetailViewController *)self adjustFontSizeForLabel:titleLabel3 withTextStyle:v4];
 }
 
-- (void)adjustFontSizeForLabel:(id)a3 withTextStyle:(id)a4
+- (void)adjustFontSizeForLabel:(id)label withTextStyle:(id)style
 {
   v5 = MEMORY[0x277D74300];
-  v7 = a3;
-  v6 = [v5 preferredFontForTextStyle:a4];
-  [v7 setFont:v6];
+  labelCopy = label;
+  v6 = [v5 preferredFontForTextStyle:style];
+  [labelCopy setFont:v6];
 
-  [v7 setAdjustsFontForContentSizeCategory:1];
+  [labelCopy setAdjustsFontForContentSizeCategory:1];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v44.receiver = self;
   v44.super_class = GKChallengeDetailViewController;
-  [(GKDashboardCollectionViewController *)&v44 traitCollectionDidChange:v4];
-  v5 = [(GKChallengeDetailViewController *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
-  if (v6 == [v4 horizontalSizeClass])
+  [(GKDashboardCollectionViewController *)&v44 traitCollectionDidChange:changeCopy];
+  traitCollection = [(GKChallengeDetailViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  if (horizontalSizeClass == [changeCopy horizontalSizeClass])
   {
-    v7 = [(GKChallengeDetailViewController *)self traitCollection];
-    v8 = [v7 layoutDirection];
-    if (v8 == [v4 layoutDirection])
+    traitCollection2 = [(GKChallengeDetailViewController *)self traitCollection];
+    layoutDirection = [traitCollection2 layoutDirection];
+    if (layoutDirection == [changeCopy layoutDirection])
     {
-      v9 = [(GKChallengeDetailViewController *)self traitCollection];
-      v10 = [v9 preferredContentSizeCategory];
-      v11 = [v4 preferredContentSizeCategory];
+      traitCollection3 = [(GKChallengeDetailViewController *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-      if (v10 == v11)
+      if (preferredContentSizeCategory == preferredContentSizeCategory2)
       {
         goto LABEL_15;
       }
@@ -174,19 +174,19 @@
   }
 
 LABEL_7:
-  v12 = [(GKChallengeDetailViewController *)self traitCollection];
-  v13 = [v12 preferredContentSizeCategory];
+  traitCollection4 = [(GKChallengeDetailViewController *)self traitCollection];
+  preferredContentSizeCategory3 = [traitCollection4 preferredContentSizeCategory];
 
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v13);
-  v15 = [(GKChallengeDetailViewController *)self artworkStackPortraitTopConstraint];
-  v16 = v15;
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
+  artworkStackPortraitTopConstraint = [(GKChallengeDetailViewController *)self artworkStackPortraitTopConstraint];
+  v16 = artworkStackPortraitTopConstraint;
   if (IsAccessibilityCategory)
   {
     v17 = 0.0;
-    [v15 setConstant:0.0];
+    [artworkStackPortraitTopConstraint setConstant:0.0];
 
     v18 = 3.0;
-    if ([(NSString *)v13 isEqualToString:*MEMORY[0x277D767E8]])
+    if ([(NSString *)preferredContentSizeCategory3 isEqualToString:*MEMORY[0x277D767E8]])
     {
       v19 = 0.0;
     }
@@ -194,7 +194,7 @@ LABEL_7:
     else
     {
       v19 = 0.0;
-      if (![(NSString *)v13 isEqualToString:*MEMORY[0x277D767F0]])
+      if (![(NSString *)preferredContentSizeCategory3 isEqualToString:*MEMORY[0x277D767F0]])
       {
         v19 = 15.0;
         v18 = 30.0;
@@ -202,74 +202,74 @@ LABEL_7:
       }
     }
 
-    v31 = [(GKChallengeDetailViewController *)self challengerStackLandscapeTopConstraint];
-    [v31 setConstant:v17];
+    challengerStackLandscapeTopConstraint = [(GKChallengeDetailViewController *)self challengerStackLandscapeTopConstraint];
+    [challengerStackLandscapeTopConstraint setConstant:v17];
 
-    v32 = [(GKChallengeDetailViewController *)self challengerStackPortraitTopConstraint];
-    [v32 setConstant:v18];
+    challengerStackPortraitTopConstraint = [(GKChallengeDetailViewController *)self challengerStackPortraitTopConstraint];
+    [challengerStackPortraitTopConstraint setConstant:v18];
 
-    v33 = [(GKChallengeDetailViewController *)self actionStackPortraitTopConstraint];
-    [v33 setConstant:v19];
+    actionStackPortraitTopConstraint = [(GKChallengeDetailViewController *)self actionStackPortraitTopConstraint];
+    [actionStackPortraitTopConstraint setConstant:v19];
 
-    v34 = [(GKChallengeDetailViewController *)self actionStackPortraitBottomConstraint];
-    [v34 setConstant:0.0];
+    actionStackPortraitBottomConstraint = [(GKChallengeDetailViewController *)self actionStackPortraitBottomConstraint];
+    [actionStackPortraitBottomConstraint setConstant:0.0];
 
-    v35 = [(GKChallengeDetailViewController *)self artworkViewHeightConstraint];
-    [v35 setConstant:100.0];
+    artworkViewHeightConstraint = [(GKChallengeDetailViewController *)self artworkViewHeightConstraint];
+    [artworkViewHeightConstraint setConstant:100.0];
 
-    v36 = [(GKChallengeDetailViewController *)self artworkStack];
-    [v36 setSpacing:0.0];
+    artworkStack = [(GKChallengeDetailViewController *)self artworkStack];
+    [artworkStack setSpacing:0.0];
 
-    v37 = [(GKChallengeDetailViewController *)self challengerStack];
-    [v37 setSpacing:0.0];
+    challengerStack = [(GKChallengeDetailViewController *)self challengerStack];
+    [challengerStack setSpacing:0.0];
 
     v38 = *MEMORY[0x277D768C8];
     v39 = *(MEMORY[0x277D768C8] + 8);
     v40 = *(MEMORY[0x277D768C8] + 16);
     v41 = *(MEMORY[0x277D768C8] + 24);
-    v42 = [(GKChallengeDetailViewController *)self playNowButton];
-    [v42 setTitleEdgeInsets:{v38, v39, v40, v41}];
+    playNowButton = [(GKChallengeDetailViewController *)self playNowButton];
+    [playNowButton setTitleEdgeInsets:{v38, v39, v40, v41}];
 
-    v29 = [(GKChallengeDetailViewController *)self declineButton];
-    [v29 setTitleEdgeInsets:{v38, v39, v40, v41}];
+    declineButton = [(GKChallengeDetailViewController *)self declineButton];
+    [declineButton setTitleEdgeInsets:{v38, v39, v40, v41}];
   }
 
   else
   {
-    [v15 setConstant:30.0];
+    [artworkStackPortraitTopConstraint setConstant:30.0];
 
-    v20 = [(GKChallengeDetailViewController *)self artworkViewHeightConstraint];
-    [v20 setConstant:200.0];
+    artworkViewHeightConstraint2 = [(GKChallengeDetailViewController *)self artworkViewHeightConstraint];
+    [artworkViewHeightConstraint2 setConstant:200.0];
 
-    v21 = [(GKChallengeDetailViewController *)self challengerStackLandscapeTopConstraint];
-    [v21 setConstant:80.0];
+    challengerStackLandscapeTopConstraint2 = [(GKChallengeDetailViewController *)self challengerStackLandscapeTopConstraint];
+    [challengerStackLandscapeTopConstraint2 setConstant:80.0];
 
-    v22 = [(GKChallengeDetailViewController *)self challengerStackPortraitTopConstraint];
-    [v22 setConstant:40.0];
+    challengerStackPortraitTopConstraint2 = [(GKChallengeDetailViewController *)self challengerStackPortraitTopConstraint];
+    [challengerStackPortraitTopConstraint2 setConstant:40.0];
 
-    v23 = [(GKChallengeDetailViewController *)self actionStackPortraitTopConstraint];
-    [v23 setConstant:25.0];
+    actionStackPortraitTopConstraint2 = [(GKChallengeDetailViewController *)self actionStackPortraitTopConstraint];
+    [actionStackPortraitTopConstraint2 setConstant:25.0];
 
-    v24 = [(GKChallengeDetailViewController *)self actionStackPortraitBottomConstraint];
-    [v24 setConstant:25.0];
+    actionStackPortraitBottomConstraint2 = [(GKChallengeDetailViewController *)self actionStackPortraitBottomConstraint];
+    [actionStackPortraitBottomConstraint2 setConstant:25.0];
 
-    v25 = [(GKChallengeDetailViewController *)self artworkStack];
-    [v25 setSpacing:8.0];
+    artworkStack2 = [(GKChallengeDetailViewController *)self artworkStack];
+    [artworkStack2 setSpacing:8.0];
 
-    v26 = [(GKChallengeDetailViewController *)self challengerStack];
-    [v26 setSpacing:10.0];
+    challengerStack2 = [(GKChallengeDetailViewController *)self challengerStack];
+    [challengerStack2 setSpacing:10.0];
 
-    v27 = [(GKChallengeDetailViewController *)self playNowButton];
+    playNowButton2 = [(GKChallengeDetailViewController *)self playNowButton];
     v28 = +[GKButtonStyle standardStyle];
-    [v27 applyButtonStyle:v28];
+    [playNowButton2 applyButtonStyle:v28];
 
-    v29 = [(GKChallengeDetailViewController *)self declineButton];
+    declineButton = [(GKChallengeDetailViewController *)self declineButton];
     v30 = +[GKButtonStyle standardStyle];
-    [v29 applyButtonStyle:v30];
+    [declineButton applyButtonStyle:v30];
   }
 
-  v43 = [(GKChallengeDetailViewController *)self view];
-  [v43 updateConstraintsIfNeeded];
+  view = [(GKChallengeDetailViewController *)self view];
+  [view updateConstraintsIfNeeded];
 
 LABEL_15:
 }
@@ -284,53 +284,53 @@ LABEL_15:
 
 - (void)configureForChallenge
 {
-  v32 = [(GKChallenge *)self->_challenge issuingPlayer];
-  v3 = [(GKChallengeDetailViewController *)self playerAvatarView];
-  [v3 setPlayer:v32];
+  issuingPlayer = [(GKChallenge *)self->_challenge issuingPlayer];
+  playerAvatarView = [(GKChallengeDetailViewController *)self playerAvatarView];
+  [playerAvatarView setPlayer:issuingPlayer];
 
-  v4 = [(GKChallengeDetailViewController *)self challenge];
+  challenge = [(GKChallengeDetailViewController *)self challenge];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   challenge = self->_challenge;
   if (isKindOfClass)
   {
-    v7 = [(GKChallenge *)challenge achievement];
-    v8 = [v7 title];
-    v9 = [(GKChallengeDetailViewController *)self titleLabel];
-    [v9 setText:v8];
+    achievement = [(GKChallenge *)challenge achievement];
+    title = [achievement title];
+    titleLabel = [(GKChallengeDetailViewController *)self titleLabel];
+    [titleLabel setText:title];
 
-    v10 = [v7 unachievedDescription];
-    v11 = [(GKChallengeDetailViewController *)self descriptionLabel];
-    [v11 setText:v10];
+    unachievedDescription = [achievement unachievedDescription];
+    descriptionLabel = [(GKChallengeDetailViewController *)self descriptionLabel];
+    [descriptionLabel setText:unachievedDescription];
 
     v12 = GKGameCenterUIFrameworkBundle();
     v13 = GKGetLocalizedStringFromTableInBundle();
-    v14 = [(GKChallengeDetailViewController *)self categoryLabel];
-    [v14 setText:v13];
+    categoryLabel = [(GKChallengeDetailViewController *)self categoryLabel];
+    [categoryLabel setText:v13];
 
-    v15 = [_TtC12GameCenterUI16AchievementUtils achievementBadgeWithAchievement:v7];
+    v15 = [_TtC12GameCenterUI16AchievementUtils achievementBadgeWithAchievement:achievement];
     [(GKChallengeDetailViewController *)self updateIconViewWithSubView:v15];
   }
 
   else
   {
     v16 = challenge;
-    v17 = [(GKChallenge *)v16 leaderboard];
-    v18 = [v17 title];
-    v19 = [(GKChallengeDetailViewController *)self titleLabel];
-    [v19 setText:v18];
+    leaderboard = [(GKChallenge *)v16 leaderboard];
+    title2 = [leaderboard title];
+    titleLabel2 = [(GKChallengeDetailViewController *)self titleLabel];
+    [titleLabel2 setText:title2];
 
-    v20 = [(GKChallenge *)v16 score];
+    score = [(GKChallenge *)v16 score];
 
-    v21 = [v20 formattedValue];
-    v22 = [(GKChallengeDetailViewController *)self descriptionLabel];
-    [v22 setText:v21];
+    formattedValue = [score formattedValue];
+    descriptionLabel2 = [(GKChallengeDetailViewController *)self descriptionLabel];
+    [descriptionLabel2 setText:formattedValue];
 
     v23 = GKGameCenterUIFrameworkBundle();
     v24 = GKGetLocalizedStringFromTableInBundle();
-    v25 = [(GKChallengeDetailViewController *)self categoryLabel];
-    [v25 setText:v24];
+    categoryLabel2 = [(GKChallengeDetailViewController *)self categoryLabel];
+    [categoryLabel2 setText:v24];
 
     [(GKChallengeDetailViewController *)self updateLeaderboardImage];
   }
@@ -338,115 +338,115 @@ LABEL_15:
   v26 = MEMORY[0x277CCACA8];
   v27 = GKGameCenterUIFrameworkBundle();
   v28 = GKGetLocalizedStringFromTableInBundle();
-  v29 = [v32 alias];
-  v30 = [v26 stringWithFormat:v28, v29];
-  v31 = [(GKChallengeDetailViewController *)self challengeByNameLabel];
-  [v31 setText:v30];
+  alias = [issuingPlayer alias];
+  v30 = [v26 stringWithFormat:v28, alias];
+  challengeByNameLabel = [(GKChallengeDetailViewController *)self challengeByNameLabel];
+  [challengeByNameLabel setText:v30];
 }
 
 - (void)configureButtons
 {
   v24 = [MEMORY[0x277D75220] _gkXmarkedCloseButtonWithTarget:self action:sel_donePressed_];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v24];
-  v4 = [(GKChallengeDetailViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(GKChallengeDetailViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
-  v5 = [(GKChallengeDetailViewController *)self playNowButton];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  playNowButton = [(GKChallengeDetailViewController *)self playNowButton];
+  [playNowButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(GKChallengeDetailViewController *)self playNowButton];
+  playNowButton2 = [(GKChallengeDetailViewController *)self playNowButton];
   v7 = +[GKButtonStyle standardStyle];
-  [v6 applyButtonStyle:v7];
+  [playNowButton2 applyButtonStyle:v7];
 
-  v8 = [(GKChallengeDetailViewController *)self declineButton];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  declineButton = [(GKChallengeDetailViewController *)self declineButton];
+  [declineButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(GKChallengeDetailViewController *)self declineButton];
+  declineButton2 = [(GKChallengeDetailViewController *)self declineButton];
   v10 = +[GKButtonStyle standardStyle];
-  [v9 applyButtonStyle:v10];
+  [declineButton2 applyButtonStyle:v10];
 
-  v11 = [(GKChallengeDetailViewController *)self playNowButton];
+  playNowButton3 = [(GKChallengeDetailViewController *)self playNowButton];
   v12 = GKGameCenterUIFrameworkBundle();
   v13 = GKGetLocalizedStringFromTableInBundle();
-  [v11 setTitle:v13 forState:0];
+  [playNowButton3 setTitle:v13 forState:0];
 
-  v14 = [(GKChallengeDetailViewController *)self playNowButton];
+  playNowButton4 = [(GKChallengeDetailViewController *)self playNowButton];
   v15 = GKGameCenterUIFrameworkBundle();
   v16 = GKGetLocalizedStringFromTableInBundle();
-  [v14 setTitle:v16 forState:4];
+  [playNowButton4 setTitle:v16 forState:4];
 
-  v17 = [(GKChallengeDetailViewController *)self declineButton];
+  declineButton3 = [(GKChallengeDetailViewController *)self declineButton];
   v18 = GKGameCenterUIFrameworkBundle();
   v19 = GKGetLocalizedStringFromTableInBundle();
-  [v17 setTitle:v19 forState:0];
+  [declineButton3 setTitle:v19 forState:0];
 
-  v20 = [(GKChallengeDetailViewController *)self declineButton];
+  declineButton4 = [(GKChallengeDetailViewController *)self declineButton];
   v21 = GKGameCenterUIFrameworkBundle();
   v22 = GKGetLocalizedStringFromTableInBundle();
-  [v20 setTitle:v22 forState:4];
+  [declineButton4 setTitle:v22 forState:4];
 
-  LODWORD(v20) = [(GKChallengeDetailViewController *)self shouldShowPlay];
-  v23 = [(GKChallengeDetailViewController *)self playNowButton];
-  [v23 setHidden:v20 ^ 1];
+  LODWORD(declineButton4) = [(GKChallengeDetailViewController *)self shouldShowPlay];
+  playNowButton5 = [(GKChallengeDetailViewController *)self playNowButton];
+  [playNowButton5 setHidden:declineButton4 ^ 1];
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  v3 = [(UIViewController *)self _gkExtensionViewController];
-  [v3 finish];
+  _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+  [_gkExtensionViewController finish];
 }
 
-- (void)playNowPressed:(id)a3
+- (void)playNowPressed:(id)pressed
 {
-  v4 = [(UIViewController *)self _gkExtensionViewController];
-  [v4 finish];
+  _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+  [_gkExtensionViewController finish];
 
-  v5 = [(UIViewController *)self _gkExtensionViewController];
-  [v5 finishAndPlayChallenge:self->_challenge];
+  _gkExtensionViewController2 = [(UIViewController *)self _gkExtensionViewController];
+  [_gkExtensionViewController2 finishAndPlayChallenge:self->_challenge];
 }
 
-- (void)declinePressed:(id)a3
+- (void)declinePressed:(id)pressed
 {
-  v4 = [(GKChallengeDetailViewController *)self challenge];
-  [v4 decline];
+  challenge = [(GKChallengeDetailViewController *)self challenge];
+  [challenge decline];
 
   [(UIViewController *)self _gkRemoveViewController:self animated:1];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:*MEMORY[0x277D0BA00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D0BA00] object:0];
 }
 
 - (void)updateLeaderboardImage
 {
   v3 = self->_challenge;
-  v4 = [(GKChallenge *)v3 leaderboard];
-  v5 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v6 = [v5 iconLeaderboardListSource];
+  leaderboard = [(GKChallenge *)v3 leaderboard];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  iconLeaderboardListSource = [mEMORY[0x277D0C8C8] iconLeaderboardListSource];
 
-  v7 = [v4 identifier];
-  v8 = [v6 cachedImageForIdentifier:v7];
+  identifier = [leaderboard identifier];
+  v8 = [iconLeaderboardListSource cachedImageForIdentifier:identifier];
 
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v8];
-    v10 = [v9 layer];
-    [v10 setCornerRadius:10.0];
+    layer = [v9 layer];
+    [layer setCornerRadius:10.0];
 
-    v11 = [v9 layer];
-    [v11 setMasksToBounds:1];
+    layer2 = [v9 layer];
+    [layer2 setMasksToBounds:1];
 
     [(GKChallengeDetailViewController *)self updateIconViewWithSubView:v9];
   }
 
   else
   {
-    v12 = [v4 imageURL];
+    imageURL = [leaderboard imageURL];
     challenge = self->_challenge;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __57__GKChallengeDetailViewController_updateLeaderboardImage__block_invoke;
     v14[3] = &unk_279669EC8;
     v14[4] = self;
-    [v6 loadImageForURLString:v12 reference:challenge queue:MEMORY[0x277D85CD0] handler:v14];
+    [iconLeaderboardListSource loadImageForURLString:imageURL reference:challenge queue:MEMORY[0x277D85CD0] handler:v14];
   }
 }
 
@@ -489,23 +489,23 @@ void __57__GKChallengeDetailViewController_updateLeaderboardImage__block_invoke(
   }
 }
 
-- (void)updateIconViewWithSubView:(id)a3 edgeInsets:(UIEdgeInsets)a4
+- (void)updateIconViewWithSubView:(id)view edgeInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
-  v10 = [(GKChallengeDetailViewController *)self iconView];
-  [v10 addSubview:v9];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  viewCopy = view;
+  iconView = [(GKChallengeDetailViewController *)self iconView];
+  [iconView addSubview:viewCopy];
 
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(GKChallengeDetailViewController *)self iconView];
-  [v11 setClipsToBounds:0];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  iconView2 = [(GKChallengeDetailViewController *)self iconView];
+  [iconView2 setClipsToBounds:0];
 
   v12 = MEMORY[0x277CCAAD0];
-  v13 = [(GKChallengeDetailViewController *)self iconView];
-  [v12 _gkInstallEdgeConstraintsForView:v9 containedWithinParentView:v13 edgeInsets:{top, left, bottom, right}];
+  iconView3 = [(GKChallengeDetailViewController *)self iconView];
+  [v12 _gkInstallEdgeConstraintsForView:viewCopy containedWithinParentView:iconView3 edgeInsets:{top, left, bottom, right}];
 }
 
 - (id)delegate

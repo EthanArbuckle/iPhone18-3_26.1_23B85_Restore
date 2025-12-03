@@ -1,16 +1,16 @@
 @interface PDDataObserver
-- (BOOL)_entitiesChangedSinceLastTrigger:(id)a3;
-- (BOOL)_entityCountsChangedSinceLastTrigger:(id)a3;
+- (BOOL)_entitiesChangedSinceLastTrigger:(id)trigger;
+- (BOOL)_entityCountsChangedSinceLastTrigger:(id)trigger;
 - (id)description;
-- (void)_sendClientEntitiesChangedAdded:(id)a3 updated:(id)a4 deleted:(id)a5 updatedMatchingPredicate:(id)a6 updatedNotMatchingPredicate:(id)a7;
+- (void)_sendClientEntitiesChangedAdded:(id)added updated:(id)updated deleted:(id)deleted updatedMatchingPredicate:(id)predicate updatedNotMatchingPredicate:(id)matchingPredicate;
 @end
 
 @implementation PDDataObserver
 
-- (BOOL)_entityCountsChangedSinceLastTrigger:(id)a3
+- (BOOL)_entityCountsChangedSinceLastTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [(PDDataObserver *)self lastChangeID];
+  triggerCopy = trigger;
+  lastChangeID = [(PDDataObserver *)self lastChangeID];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -18,25 +18,25 @@
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
-  v29[3] = sub_1000F580C(v4);
+  v29[3] = sub_1000F580C(triggerCopy);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000E4384;
   v23[3] = &unk_100204C30;
-  v6 = v4;
+  v6 = triggerCopy;
   v24 = v6;
-  v25 = self;
+  selfCopy = self;
   v26 = v29;
   v27 = &v30;
-  v28 = v5 == 0;
+  v28 = lastChangeID == 0;
   sub_10010BE68(v6, v23);
   v7 = NSStringFromClass(self->_entityClass);
   if (*(v31 + 24) == 1)
   {
     v8 = +[PDUserDefaults sharedDefaults];
-    v9 = [v8 enableVerboseLogging];
+    enableVerboseLogging = [v8 enableVerboseLogging];
 
-    if (v9)
+    if (enableVerboseLogging)
     {
       CLSInitLog();
       v10 = CLSLogNotifications;
@@ -46,7 +46,7 @@
         lastTriggerDate = self->_lastTriggerDate;
         [(NSDate *)lastTriggerDate timeIntervalSinceReferenceDate];
         *buf = 134219010;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
         v37 = v7;
         v38 = 2048;
@@ -69,9 +69,9 @@
   else
   {
     v16 = +[PDUserDefaults sharedDefaults];
-    v17 = [v16 enableVerboseLogging];
+    enableVerboseLogging2 = [v16 enableVerboseLogging];
 
-    if (v17)
+    if (enableVerboseLogging2)
     {
       CLSInitLog();
       v18 = CLSLogNotifications;
@@ -80,7 +80,7 @@
         v19 = self->_lastTriggerDate;
         [(NSDate *)v19 timeIntervalSinceReferenceDate];
         *buf = 134218754;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
         v37 = v7;
         v38 = 2112;
@@ -100,35 +100,35 @@
   return v21 & 1;
 }
 
-- (void)_sendClientEntitiesChangedAdded:(id)a3 updated:(id)a4 deleted:(id)a5 updatedMatchingPredicate:(id)a6 updatedNotMatchingPredicate:(id)a7
+- (void)_sendClientEntitiesChangedAdded:(id)added updated:(id)updated deleted:(id)deleted updatedMatchingPredicate:(id)predicate updatedNotMatchingPredicate:(id)matchingPredicate
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v19 count];
-  v17 = &v16[[v12 count]];
-  if ([v13 count] + v17)
+  addedCopy = added;
+  updatedCopy = updated;
+  deletedCopy = deleted;
+  predicateCopy = predicate;
+  matchingPredicateCopy = matchingPredicate;
+  v16 = [addedCopy count];
+  v17 = &v16[[updatedCopy count]];
+  if ([deletedCopy count] + v17)
   {
-    [(CLSEntityChangeNotifiable *)self->_remoteObserver clientRemote_entitiesChangedAdded:v19 updated:v12 deleted:v13];
-    [v19 removeAllObjects];
-    [v12 removeAllObjects];
-    [v13 removeAllObjects];
+    [(CLSEntityChangeNotifiable *)self->_remoteObserver clientRemote_entitiesChangedAdded:addedCopy updated:updatedCopy deleted:deletedCopy];
+    [addedCopy removeAllObjects];
+    [updatedCopy removeAllObjects];
+    [deletedCopy removeAllObjects];
   }
 
-  v18 = [v14 count];
-  if ([v15 count] + v18)
+  v18 = [predicateCopy count];
+  if ([matchingPredicateCopy count] + v18)
   {
-    [(CLSEntityChangeNotifiable *)self->_remoteObserver clientRemote_entitiesChangedUpdatedMatchingPredicate:v14 updatedNotMatchingPredicate:v15];
-    [v14 removeAllObjects];
-    [v15 removeAllObjects];
+    [(CLSEntityChangeNotifiable *)self->_remoteObserver clientRemote_entitiesChangedUpdatedMatchingPredicate:predicateCopy updatedNotMatchingPredicate:matchingPredicateCopy];
+    [predicateCopy removeAllObjects];
+    [matchingPredicateCopy removeAllObjects];
   }
 }
 
-- (BOOL)_entitiesChangedSinceLastTrigger:(id)a3
+- (BOOL)_entitiesChangedSinceLastTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   v56[0] = 0;
   v56[1] = v56;
   v56[2] = 0x2020000000;
@@ -179,13 +179,13 @@
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
-  v36[3] = sub_1000F580C(v4);
+  v36[3] = sub_1000F580C(triggerCopy);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000E4BA0;
   v23[3] = &unk_100204CA8;
   v23[4] = self;
-  v6 = v4;
+  v6 = triggerCopy;
   v24 = v6;
   v25 = v45;
   v26 = &v48;
@@ -203,9 +203,9 @@
   if (*(v53 + 24) == 1)
   {
     v8 = +[PDUserDefaults sharedDefaults];
-    v9 = [v8 enableVerboseLogging];
+    enableVerboseLogging = [v8 enableVerboseLogging];
 
-    if (v9)
+    if (enableVerboseLogging)
     {
       CLSInitLog();
       v10 = CLSLogNotifications;
@@ -215,7 +215,7 @@
         lastTriggerDate = self->_lastTriggerDate;
         [(NSDate *)lastTriggerDate timeIntervalSinceReferenceDate];
         *buf = 134219010;
-        v59 = self;
+        selfCopy2 = self;
         v60 = 2112;
         v61 = v7;
         v62 = 2048;
@@ -238,9 +238,9 @@
   else
   {
     v16 = +[PDUserDefaults sharedDefaults];
-    v17 = [v16 enableVerboseLogging];
+    enableVerboseLogging2 = [v16 enableVerboseLogging];
 
-    if (v17)
+    if (enableVerboseLogging2)
     {
       CLSInitLog();
       v18 = CLSLogNotifications;
@@ -249,7 +249,7 @@
         v19 = self->_lastTriggerDate;
         [(NSDate *)v19 timeIntervalSinceReferenceDate];
         *buf = 134218754;
-        v59 = self;
+        selfCopy2 = self;
         v60 = 2112;
         v61 = v7;
         v62 = 2112;
@@ -292,9 +292,9 @@
   [v4 appendString:v5];
 
   v6 = +[PDUserDefaults sharedDefaults];
-  v7 = [v6 enableVerboseLogging];
+  enableVerboseLogging = [v6 enableVerboseLogging];
 
-  if (v7)
+  if (enableVerboseLogging)
   {
     [v4 appendString:@") (whereSQL: "];
     if (self->_predicateWhereSql)
@@ -325,13 +325,13 @@
 
     [v4 appendString:@") (changedEntitiesCount: "];
     v12 = [NSNumber numberWithInteger:[(PDDataObserver *)self changedEntitiesCount]];
-    v13 = [v12 stringValue];
-    [v4 appendString:v13];
+    stringValue = [v12 stringValue];
+    [v4 appendString:stringValue];
 
     [v4 appendString:@") (changedMatchingEntitiesCount: "];
     v14 = [NSNumber numberWithInteger:[(PDDataObserver *)self changedMatchingEntitiesCount]];
-    v15 = [v14 stringValue];
-    [v4 appendString:v15];
+    stringValue2 = [v14 stringValue];
+    [v4 appendString:stringValue2];
   }
 
   [v4 appendString:@") (invalidated: "];
@@ -347,8 +347,8 @@
 
   [v4 appendString:v16];
   [v4 appendString:@") (lastTriggerDate: "];
-  v17 = [(PDDataObserver *)self lastTriggerDate];
-  v18 = [v17 description];
+  lastTriggerDate = [(PDDataObserver *)self lastTriggerDate];
+  v18 = [lastTriggerDate description];
   v19 = v18;
   if (v18)
   {

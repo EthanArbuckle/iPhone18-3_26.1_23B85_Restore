@@ -10,10 +10,10 @@
   v6.receiver = self;
   v6.super_class = JSSocialProfileVerticalStackViewControllerAccessibility;
   [(JSSocialProfileVerticalStackViewControllerAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v3 = [(JSSocialProfileVerticalStackViewControllerAccessibility *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
+  navigationItem = [(JSSocialProfileVerticalStackViewControllerAccessibility *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
   v5 = accessibilityMusicLocalizedString(@"more.button");
-  [v4 setAccessibilityLabel:v5];
+  [rightBarButtonItem setAccessibilityLabel:v5];
 }
 
 - (void)viewDidLoad

@@ -1,29 +1,29 @@
 @interface WLAPlayContent
-+ (unint64_t)_WLKContentTypeForSAVCSContentType:(id)a3;
-- (void)performWithCompletion:(id)a3;
++ (unint64_t)_WLKContentTypeForSAVCSContentType:(id)type;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation WLAPlayContent
 
-+ (unint64_t)_WLKContentTypeForSAVCSContentType:(id)a3
++ (unint64_t)_WLKContentTypeForSAVCSContentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAVCSContentTypeMovieValue])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:SAVCSContentTypeMovieValue])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:SAVCSContentTypeShowValue])
+  else if ([typeCopy isEqualToString:SAVCSContentTypeShowValue])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:SAVCSContentTypeSeasonValue])
+  else if ([typeCopy isEqualToString:SAVCSContentTypeSeasonValue])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:SAVCSContentTypeEpisodeValue])
+  else if ([typeCopy isEqualToString:SAVCSContentTypeEpisodeValue])
   {
     v4 = 4;
   }
@@ -36,13 +36,13 @@
   return v4;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WLAPlayContent *)self utsId];
-  v6 = [(WLAPlayContent *)self contentType];
-  v7 = [objc_opt_class() _WLKContentTypeForSAVCSContentType:v6];
-  NSLog(@"WLAPlayContent: Got play request for content type '%@', canonical ID '%@'", v6, v5);
+  completionCopy = completion;
+  utsId = [(WLAPlayContent *)self utsId];
+  contentType = [(WLAPlayContent *)self contentType];
+  v7 = [objc_opt_class() _WLKContentTypeForSAVCSContentType:contentType];
+  NSLog(@"WLAPlayContent: Got play request for content type '%@', canonical ID '%@'", contentType, utsId);
   +[NSDate date];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -50,37 +50,37 @@
   v8 = v20[3] = &unk_82B0;
   v21 = v8;
   v23 = v7;
-  v9 = v4;
+  v9 = completionCopy;
   v22 = v9;
   v10 = objc_retainBlock(v20);
-  if ([v5 length] && ((objc_msgSend(v6, "isEqualToString:", SAVCSContentTypeMovieValue) & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", SAVCSContentTypeEpisodeValue) & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", SAVCSContentTypeShowValue) & 1) != 0 || objc_msgSend(v6, "isEqualToString:", SAVCSContentTypeSeasonValue)))
+  if ([utsId length] && ((objc_msgSend(contentType, "isEqualToString:", SAVCSContentTypeMovieValue) & 1) != 0 || (objc_msgSend(contentType, "isEqualToString:", SAVCSContentTypeEpisodeValue) & 1) != 0 || (objc_msgSend(contentType, "isEqualToString:", SAVCSContentTypeShowValue) & 1) != 0 || objc_msgSend(contentType, "isEqualToString:", SAVCSContentTypeSeasonValue)))
   {
-    v11 = [[WLKContentPlayRequest alloc] initWithCanonicalID:v5];
+    v11 = [[WLKContentPlayRequest alloc] initWithCanonicalID:utsId];
     NSLog(@"WLAPlayContent: Will enqueue playables request: %@", v11);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = __40__WLAPlayContent_performWithCompletion___block_invoke_2;
     v14[3] = &unk_8300;
-    v15 = v6;
-    v16 = v5;
+    v15 = contentType;
+    v16 = utsId;
     v19 = v7;
     v17 = v10;
     v18 = v9;
     [v11 makeRequestWithCompletion:v14];
 
-    v12 = v15;
+    dictionary = v15;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  NSLog(@"WLAPlayContent: Unsupported content type for play command: %@, canonical ID: %@", v6, v5);
+  NSLog(@"WLAPlayContent: Unsupported content type for play command: %@, canonical ID: %@", contentType, utsId);
   if (v9)
   {
     v13 = [SACommandFailed alloc];
     v11 = [v13 initWithErrorCode:SAVCSCannotPlayContentErrorCode];
-    v12 = [v11 dictionary];
-    (*(v9 + 2))(v9, v12);
+    dictionary = [v11 dictionary];
+    (*(v9 + 2))(v9, dictionary);
     goto LABEL_9;
   }
 

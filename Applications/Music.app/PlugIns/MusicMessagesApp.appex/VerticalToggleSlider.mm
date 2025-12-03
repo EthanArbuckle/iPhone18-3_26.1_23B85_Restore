@@ -1,14 +1,14 @@
 @interface VerticalToggleSlider
 - (BOOL)accessibilityAutomaticallyDisablesOnMaxValue;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (void)accessibilitySetSliderValue:(double)a3;
+- (void)accessibilitySetSliderValue:(double)value;
 - (void)didMoveToWindow;
-- (void)dragged:(id)a3;
+- (void)dragged:(id)dragged;
 - (void)layoutSubviews;
-- (void)longPressed:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)longPressed:(id)pressed;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)tintColorDidChange;
 @end
 
@@ -28,18 +28,18 @@
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for VerticalToggleSlider();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(VerticalToggleSlider *)&v9 isEnabled];
-  v8.receiver = v6;
+  selfCopy = self;
+  isEnabled = [(VerticalToggleSlider *)&v9 isEnabled];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(VerticalToggleSlider *)&v8 setEnabled:v3];
-  if (v7 != [(VerticalToggleSlider *)v6 isEnabled])
+  [(VerticalToggleSlider *)&v8 setEnabled:enabledCopy];
+  if (isEnabled != [(VerticalToggleSlider *)selfCopy isEnabled])
   {
     sub_1003E6A98();
   }
@@ -53,7 +53,7 @@
   v6 = type metadata accessor for VerticalToggleSlider();
   v10.receiver = self;
   v10.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(VerticalToggleSlider *)&v10 layoutSubviews];
   v8 = sub_1003E6470();
   sub_1004DE52C();
@@ -71,12 +71,12 @@
   sub_1003E6764();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(VerticalToggleSlider *)v6 bounds];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(VerticalToggleSlider *)selfCopy bounds];
   v11 = CGRectInset(v10, -14.0, -14.0);
   v9.x = x;
   v9.y = y;
@@ -87,36 +87,36 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   VerticalToggleSlider.didMoveToWindow()();
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for VerticalToggleSlider();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(VerticalToggleSlider *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(VerticalToggleSlider *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(VerticalToggleSlider *)&v8 setHighlighted:v3];
-  sub_1003EB758(v7);
+  [(VerticalToggleSlider *)&v8 setHighlighted:highlightedCopy];
+  sub_1003EB758(isHighlighted);
 }
 
-- (void)longPressed:(id)a3
+- (void)longPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003E7AAC(v4);
+  pressedCopy = pressed;
+  selfCopy = self;
+  sub_1003E7AAC(pressedCopy);
 }
 
-- (void)dragged:(id)a3
+- (void)dragged:(id)dragged
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003E7BE8(v4);
+  draggedCopy = dragged;
+  selfCopy = self;
+  sub_1003E7BE8(draggedCopy);
 }
 
 - (BOOL)accessibilityAutomaticallyDisablesOnMaxValue
@@ -126,10 +126,10 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)accessibilitySetSliderValue:(double)a3
+- (void)accessibilitySetSliderValue:(double)value
 {
-  v4 = self;
-  VerticalToggleSlider.accessibilitySetSliderValue(_:)(a3);
+  selfCopy = self;
+  VerticalToggleSlider.accessibilitySetSliderValue(_:)(value);
 }
 
 @end

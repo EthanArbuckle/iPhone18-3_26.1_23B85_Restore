@@ -1,18 +1,18 @@
 @interface UAFConfigurationManager
 + (id)defaultManager;
-+ (id)getAssetNameFromPath:(id)a3;
-+ (id)getConfigurationDirURL:(id)a3;
-+ (id)getDeprecatedUsageAliasNameFromPath:(id)a3;
-- (BOOL)isUsageLimitExceeded:(id)a3;
-- (UAFConfigurationManager)initWithURLs:(id)a3;
-- (id)applySubscriptions:(id)a3;
++ (id)getAssetNameFromPath:(id)path;
++ (id)getConfigurationDirURL:(id)l;
++ (id)getDeprecatedUsageAliasNameFromPath:(id)path;
+- (BOOL)isUsageLimitExceeded:(id)exceeded;
+- (UAFConfigurationManager)initWithURLs:(id)ls;
+- (id)applySubscriptions:(id)subscriptions;
 - (id)getAllAssetSets;
-- (id)getAssetSet:(id)a3;
-- (id)getMinVersion:(id)a3 provider:(id)a4;
-- (id)getPrestage:(id)a3;
-- (id)getUsageAlias:(id)a3 includeDeprecatedValues:(BOOL)a4;
-- (id)minVersions:(id)a3;
-- (void)assetSetCacheMiss:(id)a3;
+- (id)getAssetSet:(id)set;
+- (id)getMinVersion:(id)version provider:(id)provider;
+- (id)getPrestage:(id)prestage;
+- (id)getUsageAlias:(id)alias includeDeprecatedValues:(BOOL)values;
+- (id)minVersions:(id)versions;
+- (void)assetSetCacheMiss:(id)miss;
 - (void)invalidateCache;
 @end
 
@@ -80,11 +80,11 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
         if (v12)
         {
           v42 = i;
-          v13 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
           v54 = v38;
           v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
           v41 = v12;
-          v15 = [v13 enumeratorAtURL:v12 includingPropertiesForKeys:v14 options:0 errorHandler:0];
+          v15 = [defaultManager enumeratorAtURL:v12 includingPropertiesForKeys:v14 options:0 errorHandler:0];
 
           v47 = 0u;
           v48 = 0u;
@@ -106,8 +106,8 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
                 }
 
                 v19 = *(*(&v45 + 1) + 8 * j);
-                v20 = [(__CFString *)v19 pathExtension];
-                v21 = [v20 isEqualToString:v9];
+                pathExtension = [(__CFString *)v19 pathExtension];
+                v21 = [pathExtension isEqualToString:v9];
 
                 if (v21)
                 {
@@ -129,7 +129,7 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
                   else
                   {
                     v24 = v16;
-                    v25 = self;
+                    selfCopy = self;
                     v26 = v9;
                     v27 = v7;
                     v28 = v8;
@@ -148,7 +148,7 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
                     v8 = v28;
                     v7 = v27;
                     v9 = v26;
-                    self = v25;
+                    self = selfCopy;
                     v16 = v24;
                     v17 = v43;
                   }
@@ -208,32 +208,32 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
     _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v31, OS_SIGNPOST_INTERVAL_END, spid, "AssetSet Configuration", "", buf, 2u);
   }
 
-  v32 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return v32;
+  return allObjects;
 }
 
-+ (id)getConfigurationDirURL:(id)a3
++ (id)getConfigurationDirURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[UAFCommonUtilities rootDirectory];
-  v5 = [v4 stringByAppendingString:v3];
+  v5 = [v4 stringByAppendingString:lCopy];
 
   v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:1 relativeToURL:0];
 
   return v6;
 }
 
-+ (id)getAssetNameFromPath:(id)a3
++ (id)getAssetNameFromPath:(id)path
 {
-  v3 = [a3 URLByDeletingPathExtension];
-  v4 = [v3 lastPathComponent];
+  uRLByDeletingPathExtension = [path URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-  if (v4)
+  if (lastPathComponent)
   {
-    v5 = v4;
+    v5 = lastPathComponent;
   }
 
   else
@@ -244,14 +244,14 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
   return v5;
 }
 
-+ (id)getDeprecatedUsageAliasNameFromPath:(id)a3
++ (id)getDeprecatedUsageAliasNameFromPath:(id)path
 {
-  v3 = [a3 URLByDeletingPathExtension];
-  v4 = [v3 lastPathComponent];
+  uRLByDeletingPathExtension = [path URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-  if (v4 && (v5 = [v4 rangeOfString:@".deprecated"], v5 != 0x7FFFFFFFFFFFFFFFLL))
+  if (lastPathComponent && (v5 = [lastPathComponent rangeOfString:@".deprecated"], v5 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v6 = [v4 substringWithRange:{0, v5}];
+    v6 = [lastPathComponent substringWithRange:{0, v5}];
   }
 
   else
@@ -262,9 +262,9 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
   return v6;
 }
 
-- (UAFConfigurationManager)initWithURLs:(id)a3
+- (UAFConfigurationManager)initWithURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v16.receiver = self;
   v16.super_class = UAFConfigurationManager;
   v5 = [(UAFConfigurationManager *)&v16 init];
@@ -274,9 +274,9 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
     assetSetCache = v5->_assetSetCache;
     v5->_assetSetCache = v6;
 
-    if (v4)
+    if (lsCopy)
     {
-      v8 = v4;
+      v8 = lsCopy;
       baseURLs = v5->_baseURLs;
       v5->_baseURLs = v8;
     }
@@ -321,11 +321,11 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
   objc_sync_exit(obj);
 }
 
-- (void)assetSetCacheMiss:(id)a3
+- (void)assetSetCacheMiss:(id)miss
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v22 = self;
+  missCopy = miss;
+  selfCopy = self;
   context = objc_autoreleasePoolPush();
   v28 = 0u;
   v29 = 0u;
@@ -349,16 +349,16 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
 
         v9 = [*(*(&v28 + 1) + 8 * i) URLByAppendingPathComponent:@"AssetSets"];
 
-        v10 = v4;
-        v11 = [v9 URLByAppendingPathComponent:v4];
+        v10 = missCopy;
+        v11 = [v9 URLByAppendingPathComponent:missCopy];
 
         v7 = [v11 URLByAppendingPathExtension:@"plist"];
 
         v27 = 0;
-        v12 = [MEMORY[0x1E696AC08] defaultManager];
-        v13 = [v7 absoluteURL];
-        v14 = [v13 path];
-        v15 = [v12 fileExistsAtPath:v14 isDirectory:&v27];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        absoluteURL = [v7 absoluteURL];
+        path = [absoluteURL path];
+        v15 = [defaultManager fileExistsAtPath:path isDirectory:&v27];
         v16 = v27;
 
         if (v15 && (v16 & 1) == 0)
@@ -366,7 +366,7 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
           v26 = 0;
           v17 = [UAFAssetSetConfiguration fromContentsOfURL:v7 error:&v26];
           v18 = v26;
-          v4 = v10;
+          missCopy = v10;
           if (!v17)
           {
             v19 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -385,12 +385,12 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
           }
 
           objc_autoreleasePoolPop(context);
-          v20 = [(UAFConfigurationManager *)v22 assetSetCache];
-          [v20 setValue:v17 forKey:v10];
+          assetSetCache = [(UAFConfigurationManager *)selfCopy assetSetCache];
+          [assetSetCache setValue:v17 forKey:v10];
           goto LABEL_16;
         }
 
-        v4 = v10;
+        missCopy = v10;
       }
 
       v6 = [obj countByEnumeratingWithState:&v28 objects:v40 count:16];
@@ -412,13 +412,13 @@ void __41__UAFConfigurationManager_defaultManager__block_invoke()
   v17 = UAFGetLogCategory(&UAFLogContextConfiguration);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    v20 = [(UAFConfigurationManager *)v22 baseURLs];
+    assetSetCache = [(UAFConfigurationManager *)selfCopy baseURLs];
     *buf = 136315650;
     v33 = "[UAFConfigurationManager assetSetCacheMiss:]";
     v34 = 2112;
-    v35 = v4;
+    v35 = missCopy;
     v36 = 2112;
-    v37 = v20;
+    v37 = assetSetCache;
     _os_log_error_impl(&dword_1BCF2C000, v17, OS_LOG_TYPE_ERROR, "%s '%@' does not exist in %@", buf, 0x20u);
 LABEL_16:
   }
@@ -426,10 +426,10 @@ LABEL_16:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getAssetSet:(id)a3
+- (id)getAssetSet:(id)set
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   v5 = UAFGetLogCategory(&UAFLogContextConfiguration);
   v6 = os_signpost_id_generate(v5);
 
@@ -439,14 +439,14 @@ LABEL_16:
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     v20 = 138543362;
-    v21 = v4;
+    v21 = setCopy;
     _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "AssetSet Configuration", "%{public}@", &v20, 0xCu);
   }
 
-  v10 = [(UAFConfigurationManager *)self assetSetCache];
-  objc_sync_enter(v10);
-  v11 = [(UAFConfigurationManager *)self assetSetCache];
-  v12 = [v11 objectForKey:v4];
+  assetSetCache = [(UAFConfigurationManager *)self assetSetCache];
+  objc_sync_enter(assetSetCache);
+  assetSetCache2 = [(UAFConfigurationManager *)self assetSetCache];
+  v12 = [assetSetCache2 objectForKey:setCopy];
 
   if (v12)
   {
@@ -455,44 +455,44 @@ LABEL_16:
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       v20 = 138543362;
-      v21 = v4;
+      v21 = setCopy;
       _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v14, OS_SIGNPOST_INTERVAL_END, v6, "AssetSet Configuration", "%{public}@", &v20, 0xCu);
     }
   }
 
   else
   {
-    [(UAFConfigurationManager *)self assetSetCacheMiss:v4];
+    [(UAFConfigurationManager *)self assetSetCacheMiss:setCopy];
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
     v14 = v15;
     if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
     {
       v20 = 138543362;
-      v21 = v4;
+      v21 = setCopy;
       _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v14, OS_SIGNPOST_INTERVAL_END, v6, "AssetSet Configuration", "%{public}@", &v20, 0xCu);
     }
   }
 
-  v16 = [(UAFConfigurationManager *)self assetSetCache];
-  v17 = [v16 objectForKey:v4];
+  assetSetCache3 = [(UAFConfigurationManager *)self assetSetCache];
+  v17 = [assetSetCache3 objectForKey:setCopy];
 
-  objc_sync_exit(v10);
+  objc_sync_exit(assetSetCache);
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)getUsageAlias:(id)a3 includeDeprecatedValues:(BOOL)a4
+- (id)getUsageAlias:(id)alias includeDeprecatedValues:(BOOL)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v76 = *MEMORY[0x1E69E9840];
-  v52 = a3;
+  aliasCopy = alias;
   context = objc_autoreleasePoolPush();
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v55 = self;
+  selfCopy = self;
   obj = [(UAFConfigurationManager *)self baseURLs];
   v6 = [obj countByEnumeratingWithState:&v61 objects:v75 count:16];
   if (v6)
@@ -526,30 +526,30 @@ LABEL_16:
 
         v15 = [v10 URLByAppendingPathComponent:@"UsageAliases"];
 
-        v16 = [v15 URLByAppendingPathComponent:v52];
+        v16 = [v15 URLByAppendingPathComponent:aliasCopy];
 
         v8 = [v16 URLByAppendingPathExtension:@"plist"];
 
         v60 = 0;
-        v17 = [MEMORY[0x1E696AC08] defaultManager];
-        v18 = [v8 absoluteURL];
-        v19 = [v18 path];
-        v20 = [v17 fileExistsAtPath:v19 isDirectory:&v60];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        absoluteURL = [v8 absoluteURL];
+        path = [absoluteURL path];
+        v20 = [defaultManager fileExistsAtPath:path isDirectory:&v60];
         v21 = v60;
 
         if (v20 && (v21 & 1) == 0)
         {
-          v54 = [UAFUsageAliasConfiguration fromContentsOfURL:v8 assetSetManager:v55 error:0];
-          if (v4)
+          v54 = [UAFUsageAliasConfiguration fromContentsOfURL:v8 assetSetManager:selfCopy error:0];
+          if (valuesCopy)
           {
             v25 = [v10 URLByAppendingPathComponent:@"UsageAliases"];
 
             v26 = [v25 URLByAppendingPathComponent:@"Deprecated"];
 
-            v27 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
             v74 = v47;
             v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v74 count:1];
-            v29 = [v27 enumeratorAtURL:v26 includingPropertiesForKeys:v28 options:1 errorHandler:0];
+            v29 = [defaultManager2 enumeratorAtURL:v26 includingPropertiesForKeys:v28 options:1 errorHandler:0];
 
             v58 = 0u;
             v59 = 0u;
@@ -557,7 +557,7 @@ LABEL_16:
             v57 = 0u;
             v30 = v29;
             v31 = [v30 countByEnumeratingWithState:&v56 objects:v73 count:16];
-            v32 = v52;
+            v32 = aliasCopy;
             if (v31)
             {
               v33 = v31;
@@ -574,15 +574,15 @@ LABEL_16:
 
                   v26 = *(*(&v56 + 1) + 8 * j);
 
-                  v37 = [v26 pathExtension];
-                  v38 = [v37 isEqualToString:@"plist"];
+                  pathExtension = [v26 pathExtension];
+                  v38 = [pathExtension isEqualToString:@"plist"];
 
                   if (v38)
                   {
                     v39 = [UAFConfigurationManager getDeprecatedUsageAliasNameFromPath:v26];
                     if ([v32 isEqualToString:v39])
                     {
-                      v40 = [UAFUsageAliasConfiguration fromContentsOfURL:v26 assetSetManager:v55 error:0];
+                      v40 = [UAFUsageAliasConfiguration fromContentsOfURL:v26 assetSetManager:selfCopy error:0];
                       if (([v54 addDeprecatedValues:v40] & 1) == 0)
                       {
                         v41 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -595,7 +595,7 @@ LABEL_16:
                           _os_log_error_impl(&dword_1BCF2C000, v41, OS_LOG_TYPE_ERROR, "%s Failed to add deprecated values from %{public}@", buf, 0x16u);
                         }
 
-                        v32 = v52;
+                        v32 = aliasCopy;
                       }
                     }
 
@@ -642,7 +642,7 @@ LABEL_16:
 
           else
           {
-            v32 = v52;
+            v32 = aliasCopy;
           }
 
           v43 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -695,7 +695,7 @@ LABEL_16:
 
   objc_autoreleasePoolPop(context);
   v42 = 0;
-  v32 = v52;
+  v32 = aliasCopy;
 LABEL_46:
 
   v45 = *MEMORY[0x1E69E9840];
@@ -703,10 +703,10 @@ LABEL_46:
   return v42;
 }
 
-- (id)getPrestage:(id)a3
+- (id)getPrestage:(id)prestage
 {
   v47 = *MEMORY[0x1E69E9840];
-  v36 = a3;
+  prestageCopy = prestage;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -744,14 +744,14 @@ LABEL_46:
 
         v14 = [v8 URLByAppendingPathComponent:@"Prestage"];
 
-        v15 = [v14 URLByAppendingPathComponent:v36];
+        v15 = [v14 URLByAppendingPathComponent:prestageCopy];
 
         v6 = [v15 URLByAppendingPathExtension:@"plist"];
 
-        v16 = [MEMORY[0x1E696AC08] defaultManager];
-        v17 = [v6 path];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path = [v6 path];
         v37 = 0;
-        v18 = [v16 attributesOfItemAtPath:v17 error:&v37];
+        v18 = [defaultManager attributesOfItemAtPath:path error:&v37];
         v19 = v37;
 
         if (v18)
@@ -830,10 +830,10 @@ LABEL_30:
   return v27;
 }
 
-- (id)minVersions:(id)a3
+- (id)minVersions:(id)versions
 {
   v88 = *MEMORY[0x1E69E9840];
-  v48 = a3;
+  versionsCopy = versions;
   context = objc_autoreleasePoolPush();
   v74 = 0u;
   v75 = 0u;
@@ -872,13 +872,13 @@ LABEL_30:
           _os_signpost_emit_with_name_impl(&dword_1BCF2C000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "MinVersion Configuration", "", buf, 2u);
         }
 
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v48, @".minversion."];
+        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", versionsCopy, @".minversion."];
         v13 = [v7 URLByAppendingPathComponent:@"MinVersions"];
-        v14 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v86 = v5;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v86 count:1];
         v51 = v13;
-        v16 = [v14 enumeratorAtURL:v13 includingPropertiesForKeys:v15 options:0 errorHandler:0];
+        v16 = [defaultManager enumeratorAtURL:v13 includingPropertiesForKeys:v15 options:0 errorHandler:0];
 
         v72 = 0u;
         v73 = 0u;
@@ -901,15 +901,15 @@ LABEL_30:
 
               v61 = i;
               v18 = *(*(&v70 + 1) + 8 * i);
-              v19 = [v18 path];
-              v20 = [v19 lastPathComponent];
-              v21 = [v20 hasPrefix:v12];
+              path = [v18 path];
+              lastPathComponent = [path lastPathComponent];
+              v21 = [lastPathComponent hasPrefix:v12];
 
               if (v21)
               {
-                v22 = [v18 path];
-                v23 = [v22 pathExtension];
-                v24 = [v23 isEqualToString:@"plist"];
+                path2 = [v18 path];
+                pathExtension = [path2 pathExtension];
+                v24 = [pathExtension isEqualToString:@"plist"];
 
                 if (v24)
                 {
@@ -931,8 +931,8 @@ LABEL_30:
                         v66 = 0u;
                         v63 = 0u;
                         v64 = 0u;
-                        v62 = [v28 minVersions];
-                        v29 = [v62 countByEnumeratingWithState:&v63 objects:v78 count:16];
+                        minVersions = [v28 minVersions];
+                        v29 = [minVersions countByEnumeratingWithState:&v63 objects:v78 count:16];
                         if (v29)
                         {
                           v30 = v29;
@@ -944,7 +944,7 @@ LABEL_30:
                             {
                               if (*v64 != v31)
                               {
-                                objc_enumerationMutation(v62);
+                                objc_enumerationMutation(minVersions);
                               }
 
                               v33 = *(*(&v63 + 1) + 8 * j);
@@ -961,20 +961,20 @@ LABEL_30:
                               }
 
                               v35 = [v4 objectForKeyedSubscript:v33];
-                              v36 = [v28 minVersions];
-                              v37 = [v36 objectForKeyedSubscript:v33];
+                              minVersions2 = [v28 minVersions];
+                              v37 = [minVersions2 objectForKeyedSubscript:v33];
                               v38 = [UAFPlatform compareVersion:v35 with:v37];
 
                               if (v38 == 1)
                               {
 LABEL_29:
-                                v39 = [v28 minVersions];
-                                v40 = [v39 objectForKeyedSubscript:v33];
+                                minVersions3 = [v28 minVersions];
+                                v40 = [minVersions3 objectForKeyedSubscript:v33];
                                 [v4 setObject:v40 forKeyedSubscript:v33];
                               }
                             }
 
-                            v30 = [v62 countByEnumeratingWithState:&v63 objects:v78 count:16];
+                            v30 = [minVersions countByEnumeratingWithState:&v63 objects:v78 count:16];
                           }
 
                           while (v30);
@@ -985,8 +985,8 @@ LABEL_29:
 
                       else
                       {
-                        v62 = UAFGetLogCategory(&UAFLogContextConfiguration);
-                        if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
+                        minVersions = UAFGetLogCategory(&UAFLogContextConfiguration);
+                        if (os_log_type_enabled(minVersions, OS_LOG_TYPE_ERROR))
                         {
                           *buf = 136315650;
                           v80 = "[UAFConfigurationManager minVersions:]";
@@ -994,7 +994,7 @@ LABEL_29:
                           v82 = v18;
                           v83 = 2112;
                           v84 = v57;
-                          _os_log_error_impl(&dword_1BCF2C000, v62, OS_LOG_TYPE_ERROR, "%s Failed to load %@:%@", buf, 0x20u);
+                          _os_log_error_impl(&dword_1BCF2C000, minVersions, OS_LOG_TYPE_ERROR, "%s Failed to load %@:%@", buf, 0x20u);
                         }
                       }
 
@@ -1043,11 +1043,11 @@ LABEL_29:
   return v4;
 }
 
-- (id)getMinVersion:(id)a3 provider:(id)a4
+- (id)getMinVersion:(id)version provider:(id)provider
 {
   v36 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v24 = a4;
+  versionCopy = version;
+  providerCopy = provider;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -1070,16 +1070,16 @@ LABEL_29:
 
         v10 = [*(*(&v27 + 1) + 8 * i) URLByAppendingPathComponent:@"MinVersions"];
 
-        v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v25, @".minversion.", v24];
-        v12 = [v10 URLByAppendingPathComponent:v11];
+        providerCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", versionCopy, @".minversion.", providerCopy];
+        v12 = [v10 URLByAppendingPathComponent:providerCopy];
 
         v8 = [v12 URLByAppendingPathExtension:@"plist"];
 
         v26 = 0;
-        v13 = [MEMORY[0x1E696AC08] defaultManager];
-        v14 = [v8 absoluteURL];
-        v15 = [v14 path];
-        v16 = [v13 fileExistsAtPath:v15 isDirectory:&v26];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        absoluteURL = [v8 absoluteURL];
+        path = [absoluteURL path];
+        v16 = [defaultManager fileExistsAtPath:path isDirectory:&v26];
         v17 = v26;
 
         if (v16 && (v17 & 1) == 0)
@@ -1122,10 +1122,10 @@ LABEL_16:
   return v19;
 }
 
-- (id)applySubscriptions:(id)a3
+- (id)applySubscriptions:(id)subscriptions
 {
   v104 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  subscriptionsCopy = subscriptions;
   v4 = UAFGetLogCategory(&UAFLogContextConfiguration);
   v5 = os_signpost_id_generate(v4);
 
@@ -1144,7 +1144,7 @@ LABEL_16:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v3;
+  obj = subscriptionsCopy;
   v67 = [obj countByEnumeratingWithState:&v90 objects:v103 count:16];
   v8 = 0;
   if (v67)
@@ -1169,8 +1169,8 @@ LABEL_16:
         v88 = 0u;
         v89 = 0u;
         v76 = v11;
-        v12 = [v11 assetSets];
-        v13 = [v12 countByEnumeratingWithState:&v86 objects:v102 count:16];
+        assetSets = [v11 assetSets];
+        v13 = [assetSets countByEnumeratingWithState:&v86 objects:v102 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1181,7 +1181,7 @@ LABEL_16:
             {
               if (*v87 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(assetSets);
               }
 
               v17 = *(*(&v86 + 1) + 8 * i);
@@ -1198,8 +1198,8 @@ LABEL_16:
                 [v8 setObject:v19 forKeyedSubscript:v17];
               }
 
-              v20 = [v76 assetSets];
-              v21 = [v20 objectForKeyedSubscript:v17];
+              assetSets2 = [v76 assetSets];
+              v21 = [assetSets2 objectForKeyedSubscript:v17];
 
               if (!v21)
               {
@@ -1216,7 +1216,7 @@ LABEL_16:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v86 objects:v102 count:16];
+            v14 = [assetSets countByEnumeratingWithState:&v86 objects:v102 count:16];
           }
 
           while (v14);
@@ -1226,14 +1226,14 @@ LABEL_16:
         v85 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v25 = [v76 usageAliases];
-        v26 = [v25 countByEnumeratingWithState:&v82 objects:v101 count:16];
+        usageAliases = [v76 usageAliases];
+        v26 = [usageAliases countByEnumeratingWithState:&v82 objects:v101 count:16];
         if (v26)
         {
           v27 = v26;
           v28 = *v83;
           v69 = *v83;
-          v70 = v25;
+          v70 = usageAliases;
           do
           {
             v29 = 0;
@@ -1242,20 +1242,20 @@ LABEL_16:
             {
               if (*v83 != v28)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(usageAliases);
               }
 
               v30 = *(*(&v82 + 1) + 8 * v29);
-              v31 = [v76 usageAliases];
-              v32 = [v31 objectForKeyedSubscript:v30];
+              usageAliases2 = [v76 usageAliases];
+              v32 = [usageAliases2 objectForKeyedSubscript:v30];
 
               v33 = [(UAFConfigurationManager *)self getUsageAlias:v30 includeDeprecatedValues:0];
               if (v33)
               {
                 v34 = v33;
-                v35 = [v33 values];
+                values = [v33 values];
                 v75 = v32;
-                v36 = [v35 objectForKeyedSubscript:v32];
+                v36 = [values objectForKeyedSubscript:v32];
 
                 if (v36)
                 {
@@ -1284,12 +1284,12 @@ LABEL_16:
 
                 v74 = v29;
                 v40 = v34;
-                v41 = [v34 values];
-                v42 = [v41 objectForKeyedSubscript:v37];
+                values2 = [v34 values];
+                v42 = [values2 objectForKeyedSubscript:v37];
 
                 log = v40;
-                v43 = [v40 values];
-                v44 = [v43 objectForKeyedSubscript:v37];
+                values3 = [v40 values];
+                v44 = [values3 objectForKeyedSubscript:v37];
                 if (v44)
                 {
                   v45 = v44;
@@ -1347,7 +1347,7 @@ LABEL_16:
 
                       while (v49);
                       v28 = v69;
-                      v25 = v70;
+                      usageAliases = v70;
                       v27 = v71;
                       v42 = v72;
                     }
@@ -1396,7 +1396,7 @@ LABEL_58:
             }
 
             while (v29 != v27);
-            v27 = [v25 countByEnumeratingWithState:&v82 objects:v101 count:16];
+            v27 = [usageAliases countByEnumeratingWithState:&v82 objects:v101 count:16];
           }
 
           while (v27);
@@ -1425,15 +1425,15 @@ LABEL_58:
   return v8;
 }
 
-- (BOOL)isUsageLimitExceeded:(id)a3
+- (BOOL)isUsageLimitExceeded:(id)exceeded
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  exceededCopy = exceeded;
+  v5 = [exceededCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1444,14 +1444,14 @@ LABEL_58:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(exceededCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(UAFConfigurationManager *)self getAssetSet:v9, v16];
         if (v10)
         {
-          v11 = [v4 objectForKeyedSubscript:v9];
+          v11 = [exceededCopy objectForKeyedSubscript:v9];
           v12 = [v10 isUsageLimitExceeded:v11];
 
           if (v12)
@@ -1463,7 +1463,7 @@ LABEL_58:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [exceededCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;

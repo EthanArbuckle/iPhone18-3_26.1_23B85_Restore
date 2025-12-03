@@ -1,15 +1,15 @@
 @interface NUChannelAssetData
-- (NUChannelAssetData)initWithAsset:(id)a3;
-- (NUChannelAssetData)initWithMedia:(id)a3;
+- (NUChannelAssetData)initWithAsset:(id)asset;
+- (NUChannelAssetData)initWithMedia:(id)media;
 @end
 
 @implementation NUChannelAssetData
 
-- (NUChannelAssetData)initWithAsset:(id)a3
+- (NUChannelAssetData)initWithAsset:(id)asset
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v10 = NUAssertLogger_4187();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -52,11 +52,11 @@
     _NUAssertFailHandler("[NUChannelAssetData initWithAsset:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2473, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "asset != nil");
   }
 
-  v5 = v4;
-  v6 = [(NUAsset *)v4 media];
+  v5 = assetCopy;
+  media = [(NUAsset *)assetCopy media];
   v26.receiver = self;
   v26.super_class = NUChannelAssetData;
-  v7 = [(NUChannelMediaData *)&v26 initWithMedia:v6];
+  v7 = [(NUChannelMediaData *)&v26 initWithMedia:media];
 
   asset = v7->_asset;
   v7->_asset = v5;
@@ -64,10 +64,10 @@
   return v7;
 }
 
-- (NUChannelAssetData)initWithMedia:(id)a3
+- (NUChannelAssetData)initWithMedia:(id)media
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -111,8 +111,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -128,8 +128,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

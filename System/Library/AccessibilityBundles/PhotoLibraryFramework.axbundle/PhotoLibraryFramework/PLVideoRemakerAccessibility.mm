@@ -1,5 +1,5 @@
 @interface PLVideoRemakerAccessibility
-- (void)_didEndRemakingWithTemporaryPath:(id)a3;
+- (void)_didEndRemakingWithTemporaryPath:(id)path;
 - (void)cancel;
 @end
 
@@ -13,11 +13,11 @@
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)_didEndRemakingWithTemporaryPath:(id)a3
+- (void)_didEndRemakingWithTemporaryPath:(id)path
 {
   v3.receiver = self;
   v3.super_class = PLVideoRemakerAccessibility;
-  [(PLVideoRemakerAccessibility *)&v3 _didEndRemakingWithTemporaryPath:a3];
+  [(PLVideoRemakerAccessibility *)&v3 _didEndRemakingWithTemporaryPath:path];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 

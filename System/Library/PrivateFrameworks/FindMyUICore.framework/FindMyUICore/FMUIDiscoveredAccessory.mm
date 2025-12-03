@@ -1,18 +1,18 @@
 @interface FMUIDiscoveredAccessory
 - (FMUIDiscoveredAccessory)init;
-- (FMUIDiscoveredAccessory)initWithIdentifier:(id)a3 productType:(int64_t)a4 productImage:(id)a5;
+- (FMUIDiscoveredAccessory)initWithIdentifier:(id)identifier productType:(int64_t)type productImage:(id)image;
 @end
 
 @implementation FMUIDiscoveredAccessory
 
-- (FMUIDiscoveredAccessory)initWithIdentifier:(id)a3 productType:(int64_t)a4 productImage:(id)a5
+- (FMUIDiscoveredAccessory)initWithIdentifier:(id)identifier productType:(int64_t)type productImage:(id)image
 {
   v7 = sub_24B2D2504();
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24B2D24E4();
-  v10 = a5;
-  v11 = sub_24B0C5278(v9, a4, a5);
+  imageCopy = image;
+  v11 = sub_24B0C5278(v9, type, image);
 
   return v11;
 }

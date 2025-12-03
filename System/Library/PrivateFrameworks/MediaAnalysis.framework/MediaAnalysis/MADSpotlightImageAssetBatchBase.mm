@@ -1,5 +1,5 @@
 @interface MADSpotlightImageAssetBatchBase
-- (MADSpotlightImageAssetBatchBase)initWithCancelBlock:(id)a3;
+- (MADSpotlightImageAssetBatchBase)initWithCancelBlock:(id)block;
 - (int)prepare;
 - (int)process;
 - (int)publish;
@@ -7,9 +7,9 @@
 
 @implementation MADSpotlightImageAssetBatchBase
 
-- (MADSpotlightImageAssetBatchBase)initWithCancelBlock:(id)a3
+- (MADSpotlightImageAssetBatchBase)initWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v33.receiver = self;
   v33.super_class = MADSpotlightImageAssetBatchBase;
   v5 = [(MADSpotlightImageAssetBatchBase *)&v33 init];
@@ -22,7 +22,7 @@
   assetEntries = v5->_assetEntries;
   v5->_assetEntries = v6;
 
-  v8 = objc_retainBlock(v4);
+  v8 = objc_retainBlock(blockCopy);
   cancelBlock = v5->_cancelBlock;
   v5->_cancelBlock = v8;
 
@@ -40,11 +40,11 @@
 
   if (v5->_commSafetyHandler && !v13)
   {
-    v15 = [(MADSpotlightImageAssetBatchBase *)v5 queueName];
-    v16 = [NSString stringWithFormat:@"%@.compute", v15];
+    queueName = [(MADSpotlightImageAssetBatchBase *)v5 queueName];
+    v16 = [NSString stringWithFormat:@"%@.compute", queueName];
 
-    v17 = [(MADSpotlightImageAssetBatchBase *)v5 queueName];
-    v18 = [NSString stringWithFormat:@"%@.request", v17];
+    queueName2 = [(MADSpotlightImageAssetBatchBase *)v5 queueName];
+    v18 = [NSString stringWithFormat:@"%@.request", queueName2];
 
     v19 = dispatch_group_create();
     computeGroup = v5->_computeGroup;
@@ -67,11 +67,11 @@ LABEL_5:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
-    v29 = [(MADSpotlightImageAssetBatchBase *)v5 logPrefix];
+    logPrefix = [(MADSpotlightImageAssetBatchBase *)v5 logPrefix];
     v30 = objc_opt_class();
     v31 = [v13 description];
     *buf = 138412802;
-    v35 = v29;
+    v35 = logPrefix;
     v36 = 2112;
     v37 = v30;
     v38 = 2112;
@@ -92,9 +92,9 @@ LABEL_9:
     v3 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v3))
     {
-      v4 = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
+      logPrefix = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
       v6 = 138412290;
-      v7 = v4;
+      v7 = logPrefix;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, "[%@][Prepare] prepare() should be implemented in sub-class", &v6, 0xCu);
     }
   }
@@ -120,12 +120,12 @@ LABEL_9:
     v6 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v6))
     {
-      v7 = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
+      logPrefix = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
       v8 = [(NSMutableArray *)self->_assetEntries count];
       qos_class_self();
       v9 = VCPMAQoSDescription();
       *buf = 138412802;
-      v35 = v7;
+      v35 = logPrefix;
       v36 = 1024;
       LODWORD(v37[0]) = v8;
       WORD2(v37[0]) = 2112;
@@ -145,8 +145,8 @@ LABEL_9:
     {
       v13 = objc_autoreleasePoolPush();
       v14 = [(NSMutableArray *)self->_assetEntries objectAtIndexedSubscript:v11];
-      v15 = [v14 filePath];
-      if (v15 && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v16 = objc_claimAutoreleasedReturnValue(), [v14 filePath], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "fileExistsAtPath:", v17), v17, v16, v15, v18))
+      filePath = [v14 filePath];
+      if (filePath && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v16 = objc_claimAutoreleasedReturnValue(), [v14 filePath], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "fileExistsAtPath:", v17), v17, v16, filePath, v18))
       {
         computeGroup = self->_computeGroup;
         computeQueue = self->_computeQueue;
@@ -155,7 +155,7 @@ LABEL_9:
         block[2] = sub_10012CF7C;
         block[3] = &unk_100282BC8;
         v32 = v14;
-        v33 = self;
+        selfCopy = self;
         dispatch_group_async(computeGroup, computeQueue, block);
       }
 
@@ -163,12 +163,12 @@ LABEL_9:
       {
         if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v12))
         {
-          v21 = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
-          v22 = [v14 uniqueIdentifier];
+          logPrefix2 = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
+          uniqueIdentifier = [v14 uniqueIdentifier];
           *buf = 138412546;
-          v35 = v21;
+          v35 = logPrefix2;
           v36 = 2112;
-          v37[0] = v22;
+          v37[0] = uniqueIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "[%@][Process][%@] File path does not exist.", buf, 0x16u);
         }
 
@@ -187,9 +187,9 @@ LABEL_9:
     v23 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v23))
     {
-      v24 = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
+      logPrefix3 = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
       *buf = 138412290;
-      v35 = v24;
+      v35 = logPrefix3;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "[%@][Process] Waiting for compute to complete", buf, 0xCu);
     }
   }
@@ -222,9 +222,9 @@ LABEL_9:
     v3 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v3))
     {
-      v4 = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
+      logPrefix = [(MADSpotlightImageAssetBatchBase *)self logPrefix];
       v6 = 138412290;
-      v7 = v4;
+      v7 = logPrefix;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, "[%@][Publish] publish() should be implemented in sub-class", &v6, 0xCu);
     }
   }

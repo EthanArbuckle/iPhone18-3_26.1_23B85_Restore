@@ -1,50 +1,50 @@
 @interface OrderedWBTabWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)ancestorTabIdentifiers;
 - (NSString)windowIdentifier;
-- (OrderedWBTabWrapper)initWithWBTab:(id)a3;
+- (OrderedWBTabWrapper)initWithWBTab:(id)tab;
 @end
 
 @implementation OrderedWBTabWrapper
 
-- (OrderedWBTabWrapper)initWithWBTab:(id)a3
+- (OrderedWBTabWrapper)initWithWBTab:(id)tab
 {
-  v5 = a3;
-  if (v5 && (v9.receiver = self, v9.super_class = OrderedWBTabWrapper, v6 = [(OrderedWBTabWrapper *)&v9 init], (self = v6) != 0))
+  tabCopy = tab;
+  if (tabCopy && (v9.receiver = self, v9.super_class = OrderedWBTabWrapper, v6 = [(OrderedWBTabWrapper *)&v9 init], (self = v6) != 0))
   {
-    objc_storeStrong(&v6->_tab, a3);
+    objc_storeStrong(&v6->_tab, tab);
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (NSArray)ancestorTabIdentifiers
 {
-  v2 = [(WBTab *)self->_tab localAttributes];
-  v3 = [v2 ancestorTabUUIDs];
+  localAttributes = [(WBTab *)self->_tab localAttributes];
+  ancestorTabUUIDs = [localAttributes ancestorTabUUIDs];
 
-  return v3;
+  return ancestorTabUUIDs;
 }
 
 - (NSString)windowIdentifier
 {
-  v2 = [(WBTab *)self->_tab localAttributes];
-  v3 = [v2 windowUUID];
+  localAttributes = [(WBTab *)self->_tab localAttributes];
+  windowUUID = [localAttributes windowUUID];
 
-  return v3;
+  return windowUUID;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(OrderedWBTabWrapper *)v4 tab];
+      v5 = [(OrderedWBTabWrapper *)equalCopy tab];
       v6 = WBSIsEqual();
     }
 

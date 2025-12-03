@@ -1,5 +1,5 @@
 @interface SiriSceneViewController
-- (_TtC15SiriInteractive23SiriSceneViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15SiriInteractive23SiriSceneViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -8,24 +8,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SiriSceneViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SiriSceneViewController.viewDidLayoutSubviews()();
 }
 
-- (_TtC15SiriInteractive23SiriSceneViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15SiriInteractive23SiriSceneViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_2675339D4();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   SiriSceneViewController.init(nibName:bundle:)();
 }
 

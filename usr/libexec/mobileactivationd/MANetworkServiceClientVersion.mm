@@ -1,41 +1,41 @@
 @interface MANetworkServiceClientVersion
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation MANetworkServiceClientVersion
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 previousFailureCount] < 1)
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  if ([challengeCopy previousFailureCount] < 1)
   {
-    v11 = [v7 protectionSpace];
-    v12 = [v11 authenticationMethod];
-    v13 = [v12 isEqualToString:NSURLAuthenticationMethodServerTrust];
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
+    v13 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
     if ((v13 & 1) == 0)
     {
-      v8[2](v8, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
       goto LABEL_5;
     }
 
     result = kSecTrustResultInvalid;
-    v14 = [v7 protectionSpace];
-    SecTrustEvaluate([v14 serverTrust], &result);
+    protectionSpace2 = [challengeCopy protectionSpace];
+    SecTrustEvaluate([protectionSpace2 serverTrust], &result);
 
     if ([(MANetworkServiceClientVersion *)self allowInvalidCert]|| (v15 = result, result == kSecTrustResultProceed) || result == kSecTrustResultUnspecified)
     {
-      v16 = [v7 protectionSpace];
-      v17 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v16 serverTrust]);
+      protectionSpace3 = [challengeCopy protectionSpace];
+      v17 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace3 serverTrust]);
 
-      (v8)[2](v8, 0, v17);
+      (handlerCopy)[2](handlerCopy, 0, v17);
       v10 = v17;
       goto LABEL_4;
     }
 
-    v18 = [v7 protectionSpace];
-    [v18 serverTrust];
+    protectionSpace4 = [challengeCopy protectionSpace];
+    [protectionSpace4 serverTrust];
     v19 = SecTrustCopyFailureDescription();
     v9 = createMobileActivationError("[MANetworkServiceClientVersion URLSession:didReceiveChallenge:completionHandler:]", 131, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to evaluate trust: %d (%@)", v15, v19);
   }
@@ -46,7 +46,7 @@
   }
 
   [(MANetworkServiceClientVersion *)self setLastNetworkError:v9];
-  v8[2](v8, 2, 0);
+  handlerCopy[2](handlerCopy, 2, 0);
   v10 = v9;
 LABEL_4:
 

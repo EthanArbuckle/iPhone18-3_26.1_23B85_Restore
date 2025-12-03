@@ -1,19 +1,19 @@
 @interface PDAccountStatementMetadataProcessorRequest
-- (BOOL)_canCoalesceRequest:(id)a3;
-- (BOOL)coalesceWithRequest:(id)a3;
-- (PDAccountStatementMetadataProcessorRequest)initWithAccountIdentifier:(id)a3 statementIdentifier:(id)a4 reason:(unint64_t)a5 completion:(id)a6;
+- (BOOL)_canCoalesceRequest:(id)request;
+- (BOOL)coalesceWithRequest:(id)request;
+- (PDAccountStatementMetadataProcessorRequest)initWithAccountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier reason:(unint64_t)reason completion:(id)completion;
 - (id)description;
-- (void)addCompletion:(id)a3;
-- (void)callCompletionsWithStatementMetadata:(id)a3 error:(id)a4;
+- (void)addCompletion:(id)completion;
+- (void)callCompletionsWithStatementMetadata:(id)metadata error:(id)error;
 @end
 
 @implementation PDAccountStatementMetadataProcessorRequest
 
-- (PDAccountStatementMetadataProcessorRequest)initWithAccountIdentifier:(id)a3 statementIdentifier:(id)a4 reason:(unint64_t)a5 completion:(id)a6
+- (PDAccountStatementMetadataProcessorRequest)initWithAccountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier reason:(unint64_t)reason completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  identifierCopy = identifier;
+  statementIdentifierCopy = statementIdentifier;
+  completionCopy = completion;
   v18.receiver = self;
   v18.super_class = PDAccountStatementMetadataProcessorRequest;
   v14 = [(PDAccountStatementMetadataProcessorRequest *)&v18 init];
@@ -23,40 +23,40 @@
     completionHandlers = v14->_completionHandlers;
     v14->_completionHandlers = v15;
 
-    objc_storeStrong(&v14->_accountIdentifier, a3);
-    objc_storeStrong(&v14->_statementIdentifier, a4);
-    v14->_reason = a5;
-    [(PDAccountStatementMetadataProcessorRequest *)v14 addCompletion:v13];
+    objc_storeStrong(&v14->_accountIdentifier, identifier);
+    objc_storeStrong(&v14->_statementIdentifier, statementIdentifier);
+    v14->_reason = reason;
+    [(PDAccountStatementMetadataProcessorRequest *)v14 addCompletion:completionCopy];
   }
 
   return v14;
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
   completionHandlers = self->_completionHandlers;
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(completion);
   [(NSMutableArray *)completionHandlers safelyAddObject:v4];
 }
 
-- (BOOL)coalesceWithRequest:(id)a3
+- (BOOL)coalesceWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(PDAccountStatementMetadataProcessorRequest *)self _canCoalesceRequest:v4];
+  requestCopy = request;
+  v5 = [(PDAccountStatementMetadataProcessorRequest *)self _canCoalesceRequest:requestCopy];
   if (v5)
   {
     completionHandlers = self->_completionHandlers;
-    v7 = [v4 completionHandlers];
-    [(NSMutableArray *)completionHandlers addObjectsFromArray:v7];
+    completionHandlers = [requestCopy completionHandlers];
+    [(NSMutableArray *)completionHandlers addObjectsFromArray:completionHandlers];
   }
 
   return v5;
 }
 
-- (void)callCompletionsWithStatementMetadata:(id)a3 error:(id)a4
+- (void)callCompletionsWithStatementMetadata:(id)metadata error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  errorCopy = error;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -89,13 +89,13 @@
   }
 }
 
-- (BOOL)_canCoalesceRequest:(id)a3
+- (BOOL)_canCoalesceRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   accountIdentifier = self->_accountIdentifier;
-  v6 = [v4 accountIdentifier];
+  accountIdentifier = [requestCopy accountIdentifier];
   v7 = accountIdentifier;
-  v8 = v6;
+  v8 = accountIdentifier;
   v9 = v8;
   if (v7 == v8)
   {
@@ -131,9 +131,9 @@ LABEL_18:
   }
 
   statementIdentifier = self->_statementIdentifier;
-  v13 = [v4 statementIdentifier];
+  statementIdentifier = [requestCopy statementIdentifier];
   v14 = statementIdentifier;
-  v15 = v13;
+  v15 = statementIdentifier;
   v7 = v15;
   if (v14 == v15)
   {
@@ -156,7 +156,7 @@ LABEL_18:
 
 LABEL_16:
   reason = self->_reason;
-  v18 = reason == [v4 reason];
+  v18 = reason == [requestCopy reason];
 LABEL_19:
 
 LABEL_20:

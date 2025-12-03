@@ -1,13 +1,13 @@
 @interface WBSFrequentlyVisitedSitesBannedURLStore
-- (BOOL)containsURLString:(id)a3;
-- (WBSFrequentlyVisitedSitesBannedURLStore)initWithStoreURL:(id)a3 history:(id)a4;
+- (BOOL)containsURLString:(id)string;
+- (WBSFrequentlyVisitedSitesBannedURLStore)initWithStoreURL:(id)l history:(id)history;
 - (id)_bannedURLStringsToEntriesMap;
 - (id)urlStrings;
-- (void)_historyItemsWereRemoved:(id)a3;
-- (void)addURLString:(id)a3;
+- (void)_historyItemsWereRemoved:(id)removed;
+- (void)addURLString:(id)string;
 - (void)dealloc;
 - (void)removeAllURLStrings;
-- (void)removeURLStrings:(id)a3;
+- (void)removeURLStrings:(id)strings;
 @end
 
 @implementation WBSFrequentlyVisitedSitesBannedURLStore
@@ -118,8 +118,8 @@ LABEL_26:
                 goto LABEL_20;
               }
 
-              v17 = [v14 allKeys];
-              v18 = [v17 count] == 2;
+              allKeys = [v14 allKeys];
+              v18 = [allKeys count] == 2;
 
               if (!v18)
               {
@@ -159,26 +159,26 @@ LABEL_20:
   return v3;
 }
 
-- (WBSFrequentlyVisitedSitesBannedURLStore)initWithStoreURL:(id)a3 history:(id)a4
+- (WBSFrequentlyVisitedSitesBannedURLStore)initWithStoreURL:(id)l history:(id)history
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  historyCopy = history;
   v16.receiver = self;
   v16.super_class = WBSFrequentlyVisitedSitesBannedURLStore;
   v9 = [(WBSFrequentlyVisitedSitesBannedURLStore *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storeURL, a3);
+    objc_storeStrong(&v9->_storeURL, l);
     v11 = dispatch_queue_create("com.apple.SafariShared.FrequentlyVisitedSitesBannedURLStore", 0);
     storeQueue = v10->_storeQueue;
     v10->_storeQueue = v11;
 
-    if (v8)
+    if (historyCopy)
     {
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v13 addObserver:v10 selector:sel__historyWasCleared_ name:@"WBSHistoryWasClearedNotification" object:v8];
-      [v13 addObserver:v10 selector:sel__historyItemsWereRemoved_ name:@"WBSHistoryItemsWereRemovedNotification" object:v8];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v10 selector:sel__historyWasCleared_ name:@"WBSHistoryWasClearedNotification" object:historyCopy];
+      [defaultCenter addObserver:v10 selector:sel__historyItemsWereRemoved_ name:@"WBSHistoryItemsWereRemovedNotification" object:historyCopy];
     }
 
     v14 = v10;
@@ -189,18 +189,18 @@ LABEL_20:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WBSFrequentlyVisitedSitesBannedURLStore;
   [(WBSFrequentlyVisitedSitesBannedURLStore *)&v4 dealloc];
 }
 
-- (BOOL)containsURLString:(id)a3
+- (BOOL)containsURLString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 safari_canonicalURLStringForFrequentlyVisitedSites];
+  stringCopy = string;
+  safari_canonicalURLStringForFrequentlyVisitedSites = [stringCopy safari_canonicalURLStringForFrequentlyVisitedSites];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -210,10 +210,10 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __61__WBSFrequentlyVisitedSitesBannedURLStore_containsURLString___block_invoke;
   block[3] = &unk_1E7FC4D50;
-  v10 = v5;
+  v10 = safari_canonicalURLStringForFrequentlyVisitedSites;
   v11 = &v12;
   block[4] = self;
-  v7 = v5;
+  v7 = safari_canonicalURLStringForFrequentlyVisitedSites;
   dispatch_sync(storeQueue, block);
   LOBYTE(storeQueue) = *(v13 + 24);
 
@@ -228,18 +228,18 @@ void __61__WBSFrequentlyVisitedSitesBannedURLStore_containsURLString___block_inv
   *(*(*(a1 + 48) + 8) + 24) = v2 != 0;
 }
 
-- (void)addURLString:(id)a3
+- (void)addURLString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 safari_canonicalURLStringForFrequentlyVisitedSites];
+  stringCopy = string;
+  safari_canonicalURLStringForFrequentlyVisitedSites = [stringCopy safari_canonicalURLStringForFrequentlyVisitedSites];
   storeQueue = self->_storeQueue;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __56__WBSFrequentlyVisitedSitesBannedURLStore_addURLString___block_invoke;
   v11 = &unk_1E7FB7F10;
-  v12 = self;
-  v13 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v13 = safari_canonicalURLStringForFrequentlyVisitedSites;
+  v7 = safari_canonicalURLStringForFrequentlyVisitedSites;
   dispatch_async(storeQueue, &v8);
   [(WBSFrequentlyVisitedSitesBannedURLStore *)self _writeOutBannedURLStringsAsynchronously:v8];
 }
@@ -258,17 +258,17 @@ void __56__WBSFrequentlyVisitedSitesBannedURLStore_addURLString___block_invoke(u
   [v5 setObject:v4 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)removeURLStrings:(id)a3
+- (void)removeURLStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   storeQueue = self->_storeQueue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __60__WBSFrequentlyVisitedSitesBannedURLStore_removeURLStrings___block_invoke;
   v10 = &unk_1E7FB7F10;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = stringsCopy;
+  v6 = stringsCopy;
   dispatch_async(storeQueue, &v7);
   [(WBSFrequentlyVisitedSitesBannedURLStore *)self _writeOutBannedURLStringsAsynchronously:v7];
 }
@@ -328,10 +328,10 @@ void __62__WBSFrequentlyVisitedSitesBannedURLStore_removeAllURLStrings__block_in
   [v1 removeAllObjects];
 }
 
-- (void)_historyItemsWereRemoved:(id)a3
+- (void)_historyItemsWereRemoved:(id)removed
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKeyedSubscript:@"WBSHistoryItemsKey"];
+  userInfo = [removed userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"WBSHistoryItemsKey"];
 
   v5 = [v6 safari_mapObjectsUsingBlock:&__block_literal_global_55];
   [(WBSFrequentlyVisitedSitesBannedURLStore *)self removeURLStrings:v5];

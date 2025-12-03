@@ -7,12 +7,12 @@
 - (id)_createHeroView;
 - (id)_footnoteFont;
 - (id)_titleFont;
-- (id)axidForElementWithString:(id)a3;
+- (id)axidForElementWithString:(id)string;
 - (id)bodyString;
 - (id)buttonTitleString;
 - (id)featureDisabledBodyString;
 - (id)footnoteString;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (id)learnMoreString;
 - (id)locationFeatureAlertAckButtonString;
 - (id)locationFeatureIneligiblePromptBodyString;
@@ -21,32 +21,32 @@
 - (id)seedExpiredBodyString;
 - (id)titleString;
 - (id)watchOSVersionTooLowBodyString;
-- (void)_isAtrialFibrillationDetectionOnboardingAvailableInCurrentLocationForActiveWatch:(id)a3;
-- (void)_presentFeatureAlertWithMessage:(id)a3;
+- (void)_isAtrialFibrillationDetectionOnboardingAvailableInCurrentLocationForActiveWatch:(id)watch;
+- (void)_presentFeatureAlertWithMessage:(id)message;
 - (void)_presentLocationNotFoundAlert;
 - (void)_setUpLearnMoreConstraints;
 - (void)_setUpLearnMoreViews;
 - (void)_setUpStackedButtonView;
-- (void)_submitOnboardingUIErrorEventWithCountryCode:(id)a3 onboardingEligibility:(id)a4;
-- (void)_updateViewsForContentExpansionState:(BOOL)a3;
+- (void)_submitOnboardingUIErrorEventWithCountryCode:(id)code onboardingEligibility:(id)eligibility;
+- (void)_updateViewsForContentExpansionState:(BOOL)state;
 - (void)presentLearnMoreAlertWithFeatureDisabledMessage;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
 @end
 
 @implementation HROnboardingAtrialFibrillationIntroViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   v9.receiver = self;
   v9.super_class = HROnboardingAtrialFibrillationIntroViewController;
-  v5 = [(HROnboardingAtrialFibrillationIntroViewController *)&v9 initForOnboarding:a3 upgradingFromAlgorithmVersion:a4];
+  v5 = [(HROnboardingAtrialFibrillationIntroViewController *)&v9 initForOnboarding:onboarding upgradingFromAlgorithmVersion:version];
   v6 = v5;
   if (v5)
   {
-    v7 = !v4;
+    v7 = !onboardingCopy;
   }
 
   else
@@ -67,72 +67,72 @@
   v32.receiver = self;
   v32.super_class = HROnboardingAtrialFibrillationIntroViewController;
   [(HROnboardingAtrialFibrillationIntroViewController *)&v32 setUpUI];
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self _createHeroView];
-  [(HROnboardingAtrialFibrillationIntroViewController *)self setHeroView:v3];
+  _createHeroView = [(HROnboardingAtrialFibrillationIntroViewController *)self _createHeroView];
+  [(HROnboardingAtrialFibrillationIntroViewController *)self setHeroView:_createHeroView];
 
-  v4 = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  heroView = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
+  [heroView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-  v6 = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
-  [v5 addSubview:v6];
+  contentView = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  heroView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
+  [contentView addSubview:heroView2];
 
   v7 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingAtrialFibrillationIntroViewController *)self setTitleLabel:v7];
 
-  v8 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleString];
-  v9 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v9 setText:v8];
+  titleString = [(HROnboardingAtrialFibrillationIntroViewController *)self titleString];
+  titleLabel = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel setText:titleString];
 
-  v10 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v10 setTextAlignment:4];
+  titleLabel2 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel2 setTextAlignment:4];
 
-  v11 = [(HROnboardingAtrialFibrillationIntroViewController *)self _titleFont];
-  v12 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v12 setFont:v11];
+  _titleFont = [(HROnboardingAtrialFibrillationIntroViewController *)self _titleFont];
+  titleLabel3 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel3 setFont:_titleFont];
 
-  v13 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel4 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v14 setNumberOfLines:0];
+  titleLabel5 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel5 setNumberOfLines:0];
 
   v15 = [(HROnboardingAtrialFibrillationIntroViewController *)self axidForElementWithString:@"PageTitle"];
-  v16 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v16 setAccessibilityIdentifier:v15];
+  titleLabel6 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel6 setAccessibilityIdentifier:v15];
 
-  v17 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-  v18 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v17 addSubview:v18];
+  contentView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  titleLabel7 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [contentView2 addSubview:titleLabel7];
 
   v19 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingAtrialFibrillationIntroViewController *)self setBodyLabel:v19];
 
-  v20 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyString];
-  v21 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v21 setText:v20];
+  bodyString = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyString];
+  bodyLabel = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel setText:bodyString];
 
-  v22 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v23 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v23 setTextColor:v22];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  bodyLabel2 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel2 setTextColor:secondaryLabelColor];
 
-  v24 = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFont];
-  v25 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v25 setFont:v24];
+  _bodyFont = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFont];
+  bodyLabel3 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel3 setFont:_bodyFont];
 
-  v26 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel4 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v27 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v27 setNumberOfLines:0];
+  bodyLabel5 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel5 setNumberOfLines:0];
 
   v28 = [(HROnboardingAtrialFibrillationIntroViewController *)self axidForElementWithString:@"Description"];
-  v29 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v29 setAccessibilityIdentifier:v28];
+  bodyLabel6 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel6 setAccessibilityIdentifier:v28];
 
-  v30 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-  v31 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v30 addSubview:v31];
+  contentView3 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  bodyLabel7 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  [contentView3 addSubview:bodyLabel7];
 
   [(HROnboardingAtrialFibrillationIntroViewController *)self _setUpLearnMoreViews];
   [(HROnboardingAtrialFibrillationIntroViewController *)self _setUpStackedButtonView];
@@ -143,64 +143,64 @@
   v33.receiver = self;
   v33.super_class = HROnboardingAtrialFibrillationIntroViewController;
   [(HROnboardingAtrialFibrillationIntroViewController *)&v33 setUpConstraints];
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
-  v4 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-  [v3 hk_alignHorizontalConstraintsWithView:v4 margin:0.0];
+  heroView = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
+  contentView = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  [heroView hk_alignHorizontalConstraintsWithView:contentView margin:0.0];
 
-  v5 = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
-  v6 = [v5 topAnchor];
-  v7 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:16.0];
+  heroView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
+  topAnchor = [heroView2 topAnchor];
+  contentView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   [v9 setActive:1];
 
-  v10 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  v11 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  titleLabel = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  contentView3 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v10 hrui_alignHorizontalConstraintsWithView:v11 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView3 insets:?];
 
-  v12 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  v13 = [v12 firstBaselineAnchor];
-  v14 = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
-  v15 = [v14 bottomAnchor];
+  titleLabel2 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  firstBaselineAnchor = [titleLabel2 firstBaselineAnchor];
+  heroView3 = [(HROnboardingAtrialFibrillationIntroViewController *)self heroView];
+  bottomAnchor = [heroView3 bottomAnchor];
   [(HROnboardingAtrialFibrillationIntroViewController *)self _assetImageBottomToTitleFirstBaseline];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:?];
+  v16 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [v16 setActive:1];
 
-  v17 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  v18 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v17 hk_alignHorizontalConstraintsWithView:v18 margin:0.0];
+  bodyLabel = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  titleLabel3 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel3 margin:0.0];
 
-  v19 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  v20 = [v19 firstBaselineAnchor];
-  v21 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  v22 = [v21 lastBaselineAnchor];
+  bodyLabel2 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  firstBaselineAnchor2 = [bodyLabel2 firstBaselineAnchor];
+  titleLabel4 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  lastBaselineAnchor = [titleLabel4 lastBaselineAnchor];
   [(HROnboardingAtrialFibrillationIntroViewController *)self _titleLastBaselineToBodyFirstBaseline];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:?];
+  v23 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
   [v23 setActive:1];
 
-  v24 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
-  v25 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  [v24 hk_alignHorizontalConstraintsWithView:v25 margin:0.0];
+  stackedButtonView = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
+  titleLabel5 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  [stackedButtonView hk_alignHorizontalConstraintsWithView:titleLabel5 margin:0.0];
 
-  v26 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
-  v27 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-  [v26 alignBlurViewHorizontalConstraintsWithView:v27];
+  stackedButtonView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
+  contentView4 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  [stackedButtonView2 alignBlurViewHorizontalConstraintsWithView:contentView4];
 
   [(HROnboardingAtrialFibrillationIntroViewController *)self _setUpLearnMoreConstraints];
-  v28 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-  v29 = [v28 bottomAnchor];
-  v30 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  contentView5 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  stackedButtonView3 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
+  bottomAnchor3 = [stackedButtonView3 bottomAnchor];
+  v32 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v32 setActive:1];
 }
 
 - (HKAnalyticsEventSubmissionManager)analyticsEventSubmissionManager
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self delegate];
-  v4 = [v3 healthStore];
+  delegate = [(HROnboardingAtrialFibrillationIntroViewController *)self delegate];
+  healthStore = [delegate healthStore];
 
   analyticsEventSubmissionManager = self->_analyticsEventSubmissionManager;
   if (analyticsEventSubmissionManager)
@@ -210,13 +210,13 @@
 
   else
   {
-    v6 = v4 == 0;
+    v6 = healthStore == 0;
   }
 
   if (!v6)
   {
     v7 = objc_alloc(MEMORY[0x277CCCFE8]);
-    v8 = [v7 initWithLoggingCategory:*MEMORY[0x277CCC2D8] healthDataSource:v4];
+    v8 = [v7 initWithLoggingCategory:*MEMORY[0x277CCC2D8] healthDataSource:healthStore];
     v9 = self->_analyticsEventSubmissionManager;
     self->_analyticsEventSubmissionManager = v8;
 
@@ -228,19 +228,19 @@
   return analyticsEventSubmissionManager;
 }
 
-- (void)_submitOnboardingUIErrorEventWithCountryCode:(id)a3 onboardingEligibility:(id)a4
+- (void)_submitOnboardingUIErrorEventWithCountryCode:(id)code onboardingEligibility:(id)eligibility
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  eligibilityCopy = eligibility;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __120__HROnboardingAtrialFibrillationIntroViewController__submitOnboardingUIErrorEventWithCountryCode_onboardingEligibility___block_invoke;
   block[3] = &unk_2796FB878;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = codeCopy;
+  v12 = eligibilityCopy;
+  selfCopy = self;
+  v8 = eligibilityCopy;
+  v9 = codeCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -276,13 +276,13 @@ void __120__HROnboardingAtrialFibrillationIntroViewController__submitOnboardingU
   v4 = objc_alloc_init(HRSimulatedAtrialFibrillationNotificationView);
   [v3 addSubview:v4];
   [(HRSimulatedAtrialFibrillationNotificationView *)v4 hk_alignVerticalConstraintsWithView:v3 margin:0.0];
-  v5 = [(HRSimulatedAtrialFibrillationNotificationView *)v4 heightAnchor];
-  v6 = [v5 constraintEqualToConstant:210.0];
+  heightAnchor = [(HRSimulatedAtrialFibrillationNotificationView *)v4 heightAnchor];
+  v6 = [heightAnchor constraintEqualToConstant:210.0];
   [v6 setActive:1];
 
-  v7 = [(HRSimulatedAtrialFibrillationNotificationView *)v4 centerXAnchor];
-  v8 = [v3 centerXAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  centerXAnchor = [(HRSimulatedAtrialFibrillationNotificationView *)v4 centerXAnchor];
+  centerXAnchor2 = [v3 centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v9 setActive:1];
 
   return v3;
@@ -290,109 +290,109 @@ void __120__HROnboardingAtrialFibrillationIntroViewController__submitOnboardingU
 
 - (void)_setUpLearnMoreViews
 {
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreString];
+  learnMoreString = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreString];
 
-  if (v3)
+  if (learnMoreString)
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:1];
     [(HROnboardingAtrialFibrillationIntroViewController *)self setLearnMoreButton:v4];
 
-    v5 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-    v6 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreString];
-    [v5 setTitle:v6 forState:0];
+    learnMoreButton = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+    learnMoreString2 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreString];
+    [learnMoreButton setTitle:learnMoreString2 forState:0];
 
-    v7 = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFont];
-    v8 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-    v9 = [v8 titleLabel];
-    [v9 setFont:v7];
+    _bodyFont = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFont];
+    learnMoreButton2 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+    titleLabel = [learnMoreButton2 titleLabel];
+    [titleLabel setFont:_bodyFont];
 
-    v10 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    learnMoreButton3 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+    [learnMoreButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-    v12 = [v11 titleLabel];
-    [v12 setNumberOfLines:0];
+    learnMoreButton4 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+    titleLabel2 = [learnMoreButton4 titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
-    v13 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-    [v13 addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:64];
+    learnMoreButton5 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+    [learnMoreButton5 addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:64];
 
     v14 = [(HROnboardingAtrialFibrillationIntroViewController *)self axidForElementWithString:@"AFibLearnMoreLink"];
-    v15 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-    [v15 setAccessibilityIdentifier:v14];
+    learnMoreButton6 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+    [learnMoreButton6 setAccessibilityIdentifier:v14];
 
-    v16 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-    v17 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-    [v16 addSubview:v17];
+    contentView = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+    learnMoreButton7 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+    [contentView addSubview:learnMoreButton7];
 
-    v18 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+    learnMoreButton8 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
     LODWORD(v19) = 1148846080;
-    [v18 setContentHuggingPriority:0 forAxis:v19];
+    [learnMoreButton8 setContentHuggingPriority:0 forAxis:v19];
 
-    v20 = [(HROnboardingAtrialFibrillationIntroViewController *)self _createLearnMoreExpandedView];
-    [(HROnboardingAtrialFibrillationIntroViewController *)self setLearnMoreContentView:v20];
+    _createLearnMoreExpandedView = [(HROnboardingAtrialFibrillationIntroViewController *)self _createLearnMoreExpandedView];
+    [(HROnboardingAtrialFibrillationIntroViewController *)self setLearnMoreContentView:_createLearnMoreExpandedView];
 
-    v22 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-    v21 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
-    [v22 addSubview:v21];
+    contentView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+    learnMoreContentView = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
+    [contentView2 addSubview:learnMoreContentView];
   }
 }
 
 - (void)_setUpLearnMoreConstraints
 {
   v46[4] = *MEMORY[0x277D85DE8];
-  v43 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-  v39 = [v43 leadingAnchor];
-  v41 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  v37 = [v41 leadingAnchor];
-  v35 = [v39 constraintEqualToAnchor:v37];
+  learnMoreButton = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+  leadingAnchor = [learnMoreButton leadingAnchor];
+  titleLabel = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  leadingAnchor2 = [titleLabel leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[0] = v35;
-  v33 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-  v29 = [v33 trailingAnchor];
-  v31 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  v27 = [v31 trailingAnchor];
-  v25 = [v29 constraintLessThanOrEqualToAnchor:v27];
+  learnMoreButton2 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+  trailingAnchor = [learnMoreButton2 trailingAnchor];
+  titleLabel2 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  trailingAnchor2 = [titleLabel2 trailingAnchor];
+  v25 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v46[1] = v25;
-  v23 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-  v21 = [v23 firstBaselineAnchor];
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  v4 = [v3 bottomAnchor];
+  learnMoreButton3 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+  firstBaselineAnchor = [learnMoreButton3 firstBaselineAnchor];
+  bodyLabel = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  bottomAnchor = [bodyLabel bottomAnchor];
   [(HROnboardingAtrialFibrillationIntroViewController *)self _titleLastBaselineToBodyFirstBaseline];
-  v5 = [v21 constraintEqualToAnchor:v4 constant:?];
+  v5 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   v46[2] = v5;
-  v6 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
-  v7 = [v6 topAnchor];
-  v8 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-  v9 = [v8 lastBaselineAnchor];
+  stackedButtonView = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
+  topAnchor = [stackedButtonView topAnchor];
+  learnMoreButton4 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+  lastBaselineAnchor = [learnMoreButton4 lastBaselineAnchor];
   [(HROnboardingAtrialFibrillationIntroViewController *)self _viewLastBaselineToContinueButton];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:?];
+  v10 = [topAnchor constraintEqualToAnchor:lastBaselineAnchor constant:?];
   v46[3] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:4];
   [(HROnboardingAtrialFibrillationIntroViewController *)self setLearnMoreCollapsedConstraints:v11];
 
-  v44 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  v40 = [v44 leadingAnchor];
-  v42 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  v38 = [v42 leadingAnchor];
-  v36 = [v40 constraintEqualToAnchor:v38];
+  learnMoreContentView = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  leadingAnchor3 = [learnMoreContentView leadingAnchor];
+  titleLabel3 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  leadingAnchor4 = [titleLabel3 leadingAnchor];
+  v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v45[0] = v36;
-  v34 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  v30 = [v34 trailingAnchor];
-  v32 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
-  v28 = [v32 trailingAnchor];
-  v26 = [v30 constraintEqualToAnchor:v28];
+  learnMoreContentView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  trailingAnchor3 = [learnMoreContentView2 trailingAnchor];
+  titleLabel4 = [(HROnboardingAtrialFibrillationIntroViewController *)self titleLabel];
+  trailingAnchor4 = [titleLabel4 trailingAnchor];
+  v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v45[1] = v26;
-  v24 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  v22 = [v24 topAnchor];
-  v12 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
-  v13 = [v12 bottomAnchor];
-  v14 = [v22 constraintEqualToAnchor:v13];
+  learnMoreContentView3 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  topAnchor2 = [learnMoreContentView3 topAnchor];
+  bodyLabel2 = [(HROnboardingAtrialFibrillationIntroViewController *)self bodyLabel];
+  bottomAnchor2 = [bodyLabel2 bottomAnchor];
+  v14 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2];
   v45[2] = v14;
-  v15 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
-  v16 = [v15 topAnchor];
-  v17 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  v18 = [v17 bottomAnchor];
+  stackedButtonView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
+  topAnchor3 = [stackedButtonView2 topAnchor];
+  learnMoreContentView4 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  bottomAnchor3 = [learnMoreContentView4 bottomAnchor];
   [(HROnboardingAtrialFibrillationIntroViewController *)self _viewLastBaselineToContinueButton];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:?];
+  v19 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:?];
   v45[3] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:4];
   [(HROnboardingAtrialFibrillationIntroViewController *)self setLearnMoreExpandedConstraints:v20];
@@ -403,39 +403,39 @@ void __120__HROnboardingAtrialFibrillationIntroViewController__submitOnboardingU
 - (void)_setUpStackedButtonView
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self buttonTitleString];
-  v11[0] = v3;
+  buttonTitleString = [(HROnboardingAtrialFibrillationIntroViewController *)self buttonTitleString];
+  v11[0] = buttonTitleString;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v5 = [(HROnboardingAtrialFibrillationIntroViewController *)self footnoteString];
-  v6 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v4 footerText:v5 boldFooterText:0 footerTextAlignment:4 delegate:self];
+  footnoteString = [(HROnboardingAtrialFibrillationIntroViewController *)self footnoteString];
+  v6 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v4 footerText:footnoteString boldFooterText:0 footerTextAlignment:4 delegate:self];
   [(HROnboardingAtrialFibrillationIntroViewController *)self setStackedButtonView:v6];
 
-  v7 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackedButtonView = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
+  [stackedButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
-  [v8 setFixedBottomButtonSpacing:1];
+  stackedButtonView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
+  [stackedButtonView2 setFixedBottomButtonSpacing:1];
 
-  v9 = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
-  v10 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
-  [v9 addSubview:v10];
+  contentView = [(HROnboardingAtrialFibrillationIntroViewController *)self contentView];
+  stackedButtonView3 = [(HROnboardingAtrialFibrillationIntroViewController *)self stackedButtonView];
+  [contentView addSubview:stackedButtonView3];
 }
 
-- (void)_updateViewsForContentExpansionState:(BOOL)a3
+- (void)_updateViewsForContentExpansionState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
-  v6 = v5;
-  if (v3)
+  stateCopy = state;
+  learnMoreButton = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreButton];
+  v6 = learnMoreButton;
+  if (stateCopy)
   {
-    [v5 setHidden:1];
+    [learnMoreButton setHidden:1];
 
-    v7 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
-    [v7 setHidden:0];
+    learnMoreContentView = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
+    [learnMoreContentView setHidden:0];
 
     v8 = MEMORY[0x277CCAAD0];
-    v9 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreCollapsedConstraints];
-    [v8 deactivateConstraints:v9];
+    learnMoreCollapsedConstraints = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreCollapsedConstraints];
+    [v8 deactivateConstraints:learnMoreCollapsedConstraints];
 
     v10 = MEMORY[0x277CCAAD0];
     [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreExpandedConstraints];
@@ -443,14 +443,14 @@ void __120__HROnboardingAtrialFibrillationIntroViewController__submitOnboardingU
 
   else
   {
-    [v5 setHidden:0];
+    [learnMoreButton setHidden:0];
 
-    v11 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
-    [v11 setHidden:1];
+    learnMoreContentView2 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreContentView];
+    [learnMoreContentView2 setHidden:1];
 
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreExpandedConstraints];
-    [v12 deactivateConstraints:v13];
+    learnMoreExpandedConstraints = [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreExpandedConstraints];
+    [v12 deactivateConstraints:learnMoreExpandedConstraints];
 
     v10 = MEMORY[0x277CCAAD0];
     [(HROnboardingAtrialFibrillationIntroViewController *)self learnMoreCollapsedConstraints];
@@ -459,25 +459,25 @@ void __120__HROnboardingAtrialFibrillationIntroViewController__submitOnboardingU
   [v10 activateConstraints:?];
 }
 
-- (void)_presentFeatureAlertWithMessage:(id)a3
+- (void)_presentFeatureAlertWithMessage:(id)message
 {
-  v7 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:a3 preferredStyle:1];
+  v7 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:message preferredStyle:1];
   v4 = MEMORY[0x277D750F8];
-  v5 = [(HROnboardingAtrialFibrillationIntroViewController *)self locationFeatureAlertAckButtonString];
-  v6 = [v4 actionWithTitle:v5 style:1 handler:0];
+  locationFeatureAlertAckButtonString = [(HROnboardingAtrialFibrillationIntroViewController *)self locationFeatureAlertAckButtonString];
+  v6 = [v4 actionWithTitle:locationFeatureAlertAckButtonString style:1 handler:0];
   [v7 addAction:v6];
 
   [(HROnboardingAtrialFibrillationIntroViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  if (!a4)
+  if (!index)
   {
     v15 = v4;
     v16 = v5;
-    v8 = [a3 buttons];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    buttons = [view buttons];
+    v9 = [buttons objectAtIndexedSubscript:0];
 
     [v9 setEnabled:0];
     v11[0] = MEMORY[0x277D85DD0];
@@ -485,7 +485,7 @@ void __120__HROnboardingAtrialFibrillationIntroViewController__submitOnboardingU
     v11[2] = __91__HROnboardingAtrialFibrillationIntroViewController_stackedButtonView_didTapButtonAtIndex___block_invoke;
     v11[3] = &unk_2796FB8C8;
     v12 = v9;
-    v13 = self;
+    selfCopy = self;
     v14 = a2;
     v10 = v9;
     [(HROnboardingAtrialFibrillationIntroViewController *)self _isAtrialFibrillationDetectionOnboardingAvailableInCurrentLocationForActiveWatch:v11];
@@ -608,18 +608,18 @@ LABEL_29:
   }
 }
 
-- (void)_isAtrialFibrillationDetectionOnboardingAvailableInCurrentLocationForActiveWatch:(id)a3
+- (void)_isAtrialFibrillationDetectionOnboardingAvailableInCurrentLocationForActiveWatch:(id)watch
 {
-  v5 = a3;
+  watchCopy = watch;
   v6 = HKPreferredRegulatoryDomainProvider();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __134__HROnboardingAtrialFibrillationIntroViewController__isAtrialFibrillationDetectionOnboardingAvailableInCurrentLocationForActiveWatch___block_invoke;
   v8[3] = &unk_2796FB8F0;
   v8[4] = self;
-  v9 = v5;
+  v9 = watchCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = watchCopy;
   [v6 fetchMobileCountryCodeFromCellularWithCompletion:v8];
 }
 
@@ -721,8 +721,8 @@ void __134__HROnboardingAtrialFibrillationIntroViewController__isAtrialFibrillat
 
 - (void)presentLearnMoreAlertWithFeatureDisabledMessage
 {
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self featureDisabledBodyString];
-  [(HROnboardingAtrialFibrillationIntroViewController *)self presentLearnMoreAlertWithMessage:v3 learnMoreTapped:&__block_literal_global_1];
+  featureDisabledBodyString = [(HROnboardingAtrialFibrillationIntroViewController *)self featureDisabledBodyString];
+  [(HROnboardingAtrialFibrillationIntroViewController *)self presentLearnMoreAlertWithMessage:featureDisabledBodyString learnMoreTapped:&__block_literal_global_1];
 }
 
 void __100__HROnboardingAtrialFibrillationIntroViewController_presentLearnMoreAlertWithFeatureDisabledMessage__block_invoke()
@@ -734,24 +734,24 @@ void __100__HROnboardingAtrialFibrillationIntroViewController_presentLearnMoreAl
 
 - (void)_presentLocationNotFoundAlert
 {
-  v4 = [(HROnboardingAtrialFibrillationIntroViewController *)self locationNotFoundPromptMessageString];
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self locationNotFoundPromptTitleString];
-  [(HROnboardingAtrialFibrillationIntroViewController *)self presentAlertWithMessage:v4 title:v3];
+  locationNotFoundPromptMessageString = [(HROnboardingAtrialFibrillationIntroViewController *)self locationNotFoundPromptMessageString];
+  locationNotFoundPromptTitleString = [(HROnboardingAtrialFibrillationIntroViewController *)self locationNotFoundPromptTitleString];
+  [(HROnboardingAtrialFibrillationIntroViewController *)self presentAlertWithMessage:locationNotFoundPromptMessageString title:locationNotFoundPromptTitleString];
 }
 
 - (id)_titleFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self _titleFontTextStyle];
-  v4 = [v2 hk_scalableFontForTextStyle:v3 symbolicTraits:2];
+  _titleFontTextStyle = [(HROnboardingAtrialFibrillationIntroViewController *)self _titleFontTextStyle];
+  v4 = [v2 hk_scalableFontForTextStyle:_titleFontTextStyle symbolicTraits:2];
 
   return v4;
 }
 
 - (double)_assetImageBottomToTitleFirstBaseline
 {
-  v2 = [(HROnboardingAtrialFibrillationIntroViewController *)self _titleFont];
-  [v2 _scaledValueForValue:54.0];
+  _titleFont = [(HROnboardingAtrialFibrillationIntroViewController *)self _titleFont];
+  [_titleFont _scaledValueForValue:54.0];
   v4 = v3;
 
   return v4;
@@ -760,16 +760,16 @@ void __100__HROnboardingAtrialFibrillationIntroViewController_presentLearnMoreAl
 - (id)_bodyFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFontTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _bodyFontTextStyle = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFontTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_bodyFontTextStyle];
 
   return v4;
 }
 
 - (double)_titleLastBaselineToBodyFirstBaseline
 {
-  v2 = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:32.0];
+  _bodyFont = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:32.0];
   v4 = v3;
 
   return v4;
@@ -778,16 +778,16 @@ void __100__HROnboardingAtrialFibrillationIntroViewController_presentLearnMoreAl
 - (id)_footnoteFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingAtrialFibrillationIntroViewController *)self _footnoteTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _footnoteTextStyle = [(HROnboardingAtrialFibrillationIntroViewController *)self _footnoteTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_footnoteTextStyle];
 
   return v4;
 }
 
 - (double)_viewLastBaselineToContinueButton
 {
-  v2 = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:6.0];
+  _bodyFont = [(HROnboardingAtrialFibrillationIntroViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:6.0];
   v4 = v3;
 
   return v4;
@@ -889,10 +889,10 @@ void __100__HROnboardingAtrialFibrillationIntroViewController_presentLearnMoreAl
   return v3;
 }
 
-- (id)axidForElementWithString:(id)a3
+- (id)axidForElementWithString:(id)string
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Onboarding.%@", a3];
-  v4 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:2 suffix:v3];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"Onboarding.%@", string];
+  v4 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:2 suffix:string];
 
   return v4;
 }

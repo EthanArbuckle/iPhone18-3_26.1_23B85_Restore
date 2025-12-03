@@ -1,6 +1,6 @@
 @interface TagFeedViewerDataManager
 - (_TtC7NewsUI224TagFeedViewerDataManager)init;
-- (void)privateChannelMembershipController:(id)a3 didAddMemberships:(id)a4 changedMemberships:(id)a5 removedMemberships:(id)a6;
+- (void)privateChannelMembershipController:(id)controller didAddMemberships:(id)memberships changedMemberships:(id)changedMemberships removedMemberships:(id)removedMemberships;
 @end
 
 @implementation TagFeedViewerDataManager
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)privateChannelMembershipController:(id)a3 didAddMemberships:(id)a4 changedMemberships:(id)a5 removedMemberships:(id)a6
+- (void)privateChannelMembershipController:(id)controller didAddMemberships:(id)memberships changedMemberships:(id)changedMemberships removedMemberships:(id)removedMemberships
 {
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_21999C4C0();
 }
 

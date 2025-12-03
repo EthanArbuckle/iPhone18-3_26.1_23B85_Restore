@@ -1,35 +1,35 @@
 @interface CKTranscriptBackgroundAnalytics
-+ (void)trackBackgroundChangedFrom:(id)a3 to:(id)a4 inConversation:(id)a5 context:(int64_t)a6;
-+ (void)trackBackgroundChangedFrom:(id)a3 to:(id)a4 withNewPosterConfiguration:(id)a5 inConversation:(id)a6 context:(int64_t)a7;
-+ (void)trackTranscriptBackgroundChangedIn:(id)a3 withOutboundBackground:(id)a4;
++ (void)trackBackgroundChangedFrom:(id)from to:(id)to inConversation:(id)conversation context:(int64_t)context;
++ (void)trackBackgroundChangedFrom:(id)from to:(id)to withNewPosterConfiguration:(id)configuration inConversation:(id)conversation context:(int64_t)context;
++ (void)trackTranscriptBackgroundChangedIn:(id)in withOutboundBackground:(id)background;
 - (_TtC7ChatKit31CKTranscriptBackgroundAnalytics)init;
 @end
 
 @implementation CKTranscriptBackgroundAnalytics
 
-+ (void)trackTranscriptBackgroundChangedIn:(id)a3 withOutboundBackground:(id)a4
++ (void)trackTranscriptBackgroundChangedIn:(id)in withOutboundBackground:(id)background
 {
-  v5 = a3;
-  v7 = a4;
-  v6 = [v5 transcriptBackground];
-  _s7ChatKit31CKTranscriptBackgroundAnalyticsC05trackD7Changed4from2to2in7contextyAA0cD0CSg_AKSo14CKConversationCAC13ChangeContextOtFZ_0(a4, v6, v5, 2);
+  inCopy = in;
+  backgroundCopy = background;
+  transcriptBackground = [inCopy transcriptBackground];
+  _s7ChatKit31CKTranscriptBackgroundAnalyticsC05trackD7Changed4from2to2in7contextyAA0cD0CSg_AKSo14CKConversationCAC13ChangeContextOtFZ_0(background, transcriptBackground, inCopy, 2);
 }
 
-+ (void)trackBackgroundChangedFrom:(id)a3 to:(id)a4 inConversation:(id)a5 context:(int64_t)a6
++ (void)trackBackgroundChangedFrom:(id)from to:(id)to inConversation:(id)conversation context:(int64_t)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  _s7ChatKit31CKTranscriptBackgroundAnalyticsC05trackD7Changed4from2to2in7contextyAA0cD0CSg_AKSo14CKConversationCAC13ChangeContextOtFZ_0(a3, a4, v12, a6);
+  fromCopy = from;
+  toCopy = to;
+  conversationCopy = conversation;
+  _s7ChatKit31CKTranscriptBackgroundAnalyticsC05trackD7Changed4from2to2in7contextyAA0cD0CSg_AKSo14CKConversationCAC13ChangeContextOtFZ_0(from, to, conversationCopy, context);
 }
 
-+ (void)trackBackgroundChangedFrom:(id)a3 to:(id)a4 withNewPosterConfiguration:(id)a5 inConversation:(id)a6 context:(int64_t)a7
++ (void)trackBackgroundChangedFrom:(id)from to:(id)to withNewPosterConfiguration:(id)configuration inConversation:(id)conversation context:(int64_t)context
 {
-  if (a5)
+  if (configuration)
   {
-    v11 = a3;
-    v12 = a4;
-    v13 = a6;
+    fromCopy = from;
+    toCopy = to;
+    conversationCopy = conversation;
     swift_unknownObjectRetain();
     sub_190D58140();
     swift_unknownObjectRelease();
@@ -38,12 +38,12 @@
   else
   {
     memset(v17, 0, sizeof(v17));
-    v14 = a3;
-    v15 = a4;
-    v16 = a6;
+    fromCopy2 = from;
+    toCopy2 = to;
+    conversationCopy2 = conversation;
   }
 
-  _s7ChatKit31CKTranscriptBackgroundAnalyticsC05trackD7Changed4from2to26withNewPosterConfiguration14inConversation7contextyAA0cD0CSg_ALypSgSo14CKConversationCAC13ChangeContextOtFZ_0(a3, a4, v17, a6, a7);
+  _s7ChatKit31CKTranscriptBackgroundAnalyticsC05trackD7Changed4from2to26withNewPosterConfiguration14inConversation7contextyAA0cD0CSg_ALypSgSo14CKConversationCAC13ChangeContextOtFZ_0(from, to, v17, conversation, context);
 
   sub_19021E7D8(v17);
 }

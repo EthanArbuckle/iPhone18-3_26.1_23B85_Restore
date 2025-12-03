@@ -1,15 +1,15 @@
 @interface BLSHPendingBacklightRamp
-- (BLSHPendingBacklightRamp)initWithBacklightRampBlock:(id)a3;
+- (BLSHPendingBacklightRamp)initWithBacklightRampBlock:(id)block;
 - (BOOL)hasPendingRamp;
-- (BOOL)performBacklightRampIfNeededWithDuration:(double)a3;
+- (BOOL)performBacklightRampIfNeededWithDuration:(double)duration;
 - (id)description;
 @end
 
 @implementation BLSHPendingBacklightRamp
 
-- (BLSHPendingBacklightRamp)initWithBacklightRampBlock:(id)a3
+- (BLSHPendingBacklightRamp)initWithBacklightRampBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = BLSHPendingBacklightRamp;
   v5 = [(BLSHPendingBacklightRamp *)&v10 init];
@@ -17,7 +17,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [blockCopy copy];
     lock_backlightRampBlock = v6->_lock_backlightRampBlock;
     v6->_lock_backlightRampBlock = v7;
   }
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (BOOL)performBacklightRampIfNeededWithDuration:(double)a3
+- (BOOL)performBacklightRampIfNeededWithDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = MEMORY[0x223D70730](self->_lock_backlightRampBlock);
@@ -43,7 +43,7 @@
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v5[2](v5, a3);
+    v5[2](v5, duration);
   }
 
   return v5 != 0;
@@ -55,9 +55,9 @@
   os_unfair_lock_lock(&self->_lock);
   v4 = [v3 appendPointer:self->_lock_backlightRampBlock withName:@"backlightRamp"];
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

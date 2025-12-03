@@ -1,15 +1,15 @@
 @interface SiriTTSWordTimingInfo
 - (_NSRange)textRange;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriTTSWordTimingInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1AC5444(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1AC5444(coderCopy);
 }
 
 - (_NSRange)textRange

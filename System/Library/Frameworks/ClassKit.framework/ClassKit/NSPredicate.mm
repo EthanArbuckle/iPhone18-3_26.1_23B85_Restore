@@ -1,49 +1,49 @@
 @interface NSPredicate
 - (NSMapTable)pd_keypathValueMap;
-- (id)pd_andCompoundWith:(id)a3;
-- (id)pd_scopeToKeyPath:(id)a3 value:(id)a4;
+- (id)pd_andCompoundWith:(id)with;
+- (id)pd_scopeToKeyPath:(id)path value:(id)value;
 @end
 
 @implementation NSPredicate
 
-- (id)pd_andCompoundWith:(id)a3
+- (id)pd_andCompoundWith:(id)with
 {
-  if (a3)
+  if (with)
   {
-    v4 = a3;
+    withCopy = with;
     v5 = [NSCompoundPredicate alloc];
     v9[0] = self;
-    v9[1] = v4;
+    v9[1] = withCopy;
     v6 = [NSArray arrayWithObjects:v9 count:2];
 
-    v7 = [v5 initWithType:1 subpredicates:v6];
+    selfCopy = [v5 initWithType:1 subpredicates:v6];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)pd_scopeToKeyPath:(id)a3 value:(id)a4
+- (id)pd_scopeToKeyPath:(id)path value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 stringByAppendingString:@" = %@"];
-  v9 = [NSPredicate predicateWithFormat:v8, v6];
+  valueCopy = value;
+  pathCopy = path;
+  v8 = [pathCopy stringByAppendingString:@" = %@"];
+  valueCopy = [NSPredicate predicateWithFormat:v8, valueCopy];
 
-  v10 = [(NSPredicate *)self pd_filterSubpredicatesForKeyPath:v7];
+  v10 = [(NSPredicate *)self pd_filterSubpredicatesForKeyPath:pathCopy];
 
   if (v10)
   {
-    v11 = [v10 pd_andCompoundWith:v9];
+    v11 = [v10 pd_andCompoundWith:valueCopy];
   }
 
   else
   {
-    v11 = v9;
+    v11 = valueCopy;
   }
 
   v12 = v11;

@@ -1,21 +1,21 @@
 @interface BlockQuoteLayoutFragment
 - (CGRect)renderingSurfaceBounds;
-- (_TtC5CAFUI24BlockQuoteLayoutFragment)initWithCoder:(id)a3;
-- (_TtC5CAFUI24BlockQuoteLayoutFragment)initWithTextElement:(id)a3 range:(id)a4;
-- (void)drawAtPoint:(CGPoint)a3 inContext:(CGContext *)a4;
+- (_TtC5CAFUI24BlockQuoteLayoutFragment)initWithCoder:(id)coder;
+- (_TtC5CAFUI24BlockQuoteLayoutFragment)initWithTextElement:(id)element range:(id)range;
+- (void)drawAtPoint:(CGPoint)point inContext:(CGContext *)context;
 @end
 
 @implementation BlockQuoteLayoutFragment
 
 - (CGRect)renderingSurfaceBounds
 {
-  v2 = self;
+  selfCopy = self;
   BlockQuoteLayoutFragment.tightTextBounds.getter();
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v23.receiver = v2;
+  v23.receiver = selfCopy;
   v23.super_class = type metadata accessor for BlockQuoteLayoutFragment();
   [(BlockQuoteLayoutFragment *)&v23 renderingSurfaceBounds];
   v27.origin.x = v11;
@@ -43,30 +43,30 @@
   return result;
 }
 
-- (void)drawAtPoint:(CGPoint)a3 inContext:(CGContext *)a4
+- (void)drawAtPoint:(CGPoint)point inContext:(CGContext *)context
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  BlockQuoteLayoutFragment.draw(at:in:)(__PAIR128__(*&y, *&x), v7);
+  y = point.y;
+  x = point.x;
+  contextCopy = context;
+  selfCopy = self;
+  BlockQuoteLayoutFragment.draw(at:in:)(__PAIR128__(*&y, *&x), contextCopy);
 }
 
-- (_TtC5CAFUI24BlockQuoteLayoutFragment)initWithTextElement:(id)a3 range:(id)a4
+- (_TtC5CAFUI24BlockQuoteLayoutFragment)initWithTextElement:(id)element range:(id)range
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC5CAFUI24BlockQuoteLayoutFragment_barWidth) = 0x4010000000000000;
   v7.receiver = self;
   v7.super_class = type metadata accessor for BlockQuoteLayoutFragment();
-  return [(BlockQuoteLayoutFragment *)&v7 initWithTextElement:a3 range:a4];
+  return [(BlockQuoteLayoutFragment *)&v7 initWithTextElement:element range:range];
 }
 
-- (_TtC5CAFUI24BlockQuoteLayoutFragment)initWithCoder:(id)a3
+- (_TtC5CAFUI24BlockQuoteLayoutFragment)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC5CAFUI24BlockQuoteLayoutFragment_barWidth) = 0x4010000000000000;
   v7.receiver = self;
   v7.super_class = type metadata accessor for BlockQuoteLayoutFragment();
-  v4 = a3;
-  v5 = [(BlockQuoteLayoutFragment *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(BlockQuoteLayoutFragment *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

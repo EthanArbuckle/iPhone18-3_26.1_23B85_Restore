@@ -1,6 +1,6 @@
 @interface _CNDonationToolLogger
 - (_CNDonationToolLogger)init;
-- (void)commandArgs:(id)a3;
+- (void)commandArgs:(id)args;
 @end
 
 @implementation _CNDonationToolLogger
@@ -22,18 +22,18 @@
   return v2;
 }
 
-- (void)commandArgs:(id)a3
+- (void)commandArgs:(id)args
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [a3 _cn_map:&__block_literal_global_5];
+  v4 = [args _cn_map:&__block_literal_global_5];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
-  v6 = [(_CNDonationToolLogger *)self log_t];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  log_t = [(_CNDonationToolLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_INFO))
   {
     v8 = 138543362;
     v9 = v5;
-    _os_log_impl(&dword_2258E5000, v6, OS_LOG_TYPE_INFO, "Command invoked with args: [ %{public}@ ]", &v8, 0xCu);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_INFO, "Command invoked with args: [ %{public}@ ]", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];

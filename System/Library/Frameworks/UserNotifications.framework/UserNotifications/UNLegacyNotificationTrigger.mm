@@ -1,54 +1,54 @@
 @interface UNLegacyNotificationTrigger
-+ (id)triggerWithDate:(id)a3 timeZone:(id)a4 repeatInterval:(unint64_t)a5 repeatCalendar:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)willTriggerAfterDate:(id)a3 withRequestedDate:(id)a4;
-- (UNLegacyNotificationTrigger)initWithCoder:(id)a3;
++ (id)triggerWithDate:(id)date timeZone:(id)zone repeatInterval:(unint64_t)interval repeatCalendar:(id)calendar;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)willTriggerAfterDate:(id)date withRequestedDate:(id)requestedDate;
+- (UNLegacyNotificationTrigger)initWithCoder:(id)coder;
 - (double)_retroactiveTriggerHysteresis;
-- (id)_initWithDate:(id)a3 timeZone:(id)a4 remainingRepeatCount:(int)a5 totalRepeatCount:(int)a6 repeatInterval:(unint64_t)a7 repeatCalendar:(id)a8;
-- (id)_nextTriggerDateAfterDate:(id)a3 withRequestedDate:(id)a4 defaultTimeZone:(id)a5;
+- (id)_initWithDate:(id)date timeZone:(id)zone remainingRepeatCount:(int)count totalRepeatCount:(int)repeatCount repeatInterval:(unint64_t)interval repeatCalendar:(id)calendar;
+- (id)_nextTriggerDateAfterDate:(id)date withRequestedDate:(id)requestedDate defaultTimeZone:(id)zone;
 - (id)description;
-- (id)nextTriggerDateAfterDate:(id)a3 withRequestedDate:(id)a4;
+- (id)nextTriggerDateAfterDate:(id)date withRequestedDate:(id)requestedDate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNLegacyNotificationTrigger
 
-+ (id)triggerWithDate:(id)a3 timeZone:(id)a4 repeatInterval:(unint64_t)a5 repeatCalendar:(id)a6
++ (id)triggerWithDate:(id)date timeZone:(id)zone repeatInterval:(unint64_t)interval repeatCalendar:(id)calendar
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] _initWithDate:v12 timeZone:v11 remainingRepeatCount:0x80000000 totalRepeatCount:0x80000000 repeatInterval:a5 repeatCalendar:v10];
+  calendarCopy = calendar;
+  zoneCopy = zone;
+  dateCopy = date;
+  v13 = [[self alloc] _initWithDate:dateCopy timeZone:zoneCopy remainingRepeatCount:0x80000000 totalRepeatCount:0x80000000 repeatInterval:interval repeatCalendar:calendarCopy];
 
   return v13;
 }
 
-- (id)_initWithDate:(id)a3 timeZone:(id)a4 remainingRepeatCount:(int)a5 totalRepeatCount:(int)a6 repeatInterval:(unint64_t)a7 repeatCalendar:(id)a8
+- (id)_initWithDate:(id)date timeZone:(id)zone remainingRepeatCount:(int)count totalRepeatCount:(int)repeatCount repeatInterval:(unint64_t)interval repeatCalendar:(id)calendar
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  dateCopy = date;
+  zoneCopy = zone;
+  calendarCopy = calendar;
   v25.receiver = self;
   v25.super_class = UNLegacyNotificationTrigger;
-  v17 = [(UNNotificationTrigger *)&v25 _initWithRepeats:a7 != 0];
+  v17 = [(UNNotificationTrigger *)&v25 _initWithRepeats:interval != 0];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [dateCopy copy];
     v19 = v17[3];
     v17[3] = v18;
 
-    v20 = [v15 copy];
+    v20 = [zoneCopy copy];
     v21 = v17[4];
     v17[4] = v20;
 
-    *(v17 + 3) = a5;
-    v22 = [v16 copy];
+    *(v17 + 3) = count;
+    v22 = [calendarCopy copy];
     v23 = v17[5];
     v17[5] = v22;
 
-    v17[6] = a7;
-    *(v17 + 4) = a6;
+    v17[6] = interval;
+    *(v17 + 4) = repeatCount;
   }
 
   return v17;
@@ -59,36 +59,36 @@
   v14.receiver = self;
   v14.super_class = UNLegacyNotificationTrigger;
   v3 = [(UNNotificationTrigger *)&v14 hash];
-  v4 = [(UNLegacyNotificationTrigger *)self date];
-  v5 = [v4 hash];
-  v6 = [(UNLegacyNotificationTrigger *)self timeZone];
-  v7 = v5 ^ [v6 hash];
+  date = [(UNLegacyNotificationTrigger *)self date];
+  v5 = [date hash];
+  timeZone = [(UNLegacyNotificationTrigger *)self timeZone];
+  v7 = v5 ^ [timeZone hash];
   v8 = v7 ^ [(UNLegacyNotificationTrigger *)self remainingRepeatCount];
-  v9 = [(UNLegacyNotificationTrigger *)self repeatCalendar];
-  v10 = v8 ^ [v9 hash];
+  repeatCalendar = [(UNLegacyNotificationTrigger *)self repeatCalendar];
+  v10 = v8 ^ [repeatCalendar hash];
   v11 = v10 ^ [(UNLegacyNotificationTrigger *)self repeatInterval]^ v3;
-  v12 = [(UNLegacyNotificationTrigger *)self totalRepeatCount];
+  totalRepeatCount = [(UNLegacyNotificationTrigger *)self totalRepeatCount];
 
-  return v11 ^ v12;
+  return v11 ^ totalRepeatCount;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v16.receiver = self, v16.super_class = UNLegacyNotificationTrigger, [(UNNotificationTrigger *)&v16 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v16.receiver = self, v16.super_class = UNLegacyNotificationTrigger, [(UNNotificationTrigger *)&v16 isEqual:equalCopy]))
   {
-    v5 = [(UNLegacyNotificationTrigger *)self date];
-    v6 = [v4 date];
-    if (UNEqualObjects(v5, v6))
+    date = [(UNLegacyNotificationTrigger *)self date];
+    date2 = [equalCopy date];
+    if (UNEqualObjects(date, date2))
     {
-      v7 = [(UNLegacyNotificationTrigger *)self repeatCalendar];
-      v8 = [v4 repeatCalendar];
-      if (UNEqualObjects(v7, v8) && (v9 = -[UNLegacyNotificationTrigger remainingRepeatCount](self, "remainingRepeatCount"), v9 == [v4 remainingRepeatCount]) && (v10 = -[UNLegacyNotificationTrigger repeatInterval](self, "repeatInterval"), v10 == objc_msgSend(v4, "repeatInterval")) && (v11 = -[UNLegacyNotificationTrigger totalRepeatCount](self, "totalRepeatCount"), v11 == objc_msgSend(v4, "totalRepeatCount")))
+      repeatCalendar = [(UNLegacyNotificationTrigger *)self repeatCalendar];
+      repeatCalendar2 = [equalCopy repeatCalendar];
+      if (UNEqualObjects(repeatCalendar, repeatCalendar2) && (v9 = -[UNLegacyNotificationTrigger remainingRepeatCount](self, "remainingRepeatCount"), v9 == [equalCopy remainingRepeatCount]) && (v10 = -[UNLegacyNotificationTrigger repeatInterval](self, "repeatInterval"), v10 == objc_msgSend(equalCopy, "repeatInterval")) && (v11 = -[UNLegacyNotificationTrigger totalRepeatCount](self, "totalRepeatCount"), v11 == objc_msgSend(equalCopy, "totalRepeatCount")))
       {
-        v12 = [(UNLegacyNotificationTrigger *)self timeZone];
-        v13 = [v4 timeZone];
-        v14 = UNEqualObjects(v12, v13);
+        timeZone = [(UNLegacyNotificationTrigger *)self timeZone];
+        timeZone2 = [equalCopy timeZone];
+        v14 = UNEqualObjects(timeZone, timeZone2);
       }
 
       else
@@ -117,22 +117,22 @@
   v3 = objc_opt_class();
   [(UNNotificationTrigger *)self repeats];
   v4 = NSStringFromBOOL();
-  v5 = [(UNLegacyNotificationTrigger *)self date];
-  v6 = [(UNLegacyNotificationTrigger *)self timeZone];
-  v7 = [(UNLegacyNotificationTrigger *)self remainingRepeatCount];
-  v8 = [(UNLegacyNotificationTrigger *)self totalRepeatCount];
-  v9 = [(UNLegacyNotificationTrigger *)self repeatInterval];
-  v10 = [(UNLegacyNotificationTrigger *)self repeatCalendar];
-  v11 = [v10 calendarIdentifier];
-  v12 = [v14 stringWithFormat:@"<%@: %p repeats: %@, date: %@, timeZone: %@, remainingRepeatCount: %ld, totalRepeatCount: %ld, repeatInterval: %ld, repeatCalendar: %@>", v3, self, v4, v5, v6, v7, v8, v9, v11];;
+  date = [(UNLegacyNotificationTrigger *)self date];
+  timeZone = [(UNLegacyNotificationTrigger *)self timeZone];
+  remainingRepeatCount = [(UNLegacyNotificationTrigger *)self remainingRepeatCount];
+  totalRepeatCount = [(UNLegacyNotificationTrigger *)self totalRepeatCount];
+  repeatInterval = [(UNLegacyNotificationTrigger *)self repeatInterval];
+  repeatCalendar = [(UNLegacyNotificationTrigger *)self repeatCalendar];
+  calendarIdentifier = [repeatCalendar calendarIdentifier];
+  v12 = [v14 stringWithFormat:@"<%@: %p repeats: %@, date: %@, timeZone: %@, remainingRepeatCount: %ld, totalRepeatCount: %ld, repeatInterval: %ld, repeatCalendar: %@>", v3, self, v4, date, timeZone, remainingRepeatCount, totalRepeatCount, repeatInterval, calendarIdentifier];;
 
   return v12;
 }
 
-- (BOOL)willTriggerAfterDate:(id)a3 withRequestedDate:(id)a4
+- (BOOL)willTriggerAfterDate:(id)date withRequestedDate:(id)requestedDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  requestedDateCopy = requestedDate;
   if ([(UNNotificationTrigger *)self repeats]&& ![(UNLegacyNotificationTrigger *)self remainingRepeatCount])
   {
     v8 = 0;
@@ -142,36 +142,36 @@
   {
     v10.receiver = self;
     v10.super_class = UNLegacyNotificationTrigger;
-    v8 = [(UNNotificationTrigger *)&v10 willTriggerAfterDate:v6 withRequestedDate:v7];
+    v8 = [(UNNotificationTrigger *)&v10 willTriggerAfterDate:dateCopy withRequestedDate:requestedDateCopy];
   }
 
   return v8;
 }
 
-- (id)nextTriggerDateAfterDate:(id)a3 withRequestedDate:(id)a4
+- (id)nextTriggerDateAfterDate:(id)date withRequestedDate:(id)requestedDate
 {
   v6 = MEMORY[0x1E695DFE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultTimeZone];
-  v10 = [(UNLegacyNotificationTrigger *)self _nextTriggerDateAfterDate:v8 withRequestedDate:v7 defaultTimeZone:v9];
+  requestedDateCopy = requestedDate;
+  dateCopy = date;
+  defaultTimeZone = [v6 defaultTimeZone];
+  v10 = [(UNLegacyNotificationTrigger *)self _nextTriggerDateAfterDate:dateCopy withRequestedDate:requestedDateCopy defaultTimeZone:defaultTimeZone];
 
   return v10;
 }
 
-- (id)_nextTriggerDateAfterDate:(id)a3 withRequestedDate:(id)a4 defaultTimeZone:(id)a5
+- (id)_nextTriggerDateAfterDate:(id)date withRequestedDate:(id)requestedDate defaultTimeZone:(id)zone
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dateCopy = date;
+  requestedDateCopy = requestedDate;
+  zoneCopy = zone;
+  if (!dateCopy)
   {
     [UNLegacyNotificationTrigger _nextTriggerDateAfterDate:withRequestedDate:defaultTimeZone:];
   }
 
-  v11 = [(UNLegacyNotificationTrigger *)self repeatInterval];
-  v12 = v11;
-  if (v11)
+  repeatInterval = [(UNLegacyNotificationTrigger *)self repeatInterval];
+  v12 = repeatInterval;
+  if (repeatInterval)
   {
     v13 = 0;
     do
@@ -185,39 +185,39 @@
       ++v13;
     }
 
-    while (v14 != v11);
-    if (v14 != v11)
+    while (v14 != repeatInterval);
+    if (v14 != repeatInterval)
     {
       v19 = 0;
       goto LABEL_39;
     }
   }
 
-  v15 = [(UNLegacyNotificationTrigger *)self date];
-  v16 = [(UNLegacyNotificationTrigger *)self repeatCalendar];
-  v17 = v16;
-  if (v16)
+  date = [(UNLegacyNotificationTrigger *)self date];
+  repeatCalendar = [(UNLegacyNotificationTrigger *)self repeatCalendar];
+  v17 = repeatCalendar;
+  if (repeatCalendar)
   {
-    v18 = v16;
+    currentCalendar = repeatCalendar;
   }
 
   else
   {
-    v18 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   }
 
-  v20 = v18;
+  v20 = currentCalendar;
 
-  v21 = [(UNLegacyNotificationTrigger *)self timeZone];
-  v22 = v21;
-  if (v21 && ([v21 isEqual:v10] & 1) == 0)
+  timeZone = [(UNLegacyNotificationTrigger *)self timeZone];
+  v22 = timeZone;
+  if (timeZone && ([timeZone isEqual:zoneCopy] & 1) == 0)
   {
     v23 = [v20 copy];
     [v23 setTimeZone:v22];
-    v24 = [v23 components:254 fromDate:v15];
+    v24 = [v23 components:254 fromDate:date];
     v25 = [v20 dateFromComponents:v24];
 
-    v15 = v25;
+    date = v25;
   }
 
   v26 = 0;
@@ -266,15 +266,15 @@
     {
       v27 = 240;
 LABEL_33:
-      v28 = [v20 components:v27 fromDate:v15];
+      v28 = [v20 components:v27 fromDate:date];
       v29 = objc_autoreleasePoolPush();
-      v26 = [v20 nextDateAfterDate:v8 matchingComponents:v28 options:512];
+      v26 = [v20 nextDateAfterDate:dateCopy matchingComponents:v28 options:512];
       objc_autoreleasePoolPop(v29);
 
       if (v26)
       {
         v19 = v26;
-        if ([v26 compare:v15] != -1)
+        if ([v26 compare:date] != -1)
         {
           goto LABEL_36;
         }
@@ -300,10 +300,10 @@ LABEL_30:
   }
 
 LABEL_35:
-  v19 = v15;
+  v19 = date;
 
 LABEL_36:
-  if ([v19 compare:v8] != 1)
+  if ([v19 compare:dateCopy] != 1)
   {
 
     v19 = 0;
@@ -327,52 +327,52 @@ LABEL_39:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = UNLegacyNotificationTrigger;
-  v4 = a3;
-  [(UNNotificationTrigger *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UNNotificationTrigger *)&v8 encodeWithCoder:coderCopy];
   v5 = [(UNLegacyNotificationTrigger *)self date:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"date"];
+  [coderCopy encodeObject:v5 forKey:@"date"];
 
-  v6 = [(UNLegacyNotificationTrigger *)self timeZone];
-  [v4 encodeObject:v6 forKey:@"timeZone"];
+  timeZone = [(UNLegacyNotificationTrigger *)self timeZone];
+  [coderCopy encodeObject:timeZone forKey:@"timeZone"];
 
-  [v4 encodeInt32:-[UNLegacyNotificationTrigger remainingRepeatCount](self forKey:{"remainingRepeatCount"), @"remainingRepeatCount"}];
-  v7 = [(UNLegacyNotificationTrigger *)self repeatCalendar];
-  [v4 encodeObject:v7 forKey:@"repeatCalendar"];
+  [coderCopy encodeInt32:-[UNLegacyNotificationTrigger remainingRepeatCount](self forKey:{"remainingRepeatCount"), @"remainingRepeatCount"}];
+  repeatCalendar = [(UNLegacyNotificationTrigger *)self repeatCalendar];
+  [coderCopy encodeObject:repeatCalendar forKey:@"repeatCalendar"];
 
-  [v4 encodeInteger:-[UNLegacyNotificationTrigger repeatInterval](self forKey:{"repeatInterval"), @"repeatInterval"}];
-  [v4 encodeInt32:-[UNLegacyNotificationTrigger totalRepeatCount](self forKey:{"totalRepeatCount"), @"totalRepeatCount"}];
+  [coderCopy encodeInteger:-[UNLegacyNotificationTrigger repeatInterval](self forKey:{"repeatInterval"), @"repeatInterval"}];
+  [coderCopy encodeInt32:-[UNLegacyNotificationTrigger totalRepeatCount](self forKey:{"totalRepeatCount"), @"totalRepeatCount"}];
 }
 
-- (UNLegacyNotificationTrigger)initWithCoder:(id)a3
+- (UNLegacyNotificationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = UNLegacyNotificationTrigger;
-  v5 = [(UNNotificationTrigger *)&v16 initWithCoder:v4];
+  v5 = [(UNNotificationTrigger *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     v7 = [v6 copy];
     date = v5->_date;
     v5->_date = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     v10 = [v9 copy];
     timeZone = v5->_timeZone;
     v5->_timeZone = v10;
 
-    *(&v5->super._repeats + 1) = [v4 decodeInt32ForKey:@"remainingRepeatCount"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"repeatCalendar"];
+    *(&v5->super._repeats + 1) = [coderCopy decodeInt32ForKey:@"remainingRepeatCount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"repeatCalendar"];
     v13 = [v12 copy];
     repeatCalendar = v5->_repeatCalendar;
     v5->_repeatCalendar = v13;
 
-    v5->_repeatInterval = [v4 decodeIntegerForKey:@"repeatInterval"];
-    v5->_remainingRepeatCount = [v4 decodeInt32ForKey:@"totalRepeatCount"];
+    v5->_repeatInterval = [coderCopy decodeIntegerForKey:@"repeatInterval"];
+    v5->_remainingRepeatCount = [coderCopy decodeInt32ForKey:@"totalRepeatCount"];
   }
 
   return v5;

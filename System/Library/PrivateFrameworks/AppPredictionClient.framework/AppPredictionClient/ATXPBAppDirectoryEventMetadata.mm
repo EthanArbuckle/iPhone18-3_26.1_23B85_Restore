@@ -1,6 +1,6 @@
 @interface ATXPBAppDirectoryEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)bundleIdInTopAppsVisible;
@@ -12,9 +12,9 @@
 - (uint64_t)setUserLaunchedAppBeforeLeaving:(uint64_t)result;
 - (uint64_t)userLaunchedAppBeforeLeaving;
 - (unint64_t)hash;
-- (void)copyTo:(_BYTE *)a1;
-- (void)mergeFrom:(_BYTE *)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(_BYTE *)to;
+- (void)mergeFrom:(_BYTE *)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBAppDirectoryEventMetadata
@@ -25,20 +25,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBAppDirectoryEventMetadata;
   v4 = [(ATXPBAppDirectoryEventMetadata *)&v8 description];
-  v5 = [(ATXPBAppDirectoryEventMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBAppDirectoryEventMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_bundleIdInTopAppsVisible];
-    [v3 setObject:v5 forKey:@"bundleIdInTopAppsVisible"];
+    [dictionary setObject:v5 forKey:@"bundleIdInTopAppsVisible"];
 
     has = self->_has;
   }
@@ -46,34 +46,34 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_userLaunchedAppBeforeLeaving];
-    [v3 setObject:v6 forKey:@"userLaunchedAppBeforeLeaving"];
+    [dictionary setObject:v6 forKey:@"userLaunchedAppBeforeLeaving"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -91,17 +91,17 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   if ((*&self->_has & 1) == 0)
   {
-    if ((v4[12] & 1) == 0)
+    if ((equalCopy[12] & 1) == 0)
     {
       goto LABEL_4;
     }
@@ -111,39 +111,39 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ((v4[12] & 1) == 0)
+  if ((equalCopy[12] & 1) == 0)
   {
     goto LABEL_10;
   }
 
   if (self->_bundleIdInTopAppsVisible)
   {
-    if ((v4[8] & 1) == 0)
+    if ((equalCopy[8] & 1) == 0)
     {
       goto LABEL_10;
     }
   }
 
-  else if (v4[8])
+  else if (equalCopy[8])
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  v5 = (v4[12] & 2) == 0;
+  v5 = (equalCopy[12] & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[12] & 2) != 0)
+    if ((equalCopy[12] & 2) != 0)
     {
       if (self->_userLaunchedAppBeforeLeaving)
       {
-        if (v4[9])
+        if (equalCopy[9])
         {
           goto LABEL_18;
         }
       }
 
-      else if (!v4[9])
+      else if (!equalCopy[9])
       {
 LABEL_18:
         v5 = 1;
@@ -257,53 +257,53 @@ LABEL_3:
   return result;
 }
 
-- (void)copyTo:(_BYTE *)a1
+- (void)copyTo:(_BYTE *)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    v4 = a1[12];
+    v4 = to[12];
     if (v4)
     {
-      v3[8] = a1[8];
+      v3[8] = to[8];
       v3[12] |= 1u;
-      v4 = a1[12];
+      v4 = to[12];
     }
 
     if ((v4 & 2) != 0)
     {
-      v3[9] = a1[9];
+      v3[9] = to[9];
       v3[12] |= 2u;
     }
   }
 }
 
-- (void)mergeFrom:(_BYTE *)a1
+- (void)mergeFrom:(_BYTE *)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     v4 = v3[12];
     if (v4)
     {
-      a1[8] = v3[8];
-      a1[12] |= 1u;
+      from[8] = v3[8];
+      from[12] |= 1u;
       v4 = v3[12];
     }
 
     if ((v4 & 2) != 0)
     {
-      a1[9] = v3[9];
-      a1[12] |= 2u;
+      from[9] = v3[9];
+      from[12] |= 2u;
     }
   }
 }
 
 - (uint64_t)bundleIdInTopAppsVisible
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else
@@ -316,9 +316,9 @@ LABEL_3:
 
 - (uint64_t)userLaunchedAppBeforeLeaving
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 9);
+    v1 = *(self + 9);
   }
 
   else

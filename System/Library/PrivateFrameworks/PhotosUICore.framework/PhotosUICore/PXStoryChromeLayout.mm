@@ -1,71 +1,71 @@
 @interface PXStoryChromeLayout
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (PXStoryChromeLayout)initWithViewModel:(id)a3;
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (PXStoryChromeLayout)initWithViewModel:(id)model;
 - (PXStoryRelatedLayoutGenerator)layoutGenerator;
 - (PXStoryViewLayoutSpec)viewLayoutSpec;
-- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)_actionPerformer;
-- (id)_buttonConfigurationForSpriteIndex:(unsigned int)a3;
+- (id)_buttonConfigurationForSpriteIndex:(unsigned int)index;
 - (id)_configurationForBrowserAddPhotosButton;
 - (id)_configurationForBrowserSelectButton;
-- (id)_configurationForButtonWithAction:(SEL)a3 systemImageName:(id)a4 backgroundStyle:(int64_t)a5 axLabelKey:(id)a6;
-- (id)_configurationForButtonWithAction:(SEL)a3 systemImageName:(id)a4 backgroundStyle:(int64_t)a5 label:(id)a6 axLabelKey:(id)a7;
-- (id)_configurationForCloseButtonWithAction:(SEL)a3 systemImageName:(id)a4 axLabelKey:(id)a5;
-- (id)_configurationForLargeButtonWithAction:(SEL)a3 systemImageName:(id)a4 backgroundStyle:(int64_t)a5 axLabelKey:(id)a6;
-- (id)_configurationForShareButtonWithAction:(SEL)a3 systemImageName:(id)a4 backgroundStyle:(int64_t)a5 axLabelKey:(id)a6;
+- (id)_configurationForButtonWithAction:(SEL)action systemImageName:(id)name backgroundStyle:(int64_t)style axLabelKey:(id)key;
+- (id)_configurationForButtonWithAction:(SEL)action systemImageName:(id)name backgroundStyle:(int64_t)style label:(id)label axLabelKey:(id)key;
+- (id)_configurationForCloseButtonWithAction:(SEL)action systemImageName:(id)name axLabelKey:(id)key;
+- (id)_configurationForLargeButtonWithAction:(SEL)action systemImageName:(id)name backgroundStyle:(int64_t)style axLabelKey:(id)key;
+- (id)_configurationForShareButtonWithAction:(SEL)action systemImageName:(id)name backgroundStyle:(int64_t)style axLabelKey:(id)key;
 - (id)_possiblyAccessibleSpriteIndexes;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index;
 - (id)axVisibleSpriteIndexes;
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)mainLayoutSpec;
 - (id)preferredFocusLayouts;
 - (id)preferredFocusSpriteIndexes;
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)a3;
-- (unsigned)_addButtonForChromeItem:(unint64_t)a3 isSupported:(BOOL)a4;
-- (unsigned)_addEdgeHighlightForChromeItem:(unint64_t)a3;
-- (unsigned)_addLabelForChromeItem:(unint64_t)a3 isSupported:(BOOL)a4;
-- (unsigned)_addSpriteForChromeItemController:(id)a3 mediaKind:(unsigned __int8)a4 presentationType:(unsigned __int8)a5;
-- (void)_configureDefaultContentLayout:(id)a3;
-- (void)_configureUnifiedContentLayout:(id)a3;
-- (void)_handleAspectModeButton:(id)a3;
-- (void)_handleAutoEditButton:(id)a3;
-- (void)_handleBrowserAddPhotosButton:(id)a3;
-- (void)_handleBrowserGridButton:(id)a3;
-- (void)_handleBrowserSelectButton:(id)a3;
-- (void)_handleCloseButton:(id)a3;
-- (void)_handleEditColorGradeButton:(id)a3;
-- (void)_handleEditMusicButton:(id)a3;
-- (void)_handleErrorIndicator:(id)a3;
-- (void)_handleFavoriteButton:(id)a3;
-- (void)_handleMuteToggleButton:(id)a3;
-- (void)_handlePlayButton:(id)a3;
-- (void)_handleReplayButton:(id)a3;
-- (void)_handleShareButton:(id)a3;
-- (void)_handleToggleViewModeButton:(id)a3;
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)index;
+- (unsigned)_addButtonForChromeItem:(unint64_t)item isSupported:(BOOL)supported;
+- (unsigned)_addEdgeHighlightForChromeItem:(unint64_t)item;
+- (unsigned)_addLabelForChromeItem:(unint64_t)item isSupported:(BOOL)supported;
+- (unsigned)_addSpriteForChromeItemController:(id)controller mediaKind:(unsigned __int8)kind presentationType:(unsigned __int8)type;
+- (void)_configureDefaultContentLayout:(id)layout;
+- (void)_configureUnifiedContentLayout:(id)layout;
+- (void)_handleAspectModeButton:(id)button;
+- (void)_handleAutoEditButton:(id)button;
+- (void)_handleBrowserAddPhotosButton:(id)button;
+- (void)_handleBrowserGridButton:(id)button;
+- (void)_handleBrowserSelectButton:(id)button;
+- (void)_handleCloseButton:(id)button;
+- (void)_handleEditColorGradeButton:(id)button;
+- (void)_handleEditMusicButton:(id)button;
+- (void)_handleErrorIndicator:(id)indicator;
+- (void)_handleFavoriteButton:(id)button;
+- (void)_handleMuteToggleButton:(id)button;
+- (void)_handlePlayButton:(id)button;
+- (void)_handleReplayButton:(id)button;
+- (void)_handleShareButton:(id)button;
+- (void)_handleToggleViewModeButton:(id)button;
 - (void)_invalidateAXGroupRole;
 - (void)_invalidateActionMenu;
 - (void)_invalidateContentAlpha;
 - (void)_invalidateContentLayout;
 - (void)_invalidateMainModel;
 - (void)_menuDidClose;
-- (void)_updateConfigurationUpdatedForPlaybackEnd:(id)a3;
+- (void)_updateConfigurationUpdatedForPlaybackEnd:(id)end;
 - (void)_updateContentAlpha;
 - (void)_updateContentLayout;
 - (void)_updateMainModel;
 - (void)alphaDidChange;
 - (void)didUpdate;
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
-- (void)setAlphaOverride:(id)a3;
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4;
-- (void)setMainModel:(id)a3;
-- (void)setRecipeManager:(id)a3;
+- (void)setAlphaOverride:(id)override;
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference;
+- (void)setMainModel:(id)model;
+- (void)setRecipeManager:(id)manager;
 - (void)update;
 - (void)willUpdate;
 @end
@@ -96,38 +96,38 @@
   return v2;
 }
 
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXStoryChromeLayout *)self viewModel];
-  v11 = [v10 mainModel];
-  if ([v11 viewMode] == 1)
+  infoCopy = info;
+  groupCopy = group;
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  mainModel = [viewModel mainModel];
+  if ([mainModel viewMode] == 1)
   {
-    v12 = [(PXStoryChromeLayout *)self viewModel];
-    [v12 wantsChromeVisible];
+    viewModel2 = [(PXStoryChromeLayout *)self viewModel];
+    [viewModel2 wantsChromeVisible];
   }
 
-  v13 = [(PXStoryChromeLayout *)self axNextResponder];
-  v14 = [v13 axGroup:v9 didRequestToPerformAction:a4 userInfo:v8];
+  axNextResponder = [(PXStoryChromeLayout *)self axNextResponder];
+  v14 = [axNextResponder axGroup:groupCopy didRequestToPerformAction:action userInfo:infoCopy];
 
   return v14;
 }
 
-- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)a3
+- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(PXStoryChromeLayout *)self viewModel];
-  v6 = [v5 wantsChromeVisible];
+  v3 = *&index;
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  wantsChromeVisible = [viewModel wantsChromeVisible];
 
-  if (!v6)
+  if (!wantsChromeVisible)
   {
     return 0;
   }
 
-  v7 = [(PXStoryChromeLayout *)self itemControllers];
+  itemControllers = [(PXStoryChromeLayout *)self itemControllers];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [itemControllers objectForKeyedSubscript:v8];
 
   if (!v9 || (-[PXStoryChromeLayout viewModel](self, "viewModel"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 chromeItems], v12 = objc_msgSend(v9, "chromeItem") & ~v11, v10, v12))
   {
@@ -142,19 +142,19 @@
   return v13;
 }
 
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index
 {
   v11.receiver = self;
   v11.super_class = PXStoryChromeLayout;
   v5 = [(PXStoryChromeLayout *)&v11 axContentInfoAtSpriteIndex:?];
-  if (self->_playButtonSpriteIndex == a3)
+  if (self->_playButtonSpriteIndex == index)
   {
-    v6 = [(PXStoryChromeLayout *)self viewModel];
-    v7 = [v6 desiredPlayState];
+    viewModel = [(PXStoryChromeLayout *)self viewModel];
+    desiredPlayState = [viewModel desiredPlayState];
 
-    if (v7)
+    if (desiredPlayState)
     {
-      if (v7 != 1)
+      if (desiredPlayState != 1)
       {
         v9 = 0;
         goto LABEL_8;
@@ -179,18 +179,18 @@ LABEL_8:
 - (id)axVisibleSpriteIndexes
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v4 = [(PXStoryChromeLayout *)self viewModel];
-  v5 = [v4 chromeItems];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  chromeItems = [viewModel chromeItems];
 
-  v6 = [(PXStoryChromeLayout *)self itemControllers];
+  itemControllers = [(PXStoryChromeLayout *)self itemControllers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__PXStoryChromeLayout_axVisibleSpriteIndexes__block_invoke;
   v9[3] = &unk_1E77375D0;
-  v11 = v5;
+  v11 = chromeItems;
   v7 = v3;
   v10 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
+  [itemControllers enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -211,15 +211,15 @@ void __45__PXStoryChromeLayout_axVisibleSpriteIndexes__block_invoke(uint64_t a1,
   if (!cachePossiblyAccessibleSpriteIndexes)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v5 = [(PXStoryChromeLayout *)self itemControllers];
+    itemControllers = [(PXStoryChromeLayout *)self itemControllers];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __55__PXStoryChromeLayout__possiblyAccessibleSpriteIndexes__block_invoke;
     v13 = &unk_1E77375A8;
-    v14 = self;
+    selfCopy = self;
     v15 = v4;
     v6 = v4;
-    [v5 enumerateKeysAndObjectsUsingBlock:&v10];
+    [itemControllers enumerateKeysAndObjectsUsingBlock:&v10];
 
     v7 = [v6 copy];
     v8 = self->_cachePossiblyAccessibleSpriteIndexes;
@@ -246,14 +246,14 @@ uint64_t __55__PXStoryChromeLayout__possiblyAccessibleSpriteIndexes__block_invok
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v10 = a3;
-  if (ViewModelObservationContext_92630 != a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_92630 != context)
   {
-    if (ItemControllerObservationContext == a5)
+    if (ItemControllerObservationContext == context)
     {
-      if ((a4 & 1) == 0)
+      if ((change & 1) == 0)
       {
         goto LABEL_33;
       }
@@ -263,17 +263,17 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    if (MainModelObservationContext_92631 != a5)
+    if (MainModelObservationContext_92631 != context)
     {
-      if (RecipeManagerObservationContext != a5)
+      if (RecipeManagerObservationContext != context)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v9 handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayout.m" lineNumber:1355 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayout.m" lineNumber:1355 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
 
-      if ((a4 & 0x21) != 0)
+      if ((change & 0x21) != 0)
       {
         [(PXStoryChromeLayout *)self _invalidateActionMenu];
       }
@@ -281,18 +281,18 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    if ((a4 & 0x1000010000) != 0)
+    if ((change & 0x1000010000) != 0)
     {
       [(PXStoryChromeLayout *)self _invalidateContent];
     }
 
-    if ((a4 & 0x40) != 0)
+    if ((change & 0x40) != 0)
     {
       [(PXStoryChromeLayout *)self _invalidateActionMenu];
-      if ((a4 & 0x200000000000) == 0)
+      if ((change & 0x200000000000) == 0)
       {
 LABEL_25:
-        if ((a4 & 0x2000) == 0)
+        if ((change & 0x2000) == 0)
         {
           goto LABEL_26;
         }
@@ -301,17 +301,17 @@ LABEL_25:
       }
     }
 
-    else if ((a4 & 0x200000000000) == 0)
+    else if ((change & 0x200000000000) == 0)
     {
       goto LABEL_25;
     }
 
     [(PXStoryChromeLayout *)self _invalidateActionMenu];
     [(PXStoryChromeLayout *)self _invalidateContent];
-    if ((a4 & 0x2000) == 0)
+    if ((change & 0x2000) == 0)
     {
 LABEL_26:
-      if ((a4 & 0x800000000000000) == 0)
+      if ((change & 0x800000000000000) == 0)
       {
         goto LABEL_33;
       }
@@ -321,7 +321,7 @@ LABEL_26:
 
 LABEL_30:
     [(PXStoryChromeLayout *)self _invalidateContent];
-    if ((a4 & 0x800000000000000) == 0)
+    if ((change & 0x800000000000000) == 0)
     {
       goto LABEL_33;
     }
@@ -331,32 +331,32 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ((a4 & 0x80000) != 0)
+  if ((change & 0x80000) != 0)
   {
     [(PXStoryChromeLayout *)self _invalidateContent];
   }
 
-  if ((a4 & 0x418000000008020) != 0)
+  if ((change & 0x418000000008020) != 0)
   {
     [(PXStoryChromeLayout *)self _invalidateContent];
   }
 
-  if ((a4 & 0x40) != 0)
+  if ((change & 0x40) != 0)
   {
     [(PXStoryChromeLayout *)self _invalidateMainModel];
   }
 
-  if ((a4 & 0x4000) != 0)
+  if ((change & 0x4000) != 0)
   {
     [(PXStoryChromeLayout *)self _invalidateContentAlpha];
   }
 
-  if ((a4 & 0x4140002C02) != 0)
+  if ((change & 0x4140002C02) != 0)
   {
     [(PXStoryChromeLayout *)self _invalidateActionMenu];
   }
 
-  if ((a4 & 0x8000) != 0)
+  if ((change & 0x8000) != 0)
   {
     [(PXStoryChromeLayout *)self _invalidateAXGroupRole];
   }
@@ -364,12 +364,12 @@ LABEL_31:
 LABEL_33:
 }
 
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference
 {
-  if (a3)
+  if (override)
   {
     v5 = MEMORY[0x1E696AD98];
-    [a3 chromeAlpha];
+    [override chromeAlpha];
     v6 = [v5 numberWithDouble:?];
     [(PXStoryChromeLayout *)self setAlphaOverride:v6];
   }
@@ -381,43 +381,43 @@ LABEL_33:
   }
 }
 
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference
 {
-  v5 = a3;
+  placementCopy = placement;
   [(PXStoryChromeLayout *)self alpha];
-  [v5 setChromeAlpha:?];
+  [placementCopy setChromeAlpha:?];
 }
 
-- (void)_handleBrowserSelectButton:(id)a3
+- (void)_handleBrowserSelectButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v5 performActionForChromeActionMenuItem:19 withValue:0 sender:v4 presentationSource:0];
+  buttonCopy = button;
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer performActionForChromeActionMenuItem:19 withValue:0 sender:buttonCopy presentationSource:0];
 }
 
-- (void)_handleBrowserAddPhotosButton:(id)a3
+- (void)_handleBrowserAddPhotosButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v3 presentAssetPicker];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer presentAssetPicker];
 }
 
-- (void)_handleBrowserGridButton:(id)a3
+- (void)_handleBrowserGridButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v3 presentBrowserGrid];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer presentBrowserGrid];
 }
 
-- (void)_handleAutoEditButton:(id)a3
+- (void)_handleAutoEditButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v3 presentStyleSwitcher];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer presentStyleSwitcher];
 }
 
-- (void)_handleToggleViewModeButton:(id)a3
+- (void)_handleToggleViewModeButton:(id)button
 {
-  v4 = [(PXStoryChromeLayout *)self viewModel];
-  v3 = [v4 mainModel];
-  [v3 performChanges:&__block_literal_global_589];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  mainModel = [viewModel mainModel];
+  [mainModel performChanges:&__block_literal_global_589];
 }
 
 void __51__PXStoryChromeLayout__handleToggleViewModeButton___block_invoke(uint64_t a1, void *a2)
@@ -441,11 +441,11 @@ void __51__PXStoryChromeLayout__handleToggleViewModeButton___block_invoke(uint64
   }
 }
 
-- (void)_handleAspectModeButton:(id)a3
+- (void)_handleAspectModeButton:(id)button
 {
-  v4 = [(PXStoryChromeLayout *)self viewModel];
-  v3 = [v4 mainModel];
-  [v3 performChanges:&__block_literal_global_587];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  mainModel = [viewModel mainModel];
+  [mainModel performChanges:&__block_literal_global_587];
 }
 
 void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a1, void *a2)
@@ -454,84 +454,84 @@ void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a
   [v2 setShouldAspectFitCurrentSegment:{objc_msgSend(v2, "shouldAspectFitCurrentSegment") ^ 1}];
 }
 
-- (void)_handleCloseButton:(id)a3
+- (void)_handleCloseButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v3 dismissStoryViewController];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer dismissStoryViewController];
 }
 
-- (void)_handleMuteToggleButton:(id)a3
+- (void)_handleMuteToggleButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v3 toggleMuteState];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer toggleMuteState];
 }
 
-- (void)_handleErrorIndicator:(id)a3
+- (void)_handleErrorIndicator:(id)indicator
 {
-  v4 = a3;
-  v5 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v5 performActionForChromeActionMenuItem:13 withValue:0 sender:v4 presentationSource:0];
+  indicatorCopy = indicator;
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer performActionForChromeActionMenuItem:13 withValue:0 sender:indicatorCopy presentationSource:0];
 }
 
-- (void)_handleFavoriteButton:(id)a3
+- (void)_handleFavoriteButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v3 toggleFavoriteState];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer toggleFavoriteState];
 }
 
-- (void)_handleShareButton:(id)a3
+- (void)_handleShareButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PXStoryChromeLayout *)self viewModel];
-  v6 = [v5 isAtPlaybackEnd];
+  buttonCopy = button;
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  isAtPlaybackEnd = [viewModel isAtPlaybackEnd];
 
-  if (v6)
+  if (isAtPlaybackEnd)
   {
-    v7 = [(PXStoryChromeLayout *)self viewModel];
-    [v7 performChanges:&__block_literal_global_584];
+    viewModel2 = [(PXStoryChromeLayout *)self viewModel];
+    [viewModel2 performChanges:&__block_literal_global_584];
   }
 
-  v8 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v8 presentSharingViewWithSender:v4];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer presentSharingViewWithSender:buttonCopy];
 }
 
-- (void)_handleReplayButton:(id)a3
+- (void)_handleReplayButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self viewModel];
-  [v3 performChanges:&__block_literal_global_582_92640];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_582_92640];
 }
 
-- (void)_handleEditColorGradeButton:(id)a3
+- (void)_handleEditColorGradeButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v3 presentColorGradeEditor];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer presentColorGradeEditor];
 }
 
-- (void)_handleEditMusicButton:(id)a3
+- (void)_handleEditMusicButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self _actionPerformer];
-  [v3 presentMusicEditor];
+  _actionPerformer = [(PXStoryChromeLayout *)self _actionPerformer];
+  [_actionPerformer presentMusicEditor];
 }
 
-- (void)_handlePlayButton:(id)a3
+- (void)_handlePlayButton:(id)button
 {
-  v3 = [(PXStoryChromeLayout *)self viewModel];
-  if ([v3 isAtPlaybackEnd])
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  if ([viewModel isAtPlaybackEnd])
   {
-    [v3 performChanges:&__block_literal_global_92642];
+    [viewModel performChanges:&__block_literal_global_92642];
   }
 
   else
   {
-    v4 = [v3 mainModel];
-    v5 = [v4 desiredPlayState];
+    mainModel = [viewModel mainModel];
+    desiredPlayState = [mainModel desiredPlayState];
     v6 = 1;
-    if (v5)
+    if (desiredPlayState)
     {
-      v6 = v5;
+      v6 = desiredPlayState;
     }
 
-    if (v5 == 1)
+    if (desiredPlayState == 1)
     {
       v6 = 0;
     }
@@ -541,37 +541,37 @@ void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a
     v7[2] = __41__PXStoryChromeLayout__handlePlayButton___block_invoke_2;
     v7[3] = &__block_descriptor_40_e31_v16__0___PXStoryMutableModel__8l;
     v7[4] = v6;
-    [v4 performChanges:v7];
+    [mainModel performChanges:v7];
   }
 }
 
 - (id)_actionPerformer
 {
-  v2 = [(PXStoryChromeLayout *)self viewModel];
-  v3 = [v2 actionPerformer];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  actionPerformer = [viewModel actionPerformer];
 
-  return v3;
+  return actionPerformer;
 }
 
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-  v9 = v8;
-  if (self->_leftEdgeHighlightSpriteIndex != a3 && self->_rightEdgeHighlightSpriteIndex != a3)
+  layoutCopy = layout;
+  viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+  v9 = viewLayoutSpec;
+  if (self->_leftEdgeHighlightSpriteIndex != index && self->_rightEdgeHighlightSpriteIndex != index)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayout.m" lineNumber:1185 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayout.m" lineNumber:1185 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = [v8 rightEdgeHighlightImageConfiguration];
+  rightEdgeHighlightImageConfiguration = [viewLayoutSpec rightEdgeHighlightImageConfiguration];
 
-  return v10;
+  return rightEdgeHighlightImageConfiguration;
 }
 
-- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
   v4 = *off_1E77220A0;
   v5 = *(off_1E77220A0 + 1);
@@ -584,14 +584,14 @@ void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a
   return result;
 }
 
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = [(PXStoryChromeLayout *)self attributedStringForSpriteAtIndex:*&a3 inLayout:a4];
-  v5 = [v4 string];
-  v6 = v5;
-  if (v5)
+  v4 = [(PXStoryChromeLayout *)self attributedStringForSpriteAtIndex:*&index inLayout:layout];
+  string = [v4 string];
+  v6 = string;
+  if (string)
   {
-    v7 = v5;
+    v7 = string;
   }
 
   else
@@ -604,30 +604,30 @@ void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a
   return v7;
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_titleSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_titleSpriteIndex == index)
   {
-    v8 = [(PXStoryChromeLayout *)self viewModel];
-    v9 = [v8 displayTitle];
+    viewModel = [(PXStoryChromeLayout *)self viewModel];
+    displayTitle = [viewModel displayTitle];
   }
 
   else
   {
-    if (self->_subtitleSpriteIndex != a3)
+    if (self->_subtitleSpriteIndex != index)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayout.m" lineNumber:1154 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayout.m" lineNumber:1154 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = [(PXStoryChromeLayout *)self viewModel];
-    v9 = [v8 displaySubtitle];
+    viewModel = [(PXStoryChromeLayout *)self viewModel];
+    displayTitle = [viewModel displaySubtitle];
   }
 
-  v10 = v9;
+  v10 = displayTitle;
 
   return v10;
 }
@@ -641,31 +641,31 @@ void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a
   }
 }
 
-- (id)_configurationForButtonWithAction:(SEL)a3 systemImageName:(id)a4 backgroundStyle:(int64_t)a5 label:(id)a6 axLabelKey:(id)a7
+- (id)_configurationForButtonWithAction:(SEL)action systemImageName:(id)name backgroundStyle:(int64_t)style label:(id)label axLabelKey:(id)key
 {
-  v12 = a6;
-  v13 = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:a3 systemImageName:a4 backgroundStyle:a5 axLabelKey:a7];
-  [v13 setLabel:v12];
+  labelCopy = label;
+  v13 = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:action systemImageName:name backgroundStyle:style axLabelKey:key];
+  [v13 setLabel:labelCopy];
 
   return v13;
 }
 
-- (void)_updateConfigurationUpdatedForPlaybackEnd:(id)a3
+- (void)_updateConfigurationUpdatedForPlaybackEnd:(id)end
 {
-  v4 = a3;
-  v6 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-  [v6 playbackEndButtonSystemImageWeight];
-  [v4 setPreferredSystemImageWeight:v5];
-  [v6 playbackEndButtonSystemImagePointSize];
-  [v4 setPreferredSystemImagePointSize:?];
+  endCopy = end;
+  viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+  [viewLayoutSpec playbackEndButtonSystemImageWeight];
+  [endCopy setPreferredSystemImageWeight:v5];
+  [viewLayoutSpec playbackEndButtonSystemImagePointSize];
+  [endCopy setPreferredSystemImagePointSize:?];
 }
 
 - (id)_configurationForBrowserSelectButton
 {
-  v3 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-  v4 = [v3 insideCollectionDetailsView];
+  viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+  insideCollectionDetailsView = [viewLayoutSpec insideCollectionDetailsView];
 
-  if (v4)
+  if (insideCollectionDetailsView)
   {
     v5 = 1;
   }
@@ -677,15 +677,15 @@ void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a
 
   v6 = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:sel__handleBrowserSelectButton_ systemImageName:@"checkmark" backgroundStyle:v5 axLabelKey:@"InteractiveMemoryButtonAccessibilityLabelBrowserSelect"];
   v7 = v6;
-  if (v4)
+  if (insideCollectionDetailsView)
   {
     [v6 setPreferredSystemImageWeight:6];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v7 setSolidBackgroundColor:v8];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [v7 setSolidBackgroundColor:systemBlueColor];
   }
 
   return v7;
@@ -693,10 +693,10 @@ void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a
 
 - (id)_configurationForBrowserAddPhotosButton
 {
-  v3 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-  v4 = [v3 insideCollectionDetailsView];
+  viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+  insideCollectionDetailsView = [viewLayoutSpec insideCollectionDetailsView];
 
-  if (v4)
+  if (insideCollectionDetailsView)
   {
     v5 = 1;
   }
@@ -708,88 +708,88 @@ void __47__PXStoryChromeLayout__handleAspectModeButton___block_invoke(uint64_t a
 
   v6 = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:sel__handleBrowserAddPhotosButton_ systemImageName:@"plus" backgroundStyle:v5 axLabelKey:@"InteractiveMemoryButtonAccessibilityLabelAddPhotos"];
   v7 = v6;
-  if (v4)
+  if (insideCollectionDetailsView)
   {
     [v6 setPreferredSystemImageWeight:6];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v7 setSolidBackgroundColor:v8];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [v7 setSolidBackgroundColor:systemBlueColor];
   }
 
   return v7;
 }
 
-- (id)_configurationForCloseButtonWithAction:(SEL)a3 systemImageName:(id)a4 axLabelKey:(id)a5
+- (id)_configurationForCloseButtonWithAction:(SEL)action systemImageName:(id)name axLabelKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-  v11 = -[PXStoryChromeLayout _configurationForButtonWithAction:systemImageName:backgroundStyle:axLabelKey:](self, "_configurationForButtonWithAction:systemImageName:backgroundStyle:axLabelKey:", a3, v9, [v10 insideCollectionDetailsView], v8);
+  keyCopy = key;
+  nameCopy = name;
+  viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+  v11 = -[PXStoryChromeLayout _configurationForButtonWithAction:systemImageName:backgroundStyle:axLabelKey:](self, "_configurationForButtonWithAction:systemImageName:backgroundStyle:axLabelKey:", action, nameCopy, [viewLayoutSpec insideCollectionDetailsView], keyCopy);
 
   [v11 setPreferredSystemImageWeight:6];
 
   return v11;
 }
 
-- (id)_configurationForShareButtonWithAction:(SEL)a3 systemImageName:(id)a4 backgroundStyle:(int64_t)a5 axLabelKey:(id)a6
+- (id)_configurationForShareButtonWithAction:(SEL)action systemImageName:(id)name backgroundStyle:(int64_t)style axLabelKey:(id)key
 {
-  v7 = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:a3 systemImageName:a4 backgroundStyle:0 axLabelKey:a6];
-  v8 = [(PXStoryChromeLayout *)self viewModel];
-  v9 = [v8 mainConfiguration];
-  v10 = [v9 assetCollection];
-  [v7 setEnabled:{objc_msgSend(v10, "px_canContainPotentiallySensitiveContent") ^ 1}];
+  v7 = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:action systemImageName:name backgroundStyle:0 axLabelKey:key];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  mainConfiguration = [viewModel mainConfiguration];
+  assetCollection = [mainConfiguration assetCollection];
+  [v7 setEnabled:{objc_msgSend(assetCollection, "px_canContainPotentiallySensitiveContent") ^ 1}];
 
   return v7;
 }
 
-- (id)_configurationForButtonWithAction:(SEL)a3 systemImageName:(id)a4 backgroundStyle:(int64_t)a5 axLabelKey:(id)a6
+- (id)_configurationForButtonWithAction:(SEL)action systemImageName:(id)name backgroundStyle:(int64_t)style axLabelKey:(id)key
 {
-  v10 = a6;
-  v11 = a4;
+  keyCopy = key;
+  nameCopy = name;
   v12 = objc_alloc_init(PXStoryChromeButtonConfiguration);
-  [(PXStoryChromeButtonConfiguration *)v12 setBackgroundStyle:a5];
-  [(PXStoryChromeButtonConfiguration *)v12 setSystemImageName:v11];
+  [(PXStoryChromeButtonConfiguration *)v12 setBackgroundStyle:style];
+  [(PXStoryChromeButtonConfiguration *)v12 setSystemImageName:nameCopy];
 
-  [(PXStoryChromeButtonConfiguration *)v12 setAction:a3];
+  [(PXStoryChromeButtonConfiguration *)v12 setAction:action];
   [(PXStoryChromeButtonConfiguration *)v12 setTarget:self];
-  v13 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-  v14 = [v13 chromeButtonSpec];
-  [(PXStoryChromeButtonConfiguration *)v12 setSpec:v14];
+  viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+  chromeButtonSpec = [viewLayoutSpec chromeButtonSpec];
+  [(PXStoryChromeButtonConfiguration *)v12 setSpec:chromeButtonSpec];
 
-  if (v10)
+  if (keyCopy)
   {
-    v15 = PXLocalizedStringFromTable(v10, @"PhotosUICore");
+    v15 = PXLocalizedStringFromTable(keyCopy, @"PhotosUICore");
     [(PXStoryChromeButtonConfiguration *)v12 setAxLabel:v15];
   }
 
   return v12;
 }
 
-- (id)_configurationForLargeButtonWithAction:(SEL)a3 systemImageName:(id)a4 backgroundStyle:(int64_t)a5 axLabelKey:(id)a6
+- (id)_configurationForLargeButtonWithAction:(SEL)action systemImageName:(id)name backgroundStyle:(int64_t)style axLabelKey:(id)key
 {
-  [(PXStoryChromeLayout *)self _configurationForButtonWithAction:a3 systemImageName:a4 backgroundStyle:a5 axLabelKey:a6];
+  [(PXStoryChromeLayout *)self _configurationForButtonWithAction:action systemImageName:name backgroundStyle:style axLabelKey:key];
   objc_claimAutoreleasedReturnValue();
   sub_1A524D1E4();
 }
 
-- (id)_buttonConfigurationForSpriteIndex:(unsigned int)a3
+- (id)_buttonConfigurationForSpriteIndex:(unsigned int)index
 {
-  v6 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-  v7 = v6;
-  if (self->_replayButtonSpriteIndex == a3)
+  viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+  v7 = viewLayoutSpec;
+  if (self->_replayButtonSpriteIndex == index)
   {
-    v8 = [v6 replayButtonImageName];
-    v9 = -[PXStoryChromeLayout _configurationForButtonWithAction:systemImageName:backgroundStyle:label:axLabelKey:](self, "_configurationForButtonWithAction:systemImageName:backgroundStyle:label:axLabelKey:", sel__handleReplayButton_, v8, [v7 defaultChromeButtonBackgroundStyle], 0, @"InteractiveMemoryButtonAccessibilityLabelReplay");
+    replayButtonImageName = [viewLayoutSpec replayButtonImageName];
+    v9 = -[PXStoryChromeLayout _configurationForButtonWithAction:systemImageName:backgroundStyle:label:axLabelKey:](self, "_configurationForButtonWithAction:systemImageName:backgroundStyle:label:axLabelKey:", sel__handleReplayButton_, replayButtonImageName, [v7 defaultChromeButtonBackgroundStyle], 0, @"InteractiveMemoryButtonAccessibilityLabelReplay");
 LABEL_3:
     v10 = v9;
 
     goto LABEL_16;
   }
 
-  if (self->_shareButtonSpriteIndex == a3)
+  if (self->_shareButtonSpriteIndex == index)
   {
     v10 = [(PXStoryChromeLayout *)self _configurationForShareButtonWithAction:sel__handleShareButton_ systemImageName:@"square.and.arrow.up" backgroundStyle:0 axLabelKey:@"InteractiveMemoryShareButtonLabel"];
     [v7 shareButtonExtraOffset];
@@ -797,57 +797,57 @@ LABEL_3:
     goto LABEL_16;
   }
 
-  if (self->_browserGridButtonSpriteIndex == a3)
+  if (self->_browserGridButtonSpriteIndex == index)
   {
     v11 = sel__handleBrowserGridButton_;
-    v12 = [v6 defaultChromeButtonBackgroundStyle];
+    defaultChromeButtonBackgroundStyle = [viewLayoutSpec defaultChromeButtonBackgroundStyle];
     v13 = @"rectangle.grid.3x2.fill";
     v14 = @"InteractiveMemoryButtonAccessibilityLabelBrowse";
 LABEL_8:
-    v15 = [(PXStoryChromeLayout *)self _configurationForLargeButtonWithAction:v11 systemImageName:v13 backgroundStyle:v12 axLabelKey:v14];
+    _configurationForBrowserAddPhotosButton = [(PXStoryChromeLayout *)self _configurationForLargeButtonWithAction:v11 systemImageName:v13 backgroundStyle:defaultChromeButtonBackgroundStyle axLabelKey:v14];
 LABEL_15:
-    v10 = v15;
+    v10 = _configurationForBrowserAddPhotosButton;
     goto LABEL_16;
   }
 
-  if (self->_browserAddPhotosButtonSpriteIndex == a3)
+  if (self->_browserAddPhotosButtonSpriteIndex == index)
   {
-    v15 = [(PXStoryChromeLayout *)self _configurationForBrowserAddPhotosButton];
+    _configurationForBrowserAddPhotosButton = [(PXStoryChromeLayout *)self _configurationForBrowserAddPhotosButton];
     goto LABEL_15;
   }
 
-  if (self->_browserSelectButtonSpriteIndex == a3)
+  if (self->_browserSelectButtonSpriteIndex == index)
   {
-    v15 = [(PXStoryChromeLayout *)self _configurationForBrowserSelectButton];
+    _configurationForBrowserAddPhotosButton = [(PXStoryChromeLayout *)self _configurationForBrowserSelectButton];
     goto LABEL_15;
   }
 
-  if (self->_fullsizePlayerButtonSpriteIndex == a3)
+  if (self->_fullsizePlayerButtonSpriteIndex == index)
   {
-    v15 = -[PXStoryChromeLayout _configurationForButtonWithAction:systemImageName:backgroundStyle:label:axLabelKey:](self, "_configurationForButtonWithAction:systemImageName:backgroundStyle:label:axLabelKey:", sel__handleToggleViewModeButton_, @"play.circle.fill", [v6 defaultChromeButtonBackgroundStyle], 0, @"InteractiveMemoryButtonAccessibilityLabelPlay");
+    _configurationForBrowserAddPhotosButton = -[PXStoryChromeLayout _configurationForButtonWithAction:systemImageName:backgroundStyle:label:axLabelKey:](self, "_configurationForButtonWithAction:systemImageName:backgroundStyle:label:axLabelKey:", sel__handleToggleViewModeButton_, @"play.circle.fill", [viewLayoutSpec defaultChromeButtonBackgroundStyle], 0, @"InteractiveMemoryButtonAccessibilityLabelPlay");
     goto LABEL_15;
   }
 
-  if (self->_closeButtonSpriteIndex == a3)
+  if (self->_closeButtonSpriteIndex == index)
   {
-    v8 = [v6 closeButtonImageName];
-    v9 = [(PXStoryChromeLayout *)self _configurationForCloseButtonWithAction:sel__handleCloseButton_ systemImageName:v8 axLabelKey:@"InteractiveMemoryButtonAccessibilityLabelClose"];
+    replayButtonImageName = [viewLayoutSpec closeButtonImageName];
+    v9 = [(PXStoryChromeLayout *)self _configurationForCloseButtonWithAction:sel__handleCloseButton_ systemImageName:replayButtonImageName axLabelKey:@"InteractiveMemoryButtonAccessibilityLabelClose"];
     goto LABEL_3;
   }
 
-  if (self->_closeBrowserButtonSpriteIndex == a3)
+  if (self->_closeBrowserButtonSpriteIndex == index)
   {
-    v15 = [(PXStoryChromeLayout *)self _configurationForCloseButtonWithAction:sel__handleCloseBrowserButton_ systemImageName:@"chevron.backward" axLabelKey:@"PXBack"];
+    _configurationForBrowserAddPhotosButton = [(PXStoryChromeLayout *)self _configurationForCloseButtonWithAction:sel__handleCloseBrowserButton_ systemImageName:@"chevron.backward" axLabelKey:@"PXBack"];
     goto LABEL_15;
   }
 
-  if (self->_aspectModeButtonIndex == a3)
+  if (self->_aspectModeButtonIndex == index)
   {
-    v17 = [(PXStoryChromeLayout *)self viewModel];
-    v18 = [v17 mainModel];
-    v19 = [v18 shouldAspectFitCurrentSegment];
+    viewModel = [(PXStoryChromeLayout *)self viewModel];
+    mainModel = [viewModel mainModel];
+    shouldAspectFitCurrentSegment = [mainModel shouldAspectFitCurrentSegment];
     v20 = @"rectangle.arrowtriangle.2.inward";
-    if (v19)
+    if (shouldAspectFitCurrentSegment)
     {
       v20 = @"rectangle.arrowtriangle.2.outward";
     }
@@ -860,21 +860,21 @@ LABEL_27:
     goto LABEL_16;
   }
 
-  if (self->_errorIndicatorSpriteIndex == a3)
+  if (self->_errorIndicatorSpriteIndex == index)
   {
     v22 = sel__handleErrorIndicator_;
-    v23 = [v6 nonblurredChromeButtonBackgroundStyle];
+    nonblurredChromeButtonBackgroundStyle = [viewLayoutSpec nonblurredChromeButtonBackgroundStyle];
     v24 = @"exclamationmark.circle";
     v25 = @"InteractiveMemoryButtonAccessibilityLabelError";
     goto LABEL_30;
   }
 
-  if (self->_muteToggleButtonSpriteIndex == a3)
+  if (self->_muteToggleButtonSpriteIndex == index)
   {
-    v26 = [(PXStoryChromeLayout *)self viewModel];
-    v27 = [v26 isMuted];
+    viewModel2 = [(PXStoryChromeLayout *)self viewModel];
+    isMuted = [viewModel2 isMuted];
 
-    if (v27)
+    if (isMuted)
     {
       v28 = @"speaker.slash";
     }
@@ -884,7 +884,7 @@ LABEL_27:
       v28 = @"speaker.wave.2";
     }
 
-    if (v27)
+    if (isMuted)
     {
       v29 = @"InteractiveMemoryButtonAccessibilityLabelUnmute";
     }
@@ -895,66 +895,66 @@ LABEL_27:
     }
 
     v10 = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:sel__handleMuteToggleButton_ systemImageName:v28 backgroundStyle:0 axLabelKey:v29];
-    v30 = [MEMORY[0x1E6982288] replaceOffUpTransition];
-    v31 = [v30 transitionWithByLayer];
-    [v10 setSymbolTransition:v31];
+    replaceOffUpTransition = [MEMORY[0x1E6982288] replaceOffUpTransition];
+    transitionWithByLayer = [replaceOffUpTransition transitionWithByLayer];
+    [v10 setSymbolTransition:transitionWithByLayer];
 
     goto LABEL_16;
   }
 
-  if (self->_styleSwitcherButtonSpriteIndex == a3)
+  if (self->_styleSwitcherButtonSpriteIndex == index)
   {
     v11 = sel__handleAutoEditButton_;
-    v12 = [v6 defaultChromeButtonBackgroundStyle];
+    defaultChromeButtonBackgroundStyle = [viewLayoutSpec defaultChromeButtonBackgroundStyle];
     v13 = @"music.and.sparkles";
     v14 = @"InteractiveMemoryButtonAccessibilityLabelStyles";
     goto LABEL_8;
   }
 
-  if (self->_playbackEndReplayButtonSpriteIndex == a3)
+  if (self->_playbackEndReplayButtonSpriteIndex == index)
   {
-    if ([v6 onlyShowReplayEndButtonAtTopOfTitle])
+    if ([viewLayoutSpec onlyShowReplayEndButtonAtTopOfTitle])
     {
-      v32 = [v7 defaultChromeButtonBackgroundStyle];
+      defaultChromeButtonBackgroundStyle2 = [v7 defaultChromeButtonBackgroundStyle];
     }
 
     else
     {
-      v32 = 0;
+      defaultChromeButtonBackgroundStyle2 = 0;
     }
 
     v34 = sel__handleReplayButton_;
     v35 = @"arrow.counterclockwise";
     v36 = @"InteractiveMemoryButtonAccessibilityLabelReplay";
-    v37 = self;
+    selfCopy3 = self;
     goto LABEL_53;
   }
 
-  if (self->_playbackEndShareButtonSpriteIndex == a3)
+  if (self->_playbackEndShareButtonSpriteIndex == index)
   {
     v33 = [(PXStoryChromeLayout *)self _configurationForShareButtonWithAction:sel__handleShareButton_ systemImageName:@"square.and.arrow.up" backgroundStyle:0 axLabelKey:@"InteractiveMemoryShareButtonLabel"];
 LABEL_54:
     v38 = v33;
-    v39 = self;
+    selfCopy2 = self;
     v10 = v38;
-    [(PXStoryChromeLayout *)v39 _updateConfigurationUpdatedForPlaybackEnd:v38];
+    [(PXStoryChromeLayout *)selfCopy2 _updateConfigurationUpdatedForPlaybackEnd:v38];
     goto LABEL_16;
   }
 
-  if (self->_playbackEndFavoriteButtonSpriteIndex == a3)
+  if (self->_playbackEndFavoriteButtonSpriteIndex == index)
   {
     v34 = sel__handleFavoriteButton_;
     v35 = @"heart";
     v36 = @"InteractiveMemoryButtonAccessibilityLabelFavorite";
 LABEL_52:
-    v37 = self;
-    v32 = 0;
+    selfCopy3 = self;
+    defaultChromeButtonBackgroundStyle2 = 0;
 LABEL_53:
-    v33 = [(PXStoryChromeLayout *)v37 _configurationForButtonWithAction:v34 systemImageName:v35 backgroundStyle:v32 axLabelKey:v36];
+    v33 = [(PXStoryChromeLayout *)selfCopy3 _configurationForButtonWithAction:v34 systemImageName:v35 backgroundStyle:defaultChromeButtonBackgroundStyle2 axLabelKey:v36];
     goto LABEL_54;
   }
 
-  if (self->_playbackEndUnfavoriteButtonSpriteIndex == a3)
+  if (self->_playbackEndUnfavoriteButtonSpriteIndex == index)
   {
     v34 = sel__handleFavoriteButton_;
     v35 = @"heart.fill";
@@ -962,16 +962,16 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if (self->_actionMenuButtonSpriteIndex != a3)
+  if (self->_actionMenuButtonSpriteIndex != index)
   {
-    if (self->_toggleFavoriteButtonSpriteIndex == a3)
+    if (self->_toggleFavoriteButtonSpriteIndex == index)
     {
-      v45 = [(PXStoryChromeLayout *)self viewModel];
-      v46 = [v45 mainModel];
-      v47 = [v46 currentAssetCollectionIsFavorite];
+      viewModel3 = [(PXStoryChromeLayout *)self viewModel];
+      mainModel2 = [viewModel3 mainModel];
+      currentAssetCollectionIsFavorite = [mainModel2 currentAssetCollectionIsFavorite];
 
-      v48 = v47 == 0;
-      if (v47)
+      v48 = currentAssetCollectionIsFavorite == 0;
+      if (currentAssetCollectionIsFavorite)
       {
         v49 = @"heart.fill";
       }
@@ -994,41 +994,41 @@ LABEL_53:
       goto LABEL_27;
     }
 
-    if (self->_editMusicButtonSpriteIndex == a3)
+    if (self->_editMusicButtonSpriteIndex == index)
     {
       v22 = sel__handleEditMusicButton_;
-      v23 = [v6 defaultChromeButtonBackgroundStyle];
+      nonblurredChromeButtonBackgroundStyle = [viewLayoutSpec defaultChromeButtonBackgroundStyle];
       v24 = @"music.badge.plus";
       v25 = @"InteractiveMemoryButtonAccessibilityLabelEditMusic";
     }
 
     else
     {
-      if (self->_editColorGradeButtonSpriteIndex != a3)
+      if (self->_editColorGradeButtonSpriteIndex != index)
       {
-        v52 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v52 handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayout.m" lineNumber:1061 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayout.m" lineNumber:1061 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
 
       v22 = sel__handleEditColorGradeButton_;
-      v23 = [v6 defaultChromeButtonBackgroundStyle];
+      nonblurredChromeButtonBackgroundStyle = [viewLayoutSpec defaultChromeButtonBackgroundStyle];
       v24 = @"camera.filters";
       v25 = @"InteractiveMemoryButtonAccessibilityLabelEditColorGrade";
     }
 
 LABEL_30:
-    v15 = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:v22 systemImageName:v24 backgroundStyle:v23 axLabelKey:v25];
+    _configurationForBrowserAddPhotosButton = [(PXStoryChromeLayout *)self _configurationForButtonWithAction:v22 systemImageName:v24 backgroundStyle:nonblurredChromeButtonBackgroundStyle axLabelKey:v25];
     goto LABEL_15;
   }
 
-  v40 = [v6 actionMenuButtonImageName];
-  v41 = -[PXStoryChromeLayout _configurationForButtonWithAction:systemImageName:backgroundStyle:axLabelKey:](self, "_configurationForButtonWithAction:systemImageName:backgroundStyle:axLabelKey:", 0, v40, [v7 nonblurredChromeButtonBackgroundStyle], @"InteractiveMemoryButtonAccessibilityLabelActionMenu");
+  actionMenuButtonImageName = [viewLayoutSpec actionMenuButtonImageName];
+  v41 = -[PXStoryChromeLayout _configurationForButtonWithAction:systemImageName:backgroundStyle:axLabelKey:](self, "_configurationForButtonWithAction:systemImageName:backgroundStyle:axLabelKey:", 0, actionMenuButtonImageName, [v7 nonblurredChromeButtonBackgroundStyle], @"InteractiveMemoryButtonAccessibilityLabelActionMenu");
 
   objc_initWeak(&location, self);
-  v42 = [(PXStoryChromeLayout *)self viewModel];
-  v43 = [PXMenuBuilder defaultStoryActionsMenuWithViewModel:v42];
+  viewModel4 = [(PXStoryChromeLayout *)self viewModel];
+  v43 = [PXMenuBuilder defaultStoryActionsMenuWithViewModel:viewModel4];
   v53 = MEMORY[0x1E69E9820];
   v54 = 3221225472;
   v55 = __58__PXStoryChromeLayout__buttonConfigurationForSpriteIndex___block_invoke;
@@ -1051,21 +1051,21 @@ void __58__PXStoryChromeLayout__buttonConfigurationForSpriteIndex___block_invoke
   [WeakRetained _menuDidClose];
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&index;
+  layoutCopy = layout;
   if (self->_playButtonSpriteIndex == v4)
   {
     v7 = [PXStoryPlayButtonConfiguration alloc];
-    v8 = [(PXStoryChromeLayout *)self viewModel];
-    v9 = [(PXStoryPlayButtonConfiguration *)v7 initWithViewModel:v8];
+    viewModel = [(PXStoryChromeLayout *)self viewModel];
+    v9 = [(PXStoryPlayButtonConfiguration *)v7 initWithViewModel:viewModel];
 
     [(PXStoryBufferingStatusViewConfiguration *)v9 setTarget:self];
     [(PXStoryBufferingStatusViewConfiguration *)v9 setAction:sel__handlePlayButton_];
-    v10 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-    v11 = [v10 playButtonSpec];
-    [(PXStoryBufferingStatusViewConfiguration *)v9 setSpec:v11];
+    viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+    playButtonSpec = [viewLayoutSpec playButtonSpec];
+    [(PXStoryBufferingStatusViewConfiguration *)v9 setSpec:playButtonSpec];
 
 LABEL_5:
     goto LABEL_6;
@@ -1074,8 +1074,8 @@ LABEL_5:
   if (self->_bufferingIndicatorSpriteIndex == v4)
   {
     v9 = objc_alloc_init(PXStoryBufferingStatusViewConfiguration);
-    v10 = [(PXStoryChromeLayout *)self viewLayoutSpec];
-    -[PXStoryBufferingStatusViewConfiguration setWantsBackground:](v9, "setWantsBackground:", [v10 bufferingIndicatorWantsBackground]);
+    viewLayoutSpec = [(PXStoryChromeLayout *)self viewLayoutSpec];
+    -[PXStoryBufferingStatusViewConfiguration setWantsBackground:](v9, "setWantsBackground:", [viewLayoutSpec bufferingIndicatorWantsBackground]);
     goto LABEL_5;
   }
 
@@ -1089,8 +1089,8 @@ LABEL_5:
     if (self->_infoPanelSpriteIndex == v4)
     {
       v9 = objc_alloc_init(PXStoryTVInfoPanelViewConfiguration);
-      v10 = [(PXStoryChromeLayout *)self viewModel];
-      [(PXStoryBufferingStatusViewConfiguration *)v9 setViewModel:v10];
+      viewLayoutSpec = [(PXStoryChromeLayout *)self viewModel];
+      [(PXStoryBufferingStatusViewConfiguration *)v9 setViewModel:viewLayoutSpec];
       goto LABEL_5;
     }
 
@@ -1103,10 +1103,10 @@ LABEL_6:
   return v9;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = a4;
-  if (self->_playButtonSpriteIndex == a3 || self->_bufferingIndicatorSpriteIndex == a3 || self->_chromeButtonFocusGuideSpriteIndex == a3 || self->_infoPanelSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_playButtonSpriteIndex == index || self->_bufferingIndicatorSpriteIndex == index || self->_chromeButtonFocusGuideSpriteIndex == index || self->_infoPanelSpriteIndex == index)
   {
     v7 = objc_opt_class();
   }
@@ -1137,9 +1137,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout _invalidateAXGroupRole]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryChromeLayout.m" lineNumber:939 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryChromeLayout.m" lineNumber:939 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -1165,22 +1165,22 @@ LABEL_5:
 {
   [(PXStoryChromeLayout *)self alpha];
   v4 = v3;
-  v5 = [(PXStoryChromeLayout *)self alphaOverride];
-  v6 = v5;
-  if (v5)
+  alphaOverride = [(PXStoryChromeLayout *)self alphaOverride];
+  v6 = alphaOverride;
+  if (alphaOverride)
   {
-    [v5 floatValue];
+    [alphaOverride floatValue];
     v4 = v7;
   }
 
-  v8 = [(PXStoryChromeLayout *)self viewModel];
-  [v8 chromeVisibilityFraction];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  [viewModel chromeVisibilityFraction];
   v10 = v9;
-  v11 = [(PXStoryChromeLayout *)self mainModel];
-  [v11 infoPanelVisibilityFraction];
+  mainModel = [(PXStoryChromeLayout *)self mainModel];
+  [mainModel infoPanelVisibilityFraction];
   v13 = v12;
 
-  LOBYTE(v11) = [v8 isChromeAllowed];
+  LOBYTE(mainModel) = [viewModel isChromeAllowed];
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -1189,7 +1189,7 @@ LABEL_5:
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v14 = [(PXStoryChromeLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXStoryChromeLayout *)self localNumberOfSprites];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __42__PXStoryChromeLayout__updateContentAlpha__block_invoke;
@@ -1197,11 +1197,11 @@ LABEL_5:
   *&v17[7] = v4;
   v17[8] = v10;
   v17[9] = v13;
-  v18 = v11;
+  v18 = mainModel;
   v17[4] = self;
   v17[5] = v23;
   v17[6] = &v19;
-  [(PXStoryChromeLayout *)self modifySpritesInRange:v14 << 32 state:v17];
+  [(PXStoryChromeLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v17];
   v15 = v20[3];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -1210,7 +1210,7 @@ LABEL_5:
   v16[4] = v23;
   v16[5] = &v19;
   v16[6] = v15;
-  [v8 performChanges:v16];
+  [viewModel performChanges:v16];
   _Block_object_dispose(&v19, 8);
   _Block_object_dispose(v23, 8);
 }
@@ -1302,9 +1302,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout _invalidateContentAlpha]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryChromeLayout.m" lineNumber:888 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryChromeLayout.m" lineNumber:888 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -1326,9 +1326,9 @@ LABEL_5:
   }
 }
 
-- (void)_configureUnifiedContentLayout:(id)a3
+- (void)_configureUnifiedContentLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   [(PXStoryChromeLayout *)self viewModel];
   objc_claimAutoreleasedReturnValue();
   [(PXStoryChromeLayout *)self mainLayoutSpec];
@@ -1336,13 +1336,13 @@ LABEL_5:
   [(PXStoryChromeLayout *)self displayScale];
   v7 = *MEMORY[0x1E695EFF8];
   [(PXStoryChromeLayout *)self referenceSize];
-  [v4 chromeButtonSize];
-  [v4 chromeButtonPadding];
+  [layoutCopy chromeButtonSize];
+  [layoutCopy chromeButtonPadding];
   [(PXStoryChromeLayout *)self referenceDepth];
-  v6 = [(PXStoryChromeLayout *)self mainModel];
-  [v6 infoPanelVisibilityFraction];
+  mainModel = [(PXStoryChromeLayout *)self mainModel];
+  [mainModel infoPanelVisibilityFraction];
 
-  [v4 infoPanelAnimationDistance];
+  [layoutCopy infoPanelAnimationDistance];
   PXFloatByLinearlyInterpolatingFloats();
 }
 
@@ -1458,15 +1458,15 @@ double __54__PXStoryChromeLayout__configureUnifiedContentLayout___block_invoke_6
   return 80.0;
 }
 
-- (void)_configureDefaultContentLayout:(id)a3
+- (void)_configureDefaultContentLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   [(PXStoryChromeLayout *)self viewModel];
   objc_claimAutoreleasedReturnValue();
   [(PXStoryChromeLayout *)self referenceSize];
   [(PXStoryChromeLayout *)self displayScale];
-  [v4 chromeButtonSize];
-  [v4 chromeButtonPadding];
+  [layoutCopy chromeButtonSize];
+  [layoutCopy chromeButtonPadding];
   [(PXStoryChromeLayout *)self referenceDepth];
   v5[0] = 0;
   v5[1] = v5;
@@ -1991,9 +1991,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout _invalidateContentLayout]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryChromeLayout.m" lineNumber:362 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryChromeLayout.m" lineNumber:362 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -2017,10 +2017,10 @@ LABEL_5:
 
 - (void)_invalidateActionMenu
 {
-  v3 = [(PXStoryChromeLayout *)self viewModel];
-  v4 = [v3 isActionMenuOpen];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  isActionMenuOpen = [viewModel isActionMenuOpen];
 
-  if (v4)
+  if (isActionMenuOpen)
   {
     self->_shouldInvalidateActionMenuOnClose = 1;
   }
@@ -2035,9 +2035,9 @@ LABEL_5:
 
 - (void)_updateMainModel
 {
-  v4 = [(PXStoryChromeLayout *)self viewModel];
-  v3 = [v4 mainModel];
-  [(PXStoryChromeLayout *)self setMainModel:v3];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  mainModel = [viewModel mainModel];
+  [(PXStoryChromeLayout *)self setMainModel:mainModel];
 }
 
 - (void)_invalidateMainModel
@@ -2056,9 +2056,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout _invalidateMainModel]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryChromeLayout.m" lineNumber:340 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryChromeLayout.m" lineNumber:340 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -2087,9 +2087,9 @@ LABEL_5:
   [(PXGCompositeLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryChromeLayout.m" lineNumber:336 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryChromeLayout.m" lineNumber:336 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -2102,9 +2102,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout update]"];
-      [v8 handleFailureInFunction:v9 file:@"PXStoryChromeLayout.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXStoryChromeLayout.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -2117,9 +2117,9 @@ LABEL_5:
       [(PXStoryChromeLayout *)self _updateMainModel];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout update]"];
-        [v10 handleFailureInFunction:v11 file:@"PXStoryChromeLayout.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v11 file:@"PXStoryChromeLayout.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -2133,9 +2133,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXStoryChromeLayout.m" lineNumber:324 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v13 file:@"PXStoryChromeLayout.m" lineNumber:324 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -2148,9 +2148,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout update]"];
-      [v14 handleFailureInFunction:v15 file:@"PXStoryChromeLayout.m" lineNumber:327 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v15 file:@"PXStoryChromeLayout.m" lineNumber:327 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -2165,9 +2165,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v7)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXStoryChromeLayout.m" lineNumber:330 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler5 handleFailureInFunction:v17 file:@"PXStoryChromeLayout.m" lineNumber:330 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -2184,62 +2184,62 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryChromeLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryChromeLayout.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryChromeLayout.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
-- (void)setAlphaOverride:(id)a3
+- (void)setAlphaOverride:(id)override
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_alphaOverride != v5)
+  overrideCopy = override;
+  v6 = overrideCopy;
+  if (self->_alphaOverride != overrideCopy)
   {
-    v8 = v5;
-    v7 = [(NSNumber *)v5 isEqual:?];
+    v8 = overrideCopy;
+    v7 = [(NSNumber *)overrideCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_alphaOverride, a3);
+      objc_storeStrong(&self->_alphaOverride, override);
       [(PXStoryChromeLayout *)self _invalidateContentAlpha];
       v6 = v8;
     }
   }
 }
 
-- (void)setRecipeManager:(id)a3
+- (void)setRecipeManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   recipeManager = self->_recipeManager;
-  if (recipeManager != v5)
+  if (recipeManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     [(PXStoryRecipeManager *)recipeManager unregisterChangeObserver:self context:RecipeManagerObservationContext];
-    objc_storeStrong(&self->_recipeManager, a3);
+    objc_storeStrong(&self->_recipeManager, manager);
     [(PXStoryRecipeManager *)self->_recipeManager registerChangeObserver:self context:RecipeManagerObservationContext];
     [(PXStoryChromeLayout *)self _invalidateActionMenu];
-    v5 = v7;
+    managerCopy = v7;
   }
 }
 
-- (void)setMainModel:(id)a3
+- (void)setMainModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_mainModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_mainModel != modelCopy)
   {
-    v10 = v5;
-    v7 = [(PXStoryModel *)v5 isEqual:?];
+    v10 = modelCopy;
+    v7 = [(PXStoryModel *)modelCopy isEqual:?];
     v6 = v10;
     if ((v7 & 1) == 0)
     {
       [(PXStoryModel *)self->_mainModel unregisterChangeObserver:self context:MainModelObservationContext_92631];
-      objc_storeStrong(&self->_mainModel, a3);
+      objc_storeStrong(&self->_mainModel, model);
       [(PXStoryModel *)self->_mainModel registerChangeObserver:self context:MainModelObservationContext_92631];
-      v8 = [(PXStoryChromeLayout *)self mainModel];
-      v9 = [v8 recipeManager];
-      [(PXStoryChromeLayout *)self setRecipeManager:v9];
+      mainModel = [(PXStoryChromeLayout *)self mainModel];
+      recipeManager = [mainModel recipeManager];
+      [(PXStoryChromeLayout *)self setRecipeManager:recipeManager];
 
       [(PXStoryChromeLayout *)self _invalidateActionMenu];
       v6 = v10;
@@ -2277,18 +2277,18 @@ LABEL_5:
   if (!layoutGenerator)
   {
     v4 = [PXStoryRelatedLayoutGenerator alloc];
-    v5 = [(PXStoryChromeLayout *)self viewModel];
-    v6 = [v5 viewLayoutSpec];
-    v7 = [v6 relatedLayoutMetrics];
-    v8 = [(PXStoryRelatedLayoutGenerator *)v4 initWithMetrics:v7];
+    viewModel = [(PXStoryChromeLayout *)self viewModel];
+    viewLayoutSpec = [viewModel viewLayoutSpec];
+    relatedLayoutMetrics = [viewLayoutSpec relatedLayoutMetrics];
+    v8 = [(PXStoryRelatedLayoutGenerator *)v4 initWithMetrics:relatedLayoutMetrics];
     v9 = self->_layoutGenerator;
     self->_layoutGenerator = v8;
 
     [(PXStoryRelatedLayoutGenerator *)self->_layoutGenerator setItemCount:1];
-    v10 = [(PXStoryChromeLayout *)self viewModel];
-    v11 = [v10 viewLayoutSpec];
-    v12 = [v11 relatedLayoutMetrics];
-    [(PXStoryRelatedLayoutGenerator *)self->_layoutGenerator setMetrics:v12];
+    viewModel2 = [(PXStoryChromeLayout *)self viewModel];
+    viewLayoutSpec2 = [viewModel2 viewLayoutSpec];
+    relatedLayoutMetrics2 = [viewLayoutSpec2 relatedLayoutMetrics];
+    [(PXStoryRelatedLayoutGenerator *)self->_layoutGenerator setMetrics:relatedLayoutMetrics2];
 
     layoutGenerator = self->_layoutGenerator;
   }
@@ -2298,34 +2298,34 @@ LABEL_5:
 
 - (id)mainLayoutSpec
 {
-  v2 = [(PXStoryChromeLayout *)self mainModel];
-  v3 = [v2 layoutSpec];
+  mainModel = [(PXStoryChromeLayout *)self mainModel];
+  layoutSpec = [mainModel layoutSpec];
 
-  return v3;
+  return layoutSpec;
 }
 
 - (PXStoryViewLayoutSpec)viewLayoutSpec
 {
-  v2 = [(PXStoryChromeLayout *)self viewModel];
-  v3 = [v2 viewLayoutSpec];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
 
-  return v3;
+  return viewLayoutSpec;
 }
 
-- (unsigned)_addSpriteForChromeItemController:(id)a3 mediaKind:(unsigned __int8)a4 presentationType:(unsigned __int8)a5
+- (unsigned)_addSpriteForChromeItemController:(id)controller mediaKind:(unsigned __int8)kind presentationType:(unsigned __int8)type
 {
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__PXStoryChromeLayout__addSpriteForChromeItemController_mediaKind_presentationType___block_invoke;
   v11[3] = &__block_descriptor_34_e55_v56__0__PXGSpriteIndexRange_II_8___I_________________16l;
-  v12 = a4;
-  v13 = a5;
-  v6 = a3;
+  kindCopy = kind;
+  typeCopy = type;
+  controllerCopy = controller;
   v7 = [(PXStoryChromeLayout *)self addSpriteWithInitialState:v11];
-  [v6 registerChangeObserver:self context:ItemControllerObservationContext];
-  v8 = [(PXStoryChromeLayout *)self itemControllers];
+  [controllerCopy registerChangeObserver:self context:ItemControllerObservationContext];
+  itemControllers = [(PXStoryChromeLayout *)self itemControllers];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7];
-  [v8 setObject:v6 forKeyedSubscript:v9];
+  [itemControllers setObject:controllerCopy forKeyedSubscript:v9];
 
   return v7;
 }
@@ -2355,24 +2355,24 @@ __n128 __84__PXStoryChromeLayout__addSpriteForChromeItemController_mediaKind_pre
   return result;
 }
 
-- (unsigned)_addEdgeHighlightForChromeItem:(unint64_t)a3
+- (unsigned)_addEdgeHighlightForChromeItem:(unint64_t)item
 {
   v5 = [PXStoryChromeLayoutEdgeHighlightController alloc];
-  v6 = [(PXStoryChromeLayout *)self viewModel];
-  v7 = [(PXStoryChromeLayoutItemController *)v5 initWithViewModel:v6 chromeItem:a3];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  v7 = [(PXStoryChromeLayoutItemController *)v5 initWithViewModel:viewModel chromeItem:item];
 
   LODWORD(self) = [(PXStoryChromeLayout *)self _addSpriteForChromeItemController:v7 mediaKind:1 presentationType:0];
   return self;
 }
 
-- (unsigned)_addLabelForChromeItem:(unint64_t)a3 isSupported:(BOOL)a4
+- (unsigned)_addLabelForChromeItem:(unint64_t)item isSupported:(BOOL)supported
 {
-  v4 = a4;
+  supportedCopy = supported;
   v7 = [PXStoryChromeLayoutItemController alloc];
-  v8 = [(PXStoryChromeLayout *)self viewModel];
-  v9 = [(PXStoryChromeLayoutItemController *)v7 initWithViewModel:v8 chromeItem:a3];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  v9 = [(PXStoryChromeLayoutItemController *)v7 initWithViewModel:viewModel chromeItem:item];
 
-  if (v4)
+  if (supportedCopy)
   {
     v10 = 3;
   }
@@ -2387,14 +2387,14 @@ __n128 __84__PXStoryChromeLayout__addSpriteForChromeItemController_mediaKind_pre
   return v11;
 }
 
-- (unsigned)_addButtonForChromeItem:(unint64_t)a3 isSupported:(BOOL)a4
+- (unsigned)_addButtonForChromeItem:(unint64_t)item isSupported:(BOOL)supported
 {
-  v4 = a4;
+  supportedCopy = supported;
   v7 = [PXStoryChromeLayoutItemController alloc];
-  v8 = [(PXStoryChromeLayout *)self viewModel];
-  v9 = [(PXStoryChromeLayoutItemController *)v7 initWithViewModel:v8 chromeItem:a3];
+  viewModel = [(PXStoryChromeLayout *)self viewModel];
+  v9 = [(PXStoryChromeLayoutItemController *)v7 initWithViewModel:viewModel chromeItem:item];
 
-  if (v4)
+  if (supportedCopy)
   {
     v10 = 10;
   }
@@ -2409,19 +2409,19 @@ __n128 __84__PXStoryChromeLayout__addSpriteForChromeItemController_mediaKind_pre
   return v11;
 }
 
-- (PXStoryChromeLayout)initWithViewModel:(id)a3
+- (PXStoryChromeLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v16.receiver = self;
   v16.super_class = PXStoryChromeLayout;
   v6 = [(PXGAbsoluteCompositeLayout *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXStoryViewModel *)v7->_viewModel registerChangeObserver:v7 context:ViewModelObservationContext_92630];
-    v8 = [v5 mainConfiguration];
-    if ([v8 isEmbeddedInCollectionDetail])
+    mainConfiguration = [modelCopy mainConfiguration];
+    if ([mainConfiguration isEmbeddedInCollectionDetail])
     {
       v9 = 1;
     }
@@ -2444,8 +2444,8 @@ __n128 __84__PXStoryChromeLayout__addSpriteForChromeItemController_mediaKind_pre
 
     else
     {
-      v12 = [v5 mainConfiguration];
-      v7->_playButtonSpriteIndex = -[PXStoryChromeLayout _addButtonForChromeItem:isSupported:](v7, "_addButtonForChromeItem:isSupported:", 4, [v12 isExportPreview]);
+      mainConfiguration2 = [modelCopy mainConfiguration];
+      v7->_playButtonSpriteIndex = -[PXStoryChromeLayout _addButtonForChromeItem:isSupported:](v7, "_addButtonForChromeItem:isSupported:", 4, [mainConfiguration2 isExportPreview]);
     }
 
     v7->_replayButtonSpriteIndex = [(PXStoryChromeLayout *)v7 _addButtonForChromeItem:32];
@@ -2477,9 +2477,9 @@ __n128 __84__PXStoryChromeLayout__addSpriteForChromeItemController_mediaKind_pre
     v13 = +[PXStorySettings sharedInstance];
     if ([(PXStoryStyleChromeContainerLayout *)v13 showStyleSwitcher])
     {
-      v14 = [v5 viewMode];
+      viewMode = [modelCopy viewMode];
 
-      if (v14 == 5)
+      if (viewMode == 5)
       {
 LABEL_12:
         [(PXStoryChromeLayout *)v7 setContentSource:v7];

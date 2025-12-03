@@ -1,8 +1,8 @@
 @interface HDDeviceUnprotectedKeyValueStorageEntryEntity
 + (id)_propertiesForEntity;
 + (id)foreignKeys;
-+ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)a3 key:(id)a4 domain:(id)a5 object:(id)a6 syncEntityIdentity:(int64_t)a7 deviceContext:(int64_t)a8 modificationDate:(id)a9;
-+ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)a3 syncEntityIdentity:(int64_t)a4 deviceContext:(int64_t)a5;
++ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)binder key:(id)key domain:(id)domain object:(id)object syncEntityIdentity:(int64_t)identity deviceContext:(int64_t)context modificationDate:(id)date;
++ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)binder syncEntityIdentity:(int64_t)identity deviceContext:(int64_t)context;
 @end
 
 @implementation HDDeviceUnprotectedKeyValueStorageEntryEntity
@@ -35,27 +35,27 @@
   return v3;
 }
 
-+ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)a3 key:(id)a4 domain:(id)a5 object:(id)a6 syncEntityIdentity:(int64_t)a7 deviceContext:(int64_t)a8 modificationDate:(id)a9
++ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)binder key:(id)key domain:(id)domain object:(id)object syncEntityIdentity:(int64_t)identity deviceContext:(int64_t)context modificationDate:(id)date
 {
-  v15 = a9;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  MEMORY[0x22AAC6B90](a3, @"sync_identity_id", a7);
-  MEMORY[0x22AAC6B90](a3, @"device_record_id", a8);
-  MEMORY[0x22AAC6BD0](a3, @"domain", v17);
+  dateCopy = date;
+  objectCopy = object;
+  domainCopy = domain;
+  keyCopy = key;
+  MEMORY[0x22AAC6B90](binder, @"sync_identity_id", identity);
+  MEMORY[0x22AAC6B90](binder, @"device_record_id", context);
+  MEMORY[0x22AAC6BD0](binder, @"domain", domainCopy);
 
-  MEMORY[0x22AAC6BD0](a3, @"key", v18);
-  MEMORY[0x22AAC6B40](a3, @"value", v16);
+  MEMORY[0x22AAC6BD0](binder, @"key", keyCopy);
+  MEMORY[0x22AAC6B40](binder, @"value", objectCopy);
 
-  [v15 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
 
   JUMPOUT(0x22AAC6B60);
 }
 
-+ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)a3 syncEntityIdentity:(int64_t)a4 deviceContext:(int64_t)a5
++ (void)binderHandlerForBinder:(HDSQLiteStatementBinder *)binder syncEntityIdentity:(int64_t)identity deviceContext:(int64_t)context
 {
-  MEMORY[0x22AAC6B90](a3, @"sync_identity_id", a4);
+  MEMORY[0x22AAC6B90](binder, @"sync_identity_id", identity);
 
   JUMPOUT(0x22AAC6B90);
 }

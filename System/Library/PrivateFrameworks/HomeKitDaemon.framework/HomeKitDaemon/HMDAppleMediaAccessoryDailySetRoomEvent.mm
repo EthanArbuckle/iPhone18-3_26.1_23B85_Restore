@@ -1,7 +1,7 @@
 @interface HMDAppleMediaAccessoryDailySetRoomEvent
-+ (id)filterToAllowedRoomName:(id)a3;
-+ (id)localizedStringForRoomName:(id)a3;
-- (HMDAppleMediaAccessoryDailySetRoomEvent)initWithCurrentRoom:(id)a3 previousRoom:(id)a4;
++ (id)filterToAllowedRoomName:(id)name;
++ (id)localizedStringForRoomName:(id)name;
+- (HMDAppleMediaAccessoryDailySetRoomEvent)initWithCurrentRoom:(id)room previousRoom:(id)previousRoom;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -10,12 +10,12 @@
 - (NSDictionary)coreAnalyticsEventDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(HMDAppleMediaAccessoryDailySetRoomEvent *)self currentRoom];
-  v5 = [HMDAppleMediaAccessoryDailySetRoomEvent filterToAllowedRoomName:v4];
+  currentRoom = [(HMDAppleMediaAccessoryDailySetRoomEvent *)self currentRoom];
+  v5 = [HMDAppleMediaAccessoryDailySetRoomEvent filterToAllowedRoomName:currentRoom];
   [v3 setObject:v5 forKeyedSubscript:@"CurrentRoom"];
 
-  v6 = [(HMDAppleMediaAccessoryDailySetRoomEvent *)self previousRoom];
-  v7 = [HMDAppleMediaAccessoryDailySetRoomEvent filterToAllowedRoomName:v6];
+  previousRoom = [(HMDAppleMediaAccessoryDailySetRoomEvent *)self previousRoom];
+  v7 = [HMDAppleMediaAccessoryDailySetRoomEvent filterToAllowedRoomName:previousRoom];
   [v3 setObject:v7 forKeyedSubscript:@"PreviousRoom"];
 
   v8 = [v3 copy];
@@ -23,35 +23,35 @@
   return v8;
 }
 
-- (HMDAppleMediaAccessoryDailySetRoomEvent)initWithCurrentRoom:(id)a3 previousRoom:(id)a4
+- (HMDAppleMediaAccessoryDailySetRoomEvent)initWithCurrentRoom:(id)room previousRoom:(id)previousRoom
 {
-  v7 = a3;
-  v8 = a4;
+  roomCopy = room;
+  previousRoomCopy = previousRoom;
   v12.receiver = self;
   v12.super_class = HMDAppleMediaAccessoryDailySetRoomEvent;
   v9 = [(HMMLogEvent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_currentRoom, a3);
-    objc_storeStrong(&v10->_previousRoom, a4);
+    objc_storeStrong(&v9->_currentRoom, room);
+    objc_storeStrong(&v10->_previousRoom, previousRoom);
   }
 
   return v10;
 }
 
-+ (id)localizedStringForRoomName:(id)a3
++ (id)localizedStringForRoomName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 uppercaseString];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  nameCopy = name;
+  uppercaseString = [nameCopy uppercaseString];
+  v5 = [uppercaseString stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
   v6 = [@"ROOM_NAME_" stringByAppendingString:v5];
 
   v7 = HMDLocalizedStringForKey(v6);
   if ([v7 isEqualToString:v6])
   {
-    v8 = v3;
+    v8 = nameCopy;
   }
 
   else
@@ -64,14 +64,14 @@
   return v8;
 }
 
-+ (id)filterToAllowedRoomName:(id)a3
++ (id)filterToAllowedRoomName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   if (filterToAllowedRoomName__onceToken == -1)
   {
-    if (v4)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -103,7 +103,7 @@ LABEL_5:
           }
 
           v11 = *(*(&v24 + 1) + 8 * v10);
-          v12 = [a1 localizedStringForRoomName:v11];
+          v12 = [self localizedStringForRoomName:v11];
           if ([v5 isEqualToString:v12] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", v11))
           {
             break;
@@ -151,7 +151,7 @@ LABEL_14:
           }
 
           v11 = *(*(&v20 + 1) + 8 * v17);
-          v12 = [a1 localizedStringForRoomName:{v11, v20}];
+          v12 = [self localizedStringForRoomName:{v11, v20}];
           if ([v5 containsString:v12] & 1) != 0 || (objc_msgSend(v5, "containsString:", v11))
           {
             break;

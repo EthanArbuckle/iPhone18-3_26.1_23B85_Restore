@@ -1,5 +1,5 @@
 @interface JSDateFormatter.CacheCoordinator.Key
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (int64_t)hash;
 @end
 
@@ -15,9 +15,9 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
 
     swift_unknownObjectRetain();

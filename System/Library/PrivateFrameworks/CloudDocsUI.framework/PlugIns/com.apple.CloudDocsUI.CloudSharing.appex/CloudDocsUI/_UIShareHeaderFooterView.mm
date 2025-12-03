@@ -1,15 +1,15 @@
 @interface _UIShareHeaderFooterView
-- (_UIShareHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (_UIShareHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation _UIShareHeaderFooterView
 
-- (_UIShareHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (_UIShareHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v23.receiver = self;
   v23.super_class = _UIShareHeaderFooterView;
-  v3 = [(_UIShareHeaderFooterView *)&v23 initWithReuseIdentifier:a3];
+  v3 = [(_UIShareHeaderFooterView *)&v23 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -18,24 +18,24 @@
     [(UILabel *)v3->_centeredTitleView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_UIShareHeaderFooterView *)v3 addSubview:v3->_centeredTitleView];
     v5 = objc_opt_new();
-    v6 = [(UILabel *)v3->_centeredTitleView centerXAnchor];
-    v7 = [(_UIShareHeaderFooterView *)v3 centerXAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    centerXAnchor = [(UILabel *)v3->_centeredTitleView centerXAnchor];
+    centerXAnchor2 = [(_UIShareHeaderFooterView *)v3 centerXAnchor];
+    v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v5 addObject:v8];
 
-    v9 = [(UILabel *)v3->_centeredTitleView widthAnchor];
-    v10 = [(_UIShareHeaderFooterView *)v3 widthAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 multiplier:0.899999976];
+    widthAnchor = [(UILabel *)v3->_centeredTitleView widthAnchor];
+    widthAnchor2 = [(_UIShareHeaderFooterView *)v3 widthAnchor];
+    v11 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.899999976];
     [v5 addObject:v11];
 
-    v12 = [(UILabel *)v3->_centeredTitleView firstBaselineAnchor];
-    v13 = [(_UIShareHeaderFooterView *)v3 topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:20.0];
+    firstBaselineAnchor = [(UILabel *)v3->_centeredTitleView firstBaselineAnchor];
+    topAnchor = [(_UIShareHeaderFooterView *)v3 topAnchor];
+    v14 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:20.0];
     [v5 addObject:v14];
 
-    v15 = [(_UIShareHeaderFooterView *)v3 bottomAnchor];
-    v16 = [(UILabel *)v3->_centeredTitleView lastBaselineAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:10.0];
+    bottomAnchor = [(_UIShareHeaderFooterView *)v3 bottomAnchor];
+    lastBaselineAnchor = [(UILabel *)v3->_centeredTitleView lastBaselineAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:10.0];
     [v5 addObject:v17];
 
     [NSLayoutConstraint activateConstraints:v5];

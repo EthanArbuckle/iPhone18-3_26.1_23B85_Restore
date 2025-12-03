@@ -1,20 +1,20 @@
 @interface FCColor
-+ (FCColor)colorWithHexString:(id)a3;
-+ (FCColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
++ (FCColor)colorWithHexString:(id)string;
++ (FCColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 + (id)blackColor;
 + (id)clearColor;
-+ (id)nullableColorWithHexString:(id)a3;
++ (id)nullableColorWithHexString:(id)string;
 + (id)whiteColor;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSimilarToColor:(id)a3 withinPercentage:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSimilarToColor:(id)color withinPercentage:(double)percentage;
 - (FCColor)init;
-- (FCColor)initWithCoder:(id)a3;
-- (FCColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
+- (FCColor)initWithCoder:(id)coder;
+- (FCColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 - (NSString)hex;
 - (id)legibleColor;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)readDeconstructedRepresentationWithAcccessor:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)readDeconstructedRepresentationWithAcccessor:(id)acccessor;
 @end
 
 @implementation FCColor
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __21__FCColor_whiteColor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EDB26ED8 != -1)
   {
     dispatch_once(&qword_1EDB26ED8, block);
@@ -70,10 +70,10 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
   objc_exception_throw(v6);
 }
 
-- (FCColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (FCColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (red < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "red >= 0"];
     *buf = 136315906;
@@ -87,7 +87,7 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (a4 < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (green < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "green >= 0"];
     *buf = 136315906;
@@ -101,7 +101,7 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (a5 < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (blue < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "blue >= 0"];
     *buf = 136315906;
@@ -115,7 +115,7 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (a6 < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (alpha < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "alpha >= 0"];
     *buf = 136315906;
@@ -134,20 +134,20 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
   result = [(FCColor *)&v17 init];
   if (result)
   {
-    result->_red = a3;
-    result->_green = a4;
-    result->_blue = a5;
-    result->_alpha = a6;
+    result->_red = red;
+    result->_green = green;
+    result->_blue = blue;
+    result->_alpha = alpha;
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (FCColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (FCColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (red < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "red >= 0"];
     *buf = 136315906;
@@ -161,7 +161,7 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (a4 < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (green < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "green >= 0"];
     *buf = 136315906;
@@ -175,7 +175,7 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (a5 < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (blue < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "blue >= 0"];
     *buf = 136315906;
@@ -189,7 +189,7 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (a6 < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (alpha < 0.0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "alpha >= 0"];
     *buf = 136315906;
@@ -203,30 +203,30 @@ uint64_t __21__FCColor_whiteColor__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v11 = [[a1 alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v11 = [[self alloc] initWithRed:red green:green blue:blue alpha:alpha];
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-+ (FCColor)colorWithHexString:(id)a3
++ (FCColor)colorWithHexString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__8;
   v14 = __Block_byref_object_dispose__8;
   v15 = 0;
-  if ([v4 fc_isValidColorHexString])
+  if ([stringCopy fc_isValidColorHexString])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __30__FCColor_colorWithHexString___block_invoke;
     v9[3] = &unk_1E7C38868;
     v9[4] = &v10;
-    v9[5] = a1;
-    FCDeconstructHexStringWithBlock(v4, v9);
+    v9[5] = self;
+    FCDeconstructHexStringWithBlock(stringCopy, v9);
   }
 
   else
@@ -253,24 +253,24 @@ uint64_t __30__FCColor_colorWithHexString___block_invoke(uint64_t a1, double a2,
   return MEMORY[0x1EEE66BB8](v7, v9);
 }
 
-+ (id)nullableColorWithHexString:(id)a3
++ (id)nullableColorWithHexString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__8;
   v12 = __Block_byref_object_dispose__8;
   v13 = 0;
-  if ([v4 fc_isValidColorHexString])
+  if ([stringCopy fc_isValidColorHexString])
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __38__FCColor_nullableColorWithHexString___block_invoke;
     v7[3] = &unk_1E7C38868;
     v7[4] = &v8;
-    v7[5] = a1;
-    FCDeconstructHexStringWithBlock(v4, v7);
+    v7[5] = self;
+    FCDeconstructHexStringWithBlock(stringCopy, v7);
   }
 
   v5 = v9[5];
@@ -296,7 +296,7 @@ uint64_t __38__FCColor_nullableColorWithHexString___block_invoke(uint64_t a1, do
   block[1] = 3221225472;
   block[2] = __21__FCColor_blackColor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EDB26EE8 != -1)
   {
     dispatch_once(&qword_1EDB26EE8, block);
@@ -323,7 +323,7 @@ uint64_t __21__FCColor_blackColor__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __21__FCColor_clearColor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EDB26EF8 != -1)
   {
     dispatch_once(&qword_1EDB26EF8, block);
@@ -344,11 +344,11 @@ uint64_t __21__FCColor_clearColor__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (void)readDeconstructedRepresentationWithAcccessor:(id)a3
+- (void)readDeconstructedRepresentationWithAcccessor:(id)acccessor
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  acccessorCopy = acccessor;
+  if (!acccessorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "accessor"];
     *buf = 136315906;
@@ -369,42 +369,42 @@ uint64_t __21__FCColor_clearColor__block_invoke(uint64_t a1)
   [(FCColor *)self blue];
   v10 = v9;
   [(FCColor *)self alpha];
-  v4[2](v4, v6, v8, v10, v11);
+  acccessorCopy[2](acccessorCopy, v6, v8, v10, v11);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isSimilarToColor:(id)a3 withinPercentage:(double)a4
+- (BOOL)isSimilarToColor:(id)color withinPercentage:(double)percentage
 {
-  v6 = a3;
-  if (!v6)
+  colorCopy = color;
+  if (!colorCopy)
   {
 LABEL_7:
     v7 = 0;
     goto LABEL_8;
   }
 
-  if (a4 >= 0.00000011920929)
+  if (percentage >= 0.00000011920929)
   {
     [(FCColor *)self red];
     v9 = v8;
-    [v6 red];
-    if (vabdd_f64(v9, v10) <= a4)
+    [colorCopy red];
+    if (vabdd_f64(v9, v10) <= percentage)
     {
       [(FCColor *)self green];
       v12 = v11;
-      [v6 green];
-      if (vabdd_f64(v12, v13) <= a4)
+      [colorCopy green];
+      if (vabdd_f64(v12, v13) <= percentage)
       {
         [(FCColor *)self blue];
         v15 = v14;
-        [v6 blue];
-        if (vabdd_f64(v15, v16) <= a4)
+        [colorCopy blue];
+        if (vabdd_f64(v15, v16) <= percentage)
         {
           [(FCColor *)self alpha];
           v19 = v18;
-          [v6 alpha];
-          v7 = vabdd_f64(v19, v20) <= a4;
+          [colorCopy alpha];
+          v7 = vabdd_f64(v19, v20) <= percentage;
           goto LABEL_8;
         }
       }
@@ -413,19 +413,19 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = [(FCColor *)self isEqual:v6];
+  v7 = [(FCColor *)self isEqual:colorCopy];
 LABEL_8:
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(FCColor *)self red];
     v7 = v6;
     [v5 red];
@@ -523,33 +523,33 @@ void __23__FCColor_legibleColor__block_invoke(uint64_t a1, double a2, double a3,
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"#%02lX%02lX%02lX%02lX", v3, v5, llroundf(v6), llroundf(v7)];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   [(FCColor *)self red];
   *&v4 = v4;
-  [v8 encodeFloat:@"red" forKey:v4];
+  [coderCopy encodeFloat:@"red" forKey:v4];
   [(FCColor *)self green];
   *&v5 = v5;
-  [v8 encodeFloat:@"green" forKey:v5];
+  [coderCopy encodeFloat:@"green" forKey:v5];
   [(FCColor *)self blue];
   *&v6 = v6;
-  [v8 encodeFloat:@"blue" forKey:v6];
+  [coderCopy encodeFloat:@"blue" forKey:v6];
   [(FCColor *)self alpha];
   *&v7 = v7;
-  [v8 encodeFloat:@"alpha" forKey:v7];
+  [coderCopy encodeFloat:@"alpha" forKey:v7];
 }
 
-- (FCColor)initWithCoder:(id)a3
+- (FCColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"red"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"red"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"green"];
+  [coderCopy decodeFloatForKey:@"green"];
   v8 = v7;
-  [v4 decodeFloatForKey:@"blue"];
+  [coderCopy decodeFloatForKey:@"blue"];
   v10 = v9;
-  [v4 decodeFloatForKey:@"alpha"];
+  [coderCopy decodeFloatForKey:@"alpha"];
   v12 = v11;
 
   return [(FCColor *)self initWithRed:v6 green:v8 blue:v10 alpha:v12];

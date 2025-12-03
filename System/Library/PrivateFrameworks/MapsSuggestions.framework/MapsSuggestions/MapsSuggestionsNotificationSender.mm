@@ -1,10 +1,10 @@
 @interface MapsSuggestionsNotificationSender
-- (MapsSuggestionsNotificationSender)initWithDarwinNotification:(const char *)a3;
+- (MapsSuggestionsNotificationSender)initWithDarwinNotification:(const char *)notification;
 @end
 
 @implementation MapsSuggestionsNotificationSender
 
-- (MapsSuggestionsNotificationSender)initWithDarwinNotification:(const char *)a3
+- (MapsSuggestionsNotificationSender)initWithDarwinNotification:(const char *)notification
 {
   v4.receiver = self;
   v4.super_class = MapsSuggestionsNotificationSender;

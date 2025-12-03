@@ -1,39 +1,39 @@
 @interface MonthDayCellLayer
 - (CGRect)fullFrame;
 - (CGRect)narrowFrame;
-- (MonthDayCellLayer)initWithDateCache:(id)a3;
-- (void)pressToTransition:(BOOL)a3;
-- (void)setHasWorkout:(BOOL)a3;
-- (void)setPercentMinimized:(double)a3;
+- (MonthDayCellLayer)initWithDateCache:(id)cache;
+- (void)pressToTransition:(BOOL)transition;
+- (void)setHasWorkout:(BOOL)workout;
+- (void)setPercentMinimized:(double)minimized;
 - (void)setupCircleBackground;
-- (void)updateWithDate:(id)a3 dayOfMonth:(int64_t)a4;
+- (void)updateWithDate:(id)date dayOfMonth:(int64_t)month;
 @end
 
 @implementation MonthDayCellLayer
 
-- (MonthDayCellLayer)initWithDateCache:(id)a3
+- (MonthDayCellLayer)initWithDateCache:(id)cache
 {
   v20.receiver = self;
   v20.super_class = MonthDayCellLayer;
-  v3 = [(MonthDayCellLayer *)&v20 initWithDateCache:a3];
+  v3 = [(MonthDayCellLayer *)&v20 initWithDateCache:cache];
   if (v3)
   {
     v4 = [UIFont systemFontOfSize:16.0];
     [(MonthDayCellLayer *)v3 setFont:v4];
 
-    v5 = [(MonthDayCellLayer *)v3 font];
-    [(MonthDayCellLayer *)v3 setBoldFont:v5];
+    font = [(MonthDayCellLayer *)v3 font];
+    [(MonthDayCellLayer *)v3 setBoldFont:font];
 
     [(MonthDayCellLayer *)v3 setDayDiameter:25.0];
     v6 = +[UIScreen mainScreen];
-    v7 = [v6 traitCollection];
+    traitCollection = [v6 traitCollection];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10013D140;
     v18[3] = &unk_10083A8B0;
     v8 = v3;
     v19 = v8;
-    [v7 performAsCurrentTraitCollection:v18];
+    [traitCollection performAsCurrentTraitCollection:v18];
 
     v9 = objc_alloc_init(MonthWorkoutIndicator);
     v10 = v8[1];
@@ -44,103 +44,103 @@
     [v8[1] setContentsScale:?];
 
     [v8[1] setHasWorkout:0];
-    v12 = [v8 circle];
-    [v12 frame];
+    circle = [v8 circle];
+    [circle frame];
     v13 = CGRectGetMaxX(v21) + 4.0;
-    v14 = [v8 circle];
-    [v14 frame];
+    circle2 = [v8 circle];
+    [circle2 frame];
     [v8[1] setFrame:{v13, CGRectGetMaxY(v22) + 1.0, 6.0, 6.0}];
 
     v15 = v8[1];
-    v16 = [v8 circle];
-    [v8 insertSublayer:v15 below:v16];
+    circle3 = [v8 circle];
+    [v8 insertSublayer:v15 below:circle3];
   }
 
   return v3;
 }
 
-- (void)updateWithDate:(id)a3 dayOfMonth:(int64_t)a4
+- (void)updateWithDate:(id)date dayOfMonth:(int64_t)month
 {
   v12.receiver = self;
   v12.super_class = MonthDayCellLayer;
-  v6 = a3;
-  [(MonthDayCellLayer *)&v12 updateWithDate:v6 dayOfMonth:a4];
-  self->_dayOfMonth = a4;
+  dateCopy = date;
+  [(MonthDayCellLayer *)&v12 updateWithDate:dateCopy dayOfMonth:month];
+  self->_dayOfMonth = month;
   [(MonthDayCellLayer *)self setHasWorkout:self->_hasWorkout, v12.receiver, v12.super_class];
   [(MonthDayCellLayer *)self setupCircleBackground];
-  [v6 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8 = v7;
 
-  v9 = [(MonthDayCellLayer *)self dateCache];
-  v10 = [v9 startOfDayMidnight];
-  [v10 timeIntervalSinceReferenceDate];
+  dateCache = [(MonthDayCellLayer *)self dateCache];
+  startOfDayMidnight = [dateCache startOfDayMidnight];
+  [startOfDayMidnight timeIntervalSinceReferenceDate];
   self->_isFutureDay = v8 > v11;
 }
 
-- (void)setHasWorkout:(BOOL)a3
+- (void)setHasWorkout:(BOOL)workout
 {
-  self->_hasWorkout = a3;
+  self->_hasWorkout = workout;
   [(MonthWorkoutIndicator *)self->_workoutIndicator setHasWorkout:?];
   v4 = +[UIScreen mainScreen];
-  v5 = [v4 traitCollection];
+  traitCollection = [v4 traitCollection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013D390;
   v8[3] = &unk_10083A8B0;
   v8[4] = self;
-  [v5 performAsCurrentTraitCollection:v8];
+  [traitCollection performAsCurrentTraitCollection:v8];
 
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   dayOfMonth = self->_dayOfMonth;
-  v7 = [(MonthDayCellLayer *)self textColor];
-  [(MonthDayCellLayer *)self updateDateTextForDayNumber:dayOfMonth textColor:v7];
+  textColor = [(MonthDayCellLayer *)self textColor];
+  [(MonthDayCellLayer *)self updateDateTextForDayNumber:dayOfMonth textColor:textColor];
 
   +[CATransaction commit];
 }
 
 - (void)setupCircleBackground
 {
-  v3 = [(MonthDayCellLayer *)self representsToday];
-  v4 = [(MonthDayCellLayer *)self circle];
-  [v4 setHidden:v3 ^ 1];
+  representsToday = [(MonthDayCellLayer *)self representsToday];
+  circle = [(MonthDayCellLayer *)self circle];
+  [circle setHidden:representsToday ^ 1];
 
   if (([(MonthDayCellLayer *)self representsToday]& 1) != 0)
   {
     v5 = +[ARUIMetricColors energyColors];
-    v8 = [v5 nonGradientTextColor];
+    nonGradientTextColor = [v5 nonGradientTextColor];
   }
 
   else
   {
-    v8 = +[UIColor darkGrayColor];
+    nonGradientTextColor = +[UIColor darkGrayColor];
   }
 
-  v6 = [(MonthDayCellLayer *)self circle];
-  v7 = v8;
-  [v6 setBackgroundColor:{objc_msgSend(v8, "CGColor")}];
+  circle2 = [(MonthDayCellLayer *)self circle];
+  v7 = nonGradientTextColor;
+  [circle2 setBackgroundColor:{objc_msgSend(nonGradientTextColor, "CGColor")}];
 }
 
-- (void)pressToTransition:(BOOL)a3
+- (void)pressToTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   +[CATransaction begin];
   [CATransaction setAnimationDuration:0.3];
   if (([(MonthDayCellLayer *)self representsToday]& 1) == 0)
   {
-    v5 = [(MonthDayCellLayer *)self circle];
-    [v5 setHidden:!v3];
+    circle = [(MonthDayCellLayer *)self circle];
+    [circle setHidden:!transitionCopy];
   }
 
   +[CATransaction commit];
 }
 
-- (void)setPercentMinimized:(double)a3
+- (void)setPercentMinimized:(double)minimized
 {
   y = self->_fullFrame.origin.y;
   width = self->_fullFrame.size.width;
   height = self->_fullFrame.size.height;
-  v7 = self->_fullFrame.origin.x + (self->_narrowFrame.origin.x - self->_fullFrame.origin.x) * a3;
+  v7 = self->_fullFrame.origin.x + (self->_narrowFrame.origin.x - self->_fullFrame.origin.x) * minimized;
   [(MonthDayCellLayer *)self setFrame:v7, y, width, height];
   v12.origin.x = v7;
   v12.origin.y = y;

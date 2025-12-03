@@ -1,47 +1,47 @@
 @interface _AKAnisetteProviderProxy
-- (_AKAnisetteProviderProxy)initWithProvider:(id)a3;
-- (void)eraseAnisetteForContext:(id)a3 withCompletion:(id)a4;
-- (void)fetchAnisetteDataForContext:(id)a3 provisionIfNecessary:(BOOL)a4 withCompletion:(id)a5;
-- (void)fetchPeerAttestationDataForContext:(id)a3 withRequest:(id)a4 completion:(id)a5;
-- (void)legacyAnisetteDataForContext:(id)a3 DSID:(id)a4 withCompletion:(id)a5;
-- (void)provisionAnisetteForContext:(id)a3 withCompletion:(id)a4;
-- (void)syncAnisetteForContext:(id)a3 withSIMData:(id)a4 completion:(id)a5;
+- (_AKAnisetteProviderProxy)initWithProvider:(id)provider;
+- (void)eraseAnisetteForContext:(id)context withCompletion:(id)completion;
+- (void)fetchAnisetteDataForContext:(id)context provisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)fetchPeerAttestationDataForContext:(id)context withRequest:(id)request completion:(id)completion;
+- (void)legacyAnisetteDataForContext:(id)context DSID:(id)d withCompletion:(id)completion;
+- (void)provisionAnisetteForContext:(id)context withCompletion:(id)completion;
+- (void)syncAnisetteForContext:(id)context withSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation _AKAnisetteProviderProxy
 
-- (_AKAnisetteProviderProxy)initWithProvider:(id)a3
+- (_AKAnisetteProviderProxy)initWithProvider:(id)provider
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, provider);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = _AKAnisetteProviderProxy;
-  v8 = [(_AKAnisetteProviderProxy *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(_AKAnisetteProviderProxy *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_anisetteDataProvider, location[0]);
+    objc_storeStrong(&selfCopy->_anisetteDataProvider, location[0]);
   }
 
-  v5 = MEMORY[0x1E69E5928](v8);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)provisionAnisetteForContext:(id)a3 withCompletion:(id)a4
+- (void)provisionAnisetteForContext:(id)context withCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, completion);
   v9 = _AKLogSystem();
   v8 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -51,7 +51,7 @@
   }
 
   objc_storeStrong(&v9, 0);
-  v7 = MEMORY[0x1E69E5928](v12->_anisetteDataProvider);
+  v7 = MEMORY[0x1E69E5928](selfCopy->_anisetteDataProvider);
   if (v7)
   {
     [v7 provisionAnisetteWithCompletion:v10];
@@ -71,17 +71,17 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)syncAnisetteForContext:(id)a3 withSIMData:(id)a4 completion:(id)a5
+- (void)syncAnisetteForContext:(id)context withSIMData:(id)data completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, data);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, completion);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -91,7 +91,7 @@
   }
 
   objc_storeStrong(&v11, 0);
-  v9 = MEMORY[0x1E69E5928](v15->_anisetteDataProvider);
+  v9 = MEMORY[0x1E69E5928](selfCopy->_anisetteDataProvider);
   if (v9)
   {
     [v9 syncAnisetteWithSIMData:v13 completion:v12];
@@ -112,15 +112,15 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)eraseAnisetteForContext:(id)a3 withCompletion:(id)a4
+- (void)eraseAnisetteForContext:(id)context withCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, completion);
   v9 = _AKLogSystem();
   v8 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -130,7 +130,7 @@
   }
 
   objc_storeStrong(&v9, 0);
-  v7 = MEMORY[0x1E69E5928](v12->_anisetteDataProvider);
+  v7 = MEMORY[0x1E69E5928](selfCopy->_anisetteDataProvider);
   if (v7)
   {
     [v7 eraseAnisetteWithCompletion:v10];
@@ -150,16 +150,16 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAnisetteDataForContext:(id)a3 provisionIfNecessary:(BOOL)a4 withCompletion:(id)a5
+- (void)fetchAnisetteDataForContext:(id)context provisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
+  objc_storeStrong(location, context);
+  necessaryCopy = necessary;
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, completion);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -169,10 +169,10 @@
   }
 
   objc_storeStrong(&v11, 0);
-  v9 = MEMORY[0x1E69E5928](v15->_anisetteDataProvider);
+  v9 = MEMORY[0x1E69E5928](selfCopy->_anisetteDataProvider);
   if (v9)
   {
-    [v9 fetchAnisetteDataAndProvisionIfNecessary:v13 withCompletion:v12];
+    [v9 fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy withCompletion:v12];
   }
 
   else
@@ -189,17 +189,17 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)legacyAnisetteDataForContext:(id)a3 DSID:(id)a4 withCompletion:(id)a5
+- (void)legacyAnisetteDataForContext:(id)context DSID:(id)d withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, d);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, completion);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -209,7 +209,7 @@
   }
 
   objc_storeStrong(&v11, 0);
-  v9 = MEMORY[0x1E69E5928](v15->_anisetteDataProvider);
+  v9 = MEMORY[0x1E69E5928](selfCopy->_anisetteDataProvider);
   if (v9)
   {
     [v9 legacyAnisetteDataForDSID:v13 withCompletion:v12];
@@ -230,17 +230,17 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchPeerAttestationDataForContext:(id)a3 withRequest:(id)a4 completion:(id)a5
+- (void)fetchPeerAttestationDataForContext:(id)context withRequest:(id)request completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, request);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, completion);
   v17 = _AKLogSystem();
   v16 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -250,7 +250,7 @@
   }
 
   objc_storeStrong(&v17, 0);
-  v15 = MEMORY[0x1E69E5928](v21->_anisetteDataProvider);
+  v15 = MEMORY[0x1E69E5928](selfCopy->_anisetteDataProvider);
   if (v15)
   {
     if (objc_opt_respondsToSelector())
@@ -259,7 +259,7 @@
       v12 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_3_8_64_8_64_8_64(v23, v21, v15, v19);
+        __os_log_helper_16_2_3_8_64_8_64_8_64(v23, selfCopy, v15, v19);
         _os_log_impl(&dword_193225000, oslog, v12, "%@: Calling anisette data provider (%@) to fetch peer attestation data for request (%@)", v23, 0x20u);
       }
 
@@ -272,7 +272,7 @@
       v11 = _AKLogSystem();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_3_8_64_8_64_8_64(v22, v21, v15, v19);
+        __os_log_helper_16_2_3_8_64_8_64_8_64(v22, selfCopy, v15, v19);
         _os_log_error_impl(&dword_193225000, v11, OS_LOG_TYPE_ERROR, "%@: Unable to call anisette data provider (%@) to fetch peer attestation data for request (%@) because it does not implement 'fetchPeerAttestationDataForRequest:completion:'", v22, 0x20u);
       }
 

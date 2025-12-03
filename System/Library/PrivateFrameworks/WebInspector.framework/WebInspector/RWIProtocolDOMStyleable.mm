@@ -1,7 +1,7 @@
 @interface RWIProtocolDOMStyleable
 - (int)nodeId;
 - (int64_t)pseudoId;
-- (void)setPseudoId:(int64_t)a3;
+- (void)setPseudoId:(int64_t)id;
 @end
 
 @implementation RWIProtocolDOMStyleable
@@ -13,7 +13,7 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"nodeId"];
 }
 
-- (void)setPseudoId:(int64_t)a3
+- (void)setPseudoId:(int64_t)id
 {
   Inspector::toProtocolString();
   if (v6)

@@ -1,31 +1,31 @@
 @interface SCRCMathRadicalExpression
 - (BOOL)_isCubeRoot;
 - (BOOL)_isSquareRoot;
-- (SCRCMathRadicalExpression)initWithDictionary:(id)a3;
+- (SCRCMathRadicalExpression)initWithDictionary:(id)dictionary;
 - (id)description;
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4;
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position;
 - (id)latexMathModeDescription;
 - (id)mathMLString;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position;
 - (id)subExpressions;
 @end
 
 @implementation SCRCMathRadicalExpression
 
-- (SCRCMathRadicalExpression)initWithDictionary:(id)a3
+- (SCRCMathRadicalExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SCRCMathRadicalExpression;
-  v5 = [(SCRCMathExpression *)&v11 initWithDictionary:v4];
+  v5 = [(SCRCMathExpression *)&v11 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AXMRadicandObject"];
+    v6 = [dictionaryCopy objectForKey:@"AXMRadicandObject"];
     v7 = [SCRCMathExpression mathExpressionWithDictionary:v6];
     [(SCRCMathRadicalExpression *)v5 setRadicand:v7];
 
-    v8 = [v4 objectForKey:@"AXMRootIndexObject"];
+    v8 = [dictionaryCopy objectForKey:@"AXMRootIndexObject"];
     v9 = [SCRCMathExpression mathExpressionWithDictionary:v8];
     [(SCRCMathRadicalExpression *)v5 setRootIndex:v9];
   }
@@ -38,36 +38,36 @@
   v8.receiver = self;
   v8.super_class = SCRCMathRadicalExpression;
   v3 = [(SCRCMathRadicalExpression *)&v8 description];
-  v4 = [(SCRCMathRadicalExpression *)self radicand];
-  v5 = [(SCRCMathRadicalExpression *)self rootIndex];
-  v6 = [v3 stringByAppendingFormat:@" - radicand %@, root index %@", v4, v5];
+  radicand = [(SCRCMathRadicalExpression *)self radicand];
+  rootIndex = [(SCRCMathRadicalExpression *)self rootIndex];
+  v6 = [v3 stringByAppendingFormat:@" - radicand %@, root index %@", radicand, rootIndex];
 
   return v6;
 }
 
 - (id)subExpressions
 {
-  v3 = [(SCRCMathRadicalExpression *)self rootIndex];
-  v4 = [(SCRCMathRadicalExpression *)self radicand];
-  v5 = [(SCRCMathExpression *)self arrayWithoutNilsFromFirstChild:v3 secondChild:v4 thirdChild:0];
+  rootIndex = [(SCRCMathRadicalExpression *)self rootIndex];
+  radicand = [(SCRCMathRadicalExpression *)self radicand];
+  v5 = [(SCRCMathExpression *)self arrayWithoutNilsFromFirstChild:rootIndex secondChild:radicand thirdChild:0];
 
   return v5;
 }
 
 - (BOOL)_isSquareRoot
 {
-  v3 = [(SCRCMathRadicalExpression *)self rootIndex];
+  rootIndex = [(SCRCMathRadicalExpression *)self rootIndex];
 
-  if (!v3)
+  if (!rootIndex)
   {
     return 1;
   }
 
-  v4 = [(SCRCMathRadicalExpression *)self rootIndex];
-  if ([v4 isInteger])
+  rootIndex2 = [(SCRCMathRadicalExpression *)self rootIndex];
+  if ([rootIndex2 isInteger])
   {
-    v5 = [(SCRCMathRadicalExpression *)self rootIndex];
-    v6 = [v5 integerValue] == 2;
+    rootIndex3 = [(SCRCMathRadicalExpression *)self rootIndex];
+    v6 = [rootIndex3 integerValue] == 2;
   }
 
   else
@@ -80,11 +80,11 @@
 
 - (BOOL)_isCubeRoot
 {
-  v3 = [(SCRCMathRadicalExpression *)self rootIndex];
-  if ([v3 isInteger])
+  rootIndex = [(SCRCMathRadicalExpression *)self rootIndex];
+  if ([rootIndex isInteger])
   {
-    v4 = [(SCRCMathRadicalExpression *)self rootIndex];
-    v5 = [v4 integerValue] == 3;
+    rootIndex2 = [(SCRCMathRadicalExpression *)self rootIndex];
+    v5 = [rootIndex2 integerValue] == 3;
   }
 
   else
@@ -95,11 +95,11 @@
   return v5;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v7 = [(SCRCMathRadicalExpression *)self radicand];
-  v8 = [v7 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4];
+  allowedCopy = allowed;
+  radicand = [(SCRCMathRadicalExpression *)self radicand];
+  v8 = [radicand speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
 
   if ([(SCRCMathRadicalExpression *)self _isSquareRoot])
   {
@@ -110,9 +110,9 @@
     goto LABEL_7;
   }
 
-  v11 = [(SCRCMathRadicalExpression *)self _isCubeRoot];
+  _isCubeRoot = [(SCRCMathRadicalExpression *)self _isCubeRoot];
   v12 = MEMORY[0x277CCA898];
-  if (v11)
+  if (_isCubeRoot)
   {
     v10 = [(SCRCMathExpression *)self localizedStringForKey:@"cube.root.formatter"];
     [v12 scrcStringWithFormat:v10, v8];
@@ -120,8 +120,8 @@
   }
 
   v10 = [(SCRCMathExpression *)self localizedStringForKey:@"nth.root.formatter"];
-  v14 = [(SCRCMathRadicalExpression *)self rootIndex];
-  v15 = [v14 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4];
+  rootIndex = [(SCRCMathRadicalExpression *)self rootIndex];
+  v15 = [rootIndex speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
   v13 = [v12 scrcStringWithFormat:v10, v15, v8];
 
 LABEL_7:
@@ -129,31 +129,31 @@ LABEL_7:
   return v13;
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = v8;
-  if (!a4)
+  positionCopy = position;
+  v9 = positionCopy;
+  if (!depth)
   {
-    v11 = 0;
+    array = 0;
     goto LABEL_22;
   }
 
-  v10 = a4 - 1;
-  if (a4 == 1)
+  v10 = depth - 1;
+  if (depth == 1)
   {
     v37.receiver = self;
     v37.super_class = SCRCMathRadicalExpression;
-    v11 = [(SCRCMathExpression *)&v37 speakableSegmentsWithSpeakingStyle:a3 upToDepth:1 treePosition:v8];
+    array = [(SCRCMathExpression *)&v37 speakableSegmentsWithSpeakingStyle:style upToDepth:1 treePosition:positionCopy];
     goto LABEL_22;
   }
 
-  v12 = [v8 indexPathByAddingIndex:0];
+  v12 = [positionCopy indexPathByAddingIndex:0];
   if ([(SCRCMathRadicalExpression *)self _isSquareRoot])
   {
-    v13 = [(SCRCMathExpression *)self localizedAttributedStringForKey:@"segment.square.root.index" treePosition:v12, v12];
-    v40[0] = v13;
+    rootIndex = [(SCRCMathExpression *)self localizedAttributedStringForKey:@"segment.square.root.index" treePosition:v12, v12];
+    v40[0] = rootIndex;
     v14 = MEMORY[0x277CBEA60];
     v15 = v40;
   }
@@ -162,13 +162,13 @@ LABEL_7:
   {
     if (![(SCRCMathRadicalExpression *)self _isCubeRoot])
     {
-      v13 = [(SCRCMathRadicalExpression *)self rootIndex];
-      v16 = [v13 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v10 treePosition:v12 localizablePrefix:@"segment.nth.root.index.prefix" localizableSuffix:@"segment.nth.root.index.suffix"];
+      rootIndex = [(SCRCMathRadicalExpression *)self rootIndex];
+      v16 = [rootIndex speakableSegmentsWithSpeakingStyle:style upToDepth:v10 treePosition:v12 localizablePrefix:@"segment.nth.root.index.prefix" localizableSuffix:@"segment.nth.root.index.suffix"];
       goto LABEL_11;
     }
 
-    v13 = [(SCRCMathExpression *)self localizedAttributedStringForKey:@"segment.cube.root.index" treePosition:v12];
-    v39 = v13;
+    rootIndex = [(SCRCMathExpression *)self localizedAttributedStringForKey:@"segment.cube.root.index" treePosition:v12];
+    v39 = rootIndex;
     v14 = MEMORY[0x277CBEA60];
     v15 = &v39;
   }
@@ -177,12 +177,12 @@ LABEL_7:
 LABEL_11:
   v17 = v16;
 
-  v18 = [(SCRCMathRadicalExpression *)self radicand];
+  radicand = [(SCRCMathRadicalExpression *)self radicand];
   v32 = v9;
   v19 = [v9 indexPathByAddingIndex:1];
-  v20 = [v18 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v10 treePosition:v19 localizablePrefix:@"segment.radicand.prefix" localizableSuffix:@"segment.radicand.suffix"];
+  v20 = [radicand speakableSegmentsWithSpeakingStyle:style upToDepth:v10 treePosition:v19 localizablePrefix:@"segment.radicand.prefix" localizableSuffix:@"segment.radicand.suffix"];
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -215,7 +215,7 @@ LABEL_11:
           }
         }
 
-        [v11 addObjectsFromArray:v28];
+        [array addObjectsFromArray:v28];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -227,104 +227,104 @@ LABEL_11:
   v9 = v32;
 LABEL_22:
 
-  return v11;
+  return array;
 }
 
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAB48] scrcString];
-  v8 = [(SCRCMathRadicalExpression *)self rootIndex];
+  positionCopy = position;
+  scrcString = [MEMORY[0x277CCAB48] scrcString];
+  rootIndex = [(SCRCMathRadicalExpression *)self rootIndex];
 
-  v9 = v8 == 0;
-  if (v8)
+  v9 = rootIndex == 0;
+  if (rootIndex)
   {
-    v10 = @"ixrte";
+    radicals2 = @"ixrte";
   }
 
   else
   {
-    v10 = @"sqrte";
+    radicals2 = @"sqrte";
   }
 
   if (v9)
   {
-    v11 = @"sqrts";
+    radicals = @"sqrts";
   }
 
   else
   {
-    v11 = @"ixrts";
+    radicals = @"ixrts";
   }
 
-  if (a3)
+  if (radicals)
   {
-    v11 = [(__CFString *)v11 stringByAppendingFormat:@"%lu", a3];
-    v10 = [(__CFString *)v10 stringByAppendingFormat:@"%lu", a3];
+    radicals = [(__CFString *)radicals stringByAppendingFormat:@"%lu", radicals];
+    radicals2 = [(__CFString *)radicals2 stringByAppendingFormat:@"%lu", radicals];
   }
 
-  v12 = [(SCRCMathRadicalExpression *)self rootIndex];
+  rootIndex2 = [(SCRCMathRadicalExpression *)self rootIndex];
 
-  if (v12)
+  if (rootIndex2)
   {
-    v13 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v11 treePosition:v6];
-    [v7 appendAttributedString:v13];
+    v13 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:radicals treePosition:positionCopy];
+    [scrcString appendAttributedString:v13];
 
-    v14 = [(SCRCMathRadicalExpression *)self rootIndex];
-    v15 = [v6 indexPathByAddingIndex:0];
-    v16 = [v14 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 + 1 treePosition:v15];
-    [v7 appendAttributedString:v16];
+    rootIndex3 = [(SCRCMathRadicalExpression *)self rootIndex];
+    v15 = [positionCopy indexPathByAddingIndex:0];
+    v16 = [rootIndex3 dollarCodeDescriptionWithNumberOfOuterRadicals:radicals + 1 treePosition:v15];
+    [scrcString appendAttributedString:v16];
 
-    v17 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"ixrtd" treePosition:v6];
-    [v7 appendAttributedString:v17];
+    v17 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"ixrtd" treePosition:positionCopy];
+    [scrcString appendAttributedString:v17];
 
-    v18 = [(SCRCMathRadicalExpression *)self radicand];
-    v19 = [v6 indexPathByAddingIndex:1];
-    v20 = [v18 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 + 1 treePosition:v19];
-    [v7 appendAttributedString:v20];
+    radicand = [(SCRCMathRadicalExpression *)self radicand];
+    v19 = [positionCopy indexPathByAddingIndex:1];
+    v20 = [radicand dollarCodeDescriptionWithNumberOfOuterRadicals:radicals + 1 treePosition:v19];
+    [scrcString appendAttributedString:v20];
 
-    v21 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v10 treePosition:v6];
-    [v7 appendAttributedString:v21];
+    v21 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:radicals2 treePosition:positionCopy];
+    [scrcString appendAttributedString:v21];
   }
 
   else
   {
-    v21 = [v6 indexPathByAddingIndex:0];
-    v22 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v11 treePosition:v21];
-    [v7 appendAttributedString:v22];
+    v21 = [positionCopy indexPathByAddingIndex:0];
+    v22 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:radicals treePosition:v21];
+    [scrcString appendAttributedString:v22];
 
-    v23 = [(SCRCMathRadicalExpression *)self radicand];
-    v24 = [v6 indexPathByAddingIndex:1];
-    v25 = [v23 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 + 1 treePosition:v24];
-    [v7 appendAttributedString:v25];
+    radicand2 = [(SCRCMathRadicalExpression *)self radicand];
+    v24 = [positionCopy indexPathByAddingIndex:1];
+    v25 = [radicand2 dollarCodeDescriptionWithNumberOfOuterRadicals:radicals + 1 treePosition:v24];
+    [scrcString appendAttributedString:v25];
 
-    v26 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:v10 treePosition:v21];
-    [v7 appendAttributedString:v26];
+    v26 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:radicals2 treePosition:v21];
+    [scrcString appendAttributedString:v26];
   }
 
-  return v7;
+  return scrcString;
 }
 
 - (id)mathMLString
 {
-  v3 = [(SCRCMathRadicalExpression *)self rootIndex];
+  rootIndex = [(SCRCMathRadicalExpression *)self rootIndex];
 
-  if (v3)
+  if (rootIndex)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(SCRCMathRadicalExpression *)self radicand];
-    v6 = [v5 mathMLString];
-    v7 = [(SCRCMathRadicalExpression *)self rootIndex];
-    v8 = [v7 mathMLString];
-    v9 = [v4 stringWithFormat:@"%@%@", v6, v8];
+    radicand = [(SCRCMathRadicalExpression *)self radicand];
+    mathMLString = [radicand mathMLString];
+    rootIndex2 = [(SCRCMathRadicalExpression *)self rootIndex];
+    mathMLString2 = [rootIndex2 mathMLString];
+    v9 = [v4 stringWithFormat:@"%@%@", mathMLString, mathMLString2];
     v10 = [v9 stringWrappedInMathMLTag:@"mroot"];
   }
 
   else
   {
-    v5 = [(SCRCMathRadicalExpression *)self radicand];
-    v6 = [v5 mathMLString];
-    v10 = [v6 stringWrappedInMathMLTag:@"msqrt"];
+    radicand = [(SCRCMathRadicalExpression *)self radicand];
+    mathMLString = [radicand mathMLString];
+    v10 = [mathMLString stringWrappedInMathMLTag:@"msqrt"];
   }
 
   return v10;

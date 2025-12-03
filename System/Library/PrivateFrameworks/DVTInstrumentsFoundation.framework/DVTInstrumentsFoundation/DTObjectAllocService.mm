@@ -1,31 +1,31 @@
 @interface DTObjectAllocService
-+ (void)registerCapabilities:(id)a3;
-- (DTObjectAllocService)initWithChannel:(id)a3;
-- (id)attachToPid:(id)a3 eventsMask:(id)a4;
-- (id)preparedEnvironmentForLaunch:(id)a3 eventsMask:(id)a4;
-- (void)messageReceived:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (DTObjectAllocService)initWithChannel:(id)channel;
+- (id)attachToPid:(id)pid eventsMask:(id)mask;
+- (id)preparedEnvironmentForLaunch:(id)launch eventsMask:(id)mask;
+- (void)messageReceived:(id)received;
 - (void)stopCollection;
 @end
 
 @implementation DTObjectAllocService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v5 = a3;
+  capabilitiesCopy = capabilities;
   v4 = +[DTAllocationsRecorder serviceIdentifier];
-  [v5 publishCapability:v4 withVersion:+[DTAllocationsRecorder currentVersion](DTAllocationsRecorder forClass:{"currentVersion"), a1}];
+  [capabilitiesCopy publishCapability:v4 withVersion:+[DTAllocationsRecorder currentVersion](DTAllocationsRecorder forClass:{"currentVersion"), self}];
 
-  [v5 publishCapability:@"com.apple.instruments.server.services.objectalloc.immediate" withVersion:1 forClass:a1];
-  [v5 publishCapability:@"com.apple.instruments.server.services.objectalloc.deferred" withVersion:1 forClass:a1];
-  [v5 publishCapability:@"com.apple.instruments.server.services.objectalloc.zombies" withVersion:1 forClass:a1];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.objectalloc.immediate" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.objectalloc.deferred" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.objectalloc.zombies" withVersion:1 forClass:self];
 }
 
-- (DTObjectAllocService)initWithChannel:(id)a3
+- (DTObjectAllocService)initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v11.receiver = self;
   v11.super_class = DTObjectAllocService;
-  v5 = [(DTXService *)&v11 initWithChannel:v4];
+  v5 = [(DTXService *)&v11 initWithChannel:channelCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -36,16 +36,16 @@
     v9[1] = 3221225472;
     v9[2] = sub_247FD62F4;
     v9[3] = &unk_278EF3740;
-    v10 = v4;
+    v10 = channelCopy;
     [(DTAllocationsRecorder *)v5->_recorder setBufferHandler:v9];
   }
 
   return v5;
 }
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
-  if ([a3 errorStatus] == 2)
+  if ([received errorStatus] == 2)
   {
     task = self->_task;
     if (task + 1 >= 2)
@@ -60,13 +60,13 @@
   }
 }
 
-- (id)preparedEnvironmentForLaunch:(id)a3 eventsMask:(id)a4
+- (id)preparedEnvironmentForLaunch:(id)launch eventsMask:(id)mask
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  v7 = [v5 intValue];
+  maskCopy = mask;
+  v6 = [launch mutableCopy];
+  intValue = [maskCopy intValue];
 
-  if ([DTAllocationsRecorder configureLocalLaunchEnvironment:v6 recordedEventsMask:v7])
+  if ([DTAllocationsRecorder configureLocalLaunchEnvironment:v6 recordedEventsMask:intValue])
   {
     v8 = v6;
   }
@@ -79,14 +79,14 @@
   return v8;
 }
 
-- (id)attachToPid:(id)a3 eventsMask:(id)a4
+- (id)attachToPid:(id)pid eventsMask:(id)mask
 {
-  v6 = a4;
-  self->_task = +[DTInstrumentServer taskForPid:](DTInstrumentServer, "taskForPid:", [a3 intValue]);
+  maskCopy = mask;
+  self->_task = +[DTInstrumentServer taskForPid:](DTInstrumentServer, "taskForPid:", [pid intValue]);
   v7 = objc_opt_new();
   recorder = self->_recorder;
   task = self->_task;
-  v10 = [v6 intValue];
+  intValue = [maskCopy intValue];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -94,7 +94,7 @@
   v13[3] = &unk_278EF1948;
   v11 = v7;
   v14 = v11;
-  [(DTAllocationsRecorder *)recorder startAttachingToTask:task recordedEventsMask:v10 errorHandler:v13];
+  [(DTAllocationsRecorder *)recorder startAttachingToTask:task recordedEventsMask:intValue errorHandler:v13];
 
   return v11;
 }
@@ -102,8 +102,8 @@
 - (void)stopCollection
 {
   [(DTAllocationsRecorder *)self->_recorder stop];
-  v3 = [(DTXService *)self channel];
-  [v3 cancel];
+  channel = [(DTXService *)self channel];
+  [channel cancel];
 }
 
 @end

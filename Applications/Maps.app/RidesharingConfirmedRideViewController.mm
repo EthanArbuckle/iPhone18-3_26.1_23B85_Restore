@@ -1,35 +1,35 @@
 @interface RidesharingConfirmedRideViewController
-- (CGSize)maximumSizeForRemoteViewController:(id)a3;
-- (CGSize)minimumSizeForRemoteViewController:(id)a3;
+- (CGSize)maximumSizeForRemoteViewController:(id)controller;
+- (CGSize)minimumSizeForRemoteViewController:(id)controller;
 - (ProminentActionButton)cancelButton;
 - (ProminentActionButton)completedButton;
 - (ProminentActionButton)contactButton;
 - (RidesharingConfirmedRideViewController)init;
-- (RidesharingConfirmedRideViewController)initWithApplicationIdentifier:(id)a3;
+- (RidesharingConfirmedRideViewController)initWithApplicationIdentifier:(id)identifier;
 - (RidesharingCoordinator)coordinator;
 - (double)headerAndRouteFromToViewHeight;
-- (double)heightForLayout:(unint64_t)a3;
-- (id)_cancelConfirmationAlertControllerForApp:(id)a3 withFee:(id)a4 threshold:(id)a5 continueBlock:(id)a6;
+- (double)heightForLayout:(unint64_t)layout;
+- (id)_cancelConfirmationAlertControllerForApp:(id)app withFee:(id)fee threshold:(id)threshold continueBlock:(id)block;
 - (id)stackedViews;
 - (int)_currentAnalyticsTarget;
-- (void)_bannerViewTapped:(id)a3;
-- (void)_cancelTapped:(id)a3;
-- (void)_cleanupWithRideStatus:(id)a3;
-- (void)_completedButtonTapped:(id)a3;
+- (void)_bannerViewTapped:(id)tapped;
+- (void)_cancelTapped:(id)tapped;
+- (void)_cleanupWithRideStatus:(id)status;
+- (void)_completedButtonTapped:(id)tapped;
 - (void)_openAppTapped;
-- (void)_setBannerViewContainerContentView:(id)a3;
-- (void)_updateFromRideStatus:(id)a3;
-- (void)contactTapped:(id)a3;
+- (void)_setBannerViewContainerContentView:(id)view;
+- (void)_updateFromRideStatus:(id)status;
+- (void)contactTapped:(id)tapped;
 - (void)dealloc;
-- (void)didChangeLayout:(unint64_t)a3;
-- (void)extensionManager:(id)a3 didUpdateAvailableExtensions:(id)a4;
-- (void)getCanCallPhoneNumber:(id)a3 completion:(id)a4;
-- (void)getRemoteViewControllerWithDelegate:(id)a3 completion:(id)a4;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)remoteViewControllerServiceDidTerminate:(id)a3;
-- (void)rideStatusMapDidChange:(id)a3;
+- (void)didChangeLayout:(unint64_t)layout;
+- (void)extensionManager:(id)manager didUpdateAvailableExtensions:(id)extensions;
+- (void)getCanCallPhoneNumber:(id)number completion:(id)completion;
+- (void)getRemoteViewControllerWithDelegate:(id)delegate completion:(id)completion;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)remoteViewControllerServiceDidTerminate:(id)terminate;
+- (void)rideStatusMapDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RidesharingConfirmedRideViewController
@@ -41,24 +41,24 @@
   return WeakRetained;
 }
 
-- (void)getCanCallPhoneNumber:(id)a3 completion:(id)a4
+- (void)getCanCallPhoneNumber:(id)number completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  numberCopy = number;
+  completionCopy = completion;
+  if (completionCopy)
   {
     cachedContactUrl = self->_cachedContactUrl;
     self->_cachedContactUrl = 0;
 
-    if (!v6)
+    if (!numberCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
       goto LABEL_8;
     }
 
     v9 = +[UIApplication sharedApplication];
-    v10 = [v6 stringValue];
-    [v9 getCanCallPhoneNumber:v10 completion:v7];
+    stringValue = [numberCopy stringValue];
+    [v9 getCanCallPhoneNumber:stringValue completion:completionCopy];
   }
 
   else
@@ -83,26 +83,26 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(INUIRemoteViewController *)self->_remoteViewController disconnect];
+  disconnect = [(INUIRemoteViewController *)self->_remoteViewController disconnect];
   v4.receiver = self;
   v4.super_class = RidesharingConfirmedRideViewController;
   [(RidesharingConfirmedRideViewController *)&v4 dealloc];
 }
 
-- (void)remoteViewControllerServiceDidTerminate:(id)a3
+- (void)remoteViewControllerServiceDidTerminate:(id)terminate
 {
   remoteViewController = self->_remoteViewController;
   self->_remoteViewController = 0;
 
   self->_hasEverRequestedRemoteViewController = 0;
-  v5 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-  [(RidesharingConfirmedRideViewController *)self _updateFromRideStatus:v5];
+  rideStatus = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  [(RidesharingConfirmedRideViewController *)self _updateFromRideStatus:rideStatus];
 }
 
-- (CGSize)maximumSizeForRemoteViewController:(id)a3
+- (CGSize)maximumSizeForRemoteViewController:(id)controller
 {
-  v3 = [(RidesharingConfirmedRideViewController *)self view];
-  [v3 frame];
+  view = [(RidesharingConfirmedRideViewController *)self view];
+  [view frame];
   v5 = v4 + -32.0;
 
   v6 = 145.0;
@@ -112,10 +112,10 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)minimumSizeForRemoteViewController:(id)a3
+- (CGSize)minimumSizeForRemoteViewController:(id)controller
 {
-  v3 = [(RidesharingConfirmedRideViewController *)self view];
-  [v3 frame];
+  view = [(RidesharingConfirmedRideViewController *)self view];
+  [view frame];
   v5 = v4 + -32.0;
 
   v6 = 145.0;
@@ -138,20 +138,20 @@ LABEL_8:
   return v5 + v4;
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   remoteViewController = self->_remoteViewController;
-  v6 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-  v7 = [v6 shouldShowFeedbackControls];
+  rideStatus = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  shouldShowFeedbackControls = [rideStatus shouldShowFeedbackControls];
 
-  if (a3 - 3 < 2)
+  if (layout - 3 < 2)
   {
-    v13 = [(ContaineeViewController *)self cardPresentationController];
-    [v13 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
     v8 = v14;
   }
 
-  else if (a3 == 2)
+  else if (layout == 2)
   {
     [(RidesharingConfirmedRideViewController *)self headerAndRouteFromToViewHeight];
     v16 = v15;
@@ -166,7 +166,7 @@ LABEL_8:
     }
 
     v22 = v19 + v21;
-    if (v7)
+    if (shouldShowFeedbackControls)
     {
       [(ExtensionsFeedbackView *)self->_feedbackView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, height];
       v20 = v23;
@@ -178,10 +178,10 @@ LABEL_8:
   else
   {
     v8 = -1.0;
-    if (a3 == 1)
+    if (layout == 1)
     {
-      v9 = [(ContaineeViewController *)self cardPresentationController];
-      [v9 bottomSafeOffset];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 bottomSafeOffset];
       v11 = v10;
       [(RidesharingConfirmedRideViewController *)self headerAndRouteFromToViewHeight];
       v8 = v12 + v11;
@@ -207,32 +207,32 @@ LABEL_8:
   return v5;
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v6.receiver = self;
   v6.super_class = RidesharingConfirmedRideViewController;
   [(ExtensionsStackViewController *)&v6 didChangeLayout:?];
-  if (a3 == 3)
+  if (layout == 3)
   {
-    v5 = [(RidesharingConfirmedRideViewController *)self analyticsBookedSession];
-    [v5 setViewedDetails:1];
+    analyticsBookedSession = [(RidesharingConfirmedRideViewController *)self analyticsBookedSession];
+    [analyticsBookedSession setViewedDetails:1];
   }
 }
 
-- (void)_setBannerViewContainerContentView:(id)a3
+- (void)_setBannerViewContainerContentView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   roundedRectView = self->_roundedRectView;
 
-  if (v5 != roundedRectView)
+  if (superview != roundedRectView)
   {
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v7 = [(UIView *)self->_roundedRectView subviews];
-    v8 = [v7 copy];
+    subviews = [(UIView *)self->_roundedRectView subviews];
+    v8 = [subviews copy];
 
     v9 = [v8 countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v9)
@@ -264,8 +264,8 @@ LABEL_8:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v13 = [(UIView *)self->_bannerViewContainerView subviews];
-    v14 = [v13 copy];
+    subviews2 = [(UIView *)self->_bannerViewContainerView subviews];
+    v14 = [subviews2 copy];
 
     v15 = [v14 countByEnumeratingWithState:&v59 objects:v68 count:16];
     if (v15)
@@ -294,91 +294,91 @@ LABEL_8:
     }
 
     [(UIView *)self->_bannerViewContainerView addSubview:self->_roundedRectView];
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIView *)self->_roundedRectView addSubview:v4];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIView *)self->_roundedRectView addSubview:viewCopy];
     [(UIView *)self->_roundedRectView addSubview:self->_bannerAttributionView];
     LODWORD(v19) = 1148846080;
-    [v4 setContentCompressionResistancePriority:1 forAxis:v19];
+    [viewCopy setContentCompressionResistancePriority:1 forAxis:v19];
     LODWORD(v20) = 1148846080;
     [(ExtensionsBannerAttributionView *)self->_bannerAttributionView setContentCompressionResistancePriority:1 forAxis:v20];
-    v57 = [v4 topAnchor];
-    v56 = [(UIView *)self->_roundedRectView topAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56 constant:1.0];
+    topAnchor = [viewCopy topAnchor];
+    topAnchor2 = [(UIView *)self->_roundedRectView topAnchor];
+    v55 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:1.0];
     v67[0] = v55;
-    v54 = [v4 leadingAnchor];
-    v53 = [(UIView *)self->_roundedRectView leadingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:1.0];
+    leadingAnchor = [viewCopy leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_roundedRectView leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:1.0];
     v67[1] = v52;
-    v51 = [v4 trailingAnchor];
-    v50 = [(UIView *)self->_roundedRectView trailingAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:-1.0];
+    trailingAnchor = [viewCopy trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_roundedRectView trailingAnchor];
+    v49 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-1.0];
     v67[2] = v49;
-    v48 = [v4 heightAnchor];
-    v47 = [v48 constraintEqualToConstant:145.0];
+    heightAnchor = [viewCopy heightAnchor];
+    v47 = [heightAnchor constraintEqualToConstant:145.0];
     v67[3] = v47;
-    v46 = [(ExtensionsBannerAttributionView *)self->_bannerAttributionView topAnchor];
-    v45 = [v4 bottomAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    topAnchor3 = [(ExtensionsBannerAttributionView *)self->_bannerAttributionView topAnchor];
+    bottomAnchor = [viewCopy bottomAnchor];
+    v44 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v67[4] = v44;
-    v43 = [(ExtensionsBannerAttributionView *)self->_bannerAttributionView leadingAnchor];
-    v42 = [(UIView *)self->_roundedRectView leadingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42 constant:1.0];
+    leadingAnchor3 = [(ExtensionsBannerAttributionView *)self->_bannerAttributionView leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->_roundedRectView leadingAnchor];
+    v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:1.0];
     v67[5] = v41;
-    v40 = [(ExtensionsBannerAttributionView *)self->_bannerAttributionView trailingAnchor];
-    v39 = [(UIView *)self->_roundedRectView trailingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:-1.0];
+    trailingAnchor3 = [(ExtensionsBannerAttributionView *)self->_bannerAttributionView trailingAnchor];
+    trailingAnchor4 = [(UIView *)self->_roundedRectView trailingAnchor];
+    v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-1.0];
     v67[6] = v38;
-    v37 = [(ExtensionsBannerAttributionView *)self->_bannerAttributionView bottomAnchor];
-    v36 = [(UIView *)self->_roundedRectView bottomAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36 constant:-1.0];
+    bottomAnchor2 = [(ExtensionsBannerAttributionView *)self->_bannerAttributionView bottomAnchor];
+    bottomAnchor3 = [(UIView *)self->_roundedRectView bottomAnchor];
+    v35 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-1.0];
     v67[7] = v35;
-    v34 = [(UIView *)self->_roundedRectView topAnchor];
-    v33 = [(UIView *)self->_bannerViewContainerView topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    topAnchor4 = [(UIView *)self->_roundedRectView topAnchor];
+    topAnchor5 = [(UIView *)self->_bannerViewContainerView topAnchor];
+    v32 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v67[8] = v32;
-    v31 = [(UIView *)self->_roundedRectView bottomAnchor];
-    v21 = [(UIView *)self->_bannerViewContainerView bottomAnchor];
-    v22 = [v31 constraintEqualToAnchor:v21];
+    bottomAnchor4 = [(UIView *)self->_roundedRectView bottomAnchor];
+    bottomAnchor5 = [(UIView *)self->_bannerViewContainerView bottomAnchor];
+    v22 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v67[9] = v22;
     [(UIView *)self->_roundedRectView leadingAnchor];
-    v23 = v58 = v4;
-    v24 = [(UIView *)self->_bannerViewContainerView leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:16.0];
+    v23 = v58 = viewCopy;
+    leadingAnchor5 = [(UIView *)self->_bannerViewContainerView leadingAnchor];
+    v25 = [v23 constraintEqualToAnchor:leadingAnchor5 constant:16.0];
     v67[10] = v25;
-    v26 = [(UIView *)self->_roundedRectView trailingAnchor];
-    v27 = [(UIView *)self->_bannerViewContainerView trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:-16.0];
+    trailingAnchor5 = [(UIView *)self->_roundedRectView trailingAnchor];
+    trailingAnchor6 = [(UIView *)self->_bannerViewContainerView trailingAnchor];
+    v28 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
     v67[11] = v28;
     v29 = [NSArray arrayWithObjects:v67 count:12];
     [NSLayoutConstraint activateConstraints:v29];
 
-    v4 = v58;
-    v30 = [(ContaineeViewController *)self cardPresentationController];
-    [v30 updateHeightForCurrentLayout];
+    viewCopy = v58;
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
   }
 }
 
-- (void)_updateFromRideStatus:(id)a3
+- (void)_updateFromRideStatus:(id)status
 {
-  v5 = a3;
-  if (!v5)
+  statusCopy = status;
+  if (!statusCopy)
   {
     goto LABEL_36;
   }
 
-  objc_storeStrong(&self->_rideStatus, a3);
-  v6 = [v5 application];
-  v7 = [v6 identifier];
-  v8 = [v5 identifier];
-  v9 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:v7 rideIdentifier:v8];
+  objc_storeStrong(&self->_rideStatus, status);
+  application = [statusCopy application];
+  identifier = [application identifier];
+  identifier2 = [statusCopy identifier];
+  v9 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:identifier rideIdentifier:identifier2];
   [(RidesharingConfirmedRideViewController *)self setAnalyticsBookedSession:v9];
 
-  if (([v5 isValidRide] & 1) == 0)
+  if (([statusCopy isValidRide] & 1) == 0)
   {
     v12 = [RidesharingErrorAlertProvider alloc];
-    v13 = [v5 application];
-    v14 = [v5 userActivity];
-    v15 = [(RidesharingErrorAlertProvider *)v12 _initWithCause:1 application:v13 activity:v14];
+    application2 = [statusCopy application];
+    userActivity = [statusCopy userActivity];
+    v15 = [(RidesharingErrorAlertProvider *)v12 _initWithCause:1 application:application2 activity:userActivity];
 
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -399,47 +399,47 @@ LABEL_8:
   {
     self->_hasEverRequestedRemoteViewController = 1;
     p_templatedBannerView = &self->_templatedBannerView;
-    [ExtensionsViewComposer composeBlankTemplatedBannerView:self->_templatedBannerView forRideBookingRideStatus:v5];
+    [ExtensionsViewComposer composeBlankTemplatedBannerView:self->_templatedBannerView forRideBookingRideStatus:statusCopy];
     [(ExtensionsBannerAttributionView *)self->_bannerAttributionView setHidden:0];
-    v11 = [(RidesharingConfirmedRideViewController *)self extensionForUI];
+    extensionForUI = [(RidesharingConfirmedRideViewController *)self extensionForUI];
 
-    if (v11)
+    if (extensionForUI)
     {
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
       v46[2] = sub_10095A96C;
       v46[3] = &unk_10162F970;
       v46[4] = self;
-      v47 = v5;
+      v47 = statusCopy;
       [(RidesharingConfirmedRideViewController *)self getRemoteViewControllerWithDelegate:self completion:v46];
     }
 
     else
     {
-      [ExtensionsViewComposer composeTemplatedBannerView:*p_templatedBannerView forRideBookingRideStatus:v5];
+      [ExtensionsViewComposer composeTemplatedBannerView:*p_templatedBannerView forRideBookingRideStatus:statusCopy];
       if (self->_remoteViewController)
       {
         p_templatedBannerView = &self->_bannerView;
       }
 
       [(RidesharingConfirmedRideViewController *)self _setBannerViewContainerContentView:*p_templatedBannerView];
-      v17 = [(ContaineeViewController *)self cardPresentationController];
-      [v17 updateHeightForCurrentLayout];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController updateHeightForCurrentLayout];
     }
   }
 
-  if (![v5 isValidRide] || (objc_msgSend(v5, "isActiveRide") & 1) == 0)
+  if (![statusCopy isValidRide] || (objc_msgSend(statusCopy, "isActiveRide") & 1) == 0)
   {
-    v18 = [(RidesharingConfirmedRideViewController *)self coordinator];
-    v19 = [v18 containerViewController];
-    v20 = [v19 chromeViewController];
-    v21 = [v20 ridesharingAnnotationsManager];
-    [v21 removeCurrentRide];
+    coordinator = [(RidesharingConfirmedRideViewController *)self coordinator];
+    containerViewController = [coordinator containerViewController];
+    chromeViewController = [containerViewController chromeViewController];
+    ridesharingAnnotationsManager = [chromeViewController ridesharingAnnotationsManager];
+    [ridesharingAnnotationsManager removeCurrentRide];
 
-    if ([v5 phase] == 4)
+    if ([statusCopy phase] == 4)
     {
-      v22 = [(ContaineeViewController *)self cardPresentationController];
-      if ([v22 containeeLayout] == 3)
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      if ([cardPresentationController2 containeeLayout] == 3)
       {
       }
 
@@ -449,8 +449,8 @@ LABEL_8:
 
         if (!hasShownFullContaineeLayout)
         {
-          v24 = [(ContaineeViewController *)self cardPresentationController];
-          [v24 wantsLayout:3];
+          cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+          [cardPresentationController3 wantsLayout:3];
 
           self->_hasShownFullContaineeLayout = 1;
         }
@@ -459,39 +459,39 @@ LABEL_8:
   }
 
   driverPhoneNumber = self->_driverPhoneNumber;
-  v26 = [v5 driverPhoneNumber];
-  if (![(NSString *)driverPhoneNumber isEqualToString:v26])
+  driverPhoneNumber = [statusCopy driverPhoneNumber];
+  if (![(NSString *)driverPhoneNumber isEqualToString:driverPhoneNumber])
   {
-    v27 = [v5 driverPhoneNumber];
+    driverPhoneNumber2 = [statusCopy driverPhoneNumber];
 
-    if (!v27)
+    if (!driverPhoneNumber2)
     {
       goto LABEL_22;
     }
 
-    v28 = [v5 driverPhoneNumber];
+    driverPhoneNumber3 = [statusCopy driverPhoneNumber];
     v29 = self->_driverPhoneNumber;
-    self->_driverPhoneNumber = v28;
+    self->_driverPhoneNumber = driverPhoneNumber3;
 
-    v26 = [[CNPhoneNumber alloc] initWithStringValue:self->_driverPhoneNumber];
-    v30 = [(RidesharingConfirmedRideViewController *)self contactButton];
-    [v30 setEnabled:0];
+    driverPhoneNumber = [[CNPhoneNumber alloc] initWithStringValue:self->_driverPhoneNumber];
+    contactButton = [(RidesharingConfirmedRideViewController *)self contactButton];
+    [contactButton setEnabled:0];
 
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_10095AA78;
     v45[3] = &unk_10162F998;
     v45[4] = self;
-    [(RidesharingConfirmedRideViewController *)self getCanCallPhoneNumber:v26 completion:v45];
+    [(RidesharingConfirmedRideViewController *)self getCanCallPhoneNumber:driverPhoneNumber completion:v45];
   }
 
 LABEL_22:
-  [ExtensionsViewComposer composeCustomHeaderView:self->_routeFromToView forRideBookingRideStatus:v5];
-  [ExtensionsViewComposer composeBannerView:self->_bannerView forRidesharingCurrentRideViewController:self rideBookingRideStatus:v5];
-  [ExtensionsViewComposer composeTemplatedBannerView:self->_templatedBannerView forRideBookingRideStatus:v5];
-  [ExtensionsViewComposer composeBannerAttributionView:self->_bannerAttributionView forRideBookingRideStatus:v5];
-  [ExtensionsViewComposer composeSecondaryDetailsView:self->_secondaryDetailsView forRideBookingRideStatus:v5];
-  [ExtensionsViewComposer composeOpenAppView:self->_openAppView forRideBookingRideStatus:v5];
+  [ExtensionsViewComposer composeCustomHeaderView:self->_routeFromToView forRideBookingRideStatus:statusCopy];
+  [ExtensionsViewComposer composeBannerView:self->_bannerView forRidesharingCurrentRideViewController:self rideBookingRideStatus:statusCopy];
+  [ExtensionsViewComposer composeTemplatedBannerView:self->_templatedBannerView forRideBookingRideStatus:statusCopy];
+  [ExtensionsViewComposer composeBannerAttributionView:self->_bannerAttributionView forRideBookingRideStatus:statusCopy];
+  [ExtensionsViewComposer composeSecondaryDetailsView:self->_secondaryDetailsView forRideBookingRideStatus:statusCopy];
+  [ExtensionsViewComposer composeOpenAppView:self->_openAppView forRideBookingRideStatus:statusCopy];
   if (self->_remoteViewController)
   {
     v31 = 192;
@@ -507,36 +507,36 @@ LABEL_22:
   [(UIView *)self->_bannerViewContainerView setHidden:0];
   [(ExtensionsSecondaryDetailsView *)self->_secondaryDetailsView setHidden:0];
   v32 = objc_alloc_init(NSMutableOrderedSet);
-  v33 = [(RidesharingConfirmedRideViewController *)self cancelButton];
-  v34 = [v5 cancelCommandTitle];
-  [v33 setTitle:v34 forState:0];
+  cancelButton = [(RidesharingConfirmedRideViewController *)self cancelButton];
+  cancelCommandTitle = [statusCopy cancelCommandTitle];
+  [cancelButton setTitle:cancelCommandTitle forState:0];
 
-  v35 = [(RidesharingConfirmedRideViewController *)self completedButton];
-  v36 = [v5 cardRideCompletedActionButtonTitle];
-  [v35 setTitle:v36 forState:0];
+  completedButton = [(RidesharingConfirmedRideViewController *)self completedButton];
+  cardRideCompletedActionButtonTitle = [statusCopy cardRideCompletedActionButtonTitle];
+  [completedButton setTitle:cardRideCompletedActionButtonTitle forState:0];
 
-  if (![v5 isValidRide] || (objc_msgSend(v5, "isActiveRide") & 1) == 0)
+  if (![statusCopy isValidRide] || (objc_msgSend(statusCopy, "isActiveRide") & 1) == 0)
   {
-    v38 = [(RidesharingConfirmedRideViewController *)self completedButton];
+    completedButton2 = [(RidesharingConfirmedRideViewController *)self completedButton];
     goto LABEL_30;
   }
 
-  v37 = [(RidesharingConfirmedRideViewController *)self cancelButton];
-  [v32 addObject:v37];
+  cancelButton2 = [(RidesharingConfirmedRideViewController *)self cancelButton];
+  [v32 addObject:cancelButton2];
 
   if ([(NSString *)self->_driverPhoneNumber length])
   {
-    v38 = [(RidesharingConfirmedRideViewController *)self contactButton];
+    completedButton2 = [(RidesharingConfirmedRideViewController *)self contactButton];
 LABEL_30:
-    v39 = v38;
-    [v32 addObject:v38];
+    v39 = completedButton2;
+    [v32 addObject:completedButton2];
   }
 
-  if ([v5 shouldShowFeedbackControls])
+  if ([statusCopy shouldShowFeedbackControls])
   {
-    [ExtensionsViewComposer composeFeedbackView:self->_feedbackView forRideBookingRideStatus:v5 tippingViewDelegate:self];
+    [ExtensionsViewComposer composeFeedbackView:self->_feedbackView forRideBookingRideStatus:statusCopy tippingViewDelegate:self];
     [(ContainerHeaderView *)self->_containerHeaderView setTitleView:self->_feedbackHeaderView];
-    [ExtensionsViewComposer composeCustomFeedbackHeaderView:self->_feedbackHeaderView forRideBookingRideStatus:v5];
+    [ExtensionsViewComposer composeCustomFeedbackHeaderView:self->_feedbackHeaderView forRideBookingRideStatus:statusCopy];
     [(ExtensionsFeedbackView *)self->_feedbackView setHidden:0];
     [(UIView *)self->_bannerViewContainerView setHidden:1];
     v40 = objc_alloc_init(NSMutableOrderedSet);
@@ -545,24 +545,24 @@ LABEL_30:
   }
 
   primaryDetailsView = self->_primaryDetailsView;
-  v42 = [v32 objectEnumerator];
-  v43 = [v42 allObjects];
-  [ExtensionsViewComposer composePrimaryDetailsView:primaryDetailsView forRideBookingRideStatus:v5 withActionButtons:v43];
+  objectEnumerator = [v32 objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  [ExtensionsViewComposer composePrimaryDetailsView:primaryDetailsView forRideBookingRideStatus:statusCopy withActionButtons:allObjects];
 
-  v44 = [v5 phase];
-  if ((v44 == 0) != [(ExtensionsPrimaryDetailsView *)self->_primaryDetailsView isHidden])
+  phase = [statusCopy phase];
+  if ((phase == 0) != [(ExtensionsPrimaryDetailsView *)self->_primaryDetailsView isHidden])
   {
-    [(ExtensionsPrimaryDetailsView *)self->_primaryDetailsView setHidden:v44 == 0];
+    [(ExtensionsPrimaryDetailsView *)self->_primaryDetailsView setHidden:phase == 0];
   }
 
 LABEL_36:
 }
 
-- (void)rideStatusMapDidChange:(id)a3
+- (void)rideStatusMapDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(RidesharingConfirmedRideViewController *)self applicationIdentifier];
-  v6 = [v4 objectForKey:v5];
+  changeCopy = change;
+  applicationIdentifier = [(RidesharingConfirmedRideViewController *)self applicationIdentifier];
+  v6 = [changeCopy objectForKey:applicationIdentifier];
 
   [(RidesharingConfirmedRideViewController *)self _updateFromRideStatus:v6];
 }
@@ -576,13 +576,13 @@ LABEL_36:
     v5 = self->_completedButton;
     self->_completedButton = v4;
 
-    v6 = [(ProminentActionButton *)self->_completedButton titleLabel];
-    [DynamicTypeWizard autorefreshLabel:v6 withFontProvider:&stru_10165DB08];
+    titleLabel = [(ProminentActionButton *)self->_completedButton titleLabel];
+    [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165DB08];
 
     [(ProminentActionButton *)self->_completedButton addTarget:self action:"_completedButtonTapped:" forControlEvents:0x2000];
-    v7 = [(RidesharingConfirmedRideViewController *)self theme];
-    v8 = [v7 controlTintColor];
-    [(ProminentActionButton *)self->_completedButton setTintColor:v8];
+    theme = [(RidesharingConfirmedRideViewController *)self theme];
+    controlTintColor = [theme controlTintColor];
+    [(ProminentActionButton *)self->_completedButton setTintColor:controlTintColor];
 
     completedButton = self->_completedButton;
   }
@@ -599,19 +599,19 @@ LABEL_36:
     v5 = self->_contactButton;
     self->_contactButton = v4;
 
-    v6 = [(ProminentActionButton *)self->_contactButton titleLabel];
-    [DynamicTypeWizard autorefreshLabel:v6 withFontProvider:&stru_10165DB08];
+    titleLabel = [(ProminentActionButton *)self->_contactButton titleLabel];
+    [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165DB08];
 
     [(ProminentActionButton *)self->_contactButton addTarget:self action:"contactTapped:" forControlEvents:0x2000];
-    v7 = [(RidesharingConfirmedRideViewController *)self theme];
-    v8 = [v7 controlTintColor];
-    [(ProminentActionButton *)self->_contactButton setTintColor:v8];
+    theme = [(RidesharingConfirmedRideViewController *)self theme];
+    controlTintColor = [theme controlTintColor];
+    [(ProminentActionButton *)self->_contactButton setTintColor:controlTintColor];
 
     [(ProminentActionButton *)self->_contactButton setEnabled:0];
     v9 = self->_contactButton;
-    v10 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-    v11 = [v10 contactCommandTitle];
-    v12 = [v11 copy];
+    rideStatus = [(RidesharingConfirmedRideViewController *)self rideStatus];
+    contactCommandTitle = [rideStatus contactCommandTitle];
+    v12 = [contactCommandTitle copy];
     if (v12)
     {
       [(ProminentActionButton *)v9 setTitle:v12 forState:0];
@@ -639,13 +639,13 @@ LABEL_36:
     v5 = self->_cancelButton;
     self->_cancelButton = v4;
 
-    v6 = [(ProminentActionButton *)self->_cancelButton titleLabel];
-    [DynamicTypeWizard autorefreshLabel:v6 withFontProvider:&stru_10165DB08];
+    titleLabel = [(ProminentActionButton *)self->_cancelButton titleLabel];
+    [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165DB08];
 
     [(ProminentActionButton *)self->_cancelButton addTarget:self action:"_cancelTapped:" forControlEvents:0x2000];
-    v7 = [(RidesharingConfirmedRideViewController *)self theme];
-    v8 = [v7 controlTintColor];
-    [(ProminentActionButton *)self->_cancelButton setTintColor:v8];
+    theme = [(RidesharingConfirmedRideViewController *)self theme];
+    controlTintColor = [theme controlTintColor];
+    [(ProminentActionButton *)self->_cancelButton setTintColor:controlTintColor];
 
     v9 = self->_cancelButton;
     v10 = +[NSBundle mainBundle];
@@ -660,10 +660,10 @@ LABEL_36:
 
 - (int)_currentAnalyticsTarget
 {
-  v2 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-  v3 = [v2 phase];
+  rideStatus = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  phase = [rideStatus phase];
 
-  if (v3 == 1)
+  if (phase == 1)
   {
     return 1403;
   }
@@ -674,23 +674,23 @@ LABEL_36:
   }
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  [(RidesharingConfirmedRideViewController *)self setRequestRideOptionProxy:0, a4];
+  [(RidesharingConfirmedRideViewController *)self setRequestRideOptionProxy:0, type];
   [(RidesharingConfirmedRideViewController *)self setRideStatus:0];
   [(RidesharingConfirmedRideViewController *)self setExtensionManager:0];
   [(RidesharingConfirmedRideViewController *)self setExtensionForUI:0];
-  v5 = [(RidesharingConfirmedRideViewController *)self coordinator];
-  [v5 viewController:self minimizeConfirmation:0];
+  coordinator = [(RidesharingConfirmedRideViewController *)self coordinator];
+  [coordinator viewController:self minimizeConfirmation:0];
 }
 
-- (void)contactTapped:(id)a3
+- (void)contactTapped:(id)tapped
 {
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:14005 onTarget:-[RidesharingConfirmedRideViewController _currentAnalyticsTarget](self eventValue:{"_currentAnalyticsTarget"), 0}];
 
-  v5 = [(RidesharingConfirmedRideViewController *)self analyticsBookedSession];
-  [v5 setContactedDriver:1];
+  analyticsBookedSession = [(RidesharingConfirmedRideViewController *)self analyticsBookedSession];
+  [analyticsBookedSession setContactedDriver:1];
 
   if (self->_cachedContactUrl)
   {
@@ -699,31 +699,31 @@ LABEL_36:
   }
 }
 
-- (void)_completedButtonTapped:(id)a3
+- (void)_completedButtonTapped:(id)tapped
 {
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:6020 onTarget:-[RidesharingConfirmedRideViewController _currentAnalyticsTarget](self eventValue:{"_currentAnalyticsTarget"), 0}];
 
-  v5 = [(RidesharingConfirmedRideViewController *)self coordinator];
-  [v5 viewControllerRideCompletionAction:self];
+  coordinator = [(RidesharingConfirmedRideViewController *)self coordinator];
+  [coordinator viewControllerRideCompletionAction:self];
 
-  v9 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-  v6 = [v9 application];
-  v7 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-  v8 = [v7 userActivityForCompletedRide];
-  [v6 openWithActivity:v8];
+  rideStatus = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  application = [rideStatus application];
+  rideStatus2 = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  userActivityForCompletedRide = [rideStatus2 userActivityForCompletedRide];
+  [application openWithActivity:userActivityForCompletedRide];
 }
 
-- (id)_cancelConfirmationAlertControllerForApp:(id)a3 withFee:(id)a4 threshold:(id)a5 continueBlock:(id)a6
+- (id)_cancelConfirmationAlertControllerForApp:(id)app withFee:(id)fee threshold:(id)threshold continueBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  appCopy = app;
+  feeCopy = fee;
+  thresholdCopy = threshold;
+  blockCopy = block;
+  v13 = blockCopy;
+  if (blockCopy)
   {
-    v49 = v12;
+    v49 = blockCopy;
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"ridesharing cancel ride confirmation default title" value:@"localized string not found" table:0];
 
@@ -731,7 +731,7 @@ LABEL_36:
     v17 = [v16 localizedStringForKey:@"ridesharing cancel ride confirmation default message" value:@"localized string not found" table:0];
 
     +[NSBundle mainBundle];
-    v18 = v52 = v11;
+    v18 = v52 = thresholdCopy;
     v45 = [v18 localizedStringForKey:@"ridesharing cancel ride confirmation continue cancel" value:@"localized string not found" table:0];
 
     v19 = +[NSBundle mainBundle];
@@ -739,20 +739,20 @@ LABEL_36:
 
     v20 = +[NSBundle mainBundle];
     v21 = [v20 localizedStringForKey:@"ridesharing cancel ride confirmation fee only title" value:@"localized string not found" table:0];
-    v22 = [v10 formattedString];
-    v51 = [NSString localizedStringWithFormat:v21, v22];
+    formattedString = [feeCopy formattedString];
+    v51 = [NSString localizedStringWithFormat:v21, formattedString];
 
     v23 = +[NSBundle mainBundle];
     v50 = [v23 localizedStringForKey:@"ridesharing cancel ride confirmation fee message" value:@"localized string not found" table:0];
 
     v24 = +[NSBundle mainBundle];
     v25 = [v24 localizedStringForKey:@"ridesharing.cancelRide.confirmation.continue.fee" value:@"localized string not found" table:0];
-    v26 = [v10 formattedString];
-    v27 = [NSString localizedStringWithFormat:v25, v26];
+    formattedString2 = [feeCopy formattedString];
+    v27 = [NSString localizedStringWithFormat:v25, formattedString2];
 
     v46 = v27;
-    v47 = v10;
-    if (v10 && v52)
+    v47 = feeCopy;
+    if (feeCopy && v52)
     {
       v28 = +[NSDate date];
       [v52 timeIntervalSinceDate:v28];
@@ -764,12 +764,12 @@ LABEL_36:
       }
     }
 
-    else if (!v10)
+    else if (!feeCopy)
     {
       if (!v52)
       {
 LABEL_14:
-        v33 = v17;
+        appCopy = v17;
         v34 = v45;
         goto LABEL_15;
       }
@@ -779,7 +779,7 @@ LABEL_14:
 
       v38 = +[NSBundle mainBundle];
       v39 = [v38 localizedStringForKey:@"ridesharing cancel ride confirmation threshold only message" value:@"localized string not found" table:0];
-      v33 = [NSString localizedStringWithFormat:v39, v9];
+      appCopy = [NSString localizedStringWithFormat:v39, appCopy];
 
       v40 = +[NSBundle mainBundle];
       v34 = [v40 localizedStringForKey:@"ridesharing.cancelRide.confirmation.continue.unknownFee" value:@"localized string not found" table:0];
@@ -789,7 +789,7 @@ LABEL_14:
 LABEL_11:
 
 LABEL_15:
-      v31 = [UIAlertController alertControllerWithTitle:v15 message:v33 preferredStyle:1];
+      v31 = [UIAlertController alertControllerWithTitle:v15 message:appCopy preferredStyle:1];
       v55[0] = _NSConcreteStackBlock;
       v55[1] = 3221225472;
       v55[2] = sub_10095B7D8;
@@ -808,14 +808,14 @@ LABEL_15:
       v43 = [UIAlertAction actionWithTitle:v34 style:2 handler:v53];
       [v31 addAction:v43];
 
-      v11 = v52;
-      v10 = v47;
+      thresholdCopy = v52;
+      feeCopy = v47;
       goto LABEL_16;
     }
 
     v32 = v51;
 
-    v33 = v50;
+    appCopy = v50;
     v34 = v27;
     v15 = v32;
     v35 = v45;
@@ -842,53 +842,53 @@ LABEL_16:
   return v31;
 }
 
-- (void)_cleanupWithRideStatus:(id)a3
+- (void)_cleanupWithRideStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(RidesharingConfirmedRideViewController *)self cancelButton];
-  [v5 setSpinnerHidden:1];
+  statusCopy = status;
+  cancelButton = [(RidesharingConfirmedRideViewController *)self cancelButton];
+  [cancelButton setSpinnerHidden:1];
 
-  v6 = [(RidesharingConfirmedRideViewController *)self analyticsBookedSession];
-  [v6 setCancelled:1];
+  analyticsBookedSession = [(RidesharingConfirmedRideViewController *)self analyticsBookedSession];
+  [analyticsBookedSession setCancelled:1];
 
-  v7 = [(RidesharingConfirmedRideViewController *)self analyticsBookedSession];
-  [v7 endSession];
+  analyticsBookedSession2 = [(RidesharingConfirmedRideViewController *)self analyticsBookedSession];
+  [analyticsBookedSession2 endSession];
 
-  v8 = [v4 application];
-  v9 = [v4 userActivityForCanceling];
+  application = [statusCopy application];
+  userActivityForCanceling = [statusCopy userActivityForCanceling];
 
-  [v8 openWithActivity:v9];
-  v10 = [(RidesharingConfirmedRideViewController *)self coordinator];
-  v11 = [v10 containerViewController];
-  v12 = [v11 chromeViewController];
-  [v12 popToRootContextAnimated:1 completion:0];
+  [application openWithActivity:userActivityForCanceling];
+  coordinator = [(RidesharingConfirmedRideViewController *)self coordinator];
+  containerViewController = [coordinator containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController popToRootContextAnimated:1 completion:0];
 
-  v15 = [(RidesharingConfirmedRideViewController *)self coordinator];
-  v13 = [v15 appCoordinator];
-  v14 = [v13 platformController];
-  [v14 clearSessions];
+  coordinator2 = [(RidesharingConfirmedRideViewController *)self coordinator];
+  appCoordinator = [coordinator2 appCoordinator];
+  platformController = [appCoordinator platformController];
+  [platformController clearSessions];
 }
 
-- (void)_cancelTapped:(id)a3
+- (void)_cancelTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:18 onTarget:-[RidesharingConfirmedRideViewController _currentAnalyticsTarget](self eventValue:{"_currentAnalyticsTarget"), 0}];
 
-  v6 = [(RidesharingConfirmedRideViewController *)self cancelButton];
-  [v6 setSpinnerHidden:0];
+  cancelButton = [(RidesharingConfirmedRideViewController *)self cancelButton];
+  [cancelButton setSpinnerHidden:0];
 
-  v7 = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  rideStatus = [(RidesharingConfirmedRideViewController *)self rideStatus];
   objc_initWeak(&location, self);
-  v8 = [(RidesharingConfirmedRideViewController *)self rideStatusObserverProxy];
+  rideStatusObserverProxy = [(RidesharingConfirmedRideViewController *)self rideStatusObserverProxy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10095BAB0;
   v10[3] = &unk_10162F948;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = rideStatus;
   v11 = v9;
-  [v8 checkIfCanCancelRideWithRideStatus:v9 completion:v10];
+  [rideStatusObserverProxy checkIfCanCancelRideWithRideStatus:v9 completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -899,57 +899,57 @@ LABEL_16:
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:6020 onTarget:-[RidesharingConfirmedRideViewController _currentAnalyticsTarget](self eventValue:{"_currentAnalyticsTarget"), 0}];
 
-  v7 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-  v4 = [v7 application];
-  v5 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-  v6 = [v5 userActivity];
-  [v4 openWithActivity:v6];
+  rideStatus = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  application = [rideStatus application];
+  rideStatus2 = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  userActivity = [rideStatus2 userActivity];
+  [application openWithActivity:userActivity];
 }
 
-- (void)_bannerViewTapped:(id)a3
+- (void)_bannerViewTapped:(id)tapped
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v5 != 3)
+  if (containeeLayout != 3)
   {
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 wantsLayout:3];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 wantsLayout:3];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = RidesharingConfirmedRideViewController;
-  v7 = a4;
-  [(ContaineeViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(ContaineeViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10095C278;
   v8[3] = &unk_101661710;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:&stru_10162F920];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&stru_10162F920];
 }
 
-- (void)getRemoteViewControllerWithDelegate:(id)a3 completion:(id)a4
+- (void)getRemoteViewControllerWithDelegate:(id)delegate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  delegateCopy = delegate;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(RidesharingConfirmedRideViewController *)self extensionForUI];
-    v9 = [v8 extension];
-    v10 = [NSMutableArray arrayWithObject:v9];
+    extensionForUI = [(RidesharingConfirmedRideViewController *)self extensionForUI];
+    extension = [extensionForUI extension];
+    v10 = [NSMutableArray arrayWithObject:extension];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10095C4B8;
     v11[3] = &unk_10162F900;
-    v12 = v7;
-    [INUIRemoteViewController attemptToConnectToRemoteViewControllerForRemainingExtensions:v10 delegate:v6 connectionHandler:v11];
+    v12 = completionCopy;
+    [INUIRemoteViewController attemptToConnectToRemoteViewControllerForRemainingExtensions:v10 delegate:delegateCopy connectionHandler:v11];
   }
 
   else
@@ -970,18 +970,18 @@ LABEL_16:
   }
 }
 
-- (void)extensionManager:(id)a3 didUpdateAvailableExtensions:(id)a4
+- (void)extensionManager:(id)manager didUpdateAvailableExtensions:(id)extensions
 {
-  v5 = a4;
+  extensionsCopy = extensions;
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10095C678;
   v7[3] = &unk_101661480;
   objc_copyWeak(&v10, &location);
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = extensionsCopy;
+  selfCopy = self;
+  v6 = extensionsCopy;
   dispatch_async(&_dispatch_main_q, v7);
 
   objc_destroyWeak(&v10);
@@ -1000,12 +1000,12 @@ LABEL_16:
   [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:0.0];
   [(ContainerHeaderView *)self->_containerHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ContainerHeaderView *)self->_containerHeaderView setDelegate:self];
-  v5 = [(ExtensionsStackViewController *)self headerView];
-  [v5 addSubview:self->_containerHeaderView];
+  headerView = [(ExtensionsStackViewController *)self headerView];
+  [headerView addSubview:self->_containerHeaderView];
 
   v6 = self->_containerHeaderView;
-  v7 = [(ExtensionsStackViewController *)self headerView];
-  v8 = [(ContainerHeaderView *)v6 _maps_constraintsForCenteringInView:v7];
+  headerView2 = [(ExtensionsStackViewController *)self headerView];
+  v8 = [(ContainerHeaderView *)v6 _maps_constraintsForCenteringInView:headerView2];
   [NSLayoutConstraint activateConstraints:v8];
 
   v9 = [[RouteOverviewFieldsView alloc] initWithDelegate:self waypointInfoProvider:0 editingMode:0];
@@ -1040,17 +1040,17 @@ LABEL_16:
   roundedRectView = self->_roundedRectView;
   self->_roundedRectView = v19;
 
-  v21 = [(UIView *)self->_roundedRectView layer];
-  [v21 setCornerRadius:6.0];
+  layer = [(UIView *)self->_roundedRectView layer];
+  [layer setCornerRadius:6.0];
 
   [(UIView *)self->_roundedRectView setClipsToBounds:1];
-  v22 = [(UIView *)self->_roundedRectView layer];
+  layer2 = [(UIView *)self->_roundedRectView layer];
   v23 = +[UIColor blackColor];
   v24 = [v23 colorWithAlphaComponent:0.200000003];
-  [v22 setBorderColor:{objc_msgSend(v24, "CGColor")}];
+  [layer2 setBorderColor:{objc_msgSend(v24, "CGColor")}];
 
-  v25 = [(UIView *)self->_roundedRectView layer];
-  [v25 setBorderWidth:1.0];
+  layer3 = [(UIView *)self->_roundedRectView layer];
+  [layer3 setBorderWidth:1.0];
 
   [(UIView *)self->_roundedRectView setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v26) = 1148846080;
@@ -1103,15 +1103,15 @@ LABEL_16:
   v46[3] = &unk_101661B98;
   objc_copyWeak(&v47, &location);
   [(ExtensionsActionsFooterView *)self->_openAppView setDidTapOpenAppButton:v46];
-  v42 = [(ExtensionsStackViewController *)self stackView];
-  v43 = [(RidesharingConfirmedRideViewController *)self stackedViews];
-  [v42 _maps_setArrangedSubviews:v43];
+  stackView = [(ExtensionsStackViewController *)self stackView];
+  stackedViews = [(RidesharingConfirmedRideViewController *)self stackedViews];
+  [stackView _maps_setArrangedSubviews:stackedViews];
 
-  v44 = [(ExtensionsStackViewController *)self stackView];
-  [v44 setCustomSpacing:self->_routeFromToView afterView:16.0];
+  stackView2 = [(ExtensionsStackViewController *)self stackView];
+  [stackView2 setCustomSpacing:self->_routeFromToView afterView:16.0];
 
-  v45 = [(RidesharingConfirmedRideViewController *)self rideStatus];
-  [(RidesharingConfirmedRideViewController *)self _updateFromRideStatus:v45];
+  rideStatus = [(RidesharingConfirmedRideViewController *)self rideStatus];
+  [(RidesharingConfirmedRideViewController *)self _updateFromRideStatus:rideStatus];
 
   objc_destroyWeak(&v47);
   objc_destroyWeak(&v49);
@@ -1125,15 +1125,15 @@ LABEL_16:
   return [(RidesharingConfirmedRideViewController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (RidesharingConfirmedRideViewController)initWithApplicationIdentifier:(id)a3
+- (RidesharingConfirmedRideViewController)initWithApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = RidesharingConfirmedRideViewController;
   v5 = [(RidesharingConfirmedRideViewController *)&v16 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
 
@@ -1145,7 +1145,7 @@ LABEL_16:
     v14[1] = 3221225472;
     v14[2] = sub_10095D4C8;
     v14[3] = &unk_10162F890;
-    v15 = v4;
+    v15 = identifierCopy;
     v10 = [_MXExtensionManager _lookupPolicyWithBlock:v14];
     v11 = [_MXExtensionManager managerWithLookupPolicy:v10 delegate:v5];
     extensionManager = v5->_extensionManager;

@@ -3,18 +3,18 @@
 + (void)initialize;
 - (FigCaptureSessionObservatory)init;
 - (id)osStatePropertyList;
-- (uint64_t)_postMovieRecordingUpdateNotification:(const void *)a3 forCaptureSession:;
+- (uint64_t)_postMovieRecordingUpdateNotification:(const void *)notification forCaptureSession:;
 - (uint64_t)_registerObserver:(uint64_t)result;
 - (unint64_t)_isSessionRecordingMovie:(unint64_t)result;
-- (void)_captureSessionDidReconfigureWhileRunning:(char)a3 containsVideoSource:(char)a4 containsStillImageSink:(char)a5 containsMovieFileSink:;
-- (void)_resetFigAssetWriterRecordingsCountForCaptureSession:(uint64_t)a1;
+- (void)_captureSessionDidReconfigureWhileRunning:(char)running containsVideoSource:(char)source containsStillImageSink:(char)sink containsMovieFileSink:;
+- (void)_resetFigAssetWriterRecordingsCountForCaptureSession:(uint64_t)session;
 - (void)_setFigAssetWriterRecording:(CFTypeRef)cf forCaptureSession:;
-- (void)_setMovieFileOutputRecording:(uint64_t)a3 sectionID:(CFTypeRef)cf forCaptureSession:;
-- (void)_setStatus:(__int128 *)a3 clientAuditToken:(char)a4 containsVideoSource:(char)a5 containsStillImageSink:(char)a6 containsMovieFileSink:(CFTypeRef)cf forCaptureSession:;
-- (void)captureSessionWasCreated:(OpaqueFigCaptureSession *)a3;
+- (void)_setMovieFileOutputRecording:(uint64_t)recording sectionID:(CFTypeRef)cf forCaptureSession:;
+- (void)_setStatus:(__int128 *)status clientAuditToken:(char)token containsVideoSource:(char)source containsStillImageSink:(char)sink containsMovieFileSink:(CFTypeRef)cf forCaptureSession:;
+- (void)captureSessionWasCreated:(OpaqueFigCaptureSession *)created;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation FigCaptureSessionObservatory
@@ -31,7 +31,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -116,9 +116,9 @@ FigCaptureSessionObservatory *__49__FigCaptureSessionObservatory_sharedObservato
   [(FigCaptureSessionObservatory *)&v3 dealloc];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -126,14 +126,14 @@ FigCaptureSessionObservatory *__49__FigCaptureSessionObservatory_sharedObservato
     v4[2] = __49__FigCaptureSessionObservatory_registerObserver___block_invoke;
     v4[3] = &unk_1E798F898;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = observer;
     fig_dispatch_async_autoreleasepool(queue, v4);
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     queue = self->_queue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -141,23 +141,23 @@ FigCaptureSessionObservatory *__49__FigCaptureSessionObservatory_sharedObservato
     v4[2] = __51__FigCaptureSessionObservatory_unregisterObserver___block_invoke;
     v4[3] = &unk_1E798F898;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = observer;
     fig_dispatch_async_autoreleasepool(queue, v4);
   }
 }
 
-- (void)captureSessionWasCreated:(OpaqueFigCaptureSession *)a3
+- (void)captureSessionWasCreated:(OpaqueFigCaptureSession *)created
 {
-  if (a3)
+  if (created)
   {
-    CFRetain(a3);
+    CFRetain(created);
     queue = self->_queue;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57__FigCaptureSessionObservatory_captureSessionWasCreated___block_invoke;
     v6[3] = &unk_1E7990178;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = created;
     fig_dispatch_async_autoreleasepool(queue, v6);
   }
 }
@@ -456,7 +456,7 @@ void __139__FigCaptureSessionObservatory__captureSessionDidReconfigureWhileRunni
 - (id)osStatePropertyList
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -477,7 +477,7 @@ void __139__FigCaptureSessionObservatory__captureSessionDidReconfigureWhileRunni
           objc_enumerationMutation(captureSessionsStorage);
         }
 
-        [v3 setObject:FigCaptureSessionGetOSStateData(*(*(&v11 + 1) + 8 * v8) forKeyedSubscript:{0), objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"FigCaptureSession-%p", *(*(&v11 + 1) + 8 * v8))}];
+        [dictionary setObject:FigCaptureSessionGetOSStateData(*(*(&v11 + 1) + 8 * v8) forKeyedSubscript:{0), objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"FigCaptureSession-%p", *(*(&v11 + 1) + 8 * v8))}];
         ++v8;
       }
 
@@ -488,7 +488,7 @@ void __139__FigCaptureSessionObservatory__captureSessionDidReconfigureWhileRunni
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (uint64_t)_registerObserver:(uint64_t)result
@@ -580,13 +580,13 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)_postMovieRecordingUpdateNotification:(const void *)a3 forCaptureSession:
+- (uint64_t)_postMovieRecordingUpdateNotification:(const void *)notification forCaptureSession:
 {
   if (result)
   {
     v5 = result;
     dispatch_assert_queue_V2(*(result + 24));
-    result = NSMapGet(*(v5 + 8), a3);
+    result = NSMapGet(*(v5 + 8), notification);
     if (result)
     {
       v13 = result;
@@ -634,62 +634,62 @@ LABEL_14:
   return result;
 }
 
-- (void)_setStatus:(__int128 *)a3 clientAuditToken:(char)a4 containsVideoSource:(char)a5 containsStillImageSink:(char)a6 containsMovieFileSink:(CFTypeRef)cf forCaptureSession:
+- (void)_setStatus:(__int128 *)status clientAuditToken:(char)token containsVideoSource:(char)source containsStillImageSink:(char)sink containsMovieFileSink:(CFTypeRef)cf forCaptureSession:
 {
-  if (a1)
+  if (self)
   {
     CFRetain(cf);
     OUTLINED_FUNCTION_7_1();
     v17 = 3221225472;
-    v14 = a3[1];
-    v23 = *a3;
+    v14 = status[1];
+    v23 = *status;
     v18 = __143__FigCaptureSessionObservatory__setStatus_clientAuditToken_containsVideoSource_containsStillImageSink_containsMovieFileSink_forCaptureSession___block_invoke;
     v19 = &unk_1E7998510;
-    v20 = a1;
+    selfCopy = self;
     v21 = cf;
     v22 = a2;
     v24 = v14;
-    v25 = a4;
-    v26 = a5;
-    v27 = a6;
+    tokenCopy = token;
+    sourceCopy = source;
+    sinkCopy = sink;
     fig_dispatch_async_autoreleasepool(v15, v16);
   }
 }
 
-- (void)_captureSessionDidReconfigureWhileRunning:(char)a3 containsVideoSource:(char)a4 containsStillImageSink:(char)a5 containsMovieFileSink:
+- (void)_captureSessionDidReconfigureWhileRunning:(char)running containsVideoSource:(char)source containsStillImageSink:(char)sink containsMovieFileSink:
 {
-  if (a1)
+  if (self)
   {
     CFRetain(cf);
     OUTLINED_FUNCTION_7_1();
     v12 = 3221225472;
     v13 = __139__FigCaptureSessionObservatory__captureSessionDidReconfigureWhileRunning_containsVideoSource_containsStillImageSink_containsMovieFileSink___block_invoke;
     v14 = &unk_1E7997648;
-    v15 = a1;
+    selfCopy = self;
     v16 = cf;
-    v17 = a3;
-    v18 = a4;
-    v19 = a5;
+    runningCopy = running;
+    sourceCopy = source;
+    sinkCopy = sink;
     fig_dispatch_async_autoreleasepool(v10, v11);
   }
 }
 
-- (void)_setMovieFileOutputRecording:(uint64_t)a3 sectionID:(CFTypeRef)cf forCaptureSession:
+- (void)_setMovieFileOutputRecording:(uint64_t)recording sectionID:(CFTypeRef)cf forCaptureSession:
 {
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (recording)
     {
       CFRetain(cf);
-      v8 = *(a1 + 24);
+      v8 = *(self + 24);
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __89__FigCaptureSessionObservatory__setMovieFileOutputRecording_sectionID_forCaptureSession___block_invoke;
       v9[3] = &unk_1E7998820;
-      v9[5] = a3;
+      v9[5] = recording;
       v9[6] = cf;
       v10 = a2;
-      v9[4] = a1;
+      v9[4] = self;
       fig_dispatch_async_autoreleasepool(v8, v9);
     }
 
@@ -744,14 +744,14 @@ void __89__FigCaptureSessionObservatory__setMovieFileOutputRecording_sectionID_f
 
 - (void)_setFigAssetWriterRecording:(CFTypeRef)cf forCaptureSession:
 {
-  if (a1)
+  if (self)
   {
     CFRetain(cf);
     OUTLINED_FUNCTION_7_1();
     v8 = 3221225472;
     v9 = __78__FigCaptureSessionObservatory__setFigAssetWriterRecording_forCaptureSession___block_invoke;
     v10 = &unk_1E7991948;
-    v11 = a1;
+    selfCopy = self;
     v12 = cf;
     v13 = a2;
     fig_dispatch_async_autoreleasepool(v6, v7);
@@ -809,17 +809,17 @@ LABEL_10:
   CFRelease(*(a1 + 40));
 }
 
-- (void)_resetFigAssetWriterRecordingsCountForCaptureSession:(uint64_t)a1
+- (void)_resetFigAssetWriterRecordingsCountForCaptureSession:(uint64_t)session
 {
-  if (a1)
+  if (session)
   {
     CFRetain(cf);
-    v4 = *(a1 + 24);
+    v4 = *(session + 24);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __85__FigCaptureSessionObservatory__resetFigAssetWriterRecordingsCountForCaptureSession___block_invoke;
     v5[3] = &unk_1E7990178;
-    v5[4] = a1;
+    v5[4] = session;
     v5[5] = cf;
     fig_dispatch_async_autoreleasepool(v4, v5);
   }

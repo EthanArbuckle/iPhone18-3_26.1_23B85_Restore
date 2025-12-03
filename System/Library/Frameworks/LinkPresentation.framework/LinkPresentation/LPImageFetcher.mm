@@ -1,19 +1,19 @@
 @interface LPImageFetcher
-+ (id)imageFetcherForConfiguration:(id)a3;
-- (void)_completedWithImage:(id)a3 error:(id)a4;
-- (void)_failedWithErrorCode:(int64_t)a3 underlyingError:(id)a4;
++ (id)imageFetcherForConfiguration:(id)configuration;
+- (void)_completedWithImage:(id)image error:(id)error;
+- (void)_failedWithErrorCode:(int64_t)code underlyingError:(id)error;
 - (void)cancel;
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation LPImageFetcher
 
-+ (id)imageFetcherForConfiguration:(id)a3
++ (id)imageFetcherForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 fetchIsNotUserInitiated];
+  configurationCopy = configuration;
+  fetchIsNotUserInitiated = [configurationCopy fetchIsNotUserInitiated];
   v5 = off_1E7A346E0;
-  if (!v4)
+  if (!fetchIsNotUserInitiated)
   {
     v5 = off_1E7A347A8;
   }
@@ -23,20 +23,20 @@
   return v6;
 }
 
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 rootEvent];
-  v9 = [v8 childWithType:2 subtitle:0];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  rootEvent = [configurationCopy rootEvent];
+  v9 = [rootEvent childWithType:2 subtitle:0];
   [(LPFetcher *)self set_event:v9];
 
   URL = self->_URL;
-  v11 = [(LPFetcher *)self _event];
-  [v11 setURL:URL];
+  _event = [(LPFetcher *)self _event];
+  [_event setURL:URL];
 
-  v12 = _Block_copy(v7);
+  v12 = _Block_copy(handlerCopy);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v12;
 
@@ -47,10 +47,10 @@
   }
 
   v15 = [(LPImageFetcher *)self URL];
-  v16 = [v15 _lp_requestWithAttribution:{objc_msgSend(v6, "loadingIsNonAppInitiated")}];
+  v16 = [v15 _lp_requestWithAttribution:{objc_msgSend(configurationCopy, "loadingIsNonAppInitiated")}];
 
-  v17 = [v6 webViewForProcessSharing];
-  if (!v17)
+  webViewForProcessSharing = [configurationCopy webViewForProcessSharing];
+  if (!webViewForProcessSharing)
   {
     v18 = LPLogChannelFetching();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -67,7 +67,7 @@
     v23 = +[LPMetadataProvider _defaultUserAgent];
     [(WKWebView *)self->_webView setCustomUserAgent:v23];
 
-    v17 = self->_webView;
+    webViewForProcessSharing = self->_webView;
   }
 
   objc_initWeak(&location, self);
@@ -76,7 +76,7 @@
   v24[2] = __59__LPImageFetcher_fetchWithConfiguration_completionHandler___block_invoke;
   v24[3] = &unk_1E7A36E50;
   objc_copyWeak(&v25, &location);
-  [(WKWebView *)v17 _loadAndDecodeImage:v16 constrainedToSize:10485760 maximumBytesFromNetwork:v24 completionHandler:1024.0, 1024.0];
+  [(WKWebView *)webViewForProcessSharing _loadAndDecodeImage:v16 constrainedToSize:10485760 maximumBytesFromNetwork:v24 completionHandler:1024.0, 1024.0];
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
 }
@@ -133,41 +133,41 @@ void __59__LPImageFetcher_fetchWithConfiguration_completionHandler___block_invok
   }
 }
 
-- (void)_failedWithErrorCode:(int64_t)a3 underlyingError:(id)a4
+- (void)_failedWithErrorCode:(int64_t)code underlyingError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   if (self->_completionHandler)
   {
-    if (a3 != 3)
+    if (code != 3)
     {
       v7 = LPLogChannelFetching();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(LPFetcher *)self _loggingID];
-        v10 = [v6 domain];
+        _loggingID = [(LPFetcher *)self _loggingID];
+        domain = [errorCopy domain];
         v11[0] = 67109891;
-        v11[1] = v9;
+        v11[1] = _loggingID;
         v12 = 2112;
-        v13 = v10;
+        v13 = domain;
         v14 = 2048;
-        v15 = [v6 code];
+        code = [errorCopy code];
         v16 = 2117;
-        v17 = v6;
+        v17 = errorCopy;
         _os_log_error_impl(&dword_1AE886000, v7, OS_LOG_TYPE_ERROR, "LPImageFetcher<%d>: failed subresource load: Domain=%@ Code=%ld Error=%{sensitive}@", v11, 0x26u);
       }
     }
 
-    v8 = makeLPError(a3, v6);
+    v8 = makeLPError(code, errorCopy);
     [(LPImageFetcher *)self _completedWithImage:0 error:v8];
   }
 }
 
-- (void)_completedWithImage:(id)a3 error:(id)a4
+- (void)_completedWithImage:(id)image error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
@@ -175,7 +175,7 @@ void __59__LPImageFetcher_fetchWithConfiguration_completionHandler___block_invok
     v10 = self->_completionHandler;
     self->_completionHandler = 0;
 
-    if (!v6)
+    if (!imageCopy)
     {
       goto LABEL_8;
     }
@@ -186,17 +186,17 @@ void __59__LPImageFetcher_fetchWithConfiguration_completionHandler___block_invok
       [LPImageFetcher _completedWithImage:v19 error:[(LPFetcher *)self _loggingID]];
     }
 
-    v12 = [(LPFetcher *)self responseClass];
-    if (!v12)
+    responseClass = [(LPFetcher *)self responseClass];
+    if (!responseClass)
     {
-      v12 = objc_opt_class();
+      responseClass = objc_opt_class();
     }
 
-    v13 = [(objc_class *)v12 responseForFetcher:self withImage:v6];
+    v13 = [(objc_class *)responseClass responseForFetcher:self withImage:imageCopy];
     if (!v13)
     {
 LABEL_8:
-      v13 = [[LPFetcherErrorResponse alloc] initWithError:v7 fetcher:self];
+      v13 = [[LPFetcherErrorResponse alloc] initWithError:errorCopy fetcher:self];
     }
 
     [(WKWebView *)self->_webView _close];
@@ -215,8 +215,8 @@ LABEL_8:
     block[3] = &unk_1E7A35518;
     block[4] = v17;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    v15 = [(LPFetcher *)self _event];
-    [v15 didCompleteWithErrorCode:{objc_msgSend(v7, "code")}];
+    _event = [(LPFetcher *)self _event];
+    [_event didCompleteWithErrorCode:{objc_msgSend(errorCopy, "code")}];
 
     v9[2](v9, v13);
     _Block_object_dispose(v17, 8);

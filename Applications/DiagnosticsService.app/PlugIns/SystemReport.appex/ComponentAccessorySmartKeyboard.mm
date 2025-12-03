@@ -1,7 +1,7 @@
 @interface ComponentAccessorySmartKeyboard
 - (BOOL)isPresent;
 - (ComponentAccessorySmartKeyboard)init;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentAccessorySmartKeyboard
@@ -23,27 +23,27 @@
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentAccessorySmartKeyboard *)self device];
-  v3 = v2 != 0;
+  device = [(ComponentAccessorySmartKeyboard *)self device];
+  v3 = device != 0;
 
   return v3;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v7 = a3;
-  v4 = [(ComponentAccessorySmartKeyboard *)self device];
-  v5 = [v4 stringFromHIDReport:17];
+  attributesCopy = attributes;
+  device = [(ComponentAccessorySmartKeyboard *)self device];
+  v5 = [device stringFromHIDReport:17];
 
   if (v5)
   {
-    [v7 setObject:v5 forKeyedSubscript:@"serialNumber"];
+    [attributesCopy setObject:v5 forKeyedSubscript:@"serialNumber"];
   }
 
   else
   {
     v6 = +[NSNull null];
-    [v7 setObject:v6 forKeyedSubscript:@"serialNumber"];
+    [attributesCopy setObject:v6 forKeyedSubscript:@"serialNumber"];
   }
 }
 

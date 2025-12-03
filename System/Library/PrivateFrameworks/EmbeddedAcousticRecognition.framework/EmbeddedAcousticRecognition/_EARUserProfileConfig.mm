@@ -1,18 +1,18 @@
 @interface _EARUserProfileConfig
 - (_EARPeopleSuggesterConfig)peopleSuggesterConfig;
-- (_EARUserProfileConfig)initWithConfiguration:(id)a3 overrides:(id)a4;
+- (_EARUserProfileConfig)initWithConfiguration:(id)configuration overrides:(id)overrides;
 @end
 
 @implementation _EARUserProfileConfig
 
-- (_EARUserProfileConfig)initWithConfiguration:(id)a3 overrides:(id)a4
+- (_EARUserProfileConfig)initWithConfiguration:(id)configuration overrides:(id)overrides
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  overridesCopy = overrides;
   v19.receiver = self;
   v19.super_class = _EARUserProfileConfig;
   [(_EARUserProfileConfig *)&v19 init];
-  v8 = v7;
+  v8 = overridesCopy;
   v10 = 0;
   v11 = &v10;
   v12 = 0x5812000000;

@@ -14,15 +14,15 @@
 + (NSExpression)expressionForVariable:(NSString *)string;
 + (NSExpression)expressionWithFormat:(NSString *)expressionFormat argumentArray:(NSArray *)arguments;
 + (NSExpression)expressionWithFormat:(NSString *)expressionFormat arguments:(va_list)argList;
-+ (id)_newKeyPathExpressionForString:(id)a3;
-+ (id)expressionForSymbolicString:(id)a3;
-+ (id)expressionForTernaryWithPredicate:(id)a3 trueExpression:(id)a4 falseExpression:(id)a5;
-+ (id)expressionForVariableNameAssignment:(id)a3 expression:(id)a4;
++ (id)_newKeyPathExpressionForString:(id)string;
++ (id)expressionForSymbolicString:(id)string;
++ (id)expressionForTernaryWithPredicate:(id)predicate trueExpression:(id)expression falseExpression:(id)falseExpression;
++ (id)expressionForVariableNameAssignment:(id)assignment expression:(id)expression;
 - (NSExpression)initWithCoder:(NSCoder *)coder;
 - (NSExpression)initWithExpressionType:(NSExpressionType)type;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSExpression
@@ -36,16 +36,16 @@
 
 + (NSExpression)expressionWithFormat:(NSString *)expressionFormat argumentArray:(NSArray *)arguments
 {
-  v4 = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"%@ == 1" argumentArray:expressionFormat], arguments];
+  arguments = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"%@ == 1" argumentArray:expressionFormat], arguments];
 
-  return [(NSPredicate *)v4 leftExpression];
+  return [(NSPredicate *)arguments leftExpression];
 }
 
 + (NSExpression)expressionWithFormat:(NSString *)expressionFormat arguments:(va_list)argList
 {
-  v4 = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"%@ == 1" arguments:expressionFormat], argList];
+  argList = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"%@ == 1" arguments:expressionFormat], argList];
 
-  return [(NSPredicate *)v4 leftExpression];
+  return [(NSPredicate *)argList leftExpression];
 }
 
 + (NSExpression)expressionForConstantValue:(id)obj
@@ -62,9 +62,9 @@
   return v3;
 }
 
-+ (id)expressionForSymbolicString:(id)a3
++ (id)expressionForSymbolicString:(id)string
 {
-  v3 = [[NSSymbolicExpression alloc] initWithString:a3];
+  v3 = [[NSSymbolicExpression alloc] initWithString:string];
 
   return v3;
 }
@@ -90,30 +90,30 @@
   return v5;
 }
 
-+ (id)expressionForVariableNameAssignment:(id)a3 expression:(id)a4
++ (id)expressionForVariableNameAssignment:(id)assignment expression:(id)expression
 {
-  v4 = [[NSVariableAssignmentExpression alloc] initWithAssignmentVariable:a3 expression:a4];
+  v4 = [[NSVariableAssignmentExpression alloc] initWithAssignmentVariable:assignment expression:expression];
 
   return v4;
 }
 
-+ (id)expressionForTernaryWithPredicate:(id)a3 trueExpression:(id)a4 falseExpression:(id)a5
++ (id)expressionForTernaryWithPredicate:(id)predicate trueExpression:(id)expression falseExpression:(id)falseExpression
 {
-  v5 = [[NSTernaryExpression alloc] initWithPredicate:a3 trueExpression:a4 falseExpression:a5];
+  v5 = [[NSTernaryExpression alloc] initWithPredicate:predicate trueExpression:expression falseExpression:falseExpression];
 
   return v5;
 }
 
-+ (id)_newKeyPathExpressionForString:(id)a3
++ (id)_newKeyPathExpressionForString:(id)string
 {
   v4 = [NSKeyPathSpecifierExpression alloc];
 
-  return [(NSKeyPathSpecifierExpression *)v4 initWithObject:a3];
+  return [(NSKeyPathSpecifierExpression *)v4 initWithObject:string];
 }
 
 + (NSExpression)expressionForKeyPath:(NSString *)keyPath
 {
-  v3 = [a1 _newKeyPathExpressionForString:keyPath];
+  v3 = [self _newKeyPathExpressionForString:keyPath];
   v4 = [[NSKeyPathExpression alloc] initWithKeyPath:v3];
 
   return &v4->super.super;
@@ -201,16 +201,16 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [(NSExpression *)self expressionType];
+  expressionType = [(NSExpression *)self expressionType];
 
-  [a3 encodeInteger:v5 forKey:@"NSExpressionType"];
+  [coder encodeInteger:expressionType forKey:@"NSExpressionType"];
 }
 
 - (NSExpression)initWithCoder:(NSCoder *)coder
@@ -230,17 +230,17 @@
   return v5;
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
-  if (a4)
+  if (flags)
   {
-    [a3 visitPredicateExpression:self];
+    [visitor visitPredicateExpression:self];
   }
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:{0, v3, v4}]);
   }

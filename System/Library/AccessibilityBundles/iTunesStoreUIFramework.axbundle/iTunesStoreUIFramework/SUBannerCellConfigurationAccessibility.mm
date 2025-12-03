@@ -6,9 +6,9 @@
 
 - (id)accessibilityTableViewCellText
 {
-  v2 = [MEMORY[0x29EDB9F48] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 hasSuffix:@"AppStore"];
+  mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier hasSuffix:@"AppStore"];
 
   if (v4)
   {

@@ -1,10 +1,10 @@
 @interface MUFadingMarqueeLabel
-- (MUFadingMarqueeLabel)initWithInterval:(double)a3;
+- (MUFadingMarqueeLabel)initWithInterval:(double)interval;
 - (void)_updateMarquee;
 - (void)_updateTimer;
 - (void)dealloc;
-- (void)setMarqueeInterval:(double)a3;
-- (void)setNumberOfLines:(int64_t)a3;
+- (void)setMarqueeInterval:(double)interval;
+- (void)setNumberOfLines:(int64_t)lines;
 @end
 
 @implementation MUFadingMarqueeLabel
@@ -61,23 +61,23 @@ void __36__MUFadingMarqueeLabel__updateTimer__block_invoke(uint64_t a1)
   [(MUFadingMarqueeLabel *)self setMarqueeEnabled:v4];
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
-  v5 = [(MUFadingMarqueeLabel *)self numberOfLines];
+  numberOfLines = [(MUFadingMarqueeLabel *)self numberOfLines];
   v6.receiver = self;
   v6.super_class = MUFadingMarqueeLabel;
-  [(MUFadingMarqueeLabel *)&v6 setNumberOfLines:a3];
-  if (v5 != [(MUFadingMarqueeLabel *)self numberOfLines])
+  [(MUFadingMarqueeLabel *)&v6 setNumberOfLines:lines];
+  if (numberOfLines != [(MUFadingMarqueeLabel *)self numberOfLines])
   {
     [(MUFadingMarqueeLabel *)self _updateMarquee];
   }
 }
 
-- (void)setMarqueeInterval:(double)a3
+- (void)setMarqueeInterval:(double)interval
 {
-  if (self->_marqueeInterval != a3)
+  if (self->_marqueeInterval != interval)
   {
-    self->_marqueeInterval = a3;
+    self->_marqueeInterval = interval;
     [(MUFadingMarqueeLabel *)self _updateMarquee];
   }
 }
@@ -95,7 +95,7 @@ void __36__MUFadingMarqueeLabel__updateTimer__block_invoke(uint64_t a1)
   [(MUFadingMarqueeLabel *)&v4 dealloc];
 }
 
-- (MUFadingMarqueeLabel)initWithInterval:(double)a3
+- (MUFadingMarqueeLabel)initWithInterval:(double)interval
 {
   v7.receiver = self;
   v7.super_class = MUFadingMarqueeLabel;
@@ -106,7 +106,7 @@ void __36__MUFadingMarqueeLabel__updateTimer__block_invoke(uint64_t a1)
     v4->_marqueeInterval = -1.0;
     v4->_initialDelay = 5.0;
     [(MUFadingMarqueeLabel *)v4 setMarqueeRepeatCount:1];
-    [(MUFadingMarqueeLabel *)v5 setMarqueeInterval:a3];
+    [(MUFadingMarqueeLabel *)v5 setMarqueeInterval:interval];
   }
 
   return v5;

@@ -1,12 +1,12 @@
 @interface CRLiOSInsertPageViewControllerOverlayGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation CRLiOSInsertPageViewControllerOverlayGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if (![(CRLiOSInsertPageViewControllerOverlayGestureRecognizer *)self state:a3])
+  if (![(CRLiOSInsertPageViewControllerOverlayGestureRecognizer *)self state:began])
   {
 
     [(CRLiOSInsertPageViewControllerOverlayGestureRecognizer *)self setState:3];

@@ -14,7 +14,7 @@
 - (double)currentDelay
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x88);
-  v3 = self;
+  selfCopy = self;
   v4 = COERCE_DOUBLE(v2());
   v6 = v5;
   v8 = v7;
@@ -36,7 +36,7 @@
 - (BOOL)shouldDelayNextReconnect
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x88);
-  v3 = self;
+  selfCopy = self;
   *&v4 = COERCE_DOUBLE(v2());
   if (v6 == -1)
   {
@@ -80,33 +80,33 @@
 
 - (void)noteConnectionAttemptStart
 {
-  v3 = self;
+  selfCopy = self;
   v2 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
-  (*((swift_isaMask & v3->super.isa) + 0x108))(v2);
+  (*((swift_isaMask & selfCopy->super.isa) + 0x108))(v2);
 }
 
 - (void)noteConnectionEstablished
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x108);
-  v3 = self;
+  selfCopy = self;
   v2(0);
 }
 
 - (void)noteConnectionAttemptFailed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000CA964();
 }
 
 - (void)notePresenceSuccess
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000CAB20();
 }
 
 - (void)notePresenceFailure
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000CACA4();
 }
 

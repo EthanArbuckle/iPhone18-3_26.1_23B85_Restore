@@ -1,7 +1,7 @@
 @interface SKIMessagesGatekeeperPayload
 - (SKIDirectInvocationPayload)invocationPayload;
-- (SKIMessagesGatekeeperPayload)initWithAppBundleId:(id)a3;
-- (SKIMessagesGatekeeperPayload)initWithDictionary:(id)a3;
+- (SKIMessagesGatekeeperPayload)initWithAppBundleId:(id)id;
+- (SKIMessagesGatekeeperPayload)initWithDictionary:(id)dictionary;
 @end
 
 @implementation SKIMessagesGatekeeperPayload
@@ -25,30 +25,30 @@
   return v4;
 }
 
-- (SKIMessagesGatekeeperPayload)initWithAppBundleId:(id)a3
+- (SKIMessagesGatekeeperPayload)initWithAppBundleId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v9.receiver = self;
   v9.super_class = SKIMessagesGatekeeperPayload;
   v6 = [(SKIMessagesGatekeeperPayload *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appBundleId, a3);
+    objc_storeStrong(&v6->_appBundleId, id);
   }
 
   return v7;
 }
 
-- (SKIMessagesGatekeeperPayload)initWithDictionary:(id)a3
+- (SKIMessagesGatekeeperPayload)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SKIMessagesGatekeeperPayload;
   v5 = [(SKIMessagesGatekeeperPayload *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"appBundleId"];
+    v6 = [dictionaryCopy objectForKey:@"appBundleId"];
     appBundleId = v5->_appBundleId;
     v5->_appBundleId = v6;
   }

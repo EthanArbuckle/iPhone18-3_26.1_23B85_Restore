@@ -1,10 +1,10 @@
 @interface PurchaseHistoryAppStateDataSource
-- (void)purchaseHistoryUpdated:(id)a3;
+- (void)purchaseHistoryUpdated:(id)updated;
 @end
 
 @implementation PurchaseHistoryAppStateDataSource
 
-- (void)purchaseHistoryUpdated:(id)a3
+- (void)purchaseHistoryUpdated:(id)updated
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D010AC8, &qword_22261DCC0);
   v5 = *(*(v4 - 8) + 64);

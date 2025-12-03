@@ -1,5 +1,5 @@
 @interface QLPreviewItemContainer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSURL)previewItemURL;
 - (_TtC18_QuickLook_SwiftUI22QLPreviewItemContainer)init;
 - (int64_t)hash;
@@ -19,14 +19,14 @@
   if (*(&self->super.isa + OBJC_IVAR____TtC18_QuickLook_SwiftUI22QLPreviewItemContainer_didStartAccessingSecurityScopeResource) == 1)
   {
     (*(v5 + 16))(v8, self + OBJC_IVAR____TtC18_QuickLook_SwiftUI22QLPreviewItemContainer_url, v4);
-    v9 = self;
+    selfCopy = self;
     sub_23B8217CC();
     (*(v5 + 8))(v8, v4);
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v11.receiver = self;
@@ -44,12 +44,12 @@
   v8 = OBJC_IVAR____TtC18_QuickLook_SwiftUI22QLPreviewItemContainer_didStartAccessingSecurityScopeResource;
   if (*(&self->super.isa + OBJC_IVAR____TtC18_QuickLook_SwiftUI22QLPreviewItemContainer_didStartAccessingSecurityScopeResource) == 1)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
     *(&self->super.isa + v8) = sub_23B8217DC() & 1;
   }
 
@@ -61,11 +61,11 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23B821A9C();
     swift_unknownObjectRelease();
@@ -74,7 +74,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_23B81E9E4(v8);
@@ -85,7 +85,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23B81F020();
 
   return v3;

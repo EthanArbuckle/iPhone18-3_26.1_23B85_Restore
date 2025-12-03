@@ -1,18 +1,18 @@
 @interface EmergencyWebRTCViewController
 - (CGSize)preferredContentSize;
-- (EmergencyWebRTCViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (EmergencyWebRTCViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)flashButtonTapped;
 - (void)flipCameraButtonTapped;
-- (void)pinch:(id)a3;
+- (void)pinch:(id)pinch;
 - (void)recentMessageViewTapped;
 - (void)requestCancel;
 - (void)requestContinue;
 - (void)rttAudioRouteButtonTapped;
 - (void)rttCallControlsButtonTapped;
 - (void)rttVideoButtonTapped;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateCallStatus;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)zoomButtonTapped;
 @end
@@ -21,31 +21,31 @@
 
 - (void)rttAudioRouteButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100157E70();
 }
 
 - (void)rttCallControlsButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100158164(3);
 }
 
 - (void)rttVideoButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001580B8();
 }
 
 - (void)recentMessageViewTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100158164(4);
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_100158D68();
   v4 = v3;
   v6 = v5;
@@ -59,74 +59,74 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001838C4();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100183948(a3);
+  selfCopy = self;
+  sub_100183948(appear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100183A84(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100183A84(change);
 }
 
 - (void)updateCallStatus
 {
-  v2 = self;
+  selfCopy = self;
   sub_100184098();
 }
 
 - (void)flashButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100187458();
 }
 
 - (void)flipCameraButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10018B730();
 }
 
 - (void)zoomButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10018BDF4();
 }
 
-- (void)pinch:(id)a3
+- (void)pinch:(id)pinch
 {
-  v4 = a3;
-  v5 = self;
-  sub_10018C598(v4);
+  pinchCopy = pinch;
+  selfCopy = self;
+  sub_10018C598(pinchCopy);
 }
 
-- (EmergencyWebRTCViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (EmergencyWebRTCViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_10018D42C();
 }
 
 - (void)requestCancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10018D7D8("EnhancedEmergency: video streaming request cancelled, request to remove webview", &selRef_cancelVideoStreamingRequest);
 }
 
 - (void)requestContinue
 {
-  v2 = self;
+  selfCopy = self;
   sub_10018D7D8("EnhancedEmergency: video streaming request continued, request to start streaming video", &selRef_continueVideoStreamingRequest);
 }
 

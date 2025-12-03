@@ -1,6 +1,6 @@
 @interface EKVirtualConferenceProvider
 - (EKVirtualConferenceProvider)init;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)fetchAvailableRoomTypesWithCompletionHandler:(void *)completionHandler;
 - (void)fetchVirtualConferenceForIdentifier:(EKVirtualConferenceRoomTypeIdentifier)identifier completionHandler:(void *)completionHandler;
 @end
@@ -29,62 +29,62 @@
   return v2;
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  if ([v4 requestType] == 1)
+  contextCopy = context;
+  if ([contextCopy requestType] == 1)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __64__EKVirtualConferenceProvider_beginRequestWithExtensionContext___block_invoke;
     v16[3] = &unk_1E77FD5D8;
-    v17 = v4;
+    v17 = contextCopy;
     [(EKVirtualConferenceProvider *)self fetchAvailableRoomTypesWithCompletionHandler:v16];
     v5 = v17;
   }
 
-  else if ([v4 requestType] == 2)
+  else if ([contextCopy requestType] == 2)
   {
-    v6 = [v4 roomTypeIdentifier];
+    roomTypeIdentifier = [contextCopy roomTypeIdentifier];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __64__EKVirtualConferenceProvider_beginRequestWithExtensionContext___block_invoke_2;
     v14[3] = &unk_1E77FD600;
-    v15 = v4;
-    [(EKVirtualConferenceProvider *)self fetchVirtualConferenceForIdentifier:v6 completionHandler:v14];
+    v15 = contextCopy;
+    [(EKVirtualConferenceProvider *)self fetchVirtualConferenceForIdentifier:roomTypeIdentifier completionHandler:v14];
 
     v5 = v15;
   }
 
-  else if ([v4 requestType] == 5)
+  else if ([contextCopy requestType] == 5)
   {
-    v7 = [v4 URLForInvalidation];
+    uRLForInvalidation = [contextCopy URLForInvalidation];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64__EKVirtualConferenceProvider_beginRequestWithExtensionContext___block_invoke_3;
     v12[3] = &unk_1E77FD628;
-    v13 = v4;
-    [(EKVirtualConferenceProvider *)self invalidateURL:v7 withCompletionHandler:v12];
+    v13 = contextCopy;
+    [(EKVirtualConferenceProvider *)self invalidateURL:uRLForInvalidation withCompletionHandler:v12];
 
     v5 = v13;
   }
 
   else
   {
-    if ([v4 requestType] != 4)
+    if ([contextCopy requestType] != 4)
     {
-      [v4 completeRequestReturningItems:0 completionHandler:0];
+      [contextCopy completeRequestReturningItems:0 completionHandler:0];
       goto LABEL_10;
     }
 
-    v8 = [v4 URLForRenewal];
-    v9 = [v4 renewalDate];
+    uRLForRenewal = [contextCopy URLForRenewal];
+    renewalDate = [contextCopy renewalDate];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __64__EKVirtualConferenceProvider_beginRequestWithExtensionContext___block_invoke_4;
     v10[3] = &unk_1E77FD628;
-    v11 = v4;
-    [(EKVirtualConferenceProvider *)self extendExpirationOfURL:v8 toExpirationDate:v9 withCompletion:v10];
+    v11 = contextCopy;
+    [(EKVirtualConferenceProvider *)self extendExpirationOfURL:uRLForRenewal toExpirationDate:renewalDate withCompletion:v10];
 
     v5 = v11;
   }

@@ -1,6 +1,6 @@
 @interface MTRCommodityPriceClusterPriceChangeEvent
 - (MTRCommodityPriceClusterPriceChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityPriceClusterPriceChangeEvent);
-  v5 = [(MTRCommodityPriceClusterPriceChangeEvent *)self currentPrice];
-  [(MTRCommodityPriceClusterPriceChangeEvent *)v4 setCurrentPrice:v5];
+  currentPrice = [(MTRCommodityPriceClusterPriceChangeEvent *)self currentPrice];
+  [(MTRCommodityPriceClusterPriceChangeEvent *)v4 setCurrentPrice:currentPrice];
 
   return v4;
 }

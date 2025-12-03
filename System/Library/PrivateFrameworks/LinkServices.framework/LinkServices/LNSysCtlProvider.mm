@@ -8,7 +8,7 @@
 + (id)runningProcessIDs
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   *v11 = xmmword_19775FCA0;
   v12 = 0;
   size = 0;
@@ -31,7 +31,7 @@
         do
         {
           v7 = [MEMORY[0x1E696AD98] numberWithInt:*v6];
-          [v2 addObject:v7];
+          [array addObject:v7];
 
           v6 += 162;
           --v5;
@@ -41,7 +41,7 @@
       }
 
       free(v4);
-      v3 = [v2 copy];
+      v3 = [array copy];
     }
   }
 

@@ -1,34 +1,34 @@
 @interface MPSNDArrayTileKernel
 - ($96B0F76142A215457D5EFBC15591F05E)multiples;
-- (MPSNDArrayTileKernel)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayTileKernel)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMultiples:(id *)a3;
+- (MPSNDArrayTileKernel)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayTileKernel)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMultiples:(id *)multiples;
 @end
 
 @implementation MPSNDArrayTileKernel
 
-- (MPSNDArrayTileKernel)initWithDevice:(id)a3
+- (MPSNDArrayTileKernel)initWithDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayTileKernel;
-  v3 = [(MPSNDArrayUnaryKernel *)&v5 initWithDevice:a3];
+  v3 = [(MPSNDArrayUnaryKernel *)&v5 initWithDevice:device];
   v3->super.super._encode = EncodeTile;
   v3->super.super.super._encodeData = v3;
   memset_pattern16(&v3->_multiples, &unk_239B0A390, 0x80uLL);
   return v3;
 }
 
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [a3 objectAtIndexedSubscript:{0, a4}];
+  v6 = [arrays objectAtIndexedSubscript:{0, state}];
   v19 = *(v6 + *MEMORY[0x277CD73D8]);
-  v7 = [a3 objectAtIndexedSubscript:0];
+  v7 = [arrays objectAtIndexedSubscript:0];
   v8 = *(v7 + *MEMORY[0x277CD73F0]);
-  v9 = [a3 objectAtIndexedSubscript:0];
+  v9 = [arrays objectAtIndexedSubscript:0];
   v10 = (v9 + *MEMORY[0x277CD7410]);
   v12 = v10[2];
   v11 = v10[3];
@@ -49,42 +49,42 @@
     }
   }
 
-  result = [MEMORY[0x277CD7268] descriptorWithDataType:objc_msgSend(objc_msgSend(a3 dimensionCount:"objectAtIndexedSubscript:" dimensionSizes:{0, *&v11, *&v12, *&v13, *&v14, *&v19), "dataType"), v8, v22}];
+  result = [MEMORY[0x277CD7268] descriptorWithDataType:objc_msgSend(objc_msgSend(arrays dimensionCount:"objectAtIndexedSubscript:" dimensionSizes:{0, *&v11, *&v12, *&v13, *&v14, *&v19), "dataType"), v8, v22}];
   v18 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (MPSNDArrayTileKernel)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayTileKernel)initWithCoder:(id)coder device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSNDArrayTileKernel;
-  result = [(MPSNDArrayUnaryKernel *)&v7 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayUnaryKernel *)&v7 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeTile;
     result->super.super.super._encodeData = result;
     v6 = result;
-    decodeMultiples(a3, &result->_multiples);
+    decodeMultiples(coder, &result->_multiples);
     return v6;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v5.receiver = self;
   v5.super_class = MPSNDArrayTileKernel;
   [(MPSNDArrayMultiaryBase *)&v5 encodeWithCoder:?];
-  encodeMultiples(a3, &self->_multiples);
+  encodeMultiples(coder, &self->_multiples);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v12.receiver = self;
   v12.super_class = MPSNDArrayTileKernel;
-  result = [(MPSNDArrayMultiaryKernel *)&v12 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v12 copyWithZone:zone device:device];
   if (result)
   {
     v6 = *&self->_multiples.dimensions[6];
@@ -123,19 +123,19 @@
   return self;
 }
 
-- (void)setMultiples:(id *)a3
+- (void)setMultiples:(id *)multiples
 {
-  v3 = *&a3->var0[6];
-  v5 = *a3->var0;
-  v4 = *&a3->var0[2];
-  *&self->_multiples.dimensions[4] = *&a3->var0[4];
+  v3 = *&multiples->var0[6];
+  v5 = *multiples->var0;
+  v4 = *&multiples->var0[2];
+  *&self->_multiples.dimensions[4] = *&multiples->var0[4];
   *&self->_multiples.dimensions[6] = v3;
   *self->_multiples.dimensions = v5;
   *&self->_multiples.dimensions[2] = v4;
-  v6 = *&a3->var0[14];
-  v8 = *&a3->var0[8];
-  v7 = *&a3->var0[10];
-  *&self->_multiples.dimensions[12] = *&a3->var0[12];
+  v6 = *&multiples->var0[14];
+  v8 = *&multiples->var0[8];
+  v7 = *&multiples->var0[10];
+  *&self->_multiples.dimensions[12] = *&multiples->var0[12];
   *&self->_multiples.dimensions[14] = v6;
   *&self->_multiples.dimensions[8] = v8;
   *&self->_multiples.dimensions[10] = v7;

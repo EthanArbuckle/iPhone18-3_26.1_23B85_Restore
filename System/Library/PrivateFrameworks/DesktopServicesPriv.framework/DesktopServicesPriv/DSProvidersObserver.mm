@@ -1,9 +1,9 @@
 @interface DSProvidersObserver
 - (id).cxx_construct;
 - (id)providers;
-- (id)providersByAddingProviderIfNeeded:(id)a3;
-- (void)receivedChanges:(id)a3;
-- (void)setProviders:(id)a3;
+- (id)providersByAddingProviderIfNeeded:(id)needed;
+- (void)receivedChanges:(id)changes;
+- (void)setProviders:(id)providers;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -19,7 +19,7 @@
 
 - (void)startObserving
 {
-  v2 = self;
+  selfCopy = self;
   if (!self->_token)
   {
     operator new();
@@ -54,22 +54,22 @@ void __37__DSProvidersObserver_startObserving__block_invoke(uint64_t a1, void *a
 
 - (id)providers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v2->_providers);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = Copy<NSMutableArray<FILocalAppContainerNode *>>(selfCopy->_providers);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)receivedChanges:(id)a3
+- (void)receivedChanges:(id)changes
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v27 = self;
-  v28 = [(DSProvidersObserver *)self providers];
-  v26 = [v4 allKeys];
-  v5 = [v26 sortedArrayUsingSelector:sel_compare_];
+  changesCopy = changes;
+  selfCopy = self;
+  providers = [(DSProvidersObserver *)self providers];
+  allKeys = [changesCopy allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
   IDContainerIteratorAdaptor<NSArray<NSString *>>::NSForwardIterator<NSArray<NSString *>>::NSForwardIterator(v30, v5);
   IDContainerIteratorAdaptor<NSArray<NSString *>>::IDContainerIteratorAdaptor(v29, -1, v5);
   v6 = algorithm_extras::distance_or_zero<IDContainerIteratorAdaptor<NSArray<NSString *>>>(v30, v29);
@@ -81,7 +81,7 @@ void __37__DSProvidersObserver_startObserving__block_invoke(uint64_t a1, void *a
   while (*buf != v31[0] || v38 != v31[16])
   {
     v8 = *(v33 + 8 * v37);
-    v9 = [v4 objectForKeyedSubscript:v8];
+    v9 = [changesCopy objectForKeyedSubscript:v8];
     if (([v9 supportsEnumeration] & 1) == 0)
     {
 
@@ -93,8 +93,8 @@ LABEL_9:
     v10 = [FIProviderDomain providerDomainForDomain:v9];
     if ([v10 isUsingFPFS])
     {
-      v11 = [v9 storageURLs];
-      v12 = [v11 count] == 0;
+      storageURLs = [v9 storageURLs];
+      v12 = [storageURLs count] == 0;
 
       if (v12)
       {
@@ -129,7 +129,7 @@ LABEL_12:
     ++v38;
   }
 
-  if (![v7 isEqualToArray:v28])
+  if (![v7 isEqualToArray:providers])
   {
     goto LABEL_23;
   }
@@ -140,7 +140,7 @@ LABEL_12:
     while (1)
     {
       v16 = [v7 objectAtIndexedSubscript:v15];
-      v17 = [v28 objectAtIndexedSubscript:v15];
+      v17 = [providers objectAtIndexedSubscript:v15];
       HaveEquivalentProperties = FileProviderDomainsHaveEquivalentProperties(v17, v16);
 
       if (!HaveEquivalentProperties)
@@ -163,12 +163,12 @@ LABEL_23:
       _os_log_impl(&dword_1E5674000, v19, OS_LOG_TYPE_DEFAULT, "Provider list update = %{public}@", buf, 0xCu);
     }
 
-    v20 = [(DSProvidersObserver *)v27 setProviders:v7];
-    populated = v27->_populated;
-    v27->_populated = 1;
+    v20 = [(DSProvidersObserver *)selfCopy setProviders:v7];
+    populated = selfCopy->_populated;
+    selfCopy->_populated = 1;
     if (!populated)
     {
-      v20 = std::unique_ptr<AutoSignpostInterval_FPProvider_Gathering>::reset[abi:ne200100](&v27->_gatheringSignpost.__ptr_, 0);
+      v20 = std::unique_ptr<AutoSignpostInterval_FPProvider_Gathering>::reset[abi:ne200100](&selfCopy->_gatheringSignpost.__ptr_, 0);
     }
 
     if (TNode::IsContextOpen(v20))
@@ -180,7 +180,7 @@ LABEL_23:
 
       else
       {
-        v23 = TNodeFromFINode(v27->fParentNode.fFINode);
+        v23 = TNodeFromFINode(selfCopy->fParentNode.fFINode);
         if (TNode::IsPopulated(v23))
         {
           v22 = 0x1000000;
@@ -192,7 +192,7 @@ LABEL_23:
         }
       }
 
-      TNodeFromFINode(v27->fParentNode.fFINode);
+      TNodeFromFINode(selfCopy->fParentNode.fFINode);
       LODWORD(v33) = 0;
       std::__variant_detail::__dtor<std::__variant_detail::__traits<std::monostate,BOOL,unsigned char,short,int,long long,unsigned int,double,Point,Blob,NSObject * {__strong},TString,TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>,TRef<__CFNumber const*,TRetainReleasePolicy<__CFNumber const*>>,TRef<__CFData const*,TRetainReleasePolicy<__CFData const*>>,TRef<__CFDictionary const*,TRetainReleasePolicy<__CFDictionary const*>>,TRef<__CFURL const*,TRetainReleasePolicy<__CFURL const*>>,TRef<__CFArray const*,TRetainReleasePolicy<__CFArray const*>>,TRef<__CFFileSecurity *,TRetainReleasePolicy<__CFFileSecurity *>>,TRef<TReferenceCounted *,TRetainReleasePolicy<TReferenceCounted *>>,Property,NodeRequestOptions,NodeDSStoreStatus,DSBladeRunnerFlags>,(std::__variant_detail::_Trait)1>::__destroy[abi:ne200100](buf);
       LODWORD(v33) = 21;
@@ -215,58 +215,58 @@ LABEL_34:
   std::unique_ptr<AutoSignpostInterval_FPProvider_Gathering>::reset[abi:ne200100](&self->_gatheringSignpost.__ptr_, 0);
 }
 
-- (void)setProviders:(id)a3
+- (void)setProviders:(id)providers
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(NSArray *)v5->_providers isEqualToArray:v4])
+  providersCopy = providers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(NSArray *)selfCopy->_providers isEqualToArray:providersCopy])
   {
     v6 = LogObj(4);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = providersCopy;
       _os_log_impl(&dword_1E5674000, v6, OS_LOG_TYPE_INFO, "FPProviders update: %{public}@", &v10, 0xCu);
     }
   }
 
-  v7 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v4);
-  providers = v5->_providers;
-  v5->_providers = v7;
+  v7 = Copy<NSMutableArray<FILocalAppContainerNode *>>(providersCopy);
+  providers = selfCopy->_providers;
+  selfCopy->_providers = v7;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)providersByAddingProviderIfNeeded:(id)a3
+- (id)providersByAddingProviderIfNeeded:(id)needed
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4 && !v5->_populated && ![(NSArray *)v5->_providers containsObject:v4])
+  neededCopy = needed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (neededCopy && !selfCopy->_populated && ![(NSArray *)selfCopy->_providers containsObject:neededCopy])
   {
-    providers = v5->_providers;
+    providers = selfCopy->_providers;
     if (providers)
     {
-      v7 = [(NSArray *)providers arrayByAddingObject:v4];
-      v8 = v5->_providers;
-      v5->_providers = v7;
+      v7 = [(NSArray *)providers arrayByAddingObject:neededCopy];
+      v8 = selfCopy->_providers;
+      selfCopy->_providers = v7;
     }
 
     else
     {
-      v14[0] = v4;
+      v14[0] = neededCopy;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-      v10 = v5->_providers;
-      v5->_providers = v9;
+      v10 = selfCopy->_providers;
+      selfCopy->_providers = v9;
     }
   }
 
-  v11 = v5->_providers;
-  objc_sync_exit(v5);
+  v11 = selfCopy->_providers;
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 

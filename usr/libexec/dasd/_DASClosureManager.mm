@@ -1,16 +1,16 @@
 @interface _DASClosureManager
-- (BOOL)extractSignposts:(id)a3 startDate:(id)a4 chunkedByInterval:(double)a5 context:(id)a6 error:(id *)a7;
-- (BOOL)isDeletableApp:(id)a3;
-- (BOOL)isNotContinuouslyRunningApplication:(id)a3;
-- (BOOL)isUserInstalledApp:(id)a3;
+- (BOOL)extractSignposts:(id)signposts startDate:(id)date chunkedByInterval:(double)interval context:(id)context error:(id *)error;
+- (BOOL)isDeletableApp:(id)app;
+- (BOOL)isNotContinuouslyRunningApplication:(id)application;
+- (BOOL)isUserInstalledApp:(id)app;
 - (_DASClosureManager)init;
 - (id)appsLaunchedSinceBoot;
 - (id)mostRecentBootTime;
-- (id)recentlyInstalledAppsLimitedTo:(int)a3;
-- (void)buildClosuresForApps:(id)a3 withTask:(id)a4 onBoot:(BOOL)a5;
-- (void)collectClosureTelemetryWithTask:(id)a3;
-- (void)collectLaunchDataWithBootBatchTimestamp:(double)a3 opportunisticBatchTimestamp:(double)a4 completion:(id)a5;
-- (void)collectPrewarmingDataWithCompletion:(id)a3;
+- (id)recentlyInstalledAppsLimitedTo:(int)to;
+- (void)buildClosuresForApps:(id)apps withTask:(id)task onBoot:(BOOL)boot;
+- (void)collectClosureTelemetryWithTask:(id)task;
+- (void)collectLaunchDataWithBootBatchTimestamp:(double)timestamp opportunisticBatchTimestamp:(double)batchTimestamp completion:(id)completion;
+- (void)collectPrewarmingDataWithCompletion:(id)completion;
 - (void)initializeLogs;
 - (void)registerForActivities;
 @end
@@ -130,28 +130,28 @@
   }
 }
 
-- (BOOL)isUserInstalledApp:(id)a3
+- (BOOL)isUserInstalledApp:(id)app
 {
-  v3 = a3;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:0];
-  v5 = [v4 compatibilityObject];
+  appCopy = app;
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:appCopy allowPlaceholder:0 error:0];
+  compatibilityObject = [v4 compatibilityObject];
 
-  v6 = [v5 appState];
-  if (![v6 isValid])
+  appState = [compatibilityObject appState];
+  if (![appState isValid])
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 appState];
-  if (([v7 isInstalled] & 1) == 0)
+  appState2 = [compatibilityObject appState];
+  if (([appState2 isInstalled] & 1) == 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [v5 applicationType];
-  v9 = [v8 isEqualToString:LSUserApplicationType];
+  applicationType = [compatibilityObject applicationType];
+  v9 = [applicationType isEqualToString:LSUserApplicationType];
 
   if (v9)
   {
@@ -164,7 +164,7 @@ LABEL_7:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v3;
+    v14 = appCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Skipping system application '%@'", &v13, 0xCu);
   }
 
@@ -174,27 +174,27 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)isDeletableApp:(id)a3
+- (BOOL)isDeletableApp:(id)app
 {
-  v3 = a3;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:0];
-  v5 = [v4 applicationState];
-  if (![v5 isValid])
+  appCopy = app;
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:appCopy allowPlaceholder:0 error:0];
+  applicationState = [v4 applicationState];
+  if (![applicationState isValid])
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 applicationState];
-  if (([v6 isInstalled] & 1) == 0)
+  applicationState2 = [v4 applicationState];
+  if (([applicationState2 isInstalled] & 1) == 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [v4 isDeletable];
+  isDeletable = [v4 isDeletable];
 
-  if (v7)
+  if (isDeletable)
   {
     v8 = 1;
     goto LABEL_9;
@@ -206,7 +206,7 @@ LABEL_7:
   if (os_log_type_enabled(qword_10020B5C8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v3;
+    v12 = appCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Skipping non-deletable app '%@'", &v11, 0xCu);
     v8 = 0;
   }
@@ -216,12 +216,12 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isNotContinuouslyRunningApplication:(id)a3
+- (BOOL)isNotContinuouslyRunningApplication:(id)application
 {
-  v3 = a3;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:0];
-  v5 = [v4 UIBackgroundModes];
-  v6 = [v5 containsObject:@"continuous"];
+  applicationCopy = application;
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:applicationCopy allowPlaceholder:0 error:0];
+  uIBackgroundModes = [v4 UIBackgroundModes];
+  v6 = [uIBackgroundModes containsObject:@"continuous"];
 
   if (v6)
   {
@@ -229,7 +229,7 @@ LABEL_9:
     if (os_log_type_enabled(qword_10020B5C8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = applicationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Skipping continuous app '%@'", &v9, 0xCu);
     }
   }
@@ -237,20 +237,20 @@ LABEL_9:
   return v6 ^ 1;
 }
 
-- (void)buildClosuresForApps:(id)a3 withTask:(id)a4 onBoot:(BOOL)a5
+- (void)buildClosuresForApps:(id)apps withTask:(id)task onBoot:(BOOL)boot
 {
-  v5 = a5;
-  v7 = a3;
-  v26 = a4;
+  bootCopy = boot;
+  appsCopy = apps;
+  taskCopy = task;
   v8 = os_signpost_id_generate(qword_10020B5C0);
   v9 = qword_10020B5C0;
   v10 = v9;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
-    v11 = [v7 allObjects];
-    v12 = [v11 componentsJoinedByString:{@", "}];
+    allObjects = [appsCopy allObjects];
+    v12 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 67109378;
-    *&buf[4] = v5;
+    *&buf[4] = bootCopy;
     LOWORD(v39) = 2114;
     *(&v39 + 2) = v12;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, v8, "DuetClosuresPrewarm", "onBoot:%d, bundleIDs:%{public}@", buf, 0x12u);
@@ -265,12 +265,12 @@ LABEL_9:
   v32[2] = sub_10008C244;
   v32[3] = &unk_1001B5798;
   v32[4] = buf;
-  [v26 setExpirationHandler:v32];
+  [taskCopy setExpirationHandler:v32];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = v7;
+  v13 = appsCopy;
   v14 = [v13 countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v14)
   {
@@ -330,44 +330,44 @@ LABEL_6:
   if (*(v39 + 24) == 1)
   {
     v27 = 0;
-    v22 = [v26 setTaskExpiredWithRetryAfter:&v27 error:0.0];
+    v22 = [taskCopy setTaskExpiredWithRetryAfter:&v27 error:0.0];
     v23 = v27;
     if ((v22 & 1) == 0)
     {
       v24 = qword_10020B5C0;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
       {
-        v25 = [v26 identifier];
-        sub_100123E24(v25, v23, v33);
+        identifier = [taskCopy identifier];
+        sub_100123E24(identifier, v23, v33);
       }
 
-      [v26 setTaskCompleted];
+      [taskCopy setTaskCompleted];
     }
   }
 
   else
   {
-    [v26 setTaskCompleted];
+    [taskCopy setTaskCompleted];
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (id)recentlyInstalledAppsLimitedTo:(int)a3
+- (id)recentlyInstalledAppsLimitedTo:(int)to
 {
   v4 = +[NSMutableSet set];
   v5 = [NSDate dateWithTimeIntervalSinceNow:-172800.0];
   v6 = [BMPublisherOptions alloc];
   v7 = +[NSDate now];
-  v8 = [v6 initWithStartDate:v7 endDate:v5 maxEvents:a3 lastN:0 reversed:1];
+  v8 = [v6 initWithStartDate:v7 endDate:v5 maxEvents:to lastN:0 reversed:1];
 
   v9 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v10 = [v9 getConsoleUserUid];
+  getConsoleUserUid = [v9 getConsoleUserUid];
 
   v11 = BiomeLibrary();
   v12 = [v11 App];
-  v13 = [v12 Install];
-  v14 = [v13 publisherWithUser:v10 useCase:@"DASBiomeUtilityUseCase" options:v8];
+  install = [v12 Install];
+  v14 = [install publisherWithUser:getConsoleUserUid useCase:@"DASBiomeUtilityUseCase" options:v8];
 
   v15 = [v14 filterWithIsIncluded:&stru_1001B7270];
   v24[0] = _NSConcreteStackBlock;
@@ -391,22 +391,22 @@ LABEL_6:
 
 - (id)appsLaunchedSinceBoot
 {
-  v2 = [(_DASClosureManager *)self mostRecentBootTime];
+  mostRecentBootTime = [(_DASClosureManager *)self mostRecentBootTime];
   v3 = +[NSDate date];
-  [v2 timeIntervalSinceDate:v3];
+  [mostRecentBootTime timeIntervalSinceDate:v3];
   if (v4 > 0.0)
   {
-    v5 = [v2 dateByAddingTimeInterval:3600.0];
+    v5 = [mostRecentBootTime dateByAddingTimeInterval:3600.0];
 
     v3 = v5;
   }
 
-  v6 = [_DASBMHistogramBuilder builderForAppInFocusStreamStarting:v2 ending:v3];
-  v7 = [v6 histogram];
-  v8 = [v7 countsDictionary];
-  v9 = [v8 allKeys];
+  v6 = [_DASBMHistogramBuilder builderForAppInFocusStreamStarting:mostRecentBootTime ending:v3];
+  histogram = [v6 histogram];
+  countsDictionary = [histogram countsDictionary];
+  allKeys = [countsDictionary allKeys];
 
-  return v9;
+  return allKeys;
 }
 
 - (id)mostRecentBootTime
@@ -429,14 +429,14 @@ LABEL_6:
   return v2;
 }
 
-- (void)collectClosureTelemetryWithTask:(id)a3
+- (void)collectClosureTelemetryWithTask:(id)task
 {
-  v4 = a3;
-  v5 = [(_DASClosureManager *)self mostRecentBootTime];
+  taskCopy = task;
+  mostRecentBootTime = [(_DASClosureManager *)self mostRecentBootTime];
   v6 = [NSDate dateWithTimeIntervalSinceNow:-86400.0];
-  v7 = [v5 laterDate:v6];
+  v7 = [mostRecentBootTime laterDate:v6];
 
-  [(_DASCollectTelemetryActivityContext *)self->_collectTelemetryActivityContext updateWithtask:v4 prewarmingStartDate:v5 launchStartDate:v7];
+  [(_DASCollectTelemetryActivityContext *)self->_collectTelemetryActivityContext updateWithtask:taskCopy prewarmingStartDate:mostRecentBootTime launchStartDate:v7];
   v8 = qword_10020B5C8;
   if (os_log_type_enabled(qword_10020B5C8, OS_LOG_TYPE_DEFAULT))
   {
@@ -451,7 +451,7 @@ LABEL_6:
   v11[2] = sub_10008D218;
   v11[3] = &unk_1001B5668;
   v11[4] = self;
-  [v4 setExpirationHandler:v11];
+  [taskCopy setExpirationHandler:v11];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10008D228;
@@ -460,9 +460,9 @@ LABEL_6:
   [(_DASClosureManager *)self collectPrewarmingDataWithCompletion:v10];
 }
 
-- (void)collectLaunchDataWithBootBatchTimestamp:(double)a3 opportunisticBatchTimestamp:(double)a4 completion:(id)a5
+- (void)collectLaunchDataWithBootBatchTimestamp:(double)timestamp opportunisticBatchTimestamp:(double)batchTimestamp completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = objc_opt_new();
   v38[0] = 0;
   v38[1] = v38;
@@ -484,8 +484,8 @@ LABEL_6:
   v27[1] = 3221225472;
   v27[2] = sub_10008DC04;
   v27[3] = &unk_1001B7388;
-  v32 = a3;
-  v33 = a4;
+  timestampCopy = timestamp;
+  batchTimestampCopy = batchTimestamp;
   v29 = v38;
   v30 = v36;
   v31 = v34;
@@ -496,7 +496,7 @@ LABEL_6:
   v21[1] = 3221225472;
   v21[2] = sub_10008DEA8;
   v21[3] = &unk_1001B73B0;
-  v13 = v8;
+  v13 = completionCopy;
   v23 = v13;
   v14 = v12;
   v22 = v14;
@@ -504,10 +504,10 @@ LABEL_6:
   v25 = v36;
   v26 = v34;
   [v10 setProcessingCompletionBlock:v21];
-  v15 = [(_DASCollectTelemetryActivityContext *)self->_collectTelemetryActivityContext launchDataCollectionStartDate];
+  launchDataCollectionStartDate = [(_DASCollectTelemetryActivityContext *)self->_collectTelemetryActivityContext launchDataCollectionStartDate];
   collectTelemetryActivityContext = self->_collectTelemetryActivityContext;
   v20 = 0;
-  v17 = [(_DASClosureManager *)self extractSignposts:v10 startDate:v15 chunkedByInterval:collectTelemetryActivityContext context:&v20 error:3600.0];
+  v17 = [(_DASClosureManager *)self extractSignposts:v10 startDate:launchDataCollectionStartDate chunkedByInterval:collectTelemetryActivityContext context:&v20 error:3600.0];
   v18 = v20;
 
   if (v18)
@@ -530,9 +530,9 @@ LABEL_6:
   _Block_object_dispose(v38, 8);
 }
 
-- (void)collectPrewarmingDataWithCompletion:(id)a3
+- (void)collectPrewarmingDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -561,15 +561,15 @@ LABEL_6:
   v14[1] = 3221225472;
   v14[2] = sub_10008E404;
   v14[3] = &unk_1001B7400;
-  v7 = v4;
+  v7 = completionCopy;
   v15 = v7;
   v16 = v21;
   v17 = v19;
   [v5 setProcessingCompletionBlock:v14];
-  v8 = [(_DASCollectTelemetryActivityContext *)self->_collectTelemetryActivityContext prewarmingDataCollectionStartDate];
+  prewarmingDataCollectionStartDate = [(_DASCollectTelemetryActivityContext *)self->_collectTelemetryActivityContext prewarmingDataCollectionStartDate];
   collectTelemetryActivityContext = self->_collectTelemetryActivityContext;
   v13 = 0;
-  v10 = [(_DASClosureManager *)self extractSignposts:v5 startDate:v8 chunkedByInterval:collectTelemetryActivityContext context:&v13 error:3600.0];
+  v10 = [(_DASClosureManager *)self extractSignposts:v5 startDate:prewarmingDataCollectionStartDate chunkedByInterval:collectTelemetryActivityContext context:&v13 error:3600.0];
   v11 = v13;
 
   if (v11)
@@ -591,19 +591,19 @@ LABEL_6:
   _Block_object_dispose(v21, 8);
 }
 
-- (BOOL)extractSignposts:(id)a3 startDate:(id)a4 chunkedByInterval:(double)a5 context:(id)a6 error:(id *)a7
+- (BOOL)extractSignposts:(id)signposts startDate:(id)date chunkedByInterval:(double)interval context:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 dateByAddingTimeInterval:3600.0];
+  signpostsCopy = signposts;
+  dateCopy = date;
+  contextCopy = context;
+  v13 = [dateCopy dateByAddingTimeInterval:3600.0];
   v14 = +[NSDate now];
-  [v11 timeIntervalSinceDate:v14];
+  [dateCopy timeIntervalSinceDate:v14];
   if (v15 >= -3600.0)
   {
     v16 = 0;
     v17 = 1;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -611,24 +611,24 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v26 = a7;
+  errorCopy = error;
   v18 = 0;
   while (1)
   {
-    v19 = [v12 wasDeferred];
-    if (v19)
+    wasDeferred = [contextCopy wasDeferred];
+    if (wasDeferred)
     {
-      v22 = v11;
+      v22 = dateCopy;
       v16 = v18;
 LABEL_10:
-      v17 = v19 ^ 1;
-      v11 = v22;
+      v17 = wasDeferred ^ 1;
+      dateCopy = v22;
       goto LABEL_12;
     }
 
     v20 = objc_autoreleasePoolPush();
     v27 = v18;
-    v21 = [v10 processLogArchiveWithPath:0 startDate:v11 endDate:v13 errorOut:&v27];
+    v21 = [signpostsCopy processLogArchiveWithPath:0 startDate:dateCopy endDate:v13 errorOut:&v27];
     v16 = v27;
 
     if ((v21 & 1) == 0)
@@ -642,7 +642,7 @@ LABEL_10:
 
     objc_autoreleasePoolPop(v20);
     [v22 timeIntervalSinceDate:v14];
-    v11 = v22;
+    dateCopy = v22;
     v18 = v16;
     if (v23 >= -3600.0)
     {
@@ -653,12 +653,12 @@ LABEL_10:
   objc_autoreleasePoolPop(v20);
   v17 = 0;
 LABEL_12:
-  a7 = v26;
-  if (v26)
+  error = errorCopy;
+  if (errorCopy)
   {
 LABEL_13:
     v24 = v16;
-    *a7 = v16;
+    *error = v16;
   }
 
 LABEL_14:

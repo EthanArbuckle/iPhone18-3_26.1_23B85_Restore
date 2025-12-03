@@ -1,5 +1,5 @@
 @interface NPKCompanionCatalogManager
-- (BOOL)needsUpdateForNewCatalog:(id)a3;
+- (BOOL)needsUpdateForNewCatalog:(id)catalog;
 - (NPKCompanionCatalogManager)init;
 - (PKCatalog)currentCatalog;
 - (id)archiveFileName;
@@ -17,8 +17,8 @@
     v3 = dispatch_queue_create("com.apple.nanopassbook.NPKCompanionAgent.NPKCompanionAgentCatalogManager", &_dispatch_queue_attr_concurrent);
     [(NPKCompanionCatalogManager *)v2 setMutex:v3];
 
-    v4 = [(NPKCompanionCatalogManager *)v2 archiveFileName];
-    v5 = [NSData dataWithContentsOfFile:v4];
+    archiveFileName = [(NPKCompanionCatalogManager *)v2 archiveFileName];
+    v5 = [NSData dataWithContentsOfFile:archiveFileName];
 
     objc_opt_class();
     v6 = NPKSecureUnarchiveObject();
@@ -44,14 +44,14 @@
   v10 = sub_100003618;
   v11 = sub_100003628;
   v12 = 0;
-  v3 = [(NPKCompanionCatalogManager *)self mutex];
+  mutex = [(NPKCompanionCatalogManager *)self mutex];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100003630;
   v6[3] = &unk_100070DB8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(mutex, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -59,27 +59,27 @@
   return v4;
 }
 
-- (BOOL)needsUpdateForNewCatalog:(id)a3
+- (BOOL)needsUpdateForNewCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(NPKCompanionCatalogManager *)self mutex];
+  mutex = [(NPKCompanionCatalogManager *)self mutex];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003744;
   block[3] = &unk_100070DE0;
   block[4] = self;
-  v9 = v4;
+  v9 = catalogCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_barrier_sync(v5, block);
+  v6 = catalogCopy;
+  dispatch_barrier_sync(mutex, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(catalogCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return catalogCopy;
 }
 
 @end

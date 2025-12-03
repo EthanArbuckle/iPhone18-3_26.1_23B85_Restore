@@ -1,13 +1,13 @@
 @interface SRCompactViewControllerContentTester
-- (BOOL)hasContentForState:(id)a3;
+- (BOOL)hasContentForState:(id)state;
 @end
 
 @implementation SRCompactViewControllerContentTester
 
-- (BOOL)hasContentForState:(id)a3
+- (BOOL)hasContentForState:(id)state
 {
-  v3 = a3;
-  if ([v3 keyboardHasContent])
+  stateCopy = state;
+  if ([stateCopy keyboardHasContent])
   {
     v4 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -23,7 +23,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if ([v3 navigationStackIsPopping] && ((objc_msgSend(v3, "deviceIsPad") & 1) != 0 || objc_msgSend(v3, "navigationBarHasContent")))
+  if ([stateCopy navigationStackIsPopping] && ((objc_msgSend(stateCopy, "deviceIsPad") & 1) != 0 || objc_msgSend(stateCopy, "navigationBarHasContent")))
   {
     v4 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -35,13 +35,13 @@ LABEL_29:
     }
 
 LABEL_30:
-    v8 = 1;
+    multiLevelViewHasContent2 = 1;
     goto LABEL_31;
   }
 
-  if ([v3 navigationStackSize] < 2)
+  if ([stateCopy navigationStackSize] < 2)
   {
-    if ([v3 editableUtteranceViewHasContent])
+    if ([stateCopy editableUtteranceViewHasContent])
     {
       v4 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -55,7 +55,7 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    if ([v3 compactViewHasContent])
+    if ([stateCopy compactViewHasContent])
     {
       v4 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -69,7 +69,7 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    if ([v3 siriViewControllerIsEditing])
+    if ([stateCopy siriViewControllerIsEditing])
     {
       v4 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -83,10 +83,10 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    v9 = [v3 contextMenuIsPresented];
+    contextMenuIsPresented = [stateCopy contextMenuIsPresented];
     v4 = AFSiriLogContextConnection;
     v10 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (contextMenuIsPresented)
     {
       if (v10)
       {
@@ -106,12 +106,12 @@ LABEL_30:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s #compact:Returning NO because point is outside Siri content", &v12, 0xCu);
     }
 
-    v8 = 0;
+    multiLevelViewHasContent2 = 0;
   }
 
   else
   {
-    if (([v3 deviceIsPad] & 1) == 0 && objc_msgSend(v3, "navigationBarHasContent"))
+    if (([stateCopy deviceIsPad] & 1) == 0 && objc_msgSend(stateCopy, "navigationBarHasContent"))
     {
       v4 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -132,16 +132,16 @@ LABEL_30:
       v12 = 136315394;
       v13 = "[SRCompactViewControllerContentTester hasContentForState:]";
       v14 = 1024;
-      v15 = [v3 multiLevelViewHasContent];
+      multiLevelViewHasContent = [stateCopy multiLevelViewHasContent];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s #compact:Returning %d because pointis in multi level card", &v12, 0x12u);
     }
 
-    v8 = [v3 multiLevelViewHasContent];
+    multiLevelViewHasContent2 = [stateCopy multiLevelViewHasContent];
   }
 
 LABEL_31:
 
-  return v8;
+  return multiLevelViewHasContent2;
 }
 
 @end

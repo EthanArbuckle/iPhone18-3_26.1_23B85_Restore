@@ -3,35 +3,35 @@
 + (BOOL)useSystemService;
 + (BOOL)wantsUnassociatedWindowSceneForKeyboardWindow;
 + (id)createArbiterConnection;
-+ (id)keyboardWindowSceneForScreen:(id)a3 create:(BOOL)a4;
++ (id)keyboardWindowSceneForScreen:(id)screen create:(BOOL)create;
 + (id)serviceName;
 + (id)sharedRemoteKeyboards;
 - (BOOL)_isWritingToolsHandlingKeyboardTracking;
 - (BOOL)_sceneFocusPermittedForApplication;
-- (BOOL)_sceneFocusUpdatePermittedForWindow:(id)a3;
+- (BOOL)_sceneFocusUpdatePermittedForWindow:(id)window;
 - (BOOL)allowedToEnableKeyboardWindow;
 - (BOOL)allowedToShowKeyboard;
-- (BOOL)assertionActivationStateForType:(unint64_t)a3;
+- (BOOL)assertionActivationStateForType:(unint64_t)type;
 - (BOOL)assistantBarVisible;
-- (BOOL)currentStateHasEqualRect:(CGRect)a3 andIAVPosition:(CGRect)a4;
-- (BOOL)didHandleKeyboardChange:(id)a3 shouldConsiderSnapshottingKeyboard:(BOOL)a4 isLocalEvent:(BOOL)a5;
-- (BOOL)hasLocalMinimumKeyboardHeightForScene:(id)a3;
-- (BOOL)hasWindowHostingCallerID:(id)a3;
+- (BOOL)currentStateHasEqualRect:(CGRect)rect andIAVPosition:(CGRect)position;
+- (BOOL)didHandleKeyboardChange:(id)change shouldConsiderSnapshottingKeyboard:(BOOL)keyboard isLocalEvent:(BOOL)event;
+- (BOOL)hasLocalMinimumKeyboardHeightForScene:(id)scene;
+- (BOOL)hasWindowHostingCallerID:(id)d;
 - (BOOL)isFloating;
 - (BOOL)isOnScreenRotating;
-- (BOOL)isShowingModalAutofillPanel:(id)a3;
+- (BOOL)isShowingModalAutofillPanel:(id)panel;
 - (BOOL)isWritingToolsHostingViewService;
 - (BOOL)keyboardIsForSystemService;
 - (BOOL)keyboardVisible;
-- (BOOL)needsToShowKeyboardForViewServiceHostWindow:(id)a3;
-- (BOOL)needsToShowKeyboardForWindow:(id)a3;
+- (BOOL)needsToShowKeyboardForViewServiceHostWindow:(id)window;
+- (BOOL)needsToShowKeyboardForWindow:(id)window;
 - (BOOL)oldPathForSnapshot;
-- (BOOL)refreshWithLocalMinimumKeyboardHeight:(double)a3 forScene:(id)a4;
-- (BOOL)remoteKeyboardUndocked:(BOOL)a3;
+- (BOOL)refreshWithLocalMinimumKeyboardHeight:(double)height forScene:(id)scene;
+- (BOOL)remoteKeyboardUndocked:(BOOL)undocked;
 - (BOOL)sceneIsFullScreen;
-- (BOOL)shouldAllowInputViewsRestoredForId:(id)a3;
-- (BOOL)wantsToShowKeyboardForViewServiceHostWindow:(id)a3;
-- (BOOL)wantsToShowKeyboardForWindow:(id)a3;
+- (BOOL)shouldAllowInputViewsRestoredForId:(id)id;
+- (BOOL)wantsToShowKeyboardForViewServiceHostWindow:(id)window;
+- (BOOL)wantsToShowKeyboardForWindow:(id)window;
 - (CGPoint)persistentOffset;
 - (CGRect)keyboardFrameIncludingRemoteIAV;
 - (CGRect)keyboardPosition;
@@ -42,102 +42,102 @@
 - (_UIKeyboardArbitration)proxy;
 - (_UIRemoteKeyboards)init;
 - (double)heightForRemoteIAVPlaceholderIfNecessary;
-- (double)intersectionHeightForWindowScene:(id)a3 isLocalMinimumHeightOut:(BOOL *)a4 ignoreHorizontalOffset:(BOOL)a5;
+- (double)intersectionHeightForWindowScene:(id)scene isLocalMinimumHeightOut:(BOOL *)out ignoreHorizontalOffset:(BOOL)offset;
 - (id)_activeScreen;
 - (id)inputWindowRootViewController;
-- (id)prepareForHostedWindowWithScene:(id)a3;
-- (id)viewHostForWindow:(id)a3;
+- (id)prepareForHostedWindowWithScene:(id)scene;
+- (id)viewHostForWindow:(id)window;
 - (unint64_t)localSceneCount;
-- (void)_lostWindow:(id)a3;
-- (void)_performOnDistributedControllersExceptSelf:(id)a3;
-- (void)_performRequiredSceneUpdateIfPermittedForWindow:(uint64_t)a3 withContext:;
-- (void)_postInputSourceDidChangeNotificationForResponder:(id)a3;
-- (void)_updateEventSource:(int64_t)keyboardSource options:(unint64_t)a4 responder:(id)a5;
-- (void)addHostedWindowView:(id)a3 fromPID:(int)a4 forScene:(id)a5 callerID:(id)a6;
-- (void)addIgnoredSceneIdentityTokenString:(id)a3;
-- (void)applicationDidBecomeActive:(id)a3 forceSignalToProxy:(BOOL)a4;
-- (void)applicationDidRemoveDeactivationReason:(id)a3;
-- (void)applicationDidSuspend:(id)a3;
-- (void)applicationKeyWindowDidChange:(id)a3;
-- (void)applicationKeyWindowWillChange:(id)a3;
-- (void)applicationResumedEventsOnly:(id)a3;
-- (void)applicationWillAddDeactivationReason:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillResume:(id)a3;
+- (void)_lostWindow:(id)window;
+- (void)_performOnDistributedControllersExceptSelf:(id)self;
+- (void)_performRequiredSceneUpdateIfPermittedForWindow:(uint64_t)window withContext:;
+- (void)_postInputSourceDidChangeNotificationForResponder:(id)responder;
+- (void)_updateEventSource:(int64_t)keyboardSource options:(unint64_t)options responder:(id)responder;
+- (void)addHostedWindowView:(id)view fromPID:(int)d forScene:(id)scene callerID:(id)iD;
+- (void)addIgnoredSceneIdentityTokenString:(id)string;
+- (void)applicationDidBecomeActive:(id)active forceSignalToProxy:(BOOL)proxy;
+- (void)applicationDidRemoveDeactivationReason:(id)reason;
+- (void)applicationDidSuspend:(id)suspend;
+- (void)applicationKeyWindowDidChange:(id)change;
+- (void)applicationKeyWindowWillChange:(id)change;
+- (void)applicationResumedEventsOnly:(id)only;
+- (void)applicationWillAddDeactivationReason:(id)reason;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillResume:(id)resume;
 - (void)assertNeedsAutofillUI;
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4;
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type;
 - (void)checkConnection;
 - (void)checkState;
 - (void)cleanSuppression;
-- (void)clearKeyboardSceneIdentifierEnteringForeground:(id)a3;
-- (void)completeMoveKeyboardForWindow:(id)a3;
-- (void)completeTransition:(id)a3 withInfo:(id)a4;
-- (void)controllerDidLayoutSubviews:(id)a3;
+- (void)clearKeyboardSceneIdentifierEnteringForeground:(id)foreground;
+- (void)completeMoveKeyboardForWindow:(id)window;
+- (void)completeTransition:(id)transition withInfo:(id)info;
+- (void)controllerDidLayoutSubviews:(id)subviews;
 - (void)dealloc;
 - (void)finishWithHostedWindow;
 - (void)forceKeyboardAway;
-- (void)ignoreLayoutNotifications:(id)a3;
+- (void)ignoreLayoutNotifications:(id)notifications;
 - (void)keyboardChangedCompleted;
-- (void)peekApplicationEvent:(id)a3;
-- (void)performOnControllers:(id)a3;
-- (void)performOnDistributedControllers:(id)a3;
-- (void)performRequiredSceneUpdateForKeyWindowCandidateOfSceneDelegate:(void *)a1;
-- (void)performRequiredSceneUpdateIfPermittedForViewServiceHostWindow:(uint64_t)a3 servicePID:;
-- (void)pointIsWithinKeyboardContent:(CGPoint)a3 onCompletion:(id)a4;
-- (void)prepareToMoveKeyboard:(CGRect)a3 withIAV:(CGRect)a4 isIAVRelevant:(BOOL)a5 showing:(BOOL)a6 notifyRemote:(BOOL)a7 forScene:(id)a8;
-- (void)preserveKeyboardWithId:(id)a3;
+- (void)peekApplicationEvent:(id)event;
+- (void)performOnControllers:(id)controllers;
+- (void)performOnDistributedControllers:(id)controllers;
+- (void)performRequiredSceneUpdateForKeyWindowCandidateOfSceneDelegate:(void *)delegate;
+- (void)performRequiredSceneUpdateIfPermittedForViewServiceHostWindow:(uint64_t)window servicePID:;
+- (void)pointIsWithinKeyboardContent:(CGPoint)content onCompletion:(id)completion;
+- (void)prepareToMoveKeyboard:(CGRect)keyboard withIAV:(CGRect)v isIAVRelevant:(BOOL)relevant showing:(BOOL)showing notifyRemote:(BOOL)remote forScene:(id)scene;
+- (void)preserveKeyboardWithId:(id)id;
 - (void)prewarmEmojiKeyboard;
-- (void)queue_activeProcessResignWithCompletion:(id)a3;
-- (void)queue_endInputSessionWithCompletion:(id)a3;
-- (void)queue_failedConnection:(id)a3;
-- (void)queue_getDebugInfoWithCompletion:(id)a3;
-- (void)queue_keyboardArbiterClientHandleChanged:(BOOL)a3 withCompletion:(id)a4;
-- (void)queue_keyboardChanged:(id)a3 onComplete:(id)a4;
-- (void)queue_keyboardChangedWithCompletion:(id)a3;
-- (void)queue_keyboardIAVChanged:(double)a3 onComplete:(id)a4;
-- (void)queue_keyboardSuppressed:(BOOL)a3 withCompletion:(id)a4;
-- (void)queue_keyboardTransition:(id)a3 event:(unint64_t)a4 withInfo:(id)a5 onComplete:(id)a6;
-- (void)queue_keyboardUIDidChange:(id)a3 onComplete:(id)a4;
-- (void)queue_sceneBecameFocused:(id)a3 withCompletion:(id)a4;
-- (void)queue_setKeyboardDisabled:(BOOL)a3 withCompletion:(id)a4;
-- (void)queue_setLastEventSource:(int64_t)a3 withCompletion:(id)a4;
-- (void)registerController:(id)a3;
-- (void)removeIgnoredSceneIdentityTokenString:(id)a3;
-- (void)requestEventDeferralTargetSelectionForWindow:(id)a3;
-- (void)resetSnapshotWithWindowCheck:(BOOL)a3;
+- (void)queue_activeProcessResignWithCompletion:(id)completion;
+- (void)queue_endInputSessionWithCompletion:(id)completion;
+- (void)queue_failedConnection:(id)connection;
+- (void)queue_getDebugInfoWithCompletion:(id)completion;
+- (void)queue_keyboardArbiterClientHandleChanged:(BOOL)changed withCompletion:(id)completion;
+- (void)queue_keyboardChanged:(id)changed onComplete:(id)complete;
+- (void)queue_keyboardChangedWithCompletion:(id)completion;
+- (void)queue_keyboardIAVChanged:(double)changed onComplete:(id)complete;
+- (void)queue_keyboardSuppressed:(BOOL)suppressed withCompletion:(id)completion;
+- (void)queue_keyboardTransition:(id)transition event:(unint64_t)event withInfo:(id)info onComplete:(id)complete;
+- (void)queue_keyboardUIDidChange:(id)change onComplete:(id)complete;
+- (void)queue_sceneBecameFocused:(id)focused withCompletion:(id)completion;
+- (void)queue_setKeyboardDisabled:(BOOL)disabled withCompletion:(id)completion;
+- (void)queue_setLastEventSource:(int64_t)source withCompletion:(id)completion;
+- (void)registerController:(id)controller;
+- (void)removeIgnoredSceneIdentityTokenString:(id)string;
+- (void)requestEventDeferralTargetSelectionForWindow:(id)window;
+- (void)resetSnapshotWithWindowCheck:(BOOL)check;
 - (void)restoreKeyboardIfNeeded;
-- (void)restoreKeyboardWithId:(id)a3;
+- (void)restoreKeyboardWithId:(id)id;
 - (void)restorePreservedInputViewsIfNecessary;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidDisconnect:(id)disconnect;
 - (void)sceneUpdated;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)screenDidDisconnect:(id)a3;
-- (void)setDisableBecomeFirstResponder:(BOOL)a3 forSuppressionAssertion:(BOOL)a4 updatePlacement:(BOOL)a5 wantsAssistant:(BOOL)a6;
-- (void)setEnableMultiscreenHack:(BOOL)a3;
-- (void)setKeyboardSceneIdentifierEnteringForegroundForScene:(id)a3;
-- (void)setPlacement:(id)a3 quietly:(BOOL)a4 animated:(BOOL)a5 generateSplitNotification:(BOOL)a6;
-- (void)setShouldFence:(BOOL)a3;
-- (void)setSnapshotting:(BOOL)a3;
-- (void)setStickerPrewarmingViewControllerEnabled:(BOOL)a3;
-- (void)setSuppressingKeyboard:(BOOL)a3 forScene:(id)a4;
-- (void)setWantsAssistantWhileSuppressingKeyboard:(BOOL)a3;
-- (void)setWindowEnabled:(BOOL)a3;
-- (void)setWindowEnabled:(BOOL)a3 force:(BOOL)a4;
-- (void)setWindowLevel:(double)a3 sceneLevel:(double)a4 forResponder:(id)a5;
-- (void)signalToProxyKeyboardChanged:(id)a3 onCompletion:(id)a4;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)screenDidDisconnect:(id)disconnect;
+- (void)setDisableBecomeFirstResponder:(BOOL)responder forSuppressionAssertion:(BOOL)assertion updatePlacement:(BOOL)placement wantsAssistant:(BOOL)assistant;
+- (void)setEnableMultiscreenHack:(BOOL)hack;
+- (void)setKeyboardSceneIdentifierEnteringForegroundForScene:(id)scene;
+- (void)setPlacement:(id)placement quietly:(BOOL)quietly animated:(BOOL)animated generateSplitNotification:(BOOL)notification;
+- (void)setShouldFence:(BOOL)fence;
+- (void)setSnapshotting:(BOOL)snapshotting;
+- (void)setStickerPrewarmingViewControllerEnabled:(BOOL)enabled;
+- (void)setSuppressingKeyboard:(BOOL)keyboard forScene:(id)scene;
+- (void)setWantsAssistantWhileSuppressingKeyboard:(BOOL)keyboard;
+- (void)setWindowEnabled:(BOOL)enabled;
+- (void)setWindowEnabled:(BOOL)enabled force:(BOOL)force;
+- (void)setWindowLevel:(double)level sceneLevel:(double)sceneLevel forResponder:(id)responder;
+- (void)signalToProxyKeyboardChanged:(id)changed onCompletion:(id)completion;
 - (void)startConnection;
-- (void)startTransition:(id)a3 withInfo:(id)a4;
+- (void)startTransition:(id)transition withInfo:(id)info;
 - (void)stopConnection;
 - (void)toggleSuppressionForWritingToolIfNeeded;
-- (void)unregisterController:(id)a3;
+- (void)unregisterController:(id)controller;
 - (void)updateAllVisibleFrames;
-- (void)updateCurrentState:(id)a3;
-- (void)updateLastScreen:(id)a3;
-- (void)updateLocalKeyboardChanged:(id)a3;
-- (void)updateTransition:(id)a3 withInfo:(id)a4;
-- (void)userSelectedApp:(id)a3 onCompletion:(id)a4;
-- (void)userSelectedProcessIdentifier:(int)a3 withSceneIdentity:(id)a4 onCompletion:(id)a5;
+- (void)updateCurrentState:(id)state;
+- (void)updateLastScreen:(id)screen;
+- (void)updateLocalKeyboardChanged:(id)changed;
+- (void)updateTransition:(id)transition withInfo:(id)info;
+- (void)userSelectedApp:(id)app onCompletion:(id)completion;
+- (void)userSelectedProcessIdentifier:(int)identifier withSceneIdentity:(id)identity onCompletion:(id)completion;
 - (void)userTapsOnKeyboard;
 @end
 
@@ -180,13 +180,13 @@ LABEL_11:
 
 + (id)sharedRemoteKeyboards
 {
-  if ([a1 enabled])
+  if ([self enabled])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43___UIRemoteKeyboards_sharedRemoteKeyboards__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (qword_1ED499750 != -1)
     {
       dispatch_once(&qword_1ED499750, block);
@@ -205,18 +205,18 @@ LABEL_11:
 
 + (BOOL)wantsUnassociatedWindowSceneForKeyboardWindow
 {
-  v2 = [a1 sharedRemoteKeyboards];
-  if ([objc_msgSend(v2 "keyboardWindowClass")])
+  sharedRemoteKeyboards = [self sharedRemoteKeyboards];
+  if ([objc_msgSend(sharedRemoteKeyboards "keyboardWindowClass")])
   {
-    v3 = 1;
+    isFrontBoard = 1;
   }
 
   else
   {
-    v3 = [UIApp isFrontBoard];
+    isFrontBoard = [UIApp isFrontBoard];
   }
 
-  return v3;
+  return isFrontBoard;
 }
 
 - (id)_activeScreen
@@ -224,34 +224,34 @@ LABEL_11:
   lastScreen = self->_lastScreen;
   if (lastScreen)
   {
-    v3 = lastScreen;
+    mainScreen = lastScreen;
 LABEL_3:
-    v4 = v3;
+    screen2 = mainScreen;
     goto LABEL_6;
   }
 
   v5 = +[UIWindowScene _keyWindowScene];
-  v6 = [v5 screen];
+  screen = [v5 screen];
 
-  if (!v6)
+  if (!screen)
   {
-    v3 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
     goto LABEL_3;
   }
 
   v7 = +[UIWindowScene _keyWindowScene];
-  v4 = [v7 screen];
+  screen2 = [v7 screen];
 
 LABEL_6:
 
-  return v4;
+  return screen2;
 }
 
 - (UIRemoteKeyboardWindow)keyboardWindow
 {
-  v3 = [(_UIRemoteKeyboards *)self keyboardWindowClass];
-  v4 = [(_UIRemoteKeyboards *)self _activeScreen];
-  v5 = [(objc_class *)v3 remoteKeyboardWindowForScreen:v4 create:0];
+  keyboardWindowClass = [(_UIRemoteKeyboards *)self keyboardWindowClass];
+  _activeScreen = [(_UIRemoteKeyboards *)self _activeScreen];
+  v5 = [(objc_class *)keyboardWindowClass remoteKeyboardWindowForScreen:_activeScreen create:0];
 
   return v5;
 }
@@ -263,11 +263,11 @@ LABEL_6:
     return self->_remoteIAVHeight;
   }
 
-  v3 = [(_UIRemoteKeyboards *)self currentState];
-  [v3 keyboardPositionWithIAV];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  [currentState keyboardPositionWithIAV];
   v5 = v4;
-  v6 = [(_UIRemoteKeyboards *)self currentState];
-  [v6 keyboardPosition];
+  currentState2 = [(_UIRemoteKeyboards *)self currentState];
+  [currentState2 keyboardPosition];
   v8 = v5 - v7;
 
   return v8;
@@ -297,10 +297,10 @@ LABEL_6:
 
 - (BOOL)keyboardVisible
 {
-  v2 = [(_UIRemoteKeyboards *)self currentState];
-  v3 = [v2 keyboardOnScreen];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  keyboardOnScreen = [currentState keyboardOnScreen];
 
-  return v3;
+  return keyboardOnScreen;
 }
 
 - (BOOL)_isWritingToolsHandlingKeyboardTracking
@@ -320,8 +320,8 @@ LABEL_6:
 
 - (_UIKeyboardArbitration)proxy
 {
-  v2 = [(_UIRemoteKeyboards *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_416];
+  connection = [(_UIRemoteKeyboards *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_416];
 
   return v3;
 }
@@ -335,13 +335,13 @@ LABEL_6:
   if (v2)
   {
     v2->_shouldFence = 1;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     windowControllers = v3->_windowControllers;
-    v3->_windowControllers = v4;
+    v3->_windowControllers = weakObjectsHashTable;
 
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     minimumKeyboardHeights = v3->_minimumKeyboardHeights;
-    v3->_minimumKeyboardHeights = v6;
+    v3->_minimumKeyboardHeights = weakToStrongObjectsMapTable;
 
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     activePIDs = v3->_activePIDs;
@@ -375,26 +375,26 @@ LABEL_6:
 
     if (!+[UIKeyboard inputUIOOP])
     {
-      v22 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v22 addObserver:v3 selector:sel_sceneDidDisconnect_ name:@"UISceneDidDisconnectNotification" object:0];
-      [v22 addObserver:v3 selector:sel_applicationWillResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
-      [v22 addObserver:v3 selector:sel_applicationDidSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-      [v22 addObserver:v3 selector:sel_applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
-      [v22 addObserver:v3 selector:sel_applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
-      [v22 addObserver:v3 selector:sel_applicationDidBecomeActive_ name:0x1EFBB47D0 object:0];
-      [v22 addObserver:v3 selector:sel_applicationWillAddDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
-      [v22 addObserver:v3 selector:sel_applicationDidRemoveDeactivationReason_ name:@"_UIApplicationDidRemoveDeactivationReasonNotification" object:0];
-      [v22 addObserver:v3 selector:sel_applicationResumedEventsOnly_ name:@"UIApplicationResumedEventsOnlyNotification" object:UIApp];
-      [v22 addObserver:v3 selector:sel_applicationKeyWindowWillChange_ name:@"_UIWindowWillBecomeApplicationKeyNotification" object:0];
-      [v22 addObserver:v3 selector:sel_applicationKeyWindowDidChange_ name:@"_UIWindowDidBecomeApplicationKeyNotification" object:0];
-      [v22 addObserver:v3 selector:sel_sceneWillEnterForeground_ name:@"UISceneWillEnterForegroundNotification" object:0];
-      [v22 addObserver:v3 selector:sel_sceneDidEnterBackground_ name:@"UISceneDidEnterBackgroundNotification" object:0];
-      [v22 addObserver:v3 selector:sel_sceneDidActivate_ name:@"UISceneDidActivateNotification" object:0];
-      [v22 addObserver:v3 selector:sel_screenDidDisconnect_ name:@"_UIScreenDidDisconnectNotification" object:0];
-      [v22 addObserver:v3 selector:sel_updateAllVisibleFrames name:@"UIKeyboardWillToggleCandidateBar" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v3 selector:sel_sceneDidDisconnect_ name:@"UISceneDidDisconnectNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationWillResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationDidSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationDidBecomeActive_ name:0x1EFBB47D0 object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationWillAddDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationDidRemoveDeactivationReason_ name:@"_UIApplicationDidRemoveDeactivationReasonNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationResumedEventsOnly_ name:@"UIApplicationResumedEventsOnlyNotification" object:UIApp];
+      [defaultCenter addObserver:v3 selector:sel_applicationKeyWindowWillChange_ name:@"_UIWindowWillBecomeApplicationKeyNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_applicationKeyWindowDidChange_ name:@"_UIWindowDidBecomeApplicationKeyNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_sceneWillEnterForeground_ name:@"UISceneWillEnterForegroundNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_sceneDidEnterBackground_ name:@"UISceneDidEnterBackgroundNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_sceneDidActivate_ name:@"UISceneDidActivateNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_screenDidDisconnect_ name:@"_UIScreenDidDisconnectNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_updateAllVisibleFrames name:@"UIKeyboardWillToggleCandidateBar" object:0];
       if ([UIApp _isSpringBoard])
       {
-        [v22 addObserver:v3 selector:sel_willLock_ name:@"_UISystemApplicationWillLockNotification" object:0];
+        [defaultCenter addObserver:v3 selector:sel_willLock_ name:@"_UISystemApplicationWillLockNotification" object:0];
       }
     }
   }
@@ -404,8 +404,8 @@ LABEL_6:
 
 - (void)checkConnection
 {
-  v3 = [(_UIRemoteKeyboards *)self connection];
-  if (v3)
+  connection = [(_UIRemoteKeyboards *)self connection];
+  if (connection)
   {
   }
 
@@ -420,26 +420,26 @@ LABEL_6:
 {
   if ([UIApp isSuspendedEventsOnly])
   {
-    v3 = [UIApp isSuspendedUnderLock];
+    isSuspendedUnderLock = [UIApp isSuspendedUnderLock];
   }
 
   else
   {
-    v3 = 1;
+    isSuspendedUnderLock = 1;
   }
 
-  v4 = [(_UIRemoteKeyboards *)self keyboardWindow];
-  if (([v4 _isHostedInAnotherProcess] & 1) != 0 || (objc_msgSend(UIApp, "isSuspended") & v3) != 1 || +[UIKeyboardImpl isActivatingForeground](UIKeyboardImpl, "isActivatingForeground"))
+  keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+  if (([keyboardWindow _isHostedInAnotherProcess] & 1) != 0 || (objc_msgSend(UIApp, "isSuspended") & isSuspendedUnderLock) != 1 || +[UIKeyboardImpl isActivatingForeground](UIKeyboardImpl, "isActivatingForeground"))
   {
-    v5 = 1;
+    _isSpringBoard = 1;
   }
 
   else
   {
-    v5 = [UIApp _isSpringBoard];
+    _isSpringBoard = [UIApp _isSpringBoard];
   }
 
-  return v5;
+  return _isSpringBoard;
 }
 
 - (void)checkState
@@ -452,9 +452,9 @@ LABEL_6:
 
   else
   {
-    v3 = [(_UIRemoteKeyboards *)self connection];
+    connection = [(_UIRemoteKeyboards *)self connection];
 
-    if (v3)
+    if (connection)
     {
 
       [(_UIRemoteKeyboards *)self stopConnection];
@@ -464,22 +464,22 @@ LABEL_6:
 
 - (BOOL)_sceneFocusPermittedForApplication
 {
-  v3 = [UIApp _shouldAllowKeyboardArbiter];
-  if (v3)
+  _shouldAllowKeyboardArbiter = [UIApp _shouldAllowKeyboardArbiter];
+  if (_shouldAllowKeyboardArbiter)
   {
 
-    LOBYTE(v3) = [(_UIRemoteKeyboards *)self allowedToShowKeyboard];
+    LOBYTE(_shouldAllowKeyboardArbiter) = [(_UIRemoteKeyboards *)self allowedToShowKeyboard];
   }
 
-  return v3;
+  return _shouldAllowKeyboardArbiter;
 }
 
 + (id)createArbiterConnection
 {
-  v2 = [a1 useSystemService];
+  useSystemService = [self useSystemService];
   v3 = objc_alloc(MEMORY[0x1E696B0B8]);
   v4 = v3;
-  if (v2)
+  if (useSystemService)
   {
     v5 = +[_UIRemoteKeyboards serviceName];
     v6 = [v4 initWithMachServiceName:v5 options:4096];
@@ -533,61 +533,61 @@ LABEL_6:
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "startConnection", buf, 2u);
     }
 
-    v5 = [(_UIRemoteKeyboards *)self connection];
+    connection = [(_UIRemoteKeyboards *)self connection];
 
-    if (!v5)
+    if (!connection)
     {
       if ([UIApp _shouldAllowKeyboardArbiter])
       {
         [(_UIRemoteKeyboards *)self resetSnapshotWithWindowCheck:0];
         v6 = +[UIDevice currentDevice];
-        v7 = [v6 userInterfaceIdiom];
+        userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-        if ((v7 - 2) >= 3)
+        if ((userInterfaceIdiom - 2) >= 3)
         {
-          v8 = [objc_opt_class() createArbiterConnection];
-          objc_storeStrong(&self->_connection, v8);
+          createArbiterConnection = [objc_opt_class() createArbiterConnection];
+          objc_storeStrong(&self->_connection, createArbiterConnection);
           v9 = BSDispatchQueueCreateWithQualityOfService();
-          [v8 _setQueue:v9];
-          objc_initWeak(buf, v8);
+          [createArbiterConnection _setQueue:v9];
+          objc_initWeak(buf, createArbiterConnection);
           v22[0] = MEMORY[0x1E69E9820];
           v22[1] = 3221225472;
           v22[2] = __37___UIRemoteKeyboards_startConnection__block_invoke;
           v22[3] = &unk_1E70F2F80;
           objc_copyWeak(&v23, buf);
           v22[4] = self;
-          [v8 setInterruptionHandler:v22];
+          [createArbiterConnection setInterruptionHandler:v22];
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __37___UIRemoteKeyboards_startConnection__block_invoke_447;
           v20[3] = &unk_1E70F2F80;
           objc_copyWeak(&v21, buf);
           v20[4] = self;
-          [v8 setInvalidationHandler:v20];
-          [v8 setExportedObject:self];
-          if (v8)
+          [createArbiterConnection setInvalidationHandler:v20];
+          [createArbiterConnection setExportedObject:self];
+          if (createArbiterConnection)
           {
-            [v8 resume];
+            [createArbiterConnection resume];
             self->_expectingInitialState = 1;
             self->_remoteIAVHeight = 0.0;
-            v10 = [(_UIRemoteKeyboards *)self requiredScene];
-            v11 = [(_UIRemoteKeyboards *)self proxy];
-            v12 = [(_UIRemoteKeyboards *)self currentKeyboard];
-            if (v12)
+            requiredScene = [(_UIRemoteKeyboards *)self requiredScene];
+            proxy = [(_UIRemoteKeyboards *)self proxy];
+            currentKeyboard = [(_UIRemoteKeyboards *)self currentKeyboard];
+            if (currentKeyboard)
             {
-              v13 = [(_UIRemoteKeyboards *)self currentState];
+              currentState = [(_UIRemoteKeyboards *)self currentState];
             }
 
             else
             {
-              v13 = 0;
+              currentState = 0;
             }
 
-            if (v10)
+            if (requiredScene)
             {
-              v18 = [v10 identityToken];
+              identityToken = [requiredScene identityToken];
               v2 = +[UIWindow _applicationKeyWindow];
-              v14 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:v18 window:v2];
+              v14 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:identityToken window:v2];
             }
 
             else
@@ -595,7 +595,7 @@ LABEL_6:
               v14 = 0;
             }
 
-            v15 = [(_UIRemoteKeyboards *)self currentHostedPIDs];
+            currentHostedPIDs = [(_UIRemoteKeyboards *)self currentHostedPIDs];
             shouldFence = self->_shouldFence;
             expectedSuppression = self->_expectedSuppression;
             v19[0] = MEMORY[0x1E69E9820];
@@ -603,13 +603,13 @@ LABEL_6:
             v19[2] = __37___UIRemoteKeyboards_startConnection__block_invoke_449;
             v19[3] = &unk_1E7117CF0;
             v19[4] = self;
-            [v11 startArbitrationWithExpectedState:v13 focusContext:v14 hostingPIDs:v15 usingFence:shouldFence withSuppression:expectedSuppression onConnected:v19];
+            [proxy startArbitrationWithExpectedState:currentState focusContext:v14 hostingPIDs:currentHostedPIDs usingFence:shouldFence withSuppression:expectedSuppression onConnected:v19];
 
-            if (v10)
+            if (requiredScene)
             {
             }
 
-            if (v12)
+            if (currentKeyboard)
             {
             }
           }
@@ -625,33 +625,33 @@ LABEL_6:
 
 - (FBSScene)requiredScene
 {
-  v2 = self->_requiredScene;
+  _FBSScene = self->_requiredScene;
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
   v4 = v3;
-  if (!v2)
+  if (!_FBSScene)
   {
-    v5 = [v3 scene];
-    v2 = [v5 _FBSScene];
+    scene = [v3 scene];
+    _FBSScene = [scene _FBSScene];
 
-    if (!v2)
+    if (!_FBSScene)
     {
-      v6 = [v4 responder];
-      v7 = [v6 _responderWindow];
-      v8 = [v7 windowScene];
-      v9 = [v8 _settingsScene];
-      v2 = [v9 _FBSScene];
+      responder = [v4 responder];
+      _responderWindow = [responder _responderWindow];
+      windowScene = [_responderWindow windowScene];
+      _settingsScene = [windowScene _settingsScene];
+      _FBSScene = [_settingsScene _FBSScene];
     }
   }
 
-  return v2;
+  return _FBSScene;
 }
 
 - (NSArray)currentHostedPIDs
 {
   v2 = [MEMORY[0x1E695DFD8] setWithArray:self->_activePIDs];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (BOOL)isOnScreenRotating
@@ -673,9 +673,9 @@ LABEL_6:
 
 - (BOOL)isWritingToolsHostingViewService
 {
-  v2 = [(_UIRemoteKeyboards *)self currentState];
-  v3 = [v2 hostBundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.WritingToolsUIService"];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  hostBundleIdentifier = [currentState hostBundleIdentifier];
+  v4 = [hostBundleIdentifier isEqualToString:@"com.apple.WritingToolsUIService"];
 
   return v4;
 }
@@ -686,21 +686,21 @@ LABEL_6:
   {
     self->_showsInvisibleKeyboardBehindWTUI = 0;
     v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v4 = [v3 responder];
+    responder = [v3 responder];
 
-    if ([v4 _isWritingToolsActive])
+    if ([responder _isWritingToolsActive])
     {
-      v5 = [(_UIRemoteKeyboards *)self currentState];
-      v6 = [v5 hostBundleIdentifier];
-      if ([v6 isEqualToString:@"com.apple.WritingToolsUIService"])
+      currentState = [(_UIRemoteKeyboards *)self currentState];
+      hostBundleIdentifier = [currentState hostBundleIdentifier];
+      if ([hostBundleIdentifier isEqualToString:@"com.apple.WritingToolsUIService"])
       {
 
         goto LABEL_6;
       }
 
-      v7 = [(_UIRemoteKeyboards *)self currentState];
-      v8 = [v7 sourceBundleIdentifier];
-      v9 = [v8 isEqualToString:@"com.apple.WritingToolsUIService"];
+      currentState2 = [(_UIRemoteKeyboards *)self currentState];
+      sourceBundleIdentifier = [currentState2 sourceBundleIdentifier];
+      v9 = [sourceBundleIdentifier isEqualToString:@"com.apple.WritingToolsUIService"];
 
       if (v9)
       {
@@ -713,15 +713,15 @@ LABEL_6:
         }
 
         [(_UIRemoteKeyboards *)self setCurrentKeyboard:1];
-        v11 = [(_UIRemoteKeyboards *)self currentState];
-        v12 = [v11 keyboardOnScreen];
+        currentState3 = [(_UIRemoteKeyboards *)self currentState];
+        keyboardOnScreen = [currentState3 keyboardOnScreen];
 
-        if (v12)
+        if (keyboardOnScreen)
         {
           self->_showsInvisibleKeyboardBehindWTUI = 1;
-          if ([v4 _writingToolsWantsKeyboardSuppression])
+          if ([responder _writingToolsWantsKeyboardSuppression])
           {
-            v13 = v4;
+            v13 = responder;
             v14 = 0;
 LABEL_11:
             [v13 _setWritingToolsWantsKeyboardSuppression:v14];
@@ -729,11 +729,11 @@ LABEL_11:
           }
 
           v17 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-          v15 = [v17 containerRootController];
+          containerRootController = [v17 containerRootController];
 
-          if ([v15 isTransitioning])
+          if ([containerRootController isTransitioning])
           {
-            [v15 addPendingActivity:&__block_literal_global_458_0];
+            [containerRootController addPendingActivity:&__block_literal_global_458_0];
           }
 
           else
@@ -750,17 +750,17 @@ LABEL_11:
             goto LABEL_20;
           }
 
-          v15 = [(_UIRemoteKeyboards *)self currentState];
-          if (![v15 keyboardOnScreen])
+          containerRootController = [(_UIRemoteKeyboards *)self currentState];
+          if (![containerRootController keyboardOnScreen])
           {
-            v16 = [v4 _writingToolsWantsKeyboardSuppression];
+            _writingToolsWantsKeyboardSuppression = [responder _writingToolsWantsKeyboardSuppression];
 
-            if (v16)
+            if (_writingToolsWantsKeyboardSuppression)
             {
               goto LABEL_20;
             }
 
-            v13 = v4;
+            v13 = responder;
             v14 = 1;
             goto LABEL_11;
           }
@@ -774,10 +774,10 @@ LABEL_20:
 
 - (id)inputWindowRootViewController
 {
-  v2 = [(_UIRemoteKeyboards *)self keyboardWindow];
-  v3 = [v2 rootViewController];
+  keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+  rootViewController = [keyboardWindow rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
 - (unint64_t)localSceneCount
@@ -807,9 +807,9 @@ LABEL_20:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v9 = [v8 keyboardSceneDelegate];
+          keyboardSceneDelegate = [v8 keyboardSceneDelegate];
 
-          if (v9)
+          if (keyboardSceneDelegate)
           {
             ++v5;
           }
@@ -833,12 +833,12 @@ LABEL_20:
 - (BOOL)allowedToEnableKeyboardWindow
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 scene];
+  scene = [v3 scene];
 
   v9 = 0;
-  if (v4)
+  if (scene)
   {
-    if (self->_deactivatedByControlCenter || self->_deactivatedBySystemAlert || (keyboardSceneIdentifierEnteringForeground = self->_keyboardSceneIdentifierEnteringForeground, [v4 _sceneIdentifier], v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(keyboardSceneIdentifierEnteringForeground) = -[NSString isEqualToString:](keyboardSceneIdentifierEnteringForeground, "isEqualToString:", v6), v6, (keyboardSceneIdentifierEnteringForeground & 1) != 0) || !objc_msgSend(v4, "activationState") || objc_msgSend(v4, "activationState") == 1 && (-[_UIRemoteKeyboards currentState](self, "currentState"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "keyboardOnScreen"), v7, v8) && ((objc_msgSend(v4, "_canDynamicallySpecifySupportedInterfaceOrientations") & 1) != 0 || (+[UIKeyboardSceneDelegate activeKeyboardSceneDelegate](UIKeyboardSceneDelegate, "activeKeyboardSceneDelegate"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "visualModeManager"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "windowingModeEnabled"), v11, v10, objc_msgSend(v4, "_coordinateSpace"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "bounds"), v15 = v14, v17 = v16, v13, objc_msgSend(v4, "screen"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "bounds"), v20 = v19, v22 = v21, v18, (v12 & 1) == 0) && v15 == v20 && v17 == v22))
+    if (self->_deactivatedByControlCenter || self->_deactivatedBySystemAlert || (keyboardSceneIdentifierEnteringForeground = self->_keyboardSceneIdentifierEnteringForeground, [scene _sceneIdentifier], v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(keyboardSceneIdentifierEnteringForeground) = -[NSString isEqualToString:](keyboardSceneIdentifierEnteringForeground, "isEqualToString:", v6), v6, (keyboardSceneIdentifierEnteringForeground & 1) != 0) || !objc_msgSend(scene, "activationState") || objc_msgSend(scene, "activationState") == 1 && (-[_UIRemoteKeyboards currentState](self, "currentState"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "keyboardOnScreen"), v7, v8) && ((objc_msgSend(scene, "_canDynamicallySpecifySupportedInterfaceOrientations") & 1) != 0 || (+[UIKeyboardSceneDelegate activeKeyboardSceneDelegate](UIKeyboardSceneDelegate, "activeKeyboardSceneDelegate"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "visualModeManager"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "windowingModeEnabled"), v11, v10, objc_msgSend(scene, "_coordinateSpace"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "bounds"), v15 = v14, v17 = v16, v13, objc_msgSend(scene, "screen"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "bounds"), v20 = v19, v22 = v21, v18, (v12 & 1) == 0) && v15 == v20 && v17 == v22))
     {
       v9 = 1;
     }
@@ -849,18 +849,18 @@ LABEL_20:
 
 - (void)keyboardChangedCompleted
 {
-  v7 = [(_UIRemoteKeyboards *)self currentState];
-  v3 = [v7 sourceBundleIdentifier];
-  if ([v3 isEqualToString:@"com.apple.siri"])
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  sourceBundleIdentifier = [currentState sourceBundleIdentifier];
+  if ([sourceBundleIdentifier isEqualToString:@"com.apple.siri"])
   {
   }
 
   else
   {
     ignoredSceneIdentityTokenStringSet = self->_ignoredSceneIdentityTokenStringSet;
-    v5 = [(_UIRemoteKeyboards *)self currentState];
-    v6 = [v5 sourceSceneIdentityString];
-    LOBYTE(ignoredSceneIdentityTokenStringSet) = [(NSMutableSet *)ignoredSceneIdentityTokenStringSet containsObject:v6];
+    currentState2 = [(_UIRemoteKeyboards *)self currentState];
+    sourceSceneIdentityString = [currentState2 sourceSceneIdentityString];
+    LOBYTE(ignoredSceneIdentityTokenStringSet) = [(NSMutableSet *)ignoredSceneIdentityTokenStringSet containsObject:sourceSceneIdentityString];
 
     if ((ignoredSceneIdentityTokenStringSet & 1) == 0)
     {
@@ -872,24 +872,24 @@ LABEL_20:
 
 - (BOOL)isFloating
 {
-  v2 = [(_UIRemoteKeyboards *)self currentState];
-  v3 = [v2 isFloating];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  isFloating = [currentState isFloating];
 
-  return v3;
+  return isFloating;
 }
 
 - (BOOL)assistantBarVisible
 {
-  v2 = [(_UIRemoteKeyboards *)self currentState];
-  v3 = [v2 assistantBarVisible];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  assistantBarVisible = [currentState assistantBarVisible];
 
-  return v3;
+  return assistantBarVisible;
 }
 
 - (void)dealloc
 {
   v6[14] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UISceneDidDisconnectNotification";
   v6[1] = @"UIApplicationWillEnterForegroundNotification";
   v6[2] = @"UIApplicationDidEnterBackgroundNotification";
@@ -905,7 +905,7 @@ LABEL_20:
   v6[12] = @"UISceneDidActivateNotification";
   v6[13] = @"_UISystemApplicationWillLockNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:14];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   [(_UIRemoteKeyboards *)self stopConnection];
   [(_UIRemoteKeyboards *)self resetSnapshotWithWindowCheck:0];
@@ -914,18 +914,18 @@ LABEL_20:
   [(_UIRemoteKeyboards *)&v5 dealloc];
 }
 
-- (BOOL)currentStateHasEqualRect:(CGRect)a3 andIAVPosition:(CGRect)a4
+- (BOOL)currentStateHasEqualRect:(CGRect)rect andIAVPosition:(CGRect)position
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v13 = [(_UIRemoteKeyboards *)self currentState];
-  [v13 keyboardPosition];
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  [currentState keyboardPosition];
   v27.origin.x = v14;
   v27.origin.y = v15;
   v27.size.width = v16;
@@ -936,8 +936,8 @@ LABEL_20:
   v25.size.height = v8;
   if (CGRectEqualToRect(v25, v27))
   {
-    v18 = [(_UIRemoteKeyboards *)self currentState];
-    [v18 keyboardPositionWithIAV];
+    currentState2 = [(_UIRemoteKeyboards *)self currentState];
+    [currentState2 keyboardPositionWithIAV];
     v28.origin.x = v19;
     v28.origin.y = v20;
     v28.size.width = v21;
@@ -957,28 +957,28 @@ LABEL_20:
   return v23;
 }
 
-- (void)updateCurrentState:(id)a3
+- (void)updateCurrentState:(id)state
 {
-  v16 = a3;
-  [v16 keyboardPosition];
+  stateCopy = state;
+  [stateCopy keyboardPosition];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v16 keyboardPositionWithIAV];
+  [stateCopy keyboardPositionWithIAV];
   if (![(_UIRemoteKeyboards *)self currentStateHasEqualRect:v5 andIAVPosition:v7, v9, v11, v12, v13, v14, v15])
   {
     [(_UIRemoteKeyboards *)self setDidSignalKeyboardChangedForCurrentKeyboard:0];
   }
 
-  [(_UIRemoteKeyboards *)self setCurrentState:v16];
+  [(_UIRemoteKeyboards *)self setCurrentState:stateCopy];
 }
 
-- (void)signalToProxyKeyboardChanged:(id)a3 onCompletion:(id)a4
+- (void)signalToProxyKeyboardChanged:(id)changed onCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  completionCopy = completion;
   v8 = _UIArbiterClientLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -990,30 +990,30 @@ LABEL_20:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v24.val[0] = 138412290;
-    *&v24.val[1] = v6;
+    *&v24.val[1] = changedCopy;
     _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "[_UIRemoteKeyboards signalToProxyKeyboardChanged:onCompletion:]  Signaling keyboard changed %@", &v24, 0xCu);
   }
 
   [(_UIRemoteKeyboards *)self setDidSignalKeyboardChangedForCurrentKeyboard:1];
   v10 = _UIMainBundleIdentifier();
-  [v6 setSourceBundleIdentifier:v10];
+  [changedCopy setSourceBundleIdentifier:v10];
 
   v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v12 = [v11 scene];
-  v13 = [v12 _FBSScene];
+  scene = [v11 scene];
+  _FBSScene = [scene _FBSScene];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
     v15 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v16 = [v15 scene];
-    v17 = [v16 _FBSScene];
-    v18 = [v17 hostHandle];
-    v19 = [v18 auditToken];
+    scene2 = [v15 scene];
+    _FBSScene2 = [scene2 _FBSScene];
+    hostHandle = [_FBSScene2 hostHandle];
+    auditToken = [hostHandle auditToken];
 
-    if (v19)
+    if (auditToken)
     {
-      [v19 realToken];
+      [auditToken realToken];
     }
 
     else
@@ -1029,25 +1029,25 @@ LABEL_20:
       CFRelease(v21);
       if ([(__CFString *)v22 isEqualToString:@"com.apple.InputUI"])
       {
-        [v6 setHostBundleIdentifier:v22];
+        [changedCopy setHostBundleIdentifier:v22];
       }
     }
   }
 
-  [(_UIRemoteKeyboards *)self updateLocalKeyboardChanged:v6, *v24.val, *&v24.val[4]];
-  v23 = [(_UIRemoteKeyboards *)self proxy];
-  [v23 signalKeyboardChanged:v6 onCompletion:v7];
+  [(_UIRemoteKeyboards *)self updateLocalKeyboardChanged:changedCopy, *v24.val, *&v24.val[4]];
+  proxy = [(_UIRemoteKeyboards *)self proxy];
+  [proxy signalKeyboardChanged:changedCopy onCompletion:completionCopy];
 }
 
-- (void)updateLocalKeyboardChanged:(id)a3
+- (void)updateLocalKeyboardChanged:(id)changed
 {
-  v3 = [a3 copyWithoutFence];
+  copyWithoutFence = [changed copyWithoutFence];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49___UIRemoteKeyboards_updateLocalKeyboardChanged___block_invoke;
   v5[3] = &unk_1E7104050;
-  v6 = v3;
-  v4 = v3;
+  v6 = copyWithoutFence;
+  v4 = copyWithoutFence;
   [UIKeyboardSceneDelegate performOnControllers:v5];
 }
 
@@ -1055,28 +1055,28 @@ LABEL_20:
 {
   if (+[UIKeyboard usesInputSystemUIForAutoFillOnly])
   {
-    v3 = [(_UIRemoteKeyboards *)self currentKeyboard];
+    currentKeyboard = [(_UIRemoteKeyboards *)self currentKeyboard];
     v4 = _UIKeyboardExtendedLog();
-    v5 = v4;
-    if (v3)
+    proxy = v4;
+    if (currentKeyboard)
     {
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *v6 = 0;
-        _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "Requesting scene for autofill UI", v6, 2u);
+        _os_log_impl(&dword_188A29000, proxy, OS_LOG_TYPE_DEFAULT, "Requesting scene for autofill UI", v6, 2u);
       }
 
-      v5 = [(_UIRemoteKeyboards *)self proxy];
-      [v5 signalAutofillUIBringupWithCompletion:&__block_literal_global_428];
+      proxy = [(_UIRemoteKeyboards *)self proxy];
+      [proxy signalAutofillUIBringupWithCompletion:&__block_literal_global_428];
     }
 
     else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "Requesting scene for autofill UI: request is pending -- not yet the current keyboard", buf, 2u);
+      _os_log_debug_impl(&dword_188A29000, proxy, OS_LOG_TYPE_DEBUG, "Requesting scene for autofill UI: request is pending -- not yet the current keyboard", buf, 2u);
     }
 
-    [(_UIRemoteKeyboards *)self setPendingAutofillRequest:!v3];
+    [(_UIRemoteKeyboards *)self setPendingAutofillRequest:!currentKeyboard];
   }
 }
 
@@ -1090,74 +1090,74 @@ LABEL_20:
   }
 }
 
-- (void)queue_keyboardArbiterClientHandleChanged:(BOOL)a3 withCompletion:(id)a4
+- (void)queue_keyboardArbiterClientHandleChanged:(BOOL)changed withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [UIApp _systemAnimationFenceExemptQueue];
+  completionCopy = completion;
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78___UIRemoteKeyboards_queue_keyboardArbiterClientHandleChanged_withCompletion___block_invoke;
   v9[3] = &unk_1E70FD0C8;
-  v11 = a3;
+  changedCopy = changed;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 performAsync:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v9];
 }
 
-- (void)queue_activeProcessResignWithCompletion:(id)a3
+- (void)queue_activeProcessResignWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [UIApp _systemAnimationFenceExemptQueue];
+  completionCopy = completion;
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62___UIRemoteKeyboards_queue_activeProcessResignWithCompletion___block_invoke;
   v7[3] = &unk_1E70F37C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performAsync:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v7];
 }
 
-- (void)queue_failedConnection:(id)a3
+- (void)queue_failedConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 interruptionHandler];
-  v6 = [v4 invalidationHandler];
-  [v4 setInterruptionHandler:0];
-  [v4 setInvalidationHandler:0];
-  v7 = [UIApp _systemAnimationFenceExemptQueue];
+  connectionCopy = connection;
+  interruptionHandler = [connectionCopy interruptionHandler];
+  invalidationHandler = [connectionCopy invalidationHandler];
+  [connectionCopy setInterruptionHandler:0];
+  [connectionCopy setInvalidationHandler:0];
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45___UIRemoteKeyboards_queue_failedConnection___block_invoke;
   v9[3] = &unk_1E70F35B8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 performAsync:v9];
+  v10 = connectionCopy;
+  v8 = connectionCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v9];
 }
 
-- (void)setShouldFence:(BOOL)a3
+- (void)setShouldFence:(BOOL)fence
 {
-  if (self->_shouldFence != a3)
+  if (self->_shouldFence != fence)
   {
-    self->_shouldFence = a3;
-    v5 = [(_UIRemoteKeyboards *)self proxy];
-    [v5 setWantsFencing:self->_shouldFence];
+    self->_shouldFence = fence;
+    proxy = [(_UIRemoteKeyboards *)self proxy];
+    [proxy setWantsFencing:self->_shouldFence];
   }
 }
 
-- (void)resetSnapshotWithWindowCheck:(BOOL)a3
+- (void)resetSnapshotWithWindowCheck:(BOOL)check
 {
   keyboardSnapshot = self->_keyboardSnapshot;
   if (keyboardSnapshot)
   {
-    v5 = a3;
+    checkCopy = check;
     [(UIView *)keyboardSnapshot removeFromSuperview];
     v6 = self->_keyboardSnapshot;
     self->_keyboardSnapshot = 0;
 
-    if (v5)
+    if (checkCopy)
     {
 
       [(_UIRemoteKeyboards *)self completeMoveKeyboardForWindow:0];
@@ -1165,37 +1165,37 @@ LABEL_20:
   }
 }
 
-- (void)addIgnoredSceneIdentityTokenString:(id)a3
+- (void)addIgnoredSceneIdentityTokenString:(id)string
 {
-  if (a3)
+  if (string)
   {
     [(NSMutableSet *)self->_ignoredSceneIdentityTokenStringSet addObject:?];
   }
 }
 
-- (void)removeIgnoredSceneIdentityTokenString:(id)a3
+- (void)removeIgnoredSceneIdentityTokenString:(id)string
 {
-  if (a3)
+  if (string)
   {
     [(NSMutableSet *)self->_ignoredSceneIdentityTokenStringSet removeObject:?];
   }
 }
 
-- (BOOL)isShowingModalAutofillPanel:(id)a3
+- (BOOL)isShowingModalAutofillPanel:(id)panel
 {
-  v3 = a3;
+  panelCopy = panel;
   if (+[UIKeyboard usesInputSystemUIForAutoFillOnly])
   {
-    v4 = [v3 sourceBundleIdentifier];
-    if ([v4 isEqualToString:@"com.apple.InputUI"])
+    sourceBundleIdentifier = [panelCopy sourceBundleIdentifier];
+    if ([sourceBundleIdentifier isEqualToString:@"com.apple.InputUI"])
     {
       v5 = 1;
     }
 
     else
     {
-      v6 = [v3 hostBundleIdentifier];
-      v5 = [v6 isEqualToString:@"com.apple.InputUI"];
+      hostBundleIdentifier = [panelCopy hostBundleIdentifier];
+      v5 = [hostBundleIdentifier isEqualToString:@"com.apple.InputUI"];
     }
   }
 
@@ -1207,34 +1207,34 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)didHandleKeyboardChange:(id)a3 shouldConsiderSnapshottingKeyboard:(BOOL)a4 isLocalEvent:(BOOL)a5
+- (BOOL)didHandleKeyboardChange:(id)change shouldConsiderSnapshottingKeyboard:(BOOL)keyboard isLocalEvent:(BOOL)event
 {
-  v5 = a5;
-  v78 = a4;
+  eventCopy = event;
+  keyboardCopy = keyboard;
   v127 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  changeCopy = change;
   v119 = 0;
   v120 = &v119;
   v121 = 0x2020000000;
   v122 = 0;
   handlingRemoteEvent = self->_handlingRemoteEvent;
-  v81 = v5;
-  self->_handlingRemoteEvent = !v5;
+  v81 = eventCopy;
+  self->_handlingRemoteEvent = !eventCopy;
   v83 = +[UIKeyboardImpl activeInstance];
   if (self->_handlingRemoteEvent)
   {
-    if (([v83 isMinimized] & 1) != 0 || (v8 = objc_msgSend(v83, "automaticMinimizationEnabled"), v8 != objc_msgSend(v7, "automaticMinimizationEnabled")))
+    if (([v83 isMinimized] & 1) != 0 || (v8 = objc_msgSend(v83, "automaticMinimizationEnabled"), v8 != objc_msgSend(changeCopy, "automaticMinimizationEnabled")))
     {
-      [v83 setAutomaticMinimizationEnabled:{objc_msgSend(v7, "automaticMinimizationEnabled")}];
-      v9 = [v83 geometryDelegate];
-      [v9 syncMinimizedStateToHardwareKeyboardAttachedState];
+      [v83 setAutomaticMinimizationEnabled:{objc_msgSend(changeCopy, "automaticMinimizationEnabled")}];
+      geometryDelegate = [v83 geometryDelegate];
+      [geometryDelegate syncMinimizedStateToHardwareKeyboardAttachedState];
     }
   }
 
   v115 = 0;
   v116 = &v115;
   v117 = 0x2020000000;
-  v118 = [(_UIRemoteKeyboards *)self currentKeyboard];
+  currentKeyboard = [(_UIRemoteKeyboards *)self currentKeyboard];
   v109 = 0;
   v110 = &v109;
   v111 = 0x3032000000;
@@ -1247,8 +1247,8 @@ LABEL_20:
   v108 = 0;
   v10 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v12 = [v11 responder];
-  v13 = [v12 _isHostingRemoteContent];
+  responder = [v11 responder];
+  _isHostingRemoteContent = [responder _isHostingRemoteContent];
 
   v97[0] = MEMORY[0x1E69E9820];
   v97[1] = 3221225472;
@@ -1256,10 +1256,10 @@ LABEL_20:
   v97[3] = &unk_1E7117D18;
   v79 = v10;
   v98 = v79;
-  v14 = v7;
-  v104 = v13;
+  v14 = changeCopy;
+  v104 = _isHostingRemoteContent;
   v99 = v14;
-  v100 = self;
+  selfCopy = self;
   v101 = &v105;
   v102 = &v109;
   v103 = &v115;
@@ -1270,12 +1270,12 @@ LABEL_20:
   }
 
   v15 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v16 = [v15 hardwareKeyboardExclusivityIdentifier];
+  hardwareKeyboardExclusivityIdentifier = [v15 hardwareKeyboardExclusivityIdentifier];
 
-  v17 = [v14 sourceBundleIdentifier];
-  if ([v17 isEqualToString:@"com.apple.Spotlight"])
+  sourceBundleIdentifier = [v14 sourceBundleIdentifier];
+  if ([sourceBundleIdentifier isEqualToString:@"com.apple.Spotlight"])
   {
-    v18 = (v16 == 0) ^ [v14 isOneness];
+    v18 = (hardwareKeyboardExclusivityIdentifier == 0) ^ [v14 isOneness];
   }
 
   else
@@ -1283,26 +1283,26 @@ LABEL_20:
     v18 = 0;
   }
 
-  v19 = [v14 sourceBundleIdentifier];
-  if ([v19 isEqualToString:@"com.apple.CoreAuthUI"])
+  sourceBundleIdentifier2 = [v14 sourceBundleIdentifier];
+  if ([sourceBundleIdentifier2 isEqualToString:@"com.apple.CoreAuthUI"])
   {
     v82 = 1;
   }
 
   else
   {
-    v82 = [v19 isEqualToString:@"com.apple.LocalAuthenticationUIService"];
+    v82 = [sourceBundleIdentifier2 isEqualToString:@"com.apple.LocalAuthenticationUIService"];
   }
 
-  v20 = [v14 sourceBundleIdentifier];
-  v21 = [v20 isEqualToString:@"com.apple.WebSheet"];
+  sourceBundleIdentifier3 = [v14 sourceBundleIdentifier];
+  v21 = [sourceBundleIdentifier3 isEqualToString:@"com.apple.WebSheet"];
 
-  v22 = [v14 sourceBundleIdentifier];
-  v23 = [v22 isEqualToString:@"com.apple.siri"];
+  sourceBundleIdentifier4 = [v14 sourceBundleIdentifier];
+  v23 = [sourceBundleIdentifier4 isEqualToString:@"com.apple.siri"];
 
   ignoredSceneIdentityTokenStringSet = self->_ignoredSceneIdentityTokenStringSet;
-  v25 = [v14 sourceSceneIdentityString];
-  v26 = [(NSMutableSet *)ignoredSceneIdentityTokenStringSet containsObject:v25];
+  sourceSceneIdentityString = [v14 sourceSceneIdentityString];
+  v26 = [(NSMutableSet *)ignoredSceneIdentityTokenStringSet containsObject:sourceSceneIdentityString];
 
   if (v26)
   {
@@ -1314,35 +1314,35 @@ LABEL_20:
     }
   }
 
-  v28 = [(_UIRemoteKeyboards *)self currentState];
-  v29 = [v28 uiPosition];
-  if (v29 == [v14 uiPosition])
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  uiPosition = [currentState uiPosition];
+  if (uiPosition == [v14 uiPosition])
   {
     goto LABEL_20;
   }
 
-  v30 = [UIApp _isSpringBoard];
+  _isSpringBoard = [UIApp _isSpringBoard];
 
-  if (v30)
+  if (_isSpringBoard)
   {
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
+    currentState = [MEMORY[0x1E696AD88] defaultCenter];
     v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v14, "uiPosition")}];
-    [v28 postNotificationName:@"UIKeyboardDidChangeUIPosition" object:v31];
+    [currentState postNotificationName:@"UIKeyboardDidChangeUIPosition" object:v31];
 
 LABEL_20:
   }
 
   if (*(v106 + 24) != 1 || (-[_UIRemoteKeyboards currentState](self, "currentState"), v32 = objc_claimAutoreleasedReturnValue(), [v32 sourceBundleIdentifier], v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "sourceBundleIdentifier"), v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v33, "isEqualToString:", v34), v34, v33, v32, (v35 & 1) == 0))
   {
-    v36 = [(_UIRemoteKeyboards *)self currentState];
-    v37 = [v36 sourceBundleIdentifier];
+    currentState2 = [(_UIRemoteKeyboards *)self currentState];
+    sourceBundleIdentifier5 = [currentState2 sourceBundleIdentifier];
     v38 = _UIMainBundleIdentifier();
-    v39 = [v37 isEqualToString:v38];
+    v39 = [sourceBundleIdentifier5 isEqualToString:v38];
 
     if (v39)
     {
-      v40 = [(_UIRemoteKeyboards *)self currentState];
-      [(_UIRemoteKeyboards *)self setBackupState:v40];
+      currentState3 = [(_UIRemoteKeyboards *)self currentState];
+      [(_UIRemoteKeyboards *)self setBackupState:currentState3];
     }
 
     [(_UIRemoteKeyboards *)self updateCurrentState:v14];
@@ -1362,9 +1362,9 @@ LABEL_20:
   v42 = _UIArbiterClientLog();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
-    v43 = [(_UIRemoteKeyboards *)self currentKeyboard];
+    currentKeyboard2 = [(_UIRemoteKeyboards *)self currentKeyboard];
     v44 = "N";
-    if (v43)
+    if (currentKeyboard2)
     {
       v45 = "Y";
     }
@@ -1386,8 +1386,8 @@ LABEL_20:
     _os_log_impl(&dword_188A29000, v42, OS_LOG_TYPE_DEFAULT, "handleKeyboardChange: set currentKeyboard:%s (wasKeyboard:%s)", buf, 0x16u);
   }
 
-  v46 = [(_UIRemoteKeyboards *)self yieldingKeyboardToIgnoredScene];
-  v47 = v46 == 0;
+  yieldingKeyboardToIgnoredScene = [(_UIRemoteKeyboards *)self yieldingKeyboardToIgnoredScene];
+  v47 = yieldingKeyboardToIgnoredScene == 0;
 
   if (v47)
   {
@@ -1400,16 +1400,16 @@ LABEL_20:
         _os_log_impl(&dword_188A29000, v52, OS_LOG_TYPE_DEFAULT, "handleKeyboardChange: begin yieldingKeyboardToIgnoredScene", buf, 2u);
       }
 
-      v53 = [v14 sourceSceneIdentityString];
-      [(_UIRemoteKeyboards *)self setYieldingKeyboardToIgnoredScene:v53];
+      sourceSceneIdentityString2 = [v14 sourceSceneIdentityString];
+      [(_UIRemoteKeyboards *)self setYieldingKeyboardToIgnoredScene:sourceSceneIdentityString2];
     }
   }
 
   else
   {
-    v48 = [(_UIRemoteKeyboards *)self yieldingKeyboardToIgnoredScene];
-    v49 = [v14 sourceSceneIdentityString];
-    v50 = [v48 isEqualToString:v49];
+    yieldingKeyboardToIgnoredScene2 = [(_UIRemoteKeyboards *)self yieldingKeyboardToIgnoredScene];
+    sourceSceneIdentityString3 = [v14 sourceSceneIdentityString];
+    v50 = [yieldingKeyboardToIgnoredScene2 isEqualToString:sourceSceneIdentityString3];
 
     if (v50 && ([v14 keyboardOnScreen] & 1) == 0)
     {
@@ -1430,8 +1430,8 @@ LABEL_20:
   {
     if ([(_UIRemoteKeyboards *)self localSceneCount]>= 2)
     {
-      v55 = [v14 sourceSceneIdentityString];
-      v54 = v55 == 0;
+      sourceSceneIdentityString4 = [v14 sourceSceneIdentityString];
+      v54 = sourceSceneIdentityString4 == 0;
     }
 
     else
@@ -1445,7 +1445,7 @@ LABEL_20:
     v54 = 0;
   }
 
-  if (*(v116 + 24) == 1 && v78 && (-[_UIRemoteKeyboards currentState](self, "currentState"), v56 = objc_claimAutoreleasedReturnValue(), v57 = [v56 keyboardOnScreen], v56, v57))
+  if (*(v116 + 24) == 1 && keyboardCopy && (-[_UIRemoteKeyboards currentState](self, "currentState"), v56 = objc_claimAutoreleasedReturnValue(), v57 = [v56 keyboardOnScreen], v56, v57))
   {
     v94[0] = MEMORY[0x1E69E9820];
     v94[1] = 3221225472;
@@ -1505,12 +1505,12 @@ LABEL_71:
             v88[2] = __94___UIRemoteKeyboards_didHandleKeyboardChange_shouldConsiderSnapshottingKeyboard_isLocalEvent___block_invoke_2_470;
             v88[3] = &unk_1E7117D60;
             v89 = v14;
-            v90 = self;
+            selfCopy2 = self;
             v91 = &v119;
             [UIKeyboardSceneDelegate performOnControllers:v88];
-            v63 = [(_UIRemoteKeyboards *)self keyboardWindow];
-            v64 = [v63 rootViewController];
-            [v64 removeCombinedBackdropViewIfNeeded];
+            keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+            rootViewController = [keyboardWindow rootViewController];
+            [rootViewController removeCombinedBackdropViewIfNeeded];
           }
 
           [(_UIRemoteKeyboards *)self toggleSuppressionForWritingToolIfNeeded];
@@ -1557,15 +1557,15 @@ LABEL_70:
   }
 
   v68 = v67;
-  v69 = [v67 responder];
-  if (([v69 _isHostingRemoteContent] & 1) == 0)
+  responder2 = [v67 responder];
+  if (([responder2 _isHostingRemoteContent] & 1) == 0)
   {
-    v70 = [v69 _responderWindow];
-    [v70 _setLastFirstResponder:v69];
+    _responderWindow = [responder2 _responderWindow];
+    [_responderWindow _setLastFirstResponder:responder2];
     if (objc_opt_respondsToSelector())
     {
-      v71 = [v69 interactionState];
-      [v70 _setLastFirstResponderInteractionState:v71];
+      interactionState = [responder2 interactionState];
+      [_responderWindow _setLastFirstResponderInteractionState:interactionState];
     }
 
     v72 = _UIArbiterClientLog();
@@ -1575,11 +1575,11 @@ LABEL_70:
       _os_log_impl(&dword_188A29000, v72, OS_LOG_TYPE_DEFAULT, "handleKeyboardChange: resignFirstResponder", buf, 2u);
     }
 
-    [v70 _setWantsResponderWithoutKeyboard:1];
-    [v69 resignFirstResponder];
-    [v70 _setWantsResponderWithoutKeyboard:0];
-    v73 = [v70 _firstResponder];
-    [v70 _setLastNextResponder:v73];
+    [_responderWindow _setWantsResponderWithoutKeyboard:1];
+    [responder2 resignFirstResponder];
+    [_responderWindow _setWantsResponderWithoutKeyboard:0];
+    _firstResponder = [_responderWindow _firstResponder];
+    [_responderWindow _setLastNextResponder:_firstResponder];
   }
 
   *(v120 + 24) = 1;
@@ -1604,8 +1604,8 @@ LABEL_86:
 
   if ((v106[3] & 1) == 0)
   {
-    v75 = [(_UIRemoteKeyboards *)self currentState];
-    [v75 resetAnimationFencing];
+    currentState4 = [(_UIRemoteKeyboards *)self currentState];
+    [currentState4 resetAnimationFencing];
   }
 
   self->_handlingRemoteEvent = handlingRemoteEvent;
@@ -1620,9 +1620,9 @@ LABEL_86:
   return v76 & 1;
 }
 
-- (void)queue_keyboardUIDidChange:(id)a3 onComplete:(id)a4
+- (void)queue_keyboardUIDidChange:(id)change onComplete:(id)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   v5 = _UIArbiterClientLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1630,15 +1630,15 @@ LABEL_86:
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "RX keyboardUIDidChange (WARNING: Unexpected call to _UIRemoteKeyboards)", v6, 2u);
   }
 
-  if (v4)
+  if (completeCopy)
   {
-    v4[2](v4);
+    completeCopy[2](completeCopy);
   }
 }
 
-- (void)queue_endInputSessionWithCompletion:(id)a3
+- (void)queue_endInputSessionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _UIArbiterClientLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1646,104 +1646,104 @@ LABEL_86:
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "RX endInputSession (WARNING: Unexpected call to _UIRemoteKeyboards)", v5, 2u);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)queue_keyboardChanged:(id)a3 onComplete:(id)a4
+- (void)queue_keyboardChanged:(id)changed onComplete:(id)complete
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  completeCopy = complete;
   v8 = +[UIKeyboardVisualModeManager visualModeLog];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = v6;
+    v18 = changedCopy;
     v19 = 2112;
-    v20 = v6;
+    v20 = changedCopy;
     _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "queue_keyboardChanged (self: %p, info: %p), %@", buf, 0x20u);
   }
 
-  v9 = [UIApp _systemAnimationFenceExemptQueue];
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55___UIRemoteKeyboards_queue_keyboardChanged_onComplete___block_invoke;
   v12[3] = &unk_1E70FCE28;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 performAsync:v12];
+  v13 = changedCopy;
+  v14 = completeCopy;
+  v10 = completeCopy;
+  v11 = changedCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v12];
 }
 
-- (void)queue_keyboardChangedWithCompletion:(id)a3
+- (void)queue_keyboardChangedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [UIApp _systemAnimationFenceExemptQueue];
+  completionCopy = completion;
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58___UIRemoteKeyboards_queue_keyboardChangedWithCompletion___block_invoke;
   v7[3] = &unk_1E70F37C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performAsync:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v7];
 }
 
-- (void)queue_keyboardIAVChanged:(double)a3 onComplete:(id)a4
+- (void)queue_keyboardIAVChanged:(double)changed onComplete:(id)complete
 {
-  v6 = a4;
+  completeCopy = complete;
   if ([UIApp _isSpringBoard])
   {
-    v7 = [UIApp _systemAnimationFenceExemptQueue];
+    _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58___UIRemoteKeyboards_queue_keyboardIAVChanged_onComplete___block_invoke;
     v8[3] = &unk_1E70F5FA8;
-    v10 = a3;
+    changedCopy = changed;
     v8[4] = self;
-    v9 = v6;
-    [v7 performAsync:v8];
+    v9 = completeCopy;
+    [_systemAnimationFenceExemptQueue performAsync:v8];
   }
 
-  else if (v6)
+  else if (completeCopy)
   {
-    v6[2](v6);
+    completeCopy[2](completeCopy);
   }
 }
 
-- (void)queue_sceneBecameFocused:(id)a3 withCompletion:(id)a4
+- (void)queue_sceneBecameFocused:(id)focused withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [UIApp _systemAnimationFenceExemptQueue];
+  focusedCopy = focused;
+  completionCopy = completion;
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62___UIRemoteKeyboards_queue_sceneBecameFocused_withCompletion___block_invoke;
   v11[3] = &unk_1E70FCE28;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performAsync:v11];
+  v12 = focusedCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = focusedCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v11];
 }
 
-- (void)_performRequiredSceneUpdateIfPermittedForWindow:(uint64_t)a3 withContext:
+- (void)_performRequiredSceneUpdateIfPermittedForWindow:(uint64_t)window withContext:
 {
   v54 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if ((a3 & 0x100) != 0)
+    if ((window & 0x100) != 0)
     {
-      v6 = [a1 currentKeyboard] ^ 1;
+      v6 = [self currentKeyboard] ^ 1;
     }
 
     else
@@ -1751,20 +1751,20 @@ LABEL_86:
       v6 = 1;
     }
 
-    v7 = [a1 isUpdatingKeyWindow];
-    if ((v7 | a3))
+    isUpdatingKeyWindow = [self isUpdatingKeyWindow];
+    if ((isUpdatingKeyWindow | window))
     {
-      v8 = v7 ^ 1;
+      v8 = isUpdatingKeyWindow ^ 1;
     }
 
     else
     {
-      v8 = [a1 _sceneFocusUpdatePermittedForWindow:v5] & v6;
+      v8 = [self _sceneFocusUpdatePermittedForWindow:v5] & v6;
     }
 
-    v9 = a3 & 0x10000;
-    v10 = a3 & 0x1000000;
-    v11 = a3 & 0x100000000;
+    v9 = window & 0x10000;
+    v10 = window & 0x1000000;
+    v11 = window & 0x100000000;
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("KeyboardFocus", &qword_1ED499788);
     if (*CategoryCachedImpl)
     {
@@ -1778,35 +1778,35 @@ LABEL_86:
         *&v43[4] = 2048;
         *&v43[6] = v5;
         v44 = 1024;
-        v45 = a3 & 1;
+        v45 = window & 1;
         v46 = 1024;
-        v47 = (a3 & 0x100) >> 8;
+        v47 = (window & 0x100) >> 8;
         v48 = 1024;
         v49 = v9 >> 16;
         v50 = 1024;
-        v51 = (a3 & 0x1000000) >> 24;
+        v51 = (window & 0x1000000) >> 24;
         v52 = 1024;
-        v53 = (a3 & 0x100000000uLL) >> 32;
+        v53 = (window & 0x100000000uLL) >> 32;
         _os_log_impl(&dword_188A29000, v33, OS_LOG_TYPE_ERROR, "%s: Update is permitted: %d; for window: %p; forcingUpdate: %d; consideringCurrentKeyboard: %d; updateFocusedSceneIdentityStringOrIdentifierIfNil: %d; updateProxyFocusContext: %d; notifyViewServiceHostIfNeeded: %d", buf, 0x3Au);
       }
     }
 
     if (v8)
     {
-      v13 = [v5 windowScene];
-      v14 = [v13 _settingsScene];
+      windowScene = [v5 windowScene];
+      _settingsScene = [windowScene _settingsScene];
 
-      v15 = [v5 windowScene];
-      v16 = [v15 _settingsScene];
+      windowScene2 = [v5 windowScene];
+      _settingsScene2 = [windowScene2 _settingsScene];
 
-      v17 = [v16 _FBSScene];
+      _FBSScene = [_settingsScene2 _FBSScene];
 
-      v18 = [v17 identityToken];
-      v19 = [a1 focusedSceneIdentityStringOrIdentifier];
-      v20 = (v19 | v9) != 0;
-      if (!v5 || v17)
+      identityToken = [_FBSScene identityToken];
+      focusedSceneIdentityStringOrIdentifier = [self focusedSceneIdentityStringOrIdentifier];
+      v20 = (focusedSceneIdentityStringOrIdentifier | v9) != 0;
+      if (!v5 || _FBSScene)
       {
-        v24 = [v18 stringRepresentation];
+        stringRepresentation = [identityToken stringRepresentation];
         v25 = __UILogGetCategoryCachedImpl("KeyboardFocus", &qword_1ED499790);
         if (*v25)
         {
@@ -1816,12 +1816,12 @@ LABEL_86:
             *buf = 136315394;
             v41 = "[_UIRemoteKeyboards _performRequiredSceneUpdateIfPermittedForWindow:withContext:]";
             v42 = 2112;
-            *v43 = v24;
+            *v43 = stringRepresentation;
             _os_log_impl(&dword_188A29000, log, OS_LOG_TYPE_ERROR, "%s: Setting required scene: %@", buf, 0x16u);
           }
         }
 
-        [a1 setRequiredScene:v17];
+        [self setRequiredScene:_FBSScene];
         if (v20)
         {
           v26 = __UILogGetCategoryCachedImpl("KeyboardFocus", &qword_1ED499798);
@@ -1833,17 +1833,17 @@ LABEL_86:
               *buf = 136315394;
               v41 = "[_UIRemoteKeyboards _performRequiredSceneUpdateIfPermittedForWindow:withContext:]";
               v42 = 2112;
-              *v43 = v24;
+              *v43 = stringRepresentation;
               _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_ERROR, "%s: Focusing scene identity: %@", buf, 0x16u);
             }
           }
 
-          [a1 setFocusedSceneIdentityStringOrIdentifier:v24];
+          [self setFocusedSceneIdentityStringOrIdentifier:stringRepresentation];
         }
 
         if (v10)
         {
-          v27 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:v18 window:v5];
+          v27 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:identityToken window:v5];
           v28 = __UILogGetCategoryCachedImpl("KeyboardFocus", &qword_1ED4997A0);
           if (*v28)
           {
@@ -1858,14 +1858,14 @@ LABEL_86:
             }
           }
 
-          v29 = [a1 proxy];
-          [v29 setClientFocusContext:v27];
+          proxy = [self proxy];
+          [proxy setClientFocusContext:v27];
         }
       }
 
       else
       {
-        if (v14 == 0 || !v20)
+        if (_settingsScene == 0 || !v20)
         {
 LABEL_26:
           if (v11)
@@ -1873,24 +1873,24 @@ LABEL_26:
             v38 = @"_UIRemoteKeyboardsHostedWindowUserInfoKey";
             v39 = v5;
             v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-            v32 = [MEMORY[0x1E696AD88] defaultCenter];
-            [v32 postNotificationName:@"_UIRemoteKeyboardsServiceWantsKeyboardFocusWithoutFirstResponderNotification" object:0 userInfo:v31];
+            defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+            [defaultCenter postNotificationName:@"_UIRemoteKeyboardsServiceWantsKeyboardFocusWithoutFirstResponderNotification" object:0 userInfo:v31];
           }
 
           goto LABEL_29;
         }
 
-        v21 = [v14 _FBSScene];
-        v22 = v21;
-        if (v21)
+        _FBSScene2 = [_settingsScene _FBSScene];
+        v22 = _FBSScene2;
+        if (_FBSScene2)
         {
-          v23 = [v21 identityToken];
-          v24 = [v23 stringRepresentation];
+          identityToken2 = [_FBSScene2 identityToken];
+          stringRepresentation = [identityToken2 stringRepresentation];
         }
 
         else
         {
-          v24 = [v14 _sceneIdentifier];
+          stringRepresentation = [_settingsScene _sceneIdentifier];
         }
 
         v30 = __UILogGetCategoryCachedImpl("KeyboardFocus", &qword_1ED4997A8);
@@ -1902,12 +1902,12 @@ LABEL_26:
             *buf = 136315394;
             v41 = "[_UIRemoteKeyboards _performRequiredSceneUpdateIfPermittedForWindow:withContext:]";
             v42 = 2112;
-            *v43 = v24;
+            *v43 = stringRepresentation;
             _os_log_impl(&dword_188A29000, v36, OS_LOG_TYPE_ERROR, "%s: Focusing scene identifier: %@", buf, 0x16u);
           }
         }
 
-        [a1 setFocusedSceneIdentityStringOrIdentifier:v24];
+        [self setFocusedSceneIdentityStringOrIdentifier:stringRepresentation];
       }
 
       goto LABEL_26;
@@ -1917,32 +1917,32 @@ LABEL_26:
 LABEL_29:
 }
 
-- (void)queue_getDebugInfoWithCompletion:(id)a3
+- (void)queue_getDebugInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [UIApp _systemAnimationFenceExemptQueue];
+    _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55___UIRemoteKeyboards_queue_getDebugInfoWithCompletion___block_invoke;
     v6[3] = &unk_1E70F37C0;
     v6[4] = self;
-    v7 = v4;
-    [v5 performAsync:v6];
+    v7 = completionCopy;
+    [_systemAnimationFenceExemptQueue performAsync:v6];
   }
 }
 
 - (void)stopConnection
 {
-  v3 = [(_UIRemoteKeyboards *)self connection];
-  [v3 setInvalidationHandler:0];
+  connection = [(_UIRemoteKeyboards *)self connection];
+  [connection setInvalidationHandler:0];
 
-  v4 = [(_UIRemoteKeyboards *)self connection];
-  [v4 setInterruptionHandler:0];
+  connection2 = [(_UIRemoteKeyboards *)self connection];
+  [connection2 setInterruptionHandler:0];
 
-  v5 = [(_UIRemoteKeyboards *)self connection];
-  [v5 invalidate];
+  connection3 = [(_UIRemoteKeyboards *)self connection];
+  [connection3 invalidate];
 
   connection = self->_connection;
   self->_connection = 0;
@@ -1975,18 +1975,18 @@ LABEL_29:
   [UIKeyboardSceneDelegate performOnControllers:&__block_literal_global_634];
 }
 
-+ (id)keyboardWindowSceneForScreen:(id)a3 create:(BOOL)a4
++ (id)keyboardWindowSceneForScreen:(id)screen create:(BOOL)create
 {
-  v4 = a4;
-  v6 = a3;
-  if (([a1 enabled] & 1) != 0 && objc_msgSend(a1, "wantsUnassociatedWindowSceneForKeyboardWindow"))
+  createCopy = create;
+  screenCopy = screen;
+  if (([self enabled] & 1) != 0 && objc_msgSend(self, "wantsUnassociatedWindowSceneForKeyboardWindow"))
   {
-    v7 = [UIWindowScene _unassociatedWindowSceneForScreen:v6 create:v4];
+    v7 = [UIWindowScene _unassociatedWindowSceneForScreen:screenCopy create:createCopy];
   }
 
   else
   {
-    v7 = [UIWindowScene _keyboardWindowSceneForScreen:v6 create:v4];
+    v7 = [UIWindowScene _keyboardWindowSceneForScreen:screenCopy create:createCopy];
   }
 
   v8 = v7;
@@ -1994,12 +1994,12 @@ LABEL_29:
   return v8;
 }
 
-- (void)setSnapshotting:(BOOL)a3
+- (void)setSnapshotting:(BOOL)snapshotting
 {
-  v3 = a3;
+  snapshottingCopy = snapshotting;
   v19 = *MEMORY[0x1E69E9840];
   takingSnapshot = self->_takingSnapshot;
-  self->_takingSnapshot = a3;
+  self->_takingSnapshot = snapshotting;
   v6 = _UIMainBundleIdentifier();
   v7 = [v6 isEqualToString:@"com.apple.Spotlight"];
 
@@ -2008,7 +2008,7 @@ LABEL_29:
     [(_UIRemoteKeyboards *)self reloadForSnapshotting];
   }
 
-  if (takingSnapshot != v3)
+  if (takingSnapshot != snapshottingCopy)
   {
     v16 = 0u;
     v17 = 0u;
@@ -2055,54 +2055,54 @@ LABEL_29:
 - (BOOL)sceneIsFullScreen
 {
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 scene];
-  v4 = [v3 _FBSScene];
+  scene = [v2 scene];
+  _FBSScene = [scene _FBSScene];
 
-  v5 = [v4 settings];
-  [v5 frame];
+  settings = [_FBSScene settings];
+  [settings frame];
   v7 = v6;
   v9 = v8;
-  v10 = [objc_opt_self() mainScreen];
-  [v10 _referenceBounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen _referenceBounds];
   v13 = v9 == v12 && v7 == v11;
 
   return v13;
 }
 
-- (void)setWindowEnabled:(BOOL)a3
+- (void)setWindowEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (![(_UIRemoteKeyboards *)self hasAnyHostedViews]|| !self->_handlingRemoteEvent || self->_handlingViewServiceEvent)
   {
 
-    [(_UIRemoteKeyboards *)self setWindowEnabled:v3 force:0];
+    [(_UIRemoteKeyboards *)self setWindowEnabled:enabledCopy force:0];
   }
 }
 
-- (void)setWindowEnabled:(BOOL)a3 force:(BOOL)a4
+- (void)setWindowEnabled:(BOOL)enabled force:(BOOL)force
 {
-  v4 = a4;
-  v5 = a3;
+  forceCopy = force;
+  enabledCopy = enabled;
   v34 = *MEMORY[0x1E69E9840];
   if (![(_UIRemoteKeyboards *)self _usesInvisibleKeyboardBehindWTUI]|| !self->_showsInvisibleKeyboardBehindWTUI)
   {
-    if (v5)
+    if (enabledCopy)
     {
-      v5 = self->_restoringKeyboardAfterDismissSiri || [(_UIRemoteKeyboards *)self allowedToEnableKeyboardWindow];
+      enabledCopy = self->_restoringKeyboardAfterDismissSiri || [(_UIRemoteKeyboards *)self allowedToEnableKeyboardWindow];
     }
 
-    if (v5 && v4)
+    if (enabledCopy && forceCopy)
     {
       v7 = 2;
     }
 
     else
     {
-      v7 = v5;
+      v7 = enabledCopy;
     }
 
-    v8 = [(_UIRemoteKeyboards *)self requiredScene];
-    v9 = [v8 identityToken];
+    requiredScene = [(_UIRemoteKeyboards *)self requiredScene];
+    identityToken = [requiredScene identityToken];
 
     v10 = off_1E7117DA8[v7];
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("KeyboardFocus", &setWindowEnabled_force____s_category);
@@ -2112,38 +2112,38 @@ LABEL_29:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v29 = v28;
-        v30 = [v9 stringRepresentation];
+        stringRepresentation = [identityToken stringRepresentation];
         *buf = 136315650;
         *v33 = "[_UIRemoteKeyboards setWindowEnabled:force:]";
         *&v33[8] = 2080;
         *&v33[10] = v10;
         *&v33[18] = 2112;
-        *&v33[20] = v30;
+        *&v33[20] = stringRepresentation;
         _os_log_impl(&dword_188A29000, v29, OS_LOG_TYPE_ERROR, "%s: Setting window state: %s for scene identity: %@", buf, 0x20u);
       }
     }
 
     v12 = +[UIWindow _applicationKeyWindow];
-    v13 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:v9 window:v12];
+    v13 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:identityToken window:v12];
 
     v14 = _UIArbiterClientLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(_UIRemoteKeyboards *)self keyboardWindow];
-      v16 = [v15 _contextId];
+      keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+      _contextId = [keyboardWindow _contextId];
       v17 = _UIKeyboardWindowStateToString(v7);
       v18 = v7;
-      v19 = v9;
+      v19 = identityToken;
       requiredLevel = self->_requiredLevel;
       [v13 descriptionForLog];
       v21 = v31 = v13;
       *buf = 67109891;
-      *v33 = v16;
+      *v33 = _contextId;
       *&v33[4] = 2114;
       *&v33[6] = v17;
       *&v33[14] = 2048;
       *&v33[16] = requiredLevel;
-      v9 = v19;
+      identityToken = v19;
       v7 = v18;
       *&v33[24] = 2113;
       *&v33[26] = v21;
@@ -2152,103 +2152,103 @@ LABEL_29:
       v13 = v31;
     }
 
-    v22 = [(_UIRemoteKeyboards *)self proxy];
-    v23 = [(_UIRemoteKeyboards *)self keyboardWindow];
-    [v22 setWindowContextID:objc_msgSend(v23 focusContext:"_contextId") windowState:v13 withLevel:{v7, self->_requiredLevel}];
+    proxy = [(_UIRemoteKeyboards *)self proxy];
+    keyboardWindow2 = [(_UIRemoteKeyboards *)self keyboardWindow];
+    [proxy setWindowContextID:objc_msgSend(keyboardWindow2 focusContext:"_contextId") windowState:v13 withLevel:{v7, self->_requiredLevel}];
 
-    v24 = [(_UIRemoteKeyboards *)self keyboardWindow];
-    [v24 setHidden:v5 ^ 1];
+    keyboardWindow3 = [(_UIRemoteKeyboards *)self keyboardWindow];
+    [keyboardWindow3 setHidden:enabledCopy ^ 1];
 
-    if (self->_windowEnabled != v5)
+    if (self->_windowEnabled != enabledCopy)
     {
-      self->_windowEnabled = v5;
+      self->_windowEnabled = enabledCopy;
       v25 = +[UIKeyboardImpl activeInstance];
-      v26 = [v25 inputModeIndicatorController];
-      [v26 keyboardWindowEnabled:v5];
+      inputModeIndicatorController = [v25 inputModeIndicatorController];
+      [inputModeIndicatorController keyboardWindowEnabled:enabledCopy];
     }
 
-    if (v5)
+    if (enabledCopy)
     {
-      v27 = [(_UIRemoteKeyboards *)self keyboardWindow];
-      [v27 _matchDeviceOrientation];
+      keyboardWindow4 = [(_UIRemoteKeyboards *)self keyboardWindow];
+      [keyboardWindow4 _matchDeviceOrientation];
     }
   }
 }
 
-- (void)_lostWindow:(id)a3
+- (void)_lostWindow:(id)window
 {
-  v10 = a3;
-  v4 = [v10 _screen];
-  v5 = [objc_opt_self() mainScreen];
+  windowCopy = window;
+  _screen = [windowCopy _screen];
+  mainScreen = [objc_opt_self() mainScreen];
 
-  if (v4 != v5)
+  if (_screen != mainScreen)
   {
     v6 = +[UIKeyboardImpl activeInstance];
     [v6 updateLayout];
   }
 
   lastScreen = self->_lastScreen;
-  v8 = [v10 _screen];
+  _screen2 = [windowCopy _screen];
 
-  if (lastScreen == v8)
+  if (lastScreen == _screen2)
   {
     v9 = self->_lastScreen;
     self->_lastScreen = 0;
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  disconnectCopy = disconnect;
+  object = [disconnectCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 object];
+    object2 = [disconnectCopy object];
 
-    if (v6 && [(UIScene *)v6 _hasInvalidated])
+    if (object2 && [(UIScene *)object2 _hasInvalidated])
     {
       suppressedScene = self->_suppressedScene;
-      if (v6 == suppressedScene)
+      if (object2 == suppressedScene)
       {
         self->_suppressedScene = 0;
       }
 
-      v8 = [(_UIRemoteKeyboards *)self requiredScene];
-      v9 = v8;
-      if (v8)
+      requiredScene = [(_UIRemoteKeyboards *)self requiredScene];
+      v9 = requiredScene;
+      if (requiredScene)
       {
-        v10 = [v8 identityToken];
-        v11 = [v10 stringRepresentation];
+        identityToken = [requiredScene identityToken];
+        stringRepresentation = [identityToken stringRepresentation];
       }
 
       else
       {
-        v11 = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
+        stringRepresentation = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
       }
 
-      v12 = [(UIScene *)v6 _FBSScene];
-      v13 = v12;
-      if (v12)
+      _FBSScene = [(UIScene *)object2 _FBSScene];
+      v13 = _FBSScene;
+      if (_FBSScene)
       {
-        v14 = [v12 identityToken];
-        v15 = [v14 stringRepresentation];
+        identityToken2 = [_FBSScene identityToken];
+        stringRepresentation2 = [identityToken2 stringRepresentation];
       }
 
       else
       {
-        v15 = [(UIScene *)v6 _sceneIdentifier];
+        stringRepresentation2 = [(UIScene *)object2 _sceneIdentifier];
       }
 
       v16 = BSEqualStrings();
       v17 = +[UIWindowScene _keyWindowScene];
-      v18 = [v17 _isTargetOfKeyboardEventDeferringEnvironment];
+      _isTargetOfKeyboardEventDeferringEnvironment = [v17 _isTargetOfKeyboardEventDeferringEnvironment];
 
-      if ((v16 & 1) != 0 || v18)
+      if ((v16 & 1) != 0 || _isTargetOfKeyboardEventDeferringEnvironment)
       {
-        v19 = [(_UIRemoteKeyboards *)self keyboardWindow];
-        v20 = [(_UIRemoteKeyboards *)self wantsToShowKeyboardForWindow:v19];
+        keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+        v20 = [(_UIRemoteKeyboards *)self wantsToShowKeyboardForWindow:keyboardWindow];
 
         CategoryCachedImpl = __UILogGetCategoryCachedImpl("KeyboardFocus", &sceneDidDisconnect____s_category);
         if (*CategoryCachedImpl)
@@ -2260,15 +2260,15 @@ LABEL_29:
             v26 = 136316418;
             v27 = "[_UIRemoteKeyboards sceneDidDisconnect:]";
             v28 = 2112;
-            v29 = v15;
+            v29 = stringRepresentation2;
             v30 = 1024;
             v31 = v16;
             v32 = 1024;
             v33 = v20;
             v34 = 1024;
-            v35 = [(_UIRemoteKeyboards *)self currentKeyboard];
+            currentKeyboard = [(_UIRemoteKeyboards *)self currentKeyboard];
             v36 = 1024;
-            v37 = [(_UIRemoteKeyboards *)self keyboardVisible];
+            keyboardVisible = [(_UIRemoteKeyboards *)self keyboardVisible];
             _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "%s: Performing required scene update for disconnecting scene: %@; needsUpdateToNil: %d; wantsToShowKeyboardForWindow: %d; hasCurrentKeyboard: %d; keyboardVisible: %d", &v26, 0x2Eu);
           }
         }
@@ -2293,11 +2293,11 @@ LABEL_29:
   else
   {
 
-    v6 = 0;
+    object2 = 0;
   }
 }
 
-- (void)applicationDidSuspend:(id)a3
+- (void)applicationDidSuspend:(id)suspend
 {
   v35 = *MEMORY[0x1E69E9840];
   if ([(_UIRemoteKeyboards *)self _usesInvisibleKeyboardBehindWTUI]&& self->_showsInvisibleKeyboardBehindWTUI)
@@ -2306,8 +2306,8 @@ LABEL_29:
     [(_UIRemoteKeyboards *)self restoreKeyboardIfNeeded];
   }
 
-  v4 = [(_UIRemoteKeyboards *)self keyboardWindow];
-  v5 = [(_UIRemoteKeyboards *)self wantsToShowKeyboardForWindow:v4];
+  keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+  v5 = [(_UIRemoteKeyboards *)self wantsToShowKeyboardForWindow:keyboardWindow];
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("KeyboardFocus", &applicationDidSuspend____s_category);
   if (*CategoryCachedImpl)
@@ -2321,19 +2321,19 @@ LABEL_29:
       v29 = 1024;
       v30 = v5;
       v31 = 1024;
-      v32 = [(_UIRemoteKeyboards *)self currentKeyboard];
+      currentKeyboard = [(_UIRemoteKeyboards *)self currentKeyboard];
       v33 = 1024;
-      v34 = [(_UIRemoteKeyboards *)self keyboardVisible];
+      keyboardVisible = [(_UIRemoteKeyboards *)self keyboardVisible];
       _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_ERROR, "%s: wantsToShowKeyboardForWindow: %d; hasCurrentKeyboard: %d; keyboardVisible: %d", buf, 0x1Eu);
     }
   }
 
   if (v5)
   {
-    v7 = [(_UIRemoteKeyboards *)self keyboardWindow];
-    v8 = [v7 _isHostedInAnotherProcess];
+    keyboardWindow2 = [(_UIRemoteKeyboards *)self keyboardWindow];
+    _isHostedInAnotherProcess = [keyboardWindow2 _isHostedInAnotherProcess];
 
-    if ((v8 & 1) == 0)
+    if ((_isHostedInAnotherProcess & 1) == 0)
     {
       [(_UIRemoteKeyboards *)self setWindowEnabled:0];
     }
@@ -2376,7 +2376,7 @@ LABEL_29:
     [(NSXPCConnection *)v16 invalidate];
   }
 
-  v17 = [UIApp _systemAnimationFenceExemptQueue];
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __44___UIRemoteKeyboards_applicationDidSuspend___block_invoke_2;
@@ -2385,61 +2385,61 @@ LABEL_29:
   v21[4] = self;
   v22 = v10;
   v18 = v10;
-  [v17 performAsync:v21];
+  [_systemAnimationFenceExemptQueue performAsync:v21];
 }
 
-- (void)applicationWillResume:(id)a3
+- (void)applicationWillResume:(id)resume
 {
-  v4 = a3;
+  resumeCopy = resume;
   if (!self->_enqueuedWillEnterForegroundActions)
   {
     self->_enqueuedWillEnterForegroundActions = 1;
     self->_userHasTappedOnKeyboard = 0;
-    v5 = [UIApp _systemAnimationFenceExemptQueue];
+    _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __44___UIRemoteKeyboards_applicationWillResume___block_invoke;
     v6[3] = &unk_1E70F35B8;
     v6[4] = self;
-    v7 = v4;
-    [v5 performAsync:v6];
+    v7 = resumeCopy;
+    [_systemAnimationFenceExemptQueue performAsync:v6];
   }
 }
 
-- (void)applicationResumedEventsOnly:(id)a3
+- (void)applicationResumedEventsOnly:(id)only
 {
   if (!self->_windowEnabled)
   {
-    [(_UIRemoteKeyboards *)self applicationWillResume:a3];
+    [(_UIRemoteKeyboards *)self applicationWillResume:only];
   }
 }
 
-- (void)applicationKeyWindowWillChange:(id)a3
+- (void)applicationKeyWindowWillChange:(id)change
 {
-  v4 = a3;
-  v5 = [(_UIRemoteKeyboards *)self keyboardWindow];
+  changeCopy = change;
+  keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
 
-  if (v5)
+  if (keyboardWindow)
   {
-    v6 = [UIApp isFrontBoard];
-    v7 = [v4 object];
-    v8 = v7;
-    if (v6)
+    isFrontBoard = [UIApp isFrontBoard];
+    object = [changeCopy object];
+    v8 = object;
+    if (isFrontBoard)
     {
-      v9 = [v7 _overriddenInterfaceOrientation];
+      _overriddenInterfaceOrientation = [object _overriddenInterfaceOrientation];
     }
 
     else
     {
-      v9 = [v7 interfaceOrientation];
+      _overriddenInterfaceOrientation = [object interfaceOrientation];
     }
 
-    v10 = v9;
+    v10 = _overriddenInterfaceOrientation;
     v11 = +[UIWindow _applicationKeyWindow];
     v12 = v11;
-    if (v6)
+    if (isFrontBoard)
     {
-      v13 = [v11 _overriddenInterfaceOrientation];
+      _overriddenInterfaceOrientation2 = [v11 _overriddenInterfaceOrientation];
       if (!v8)
       {
         goto LABEL_13;
@@ -2448,7 +2448,7 @@ LABEL_29:
 
     else
     {
-      v13 = [v11 interfaceOrientation];
+      _overriddenInterfaceOrientation2 = [v11 interfaceOrientation];
       if (!v8)
       {
 LABEL_13:
@@ -2457,20 +2457,20 @@ LABEL_13:
       }
     }
 
-    if (!v12 || v10 != v13)
+    if (!v12 || v10 != _overriddenInterfaceOrientation2)
     {
-      v14 = [(_UIRemoteKeyboards *)self keyboardWindow];
-      v15 = [v14 interfaceOrientation];
+      keyboardWindow2 = [(_UIRemoteKeyboards *)self keyboardWindow];
+      interfaceOrientation = [keyboardWindow2 interfaceOrientation];
 
-      if (v15 != v10)
+      if (interfaceOrientation != v10)
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __53___UIRemoteKeyboards_applicationKeyWindowWillChange___block_invoke;
         block[3] = &unk_1E70F5AF0;
-        v19 = v6;
+        v19 = isFrontBoard;
         v17 = v8;
-        v18 = self;
+        selfCopy = self;
         dispatch_async(MEMORY[0x1E69E96A0], block);
       }
     }
@@ -2481,15 +2481,15 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)applicationKeyWindowDidChange:(id)a3
+- (void)applicationKeyWindowDidChange:(id)change
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = 16777472;
-  v5 = a3;
-  v6 = [v5 object];
-  v7 = [v5 userInfo];
+  changeCopy = change;
+  object = [changeCopy object];
+  userInfo = [changeCopy userInfo];
 
-  v8 = [v7 objectForKey:@"Reason"];
+  v8 = [userInfo objectForKey:@"Reason"];
 
   if (v8 && [v8 unsignedIntegerValue] == 1)
   {
@@ -2503,39 +2503,39 @@ LABEL_14:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = v10;
-      v12 = _UIRemoteKeyboardsFBSSceneIdentityStringFromSettingsSceneOfWindow(v6);
+      v12 = _UIRemoteKeyboardsFBSSceneIdentityStringFromSettingsSceneOfWindow(object);
       v13 = 136315906;
       v14 = "[_UIRemoteKeyboards applicationKeyWindowDidChange:]";
       v15 = 2048;
-      v16 = v6;
+      v16 = object;
       v17 = 2112;
       v18 = v12;
       v19 = 2048;
-      v20 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "%s: Application key window changed to window: %p; scene identity: %@; for reason: %lu", &v13, 0x2Au);
     }
   }
 
-  [(_UIRemoteKeyboards *)self _performRequiredSceneUpdateIfPermittedForWindow:v6 withContext:v4];
+  [(_UIRemoteKeyboards *)self _performRequiredSceneUpdateIfPermittedForWindow:object withContext:v4];
   [UIKeyboardSceneDelegate performOnControllers:&__block_literal_global_650_0];
 }
 
-- (void)performRequiredSceneUpdateForKeyWindowCandidateOfSceneDelegate:(void *)a1
+- (void)performRequiredSceneUpdateForKeyWindowCandidateOfSceneDelegate:(void *)delegate
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (delegate)
   {
-    v3 = [a2 keyWindowCandidate];
-    v4 = v3;
-    if (v3)
+    keyWindowCandidate = [a2 keyWindowCandidate];
+    v4 = keyWindowCandidate;
+    if (keyWindowCandidate)
     {
-      v5 = [v3 windowScene];
-      v6 = [v5 _settingsScene];
+      windowScene = [keyWindowCandidate windowScene];
+      _settingsScene = [windowScene _settingsScene];
 
-      v7 = [v6 _FBSScene];
+      _FBSScene = [_settingsScene _FBSScene];
 
-      v8 = [v7 identityToken];
-      v9 = [v8 stringRepresentation];
+      identityToken = [_FBSScene identityToken];
+      stringRepresentation = [identityToken stringRepresentation];
 
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("KeyboardFocus", &performRequiredSceneUpdateForKeyWindowCandidateOfSceneDelegate____s_category);
       if (*CategoryCachedImpl)
@@ -2548,22 +2548,22 @@ LABEL_14:
           v14 = 2048;
           v15 = v4;
           v16 = 2112;
-          v17 = v9;
+          v17 = stringRepresentation;
           _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "%s: Performing required scene update for candidate window: %p; scene: %@", &v12, 0x20u);
         }
       }
 
-      [(_UIRemoteKeyboards *)a1 _performRequiredSceneUpdateIfPermittedForWindow:v4 withContext:0];
+      [(_UIRemoteKeyboards *)delegate _performRequiredSceneUpdateIfPermittedForWindow:v4 withContext:0];
     }
   }
 }
 
-- (BOOL)needsToShowKeyboardForWindow:(id)a3
+- (BOOL)needsToShowKeyboardForWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   if ([(_UIRemoteKeyboards *)self allowedToShowKeyboard])
   {
-    v5 = [(_UIRemoteKeyboards *)self wantsToShowKeyboardForWindow:v4];
+    v5 = [(_UIRemoteKeyboards *)self wantsToShowKeyboardForWindow:windowCopy];
   }
 
   else
@@ -2574,12 +2574,12 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)needsToShowKeyboardForViewServiceHostWindow:(id)a3
+- (BOOL)needsToShowKeyboardForViewServiceHostWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   if ([(_UIRemoteKeyboards *)self allowedToShowKeyboard])
   {
-    v5 = [(_UIRemoteKeyboards *)self wantsToShowKeyboardForViewServiceHostWindow:v4];
+    v5 = [(_UIRemoteKeyboards *)self wantsToShowKeyboardForViewServiceHostWindow:windowCopy];
   }
 
   else
@@ -2590,22 +2590,22 @@ LABEL_14:
   return v5;
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
-  v9 = a3;
+  activateCopy = activate;
   [(_UIRemoteKeyboards *)self clearKeyboardSceneIdentifierEnteringForeground:?];
   if ([(_UIRemoteKeyboards *)self currentKeyboard])
   {
-    v4 = [(_UIRemoteKeyboards *)self keyboardWindow];
-    v5 = [v4 isHidden];
+    keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+    isHidden = [keyboardWindow isHidden];
 
-    if (v5)
+    if (isHidden)
     {
-      v6 = [v9 object];
+      object = [activateCopy object];
       v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v8 = [v7 scene];
+      scene = [v7 scene];
 
-      if (v6 == v8)
+      if (object == scene)
       {
         [(_UIRemoteKeyboards *)self applicationDidBecomeActive:0];
       }
@@ -2613,20 +2613,20 @@ LABEL_14:
   }
 }
 
-- (void)setKeyboardSceneIdentifierEnteringForegroundForScene:(id)a3
+- (void)setKeyboardSceneIdentifierEnteringForegroundForScene:(id)scene
 {
-  v4 = [a3 _sceneIdentifier];
+  _sceneIdentifier = [scene _sceneIdentifier];
   keyboardSceneIdentifierEnteringForeground = self->_keyboardSceneIdentifierEnteringForeground;
-  self->_keyboardSceneIdentifierEnteringForeground = v4;
+  self->_keyboardSceneIdentifierEnteringForeground = _sceneIdentifier;
 }
 
-- (void)clearKeyboardSceneIdentifierEnteringForeground:(id)a3
+- (void)clearKeyboardSceneIdentifierEnteringForeground:(id)foreground
 {
-  v4 = [a3 object];
+  object = [foreground object];
   keyboardSceneIdentifierEnteringForeground = self->_keyboardSceneIdentifierEnteringForeground;
-  v8 = v4;
-  v6 = [v4 _sceneIdentifier];
-  LODWORD(keyboardSceneIdentifierEnteringForeground) = [(NSString *)keyboardSceneIdentifierEnteringForeground isEqualToString:v6];
+  v8 = object;
+  _sceneIdentifier = [object _sceneIdentifier];
+  LODWORD(keyboardSceneIdentifierEnteringForeground) = [(NSString *)keyboardSceneIdentifierEnteringForeground isEqualToString:_sceneIdentifier];
 
   if (keyboardSceneIdentifierEnteringForeground)
   {
@@ -2635,39 +2635,39 @@ LABEL_14:
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v9 = [a3 object];
+  object = [foreground object];
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 scene];
+  scene = [v4 scene];
 
-  v6 = v9;
-  if (v9 == v5)
+  v6 = object;
+  if (object == scene)
   {
-    v7 = [v9 _sceneIdentifier];
+    _sceneIdentifier = [object _sceneIdentifier];
     keyboardSceneIdentifierEnteringForeground = self->_keyboardSceneIdentifierEnteringForeground;
-    self->_keyboardSceneIdentifierEnteringForeground = v7;
+    self->_keyboardSceneIdentifierEnteringForeground = _sceneIdentifier;
 
-    v6 = v9;
+    v6 = object;
   }
 }
 
-- (void)screenDidDisconnect:(id)a3
+- (void)screenDidDisconnect:(id)disconnect
 {
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v7 = [v4 scene];
+  scene = [v4 scene];
 
-  if (-[_UIRemoteKeyboards currentKeyboard](self, "currentKeyboard") && [v7 activationState] == 1)
+  if (-[_UIRemoteKeyboards currentKeyboard](self, "currentKeyboard") && [scene activationState] == 1)
   {
-    v5 = [v7 _sceneIdentifier];
+    _sceneIdentifier = [scene _sceneIdentifier];
     keyboardSceneIdentifierEnteringForeground = self->_keyboardSceneIdentifierEnteringForeground;
-    self->_keyboardSceneIdentifierEnteringForeground = v5;
+    self->_keyboardSceneIdentifierEnteringForeground = _sceneIdentifier;
   }
 }
 
-- (BOOL)wantsToShowKeyboardForWindow:(id)a3
+- (BOOL)wantsToShowKeyboardForWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   if ([(_UIRemoteKeyboards *)self currentKeyboard])
   {
     v5 = 1;
@@ -2675,27 +2675,27 @@ LABEL_14:
 
   else
   {
-    v6 = [(_UIRemoteKeyboards *)self viewHostForWindow:v4];
+    v6 = [(_UIRemoteKeyboards *)self viewHostForWindow:windowCopy];
     v5 = ([v6 hasHostedViews] & 1) != 0 || self->_keyboardSnapshot || -[_UIRemoteKeyboards isOnScreenRotating](self, "isOnScreenRotating");
   }
 
   return v5;
 }
 
-- (BOOL)wantsToShowKeyboardForViewServiceHostWindow:(id)a3
+- (BOOL)wantsToShowKeyboardForViewServiceHostWindow:(id)window
 {
-  v3 = [(_UIRemoteKeyboards *)self viewHostForWindow:a3];
-  v4 = [v3 hasHostedViews];
+  v3 = [(_UIRemoteKeyboards *)self viewHostForWindow:window];
+  hasHostedViews = [v3 hasHostedViews];
 
-  return v4;
+  return hasHostedViews;
 }
 
-- (void)updateLastScreen:(id)a3
+- (void)updateLastScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   if (self->_enableMultiscreenHack)
   {
-    v10 = v5;
+    v10 = screenCopy;
     p_lastScreen = &self->_lastScreen;
     if (self->_lastScreen)
     {
@@ -2703,35 +2703,35 @@ LABEL_14:
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 screen];
+        screen = [v7 screen];
 
-        if (v9 != v10)
+        if (screen != v10)
         {
           [v8 invalidate];
         }
       }
     }
 
-    objc_storeStrong(p_lastScreen, a3);
-    v5 = v10;
+    objc_storeStrong(p_lastScreen, screen);
+    screenCopy = v10;
   }
 }
 
-- (void)prepareToMoveKeyboard:(CGRect)a3 withIAV:(CGRect)a4 isIAVRelevant:(BOOL)a5 showing:(BOOL)a6 notifyRemote:(BOOL)a7 forScene:(id)a8
+- (void)prepareToMoveKeyboard:(CGRect)keyboard withIAV:(CGRect)v isIAVRelevant:(BOOL)relevant showing:(BOOL)showing notifyRemote:(BOOL)remote forScene:(id)scene
 {
-  v8 = a7;
-  v9 = a6;
-  v10 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3.size.height;
-  v16 = a3.size.width;
-  v194 = a3.origin.x;
-  v195 = a3.origin.y;
+  remoteCopy = remote;
+  showingCopy = showing;
+  relevantCopy = relevant;
+  height = v.size.height;
+  width = v.size.width;
+  y = v.origin.y;
+  x = v.origin.x;
+  v15 = keyboard.size.height;
+  v16 = keyboard.size.width;
+  v194 = keyboard.origin.x;
+  v195 = keyboard.origin.y;
   v205 = *MEMORY[0x1E69E9840];
-  v18 = a8;
+  sceneCopy = scene;
   if (![(_UIRemoteKeyboards *)self _usesInvisibleKeyboardBehindWTUI])
   {
 LABEL_5:
@@ -2743,15 +2743,15 @@ LABEL_5:
       v206.size.width = v16;
       v206.size.height = v15;
       v20 = NSStringFromCGRect(v206);
-      v21 = [MEMORY[0x1E696AD98] numberWithBool:v9];
-      v22 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+      v21 = [MEMORY[0x1E696AD98] numberWithBool:showingCopy];
+      v22 = [MEMORY[0x1E696AD98] numberWithBool:remoteCopy];
       v23 = +[UIKeyboardImpl activeInstance];
-      v24 = [v23 isMinimized];
+      isMinimized = [v23 isMinimized];
       v25 = @"NO";
       *buf = 138413058;
       *v200 = v20;
       *&v200[8] = 2112;
-      if (v24)
+      if (isMinimized)
       {
         v25 = @"YES";
       }
@@ -2765,148 +2765,148 @@ LABEL_5:
     }
 
     context = objc_autoreleasePoolPush();
-    v26 = [v18 screen];
-    v27 = v26;
+    screen = [sceneCopy screen];
+    v27 = screen;
     v28 = 0;
-    if (self->_enableMultiscreenHack && v9)
+    if (self->_enableMultiscreenHack && showingCopy)
     {
-      v28 = self->_lastScreen != v26;
-      [(_UIRemoteKeyboards *)self updateLastScreen:v26];
+      v28 = self->_lastScreen != screen;
+      [(_UIRemoteKeyboards *)self updateLastScreen:screen];
     }
 
     [(_UIRemoteKeyboards *)self setBackupState:0];
-    v29 = [(_UIRemoteKeyboards *)self proxy];
-    v30 = v29;
+    proxy = [(_UIRemoteKeyboards *)self proxy];
+    v30 = proxy;
     v31 = height - v15;
-    if (!v10)
+    if (!relevantCopy)
     {
       v31 = 0.0;
     }
 
-    [v29 notifyIAVHeight:v31];
+    [proxy notifyIAVHeight:v31];
 
-    v32 = [(_UIRemoteKeyboards *)self keyboardWindow];
-    v33 = [v32 rootViewController];
+    keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+    rootViewController = [keyboardWindow rootViewController];
     v196 = v27;
-    v34 = ([v33 isRotating] & 1) != 0 || self->_takingSnapshot;
+    v34 = ([rootViewController isRotating] & 1) != 0 || self->_takingSnapshot;
 
-    v35 = [v18 keyboardSceneDelegate];
-    v36 = [v35 responder];
-    v37 = [v36 _window];
+    keyboardSceneDelegate = [sceneCopy keyboardSceneDelegate];
+    responder = [keyboardSceneDelegate responder];
+    _window = [responder _window];
 
-    v192 = v8;
-    if (v37)
+    v192 = remoteCopy;
+    if (_window)
     {
-      v34 |= [v37 _requiresKeyboardPresentationFence] ^ 1;
+      v34 |= [_window _requiresKeyboardPresentationFence] ^ 1;
     }
 
     v38 = +[UIKeyboardImpl activeInstance];
-    v39 = [v38 layoutIsResizing];
+    layoutIsResizing = [v38 layoutIsResizing];
 
-    v188 = v39;
-    if (v39)
+    v188 = layoutIsResizing;
+    if (layoutIsResizing)
     {
       v40 = 1;
     }
 
     else
     {
-      v41 = [(_UIRemoteKeyboards *)self keyboardWindow];
-      v42 = [v41 rootViewController];
-      v43 = [v42 isTransitioningBetweenFloatingStates];
+      keyboardWindow2 = [(_UIRemoteKeyboards *)self keyboardWindow];
+      rootViewController2 = [keyboardWindow2 rootViewController];
+      isTransitioningBetweenFloatingStates = [rootViewController2 isTransitioningBetweenFloatingStates];
 
-      v40 = v43 | v34;
+      v40 = isTransitioningBetweenFloatingStates | v34;
     }
 
     v44 = objc_opt_class();
-    v45 = [(_UIRemoteKeyboards *)self keyboardVisible];
-    v46 = v45;
-    if (!v9)
+    keyboardVisible = [(_UIRemoteKeyboards *)self keyboardVisible];
+    v46 = keyboardVisible;
+    if (!showingCopy)
     {
       if (![(_UIRemoteKeyboards *)self currentKeyboard])
       {
         if ((v40 & 1) == 0)
         {
-          v58 = [(_UIRemoteKeyboards *)self currentState];
-          v59 = [v58 animationFence];
-          [v18 _synchronizeDrawingWithFence:v59];
+          currentState = [(_UIRemoteKeyboards *)self currentState];
+          animationFence = [currentState animationFence];
+          [sceneCopy _synchronizeDrawingWithFence:animationFence];
         }
 
-        v60 = [(_UIRemoteKeyboards *)self currentState];
-        [v60 resetAnimationFencing];
+        currentState2 = [(_UIRemoteKeyboards *)self currentState];
+        [currentState2 resetAnimationFencing];
         goto LABEL_126;
       }
 
       if (!v46)
       {
-        v189 = 1;
+        _isHostedInAnotherProcess = 1;
         goto LABEL_73;
       }
 
-      v53 = [v44 informationForKeyboardDown];
-      [(_UIRemoteKeyboards *)self updateCurrentState:v53];
-      v189 = 1;
+      informationForKeyboardDown = [v44 informationForKeyboardDown];
+      [(_UIRemoteKeyboards *)self updateCurrentState:informationForKeyboardDown];
+      _isHostedInAnotherProcess = 1;
 LABEL_72:
 
 LABEL_73:
-      v60 = v18;
-      v99 = [v60 _FBSScene];
-      v100 = v99;
-      if (v99)
+      currentState2 = sceneCopy;
+      _FBSScene = [currentState2 _FBSScene];
+      v100 = _FBSScene;
+      if (_FBSScene)
       {
-        v101 = [v99 identityToken];
-        v102 = [v101 stringRepresentation];
+        identityToken = [_FBSScene identityToken];
+        stringRepresentation = [identityToken stringRepresentation];
       }
 
       else
       {
-        v102 = [v60 _sceneIdentifier];
+        stringRepresentation = [currentState2 _sceneIdentifier];
       }
 
-      v103 = [(_UIRemoteKeyboards *)self currentState];
-      [v103 setSourceSceneIdentityString:v102];
+      currentState3 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState3 setSourceSceneIdentityString:stringRepresentation];
 
       v104 = _UIMainBundleIdentifier();
-      v105 = [(_UIRemoteKeyboards *)self currentState];
-      [v105 setSourceBundleIdentifier:v104];
+      currentState4 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState4 setSourceBundleIdentifier:v104];
 
-      v106 = [v60 screen];
-      v107 = [v106 displayConfiguration];
-      v108 = [v107 _nameForDisplayType];
-      v109 = [(_UIRemoteKeyboards *)self currentState];
-      [v109 setSourceDisplayIdentifier:v108];
+      screen2 = [currentState2 screen];
+      displayConfiguration = [screen2 displayConfiguration];
+      _nameForDisplayType = [displayConfiguration _nameForDisplayType];
+      currentState5 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState5 setSourceDisplayIdentifier:_nameForDisplayType];
 
       v110 = _UIMainBundleIdentifier();
-      LODWORD(v107) = [v110 isEqualToString:@"com.apple.Spotlight"];
+      LODWORD(displayConfiguration) = [v110 isEqualToString:@"com.apple.Spotlight"];
 
-      v111 = [(_UIRemoteKeyboards *)self currentState];
-      [v111 setShouldTakeSnapshot:v107 ^ 1];
+      currentState6 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState6 setShouldTakeSnapshot:displayConfiguration ^ 1];
 
       v112 = [(_UIRemoteKeyboards *)self localSceneCount]> 1;
-      v113 = [(_UIRemoteKeyboards *)self currentState];
-      [v113 setMultipleScenes:v112];
+      currentState7 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState7 setMultipleScenes:v112];
 
       v114 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v115 = [v114 hardwareKeyboardExclusivityIdentifier];
-      v116 = [(_UIRemoteKeyboards *)self currentState];
-      [v116 setIsOneness:v115 != 0];
+      hardwareKeyboardExclusivityIdentifier = [v114 hardwareKeyboardExclusivityIdentifier];
+      currentState8 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState8 setIsOneness:hardwareKeyboardExclusivityIdentifier != 0];
 
       v117 = +[UIKeyboardImpl isFloating];
-      v118 = [(_UIRemoteKeyboards *)self currentState];
-      [v118 setIsFloating:v117];
+      currentState9 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState9 setIsFloating:v117];
 
       +[UIKeyboardImpl persistentOffset];
       v120 = v119;
       v122 = v121;
-      v123 = [(_UIRemoteKeyboards *)self currentState];
-      [v123 setPersistentOffset:{v120, v122}];
+      currentState10 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState10 setPersistentOffset:{v120, v122}];
 
-      [(_UIRemoteKeyboards *)self setCurrentKeyboard:v9];
+      [(_UIRemoteKeyboards *)self setCurrentKeyboard:showingCopy];
       v124 = _UIArbiterClientLog();
       if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
       {
         v125 = "N";
-        if (v9)
+        if (showingCopy)
         {
           v125 = "Y";
         }
@@ -2916,24 +2916,24 @@ LABEL_73:
         _os_log_impl(&dword_188A29000, v124, OS_LOG_TYPE_DEFAULT, "prepareToMoveKeyboard: set currentKeyboard:%s", buf, 0xCu);
       }
 
-      v191 = v18;
+      v191 = sceneCopy;
 
-      v126 = [(_UIRemoteKeyboards *)self currentState];
-      v127 = v37;
-      if ([v126 multipleScenes])
+      currentState11 = [(_UIRemoteKeyboards *)self currentState];
+      v127 = _window;
+      if ([currentState11 multipleScenes])
       {
-        v128 = [(_UIRemoteKeyboards *)self keyboardWindow];
-        v129 = [(_UIRemoteKeyboards *)self viewHostForWindow:v128];
-        v130 = [v129 hasHostedViews];
+        keyboardWindow3 = [(_UIRemoteKeyboards *)self keyboardWindow];
+        v129 = [(_UIRemoteKeyboards *)self viewHostForWindow:keyboardWindow3];
+        hasHostedViews = [v129 hasHostedViews];
 
-        if (v130)
+        if (hasHostedViews)
         {
           v131 = v46;
-          v132 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+          v132 = [MEMORY[0x1E696AD98] numberWithBool:showingCopy];
           currentKeyboardsBySceneIdentifier = self->_currentKeyboardsBySceneIdentifier;
-          v134 = [(_UIRemoteKeyboards *)self currentState];
-          v135 = [v134 sourceSceneIdentityString];
-          [(NSMutableDictionary *)currentKeyboardsBySceneIdentifier setObject:v132 forKeyedSubscript:v135];
+          currentState12 = [(_UIRemoteKeyboards *)self currentState];
+          sourceSceneIdentityString = [currentState12 sourceSceneIdentityString];
+          [(NSMutableDictionary *)currentKeyboardsBySceneIdentifier setObject:v132 forKeyedSubscript:sourceSceneIdentityString];
 
           goto LABEL_85;
         }
@@ -2949,32 +2949,32 @@ LABEL_85:
       [(_UIRemoteKeyboards *)self setYieldingKeyboardToIgnoredScene:0];
       v136 = off_1E70EA000;
       v137 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v138 = [v137 hasVisibleAssistantBar];
-      v139 = [(_UIRemoteKeyboards *)self currentState];
-      [v139 setAssistantBarVisible:v138];
+      hasVisibleAssistantBar = [v137 hasVisibleAssistantBar];
+      currentState13 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState13 setAssistantBarVisible:hasVisibleAssistantBar];
 
-      v140 = [v137 visualModeManager];
-      v141 = [v140 windowingModeEnabled];
+      visualModeManager = [v137 visualModeManager];
+      windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-      v142 = [v137 visualModeManager];
-      v143 = [v142 shouldShowWithinAppWindow];
+      visualModeManager2 = [v137 visualModeManager];
+      shouldShowWithinAppWindow = [visualModeManager2 shouldShowWithinAppWindow];
 
       v144 = +[UIKeyboardImpl isFloating];
       v145 = +[UIKeyboardImpl isFloatingForced];
-      if (v141)
+      if (windowingModeEnabled)
       {
         v146 = v145;
-        if (v143)
+        if (shouldShowWithinAppWindow)
         {
           v147 = 1;
         }
 
         else
         {
-          v148 = [(_UIRemoteKeyboards *)self currentState];
-          v149 = [v148 keyboardOnScreen];
+          currentState14 = [(_UIRemoteKeyboards *)self currentState];
+          keyboardOnScreen = [currentState14 keyboardOnScreen];
 
-          if (v149)
+          if (keyboardOnScreen)
           {
             if (v146)
             {
@@ -3006,14 +3006,14 @@ LABEL_85:
         v151 = +[UIKeyboardVisualModeManager visualModeLog];
         if (os_log_type_enabled(v151, OS_LOG_TYPE_DEBUG))
         {
-          v181 = [(_UIRemoteKeyboards *)self currentState];
-          v180 = [v181 keyboardOnScreen];
+          currentState15 = [(_UIRemoteKeyboards *)self currentState];
+          keyboardOnScreen2 = [currentState15 keyboardOnScreen];
           *buf = 67110400;
           *v200 = 1;
           *&v200[4] = 1024;
-          *&v200[6] = v143;
+          *&v200[6] = shouldShowWithinAppWindow;
           LOWORD(v201) = 1024;
-          *(&v201 + 2) = v180;
+          *(&v201 + 2) = keyboardOnScreen2;
           HIWORD(v201) = 1024;
           *v202 = v144;
           *&v202[4] = 1024;
@@ -3023,23 +3023,23 @@ LABEL_85:
           _os_log_debug_impl(&dword_188A29000, v151, OS_LOG_TYPE_DEBUG, "prepareToMoveKeyboard (SM: %d, WVM: %d, OS: %d, FL: %d, FF: %d) -> uiPosition: %lu", buf, 0x2Au);
         }
 
-        v152 = [(_UIRemoteKeyboards *)self currentState];
-        [v152 setUiPosition:v147];
+        currentState16 = [(_UIRemoteKeyboards *)self currentState];
+        [currentState16 setUiPosition:v147];
 
         v136 = off_1E70EA000;
       }
 
       v153 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v154 = [v153 containerRootController];
-      v155 = [v154 isSnapshotting];
+      containerRootController = [v153 containerRootController];
+      isSnapshotting = [containerRootController isSnapshotting];
 
       if ([(_UIRemoteKeyboards *)self _isWritingToolsHandlingKeyboardTracking])
       {
         v156 = v131;
         if ([(_UIRemoteKeyboards *)self hasActiveKeyboardSuppressionAssertionsForReason:@"WritingTools"])
         {
-          v157 = [(_UIRemoteKeyboards *)self currentState];
-          [v157 keyboardPosition];
+          currentState17 = [(_UIRemoteKeyboards *)self currentState];
+          [currentState17 keyboardPosition];
           v209.origin.x = v158;
           v209.origin.y = v159;
           v209.size.width = v160;
@@ -3050,8 +3050,8 @@ LABEL_85:
           v207.size.height = v15;
           v162 = CGRectEqualToRect(v207, v209);
 
-          v163 = [(_UIRemoteKeyboards *)self currentState];
-          [v163 keyboardPositionWithIAV];
+          currentState18 = [(_UIRemoteKeyboards *)self currentState];
+          [currentState18 keyboardPositionWithIAV];
           v210.origin.x = v164;
           v210.origin.y = v165;
           v210.size.width = v166;
@@ -3062,11 +3062,11 @@ LABEL_85:
           v208.size.height = height;
           v168 = CGRectEqualToRect(v208, v210);
 
-          v37 = v127;
+          _window = v127;
           if (![(_UIRemoteKeyboards *)self currentKeyboard]|| v162 && v168)
           {
             v170 = KeyboardArbiterClientLog_1();
-            v18 = v191;
+            sceneCopy = v191;
             if (os_log_type_enabled(v170, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
@@ -3079,13 +3079,13 @@ LABEL_85:
           else
           {
             v169 = 0;
-            v18 = v191;
+            sceneCopy = v191;
           }
 
           v136 = off_1E70EA000;
 LABEL_111:
           [(_UIRemoteKeyboardsEventObserver *)self->_eventObserver setKeyboardIsVisible:[(_UIRemoteKeyboards *)self keyboardVisible]];
-          if (v155 & 1 | ((v192 & 1) == 0))
+          if (isSnapshotting & 1 | ((v192 & 1) == 0))
           {
             goto LABEL_120;
           }
@@ -3097,13 +3097,13 @@ LABEL_111:
 LABEL_120:
               self->_expectingInitialState = 0;
               [(_UIRemoteKeyboards *)self checkConnection];
-              if (((v189 | v156) & 1) == 0 && [v60 _isKeyWindowScene])
+              if (((_isHostedInAnotherProcess | v156) & 1) == 0 && [currentState2 _isKeyWindowScene])
               {
                 [(_UIRemoteKeyboards *)self setWindowEnabled:[(_UIRemoteKeyboards *)self allowedToShowKeyboard]];
               }
 
-              v179 = [(_UIRemoteKeyboards *)self currentState];
-              [v179 resetAnimationFencing];
+              currentState19 = [(_UIRemoteKeyboards *)self currentState];
+              [currentState19 resetAnimationFencing];
 
               if ([(_UIRemoteKeyboards *)self pendingAutofillRequest])
               {
@@ -3126,25 +3126,25 @@ LABEL_127:
           }
 
           v171 = +[_UIRemoteKeyboardsToken uniqueToken];
-          v172 = [v60 _FBSScene];
-          v173 = v172;
-          if (v172)
+          _FBSScene2 = [currentState2 _FBSScene];
+          v173 = _FBSScene2;
+          if (_FBSScene2)
           {
-            v174 = [v172 identityToken];
-            v175 = [v174 stringRepresentation];
+            identityToken2 = [_FBSScene2 identityToken];
+            stringRepresentation2 = [identityToken2 stringRepresentation];
 
             v136 = off_1E70EA000;
           }
 
           else
           {
-            v175 = [v60 _sceneIdentifier];
+            stringRepresentation2 = [currentState2 _sceneIdentifier];
           }
 
-          [v171 setSceneIdentityString:v175];
+          [v171 setSceneIdentityString:stringRepresentation2];
           [(NSMutableSet *)self->_pendingKeyboardGrabs addObject:v171];
-          v176 = [(_UIRemoteKeyboards *)self currentState];
-          v177 = [v176 copy];
+          currentState20 = [(_UIRemoteKeyboards *)self currentState];
+          v177 = [currentState20 copy];
           v197[0] = MEMORY[0x1E69E9820];
           v197[1] = 3221225472;
           v197[2] = __96___UIRemoteKeyboards_prepareToMoveKeyboard_withIAV_isIAVRelevant_showing_notifyRemote_forScene___block_invoke;
@@ -3166,12 +3166,12 @@ LABEL_127:
         v156 = v131;
       }
 
-      v37 = v127;
-      v18 = v191;
+      _window = v127;
+      sceneCopy = v191;
       goto LABEL_111;
     }
 
-    if (!v28 && v45)
+    if (!v28 && keyboardVisible)
     {
       if ([(_UIRemoteKeyboards *)self currentKeyboard])
       {
@@ -3197,13 +3197,13 @@ LABEL_127:
       }
     }
 
-    v53 = [(objc_class *)[(_UIRemoteKeyboards *)self keyboardWindowClass] remoteKeyboardWindowForScreen:v196 create:1];
-    v189 = [v53 _isHostedInAnotherProcess];
-    if ([v18 _isKeyWindowScene])
+    informationForKeyboardDown = [(objc_class *)[(_UIRemoteKeyboards *)self keyboardWindowClass] remoteKeyboardWindowForScreen:v196 create:1];
+    _isHostedInAnotherProcess = [informationForKeyboardDown _isHostedInAnotherProcess];
+    if ([sceneCopy _isKeyWindowScene])
     {
       v54 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:0];
       [v54 windowLevel];
-      [v53 setWindowLevel:v55 + 1.0];
+      [informationForKeyboardDown setWindowLevel:v55 + 1.0];
     }
 
     v186 = v16;
@@ -3240,8 +3240,8 @@ LABEL_71:
 
 LABEL_64:
       v92 = v68;
-      v93 = [(_UIRemoteKeyboards *)self currentState];
-      [v93 keyboardPosition];
+      currentState21 = [(_UIRemoteKeyboards *)self currentState];
+      [currentState21 keyboardPosition];
       if (v95 != v186 || v94 != v185)
       {
         v96 = +[UIKeyboardImpl activeInstance];
@@ -3270,34 +3270,34 @@ LABEL_64:
     {
       if (v57 <= 0.0)
       {
-        v73 = [v18 effectiveGeometry];
-        v74 = [v73 coordinateSpace];
-        [v74 bounds];
+        effectiveGeometry = [sceneCopy effectiveGeometry];
+        coordinateSpace = [effectiveGeometry coordinateSpace];
+        [coordinateSpace bounds];
         v76 = v75 - v15;
 
-        v190 = [v18 effectiveGeometry];
-        v77 = [v190 coordinateSpace];
-        v78 = [v18 screen];
-        [v78 coordinateSpace];
-        v79 = v18;
-        v80 = v37;
+        effectiveGeometry2 = [sceneCopy effectiveGeometry];
+        coordinateSpace2 = [effectiveGeometry2 coordinateSpace];
+        screen3 = [sceneCopy screen];
+        [screen3 coordinateSpace];
+        v79 = sceneCopy;
+        v80 = _window;
         v82 = v81 = v46;
-        [v77 convertRect:v82 toCoordinateSpace:{v194, v76, v16, v15}];
+        [coordinateSpace2 convertRect:v82 toCoordinateSpace:{v194, v76, v16, v15}];
         v84 = v83;
         v86 = v85;
         v67 = v87;
         v66 = v88;
 
         v46 = v81;
-        v37 = v80;
-        v18 = v79;
+        _window = v80;
+        sceneCopy = v79;
 
         v68 = v86;
 LABEL_54:
         if (v67 != width || (v61 = v66, v63 = v67, v64 = v68, v65 = v84, v66 != v187))
         {
           v89 = v68;
-          [v53 bounds];
+          [informationForKeyboardDown bounds];
           v68 = v89;
           v61 = v187;
           v64 = v90 - v187;
@@ -3319,7 +3319,7 @@ LABEL_54:
         goto LABEL_64;
       }
 
-      [v53 bounds];
+      [informationForKeyboardDown bounds];
       v68 = v71 - (v15 + v70);
     }
 
@@ -3335,7 +3335,7 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      [v53 bounds];
+      [informationForKeyboardDown bounds];
       v68 = v72 - v15;
     }
 
@@ -3353,44 +3353,44 @@ LABEL_53:
 LABEL_128:
 }
 
-- (id)viewHostForWindow:(id)a3
+- (id)viewHostForWindow:(id)window
 {
-  v3 = a3;
-  v4 = [v3 rootViewController];
-  v5 = [v4 view];
-  v6 = [v5 conformsToProtocol:&unk_1F0037170];
+  windowCopy = window;
+  rootViewController = [windowCopy rootViewController];
+  view = [rootViewController view];
+  v6 = [view conformsToProtocol:&unk_1F0037170];
 
   if (v6)
   {
-    v7 = [v3 rootViewController];
-    v8 = [v7 view];
+    rootViewController2 = [windowCopy rootViewController];
+    view2 = [rootViewController2 view];
   }
 
   else
   {
-    v8 = 0;
+    view2 = 0;
   }
 
-  return v8;
+  return view2;
 }
 
-- (void)completeMoveKeyboardForWindow:(id)a3
+- (void)completeMoveKeyboardForWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(_UIRemoteKeyboards *)self keyboardWindowClass];
-  v6 = [v4 screen];
-  v7 = [(objc_class *)v5 remoteKeyboardWindowForScreen:v6 create:0];
+  windowCopy = window;
+  keyboardWindowClass = [(_UIRemoteKeyboards *)self keyboardWindowClass];
+  screen = [windowCopy screen];
+  v7 = [(objc_class *)keyboardWindowClass remoteKeyboardWindowForScreen:screen create:0];
 
-  if (v7 == v4)
+  if (v7 == windowCopy)
   {
     [(_UIRemoteKeyboards *)self updateAllVisibleFrames];
     if ([(_UIRemoteKeyboards *)self currentKeyboard])
     {
-      v12 = [v4 rootViewController];
-      v13 = [v12 inputViewSet];
-      v14 = [v13 isInputViewPlaceholder];
+      rootViewController = [windowCopy rootViewController];
+      inputViewSet = [rootViewController inputViewSet];
+      isInputViewPlaceholder = [inputViewSet isInputViewPlaceholder];
 
-      if ((v14 & 1) == 0)
+      if ((isInputViewPlaceholder & 1) == 0)
       {
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
@@ -3432,28 +3432,28 @@ LABEL_128:
     objc_destroyWeak(&location);
   }
 
-  v15 = [(_UIRemoteKeyboards *)self currentState];
-  [v15 resetAnimationFencing];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  [currentState resetAnimationFencing];
 }
 
-- (void)setWindowLevel:(double)a3 sceneLevel:(double)a4 forResponder:(id)a5
+- (void)setWindowLevel:(double)level sceneLevel:(double)sceneLevel forResponder:(id)responder
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(_UIRemoteKeyboards *)self keyboardWindowClass];
-  v10 = [v8 _responderWindow];
-  v11 = [v10 screen];
-  v12 = [(objc_class *)v9 remoteKeyboardWindowForScreen:v11 create:0];
+  responderCopy = responder;
+  keyboardWindowClass = [(_UIRemoteKeyboards *)self keyboardWindowClass];
+  _responderWindow = [responderCopy _responderWindow];
+  screen = [_responderWindow screen];
+  v12 = [(objc_class *)keyboardWindowClass remoteKeyboardWindowForScreen:screen create:0];
 
-  [v12 setWindowLevel:a3];
-  v13 = [v8 _responderWindow];
-  v14 = [v13 windowScene];
-  v15 = [v14 _settingsScene];
+  [v12 setWindowLevel:level];
+  _responderWindow2 = [responderCopy _responderWindow];
+  windowScene = [_responderWindow2 windowScene];
+  _settingsScene = [windowScene _settingsScene];
 
-  v16 = [v15 _FBSScene];
+  _FBSScene = [_settingsScene _FBSScene];
 
-  v17 = [v16 identityToken];
-  v18 = [v17 stringRepresentation];
+  identityToken = [_FBSScene identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("KeyboardFocus", &qword_1ED4997B0);
   if (*CategoryCachedImpl)
@@ -3464,17 +3464,17 @@ LABEL_128:
       v39 = 136315650;
       v40 = "[_UIRemoteKeyboards setWindowLevel:sceneLevel:forResponder:]";
       v41 = 2112;
-      *v42 = v8;
+      *v42 = responderCopy;
       *&v42[8] = 2112;
-      v43 = v18;
+      v43 = stringRepresentation;
       _os_log_impl(&dword_188A29000, v37, OS_LOG_TYPE_ERROR, "%s: Setting window level for responder: %@; scene identity: %@", &v39, 0x20u);
     }
   }
 
-  v20 = [v8 _responderWindow];
-  v21 = [v8 _responderWindow];
-  v22 = [v21 windowScene];
-  if ([v22 _isTargetOfKeyboardEventDeferringEnvironment])
+  _responderWindow3 = [responderCopy _responderWindow];
+  _responderWindow4 = [responderCopy _responderWindow];
+  windowScene2 = [_responderWindow4 windowScene];
+  if ([windowScene2 _isTargetOfKeyboardEventDeferringEnvironment])
   {
     v23 = 1;
   }
@@ -3484,19 +3484,19 @@ LABEL_128:
     v23 = 16777217;
   }
 
-  [(_UIRemoteKeyboards *)self _performRequiredSceneUpdateIfPermittedForWindow:v20 withContext:v23];
+  [(_UIRemoteKeyboards *)self _performRequiredSceneUpdateIfPermittedForWindow:_responderWindow3 withContext:v23];
 
-  v24 = [(_UIRemoteKeyboards *)self requiredScene];
-  v25 = [v24 identityToken];
+  requiredScene = [(_UIRemoteKeyboards *)self requiredScene];
+  identityToken2 = [requiredScene identityToken];
 
-  v26 = [v12 activeSceneIdentity];
+  activeSceneIdentity = [v12 activeSceneIdentity];
   v27 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v28 = [v27 hardwareKeyboardExclusivityIdentifier];
-  v29 = v28 != 0;
+  hardwareKeyboardExclusivityIdentifier = [v27 hardwareKeyboardExclusivityIdentifier];
+  v29 = hardwareKeyboardExclusivityIdentifier != 0;
 
   v30 = BSEqualObjects() ^ 1;
   requiredLevel = self->_requiredLevel;
-  if (requiredLevel == a4)
+  if (requiredLevel == sceneLevel)
   {
     v32 = v30;
   }
@@ -3529,14 +3529,14 @@ LABEL_128:
       *&v42[4] = 1024;
       *&v42[6] = v30;
       LOWORD(v43) = 1024;
-      *(&v43 + 2) = requiredLevel != a4;
+      *(&v43 + 2) = requiredLevel != sceneLevel;
       _os_log_impl(&dword_188A29000, v38, OS_LOG_TYPE_ERROR, "%s: Should reset scene: %d; identitiesAreDifferent: %d; levelsAreDifferent: %d", &v39, 0x1Eu);
     }
   }
 
   if (v33)
   {
-    self->_requiredLevel = a4;
+    self->_requiredLevel = sceneLevel;
     self->_hasExclusivityIdentifier = v29;
     [v12 resetScene];
   }
@@ -3546,9 +3546,9 @@ LABEL_128:
   [(_UIRemoteKeyboards *)self setWindowEnabled:v35 force:v36];
 }
 
-- (void)controllerDidLayoutSubviews:(id)a3
+- (void)controllerDidLayoutSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   if (self->_ignoreLayoutSubviews <= 0 && [(_UIRemoteKeyboards *)self currentKeyboard])
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -3556,48 +3556,48 @@ LABEL_128:
     v5[2] = __50___UIRemoteKeyboards_controllerDidLayoutSubviews___block_invoke;
     v5[3] = &unk_1E70F35B8;
     v5[4] = self;
-    v6 = v4;
+    v6 = subviewsCopy;
     [(_UIRemoteKeyboards *)self ignoreLayoutNotifications:v5];
   }
 }
 
-- (void)ignoreLayoutNotifications:(id)a3
+- (void)ignoreLayoutNotifications:(id)notifications
 {
   ++self->_ignoreLayoutSubviews;
-  (*(a3 + 2))(a3, a2);
+  (*(notifications + 2))(notifications, a2);
   --self->_ignoreLayoutSubviews;
 }
 
-- (void)registerController:(id)a3
+- (void)registerController:(id)controller
 {
-  v4 = a3;
-  if (([v4 conformsToProtocol:&unk_1F003A0E0] & 1) == 0)
+  controllerCopy = controller;
+  if (([controllerCopy conformsToProtocol:&unk_1F003A0E0] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Object does not implement expected protocol: %@", v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Object does not implement expected protocol: %@", controllerCopy}];
   }
 
-  [(NSHashTable *)self->_windowControllers addObject:v4];
-  [v4 setControllerDelegate:self];
+  [(NSHashTable *)self->_windowControllers addObject:controllerCopy];
+  [controllerCopy setControllerDelegate:self];
 }
 
-- (void)unregisterController:(id)a3
+- (void)unregisterController:(id)controller
 {
-  v4 = a3;
-  [v4 setControllerDelegate:0];
-  [(NSHashTable *)self->_windowControllers removeObject:v4];
+  controllerCopy = controller;
+  [controllerCopy setControllerDelegate:0];
+  [(NSHashTable *)self->_windowControllers removeObject:controllerCopy];
 }
 
-- (void)performOnControllers:(id)a3
+- (void)performOnControllers:(id)controllers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = [(NSHashTable *)self->_windowControllers copy];
-  v6 = [(_UIRemoteKeyboards *)self keyboardWindow];
-  v7 = [v6 rootViewController];
+  keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+  rootViewController = [keyboardWindow rootViewController];
 
-  if (v7 && [v5 containsObject:v7])
+  if (rootViewController && [v5 containsObject:rootViewController])
   {
-    v4[2](v4, v7);
+    controllersCopy[2](controllersCopy, rootViewController);
   }
 
   v15 = 0u;
@@ -3620,9 +3620,9 @@ LABEL_128:
           objc_enumerationMutation(v8);
         }
 
-        if (*(*(&v13 + 1) + 8 * v12) != v7)
+        if (*(*(&v13 + 1) + 8 * v12) != rootViewController)
         {
-          (v4[2])(v4);
+          (controllersCopy[2])(controllersCopy);
         }
 
         ++v12;
@@ -3636,37 +3636,37 @@ LABEL_128:
   }
 }
 
-- (void)_performOnDistributedControllersExceptSelf:(id)a3
+- (void)_performOnDistributedControllersExceptSelf:(id)self
 {
-  v4 = a3;
+  selfCopy = self;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65___UIRemoteKeyboards__performOnDistributedControllersExceptSelf___block_invoke;
   v6[3] = &unk_1E71060D0;
-  v7 = v4;
-  v5 = v4;
+  v7 = selfCopy;
+  v5 = selfCopy;
   [(_UIRemoteKeyboards *)self performOnControllers:v6];
 }
 
-- (void)performOnDistributedControllers:(id)a3
+- (void)performOnDistributedControllers:(id)controllers
 {
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v4 = *(controllers + 2);
+  controllersCopy = controllers;
   v4();
-  [(_UIRemoteKeyboards *)self _performOnDistributedControllersExceptSelf:v5];
+  [(_UIRemoteKeyboards *)self _performOnDistributedControllersExceptSelf:controllersCopy];
 }
 
-- (id)prepareForHostedWindowWithScene:(id)a3
+- (id)prepareForHostedWindowWithScene:(id)scene
 {
-  v4 = a3;
-  v5 = [v4 screen];
-  v6 = [(objc_class *)[(_UIRemoteKeyboards *)self keyboardWindowClass] remoteKeyboardWindowForScreen:v5 create:0];
+  sceneCopy = scene;
+  screen = [sceneCopy screen];
+  v6 = [(objc_class *)[(_UIRemoteKeyboards *)self keyboardWindowClass] remoteKeyboardWindowForScreen:screen create:0];
   ++self->_hostedCount;
-  v7 = [(objc_class *)[(_UIRemoteKeyboards *)self keyboardWindowClass] remoteKeyboardWindowForScreen:v5 create:1];
-  v8 = [v7 windowScene];
-  if (!v8 || (v9 = v8, [v7 windowScene], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "_hasInvalidated"), v10, v9, v11))
+  v7 = [(objc_class *)[(_UIRemoteKeyboards *)self keyboardWindowClass] remoteKeyboardWindowForScreen:screen create:1];
+  windowScene = [v7 windowScene];
+  if (!windowScene || (v9 = windowScene, [v7 windowScene], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "_hasInvalidated"), v10, v9, v11))
   {
-    [v7 setWindowScene:v4];
+    [v7 setWindowScene:sceneCopy];
   }
 
   [(_UIRemoteKeyboards *)self checkConnection];
@@ -3695,146 +3695,146 @@ LABEL_128:
   }
 }
 
-- (BOOL)refreshWithLocalMinimumKeyboardHeight:(double)a3 forScene:(id)a4
+- (BOOL)refreshWithLocalMinimumKeyboardHeight:(double)height forScene:(id)scene
 {
-  v6 = a4;
+  sceneCopy = scene;
   minimumKeyboardHeights = self->_minimumKeyboardHeights;
-  v8 = [v6 _FBSScene];
-  v9 = v8;
-  if (v8)
+  _FBSScene = [sceneCopy _FBSScene];
+  v9 = _FBSScene;
+  if (_FBSScene)
   {
-    v10 = [v8 identityToken];
-    v11 = [v10 stringRepresentation];
+    identityToken = [_FBSScene identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
   }
 
   else
   {
-    v11 = [v6 _sceneIdentifier];
+    stringRepresentation = [sceneCopy _sceneIdentifier];
   }
 
-  v12 = [(NSMapTable *)minimumKeyboardHeights objectForKey:v11];
+  v12 = [(NSMapTable *)minimumKeyboardHeights objectForKey:stringRepresentation];
   [v12 doubleValue];
   v14 = v13;
 
-  if (v14 != a3)
+  if (v14 != height)
   {
     v15 = self->_minimumKeyboardHeights;
-    if (a3 == 0.0)
+    if (height == 0.0)
     {
-      v16 = [v6 _FBSScene];
-      v17 = v16;
-      if (v16)
+      _FBSScene2 = [sceneCopy _FBSScene];
+      v17 = _FBSScene2;
+      if (_FBSScene2)
       {
-        v18 = [v16 identityToken];
-        v19 = [v18 stringRepresentation];
+        identityToken2 = [_FBSScene2 identityToken];
+        stringRepresentation2 = [identityToken2 stringRepresentation];
       }
 
       else
       {
-        v19 = [v6 _sceneIdentifier];
+        stringRepresentation2 = [sceneCopy _sceneIdentifier];
       }
 
-      [(NSMapTable *)v15 removeObjectForKey:v19];
+      [(NSMapTable *)v15 removeObjectForKey:stringRepresentation2];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-      v20 = [v6 _FBSScene];
-      v21 = v20;
-      if (v20)
+      stringRepresentation2 = [MEMORY[0x1E696AD98] numberWithDouble:height];
+      _FBSScene3 = [sceneCopy _FBSScene];
+      v21 = _FBSScene3;
+      if (_FBSScene3)
       {
-        v22 = [v20 identityToken];
-        v23 = [v22 stringRepresentation];
+        identityToken3 = [_FBSScene3 identityToken];
+        stringRepresentation3 = [identityToken3 stringRepresentation];
       }
 
       else
       {
-        v23 = [v6 _sceneIdentifier];
+        stringRepresentation3 = [sceneCopy _sceneIdentifier];
       }
 
-      [(NSMapTable *)v15 setObject:v19 forKey:v23];
+      [(NSMapTable *)v15 setObject:stringRepresentation2 forKey:stringRepresentation3];
     }
   }
 
-  return v14 != a3;
+  return v14 != height;
 }
 
-- (BOOL)hasLocalMinimumKeyboardHeightForScene:(id)a3
+- (BOOL)hasLocalMinimumKeyboardHeightForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   minimumKeyboardHeights = self->_minimumKeyboardHeights;
-  v6 = [v4 _FBSScene];
-  v7 = v6;
-  if (v6)
+  _FBSScene = [sceneCopy _FBSScene];
+  v7 = _FBSScene;
+  if (_FBSScene)
   {
-    v8 = [v6 identityToken];
-    v9 = [v8 stringRepresentation];
+    identityToken = [_FBSScene identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
   }
 
   else
   {
-    v9 = [v4 _sceneIdentifier];
+    stringRepresentation = [sceneCopy _sceneIdentifier];
   }
 
-  v10 = [(NSMapTable *)minimumKeyboardHeights objectForKey:v9];
+  v10 = [(NSMapTable *)minimumKeyboardHeights objectForKey:stringRepresentation];
   [v10 doubleValue];
   v12 = v11;
 
   return v12 > 0.0;
 }
 
-- (double)intersectionHeightForWindowScene:(id)a3 isLocalMinimumHeightOut:(BOOL *)a4 ignoreHorizontalOffset:(BOOL)a5
+- (double)intersectionHeightForWindowScene:(id)scene isLocalMinimumHeightOut:(BOOL *)out ignoreHorizontalOffset:(BOOL)offset
 {
-  v6 = a5;
-  v9 = a3;
+  offsetCopy = offset;
+  sceneCopy = scene;
   v10 = 0x1E70E9000uLL;
   if (+[UIKeyboard inputUIOOP])
   {
-    v11 = self;
-    v12 = v9;
+    selfCopy = self;
+    v12 = sceneCopy;
     v13 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v14 = [v13 keyboardArbiterClient];
+    keyboardArbiterClient = [v13 keyboardArbiterClient];
 
-    v15 = [v14 currentClientState];
+    currentClientState = [keyboardArbiterClient currentClientState];
     if (+[UIKeyboard usesInputSystemUI])
     {
-      v112 = a4;
-      v16 = [v14 currentUIState];
-      v17 = [v16 bundleIdentifier];
+      outCopy = out;
+      currentUIState = [keyboardArbiterClient currentUIState];
+      bundleIdentifier = [currentUIState bundleIdentifier];
       v18 = _UIMainBundleIdentifier();
-      if (([v17 isEqualToString:v18] & 1) == 0)
+      if (([bundleIdentifier isEqualToString:v18] & 1) == 0)
       {
 
         goto LABEL_9;
       }
 
-      v19 = [v14 keyboardVisible];
+      keyboardVisible = [keyboardArbiterClient keyboardVisible];
 
-      a4 = v112;
+      out = outCopy;
       v10 = 0x1E70E9000;
-      if (v19)
+      if (keyboardVisible)
       {
         v20 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v16 = [v20 responder];
+        currentUIState = [v20 responder];
 
-        v21 = [v16 inputView];
-        if (v21)
+        inputView = [currentUIState inputView];
+        if (inputView)
         {
-          v17 = v21;
+          bundleIdentifier = inputView;
           goto LABEL_60;
         }
 
-        v63 = [v16 inputViewController];
-        v17 = [v63 view];
+        inputViewController = [currentUIState inputViewController];
+        bundleIdentifier = [inputViewController view];
 
-        if (v17)
+        if (bundleIdentifier)
         {
 LABEL_60:
-          [v17 frame];
+          [bundleIdentifier frame];
           if (v64 == 0.0)
           {
-            v9 = v12;
+            sceneCopy = v12;
 
             height = 0.0;
             goto LABEL_91;
@@ -3843,46 +3843,46 @@ LABEL_60:
 
 LABEL_9:
 
-        a4 = v112;
+        out = outCopy;
         v10 = 0x1E70E9000uLL;
       }
     }
 
-    v5 = [v14 currentUIState];
-    [v5 keyboardPosition];
+    currentUIState2 = [keyboardArbiterClient currentUIState];
+    [currentUIState2 keyboardPosition];
     v23 = v28;
     v25 = v29;
     v27 = v30;
 
-    v9 = v12;
-    self = v11;
+    sceneCopy = v12;
+    self = selfCopy;
     goto LABEL_11;
   }
 
-  v15 = [(_UIRemoteKeyboards *)self currentState];
-  [v15 keyboardPosition];
+  currentClientState = [(_UIRemoteKeyboards *)self currentState];
+  [currentClientState keyboardPosition];
   v23 = v22;
   v25 = v24;
   v27 = v26;
 LABEL_11:
   v31 = 0.0;
-  if (!v15 || ([v15 avoidIntersectability] & 1) != 0)
+  if (!currentClientState || ([currentClientState avoidIntersectability] & 1) != 0)
   {
     goto LABEL_93;
   }
 
-  v14 = _UIMainBundleIdentifier();
+  keyboardArbiterClient = _UIMainBundleIdentifier();
   v32 = v10;
-  if ([v14 isEqualToString:@"com.apple.Spotlight"] & 1) != 0 || (objc_msgSend(UIApp, "_isSpringBoard"))
+  if ([keyboardArbiterClient isEqualToString:@"com.apple.Spotlight"] & 1) != 0 || (objc_msgSend(UIApp, "_isSpringBoard"))
   {
     v33 = 0;
   }
 
   else
   {
-    v16 = [v15 sourceBundleIdentifier];
+    currentUIState = [currentClientState sourceBundleIdentifier];
     height = 0.0;
-    if ([v16 isEqualToString:@"com.apple.Spotlight"])
+    if ([currentUIState isEqualToString:@"com.apple.Spotlight"])
     {
 LABEL_91:
 
@@ -3891,24 +3891,24 @@ LABEL_92:
       goto LABEL_93;
     }
 
-    v104 = v16;
+    v104 = currentUIState;
     v33 = 1;
   }
 
   v34 = _UIMainBundleIdentifier();
-  v113 = a4;
+  outCopy2 = out;
   if ([v34 isEqualToString:@"com.apple.CoreAuthUI"] & 1) != 0 || (objc_msgSend(v34, "isEqualToString:", @"com.apple.LocalAuthenticationUIService") & 1) != 0 || (objc_msgSend(UIApp, "_isSpringBoard"))
   {
     v35 = 0;
     goto LABEL_20;
   }
 
-  v58 = [v15 sourceBundleIdentifier];
-  if ([v58 isEqualToString:@"com.apple.CoreAuthUI"])
+  sourceBundleIdentifier = [currentClientState sourceBundleIdentifier];
+  if ([sourceBundleIdentifier isEqualToString:@"com.apple.CoreAuthUI"])
   {
 
     height = 0.0;
-    v16 = v104;
+    currentUIState = v104;
     if ((v33 & 1) == 0)
     {
       goto LABEL_92;
@@ -3917,14 +3917,14 @@ LABEL_92:
     goto LABEL_91;
   }
 
-  v65 = [v58 isEqualToString:@"com.apple.LocalAuthenticationUIService"];
-  v66 = v58;
-  v5 = v65;
+  v65 = [sourceBundleIdentifier isEqualToString:@"com.apple.LocalAuthenticationUIService"];
+  v66 = sourceBundleIdentifier;
+  currentUIState2 = v65;
   v102 = v66;
 
   v35 = 1;
   LOBYTE(v37) = 1;
-  if ((v5 & 1) == 0)
+  if ((currentUIState2 & 1) == 0)
   {
 LABEL_20:
     v108 = v35;
@@ -3938,36 +3938,36 @@ LABEL_20:
 
     else
     {
-      v5 = [v15 sourceBundleIdentifier];
+      currentUIState2 = [currentClientState sourceBundleIdentifier];
       v37 = 1;
-      if ([v5 isEqualToString:@"com.apple.WebSheet"])
+      if ([currentUIState2 isEqualToString:@"com.apple.WebSheet"])
       {
         goto LABEL_33;
       }
     }
 
-    if (v9 && ![*(v32 + 3824) inputUIOOP])
+    if (sceneCopy && ![*(v32 + 3824) inputUIOOP])
     {
-      v99 = v5;
-      v100 = v6;
-      v39 = [v15 sourceDisplayIdentifier];
-      v40 = v9;
-      v41 = v39;
+      v99 = currentUIState2;
+      v100 = offsetCopy;
+      sourceDisplayIdentifier = [currentClientState sourceDisplayIdentifier];
+      v40 = sceneCopy;
+      v41 = sourceDisplayIdentifier;
       v101 = v40;
-      v42 = [v40 screen];
-      v43 = [v42 displayConfiguration];
-      v44 = [v43 _nameForDisplayType];
-      v45 = [v41 isEqual:v44];
+      screen = [v40 screen];
+      displayConfiguration = [screen displayConfiguration];
+      _nameForDisplayType = [displayConfiguration _nameForDisplayType];
+      v45 = [v41 isEqual:_nameForDisplayType];
 
       if (!v37)
       {
 
-        v6 = v100;
+        offsetCopy = v100;
         if (v108)
         {
         }
 
-        v9 = v101;
+        sceneCopy = v101;
         self = rect;
         if (v110)
         {
@@ -3982,9 +3982,9 @@ LABEL_20:
       }
 
       LOBYTE(v37) = v45 ^ 1;
-      v9 = v101;
-      v6 = v100;
-      v5 = v99;
+      sceneCopy = v101;
+      offsetCopy = v100;
+      currentUIState2 = v99;
     }
 
     else
@@ -4019,26 +4019,26 @@ LABEL_36:
   {
 LABEL_39:
     v46 = +[UIWindowScene _keyWindowScene];
-    v47 = [(UIWindowScene *)v46 _keyWindow];
+    _keyWindow = [(UIWindowScene *)v46 _keyWindow];
 
-    if (v47 && ([v47 _isHostedInAnotherProcess] & 1) == 0)
+    if (_keyWindow && ([_keyWindow _isHostedInAnotherProcess] & 1) == 0)
     {
-      v48 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:v9];
+      v48 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:sceneCopy];
     }
 
     else
     {
-      v48 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:v9];
+      v48 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:sceneCopy];
     }
 
-    v14 = v48;
+    keyboardArbiterClient = v48;
     v49 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v50 = [v49 visualModeManager];
-    v51 = [v50 windowingModeEnabled];
+    visualModeManager = [v49 visualModeManager];
+    windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-    if (v51 && ([v14 hostedViewReference], !CGRectIsEmpty(v114)))
+    if (windowingModeEnabled && ([keyboardArbiterClient hostedViewReference], !CGRectIsEmpty(v114)))
     {
-      [v14 hostedViewReference];
+      [keyboardArbiterClient hostedViewReference];
       v109 = v60;
       v111 = v59;
       v57 = v61;
@@ -4047,12 +4047,12 @@ LABEL_39:
 
     else
     {
-      [v14 actualSceneFrame];
+      [keyboardArbiterClient actualSceneFrame];
       v109 = v53;
       v111 = v52;
       v55 = v54;
       v57 = v56;
-      if ([UIApp _isSpringBoard] && (objc_msgSend(v14, "interfaceOrientation") - 3) <= 1 && (objc_msgSend(v14, "actualSceneOrientation") - 3) >= 2)
+      if ([UIApp _isSpringBoard] && (objc_msgSend(keyboardArbiterClient, "interfaceOrientation") - 3) <= 1 && (objc_msgSend(keyboardArbiterClient, "actualSceneOrientation") - 3) >= 2)
       {
         v109 = 0.0;
         v111 = 0.0;
@@ -4066,21 +4066,21 @@ LABEL_39:
       }
     }
 
-    [v14 _sceneBounds];
+    [keyboardArbiterClient _sceneBounds];
     v68 = v67;
     v70 = v69;
     +[UIKeyboardImpl normalizedPersistentOffset];
     v103 = v71;
     v105 = v72;
     v73 = v70;
-    if ([v14 interfaceOrientation])
+    if ([keyboardArbiterClient interfaceOrientation])
     {
-      v74 = [(_UIRemoteKeyboards *)self keyboardWindow];
-      if ([v74 interfaceOrientation])
+      keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+      if ([keyboardWindow interfaceOrientation])
       {
-        v75 = ([v14 interfaceOrientation] - 3) < 2;
-        v76 = [(_UIRemoteKeyboards *)self keyboardWindow];
-        v77 = v75 ^ (([v76 interfaceOrientation] - 3) < 2);
+        v75 = ([keyboardArbiterClient interfaceOrientation] - 3) < 2;
+        keyboardWindow2 = [(_UIRemoteKeyboards *)self keyboardWindow];
+        v77 = v75 ^ (([keyboardWindow2 interfaceOrientation] - 3) < 2);
 
         if (v77)
         {
@@ -4100,36 +4100,36 @@ LABEL_39:
       }
     }
 
-    if ([v14 _shouldResizeWithScene])
+    if ([keyboardArbiterClient _shouldResizeWithScene])
     {
-      v78 = [v14 screen];
-      [v78 bounds];
+      screen2 = [keyboardArbiterClient screen];
+      [screen2 bounds];
       v68 = v79;
       v70 = v80;
 
       v73 = v70;
     }
 
-    v81 = v47;
+    v81 = _keyWindow;
     minimumKeyboardHeights = self->_minimumKeyboardHeights;
-    v83 = [v9 _FBSScene];
-    v84 = v83;
-    if (v83)
+    _FBSScene = [sceneCopy _FBSScene];
+    v84 = _FBSScene;
+    if (_FBSScene)
     {
-      v85 = [v83 identityToken];
-      v86 = [v85 stringRepresentation];
+      identityToken = [_FBSScene identityToken];
+      stringRepresentation = [identityToken stringRepresentation];
     }
 
     else
     {
-      v86 = [v9 _sceneIdentifier];
+      stringRepresentation = [sceneCopy _sceneIdentifier];
     }
 
-    v87 = [(NSMapTable *)minimumKeyboardHeights objectForKey:v86];
+    v87 = [(NSMapTable *)minimumKeyboardHeights objectForKey:stringRepresentation];
     [v87 doubleValue];
     v89 = v88;
 
-    v16 = v81;
+    currentUIState = v81;
     if (v89 > 0.0)
     {
       v115.origin.y = v109;
@@ -4137,9 +4137,9 @@ LABEL_39:
       v115.size.width = v57;
       v115.size.height = recta;
       v90 = v89 + v73 - CGRectGetMaxY(v115);
-      if (v113)
+      if (outCopy2)
       {
-        *v113 = v90 > v27;
+        *outCopy2 = v90 > v27;
       }
 
       if (v27 < v90)
@@ -4151,7 +4151,7 @@ LABEL_39:
     }
 
     v91 = v73 - v27;
-    if (v6)
+    if (offsetCopy)
     {
       v25 = v68;
     }
@@ -4196,8 +4196,8 @@ LABEL_93:
 
 - (CGRect)keyboardFrameIncludingRemoteIAV
 {
-  v2 = [(_UIRemoteKeyboards *)self currentState];
-  [v2 keyboardPositionWithRemoteIAV];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  [currentState keyboardPositionWithRemoteIAV];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -4216,8 +4216,8 @@ LABEL_93:
 
 - (CGRect)keyboardPosition
 {
-  v2 = [(_UIRemoteKeyboards *)self currentState];
-  [v2 keyboardPosition];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  [currentState keyboardPosition];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -4236,8 +4236,8 @@ LABEL_93:
 
 - (CGPoint)persistentOffset
 {
-  v2 = [(_UIRemoteKeyboards *)self currentState];
-  [v2 persistentOffset];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  [currentState persistentOffset];
   v4 = v3;
   v6 = v5;
 
@@ -4248,70 +4248,70 @@ LABEL_93:
   return result;
 }
 
-- (BOOL)remoteKeyboardUndocked:(BOOL)a3
+- (BOOL)remoteKeyboardUndocked:(BOOL)undocked
 {
-  v3 = a3;
-  if (![(_UIRemoteKeyboards *)self currentKeyboard]|| v3)
+  undockedCopy = undocked;
+  if (![(_UIRemoteKeyboards *)self currentKeyboard]|| undockedCopy)
   {
     if ([(_UIRemoteKeyboards *)self keyboardVisible])
     {
-      v5 = [(_UIRemoteKeyboards *)self currentState];
-      [v5 keyboardPosition];
+      currentState = [(_UIRemoteKeyboards *)self currentState];
+      [currentState keyboardPosition];
       MaxY = CGRectGetMaxY(v11);
       v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v8 = [v7 scene];
-      v9 = [v8 screen];
-      [v9 bounds];
-      LOBYTE(v3) = MaxY < CGRectGetHeight(v12);
+      scene = [v7 scene];
+      screen = [scene screen];
+      [screen bounds];
+      LOBYTE(undockedCopy) = MaxY < CGRectGetHeight(v12);
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(undockedCopy) = 0;
     }
   }
 
-  return v3;
+  return undockedCopy;
 }
 
-- (void)addHostedWindowView:(id)a3 fromPID:(int)a4 forScene:(id)a5 callerID:(id)a6
+- (void)addHostedWindowView:(id)view fromPID:(int)d forScene:(id)scene callerID:(id)iD
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v11)
+  v8 = *&d;
+  viewCopy = view;
+  sceneCopy = scene;
+  iDCopy = iD;
+  if (sceneCopy)
   {
-    v13 = [v11 screen];
-    [(_UIRemoteKeyboards *)self updateLastScreen:v13];
+    screen = [sceneCopy screen];
+    [(_UIRemoteKeyboards *)self updateLastScreen:screen];
   }
 
-  v14 = [(_UIRemoteKeyboards *)self keyboardWindowClass];
-  v15 = [(_UIRemoteKeyboards *)self _activeScreen];
-  v16 = [(objc_class *)v14 remoteKeyboardWindowForScreen:v15 create:1];
+  keyboardWindowClass = [(_UIRemoteKeyboards *)self keyboardWindowClass];
+  _activeScreen = [(_UIRemoteKeyboards *)self _activeScreen];
+  v16 = [(objc_class *)keyboardWindowClass remoteKeyboardWindowForScreen:_activeScreen create:1];
 
   [v16 setHidden:0];
   v17 = [(_UIRemoteKeyboards *)self viewHostForWindow:v16];
   objc_initWeak(&location, v17);
 
   v18 = [MEMORY[0x1E696AD98] numberWithInt:v8];
-  v19 = [(_UIRemoteKeyboards *)self proxy];
-  [v19 setWindowHostingPID:v8 active:1];
+  proxy = [(_UIRemoteKeyboards *)self proxy];
+  [proxy setWindowHostingPID:v8 active:1];
 
   [(NSMutableArray *)self->_activePIDs addObject:v18];
-  if (v12)
+  if (iDCopy)
   {
-    [(NSMutableArray *)self->_activeCIDs addObject:v12];
+    [(NSMutableArray *)self->_activeCIDs addObject:iDCopy];
   }
 
-  v20 = [v16 _isHostedInAnotherProcess];
-  if ((v20 & 1) == 0)
+  _isHostedInAnotherProcess = [v16 _isHostedInAnotherProcess];
+  if ((_isHostedInAnotherProcess & 1) == 0)
   {
     [(_UIRemoteKeyboards *)self setWindowEnabled:[(_UIRemoteKeyboards *)self allowedToShowKeyboard]];
   }
 
   v21 = objc_loadWeakRetained(&location);
-  [v16 updateLastRemoteView:1 forView:v10 inContainer:v21];
+  [v16 updateLastRemoteView:1 forView:viewCopy inContainer:v21];
 
   v22 = objc_loadWeakRetained(&location);
   v26[0] = MEMORY[0x1E69E9820];
@@ -4321,12 +4321,12 @@ LABEL_93:
   v26[4] = self;
   v23 = v18;
   v27 = v23;
-  v32 = v20;
+  v32 = _isHostedInAnotherProcess;
   v31 = v8;
-  v24 = v12;
+  v24 = iDCopy;
   v28 = v24;
   objc_copyWeak(&v30, &location);
-  v25 = v10;
+  v25 = viewCopy;
   v29 = v25;
   [v22 addHostedView:v25 withViewRemovalHandler:v26];
 
@@ -4334,17 +4334,17 @@ LABEL_93:
   objc_destroyWeak(&location);
 }
 
-- (void)performRequiredSceneUpdateIfPermittedForViewServiceHostWindow:(uint64_t)a3 servicePID:
+- (void)performRequiredSceneUpdateIfPermittedForViewServiceHostWindow:(uint64_t)window servicePID:
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 96) == 1)
+    if (*(self + 96) == 1)
     {
-      v7 = [v5 windowScene];
-      v8 = v7 == *(a1 + 88);
+      windowScene = [v5 windowScene];
+      v8 = windowScene == *(self + 88);
     }
 
     else
@@ -4352,11 +4352,11 @@ LABEL_93:
       v8 = 0;
     }
 
-    v9 = *(a1 + 40);
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:a3];
+    v9 = *(self + 40);
+    v10 = [MEMORY[0x1E696AD98] numberWithInt:window];
     v11 = [v9 containsObject:v10];
 
-    v12 = a3 ? v11 : 1;
+    v12 = window ? v11 : 1;
     if (v6 && !v8 && v12)
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("KeyboardFocus", &performRequiredSceneUpdateIfPermittedForViewServiceHostWindow_servicePID____s_category);
@@ -4373,14 +4373,14 @@ LABEL_93:
         }
       }
 
-      [(_UIRemoteKeyboards *)a1 _performRequiredSceneUpdateIfPermittedForWindow:v6 withContext:0x101010001];
+      [(_UIRemoteKeyboards *)self _performRequiredSceneUpdateIfPermittedForWindow:v6 withContext:0x101010001];
     }
   }
 }
 
-- (BOOL)hasWindowHostingCallerID:(id)a3
+- (BOOL)hasWindowHostingCallerID:(id)d
 {
-  if (a3)
+  if (d)
   {
     return [(NSMutableArray *)self->_activeCIDs containsObject:?];
   }
@@ -4391,15 +4391,15 @@ LABEL_93:
   }
 }
 
-- (void)setSuppressingKeyboard:(BOOL)a3 forScene:(id)a4
+- (void)setSuppressingKeyboard:(BOOL)keyboard forScene:(id)scene
 {
-  v4 = a3;
+  keyboardCopy = keyboard;
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_expectedSuppression != v4)
+  sceneCopy = scene;
+  if (self->_expectedSuppression != keyboardCopy)
   {
-    self->_expectedSuppression = v4;
-    if (v4 && (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    self->_expectedSuppression = keyboardCopy;
+    if (keyboardCopy && (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v7 = dispatch_time(0, 500000000);
       block[0] = MEMORY[0x1E69E9820];
@@ -4410,33 +4410,33 @@ LABEL_93:
       dispatch_after(v7, MEMORY[0x1E69E96A0], block);
     }
 
-    v8 = [(_UIRemoteKeyboards *)self keyboardWindow];
-    v9 = v8;
-    if (v8)
+    keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+    v9 = keyboardWindow;
+    if (keyboardWindow)
     {
-      v10 = v8;
+      containerWindow = keyboardWindow;
     }
 
     else
     {
       v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v10 = [v11 containerWindow];
+      containerWindow = [v11 containerWindow];
     }
 
-    v12 = [v10 screen];
-    v13 = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:v12];
+    screen = [containerWindow screen];
+    v13 = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:screen];
 
-    if (v4)
+    if (keyboardCopy)
     {
-      if (!v6)
+      if (!sceneCopy)
       {
-        v6 = v13;
+        sceneCopy = v13;
       }
 
-      objc_storeStrong(&self->_suppressedScene, v6);
+      objc_storeStrong(&self->_suppressedScene, sceneCopy);
     }
 
-    else if (!v6)
+    else if (!sceneCopy)
     {
       v32 = 0u;
       v33 = 0u;
@@ -4476,7 +4476,7 @@ LABEL_15:
           }
         }
 
-        v6 = suppressedScene;
+        sceneCopy = suppressedScene;
 
         if (v19)
         {
@@ -4489,12 +4489,12 @@ LABEL_15:
 LABEL_21:
       }
 
-      v6 = v13;
+      sceneCopy = v13;
     }
 
 LABEL_24:
-    v21 = [(_UIRemoteKeyboards *)self proxy];
-    [v21 notifyHostedPIDsOfSuppression:v4];
+    proxy = [(_UIRemoteKeyboards *)self proxy];
+    [proxy notifyHostedPIDsOfSuppression:keyboardCopy];
 
     v22 = +[UIPeripheralHost sharedInstance];
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -4503,9 +4503,9 @@ LABEL_24:
     aBlock[3] = &unk_1E70F5AF0;
     v23 = v22;
     v27 = v23;
-    v29 = v4;
-    v6 = v6;
-    v28 = v6;
+    v29 = keyboardCopy;
+    sceneCopy = sceneCopy;
+    v28 = sceneCopy;
     v24 = _Block_copy(aBlock);
     if ([UIApp isSuspended])
     {
@@ -4523,26 +4523,26 @@ LABEL_24:
   }
 }
 
-- (void)queue_keyboardSuppressed:(BOOL)a3 withCompletion:(id)a4
+- (void)queue_keyboardSuppressed:(BOOL)suppressed withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [UIApp _systemAnimationFenceExemptQueue];
+  completionCopy = completion;
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62___UIRemoteKeyboards_queue_keyboardSuppressed_withCompletion___block_invoke;
   v9[3] = &unk_1E70FD0C8;
-  v11 = a3;
+  suppressedCopy = suppressed;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 performAsync:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v9];
 }
 
-- (void)queue_keyboardTransition:(id)a3 event:(unint64_t)a4 withInfo:(id)a5 onComplete:(id)a6
+- (void)queue_keyboardTransition:(id)transition event:(unint64_t)event withInfo:(id)info onComplete:(id)complete
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  transitionCopy = transition;
+  infoCopy = info;
+  completeCopy = complete;
   if ([(_UIRemoteKeyboards *)self keyboardActive])
   {
     v13 = _UIArbiterClientLog();
@@ -4555,16 +4555,16 @@ LABEL_24:
     goto LABEL_18;
   }
 
-  if (a4 > 1)
+  if (event > 1)
   {
-    if (a4 == 2)
+    if (event == 2)
     {
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __73___UIRemoteKeyboards_queue_keyboardTransition_event_withInfo_onComplete___block_invoke_3;
       v28[3] = &unk_1E7106060;
-      v29 = v10;
-      v30 = v11;
+      v29 = transitionCopy;
+      v30 = infoCopy;
       v14 = _Block_copy(v28);
 
       v15 = v29;
@@ -4572,18 +4572,18 @@ LABEL_24:
 
     else
     {
-      if (a4 != 3 || ![@"Placement" isEqualToString:v10])
+      if (event != 3 || ![@"Placement" isEqualToString:transitionCopy])
       {
         goto LABEL_13;
       }
 
-      v16 = [v11 objectForKey:@"Placement"];
+      v16 = [infoCopy objectForKey:@"Placement"];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __73___UIRemoteKeyboards_queue_keyboardTransition_event_withInfo_onComplete___block_invoke_4;
       v25[3] = &unk_1E7106060;
       v26 = v16;
-      v27 = v11;
+      v27 = infoCopy;
       v15 = v16;
       v14 = _Block_copy(v25);
     }
@@ -4591,16 +4591,16 @@ LABEL_24:
 
   else
   {
-    if (a4)
+    if (event)
     {
-      if (a4 == 1)
+      if (event == 1)
       {
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __73___UIRemoteKeyboards_queue_keyboardTransition_event_withInfo_onComplete___block_invoke_2;
         aBlock[3] = &unk_1E7106060;
-        v32 = v10;
-        v33 = v11;
+        v32 = transitionCopy;
+        v33 = infoCopy;
         v14 = _Block_copy(aBlock);
 
         v15 = v32;
@@ -4608,7 +4608,7 @@ LABEL_24:
       }
 
 LABEL_13:
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unknown transition data: %@/%lu/%@", v10, a4, v11}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unknown transition data: %@/%lu/%@", transitionCopy, event, infoCopy}];
       goto LABEL_18;
     }
 
@@ -4616,8 +4616,8 @@ LABEL_13:
     v34[1] = 3221225472;
     v34[2] = __73___UIRemoteKeyboards_queue_keyboardTransition_event_withInfo_onComplete___block_invoke;
     v34[3] = &unk_1E7106060;
-    v35 = v10;
-    v36 = v11;
+    v35 = transitionCopy;
+    v36 = infoCopy;
     v14 = _Block_copy(v34);
 
     v15 = v35;
@@ -4627,45 +4627,45 @@ LABEL_16:
 
   if (v14)
   {
-    v17 = [UIApp _systemAnimationFenceExemptQueue];
+    _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __73___UIRemoteKeyboards_queue_keyboardTransition_event_withInfo_onComplete___block_invoke_5;
     v19[3] = &unk_1E7106088;
-    v20 = v10;
-    v21 = self;
-    v24 = a4;
+    v20 = transitionCopy;
+    selfCopy = self;
+    eventCopy = event;
     v22 = v14;
-    v23 = v12;
+    v23 = completeCopy;
     v18 = v14;
-    [v17 performAsync:v19];
+    [_systemAnimationFenceExemptQueue performAsync:v19];
 
     goto LABEL_20;
   }
 
 LABEL_18:
-  if (v12)
+  if (completeCopy)
   {
-    v12[2](v12);
+    completeCopy[2](completeCopy);
   }
 
 LABEL_20:
 }
 
-- (void)setDisableBecomeFirstResponder:(BOOL)a3 forSuppressionAssertion:(BOOL)a4 updatePlacement:(BOOL)a5 wantsAssistant:(BOOL)a6
+- (void)setDisableBecomeFirstResponder:(BOOL)responder forSuppressionAssertion:(BOOL)assertion updatePlacement:(BOOL)placement wantsAssistant:(BOOL)assistant
 {
-  if (self->_disablingKeyboard != a3)
+  if (self->_disablingKeyboard != responder)
   {
-    v6 = a6;
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
+    assistantCopy = assistant;
+    placementCopy = placement;
+    assertionCopy = assertion;
+    responderCopy = responder;
     v11 = [(_UIAssertionController *)self->_assertionController hasAssertionsForReason:@"WritingTools"];
     v12 = +[UIPeripheralHost sharedInstance];
-    [v12 setDeactivatedKeyboard:v9 forScene:0 forSuppressionAssertion:v8 updatePlacement:v7 wantsAssistant:v6 keepAccessories:v11];
+    [v12 setDeactivatedKeyboard:responderCopy forScene:0 forSuppressionAssertion:assertionCopy updatePlacement:placementCopy wantsAssistant:assistantCopy keepAccessories:v11];
 
-    self->_disablingKeyboard = v9;
-    if (!v9)
+    self->_disablingKeyboard = responderCopy;
+    if (!responderCopy)
     {
       pendingInvalidateKeyboardWindowBlock = self->_pendingInvalidateKeyboardWindowBlock;
       if (pendingInvalidateKeyboardWindowBlock)
@@ -4678,13 +4678,13 @@ LABEL_20:
   }
 }
 
-- (void)setWantsAssistantWhileSuppressingKeyboard:(BOOL)a3
+- (void)setWantsAssistantWhileSuppressingKeyboard:(BOOL)keyboard
 {
-  if (self->_wantsAssistantWhileSuppressingKeyboard != a3)
+  if (self->_wantsAssistantWhileSuppressingKeyboard != keyboard)
   {
-    v3 = a3;
-    self->_wantsAssistantWhileSuppressingKeyboard = a3;
-    if (a3)
+    keyboardCopy = keyboard;
+    self->_wantsAssistantWhileSuppressingKeyboard = keyboard;
+    if (keyboard)
     {
       v5 = +[UIKeyboardImpl activeInstance];
       [v5 _setShouldSuppressAssistantBar:0];
@@ -4698,8 +4698,8 @@ LABEL_20:
       v7 = [(_UIAssertionController *)self->_assertionController hasAssertionsForReason:@"WritingTools"];
       v10 = +[UIPeripheralHost sharedInstance];
       v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v9 = [v8 nextAnimationStyle];
-      [v10 updatePlacementForDeactivatedKeyboard:1 forSuppressionAssertion:1 wantsAssistant:v3 keepAccessories:v7 animationStyle:v9];
+      nextAnimationStyle = [v8 nextAnimationStyle];
+      [v10 updatePlacementForDeactivatedKeyboard:1 forSuppressionAssertion:1 wantsAssistant:keyboardCopy keepAccessories:v7 animationStyle:nextAnimationStyle];
     }
   }
 }
@@ -4712,14 +4712,14 @@ LABEL_20:
   stickerPrewarmingViewController = self->_stickerPrewarmingViewController;
   self->_stickerPrewarmingViewController = v5;
 
-  v7 = [(_UIRemoteKeyboards *)self keyboardWindow];
-  v8 = [v7 rootViewController];
+  keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+  rootViewController = [keyboardWindow rootViewController];
 
-  v9 = [(UIViewController *)self->_stickerPrewarmingViewController view];
-  v10 = v9;
-  if (v9)
+  view = [(UIViewController *)self->_stickerPrewarmingViewController view];
+  v10 = view;
+  if (view)
   {
-    v11 = v8 == 0;
+    v11 = rootViewController == 0;
   }
 
   else
@@ -4733,44 +4733,44 @@ LABEL_20:
 
   else
   {
-    v12 = [(UIViewController *)self->_stickerPrewarmingViewController view];
-    v13 = [v12 window];
-    v14 = [(_UIRemoteKeyboards *)self keyboardWindow];
+    view2 = [(UIViewController *)self->_stickerPrewarmingViewController view];
+    window = [view2 window];
+    keyboardWindow2 = [(_UIRemoteKeyboards *)self keyboardWindow];
 
-    if (v13 != v14)
+    if (window != keyboardWindow2)
     {
-      [v8 addChildViewController:self->_stickerPrewarmingViewController];
-      v15 = [v8 view];
-      v16 = [(UIViewController *)self->_stickerPrewarmingViewController view];
-      [v15 addSubview:v16];
-      [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v27 = [v16 topAnchor];
-      v28 = v15;
-      v26 = [v15 bottomAnchor];
-      v25 = [v27 constraintEqualToAnchor:v26];
+      [rootViewController addChildViewController:self->_stickerPrewarmingViewController];
+      view3 = [rootViewController view];
+      view4 = [(UIViewController *)self->_stickerPrewarmingViewController view];
+      [view3 addSubview:view4];
+      [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
+      topAnchor = [view4 topAnchor];
+      v28 = view3;
+      bottomAnchor = [view3 bottomAnchor];
+      v25 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       v29[0] = v25;
-      v24 = [v16 leadingAnchor];
-      v17 = [v15 trailingAnchor];
-      v18 = [v24 constraintEqualToAnchor:v17];
+      leadingAnchor = [view4 leadingAnchor];
+      trailingAnchor = [view3 trailingAnchor];
+      v18 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
       v29[1] = v18;
-      v19 = [v16 widthAnchor];
-      v20 = [v19 constraintEqualToConstant:1.0];
+      widthAnchor = [view4 widthAnchor];
+      v20 = [widthAnchor constraintEqualToConstant:1.0];
       v29[2] = v20;
-      v21 = [v16 heightAnchor];
-      v22 = [v21 constraintEqualToConstant:1.0];
+      heightAnchor = [view4 heightAnchor];
+      v22 = [heightAnchor constraintEqualToConstant:1.0];
       v29[3] = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
 
       [MEMORY[0x1E69977A0] activateConstraints:v23];
-      [(UIViewController *)self->_stickerPrewarmingViewController didMoveToParentViewController:v8];
+      [(UIViewController *)self->_stickerPrewarmingViewController didMoveToParentViewController:rootViewController];
     }
   }
 }
 
-- (void)setStickerPrewarmingViewControllerEnabled:(BOOL)a3
+- (void)setStickerPrewarmingViewControllerEnabled:(BOOL)enabled
 {
   stickerPrewarmingViewController = self->_stickerPrewarmingViewController;
-  if (a3)
+  if (enabled)
   {
     if (!stickerPrewarmingViewController)
     {
@@ -4791,8 +4791,8 @@ LABEL_20:
   else
   {
     [(UIViewController *)stickerPrewarmingViewController willMoveToParentViewController:0];
-    v7 = [(UIViewController *)self->_stickerPrewarmingViewController view];
-    [v7 removeFromSuperview];
+    view = [(UIViewController *)self->_stickerPrewarmingViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_stickerPrewarmingViewController removeFromParentViewController];
     v8 = self->_stickerPrewarmingViewController;
@@ -4800,18 +4800,18 @@ LABEL_20:
   }
 }
 
-- (BOOL)assertionActivationStateForType:(unint64_t)a3
+- (BOOL)assertionActivationStateForType:(unint64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       return 0;
     }
 
-    v5 = [(UIViewController *)self->_stickerPrewarmingViewController _window];
-    v6 = [(_UIRemoteKeyboards *)self keyboardWindow];
-    v7 = v5 == v6;
+    _window = [(UIViewController *)self->_stickerPrewarmingViewController _window];
+    keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+    v7 = _window == keyboardWindow;
 
     return v7;
   }
@@ -4823,12 +4823,12 @@ LABEL_20:
   }
 }
 
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type
 {
-  v4 = a3;
-  if (a4 > 1)
+  stateCopy = state;
+  if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
 
       [(_UIRemoteKeyboards *)self setStickerPrewarmingViewControllerEnabled:?];
@@ -4837,25 +4837,25 @@ LABEL_20:
 
   else
   {
-    v6 = [(_UIRemoteKeyboards *)self wantsAssistantWhileSuppressingKeyboard];
+    wantsAssistantWhileSuppressingKeyboard = [(_UIRemoteKeyboards *)self wantsAssistantWhileSuppressingKeyboard];
 
-    [(_UIRemoteKeyboards *)self setDisableBecomeFirstResponder:v4 forSuppressionAssertion:1 updatePlacement:1 wantsAssistant:v6];
+    [(_UIRemoteKeyboards *)self setDisableBecomeFirstResponder:stateCopy forSuppressionAssertion:1 updatePlacement:1 wantsAssistant:wantsAssistantWhileSuppressingKeyboard];
   }
 }
 
-- (void)queue_setKeyboardDisabled:(BOOL)a3 withCompletion:(id)a4
+- (void)queue_setKeyboardDisabled:(BOOL)disabled withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [UIApp _systemAnimationFenceExemptQueue];
+  completionCopy = completion;
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63___UIRemoteKeyboards_queue_setKeyboardDisabled_withCompletion___block_invoke;
   v9[3] = &unk_1E70FD0C8;
-  v11 = a3;
+  disabledCopy = disabled;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 performAsync:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v9];
 }
 
 - (void)forceKeyboardAway
@@ -4869,7 +4869,7 @@ LABEL_20:
 
   v4 = +[_UIKeyboardChangedInformationWithFencing informationForKeyboardDown];
   [(_UIRemoteKeyboards *)self updateLocalKeyboardChanged:v4];
-  v5 = [(_UIRemoteKeyboards *)self proxy];
+  proxy = [(_UIRemoteKeyboards *)self proxy];
   v6 = [v4 copy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -4878,24 +4878,24 @@ LABEL_20:
   v8[4] = self;
   v9 = v4;
   v7 = v4;
-  [v5 signalKeyboardChanged:v6 onCompletion:v8];
+  [proxy signalKeyboardChanged:v6 onCompletion:v8];
 }
 
-- (void)preserveKeyboardWithId:(id)a3
+- (void)preserveKeyboardWithId:(id)id
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = _UIArbiterClientLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = idCopy;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "TX signalKeyboardChanged (preserveKeyboardWithId:%{public}@)", buf, 0xCu);
   }
 
-  v6 = [_UIKeyboardChangedInformationWithFencing informationForKeyboardPreserve:v4];
+  v6 = [_UIKeyboardChangedInformationWithFencing informationForKeyboardPreserve:idCopy];
   [(_UIRemoteKeyboards *)self updateLocalKeyboardChanged:v6];
-  v7 = [(_UIRemoteKeyboards *)self proxy];
+  proxy = [(_UIRemoteKeyboards *)self proxy];
   v8 = [v6 copy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -4904,24 +4904,24 @@ LABEL_20:
   v10[4] = self;
   v11 = v6;
   v9 = v6;
-  [v7 signalKeyboardChanged:v8 onCompletion:v10];
+  [proxy signalKeyboardChanged:v8 onCompletion:v10];
 }
 
-- (void)restoreKeyboardWithId:(id)a3
+- (void)restoreKeyboardWithId:(id)id
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = _UIArbiterClientLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = idCopy;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "TX signalKeyboardChanged (restoreKeyboardWithId:%{public}@)", buf, 0xCu);
   }
 
-  v6 = [_UIKeyboardChangedInformationWithFencing informationForKeyboardRestore:v4];
+  v6 = [_UIKeyboardChangedInformationWithFencing informationForKeyboardRestore:idCopy];
   [(_UIRemoteKeyboards *)self updateLocalKeyboardChanged:v6];
-  v7 = [(_UIRemoteKeyboards *)self proxy];
+  proxy = [(_UIRemoteKeyboards *)self proxy];
   v8 = [v6 copy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -4930,34 +4930,34 @@ LABEL_20:
   v10[4] = self;
   v11 = v6;
   v9 = v6;
-  [v7 signalKeyboardChanged:v8 onCompletion:v10];
+  [proxy signalKeyboardChanged:v8 onCompletion:v10];
 }
 
-- (void)userSelectedApp:(id)a3 onCompletion:(id)a4
+- (void)userSelectedApp:(id)app onCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ![v6 isEqualToString:&stru_1EFB14550])
+  appCopy = app;
+  completionCopy = completion;
+  if (appCopy && ![appCopy isEqualToString:&stru_1EFB14550])
   {
-    v11 = 0;
+    focusedSceneIdentityStringOrIdentifier = 0;
   }
 
   else
   {
-    v8 = [(_UIRemoteKeyboards *)self requiredScene];
-    v9 = [v8 identityToken];
-    v10 = [v9 stringRepresentation];
-    [(_UIRemoteKeyboards *)self setFocusedSceneIdentityStringOrIdentifier:v10];
+    requiredScene = [(_UIRemoteKeyboards *)self requiredScene];
+    identityToken = [requiredScene identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
+    [(_UIRemoteKeyboards *)self setFocusedSceneIdentityStringOrIdentifier:stringRepresentation];
 
-    v11 = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
+    focusedSceneIdentityStringOrIdentifier = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
   }
 
   v12 = _UIArbiterClientLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = appCopy;
     _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "TX applicationShouldFocusWithBundle (userSelectedApp: %@)", &v16, 0xCu);
   }
 
@@ -4970,29 +4970,29 @@ LABEL_20:
       v16 = 136315650;
       v17 = "[_UIRemoteKeyboards userSelectedApp:onCompletion:]";
       v18 = 2112;
-      v19 = v6;
+      v19 = appCopy;
       v20 = 2112;
-      v21 = v11;
+      v21 = focusedSceneIdentityStringOrIdentifier;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "%s: Focus bundle: %@, sceneIdentity: %@", &v16, 0x20u);
     }
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
-    v7 = &__block_literal_global_713;
+    completionCopy = &__block_literal_global_713;
   }
 
-  v14 = [(_UIRemoteKeyboards *)self proxy];
-  [v14 applicationShouldFocusWithBundle:v6 onCompletion:v7];
+  proxy = [(_UIRemoteKeyboards *)self proxy];
+  [proxy applicationShouldFocusWithBundle:appCopy onCompletion:completionCopy];
 }
 
-- (void)pointIsWithinKeyboardContent:(CGPoint)a3 onCompletion:(id)a4
+- (void)pointIsWithinKeyboardContent:(CGPoint)content onCompletion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_UIRemoteKeyboards *)self proxy];
-  [v8 pointIsWithinKeyboardContent:v7 onCompletion:{x, y}];
+  y = content.y;
+  x = content.x;
+  completionCopy = completion;
+  proxy = [(_UIRemoteKeyboards *)self proxy];
+  [proxy pointIsWithinKeyboardContent:completionCopy onCompletion:{x, y}];
 }
 
 - (void)userTapsOnKeyboard
@@ -5000,8 +5000,8 @@ LABEL_20:
   if (!self->_userHasTappedOnKeyboard)
   {
     self->_userHasTappedOnKeyboard = 1;
-    v3 = [(_UIRemoteKeyboards *)self proxy];
-    [v3 userFirstTapOnKeyboard];
+    proxy = [(_UIRemoteKeyboards *)self proxy];
+    [proxy userFirstTapOnKeyboard];
   }
 }
 
@@ -5010,15 +5010,15 @@ LABEL_20:
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v4 = [v3 visualModeManager];
-    v5 = [v4 windowingModeEnabled];
+    visualModeManager = [v3 visualModeManager];
+    windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-    if (v5)
+    if (windowingModeEnabled)
     {
       if (self->_currentKeyboard)
       {
-        v6 = [(_UIRemoteKeyboards *)self inputWindowRootViewController];
-        v8 = [UIPeripheralHost allVisibleFrames:v6];
+        inputWindowRootViewController = [(_UIRemoteKeyboards *)self inputWindowRootViewController];
+        v8 = [UIPeripheralHost allVisibleFrames:inputWindowRootViewController];
       }
 
       else
@@ -5033,36 +5033,36 @@ LABEL_20:
 
       else
       {
-        v7 = [(_UIRemoteKeyboards *)self proxy];
-        [v7 setAllVisibleFrames:v8];
+        proxy = [(_UIRemoteKeyboards *)self proxy];
+        [proxy setAllVisibleFrames:v8];
       }
     }
   }
 }
 
-- (void)userSelectedProcessIdentifier:(int)a3 withSceneIdentity:(id)a4 onCompletion:(id)a5
+- (void)userSelectedProcessIdentifier:(int)identifier withSceneIdentity:(id)identity onCompletion:(id)completion
 {
-  v6 = *&a3;
+  v6 = *&identifier;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 stringRepresentation];
-  if (!v8)
+  identityCopy = identity;
+  completionCopy = completion;
+  stringRepresentation = [identityCopy stringRepresentation];
+  if (!identityCopy)
   {
-    v11 = [(_UIRemoteKeyboards *)self requiredScene];
-    v12 = [v11 identityToken];
-    v13 = [v12 stringRepresentation];
-    [(_UIRemoteKeyboards *)self setFocusedSceneIdentityStringOrIdentifier:v13];
+    requiredScene = [(_UIRemoteKeyboards *)self requiredScene];
+    identityToken = [requiredScene identityToken];
+    stringRepresentation2 = [identityToken stringRepresentation];
+    [(_UIRemoteKeyboards *)self setFocusedSceneIdentityStringOrIdentifier:stringRepresentation2];
 
-    v14 = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
+    focusedSceneIdentityStringOrIdentifier = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
 
-    v10 = v14;
+    stringRepresentation = focusedSceneIdentityStringOrIdentifier;
   }
 
   v15 = _UIArbiterClientLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v8 description];
+    v16 = [identityCopy description];
     v17 = _UISceneIdentityToLogString(v16);
     v23 = 67109378;
     *v24 = v6;
@@ -5082,62 +5082,62 @@ LABEL_20:
       *&v24[8] = 1024;
       *&v24[10] = v6;
       v25 = 2112;
-      v26 = v10;
+      v26 = stringRepresentation;
       _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "%s: Focus PID: %d, sceneIdentity: %@", &v23, 0x1Cu);
     }
   }
 
-  if (!v9)
+  if (!completionCopy)
   {
-    v9 = &__block_literal_global_718;
+    completionCopy = &__block_literal_global_718;
   }
 
-  v19 = [(_UIRemoteKeyboards *)self proxy];
+  proxy = [(_UIRemoteKeyboards *)self proxy];
   v20 = +[UIWindow _applicationKeyWindow];
-  v21 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:v8 window:v20];
-  [v19 focusApplicationWithProcessIdentifier:v6 context:v21 onCompletion:v9];
+  v21 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:identityCopy window:v20];
+  [proxy focusApplicationWithProcessIdentifier:v6 context:v21 onCompletion:completionCopy];
 }
 
-- (void)requestEventDeferralTargetSelectionForWindow:(id)a3
+- (void)requestEventDeferralTargetSelectionForWindow:(id)window
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   if (+[UIKeyboard doesKeyboardFollowEventDeferralTarget])
   {
-    [(_UIRemoteKeyboards *)self _performRequiredSceneUpdateIfPermittedForWindow:v4 withContext:0x100010001];
-    v5 = [(_UIRemoteKeyboards *)self requiredScene];
-    v6 = [v5 identityToken];
+    [(_UIRemoteKeyboards *)self _performRequiredSceneUpdateIfPermittedForWindow:windowCopy withContext:0x100010001];
+    requiredScene = [(_UIRemoteKeyboards *)self requiredScene];
+    identityToken = [requiredScene identityToken];
 
-    v7 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:v6 window:v4];
+    v7 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:identityToken window:windowCopy];
     v8 = _UIArbiterClientLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 descriptionForLog];
+      descriptionForLog = [v7 descriptionForLog];
       v11 = 138543362;
-      v12 = v9;
+      v12 = descriptionForLog;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "TX focusApplication (requestEventDeferralTargetSelection) stealKB:N context:%{public}@", &v11, 0xCu);
     }
 
-    v10 = [(_UIRemoteKeyboards *)self proxy];
-    [v10 focusApplicationWithProcessIdentifier:getpid() context:v7 stealingKeyboard:0 onCompletion:&__block_literal_global_723];
+    proxy = [(_UIRemoteKeyboards *)self proxy];
+    [proxy focusApplicationWithProcessIdentifier:getpid() context:v7 stealingKeyboard:0 onCompletion:&__block_literal_global_723];
   }
 }
 
-- (void)_postInputSourceDidChangeNotificationForResponder:(id)a3
+- (void)_postInputSourceDidChangeNotificationForResponder:(id)responder
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  responderCopy = responder;
+  if (responderCopy)
   {
-    v5 = v4;
+    responder = responderCopy;
   }
 
   else
   {
     v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v5 = [v6 responder];
+    responder = [v6 responder];
 
-    if (!v5)
+    if (!responder)
     {
       v14 = @"UITextInputSourceDidChangeInputSourceKey";
       v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_lastEventSource];
@@ -5154,7 +5154,7 @@ LABEL_20:
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_lastEventSource];
   v16[1] = @"UITextInputResponderCapabilitiesChangedInputResponderKey";
   v17[0] = v7;
-  v17[1] = v5;
+  v17[1] = responder;
   v8 = MEMORY[0x1E695DF20];
   v9 = v17;
   v10 = v16;
@@ -5162,17 +5162,17 @@ LABEL_20:
 LABEL_5:
   v12 = [v8 dictionaryWithObjects:v9 forKeys:v10 count:v11];
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v13 postNotificationName:@"UITextInputSourceDidChangeNotification" object:0 userInfo:v12];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UITextInputSourceDidChangeNotification" object:0 userInfo:v12];
 }
 
-- (void)_updateEventSource:(int64_t)keyboardSource options:(unint64_t)a4 responder:(id)a5
+- (void)_updateEventSource:(int64_t)keyboardSource options:(unint64_t)options responder:(id)responder
 {
-  v5 = a4;
-  v8 = a5;
+  optionsCopy = options;
+  responderCopy = responder;
   if (keyboardSource)
   {
-    if ((v5 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
       goto LABEL_7;
     }
@@ -5180,7 +5180,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ((v5 & 8) != 0)
+  if ((optionsCopy & 8) != 0)
   {
 LABEL_6:
     self->_keyboardSource = keyboardSource;
@@ -5189,29 +5189,29 @@ LABEL_6:
 
   keyboardSource = self->_keyboardSource;
 LABEL_7:
-  if ((v5 & 0x10) == 0 && self->_lastEventSource == keyboardSource)
+  if ((optionsCopy & 0x10) == 0 && self->_lastEventSource == keyboardSource)
   {
     goto LABEL_14;
   }
 
   self->_lastEventSource = keyboardSource;
-  v11 = v8;
-  if ((v5 & 1) == 0)
+  v11 = responderCopy;
+  if ((optionsCopy & 1) == 0)
   {
-    if ((v5 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       goto LABEL_11;
     }
 
 LABEL_18:
-    v10 = [(_UIRemoteKeyboards *)self proxy];
-    [v10 signalEventSourceChanged:keyboardSource completionHandler:&__block_literal_global_726];
+    proxy = [(_UIRemoteKeyboards *)self proxy];
+    [proxy signalEventSourceChanged:keyboardSource completionHandler:&__block_literal_global_726];
 
-    v8 = v11;
-    if ((v5 & 1) == 0)
+    responderCopy = v11;
+    if ((optionsCopy & 1) == 0)
     {
 LABEL_12:
-      if ((v5 & 2) == 0)
+      if ((optionsCopy & 2) == 0)
       {
         goto LABEL_14;
       }
@@ -5223,60 +5223,60 @@ LABEL_12:
   }
 
   [UIScribbleInteraction _lastEventSourceChanged:keyboardSource];
-  v8 = v11;
-  if ((v5 & 4) != 0)
+  responderCopy = v11;
+  if ((optionsCopy & 4) != 0)
   {
     goto LABEL_18;
   }
 
 LABEL_11:
-  if ((v5 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     goto LABEL_12;
   }
 
 LABEL_19:
   [(_UIRemoteKeyboards *)self _postInputSourceDidChangeNotificationForResponder:v11];
-  v8 = v11;
-  if ((v5 & 2) != 0)
+  responderCopy = v11;
+  if ((optionsCopy & 2) != 0)
   {
 LABEL_13:
     v9 = +[UIKeyboardImpl activeInstance];
     [v9 _suppressSoftwareKeyboardStateChangedIgnoringPolicyDelegate:0];
 
-    v8 = v11;
+    responderCopy = v11;
   }
 
 LABEL_14:
 }
 
-- (void)queue_setLastEventSource:(int64_t)a3 withCompletion:(id)a4
+- (void)queue_setLastEventSource:(int64_t)source withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [UIApp _systemAnimationFenceExemptQueue];
+  completionCopy = completion;
+  _systemAnimationFenceExemptQueue = [UIApp _systemAnimationFenceExemptQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62___UIRemoteKeyboards_queue_setLastEventSource_withCompletion___block_invoke;
   v9[3] = &unk_1E70F5FA8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  sourceCopy = source;
   v9[4] = self;
-  v8 = v6;
-  [v7 performAsync:v9];
+  v8 = completionCopy;
+  [_systemAnimationFenceExemptQueue performAsync:v9];
 }
 
-- (BOOL)_sceneFocusUpdatePermittedForWindow:(id)a3
+- (BOOL)_sceneFocusUpdatePermittedForWindow:(id)window
 {
-  v4 = a3;
-  if (v4 && [UIApp _systemShellAllowsInteractionTrackingKeyboardFocusUpdateForWindow:v4] && -[_UIRemoteKeyboards _sceneFocusPermittedForApplication](self, "_sceneFocusPermittedForApplication"))
+  windowCopy = window;
+  if (windowCopy && [UIApp _systemShellAllowsInteractionTrackingKeyboardFocusUpdateForWindow:windowCopy] && -[_UIRemoteKeyboards _sceneFocusPermittedForApplication](self, "_sceneFocusPermittedForApplication"))
   {
-    v5 = [v4 windowScene];
-    v6 = v5;
+    windowScene = [windowCopy windowScene];
+    v6 = windowScene;
     v7 = 0;
     if (self)
     {
-      v8 = v5;
-      if (!v5)
+      focusedSceneIdentityStringOrIdentifier = windowScene;
+      if (!windowScene)
       {
 LABEL_39:
 
@@ -5285,8 +5285,8 @@ LABEL_39:
 
       if ([(_UIRemoteKeyboards *)self _sceneFocusPermittedForApplication])
       {
-        v9 = [v6 _keyboardClientComponent];
-        if (([v9 suppressKeyboardFocusRequests] & 1) == 0)
+        _keyboardClientComponent = [v6 _keyboardClientComponent];
+        if (([_keyboardClientComponent suppressKeyboardFocusRequests] & 1) == 0)
         {
           v10 = +[UIWindowScene _keyWindowScene];
 
@@ -5294,7 +5294,7 @@ LABEL_39:
           {
 
 LABEL_23:
-            if (([v4 _isTextEffectsWindow] & 1) != 0 || (objc_msgSend(v4, "_isRemoteKeyboardWindow") & 1) != 0 || (objc_msgSend(v4, "windowScene"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "_FBSScene"), v21 = objc_claimAutoreleasedReturnValue(), v21, v20, v21) || !objc_msgSend(v4, "_isHostedInAnotherProcess"))
+            if (([windowCopy _isTextEffectsWindow] & 1) != 0 || (objc_msgSend(windowCopy, "_isRemoteKeyboardWindow") & 1) != 0 || (objc_msgSend(windowCopy, "windowScene"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "_FBSScene"), v21 = objc_claimAutoreleasedReturnValue(), v21, v20, v21) || !objc_msgSend(windowCopy, "_isHostedInAnotherProcess"))
             {
               isKindOfClass = 0;
             }
@@ -5305,8 +5305,8 @@ LABEL_23:
               isKindOfClass = objc_opt_isKindOfClass();
             }
 
-            v23 = [v4 _canUpdateSceneFocus];
-            if ((isKindOfClass & 1) == 0 && !v23 || ![v4 _appearsInLoupe])
+            _canUpdateSceneFocus = [windowCopy _canUpdateSceneFocus];
+            if ((isKindOfClass & 1) == 0 && !_canUpdateSceneFocus || ![windowCopy _appearsInLoupe])
             {
 LABEL_34:
               v7 = 0;
@@ -5315,10 +5315,10 @@ LABEL_40:
               goto LABEL_19;
             }
 
-            v8 = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
-            v9 = _UIRemoteKeyboardsFBSSceneIdentityStringOrIdentifierFromScene(v6);
-            v24 = [(_UIRemoteKeyboards *)self keyboardVisible];
-            if (v8)
+            focusedSceneIdentityStringOrIdentifier = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
+            _keyboardClientComponent = _UIRemoteKeyboardsFBSSceneIdentityStringOrIdentifierFromScene(v6);
+            keyboardVisible = [(_UIRemoteKeyboards *)self keyboardVisible];
+            if (focusedSceneIdentityStringOrIdentifier)
             {
               v25 = BSEqualStrings() ^ 1;
             }
@@ -5333,7 +5333,7 @@ LABEL_40:
             if (isKindOfClass)
             {
               v27 = BSEqualStrings();
-              if (v26 == v4)
+              if (v26 == windowCopy)
               {
                 v28 = 0;
               }
@@ -5349,7 +5349,7 @@ LABEL_40:
               v28 = 0;
             }
 
-            if (v24)
+            if (keyboardVisible)
             {
               v7 = v25 | v28;
             }
@@ -5362,19 +5362,19 @@ LABEL_40:
             goto LABEL_38;
           }
 
-          v11 = [v6 screen];
-          if (([v11 _userInterfaceIdiom] - 2) > 2)
+          screen = [v6 screen];
+          if (([screen _userInterfaceIdiom] - 2) > 2)
           {
-            v12 = [_UIRemoteKeyboards keyboardWindowSceneForScreen:v11 create:0];
-            v13 = [v6 session];
-            v14 = [v13 role];
-            v15 = [v14 isEqualToString:@"UIWindowSceneSessionRoleExternalDisplayNonInteractive"];
+            v12 = [_UIRemoteKeyboards keyboardWindowSceneForScreen:screen create:0];
+            session = [v6 session];
+            role = [session role];
+            v15 = [role isEqualToString:@"UIWindowSceneSessionRoleExternalDisplayNonInteractive"];
 
-            v16 = [v6 activationState];
-            v17 = [v6 activationState];
+            activationState = [v6 activationState];
+            activationState2 = [v6 activationState];
             if (v12 != v6)
             {
-              if (v16 != 1 && v17 != 0)
+              if (activationState != 1 && activationState2 != 0)
               {
                 v15 = 1;
               }
@@ -5390,7 +5390,7 @@ LABEL_40:
         }
 
         v7 = 0;
-        v8 = v6;
+        focusedSceneIdentityStringOrIdentifier = v6;
 LABEL_38:
 
         goto LABEL_39;
@@ -5399,7 +5399,7 @@ LABEL_38:
       v7 = 0;
     }
 
-    v8 = v6;
+    focusedSceneIdentityStringOrIdentifier = v6;
     goto LABEL_39;
   }
 
@@ -5409,28 +5409,28 @@ LABEL_19:
   return v7 & 1;
 }
 
-- (void)peekApplicationEvent:(id)a3
+- (void)peekApplicationEvent:(id)event
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   if ([(_UIRemoteKeyboards *)self _usesInvisibleKeyboardBehindWTUI]&& self->_showsInvisibleKeyboardBehindWTUI)
   {
     self->_dontSuppressKeyboardAgain = 1;
   }
 
-  if (![v4 type])
+  if (![eventCopy type])
   {
-    [(_UIRemoteKeyboardsEventObserver *)self->_eventObserver peekApplicationEvent:v4];
-    v5 = [(_UIRemoteKeyboards *)self _sceneFocusPermittedForApplication];
-    v6 = [v4 allTouches];
-    v7 = [v6 anyObject];
+    [(_UIRemoteKeyboardsEventObserver *)self->_eventObserver peekApplicationEvent:eventCopy];
+    _sceneFocusPermittedForApplication = [(_UIRemoteKeyboards *)self _sceneFocusPermittedForApplication];
+    allTouches = [eventCopy allTouches];
+    anyObject = [allTouches anyObject];
 
-    v8 = [v7 phase];
-    if (v5)
+    phase = [anyObject phase];
+    if (_sceneFocusPermittedForApplication)
     {
-      if (v8)
+      if (phase)
       {
-        v9 = v8 == 3;
+        v9 = phase == 3;
       }
 
       else
@@ -5446,47 +5446,47 @@ LABEL_19:
       v10 = 0;
     }
 
-    v11 = [v7 window];
-    v12 = [v11 _isRemoteKeyboardWindow];
+    window = [anyObject window];
+    _isRemoteKeyboardWindow = [window _isRemoteKeyboardWindow];
 
-    v13 = [v7 view];
-    v14 = v13;
-    if (v12)
+    view = [anyObject view];
+    v14 = view;
+    if (_isRemoteKeyboardWindow)
     {
-      [v7 window];
+      [anyObject window];
     }
 
     else
     {
-      [v13 _responderWindow];
+      [view _responderWindow];
     }
     v15 = ;
     if (v10)
     {
-      v16 = _UITouchIsWithinTiledWindowResizeRegion(v7, v15) ? 3 : 0;
-      if ([v7 phase] == v16)
+      v16 = _UITouchIsWithinTiledWindowResizeRegion(anyObject, v15) ? 3 : 0;
+      if ([anyObject phase] == v16)
       {
-        v17 = [v15 windowScene];
-        v18 = [v17 _FBSScene];
-        v19 = v18;
-        if (v18)
+        windowScene = [v15 windowScene];
+        _FBSScene = [windowScene _FBSScene];
+        v19 = _FBSScene;
+        if (_FBSScene)
         {
-          v20 = [v18 identityToken];
-          v21 = [v20 stringRepresentation];
+          identityToken = [_FBSScene identityToken];
+          stringRepresentation = [identityToken stringRepresentation];
         }
 
         else
         {
-          v21 = [v17 _sceneIdentifier];
+          stringRepresentation = [windowScene _sceneIdentifier];
         }
 
         v22 = [(_UIRemoteKeyboards *)self _sceneFocusUpdatePermittedForWindow:v15];
-        v23 = [v14 _wantsTargetOfKeyboardEventDeferringEnvironment];
-        if ((v12 & 1) == 0)
+        _wantsTargetOfKeyboardEventDeferringEnvironment = [v14 _wantsTargetOfKeyboardEventDeferringEnvironment];
+        if ((_isRemoteKeyboardWindow & 1) == 0)
         {
-          v24 = [v7 type] == 2;
+          v24 = [anyObject type] == 2;
           v25 = +[UIDictationController activeInstance];
-          [v25 cancelDictationForResponderIfNeeded:v14 wantsKeyboard:v23 isPencil:v24];
+          [v25 cancelDictationForResponderIfNeeded:v14 wantsKeyboard:_wantsTargetOfKeyboardEventDeferringEnvironment isPencil:v24];
         }
 
         [UIKeyboardSceneDelegate performOnControllers:&__block_literal_global_729];
@@ -5501,15 +5501,15 @@ LABEL_19:
             v49 = 1024;
             LODWORD(v50) = v22;
             WORD2(v50) = 2112;
-            *(&v50 + 6) = v21;
+            *(&v50 + 6) = stringRepresentation;
             _os_log_impl(&dword_188A29000, v42, OS_LOG_TYPE_ERROR, "%s: Update permitted: %d; for scene identity or identifier: %@", buf, 0x1Cu);
           }
         }
 
         if (v22)
         {
-          v27 = [(_UIRemoteKeyboards *)self keyboardVisible];
-          v28 = [v7 _isPointerTouch];
+          keyboardVisible = [(_UIRemoteKeyboards *)self keyboardVisible];
+          _isPointerTouch = [anyObject _isPointerTouch];
           v29 = __UILogGetCategoryCachedImpl("KeyboardFocus", &qword_1ED4997C8);
           if (*v29)
           {
@@ -5519,37 +5519,37 @@ LABEL_19:
               *buf = 136316418;
               v48 = "[_UIRemoteKeyboards peekApplicationEvent:]";
               v49 = 1024;
-              LODWORD(v50) = (!v27 | v28 | v23) & 1;
+              LODWORD(v50) = (!keyboardVisible | _isPointerTouch | _wantsTargetOfKeyboardEventDeferringEnvironment) & 1;
               WORD2(v50) = 1024;
-              *(&v50 + 6) = v27;
+              *(&v50 + 6) = keyboardVisible;
               WORD5(v50) = 1024;
-              HIDWORD(v50) = v23;
+              HIDWORD(v50) = _wantsTargetOfKeyboardEventDeferringEnvironment;
               v51 = 1024;
-              v52 = v28 & 1;
+              v52 = _isPointerTouch & 1;
               v53 = 2112;
-              v54 = v21;
+              v54 = stringRepresentation;
               _os_log_impl(&dword_188A29000, loga, OS_LOG_TYPE_ERROR, "%s: Request scene focus: %d; keyboardOnScreen: %d; wantsKeyboard: %d; touchIsPointer: %d; for scene identity or identifier: %@", buf, 0x2Eu);
             }
           }
 
-          if ((!v27 | v28 | v23))
+          if ((!keyboardVisible | _isPointerTouch | _wantsTargetOfKeyboardEventDeferringEnvironment))
           {
             v30 = 0x100010001;
-            if (v23 && ![v14 isFirstResponder])
+            if (_wantsTargetOfKeyboardEventDeferringEnvironment && ![v14 isFirstResponder])
             {
               v30 = 65537;
             }
 
             [(_UIRemoteKeyboards *)self _performRequiredSceneUpdateIfPermittedForWindow:v15 withContext:v30];
-            v31 = [(_UIRemoteKeyboards *)self requiredScene];
-            v32 = [v31 identityToken];
+            requiredScene = [(_UIRemoteKeyboards *)self requiredScene];
+            identityToken2 = [requiredScene identityToken];
 
-            v33 = [(_UIRemoteKeyboards *)self currentKeyboard]| v23;
+            v33 = [(_UIRemoteKeyboards *)self currentKeyboard]| _wantsTargetOfKeyboardEventDeferringEnvironment;
             log = v33 ^ 1;
             v34 = _UIArbiterClientLog();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
-              v43 = v21;
+              v43 = stringRepresentation;
               if (v33)
               {
                 v35 = "N";
@@ -5560,20 +5560,20 @@ LABEL_19:
                 v35 = "Y";
               }
 
-              v36 = [v32 description];
+              v36 = [identityToken2 description];
               v37 = _UISceneIdentityToLogString(v36);
               *buf = 136315394;
               v48 = v35;
-              v21 = v44;
+              stringRepresentation = v44;
               v49 = 2114;
               *&v50 = v37;
               _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_DEFAULT, "TX focusApplication (peekAppEvent) stealKB:%s scene:%{public}@", buf, 0x16u);
             }
 
-            v38 = [(_UIRemoteKeyboards *)self proxy];
+            proxy = [(_UIRemoteKeyboards *)self proxy];
             v39 = getpid();
-            v40 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:v32 window:v15];
-            [v38 focusApplicationWithProcessIdentifier:v39 context:v40 stealingKeyboard:log & 1 onCompletion:&__block_literal_global_733];
+            v40 = [UIKBArbiterClientFocusContext focusContextForSceneIdentity:identityToken2 window:v15];
+            [proxy focusApplicationWithProcessIdentifier:v39 context:v40 stealingKeyboard:log & 1 onCompletion:&__block_literal_global_733];
 
             if (([v15 _isApplicationKeyWindow] & 1) == 0)
             {
@@ -5585,10 +5585,10 @@ LABEL_19:
 
           else
           {
-            v41 = [v15 windowScene];
-            v32 = [v41 keyboardSceneDelegate];
+            windowScene2 = [v15 windowScene];
+            identityToken2 = [windowScene2 keyboardSceneDelegate];
 
-            [v32 setKeyWindowCandidate:v15];
+            [identityToken2 setKeyWindowCandidate:v15];
           }
         }
       }
@@ -5603,9 +5603,9 @@ LABEL_19:
   [UIKeyboardSceneDelegate performOnControllers:&__block_literal_global_735];
 }
 
-- (BOOL)shouldAllowInputViewsRestoredForId:(id)a3
+- (BOOL)shouldAllowInputViewsRestoredForId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   if ([(_UIRemoteKeyboards *)self keyboardActive])
   {
     v5 = 1;
@@ -5613,8 +5613,8 @@ LABEL_19:
 
   else if ([(_UIRemoteKeyboards *)self _isWritingToolsHandlingKeyboardTracking])
   {
-    v6 = [(_UIRemoteKeyboards *)self yieldingKeyboardToIgnoredScene];
-    v5 = v6 != 0;
+    yieldingKeyboardToIgnoredScene = [(_UIRemoteKeyboards *)self yieldingKeyboardToIgnoredScene];
+    v5 = yieldingKeyboardToIgnoredScene != 0;
   }
 
   else
@@ -5622,31 +5622,31 @@ LABEL_19:
     v5 = 0;
   }
 
-  v7 = [objc_opt_class() bundlesThatShouldNotPreventRestoration];
-  v8 = [(_UIRemoteKeyboards *)self currentState];
-  v9 = [v8 sourceBundleIdentifier];
-  if (([v7 containsObject:v9] & 1) != 0 || v5 | !-[_UIRemoteKeyboards keyboardVisible](self, "keyboardVisible"))
+  bundlesThatShouldNotPreventRestoration = [objc_opt_class() bundlesThatShouldNotPreventRestoration];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  sourceBundleIdentifier = [currentState sourceBundleIdentifier];
+  if (([bundlesThatShouldNotPreventRestoration containsObject:sourceBundleIdentifier] & 1) != 0 || v5 | !-[_UIRemoteKeyboards keyboardVisible](self, "keyboardVisible"))
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = [v4 isEqual:@"remote-keyboards"];
+    v10 = [idCopy isEqual:@"remote-keyboards"];
   }
 
   return v10;
 }
 
-- (void)applicationWillAddDeactivationReason:(id)a3
+- (void)applicationWillAddDeactivationReason:(id)reason
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
-  v6 = [v5 integerValue];
+  userInfo = [reason userInfo];
+  v5 = [userInfo objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
+  integerValue = [v5 integerValue];
 
-  if (v6 > 13)
+  if (integerValue > 13)
   {
-    if ((v6 - 14) >= 3)
+    if ((integerValue - 14) >= 3)
     {
       goto LABEL_8;
     }
@@ -5654,15 +5654,15 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  switch(v6)
+  switch(integerValue)
   {
     case 2:
       self->_deactivatedByControlCenter = 1;
       break;
     case 7:
 LABEL_7:
-      v7 = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
-      self->_hadFocusBeforeOverlay = v7 != 0;
+      focusedSceneIdentityStringOrIdentifier = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
+      self->_hadFocusBeforeOverlay = focusedSceneIdentityStringOrIdentifier != 0;
 
       break;
     case 13:
@@ -5681,14 +5681,14 @@ LABEL_8:
     return;
   }
 
-  v12 = [(_UIRemoteKeyboards *)self currentState];
-  v10 = [v12 hostBundleIdentifier];
+  currentState = [(_UIRemoteKeyboards *)self currentState];
+  hostBundleIdentifier = [currentState hostBundleIdentifier];
   v11 = _UIMainBundleIdentifier();
-  if ([v10 isEqualToString:v11])
+  if ([hostBundleIdentifier isEqualToString:v11])
   {
 
 LABEL_9:
-    if (v6 == 12)
+    if (integerValue == 12)
     {
       v8 = _UIArbiterClientLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -5697,37 +5697,37 @@ LABEL_9:
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "TX setDeactivating: Y (+DeactivationReason:SuspendedEventsOnly)", buf, 2u);
       }
 
-      v9 = [(_UIRemoteKeyboards *)self proxy];
-      [v9 setDeactivating:1];
+      proxy = [(_UIRemoteKeyboards *)self proxy];
+      [proxy setDeactivating:1];
     }
 
     return;
   }
 }
 
-- (void)applicationDidRemoveDeactivationReason:(id)a3
+- (void)applicationDidRemoveDeactivationReason:(id)reason
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
-  v6 = [v5 integerValue];
+  userInfo = [reason userInfo];
+  v5 = [userInfo objectForKey:@"_UIApplicationDeactivationReasonUserInfoKey"];
+  integerValue = [v5 integerValue];
 
-  if (v6 <= 12)
+  if (integerValue <= 12)
   {
-    if (v6 == 2)
+    if (integerValue == 2)
     {
       self->_deactivatedByControlCenter = 0;
       return;
     }
 
-    if (v6 != 7)
+    if (integerValue != 7)
     {
       goto LABEL_11;
     }
   }
 
-  else if ((v6 - 14) >= 3)
+  else if ((integerValue - 14) >= 3)
   {
-    if (v6 == 13)
+    if (integerValue == 13)
     {
       self->_deactivatedBySystemAlert = 0;
     }
@@ -5737,18 +5737,18 @@ LABEL_9:
 
   if (self->_hadFocusBeforeOverlay)
   {
-    v7 = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
+    focusedSceneIdentityStringOrIdentifier = [(_UIRemoteKeyboards *)self focusedSceneIdentityStringOrIdentifier];
 
-    if (v7)
+    if (focusedSceneIdentityStringOrIdentifier)
     {
-      v8 = [(_UIRemoteKeyboards *)self proxy];
-      [v8 applicationShouldFocusWithBundle:0 onCompletion:&__block_literal_global_740];
+      proxy = [(_UIRemoteKeyboards *)self proxy];
+      [proxy applicationShouldFocusWithBundle:0 onCompletion:&__block_literal_global_740];
     }
   }
 
   self->_hadFocusBeforeOverlay = 0;
 LABEL_11:
-  if (v6 == 12)
+  if (integerValue == 12)
   {
     v9 = _UIArbiterClientLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -5757,12 +5757,12 @@ LABEL_11:
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "Send setDeactivating: N (-DeactivationReason:SuspendedEventsOnly)", v11, 2u);
     }
 
-    v10 = [(_UIRemoteKeyboards *)self proxy];
-    [v10 setDeactivating:0];
+    proxy2 = [(_UIRemoteKeyboards *)self proxy];
+    [proxy2 setDeactivating:0];
   }
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   if ([(_UIRemoteKeyboards *)self currentKeyboard])
   {
@@ -5773,8 +5773,8 @@ LABEL_11:
 
       if ((v5 & 1) == 0)
       {
-        v6 = [(_UIRemoteKeyboards *)self currentState];
-        v7 = [v6 copyWithIntersectability:0];
+        currentState = [(_UIRemoteKeyboards *)self currentState];
+        v7 = [currentState copyWithIntersectability:0];
 
         [v7 setShouldTakeSnapshot:0];
         [(_UIRemoteKeyboards *)self signalToProxyKeyboardChanged:v7 onCompletion:&__block_literal_global_742];
@@ -5782,41 +5782,41 @@ LABEL_11:
     }
   }
 
-  v8 = [(_UIRemoteKeyboards *)self inputWindowRootViewController];
-  v9 = [v8 presentedViewController];
+  inputWindowRootViewController = [(_UIRemoteKeyboards *)self inputWindowRootViewController];
+  presentedViewController = [inputWindowRootViewController presentedViewController];
 
-  if (v9)
+  if (presentedViewController)
   {
-    v11 = [(_UIRemoteKeyboards *)self inputWindowRootViewController];
-    v10 = [v11 presentedViewController];
-    [v10 dismissViewControllerAnimated:0 completion:0];
+    inputWindowRootViewController2 = [(_UIRemoteKeyboards *)self inputWindowRootViewController];
+    presentedViewController2 = [inputWindowRootViewController2 presentedViewController];
+    [presentedViewController2 dismissViewControllerAnimated:0 completion:0];
   }
 }
 
-- (void)applicationDidBecomeActive:(id)a3 forceSignalToProxy:(BOOL)a4
+- (void)applicationDidBecomeActive:(id)active forceSignalToProxy:(BOOL)proxy
 {
-  v12 = a3;
-  if (a4 || [(_UIRemoteKeyboards *)self currentKeyboard]&& !self->_deactivatedByControlCenter)
+  activeCopy = active;
+  if (proxy || [(_UIRemoteKeyboards *)self currentKeyboard]&& !self->_deactivatedByControlCenter)
   {
-    v6 = [(_UIRemoteKeyboards *)self backupState];
-    v7 = v6;
-    if (v6)
+    backupState = [(_UIRemoteKeyboards *)self backupState];
+    v7 = backupState;
+    if (backupState)
     {
-      v8 = [v6 copyWithIntersectability:1];
+      v8 = [backupState copyWithIntersectability:1];
     }
 
     else
     {
-      v9 = [(_UIRemoteKeyboards *)self currentState];
-      v8 = [v9 copyWithIntersectability:1];
+      currentState = [(_UIRemoteKeyboards *)self currentState];
+      v8 = [currentState copyWithIntersectability:1];
     }
 
     [v8 setShouldTakeSnapshot:0];
     [(_UIRemoteKeyboards *)self signalToProxyKeyboardChanged:v8 onCompletion:&__block_literal_global_744];
-    v10 = [(_UIRemoteKeyboards *)self keyboardWindow];
-    v11 = [v10 _isHostedInAnotherProcess];
+    keyboardWindow = [(_UIRemoteKeyboards *)self keyboardWindow];
+    _isHostedInAnotherProcess = [keyboardWindow _isHostedInAnotherProcess];
 
-    if ((v11 & 1) == 0)
+    if ((_isHostedInAnotherProcess & 1) == 0)
     {
       [(_UIRemoteKeyboards *)self setWindowEnabled:1];
     }
@@ -5825,7 +5825,7 @@ LABEL_11:
   self->_deactivatedByControlCenter = 0;
 }
 
-- (void)setEnableMultiscreenHack:(BOOL)a3
+- (void)setEnableMultiscreenHack:(BOOL)hack
 {
   v10 = _UIMainBundleIdentifier();
   if (([v10 isEqualToString:@"com.apple.mobilenotes"] & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"com.apple.sidecar.extension.display") & 1) == 0)
@@ -5837,7 +5837,7 @@ LABEL_11:
     [v6 raise:v7 format:{@"Application '%@' not permitted to use '%@'", v8, v9}];
   }
 
-  self->_enableMultiscreenHack = a3;
+  self->_enableMultiscreenHack = hack;
 }
 
 - (BOOL)keyboardIsForSystemService
@@ -5847,40 +5847,40 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(_UIKeyboardChangedInformation *)self->_currentState sourceBundleIdentifier];
+  sourceBundleIdentifier = [(_UIKeyboardChangedInformation *)self->_currentState sourceBundleIdentifier];
   v4 = _UIMainBundleIdentifier();
-  if ([v3 isEqualToString:v4])
+  if ([sourceBundleIdentifier isEqualToString:v4])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(_UIKeyboardChangedInformation *)self->_currentState sourceBundleIdentifier];
-    if ([v6 isEqualToString:@"com.apple.Spotlight"])
+    sourceBundleIdentifier2 = [(_UIKeyboardChangedInformation *)self->_currentState sourceBundleIdentifier];
+    if ([sourceBundleIdentifier2 isEqualToString:@"com.apple.Spotlight"])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [(_UIKeyboardChangedInformation *)self->_currentState sourceBundleIdentifier];
-      if ([v7 isEqualToString:@"com.apple.siri"])
+      sourceBundleIdentifier3 = [(_UIKeyboardChangedInformation *)self->_currentState sourceBundleIdentifier];
+      if ([sourceBundleIdentifier3 isEqualToString:@"com.apple.siri"])
       {
         v5 = 1;
       }
 
       else
       {
-        v8 = [(_UIKeyboardChangedInformation *)self->_currentState sourceBundleIdentifier];
-        if ([v8 isEqualToString:@"com.apple.CoreAuthUI"])
+        sourceBundleIdentifier4 = [(_UIKeyboardChangedInformation *)self->_currentState sourceBundleIdentifier];
+        if ([sourceBundleIdentifier4 isEqualToString:@"com.apple.CoreAuthUI"])
         {
           v5 = 1;
         }
 
         else
         {
-          v5 = [v8 isEqualToString:@"com.apple.LocalAuthenticationUIService"];
+          v5 = [sourceBundleIdentifier4 isEqualToString:@"com.apple.LocalAuthenticationUIService"];
         }
       }
     }
@@ -5889,54 +5889,54 @@ LABEL_11:
   return v5;
 }
 
-- (void)startTransition:(id)a3 withInfo:(id)a4
+- (void)startTransition:(id)transition withInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIRemoteKeyboards *)self proxy];
-  [v8 transition:v7 eventStage:0 withInfo:v6];
+  infoCopy = info;
+  transitionCopy = transition;
+  proxy = [(_UIRemoteKeyboards *)self proxy];
+  [proxy transition:transitionCopy eventStage:0 withInfo:infoCopy];
 }
 
-- (void)updateTransition:(id)a3 withInfo:(id)a4
+- (void)updateTransition:(id)transition withInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIRemoteKeyboards *)self proxy];
-  [v8 transition:v7 eventStage:1 withInfo:v6];
+  infoCopy = info;
+  transitionCopy = transition;
+  proxy = [(_UIRemoteKeyboards *)self proxy];
+  [proxy transition:transitionCopy eventStage:1 withInfo:infoCopy];
 }
 
-- (void)completeTransition:(id)a3 withInfo:(id)a4
+- (void)completeTransition:(id)transition withInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIRemoteKeyboards *)self proxy];
-  [v8 transition:v7 eventStage:2 withInfo:v6];
+  infoCopy = info;
+  transitionCopy = transition;
+  proxy = [(_UIRemoteKeyboards *)self proxy];
+  [proxy transition:transitionCopy eventStage:2 withInfo:infoCopy];
 
   [(_UIRemoteKeyboards *)self updateAllVisibleFrames];
 }
 
-- (void)setPlacement:(id)a3 quietly:(BOOL)a4 animated:(BOOL)a5 generateSplitNotification:(BOOL)a6
+- (void)setPlacement:(id)placement quietly:(BOOL)quietly animated:(BOOL)animated generateSplitNotification:(BOOL)notification
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  notificationCopy = notification;
+  animatedCopy = animated;
+  quietlyCopy = quietly;
   v17[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(_UIRemoteKeyboards *)self proxy];
-  v17[0] = v10;
+  placementCopy = placement;
+  proxy = [(_UIRemoteKeyboards *)self proxy];
+  v17[0] = placementCopy;
   v16[0] = @"Placement";
   v16[1] = @"Quiet";
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:quietlyCopy];
   v17[1] = v12;
   v16[2] = @"Animated";
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
   v17[2] = v13;
   v16[3] = @"Notify";
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:notificationCopy];
   v17[3] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
 
-  [v11 transition:@"Placement" eventStage:3 withInfo:v15];
+  [proxy transition:@"Placement" eventStage:3 withInfo:v15];
 }
 
 @end

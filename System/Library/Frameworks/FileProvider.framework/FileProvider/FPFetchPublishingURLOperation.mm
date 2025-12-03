@@ -1,20 +1,20 @@
 @interface FPFetchPublishingURLOperation
-- (FPFetchPublishingURLOperation)initWithItem:(id)a3;
+- (FPFetchPublishingURLOperation)initWithItem:(id)item;
 - (void)_setupFilePresenterAndWaitForUpload;
 - (void)_tryFetchingSharingURL;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
 - (void)cancel;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)presentedItemDidChangeUbiquityAttributes:(id)a3;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)presentedItemDidChangeUbiquityAttributes:(id)attributes;
 @end
 
 @implementation FPFetchPublishingURLOperation
 
-- (FPFetchPublishingURLOperation)initWithItem:(id)a3
+- (FPFetchPublishingURLOperation)initWithItem:(id)item
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v15[0] = v5;
+  itemCopy = item;
+  v15[0] = itemCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v14.receiver = self;
   v14.super_class = FPFetchPublishingURLOperation;
@@ -22,7 +22,7 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_item, a3);
+    objc_storeStrong(&v7->_item, item);
     v8 = objc_opt_new();
     [(FPActionOperation *)v7 setProgress:v8];
 
@@ -30,8 +30,8 @@
     operationQueue = v7->_operationQueue;
     v7->_operationQueue = v9;
 
-    v11 = [(FPOperation *)v7 callbackQueue];
-    [(NSOperationQueue *)v7->_operationQueue setUnderlyingQueue:v11];
+    callbackQueue = [(FPOperation *)v7 callbackQueue];
+    [(NSOperationQueue *)v7->_operationQueue setUnderlyingQueue:callbackQueue];
 
     [(FPActionOperation *)v7 setSetupRemoteOperationService:1];
   }
@@ -40,7 +40,7 @@
   return v7;
 }
 
-- (void)presentedItemDidChangeUbiquityAttributes:(id)a3
+- (void)presentedItemDidChangeUbiquityAttributes:(id)attributes
 {
   if (([(FPFetchPublishingURLOperation *)self isCancelled]& 1) == 0)
   {
@@ -50,14 +50,14 @@
       [(FPFetchPublishingURLOperation *)self presentedItemDidChangeUbiquityAttributes:v4, v5, v6, v7, v8, v9, v10];
     }
 
-    v11 = [(FPActionOperation *)self itemManager];
+    itemManager = [(FPActionOperation *)self itemManager];
     itemURL = self->_itemURL;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __74__FPFetchPublishingURLOperation_presentedItemDidChangeUbiquityAttributes___block_invoke;
     v13[3] = &unk_1E793B0E0;
     v13[4] = self;
-    [v11 fetchItemForURL:itemURL completionHandler:v13];
+    [itemManager fetchItemForURL:itemURL completionHandler:v13];
   }
 }
 
@@ -169,38 +169,38 @@ void __74__FPFetchPublishingURLOperation_presentedItemDidChangeUbiquityAttribute
   }
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
   v4 = MEMORY[0x1E696ABC0];
   v5 = *MEMORY[0x1E696A250];
-  v7 = a3;
+  handlerCopy = handler;
   v6 = [v4 errorWithDomain:v5 code:260 userInfo:0];
   [(FPOperation *)self completedWithResult:0 error:v6];
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 - (void)_setupFilePresenterAndWaitForUpload
 {
-  v4 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v4);
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   if (([(FPFetchPublishingURLOperation *)self isCancelled]& 1) == 0)
   {
     if (self->_isFilePresenter)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"FPFetchPublishingURLOperation.m" lineNumber:168 description:@"already a file presenter"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"FPFetchPublishingURLOperation.m" lineNumber:168 description:@"already a file presenter"];
     }
 
-    v6 = [(FPActionOperation *)self itemManager];
+    itemManager = [(FPActionOperation *)self itemManager];
     item = self->_item;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68__FPFetchPublishingURLOperation__setupFilePresenterAndWaitForUpload__block_invoke;
     v8[3] = &unk_1E793BBD8;
     v8[4] = self;
-    [v6 fetchURLForItem:item completionHandler:v8];
+    [itemManager fetchURLForItem:item completionHandler:v8];
 
     self->_isFilePresenter = 1;
   }
@@ -256,27 +256,27 @@ void __68__FPFetchPublishingURLOperation__setupFilePresenterAndWaitForUpload__bl
 
 - (void)_tryFetchingSharingURL
 {
-  v3 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v3);
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  v4 = [(FPActionOperation *)self remoteServiceProxy];
-  v5 = [(FPItem *)self->_item itemID];
+  remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
+  itemID = [(FPItem *)self->_item itemID];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__FPFetchPublishingURLOperation__tryFetchingSharingURL__block_invoke;
   v8[3] = &unk_1E793BBD8;
   v8[4] = self;
-  v6 = [v4 fetchPublishingURLForItemID:v5 completionHandler:v8];
+  v6 = [remoteServiceProxy fetchPublishingURLForItemID:itemID completionHandler:v8];
 
-  v7 = self;
-  objc_sync_enter(v7);
-  objc_storeStrong(&v7->_remoteCancellableProgress, v6);
-  if ([(FPFetchPublishingURLOperation *)v7 isCancelled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_remoteCancellableProgress, v6);
+  if ([(FPFetchPublishingURLOperation *)selfCopy isCancelled])
   {
-    [(NSProgress *)v7->_remoteCancellableProgress cancel];
+    [(NSProgress *)selfCopy->_remoteCancellableProgress cancel];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 void __55__FPFetchPublishingURLOperation__tryFetchingSharingURL__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -328,31 +328,31 @@ uint64_t __55__FPFetchPublishingURLOperation__tryFetchingSharingURL__block_invok
   v5.receiver = self;
   v5.super_class = FPFetchPublishingURLOperation;
   [(FPOperation *)&v5 cancel];
-  v3 = self;
-  objc_sync_enter(v3);
-  [(NSProgress *)v3->_remoteCancellableProgress cancel];
-  remoteCancellableProgress = v3->_remoteCancellableProgress;
-  v3->_remoteCancellableProgress = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSProgress *)selfCopy->_remoteCancellableProgress cancel];
+  remoteCancellableProgress = selfCopy->_remoteCancellableProgress;
+  selfCopy->_remoteCancellableProgress = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [MEMORY[0x1E696ABF8] removeFilePresenter:self];
-  v8 = [(FPFetchPublishingURLOperation *)self fetchCompletionBlock];
-  v9 = v8;
-  if (v8)
+  fetchCompletionBlock = [(FPFetchPublishingURLOperation *)self fetchCompletionBlock];
+  v9 = fetchCompletionBlock;
+  if (fetchCompletionBlock)
   {
-    (*(v8 + 16))(v8, v6, v7);
+    (*(fetchCompletionBlock + 16))(fetchCompletionBlock, resultCopy, errorCopy);
     [(FPFetchPublishingURLOperation *)self setFetchCompletionBlock:0];
   }
 
   v10.receiver = self;
   v10.super_class = FPFetchPublishingURLOperation;
-  [(FPActionOperation *)&v10 finishWithResult:v6 error:v7];
+  [(FPActionOperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 - (void)presentedItemDidChangeUbiquityAttributes:(uint64_t)a3 .cold.1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

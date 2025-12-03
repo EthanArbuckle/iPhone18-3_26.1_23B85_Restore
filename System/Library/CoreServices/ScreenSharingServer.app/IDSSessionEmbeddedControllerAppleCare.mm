@@ -4,7 +4,7 @@
 - (void)doAcceptIDSInvitation;
 - (void)postInvitationNotification;
 - (void)shouldStartScreenSharingSession;
-- (void)termsAndConditionsResult:(id)a3;
+- (void)termsAndConditionsResult:(id)result;
 @end
 
 @implementation IDSSessionEmbeddedControllerAppleCare
@@ -17,21 +17,21 @@
     v3 = sub_100042E68();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
-      v5 = [v4 sessionID];
+      idsSession = [(IDSSessionEmbeddedControllerBase *)self idsSession];
+      sessionID = [idsSession sessionID];
       *buf = 136315650;
       v52 = "[IDSSessionEmbeddedControllerAppleCare postInvitationNotification]";
       v53 = 1024;
       v54 = 138;
       v55 = 2080;
-      v56 = [v5 UTF8String];
+      selfCopy = [sessionID UTF8String];
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%s:%d] postInvitationNotification for %s", buf, 0x1Cu);
     }
   }
 
-  v6 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
-  v7 = [v6 sessionID];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 138, "-[IDSSessionEmbeddedControllerAppleCare postInvitationNotification]", 7, 0, "postInvitationNotification for %s", [v7 UTF8String]);
+  idsSession2 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
+  sessionID2 = [idsSession2 sessionID];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 138, "-[IDSSessionEmbeddedControllerAppleCare postInvitationNotification]", 7, 0, "postInvitationNotification for %s", [sessionID2 UTF8String]);
 
   if (qword_100070A68 != -1)
   {
@@ -45,27 +45,27 @@
     v9 = sub_100042E68();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
-      v11 = [v10 UTF8String];
+      inviterFullName = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
+      uTF8String = [inviterFullName UTF8String];
       *buf = 136315650;
       v52 = "[IDSSessionEmbeddedControllerAppleCare postInvitationNotification]";
       v53 = 1024;
       v54 = 160;
       v55 = 2080;
-      v56 = v11;
+      selfCopy = uTF8String;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%s:%d] inviter name %s", buf, 0x1Cu);
     }
   }
 
-  v12 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 160, "-[IDSSessionEmbeddedControllerAppleCare postInvitationNotification]", 7, 0, "inviter name %s", [v12 UTF8String]);
+  inviterFullName2 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 160, "-[IDSSessionEmbeddedControllerAppleCare postInvitationNotification]", 7, 0, "inviter name %s", [inviterFullName2 UTF8String]);
 
   if ([(IDSSessionEmbeddedControllerBase *)self inviterKind]!= 3)
   {
     v15 = +[NSBundle mainBundle];
     v16 = [v15 localizedStringForKey:@"kSSShareYourScreen" value:&stru_100069830 table:0];
-    v17 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
-    v14 = [NSString stringWithFormat:v16, v17];
+    inviterFullName3 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
+    v14 = [NSString stringWithFormat:v16, inviterFullName3];
 
     if (!v14)
     {
@@ -86,20 +86,20 @@ LABEL_15:
   }
 
 LABEL_16:
-  v18 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
+  inviterFullName4 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
 
-  if (v18)
+  if (inviterFullName4)
   {
-    CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, v18);
+    CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, inviterFullName4);
   }
 
-  v19 = [(IDSSessionEmbeddedControllerBase *)self idsServiceController];
-  v20 = [v19 isAppleTV];
+  idsServiceController = [(IDSSessionEmbeddedControllerBase *)self idsServiceController];
+  isAppleTV = [idsServiceController isAppleTV];
 
-  v21 = [(IDSSessionEmbeddedControllerBase *)self inviterKind];
-  if (v20)
+  inviterKind = [(IDSSessionEmbeddedControllerBase *)self inviterKind];
+  if (isAppleTV)
   {
-    if (v21 != 3)
+    if (inviterKind != 3)
     {
       v25 = +[NSBundle mainBundle];
       v26 = v25;
@@ -113,15 +113,15 @@ LABEL_16:
 
   else
   {
-    if (v21 != 3)
+    if (inviterKind != 3)
     {
       v25 = +[NSBundle mainBundle];
       v26 = v25;
       v27 = @"kSSTapAccept";
 LABEL_27:
       v28 = [v25 localizedStringForKey:v27 value:&stru_100069830 table:0];
-      v29 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
-      v24 = [NSString stringWithFormat:v28, v29];
+      inviterFullName5 = [(IDSSessionEmbeddedControllerAppleCare *)self inviterFullName];
+      v24 = [NSString stringWithFormat:v28, inviterFullName5];
 
       if (!v24)
       {
@@ -169,9 +169,9 @@ LABEL_29:
     CFRelease(Mutable);
   }
 
-  v36 = [(IDSSessionEmbeddedControllerBase *)self invitationNotification];
+  invitationNotification = [(IDSSessionEmbeddedControllerBase *)self invitationNotification];
   v37 = sub_1000423E0();
-  if (v36)
+  if (invitationNotification)
   {
     if (v37)
     {
@@ -183,7 +183,7 @@ LABEL_29:
         v53 = 1024;
         v54 = 222;
         v55 = 1024;
-        LODWORD(v56) = error;
+        LODWORD(selfCopy) = error;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "[%s:%d] got error %d", buf, 0x18u);
       }
     }
@@ -203,7 +203,7 @@ LABEL_29:
           v53 = 1024;
           v54 = 232;
           v55 = 2048;
-          v56 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "[%s:%d] adding self %p to pending notifications", buf, 0x1Cu);
         }
       }
@@ -221,7 +221,7 @@ LABEL_29:
           v53 = 1024;
           v54 = 234;
           v55 = 2048;
-          v56 = v43;
+          selfCopy = v43;
           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "[%s:%d] [gPendingUserNotifications count %lu", buf, 0x1Cu);
         }
       }
@@ -235,7 +235,7 @@ LABEL_29:
       v46 = [NSTimer scheduledTimerWithTimeInterval:self target:"userNotificationTimeout:" selector:0 userInfo:0 repeats:28.0];
       [(IDSSessionEmbeddedControllerBase *)self setNotificationTimeoutTimer:v46];
 
-      v47 = RunLoopSource;
+      invitationNotification2 = RunLoopSource;
     }
 
     else
@@ -254,10 +254,10 @@ LABEL_29:
       }
 
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 227, "[IDSSessionEmbeddedControllerAppleCare postInvitationNotification]", 7, 0, "Failed to create run loop source for notification");
-      v47 = [(IDSSessionEmbeddedControllerBase *)self invitationNotification];
+      invitationNotification2 = [(IDSSessionEmbeddedControllerBase *)self invitationNotification];
     }
 
-    CFRelease(v47);
+    CFRelease(invitationNotification2);
   }
 
   else
@@ -279,9 +279,9 @@ LABEL_29:
   }
 }
 
-- (void)termsAndConditionsResult:(id)a3
+- (void)termsAndConditionsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
@@ -296,7 +296,7 @@ LABEL_29:
   }
 
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 247, "[IDSSessionEmbeddedControllerAppleCare termsAndConditionsResult:]", 7, 0, "AppleCare termsAndConditionsResult called from viewservice");
-  v6 = [v4 objectForKey:@"result"];
+  v6 = [resultCopy objectForKey:@"result"];
 
   -[IDSSessionEmbeddedControllerAppleCare setTermsAccepted:](self, "setTermsAccepted:", [v6 BOOLValue]);
   if (sub_1000423E0())
@@ -304,33 +304,33 @@ LABEL_29:
     v7 = sub_100042E68();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(IDSSessionEmbeddedControllerAppleCare *)self termsAccepted];
-      v9 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
-      v10 = [v9 sessionID];
-      v11 = [v10 UTF8String];
+      termsAccepted = [(IDSSessionEmbeddedControllerAppleCare *)self termsAccepted];
+      idsSession = [(IDSSessionEmbeddedControllerBase *)self idsSession];
+      sessionID = [idsSession sessionID];
+      uTF8String = [sessionID UTF8String];
       *buf = 136315906;
       v20 = "[IDSSessionEmbeddedControllerAppleCare termsAndConditionsResult:]";
       v21 = 1024;
       v22 = 250;
       v23 = 1024;
-      v24 = v8;
+      v24 = termsAccepted;
       v25 = 2080;
-      v26 = v11;
+      v26 = uTF8String;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%s:%d] termsAndConditionsResult:%d  session %s", buf, 0x22u);
     }
   }
 
-  v12 = [(IDSSessionEmbeddedControllerAppleCare *)self termsAccepted];
-  v13 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
-  v14 = [v13 sessionID];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 250, "-[IDSSessionEmbeddedControllerAppleCare termsAndConditionsResult:]", 7, 0, "termsAndConditionsResult:%d  session %s", v12, [v14 UTF8String]);
+  termsAccepted2 = [(IDSSessionEmbeddedControllerAppleCare *)self termsAccepted];
+  idsSession2 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
+  sessionID2 = [idsSession2 sessionID];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 250, "-[IDSSessionEmbeddedControllerAppleCare termsAndConditionsResult:]", 7, 0, "termsAndConditionsResult:%d  session %s", termsAccepted2, [sessionID2 UTF8String]);
 
-  v15 = [(IDSSessionEmbeddedControllerBase *)self vsSemaphore];
+  vsSemaphore = [(IDSSessionEmbeddedControllerBase *)self vsSemaphore];
 
-  if (v15)
+  if (vsSemaphore)
   {
-    v16 = [(IDSSessionEmbeddedControllerBase *)self vsSemaphore];
-    dispatch_semaphore_signal(v16);
+    vsSemaphore2 = [(IDSSessionEmbeddedControllerBase *)self vsSemaphore];
+    dispatch_semaphore_signal(vsSemaphore2);
 
     if (sub_1000423E0())
     {
@@ -375,24 +375,24 @@ LABEL_29:
     v3 = sub_100042E68();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
-      v5 = [v4 sessionID];
+      idsSession = [(IDSSessionEmbeddedControllerBase *)self idsSession];
+      sessionID = [idsSession sessionID];
       *buf = 136315650;
       v12 = "[IDSSessionEmbeddedControllerAppleCare doAcceptIDSInvitation]";
       v13 = 1024;
       v14 = 265;
       v15 = 2080;
-      v16 = [v5 UTF8String];
+      uTF8String = [sessionID UTF8String];
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%s:%d] Called [IDSSession doAcceptIDSInvitation] for %s", buf, 0x1Cu);
     }
   }
 
-  v6 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
-  v7 = [v6 sessionID];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 265, "-[IDSSessionEmbeddedControllerAppleCare doAcceptIDSInvitation]", 7, 0, "Called [IDSSession doAcceptIDSInvitation] for %s", [v7 UTF8String]);
+  idsSession2 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
+  sessionID2 = [idsSession2 sessionID];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 265, "-[IDSSessionEmbeddedControllerAppleCare doAcceptIDSInvitation]", 7, 0, "Called [IDSSession doAcceptIDSInvitation] for %s", [sessionID2 UTF8String]);
 
-  v8 = [(IDSSessionEmbeddedControllerBase *)self idsServiceController];
-  [v8 inviteWasAccepted:self];
+  idsServiceController = [(IDSSessionEmbeddedControllerBase *)self idsServiceController];
+  [idsServiceController inviteWasAccepted:self];
 
   [(IDSSessionEmbeddedControllerBase *)self doAcceptIDSInvitationWithAVConferenceInfo];
   [(IDSSessionEmbeddedControllerAppleCare *)self setTermsAccepted:0];
@@ -455,9 +455,9 @@ LABEL_29:
   }
 
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 314, "[IDSSessionEmbeddedControllerAppleCare showUserTermsAndConditions]", 7, 0, "RemoteAlert: %d", v8);
-  v10 = [(IDSSessionEmbeddedControllerBase *)self vsSemaphore];
+  vsSemaphore = [(IDSSessionEmbeddedControllerBase *)self vsSemaphore];
   v11 = dispatch_time(0, 600000000000);
-  v12 = dispatch_semaphore_wait(v10, v11);
+  v12 = dispatch_semaphore_wait(vsSemaphore, v11);
   v13 = v12 == 0;
 
   if (v12)
@@ -467,22 +467,22 @@ LABEL_29:
       v14 = sub_100042E68();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
-        v16 = [v15 sessionID];
-        v17 = [v16 UTF8String];
+        idsSession = [(IDSSessionEmbeddedControllerBase *)self idsSession];
+        sessionID = [idsSession sessionID];
+        uTF8String = [sessionID UTF8String];
         *buf = 136315650;
         v27 = "[IDSSessionEmbeddedControllerAppleCare showUserTermsAndConditions]";
         v28 = 1024;
         v29 = 319;
         v30 = 2080;
-        v31 = v17;
+        v31 = uTF8String;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%s:%d] terms and conditions timeout for %s", buf, 0x1Cu);
       }
     }
 
-    v18 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
-    v19 = [v18 sessionID];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 319, "-[IDSSessionEmbeddedControllerAppleCare showUserTermsAndConditions]", 7, 0, "terms and conditions timeout for %s", [v19 UTF8String]);
+    idsSession2 = [(IDSSessionEmbeddedControllerBase *)self idsSession];
+    sessionID2 = [idsSession2 sessionID];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 319, "-[IDSSessionEmbeddedControllerAppleCare showUserTermsAndConditions]", 7, 0, "terms and conditions timeout for %s", [sessionID2 UTF8String]);
 
     [(IDSSessionEmbeddedControllerBase *)self stopLiveActivity];
   }
@@ -508,20 +508,20 @@ LABEL_29:
       v21 = sub_100042E68();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(IDSSessionEmbeddedControllerBase *)self sessionID];
-        v23 = [v22 UTF8String];
+        sessionID3 = [(IDSSessionEmbeddedControllerBase *)self sessionID];
+        uTF8String2 = [sessionID3 UTF8String];
         *buf = 136315650;
         v27 = "[IDSSessionEmbeddedControllerAppleCare showUserTermsAndConditions]";
         v28 = 1024;
         v29 = 326;
         v30 = 2080;
-        v31 = v23;
+        v31 = uTF8String2;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%s:%d] terms not accepted for %s", buf, 0x1Cu);
       }
     }
 
-    v24 = [(IDSSessionEmbeddedControllerBase *)self sessionID];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 326, "-[IDSSessionEmbeddedControllerAppleCare showUserTermsAndConditions]", 7, 0, "terms not accepted for %s", [v24 UTF8String]);
+    sessionID4 = [(IDSSessionEmbeddedControllerBase *)self sessionID];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 326, "-[IDSSessionEmbeddedControllerAppleCare showUserTermsAndConditions]", 7, 0, "terms not accepted for %s", [sessionID4 UTF8String]);
 
     v13 = 0;
   }
@@ -547,7 +547,7 @@ LABEL_29:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 355, "[IDSSessionEmbeddedControllerAppleCare shouldStartScreenSharingSession]", 7, 0, "check if should show terms");
   if ([(IDSSessionEmbeddedControllerBase *)self autoAcceptInvitation])
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(showUserTermsAndConditions) = 1;
   }
 
   else
@@ -566,28 +566,28 @@ LABEL_29:
     }
 
     sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 367, "[IDSSessionEmbeddedControllerAppleCare shouldStartScreenSharingSession]", 7, 0, "going to show terms and conditions");
-    v4 = [(IDSSessionEmbeddedControllerAppleCare *)self showUserTermsAndConditions];
+    showUserTermsAndConditions = [(IDSSessionEmbeddedControllerAppleCare *)self showUserTermsAndConditions];
     if (sub_1000423E0())
     {
       v6 = sub_100042E68();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(IDSSessionEmbeddedControllerBase *)self sessionID];
-        v8 = [v7 UTF8String];
+        sessionID = [(IDSSessionEmbeddedControllerBase *)self sessionID];
+        uTF8String = [sessionID UTF8String];
         *buf = 136315906;
         v13 = "[IDSSessionEmbeddedControllerAppleCare shouldStartScreenSharingSession]";
         v14 = 1024;
         v15 = 369;
         v16 = 1024;
-        v17 = v4;
+        v17 = showUserTermsAndConditions;
         v18 = 2080;
-        v19 = v8;
+        v19 = uTF8String;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%s:%d] termsConditionsAccepted = %d for %s", buf, 0x22u);
       }
     }
 
-    v9 = [(IDSSessionEmbeddedControllerBase *)self sessionID];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 369, "-[IDSSessionEmbeddedControllerAppleCare shouldStartScreenSharingSession]", 7, 0, "termsConditionsAccepted = %d for %s", v4, [v9 UTF8String]);
+    sessionID2 = [(IDSSessionEmbeddedControllerBase *)self sessionID];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSSessionEmbeddedControllerAppleCare.m", 130, 369, "-[IDSSessionEmbeddedControllerAppleCare shouldStartScreenSharingSession]", 7, 0, "termsConditionsAccepted = %d for %s", showUserTermsAndConditions, [sessionID2 UTF8String]);
   }
 
   block[0] = _NSConcreteStackBlock;
@@ -595,16 +595,16 @@ LABEL_29:
   block[2] = sub_100010708;
   block[3] = &unk_100068CD8;
   block[4] = self;
-  v11 = v4;
+  v11 = showUserTermsAndConditions;
   dispatch_async(&_dispatch_main_q, block);
 }
 
 - (id)inviterFullName
 {
-  v2 = [(IDSSessionEmbeddedControllerBase *)self inviterKind];
+  inviterKind = [(IDSSessionEmbeddedControllerBase *)self inviterKind];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2 == 2)
+  if (inviterKind == 2)
   {
     v5 = @"kSSAppleCare";
   }

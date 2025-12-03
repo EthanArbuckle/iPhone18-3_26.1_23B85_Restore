@@ -1,23 +1,23 @@
 @interface CRLBoardItemFactoryObjCHelper
-+ (id)freehandDrawingShapeItemsFromPKStroke:(id)a3 adjustedBaseWidth:(double)a4 boardItemFactory:(id)a5;
-+ (id)freehandDrawingShapeItemsFromPKStroke:(id)a3 unadjustedPencilKitBaseWidth:(double)a4 boardItemFactory:(id)a5;
-+ (id)p_bezierAndStrokePathDataSubpathsByClippingBezier:(id)a3 andStrokePathData:(id)a4 fromOriginalPKStroke:(id)a5 toPath:(id)a6;
-+ (id)p_freehandDrawingShapeItemsFromClippedPKStroke:(id)a3 adjustedBaseWidth:(double)a4 boardItemFactory:(id)a5;
-+ (id)p_strokePathCompactData:(id)a3 byTrimmingToMap:(id)a4 outInitialTValue:(double *)a5;
++ (id)freehandDrawingShapeItemsFromPKStroke:(id)stroke adjustedBaseWidth:(double)width boardItemFactory:(id)factory;
++ (id)freehandDrawingShapeItemsFromPKStroke:(id)stroke unadjustedPencilKitBaseWidth:(double)width boardItemFactory:(id)factory;
++ (id)p_bezierAndStrokePathDataSubpathsByClippingBezier:(id)bezier andStrokePathData:(id)data fromOriginalPKStroke:(id)stroke toPath:(id)path;
++ (id)p_freehandDrawingShapeItemsFromClippedPKStroke:(id)stroke adjustedBaseWidth:(double)width boardItemFactory:(id)factory;
++ (id)p_strokePathCompactData:(id)data byTrimmingToMap:(id)map outInitialTValue:(double *)value;
 @end
 
 @implementation CRLBoardItemFactoryObjCHelper
 
-+ (id)freehandDrawingShapeItemsFromPKStroke:(id)a3 adjustedBaseWidth:(double)a4 boardItemFactory:(id)a5
++ (id)freehandDrawingShapeItemsFromPKStroke:(id)stroke adjustedBaseWidth:(double)width boardItemFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 _clipPlane];
+  strokeCopy = stroke;
+  factoryCopy = factory;
+  _clipPlane = [strokeCopy _clipPlane];
 
-  if (v10)
+  if (_clipPlane)
   {
     v11 = [PKDrawing alloc];
-    v27 = v8;
+    v27 = strokeCopy;
     v12 = [NSArray arrayWithObjects:&v27 count:1];
     v13 = [v11 initWithStrokes:v12];
 
@@ -27,8 +27,8 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = [v13 strokes];
-    v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    strokes = [v13 strokes];
+    v16 = [strokes countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -39,14 +39,14 @@
         {
           if (*v23 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(strokes);
           }
 
-          v20 = [a1 p_freehandDrawingShapeItemsFromClippedPKStroke:*(*(&v22 + 1) + 8 * i) adjustedBaseWidth:v9 boardItemFactory:a4];
+          v20 = [self p_freehandDrawingShapeItemsFromClippedPKStroke:*(*(&v22 + 1) + 8 * i) adjustedBaseWidth:factoryCopy boardItemFactory:width];
           [v14 addObjectsFromArray:v20];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [strokes countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v17);
@@ -55,36 +55,36 @@
 
   else
   {
-    v14 = [a1 p_freehandDrawingShapeItemsFromClippedPKStroke:v8 adjustedBaseWidth:v9 boardItemFactory:a4];
+    v14 = [self p_freehandDrawingShapeItemsFromClippedPKStroke:strokeCopy adjustedBaseWidth:factoryCopy boardItemFactory:width];
   }
 
   return v14;
 }
 
-+ (id)p_freehandDrawingShapeItemsFromClippedPKStroke:(id)a3 adjustedBaseWidth:(double)a4 boardItemFactory:(id)a5
++ (id)p_freehandDrawingShapeItemsFromClippedPKStroke:(id)stroke adjustedBaseWidth:(double)width boardItemFactory:(id)factory
 {
-  v8 = a3;
-  v57 = a5;
+  strokeCopy = stroke;
+  factoryCopy = factory;
   v58 = +[NSMutableArray array];
   v70 = 0;
-  v9 = [CRLPKStrokeConverter pathFromPKStroke:v8 pencilKitStrokePathData:&v70];
+  v9 = [CRLPKStrokeConverter pathFromPKStroke:strokeCopy pencilKitStrokePathData:&v70];
   v10 = v70;
   v11 = [CRLPencilKitInkStroke alloc];
-  v12 = [v8 ink];
-  v56 = [(CRLPencilKitInkStroke *)v11 initWithInk:v12 adjustedWidth:a4];
+  v12 = [strokeCopy ink];
+  v56 = [(CRLPencilKitInkStroke *)v11 initWithInk:v12 adjustedWidth:width];
 
   memset(&v69, 0, sizeof(v69));
-  if (v8)
+  if (strokeCopy)
   {
-    [v8 transform];
+    [strokeCopy transform];
   }
 
-  v13 = [v8 mask];
-  v14 = [v13 CGPath];
+  mask = [strokeCopy mask];
+  cGPath = [mask CGPath];
 
-  if (v14)
+  if (cGPath)
   {
-    v15 = [CRLBezierPath bezierPathWithCGPath:v14];
+    v15 = [CRLBezierPath bezierPathWithCGPath:cGPath];
   }
 
   else
@@ -96,9 +96,9 @@
   [v15 transformUsingAffineTransform:&v68];
   if (v15)
   {
-    [v8 crl_maximumActualWidth];
+    [strokeCopy crl_maximumActualWidth];
     v17 = [v15 bezierPathByOffsettingPath:1 joinStyle:v16 * 0.5];
-    [a1 p_bezierAndStrokePathDataSubpathsByClippingBezier:v9 andStrokePathData:v10 fromOriginalPKStroke:v8 toPath:v17];
+    [self p_bezierAndStrokePathDataSubpathsByClippingBezier:v9 andStrokePathData:v10 fromOriginalPKStroke:strokeCopy toPath:v17];
   }
 
   else
@@ -114,7 +114,7 @@
   memset(&v68, 0, sizeof(v68));
   CGAffineTransformMakeScale(&v67, v19, v20);
   CGAffineTransformInvert(&v68, &v67);
-  [v8 _anchorPointForTexture];
+  [strokeCopy _anchorPointForTexture];
   v22 = v21;
   v24 = v23;
   t1 = v69;
@@ -127,8 +127,8 @@
   d = v67.d;
   tx = v67.tx;
   ty = v67.ty;
-  v53 = v8;
-  v55 = +[CRLFreehandDrawingShapeTypeHelper freehandDrawingShapeTypeFromPKShapeType:](_TtC8Freeform33CRLFreehandDrawingShapeTypeHelper, "freehandDrawingShapeTypeFromPKShapeType:", [v8 _shapeType]);
+  v53 = strokeCopy;
+  v55 = +[CRLFreehandDrawingShapeTypeHelper freehandDrawingShapeTypeFromPKShapeType:](_TtC8Freeform33CRLFreehandDrawingShapeTypeHelper, "freehandDrawingShapeTypeFromPKShapeType:", [strokeCopy _shapeType]);
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -153,12 +153,12 @@
         }
 
         v39 = *(*(&v61 + 1) + 8 * i);
-        v40 = [v39 bezierPath];
-        v41 = [v39 compactData];
-        [v40 bounds];
+        bezierPath = [v39 bezierPath];
+        compactData = [v39 compactData];
+        [bezierPath bounds];
         v59 = v42;
         v60 = v43;
-        v44 = [CRLBezierPathSource pathSourceWithBezierPath:v40];
+        v44 = [CRLBezierPathSource pathSourceWithBezierPath:bezierPath];
         if (v15)
         {
           v45 = [v15 copy];
@@ -174,9 +174,9 @@
           v45 = 0;
         }
 
-        [v41 setAnchorPointForTexture:{sub_10011F31C(v34, v33, vaddq_f64(*&v68.tx, vmlaq_n_f64(vmulq_n_f64(*&v68.c, v60), *&v68.a, v59)).f64[0])}];
+        [compactData setAnchorPointForTexture:{sub_10011F31C(v34, v33, vaddq_f64(*&v68.tx, vmlaq_n_f64(vmulq_n_f64(*&v68.c, v60), *&v68.a, v59)).f64[0])}];
         v47 = objc_opt_class();
-        v48 = [v57 makeShapeItemForFreehandDrawingWithPathSource:v44 position:v56 stroke:0 fill:v41 pencilKitStrokePathCompactData:v45 maskPath:v55 snappedShapeType:{v59, v60}];
+        v48 = [factoryCopy makeShapeItemForFreehandDrawingWithPathSource:v44 position:v56 stroke:0 fill:compactData pencilKitStrokePathCompactData:v45 maskPath:v55 snappedShapeType:{v59, v60}];
         v49 = sub_100013F00(v47, v48);
 
         [v58 addObject:v49];
@@ -192,29 +192,29 @@
   return v58;
 }
 
-+ (id)freehandDrawingShapeItemsFromPKStroke:(id)a3 unadjustedPencilKitBaseWidth:(double)a4 boardItemFactory:(id)a5
++ (id)freehandDrawingShapeItemsFromPKStroke:(id)stroke unadjustedPencilKitBaseWidth:(double)width boardItemFactory:(id)factory
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 ink];
-  v11 = [v10 inkType];
-  [CRLPencilKitInkStroke adjustedStrokeWidthFromWidth:v11 forInkType:a4];
+  factoryCopy = factory;
+  strokeCopy = stroke;
+  v10 = [strokeCopy ink];
+  inkType = [v10 inkType];
+  [CRLPencilKitInkStroke adjustedStrokeWidthFromWidth:inkType forInkType:width];
   v13 = v12;
 
-  v14 = [a1 freehandDrawingShapeItemsFromPKStroke:v9 adjustedBaseWidth:v8 boardItemFactory:v13];
+  v14 = [self freehandDrawingShapeItemsFromPKStroke:strokeCopy adjustedBaseWidth:factoryCopy boardItemFactory:v13];
 
   return v14;
 }
 
-+ (id)p_bezierAndStrokePathDataSubpathsByClippingBezier:(id)a3 andStrokePathData:(id)a4 fromOriginalPKStroke:(id)a5 toPath:(id)a6
++ (id)p_bezierAndStrokePathDataSubpathsByClippingBezier:(id)bezier andStrokePathData:(id)data fromOriginalPKStroke:(id)stroke toPath:(id)path
 {
-  v38 = a4;
-  v34 = a5;
+  dataCopy = data;
+  strokeCopy = stroke;
   v44 = 0;
-  v9 = [CRLBezierPathBooleanOperationHelper linePathWithLinePath:a3 intersectedWithFilledPath:a6 outMapToInputPaths:&v44];
+  v9 = [CRLBezierPathBooleanOperationHelper linePathWithLinePath:bezier intersectedWithFilledPath:path outMapToInputPaths:&v44];
   v37 = v44;
-  v10 = [v37 elementCount];
-  if (v10 != [v9 elementCount])
+  elementCount = [v37 elementCount];
+  if (elementCount != [v9 elementCount])
   {
     v11 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -247,8 +247,8 @@
   if ([v9 containsElementsOtherThanMoveAndClose])
   {
     v36 = +[NSMutableArray array];
-    v16 = [v9 rangesOfSubpaths];
-    v17 = [v16 crl_arrayOfObjectsPassingTest:&stru_10183A408];
+    rangesOfSubpaths = [v9 rangesOfSubpaths];
+    v17 = [rangesOfSubpaths crl_arrayOfObjectsPassingTest:&stru_10183A408];
 
     v18 = [v17 count];
     v40 = 0u;
@@ -273,7 +273,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v40 + 1) + 8 * i) rangeValue];
+        rangeValue = [*(*(&v40 + 1) + 8 * i) rangeValue];
         if (v18 == 1)
         {
           v26 = v9;
@@ -287,9 +287,9 @@
 
         else
         {
-          v28 = v24;
+          v28 = rangeValue;
           v29 = v25;
-          v26 = [v9 copyWithPointsInRange:{v24, v25}];
+          v26 = [v9 copyWithPointsInRange:{rangeValue, v25}];
           if (([v26 containsElementsOtherThanMoveAndClose] & 1) == 0)
           {
             goto LABEL_25;
@@ -300,12 +300,12 @@
 
         v30 = v27;
         v39 = -1.0;
-        v31 = [a1 p_strokePathCompactData:v38 byTrimmingToMap:v27 outInitialTValue:&v39];
+        v31 = [self p_strokePathCompactData:dataCopy byTrimmingToMap:v27 outInitialTValue:&v39];
         if (v39 > 0.0)
         {
-          [v34 crl_particleOffsetAt:0 forSecondaryParticles:v39];
+          [strokeCopy crl_particleOffsetAt:0 forSecondaryParticles:v39];
           [v31 setParticleOffset:?];
-          [v34 crl_particleOffsetAt:1 forSecondaryParticles:v39];
+          [strokeCopy crl_particleOffsetAt:1 forSecondaryParticles:v39];
           [v31 setSecondaryParticleOffset:?];
         }
 
@@ -331,30 +331,30 @@ LABEL_29:
   return v36;
 }
 
-+ (id)p_strokePathCompactData:(id)a3 byTrimmingToMap:(id)a4 outInitialTValue:(double *)a5
++ (id)p_strokePathCompactData:(id)data byTrimmingToMap:(id)map outInitialTValue:(double *)value
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 elementCount];
+  dataCopy = data;
+  mapCopy = map;
+  elementCount = [mapCopy elementCount];
   v10 = [CRLPKStrokePathCompactData alloc];
-  v11 = [v7 randomSeed];
-  v12 = [v7 creationDate];
-  v13 = [(CRLPKStrokePathCompactData *)v10 initWithCapacity:v9 randomSeed:v11 creationDate:v12];
+  randomSeed = [dataCopy randomSeed];
+  creationDate = [dataCopy creationDate];
+  v13 = [(CRLPKStrokePathCompactData *)v10 initWithCapacity:elementCount randomSeed:randomSeed creationDate:creationDate];
 
-  [v7 renderScaleX];
+  [dataCopy renderScaleX];
   [(CRLPKStrokePathCompactData *)v13 setRenderScaleX:?];
-  [v7 renderScaleY];
+  [dataCopy renderScaleY];
   [(CRLPKStrokePathCompactData *)v13 setRenderScaleY:?];
-  v14 = [v7 renderGroupID];
-  [(CRLPKStrokePathCompactData *)v13 setRenderGroupID:v14];
+  renderGroupID = [dataCopy renderGroupID];
+  [(CRLPKStrokePathCompactData *)v13 setRenderGroupID:renderGroupID];
 
-  -[CRLPKStrokePathCompactData setShouldSolveMath:](v13, "setShouldSolveMath:", [v7 shouldSolveMath]);
-  -[CRLPKStrokePathCompactData setIsSynthesizedStroke:](v13, "setIsSynthesizedStroke:", [v7 isSynthesizedStroke]);
-  [v7 particleOffset];
+  -[CRLPKStrokePathCompactData setShouldSolveMath:](v13, "setShouldSolveMath:", [dataCopy shouldSolveMath]);
+  -[CRLPKStrokePathCompactData setIsSynthesizedStroke:](v13, "setIsSynthesizedStroke:", [dataCopy isSynthesizedStroke]);
+  [dataCopy particleOffset];
   [(CRLPKStrokePathCompactData *)v13 setParticleOffset:?];
-  [v7 secondaryParticleOffset];
+  [dataCopy secondaryParticleOffset];
   [(CRLPKStrokePathCompactData *)v13 setSecondaryParticleOffset:?];
-  if (v9 >= 1)
+  if (elementCount >= 1)
   {
     v15 = 0;
     v16.f64[0] = NAN;
@@ -364,7 +364,7 @@ LABEL_29:
     do
     {
       v36 = NAN;
-      v18 = [v8 inputPathIndexForOutputElementIndex:v15 outInputT:&v36];
+      v18 = [mapCopy inputPathIndexForOutputElementIndex:v15 outInputT:&v36];
       if (v18)
       {
         v20 = -1.0;
@@ -390,10 +390,10 @@ LABEL_29:
         v22 = v20;
       }
 
-      if (v22 < 0.0 && v15 + 1 < v9)
+      if (v22 < 0.0 && v15 + 1 < elementCount)
       {
         *&v35[2] = 0x7FF8000000000000;
-        if (![v8 inputPathIndexForOutputElementIndex:v36 outInputT:v20])
+        if (![mapCopy inputPathIndexForOutputElementIndex:v36 outInputT:v20])
         {
           v22 = *&v35[2];
         }
@@ -412,9 +412,9 @@ LABEL_29:
       v31 = v19;
       v24 = vcvtmd_u64_f64(*v19.i64);
       memset(&v35[2], 0, 28);
-      if (v7)
+      if (dataCopy)
       {
-        [v7 strokePointCompactDataAtIndex:v24];
+        [dataCopy strokePointCompactDataAtIndex:v24];
       }
 
       *v19.i64 = *v31.i64 - trunc(*v31.i64);
@@ -423,14 +423,14 @@ LABEL_29:
       {
         v25 = v24 + 1;
         v29 = *v19.i64;
-        v26 = [v7 pointCount];
+        pointCount = [dataCopy pointCount];
         v27 = v29;
-        if (v25 < v26)
+        if (v25 < pointCount)
         {
           memset(v35, 0, 28);
-          if (v7)
+          if (dataCopy)
           {
-            [v7 strokePointCompactDataAtIndex:{v25, v29}];
+            [dataCopy strokePointCompactDataAtIndex:{v25, v29}];
             v27 = v29;
           }
 
@@ -447,15 +447,15 @@ LABEL_29:
       v35[0] = v35[2];
       *(v35 + 12) = *(&v35[2] + 12);
       [(CRLPKStrokePathCompactData *)v13 appendStrokePointCompactData:v35];
-      if (a5 && !v15)
+      if (value && !v15)
       {
-        *a5 = *v31.i64;
+        *value = *v31.i64;
       }
 
       ++v15;
     }
 
-    while (v9 != v15);
+    while (elementCount != v15);
   }
 
   return v13;

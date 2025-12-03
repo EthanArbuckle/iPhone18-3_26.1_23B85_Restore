@@ -1,9 +1,9 @@
 @interface ATXSpotlightUIEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-+ (id)stringForATXSpotlightUIEventType:(int64_t)a3;
-- (ATXSpotlightUIEvent)initWithProto:(id)a3;
-- (ATXSpotlightUIEvent)initWithProtoData:(id)a3;
-- (ATXSpotlightUIEvent)initWithType:(int64_t)a3 suggestionUniqueId:(id)a4 suggestionType:(id)a5 suggestionSubtype:(id)a6 suggestionContext:(id)a7;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
++ (id)stringForATXSpotlightUIEventType:(int64_t)type;
+- (ATXSpotlightUIEvent)initWithProto:(id)proto;
+- (ATXSpotlightUIEvent)initWithProtoData:(id)data;
+- (ATXSpotlightUIEvent)initWithType:(int64_t)type suggestionUniqueId:(id)id suggestionType:(id)suggestionType suggestionSubtype:(id)subtype suggestionContext:(id)context;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDictionary;
@@ -12,32 +12,32 @@
 
 @implementation ATXSpotlightUIEvent
 
-- (ATXSpotlightUIEvent)initWithType:(int64_t)a3 suggestionUniqueId:(id)a4 suggestionType:(id)a5 suggestionSubtype:(id)a6 suggestionContext:(id)a7
+- (ATXSpotlightUIEvent)initWithType:(int64_t)type suggestionUniqueId:(id)id suggestionType:(id)suggestionType suggestionSubtype:(id)subtype suggestionContext:(id)context
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  idCopy = id;
+  suggestionTypeCopy = suggestionType;
+  subtypeCopy = subtype;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = ATXSpotlightUIEvent;
   v16 = [(ATXSpotlightUIEvent *)&v27 init];
   v17 = v16;
   if (v16)
   {
-    v16->_eventType = a3;
-    v18 = [v12 copy];
+    v16->_eventType = type;
+    v18 = [idCopy copy];
     suggestionUniqueId = v17->_suggestionUniqueId;
     v17->_suggestionUniqueId = v18;
 
-    v20 = [v13 copy];
+    v20 = [suggestionTypeCopy copy];
     suggestionType = v17->_suggestionType;
     v17->_suggestionType = v20;
 
-    v22 = [v14 copy];
+    v22 = [subtypeCopy copy];
     suggestionSubtype = v17->_suggestionSubtype;
     v17->_suggestionSubtype = v22;
 
-    v24 = [v15 copy];
+    v24 = [contextCopy copy];
     suggestionContext = v17->_suggestionContext;
     v17->_suggestionContext = v24;
   }
@@ -45,23 +45,23 @@
   return v17;
 }
 
-+ (id)stringForATXSpotlightUIEventType:(int64_t)a3
++ (id)stringForATXSpotlightUIEventType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E86A4D48[a3 - 1];
+    return off_1E86A4D48[type - 1];
   }
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -73,55 +73,55 @@
   v3 = [MEMORY[0x1E696AD98] numberWithInteger:{-[ATXSpotlightUIEvent eventType](self, "eventType")}];
   v16[0] = v3;
   v15[1] = @"suggestionUniqueId";
-  v4 = [(ATXSpotlightUIEvent *)self suggestionUniqueId];
-  v5 = v4;
-  if (!v4)
+  suggestionUniqueId = [(ATXSpotlightUIEvent *)self suggestionUniqueId];
+  null = suggestionUniqueId;
+  if (!suggestionUniqueId)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v5;
+  v16[1] = null;
   v15[2] = @"suggestionType";
-  v6 = [(ATXSpotlightUIEvent *)self suggestionType];
-  v7 = v6;
-  if (!v6)
+  suggestionType = [(ATXSpotlightUIEvent *)self suggestionType];
+  null2 = suggestionType;
+  if (!suggestionType)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v7;
+  v16[2] = null2;
   v15[3] = @"suggestionSubtype";
-  v8 = [(ATXSpotlightUIEvent *)self suggestionSubtype];
-  v9 = v8;
-  if (!v8)
+  suggestionSubtype = [(ATXSpotlightUIEvent *)self suggestionSubtype];
+  null3 = suggestionSubtype;
+  if (!suggestionSubtype)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[3] = v9;
+  v16[3] = null3;
   v15[4] = @"suggestionContext";
-  v10 = [(ATXSpotlightUIEvent *)self suggestionContext];
-  v11 = v10;
-  if (!v10)
+  suggestionContext = [(ATXSpotlightUIEvent *)self suggestionContext];
+  null4 = suggestionContext;
+  if (!suggestionContext)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[4] = v11;
+  v16[4] = null4;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:5];
-  if (!v10)
+  if (!suggestionContext)
   {
   }
 
-  if (!v8)
+  if (!suggestionSubtype)
   {
   }
 
-  if (!v6)
+  if (!suggestionType)
   {
   }
 
-  if (!v4)
+  if (!suggestionUniqueId)
   {
   }
 
@@ -133,77 +133,77 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXSpotlightUIEvent *)self jsonDictionary];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDictionary = [(ATXSpotlightUIEvent *)self jsonDictionary];
+  v4 = [v2 dataWithJSONObject:jsonDictionary options:1 error:0];
 
   return v4;
 }
 
-- (ATXSpotlightUIEvent)initWithProtoData:(id)a3
+- (ATXSpotlightUIEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBSpotlightUIEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBSpotlightUIEvent alloc] initWithData:dataCopy];
 
     self = [(ATXSpotlightUIEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXSpotlightUIEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXSpotlightUIEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXSpotlightUIEvent)initWithProto:(id)a3
+- (ATXSpotlightUIEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  protoCopy = proto;
+  if (protoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 eventType];
-    v7 = [v5 suggestionUniqueId];
-    v8 = [v5 suggestionType];
-    v9 = [v5 suggestionSubtype];
-    v10 = [v5 suggestionContext];
+    v5 = protoCopy;
+    eventType = [v5 eventType];
+    suggestionUniqueId = [v5 suggestionUniqueId];
+    suggestionType = [v5 suggestionType];
+    suggestionSubtype = [v5 suggestionSubtype];
+    suggestionContext = [v5 suggestionContext];
 
-    self = [(ATXSpotlightUIEvent *)self initWithType:v6 suggestionUniqueId:v7 suggestionType:v8 suggestionSubtype:v9 suggestionContext:v10];
-    v11 = self;
+    self = [(ATXSpotlightUIEvent *)self initWithType:eventType suggestionUniqueId:suggestionUniqueId suggestionType:suggestionType suggestionSubtype:suggestionSubtype suggestionContext:suggestionContext];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(ATXSpotlightUIEvent *)self suggestionUniqueId];
-  [v3 setSuggestionUniqueId:v4];
+  suggestionUniqueId = [(ATXSpotlightUIEvent *)self suggestionUniqueId];
+  [v3 setSuggestionUniqueId:suggestionUniqueId];
 
-  v5 = [(ATXSpotlightUIEvent *)self suggestionType];
-  [v3 setSuggestionType:v5];
+  suggestionType = [(ATXSpotlightUIEvent *)self suggestionType];
+  [v3 setSuggestionType:suggestionType];
 
-  v6 = [(ATXSpotlightUIEvent *)self suggestionSubtype];
-  [v3 setSuggestionSubtype:v6];
+  suggestionSubtype = [(ATXSpotlightUIEvent *)self suggestionSubtype];
+  [v3 setSuggestionSubtype:suggestionSubtype];
 
-  v7 = [(ATXSpotlightUIEvent *)self suggestionContext];
-  [v3 setSuggestionContext:v7];
+  suggestionContext = [(ATXSpotlightUIEvent *)self suggestionContext];
+  [v3 setSuggestionContext:suggestionContext];
 
   [v3 setEventType:{-[ATXSpotlightUIEvent eventType](self, "eventType")}];
 

@@ -1,8 +1,8 @@
 @interface MFAuthScheme
-+ (id)authSchemesForAccount:(id)a3 connection:(id)a4;
++ (id)authSchemesForAccount:(id)account connection:(id)connection;
 + (void)initialize;
-+ (void)registerSchemeClass:(Class)a3;
-- (id)authenticatorForAccount:(id)a3 connection:(id)a4;
++ (void)registerSchemeClass:(Class)class;
+- (id)authenticatorForAccount:(id)account connection:(id)connection;
 @end
 
 @implementation MFAuthScheme
@@ -18,7 +18,7 @@
       v4 = NSClassFromString(&initialize_schemes[v3]->isa);
       if (v4)
       {
-        [a1 registerSchemeClass:v4];
+        [self registerSchemeClass:v4];
       }
 
       ++v3;
@@ -28,29 +28,29 @@
   }
 }
 
-+ (void)registerSchemeClass:(Class)a3
++ (void)registerSchemeClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
-    v4 = [objc_allocWithZone(a3) init];
-    v3 = [v4 name];
-    if (v3)
+    v4 = [objc_allocWithZone(class) init];
+    name = [v4 name];
+    if (name)
     {
-      [_schemesByName setObject:v4 forKey:v3];
+      [_schemesByName setObject:v4 forKey:name];
     }
   }
 }
 
-+ (id)authSchemesForAccount:(id)a3 connection:(id)a4
++ (id)authSchemesForAccount:(id)account connection:(id)connection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [a4 authenticationMechanisms];
-  v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  authenticationMechanisms = [connection authenticationMechanisms];
+  v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(authenticationMechanisms, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [authenticationMechanisms countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -61,7 +61,7 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(authenticationMechanisms);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -79,7 +79,7 @@
         if (v12)
         {
           v13 = v12;
-          if ([(MFAuthScheme *)v12 canAuthenticateAccountClass:objc_opt_class() connection:a4])
+          if ([(MFAuthScheme *)v12 canAuthenticateAccountClass:objc_opt_class() connection:connection])
           {
             if ([v16 indexOfObject:v13] == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -89,7 +89,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [authenticationMechanisms countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -100,12 +100,12 @@
   return result;
 }
 
-- (id)authenticatorForAccount:(id)a3 connection:(id)a4
+- (id)authenticatorForAccount:(id)account connection:(id)connection
 {
   result = [(MFAuthScheme *)self authenticatorClass];
   if (result)
   {
-    v8 = [[result alloc] initWithAuthScheme:self account:a3 connection:a4];
+    v8 = [[result alloc] initWithAuthScheme:self account:account connection:connection];
 
     return v8;
   }

@@ -1,10 +1,10 @@
 @interface CallProviderBundleIDObserver
-- (void)handleCallStatusChanged:(id)a3;
+- (void)handleCallStatusChanged:(id)changed;
 @end
 
 @implementation CallProviderBundleIDObserver
 
-- (void)handleCallStatusChanged:(id)a3
+- (void)handleCallStatusChanged:(id)changed
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

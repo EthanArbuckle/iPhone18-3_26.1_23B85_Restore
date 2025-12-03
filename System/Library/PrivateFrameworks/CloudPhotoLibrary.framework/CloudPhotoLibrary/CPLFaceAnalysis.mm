@@ -1,27 +1,27 @@
 @interface CPLFaceAnalysis
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFaceInstances:(id)a3;
-- (void)addPetFaceInstances:(id)a3;
-- (void)addTorsoFaceInstances:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFaceInstances:(id)instances;
+- (void)addPetFaceInstances:(id)instances;
+- (void)addTorsoFaceInstances:(id)instances;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLFaceAnalysis
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 36))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 36))
   {
-    self->_completed = *(v4 + 32);
+    self->_completed = *(fromCopy + 32);
     *&self->_has |= 1u;
   }
 
@@ -29,7 +29,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
@@ -135,26 +135,26 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_torsoFaceInstances hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 36) & 1) == 0)
+  if ((*(equalCopy + 36) & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (!self->_completed)
   {
 LABEL_3:
@@ -168,20 +168,20 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ((*(v4 + 32) & 1) == 0)
+  if ((*(equalCopy + 32) & 1) == 0)
   {
     goto LABEL_11;
   }
 
 LABEL_4:
   faceInstances = self->_faceInstances;
-  if (faceInstances | *(v4 + 1) && ![(NSMutableArray *)faceInstances isEqual:?])
+  if (faceInstances | *(equalCopy + 1) && ![(NSMutableArray *)faceInstances isEqual:?])
   {
     goto LABEL_11;
   }
 
   petFaceInstances = self->_petFaceInstances;
-  if (petFaceInstances | *(v4 + 2))
+  if (petFaceInstances | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)petFaceInstances isEqual:?])
     {
@@ -190,7 +190,7 @@ LABEL_4:
   }
 
   torsoFaceInstances = self->_torsoFaceInstances;
-  if (torsoFaceInstances | *(v4 + 3))
+  if (torsoFaceInstances | *(equalCopy + 3))
   {
     v9 = [(NSMutableArray *)torsoFaceInstances isEqual:?];
   }
@@ -205,10 +205,10 @@ LABEL_12:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -236,7 +236,7 @@ LABEL_12:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v35 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v35 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addFaceInstances:v12];
 
         ++v11;
@@ -269,7 +269,7 @@ LABEL_12:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v31 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v31 + 1) + 8 * v17) copyWithZone:zone];
         [v6 addPetFaceInstances:v18];
 
         ++v17;
@@ -302,7 +302,7 @@ LABEL_12:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v27 + 1) + 8 * v23) copyWithZone:{a3, v27}];
+        v24 = [*(*(&v27 + 1) + 8 * v23) copyWithZone:{zone, v27}];
         [v6 addTorsoFaceInstances:v24];
 
         ++v23;
@@ -319,23 +319,23 @@ LABEL_12:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[32] = self->_completed;
-    v4[36] |= 1u;
+    toCopy[32] = self->_completed;
+    toCopy[36] |= 1u;
   }
 
-  v17 = v4;
+  v17 = toCopy;
   if ([(CPLFaceAnalysis *)self faceInstancesCount])
   {
     [v17 clearFaceInstances];
-    v5 = [(CPLFaceAnalysis *)self faceInstancesCount];
-    if (v5)
+    faceInstancesCount = [(CPLFaceAnalysis *)self faceInstancesCount];
+    if (faceInstancesCount)
     {
-      v6 = v5;
+      v6 = faceInstancesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(CPLFaceAnalysis *)self faceInstancesAtIndex:i];
@@ -347,10 +347,10 @@ LABEL_12:
   if ([(CPLFaceAnalysis *)self petFaceInstancesCount])
   {
     [v17 clearPetFaceInstances];
-    v9 = [(CPLFaceAnalysis *)self petFaceInstancesCount];
-    if (v9)
+    petFaceInstancesCount = [(CPLFaceAnalysis *)self petFaceInstancesCount];
+    if (petFaceInstancesCount)
     {
-      v10 = v9;
+      v10 = petFaceInstancesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(CPLFaceAnalysis *)self petFaceInstancesAtIndex:j];
@@ -362,10 +362,10 @@ LABEL_12:
   if ([(CPLFaceAnalysis *)self torsoFaceInstancesCount])
   {
     [v17 clearTorsoFaceInstances];
-    v13 = [(CPLFaceAnalysis *)self torsoFaceInstancesCount];
-    if (v13)
+    torsoFaceInstancesCount = [(CPLFaceAnalysis *)self torsoFaceInstancesCount];
+    if (torsoFaceInstancesCount)
     {
-      v14 = v13;
+      v14 = torsoFaceInstancesCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(CPLFaceAnalysis *)self torsoFaceInstancesAtIndex:k];
@@ -375,10 +375,10 @@ LABEL_12:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     completed = self->_completed;
@@ -487,11 +487,11 @@ LABEL_12:
 - (id)dictionaryRepresentation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_completed];
-    [v3 setObject:v4 forKey:@"completed"];
+    [dictionary setObject:v4 forKey:@"completed"];
   }
 
   if ([(NSMutableArray *)self->_faceInstances count])
@@ -516,8 +516,8 @@ LABEL_12:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -526,7 +526,7 @@ LABEL_12:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"faceInstances"];
+    [dictionary setObject:v5 forKey:@"faceInstances"];
   }
 
   if ([(NSMutableArray *)self->_petFaceInstances count])
@@ -551,8 +551,8 @@ LABEL_12:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -561,7 +561,7 @@ LABEL_12:
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"petFaceInstances"];
+    [dictionary setObject:v12 forKey:@"petFaceInstances"];
   }
 
   if ([(NSMutableArray *)self->_torsoFaceInstances count])
@@ -586,8 +586,8 @@ LABEL_12:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v28 objects:v40 count:16];
@@ -596,12 +596,12 @@ LABEL_12:
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"torsoFaceInstances"];
+    [dictionary setObject:v19 forKey:@"torsoFaceInstances"];
   }
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -610,64 +610,64 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = CPLFaceAnalysis;
   v4 = [(CPLFaceAnalysis *)&v8 description];
-  v5 = [(CPLFaceAnalysis *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CPLFaceAnalysis *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTorsoFaceInstances:(id)a3
+- (void)addTorsoFaceInstances:(id)instances
 {
-  v4 = a3;
+  instancesCopy = instances;
   torsoFaceInstances = self->_torsoFaceInstances;
-  v8 = v4;
+  v8 = instancesCopy;
   if (!torsoFaceInstances)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_torsoFaceInstances;
     self->_torsoFaceInstances = v6;
 
-    v4 = v8;
+    instancesCopy = v8;
     torsoFaceInstances = self->_torsoFaceInstances;
   }
 
-  [(NSMutableArray *)torsoFaceInstances addObject:v4];
+  [(NSMutableArray *)torsoFaceInstances addObject:instancesCopy];
 }
 
-- (void)addPetFaceInstances:(id)a3
+- (void)addPetFaceInstances:(id)instances
 {
-  v4 = a3;
+  instancesCopy = instances;
   petFaceInstances = self->_petFaceInstances;
-  v8 = v4;
+  v8 = instancesCopy;
   if (!petFaceInstances)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_petFaceInstances;
     self->_petFaceInstances = v6;
 
-    v4 = v8;
+    instancesCopy = v8;
     petFaceInstances = self->_petFaceInstances;
   }
 
-  [(NSMutableArray *)petFaceInstances addObject:v4];
+  [(NSMutableArray *)petFaceInstances addObject:instancesCopy];
 }
 
-- (void)addFaceInstances:(id)a3
+- (void)addFaceInstances:(id)instances
 {
-  v4 = a3;
+  instancesCopy = instances;
   faceInstances = self->_faceInstances;
-  v8 = v4;
+  v8 = instancesCopy;
   if (!faceInstances)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_faceInstances;
     self->_faceInstances = v6;
 
-    v4 = v8;
+    instancesCopy = v8;
     faceInstances = self->_faceInstances;
   }
 
-  [(NSMutableArray *)faceInstances addObject:v4];
+  [(NSMutableArray *)faceInstances addObject:instancesCopy];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CKSaveToPhotosActivity
-- (CKSaveToPhotosActivity)initWithMediaObject:(id)a3 presenterViewController:(id)a4;
+- (CKSaveToPhotosActivity)initWithMediaObject:(id)object presenterViewController:(id)controller;
 - (UIViewController)presenterViewController;
 - (id)activityTitle;
 - (void)performActivity;
@@ -7,18 +7,18 @@
 
 @implementation CKSaveToPhotosActivity
 
-- (CKSaveToPhotosActivity)initWithMediaObject:(id)a3 presenterViewController:(id)a4
+- (CKSaveToPhotosActivity)initWithMediaObject:(id)object presenterViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CKSaveToPhotosActivity;
   v9 = [(UIActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaObject, a3);
-    objc_storeWeak(&v10->_presenterViewController, v8);
+    objc_storeStrong(&v9->_mediaObject, object);
+    objc_storeWeak(&v10->_presenterViewController, controllerCopy);
   }
 
   return v10;
@@ -26,18 +26,18 @@
 
 - (id)activityTitle
 {
-  v2 = [(CKSaveToPhotosActivity *)self mediaObject];
-  v3 = [v2 mediaType];
+  mediaObject = [(CKSaveToPhotosActivity *)self mediaObject];
+  mediaType = [mediaObject mediaType];
 
   v4 = CKFrameworkBundle();
   v5 = v4;
   v6 = @"PREVIEW_SAVE_ITEM";
-  if (v3 == 2)
+  if (mediaType == 2)
   {
     v6 = @"PREVIEW_SAVE_VIDEO";
   }
 
-  if (v3 == 3)
+  if (mediaType == 3)
   {
     v7 = @"PREVIEW_SAVE_PHOTO";
   }
@@ -55,25 +55,25 @@
 - (void)performActivity
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(CKSaveToPhotosActivity *)self mediaObject];
-  v4 = [(CKSaveToPhotosActivity *)self presenterViewController];
+  mediaObject = [(CKSaveToPhotosActivity *)self mediaObject];
+  presenterViewController = [(CKSaveToPhotosActivity *)self presenterViewController];
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v17 = v3;
+    v17 = mediaObject;
     v18 = 2112;
-    v19 = v4;
+    v19 = presenterViewController;
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Share sheet Save requested for media object: %@. PresenterViewController: %@.", buf, 0x16u);
   }
 
-  if (v4 && v3)
+  if (presenterViewController && mediaObject)
   {
-    v15 = v3;
+    v15 = mediaObject;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
     v7 = CKMomentShareURLForMediaObjects(v6);
 
-    v14 = v3;
+    v14 = mediaObject;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
     v9 = *MEMORY[0x1E69A7618];
     v13[0] = MEMORY[0x1E69E9820];
@@ -85,7 +85,7 @@
 
     if (v10)
     {
-      [v4 presentViewController:v10 animated:1 completion:0];
+      [presenterViewController presentViewController:v10 animated:1 completion:0];
     }
 
     else

@@ -1,19 +1,19 @@
 @interface HDHealthServiceCharacteristic
-+ (BOOL)uint16:(unsigned __int16)a3 toData:(char *)a4 before:(const char *)a5;
-+ (BOOL)uint32:(unsigned int)a3 toData:(char *)a4 before:(const char *)a5;
-+ (BOOL)uint8:(unsigned __int8)a3 toData:(char *)a4 before:(const char *)a5;
-+ (double)doubleFromFLOAT:(unsigned int)a3;
-+ (double)doubleFromFLOATData:(const char *)a3 before:(const char *)a4;
-+ (float)floatFromSFLOAT:(unsigned __int16)a3;
-+ (float)floatFromSFLOATData:(const char *)a3 before:(const char *)a4;
-+ (id)buildWithBinaryValue:(id)a3 updateTime:(id)a4 error:(id *)a5;
-+ (id)dateFromData:(const char *)a3 before:(const char *)a4 calendar:(id)a5;
++ (BOOL)uint16:(unsigned __int16)uint16 toData:(char *)data before:(const char *)before;
++ (BOOL)uint32:(unsigned int)uint32 toData:(char *)data before:(const char *)before;
++ (BOOL)uint8:(unsigned __int8)uint8 toData:(char *)data before:(const char *)before;
++ (double)doubleFromFLOAT:(unsigned int)t;
++ (double)doubleFromFLOATData:(const char *)data before:(const char *)before;
++ (float)floatFromSFLOAT:(unsigned __int16)t;
++ (float)floatFromSFLOATData:(const char *)data before:(const char *)before;
++ (id)buildWithBinaryValue:(id)value updateTime:(id)time error:(id *)error;
++ (id)dateFromData:(const char *)data before:(const char *)before calendar:(id)calendar;
 + (id)uuid;
-+ (signed)int16FromData:(const char *)a3 before:(const char *)a4;
-+ (unsigned)uint16FromData:(const char *)a3 before:(const char *)a4;
-+ (unsigned)uint24FromData:(const char *)a3 before:(const char *)a4;
-+ (unsigned)uint32FromData:(const char *)a3 before:(const char *)a4;
-+ (unsigned)uint8FromData:(const char *)a3 before:(const char *)a4;
++ (signed)int16FromData:(const char *)data before:(const char *)before;
++ (unsigned)uint16FromData:(const char *)data before:(const char *)before;
++ (unsigned)uint24FromData:(const char *)data before:(const char *)before;
++ (unsigned)uint32FromData:(const char *)data before:(const char *)before;
++ (unsigned)uint8FromData:(const char *)data before:(const char *)before;
 - (NSString)description;
 - (id)_init;
 @end
@@ -27,15 +27,15 @@
   return [(HDHealthServiceCharacteristic *)&v3 init];
 }
 
-+ (id)buildWithBinaryValue:(id)a3 updateTime:(id)a4 error:(id *)a5
++ (id)buildWithBinaryValue:(id)value updateTime:(id)time error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() _buildWithBinaryValue:v9 error:a5];
+  timeCopy = time;
+  valueCopy = value;
+  v10 = [objc_opt_class() _buildWithBinaryValue:valueCopy error:error];
 
   if (v10)
   {
-    objc_storeStrong(v10 + 1, a4);
+    objc_storeStrong(v10 + 1, time);
   }
 
   return v10;
@@ -43,13 +43,13 @@
 
 - (NSString)description
 {
-  v3 = [objc_opt_class() uuid];
-  v4 = [v3 UUIDString];
+  uuid = [objc_opt_class() uuid];
+  uUIDString = [uuid UUIDString];
 
-  v5 = [objc_opt_class() uuid];
-  v6 = [v5 description];
+  uuid2 = [objc_opt_class() uuid];
+  v6 = [uuid2 description];
 
-  if ([(__CFString *)v6 isEqualToString:v4])
+  if ([(__CFString *)v6 isEqualToString:uUIDString])
   {
 
     v6 = &stru_5E418;
@@ -58,24 +58,24 @@
   v10.receiver = self;
   v10.super_class = HDHealthServiceCharacteristic;
   v7 = [(HDHealthServiceCharacteristic *)&v10 description];
-  v8 = [NSString stringWithFormat:@"%@ uuid=%@ %@", v7, v4, v6];
+  v8 = [NSString stringWithFormat:@"%@ uuid=%@ %@", v7, uUIDString, v6];
 
   return v8;
 }
 
-+ (float)floatFromSFLOAT:(unsigned __int16)a3
++ (float)floatFromSFLOAT:(unsigned __int16)t
 {
-  v3 = a3 & 0xFFF;
+  v3 = t & 0xFFF;
   if (v3 - 2046 > 4)
   {
-    if ((a3 & 0x8000u) == 0)
+    if ((t & 0x8000u) == 0)
     {
-      v5 = a3 >> 12;
+      v5 = t >> 12;
     }
 
     else
     {
-      v5 = (a3 >> 12) | 0xFFFFFFF0;
+      v5 = (t >> 12) | 0xFFFFFFF0;
     }
 
     if (v3 <= 0x7FF)
@@ -110,10 +110,10 @@
   return result;
 }
 
-+ (double)doubleFromFLOAT:(unsigned int)a3
++ (double)doubleFromFLOAT:(unsigned int)t
 {
-  v3 = a3 & 0xFFFFFF;
-  v4 = (a3 & 0xFFFFFF) - 8388606;
+  v3 = t & 0xFFFFFF;
+  v4 = (t & 0xFFFFFF) - 8388606;
   if (v4 <= 4)
   {
     return dbl_447C0[v4];
@@ -129,13 +129,13 @@
     v6 = 0;
   }
 
-  return __exp10((a3 >> 24)) * (v6 | v3);
+  return __exp10((t >> 24)) * (v6 | v3);
 }
 
-+ (unsigned)uint8FromData:(const char *)a3 before:(const char *)a4
++ (unsigned)uint8FromData:(const char *)data before:(const char *)before
 {
   v7 = 0;
-  v4 = sub_15638(a1, &v7, a3, 1, a4);
+  v4 = sub_15638(self, &v7, data, 1, before);
   v5 = v7;
   if (!v4)
   {
@@ -145,10 +145,10 @@
   return v5;
 }
 
-+ (signed)int16FromData:(const char *)a3 before:(const char *)a4
++ (signed)int16FromData:(const char *)data before:(const char *)before
 {
   v7 = 0;
-  v4 = sub_15638(a1, &v7, a3, 2, a4);
+  v4 = sub_15638(self, &v7, data, 2, before);
   v5 = v7;
   if (!v4)
   {
@@ -158,10 +158,10 @@
   return v5;
 }
 
-+ (unsigned)uint16FromData:(const char *)a3 before:(const char *)a4
++ (unsigned)uint16FromData:(const char *)data before:(const char *)before
 {
   v7 = 0;
-  v4 = sub_15638(a1, &v7, a3, 2, a4);
+  v4 = sub_15638(self, &v7, data, 2, before);
   v5 = v7;
   if (!v4)
   {
@@ -171,10 +171,10 @@
   return v5;
 }
 
-+ (unsigned)uint24FromData:(const char *)a3 before:(const char *)a4
++ (unsigned)uint24FromData:(const char *)data before:(const char *)before
 {
   v5 = 0;
-  if (sub_15638(a1, &v5, a3, 3, a4))
+  if (sub_15638(self, &v5, data, 3, before))
   {
     return v5;
   }
@@ -185,10 +185,10 @@
   }
 }
 
-+ (unsigned)uint32FromData:(const char *)a3 before:(const char *)a4
++ (unsigned)uint32FromData:(const char *)data before:(const char *)before
 {
   v5 = 0;
-  if (sub_15638(a1, &v5, a3, 4, a4))
+  if (sub_15638(self, &v5, data, 4, before))
   {
     return v5;
   }
@@ -199,61 +199,61 @@
   }
 }
 
-+ (float)floatFromSFLOATData:(const char *)a3 before:(const char *)a4
++ (float)floatFromSFLOATData:(const char *)data before:(const char *)before
 {
   objc_opt_self();
-  if (!a3 || !a4 || !*a3)
+  if (!data || !before || !*data)
   {
     return 0.0;
   }
 
-  if (*a3 + 2 > a4)
+  if (*data + 2 > before)
   {
-    *a3 = 0;
+    *data = 0;
     return 0.0;
   }
 
-  v8 = [a1 uint16FromData:a3 before:a4];
+  v8 = [self uint16FromData:data before:before];
 
-  [a1 floatFromSFLOAT:v8];
+  [self floatFromSFLOAT:v8];
   return result;
 }
 
-+ (double)doubleFromFLOATData:(const char *)a3 before:(const char *)a4
++ (double)doubleFromFLOATData:(const char *)data before:(const char *)before
 {
   objc_opt_self();
-  if (!a3 || !a4 || !*a3)
+  if (!data || !before || !*data)
   {
     return 0.0;
   }
 
-  if (*a3 + 4 > a4)
+  if (*data + 4 > before)
   {
-    *a3 = 0;
+    *data = 0;
     return 0.0;
   }
 
-  v8 = [a1 uint32FromData:a3 before:a4];
+  v8 = [self uint32FromData:data before:before];
 
-  [a1 doubleFromFLOAT:v8];
+  [self doubleFromFLOAT:v8];
   return result;
 }
 
-+ (id)dateFromData:(const char *)a3 before:(const char *)a4 calendar:(id)a5
++ (id)dateFromData:(const char *)data before:(const char *)before calendar:(id)calendar
 {
-  v8 = a5;
+  calendarCopy = calendar;
   objc_opt_self();
   v9 = 0;
-  if (a3 && a4 && *a3)
+  if (data && before && *data)
   {
-    if (*a3 + 7 <= a4)
+    if (*data + 7 <= before)
     {
-      v10 = [a1 uint16FromData:a3 before:a4];
-      v11 = [a1 uint8FromData:a3 before:a4];
-      v12 = [a1 uint8FromData:a3 before:a4];
-      v13 = [a1 uint8FromData:a3 before:a4];
-      v14 = [a1 uint8FromData:a3 before:a4];
-      v15 = [a1 uint8FromData:a3 before:a4];
+      v10 = [self uint16FromData:data before:before];
+      v11 = [self uint8FromData:data before:before];
+      v12 = [self uint8FromData:data before:before];
+      v13 = [self uint8FromData:data before:before];
+      v14 = [self uint8FromData:data before:before];
+      v15 = [self uint8FromData:data before:before];
       v16 = objc_alloc_init(NSDateComponents);
       [v16 setYear:v10];
       [v16 setMonth:v11];
@@ -261,34 +261,34 @@
       [v16 setHour:v13];
       [v16 setMinute:v14];
       [v16 setSecond:v15];
-      v9 = [v8 dateFromComponents:v16];
+      v9 = [calendarCopy dateFromComponents:v16];
     }
 
     else
     {
       v9 = 0;
-      *a3 = 0;
+      *data = 0;
     }
   }
 
   return v9;
 }
 
-+ (BOOL)uint8:(unsigned __int8)a3 toData:(char *)a4 before:(const char *)a5
++ (BOOL)uint8:(unsigned __int8)uint8 toData:(char *)data before:(const char *)before
 {
   objc_opt_self();
   result = 0;
-  if (a4)
+  if (data)
   {
-    if (a5)
+    if (before)
     {
-      v9 = *a4;
-      if (*a4)
+      v9 = *data;
+      if (*data)
       {
-        if (v9 + 1 <= a5)
+        if (v9 + 1 <= before)
         {
-          *v9 = a3;
-          ++*a4;
+          *v9 = uint8;
+          ++*data;
           return 1;
         }
       }
@@ -298,21 +298,21 @@
   return result;
 }
 
-+ (BOOL)uint16:(unsigned __int16)a3 toData:(char *)a4 before:(const char *)a5
++ (BOOL)uint16:(unsigned __int16)uint16 toData:(char *)data before:(const char *)before
 {
   objc_opt_self();
   result = 0;
-  if (a4)
+  if (data)
   {
-    if (a5)
+    if (before)
     {
-      v9 = *a4;
-      if (*a4)
+      v9 = *data;
+      if (*data)
       {
-        if (v9 + 2 <= a5)
+        if (v9 + 2 <= before)
         {
-          *v9 = a3;
-          *a4 += 2;
+          *v9 = uint16;
+          *data += 2;
           return 1;
         }
       }
@@ -322,21 +322,21 @@
   return result;
 }
 
-+ (BOOL)uint32:(unsigned int)a3 toData:(char *)a4 before:(const char *)a5
++ (BOOL)uint32:(unsigned int)uint32 toData:(char *)data before:(const char *)before
 {
   objc_opt_self();
   result = 0;
-  if (a4)
+  if (data)
   {
-    if (a5)
+    if (before)
     {
-      v9 = *a4;
-      if (*a4)
+      v9 = *data;
+      if (*data)
       {
-        if (v9 + 4 <= a5)
+        if (v9 + 4 <= before)
         {
-          *v9 = a3;
-          *a4 += 4;
+          *v9 = uint32;
+          *data += 4;
           return 1;
         }
       }

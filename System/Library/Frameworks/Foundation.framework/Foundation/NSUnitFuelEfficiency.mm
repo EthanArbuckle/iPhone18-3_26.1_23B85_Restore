@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (NSUnitFuelEfficiency == a1)
+  if (NSUnitFuelEfficiency == self)
   {
     objc_opt_class();
   }

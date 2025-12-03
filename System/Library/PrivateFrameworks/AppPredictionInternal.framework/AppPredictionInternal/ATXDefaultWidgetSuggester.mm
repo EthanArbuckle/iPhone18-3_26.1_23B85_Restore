@@ -1,23 +1,23 @@
 @interface ATXDefaultWidgetSuggester
-- (ATXDefaultWidgetSuggester)initWithHistogramManager:(id)a3;
+- (ATXDefaultWidgetSuggester)initWithHistogramManager:(id)manager;
 - (BOOL)shouldSuggestTV;
-- (double)_appLaunchCountForAppBudleId:(id)a3;
-- (double)_intentDonationCountForActionKey:(id)a3;
+- (double)_appLaunchCountForAppBudleId:(id)id;
+- (double)_intentDonationCountForActionKey:(id)key;
 - (double)intentDonationCountForTVApp;
 @end
 
 @implementation ATXDefaultWidgetSuggester
 
-- (ATXDefaultWidgetSuggester)initWithHistogramManager:(id)a3
+- (ATXDefaultWidgetSuggester)initWithHistogramManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ATXDefaultWidgetSuggester;
   v6 = [(ATXDefaultWidgetSuggester *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_histogramManager, a3);
+    objc_storeStrong(&v6->_histogramManager, manager);
   }
 
   return v7;
@@ -44,12 +44,12 @@
   return v5;
 }
 
-- (double)_appLaunchCountForAppBudleId:(id)a3
+- (double)_appLaunchCountForAppBudleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
   v6 = [(_ATXAppLaunchHistogramManager *)self->_histogramManager categoricalHistogramForLaunchType:43];
-  [v6 totalLaunchesForBundleId:v4];
+  [v6 totalLaunchesForBundleId:idCopy];
   v8 = v7;
   v9 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -61,13 +61,13 @@
   return v8;
 }
 
-- (double)_intentDonationCountForActionKey:(id)a3
+- (double)_intentDonationCountForActionKey:(id)key
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_autoreleasePoolPush();
   v6 = [(_ATXAppLaunchHistogramManager *)self->_histogramManager histogramForLaunchType:17];
-  v13[0] = v4;
+  v13[0] = keyCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   [v6 totalLaunchesForBundleIds:v7];
   v9 = v8;

@@ -1,28 +1,28 @@
 @interface ATXWidgetModeEventProvider
-- (ATXWidgetModeEventProvider)initWithInformationStore:(id)a3;
-- (id)widgetModeEventsBetweenStartDate:(id)a3 endDate:(id)a4;
+- (ATXWidgetModeEventProvider)initWithInformationStore:(id)store;
+- (id)widgetModeEventsBetweenStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation ATXWidgetModeEventProvider
 
-- (ATXWidgetModeEventProvider)initWithInformationStore:(id)a3
+- (ATXWidgetModeEventProvider)initWithInformationStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = ATXWidgetModeEventProvider;
   v6 = [(ATXWidgetModeEventProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_informationStore, a3);
+    objc_storeStrong(&v6->_informationStore, store);
   }
 
   return v7;
 }
 
-- (id)widgetModeEventsBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)widgetModeEventsBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v4 = [(ATXInformationStore *)self->_informationStore fetchWidgetTapEngagementsBetweenStartDate:a3 endDate:a4];
+  v4 = [(ATXInformationStore *)self->_informationStore fetchWidgetTapEngagementsBetweenStartDate:date endDate:endDate];
   v5 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

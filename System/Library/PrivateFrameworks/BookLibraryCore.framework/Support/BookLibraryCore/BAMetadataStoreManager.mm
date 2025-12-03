@@ -1,21 +1,21 @@
 @interface BAMetadataStoreManager
 - (BAMetadataStoreManager)init;
-- (BAMetadataStoreManager)initWithContainer:(id)a3;
-- (void)deleteStoreWithCompletion:(id)a3;
+- (BAMetadataStoreManager)initWithContainer:(id)container;
+- (void)deleteStoreWithCompletion:(id)completion;
 @end
 
 @implementation BAMetadataStoreManager
 
-- (BAMetadataStoreManager)initWithContainer:(id)a3
+- (BAMetadataStoreManager)initWithContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = BAMetadataStoreManager;
   v6 = [(BAMetadataStoreManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
+    objc_storeStrong(&v6->_container, container);
     [(NSPersistentContainer *)v7->_container loadPersistentStoresWithCompletionHandler:&stru_10011E748];
     v8 = [[BAMetadataStore alloc] initWithPersistentContainer:v7->_container];
     metadataStore = v7->_metadataStore;
@@ -33,19 +33,19 @@
   return v4;
 }
 
-- (void)deleteStoreWithCompletion:(id)a3
+- (void)deleteStoreWithCompletion:(id)completion
 {
-  v21 = a3;
-  v23 = self;
-  v4 = [(BAMetadataStoreManager *)self container];
-  v5 = [v4 persistentStoreCoordinator];
-  v6 = [v5 persistentStores];
+  completionCopy = completion;
+  selfCopy = self;
+  container = [(BAMetadataStoreManager *)self container];
+  persistentStoreCoordinator = [container persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v6;
+  obj = persistentStores;
   v7 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v7)
   {
@@ -65,22 +65,22 @@
         if (v11)
         {
           v12 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v11];
-          v13 = [v12 options];
+          options = [v12 options];
           v14 = BLServiceMetadataStoreLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
             v31 = v11;
             v32 = 2112;
-            v33 = v13;
+            v33 = options;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Attempt to remove metadata store, url: %@, options: %@", buf, 0x16u);
           }
 
-          v15 = [(BAMetadataStoreManager *)v23 container];
-          v16 = [v15 persistentStoreCoordinator];
-          v17 = [v12 type];
+          container2 = [(BAMetadataStoreManager *)selfCopy container];
+          persistentStoreCoordinator2 = [container2 persistentStoreCoordinator];
+          type = [v12 type];
           v25 = v9;
-          [v16 destroyPersistentStoreAtURL:v11 withType:v17 options:v13 error:&v25];
+          [persistentStoreCoordinator2 destroyPersistentStoreAtURL:v11 withType:type options:options error:&v25];
           v18 = v25;
 
           v9 = v18;
@@ -108,7 +108,7 @@
     v9 = 0;
   }
 
-  v19 = objc_retainBlock(v21);
+  v19 = objc_retainBlock(completionCopy);
   v20 = v19;
   if (v19)
   {

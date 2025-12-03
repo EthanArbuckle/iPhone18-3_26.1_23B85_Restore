@@ -1,17 +1,17 @@
 @interface _NUCompositeMedia
-- (_NUCompositeMedia)initWithFormat:(id)a3 geometry:(id)a4;
-- (_NUCompositeMedia)initWithInputMedias:(id)a3 format:(id)a4 geometry:(id)a5;
+- (_NUCompositeMedia)initWithFormat:(id)format geometry:(id)geometry;
+- (_NUCompositeMedia)initWithInputMedias:(id)medias format:(id)format geometry:(id)geometry;
 @end
 
 @implementation _NUCompositeMedia
 
-- (_NUCompositeMedia)initWithInputMedias:(id)a3 format:(id)a4 geometry:(id)a5
+- (_NUCompositeMedia)initWithInputMedias:(id)medias format:(id)format geometry:(id)geometry
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 || (v11 = v10, ![v8 count]))
+  mediasCopy = medias;
+  formatCopy = format;
+  geometryCopy = geometry;
+  if (!mediasCopy || (v11 = geometryCopy, ![mediasCopy count]))
   {
     v16 = NUAssertLogger_2109();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -32,8 +32,8 @@
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v23;
         v35 = 2114;
@@ -44,8 +44,8 @@
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -56,19 +56,19 @@
 
   v32.receiver = self;
   v32.super_class = _NUCompositeMedia;
-  v12 = [(_NUMedia *)&v32 initWithFormat:v9 geometry:v11];
-  v13 = [v8 copy];
+  v12 = [(_NUMedia *)&v32 initWithFormat:formatCopy geometry:v11];
+  v13 = [mediasCopy copy];
   inputMedias = v12->_inputMedias;
   v12->_inputMedias = v13;
 
   return v12;
 }
 
-- (_NUCompositeMedia)initWithFormat:(id)a3 geometry:(id)a4
+- (_NUCompositeMedia)initWithFormat:(id)format geometry:(id)geometry
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  formatCopy = format;
+  geometryCopy = geometry;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_379);
@@ -112,8 +112,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -129,8 +129,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

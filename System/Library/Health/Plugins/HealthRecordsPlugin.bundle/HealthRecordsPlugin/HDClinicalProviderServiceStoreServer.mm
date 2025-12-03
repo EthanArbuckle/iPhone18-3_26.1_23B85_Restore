@@ -1,39 +1,39 @@
 @interface HDClinicalProviderServiceStoreServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDClinicalProviderServiceStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 providerServiceManager:(id)a7;
-- (void)remote_setHealthRecordsEnvironment:(int64_t)a3 completion:(id)a4;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDClinicalProviderServiceStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate providerServiceManager:(id)manager;
+- (void)remote_setHealthRecordsEnvironment:(int64_t)environment completion:(id)completion;
 @end
 
 @implementation HDClinicalProviderServiceStoreServer
 
-- (HDClinicalProviderServiceStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 providerServiceManager:(id)a7
+- (HDClinicalProviderServiceStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate providerServiceManager:(id)manager
 {
-  v13 = a7;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = HDClinicalProviderServiceStoreServer;
-  v14 = [(HDClinicalProviderServiceStoreServer *)&v17 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v14 = [(HDClinicalProviderServiceStoreServer *)&v17 initWithUUID:d configuration:configuration client:client delegate:delegate];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_providerServiceManager, a7);
+    objc_storeStrong(&v14->_providerServiceManager, manager);
   }
 
   return v15;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v14 profile];
-  v17 = [v16 profileExtensionWithIdentifier:HKHealthRecordsPluginIdentifier];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  v17 = [profile profileExtensionWithIdentifier:HKHealthRecordsPluginIdentifier];
 
-  v18 = [v17 providerServiceManager];
-  if (v18)
+  providerServiceManager = [v17 providerServiceManager];
+  if (providerServiceManager)
   {
-    v19 = [[a1 alloc] initWithUUID:v12 configuration:v13 client:v14 delegate:v15 providerServiceManager:v18];
+    v19 = [[self alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy providerServiceManager:providerServiceManager];
   }
 
   else
@@ -41,10 +41,10 @@
     v20 = +[NSError hk_featureUnavailableForProfileError];
     if (v20)
     {
-      if (a7)
+      if (error)
       {
         v21 = v20;
-        *a7 = v20;
+        *error = v20;
       }
 
       else
@@ -59,13 +59,13 @@
   return v19;
 }
 
-- (void)remote_setHealthRecordsEnvironment:(int64_t)a3 completion:(id)a4
+- (void)remote_setHealthRecordsEnvironment:(int64_t)environment completion:(id)completion
 {
   v8 = 0;
-  v5 = a4;
-  v6 = [HDProviderServiceSpecification setServiceEnvironment:a3 error:&v8];
+  completionCopy = completion;
+  v6 = [HDProviderServiceSpecification setServiceEnvironment:environment error:&v8];
   v7 = v8;
-  v5[2](v5, v6, v7);
+  completionCopy[2](completionCopy, v6, v7);
 }
 
 @end

@@ -1,101 +1,101 @@
 @interface WFHandleIntentAction
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4;
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index;
 - (BOOL)inputPassthrough;
-- (BOOL)intentIsHandledBySiri:(id)a3;
+- (BOOL)intentIsHandledBySiri:(id)siri;
 - (BOOL)isHandledBySiri;
 - (BOOL)isWorkflowInDatabase;
 - (BOOL)opensInApp;
-- (BOOL)parameterCombinationForIntentSupportsBackgroundExecution:(id)a3;
+- (BOOL)parameterCombinationForIntentSupportsBackgroundExecution:(id)execution;
 - (BOOL)prefersActionAttribution;
 - (BOOL)requiresRemoteExecution;
 - (BOOL)runInProcess;
-- (BOOL)shouldDonateIntent:(id)a3;
-- (BOOL)shouldForceHandleInSiri:(id)a3;
+- (BOOL)shouldDonateIntent:(id)intent;
+- (BOOL)shouldForceHandleInSiri:(id)siri;
 - (BOOL)showsWhenRun;
 - (BOOL)skipSiriExecution;
 - (INCExtensionConnection)connection;
 - (NSString)associatedAppBundleIdentifier;
-- (WFHandleIntentAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
-- (WFHandleIntentAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5 stringLocalizer:(id)a6;
+- (WFHandleIntentAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
+- (WFHandleIntentAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters stringLocalizer:(id)localizer;
 - (id)appBundleIdentifier;
 - (id)appDescriptor;
 - (id)appResource;
-- (id)confirmationAlertForInteraction:(id)a3 completionHandler:(id)a4;
-- (id)contentDestinationWithError:(id *)a3;
+- (id)confirmationAlertForInteraction:(id)interaction completionHandler:(id)handler;
+- (id)contentDestinationWithError:(id *)error;
 - (id)createResourceManager;
 - (id)defaultLocalizationContext;
 - (id)disabledOnPlatforms;
 - (id)displayableAppDescriptor;
-- (id)errorAttributedToApp:(id)a3;
-- (id)errorFromConfirmResponse:(id)a3 intent:(id)a4;
-- (id)errorFromHandleResponse:(id)a3 intent:(id)a4;
-- (id)errorFromResolutionResult:(id)a3 forSlot:(id)a4 onIntent:(id)a5;
-- (id)errorThatLaunchesApp:(id)a3;
-- (id)executorWithIntent:(id)a3 groupIdentifier:(id)a4;
+- (id)errorAttributedToApp:(id)app;
+- (id)errorFromConfirmResponse:(id)response intent:(id)intent;
+- (id)errorFromHandleResponse:(id)response intent:(id)intent;
+- (id)errorFromResolutionResult:(id)result forSlot:(id)slot onIntent:(id)intent;
+- (id)errorThatLaunchesApp:(id)app;
+- (id)executorWithIntent:(id)intent groupIdentifier:(id)identifier;
 - (id)externalMetricsActionIdentifier;
-- (id)generatedIntentWithInput:(id)a3 processedParameters:(id)a4 error:(id *)a5;
-- (id)localizedNameWithContext:(id)a3;
-- (id)parameterForSlot:(id)a3;
-- (id)rootCauseErrorFromError:(id)a3;
+- (id)generatedIntentWithInput:(id)input processedParameters:(id)parameters error:(id *)error;
+- (id)localizedNameWithContext:(id)context;
+- (id)parameterForSlot:(id)slot;
+- (id)rootCauseErrorFromError:(id)error;
 - (id)showsWhenRunIfApplicable;
-- (id)unknownErrorWithCode:(int64_t)a3 localizedDescription:(id)a4 userInfo:(id)a5;
+- (id)unknownErrorWithCode:(int64_t)code localizedDescription:(id)description userInfo:(id)info;
 - (unint64_t)allowsInteractiveSlotResolution;
-- (void)accessBundleContentWithBlock:(id)a3;
-- (void)actuallyStartExecutingIntent:(id)a3;
+- (void)accessBundleContentWithBlock:(id)block;
+- (void)actuallyStartExecutingIntent:(id)intent;
 - (void)cancel;
 - (void)finishRunningByContinuingInApp;
-- (void)finishRunningWithError:(id)a3;
-- (void)generatePopulatedIntentFromInput:(id)a3 processedParameters:(id)a4 completion:(id)a5;
-- (void)generatePopulatedIntentWithIdentifier:(id)a3 fromInput:(id)a4 processedParameters:(id)a5 completion:(id)a6;
-- (void)generateShortcutRepresentation:(id)a3;
-- (void)generateStandaloneShortcutRepresentation:(id)a3;
-- (void)getErrorFromExtensionError:(id)a3 completionHandler:(id)a4;
-- (void)getOutputFromIntentResponse:(id)a3 completionHandler:(id)a4;
-- (void)handleExecutionCompletionWithInteraction:(id)a3 error:(id)a4;
-- (void)handleExecutorError:(id)a3;
-- (void)handleResolutionResult:(id)a3 forSlot:(id)a4 onIntent:(id)a5;
+- (void)finishRunningWithError:(id)error;
+- (void)generatePopulatedIntentFromInput:(id)input processedParameters:(id)parameters completion:(id)completion;
+- (void)generatePopulatedIntentWithIdentifier:(id)identifier fromInput:(id)input processedParameters:(id)parameters completion:(id)completion;
+- (void)generateShortcutRepresentation:(id)representation;
+- (void)generateStandaloneShortcutRepresentation:(id)representation;
+- (void)getErrorFromExtensionError:(id)error completionHandler:(id)handler;
+- (void)getOutputFromIntentResponse:(id)response completionHandler:(id)handler;
+- (void)handleExecutionCompletionWithInteraction:(id)interaction error:(id)error;
+- (void)handleExecutorError:(id)error;
+- (void)handleResolutionResult:(id)result forSlot:(id)slot onIntent:(id)intent;
 - (void)initializeParameters;
-- (void)launchAppInBackground:(BOOL)a3;
-- (void)localizedConfirmationPromptForAttribute:(id)a3 intent:(id)a4 completion:(id)a5;
-- (void)localizedDisambiguationPromptForAttribute:(id)a3 intent:(id)a4 disambiguationItems:(id)a5 completion:(id)a6;
-- (void)populateIntent:(id)a3 withInput:(id)a4 processedParameters:(id)a5 completionHandler:(id)a6;
-- (void)resolveSlot:(id)a3 withProcessedValue:(id)a4 parameter:(id)a5 input:(id)a6 completion:(id)a7;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)setExecutor:(id)a3;
-- (void)setIntentDescriptor:(id)a3;
-- (void)showAskForValueAndRetryForSlot:(id)a3 onIntent:(id)a4;
-- (void)showConfirmationAndRetryForSlot:(id)a3 item:(id)a4 onIntent:(id)a5 completionHandler:(id)a6;
-- (void)showDisambiguationAndRetryForSlot:(id)a3 items:(id)a4 onIntent:(id)a5;
-- (void)startExecutingIntent:(id)a3;
-- (void)updateAppDescriptorInDatabaseWithSelectedApp:(id)a3;
-- (void)updateAppDescriptorWithSelectedApp:(id)a3;
-- (void)wasAddedToWorkflowByUser:(id)a3;
+- (void)launchAppInBackground:(BOOL)background;
+- (void)localizedConfirmationPromptForAttribute:(id)attribute intent:(id)intent completion:(id)completion;
+- (void)localizedDisambiguationPromptForAttribute:(id)attribute intent:(id)intent disambiguationItems:(id)items completion:(id)completion;
+- (void)populateIntent:(id)intent withInput:(id)input processedParameters:(id)parameters completionHandler:(id)handler;
+- (void)resolveSlot:(id)slot withProcessedValue:(id)value parameter:(id)parameter input:(id)input completion:(id)completion;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)setExecutor:(id)executor;
+- (void)setIntentDescriptor:(id)descriptor;
+- (void)showAskForValueAndRetryForSlot:(id)slot onIntent:(id)intent;
+- (void)showConfirmationAndRetryForSlot:(id)slot item:(id)item onIntent:(id)intent completionHandler:(id)handler;
+- (void)showDisambiguationAndRetryForSlot:(id)slot items:(id)items onIntent:(id)intent;
+- (void)startExecutingIntent:(id)intent;
+- (void)updateAppDescriptorInDatabaseWithSelectedApp:(id)app;
+- (void)updateAppDescriptorWithSelectedApp:(id)app;
+- (void)wasAddedToWorkflowByUser:(id)user;
 @end
 
 @implementation WFHandleIntentAction
 
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index
 {
-  if (!a4)
+  if (!index)
   {
     return 0;
   }
 
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"Connection"];
+  userInfo = [error userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"Connection"];
 
-  v6 = [v5 appProxy];
-  [v6 launchAppInBackground:0 completionHandler:&__block_literal_global_5174];
+  appProxy = [v5 appProxy];
+  [appProxy launchAppInBackground:0 completionHandler:&__block_literal_global_5174];
 
   v7 = v5 != 0;
   return v7;
 }
 
-- (id)rootCauseErrorFromError:(id)a3
+- (id)rootCauseErrorFromError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E696AA08]];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
   if (v6)
   {
@@ -104,7 +104,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = errorCopy;
   }
 
   v8 = v7;
@@ -112,17 +112,17 @@
   return v8;
 }
 
-- (void)handleExecutorError:(id)a3
+- (void)handleExecutorError:(id)error
 {
   v74[2] = *MEMORY[0x1E69E9840];
-  v4 = [(WFHandleIntentAction *)self errorAttributedToApp:a3];
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"WFIntentExecutorErrorDomain"];
+  v4 = [(WFHandleIntentAction *)self errorAttributedToApp:error];
+  domain = [v4 domain];
+  v6 = [domain isEqualToString:@"WFIntentExecutorErrorDomain"];
 
   if (!v6)
   {
-    v11 = [v4 domain];
-    v12 = [v11 isEqualToString:*MEMORY[0x1E699F9A0]];
+    domain2 = [v4 domain];
+    v12 = [domain2 isEqualToString:*MEMORY[0x1E699F9A0]];
 
     if (!v12)
     {
@@ -130,99 +130,99 @@
     }
 
     v13 = MEMORY[0x1E6963620];
-    v14 = [(WFHandleIntentAction *)self executor];
-    v15 = [v14 intent];
-    v16 = [v15 _intents_bundleIdForDisplay];
-    v17 = [v13 bundleRecordWithBundleIdentifier:v16 allowPlaceholder:0 error:0];
+    executor = [(WFHandleIntentAction *)self executor];
+    intent = [executor intent];
+    _intents_bundleIdForDisplay = [intent _intents_bundleIdForDisplay];
+    v17 = [v13 bundleRecordWithBundleIdentifier:_intents_bundleIdForDisplay allowPlaceholder:0 error:0];
 
     if (v17)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v17 localizedName];
-        v19 = [v18 length] != 0;
+        localizedName = [v17 localizedName];
+        v19 = [localizedName length] != 0;
       }
 
       else
       {
         v19 = 0;
-        v18 = v17;
+        localizedName = v17;
         v17 = 0;
       }
     }
 
     else
     {
-      v18 = 0;
+      localizedName = 0;
       v19 = 0;
     }
 
     v29 = MEMORY[0x1E696AEC0];
     v30 = WFLocalizedString(@"Couldn’t Run “%@”");
-    v31 = [(WFAction *)self localizedName];
-    v32 = [v29 stringWithFormat:v30, v31];
+    localizedName2 = [(WFAction *)self localizedName];
+    v32 = [v29 stringWithFormat:v30, localizedName2];
 
     v33 = MEMORY[0x1E696AEC0];
     if (v19)
     {
       v34 = WFLocalizedString(@"“%1$@” could not open “%2$@” because an unknown error occurred.");
-      v35 = [(WFAction *)self localizedName];
-      v36 = [v17 localizedName];
-      v37 = [v33 localizedStringWithFormat:v34, v35, v36];
+      localizedName3 = [(WFAction *)self localizedName];
+      localizedName4 = [v17 localizedName];
+      v37 = [v33 localizedStringWithFormat:v34, localizedName3, localizedName4];
     }
 
     else
     {
       v34 = WFLocalizedString(@"“%@” could not open the app because an unknown error occurred.");
-      v35 = [(WFAction *)self localizedName];
-      v37 = [v33 localizedStringWithFormat:v34, v35];
+      localizedName3 = [(WFAction *)self localizedName];
+      v37 = [v33 localizedStringWithFormat:v34, localizedName3];
     }
 
     v38 = [(WFHandleIntentAction *)self rootCauseErrorFromError:v4];
-    v39 = [v38 domain];
-    if ([v39 isEqualToString:*MEMORY[0x1E699F8C0]])
+    domain3 = [v38 domain];
+    if ([domain3 isEqualToString:*MEMORY[0x1E699F8C0]])
     {
-      v40 = [v38 code];
+      code = [v38 code];
 
-      if (v40 != 7)
+      if (code != 7)
       {
 LABEL_44:
         v62 = MEMORY[0x1E696ABC0];
-        v63 = [v4 domain];
-        v64 = [v4 code];
+        domain4 = [v4 domain];
+        code2 = [v4 code];
         v65 = *MEMORY[0x1E696A578];
         v73[0] = *MEMORY[0x1E696A588];
         v73[1] = v65;
         v74[0] = v32;
         v74[1] = v37;
         v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:2];
-        v67 = [v62 errorWithDomain:v63 code:v64 userInfo:v66];
+        v67 = [v62 errorWithDomain:domain4 code:code2 userInfo:v66];
 
         v4 = v67;
         goto LABEL_45;
       }
 
-      v41 = [MEMORY[0x1E69E0A90] currentDevice];
-      v39 = [v41 localizedModel];
+      currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+      domain3 = [currentDevice localizedModel];
 
       v42 = MEMORY[0x1E696AEC0];
       if (v19)
       {
         v71 = WFLocalizedString(@"“%1$@” could not open “%2$@” because the %3$@ is locked.");
-        v43 = [(WFAction *)self localizedName];
-        v44 = [v17 localizedName];
-        v45 = [v42 localizedStringWithFormat:v71, v43, v44, v39];
+        localizedName5 = [(WFAction *)self localizedName];
+        localizedName6 = [v17 localizedName];
+        v45 = [v42 localizedStringWithFormat:v71, localizedName5, localizedName6, domain3];
 
-        v37 = v44;
+        v37 = localizedName6;
         v46 = v71;
       }
 
       else
       {
         v46 = WFLocalizedString(@"“%1$@” could not open the app because the %2$@ is locked.");
-        v43 = [(WFAction *)self localizedName];
-        v45 = [v42 stringWithFormat:v46, v43, v39];
+        localizedName5 = [(WFAction *)self localizedName];
+        v45 = [v42 stringWithFormat:v46, localizedName5, domain3];
       }
 
       v37 = v45;
@@ -231,22 +231,22 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v7 = [v4 code];
-  if (v7 <= 101)
+  code3 = [v4 code];
+  if (code3 <= 101)
   {
-    if (v7 == 100)
+    if (code3 == 100)
     {
-      v24 = [v4 userInfo];
+      userInfo = [v4 userInfo];
       v25 = *MEMORY[0x1E696AA08];
-      v8 = [v24 objectForKey:*MEMORY[0x1E696AA08]];
+      userInfo2 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-      v26 = [v8 domain];
+      domain5 = [userInfo2 domain];
       v27 = *MEMORY[0x1E696E568];
-      if ([v26 isEqualToString:*MEMORY[0x1E696E568]])
+      if ([domain5 isEqualToString:*MEMORY[0x1E696E568]])
       {
-        v28 = [v8 code];
+        code4 = [userInfo2 code];
 
-        if (v28 == 3001)
+        if (code4 == 3001)
         {
           [(WFHandleIntentAction *)self finishRunningByContinuingInApp];
           goto LABEL_22;
@@ -257,42 +257,42 @@ LABEL_44:
       {
       }
 
-      v47 = [v8 domain];
-      if ([v47 isEqualToString:v27])
+      domain6 = [userInfo2 domain];
+      if ([domain6 isEqualToString:v27])
       {
-        v48 = [v8 code];
+        code5 = [userInfo2 code];
 
-        if (v48 == 3006)
+        if (code5 == 3006)
         {
           v9 = objc_opt_new();
           v49 = MEMORY[0x1E696AEC0];
           v50 = WFLocalizedString(@"Could not run %@");
-          v51 = [(WFAction *)self localizedName];
-          v52 = [v49 localizedStringWithFormat:v50, v51];
+          localizedName7 = [(WFAction *)self localizedName];
+          v52 = [v49 localizedStringWithFormat:v50, localizedName7];
           [v9 setObject:v52 forKeyedSubscript:*MEMORY[0x1E696A588]];
 
-          [v9 setObject:v8 forKeyedSubscript:v25];
-          v53 = [(WFHandleIntentAction *)self appDescriptor];
-          v54 = [v53 localizedName];
-          v55 = [v54 length];
+          [v9 setObject:userInfo2 forKeyedSubscript:v25];
+          appDescriptor = [(WFHandleIntentAction *)self appDescriptor];
+          localizedName8 = [appDescriptor localizedName];
+          v55 = [localizedName8 length];
 
           v56 = MEMORY[0x1E696AEC0];
           if (v55)
           {
             v57 = WFLocalizedString(@"The action “%1$@” could not run. Open %2$@ to continue.");
-            v58 = [(WFAction *)self localizedName];
-            v59 = [(WFHandleIntentAction *)self appDescriptor];
-            v60 = [v59 localizedName];
-            v61 = [v56 localizedStringWithFormat:v57, v58, v60];
+            localizedName9 = [(WFAction *)self localizedName];
+            appDescriptor2 = [(WFHandleIntentAction *)self appDescriptor];
+            localizedName10 = [appDescriptor2 localizedName];
+            v61 = [v56 localizedStringWithFormat:v57, localizedName9, localizedName10];
             [v9 setObject:v61 forKeyedSubscript:*MEMORY[0x1E696A578]];
           }
 
           else
           {
             v57 = WFLocalizedString(@"The action “%@” could not run. Open the app to continue.");
-            v58 = [(WFAction *)self localizedName];
-            v59 = [v56 localizedStringWithFormat:v57, v58];
-            [v9 setObject:v59 forKeyedSubscript:*MEMORY[0x1E696A578]];
+            localizedName9 = [(WFAction *)self localizedName];
+            appDescriptor2 = [v56 localizedStringWithFormat:v57, localizedName9];
+            [v9 setObject:appDescriptor2 forKeyedSubscript:*MEMORY[0x1E696A578]];
           }
 
           v69 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFIntentExecutorErrorDomain" code:100 userInfo:v9];
@@ -316,12 +316,12 @@ LABEL_44:
       goto LABEL_22;
     }
 
-    if (v7 == 101)
+    if (code3 == 101)
     {
-      v8 = [v4 userInfo];
-      v9 = [v8 objectForKey:@"WFIntentExecutorSlotResolutionResultErrorKey"];
-      v10 = [v8 objectForKey:@"WFIntentExecutorSlotDescriptionErrorKey"];
-      v20 = [v8 objectForKey:@"WFIntentExecutorIntentErrorKey"];
+      userInfo2 = [v4 userInfo];
+      v9 = [userInfo2 objectForKey:@"WFIntentExecutorSlotResolutionResultErrorKey"];
+      v10 = [userInfo2 objectForKey:@"WFIntentExecutorSlotDescriptionErrorKey"];
+      v20 = [userInfo2 objectForKey:@"WFIntentExecutorIntentErrorKey"];
       [(WFHandleIntentAction *)self handleResolutionResult:v9 forSlot:v10 onIntent:v20];
 LABEL_20:
 
@@ -336,11 +336,11 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if ((v7 - 102) < 2)
+  if ((code3 - 102) < 2)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:@"WFIntentExecutorIntentErrorKey"];
-    v10 = [v8 objectForKey:@"WFIntentExecutorIntentResponseErrorKey"];
+    userInfo2 = [v4 userInfo];
+    v9 = [userInfo2 objectForKey:@"WFIntentExecutorIntentErrorKey"];
+    v10 = [userInfo2 objectForKey:@"WFIntentExecutorIntentResponseErrorKey"];
     if ([v4 code] == 102)
     {
       [(WFHandleIntentAction *)self errorFromConfirmResponse:v10 intent:v9];
@@ -362,13 +362,13 @@ LABEL_45:
     goto LABEL_20;
   }
 
-  if (v7 != 104)
+  if (code3 != 104)
   {
     goto LABEL_45;
   }
 
-  v21 = [v4 userInfo];
-  v22 = [v21 objectForKey:@"WFIntentExecutorIntentErrorKey"];
+  userInfo3 = [v4 userInfo];
+  v22 = [userInfo3 objectForKey:@"WFIntentExecutorIntentErrorKey"];
 
   [(WFHandleIntentAction *)self startExecutingIntent:v22];
 LABEL_46:
@@ -376,11 +376,11 @@ LABEL_46:
   v68 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getErrorFromExtensionError:(id)a3 completionHandler:(id)a4
+- (void)getErrorFromExtensionError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
-  v8 = [v7 objectForKey:*MEMORY[0x1E696AA08]];
+  handlerCopy = handler;
+  userInfo = [error userInfo];
+  v8 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -389,11 +389,11 @@ LABEL_46:
   aBlock[4] = self;
   v9 = v8;
   v24 = v9;
-  v10 = v6;
+  v10 = handlerCopy;
   v25 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [v9 code];
-  switch(v12)
+  code = [v9 code];
+  switch(code)
   {
     case 1300:
     case 1303:
@@ -423,43 +423,43 @@ LABEL_46:
       v13 = @"There was a problem opening the app. Please unlock the device and try again.";
       goto LABEL_8;
     case 1315:
-      v15 = [(WFHandleIntentAction *)self appDescriptor];
-      v14 = [v15 localizedName];
+      appDescriptor = [(WFHandleIntentAction *)self appDescriptor];
+      localizedName = [appDescriptor localizedName];
 
-      if ([v14 length])
+      if ([localizedName length])
       {
         v16 = MEMORY[0x1E696AEC0];
         v17 = WFLocalizedString(@"This action requires %@ to be installed.");
-        v18 = [v16 stringWithFormat:v17, v14];
-        v11[2](v11, v18);
+        appDescriptor2 = [v16 stringWithFormat:v17, localizedName];
+        v11[2](v11, appDescriptor2);
       }
 
       else
       {
         v17 = objc_alloc_init(WFiTunesSessionManager);
-        v18 = [(WFHandleIntentAction *)self appDescriptor];
-        v19 = [v18 bundleIdentifier];
-        v20 = [MEMORY[0x1E695DF58] currentLocale];
-        v21 = [v20 countryCode];
+        appDescriptor2 = [(WFHandleIntentAction *)self appDescriptor];
+        bundleIdentifier = [appDescriptor2 bundleIdentifier];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        countryCode = [currentLocale countryCode];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __69__WFHandleIntentAction_getErrorFromExtensionError_completionHandler___block_invoke_2;
         v22[3] = &unk_1E837F588;
         v22[4] = v11;
-        [(WFiTunesSessionManager *)v17 lookupMediaWithBundleIdentifier:v19 countryCode:v21 completion:v22];
+        [(WFiTunesSessionManager *)v17 lookupMediaWithBundleIdentifier:bundleIdentifier countryCode:countryCode completion:v22];
       }
 
       goto LABEL_9;
     default:
-      if ((v12 - 1399) < 2)
+      if ((code - 1399) < 2)
       {
         goto LABEL_10;
       }
 
       v13 = @"There was a problem with the app.";
 LABEL_8:
-      v14 = WFLocalizedString(v13);
-      v11[2](v11, v14);
+      localizedName = WFLocalizedString(v13);
+      v11[2](v11, localizedName);
 LABEL_9:
 
 LABEL_10:
@@ -527,24 +527,24 @@ void __69__WFHandleIntentAction_getErrorFromExtensionError_completionHandler___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)errorThatLaunchesApp:(id)a3
+- (id)errorThatLaunchesApp:(id)app
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (app)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = a3;
+    appCopy = app;
     v6 = WFLocalizedString(@"Open %@");
-    v7 = [(WFHandleIntentAction *)self appDescriptor];
-    v8 = [v7 localizedName];
-    v9 = [v4 stringWithFormat:v6, v8];
+    appDescriptor = [(WFHandleIntentAction *)self appDescriptor];
+    localizedName = [appDescriptor localizedName];
+    v9 = [v4 stringWithFormat:v6, localizedName];
 
-    v10 = [v5 userInfo];
-    v11 = [v10 mutableCopy];
+    userInfo = [appCopy userInfo];
+    v11 = [userInfo mutableCopy];
 
-    v12 = [(WFHandleIntentAction *)self executor];
-    v13 = [v12 connection];
-    [v11 setObject:v13 forKeyedSubscript:@"Connection"];
+    executor = [(WFHandleIntentAction *)self executor];
+    connection = [executor connection];
+    [v11 setObject:connection forKeyedSubscript:@"Connection"];
 
     [v11 setObject:&unk_1F4A9A180 forKeyedSubscript:*MEMORY[0x1E6997118]];
     v14 = WFLocalizedString(@"Cancel");
@@ -555,10 +555,10 @@ void __69__WFHandleIntentAction_getErrorFromExtensionError_completionHandler___b
 
     [v11 setObject:self forKeyedSubscript:*MEMORY[0x1E696A8A8]];
     v16 = MEMORY[0x1E696ABC0];
-    v17 = [v5 domain];
-    v18 = [v5 code];
+    domain = [appCopy domain];
+    code = [appCopy code];
 
-    v19 = [v16 errorWithDomain:v17 code:v18 userInfo:v11];
+    v19 = [v16 errorWithDomain:domain code:code userInfo:v11];
   }
 
   else
@@ -571,23 +571,23 @@ void __69__WFHandleIntentAction_getErrorFromExtensionError_completionHandler___b
   return v19;
 }
 
-- (id)errorAttributedToApp:(id)a3
+- (id)errorAttributedToApp:(id)app
 {
-  if (a3)
+  if (app)
   {
-    v4 = a3;
-    v5 = [v4 userInfo];
-    v6 = [v5 mutableCopy];
+    appCopy = app;
+    userInfo = [appCopy userInfo];
+    v6 = [userInfo mutableCopy];
 
-    v7 = [(WFHandleIntentAction *)self appDescriptor];
-    v8 = [v7 localizedName];
-    [v6 setObject:v8 forKeyedSubscript:@"ApplicationName"];
+    appDescriptor = [(WFHandleIntentAction *)self appDescriptor];
+    localizedName = [appDescriptor localizedName];
+    [v6 setObject:localizedName forKeyedSubscript:@"ApplicationName"];
 
     v9 = MEMORY[0x1E696ABC0];
-    v10 = [v4 domain];
-    v11 = [v4 code];
+    domain = [appCopy domain];
+    code = [appCopy code];
 
-    v12 = [v9 errorWithDomain:v10 code:v11 userInfo:v6];
+    v12 = [v9 errorWithDomain:domain code:code userInfo:v6];
   }
 
   else
@@ -598,12 +598,12 @@ void __69__WFHandleIntentAction_getErrorFromExtensionError_completionHandler___b
   return v12;
 }
 
-- (id)errorFromHandleResponse:(id)a3 intent:(id)a4
+- (id)errorFromHandleResponse:(id)response intent:(id)intent
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 _isSuccess])
+  responseCopy = response;
+  intentCopy = intent;
+  if ([responseCopy _isSuccess])
   {
     v8 = 0;
   }
@@ -621,14 +621,14 @@ void __69__WFHandleIntentAction_getErrorFromExtensionError_completionHandler___b
     v16 = __55__WFHandleIntentAction_errorFromHandleResponse_intent___block_invoke;
     v17 = &unk_1E837C4B0;
     v20 = &v21;
-    v9 = v6;
+    v9 = responseCopy;
     v18 = v9;
-    v19 = self;
+    selfCopy = self;
     [(WFHandleIntentAction *)self accessBundleContentWithBlock:&v14];
     v10 = v22[5];
     v27[0] = @"WFIntentExecutorIntentErrorKey";
     v27[1] = @"WFIntentExecutorIntentResponseErrorKey";
-    v28[0] = v7;
+    v28[0] = intentCopy;
     v28[1] = v9;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:{2, v14, v15, v16, v17}];
     v8 = [(WFHandleIntentAction *)self unknownErrorWithCode:103 localizedDescription:v10 userInfo:v11];
@@ -651,16 +651,16 @@ void __55__WFHandleIntentAction_errorFromHandleResponse_intent___block_invoke(ui
   *(v4 + 40) = v3;
 }
 
-- (id)errorFromConfirmResponse:(id)a3 intent:(id)a4
+- (id)errorFromConfirmResponse:(id)response intent:(id)intent
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v13[0] = @"WFIntentExecutorIntentErrorKey";
   v13[1] = @"WFIntentExecutorIntentResponseErrorKey";
-  v14[0] = a4;
-  v14[1] = a3;
+  v14[0] = intent;
+  v14[1] = response;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
-  v8 = a3;
+  intentCopy = intent;
+  responseCopy = response;
   v9 = [v6 dictionaryWithObjects:v14 forKeys:v13 count:2];
 
   v10 = [(WFHandleIntentAction *)self unknownErrorWithCode:102 localizedDescription:0 userInfo:v9];
@@ -670,20 +670,20 @@ void __55__WFHandleIntentAction_errorFromHandleResponse_intent___block_invoke(ui
   return v10;
 }
 
-- (id)errorFromResolutionResult:(id)a3 forSlot:(id)a4 onIntent:(id)a5
+- (id)errorFromResolutionResult:(id)result forSlot:(id)slot onIntent:(id)intent
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFHandleIntentAction *)self parameterForSlot:v9];
-  if (v11 && [v8 resolutionResultCode] == 1)
+  resultCopy = result;
+  slotCopy = slot;
+  intentCopy = intent;
+  v11 = [(WFHandleIntentAction *)self parameterForSlot:slotCopy];
+  if (v11 && [resultCopy resolutionResultCode] == 1)
   {
-    v12 = [v10 _codableDescription];
-    v13 = [v9 wf_slotName];
-    v32 = [v12 attributeByName:v13];
+    _codableDescription = [intentCopy _codableDescription];
+    wf_slotName = [slotCopy wf_slotName];
+    v32 = [_codableDescription attributeByName:wf_slotName];
 
-    v14 = [v32 unsupportedReasonWithIndex:{objc_msgSend(v8, "unsupportedReason")}];
+    v14 = [v32 unsupportedReasonWithIndex:{objc_msgSend(resultCopy, "unsupportedReason")}];
     v38 = 0;
     v39 = &v38;
     v40 = 0x3032000000;
@@ -697,13 +697,13 @@ void __55__WFHandleIntentAction_errorFromHandleResponse_intent___block_invoke(ui
     v37 = &v38;
     v15 = v14;
     v34 = v15;
-    v35 = v10;
-    v36 = self;
+    v35 = intentCopy;
+    selfCopy = self;
     [(WFHandleIntentAction *)self accessBundleContentWithBlock:v33];
     v16 = MEMORY[0x1E696AEC0];
     v17 = WFLocalizedString(@"Invalid %@");
-    v18 = [v11 localizedLabel];
-    v19 = [v16 localizedStringWithFormat:v17, v18, 0];
+    localizedLabel = [v11 localizedLabel];
+    v19 = [v16 localizedStringWithFormat:v17, localizedLabel, 0];
 
     v20 = v39[5];
     if (v20)
@@ -715,9 +715,9 @@ void __55__WFHandleIntentAction_errorFromHandleResponse_intent___block_invoke(ui
     {
       v23 = MEMORY[0x1E696AEC0];
       v24 = WFLocalizedString(@"The value provided for %1$@ in %2$@ was invalid.");
-      v25 = [v11 localizedLabel];
-      v26 = [(WFAction *)self localizedName];
-      v21 = [v23 localizedStringWithFormat:v24, v25, v26, 0];
+      localizedLabel2 = [v11 localizedLabel];
+      localizedName = [(WFAction *)self localizedName];
+      v21 = [v23 localizedStringWithFormat:v24, localizedLabel2, localizedName, 0];
     }
 
     v27 = MEMORY[0x1E696ABC0];
@@ -753,21 +753,21 @@ void __67__WFHandleIntentAction_errorFromResolutionResult_forSlot_onIntent___blo
   *(v5 + 40) = v4;
 }
 
-- (void)showConfirmationAndRetryForSlot:(id)a3 item:(id)a4 onIntent:(id)a5 completionHandler:(id)a6
+- (void)showConfirmationAndRetryForSlot:(id)slot item:(id)item onIntent:(id)intent completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  slotCopy = slot;
+  itemCopy = item;
+  intentCopy = intent;
+  handlerCopy = handler;
   v14 = [MEMORY[0x1E6996C70] alertWithPreferredStyle:0];
-  v15 = [v12 _codableDescription];
-  v16 = [v10 wf_slotName];
-  v17 = [v15 attributeByName:v16];
+  _codableDescription = [intentCopy _codableDescription];
+  wf_slotName = [slotCopy wf_slotName];
+  v17 = [_codableDescription attributeByName:wf_slotName];
 
-  v18 = [v17 metadata];
-  v19 = [v10 wf_slotName];
-  v20 = [(WFAction *)self parameterStateForKey:v19];
-  [v18 wf_updateWithParameterState:v20];
+  metadata = [v17 metadata];
+  wf_slotName2 = [slotCopy wf_slotName];
+  v20 = [(WFAction *)self parameterStateForKey:wf_slotName2];
+  [metadata wf_updateWithParameterState:v20];
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -775,16 +775,16 @@ void __67__WFHandleIntentAction_errorFromResolutionResult_forSlot_onIntent___blo
   v27[3] = &unk_1E8374498;
   v27[4] = self;
   v28 = v17;
-  v29 = v12;
+  v29 = intentCopy;
   v30 = v14;
-  v32 = v10;
-  v33 = v13;
-  v31 = v11;
-  v21 = v10;
-  v22 = v13;
-  v23 = v11;
+  v32 = slotCopy;
+  v33 = handlerCopy;
+  v31 = itemCopy;
+  v21 = slotCopy;
+  v22 = handlerCopy;
+  v23 = itemCopy;
   v24 = v14;
-  v25 = v12;
+  v25 = intentCopy;
   v26 = v17;
   [v23 wf_transformValueForCodableAttribute:v26 completionHandler:v27];
 }
@@ -891,22 +891,22 @@ void __88__WFHandleIntentAction_showConfirmationAndRetryForSlot_item_onIntent_co
   [v1 finishRunningWithError:v2];
 }
 
-- (void)localizedConfirmationPromptForAttribute:(id)a3 intent:(id)a4 completion:(id)a5
+- (void)localizedConfirmationPromptForAttribute:(id)attribute intent:(id)intent completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 promptDialogWithType:5];
+  intentCopy = intent;
+  completionCopy = completion;
+  v10 = [attribute promptDialogWithType:5];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__WFHandleIntentAction_localizedConfirmationPromptForAttribute_intent_completion___block_invoke;
   v14[3] = &unk_1E837F510;
   v15 = v10;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v11 = v8;
+  v16 = intentCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v11 = intentCopy;
   v12 = v10;
-  v13 = v9;
+  v13 = completionCopy;
   [(WFHandleIntentAction *)self accessBundleContentWithBlock:v14];
 }
 
@@ -920,20 +920,20 @@ void __82__WFHandleIntentAction_localizedConfirmationPromptForAttribute_intent_c
   (*(v3 + 16))(v3, v4, 0);
 }
 
-- (void)showDisambiguationAndRetryForSlot:(id)a3 items:(id)a4 onIntent:(id)a5
+- (void)showDisambiguationAndRetryForSlot:(id)slot items:(id)items onIntent:(id)intent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  slotCopy = slot;
+  itemsCopy = items;
+  intentCopy = intent;
   v11 = [MEMORY[0x1E6996C70] alertWithPreferredStyle:1];
-  v12 = [v10 _codableDescription];
-  v13 = [v8 wf_slotName];
-  v14 = [v12 attributeByName:v13];
+  _codableDescription = [intentCopy _codableDescription];
+  wf_slotName = [slotCopy wf_slotName];
+  v14 = [_codableDescription attributeByName:wf_slotName];
 
-  v15 = [v14 metadata];
-  v16 = [v8 wf_slotName];
-  v17 = [(WFAction *)self parameterStateForKey:v16];
-  [v15 wf_updateWithParameterState:v17];
+  metadata = [v14 metadata];
+  wf_slotName2 = [slotCopy wf_slotName];
+  v17 = [(WFAction *)self parameterStateForKey:wf_slotName2];
+  [metadata wf_updateWithParameterState:v17];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -941,14 +941,14 @@ void __82__WFHandleIntentAction_localizedConfirmationPromptForAttribute_intent_c
   v23[3] = &unk_1E8374448;
   v23[4] = self;
   v24 = v14;
-  v25 = v10;
+  v25 = intentCopy;
   v26 = v11;
-  v27 = v9;
-  v28 = v8;
-  v18 = v8;
-  v19 = v9;
+  v27 = itemsCopy;
+  v28 = slotCopy;
+  v18 = slotCopy;
+  v19 = itemsCopy;
   v20 = v11;
-  v21 = v10;
+  v21 = intentCopy;
   v22 = v14;
   [v19 wf_transformValueForCodableAttribute:v22 completionHandler:v23];
 }
@@ -1101,19 +1101,19 @@ void __73__WFHandleIntentAction_showDisambiguationAndRetryForSlot_items_onIntent
   [v1 finishRunningWithError:v2];
 }
 
-- (void)localizedDisambiguationPromptForAttribute:(id)a3 intent:(id)a4 disambiguationItems:(id)a5 completion:(id)a6
+- (void)localizedDisambiguationPromptForAttribute:(id)attribute intent:(id)intent disambiguationItems:(id)items completion:(id)completion
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v13 promptDialogWithType:2];
-  v15 = [v13 promptDialogWithType:4];
+  intentCopy = intent;
+  completionCopy = completion;
+  itemsCopy = items;
+  attributeCopy = attribute;
+  v14 = [attributeCopy promptDialogWithType:2];
+  v15 = [attributeCopy promptDialogWithType:4];
 
   v33 = @"count";
   v16 = MEMORY[0x1E696AD98];
-  v17 = [v12 count];
+  v17 = [itemsCopy count];
 
   v18 = [v16 numberWithUnsignedInteger:v17];
   v34[0] = v18;
@@ -1124,15 +1124,15 @@ void __73__WFHandleIntentAction_showDisambiguationAndRetryForSlot_items_onIntent
   v26[2] = __104__WFHandleIntentAction_localizedDisambiguationPromptForAttribute_intent_disambiguationItems_completion___block_invoke;
   v26[3] = &unk_1E8379788;
   v27 = v14;
-  v28 = v10;
+  v28 = intentCopy;
   v29 = v19;
-  v30 = self;
+  selfCopy = self;
   v31 = v15;
-  v32 = v11;
-  v20 = v11;
+  v32 = completionCopy;
+  v20 = completionCopy;
   v21 = v15;
   v22 = v19;
-  v23 = v10;
+  v23 = intentCopy;
   v24 = v14;
   [(WFHandleIntentAction *)self accessBundleContentWithBlock:v26];
 
@@ -1178,21 +1178,21 @@ LABEL_9:
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)showAskForValueAndRetryForSlot:(id)a3 onIntent:(id)a4
+- (void)showAskForValueAndRetryForSlot:(id)slot onIntent:(id)intent
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WFHandleIntentAction *)self parameterForSlot:v7];
-  v10 = v7;
+  slotCopy = slot;
+  intentCopy = intent;
+  v9 = [(WFHandleIntentAction *)self parameterForSlot:slotCopy];
+  v10 = slotCopy;
   if (v10)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 codableAttribute];
-      v12 = [v11 promptDialogs];
-      v4 = [v12 count];
+      codableAttribute = [v10 codableAttribute];
+      promptDialogs = [codableAttribute promptDialogs];
+      v4 = [promptDialogs count];
 
       v13 = v10;
       if (!v4)
@@ -1200,10 +1200,10 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v14 = [v10 codableAttribute];
-      v15 = [v14 promptDialogWithType:0];
+      codableAttribute2 = [v10 codableAttribute];
+      v15 = [codableAttribute2 promptDialogWithType:0];
 
-      v16 = [v15 localizedDialogWithIntent:v8 tokens:0];
+      v16 = [v15 localizedDialogWithIntent:intentCopy tokens:0];
       if ([v16 length])
       {
         [v9 setLocalizedPrompt:v16];
@@ -1226,16 +1226,16 @@ LABEL_9:
   }
 
 LABEL_10:
-  v17 = [(WFAction *)self runningDelegate];
-  v18 = [v17 action:self canProvideInputForParameter:v9];
+  runningDelegate = [(WFAction *)self runningDelegate];
+  v18 = [runningDelegate action:self canProvideInputForParameter:v9];
 
   if (v18)
   {
     if (v9)
     {
-      v32 = v8;
-      v19 = [(WFAction *)self processedParameters];
-      v20 = [v19 mutableCopy];
+      v32 = intentCopy;
+      processedParameters = [(WFAction *)self processedParameters];
+      v20 = [processedParameters mutableCopy];
 
       v21 = [v9 key];
       [v20 setObject:0 forKeyedSubscript:v21];
@@ -1258,7 +1258,7 @@ LABEL_10:
         v25 = MEMORY[0x1E695E0F8];
       }
 
-      v29 = [(WFAction *)self input];
+      input = [(WFAction *)self input];
       v30 = dispatch_get_global_queue(0, 0);
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
@@ -1268,13 +1268,13 @@ LABEL_10:
       v34 = v32;
       v35 = v10;
       v36 = v9;
-      [(WFAction *)self askForValuesOfParameters:v24 withDefaultStates:v25 prompts:MEMORY[0x1E695E0F8] input:v29 workQueue:v30 completionHandler:v33];
+      [(WFAction *)self askForValuesOfParameters:v24 withDefaultStates:v25 prompts:MEMORY[0x1E695E0F8] input:input workQueue:v30 completionHandler:v33];
 
       if (v23)
       {
       }
 
-      v8 = v32;
+      intentCopy = v32;
     }
 
     else
@@ -1282,11 +1282,11 @@ LABEL_10:
       v27 = getWFIntentExecutionLogObject();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
-        v28 = [v10 wf_slotName];
+        wf_slotName = [v10 wf_slotName];
         *buf = 136315650;
         v40 = "[WFHandleIntentAction showAskForValueAndRetryForSlot:onIntent:]";
         v41 = 2114;
-        v42 = v28;
+        v42 = wf_slotName;
         v43 = 2114;
         v44 = v10;
         _os_log_impl(&dword_1CA256000, v27, OS_LOG_TYPE_FAULT, "%s No parameter found for slot description (slotName: %{public}@): %{public}@. Opening in app to continue.", buf, 0x20u);
@@ -1298,8 +1298,8 @@ LABEL_10:
 
   else
   {
-    v26 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-    [(WFHandleIntentAction *)self finishRunningWithError:v26];
+    wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+    [(WFHandleIntentAction *)self finishRunningWithError:wfUnsupportedUserInterfaceError];
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -1354,46 +1354,46 @@ void __64__WFHandleIntentAction_showAskForValueAndRetryForSlot_onIntent___block_
   }
 }
 
-- (void)handleResolutionResult:(id)a3 forSlot:(id)a4 onIntent:(id)a5
+- (void)handleResolutionResult:(id)result forSlot:(id)slot onIntent:(id)intent
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFHandleIntentAction *)self allowsInteractiveSlotResolution];
-  if (v11 == 2)
+  resultCopy = result;
+  slotCopy = slot;
+  intentCopy = intent;
+  allowsInteractiveSlotResolution = [(WFHandleIntentAction *)self allowsInteractiveSlotResolution];
+  if (allowsInteractiveSlotResolution == 2)
   {
-    v12 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+    wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
     goto LABEL_5;
   }
 
-  if (v11)
+  if (allowsInteractiveSlotResolution)
   {
-    v14 = [v8 resolutionResultCode];
-    if (v14 == 4)
+    resolutionResultCode = [resultCopy resolutionResultCode];
+    if (resolutionResultCode == 4)
     {
-      [(WFHandleIntentAction *)self showAskForValueAndRetryForSlot:v9 onIntent:v10];
+      [(WFHandleIntentAction *)self showAskForValueAndRetryForSlot:slotCopy onIntent:intentCopy];
       goto LABEL_7;
     }
 
-    if (v14 == 2)
+    if (resolutionResultCode == 2)
     {
-      v12 = [v8 disambiguationItems];
-      [(WFHandleIntentAction *)self showDisambiguationAndRetryForSlot:v9 items:v12 onIntent:v10];
+      wfUnsupportedUserInterfaceError = [resultCopy disambiguationItems];
+      [(WFHandleIntentAction *)self showDisambiguationAndRetryForSlot:slotCopy items:wfUnsupportedUserInterfaceError onIntent:intentCopy];
       goto LABEL_6;
     }
 
-    v12 = [(WFHandleIntentAction *)self errorFromResolutionResult:v8 forSlot:v9 onIntent:v10];
-    if (!v12)
+    wfUnsupportedUserInterfaceError = [(WFHandleIntentAction *)self errorFromResolutionResult:resultCopy forSlot:slotCopy onIntent:intentCopy];
+    if (!wfUnsupportedUserInterfaceError)
     {
       v16 = @"WFIntentExecutorIntentErrorKey";
-      v17[0] = v10;
+      v17[0] = intentCopy;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-      v12 = [(WFHandleIntentAction *)self unknownErrorWithCode:101 localizedDescription:0 userInfo:v15];
+      wfUnsupportedUserInterfaceError = [(WFHandleIntentAction *)self unknownErrorWithCode:101 localizedDescription:0 userInfo:v15];
     }
 
 LABEL_5:
-    [(WFHandleIntentAction *)self finishRunningWithError:v12];
+    [(WFHandleIntentAction *)self finishRunningWithError:wfUnsupportedUserInterfaceError];
 LABEL_6:
 
     goto LABEL_7;
@@ -1405,22 +1405,22 @@ LABEL_7:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)unknownErrorWithCode:(int64_t)a3 localizedDescription:(id)a4 userInfo:(id)a5
+- (id)unknownErrorWithCode:(int64_t)code localizedDescription:(id)description userInfo:(id)info
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  infoCopy = info;
   v10 = MEMORY[0x1E696AEC0];
   v11 = WFLocalizedString(@"Could Not Run %@");
-  v12 = [(WFAction *)self localizedName];
-  v13 = [v10 localizedStringWithFormat:v11, v12, 0];
+  localizedName = [(WFAction *)self localizedName];
+  v13 = [v10 localizedStringWithFormat:v11, localizedName, 0];
 
-  if (!v8)
+  if (!descriptionCopy)
   {
-    v8 = WFLocalizedString(@"An unknown error occurred.");
+    descriptionCopy = WFLocalizedString(@"An unknown error occurred.");
   }
 
-  v14 = [v9 mutableCopy];
+  v14 = [infoCopy mutableCopy];
   v15 = v14;
   if (v14)
   {
@@ -1438,30 +1438,30 @@ LABEL_7:
   v23[0] = *MEMORY[0x1E696A588];
   v23[1] = v18;
   v24[0] = v13;
-  v24[1] = v8;
+  v24[1] = descriptionCopy;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   [v17 addEntriesFromDictionary:v19];
 
-  v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFIntentExecutorErrorDomain" code:a3 userInfo:v17];
+  v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFIntentExecutorErrorDomain" code:code userInfo:v17];
 
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (id)confirmationAlertForInteraction:(id)a3 completionHandler:(id)a4
+- (id)confirmationAlertForInteraction:(id)interaction completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 intent];
+  interactionCopy = interaction;
+  handlerCopy = handler;
+  intent = [interactionCopy intent];
   v9 = [MEMORY[0x1E6996C70] alertWithPreferredStyle:0];
-  v10 = [v6 intentResponse];
+  intentResponse = [interactionCopy intentResponse];
 
-  if (v10)
+  if (intentResponse)
   {
-    v11 = [v6 intentResponse];
-    v12 = [(WFHandleIntentAction *)self stringLocalizer];
-    v13 = [v11 _renderedResponseWithLocalizer:v12 requiresSiriCompatibility:0];
+    intentResponse2 = [interactionCopy intentResponse];
+    stringLocalizer = [(WFHandleIntentAction *)self stringLocalizer];
+    v13 = [intentResponse2 _renderedResponseWithLocalizer:stringLocalizer requiresSiriCompatibility:0];
   }
 
   else
@@ -1471,24 +1471,24 @@ LABEL_7:
 
   if (![v13 length])
   {
-    v14 = [v8 _subtitle];
+    _subtitle = [intent _subtitle];
 
-    v13 = v14;
+    v13 = _subtitle;
   }
 
-  v15 = [v8 _title];
-  [v9 setTitle:v15];
+  _title = [intent _title];
+  [v9 setTitle:_title];
 
   [v9 setMessage:v13];
   v16 = MEMORY[0x1E6996C78];
-  v17 = [v8 _localizedVerb];
+  _localizedVerb = [intent _localizedVerb];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __74__WFHandleIntentAction_confirmationAlertForInteraction_completionHandler___block_invoke;
   v29[3] = &unk_1E837F4E8;
-  v18 = v7;
+  v18 = handlerCopy;
   v30 = v18;
-  v19 = [v16 buttonWithTitle:v17 style:0 handler:v29];
+  v19 = [v16 buttonWithTitle:_localizedVerb style:0 handler:v29];
   [v9 addButton:v19];
 
   v20 = MEMORY[0x1E6996C78];
@@ -1580,25 +1580,25 @@ uint64_t __143__WFHandleIntentAction_showInteractionIfNeeded_inUserInterface_req
   v13.super_class = WFHandleIntentAction;
   if ([(WFAction *)&v13 requiresRemoteExecution])
   {
-    v3 = getWFRemoteExecutionLogObject();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    anyObject = getWFRemoteExecutionLogObject();
+    if (os_log_type_enabled(anyObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v15 = "[WFHandleIntentAction requiresRemoteExecution]";
       v16 = 2114;
-      v17 = self;
-      _os_log_impl(&dword_1CA256000, v3, OS_LOG_TYPE_DEFAULT, "%s %{public}@ definition requires remote execution, returning YES for requiresRemoteExecution", buf, 0x16u);
+      selfCopy3 = self;
+      _os_log_impl(&dword_1CA256000, anyObject, OS_LOG_TYPE_DEFAULT, "%s %{public}@ definition requires remote execution, returning YES for requiresRemoteExecution", buf, 0x16u);
     }
 
     LOBYTE(v4) = 1;
     goto LABEL_15;
   }
 
-  v5 = [(WFAction *)self resourceManager];
-  v6 = [v5 resourceObjectsOfClass:objc_opt_class()];
-  v3 = [v6 anyObject];
+  resourceManager = [(WFAction *)self resourceManager];
+  v6 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v6 anyObject];
 
-  if (!v3)
+  if (!anyObject)
   {
     v7 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1606,39 +1606,39 @@ uint64_t __143__WFHandleIntentAction_showInteractionIfNeeded_inUserInterface_req
       *buf = 136315394;
       v15 = "[WFHandleIntentAction requiresRemoteExecution]";
       v16 = 2114;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_ERROR, "%s App availability resource was not found for action: %{public}@", buf, 0x16u);
     }
 
     goto LABEL_11;
   }
 
-  if (![v3 intentIsEligibleForRemoteExecution])
+  if (![anyObject intentIsEligibleForRemoteExecution])
   {
 LABEL_11:
     v4 = 0;
     goto LABEL_12;
   }
 
-  v4 = [v3 intentIsLocallyAvailable]^ 1;
+  v4 = [anyObject intentIsLocallyAvailable]^ 1;
 LABEL_12:
   v8 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v3 intentIsEligibleForRemoteExecution];
-    v10 = [v3 intentIsLocallyAvailable];
+    intentIsEligibleForRemoteExecution = [anyObject intentIsEligibleForRemoteExecution];
+    intentIsLocallyAvailable = [anyObject intentIsLocallyAvailable];
     *buf = 136316418;
     v15 = "[WFHandleIntentAction requiresRemoteExecution]";
     v16 = 2114;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 1024;
     v19 = v4;
     v20 = 1024;
-    v21 = v3 != 0;
+    v21 = anyObject != 0;
     v22 = 1024;
-    v23 = v9;
+    v23 = intentIsEligibleForRemoteExecution;
     v24 = 1024;
-    v25 = v10;
+    v25 = intentIsLocallyAvailable;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEFAULT, "%s %{public}@ requires remote execution: %i (intentAvailableResource exists: %i, intentIsEligibleForRemoteExecution: %i, intentIsLocallyAvailable: %i", buf, 0x2Eu);
   }
 
@@ -1647,15 +1647,15 @@ LABEL_15:
   return v4;
 }
 
-- (id)contentDestinationWithError:(id *)a3
+- (id)contentDestinationWithError:(id *)error
 {
-  v4 = [(WFHandleIntentAction *)self appDescriptor];
+  appDescriptor = [(WFHandleIntentAction *)self appDescriptor];
 
-  if (v4 && (-[WFHandleIntentAction appDescriptor](self, "appDescriptor"), v5 = objc_claimAutoreleasedReturnValue(), [v5 bundleIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = VCIsShortcutsAppBundleIdentifier(), v6, v5, (v7 & 1) == 0))
+  if (appDescriptor && (-[WFHandleIntentAction appDescriptor](self, "appDescriptor"), v5 = objc_claimAutoreleasedReturnValue(), [v5 bundleIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = VCIsShortcutsAppBundleIdentifier(), v6, v5, (v7 & 1) == 0))
   {
     v9 = MEMORY[0x1E6996C90];
-    v10 = [(WFHandleIntentAction *)self appDescriptor];
-    v8 = [v9 locationWithAppDescriptor:v10];
+    appDescriptor2 = [(WFHandleIntentAction *)self appDescriptor];
+    v8 = [v9 locationWithAppDescriptor:appDescriptor2];
   }
 
   else
@@ -1668,16 +1668,16 @@ LABEL_15:
 
 - (id)appResource
 {
-  v3 = [(WFHandleIntentAction *)self intentDescriptor];
+  intentDescriptor = [(WFHandleIntentAction *)self intentDescriptor];
 
-  if (v3)
+  if (intentDescriptor)
   {
     appResource = self->_appResource;
     if (!appResource)
     {
       v5 = [WFAppInstalledResource alloc];
-      v6 = [(WFHandleIntentAction *)self intentDescriptor];
-      v7 = [(WFAppInstalledResource *)v5 initWithIntentDescriptor:v6 isSyncedFromOtherDevice:[(WFHandleIntentAction *)self intentDescriptorIsSyncedFromOtherDevices]];
+      intentDescriptor2 = [(WFHandleIntentAction *)self intentDescriptor];
+      v7 = [(WFAppInstalledResource *)v5 initWithIntentDescriptor:intentDescriptor2 isSyncedFromOtherDevice:[(WFHandleIntentAction *)self intentDescriptorIsSyncedFromOtherDevices]];
       v8 = self->_appResource;
       self->_appResource = v7;
 
@@ -1696,90 +1696,90 @@ LABEL_15:
   return v9;
 }
 
-- (void)updateAppDescriptorInDatabaseWithSelectedApp:(id)a3
+- (void)updateAppDescriptorInDatabaseWithSelectedApp:(id)app
 {
-  v4 = a3;
-  v5 = [(WFAction *)self workflow];
-  v15 = [v5 actions];
+  appCopy = app;
+  workflow = [(WFAction *)self workflow];
+  actions = [workflow actions];
 
-  v6 = [v15 indexOfObject:self];
-  v7 = [(WFHandleIntentAction *)self intentDescriptor];
-  v8 = [v7 descriptorWithAppDescriptor:v4];
+  v6 = [actions indexOfObject:self];
+  intentDescriptor = [(WFHandleIntentAction *)self intentDescriptor];
+  v8 = [intentDescriptor descriptorWithAppDescriptor:appCopy];
 
   v9 = +[WFDatabaseProxy defaultDatabase];
-  v10 = [(WFAction *)self UUID];
+  uUID = [(WFAction *)self UUID];
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
-  v12 = [(WFAction *)self identifier];
-  v13 = [(WFAction *)self workflow];
-  v14 = [v13 workflowID];
-  [v9 updateAppDescriptor:v8 atKey:@"IntentAppDefinition" actionUUID:v10 actionIndex:v11 actionIdentifier:v12 workflowID:v14 error:0];
+  identifier = [(WFAction *)self identifier];
+  workflow2 = [(WFAction *)self workflow];
+  workflowID = [workflow2 workflowID];
+  [v9 updateAppDescriptor:v8 atKey:@"IntentAppDefinition" actionUUID:uUID actionIndex:v11 actionIdentifier:identifier workflowID:workflowID error:0];
 }
 
-- (void)updateAppDescriptorWithSelectedApp:(id)a3
+- (void)updateAppDescriptorWithSelectedApp:(id)app
 {
-  v4 = a3;
-  v5 = [(WFHandleIntentAction *)self intentDescriptor];
-  v6 = [v5 descriptorWithAppDescriptor:v4];
+  appCopy = app;
+  intentDescriptor = [(WFHandleIntentAction *)self intentDescriptor];
+  v6 = [intentDescriptor descriptorWithAppDescriptor:appCopy];
   [(WFHandleIntentAction *)self setIntentDescriptor:v6];
 
   v7.receiver = self;
   v7.super_class = WFHandleIntentAction;
-  [(WFAction *)&v7 updateAppDescriptorWithSelectedApp:v4];
+  [(WFAction *)&v7 updateAppDescriptorWithSelectedApp:appCopy];
 }
 
-- (void)setIntentDescriptor:(id)a3
+- (void)setIntentDescriptor:(id)descriptor
 {
-  v7 = a3;
-  objc_storeStrong(&self->_intentDescriptor, a3);
+  descriptorCopy = descriptor;
+  objc_storeStrong(&self->_intentDescriptor, descriptor);
   v5 = [(WFAction *)self parameterForKey:@"IntentAppDefinition"];
   if (v5)
   {
-    v6 = [(WFVariableSubstitutableParameterState *)[WFIntentDescriptorParameterState alloc] initWithValue:v7];
-    [(WFAction *)self setParameterState:v6 forKey:@"IntentAppDefinition"];
+    serializedRepresentation = [(WFVariableSubstitutableParameterState *)[WFIntentDescriptorParameterState alloc] initWithValue:descriptorCopy];
+    [(WFAction *)self setParameterState:serializedRepresentation forKey:@"IntentAppDefinition"];
   }
 
   else
   {
-    v6 = [v7 serializedRepresentation];
-    [(WFAction *)self setSupplementalParameterValue:v6 forKey:@"IntentAppDefinition"];
+    serializedRepresentation = [descriptorCopy serializedRepresentation];
+    [(WFAction *)self setSupplementalParameterValue:serializedRepresentation forKey:@"IntentAppDefinition"];
   }
 }
 
 - (id)appDescriptor
 {
-  v2 = [(WFHandleIntentAction *)self intentDescriptor];
-  v3 = [v2 appDescriptor];
-  v4 = [v3 selfIfNotShortcutsApp];
+  intentDescriptor = [(WFHandleIntentAction *)self intentDescriptor];
+  appDescriptor = [intentDescriptor appDescriptor];
+  selfIfNotShortcutsApp = [appDescriptor selfIfNotShortcutsApp];
 
-  return v4;
+  return selfIfNotShortcutsApp;
 }
 
 - (id)displayableAppDescriptor
 {
-  v3 = [(WFAction *)self displayableAppDefinition];
-  if (v3)
+  displayableAppDefinition = [(WFAction *)self displayableAppDefinition];
+  if (displayableAppDefinition)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696E720]) initWithSerializedRepresentation:v3];
+    selfIfNotShortcutsApp = [objc_alloc(MEMORY[0x1E696E720]) initWithSerializedRepresentation:displayableAppDefinition];
   }
 
   else
   {
-    v5 = [(WFHandleIntentAction *)self intentDescriptor];
-    v6 = [v5 _displayableAppDescriptor];
-    v4 = [v6 selfIfNotShortcutsApp];
+    intentDescriptor = [(WFHandleIntentAction *)self intentDescriptor];
+    _displayableAppDescriptor = [intentDescriptor _displayableAppDescriptor];
+    selfIfNotShortcutsApp = [_displayableAppDescriptor selfIfNotShortcutsApp];
   }
 
-  return v4;
+  return selfIfNotShortcutsApp;
 }
 
-- (void)getOutputFromIntentResponse:(id)a3 completionHandler:(id)a4
+- (void)getOutputFromIntentResponse:(id)response completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  responseCopy = response;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFHandleIntentAction.m" lineNumber:660 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHandleIntentAction.m" lineNumber:660 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -1787,9 +1787,9 @@ LABEL_15:
   v11[2] = __70__WFHandleIntentAction_getOutputFromIntentResponse_completionHandler___block_invoke;
   v11[3] = &unk_1E8374358;
   v11[4] = self;
-  v12 = v8;
-  v9 = v8;
-  [v7 wf_getOutputValueWithCompletionHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  [responseCopy wf_getOutputValueWithCompletionHandler:v11];
 }
 
 void __70__WFHandleIntentAction_getOutputFromIntentResponse_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1892,14 +1892,14 @@ void __70__WFHandleIntentAction_getOutputFromIntentResponse_completionHandler___
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)launchAppInBackground:(BOOL)a3
+- (void)launchAppInBackground:(BOOL)background
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __46__WFHandleIntentAction_launchAppInBackground___block_invoke;
   v3[3] = &unk_1E837DEA0;
   v3[4] = self;
-  v4 = a3;
+  backgroundCopy = background;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -1934,58 +1934,58 @@ uint64_t __46__WFHandleIntentAction_launchAppInBackground___block_invoke_2(uint6
 - (void)finishRunningByContinuingInApp
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v4 = [(WFHandleIntentAction *)self executor];
-  v5 = [v4 connection];
-  v6 = [v5 intent];
+  executor = [(WFHandleIntentAction *)self executor];
+  connection = [executor connection];
+  intent = [connection intent];
 
-  v7 = [(WFHandleIntentAction *)self executor];
-  v8 = [v7 connection];
-  v9 = [v8 _transaction];
-  v10 = [v9 state];
-  v11 = [v10 intentResponse];
+  executor2 = [(WFHandleIntentAction *)self executor];
+  connection2 = [executor2 connection];
+  _transaction = [connection2 _transaction];
+  state = [_transaction state];
+  intentResponse = [state intentResponse];
 
-  v12 = [(WFAction *)self userInterface];
-  if ([v12 isRunningWithSiriUI])
+  userInterface = [(WFAction *)self userInterface];
+  if ([userInterface isRunningWithSiriUI])
   {
-    v13 = [(WFHandleIntentAction *)self executor];
+    executor3 = [(WFHandleIntentAction *)self executor];
 
-    if (!v13)
+    if (!executor3)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"WFHandleIntentAction.m" lineNumber:590 description:@"executor should not be nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WFHandleIntentAction.m" lineNumber:590 description:@"executor should not be nil"];
     }
 
-    if ([(WFHandleIntentAction *)self shouldOpenAppThroughSiriForIntent:v6 intentResponse:v11])
+    if ([(WFHandleIntentAction *)self shouldOpenAppThroughSiriForIntent:intent intentResponse:intentResponse])
     {
-      v14 = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:v6 response:v11];
-      v15 = [objc_alloc(MEMORY[0x1E69E0CF0]) initWithInteraction:v14];
+      actionsRestrictedWhileLocked = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:intent response:intentResponse];
+      v15 = [objc_alloc(MEMORY[0x1E69E0CF0]) initWithInteraction:actionsRestrictedWhileLocked];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __54__WFHandleIntentAction_finishRunningByContinuingInApp__block_invoke;
       v30[3] = &unk_1E8377278;
       v30[4] = self;
-      if (([v12 performSiriRequest:v15 completionHandler:v30] & 1) == 0)
+      if (([userInterface performSiriRequest:v15 completionHandler:v30] & 1) == 0)
       {
-        v16 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-        [(WFHandleIntentAction *)self finishRunningWithError:v16];
+        wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+        [(WFHandleIntentAction *)self finishRunningWithError:wfUnsupportedUserInterfaceError];
       }
 
       goto LABEL_17;
     }
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v12 requestedFromAnotherDevice] && !-[WFHandleIntentAction allowsContinueInAppWhenRunningRemotely](self, "allowsContinueInAppWhenRunningRemotely"))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [userInterface requestedFromAnotherDevice] && !-[WFHandleIntentAction allowsContinueInAppWhenRunningRemotely](self, "allowsContinueInAppWhenRunningRemotely"))
   {
-    v14 = WFLocalizedString(@"Sorry, you can’t do that here. Try it on your iPhone instead.");
+    actionsRestrictedWhileLocked = WFLocalizedString(@"Sorry, you can’t do that here. Try it on your iPhone instead.");
     v20 = MEMORY[0x1E696ABC0];
     v31[0] = *MEMORY[0x1E696A588];
     v21 = MEMORY[0x1E696AEC0];
     v22 = WFLocalizedString(@"Could Not Run “%@”");
-    v23 = [(WFAction *)self localizedName];
-    v24 = [v21 localizedStringWithFormat:v22, v23];
+    localizedName = [(WFAction *)self localizedName];
+    v24 = [v21 localizedStringWithFormat:v22, localizedName];
     v31[1] = *MEMORY[0x1E696A578];
     v32[0] = v24;
-    v32[1] = v14;
+    v32[1] = actionsRestrictedWhileLocked;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
     v26 = [v20 errorWithDomain:@"WFHandleIntentActionErrorDomain" code:0 userInfo:v25];
 
@@ -1995,13 +1995,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (![MEMORY[0x1E69AA868] shouldLaunchAppInBackgroundWithIntent:v6 intentResponse:v11])
+  if (![MEMORY[0x1E69AA868] shouldLaunchAppInBackgroundWithIntent:intent intentResponse:intentResponse])
   {
-    v17 = [MEMORY[0x1E696E728] appInfoWithIntent:v6];
-    v14 = [v17 actionsRestrictedWhileLocked];
+    v17 = [MEMORY[0x1E696E728] appInfoWithIntent:intent];
+    actionsRestrictedWhileLocked = [v17 actionsRestrictedWhileLocked];
 
-    v18 = [v6 _className];
-    v19 = [v14 containsObject:v18];
+    _className = [intent _className];
+    v19 = [actionsRestrictedWhileLocked containsObject:_className];
 
     if (v19)
     {
@@ -2076,37 +2076,37 @@ uint64_t __54__WFHandleIntentAction_finishRunningByContinuingInApp__block_invoke
   }
 }
 
-- (void)populateIntent:(id)a3 withInput:(id)a4 processedParameters:(id)a5 completionHandler:(id)a6
+- (void)populateIntent:(id)intent withInput:(id)input processedParameters:(id)parameters completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 copy];
-  if (!v10)
+  inputCopy = input;
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  v13 = [intent copy];
+  if (!inputCopy)
   {
-    v10 = objc_opt_new();
+    inputCopy = objc_opt_new();
   }
 
-  v14 = [(WFHandleIntentAction *)self slots];
+  slots = [(WFHandleIntentAction *)self slots];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __87__WFHandleIntentAction_populateIntent_withInput_processedParameters_completionHandler___block_invoke;
   v22[3] = &unk_1E8374330;
   v22[4] = self;
-  v23 = v11;
+  v23 = parametersCopy;
   v24 = v13;
-  v25 = v10;
+  v25 = inputCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __87__WFHandleIntentAction_populateIntent_withInput_processedParameters_completionHandler___block_invoke_3;
   v19[3] = &unk_1E837EE60;
   v20 = v24;
-  v21 = v12;
+  v21 = handlerCopy;
   v15 = v24;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
-  [v14 if_enumerateAsynchronouslyInSequence:v22 completionHandler:v19];
+  v16 = handlerCopy;
+  v17 = inputCopy;
+  v18 = parametersCopy;
+  [slots if_enumerateAsynchronouslyInSequence:v22 completionHandler:v19];
 }
 
 void __87__WFHandleIntentAction_populateIntent_withInput_processedParameters_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2224,52 +2224,52 @@ void __87__WFHandleIntentAction_populateIntent_withInput_processedParameters_com
   (*(a1[6] + 16))();
 }
 
-- (id)executorWithIntent:(id)a3 groupIdentifier:(id)a4
+- (id)executorWithIntent:(id)intent groupIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[WFIntentExecutor alloc] initWithIntent:v7 donateInteraction:[(WFHandleIntentAction *)self shouldDonateIntent:v7] groupIdentifier:v6];
+  identifierCopy = identifier;
+  intentCopy = intent;
+  v8 = [[WFIntentExecutor alloc] initWithIntent:intentCopy donateInteraction:[(WFHandleIntentAction *)self shouldDonateIntent:intentCopy] groupIdentifier:identifierCopy];
 
   [(WFIntentExecutor *)v8 setDelegate:self];
 
   return v8;
 }
 
-- (BOOL)shouldForceHandleInSiri:(id)a3
+- (BOOL)shouldForceHandleInSiri:(id)siri
 {
-  v3 = a3;
-  if ([v3 _idiom] == 4)
+  siriCopy = siri;
+  if ([siriCopy _idiom] == 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-    v6 = [v5 arrayForKey:@"IntentsHandledBySiriOverride"];
-    v7 = [v3 _className];
-    v4 = [v6 containsObject:v7];
+    systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+    v6 = [systemShortcutsUserDefaults arrayForKey:@"IntentsHandledBySiriOverride"];
+    _className = [siriCopy _className];
+    v4 = [v6 containsObject:_className];
   }
 
   return v4;
 }
 
-- (BOOL)intentIsHandledBySiri:(id)a3
+- (BOOL)intentIsHandledBySiri:(id)siri
 {
-  v8 = a3;
-  v4 = [(WFHandleIntentAction *)self skipSiriExecution];
-  v5 = [(WFHandleIntentAction *)self runInProcess];
-  v6 = [v8 _type] == 2;
-  v7 = [(WFHandleIntentAction *)self shouldForceHandleInSiri:v8];
+  siriCopy = siri;
+  skipSiriExecution = [(WFHandleIntentAction *)self skipSiriExecution];
+  runInProcess = [(WFHandleIntentAction *)self runInProcess];
+  v6 = [siriCopy _type] == 2;
+  v7 = [(WFHandleIntentAction *)self shouldForceHandleInSiri:siriCopy];
 
-  LOBYTE(v8) = 0;
-  if ((v6 || v7) && !v5)
+  LOBYTE(siriCopy) = 0;
+  if ((v6 || v7) && !runInProcess)
   {
-    v9 = [(WFAction *)self userInterface];
-    LODWORD(v8) = [v9 isRunningWithSiriUI] & !v4;
+    userInterface = [(WFAction *)self userInterface];
+    LODWORD(siriCopy) = [userInterface isRunningWithSiriUI] & !skipSiriExecution;
   }
 
-  return v8;
+  return siriCopy;
 }
 
 - (BOOL)isHandledBySiri
@@ -2304,46 +2304,46 @@ void __87__WFHandleIntentAction_populateIntent_withInput_processedParameters_com
 
 - (BOOL)skipSiriExecution
 {
-  v2 = [(WFAction *)self definition];
-  v3 = [v2 objectForKey:@"SkipSiriExecution"];
-  v4 = [v3 BOOLValue];
+  definition = [(WFAction *)self definition];
+  v3 = [definition objectForKey:@"SkipSiriExecution"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)runInProcess
 {
-  v2 = [(WFAction *)self definition];
-  v3 = [v2 objectForKey:@"InProcess"];
-  v4 = [v3 BOOLValue];
+  definition = [(WFAction *)self definition];
+  v3 = [definition objectForKey:@"InProcess"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)parameterCombinationForIntentSupportsBackgroundExecution:(id)a3
+- (BOOL)parameterCombinationForIntentSupportsBackgroundExecution:(id)execution
 {
-  v3 = [a3 _currentParameterCombination];
-  v4 = v3;
-  if (v3)
+  _currentParameterCombination = [execution _currentParameterCombination];
+  v4 = _currentParameterCombination;
+  if (_currentParameterCombination)
   {
-    v5 = [v3 supportsBackgroundExecution];
+    supportsBackgroundExecution = [_currentParameterCombination supportsBackgroundExecution];
   }
 
   else
   {
-    v5 = 1;
+    supportsBackgroundExecution = 1;
   }
 
-  return v5;
+  return supportsBackgroundExecution;
 }
 
-- (void)handleExecutionCompletionWithInteraction:(id)a3 error:(id)a4
+- (void)handleExecutionCompletionWithInteraction:(id)interaction error:(id)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  interactionCopy = interaction;
+  v7 = interactionCopy;
+  if (interactionCopy)
   {
-    v8 = [v6 intentResponse];
+    intentResponse = [interactionCopy intentResponse];
     v9 = INTypedIntentResponseWithIntentResponse();
 
     v10[0] = MEMORY[0x1E69E9820];
@@ -2357,7 +2357,7 @@ void __87__WFHandleIntentAction_populateIntent_withInput_processedParameters_com
 
   else
   {
-    [(WFHandleIntentAction *)self handleExecutorError:a4];
+    [(WFHandleIntentAction *)self handleExecutorError:error];
   }
 }
 
@@ -2406,11 +2406,11 @@ void __71__WFHandleIntentAction_handleExecutionCompletionWithInteraction_error__
   [v2 showInteractionIfNeeded:v3 inUserInterface:v4 requiringConfirmation:0 requiringAuthentication:0 executionStage:1 completionHandler:v5];
 }
 
-- (void)actuallyStartExecutingIntent:(id)a3
+- (void)actuallyStartExecutingIntent:(id)intent
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(WFHandleIntentAction *)self parameterCombinationForIntentSupportsBackgroundExecution:v4]&& ![(WFHandleIntentAction *)self opensInApp])
+  intentCopy = intent;
+  if ([(WFHandleIntentAction *)self parameterCombinationForIntentSupportsBackgroundExecution:intentCopy]&& ![(WFHandleIntentAction *)self opensInApp])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -2418,16 +2418,16 @@ void __71__WFHandleIntentAction_handleExecutionCompletionWithInteraction_error__
     aBlock[3] = &unk_1E8379390;
     aBlock[4] = self;
     v8 = _Block_copy(aBlock);
-    v9 = [(WFHandleIntentAction *)self runInProcess];
-    v10 = [v4 _executionContext];
-    v12 = v10 != 9 && (v10 - 3) < 0xFFFFFFFFFFFFFFFELL;
-    v13 = [v4 extensionBundleId];
-    if (v13)
+    runInProcess = [(WFHandleIntentAction *)self runInProcess];
+    _executionContext = [intentCopy _executionContext];
+    v12 = _executionContext != 9 && (_executionContext - 3) < 0xFFFFFFFFFFFFFFFELL;
+    extensionBundleId = [intentCopy extensionBundleId];
+    if (extensionBundleId)
     {
-      v14 = [MEMORY[0x1E6963618] bundleProxyForCurrentProcess];
-      v15 = [v14 bundleIdentifier];
-      v16 = [v4 extensionBundleId];
-      v17 = [v15 isEqualToString:v16];
+      bundleProxyForCurrentProcess = [MEMORY[0x1E6963618] bundleProxyForCurrentProcess];
+      bundleIdentifier = [bundleProxyForCurrentProcess bundleIdentifier];
+      extensionBundleId2 = [intentCopy extensionBundleId];
+      v17 = [bundleIdentifier isEqualToString:extensionBundleId2];
     }
 
     else
@@ -2435,37 +2435,37 @@ void __71__WFHandleIntentAction_handleExecutionCompletionWithInteraction_error__
       v17 = 0;
     }
 
-    if ((v9 | v12 & v17))
+    if ((runInProcess | v12 & v17))
     {
       v18 = +[WFBundledIntentHandlerProvider localIntentHandlerLaunchID];
-      [v4 _setExtensionBundleId:v18];
+      [intentCopy _setExtensionBundleId:v18];
     }
 
-    if ([(WFHandleIntentAction *)self intentIsHandledBySiri:v4])
+    if ([(WFHandleIntentAction *)self intentIsHandledBySiri:intentCopy])
     {
-      if (([v4 _hasMatchingIntentHandlerIncludingRemoteExecution:1] & 1) == 0)
+      if (([intentCopy _hasMatchingIntentHandlerIncludingRemoteExecution:1] & 1) == 0)
       {
-        v31 = [(WFHandleIntentAction *)self executorWithIntent:v4 groupIdentifier:0];
+        v31 = [(WFHandleIntentAction *)self executorWithIntent:intentCopy groupIdentifier:0];
         [(WFHandleIntentAction *)self setExecutor:v31];
 
         [(WFHandleIntentAction *)self finishRunningByContinuingInApp];
         goto LABEL_23;
       }
 
-      v19 = [(WFAction *)self userInterface];
-      v20 = [v19 isRunningWithSiriUI];
+      userInterface = [(WFAction *)self userInterface];
+      isRunningWithSiriUI = [userInterface isRunningWithSiriUI];
 
-      if (v20)
+      if (isRunningWithSiriUI)
       {
-        v21 = [objc_alloc(MEMORY[0x1E69E0CC0]) initWithIntent:v4];
-        v22 = [(WFAction *)self userInterface];
+        v21 = [objc_alloc(MEMORY[0x1E69E0CC0]) initWithIntent:intentCopy];
+        userInterface2 = [(WFAction *)self userInterface];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __53__WFHandleIntentAction_actuallyStartExecutingIntent___block_invoke_2;
         v33[3] = &unk_1E8374A98;
         v33[4] = self;
         v34 = v8;
-        v23 = [v22 performSiriRequest:v21 completionHandler:v33];
+        v23 = [userInterface2 performSiriRequest:v21 completionHandler:v33];
 
         if (v23)
         {
@@ -2474,19 +2474,19 @@ void __71__WFHandleIntentAction_handleExecutionCompletionWithInteraction_error__
       }
     }
 
-    v24 = [(WFHandleIntentAction *)self executor];
-    v25 = [v24 connection];
-    v26 = [v25 appProtectionPolicy];
+    executor = [(WFHandleIntentAction *)self executor];
+    connection = [executor connection];
+    appProtectionPolicy = [connection appProtectionPolicy];
 
-    v27 = [(WFHandleIntentAction *)self executorWithIntent:v4 groupIdentifier:0];
+    v27 = [(WFHandleIntentAction *)self executorWithIntent:intentCopy groupIdentifier:0];
     [(WFHandleIntentAction *)self setExecutor:v27];
 
-    v28 = [(WFHandleIntentAction *)self executor];
-    v29 = [v28 connection];
-    [v29 setAppProtectionPolicy:v26];
+    executor2 = [(WFHandleIntentAction *)self executor];
+    connection2 = [executor2 connection];
+    [connection2 setAppProtectionPolicy:appProtectionPolicy];
 
-    v30 = [(WFHandleIntentAction *)self executor];
-    [v30 startWithCompletionHandler:v8];
+    executor3 = [(WFHandleIntentAction *)self executor];
+    [executor3 startWithCompletionHandler:v8];
 
 LABEL_23:
     goto LABEL_24;
@@ -2495,19 +2495,19 @@ LABEL_23:
   v5 = getWFIntentExecutionLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WFAction *)self localizedName];
+    localizedName = [(WFAction *)self localizedName];
     *buf = 136315906;
     v37 = "[WFHandleIntentAction actuallyStartExecutingIntent:]";
     v38 = 2112;
-    v39 = v6;
+    v39 = localizedName;
     v40 = 1024;
-    v41 = [(WFHandleIntentAction *)self parameterCombinationForIntentSupportsBackgroundExecution:v4];
+    v41 = [(WFHandleIntentAction *)self parameterCombinationForIntentSupportsBackgroundExecution:intentCopy];
     v42 = 1024;
-    v43 = [(WFHandleIntentAction *)self opensInApp];
+    opensInApp = [(WFHandleIntentAction *)self opensInApp];
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s %@ will finish by continuing in app (parameter combination supports background execution: %i, opensInApp: %i", buf, 0x22u);
   }
 
-  v7 = [(WFHandleIntentAction *)self executorWithIntent:v4 groupIdentifier:0];
+  v7 = [(WFHandleIntentAction *)self executorWithIntent:intentCopy groupIdentifier:0];
   [(WFHandleIntentAction *)self setExecutor:v7];
 
   [(WFHandleIntentAction *)self finishRunningByContinuingInApp];
@@ -2538,10 +2538,10 @@ void __53__WFHandleIntentAction_actuallyStartExecutingIntent___block_invoke_2(ui
   }
 }
 
-- (void)startExecutingIntent:(id)a3
+- (void)startExecutingIntent:(id)intent
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  intentCopy = intent;
   v5 = getWFIntentExecutionLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2550,44 +2550,44 @@ void __53__WFHandleIntentAction_actuallyStartExecutingIntent___block_invoke_2(ui
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEBUG, "%s WFHandleIntentAction startExecutingIntent", buf, 0xCu);
   }
 
-  [v4 _setExecutionContext:7];
-  v6 = [(WFHandleIntentAction *)self showsWhenRunIfApplicable];
-  v7 = v6;
-  if (v6)
+  [intentCopy _setExecutionContext:7];
+  showsWhenRunIfApplicable = [(WFHandleIntentAction *)self showsWhenRunIfApplicable];
+  v7 = showsWhenRunIfApplicable;
+  if (showsWhenRunIfApplicable)
   {
-    v8 = [v6 BOOLValue];
-    v9 = [v4 _metadata];
-    [v9 setShowsWhenRun:v8];
+    bOOLValue = [showsWhenRunIfApplicable BOOLValue];
+    _metadata = [intentCopy _metadata];
+    [_metadata setShowsWhenRun:bOOLValue];
   }
 
-  v10 = [v4 copy];
+  v10 = [intentCopy copy];
   runningIntent = self->_runningIntent;
   self->_runningIntent = v10;
 
-  v12 = [(WFAction *)self userInterface];
-  if (![v12 isRunningWithSiriUI])
+  userInterface = [(WFAction *)self userInterface];
+  if (![userInterface isRunningWithSiriUI])
   {
     goto LABEL_8;
   }
 
-  v13 = [(WFAction *)self userInterface];
+  userInterface2 = [(WFAction *)self userInterface];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v12 = [(WFAction *)self userInterface];
-    [v12 configureIntent:v4];
+    userInterface = [(WFAction *)self userInterface];
+    [userInterface configureIntent:intentCopy];
 LABEL_8:
   }
 
-  v15 = [[WFActionWillRunIntentTestingEvent alloc] initWithAction:self intent:v4];
+  v15 = [[WFActionWillRunIntentTestingEvent alloc] initWithAction:self intent:intentCopy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __45__WFHandleIntentAction_startExecutingIntent___block_invoke;
   v18[3] = &unk_1E837C698;
   v18[4] = self;
-  v19 = v4;
-  v16 = v4;
+  v19 = intentCopy;
+  v16 = intentCopy;
   [(WFAction *)self handleTestingEvent:v15 completionHandler:v18];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -2607,22 +2607,22 @@ uint64_t __45__WFHandleIntentAction_startExecutingIntent___block_invoke(uint64_t
   }
 }
 
-- (void)setExecutor:(id)a3
+- (void)setExecutor:(id)executor
 {
-  v5 = a3;
+  executorCopy = executor;
   executor = self->_executor;
-  if (executor != v5)
+  if (executor != executorCopy)
   {
-    v13 = v5;
+    v13 = executorCopy;
     if (!executor)
     {
       goto LABEL_6;
     }
 
-    v7 = [(WFIntentExecutor *)executor progress];
-    v8 = [v7 totalUnitCount];
-    v9 = [(WFIntentExecutor *)self->_executor progress];
-    [v9 setCompletedUnitCount:v8];
+    progress = [(WFIntentExecutor *)executor progress];
+    totalUnitCount = [progress totalUnitCount];
+    progress2 = [(WFIntentExecutor *)self->_executor progress];
+    [progress2 setCompletedUnitCount:totalUnitCount];
 
     if (!v13)
     {
@@ -2631,36 +2631,36 @@ uint64_t __45__WFHandleIntentAction_startExecutingIntent___block_invoke(uint64_t
 
     if (self->_executor)
     {
-      v10 = [(WFAction *)self progress];
-      [v10 setTotalUnitCount:{objc_msgSend(v10, "totalUnitCount") + 1}];
+      progress3 = [(WFAction *)self progress];
+      [progress3 setTotalUnitCount:{objc_msgSend(progress3, "totalUnitCount") + 1}];
 
-      objc_storeStrong(&self->_executor, a3);
+      objc_storeStrong(&self->_executor, executor);
     }
 
     else
     {
 LABEL_6:
-      objc_storeStrong(&self->_executor, a3);
-      v5 = v13;
+      objc_storeStrong(&self->_executor, executor);
+      executorCopy = v13;
       if (!v13)
       {
         goto LABEL_8;
       }
     }
 
-    v11 = [(WFAction *)self progress];
-    v12 = [(WFIntentExecutor *)v13 progress];
-    [v11 addChild:v12 withPendingUnitCount:1];
+    progress4 = [(WFAction *)self progress];
+    progress5 = [(WFIntentExecutor *)v13 progress];
+    [progress4 addChild:progress5 withPendingUnitCount:1];
 
-    v5 = v13;
+    executorCopy = v13;
   }
 
 LABEL_8:
 }
 
-- (BOOL)shouldDonateIntent:(id)a3
+- (BOOL)shouldDonateIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2677,46 +2677,46 @@ LABEL_8:
 
 - (BOOL)isWorkflowInDatabase
 {
-  v2 = [(WFAction *)self workflow];
-  v3 = [v2 reference];
-  v4 = [v3 identifier];
-  v5 = v4 != 0;
+  workflow = [(WFAction *)self workflow];
+  reference = [workflow reference];
+  identifier = [reference identifier];
+  v5 = identifier != 0;
 
   return v5;
 }
 
-- (void)accessBundleContentWithBlock:(id)a3
+- (void)accessBundleContentWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(WFHandleIntentAction *)self appDescriptor];
-  v8 = [v5 bundleIdentifier];
+  blockCopy = block;
+  appDescriptor = [(WFHandleIntentAction *)self appDescriptor];
+  bundleIdentifier = [appDescriptor bundleIdentifier];
 
-  v6 = [MEMORY[0x1E696E878] sharedConnection];
-  v7 = [MEMORY[0x1E695DFD8] setWithObjects:{v8, 0}];
-  [v6 wf_accessBundleContentForBundleIdentifiers:v7 withBlock:v4];
+  mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
+  v7 = [MEMORY[0x1E695DFD8] setWithObjects:{bundleIdentifier, 0}];
+  [mEMORY[0x1E696E878] wf_accessBundleContentForBundleIdentifiers:v7 withBlock:blockCopy];
 }
 
-- (id)parameterForSlot:(id)a3
+- (id)parameterForSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(WFAction *)self parameters];
-  v6 = [v4 wf_slotName];
+  slotCopy = slot;
+  parameters = [(WFAction *)self parameters];
+  wf_slotName = [slotCopy wf_slotName];
 
-  v7 = [v5 objectMatchingKey:@"intentSlotName" value:v6];
+  v7 = [parameters objectMatchingKey:@"intentSlotName" value:wf_slotName];
 
   return v7;
 }
 
-- (void)generateStandaloneShortcutRepresentation:(id)a3
+- (void)generateStandaloneShortcutRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__WFHandleIntentAction_generateStandaloneShortcutRepresentation___block_invoke;
   v6[3] = &unk_1E83742D8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = representationCopy;
+  v5 = representationCopy;
   [(WFHandleIntentAction *)self generateShortcutRepresentation:v6];
 }
 
@@ -2730,17 +2730,17 @@ void __65__WFHandleIntentAction_generateStandaloneShortcutRepresentation___block
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)generateShortcutRepresentation:(id)a3
+- (void)generateShortcutRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__WFHandleIntentAction_generateShortcutRepresentation___block_invoke;
   v7[3] = &unk_1E8378300;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = representationCopy;
+  v6 = representationCopy;
   [(WFAction *)self processParametersWithoutAskingForValuesWithInput:0 workQueue:v5 completionHandler:v7];
 }
 
@@ -2786,108 +2786,108 @@ void __55__WFHandleIntentAction_generateShortcutRepresentation___block_invoke_2(
 {
   v5.receiver = self;
   v5.super_class = WFHandleIntentAction;
-  v3 = [(WFAction *)&v5 createResourceManager];
-  WFConfigureIntentBasedParameterResources(v3, self);
+  createResourceManager = [(WFAction *)&v5 createResourceManager];
+  WFConfigureIntentBasedParameterResources(createResourceManager, self);
 
-  return v3;
+  return createResourceManager;
 }
 
-- (void)generatePopulatedIntentWithIdentifier:(id)a3 fromInput:(id)a4 processedParameters:(id)a5 completion:(id)a6
+- (void)generatePopulatedIntentWithIdentifier:(id)identifier fromInput:(id)input processedParameters:(id)parameters completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
+  inputCopy = input;
+  parametersCopy = parameters;
   v15 = 0;
-  v12 = a6;
-  v13 = [(WFHandleIntentAction *)self generatedIntentWithIdentifier:a3 input:v10 processedParameters:v11 error:&v15];
+  completionCopy = completion;
+  v13 = [(WFHandleIntentAction *)self generatedIntentWithIdentifier:identifier input:inputCopy processedParameters:parametersCopy error:&v15];
   v14 = v15;
   if (v13)
   {
-    [(WFHandleIntentAction *)self populateIntent:v13 withInput:v10 processedParameters:v11 completionHandler:v12];
+    [(WFHandleIntentAction *)self populateIntent:v13 withInput:inputCopy processedParameters:parametersCopy completionHandler:completionCopy];
   }
 
   else
   {
-    v12[2](v12, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 }
 
-- (void)generatePopulatedIntentFromInput:(id)a3 processedParameters:(id)a4 completion:(id)a5
+- (void)generatePopulatedIntentFromInput:(id)input processedParameters:(id)parameters completion:(id)completion
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v13 = [v8 UUID];
-  v12 = [v13 UUIDString];
-  [(WFHandleIntentAction *)self generatePopulatedIntentWithIdentifier:v12 fromInput:v11 processedParameters:v10 completion:v9];
+  completionCopy = completion;
+  parametersCopy = parameters;
+  inputCopy = input;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
+  [(WFHandleIntentAction *)self generatePopulatedIntentWithIdentifier:uUIDString fromInput:inputCopy processedParameters:parametersCopy completion:completionCopy];
 }
 
 - (NSString)associatedAppBundleIdentifier
 {
   v2 = [(WFHandleIntentAction *)self generatedIntentWithInput:0 processedParameters:0 error:0];
-  v3 = [v2 _intents_bundleIdForDisplay];
-  v4 = v3;
-  if (v3)
+  _intents_bundleIdForDisplay = [v2 _intents_bundleIdForDisplay];
+  v4 = _intents_bundleIdForDisplay;
+  if (_intents_bundleIdForDisplay)
   {
-    v5 = v3;
+    _intents_launchIdForCurrentPlatform = _intents_bundleIdForDisplay;
   }
 
   else
   {
-    v5 = [v2 _intents_launchIdForCurrentPlatform];
+    _intents_launchIdForCurrentPlatform = [v2 _intents_launchIdForCurrentPlatform];
   }
 
-  v6 = v5;
+  v6 = _intents_launchIdForCurrentPlatform;
 
   return v6;
 }
 
-- (id)generatedIntentWithInput:(id)a3 processedParameters:(id)a4 error:(id *)a5
+- (id)generatedIntentWithInput:(id)input processedParameters:(id)parameters error:(id *)error
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 UUID];
-  v12 = [v11 UUIDString];
-  v13 = [(WFHandleIntentAction *)self generatedIntentWithIdentifier:v12 input:v10 processedParameters:v9 error:a5];
+  parametersCopy = parameters;
+  inputCopy = input;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
+  v13 = [(WFHandleIntentAction *)self generatedIntentWithIdentifier:uUIDString input:inputCopy processedParameters:parametersCopy error:error];
 
   return v13;
 }
 
-- (void)resolveSlot:(id)a3 withProcessedValue:(id)a4 parameter:(id)a5 input:(id)a6 completion:(id)a7
+- (void)resolveSlot:(id)slot withProcessedValue:(id)value parameter:(id)parameter input:(id)input completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (v12)
+  slotCopy = slot;
+  valueCopy = value;
+  parameterCopy = parameter;
+  completionCopy = completion;
+  if (valueCopy)
   {
-    v15 = [v13 key];
+    v15 = [parameterCopy key];
     v16 = [(WFAction *)self parameterStateForKey:v15];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v12;
-      v18 = [(WFAction *)self contentPermissionRequestor];
+      v17 = valueCopy;
+      contentPermissionRequestor = [(WFAction *)self contentPermissionRequestor];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __82__WFHandleIntentAction_resolveSlot_withProcessedValue_parameter_input_completion___block_invoke;
       v20[3] = &unk_1E8374288;
-      v22 = v14;
-      v21 = v11;
-      [v17 getRecipientsWithPermissionRequestor:v18 completionHandler:v20];
+      v22 = completionCopy;
+      v21 = slotCopy;
+      [v17 getRecipientsWithPermissionRequestor:contentPermissionRequestor completionHandler:v20];
     }
 
     else
     {
-      [v11 wf_getProcessedIntentValueForParameterValue:v12 parameter:v13 parameterState:v16 completionHandler:v14];
+      [slotCopy wf_getProcessedIntentValueForParameterValue:valueCopy parameter:parameterCopy parameterState:v16 completionHandler:completionCopy];
     }
   }
 
   else
   {
-    if ([v11 wf_multipleValues])
+    if ([slotCopy wf_multipleValues])
     {
       v19 = MEMORY[0x1E695E0F0];
     }
@@ -2897,7 +2897,7 @@ void __55__WFHandleIntentAction_generateShortcutRepresentation___block_invoke_2(
       v19 = 0;
     }
 
-    (*(v14 + 2))(v14, v19, 0);
+    (*(completionCopy + 2))(completionCopy, v19, 0);
   }
 }
 
@@ -2920,17 +2920,17 @@ void __82__WFHandleIntentAction_resolveSlot_withProcessedValue_parameter_input_c
 
 - (unint64_t)allowsInteractiveSlotResolution
 {
-  v3 = [(WFAction *)self userInterface];
-  if (([v3 isRunningWithSiriUI] & 1) == 0)
+  userInterface = [(WFAction *)self userInterface];
+  if (([userInterface isRunningWithSiriUI] & 1) == 0)
   {
 
     return 1;
   }
 
-  v4 = [(WFAction *)self userInterface];
-  v5 = [v4 executionContext];
+  userInterface2 = [(WFAction *)self userInterface];
+  executionContext = [userInterface2 executionContext];
 
-  if (v5 <= 9 && ((1 << v5) & 0x206) != 0)
+  if (executionContext <= 9 && ((1 << executionContext) & 0x206) != 0)
   {
     return 1;
   }
@@ -2949,17 +2949,17 @@ void __82__WFHandleIntentAction_resolveSlot_withProcessedValue_parameter_input_c
 - (BOOL)opensInApp
 {
   v2 = [(WFAction *)self parameterValueForKey:@"OpenInApp" ofClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)showsWhenRun
 {
-  v2 = [(WFHandleIntentAction *)self showsWhenRunIfApplicable];
-  v3 = [v2 BOOLValue];
+  showsWhenRunIfApplicable = [(WFHandleIntentAction *)self showsWhenRunIfApplicable];
+  bOOLValue = [showsWhenRunIfApplicable BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)showsWhenRunIfApplicable
@@ -2987,15 +2987,15 @@ void __82__WFHandleIntentAction_resolveSlot_withProcessedValue_parameter_input_c
   return v3;
 }
 
-- (void)wasAddedToWorkflowByUser:(id)a3
+- (void)wasAddedToWorkflowByUser:(id)user
 {
   v9.receiver = self;
   v9.super_class = WFHandleIntentAction;
-  v4 = a3;
-  [(WFAction *)&v9 wasAddedToWorkflowByUser:v4];
-  v5 = [v4 hiddenFromLibraryAndSync];
+  userCopy = user;
+  [(WFAction *)&v9 wasAddedToWorkflowByUser:userCopy];
+  hiddenFromLibraryAndSync = [userCopy hiddenFromLibraryAndSync];
 
-  if (v5)
+  if (hiddenFromLibraryAndSync)
   {
     v6 = [(WFAction *)self parameterForKey:@"ShowWhenRun"];
 
@@ -3010,29 +3010,29 @@ void __82__WFHandleIntentAction_resolveSlot_withProcessedValue_parameter_input_c
 
 - (id)externalMetricsActionIdentifier
 {
-  v2 = [(WFHandleIntentAction *)self intentDescriptor];
-  v3 = [v2 intentClassName];
+  intentDescriptor = [(WFHandleIntentAction *)self intentDescriptor];
+  intentClassName = [intentDescriptor intentClassName];
 
-  return v3;
+  return intentClassName;
 }
 
 - (id)appBundleIdentifier
 {
-  v3 = [(WFHandleIntentAction *)self intentDescriptor];
-  v4 = [v3 displayableBundleIdentifier];
-  v5 = v4;
-  if (v4)
+  intentDescriptor = [(WFHandleIntentAction *)self intentDescriptor];
+  displayableBundleIdentifier = [intentDescriptor displayableBundleIdentifier];
+  v5 = displayableBundleIdentifier;
+  if (displayableBundleIdentifier)
   {
-    v6 = v4;
+    bundleIdentifier = displayableBundleIdentifier;
   }
 
   else
   {
-    v7 = [(WFHandleIntentAction *)self intentDescriptor];
-    v6 = [v7 bundleIdentifier];
+    intentDescriptor2 = [(WFHandleIntentAction *)self intentDescriptor];
+    bundleIdentifier = [intentDescriptor2 bundleIdentifier];
   }
 
-  return v6;
+  return bundleIdentifier;
 }
 
 - (BOOL)prefersActionAttribution
@@ -3041,8 +3041,8 @@ void __82__WFHandleIntentAction_resolveSlot_withProcessedValue_parameter_input_c
   v6.super_class = WFHandleIntentAction;
   if ([(WFAction *)&v6 prefersActionAttribution])
   {
-    v3 = [(WFAction *)self identifier];
-    v4 = [v3 hasPrefix:@"is.workflow.actions"] ^ 1;
+    identifier = [(WFAction *)self identifier];
+    v4 = [identifier hasPrefix:@"is.workflow.actions"] ^ 1;
   }
 
   else
@@ -3055,41 +3055,41 @@ void __82__WFHandleIntentAction_resolveSlot_withProcessedValue_parameter_input_c
 
 - (INCExtensionConnection)connection
 {
-  v2 = [(WFHandleIntentAction *)self executor];
-  v3 = [v2 connection];
+  executor = [(WFHandleIntentAction *)self executor];
+  connection = [executor connection];
 
-  return v3;
+  return connection;
 }
 
 - (void)cancel
 {
-  v3 = [(WFHandleIntentAction *)self executor];
-  [v3 cancel];
+  executor = [(WFHandleIntentAction *)self executor];
+  [executor cancel];
 
   v4.receiver = self;
   v4.super_class = WFHandleIntentAction;
   [(WFAction *)&v4 cancel];
 }
 
-- (void)finishRunningWithError:(id)a3
+- (void)finishRunningWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(WFHandleIntentAction *)self setExecutor:0];
   v5.receiver = self;
   v5.super_class = WFHandleIntentAction;
-  [(WFAction *)&v5 finishRunningWithError:v4];
+  [(WFAction *)&v5 finishRunningWithError:errorCopy];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [(WFAction *)self processedParameters];
+  inputCopy = input;
+  processedParameters = [(WFAction *)self processedParameters];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__WFHandleIntentAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_1E8374260;
   v6[4] = self;
-  [(WFHandleIntentAction *)self generatePopulatedIntentFromInput:v4 processedParameters:v5 completion:v6];
+  [(WFHandleIntentAction *)self generatePopulatedIntentFromInput:inputCopy processedParameters:processedParameters completion:v6];
 }
 
 uint64_t __51__WFHandleIntentAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, uint64_t a2)
@@ -3116,8 +3116,8 @@ uint64_t __51__WFHandleIntentAction_runAsynchronouslyWithInput___block_invoke(ui
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(WFAction *)self parameters];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  parameters = [(WFAction *)self parameters];
+  v4 = [parameters countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3129,17 +3129,17 @@ uint64_t __51__WFHandleIntentAction_runAsynchronouslyWithInput___block_invoke(ui
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(parameters);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) resourceManager];
-        WFConfigureIntentBasedParameterResources(v8, self);
+        resourceManager = [*(*(&v10 + 1) + 8 * v7) resourceManager];
+        WFConfigureIntentBasedParameterResources(resourceManager, self);
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v5 = [parameters countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v5);
@@ -3148,21 +3148,21 @@ uint64_t __51__WFHandleIntentAction_runAsynchronouslyWithInput___block_invoke(ui
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFHandleIntentAction *)self overrideLocalizedName];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  overrideLocalizedName = [(WFHandleIntentAction *)self overrideLocalizedName];
+  v6 = overrideLocalizedName;
+  if (overrideLocalizedName)
   {
-    v7 = v5;
+    v7 = overrideLocalizedName;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = WFHandleIntentAction;
-    v7 = [(WFAction *)&v10 localizedNameWithContext:v4];
+    v7 = [(WFAction *)&v10 localizedNameWithContext:contextCopy];
   }
 
   v8 = v7;
@@ -3172,8 +3172,8 @@ uint64_t __51__WFHandleIntentAction_runAsynchronouslyWithInput___block_invoke(ui
 
 - (BOOL)inputPassthrough
 {
-  v2 = [(WFAction *)self outputDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"Types"];
+  outputDictionary = [(WFAction *)self outputDictionary];
+  v3 = [outputDictionary objectForKeyedSubscript:@"Types"];
   v4 = v3 == 0;
 
   return v4;
@@ -3183,37 +3183,37 @@ uint64_t __51__WFHandleIntentAction_runAsynchronouslyWithInput___block_invoke(ui
 {
   v4.receiver = self;
   v4.super_class = WFHandleIntentAction;
-  v2 = [(WFAction *)&v4 disabledOnPlatforms];
+  disabledOnPlatforms = [(WFAction *)&v4 disabledOnPlatforms];
 
-  return v2;
+  return disabledOnPlatforms;
 }
 
 - (id)defaultLocalizationContext
 {
   v3 = objc_alloc(MEMORY[0x1E69E0BE0]);
-  v4 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  v5 = [(WFHandleIntentAction *)self stringLocalizer];
-  v6 = [v3 initWithLocale:v4 stringLocalizer:v5];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  stringLocalizer = [(WFHandleIntentAction *)self stringLocalizer];
+  v6 = [v3 initWithLocale:autoupdatingCurrentLocale stringLocalizer:stringLocalizer];
 
   return v6;
 }
 
-- (WFHandleIntentAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5 stringLocalizer:(id)a6
+- (WFHandleIntentAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters stringLocalizer:(id)localizer
 {
-  v10 = a6;
+  localizerCopy = localizer;
   v15.receiver = self;
   v15.super_class = WFHandleIntentAction;
-  v11 = [(WFAction *)&v15 initWithIdentifier:a3 definition:a4 serializedParameters:a5];
+  v11 = [(WFAction *)&v15 initWithIdentifier:identifier definition:definition serializedParameters:parameters];
   if (v11)
   {
-    v12 = v10;
-    if (!v10)
+    v12 = localizerCopy;
+    if (!localizerCopy)
     {
       v12 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
     }
 
     objc_storeStrong(&v11->_stringLocalizer, v12);
-    if (!v10)
+    if (!localizerCopy)
     {
     }
 
@@ -3223,14 +3223,14 @@ uint64_t __51__WFHandleIntentAction_runAsynchronouslyWithInput___block_invoke(ui
   return v11;
 }
 
-- (WFHandleIntentAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFHandleIntentAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
   v8 = MEMORY[0x1E696EA80];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  parametersCopy = parameters;
+  definitionCopy = definition;
+  identifierCopy = identifier;
   v12 = [v8 localizerForLanguage:0];
-  v13 = [(WFHandleIntentAction *)self initWithIdentifier:v11 definition:v10 serializedParameters:v9 stringLocalizer:v12];
+  v13 = [(WFHandleIntentAction *)self initWithIdentifier:identifierCopy definition:definitionCopy serializedParameters:parametersCopy stringLocalizer:v12];
 
   return v13;
 }

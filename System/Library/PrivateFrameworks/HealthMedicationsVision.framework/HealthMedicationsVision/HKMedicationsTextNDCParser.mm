@@ -1,6 +1,6 @@
 @interface HKMedicationsTextNDCParser
 - (HKMedicationsTextNDCParser)init;
-- (id)parsedNDCCodeFromString:(id)a3;
+- (id)parsedNDCCodeFromString:(id)string;
 @end
 
 @implementation HKMedicationsTextNDCParser
@@ -43,25 +43,25 @@
   return v2;
 }
 
-- (id)parsedNDCCodeFromString:(id)a3
+- (id)parsedNDCCodeFromString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__0;
   v39 = __Block_byref_object_dispose__0;
   v40 = 0;
-  v5 = [(HKMedicationsTextNDCParser *)self NDC11RegularExpression];
-  v6 = [v4 length];
+  nDC11RegularExpression = [(HKMedicationsTextNDCParser *)self NDC11RegularExpression];
+  v6 = [stringCopy length];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __54__HKMedicationsTextNDCParser_parsedNDCCodeFromString___block_invoke;
   v32[3] = &unk_2796D2868;
   v34 = &v35;
-  v7 = v4;
+  v7 = stringCopy;
   v33 = v7;
-  [v5 enumerateMatchesInString:v7 options:0 range:0 usingBlock:{v6, v32}];
+  [nDC11RegularExpression enumerateMatchesInString:v7 options:0 range:0 usingBlock:{v6, v32}];
 
   v8 = v36[5];
   if (v8)
@@ -81,8 +81,8 @@
   {
     for (i = 0; ; ++i)
     {
-      v15 = [(HKMedicationsTextNDCParser *)self NDC10RegularExpressions];
-      v16 = [v15 count];
+      nDC10RegularExpressions = [(HKMedicationsTextNDCParser *)self NDC10RegularExpressions];
+      v16 = [nDC10RegularExpressions count];
 
       if (i >= v16)
       {
@@ -90,8 +90,8 @@
         goto LABEL_11;
       }
 
-      v17 = [(HKMedicationsTextNDCParser *)self NDC10RegularExpressions];
-      v18 = [v17 objectAtIndexedSubscript:i];
+      nDC10RegularExpressions2 = [(HKMedicationsTextNDCParser *)self NDC10RegularExpressions];
+      v18 = [nDC10RegularExpressions2 objectAtIndexedSubscript:i];
 
       v19 = [v7 length];
       v29[0] = MEMORY[0x277D85DD0];

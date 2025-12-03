@@ -2,17 +2,17 @@
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
 - (NSString)debugDescription;
-- (VLFSessionLocationHorizontalAccuracyMonitor)initWithObserver:(id)a3 locationManager:(id)a4;
-- (void)_updateStateWithLocation:(id)a3;
+- (VLFSessionLocationHorizontalAccuracyMonitor)initWithObserver:(id)observer locationManager:(id)manager;
+- (void)_updateStateWithLocation:(id)location;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
 @end
 
 @implementation VLFSessionLocationHorizontalAccuracyMonitor
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -52,8 +52,8 @@
     }
   }
 
-  v8 = [v4 lastLocation];
-  [(VLFSessionLocationHorizontalAccuracyMonitor *)self _updateStateWithLocation:v8];
+  lastLocation = [locationCopy lastLocation];
+  [(VLFSessionLocationHorizontalAccuracyMonitor *)self _updateStateWithLocation:lastLocation];
 }
 
 - (NSString)debugDescription
@@ -93,14 +93,14 @@
   }
 
   v10 = v9;
-  v11 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v12 = @"Hide";
-  if (v11 == 1)
+  if (state == 1)
   {
     v12 = @"EnablePuck";
   }
 
-  if (v11 == 2)
+  if (state == 2)
   {
     v13 = @"EnablePuckAndBanner";
   }
@@ -110,9 +110,9 @@
     v13 = v12;
   }
 
-  v14 = [(VLFSessionLocationHorizontalAccuracyMonitor *)self locationManager];
-  v15 = [v14 lastLocation];
-  [v15 horizontalAccuracy];
+  locationManager = [(VLFSessionLocationHorizontalAccuracyMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
+  [lastLocation horizontalAccuracy];
   v17 = v16;
   +[VLLocalizer maximumHorizontalAccuracyThreshold];
   v19 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentState: %@, currentHorizontalAccuracy: %f, threshold: %f>", v4, v6, v8, v10, v13, v17, v18];
@@ -120,34 +120,34 @@
   return v19;
 }
 
-- (void)_updateStateWithLocation:(id)a3
+- (void)_updateStateWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = sub_1000717E0();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (locationCopy)
   {
     if (v6)
     {
-      [v4 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       v23 = 134283521;
       v24 = v7;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Got location with horizontal accuracy: %{private}f", &v23, 0xCu);
     }
 
-    [v4 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v9 = v8;
     +[VLLocalizer maximumHorizontalAccuracyThreshold];
     v11 = v10;
-    v12 = [(VLFSessionMonitor *)self state];
+    state = [(VLFSessionMonitor *)self state];
     if (v9 <= v11)
     {
-      if (v12 != 2)
+      if (state != 2)
       {
         v19 = sub_1000717E0();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          [v4 horizontalAccuracy];
+          [locationCopy horizontalAccuracy];
           v21 = v20;
           +[VLLocalizer maximumHorizontalAccuracyThreshold];
           v23 = 134283777;
@@ -158,18 +158,18 @@
         }
       }
 
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2;
     }
 
     else
     {
-      if (v12)
+      if (state)
       {
         v13 = sub_1000717E0();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          [v4 horizontalAccuracy];
+          [locationCopy horizontalAccuracy];
           v15 = v14;
           +[VLLocalizer maximumHorizontalAccuracyThreshold];
           v23 = 134283777;
@@ -180,11 +180,11 @@
         }
       }
 
-      v17 = self;
+      selfCopy2 = self;
       v18 = 0;
     }
 
-    [(VLFSessionMonitor *)v17 setState:v18];
+    [(VLFSessionMonitor *)selfCopy2 setState:v18];
   }
 
   else
@@ -205,11 +205,11 @@
   [(VLFSessionLocationHorizontalAccuracyMonitor *)&v3 dealloc];
 }
 
-- (VLFSessionLocationHorizontalAccuracyMonitor)initWithObserver:(id)a3 locationManager:(id)a4
+- (VLFSessionLocationHorizontalAccuracyMonitor)initWithObserver:(id)observer locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  observerCopy = observer;
+  managerCopy = manager;
+  if (!observerCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -238,7 +238,7 @@
     }
   }
 
-  if (!v7)
+  if (!managerCopy)
   {
     v15 = sub_10006D178();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -269,14 +269,14 @@
 
   v18.receiver = self;
   v18.super_class = VLFSessionLocationHorizontalAccuracyMonitor;
-  v8 = [(VLFSessionMonitor *)&v18 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v18 initWithObserver:observerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     [(MKLocationManager *)v9->_locationManager listenForLocationUpdates:v9];
-    v10 = [(MKLocationManager *)v9->_locationManager lastLocation];
-    [(VLFSessionLocationHorizontalAccuracyMonitor *)v9 _updateStateWithLocation:v10];
+    lastLocation = [(MKLocationManager *)v9->_locationManager lastLocation];
+    [(VLFSessionLocationHorizontalAccuracyMonitor *)v9 _updateStateWithLocation:lastLocation];
   }
 
   return v9;

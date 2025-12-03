@@ -1,16 +1,16 @@
 @interface _MUEmptyUnit
-+ (id)unitFromUnit:(id)a3;
++ (id)unitFromUnit:(id)unit;
 @end
 
 @implementation _MUEmptyUnit
 
-+ (id)unitFromUnit:(id)a3
++ (id)unitFromUnit:(id)unit
 {
-  v3 = a3;
+  unitCopy = unit;
   v4 = [_MUEmptyUnit alloc];
-  v5 = [v3 symbol];
+  symbol = [unitCopy symbol];
 
-  v6 = [(_MUEmptyUnit *)v4 initWithSymbol:v5];
+  v6 = [(_MUEmptyUnit *)v4 initWithSymbol:symbol];
 
   return v6;
 }

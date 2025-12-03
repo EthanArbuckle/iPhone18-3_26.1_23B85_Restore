@@ -1,7 +1,7 @@
 @interface UIMenuSystemFindElementGroupConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIMenuSystemFindElementGroupConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -33,13 +33,13 @@
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v7 = (isKindOfClass & 1) != 0 && self->_style == v4->_style;
+    v7 = (isKindOfClass & 1) != 0 && self->_style == equalCopy->_style;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_opt_new();
   *(result + 1) = self->_style;
@@ -62,9 +62,9 @@
   }
 
   [v3 appendString:v6 withName:@"style"];
-  v7 = [v4 build];
+  build = [v4 build];
 
-  return v7;
+  return build;
 }
 
 @end

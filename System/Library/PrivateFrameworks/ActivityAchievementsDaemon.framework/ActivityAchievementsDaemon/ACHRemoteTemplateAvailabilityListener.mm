@@ -1,7 +1,7 @@
 @interface ACHRemoteTemplateAvailabilityListener
 - (ACHRemoteTemplateAvailabilityListener)init;
-- (BOOL)_isKeyACHAvailabilityStateKey:(id)a3;
-- (void)_unprotectedNanoUserDefaultsDidSyncWithNotification:(id)a3;
+- (BOOL)_isKeyACHAvailabilityStateKey:(id)key;
+- (void)_unprotectedNanoUserDefaultsDidSyncWithNotification:(id)notification;
 @end
 
 @implementation ACHRemoteTemplateAvailabilityListener
@@ -13,17 +13,17 @@
   v2 = [(ACHRemoteTemplateAvailabilityListener *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__unprotectedNanoUserDefaultsDidSyncWithNotification_ name:*MEMORY[0x277D104E0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__unprotectedNanoUserDefaultsDidSyncWithNotification_ name:*MEMORY[0x277D104E0] object:0];
   }
 
   return v2;
 }
 
-- (void)_unprotectedNanoUserDefaultsDidSyncWithNotification:(id)a3
+- (void)_unprotectedNanoUserDefaultsDidSyncWithNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D10488]];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D10488]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -59,17 +59,17 @@ uint64_t __93__ACHRemoteTemplateAvailabilityListener__unprotectedNanoUserDefault
   return v3;
 }
 
-- (BOOL)_isKeyACHAvailabilityStateKey:(id)a3
+- (BOOL)_isKeyACHAvailabilityStateKey:(id)key
 {
-  v3 = a3;
-  if ([v3 hasSuffix:*MEMORY[0x277CE8AE0]])
+  keyCopy = key;
+  if ([keyCopy hasSuffix:*MEMORY[0x277CE8AE0]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasSuffix:*MEMORY[0x277CE8AE8]];
+    v4 = [keyCopy hasSuffix:*MEMORY[0x277CE8AE8]];
   }
 
   return v4;

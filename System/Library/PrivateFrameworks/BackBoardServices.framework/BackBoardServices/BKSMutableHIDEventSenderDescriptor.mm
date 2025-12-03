@@ -1,8 +1,8 @@
 @interface BKSMutableHIDEventSenderDescriptor
 + (id)new;
 - (BKSMutableHIDEventSenderDescriptor)init;
-- (void)setAssociatedDisplay:(id)a3;
-- (void)setPrimaryPage:(unsigned int)a3 primaryUsage:(unsigned int)a4;
+- (void)setAssociatedDisplay:(id)display;
+- (void)setPrimaryPage:(unsigned int)page primaryUsage:(unsigned int)usage;
 @end
 
 @implementation BKSMutableHIDEventSenderDescriptor
@@ -14,10 +14,10 @@
   return [(BKSHIDEventSenderDescriptor *)&v3 _initWithHardwareType:0 associatedDisplay:0 authenticated:0 primaryPage:0 primaryUsage:0 senderID:0];
 }
 
-- (void)setPrimaryPage:(unsigned int)a3 primaryUsage:(unsigned int)a4
+- (void)setPrimaryPage:(unsigned int)page primaryUsage:(unsigned int)usage
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a3 && a4)
+  if (!page && usage)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"primaryPage != 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@
       v13 = 2114;
       v14 = v10;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BKSHIDEventSenderDescriptor.m";
       v19 = 1024;
@@ -46,28 +46,28 @@
     JUMPOUT(0x1863B31ACLL);
   }
 
-  self->super._primaryPage = a3;
-  self->super._primaryUsage = a4;
+  self->super._primaryPage = page;
+  self->super._primaryUsage = usage;
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAssociatedDisplay:(id)a3
+- (void)setAssociatedDisplay:(id)display
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  displayCopy = display;
+  if (displayCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [(BKSHIDEventDisplay *)v5 classForCoder];
-      if (!v9)
+      classForCoder = [(BKSHIDEventDisplay *)displayCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"associatedDisplay", v10, v12];
@@ -82,7 +82,7 @@
         v19 = 2114;
         v20 = v16;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 2114;
         v24 = @"BKSHIDEventSenderDescriptor.m";
         v25 = 1024;
@@ -100,13 +100,13 @@
   }
 
   associatedDisplay = self->super._associatedDisplay;
-  self->super._associatedDisplay = v5;
+  self->super._associatedDisplay = displayCopy;
   v7 = *MEMORY[0x1E69E9840];
 }
 
 + (id)new
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
 
   return [v2 _initWithHardwareType:0 associatedDisplay:0 authenticated:0 primaryPage:0 primaryUsage:0 senderID:0];
 }

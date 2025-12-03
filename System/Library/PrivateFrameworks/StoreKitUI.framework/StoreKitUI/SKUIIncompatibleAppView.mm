@@ -1,18 +1,18 @@
 @interface SKUIIncompatibleAppView
-- (id)addButtonWithTitle:(id)a3;
+- (id)addButtonWithTitle:(id)title;
 - (void)layoutSubviews;
-- (void)removeButtonTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
-- (void)setBackgroundColor:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)removeButtonTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
+- (void)setBackgroundColor:(id)color;
+- (void)setIconImage:(id)image;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIIncompatibleAppView
 
-- (id)addButtonWithTitle:(id)a3
+- (id)addButtonWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIncompatibleAppView addButtonWithTitle:];
@@ -26,11 +26,11 @@
   }
 
   v7 = [MEMORY[0x277D75220] buttonWithType:1];
-  [v7 setTitle:v4 forState:0];
+  [v7 setTitle:titleCopy forState:0];
 
-  v8 = [v7 titleLabel];
+  titleLabel = [v7 titleLabel];
   v9 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-  [v8 setFont:v9];
+  [titleLabel setFont:v9];
 
   [v7 sizeToFit];
   [(SKUIIncompatibleAppView *)self addSubview:v7];
@@ -39,10 +39,10 @@
   return v7;
 }
 
-- (void)removeButtonTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)removeButtonTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  targetCopy = target;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -63,7 +63,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) removeTarget:v8 action:a4 forControlEvents:{a5, v14}];
+        [*(*(&v14 + 1) + 8 * v13++) removeTarget:targetCopy action:action forControlEvents:{events, v14}];
       }
 
       while (v11 != v13);
@@ -74,12 +74,12 @@
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   iconView = self->_iconView;
-  v11 = v4;
-  if (v4)
+  v11 = imageCopy;
+  if (imageCopy)
   {
     if (!iconView)
     {
@@ -88,15 +88,15 @@
       self->_iconView = v6;
 
       v8 = self->_iconView;
-      v9 = [(SKUIIncompatibleAppView *)self backgroundColor];
-      [(UIImageView *)v8 setBackgroundColor:v9];
+      backgroundColor = [(SKUIIncompatibleAppView *)self backgroundColor];
+      [(UIImageView *)v8 setBackgroundColor:backgroundColor];
 
       [(SKUIIncompatibleAppView *)self addSubview:self->_iconView];
-      v4 = v11;
+      imageCopy = v11;
       iconView = self->_iconView;
     }
 
-    [(UIImageView *)iconView setImage:v4];
+    [(UIImageView *)iconView setImage:imageCopy];
     [(UIImageView *)self->_iconView sizeToFit];
     [(SKUIIncompatibleAppView *)self setNeedsLayout];
   }
@@ -109,12 +109,12 @@
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   messageLabel = self->_messageLabel;
-  v15 = v4;
-  if (v4)
+  v15 = messageCopy;
+  if (messageCopy)
   {
     if (!messageLabel)
     {
@@ -123,8 +123,8 @@
       self->_messageLabel = v6;
 
       v8 = self->_messageLabel;
-      v9 = [(SKUIIncompatibleAppView *)self backgroundColor];
-      [(UILabel *)v8 setBackgroundColor:v9];
+      backgroundColor = [(SKUIIncompatibleAppView *)self backgroundColor];
+      [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
       v10 = self->_messageLabel;
       v11 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
@@ -133,15 +133,15 @@
       [(UILabel *)self->_messageLabel setNumberOfLines:0];
       [(UILabel *)self->_messageLabel setTextAlignment:1];
       v12 = self->_messageLabel;
-      v13 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)v12 setTextColor:v13];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)v12 setTextColor:blackColor];
 
       [(SKUIIncompatibleAppView *)self addSubview:self->_messageLabel];
-      v4 = v15;
+      messageCopy = v15;
       messageLabel = self->_messageLabel;
     }
 
-    [(UILabel *)messageLabel setText:v4];
+    [(UILabel *)messageLabel setText:messageCopy];
     [(SKUIIncompatibleAppView *)self setNeedsLayout];
   }
 
@@ -153,12 +153,12 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   titleLabel = self->_titleLabel;
-  v15 = v4;
-  if (v4)
+  v15 = titleCopy;
+  if (titleCopy)
   {
     if (!titleLabel)
     {
@@ -167,8 +167,8 @@
       self->_titleLabel = v6;
 
       v8 = self->_titleLabel;
-      v9 = [(SKUIIncompatibleAppView *)self backgroundColor];
-      [(UILabel *)v8 setBackgroundColor:v9];
+      backgroundColor = [(SKUIIncompatibleAppView *)self backgroundColor];
+      [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
       v10 = self->_titleLabel;
       v11 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
@@ -177,15 +177,15 @@
       [(UILabel *)self->_titleLabel setNumberOfLines:0];
       [(UILabel *)self->_titleLabel setTextAlignment:1];
       v12 = self->_titleLabel;
-      v13 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)v12 setTextColor:v13];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)v12 setTextColor:blackColor];
 
       [(SKUIIncompatibleAppView *)self addSubview:self->_titleLabel];
-      v4 = v15;
+      titleCopy = v15;
       titleLabel = self->_titleLabel;
     }
 
-    [(UILabel *)titleLabel setText:v4];
+    [(UILabel *)titleLabel setText:titleCopy];
     [(SKUIIncompatibleAppView *)self setNeedsLayout];
   }
 
@@ -358,17 +358,17 @@ double __41__SKUIIncompatibleAppView_layoutSubviews__block_invoke(uint64_t a1, v
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   buttons = self->_buttons;
-  v6 = a3;
-  [(NSMutableArray *)buttons makeObjectsPerformSelector:a2 withObject:v6];
-  [(UIImageView *)self->_iconView setBackgroundColor:v6];
-  [(UILabel *)self->_messageLabel setBackgroundColor:v6];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v6];
+  colorCopy = color;
+  [(NSMutableArray *)buttons makeObjectsPerformSelector:a2 withObject:colorCopy];
+  [(UIImageView *)self->_iconView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_messageLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v7.receiver = self;
   v7.super_class = SKUIIncompatibleAppView;
-  [(SKUIIncompatibleAppView *)&v7 setBackgroundColor:v6];
+  [(SKUIIncompatibleAppView *)&v7 setBackgroundColor:colorCopy];
 }
 
 - (void)addButtonWithTitle:.cold.1()

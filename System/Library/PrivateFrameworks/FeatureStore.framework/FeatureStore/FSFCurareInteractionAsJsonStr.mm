@@ -1,14 +1,14 @@
 @interface FSFCurareInteractionAsJsonStr
-- (FSFCurareInteractionAsJsonStr)initWithJsonStr:(id)a3 interactionId:(id)a4 dataVersion:(unsigned int)a5;
+- (FSFCurareInteractionAsJsonStr)initWithJsonStr:(id)str interactionId:(id)id dataVersion:(unsigned int)version;
 - (id)json;
 @end
 
 @implementation FSFCurareInteractionAsJsonStr
 
-- (FSFCurareInteractionAsJsonStr)initWithJsonStr:(id)a3 interactionId:(id)a4 dataVersion:(unsigned int)a5
+- (FSFCurareInteractionAsJsonStr)initWithJsonStr:(id)str interactionId:(id)id dataVersion:(unsigned int)version
 {
-  v8 = a3;
-  v9 = a4;
+  strCopy = str;
+  idCopy = id;
   if (+[FSFUtils isSupportedPlatform])
   {
     v16.receiver = self;
@@ -17,25 +17,25 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_interactionId, a4);
-      v12 = [v8 dataUsingEncoding:4];
+      objc_storeStrong(&v10->_interactionId, id);
+      v12 = [strCopy dataUsingEncoding:4];
       content = v11->_content;
       v11->_content = v12;
 
-      v11->_dataVersion = a5;
+      v11->_dataVersion = version;
     }
 
     self = v11;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)json

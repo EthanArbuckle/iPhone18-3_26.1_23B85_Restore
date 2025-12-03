@@ -1,7 +1,7 @@
 @interface EKPersistentOrganizer
 + (id)defaultPropertiesToLoad;
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __48__EKPersistentOrganizer_defaultPropertiesToLoad__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultPropertiesToLoad_onceToken_7 != -1)
   {
     dispatch_once(&defaultPropertiesToLoad_onceToken_7, block);
@@ -63,33 +63,33 @@ void __34__EKPersistentOrganizer_relations__block_invoke()
   relations_relations_11 = v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(EKPersistentOrganizer);
   if (v4)
   {
-    v5 = [(EKPersistentParticipant *)self UUID];
-    v6 = [v5 copy];
+    uUID = [(EKPersistentParticipant *)self UUID];
+    v6 = [uUID copy];
     [(EKPersistentParticipant *)v4 setUUID:v6];
 
-    v7 = [(EKPersistentParticipant *)self displayNameRaw];
-    [(EKPersistentParticipant *)v4 setDisplayNameRaw:v7];
+    displayNameRaw = [(EKPersistentParticipant *)self displayNameRaw];
+    [(EKPersistentParticipant *)v4 setDisplayNameRaw:displayNameRaw];
 
     [(EKPersistentOrganizer *)v4 setIsCurrentUser:[(EKPersistentOrganizer *)self isCurrentUser]];
     [(EKPersistentOrganizer *)v4 setScheduleAgent:[(EKPersistentOrganizer *)self scheduleAgent]];
-    v8 = [(EKPersistentObject *)self eventStore];
-    LODWORD(v6) = [v8 eventAccessLevel];
+    eventStore = [(EKPersistentObject *)self eventStore];
+    LODWORD(v6) = [eventStore eventAccessLevel];
 
     if (v6 == 2)
     {
-      v9 = [(EKPersistentParticipant *)self emailAddress];
-      [(EKPersistentParticipant *)v4 setEmailAddress:v9];
+      emailAddress = [(EKPersistentParticipant *)self emailAddress];
+      [(EKPersistentParticipant *)v4 setEmailAddress:emailAddress];
 
-      v10 = [(EKPersistentParticipant *)self phoneNumber];
-      [(EKPersistentParticipant *)v4 setPhoneNumber:v10];
+      phoneNumber = [(EKPersistentParticipant *)self phoneNumber];
+      [(EKPersistentParticipant *)v4 setPhoneNumber:phoneNumber];
 
-      v11 = [(EKPersistentParticipant *)self URLString];
-      [(EKPersistentParticipant *)v4 setURLString:v11];
+      uRLString = [(EKPersistentParticipant *)self URLString];
+      [(EKPersistentParticipant *)v4 setURLString:uRLString];
     }
   }
 
@@ -100,13 +100,13 @@ void __34__EKPersistentOrganizer_relations__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKPersistentParticipant *)self UUID];
-  v6 = [(EKPersistentParticipant *)self displayNameRaw];
-  v7 = [(EKPersistentParticipant *)self emailAddress];
-  v8 = [(EKPersistentParticipant *)self phoneNumber];
-  v9 = [(EKPersistentParticipant *)self firstName];
-  v10 = [(EKPersistentParticipant *)self lastName];
-  v11 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ displayName = %@; email = %@; phoneNumber = %@; firstName = %@; lastName = %@; isSelf = %d}", v4, self, v5, v6, v7, v8, v9, v10, -[EKPersistentOrganizer isCurrentUser](self, "isCurrentUser")];;
+  uUID = [(EKPersistentParticipant *)self UUID];
+  displayNameRaw = [(EKPersistentParticipant *)self displayNameRaw];
+  emailAddress = [(EKPersistentParticipant *)self emailAddress];
+  phoneNumber = [(EKPersistentParticipant *)self phoneNumber];
+  firstName = [(EKPersistentParticipant *)self firstName];
+  lastName = [(EKPersistentParticipant *)self lastName];
+  v11 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ displayName = %@; email = %@; phoneNumber = %@; firstName = %@; lastName = %@; isSelf = %d}", v4, self, uUID, displayNameRaw, emailAddress, phoneNumber, firstName, lastName, -[EKPersistentOrganizer isCurrentUser](self, "isCurrentUser")];;
 
   return v11;
 }

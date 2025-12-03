@@ -1,24 +1,24 @@
 @interface CHDErrorBar
-+ (CHDErrorBar)errorBarWithChart:(id)a3;
-- (CHDErrorBar)initWithChart:(id)a3;
++ (CHDErrorBar)errorBarWithChart:(id)chart;
+- (CHDErrorBar)initWithChart:(id)chart;
 - (id)description;
-- (void)setGraphicProperties:(id)a3;
-- (void)setMinusValues:(id)a3;
-- (void)setPlusValues:(id)a3;
+- (void)setGraphicProperties:(id)properties;
+- (void)setMinusValues:(id)values;
+- (void)setPlusValues:(id)values;
 @end
 
 @implementation CHDErrorBar
 
-- (CHDErrorBar)initWithChart:(id)a3
+- (CHDErrorBar)initWithChart:(id)chart
 {
-  v5 = a3;
+  chartCopy = chart;
   v9.receiver = self;
   v9.super_class = CHDErrorBar;
   v6 = [(CHDErrorBar *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mChart, a3);
+    objc_storeStrong(&v6->mChart, chart);
     v7->mValue = 0.0;
     *&v7->mType = 0x200000000;
     v7->mDirection = 1;
@@ -28,52 +28,52 @@
   return v7;
 }
 
-+ (CHDErrorBar)errorBarWithChart:(id)a3
++ (CHDErrorBar)errorBarWithChart:(id)chart
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithChart:v3];
+  chartCopy = chart;
+  v4 = [objc_alloc(objc_opt_class()) initWithChart:chartCopy];
 
   return v4;
 }
 
-- (void)setMinusValues:(id)a3
+- (void)setMinusValues:(id)values
 {
-  v5 = a3;
-  if (self->mMinusValues != v5)
+  valuesCopy = values;
+  if (self->mMinusValues != valuesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->mMinusValues, a3);
-    v6 = [(CHDChart *)self->mChart processors];
-    [v6 markObject:v7 processor:objc_opt_class()];
+    v7 = valuesCopy;
+    objc_storeStrong(&self->mMinusValues, values);
+    processors = [(CHDChart *)self->mChart processors];
+    [processors markObject:v7 processor:objc_opt_class()];
 
-    v5 = v7;
+    valuesCopy = v7;
   }
 }
 
-- (void)setPlusValues:(id)a3
+- (void)setPlusValues:(id)values
 {
-  v5 = a3;
-  if (self->mPlusValues != v5)
+  valuesCopy = values;
+  if (self->mPlusValues != valuesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->mPlusValues, a3);
-    v6 = [(CHDChart *)self->mChart processors];
-    [v6 markObject:v7 processor:objc_opt_class()];
+    v7 = valuesCopy;
+    objc_storeStrong(&self->mPlusValues, values);
+    processors = [(CHDChart *)self->mChart processors];
+    [processors markObject:v7 processor:objc_opt_class()];
 
-    v5 = v7;
+    valuesCopy = v7;
   }
 }
 
-- (void)setGraphicProperties:(id)a3
+- (void)setGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mGraphicProperties = self->mGraphicProperties;
   p_mGraphicProperties = &self->mGraphicProperties;
-  if (mGraphicProperties != v5)
+  if (mGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 

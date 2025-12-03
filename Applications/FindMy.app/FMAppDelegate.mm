@@ -1,58 +1,58 @@
 @interface FMAppDelegate
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)onMenuAction:(id)a3;
-- (void)setWindow:(id)a3;
-- (void)validateCommand:(id)a3;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)onMenuAction:(id)action;
+- (void)setWindow:(id)window;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation FMAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v4 = a4;
-  if (a4)
+  optionsCopy = options;
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_10000A4B0(&qword_1006AF350, type metadata accessor for LaunchOptionsKey);
-    v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100004E30(v7, v4);
+  applicationCopy = application;
+  selfCopy = self;
+  sub_100004E30(applicationCopy, optionsCopy);
 
   return 1;
 }
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  LOBYTE(self) = sub_1000C27E8(v10);
+  v8 = _Block_copy(handler);
+  applicationCopy = application;
+  activityCopy = activity;
+  selfCopy = self;
+  LOBYTE(self) = sub_1000C27E8(activityCopy);
   _Block_release(v8);
 
   return self & 1;
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -62,86 +62,86 @@
 
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  v13 = sub_10012277C(a3, v8, v10, v5);
+  applicationCopy = application;
+  selfCopy = self;
+  v13 = sub_10012277C(application, v8, v10, optionsCopy);
 
   return v13 & 1;
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC6FindMy13FMAppDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC6FindMy13FMAppDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC6FindMy13FMAppDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_1003E1C00();
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
+  backgroundCopy = background;
+  selfCopy = self;
   sub_1003E1DC4();
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
+  foregroundCopy = foreground;
+  selfCopy = self;
   sub_1003E2500();
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  applicationCopy = application;
+  selfCopy = self;
   LOBYTE(self) = sub_1003E281C(v10);
 
   (*(v8 + 8))(v10, v7);
   return self & 1;
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003E0ED8(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1003E0ED8(activeCopy);
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = a3;
-  v5 = self;
+  terminateCopy = terminate;
+  selfCopy = self;
   sub_1003E2A50();
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10048B9C8(a3);
+  selfCopy = self;
+  sub_10048B9C8(builder);
   swift_unknownObjectRelease();
 }
 
-- (void)onMenuAction:(id)a3
+- (void)onMenuAction:(id)action
 {
   v4 = qword_1006AEC80;
   swift_unknownObjectRetain();
@@ -151,22 +151,22 @@ LABEL_4:
   }
 
   sub_100110FE0();
-  sub_10047121C(a3);
+  sub_10047121C(action);
 
   swift_unknownObjectRelease();
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
   v3 = qword_1006AEC80;
-  v4 = a3;
+  commandCopy = command;
   if (v3 != -1)
   {
     swift_once();
   }
 
   sub_100110FE0();
-  sub_100470874(v4);
+  sub_100470874(commandCopy);
 }
 
 @end

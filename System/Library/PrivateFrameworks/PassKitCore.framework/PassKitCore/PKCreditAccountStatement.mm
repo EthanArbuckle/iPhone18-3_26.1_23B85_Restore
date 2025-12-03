@@ -1,131 +1,131 @@
 @interface PKCreditAccountStatement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKCreditAccountStatement)initWithCoder:(id)a3;
-- (PKCreditAccountStatement)initWithDictionary:(id)a3;
-- (PKCreditAccountStatement)initWithRecord:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKCreditAccountStatement)initWithCoder:(id)coder;
+- (PKCreditAccountStatement)initWithDictionary:(id)dictionary;
+- (PKCreditAccountStatement)initWithRecord:(id)record;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (unint64_t)monthNumber;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRecord:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRecord:(id)record;
 @end
 
 @implementation PKCreditAccountStatement
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_openingDate];
-  [v3 safelyAddObject:self->_closingDate];
-  [v3 safelyAddObject:self->_paymentDueDate];
-  [v3 safelyAddObject:self->_currencyCode];
-  [v3 safelyAddObject:self->_statementBalance];
-  [v3 safelyAddObject:self->_totalBalance];
-  [v3 safelyAddObject:self->_minimumDue];
-  [v3 safelyAddObject:self->_purchases];
-  [v3 safelyAddObject:self->_feesCharged];
-  [v3 safelyAddObject:self->_interestCharged];
-  [v3 safelyAddObject:self->_balanceTransfers];
-  [v3 safelyAddObject:self->_paymentsAndCredits];
-  [v3 safelyAddObject:self->_payments];
-  [v3 safelyAddObject:self->_credits];
-  [v3 safelyAddObject:self->_rewardsBalance];
-  [v3 safelyAddObject:self->_rewardsEarned];
-  [v3 safelyAddObject:self->_rewardsRedeemed];
-  [v3 safelyAddObject:self->_rewardsYTD];
-  [v3 safelyAddObject:self->_rewardsLifetime];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_openingDate];
+  [array safelyAddObject:self->_closingDate];
+  [array safelyAddObject:self->_paymentDueDate];
+  [array safelyAddObject:self->_currencyCode];
+  [array safelyAddObject:self->_statementBalance];
+  [array safelyAddObject:self->_totalBalance];
+  [array safelyAddObject:self->_minimumDue];
+  [array safelyAddObject:self->_purchases];
+  [array safelyAddObject:self->_feesCharged];
+  [array safelyAddObject:self->_interestCharged];
+  [array safelyAddObject:self->_balanceTransfers];
+  [array safelyAddObject:self->_paymentsAndCredits];
+  [array safelyAddObject:self->_payments];
+  [array safelyAddObject:self->_credits];
+  [array safelyAddObject:self->_rewardsBalance];
+  [array safelyAddObject:self->_rewardsEarned];
+  [array safelyAddObject:self->_rewardsRedeemed];
+  [array safelyAddObject:self->_rewardsYTD];
+  [array safelyAddObject:self->_rewardsLifetime];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (PKCreditAccountStatement)initWithDictionary:(id)a3
+- (PKCreditAccountStatement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v47.receiver = self;
   v47.super_class = PKCreditAccountStatement;
   v5 = [(PKCreditAccountStatement *)&v47 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKDateForKey:@"openingDate"];
+    v8 = [dictionaryCopy PKDateForKey:@"openingDate"];
     openingDate = v5->_openingDate;
     v5->_openingDate = v8;
 
-    v10 = [v4 PKDateForKey:@"closingDate"];
+    v10 = [dictionaryCopy PKDateForKey:@"closingDate"];
     closingDate = v5->_closingDate;
     v5->_closingDate = v10;
 
-    v12 = [v4 PKDateForKey:@"paymentDueDate"];
+    v12 = [dictionaryCopy PKDateForKey:@"paymentDueDate"];
     paymentDueDate = v5->_paymentDueDate;
     v5->_paymentDueDate = v12;
 
-    v14 = [v4 PKStringForKey:@"currencyCode"];
+    v14 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v14;
 
-    v16 = [v4 PKDecimalNumberFromStringForKey:@"statementBalance"];
+    v16 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"statementBalance"];
     statementBalance = v5->_statementBalance;
     v5->_statementBalance = v16;
 
-    v18 = [v4 PKDecimalNumberFromStringForKey:@"totalBalance"];
+    v18 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"totalBalance"];
     totalBalance = v5->_totalBalance;
     v5->_totalBalance = v18;
 
-    v20 = [v4 PKDecimalNumberFromStringForKey:@"minimumDue"];
+    v20 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"minimumDue"];
     minimumDue = v5->_minimumDue;
     v5->_minimumDue = v20;
 
-    v22 = [v4 PKDecimalNumberFromStringForKey:@"purchases"];
+    v22 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"purchases"];
     purchases = v5->_purchases;
     v5->_purchases = v22;
 
-    v24 = [v4 PKDecimalNumberFromStringForKey:@"feesCharged"];
+    v24 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"feesCharged"];
     feesCharged = v5->_feesCharged;
     v5->_feesCharged = v24;
 
-    v26 = [v4 PKDecimalNumberFromStringForKey:@"interestCharged"];
+    v26 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"interestCharged"];
     interestCharged = v5->_interestCharged;
     v5->_interestCharged = v26;
 
-    v28 = [v4 PKDecimalNumberFromStringForKey:@"balanceTransfers"];
+    v28 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"balanceTransfers"];
     balanceTransfers = v5->_balanceTransfers;
     v5->_balanceTransfers = v28;
 
-    v30 = [v4 PKDecimalNumberFromStringForKey:@"paymentsAndCredits"];
+    v30 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"paymentsAndCredits"];
     paymentsAndCredits = v5->_paymentsAndCredits;
     v5->_paymentsAndCredits = v30;
 
-    v32 = [v4 PKDecimalNumberFromStringForKey:@"payments"];
+    v32 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"payments"];
     payments = v5->_payments;
     v5->_payments = v32;
 
-    v34 = [v4 PKDecimalNumberFromStringForKey:@"credits"];
+    v34 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"credits"];
     credits = v5->_credits;
     v5->_credits = v34;
 
-    v36 = [v4 PKDecimalNumberFromStringForKey:@"rewardsBalance"];
+    v36 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"rewardsBalance"];
     rewardsBalance = v5->_rewardsBalance;
     v5->_rewardsBalance = v36;
 
-    v38 = [v4 PKDecimalNumberFromStringForKey:@"rewardsEarned"];
+    v38 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"rewardsEarned"];
     rewardsEarned = v5->_rewardsEarned;
     v5->_rewardsEarned = v38;
 
-    v40 = [v4 PKDecimalNumberFromStringForKey:@"rewardsRedeemed"];
+    v40 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"rewardsRedeemed"];
     rewardsRedeemed = v5->_rewardsRedeemed;
     v5->_rewardsRedeemed = v40;
 
-    v42 = [v4 PKDecimalNumberFromStringForKey:@"rewardsYTD"];
+    v42 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"rewardsYTD"];
     rewardsYTD = v5->_rewardsYTD;
     v5->_rewardsYTD = v42;
 
-    v44 = [v4 PKDecimalNumberFromStringForKey:@"rewardsLifetime"];
+    v44 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"rewardsLifetime"];
     rewardsLifetime = v5->_rewardsLifetime;
     v5->_rewardsLifetime = v44;
   }
@@ -141,100 +141,100 @@
   v6 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
   v7 = [v6 dateByAddingComponents:v5 toDate:v4 options:0];
   v8 = [v6 components:8 fromDate:v7];
-  v9 = [v8 month];
+  month = [v8 month];
 
-  return v9;
+  return month;
 }
 
-- (PKCreditAccountStatement)initWithCoder:(id)a3
+- (PKCreditAccountStatement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = PKCreditAccountStatement;
   v5 = [(PKCreditAccountStatement *)&v49 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"openingDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"openingDate"];
     openingDate = v5->_openingDate;
     v5->_openingDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"closingDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"closingDate"];
     closingDate = v5->_closingDate;
     v5->_closingDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentDueDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentDueDate"];
     paymentDueDate = v5->_paymentDueDate;
     v5->_paymentDueDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statementBalance"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statementBalance"];
     statementBalance = v5->_statementBalance;
     v5->_statementBalance = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalBalance"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalBalance"];
     totalBalance = v5->_totalBalance;
     v5->_totalBalance = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumDue"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumDue"];
     minimumDue = v5->_minimumDue;
     v5->_minimumDue = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchases"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchases"];
     purchases = v5->_purchases;
     v5->_purchases = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"feesCharged"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"feesCharged"];
     feesCharged = v5->_feesCharged;
     v5->_feesCharged = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interestCharged"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interestCharged"];
     interestCharged = v5->_interestCharged;
     v5->_interestCharged = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balanceTransfers"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balanceTransfers"];
     balanceTransfers = v5->_balanceTransfers;
     v5->_balanceTransfers = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentsAndCredits"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentsAndCredits"];
     paymentsAndCredits = v5->_paymentsAndCredits;
     v5->_paymentsAndCredits = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payments"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payments"];
     payments = v5->_payments;
     v5->_payments = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credits"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credits"];
     credits = v5->_credits;
     v5->_credits = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsBalance"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsBalance"];
     rewardsBalance = v5->_rewardsBalance;
     v5->_rewardsBalance = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsEarned"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsEarned"];
     rewardsEarned = v5->_rewardsEarned;
     v5->_rewardsEarned = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsRedeemed"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsRedeemed"];
     rewardsRedeemed = v5->_rewardsRedeemed;
     v5->_rewardsRedeemed = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsYTD"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsYTD"];
     rewardsYTD = v5->_rewardsYTD;
     v5->_rewardsYTD = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsLifetime"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsLifetime"];
     rewardsLifetime = v5->_rewardsLifetime;
     v5->_rewardsLifetime = v46;
   }
@@ -242,118 +242,118 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeObject:self->_openingDate forKey:@"openingDate"];
-  [v5 encodeObject:self->_closingDate forKey:@"closingDate"];
-  [v5 encodeObject:self->_paymentDueDate forKey:@"paymentDueDate"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_statementBalance forKey:@"statementBalance"];
-  [v5 encodeObject:self->_totalBalance forKey:@"totalBalance"];
-  [v5 encodeObject:self->_minimumDue forKey:@"minimumDue"];
-  [v5 encodeObject:self->_purchases forKey:@"purchases"];
-  [v5 encodeObject:self->_feesCharged forKey:@"feesCharged"];
-  [v5 encodeObject:self->_interestCharged forKey:@"interestCharged"];
-  [v5 encodeObject:self->_balanceTransfers forKey:@"balanceTransfers"];
-  [v5 encodeObject:self->_paymentsAndCredits forKey:@"paymentsAndCredits"];
-  [v5 encodeObject:self->_payments forKey:@"payments"];
-  [v5 encodeObject:self->_credits forKey:@"credits"];
-  [v5 encodeObject:self->_rewardsBalance forKey:@"rewardsBalance"];
-  [v5 encodeObject:self->_rewardsEarned forKey:@"rewardsEarned"];
-  [v5 encodeObject:self->_rewardsRedeemed forKey:@"rewardsRedeemed"];
-  [v5 encodeObject:self->_rewardsYTD forKey:@"rewardsYTD"];
-  [v5 encodeObject:self->_rewardsLifetime forKey:@"rewardsLifetime"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_openingDate forKey:@"openingDate"];
+  [coderCopy encodeObject:self->_closingDate forKey:@"closingDate"];
+  [coderCopy encodeObject:self->_paymentDueDate forKey:@"paymentDueDate"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_statementBalance forKey:@"statementBalance"];
+  [coderCopy encodeObject:self->_totalBalance forKey:@"totalBalance"];
+  [coderCopy encodeObject:self->_minimumDue forKey:@"minimumDue"];
+  [coderCopy encodeObject:self->_purchases forKey:@"purchases"];
+  [coderCopy encodeObject:self->_feesCharged forKey:@"feesCharged"];
+  [coderCopy encodeObject:self->_interestCharged forKey:@"interestCharged"];
+  [coderCopy encodeObject:self->_balanceTransfers forKey:@"balanceTransfers"];
+  [coderCopy encodeObject:self->_paymentsAndCredits forKey:@"paymentsAndCredits"];
+  [coderCopy encodeObject:self->_payments forKey:@"payments"];
+  [coderCopy encodeObject:self->_credits forKey:@"credits"];
+  [coderCopy encodeObject:self->_rewardsBalance forKey:@"rewardsBalance"];
+  [coderCopy encodeObject:self->_rewardsEarned forKey:@"rewardsEarned"];
+  [coderCopy encodeObject:self->_rewardsRedeemed forKey:@"rewardsRedeemed"];
+  [coderCopy encodeObject:self->_rewardsYTD forKey:@"rewardsYTD"];
+  [coderCopy encodeObject:self->_rewardsLifetime forKey:@"rewardsLifetime"];
 }
 
-- (PKCreditAccountStatement)initWithRecord:(id)a3
+- (PKCreditAccountStatement)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v47.receiver = self;
   v47.super_class = PKCreditAccountStatement;
   v5 = [(PKCreditAccountStatement *)&v47 init];
   if (v5)
   {
-    v6 = [v4 pk_encryptedStringForKey:@"identifier"];
+    v6 = [recordCopy pk_encryptedStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 pk_encryptedDateForKey:@"openingDate"];
+    v8 = [recordCopy pk_encryptedDateForKey:@"openingDate"];
     openingDate = v5->_openingDate;
     v5->_openingDate = v8;
 
-    v10 = [v4 pk_encryptedDateForKey:@"closingDate"];
+    v10 = [recordCopy pk_encryptedDateForKey:@"closingDate"];
     closingDate = v5->_closingDate;
     v5->_closingDate = v10;
 
-    v12 = [v4 pk_encryptedDateForKey:@"paymentDueDate"];
+    v12 = [recordCopy pk_encryptedDateForKey:@"paymentDueDate"];
     paymentDueDate = v5->_paymentDueDate;
     v5->_paymentDueDate = v12;
 
-    v14 = [v4 pk_encryptedStringForKey:@"currencyCode"];
+    v14 = [recordCopy pk_encryptedStringForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v14;
 
-    v16 = [v4 pk_encryptedDecimalNumberForKey:@"statementBalance"];
+    v16 = [recordCopy pk_encryptedDecimalNumberForKey:@"statementBalance"];
     statementBalance = v5->_statementBalance;
     v5->_statementBalance = v16;
 
-    v18 = [v4 pk_encryptedDecimalNumberForKey:@"totalBalance"];
+    v18 = [recordCopy pk_encryptedDecimalNumberForKey:@"totalBalance"];
     totalBalance = v5->_totalBalance;
     v5->_totalBalance = v18;
 
-    v20 = [v4 pk_encryptedDecimalNumberForKey:@"minimumDue"];
+    v20 = [recordCopy pk_encryptedDecimalNumberForKey:@"minimumDue"];
     minimumDue = v5->_minimumDue;
     v5->_minimumDue = v20;
 
-    v22 = [v4 pk_encryptedDecimalNumberForKey:@"rewardsBalance"];
+    v22 = [recordCopy pk_encryptedDecimalNumberForKey:@"rewardsBalance"];
     rewardsBalance = v5->_rewardsBalance;
     v5->_rewardsBalance = v22;
 
-    v24 = [v4 pk_encryptedDecimalNumberForKey:@"rewardsEarned"];
+    v24 = [recordCopy pk_encryptedDecimalNumberForKey:@"rewardsEarned"];
     rewardsEarned = v5->_rewardsEarned;
     v5->_rewardsEarned = v24;
 
-    v26 = [v4 pk_encryptedDecimalNumberForKey:@"rewardsRedeemed"];
+    v26 = [recordCopy pk_encryptedDecimalNumberForKey:@"rewardsRedeemed"];
     rewardsRedeemed = v5->_rewardsRedeemed;
     v5->_rewardsRedeemed = v26;
 
-    v28 = [v4 pk_encryptedDecimalNumberForKey:@"rewardsYTD"];
+    v28 = [recordCopy pk_encryptedDecimalNumberForKey:@"rewardsYTD"];
     rewardsYTD = v5->_rewardsYTD;
     v5->_rewardsYTD = v28;
 
-    v30 = [v4 pk_encryptedDecimalNumberForKey:@"rewardsLifetime"];
+    v30 = [recordCopy pk_encryptedDecimalNumberForKey:@"rewardsLifetime"];
     rewardsLifetime = v5->_rewardsLifetime;
     v5->_rewardsLifetime = v30;
 
-    v32 = [v4 pk_encryptedDecimalNumberForKey:@"purchases"];
+    v32 = [recordCopy pk_encryptedDecimalNumberForKey:@"purchases"];
     purchases = v5->_purchases;
     v5->_purchases = v32;
 
-    v34 = [v4 pk_encryptedDecimalNumberForKey:@"feesCharged"];
+    v34 = [recordCopy pk_encryptedDecimalNumberForKey:@"feesCharged"];
     feesCharged = v5->_feesCharged;
     v5->_feesCharged = v34;
 
-    v36 = [v4 pk_encryptedDecimalNumberForKey:@"interestCharged"];
+    v36 = [recordCopy pk_encryptedDecimalNumberForKey:@"interestCharged"];
     interestCharged = v5->_interestCharged;
     v5->_interestCharged = v36;
 
-    v38 = [v4 pk_encryptedDecimalNumberForKey:@"balanceTransfers"];
+    v38 = [recordCopy pk_encryptedDecimalNumberForKey:@"balanceTransfers"];
     balanceTransfers = v5->_balanceTransfers;
     v5->_balanceTransfers = v38;
 
-    v40 = [v4 pk_encryptedDecimalNumberForKey:@"paymentsAndCredits"];
+    v40 = [recordCopy pk_encryptedDecimalNumberForKey:@"paymentsAndCredits"];
     paymentsAndCredits = v5->_paymentsAndCredits;
     v5->_paymentsAndCredits = v40;
 
-    v42 = [v4 pk_encryptedDecimalNumberForKey:@"payments"];
+    v42 = [recordCopy pk_encryptedDecimalNumberForKey:@"payments"];
     payments = v5->_payments;
     v5->_payments = v42;
 
-    v44 = [v4 pk_encryptedDecimalNumberForKey:@"credits"];
+    v44 = [recordCopy pk_encryptedDecimalNumberForKey:@"credits"];
     credits = v5->_credits;
     v5->_credits = v44;
   }
@@ -361,63 +361,63 @@
   return v5;
 }
 
-- (void)encodeWithRecord:(id)a3
+- (void)encodeWithRecord:(id)record
 {
-  v19 = [a3 encryptedValues];
-  [v19 setObject:self->_identifier forKey:@"identifier"];
-  [v19 setObject:self->_openingDate forKey:@"openingDate"];
-  [v19 setObject:self->_closingDate forKey:@"closingDate"];
-  [v19 setObject:self->_paymentDueDate forKey:@"paymentDueDate"];
-  [v19 setObject:self->_currencyCode forKey:@"currencyCode"];
-  v4 = [(NSDecimalNumber *)self->_statementBalance stringValue];
-  [v19 setObject:v4 forKey:@"statementBalance"];
+  encryptedValues = [record encryptedValues];
+  [encryptedValues setObject:self->_identifier forKey:@"identifier"];
+  [encryptedValues setObject:self->_openingDate forKey:@"openingDate"];
+  [encryptedValues setObject:self->_closingDate forKey:@"closingDate"];
+  [encryptedValues setObject:self->_paymentDueDate forKey:@"paymentDueDate"];
+  [encryptedValues setObject:self->_currencyCode forKey:@"currencyCode"];
+  stringValue = [(NSDecimalNumber *)self->_statementBalance stringValue];
+  [encryptedValues setObject:stringValue forKey:@"statementBalance"];
 
-  v5 = [(NSDecimalNumber *)self->_totalBalance stringValue];
-  [v19 setObject:v5 forKey:@"totalBalance"];
+  stringValue2 = [(NSDecimalNumber *)self->_totalBalance stringValue];
+  [encryptedValues setObject:stringValue2 forKey:@"totalBalance"];
 
-  v6 = [(NSDecimalNumber *)self->_minimumDue stringValue];
-  [v19 setObject:v6 forKey:@"minimumDue"];
+  stringValue3 = [(NSDecimalNumber *)self->_minimumDue stringValue];
+  [encryptedValues setObject:stringValue3 forKey:@"minimumDue"];
 
-  v7 = [(NSDecimalNumber *)self->_rewardsBalance stringValue];
-  [v19 setObject:v7 forKey:@"rewardsBalance"];
+  stringValue4 = [(NSDecimalNumber *)self->_rewardsBalance stringValue];
+  [encryptedValues setObject:stringValue4 forKey:@"rewardsBalance"];
 
-  v8 = [(NSDecimalNumber *)self->_rewardsEarned stringValue];
-  [v19 setObject:v8 forKey:@"rewardsEarned"];
+  stringValue5 = [(NSDecimalNumber *)self->_rewardsEarned stringValue];
+  [encryptedValues setObject:stringValue5 forKey:@"rewardsEarned"];
 
-  v9 = [(NSDecimalNumber *)self->_rewardsRedeemed stringValue];
-  [v19 setObject:v9 forKey:@"rewardsRedeemed"];
+  stringValue6 = [(NSDecimalNumber *)self->_rewardsRedeemed stringValue];
+  [encryptedValues setObject:stringValue6 forKey:@"rewardsRedeemed"];
 
-  v10 = [(NSDecimalNumber *)self->_rewardsYTD stringValue];
-  [v19 setObject:v10 forKey:@"rewardsYTD"];
+  stringValue7 = [(NSDecimalNumber *)self->_rewardsYTD stringValue];
+  [encryptedValues setObject:stringValue7 forKey:@"rewardsYTD"];
 
-  v11 = [(NSDecimalNumber *)self->_rewardsLifetime stringValue];
-  [v19 setObject:v11 forKey:@"rewardsLifetime"];
+  stringValue8 = [(NSDecimalNumber *)self->_rewardsLifetime stringValue];
+  [encryptedValues setObject:stringValue8 forKey:@"rewardsLifetime"];
 
-  v12 = [(NSDecimalNumber *)self->_purchases stringValue];
-  [v19 setObject:v12 forKey:@"purchases"];
+  stringValue9 = [(NSDecimalNumber *)self->_purchases stringValue];
+  [encryptedValues setObject:stringValue9 forKey:@"purchases"];
 
-  v13 = [(NSDecimalNumber *)self->_feesCharged stringValue];
-  [v19 setObject:v13 forKey:@"feesCharged"];
+  stringValue10 = [(NSDecimalNumber *)self->_feesCharged stringValue];
+  [encryptedValues setObject:stringValue10 forKey:@"feesCharged"];
 
-  v14 = [(NSDecimalNumber *)self->_interestCharged stringValue];
-  [v19 setObject:v14 forKey:@"interestCharged"];
+  stringValue11 = [(NSDecimalNumber *)self->_interestCharged stringValue];
+  [encryptedValues setObject:stringValue11 forKey:@"interestCharged"];
 
-  v15 = [(NSDecimalNumber *)self->_balanceTransfers stringValue];
-  [v19 setObject:v15 forKey:@"balanceTransfers"];
+  stringValue12 = [(NSDecimalNumber *)self->_balanceTransfers stringValue];
+  [encryptedValues setObject:stringValue12 forKey:@"balanceTransfers"];
 
-  v16 = [(NSDecimalNumber *)self->_paymentsAndCredits stringValue];
-  [v19 setObject:v16 forKey:@"paymentsAndCredits"];
+  stringValue13 = [(NSDecimalNumber *)self->_paymentsAndCredits stringValue];
+  [encryptedValues setObject:stringValue13 forKey:@"paymentsAndCredits"];
 
-  v17 = [(NSDecimalNumber *)self->_payments stringValue];
-  [v19 setObject:v17 forKey:@"payments"];
+  stringValue14 = [(NSDecimalNumber *)self->_payments stringValue];
+  [encryptedValues setObject:stringValue14 forKey:@"payments"];
 
-  v18 = [(NSDecimalNumber *)self->_credits stringValue];
-  [v19 setObject:v18 forKey:@"credits"];
+  stringValue15 = [(NSDecimalNumber *)self->_credits stringValue];
+  [encryptedValues setObject:stringValue15 forKey:@"credits"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -425,7 +425,7 @@
   }
 
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (identifier && v6)
   {
     if (([(NSString *)identifier isEqual:?]& 1) == 0)
@@ -440,7 +440,7 @@
   }
 
   openingDate = self->_openingDate;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (openingDate && v8)
   {
     if (([(NSDate *)openingDate isEqual:?]& 1) == 0)
@@ -455,7 +455,7 @@
   }
 
   closingDate = self->_closingDate;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (closingDate && v10)
   {
     if (([(NSDate *)closingDate isEqual:?]& 1) == 0)
@@ -470,7 +470,7 @@
   }
 
   paymentDueDate = self->_paymentDueDate;
-  v12 = v4[5];
+  v12 = equalCopy[5];
   if (paymentDueDate && v12)
   {
     if (([(NSDate *)paymentDueDate isEqual:?]& 1) == 0)
@@ -485,7 +485,7 @@
   }
 
   currencyCode = self->_currencyCode;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (currencyCode && v14)
   {
     if (([(NSString *)currencyCode isEqual:?]& 1) == 0)
@@ -500,7 +500,7 @@
   }
 
   statementBalance = self->_statementBalance;
-  v16 = v4[7];
+  v16 = equalCopy[7];
   if (statementBalance && v16)
   {
     if (([(NSDecimalNumber *)statementBalance isEqual:?]& 1) == 0)
@@ -515,7 +515,7 @@
   }
 
   totalBalance = self->_totalBalance;
-  v18 = v4[8];
+  v18 = equalCopy[8];
   if (totalBalance && v18)
   {
     if (([(NSDecimalNumber *)totalBalance isEqual:?]& 1) == 0)
@@ -530,7 +530,7 @@
   }
 
   minimumDue = self->_minimumDue;
-  v20 = v4[9];
+  v20 = equalCopy[9];
   if (minimumDue && v20)
   {
     if (([(NSDecimalNumber *)minimumDue isEqual:?]& 1) == 0)
@@ -545,7 +545,7 @@
   }
 
   purchases = self->_purchases;
-  v22 = v4[10];
+  v22 = equalCopy[10];
   if (purchases && v22)
   {
     if (([(NSDecimalNumber *)purchases isEqual:?]& 1) == 0)
@@ -560,7 +560,7 @@
   }
 
   feesCharged = self->_feesCharged;
-  v24 = v4[11];
+  v24 = equalCopy[11];
   if (feesCharged && v24)
   {
     if (([(NSDecimalNumber *)feesCharged isEqual:?]& 1) == 0)
@@ -575,7 +575,7 @@
   }
 
   interestCharged = self->_interestCharged;
-  v26 = v4[12];
+  v26 = equalCopy[12];
   if (interestCharged && v26)
   {
     if (([(NSDecimalNumber *)interestCharged isEqual:?]& 1) == 0)
@@ -590,7 +590,7 @@
   }
 
   balanceTransfers = self->_balanceTransfers;
-  v28 = v4[13];
+  v28 = equalCopy[13];
   if (balanceTransfers && v28)
   {
     if (([(NSDecimalNumber *)balanceTransfers isEqual:?]& 1) == 0)
@@ -605,7 +605,7 @@
   }
 
   paymentsAndCredits = self->_paymentsAndCredits;
-  v30 = v4[14];
+  v30 = equalCopy[14];
   if (paymentsAndCredits && v30)
   {
     if (([(NSDecimalNumber *)paymentsAndCredits isEqual:?]& 1) == 0)
@@ -620,7 +620,7 @@
   }
 
   payments = self->_payments;
-  v32 = v4[15];
+  v32 = equalCopy[15];
   if (payments && v32)
   {
     if (([(NSDecimalNumber *)payments isEqual:?]& 1) == 0)
@@ -635,7 +635,7 @@
   }
 
   credits = self->_credits;
-  v34 = v4[16];
+  v34 = equalCopy[16];
   if (credits && v34)
   {
     if (([(NSDecimalNumber *)credits isEqual:?]& 1) == 0)
@@ -650,7 +650,7 @@
   }
 
   rewardsBalance = self->_rewardsBalance;
-  v36 = v4[17];
+  v36 = equalCopy[17];
   if (rewardsBalance && v36)
   {
     if (([(NSDecimalNumber *)rewardsBalance isEqual:?]& 1) == 0)
@@ -665,7 +665,7 @@
   }
 
   rewardsEarned = self->_rewardsEarned;
-  v38 = v4[18];
+  v38 = equalCopy[18];
   if (rewardsEarned && v38)
   {
     if (([(NSDecimalNumber *)rewardsEarned isEqual:?]& 1) == 0)
@@ -680,7 +680,7 @@
   }
 
   rewardsRedeemed = self->_rewardsRedeemed;
-  v40 = v4[19];
+  v40 = equalCopy[19];
   if (rewardsRedeemed && v40)
   {
     if (([(NSDecimalNumber *)rewardsRedeemed isEqual:?]& 1) == 0)
@@ -695,7 +695,7 @@
   }
 
   rewardsYTD = self->_rewardsYTD;
-  v42 = v4[20];
+  v42 = equalCopy[20];
   if (!rewardsYTD || !v42)
   {
     if (rewardsYTD == v42)
@@ -715,7 +715,7 @@ LABEL_99:
 
 LABEL_95:
   rewardsLifetime = self->_rewardsLifetime;
-  v44 = v4[21];
+  v44 = equalCopy[21];
   if (rewardsLifetime && v44)
   {
     v45 = [(NSDecimalNumber *)rewardsLifetime isEqual:?];
@@ -745,140 +745,140 @@ LABEL_100:
   [v3 appendFormat:@"paymentDueDate: '%@'; ", v6];
 
   [v3 appendFormat:@"currencyCode: '%@'; ", self->_currencyCode];
-  v7 = [(NSDecimalNumber *)self->_statementBalance stringValue];
-  [v3 appendFormat:@"statementBalance: '%@'; ", v7];
+  stringValue = [(NSDecimalNumber *)self->_statementBalance stringValue];
+  [v3 appendFormat:@"statementBalance: '%@'; ", stringValue];
 
-  v8 = [(NSDecimalNumber *)self->_totalBalance stringValue];
-  [v3 appendFormat:@"totalBalance: '%@'; ", v8];
+  stringValue2 = [(NSDecimalNumber *)self->_totalBalance stringValue];
+  [v3 appendFormat:@"totalBalance: '%@'; ", stringValue2];
 
-  v9 = [(NSDecimalNumber *)self->_minimumDue stringValue];
-  [v3 appendFormat:@"minimumDue: '%@'; ", v9];
+  stringValue3 = [(NSDecimalNumber *)self->_minimumDue stringValue];
+  [v3 appendFormat:@"minimumDue: '%@'; ", stringValue3];
 
-  v10 = [(NSDecimalNumber *)self->_purchases stringValue];
-  [v3 appendFormat:@"purchases: '%@'; ", v10];
+  stringValue4 = [(NSDecimalNumber *)self->_purchases stringValue];
+  [v3 appendFormat:@"purchases: '%@'; ", stringValue4];
 
-  v11 = [(NSDecimalNumber *)self->_feesCharged stringValue];
-  [v3 appendFormat:@"feesCharged: '%@'; ", v11];
+  stringValue5 = [(NSDecimalNumber *)self->_feesCharged stringValue];
+  [v3 appendFormat:@"feesCharged: '%@'; ", stringValue5];
 
-  v12 = [(NSDecimalNumber *)self->_interestCharged stringValue];
-  [v3 appendFormat:@"interestCharged: '%@'; ", v12];
+  stringValue6 = [(NSDecimalNumber *)self->_interestCharged stringValue];
+  [v3 appendFormat:@"interestCharged: '%@'; ", stringValue6];
 
-  v13 = [(NSDecimalNumber *)self->_balanceTransfers stringValue];
-  [v3 appendFormat:@"balanceTransfers: '%@'; ", v13];
+  stringValue7 = [(NSDecimalNumber *)self->_balanceTransfers stringValue];
+  [v3 appendFormat:@"balanceTransfers: '%@'; ", stringValue7];
 
-  v14 = [(NSDecimalNumber *)self->_paymentsAndCredits stringValue];
-  [v3 appendFormat:@"paymentsAndCredits: '%@'; ", v14];
+  stringValue8 = [(NSDecimalNumber *)self->_paymentsAndCredits stringValue];
+  [v3 appendFormat:@"paymentsAndCredits: '%@'; ", stringValue8];
 
-  v15 = [(NSDecimalNumber *)self->_payments stringValue];
-  [v3 appendFormat:@"payments: '%@'; ", v15];
+  stringValue9 = [(NSDecimalNumber *)self->_payments stringValue];
+  [v3 appendFormat:@"payments: '%@'; ", stringValue9];
 
-  v16 = [(NSDecimalNumber *)self->_credits stringValue];
-  [v3 appendFormat:@"credits: '%@'; ", v16];
+  stringValue10 = [(NSDecimalNumber *)self->_credits stringValue];
+  [v3 appendFormat:@"credits: '%@'; ", stringValue10];
 
-  v17 = [(NSDecimalNumber *)self->_rewardsBalance stringValue];
-  [v3 appendFormat:@"rewardsBalance: '%@'; ", v17];
+  stringValue11 = [(NSDecimalNumber *)self->_rewardsBalance stringValue];
+  [v3 appendFormat:@"rewardsBalance: '%@'; ", stringValue11];
 
-  v18 = [(NSDecimalNumber *)self->_rewardsEarned stringValue];
-  [v3 appendFormat:@"rewardsEarned: '%@'; ", v18];
+  stringValue12 = [(NSDecimalNumber *)self->_rewardsEarned stringValue];
+  [v3 appendFormat:@"rewardsEarned: '%@'; ", stringValue12];
 
-  v19 = [(NSDecimalNumber *)self->_rewardsRedeemed stringValue];
-  [v3 appendFormat:@"rewardsRedeemed: '%@'; ", v19];
+  stringValue13 = [(NSDecimalNumber *)self->_rewardsRedeemed stringValue];
+  [v3 appendFormat:@"rewardsRedeemed: '%@'; ", stringValue13];
 
-  v20 = [(NSDecimalNumber *)self->_rewardsYTD stringValue];
-  [v3 appendFormat:@"rewardsYTD: '%@'; ", v20];
+  stringValue14 = [(NSDecimalNumber *)self->_rewardsYTD stringValue];
+  [v3 appendFormat:@"rewardsYTD: '%@'; ", stringValue14];
 
-  v21 = [(NSDecimalNumber *)self->_rewardsLifetime stringValue];
-  [v3 appendFormat:@"rewardsLifetime: '%@'; ", v21];
+  stringValue15 = [(NSDecimalNumber *)self->_rewardsLifetime stringValue];
+  [v3 appendFormat:@"rewardsLifetime: '%@'; ", stringValue15];
 
   [v3 appendFormat:@">"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKCreditAccountStatement allocWithZone:](PKCreditAccountStatement init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   accountIdentifier = v5->_accountIdentifier;
   v5->_accountIdentifier = v8;
 
-  v10 = [(NSDate *)self->_openingDate copyWithZone:a3];
+  v10 = [(NSDate *)self->_openingDate copyWithZone:zone];
   openingDate = v5->_openingDate;
   v5->_openingDate = v10;
 
-  v12 = [(NSDate *)self->_closingDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_closingDate copyWithZone:zone];
   closingDate = v5->_closingDate;
   v5->_closingDate = v12;
 
-  v14 = [(NSDate *)self->_paymentDueDate copyWithZone:a3];
+  v14 = [(NSDate *)self->_paymentDueDate copyWithZone:zone];
   paymentDueDate = v5->_paymentDueDate;
   v5->_paymentDueDate = v14;
 
-  v16 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v16 = [(NSString *)self->_currencyCode copyWithZone:zone];
   currencyCode = v5->_currencyCode;
   v5->_currencyCode = v16;
 
-  v18 = [(NSDecimalNumber *)self->_statementBalance copyWithZone:a3];
+  v18 = [(NSDecimalNumber *)self->_statementBalance copyWithZone:zone];
   statementBalance = v5->_statementBalance;
   v5->_statementBalance = v18;
 
-  v20 = [(NSDecimalNumber *)self->_totalBalance copyWithZone:a3];
+  v20 = [(NSDecimalNumber *)self->_totalBalance copyWithZone:zone];
   totalBalance = v5->_totalBalance;
   v5->_totalBalance = v20;
 
-  v22 = [(NSDecimalNumber *)self->_minimumDue copyWithZone:a3];
+  v22 = [(NSDecimalNumber *)self->_minimumDue copyWithZone:zone];
   minimumDue = v5->_minimumDue;
   v5->_minimumDue = v22;
 
-  v24 = [(NSDecimalNumber *)self->_purchases copyWithZone:a3];
+  v24 = [(NSDecimalNumber *)self->_purchases copyWithZone:zone];
   purchases = v5->_purchases;
   v5->_purchases = v24;
 
-  v26 = [(NSDecimalNumber *)self->_feesCharged copyWithZone:a3];
+  v26 = [(NSDecimalNumber *)self->_feesCharged copyWithZone:zone];
   feesCharged = v5->_feesCharged;
   v5->_feesCharged = v26;
 
-  v28 = [(NSDecimalNumber *)self->_interestCharged copyWithZone:a3];
+  v28 = [(NSDecimalNumber *)self->_interestCharged copyWithZone:zone];
   interestCharged = v5->_interestCharged;
   v5->_interestCharged = v28;
 
-  v30 = [(NSDecimalNumber *)self->_balanceTransfers copyWithZone:a3];
+  v30 = [(NSDecimalNumber *)self->_balanceTransfers copyWithZone:zone];
   balanceTransfers = v5->_balanceTransfers;
   v5->_balanceTransfers = v30;
 
-  v32 = [(NSDecimalNumber *)self->_paymentsAndCredits copyWithZone:a3];
+  v32 = [(NSDecimalNumber *)self->_paymentsAndCredits copyWithZone:zone];
   paymentsAndCredits = v5->_paymentsAndCredits;
   v5->_paymentsAndCredits = v32;
 
-  v34 = [(NSDecimalNumber *)self->_payments copyWithZone:a3];
+  v34 = [(NSDecimalNumber *)self->_payments copyWithZone:zone];
   payments = v5->_payments;
   v5->_payments = v34;
 
-  v36 = [(NSDecimalNumber *)self->_credits copyWithZone:a3];
+  v36 = [(NSDecimalNumber *)self->_credits copyWithZone:zone];
   credits = v5->_credits;
   v5->_credits = v36;
 
-  v38 = [(NSDecimalNumber *)self->_rewardsBalance copyWithZone:a3];
+  v38 = [(NSDecimalNumber *)self->_rewardsBalance copyWithZone:zone];
   rewardsBalance = v5->_rewardsBalance;
   v5->_rewardsBalance = v38;
 
-  v40 = [(NSDecimalNumber *)self->_rewardsEarned copyWithZone:a3];
+  v40 = [(NSDecimalNumber *)self->_rewardsEarned copyWithZone:zone];
   rewardsEarned = v5->_rewardsEarned;
   v5->_rewardsEarned = v40;
 
-  v42 = [(NSDecimalNumber *)self->_rewardsRedeemed copyWithZone:a3];
+  v42 = [(NSDecimalNumber *)self->_rewardsRedeemed copyWithZone:zone];
   rewardsRedeemed = v5->_rewardsRedeemed;
   v5->_rewardsRedeemed = v42;
 
-  v44 = [(NSDecimalNumber *)self->_rewardsYTD copyWithZone:a3];
+  v44 = [(NSDecimalNumber *)self->_rewardsYTD copyWithZone:zone];
   rewardsYTD = v5->_rewardsYTD;
   v5->_rewardsYTD = v44;
 
-  v46 = [(NSDecimalNumber *)self->_rewardsLifetime copyWithZone:a3];
+  v46 = [(NSDecimalNumber *)self->_rewardsLifetime copyWithZone:zone];
   rewardsLifetime = v5->_rewardsLifetime;
   v5->_rewardsLifetime = v46;
 

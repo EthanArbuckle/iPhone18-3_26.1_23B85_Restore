@@ -1,24 +1,24 @@
 @interface DKDiagnosticAllowList
-- (BOOL)containsIdentifier:(id)a3;
-- (DKDiagnosticAllowList)initWithIdentifiers:(id)a3 contactMessage:(id)a4;
+- (BOOL)containsIdentifier:(id)identifier;
+- (DKDiagnosticAllowList)initWithIdentifiers:(id)identifiers contactMessage:(id)message;
 @end
 
 @implementation DKDiagnosticAllowList
 
-- (DKDiagnosticAllowList)initWithIdentifiers:(id)a3 contactMessage:(id)a4
+- (DKDiagnosticAllowList)initWithIdentifiers:(id)identifiers contactMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = DKDiagnosticAllowList;
   v8 = [(DKDiagnosticAllowList *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [messageCopy copy];
     contactMessage = v8->_contactMessage;
     v8->_contactMessage = v9;
 
-    v11 = [v6 copy];
+    v11 = [identifiersCopy copy];
     allowList = v8->_allowList;
     v8->_allowList = v11;
   }
@@ -26,11 +26,11 @@
   return v8;
 }
 
-- (BOOL)containsIdentifier:(id)a3
+- (BOOL)containsIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DKDiagnosticAllowList *)self allowList];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  allowList = [(DKDiagnosticAllowList *)self allowList];
+  v6 = [allowList containsObject:identifierCopy];
 
   return v6;
 }

@@ -1,25 +1,25 @@
 @interface VCPFaceAnchor
-- (VCPFaceAnchor)initWithCoder:(id)a3;
-- (VCPFaceAnchor)initWithTransform:(__n128)a3 blendShapes:(__n128)a4 geometry:(__n128)a5;
-- (void)encodeWithCoder:(id)a3;
+- (VCPFaceAnchor)initWithCoder:(id)coder;
+- (VCPFaceAnchor)initWithTransform:(__n128)transform blendShapes:(__n128)shapes geometry:(__n128)geometry;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCPFaceAnchor
 
-- (VCPFaceAnchor)initWithTransform:(__n128)a3 blendShapes:(__n128)a4 geometry:(__n128)a5
+- (VCPFaceAnchor)initWithTransform:(__n128)transform blendShapes:(__n128)shapes geometry:(__n128)geometry
 {
   v10 = a7;
   v11 = a8;
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = VCPFaceAnchor;
   v12 = [(VCPFaceAnchor *)&v21 init];
   v13 = v12;
   if (v12)
   {
     *&v12[1].super.isa = a2;
-    *&v12[1]._geometry = a3;
-    *&v12[2].super.isa = a4;
-    *&v12[2]._geometry = a5;
+    *&v12[1]._geometry = transform;
+    *&v12[2].super.isa = shapes;
+    *&v12[2]._geometry = geometry;
     if (v10)
     {
       v14 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v10];
@@ -33,37 +33,37 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&self[1] length:64];
-  [v7 encodeObject:v4 forKey:@"transform"];
+  [coderCopy encodeObject:v4 forKey:@"transform"];
 
   blendShapes = self->_blendShapes;
   if (blendShapes)
   {
-    [v7 encodeObject:blendShapes forKey:@"blendshapes"];
+    [coderCopy encodeObject:blendShapes forKey:@"blendshapes"];
   }
 
   geometry = self->_geometry;
   if (geometry)
   {
-    [v7 encodeObject:geometry forKey:@"geometry"];
+    [coderCopy encodeObject:geometry forKey:@"geometry"];
   }
 }
 
-- (VCPFaceAnchor)initWithCoder:(id)a3
+- (VCPFaceAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transform"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transform"];
   if ([v5 length] > 0x3F)
   {
     [v5 getBytes:&v10 length:64];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blendshapes"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blendshapes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
     self = [(VCPFaceAnchor *)self initWithTransform:v7 blendShapes:v8 geometry:*&v10, *&v11, *&v12, *&v13];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -74,10 +74,10 @@
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPFaceAnchor initWithCoder - unexpected size of transform data", &v10, 2u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

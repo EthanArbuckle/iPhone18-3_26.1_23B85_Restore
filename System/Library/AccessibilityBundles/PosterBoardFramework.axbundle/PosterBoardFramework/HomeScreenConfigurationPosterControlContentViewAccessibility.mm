@@ -10,9 +10,9 @@
   v3 = [(HomeScreenConfigurationPosterControlContentViewAccessibility *)self safeSwiftValueForKey:@"primaryImageView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 image];
-  v6 = [v5 accessibilityIdentifier];
-  v7 = [v6 isEqualToString:@"photo.on.rectangle"];
+  image = [v4 image];
+  accessibilityIdentifier = [image accessibilityIdentifier];
+  v7 = [accessibilityIdentifier isEqualToString:@"photo.on.rectangle"];
 
   if (v7)
   {

@@ -1,38 +1,38 @@
 @interface ABFavoritesEntry
 + (void)_runLookup;
-- (ABFavoritesEntry)initWithDictionaryRepresentation:(id)a3 addressBook:(void *)a4;
-- (ABFavoritesEntry)initWithPerson:(void *)a3 property:(int)a4 identifier:(int)a5 type:(int)a6;
-- (BOOL)isEqual:(id)a3;
+- (ABFavoritesEntry)initWithDictionaryRepresentation:(id)representation addressBook:(void *)book;
+- (ABFavoritesEntry)initWithPerson:(void *)person property:(int)property identifier:(int)identifier type:(int)type;
+- (BOOL)isEqual:(id)equal;
 - (id)dictionaryRepresentation;
 - (id)displayName;
 - (id)label;
 - (void)ABPerson;
-- (void)_lookupChanged:(id)a3;
+- (void)_lookupChanged:(id)changed;
 - (void)_lookupNotFound;
 - (void)_postEntryChanged;
 - (void)_queueLookup;
 - (void)_unqueueLookup;
 - (void)dealloc;
-- (void)dictionaryRepresentation:(id *)a3 isDirty:(BOOL *)a4;
+- (void)dictionaryRepresentation:(id *)representation isDirty:(BOOL *)dirty;
 @end
 
 @implementation ABFavoritesEntry
 
-- (ABFavoritesEntry)initWithPerson:(void *)a3 property:(int)a4 identifier:(int)a5 type:(int)a6
+- (ABFavoritesEntry)initWithPerson:(void *)person property:(int)property identifier:(int)identifier type:(int)type
 {
   v19.receiver = self;
   v19.super_class = ABFavoritesEntry;
   v10 = [(ABFavoritesEntry *)&v19 init];
-  *(v10 + 6) = a4;
-  RecordID = ABRecordGetRecordID(a3);
+  *(v10 + 6) = property;
+  RecordID = ABRecordGetRecordID(person);
   *(v10 + 2) = RecordID;
   if (RecordID == -1)
   {
     goto LABEL_12;
   }
 
-  *(v10 + 3) = a5;
-  if (a3 && (v12 = ABCGetAddressBookForRecord()) != 0)
+  *(v10 + 3) = identifier;
+  if (person && (v12 = ABCGetAddressBookForRecord()) != 0)
   {
     v13 = CFRetain(v12);
   }
@@ -43,8 +43,8 @@
   }
 
   *(v10 + 8) = v13;
-  *(v10 + 6) = ABCopyPreferredNameForPerson(a3);
-  v14 = ABRecordCopyValue(a3, a4);
+  *(v10 + 6) = ABCopyPreferredNameForPerson(person);
+  v14 = ABRecordCopyValue(person, property);
   if (!v14)
   {
     goto LABEL_12;
@@ -59,7 +59,7 @@ LABEL_12:
     return 0;
   }
 
-  IndexForIdentifier = ABMultiValueGetIndexForIdentifier(v15, a5);
+  IndexForIdentifier = ABMultiValueGetIndexForIdentifier(v15, identifier);
   *(v10 + 2) = ABMultiValueCopyValueAtIndex(v15, IndexForIdentifier);
   *(v10 + 5) = ABMultiValueCopyLabelAtIndex(v15, IndexForIdentifier);
   v17 = *(v10 + 8);
@@ -68,28 +68,28 @@ LABEL_12:
     *(v10 + 7) = ABAddressBookCopyUniqueIdentifier(v17);
   }
 
-  *(v10 + 7) = a6;
+  *(v10 + 7) = type;
   *(v10 + 32) |= 1u;
   CFRelease(v15);
   return v10;
 }
 
-- (ABFavoritesEntry)initWithDictionaryRepresentation:(id)a3 addressBook:(void *)a4
+- (ABFavoritesEntry)initWithDictionaryRepresentation:(id)representation addressBook:(void *)book
 {
   v13.receiver = self;
   v13.super_class = ABFavoritesEntry;
   v6 = [(ABFavoritesEntry *)&v13 init];
   if (v6)
   {
-    v6->_property = [objc_msgSend(a3 objectForKey:{@"Property", "intValue"}];
-    v6->_value = [a3 objectForKey:@"Value"];
-    v6->_label = [a3 objectForKey:@"Label"];
-    v6->_name = [a3 objectForKey:@"Name"];
-    v6->_abUid = [objc_msgSend(a3 objectForKey:{@"ABUid", "intValue"}];
-    v6->_abIdentifier = [objc_msgSend(a3 objectForKey:{@"ABIdentifier", "intValue"}];
-    v6->_abDatabaseUUID = [objc_msgSend(a3 objectForKey:{@"ABDatabaseUUID", "copy"}];
+    v6->_property = [objc_msgSend(representation objectForKey:{@"Property", "intValue"}];
+    v6->_value = [representation objectForKey:@"Value"];
+    v6->_label = [representation objectForKey:@"Label"];
+    v6->_name = [representation objectForKey:@"Name"];
+    v6->_abUid = [objc_msgSend(representation objectForKey:{@"ABUid", "intValue"}];
+    v6->_abIdentifier = [objc_msgSend(representation objectForKey:{@"ABIdentifier", "intValue"}];
+    v6->_abDatabaseUUID = [objc_msgSend(representation objectForKey:{@"ABDatabaseUUID", "copy"}];
     v6->_type = 0;
-    v7 = [a3 objectForKey:@"EntryType"];
+    v7 = [representation objectForKey:@"EntryType"];
     if (v7 && (v8 = [v7 intValue], v6->_type = v8, v8 == -1))
     {
 
@@ -98,9 +98,9 @@ LABEL_12:
 
     else
     {
-      if (a4)
+      if (book)
       {
-        CFRetain(a4);
+        CFRetain(book);
       }
 
       else
@@ -109,7 +109,7 @@ LABEL_12:
         _ABLog2(4, "[ABFavoritesEntry initWithDictionaryRepresentation:addressBook:]", 135, 0, @"addressBook is NULL, some API is non-functional when this is the case (example -ABPerson)", v9, v10, v11, v13.receiver);
       }
 
-      v6->_addressBook = a4;
+      v6->_addressBook = book;
     }
   }
 
@@ -166,10 +166,10 @@ LABEL_12:
   return v8;
 }
 
-- (void)dictionaryRepresentation:(id *)a3 isDirty:(BOOL *)a4
+- (void)dictionaryRepresentation:(id *)representation isDirty:(BOOL *)dirty
 {
-  *a3 = [(ABFavoritesEntry *)self dictionaryRepresentation];
-  *a4 = *(self + 32) & 1;
+  *representation = [(ABFavoritesEntry *)self dictionaryRepresentation];
+  *dirty = *(self + 32) & 1;
   *(self + 32) &= ~1u;
 }
 
@@ -208,23 +208,23 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self->_property == *(a3 + 6))
+  if (self->_property == *(equal + 6))
   {
-    v5 = [(NSString *)self->_value isEqualToString:*(a3 + 2)];
+    v5 = [(NSString *)self->_value isEqualToString:*(equal + 2)];
     if (!v5)
     {
       return v5;
     }
 
-    if (self->_type == *(a3 + 7))
+    if (self->_type == *(equal + 7))
     {
       label = self->_label;
-      v7 = *(a3 + 5);
+      v7 = *(equal + 5);
       if (label && v7)
       {
-        if (![(NSString *)label isEqualToString:?]|| self->_abUid != *(a3 + 2))
+        if (![(NSString *)label isEqualToString:?]|| self->_abUid != *(equal + 2))
         {
           goto LABEL_8;
         }
@@ -451,9 +451,9 @@ LABEL_23:
         goto LABEL_37;
       }
 
-      v22 = [v6 property];
-      v7 = __OFSUB__(v22, kABPersonEmailProperty);
-      if (v22 == kABPersonEmailProperty)
+      property = [v6 property];
+      v7 = __OFSUB__(property, kABPersonEmailProperty);
+      if (property == kABPersonEmailProperty)
       {
         v68 = 0;
         v69 = 0;
@@ -616,10 +616,10 @@ LABEL_78:
           if ((v67 || (v40 = v62, v66 = v60, v62) || (v40 = v25, v66 = v26, v25)) && (v13 = v40, (v41 = ABRecordCopyValue(v40, [v6 property])) != 0))
           {
             v23 = v41;
-            v42 = [v6 property];
+            property2 = [v6 property];
             v43 = *(v6 + 2);
             v4 = v57;
-            if (v42 == kABPersonPhoneProperty)
+            if (property2 == kABPersonPhoneProperty)
             {
               FirstIndexOfValueWithCallback = ABCMultiValueGetFirstIndexOfValueWithCallback(v23, v43, _ABFavoritesPhoneNumbersEqualCallback);
             }
@@ -806,9 +806,9 @@ LABEL_127:
 
 - (void)_postEntryChanged
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v3 postNotificationName:@"CNFavoritesEntryChangedNotification" object:self userInfo:0];
+  [defaultCenter postNotificationName:@"CNFavoritesEntryChangedNotification" object:self userInfo:0];
 }
 
 - (void)_lookupNotFound
@@ -857,15 +857,15 @@ LABEL_12:
   [(ABFavoritesEntry *)self _postEntryChanged];
 }
 
-- (void)_lookupChanged:(id)a3
+- (void)_lookupChanged:(id)changed
 {
-  v5 = *(a3 + 2);
+  v5 = *(changed + 2);
   if ((v5 & 0x80000000) == 0)
   {
     self->_abIdentifier = v5;
   }
 
-  v6 = *(a3 + 3);
+  v6 = *(changed + 3);
   if (v6 < 0)
   {
     v8 = 0;
@@ -879,30 +879,30 @@ LABEL_12:
     v8 = abUid >> 31;
   }
 
-  if (*(a3 + 2))
+  if (*(changed + 2))
   {
 
-    self->_value = *(a3 + 2);
+    self->_value = *(changed + 2);
   }
 
-  if (*(a3 + 3))
+  if (*(changed + 3))
   {
 
-    self->_name = *(a3 + 3);
+    self->_name = *(changed + 3);
     v8 = 1;
   }
 
-  if (*(a3 + 4))
+  if (*(changed + 4))
   {
 
-    self->_label = *(a3 + 4);
+    self->_label = *(changed + 4);
     v8 = 1;
   }
 
   if ((self->_abUid & 0x80000000) == 0)
   {
 
-    self->_abDatabaseUUID = *(a3 + 5);
+    self->_abDatabaseUUID = *(changed + 5);
     if ((abUid & 0x80000000) != 0)
     {
       goto LABEL_17;

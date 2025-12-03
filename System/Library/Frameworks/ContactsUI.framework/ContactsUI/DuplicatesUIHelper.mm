@@ -1,24 +1,24 @@
 @interface DuplicatesUIHelper
 - (_TtC10ContactsUI18DuplicatesUIHelper)init;
-- (_TtC10ContactsUI18DuplicatesUIHelper)initWithDelegate:(id)a3;
-- (id)duplicateContactsListViewController:(BOOL)a3;
+- (_TtC10ContactsUI18DuplicatesUIHelper)initWithDelegate:(id)delegate;
+- (id)duplicateContactsListViewController:(BOOL)controller;
 @end
 
 @implementation DuplicatesUIHelper
 
-- (_TtC10ContactsUI18DuplicatesUIHelper)initWithDelegate:(id)a3
+- (_TtC10ContactsUI18DuplicatesUIHelper)initWithDelegate:(id)delegate
 {
-  *(&self->super.isa + OBJC_IVAR____TtC10ContactsUI18DuplicatesUIHelper_delegate) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC10ContactsUI18DuplicatesUIHelper_delegate) = delegate;
   v4.receiver = self;
   v4.super_class = type metadata accessor for DuplicatesUIHelper();
   swift_unknownObjectRetain();
   return [(DuplicatesUIHelper *)&v4 init];
 }
 
-- (id)duplicateContactsListViewController:(BOOL)a3
+- (id)duplicateContactsListViewController:(BOOL)controller
 {
-  v4 = self;
-  v5 = sub_199B1D09C(a3);
+  selfCopy = self;
+  v5 = sub_199B1D09C(controller);
 
   return v5;
 }

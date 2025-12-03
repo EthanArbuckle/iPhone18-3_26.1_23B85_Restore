@@ -1,28 +1,28 @@
 @interface LPiTunesMediaAsset
 - (LPFetcher)fetcher;
-- (LPiTunesMediaAsset)initWithImageURL:(id)a3 colors:(id)a4 name:(id)a5;
-- (LPiTunesMediaAsset)initWithName:(id)a3 curatorID:(id)a4;
-- (LPiTunesMediaAsset)initWithName:(id)a3 lyricComponents:(id)a4;
-- (LPiTunesMediaAsset)initWithVideoURL:(id)a3 name:(id)a4;
+- (LPiTunesMediaAsset)initWithImageURL:(id)l colors:(id)colors name:(id)name;
+- (LPiTunesMediaAsset)initWithName:(id)name curatorID:(id)d;
+- (LPiTunesMediaAsset)initWithName:(id)name lyricComponents:(id)components;
+- (LPiTunesMediaAsset)initWithVideoURL:(id)l name:(id)name;
 - (id)metadata;
 @end
 
 @implementation LPiTunesMediaAsset
 
-- (LPiTunesMediaAsset)initWithImageURL:(id)a3 colors:(id)a4 name:(id)a5
+- (LPiTunesMediaAsset)initWithImageURL:(id)l colors:(id)colors name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  colorsCopy = colors;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = LPiTunesMediaAsset;
   v12 = [(LPiTunesMediaAsset *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_URL, a3);
-    objc_storeStrong(&v13->_colors, a4);
-    objc_storeStrong(&v13->_name, a5);
+    objc_storeStrong(&v12->_URL, l);
+    objc_storeStrong(&v13->_colors, colors);
+    objc_storeStrong(&v13->_name, name);
     v13->_type = 0;
     v14 = v13;
   }
@@ -30,18 +30,18 @@
   return v13;
 }
 
-- (LPiTunesMediaAsset)initWithVideoURL:(id)a3 name:(id)a4
+- (LPiTunesMediaAsset)initWithVideoURL:(id)l name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = LPiTunesMediaAsset;
   v9 = [(LPiTunesMediaAsset *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_URL, a3);
-    objc_storeStrong(&v10->_name, a4);
+    objc_storeStrong(&v9->_URL, l);
+    objc_storeStrong(&v10->_name, name);
     v10->_type = 1;
     v11 = v10;
   }
@@ -49,18 +49,18 @@
   return v10;
 }
 
-- (LPiTunesMediaAsset)initWithName:(id)a3 lyricComponents:(id)a4
+- (LPiTunesMediaAsset)initWithName:(id)name lyricComponents:(id)components
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  componentsCopy = components;
   v13.receiver = self;
   v13.super_class = LPiTunesMediaAsset;
   v9 = [(LPiTunesMediaAsset *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_lyricComponents, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_lyricComponents, components);
     v10->_type = 2;
     v11 = v10;
   }
@@ -68,18 +68,18 @@
   return v10;
 }
 
-- (LPiTunesMediaAsset)initWithName:(id)a3 curatorID:(id)a4
+- (LPiTunesMediaAsset)initWithName:(id)name curatorID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = LPiTunesMediaAsset;
   v9 = [(LPiTunesMediaAsset *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_curatorID, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_curatorID, d);
     v10->_type = 3;
     v11 = v10;
   }

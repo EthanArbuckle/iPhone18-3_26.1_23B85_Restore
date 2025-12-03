@@ -1,32 +1,32 @@
 @interface VUIVPPAManager
-+ (BOOL)_isReminderDue:(id)a3 reminderInterval:(double)a4;
-+ (BOOL)channelAlreadyExists:(id)a3 channelID:(id)a4;
-+ (id)_getChannelDetailsForID:(id)a3;
++ (BOOL)_isReminderDue:(id)due reminderInterval:(double)interval;
++ (BOOL)channelAlreadyExists:(id)exists channelID:(id)d;
++ (id)_getChannelDetailsForID:(id)d;
 + (id)_getConsentedBrandsFromSettingsStore;
 + (id)_getConsentedChannels;
 + (id)_getDeniedBrandsFromSettingsStore;
 + (id)_getDeniedChannels;
-+ (id)addUniqueChannels:(id)a3 channels:(id)a4;
++ (id)addUniqueChannels:(id)channels channels:(id)a4;
 + (id)sharedInstance;
-- (BOOL)_isChannelVPPAPromptEligible:(id)a3;
-- (BOOL)_isVPPAPromptDueForConfig:(id)a3;
+- (BOOL)_isChannelVPPAPromptEligible:(id)eligible;
+- (BOOL)_isVPPAPromptDueForConfig:(id)config;
 - (VUIVPPAManager)init;
-- (id)_appSettingsForChannelID:(id)a3 externalID:(id)a4;
-- (id)_filterOutNotEligibleVPPAChannels:(id)a3;
-- (id)_getChannelDetailsFor:(id)a3 channelsResponse:(id)a4;
+- (id)_appSettingsForChannelID:(id)d externalID:(id)iD;
+- (id)_filterOutNotEligibleVPPAChannels:(id)channels;
+- (id)_getChannelDetailsFor:(id)for channelsResponse:(id)response;
 - (id)_getEligibleBulkChannels;
-- (id)_getVPPABulkChannels:(int64_t)a3;
+- (id)_getVPPABulkChannels:(int64_t)channels;
 - (id)_rootViewController;
 - (id)_subscribedAppBundleIdentifiers;
 - (id)_watchlistOrderedChannels;
-- (void)_completeConfigurationResponse:(id)a3 error:(id)a4 channelDetails:(id)a5 shouldForceConsentPrompt:(BOOL)a6 completion:(id)a7;
-- (void)_fetchConfigurationAndPresentVPPAIfRequired:(id)a3 shouldForceConsentPrompt:(BOOL)a4 completion:(id)a5;
-- (void)_presentVPPAConsentScreen:(id)a3 vppaState:(int64_t)a4 completion:(id)a5;
-- (void)_removeNotEligibleChannelFromSettingsStore:(id)a3;
+- (void)_completeConfigurationResponse:(id)response error:(id)error channelDetails:(id)details shouldForceConsentPrompt:(BOOL)prompt completion:(id)completion;
+- (void)_fetchConfigurationAndPresentVPPAIfRequired:(id)required shouldForceConsentPrompt:(BOOL)prompt completion:(id)completion;
+- (void)_presentVPPAConsentScreen:(id)screen vppaState:(int64_t)state completion:(id)completion;
+- (void)_removeNotEligibleChannelFromSettingsStore:(id)store;
 - (void)clearVPPAState;
 - (void)reloadConfigurationAfterVPPAChange;
-- (void)startVPPAConsentFlow:(id)a3 consentCancelButtonType:(unint64_t)a4 shouldForceVPPAPrompt:(BOOL)a5 completion:(id)a6;
-- (void)startVPPAConsentFlowForDeeplink:(id)a3 channelsResponse:(id)a4 completion:(id)a5;
+- (void)startVPPAConsentFlow:(id)flow consentCancelButtonType:(unint64_t)type shouldForceVPPAPrompt:(BOOL)prompt completion:(id)completion;
+- (void)startVPPAConsentFlowForDeeplink:(id)deeplink channelsResponse:(id)response completion:(id)completion;
 @end
 
 @implementation VUIVPPAManager
@@ -63,16 +63,16 @@ void __32__VUIVPPAManager_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)startVPPAConsentFlow:(id)a3 consentCancelButtonType:(unint64_t)a4 shouldForceVPPAPrompt:(BOOL)a5 completion:(id)a6
+- (void)startVPPAConsentFlow:(id)flow consentCancelButtonType:(unint64_t)type shouldForceVPPAPrompt:(BOOL)prompt completion:(id)completion
 {
-  v7 = a5;
+  promptCopy = prompt;
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [MEMORY[0x1E69D5920] activeAccount];
-  v13 = [v12 ams_DSID];
+  flowCopy = flow;
+  completionCopy = completion;
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
 
-  if (!v13)
+  if (!ams_DSID)
   {
     v14 = VUIDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -84,7 +84,7 @@ void __32__VUIVPPAManager_sharedInstance__block_invoke()
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!flowCopy)
   {
     v14 = VUIDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -95,16 +95,16 @@ void __32__VUIVPPAManager_sharedInstance__block_invoke()
 
 LABEL_8:
 
-    (*(v11 + 2))(v11, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_16;
   }
 
-  self->_consentCancelButtonType = a4;
+  self->_consentCancelButtonType = type;
   if (_os_feature_enabled_impl())
   {
-    if ([(VUIVPPAManager *)self _isChannelVPPAPromptEligible:v10])
+    if ([(VUIVPPAManager *)self _isChannelVPPAPromptEligible:flowCopy])
     {
-      [(VUIVPPAManager *)self _fetchConfigurationAndPresentVPPAIfRequired:v10 shouldForceConsentPrompt:v7 completion:v11];
+      [(VUIVPPAManager *)self _fetchConfigurationAndPresentVPPAIfRequired:flowCopy shouldForceConsentPrompt:promptCopy completion:completionCopy];
     }
 
     else
@@ -112,30 +112,30 @@ LABEL_8:
       v17 = VUIDefaultLogObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v10 name];
+        name = [flowCopy name];
         *buf = 138412290;
-        v26 = v18;
+        v26 = name;
         _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "VUIVPPAManager - %@ does not required vppa prompt.", buf, 0xCu);
       }
 
-      (*(v11 + 2))(v11, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69E1500] sharedInstanceFiltered];
+    mEMORY[0x1E69E1500] = [MEMORY[0x1E69E1500] sharedInstanceFiltered];
     objc_initWeak(buf, self);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __96__VUIVPPAManager_startVPPAConsentFlow_consentCancelButtonType_shouldForceVPPAPrompt_completion___block_invoke;
     v19[3] = &unk_1E8736BA0;
     objc_copyWeak(&v23, buf);
-    v20 = v10;
-    v16 = v15;
+    v20 = flowCopy;
+    v16 = mEMORY[0x1E69E1500];
     v21 = v16;
-    v22 = v11;
-    v24 = v7;
+    v22 = completionCopy;
+    v24 = promptCopy;
     [v16 loadIfNeededWithCompletion:v19];
 
     objc_destroyWeak(&v23);
@@ -185,29 +185,29 @@ void __96__VUIVPPAManager_startVPPAConsentFlow_consentCancelButtonType_shouldFor
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)_getChannelDetailsFor:(id)a3 channelsResponse:(id)a4
+- (id)_getChannelDetailsFor:(id)for channelsResponse:(id)response
 {
-  v4 = a4;
-  if (a4)
+  responseCopy = response;
+  if (response)
   {
-    v5 = a3;
-    v6 = [v4 vui_dictionaryForKey:@"channels"];
-    v4 = [v6 vui_dictionaryForKey:v5];
+    forCopy = for;
+    v6 = [responseCopy vui_dictionaryForKey:@"channels"];
+    responseCopy = [v6 vui_dictionaryForKey:forCopy];
   }
 
-  return v4;
+  return responseCopy;
 }
 
-- (void)startVPPAConsentFlowForDeeplink:(id)a3 channelsResponse:(id)a4 completion:(id)a5
+- (void)startVPPAConsentFlowForDeeplink:(id)deeplink channelsResponse:(id)response completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69D5920] activeAccount];
-  v12 = [v11 ams_DSID];
+  deeplinkCopy = deeplink;
+  responseCopy = response;
+  completionCopy = completion;
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
 
-  if (!v12)
+  if (!ams_DSID)
   {
     v16 = VUIDefaultLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -219,7 +219,7 @@ void __96__VUIVPPAManager_startVPPAConsentFlow_consentCancelButtonType_shouldFor
     goto LABEL_17;
   }
 
-  if (!v8)
+  if (!deeplinkCopy)
   {
     v16 = VUIDefaultLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -232,7 +232,7 @@ void __96__VUIVPPAManager_startVPPAConsentFlow_consentCancelButtonType_shouldFor
   }
 
   v13 = _os_feature_enabled_impl();
-  if (!v9 || !v13)
+  if (!responseCopy || !v13)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -240,7 +240,7 @@ void __96__VUIVPPAManager_startVPPAConsentFlow_consentCancelButtonType_shouldFor
     v30 = __Block_byref_object_copy__32;
     v31 = __Block_byref_object_dispose__32;
     v32 = 0;
-    v17 = [MEMORY[0x1E69E1500] sharedInstanceFiltered];
+    mEMORY[0x1E69E1500] = [MEMORY[0x1E69E1500] sharedInstanceFiltered];
     objc_initWeak(&location, self);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -248,10 +248,10 @@ void __96__VUIVPPAManager_startVPPAConsentFlow_consentCancelButtonType_shouldFor
     v21[3] = &unk_1E8736BC8;
     objc_copyWeak(&v26, &location);
     p_buf = &buf;
-    v18 = v17;
+    v18 = mEMORY[0x1E69E1500];
     v22 = v18;
-    v23 = v8;
-    v24 = v10;
+    v23 = deeplinkCopy;
+    v24 = completionCopy;
     [v18 loadIfNeededWithCompletion:v21];
 
     objc_destroyWeak(&v26);
@@ -261,7 +261,7 @@ void __96__VUIVPPAManager_startVPPAConsentFlow_consentCancelButtonType_shouldFor
     goto LABEL_22;
   }
 
-  v14 = [(VUIVPPAManager *)self _getChannelDetailsFor:v8 channelsResponse:v9];
+  v14 = [(VUIVPPAManager *)self _getChannelDetailsFor:deeplinkCopy channelsResponse:responseCopy];
   if (!v14)
   {
     v16 = VUIDefaultLogObject();
@@ -273,14 +273,14 @@ void __96__VUIVPPAManager_startVPPAConsentFlow_consentCancelButtonType_shouldFor
 
 LABEL_17:
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_22;
   }
 
   v15 = [objc_alloc(MEMORY[0x1E69E14F0]) initWithDictionary:v14];
   if ([(VUIVPPAManager *)self _isChannelVPPAPromptEligible:v15])
   {
-    [(VUIVPPAManager *)self _fetchConfigurationAndPresentVPPAIfRequired:v15 shouldForceConsentPrompt:0 completion:v10];
+    [(VUIVPPAManager *)self _fetchConfigurationAndPresentVPPAIfRequired:v15 shouldForceConsentPrompt:0 completion:completionCopy];
   }
 
   else
@@ -288,13 +288,13 @@ LABEL_17:
     v19 = VUIDefaultLogObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v15 name];
+      name = [v15 name];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v20;
+      *(&buf + 4) = name;
       _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_DEFAULT, "VUIVPPAManager - %@ does not required vppa prompt.", &buf, 0xCu);
     }
 
-    (*(v10 + 2))(v10, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
 LABEL_22:
@@ -355,8 +355,8 @@ LABEL_12:
 
   else
   {
-    v2 = [MEMORY[0x1E69E1508] sharedInstance];
-    [v2 fetchConfigurationWithOptions:0 cachePolicy:3 queryParameters:0 completion:&__block_literal_global_38_1];
+    mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
+    [mEMORY[0x1E69E1508] fetchConfigurationWithOptions:0 cachePolicy:3 queryParameters:0 completion:&__block_literal_global_38_1];
   }
 }
 
@@ -404,10 +404,10 @@ void __52__VUIVPPAManager_reloadConfigurationAfterVPPAChange__block_invoke_35(ui
   }
 }
 
-- (void)_fetchConfigurationAndPresentVPPAIfRequired:(id)a3 shouldForceConsentPrompt:(BOOL)a4 completion:(id)a5
+- (void)_fetchConfigurationAndPresentVPPAIfRequired:(id)required shouldForceConsentPrompt:(BOOL)prompt completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  requiredCopy = required;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if (_os_feature_enabled_impl())
   {
@@ -417,9 +417,9 @@ void __52__VUIVPPAManager_reloadConfigurationAfterVPPAChange__block_invoke_35(ui
     v19[3] = &unk_1E8736BF0;
     v10 = &v22;
     objc_copyWeak(&v22, &location);
-    v20 = v8;
-    v23 = a4;
-    v21 = v9;
+    v20 = requiredCopy;
+    promptCopy = prompt;
+    v21 = completionCopy;
     [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:0 completion:v19];
     v11 = &v20;
     v12 = &v21;
@@ -427,17 +427,17 @@ void __52__VUIVPPAManager_reloadConfigurationAfterVPPAChange__block_invoke_35(ui
 
   else
   {
-    v13 = [MEMORY[0x1E69E1508] sharedInstance];
+    mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __98__VUIVPPAManager__fetchConfigurationAndPresentVPPAIfRequired_shouldForceConsentPrompt_completion___block_invoke_2;
     v14[3] = &unk_1E8736C18;
     v10 = &v17;
     objc_copyWeak(&v17, &location);
-    v15 = v8;
-    v18 = a4;
-    v16 = v9;
-    [v13 fetchConfigurationWithOptions:0 cachePolicy:0 queryParameters:0 completion:v14];
+    v15 = requiredCopy;
+    promptCopy2 = prompt;
+    v16 = completionCopy;
+    [mEMORY[0x1E69E1508] fetchConfigurationWithOptions:0 cachePolicy:0 queryParameters:0 completion:v14];
     v11 = &v15;
     v12 = &v16;
   }
@@ -489,11 +489,11 @@ void __98__VUIVPPAManager__fetchConfigurationAndPresentVPPAIfRequired_shouldForc
   }
 }
 
-- (void)_completeConfigurationResponse:(id)a3 error:(id)a4 channelDetails:(id)a5 shouldForceConsentPrompt:(BOOL)a6 completion:(id)a7
+- (void)_completeConfigurationResponse:(id)response error:(id)error channelDetails:(id)details shouldForceConsentPrompt:(BOOL)prompt completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
+  responseCopy = response;
+  detailsCopy = details;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -501,14 +501,14 @@ void __98__VUIVPPAManager__fetchConfigurationAndPresentVPPAIfRequired_shouldForc
   block[2] = __106__VUIVPPAManager__completeConfigurationResponse_error_channelDetails_shouldForceConsentPrompt_completion___block_invoke;
   block[3] = &unk_1E8736C40;
   objc_copyWeak(&v23, &location);
-  v19 = v11;
-  v20 = v12;
-  v24 = a6;
-  v21 = self;
-  v22 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v19 = responseCopy;
+  v20 = detailsCopy;
+  promptCopy = prompt;
+  selfCopy = self;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  v16 = detailsCopy;
+  v17 = responseCopy;
   dispatch_async(v14, block);
 
   objc_destroyWeak(&v23);
@@ -697,12 +697,12 @@ LABEL_37:
 LABEL_39:
 }
 
-- (BOOL)_isChannelVPPAPromptEligible:(id)a3
+- (BOOL)_isChannelVPPAPromptEligible:(id)eligible
 {
-  v3 = a3;
-  if ([v3 isWatchListEnabled])
+  eligibleCopy = eligible;
+  if ([eligibleCopy isWatchListEnabled])
   {
-    v4 = [v3 isFirstParty] ^ 1;
+    v4 = [eligibleCopy isFirstParty] ^ 1;
   }
 
   else
@@ -713,13 +713,13 @@ LABEL_39:
   return v4;
 }
 
-- (BOOL)_isVPPAPromptDueForConfig:(id)a3
+- (BOOL)_isVPPAPromptDueForConfig:(id)config
 {
-  v3 = a3;
-  v4 = [v3 vppaStatus];
-  v5 = [v3 vppaSessionDurationInMillis];
+  configCopy = config;
+  vppaStatus = [configCopy vppaStatus];
+  vppaSessionDurationInMillis = [configCopy vppaSessionDurationInMillis];
 
-  [v5 doubleValue];
+  [vppaSessionDurationInMillis doubleValue];
   v7 = v6 / 1000.0;
   if (v7 <= 0.0)
   {
@@ -731,17 +731,17 @@ LABEL_39:
     v8 = v7;
   }
 
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v10 = [v9 objectForKey:@"vppaConsentLastPrompted"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v10 = [standardUserDefaults objectForKey:@"vppaConsentLastPrompted"];
 
-  v11 = (v4 & 0xFFFFFFFFFFFFFFFELL) == 2 || v4 == 1 && [VUIVPPAManager _isReminderDue:v10 reminderInterval:v8];
+  v11 = (vppaStatus & 0xFFFFFFFFFFFFFFFELL) == 2 || vppaStatus == 1 && [VUIVPPAManager _isReminderDue:v10 reminderInterval:v8];
   return v11;
 }
 
-- (void)_presentVPPAConsentScreen:(id)a3 vppaState:(int64_t)a4 completion:(id)a5
+- (void)_presentVPPAConsentScreen:(id)screen vppaState:(int64_t)state completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  screenCopy = screen;
+  completionCopy = completion;
   v10 = VUIDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -749,10 +749,10 @@ LABEL_39:
     _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIVPPAManager - Present consent screen", buf, 2u);
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
-  [v11 addObject:v8];
-  v12 = [(VUIVPPAManager *)self _getVPPABulkChannels:a4];
-  v13 = [(VUIVPPAManager *)self _getEligibleBulkChannels];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:screenCopy];
+  v12 = [(VUIVPPAManager *)self _getVPPABulkChannels:state];
+  _getEligibleBulkChannels = [(VUIVPPAManager *)self _getEligibleBulkChannels];
   if ([v12 count])
   {
     v14 = VUIDefaultLogObject();
@@ -765,13 +765,13 @@ LABEL_39:
     v15 = v12;
 LABEL_11:
 
-    v16 = [objc_opt_class() addUniqueChannels:v15 channels:v11];
+    v16 = [objc_opt_class() addUniqueChannels:v15 channels:array];
 
-    v11 = v16;
+    array = v16;
     goto LABEL_12;
   }
 
-  if ([v13 count])
+  if ([_getEligibleBulkChannels count])
   {
     v14 = VUIDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -780,7 +780,7 @@ LABEL_11:
       _os_log_impl(&dword_1E323F000, v14, OS_LOG_TYPE_DEFAULT, "VUIVPPAManager - Adding Eligible channels", buf, 2u);
     }
 
-    v15 = v13;
+    v15 = _getEligibleBulkChannels;
     goto LABEL_11;
   }
 
@@ -791,14 +791,14 @@ LABEL_12:
   v20[2] = __65__VUIVPPAManager__presentVPPAConsentScreen_vppaState_completion___block_invoke;
   v20[3] = &unk_1E8736CE0;
   objc_copyWeak(v25, buf);
-  v25[1] = a4;
-  v21 = v11;
-  v22 = self;
-  v23 = v8;
-  v24 = v9;
-  v17 = v8;
-  v18 = v11;
-  v19 = v9;
+  v25[1] = state;
+  v21 = array;
+  selfCopy = self;
+  v23 = screenCopy;
+  v24 = completionCopy;
+  v17 = screenCopy;
+  v18 = array;
+  v19 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v20);
 
   objc_destroyWeak(v25);
@@ -1011,49 +1011,49 @@ void __65__VUIVPPAManager__presentVPPAConsentScreen_vppaState_completion___block
   [v12 postNotificationName:@"VUIVPPADismissedNotification" object:0 userInfo:v11];
 }
 
-- (id)_getVPPABulkChannels:(int64_t)a3
+- (id)_getVPPABulkChannels:(int64_t)channels
 {
-  if ((a3 - 1) <= 1)
+  if ((channels - 1) <= 1)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [objc_opt_class() _getConsentedChannels];
+    array = [MEMORY[0x1E695DF70] array];
+    _getConsentedChannels = [objc_opt_class() _getConsentedChannels];
 LABEL_5:
-    v7 = v5;
-    [v4 addObjectsFromArray:v5];
+    v7 = _getConsentedChannels;
+    [array addObjectsFromArray:_getConsentedChannels];
 
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (channels == 3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v6 = [objc_opt_class() _getConsentedChannels];
-    [v4 addObjectsFromArray:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    _getConsentedChannels2 = [objc_opt_class() _getConsentedChannels];
+    [array addObjectsFromArray:_getConsentedChannels2];
 
-    v5 = [objc_opt_class() _getDeniedChannels];
+    _getConsentedChannels = [objc_opt_class() _getDeniedChannels];
     goto LABEL_5;
   }
 
-  v4 = 0;
+  array = 0;
 LABEL_7:
-  v8 = [(VUIVPPAManager *)self _filterOutNotEligibleVPPAChannels:v4];
+  v8 = [(VUIVPPAManager *)self _filterOutNotEligibleVPPAChannels:array];
 
   return v8;
 }
 
-- (id)_filterOutNotEligibleVPPAChannels:(id)a3
+- (id)_filterOutNotEligibleVPPAChannels:(id)channels
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  channelsCopy = channels;
+  if ([channelsCopy count])
   {
-    v14 = v4;
+    v14 = channelsCopy;
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v4;
+    v5 = channelsCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v6)
     {
@@ -1074,9 +1074,9 @@ LABEL_7:
             v11 = VUIDefaultLogObject();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
-              v12 = [v10 name];
+              name = [v10 name];
               *buf = 138412290;
-              v21 = v12;
+              v21 = name;
               _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "VUIVPPAManager - %@ not eligible for VPPA.", buf, 0xCu);
             }
 
@@ -1095,74 +1095,74 @@ LABEL_7:
       while (v7);
     }
 
-    v4 = v14;
+    channelsCopy = v14;
   }
 
   else
   {
-    v15 = v4;
+    v15 = channelsCopy;
   }
 
   return v15;
 }
 
-- (void)_removeNotEligibleChannelFromSettingsStore:(id)a3
+- (void)_removeNotEligibleChannelFromSettingsStore:(id)store
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69E15D0] sharedSettings];
-  v5 = [v3 channelID];
-  v6 = [v4 settingsForChannelID:v5 externalID:0];
+  storeCopy = store;
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
+  channelID = [storeCopy channelID];
+  v6 = [mEMORY[0x1E69E15D0] settingsForChannelID:channelID externalID:0];
 
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v3 appName];
+    appName = [storeCopy appName];
     v9 = 138412290;
-    v10 = v8;
+    v10 = appName;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIVPPAManager - Removing not eligible channel %@ from settings store.", &v9, 0xCu);
   }
 
-  [v4 _removeWatchListApp:v6];
+  [mEMORY[0x1E69E15D0] _removeWatchListApp:v6];
 }
 
 - (id)_getEligibleBulkChannels
 {
   v40 = *MEMORY[0x1E69E9840];
-  v27 = [(VUIVPPAManager *)self _subscribedAppBundleIdentifiers];
-  v24 = [MEMORY[0x1E695DF70] array];
-  v25 = self;
+  _subscribedAppBundleIdentifiers = [(VUIVPPAManager *)self _subscribedAppBundleIdentifiers];
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v3 = [(VUIVPPAManager *)self _watchlistOrderedChannels];
-  v4 = [v3 countByEnumeratingWithState:&v32 objects:v39 count:16];
+  _watchlistOrderedChannels = [(VUIVPPAManager *)self _watchlistOrderedChannels];
+  v4 = [_watchlistOrderedChannels countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v4)
   {
     v6 = v4;
     v7 = *v33;
     *&v5 = 138412290;
     v23 = v5;
-    v26 = v3;
+    v26 = _watchlistOrderedChannels;
     do
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_watchlistOrderedChannels);
         }
 
         v9 = *(*(&v32 + 1) + 8 * i);
-        v10 = [v9 appBundleIDs];
+        appBundleIDs = [v9 appBundleIDs];
         if (([v9 isFirstParty] & 1) == 0 && objc_msgSend(v9, "isWatchListEnabled"))
         {
           v30 = 0u;
           v31 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v11 = v27;
+          v11 = _subscribedAppBundleIdentifiers;
           v12 = [v11 countByEnumeratingWithState:&v28 objects:v38 count:16];
           if (v12)
           {
@@ -1178,24 +1178,24 @@ LABEL_7:
                 }
 
                 v16 = *(*(&v28 + 1) + 8 * j);
-                if ([v10 containsObject:v16])
+                if ([appBundleIDs containsObject:v16])
                 {
-                  v17 = [(VUIVPPAManager *)v25 _subscriptionIdentifierForBundleID:v16];
-                  v18 = [v9 channelID];
-                  v19 = [(VUIVPPAManager *)v25 _appSettingsForChannelID:v18 externalID:v17];
+                  v17 = [(VUIVPPAManager *)selfCopy _subscriptionIdentifierForBundleID:v16];
+                  channelID = [v9 channelID];
+                  v19 = [(VUIVPPAManager *)selfCopy _appSettingsForChannelID:channelID externalID:v17];
 
-                  if ((!v19 || ![v19 accessStatus]) && (objc_msgSend(v24, "containsObject:", v9) & 1) == 0)
+                  if ((!v19 || ![v19 accessStatus]) && (objc_msgSend(array, "containsObject:", v9) & 1) == 0)
                   {
                     v20 = VUIDefaultLogObject();
                     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
                     {
-                      v21 = [v9 channelID];
+                      channelID2 = [v9 channelID];
                       *buf = v23;
-                      v37 = v21;
+                      v37 = channelID2;
                       _os_log_impl(&dword_1E323F000, v20, OS_LOG_TYPE_DEFAULT, "VUIVPPAManager - Found eligible channel: %@", buf, 0xCu);
                     }
 
-                    [v24 addObject:v9];
+                    [array addObject:v9];
                   }
 
                   goto LABEL_24;
@@ -1214,39 +1214,39 @@ LABEL_7:
 
 LABEL_24:
 
-          v3 = v26;
+          _watchlistOrderedChannels = v26;
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v32 objects:v39 count:16];
+      v6 = [_watchlistOrderedChannels countByEnumeratingWithState:&v32 objects:v39 count:16];
     }
 
     while (v6);
   }
 
-  return v24;
+  return array;
 }
 
-+ (BOOL)_isReminderDue:(id)a3 reminderInterval:(double)a4
++ (BOOL)_isReminderDue:(id)due reminderInterval:(double)interval
 {
-  if (!a3)
+  if (!due)
   {
     return 1;
   }
 
-  v4 = [a3 dateByAddingTimeInterval:a4];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v4 compare:v5] == -1;
+  v4 = [due dateByAddingTimeInterval:interval];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [v4 compare:date] == -1;
 
   return v6;
 }
 
-+ (BOOL)channelAlreadyExists:(id)a3 channelID:(id)a4
++ (BOOL)channelAlreadyExists:(id)exists channelID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6 && (v19 = 0u, v20 = 0u, v17 = 0u, v18 = 0u, (v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16]) != 0))
+  existsCopy = exists;
+  dCopy = d;
+  if (dCopy && (v19 = 0u, v20 = 0u, v17 = 0u, v18 = 0u, (v7 = [existsCopy countByEnumeratingWithState:&v17 objects:v21 count:16]) != 0))
   {
     v8 = v7;
     v9 = 0;
@@ -1257,25 +1257,25 @@ LABEL_24:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(existsCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 channelID];
-          if (v13)
+          channelID = [v12 channelID];
+          if (channelID)
           {
-            v14 = [v12 channelID];
-            v15 = [v14 isEqualToString:v6];
+            channelID2 = [v12 channelID];
+            v15 = [channelID2 isEqualToString:dCopy];
 
             v9 |= v15;
           }
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [existsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -1289,16 +1289,16 @@ LABEL_24:
   return v9 & 1;
 }
 
-+ (id)addUniqueChannels:(id)a3 channels:(id)a4
++ (id)addUniqueChannels:(id)channels channels:(id)a4
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  channelsCopy = channels;
   v6 = a4;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [channelsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1309,20 +1309,20 @@ LABEL_24:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(channelsCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 channelID];
+          channelID = [v11 channelID];
 
-          if (v12)
+          if (channelID)
           {
             v13 = objc_opt_class();
-            v14 = [v11 channelID];
-            LOBYTE(v13) = [v13 channelAlreadyExists:v6 channelID:v14];
+            channelID2 = [v11 channelID];
+            LOBYTE(v13) = [v13 channelAlreadyExists:v6 channelID:channelID2];
 
             if ((v13 & 1) == 0)
             {
@@ -1332,7 +1332,7 @@ LABEL_24:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [channelsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -1344,13 +1344,13 @@ LABEL_24:
 + (id)_getConsentedChannels
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _getConsentedBrandsFromSettingsStore];
+  _getConsentedBrandsFromSettingsStore = [objc_opt_class() _getConsentedBrandsFromSettingsStore];
   v3 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = _getConsentedBrandsFromSettingsStore;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -1385,13 +1385,13 @@ LABEL_24:
 + (id)_getDeniedChannels
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _getDeniedBrandsFromSettingsStore];
+  _getDeniedBrandsFromSettingsStore = [objc_opt_class() _getDeniedBrandsFromSettingsStore];
   v3 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = _getDeniedBrandsFromSettingsStore;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -1425,61 +1425,61 @@ LABEL_24:
 
 - (id)_rootViewController
 {
-  v2 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-  v3 = [v2 rootViewController];
+  vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+  rootViewController = [vui_keyWindow rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
 - (id)_subscribedAppBundleIdentifiers
 {
-  v2 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
-  v3 = [v2 subscribedAppBundleIdentifiers];
+  defaultAppLibrary = [MEMORY[0x1E69E14D0] defaultAppLibrary];
+  subscribedAppBundleIdentifiers = [defaultAppLibrary subscribedAppBundleIdentifiers];
 
-  return v3;
+  return subscribedAppBundleIdentifiers;
 }
 
 - (id)_watchlistOrderedChannels
 {
-  v2 = [MEMORY[0x1E69E1500] sharedInstance];
-  v3 = [v2 orderedChannels];
+  mEMORY[0x1E69E1500] = [MEMORY[0x1E69E1500] sharedInstance];
+  orderedChannels = [mEMORY[0x1E69E1500] orderedChannels];
 
-  return v3;
+  return orderedChannels;
 }
 
-- (id)_appSettingsForChannelID:(id)a3 externalID:(id)a4
+- (id)_appSettingsForChannelID:(id)d externalID:(id)iD
 {
   v5 = MEMORY[0x1E69E15D0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedSettings];
-  v9 = [v8 settingsForChannelID:v7 externalID:v6];
+  iDCopy = iD;
+  dCopy = d;
+  sharedSettings = [v5 sharedSettings];
+  v9 = [sharedSettings settingsForChannelID:dCopy externalID:iDCopy];
 
   return v9;
 }
 
 + (id)_getConsentedBrandsFromSettingsStore
 {
-  v2 = [MEMORY[0x1E69E15D0] sharedSettings];
-  v3 = [v2 consentedBrands];
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
+  consentedBrands = [mEMORY[0x1E69E15D0] consentedBrands];
 
-  return v3;
+  return consentedBrands;
 }
 
 + (id)_getDeniedBrandsFromSettingsStore
 {
-  v2 = [MEMORY[0x1E69E15D0] sharedSettings];
-  v3 = [v2 deniedBrands];
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
+  deniedBrands = [mEMORY[0x1E69E15D0] deniedBrands];
 
-  return v3;
+  return deniedBrands;
 }
 
-+ (id)_getChannelDetailsForID:(id)a3
++ (id)_getChannelDetailsForID:(id)d
 {
   v3 = MEMORY[0x1E69E1500];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 channelForID:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance channelForID:dCopy];
 
   return v6;
 }

@@ -11,42 +11,42 @@
   [(SPKQuery *)&v22 start];
   if (![(SPKQuery *)self sendEmptyResponseIfNecessaryForSourceKind:7])
   {
-    v3 = [(SPKQuery *)self userQueryString];
-    v4 = [v3 mutableCopy];
+    userQueryString = [(SPKQuery *)self userQueryString];
+    v4 = [userQueryString mutableCopy];
 
     if (v4)
     {
-      v5 = [(SPKQuery *)self queryContext];
-      v6 = [(SPKQuery *)self delegate];
-      v7 = [v6 queryIdent];
-      v8 = [v6 clientBundleID];
-      v9 = [v5 searchString];
-      v10 = [objc_alloc(MEMORY[0x277D4C658]) initWithInput:v9 triggerEvent:objc_msgSend(v5 indexType:"whyQuery") queryId:{1, v7}];
-      v11 = [MEMORY[0x277D4BEC0] sharedProxy];
-      [v11 sendFeedbackType:5 feedback:v10 queryId:v7 clientID:v8];
+      queryContext = [(SPKQuery *)self queryContext];
+      delegate = [(SPKQuery *)self delegate];
+      queryIdent = [delegate queryIdent];
+      clientBundleID = [delegate clientBundleID];
+      searchString = [queryContext searchString];
+      v10 = [objc_alloc(MEMORY[0x277D4C658]) initWithInput:searchString triggerEvent:objc_msgSend(queryContext indexType:"whyQuery") queryId:{1, queryIdent}];
+      mEMORY[0x277D4BEC0] = [MEMORY[0x277D4BEC0] sharedProxy];
+      [mEMORY[0x277D4BEC0] sendFeedbackType:5 feedback:v10 queryId:queryIdent clientID:clientBundleID];
 
       v12 = MEMORY[0x277D659D0];
-      v13 = [(SPKQuery *)self queryGroupId];
+      queryGroupId = [(SPKQuery *)self queryGroupId];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __27__SPKWorldClockQuery_start__block_invoke;
       v18[3] = &unk_279CFE718;
       v18[4] = self;
       v19 = v10;
-      v20 = v8;
-      v21 = v7;
-      v14 = v8;
+      v20 = clientBundleID;
+      v21 = queryIdent;
+      v14 = clientBundleID;
       v15 = v10;
-      [v12 getWorldClockResultsForQuery:v4 queryID:v13 completionHandler:v18];
+      [v12 getWorldClockResultsForQuery:v4 queryID:queryGroupId completionHandler:v18];
     }
 
     else
     {
       v16 = objc_alloc(MEMORY[0x277D65860]);
-      v17 = [(SPKQuery *)self queryGroupId];
-      v5 = [v16 initWithQueryID:v17 sourceKind:7 sections:MEMORY[0x277CBEBF8]];
-      v6 = [(SPKQuery *)self responseHandler];
-      (v6)[2](v6, v5);
+      queryGroupId2 = [(SPKQuery *)self queryGroupId];
+      queryContext = [v16 initWithQueryID:queryGroupId2 sourceKind:7 sections:MEMORY[0x277CBEBF8]];
+      delegate = [(SPKQuery *)self responseHandler];
+      (delegate)[2](delegate, queryContext);
     }
   }
 }

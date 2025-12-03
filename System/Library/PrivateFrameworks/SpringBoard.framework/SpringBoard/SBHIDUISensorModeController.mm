@@ -1,40 +1,40 @@
 @interface SBHIDUISensorModeController
 - (SBHIDUISensorModeController)init;
-- (SBHIDUISensorModeController)initWithSensorService:(id)a3;
-- (id)_requestSensorModeAssertionForReason:(id)a3 source:(int64_t)a4 builder:(id)a5;
+- (SBHIDUISensorModeController)initWithSensorService:(id)service;
+- (id)_requestSensorModeAssertionForReason:(id)reason source:(int64_t)source builder:(id)builder;
 - (id)addStartupHIDLockAssertion;
-- (id)assertBaselineDisabledDigitizerMode:(int64_t)a3 source:(int64_t)a4 reason:(id)a5;
-- (id)assertDisplayState:(int64_t)a3 source:(int64_t)a4 reason:(id)a5;
-- (id)requestProximityMode:(int)a3 forReason:(id)a4;
-- (id)sensorModeTransactionForBacklightChangeSource:(int64_t)a3;
-- (id)suspendProximityDetection:(BOOL)a3 disableDigitizer:(int64_t)a4 source:(int64_t)a5 reason:(id)a6;
-- (void)_reevaluateLockStateForSource:(int64_t)a3;
-- (void)_removeHIDUISensorModeAssertion:(id)a3;
+- (id)assertBaselineDisabledDigitizerMode:(int64_t)mode source:(int64_t)source reason:(id)reason;
+- (id)assertDisplayState:(int64_t)state source:(int64_t)source reason:(id)reason;
+- (id)requestProximityMode:(int)mode forReason:(id)reason;
+- (id)sensorModeTransactionForBacklightChangeSource:(int64_t)source;
+- (id)suspendProximityDetection:(BOOL)detection disableDigitizer:(int64_t)digitizer source:(int64_t)source reason:(id)reason;
+- (void)_reevaluateLockStateForSource:(int64_t)source;
+- (void)_removeHIDUISensorModeAssertion:(id)assertion;
 - (void)invalidate;
-- (void)setPocketTouchesExpected:(BOOL)a3;
-- (void)setProximityDetectionEnabled:(BOOL)a3 changeSource:(unint64_t)a4;
+- (void)setPocketTouchesExpected:(BOOL)expected;
+- (void)setProximityDetectionEnabled:(BOOL)enabled changeSource:(unint64_t)source;
 @end
 
 @implementation SBHIDUISensorModeController
 
 - (SBHIDUISensorModeController)init
 {
-  v3 = [MEMORY[0x277CF06F8] sharedInstance];
-  v4 = [(SBHIDUISensorModeController *)self initWithSensorService:v3];
+  mEMORY[0x277CF06F8] = [MEMORY[0x277CF06F8] sharedInstance];
+  v4 = [(SBHIDUISensorModeController *)self initWithSensorService:mEMORY[0x277CF06F8]];
 
   return v4;
 }
 
-- (SBHIDUISensorModeController)initWithSensorService:(id)a3
+- (SBHIDUISensorModeController)initWithSensorService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v34.receiver = self;
   v34.super_class = SBHIDUISensorModeController;
   v6 = [(SBHIDUISensorModeController *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sensorService, a3);
+    objc_storeStrong(&v6->_sensorService, service);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     assertions = v7->_assertions;
     v7->_assertions = v8;
@@ -142,7 +142,7 @@ void __53__SBHIDUISensorModeController_initWithSensorService___block_invoke_4(ui
   self->_secureIndicatorProximityModeAssertion = 0;
 }
 
-- (void)_reevaluateLockStateForSource:(int64_t)a3
+- (void)_reevaluateLockStateForSource:(int64_t)source
 {
   v62 = *MEMORY[0x277D85DE8];
   if (self->_sensorModeTransactionCount)
@@ -150,30 +150,30 @@ void __53__SBHIDUISensorModeController_initWithSensorService___block_invoke_4(ui
     return;
   }
 
-  v4 = self;
+  selfCopy = self;
   v46 = [MEMORY[0x277CBEB40] orderedSetWithObject:@"SB"];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v5 = v4->_assertions;
+  v5 = selfCopy->_assertions;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (!v6)
   {
 
     LOBYTE(v9) = 0;
     v8 = 0;
-    v21 = a3 == 3;
+    v21 = source == 3;
     goto LABEL_23;
   }
 
   v7 = v6;
-  v43 = a3;
-  v44 = v4;
+  sourceCopy = source;
+  v44 = selfCopy;
   v8 = 0;
   v9 = 0;
   v10 = 0;
-  v11 = 0;
+  integerValue = 0;
   v12 = *v55;
   do
   {
@@ -185,22 +185,22 @@ void __53__SBHIDUISensorModeController_initWithSensorService___block_invoke_4(ui
       }
 
       v14 = *(*(&v54 + 1) + 8 * i);
-      v15 = [v14 digitizerMode];
-      if (v15 > v11)
+      digitizerMode = [v14 digitizerMode];
+      if (digitizerMode > integerValue)
       {
-        v11 = v15;
+        integerValue = digitizerMode;
       }
 
-      v16 = [v14 displayState];
-      if (qword_21F8A8C10[v16] > qword_21F8A8C10[v8])
+      displayState = [v14 displayState];
+      if (qword_21F8A8C10[displayState] > qword_21F8A8C10[v8])
       {
-        v8 = v16;
+        v8 = displayState;
       }
 
       v10 |= [v14 suspendProximitySensor];
       v9 |= [v14 pocketTouchesExpected];
-      v17 = [v14 reason];
-      [v46 addObject:v17];
+      reason = [v14 reason];
+      [v46 addObject:reason];
     }
 
     v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v54 objects:v61 count:16];
@@ -208,41 +208,41 @@ void __53__SBHIDUISensorModeController_initWithSensorService___block_invoke_4(ui
 
   while (v7);
 
-  v4 = v44;
-  if ((v11 - 1) <= 2 && [(BSCompoundAssertion *)v44->_digitizerModeBaselineAssertion isActive])
+  selfCopy = v44;
+  if ((integerValue - 1) <= 2 && [(BSCompoundAssertion *)v44->_digitizerModeBaselineAssertion isActive])
   {
-    v18 = [(BSCompoundAssertion *)v44->_digitizerModeBaselineAssertion context];
-    v19 = [v18 bs_reduce:&unk_283372590 block:&__block_literal_global_457];
-    v11 = [v19 integerValue];
-    if (v11 == 4)
+    context = [(BSCompoundAssertion *)v44->_digitizerModeBaselineAssertion context];
+    v19 = [context bs_reduce:&unk_283372590 block:&__block_literal_global_457];
+    integerValue = [v19 integerValue];
+    if (integerValue == 4)
     {
       v8 = 1;
     }
 
-    v20 = [(BSCompoundAssertion *)v44->_digitizerModeBaselineAssertion reasons];
-    [v46 unionSet:v20];
+    reasons = [(BSCompoundAssertion *)v44->_digitizerModeBaselineAssertion reasons];
+    [v46 unionSet:reasons];
   }
 
-  v21 = v43 == 3;
+  v21 = sourceCopy == 3;
   if ((v10 & 1) == 0)
   {
-    if (v11)
+    if (integerValue)
     {
       v22 = 20;
       goto LABEL_37;
     }
 
 LABEL_23:
-    if ([(BSCompoundAssertion *)v4->_proximityModeAssertion isActive])
+    if ([(BSCompoundAssertion *)selfCopy->_proximityModeAssertion isActive])
     {
       v45 = v21;
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v23 = v4;
-      v24 = [(BSCompoundAssertion *)v4->_proximityModeAssertion orderedContext];
-      v25 = [v24 countByEnumeratingWithState:&v50 objects:v60 count:16];
+      v23 = selfCopy;
+      orderedContext = [(BSCompoundAssertion *)selfCopy->_proximityModeAssertion orderedContext];
+      v25 = [orderedContext countByEnumeratingWithState:&v50 objects:v60 count:16];
       if (v25)
       {
         v26 = v25;
@@ -254,18 +254,18 @@ LABEL_23:
           {
             if (*v51 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(orderedContext);
             }
 
-            v29 = [*(*(&v50 + 1) + 8 * j) intValue];
+            intValue = [*(*(&v50 + 1) + 8 * j) intValue];
             v30 = BKSHIDServicesProximityDetectionModePriority();
             if (v30 > BKSHIDServicesProximityDetectionModePriority())
             {
-              v22 = v29;
+              v22 = intValue;
             }
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v50 objects:v60 count:16];
+          v26 = [orderedContext countByEnumeratingWithState:&v50 objects:v60 count:16];
         }
 
         while (v26);
@@ -276,17 +276,17 @@ LABEL_23:
         v22 = 0;
       }
 
-      v4 = v23;
-      v31 = [(BSCompoundAssertion *)v23->_proximityModeAssertion reasons];
-      [v46 unionSet:v31];
+      selfCopy = v23;
+      reasons2 = [(BSCompoundAssertion *)v23->_proximityModeAssertion reasons];
+      [v46 unionSet:reasons2];
 
-      v11 = 0;
+      integerValue = 0;
       v21 = v45;
     }
 
     else
     {
-      v11 = 0;
+      integerValue = 0;
       v22 = 0;
     }
 
@@ -295,8 +295,8 @@ LABEL_23:
 
   v22 = 5;
 LABEL_37:
-  v32 = [v46 array];
-  v33 = [v32 componentsJoinedByString:@" + "];
+  array = [v46 array];
+  v33 = [array componentsJoinedByString:@" + "];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -304,19 +304,19 @@ LABEL_37:
   v47[3] = &unk_2783C5150;
   v48 = v22;
   v49 = v9 & 1;
-  v47[4] = v4;
+  v47[4] = selfCopy;
   v47[5] = v8;
-  v47[6] = v11;
+  v47[6] = integerValue;
   v47[7] = v21;
   v34 = [MEMORY[0x277CF06F0] buildModeForReason:v33 builder:v47];
-  v35 = [(BKSHIDUISensorMode *)v4->_sensorMode isEqual:v34];
+  v35 = [(BKSHIDUISensorMode *)selfCopy->_sensorMode isEqual:v34];
   v36 = SBLogProximitySensor();
   v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
   if (v35)
   {
     if (v37)
     {
-      sensorMode = v4->_sensorMode;
+      sensorMode = selfCopy->_sensorMode;
       *buf = 138543362;
       v59 = sensorMode;
       _os_log_impl(&dword_21ED4E000, v36, OS_LOG_TYPE_DEFAULT, "reevalute: no change -- %{public}@", buf, 0xCu);
@@ -332,13 +332,13 @@ LABEL_37:
       _os_log_impl(&dword_21ED4E000, v36, OS_LOG_TYPE_DEFAULT, "reevalute: -> %{public}@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v4->_sensorMode, v34);
-    v36 = [(BKSHIDUISensorService *)v4->_sensorService suppressUISensorChangesForReason:@"SB transaction"];
-    sensorService = v4->_sensorService;
-    v40 = v4->_sensorModeAssertion;
+    objc_storeStrong(&selfCopy->_sensorMode, v34);
+    v36 = [(BKSHIDUISensorService *)selfCopy->_sensorService suppressUISensorChangesForReason:@"SB transaction"];
+    sensorService = selfCopy->_sensorService;
+    v40 = selfCopy->_sensorModeAssertion;
     v41 = [(BKSHIDUISensorService *)sensorService requestUISensorMode:v34];
-    sensorModeAssertion = v4->_sensorModeAssertion;
-    v4->_sensorModeAssertion = v41;
+    sensorModeAssertion = selfCopy->_sensorModeAssertion;
+    selfCopy->_sensorModeAssertion = v41;
 
     [(BSInvalidatable *)v40 invalidate];
     [v36 invalidate];
@@ -460,17 +460,17 @@ LABEL_16:
   [v9 setChangeSource:*(a1 + 56)];
 }
 
-- (id)_requestSensorModeAssertionForReason:(id)a3 source:(int64_t)a4 builder:(id)a5
+- (id)_requestSensorModeAssertionForReason:(id)reason source:(int64_t)source builder:(id)builder
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
+  builderCopy = builder;
+  reasonCopy = reason;
   v10 = objc_alloc_init(SBHIDUISensorModeAssertion);
   [(SBHIDUISensorModeAssertion *)v10 setSensorModeController:self];
-  [(SBHIDUISensorModeAssertion *)v10 setReason:v9];
+  [(SBHIDUISensorModeAssertion *)v10 setReason:reasonCopy];
 
-  [(SBHIDUISensorModeAssertion *)v10 setSource:a4];
-  v8[2](v8, v10);
+  [(SBHIDUISensorModeAssertion *)v10 setSource:source];
+  builderCopy[2](builderCopy, v10);
 
   [(NSMutableArray *)self->_assertions addObject:v10];
   v11 = SBLogProximitySensor();
@@ -481,19 +481,19 @@ LABEL_16:
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "add: %{public}@", &v13, 0xCu);
   }
 
-  [(SBHIDUISensorModeController *)self _reevaluateLockStateForSource:a4];
+  [(SBHIDUISensorModeController *)self _reevaluateLockStateForSource:source];
 
   return v10;
 }
 
-- (void)setPocketTouchesExpected:(BOOL)a3
+- (void)setPocketTouchesExpected:(BOOL)expected
 {
-  v3 = a3;
+  expectedCopy = expected;
   BSDispatchQueueAssertMain();
   pocketTouchesAssertion = self->_pocketTouchesAssertion;
-  if ((((pocketTouchesAssertion == 0) ^ v3) & 1) == 0)
+  if ((((pocketTouchesAssertion == 0) ^ expectedCopy) & 1) == 0)
   {
-    if (v3)
+    if (expectedCopy)
     {
       v6 = objc_alloc_init(SBHIDUISensorModeAssertion);
       [(SBHIDUISensorModeAssertion *)v6 setSensorModeController:self];
@@ -540,31 +540,31 @@ LABEL_16:
   return v3;
 }
 
-- (void)_removeHIDUISensorModeAssertion:(id)a3
+- (void)_removeHIDUISensorModeAssertion:(id)assertion
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = SBLogProximitySensor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = assertionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "remove: %{public}@", &v6, 0xCu);
   }
 
-  [(NSMutableArray *)self->_assertions removeObject:v4];
+  [(NSMutableArray *)self->_assertions removeObject:assertionCopy];
   [(SBHIDUISensorModeController *)self _reevaluateLockStateForSource:0];
 }
 
-- (id)suspendProximityDetection:(BOOL)a3 disableDigitizer:(int64_t)a4 source:(int64_t)a5 reason:(id)a6
+- (id)suspendProximityDetection:(BOOL)detection disableDigitizer:(int64_t)digitizer source:(int64_t)source reason:(id)reason
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__SBHIDUISensorModeController_suspendProximityDetection_disableDigitizer_source_reason___block_invoke;
   v8[3] = &__block_descriptor_41_e36_v16__0__SBHIDUISensorModeAssertion_8l;
-  v8[4] = a4;
-  v9 = a3;
-  v6 = [(SBHIDUISensorModeController *)self _requestSensorModeAssertionForReason:a6 source:a5 builder:v8];
+  v8[4] = digitizer;
+  detectionCopy = detection;
+  v6 = [(SBHIDUISensorModeController *)self _requestSensorModeAssertionForReason:reason source:source builder:v8];
 
   return v6;
 }
@@ -577,30 +577,30 @@ void __88__SBHIDUISensorModeController_suspendProximityDetection_disableDigitize
   [v4 setSuspendProximitySensor:*(a1 + 40)];
 }
 
-- (id)assertDisplayState:(int64_t)a3 source:(int64_t)a4 reason:(id)a5
+- (id)assertDisplayState:(int64_t)state source:(int64_t)source reason:(id)reason
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__SBHIDUISensorModeController_assertDisplayState_source_reason___block_invoke;
   v7[3] = &__block_descriptor_40_e36_v16__0__SBHIDUISensorModeAssertion_8l;
-  v7[4] = a3;
-  v5 = [(SBHIDUISensorModeController *)self _requestSensorModeAssertionForReason:a5 source:a4 builder:v7];
+  v7[4] = state;
+  v5 = [(SBHIDUISensorModeController *)self _requestSensorModeAssertionForReason:reason source:source builder:v7];
 
   return v5;
 }
 
-- (id)assertBaselineDisabledDigitizerMode:(int64_t)a3 source:(int64_t)a4 reason:(id)a5
+- (id)assertBaselineDisabledDigitizerMode:(int64_t)mode source:(int64_t)source reason:(id)reason
 {
   digitizerModeBaselineAssertion = self->_digitizerModeBaselineAssertion;
   v7 = MEMORY[0x277CCABB0];
-  v8 = a5;
-  v9 = [v7 numberWithInteger:a3];
-  v10 = [(BSCompoundAssertion *)digitizerModeBaselineAssertion acquireForReason:v8 withContext:v9];
+  reasonCopy = reason;
+  v9 = [v7 numberWithInteger:mode];
+  v10 = [(BSCompoundAssertion *)digitizerModeBaselineAssertion acquireForReason:reasonCopy withContext:v9];
 
   return v10;
 }
 
-- (id)sensorModeTransactionForBacklightChangeSource:(int64_t)a3
+- (id)sensorModeTransactionForBacklightChangeSource:(int64_t)source
 {
   objc_initWeak(&location, self);
   ++self->_sensorModeTransactionCount;
@@ -610,7 +610,7 @@ void __88__SBHIDUISensorModeController_suspendProximityDetection_disableDigitize
   v8[2] = __77__SBHIDUISensorModeController_sensorModeTransactionForBacklightChangeSource___block_invoke;
   v8[3] = &unk_2783A90C0;
   objc_copyWeak(v9, &location);
-  v9[1] = a3;
+  v9[1] = source;
   v6 = [v5 initWithIdentifier:@"sensorModeTransaction" forReason:@"hello" invalidationBlock:v8];
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
@@ -630,30 +630,30 @@ void __77__SBHIDUISensorModeController_sensorModeTransactionForBacklightChangeSo
   }
 }
 
-- (id)requestProximityMode:(int)a3 forReason:(id)a4
+- (id)requestProximityMode:(int)mode forReason:(id)reason
 {
-  v4 = *&a3;
+  v4 = *&mode;
   proximityModeAssertion = self->_proximityModeAssertion;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
+  reasonCopy = reason;
   v8 = [v6 numberWithUnsignedInt:v4];
-  v9 = [(BSCompoundAssertion *)proximityModeAssertion acquireForReason:v7 withContext:v8];
+  v9 = [(BSCompoundAssertion *)proximityModeAssertion acquireForReason:reasonCopy withContext:v8];
 
   return v9;
 }
 
-- (void)setProximityDetectionEnabled:(BOOL)a3 changeSource:(unint64_t)a4
+- (void)setProximityDetectionEnabled:(BOOL)enabled changeSource:(unint64_t)source
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (self->_proximityDetectionEnabled != a3)
+  if (self->_proximityDetectionEnabled != enabled)
   {
-    self->_proximityDetectionEnabled = a3;
+    self->_proximityDetectionEnabled = enabled;
     if ([(SBHIDUISensorModeController *)self isProximityDetectionEnabled])
     {
       v6 = +[SBTelephonyManager sharedTelephonyManager];
-      v7 = [v6 inCall];
+      inCall = [v6 inCall];
 
-      if (v7 && self->_activeAudioRouteIsReceiver)
+      if (inCall && self->_activeAudioRouteIsReceiver)
       {
         v8 = 3;
         v9 = @"active";
@@ -693,12 +693,12 @@ void __77__SBHIDUISensorModeController_sensorModeTransactionForBacklightChangeSo
       v21[2] = __73__SBHIDUISensorModeController_setProximityDetectionEnabled_changeSource___block_invoke;
       v21[3] = &__block_descriptor_44_e35_v16__0__BKSMutableHIDUISensorMode_8l;
       v22 = v8;
-      v21[4] = a4;
+      v21[4] = source;
       v15 = [MEMORY[0x277CF06F0] buildModeForReason:v13 builder:v21];
       v16 = MEMORY[0x277CF06F8];
       v17 = self->_proximityDetectionModeAssertion;
-      v18 = [v16 sharedInstance];
-      v19 = [v18 requestUISensorMode:v15];
+      sharedInstance = [v16 sharedInstance];
+      v19 = [sharedInstance requestUISensorMode:v15];
       proximityDetectionModeAssertion = self->_proximityDetectionModeAssertion;
       self->_proximityDetectionModeAssertion = v19;
 

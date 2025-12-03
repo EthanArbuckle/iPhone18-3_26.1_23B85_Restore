@@ -1,64 +1,64 @@
 @interface SFReaderTextSizeStepperController
-- (SFReaderTextSizeStepperController)initWithReaderContext:(id)a3;
-- (void)_updateStepperControls:(id)a3;
-- (void)decrementValue:(id)a3;
-- (void)incrementValue:(id)a3;
-- (void)prepareStepper:(id)a3;
+- (SFReaderTextSizeStepperController)initWithReaderContext:(id)context;
+- (void)_updateStepperControls:(id)controls;
+- (void)decrementValue:(id)value;
+- (void)incrementValue:(id)value;
+- (void)prepareStepper:(id)stepper;
 @end
 
 @implementation SFReaderTextSizeStepperController
 
-- (SFReaderTextSizeStepperController)initWithReaderContext:(id)a3
+- (SFReaderTextSizeStepperController)initWithReaderContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = SFReaderTextSizeStepperController;
   v6 = [(SFReaderTextSizeStepperController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_readerContext, a3);
+    objc_storeStrong(&v6->_readerContext, context);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)prepareStepper:(id)a3
+- (void)prepareStepper:(id)stepper
 {
   v4 = MEMORY[0x1E69DCAB8];
-  v7 = a3;
+  stepperCopy = stepper;
   v5 = [v4 systemImageNamed:@"textformat.size.smaller"];
-  [v7 setImage:v5 forButton:1];
+  [stepperCopy setImage:v5 forButton:1];
 
   v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"textformat.size.larger"];
-  [v7 setImage:v6 forButton:0];
+  [stepperCopy setImage:v6 forButton:0];
 
-  [(SFReaderTextSizeStepperController *)self _updateStepperControls:v7];
+  [(SFReaderTextSizeStepperController *)self _updateStepperControls:stepperCopy];
 }
 
-- (void)incrementValue:(id)a3
+- (void)incrementValue:(id)value
 {
   readerContext = self->_readerContext;
-  v5 = a3;
+  valueCopy = value;
   [(SFReaderContext *)readerContext increaseReaderTextSize];
-  [(SFReaderTextSizeStepperController *)self _updateStepperControls:v5];
+  [(SFReaderTextSizeStepperController *)self _updateStepperControls:valueCopy];
 }
 
-- (void)decrementValue:(id)a3
+- (void)decrementValue:(id)value
 {
   readerContext = self->_readerContext;
-  v5 = a3;
+  valueCopy = value;
   [(SFReaderContext *)readerContext decreaseReaderTextSize];
-  [(SFReaderTextSizeStepperController *)self _updateStepperControls:v5];
+  [(SFReaderTextSizeStepperController *)self _updateStepperControls:valueCopy];
 }
 
-- (void)_updateStepperControls:(id)a3
+- (void)_updateStepperControls:(id)controls
 {
   readerContext = self->_readerContext;
-  v5 = a3;
-  [v5 setEnabled:-[SFReaderContext canDecreaseReaderTextSize](readerContext forButton:{"canDecreaseReaderTextSize"), 1}];
-  [v5 setEnabled:-[SFReaderContext canIncreaseReaderTextSize](self->_readerContext forButton:{"canIncreaseReaderTextSize"), 0}];
+  controlsCopy = controls;
+  [controlsCopy setEnabled:-[SFReaderContext canDecreaseReaderTextSize](readerContext forButton:{"canDecreaseReaderTextSize"), 1}];
+  [controlsCopy setEnabled:-[SFReaderContext canIncreaseReaderTextSize](self->_readerContext forButton:{"canIncreaseReaderTextSize"), 0}];
 }
 
 @end

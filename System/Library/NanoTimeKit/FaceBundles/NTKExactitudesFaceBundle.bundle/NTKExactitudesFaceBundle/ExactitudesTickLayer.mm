@@ -1,9 +1,9 @@
 @interface ExactitudesTickLayer
 - (CGRect)bounds;
 - (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)init;
-- (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)initWithCoder:(id)a3;
-- (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)initWithLayer:(id)a3;
-- (void)setBounds:(CGRect)a3;
+- (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)initWithCoder:(id)coder;
+- (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)initWithLayer:(id)layer;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation ExactitudesTickLayer
@@ -18,7 +18,7 @@
   return [(ExactitudesTickLayer *)&v5 init];
 }
 
-- (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)initWithLayer:(id)a3
+- (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -36,7 +36,7 @@
   return v6;
 }
 
-- (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)initWithCoder:(id)a3
+- (_TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer_length) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC24NTKExactitudesFaceBundle20ExactitudesTickLayer_thickness) = 0;
@@ -57,13 +57,13 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   ExactitudesTickLayer.bounds.setter(x, y, width, height);
 }
 

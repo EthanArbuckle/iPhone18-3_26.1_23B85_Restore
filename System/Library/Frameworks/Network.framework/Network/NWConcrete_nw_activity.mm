@@ -1,6 +1,6 @@
 @interface NWConcrete_nw_activity
 - (NSString)description;
-- (char)initWithToken:(void *)a1;
+- (char)initWithToken:(void *)token;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
@@ -84,15 +84,15 @@
   [(NWConcrete_nw_activity *)&v4 dealloc];
 }
 
-- (char)initWithToken:(void *)a1
+- (char)initWithToken:(void *)token
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!token)
   {
     return 0;
   }
 
-  v17.receiver = a1;
+  v17.receiver = token;
   v17.super_class = NWConcrete_nw_activity;
   v3 = objc_msgSendSuper2(&v17, sel_init);
   v4 = v3;

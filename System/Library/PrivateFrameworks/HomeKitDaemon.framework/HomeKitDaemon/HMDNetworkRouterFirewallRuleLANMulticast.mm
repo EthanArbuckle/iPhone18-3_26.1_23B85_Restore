@@ -1,5 +1,5 @@
 @interface HMDNetworkRouterFirewallRuleLANMulticast
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)attributeDescriptions;
 - (id)prettyJSONDictionary;
 - (unint64_t)hash;
@@ -12,13 +12,13 @@
   v3 = MEMORY[0x277CBEB38];
   v11.receiver = self;
   v11.super_class = HMDNetworkRouterFirewallRuleLANMulticast;
-  v4 = [(HMDNetworkRouterFirewallRuleLAN *)&v11 prettyJSONDictionary];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  prettyJSONDictionary = [(HMDNetworkRouterFirewallRuleLAN *)&v11 prettyJSONDictionary];
+  v5 = [v3 dictionaryWithDictionary:prettyJSONDictionary];
 
   [v5 setObject:@"Multicast Bridging Rule" forKeyedSubscript:@"type"];
-  v6 = [(HMDNetworkRouterFirewallRuleLANMulticast *)self ipAddress];
-  v7 = [v6 addressString];
-  [v5 setObject:v7 forKeyedSubscript:@"ipAddress"];
+  ipAddress = [(HMDNetworkRouterFirewallRuleLANMulticast *)self ipAddress];
+  addressString = [ipAddress addressString];
+  [v5 setObject:addressString forKeyedSubscript:@"ipAddress"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[HMDNetworkRouterFirewallRuleLANMulticast port](self, "port")}];
   [v5 setObject:v8 forKeyedSubscript:@"port"];
@@ -33,17 +33,17 @@
   v15[2] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = HMDNetworkRouterFirewallRuleLANMulticast;
-  v3 = [(HMDNetworkRouterFirewallRuleLAN *)&v14 attributeDescriptions];
+  attributeDescriptions = [(HMDNetworkRouterFirewallRuleLAN *)&v14 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDNetworkRouterFirewallRuleLANMulticast *)self ipAddress];
-  v6 = [v4 initWithName:@"IPAddress" value:v5];
+  ipAddress = [(HMDNetworkRouterFirewallRuleLANMulticast *)self ipAddress];
+  v6 = [v4 initWithName:@"IPAddress" value:ipAddress];
   v15[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[HMDNetworkRouterFirewallRuleLANMulticast port](self, "port")}];
   v9 = [v7 initWithName:@"Port" value:v8];
   v15[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  v11 = [v3 arrayByAddingObjectsFromArray:v10];
+  v11 = [attributeDescriptions arrayByAddingObjectsFromArray:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -52,16 +52,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDNetworkRouterFirewallRuleLANMulticast *)self ipAddress];
-  v4 = [v3 hash];
+  ipAddress = [(HMDNetworkRouterFirewallRuleLANMulticast *)self ipAddress];
+  v4 = [ipAddress hash];
 
   return v4 ^ [(HMDNetworkRouterFirewallRuleLANMulticast *)self port];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -70,9 +70,9 @@
   {
     v13.receiver = self;
     v13.super_class = HMDNetworkRouterFirewallRuleLANMulticast;
-    if ([(HMDNetworkRouterFirewallRuleLAN *)&v13 isEqual:v4])
+    if ([(HMDNetworkRouterFirewallRuleLAN *)&v13 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -88,12 +88,12 @@
 
       if (v7)
       {
-        v8 = [(HMDNetworkRouterFirewallRuleLANMulticast *)self ipAddress];
-        v9 = [(HMDNetworkRouterFirewallRuleLANMulticast *)v7 ipAddress];
-        if ([v8 isEqual:v9])
+        ipAddress = [(HMDNetworkRouterFirewallRuleLANMulticast *)self ipAddress];
+        ipAddress2 = [(HMDNetworkRouterFirewallRuleLANMulticast *)v7 ipAddress];
+        if ([ipAddress isEqual:ipAddress2])
         {
-          v10 = [(HMDNetworkRouterFirewallRuleLANMulticast *)self port];
-          v11 = v10 == [(HMDNetworkRouterFirewallRuleLANMulticast *)v7 port];
+          port = [(HMDNetworkRouterFirewallRuleLANMulticast *)self port];
+          v11 = port == [(HMDNetworkRouterFirewallRuleLANMulticast *)v7 port];
         }
 
         else

@@ -1,27 +1,27 @@
 @interface PKPassUpcomingPassInformationImageManifest
-+ (id)createFromDictionary:(id)a3 bundle:(id)a4 imageName:(id)a5 reuseAllowed:(BOOL)a6;
-- (BOOL)composeFromDictionary:(id)a3 bundle:(id)a4 reuseAllowed:(BOOL)a5;
-- (PKPassUpcomingPassInformationImageManifest)initWithCoder:(id)a3;
-- (id)_initWithImageName:(id)a3;
-- (id)itemClosestMatchingScreenScale:(double)a3;
-- (id)itemForScreenScale:(double)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createFromDictionary:(id)dictionary bundle:(id)bundle imageName:(id)name reuseAllowed:(BOOL)allowed;
+- (BOOL)composeFromDictionary:(id)dictionary bundle:(id)bundle reuseAllowed:(BOOL)allowed;
+- (PKPassUpcomingPassInformationImageManifest)initWithCoder:(id)coder;
+- (id)_initWithImageName:(id)name;
+- (id)itemClosestMatchingScreenScale:(double)scale;
+- (id)itemForScreenScale:(double)scale;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpcomingPassInformationImageManifest
 
-+ (id)createFromDictionary:(id)a3 bundle:(id)a4 imageName:(id)a5 reuseAllowed:(BOOL)a6
++ (id)createFromDictionary:(id)dictionary bundle:(id)bundle imageName:(id)name reuseAllowed:(BOOL)allowed
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  allowedCopy = allowed;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v11 = 0;
-  if (v10 && v9 && a5)
+  if (bundleCopy && dictionaryCopy && name)
   {
-    v12 = a5;
-    v13 = [[PKPassUpcomingPassInformationImageManifest alloc] _initWithImageName:v12];
+    nameCopy = name;
+    v13 = [[PKPassUpcomingPassInformationImageManifest alloc] _initWithImageName:nameCopy];
 
-    if (v13 && [v13 composeFromDictionary:v9 bundle:v10 reuseAllowed:v6])
+    if (v13 && [v13 composeFromDictionary:dictionaryCopy bundle:bundleCopy reuseAllowed:allowedCopy])
     {
       v11 = v13;
     }
@@ -35,10 +35,10 @@
   return v11;
 }
 
-- (id)_initWithImageName:(id)a3
+- (id)_initWithImageName:(id)name
 {
-  v5 = a3;
-  if (v5)
+  nameCopy = name;
+  if (nameCopy)
   {
     v10.receiver = self;
     v10.super_class = PKPassUpcomingPassInformationImageManifest;
@@ -46,29 +46,29 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_imageName, a3);
+      objc_storeStrong(&v6->_imageName, name);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)composeFromDictionary:(id)a3 bundle:(id)a4 reuseAllowed:(BOOL)a5
+- (BOOL)composeFromDictionary:(id)dictionary bundle:(id)bundle reuseAllowed:(BOOL)allowed
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 PKBoolForKey:@"reuseExisting"];
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
+  v10 = [dictionaryCopy PKBoolForKey:@"reuseExisting"];
   self->_reuseExisting = v10;
-  if (v10 && !a5)
+  if (v10 && !allowed)
   {
     v11 = PKLogFacilityTypeGetObject(0);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -94,7 +94,7 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v15 = [PKImage URLForImageNamed:self->_imageName inBundle:v9 scale:0];
+  v15 = [PKImage URLForImageNamed:self->_imageName inBundle:bundleCopy scale:0];
 
   if (!v15)
   {
@@ -114,10 +114,10 @@ LABEL_5:
   if (!self->_reuseExisting)
   {
 LABEL_11:
-    v31 = v9;
+    v31 = bundleCopy;
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v33 = v8;
-    v16 = [v8 PKArrayForKey:@"URLs"];
+    v33 = dictionaryCopy;
+    v16 = [dictionaryCopy PKArrayForKey:@"URLs"];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -174,9 +174,9 @@ LABEL_11:
       }
     }
 
-    v9 = v32;
+    bundleCopy = v32;
 
-    v8 = v33;
+    dictionaryCopy = v33;
     goto LABEL_25;
   }
 
@@ -186,21 +186,21 @@ LABEL_26:
   return v14;
 }
 
-- (PKPassUpcomingPassInformationImageManifest)initWithCoder:(id)a3
+- (PKPassUpcomingPassInformationImageManifest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPassUpcomingPassInformationImageManifest;
   v5 = [(PKPassUpcomingPassInformationImageManifest *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v6;
 
-    v5->_reuseExisting = [v4 decodeBoolForKey:@"reuseExisting"];
+    v5->_reuseExisting = [coderCopy decodeBoolForKey:@"reuseExisting"];
     v8 = objc_opt_class();
-    v9 = [v4 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"items"];
+    v9 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"items"];
     items = v5->_items;
     v5->_items = v9;
   }
@@ -208,25 +208,25 @@ LABEL_26:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageName = self->_imageName;
-  v5 = a3;
-  [v5 encodeObject:imageName forKey:@"imageName"];
-  [v5 encodeBool:self->_reuseExisting forKey:@"reuseExisting"];
-  [v5 encodeObject:self->_items forKey:@"items"];
+  coderCopy = coder;
+  [coderCopy encodeObject:imageName forKey:@"imageName"];
+  [coderCopy encodeBool:self->_reuseExisting forKey:@"reuseExisting"];
+  [coderCopy encodeObject:self->_items forKey:@"items"];
 }
 
-- (id)itemForScreenScale:(double)a3
+- (id)itemForScreenScale:(double)scale
 {
   items = self->_items;
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   v5 = [(NSDictionary *)items objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)itemClosestMatchingScreenScale:(double)a3
+- (id)itemClosestMatchingScreenScale:(double)scale
 {
   v15 = 0;
   v16 = &v15;
@@ -241,22 +241,22 @@ LABEL_26:
   v14[4] = self;
   v14[5] = &v15;
   v4 = _Block_copy(v14);
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   v4[2](v4, v5);
 
   v6 = v16[5];
   if (!v6)
   {
-    v7 = a3;
+    scaleCopy = scale;
     do
     {
-      v7 = v7 + 1.0;
-      if (v7 > 3.0)
+      scaleCopy = scaleCopy + 1.0;
+      if (scaleCopy > 3.0)
       {
         break;
       }
 
-      v8 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
+      v8 = [MEMORY[0x1E696AD98] numberWithDouble:scaleCopy];
       v9 = (v4[2])(v4, v8);
     }
 
@@ -266,13 +266,13 @@ LABEL_26:
     {
       do
       {
-        a3 = a3 + -1.0;
-        if (a3 <= 0.0)
+        scale = scale + -1.0;
+        if (scale <= 0.0)
         {
           break;
         }
 
-        v10 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+        v10 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
         v11 = (v4[2])(v4, v10);
       }
 

@@ -1,8 +1,8 @@
 @interface TDNamedGradientRenditionSpec
 - (CGPoint)gradientEndPoint;
 - (CGPoint)gradientStartPoint;
-- (void)setGradientEndPoint:(CGPoint)a3;
-- (void)setGradientStartPoint:(CGPoint)a3;
+- (void)setGradientEndPoint:(CGPoint)point;
+- (void)setGradientStartPoint:(CGPoint)point;
 @end
 
 @implementation TDNamedGradientRenditionSpec
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (void)setGradientStartPoint:(CGPoint)a3
+- (void)setGradientStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  *&a3.x = a3.x;
-  -[TDNamedGradientRenditionSpec setGradientStartX:](self, "setGradientStartX:", [MEMORY[0x277CCABB0] numberWithFloat:a3.x]);
+  y = point.y;
+  *&point.x = point.x;
+  -[TDNamedGradientRenditionSpec setGradientStartX:](self, "setGradientStartX:", [MEMORY[0x277CCABB0] numberWithFloat:point.x]);
   *&v5 = y;
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
 
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (void)setGradientEndPoint:(CGPoint)a3
+- (void)setGradientEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  *&a3.x = a3.x;
-  -[TDNamedGradientRenditionSpec setGradientEndX:](self, "setGradientEndX:", [MEMORY[0x277CCABB0] numberWithFloat:a3.x]);
+  y = point.y;
+  *&point.x = point.x;
+  -[TDNamedGradientRenditionSpec setGradientEndX:](self, "setGradientEndX:", [MEMORY[0x277CCABB0] numberWithFloat:point.x]);
   *&v5 = y;
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
 

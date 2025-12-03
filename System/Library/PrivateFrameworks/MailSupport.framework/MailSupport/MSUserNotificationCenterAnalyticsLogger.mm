@@ -1,11 +1,11 @@
 @interface MSUserNotificationCenterAnalyticsLogger
-- (MSUserNotificationCenterAnalyticsLogger)initWithCoreAnalyticsCollector:(id)a3;
-- (void)messageAddedWithNotificationIDs:(id)a3;
-- (void)messageSummaryAddedForNotificationID:(id)a3 isGeneratedSummary:(BOOL)a4;
-- (void)notificationRemovedWithNotificationIDs:(id)a3;
-- (void)notificationSummaryUpdatedForNotificationID:(id)a3;
-- (void)notificationWithSummaryPostedForNotificationID:(id)a3;
-- (void)notificationWithoutSummaryPostedForNotificationID:(id)a3;
+- (MSUserNotificationCenterAnalyticsLogger)initWithCoreAnalyticsCollector:(id)collector;
+- (void)messageAddedWithNotificationIDs:(id)ds;
+- (void)messageSummaryAddedForNotificationID:(id)d isGeneratedSummary:(BOOL)summary;
+- (void)notificationRemovedWithNotificationIDs:(id)ds;
+- (void)notificationSummaryUpdatedForNotificationID:(id)d;
+- (void)notificationWithSummaryPostedForNotificationID:(id)d;
+- (void)notificationWithoutSummaryPostedForNotificationID:(id)d;
 @end
 
 @implementation MSUserNotificationCenterAnalyticsLogger
@@ -17,42 +17,42 @@ void ___ef_log_MSUserNotificationCenterAnalyticsLogger_block_invoke()
   _ef_log_MSUserNotificationCenterAnalyticsLogger_log = v0;
 }
 
-- (MSUserNotificationCenterAnalyticsLogger)initWithCoreAnalyticsCollector:(id)a3
+- (MSUserNotificationCenterAnalyticsLogger)initWithCoreAnalyticsCollector:(id)collector
 {
-  v5 = a3;
+  collectorCopy = collector;
   v13.receiver = self;
   v13.super_class = MSUserNotificationCenterAnalyticsLogger;
   v6 = [(MSUserNotificationCenterAnalyticsLogger *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coreAnalytics, a3);
+    objc_storeStrong(&v6->_coreAnalytics, collector);
     v8 = [MEMORY[0x277D071B8] serialDispatchQueueSchedulerWithName:@"com.apple.mail.analytics.notification" qualityOfService:9];
     scheduler = v7->_scheduler;
     v7->_scheduler = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     notificationIntervals = v7->_notificationIntervals;
-    v7->_notificationIntervals = v10;
+    v7->_notificationIntervals = dictionary;
   }
 
   return v7;
 }
 
-- (void)messageAddedWithNotificationIDs:(id)a3
+- (void)messageAddedWithNotificationIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     objc_initWeak(&location, self);
-    v5 = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
+    scheduler = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __75__MSUserNotificationCenterAnalyticsLogger_messageAddedWithNotificationIDs___block_invoke;
     v6[3] = &unk_27985BBD0;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    [v5 performBlock:v6];
+    v7 = dsCopy;
+    [scheduler performBlock:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -135,25 +135,25 @@ void __75__MSUserNotificationCenterAnalyticsLogger_messageAddedWithNotificationI
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationRemovedWithNotificationIDs:(id)a3
+- (void)notificationRemovedWithNotificationIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = _ef_log_MSUserNotificationCenterAnalyticsLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(MSUserNotificationCenterAnalyticsLogger *)v4 notificationRemovedWithNotificationIDs:v5];
+    [(MSUserNotificationCenterAnalyticsLogger *)dsCopy notificationRemovedWithNotificationIDs:v5];
   }
 
   objc_initWeak(&location, self);
-  v6 = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
+  scheduler = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__MSUserNotificationCenterAnalyticsLogger_notificationRemovedWithNotificationIDs___block_invoke;
   v8[3] = &unk_27985BBD0;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = dsCopy;
   v9 = v7;
-  [v6 performBlock:v8];
+  [scheduler performBlock:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -172,25 +172,25 @@ void __82__MSUserNotificationCenterAnalyticsLogger_notificationRemovedWithNotifi
   }
 }
 
-- (void)notificationWithoutSummaryPostedForNotificationID:(id)a3
+- (void)notificationWithoutSummaryPostedForNotificationID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSUserNotificationCenterAnalyticsLogger.m" lineNumber:81 description:@"notificationID cannot be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSUserNotificationCenterAnalyticsLogger.m" lineNumber:81 description:@"notificationID cannot be nil"];
   }
 
   objc_initWeak(&location, self);
-  v6 = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
+  scheduler = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __93__MSUserNotificationCenterAnalyticsLogger_notificationWithoutSummaryPostedForNotificationID___block_invoke;
   v9[3] = &unk_27985BBD0;
   objc_copyWeak(&v11, &location);
-  v7 = v5;
+  v7 = dCopy;
   v10 = v7;
-  [v6 performBlock:v9];
+  [scheduler performBlock:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -238,25 +238,25 @@ void __93__MSUserNotificationCenterAnalyticsLogger_notificationWithoutSummaryPos
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationWithSummaryPostedForNotificationID:(id)a3
+- (void)notificationWithSummaryPostedForNotificationID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSUserNotificationCenterAnalyticsLogger.m" lineNumber:102 description:@"notificationID cannot be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSUserNotificationCenterAnalyticsLogger.m" lineNumber:102 description:@"notificationID cannot be nil"];
   }
 
   objc_initWeak(&location, self);
-  v6 = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
+  scheduler = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __90__MSUserNotificationCenterAnalyticsLogger_notificationWithSummaryPostedForNotificationID___block_invoke;
   v9[3] = &unk_27985BBD0;
   objc_copyWeak(&v11, &location);
-  v7 = v5;
+  v7 = dCopy;
   v10 = v7;
-  [v6 performBlock:v9];
+  [scheduler performBlock:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -304,25 +304,25 @@ void __90__MSUserNotificationCenterAnalyticsLogger_notificationWithSummaryPosted
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationSummaryUpdatedForNotificationID:(id)a3
+- (void)notificationSummaryUpdatedForNotificationID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSUserNotificationCenterAnalyticsLogger.m" lineNumber:123 description:@"notificationID cannot be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSUserNotificationCenterAnalyticsLogger.m" lineNumber:123 description:@"notificationID cannot be nil"];
   }
 
   objc_initWeak(&location, self);
-  v6 = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
+  scheduler = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __87__MSUserNotificationCenterAnalyticsLogger_notificationSummaryUpdatedForNotificationID___block_invoke;
   v9[3] = &unk_27985BBD0;
   objc_copyWeak(&v11, &location);
-  v7 = v5;
+  v7 = dCopy;
   v10 = v7;
-  [v6 performBlock:v9];
+  [scheduler performBlock:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -368,26 +368,26 @@ void __87__MSUserNotificationCenterAnalyticsLogger_notificationSummaryUpdatedFor
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageSummaryAddedForNotificationID:(id)a3 isGeneratedSummary:(BOOL)a4
+- (void)messageSummaryAddedForNotificationID:(id)d isGeneratedSummary:(BOOL)summary
 {
-  v7 = a3;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MSUserNotificationCenterAnalyticsLogger.m" lineNumber:143 description:@"notificationID cannot be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSUserNotificationCenterAnalyticsLogger.m" lineNumber:143 description:@"notificationID cannot be nil"];
   }
 
   objc_initWeak(&location, self);
-  v8 = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
+  scheduler = [(MSUserNotificationCenterAnalyticsLogger *)self scheduler];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __99__MSUserNotificationCenterAnalyticsLogger_messageSummaryAddedForNotificationID_isGeneratedSummary___block_invoke;
   v11[3] = &unk_27985BBF8;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = dCopy;
   v12 = v9;
-  v14 = a4;
-  [v8 performBlock:v11];
+  summaryCopy = summary;
+  [scheduler performBlock:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);

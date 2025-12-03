@@ -1,67 +1,67 @@
 @interface MobileActivationDaemon
-- (BOOL)handleSessionResponse:(id)a3 withError:(id *)a4;
-- (BOOL)isEntitled:(id)a3;
+- (BOOL)handleSessionResponse:(id)response withError:(id *)error;
+- (BOOL)isEntitled:(id)entitled;
 - (BOOL)isHostConnection;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)validateActivationDataSignature:(id)a3 activationSignature:(id)a4 withError:(id *)a5;
-- (MobileActivationDaemon)initWithContext:(id)a3 Queue:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)validateActivationDataSignature:(id)signature activationSignature:(id)activationSignature withError:(id *)error;
+- (MobileActivationDaemon)initWithContext:(id)context Queue:(id)queue;
 - (NSData)sessionHelloMessage;
 - (PSCSessionInternal_)session;
 - (id)callingProcessName;
-- (id)copyUCRTVersionInfoWithError:(id *)a3;
-- (id)valueForEntitlement:(id)a3;
+- (id)copyUCRTVersionInfoWithError:(id *)error;
+- (id)valueForEntitlement:(id)entitlement;
 - (unint64_t)currentSessionDuration;
-- (void)copyActivationRecordWithCompletionBlock:(id)a3;
-- (void)copyAttestationDictionaryWithCompletionBlock:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)copyAutomaticTimeEnabledWithCompletion:(id)a3;
-- (void)copyDCRTWithCompletionBlock:(id)a3 withCompletion:(id)a4;
-- (void)copyLegacyDeviceIdentityWithCompletionBlock:(id)a3;
-- (void)copyMonotonicClockWithCompletionBlock:(id)a3;
-- (void)copyPCRTTokenWithCompletionBlock:(id)a3;
-- (void)copyRTCResetCountWithCompletionBlock:(id)a3;
-- (void)copyRegionDataForGestaltWithCompletionBlock:(id)a3;
-- (void)copyUCRTVersionInfoWithCompletionBlock:(id)a3;
-- (void)copyUCRTWithCompletionBlock:(id)a3;
-- (void)createActivationInfoWithCompletionBlock:(id)a3;
-- (void)createTunnel1ActivationInfo:(id)a3 options:(id)a4 withCompletionBlock:(id)a5;
-- (void)createTunnel1SessionInfoWithCompletionBlock:(id)a3;
-- (void)deactivateDeviceWithCompletionBlock:(id)a3;
+- (void)copyActivationRecordWithCompletionBlock:(id)block;
+- (void)copyAttestationDictionaryWithCompletionBlock:(id)block options:(id)options completion:(id)completion;
+- (void)copyAutomaticTimeEnabledWithCompletion:(id)completion;
+- (void)copyDCRTWithCompletionBlock:(id)block withCompletion:(id)completion;
+- (void)copyLegacyDeviceIdentityWithCompletionBlock:(id)block;
+- (void)copyMonotonicClockWithCompletionBlock:(id)block;
+- (void)copyPCRTTokenWithCompletionBlock:(id)block;
+- (void)copyRTCResetCountWithCompletionBlock:(id)block;
+- (void)copyRegionDataForGestaltWithCompletionBlock:(id)block;
+- (void)copyUCRTVersionInfoWithCompletionBlock:(id)block;
+- (void)copyUCRTWithCompletionBlock:(id)block;
+- (void)createActivationInfoWithCompletionBlock:(id)block;
+- (void)createTunnel1ActivationInfo:(id)info options:(id)options withCompletionBlock:(id)block;
+- (void)createTunnel1SessionInfoWithCompletionBlock:(id)block;
+- (void)deactivateDeviceWithCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)deleteLegacyDeviceIdentityWithCompletionBlock:(id)a3;
-- (void)generateSession:(BOOL)a3;
-- (void)getActivationBuildWithCompletionBlock:(id)a3;
-- (void)getActivationStateWithCompletionBlock:(id)a3;
-- (void)getDCRTStateWithCompletionBlock:(id)a3 withCompletion:(id)a4;
-- (void)handleActivationInfo:(id)a3 withCompletionBlock:(id)a4;
-- (void)handleActivationInfoWithSession:(id)a3 activationSignature:(id)a4 completionBlock:(id)a5;
-- (void)isDeviceBrickedWithCompletionBlock:(id)a3;
-- (void)isInFieldCollectedWithCompletionBlock:(id)a3;
-- (void)issueClientCertificateLegacy:(id)a3 WithCompletionBlock:(id)a4;
-- (void)issueClientCertificateWithReferenceKey:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)issueCollection:(id)a3 withCompletionBlock:(id)a4;
-- (void)issueDCRT:(id)a3 withCompletionBlock:(id)a4;
-- (void)issueUCRT:(id)a3 withCompletionBlock:(id)a4;
-- (void)performMigrationWithCompletion:(id)a3 completion:(id)a4;
-- (void)recertifyDeviceWithCompletionBlock:(id)a3;
-- (void)requestDeviceReactivationWithCompletionBlock:(id)a3;
-- (void)ucrtUpgradeRequiredWithCompletionBlock:(id)a3;
-- (void)unbrickDeviceWithCompletionBlock:(id)a3;
-- (void)updateBasebandTicket:(id)a3 baaCertData:(id)a4 baaIntermediateCert:(id)a5 options:(id)a6 withCompletionBlock:(id)a7;
+- (void)deleteLegacyDeviceIdentityWithCompletionBlock:(id)block;
+- (void)generateSession:(BOOL)session;
+- (void)getActivationBuildWithCompletionBlock:(id)block;
+- (void)getActivationStateWithCompletionBlock:(id)block;
+- (void)getDCRTStateWithCompletionBlock:(id)block withCompletion:(id)completion;
+- (void)handleActivationInfo:(id)info withCompletionBlock:(id)block;
+- (void)handleActivationInfoWithSession:(id)session activationSignature:(id)signature completionBlock:(id)block;
+- (void)isDeviceBrickedWithCompletionBlock:(id)block;
+- (void)isInFieldCollectedWithCompletionBlock:(id)block;
+- (void)issueClientCertificateLegacy:(id)legacy WithCompletionBlock:(id)block;
+- (void)issueClientCertificateWithReferenceKey:(id)key options:(id)options completion:(id)completion;
+- (void)issueCollection:(id)collection withCompletionBlock:(id)block;
+- (void)issueDCRT:(id)t withCompletionBlock:(id)block;
+- (void)issueUCRT:(id)t withCompletionBlock:(id)block;
+- (void)performMigrationWithCompletion:(id)completion completion:(id)a4;
+- (void)recertifyDeviceWithCompletionBlock:(id)block;
+- (void)requestDeviceReactivationWithCompletionBlock:(id)block;
+- (void)ucrtUpgradeRequiredWithCompletionBlock:(id)block;
+- (void)unbrickDeviceWithCompletionBlock:(id)block;
+- (void)updateBasebandTicket:(id)ticket baaCertData:(id)data baaIntermediateCert:(id)cert options:(id)options withCompletionBlock:(id)block;
 @end
 
 @implementation MobileActivationDaemon
 
-- (MobileActivationDaemon)initWithContext:(id)a3 Queue:(id)a4
+- (MobileActivationDaemon)initWithContext:(id)context Queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = MobileActivationDaemon;
   v9 = [(MobileActivationDaemon *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7 || !v8 || (objc_storeStrong(&v9->_dark, a3), objc_storeStrong(&v10->_xpcQueue, a4), v11 = dispatch_queue_attr_make_with_autorelease_frequency(&_dispatch_queue_attr_concurrent, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v12 = dispatch_queue_create("com.apple.mobileactivationd.xpc.create", v11), creationQueue = v10->_creationQueue, v10->_creationQueue = v12, creationQueue, v11, !v10->_creationQueue) || (v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v15 = dispatch_queue_create("com.apple.mobileactivationd.xpc.session", v14), sessionQueue = v10->_sessionQueue, v10->_sessionQueue = v15, sessionQueue, v14, !v10->_sessionQueue))
+    if (!contextCopy || !queueCopy || (objc_storeStrong(&v9->_dark, context), objc_storeStrong(&v10->_xpcQueue, queue), v11 = dispatch_queue_attr_make_with_autorelease_frequency(&_dispatch_queue_attr_concurrent, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v12 = dispatch_queue_create("com.apple.mobileactivationd.xpc.create", v11), creationQueue = v10->_creationQueue, v10->_creationQueue = v12, creationQueue, v11, !v10->_creationQueue) || (v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v15 = dispatch_queue_create("com.apple.mobileactivationd.xpc.session", v14), sessionQueue = v10->_sessionQueue, v10->_sessionQueue = v15, sessionQueue, v14, !v10->_sessionQueue))
     {
 
       v10 = 0;
@@ -86,8 +86,8 @@
 
 - (unint64_t)currentSessionDuration
 {
-  v3 = [(MobileActivationDaemon *)self sessionQueue];
-  dispatch_assert_queue_V2(v3);
+  sessionQueue = [(MobileActivationDaemon *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
   if (self->_sessionStartTime)
   {
@@ -100,16 +100,16 @@
   }
 }
 
-- (void)generateSession:(BOOL)a3
+- (void)generateSession:(BOOL)session
 {
-  v3 = a3;
-  v5 = [(MobileActivationDaemon *)self sessionQueue];
-  dispatch_assert_queue_V2(v5);
+  sessionCopy = session;
+  sessionQueue = [(MobileActivationDaemon *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
   v12 = 0;
   v11 = 0;
   v10 = 0;
-  if (self->_session && [(MobileActivationDaemon *)self currentSessionDuration]<= 0x12C && !v3)
+  if (self->_session && [(MobileActivationDaemon *)self currentSessionDuration]<= 0x12C && !sessionCopy)
   {
     goto LABEL_6;
   }
@@ -159,8 +159,8 @@ LABEL_7:
 
 - (PSCSessionInternal_)session
 {
-  v3 = [(MobileActivationDaemon *)self sessionQueue];
-  dispatch_assert_queue_V2(v3);
+  sessionQueue = [(MobileActivationDaemon *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
   [(MobileActivationDaemon *)self generateSession:0];
   return self->_session;
@@ -168,8 +168,8 @@ LABEL_7:
 
 - (NSData)sessionHelloMessage
 {
-  v3 = [(MobileActivationDaemon *)self sessionQueue];
-  dispatch_assert_queue_V2(v3);
+  sessionQueue = [(MobileActivationDaemon *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
   [(MobileActivationDaemon *)self generateSession:0];
   sessionHelloMessage = self->_sessionHelloMessage;
@@ -179,16 +179,16 @@ LABEL_7:
 
 - (id)callingProcessName
 {
-  v3 = [(MobileActivationDaemon *)self xpcQueue];
-  dispatch_assert_queue_V2(v3);
+  xpcQueue = [(MobileActivationDaemon *)self xpcQueue];
+  dispatch_assert_queue_V2(xpcQueue);
 
-  v4 = [(MobileActivationDaemon *)self dark];
-  v5 = data_ark_exists(v4, 0, @"HostProcessName");
+  dark = [(MobileActivationDaemon *)self dark];
+  v5 = data_ark_exists(dark, 0, @"HostProcessName");
 
   if (v5)
   {
-    v6 = [(MobileActivationDaemon *)self dark];
-    v7 = data_ark_copy(v6, 0, @"HostProcessName");
+    dark2 = [(MobileActivationDaemon *)self dark];
+    v7 = data_ark_copy(dark2, 0, @"HostProcessName");
   }
 
   else
@@ -201,29 +201,29 @@ LABEL_7:
 
 - (BOOL)isHostConnection
 {
-  v3 = [(MobileActivationDaemon *)self xpcQueue];
-  dispatch_assert_queue_V2(v3);
+  xpcQueue = [(MobileActivationDaemon *)self xpcQueue];
+  dispatch_assert_queue_V2(xpcQueue);
 
-  v4 = [(MobileActivationDaemon *)self dark];
-  LOBYTE(v3) = data_ark_exists(v4, 0, @"HostProcessName");
+  dark = [(MobileActivationDaemon *)self dark];
+  LOBYTE(xpcQueue) = data_ark_exists(dark, 0, @"HostProcessName");
 
-  return v3;
+  return xpcQueue;
 }
 
-- (BOOL)isEntitled:(id)a3
+- (BOOL)isEntitled:(id)entitled
 {
-  v4 = a3;
+  entitledCopy = entitled;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [(MobileActivationDaemon *)self xpcQueue];
-  dispatch_assert_queue_V2(v6);
+  xpcQueue = [(MobileActivationDaemon *)self xpcQueue];
+  dispatch_assert_queue_V2(xpcQueue);
 
   v7 = 0;
   LOBYTE(v8) = 0;
-  if (v4)
+  if (entitledCopy)
   {
     if (v5)
     {
-      v7 = [(NSXPCConnection *)v5 valueForEntitlement:v4];
+      v7 = [(NSXPCConnection *)v5 valueForEntitlement:entitledCopy];
       v8 = isNSNumber(v7);
 
       if (v8)
@@ -236,40 +236,40 @@ LABEL_7:
   return v8;
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [(MobileActivationDaemon *)self xpcQueue];
-  dispatch_assert_queue_V2(v6);
+  xpcQueue = [(MobileActivationDaemon *)self xpcQueue];
+  dispatch_assert_queue_V2(xpcQueue);
 
   v7 = 0;
-  if (v4 && v5)
+  if (entitlementCopy && v5)
   {
-    v7 = [(NSXPCConnection *)v5 valueForEntitlement:v4];
+    v7 = [(NSXPCConnection *)v5 valueForEntitlement:entitlementCopy];
   }
 
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MobileActivationProtocol];
-  [v5 setExportedInterface:v6];
-  [v5 setExportedObject:self];
-  v7 = [(MobileActivationDaemon *)self xpcQueue];
-  [v5 _setQueue:v7];
+  [connectionCopy setExportedInterface:v6];
+  [connectionCopy setExportedObject:self];
+  xpcQueue = [(MobileActivationDaemon *)self xpcQueue];
+  [connectionCopy _setQueue:xpcQueue];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 
-- (id)copyUCRTVersionInfoWithError:(id *)a3
+- (id)copyUCRTVersionInfoWithError:(id *)error
 {
-  v4 = [(MobileActivationDaemon *)self dark];
+  dark = [(MobileActivationDaemon *)self dark];
   v11 = 0;
-  v5 = copyUCRTVersionInformation(v4, &v11);
+  v5 = copyUCRTVersionInformation(dark, &v11);
   v6 = v11;
 
   if (v5)
@@ -281,10 +281,10 @@ LABEL_7:
   {
     v8 = createMobileActivationError("[MobileActivationDaemon copyUCRTVersionInfoWithError:]", 285, @"com.apple.MobileActivation.ErrorDomain", -1, v6, @"Failed to copy UCRT version info.");
 
-    if (a3)
+    if (error)
     {
       v9 = v8;
-      *a3 = v8;
+      *error = v8;
     }
 
     v6 = v8;
@@ -293,9 +293,9 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)handleSessionResponse:(id)a3 withError:(id *)a4
+- (BOOL)handleSessionResponse:(id)response withError:(id *)error
 {
-  v5 = a3;
+  responseCopy = response;
   v65 = 0;
   v66 = &v65;
   v67 = 0x3032000000;
@@ -318,10 +318,10 @@ LABEL_7:
   v55[1] = v55;
   v55[2] = 0x2020000000;
   v56 = 0;
-  v6 = [(MobileActivationDaemon *)self xpcQueue];
-  dispatch_assert_queue_not_V2(v6);
+  xpcQueue = [(MobileActivationDaemon *)self xpcQueue];
+  dispatch_assert_queue_not_V2(xpcQueue);
 
-  if (!v5)
+  if (!responseCopy)
   {
     v28 = createMobileActivationError("[MobileActivationDaemon handleSessionResponse:withError:]", 319, @"com.apple.MobileActivation.ErrorDomain", -2, 0, @"Invalid input.");
 LABEL_15:
@@ -340,8 +340,8 @@ LABEL_16:
   }
 
   v7 = [MACollectionInterface alloc];
-  v8 = [(MobileActivationDaemon *)self dark];
-  v9 = [(MACollectionInterface *)v7 initWithContext:v8];
+  dark = [(MobileActivationDaemon *)self dark];
+  v9 = [(MACollectionInterface *)v7 initWithContext:dark];
 
   if (!v9)
   {
@@ -367,7 +367,7 @@ LABEL_16:
 
   v13 = v66;
   obj = 0;
-  v14 = [NSPropertyListSerialization propertyListWithData:v5 options:0 format:0 error:&obj];
+  v14 = [NSPropertyListSerialization propertyListWithData:responseCopy options:0 format:0 error:&obj];
   objc_storeStrong(v13 + 5, obj);
   v15 = isNSDictionary(v14);
 
@@ -430,7 +430,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v25 = [(MobileActivationDaemon *)self xpcQueue];
+  xpcQueue2 = [(MobileActivationDaemon *)self xpcQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __58__MobileActivationDaemon_handleSessionResponse_withError___block_invoke;
@@ -442,11 +442,11 @@ LABEL_25:
   v46 = v9;
   v19 = v19;
   v47 = v19;
-  v48 = self;
+  selfCopy = self;
   v53 = v55;
   v11 = v11;
   v49 = v11;
-  dispatch_sync(v25, block);
+  dispatch_sync(xpcQueue2, block);
 
   if (v66[5])
   {
@@ -455,7 +455,7 @@ LABEL_26:
     goto LABEL_17;
   }
 
-  v26 = [(MobileActivationDaemon *)self sessionQueue];
+  sessionQueue = [(MobileActivationDaemon *)self sessionQueue];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3254779904;
   v40[2] = __58__MobileActivationDaemon_handleSessionResponse_withError___block_invoke_150;
@@ -467,13 +467,13 @@ LABEL_26:
   v41 = v17;
   v18 = v18;
   v42 = v18;
-  dispatch_sync(v26, v40);
+  dispatch_sync(sessionQueue, v40);
 
   v27 = v66[5] == 0;
 LABEL_17:
-  if (a4 && !v27)
+  if (error && !v27)
   {
-    *a4 = v66[5];
+    *error = v66[5];
   }
 
   _Block_object_dispose(v55, 8);
@@ -559,11 +559,11 @@ LABEL_9:
   }
 }
 
-- (BOOL)validateActivationDataSignature:(id)a3 activationSignature:(id)a4 withError:(id *)a5
+- (BOOL)validateActivationDataSignature:(id)signature activationSignature:(id)activationSignature withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  signatureCopy = signature;
+  activationSignatureCopy = activationSignature;
+  v10 = activationSignatureCopy;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -574,9 +574,9 @@ LABEL_9:
   v21[1] = v21;
   v21[2] = 0x2020000000;
   v22 = 0;
-  if (v8 && v9)
+  if (signatureCopy && activationSignatureCopy)
   {
-    v11 = [(MobileActivationDaemon *)self sessionQueue];
+    sessionQueue = [(MobileActivationDaemon *)self sessionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3254779904;
     block[2] = __88__MobileActivationDaemon_validateActivationDataSignature_activationSignature_withError___block_invoke;
@@ -584,12 +584,12 @@ LABEL_9:
     block[4] = self;
     v19 = &v23;
     v20 = v21;
-    v17 = v8;
+    v17 = signatureCopy;
     v18 = v10;
-    dispatch_sync(v11, block);
+    dispatch_sync(sessionQueue, block);
 
     v12 = v24[5] == 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -602,7 +602,7 @@ LABEL_9:
     v24[5] = v13;
 
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -610,7 +610,7 @@ LABEL_9:
 
   if (!v12)
   {
-    *a5 = v24[5];
+    *error = v24[5];
   }
 
 LABEL_8:
@@ -649,29 +649,29 @@ void __88__MobileActivationDaemon_validateActivationDataSignature_activationSign
   }
 }
 
-- (void)getActivationStateWithCompletionBlock:(id)a3
+- (void)getActivationStateWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self dark];
-  v6 = dataMigrationCompleted(v5);
+  blockCopy = block;
+  dark = [(MobileActivationDaemon *)self dark];
+  v6 = dataMigrationCompleted(dark);
 
   if ((v6 & 1) == 0)
   {
     v13 = @"ActivationState";
     v14 = @"Unavailable";
     v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_7:
-    v4[2](v4, v10, 0);
+    blockCopy[2](blockCopy, v10, 0);
     goto LABEL_8;
   }
 
-  v7 = [(MobileActivationDaemon *)self dark];
-  v8 = data_ark_copy(v7, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v8 = data_ark_copy(dark2, 0, @"ActivationState");
   v9 = isNSString(v8);
 
   if (!v9)
@@ -683,7 +683,7 @@ LABEL_7:
   v12 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
-  if (v4)
+  if (blockCopy)
   {
     goto LABEL_7;
   }
@@ -691,10 +691,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)performMigrationWithCompletion:(id)a3 completion:(id)a4
+- (void)performMigrationWithCompletion:(id)completion completion:(id)a4
 {
   v5 = a4;
-  v6 = [(MobileActivationDaemon *)self callingProcessName];
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
   v7 = copySignpostLoggingHandle();
   v8 = os_signpost_enabled(v7);
 
@@ -736,7 +736,7 @@ LABEL_8:
     v14 = @"erase-install";
   }
 
-  maLog("[MobileActivationDaemon performMigrationWithCompletion:completion:]", 1, @"Data migration requested by %@ (%@)", v6, v14);
+  maLog("[MobileActivationDaemon performMigrationWithCompletion:completion:]", 1, @"Data migration requested by %@ (%@)", callingProcessName, v14);
   if (![(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
     v28 = @"com.apple.mobileactivationd.spi";
@@ -750,14 +750,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v15 = [(MobileActivationDaemon *)self dark];
-  v16 = preSydroDataMigrationCompleted(v15);
+  dark = [(MobileActivationDaemon *)self dark];
+  v16 = preSydroDataMigrationCompleted(dark);
 
   if ((v16 & 1) == 0)
   {
-    v20 = [(MobileActivationDaemon *)self dark];
+    dark2 = [(MobileActivationDaemon *)self dark];
     v23 = 0;
-    v21 = performMigration(v20, &v23);
+    v21 = performMigration(dark2, &v23);
     v17 = v23;
 
     if (v21)
@@ -795,17 +795,17 @@ void __68__MobileActivationDaemon_performMigrationWithCompletion_completion___bl
   }
 }
 
-- (void)copyAutomaticTimeEnabledWithCompletion:(id)a3
+- (void)copyAutomaticTimeEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self creationQueue];
+  completionCopy = completion;
+  creationQueue = [(MobileActivationDaemon *)self creationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __65__MobileActivationDaemon_copyAutomaticTimeEnabledWithCompletion___block_invoke;
   block[3] = &__block_descriptor_40_e8_32bs_e5_v8__0l;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(creationQueue, block);
 }
 
 void __65__MobileActivationDaemon_copyAutomaticTimeEnabledWithCompletion___block_invoke(uint64_t a1)
@@ -822,17 +822,17 @@ void __65__MobileActivationDaemon_copyAutomaticTimeEnabledWithCompletion___block
   }
 }
 
-- (void)copyRTCResetCountWithCompletionBlock:(id)a3
+- (void)copyRTCResetCountWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = copyRTCResetSerialQueue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3254779904;
   v7[2] = __63__MobileActivationDaemon_copyRTCResetCountWithCompletionBlock___block_invoke;
   v7[3] = &__block_descriptor_48_e8_32s40bs_e5_v8__0l;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(v5, v7);
 }
 
@@ -862,17 +862,17 @@ void __63__MobileActivationDaemon_copyRTCResetCountWithCompletionBlock___block_i
   }
 }
 
-- (void)copyMonotonicClockWithCompletionBlock:(id)a3
+- (void)copyMonotonicClockWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self creationQueue];
+  blockCopy = block;
+  creationQueue = [(MobileActivationDaemon *)self creationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __64__MobileActivationDaemon_copyMonotonicClockWithCompletionBlock___block_invoke;
   block[3] = &__block_descriptor_40_e8_32bs_e5_v8__0l;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(creationQueue, block);
 }
 
 void __64__MobileActivationDaemon_copyMonotonicClockWithCompletionBlock___block_invoke(uint64_t a1)
@@ -902,19 +902,19 @@ void __64__MobileActivationDaemon_copyMonotonicClockWithCompletionBlock___block_
   }
 }
 
-- (void)deactivateDeviceWithCompletionBlock:(id)a3
+- (void)deactivateDeviceWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon deactivateDeviceWithCompletionBlock:]", 1, @"Deactivation requested by %@", v5);
+  blockCopy = block;
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon deactivateDeviceWithCompletionBlock:]", 1, @"Deactivation requested by %@", callingProcessName);
 
-  v6 = [(MobileActivationDaemon *)self dark];
-  v7 = dataMigrationCompleted(v6);
+  dark = [(MobileActivationDaemon *)self dark];
+  v7 = dataMigrationCompleted(dark);
 
   if ((v7 & 1) == 0)
   {
     v9 = createAndLogError("[MobileActivationDaemon deactivateDeviceWithCompletionBlock:]", 626, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Data Migration not complete.");
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_6;
     }
@@ -922,25 +922,25 @@ void __64__MobileActivationDaemon_copyMonotonicClockWithCompletionBlock___block_
     goto LABEL_5;
   }
 
-  v8 = [(MobileActivationDaemon *)self dark];
-  handle_deactivate(v8, 1);
+  dark2 = [(MobileActivationDaemon *)self dark];
+  handle_deactivate(dark2, 1);
 
   v9 = 0;
-  if (v4)
+  if (blockCopy)
   {
 LABEL_5:
-    v4[2](v4, 0, v9);
+    blockCopy[2](blockCopy, 0, v9);
   }
 
 LABEL_6:
 }
 
-- (void)createTunnel1ActivationInfo:(id)a3 options:(id)a4 withCompletionBlock:(id)a5
+- (void)createTunnel1ActivationInfo:(id)info options:(id)options withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MobileActivationDaemon *)self callingProcessName];
+  infoCopy = info;
+  optionsCopy = options;
+  blockCopy = block;
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x3032000000;
@@ -953,10 +953,10 @@ LABEL_6:
   if (v13)
   {
     v14 = 0xEEEEB0B5B2B2EEEELL;
-    if (v8 != 0xEEEEB0B5B2B2EEEELL)
+    if (infoCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v15 = copySignpostLoggingHandle();
-      v14 = os_signpost_id_make_with_pointer(v15, v8);
+      v14 = os_signpost_id_make_with_pointer(v15, infoCopy);
     }
 
     v16 = copySignpostLoggingHandle();
@@ -971,37 +971,37 @@ LABEL_6:
     v34[1] = 3254779904;
     v34[2] = __82__MobileActivationDaemon_createTunnel1ActivationInfo_options_withCompletionBlock___block_invoke;
     v34[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v35 = v10;
+    v35 = blockCopy;
     v36 = v14;
-    v10 = objc_retainBlock(v34);
+    blockCopy = objc_retainBlock(v34);
   }
 
-  maLog("[MobileActivationDaemon createTunnel1ActivationInfo:options:withCompletionBlock:]", 1, @"Tunnel1 Activation info creation requested by %@", v11);
+  maLog("[MobileActivationDaemon createTunnel1ActivationInfo:options:withCompletionBlock:]", 1, @"Tunnel1 Activation info creation requested by %@", callingProcessName);
   v18 = +[NSUUID UUID];
-  v19 = [(NSUUID *)v18 UUIDString];
+  uUIDString = [(NSUUID *)v18 UUIDString];
 
-  [(MobileActivationDaemon *)self setActivationNonce:v19];
-  [(MobileActivationDaemon *)self setActivationSessionClientName:v11];
-  v20 = [(MobileActivationDaemon *)self dark];
-  v21 = copy_activation_record(v20);
+  [(MobileActivationDaemon *)self setActivationNonce:uUIDString];
+  [(MobileActivationDaemon *)self setActivationSessionClientName:callingProcessName];
+  dark = [(MobileActivationDaemon *)self dark];
+  v21 = copy_activation_record(dark);
 
-  v22 = [(MobileActivationDaemon *)self creationQueue];
+  creationQueue = [(MobileActivationDaemon *)self creationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __82__MobileActivationDaemon_createTunnel1ActivationInfo_options_withCompletionBlock___block_invoke_199;
   block[3] = &__block_descriptor_81_e8_32s40s48s56s64bs72r_e5_v8__0l;
   block[4] = self;
-  v28 = v9;
+  v28 = optionsCopy;
   v33 = v21 != 0;
-  v29 = v19;
-  v30 = v8;
-  v31 = v10;
+  v29 = uUIDString;
+  v30 = infoCopy;
+  v31 = blockCopy;
   v32 = v38;
-  v23 = v10;
-  v24 = v8;
-  v25 = v19;
-  v26 = v9;
-  dispatch_async(v22, block);
+  v23 = blockCopy;
+  v24 = infoCopy;
+  v25 = uUIDString;
+  v26 = optionsCopy;
+  dispatch_async(creationQueue, block);
 
   _Block_object_dispose(v38, 8);
 }
@@ -1337,20 +1337,20 @@ void __82__MobileActivationDaemon_createTunnel1ActivationInfo_options_withComple
   *(v7 + 40) = v4;
 }
 
-- (void)createTunnel1SessionInfoWithCompletionBlock:(id)a3
+- (void)createTunnel1SessionInfoWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self callingProcessName];
+  blockCopy = block;
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
   v6 = copySignpostLoggingHandle();
   v7 = os_signpost_enabled(v6);
 
   if (v7)
   {
     v8 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v9 = copySignpostLoggingHandle();
-      v8 = os_signpost_id_make_with_pointer(v9, v4);
+      v8 = os_signpost_id_make_with_pointer(v9, blockCopy);
     }
 
     v10 = copySignpostLoggingHandle();
@@ -1365,21 +1365,21 @@ void __82__MobileActivationDaemon_createTunnel1ActivationInfo_options_withComple
     v16[1] = 3254779904;
     v16[2] = __70__MobileActivationDaemon_createTunnel1SessionInfoWithCompletionBlock___block_invoke;
     v16[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v17 = v4;
+    v17 = blockCopy;
     v18 = v8;
-    v4 = objc_retainBlock(v16);
+    blockCopy = objc_retainBlock(v16);
   }
 
-  maLog("[MobileActivationDaemon createTunnel1SessionInfoWithCompletionBlock:]", 1, @"Session creation requested by %@", v5);
-  v12 = [(MobileActivationDaemon *)self creationQueue];
+  maLog("[MobileActivationDaemon createTunnel1SessionInfoWithCompletionBlock:]", 1, @"Session creation requested by %@", callingProcessName);
+  creationQueue = [(MobileActivationDaemon *)self creationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __70__MobileActivationDaemon_createTunnel1SessionInfoWithCompletionBlock___block_invoke_237;
   block[3] = &__block_descriptor_48_e8_32s40bs_e5_v8__0l;
   block[4] = self;
-  v15 = v4;
-  v13 = v4;
-  dispatch_async(v12, block);
+  v15 = blockCopy;
+  v13 = blockCopy;
+  dispatch_async(creationQueue, block);
 }
 
 void __70__MobileActivationDaemon_createTunnel1SessionInfoWithCompletionBlock___block_invoke(uint64_t a1, id a2, void *a3)
@@ -1604,20 +1604,20 @@ void __70__MobileActivationDaemon_createTunnel1SessionInfoWithCompletionBlock___
   }
 }
 
-- (void)createActivationInfoWithCompletionBlock:(id)a3
+- (void)createActivationInfoWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self callingProcessName];
+  blockCopy = block;
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
   v6 = copySignpostLoggingHandle();
   v7 = os_signpost_enabled(v6);
 
   if (v7)
   {
     v8 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v9 = copySignpostLoggingHandle();
-      v8 = os_signpost_id_make_with_pointer(v9, v4);
+      v8 = os_signpost_id_make_with_pointer(v9, blockCopy);
     }
 
     v10 = copySignpostLoggingHandle();
@@ -1632,29 +1632,29 @@ void __70__MobileActivationDaemon_createTunnel1SessionInfoWithCompletionBlock___
     v23[1] = 3254779904;
     v23[2] = __66__MobileActivationDaemon_createActivationInfoWithCompletionBlock___block_invoke;
     v23[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v24 = v4;
+    v24 = blockCopy;
     v25 = v8;
-    v4 = objc_retainBlock(v23);
+    blockCopy = objc_retainBlock(v23);
   }
 
   v12 = +[NSUUID UUID];
-  v13 = [(NSUUID *)v12 UUIDString];
+  uUIDString = [(NSUUID *)v12 UUIDString];
 
-  [(MobileActivationDaemon *)self setActivationNonce:v13];
-  [(MobileActivationDaemon *)self setActivationSessionClientName:v5];
-  v14 = [(MobileActivationDaemon *)self creationQueue];
+  [(MobileActivationDaemon *)self setActivationNonce:uUIDString];
+  [(MobileActivationDaemon *)self setActivationSessionClientName:callingProcessName];
+  creationQueue = [(MobileActivationDaemon *)self creationQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3254779904;
   v18[2] = __66__MobileActivationDaemon_createActivationInfoWithCompletionBlock___block_invoke_274;
   v18[3] = &__block_descriptor_64_e8_32s40s48s56bs_e5_v8__0l;
-  v19 = v5;
-  v20 = self;
-  v21 = v13;
-  v22 = v4;
-  v15 = v4;
-  v16 = v13;
-  v17 = v5;
-  dispatch_async(v14, v18);
+  v19 = callingProcessName;
+  selfCopy = self;
+  v21 = uUIDString;
+  v22 = blockCopy;
+  v15 = blockCopy;
+  v16 = uUIDString;
+  v17 = callingProcessName;
+  dispatch_async(creationQueue, v18);
 }
 
 void __66__MobileActivationDaemon_createActivationInfoWithCompletionBlock___block_invoke(uint64_t a1, id a2, void *a3)
@@ -1731,21 +1731,21 @@ LABEL_8:
   }
 }
 
-- (void)handleActivationInfo:(id)a3 withCompletionBlock:(id)a4
+- (void)handleActivationInfo:(id)info withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MobileActivationDaemon *)self callingProcessName];
+  infoCopy = info;
+  blockCopy = block;
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
   v9 = copySignpostLoggingHandle();
   v10 = os_signpost_enabled(v9);
 
   if (v10)
   {
     v11 = 0xEEEEB0B5B2B2EEEELL;
-    if (v7 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v12 = copySignpostLoggingHandle();
-      v11 = os_signpost_id_make_with_pointer(v12, v7);
+      v11 = os_signpost_id_make_with_pointer(v12, blockCopy);
     }
 
     v13 = copySignpostLoggingHandle();
@@ -1760,25 +1760,25 @@ LABEL_8:
     v35[1] = 3254779904;
     v35[2] = __67__MobileActivationDaemon_handleActivationInfo_withCompletionBlock___block_invoke;
     v35[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v36 = v7;
+    v36 = blockCopy;
     v37 = v11;
-    v7 = objc_retainBlock(v35);
+    blockCopy = objc_retainBlock(v35);
   }
 
-  maLog("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1, @"Activation (legacy) requested by %@", v8);
-  if (!v6)
+  maLog("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1, @"Activation (legacy) requested by %@", callingProcessName);
+  if (!infoCopy)
   {
     v32 = createAndLogError("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1030, @"com.apple.MobileActivation.ErrorDomain", -2, 0, @"Invalid input.");
 LABEL_20:
     v28 = v32;
-    v22 = 0;
+    activationNonce = 0;
     v21 = 0;
     v19 = 0;
     goto LABEL_21;
   }
 
-  v15 = [(MobileActivationDaemon *)self dark];
-  v16 = dataMigrationCompleted(v15);
+  dark = [(MobileActivationDaemon *)self dark];
+  v16 = dataMigrationCompleted(dark);
 
   if ((v16 & 1) == 0)
   {
@@ -1786,8 +1786,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v17 = [(MobileActivationDaemon *)self dark];
-  v18 = data_ark_copy(v17, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v18 = data_ark_copy(dark2, 0, @"ActivationState");
   v19 = isNSString(v18);
 
   if (!v19)
@@ -1802,28 +1802,28 @@ LABEL_20:
     if (v20)
     {
       [v20 setObject:&__kCFBooleanTrue forKeyedSubscript:@"UseFactoryCertificates"];
-      v22 = [(MobileActivationDaemon *)self activationNonce];
-      if (v22)
+      activationNonce = [(MobileActivationDaemon *)self activationNonce];
+      if (activationNonce)
       {
         [(MobileActivationDaemon *)self setActivationNonce:0];
-        v23 = [(MobileActivationDaemon *)self activationSessionClientName];
-        v24 = [(NSString *)v23 isEqualToString:v8];
+        activationSessionClientName = [(MobileActivationDaemon *)self activationSessionClientName];
+        v24 = [(NSString *)activationSessionClientName isEqualToString:callingProcessName];
 
         if (v24)
         {
-          [v21 setObject:v22 forKeyedSubscript:@"ActivationRandomness"];
-          v25 = dictionary_to_xml(v6);
+          [v21 setObject:activationNonce forKeyedSubscript:@"ActivationRandomness"];
+          v25 = dictionary_to_xml(infoCopy);
           maLog("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 0, @"Activation message:\n%@", v25);
 
-          v26 = [(MobileActivationDaemon *)self dark];
+          dark3 = [(MobileActivationDaemon *)self dark];
           v34 = 0;
-          v27 = handle_activate(v26, v6, v21, &v34);
+          v27 = handle_activate(dark3, infoCopy, v21, &v34);
           v28 = v34;
 
           if ((v27 & 1) == 0)
           {
-            v29 = [(MobileActivationDaemon *)self dark];
-            writeSplunkLog(v29, 3, -1, "[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1082, 0, @"%@", v30, v28);
+            dark4 = [(MobileActivationDaemon *)self dark];
+            writeSplunkLog(dark4, 3, -1, "[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1082, 0, @"%@", v30, v28);
 
             v31 = createAndLogError("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1083, @"com.apple.MobileActivation.ErrorDomain", -2, v28, @"Failed to activate device.");
             v28 = v31;
@@ -1832,8 +1832,8 @@ LABEL_20:
 
         else
         {
-          v33 = [(MobileActivationDaemon *)self activationSessionClientName];
-          v28 = createAndLogError("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1073, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid activation session (actual, expected): (%@, %@)", v8, v33);
+          activationSessionClientName2 = [(MobileActivationDaemon *)self activationSessionClientName];
+          v28 = createAndLogError("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1073, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid activation session (actual, expected): (%@, %@)", callingProcessName, activationSessionClientName2);
         }
       }
 
@@ -1846,21 +1846,21 @@ LABEL_20:
     else
     {
       v28 = createAndLogError("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1051, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to allocate dictionary.");
-      v22 = 0;
+      activationNonce = 0;
     }
   }
 
   else
   {
     v28 = createAndLogError("[MobileActivationDaemon handleActivationInfo:withCompletionBlock:]", 1045, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Device is already activated (%@).", v19);
-    v22 = 0;
+    activationNonce = 0;
     v21 = 0;
   }
 
 LABEL_21:
-  if (v7)
+  if (blockCopy)
   {
-    (*(v7 + 2))(v7, 0, v28);
+    (*(blockCopy + 2))(blockCopy, 0, v28);
   }
 }
 
@@ -1884,19 +1884,19 @@ void __67__MobileActivationDaemon_handleActivationInfo_withCompletionBlock___blo
   }
 }
 
-- (void)copyUCRTWithCompletionBlock:(id)a3
+- (void)copyUCRTWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = copySignpostLoggingHandle();
   v6 = os_signpost_enabled(v5);
 
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -1911,21 +1911,21 @@ void __67__MobileActivationDaemon_handleActivationInfo_withCompletionBlock___blo
     v24[1] = 3254779904;
     v24[2] = __54__MobileActivationDaemon_copyUCRTWithCompletionBlock___block_invoke;
     v24[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v25 = v4;
+    v25 = blockCopy;
     v26 = v7;
-    v4 = objc_retainBlock(v24);
+    blockCopy = objc_retainBlock(v24);
   }
 
   if ([(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
-    v11 = [(MobileActivationDaemon *)self dark];
-    v12 = dataMigrationCompleted(v11);
+    dark = [(MobileActivationDaemon *)self dark];
+    v12 = dataMigrationCompleted(dark);
 
     if (v12)
     {
-      v13 = [(MobileActivationDaemon *)self dark];
+      dark2 = [(MobileActivationDaemon *)self dark];
       v23 = 0;
-      v14 = copyUCRT(v13, &v23);
+      v14 = copyUCRT(dark2, &v23);
       v15 = v23;
 
       if (v14)
@@ -1967,19 +1967,19 @@ void __67__MobileActivationDaemon_handleActivationInfo_withCompletionBlock___blo
 
   else
   {
-    v19 = [(MobileActivationDaemon *)self callingProcessName];
+    callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
     v30 = @"com.apple.mobileactivationd.spi";
     v31 = &__kCFBooleanTrue;
     v20 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    v15 = createMobileActivationError("[MobileActivationDaemon copyUCRTWithCompletionBlock:]", 1108, @"com.apple.MobileActivation.ErrorDomain", -7, 0, @"%@ is missing required entitlement: %@", v19, v20);
+    v15 = createMobileActivationError("[MobileActivationDaemon copyUCRTWithCompletionBlock:]", 1108, @"com.apple.MobileActivation.ErrorDomain", -7, 0, @"%@ is missing required entitlement: %@", callingProcessName, v20);
   }
 
   v18 = 0;
   v17 = 0;
 LABEL_16:
-  if (v4)
+  if (blockCopy)
   {
-    (*(v4 + 2))(v4, v18, v15);
+    (*(blockCopy + 2))(blockCopy, v18, v15);
   }
 }
 
@@ -2003,19 +2003,19 @@ void __54__MobileActivationDaemon_copyUCRTWithCompletionBlock___block_invoke(uin
   }
 }
 
-- (void)copyPCRTTokenWithCompletionBlock:(id)a3
+- (void)copyPCRTTokenWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = copySignpostLoggingHandle();
   v6 = os_signpost_enabled(v5);
 
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -2030,18 +2030,18 @@ void __54__MobileActivationDaemon_copyUCRTWithCompletionBlock___block_invoke(uin
     v26[1] = 3254779904;
     v26[2] = __59__MobileActivationDaemon_copyPCRTTokenWithCompletionBlock___block_invoke;
     v26[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v27 = v4;
+    v27 = blockCopy;
     v28 = v7;
-    v4 = objc_retainBlock(v26);
+    blockCopy = objc_retainBlock(v26);
   }
 
   if (![(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
-    v23 = [(MobileActivationDaemon *)self callingProcessName];
+    callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
     v32 = @"com.apple.mobileactivationd.spi";
     v33 = &__kCFBooleanTrue;
     v24 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-    v22 = createMobileActivationError("[MobileActivationDaemon copyPCRTTokenWithCompletionBlock:]", 1154, @"com.apple.MobileActivation.ErrorDomain", -7, 0, @"%@ is missing required entitlement: %@", v23, v24);
+    v22 = createMobileActivationError("[MobileActivationDaemon copyPCRTTokenWithCompletionBlock:]", 1154, @"com.apple.MobileActivation.ErrorDomain", -7, 0, @"%@ is missing required entitlement: %@", callingProcessName, v24);
 
 LABEL_19:
     v20 = 0;
@@ -2049,8 +2049,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v11 = [(MobileActivationDaemon *)self dark];
-  v12 = dataMigrationCompleted(v11);
+  dark = [(MobileActivationDaemon *)self dark];
+  v12 = dataMigrationCompleted(dark);
 
   if ((v12 & 1) == 0)
   {
@@ -2058,8 +2058,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v13 = [(MobileActivationDaemon *)self dark];
-  v14 = data_ark_copy(v13, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v14 = data_ark_copy(dark2, 0, @"ActivationState");
 
   v15 = isNSString(v14);
   if (!v15)
@@ -2071,13 +2071,13 @@ LABEL_19:
 
   if (([(__CFString *)v14 isEqualToString:@"Activated"]& 1) != 0)
   {
-    v17 = [(MobileActivationDaemon *)self dark];
-    v18 = collectionAlreadyPerformed(v17);
+    dark3 = [(MobileActivationDaemon *)self dark];
+    v18 = collectionAlreadyPerformed(dark3);
 
     if (v18)
     {
-      v19 = [(MobileActivationDaemon *)self dark];
-      v20 = data_ark_copy(v19, 0, @"PCRTToken");
+      dark4 = [(MobileActivationDaemon *)self dark];
+      v20 = data_ark_copy(dark4, 0, @"PCRTToken");
 
       v21 = isNSString(v20);
       if (v21)
@@ -2086,7 +2086,7 @@ LABEL_19:
         v31 = v20;
         v21 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
         v22 = 0;
-        if (!v4)
+        if (!blockCopy)
         {
           goto LABEL_22;
         }
@@ -2095,7 +2095,7 @@ LABEL_19:
       else
       {
         v22 = createMobileActivationError("[MobileActivationDaemon copyPCRTTokenWithCompletionBlock:]", 1180, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to copy PCRT token.");
-        if (!v4)
+        if (!blockCopy)
         {
           goto LABEL_22;
         }
@@ -2116,10 +2116,10 @@ LABEL_19:
   v20 = 0;
 LABEL_20:
   v21 = 0;
-  if (v4)
+  if (blockCopy)
   {
 LABEL_21:
-    (*(v4 + 2))(v4, v21, v22);
+    (*(blockCopy + 2))(blockCopy, v21, v22);
   }
 
 LABEL_22:
@@ -2145,18 +2145,18 @@ void __59__MobileActivationDaemon_copyPCRTTokenWithCompletionBlock___block_invok
   }
 }
 
-- (void)isDeviceBrickedWithCompletionBlock:(id)a3
+- (void)isDeviceBrickedWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self dark];
-  v6 = dataMigrationCompleted(v5);
+  blockCopy = block;
+  dark = [(MobileActivationDaemon *)self dark];
+  v6 = dataMigrationCompleted(dark);
 
   if ((v6 & 1) == 0)
   {
     v11 = createAndLogError("[MobileActivationDaemon isDeviceBrickedWithCompletionBlock:]", 1201, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Data Migration not complete.");
     v9 = 0;
     v12 = 0;
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_9;
     }
@@ -2164,47 +2164,47 @@ void __59__MobileActivationDaemon_copyPCRTTokenWithCompletionBlock___block_invok
     goto LABEL_8;
   }
 
-  v7 = [(MobileActivationDaemon *)self dark];
-  v8 = data_ark_copy(v7, 0, @"BrickState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v8 = data_ark_copy(dark2, 0, @"BrickState");
   v9 = isNSNumber(v8);
 
   if (v9)
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
   v14 = @"BrickState";
-  v13 = [NSNumber numberWithBool:v10];
+  v13 = [NSNumber numberWithBool:bOOLValue];
   v15 = v13;
   v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
 
   v11 = 0;
-  if (v4)
+  if (blockCopy)
   {
 LABEL_8:
-    v4[2](v4, v12, v11);
+    blockCopy[2](blockCopy, v12, v11);
   }
 
 LABEL_9:
 }
 
-- (void)getActivationBuildWithCompletionBlock:(id)a3
+- (void)getActivationBuildWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self dark];
-  v6 = dataMigrationCompleted(v5);
+  blockCopy = block;
+  dark = [(MobileActivationDaemon *)self dark];
+  v6 = dataMigrationCompleted(dark);
 
   if ((v6 & 1) == 0)
   {
     v11 = createAndLogError("[MobileActivationDaemon getActivationBuildWithCompletionBlock:]", 1227, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Data Migration not complete.");
     v10 = 0;
     v9 = 0;
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_9;
     }
@@ -2212,8 +2212,8 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v7 = [(MobileActivationDaemon *)self dark];
-  v8 = data_ark_copy(v7, 0, @"LastActivated");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v8 = data_ark_copy(dark2, 0, @"LastActivated");
   v9 = isNSString(v8);
 
   if (v9)
@@ -2229,31 +2229,31 @@ LABEL_9:
   }
 
   v11 = 0;
-  if (v4)
+  if (blockCopy)
   {
 LABEL_8:
-    v4[2](v4, v10, v11);
+    blockCopy[2](blockCopy, v10, v11);
   }
 
 LABEL_9:
 }
 
-- (void)requestDeviceReactivationWithCompletionBlock:(id)a3
+- (void)requestDeviceReactivationWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self dark];
-  v6 = dataMigrationCompleted(v5);
+  blockCopy = block;
+  dark = [(MobileActivationDaemon *)self dark];
+  v6 = dataMigrationCompleted(dark);
 
   if ((v6 & 1) == 0)
   {
     v15 = createAndLogError("[MobileActivationDaemon requestDeviceReactivationWithCompletionBlock:]", 1248, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Data Migration not complete.");
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_15;
     }
 
 LABEL_14:
-    v4[2](v4, 0, v15);
+    blockCopy[2](blockCopy, 0, v15);
     goto LABEL_15;
   }
 
@@ -2263,10 +2263,10 @@ LABEL_14:
   if (v8)
   {
     v9 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v10 = copySignpostLoggingHandle();
-      v9 = os_signpost_id_make_with_pointer(v10, v4);
+      v9 = os_signpost_id_make_with_pointer(v10, blockCopy);
     }
 
     v11 = copySignpostLoggingHandle();
@@ -2281,22 +2281,22 @@ LABEL_14:
     v16[1] = 3254779904;
     v16[2] = __71__MobileActivationDaemon_requestDeviceReactivationWithCompletionBlock___block_invoke;
     v16[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v17 = v4;
+    v17 = blockCopy;
     v18 = v9;
-    v4 = objc_retainBlock(v16);
+    blockCopy = objc_retainBlock(v16);
   }
 
   if (!use_hactivation())
   {
-    v13 = [(MobileActivationDaemon *)self callingProcessName];
-    maLog("[MobileActivationDaemon requestDeviceReactivationWithCompletionBlock:]", 1, @"Reactivation requested by %@", v13);
+    callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+    maLog("[MobileActivationDaemon requestDeviceReactivationWithCompletionBlock:]", 1, @"Reactivation requested by %@", callingProcessName);
 
-    v14 = [(MobileActivationDaemon *)self dark];
-    handle_deactivate(v14, 0);
+    dark2 = [(MobileActivationDaemon *)self dark];
+    handle_deactivate(dark2, 0);
   }
 
   v15 = 0;
-  if (v4)
+  if (blockCopy)
   {
     goto LABEL_14;
   }
@@ -2324,11 +2324,11 @@ void __71__MobileActivationDaemon_requestDeviceReactivationWithCompletionBlock__
   }
 }
 
-- (void)copyActivationRecordWithCompletionBlock:(id)a3
+- (void)copyActivationRecordWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self dark];
-  v6 = dataMigrationCompleted(v5);
+  blockCopy = block;
+  dark = [(MobileActivationDaemon *)self dark];
+  v6 = dataMigrationCompleted(dark);
 
   if ((v6 & 1) == 0)
   {
@@ -2336,7 +2336,7 @@ void __71__MobileActivationDaemon_requestDeviceReactivationWithCompletionBlock__
     v11 = 0;
     v12 = 0;
     v9 = 0;
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_16;
     }
@@ -2344,8 +2344,8 @@ void __71__MobileActivationDaemon_requestDeviceReactivationWithCompletionBlock__
     goto LABEL_15;
   }
 
-  v7 = [(MobileActivationDaemon *)self dark];
-  v8 = data_ark_copy(v7, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v8 = data_ark_copy(dark2, 0, @"ActivationState");
   v9 = isNSString(v8);
 
   if (!v9)
@@ -2360,21 +2360,21 @@ void __71__MobileActivationDaemon_requestDeviceReactivationWithCompletionBlock__
     goto LABEL_21;
   }
 
-  v10 = [(MobileActivationDaemon *)self dark];
-  v11 = copy_activation_record(v10);
+  dark3 = [(MobileActivationDaemon *)self dark];
+  v11 = copy_activation_record(dark3);
 
   if (!v11)
   {
     v19 = createMobileActivationError("[MobileActivationDaemon copyActivationRecordWithCompletionBlock:]", 1296, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Failed to copy activation record.");
 LABEL_21:
     v12 = 0;
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    v4[2](v4, v12, v19);
+    blockCopy[2](blockCopy, v12, v19);
     goto LABEL_16;
   }
 
@@ -2404,7 +2404,7 @@ LABEL_15:
   }
 
   v19 = 0;
-  if (v4)
+  if (blockCopy)
   {
     goto LABEL_15;
   }
@@ -2412,16 +2412,16 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)copyRegionDataForGestaltWithCompletionBlock:(id)a3
+- (void)copyRegionDataForGestaltWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileActivationDaemon *)self dark];
-  v6 = dataMigrationCompleted(v5);
+  blockCopy = block;
+  dark = [(MobileActivationDaemon *)self dark];
+  v6 = dataMigrationCompleted(dark);
 
   if (v6)
   {
-    v7 = [(MobileActivationDaemon *)self dark];
-    v8 = data_ark_copy(v7, 0, @"ActivationState");
+    dark2 = [(MobileActivationDaemon *)self dark];
+    v8 = data_ark_copy(dark2, 0, @"ActivationState");
     v9 = isNSString(v8);
 
     if (!v9)
@@ -2431,8 +2431,8 @@ LABEL_16:
 
     if (([(__CFString *)v9 isEqualToString:@"Activated"]& 1) != 0)
     {
-      v10 = [(MobileActivationDaemon *)self dark];
-      v11 = copy_activation_record(v10);
+      dark3 = [(MobileActivationDaemon *)self dark];
+      v11 = copy_activation_record(dark3);
 
       if (v11)
       {
@@ -2442,7 +2442,7 @@ LABEL_16:
         if (v12)
         {
           v12 = v12;
-          if (!v4)
+          if (!blockCopy)
           {
             goto LABEL_14;
           }
@@ -2453,7 +2453,7 @@ LABEL_16:
           v14 = createMobileActivationError("[MobileActivationDaemon copyRegionDataForGestaltWithCompletionBlock:]", 1352, @"com.apple.MobileActivation.ErrorDomain", -1, v13, @"Failed to create region data.");
 
           v13 = v14;
-          if (!v4)
+          if (!blockCopy)
           {
             goto LABEL_14;
           }
@@ -2480,28 +2480,28 @@ LABEL_16:
   }
 
   v12 = 0;
-  if (v4)
+  if (blockCopy)
   {
 LABEL_13:
-    v4[2](v4, v12, v13);
+    blockCopy[2](blockCopy, v12, v13);
   }
 
 LABEL_14:
 }
 
-- (void)unbrickDeviceWithCompletionBlock:(id)a3
+- (void)unbrickDeviceWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = copySignpostLoggingHandle();
   v6 = os_signpost_enabled(v5);
 
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -2516,21 +2516,21 @@ LABEL_14:
     v22[1] = 3254779904;
     v22[2] = __59__MobileActivationDaemon_unbrickDeviceWithCompletionBlock___block_invoke;
     v22[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v23 = v4;
+    v23 = blockCopy;
     v24 = v7;
-    v4 = objc_retainBlock(v22);
+    blockCopy = objc_retainBlock(v22);
   }
 
-  v11 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon unbrickDeviceWithCompletionBlock:]", 1, @"Unbrick requested by %@", v11);
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon unbrickDeviceWithCompletionBlock:]", 1, @"Unbrick requested by %@", callingProcessName);
 
-  v12 = [(MobileActivationDaemon *)self dark];
-  v13 = dataMigrationCompleted(v12);
+  dark = [(MobileActivationDaemon *)self dark];
+  v13 = dataMigrationCompleted(dark);
 
   if (v13)
   {
-    v14 = [(MobileActivationDaemon *)self dark];
-    v15 = data_ark_copy(v14, 0, @"ActivationState");
+    dark2 = [(MobileActivationDaemon *)self dark];
+    v15 = data_ark_copy(dark2, 0, @"ActivationState");
     v16 = isNSString(v15);
 
     if (!v16)
@@ -2541,7 +2541,7 @@ LABEL_14:
     if (![(__CFString *)v16 isEqualToString:@"Unactivated"])
     {
       v19 = 0;
-      if (!v4)
+      if (!blockCopy)
       {
         goto LABEL_18;
       }
@@ -2549,9 +2549,9 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    v17 = [(MobileActivationDaemon *)self dark];
+    dark3 = [(MobileActivationDaemon *)self dark];
     v21 = 0;
-    v18 = handle_unbrick(v17, &v21);
+    v18 = handle_unbrick(dark3, &v21);
     v19 = v21;
 
     if ((v18 & 1) == 0)
@@ -2559,7 +2559,7 @@ LABEL_14:
       v20 = createAndLogError("[MobileActivationDaemon unbrickDeviceWithCompletionBlock:]", 1390, @"com.apple.MobileActivation.ErrorDomain", -1, v19, @"Unbrick failed.");
 
       v19 = v20;
-      if (!v4)
+      if (!blockCopy)
       {
         goto LABEL_18;
       }
@@ -2574,10 +2574,10 @@ LABEL_14:
     v16 = 0;
   }
 
-  if (v4)
+  if (blockCopy)
   {
 LABEL_17:
-    (*(v4 + 2))(v4, 0, v19);
+    (*(blockCopy + 2))(blockCopy, 0, v19);
   }
 
 LABEL_18:
@@ -2603,9 +2603,9 @@ void __59__MobileActivationDaemon_unbrickDeviceWithCompletionBlock___block_invok
   }
 }
 
-- (void)recertifyDeviceWithCompletionBlock:(id)a3
+- (void)recertifyDeviceWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -2618,10 +2618,10 @@ void __59__MobileActivationDaemon_unbrickDeviceWithCompletionBlock___block_invok
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -2636,21 +2636,21 @@ void __59__MobileActivationDaemon_unbrickDeviceWithCompletionBlock___block_invok
     v30[1] = 3254779904;
     v30[2] = __61__MobileActivationDaemon_recertifyDeviceWithCompletionBlock___block_invoke;
     v30[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v31 = v4;
+    v31 = blockCopy;
     v32 = v7;
-    v4 = objc_retainBlock(v30);
+    blockCopy = objc_retainBlock(v30);
   }
 
-  v11 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon recertifyDeviceWithCompletionBlock:]", 1, @"Recertification (SB) requested by %@", v11);
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon recertifyDeviceWithCompletionBlock:]", 1, @"Recertification (SB) requested by %@", callingProcessName);
 
-  v12 = [(MobileActivationDaemon *)self dark];
-  v13 = dataMigrationCompleted(v12);
+  dark = [(MobileActivationDaemon *)self dark];
+  v13 = dataMigrationCompleted(dark);
 
   if (v13)
   {
-    v14 = [(MobileActivationDaemon *)self dark];
-    v15 = data_ark_copy(v14, 0, @"ActivationState");
+    dark2 = [(MobileActivationDaemon *)self dark];
+    v15 = data_ark_copy(dark2, 0, @"ActivationState");
     v16 = isNSString(v15);
 
     if (!v16)
@@ -2661,23 +2661,23 @@ void __59__MobileActivationDaemon_unbrickDeviceWithCompletionBlock___block_invok
     if (([(__CFString *)v16 isEqualToString:@"Activated"]& 1) != 0)
     {
       v17 = [MobileRecertifyEngine alloc];
-      v18 = [(MobileActivationDaemon *)self xpcQueue];
-      v19 = [(MobileActivationDaemon *)self dark];
-      v20 = [(MobileRecertifyEngine *)v17 initWithQueue:v18 dark:v19];
+      xpcQueue = [(MobileActivationDaemon *)self xpcQueue];
+      dark3 = [(MobileActivationDaemon *)self dark];
+      v20 = [(MobileRecertifyEngine *)v17 initWithQueue:xpcQueue dark:dark3];
 
       if (v20)
       {
-        v21 = [(MobileActivationDaemon *)self creationQueue];
+        creationQueue = [(MobileActivationDaemon *)self creationQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3254779904;
         block[2] = __61__MobileActivationDaemon_recertifyDeviceWithCompletionBlock___block_invoke_339;
         block[3] = &__block_descriptor_64_e8_32s40s48bs56r_e5_v8__0l;
         v22 = v20;
         v26 = v22;
-        v27 = self;
+        selfCopy = self;
         v29 = &v34;
-        v28 = v4;
-        dispatch_async(v21, block);
+        v28 = blockCopy;
+        dispatch_async(creationQueue, block);
 
         goto LABEL_20;
       }
@@ -2700,9 +2700,9 @@ void __59__MobileActivationDaemon_unbrickDeviceWithCompletionBlock___block_invok
   v24 = v35[5];
   v35[5] = v23;
 
-  if (v4)
+  if (blockCopy)
   {
-    (*(v4 + 2))(v4, 0, v35[5]);
+    (*(blockCopy + 2))(blockCopy, 0, v35[5]);
   }
 
   v22 = 0;
@@ -2765,22 +2765,22 @@ uint64_t __61__MobileActivationDaemon_recertifyDeviceWithCompletionBlock___block
   return v10();
 }
 
-- (void)handleActivationInfoWithSession:(id)a3 activationSignature:(id)a4 completionBlock:(id)a5
+- (void)handleActivationInfoWithSession:(id)session activationSignature:(id)signature completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MobileActivationDaemon *)self callingProcessName];
+  sessionCopy = session;
+  signatureCopy = signature;
+  blockCopy = block;
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
   v12 = copySignpostLoggingHandle();
   v13 = os_signpost_enabled(v12);
 
   if (v13)
   {
     v14 = 0xEEEEB0B5B2B2EEEELL;
-    if (v8 != 0xEEEEB0B5B2B2EEEELL)
+    if (sessionCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v15 = copySignpostLoggingHandle();
-      v14 = os_signpost_id_make_with_pointer(v15, v8);
+      v14 = os_signpost_id_make_with_pointer(v15, sessionCopy);
     }
 
     v16 = copySignpostLoggingHandle();
@@ -2795,20 +2795,20 @@ uint64_t __61__MobileActivationDaemon_recertifyDeviceWithCompletionBlock___block
     v54[1] = 3254779904;
     v54[2] = __94__MobileActivationDaemon_handleActivationInfoWithSession_activationSignature_completionBlock___block_invoke;
     v54[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v55 = v10;
+    v55 = blockCopy;
     v56 = v14;
-    v10 = objc_retainBlock(v54);
+    blockCopy = objc_retainBlock(v54);
   }
 
-  maLog("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1, @"Activation (session) requested by %@", v11);
-  v50 = v9;
-  if (!v8)
+  maLog("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1, @"Activation (session) requested by %@", callingProcessName);
+  v50 = signatureCopy;
+  if (!sessionCopy)
   {
     v38 = createAndLogError("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1479, @"com.apple.MobileActivation.ErrorDomain", -2, 0, @"Invalid input.");
 LABEL_23:
     v36 = v38;
     v32 = 0;
-    v28 = 0;
+    activationNonce = 0;
     v22 = 0;
 LABEL_28:
     v34 = 0;
@@ -2816,8 +2816,8 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v18 = [(MobileActivationDaemon *)self dark];
-  v19 = dataMigrationCompleted(v18);
+  dark = [(MobileActivationDaemon *)self dark];
+  v19 = dataMigrationCompleted(dark);
 
   if ((v19 & 1) == 0)
   {
@@ -2825,8 +2825,8 @@ LABEL_28:
     goto LABEL_23;
   }
 
-  v20 = [(MobileActivationDaemon *)self dark];
-  v21 = data_ark_copy(v20, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v21 = data_ark_copy(dark2, 0, @"ActivationState");
   v22 = isNSString(v21);
 
   if (!v22)
@@ -2839,18 +2839,18 @@ LABEL_28:
     v36 = createAndLogError("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1494, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Device is already activated (%@).", v22);
 LABEL_27:
     v32 = 0;
-    v28 = 0;
+    activationNonce = 0;
     goto LABEL_28;
   }
 
-  if (!v9)
+  if (!signatureCopy)
   {
     v25 = 0;
     goto LABEL_26;
   }
 
   v53 = 0;
-  v23 = [(MobileActivationDaemon *)self validateActivationDataSignature:v8 activationSignature:v9 withError:&v53];
+  v23 = [(MobileActivationDaemon *)self validateActivationDataSignature:sessionCopy activationSignature:signatureCopy withError:&v53];
   v24 = v53;
   v25 = v24;
   if ((v23 & 1) == 0)
@@ -2862,7 +2862,7 @@ LABEL_26:
   }
 
   v52 = v24;
-  v26 = getSessionActivationRecordFromData(v8, &v52);
+  v26 = getSessionActivationRecordFromData(sessionCopy, &v52);
   v27 = v52;
 
   if (!v26)
@@ -2870,14 +2870,14 @@ LABEL_26:
     v36 = createAndLogError("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1505, @"com.apple.MobileActivation.ErrorDomain", -2, v27, @"Failed to extract activation record.");
 
     v32 = 0;
-    v28 = 0;
+    activationNonce = 0;
 LABEL_36:
     v34 = 0;
     goto LABEL_29;
   }
 
-  v28 = [(MobileActivationDaemon *)self activationNonce];
-  if (!v28)
+  activationNonce = [(MobileActivationDaemon *)self activationNonce];
+  if (!activationNonce)
   {
     v36 = createAndLogError("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1511, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid activation nonce.");
     v39 = v27;
@@ -2889,64 +2889,64 @@ LABEL_35:
 
   v48 = v27;
   [(MobileActivationDaemon *)self setActivationNonce:0];
-  v29 = [(MobileActivationDaemon *)self activationSessionClientName];
-  v30 = [(NSString *)v29 isEqualToString:v11];
+  activationSessionClientName = [(MobileActivationDaemon *)self activationSessionClientName];
+  v30 = [(NSString *)activationSessionClientName isEqualToString:callingProcessName];
 
   if ((v30 & 1) == 0)
   {
-    v40 = [(MobileActivationDaemon *)self activationSessionClientName];
-    v36 = createAndLogError("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1518, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid activation session (actual, expected): (%@, %@)", v11, v40);
+    activationSessionClientName2 = [(MobileActivationDaemon *)self activationSessionClientName];
+    v36 = createAndLogError("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1518, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid activation session (actual, expected): (%@, %@)", callingProcessName, activationSessionClientName2);
 
-    v39 = v40;
+    v39 = activationSessionClientName2;
     goto LABEL_35;
   }
 
   v60 = @"ActivationRandomness";
-  v61 = v28;
+  v61 = activationNonce;
   v31 = [NSDictionary dictionaryWithObjects:&v61 forKeys:&v60 count:1];
   v32 = [(NSDictionary *)v31 mutableCopy];
 
-  v46 = [(MobileActivationDaemon *)self dark];
-  v33 = copy_activation_record(v46);
+  dark3 = [(MobileActivationDaemon *)self dark];
+  v33 = copy_activation_record(dark3);
   v34 = [NSNumber numberWithInt:v33 != 0];
 
   [v32 setObject:v34 forKeyedSubscript:@"UseCommittedUIK"];
   v35 = dictionary_to_xml(v26);
   maLog("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 0, @"Activation message:\n%@", v35);
 
-  v47 = [(MobileActivationDaemon *)self dark];
+  dark4 = [(MobileActivationDaemon *)self dark];
   v58 = @"ActivationRecord";
   v59 = v26;
   v44 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
   v51 = v48;
-  v45 = handle_activate(v47, v44, v32, &v51);
+  v45 = handle_activate(dark4, v44, v32, &v51);
   v36 = v51;
 
   if (v45)
   {
     if (device_supports_dcrt_oob())
     {
-      v49 = [(MobileActivationDaemon *)self dark];
-      scheduleXPCActivity(v49, [@"com.apple.mobileactivationd.DCRT.OOB" UTF8String], 5u, 1, 0x4000u, 0x1000u, &__block_literal_global_9);
+      dark5 = [(MobileActivationDaemon *)self dark];
+      scheduleXPCActivity(dark5, [@"com.apple.mobileactivationd.DCRT.OOB" UTF8String], 5u, 1, 0x4000u, 0x1000u, &__block_literal_global_9);
 
-      v37 = [(MobileActivationDaemon *)self dark];
-      scheduleXPCActivity(v37, [@"com.apple.mobileactivationd.SDCRT.OOB" UTF8String], 5u, 1, 0x4000u, 0x1000u, &__block_literal_global_357);
+      dark6 = [(MobileActivationDaemon *)self dark];
+      scheduleXPCActivity(dark6, [@"com.apple.mobileactivationd.SDCRT.OOB" UTF8String], 5u, 1, 0x4000u, 0x1000u, &__block_literal_global_357);
     }
   }
 
   else
   {
-    v41 = [(MobileActivationDaemon *)self dark];
-    writeSplunkLog(v41, 4, -1, "[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1536, 0, @"%@", v42, v36);
+    dark7 = [(MobileActivationDaemon *)self dark];
+    writeSplunkLog(dark7, 4, -1, "[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1536, 0, @"%@", v42, v36);
 
     v43 = createAndLogError("[MobileActivationDaemon handleActivationInfoWithSession:activationSignature:completionBlock:]", 1537, @"com.apple.MobileActivation.ErrorDomain", -1, v36, @"Failed to activate device.");
     v36 = v43;
   }
 
 LABEL_29:
-  if (v10)
+  if (blockCopy)
   {
-    (*(v10 + 2))(v10, 0, v36);
+    (*(blockCopy + 2))(blockCopy, 0, v36);
   }
 }
 
@@ -2970,10 +2970,10 @@ void __94__MobileActivationDaemon_handleActivationInfoWithSession_activationSign
   }
 }
 
-- (void)issueClientCertificateLegacy:(id)a3 WithCompletionBlock:(id)a4
+- (void)issueClientCertificateLegacy:(id)legacy WithCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  legacyCopy = legacy;
+  blockCopy = block;
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x3032000000;
@@ -2992,10 +2992,10 @@ void __94__MobileActivationDaemon_handleActivationInfoWithSession_activationSign
   if (v9)
   {
     v10 = 0xEEEEB0B5B2B2EEEELL;
-    if (v6 != 0xEEEEB0B5B2B2EEEELL)
+    if (legacyCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v11 = copySignpostLoggingHandle();
-      v10 = os_signpost_id_make_with_pointer(v11, v6);
+      v10 = os_signpost_id_make_with_pointer(v11, legacyCopy);
     }
 
     v12 = copySignpostLoggingHandle();
@@ -3010,13 +3010,13 @@ void __94__MobileActivationDaemon_handleActivationInfoWithSession_activationSign
     v30[1] = 3254779904;
     v30[2] = __75__MobileActivationDaemon_issueClientCertificateLegacy_WithCompletionBlock___block_invoke;
     v30[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v31 = v7;
+    v31 = blockCopy;
     v32 = v10;
-    v7 = objc_retainBlock(v30);
+    blockCopy = objc_retainBlock(v30);
   }
 
-  v14 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon issueClientCertificateLegacy:WithCompletionBlock:]", 1, @"Client certification (legacy) requested by %@", v14);
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon issueClientCertificateLegacy:WithCompletionBlock:]", 1, @"Client certification (legacy) requested by %@", callingProcessName);
   if (![(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
     v42 = @"com.apple.mobileactivationd.spi";
@@ -3030,15 +3030,15 @@ void __94__MobileActivationDaemon_handleActivationInfoWithSession_activationSign
     goto LABEL_20;
   }
 
-  if (v6)
+  if (legacyCopy)
   {
-    v15 = [(MobileActivationDaemon *)self dark];
-    v16 = dataMigrationCompleted(v15);
+    dark = [(MobileActivationDaemon *)self dark];
+    v16 = dataMigrationCompleted(dark);
 
     if (v16)
     {
-      v17 = [(MobileActivationDaemon *)self dark];
-      v18 = data_ark_copy(v17, 0, @"ActivationState");
+      dark2 = [(MobileActivationDaemon *)self dark];
+      v18 = data_ark_copy(dark2, 0, @"ActivationState");
       v19 = isNSString(v18);
 
       if (!v19)
@@ -3048,16 +3048,16 @@ void __94__MobileActivationDaemon_handleActivationInfoWithSession_activationSign
 
       if (([(__CFString *)v19 isEqualToString:@"Activated"]& 1) != 0)
       {
-        v20 = [(MobileActivationDaemon *)self creationQueue];
+        creationQueue = [(MobileActivationDaemon *)self creationQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3254779904;
         block[2] = __75__MobileActivationDaemon_issueClientCertificateLegacy_WithCompletionBlock___block_invoke_361;
         block[3] = &__block_descriptor_64_e8_32s40bs48r56r_e5_v8__0l;
         v28 = &v34;
-        v26 = v6;
+        v26 = legacyCopy;
         v29 = v40;
-        v27 = v7;
-        dispatch_async(v20, block);
+        v27 = blockCopy;
+        dispatch_async(creationQueue, block);
 
         goto LABEL_22;
       }
@@ -3080,9 +3080,9 @@ LABEL_19:
   v35[5] = v24;
 LABEL_20:
 
-  if (v7)
+  if (blockCopy)
   {
-    (*(v7 + 2))(v7, 0, v35[5]);
+    (*(blockCopy + 2))(blockCopy, 0, v35[5]);
   }
 
 LABEL_22:
@@ -3192,21 +3192,21 @@ void __75__MobileActivationDaemon_issueClientCertificateLegacy_WithCompletionBlo
   }
 }
 
-- (void)issueClientCertificateWithReferenceKey:(id)a3 options:(id)a4 completion:(id)a5
+- (void)issueClientCertificateWithReferenceKey:(id)key options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = copySignpostLoggingHandle();
   v12 = os_signpost_enabled(v11);
 
   if (v12)
   {
     v13 = 0xEEEEB0B5B2B2EEEELL;
-    if (v8 != 0xEEEEB0B5B2B2EEEELL)
+    if (keyCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v14 = copySignpostLoggingHandle();
-      v13 = os_signpost_id_make_with_pointer(v14, v8);
+      v13 = os_signpost_id_make_with_pointer(v14, keyCopy);
     }
 
     v15 = copySignpostLoggingHandle();
@@ -3221,13 +3221,13 @@ void __75__MobileActivationDaemon_issueClientCertificateLegacy_WithCompletionBlo
     v34[1] = 3254779904;
     v34[2] = __84__MobileActivationDaemon_issueClientCertificateWithReferenceKey_options_completion___block_invoke;
     v34[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v35 = v10;
+    v35 = completionCopy;
     v36 = v13;
-    v10 = objc_retainBlock(v34);
+    completionCopy = objc_retainBlock(v34);
   }
 
-  v17 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon issueClientCertificateWithReferenceKey:options:completion:]", 1, @"Client certification requested by %@", v17);
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon issueClientCertificateWithReferenceKey:options:completion:]", 1, @"Client certification requested by %@", callingProcessName);
   v33 = 0;
   v18 = isSupportedDeviceIdentityClient(1, &v33);
   v19 = v33;
@@ -3242,17 +3242,17 @@ void __75__MobileActivationDaemon_issueClientCertificateLegacy_WithCompletionBlo
       goto LABEL_22;
     }
 
-    v20 = [(MobileActivationDaemon *)self dark];
-    v21 = dataMigrationCompleted(v20);
+    dark = [(MobileActivationDaemon *)self dark];
+    v21 = dataMigrationCompleted(dark);
 
     if (v21)
     {
-      if (!v9)
+      if (!optionsCopy)
       {
         goto LABEL_29;
       }
 
-      v22 = [v9 objectForKeyedSubscript:@"OIDSToInclude"];
+      v22 = [optionsCopy objectForKeyedSubscript:@"OIDSToInclude"];
       v23 = isNSArray(v22);
 
       if (!v23)
@@ -3260,13 +3260,13 @@ void __75__MobileActivationDaemon_issueClientCertificateLegacy_WithCompletionBlo
         goto LABEL_29;
       }
 
-      v24 = [v9 objectForKeyedSubscript:@"OIDSToInclude"];
+      v24 = [optionsCopy objectForKeyedSubscript:@"OIDSToInclude"];
       if (([v24 containsObject:@"1.2.840.113635.100.10.1"] & 1) == 0)
       {
-        v25 = [v9 objectForKeyedSubscript:@"OIDSToInclude"];
+        v25 = [optionsCopy objectForKeyedSubscript:@"OIDSToInclude"];
         if (![v25 containsObject:@"1.2.840.113635.100.8.1"])
         {
-          v30 = [v9 objectForKeyedSubscript:@"OIDSToInclude"];
+          v30 = [optionsCopy objectForKeyedSubscript:@"OIDSToInclude"];
           v31 = [v30 containsObject:@"1.2.840.113635.100.8.3"];
 
           if ((v31 & 1) == 0)
@@ -3293,8 +3293,8 @@ LABEL_22:
       }
 
 LABEL_29:
-      v32 = [(MobileActivationDaemon *)self dark];
-      issueClientCertificateWithReferenceKey(v32, v17, v8, 0, v9, v10);
+      dark2 = [(MobileActivationDaemon *)self dark];
+      issueClientCertificateWithReferenceKey(dark2, callingProcessName, keyCopy, 0, optionsCopy, completionCopy);
 
       goto LABEL_26;
     }
@@ -3310,9 +3310,9 @@ LABEL_29:
   v29 = v28;
 LABEL_23:
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0, v29);
+    (*(completionCopy + 2))(completionCopy, 0, v29);
   }
 
   v19 = v29;
@@ -3339,11 +3339,11 @@ void __84__MobileActivationDaemon_issueClientCertificateWithReferenceKey_options
   }
 }
 
-- (void)copyAttestationDictionaryWithCompletionBlock:(id)a3 options:(id)a4 completion:(id)a5
+- (void)copyAttestationDictionaryWithCompletionBlock:(id)block options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  optionsCopy = options;
+  completionCopy = completion;
   v65 = 0;
   v66 = &v65;
   v67 = 0x3032000000;
@@ -3356,10 +3356,10 @@ void __84__MobileActivationDaemon_issueClientCertificateWithReferenceKey_options
   if (v12)
   {
     v13 = 0xEEEEB0B5B2B2EEEELL;
-    if (v8 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v14 = copySignpostLoggingHandle();
-      v13 = os_signpost_id_make_with_pointer(v14, v8);
+      v13 = os_signpost_id_make_with_pointer(v14, blockCopy);
     }
 
     v15 = copySignpostLoggingHandle();
@@ -3374,14 +3374,14 @@ void __84__MobileActivationDaemon_issueClientCertificateWithReferenceKey_options
     v61[1] = 3254779904;
     v61[2] = __90__MobileActivationDaemon_copyAttestationDictionaryWithCompletionBlock_options_completion___block_invoke;
     v61[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v62 = v10;
+    v62 = completionCopy;
     v63 = v13;
-    v10 = objc_retainBlock(v61);
+    completionCopy = objc_retainBlock(v61);
   }
 
-  v17 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon copyAttestationDictionaryWithCompletionBlock:options:completion:]", 1, @"Client attestation requested by %@", v17);
-  if (!v8 || !v17)
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon copyAttestationDictionaryWithCompletionBlock:options:completion:]", 1, @"Client attestation requested by %@", callingProcessName);
+  if (!blockCopy || !callingProcessName)
   {
     v27 = createAndLogError("[MobileActivationDaemon copyAttestationDictionaryWithCompletionBlock:options:completion:]", 1734, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Invalid input(s).");
 LABEL_21:
@@ -3406,8 +3406,8 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  v18 = [(MobileActivationDaemon *)self dark];
-  v19 = dataMigrationCompleted(v18);
+  dark = [(MobileActivationDaemon *)self dark];
+  v19 = dataMigrationCompleted(dark);
 
   if ((v19 & 1) == 0)
   {
@@ -3415,23 +3415,23 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  if (!v9)
+  if (!optionsCopy)
   {
     goto LABEL_32;
   }
 
-  v20 = [v9 objectForKeyedSubscript:@"OIDSToInclude"];
+  v20 = [optionsCopy objectForKeyedSubscript:@"OIDSToInclude"];
   v21 = isNSArray(v20);
 
   if (v21)
   {
-    v22 = [v9 objectForKeyedSubscript:@"OIDSToInclude"];
+    v22 = [optionsCopy objectForKeyedSubscript:@"OIDSToInclude"];
     if (([v22 containsObject:@"1.2.840.113635.100.10.1"] & 1) == 0)
     {
-      v23 = [v9 objectForKeyedSubscript:@"OIDSToInclude"];
+      v23 = [optionsCopy objectForKeyedSubscript:@"OIDSToInclude"];
       if (![v23 containsObject:@"1.2.840.113635.100.8.1"])
       {
-        v33 = [v9 objectForKeyedSubscript:@"OIDSToInclude"];
+        v33 = [optionsCopy objectForKeyedSubscript:@"OIDSToInclude"];
         v34 = [v33 containsObject:@"1.2.840.113635.100.8.3"];
 
         if ((v34 & 1) == 0)
@@ -3459,9 +3459,9 @@ LABEL_24:
       v30 = 0;
 LABEL_25:
 
-      if (v10)
+      if (completionCopy)
       {
-        (*(v10 + 2))(v10, 0, v66[5]);
+        (*(completionCopy + 2))(completionCopy, 0, v66[5]);
       }
 
       goto LABEL_27;
@@ -3469,27 +3469,27 @@ LABEL_25:
   }
 
 LABEL_30:
-  v35 = [v9 objectForKeyedSubscript:@"scrtAttestation"];
+  v35 = [optionsCopy objectForKeyedSubscript:@"scrtAttestation"];
   v36 = isNSNumber(v35);
 
   if (v36)
   {
-    v37 = [v9 objectForKeyedSubscript:@"scrtAttestation"];
-    v38 = [v37 BOOLValue];
+    v37 = [optionsCopy objectForKeyedSubscript:@"scrtAttestation"];
+    bOOLValue = [v37 BOOLValue];
 
     goto LABEL_33;
   }
 
 LABEL_32:
-  v38 = 0;
+  bOOLValue = 0;
 LABEL_33:
-  v39 = [(MobileActivationDaemon *)self dark];
-  v40 = data_ark_copy(v39, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v40 = data_ark_copy(dark2, 0, @"ActivationState");
   v30 = isNSString(v40);
 
   if (v30)
   {
-    if (v38)
+    if (bOOLValue)
     {
 LABEL_35:
       v28 = 0;
@@ -3502,7 +3502,7 @@ LABEL_35:
   else
   {
     v30 = @"Unactivated";
-    if (v38)
+    if (bOOLValue)
     {
       goto LABEL_35;
     }
@@ -3516,25 +3516,25 @@ LABEL_35:
     goto LABEL_22;
   }
 
-  v42 = [(MobileActivationDaemon *)self dark];
-  v28 = data_ark_copy(v42, 0, @"UCRTHealingRequired");
+  dark3 = [(MobileActivationDaemon *)self dark];
+  v28 = data_ark_copy(dark3, 0, @"UCRTHealingRequired");
 
   v43 = isNSNumber(v28);
-  LODWORD(v42) = v43 == 0;
+  LODWORD(dark3) = v43 == 0;
 
-  if (v42)
+  if (dark3)
   {
 
     v28 = &__kCFBooleanFalse;
   }
 
-  v44 = [(MobileActivationDaemon *)self dark];
-  v29 = data_ark_copy(v44, 0, @"UCRTOOBForbidden");
+  dark4 = [(MobileActivationDaemon *)self dark];
+  v29 = data_ark_copy(dark4, 0, @"UCRTOOBForbidden");
 
   v45 = isNSNumber(v29);
-  LODWORD(v44) = v45 == 0;
+  LODWORD(dark4) = v45 == 0;
 
-  if (v44)
+  if (dark4)
   {
 
     v29 = &__kCFBooleanFalse;
@@ -3573,11 +3573,11 @@ LABEL_35:
     goto LABEL_22;
   }
 
-  v49 = [(MobileActivationDaemon *)self dark];
+  dark5 = [(MobileActivationDaemon *)self dark];
   v50 = (v66 + 5);
   v59 = v66[5];
-  v51 = v49;
-  cf = copyUCRT(v49, &v59);
+  v51 = dark5;
+  cf = copyUCRT(dark5, &v59);
   objc_storeStrong(v50, v59);
 
   if (!cf)
@@ -3587,17 +3587,17 @@ LABEL_35:
   }
 
 LABEL_36:
-  v41 = [(MobileActivationDaemon *)self creationQueue];
+  creationQueue = [(MobileActivationDaemon *)self creationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __90__MobileActivationDaemon_copyAttestationDictionaryWithCompletionBlock_options_completion___block_invoke_392;
   block[3] = &__block_descriptor_72_e8_32s40s48s56bs64r_e5_v8__0l;
   v58 = &v65;
-  v54 = v17;
-  v55 = v9;
-  v56 = v8;
-  v57 = v10;
-  dispatch_async(v41, block);
+  v54 = callingProcessName;
+  v55 = optionsCopy;
+  v56 = blockCopy;
+  v57 = completionCopy;
+  dispatch_async(creationQueue, block);
 
   if (cf)
   {
@@ -3751,19 +3751,19 @@ LABEL_19:
   }
 }
 
-- (void)isInFieldCollectedWithCompletionBlock:(id)a3
+- (void)isInFieldCollectedWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = copySignpostLoggingHandle();
   v6 = os_signpost_enabled(v5);
 
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -3778,20 +3778,20 @@ LABEL_19:
     v20[1] = 3254779904;
     v20[2] = __64__MobileActivationDaemon_isInFieldCollectedWithCompletionBlock___block_invoke;
     v20[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v21 = v4;
+    v21 = blockCopy;
     v22 = v7;
-    v4 = objc_retainBlock(v20);
+    blockCopy = objc_retainBlock(v20);
   }
 
   if ([(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
-    v11 = [(MobileActivationDaemon *)self dark];
-    v12 = dataMigrationCompleted(v11);
+    dark = [(MobileActivationDaemon *)self dark];
+    v12 = dataMigrationCompleted(dark);
 
     if (v12)
     {
-      v13 = [(MobileActivationDaemon *)self dark];
-      v14 = collectionAlreadyPerformed(v13);
+      dark2 = [(MobileActivationDaemon *)self dark];
+      v14 = collectionAlreadyPerformed(dark2);
 
       if (v14)
       {
@@ -3799,7 +3799,7 @@ LABEL_19:
         v25 = &__kCFBooleanTrue;
         v15 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
         v16 = 0;
-        if (!v4)
+        if (!blockCopy)
         {
           goto LABEL_19;
         }
@@ -3820,18 +3820,18 @@ LABEL_19:
 
   else
   {
-    v17 = [(MobileActivationDaemon *)self callingProcessName];
+    callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
     v26 = @"com.apple.mobileactivationd.spi";
     v27 = &__kCFBooleanTrue;
     v18 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    v16 = createMobileActivationError("[MobileActivationDaemon isInFieldCollectedWithCompletionBlock:]", 1908, @"com.apple.MobileActivation.ErrorDomain", -7, 0, @"%@ is missing required entitlement: %@", v17, v18);
+    v16 = createMobileActivationError("[MobileActivationDaemon isInFieldCollectedWithCompletionBlock:]", 1908, @"com.apple.MobileActivation.ErrorDomain", -7, 0, @"%@ is missing required entitlement: %@", callingProcessName, v18);
   }
 
   v15 = 0;
-  if (v4)
+  if (blockCopy)
   {
 LABEL_18:
-    (*(v4 + 2))(v4, v15, v16);
+    (*(blockCopy + 2))(blockCopy, v15, v16);
   }
 
 LABEL_19:
@@ -3857,14 +3857,14 @@ void __64__MobileActivationDaemon_isInFieldCollectedWithCompletionBlock___block_
   }
 }
 
-- (void)updateBasebandTicket:(id)a3 baaCertData:(id)a4 baaIntermediateCert:(id)a5 options:(id)a6 withCompletionBlock:(id)a7
+- (void)updateBasebandTicket:(id)ticket baaCertData:(id)data baaIntermediateCert:(id)cert options:(id)options withCompletionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(MobileActivationDaemon *)self callingProcessName];
+  ticketCopy = ticket;
+  dataCopy = data;
+  certCopy = cert;
+  optionsCopy = options;
+  blockCopy = block;
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
   v61 = 0;
   v62 = &v61;
   v63 = 0x3032000000;
@@ -3883,10 +3883,10 @@ void __64__MobileActivationDaemon_isInFieldCollectedWithCompletionBlock___block_
   if (v19)
   {
     v20 = 0xEEEEB0B5B2B2EEEELL;
-    if (v12 != 0xEEEEB0B5B2B2EEEELL)
+    if (ticketCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v21 = copySignpostLoggingHandle();
-      v20 = os_signpost_id_make_with_pointer(v21, v12);
+      v20 = os_signpost_id_make_with_pointer(v21, ticketCopy);
     }
 
     v22 = copySignpostLoggingHandle();
@@ -3901,12 +3901,12 @@ void __64__MobileActivationDaemon_isInFieldCollectedWithCompletionBlock___block_
     v51[1] = 3254779904;
     v51[2] = __107__MobileActivationDaemon_updateBasebandTicket_baaCertData_baaIntermediateCert_options_withCompletionBlock___block_invoke;
     v51[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v52 = v16;
+    v52 = blockCopy;
     v53 = v20;
-    v16 = objc_retainBlock(v51);
+    blockCopy = objc_retainBlock(v51);
   }
 
-  maLog("[MobileActivationDaemon updateBasebandTicket:baaCertData:baaIntermediateCert:options:withCompletionBlock:]", 1, @"Baseband ticket update requested by %@ (%@)", v17, v15);
+  maLog("[MobileActivationDaemon updateBasebandTicket:baaCertData:baaIntermediateCert:options:withCompletionBlock:]", 1, @"Baseband ticket update requested by %@ (%@)", callingProcessName, optionsCopy);
   if (![(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
     v67 = @"com.apple.mobileactivationd.spi";
@@ -3920,15 +3920,15 @@ void __64__MobileActivationDaemon_isInFieldCollectedWithCompletionBlock___block_
     goto LABEL_24;
   }
 
-  if (v12 && v13 && v14)
+  if (ticketCopy && dataCopy && certCopy)
   {
-    v24 = [(MobileActivationDaemon *)self dark];
-    v25 = dataMigrationCompleted(v24);
+    dark = [(MobileActivationDaemon *)self dark];
+    v25 = dataMigrationCompleted(dark);
 
     if (v25)
     {
-      v26 = [(MobileActivationDaemon *)self dark];
-      v27 = data_ark_copy(v26, 0, @"ActivationState");
+      dark2 = [(MobileActivationDaemon *)self dark];
+      v27 = data_ark_copy(dark2, 0, @"ActivationState");
       v28 = isNSString(v27);
       v29 = v56[5];
       v56[5] = v28;
@@ -3951,12 +3951,12 @@ void __64__MobileActivationDaemon_isInFieldCollectedWithCompletionBlock___block_
         {
           if (is_product_cellular())
           {
-            v36 = [v15 objectForKeyedSubscript:@"NetworkTimeoutInterval"];
+            v36 = [optionsCopy objectForKeyedSubscript:@"NetworkTimeoutInterval"];
             v37 = isNSNumber(v36);
 
             if (v37)
             {
-              v35 = [v15 objectForKeyedSubscript:@"NetworkTimeoutInterval"];
+              v35 = [optionsCopy objectForKeyedSubscript:@"NetworkTimeoutInterval"];
               [v35 doubleValue];
               if (v38 <= 0.0)
               {
@@ -3970,23 +3970,23 @@ void __64__MobileActivationDaemon_isInFieldCollectedWithCompletionBlock___block_
               v35 = 0;
             }
 
-            v39 = [(MobileActivationDaemon *)self creationQueue];
+            creationQueue = [(MobileActivationDaemon *)self creationQueue];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3254779904;
             block[2] = __107__MobileActivationDaemon_updateBasebandTicket_baaCertData_baaIntermediateCert_options_withCompletionBlock___block_invoke_411;
             block[3] = &__block_descriptor_112_e8_32s40s48s56s64s72s80s88bs96r104r_e5_v8__0l;
             v49 = &v61;
-            v41 = v17;
-            v42 = v15;
-            v43 = v12;
-            v44 = v13;
-            v45 = v14;
-            v46 = self;
+            v41 = callingProcessName;
+            v42 = optionsCopy;
+            v43 = ticketCopy;
+            v44 = dataCopy;
+            v45 = certCopy;
+            selfCopy = self;
             v35 = v35;
             v47 = v35;
             v50 = &v55;
-            v48 = v16;
-            dispatch_async(v39, block);
+            v48 = blockCopy;
+            dispatch_async(creationQueue, block);
 
             goto LABEL_26;
           }
@@ -4018,9 +4018,9 @@ LABEL_23:
   v62[5] = v31;
 LABEL_24:
 
-  if (v16)
+  if (blockCopy)
   {
-    (*(v16 + 2))(v16, 0, v62[5]);
+    (*(blockCopy + 2))(blockCopy, 0, v62[5]);
   }
 
 LABEL_26:
@@ -4719,20 +4719,20 @@ void __107__MobileActivationDaemon_updateBasebandTicket_baaCertData_baaIntermedi
   }
 }
 
-- (void)copyDCRTWithCompletionBlock:(id)a3 withCompletion:(id)a4
+- (void)copyDCRTWithCompletionBlock:(id)block withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   v8 = copySignpostLoggingHandle();
   v9 = os_signpost_enabled(v8);
 
   if (v9)
   {
     v10 = 0xEEEEB0B5B2B2EEEELL;
-    if (v7 != 0xEEEEB0B5B2B2EEEELL)
+    if (completionCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v11 = copySignpostLoggingHandle();
-      v10 = os_signpost_id_make_with_pointer(v11, v7);
+      v10 = os_signpost_id_make_with_pointer(v11, completionCopy);
     }
 
     v12 = copySignpostLoggingHandle();
@@ -4747,20 +4747,20 @@ void __107__MobileActivationDaemon_updateBasebandTicket_baaCertData_baaIntermedi
     v29[1] = 3254779904;
     v29[2] = __69__MobileActivationDaemon_copyDCRTWithCompletionBlock_withCompletion___block_invoke;
     v29[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v30 = v7;
+    v30 = completionCopy;
     v31 = v10;
-    v7 = objc_retainBlock(v29);
+    completionCopy = objc_retainBlock(v29);
   }
 
-  v14 = [(MobileActivationDaemon *)self dark];
-  v15 = dataMigrationCompleted(v14);
+  dark = [(MobileActivationDaemon *)self dark];
+  v15 = dataMigrationCompleted(dark);
 
   if (v15)
   {
     if (platform_supports_activation())
     {
-      v16 = [(MobileActivationDaemon *)self dark];
-      v17 = data_ark_copy(v16, 0, @"ActivationState");
+      dark2 = [(MobileActivationDaemon *)self dark];
+      v17 = data_ark_copy(dark2, 0, @"ActivationState");
       v18 = isNSString(v17);
 
       if (!v18)
@@ -4786,18 +4786,18 @@ void __107__MobileActivationDaemon_updateBasebandTicket_baaCertData_baaIntermedi
     v21 = v22;
     if (v22)
     {
-      if (v6)
+      if (blockCopy)
       {
-        [v22 addEntriesFromDictionary:v6];
+        [v22 addEntriesFromDictionary:blockCopy];
       }
 
-      v23 = [(MobileActivationDaemon *)self callingProcessName];
-      v24 = [NSNumber numberWithBool:client_requires_critical_dcrt_oids(v23)];
+      callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+      v24 = [NSNumber numberWithBool:client_requires_critical_dcrt_oids(callingProcessName)];
       [v21 setObject:v24 forKeyedSubscript:@"ValidateCriticalDcrtOIDs"];
 
-      v25 = [(MobileActivationDaemon *)self dark];
+      dark3 = [(MobileActivationDaemon *)self dark];
       v28 = 0;
-      v20 = copyDCRT(v25, 0, 0, v21, &v28);
+      v20 = copyDCRT(dark3, 0, 0, v21, &v28);
       v19 = v28;
 
       if (v20)
@@ -4805,7 +4805,7 @@ void __107__MobileActivationDaemon_updateBasebandTicket_baaCertData_baaIntermedi
         v33 = @"DCRTData";
         v34 = v20;
         v26 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_25;
         }
@@ -4817,7 +4817,7 @@ void __107__MobileActivationDaemon_updateBasebandTicket_baaCertData_baaIntermedi
 
         v26 = 0;
         v19 = v27;
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_25;
         }
@@ -4840,10 +4840,10 @@ void __107__MobileActivationDaemon_updateBasebandTicket_baaCertData_baaIntermedi
 
 LABEL_23:
   v26 = 0;
-  if (v7)
+  if (completionCopy)
   {
 LABEL_24:
-    (*(v7 + 2))(v7, v26, v19);
+    (*(completionCopy + 2))(completionCopy, v26, v19);
   }
 
 LABEL_25:
@@ -4869,20 +4869,20 @@ void __69__MobileActivationDaemon_copyDCRTWithCompletionBlock_withCompletion___b
   }
 }
 
-- (void)getDCRTStateWithCompletionBlock:(id)a3 withCompletion:(id)a4
+- (void)getDCRTStateWithCompletionBlock:(id)block withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   v8 = copySignpostLoggingHandle();
   v9 = os_signpost_enabled(v8);
 
   if (v9)
   {
     v10 = 0xEEEEB0B5B2B2EEEELL;
-    if (v7 != 0xEEEEB0B5B2B2EEEELL)
+    if (completionCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v11 = copySignpostLoggingHandle();
-      v10 = os_signpost_id_make_with_pointer(v11, v7);
+      v10 = os_signpost_id_make_with_pointer(v11, completionCopy);
     }
 
     v12 = copySignpostLoggingHandle();
@@ -4897,9 +4897,9 @@ void __69__MobileActivationDaemon_copyDCRTWithCompletionBlock_withCompletion___b
     v30[1] = 3254779904;
     v30[2] = __73__MobileActivationDaemon_getDCRTStateWithCompletionBlock_withCompletion___block_invoke;
     v30[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v31 = v7;
+    v31 = completionCopy;
     v32 = v10;
-    v7 = objc_retainBlock(v30);
+    completionCopy = objc_retainBlock(v30);
   }
 
   if (![(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
@@ -4918,8 +4918,8 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v14 = [(MobileActivationDaemon *)self dark];
-  v15 = dataMigrationCompleted(v14);
+  dark = [(MobileActivationDaemon *)self dark];
+  v15 = dataMigrationCompleted(dark);
 
   if ((v15 & 1) == 0)
   {
@@ -4929,8 +4929,8 @@ LABEL_18:
 
   if (platform_supports_activation())
   {
-    v16 = [(MobileActivationDaemon *)self dark];
-    v17 = data_ark_copy(v16, 0, @"ActivationState");
+    dark2 = [(MobileActivationDaemon *)self dark];
+    v17 = data_ark_copy(dark2, 0, @"ActivationState");
     v18 = isNSString(v17);
 
     if (!v18)
@@ -4965,18 +4965,18 @@ LABEL_31:
     goto LABEL_18;
   }
 
-  if (v6)
+  if (blockCopy)
   {
-    [v24 addEntriesFromDictionary:v6];
+    [v24 addEntriesFromDictionary:blockCopy];
   }
 
-  v25 = [(MobileActivationDaemon *)self callingProcessName];
-  v26 = [NSNumber numberWithBool:client_requires_critical_dcrt_oids(v25)];
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  v26 = [NSNumber numberWithBool:client_requires_critical_dcrt_oids(callingProcessName)];
   [v21 setObject:v26 forKeyedSubscript:@"ValidateCriticalDcrtOIDs"];
 
-  v27 = [(MobileActivationDaemon *)self dark];
+  dark3 = [(MobileActivationDaemon *)self dark];
   v29 = 0;
-  v20 = copyDCRT(v27, 0, 0, v21, &v29);
+  v20 = copyDCRT(dark3, 0, 0, v21, &v29);
   v23 = v29;
 
   if (v20)
@@ -5003,9 +5003,9 @@ LABEL_31:
   v19 = 0;
   v23 = v28;
 LABEL_19:
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, v19, v23);
+    (*(completionCopy + 2))(completionCopy, v19, v23);
   }
 }
 
@@ -5029,20 +5029,20 @@ void __73__MobileActivationDaemon_getDCRTStateWithCompletionBlock_withCompletion
   }
 }
 
-- (void)issueDCRT:(id)a3 withCompletionBlock:(id)a4
+- (void)issueDCRT:(id)t withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  tCopy = t;
+  blockCopy = block;
   v8 = copySignpostLoggingHandle();
   v9 = os_signpost_enabled(v8);
 
   if (v9)
   {
     v10 = 0xEEEEB0B5B2B2EEEELL;
-    if (v7 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v11 = copySignpostLoggingHandle();
-      v10 = os_signpost_id_make_with_pointer(v11, v7);
+      v10 = os_signpost_id_make_with_pointer(v11, blockCopy);
     }
 
     v12 = copySignpostLoggingHandle();
@@ -5057,13 +5057,13 @@ void __73__MobileActivationDaemon_getDCRTStateWithCompletionBlock_withCompletion
     v29[1] = 3254779904;
     v29[2] = __56__MobileActivationDaemon_issueDCRT_withCompletionBlock___block_invoke;
     v29[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v30 = v7;
+    v30 = blockCopy;
     v31 = v10;
-    v7 = objc_retainBlock(v29);
+    blockCopy = objc_retainBlock(v29);
   }
 
-  v14 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon issueDCRT:withCompletionBlock:]", 1, @"DCRT reissue requested by %@ (%@)", v14, v6);
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon issueDCRT:withCompletionBlock:]", 1, @"DCRT reissue requested by %@ (%@)", callingProcessName, tCopy);
   if (![(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
     v33 = @"com.apple.mobileactivationd.spi";
@@ -5074,26 +5074,26 @@ void __73__MobileActivationDaemon_getDCRTStateWithCompletionBlock_withCompletion
     goto LABEL_20;
   }
 
-  v15 = [(MobileActivationDaemon *)self dark];
-  v16 = dataMigrationCompleted(v15);
+  dark = [(MobileActivationDaemon *)self dark];
+  v16 = dataMigrationCompleted(dark);
 
   if ((v16 & 1) == 0)
   {
     v25 = createAndLogError("[MobileActivationDaemon issueDCRT:withCompletionBlock:]", 2396, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Data Migration not complete.");
 LABEL_20:
     v19 = 0;
-    if (!v7)
+    if (!blockCopy)
     {
       goto LABEL_22;
     }
 
 LABEL_21:
-    (*(v7 + 2))(v7, 0, v25);
+    (*(blockCopy + 2))(blockCopy, 0, v25);
     goto LABEL_22;
   }
 
-  v17 = [(MobileActivationDaemon *)self dark];
-  v18 = data_ark_copy(v17, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v18 = data_ark_copy(dark2, 0, @"ActivationState");
   v19 = isNSString(v18);
 
   if (!v19)
@@ -5106,7 +5106,7 @@ LABEL_21:
     v27 = createAndLogError("[MobileActivationDaemon issueDCRT:withCompletionBlock:]", 2407, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Device is not activated (%@).", v19);
 LABEL_25:
     v25 = v27;
-    if (!v7)
+    if (!blockCopy)
     {
       goto LABEL_22;
     }
@@ -5122,17 +5122,17 @@ LABEL_25:
   }
 
   v21 = v20;
-  if (v6)
+  if (tCopy)
   {
-    [v20 addEntriesFromDictionary:v6];
+    [v20 addEntriesFromDictionary:tCopy];
   }
 
-  v22 = [(MobileActivationDaemon *)self callingProcessName];
-  v23 = [NSNumber numberWithBool:client_requires_critical_dcrt_oids(v22)];
+  callingProcessName2 = [(MobileActivationDaemon *)self callingProcessName];
+  v23 = [NSNumber numberWithBool:client_requires_critical_dcrt_oids(callingProcessName2)];
   [v21 setObject:v23 forKeyedSubscript:@"ValidateCriticalDcrtOIDs"];
 
-  v24 = [(MobileActivationDaemon *)self dark];
-  issueDCRT(v24, v14, v21, v7);
+  dark3 = [(MobileActivationDaemon *)self dark];
+  issueDCRT(dark3, callingProcessName, v21, blockCopy);
 
   v25 = 0;
 LABEL_22:
@@ -5158,20 +5158,20 @@ void __56__MobileActivationDaemon_issueDCRT_withCompletionBlock___block_invoke(u
   }
 }
 
-- (void)issueUCRT:(id)a3 withCompletionBlock:(id)a4
+- (void)issueUCRT:(id)t withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  tCopy = t;
+  blockCopy = block;
   v8 = copySignpostLoggingHandle();
   v9 = os_signpost_enabled(v8);
 
   if (v9)
   {
     v10 = 0xEEEEB0B5B2B2EEEELL;
-    if (v7 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v11 = copySignpostLoggingHandle();
-      v10 = os_signpost_id_make_with_pointer(v11, v7);
+      v10 = os_signpost_id_make_with_pointer(v11, blockCopy);
     }
 
     v12 = copySignpostLoggingHandle();
@@ -5186,13 +5186,13 @@ void __56__MobileActivationDaemon_issueDCRT_withCompletionBlock___block_invoke(u
     v23[1] = 3254779904;
     v23[2] = __56__MobileActivationDaemon_issueUCRT_withCompletionBlock___block_invoke;
     v23[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v24 = v7;
+    v24 = blockCopy;
     v25 = v10;
-    v7 = objc_retainBlock(v23);
+    blockCopy = objc_retainBlock(v23);
   }
 
-  v14 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon issueUCRT:withCompletionBlock:]", 1, @"UCRT reissue requested by %@ (%@)", v14, v6);
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon issueUCRT:withCompletionBlock:]", 1, @"UCRT reissue requested by %@ (%@)", callingProcessName, tCopy);
   if (![(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
     v27 = @"com.apple.mobileactivationd.spi";
@@ -5203,26 +5203,26 @@ void __56__MobileActivationDaemon_issueDCRT_withCompletionBlock___block_invoke(u
     goto LABEL_16;
   }
 
-  v15 = [(MobileActivationDaemon *)self dark];
-  v16 = dataMigrationCompleted(v15);
+  dark = [(MobileActivationDaemon *)self dark];
+  v16 = dataMigrationCompleted(dark);
 
   if ((v16 & 1) == 0)
   {
     v21 = createAndLogError("[MobileActivationDaemon issueUCRT:withCompletionBlock:]", 2457, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Data Migration not complete.");
 LABEL_16:
     v19 = 0;
-    if (!v7)
+    if (!blockCopy)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
-    (*(v7 + 2))(v7, 0, v21);
+    (*(blockCopy + 2))(blockCopy, 0, v21);
     goto LABEL_18;
   }
 
-  v17 = [(MobileActivationDaemon *)self dark];
-  v18 = data_ark_copy(v17, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v18 = data_ark_copy(dark2, 0, @"ActivationState");
   v19 = isNSString(v18);
 
   if (!v19)
@@ -5233,7 +5233,7 @@ LABEL_17:
   if (([(__CFString *)v19 isEqualToString:@"Activated"]& 1) == 0)
   {
     v21 = createAndLogError("[MobileActivationDaemon issueUCRT:withCompletionBlock:]", 2467, @"com.apple.MobileActivation.ErrorDomain", -1, 0, @"Device is not activated (%@).", v19);
-    if (!v7)
+    if (!blockCopy)
     {
       goto LABEL_18;
     }
@@ -5241,8 +5241,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v20 = [(MobileActivationDaemon *)self dark];
-  issueUCRT(v20, v14, v6, v7);
+  dark3 = [(MobileActivationDaemon *)self dark];
+  issueUCRT(dark3, callingProcessName, tCopy, blockCopy);
 
   v21 = 0;
 LABEL_18:
@@ -5268,20 +5268,20 @@ void __56__MobileActivationDaemon_issueUCRT_withCompletionBlock___block_invoke(u
   }
 }
 
-- (void)issueCollection:(id)a3 withCompletionBlock:(id)a4
+- (void)issueCollection:(id)collection withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  blockCopy = block;
   v8 = copySignpostLoggingHandle();
   v9 = os_signpost_enabled(v8);
 
   if (v9)
   {
     v10 = 0xEEEEB0B5B2B2EEEELL;
-    if (v7 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v11 = copySignpostLoggingHandle();
-      v10 = os_signpost_id_make_with_pointer(v11, v7);
+      v10 = os_signpost_id_make_with_pointer(v11, blockCopy);
     }
 
     v12 = copySignpostLoggingHandle();
@@ -5296,13 +5296,13 @@ void __56__MobileActivationDaemon_issueUCRT_withCompletionBlock___block_invoke(u
     v42[1] = 3254779904;
     v42[2] = __62__MobileActivationDaemon_issueCollection_withCompletionBlock___block_invoke;
     v42[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v43 = v7;
+    v43 = blockCopy;
     v44 = v10;
-    v7 = objc_retainBlock(v42);
+    blockCopy = objc_retainBlock(v42);
   }
 
-  v14 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon issueCollection:withCompletionBlock:]", 1, @"Collection requested by %@ (%@)", v14, v6);
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon issueCollection:withCompletionBlock:]", 1, @"Collection requested by %@ (%@)", callingProcessName, collectionCopy);
   if (![(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
     v47 = @"com.apple.mobileactivationd.spi";
@@ -5320,8 +5320,8 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v15 = [(MobileActivationDaemon *)self dark];
-  v16 = dataMigrationCompleted(v15);
+  dark = [(MobileActivationDaemon *)self dark];
+  v16 = dataMigrationCompleted(dark);
 
   if ((v16 & 1) == 0)
   {
@@ -5329,8 +5329,8 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v17 = [(MobileActivationDaemon *)self dark];
-  v18 = data_ark_copy(v17, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v18 = data_ark_copy(dark2, 0, @"ActivationState");
   v19 = isNSString(v18);
 
   if (!v19)
@@ -5340,7 +5340,7 @@ LABEL_29:
 
   if (([(__CFString *)v19 isEqualToString:@"Activated"]& 1) != 0)
   {
-    v20 = [v6 objectForKeyedSubscript:@"scheduleCollectionForCurrentBuild"];
+    v20 = [collectionCopy objectForKeyedSubscript:@"scheduleCollectionForCurrentBuild"];
     v21 = isNSNumber(v20);
 
     if (!v21)
@@ -5351,12 +5351,12 @@ LABEL_29:
 
     if (![v20 BOOLValue])
     {
-      v34 = [(MobileActivationDaemon *)self dark];
-      v35 = v6;
-      v36 = v34;
-      issueCollection(v34, v14, v35, v7);
+      dark3 = [(MobileActivationDaemon *)self dark];
+      v35 = collectionCopy;
+      v36 = dark3;
+      issueCollection(dark3, callingProcessName, v35, blockCopy);
       v37 = v36;
-      v6 = v35;
+      collectionCopy = v35;
 
       v32 = 0;
       v30 = 0;
@@ -5372,8 +5372,8 @@ LABEL_29:
     v24 = isNSString(v23);
     if (v24)
     {
-      v25 = [(MobileActivationDaemon *)self dark];
-      v24 = data_ark_copy(v25, 0, @"CollectionLastPerformed");
+      dark4 = [(MobileActivationDaemon *)self dark];
+      v24 = data_ark_copy(dark4, 0, @"CollectionLastPerformed");
 
       v26 = isNSString(v24);
       if (!v26)
@@ -5382,8 +5382,8 @@ LABEL_29:
         v24 = 0;
       }
 
-      v27 = [(MobileActivationDaemon *)self dark];
-      v28 = data_ark_copy(v27, 0, @"InFieldCollectionInFlight");
+      dark5 = [(MobileActivationDaemon *)self dark];
+      v28 = data_ark_copy(dark5, 0, @"InFieldCollectionInFlight");
 
       v29 = isNSNumber(v28);
       if (!v29)
@@ -5392,8 +5392,8 @@ LABEL_29:
         v28 = &__kCFBooleanFalse;
       }
 
-      v41 = v6;
-      v30 = [v6 objectForKeyedSubscript:@"IgnoreExistingCollection"];
+      v41 = collectionCopy;
+      v30 = [collectionCopy objectForKeyedSubscript:@"IgnoreExistingCollection"];
       v31 = isNSNumber(v30);
 
       if (!v31)
@@ -5402,7 +5402,7 @@ LABEL_29:
         v30 = &__kCFBooleanFalse;
       }
 
-      v6 = v41;
+      collectionCopy = v41;
       if ([v30 BOOLValue] & 1) == 0 && (objc_msgSend(v24, "isEqualToString:", v23) & 1) != 0 || (objc_msgSend(v28, "BOOLValue"))
       {
         v32 = 0;
@@ -5410,22 +5410,22 @@ LABEL_29:
 
       else
       {
-        v38 = [(MobileActivationDaemon *)self dark];
-        data_ark_remove(v38, 0, @"CollectionLastPerformed");
+        dark6 = [(MobileActivationDaemon *)self dark];
+        data_ark_remove(dark6, 0, @"CollectionLastPerformed");
 
         v39 = copyLoggingHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v46 = v14;
+          v46 = callingProcessName;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Scheduling collection as requested by %@.", buf, 0xCu);
         }
 
-        v40 = [(MobileActivationDaemon *)self dark];
-        scheduleXPCActivity(v40, [@"com.apple.mobileactivationd.collection" UTF8String], 5u, 1, 0x5000u, 0x1000u, &__block_literal_global_489);
+        dark7 = [(MobileActivationDaemon *)self dark];
+        scheduleXPCActivity(dark7, [@"com.apple.mobileactivationd.collection" UTF8String], 5u, 1, 0x5000u, 0x1000u, &__block_literal_global_489);
 
         v32 = 0;
-        v6 = v41;
+        collectionCopy = v41;
       }
     }
 
@@ -5448,9 +5448,9 @@ LABEL_29:
   }
 
 LABEL_30:
-  if (v7)
+  if (blockCopy)
   {
-    (*(v7 + 2))(v7, 0, v32);
+    (*(blockCopy + 2))(blockCopy, 0, v32);
   }
 
 LABEL_32:
@@ -5476,19 +5476,19 @@ void __62__MobileActivationDaemon_issueCollection_withCompletionBlock___block_in
   }
 }
 
-- (void)ucrtUpgradeRequiredWithCompletionBlock:(id)a3
+- (void)ucrtUpgradeRequiredWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = copySignpostLoggingHandle();
   v6 = os_signpost_enabled(v5);
 
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -5503,13 +5503,13 @@ void __62__MobileActivationDaemon_issueCollection_withCompletionBlock___block_in
     v31[1] = 3254779904;
     v31[2] = __65__MobileActivationDaemon_ucrtUpgradeRequiredWithCompletionBlock___block_invoke;
     v31[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v32 = v4;
+    v32 = blockCopy;
     v33 = v7;
-    v4 = objc_retainBlock(v31);
+    blockCopy = objc_retainBlock(v31);
   }
 
-  v11 = [(MobileActivationDaemon *)self dark];
-  v12 = dataMigrationCompleted(v11);
+  dark = [(MobileActivationDaemon *)self dark];
+  v12 = dataMigrationCompleted(dark);
 
   if ((v12 & 1) == 0)
   {
@@ -5521,8 +5521,8 @@ void __62__MobileActivationDaemon_issueCollection_withCompletionBlock___block_in
     goto LABEL_24;
   }
 
-  v13 = [(MobileActivationDaemon *)self dark];
-  v14 = data_ark_copy(v13, 0, @"ActivationState");
+  dark2 = [(MobileActivationDaemon *)self dark];
+  v14 = data_ark_copy(dark2, 0, @"ActivationState");
   v15 = isNSString(v14);
 
   if (!v15)
@@ -5538,7 +5538,7 @@ void __62__MobileActivationDaemon_issueCollection_withCompletionBlock___block_in
     v27 = 0;
 LABEL_24:
     v17 = 0;
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_26;
     }
@@ -5546,9 +5546,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v16 = [(MobileActivationDaemon *)self dark];
+  dark3 = [(MobileActivationDaemon *)self dark];
   v30 = 0;
-  v17 = copyUCRT(v16, &v30);
+  v17 = copyUCRT(dark3, &v30);
   v18 = v30;
 
   if (!v17 && (mobileactivationErrorHasDomainAndErrorCode(v18, @"com.apple.MobileActivation.ErrorDomain", 0xFFFFFFFFFFFFFFFCLL) & 1) == 0)
@@ -5560,18 +5560,18 @@ LABEL_24:
     v27 = 0;
     v17 = 0;
     v18 = v29;
-    if (!v4)
+    if (!blockCopy)
     {
       goto LABEL_26;
     }
 
 LABEL_25:
-    (*(v4 + 2))(v4, v27, v18);
+    (*(blockCopy + 2))(blockCopy, v27, v18);
     goto LABEL_26;
   }
 
-  v19 = [(MobileActivationDaemon *)self dark];
-  v20 = data_ark_copy(v19, 0, @"UCRTHealingRequired");
+  dark4 = [(MobileActivationDaemon *)self dark];
+  v20 = data_ark_copy(dark4, 0, @"UCRTHealingRequired");
   v21 = isNSNumber(v20);
 
   if (v21)
@@ -5584,8 +5584,8 @@ LABEL_25:
     v22 = &__kCFBooleanFalse;
   }
 
-  v23 = [(MobileActivationDaemon *)self dark];
-  v24 = data_ark_copy(v23, 0, @"UIKUpgradeRequired");
+  dark5 = [(MobileActivationDaemon *)self dark];
+  v24 = data_ark_copy(dark5, 0, @"UIKUpgradeRequired");
 
   v25 = isNSNumber(v24);
   if (!v25)
@@ -5597,19 +5597,19 @@ LABEL_25:
   v35 = @"UCRTUpgradeRequired";
   if (v17 && ([v22 BOOLValue] & 1) == 0)
   {
-    v26 = [v24 BOOLValue];
+    bOOLValue = [v24 BOOLValue];
   }
 
   else
   {
-    v26 = 1;
+    bOOLValue = 1;
   }
 
-  v28 = [NSNumber numberWithInt:v26];
+  v28 = [NSNumber numberWithInt:bOOLValue];
   v36 = v28;
   v27 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
-  if (v4)
+  if (blockCopy)
   {
     goto LABEL_25;
   }
@@ -5641,9 +5641,9 @@ void __65__MobileActivationDaemon_ucrtUpgradeRequiredWithCompletionBlock___block
   }
 }
 
-- (void)copyLegacyDeviceIdentityWithCompletionBlock:(id)a3
+- (void)copyLegacyDeviceIdentityWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -5656,10 +5656,10 @@ void __65__MobileActivationDaemon_ucrtUpgradeRequiredWithCompletionBlock___block
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -5674,15 +5674,15 @@ void __65__MobileActivationDaemon_ucrtUpgradeRequiredWithCompletionBlock___block
     v22[1] = 3254779904;
     v22[2] = __70__MobileActivationDaemon_copyLegacyDeviceIdentityWithCompletionBlock___block_invoke;
     v22[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v23 = v4;
+    v23 = blockCopy;
     v24 = v7;
-    v4 = objc_retainBlock(v22);
+    blockCopy = objc_retainBlock(v22);
   }
 
   if ([(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
-    v11 = [(MobileActivationDaemon *)self dark];
-    v12 = data_ark_copy(v11, 0, @"ActivationState");
+    dark = [(MobileActivationDaemon *)self dark];
+    v12 = data_ark_copy(dark, 0, @"ActivationState");
     v13 = isNSString(v12);
 
     if (!v13)
@@ -5692,14 +5692,14 @@ void __65__MobileActivationDaemon_ucrtUpgradeRequiredWithCompletionBlock___block
 
     if (([(__CFString *)v13 isEqualToString:@"Activated"]& 1) != 0)
     {
-      v14 = [(MobileActivationDaemon *)self creationQueue];
+      creationQueue = [(MobileActivationDaemon *)self creationQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3254779904;
       block[2] = __70__MobileActivationDaemon_copyLegacyDeviceIdentityWithCompletionBlock___block_invoke_490;
       block[3] = &__block_descriptor_48_e8_32bs40r_e5_v8__0l;
       v21 = &v26;
-      v20 = v4;
-      dispatch_async(v14, block);
+      v20 = blockCopy;
+      dispatch_async(creationQueue, block);
 
       goto LABEL_17;
     }
@@ -5721,9 +5721,9 @@ void __65__MobileActivationDaemon_ucrtUpgradeRequiredWithCompletionBlock___block
     v13 = 0;
   }
 
-  if (v4)
+  if (blockCopy)
   {
-    (*(v4 + 2))(v4, 0, v27[5]);
+    (*(blockCopy + 2))(blockCopy, 0, v27[5]);
   }
 
 LABEL_17:
@@ -5854,19 +5854,19 @@ LABEL_17:
   privateKeyRef = 0;
 }
 
-- (void)deleteLegacyDeviceIdentityWithCompletionBlock:(id)a3
+- (void)deleteLegacyDeviceIdentityWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = copySignpostLoggingHandle();
   v6 = os_signpost_enabled(v5);
 
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -5881,18 +5881,18 @@ LABEL_17:
     v21[1] = 3254779904;
     v21[2] = __72__MobileActivationDaemon_deleteLegacyDeviceIdentityWithCompletionBlock___block_invoke;
     v21[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v22 = v4;
+    v22 = blockCopy;
     v23 = v7;
-    v4 = objc_retainBlock(v21);
+    blockCopy = objc_retainBlock(v21);
   }
 
-  v11 = [(MobileActivationDaemon *)self callingProcessName];
-  maLog("[MobileActivationDaemon deleteLegacyDeviceIdentityWithCompletionBlock:]", 1, @"Legacy Identity (delete) requested by %@", v11);
+  callingProcessName = [(MobileActivationDaemon *)self callingProcessName];
+  maLog("[MobileActivationDaemon deleteLegacyDeviceIdentityWithCompletionBlock:]", 1, @"Legacy Identity (delete) requested by %@", callingProcessName);
 
   if ([(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
   {
-    v12 = [(MobileActivationDaemon *)self dark];
-    v13 = data_ark_copy(v12, 0, @"ActivationState");
+    dark = [(MobileActivationDaemon *)self dark];
+    v13 = data_ark_copy(dark, 0, @"ActivationState");
     v14 = isNSString(v13);
 
     if (!v14)
@@ -5904,7 +5904,7 @@ LABEL_17:
     {
       v17 = createAndLogError("[MobileActivationDaemon deleteLegacyDeviceIdentityWithCompletionBlock:]", 2767, @"com.apple.MobileActivation.ErrorDomain", -8, 0, @"Device is not activated (%@).", v14);
       v15 = 0;
-      if (!v4)
+      if (!blockCopy)
       {
         goto LABEL_18;
       }
@@ -5923,7 +5923,7 @@ LABEL_17:
       v18 = createAndLogError("[MobileActivationDaemon deleteLegacyDeviceIdentityWithCompletionBlock:]", 2776, @"com.apple.MobileActivation.ErrorDomain", -1, v17, @"Failed to delete existing identity.");
 
       v17 = v18;
-      if (!v4)
+      if (!blockCopy)
       {
         goto LABEL_18;
       }
@@ -5943,10 +5943,10 @@ LABEL_17:
     v14 = 0;
   }
 
-  if (v4)
+  if (blockCopy)
   {
 LABEL_17:
-    (*(v4 + 2))(v4, 0, v17);
+    (*(blockCopy + 2))(blockCopy, 0, v17);
   }
 
 LABEL_18:
@@ -5972,19 +5972,19 @@ void __72__MobileActivationDaemon_deleteLegacyDeviceIdentityWithCompletionBlock_
   }
 }
 
-- (void)copyUCRTVersionInfoWithCompletionBlock:(id)a3
+- (void)copyUCRTVersionInfoWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = copySignpostLoggingHandle();
   v6 = os_signpost_enabled(v5);
 
   if (v6)
   {
     v7 = 0xEEEEB0B5B2B2EEEELL;
-    if (v4 != 0xEEEEB0B5B2B2EEEELL)
+    if (blockCopy != 0xEEEEB0B5B2B2EEEELL)
     {
       v8 = copySignpostLoggingHandle();
-      v7 = os_signpost_id_make_with_pointer(v8, v4);
+      v7 = os_signpost_id_make_with_pointer(v8, blockCopy);
     }
 
     v9 = copySignpostLoggingHandle();
@@ -5999,9 +5999,9 @@ void __72__MobileActivationDaemon_deleteLegacyDeviceIdentityWithCompletionBlock_
     v17[1] = 3254779904;
     v17[2] = __65__MobileActivationDaemon_copyUCRTVersionInfoWithCompletionBlock___block_invoke;
     v17[3] = &__block_descriptor_48_e8_32bs_e34_v24__0__NSDictionary_8__NSError_16l;
-    v18 = v4;
+    v18 = blockCopy;
     v19 = v7;
-    v4 = objc_retainBlock(v17);
+    blockCopy = objc_retainBlock(v17);
   }
 
   if ([(MobileActivationDaemon *)self isEntitled:@"com.apple.mobileactivationd.spi"])
@@ -6014,7 +6014,7 @@ void __72__MobileActivationDaemon_deleteLegacyDeviceIdentityWithCompletionBlock_
       v21 = @"UCRTVersionInfo";
       v22 = v11;
       v13 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-      if (!v4)
+      if (!blockCopy)
       {
         goto LABEL_14;
       }
@@ -6026,7 +6026,7 @@ void __72__MobileActivationDaemon_deleteLegacyDeviceIdentityWithCompletionBlock_
 
       v13 = 0;
       v12 = v15;
-      if (!v4)
+      if (!blockCopy)
       {
         goto LABEL_14;
       }
@@ -6042,10 +6042,10 @@ void __72__MobileActivationDaemon_deleteLegacyDeviceIdentityWithCompletionBlock_
 
   v11 = 0;
   v13 = 0;
-  if (v4)
+  if (blockCopy)
   {
 LABEL_13:
-    (*(v4 + 2))(v4, v13, v12);
+    (*(blockCopy + 2))(blockCopy, v13, v12);
   }
 
 LABEL_14:

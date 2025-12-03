@@ -1,23 +1,23 @@
 @interface HKHRCardioFitnessAnalyticsManager
-- (HKHRCardioFitnessAnalyticsManager)initWithSignalSource:(id)a3;
-- (id)submitClassificationChartOverlaySelectedEventCurrentOverlay:(id)a3 previousOverlay:(id)a4;
-- (id)submitDailyEventWithSource:(id)a3 deviceContextsDict:(id)a4;
-- (id)submitOnboardingEventForStep:(id)a3 acceptDefaults:(BOOL)a4 countryCode:(id)a5;
-- (void)_setKey:(id)a3 value:(id)a4 onPayloadIfPresent:(id)a5;
+- (HKHRCardioFitnessAnalyticsManager)initWithSignalSource:(id)source;
+- (id)submitClassificationChartOverlaySelectedEventCurrentOverlay:(id)overlay previousOverlay:(id)previousOverlay;
+- (id)submitDailyEventWithSource:(id)source deviceContextsDict:(id)dict;
+- (id)submitOnboardingEventForStep:(id)step acceptDefaults:(BOOL)defaults countryCode:(id)code;
+- (void)_setKey:(id)key value:(id)value onPayloadIfPresent:(id)present;
 @end
 
 @implementation HKHRCardioFitnessAnalyticsManager
 
-- (HKHRCardioFitnessAnalyticsManager)initWithSignalSource:(id)a3
+- (HKHRCardioFitnessAnalyticsManager)initWithSignalSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = HKHRCardioFitnessAnalyticsManager;
   v6 = [(HKHRCardioFitnessAnalyticsManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_signalSource, a3);
+    objc_storeStrong(&v6->_signalSource, source);
     v8 = HKCreateSerialDispatchQueue();
     queue = v7->_queue;
     v7->_queue = v8;
@@ -26,26 +26,26 @@
   return v7;
 }
 
-- (id)submitOnboardingEventForStep:(id)a3 acceptDefaults:(BOOL)a4 countryCode:(id)a5
+- (id)submitOnboardingEventForStep:(id)step acceptDefaults:(BOOL)defaults countryCode:(id)code
 {
-  v8 = a3;
-  v9 = a5;
+  stepCopy = step;
+  codeCopy = code;
   queue = self->_queue;
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __93__HKHRCardioFitnessAnalyticsManager_submitOnboardingEventForStep_acceptDefaults_countryCode___block_invoke;
   v19 = &unk_27860AC60;
-  v23 = a4;
-  v20 = self;
-  v21 = v9;
-  v22 = v8;
-  v11 = v8;
-  v12 = v9;
+  defaultsCopy = defaults;
+  selfCopy = self;
+  v21 = codeCopy;
+  v22 = stepCopy;
+  v11 = stepCopy;
+  v12 = codeCopy;
   dispatch_async(queue, &v16);
   v13 = [HKHRCardioFitnessAnalyticsResult alloc];
-  v14 = [(HKHRCardioFitnessAnalyticsResult *)v13 initWithStatus:0 error:0, v16, v17, v18, v19, v20];
+  selfCopy = [(HKHRCardioFitnessAnalyticsResult *)v13 initWithStatus:0 error:0, v16, v17, v18, v19, selfCopy];
 
-  return v14;
+  return selfCopy;
 }
 
 void __93__HKHRCardioFitnessAnalyticsManager_submitOnboardingEventForStep_acceptDefaults_countryCode___block_invoke(uint64_t a1)
@@ -93,11 +93,11 @@ id __93__HKHRCardioFitnessAnalyticsManager_submitOnboardingEventForStep_acceptDe
   return v2;
 }
 
-- (id)submitClassificationChartOverlaySelectedEventCurrentOverlay:(id)a3 previousOverlay:(id)a4
+- (id)submitClassificationChartOverlaySelectedEventCurrentOverlay:(id)overlay previousOverlay:(id)previousOverlay
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  previousOverlayCopy = previousOverlay;
   if ([(HKHRCardioFitnessAnalyticsSignalSource *)self->_signalSource isImproveHealthAndActivityAllowed])
   {
     queue = self->_queue;
@@ -106,8 +106,8 @@ id __93__HKHRCardioFitnessAnalyticsManager_submitOnboardingEventForStep_acceptDe
     block[2] = __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySelectedEventCurrentOverlay_previousOverlay___block_invoke;
     block[3] = &unk_27860AA48;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = overlayCopy;
+    v15 = previousOverlayCopy;
     dispatch_async(queue, block);
     v9 = [[HKHRCardioFitnessAnalyticsResult alloc] initWithStatus:0 error:0];
   }
@@ -119,7 +119,7 @@ id __93__HKHRCardioFitnessAnalyticsManager_submitOnboardingEventForStep_acceptDe
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228942000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]: IH&A not allowed, will not submit overlay analytics.", buf, 0xCu);
     }
 
@@ -177,14 +177,14 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
   return v2;
 }
 
-- (id)submitDailyEventWithSource:(id)a3 deviceContextsDict:(id)a4
+- (id)submitDailyEventWithSource:(id)source deviceContextsDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKHRCardioFitnessAnalyticsSignalSource *)self->_signalSource isImproveHealthAndActivityAllowed];
-  v9 = [MEMORY[0x277CBEAA8] date];
+  sourceCopy = source;
+  dictCopy = dict;
+  isImproveHealthAndActivityAllowed = [(HKHRCardioFitnessAnalyticsSignalSource *)self->_signalSource isImproveHealthAndActivityAllowed];
+  date = [MEMORY[0x277CBEAA8] date];
   v61[0] = 0;
-  v10 = [v6 determineWeeksSinceOnboardingWithCurrentDate:v9 error:v61];
+  v10 = [sourceCopy determineWeeksSinceOnboardingWithCurrentDate:date error:v61];
   v11 = v61[0];
   if (v11 || (v12 = self->_signalSource, v60 = 0, [(HKHRCardioFitnessAnalyticsSignalSource *)v12 bucketedAgeWithError:&v60], (v11 = v60) != 0))
   {
@@ -207,7 +207,7 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
     else
     {
       v58 = 0;
-      v19 = [v6 determineDaysSinceLastLowNotificationWithCurrentDate:v9 isImproveHealthAndActivityAllowed:v8 error:&v58];
+      v19 = [sourceCopy determineDaysSinceLastLowNotificationWithCurrentDate:date isImproveHealthAndActivityAllowed:isImproveHealthAndActivityAllowed error:&v58];
       v20 = v58;
       if (v20)
       {
@@ -218,7 +218,7 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
       else
       {
         v57 = 0;
-        v44 = [v6 determineDaysSinceLastVO2MaxSampleWithCurrentDate:v9 isImproveHealthAndActivityAllowed:v8 error:&v57];
+        v44 = [sourceCopy determineDaysSinceLastVO2MaxSampleWithCurrentDate:date isImproveHealthAndActivityAllowed:isImproveHealthAndActivityAllowed error:&v57];
         v21 = v57;
         if (v21)
         {
@@ -229,7 +229,7 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
         else
         {
           v56 = 0;
-          v43 = [v6 determineNumberOfLowNotificationsInPastYearWithCurrentDate:v9 isImproveHealthAndActivityAllowed:v8 error:&v56];
+          v43 = [sourceCopy determineNumberOfLowNotificationsInPastYearWithCurrentDate:date isImproveHealthAndActivityAllowed:isImproveHealthAndActivityAllowed error:&v56];
           v22 = v56;
           if (v22)
           {
@@ -240,7 +240,7 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
           else
           {
             v55 = 0;
-            v42 = [v6 determineIsBlockersEnabledWithIsImproveHealthAndActivityAllowed:v8 error:&v55];
+            v42 = [sourceCopy determineIsBlockersEnabledWithIsImproveHealthAndActivityAllowed:isImproveHealthAndActivityAllowed error:&v55];
             v23 = v55;
             if (v23)
             {
@@ -251,7 +251,7 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
             else
             {
               v54 = 0;
-              v41 = [v6 latestClassificationWithIsOnboarded:v10 >= 0 isImproveHealthAndActivityAllowed:v8 error:&v54];
+              v41 = [sourceCopy latestClassificationWithIsOnboarded:v10 >= 0 isImproveHealthAndActivityAllowed:isImproveHealthAndActivityAllowed error:&v54];
               v13 = v54;
               if (v13)
               {
@@ -261,11 +261,11 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
 
               else
               {
-                v25 = [v7 objectForKeyedSubscript:&unk_283BE0D68];
+                v25 = [dictCopy objectForKeyedSubscript:&unk_283BE0D68];
                 if (v25)
                 {
                   v37 = v25;
-                  v40 = [v7 objectForKeyedSubscript:&unk_283BE0D68];
+                  v40 = [dictCopy objectForKeyedSubscript:&unk_283BE0D68];
                   v25 = v37;
                 }
 
@@ -274,11 +274,11 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
                   v40 = &unk_283BE0D80;
                 }
 
-                v26 = [v7 objectForKeyedSubscript:&unk_283BE0D98];
+                v26 = [dictCopy objectForKeyedSubscript:&unk_283BE0D98];
                 if (v26)
                 {
                   v38 = v26;
-                  v35 = [v7 objectForKeyedSubscript:&unk_283BE0D98];
+                  v35 = [dictCopy objectForKeyedSubscript:&unk_283BE0D98];
                   v26 = v38;
                 }
 
@@ -287,11 +287,11 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
                   v35 = &unk_283BE0D80;
                 }
 
-                v27 = [v7 objectForKeyedSubscript:&unk_283BE0DB0];
+                v27 = [dictCopy objectForKeyedSubscript:&unk_283BE0DB0];
                 if (v27)
                 {
                   v32 = v27;
-                  v39 = [v7 objectForKeyedSubscript:&unk_283BE0DB0];
+                  v39 = [dictCopy objectForKeyedSubscript:&unk_283BE0DB0];
                   v27 = v32;
                 }
 
@@ -300,11 +300,11 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
                   v39 = &unk_283BE0D80;
                 }
 
-                v28 = [v7 objectForKeyedSubscript:&unk_283BE0DC8];
+                v28 = [dictCopy objectForKeyedSubscript:&unk_283BE0DC8];
                 if (v28)
                 {
                   v31 = v28;
-                  v33 = [v7 objectForKeyedSubscript:&unk_283BE0DC8];
+                  v33 = [dictCopy objectForKeyedSubscript:&unk_283BE0DC8];
                   v28 = v31;
                 }
 
@@ -313,7 +313,7 @@ id __113__HKHRCardioFitnessAnalyticsManager_submitClassificationChartOverlaySele
                   v33 = &unk_283BE0D80;
                 }
 
-                v45 = v6;
+                v45 = sourceCopy;
                 v46 = v35;
                 v47 = v33;
                 v48 = v17;
@@ -385,11 +385,11 @@ id __83__HKHRCardioFitnessAnalyticsManager_submitDailyEventWithSource_deviceCont
   return v2;
 }
 
-- (void)_setKey:(id)a3 value:(id)a4 onPayloadIfPresent:(id)a5
+- (void)_setKey:(id)key value:(id)value onPayloadIfPresent:(id)present
 {
-  if (a4)
+  if (value)
   {
-    [a5 setObject:a4 forKeyedSubscript:a3];
+    [present setObject:value forKeyedSubscript:key];
   }
 }
 

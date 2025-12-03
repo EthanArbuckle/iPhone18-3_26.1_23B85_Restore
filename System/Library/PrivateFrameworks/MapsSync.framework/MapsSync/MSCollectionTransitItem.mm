@@ -1,22 +1,22 @@
 @interface MSCollectionTransitItem
 + (Class)managedClass;
-- (BOOL)isEqualToMuid:(unint64_t)a3;
-- (MSCollectionTransitItem)initWithMuid:(unint64_t)a3 transitLineStorage:(id)a4;
-- (MSCollectionTransitItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSCollectionTransitItem)initWithStore:(id)a3 muid:(unint64_t)a4 transitLineStorage:(id)a5;
+- (BOOL)isEqualToMuid:(unint64_t)muid;
+- (MSCollectionTransitItem)initWithMuid:(unint64_t)muid transitLineStorage:(id)storage;
+- (MSCollectionTransitItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSCollectionTransitItem)initWithStore:(id)store muid:(unint64_t)muid transitLineStorage:(id)storage;
 - (NSData)transitLineStorage;
 - (unint64_t)muid;
-- (void)setMuid:(unint64_t)a3;
-- (void)setTransitLineStorage:(id)a3;
+- (void)setMuid:(unint64_t)muid;
+- (void)setTransitLineStorage:(id)storage;
 @end
 
 @implementation MSCollectionTransitItem
 
-- (MSCollectionTransitItem)initWithMuid:(unint64_t)a3 transitLineStorage:(id)a4
+- (MSCollectionTransitItem)initWithMuid:(unint64_t)muid transitLineStorage:(id)storage
 {
-  if (a4)
+  if (storage)
   {
-    v6 = a4;
+    storageCopy = storage;
     v7 = sub_1B63BE924();
     v9 = v8;
   }
@@ -45,30 +45,30 @@
     sub_1B6284F64(v7, v9);
   }
 
-  v12 = [(MSCollectionTransitItem *)self initWithStore:v10 muid:a3 transitLineStorage:v11];
+  v12 = [(MSCollectionTransitItem *)self initWithStore:v10 muid:muid transitLineStorage:v11];
   sub_1B6284F64(v7, v9);
 
   return v12;
 }
 
-- (MSCollectionTransitItem)initWithStore:(id)a3 muid:(unint64_t)a4 transitLineStorage:(id)a5
+- (MSCollectionTransitItem)initWithStore:(id)store muid:(unint64_t)muid transitLineStorage:(id)storage
 {
-  v5 = a5;
-  if (a5)
+  storageCopy = storage;
+  if (storage)
   {
-    v8 = a3;
-    v9 = v5;
-    v5 = sub_1B63BE924();
+    storeCopy = store;
+    v9 = storageCopy;
+    storageCopy = sub_1B63BE924();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
+    storeCopy2 = store;
     v11 = 0xF000000000000000;
   }
 
-  return CollectionTransitItem.init(store:muid:transitLineStorage:)(a3, a4, v5, v11);
+  return CollectionTransitItem.init(store:muid:transitLineStorage:)(store, muid, storageCopy, v11);
 }
 
 + (Class)managedClass
@@ -82,23 +82,23 @@
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.super.isa + OBJC_IVAR___MSCollectionTransitItem__muid);
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR___MSCollectionTransitItem__muid);
   [*(&self->super.super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setMuid:(unint64_t)a3
+- (void)setMuid:(unint64_t)muid
 {
-  v4 = self;
-  sub_1B62D9F40(a3);
+  selfCopy = self;
+  sub_1B62D9F40(muid);
 }
 
 - (NSData)transitLineStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62DA26C();
   v5 = v4;
 
@@ -117,41 +117,41 @@
   return v6;
 }
 
-- (void)setTransitLineStorage:(id)a3
+- (void)setTransitLineStorage:(id)storage
 {
-  v3 = a3;
-  if (a3)
+  storageCopy = storage;
+  if (storage)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1B63BE924();
+    selfCopy = self;
+    v5 = storageCopy;
+    storageCopy = sub_1B63BE924();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1B62DB010(v3, v7);
-  sub_1B6284F64(v3, v7);
+  sub_1B62DB010(storageCopy, v7);
+  sub_1B6284F64(storageCopy, v7);
 }
 
-- (MSCollectionTransitItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSCollectionTransitItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  return sub_1B62DAA00(a3, a4, v7, v6);
+  parentCopy = parent;
+  loadCopy = load;
+  objectCopy = object;
+  return sub_1B62DAA00(object, store, loadCopy, parentCopy);
 }
 
-- (BOOL)isEqualToMuid:(unint64_t)a3
+- (BOOL)isEqualToMuid:(unint64_t)muid
 {
-  v4 = self;
-  LOBYTE(a3) = CollectionTransitItem.isEqualTo(muid:)(a3);
+  selfCopy = self;
+  LOBYTE(muid) = CollectionTransitItem.isEqualTo(muid:)(muid);
 
-  return a3 & 1;
+  return muid & 1;
 }
 
 @end

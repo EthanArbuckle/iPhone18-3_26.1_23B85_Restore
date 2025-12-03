@@ -1,32 +1,32 @@
 @interface AMDModelAssets
-+ (id)loadMapFromDir:(id)a3 andFile:(id)a4 error:(id *)a5;
-+ (void)saveMap:(id)a3 toDir:(id)a4 inFile:(id)a5 keyIsInt64:(BOOL)a6 error:(id *)a7;
++ (id)loadMapFromDir:(id)dir andFile:(id)file error:(id *)error;
++ (void)saveMap:(id)map toDir:(id)dir inFile:(id)file keyIsInt64:(BOOL)int64 error:(id *)error;
 - (BOOL)isValid;
-- (id)initFromDir:(id)a3 andMetadata:(id)a4 useBinaryInputMap:(BOOL)a5 useBinaryOutputMap:(BOOL)a6 withModelId:(id)a7 isInference:(BOOL)a8 error:(id *)a9;
-- (void)loadCToLMapFromDir:(id)a3 error:(id *)a4;
-- (void)loadLToCMapFromDir:(id)a3 error:(id *)a4;
-- (void)saveCToLMap:(id)a3 toDir:(id)a4 error:(id *)a5;
-- (void)saveLToCMap:(id)a3 toDir:(id)a4 error:(id *)a5;
+- (id)initFromDir:(id)dir andMetadata:(id)metadata useBinaryInputMap:(BOOL)map useBinaryOutputMap:(BOOL)outputMap withModelId:(id)id isInference:(BOOL)inference error:(id *)error;
+- (void)loadCToLMapFromDir:(id)dir error:(id *)error;
+- (void)loadLToCMapFromDir:(id)dir error:(id *)error;
+- (void)saveCToLMap:(id)map toDir:(id)dir error:(id *)error;
+- (void)saveLToCMap:(id)map toDir:(id)dir error:(id *)error;
 @end
 
 @implementation AMDModelAssets
 
-+ (id)loadMapFromDir:(id)a3 andFile:(id)a4 error:(id *)a5
++ (id)loadMapFromDir:(id)dir andFile:(id)file error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dir);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
-  v36 = a5;
+  objc_storeStrong(&v37, file);
+  errorCopy = error;
   v16 = [location[0] stringByAppendingPathComponent:v37];
   v35 = [v16 stringByAppendingPathExtension:@"bin"];
   MEMORY[0x277D82BD8](v16);
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
-  v18 = [v17 fileExistsAtPath:v35];
-  MEMORY[0x277D82BD8](v17);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v18 = [defaultManager fileExistsAtPath:v35];
+  MEMORY[0x277D82BD8](defaultManager);
   if (v18)
   {
     v31 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -45,8 +45,8 @@
     if (v29)
     {
       v6 = v29;
-      v25 = [v29 bytes];
-      v24 = *v25++;
+      bytes = [v29 bytes];
+      v24 = *bytes++;
       v23 = 12 * v24 + 4;
       if ([v29 length] == v23)
       {
@@ -76,7 +76,7 @@
         objc_storeStrong(&oslog, 0);
         v10 = [AMDError allocError:7 withMessage:v22];
         v7 = v10;
-        *v36 = v10;
+        *errorCopy = v10;
         v39 = 0;
         v32 = 1;
         objc_storeStrong(&v22, 0);
@@ -97,7 +97,7 @@
       objc_storeStrong(&v27, 0);
       v11 = [AMDError allocError:7 withMessage:v28];
       v5 = v11;
-      *v36 = v11;
+      *errorCopy = v11;
       v39 = 0;
       v32 = 1;
       objc_storeStrong(&v28, 0);
@@ -117,7 +117,7 @@
     }
 
     objc_storeStrong(&v34, 0);
-    *v36 = 0;
+    *errorCopy = 0;
     v39 = 0;
     v32 = 1;
   }
@@ -131,20 +131,20 @@
   return v8;
 }
 
-- (void)loadCToLMapFromDir:(id)a3 error:(id *)a4
+- (void)loadCToLMapFromDir:(id)dir error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AMDModelAssets *)v8 useBinaryInputMap])
+  objc_storeStrong(location, dir);
+  if ([(AMDModelAssets *)selfCopy useBinaryInputMap])
   {
-    v4 = [AMDModelAssets loadMapFromDir:location[0] andFile:@"content_id_to_logical_id" error:a4];
-    [(AMDModelAssets *)v8 setContentToLogicalMap:?];
+    v4 = [AMDModelAssets loadMapFromDir:location[0] andFile:@"content_id_to_logical_id" error:error];
+    [(AMDModelAssets *)selfCopy setContentToLogicalMap:?];
     MEMORY[0x277D82BD8](v4);
-    v5 = [(AMDModelAssets *)v8 contentToLogicalMap];
-    MEMORY[0x277D82BD8](v5);
-    if (v5)
+    contentToLogicalMap = [(AMDModelAssets *)selfCopy contentToLogicalMap];
+    MEMORY[0x277D82BD8](contentToLogicalMap);
+    if (contentToLogicalMap)
     {
       [AMDPerf sampleForKey:@"loadedCToL"];
     }
@@ -153,20 +153,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)loadLToCMapFromDir:(id)a3 error:(id *)a4
+- (void)loadLToCMapFromDir:(id)dir error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AMDModelAssets *)v8 useBinaryOutputMap])
+  objc_storeStrong(location, dir);
+  if ([(AMDModelAssets *)selfCopy useBinaryOutputMap])
   {
-    v4 = [AMDModelAssets loadMapFromDir:location[0] andFile:@"label_index_to_content_id" error:a4];
-    [(AMDModelAssets *)v8 setLogicalToContentMap:?];
+    v4 = [AMDModelAssets loadMapFromDir:location[0] andFile:@"label_index_to_content_id" error:error];
+    [(AMDModelAssets *)selfCopy setLogicalToContentMap:?];
     MEMORY[0x277D82BD8](v4);
-    v5 = [(AMDModelAssets *)v8 logicalToContentMap];
-    MEMORY[0x277D82BD8](v5);
-    if (v5)
+    logicalToContentMap = [(AMDModelAssets *)selfCopy logicalToContentMap];
+    MEMORY[0x277D82BD8](logicalToContentMap);
+    if (logicalToContentMap)
     {
       [AMDPerf sampleForKey:@"loadedLToC"];
     }
@@ -175,25 +175,25 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)saveMap:(id)a3 toDir:(id)a4 inFile:(id)a5 keyIsInt64:(BOOL)a6 error:(id *)a7
++ (void)saveMap:(id)map toDir:(id)dir inFile:(id)file keyIsInt64:(BOOL)int64 error:(id *)error
 {
   v69 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, map);
   v60 = 0;
-  objc_storeStrong(&v60, a4);
+  objc_storeStrong(&v60, dir);
   v59 = 0;
-  objc_storeStrong(&v59, a5);
-  v58 = a6;
-  v57 = a7;
+  objc_storeStrong(&v59, file);
+  int64Copy = int64;
+  errorCopy = error;
   v28 = [v60 stringByAppendingPathComponent:v59];
   v56 = [v28 stringByAppendingPathExtension:@"bin"];
   MEMORY[0x277D82BD8](v28);
-  v26 = [MEMORY[0x277CCAA00] defaultManager];
-  v27 = [v26 fileExistsAtPath:v56];
-  MEMORY[0x277D82BD8](v26);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v27 = [defaultManager fileExistsAtPath:v56];
+  MEMORY[0x277D82BD8](defaultManager);
   if (v27)
   {
     v55 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -225,7 +225,7 @@
     v47 = v48;
     *v48 = v52;
     ++v47;
-    if (v58)
+    if (int64Copy)
     {
       memset(__b, 0, sizeof(__b));
       v24 = MEMORY[0x277D82BE0](location[0]);
@@ -338,7 +338,7 @@
         objc_storeStrong(&v33, 0);
         v10 = [AMDError allocError:7 withMessage:v34];
         v8 = v10;
-        *v57 = v10;
+        *errorCopy = v10;
         v53 = 1;
         objc_storeStrong(&v34, 0);
       }
@@ -358,7 +358,7 @@
       objc_storeStrong(&v37, 0);
       v11 = [AMDError allocError:7 withMessage:v38];
       v7 = v11;
-      *v57 = v11;
+      *errorCopy = v11;
       v53 = 1;
       objc_storeStrong(&v38, 0);
     }
@@ -396,17 +396,17 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)saveCToLMap:(id)a3 toDir:(id)a4 error:(id *)a5
+- (void)saveCToLMap:(id)map toDir:(id)dir error:(id *)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, map);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  if ([(AMDModelAssets *)v9 useBinaryInputMap])
+  objc_storeStrong(&v7, dir);
+  if ([(AMDModelAssets *)selfCopy useBinaryInputMap])
   {
-    [AMDModelAssets saveMap:location[0] toDir:v7 inFile:@"content_id_to_logical_id" keyIsInt64:1 error:a5];
+    [AMDModelAssets saveMap:location[0] toDir:v7 inFile:@"content_id_to_logical_id" keyIsInt64:1 error:error];
     [AMDPerf sampleForKey:@"savedCToL"];
   }
 
@@ -414,17 +414,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)saveLToCMap:(id)a3 toDir:(id)a4 error:(id *)a5
+- (void)saveLToCMap:(id)map toDir:(id)dir error:(id *)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, map);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  if ([(AMDModelAssets *)v9 useBinaryInputMap])
+  objc_storeStrong(&v7, dir);
+  if ([(AMDModelAssets *)selfCopy useBinaryInputMap])
   {
-    [AMDModelAssets saveMap:location[0] toDir:v7 inFile:@"label_index_to_content_id" keyIsInt64:0 error:a5];
+    [AMDModelAssets saveMap:location[0] toDir:v7 inFile:@"label_index_to_content_id" keyIsInt64:0 error:error];
     [AMDPerf sampleForKey:@"savedLToC"];
   }
 
@@ -432,33 +432,33 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)initFromDir:(id)a3 andMetadata:(id)a4 useBinaryInputMap:(BOOL)a5 useBinaryOutputMap:(BOOL)a6 withModelId:(id)a7 isInference:(BOOL)a8 error:(id *)a9
+- (id)initFromDir:(id)dir andMetadata:(id)metadata useBinaryInputMap:(BOOL)map useBinaryOutputMap:(BOOL)outputMap withModelId:(id)id isInference:(BOOL)inference error:(id *)error
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dir);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
-  v32 = a5;
-  v31 = a6;
+  objc_storeStrong(&v33, metadata);
+  mapCopy = map;
+  outputMapCopy = outputMap;
   v30 = 0;
-  objc_storeStrong(&v30, a7);
-  v29 = a8;
-  v28 = a9;
-  v9 = v35;
-  v35 = 0;
+  objc_storeStrong(&v30, id);
+  inferenceCopy = inference;
+  errorCopy = error;
+  v9 = selfCopy;
+  selfCopy = 0;
   v27.receiver = v9;
   v27.super_class = AMDModelAssets;
-  v35 = [(AMDModelAssets *)&v27 init];
-  objc_storeStrong(&v35, v35);
-  [v35 setContentToLogicalMap:0];
-  [v35 setLogicalToContentMap:0];
-  [v35 setUseBinaryInputMap:v32];
-  [v35 setUseBinaryOutputMap:v31];
-  [v35 setAssetsMetadata:v33];
-  [v35 loadLToCMapFromDir:location[0] error:v28];
-  if (*v28)
+  selfCopy = [(AMDModelAssets *)&v27 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [selfCopy setContentToLogicalMap:0];
+  [selfCopy setLogicalToContentMap:0];
+  [selfCopy setUseBinaryInputMap:mapCopy];
+  [selfCopy setUseBinaryOutputMap:outputMapCopy];
+  [selfCopy setAssetsMetadata:v33];
+  [selfCopy loadLToCMapFromDir:location[0] error:errorCopy];
+  if (*errorCopy)
   {
     v36 = 0;
     v26 = 1;
@@ -466,7 +466,7 @@
 
   else
   {
-    if (!v29)
+    if (!inferenceCopy)
     {
       goto LABEL_11;
     }
@@ -484,7 +484,7 @@
 
     else
     {
-      [v35 setMinimalMapPresent:1];
+      [selfCopy setMinimalMapPresent:1];
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       type = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
@@ -496,7 +496,7 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      v36 = MEMORY[0x277D82BE0](v35);
+      v36 = MEMORY[0x277D82BE0](selfCopy);
       v26 = 1;
     }
 
@@ -506,16 +506,16 @@
     if (!v26)
     {
 LABEL_11:
-      [v35 setMinimalMapPresent:0];
-      [v35 loadCToLMapFromDir:location[0] error:v28];
-      if (*v28)
+      [selfCopy setMinimalMapPresent:0];
+      [selfCopy loadCToLMapFromDir:location[0] error:errorCopy];
+      if (*errorCopy)
       {
         v36 = 0;
       }
 
       else
       {
-        v36 = MEMORY[0x277D82BE0](v35);
+        v36 = MEMORY[0x277D82BE0](selfCopy);
       }
 
       v26 = 1;
@@ -525,17 +525,17 @@ LABEL_11:
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v35, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v36;
 }
 
 - (BOOL)isValid
 {
-  v4 = [(AMDModelAssets *)self contentToLogicalMap];
+  contentToLogicalMap = [(AMDModelAssets *)self contentToLogicalMap];
   v5 = 0;
-  if (!v4 || (v6 = [(AMDModelAssets *)self logicalToContentMap], v5 = 1, v3 = 1, !v6))
+  if (!contentToLogicalMap || (v6 = [(AMDModelAssets *)self logicalToContentMap], v5 = 1, minimalMapPresent = 1, !v6))
   {
-    v3 = [(AMDModelAssets *)self minimalMapPresent];
+    minimalMapPresent = [(AMDModelAssets *)self minimalMapPresent];
   }
 
   if (v5)
@@ -543,8 +543,8 @@ LABEL_11:
     MEMORY[0x277D82BD8](v6);
   }
 
-  MEMORY[0x277D82BD8](v4);
-  return v3;
+  MEMORY[0x277D82BD8](contentToLogicalMap);
+  return minimalMapPresent;
 }
 
 @end

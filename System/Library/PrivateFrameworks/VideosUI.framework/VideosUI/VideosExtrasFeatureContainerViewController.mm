@@ -1,29 +1,29 @@
 @interface VideosExtrasFeatureContainerViewController
 - (UIView)menuBarView;
 - (VideosExtrasContext)context;
-- (VideosExtrasFeatureContainerViewController)initWithContext:(id)a3;
+- (VideosExtrasFeatureContainerViewController)initWithContext:(id)context;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
-- (void)_menuBarHeightChange:(id)a3;
+- (void)_menuBarHeightChange:(id)change;
 - (void)dealloc;
-- (void)setMenuBarView:(id)a3;
-- (void)setVideoPlaybackViewController:(id)a3;
+- (void)setMenuBarView:(id)view;
+- (void)setVideoPlaybackViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation VideosExtrasFeatureContainerViewController
 
-- (VideosExtrasFeatureContainerViewController)initWithContext:(id)a3
+- (VideosExtrasFeatureContainerViewController)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = VideosExtrasFeatureContainerViewController;
   v5 = [(VideosExtrasFeatureContainerViewController *)&v9 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel__menuBarHeightChange_ name:@"VideosExtrasMainTemplateBarHeightChangeNotification" object:0];
+    objc_storeWeak(&v5->_context, contextCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__menuBarHeightChange_ name:@"VideosExtrasMainTemplateBarHeightChangeNotification" object:0];
   }
 
   return v6;
@@ -31,8 +31,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VideosExtrasFeatureContainerViewController;
@@ -44,32 +44,32 @@
   v4.receiver = self;
   v4.super_class = VideosExtrasFeatureContainerViewController;
   [(VideosExtrasFeatureContainerViewController *)&v4 viewDidLoad];
-  v3 = [(VideosExtrasFeatureContainerViewController *)self context];
-  [v3 extrasRequestReloadWithContext:0];
+  context = [(VideosExtrasFeatureContainerViewController *)self context];
+  [context extrasRequestReloadWithContext:0];
 }
 
 - (id)childViewControllerForHomeIndicatorAutoHidden
 {
-  v2 = [(VideosExtrasFeatureContainerViewController *)self childViewControllers];
-  v3 = [v2 lastObject];
+  childViewControllers = [(VideosExtrasFeatureContainerViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setVideoPlaybackViewController:(id)a3
+- (void)setVideoPlaybackViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   videoPlaybackViewController = self->_videoPlaybackViewController;
-  if (videoPlaybackViewController != v5)
+  if (videoPlaybackViewController != controllerCopy)
   {
     [(VideosExtrasVideoPlaybackViewController *)videoPlaybackViewController willMoveToParentViewController:0];
-    v7 = [(VideosExtrasVideoPlaybackViewController *)self->_videoPlaybackViewController view];
-    [v7 removeFromSuperview];
+    view = [(VideosExtrasVideoPlaybackViewController *)self->_videoPlaybackViewController view];
+    [view removeFromSuperview];
 
     [(VideosExtrasVideoPlaybackViewController *)self->_videoPlaybackViewController removeFromParentViewController];
     [(VideosExtrasVideoPlaybackViewController *)self->_videoPlaybackViewController setOverlayVisibilityChangeAnimationBlock:0];
-    objc_storeStrong(&self->_videoPlaybackViewController, a3);
-    if (v5)
+    objc_storeStrong(&self->_videoPlaybackViewController, controller);
+    if (controllerCopy)
     {
       overlayViewAdjustmentConstraint = self->_overlayViewAdjustmentConstraint;
       if (overlayViewAdjustmentConstraint)
@@ -77,17 +77,17 @@
         [(NSLayoutConstraint *)overlayViewAdjustmentConstraint setActive:0];
       }
 
-      v9 = [(VideosExtrasFeatureContainerViewController *)self view];
-      v10 = [(VideosExtrasVideoPlaybackViewController *)v5 view];
-      [v9 bounds];
-      [v10 setFrame:?];
-      [(VideosExtrasFeatureContainerViewController *)self addChildViewController:v5];
-      v11 = [(VideosExtrasVideoPlaybackViewController *)v5 view];
-      [v9 addSubview:v11];
+      view2 = [(VideosExtrasFeatureContainerViewController *)self view];
+      view3 = [(VideosExtrasVideoPlaybackViewController *)controllerCopy view];
+      [view2 bounds];
+      [view3 setFrame:?];
+      [(VideosExtrasFeatureContainerViewController *)self addChildViewController:controllerCopy];
+      view4 = [(VideosExtrasVideoPlaybackViewController *)controllerCopy view];
+      [view2 addSubview:view4];
 
-      [(VideosExtrasVideoPlaybackViewController *)v5 didMoveToParentViewController:self];
-      v12 = [(VideosExtrasVideoPlaybackViewController *)v5 overlayView];
-      v13 = [MEMORY[0x1E696ACD8] constraintWithItem:v12 attribute:4 relatedBy:0 toItem:v10 attribute:4 multiplier:1.0 constant:0.0];
+      [(VideosExtrasVideoPlaybackViewController *)controllerCopy didMoveToParentViewController:self];
+      overlayView = [(VideosExtrasVideoPlaybackViewController *)controllerCopy overlayView];
+      v13 = [MEMORY[0x1E696ACD8] constraintWithItem:overlayView attribute:4 relatedBy:0 toItem:view3 attribute:4 multiplier:1.0 constant:0.0];
       v14 = self->_overlayViewAdjustmentConstraint;
       self->_overlayViewAdjustmentConstraint = v13;
 
@@ -96,11 +96,11 @@
       {
         [(NSLayoutConstraint *)self->_overlayViewAdjustmentConstraint setActive:1];
         v16 = objc_loadWeakRetained(&self->_menuBarView);
-        [v12 alpha];
+        [overlayView alpha];
         [v16 setAlpha:?];
 
         v17 = objc_loadWeakRetained(&self->_menuBarView);
-        [v17 setHidden:{objc_msgSend(v12, "isHidden")}];
+        [v17 setHidden:{objc_msgSend(overlayView, "isHidden")}];
       }
 
       objc_initWeak(&location, self);
@@ -109,13 +109,13 @@
       v20[2] = __77__VideosExtrasFeatureContainerViewController_setVideoPlaybackViewController___block_invoke;
       v20[3] = &unk_1E872F5D0;
       objc_copyWeak(&v21, &location);
-      [(VideosExtrasVideoPlaybackViewController *)v5 setOverlayVisibilityChangeAnimationBlock:v20];
+      [(VideosExtrasVideoPlaybackViewController *)controllerCopy setOverlayVisibilityChangeAnimationBlock:v20];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __77__VideosExtrasFeatureContainerViewController_setVideoPlaybackViewController___block_invoke_2;
       v18[3] = &unk_1E872F5D0;
       objc_copyWeak(&v19, &location);
-      [(VideosExtrasVideoPlaybackViewController *)v5 setOverlayVisibilityChangeAnimationCompletionBlock:v18];
+      [(VideosExtrasVideoPlaybackViewController *)controllerCopy setOverlayVisibilityChangeAnimationCompletionBlock:v18];
       objc_destroyWeak(&v19);
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -186,30 +186,30 @@ void __77__VideosExtrasFeatureContainerViewController_setVideoPlaybackViewContro
   }
 }
 
-- (void)_menuBarHeightChange:(id)a3
+- (void)_menuBarHeightChange:(id)change
 {
-  v5 = [a3 object];
-  [v5 floatValue];
+  object = [change object];
+  [object floatValue];
   [(NSLayoutConstraint *)self->_overlayViewAdjustmentConstraint setConstant:-v4];
 }
 
-- (void)setMenuBarView:(id)a3
+- (void)setMenuBarView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_menuBarView);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
     v6 = objc_loadWeakRetained(&self->_menuBarView);
 
     if (!v6)
     {
-      [v4 frame];
+      [viewCopy frame];
       [(NSLayoutConstraint *)self->_overlayViewAdjustmentConstraint setConstant:-CGRectGetHeight(v8)];
     }
 
-    objc_storeWeak(&self->_menuBarView, v4);
-    [(NSLayoutConstraint *)self->_overlayViewAdjustmentConstraint setActive:v4 != 0];
+    objc_storeWeak(&self->_menuBarView, viewCopy);
+    [(NSLayoutConstraint *)self->_overlayViewAdjustmentConstraint setActive:viewCopy != 0];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__VideosExtrasFeatureContainerViewController_setMenuBarView___block_invoke;

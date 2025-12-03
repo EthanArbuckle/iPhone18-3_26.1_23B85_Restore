@@ -1,26 +1,26 @@
 @interface WiFiAwareDevicesStore
 - (WiFiAwareDevicesStore)init;
 - (WiFiAwareDevicesStoreDelegate)delegate;
-- (id)reauthorizePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4;
+- (id)reauthorizePairedDeviceFor:(id)for withDeviceID:(unint64_t)d;
 - (id)remoteObjectInterface;
 - (id)removeAllPairedDevices;
-- (id)removeAllPairedDevicesFor:(id)a3;
-- (id)removePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4;
-- (id)uninstallPairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4;
-- (id)updatePairedDeviceNameFor:(id)a3 withDeviceID:(unint64_t)a4 toNewName:(id)a5;
-- (unint64_t)authorizeNewPairedDeviceFor:(id)a3 pairingKeyStoreID:(id)a4 storageClass:(int64_t)a5 lifetime:(double)a6 client:(int64_t)a7 error:(id *)a8;
-- (void)authorizeNewPairedDeviceFor:(id)a3 pairingKeyStoreID:(id)a4 storageClass:(int64_t)a5 lifetime:(double)a6 client:(int64_t)a7 completionHandler:(id)a8;
-- (void)deauthorizePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4 remove:(BOOL)a5 completionHandler:(id)a6;
-- (void)pairedDeviceAdded:(id)a3;
-- (void)pairedDeviceChanged:(id)a3;
-- (void)pairedDeviceRemoved:(id)a3;
-- (void)queryPairedDevicesInfo:(id)a3;
-- (void)reauthorizePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4 completionHandler:(id)a5;
-- (void)removeAllPairedDevices:(id)a3;
-- (void)removeAllPairedDevicesFor:(id)a3 completionHandler:(id)a4;
-- (void)removePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4 completionHandler:(id)a5;
-- (void)uninstallPairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4 completionHandler:(id)a5;
-- (void)updatePairedDeviceNameFor:(id)a3 withDeviceID:(unint64_t)a4 toNewName:(id)a5 completionHandler:(id)a6;
+- (id)removeAllPairedDevicesFor:(id)for;
+- (id)removePairedDeviceFor:(id)for withDeviceID:(unint64_t)d;
+- (id)uninstallPairedDeviceFor:(id)for withDeviceID:(unint64_t)d;
+- (id)updatePairedDeviceNameFor:(id)for withDeviceID:(unint64_t)d toNewName:(id)name;
+- (unint64_t)authorizeNewPairedDeviceFor:(id)for pairingKeyStoreID:(id)d storageClass:(int64_t)class lifetime:(double)lifetime client:(int64_t)client error:(id *)error;
+- (void)authorizeNewPairedDeviceFor:(id)for pairingKeyStoreID:(id)d storageClass:(int64_t)class lifetime:(double)lifetime client:(int64_t)client completionHandler:(id)handler;
+- (void)deauthorizePairedDeviceFor:(id)for withDeviceID:(unint64_t)d remove:(BOOL)remove completionHandler:(id)handler;
+- (void)pairedDeviceAdded:(id)added;
+- (void)pairedDeviceChanged:(id)changed;
+- (void)pairedDeviceRemoved:(id)removed;
+- (void)queryPairedDevicesInfo:(id)info;
+- (void)reauthorizePairedDeviceFor:(id)for withDeviceID:(unint64_t)d completionHandler:(id)handler;
+- (void)removeAllPairedDevices:(id)devices;
+- (void)removeAllPairedDevicesFor:(id)for completionHandler:(id)handler;
+- (void)removePairedDeviceFor:(id)for withDeviceID:(unint64_t)d completionHandler:(id)handler;
+- (void)uninstallPairedDeviceFor:(id)for withDeviceID:(unint64_t)d completionHandler:(id)handler;
+- (void)updatePairedDeviceNameFor:(id)for withDeviceID:(unint64_t)d toNewName:(id)name completionHandler:(id)handler;
 @end
 
 @implementation WiFiAwareDevicesStore
@@ -56,46 +56,46 @@
   return v2;
 }
 
-- (void)queryPairedDevicesInfo:(id)a3
+- (void)queryPairedDevicesInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   xpcConnection = self->_xpcConnection;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__WiFiAwareDevicesStore_queryPairedDevicesInfo___block_invoke;
   v7[3] = &unk_2787AAE88;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v7];
 }
 
-- (void)authorizeNewPairedDeviceFor:(id)a3 pairingKeyStoreID:(id)a4 storageClass:(int64_t)a5 lifetime:(double)a6 client:(int64_t)a7 completionHandler:(id)a8
+- (void)authorizeNewPairedDeviceFor:(id)for pairingKeyStoreID:(id)d storageClass:(int64_t)class lifetime:(double)lifetime client:(int64_t)client completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  forCopy = for;
+  dCopy = d;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __118__WiFiAwareDevicesStore_authorizeNewPairedDeviceFor_pairingKeyStoreID_storageClass_lifetime_client_completionHandler___block_invoke;
   v21[3] = &unk_2787AAEB0;
-  v22 = v14;
-  v23 = v15;
-  v26 = a6;
-  v27 = a7;
-  v24 = v16;
-  v25 = a5;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
+  v22 = forCopy;
+  v23 = dCopy;
+  lifetimeCopy = lifetime;
+  clientCopy = client;
+  v24 = handlerCopy;
+  classCopy = class;
+  v18 = handlerCopy;
+  v19 = dCopy;
+  v20 = forCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v21];
 }
 
-- (unint64_t)authorizeNewPairedDeviceFor:(id)a3 pairingKeyStoreID:(id)a4 storageClass:(int64_t)a5 lifetime:(double)a6 client:(int64_t)a7 error:(id *)a8
+- (unint64_t)authorizeNewPairedDeviceFor:(id)for pairingKeyStoreID:(id)d storageClass:(int64_t)class lifetime:(double)lifetime client:(int64_t)client error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
+  forCopy = for;
+  dCopy = d;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -115,7 +115,7 @@
   v25 = &v32;
   v17 = v16;
   v23 = v17;
-  [(WiFiAwareDevicesStore *)self authorizeNewPairedDeviceFor:v14 pairingKeyStoreID:v15 storageClass:a5 lifetime:a7 client:v22 completionHandler:a6];
+  [(WiFiAwareDevicesStore *)self authorizeNewPairedDeviceFor:forCopy pairingKeyStoreID:dCopy storageClass:class lifetime:client client:v22 completionHandler:lifetime];
   v18 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v17, v18) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -124,7 +124,7 @@
     _os_log_error_impl(&dword_22DFDF000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[WiFiPeerToPeer] FAILED to complete operation within %{public}.1fs, continuing", buf, 0xCu);
   }
 
-  *a8 = v27[5];
+  *error = v27[5];
   v19 = v33[3];
 
   _Block_object_dispose(&v26, 8);
@@ -164,27 +164,27 @@ void __106__WiFiAwareDevicesStore_authorizeNewPairedDeviceFor_pairingKeyStoreID_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reauthorizePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4 completionHandler:(id)a5
+- (void)reauthorizePairedDeviceFor:(id)for withDeviceID:(unint64_t)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  forCopy = for;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__WiFiAwareDevicesStore_reauthorizePairedDeviceFor_withDeviceID_completionHandler___block_invoke;
   v13[3] = &unk_2787AAF00;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  v15 = handlerCopy;
+  dCopy = d;
+  v14 = forCopy;
+  v11 = handlerCopy;
+  v12 = forCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v13];
 }
 
-- (id)reauthorizePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4
+- (id)reauthorizePairedDeviceFor:(id)for withDeviceID:(unint64_t)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -199,7 +199,7 @@ void __106__WiFiAwareDevicesStore_authorizeNewPairedDeviceFor_pairingKeyStoreID_
   v15 = &v16;
   v8 = v7;
   v14 = v8;
-  [(WiFiAwareDevicesStore *)self reauthorizePairedDeviceFor:v6 withDeviceID:a4 completionHandler:v13];
+  [(WiFiAwareDevicesStore *)self reauthorizePairedDeviceFor:forCopy withDeviceID:d completionHandler:v13];
   v9 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v8, v9) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -242,31 +242,31 @@ void __65__WiFiAwareDevicesStore_reauthorizePairedDeviceFor_withDeviceID___block
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePairedDeviceNameFor:(id)a3 withDeviceID:(unint64_t)a4 toNewName:(id)a5 completionHandler:(id)a6
+- (void)updatePairedDeviceNameFor:(id)for withDeviceID:(unint64_t)d toNewName:(id)name completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  forCopy = for;
+  nameCopy = name;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __92__WiFiAwareDevicesStore_updatePairedDeviceNameFor_withDeviceID_toNewName_completionHandler___block_invoke;
   v17[3] = &unk_2787AAF50;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a4;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = forCopy;
+  v19 = nameCopy;
+  v20 = handlerCopy;
+  dCopy = d;
+  v14 = handlerCopy;
+  v15 = nameCopy;
+  v16 = forCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v17];
 }
 
-- (id)updatePairedDeviceNameFor:(id)a3 withDeviceID:(unint64_t)a4 toNewName:(id)a5
+- (id)updatePairedDeviceNameFor:(id)for withDeviceID:(unint64_t)d toNewName:(id)name
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  forCopy = for;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -281,7 +281,7 @@ void __65__WiFiAwareDevicesStore_reauthorizePairedDeviceFor_withDeviceID___block
   v18 = &v19;
   v11 = v10;
   v17 = v11;
-  [(WiFiAwareDevicesStore *)self updatePairedDeviceNameFor:v8 withDeviceID:a4 toNewName:v9 completionHandler:v16];
+  [(WiFiAwareDevicesStore *)self updatePairedDeviceNameFor:forCopy withDeviceID:d toNewName:nameCopy completionHandler:v16];
   v12 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v11, v12) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -324,27 +324,27 @@ void __74__WiFiAwareDevicesStore_updatePairedDeviceNameFor_withDeviceID_toNewNam
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4 completionHandler:(id)a5
+- (void)removePairedDeviceFor:(id)for withDeviceID:(unint64_t)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  forCopy = for;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__WiFiAwareDevicesStore_removePairedDeviceFor_withDeviceID_completionHandler___block_invoke;
   v13[3] = &unk_2787AAF00;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  v15 = handlerCopy;
+  dCopy = d;
+  v14 = forCopy;
+  v11 = handlerCopy;
+  v12 = forCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v13];
 }
 
-- (id)removePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4
+- (id)removePairedDeviceFor:(id)for withDeviceID:(unint64_t)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -359,7 +359,7 @@ void __74__WiFiAwareDevicesStore_updatePairedDeviceNameFor_withDeviceID_toNewNam
   v15 = &v16;
   v8 = v7;
   v14 = v8;
-  [(WiFiAwareDevicesStore *)self removePairedDeviceFor:v6 withDeviceID:a4 completionHandler:v13];
+  [(WiFiAwareDevicesStore *)self removePairedDeviceFor:forCopy withDeviceID:d completionHandler:v13];
   v9 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v8, v9) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -402,27 +402,27 @@ void __60__WiFiAwareDevicesStore_removePairedDeviceFor_withDeviceID___block_invo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uninstallPairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4 completionHandler:(id)a5
+- (void)uninstallPairedDeviceFor:(id)for withDeviceID:(unint64_t)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  forCopy = for;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__WiFiAwareDevicesStore_uninstallPairedDeviceFor_withDeviceID_completionHandler___block_invoke;
   v13[3] = &unk_2787AAF00;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  v15 = handlerCopy;
+  dCopy = d;
+  v14 = forCopy;
+  v11 = handlerCopy;
+  v12 = forCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v13];
 }
 
-- (id)uninstallPairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4
+- (id)uninstallPairedDeviceFor:(id)for withDeviceID:(unint64_t)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -437,7 +437,7 @@ void __60__WiFiAwareDevicesStore_removePairedDeviceFor_withDeviceID___block_invo
   v15 = &v16;
   v8 = v7;
   v14 = v8;
-  [(WiFiAwareDevicesStore *)self uninstallPairedDeviceFor:v6 withDeviceID:a4 completionHandler:v13];
+  [(WiFiAwareDevicesStore *)self uninstallPairedDeviceFor:forCopy withDeviceID:d completionHandler:v13];
   v9 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v8, v9) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -480,21 +480,21 @@ void __63__WiFiAwareDevicesStore_uninstallPairedDeviceFor_withDeviceID___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deauthorizePairedDeviceFor:(id)a3 withDeviceID:(unint64_t)a4 remove:(BOOL)a5 completionHandler:(id)a6
+- (void)deauthorizePairedDeviceFor:(id)for withDeviceID:(unint64_t)d remove:(BOOL)remove completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  forCopy = for;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__WiFiAwareDevicesStore_deauthorizePairedDeviceFor_withDeviceID_remove_completionHandler___block_invoke;
   v15[3] = &unk_2787AAF78;
-  v17 = v11;
-  v18 = a4;
-  v19 = a5;
-  v16 = v10;
-  v13 = v11;
-  v14 = v10;
+  v17 = handlerCopy;
+  dCopy = d;
+  removeCopy = remove;
+  v16 = forCopy;
+  v13 = handlerCopy;
+  v14 = forCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v15];
 }
 
@@ -524,26 +524,26 @@ void __72__WiFiAwareDevicesStore_deauthorizePairedDeviceFor_withDeviceID_remove_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllPairedDevicesFor:(id)a3 completionHandler:(id)a4
+- (void)removeAllPairedDevicesFor:(id)for completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__WiFiAwareDevicesStore_removeAllPairedDevicesFor_completionHandler___block_invoke;
   v11[3] = &unk_2787AAFA0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = forCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = forCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v11];
 }
 
-- (id)removeAllPairedDevicesFor:(id)a3
+- (id)removeAllPairedDevicesFor:(id)for
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  forCopy = for;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -558,7 +558,7 @@ void __72__WiFiAwareDevicesStore_deauthorizePairedDeviceFor_withDeviceID_remove_
   v13 = &v14;
   v6 = v5;
   v12 = v6;
-  [(WiFiAwareDevicesStore *)self removeAllPairedDevicesFor:v4 completionHandler:v11];
+  [(WiFiAwareDevicesStore *)self removeAllPairedDevicesFor:forCopy completionHandler:v11];
   v7 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v6, v7) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -601,16 +601,16 @@ void __51__WiFiAwareDevicesStore_removeAllPairedDevicesFor___block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllPairedDevices:(id)a3
+- (void)removeAllPairedDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   xpcConnection = self->_xpcConnection;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__WiFiAwareDevicesStore_removeAllPairedDevices___block_invoke;
   v7[3] = &unk_2787AAE88;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v7];
 }
 
@@ -674,25 +674,25 @@ void __47__WiFiAwareDevicesStore_removeAllPairedDevices__block_invoke(uint64_t a
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pairedDeviceAdded:(id)a3
+- (void)pairedDeviceAdded:(id)added
 {
-  v4 = a3;
-  v5 = [(WiFiAwareDevicesStore *)self delegate];
-  [v5 deviceAdded:v4];
+  addedCopy = added;
+  delegate = [(WiFiAwareDevicesStore *)self delegate];
+  [delegate deviceAdded:addedCopy];
 }
 
-- (void)pairedDeviceRemoved:(id)a3
+- (void)pairedDeviceRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(WiFiAwareDevicesStore *)self delegate];
-  [v5 deviceRemoved:v4];
+  removedCopy = removed;
+  delegate = [(WiFiAwareDevicesStore *)self delegate];
+  [delegate deviceRemoved:removedCopy];
 }
 
-- (void)pairedDeviceChanged:(id)a3
+- (void)pairedDeviceChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(WiFiAwareDevicesStore *)self delegate];
-  [v5 deviceChanged:v4];
+  changedCopy = changed;
+  delegate = [(WiFiAwareDevicesStore *)self delegate];
+  [delegate deviceChanged:changedCopy];
 }
 
 - (WiFiAwareDevicesStoreDelegate)delegate

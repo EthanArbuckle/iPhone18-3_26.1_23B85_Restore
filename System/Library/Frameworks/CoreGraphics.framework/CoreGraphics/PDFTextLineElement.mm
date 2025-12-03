@@ -1,5 +1,5 @@
 @interface PDFTextLineElement
-- (PDFTextLineElement)initWithTextLine:(const void *)a3 boundingBox:(id)a4;
+- (PDFTextLineElement)initWithTextLine:(const void *)line boundingBox:(id)box;
 - (id).cxx_construct;
 - (shared_ptr<TextLine>)textLine;
 @end
@@ -21,17 +21,17 @@
   return result;
 }
 
-- (PDFTextLineElement)initWithTextLine:(const void *)a3 boundingBox:(id)a4
+- (PDFTextLineElement)initWithTextLine:(const void *)line boundingBox:(id)box
 {
   v12.receiver = self;
   v12.super_class = PDFTextLineElement;
-  v5 = [(PDFAtomicElement *)&v12 initWithType:1 boundingBox:a4 layoutDirection:1];
+  v5 = [(PDFAtomicElement *)&v12 initWithType:1 boundingBox:box layoutDirection:1];
   v6 = v5;
   if (v5)
   {
     p_textLine = &v5->_textLine;
-    v9 = *a3;
-    v8 = *(a3 + 1);
+    v9 = *line;
+    v8 = *(line + 1);
     if (v8)
     {
       atomic_fetch_add_explicit((v8 + 8), 1uLL, memory_order_relaxed);

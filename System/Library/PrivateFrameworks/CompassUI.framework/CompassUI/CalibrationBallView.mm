@@ -1,20 +1,20 @@
 @interface CalibrationBallView
-- (CalibrationBallView)initWithFrame:(CGRect)a3 ballRadius:(double)a4;
+- (CalibrationBallView)initWithFrame:(CGRect)frame ballRadius:(double)radius;
 - (id)ballView;
 - (void)layoutSubviews;
 @end
 
 @implementation CalibrationBallView
 
-- (CalibrationBallView)initWithFrame:(CGRect)a3 ballRadius:(double)a4
+- (CalibrationBallView)initWithFrame:(CGRect)frame ballRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = CalibrationBallView;
-  result = [(CalibrationBallView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CalibrationBallView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_currentAngle = 0.0;
-    result->_ballRadius = a4;
+    result->_ballRadius = radius;
   }
 
   return result;
@@ -36,17 +36,17 @@
       v5 = self->_ballView;
       self->_ballView = v4;
 
-      v6 = [MEMORY[0x277D75348] redColor];
-      v7 = [v6 CGColor];
-      v8 = [(UIView *)self->_ballView layer];
-      [v8 setBackgroundColor:v7];
+      redColor = [MEMORY[0x277D75348] redColor];
+      cGColor = [redColor CGColor];
+      layer = [(UIView *)self->_ballView layer];
+      [layer setBackgroundColor:cGColor];
 
-      v9 = [(UIView *)self->_ballView layer];
-      [v9 setMasksToBounds:1];
+      layer2 = [(UIView *)self->_ballView layer];
+      [layer2 setMasksToBounds:1];
 
       v10 = self->_ballRadius * 0.5;
-      v11 = [(UIView *)self->_ballView layer];
-      [v11 setCornerRadius:v10];
+      layer3 = [(UIView *)self->_ballView layer];
+      [layer3 setCornerRadius:v10];
 
       [(CalibrationBallView *)self addSubview:self->_ballView];
       ballView = self->_ballView;
@@ -65,10 +65,10 @@
   MidX = CGRectGetMidX(v9);
   [(CalibrationBallView *)self bounds];
   MidY = CGRectGetMidY(v10);
-  v5 = [(CalibrationBallView *)self ballView];
+  ballView = [(CalibrationBallView *)self ballView];
   trackRadius = self->_trackRadius;
   v7 = __sincos_stret(self->_currentAngle);
-  [v5 setCenter:{MidX + trackRadius * v7.__cosval, MidY + trackRadius * v7.__sinval}];
+  [ballView setCenter:{MidX + trackRadius * v7.__cosval, MidY + trackRadius * v7.__sinval}];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface ACFPrincipal
-+ (ACFPrincipal)principalWithPrincipalString:(id)a3;
-+ (ACFPrincipal)principalWithUserName:(id)a3 realm:(id)a4;
-- (ACFPrincipal)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (ACFPrincipal)principalWithPrincipalString:(id)string;
++ (ACFPrincipal)principalWithUserName:(id)name realm:(id)realm;
+- (ACFPrincipal)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)principalString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)releaseCaches;
-- (void)setPrincipalString:(id)a3;
-- (void)setRealm:(id)a3;
-- (void)setUserName:(id)a3;
+- (void)setPrincipalString:(id)string;
+- (void)setRealm:(id)realm;
+- (void)setUserName:(id)name;
 @end
 
 @implementation ACFPrincipal
 
-+ (ACFPrincipal)principalWithUserName:(id)a3 realm:(id)a4
++ (ACFPrincipal)principalWithUserName:(id)name realm:(id)realm
 {
   v6 = objc_opt_new();
-  [v6 setUserName:{objc_msgSend(objc_msgSend(a3, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x29EDB9F50], "whitespaceCharacterSet")), "lowercaseString")}];
-  [v6 setRealm:a4];
+  [v6 setUserName:{objc_msgSend(objc_msgSend(name, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x29EDB9F50], "whitespaceCharacterSet")), "lowercaseString")}];
+  [v6 setRealm:realm];
 
   return v6;
 }
 
-+ (ACFPrincipal)principalWithPrincipalString:(id)a3
++ (ACFPrincipal)principalWithPrincipalString:(id)string
 {
   v4 = objc_opt_new();
-  [v4 setPrincipalString:a3];
+  [v4 setPrincipalString:string];
 
   return v4;
 }
@@ -60,74 +60,74 @@
 
     if ([(ACFPrincipal *)self realm])
     {
-      v6 = [(ACFPrincipal *)self realm];
+      realm = [(ACFPrincipal *)self realm];
     }
 
     else
     {
-      v6 = @"<NULL>";
+      realm = @"<NULL>";
     }
 
-    return [v4 stringWithFormat:@"%@@%@", v5, v6];
+    return [v4 stringWithFormat:@"%@@%@", v5, realm];
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setUserName:{-[ACFPrincipal userName](self, "userName")}];
   [v4 setRealm:{-[ACFPrincipal realm](self, "realm")}];
   return v4;
 }
 
-- (ACFPrincipal)initWithCoder:(id)a3
+- (ACFPrincipal)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = ACFPrincipal;
   v4 = [(ACFPrincipal *)&v7 init];
   if (v4)
   {
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      -[ACFPrincipal setUserName:](v4, "setUserName:", [a3 decodeObjectForKey:@"ACFPrincipalName"]);
-      v5 = [a3 decodeObjectForKey:@"ACFPrincipalRealm"];
+      -[ACFPrincipal setUserName:](v4, "setUserName:", [coder decodeObjectForKey:@"ACFPrincipalName"]);
+      decodeObject = [coder decodeObjectForKey:@"ACFPrincipalRealm"];
     }
 
     else
     {
-      -[ACFPrincipal setUserName:](v4, "setUserName:", [a3 decodeObject]);
-      v5 = [a3 decodeObject];
+      -[ACFPrincipal setUserName:](v4, "setUserName:", [coder decodeObject]);
+      decodeObject = [coder decodeObject];
     }
 
-    [(ACFPrincipal *)v4 setRealm:v5];
+    [(ACFPrincipal *)v4 setRealm:decodeObject];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_sync_enter(self);
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeObject:-[ACFPrincipal userName](self forKey:{"userName"), @"ACFPrincipalName"}];
-    [a3 encodeObject:-[ACFPrincipal realm](self forKey:{"realm"), @"ACFPrincipalRealm"}];
+    [coder encodeObject:-[ACFPrincipal userName](self forKey:{"userName"), @"ACFPrincipalName"}];
+    [coder encodeObject:-[ACFPrincipal realm](self forKey:{"realm"), @"ACFPrincipalRealm"}];
   }
 
   else
   {
-    [a3 encodeObject:{-[ACFPrincipal userName](self, "userName")}];
-    [a3 encodeObject:{-[ACFPrincipal realm](self, "realm")}];
+    [coder encodeObject:{-[ACFPrincipal userName](self, "userName")}];
+    [coder encodeObject:{-[ACFPrincipal realm](self, "realm")}];
   }
 
   objc_sync_exit(self);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -138,33 +138,33 @@
     return 0;
   }
 
-  v5 = [a3 principalString];
-  v6 = [(ACFPrincipal *)self principalString];
+  principalString = [equal principalString];
+  principalString2 = [(ACFPrincipal *)self principalString];
 
-  return [v5 isEqual:v6];
+  return [principalString isEqual:principalString2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ACFPrincipal *)self principalString];
+  principalString = [(ACFPrincipal *)self principalString];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)principalString hash];
 }
 
-- (void)setUserName:(id)a3
+- (void)setUserName:(id)name
 {
   objc_sync_enter(self);
-  if (![a3 length])
+  if (![name length])
   {
-    a3 = 0;
+    name = 0;
   }
 
   userName = self->_userName;
-  if (userName != a3)
+  if (userName != name)
   {
-    if (a3)
+    if (name)
     {
-      if ([(NSString *)userName isEqualToString:a3])
+      if ([(NSString *)userName isEqualToString:name])
       {
         goto LABEL_8;
       }
@@ -172,7 +172,7 @@
       userName = self->_userName;
     }
 
-    self->_userName = a3;
+    self->_userName = name;
     [(ACFPrincipal *)self releaseCaches];
   }
 
@@ -181,20 +181,20 @@ LABEL_8:
   objc_sync_exit(self);
 }
 
-- (void)setRealm:(id)a3
+- (void)setRealm:(id)realm
 {
   objc_sync_enter(self);
-  if (![a3 length])
+  if (![realm length])
   {
-    a3 = 0;
+    realm = 0;
   }
 
   realm = self->_realm;
-  if (realm != a3)
+  if (realm != realm)
   {
-    if (a3)
+    if (realm)
     {
-      if ([(NSString *)realm isEqualToString:a3])
+      if ([(NSString *)realm isEqualToString:realm])
       {
         goto LABEL_8;
       }
@@ -202,7 +202,7 @@ LABEL_8:
       realm = self->_realm;
     }
 
-    self->_realm = a3;
+    self->_realm = realm;
     [(ACFPrincipal *)self releaseCaches];
   }
 
@@ -235,15 +235,15 @@ LABEL_8:
   return v3;
 }
 
-- (void)setPrincipalString:(id)a3
+- (void)setPrincipalString:(id)string
 {
   objc_sync_enter(self);
-  if (a3)
+  if (string)
   {
     principalString = self->_principalString;
-    if (principalString != a3 && ![(NSString *)principalString isEqualToString:a3])
+    if (principalString != string && ![(NSString *)principalString isEqualToString:string])
     {
-      v6 = [a3 componentsSeparatedByString:@"@"];
+      v6 = [string componentsSeparatedByString:@"@"];
       if ([v6 count] == 2)
       {
         v7 = [v6 objectAtIndex:0];

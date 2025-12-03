@@ -1,22 +1,22 @@
 @interface HDCloudSyncPushSequenceOperation
-+ (BOOL)shouldPerformRecentRecordRollingForUnfrozenRecords:(id)a3 configuration:(id)a4;
++ (BOOL)shouldPerformRecentRecordRollingForUnfrozenRecords:(id)records configuration:(id)configuration;
 + (id)operationTagDependencies;
-+ (id)unfrozenChangeRecordsForPushTarget:(id)a3 sequenceRecord:(id)a4 configuration:(id)a5 error:(id *)a6;
-- (BOOL)syncSession:(id)a3 didEndTransactionWithError:(id *)a4;
-- (HDCloudSyncPushSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncPushSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5 sequence:(id)a6;
++ (id)unfrozenChangeRecordsForPushTarget:(id)target sequenceRecord:(id)record configuration:(id)configuration error:(id *)error;
+- (BOOL)syncSession:(id)session didEndTransactionWithError:(id *)error;
+- (HDCloudSyncPushSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncPushSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target sequence:(id)sequence;
 - (HDCloudSyncSequenceState)sequenceState;
-- (uint64_t)_lock_finalizeNextChangeRecordForUploadToSession:(int)a3 shouldFreeze:(void *)a4 error:;
-- (void)_finalizePushForSession:(uint64_t)a1;
+- (uint64_t)_lock_finalizeNextChangeRecordForUploadToSession:(int)session shouldFreeze:(void *)freeze error:;
+- (void)_finalizePushForSession:(uint64_t)session;
 - (void)_setInitialForwardProgressDateIfNecessary;
-- (void)_synthesizeEmptySyncForSession:(uint64_t)a1;
-- (void)_uploadChangesForSyncSession:(int)a3 isFinalUpload:(void *)a4 completion:;
+- (void)_synthesizeEmptySyncForSession:(uint64_t)session;
+- (void)_uploadChangesForSyncSession:(int)session isFinalUpload:(void *)upload completion:;
 - (void)main;
-- (void)setSequenceState:(id)a3;
-- (void)syncSession:(id)a3 didFinishSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)syncSession:(id)a3 sendChanges:(id)a4 completion:(id)a5;
-- (void)syncSession:(id)a3 willSyncAnchorRanges:(id)a4;
-- (void)syncSessionWillBegin:(id)a3;
+- (void)setSequenceState:(id)state;
+- (void)syncSession:(id)session didFinishSuccessfully:(BOOL)successfully error:(id)error;
+- (void)syncSession:(id)session sendChanges:(id)changes completion:(id)completion;
+- (void)syncSession:(id)session willSyncAnchorRanges:(id)ranges;
+- (void)syncSessionWillBegin:(id)begin;
 @end
 
 @implementation HDCloudSyncPushSequenceOperation
@@ -33,7 +33,7 @@
   return v2;
 }
 
-- (HDCloudSyncPushSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPushSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -43,18 +43,18 @@
   return 0;
 }
 
-- (HDCloudSyncPushSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5 sequence:(id)a6
+- (HDCloudSyncPushSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target sequence:(id)sequence
 {
-  v11 = a5;
-  v12 = a6;
+  targetCopy = target;
+  sequenceCopy = sequence;
   v26.receiver = self;
   v26.super_class = HDCloudSyncPushSequenceOperation;
-  v13 = [(HDCloudSyncOperation *)&v26 initWithConfiguration:a3 cloudState:a4];
+  v13 = [(HDCloudSyncOperation *)&v26 initWithConfiguration:configuration cloudState:state];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_target, a5);
-    objc_storeStrong(&v14->_sequenceRecord, a6);
+    objc_storeStrong(&v13->_target, target);
+    objc_storeStrong(&v14->_sequenceRecord, sequence);
     v14->_lock._os_unfair_lock_opaque = 0;
     v15 = objc_alloc_init(MEMORY[0x277D10BB0]);
     taskGroup = v14->_taskGroup;
@@ -90,22 +90,22 @@
   return v3;
 }
 
-- (void)setSequenceState:(id)a3
+- (void)setSequenceState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if ([(HDCloudSyncOperation *)self status])
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushSequenceOperation.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushSequenceOperation.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
   sequenceState = self->_sequenceState;
-  self->_sequenceState = v5;
-  v7 = v5;
+  self->_sequenceState = stateCopy;
+  v7 = stateCopy;
 
-  v8 = [(HDCloudSyncSequenceState *)self->_sequenceState shouldClearRebaselineDeadline];
-  self->_shouldClearRebaselineDeadline = v8;
+  shouldClearRebaselineDeadline = [(HDCloudSyncSequenceState *)self->_sequenceState shouldClearRebaselineDeadline];
+  self->_shouldClearRebaselineDeadline = shouldClearRebaselineDeadline;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -117,41 +117,41 @@
   if (sequenceState)
   {
     recordsPendingDeletion = self->_recordsPendingDeletion;
-    v5 = [(HDCloudSyncSequenceState *)sequenceState recordIDsToDelete];
-    [(NSMutableArray *)recordsPendingDeletion addObjectsFromArray:v5];
+    recordIDsToDelete = [(HDCloudSyncSequenceState *)sequenceState recordIDsToDelete];
+    [(NSMutableArray *)recordsPendingDeletion addObjectsFromArray:recordIDsToDelete];
   }
 
-  v6 = [(HDCloudSyncOperation *)self progress];
-  [v6 setTotalUnitCount:1000];
+  progress = [(HDCloudSyncOperation *)self progress];
+  [progress setTotalUnitCount:1000];
 
   v163 = 0;
   v7 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-  v8 = [(HDCloudSyncOperation *)self configuration];
-  v9 = [v8 accessibilityAssertion];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  accessibilityAssertion = [configuration accessibilityAssertion];
 
-  if (v9)
+  if (accessibilityAssertion)
   {
-    [v7 addAccessibilityAssertion:v9];
+    [v7 addAccessibilityAssertion:accessibilityAssertion];
   }
 
-  v10 = [(HDCloudSyncOperation *)self configuration];
-  v11 = [v10 repository];
-  v12 = [v11 profile];
-  v13 = [v12 database];
-  v14 = [v13 performTransactionWithContext:v7 error:&v163 block:&__block_literal_global_373 inaccessibilityHandler:0];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  profile = [repository profile];
+  database = [profile database];
+  v14 = [database performTransactionWithContext:v7 error:&v163 block:&__block_literal_global_373 inaccessibilityHandler:0];
 
   v15 = v163;
   v154 = v15;
   if (v14)
   {
     [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
-    v16 = [(HDCloudSyncTarget *)self->_target store];
-    v153 = [v16 syncStoreForEpoch:{-[HDCloudSyncSequenceRecord baselineEpoch](self->_sequenceRecord, "baselineEpoch")}];
+    store = [(HDCloudSyncTarget *)self->_target store];
+    v153 = [store syncStoreForEpoch:{-[HDCloudSyncSequenceRecord baselineEpoch](self->_sequenceRecord, "baselineEpoch")}];
 
     sequenceRecord = self->_sequenceRecord;
-    v18 = [(HDCloudSyncTarget *)self->_target storeRecord];
-    v19 = [v18 tombstoneSequenceRecord];
-    v20 = [(HDCloudSyncSequenceRecord *)sequenceRecord isEqual:v19];
+    storeRecord = [(HDCloudSyncTarget *)self->_target storeRecord];
+    tombstoneSequenceRecord = [storeRecord tombstoneSequenceRecord];
+    v20 = [(HDCloudSyncSequenceRecord *)sequenceRecord isEqual:tombstoneSequenceRecord];
 
     if (v20)
     {
@@ -160,16 +160,16 @@
       v153 = v21;
     }
 
-    v22 = [(HDCloudSyncOperation *)self configuration];
-    v23 = [v22 repository];
-    v150 = [v23 syncEngine];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration3 repository];
+    syncEngine = [repository2 syncEngine];
 
-    v24 = [(HDCloudSyncOperation *)self configuration];
-    v25 = [v24 repository];
-    v26 = [v25 profile];
-    v27 = [v26 legacyRepositoryProfile];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
+    repository3 = [configuration4 repository];
+    profile2 = [repository3 profile];
+    legacyRepositoryProfile = [profile2 legacyRepositoryProfile];
     v162 = 0;
-    v28 = HDUpgradedToSyncIdentity(v27, &v162);
+    v28 = HDUpgradedToSyncIdentity(legacyRepositoryProfile, &v162);
     v152 = v162;
 
     if (v152)
@@ -185,10 +185,10 @@ LABEL_83:
     if (v28)
     {
       v161 = 0;
-      v30 = [(HDCloudSyncOperation *)self profile];
-      v31 = [v30 syncIdentityManager];
-      v32 = [v31 currentSyncIdentity];
-      v33 = [v32 identity];
+      profile3 = [(HDCloudSyncOperation *)self profile];
+      syncIdentityManager = [profile3 syncIdentityManager];
+      currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+      identity = [currentSyncIdentity identity];
 
       *&v164 = 0;
       *(&v164 + 1) = &v164;
@@ -197,23 +197,23 @@ LABEL_83:
       *&v166 = __Block_byref_object_dispose__21;
       *(&v166 + 1) = objc_alloc_init(MEMORY[0x277CBEB98]);
       v34 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-      v35 = [(HDCloudSyncOperation *)self configuration];
-      v36 = [v35 accessibilityAssertion];
-      v37 = [v34 contextWithAccessibilityAssertion:v36];
+      configuration5 = [(HDCloudSyncOperation *)self configuration];
+      accessibilityAssertion2 = [configuration5 accessibilityAssertion];
+      v37 = [v34 contextWithAccessibilityAssertion:accessibilityAssertion2];
 
-      v38 = [(HDCloudSyncOperation *)self profile];
-      v39 = [v38 database];
+      profile4 = [(HDCloudSyncOperation *)self profile];
+      database2 = [profile4 database];
       *buf = MEMORY[0x277D85DD0];
       *&buf[8] = 3221225472;
       *&buf[16] = __76__HDCloudSyncPushSequenceOperation__excludedSyncIdentitiesForPushWithError___block_invoke;
       v175 = &unk_278615F88;
       *&v176 = self;
-      v40 = v33;
+      v40 = identity;
       *(&v176 + 1) = v40;
       v177 = &v164;
-      LOBYTE(v36) = [v39 performTransactionWithContext:v37 error:&v161 block:buf inaccessibilityHandler:0];
+      LOBYTE(accessibilityAssertion2) = [database2 performTransactionWithContext:v37 error:&v161 block:buf inaccessibilityHandler:0];
 
-      if (v36)
+      if (accessibilityAssertion2)
       {
         v149 = *(*(&v164 + 1) + 40);
       }
@@ -239,23 +239,23 @@ LABEL_83:
 
     else
     {
-      v41 = [(HDCloudSyncOperation *)self configuration];
-      v42 = [v41 repository];
-      v43 = [v42 syncIdentityManager];
-      v44 = [v43 currentSyncIdentity];
-      v45 = [v44 identity];
+      configuration6 = [(HDCloudSyncOperation *)self configuration];
+      repository4 = [configuration6 repository];
+      syncIdentityManager2 = [repository4 syncIdentityManager];
+      currentSyncIdentity2 = [syncIdentityManager2 currentSyncIdentity];
+      identity2 = [currentSyncIdentity2 identity];
 
-      v46 = [(HDCloudSyncOperation *)self configuration];
-      v47 = [v46 computedState];
-      v48 = [v47 targets];
+      configuration7 = [(HDCloudSyncOperation *)self configuration];
+      computedState = [configuration7 computedState];
+      targets = [computedState targets];
       *buf = MEMORY[0x277D85DD0];
       *&buf[8] = 3221225472;
       *&buf[16] = __62__HDCloudSyncPushSequenceOperation__excludedSyncStoresForPush__block_invoke;
       v175 = &unk_278615F38;
       *&v176 = self;
-      *(&v176 + 1) = v45;
-      v49 = v45;
-      v146 = [v48 hk_mapToSet:buf];
+      *(&v176 + 1) = identity2;
+      v49 = identity2;
+      v146 = [targets hk_mapToSet:buf];
 
       v149 = objc_alloc_init(MEMORY[0x277CBEB98]);
       [v149 hk_map:&__block_literal_global_22];
@@ -263,31 +263,31 @@ LABEL_83:
     v52 = ;
     objc_storeStrong(&self->_excludedSyncIdentities, v52);
 
-    v53 = [(HDCloudSyncOperation *)self configuration];
-    v54 = [v53 repository];
-    v55 = [v54 profile];
-    v56 = [v55 cloudSyncManager];
-    v57 = [(HDCloudSyncOperation *)self configuration];
-    v58 = [v57 context];
-    [v58 reason];
+    configuration8 = [(HDCloudSyncOperation *)self configuration];
+    repository5 = [configuration8 repository];
+    profile5 = [repository5 profile];
+    cloudSyncManager = [profile5 cloudSyncManager];
+    configuration9 = [(HDCloudSyncOperation *)self configuration];
+    context = [configuration9 context];
+    [context reason];
     v59 = HKCloudSyncReasonToString();
-    v60 = [(HDCloudSyncOperation *)self configuration];
-    v61 = [v60 accessibilityAssertion];
-    v148 = [v56 syncSessionForSyncStore:v153 reason:v59 delegate:self accessibilityAssertion:v61 excludedStores:v146 excludedSyncIdentities:v149];
+    configuration10 = [(HDCloudSyncOperation *)self configuration];
+    accessibilityAssertion3 = [configuration10 accessibilityAssertion];
+    v148 = [cloudSyncManager syncSessionForSyncStore:v153 reason:v59 delegate:self accessibilityAssertion:accessibilityAssertion3 excludedStores:v146 excludedSyncIdentities:v149];
 
     [v148 setSequenceRecord:self->_sequenceRecord];
     v160 = 0;
     v62 = objc_alloc_init(HDSyncAnchorRangeMap);
-    v63 = [(HDCloudSyncOperation *)self profile];
-    v64 = HDCloudSyncKeyValueDomainWithProfile(v63);
+    profile6 = [(HDCloudSyncOperation *)self profile];
+    v64 = HDCloudSyncKeyValueDomainWithProfile(profile6);
 
-    v65 = [(HDCloudSyncOperation *)self profile];
-    v66 = [v65 syncIdentityManager];
-    v67 = [v66 currentSyncIdentity];
-    v68 = [v67 identity];
-    v69 = [v68 identityString];
+    profile7 = [(HDCloudSyncOperation *)self profile];
+    syncIdentityManager3 = [profile7 syncIdentityManager];
+    currentSyncIdentity3 = [syncIdentityManager3 currentSyncIdentity];
+    identity3 = [currentSyncIdentity3 identity];
+    identityString = [identity3 identityString];
 
-    v70 = HDCloudSyncFullSyncAnchorMapLimitKey(v69);
+    v70 = HDCloudSyncFullSyncAnchorMapLimitKey(identityString);
     *buf = 0;
     v71 = [v64 dataForKey:v70 error:buf];
     v72 = *buf;
@@ -334,12 +334,12 @@ LABEL_82:
     v159 = v29;
     v76 = objc_alloc_init(HDSyncAnchorMap);
     v77 = [HDCloudSyncCachedZone alloc];
-    v78 = [(HDCloudSyncTarget *)self->_target zoneIdentifier];
-    v79 = [(HDCloudSyncOperation *)self configuration];
-    v80 = [v79 repository];
-    v81 = [(HDCloudSyncOperation *)self configuration];
-    v82 = [v81 accessibilityAssertion];
-    v83 = [(HDCloudSyncCachedZone *)v77 initForZoneIdentifier:v78 repository:v80 accessibilityAssertion:v82];
+    zoneIdentifier = [(HDCloudSyncTarget *)self->_target zoneIdentifier];
+    configuration11 = [(HDCloudSyncOperation *)self configuration];
+    repository6 = [configuration11 repository];
+    configuration12 = [(HDCloudSyncOperation *)self configuration];
+    accessibilityAssertion4 = [configuration12 accessibilityAssertion];
+    v83 = [(HDCloudSyncCachedZone *)v77 initForZoneIdentifier:zoneIdentifier repository:repository6 accessibilityAssertion:accessibilityAssertion4];
 
     v84 = objc_opt_class();
     *buf = MEMORY[0x277D85DD0];
@@ -373,7 +373,7 @@ LABEL_81:
     }
 
     v158 = 0;
-    v89 = [v150 syncAnchorRangesIfRequiredForSession:v148 startingAnchors:v88 error:&v158];
+    v89 = [syncEngine syncAnchorRangesIfRequiredForSession:v148 startingAnchors:v88 error:&v158];
     v90 = v158;
     v144 = v90;
     if (v89)
@@ -384,12 +384,12 @@ LABEL_81:
         v91 = v153;
         v141 = v88;
         v142 = v91;
-        v92 = [v91 shardPredicate];
-        v93 = [v92 type] == 2;
+        shardPredicate = [v91 shardPredicate];
+        v93 = [shardPredicate type] == 2;
 
         if (v93)
         {
-          v143 = v142;
+          frozenSyncAnchorMap = v142;
           v151 = v141;
           if ([(HDSyncAnchorMap *)v151 anchorCount])
           {
@@ -401,14 +401,14 @@ LABEL_49:
               *buf = 138543874;
               *&buf[4] = self;
               *&buf[12] = 2114;
-              *&buf[14] = v143;
+              *&buf[14] = frozenSyncAnchorMap;
               *&buf[22] = 2114;
               v175 = v85;
               _os_log_impl(&dword_228986000, v116, OS_LOG_TYPE_DEFAULT, "%{public}@: Replace persisted anchors for store %{public}@ with (pushed-staging) %{public}@", buf, 0x20u);
             }
 
-            v117 = [(HDCloudSyncSequenceRecord *)self->_sequenceRecord syncAnchorMap];
-            if ([(HDSyncAnchorMap *)v143 replacePersistedAnchorMap:v117 error:&v157])
+            syncAnchorMap = [(HDCloudSyncSequenceRecord *)self->_sequenceRecord syncAnchorMap];
+            if ([(HDSyncAnchorMap *)frozenSyncAnchorMap replacePersistedAnchorMap:syncAnchorMap error:&v157])
             {
               v118 = v85;
             }
@@ -447,17 +447,17 @@ LABEL_76:
             goto LABEL_80;
           }
 
-          v94 = v143;
+          v94 = frozenSyncAnchorMap;
           v95 = objc_alloc_init(HDSyncAnchorMap);
           v96 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-          v97 = [(HDCloudSyncOperation *)self configuration];
-          v98 = [v97 accessibilityAssertion];
-          v140 = [v96 contextWithAccessibilityAssertion:v98];
+          configuration13 = [(HDCloudSyncOperation *)self configuration];
+          accessibilityAssertion5 = [configuration13 accessibilityAssertion];
+          v140 = [v96 contextWithAccessibilityAssertion:accessibilityAssertion5];
 
-          v99 = [(HDCloudSyncOperation *)self configuration];
-          v100 = [v99 repository];
-          v101 = [v100 profile];
-          v102 = [v101 database];
+          configuration14 = [(HDCloudSyncOperation *)self configuration];
+          repository7 = [configuration14 repository];
+          profile8 = [repository7 profile];
+          database3 = [profile8 database];
           v171[0] = MEMORY[0x277D85DD0];
           v171[1] = 3221225472;
           v171[2] = __80__HDCloudSyncPushSequenceOperation__startingSyncAnchorMapForStagingStore_error___block_invoke;
@@ -467,12 +467,12 @@ LABEL_76:
           v172 = v103;
           v85 = v95;
           v173 = v85;
-          v139 = [v102 performTransactionWithContext:v140 error:&v157 block:v171 inaccessibilityHandler:0];
+          v139 = [database3 performTransactionWithContext:v140 error:&v157 block:v171 inaccessibilityHandler:0];
 
           v104 = objc_alloc_init(MEMORY[0x277CBEB58]);
-          v105 = [(HDCloudSyncOperation *)self profile];
-          v106 = [v105 syncEngine];
-          v107 = [v106 allSyncEntitiesByIdentifier];
+          profile9 = [(HDCloudSyncOperation *)self profile];
+          syncEngine2 = [profile9 syncEngine];
+          allSyncEntitiesByIdentifier = [syncEngine2 allSyncEntitiesByIdentifier];
 
           v168[0] = MEMORY[0x277D85DD0];
           v168[1] = 3221225472;
@@ -482,7 +482,7 @@ LABEL_76:
           v169 = v108;
           v109 = v104;
           v170 = v109;
-          [v107 enumerateKeysAndObjectsUsingBlock:v168];
+          [allSyncEntitiesByIdentifier enumerateKeysAndObjectsUsingBlock:v168];
           v166 = 0u;
           v167 = 0u;
           v164 = 0u;
@@ -531,32 +531,32 @@ LABEL_76:
 
         else
         {
-          v143 = [(HDCloudSyncSequenceRecord *)self->_sequenceRecord frozenSyncAnchorMap];
-          if (!v143)
+          frozenSyncAnchorMap = [(HDCloudSyncSequenceRecord *)self->_sequenceRecord frozenSyncAnchorMap];
+          if (!frozenSyncAnchorMap)
           {
-            v143 = objc_alloc_init(HDSyncAnchorMap);
+            frozenSyncAnchorMap = objc_alloc_init(HDSyncAnchorMap);
           }
 
           target = self->_target;
           v121 = self->_sequenceRecord;
-          v122 = [(HDCloudSyncOperation *)self configuration];
-          v151 = [HDCloudSyncPushSequenceOperation unfrozenChangeRecordsForPushTarget:target sequenceRecord:v121 configuration:v122 error:&v157];
+          configuration15 = [(HDCloudSyncOperation *)self configuration];
+          v151 = [HDCloudSyncPushSequenceOperation unfrozenChangeRecordsForPushTarget:target sequenceRecord:v121 configuration:configuration15 error:&v157];
 
           if (v151)
           {
-            v123 = [(HDCloudSyncOperation *)self profile];
-            v124 = [v123 cloudSyncManager];
-            v125 = [v124 canPerformRecentRecordRoll];
+            profile10 = [(HDCloudSyncOperation *)self profile];
+            cloudSyncManager2 = [profile10 cloudSyncManager];
+            canPerformRecentRecordRoll = [cloudSyncManager2 canPerformRecentRecordRoll];
 
-            v126 = [(HDCloudSyncOperation *)self configuration];
-            LODWORD(v124) = [HDCloudSyncPushSequenceOperation shouldPerformRecentRecordRollingForUnfrozenRecords:v151 configuration:v126];
+            configuration16 = [(HDCloudSyncOperation *)self configuration];
+            LODWORD(cloudSyncManager2) = [HDCloudSyncPushSequenceOperation shouldPerformRecentRecordRollingForUnfrozenRecords:v151 configuration:configuration16];
 
             v127 = [(HDSyncAnchorMap *)v151 count];
-            v128 = v125 & v124;
+            v128 = canPerformRecentRecordRoll & cloudSyncManager2;
             v129 = v141;
-            if ((v125 & v124) != 0)
+            if ((canPerformRecentRecordRoll & cloudSyncManager2) != 0)
             {
-              v129 = v143;
+              v129 = frozenSyncAnchorMap;
             }
 
             v85 = v129;
@@ -566,7 +566,7 @@ LABEL_76:
               v130 = [(HDSyncAnchorMap *)v151 hk_map:&__block_literal_global_324_1];
               [(NSMutableArray *)self->_recordsPendingDeletion addObjectsFromArray:v130];
               v131 = self->_sequenceRecord;
-              v132 = v143;
+              v132 = frozenSyncAnchorMap;
               [(HDCloudSyncSequenceRecord *)v131 decrementChildRecordCount:v127];
               [(HDCloudSyncSequenceRecord *)self->_sequenceRecord resetChangeIndex:[(HDCloudSyncSequenceRecord *)self->_sequenceRecord changeIndex]- v127];
               [(HDCloudSyncSequenceRecord *)self->_sequenceRecord updateSyncProtocolVersion:17 syncEntityVersions:self->_changesSyncEntityVersionMap];
@@ -644,18 +644,18 @@ id __40__HDCloudSyncPushSequenceOperation_main__block_invoke(uint64_t a1, void *
   return v4;
 }
 
-- (void)_synthesizeEmptySyncForSession:(uint64_t)a1
+- (void)_synthesizeEmptySyncForSession:(uint64_t)session
 {
   v3 = a2;
-  if (a1)
+  if (session)
   {
-    [*(a1 + 136) beginTask];
-    v4 = *(a1 + 128);
+    [*(session + 136) beginTask];
+    v4 = *(session + 128);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __67__HDCloudSyncPushSequenceOperation__synthesizeEmptySyncForSession___block_invoke;
     v5[3] = &unk_278613920;
-    v5[4] = a1;
+    v5[4] = session;
     v6 = v3;
     dispatch_async(v4, v5);
   }
@@ -663,18 +663,18 @@ id __40__HDCloudSyncPushSequenceOperation_main__block_invoke(uint64_t a1, void *
 
 - (void)_setInitialForwardProgressDateIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 configuration];
-    v3 = [v2 repository];
-    v4 = [v3 profile];
-    v5 = [v4 database];
+    configuration = [self configuration];
+    repository = [configuration repository];
+    profile = [repository profile];
+    database = [profile database];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __77__HDCloudSyncPushSequenceOperation__setInitialForwardProgressDateIfNecessary__block_invoke;
     v6[3] = &unk_278613968;
-    v6[4] = a1;
-    [v5 performAsynchronouslySerial:v6];
+    v6[4] = self;
+    [database performAsynchronouslySerial:v6];
   }
 }
 
@@ -978,38 +978,38 @@ uint64_t __67__HDCloudSyncPushSequenceOperation__synthesizeEmptySyncForSession__
   return result;
 }
 
-- (void)_finalizePushForSession:(uint64_t)a1
+- (void)_finalizePushForSession:(uint64_t)session
 {
   v3 = a2;
-  if (a1)
+  if (session)
   {
-    os_unfair_lock_lock((a1 + 120));
-    v4 = [*(a1 + 144) archiveCreator];
-    v5 = [v4 archiveIsValid];
+    os_unfair_lock_lock((session + 120));
+    archiveCreator = [*(session + 144) archiveCreator];
+    archiveIsValid = [archiveCreator archiveIsValid];
 
-    if (v5)
+    if (archiveIsValid)
     {
       v12 = 0;
-      v6 = [(HDCloudSyncPushSequenceOperation *)a1 _lock_finalizeNextChangeRecordForUploadToSession:v3 shouldFreeze:0 error:&v12];
+      v6 = [(HDCloudSyncPushSequenceOperation *)session _lock_finalizeNextChangeRecordForUploadToSession:v3 shouldFreeze:0 error:&v12];
       v7 = v12;
       v8 = v7;
       if ((v6 & 1) == 0)
       {
-        [*(a1 + 144) finishProgress];
-        os_unfair_lock_unlock((a1 + 120));
+        [*(session + 144) finishProgress];
+        os_unfair_lock_unlock((session + 120));
         goto LABEL_7;
       }
     }
 
-    os_unfair_lock_unlock((a1 + 120));
-    [*(a1 + 136) beginTask];
+    os_unfair_lock_unlock((session + 120));
+    [*(session + 136) beginTask];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __60__HDCloudSyncPushSequenceOperation__finalizePushForSession___block_invoke;
     v9[3] = &unk_278616020;
     v10 = v3;
-    v11 = a1;
-    [(HDCloudSyncPushSequenceOperation *)a1 _uploadChangesForSyncSession:v10 isFinalUpload:1 completion:v9];
+    sessionCopy = session;
+    [(HDCloudSyncPushSequenceOperation *)session _uploadChangesForSyncSession:v10 isFinalUpload:1 completion:v9];
     v8 = v10;
 LABEL_7:
   }
@@ -1435,50 +1435,50 @@ LABEL_14:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_lock_finalizeNextChangeRecordForUploadToSession:(int)a3 shouldFreeze:(void *)a4 error:
+- (uint64_t)_lock_finalizeNextChangeRecordForUploadToSession:(int)session shouldFreeze:(void *)freeze error:
 {
   v84 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 120));
-    v8 = [*(a1 + 144) pendingAnchorRangeMap];
-    v9 = [v8 anchorRangeCount];
+    os_unfair_lock_assert_owner((self + 120));
+    pendingAnchorRangeMap = [*(self + 144) pendingAnchorRangeMap];
+    anchorRangeCount = [pendingAnchorRangeMap anchorRangeCount];
 
-    if (v9)
+    if (anchorRangeCount)
     {
-      v10 = [*(a1 + 144) archiveCreator];
-      v11 = [v10 archiveIsValid];
+      archiveCreator = [*(self + 144) archiveCreator];
+      archiveIsValid = [archiveCreator archiveIsValid];
 
-      if (v11)
+      if (archiveIsValid)
       {
-        v12 = [*(a1 + 144) pendingAnchorRangeMap];
-        v67 = [HDSyncAnchorMap syncAnchorMapWithSyncAnchorRangeMap:v12];
+        pendingAnchorRangeMap2 = [*(self + 144) pendingAnchorRangeMap];
+        v67 = [HDSyncAnchorMap syncAnchorMapWithSyncAnchorRangeMap:pendingAnchorRangeMap2];
 
-        v13 = [*(a1 + 144) archiveCreator];
-        [v13 closeArchive];
+        archiveCreator2 = [*(self + 144) archiveCreator];
+        [archiveCreator2 closeArchive];
 
-        v14 = [v7 sequenceRecord];
-        if (!v14)
+        sequenceRecord = [v7 sequenceRecord];
+        if (!sequenceRecord)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a4 code:718 format:@"No sequence record for current session."];
-          a1 = 0;
+          [MEMORY[0x277CCA9B8] hk_assignError:freeze code:718 format:@"No sequence record for current session."];
+          self = 0;
 LABEL_55:
 
           goto LABEL_56;
         }
 
         v15 = v67;
-        v16 = v14;
+        v16 = sequenceRecord;
         [v16 incrementChangeIndex];
-        [v16 updateSyncProtocolVersion:17 syncEntityVersions:*(a1 + 184)];
+        [v16 updateSyncProtocolVersion:17 syncEntityVersions:*(self + 184)];
         [v16 updateSyncAnchorMapWithSyncAnchorMap:v15];
 
-        v17 = [*(a1 + 144) archiveCreator];
-        v18 = [v17 fileHandle];
+        archiveCreator3 = [*(self + 144) archiveCreator];
+        fileHandle = [archiveCreator3 fileHandle];
 
-        v19 = v18;
-        if ([v19 seekToOffset:0 error:a4])
+        v19 = fileHandle;
+        if ([v19 seekToOffset:0 error:freeze])
         {
           v20 = [objc_alloc(MEMORY[0x277CCDE88]) initWithFileHandle:v19];
           v72 = 0;
@@ -1498,8 +1498,8 @@ LABEL_55:
 
             _Block_object_dispose(&v72, 8);
             v23 = [HDCloudSyncChangeRecord alloc];
-            v24 = [*(a1 + 144) pendingAnchorRangeMap];
-            v25 = -[HDCloudSyncChangeRecord initWithSyncAnchorRangeMap:finalForSequence:changesetArchiveFileHandle:sequenceRecord:protocolVersion:](v23, "initWithSyncAnchorRangeMap:finalForSequence:changesetArchiveFileHandle:sequenceRecord:protocolVersion:", v24, [*(a1 + 144) hasOpenSequence] ^ 1, v19, v16, 17);
+            pendingAnchorRangeMap3 = [*(self + 144) pendingAnchorRangeMap];
+            v25 = -[HDCloudSyncChangeRecord initWithSyncAnchorRangeMap:finalForSequence:changesetArchiveFileHandle:sequenceRecord:protocolVersion:](v23, "initWithSyncAnchorRangeMap:finalForSequence:changesetArchiveFileHandle:sequenceRecord:protocolVersion:", pendingAnchorRangeMap3, [*(self + 144) hasOpenSequence] ^ 1, v19, v16, 17);
 
             v69 = 0;
             v66 = v25;
@@ -1513,7 +1513,7 @@ LABEL_55:
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
               {
                 *buf = 138543618;
-                v77 = a1;
+                selfCopy6 = self;
                 v78 = 2114;
                 v79 = v27;
                 _os_log_fault_impl(&dword_228986000, v35, OS_LOG_TYPE_FAULT, "%{public}@: Failed to validate store record after creation: %{public}@", buf, 0x16u);
@@ -1523,11 +1523,11 @@ LABEL_55:
               v37 = v36;
               if (v36)
               {
-                if (a4)
+                if (freeze)
                 {
                   v38 = v36;
                   v36 = v37;
-                  *a4 = v37;
+                  *freeze = v37;
                 }
 
                 else
@@ -1537,7 +1537,7 @@ LABEL_55:
                 }
               }
 
-              a1 = 0;
+              self = 0;
               goto LABEL_53;
             }
 
@@ -1548,19 +1548,19 @@ LABEL_55:
             if (v28)
             {
               v29 = v70[0];
-              v30 = [v66 changeSize];
-              LOBYTE(v29) = v29 == [v30 unsignedLongLongValue];
+              changeSize = [v66 changeSize];
+              LOBYTE(v29) = v29 == [changeSize unsignedLongLongValue];
 
               if (v29)
               {
-                if (a3 && *(a1 + 168) == 1)
+                if (session && *(self + 168) == 1)
                 {
                   _HKInitializeLogging();
                   v31 = *MEMORY[0x277CCC328];
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543618;
-                    v77 = a1;
+                    selfCopy6 = self;
                     v78 = 2114;
                     v79 = v15;
                     _os_log_impl(&dword_228986000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@: Update sequence record's frozen sync anchors with %{public}@", buf, 0x16u);
@@ -1572,43 +1572,43 @@ LABEL_55:
 
                 else
                 {
-                  v47 = [v16 firstUnfrozenChangeRecord];
-                  v48 = v47 == 0;
+                  firstUnfrozenChangeRecord = [v16 firstUnfrozenChangeRecord];
+                  v48 = firstUnfrozenChangeRecord == 0;
 
                   if (v48)
                   {
-                    v49 = [v66 record];
-                    v50 = [v49 recordID];
-                    [v16 setFirstUnfrozenChangeRecord:v50];
+                    record = [v66 record];
+                    recordID = [record recordID];
+                    [v16 setFirstUnfrozenChangeRecord:recordID];
                   }
                 }
 
-                v51 = [*(a1 + 144) archiveSize];
+                archiveSize = [*(self + 144) archiveSize];
                 _HKInitializeLogging();
                 v52 = *MEMORY[0x277CCC328];
                 if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                 {
-                  v53 = *(a1 + 144);
+                  v53 = *(self + 144);
                   v54 = v52;
-                  v55 = [v53 pendingAnchorRangeMap];
+                  pendingAnchorRangeMap4 = [v53 pendingAnchorRangeMap];
                   *buf = 138543874;
-                  v77 = a1;
+                  selfCopy6 = self;
                   v78 = 2048;
-                  v79 = v51;
+                  v79 = archiveSize;
                   v80 = 2114;
-                  v81 = v55;
+                  v81 = pendingAnchorRangeMap4;
                   _os_log_impl(&dword_228986000, v54, OS_LOG_TYPE_DEFAULT, "%{public}@: Finalized change record for push: assetSize: (%llu), anchorRangeMap: %{public}@", buf, 0x20u);
                 }
 
-                if (v51 > 0x100000)
+                if (archiveSize > 0x100000)
                 {
-                  v56 = [a1 configuration];
-                  v57 = [v56 operationGroup];
-                  [v57 setExpectedSendSize:2];
+                  configuration = [self configuration];
+                  operationGroup = [configuration operationGroup];
+                  [operationGroup setExpectedSendSize:2];
                 }
 
-                [*(a1 + 152) addObject:v66];
-                a1 = 1;
+                [*(self + 152) addObject:v66];
+                self = 1;
                 goto LABEL_52;
               }
 
@@ -1617,19 +1617,19 @@ LABEL_55:
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
               {
                 v63 = v44;
-                v64 = [v66 changeSize];
+                changeSize2 = [v66 changeSize];
                 *buf = 138543874;
-                v77 = a1;
+                selfCopy6 = self;
                 v78 = 2114;
-                v79 = v64;
+                v79 = changeSize2;
                 v80 = 2048;
                 v81 = v70[0];
                 _os_log_fault_impl(&dword_228986000, v63, OS_LOG_TYPE_FAULT, "%{public}@: Change size %{public}@ does not match computed file size: %llu", buf, 0x20u);
               }
 
               v45 = MEMORY[0x277CCA9B8];
-              v46 = [v66 changeSize];
-              [v45 hk_assignError:a4 code:709 format:{@"Change size %@ does not match computed file size: %llu", v46, v70[0]}];
+              changeSize3 = [v66 changeSize];
+              [v45 hk_assignError:freeze code:709 format:{@"Change size %@ does not match computed file size: %llu", changeSize3, v70[0]}];
             }
 
             else
@@ -1639,7 +1639,7 @@ LABEL_55:
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                v77 = a1;
+                selfCopy6 = self;
                 v78 = 2114;
                 v79 = v65;
                 _os_log_error_impl(&dword_228986000, v39, OS_LOG_TYPE_ERROR, "%{public}@: Failed to compute archive file size: %{public}@", buf, 0x16u);
@@ -1649,10 +1649,10 @@ LABEL_55:
               v41 = v40;
               if (v40)
               {
-                if (a4)
+                if (freeze)
                 {
                   v42 = v40;
-                  *a4 = v41;
+                  *freeze = v41;
                 }
 
                 else
@@ -1662,7 +1662,7 @@ LABEL_55:
               }
             }
 
-            a1 = 0;
+            self = 0;
 LABEL_52:
             v37 = v65;
 LABEL_53:
@@ -1674,10 +1674,10 @@ LABEL_53:
           v33 = v32;
           if (v32)
           {
-            if (a4)
+            if (freeze)
             {
               v34 = v32;
-              *a4 = v33;
+              *freeze = v33;
             }
 
             else
@@ -1690,13 +1690,13 @@ LABEL_53:
           v43 = *MEMORY[0x277CCC328];
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
           {
-            v58 = [*(a1 + 144) archiveURL];
-            v59 = [v58 path];
+            archiveURL = [*(self + 144) archiveURL];
+            path = [archiveURL path];
             v60 = v73[3];
             *buf = 138544130;
-            v77 = a1;
+            selfCopy6 = self;
             v78 = 2114;
-            v79 = v59;
+            v79 = path;
             v80 = 2048;
             v81 = v60;
             v82 = 2114;
@@ -1711,70 +1711,70 @@ LABEL_53:
         {
         }
 
-        a1 = 0;
+        self = 0;
 LABEL_54:
 
         goto LABEL_55;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:717 format:@"Unable to create change record with invalid archive."];
-      a1 = 0;
+      [MEMORY[0x277CCA9B8] hk_assignError:freeze code:717 format:@"Unable to create change record with invalid archive."];
+      self = 0;
     }
 
     else
     {
-      a1 = 1;
+      self = 1;
     }
   }
 
 LABEL_56:
 
   v61 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (void)_uploadChangesForSyncSession:(int)a3 isFinalUpload:(void *)a4 completion:
+- (void)_uploadChangesForSyncSession:(int)session isFinalUpload:(void *)upload completion:
 {
   v83 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (a1)
+  uploadCopy = upload;
+  if (self)
   {
-    v8 = [a2 sequenceRecord];
-    if (!v8)
+    sequenceRecord = [a2 sequenceRecord];
+    if (!sequenceRecord)
     {
       v16 = [MEMORY[0x277CCA9B8] hk_error:718 format:@"No sequence record for current session."];
-      v7[2](v7, 0, v16);
+      uploadCopy[2](uploadCopy, 0, v16);
 
 LABEL_31:
       goto LABEL_32;
     }
 
-    v9 = [*(a1 + 104) store];
-    v10 = [v9 shardPredicate];
-    v11 = [*(a1 + 104) storeRecord];
-    [v11 setShardPredicate:v10];
+    store = [*(self + 104) store];
+    shardPredicate = [store shardPredicate];
+    storeRecord = [*(self + 104) storeRecord];
+    [storeRecord setShardPredicate:shardPredicate];
 
-    os_unfair_lock_lock((a1 + 120));
-    v12 = [*(a1 + 152) hk_map:&__block_literal_global_357];
+    os_unfair_lock_lock((self + 120));
+    v12 = [*(self + 152) hk_map:&__block_literal_global_357];
     v76 = [v12 mutableCopy];
 
-    [*(a1 + 152) removeAllObjects];
-    v77 = [*(a1 + 160) copy];
-    v13 = *(a1 + 160);
-    *(a1 + 160) = 0;
+    [*(self + 152) removeAllObjects];
+    v77 = [*(self + 160) copy];
+    v13 = *(self + 160);
+    *(self + 160) = 0;
 
-    if (!a3)
+    if (!session)
     {
       v17 = 0;
 LABEL_12:
-      v75 = v8;
-      os_unfair_lock_unlock((a1 + 120));
-      v22 = [*(a1 + 104) storeRecord];
-      v23 = [v22 record];
-      v24 = [v23 modificationDate];
-      v25 = [a1 configuration];
-      v26 = [v25 syncDate];
-      [v24 timeIntervalSinceDate:v26];
+      v75 = sequenceRecord;
+      os_unfair_lock_unlock((self + 120));
+      storeRecord2 = [*(self + 104) storeRecord];
+      record = [storeRecord2 record];
+      modificationDate = [record modificationDate];
+      configuration = [self configuration];
+      syncDate = [configuration syncDate];
+      [modificationDate timeIntervalSinceDate:syncDate];
       v28 = v27;
 
       if ((v17 & 1) != 0 || v28 < -1209600.0 || [v77 count] || objc_msgSend(v76, "count"))
@@ -1785,75 +1785,75 @@ LABEL_12:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           v31 = "interim";
-          if (a3)
+          if (session)
           {
             v31 = "FINAL";
           }
 
           *buf = 138543618;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2082;
           *&buf[14] = v31;
           _os_log_impl(&dword_228986000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: Uploading %{public}s changeset record to CloudKit", buf, 0x16u);
         }
 
-        v74 = v7;
-        v32 = [a1 configuration];
-        v33 = [v32 repository];
-        v34 = [v33 behavior];
+        v74 = uploadCopy;
+        configuration2 = [self configuration];
+        repository = [configuration2 repository];
+        behavior = [repository behavior];
 
-        v35 = [v34 currentDeviceProductType];
-        v36 = [*(a1 + 104) storeRecord];
-        [v36 setProductType:v35];
+        currentDeviceProductType = [behavior currentDeviceProductType];
+        storeRecord3 = [*(self + 104) storeRecord];
+        [storeRecord3 setProductType:currentDeviceProductType];
 
-        v37 = [v34 currentOSBuild];
-        v38 = [*(a1 + 104) storeRecord];
-        [v38 setSystemBuildVersion:v37];
+        currentOSBuild = [behavior currentOSBuild];
+        storeRecord4 = [*(self + 104) storeRecord];
+        [storeRecord4 setSystemBuildVersion:currentOSBuild];
 
-        v39 = [v34 currentDeviceDisplayName];
-        v40 = [*(a1 + 104) storeRecord];
-        [v40 setDeviceName:v39];
+        currentDeviceDisplayName = [behavior currentDeviceDisplayName];
+        storeRecord5 = [*(self + 104) storeRecord];
+        [storeRecord5 setDeviceName:currentDeviceDisplayName];
 
-        v41 = [*(a1 + 104) storeRecord];
-        [v41 setSupportedProtocolVersion:0];
+        storeRecord6 = [*(self + 104) storeRecord];
+        [storeRecord6 setSupportedProtocolVersion:0];
 
-        v42 = [*(a1 + 104) storeRecord];
-        [v42 setRequiredProtocolVersion:0];
+        storeRecord7 = [*(self + 104) storeRecord];
+        [storeRecord7 setRequiredProtocolVersion:0];
 
-        v43 = [a1 configuration];
-        v44 = [v43 repository];
-        v45 = [v44 deviceMode];
-        v46 = [*(a1 + 104) storeRecord];
-        [v46 setDeviceMode:v45];
+        configuration3 = [self configuration];
+        repository2 = [configuration3 repository];
+        deviceMode = [repository2 deviceMode];
+        storeRecord8 = [*(self + 104) storeRecord];
+        [storeRecord8 setDeviceMode:deviceMode];
 
-        v47 = [*(a1 + 104) storeRecord];
-        v48 = [v47 record];
-        [v76 addObject:v48];
+        storeRecord9 = [*(self + 104) storeRecord];
+        record2 = [storeRecord9 record];
+        [v76 addObject:record2];
 
-        v49 = [v75 record];
-        [v76 addObject:v49];
+        record3 = [v75 record];
+        [v76 addObject:record3];
 
-        v50 = *(a1 + 176);
+        v50 = *(self + 176);
         if (v50)
         {
-          v51 = [v50 recordsToSave];
-          [v76 addObjectsFromArray:v51];
+          recordsToSave = [v50 recordsToSave];
+          [v76 addObjectsFromArray:recordsToSave];
 
-          v52 = *(a1 + 176);
-          *(a1 + 176) = 0;
+          v52 = *(self + 176);
+          *(self + 176) = 0;
         }
 
-        v73 = [a1 configuration];
-        v72 = [v73 repository];
-        v53 = [v72 primaryCKContainer];
-        v54 = [v53 containerIdentifier];
+        configuration4 = [self configuration];
+        repository3 = [configuration4 repository];
+        primaryCKContainer = [repository3 primaryCKContainer];
+        containerIdentifier = [primaryCKContainer containerIdentifier];
         v55 = v76;
         v56 = v77;
-        v57 = v54;
+        v57 = containerIdentifier;
         v58 = v74;
-        v59 = [a1 configuration];
-        v60 = [v59 repository];
-        v61 = [v60 containerForContainerIdentifier:v57];
+        configuration5 = [self configuration];
+        repository4 = [configuration5 repository];
+        v61 = [repository4 containerForContainerIdentifier:v57];
 
         if (v61)
         {
@@ -1863,7 +1863,7 @@ LABEL_12:
           if (os_log_type_enabled(*v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138544130;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2114;
             *&buf[14] = v62;
             *&buf[22] = 2114;
@@ -1874,14 +1874,14 @@ LABEL_12:
           }
 
           v64 = [HDCloudSyncModifyRecordsOperation alloc];
-          v65 = [a1 configuration];
-          v66 = [(HDCloudSyncModifyRecordsOperation *)v64 initWithConfiguration:v65 container:v61 recordsToSave:v55 recordIDsToDelete:v56];
+          configuration6 = [self configuration];
+          v66 = [(HDCloudSyncModifyRecordsOperation *)v64 initWithConfiguration:configuration6 container:v61 recordsToSave:v55 recordIDsToDelete:v56];
 
           *buf = MEMORY[0x277D85DD0];
           *&buf[8] = 3221225472;
           *&buf[16] = __90__HDCloudSyncPushSequenceOperation__pushRecords_recordIDsToDelete_containerID_completion___block_invoke_367;
           v81 = &unk_2786143E8;
-          *&v82 = a1;
+          *&v82 = self;
           v67 = v58;
           *(&v82 + 1) = v67;
           [(HDCloudSyncOperation *)v66 setOnError:buf];
@@ -1889,7 +1889,7 @@ LABEL_12:
           v78[1] = 3221225472;
           v78[2] = __90__HDCloudSyncPushSequenceOperation__pushRecords_recordIDsToDelete_containerID_completion___block_invoke_369;
           v78[3] = &unk_278615FF8;
-          v78[4] = a1;
+          v78[4] = self;
           v79 = v67;
           [(HDCloudSyncOperation *)v66 setOnSuccess:v78];
           [(HDCloudSyncOperation *)v66 start];
@@ -1902,7 +1902,7 @@ LABEL_12:
           if (os_log_type_enabled(*v29, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2114;
             *&buf[14] = v57;
             _os_log_error_impl(&dword_228986000, v68, OS_LOG_TYPE_ERROR, "%{public}@: Container not found for container ID: %{public}@", buf, 0x16u);
@@ -1912,10 +1912,10 @@ LABEL_12:
           (*(v58 + 2))(v58, 0, v62);
         }
 
-        v8 = v75;
+        sequenceRecord = v75;
         v69 = v76;
 
-        v7 = v74;
+        uploadCopy = v74;
       }
 
       else
@@ -1925,49 +1925,49 @@ LABEL_12:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           _os_log_impl(&dword_228986000, v71, OS_LOG_TYPE_DEFAULT, "%{public}@: No upload required at the present time; skipping record save.", buf, 0xCu);
         }
 
-        *(a1 + 192) = 1;
-        v7[2](v7, 1, 0);
-        v8 = v75;
+        *(self + 192) = 1;
+        uploadCopy[2](uploadCopy, 1, 0);
+        sequenceRecord = v75;
         v69 = v76;
       }
 
       goto LABEL_31;
     }
 
-    v14 = [*(a1 + 104) storeRecord];
-    v15 = [v14 pendingOwner];
-    if (v15)
+    storeRecord10 = [*(self + 104) storeRecord];
+    pendingOwner = [storeRecord10 pendingOwner];
+    if (pendingOwner)
     {
     }
 
     else
     {
-      v18 = [*(a1 + 104) storeRecord];
-      v19 = [v18 pendingSyncIdentity];
+      storeRecord11 = [*(self + 104) storeRecord];
+      pendingSyncIdentity = [storeRecord11 pendingSyncIdentity];
 
-      if (!v19)
+      if (!pendingSyncIdentity)
       {
         v17 = 0;
 LABEL_10:
-        if (([v8 isActive] & 1) == 0)
+        if (([sequenceRecord isActive] & 1) == 0)
         {
           v17 = 1;
-          [v8 setActive:1];
+          [sequenceRecord setActive:1];
         }
 
         goto LABEL_12;
       }
     }
 
-    v20 = [*(a1 + 104) storeRecord];
-    [v20 setPendingOwner:0];
+    storeRecord12 = [*(self + 104) storeRecord];
+    [storeRecord12 setPendingOwner:0];
 
-    v21 = [*(a1 + 104) storeRecord];
-    [v21 setPendingSyncIdentity:0];
+    storeRecord13 = [*(self + 104) storeRecord];
+    [storeRecord13 setPendingSyncIdentity:0];
 
     v17 = 1;
     goto LABEL_10;
@@ -2298,18 +2298,18 @@ uint64_t __63__HDCloudSyncPushSequenceOperation__handleRebaselineWithError___blo
   return v9;
 }
 
-+ (BOOL)shouldPerformRecentRecordRollingForUnfrozenRecords:(id)a3 configuration:(id)a4
++ (BOOL)shouldPerformRecentRecordRollingForUnfrozenRecords:(id)records configuration:(id)configuration
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  recordsCopy = records;
+  configurationCopy = configuration;
+  if (recordsCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v7 = [recordsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2321,14 +2321,14 @@ uint64_t __63__HDCloudSyncPushSequenceOperation__handleRebaselineWithError___blo
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(recordsCopy);
           }
 
-          v12 = [*(*(&v23 + 1) + 8 * i) changeSize];
-          v9 += [v12 longLongValue];
+          changeSize = [*(*(&v23 + 1) + 8 * i) changeSize];
+          v9 += [changeSize longLongValue];
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v8 = [recordsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v8);
@@ -2339,13 +2339,13 @@ uint64_t __63__HDCloudSyncPushSequenceOperation__handleRebaselineWithError___blo
       v9 = 0;
     }
 
-    v14 = [v5 count];
-    v15 = [v6 repository];
-    v16 = [v15 profile];
-    v17 = [v16 cloudSyncManager];
-    v18 = [v17 bytesPerChangeRecordAssetThreshold];
+    v14 = [recordsCopy count];
+    repository = [configurationCopy repository];
+    profile = [repository profile];
+    cloudSyncManager = [profile cloudSyncManager];
+    bytesPerChangeRecordAssetThreshold = [cloudSyncManager bytesPerChangeRecordAssetThreshold];
 
-    v13 = v14 > 21 || v9 > v18 || v14 == 0;
+    v13 = v14 > 21 || v9 > bytesPerChangeRecordAssetThreshold || v14 == 0;
   }
 
   else
@@ -2357,34 +2357,34 @@ uint64_t __63__HDCloudSyncPushSequenceOperation__handleRebaselineWithError___blo
   return v13;
 }
 
-+ (id)unfrozenChangeRecordsForPushTarget:(id)a3 sequenceRecord:(id)a4 configuration:(id)a5 error:(id *)a6
++ (id)unfrozenChangeRecordsForPushTarget:(id)target sequenceRecord:(id)record configuration:(id)configuration error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 frozenSyncAnchorMap];
-  if (!v12)
+  recordCopy = record;
+  configurationCopy = configuration;
+  targetCopy = target;
+  frozenSyncAnchorMap = [recordCopy frozenSyncAnchorMap];
+  if (!frozenSyncAnchorMap)
   {
-    v12 = objc_alloc_init(HDSyncAnchorMap);
+    frozenSyncAnchorMap = objc_alloc_init(HDSyncAnchorMap);
   }
 
   v13 = [HDCloudSyncCachedZone alloc];
-  v14 = [v11 zoneIdentifier];
+  zoneIdentifier = [targetCopy zoneIdentifier];
 
-  v15 = [v10 repository];
-  v16 = [v10 accessibilityAssertion];
+  repository = [configurationCopy repository];
+  accessibilityAssertion = [configurationCopy accessibilityAssertion];
 
-  v17 = [(HDCloudSyncCachedZone *)v13 initForZoneIdentifier:v14 repository:v15 accessibilityAssertion:v16];
+  v17 = [(HDCloudSyncCachedZone *)v13 initForZoneIdentifier:zoneIdentifier repository:repository accessibilityAssertion:accessibilityAssertion];
   v18 = objc_opt_class();
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTarget_sequenceRecord_configuration_error___block_invoke;
   v23[3] = &unk_278615E78;
-  v24 = v9;
-  v25 = v12;
-  v19 = v12;
-  v20 = v9;
-  v21 = [v17 recordsForClass:v18 error:a6 filter:v23];
+  v24 = recordCopy;
+  v25 = frozenSyncAnchorMap;
+  v19 = frozenSyncAnchorMap;
+  v20 = recordCopy;
+  v21 = [v17 recordsForClass:v18 error:error filter:v23];
 
   return v21;
 }
@@ -2435,10 +2435,10 @@ uint64_t __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTar
   return result;
 }
 
-- (void)syncSessionWillBegin:(id)a3
+- (void)syncSessionWillBegin:(id)begin
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beginCopy = begin;
   dispatch_assert_queue_V2(self->_syncQueue);
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
   _HKInitializeLogging();
@@ -2447,9 +2447,9 @@ uint64_t __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTar
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v4;
+    v17 = beginCopy;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning sync session: %{public}@", &v14, 0x16u);
   }
 
@@ -2464,10 +2464,10 @@ uint64_t __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTar
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(HDCloudSyncOperation *)self configuration];
-        v12 = [v11 descriptionForSignpost];
+        configuration = [(HDCloudSyncOperation *)self configuration];
+        descriptionForSignpost = [configuration descriptionForSignpost];
         v14 = 138543362;
-        v15 = v12;
+        selfCopy = descriptionForSignpost;
         _os_signpost_emit_with_name_impl(&dword_228986000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v10, "cloud-sync-push-session", "%{public}@", &v14, 0xCu);
       }
     }
@@ -2476,69 +2476,69 @@ uint64_t __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTar
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSession:(id)a3 willSyncAnchorRanges:(id)a4
+- (void)syncSession:(id)session willSyncAnchorRanges:(id)ranges
 {
-  v16 = a4;
+  rangesCopy = ranges;
   dispatch_assert_queue_V2(self->_syncQueue);
   if (!self->_sessionContext)
   {
     v5 = [HDCloudSyncSessionContext alloc];
-    v6 = [v16 anchorRangeCount];
-    v7 = [(HDCloudSyncOperation *)self configuration];
-    v8 = [v7 repository];
-    v9 = [v8 profile];
-    v10 = [v9 legacyRepositoryProfile];
-    v11 = [(HDCloudSyncSessionContext *)v5 initWithChangedSyncEntityCount:v6 profile:v10];
+    anchorRangeCount = [rangesCopy anchorRangeCount];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration repository];
+    profile = [repository profile];
+    legacyRepositoryProfile = [profile legacyRepositoryProfile];
+    v11 = [(HDCloudSyncSessionContext *)v5 initWithChangedSyncEntityCount:anchorRangeCount profile:legacyRepositoryProfile];
     sessionContext = self->_sessionContext;
     self->_sessionContext = v11;
 
-    v13 = [(HDCloudSyncOperation *)self progress];
-    v14 = [(HDCloudSyncSessionContext *)self->_sessionContext progress];
-    v15 = [(HDCloudSyncOperation *)self progress];
-    [v13 addChild:v14 withPendingUnitCount:{objc_msgSend(v15, "totalUnitCount")}];
+    progress = [(HDCloudSyncOperation *)self progress];
+    progress2 = [(HDCloudSyncSessionContext *)self->_sessionContext progress];
+    progress3 = [(HDCloudSyncOperation *)self progress];
+    [progress addChild:progress2 withPendingUnitCount:{objc_msgSend(progress3, "totalUnitCount")}];
   }
 }
 
-- (void)syncSession:(id)a3 sendChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session sendChanges:(id)changes completion:(id)completion
 {
   v76 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  changesCopy = changes;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_syncQueue);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v54 = [MEMORY[0x277CCA890] currentHandler];
-    [v54 handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushSequenceOperation.m" lineNumber:1114 description:{@"Invalid parameter not satisfying: %@", @"[session isKindOfClass:[HDCloudSyncSession class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushSequenceOperation.m" lineNumber:1114 description:{@"Invalid parameter not satisfying: %@", @"[session isKindOfClass:[HDCloudSyncSession class]]"}];
   }
 
-  v12 = [(HDCloudSyncOperation *)self configuration];
-  v13 = [v12 context];
-  v14 = [v13 backgroundTask];
-  v15 = [v14 shouldDefer];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  context = [configuration context];
+  backgroundTask = [context backgroundTask];
+  shouldDefer = [backgroundTask shouldDefer];
 
-  if (!v15)
+  if (!shouldDefer)
   {
-    v18 = [v10 hk_mapToSet:&__block_literal_global_384];
+    configuration4 = [changesCopy hk_mapToSet:&__block_literal_global_384];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __71__HDCloudSyncPushSequenceOperation_syncSession_sendChanges_completion___block_invoke_2;
     v65[3] = &unk_2786160B8;
     v65[4] = self;
-    [v10 enumerateObjectsUsingBlock:v65];
-    v61 = v18;
-    v23 = [v18 allObjects];
-    v24 = [v23 componentsJoinedByString:{@", "}];
+    [changesCopy enumerateObjectsUsingBlock:v65];
+    v61 = configuration4;
+    allObjects = [configuration4 allObjects];
+    v24 = [allObjects componentsJoinedByString:{@", "}];
 
     os_unfair_lock_lock(&self->_lock);
     sessionContext = self->_sessionContext;
-    v26 = [v9 sessionUUID];
+    sessionUUID = [sessionCopy sessionUUID];
     v64 = 0;
-    LOBYTE(sessionContext) = [(HDCloudSyncSessionContext *)sessionContext resetInvalidArchiveCreatorWithSessionUUID:v26 error:&v64];
+    LOBYTE(sessionContext) = [(HDCloudSyncSessionContext *)sessionContext resetInvalidArchiveCreatorWithSessionUUID:sessionUUID error:&v64];
     v60 = v64;
 
-    v27 = [(HDCloudSyncSessionContext *)self->_sessionContext archiveSize];
+    archiveSize = [(HDCloudSyncSessionContext *)self->_sessionContext archiveSize];
     os_unfair_lock_unlock(&self->_lock);
     if ((sessionContext & 1) == 0)
     {
@@ -2548,78 +2548,78 @@ uint64_t __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTar
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v67 = self;
+        selfCopy5 = self;
         v68 = 2114;
         v69 = v60;
         _os_log_error_impl(&dword_228986000, v45, OS_LOG_TYPE_ERROR, "%{public}@: Failed to reset invalid archive creator: (%{public}@)", buf, 0x16u);
       }
 
-      v11[2](v11, 0, v60);
+      completionCopy[2](completionCopy, 0, v60);
       goto LABEL_32;
     }
 
     v28 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    v57 = v10;
-    [v28 encodeObject:v10 forKey:@"changes"];
+    v57 = changesCopy;
+    [v28 encodeObject:changesCopy forKey:@"changes"];
     v55 = v28;
-    v59 = [v28 encodedData];
-    v29 = [v59 length] + v27;
+    encodedData = [v28 encodedData];
+    v29 = [encodedData length] + archiveSize;
     _HKInitializeLogging();
     v30 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v31 = v30;
-      v32 = [v59 length];
+      v32 = [encodedData length];
       *buf = 138544386;
-      v67 = self;
+      selfCopy5 = self;
       v68 = 2112;
       v69 = v24;
       v70 = 2048;
       v71 = v29;
       v72 = 2048;
-      v73 = v27;
+      v73 = archiveSize;
       v74 = 2048;
       v75 = v32;
       _os_log_impl(&dword_228986000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@: Archiving changes for (%@): total: (%llu), assetSize: (%llu), data.length: (%lu)", buf, 0x34u);
     }
 
     v56 = v24;
-    v33 = [(HDCloudSyncOperation *)self configuration];
-    v34 = [v33 repository];
-    [v34 profile];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration2 repository];
+    [repository profile];
     v35 = v58 = v29;
-    v36 = [v35 cloudSyncManager];
-    v37 = [v36 bytesPerChangeRecordAssetThresholdHardLimit];
+    cloudSyncManager = [v35 cloudSyncManager];
+    bytesPerChangeRecordAssetThresholdHardLimit = [cloudSyncManager bytesPerChangeRecordAssetThresholdHardLimit];
 
-    v38 = [(HDCloudSyncOperation *)self configuration];
-    v39 = [v38 repository];
-    v40 = [v39 profile];
-    v41 = [v40 cloudSyncManager];
-    v42 = [v41 bytesPerChangeRecordAssetThreshold];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration3 repository];
+    profile = [repository2 profile];
+    cloudSyncManager2 = [profile cloudSyncManager];
+    bytesPerChangeRecordAssetThreshold = [cloudSyncManager2 bytesPerChangeRecordAssetThreshold];
 
-    if (v58 >= v37)
+    if (v58 >= bytesPerChangeRecordAssetThresholdHardLimit)
     {
       _HKInitializeLogging();
       v46 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544130;
-        v67 = self;
+        selfCopy5 = self;
         v68 = 2114;
-        v69 = v9;
+        v69 = sessionCopy;
         v70 = 2048;
         v71 = v58;
         v72 = 2048;
-        v73 = v37;
+        v73 = bytesPerChangeRecordAssetThresholdHardLimit;
         _os_log_impl(&dword_228986000, v46, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: Estimated asset data size (%llu) is over threshold hard limit (%ld), and needs to be uploaded", buf, 0x2Au);
       }
 
       os_unfair_lock_lock(&self->_lock);
       v63 = 0;
-      v47 = [(HDCloudSyncPushSequenceOperation *)self _lock_finalizeNextChangeRecordForUploadToSession:v9 shouldFreeze:1 error:&v63];
+      v47 = [(HDCloudSyncPushSequenceOperation *)self _lock_finalizeNextChangeRecordForUploadToSession:sessionCopy shouldFreeze:1 error:&v63];
       v43 = v63;
       os_unfair_lock_unlock(&self->_lock);
-      v10 = v57;
+      changesCopy = v57;
       if ((v47 & 1) == 0)
       {
         goto LABEL_30;
@@ -2631,21 +2631,21 @@ uint64_t __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTar
     else
     {
       v43 = v60;
-      if (v58 >= v42)
+      if (v58 >= bytesPerChangeRecordAssetThreshold)
       {
         _HKInitializeLogging();
         v48 = *MEMORY[0x277CCC328];
-        v10 = v57;
+        changesCopy = v57;
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138544130;
-          v67 = self;
+          selfCopy5 = self;
           v68 = 2114;
-          v69 = v9;
+          v69 = sessionCopy;
           v70 = 2048;
           v71 = v58;
           v72 = 2048;
-          v73 = v42;
+          v73 = bytesPerChangeRecordAssetThreshold;
           _os_log_impl(&dword_228986000, v48, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: Estimated asset data size (%llu) is over threshold (%ld), and needs to be uploaded", buf, 0x2Au);
         }
 
@@ -2655,15 +2655,15 @@ uint64_t __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTar
       else
       {
         v44 = 0;
-        v10 = v57;
+        changesCopy = v57;
       }
     }
 
     v49 = v43;
     v50 = self->_sessionContext;
-    v51 = [v9 sessionUUID];
+    sessionUUID2 = [sessionCopy sessionUUID];
     v62 = v43;
-    LOBYTE(v50) = [(HDCloudSyncSessionContext *)v50 addChangeData:v59 changes:v10 sessionIdentifier:v51 outError:&v62];
+    LOBYTE(v50) = [(HDCloudSyncSessionContext *)v50 addChangeData:encodedData changes:changesCopy sessionIdentifier:sessionUUID2 outError:&v62];
     v43 = v62;
 
     if (v50)
@@ -2687,14 +2687,14 @@ uint64_t __106__HDCloudSyncPushSequenceOperation_unfrozenChangeRecordsForPushTar
         v52 = 1;
       }
 
-      v18 = v61;
-      v11[2](v11, v52, 0);
+      configuration4 = v61;
+      completionCopy[2](completionCopy, v52, 0);
       goto LABEL_31;
     }
 
 LABEL_30:
-    v11[2](v11, 0, v43);
-    v18 = v61;
+    completionCopy[2](completionCopy, 0, v43);
+    configuration4 = v61;
     v24 = v56;
 LABEL_31:
 
@@ -2707,17 +2707,17 @@ LABEL_32:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v67 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Operation deferral requested.", buf, 0xCu);
   }
 
   v17 = MEMORY[0x277CCA9B8];
-  v18 = [(HDCloudSyncOperation *)self configuration];
-  v19 = [v18 context];
-  v20 = [v19 backgroundTask];
-  v21 = [v20 identifier];
-  v22 = [v17 hk_error:708 format:{@"Canceling sync, xpc activity %@ indicated deferral.", v21}];
-  v11[2](v11, 0, v22);
+  configuration4 = [(HDCloudSyncOperation *)self configuration];
+  context2 = [configuration4 context];
+  backgroundTask2 = [context2 backgroundTask];
+  identifier = [backgroundTask2 identifier];
+  v22 = [v17 hk_error:708 format:{@"Canceling sync, xpc activity %@ indicated deferral.", identifier}];
+  completionCopy[2](completionCopy, 0, v22);
 
 LABEL_33:
   v53 = *MEMORY[0x277D85DE8];
@@ -2740,16 +2740,16 @@ void __71__HDCloudSyncPushSequenceOperation_syncSession_sendChanges_completion__
   [*(*(a1 + 32) + 184) addEntityVersionRange:v8];
 }
 
-- (BOOL)syncSession:(id)a3 didEndTransactionWithError:(id *)a4
+- (BOOL)syncSession:(id)session didEndTransactionWithError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_syncQueue);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushSequenceOperation.m" lineNumber:1200 description:{@"Invalid parameter not satisfying: %@", @"[session isKindOfClass:[HDCloudSyncSession class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushSequenceOperation.m" lineNumber:1200 description:{@"Invalid parameter not satisfying: %@", @"[session isKindOfClass:[HDCloudSyncSession class]]"}];
   }
 
   _HKInitializeLogging();
@@ -2759,12 +2759,12 @@ void __71__HDCloudSyncPushSequenceOperation_syncSession_sendChanges_completion__
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = sessionCopy;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: didEndTransaction called for session: %{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(HDCloudSyncPushSequenceOperation *)self _lock_finalizeNextChangeRecordForUploadToSession:v7 shouldFreeze:1 error:a4];
+  v9 = [(HDCloudSyncPushSequenceOperation *)self _lock_finalizeNextChangeRecordForUploadToSession:sessionCopy shouldFreeze:1 error:error];
   os_unfair_lock_unlock(&self->_lock);
   if (v9)
   {
@@ -2787,7 +2787,7 @@ void __71__HDCloudSyncPushSequenceOperation_syncSession_sendChanges_completion__
     v22 = buf;
     v11 = v10;
     v20 = v11;
-    [(HDCloudSyncPushSequenceOperation *)self _uploadChangesForSyncSession:v7 isFinalUpload:0 completion:v19];
+    [(HDCloudSyncPushSequenceOperation *)self _uploadChangesForSyncSession:sessionCopy isFinalUpload:0 completion:v19];
     dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
     v12 = *(v24 + 24);
     if ((v12 & 1) == 0)
@@ -2796,10 +2796,10 @@ void __71__HDCloudSyncPushSequenceOperation_syncSession_sendChanges_completion__
       v14 = v13;
       if (v13)
       {
-        if (a4)
+        if (error)
         {
           v15 = v13;
-          *a4 = v14;
+          *error = v14;
         }
 
         else
@@ -2832,18 +2832,18 @@ void __75__HDCloudSyncPushSequenceOperation_syncSession_didEndTransactionWithErr
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)syncSession:(id)a3 didFinishSuccessfully:(BOOL)a4 error:(id)a5
+- (void)syncSession:(id)session didFinishSuccessfully:(BOOL)successfully error:(id)error
 {
-  v6 = a4;
+  successfullyCopy = successfully;
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  sessionCopy = session;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_syncQueue);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushSequenceOperation.m" lineNumber:1234 description:{@"Invalid parameter not satisfying: %@", @"[session isKindOfClass:[HDCloudSyncSession class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushSequenceOperation.m" lineNumber:1234 description:{@"Invalid parameter not satisfying: %@", @"[session isKindOfClass:[HDCloudSyncSession class]]"}];
   }
 
   _HKInitializeLogging();
@@ -2858,12 +2858,12 @@ void __75__HDCloudSyncPushSequenceOperation_syncSession_didEndTransactionWithErr
       v15 = v14;
       if (os_signpost_enabled(v13))
       {
-        v16 = [(HDCloudSyncOperation *)self configuration];
-        v17 = [v16 descriptionForSignpost];
+        configuration = [(HDCloudSyncOperation *)self configuration];
+        descriptionForSignpost = [configuration descriptionForSignpost];
         *buf = 67109378;
-        *v23 = v6;
+        *v23 = successfullyCopy;
         *&v23[4] = 2114;
-        *&v23[6] = v17;
+        *&v23[6] = descriptionForSignpost;
         _os_signpost_emit_with_name_impl(&dword_228986000, v13, OS_SIGNPOST_INTERVAL_END, v15, "cloud-sync-push-session", "success=%{BOOL}d, %{public}@", buf, 0x12u);
       }
     }
@@ -2872,18 +2872,18 @@ void __75__HDCloudSyncPushSequenceOperation_syncSession_didEndTransactionWithErr
   _HKInitializeLogging();
   v18 = *v11;
   v19 = *v11;
-  if (v6)
+  if (successfullyCopy)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       *v23 = self;
       *&v23[8] = 2114;
-      *&v23[10] = v9;
+      *&v23[10] = sessionCopy;
       _os_log_impl(&dword_228986000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: Finished session: %{public}@", buf, 0x16u);
     }
 
-    [(HDCloudSyncPushSequenceOperation *)self _finalizePushForSession:v9];
+    [(HDCloudSyncPushSequenceOperation *)self _finalizePushForSession:sessionCopy];
     [(HDSynchronousTaskGroup *)self->_taskGroup finishTask];
   }
 
@@ -2894,16 +2894,16 @@ void __75__HDCloudSyncPushSequenceOperation_syncSession_didEndTransactionWithErr
       *buf = 138543874;
       *v23 = self;
       *&v23[8] = 2114;
-      *&v23[10] = v9;
+      *&v23[10] = sessionCopy;
       v24 = 2114;
-      v25 = v10;
+      v25 = errorCopy;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "%{public}@: Sync session %{public}@ failed: %{public}@", buf, 0x20u);
     }
 
     os_unfair_lock_lock(&self->_lock);
     [(HDCloudSyncSessionContext *)self->_sessionContext finishProgress];
     os_unfair_lock_unlock(&self->_lock);
-    [(HDSynchronousTaskGroup *)self->_taskGroup failTaskWithError:v10];
+    [(HDSynchronousTaskGroup *)self->_taskGroup failTaskWithError:errorCopy];
   }
 
   v20 = *MEMORY[0x277D85DE8];

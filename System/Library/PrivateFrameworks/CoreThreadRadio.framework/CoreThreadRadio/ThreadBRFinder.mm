@@ -1,23 +1,23 @@
 @interface ThreadBRFinder
-- (BOOL)disPatchStartScanToMatchListOfPreferredNetworkEntries:(id)a3;
-- (BOOL)dispatchStartScan:(id)a3 extendedPanIdToFind:(id)a4 borderAgentIdToFind:(id)a5;
-- (BOOL)matchTheListWithServer:(id)a3;
-- (BOOL)matchTheRecord:(id)a3;
-- (id)dataFromHexString:(id)a3;
-- (id)getAgentDescriptionForIndex:(unint64_t)a3;
-- (id)getBorderAgentForIndex:(unint64_t)a3;
+- (BOOL)disPatchStartScanToMatchListOfPreferredNetworkEntries:(id)entries;
+- (BOOL)dispatchStartScan:(id)scan extendedPanIdToFind:(id)find borderAgentIdToFind:(id)toFind;
+- (BOOL)matchTheListWithServer:(id)server;
+- (BOOL)matchTheRecord:(id)record;
+- (id)dataFromHexString:(id)string;
+- (id)getAgentDescriptionForIndex:(unint64_t)index;
+- (id)getBorderAgentForIndex:(unint64_t)index;
 - (int64_t)findNWs;
-- (void)agentResolved:(id)a3;
+- (void)agentResolved:(id)resolved;
 - (void)clear;
-- (void)startScan:(id)a3 queue:(id)a4 timeInSec:(unsigned __int8)a5;
+- (void)startScan:(id)scan queue:(id)queue timeInSec:(unsigned __int8)sec;
 - (void)stopScan;
 @end
 
 @implementation ThreadBRFinder
 
-- (BOOL)disPatchStartScanToMatchListOfPreferredNetworkEntries:(id)a3
+- (BOOL)disPatchStartScanToMatchListOfPreferredNetworkEntries:(id)entries
 {
-  v5 = a3;
+  entriesCopy = entries;
   v6 = dispatch_semaphore_create(0);
   baFinderSemaphore = self->_baFinderSemaphore;
   self->_baFinderSemaphore = v6;
@@ -25,7 +25,7 @@
   v8 = self->_baFinderSemaphore;
   if (v8)
   {
-    objc_storeStrong(&self->_preferredList, a3);
+    objc_storeStrong(&self->_preferredList, entries);
     preferredRecord = self->_preferredRecord;
     self->_preferredRecord = 0;
 
@@ -60,11 +60,11 @@ void __72__ThreadBRFinder_disPatchStartScanToMatchListOfPreferredNetworkEntries_
   }
 }
 
-- (BOOL)dispatchStartScan:(id)a3 extendedPanIdToFind:(id)a4 borderAgentIdToFind:(id)a5
+- (BOOL)dispatchStartScan:(id)scan extendedPanIdToFind:(id)find borderAgentIdToFind:(id)toFind
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  scanCopy = scan;
+  findCopy = find;
+  toFindCopy = toFind;
   v12 = dispatch_semaphore_create(0);
   baFinderSemaphore = self->_baFinderSemaphore;
   self->_baFinderSemaphore = v12;
@@ -78,9 +78,9 @@ void __72__ThreadBRFinder_disPatchStartScanToMatchListOfPreferredNetworkEntries_
     preferredRecord = self->_preferredRecord;
     self->_preferredRecord = 0;
 
-    objc_storeStrong(&self->_extendedPANIDToFind, a4);
-    objc_storeStrong(&self->_networkNameToFind, a3);
-    objc_storeStrong(&self->_borderAgentIdToFind, a5);
+    objc_storeStrong(&self->_extendedPANIDToFind, find);
+    objc_storeStrong(&self->_networkNameToFind, scan);
+    objc_storeStrong(&self->_borderAgentIdToFind, toFind);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __76__ThreadBRFinder_dispatchStartScan_extendedPanIdToFind_borderAgentIdToFind___block_invoke;
@@ -112,20 +112,20 @@ void __76__ThreadBRFinder_dispatchStartScan_extendedPanIdToFind_borderAgentIdToF
   }
 }
 
-- (void)startScan:(id)a3 queue:(id)a4 timeInSec:(unsigned __int8)a5
+- (void)startScan:(id)scan queue:(id)queue timeInSec:(unsigned __int8)sec
 {
-  v5 = a5;
+  secCopy = sec;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __44__ThreadBRFinder_startScan_queue_timeInSec___block_invoke;
   block[3] = &unk_1004C1720;
   block[4] = self;
-  v7 = a4;
-  v8 = a3;
+  queueCopy = queue;
+  scanCopy = scan;
   dispatch_async(&_dispatch_main_q, block);
   NSLog(@"Starting dispatch After");
-  v9 = dispatch_time(0, 1000000000 * v5);
-  dispatch_after(v9, v7, v8);
+  v9 = dispatch_time(0, 1000000000 * secCopy);
+  dispatch_after(v9, queueCopy, scanCopy);
 }
 
 void __44__ThreadBRFinder_startScan_queue_timeInSec___block_invoke(uint64_t a1)
@@ -210,35 +210,35 @@ void __23__ThreadBRFinder_clear__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)getBorderAgentForIndex:(unint64_t)a3
+- (id)getBorderAgentForIndex:(unint64_t)index
 {
   borderAgentFinder = self->_borderAgentFinder;
   if (borderAgentFinder)
   {
-    borderAgentFinder = [borderAgentFinder getBorderAgentAtIndex:a3];
+    borderAgentFinder = [borderAgentFinder getBorderAgentAtIndex:index];
     v3 = vars8;
   }
 
   return borderAgentFinder;
 }
 
-- (id)getAgentDescriptionForIndex:(unint64_t)a3
+- (id)getAgentDescriptionForIndex:(unint64_t)index
 {
   borderAgentFinder = self->_borderAgentFinder;
   if (borderAgentFinder)
   {
-    borderAgentFinder = [borderAgentFinder getAgentDescription:a3];
+    borderAgentFinder = [borderAgentFinder getAgentDescription:index];
     v3 = vars8;
   }
 
   return borderAgentFinder;
 }
 
-- (BOOL)matchTheListWithServer:(id)a3
+- (BOOL)matchTheListWithServer:(id)server
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  serverCopy = server;
+  v5 = serverCopy;
+  if (!serverCopy)
   {
     NSLog(@"Error:Empty Server");
 LABEL_16:
@@ -246,9 +246,9 @@ LABEL_16:
     goto LABEL_81;
   }
 
-  v6 = [v4 addresses];
+  addresses = [serverCopy addresses];
 
-  if (!v6)
+  if (!addresses)
   {
     v18 = THCredentialsServerLogHandleForCategory(1);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -259,8 +259,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = [v5 TXTRecordData];
-  v8 = [NSNetService dictionaryFromTXTRecordData:v7];
+  tXTRecordData = [v5 TXTRecordData];
+  v8 = [NSNetService dictionaryFromTXTRecordData:tXTRecordData];
 
   if (!v8)
   {
@@ -427,7 +427,7 @@ LABEL_36:
   }
 
   v31 = v30;
-  v59 = self;
+  selfCopy = self;
   v56 = v9;
   v64 = 0;
   v16 = 0;
@@ -447,9 +447,9 @@ LABEL_38:
       goto LABEL_56;
     }
 
-    v35 = [*(*(&v66 + 1) + 8 * v33) network];
-    v36 = [v35 networkName];
-    v37 = [v36 isEqualToString:v28];
+    network = [*(*(&v66 + 1) + 8 * v33) network];
+    networkName = [network networkName];
+    v37 = [networkName isEqualToString:v28];
 
     v38 = THCredentialsServerLogHandleForCategory(1);
     v39 = os_log_type_enabled(v38, OS_LOG_TYPE_ERROR);
@@ -457,14 +457,14 @@ LABEL_38:
     {
       if (v39)
       {
-        v51 = [v34 network];
-        v52 = [v51 networkName];
+        network2 = [v34 network];
+        networkName2 = [network2 networkName];
         *buf = 136315906;
         v72 = "[ThreadBRFinder matchTheListWithServer:]";
         v73 = 1024;
         v74 = 300;
         v75 = 2112;
-        v76 = v52;
+        v76 = networkName2;
         v77 = 2112;
         v78 = v65;
         _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%s : %d: Preferred Network to find :%@ does not match with mdns record :%@", buf, 0x26u);
@@ -479,14 +479,14 @@ LABEL_38:
 
     if (v39)
     {
-      v49 = [v34 network];
-      v50 = [v49 networkName];
+      network3 = [v34 network];
+      networkName3 = [network3 networkName];
       *buf = 136315906;
       v72 = "[ThreadBRFinder matchTheListWithServer:]";
       v73 = 1024;
       v74 = 267;
       v75 = 2112;
-      v76 = v50;
+      v76 = networkName3;
       v77 = 2112;
       v78 = v28;
       _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%s : %d: Network name to find :%@ does match with mdns record name :%@", buf, 0x26u);
@@ -494,9 +494,9 @@ LABEL_38:
 
     if (v61 != 16)
     {
-      v46 = [v34 network];
-      v47 = [v46 extendedPANID];
-      v48 = [v47 isEqualToData:v63];
+      network4 = [v34 network];
+      extendedPANID = [network4 extendedPANID];
+      v48 = [extendedPANID isEqualToData:v63];
 
       if (v48)
       {
@@ -518,7 +518,7 @@ LABEL_38:
         v8 = v57;
         v5 = v58;
         v9 = v56;
-        v41 = v59;
+        v41 = selfCopy;
         v12 = v60;
         goto LABEL_77;
       }
@@ -546,8 +546,8 @@ LABEL_38:
       goto LABEL_53;
     }
 
-    v41 = v59;
-    v42 = [(ThreadBRFinder *)v59 dataFromHexString:v40];
+    v41 = selfCopy;
+    v42 = [(ThreadBRFinder *)selfCopy dataFromHexString:v40];
 
     if (v42)
     {
@@ -589,9 +589,9 @@ LABEL_56:
     }
   }
 
-  v43 = [v34 network];
-  v44 = [v43 extendedPANID];
-  v45 = [v44 isEqualToData:v42];
+  network5 = [v34 network];
+  extendedPANID2 = [network5 extendedPANID];
+  v45 = [extendedPANID2 isEqualToData:v42];
 
   if (!v45)
   {
@@ -631,18 +631,18 @@ LABEL_81:
   return v17;
 }
 
-- (BOOL)matchTheRecord:(id)a3
+- (BOOL)matchTheRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (recordCopy)
   {
-    v6 = [v4 addresses];
+    addresses = [recordCopy addresses];
 
-    if (v6)
+    if (addresses)
     {
-      v7 = [v5 TXTRecordData];
-      v8 = [NSNetService dictionaryFromTXTRecordData:v7];
+      tXTRecordData = [v5 TXTRecordData];
+      v8 = [NSNetService dictionaryFromTXTRecordData:tXTRecordData];
 
       if (!v8)
       {
@@ -963,24 +963,24 @@ LABEL_27:
   return v15;
 }
 
-- (void)agentResolved:(id)a3
+- (void)agentResolved:(id)resolved
 {
-  v5 = a3;
+  resolvedCopy = resolved;
   NSLog(@"Agent Resolved");
-  if (v5)
+  if (resolvedCopy)
   {
     if (self->_baFinderSemaphore)
     {
-      if ([(ThreadBRFinder *)self matchTheRecord:v5])
+      if ([(ThreadBRFinder *)self matchTheRecord:resolvedCopy])
       {
-        v4 = [(ThreadBRFinder *)self baFinderSemaphore];
-        dispatch_semaphore_signal(v4);
+        baFinderSemaphore = [(ThreadBRFinder *)self baFinderSemaphore];
+        dispatch_semaphore_signal(baFinderSemaphore);
       }
     }
 
     else
     {
-      NSLog(@"%s:%d: Returning no semaphore initialized, Agent Resolved : %@", "[ThreadBRFinder agentResolved:]", 461, v5);
+      NSLog(@"%s:%d: Returning no semaphore initialized, Agent Resolved : %@", "[ThreadBRFinder agentResolved:]", 461, resolvedCopy);
     }
   }
 
@@ -990,12 +990,12 @@ LABEL_27:
   }
 }
 
-- (id)dataFromHexString:(id)a3
+- (id)dataFromHexString:(id)string
 {
-  v3 = [a3 lowercaseString];
+  lowercaseString = [string lowercaseString];
   v4 = objc_opt_new();
   v15 = 0;
-  v5 = [v3 length];
+  v5 = [lowercaseString length];
   if (v5 >= 2)
   {
     v6 = 0;
@@ -1003,7 +1003,7 @@ LABEL_27:
     do
     {
       v8 = v6 + 1;
-      v9 = [v3 characterAtIndex:v6];
+      v9 = [lowercaseString characterAtIndex:v6];
       if (v9 >= 48)
       {
         v10 = v9 & 0x7F;
@@ -1012,7 +1012,7 @@ LABEL_27:
         if (v10 <= 0x66 && !v12)
         {
           __str[0] = v9;
-          __str[1] = [v3 characterAtIndex:v8];
+          __str[1] = [lowercaseString characterAtIndex:v8];
           HIBYTE(v15) = strtol(__str, 0, 16);
           [v4 appendBytes:&v15 + 1 length:1];
           v8 = v6 + 2;

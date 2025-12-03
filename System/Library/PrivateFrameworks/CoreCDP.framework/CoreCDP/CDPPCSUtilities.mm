@@ -1,68 +1,68 @@
 @interface CDPPCSUtilities
 + (id)_pcsConfigForPrimaryAccount;
-+ (id)setupDictionaryWithContext:(id)a3;
++ (id)setupDictionaryWithContext:(id)context;
 @end
 
 @implementation CDPPCSUtilities
 
-+ (id)setupDictionaryWithContext:(id)a3
++ (id)setupDictionaryWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [v3 appleID];
+  contextCopy = context;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  appleID = [contextCopy appleID];
 
-  if (v5)
+  if (appleID)
   {
-    v6 = [v3 appleID];
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69C6598]];
+    appleID2 = [contextCopy appleID];
+    [dictionary setObject:appleID2 forKeyedSubscript:*MEMORY[0x1E69C6598]];
   }
 
-  v7 = [v3 dsid];
+  dsid = [contextCopy dsid];
 
-  if (v7)
+  if (dsid)
   {
-    v8 = [v3 dsid];
-    v9 = [v8 stringValue];
-    [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69C6580]];
+    dsid2 = [contextCopy dsid];
+    stringValue = [dsid2 stringValue];
+    [dictionary setObject:stringValue forKeyedSubscript:*MEMORY[0x1E69C6580]];
   }
 
-  v10 = [v3 passwordEquivToken];
+  passwordEquivToken = [contextCopy passwordEquivToken];
 
-  if (v10)
+  if (passwordEquivToken)
   {
-    v11 = [v3 passwordEquivToken];
-    [v4 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69C6590]];
+    passwordEquivToken2 = [contextCopy passwordEquivToken];
+    [dictionary setObject:passwordEquivToken2 forKeyedSubscript:*MEMORY[0x1E69C6590]];
   }
 
-  v12 = [v3 telemetryFlowID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
 
-  if (v12)
+  if (telemetryFlowID)
   {
-    v13 = [v3 telemetryFlowID];
-    [v4 setObject:v13 forKeyedSubscript:@"kPCSFlowID"];
+    telemetryFlowID2 = [contextCopy telemetryFlowID];
+    [dictionary setObject:telemetryFlowID2 forKeyedSubscript:@"kPCSFlowID"];
   }
 
-  v14 = [v3 telemetryDeviceSessionID];
+  telemetryDeviceSessionID = [contextCopy telemetryDeviceSessionID];
 
-  if (v14)
+  if (telemetryDeviceSessionID)
   {
-    v15 = [v3 telemetryDeviceSessionID];
-    [v4 setObject:v15 forKeyedSubscript:@"kPCSDeviceSessionID"];
+    telemetryDeviceSessionID2 = [contextCopy telemetryDeviceSessionID];
+    [dictionary setObject:telemetryDeviceSessionID2 forKeyedSubscript:@"kPCSDeviceSessionID"];
   }
 
-  v16 = [v3 altDSID];
+  altDSID = [contextCopy altDSID];
 
   v17 = _CDPLogSystem();
-  v18 = v17;
-  if (v16)
+  altDSID2 = v17;
+  if (altDSID)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       +[CDPPCSUtilities setupDictionaryWithContext:];
     }
 
-    v18 = [v3 altDSID];
-    [v4 setObject:v18 forKeyedSubscript:@"kPCSAltDSID"];
+    altDSID2 = [contextCopy altDSID];
+    [dictionary setObject:altDSID2 forKeyedSubscript:@"kPCSAltDSID"];
   }
 
   else if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -70,10 +70,10 @@
     +[CDPPCSUtilities setupDictionaryWithContext:];
   }
 
-  v19 = [objc_opt_class() _pcsConfigForPrimaryAccount];
-  [v4 addEntriesFromDictionary:v19];
+  _pcsConfigForPrimaryAccount = [objc_opt_class() _pcsConfigForPrimaryAccount];
+  [dictionary addEntriesFromDictionary:_pcsConfigForPrimaryAccount];
 
-  v20 = [v4 copy];
+  v20 = [dictionary copy];
 
   return v20;
 }
@@ -82,11 +82,11 @@
 {
   v2 = [MEMORY[0x1E695E0F8] mutableCopy];
   v3 = +[CDPAccount sharedInstance];
-  v4 = [v3 iCloudEnv];
+  iCloudEnv = [v3 iCloudEnv];
 
-  if (v4)
+  if (iCloudEnv)
   {
-    [v2 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69C65A0]];
+    [v2 setObject:iCloudEnv forKeyedSubscript:*MEMORY[0x1E69C65A0]];
   }
 
   else
@@ -99,11 +99,11 @@
   }
 
   v6 = +[CDPAccount sharedInstance];
-  v7 = [v6 authToken];
+  authToken = [v6 authToken];
 
-  if (v7)
+  if (authToken)
   {
-    [v2 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69C6578]];
+    [v2 setObject:authToken forKeyedSubscript:*MEMORY[0x1E69C6578]];
   }
 
   else
@@ -116,11 +116,11 @@
   }
 
   v9 = +[CDPAccount sharedInstance];
-  v10 = [v9 escrowURL];
+  escrowURL = [v9 escrowURL];
 
-  if (v10)
+  if (escrowURL)
   {
-    [v2 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69C6588]];
+    [v2 setObject:escrowURL forKeyedSubscript:*MEMORY[0x1E69C6588]];
   }
 
   else

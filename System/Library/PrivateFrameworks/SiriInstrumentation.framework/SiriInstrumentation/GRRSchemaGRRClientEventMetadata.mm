@@ -1,25 +1,25 @@
 @interface GRRSchemaGRRClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (GRRSchemaGRRClientEventMetadata)initWithDictionary:(id)a3;
-- (GRRSchemaGRRClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GRRSchemaGRRClientEventMetadata)initWithDictionary:(id)dictionary;
+- (GRRSchemaGRRClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GRRSchemaGRRClientEventMetadata
 
-- (GRRSchemaGRRClientEventMetadata)initWithDictionary:(id)a3
+- (GRRSchemaGRRClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = GRRSchemaGRRClientEventMetadata;
   v5 = [(GRRSchemaGRRClientEventMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"grrId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"grrId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(GRRSchemaGRRClientEventMetadata *)v5 setGrrId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (GRRSchemaGRRClientEventMetadata)initWithJSON:(id)a3
+- (GRRSchemaGRRClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GRRSchemaGRRClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GRRSchemaGRRClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GRRSchemaGRRClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,57 +77,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_grrId)
   {
-    v4 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    grrId = [(GRRSchemaGRRClientEventMetadata *)self grrId];
+    dictionaryRepresentation = [grrId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"grrId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"grrId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"grrId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"grrId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v7 = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
+    v8 = [resultCandidateId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"resultCandidateId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
-  v6 = [v4 grrId];
-  if ((v5 != 0) == (v6 == 0))
+  grrId = [(GRRSchemaGRRClientEventMetadata *)self grrId];
+  grrId2 = [equalCopy grrId];
+  if ((grrId != 0) == (grrId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
-  if (v7)
+  grrId3 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
+  if (grrId3)
   {
-    v8 = v7;
-    v9 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
-    v10 = [v4 grrId];
-    v11 = [v9 isEqual:v10];
+    v8 = grrId3;
+    grrId4 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
+    grrId5 = [equalCopy grrId];
+    v11 = [grrId4 isEqual:grrId5];
 
     if (!v11)
     {
@@ -139,12 +139,12 @@
   {
   }
 
-  v5 = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) != (v6 == 0))
+  grrId = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
+  grrId2 = [equalCopy resultCandidateId];
+  if ((grrId != 0) != (grrId2 == 0))
   {
-    v12 = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
-    if (!v12)
+    resultCandidateId = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
+    if (!resultCandidateId)
     {
 
 LABEL_15:
@@ -152,10 +152,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (v16)
     {
@@ -175,36 +175,36 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
+  toCopy = to;
+  grrId = [(GRRSchemaGRRClientEventMetadata *)self grrId];
 
-  if (v4)
+  if (grrId)
   {
-    v5 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
+    grrId2 = [(GRRSchemaGRRClientEventMetadata *)self grrId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
+  resultCandidateId = [(GRRSchemaGRRClientEventMetadata *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = GRRSchemaGRRClientEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GRRSchemaGRRClientEventMetadata *)self grrId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(GRRSchemaGRRClientEventMetadata *)self deleteGrrId];
   }

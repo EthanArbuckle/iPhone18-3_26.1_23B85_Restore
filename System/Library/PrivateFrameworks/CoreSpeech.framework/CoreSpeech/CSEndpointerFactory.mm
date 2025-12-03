@@ -1,16 +1,16 @@
 @interface CSEndpointerFactory
-+ (id)endpointAnalyzer:(BOOL)a3;
++ (id)endpointAnalyzer:(BOOL)analyzer;
 @end
 
 @implementation CSEndpointerFactory
 
-+ (id)endpointAnalyzer:(BOOL)a3
++ (id)endpointAnalyzer:(BOOL)analyzer
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D018F8] isAttentiveSiriEnabled];
+  isAttentiveSiriEnabled = [MEMORY[0x277D018F8] isAttentiveSiriEnabled];
   v5 = *MEMORY[0x277D015B8];
   v6 = os_log_type_enabled(*MEMORY[0x277D015B8], OS_LOG_TYPE_DEFAULT);
-  if (!v4 || a3)
+  if (!isAttentiveSiriEnabled || analyzer)
   {
     if (v6)
     {

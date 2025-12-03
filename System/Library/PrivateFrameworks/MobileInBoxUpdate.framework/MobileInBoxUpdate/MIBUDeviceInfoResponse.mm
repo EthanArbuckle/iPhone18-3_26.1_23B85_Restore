@@ -1,5 +1,5 @@
 @interface MIBUDeviceInfoResponse
-- (BOOL)_deserialize:(id)a3;
+- (BOOL)_deserialize:(id)_deserialize;
 - (MIBUDeviceInfoResponse)init;
 - (id)serialize;
 @end
@@ -261,50 +261,50 @@ void __39__MIBUDeviceInfoResponse__deserialize___block_invoke_68()
   v3 = objc_opt_new();
   if (![(MIBUNFCResponse *)self rejected])
   {
-    v31 = [(MIBUDeviceInfoResponse *)self serialNumber];
-    v34[0] = v31;
-    v30 = [(MIBUDeviceInfoResponse *)self ecid];
-    v34[1] = v30;
-    v29 = [(MIBUDeviceInfoResponse *)self boardID];
-    v34[2] = v29;
-    v28 = [(MIBUDeviceInfoResponse *)self chipID];
-    v34[3] = v28;
-    v27 = [(MIBUDeviceInfoResponse *)self securityDomain];
-    v34[4] = v27;
-    v26 = [(MIBUDeviceInfoResponse *)self apNonce];
-    if (v26)
+    serialNumber = [(MIBUDeviceInfoResponse *)self serialNumber];
+    v34[0] = serialNumber;
+    ecid = [(MIBUDeviceInfoResponse *)self ecid];
+    v34[1] = ecid;
+    boardID = [(MIBUDeviceInfoResponse *)self boardID];
+    v34[2] = boardID;
+    chipID = [(MIBUDeviceInfoResponse *)self chipID];
+    v34[3] = chipID;
+    securityDomain = [(MIBUDeviceInfoResponse *)self securityDomain];
+    v34[4] = securityDomain;
+    apNonce = [(MIBUDeviceInfoResponse *)self apNonce];
+    if (apNonce)
     {
-      v4 = [(MIBUDeviceInfoResponse *)self apNonce];
+      apNonce2 = [(MIBUDeviceInfoResponse *)self apNonce];
     }
 
     else
     {
-      v4 = objc_opt_new();
+      apNonce2 = objc_opt_new();
     }
 
-    v25 = v4;
-    v34[5] = v4;
-    v24 = [(MIBUDeviceInfoResponse *)self sepNonce];
-    if (v24)
+    v25 = apNonce2;
+    v34[5] = apNonce2;
+    sepNonce = [(MIBUDeviceInfoResponse *)self sepNonce];
+    if (sepNonce)
     {
-      v5 = [(MIBUDeviceInfoResponse *)self sepNonce];
+      sepNonce2 = [(MIBUDeviceInfoResponse *)self sepNonce];
     }
 
     else
     {
-      v5 = objc_opt_new();
+      sepNonce2 = objc_opt_new();
     }
 
-    v6 = v5;
-    v34[6] = v5;
+    v6 = sepNonce2;
+    v34[6] = sepNonce2;
     v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[MIBUDeviceInfoResponse productionMode](self, "productionMode")}];
     v34[7] = v7;
     v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[MIBUDeviceInfoResponse securityMode](self, "securityMode")}];
     v34[8] = v8;
     v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[MIBUDeviceInfoResponse uidMode](self, "uidMode")}];
     v34[9] = v9;
-    v10 = [(MIBUDeviceInfoResponse *)self sikaFuse];
-    v34[10] = v10;
+    sikaFuse = [(MIBUDeviceInfoResponse *)self sikaFuse];
+    v34[10] = sikaFuse;
     v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[MIBUDeviceInfoResponse sikaFuseExists](self, "sikaFuseExists")}];
     v34[11] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:12];
@@ -312,12 +312,12 @@ void __39__MIBUDeviceInfoResponse__deserialize___block_invoke_68()
 
     if (v13)
     {
-      v14 = [(MIBUNFCResponse *)self error];
-      v15 = [v3 serializeResponseError:v14];
+      error = [(MIBUNFCResponse *)self error];
+      v15 = [v3 serializeResponseError:error];
 
       if (v15)
       {
-        v16 = [v3 serializedData];
+        serializedData = [v3 serializedData];
         goto LABEL_11;
       }
 
@@ -330,9 +330,9 @@ void __39__MIBUDeviceInfoResponse__deserialize___block_invoke_68()
       if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
       {
         v22 = v21;
-        v23 = [(MIBUNFCResponse *)self error];
+        error2 = [(MIBUNFCResponse *)self error];
         *buf = 138543362;
-        v33 = v23;
+        v33 = error2;
         _os_log_error_impl(&dword_259ABF000, v22, OS_LOG_TYPE_ERROR, "Failed to serialize response error: %{public}@", buf, 0xCu);
       }
     }
@@ -353,22 +353,22 @@ void __39__MIBUDeviceInfoResponse__deserialize___block_invoke_68()
     }
   }
 
-  v16 = 0;
+  serializedData = 0;
 LABEL_11:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return serializedData;
 }
 
-- (BOOL)_deserialize:(id)a3
+- (BOOL)_deserialize:(id)_deserialize
 {
-  v8 = a3;
-  v9 = [[MIBUDeserializer alloc] initWithData:v8];
+  _deserializeCopy = _deserialize;
+  v9 = [[MIBUDeserializer alloc] initWithData:_deserializeCopy];
 
-  v10 = [(MIBUDeserializer *)v9 deserialize];
+  deserialize = [(MIBUDeserializer *)v9 deserialize];
   v94 = v9;
-  if (!v10)
+  if (!deserialize)
   {
     if (MIBUOnceToken != -1)
     {
@@ -417,7 +417,7 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  v14 = [v10 objectForKey:&unk_286AC7CE0];
+  v14 = [deserialize objectForKey:&unk_286AC7CE0];
   if (!v14)
   {
     if (MIBUOnceToken != -1)
@@ -447,7 +447,7 @@ LABEL_44:
   }
 
   v13 = v14;
-  v15 = [v10 objectForKey:&unk_286AC7CF8];
+  v15 = [deserialize objectForKey:&unk_286AC7CF8];
   if (!v15)
   {
     if (MIBUOnceToken != -1)
@@ -468,7 +468,7 @@ LABEL_44:
   }
 
   v16 = v15;
-  v17 = [v10 objectForKey:&unk_286AC7D10];
+  v17 = [deserialize objectForKey:&unk_286AC7D10];
   if (!v17)
   {
     v91 = v16;
@@ -490,7 +490,7 @@ LABEL_44:
   }
 
   v18 = v17;
-  v19 = [v10 objectForKey:&unk_286AC7D28];
+  v19 = [deserialize objectForKey:&unk_286AC7D28];
   if (!v19)
   {
     v91 = v16;
@@ -512,7 +512,7 @@ LABEL_44:
   }
 
   v20 = v19;
-  v21 = [v10 objectForKey:&unk_286AC7D40];
+  v21 = [deserialize objectForKey:&unk_286AC7D40];
   if (!v21)
   {
     v4 = v20;
@@ -534,7 +534,7 @@ LABEL_44:
   }
 
   v4 = v21;
-  v22 = [v10 objectForKey:&unk_286AC7D58];
+  v22 = [deserialize objectForKey:&unk_286AC7D58];
   if (!v22)
   {
     OUTLINED_FUNCTION_8_0();
@@ -565,24 +565,24 @@ LABEL_65:
   }
 
   v5 = v22;
-  v6 = [v10 objectForKey:&unk_286AC7D70];
-  v23 = [v10 objectForKey:&unk_286AC7D88];
+  v6 = [deserialize objectForKey:&unk_286AC7D70];
+  v23 = [deserialize objectForKey:&unk_286AC7D88];
   v93 = v6;
   if (v23)
   {
     v98 = v23;
-    v24 = [v10 objectForKey:&unk_286AC7DA0];
+    v24 = [deserialize objectForKey:&unk_286AC7DA0];
     if (v24)
     {
       v97 = v24;
-      v25 = [v10 objectForKey:&unk_286AC7DB8];
+      v25 = [deserialize objectForKey:&unk_286AC7DB8];
       if (v25)
       {
         v95 = v25;
-        v96 = [v10 objectForKey:&unk_286AC7DE8];
+        v96 = [deserialize objectForKey:&unk_286AC7DE8];
         if (v96)
         {
-          v99 = [v10 objectForKey:&unk_286AC7DD0];
+          v99 = [deserialize objectForKey:&unk_286AC7DD0];
           if (!v99)
           {
             OUTLINED_FUNCTION_8_0();

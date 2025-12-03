@@ -1,6 +1,6 @@
 @interface _DKAppInstallMonitor
 - (_DKAppInstallMonitor)init;
-- (void)_applicationsDidChange:(id)a3 didInstall:(BOOL)a4;
+- (void)_applicationsDidChange:(id)change didInstall:(BOOL)install;
 @end
 
 @implementation _DKAppInstallMonitor
@@ -14,41 +14,41 @@
   {
     v3 = BiomeLibrary();
     v4 = [v3 App];
-    v5 = [v4 Install];
-    v6 = [v5 source];
+    install = [v4 Install];
+    source = [install source];
     source = v2->_source;
-    v2->_source = v6;
+    v2->_source = source;
 
-    v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     appWorkspace = v2->_appWorkspace;
-    v2->_appWorkspace = v8;
+    v2->_appWorkspace = defaultWorkspace;
 
     [(LSApplicationWorkspace *)v2->_appWorkspace addObserver:v2];
-    v10 = [MEMORY[0x277CFE0C8] knowledgeChannel];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    knowledgeChannel = [MEMORY[0x277CFE0C8] knowledgeChannel];
+    if (os_log_type_enabled(knowledgeChannel, OS_LOG_TYPE_DEBUG))
     {
-      [(_DKAppInstallMonitor *)v10 init];
+      [(_DKAppInstallMonitor *)knowledgeChannel init];
     }
   }
 
   return v2;
 }
 
-- (void)_applicationsDidChange:(id)a3 didInstall:(BOOL)a4
+- (void)_applicationsDidChange:(id)change didInstall:(BOOL)install
 {
-  v6 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  v7 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58___DKAppInstallMonitor__applicationsDidChange_didInstall___block_invoke;
   v13[3] = &unk_27856F678;
-  v8 = v6;
+  v8 = changeCopy;
   v14 = v8;
   objc_copyWeak(&v15, &location);
-  v16 = a4;
+  installCopy = install;
   v9 = v13;
-  v10 = v7;
+  v10 = queue;
   v11 = os_transaction_create();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

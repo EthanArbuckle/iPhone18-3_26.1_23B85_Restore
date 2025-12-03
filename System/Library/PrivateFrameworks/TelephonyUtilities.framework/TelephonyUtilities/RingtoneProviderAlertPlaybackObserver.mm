@@ -1,13 +1,13 @@
 @interface RingtoneProviderAlertPlaybackObserver
-- (void)alertDidBeginPlaying:(id)a3;
+- (void)alertDidBeginPlaying:(id)playing;
 @end
 
 @implementation RingtoneProviderAlertPlaybackObserver
 
-- (void)alertDidBeginPlaying:(id)a3
+- (void)alertDidBeginPlaying:(id)playing
 {
-  v4 = a3;
-  v5 = self;
+  playingCopy = playing;
+  selfCopy = self;
   sub_10034ECF4();
 }
 

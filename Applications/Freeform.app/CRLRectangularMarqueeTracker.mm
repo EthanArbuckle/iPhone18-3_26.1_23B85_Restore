@@ -1,14 +1,14 @@
 @interface CRLRectangularMarqueeTracker
-- (BOOL)p_shouldUpdateMarqueeFrameForDragDistance:(double)a3;
+- (BOOL)p_shouldUpdateMarqueeFrameForDragDistance:(double)distance;
 - (CGPoint)currentUnscaledDragPoint;
 - (CGPoint)startingUnscaledPoint;
 - (CGRect)p_currentUnscaledMarqueeRect;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
-- (CRLRectangularMarqueeTracker)initWithInteractiveCanvasController:(id)a3;
+- (CRLRectangularMarqueeTracker)initWithInteractiveCanvasController:(id)controller;
 - (NSArray)decoratorOverlayRenderables;
 - (void)beginMarquee;
-- (void)changeDynamicLayoutsForReps:(id)a3;
-- (void)commitChangesForReps:(id)a3;
+- (void)changeDynamicLayoutsForReps:(id)reps;
+- (void)commitChangesForReps:(id)reps;
 - (void)p_beginMarquee;
 - (void)p_beginMarqueePressAnimation;
 - (void)p_refreshRectsForReps;
@@ -18,16 +18,16 @@
 
 @implementation CRLRectangularMarqueeTracker
 
-- (CRLRectangularMarqueeTracker)initWithInteractiveCanvasController:(id)a3
+- (CRLRectangularMarqueeTracker)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = CRLRectangularMarqueeTracker;
   v5 = [(CRLRectangularMarqueeTracker *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
     v7 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:0];
     scaledRectsForReps = v6->_scaledRectsForReps;
     v6->_scaledRectsForReps = v7;
@@ -52,7 +52,7 @@
     [(CRLCanvasRenderable *)v6->_selectionOverlay setBorderWidth:1.0];
     -[CRLCanvasRenderable setBackgroundColor:](v6->_selectionOverlay, "setBackgroundColor:", [v16 CGColor]);
     v17 = +[NSNotificationCenter defaultCenter];
-    [v17 addObserver:v6 selector:"p_refreshRectsForReps" name:@"CRLCanvasUpdateScrollNotification" object:v4];
+    [v17 addObserver:v6 selector:"p_refreshRectsForReps" name:@"CRLCanvasUpdateScrollNotification" object:controllerCopy];
   }
 
   return v6;
@@ -89,9 +89,9 @@
   }
 }
 
-- (void)changeDynamicLayoutsForReps:(id)a3
+- (void)changeDynamicLayoutsForReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   if (self->_startedSelection)
   {
     if (!self->_wasCurrentUnscaledDragPointSetExternally)
@@ -99,22 +99,22 @@
       goto LABEL_6;
     }
 
-    v5 = v4;
+    v5 = repsCopy;
     [(CRLRectangularMarqueeTracker *)self p_updateMarquee];
   }
 
   else
   {
     self->_startedSelection = 1;
-    v5 = v4;
+    v5 = repsCopy;
     [(CRLRectangularMarqueeTracker *)self p_beginMarquee];
   }
 
-  v4 = v5;
+  repsCopy = v5;
 LABEL_6:
 }
 
-- (void)commitChangesForReps:(id)a3
+- (void)commitChangesForReps:(id)reps
 {
   if (!self->_startedSelection)
   {
@@ -124,7 +124,7 @@ LABEL_6:
   size = CGRectZero.size;
   self->_selectionRectScaled.origin = CGRectZero.origin;
   self->_selectionRectScaled.size = size;
-  [(CRLCanvasRenderable *)self->_selectionOverlay setBounds:a3, self->_selectionRectScaled.origin.x, self->_selectionRectScaled.origin.y, self->_selectionRectScaled.size.width, self->_selectionRectScaled.size.height];
+  [(CRLCanvasRenderable *)self->_selectionOverlay setBounds:reps, self->_selectionRectScaled.origin.x, self->_selectionRectScaled.origin.y, self->_selectionRectScaled.size.width, self->_selectionRectScaled.size.height];
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
   [WeakRetained removeDecorator:self];
 
@@ -137,10 +137,10 @@ LABEL_6:
     if (![(CRLRectangularMarqueeTracker *)self shouldSuppressContextMenu])
     {
       v8 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-      v9 = [v8 layerHost];
-      v10 = [v9 asiOSCVC];
+      layerHost = [v8 layerHost];
+      asiOSCVC = [layerHost asiOSCVC];
 
-      [v10 performSelector:"showDefaultEditUIForCurrentSelection" withObject:0 afterDelay:0.0];
+      [asiOSCVC performSelector:"showDefaultEditUIForCurrentSelection" withObject:0 afterDelay:0.0];
 LABEL_8:
     }
   }
@@ -148,21 +148,21 @@ LABEL_8:
   else if (![(CRLRectangularMarqueeTracker *)self shouldSuppressRestoringOriginalSelectionIfNothingSelected])
   {
     selectionBeforeMarquee = self->_selectionBeforeMarquee;
-    v10 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v12 = [v10 editorController];
-    [v12 setSelectionPath:selectionBeforeMarquee];
+    asiOSCVC = objc_loadWeakRetained(&self->_interactiveCanvasController);
+    editorController = [asiOSCVC editorController];
+    [editorController setSelectionPath:selectionBeforeMarquee];
 
     goto LABEL_8;
   }
 
   v13 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v14 = [v13 layerHost];
-  v15 = [v14 asiOSCVC];
-  v18 = [v15 i_quickSelectViewController];
+  layerHost2 = [v13 layerHost];
+  asiOSCVC2 = [layerHost2 asiOSCVC];
+  i_quickSelectViewController = [asiOSCVC2 i_quickSelectViewController];
 
-  if (v18)
+  if (i_quickSelectViewController)
   {
-    [v18 unhideUIIfAppropriateAfterHidingForWindowRect];
+    [i_quickSelectViewController unhideUIIfAppropriateAfterHidingForWindowRect];
   }
 
   v16 = +[NSNotificationCenter defaultCenter];
@@ -243,7 +243,7 @@ LABEL_8:
         v40 = v39;
         v42 = v41;
 
-        v43 = [v33 info];
+        info = [v33 info];
         v82.origin.x = v36;
         v82.origin.y = v38;
         v82.size.width = v40;
@@ -272,7 +272,7 @@ LABEL_8:
           }
         }
 
-        [v45 addObject:v43];
+        [v45 addObject:info];
       }
 
       v30 = [(NSMapTable *)v28 countByEnumeratingWithState:&v74 objects:v78 count:16];
@@ -291,11 +291,11 @@ LABEL_8:
   [(CRLRectangularMarqueeTracker *)self p_setPendingSelection];
   self->_lastUnscaledPoint = self->_currentUnscaledDragPoint;
   v47 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v48 = [v47 layerHost];
-  v49 = [v48 asiOSCVC];
-  v50 = [v49 i_quickSelectViewController];
+  layerHost = [v47 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  i_quickSelectViewController = [asiOSCVC i_quickSelectViewController];
 
-  if (v50)
+  if (i_quickSelectViewController)
   {
     [(CRLRectangularMarqueeTracker *)self p_currentUnscaledMarqueeRect];
     x = v81.origin.x;
@@ -312,14 +312,14 @@ LABEL_8:
       v63 = v62;
 
       v64 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-      v65 = [v64 canvasView];
-      [v65 convertRect:0 toView:{v57, v59, v61, v63}];
+      canvasView = [v64 canvasView];
+      [canvasView convertRect:0 toView:{v57, v59, v61, v63}];
       v67 = v66;
       v69 = v68;
       v71 = v70;
       v73 = v72;
 
-      [v50 temporarilyHideUIIfAppropriateForWindowRect:{v67, v69, v71, v73}];
+      [i_quickSelectViewController temporarilyHideUIIfAppropriateForWindowRect:{v67, v69, v71, v73}];
     }
   }
 }
@@ -334,45 +334,45 @@ LABEL_8:
   [v5 addDecorator:self];
 
   v6 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v7 = [v6 editorController];
-  v8 = [v7 selectionPath];
+  editorController = [v6 editorController];
+  selectionPath = [editorController selectionPath];
   selectionBeforeMarquee = self->_selectionBeforeMarquee;
-  self->_selectionBeforeMarquee = v8;
+  self->_selectionBeforeMarquee = selectionPath;
 
   [(CRLRectangularMarqueeTracker *)self p_refreshRectsForReps];
   v10 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v32 = [v10 canvasEditor];
+  canvasEditor = [v10 canvasEditor];
 
   v11 = objc_loadWeakRetained(&self->_interactiveCanvasController);
   p_startingUnscaledPoint = &self->_startingUnscaledPoint;
   v13 = [v11 hitRep:{self->_startingUnscaledPoint.x, self->_startingUnscaledPoint.y}];
 
-  v14 = [v13 repForSelecting];
-  v15 = v14;
-  if (self->_shouldInvertOriginalSelection || v14 && [v14 isSelectedIgnoringLocking])
+  repForSelecting = [v13 repForSelecting];
+  v15 = repForSelecting;
+  if (self->_shouldInvertOriginalSelection || repForSelecting && [repForSelecting isSelectedIgnoringLocking])
   {
     v16 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v17 = [v16 infosForCurrentSelectionPath];
+    infosForCurrentSelectionPath = [v16 infosForCurrentSelectionPath];
 
-    v18 = [v17 objectsPassingTest:&stru_101871D68];
+    v18 = [infosForCurrentSelectionPath objectsPassingTest:&stru_101871D68];
 
     [(NSMutableSet *)self->_pendingSelection unionSet:v18];
   }
 
   else
   {
-    v18 = [v32 selectionPathWithInfo:0];
+    v18 = [canvasEditor selectionPathWithInfo:0];
     v19 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v20 = [v19 editorController];
-    [v20 setSelectionPath:v18];
+    editorController2 = [v19 editorController];
+    [editorController2 setSelectionPath:v18];
   }
 
   v21 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v22 = [v21 selectionModelTranslator];
+  selectionModelTranslator = [v21 selectionModelTranslator];
   v23 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v24 = [v23 editorController];
-  v25 = [v24 selectionPath];
-  v26 = [v22 boardItemsForSelectionPath:v25];
+  editorController3 = [v23 editorController];
+  selectionPath2 = [editorController3 selectionPath];
+  v26 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath2];
   originalSelection = self->_originalSelection;
   self->_originalSelection = v26;
 
@@ -380,12 +380,12 @@ LABEL_8:
   {
     if (self->_shouldInvertOriginalSelection)
     {
-      v28 = [v15 isSelectedIgnoringLocking];
+      isSelectedIgnoringLocking = [v15 isSelectedIgnoringLocking];
       pendingSelection = self->_pendingSelection;
-      v30 = [v15 info];
-      if (v28)
+      info = [v15 info];
+      if (isSelectedIgnoringLocking)
       {
-        [(NSMutableSet *)pendingSelection removeObject:v30];
+        [(NSMutableSet *)pendingSelection removeObject:info];
 LABEL_13:
 
         goto LABEL_14;
@@ -402,10 +402,10 @@ LABEL_14:
       }
 
       pendingSelection = self->_pendingSelection;
-      v30 = [v15 info];
+      info = [v15 info];
     }
 
-    [(NSMutableSet *)pendingSelection addObject:v30];
+    [(NSMutableSet *)pendingSelection addObject:info];
     goto LABEL_13;
   }
 
@@ -423,38 +423,38 @@ LABEL_15:
 - (void)p_setPendingSelection
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v18 = [WeakRetained editorController];
+  editorController = [WeakRetained editorController];
 
   v4 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v5 = [v4 canvasEditor];
+  canvasEditor = [v4 canvasEditor];
 
-  v6 = [v18 selectionPath];
-  v7 = [v6 mostSpecificSelectionOfClass:objc_opt_class()];
+  selectionPath = [editorController selectionPath];
+  v7 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
   v8 = v7;
   if (v7)
   {
     pendingSelection = self->_pendingSelection;
-    v10 = [v7 boardItems];
-    v11 = [v10 anyObject];
-    [(NSMutableSet *)pendingSelection removeObject:v11];
+    boardItems = [v7 boardItems];
+    anyObject = [boardItems anyObject];
+    [(NSMutableSet *)pendingSelection removeObject:anyObject];
   }
 
   v12 = [(NSMutableSet *)self->_pendingSelection count];
   if (!v8 || v12)
   {
-    v17 = [v5 selectionPathWithInfos:self->_pendingSelection];
+    v17 = [canvasEditor selectionPathWithInfos:self->_pendingSelection];
   }
 
   else
   {
     v13 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v14 = [v13 selectionModelTranslator];
-    v15 = [v8 containerGroups];
-    v16 = [v15 lastObject];
-    v17 = [v14 selectionPathForNothingSelectedInsideGroup:v16];
+    selectionModelTranslator = [v13 selectionModelTranslator];
+    containerGroups = [v8 containerGroups];
+    lastObject = [containerGroups lastObject];
+    v17 = [selectionModelTranslator selectionPathForNothingSelectedInsideGroup:lastObject];
   }
 
-  [v18 setSelectionPath:v17];
+  [editorController setSelectionPath:v17];
 }
 
 - (void)p_refreshRectsForReps
@@ -467,9 +467,9 @@ LABEL_15:
   v35 = 0u;
   v36 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v6 = [WeakRetained topLevelRepsForDragSelecting];
+  topLevelRepsForDragSelecting = [WeakRetained topLevelRepsForDragSelecting];
 
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  v7 = [topLevelRepsForDragSelecting countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
@@ -481,12 +481,12 @@ LABEL_15:
       {
         if (*v36 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(topLevelRepsForDragSelecting);
         }
 
-        v11 = [*(*(&v35 + 1) + 8 * v10) repForSelecting];
-        v12 = v11;
-        if (v11 && ([v11 demandsExclusiveSelection] & 1) == 0)
+        repForSelecting = [*(*(&v35 + 1) + 8 * v10) repForSelecting];
+        v12 = repForSelecting;
+        if (repForSelecting && ([repForSelecting demandsExclusiveSelection] & 1) == 0)
         {
           v13 = NSAllMapTableKeys(self->_scaledRectsForReps);
           v14 = [v13 containsObject:v12];
@@ -513,7 +513,7 @@ LABEL_15:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v8 = [topLevelRepsForDragSelecting countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v8);
@@ -582,11 +582,11 @@ LABEL_15:
   [(CRLCanvasRenderable *)self->_selectionOverlay addAnimation:v20 forKey:@"kCRLMarqueeStartAnimationKey"];
 }
 
-- (BOOL)p_shouldUpdateMarqueeFrameForDragDistance:(double)a3
+- (BOOL)p_shouldUpdateMarqueeFrameForDragDistance:(double)distance
 {
   v5 = [(CRLCanvasRenderable *)self->_selectionOverlay animationForKey:@"kCRLMarqueeStartAnimationKey"];
 
-  v6 = a3 >= 20.0 || v5 == 0;
+  v6 = distance >= 20.0 || v5 == 0;
   v7 = v6;
   if (v6)
   {

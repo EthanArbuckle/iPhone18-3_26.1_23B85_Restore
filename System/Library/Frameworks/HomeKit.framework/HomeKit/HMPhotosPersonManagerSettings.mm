@@ -1,11 +1,11 @@
 @interface HMPhotosPersonManagerSettings
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMPhotosPersonManagerSettings)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMPhotosPersonManagerSettings)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMPhotosPersonManagerSettings
@@ -37,25 +37,25 @@
   return [v2 shortDescription];
 }
 
-- (HMPhotosPersonManagerSettings)initWithCoder:(id)a3
+- (HMPhotosPersonManagerSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  -[HMPhotosPersonManagerSettings setImportingFromPhotoLibraryEnabled:](v5, "setImportingFromPhotoLibraryEnabled:", [v4 decodeBoolForKey:@"HMPMS.ifple"]);
-  v6 = [v4 decodeBoolForKey:@"HMPMS.sfce"];
+  -[HMPhotosPersonManagerSettings setImportingFromPhotoLibraryEnabled:](v5, "setImportingFromPhotoLibraryEnabled:", [coderCopy decodeBoolForKey:@"HMPMS.ifple"]);
+  v6 = [coderCopy decodeBoolForKey:@"HMPMS.sfce"];
 
   [(HMPhotosPersonManagerSettings *)v5 setSharingFaceClassificationsEnabled:v6];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[HMPhotosPersonManagerSettings isImportingFromPhotoLibraryEnabled](self forKey:{"isImportingFromPhotoLibraryEnabled"), @"HMPMS.ifple"}];
-  [v4 encodeBool:-[HMPhotosPersonManagerSettings isSharingFaceClassificationsEnabled](self forKey:{"isSharingFaceClassificationsEnabled"), @"HMPMS.sfce"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[HMPhotosPersonManagerSettings isImportingFromPhotoLibraryEnabled](self forKey:{"isImportingFromPhotoLibraryEnabled"), @"HMPMS.ifple"}];
+  [coderCopy encodeBool:-[HMPhotosPersonManagerSettings isSharingFaceClassificationsEnabled](self forKey:{"isSharingFaceClassificationsEnabled"), @"HMPMS.sfce"}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[HMMutablePhotosPersonManagerSettings allocWithZone:?]];
   [(HMPhotosPersonManagerSettings *)v4 setImportingFromPhotoLibraryEnabled:[(HMPhotosPersonManagerSettings *)self isImportingFromPhotoLibraryEnabled]];
@@ -70,13 +70,13 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -87,8 +87,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMPhotosPersonManagerSettings isImportingFromPhotoLibraryEnabled](self, "isImportingFromPhotoLibraryEnabled"), v7 == [v6 isImportingFromPhotoLibraryEnabled]))
   {
-    v9 = [(HMPhotosPersonManagerSettings *)self isSharingFaceClassificationsEnabled];
-    v8 = v9 ^ [v6 isSharingFaceClassificationsEnabled] ^ 1;
+    isSharingFaceClassificationsEnabled = [(HMPhotosPersonManagerSettings *)self isSharingFaceClassificationsEnabled];
+    v8 = isSharingFaceClassificationsEnabled ^ [v6 isSharingFaceClassificationsEnabled] ^ 1;
   }
 
   else

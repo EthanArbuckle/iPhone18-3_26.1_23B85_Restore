@@ -1,10 +1,10 @@
 @interface WFContentQuery
-- (BOOL)canEvaluateObjects:(id)a3 withPropertySubstitutor:(id)a4;
+- (BOOL)canEvaluateObjects:(id)objects withPropertySubstitutor:(id)substitutor;
 - (NSSet)containedProperties;
-- (WFContentQuery)initWithPredicate:(id)a3;
+- (WFContentQuery)initWithPredicate:(id)predicate;
 - (_WFContentSlice)slice;
 - (id)description;
-- (void)runWithObjects:(id)a3 propertySubstitutor:(id)a4 completionHandler:(id)a5;
+- (void)runWithObjects:(id)objects propertySubstitutor:(id)substitutor completionHandler:(id)handler;
 @end
 
 @implementation WFContentQuery
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (BOOL)canEvaluateObjects:(id)a3 withPropertySubstitutor:(id)a4
+- (BOOL)canEvaluateObjects:(id)objects withPropertySubstitutor:(id)substitutor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFContentQuery *)self containedProperties];
-  HaveProperties = WFContentObjectsHaveProperties(v7, v8, v6);
+  substitutorCopy = substitutor;
+  objectsCopy = objects;
+  containedProperties = [(WFContentQuery *)self containedProperties];
+  HaveProperties = WFContentObjectsHaveProperties(objectsCopy, containedProperties, substitutorCopy);
 
   return HaveProperties;
 }
@@ -32,21 +32,21 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(WFContentQuery *)self predicate];
+  predicate = [(WFContentQuery *)self predicate];
 
-  if (v4)
+  if (predicate)
   {
-    v5 = [(WFContentQuery *)self predicate];
-    v6 = [v5 containedProperties];
-    [v3 unionSet:v6];
+    predicate2 = [(WFContentQuery *)self predicate];
+    containedProperties = [predicate2 containedProperties];
+    [v3 unionSet:containedProperties];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(WFContentQuery *)self sortDescriptors];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sortDescriptors = [(WFContentQuery *)self sortDescriptors];
+  v8 = [sortDescriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -57,14 +57,14 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sortDescriptors);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) containedProperties];
-        [v3 unionSet:v12];
+        containedProperties2 = [*(*(&v14 + 1) + 8 * i) containedProperties];
+        [v3 unionSet:containedProperties2];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [sortDescriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -73,22 +73,22 @@
   return v3;
 }
 
-- (void)runWithObjects:(id)a3 propertySubstitutor:(id)a4 completionHandler:(id)a5
+- (void)runWithObjects:(id)objects propertySubstitutor:(id)substitutor completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  objectsCopy = objects;
+  substitutorCopy = substitutor;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v8)
+    if (objectsCopy)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __71__WFContentQuery_runWithObjects_propertySubstitutor_completionHandler___block_invoke;
       v15[3] = &unk_2783485E8;
       v15[4] = self;
-      v16 = v9;
+      v16 = substitutorCopy;
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __71__WFContentQuery_runWithObjects_propertySubstitutor_completionHandler___block_invoke_3;
@@ -96,12 +96,12 @@
       v12[4] = self;
       v13 = v11;
       v14 = v16;
-      [v8 if_mapAsynchronously:v15 completionHandler:v12];
+      [objectsCopy if_mapAsynchronously:v15 completionHandler:v12];
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
@@ -179,20 +179,20 @@ uint64_t __71__WFContentQuery_runWithObjects_propertySubstitutor_completionHandl
   v17 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(WFContentQuery *)self predicate];
-  v6 = [(WFContentQuery *)self sortDescriptors];
-  v7 = [(WFContentQuery *)self slice];
-  v8 = v7;
+  predicate = [(WFContentQuery *)self predicate];
+  sortDescriptors = [(WFContentQuery *)self sortDescriptors];
+  slice = [(WFContentQuery *)self slice];
+  v8 = slice;
   v10 = v9;
   v11 = MEMORY[0x277CCACA8];
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  if (slice == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = &stru_282F53518;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v7];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", slice];
   }
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
@@ -210,22 +210,22 @@ uint64_t __71__WFContentQuery_runWithObjects_propertySubstitutor_completionHandl
   {
   }
 
-  v15 = [v17 stringWithFormat:@"<%@: %p, predicate: %@, sortDescriptors: %@, slice: %@>", v4, self, v5, v6, v13];
+  v15 = [v17 stringWithFormat:@"<%@: %p, predicate: %@, sortDescriptors: %@, slice: %@>", v4, self, predicate, sortDescriptors, v13];
 
   return v15;
 }
 
-- (WFContentQuery)initWithPredicate:(id)a3
+- (WFContentQuery)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v10.receiver = self;
   v10.super_class = WFContentQuery;
   v5 = [(WFContentQuery *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (predicateCopy)
     {
-      v6 = v4;
+      v6 = predicateCopy;
     }
 
     else

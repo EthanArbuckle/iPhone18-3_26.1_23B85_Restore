@@ -19,8 +19,8 @@
 {
   v3 = MEMORY[0x1E696AB08];
   v4 = a3;
-  v5 = [v3 URLQueryAllowedCharacterSet];
-  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  uRLQueryAllowedCharacterSet = [v3 URLQueryAllowedCharacterSet];
+  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   if ([v6 length])
   {
@@ -41,11 +41,11 @@
   v5 = MEMORY[0x1E696AB08];
   v6 = a4;
   v7 = a3;
-  v8 = [v5 URLQueryAllowedCharacterSet];
-  v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+  uRLQueryAllowedCharacterSet = [v5 URLQueryAllowedCharacterSet];
+  v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
-  v10 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v11 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v10];
+  uRLQueryAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v11 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet2];
 
   v12 = [v9 length];
   v13 = [v11 length];
@@ -91,8 +91,8 @@ LABEL_9:
 {
   *a3 = 0;
   *a4 = 0;
-  v6 = [a1 host];
-  v11 = [v6 componentsSeparatedByString:@"."];
+  host = [self host];
+  v11 = [host componentsSeparatedByString:@"."];
 
   v7 = [v11 count];
   v8 = v11;
@@ -140,17 +140,17 @@ LABEL_9:
 
 - (id)radarWebURL
 {
-  v2 = [a1 scheme];
-  v3 = [v2 lowercaseString];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (([v3 isEqualToString:@"rdar"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"radar"))
+  if (([lowercaseString isEqualToString:@"rdar"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"radar"))
   {
-    v4 = [a1 resourceSpecifier];
-    if (v4)
+    resourceSpecifier = [self resourceSpecifier];
+    if (resourceSpecifier)
     {
-      v5 = v4;
-      v6 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-      v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+      v5 = resourceSpecifier;
+      uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+      v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://bugreport.apple.com/cgi-bin/WebObjects/RadarWeb.woa/wa/openURL?url=%@", v7];
       v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
@@ -181,16 +181,16 @@ LABEL_9:
 
 - (id)searchResultDomain
 {
-  v2 = [a1 scheme];
-  v3 = [v2 isEqualToString:@"search"];
+  scheme = [self scheme];
+  v3 = [scheme isEqualToString:@"search"];
 
   if (v3)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [a1 path];
-    v6 = [v5 stringByDeletingLastPathComponent];
-    v7 = [v6 lastPathComponent];
-    v8 = [v4 numberWithLongLong:{objc_msgSend(v7, "longLongValue")}];
+    path = [self path];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+    lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
+    v8 = [v4 numberWithLongLong:{objc_msgSend(lastPathComponent, "longLongValue")}];
   }
 
   else
@@ -203,18 +203,18 @@ LABEL_9:
 
 - (id)searchResultIdentifier
 {
-  v2 = [a1 scheme];
-  v3 = [v2 isEqualToString:@"search"];
+  scheme = [self scheme];
+  v3 = [scheme isEqualToString:@"search"];
 
   if (v3)
   {
-    v4 = [a1 path];
-    v5 = [v4 lastPathComponent];
-    v6 = [v5 UTF8String];
+    path = [self path];
+    lastPathComponent = [path lastPathComponent];
+    uTF8String = [lastPathComponent UTF8String];
 
-    if (v6)
+    if (uTF8String)
     {
-      v7 = strtoull(v6, 0, 10);
+      v7 = strtoull(uTF8String, 0, 10);
     }
 
     else
@@ -235,30 +235,30 @@ LABEL_9:
 
 - (uint64_t)isSpringboardHandledURL
 {
-  v2 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v5 = 0;
-  v3 = [v2 isApplicationAvailableToOpenURL:a1 includePrivateURLSchemes:0 error:&v5];
+  v3 = [defaultWorkspace isApplicationAvailableToOpenURL:self includePrivateURLSchemes:0 error:&v5];
 
   return v3;
 }
 
 - (BOOL)isWebcalURL
 {
-  v2 = [a1 scheme];
-  v3 = [v2 lowercaseString];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v3 isEqualToString:@"webcal"])
+  if ([lowercaseString isEqualToString:@"webcal"])
   {
     v4 = 1;
   }
 
-  else if (([v3 isEqualToString:@"http"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"https"))
+  else if (([lowercaseString isEqualToString:@"http"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"https"))
   {
-    v5 = [a1 path];
-    v6 = v5;
-    if (v5)
+    path = [self path];
+    v6 = path;
+    if (path)
     {
-      v4 = [v5 rangeOfString:@".ics" options:13] != 0x7FFFFFFFFFFFFFFFLL;
+      v4 = [path rangeOfString:@".ics" options:13] != 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -277,11 +277,11 @@ LABEL_9:
 
 - (BOOL)isAccountURL
 {
-  v1 = [a1 scheme];
-  v2 = v1;
-  if (v1)
+  scheme = [self scheme];
+  v2 = scheme;
+  if (scheme)
   {
-    v3 = [v1 compare:@"account" options:1] == 0;
+    v3 = [scheme compare:@"account" options:1] == 0;
   }
 
   else
@@ -294,11 +294,11 @@ LABEL_9:
 
 - (BOOL)isJavaScriptURL
 {
-  v1 = [a1 scheme];
-  v2 = v1;
-  if (v1)
+  scheme = [self scheme];
+  v2 = scheme;
+  if (scheme)
   {
-    v3 = [v1 caseInsensitiveCompare:@"javascript"] == 0;
+    v3 = [scheme caseInsensitiveCompare:@"javascript"] == 0;
   }
 
   else
@@ -311,11 +311,11 @@ LABEL_9:
 
 - (BOOL)isHTTPOrHTTPSURL
 {
-  v1 = [a1 scheme];
-  v2 = v1;
-  if (v1)
+  scheme = [self scheme];
+  v2 = scheme;
+  if (scheme)
   {
-    if ([v1 caseInsensitiveCompare:@"http"])
+    if ([scheme caseInsensitiveCompare:@"http"])
     {
       v3 = [v2 caseInsensitiveCompare:@"https"] == 0;
     }

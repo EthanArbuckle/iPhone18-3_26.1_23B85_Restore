@@ -22,23 +22,23 @@
   }
 
   [(SBEntityRemovalMedusaDefaultAnimationSettings *)self setToBeMadeFullscreenFrameAnimationDelay:v4];
-  v5 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v5 setBehaviorType:2];
-  [v5 setDampingRatio:1.0];
-  [v5 setResponse:0.550000012];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues setBehaviorType:2];
+  [initWithDefaultValues setDampingRatio:1.0];
+  [initWithDefaultValues setResponse:0.550000012];
   v10 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v5 setFrameRateRange:1114113 highFrameRateReason:{*&v10.minimum, *&v10.maximum, *&v10.preferred}];
-  [(SBEntityRemovalMedusaDefaultAnimationSettings *)self setToBeRemovedScaleAnimationSettings:v5];
-  v6 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v6 setBehaviorType:2];
-  [v6 setDampingRatio:1.0];
-  [v6 setResponse:0.300000012];
-  [(SBEntityRemovalMedusaDefaultAnimationSettings *)self setToBeRemovedAlphaAnimationSettings:v6];
+  [initWithDefaultValues setFrameRateRange:1114113 highFrameRateReason:{*&v10.minimum, *&v10.maximum, *&v10.preferred}];
+  [(SBEntityRemovalMedusaDefaultAnimationSettings *)self setToBeRemovedScaleAnimationSettings:initWithDefaultValues];
+  initWithDefaultValues2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues2 setBehaviorType:2];
+  [initWithDefaultValues2 setDampingRatio:1.0];
+  [initWithDefaultValues2 setResponse:0.300000012];
+  [(SBEntityRemovalMedusaDefaultAnimationSettings *)self setToBeRemovedAlphaAnimationSettings:initWithDefaultValues2];
   v7 = SBEntityRemovalDefaultFluidAnimationSettings();
   [(SBEntityRemovalMedusaDefaultAnimationSettings *)self setToBeMadeFullscreenFrameAnimationSettings:v7];
 
-  v8 = [(SBEntityRemovalMedusaDefaultAnimationSettings *)self toBeMadeFullscreenFrameAnimationSettings];
-  [v8 setResponse:0.430000007];
+  toBeMadeFullscreenFrameAnimationSettings = [(SBEntityRemovalMedusaDefaultAnimationSettings *)self toBeMadeFullscreenFrameAnimationSettings];
+  [toBeMadeFullscreenFrameAnimationSettings setResponse:0.430000007];
 }
 
 + (id)_settingsModule
@@ -74,8 +74,8 @@
 
   v21 = MEMORY[0x277D43210];
   v22 = MEMORY[0x277D431B0];
-  v23 = [MEMORY[0x277D43240] action];
-  v24 = [v22 rowWithTitle:@"Restore Medusa Default Animation Settings" action:v23];
+  action = [MEMORY[0x277D43240] action];
+  v24 = [v22 rowWithTitle:@"Restore Medusa Default Animation Settings" action:action];
   v33 = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
   v26 = [v21 sectionWithRows:v25];

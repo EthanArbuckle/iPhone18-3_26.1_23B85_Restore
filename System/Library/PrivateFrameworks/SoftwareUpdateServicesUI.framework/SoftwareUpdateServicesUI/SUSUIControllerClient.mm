@@ -1,12 +1,12 @@
 @interface SUSUIControllerClient
-- (BOOL)createKeybagWithSecret:(id)a3;
+- (BOOL)createKeybagWithSecret:(id)secret;
 - (SUSUIControllerClient)init;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
 - (void)_connectToServerIfNecessary;
 - (void)_invalidateConnection;
 - (void)_noteConnectionDropped;
 - (void)dealloc;
-- (void)getPasscodePolicy:(id)a3;
+- (void)getPasscodePolicy:(id)policy;
 @end
 
 @implementation SUSUIControllerClient
@@ -32,20 +32,20 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(SUSUIControllerClient *)self _invalidateConnection];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = SUSUIControllerClient;
   [(SUSUIControllerClient *)&v2 dealloc];
 }
 
-- (BOOL)createKeybagWithSecret:(id)a3
+- (BOOL)createKeybagWithSecret:(id)secret
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, secret);
   v8 = 0;
   v5 = objc_alloc(MEMORY[0x277D648B8]);
   v6 = dispatch_get_global_queue(21, 0);
@@ -67,31 +67,31 @@
   return v4 & 1;
 }
 
-- (void)getPasscodePolicy:(id)a3
+- (void)getPasscodePolicy:(id)policy
 {
   v24 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, policy);
   if (location[0])
   {
     v19 = SUSUILog();
     v18 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v23, v22);
+      __os_log_helper_16_0_1_8_0(v23, selfCopy);
       _os_log_impl(&dword_26AC54000, v19, v18, "Client <%p>: getPasscodePolicy", v23, 0xCu);
     }
 
     objc_storeStrong(&v19, 0);
-    v3 = v22;
+    v3 = selfCopy;
     v11 = MEMORY[0x277D85DD0];
     v12 = -1073741824;
     v13 = 0;
     v14 = __43__SUSUIControllerClient_getPasscodePolicy___block_invoke;
     v15 = &unk_279CB4F68;
-    v16 = MEMORY[0x277D82BE0](v22);
+    v16 = MEMORY[0x277D82BE0](selfCopy);
     v17 = MEMORY[0x277D82BE0](location[0]);
     v4 = [(SUSUIControllerClient *)v3 _remoteInterfaceWithErrorHandler:&v11];
     v5 = MEMORY[0x277D85DD0];
@@ -144,14 +144,14 @@ uint64_t __43__SUSUIControllerClient_getPasscodePolicy___block_invoke_289(uint64
   return (*(v4 + 16))(v4, v2);
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUIControllerClient *)v6 _connectToServerIfNecessary];
-  v4 = [(NSXPCConnection *)v6->_serverConnection remoteObjectProxyWithErrorHandler:location[0]];
+  objc_storeStrong(location, handler);
+  [(SUSUIControllerClient *)selfCopy _connectToServerIfNecessary];
+  v4 = [(NSXPCConnection *)selfCopy->_serverConnection remoteObjectProxyWithErrorHandler:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
@@ -172,7 +172,7 @@ uint64_t __43__SUSUIControllerClient_getPasscodePolicy___block_invoke_289(uint64
 - (void)_connectToServerIfNecessary
 {
   v33 = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_connected)
   {
@@ -180,31 +180,31 @@ uint64_t __43__SUSUIControllerClient_getPasscodePolicy___block_invoke_289(uint64
     v28 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v32, v30);
+      __os_log_helper_16_0_1_8_0(v32, selfCopy);
       _os_log_impl(&dword_26AC54000, location[0], v28, "Client <%p>: establishing connection to softwareupdateservicesui plugin.", v32, 0xCu);
     }
 
     objc_storeStrong(location, 0);
-    [(SUSUIControllerClient *)v30 _invalidateConnection];
+    [(SUSUIControllerClient *)selfCopy _invalidateConnection];
     v11 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.softwareupdateservicesui.controller" options:4096];
-    serverConnection = v30->_serverConnection;
-    v30->_serverConnection = v11;
+    serverConnection = selfCopy->_serverConnection;
+    selfCopy->_serverConnection = v11;
     MEMORY[0x277D82BD8](serverConnection);
-    v10 = v30->_serverConnection;
+    v10 = selfCopy->_serverConnection;
     v3 = MEMORY[0x277D85CD0];
     v9 = MEMORY[0x277D85CD0];
     [(NSXPCConnection *)v10 _setQueue:?];
     MEMORY[0x277D82BD8](v9);
-    v8 = v30->_serverConnection;
+    v8 = selfCopy->_serverConnection;
     v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287B7A430];
     [(NSXPCConnection *)v8 setRemoteObjectInterface:?];
     MEMORY[0x277D82BD8](v7);
-    v6 = v30->_serverConnection;
+    v6 = selfCopy->_serverConnection;
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287B7A430];
     [(NSXPCConnection *)v6 setExportedInterface:?];
     MEMORY[0x277D82BD8](v5);
-    [(NSXPCConnection *)v30->_serverConnection setExportedObject:v30];
-    objc_initWeak(&from, v30);
+    [(NSXPCConnection *)selfCopy->_serverConnection setExportedObject:selfCopy];
+    objc_initWeak(&from, selfCopy);
     v20 = MEMORY[0x277D85DD0];
     v21 = -1073741824;
     v22 = 0;
@@ -212,8 +212,8 @@ uint64_t __43__SUSUIControllerClient_getPasscodePolicy___block_invoke_289(uint64
     v24 = &unk_279CB48D0;
     objc_copyWeak(&v25, &from);
     v26 = MEMORY[0x26D669210](&v20);
-    [(NSXPCConnection *)v30->_serverConnection setInvalidationHandler:v26];
-    v4 = v30->_serverConnection;
+    [(NSXPCConnection *)selfCopy->_serverConnection setInvalidationHandler:v26];
+    v4 = selfCopy->_serverConnection;
     v13 = MEMORY[0x277D85DD0];
     v14 = -1073741824;
     v15 = 0;
@@ -222,13 +222,13 @@ uint64_t __43__SUSUIControllerClient_getPasscodePolicy___block_invoke_289(uint64
     objc_copyWeak(&v19, &from);
     v18 = MEMORY[0x277D82BE0](v26);
     [(NSXPCConnection *)v4 setInterruptionHandler:&v13];
-    [(NSXPCConnection *)v30->_serverConnection resume];
-    v30->_connected = 1;
-    v30->_serverIsExiting = 0;
+    [(NSXPCConnection *)selfCopy->_serverConnection resume];
+    selfCopy->_connected = 1;
+    selfCopy->_serverIsExiting = 0;
     oslog = SUSUILog();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v31, v30);
+      __os_log_helper_16_0_1_8_0(v31, selfCopy);
       _os_log_impl(&dword_26AC54000, oslog, OS_LOG_TYPE_DEFAULT, "Client <%p>: connection established to softwareupdateservicesui plugin.", v31, 0xCu);
     }
 
@@ -274,17 +274,17 @@ uint64_t __52__SUSUIControllerClient__connectToServerIfNecessary__block_invoke_2
 - (void)_noteConnectionDropped
 {
   v5 = *MEMORY[0x277D85DE8];
-  v3 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = SUSUILog();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v4, v3);
+    __os_log_helper_16_0_1_8_0(v4, selfCopy);
     _os_log_impl(&dword_26AC54000, oslog[0], OS_LOG_TYPE_DEFAULT, "Client <%p>: disconnected from softwareupdateservicesui plugin.", v4, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  v3->_connected = 0;
+  selfCopy->_connected = 0;
   *MEMORY[0x277D85DE8];
 }
 

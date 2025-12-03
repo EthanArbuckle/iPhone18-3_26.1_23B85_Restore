@@ -1,22 +1,22 @@
 @interface SCMLMADImageEncoder
-+ (id)getServiceWithError:(id *)a3;
-+ (id)newRequestWithType:(unint64_t)a3 withVersion:(unint64_t)a4 error:(id *)a5;
-- (SCMLMADImageEncoder)initWithError:(id *)a3;
-- (void)embedPixelBufferAsynchronously:(__CVBuffer *)a3 requestType:(unint64_t)a4 version:(unint64_t)a5 completionHandler:(id)a6;
++ (id)getServiceWithError:(id *)error;
++ (id)newRequestWithType:(unint64_t)type withVersion:(unint64_t)version error:(id *)error;
+- (SCMLMADImageEncoder)initWithError:(id *)error;
+- (void)embedPixelBufferAsynchronously:(__CVBuffer *)asynchronously requestType:(unint64_t)type version:(unint64_t)version completionHandler:(id)handler;
 @end
 
 @implementation SCMLMADImageEncoder
 
-+ (id)newRequestWithType:(unint64_t)a3 withVersion:(unint64_t)a4 error:(id *)a5
++ (id)newRequestWithType:(unint64_t)type withVersion:(unint64_t)version error:(id *)error
 {
   if (!getMADImageEmbeddingRequestClass())
   {
-    if (a5)
+    if (error)
     {
       v12 = scml::error(0x15u, "failed to get MADImageEmbeddingRequest class", 44);
 LABEL_15:
       v10 = 0;
-      *a5 = v12;
+      *error = v12;
       return v10;
     }
 
@@ -26,7 +26,7 @@ LABEL_15:
   v8 = objc_alloc(getMADImageEmbeddingRequestClass());
   if (!v8)
   {
-    if (a5)
+    if (error)
     {
       v13 = "failed to alloc MADImageEmbeddingRequest";
       v14 = 40;
@@ -43,7 +43,7 @@ LABEL_14:
 
   if (!v10)
   {
-    if (a5)
+    if (error)
     {
       v13 = "failed to init MADImageEmbeddingRequest";
       v14 = 39;
@@ -53,52 +53,52 @@ LABEL_14:
     return 0;
   }
 
-  [v10 setVersion:toMADUnifiedEmbeddingVersion(a4)];
-  if (a3 - 2 >= 3)
+  [v10 setVersion:toMADUnifiedEmbeddingVersion(version)];
+  if (type - 2 >= 3)
   {
-    v11 = 0;
+    typeCopy = 0;
   }
 
   else
   {
-    v11 = a3;
+    typeCopy = type;
   }
 
-  [v10 setEmbeddingRequestType:v11];
+  [v10 setEmbeddingRequestType:typeCopy];
   return v10;
 }
 
-+ (id)getServiceWithError:(id *)a3
++ (id)getServiceWithError:(id *)error
 {
   if (getMADServiceClass())
   {
-    v4 = [getMADServiceClass() service];
+    service = [getMADServiceClass() service];
   }
 
-  else if (a3)
+  else if (error)
   {
     v5 = scml::error(0x15u, "failed to get MADService class", 30);
     v6 = v5;
-    v4 = 0;
-    *a3 = v5;
+    service = 0;
+    *error = v5;
   }
 
   else
   {
-    v4 = 0;
+    service = 0;
   }
 
-  return v4;
+  return service;
 }
 
-- (SCMLMADImageEncoder)initWithError:(id *)a3
+- (SCMLMADImageEncoder)initWithError:(id *)error
 {
   v8.receiver = self;
   v8.super_class = SCMLMADImageEncoder;
   v4 = [(SCMLMADImageEncoder *)&v8 init];
   if (v4)
   {
-    v5 = [SCMLMADImageEncoder getServiceWithError:a3];
+    v5 = [SCMLMADImageEncoder getServiceWithError:error];
     service = v4->_service;
     v4->_service = v5;
 
@@ -112,12 +112,12 @@ LABEL_14:
   return v4;
 }
 
-- (void)embedPixelBufferAsynchronously:(__CVBuffer *)a3 requestType:(unint64_t)a4 version:(unint64_t)a5 completionHandler:(id)a6
+- (void)embedPixelBufferAsynchronously:(__CVBuffer *)asynchronously requestType:(unint64_t)type version:(unint64_t)version completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  handlerCopy = handler;
   v19 = 0;
-  v11 = [SCMLMADImageEncoder newRequestWithType:a4 withVersion:a5 error:&v19];
+  v11 = [SCMLMADImageEncoder newRequestWithType:type withVersion:version error:&v19];
   v12 = v19;
   if (v11)
   {
@@ -129,13 +129,13 @@ LABEL_14:
     v16[2] = __92__SCMLMADImageEncoder_embedPixelBufferAsynchronously_requestType_version_completionHandler___block_invoke;
     v16[3] = &unk_1E7EB3BD0;
     v17 = v11;
-    v18 = v10;
-    [(MADService *)service performRequests:v13 onPixelBuffer:a3 withOrientation:1 andIdentifier:0 completionHandler:v16];
+    v18 = handlerCopy;
+    [(MADService *)service performRequests:v13 onPixelBuffer:asynchronously withOrientation:1 andIdentifier:0 completionHandler:v16];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 
   v15 = *MEMORY[0x1E69E9840];

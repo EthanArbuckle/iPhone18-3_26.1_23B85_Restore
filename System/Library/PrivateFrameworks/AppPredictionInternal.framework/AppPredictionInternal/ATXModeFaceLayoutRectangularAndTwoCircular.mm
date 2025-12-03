@@ -1,21 +1,21 @@
 @interface ATXModeFaceLayoutRectangularAndTwoCircular
-- (BOOL)assignComplicationsFromCandidates:(id)a3 forSuggestedFace:(id)a4;
+- (BOOL)assignComplicationsFromCandidates:(id)candidates forSuggestedFace:(id)face;
 @end
 
 @implementation ATXModeFaceLayoutRectangularAndTwoCircular
 
-- (BOOL)assignComplicationsFromCandidates:(id)a3 forSuggestedFace:(id)a4
+- (BOOL)assignComplicationsFromCandidates:(id)candidates forSuggestedFace:(id)face
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 _pas_filteredArrayWithTest:&__block_literal_global_198];
-  v8 = [v6 _pas_filteredArrayWithTest:&__block_literal_global_12_0];
+  faceCopy = face;
+  candidatesCopy = candidates;
+  v7 = [candidatesCopy _pas_filteredArrayWithTest:&__block_literal_global_198];
+  v8 = [candidatesCopy _pas_filteredArrayWithTest:&__block_literal_global_12_0];
 
   if ([v7 count])
   {
     v9 = objc_opt_new();
-    v10 = [v7 firstObject];
-    [v9 addObject:v10];
+    firstObject = [v7 firstObject];
+    [v9 addObject:firstObject];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -41,8 +41,8 @@
 
       v16 = [v11 subarrayWithRange:{0, v15}];
       [v9 addObjectsFromArray:v16];
-      [v5 setLayoutType:3];
-      [v5 setComplications:v9];
+      [faceCopy setLayoutType:3];
+      [faceCopy setComplications:v9];
     }
   }
 

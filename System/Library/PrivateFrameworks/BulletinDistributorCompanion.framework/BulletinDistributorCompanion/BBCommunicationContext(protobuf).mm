@@ -10,26 +10,26 @@
 {
   v4 = a3;
   v5 = objc_opt_new();
-  v6 = [v4 identifier];
-  [v5 setIdentifier:v6];
+  identifier = [v4 identifier];
+  [v5 setIdentifier:identifier];
 
-  v7 = [v4 displayName];
-  [v5 setDisplayName:v7];
+  displayName = [v4 displayName];
+  [v5 setDisplayName:displayName];
 
-  v8 = [a1 writeContentURLIfPossibleFromProtobuf:v4];
+  v8 = [self writeContentURLIfPossibleFromProtobuf:v4];
   [v5 setContentURL:v8];
 
-  v9 = [v4 recipients];
-  v10 = [v9 bs_compactMap:&__block_literal_global_11];
+  recipients = [v4 recipients];
+  v10 = [recipients bs_compactMap:&__block_literal_global_11];
   [v5 setRecipients:v10];
 
-  v11 = [v4 sender];
+  sender = [v4 sender];
 
-  if (v11)
+  if (sender)
   {
     v12 = MEMORY[0x277CF3528];
-    v13 = [v4 sender];
-    v14 = [v12 contactFromProtobuf:v13];
+    sender2 = [v4 sender];
+    v14 = [v12 contactFromProtobuf:sender2];
     [v5 setSender:v14];
   }
 
@@ -55,8 +55,8 @@
 
   if ([v4 hasImageName])
   {
-    v15 = [v4 imageName];
-    [v5 setImageName:v15];
+    imageName = [v4 imageName];
+    [v5 setImageName:imageName];
   }
 
   if ([v4 hasSystemImage])
@@ -81,8 +81,8 @@
     goto LABEL_12;
   }
 
-  v4 = [v3 contentURLLocalFileLocation];
-  if (!v4)
+  contentURLLocalFileLocation = [v3 contentURLLocalFileLocation];
+  if (!contentURLLocalFileLocation)
   {
     v8 = blt_general_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -93,8 +93,8 @@
     goto LABEL_10;
   }
 
-  v5 = [v3 contentURLData];
-  v6 = [BLTReferenceCountedFile retain:v4 fileData:v5];
+  contentURLData = [v3 contentURLData];
+  v6 = [BLTReferenceCountedFile retain:contentURLLocalFileLocation fileData:contentURLData];
 
   if (!v6)
   {
@@ -110,7 +110,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = v4;
+  v7 = contentURLLocalFileLocation;
 LABEL_11:
 
 LABEL_12:
@@ -122,45 +122,45 @@ LABEL_12:
 {
   v24 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  v3 = [a1 identifier];
-  [v2 setIdentifier:v3];
+  identifier = [self identifier];
+  [v2 setIdentifier:identifier];
 
   [v2 setBundleIdentifier:&stru_285432190];
-  v4 = [a1 displayName];
-  [v2 setDisplayName:v4];
+  displayName = [self displayName];
+  [v2 setDisplayName:displayName];
 
-  [v2 setMentionsCurrentUser:{objc_msgSend(a1, "mentionsCurrentUser")}];
-  [v2 setNotifyRecipientAnyway:{objc_msgSend(a1, "notifyRecipientAnyway")}];
-  [v2 setReplyToCurrentUser:{objc_msgSend(a1, "isReplyToCurrentUser")}];
-  [v2 setRecipientCount:{objc_msgSend(a1, "recipientCount")}];
-  [v2 setSystemImage:{objc_msgSend(a1, "systemImage")}];
-  v5 = [a1 imageName];
-  [v2 setImageName:v5];
+  [v2 setMentionsCurrentUser:{objc_msgSend(self, "mentionsCurrentUser")}];
+  [v2 setNotifyRecipientAnyway:{objc_msgSend(self, "notifyRecipientAnyway")}];
+  [v2 setReplyToCurrentUser:{objc_msgSend(self, "isReplyToCurrentUser")}];
+  [v2 setRecipientCount:{objc_msgSend(self, "recipientCount")}];
+  [v2 setSystemImage:{objc_msgSend(self, "systemImage")}];
+  imageName = [self imageName];
+  [v2 setImageName:imageName];
 
-  [v2 setCapabilities:{objc_msgSend(a1, "capabilities")}];
-  v6 = [a1 sender];
+  [v2 setCapabilities:{objc_msgSend(self, "capabilities")}];
+  sender = [self sender];
 
-  if (v6)
+  if (sender)
   {
-    v7 = [a1 sender];
-    v8 = [v7 blt_protobuf];
-    [v2 setSender:v8];
+    sender2 = [self sender];
+    blt_protobuf = [sender2 blt_protobuf];
+    [v2 setSender:blt_protobuf];
   }
 
-  v9 = [a1 contentURL];
+  contentURL = [self contentURL];
 
-  if (v9)
+  if (contentURL)
   {
-    v10 = [a1 imageDataForContentURL];
-    [v2 setContentURLData:v10];
+    imageDataForContentURL = [self imageDataForContentURL];
+    [v2 setContentURLData:imageDataForContentURL];
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [a1 recipients];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  recipients = [self recipients];
+  v12 = [recipients countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -171,17 +171,17 @@ LABEL_12:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(recipients);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * i) blt_protobuf];
-        if (v16)
+        blt_protobuf2 = [*(*(&v19 + 1) + 8 * i) blt_protobuf];
+        if (blt_protobuf2)
         {
-          [v2 addRecipients:v16];
+          [v2 addRecipients:blt_protobuf2];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [recipients countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);

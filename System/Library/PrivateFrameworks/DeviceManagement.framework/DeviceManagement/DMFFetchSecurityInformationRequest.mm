@@ -5,24 +5,24 @@
 + (NSArray)macOSSecurityInfoKeys;
 + (NSArray)tvOSSecurityInfoKeys;
 + (NSArray)watchOSSecurityInfoKeys;
-- (DMFFetchSecurityInformationRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFFetchSecurityInformationRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchSecurityInformationRequest
 
-- (DMFFetchSecurityInformationRequest)initWithCoder:(id)a3
+- (DMFFetchSecurityInformationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = DMFFetchSecurityInformationRequest;
-  v5 = [(CATTaskRequest *)&v12 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"infoKeys"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"infoKeys"];
     infoKeys = v5->_infoKeys;
     v5->_infoKeys = v9;
   }
@@ -30,24 +30,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFFetchSecurityInformationRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchSecurityInformationRequest *)self infoKeys:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"infoKeys"];
+  [coderCopy encodeObject:v5 forKey:@"infoKeys"];
 }
 
 + (NSArray)currentPlatformSecurityInfoKeys
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [a1 allPlatformSecurityInfoKeys];
-  v5 = [v3 arrayWithArray:v4];
+  allPlatformSecurityInfoKeys = [self allPlatformSecurityInfoKeys];
+  v5 = [v3 arrayWithArray:allPlatformSecurityInfoKeys];
 
-  v6 = [a1 iOSSecurityInfoKeys];
-  [v5 addObjectsFromArray:v6];
+  iOSSecurityInfoKeys = [self iOSSecurityInfoKeys];
+  [v5 addObjectsFromArray:iOSSecurityInfoKeys];
 
   return v5;
 }

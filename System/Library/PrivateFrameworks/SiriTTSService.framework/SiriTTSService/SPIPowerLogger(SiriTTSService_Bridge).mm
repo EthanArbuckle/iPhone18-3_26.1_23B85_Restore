@@ -6,9 +6,9 @@
 
 + (id)loggerForCurrentProcess
 {
-  v0 = [objc_alloc(MEMORY[0x1E69D2760]) initWithCurrentProcess];
+  initWithCurrentProcess = [objc_alloc(MEMORY[0x1E69D2760]) initWithCurrentProcess];
 
-  return v0;
+  return initWithCurrentProcess;
 }
 
 @end

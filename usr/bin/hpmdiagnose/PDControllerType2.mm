@@ -2,8 +2,8 @@
 - (BOOL)isSPIMaster;
 - (id)readFullVersion;
 - (id)readFullVersionWithConfig;
-- (id)stringForTitle:(id)a3 valueString:(id)a4;
-- (int)disc:(unsigned __int8)a3;
+- (id)stringForTitle:(id)title valueString:(id)string;
+- (int)disc:(unsigned __int8)disc;
 - (int)printAll;
 - (int)printDBStateHistory;
 - (int)printIECSAceSpecificInfo;
@@ -91,10 +91,10 @@
 
 - (int)printTitle
 {
-  v3 = [(PDController *)self userClient];
-  v4 = [v3 routerID];
-  v5 = [(PDController *)self userClient];
-  printf("HPM at RID 0x%x Route 0x%llx Address 0x%02x :\n", v4, [v5 routeString], -[PDController address](self, "address"));
+  userClient = [(PDController *)self userClient];
+  routerID = [userClient routerID];
+  userClient2 = [(PDController *)self userClient];
+  printf("HPM at RID 0x%x Route 0x%llx Address 0x%02x :\n", routerID, [userClient2 routeString], -[PDController address](self, "address"));
 
   return 0;
 }
@@ -108,8 +108,8 @@
     result = [(PDControllerType2 *)self printIECSStandardInfo];
     if (!result)
     {
-      v4 = [(PDControllerType2 *)self readFullVersionWithConfig];
-      printf("0x0f %-22s %s\n", "FW Versions", [v4 UTF8String]);
+      readFullVersionWithConfig = [(PDControllerType2 *)self readFullVersionWithConfig];
+      printf("0x0f %-22s %s\n", "FW Versions", [readFullVersionWithConfig UTF8String]);
 
       putchar(10);
 
@@ -440,18 +440,18 @@ LABEL_27:
   }
 }
 
-- (id)stringForTitle:(id)a3 valueString:(id)a4
+- (id)stringForTitle:(id)title valueString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%-22s %@", [a3 UTF8String], v7);
+  titleCopy = title;
+  stringCopy = string;
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%-22s %@", [title UTF8String], stringCopy);
 
   return v8;
 }
 
-- (int)disc:(unsigned __int8)a3
+- (int)disc:(unsigned __int8)disc
 {
-  v14 = a3;
+  discCopy = disc;
   if ([(PDController *)self remote]&& ![(PDControllerType2 *)self supportsRemote])
   {
     printf("pd controller at 0x%02x does not support remote access\n", [(PDController *)self address]);
@@ -487,7 +487,7 @@ LABEL_27:
 
   v8 = v7;
   LODWORD(v10) = 4194305;
-  v6 = [(PDControllerType2 *)self executeIECSAtomicCommand:1 cmdBuffer:&v11 dataBuffer:&v14 extDataBuffer:0 returnDataBuffer:v7 returnExtDataBuffer:0 inputDataLength:v10 returnDataBufferLength:10 timeoutInSeconds:?];
+  v6 = [(PDControllerType2 *)self executeIECSAtomicCommand:1 cmdBuffer:&v11 dataBuffer:&discCopy extDataBuffer:0 returnDataBuffer:v7 returnExtDataBuffer:0 inputDataLength:v10 returnDataBufferLength:10 timeoutInSeconds:?];
   free(v8);
   return v6;
 }
@@ -531,9 +531,9 @@ LABEL_8:
 
 - (id)readFullVersionWithConfig
 {
-  v3 = [(PDControllerType2 *)self readFullVersion];
+  readFullVersion = [(PDControllerType2 *)self readFullVersion];
   v4 = [(PDControllerType2 *)self getDeviceInfoNameWithConfigOnly:1];
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%s)", v3, [v4 UTF8String]);
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (%s)", readFullVersion, [v4 UTF8String]);
 
   return v5;
 }

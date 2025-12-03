@@ -1,19 +1,19 @@
 @interface UserNotificationManagerDelegate
 - (_TtC13CoreIDVSharedP33_881EC008BCF5B7587B4DE56AEEEE7BAF31UserNotificationManagerDelegate)init;
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 didReceiveNotificationResponse:(UNNotificationResponse *)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(id)handler;
 @end
 
 @implementation UserNotificationManagerDelegate
 
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 didReceiveNotificationResponse:(UNNotificationResponse *)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = center;
+  v14[3] = response;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -28,9 +28,9 @@
   v17[3] = 0;
   v17[4] = &unk_225CF9CD0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  centerCopy = center;
+  responseCopy = response;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02030, v17);
 }
 

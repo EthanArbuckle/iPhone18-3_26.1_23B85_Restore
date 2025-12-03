@@ -1,34 +1,34 @@
 @interface AppEventDetailPageView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (_TtC18ASMessagesProvider9VideoView)accessibilityVideoView;
-- (void)didTapShareButton:(id)a3;
+- (void)didTapShareButton:(id)button;
 - (void)layoutSubviews;
-- (void)lockupTapGestureRecognized:(id)a3;
-- (void)notifyMeButtonTapped:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)videoTapGestureRecognized:(id)a3;
+- (void)lockupTapGestureRecognized:(id)recognized;
+- (void)notifyMeButtonTapped:(id)tapped;
+- (void)traitCollectionDidChange:(id)change;
+- (void)videoTapGestureRecognized:(id)recognized;
 @end
 
 @implementation AppEventDetailPageView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_6D9E70();
 }
 
-- (void)didTapShareButton:(id)a3
+- (void)didTapShareButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_6DB2CC(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_6DB2CC(buttonCopy);
 }
 
-- (void)videoTapGestureRecognized:(id)a3
+- (void)videoTapGestureRecognized:(id)recognized
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_76A510();
   swift_unknownObjectRelease();
   sub_6DB5FC();
@@ -36,24 +36,24 @@
   sub_BEB8(&v5);
 }
 
-- (void)notifyMeButtonTapped:(id)a3
+- (void)notifyMeButtonTapped:(id)tapped
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider22AppEventDetailPageView_notifyMeButtonPresenter))
   {
-    v4 = a3;
-    v5 = self;
+    tappedCopy = tapped;
+    selfCopy = self;
 
-    NotifyMeButtonPresenter.didTapButton(sender:)(v4);
+    NotifyMeButtonPresenter.didTapButton(sender:)(tappedCopy);
   }
 }
 
-- (void)lockupTapGestureRecognized:(id)a3
+- (void)lockupTapGestureRecognized:(id)recognized
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_76A510();
   swift_unknownObjectRelease();
-  v5 = *(&v4->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider22AppEventDetailPageView_lockupTapGestureActionBlock);
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider22AppEventDetailPageView_lockupTapGestureActionBlock);
   if (v5)
   {
 
@@ -69,31 +69,31 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_6DC3D4(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_6DC3D4(recognizerCopy, gestureRecognizerCopy);
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_6DC52C(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_6DC52C(recognizerCopy, touchCopy);
 
   return v9;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_6DCA28(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_6DCA28(change);
 }
 
 - (_TtC18ASMessagesProvider9VideoView)accessibilityVideoView

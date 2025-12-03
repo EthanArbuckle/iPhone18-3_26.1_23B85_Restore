@@ -1,13 +1,13 @@
 @interface MTSDevicePairing
-+ (id)UUIDFromNodeID:(id)a3 fabric:(id)a4;
++ (id)UUIDFromNodeID:(id)d fabric:(id)fabric;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (MTSDevicePairing)initWithCoder:(id)a3;
-- (MTSDevicePairing)initWithNodeID:(id)a3 fabric:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTSDevicePairing)initWithCoder:(id)coder;
+- (MTSDevicePairing)initWithNodeID:(id)d fabric:(id)fabric;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSDevicePairing
@@ -16,15 +16,15 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(MTSDevicePairing *)self uuid];
-  v5 = [v3 initWithName:@"UUID" value:v4];
+  uuid = [(MTSDevicePairing *)self uuid];
+  v5 = [v3 initWithName:@"UUID" value:uuid];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(MTSDevicePairing *)self nodeID];
-  v8 = [v6 initWithName:@"Node ID" value:v7];
+  nodeID = [(MTSDevicePairing *)self nodeID];
+  v8 = [v6 initWithName:@"Node ID" value:nodeID];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(MTSDevicePairing *)self fabric];
-  v11 = [v9 initWithName:@"Fabric" value:v10];
+  fabric = [(MTSDevicePairing *)self fabric];
+  v11 = [v9 initWithName:@"Fabric" value:fabric];
   v15[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
 
@@ -40,22 +40,22 @@
   return [v2 shortDescription];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSDevicePairing *)self nodeID];
-  [v4 encodeObject:v5 forKey:@"MTSDP.nodeID"];
+  coderCopy = coder;
+  nodeID = [(MTSDevicePairing *)self nodeID];
+  [coderCopy encodeObject:nodeID forKey:@"MTSDP.nodeID"];
 
-  v6 = [(MTSDevicePairing *)self fabric];
-  [v4 encodeObject:v6 forKey:@"MTSDP.fabric"];
+  fabric = [(MTSDevicePairing *)self fabric];
+  [coderCopy encodeObject:fabric forKey:@"MTSDP.fabric"];
 }
 
-- (MTSDevicePairing)initWithCoder:(id)a3
+- (MTSDevicePairing)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDP.nodeID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSDP.fabric"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDP.nodeID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSDP.fabric"];
   v7 = v6;
   if (v5)
   {
@@ -70,7 +70,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -90,8 +90,8 @@
 
   else
   {
-    v12 = [(MTSDevicePairing *)self initWithNodeID:v5 fabric:v6];
-    v13 = v12;
+    selfCopy = [(MTSDevicePairing *)self initWithNodeID:v5 fabric:v6];
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -100,19 +100,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MTSDevicePairing *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(MTSDevicePairing *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -123,13 +123,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSDevicePairing *)self nodeID];
-    v8 = [v6 nodeID];
-    if ([v7 isEqual:v8])
+    nodeID = [(MTSDevicePairing *)self nodeID];
+    nodeID2 = [v6 nodeID];
+    if ([nodeID isEqual:nodeID2])
     {
-      v9 = [(MTSDevicePairing *)self fabric];
-      v10 = [v6 fabric];
-      v11 = [v9 isEqual:v10];
+      fabric = [(MTSDevicePairing *)self fabric];
+      fabric2 = [v6 fabric];
+      v11 = [fabric isEqual:fabric2];
     }
 
     else
@@ -146,18 +146,18 @@
   return v11;
 }
 
-- (MTSDevicePairing)initWithNodeID:(id)a3 fabric:(id)a4
+- (MTSDevicePairing)initWithNodeID:(id)d fabric:(id)fabric
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  fabricCopy = fabric;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = fabricCopy;
+  if (!fabricCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -170,12 +170,12 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_nodeID, a3);
+    objc_storeStrong(&v10->_nodeID, d);
     v12 = [v9 copy];
     fabric = v11->_fabric;
     v11->_fabric = v12;
 
-    v14 = [MTSDevicePairing UUIDFromNodeID:v7 fabric:v9];
+    v14 = [MTSDevicePairing UUIDFromNodeID:dCopy fabric:v9];
     uuid = v11->_uuid;
     v11->_uuid = v14;
   }
@@ -190,15 +190,15 @@ LABEL_7:
   return NSStringFromClass(v2);
 }
 
-+ (id)UUIDFromNodeID:(id)a3 fabric:(id)a4
++ (id)UUIDFromNodeID:(id)d fabric:(id)fabric
 {
-  v5 = a4;
-  v11 = [a3 integerValue];
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:&v11 length:8];
+  fabricCopy = fabric;
+  integerValue = [d integerValue];
+  v6 = [MEMORY[0x277CBEA90] dataWithBytes:&integerValue length:8];
   v7 = MEMORY[0x277CCAD78];
-  v8 = [v5 uuid];
+  uuid = [fabricCopy uuid];
 
-  v9 = [v7 hmf_UUIDWithNamespace:v8 data:v6];
+  v9 = [v7 hmf_UUIDWithNamespace:uuid data:v6];
 
   return v9;
 }

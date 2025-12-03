@@ -1,18 +1,18 @@
 @interface PKDiscoveryTextBlockShelf
-- (BOOL)isEqual:(id)a3;
-- (PKDiscoveryTextBlockShelf)initWithCoder:(id)a3;
-- (PKDiscoveryTextBlockShelf)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKDiscoveryTextBlockShelf)initWithCoder:(id)coder;
+- (PKDiscoveryTextBlockShelf)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)localizeWithBundle:(id)a3 table:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)localizeWithBundle:(id)bundle table:(id)table;
 @end
 
 @implementation PKDiscoveryTextBlockShelf
 
-- (PKDiscoveryTextBlockShelf)initWithDictionary:(id)a3
+- (PKDiscoveryTextBlockShelf)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PKDiscoveryTextBlockShelf;
   v5 = [(PKDiscoveryTextBlockShelf *)&v16 init];
@@ -20,19 +20,19 @@
   if (v5)
   {
     [(PKDiscoveryShelf *)v5 setType:1];
-    v7 = [v4 PKStringForKey:@"bodyKey"];
+    v7 = [dictionaryCopy PKStringForKey:@"bodyKey"];
     bodyKey = v6->_bodyKey;
     v6->_bodyKey = v7;
 
-    v9 = [v4 PKStringForKey:@"ledeKey"];
+    v9 = [dictionaryCopy PKStringForKey:@"ledeKey"];
     ledeKey = v6->_ledeKey;
     v6->_ledeKey = v9;
 
-    v11 = [v4 PKStringForKey:@"sectionHeadlineKey"];
+    v11 = [dictionaryCopy PKStringForKey:@"sectionHeadlineKey"];
     sectionHeaderLineKey = v6->_sectionHeaderLineKey;
     v6->_sectionHeaderLineKey = v11;
 
-    v13 = [v4 PKStringForKey:@"style"];
+    v13 = [dictionaryCopy PKStringForKey:@"style"];
     if ([@"standard" isEqualToString:v13])
     {
       v14 = 0;
@@ -49,14 +49,14 @@
   return v6;
 }
 
-- (void)localizeWithBundle:(id)a3 table:(id)a4
+- (void)localizeWithBundle:(id)bundle table:(id)table
 {
-  v16 = a3;
-  v6 = a4;
+  bundleCopy = bundle;
+  tableCopy = table;
   bodyKey = self->_bodyKey;
   if (bodyKey)
   {
-    v8 = [v16 localizedStringForKey:bodyKey value:&stru_1F227FD28 table:v6];
+    v8 = [bundleCopy localizedStringForKey:bodyKey value:&stru_1F227FD28 table:tableCopy];
     localizedBody = self->_localizedBody;
     self->_localizedBody = v8;
   }
@@ -64,7 +64,7 @@
   ledeKey = self->_ledeKey;
   if (ledeKey)
   {
-    v11 = [v16 localizedStringForKey:ledeKey value:&stru_1F227FD28 table:v6];
+    v11 = [bundleCopy localizedStringForKey:ledeKey value:&stru_1F227FD28 table:tableCopy];
     localizedLede = self->_localizedLede;
     self->_localizedLede = v11;
   }
@@ -72,30 +72,30 @@
   sectionHeaderLineKey = self->_sectionHeaderLineKey;
   if (sectionHeaderLineKey)
   {
-    v14 = [v16 localizedStringForKey:sectionHeaderLineKey value:&stru_1F227FD28 table:v6];
+    v14 = [bundleCopy localizedStringForKey:sectionHeaderLineKey value:&stru_1F227FD28 table:tableCopy];
     localizedSectionHeaderLine = self->_localizedSectionHeaderLine;
     self->_localizedSectionHeaderLine = v14;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v21.receiver = self;
   v21.super_class = PKDiscoveryTextBlockShelf;
-  if (![(PKDiscoveryShelf *)&v21 isEqual:v4])
+  if (![(PKDiscoveryShelf *)&v21 isEqual:equalCopy])
   {
     goto LABEL_37;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_style != v4[4])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_style != equalCopy[4])
   {
     goto LABEL_37;
   }
 
   bodyKey = self->_bodyKey;
-  v6 = v4[5];
+  v6 = equalCopy[5];
   if (bodyKey)
   {
     v7 = v6 == 0;
@@ -120,7 +120,7 @@
   }
 
   ledeKey = self->_ledeKey;
-  v9 = v4[6];
+  v9 = equalCopy[6];
   if (ledeKey)
   {
     v10 = v9 == 0;
@@ -145,7 +145,7 @@
   }
 
   sectionHeaderLineKey = self->_sectionHeaderLineKey;
-  v12 = v4[7];
+  v12 = equalCopy[7];
   if (sectionHeaderLineKey && v12)
   {
     if (([(NSString *)sectionHeaderLineKey isEqual:?]& 1) == 0)
@@ -160,7 +160,7 @@
   }
 
   localizedBody = self->_localizedBody;
-  v14 = v4[8];
+  v14 = equalCopy[8];
   if (localizedBody && v14)
   {
     if (([(NSString *)localizedBody isEqual:?]& 1) == 0)
@@ -175,7 +175,7 @@
   }
 
   localizedLede = self->_localizedLede;
-  v16 = v4[9];
+  v16 = equalCopy[9];
   if (!localizedLede || !v16)
   {
     if (localizedLede == v16)
@@ -195,7 +195,7 @@ LABEL_37:
 
 LABEL_33:
   localizedSectionHeaderLine = self->_localizedSectionHeaderLine;
-  v18 = v4[10];
+  v18 = equalCopy[10];
   if (localizedSectionHeaderLine && v18)
   {
     v19 = [(NSString *)localizedSectionHeaderLine isEqual:?];
@@ -263,51 +263,51 @@ LABEL_38:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKDiscoveryTextBlockShelf;
-  v4 = a3;
-  [(PKDiscoveryShelf *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_style forKey:{@"style", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_bodyKey forKey:@"bodyKey"];
-  [v4 encodeObject:self->_ledeKey forKey:@"ledeKey"];
-  [v4 encodeObject:self->_sectionHeaderLineKey forKey:@"sectionHeadlineKey"];
-  [v4 encodeObject:self->_localizedBody forKey:@"localizedBody"];
-  [v4 encodeObject:self->_localizedLede forKey:@"localizedLede"];
-  [v4 encodeObject:self->_localizedSectionHeaderLine forKey:@"localizedSectionHeadline"];
+  coderCopy = coder;
+  [(PKDiscoveryShelf *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_style forKey:{@"style", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_bodyKey forKey:@"bodyKey"];
+  [coderCopy encodeObject:self->_ledeKey forKey:@"ledeKey"];
+  [coderCopy encodeObject:self->_sectionHeaderLineKey forKey:@"sectionHeadlineKey"];
+  [coderCopy encodeObject:self->_localizedBody forKey:@"localizedBody"];
+  [coderCopy encodeObject:self->_localizedLede forKey:@"localizedLede"];
+  [coderCopy encodeObject:self->_localizedSectionHeaderLine forKey:@"localizedSectionHeadline"];
 }
 
-- (PKDiscoveryTextBlockShelf)initWithCoder:(id)a3
+- (PKDiscoveryTextBlockShelf)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKDiscoveryTextBlockShelf;
-  v5 = [(PKDiscoveryShelf *)&v19 initWithCoder:v4];
+  v5 = [(PKDiscoveryShelf *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bodyKey"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bodyKey"];
     bodyKey = v5->_bodyKey;
     v5->_bodyKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ledeKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ledeKey"];
     ledeKey = v5->_ledeKey;
     v5->_ledeKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionHeadlineKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionHeadlineKey"];
     sectionHeaderLineKey = v5->_sectionHeaderLineKey;
     v5->_sectionHeaderLineKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedBody"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedBody"];
     localizedBody = v5->_localizedBody;
     v5->_localizedBody = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedLede"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedLede"];
     localizedLede = v5->_localizedLede;
     v5->_localizedLede = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedSectionHeadline"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedSectionHeadline"];
     localizedSectionHeaderLine = v5->_localizedSectionHeaderLine;
     v5->_localizedSectionHeaderLine = v16;
   }

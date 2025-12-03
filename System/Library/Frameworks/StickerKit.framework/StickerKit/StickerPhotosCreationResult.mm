@@ -3,18 +3,18 @@
 - (NSArray)representations;
 - (NSUUID)stickerUUID;
 - (_TtC10StickerKitP33_19FC6B4034B7CA5830119A91FEF116A027StickerPhotosCreationResult)init;
-- (void)setRepresentations:(id)a3;
-- (void)setSticker:(id)a3;
-- (void)setStickerUUID:(id)a3;
+- (void)setRepresentations:(id)representations;
+- (void)setSticker:(id)sticker;
+- (void)setStickerUUID:(id)d;
 @end
 
 @implementation StickerPhotosCreationResult
 
-- (void)setSticker:(id)a3
+- (void)setSticker:(id)sticker
 {
   v4 = *(self + OBJC_IVAR____TtC10StickerKitP33_19FC6B4034B7CA5830119A91FEF116A027StickerPhotosCreationResult_sticker);
-  *(self + OBJC_IVAR____TtC10StickerKitP33_19FC6B4034B7CA5830119A91FEF116A027StickerPhotosCreationResult_sticker) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10StickerKitP33_19FC6B4034B7CA5830119A91FEF116A027StickerPhotosCreationResult_sticker) = sticker;
+  stickerCopy = sticker;
 }
 
 - (NSUUID)stickerUUID
@@ -39,12 +39,12 @@
   return v10;
 }
 
-- (void)setStickerUUID:(id)a3
+- (void)setStickerUUID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAFCD800);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (d)
   {
     sub_19A7A8F44();
     v8 = sub_19A7A8F64();
@@ -59,7 +59,7 @@
 
   v10 = OBJC_IVAR____TtC10StickerKitP33_19FC6B4034B7CA5830119A91FEF116A027StickerPhotosCreationResult_stickerUUID;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_19A6264EC(v7, self + v10);
   swift_endAccess();
 }
@@ -81,9 +81,9 @@
   return v2;
 }
 
-- (void)setRepresentations:(id)a3
+- (void)setRepresentations:(id)representations
 {
-  if (a3)
+  if (representations)
   {
     sub_19A7AAD24();
     v4 = sub_19A7AB254();

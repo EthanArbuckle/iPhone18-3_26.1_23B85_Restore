@@ -1,81 +1,81 @@
 @interface TAScanRequestSettings
-- (BOOL)isEqual:(id)a3;
-- (TAScanRequestSettings)initWithCoder:(id)a3;
-- (TAScanRequestSettings)initWithMinVisitEntryDisplayOnDuration:(double)a3 minInterVisitDisplayOnDuration:(double)a4 interVisitScanDelay:(double)a5 maxInterVisitScanRequests:(unint64_t)a6;
-- (TAScanRequestSettings)initWithMinVisitEntryDisplayOnDurationOrDefault:(id)a3 minInterVisitDisplayOnDurationOrDefault:(id)a4 interVisitScanDelayOrDefault:(id)a5 maxInterVisitScanRequestsOrDefault:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TAScanRequestSettings)initWithCoder:(id)coder;
+- (TAScanRequestSettings)initWithMinVisitEntryDisplayOnDuration:(double)duration minInterVisitDisplayOnDuration:(double)onDuration interVisitScanDelay:(double)delay maxInterVisitScanRequests:(unint64_t)requests;
+- (TAScanRequestSettings)initWithMinVisitEntryDisplayOnDurationOrDefault:(id)default minInterVisitDisplayOnDurationOrDefault:(id)orDefault interVisitScanDelayOrDefault:(id)delayOrDefault maxInterVisitScanRequestsOrDefault:(id)requestsOrDefault;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TAScanRequestSettings
 
-- (TAScanRequestSettings)initWithMinVisitEntryDisplayOnDuration:(double)a3 minInterVisitDisplayOnDuration:(double)a4 interVisitScanDelay:(double)a5 maxInterVisitScanRequests:(unint64_t)a6
+- (TAScanRequestSettings)initWithMinVisitEntryDisplayOnDuration:(double)duration minInterVisitDisplayOnDuration:(double)onDuration interVisitScanDelay:(double)delay maxInterVisitScanRequests:(unint64_t)requests
 {
   v11.receiver = self;
   v11.super_class = TAScanRequestSettings;
   result = [(TAScanRequestSettings *)&v11 init];
   if (result)
   {
-    result->_minVisitEntryDisplayOnDuration = a3;
-    result->_minInterVisitDisplayOnDuration = a4;
-    result->_interVisitScanDelay = a5;
-    result->_maxInterVisitScanRequests = a6;
+    result->_minVisitEntryDisplayOnDuration = duration;
+    result->_minInterVisitDisplayOnDuration = onDuration;
+    result->_interVisitScanDelay = delay;
+    result->_maxInterVisitScanRequests = requests;
   }
 
   return result;
 }
 
-- (TAScanRequestSettings)initWithMinVisitEntryDisplayOnDurationOrDefault:(id)a3 minInterVisitDisplayOnDurationOrDefault:(id)a4 interVisitScanDelayOrDefault:(id)a5 maxInterVisitScanRequestsOrDefault:(id)a6
+- (TAScanRequestSettings)initWithMinVisitEntryDisplayOnDurationOrDefault:(id)default minInterVisitDisplayOnDurationOrDefault:(id)orDefault interVisitScanDelayOrDefault:(id)delayOrDefault maxInterVisitScanRequestsOrDefault:(id)requestsOrDefault
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  defaultCopy = default;
+  orDefaultCopy = orDefault;
+  delayOrDefaultCopy = delayOrDefault;
+  requestsOrDefaultCopy = requestsOrDefault;
   v14 = 90.0;
   v15 = 90.0;
-  if (v10)
+  if (defaultCopy)
   {
-    [v10 doubleValue];
+    [defaultCopy doubleValue];
     v15 = v16;
   }
 
-  if (v11)
+  if (orDefaultCopy)
   {
-    [v11 doubleValue];
+    [orDefaultCopy doubleValue];
     v14 = v17;
   }
 
-  if (!v12)
+  if (!delayOrDefaultCopy)
   {
     v19 = 660.0;
-    if (v13)
+    if (requestsOrDefaultCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_9:
-    v20 = 2;
+    unsignedIntegerValue = 2;
     goto LABEL_10;
   }
 
-  [v12 doubleValue];
+  [delayOrDefaultCopy doubleValue];
   v19 = v18;
-  if (!v13)
+  if (!requestsOrDefaultCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_7:
-  v20 = [v13 unsignedIntegerValue];
+  unsignedIntegerValue = [requestsOrDefaultCopy unsignedIntegerValue];
 LABEL_10:
-  v21 = [(TAScanRequestSettings *)self initWithMinVisitEntryDisplayOnDuration:v20 minInterVisitDisplayOnDuration:v15 interVisitScanDelay:v14 maxInterVisitScanRequests:v19];
+  v21 = [(TAScanRequestSettings *)self initWithMinVisitEntryDisplayOnDuration:unsignedIntegerValue minInterVisitDisplayOnDuration:v15 interVisitScanDelay:v14 maxInterVisitScanRequests:v19];
 
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TAScanRequestSettings allocWithZone:a3];
+  v4 = [TAScanRequestSettings allocWithZone:zone];
   minVisitEntryDisplayOnDuration = self->_minVisitEntryDisplayOnDuration;
   minInterVisitDisplayOnDuration = self->_minInterVisitDisplayOnDuration;
   interVisitScanDelay = self->_interVisitScanDelay;
@@ -84,10 +84,10 @@ LABEL_10:
   return [(TAScanRequestSettings *)v4 initWithMinVisitEntryDisplayOnDuration:maxInterVisitScanRequests minInterVisitDisplayOnDuration:minVisitEntryDisplayOnDuration interVisitScanDelay:minInterVisitDisplayOnDuration maxInterVisitScanRequests:interVisitScanDelay];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -97,14 +97,14 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(TAScanRequestSettings *)self minVisitEntryDisplayOnDuration];
       v7 = v6;
       [(TAScanRequestSettings *)v5 minVisitEntryDisplayOnDuration];
       if (v7 == v8 && ([(TAScanRequestSettings *)self minInterVisitDisplayOnDuration], v10 = v9, [(TAScanRequestSettings *)v5 minInterVisitDisplayOnDuration], v10 == v11) && ([(TAScanRequestSettings *)self interVisitScanDelay], v13 = v12, [(TAScanRequestSettings *)v5 interVisitScanDelay], v13 == v14))
       {
-        v15 = [(TAScanRequestSettings *)self maxInterVisitScanRequests];
-        v16 = v15 == [(TAScanRequestSettings *)v5 maxInterVisitScanRequests];
+        maxInterVisitScanRequests = [(TAScanRequestSettings *)self maxInterVisitScanRequests];
+        v16 = maxInterVisitScanRequests == [(TAScanRequestSettings *)v5 maxInterVisitScanRequests];
       }
 
       else
@@ -122,28 +122,28 @@ LABEL_10:
   return v16;
 }
 
-- (TAScanRequestSettings)initWithCoder:(id)a3
+- (TAScanRequestSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"VisitDisplayOn"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"VisitDisplayOn"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"IntervisitDisplayOn"];
+  [coderCopy decodeDoubleForKey:@"IntervisitDisplayOn"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"ScanDelay"];
+  [coderCopy decodeDoubleForKey:@"ScanDelay"];
   v10 = v9;
-  v11 = [v4 decodeIntegerForKey:@"MaxScanReqs"];
+  v11 = [coderCopy decodeIntegerForKey:@"MaxScanReqs"];
 
   return [(TAScanRequestSettings *)self initWithMinVisitEntryDisplayOnDuration:v11 minInterVisitDisplayOnDuration:v6 interVisitScanDelay:v8 maxInterVisitScanRequests:v10];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minVisitEntryDisplayOnDuration = self->_minVisitEntryDisplayOnDuration;
-  v5 = a3;
-  [v5 encodeDouble:@"VisitDisplayOn" forKey:minVisitEntryDisplayOnDuration];
-  [v5 encodeDouble:@"IntervisitDisplayOn" forKey:self->_minInterVisitDisplayOnDuration];
-  [v5 encodeDouble:@"ScanDelay" forKey:self->_interVisitScanDelay];
-  [v5 encodeInteger:self->_maxInterVisitScanRequests forKey:@"MaxScanReqs"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"VisitDisplayOn" forKey:minVisitEntryDisplayOnDuration];
+  [coderCopy encodeDouble:@"IntervisitDisplayOn" forKey:self->_minInterVisitDisplayOnDuration];
+  [coderCopy encodeDouble:@"ScanDelay" forKey:self->_interVisitScanDelay];
+  [coderCopy encodeInteger:self->_maxInterVisitScanRequests forKey:@"MaxScanReqs"];
 }
 
 @end

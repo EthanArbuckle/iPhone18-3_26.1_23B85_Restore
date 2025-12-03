@@ -1,12 +1,12 @@
 @interface HUTouchGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation HUTouchGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if ([a3 count] != 1)
+  if ([began count] != 1)
   {
     [(HUTouchGestureRecognizer *)self setState:5];
   }

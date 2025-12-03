@@ -3,7 +3,7 @@
 - (BOOL)_shouldEnableSoundSource;
 - (id)specifiers;
 - (void)soundActionsAssetDidUpdate;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATSwitchSourceController
@@ -19,8 +19,8 @@
 
 - (BOOL)_shouldEnableSoundSource
 {
-  v2 = [(SCATSwitchSourceController *)self soundActionslocalURL];
-  v3 = v2 != 0;
+  soundActionslocalURL = [(SCATSwitchSourceController *)self soundActionslocalURL];
+  v3 = soundActionslocalURL != 0;
 
   return v3;
 }
@@ -146,40 +146,40 @@ void __55__SCATSwitchSourceController__shouldEnableCameraSource__block_invoke_2(
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v17.receiver = self;
   v17.super_class = SCATSwitchSourceController;
-  v5 = [(SCATSwitchSourceController *)&v17 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [v6 identifier];
+  v5 = [(SCATSwitchSourceController *)&v17 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  identifier = [specifier identifier];
 
-  if ([v7 isEqualToString:@"ExternalSwitchSourceIdentifier"] || objc_msgSend(v7, "isEqualToString:", @"ScreenSwitchSourceIdentifier") || objc_msgSend(v7, "isEqualToString:", @"CameraSwitchSourceIdentifier"))
+  if ([identifier isEqualToString:@"ExternalSwitchSourceIdentifier"] || objc_msgSend(identifier, "isEqualToString:", @"ScreenSwitchSourceIdentifier") || objc_msgSend(identifier, "isEqualToString:", @"CameraSwitchSourceIdentifier"))
   {
     v8 = objc_opt_new();
     [v8 setParentController:self];
-    v9 = [(SCATSwitchSourceController *)self rootController];
-    [v8 setRootController:v9];
+    rootController = [(SCATSwitchSourceController *)self rootController];
+    [v8 setRootController:rootController];
 
-    v10 = AXParameterizedLocalizedString();
-    v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:-1 edit:0];
-    [v8 setSpecifier:v11];
+    specifier2 = AXParameterizedLocalizedString();
+    name = [PSSpecifier preferenceSpecifierNamed:specifier2 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+    [v8 setSpecifier:name];
     goto LABEL_6;
   }
 
-  if (![v7 isEqualToString:@"BackTapSwitchSourceIdentifier"])
+  if (![identifier isEqualToString:@"BackTapSwitchSourceIdentifier"])
   {
-    if ([v7 isEqualToString:@"SoundSwitchSourceIdentifier"])
+    if ([identifier isEqualToString:@"SoundSwitchSourceIdentifier"])
     {
       v8 = objc_opt_new();
-      v14 = [(SCATSwitchSourceController *)self soundActionslocalURL];
-      [v8 setAssetURL:v14];
+      soundActionslocalURL = [(SCATSwitchSourceController *)self soundActionslocalURL];
+      [v8 setAssetURL:soundActionslocalURL];
 
       v13 = v8;
       goto LABEL_13;
     }
 
-    if (![v7 isEqualToString:@"HeadGesturesSwitchSourceIdentifier"])
+    if (![identifier isEqualToString:@"HeadGesturesSwitchSourceIdentifier"])
     {
       goto LABEL_8;
     }
@@ -189,20 +189,20 @@ void __55__SCATSwitchSourceController__shouldEnableCameraSource__block_invoke_2(
   v8 = v13;
 LABEL_13:
   [v13 setParentController:self];
-  v15 = [(SCATSwitchSourceController *)self rootController];
-  [v8 setRootController:v15];
+  rootController2 = [(SCATSwitchSourceController *)self rootController];
+  [v8 setRootController:rootController2];
 
-  v10 = [v5 specifier];
-  v11 = [v10 name];
-  v16 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+  specifier2 = [v5 specifier];
+  name = [specifier2 name];
+  v16 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [v8 setSpecifier:v16];
 
 LABEL_6:
   [(SCATSwitchSourceController *)self showController:v8 animate:1];
   if (v8)
   {
-    v12 = [(SCATSettingsCompletionController *)self completion];
-    [v8 setCompletion:v12];
+    completion = [(SCATSettingsCompletionController *)self completion];
+    [v8 setCompletion:completion];
   }
 
 LABEL_8:

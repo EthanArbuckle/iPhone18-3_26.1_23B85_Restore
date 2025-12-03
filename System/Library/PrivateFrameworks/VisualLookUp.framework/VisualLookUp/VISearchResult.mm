@@ -1,21 +1,21 @@
 @interface VISearchResult
 + (id)empty;
-- (BOOL)isEqual:(id)a3;
-- (VISearchResult)initWithRegionOfInterestResults:(id)a3;
-- (VISearchResult)initWithRegionOfInterestResults:(id)a3 userFeedbackPayload:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VISearchResult)initWithRegionOfInterestResults:(id)results;
+- (VISearchResult)initWithRegionOfInterestResults:(id)results userFeedbackPayload:(id)payload;
 @end
 
 @implementation VISearchResult
 
-- (VISearchResult)initWithRegionOfInterestResults:(id)a3
+- (VISearchResult)initWithRegionOfInterestResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v9.receiver = self;
   v9.super_class = VISearchResult;
   v5 = [(VISearchResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resultsCopy copy];
     regionOfInterestResults = v5->_regionOfInterestResults;
     v5->_regionOfInterestResults = v6;
   }
@@ -23,20 +23,20 @@
   return v5;
 }
 
-- (VISearchResult)initWithRegionOfInterestResults:(id)a3 userFeedbackPayload:(id)a4
+- (VISearchResult)initWithRegionOfInterestResults:(id)results userFeedbackPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  payloadCopy = payload;
   v14.receiver = self;
   v14.super_class = VISearchResult;
   v8 = [(VISearchResult *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [resultsCopy copy];
     regionOfInterestResults = v8->_regionOfInterestResults;
     v8->_regionOfInterestResults = v9;
 
-    v11 = [v7 copy];
+    v11 = [payloadCopy copy];
     userFeedbackPayload = v8->_userFeedbackPayload;
     v8->_userFeedbackPayload = v11;
   }
@@ -44,20 +44,20 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   v15 = v5;
   v16 = v3;
-  v10 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = equalCopy;
   }
 
   else
@@ -66,8 +66,8 @@
   }
 
   regionOfInterestResults = self->_regionOfInterestResults;
-  v13 = [v11 regionOfInterestResults];
-  LOBYTE(regionOfInterestResults) = VIObjectIsEqual(regionOfInterestResults, v13);
+  regionOfInterestResults = [v11 regionOfInterestResults];
+  LOBYTE(regionOfInterestResults) = VIObjectIsEqual(regionOfInterestResults, regionOfInterestResults);
 
   return regionOfInterestResults;
 }

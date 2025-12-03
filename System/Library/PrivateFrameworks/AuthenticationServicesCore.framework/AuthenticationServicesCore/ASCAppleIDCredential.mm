@@ -1,32 +1,32 @@
 @interface ASCAppleIDCredential
-- (ASCAppleIDCredential)initWithAuthorization:(id)a3;
-- (ASCAppleIDCredential)initWithCoder:(id)a3;
-- (ASCAppleIDCredential)initWithUser:(id)a3 identityToken:(id)a4 state:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASCAppleIDCredential)initWithAuthorization:(id)authorization;
+- (ASCAppleIDCredential)initWithCoder:(id)coder;
+- (ASCAppleIDCredential)initWithUser:(id)user identityToken:(id)token state:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCAppleIDCredential
 
-- (ASCAppleIDCredential)initWithUser:(id)a3 identityToken:(id)a4 state:(id)a5
+- (ASCAppleIDCredential)initWithUser:(id)user identityToken:(id)token state:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  userCopy = user;
+  tokenCopy = token;
+  stateCopy = state;
   v20.receiver = self;
   v20.super_class = ASCAppleIDCredential;
   v11 = [(ASCAppleIDCredential *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [userCopy copy];
     user = v11->_user;
     v11->_user = v12;
 
-    v14 = [v9 copy];
+    v14 = [tokenCopy copy];
     identityToken = v11->_identityToken;
     v11->_identityToken = v14;
 
-    v16 = [v10 copy];
+    v16 = [stateCopy copy];
     state = v11->_state;
     v11->_state = v16;
 
@@ -36,25 +36,25 @@
   return v11;
 }
 
-- (ASCAppleIDCredential)initWithAuthorization:(id)a3
+- (ASCAppleIDCredential)initWithAuthorization:(id)authorization
 {
-  v5 = a3;
-  v6 = [v5 credential];
-  v7 = [v6 userIdentifier];
-  v8 = [v6 identityToken];
-  v9 = [v6 state];
-  v10 = [(ASCAppleIDCredential *)self initWithUser:v7 identityToken:v8 state:v9];
+  authorizationCopy = authorization;
+  credential = [authorizationCopy credential];
+  userIdentifier = [credential userIdentifier];
+  identityToken = [credential identityToken];
+  state = [credential state];
+  v10 = [(ASCAppleIDCredential *)self initWithUser:userIdentifier identityToken:identityToken state:state];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_authorization, a3);
+    objc_storeStrong(&v10->_authorization, authorization);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   authorization = self->_authorization;
   v5 = [ASCAppleIDCredential alloc];
@@ -75,23 +75,23 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   authorization = self->_authorization;
-  v5 = a3;
-  [v5 encodeObject:authorization forKey:@"Authorization"];
-  [v5 encodeObject:self->_user forKey:@"User"];
-  [v5 encodeObject:self->_identityToken forKey:@"IdentityToken"];
-  [v5 encodeObject:self->_state forKey:@"State"];
+  coderCopy = coder;
+  [coderCopy encodeObject:authorization forKey:@"Authorization"];
+  [coderCopy encodeObject:self->_user forKey:@"User"];
+  [coderCopy encodeObject:self->_identityToken forKey:@"IdentityToken"];
+  [coderCopy encodeObject:self->_state forKey:@"State"];
 }
 
-- (ASCAppleIDCredential)initWithCoder:(id)a3
+- (ASCAppleIDCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Authorization"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"User"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IdentityToken"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"State"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Authorization"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"User"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IdentityToken"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"State"];
 
   v9 = [(ASCAppleIDCredential *)self initWithUser:v6 identityToken:v7 state:v8];
   v10 = v9;

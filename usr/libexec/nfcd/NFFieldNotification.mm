@@ -1,88 +1,88 @@
 @interface NFFieldNotification
-+ (NFFieldNotification)notificationWithDictionary:(id)a3;
-+ (id)fieldNotificationFromXPCObject:(id)a3;
++ (NFFieldNotification)notificationWithDictionary:(id)dictionary;
++ (id)fieldNotificationFromXPCObject:(id)object;
 - (BOOL)isCHAutoNegotiationField;
 - (BOOL)isCHTerminal;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualTerminalInfo:(id)a3;
-- (BOOL)isEqualWithoutRFTech:(id)a3;
-- (NFFieldNotification)initWithCoder:(id)a3;
-- (NFFieldNotification)initWithDictionary:(id)a3;
-- (NFFieldNotification)initWithNotificationType:(unint64_t)a3 rfTechnology:(unsigned int)a4 typeFSystemCode:(unsigned __int16)a5 creationDate:(id)a6 cachedBeforeRFReset:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualTerminalInfo:(id)info;
+- (BOOL)isEqualWithoutRFTech:(id)tech;
+- (NFFieldNotification)initWithCoder:(id)coder;
+- (NFFieldNotification)initWithDictionary:(id)dictionary;
+- (NFFieldNotification)initWithNotificationType:(unint64_t)type rfTechnology:(unsigned int)technology typeFSystemCode:(unsigned __int16)code creationDate:(id)date cachedBeforeRFReset:(BOOL)reset;
 - (id)_creationDateString;
 - (id)asXPCObject;
 - (id)chRandomData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)chFieldType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFFieldNotification
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rfTechnology = self->_rfTechnology;
-  v5 = a3;
-  [v5 encodeInteger:rfTechnology forKey:@"rfTechnology"];
-  [v5 encodeInteger:self->_typeFSystemCode forKey:@"typeFSystemCode"];
-  [v5 encodeInteger:self->_notificationType forKey:@"notificationType"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeBool:self->_cachedBeforeRFReset forKey:@"cachedBeforeRFReset"];
-  [v5 encodeInteger:self->_category forKey:@"category"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:rfTechnology forKey:@"rfTechnology"];
+  [coderCopy encodeInteger:self->_typeFSystemCode forKey:@"typeFSystemCode"];
+  [coderCopy encodeInteger:self->_notificationType forKey:@"notificationType"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeBool:self->_cachedBeforeRFReset forKey:@"cachedBeforeRFReset"];
+  [coderCopy encodeInteger:self->_category forKey:@"category"];
 }
 
-- (NFFieldNotification)initWithCoder:(id)a3
+- (NFFieldNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NFFieldNotification;
   v5 = [(NFFieldNotification *)&v9 init];
   if (v5)
   {
-    v5->_rfTechnology = [v4 decodeIntegerForKey:@"rfTechnology"];
-    v5->_typeFSystemCode = [v4 decodeIntegerForKey:@"typeFSystemCode"];
-    v5->_notificationType = [v4 decodeIntegerForKey:@"notificationType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v5->_rfTechnology = [coderCopy decodeIntegerForKey:@"rfTechnology"];
+    v5->_typeFSystemCode = [coderCopy decodeIntegerForKey:@"typeFSystemCode"];
+    v5->_notificationType = [coderCopy decodeIntegerForKey:@"notificationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v6;
 
-    v5->_cachedBeforeRFReset = [v4 decodeBoolForKey:@"cachedBeforeRFReset"];
-    v5->_category = [v4 decodeIntegerForKey:@"category"];
+    v5->_cachedBeforeRFReset = [coderCopy decodeBoolForKey:@"cachedBeforeRFReset"];
+    v5->_category = [coderCopy decodeIntegerForKey:@"category"];
   }
 
   return v5;
 }
 
-+ (NFFieldNotification)notificationWithDictionary:(id)a3
++ (NFFieldNotification)notificationWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (![v5 count])
+  dictionaryCopy = dictionary;
+  if (![dictionaryCopy count])
   {
     v11 = +[NSAssertionHandler currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"NFFieldNotification.m" lineNumber:63 description:@"Empty dictionary"];
+    [v11 handleFailureInMethod:a2 object:self file:@"NFFieldNotification.m" lineNumber:63 description:@"Empty dictionary"];
 
     v12 = 0;
     goto LABEL_34;
   }
 
-  v6 = [v5 objectForKey:@"ECPData"];
+  v6 = [dictionaryCopy objectForKey:@"ECPData"];
   if ([v6 length] < 3)
   {
     goto LABEL_31;
   }
 
-  v7 = [v6 bytes];
-  if (*v7 != 106)
+  bytes = [v6 bytes];
+  if (*bytes != 106)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
     {
       v14 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v18 = 45;
       if (isMetaClass)
@@ -100,7 +100,7 @@
       goto LABEL_30;
     }
 
-    v20 = object_getClass(a1);
+    v20 = object_getClass(self);
     if (class_isMetaClass(v20))
     {
       v21 = 43;
@@ -114,7 +114,7 @@
     *buf = 67109890;
     v36 = v21;
     v37 = 2082;
-    v38 = object_getClassName(a1);
+    v38 = object_getClassName(self);
     v39 = 2082;
     v40 = sel_getName(a2);
     v41 = 1024;
@@ -129,8 +129,8 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v8 = v7;
-  v9 = v7[1];
+  v8 = bytes;
+  v9 = bytes[1];
   if (v9 != 2)
   {
     if (v9 == 1)
@@ -144,9 +144,9 @@ LABEL_31:
     if (v23)
     {
       v24 = v23;
-      v25 = object_getClass(a1);
+      v25 = object_getClass(self);
       v26 = class_isMetaClass(v25);
-      v27 = object_getClassName(a1);
+      v27 = object_getClassName(self);
       v34 = sel_getName(a2);
       v28 = 45;
       if (v26)
@@ -164,7 +164,7 @@ LABEL_31:
       goto LABEL_30;
     }
 
-    v29 = object_getClass(a1);
+    v29 = object_getClass(self);
     if (class_isMetaClass(v29))
     {
       v30 = 43;
@@ -178,7 +178,7 @@ LABEL_31:
     *buf = 67109890;
     v36 = v30;
     v37 = 2082;
-    v38 = object_getClassName(a1);
+    v38 = object_getClassName(self);
     v39 = 2082;
     v40 = sel_getName(a2);
     v41 = 1024;
@@ -189,13 +189,13 @@ LABEL_31:
 
   if ([v6 length] == 8 && *v8 == 0x820202C3026ALL)
   {
-    v31 = [[NFFieldNotificationECP1_0 alloc] initWithDictionaryForDavenport:v5];
+    v31 = [[NFFieldNotificationECP1_0 alloc] initWithDictionaryForDavenport:dictionaryCopy];
     goto LABEL_33;
   }
 
   v10 = NFFieldNotificationECP2_0;
 LABEL_32:
-  v31 = [[v10 alloc] initWithDictionary:v5];
+  v31 = [[v10 alloc] initWithDictionary:dictionaryCopy];
 LABEL_33:
   v12 = v31;
 
@@ -204,19 +204,19 @@ LABEL_34:
   return v12;
 }
 
-+ (id)fieldNotificationFromXPCObject:(id)a3
++ (id)fieldNotificationFromXPCObject:(id)object
 {
-  v5 = a3;
-  if (xpc_get_type(v5) != &_xpc_type_data)
+  objectCopy = object;
+  if (xpc_get_type(objectCopy) != &_xpc_type_data)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v10 = 45;
       if (isMetaClass)
@@ -224,7 +224,7 @@ LABEL_34:
         v10 = 43;
       }
 
-      v7(3, "%c[%{public}s %{public}s]:%i Unexpected parameter: %@", v10, ClassName, Name, 98, v5);
+      v7(3, "%c[%{public}s %{public}s]:%i Unexpected parameter: %@", v10, ClassName, Name, 98, objectCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -234,7 +234,7 @@ LABEL_34:
       goto LABEL_12;
     }
 
-    v12 = object_getClass(a1);
+    v12 = object_getClass(self);
     if (class_isMetaClass(v12))
     {
       v13 = 43;
@@ -248,13 +248,13 @@ LABEL_34:
     *buf = 67110146;
     v47 = v13;
     v48 = 2082;
-    v49 = object_getClassName(a1);
+    v49 = object_getClassName(self);
     v50 = 2082;
     v51 = sel_getName(a2);
     v52 = 1024;
     v53 = 98;
     v54 = 2112;
-    v55 = v5;
+    v55 = objectCopy;
 LABEL_11:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Unexpected parameter: %@", buf, 0x2Cu);
 LABEL_12:
@@ -270,9 +270,9 @@ LABEL_12:
     if (v32)
     {
       v33 = v32;
-      v34 = object_getClass(a1);
+      v34 = object_getClass(self);
       v35 = class_isMetaClass(v34);
-      v41 = object_getClassName(a1);
+      v41 = object_getClassName(self);
       v44 = sel_getName(a2);
       v36 = 45;
       if (v35)
@@ -280,7 +280,7 @@ LABEL_12:
         v36 = 43;
       }
 
-      v33(3, "%c[%{public}s %{public}s]:%i Unexpected parameter: %@", v36, v41, v44, 104, v5);
+      v33(3, "%c[%{public}s %{public}s]:%i Unexpected parameter: %@", v36, v41, v44, 104, objectCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -290,7 +290,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v37 = object_getClass(a1);
+    v37 = object_getClass(self);
     if (class_isMetaClass(v37))
     {
       v38 = 43;
@@ -304,13 +304,13 @@ LABEL_12:
     *buf = 67110146;
     v47 = v38;
     v48 = 2082;
-    v49 = object_getClassName(a1);
+    v49 = object_getClassName(self);
     v50 = 2082;
     v51 = sel_getName(a2);
     v52 = 1024;
     v53 = 104;
     v54 = 2112;
-    v55 = v5;
+    v55 = objectCopy;
     goto LABEL_11;
   }
 
@@ -328,9 +328,9 @@ LABEL_12:
     if (v21)
     {
       v22 = v21;
-      v23 = object_getClass(a1);
+      v23 = object_getClass(self);
       v24 = class_isMetaClass(v23);
-      v25 = object_getClassName(a1);
+      v25 = object_getClassName(self);
       v43 = sel_getName(a2);
       v26 = 45;
       if (v24)
@@ -345,7 +345,7 @@ LABEL_12:
     v27 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = object_getClass(a1);
+      v28 = object_getClass(self);
       if (class_isMetaClass(v28))
       {
         v29 = 43;
@@ -356,7 +356,7 @@ LABEL_12:
         v29 = 45;
       }
 
-      v30 = object_getClassName(a1);
+      v30 = object_getClassName(self);
       v31 = sel_getName(a2);
       *buf = 67110146;
       v47 = v29;
@@ -384,38 +384,38 @@ LABEL_36:
   return v14;
 }
 
-- (NFFieldNotification)initWithNotificationType:(unint64_t)a3 rfTechnology:(unsigned int)a4 typeFSystemCode:(unsigned __int16)a5 creationDate:(id)a6 cachedBeforeRFReset:(BOOL)a7
+- (NFFieldNotification)initWithNotificationType:(unint64_t)type rfTechnology:(unsigned int)technology typeFSystemCode:(unsigned __int16)code creationDate:(id)date cachedBeforeRFReset:(BOOL)reset
 {
-  v13 = a6;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = NFFieldNotification;
   v14 = [(NFFieldNotification *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    v14->_notificationType = a3;
-    v14->_rfTechnology = a4;
-    v14->_typeFSystemCode = a5;
-    objc_storeStrong(&v14->_creationDate, a6);
-    v15->_cachedBeforeRFReset = a7;
+    v14->_notificationType = type;
+    v14->_rfTechnology = technology;
+    v14->_typeFSystemCode = code;
+    objc_storeStrong(&v14->_creationDate, date);
+    v15->_cachedBeforeRFReset = reset;
     v16 = v15;
   }
 
   return v15;
 }
 
-- (NFFieldNotification)initWithDictionary:(id)a3
+- (NFFieldNotification)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = NFFieldNotification;
   v5 = [(NFFieldNotification *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"FieldTechnology"];
+    v6 = [dictionaryCopy objectForKey:@"FieldTechnology"];
     v5->_rfTechnology = [v6 integerValue];
 
-    v7 = [v4 objectForKey:@"SystemCode"];
+    v7 = [dictionaryCopy objectForKey:@"SystemCode"];
     v5->_typeFSystemCode = [v7 integerValue];
 
     v5->_notificationType = 1;
@@ -497,16 +497,16 @@ LABEL_7:
   v6 = [NSString alloc];
   ClassName = object_getClassName(self);
   v8 = bswap32(self->_typeFSystemCode) >> 16;
-  v9 = [(NFFieldNotification *)self _creationDateString];
-  v10 = [v6 initWithFormat:@"<%s: tech=%@ sc=0x%X date=%@ cached=%d>", ClassName, v4, v8, v9, self->_cachedBeforeRFReset];
+  _creationDateString = [(NFFieldNotification *)self _creationDateString];
+  v10 = [v6 initWithFormat:@"<%s: tech=%@ sc=0x%X date=%@ cached=%d>", ClassName, v4, v8, _creationDateString, self->_cachedBeforeRFReset];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -516,12 +516,12 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NFFieldNotification *)v5 rfTechnology];
-      if (v6 == [(NFFieldNotification *)self rfTechnology]&& (v7 = [(NFFieldNotification *)v5 typeFSystemCode], v7 == [(NFFieldNotification *)self typeFSystemCode]))
+      v5 = equalCopy;
+      rfTechnology = [(NFFieldNotification *)v5 rfTechnology];
+      if (rfTechnology == [(NFFieldNotification *)self rfTechnology]&& (v7 = [(NFFieldNotification *)v5 typeFSystemCode], v7 == [(NFFieldNotification *)self typeFSystemCode]))
       {
-        v8 = [(NFFieldNotification *)v5 notificationType];
-        v9 = v8 == [(NFFieldNotification *)self notificationType];
+        notificationType = [(NFFieldNotification *)v5 notificationType];
+        v9 = notificationType == [(NFFieldNotification *)self notificationType];
       }
 
       else
@@ -539,10 +539,10 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqualWithoutRFTech:(id)a3
+- (BOOL)isEqualWithoutRFTech:(id)tech
 {
-  v4 = a3;
-  if (v4 == self)
+  techCopy = tech;
+  if (techCopy == self)
   {
     v6 = 1;
   }
@@ -552,8 +552,8 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NFFieldNotification *)v4 notificationType];
-      v6 = v5 == [(NFFieldNotification *)self notificationType];
+      notificationType = [(NFFieldNotification *)techCopy notificationType];
+      v6 = notificationType == [(NFFieldNotification *)self notificationType];
     }
 
     else
@@ -565,11 +565,11 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualTerminalInfo:(id)a3
+- (BOOL)isEqualTerminalInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(NFFieldNotification *)self notificationType];
-  if (v5 != [v4 notificationType])
+  infoCopy = info;
+  notificationType = [(NFFieldNotification *)self notificationType];
+  if (notificationType != [infoCopy notificationType])
   {
     goto LABEL_8;
   }
@@ -578,11 +578,11 @@ LABEL_7:
   {
     if ([(NFFieldNotification *)self notificationType]== 3)
     {
-      v9 = [(NFFieldNotification *)self terminalType];
-      if (v9 == [v4 terminalType])
+      terminalType = [(NFFieldNotification *)self terminalType];
+      if (terminalType == [infoCopy terminalType])
       {
-        v6 = [(NFFieldNotification *)self terminalSubType];
-        v7 = [v4 terminalSubType];
+        terminalSubType = [(NFFieldNotification *)self terminalSubType];
+        terminalSubType2 = [infoCopy terminalSubType];
         goto LABEL_4;
       }
     }
@@ -592,10 +592,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [(NFFieldNotification *)self terminalType];
-  v7 = [v4 terminalType];
+  terminalSubType = [(NFFieldNotification *)self terminalType];
+  terminalSubType2 = [infoCopy terminalType];
 LABEL_4:
-  v8 = v6 == v7;
+  v8 = terminalSubType == terminalSubType2;
 LABEL_9:
 
   return v8;
@@ -667,7 +667,7 @@ LABEL_9:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NFFieldNotification alloc];
   rfTechnology = self->_rfTechnology;
@@ -695,8 +695,8 @@ LABEL_9:
     return 0;
   }
 
-  v3 = self;
-  v4 = [(NFFieldNotification *)v3 terminalType]== 5 && [(NFFieldNotification *)v3 terminalSubType]== 0;
+  selfCopy = self;
+  v4 = [(NFFieldNotification *)selfCopy terminalType]== 5 && [(NFFieldNotification *)selfCopy terminalSubType]== 0;
 
   return v4;
 }
@@ -705,34 +705,34 @@ LABEL_9:
 {
   if ([(NFFieldNotification *)self isCHTerminal])
   {
-    v3 = self;
-    v4 = [(NFFieldNotification *)v3 userInfo];
+    selfCopy = self;
+    userInfo = [(NFFieldNotification *)selfCopy userInfo];
 
-    if (v4)
+    if (userInfo)
     {
-      v5 = [(NFFieldNotification *)v3 userInfo];
-      v6 = [v5 objectForKeyedSubscript:@"CHCfgBytes"];
+      userInfo2 = [(NFFieldNotification *)selfCopy userInfo];
+      v6 = [userInfo2 objectForKeyedSubscript:@"CHCfgBytes"];
 
-      v4 = ([v6 unsignedShortValue] & 1);
+      userInfo = ([v6 unsignedShortValue] & 1);
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(userInfo) = 0;
   }
 
-  return v4;
+  return userInfo;
 }
 
 - (unint64_t)chFieldType
 {
   if ([(NFFieldNotification *)self isCHTerminal])
   {
-    v4 = self;
-    v5 = [(NFFieldNotification *)v4 userInfo];
+    selfCopy = self;
+    userInfo = [(NFFieldNotification *)selfCopy userInfo];
 
-    if (!v5)
+    if (!userInfo)
     {
       v22 = 4;
 LABEL_33:
@@ -740,15 +740,15 @@ LABEL_33:
       return v22;
     }
 
-    v6 = [(NFFieldNotification *)v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"CHCfgBytes"];
+    userInfo2 = [(NFFieldNotification *)selfCopy userInfo];
+    v7 = [userInfo2 objectForKeyedSubscript:@"CHCfgBytes"];
 
     if ([v7 unsignedShortValue])
     {
       if ([v7 unsignedShortValue])
       {
-        v23 = [(NFFieldNotification *)v4 userInfo];
-        v24 = [v23 objectForKey:@"CHRemoteRandom"];
+        userInfo3 = [(NFFieldNotification *)selfCopy userInfo];
+        v24 = [userInfo3 objectForKey:@"CHRemoteRandom"];
 
         if (!v24)
         {
@@ -757,9 +757,9 @@ LABEL_33:
           if (Logger)
           {
             v28 = Logger;
-            Class = object_getClass(v4);
+            Class = object_getClass(selfCopy);
             isMetaClass = class_isMetaClass(Class);
-            ClassName = object_getClassName(v4);
+            ClassName = object_getClassName(selfCopy);
             Name = sel_getName(a2);
             v32 = 45;
             if (isMetaClass)
@@ -774,7 +774,7 @@ LABEL_33:
           v16 = NFSharedLogGetLogger();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            v33 = object_getClass(v4);
+            v33 = object_getClass(selfCopy);
             if (class_isMetaClass(v33))
             {
               v34 = 43;
@@ -788,7 +788,7 @@ LABEL_33:
             *buf = 67109890;
             v40 = v34;
             v41 = 2082;
-            v42 = object_getClassName(v4);
+            v42 = object_getClassName(selfCopy);
             v43 = 2082;
             v44 = sel_getName(a2);
             v45 = 1024;
@@ -799,8 +799,8 @@ LABEL_33:
           goto LABEL_31;
         }
 
-        v25 = [(NFFieldNotification *)v4 userInfo];
-        v26 = [v25 objectForKey:@"CHInitiatorDetected"];
+        userInfo4 = [(NFFieldNotification *)selfCopy userInfo];
+        v26 = [userInfo4 objectForKey:@"CHInitiatorDetected"];
 
         if (v26)
         {
@@ -808,8 +808,8 @@ LABEL_33:
           goto LABEL_32;
         }
 
-        v36 = [(NFFieldNotification *)v4 userInfo];
-        v37 = [v36 objectForKey:@"CHReceiverDetected"];
+        userInfo5 = [(NFFieldNotification *)selfCopy userInfo];
+        v37 = [userInfo5 objectForKey:@"CHReceiverDetected"];
 
         if (v37)
         {
@@ -825,11 +825,11 @@ LABEL_33:
         if (v8)
         {
           v9 = v8;
-          v10 = object_getClass(v4);
+          v10 = object_getClass(selfCopy);
           v11 = class_isMetaClass(v10);
-          v12 = object_getClassName(v4);
+          v12 = object_getClassName(selfCopy);
           v13 = sel_getName(a2);
-          v14 = [(NFFieldNotification *)v4 debugDescription];
+          v14 = [(NFFieldNotification *)selfCopy debugDescription];
           v15 = 45;
           if (v11)
           {
@@ -843,7 +843,7 @@ LABEL_33:
         v16 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          v17 = object_getClass(v4);
+          v17 = object_getClass(selfCopy);
           if (class_isMetaClass(v17))
           {
             v18 = 43;
@@ -854,9 +854,9 @@ LABEL_33:
             v18 = 45;
           }
 
-          v19 = object_getClassName(v4);
+          v19 = object_getClassName(selfCopy);
           v20 = sel_getName(a2);
-          v21 = [(NFFieldNotification *)v4 debugDescription];
+          v21 = [(NFFieldNotification *)selfCopy debugDescription];
           *buf = 67110146;
           v40 = v18;
           v41 = 2082;
@@ -896,22 +896,22 @@ LABEL_32:
 {
   if ([(NFFieldNotification *)self isCHTerminal])
   {
-    v3 = self;
-    v4 = [(NFFieldNotification *)v3 userInfo];
+    selfCopy = self;
+    userInfo = [(NFFieldNotification *)selfCopy userInfo];
 
-    if (v4)
+    if (userInfo)
     {
-      v5 = [(NFFieldNotification *)v3 userInfo];
-      v4 = [v5 objectForKeyedSubscript:@"CHRemoteRandom"];
+      userInfo2 = [(NFFieldNotification *)selfCopy userInfo];
+      userInfo = [userInfo2 objectForKeyedSubscript:@"CHRemoteRandom"];
     }
   }
 
   else
   {
-    v4 = 0;
+    userInfo = 0;
   }
 
-  return v4;
+  return userInfo;
 }
 
 @end

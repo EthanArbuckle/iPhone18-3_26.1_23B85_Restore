@@ -1,5 +1,5 @@
 @interface PaddleView
-- (_TtC10StickerKitP33_9B62E14B6CA571F9D4DD89006C891CC510PaddleView)initWithFrame:(CGRect)a3;
+- (_TtC10StickerKitP33_9B62E14B6CA571F9D4DD89006C891CC510PaddleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A70EDF0();
 }
 
-- (_TtC10StickerKitP33_9B62E14B6CA571F9D4DD89006C891CC510PaddleView)initWithFrame:(CGRect)a3
+- (_TtC10StickerKitP33_9B62E14B6CA571F9D4DD89006C891CC510PaddleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10StickerKitP33_9B62E14B6CA571F9D4DD89006C891CC510PaddleView_previewView) = 0;
   v7 = self + OBJC_IVAR____TtC10StickerKitP33_9B62E14B6CA571F9D4DD89006C891CC510PaddleView_style;
   *v7 = 0;

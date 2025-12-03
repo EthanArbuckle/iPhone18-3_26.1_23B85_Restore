@@ -1,63 +1,63 @@
 @interface TSGPSTime
-- (BOOL)isEqual:(id)a3;
-- (TSGPSTime)initWithNanosecondsSinceEpoch:(unint64_t)a3;
-- (TSGPSTime)initWithWeek:(unsigned int)a3 nanoseconds:(unint64_t)a4 rollovers:(unsigned __int16)a5;
-- (TSGPSTime)initWithWeek:(unsigned int)a3 seconds:(double)a4 rollovers:(unsigned __int16)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSGPSTime)initWithNanosecondsSinceEpoch:(unint64_t)epoch;
+- (TSGPSTime)initWithWeek:(unsigned int)week nanoseconds:(unint64_t)nanoseconds rollovers:(unsigned __int16)rollovers;
+- (TSGPSTime)initWithWeek:(unsigned int)week seconds:(double)seconds rollovers:(unsigned __int16)rollovers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation TSGPSTime
 
-- (TSGPSTime)initWithNanosecondsSinceEpoch:(unint64_t)a3
+- (TSGPSTime)initWithNanosecondsSinceEpoch:(unint64_t)epoch
 {
   v5.receiver = self;
   v5.super_class = TSGPSTime;
   result = [(TSGPSTime *)&v5 init];
   if (result)
   {
-    result->_nanosecondsSinceEpoch = a3;
+    result->_nanosecondsSinceEpoch = epoch;
   }
 
   return result;
 }
 
-- (TSGPSTime)initWithWeek:(unsigned int)a3 seconds:(double)a4 rollovers:(unsigned __int16)a5
+- (TSGPSTime)initWithWeek:(unsigned int)week seconds:(double)seconds rollovers:(unsigned __int16)rollovers
 {
-  v5 = a5 << 10;
-  if (a3 >= 0x400)
+  v5 = rollovers << 10;
+  if (week >= 0x400)
   {
     v5 = 0;
   }
 
-  return [(TSGPSTime *)self initWithExtendedWeek:v5 | a3 seconds:a4];
+  return [(TSGPSTime *)self initWithExtendedWeek:v5 | week seconds:seconds];
 }
 
-- (TSGPSTime)initWithWeek:(unsigned int)a3 nanoseconds:(unint64_t)a4 rollovers:(unsigned __int16)a5
+- (TSGPSTime)initWithWeek:(unsigned int)week nanoseconds:(unint64_t)nanoseconds rollovers:(unsigned __int16)rollovers
 {
-  v5 = a5 << 10;
-  if (a3 >= 0x400)
+  v5 = rollovers << 10;
+  if (week >= 0x400)
   {
     v5 = 0;
   }
 
-  return [(TSGPSTime *)self initWithExtendedWeek:v5 | a3 nanoseconds:a4];
+  return [(TSGPSTime *)self initWithExtendedWeek:v5 | week nanoseconds:nanoseconds];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->_nanosecondsSinceEpoch;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (([v4 isMemberOfClass:objc_opt_class()] & 1) != 0 || -[TSGPSTime isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class()))
+  equalCopy = equal;
+  if (([equalCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || -[TSGPSTime isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class()))
   {
-    v5 = [(TSGPSTime *)self nanosecondsSinceEpoch];
-    v6 = v5 == [v4 nanosecondsSinceEpoch];
+    nanosecondsSinceEpoch = [(TSGPSTime *)self nanosecondsSinceEpoch];
+    v6 = nanosecondsSinceEpoch == [equalCopy nanosecondsSinceEpoch];
   }
 
   else
@@ -70,9 +70,9 @@
 
 - (id)description
 {
-  v3 = [(TSGPSTime *)self extendedWeek];
+  extendedWeek = [(TSGPSTime *)self extendedWeek];
   [(TSGPSTime *)self seconds];
-  return [NSString stringWithFormat:@"GPS Time week %u seconds %0.9f", v3, v4];
+  return [NSString stringWithFormat:@"GPS Time week %u seconds %0.9f", extendedWeek, v4];
 }
 
 @end

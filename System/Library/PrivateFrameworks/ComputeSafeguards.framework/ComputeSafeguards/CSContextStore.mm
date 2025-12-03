@@ -1,9 +1,9 @@
 @interface CSContextStore
 + (CSContextStore)sharedInstance;
-- (BOOL)satisfiesCriteriaForScenario:(id)a3;
+- (BOOL)satisfiesCriteriaForScenario:(id)scenario;
 - (id)_init;
-- (void)updateState:(id)a3 forIdentifier:(id)a4;
-- (void)updateState:(id)a3 forIdentifier:(id)a4 withRestrictions:(id)a5;
+- (void)updateState:(id)state forIdentifier:(id)identifier;
+- (void)updateState:(id)state forIdentifier:(id)identifier withRestrictions:(id)restrictions;
 @end
 
 @implementation CSContextStore
@@ -38,17 +38,17 @@ uint64_t __32__CSContextStore_sharedInstance__block_invoke()
     logger = v2->_logger;
     v2->_logger = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     currentContext = v2->_currentContext;
-    v2->_currentContext = v5;
+    v2->_currentContext = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     currentContextDate = v2->_currentContextDate;
-    v2->_currentContextDate = v7;
+    v2->_currentContextDate = dictionary2;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     currentAffectedRestrictionsForContext = v2->_currentAffectedRestrictionsForContext;
-    v2->_currentAffectedRestrictionsForContext = v9;
+    v2->_currentAffectedRestrictionsForContext = dictionary3;
 
     v11 = v2;
   }
@@ -56,11 +56,11 @@ uint64_t __32__CSContextStore_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)satisfiesCriteriaForScenario:(id)a3
+- (BOOL)satisfiesCriteriaForScenario:(id)scenario
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 scenarioCriteria];
+  scenarioCopy = scenario;
+  [scenarioCopy scenarioCriteria];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -107,7 +107,7 @@ uint64_t __32__CSContextStore_sharedInstance__block_invoke()
     }
   }
 
-  [v4 setRestrictionsByProcess:0];
+  [scenarioCopy setRestrictionsByProcess:0];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -145,14 +145,14 @@ uint64_t __32__CSContextStore_sharedInstance__block_invoke()
               v28 = logger;
               v29 = [(NSMutableDictionary *)currentAffectedRestrictionsForContext objectForKeyedSubscript:v20];
               *buf = 138412546;
-              v43 = v4;
+              v43 = scenarioCopy;
               v44 = 2112;
               v45 = v29;
               _os_log_debug_impl(&dword_243DC3000, v28, OS_LOG_TYPE_DEBUG, "scenario: %@, set restrictions:%@", buf, 0x16u);
             }
 
             v26 = [(NSMutableDictionary *)self->_currentAffectedRestrictionsForContext objectForKeyedSubscript:v20];
-            [v4 setRestrictionsByProcess:v26];
+            [scenarioCopy setRestrictionsByProcess:v26];
           }
         }
       }
@@ -176,14 +176,14 @@ LABEL_24:
   return v30;
 }
 
-- (void)updateState:(id)a3 forIdentifier:(id)a4
+- (void)updateState:(id)state forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_currentContext objectForKey:v7];
+  stateCopy = state;
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)self->_currentContext objectForKey:identifierCopy];
 
   v9 = os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG);
-  if (v8 == v6)
+  if (v8 == stateCopy)
   {
     if (v9)
     {
@@ -198,22 +198,22 @@ LABEL_24:
       [CSContextStore updateState:forIdentifier:];
     }
 
-    [(NSMutableDictionary *)self->_currentContext setValue:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_currentContext setValue:stateCopy forKey:identifierCopy];
     currentContextDate = self->_currentContextDate;
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [(NSMutableDictionary *)currentContextDate setValue:v11 forKey:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(NSMutableDictionary *)currentContextDate setValue:date forKey:identifierCopy];
   }
 }
 
-- (void)updateState:(id)a3 forIdentifier:(id)a4 withRestrictions:(id)a5
+- (void)updateState:(id)state forIdentifier:(id)identifier withRestrictions:(id)restrictions
 {
-  v8 = a4;
-  v9 = a5;
-  [(CSContextStore *)self updateState:a3 forIdentifier:v8];
-  v10 = [(NSMutableDictionary *)self->_currentAffectedRestrictionsForContext objectForKey:v8];
+  identifierCopy = identifier;
+  restrictionsCopy = restrictions;
+  [(CSContextStore *)self updateState:state forIdentifier:identifierCopy];
+  v10 = [(NSMutableDictionary *)self->_currentAffectedRestrictionsForContext objectForKey:identifierCopy];
 
   v11 = os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG);
-  if (v10 == v9)
+  if (v10 == restrictionsCopy)
   {
     if (v11)
     {
@@ -228,7 +228,7 @@ LABEL_24:
       [CSContextStore updateState:forIdentifier:withRestrictions:];
     }
 
-    [(NSMutableDictionary *)self->_currentAffectedRestrictionsForContext setValue:v9 forKey:v8];
+    [(NSMutableDictionary *)self->_currentAffectedRestrictionsForContext setValue:restrictionsCopy forKey:identifierCopy];
   }
 }
 

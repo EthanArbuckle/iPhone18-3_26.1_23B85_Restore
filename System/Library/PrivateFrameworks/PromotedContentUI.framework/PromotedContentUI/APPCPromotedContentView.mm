@@ -1,25 +1,25 @@
 @interface APPCPromotedContentView
-- (APPCPromotedContentView)initWithFrame:(CGRect)a3;
+- (APPCPromotedContentView)initWithFrame:(CGRect)frame;
 - (CGRect)frame;
 - (NSString)description;
 - (void)layoutSubviews;
-- (void)newsTransparencyViewControllerDidDismiss:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setReadiness:(int64_t)a3;
-- (void)sizeCategoryChanged:(id)a3;
-- (void)tapRecognized:(id)a3;
-- (void)tappedPrivacyMarker:(id)a3;
+- (void)newsTransparencyViewControllerDidDismiss:(id)dismiss;
+- (void)setFrame:(CGRect)frame;
+- (void)setReadiness:(int64_t)readiness;
+- (void)sizeCategoryChanged:(id)changed;
+- (void)tapRecognized:(id)recognized;
+- (void)tappedPrivacyMarker:(id)marker;
 @end
 
 @implementation APPCPromotedContentView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_1C1999518(x, y, width, height);
 }
 
@@ -35,21 +35,21 @@
   return result;
 }
 
-- (void)setReadiness:(int64_t)a3
+- (void)setReadiness:(int64_t)readiness
 {
-  v4 = self;
-  sub_1C199D484(a3);
+  selfCopy = self;
+  sub_1C199D484(readiness);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19A53B0();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19F6164();
 
   v3 = sub_1C1A6F39C();
@@ -57,7 +57,7 @@
   return v3;
 }
 
-- (void)sizeCategoryChanged:(id)a3
+- (void)sizeCategoryChanged:(id)changed
 {
   v3 = sub_1C1A6D25C();
   v4 = *(v3 - 8);
@@ -67,21 +67,21 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (APPCPromotedContentView)initWithFrame:(CGRect)a3
+- (APPCPromotedContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)tappedPrivacyMarker:(id)a3
+- (void)tappedPrivacyMarker:(id)marker
 {
-  v4 = a3;
-  v5 = self;
+  markerCopy = marker;
+  selfCopy = self;
   sub_1C19FD730();
 }
 
-- (void)newsTransparencyViewControllerDidDismiss:(id)a3
+- (void)newsTransparencyViewControllerDidDismiss:(id)dismiss
 {
   v5 = self + OBJC_IVAR___APPCPromotedContentView_interactionDelegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -89,17 +89,17 @@
     v6 = *(v5 + 1);
     ObjectType = swift_getObjectType();
     v8 = *(v6 + 32);
-    v9 = a3;
-    v10 = self;
-    v8(v9, ObjectType, v6);
+    dismissCopy = dismiss;
+    selfCopy = self;
+    v8(dismissCopy, ObjectType, v6);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)tapRecognized:(id)a3
+- (void)tapRecognized:(id)recognized
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___APPCPromotedContentView_tapGestureRecognizer);
-  v5 = self;
+  selfCopy = self;
   v4 = v3;
   sub_1C1A4142C(v4);
 }

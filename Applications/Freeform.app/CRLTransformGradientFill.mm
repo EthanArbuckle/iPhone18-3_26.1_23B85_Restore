@@ -1,39 +1,39 @@
 @interface CRLTransformGradientFill
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIgnoringTransform:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIgnoringTransform:(id)transform;
 - (CGPoint)endPoint;
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (CGPoint)normalizedPointForSize:(CGSize)a3 endPoint:(BOOL)a4;
-- (CGPoint)p_scalePoint:(CGPoint)a3 fromShapeWithNaturalSize:(CGSize)a4;
-- (CGPoint)p_scalePoint:(CGPoint)a3 toShapeWithNaturalSize:(CGSize)a4;
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds;
+- (CGPoint)normalizedPointForSize:(CGSize)size endPoint:(BOOL)point;
+- (CGPoint)p_scalePoint:(CGPoint)point fromShapeWithNaturalSize:(CGSize)size;
+- (CGPoint)p_scalePoint:(CGPoint)point toShapeWithNaturalSize:(CGSize)size;
 - (CGPoint)startPoint;
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4;
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds;
 - (CGSize)baseNaturalSize;
-- (CGSize)baseNaturalSizeForBounds:(CGRect)a3;
-- (CRLTransformGradientFill)initWithGradient:(id)a3 inPath:(id)a4 andBounds:(CGRect)a5;
-- (CRLTransformGradientFill)initWithGradientStops:(id)a3 type:(unint64_t)a4;
-- (CRLTransformGradientFill)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7 baseNaturalSize:(CGSize)a8 isAdvancedGradient:(BOOL)a9;
-- (CRLTransformGradientFill)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5;
+- (CGSize)baseNaturalSizeForBounds:(CGRect)bounds;
+- (CRLTransformGradientFill)initWithGradient:(id)gradient inPath:(id)path andBounds:(CGRect)bounds;
+- (CRLTransformGradientFill)initWithGradientStops:(id)stops type:(unint64_t)type;
+- (CRLTransformGradientFill)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity startPoint:(CGPoint)point endPoint:(CGPoint)endPoint baseNaturalSize:(CGSize)size isAdvancedGradient:(BOOL)gradient;
+- (CRLTransformGradientFill)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type;
 - (double)gradientAngleInDegrees;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)p_drawQuartzShadingInContext:(CGContext *)a3 withGradientNaturalSize:(CGSize)a4 baseNaturalSize:(CGSize)a5 start:(CGPoint)a6 end:(CGPoint)a7;
-- (void)p_setBaseNaturalSize:(CGSize)a3;
+- (void)p_drawQuartzShadingInContext:(CGContext *)context withGradientNaturalSize:(CGSize)size baseNaturalSize:(CGSize)naturalSize start:(CGPoint)start end:(CGPoint)end;
+- (void)p_setBaseNaturalSize:(CGSize)size;
 - (void)p_setDefaultValues;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
 @end
 
 @implementation CRLTransformGradientFill
 
-- (CRLTransformGradientFill)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5
+- (CRLTransformGradientFill)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = CRLTransformGradientFill;
-  v5 = [(CRLGradientFill *)&v8 initWithStartColor:a3 endColor:a4 type:a5];
+  v5 = [(CRLGradientFill *)&v8 initWithStartColor:color endColor:endColor type:type];
   v6 = v5;
   if (v5)
   {
@@ -43,11 +43,11 @@
   return v6;
 }
 
-- (CRLTransformGradientFill)initWithGradientStops:(id)a3 type:(unint64_t)a4
+- (CRLTransformGradientFill)initWithGradientStops:(id)stops type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = CRLTransformGradientFill;
-  v4 = [(CRLGradientFill *)&v7 initWithGradientStops:a3 type:a4];
+  v4 = [(CRLGradientFill *)&v7 initWithGradientStops:stops type:type];
   v5 = v4;
   if (v4)
   {
@@ -57,19 +57,19 @@
   return v5;
 }
 
-- (CRLTransformGradientFill)initWithGradient:(id)a3 inPath:(id)a4 andBounds:(CGRect)a5
+- (CRLTransformGradientFill)initWithGradient:(id)gradient inPath:(id)path andBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v21.receiver = self;
   v21.super_class = CRLTransformGradientFill;
-  v11 = -[CRLGradientFill initWithGradientStops:type:](&v21, "initWithGradientStops:type:", [a3 gradientStops], objc_msgSend(a3, "gradientType"));
+  v11 = -[CRLGradientFill initWithGradientStops:type:](&v21, "initWithGradientStops:type:", [gradient gradientStops], objc_msgSend(gradient, "gradientType"));
   if (v11)
   {
     v12 = objc_opt_class();
-    v13 = sub_100014370(v12, a3);
+    v13 = sub_100014370(v12, gradient);
     if (v13)
     {
       [v13 baseNaturalSizeForBounds:{x, y, width, height}];
@@ -79,10 +79,10 @@
 
     v11->mBaseNaturalSize.width = width;
     v11->mBaseNaturalSize.height = height;
-    [a3 startPointForPath:a4 andBounds:sub_10011ECB4()];
+    [gradient startPointForPath:path andBounds:sub_10011ECB4()];
     v11->mStart.x = v16;
     v11->mStart.y = v17;
-    [a3 endPointForPath:a4 andBounds:sub_10011ECB4()];
+    [gradient endPointForPath:path andBounds:sub_10011ECB4()];
     v11->mEnd.x = v18;
     v11->mEnd.y = v19;
   }
@@ -90,18 +90,18 @@
   return v11;
 }
 
-- (CRLTransformGradientFill)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7 baseNaturalSize:(CGSize)a8 isAdvancedGradient:(BOOL)a9
+- (CRLTransformGradientFill)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity startPoint:(CGPoint)point endPoint:(CGPoint)endPoint baseNaturalSize:(CGSize)size isAdvancedGradient:(BOOL)gradient
 {
-  v9 = a9;
-  height = a8.height;
-  width = a8.width;
-  y = a7.y;
-  x = a7.x;
-  v14 = a6.y;
-  v15 = a6.x;
+  gradientCopy = gradient;
+  height = size.height;
+  width = size.width;
+  y = endPoint.y;
+  x = endPoint.x;
+  v14 = point.y;
+  v15 = point.x;
   v19.receiver = self;
   v19.super_class = CRLTransformGradientFill;
-  v16 = [(CRLGradientFill *)&v19 initWithGradientStops:a3 type:a4 opacity:a5];
+  v16 = [(CRLGradientFill *)&v19 initWithGradientStops:stops type:type opacity:opacity];
   v17 = v16;
   if (v16)
   {
@@ -111,7 +111,7 @@
     v16->mStart.y = v14;
     v16->mEnd.x = x;
     v16->mEnd.y = y;
-    [(CRLGradientFill *)v16 p_setIsAdvancedGradient:v9];
+    [(CRLGradientFill *)v16 p_setIsAdvancedGradient:gradientCopy];
   }
 
   return v17;
@@ -138,17 +138,17 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLGradientFill *)self gradientType];
+  gradientType = [(CRLGradientFill *)self gradientType];
   [(CRLGradientFill *)self opacity];
   v7 = v6;
   v8 = NSStringFromCGPoint(self->mStart);
   v9 = NSStringFromCGPoint(self->mEnd);
-  return [NSString stringWithFormat:@"%@<%p>: type=%tu opacity=%f start=%@ end=%@ \n\tstops=%@ \n\tbase size=%@", v4, self, v5, v7, v8, v9, [(CRLGradientFill *)self gradientStops], NSStringFromCGSize(self->mBaseNaturalSize)];
+  return [NSString stringWithFormat:@"%@<%p>: type=%tu opacity=%f start=%@ end=%@ \n\tstops=%@ \n\tbase size=%@", v4, self, gradientType, v7, v8, v9, [(CRLGradientFill *)self gradientStops], NSStringFromCGSize(self->mBaseNaturalSize)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -158,13 +158,13 @@
     v21 = v3;
     v22 = v4;
     v7 = objc_opt_class();
-    v8 = sub_100014370(v7, a3);
+    v8 = sub_100014370(v7, equal);
     if (v8)
     {
       v9 = v8;
       v20.receiver = self;
       v20.super_class = CRLTransformGradientFill;
-      LODWORD(v8) = [(CRLGradientFill *)&v20 isEqual:a3];
+      LODWORD(v8) = [(CRLGradientFill *)&v20 isEqual:equal];
       if (v8)
       {
         [v9 startPoint];
@@ -187,9 +187,9 @@
   return v8;
 }
 
-- (BOOL)isEqualIgnoringTransform:(id)a3
+- (BOOL)isEqualIgnoringTransform:(id)transform
 {
-  if (a3 == self)
+  if (transform == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -199,13 +199,13 @@
     v15 = v3;
     v16 = v4;
     v7 = objc_opt_class();
-    v8 = sub_100014370(v7, a3);
+    v8 = sub_100014370(v7, transform);
     if (v8)
     {
       v9 = v8;
       v14.receiver = self;
       v14.super_class = CRLTransformGradientFill;
-      LODWORD(v8) = [(CRLGradientFill *)&v14 isEqual:a3];
+      LODWORD(v8) = [(CRLGradientFill *)&v14 isEqual:transform];
       if (v8)
       {
         p_mBaseNaturalSize = &self->mBaseNaturalSize;
@@ -218,13 +218,13 @@
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CRLMutableTransformGradientFill allocWithZone:a3];
-  v5 = [(CRLGradientFill *)self gradientStops];
-  v6 = [(CRLGradientFill *)self gradientType];
+  v4 = [CRLMutableTransformGradientFill allocWithZone:zone];
+  gradientStops = [(CRLGradientFill *)self gradientStops];
+  gradientType = [(CRLGradientFill *)self gradientType];
   [(CRLGradientFill *)self opacity];
-  v7 = [(CRLGradientFill *)v4 initWithGradientStops:v5 type:v6 opacity:?];
+  v7 = [(CRLGradientFill *)v4 initWithGradientStops:gradientStops type:gradientType opacity:?];
   [(CRLGradientFill *)v7 i_setAdvancedGradientFlag:[(CRLGradientFill *)self i_advancedGradientFlag]];
   [(CRLTransformGradientFill *)self startPoint];
   [(CRLMutableTransformGradientFill *)v7 setStartPoint:?];
@@ -235,11 +235,11 @@
   return v7;
 }
 
-- (CGPoint)normalizedPointForSize:(CGSize)a3 endPoint:(BOOL)a4
+- (CGPoint)normalizedPointForSize:(CGSize)size endPoint:(BOOL)point
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  pointCopy = point;
+  height = size.height;
+  width = size.width;
   [(CRLTransformGradientFill *)self startPoint];
   v46 = v9;
   v47 = v8;
@@ -317,7 +317,7 @@
     v16.f64[0] = v49;
   }
 
-  if (!v4)
+  if (!pointCopy)
   {
     v20.f64[0] = v16.f64[0];
     v21 = v19;
@@ -328,34 +328,34 @@
   return result;
 }
 
-- (void)p_setBaseNaturalSize:(CGSize)a3
+- (void)p_setBaseNaturalSize:(CGSize)size
 {
-  if (a3.height <= 0.0)
+  if (size.height <= 0.0)
   {
-    a3.height = 1.0;
+    size.height = 1.0;
   }
 
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.0;
+    size.width = 1.0;
   }
 
-  self->mBaseNaturalSize = a3;
+  self->mBaseNaturalSize = size;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(CRLGradientFill *)self shadingRef];
-  CGContextSaveGState(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  shadingRef = [(CRLGradientFill *)self shadingRef];
+  CGContextSaveGState(context);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
   v16.size.height = height;
-  CGContextClipToRect(a4, v16);
+  CGContextClipToRect(context, v16);
   if ([(CRLGradientFill *)self gradientType])
   {
     if (self)
@@ -368,7 +368,7 @@
       memset(&v15, 0, sizeof(v15));
     }
 
-    CGContextConcatCTM(a4, &v15);
+    CGContextConcatCTM(context, &v15);
   }
 
   else
@@ -383,7 +383,7 @@
     v18.size.width = width;
     v18.size.height = height;
     MinY = CGRectGetMinY(v18);
-    CGContextTranslateCTM(a4, MidX, MinY);
+    CGContextTranslateCTM(context, MidX, MinY);
     v19.origin.x = x;
     v19.origin.y = y;
     v19.size.width = width;
@@ -394,75 +394,75 @@
     v20.size.width = width;
     v20.size.height = height;
     v14 = CGRectGetHeight(v20);
-    CGContextScaleCTM(a4, v13, v14 / 100.0);
+    CGContextScaleCTM(context, v13, v14 / 100.0);
   }
 
-  [(CRLGradientFill *)self p_setAlpha:a4, *&v15.a, *&v15.c, *&v15.tx];
-  CGContextSetInterpolationQuality(a4, kCGInterpolationHigh);
-  CGContextDrawShading(a4, v10);
-  CGContextRestoreGState(a4);
+  [(CRLGradientFill *)self p_setAlpha:context, *&v15.a, *&v15.c, *&v15.tx];
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+  CGContextDrawShading(context, shadingRef);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  BoundingBox = CGPathGetBoundingBox(a3);
+  BoundingBox = CGPathGetBoundingBox(path);
 
-  [(CRLTransformGradientFill *)self paintPath:a3 naturalBounds:a4 inContext:0 isPDF:BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height];
+  [(CRLTransformGradientFill *)self paintPath:path naturalBounds:context inContext:0 isPDF:BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height];
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSaveGState(a5);
-  CGContextAddPath(a5, a3);
-  CGContextClip(a5);
-  CGContextTranslateCTM(a5, x, y);
-  if ((a6 || sub_100510804(a5)) && [(CRLGradientFill *)self hasAlpha]|| sub_10051058C(a5))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGContextSaveGState(context);
+  CGContextAddPath(context, path);
+  CGContextClip(context);
+  CGContextTranslateCTM(context, x, y);
+  if ((f || sub_100510804(context)) && [(CRLGradientFill *)self hasAlpha]|| sub_10051058C(context))
   {
     size = CGRectZero.size;
     origin = CGRectZero.origin;
     v17 = size;
-    v15 = [(CRLGradientFill *)self p_beginBitmapWrapperContextInContext:a5 returningIntegralBounds:&origin];
+    v15 = [(CRLGradientFill *)self p_beginBitmapWrapperContextInContext:context returningIntegralBounds:&origin];
     if (v15)
     {
       [(CRLTransformGradientFill *)self p_drawQuartzShadingInContext:v15 withGradientNaturalSize:width baseNaturalSize:height start:self->mBaseNaturalSize.width end:self->mBaseNaturalSize.height, self->mStart.x, self->mStart.y, self->mEnd.x, self->mEnd.y];
     }
 
-    [(CRLGradientFill *)self p_endBitmapWrapperContext:v15 inContext:a5 withIntegralBounds:origin, v17];
+    [(CRLGradientFill *)self p_endBitmapWrapperContext:v15 inContext:context withIntegralBounds:origin, v17];
   }
 
   else
   {
-    [(CRLTransformGradientFill *)self p_drawQuartzShadingInContext:a5 withGradientNaturalSize:width baseNaturalSize:height start:self->mBaseNaturalSize.width end:self->mBaseNaturalSize.height, self->mStart.x, self->mStart.y, self->mEnd.x, self->mEnd.y];
+    [(CRLTransformGradientFill *)self p_drawQuartzShadingInContext:context withGradientNaturalSize:width baseNaturalSize:height start:self->mBaseNaturalSize.width end:self->mBaseNaturalSize.height, self->mStart.x, self->mStart.y, self->mEnd.x, self->mEnd.y];
   }
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  [(CRLTransformGradientFill *)self normalizedPointForSize:0 endPoint:a4.size.width, a4.size.height];
+  [(CRLTransformGradientFill *)self normalizedPointForSize:0 endPoint:bounds.size.width, bounds.size.height];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  [(CRLTransformGradientFill *)self normalizedPointForSize:1 endPoint:a4.size.width, a4.size.height];
+  [(CRLTransformGradientFill *)self normalizedPointForSize:1 endPoint:bounds.size.width, bounds.size.height];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGSize)baseNaturalSizeForBounds:(CGRect)a3
+- (CGSize)baseNaturalSizeForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  if ([(CRLGradientFill *)self gradientType:a3.origin.x])
+  height = bounds.size.height;
+  width = bounds.size.width;
+  if ([(CRLGradientFill *)self gradientType:bounds.origin.x])
   {
     [(CRLTransformGradientFill *)self baseNaturalSize];
     width = v6;
@@ -496,33 +496,33 @@
   self->mBaseNaturalSize = vdupq_n_s64(0x4059000000000000uLL);
 }
 
-- (CGPoint)p_scalePoint:(CGPoint)a3 toShapeWithNaturalSize:(CGSize)a4
+- (CGPoint)p_scalePoint:(CGPoint)point toShapeWithNaturalSize:(CGSize)size
 {
-  v4 = a3.x * a4.width / self->mBaseNaturalSize.width;
-  v5 = a3.y * a4.height / self->mBaseNaturalSize.height;
+  v4 = point.x * size.width / self->mBaseNaturalSize.width;
+  v5 = point.y * size.height / self->mBaseNaturalSize.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)p_scalePoint:(CGPoint)a3 fromShapeWithNaturalSize:(CGSize)a4
+- (CGPoint)p_scalePoint:(CGPoint)point fromShapeWithNaturalSize:(CGSize)size
 {
-  v4 = a3.x * self->mBaseNaturalSize.width / a4.width;
-  v5 = a3.y * self->mBaseNaturalSize.height / a4.height;
+  v4 = point.x * self->mBaseNaturalSize.width / size.width;
+  v5 = point.y * self->mBaseNaturalSize.height / size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (void)p_drawQuartzShadingInContext:(CGContext *)a3 withGradientNaturalSize:(CGSize)a4 baseNaturalSize:(CGSize)a5 start:(CGPoint)a6 end:(CGPoint)a7
+- (void)p_drawQuartzShadingInContext:(CGContext *)context withGradientNaturalSize:(CGSize)size baseNaturalSize:(CGSize)naturalSize start:(CGPoint)start end:(CGPoint)end
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
+  y = end.y;
+  x = end.x;
+  v9 = start.y;
+  v10 = start.x;
   if (self)
   {
-    [(CRLTransformGradientFill *)self transformForSize:a4.width, a4.height, a5.width, a5.height];
+    [(CRLTransformGradientFill *)self transformForSize:size.width, size.height, naturalSize.width, naturalSize.height];
   }
 
   else
@@ -530,16 +530,16 @@
     memset(&v17, 0, sizeof(v17));
   }
 
-  CGContextConcatCTM(a3, &v17);
-  CGContextTranslateCTM(a3, v10, v9);
+  CGContextConcatCTM(context, &v17);
+  CGContextTranslateCTM(context, v10, v9);
   v13 = sub_10011F31C(x, y, v10);
   v15 = sub_1001208D0(v13, v14);
-  CGContextRotateCTM(a3, v15);
+  CGContextRotateCTM(context, v15);
   v16 = sub_100120090(v10, v9, x, y);
-  CGContextScaleCTM(a3, v16 / 100.0, v16 / 100.0);
-  [(CRLGradientFill *)self p_setAlpha:a3];
-  CGContextSetInterpolationQuality(a3, kCGInterpolationHigh);
-  CGContextDrawShading(a3, [(CRLGradientFill *)self shadingRef]);
+  CGContextScaleCTM(context, v16 / 100.0, v16 / 100.0);
+  [(CRLGradientFill *)self p_setAlpha:context];
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+  CGContextDrawShading(context, [(CRLGradientFill *)self shadingRef]);
 }
 
 - (CGPoint)startPoint

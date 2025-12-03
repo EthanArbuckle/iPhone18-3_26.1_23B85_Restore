@@ -1,32 +1,32 @@
 @interface EPUDIDData
-+ (id)SHA256WithString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (EPUDIDData)initWithCoder:(id)a3;
-- (EPUDIDData)initWithUDID:(id)a3;
++ (id)SHA256WithString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (EPUDIDData)initWithCoder:(id)coder;
+- (EPUDIDData)initWithUDID:(id)d;
 - (id)description;
-- (id)initFromFile:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initFromFile:(id)file;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EPUDIDData
 
-+ (id)SHA256WithString:(id)a3
++ (id)SHA256WithString:(id)string
 {
-  v3 = [a3 dataUsingEncoding:4];
-  v4 = [v3 NRSHA256];
+  v3 = [string dataUsingEncoding:4];
+  nRSHA256 = [v3 NRSHA256];
 
-  return v4;
+  return nRSHA256;
 }
 
-- (EPUDIDData)initWithCoder:(id)a3
+- (EPUDIDData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EPUDIDData;
   v5 = [(EPUDIDData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UDIDSHA256"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UDIDSHA256"];
     UDIDSHA256 = v5->_UDIDSHA256;
     v5->_UDIDSHA256 = v6;
   }
@@ -34,11 +34,11 @@
   return v5;
 }
 
-- (EPUDIDData)initWithUDID:(id)a3
+- (EPUDIDData)initWithUDID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && [dCopy length])
   {
     v11.receiver = self;
     v11.super_class = EPUDIDData;
@@ -51,22 +51,22 @@
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)initFromFile:(id)a3
+- (id)initFromFile:(id)file
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  fileCopy = file;
+  v5 = fileCopy;
+  if (fileCopy && [fileCopy length])
   {
     v6 = [NSSet setWithObject:objc_opt_class()];
     v7 = [NSKeyedUnarchiver secureUnarchiveObjectOfClasses:v6 withFile:v5];
@@ -91,17 +91,17 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(EPUDIDData *)self UDIDSHA256];
-  [v4 encodeObject:v5 forKey:@"UDIDSHA256"];
+  coderCopy = coder;
+  uDIDSHA256 = [(EPUDIDData *)self UDIDSHA256];
+  [coderCopy encodeObject:uDIDSHA256 forKey:@"UDIDSHA256"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -112,8 +112,8 @@
     if (objc_opt_isKindOfClass())
     {
       UDIDSHA256 = self->_UDIDSHA256;
-      v6 = [(EPUDIDData *)v4 UDIDSHA256];
-      v7 = [(NSData *)UDIDSHA256 isEqual:v6];
+      uDIDSHA256 = [(EPUDIDData *)equalCopy UDIDSHA256];
+      v7 = [(NSData *)UDIDSHA256 isEqual:uDIDSHA256];
     }
 
     else

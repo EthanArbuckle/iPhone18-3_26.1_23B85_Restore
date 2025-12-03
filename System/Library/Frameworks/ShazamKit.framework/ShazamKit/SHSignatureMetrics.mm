@@ -1,35 +1,35 @@
 @interface SHSignatureMetrics
-- (SHSignatureMetrics)initWithCoder:(id)a3;
-- (SHSignatureMetrics)initWithSessionStartDate:(id)a3 signatureRecordingOffset:(double)a4;
+- (SHSignatureMetrics)initWithCoder:(id)coder;
+- (SHSignatureMetrics)initWithSessionStartDate:(id)date signatureRecordingOffset:(double)offset;
 - (double)sessionDuration;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHSignatureMetrics
 
-- (SHSignatureMetrics)initWithSessionStartDate:(id)a3 signatureRecordingOffset:(double)a4
+- (SHSignatureMetrics)initWithSessionStartDate:(id)date signatureRecordingOffset:(double)offset
 {
-  v7 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = SHSignatureMetrics;
   v8 = [(SHSignatureMetrics *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sessionStartDate, a3);
-    v9->_signatureRecordingOffset = a4;
+    objc_storeStrong(&v8->_sessionStartDate, date);
+    v9->_signatureRecordingOffset = offset;
   }
 
   return v9;
 }
 
-- (SHSignatureMetrics)initWithCoder:(id)a3
+- (SHSignatureMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionStartDate"];
-  v6 = [v4 decodeIntegerForKey:@"recordingSource"];
-  [v4 decodeDoubleForKey:@"signatureRecordingOffset"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionStartDate"];
+  v6 = [coderCopy decodeIntegerForKey:@"recordingSource"];
+  [coderCopy decodeDoubleForKey:@"signatureRecordingOffset"];
   v8 = v7;
 
   v9 = [(SHSignatureMetrics *)self initWithSessionStartDate:v5 signatureRecordingOffset:v8];
@@ -44,12 +44,12 @@
 
 - (double)sessionDuration
 {
-  v3 = [(SHSignatureMetrics *)self sessionStartDate];
-  if (v3)
+  sessionStartDate = [(SHSignatureMetrics *)self sessionStartDate];
+  if (sessionStartDate)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [(SHSignatureMetrics *)self sessionStartDate];
-    [v4 timeIntervalSinceDate:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    sessionStartDate2 = [(SHSignatureMetrics *)self sessionStartDate];
+    [date timeIntervalSinceDate:sessionStartDate2];
     v7 = v6;
   }
 
@@ -61,22 +61,22 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(SHSignatureMetrics *)self sessionStartDate];
-  [v5 encodeObject:v4 forKey:@"sessionStartDate"];
+  coderCopy = coder;
+  sessionStartDate = [(SHSignatureMetrics *)self sessionStartDate];
+  [coderCopy encodeObject:sessionStartDate forKey:@"sessionStartDate"];
 
-  [v5 encodeInteger:-[SHSignatureMetrics recordingSource](self forKey:{"recordingSource"), @"recordingSource"}];
+  [coderCopy encodeInteger:-[SHSignatureMetrics recordingSource](self forKey:{"recordingSource"), @"recordingSource"}];
   [(SHSignatureMetrics *)self signatureRecordingOffset];
-  [v5 encodeDouble:@"signatureRecordingOffset" forKey:?];
+  [coderCopy encodeDouble:@"signatureRecordingOffset" forKey:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHSignatureMetrics allocWithZone:?];
-  v6 = [(SHSignatureMetrics *)self sessionStartDate];
-  v7 = [v6 copyWithZone:a3];
+  sessionStartDate = [(SHSignatureMetrics *)self sessionStartDate];
+  v7 = [sessionStartDate copyWithZone:zone];
   [(SHSignatureMetrics *)self signatureRecordingOffset];
   v8 = [(SHSignatureMetrics *)v5 initWithSessionStartDate:v7 signatureRecordingOffset:?];
 

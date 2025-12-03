@@ -10,13 +10,13 @@
   v94.receiver = self;
   v94.super_class = EventKitTCCFullAccessNotificationUIExtensionViewController;
   [(EventKitTCCFullAccessNotificationUIExtensionViewController *)&v94 viewDidLoad];
-  v3 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self extensionContext];
-  v4 = [v3 inputItems];
-  v5 = [v4 firstObject];
+  extensionContext = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
-  v93 = v5;
-  v6 = [v5 userInfo];
-  v7 = [v6 valueForKey:kTCCNotificationExtensionClientDataKey];
+  v93 = firstObject;
+  userInfo = [firstObject userInfo];
+  v7 = [userInfo valueForKey:kTCCNotificationExtensionClientDataKey];
 
   v92 = v7;
   v91 = [v7 valueForKey:kEventKitTCCUIFullAccessNotificationClientBundleIDKey];
@@ -49,15 +49,15 @@
   [v9 setText:v13];
 
   [v9 setLineBreakStrategy:1];
-  v14 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+  view = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
   v90 = v9;
-  [v14 addSubview:v9];
+  [view addSubview:v9];
 
-  v15 = [(EventKitTCCUIFactory *)self->_tccUIFactory countEventsInTheNextYear];
-  v16 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self tccUIFactory];
-  v17 = [v16 previewViewController];
+  countEventsInTheNextYear = [(EventKitTCCUIFactory *)self->_tccUIFactory countEventsInTheNextYear];
+  tccUIFactory = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self tccUIFactory];
+  previewViewController = [tccUIFactory previewViewController];
 
-  if (v15 >= 1 && v17)
+  if (countEventsInTheNextYear >= 1 && previewViewController)
   {
     v18 = objc_alloc_init(UILabel);
     objc_storeStrong(&self->_eventCountLabel, v18);
@@ -90,119 +90,119 @@
     [v18 setTextAlignment:v24];
     v25 = [NSBundle bundleForClass:objc_opt_class()];
     v26 = [v25 localizedStringForKey:@"x_events" value:&stru_100004150 table:0];
-    v27 = [NSString localizedStringWithFormat:v26, v15];
+    v27 = [NSString localizedStringWithFormat:v26, countEventsInTheNextYear];
     [v18 setText:v27];
 
     [v18 setLineBreakStrategy:1];
-    v28 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    [v28 addSubview:v18];
+    view2 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    [view2 addSubview:v18];
 
-    [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self addChildViewController:v17];
-    v29 = [v17 view];
+    [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self addChildViewController:previewViewController];
+    view3 = [previewViewController view];
     calendarView = self->_calendarView;
-    self->_calendarView = v29;
+    self->_calendarView = view3;
 
-    v31 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    [v31 addSubview:self->_calendarView];
+    view4 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    [view4 addSubview:self->_calendarView];
 
-    [v17 didMoveToParentViewController:self];
+    [previewViewController didMoveToParentViewController:self];
     [(UIView *)self->_calendarView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_calendarView setClipsToBounds:0];
-    v74 = [(UIView *)self->_calendarView topAnchor];
-    v76 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v75 = [v76 topAnchor];
-    v87 = [v74 constraintEqualToAnchor:v75];
-    v96[0] = v87;
-    v32 = [(UIView *)self->_calendarView leadingAnchor];
-    v85 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    [v85 leadingAnchor];
-    v84 = v86 = v32;
-    v83 = [v32 constraintEqualToAnchor:?];
-    v96[1] = v83;
-    v71 = [(UIView *)self->_calendarView trailingAnchor];
-    v82 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v69 = [v82 trailingAnchor];
-    v67 = [v71 constraintEqualToAnchor:v69];
+    topAnchor = [(UIView *)self->_calendarView topAnchor];
+    view5 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    topAnchor2 = [view5 topAnchor];
+    view13 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    v96[0] = view13;
+    leadingAnchor = [(UIView *)self->_calendarView leadingAnchor];
+    view6 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    [view6 leadingAnchor];
+    v84 = bottomAnchor6 = leadingAnchor;
+    view14 = [leadingAnchor constraintEqualToAnchor:?];
+    v96[1] = view14;
+    trailingAnchor = [(UIView *)self->_calendarView trailingAnchor];
+    view7 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    trailingAnchor2 = [view7 trailingAnchor];
+    v67 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v96[2] = v67;
-    v33 = [(UIView *)self->_calendarView bottomAnchor];
-    v80 = [(UILabel *)self->_eventCountLabel topAnchor];
-    v81 = v33;
-    v63 = [v33 constraintEqualToAnchor:-16.0 constant:?];
+    bottomAnchor = [(UIView *)self->_calendarView bottomAnchor];
+    topAnchor3 = [(UILabel *)self->_eventCountLabel topAnchor];
+    trailingAnchor8 = bottomAnchor;
+    v63 = [bottomAnchor constraintEqualToAnchor:-16.0 constant:?];
     v96[3] = v63;
-    v73 = [(UILabel *)self->_eventCountLabel bottomAnchor];
-    v72 = [(UILabel *)*p_descriptionLabel topAnchor];
-    v70 = [v73 constraintEqualToAnchor:v72 constant:-4.0];
+    bottomAnchor2 = [(UILabel *)self->_eventCountLabel bottomAnchor];
+    topAnchor4 = [(UILabel *)*p_descriptionLabel topAnchor];
+    v70 = [bottomAnchor2 constraintEqualToAnchor:topAnchor4 constant:-4.0];
     v96[4] = v70;
-    v66 = [(UILabel *)self->_eventCountLabel leadingAnchor];
-    v68 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v65 = [v68 leadingAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65 constant:16.0];
+    leadingAnchor2 = [(UILabel *)self->_eventCountLabel leadingAnchor];
+    view8 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    leadingAnchor3 = [view8 leadingAnchor];
+    v64 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:16.0];
     v96[5] = v64;
-    v61 = [(UILabel *)self->_eventCountLabel trailingAnchor];
-    v62 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v60 = [v62 trailingAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60 constant:-16.0];
+    trailingAnchor3 = [(UILabel *)self->_eventCountLabel trailingAnchor];
+    view9 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    trailingAnchor4 = [view9 trailingAnchor];
+    v59 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
     v96[6] = v59;
-    v57 = [(UILabel *)*p_descriptionLabel bottomAnchor];
-    v58 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v56 = [v58 bottomAnchor];
-    v34 = [v57 constraintEqualToAnchor:v56 constant:-12.0];
+    bottomAnchor3 = [(UILabel *)*p_descriptionLabel bottomAnchor];
+    view10 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    bottomAnchor4 = [view10 bottomAnchor];
+    v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-12.0];
     v96[7] = v34;
-    v35 = [(UILabel *)*p_descriptionLabel leadingAnchor];
+    leadingAnchor4 = [(UILabel *)*p_descriptionLabel leadingAnchor];
     [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v36 = v79 = v17;
-    v37 = [v36 leadingAnchor];
-    v38 = [v35 constraintEqualToAnchor:v37 constant:16.0];
+    v36 = v79 = previewViewController;
+    leadingAnchor5 = [v36 leadingAnchor];
+    v38 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:16.0];
     v96[8] = v38;
-    v39 = [(UILabel *)*p_descriptionLabel trailingAnchor];
-    v40 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v41 = [v40 trailingAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41 constant:-16.0];
+    trailingAnchor5 = [(UILabel *)*p_descriptionLabel trailingAnchor];
+    view11 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    trailingAnchor6 = [view11 trailingAnchor];
+    v42 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
     v96[9] = v42;
     v43 = [NSArray arrayWithObjects:v96 count:10];
     [NSLayoutConstraint activateConstraints:v43];
 
     v44 = v63;
-    v45 = v77;
+    topAnchor5 = v77;
 
-    v46 = v74;
-    v47 = v67;
+    topAnchor6 = topAnchor;
+    view15 = v67;
 
-    v48 = v76;
-    v49 = v75;
+    v48 = view5;
+    bottomAnchor5 = topAnchor2;
 
-    v50 = v69;
-    v17 = v79;
+    trailingAnchor7 = trailingAnchor2;
+    previewViewController = v79;
 
-    v51 = v71;
-    v52 = v78;
+    v51 = trailingAnchor;
+    view12 = v78;
   }
 
   else
   {
-    v45 = [(UILabel *)*p_descriptionLabel topAnchor];
-    v52 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v46 = [v52 topAnchor];
-    v48 = [v45 constraintEqualToAnchor:v46];
+    topAnchor5 = [(UILabel *)*p_descriptionLabel topAnchor];
+    view12 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    topAnchor6 = [view12 topAnchor];
+    v48 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v95[0] = v48;
-    v49 = [(UILabel *)*p_descriptionLabel bottomAnchor];
-    v87 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v86 = [v87 bottomAnchor];
-    v85 = [v49 constraintEqualToAnchor:-12.0 constant:?];
-    v95[1] = v85;
-    v53 = [(UILabel *)*p_descriptionLabel leadingAnchor];
-    v83 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v54 = [v83 leadingAnchor];
-    v84 = v53;
-    v55 = v53;
-    v51 = v54;
-    v82 = [v55 constraintEqualToAnchor:v54 constant:16.0];
-    v95[2] = v82;
-    v50 = [(UILabel *)*p_descriptionLabel trailingAnchor];
-    v47 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
-    v81 = [v47 trailingAnchor];
-    v80 = [v50 constraintEqualToAnchor:-16.0 constant:?];
-    v95[3] = v80;
+    bottomAnchor5 = [(UILabel *)*p_descriptionLabel bottomAnchor];
+    view13 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    bottomAnchor6 = [view13 bottomAnchor];
+    view6 = [bottomAnchor5 constraintEqualToAnchor:-12.0 constant:?];
+    v95[1] = view6;
+    leadingAnchor6 = [(UILabel *)*p_descriptionLabel leadingAnchor];
+    view14 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    leadingAnchor7 = [view14 leadingAnchor];
+    v84 = leadingAnchor6;
+    v55 = leadingAnchor6;
+    v51 = leadingAnchor7;
+    view7 = [v55 constraintEqualToAnchor:leadingAnchor7 constant:16.0];
+    v95[2] = view7;
+    trailingAnchor7 = [(UILabel *)*p_descriptionLabel trailingAnchor];
+    view15 = [(EventKitTCCFullAccessNotificationUIExtensionViewController *)self view];
+    trailingAnchor8 = [view15 trailingAnchor];
+    topAnchor3 = [trailingAnchor7 constraintEqualToAnchor:-16.0 constant:?];
+    v95[3] = topAnchor3;
     v44 = [NSArray arrayWithObjects:v95 count:4];
     [NSLayoutConstraint activateConstraints:v44];
   }

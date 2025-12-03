@@ -1,5 +1,5 @@
 @interface CoverSheetBackgroundView
-- (void)artworkView:(id)a3 didChangeArtworkImage:(id)a4;
+- (void)artworkView:(id)view didChangeArtworkImage:(id)image;
 - (void)layoutSubviews;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000723C();
 }
 
-- (void)artworkView:(id)a3 didChangeArtworkImage:(id)a4
+- (void)artworkView:(id)view didChangeArtworkImage:(id)image
 {
-  v4 = self;
+  selfCopy = self;
   sub_1000073A0();
 }
 

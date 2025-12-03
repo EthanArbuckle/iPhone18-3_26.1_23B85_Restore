@@ -8,7 +8,7 @@
 
 - (id)fp_lastEditorDeviceName
 {
-  FPPrecheckTCCReadAccess(a1);
+  FPPrecheckTCCReadAccess(self);
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
@@ -21,7 +21,7 @@
   v5[2] = __50__NSURL_FPConflictWinner__fp_lastEditorDeviceName__block_invoke;
   v5[3] = &unk_1E793D688;
   v5[4] = &v6;
-  [v2 itemForURL:a1 options:0 completionHandler:v5];
+  [v2 itemForURL:self options:0 completionHandler:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -31,7 +31,7 @@
 
 - (id)fp_lastEditorNameComponents
 {
-  FPPrecheckTCCReadAccess(a1);
+  FPPrecheckTCCReadAccess(self);
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
@@ -44,7 +44,7 @@
   v5[2] = __54__NSURL_FPConflictWinner__fp_lastEditorNameComponents__block_invoke;
   v5[3] = &unk_1E793D688;
   v5[4] = &v6;
-  [v2 itemForURL:a1 options:0 completionHandler:v5];
+  [v2 itemForURL:self options:0 completionHandler:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -58,19 +58,19 @@
   v10 = a3;
   v34 = a4;
   v35 = a5;
-  v11 = [MEMORY[0x1E69A07C0] manager];
-  v12 = [v11 permanentStorageForItemAtURL:a1 allocateIfNone:1 error:a6];
+  manager = [MEMORY[0x1E69A07C0] manager];
+  v12 = [manager permanentStorageForItemAtURL:self allocateIfNone:1 error:a6];
 
   v13 = objc_alloc(MEMORY[0x1E696ADF0]);
   v14 = [NSFileProviderItemVersion alloc];
-  v15 = [MEMORY[0x1E695DEF0] data];
-  v16 = [MEMORY[0x1E695DEF0] data];
-  v37 = [(NSFileProviderItemVersion *)v14 initWithContentVersion:v15 metadataVersion:v16];
+  data = [MEMORY[0x1E695DEF0] data];
+  data2 = [MEMORY[0x1E695DEF0] data];
+  v37 = [(NSFileProviderItemVersion *)v14 initWithContentVersion:data metadataVersion:data2];
 
   v17 = [MEMORY[0x1E695DF00] now];
   v18 = [FPConflictLoser alloc];
-  v19 = [v10 lastPathComponent];
-  v33 = [(FPFileVersion *)v18 initWithVersion:v37 displayName:v19 originalURL:v10 physicalURL:0 identifier:0 modificationDate:v17 lastEditorNameComponents:v13 size:0];
+  lastPathComponent = [v10 lastPathComponent];
+  v33 = [(FPFileVersion *)v18 initWithVersion:v37 displayName:lastPathComponent originalURL:v10 physicalURL:0 identifier:0 modificationDate:v17 lastEditorNameComponents:v13 size:0];
 
   v20 = MEMORY[0x1E695E118];
   v57 = v17;
@@ -83,9 +83,9 @@
   v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:2];
 
   v54[0] = *MEMORY[0x1E69A0768];
-  v22 = [v10 lastPathComponent];
+  lastPathComponent2 = [v10 lastPathComponent];
   v23 = *MEMORY[0x1E69A0760];
-  v55[0] = v22;
+  v55[0] = lastPathComponent2;
   v55[1] = v20;
   v24 = *MEMORY[0x1E69A0790];
   v54[1] = v23;

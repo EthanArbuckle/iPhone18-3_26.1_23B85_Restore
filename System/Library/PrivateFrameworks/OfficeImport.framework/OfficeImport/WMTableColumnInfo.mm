@@ -1,21 +1,21 @@
 @interface WMTableColumnInfo
-- (WMTableColumnInfo)initWithStopArray:(id)a3;
-- (float)stopAt:(unsigned int)a3;
-- (unsigned)columnSpan:(float)a3 at:(unsigned int)a4;
-- (void)mergeStopArray:(id)a3;
+- (WMTableColumnInfo)initWithStopArray:(id)array;
+- (float)stopAt:(unsigned int)at;
+- (unsigned)columnSpan:(float)span at:(unsigned int)at;
+- (void)mergeStopArray:(id)array;
 @end
 
 @implementation WMTableColumnInfo
 
-- (WMTableColumnInfo)initWithStopArray:(id)a3
+- (WMTableColumnInfo)initWithStopArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = WMTableColumnInfo;
   v5 = [(WMTableColumnInfo *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:arrayCopy];
     mStopArray = v5->mStopArray;
     v5->mStopArray = v6;
   }
@@ -23,12 +23,12 @@
   return v5;
 }
 
-- (float)stopAt:(unsigned int)a3
+- (float)stopAt:(unsigned int)at
 {
   v5 = -1.0;
-  if ([(NSMutableArray *)self->mStopArray count]> a3)
+  if ([(NSMutableArray *)self->mStopArray count]> at)
   {
-    v6 = [(NSMutableArray *)self->mStopArray objectAtIndex:a3];
+    v6 = [(NSMutableArray *)self->mStopArray objectAtIndex:at];
     [v6 floatValue];
     v5 = v7;
   }
@@ -36,22 +36,22 @@
   return v5;
 }
 
-- (void)mergeStopArray:(id)a3
+- (void)mergeStopArray:(id)array
 {
-  v18 = a3;
-  if (v18)
+  arrayCopy = array;
+  if (arrayCopy)
   {
     [(WMTableColumnInfo *)self stopAt:0];
     v5 = v4;
     LODWORD(v6) = 0;
     for (i = 0; ; ++i)
     {
-      if ([v18 count] <= i)
+      if ([arrayCopy count] <= i)
       {
         goto LABEL_20;
       }
 
-      v8 = [v18 objectAtIndex:i];
+      v8 = [arrayCopy objectAtIndex:i];
       [v8 floatValue];
       v10 = v9;
 
@@ -85,7 +85,7 @@
       else
       {
         mStopArray = self->mStopArray;
-        v17 = [v18 objectAtIndex:i];
+        v17 = [arrayCopy objectAtIndex:i];
         [(NSMutableArray *)mStopArray insertObject:v17 atIndex:v6];
 
         LODWORD(v6) = v6 + 1;
@@ -97,7 +97,7 @@ LABEL_15:
 
 LABEL_13:
     v13 = self->mStopArray;
-    v14 = [v18 objectAtIndex:i];
+    v14 = [arrayCopy objectAtIndex:i];
     [(NSMutableArray *)v13 addObject:v14];
 
     v6 = (v6 + 1);
@@ -110,12 +110,12 @@ LABEL_14:
 LABEL_20:
 }
 
-- (unsigned)columnSpan:(float)a3 at:(unsigned int)a4
+- (unsigned)columnSpan:(float)span at:(unsigned int)at
 {
-  v4 = *&a4;
-  if (a4)
+  v4 = *&at;
+  if (at)
   {
-    [(WMTableColumnInfo *)self stopAt:a4 - 1];
+    [(WMTableColumnInfo *)self stopAt:at - 1];
     v8 = v7;
   }
 
@@ -127,7 +127,7 @@ LABEL_20:
   LODWORD(v9) = v4;
   if ([(NSMutableArray *)self->mStopArray count]> v4)
   {
-    v10 = v8 + a3;
+    v10 = v8 + span;
     v9 = v4;
     do
     {

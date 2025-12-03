@@ -1,9 +1,9 @@
 @interface MotionDecoderWrapper
-- (MotionDecoderWrapper)initWithEncoderSeqParams:(id)a3;
-- (char)getPointerToDataBuffer:(id)a3;
+- (MotionDecoderWrapper)initWithEncoderSeqParams:(id)params;
+- (char)getPointerToDataBuffer:(id)buffer;
 - (id).cxx_construct;
 - (id)motionDecoderWrapperLogSharedInstance;
-- (int)decodeFrameInternal:(id)a3 decodedFrame:(int *)a4 decodeError:(unint64_t *)a5;
+- (int)decodeFrameInternal:(id)internal decodedFrame:(int *)frame decodeError:(unint64_t *)error;
 - (void)dealloc;
 @end
 
@@ -28,17 +28,17 @@ void __61__MotionDecoderWrapper_motionDecoderWrapperLogSharedInstance__block_inv
   [MotionDecoderWrapper motionDecoderWrapperLogSharedInstance]::sharedInstance = v0;
 }
 
-- (char)getPointerToDataBuffer:(id)a3
+- (char)getPointerToDataBuffer:(id)buffer
 {
-  v3 = a3;
+  bufferCopy = buffer;
 
-  return [v3 bytes];
+  return [bufferCopy bytes];
 }
 
-- (MotionDecoderWrapper)initWithEncoderSeqParams:(id)a3
+- (MotionDecoderWrapper)initWithEncoderSeqParams:(id)params
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  paramsCopy = params;
   v21.receiver = self;
   v21.super_class = MotionDecoderWrapper;
   v5 = [(MotionDecoderWrapper *)&v21 init];
@@ -47,20 +47,20 @@ void __61__MotionDecoderWrapper_motionDecoderWrapperLogSharedInstance__block_inv
     v6 = operator new(8uLL);
     gcl::motion::Decoder::Decoder(v6);
     *(v5 + 1) = v6;
-    v7 = [v5 getPointerToDataBuffer:v4];
-    v8 = [v4 length];
+    v7 = [v5 getPointerToDataBuffer:paramsCopy];
+    v8 = [paramsCopy length];
     __p = 0;
     v19 = 0;
     v20 = 0;
     std::vector<unsigned char>::__init_with_size[abi:ne200100]<unsigned char *,unsigned char *>(&__p, v7, v7 + v8, v8);
     v17 = 0;
-    gcl::motion::Decoder::decodeSequenceParameterSet(*(v5 + 1), __p, [v4 length], &v17, (v5 + 32));
+    gcl::motion::Decoder::decodeSequenceParameterSet(*(v5 + 1), __p, [paramsCopy length], &v17, (v5 + 32));
     v9 = *(v5 + 5);
     *&v10 = v9;
     *(&v10 + 1) = SHIDWORD(v9);
     *(v5 + 1) = v10;
-    v11 = [v5 motionDecoderWrapperLogSharedInstance];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    motionDecoderWrapperLogSharedInstance = [v5 motionDecoderWrapperLogSharedInstance];
+    if (os_log_type_enabled(motionDecoderWrapperLogSharedInstance, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v5[36];
       v13 = v5[37];
@@ -77,7 +77,7 @@ void __61__MotionDecoderWrapper_motionDecoderWrapperLogSharedInstance__block_inv
       v31 = 3;
       v32 = 1024;
       v33 = 0;
-      _os_log_impl(&dword_26606F000, v11, OS_LOG_TYPE_DEFAULT, "Remote Encoder version is %d %d %d, Local Encoder version is %d %d %d", buf, 0x26u);
+      _os_log_impl(&dword_26606F000, motionDecoderWrapperLogSharedInstance, OS_LOG_TYPE_DEFAULT, "Remote Encoder version is %d %d %d, Local Encoder version is %d %d %d", buf, 0x26u);
     }
 
     if (__p)
@@ -105,20 +105,20 @@ void __61__MotionDecoderWrapper_motionDecoderWrapperLogSharedInstance__block_inv
   [(MotionDecoderWrapper *)&v5 dealloc];
 }
 
-- (int)decodeFrameInternal:(id)a3 decodedFrame:(int *)a4 decodeError:(unint64_t *)a5
+- (int)decodeFrameInternal:(id)internal decodedFrame:(int *)frame decodeError:(unint64_t *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 length];
+  internalCopy = internal;
+  v9 = [internalCopy length];
   v29 = 0;
   if (!v9)
   {
     v14 = 0;
-    *a5 = 4;
+    *error = 4;
     goto LABEL_12;
   }
 
-  v10 = [(MotionDecoderWrapper *)self getPointerToDataBuffer:v8];
+  v10 = [(MotionDecoderWrapper *)self getPointerToDataBuffer:internalCopy];
   v26 = 0;
   v27 = 0;
   v28 = 0;
@@ -128,24 +128,24 @@ void __61__MotionDecoderWrapper_motionDecoderWrapperLogSharedInstance__block_inv
   v12 = v11;
   if (v11)
   {
-    *a5 = 5;
+    *error = 5;
     if (v11 == 7)
     {
-      *a5 = 6;
+      *error = 6;
     }
 
     else if (v11 == 11)
     {
-      *a5 = 7;
-      v23 = [(MotionDecoderWrapper *)self motionDecoderWrapperLogSharedInstance];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      *error = 7;
+      motionDecoderWrapperLogSharedInstance = [(MotionDecoderWrapper *)self motionDecoderWrapperLogSharedInstance];
+      if (os_log_type_enabled(motionDecoderWrapperLogSharedInstance, OS_LOG_TYPE_ERROR))
       {
-        [MotionDecoderWrapper decodeFrameInternal:v23 decodedFrame:? decodeError:?];
+        [MotionDecoderWrapper decodeFrameInternal:motionDecoderWrapperLogSharedInstance decodedFrame:? decodeError:?];
       }
     }
 
-    v13 = [(MotionDecoderWrapper *)self motionDecoderWrapperLogSharedInstance];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    motionDecoderWrapperLogSharedInstance2 = [(MotionDecoderWrapper *)self motionDecoderWrapperLogSharedInstance];
+    if (os_log_type_enabled(motionDecoderWrapperLogSharedInstance2, OS_LOG_TYPE_ERROR))
     {
       CurrentFrameNumber = gcl::motion::Decoder::getCurrentFrameNumber(self->decoder);
       v19 = gcl::motion::Decoder::getlastDecodedFrameNumber(self->decoder);
@@ -164,7 +164,7 @@ void __61__MotionDecoderWrapper_motionDecoderWrapperLogSharedInstance__block_inv
       v39 = CurrentFramePayloadLength;
       v40 = 1024;
       v41 = CurrentFrameFlags;
-      _os_log_error_impl(&dword_26606F000, v13, OS_LOG_TYPE_ERROR, "Failed to decode with error %d c:%d p:%d q:%d l:%d f:%d", buf, 0x26u);
+      _os_log_error_impl(&dword_26606F000, motionDecoderWrapperLogSharedInstance2, OS_LOG_TYPE_ERROR, "Failed to decode with error %d c:%d p:%d q:%d l:%d f:%d", buf, 0x26u);
     }
 
     v14 = 0;
@@ -180,7 +180,7 @@ void __61__MotionDecoderWrapper_motionDecoderWrapperLogSharedInstance__block_inv
     v15 = __p;
     if (v25 != __p)
     {
-      memmove(a4, __p, v25 - __p);
+      memmove(frame, __p, v25 - __p);
     }
 
     v14 = v29;

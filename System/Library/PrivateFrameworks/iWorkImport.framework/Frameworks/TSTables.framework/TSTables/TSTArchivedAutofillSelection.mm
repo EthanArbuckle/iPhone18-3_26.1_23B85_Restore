@@ -1,15 +1,15 @@
 @interface TSTArchivedAutofillSelection
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setSelection:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation TSTArchivedAutofillSelection
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v26 = a3;
-  if (v26)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -32,11 +32,11 @@
   self->_autofillSelection = v20;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v19 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v19, v4, off_2812E4498[154], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[154], v5, v6);
   v8 = 0x7FFF7FFFFFFFLL;
 
   v9 = *(v7 + 16);
@@ -71,11 +71,11 @@ LABEL_6:
   self->_autofillSelection = v17;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v35 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v35, v4, sub_2216E45B4, off_2812E4498[154], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2216E45B4, off_2812E4498[154], v5);
 
   v11 = objc_msgSend_autofillSelection(self, v7, v8, v9, v10);
   v16 = objc_msgSend_sourceCellRange(v11, v12, v13, v14, v15);

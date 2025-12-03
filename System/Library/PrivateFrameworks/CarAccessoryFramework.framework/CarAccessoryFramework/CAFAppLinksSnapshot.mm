@@ -1,26 +1,26 @@
 @interface CAFAppLinksSnapshot
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSnapshot:(id)a3;
-- (CAFAppLinksSnapshot)initWithAppLinks:(id)a3;
-- (CAFAppLinksSnapshot)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSnapshot:(id)snapshot;
+- (CAFAppLinksSnapshot)initWithAppLinks:(id)links;
+- (CAFAppLinksSnapshot)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAFAppLinksSnapshot
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CAFAppLinksSnapshot *)self appLinks];
-  [v4 encodeObject:v5 forKey:@"kCAFAppLinkstKey"];
+  coderCopy = coder;
+  appLinks = [(CAFAppLinksSnapshot *)self appLinks];
+  [coderCopy encodeObject:appLinks forKey:@"kCAFAppLinkstKey"];
 }
 
-- (CAFAppLinksSnapshot)initWithCoder:(id)a3
+- (CAFAppLinksSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CAFAppLinksSnapshot;
   v5 = [(CAFAppLinksSnapshot *)&v12 init];
@@ -29,7 +29,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kCAFAppLinkstKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kCAFAppLinkstKey"];
     appLinks = v5->_appLinks;
     v5->_appLinks = v9;
   }
@@ -37,16 +37,16 @@
   return v5;
 }
 
-- (CAFAppLinksSnapshot)initWithAppLinks:(id)a3
+- (CAFAppLinksSnapshot)initWithAppLinks:(id)links
 {
-  v5 = a3;
+  linksCopy = links;
   v9.receiver = self;
   v9.super_class = CAFAppLinksSnapshot;
   v6 = [(CAFAppLinksSnapshot *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appLinks, a3);
+    objc_storeStrong(&v6->_appLinks, links);
   }
 
   return v7;
@@ -59,44 +59,44 @@
   v10.super_class = CAFAppLinksSnapshot;
   v4 = [(CAFAppLinksSnapshot *)&v10 description];
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(CAFAppLinksSnapshot *)self appLinks];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+  appLinks = [(CAFAppLinksSnapshot *)self appLinks];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(appLinks, "count")}];
   v8 = [v3 stringWithFormat:@"%@: appLinks count %@", v4, v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CAFAppLinksSnapshot *)self isEqualToSnapshot:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CAFAppLinksSnapshot *)self isEqualToSnapshot:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSnapshot:(id)a3
+- (BOOL)isEqualToSnapshot:(id)snapshot
 {
-  v4 = [a3 appLinks];
-  v5 = [(CAFAppLinksSnapshot *)self appLinks];
-  v6 = [v4 isEqualToArray:v5];
+  appLinks = [snapshot appLinks];
+  appLinks2 = [(CAFAppLinksSnapshot *)self appLinks];
+  v6 = [appLinks isEqualToArray:appLinks2];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CAFAppLinksSnapshot *)self appLinks];
-  v3 = [v2 hash];
+  appLinks = [(CAFAppLinksSnapshot *)self appLinks];
+  v3 = [appLinks hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CAFAppLinksSnapshot alloc];
-  v5 = [(CAFAppLinksSnapshot *)self appLinks];
-  v6 = [(CAFAppLinksSnapshot *)v4 initWithAppLinks:v5];
+  appLinks = [(CAFAppLinksSnapshot *)self appLinks];
+  v6 = [(CAFAppLinksSnapshot *)v4 initWithAppLinks:appLinks];
 
   return v6;
 }

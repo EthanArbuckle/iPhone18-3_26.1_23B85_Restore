@@ -1,17 +1,17 @@
 @interface __NSCFSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)classForCoder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)member:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)member:(id)member;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)objectEnumerator;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addObject:(id)a3;
-- (void)getObjects:(id *)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addObject:(id)object;
+- (void)getObjects:(id *)objects;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
+- (void)removeObject:(id)object;
 @end
 
 @implementation __NSCFSet
@@ -41,7 +41,7 @@
   CFSetRemoveAllValues(self);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9 = *MEMORY[0x1E69E9840];
   if (__cf_tsanReadFunction)
@@ -53,12 +53,12 @@
   {
     v8.receiver = self;
     v8.super_class = __NSCFSet;
-    result = [(NSSet *)&v8 isEqual:a3];
+    result = [(NSSet *)&v8 isEqual:equal];
   }
 
-  else if (a3)
+  else if (equal)
   {
-    result = _CFNonObjCEqual(self, a3) != 0;
+    result = _CFNonObjCEqual(self, equal) != 0;
   }
 
   else
@@ -109,7 +109,7 @@
   return objc_opt_self();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   theSet = self;
   if (__cf_tsanReadFunction)
@@ -131,7 +131,7 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if (__cf_tsanReadFunction)
   {
@@ -141,10 +141,10 @@
   return CFSetCreateMutableCopy(0, 0, self);
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (member)
   {
     if (__cf_tsanReadFunction)
     {
@@ -152,7 +152,7 @@
     }
 
     v8[0] = 0;
-    if (CFSetGetValueIfPresent(self, a3, v8))
+    if (CFSetGetValueIfPresent(self, member, v8))
     {
       result = v8[0];
     }
@@ -172,14 +172,14 @@
   return result;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   if (__cf_tsanReadFunction)
   {
     __cf_tsanReadFunction(self, v5, __CFTSANTagMutableSet);
   }
 
-  return _CFSetFastEnumeration(self, a3, a4, a5);
+  return _CFSetFastEnumeration(self, state, objects, count);
 }
 
 - (id)objectEnumerator
@@ -194,7 +194,7 @@
   return v4;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   if (__cf_tsanWriteFunction)
   {
@@ -206,15 +206,15 @@
     [(__NSCFSet *)self addObject:a2];
   }
 
-  if (!a3)
+  if (!object)
   {
     [(__NSCFSet *)self addObject:a2];
   }
 
-  CFSetAddValue(self, a3);
+  CFSetAddValue(self, object);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   if (__cf_tsanWriteFunction)
   {
@@ -226,15 +226,15 @@
     [(__NSCFSet *)self removeObject:a2];
   }
 
-  if (!a3)
+  if (!object)
   {
     [(__NSCFSet *)self removeObject:a2];
   }
 
-  CFSetRemoveValue(self, a3);
+  CFSetRemoveValue(self, object);
 }
 
-- (void)getObjects:(id *)a3
+- (void)getObjects:(id *)objects
 {
   if (__cf_tsanReadFunction)
   {
@@ -242,10 +242,10 @@
   }
 
   Count = CFSetGetCount(self);
-  if (a3 && Count)
+  if (objects && Count)
   {
 
-    CFSetGetValues(self, a3);
+    CFSetGetValues(self, objects);
   }
 }
 

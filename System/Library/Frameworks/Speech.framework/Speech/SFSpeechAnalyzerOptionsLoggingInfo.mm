@@ -1,27 +1,27 @@
 @interface SFSpeechAnalyzerOptionsLoggingInfo
-- (SFSpeechAnalyzerOptionsLoggingInfo)initWithAsrID:(id)a3 requestID:(id)a4 dictationUIInteractionID:(id)a5;
+- (SFSpeechAnalyzerOptionsLoggingInfo)initWithAsrID:(id)d requestID:(id)iD dictationUIInteractionID:(id)interactionID;
 @end
 
 @implementation SFSpeechAnalyzerOptionsLoggingInfo
 
-- (SFSpeechAnalyzerOptionsLoggingInfo)initWithAsrID:(id)a3 requestID:(id)a4 dictationUIInteractionID:(id)a5
+- (SFSpeechAnalyzerOptionsLoggingInfo)initWithAsrID:(id)d requestID:(id)iD dictationUIInteractionID:(id)interactionID
 {
   v18.receiver = self;
   v18.super_class = SFSpeechAnalyzerOptionsLoggingInfo;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  interactionIDCopy = interactionID;
+  iDCopy = iD;
+  dCopy = d;
   v10 = [(SFSpeechAnalyzerOptionsLoggingInfo *)&v18 init];
-  v11 = [v9 copy];
+  v11 = [dCopy copy];
 
   asrID = v10->_asrID;
   v10->_asrID = v11;
 
-  v13 = [v8 copy];
+  v13 = [iDCopy copy];
   requestID = v10->_requestID;
   v10->_requestID = v13;
 
-  v15 = [v7 copy];
+  v15 = [interactionIDCopy copy];
   dictationUIInteractionID = v10->_dictationUIInteractionID;
   v10->_dictationUIInteractionID = v15;
 

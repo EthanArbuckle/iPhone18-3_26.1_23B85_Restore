@@ -1,34 +1,34 @@
 @interface ICASTranscriptActionType
-- (ICASTranscriptActionType)initWithTranscriptActionType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASTranscriptActionType)initWithTranscriptActionType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASTranscriptActionType
 
-- (ICASTranscriptActionType)initWithTranscriptActionType:(int64_t)a3
+- (ICASTranscriptActionType)initWithTranscriptActionType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASTranscriptActionType;
   result = [(ICASTranscriptActionType *)&v5 init];
   if (result)
   {
-    result->_transcriptActionType = a3;
+    result->_transcriptActionType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASTranscriptActionType *)self transcriptActionType];
-  if ((v3 - 1) > 2)
+  transcriptActionType = [(ICASTranscriptActionType *)self transcriptActionType];
+  if ((transcriptActionType - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF1F8[v3 - 1];
+    return off_2799AF1F8[transcriptActionType - 1];
   }
 }
 

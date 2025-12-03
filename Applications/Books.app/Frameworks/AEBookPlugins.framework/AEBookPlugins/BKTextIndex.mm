@@ -1,28 +1,28 @@
 @interface BKTextIndex
-+ (BOOL)doesBookIndexWithNameExist:(id)a3 isLoaded:(BOOL *)a4;
-+ (id)_cachedIndexFileNameForName:(id)a3 createIndicesDirectoryIfNeeded:(BOOL)a4;
-+ (id)bookIndexWithName:(id)a3;
-+ (void)invalidateBookIndicesWithNames:(id)a3;
-- (BKTextIndex)initWithCoder:(id)a3;
-- (BKTextIndex)initWithName:(id)a3;
-- (BOOL)containsTextUnitWithOrdinal:(unint64_t)a3;
-- (id)queryForString:(id)a3 maxOrdinal:(unint64_t)a4;
++ (BOOL)doesBookIndexWithNameExist:(id)exist isLoaded:(BOOL *)loaded;
++ (id)_cachedIndexFileNameForName:(id)name createIndicesDirectoryIfNeeded:(BOOL)needed;
++ (id)bookIndexWithName:(id)name;
++ (void)invalidateBookIndicesWithNames:(id)names;
+- (BKTextIndex)initWithCoder:(id)coder;
+- (BKTextIndex)initWithName:(id)name;
+- (BOOL)containsTextUnitWithOrdinal:(unint64_t)ordinal;
+- (id)queryForString:(id)string maxOrdinal:(unint64_t)ordinal;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)indexTextUnit:(id)a3 withOrdinal:(unint64_t)a4 indexSynchronously:(BOOL)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)indexTextUnit:(id)unit withOrdinal:(unint64_t)ordinal indexSynchronously:(BOOL)synchronously;
 - (void)save;
 @end
 
 @implementation BKTextIndex
 
-+ (id)_cachedIndexFileNameForName:(id)a3 createIndicesDirectoryIfNeeded:(BOOL)a4
++ (id)_cachedIndexFileNameForName:(id)name createIndicesDirectoryIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = a3;
+  neededCopy = needed;
+  nameCopy = name;
   v6 = +[UIApplication applicationCacheDirectory];
   v7 = [v6 stringByAppendingPathComponent:@"searchIndices"];
 
-  if (v4)
+  if (neededCopy)
   {
     v8 = +[NSFileManager defaultManager];
     v14 = 0;
@@ -46,33 +46,33 @@
     }
   }
 
-  v11 = [NSString stringWithFormat:@"%@/%@.index", v7, v5];
+  nameCopy = [NSString stringWithFormat:@"%@/%@.index", v7, nameCopy];
 
-  return v11;
+  return nameCopy;
 }
 
-+ (id)bookIndexWithName:(id)a3
++ (id)bookIndexWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v6 = [IMTextIndex textIndexWithName:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [IMTextIndex textIndexWithName:nameCopy];
     if (!v6)
     {
-      v7 = [v5 _cachedIndexFileNameForName:v4];
+      v7 = [selfCopy _cachedIndexFileNameForName:nameCopy];
       v8 = [NSData dataWithContentsOfFile:v7];
       v9 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v8 error:0];
       v10 = [v9 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
       v6 = v10;
-      if (v10 && [v10 version] == &dword_4 + 1 || (v11 = -[BKTextIndex initWithName:]([BKTextIndex alloc], "initWithName:", v4), v6, (v6 = v11) != 0))
+      if (v10 && [v10 version] == &dword_4 + 1 || (v11 = -[BKTextIndex initWithName:]([BKTextIndex alloc], "initWithName:", nameCopy), v6, (v6 = v11) != 0))
       {
-        [IMTextIndex addTextIndex:v6 withName:v4];
+        [IMTextIndex addTextIndex:v6 withName:nameCopy];
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -84,11 +84,11 @@
   return v6;
 }
 
-+ (void)invalidateBookIndicesWithNames:(id)a3
++ (void)invalidateBookIndicesWithNames:(id)names
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  namesCopy = names;
+  v5 = namesCopy;
+  if (namesCopy && [namesCopy count])
   {
     v18 = 0u;
     v19 = 0u;
@@ -111,10 +111,10 @@
           }
 
           v10 = *(*(&v16 + 1) + 8 * v9);
-          v11 = a1;
-          objc_sync_enter(v11);
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
           [IMTextIndex removeTextIndexWithName:v10];
-          v12 = [v11 _cachedIndexFileNameForName:v10 createIndicesDirectoryIfNeeded:0];
+          v12 = [selfCopy _cachedIndexFileNameForName:v10 createIndicesDirectoryIfNeeded:0];
           v13 = v12;
           if (v12 && [v12 length])
           {
@@ -122,7 +122,7 @@
             [v14 removeItemAtPath:v13 error:0];
           }
 
-          objc_sync_exit(v11);
+          objc_sync_exit(selfCopy);
           v9 = v9 + 1;
         }
 
@@ -137,38 +137,38 @@
   }
 }
 
-+ (BOOL)doesBookIndexWithNameExist:(id)a3 isLoaded:(BOOL *)a4
++ (BOOL)doesBookIndexWithNameExist:(id)exist isLoaded:(BOOL *)loaded
 {
-  v6 = a3;
-  v7 = a1;
-  objc_sync_enter(v7);
-  v8 = [IMTextIndex textIndexWithName:v6];
+  existCopy = exist;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [IMTextIndex textIndexWithName:existCopy];
   v9 = v8;
-  if (a4)
+  if (loaded)
   {
-    *a4 = v8 != 0;
+    *loaded = v8 != 0;
   }
 
-  v10 = [v7 _cachedIndexFileNameForName:v6];
+  v10 = [selfCopy _cachedIndexFileNameForName:existCopy];
   v11 = +[NSFileManager defaultManager];
   v12 = [v11 fileExistsAtPath:v10];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   return (v9 != 0) | v12 & 1;
 }
 
 - (void)save
 {
   [(BKTextIndex *)self closeIndex];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_isDirty)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isDirty)
   {
-    v4 = [(BKTextIndex *)v3 name];
-    v5 = [BKTextIndex _cachedIndexFileNameForName:v4];
+    name = [(BKTextIndex *)selfCopy name];
+    v5 = [BKTextIndex _cachedIndexFileNameForName:name];
 
     v8 = 0;
-    v6 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v8];
+    v6 = [NSKeyedArchiver archivedDataWithRootObject:selfCopy requiringSecureCoding:1 error:&v8];
     v7 = v8;
     if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -176,22 +176,22 @@
     }
 
     [v6 writeToFile:v5 atomically:1];
-    v3->_isDirty = 0;
+    selfCopy->_isDirty = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
-- (BKTextIndex)initWithName:(id)a3
+- (BKTextIndex)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = BKTextIndex;
   v6 = [(BKTextIndex *)&v9 initWithCaseRule:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v7->_version = 5;
   }
 
@@ -211,82 +211,82 @@
   [(BKTextIndex *)&v5 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v7.receiver = v5;
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7.receiver = selfCopy;
   v7.super_class = BKTextIndex;
-  [(BKTextIndex *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:v5->_name forKey:@"name"];
-  v6 = [NSNumber numberWithUnsignedInteger:v5->_version];
-  [v4 encodeObject:v6 forKey:@"version"];
+  [(BKTextIndex *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:selfCopy->_name forKey:@"name"];
+  v6 = [NSNumber numberWithUnsignedInteger:selfCopy->_version];
+  [coderCopy encodeObject:v6 forKey:@"version"];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BKTextIndex)initWithCoder:(id)a3
+- (BKTextIndex)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = BKTextIndex;
-  v5 = [(BKTextIndex *)&v10 initWithCoder:v4];
+  v5 = [(BKTextIndex *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     v5->_version = [v8 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)indexTextUnit:(id)a3 withOrdinal:(unint64_t)a4 indexSynchronously:(BOOL)a5
+- (void)indexTextUnit:(id)unit withOrdinal:(unint64_t)ordinal indexSynchronously:(BOOL)synchronously
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [NSString stringWithFormat:@"%lu", a4];
-  [(BKTextIndex *)self indexTextUnit:v8 withIdentifier:v9 indexSynchronously:v5];
+  synchronouslyCopy = synchronously;
+  unitCopy = unit;
+  ordinal = [NSString stringWithFormat:@"%lu", ordinal];
+  [(BKTextIndex *)self indexTextUnit:unitCopy withIdentifier:ordinal indexSynchronously:synchronouslyCopy];
 
   self->_isDirty = 1;
 }
 
-- (BOOL)containsTextUnitWithOrdinal:(unint64_t)a3
+- (BOOL)containsTextUnitWithOrdinal:(unint64_t)ordinal
 {
-  v4 = [NSString stringWithFormat:@"%lu", a3];
-  LOBYTE(self) = [(BKTextIndex *)self containsTextUnitWithIdentifier:v4];
+  ordinal = [NSString stringWithFormat:@"%lu", ordinal];
+  LOBYTE(self) = [(BKTextIndex *)self containsTextUnitWithIdentifier:ordinal];
 
   return self;
 }
 
-- (id)queryForString:(id)a3 maxOrdinal:(unint64_t)a4
+- (id)queryForString:(id)string maxOrdinal:(unint64_t)ordinal
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(BKTextIndex *)v7 candidateIdentifiersForStringQuery:v6];
-  v9 = [(BKTextIndex *)v7 allIdentifiers];
+  stringCopy = string;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(BKTextIndex *)selfCopy candidateIdentifiersForStringQuery:stringCopy];
+  allIdentifiers = [(BKTextIndex *)selfCopy allIdentifiers];
   v10 = [v8 count];
-  if (a4 == -1 || v10 || [v9 count] != a4)
+  if (ordinal == -1 || v10 || [allIdentifiers count] != ordinal)
   {
     v12 = [BKTextIndexQueryResult alloc];
-    v13 = [v9 count];
-    if (v13 == a4)
+    v13 = [allIdentifiers count];
+    if (v13 == ordinal)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = [NSSet setWithArray:v9];
+      v14 = [NSSet setWithArray:allIdentifiers];
     }
 
     v11 = [(BKTextIndexQueryResult *)v12 initWithOrdinals:v8 allOrdinals:v14];
-    if (v13 != a4)
+    if (v13 != ordinal)
     {
     }
   }
@@ -296,7 +296,7 @@
     v11 = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }

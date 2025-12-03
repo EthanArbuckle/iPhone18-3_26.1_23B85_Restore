@@ -1,33 +1,33 @@
 @interface DRSCloudKitHelper
-+ (id)helperForCKConfig:(id)a3;
++ (id)helperForCKConfig:(id)config;
 + (id)prodContainerHelper;
 + (id)sandboxContainerHelper;
-- (BOOL)_handleRAPIDRequests:(id)a3 xpcActivity:(id)a4 errorsOut:(id)a5;
-- (DRSCloudKitHelper)initWithContainerEnvironment:(int64_t)a3 rapidEnvironment:(int64_t)a4;
-- (id)_requestsPassingUploadSizeCap:(id)a3 remainingQuota:(unint64_t)a4;
-- (void)_sendDecisionServerRequests:(id)a3 xpcActivity:(id)a4 replyHandler:(id)a5;
-- (void)_uploadRecords:(id)a3 containerName:(id)a4 xpcActivity:(id)a5 completionHandler:(id)a6;
-- (void)reportTerminalRequestStats:(id)a3 xpcActivity:(id)a4 replyHandler:(id)a5;
-- (void)shouldEnableDataGathering:(id)a3 xpcActivity:(id)a4 replyHandler:(id)a5;
-- (void)shouldUploadRequests:(id)a3 xpcActivity:(id)a4 replyHandler:(id)a5;
-- (void)uploadRequests:(id)a3 contactDecisionServer:(BOOL)a4 xpcActivity:(id)a5 remainingUploadQuota:(unint64_t)a6 backingPersistentContainer:(id)a7 completionHandler:(id)a8;
+- (BOOL)_handleRAPIDRequests:(id)requests xpcActivity:(id)activity errorsOut:(id)out;
+- (DRSCloudKitHelper)initWithContainerEnvironment:(int64_t)environment rapidEnvironment:(int64_t)rapidEnvironment;
+- (id)_requestsPassingUploadSizeCap:(id)cap remainingQuota:(unint64_t)quota;
+- (void)_sendDecisionServerRequests:(id)requests xpcActivity:(id)activity replyHandler:(id)handler;
+- (void)_uploadRecords:(id)records containerName:(id)name xpcActivity:(id)activity completionHandler:(id)handler;
+- (void)reportTerminalRequestStats:(id)stats xpcActivity:(id)activity replyHandler:(id)handler;
+- (void)shouldEnableDataGathering:(id)gathering xpcActivity:(id)activity replyHandler:(id)handler;
+- (void)shouldUploadRequests:(id)requests xpcActivity:(id)activity replyHandler:(id)handler;
+- (void)uploadRequests:(id)requests contactDecisionServer:(BOOL)server xpcActivity:(id)activity remainingUploadQuota:(unint64_t)quota backingPersistentContainer:(id)container completionHandler:(id)handler;
 @end
 
 @implementation DRSCloudKitHelper
 
-+ (id)helperForCKConfig:(id)a3
++ (id)helperForCKConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = [DRSCloudKitHelper alloc];
-  v5 = [v3 ckContainerEnvironment];
-  v6 = [v3 ckRapidEnvironment];
+  ckContainerEnvironment = [configCopy ckContainerEnvironment];
+  ckRapidEnvironment = [configCopy ckRapidEnvironment];
 
-  v7 = [(DRSCloudKitHelper *)v4 initWithContainerEnvironment:v5 rapidEnvironment:v6];
+  v7 = [(DRSCloudKitHelper *)v4 initWithContainerEnvironment:ckContainerEnvironment rapidEnvironment:ckRapidEnvironment];
 
   return v7;
 }
 
-- (DRSCloudKitHelper)initWithContainerEnvironment:(int64_t)a3 rapidEnvironment:(int64_t)a4
+- (DRSCloudKitHelper)initWithContainerEnvironment:(int64_t)environment rapidEnvironment:(int64_t)rapidEnvironment
 {
   v13.receiver = self;
   v13.super_class = DRSCloudKitHelper;
@@ -35,8 +35,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_environment = a3;
-    v6->_rapidEnvironment = a4;
+    v6->_environment = environment;
+    v6->_rapidEnvironment = rapidEnvironment;
     if ([(DRSCloudKitHelper *)v6 environment]== 1)
     {
       DRSProductionContainer();
@@ -105,38 +105,38 @@ void __40__DRSCloudKitHelper_prodContainerHelper__block_invoke()
   prodContainerHelper_helper = v0;
 }
 
-- (void)_uploadRecords:(id)a3 containerName:(id)a4 xpcActivity:(id)a5 completionHandler:(id)a6
+- (void)_uploadRecords:(id)records containerName:(id)name xpcActivity:(id)activity completionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  nameCopy = name;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CBC4A0];
-  v13 = a5;
-  v14 = a3;
-  v15 = [[v12 alloc] initWithRecordsToSave:v14 recordIDsToDelete:0];
+  activityCopy = activity;
+  recordsCopy = records;
+  v15 = [[v12 alloc] initWithRecordsToSave:recordsCopy recordIDsToDelete:0];
 
-  if ([v10 isEqualToString:kDRSCloudKitContainerName])
+  if ([nameCopy isEqualToString:kDRSCloudKitContainerName])
   {
-    v16 = [(DRSCloudKitHelper *)self _targetContainer];
+    _targetContainer = [(DRSCloudKitHelper *)self _targetContainer];
   }
 
   else
   {
-    v17 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:v10 environment:{-[DRSCloudKitHelper environment](self, "environment")}];
-    v16 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v17];
+    v17 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:nameCopy environment:{-[DRSCloudKitHelper environment](self, "environment")}];
+    _targetContainer = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v17];
   }
 
-  [(DRSCloudKitHelper *)self _configureOperation:v15 container:v16 xpcActivity:v13];
+  [(DRSCloudKitHelper *)self _configureOperation:v15 container:_targetContainer xpcActivity:activityCopy];
 
-  v18 = [v15 operationID];
+  operationID = [v15 operationID];
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = __80__DRSCloudKitHelper__uploadRecords_containerName_xpcActivity_completionHandler___block_invoke;
   v30 = &unk_27899F038;
-  v19 = v18;
+  v19 = operationID;
   v31 = v19;
-  v32 = v11;
-  v20 = v11;
+  v32 = handlerCopy;
+  v20 = handlerCopy;
   v21 = _Block_copy(&v27);
   [v15 setModifyRecordsCompletionBlock:{v21, v27, v28, v29, v30}];
   v22 = DPLogHandle_CKRecordUpload();
@@ -149,13 +149,13 @@ void __40__DRSCloudKitHelper_prodContainerHelper__block_invoke()
       *buf = 138543618;
       v34 = v19;
       v35 = 2114;
-      v36 = v10;
+      v36 = nameCopy;
       _os_signpost_emit_with_name_impl(&dword_232906000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v24, "CKRecordUpload", "Upload operation ID: %{public}@, target container: %{public}@", buf, 0x16u);
     }
   }
 
-  v25 = [v16 publicCloudDatabase];
-  [v25 addOperation:v15];
+  publicCloudDatabase = [_targetContainer publicCloudDatabase];
+  [publicCloudDatabase addOperation:v15];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -191,17 +191,17 @@ void __80__DRSCloudKitHelper__uploadRecords_containerName_xpcActivity_completion
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_handleRAPIDRequests:(id)a3 xpcActivity:(id)a4 errorsOut:(id)a5
+- (BOOL)_handleRAPIDRequests:(id)requests xpcActivity:(id)activity errorsOut:(id)out
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v24 = a5;
+  requestsCopy = requests;
+  activityCopy = activity;
+  outCopy = out;
   v10 = DPLogHandle_CKCFUpload();
   if (os_signpost_enabled(v10))
   {
     *buf = 134349056;
-    v33 = [v8 count];
+    v33 = [requestsCopy count];
     _os_signpost_emit_with_name_impl(&dword_232906000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "CloudFunctionsUploadSession", "Beginning upload session of %{public}llu requests", buf, 0xCu);
   }
 
@@ -209,7 +209,7 @@ void __80__DRSCloudKitHelper__uploadRecords_containerName_xpcActivity_completion
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v8;
+  v11 = requestsCopy;
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
@@ -226,7 +226,7 @@ void __80__DRSCloudKitHelper__uploadRecords_containerName_xpcActivity_completion
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        if (v9 && xpc_activity_should_defer(v9))
+        if (activityCopy && xpc_activity_should_defer(activityCopy))
         {
           v20 = DPLogHandle_CKCFUpload();
           if (os_signpost_enabled(v20))
@@ -241,13 +241,13 @@ void __80__DRSCloudKitHelper__uploadRecords_containerName_xpcActivity_completion
           goto LABEL_18;
         }
 
-        v17 = [(DRSCloudKitHelper *)self rapidHelper];
+        rapidHelper = [(DRSCloudKitHelper *)self rapidHelper];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __64__DRSCloudKitHelper__handleRAPIDRequests_xpcActivity_errorsOut___block_invoke;
         v25[3] = &unk_27899F060;
-        v26 = v24;
-        [v17 submitRapidPayload:v16 replyHandler:v25];
+        v26 = outCopy;
+        [rapidHelper submitRapidPayload:v16 replyHandler:v25];
       }
 
       v11 = obj;
@@ -285,10 +285,10 @@ uint64_t __64__DRSCloudKitHelper__handleRAPIDRequests_xpcActivity_errorsOut___bl
   return result;
 }
 
-- (id)_requestsPassingUploadSizeCap:(id)a3 remainingQuota:(unint64_t)a4
+- (id)_requestsPassingUploadSizeCap:(id)cap remainingQuota:(unint64_t)quota
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [a3 mutableCopy];
+  v5 = [cap mutableCopy];
   [v5 sortUsingComparator:&__block_literal_global_232];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22 = 0u;
@@ -313,15 +313,15 @@ uint64_t __64__DRSCloudKitHelper__handleRAPIDRequests_xpcActivity_errorsOut___bl
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 totalLogSizeBytes];
-        if (v14)
+        totalLogSizeBytes = [v13 totalLogSizeBytes];
+        if (totalLogSizeBytes)
         {
-          v15 = v14;
-          v16 = a4 - v14;
-          if (a4 >= v14)
+          v15 = totalLogSizeBytes;
+          v16 = quota - totalLogSizeBytes;
+          if (quota >= totalLogSizeBytes)
           {
             [v6 addObject:v13];
-            a4 = v16;
+            quota = v16;
           }
 
           else
@@ -329,13 +329,13 @@ uint64_t __64__DRSCloudKitHelper__handleRAPIDRequests_xpcActivity_errorsOut___bl
             v17 = DPLogHandle_CKRecordUpload();
             if (os_signpost_enabled(v17))
             {
-              v18 = [v13 requestID];
+              requestID = [v13 requestID];
               *buf = v21;
-              v27 = v18;
+              v27 = requestID;
               v28 = 2048;
               v29 = v15;
               v30 = 2048;
-              v31 = a4;
+              quotaCopy = quota;
               _os_signpost_emit_with_name_impl(&dword_232906000, v17, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "UploadSkippedDueToSizeLimits", "Skipping upload of request %{public}@ due to upload size limits: %zu (size B) > %llu (remaining quota B)", buf, 0x20u);
             }
           }
@@ -368,23 +368,23 @@ uint64_t __66__DRSCloudKitHelper__requestsPassingUploadSizeCap_remainingQuota___
   return v7;
 }
 
-- (void)uploadRequests:(id)a3 contactDecisionServer:(BOOL)a4 xpcActivity:(id)a5 remainingUploadQuota:(unint64_t)a6 backingPersistentContainer:(id)a7 completionHandler:(id)a8
+- (void)uploadRequests:(id)requests contactDecisionServer:(BOOL)server xpcActivity:(id)activity remainingUploadQuota:(unint64_t)quota backingPersistentContainer:(id)container completionHandler:(id)handler
 {
-  v41 = a4;
+  serverCopy = server;
   v78 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v43 = a5;
-  v45 = a7;
-  v42 = a8;
+  requestsCopy = requests;
+  activityCopy = activity;
+  containerCopy = container;
+  handlerCopy = handler;
   v13 = +[DRSSystemProfile sharedInstance];
-  v14 = [v13 isLogUploadEnabled];
+  isLogUploadEnabled = [v13 isLogUploadEnabled];
 
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v16 = v12;
+  v16 = requestsCopy;
   v17 = [v16 countByEnumeratingWithState:&v70 objects:v77 count:16];
   if (v17)
   {
@@ -403,7 +403,7 @@ uint64_t __66__DRSCloudKitHelper__requestsPassingUploadSizeCap_remainingQuota___
         {
           if ([v20 hasUploadableContent])
           {
-            if (v14)
+            if (isLogUploadEnabled)
             {
               [v15 addObject:v20];
             }
@@ -427,7 +427,7 @@ uint64_t __66__DRSCloudKitHelper__requestsPassingUploadSizeCap_remainingQuota___
     while (v17);
   }
 
-  v21 = [(DRSCloudKitHelper *)self _requestsPassingUploadSizeCap:v15 remainingQuota:a6];
+  v21 = [(DRSCloudKitHelper *)self _requestsPassingUploadSizeCap:v15 remainingQuota:quota];
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v68 = 0u;
   v69 = 0u;
@@ -460,9 +460,9 @@ uint64_t __66__DRSCloudKitHelper__requestsPassingUploadSizeCap_remainingQuota___
     while (v24);
   }
 
-  if (v45)
+  if (containerCopy)
   {
-    v28 = [v45 newBackgroundContext];
+    newBackgroundContext = [containerCopy newBackgroundContext];
     v60 = 0;
     v61 = &v60;
     v62 = 0x3032000000;
@@ -479,7 +479,7 @@ uint64_t __66__DRSCloudKitHelper__requestsPassingUploadSizeCap_remainingQuota___
     v53[3] = &unk_27899ED80;
     v29 = v23;
     v54 = v29;
-    v30 = v28;
+    v30 = newBackgroundContext;
     v55 = v30;
     v56 = v58;
     v57 = &v60;
@@ -489,12 +489,12 @@ uint64_t __66__DRSCloudKitHelper__requestsPassingUploadSizeCap_remainingQuota___
       v31 = DPLogHandle_CKRecordUpload();
       if (os_signpost_enabled(v31))
       {
-        v32 = [v61[5] localizedDescription];
-        v33 = v32;
+        localizedDescription = [v61[5] localizedDescription];
+        v33 = localizedDescription;
         v34 = @"Unknown";
-        if (v32)
+        if (localizedDescription)
         {
-          v34 = v32;
+          v34 = localizedDescription;
         }
 
         *buf = 138543362;
@@ -523,14 +523,14 @@ uint64_t __66__DRSCloudKitHelper__requestsPassingUploadSizeCap_remainingQuota___
   aBlock[1] = 3221225472;
   aBlock[2] = __136__DRSCloudKitHelper_uploadRequests_contactDecisionServer_xpcActivity_remainingUploadQuota_backingPersistentContainer_completionHandler___block_invoke_233;
   aBlock[3] = &unk_27899F0F8;
-  v36 = v42;
+  v36 = handlerCopy;
   v52 = v36;
   aBlock[4] = self;
-  v37 = v43;
+  v37 = activityCopy;
   v51 = v37;
   v38 = _Block_copy(aBlock);
   v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v41)
+  if (serverCopy)
   {
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
@@ -1177,18 +1177,18 @@ LABEL_27:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shouldUploadRequests:(id)a3 xpcActivity:(id)a4 replyHandler:(id)a5
+- (void)shouldUploadRequests:(id)requests xpcActivity:(id)activity replyHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestsCopy = requests;
+  activityCopy = activity;
+  handlerCopy = handler;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v8;
+  v12 = requestsCopy;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
@@ -1216,23 +1216,23 @@ LABEL_27:
     while (v14);
   }
 
-  [(DRSCloudKitHelper *)self _sendDecisionServerRequests:v11 xpcActivity:v9 replyHandler:v10];
+  [(DRSCloudKitHelper *)self _sendDecisionServerRequests:v11 xpcActivity:activityCopy replyHandler:handlerCopy];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shouldEnableDataGathering:(id)a3 xpcActivity:(id)a4 replyHandler:(id)a5
+- (void)shouldEnableDataGathering:(id)gathering xpcActivity:(id)activity replyHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  gatheringCopy = gathering;
+  activityCopy = activity;
+  handlerCopy = handler;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v13 = v8;
+  v13 = gatheringCopy;
   v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v14)
   {
@@ -1272,11 +1272,11 @@ LABEL_27:
   v26 = __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler___block_invoke;
   v27 = &unk_27899F148;
   v28 = v11;
-  v29 = v10;
-  v20 = v10;
+  v29 = handlerCopy;
+  v20 = handlerCopy;
   v21 = v11;
   v22 = _Block_copy(&v24);
-  [(DRSCloudKitHelper *)self _sendDecisionServerRequests:v12 xpcActivity:v9 replyHandler:v22, v24, v25, v26, v27];
+  [(DRSCloudKitHelper *)self _sendDecisionServerRequests:v12 xpcActivity:activityCopy replyHandler:v22, v24, v25, v26, v27];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -1353,31 +1353,31 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendDecisionServerRequests:(id)a3 xpcActivity:(id)a4 replyHandler:(id)a5
+- (void)_sendDecisionServerRequests:(id)requests xpcActivity:(id)activity replyHandler:(id)handler
 {
   v111 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 count])
+  requestsCopy = requests;
+  activityCopy = activity;
+  handlerCopy = handler;
+  if (requestsCopy && [requestsCopy count])
   {
-    v74 = v10;
-    v75 = v9;
+    v74 = handlerCopy;
+    v75 = activityCopy;
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v12 = +[DRSSystemProfile sharedInstance];
-    v13 = [v12 isLogUploadEnabled];
+    isLogUploadEnabled = [v12 isLogUploadEnabled];
 
-    if (v13)
+    if (isLogUploadEnabled)
     {
-      v72 = self;
+      selfCopy = self;
       v77 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v88 = 0u;
       v89 = 0u;
       v90 = 0u;
       v91 = 0u;
-      v73 = v8;
-      v15 = v8;
+      v73 = requestsCopy;
+      v15 = requestsCopy;
       v16 = [v15 countByEnumeratingWithState:&v88 objects:v109 count:16];
       v76 = v14;
       if (v16)
@@ -1394,18 +1394,18 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
             }
 
             v20 = *(*(&v88 + 1) + 8 * i);
-            v21 = [v20 pbRequest];
-            if (v21)
+            pbRequest = [v20 pbRequest];
+            if (pbRequest)
             {
-              [v77 addObject:v21];
+              [v77 addObject:pbRequest];
               [v14 addObject:v20];
             }
 
             else
             {
               v22 = [[DRSDecisionServerRequestReply alloc] initWithOriginalRequest:v20 requestAccepted:0 rejectionReason:@"Invalid upload request"];
-              v23 = [v20 uniqueID];
-              [v11 setObject:v22 forKeyedSubscript:v23];
+              uniqueID = [v20 uniqueID];
+              [v11 setObject:v22 forKeyedSubscript:uniqueID];
 
               v14 = v76;
             }
@@ -1426,19 +1426,19 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
         v27 = [v25 errorWithDomain:@"CKCodeServerError" code:0 userInfo:v26];
 
-        v10 = v74;
+        handlerCopy = v74;
         (v74)[2](v74, v11, 0, v27);
-        v9 = v75;
+        activityCopy = v75;
       }
 
       else
       {
         v37 = objc_alloc(MEMORY[0x277CBC1F8]);
         v38 = kDRSCloudKitDecisionServerName;
-        v39 = [v76 firstObject];
-        v40 = [v39 functionName];
-        v41 = [v76 firstObject];
-        v27 = [v37 initWithServiceName:v38 functionName:v40 responseClass:{objc_msgSend(v41, "pbBatchResponseClass")}];
+        firstObject = [v76 firstObject];
+        functionName = [firstObject functionName];
+        firstObject2 = [v76 firstObject];
+        v27 = [v37 initWithServiceName:v38 functionName:functionName responseClass:{objc_msgSend(firstObject2, "pbBatchResponseClass")}];
 
         if (v27)
         {
@@ -1446,31 +1446,31 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
           if (os_signpost_enabled(v42))
           {
             v43 = kDRSCloudKitDecisionServerName;
-            v44 = [v76 firstObject];
-            v45 = [v44 functionName];
-            v46 = [v27 operationID];
+            firstObject3 = [v76 firstObject];
+            functionName2 = [firstObject3 functionName];
+            operationID = [v27 operationID];
             *buf = 138543874;
             v97 = v43;
             v98 = 2114;
-            v99 = v45;
+            v99 = functionName2;
             v100 = 2114;
-            v101 = v46;
+            v101 = operationID;
             _os_signpost_emit_with_name_impl(&dword_232906000, v42, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CKCodeOperationCreation", "Server: %{public}@, function: %{public}@, CKOperationID: %{public}@", buf, 0x20u);
           }
 
-          v47 = [(DRSCloudKitHelper *)v72 _targetContainer];
-          v9 = v75;
-          [(DRSCloudKitHelper *)v72 _configureOperation:v27 container:v47 xpcActivity:v75];
+          _targetContainer = [(DRSCloudKitHelper *)selfCopy _targetContainer];
+          activityCopy = v75;
+          [(DRSCloudKitHelper *)selfCopy _configureOperation:v27 container:_targetContainer xpcActivity:v75];
 
-          v48 = [v76 firstObject];
-          v49 = [v48 pbBatchInstance];
+          firstObject4 = [v76 firstObject];
+          pbBatchInstance = [firstObject4 pbBatchInstance];
 
           v50 = DRSDeviceMetadata();
-          [v49 setClientMetadata:v50];
+          [pbBatchInstance setClientMetadata:v50];
 
-          [v49 setRequests:v77];
-          [v27 setRequest:v49];
-          v51 = [v27 operationID];
+          [pbBatchInstance setRequests:v77];
+          [v27 setRequest:pbBatchInstance];
+          operationID2 = [v27 operationID];
           v78[0] = MEMORY[0x277D85DD0];
           v78[1] = 3221225472;
           v78[2] = __74__DRSCloudKitHelper__sendDecisionServerRequests_xpcActivity_replyHandler___block_invoke;
@@ -1478,14 +1478,14 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
           v79 = v76;
           v80 = v11;
           v81 = v15;
-          v10 = v74;
-          v82 = v51;
+          handlerCopy = v74;
+          v82 = operationID2;
           v83 = v74;
-          v52 = v51;
+          v52 = operationID2;
           [v27 setCodeOperationCompletionBlock:v78];
-          v53 = [(DRSCloudKitHelper *)v72 _targetContainer];
-          v54 = [v53 publicCloudDatabase];
-          [v54 addOperation:v27];
+          _targetContainer2 = [(DRSCloudKitHelper *)selfCopy _targetContainer];
+          publicCloudDatabase = [_targetContainer2 publicCloudDatabase];
+          [publicCloudDatabase addOperation:v27];
         }
 
         else
@@ -1511,8 +1511,8 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
 
                 v60 = *(*(&v84 + 1) + 8 * j);
                 v61 = [[DRSDecisionServerRequestReply alloc] initWithOriginalRequest:v60 requestAccepted:0 rejectionReason:@"Could not create upload request operation"];
-                v62 = [v60 uniqueID];
-                [v11 setObject:v61 forKeyedSubscript:v62];
+                uniqueID2 = [v60 uniqueID];
+                [v11 setObject:v61 forKeyedSubscript:uniqueID2];
               }
 
               v57 = [v55 countByEnumeratingWithState:&v84 objects:v106 count:16];
@@ -1544,16 +1544,16 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
           }
 
           v70 = [v67 dictionaryWithObjects:v68 forKeys:v69 count:1];
-          v10 = v74;
-          v9 = v75;
+          handlerCopy = v74;
+          activityCopy = v75;
           v27 = 0;
-          v49 = [v65 errorWithDomain:@"CKCodeServerError" code:0 userInfo:v70];
+          pbBatchInstance = [v65 errorWithDomain:@"CKCodeServerError" code:0 userInfo:v70];
 
-          (*(v10 + 2))(v10, v11, 0, v49);
+          (*(handlerCopy + 2))(handlerCopy, v11, 0, pbBatchInstance);
         }
       }
 
-      v8 = v73;
+      requestsCopy = v73;
     }
 
     else
@@ -1562,7 +1562,7 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
       v95 = 0u;
       v92 = 0u;
       v93 = 0u;
-      v29 = v8;
+      v29 = requestsCopy;
       v30 = [v29 countByEnumeratingWithState:&v92 objects:v110 count:16];
       if (v30)
       {
@@ -1579,8 +1579,8 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
 
             v34 = *(*(&v92 + 1) + 8 * k);
             v35 = [[DRSDecisionServerRequestReply alloc] initWithOriginalRequest:v34 requestAccepted:0 rejectionReason:@"Log upload is disabled"];
-            v36 = [v34 uniqueID];
-            [v11 setObject:v35 forKeyedSubscript:v36];
+            uniqueID3 = [v34 uniqueID];
+            [v11 setObject:v35 forKeyedSubscript:uniqueID3];
           }
 
           v31 = [v29 countByEnumeratingWithState:&v92 objects:v110 count:16];
@@ -1589,7 +1589,7 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
         while (v31);
       }
 
-      v10 = v74;
+      handlerCopy = v74;
       (v74)[2](v74, v11, 0, 0);
     }
   }
@@ -1597,7 +1597,7 @@ void __72__DRSCloudKitHelper_shouldEnableDataGathering_xpcActivity_replyHandler_
   else
   {
     v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    (*(v10 + 2))(v10, v28, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v28, 0, 0);
   }
 
   v71 = *MEMORY[0x277D85DE8];
@@ -1775,15 +1775,15 @@ LABEL_34:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportTerminalRequestStats:(id)a3 xpcActivity:(id)a4 replyHandler:(id)a5
+- (void)reportTerminalRequestStats:(id)stats xpcActivity:(id)activity replyHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  statsCopy = stats;
+  activityCopy = activity;
+  handlerCopy = handler;
+  if ([statsCopy count])
   {
-    v11 = [DRSRequestAllStats statsForRequests:v8];
+    v11 = [DRSRequestAllStats statsForRequests:statsCopy];
     v12 = [v11 generateCoreAnalyticsEvents:1];
     v13 = DPLogHandle_Telemetry();
     if (os_signpost_enabled(v13))
@@ -1794,28 +1794,28 @@ LABEL_34:
     }
 
     v14 = +[DRSSystemProfile sharedInstance];
-    v15 = [v14 isInternal];
+    isInternal = [v14 isInternal];
 
-    if (v15)
+    if (isInternal)
     {
-      v16 = [v11 terminalRequestProtobufRepresentation];
-      if (v16)
+      terminalRequestProtobufRepresentation = [v11 terminalRequestProtobufRepresentation];
+      if (terminalRequestProtobufRepresentation)
       {
         v17 = objc_alloc(MEMORY[0x277CBC1F8]);
         v18 = [v17 initWithServiceName:kDRSCloudKitDecisionServerName functionName:@"reportDiagnosticRequestStatsBatch" responseClass:objc_opt_class()];
-        v19 = [(DRSCloudKitHelper *)self _targetContainer];
-        [(DRSCloudKitHelper *)self _configureOperation:v18 container:v19 xpcActivity:v9];
+        _targetContainer = [(DRSCloudKitHelper *)self _targetContainer];
+        [(DRSCloudKitHelper *)self _configureOperation:v18 container:_targetContainer xpcActivity:activityCopy];
 
-        [v18 setRequest:v16];
+        [v18 setRequest:terminalRequestProtobufRepresentation];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __73__DRSCloudKitHelper_reportTerminalRequestStats_xpcActivity_replyHandler___block_invoke;
         v26[3] = &unk_27899F198;
-        v27 = v10;
+        v27 = handlerCopy;
         [v18 setCodeOperationCompletionBlock:v26];
-        v20 = [(DRSCloudKitHelper *)self _targetContainer];
-        v21 = [v20 publicCloudDatabase];
-        [v21 addOperation:v18];
+        _targetContainer2 = [(DRSCloudKitHelper *)self _targetContainer];
+        publicCloudDatabase = [_targetContainer2 publicCloudDatabase];
+        [publicCloudDatabase addOperation:v18];
       }
 
       else
@@ -1833,19 +1833,19 @@ LABEL_34:
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
         v18 = [v23 errorWithDomain:@"DiagnosticPipelineRequestStatsBatchError" code:0 userInfo:v24];
 
-        (*(v10 + 2))(v10, v18);
+        (*(handlerCopy + 2))(handlerCopy, v18);
       }
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v25 = *MEMORY[0x277D85DE8];

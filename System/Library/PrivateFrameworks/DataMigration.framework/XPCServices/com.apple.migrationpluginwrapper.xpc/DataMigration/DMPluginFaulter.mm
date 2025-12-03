@@ -1,7 +1,7 @@
 @interface DMPluginFaulter
 - (DMPluginFaulter)init;
 - (void)_faultForUnknownPluginIdentifier;
-- (void)faultWithPluginIdentifier:(id)a3 message:(id)a4;
+- (void)faultWithPluginIdentifier:(id)identifier message:(id)message;
 @end
 
 @implementation DMPluginFaulter
@@ -20,18 +20,18 @@
   return v2;
 }
 
-- (void)faultWithPluginIdentifier:(id)a3 message:(id)a4
+- (void)faultWithPluginIdentifier:(id)identifier message:(id)message
 {
-  v9 = a3;
-  v6 = a4;
-  [(DMPluginFaulter *)self setMessage:v6];
-  if (v9)
+  identifierCopy = identifier;
+  messageCopy = message;
+  [(DMPluginFaulter *)self setMessage:messageCopy];
+  if (identifierCopy)
   {
     v7 = [DMPluginSpecificUtilitiesManager utilitiesForPluginIdentifier:?];
     if (v7)
     {
-      v8 = [(DMPluginFaulter *)self os_log];
-      [v7 faultWithLog:v8 message:v6];
+      os_log = [(DMPluginFaulter *)self os_log];
+      [v7 faultWithLog:os_log message:messageCopy];
     }
 
     else
@@ -48,10 +48,10 @@
 
 - (void)_faultForUnknownPluginIdentifier
 {
-  v3 = [(DMPluginFaulter *)self os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+  os_log = [(DMPluginFaulter *)self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_FAULT))
   {
-    sub_100005E68(self, v3);
+    sub_100005E68(self, os_log);
   }
 }
 

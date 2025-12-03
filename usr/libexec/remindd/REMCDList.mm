@@ -1,33 +1,33 @@
 @interface REMCDList
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5;
-+ (id)newPlaceholderObjectForRecordID:(id)a3 account:(id)a4 context:(id)a5;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context;
++ (id)newPlaceholderObjectForRecordID:(id)d account:(id)account context:(id)context;
 + (id)recordTypes;
-- (BOOL)isConnectedToAccountObject:(id)a3;
+- (BOOL)isConnectedToAccountObject:(id)object;
 - (BOOL)isShared;
-- (BOOL)mergeWithLocalObject:(id)a3;
-- (BOOL)shouldCascadeMarkAsDeleteInto:(id)a3 forRelationship:(id)a4;
-- (BOOL)validateForDelete:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
+- (BOOL)mergeWithLocalObject:(id)object;
+- (BOOL)shouldCascadeMarkAsDeleteInto:(id)into forRelationship:(id)relationship;
+- (BOOL)validateForDelete:(id *)delete;
+- (BOOL)validateForInsert:(id *)insert;
 - (NSData)reminderIDsMergeableOrdering;
 - (NSString)displayName;
 - (id)_parentZoneMismatchErrorDebugDescription;
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3;
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate;
 - (id)newlyCreatedRecord;
 - (id)objectsToBeDeletedBeforeThisObject;
 - (id)recordType;
 - (id)shareTitle;
 - (id)shareType;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)parentEffectiveMinimumSupportedVersion;
 - (void)debug_lowLevelRemoveFromParent;
 - (void)incrementSpotlightIndexCount;
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4;
+- (void)mergeDataFromRecord:(id)record accountID:(id)d;
 - (void)objectWasDeletedFromCloudByAnotherDevice;
 - (void)restoreParentReferenceAfterUnmarkingForDeletion;
-- (void)setReminderIDsMergeableOrdering:(id)a3;
+- (void)setReminderIDsMergeableOrdering:(id)ordering;
 - (void)sortChildrenObjects;
-- (void)updateObjectWithShare:(id)a3;
+- (void)updateObjectWithShare:(id)share;
 @end
 
 @implementation REMCDList
@@ -43,29 +43,29 @@
   return v3;
 }
 
-- (void)setReminderIDsMergeableOrdering:(id)a3
+- (void)setReminderIDsMergeableOrdering:(id)ordering
 {
-  v4 = a3;
+  orderingCopy = ordering;
   [(REMCDObject *)self willChangeValueForKey:@"reminderIDsOrdering"];
   [(REMCDObject *)self willChangeValueForKey:@"reminderIDsMergeableOrdering_v2_JSON"];
-  [(REMCDList *)self setPrimitiveValue:v4 forKey:@"reminderIDsMergeableOrdering_v2_JSON"];
+  [(REMCDList *)self setPrimitiveValue:orderingCopy forKey:@"reminderIDsMergeableOrdering_v2_JSON"];
 
   [(REMCDObject *)self didChangeValueForKey:@"reminderIDsMergeableOrdering_v2_JSON"];
 
   [(REMCDObject *)self didChangeValueForKey:@"reminderIDsOrdering"];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   v5 = REMDynamicCast();
 
   if (v5 && ([v5 name], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 name];
-    v8 = [(REMCDList *)self name];
-    v9 = [v8 compare:v7];
+    name = [v5 name];
+    name2 = [(REMCDList *)self name];
+    v9 = [name2 compare:name];
   }
 
   else
@@ -76,26 +76,26 @@
   return v9;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v9.receiver = self;
   v9.super_class = REMCDList;
   v5 = [(REMCDObject *)&v9 validateForInsert:?];
   if (v5)
   {
-    v6 = [(REMCDList *)self account];
+    account = [(REMCDList *)self account];
 
-    if (v6)
+    if (account)
     {
       LOBYTE(v5) = 1;
     }
 
     else
     {
-      if (a3)
+      if (insert)
       {
-        v7 = [(REMCDObject *)self remObjectID];
-        *a3 = [REMError validationErrorListHasNoAccount:v7];
+        remObjectID = [(REMCDObject *)self remObjectID];
+        *insert = [REMError validationErrorListHasNoAccount:remObjectID];
       }
 
       LOBYTE(v5) = 0;
@@ -105,21 +105,21 @@
   return v5;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v10.receiver = self;
   v10.super_class = REMCDList;
-  v4 = [(REMCDList *)&v10 validateForDelete:a3];
+  v4 = [(REMCDList *)&v10 validateForDelete:delete];
   if (v4)
   {
-    v5 = [(REMCDObject *)self remObjectID];
-    v6 = [v5 stringRepresentation];
+    remObjectID = [(REMCDObject *)self remObjectID];
+    stringRepresentation = [remObjectID stringRepresentation];
 
     v7 = +[REMUserDefaults daemonUserDefaults];
-    [v7 removeMuteNotificationOptionsForSharedList:v6];
+    [v7 removeMuteNotificationOptionsForSharedList:stringRepresentation];
 
     v8 = +[REMUserDefaults daemonUserDefaults];
-    [v8 removeHideEmptySectionsForGroceryList:v6];
+    [v8 removeHideEmptySectionsForGroceryList:stringRepresentation];
   }
 
   return v4;
@@ -127,19 +127,19 @@
 
 - (id)_parentZoneMismatchErrorDebugDescription
 {
-  v3 = [(REMCDList *)self sharees];
-  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"sharees.count: %lu, sharingStatus: %d", [v3 count], -[REMCDList sharingStatus](self, "sharingStatus"));
+  sharees = [(REMCDList *)self sharees];
+  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"sharees.count: %lu, sharingStatus: %d", [sharees count], -[REMCDList sharingStatus](self, "sharingStatus"));
 
   return v4;
 }
 
 - (BOOL)isShared
 {
-  v2 = self;
-  v3 = [(REMCDList *)self sharees];
-  LOBYTE(v2) = +[REMList isSharedWithShareeCount:sharingStatus:](REMList, "isSharedWithShareeCount:sharingStatus:", [v3 count], -[REMCDList sharingStatus](v2, "sharingStatus"));
+  selfCopy = self;
+  sharees = [(REMCDList *)self sharees];
+  LOBYTE(selfCopy) = +[REMList isSharedWithShareeCount:sharingStatus:](REMList, "isSharedWithShareeCount:sharingStatus:", [sharees count], -[REMCDList sharingStatus](selfCopy, "sharingStatus"));
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)incrementSpotlightIndexCount
@@ -157,13 +157,13 @@
   [(REMCDList *)self setSpotlightIndexCount:v3];
 }
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
-  v5 = [(REMCDObject *)self remObjectID];
-  if (v5)
+  objectCopy = object;
+  remObjectID = [(REMCDObject *)self remObjectID];
+  if (remObjectID)
   {
-    v6 = [v4 objectForKeyedSubscript:v5];
+    v6 = [objectCopy objectForKeyedSubscript:remObjectID];
     v7 = v6;
     if (v6)
     {
@@ -172,10 +172,10 @@
 
     else
     {
-      [v4 setObject:&off_100904FE0 forKeyedSubscript:v5];
-      v9 = [(REMCDList *)self parentList];
+      [objectCopy setObject:&off_100904FE0 forKeyedSubscript:remObjectID];
+      parentList = [(REMCDList *)self parentList];
 
-      if (v9)
+      if (parentList)
       {
         [(REMCDList *)self parentList];
       }
@@ -185,7 +185,7 @@
         [(REMCDList *)self parentAccount];
       }
       v10 = ;
-      v8 = [v10 isConnectedToAccountObject:v4];
+      v8 = [v10 isConnectedToAccountObject:objectCopy];
 
       if (v8)
       {
@@ -197,7 +197,7 @@
         v11 = &off_100905010;
       }
 
-      [v4 setObject:v11 forKeyedSubscript:v5];
+      [objectCopy setObject:v11 forKeyedSubscript:remObjectID];
     }
   }
 
@@ -209,26 +209,26 @@
   return v8;
 }
 
-- (BOOL)shouldCascadeMarkAsDeleteInto:(id)a3 forRelationship:(id)a4
+- (BOOL)shouldCascadeMarkAsDeleteInto:(id)into forRelationship:(id)relationship
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 name];
-  v9 = [v8 isEqualToString:@"reminders"];
+  intoCopy = into;
+  relationshipCopy = relationship;
+  name = [relationshipCopy name];
+  v9 = [name isEqualToString:@"reminders"];
 
   if (v9)
   {
     objc_opt_class();
     v10 = REMCheckedDynamicCast();
-    v11 = [v10 parentReminder];
-    v12 = v11 == 0;
+    parentReminder = [v10 parentReminder];
+    v12 = parentReminder == 0;
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = REMCDList;
-    v12 = [(REMCDObject *)&v14 shouldCascadeMarkAsDeleteInto:v6 forRelationship:v7];
+    v12 = [(REMCDObject *)&v14 shouldCascadeMarkAsDeleteInto:intoCopy forRelationship:relationshipCopy];
   }
 
   return v12;
@@ -236,30 +236,30 @@
 
 - (int64_t)parentEffectiveMinimumSupportedVersion
 {
-  v3 = [(REMCDList *)self parentList];
+  parentList = [(REMCDList *)self parentList];
 
-  if (v3)
+  if (parentList)
   {
-    v4 = [(REMCDList *)self parentList];
-    v5 = [v4 effectiveMinimumSupportedVersion];
+    parentList2 = [(REMCDList *)self parentList];
+    effectiveMinimumSupportedVersion = [parentList2 effectiveMinimumSupportedVersion];
   }
 
   else
   {
-    v4 = [(REMCDList *)self parentAccount];
-    if (v4)
+    parentList2 = [(REMCDList *)self parentAccount];
+    if (parentList2)
     {
-      v6 = [(REMCDList *)self parentAccount];
-      v5 = [v6 effectiveMinimumSupportedVersion];
+      parentAccount = [(REMCDList *)self parentAccount];
+      effectiveMinimumSupportedVersion = [parentAccount effectiveMinimumSupportedVersion];
     }
 
     else
     {
-      v5 = kREMSupportedVersionUnset;
+      effectiveMinimumSupportedVersion = kREMSupportedVersionUnset;
     }
   }
 
-  return v5;
+  return effectiveMinimumSupportedVersion;
 }
 
 - (void)debug_lowLevelRemoveFromParent
@@ -271,12 +271,12 @@
 
 - (NSString)displayName
 {
-  v3 = [(REMCDList *)self name];
+  name = [(REMCDList *)self name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [(REMCDList *)self name];
-    v5 = [REMDisplayNameUtils displayNameFromListName:v4 isPlaceholder:[(REMCDObject *)self isPlaceholder]];
+    name2 = [(REMCDList *)self name];
+    v5 = [REMDisplayNameUtils displayNameFromListName:name2 isPlaceholder:[(REMCDObject *)self isPlaceholder]];
   }
 
   else
@@ -294,49 +294,49 @@
   return v2.super.isa;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a5;
-  v12 = static REMCDList.existingCloudObject(for:accountID:managedObjectContext:)(v10, v7, v9, v11);
+  dCopy = d;
+  contextCopy = context;
+  v12 = static REMCDList.existingCloudObject(for:accountID:managedObjectContext:)(dCopy, v7, v9, contextCopy);
 
   return v12;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = static REMCDList.newCloudObject(for:account:managedObjectContext:)(v8, v9, v10);
+  recordCopy = record;
+  accountCopy = account;
+  contextCopy = context;
+  v11 = static REMCDList.newCloudObject(for:account:managedObjectContext:)(recordCopy, accountCopy, contextCopy);
 
   return v11;
 }
 
-+ (id)newPlaceholderObjectForRecordID:(id)a3 account:(id)a4 context:(id)a5
++ (id)newPlaceholderObjectForRecordID:(id)d account:(id)account context:(id)context
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = static REMCDList.newPlaceholderObject(for:account:context:)(v8, a4, v10);
+  dCopy = d;
+  accountCopy = account;
+  contextCopy = context;
+  v11 = static REMCDList.newPlaceholderObject(for:account:context:)(dCopy, account, contextCopy);
 
   return v11;
 }
 
 - (void)objectWasDeletedFromCloudByAnotherDevice
 {
-  v2 = self;
-  if (![(REMCDObject *)v2 isOwnedByCurrentUser])
+  selfCopy = self;
+  if (![(REMCDObject *)selfCopy isOwnedByCurrentUser])
   {
-    [(REMCDObject *)v2 updateSharedObjectOwnerName:0];
+    [(REMCDObject *)selfCopy updateSharedObjectOwnerName:0];
   }
 
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = REMCDList;
   [(REMCDObject *)&v3 objectWasDeletedFromCloudByAnotherDevice];
 }
@@ -350,25 +350,25 @@
 
 - (void)sortChildrenObjects
 {
-  v2 = self;
+  selfCopy = self;
   sub_100357E44();
   sub_100358264();
 }
 
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4
+- (void)mergeDataFromRecord:(id)record accountID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  recordCopy = record;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  REMCDList.mergeData(from:accountID:)(v9, v11);
+  REMCDList.mergeData(from:accountID:)(recordCopy, v11);
 }
 
 - (id)newlyCreatedRecord
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDList.newlyCreatedRecord()();
 
   return v3;
@@ -376,16 +376,16 @@
 
 - (id)shareTitle
 {
-  v2 = self;
-  v3 = [(REMCDList *)v2 name];
-  if (!v3)
+  selfCopy = self;
+  name = [(REMCDList *)selfCopy name];
+  if (!name)
   {
-    v7.receiver = v2;
+    v7.receiver = selfCopy;
     v7.super_class = REMCDList;
-    v3 = [(REMCDObject *)&v7 shareTitle];
+    name = [(REMCDObject *)&v7 shareTitle];
   }
 
-  v4 = v3;
+  v4 = name;
   static String._unconditionallyBridgeFromObjectiveC(_:)();
 
   v5 = String._bridgeToObjectiveC()();
@@ -400,38 +400,38 @@
   return v2;
 }
 
-- (void)updateObjectWithShare:(id)a3
+- (void)updateObjectWithShare:(id)share
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.super.isa = a3;
+  shareCopy = share;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.super.isa = share;
   REMCDList.update(with:)(v9);
 }
 
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate
 {
-  v5 = a3;
-  v6 = self;
-  REMCDList.existingLocalObjectToMerge(with:)(v7, a3);
+  predicateCopy = predicate;
+  selfCopy = self;
+  REMCDList.existingLocalObjectToMerge(with:)(v7, predicate);
   v9 = v8;
 
   return v9;
 }
 
-- (BOOL)mergeWithLocalObject:(id)a3
+- (BOOL)mergeWithLocalObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = REMCDList.merge(withLocalObject:)(v4);
+  objectCopy = object;
+  selfCopy = self;
+  LOBYTE(self) = REMCDList.merge(withLocalObject:)(objectCopy);
 
   return self & 1;
 }
 
 - (id)objectsToBeDeletedBeforeThisObject
 {
-  v2 = self;
+  selfCopy = self;
   REMCDList.objectsToBeDeletedBeforeThisObject()();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -441,9 +441,9 @@
 
 - (void)restoreParentReferenceAfterUnmarkingForDeletion
 {
-  v3 = self;
-  v2 = [(REMCDList *)v3 account];
-  [(REMCDList *)v3 setParentAccount:v2];
+  selfCopy = self;
+  account = [(REMCDList *)selfCopy account];
+  [(REMCDList *)selfCopy setParentAccount:account];
 }
 
 @end

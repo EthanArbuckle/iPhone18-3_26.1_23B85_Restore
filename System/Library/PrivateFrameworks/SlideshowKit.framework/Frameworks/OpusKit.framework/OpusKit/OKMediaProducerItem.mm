@@ -1,40 +1,40 @@
 @interface OKMediaProducerItem
-+ (id)urlForMediaObject:(id)a3;
-+ (id)urlForProducerPluginIdentifier:(id)a3 andResourcePath:(id)a4;
-- (OKMediaProducerItem)initWithProducerPluginIdentifier:(id)a3 andResourcePath:(id)a4;
++ (id)urlForMediaObject:(id)object;
++ (id)urlForProducerPluginIdentifier:(id)identifier andResourcePath:(id)path;
+- (OKMediaProducerItem)initWithProducerPluginIdentifier:(id)identifier andResourcePath:(id)path;
 - (id)_fileURL;
-- (id)createMetadataWithCompletionHandler:(id)a3;
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5;
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4;
-- (id)parseDate:(id)a3;
-- (id)resourceURLWithCompletionHandler:(id)a3;
+- (id)createMetadataWithCompletionHandler:(id)handler;
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler;
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler;
+- (id)parseDate:(id)date;
+- (id)resourceURLWithCompletionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation OKMediaProducerItem
 
-+ (id)urlForMediaObject:(id)a3
++ (id)urlForMediaObject:(id)object
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([objc_msgSend(a3 "scheme")] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([objc_msgSend(object "scheme")] & 1) == 0)
   {
     return 0;
   }
 
-  return a3;
+  return object;
 }
 
-+ (id)urlForProducerPluginIdentifier:(id)a3 andResourcePath:(id)a4
++ (id)urlForProducerPluginIdentifier:(id)identifier andResourcePath:(id)path
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@/%@", objc_msgSend(objc_opt_class(), "scheme"), objc_msgSend(a3, "stringByAddingPercentEscapesForURLPath"), objc_msgSend(a4, "stringByAddingPercentEscapesForURLPath")];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@/%@", objc_msgSend(objc_opt_class(), "scheme"), objc_msgSend(identifier, "stringByAddingPercentEscapesForURLPath"), objc_msgSend(path, "stringByAddingPercentEscapesForURLPath")];
 
   return [v4 URLWithString:v5];
 }
 
-- (OKMediaProducerItem)initWithProducerPluginIdentifier:(id)a3 andResourcePath:(id)a4
+- (OKMediaProducerItem)initWithProducerPluginIdentifier:(id)identifier andResourcePath:(id)path
 {
-  v5 = [objc_opt_class() urlForProducerPluginIdentifier:a3 andResourcePath:a4];
+  v5 = [objc_opt_class() urlForProducerPluginIdentifier:identifier andResourcePath:path];
   v7.receiver = self;
   v7.super_class = OKMediaProducerItem;
   result = [(OKMediaItem *)&v7 initWithUniqueURL:v5];
@@ -64,20 +64,20 @@
 - (id)_fileURL
 {
   plugin = self->_plugin;
-  v4 = [(NSString *)[(NSURL *)[(OKMediaItem *)self uniqueURL] path] stringByDeletingPathExtension];
-  v5 = [(NSURL *)[(OKMediaItem *)self uniqueURL] pathExtension];
+  stringByDeletingPathExtension = [(NSString *)[(NSURL *)[(OKMediaItem *)self uniqueURL] path] stringByDeletingPathExtension];
+  pathExtension = [(NSURL *)[(OKMediaItem *)self uniqueURL] pathExtension];
 
-  return [(OKProducerPlugin *)plugin URLForResource:v4 withExtension:v5];
+  return [(OKProducerPlugin *)plugin URLForResource:stringByDeletingPathExtension withExtension:pathExtension];
 }
 
-- (id)createMetadataWithCompletionHandler:(id)a3
+- (id)createMetadataWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__OKMediaProducerItem_createMetadataWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C8F720;
   v4[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:a3];
+  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:handler];
 }
 
 uint64_t __59__OKMediaProducerItem_createMetadataWithCompletionHandler___block_invoke(uint64_t a1, void *a2, OKMediaItemMetadata **a3)
@@ -289,16 +289,16 @@ LABEL_18:
   }
 }
 
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __88__OKMediaProducerItem_createThumbnailImageForResolution_withMetadata_completionHandler___block_invoke;
   v6[3] = &unk_279C8FAB0;
   v6[4] = self;
-  v6[5] = a4;
-  v6[6] = a3;
-  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:a5];
+  v6[5] = metadata;
+  v6[6] = resolution;
+  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:handler];
 }
 
 void __88__OKMediaProducerItem_createThumbnailImageForResolution_withMetadata_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -446,15 +446,15 @@ uint64_t __88__OKMediaProducerItem_createThumbnailImageForResolution_withMetadat
   return result;
 }
 
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __67__OKMediaProducerItem_importMediaToDirectoryURL_completionHandler___block_invoke;
   v5[3] = &unk_279C8F930;
   v5[4] = self;
-  v5[5] = a3;
-  return [(OKMediaItem *)self operationWithBlock:v5 completionHandlerWithObject:a4];
+  v5[5] = l;
+  return [(OKMediaItem *)self operationWithBlock:v5 completionHandlerWithObject:handler];
 }
 
 void __67__OKMediaProducerItem_importMediaToDirectoryURL_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -606,14 +606,14 @@ uint64_t __67__OKMediaProducerItem_importMediaToDirectoryURL_completionHandler__
   return result;
 }
 
-- (id)resourceURLWithCompletionHandler:(id)a3
+- (id)resourceURLWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__OKMediaProducerItem_resourceURLWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C8F720;
   v4[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:a3];
+  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:handler];
 }
 
 uint64_t __56__OKMediaProducerItem_resourceURLWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -699,7 +699,7 @@ uint64_t __56__OKMediaProducerItem_resourceURLWithCompletionHandler___block_invo
   return [v5 finish];
 }
 
-- (id)parseDate:(id)a3
+- (id)parseDate:(id)date
 {
   if (parseDate__onceToken_0 != -1)
   {
@@ -708,7 +708,7 @@ uint64_t __56__OKMediaProducerItem_resourceURLWithCompletionHandler___block_invo
 
   v4 = parseDate___exifDateFormatter_0;
 
-  return [v4 dateFromString:a3];
+  return [v4 dateFromString:date];
 }
 
 uint64_t __33__OKMediaProducerItem_parseDate___block_invoke()

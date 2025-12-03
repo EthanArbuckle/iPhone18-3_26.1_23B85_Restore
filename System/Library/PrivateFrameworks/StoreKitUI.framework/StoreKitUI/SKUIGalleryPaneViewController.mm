@@ -1,12 +1,12 @@
 @interface SKUIGalleryPaneViewController
-- (SKUIGalleryPaneViewController)initWithMediaComponent:(id)a3 galleryIndex:(int64_t)a4;
+- (SKUIGalleryPaneViewController)initWithMediaComponent:(id)component galleryIndex:(int64_t)index;
 @end
 
 @implementation SKUIGalleryPaneViewController
 
-- (SKUIGalleryPaneViewController)initWithMediaComponent:(id)a3 galleryIndex:(int64_t)a4
+- (SKUIGalleryPaneViewController)initWithMediaComponent:(id)component galleryIndex:(int64_t)index
 {
-  v7 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGalleryPaneViewController initWithMediaComponent:galleryIndex:];
@@ -18,8 +18,8 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_component, a3);
-    v9->_galleryIndex = a4;
+    objc_storeStrong(&v8->_component, component);
+    v9->_galleryIndex = index;
   }
 
   return v9;

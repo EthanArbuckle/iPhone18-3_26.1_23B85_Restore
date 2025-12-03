@@ -1,36 +1,36 @@
 @interface GKContactsChangedAddOrUpdateCommand
-- (BOOL)isValidContact:(id)a3 meContactID:(id)a4;
-- (GKContactsChangedAddOrUpdateCommand)initWithContact:(id)a3 meContactID:(id)a4;
-- (id)executeWithContext:(id)a3;
+- (BOOL)isValidContact:(id)contact meContactID:(id)d;
+- (GKContactsChangedAddOrUpdateCommand)initWithContact:(id)contact meContactID:(id)d;
+- (id)executeWithContext:(id)context;
 @end
 
 @implementation GKContactsChangedAddOrUpdateCommand
 
-- (GKContactsChangedAddOrUpdateCommand)initWithContact:(id)a3 meContactID:(id)a4
+- (GKContactsChangedAddOrUpdateCommand)initWithContact:(id)contact meContactID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = GKContactsChangedAddOrUpdateCommand;
   v9 = [(GKContactsChangedAddOrUpdateCommand *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contact, a3);
-    objc_storeStrong(&v10->_meContactID, a4);
+    objc_storeStrong(&v9->_contact, contact);
+    objc_storeStrong(&v10->_meContactID, d);
   }
 
   return v10;
 }
 
-- (BOOL)isValidContact:(id)a3 meContactID:(id)a4
+- (BOOL)isValidContact:(id)contact meContactID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 contactType])
+  contactCopy = contact;
+  dCopy = d;
+  if (![contactCopy contactType])
   {
-    v9 = [v6 identifier];
-    if ([v9 isEqualToString:v7])
+    identifier = [contactCopy identifier];
+    if ([identifier isEqualToString:dCopy])
     {
       v8 = 0;
 LABEL_15:
@@ -38,8 +38,8 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v10 = [v6 givenName];
-    v11 = [v10 length];
+    givenName = [contactCopy givenName];
+    v11 = [givenName length];
     if (v11)
     {
       v12 = 0;
@@ -47,29 +47,29 @@ LABEL_15:
 
     else
     {
-      v4 = [v6 familyName];
-      if ([v4 length])
+      familyName = [contactCopy familyName];
+      if ([familyName length])
       {
         v12 = 0;
       }
 
       else
       {
-        v16 = [v6 nickname];
-        if (![v16 length])
+        nickname = [contactCopy nickname];
+        if (![nickname length])
         {
 
           v8 = 0;
           goto LABEL_13;
         }
 
-        v17 = v16;
+        v17 = nickname;
         v12 = 1;
       }
     }
 
-    v13 = [v6 emailAddresses];
-    if ([v13 count])
+    emailAddresses = [contactCopy emailAddresses];
+    if ([emailAddresses count])
     {
 
       v8 = 1;
@@ -81,8 +81,8 @@ LABEL_15:
 
     else
     {
-      v15 = [v6 phoneNumbers];
-      v8 = [v15 count] != 0;
+      phoneNumbers = [contactCopy phoneNumbers];
+      v8 = [phoneNumbers count] != 0;
 
       if ((v12 & 1) == 0)
       {
@@ -109,17 +109,17 @@ LABEL_16:
   return v8;
 }
 
-- (id)executeWithContext:(id)a3
+- (id)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(GKContactsChangedAddOrUpdateCommand *)self contact];
-  v6 = [(GKContactsChangedAddOrUpdateCommand *)self meContactID];
-  v7 = [(GKContactsChangedAddOrUpdateCommand *)self isValidContact:v5 meContactID:v6];
+  contextCopy = context;
+  contact = [(GKContactsChangedAddOrUpdateCommand *)self contact];
+  meContactID = [(GKContactsChangedAddOrUpdateCommand *)self meContactID];
+  v7 = [(GKContactsChangedAddOrUpdateCommand *)self isValidContact:contact meContactID:meContactID];
 
   if (v7)
   {
-    v8 = [(GKContactsChangedAddOrUpdateCommand *)self contact];
-    v9 = [GKCDContactInfo _gkUpdateWithContact:v8 withContext:v4];
+    contact2 = [(GKContactsChangedAddOrUpdateCommand *)self contact];
+    v9 = [GKCDContactInfo _gkUpdateWithContact:contact2 withContext:contextCopy];
   }
 
   else

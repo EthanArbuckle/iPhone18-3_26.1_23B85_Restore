@@ -1,12 +1,12 @@
 @interface RMAudioListenerPoseEngine
 + (id)sharedInstance;
 - (RMAudioListenerPoseEngine)init;
-- (id)startProducingDataForObject:(id)a3 tempestOptions:(id)a4 forceSessionRestart:(BOOL)a5 callback:(id)a6;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
-- (void)externalDisplayDidConnect:(uint64_t)a1;
-- (void)facePoseCaptureSessionDidConfigure:(id)a3;
-- (void)onActiveAudioRouteChanged:(id)a3;
-- (void)stopProducingDataForObject:(id)a3;
+- (id)startProducingDataForObject:(id)object tempestOptions:(id)options forceSessionRestart:(BOOL)restart callback:(id)callback;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
+- (void)externalDisplayDidConnect:(uint64_t)connect;
+- (void)facePoseCaptureSessionDidConfigure:(id)configure;
+- (void)onActiveAudioRouteChanged:(id)changed;
+- (void)stopProducingDataForObject:(id)object;
 @end
 
 @implementation RMAudioListenerPoseEngine
@@ -133,11 +133,11 @@
   return v2;
 }
 
-- (id)startProducingDataForObject:(id)a3 tempestOptions:(id)a4 forceSessionRestart:(BOOL)a5 callback:(id)a6
+- (id)startProducingDataForObject:(id)object tempestOptions:(id)options forceSessionRestart:(BOOL)restart callback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  objectCopy = object;
+  optionsCopy = options;
+  callbackCopy = callback;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -159,14 +159,14 @@
   v20[2] = sub_10000FBDC;
   v20[3] = &unk_100024858;
   v20[4] = self;
-  v21 = v11;
-  v22 = v10;
-  v23 = v12;
+  v21 = optionsCopy;
+  v22 = objectCopy;
+  v23 = callbackCopy;
   v24 = v14;
-  v25 = a5;
-  v15 = v10;
-  v16 = v12;
-  v17 = v11;
+  restartCopy = restart;
+  v15 = objectCopy;
+  v16 = callbackCopy;
+  v17 = optionsCopy;
   dispatch_sync(producerQueue, v20);
   v18 = v27[5];
 
@@ -175,9 +175,9 @@
   return v18;
 }
 
-- (void)stopProducingDataForObject:(id)a3
+- (void)stopProducingDataForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (self)
   {
     producerQueue = self->_producerQueue;
@@ -191,12 +191,12 @@
   dispatch_sync(v8, v9);
 }
 
-- (void)externalDisplayDidConnect:(uint64_t)a1
+- (void)externalDisplayDidConnect:(uint64_t)connect
 {
-  if (a1)
+  if (connect)
   {
-    sub_1000027DC(a1);
-    v2 = [v1 externalDisplayService];
+    sub_1000027DC(connect);
+    externalDisplayService = [v1 externalDisplayService];
     sub_100002748();
     sub_10000287C();
     v5 = sub_100011AE8;
@@ -206,9 +206,9 @@
   }
 }
 
-- (void)facePoseCaptureSessionDidConfigure:(id)a3
+- (void)facePoseCaptureSessionDidConfigure:(id)configure
 {
-  v4 = a3;
+  configureCopy = configure;
   if (self)
   {
     producerQueue = self->_producerQueue;
@@ -222,7 +222,7 @@
   dispatch_async(v8, v9);
 }
 
-- (void)onActiveAudioRouteChanged:(id)a3
+- (void)onActiveAudioRouteChanged:(id)changed
 {
   if (self)
   {
@@ -237,7 +237,7 @@
   dispatch_async(v5, block);
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
   if (self)
   {

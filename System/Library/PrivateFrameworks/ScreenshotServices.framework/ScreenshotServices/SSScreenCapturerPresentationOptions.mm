@@ -7,13 +7,13 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v8.receiver = self;
   v8.super_class = SSScreenCapturerPresentationOptions;
   v4 = [(SSScreenCapturerPresentationOptions *)&v8 description];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
-  [v3 appendString:@" presentationMode: "];
+  [string appendString:@" presentationMode: "];
   presentationMode = self->_presentationMode;
   if (presentationMode > 3)
   {
@@ -25,9 +25,9 @@
     v6 = off_1E85900B0[presentationMode];
   }
 
-  [v3 appendString:v6];
+  [string appendString:v6];
 
-  return v3;
+  return string;
 }
 
 - (unint64_t)effectivePresentationMode

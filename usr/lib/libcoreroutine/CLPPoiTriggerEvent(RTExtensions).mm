@@ -180,10 +180,10 @@
 - (uint64_t)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 muid];
-  v4 = [a1 providerIdentifier];
-  [a1 triggerTimestamp];
-  return [v2 stringWithFormat:@"muid, %llu, providerIdentifier, %d triggerTimestamp, %.2f, triggerType, %d, triggerSubType, %d", v3, v4, v5, objc_msgSend(a1, "triggerType"), objc_msgSend(a1, "triggerSubType")];
+  muid = [self muid];
+  providerIdentifier = [self providerIdentifier];
+  [self triggerTimestamp];
+  return [v2 stringWithFormat:@"muid, %llu, providerIdentifier, %d triggerTimestamp, %.2f, triggerType, %d, triggerSubType, %d", muid, providerIdentifier, v5, objc_msgSend(self, "triggerType"), objc_msgSend(self, "triggerSubType")];
 }
 
 @end

@@ -2,18 +2,18 @@
 - (id).cxx_construct;
 - (uint64_t)initThread;
 - (uint64_t)startThread;
-- (void)dispatchHandlers:(id)a3;
-- (void)initWithScreen:(void *)a1;
-- (void)thread:(id)a3;
+- (void)dispatchHandlers:(id)handlers;
+- (void)initWithScreen:(void *)screen;
+- (void)thread:(id)thread;
 @end
 
 @implementation RBAnimationThread
 
-- (void)thread:(id)a3
+- (void)thread:(id)thread
 {
   [(RBAnimationThread *)self initThread];
-  v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [(CADisplayLink *)self->_link._p addToRunLoop:v4 forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [(CADisplayLink *)self->_link._p addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
   self->_empty_ttl = 10;
   os_unfair_lock_lock(v5);
   os_unfair_lock_unlock(v5);
@@ -23,7 +23,7 @@
   self->_thread._p = 0;
 }
 
-- (void)dispatchHandlers:(id)a3
+- (void)dispatchHandlers:(id)handlers
 {
   lock = v4;
   v22 = 1;
@@ -139,9 +139,9 @@ LABEL_15:
     self->_empty_ttl = v19;
     if (!v19)
     {
-      v20 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      [(CADisplayLink *)self->_link._p removeFromRunLoop:v20 forMode:*MEMORY[0x1E695DA28]];
-      CFRunLoopStop([v20 getCFRunLoop]);
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      [(CADisplayLink *)self->_link._p removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
+      CFRunLoopStop([currentRunLoop getCFRunLoop]);
     }
   }
 
@@ -158,14 +158,14 @@ LABEL_15:
   return self;
 }
 
-- (void)initWithScreen:(void *)a1
+- (void)initWithScreen:(void *)screen
 {
-  if (!a1)
+  if (!screen)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = screen;
   v8.super_class = RBAnimationThread;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   if (v3)

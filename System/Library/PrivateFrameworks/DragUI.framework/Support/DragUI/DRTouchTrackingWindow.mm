@@ -1,21 +1,21 @@
 @interface DRTouchTrackingWindow
-- (DRTouchTrackingWindow)initWithWindowScene:(id)a3;
+- (DRTouchTrackingWindow)initWithWindowScene:(id)scene;
 - (DRTouchTrackingWindowDelegate)trackingDelegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setTracksTouches:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setTracksTouches:(BOOL)touches;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation DRTouchTrackingWindow
 
-- (DRTouchTrackingWindow)initWithWindowScene:(id)a3
+- (DRTouchTrackingWindow)initWithWindowScene:(id)scene
 {
   v9.receiver = self;
   v9.super_class = DRTouchTrackingWindow;
-  v3 = [(DRTouchTrackingWindow *)&v9 initWithWindowScene:a3];
+  v3 = [(DRTouchTrackingWindow *)&v9 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -25,24 +25,24 @@
     velocityIntegratorsByTouch = v4->_velocityIntegratorsByTouch;
     v4->_velocityIntegratorsByTouch = v5;
 
-    v7 = [(DRTouchTrackingWindow *)v4 _bindingLayer];
-    [v7 setAllowsHitTesting:0];
+    _bindingLayer = [(DRTouchTrackingWindow *)v4 _bindingLayer];
+    [_bindingLayer setAllowsHitTesting:0];
   }
 
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = DRTouchTrackingWindow;
-  v8 = [(DRTouchTrackingWindow *)&v12 hitTest:v7 withEvent:x, y];
-  if (!v8)
+  selfCopy = [(DRTouchTrackingWindow *)&v12 hitTest:eventCopy withEvent:x, y];
+  if (!selfCopy)
   {
-    v8 = self;
+    selfCopy = self;
     v9 = DRLogTarget();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -52,25 +52,25 @@
       *buf = 138412546;
       v14 = v10;
       v15 = 2112;
-      v16 = v7;
+      v16 = eventCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "hitTest %@ withEvent:%@ failed to return a view. Falling back.", buf, 0x16u);
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a3;
-  v6 = v5;
+  beganCopy = began;
+  v6 = beganCopy;
   if (self->_tracksTouches)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [beganCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -103,19 +103,19 @@
       while (v8);
     }
 
-    v13 = [(DRTouchTrackingWindow *)self trackingDelegate];
-    [v13 touchTrackingWindow:self touchesBegan:v6];
+    trackingDelegate = [(DRTouchTrackingWindow *)self trackingDelegate];
+    [trackingDelegate touchTrackingWindow:self touchesBegan:v6];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = a3;
+  movedCopy = moved;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [movedCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -127,7 +127,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(movedCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -140,27 +140,27 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [movedCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
     if (v8)
     {
-      v13 = [(DRTouchTrackingWindow *)self trackingDelegate];
-      [v13 touchTrackingWindow:self touchesMoved:v5];
+      trackingDelegate = [(DRTouchTrackingWindow *)self trackingDelegate];
+      [trackingDelegate touchTrackingWindow:self touchesMoved:movedCopy];
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
+  endedCopy = ended;
   v6 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = endedCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -200,19 +200,19 @@
 
   if ([v6 count])
   {
-    v15 = [(DRTouchTrackingWindow *)self trackingDelegate];
-    [v15 touchTrackingWindow:self touchesEnded:v7 pairedWithVelocities:v6];
+    trackingDelegate = [(DRTouchTrackingWindow *)self trackingDelegate];
+    [trackingDelegate touchTrackingWindow:self touchesEnded:v7 pairedWithVelocities:v6];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a3;
+  cancelledCopy = cancelled;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [cancelledCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -224,7 +224,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cancelledCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -236,24 +236,24 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [cancelledCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
     if (v8)
     {
-      v13 = [(DRTouchTrackingWindow *)self trackingDelegate];
-      [v13 touchTrackingWindow:self touchesCancelled:v5];
+      trackingDelegate = [(DRTouchTrackingWindow *)self trackingDelegate];
+      [trackingDelegate touchTrackingWindow:self touchesCancelled:cancelledCopy];
     }
   }
 }
 
-- (void)setTracksTouches:(BOOL)a3
+- (void)setTracksTouches:(BOOL)touches
 {
-  if (self->_tracksTouches != a3)
+  if (self->_tracksTouches != touches)
   {
-    self->_tracksTouches = a3;
-    if (!a3)
+    self->_tracksTouches = touches;
+    if (!touches)
     {
       if ([(NSMapTable *)self->_velocityIntegratorsByTouch count])
       {
@@ -262,8 +262,8 @@
         v11 = 0u;
         v12 = 0u;
         v13 = 0u;
-        v5 = [(NSMapTable *)self->_velocityIntegratorsByTouch keyEnumerator];
-        v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        keyEnumerator = [(NSMapTable *)self->_velocityIntegratorsByTouch keyEnumerator];
+        v6 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v6)
         {
           v7 = v6;
@@ -275,7 +275,7 @@
             {
               if (*v11 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(keyEnumerator);
               }
 
               [v4 addObject:*(*(&v10 + 1) + 8 * v9)];
@@ -283,7 +283,7 @@
             }
 
             while (v7 != v9);
-            v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+            v7 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
           }
 
           while (v7);

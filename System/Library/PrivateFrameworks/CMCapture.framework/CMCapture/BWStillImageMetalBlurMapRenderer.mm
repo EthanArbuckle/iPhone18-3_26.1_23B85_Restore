@@ -1,30 +1,30 @@
 @interface BWStillImageMetalBlurMapRenderer
 - (BOOL)shouldEnableForegroundBlur;
-- (BWStillImageMetalBlurMapRenderer)initWithSDOFRenderingTuningParameters:(id)a3 imageDimensions:(id)a4 depthDataMapDimensions:(id)a5 portraitRenderQuality:(int)a6 metalCommandQueue:(id)a7 backPressureDrivenPipelining:(BOOL)a8;
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5;
-- (uint64_t)_allocateBlurMapPixelBufferPoolForBuffersOfWidth:(uint64_t)a3 height:(int)a4 enableForegroundBlur:;
+- (BWStillImageMetalBlurMapRenderer)initWithSDOFRenderingTuningParameters:(id)parameters imageDimensions:(id)dimensions depthDataMapDimensions:(id)mapDimensions portraitRenderQuality:(int)quality metalCommandQueue:(id)queue backPressureDrivenPipelining:(BOOL)pipelining;
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key;
+- (uint64_t)_allocateBlurMapPixelBufferPoolForBuffersOfWidth:(uint64_t)width height:(int)height enableForegroundBlur:;
 - (uint64_t)_loadAndConfigureSDOFBlurMapRenderer;
 - (uint64_t)bundleOptionsDictionary;
 - (uint64_t)shouldEnableForegroundBlur;
 - (void)dealloc;
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8;
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler;
 @end
 
 @implementation BWStillImageMetalBlurMapRenderer
 
-- (BWStillImageMetalBlurMapRenderer)initWithSDOFRenderingTuningParameters:(id)a3 imageDimensions:(id)a4 depthDataMapDimensions:(id)a5 portraitRenderQuality:(int)a6 metalCommandQueue:(id)a7 backPressureDrivenPipelining:(BOOL)a8
+- (BWStillImageMetalBlurMapRenderer)initWithSDOFRenderingTuningParameters:(id)parameters imageDimensions:(id)dimensions depthDataMapDimensions:(id)mapDimensions portraitRenderQuality:(int)quality metalCommandQueue:(id)queue backPressureDrivenPipelining:(BOOL)pipelining
 {
   v16.receiver = self;
   v16.super_class = BWStillImageMetalBlurMapRenderer;
   v14 = [(BWStillImageMetalBlurMapRenderer *)&v16 init];
   if (v14)
   {
-    v14->_sdofRenderingTuningParameters = a3;
-    v14->_imageDimensions = a4;
-    v14->_depthDataMapDimensions = a5;
-    v14->_portraitRenderQuality = a6;
-    v14->_mtlCommandQueue = a7;
-    v14->_backPressureDrivenPipelining = a8;
+    v14->_sdofRenderingTuningParameters = parameters;
+    v14->_imageDimensions = dimensions;
+    v14->_depthDataMapDimensions = mapDimensions;
+    v14->_portraitRenderQuality = quality;
+    v14->_mtlCommandQueue = queue;
+    v14->_backPressureDrivenPipelining = pipelining;
     [(BWStillImageMetalBlurMapRenderer *)v14 _loadAndConfigureSDOFBlurMapRenderer];
   }
 
@@ -40,10 +40,10 @@
 
 - (BOOL)shouldEnableForegroundBlur
 {
-  v2 = [(BWStillImageMetalBlurMapRenderer *)self bundleOptionsDictionary];
-  if (v2)
+  bundleOptionsDictionary = [(BWStillImageMetalBlurMapRenderer *)self bundleOptionsDictionary];
+  if (bundleOptionsDictionary)
   {
-    v3 = [v2 objectForKeyedSubscript:*off_1E798A9D0];
+    v3 = [bundleOptionsDictionary objectForKeyedSubscript:*off_1E798A9D0];
     if (v3)
     {
       v4 = v3;
@@ -104,32 +104,32 @@
   return 0;
 }
 
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key
 {
   if (!self->_blurMapPixelBufferPool)
   {
-    v8 = [a4 width];
-    v9 = v8 + (v8 >> 31);
-    v10 = [a4 height];
-    [(BWStillImageMetalBlurMapRenderer *)self _allocateBlurMapPixelBufferPoolForBuffersOfWidth:(v10 + (v10 >> 31)) >> 1 height:[(BWStillImageMetalBlurMapRenderer *)self shouldEnableForegroundBlur] enableForegroundBlur:?];
+    width = [format width];
+    v9 = width + (width >> 31);
+    height = [format height];
+    [(BWStillImageMetalBlurMapRenderer *)self _allocateBlurMapPixelBufferPoolForBuffersOfWidth:(height + (height >> 31)) >> 1 height:[(BWStillImageMetalBlurMapRenderer *)self shouldEnableForegroundBlur] enableForegroundBlur:?];
   }
 
   return 0;
 }
 
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler
 {
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a5, @"Depth");
+  AttachedMedia = BWSampleBufferGetAttachedMedia(sampleBuffer, @"Depth");
   if (!AttachedMedia || (ImageBuffer = CMSampleBufferGetImageBuffer(AttachedMedia)) == 0)
   {
     [BWStillImageMetalBlurMapRenderer renderUsingParameters:inputPixelBuffer:inputSampleBuffer:originalPixelBuffer:processedPixelBuffer:completionHandler:];
 LABEL_28:
-    v22 = 0;
+    newPixelBuffer = 0;
     goto LABEL_22;
   }
 
   v13 = ImageBuffer;
-  v14 = BWSampleBufferGetAttachedMedia(a5, 0x1F21AABB0);
+  v14 = BWSampleBufferGetAttachedMedia(sampleBuffer, 0x1F21AABB0);
   if (v14)
   {
     v15 = CMSampleBufferGetImageBuffer(v14);
@@ -140,7 +140,7 @@ LABEL_28:
     v15 = 0;
   }
 
-  v16 = BWSampleBufferGetAttachedMedia(a5, 0x1F21AABD0);
+  v16 = BWSampleBufferGetAttachedMedia(sampleBuffer, 0x1F21AABD0);
   if (v16)
   {
     v17 = CMSampleBufferGetImageBuffer(v16);
@@ -151,7 +151,7 @@ LABEL_28:
     v17 = 0;
   }
 
-  v18 = BWSampleBufferGetAttachedMedia(a5, @"PersonSemanticsHair");
+  v18 = BWSampleBufferGetAttachedMedia(sampleBuffer, @"PersonSemanticsHair");
   if (v18)
   {
     v19 = CMSampleBufferGetImageBuffer(v18);
@@ -162,7 +162,7 @@ LABEL_28:
     v19 = 0;
   }
 
-  v20 = BWSampleBufferGetAttachedMedia(a5, @"PersonSemanticsGlasses");
+  v20 = BWSampleBufferGetAttachedMedia(sampleBuffer, @"PersonSemanticsGlasses");
   if (v20)
   {
     v21 = CMSampleBufferGetImageBuffer(v20);
@@ -197,8 +197,8 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  [(FigSDOFBlurMapRendering *)self->_sdofBlurMapRenderer setFaceLandmarksArray:BWInferenceGetAttachedInference(a5, 801, 0x1F219E5F0)];
-  v22 = [(BWPixelBufferPool *)self->_blurMapPixelBufferPool newPixelBuffer];
+  [(FigSDOFBlurMapRendering *)self->_sdofBlurMapRenderer setFaceLandmarksArray:BWInferenceGetAttachedInference(sampleBuffer, 801, 0x1F219E5F0)];
+  newPixelBuffer = [(BWPixelBufferPool *)self->_blurMapPixelBufferPool newPixelBuffer];
   if (v17)
   {
     v23 = v17;
@@ -209,25 +209,25 @@ LABEL_32:
     v23 = v13;
   }
 
-  if ([(FigSDOFBlurMapRendering *)self->_sdofBlurMapRenderer computeBlurMapWithImage:a5 shiftMap:v23 personSegmentationMask:v15 hairSemanticSegmentationMask:v19 glassesSemanticSegmentationMask:v21 resultFaceAdjustedBlurMap:v22])
+  if ([(FigSDOFBlurMapRendering *)self->_sdofBlurMapRenderer computeBlurMapWithImage:sampleBuffer shiftMap:v23 personSegmentationMask:v15 hairSemanticSegmentationMask:v19 glassesSemanticSegmentationMask:v21 resultFaceAdjustedBlurMap:newPixelBuffer])
   {
     [BWStillImageMetalBlurMapRenderer renderUsingParameters:inputPixelBuffer:inputSampleBuffer:originalPixelBuffer:processedPixelBuffer:completionHandler:];
   }
 
   else
   {
-    CMSetAttachment(a5, @"PortraitStillImageFaceAdjustedBlurMap", v22, 1u);
+    CMSetAttachment(sampleBuffer, @"PortraitStillImageFaceAdjustedBlurMap", newPixelBuffer, 1u);
   }
 
 LABEL_22:
-  if (a8)
+  if (handler)
   {
-    (*(a8 + 2))(a8, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
   }
 
-  if (v22)
+  if (newPixelBuffer)
   {
-    CFRelease(v22);
+    CFRelease(newPixelBuffer);
   }
 }
 
@@ -237,8 +237,8 @@ LABEL_22:
   {
     v1 = result;
     v12 = 0;
-    v2 = [(BWStillImageMetalBlurMapRenderer *)result bundleOptionsDictionary];
-    if (!v2 || (v3 = v2, (v4 = [v2 objectForKeyedSubscript:*off_1E798A9D0]) == 0) || (v5 = objc_msgSend(v4, "objectForKeyedSubscript:", *off_1E798A9D8)) == 0 || ((v6 = objc_msgSend(v5, "intValue"), v6 >= 5) ? (v7 = 5) : (v7 = v6), v8 = objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@/%@V%d.bundle", @"/System/Library/VideoProcessors", @"SDOFRendering", v7, v12), (v9 = objc_msgSend(MEMORY[0x1E696AAE8], "bundleWithPath:", v8)) == 0))
+    bundleOptionsDictionary = [(BWStillImageMetalBlurMapRenderer *)result bundleOptionsDictionary];
+    if (!bundleOptionsDictionary || (v3 = bundleOptionsDictionary, (v4 = [bundleOptionsDictionary objectForKeyedSubscript:*off_1E798A9D0]) == 0) || (v5 = objc_msgSend(v4, "objectForKeyedSubscript:", *off_1E798A9D8)) == 0 || ((v6 = objc_msgSend(v5, "intValue"), v6 >= 5) ? (v7 = 5) : (v7 = v6), v8 = objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@/%@V%d.bundle", @"/System/Library/VideoProcessors", @"SDOFRendering", v7, v12), (v9 = objc_msgSend(MEMORY[0x1E696AAE8], "bundleWithPath:", v8)) == 0))
     {
       OUTLINED_FUNCTION_2();
       OUTLINED_FUNCTION_0_2();
@@ -294,11 +294,11 @@ LABEL_22:
   return result;
 }
 
-- (uint64_t)_allocateBlurMapPixelBufferPoolForBuffersOfWidth:(uint64_t)a3 height:(int)a4 enableForegroundBlur:
+- (uint64_t)_allocateBlurMapPixelBufferPoolForBuffersOfWidth:(uint64_t)width height:(int)height enableForegroundBlur:
 {
-  if (a1 && !*(a1 + 24))
+  if (self && !*(self + 24))
   {
-    if (a4)
+    if (height)
     {
       v6 = 843264056;
     }
@@ -311,7 +311,7 @@ LABEL_22:
     v21[0] = *MEMORY[0x1E6966208];
     v22[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a2];
     v21[1] = *MEMORY[0x1E69660B8];
-    v22[1] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
+    v22[1] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:width];
     v21[2] = *MEMORY[0x1E6966130];
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
     v21[3] = *MEMORY[0x1E69660D8];
@@ -328,9 +328,9 @@ LABEL_22:
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v11 = [BWPixelBufferPool alloc];
     v12 = +[BWMemoryPool sharedMemoryPool];
-    LOBYTE(v15) = *(a1 + 32);
+    LOBYTE(v15) = *(self + 32);
     v13 = [(BWPixelBufferPool *)v11 initWithVideoFormat:v9 capacity:2 name:@"Still Image Blur Map Pool" memoryPool:v12 additionalPixelBufferAttributes:v10 providesBackPressure:v15 reportSlowBackPressureAllocations:?];
-    *(a1 + 24) = v13;
+    *(self + 24) = v13;
     if (!v13)
     {
       fig_log_get_emitter();

@@ -1,58 +1,58 @@
 @interface NTKSnowglobeSceneController
 - (NTKSnowglobeCrownHandler)crownInputHandler;
-- (NTKSnowglobeSceneController)initWithSceneSize:(CGSize)a3 renderQueue:(id)a4;
+- (NTKSnowglobeSceneController)initWithSceneSize:(CGSize)size renderQueue:(id)queue;
 - (NTKSnowglobeState)snowglobeState;
 - (SCNRenderer)renderer;
-- (double)_tritiumOriginAdjustmentForDigit:(uint64_t)a3;
-- (double)_tritiumRotationForDigit:(uint64_t)a3;
+- (double)_tritiumOriginAdjustmentForDigit:(uint64_t)digit;
+- (double)_tritiumRotationForDigit:(uint64_t)digit;
 - (double)backgroundObjectOpacity;
-- (id)_charactersFromFormatter:(id)a3;
-- (id)_queue_backgroundObjectColorsFromColors:(id)a3;
+- (id)_charactersFromFormatter:(id)formatter;
+- (id)_queue_backgroundObjectColorsFromColors:(id)colors;
 - (id)_queue_backgroundObjectPositions;
-- (uint64_t)_restingOriginForDigit:(uint64_t)a3 node:(unint64_t)a4;
-- (void)_queue_animatedReplaceDigit:(unint64_t)a3 withCharacter:(unint64_t)a4;
-- (void)_queue_animatedReplaceDigit:(unint64_t)a3 withCharacter:(unint64_t)a4 force:(BOOL)a5;
+- (uint64_t)_restingOriginForDigit:(uint64_t)digit node:(unint64_t)node;
+- (void)_queue_animatedReplaceDigit:(unint64_t)digit withCharacter:(unint64_t)character;
+- (void)_queue_animatedReplaceDigit:(unint64_t)digit withCharacter:(unint64_t)character force:(BOOL)force;
 - (void)_queue_applyBackgroundContents;
-- (void)_queue_applyBackgroundObjectColors:(id)a3;
+- (void)_queue_applyBackgroundObjectColors:(id)colors;
 - (void)_queue_applyColorPalette;
 - (void)_queue_applyState;
-- (void)_queue_configureController:(id)a3 digit:(unint64_t)a4;
-- (void)_queue_configureLightingWithTritiumFraction:(double)a3;
-- (void)_queue_enumerateDigitsWithBlock:(id)a3;
+- (void)_queue_configureController:(id)controller digit:(unint64_t)digit;
+- (void)_queue_configureLightingWithTritiumFraction:(double)fraction;
+- (void)_queue_enumerateDigitsWithBlock:(id)block;
 - (void)_queue_loadBackgroundObjects;
-- (void)_queue_replaceDigit:(unint64_t)a3 withCharacter:(unint64_t)a4;
+- (void)_queue_replaceDigit:(unint64_t)digit withCharacter:(unint64_t)character;
 - (void)_queue_replaceRandomObjectWithDainty;
 - (void)_queue_resetToIdealizedState;
-- (void)_queue_setupBackgroundObject:(id)a3;
+- (void)_queue_setupBackgroundObject:(id)object;
 - (void)_queue_setupBorderWalls;
 - (void)_queue_setupCamera;
 - (void)_queue_setupPlane;
 - (void)_queue_setupScene;
-- (void)_queue_tapAtPoint:(CGPoint)a3;
+- (void)_queue_tapAtPoint:(CGPoint)point;
 - (void)_queue_updateBackgroundContainerOpacity;
 - (void)_queue_updateCameraAngles;
 - (void)_queue_updateCameraParallax;
 - (void)_setupTimeFormatter;
 - (void)flush;
-- (void)flushWithCompletion:(id)a3;
-- (void)physicsWorld:(id)a3 didBeginContact:(id)a4;
-- (void)renderer:(id)a3 updateAtTime:(double)a4;
-- (void)setBackgroundObjectOpacity:(double)a3;
-- (void)setColorPalette:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setSnowglobeState:(id)a3;
-- (void)setTritiumState:(unint64_t)a3 fraction:(double)a4;
-- (void)tapAtPoint:(CGPoint)a3;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)flushWithCompletion:(id)completion;
+- (void)physicsWorld:(id)world didBeginContact:(id)contact;
+- (void)renderer:(id)renderer updateAtTime:(double)time;
+- (void)setBackgroundObjectOpacity:(double)opacity;
+- (void)setColorPalette:(id)palette;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setSnowglobeState:(id)state;
+- (void)setTritiumState:(unint64_t)state fraction:(double)fraction;
+- (void)tapAtPoint:(CGPoint)point;
+- (void)timeFormatterTextDidChange:(id)change;
 @end
 
 @implementation NTKSnowglobeSceneController
 
-- (NTKSnowglobeSceneController)initWithSceneSize:(CGSize)a3 renderQueue:(id)a4
+- (NTKSnowglobeSceneController)initWithSceneSize:(CGSize)size renderQueue:(id)queue
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
+  height = size.height;
+  width = size.width;
+  queueCopy = queue;
   v39.receiver = self;
   v39.super_class = NTKSnowglobeSceneController;
   v9 = [(NTKSnowglobeSceneController *)&v39 init];
@@ -62,9 +62,9 @@
     v9->_screenSize.width = width;
     v9->_screenSize.height = height;
     v10 = +[NTKSnowglobeAssetLibrary sharedInstance];
-    v11 = [v10 sharedDevice];
+    sharedDevice = [v10 sharedDevice];
     device = v9->_device;
-    v9->_device = v11;
+    v9->_device = sharedDevice;
 
     v13 = v9->_device;
     if (qword_27E1EDE30 != -1)
@@ -89,16 +89,16 @@
     digitControllers = v9->_digitControllers;
     v9->_digitControllers = v21;
 
-    v23 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     digitControllerLookup = v9->_digitControllerLookup;
-    v9->_digitControllerLookup = v23;
+    v9->_digitControllerLookup = weakToWeakObjectsMapTable;
 
     v25 = dispatch_group_create();
     group = v9->_group;
     v9->_group = v25;
 
     v9->_showingOverrideTime = 1;
-    objc_storeStrong(&v9->_renderQueue, a4);
+    objc_storeStrong(&v9->_renderQueue, queue);
     v9->_stateLock._os_unfair_lock_opaque = 0;
     v27 = dispatch_semaphore_create(1);
     asyncApplyStateSemaphore = v9->_asyncApplyStateSemaphore;
@@ -117,9 +117,9 @@
     [MEMORY[0x277CDBB18] begin];
     [MEMORY[0x277CDBB18] setAnimationDuration:0.0];
     v33 = +[NTKSnowglobeAssetLibrary sharedInstance];
-    v34 = [v33 createScene];
+    createScene = [v33 createScene];
     scene = v9->_scene;
-    v9->_scene = v34;
+    v9->_scene = createScene;
 
     [MEMORY[0x277CDBB18] commit];
     block[0] = MEMORY[0x277D85DD0];
@@ -127,7 +127,7 @@
     block[2] = sub_23C0883F8;
     block[3] = &unk_278BAC870;
     v38 = v9;
-    dispatch_async(v8, block);
+    dispatch_async(queueCopy, block);
   }
 
   return v9;
@@ -164,26 +164,26 @@
   }
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   renderQueue = self->_renderQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_23C088630;
   v7[3] = &unk_278BAC5C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(renderQueue, v7);
 }
 
-- (void)setSnowglobeState:(id)a3
+- (void)setSnowglobeState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   os_unfair_lock_lock(&self->_stateLock);
-  objc_storeStrong(&self->_snowglobeState, a3);
+  objc_storeStrong(&self->_snowglobeState, state);
   os_unfair_lock_unlock(&self->_stateLock);
   renderQueue = self->_renderQueue;
   asyncApplyStateSemaphore = self->_asyncApplyStateSemaphore;
@@ -216,41 +216,41 @@
   return v3;
 }
 
-- (void)setTritiumState:(unint64_t)a3 fraction:(double)a4
+- (void)setTritiumState:(unint64_t)state fraction:(double)fraction
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v8 = [(NTKSnowglobeSceneController *)self snowglobeState];
-  v7 = [v8 withTritiumState:a3 fraction:a4];
+  snowglobeState = [(NTKSnowglobeSceneController *)self snowglobeState];
+  v7 = [snowglobeState withTritiumState:state fraction:fraction];
   [(NTKSnowglobeSceneController *)self setSnowglobeState:v7];
 }
 
 - (double)backgroundObjectOpacity
 {
-  v2 = [(NTKSnowglobeSceneController *)self snowglobeState];
-  [v2 backgroundObjectOpacity];
+  snowglobeState = [(NTKSnowglobeSceneController *)self snowglobeState];
+  [snowglobeState backgroundObjectOpacity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBackgroundObjectOpacity:(double)a3
+- (void)setBackgroundObjectOpacity:(double)opacity
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v6 = [(NTKSnowglobeSceneController *)self snowglobeState];
-  v5 = [v6 withBackgroundObjectOpacity:a3];
+  snowglobeState = [(NTKSnowglobeSceneController *)self snowglobeState];
+  v5 = [snowglobeState withBackgroundObjectOpacity:opacity];
   [(NTKSnowglobeSceneController *)self setSnowglobeState:v5];
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  v8 = a3;
+  paletteCopy = palette;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  objc_storeStrong(&self->_colorPalette, a3);
-  if (v8)
+  objc_storeStrong(&self->_colorPalette, palette);
+  if (paletteCopy)
   {
-    v5 = [(NTKSnowglobeSceneController *)self snowglobeState];
-    v6 = [[NTKSnowglobeColors alloc] initWithPalette:v8];
-    v7 = [v5 withPalette:v6];
+    snowglobeState = [(NTKSnowglobeSceneController *)self snowglobeState];
+    v6 = [[NTKSnowglobeColors alloc] initWithPalette:paletteCopy];
+    v7 = [snowglobeState withPalette:v6];
     [(NTKSnowglobeSceneController *)self setSnowglobeState:v7];
   }
 }
@@ -259,23 +259,23 @@
 {
   v45 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_renderQueue);
-  v3 = [(NTKSnowglobeSceneController *)self snowglobeState];
-  v4 = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
+  snowglobeState = [(NTKSnowglobeSceneController *)self snowglobeState];
+  appliedSnowglobeState = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
   if (self->_leftBacklightNode)
   {
-    v5 = [v3 palette];
+    palette = [snowglobeState palette];
 
-    if (v5)
+    if (palette)
     {
       snowglobeStateInitialized = self->_snowglobeStateInitialized;
       self->_snowglobeStateInitialized = 1;
-      objc_storeStrong(&self->_appliedSnowglobeState, v3);
+      objc_storeStrong(&self->_appliedSnowglobeState, snowglobeState);
       if (snowglobeStateInitialized)
       {
-        v7 = [v4 shouldBeInIdealizedState];
-        v8 = v7 ^ [v3 shouldBeInIdealizedState];
-        v9 = [v4 scenePaused];
-        if (v9 != [v3 scenePaused])
+        shouldBeInIdealizedState = [appliedSnowglobeState shouldBeInIdealizedState];
+        v8 = shouldBeInIdealizedState ^ [snowglobeState shouldBeInIdealizedState];
+        scenePaused = [appliedSnowglobeState scenePaused];
+        if (scenePaused != [snowglobeState scenePaused])
         {
           v10 = v8 | 2;
         }
@@ -285,10 +285,10 @@
           v10 = v8;
         }
 
-        v11 = [v4 palette];
-        v12 = [v3 palette];
+        palette2 = [appliedSnowglobeState palette];
+        palette3 = [snowglobeState palette];
 
-        if (v11 == v12)
+        if (palette2 == palette3)
         {
           v13 = v10;
         }
@@ -298,9 +298,9 @@
           v13 = v10 | 4;
         }
 
-        [v4 tritiumFraction];
+        [appliedSnowglobeState tritiumFraction];
         v15 = v14;
-        [v3 tritiumFraction];
+        [snowglobeState tritiumFraction];
         if (v15 == v16)
         {
           v17 = v13;
@@ -311,8 +311,8 @@
           v17 = v13 | 8;
         }
 
-        v18 = [v4 tritiumState];
-        if (v18 == [v3 tritiumState])
+        tritiumState = [appliedSnowglobeState tritiumState];
+        if (tritiumState == [snowglobeState tritiumState])
         {
           v19 = v17;
         }
@@ -322,9 +322,9 @@
           v19 = v17 | 0x10;
         }
 
-        [v4 backgroundObjectOpacity];
+        [appliedSnowglobeState backgroundObjectOpacity];
         v21 = v20;
-        [v3 backgroundObjectOpacity];
+        [snowglobeState backgroundObjectOpacity];
         if (v21 == v22)
         {
           goto LABEL_23;
@@ -344,28 +344,28 @@ LABEL_23:
         *buf = 67109888;
         v38 = v19;
         v39 = 1024;
-        v40 = [v3 idealizedState];
+        idealizedState = [snowglobeState idealizedState];
         v41 = 1024;
-        v42 = [v3 editing];
+        editing = [snowglobeState editing];
         v43 = 2048;
-        v44 = [v3 tritiumState];
+        tritiumState2 = [snowglobeState tritiumState];
         _os_log_impl(&dword_23C07F000, v24, OS_LOG_TYPE_DEFAULT, "Apply state (changes=%X, idealized=%i, editing=%i, tritium=%lu)", buf, 0x1Eu);
       }
 
-      if ((v19 & 1) != 0 && [v3 shouldBeInIdealizedState])
+      if ((v19 & 1) != 0 && [snowglobeState shouldBeInIdealizedState])
       {
         [(NTKSnowglobeSceneController *)self _queue_resetToIdealizedState];
       }
 
       if ((v19 & 2) != 0)
       {
-        v25 = [v3 scenePaused];
+        scenePaused2 = [snowglobeState scenePaused];
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v26 = [(NSMutableDictionary *)self->_digitControllers allValues];
-        v27 = [v26 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        allValues = [(NSMutableDictionary *)self->_digitControllers allValues];
+        v27 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v27)
         {
           v28 = v27;
@@ -376,21 +376,21 @@ LABEL_23:
             {
               if (*v33 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(allValues);
               }
 
-              [*(*(&v32 + 1) + 8 * i) setPausePhysics:v25];
+              [*(*(&v32 + 1) + 8 * i) setPausePhysics:scenePaused2];
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v32 objects:v36 count:16];
+            v28 = [allValues countByEnumeratingWithState:&v32 objects:v36 count:16];
           }
 
           while (v28);
         }
 
-        if (v25 != [(SCNScene *)self->_scene isPaused])
+        if (scenePaused2 != [(SCNScene *)self->_scene isPaused])
         {
-          [(SCNScene *)self->_scene setPaused:v25];
+          [(SCNScene *)self->_scene setPaused:scenePaused2];
         }
       }
 
@@ -411,7 +411,7 @@ LABEL_23:
 
       if ((v19 & 8) != 0)
       {
-        [v3 tritiumFraction];
+        [snowglobeState tritiumFraction];
         [(NTKSnowglobeSceneController *)self _queue_configureLightingWithTritiumFraction:?];
       }
 
@@ -433,28 +433,28 @@ LABEL_46:
 - (void)_queue_applyBackgroundContents
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v8 = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
-  v3 = [v8 palette];
-  v4 = [v3 backgroundColor];
-  v5 = [MEMORY[0x277D75348] blackColor];
-  [v8 tritiumFraction];
-  v6 = MEMORY[0x23EEC5E20](v4, v5);
-  v7 = [(SCNScene *)self->_scene background];
-  [v7 setContents:v6];
+  appliedSnowglobeState = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
+  palette = [appliedSnowglobeState palette];
+  backgroundColor = [palette backgroundColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [appliedSnowglobeState tritiumFraction];
+  v6 = MEMORY[0x23EEC5E20](backgroundColor, blackColor);
+  background = [(SCNScene *)self->_scene background];
+  [background setContents:v6];
 }
 
 - (void)_queue_updateBackgroundContainerOpacity
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v9 = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
-  v3 = [v9 tritiumState];
-  [v9 tritiumFraction];
+  appliedSnowglobeState = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
+  tritiumState = [appliedSnowglobeState tritiumState];
+  [appliedSnowglobeState tritiumFraction];
   v5 = v4;
-  [v9 backgroundObjectOpacity];
+  [appliedSnowglobeState backgroundObjectOpacity];
   v7 = v6;
-  if (v3)
+  if (tritiumState)
   {
-    if ([v9 tritiumState] == 3)
+    if ([appliedSnowglobeState tritiumState] == 3)
     {
       v8 = v5 * -2.0 + 1.0;
       if (v8 < 0.0)
@@ -484,8 +484,8 @@ LABEL_46:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(NSMutableDictionary *)self->_digitControllers allValues];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  allValues = [(NSMutableDictionary *)self->_digitControllers allValues];
+  v4 = [allValues countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -497,14 +497,14 @@ LABEL_46:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v18 + 1) + 8 * v7++) resetToOrigin];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);
@@ -547,44 +547,44 @@ LABEL_46:
 - (void)_queue_applyColorPalette
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v3 = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
-  v10 = [v3 palette];
+  appliedSnowglobeState = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
+  palette = [appliedSnowglobeState palette];
 
-  v4 = v10;
-  if (self->_leftBacklightNode && self->_rightBacklightNode && v10)
+  v4 = palette;
+  if (self->_leftBacklightNode && self->_rightBacklightNode && palette)
   {
-    v5 = [v10 backgroundColorsForRandoms:self->_backgroundObjectRandoms];
+    v5 = [palette backgroundColorsForRandoms:self->_backgroundObjectRandoms];
     [(NTKSnowglobeSceneController *)self _queue_applyBackgroundObjectColors:v5];
     [(NTKSnowglobeSceneController *)self _queue_applyBackgroundContents];
-    v6 = [v10 backlightColor];
-    v7 = [(SCNNode *)self->_rightBacklightNode light];
-    [v7 setColor:v6];
+    backlightColor = [palette backlightColor];
+    light = [(SCNNode *)self->_rightBacklightNode light];
+    [light setColor:backlightColor];
 
-    v8 = [v10 backlightColor];
-    v9 = [(SCNNode *)self->_leftBacklightNode light];
-    [v9 setColor:v8];
+    backlightColor2 = [palette backlightColor];
+    light2 = [(SCNNode *)self->_leftBacklightNode light];
+    [light2 setColor:backlightColor2];
 
-    v4 = v10;
+    v4 = palette;
   }
 }
 
-- (void)_queue_applyBackgroundObjectColors:(id)a3
+- (void)_queue_applyBackgroundObjectColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   dispatch_assert_queue_V2(self->_renderQueue);
   backgroundObjects = self->_backgroundObjects;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_23C08943C;
   v7[3] = &unk_278BAC8C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = colorsCopy;
+  v6 = colorsCopy;
   [(NSArray *)backgroundObjects enumerateObjectsUsingBlock:v7];
 }
 
-- (id)_queue_backgroundObjectColorsFromColors:(id)a3
+- (id)_queue_backgroundObjectColorsFromColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   dispatch_assert_queue_V2(self->_renderQueue);
   v5 = objc_opt_new();
   if ([(NSArray *)self->_backgroundObjects count])
@@ -593,10 +593,10 @@ LABEL_46:
     do
     {
       v7 = [(NSArray *)self->_backgroundObjectRandoms objectAtIndexedSubscript:v6];
-      v8 = [v7 unsignedIntegerValue];
-      v9 = v8 % [v4 count];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
+      v9 = unsignedIntegerValue % [colorsCopy count];
 
-      v10 = [v4 objectAtIndexedSubscript:v9];
+      v10 = [colorsCopy objectAtIndexedSubscript:v9];
       [v5 addObject:v10];
 
       ++v6;
@@ -611,8 +611,8 @@ LABEL_46:
 - (void)_queue_updateCameraAngles
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v3 = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
-  [v3 parallaxMultiplier];
+  appliedSnowglobeState = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
+  [appliedSnowglobeState parallaxMultiplier];
   v7 = v4;
 
   *&v5 = vcvt_f32_f64(vmulq_n_f64(vcvtq_f64_f32(vneg_f32(*self->_backgroundParallax)), v7));
@@ -654,133 +654,133 @@ LABEL_46:
 - (void)_queue_setupScene
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v3 = [(SCNScene *)self->_scene physicsWorld];
-  [v3 setSpeed:1.0];
+  physicsWorld = [(SCNScene *)self->_scene physicsWorld];
+  [physicsWorld setSpeed:1.0];
 
-  v4 = [(SCNScene *)self->_scene physicsWorld];
-  [v4 setGravity:{0.0, 0.0, 0.0}];
+  physicsWorld2 = [(SCNScene *)self->_scene physicsWorld];
+  [physicsWorld2 setGravity:{0.0, 0.0, 0.0}];
 
-  v5 = [(SCNScene *)self->_scene physicsWorld];
-  [v5 setContactDelegate:self];
+  physicsWorld3 = [(SCNScene *)self->_scene physicsWorld];
+  [physicsWorld3 setContactDelegate:self];
 
   [(SCNScene *)self->_scene setPaused:1];
   [(NTKSnowglobeSceneController *)self _queue_setupCamera];
   [(NTKSnowglobeSceneController *)self _queue_setupBorderWalls];
-  v6 = [MEMORY[0x277CDBAA8] node];
-  v7 = [MEMORY[0x277CDBA88] light];
-  [(SCNNode *)v6 setLight:v7];
+  node = [MEMORY[0x277CDBAA8] node];
+  light = [MEMORY[0x277CDBA88] light];
+  [(SCNNode *)node setLight:light];
 
   v8 = *MEMORY[0x277CDBB78];
-  v9 = [(SCNNode *)v6 light];
-  [v9 setType:v8];
+  light2 = [(SCNNode *)node light];
+  [light2 setType:v8];
 
-  v10 = [(SCNNode *)v6 light];
-  [v10 setIntensity:1800.0];
+  light3 = [(SCNNode *)node light];
+  [light3 setIntensity:1800.0];
 
-  v11 = [(SCNNode *)v6 light];
-  [v11 setCategoryBitMask:2];
+  light4 = [(SCNNode *)node light];
+  [light4 setCategoryBitMask:2];
 
-  v12 = [MEMORY[0x277CDBAA8] node];
-  v13 = [MEMORY[0x277CDBA88] light];
-  [(SCNNode *)v12 setLight:v13];
+  node2 = [MEMORY[0x277CDBAA8] node];
+  light5 = [MEMORY[0x277CDBA88] light];
+  [(SCNNode *)node2 setLight:light5];
 
-  v14 = [(SCNNode *)v12 light];
-  [v14 setType:v8];
+  light6 = [(SCNNode *)node2 light];
+  [light6 setType:v8];
 
-  v15 = [(SCNNode *)v12 light];
-  [v15 setIntensity:1800.0];
+  light7 = [(SCNNode *)node2 light];
+  [light7 setIntensity:1800.0];
 
-  v16 = [(SCNNode *)v12 light];
-  [v16 setCategoryBitMask:2];
+  light8 = [(SCNNode *)node2 light];
+  [light8 setCategoryBitMask:2];
 
-  v17 = [MEMORY[0x277CDBAA8] node];
-  v18 = [MEMORY[0x277CDBA88] light];
-  [(SCNNode *)v17 setLight:v18];
+  node3 = [MEMORY[0x277CDBAA8] node];
+  light9 = [MEMORY[0x277CDBA88] light];
+  [(SCNNode *)node3 setLight:light9];
 
-  v19 = [(SCNNode *)v17 light];
-  [v19 setType:v8];
+  light10 = [(SCNNode *)node3 light];
+  [light10 setType:v8];
 
   v20 = [MEMORY[0x277D75348] colorWithHue:0.566666667 saturation:0.39 brightness:1.0 alpha:1.0];
-  v21 = [(SCNNode *)v17 light];
-  [v21 setColor:v20];
+  light11 = [(SCNNode *)node3 light];
+  [light11 setColor:v20];
 
-  v22 = [(SCNNode *)v17 light];
-  [v22 setIntensity:0.0];
+  light12 = [(SCNNode *)node3 light];
+  [light12 setIntensity:0.0];
 
-  v23 = [(SCNNode *)v17 light];
-  [v23 setCategoryBitMask:2];
+  light13 = [(SCNNode *)node3 light];
+  [light13 setCategoryBitMask:2];
 
-  v24 = [MEMORY[0x277CDBAA8] node];
-  v25 = [MEMORY[0x277CDBA88] light];
-  [(SCNNode *)v24 setLight:v25];
+  node4 = [MEMORY[0x277CDBAA8] node];
+  light14 = [MEMORY[0x277CDBA88] light];
+  [(SCNNode *)node4 setLight:light14];
 
   v26 = *MEMORY[0x277CDBB70];
-  v27 = [(SCNNode *)v24 light];
-  [v27 setType:v26];
+  light15 = [(SCNNode *)node4 light];
+  [light15 setType:v26];
 
-  v28 = [MEMORY[0x277D75348] whiteColor];
-  v29 = [(SCNNode *)v24 light];
-  [v29 setColor:v28];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  light16 = [(SCNNode *)node4 light];
+  [light16 setColor:whiteColor];
 
-  v30 = [(SCNNode *)v24 light];
-  [v30 setIntensity:0.0];
+  light17 = [(SCNNode *)node4 light];
+  [light17 setIntensity:0.0];
 
-  v31 = [(SCNNode *)v24 light];
-  [v31 setCategoryBitMask:2];
+  light18 = [(SCNNode *)node4 light];
+  [light18 setCategoryBitMask:2];
 
   LODWORD(v32) = 1081824209;
   LODWORD(v33) = 1.0;
-  [(SCNNode *)v6 setRotation:0.0, v33, 0.0, v32];
+  [(SCNNode *)node setRotation:0.0, v33, 0.0, v32];
   LODWORD(v34) = 1075235812;
   LODWORD(v35) = 1.0;
-  [(SCNNode *)v12 setRotation:0.0, v35, 0.0, v34];
+  [(SCNNode *)node2 setRotation:0.0, v35, 0.0, v34];
   LODWORD(v36) = -1085730853;
   LODWORD(v37) = -1077342245;
-  [(SCNNode *)v17 setEulerAngles:v36, v37, 0.0];
+  [(SCNNode *)node3 setEulerAngles:v36, v37, 0.0];
   leftBacklightNode = self->_leftBacklightNode;
-  self->_leftBacklightNode = v6;
-  v39 = v6;
+  self->_leftBacklightNode = node;
+  v39 = node;
 
   rightBacklightNode = self->_rightBacklightNode;
-  self->_rightBacklightNode = v12;
-  v41 = v12;
+  self->_rightBacklightNode = node2;
+  v41 = node2;
 
   nightLightNode = self->_nightLightNode;
-  self->_nightLightNode = v17;
-  v43 = v17;
+  self->_nightLightNode = node3;
+  v43 = node3;
 
   nightAmbientLightNode = self->_nightAmbientLightNode;
-  self->_nightAmbientLightNode = v24;
-  v45 = v24;
+  self->_nightAmbientLightNode = node4;
+  v45 = node4;
 
-  v46 = [(SCNNode *)v39 light];
+  light19 = [(SCNNode *)v39 light];
   leftBacklight = self->_leftBacklight;
-  self->_leftBacklight = v46;
+  self->_leftBacklight = light19;
 
-  v48 = [(SCNNode *)v41 light];
+  light20 = [(SCNNode *)v41 light];
   rightBacklight = self->_rightBacklight;
-  self->_rightBacklight = v48;
+  self->_rightBacklight = light20;
 
-  v50 = [(SCNNode *)v43 light];
+  light21 = [(SCNNode *)v43 light];
   nightLight = self->_nightLight;
-  self->_nightLight = v50;
+  self->_nightLight = light21;
 
-  v52 = [(SCNNode *)v45 light];
+  light22 = [(SCNNode *)v45 light];
   nightAmbientLight = self->_nightAmbientLight;
-  self->_nightAmbientLight = v52;
+  self->_nightAmbientLight = light22;
 
-  v54 = [(SCNScene *)self->_scene rootNode];
-  [v54 addChildNode:v39];
+  rootNode = [(SCNScene *)self->_scene rootNode];
+  [rootNode addChildNode:v39];
 
-  v55 = [(SCNScene *)self->_scene rootNode];
-  [v55 addChildNode:v41];
+  rootNode2 = [(SCNScene *)self->_scene rootNode];
+  [rootNode2 addChildNode:v41];
 
-  v56 = [(SCNScene *)self->_scene rootNode];
-  [v56 addChildNode:v43];
+  rootNode3 = [(SCNScene *)self->_scene rootNode];
+  [rootNode3 addChildNode:v43];
 
-  v57 = [(SCNScene *)self->_scene rootNode];
+  rootNode4 = [(SCNScene *)self->_scene rootNode];
 
-  [v57 addChildNode:v45];
+  [rootNode4 addChildNode:v45];
   [(NTKSnowglobeSceneController *)self _queue_loadBackgroundObjects];
   [(NTKSnowglobeSceneController *)self _queue_setupPlane];
 
@@ -790,15 +790,15 @@ LABEL_46:
 - (void)_queue_setupCamera
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v3 = [MEMORY[0x277CDBAA8] node];
-  v4 = [MEMORY[0x277CDBA48] camera];
-  [(SCNNode *)v3 setCamera:v4];
+  node = [MEMORY[0x277CDBAA8] node];
+  camera = [MEMORY[0x277CDBA48] camera];
+  [(SCNNode *)node setCamera:camera];
 
-  v5 = [(SCNNode *)v3 camera];
-  [v5 setZFar:110.0];
+  camera2 = [(SCNNode *)node camera];
+  [camera2 setZFar:110.0];
 
-  v6 = [(SCNNode *)v3 camera];
-  [v6 setZNear:1.0];
+  camera3 = [(SCNNode *)node camera];
+  [camera3 setZNear:1.0];
 
   CameraMode = NTKSnowglobeDebugGetCameraMode();
   v8 = NTKSnowglobeTunableFloat(@"cameraPivotDepth", -2.5);
@@ -807,8 +807,8 @@ LABEL_46:
     v16 = NTKSnowglobeTunableFloat(@"cameraFOV", 40.0);
     *&v17 = NTKSnowglobeTunableFloat3(@"cameraPosition", 0);
     *v25 = v17;
-    v18 = [(SCNNode *)v3 camera];
-    [v18 setFieldOfView:v16];
+    camera4 = [(SCNNode *)node camera];
+    [camera4 setFieldOfView:v16];
 
     v14 = *v25;
     LODWORD(v13) = v25[1];
@@ -824,35 +824,35 @@ LABEL_46:
 
     v9 = NTKSnowglobeTunableFloat(@"cameraFOV", 40.0);
     v10 = 4.0 / tan(v9 / 180.0 * 3.14159265 * 0.5);
-    v11 = [(SCNNode *)v3 camera];
-    [v11 setFieldOfView:v9];
+    camera5 = [(SCNNode *)node camera];
+    [camera5 setFieldOfView:v9];
 
-    v12 = [(SCNNode *)v3 camera];
-    [v12 setProjectionDirection:1];
+    camera6 = [(SCNNode *)node camera];
+    [camera6 setProjectionDirection:1];
 
     *&v13 = v10 - v8;
     v14 = 0.0;
     v15 = 0.0;
   }
 
-  [(SCNNode *)v3 setPosition:v14, v15, v13];
+  [(SCNNode *)node setPosition:v14, v15, v13];
 LABEL_6:
-  [(SCNNode *)v3 setName:@"NTKPointOfView"];
-  v19 = [MEMORY[0x277CDBAA8] node];
+  [(SCNNode *)node setName:@"NTKPointOfView"];
+  node2 = [MEMORY[0x277CDBAA8] node];
   *&v20 = v8;
-  [(SCNNode *)v19 setPosition:0.0, 0.0, v20];
+  [(SCNNode *)node2 setPosition:0.0, 0.0, v20];
   cameraNode = self->_cameraNode;
-  self->_cameraNode = v3;
-  v22 = v3;
+  self->_cameraNode = node;
+  v22 = node;
 
   cameraFocalNode = self->_cameraFocalNode;
-  self->_cameraFocalNode = v19;
-  v24 = v19;
+  self->_cameraFocalNode = node2;
+  v24 = node2;
 
   [(SCNNode *)v24 addChildNode:v22];
-  v26 = [(SCNScene *)self->_scene rootNode];
+  rootNode = [(SCNScene *)self->_scene rootNode];
 
-  [v26 addChildNode:v24];
+  [rootNode addChildNode:v24];
 }
 
 - (void)_queue_setupPlane
@@ -868,20 +868,20 @@ LABEL_6:
   [(SCNNode *)self->_glassNode setEulerAngles:0.0, v7, 0.0];
   LODWORD(v8) = 2.0;
   [(SCNNode *)self->_glassNode setPosition:0.0, 0.0, v8];
-  v9 = [MEMORY[0x277CDBAB0] staticBody];
-  [(SCNNode *)self->_glassNode setPhysicsBody:v9];
+  staticBody = [MEMORY[0x277CDBAB0] staticBody];
+  [(SCNNode *)self->_glassNode setPhysicsBody:staticBody];
 
   v10 = MEMORY[0x277CDBAD0];
-  v11 = [(SCNNode *)self->_glassNode geometry];
-  v12 = [v10 shapeWithGeometry:v11 options:0];
-  v13 = [(SCNNode *)self->_glassNode physicsBody];
-  [v13 setPhysicsShape:v12];
+  geometry = [(SCNNode *)self->_glassNode geometry];
+  v12 = [v10 shapeWithGeometry:geometry options:0];
+  physicsBody = [(SCNNode *)self->_glassNode physicsBody];
+  [physicsBody setPhysicsShape:v12];
 
-  v14 = [(SCNNode *)self->_glassNode physicsBody];
-  [v14 setRestitution:0.2];
+  physicsBody2 = [(SCNNode *)self->_glassNode physicsBody];
+  [physicsBody2 setRestitution:0.2];
 
-  v15 = [(SCNScene *)self->_scene rootNode];
-  [v15 addChildNode:self->_glassNode];
+  rootNode = [(SCNScene *)self->_scene rootNode];
+  [rootNode addChildNode:self->_glassNode];
 }
 
 - (void)_queue_setupBorderWalls
@@ -889,8 +889,8 @@ LABEL_6:
   dispatch_assert_queue_V2(self->_renderQueue);
   width = self->_screenSize.width;
   height = self->_screenSize.height;
-  v5 = [(SCNNode *)self->_cameraNode camera];
-  [v5 fieldOfView];
+  camera = [(SCNNode *)self->_cameraNode camera];
+  [camera fieldOfView];
   v7 = v6 * 0.0174532925 * 0.5;
 
   v43 = [MEMORY[0x277CDBAD8] planeWithWidth:100.0 height:100.0];
@@ -907,12 +907,12 @@ LABEL_6:
   v13.i64[1] = 0x3F0000003F000000;
   [v8 setSimdPosition:{*vmulq_f32(vmulq_f32(v12, v42), v13).i64}];
   [v8 setSimdRotation:0.0078125];
-  v14 = [MEMORY[0x277CDBAB0] staticBody];
-  [v8 setPhysicsBody:v14];
+  staticBody = [MEMORY[0x277CDBAB0] staticBody];
+  [v8 setPhysicsBody:staticBody];
 
   v15 = [MEMORY[0x277CDBAD0] shapeWithGeometry:v43 options:0];
-  v16 = [v8 physicsBody];
-  [v16 setPhysicsShape:v15];
+  physicsBody = [v8 physicsBody];
+  [physicsBody setPhysicsShape:v15];
 
   v17 = [MEMORY[0x277CDBAA8] nodeWithGeometry:v43];
   v18.i32[1] = 0;
@@ -923,12 +923,12 @@ LABEL_6:
   v18.i64[1] = 0x3F0000003F000000;
   [v17 setSimdPosition:{*vmulq_f32(v19, v18).i64}];
   [v17 setSimdRotation:0.0078125];
-  v20 = [MEMORY[0x277CDBAB0] staticBody];
-  [v17 setPhysicsBody:v20];
+  staticBody2 = [MEMORY[0x277CDBAB0] staticBody];
+  [v17 setPhysicsBody:staticBody2];
 
   v21 = [MEMORY[0x277CDBAD0] shapeWithGeometry:v43 options:0];
-  v22 = [v17 physicsBody];
-  [v22 setPhysicsShape:v21];
+  physicsBody2 = [v17 physicsBody];
+  [physicsBody2 setPhysicsShape:v21];
 
   v23 = [MEMORY[0x277CDBAA8] nodeWithGeometry:v43];
   v24 = __sincos_stret(height * v7 / width);
@@ -943,12 +943,12 @@ LABEL_6:
   v28.i64[1] = 0x3F0000003F000000;
   [v23 setSimdPosition:{*vmulq_f32(vmulq_f32(v27, v42), v28).i64}];
   [v23 setSimdRotation:COERCE_DOUBLE(1065353216)];
-  v29 = [MEMORY[0x277CDBAB0] staticBody];
-  [v23 setPhysicsBody:v29];
+  staticBody3 = [MEMORY[0x277CDBAB0] staticBody];
+  [v23 setPhysicsBody:staticBody3];
 
   v30 = [MEMORY[0x277CDBAD0] shapeWithGeometry:v43 options:0];
-  v31 = [v23 physicsBody];
-  [v31 setPhysicsShape:v30];
+  physicsBody3 = [v23 physicsBody];
+  [physicsBody3 setPhysicsShape:v30];
 
   v32 = [MEMORY[0x277CDBAA8] nodeWithGeometry:v43];
   v33.i32[0] = 0;
@@ -959,12 +959,12 @@ LABEL_6:
   v33.i64[1] = 0x3F0000003F000000;
   [v32 setSimdPosition:{*vmulq_f32(v34, v33).i64}];
   [v32 setSimdRotation:COERCE_DOUBLE(1065353216)];
-  v35 = [MEMORY[0x277CDBAB0] staticBody];
-  [v32 setPhysicsBody:v35];
+  staticBody4 = [MEMORY[0x277CDBAB0] staticBody];
+  [v32 setPhysicsBody:staticBody4];
 
   v36 = [MEMORY[0x277CDBAD0] shapeWithGeometry:v43 options:0];
-  v37 = [v32 physicsBody];
-  [v37 setPhysicsShape:v36];
+  physicsBody4 = [v32 physicsBody];
+  [physicsBody4 setPhysicsShape:v36];
 
   [(SCNNode *)self->_cameraNode addChildNode:v8];
   [(SCNNode *)self->_cameraNode addChildNode:v17];
@@ -972,32 +972,32 @@ LABEL_6:
   [(SCNNode *)self->_cameraNode addChildNode:v32];
 }
 
-- (void)_queue_enumerateDigitsWithBlock:(id)a3
+- (void)_queue_enumerateDigitsWithBlock:(id)block
 {
   renderQueue = self->_renderQueue;
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(renderQueue);
-  v4[2](v4, 0);
-  v4[2](v4, 1);
-  v4[2](v4, 2);
-  v4[2](v4, 3);
+  blockCopy[2](blockCopy, 0);
+  blockCopy[2](blockCopy, 1);
+  blockCopy[2](blockCopy, 2);
+  blockCopy[2](blockCopy, 3);
 }
 
-- (void)_queue_replaceDigit:(unint64_t)a3 withCharacter:(unint64_t)a4
+- (void)_queue_replaceDigit:(unint64_t)digit withCharacter:(unint64_t)character
 {
   v35 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_renderQueue);
   digitControllers = self->_digitControllers;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digit];
   v9 = [(NSMutableDictionary *)digitControllers objectForKeyedSubscript:v8];
   if (v9)
   {
     v10 = self->_digitControllers;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digit];
     v12 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v11];
-    v13 = [v12 digit];
+    digit = [v12 digit];
 
-    if (v13 == a4)
+    if (digit == character)
     {
       goto LABEL_8;
     }
@@ -1011,14 +1011,14 @@ LABEL_6:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v32 = a3;
+    digitCopy = digit;
     v33 = 2048;
-    v34 = a4;
+    characterCopy = character;
     _os_log_impl(&dword_23C07F000, v14, OS_LOG_TYPE_DEFAULT, "Replacing digit at %lu with %lu", buf, 0x16u);
   }
 
   v15 = self->_digitControllers;
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digit];
   v17 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:v16];
 
   objc_initWeak(buf, self);
@@ -1031,10 +1031,10 @@ LABEL_6:
   v28 = sub_23C08A8A0;
   v29 = &unk_278BAC8E8;
   objc_copyWeak(v30, buf);
-  v30[1] = a3;
-  v22 = [(NTKSnowglobeDigitController *)v18 initWithDigit:a4 scene:scene queue:renderQueue group:group configureNode:&v26];
+  v30[1] = digit;
+  v22 = [(NTKSnowglobeDigitController *)v18 initWithDigit:character scene:scene queue:renderQueue group:group configureNode:&v26];
   v23 = self->_digitControllers;
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{a3, v26, v27, v28, v29}];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{digit, v26, v27, v28, v29}];
   [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:v24];
 
   [v17 destroy];
@@ -1045,19 +1045,19 @@ LABEL_8:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_tritiumRotationForDigit:(uint64_t)a3
+- (double)_tritiumRotationForDigit:(uint64_t)digit
 {
   result = 0.0;
-  if (a3 > 1)
+  if (digit > 1)
   {
-    if (a3 == 2)
+    if (digit == 2)
     {
       v4 = vdupq_n_s32(0x3E715BEFu);
     }
 
     else
     {
-      if (a3 != 3)
+      if (digit != 3)
       {
         return result;
       }
@@ -1066,9 +1066,9 @@ LABEL_8:
     }
   }
 
-  else if (a3)
+  else if (digit)
   {
-    if (a3 != 1)
+    if (digit != 1)
     {
       return result;
     }
@@ -1084,30 +1084,30 @@ LABEL_8:
   return sub_23C08A994(xmmword_23C0907D0, v4);
 }
 
-- (uint64_t)_restingOriginForDigit:(uint64_t)a3 node:(unint64_t)a4
+- (uint64_t)_restingOriginForDigit:(uint64_t)digit node:(unint64_t)node
 {
-  a1.n128_u32[0] = -1.5;
-  v5 = qword_23C090810[a4 < 2];
+  self.n128_u32[0] = -1.5;
+  v5 = qword_23C090810[node < 2];
   v10 = 0;
   v9 = 0;
-  if (a4 < 2)
+  if (node < 2)
   {
-    a1.n128_f32[0] = 2.5;
+    self.n128_f32[0] = 2.5;
   }
 
   v8 = 0;
   v7 = 0;
-  return [a5 getBoundingBoxMin:&v9 max:{&v7, *&a1}];
+  return [a5 getBoundingBoxMin:&v9 max:{&v7, *&self}];
 }
 
-- (double)_tritiumOriginAdjustmentForDigit:(uint64_t)a3
+- (double)_tritiumOriginAdjustmentForDigit:(uint64_t)digit
 {
   result = 0.0;
-  if (a3 <= 1)
+  if (digit <= 1)
   {
-    if (a3)
+    if (digit)
     {
-      if (a3 != 1)
+      if (digit != 1)
       {
         return result;
       }
@@ -1120,12 +1120,12 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (digit == 3)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 2)
+  if (digit == 2)
   {
 LABEL_7:
     *&result = 3192704205;
@@ -1134,50 +1134,50 @@ LABEL_7:
   return result;
 }
 
-- (void)_queue_configureController:(id)a3 digit:(unint64_t)a4
+- (void)_queue_configureController:(id)controller digit:(unint64_t)digit
 {
-  v13 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(self->_renderQueue);
-  v6 = [v13 node];
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMapTable *)v7->_digitControllerLookup setObject:v13 forKey:v6];
-  objc_sync_exit(v7);
+  node = [controllerCopy node];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMapTable *)selfCopy->_digitControllerLookup setObject:controllerCopy forKey:node];
+  objc_sync_exit(selfCopy);
 
-  [(NTKSnowglobeSceneController *)v7 _restingOriginForDigit:a4 node:v6];
+  [(NTKSnowglobeSceneController *)selfCopy _restingOriginForDigit:digit node:node];
   LODWORD(v9) = HIDWORD(v8);
   LODWORD(v11) = v10;
-  [v13 setOrigin:{v8, v9, v11}];
-  [(NTKSnowglobeSceneController *)v7 _restingOriginForDigit:a4 node:v6];
-  [v13 setTritiumOrigin:?];
-  [v13 setTritiumRotation:0.0];
-  v12 = [(NTKSnowglobeSceneController *)v7 appliedSnowglobeState];
-  [v13 setPausePhysics:{objc_msgSend(v12, "scenePaused")}];
+  [controllerCopy setOrigin:{v8, v9, v11}];
+  [(NTKSnowglobeSceneController *)selfCopy _restingOriginForDigit:digit node:node];
+  [controllerCopy setTritiumOrigin:?];
+  [controllerCopy setTritiumRotation:0.0];
+  appliedSnowglobeState = [(NTKSnowglobeSceneController *)selfCopy appliedSnowglobeState];
+  [controllerCopy setPausePhysics:{objc_msgSend(appliedSnowglobeState, "scenePaused")}];
 }
 
-- (void)_queue_animatedReplaceDigit:(unint64_t)a3 withCharacter:(unint64_t)a4
+- (void)_queue_animatedReplaceDigit:(unint64_t)digit withCharacter:(unint64_t)character
 {
   dispatch_assert_queue_V2(self->_renderQueue);
 
   MEMORY[0x2821F9670](self, sel__queue_animatedReplaceDigit_withCharacter_force_);
 }
 
-- (void)_queue_animatedReplaceDigit:(unint64_t)a3 withCharacter:(unint64_t)a4 force:(BOOL)a5
+- (void)_queue_animatedReplaceDigit:(unint64_t)digit withCharacter:(unint64_t)character force:(BOOL)force
 {
-  v5 = a5;
+  forceCopy = force;
   v57 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_renderQueue);
   digitControllers = self->_digitControllers;
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digit];
   v11 = [(NSMutableDictionary *)digitControllers objectForKeyedSubscript:v10];
   if (v11)
   {
     v12 = self->_digitControllers;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digit];
     v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
-    v15 = [v14 digit];
+    digit = [v14 digit];
 
-    if (v15 == a4 && !v5)
+    if (digit == character && !forceCopy)
     {
       goto LABEL_20;
     }
@@ -1191,16 +1191,16 @@ LABEL_7:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v54 = a3;
+    digitCopy = digit;
     v55 = 2048;
-    v56 = a4;
+    characterCopy = character;
     _os_log_impl(&dword_23C07F000, v16, OS_LOG_TYPE_DEFAULT, "Replacing digit with animation at %lu with %lu", buf, 0x16u);
   }
 
   v17 = -5.5;
-  if (a3 > 1)
+  if (digit > 1)
   {
-    if (a3 == 2)
+    if (digit == 2)
     {
       v18 = -1.5;
       v19 = -10.0;
@@ -1209,7 +1209,7 @@ LABEL_7:
 
     else
     {
-      if (a3 != 3)
+      if (digit != 3)
       {
         goto LABEL_20;
       }
@@ -1225,9 +1225,9 @@ LABEL_7:
   {
     v18 = 2.5;
     v19 = 10.0;
-    if (a3)
+    if (digit)
     {
-      if (a3 != 1)
+      if (digit != 1)
       {
         goto LABEL_20;
       }
@@ -1243,19 +1243,19 @@ LABEL_7:
   }
 
   v21 = self->_digitControllers;
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digit];
   v23 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:v22];
 
   if (v23)
   {
     [(NSMutableArray *)self->_exitingDigitControllers addObject:v23];
-    v24 = [v23 node];
-    v25 = [v24 physicsBody];
-    [v25 setCollisionBitMask:1];
+    node = [v23 node];
+    physicsBody = [node physicsBody];
+    [physicsBody setCollisionBitMask:1];
 
-    v26 = [v23 node];
-    v27 = [v26 physicsBody];
-    [v27 setContactTestBitMask:1];
+    node2 = [v23 node];
+    physicsBody2 = [node2 physicsBody];
+    [physicsBody2 setContactTestBitMask:1];
 
     *&v28 = v20;
     *&v29 = v19;
@@ -1287,10 +1287,10 @@ LABEL_7:
   v47 = v17;
   v48 = v18;
   v49 = 0;
-  v46[1] = a3;
-  v38 = [(NTKSnowglobeDigitController *)v34 initWithDigit:a4 scene:scene queue:v36 group:group configureNode:&v42];
+  v46[1] = digit;
+  v38 = [(NTKSnowglobeDigitController *)v34 initWithDigit:character scene:scene queue:v36 group:group configureNode:&v42];
   v39 = self->_digitControllers;
-  v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{a3, v42, v43, v44, v45}];
+  v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{digit, v42, v43, v44, v45}];
   [(NSMutableDictionary *)v39 setObject:v38 forKeyedSubscript:v40];
 
   objc_destroyWeak(v46);
@@ -1379,9 +1379,9 @@ LABEL_20:
 
     v17 = arc4random_uniform([v7 count]);
     v18 = [v7 objectAtIndexedSubscript:v17];
-    v19 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-    v20 = [v11 objectAtIndexedSubscript:v19];
+    v20 = [v11 objectAtIndexedSubscript:unsignedIntegerValue];
     [v20 CGPointValue];
     v22 = v21;
 
@@ -1476,13 +1476,13 @@ LABEL_29:
   self->_daintyIndex = 0;
 
   [(NSMutableArray *)self->_backgroundControllers removeAllObjects];
-  v4 = [MEMORY[0x277CDBAA8] node];
+  node = [MEMORY[0x277CDBAA8] node];
   backgroundContainer = self->_backgroundContainer;
-  self->_backgroundContainer = v4;
+  self->_backgroundContainer = node;
 
   [(NTKSnowglobeSceneController *)self _queue_updateBackgroundContainerOpacity];
-  v6 = [(SCNNode *)self->_cameraNode camera];
-  [v6 fieldOfView];
+  camera = [(SCNNode *)self->_cameraNode camera];
+  [camera fieldOfView];
   v8 = v7;
 
   [(SCNNode *)self->_cameraFocalNode simdPosition];
@@ -1491,12 +1491,12 @@ LABEL_29:
   v54 = v10;
   v11 = objc_opt_new();
   v12 = CACurrentMediaTime();
-  v13 = [(NTKSnowglobeSceneController *)self _queue_backgroundObjectPositions];
+  _queue_backgroundObjectPositions = [(NTKSnowglobeSceneController *)self _queue_backgroundObjectPositions];
   v14 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v69 = [v13 count];
+    v69 = [_queue_backgroundObjectPositions count];
     v70 = 2048;
     v71 = (CACurrentMediaTime() - v12) * 1000.0;
     _os_log_impl(&dword_23C07F000, v14, OS_LOG_TYPE_DEFAULT, "fished %lu in %.2fms", buf, 0x16u);
@@ -1504,7 +1504,7 @@ LABEL_29:
 
   v52 = objc_opt_new();
   v15 = objc_opt_new();
-  if ([v13 count])
+  if ([_queue_backgroundObjectPositions count])
   {
     v16 = 0;
     v17 = v8 * 3.14159265 / 180.0;
@@ -1516,7 +1516,7 @@ LABEL_29:
       v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:arc4random()];
       [v11 addObject:v20];
 
-      v21 = [v13 objectAtIndexedSubscript:v16];
+      v21 = [_queue_backgroundObjectPositions objectAtIndexedSubscript:v16];
       [v21 CGPointValue];
       v55 = v23;
       v59 = v22;
@@ -1568,7 +1568,7 @@ LABEL_29:
       ++v16;
     }
 
-    while (v16 < [v13 count]);
+    while (v16 < [_queue_backgroundObjectPositions count]);
   }
 
   v40 = [v11 copy];
@@ -1600,15 +1600,15 @@ LABEL_29:
     [(NTKSnowglobeSceneController *)self _queue_replaceRandomObjectWithDainty];
   }
 
-  v50 = [(SCNScene *)self->_scene rootNode];
-  [v50 addChildNode:self->_backgroundContainer];
+  rootNode = [(SCNScene *)self->_scene rootNode];
+  [rootNode addChildNode:self->_backgroundContainer];
 
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setupBackgroundObject:(id)a3
+- (void)_queue_setupBackgroundObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   dispatch_assert_queue_V2(self->_renderQueue);
   v5 = self->_group;
   dispatch_group_enter(v5);
@@ -1620,7 +1620,7 @@ LABEL_29:
   objc_copyWeak(&v9, &location);
   v6 = v5;
   v8 = v6;
-  [v4 fetchWithCompletion:v7];
+  [objectCopy fetchWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1640,22 +1640,22 @@ LABEL_29:
 
     v5 = arc4random_uniform([(NSArray *)self->_offscreenBackgroundObjectIndices count]);
     v6 = [(NSArray *)self->_offscreenBackgroundObjectIndices objectAtIndexedSubscript:v5];
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-    if (v7 == [(NSNumber *)self->_daintyIndex unsignedIntegerValue])
+    if (unsignedIntegerValue == [(NSNumber *)self->_daintyIndex unsignedIntegerValue])
     {
       v8 = [(NSArray *)self->_offscreenBackgroundObjectIndices objectAtIndexedSubscript:(v5 + 1) % [(NSArray *)self->_offscreenBackgroundObjectIndices count]];
-      v7 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
     v10 = self->_daintyIndex;
     self->_daintyIndex = v9;
 
     v11 = self->_group;
     dispatch_group_enter(v11);
     objc_initWeak(&location, self);
-    v12 = [(NSArray *)self->_backgroundObjects objectAtIndexedSubscript:v7];
+    v12 = [(NSArray *)self->_backgroundObjects objectAtIndexedSubscript:unsignedIntegerValue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_23C08C9F0;
@@ -1670,11 +1670,11 @@ LABEL_29:
   }
 }
 
-- (void)renderer:(id)a3 updateAtTime:(double)a4
+- (void)renderer:(id)renderer updateAtTime:(double)time
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v6 = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
-  if (([v6 editing] & 1) == 0 && (objc_msgSend(v6, "idealizedState") & 1) == 0)
+  appliedSnowglobeState = [(NTKSnowglobeSceneController *)self appliedSnowglobeState];
+  if (([appliedSnowglobeState editing] & 1) == 0 && (objc_msgSend(appliedSnowglobeState, "idealizedState") & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_crownInputHandler);
     [WeakRetained step:0.0333333333];
@@ -1688,8 +1688,8 @@ LABEL_29:
   v12[4] = self;
   [(NSMutableArray *)backgroundControllers enumerateObjectsUsingBlock:v12];
   v9 = objc_opt_new();
-  v10 = [(NSMutableDictionary *)self->_digitControllers allValues];
-  [v9 addObjectsFromArray:v10];
+  allValues = [(NSMutableDictionary *)self->_digitControllers allValues];
+  [v9 addObjectsFromArray:allValues];
 
   [v9 addObjectsFromArray:self->_exitingDigitControllers];
   [v9 addObjectsFromArray:self->_backgroundControllers];
@@ -1697,16 +1697,16 @@ LABEL_29:
   v11[1] = 3221225472;
   v11[2] = sub_23C08CDF0;
   v11[3] = &unk_278BACAE0;
-  *&v11[4] = a4;
+  *&v11[4] = time;
   [v9 enumerateObjectsUsingBlock:v11];
   [(NTKSnowglobeSceneController *)self _queue_updateCameraParallax];
 }
 
-- (void)physicsWorld:(id)a3 didBeginContact:(id)a4
+- (void)physicsWorld:(id)world didBeginContact:(id)contact
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  worldCopy = world;
+  contactCopy = contact;
   dispatch_assert_queue_V2(self->_renderQueue);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -1714,27 +1714,27 @@ LABEL_29:
   v31[3] = &unk_278BACB08;
   v31[4] = self;
   v8 = MEMORY[0x23EEC6230](v31);
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [v7 nodeA];
-  v11 = (v8)[2](v8, v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nodeA = [contactCopy nodeA];
+  v11 = (v8)[2](v8, nodeA);
 
-  v12 = [v7 nodeB];
-  v13 = (v8)[2](v8, v12);
+  nodeB = [contactCopy nodeB];
+  v13 = (v8)[2](v8, nodeB);
 
-  objc_sync_exit(v9);
-  if (!v11 || !v13 || ([v7 collisionImpulse], v14 >= 0.1))
+  objc_sync_exit(selfCopy);
+  if (!v11 || !v13 || ([contactCopy collisionImpulse], v14 >= 0.1))
   {
-    v15 = [v7 nodeA];
-    v16 = v15;
-    if (v15 == v9->_glassNode)
+    nodeA2 = [contactCopy nodeA];
+    v16 = nodeA2;
+    if (nodeA2 == selfCopy->_glassNode)
     {
     }
 
     else
     {
-      v17 = [v7 nodeB];
-      v18 = v17 == v9->_glassNode;
+      nodeB2 = [contactCopy nodeB];
+      v18 = nodeB2 == selfCopy->_glassNode;
 
       if (!v18)
       {
@@ -1755,12 +1755,12 @@ LABEL_16:
       v19 = v13;
     }
 
-    v20 = [v19 node];
-    v21 = [v20 physicsBody];
-    [v21 velocity];
+    node = [v19 node];
+    physicsBody = [node physicsBody];
+    [physicsBody velocity];
     v23 = v22;
 
-    [v7 collisionImpulse];
+    [contactCopy collisionImpulse];
     v25 = v24;
     v26 = _NTKLoggingObjectForDomain();
     v27 = v23;
@@ -1775,9 +1775,9 @@ LABEL_16:
 
     v28 = NTKSnowglobeTunableFloat(@"hapticTimeout", 0.1);
     v29 = NTKSnowglobeTunableFloat(@"hapticVelocityMin", 2.0);
-    if (CACurrentMediaTime() - v9->_lastHaptic > v28 && v29 < v27)
+    if (CACurrentMediaTime() - selfCopy->_lastHaptic > v28 && v29 < v27)
     {
-      v9->_lastHaptic = CACurrentMediaTime();
+      selfCopy->_lastHaptic = CACurrentMediaTime();
     }
 
     goto LABEL_16;
@@ -1788,16 +1788,16 @@ LABEL_17:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [(CLKTimeFormatter *)self->_timeFormatter setOverrideDate:v5];
+  dateCopy = date;
+  [(CLKTimeFormatter *)self->_timeFormatter setOverrideDate:dateCopy];
   v6 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = dateCopy;
     _os_log_impl(&dword_23C07F000, v6, OS_LOG_TYPE_DEFAULT, "Snowglobe override date %@", &v8, 0xCu);
   }
 
@@ -1817,42 +1817,42 @@ LABEL_17:
   MEMORY[0x2821F9670](v5, sel_addObserver_);
 }
 
-- (id)_charactersFromFormatter:(id)a3
+- (id)_charactersFromFormatter:(id)formatter
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  formatterCopy = formatter;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v4 = [v3 timeSubstringToSeparatorText];
-  v5 = [v3 timeSubstringFromSeparatorText];
+  timeSubstringToSeparatorText = [formatterCopy timeSubstringToSeparatorText];
+  timeSubstringFromSeparatorText = [formatterCopy timeSubstringFromSeparatorText];
 
-  if ([v4 length] == 1)
+  if ([timeSubstringToSeparatorText length] == 1)
   {
-    v6 = [v4 intValue];
-    v7 = 0;
+    intValue = [timeSubstringToSeparatorText intValue];
+    intValue2 = 0;
   }
 
   else
   {
-    v8 = [v4 substringWithRange:{0, 1}];
-    v7 = [v8 intValue];
+    v8 = [timeSubstringToSeparatorText substringWithRange:{0, 1}];
+    intValue2 = [v8 intValue];
 
-    v9 = [v4 substringWithRange:{1, 1}];
-    v6 = [v9 intValue];
+    v9 = [timeSubstringToSeparatorText substringWithRange:{1, 1}];
+    intValue = [v9 intValue];
   }
 
-  v10 = [v5 substringWithRange:{0, 1}];
-  v11 = [v10 intValue];
+  v10 = [timeSubstringFromSeparatorText substringWithRange:{0, 1}];
+  intValue3 = [v10 intValue];
 
-  v12 = [v5 substringWithRange:{1, 1}];
-  v13 = [v12 intValue];
+  v12 = [timeSubstringFromSeparatorText substringWithRange:{1, 1}];
+  intValue4 = [v12 intValue];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intValue2];
   v21[0] = v14;
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intValue];
   v21[1] = v15;
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intValue3];
   v21[2] = v16;
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intValue4];
   v21[3] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
 
@@ -1861,29 +1861,29 @@ LABEL_17:
   return v18;
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(NTKSnowglobeSceneController *)self _charactersFromFormatter:v4];
-  v6 = [v4 overrideDate];
+  v5 = [(NTKSnowglobeSceneController *)self _charactersFromFormatter:changeCopy];
+  overrideDate = [changeCopy overrideDate];
 
   renderQueue = self->_renderQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23C08D5C4;
   block[3] = &unk_278BACB58;
-  v11 = v6 != 0;
+  v11 = overrideDate != 0;
   block[4] = self;
   v10 = v5;
   v8 = v5;
   dispatch_async(renderQueue, block);
 }
 
-- (void)tapAtPoint:(CGPoint)a3
+- (void)tapAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   WeakRetained = objc_loadWeakRetained(&self->_renderer);
 
@@ -1901,10 +1901,10 @@ LABEL_17:
   }
 }
 
-- (void)_queue_tapAtPoint:(CGPoint)a3
+- (void)_queue_tapAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v33[2] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_renderQueue);
   v6 = x + x;
@@ -1921,16 +1921,16 @@ LABEL_17:
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
     v15 = [(NSMutableDictionary *)digitControllers objectForKeyedSubscript:v14];
 
-    v16 = [v15 node];
+    node = [v15 node];
 
-    if (v16)
+    if (node)
     {
       v17 = objc_loadWeakRetained(&self->_renderer);
       v32[1] = v12;
       v33[0] = MEMORY[0x277CBEC38];
       v32[0] = v11;
-      v18 = [v15 node];
-      v33[1] = v18;
+      node2 = [v15 node];
+      v33[1] = node2;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
       v20 = [v17 hitTest:v19 options:{v6, v9}];
 
@@ -1974,15 +1974,15 @@ LABEL_17:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_configureLightingWithTritiumFraction:(double)a3
+- (void)_queue_configureLightingWithTritiumFraction:(double)fraction
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v5 = 1.0 - a3;
-  v6 = [(SCNScene *)self->_scene lightingEnvironment];
-  [v6 setIntensity:v5 + v5];
+  v5 = 1.0 - fraction;
+  lightingEnvironment = [(SCNScene *)self->_scene lightingEnvironment];
+  [lightingEnvironment setIntensity:v5 + v5];
 
   nightLightNode = self->_nightLightNode;
-  if (a3 <= 0.0)
+  if (fraction <= 0.0)
   {
     [(SCNNode *)nightLightNode setHidden:1];
     [(SCNNode *)self->_nightAmbientLightNode setHidden:1];
@@ -1992,12 +1992,12 @@ LABEL_17:
   {
     [(SCNNode *)nightLightNode setHidden:0];
     [(SCNNode *)self->_nightAmbientLightNode setHidden:0];
-    [(SCNLight *)self->_nightLight setIntensity:a3 * 1400.0];
-    [(SCNLight *)self->_nightAmbientLight setIntensity:a3 * 150.0];
+    [(SCNLight *)self->_nightLight setIntensity:fraction * 1400.0];
+    [(SCNLight *)self->_nightAmbientLight setIntensity:fraction * 150.0];
   }
 
   leftBacklightNode = self->_leftBacklightNode;
-  if (a3 >= 1.0)
+  if (fraction >= 1.0)
   {
     [(SCNNode *)leftBacklightNode setHidden:1];
     rightBacklightNode = self->_rightBacklightNode;

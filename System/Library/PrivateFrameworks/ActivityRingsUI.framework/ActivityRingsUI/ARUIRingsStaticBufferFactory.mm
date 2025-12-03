@@ -1,17 +1,17 @@
 @interface ARUIRingsStaticBufferFactory
-+ (id)ringIndexBufferWithDevice:(id)a3;
-+ (id)ringVertexPositionsBufferWithDevice:(id)a3;
++ (id)ringIndexBufferWithDevice:(id)device;
++ (id)ringVertexPositionsBufferWithDevice:(id)device;
 + (void)clearCaches;
 @end
 
 @implementation ARUIRingsStaticBufferFactory
 
-+ (id)ringVertexPositionsBufferWithDevice:(id)a3
++ (id)ringVertexPositionsBufferWithDevice:(id)device
 {
   v3 = __ringVertexPositionsBuffer;
   if (!__ringVertexPositionsBuffer)
   {
-    v4 = a3;
+    deviceCopy = device;
     v5 = objc_alloc_init(ARUIRingsGeometry);
     [(ARUIRingsGeometry *)v5 setCircleSegments:30];
     v6 = 32 * [(ARUIRingsGeometry *)v5 vertexCount];
@@ -22,7 +22,7 @@
     v11[3] = &__block_descriptor_40_e23_v32__0I8I12f16f20f24f28l;
     v11[4] = v7;
     [(ARUIRingsGeometry *)v5 enumerateVertexGeometryWithBlock:v11];
-    v8 = [v4 newBufferWithBytes:v7 length:v6 options:0];
+    v8 = [deviceCopy newBufferWithBytes:v7 length:v6 options:0];
 
     v9 = __ringVertexPositionsBuffer;
     __ringVertexPositionsBuffer = v8;
@@ -53,23 +53,23 @@ float __68__ARUIRingsStaticBufferFactory_ringVertexPositionsBufferWithDevice___b
   return result;
 }
 
-+ (id)ringIndexBufferWithDevice:(id)a3
++ (id)ringIndexBufferWithDevice:(id)device
 {
   v3 = __ringIndexBuffer;
   if (!__ringIndexBuffer)
   {
-    v4 = a3;
+    deviceCopy = device;
     v5 = objc_alloc_init(ARUIRingsGeometry);
     [(ARUIRingsGeometry *)v5 setCircleSegments:30];
     v6 = 2 * [(ARUIRingsGeometry *)v5 indexCount];
-    v7 = [(ARUIRingsGeometry *)v5 connectedIndiciesGeometry];
-    v8 = [v4 newBufferWithBytes:v7 length:v6 options:0];
+    connectedIndiciesGeometry = [(ARUIRingsGeometry *)v5 connectedIndiciesGeometry];
+    v8 = [deviceCopy newBufferWithBytes:connectedIndiciesGeometry length:v6 options:0];
 
     v9 = __ringIndexBuffer;
     __ringIndexBuffer = v8;
 
     [__ringIndexBuffer setLabel:@"Indicies"];
-    free(v7);
+    free(connectedIndiciesGeometry);
 
     v3 = __ringIndexBuffer;
   }

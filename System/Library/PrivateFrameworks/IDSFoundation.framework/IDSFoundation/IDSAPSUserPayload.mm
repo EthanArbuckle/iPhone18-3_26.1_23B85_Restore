@@ -1,44 +1,44 @@
 @interface IDSAPSUserPayload
-- (IDSAPSUserPayload)initWithBlastDoorObject:(id)a3;
-- (id)extractCommandResponseFrom:(id)a3;
-- (id)extractCommandWebTunnelResponseFrom:(id)a3;
-- (id)extractMadridDeliveryContextFrom:(id)a3;
-- (id)extractMadridHttpHeadersFrom:(id)a3;
-- (id)extractMadridProtocolPayloadFrom:(id)a3;
-- (id)extractQuickRelayAllocationStatusFrom:(id)a3;
-- (id)extractQuickRelaySelfAllocTokenFrom:(id)a3;
-- (void)logDiffBetween:(id)a3 andTarget:(id)a4 withKeyPath:(id)a5;
-- (void)logHeaderDiffAgainstSource:(id)a3;
+- (IDSAPSUserPayload)initWithBlastDoorObject:(id)object;
+- (id)extractCommandResponseFrom:(id)from;
+- (id)extractCommandWebTunnelResponseFrom:(id)from;
+- (id)extractMadridDeliveryContextFrom:(id)from;
+- (id)extractMadridHttpHeadersFrom:(id)from;
+- (id)extractMadridProtocolPayloadFrom:(id)from;
+- (id)extractQuickRelayAllocationStatusFrom:(id)from;
+- (id)extractQuickRelaySelfAllocTokenFrom:(id)from;
+- (void)logDiffBetween:(id)between andTarget:(id)target withKeyPath:(id)path;
+- (void)logHeaderDiffAgainstSource:(id)source;
 @end
 
 @implementation IDSAPSUserPayload
 
-- (IDSAPSUserPayload)initWithBlastDoorObject:(id)a3
+- (IDSAPSUserPayload)initWithBlastDoorObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = IDSAPSUserPayload;
   v5 = [(IDSAPSUserPayload *)&v11 init];
   if (v5)
   {
-    v6 = [v4 valueForKey:@"command"];
-    v7 = [v6 intValue];
+    v6 = [objectCopy valueForKey:@"command"];
+    intValue = [v6 intValue];
 
-    if (v7 == 97)
+    if (intValue == 97)
     {
-      v8 = [(IDSAPSUserPayload *)v5 extractCommandWebTunnelResponseFrom:v4];
+      v8 = [(IDSAPSUserPayload *)v5 extractCommandWebTunnelResponseFrom:objectCopy];
     }
 
     else
     {
-      if (v7 == 255)
+      if (intValue == 255)
       {
-        [(IDSAPSUserPayload *)v5 extractCommandResponseFrom:v4];
+        [(IDSAPSUserPayload *)v5 extractCommandResponseFrom:objectCopy];
       }
 
       else
       {
-        [(IDSAPSUserPayload *)v5 extractMadridProtocolPayloadFrom:v4];
+        [(IDSAPSUserPayload *)v5 extractMadridProtocolPayloadFrom:objectCopy];
       }
       v8 = ;
     }
@@ -50,11 +50,11 @@
   return v5;
 }
 
-- (id)extractCommandResponseFrom:(id)a3
+- (id)extractCommandResponseFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = v3;
+  v5 = fromCopy;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "command")}];
   [v4 setObject:v6 forKey:@"c"];
 
@@ -64,12 +64,12 @@
     [v4 setObject:v7 forKey:@"i"];
   }
 
-  v8 = [v5 messageUUID];
+  messageUUID = [v5 messageUUID];
 
-  if (v8)
+  if (messageUUID)
   {
-    v9 = [v5 messageUUID];
-    [v4 setObject:v9 forKey:@"U"];
+    messageUUID2 = [v5 messageUUID];
+    [v4 setObject:messageUUID2 forKey:@"U"];
   }
 
   if ([v5 has_responseStatus])
@@ -84,12 +84,12 @@
     [v4 setObject:v11 forKey:@"fR"];
   }
 
-  v12 = [v5 token];
+  token = [v5 token];
 
-  if (v12)
+  if (token)
   {
-    v13 = [v5 token];
-    [v4 setObject:v13 forKey:@"t"];
+    token2 = [v5 token];
+    [v4 setObject:token2 forKey:@"t"];
   }
 
   if ([v5 has_internalBuild])
@@ -104,12 +104,12 @@
     [v4 setObject:v15 forKey:@"x-logging"];
   }
 
-  v16 = [v5 applicationId];
+  applicationId = [v5 applicationId];
 
-  if (v16)
+  if (applicationId)
   {
-    v17 = [v5 applicationId];
-    [v4 setObject:v17 forKey:@"qai"];
+    applicationId2 = [v5 applicationId];
+    [v4 setObject:applicationId2 forKey:@"qai"];
   }
 
   if ([v5 has_requestType])
@@ -118,12 +118,12 @@
     [v4 setObject:v18 forKey:@"qat"];
   }
 
-  v19 = [v5 idsSessionId];
+  idsSessionId = [v5 idsSessionId];
 
-  if (v19)
+  if (idsSessionId)
   {
-    v20 = [v5 idsSessionId];
-    [v4 setObject:v20 forKey:@"qids"];
+    idsSessionId2 = [v5 idsSessionId];
+    [v4 setObject:idsSessionId2 forKey:@"qids"];
   }
 
   if ([v5 has_sharedSession])
@@ -141,11 +141,11 @@
   return v4;
 }
 
-- (id)extractCommandWebTunnelResponseFrom:(id)a3
+- (id)extractCommandWebTunnelResponseFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = v4;
+  v6 = fromCopy;
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "command")}];
   [v5 setObject:v7 forKey:@"c"];
 
@@ -155,12 +155,12 @@
     [v5 setObject:v8 forKey:@"i"];
   }
 
-  v9 = [v6 messageUUID];
+  messageUUID = [v6 messageUUID];
 
-  if (v9)
+  if (messageUUID)
   {
-    v10 = [v6 messageUUID];
-    [v5 setObject:v10 forKey:@"U"];
+    messageUUID2 = [v6 messageUUID];
+    [v5 setObject:messageUUID2 forKey:@"U"];
   }
 
   if ([v6 has_responseStatus])
@@ -169,12 +169,12 @@
     [v5 setObject:v11 forKey:@"s"];
   }
 
-  v12 = [v6 contentType];
+  contentType = [v6 contentType];
 
-  if (v12)
+  if (contentType)
   {
-    v13 = [v6 contentType];
-    [v5 setObject:v13 forKey:@"cT"];
+    contentType2 = [v6 contentType];
+    [v5 setObject:contentType2 forKey:@"cT"];
   }
 
   if ([v6 has_epochTimeNanos])
@@ -183,44 +183,44 @@
     [v5 setObject:v14 forKey:@"e"];
   }
 
-  v15 = [v6 httpUrl];
+  httpUrl = [v6 httpUrl];
 
-  if (v15)
+  if (httpUrl)
   {
-    v16 = [v6 httpUrl];
-    [v5 setObject:v16 forKey:@"u"];
+    httpUrl2 = [v6 httpUrl];
+    [v5 setObject:httpUrl2 forKey:@"u"];
   }
 
-  v17 = [v6 httpHeaders];
-  v18 = [(IDSAPSUserPayload *)self extractMadridHttpHeadersFrom:v17];
+  httpHeaders = [v6 httpHeaders];
+  v18 = [(IDSAPSUserPayload *)self extractMadridHttpHeadersFrom:httpHeaders];
   v19 = v18;
   if (v18 && [v18 count])
   {
     [v5 setObject:v19 forKey:@"h"];
   }
 
-  v20 = [v6 httpBody];
+  httpBody = [v6 httpBody];
 
-  if (v20)
+  if (httpBody)
   {
-    v21 = [v6 httpBody];
-    [v5 setObject:v21 forKey:@"b"];
+    httpBody2 = [v6 httpBody];
+    [v5 setObject:httpBody2 forKey:@"b"];
   }
 
-  v22 = [v6 httpBodyUrl];
+  httpBodyUrl = [v6 httpBodyUrl];
 
-  if (v22)
+  if (httpBodyUrl)
   {
-    v23 = [v6 httpBodyUrl];
-    [v5 setObject:v23 forKey:@"bu"];
+    httpBodyUrl2 = [v6 httpBodyUrl];
+    [v5 setObject:httpBodyUrl2 forKey:@"bu"];
   }
 
-  v24 = [v6 httpBodyKey];
+  httpBodyKey = [v6 httpBodyKey];
 
-  if (v24)
+  if (httpBodyKey)
   {
-    v25 = [v6 httpBodyKey];
-    [v5 setObject:v25 forKey:@"bk"];
+    httpBodyKey2 = [v6 httpBodyKey];
+    [v5 setObject:httpBodyKey2 forKey:@"bk"];
   }
 
   if ([v6 has_httpResponseStatus])
@@ -229,91 +229,91 @@
     [v5 setObject:v26 forKey:@"hs"];
   }
 
-  v27 = [v6 httpErrorMsg];
+  httpErrorMsg = [v6 httpErrorMsg];
 
-  if (v27)
+  if (httpErrorMsg)
   {
-    v28 = [v6 httpErrorMsg];
-    [v5 setObject:v28 forKey:@"hr"];
+    httpErrorMsg2 = [v6 httpErrorMsg];
+    [v5 setObject:httpErrorMsg2 forKey:@"hr"];
   }
 
   return v5;
 }
 
-- (id)extractMadridHttpHeadersFrom:(id)a3
+- (id)extractMadridHttpHeadersFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = v3;
-  v6 = [v5 adhocServiceOverride];
+  v5 = fromCopy;
+  adhocServiceOverride = [v5 adhocServiceOverride];
 
-  if (v6)
+  if (adhocServiceOverride)
   {
-    v7 = [v5 adhocServiceOverride];
-    [v4 setObject:v7 forKey:@"aS"];
+    adhocServiceOverride2 = [v5 adhocServiceOverride];
+    [v4 setObject:adhocServiceOverride2 forKey:@"aS"];
   }
 
-  v8 = [v5 responseIdentifierString];
+  responseIdentifierString = [v5 responseIdentifierString];
 
-  if (v8)
+  if (responseIdentifierString)
   {
-    v9 = [v5 responseIdentifierString];
-    [v4 setObject:v9 forKey:@"ri"];
+    responseIdentifierString2 = [v5 responseIdentifierString];
+    [v4 setObject:responseIdentifierString2 forKey:@"ri"];
   }
 
-  v10 = [v5 strictTransportSecurity];
+  strictTransportSecurity = [v5 strictTransportSecurity];
 
-  if (v10)
+  if (strictTransportSecurity)
   {
-    v11 = [v5 strictTransportSecurity];
-    [v4 setObject:v11 forKey:@"strict-transport-security"];
+    strictTransportSecurity2 = [v5 strictTransportSecurity];
+    [v4 setObject:strictTransportSecurity2 forKey:@"strict-transport-security"];
   }
 
-  v12 = [v5 traceId];
+  traceId = [v5 traceId];
 
-  if (v12)
+  if (traceId)
   {
-    v13 = [v5 traceId];
-    [v4 setObject:v13 forKey:@"x-b3-traceid"];
+    traceId2 = [v5 traceId];
+    [v4 setObject:traceId2 forKey:@"x-b3-traceid"];
   }
 
-  v14 = [v5 splunkHint];
+  splunkHint = [v5 splunkHint];
 
-  if (v14)
+  if (splunkHint)
   {
-    v15 = [v5 splunkHint];
-    [v4 setObject:v15 forKey:@"sh"];
+    splunkHint2 = [v5 splunkHint];
+    [v4 setObject:splunkHint2 forKey:@"sh"];
   }
 
-  v16 = [v5 asHttpHeader];
+  asHttpHeader = [v5 asHttpHeader];
 
-  if (v16)
+  if (asHttpHeader)
   {
-    v17 = [v5 asHttpHeader];
-    [v4 setObject:v17 forKey:@"as"];
+    asHttpHeader2 = [v5 asHttpHeader];
+    [v4 setObject:asHttpHeader2 forKey:@"as"];
   }
 
   return v4;
 }
 
-- (id)extractMadridDeliveryContextFrom:(id)a3
+- (id)extractMadridDeliveryContextFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v3 has_count])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [fromCopy has_count])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "count")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(fromCopy, "count")}];
     [v4 setObject:v5 forKey:@"c"];
   }
 
   return v4;
 }
 
-- (id)extractQuickRelayAllocationStatusFrom:(id)a3
+- (id)extractQuickRelayAllocationStatusFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = v3;
+  v5 = fromCopy;
   if ([v5 has_participantId])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v5, "participantId")}];
@@ -326,44 +326,44 @@
     [v4 setObject:v7 forKey:@"qrs"];
   }
 
-  v8 = [v5 token];
+  token = [v5 token];
 
-  if (v8)
+  if (token)
   {
-    v9 = [v5 token];
-    [v4 setObject:v9 forKey:@"t"];
+    token2 = [v5 token];
+    [v4 setObject:token2 forKey:@"t"];
   }
 
-  v10 = [v5 destinationId];
+  destinationId = [v5 destinationId];
 
-  if (v10)
+  if (destinationId)
   {
-    v11 = [v5 destinationId];
-    [v4 setObject:v11 forKey:@"tP"];
+    destinationId2 = [v5 destinationId];
+    [v4 setObject:destinationId2 forKey:@"tP"];
   }
 
   return v4;
 }
 
-- (id)extractQuickRelaySelfAllocTokenFrom:(id)a3
+- (id)extractQuickRelaySelfAllocTokenFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = v3;
-  v6 = [v5 relayIp];
+  v5 = fromCopy;
+  relayIp = [v5 relayIp];
 
-  if (v6)
+  if (relayIp)
   {
-    v7 = [v5 relayIp];
-    [v4 setObject:v7 forKey:@"qrip"];
+    relayIp2 = [v5 relayIp];
+    [v4 setObject:relayIp2 forKey:@"qrip"];
   }
 
-  v8 = [v5 relayIpv6];
+  relayIpv6 = [v5 relayIpv6];
 
-  if (v8)
+  if (relayIpv6)
   {
-    v9 = [v5 relayIpv6];
-    [v4 setObject:v9 forKey:@"qrip6"];
+    relayIpv62 = [v5 relayIpv6];
+    [v4 setObject:relayIpv62 forKey:@"qrip6"];
   }
 
   if ([v5 has_relayPort])
@@ -372,28 +372,28 @@
     [v4 setObject:v10 forKey:@"qrp"];
   }
 
-  v11 = [v5 relaySessionKey];
+  relaySessionKey = [v5 relaySessionKey];
 
-  if (v11)
+  if (relaySessionKey)
   {
-    v12 = [v5 relaySessionKey];
-    [v4 setObject:v12 forKey:@"qrsk"];
+    relaySessionKey2 = [v5 relaySessionKey];
+    [v4 setObject:relaySessionKey2 forKey:@"qrsk"];
   }
 
-  v13 = [v5 relaySessionId];
+  relaySessionId = [v5 relaySessionId];
 
-  if (v13)
+  if (relaySessionId)
   {
-    v14 = [v5 relaySessionId];
-    [v4 setObject:v14 forKey:@"qrsi"];
+    relaySessionId2 = [v5 relaySessionId];
+    [v4 setObject:relaySessionId2 forKey:@"qrsi"];
   }
 
-  v15 = [v5 relayAccessToken];
+  relayAccessToken = [v5 relayAccessToken];
 
-  if (v15)
+  if (relayAccessToken)
   {
-    v16 = [v5 relayAccessToken];
-    [v4 setObject:v16 forKey:@"qrst"];
+    relayAccessToken2 = [v5 relayAccessToken];
+    [v4 setObject:relayAccessToken2 forKey:@"qrst"];
   }
 
   if ([v5 has_relayProvider])
@@ -405,12 +405,12 @@
   return v4;
 }
 
-- (id)extractMadridProtocolPayloadFrom:(id)a3
+- (id)extractMadridProtocolPayloadFrom:(id)from
 {
   v276 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = v4;
+  v6 = fromCopy;
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "command")}];
   [v5 setObject:v7 forKey:@"c"];
 
@@ -426,70 +426,70 @@
     [v5 setObject:v9 forKey:@"v"];
   }
 
-  v10 = [v6 payload];
+  payload = [v6 payload];
 
-  if (v10)
+  if (payload)
   {
-    v11 = [v6 payload];
-    [v5 setObject:v11 forKey:@"P"];
+    payload2 = [v6 payload];
+    [v5 setObject:payload2 forKey:@"P"];
   }
 
-  v12 = [v6 bulkedPayload];
+  bulkedPayload = [v6 bulkedPayload];
 
-  if (v12)
+  if (bulkedPayload)
   {
-    v13 = [v6 bulkedPayload];
-    [v5 setObject:v13 forKey:@"N"];
+    bulkedPayload2 = [v6 bulkedPayload];
+    [v5 setObject:bulkedPayload2 forKey:@"N"];
   }
 
-  v14 = [v6 fanoutPayload];
+  fanoutPayload = [v6 fanoutPayload];
 
-  if (v14)
+  if (fanoutPayload)
   {
-    v15 = [v6 fanoutPayload];
-    [v5 setObject:v15 forKey:@"fP"];
+    fanoutPayload2 = [v6 fanoutPayload];
+    [v5 setObject:fanoutPayload2 forKey:@"fP"];
   }
 
-  v16 = [v6 additionalPayload];
+  additionalPayload = [v6 additionalPayload];
 
-  if (v16)
+  if (additionalPayload)
   {
-    v17 = [v6 additionalPayload];
-    [v5 setObject:v17 forKey:@"aP"];
+    additionalPayload2 = [v6 additionalPayload];
+    [v5 setObject:additionalPayload2 forKey:@"aP"];
   }
 
-  v18 = [v6 payloadMetadata];
+  payloadMetadata = [v6 payloadMetadata];
 
-  if (v18)
+  if (payloadMetadata)
   {
-    v19 = [v6 payloadMetadata];
-    [v5 setObject:v19 forKey:@"Pm"];
+    payloadMetadata2 = [v6 payloadMetadata];
+    [v5 setObject:payloadMetadata2 forKey:@"Pm"];
   }
 
-  v20 = [v6 messageId];
+  messageId = [v6 messageId];
 
-  if (v20)
+  if (messageId)
   {
-    v21 = [v6 messageId];
-    [v5 setObject:v21 forKey:@"i"];
+    messageId2 = [v6 messageId];
+    [v5 setObject:messageId2 forKey:@"i"];
   }
 
-  v22 = [v6 messageUUID];
+  messageUUID = [v6 messageUUID];
 
-  if (v22)
+  if (messageUUID)
   {
-    v23 = [v6 messageUUID];
-    [v5 setObject:v23 forKey:@"U"];
+    messageUUID2 = [v6 messageUUID];
+    [v5 setObject:messageUUID2 forKey:@"U"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v24 = [v6 queueId];
+    queueId = [v6 queueId];
 
-    if (v24)
+    if (queueId)
     {
-      v25 = [v6 queueId];
-      [v5 setObject:v25 forKey:@"qI"];
+      queueId2 = [v6 queueId];
+      [v5 setObject:queueId2 forKey:@"qI"];
     }
   }
 
@@ -501,8 +501,8 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v27 = [v6 deliveryContext];
-    v28 = [(IDSAPSUserPayload *)self extractMadridDeliveryContextFrom:v27];
+    deliveryContext = [v6 deliveryContext];
+    v28 = [(IDSAPSUserPayload *)self extractMadridDeliveryContextFrom:deliveryContext];
 
     if (v28 && [v28 count])
     {
@@ -516,12 +516,12 @@
     [v5 setObject:v29 forKey:@"cdv"];
   }
 
-  v30 = [v6 certifiedDeliveryRts];
+  certifiedDeliveryRts = [v6 certifiedDeliveryRts];
 
-  if (v30)
+  if (certifiedDeliveryRts)
   {
-    v31 = [v6 certifiedDeliveryRts];
-    [v5 setObject:v31 forKey:@"cdr"];
+    certifiedDeliveryRts2 = [v6 certifiedDeliveryRts];
+    [v5 setObject:certifiedDeliveryRts2 forKey:@"cdr"];
   }
 
   if ([v6 has_noResponseNeeded])
@@ -536,52 +536,52 @@
     [v5 setObject:v33 forKey:@"gd"];
   }
 
-  v34 = [v6 sessionToken];
+  sessionToken = [v6 sessionToken];
 
-  if (v34)
+  if (sessionToken)
   {
-    v35 = [v6 sessionToken];
-    [v5 setObject:v35 forKey:@"sT"];
+    sessionToken2 = [v6 sessionToken];
+    [v5 setObject:sessionToken2 forKey:@"sT"];
   }
 
-  v36 = [v6 homekitSessionToken];
+  homekitSessionToken = [v6 homekitSessionToken];
 
-  if (v36)
+  if (homekitSessionToken)
   {
-    v37 = [v6 homekitSessionToken];
-    [v5 setObject:v37 forKey:@"hT"];
+    homekitSessionToken2 = [v6 homekitSessionToken];
+    [v5 setObject:homekitSessionToken2 forKey:@"hT"];
   }
 
-  v38 = [v6 destinationId];
+  destinationId = [v6 destinationId];
 
-  if (v38)
+  if (destinationId)
   {
-    v39 = [v6 destinationId];
-    [v5 setObject:v39 forKey:@"tP"];
+    destinationId2 = [v6 destinationId];
+    [v5 setObject:destinationId2 forKey:@"tP"];
   }
 
-  v40 = [v6 userAgent];
+  userAgent = [v6 userAgent];
 
-  if (v40)
+  if (userAgent)
   {
-    v41 = [v6 userAgent];
-    [v5 setObject:v41 forKey:@"ua"];
+    userAgent2 = [v6 userAgent];
+    [v5 setObject:userAgent2 forKey:@"ua"];
   }
 
-  v42 = [v6 MMCSOwnerId];
+  mMCSOwnerId = [v6 MMCSOwnerId];
 
-  if (v42)
+  if (mMCSOwnerId)
   {
-    v43 = [v6 MMCSOwnerId];
-    [v5 setObject:v43 forKey:@"mO"];
+    mMCSOwnerId2 = [v6 MMCSOwnerId];
+    [v5 setObject:mMCSOwnerId2 forKey:@"mO"];
   }
 
-  v44 = [v6 MMCSFileSignature];
+  mMCSFileSignature = [v6 MMCSFileSignature];
 
-  if (v44)
+  if (mMCSFileSignature)
   {
-    v45 = [v6 MMCSFileSignature];
-    [v5 setObject:v45 forKey:@"mS"];
+    mMCSFileSignature2 = [v6 MMCSFileSignature];
+    [v5 setObject:mMCSFileSignature2 forKey:@"mS"];
   }
 
   if ([v6 has_MMCSFileLength])
@@ -590,60 +590,60 @@
     [v5 setObject:v46 forKey:@"mL"];
   }
 
-  v47 = [v6 MMCSAuthToken];
+  mMCSAuthToken = [v6 MMCSAuthToken];
 
-  if (v47)
+  if (mMCSAuthToken)
   {
-    v48 = [v6 MMCSAuthToken];
-    [v5 setObject:v48 forKey:@"mA"];
+    mMCSAuthToken2 = [v6 MMCSAuthToken];
+    [v5 setObject:mMCSAuthToken2 forKey:@"mA"];
   }
 
-  v49 = [v6 MMCSAuthUrl];
+  mMCSAuthUrl = [v6 MMCSAuthUrl];
 
-  if (v49)
+  if (mMCSAuthUrl)
   {
-    v50 = [v6 MMCSAuthUrl];
-    [v5 setObject:v50 forKey:@"mR"];
+    mMCSAuthUrl2 = [v6 MMCSAuthUrl];
+    [v5 setObject:mMCSAuthUrl2 forKey:@"mR"];
   }
 
-  v51 = [v6 MMCSAuthId];
+  mMCSAuthId = [v6 MMCSAuthId];
 
-  if (v51)
+  if (mMCSAuthId)
   {
-    v52 = [v6 MMCSAuthId];
-    [v5 setObject:v52 forKey:@"mU"];
+    mMCSAuthId2 = [v6 MMCSAuthId];
+    [v5 setObject:mMCSAuthId2 forKey:@"mU"];
   }
 
-  v53 = [v6 MMCSDownloadAuthList];
+  mMCSDownloadAuthList = [v6 MMCSDownloadAuthList];
 
-  if (v53)
+  if (mMCSDownloadAuthList)
   {
-    v54 = [v6 MMCSDownloadAuthList];
-    [v5 setObject:v54 forKey:@"dal"];
+    mMCSDownloadAuthList2 = [v6 MMCSDownloadAuthList];
+    [v5 setObject:mMCSDownloadAuthList2 forKey:@"dal"];
   }
 
-  v55 = [v6 MMCSDownloadUrlList];
+  mMCSDownloadUrlList = [v6 MMCSDownloadUrlList];
 
-  if (v55)
+  if (mMCSDownloadUrlList)
   {
-    v56 = [v6 MMCSDownloadUrlList];
-    [v5 setObject:v56 forKey:@"dul"];
+    mMCSDownloadUrlList2 = [v6 MMCSDownloadUrlList];
+    [v5 setObject:mMCSDownloadUrlList2 forKey:@"dul"];
   }
 
-  v57 = [v6 MMCSDownloadUrl];
+  mMCSDownloadUrl = [v6 MMCSDownloadUrl];
 
-  if (v57)
+  if (mMCSDownloadUrl)
   {
-    v58 = [v6 MMCSDownloadUrl];
-    [v5 setObject:v58 forKey:@"dR"];
+    mMCSDownloadUrl2 = [v6 MMCSDownloadUrl];
+    [v5 setObject:mMCSDownloadUrl2 forKey:@"dR"];
   }
 
-  v59 = [v6 MMCSUploadUrl];
+  mMCSUploadUrl = [v6 MMCSUploadUrl];
 
-  if (v59)
+  if (mMCSUploadUrl)
   {
-    v60 = [v6 MMCSUploadUrl];
-    [v5 setObject:v60 forKey:@"uR"];
+    mMCSUploadUrl2 = [v6 MMCSUploadUrl];
+    [v5 setObject:mMCSUploadUrl2 forKey:@"uR"];
   }
 
   if ([v6 has_MMCSExpiryNanos])
@@ -658,28 +658,28 @@
     [v5 setObject:v62 forKey:@"cV"];
   }
 
-  v63 = [v6 contentHeaders];
+  contentHeaders = [v6 contentHeaders];
 
-  if (v63)
+  if (contentHeaders)
   {
-    v64 = [v6 contentHeaders];
-    [v5 setObject:v64 forKey:@"cH"];
+    contentHeaders2 = [v6 contentHeaders];
+    [v5 setObject:contentHeaders2 forKey:@"cH"];
   }
 
-  v65 = [v6 contentBody];
+  contentBody = [v6 contentBody];
 
-  if (v65)
+  if (contentBody)
   {
-    v66 = [v6 contentBody];
-    [v5 setObject:v66 forKey:@"cB"];
+    contentBody2 = [v6 contentBody];
+    [v5 setObject:contentBody2 forKey:@"cB"];
   }
 
-  v67 = [v6 contentReferenceSignature];
+  contentReferenceSignature = [v6 contentReferenceSignature];
 
-  if (v67)
+  if (contentReferenceSignature)
   {
-    v68 = [v6 contentReferenceSignature];
-    [v5 setObject:v68 forKey:@"cR"];
+    contentReferenceSignature2 = [v6 contentReferenceSignature];
+    [v5 setObject:contentReferenceSignature2 forKey:@"cR"];
   }
 
   if ([v6 has_attachmentSize])
@@ -688,36 +688,36 @@
     [v5 setObject:v69 forKey:@"mT"];
   }
 
-  v70 = [v6 token];
+  token = [v6 token];
 
-  if (v70)
+  if (token)
   {
-    v71 = [v6 token];
-    [v5 setObject:v71 forKey:@"t"];
+    token2 = [v6 token];
+    [v5 setObject:token2 forKey:@"t"];
   }
 
-  v72 = [v6 senderId];
+  senderId = [v6 senderId];
 
-  if (v72)
+  if (senderId)
   {
-    v73 = [v6 senderId];
-    [v5 setObject:v73 forKey:@"sP"];
+    senderId2 = [v6 senderId];
+    [v5 setObject:senderId2 forKey:@"sP"];
   }
 
-  v74 = [v6 senderOpaqueId];
+  senderOpaqueId = [v6 senderOpaqueId];
 
-  if (v74)
+  if (senderOpaqueId)
   {
-    v75 = [v6 senderOpaqueId];
-    [v5 setObject:v75 forKey:@"sI"];
+    senderOpaqueId2 = [v6 senderOpaqueId];
+    [v5 setObject:senderOpaqueId2 forKey:@"sI"];
   }
 
-  v76 = [v6 mspId];
+  mspId = [v6 mspId];
 
-  if (v76)
+  if (mspId)
   {
-    v77 = [v6 mspId];
-    [v5 setObject:v77 forKey:@"mP"];
+    mspId2 = [v6 mspId];
+    [v5 setObject:mspId2 forKey:@"mP"];
   }
 
   if ([v6 has_responseStatus])
@@ -744,20 +744,20 @@
     [v5 setObject:v81 forKey:@"fR"];
   }
 
-  v82 = [v6 failMessageId];
+  failMessageId = [v6 failMessageId];
 
-  if (v82)
+  if (failMessageId)
   {
-    v83 = [v6 failMessageId];
-    [v5 setObject:v83 forKey:@"fU"];
+    failMessageId2 = [v6 failMessageId];
+    [v5 setObject:failMessageId2 forKey:@"fU"];
   }
 
-  v84 = [v6 failMessageIdString];
+  failMessageIdString = [v6 failMessageIdString];
 
-  if (v84)
+  if (failMessageIdString)
   {
-    v85 = [v6 failMessageIdString];
-    [v5 setObject:v85 forKey:@"fM"];
+    failMessageIdString2 = [v6 failMessageIdString];
+    [v5 setObject:failMessageIdString2 forKey:@"fM"];
   }
 
   if ([v6 has_failDownloadAttachmentSize])
@@ -772,12 +772,12 @@
     [v5 setObject:v87 forKey:@"fS"];
   }
 
-  v88 = [v6 failReasonMessage];
+  failReasonMessage = [v6 failReasonMessage];
 
-  if (v88)
+  if (failReasonMessage)
   {
-    v89 = [v6 failReasonMessage];
-    [v5 setObject:v89 forKey:@"fRM"];
+    failReasonMessage2 = [v6 failReasonMessage];
+    [v5 setObject:failReasonMessage2 forKey:@"fRM"];
   }
 
   if ([v6 has_failTimeElapsed])
@@ -786,12 +786,12 @@
     [v5 setObject:v90 forKey:@"fTE"];
   }
 
-  v91 = [v6 encryptionType];
+  encryptionType = [v6 encryptionType];
 
-  if (v91)
+  if (encryptionType)
   {
-    v92 = [v6 encryptionType];
-    [v5 setObject:v92 forKey:@"E"];
+    encryptionType2 = [v6 encryptionType];
+    [v5 setObject:encryptionType2 forKey:@"E"];
   }
 
   if ([v6 has_storageFlags])
@@ -817,8 +817,8 @@
   v269 = 0u;
   v270 = 0u;
   v271 = 0u;
-  v97 = [v6 dstIdTokenList];
-  v98 = [v97 countByEnumeratingWithState:&v268 objects:v275 count:16];
+  dstIdTokenList = [v6 dstIdTokenList];
+  v98 = [dstIdTokenList countByEnumeratingWithState:&v268 objects:v275 count:16];
   if (v98)
   {
     v99 = v98;
@@ -830,7 +830,7 @@
       {
         if (*v269 != v100)
         {
-          objc_enumerationMutation(v97);
+          objc_enumerationMutation(dstIdTokenList);
         }
 
         v102 = [(IDSAPSUserPayload *)self extractMadridProtocolPayloadFrom:*(*(&v268 + 1) + 8 * v101)];
@@ -840,7 +840,7 @@
       }
 
       while (v99 != v101);
-      v99 = [v97 countByEnumeratingWithState:&v268 objects:v275 count:16];
+      v99 = [dstIdTokenList countByEnumeratingWithState:&v268 objects:v275 count:16];
     }
 
     while (v99);
@@ -856,8 +856,8 @@
   v265 = 0u;
   v266 = 0u;
   v267 = 0u;
-  v104 = [v6 madridMessageList];
-  v105 = [v104 countByEnumeratingWithState:&v264 objects:v274 count:16];
+  madridMessageList = [v6 madridMessageList];
+  v105 = [madridMessageList countByEnumeratingWithState:&v264 objects:v274 count:16];
   if (v105)
   {
     v106 = v105;
@@ -869,7 +869,7 @@
       {
         if (*v265 != v107)
         {
-          objc_enumerationMutation(v104);
+          objc_enumerationMutation(madridMessageList);
         }
 
         v109 = [(IDSAPSUserPayload *)self extractMadridProtocolPayloadFrom:*(*(&v264 + 1) + 8 * v108)];
@@ -879,7 +879,7 @@
       }
 
       while (v106 != v108);
-      v106 = [v104 countByEnumeratingWithState:&v264 objects:v274 count:16];
+      v106 = [madridMessageList countByEnumeratingWithState:&v264 objects:v274 count:16];
     }
 
     while (v106);
@@ -932,68 +932,68 @@
     [v5 setObject:v116 forKey:@"gm"];
   }
 
-  v117 = [v6 contentType];
+  contentType = [v6 contentType];
 
-  if (v117)
+  if (contentType)
   {
-    v118 = [v6 contentType];
-    [v5 setObject:v118 forKey:@"cT"];
+    contentType2 = [v6 contentType];
+    [v5 setObject:contentType2 forKey:@"cT"];
   }
 
-  v119 = [v6 adhocServiceOverride];
+  adhocServiceOverride = [v6 adhocServiceOverride];
 
-  if (v119)
+  if (adhocServiceOverride)
   {
-    v120 = [v6 adhocServiceOverride];
-    [v5 setObject:v120 forKey:@"aS"];
+    adhocServiceOverride2 = [v6 adhocServiceOverride];
+    [v5 setObject:adhocServiceOverride2 forKey:@"aS"];
   }
 
-  v121 = [v6 responseIdentifier];
+  responseIdentifier = [v6 responseIdentifier];
 
-  if (v121)
+  if (responseIdentifier)
   {
-    v122 = [v6 responseIdentifier];
-    [v5 setObject:v122 forKey:@"rI"];
+    responseIdentifier2 = [v6 responseIdentifier];
+    [v5 setObject:responseIdentifier2 forKey:@"rI"];
   }
 
-  v123 = [v6 responseIdentifierString];
+  responseIdentifierString = [v6 responseIdentifierString];
 
-  if (v123)
+  if (responseIdentifierString)
   {
-    v124 = [v6 responseIdentifierString];
-    [v5 setObject:v124 forKey:@"ri"];
+    responseIdentifierString2 = [v6 responseIdentifierString];
+    [v5 setObject:responseIdentifierString2 forKey:@"ri"];
   }
 
-  v125 = [v6 strictTransportSecurity];
+  strictTransportSecurity = [v6 strictTransportSecurity];
 
-  if (v125)
+  if (strictTransportSecurity)
   {
-    v126 = [v6 strictTransportSecurity];
-    [v5 setObject:v126 forKey:@"strict-transport-security"];
+    strictTransportSecurity2 = [v6 strictTransportSecurity];
+    [v5 setObject:strictTransportSecurity2 forKey:@"strict-transport-security"];
   }
 
-  v127 = [v6 traceId];
+  traceId = [v6 traceId];
 
-  if (v127)
+  if (traceId)
   {
-    v128 = [v6 traceId];
-    [v5 setObject:v128 forKey:@"x-b3-traceid"];
+    traceId2 = [v6 traceId];
+    [v5 setObject:traceId2 forKey:@"x-b3-traceid"];
   }
 
-  v129 = [v6 splunkHint];
+  splunkHint = [v6 splunkHint];
 
-  if (v129)
+  if (splunkHint)
   {
-    v130 = [v6 splunkHint];
-    [v5 setObject:v130 forKey:@"sh"];
+    splunkHint2 = [v6 splunkHint];
+    [v5 setObject:splunkHint2 forKey:@"sh"];
   }
 
-  v131 = [v6 asHttpHeader];
+  asHttpHeader = [v6 asHttpHeader];
 
-  if (v131)
+  if (asHttpHeader)
   {
-    v132 = [v6 asHttpHeader];
-    [v5 setObject:v132 forKey:@"as"];
+    asHttpHeader2 = [v6 asHttpHeader];
+    [v5 setObject:asHttpHeader2 forKey:@"as"];
   }
 
   if ([v6 has_homekitDeliveryStatus])
@@ -1002,12 +1002,12 @@
     [v5 setObject:v133 forKey:@"hD"];
   }
 
-  v134 = [v6 homekitReportId];
+  homekitReportId = [v6 homekitReportId];
 
-  if (v134)
+  if (homekitReportId)
   {
-    v135 = [v6 homekitReportId];
-    [v5 setObject:v135 forKey:@"hI"];
+    homekitReportId2 = [v6 homekitReportId];
+    [v5 setObject:homekitReportId2 forKey:@"hI"];
   }
 
   if ([v6 has_retryCount])
@@ -1016,12 +1016,12 @@
     [v5 setObject:v136 forKey:@"rc"];
   }
 
-  v137 = [v6 testOptions];
+  testOptions = [v6 testOptions];
 
-  if (v137)
+  if (testOptions)
   {
-    v138 = [v6 testOptions];
-    [v5 setObject:v138 forKey:@"x-test-opts"];
+    testOptions2 = [v6 testOptions];
+    [v5 setObject:testOptions2 forKey:@"x-test-opts"];
   }
 
   if ([v6 has_fanoutChunkNumber])
@@ -1056,44 +1056,44 @@
     [v5 setObject:v144 forKey:@"wV"];
   }
 
-  v145 = [v6 httpUrl];
+  httpUrl = [v6 httpUrl];
 
-  if (v145)
+  if (httpUrl)
   {
-    v146 = [v6 httpUrl];
-    [v5 setObject:v146 forKey:@"u"];
+    httpUrl2 = [v6 httpUrl];
+    [v5 setObject:httpUrl2 forKey:@"u"];
   }
 
-  v147 = [v6 httpHeaders];
-  v148 = [(IDSAPSUserPayload *)self extractMadridHttpHeadersFrom:v147];
+  httpHeaders = [v6 httpHeaders];
+  v148 = [(IDSAPSUserPayload *)self extractMadridHttpHeadersFrom:httpHeaders];
   v149 = v148;
   if (v148 && [v148 count])
   {
     [v5 setObject:v149 forKey:@"h"];
   }
 
-  v150 = [v6 httpBody];
+  httpBody = [v6 httpBody];
 
-  if (v150)
+  if (httpBody)
   {
-    v151 = [v6 httpBody];
-    [v5 setObject:v151 forKey:@"b"];
+    httpBody2 = [v6 httpBody];
+    [v5 setObject:httpBody2 forKey:@"b"];
   }
 
-  v152 = [v6 httpBodyUrl];
+  httpBodyUrl = [v6 httpBodyUrl];
 
-  if (v152)
+  if (httpBodyUrl)
   {
-    v153 = [v6 httpBodyUrl];
-    [v5 setObject:v153 forKey:@"bu"];
+    httpBodyUrl2 = [v6 httpBodyUrl];
+    [v5 setObject:httpBodyUrl2 forKey:@"bu"];
   }
 
-  v154 = [v6 httpBodyKey];
+  httpBodyKey = [v6 httpBodyKey];
 
-  if (v154)
+  if (httpBodyKey)
   {
-    v155 = [v6 httpBodyKey];
-    [v5 setObject:v155 forKey:@"bk"];
+    httpBodyKey2 = [v6 httpBodyKey];
+    [v5 setObject:httpBodyKey2 forKey:@"bk"];
   }
 
   if ([v6 has_httpResponseStatus])
@@ -1102,12 +1102,12 @@
     [v5 setObject:v156 forKey:@"hs"];
   }
 
-  v157 = [v6 httpErrorMsg];
+  httpErrorMsg = [v6 httpErrorMsg];
 
-  if (v157)
+  if (httpErrorMsg)
   {
-    v158 = [v6 httpErrorMsg];
-    [v5 setObject:v158 forKey:@"hr"];
+    httpErrorMsg2 = [v6 httpErrorMsg];
+    [v5 setObject:httpErrorMsg2 forKey:@"hr"];
   }
 
   if ([v6 has_writeToCloudkit])
@@ -1134,28 +1134,28 @@
     [v5 setObject:v162 forKey:@"O"];
   }
 
-  v163 = [v6 conferenceURI];
+  conferenceURI = [v6 conferenceURI];
 
-  if (v163)
+  if (conferenceURI)
   {
-    v164 = [v6 conferenceURI];
-    [v5 setObject:v164 forKey:@"curi"];
+    conferenceURI2 = [v6 conferenceURI];
+    [v5 setObject:conferenceURI2 forKey:@"curi"];
   }
 
-  v165 = [v6 selfSessionToken];
+  selfSessionToken = [v6 selfSessionToken];
 
-  if (v165)
+  if (selfSessionToken)
   {
-    v166 = [v6 selfSessionToken];
-    [v5 setObject:v166 forKey:@"sst"];
+    selfSessionToken2 = [v6 selfSessionToken];
+    [v5 setObject:selfSessionToken2 forKey:@"sst"];
   }
 
-  v167 = [v6 queryHash];
+  queryHash = [v6 queryHash];
 
-  if (v167)
+  if (queryHash)
   {
-    v168 = [v6 queryHash];
-    [v5 setObject:v168 forKey:@"qH"];
+    queryHash2 = [v6 queryHash];
+    [v5 setObject:queryHash2 forKey:@"qH"];
   }
 
   if ([v6 has_testDropPoint])
@@ -1200,12 +1200,12 @@
     [v5 setObject:v175 forKey:@"qv"];
   }
 
-  v176 = [v6 applicationId];
+  applicationId = [v6 applicationId];
 
-  if (v176)
+  if (applicationId)
   {
-    v177 = [v6 applicationId];
-    [v5 setObject:v177 forKey:@"qai"];
+    applicationId2 = [v6 applicationId];
+    [v5 setObject:applicationId2 forKey:@"qai"];
   }
 
   if ([v6 has_reason])
@@ -1220,20 +1220,20 @@
     [v5 setObject:v179 forKey:@"qpec"];
   }
 
-  v180 = [v6 prevAccessToken];
+  prevAccessToken = [v6 prevAccessToken];
 
-  if (v180)
+  if (prevAccessToken)
   {
-    v181 = [v6 prevAccessToken];
-    [v5 setObject:v181 forKey:@"qpat"];
+    prevAccessToken2 = [v6 prevAccessToken];
+    [v5 setObject:prevAccessToken2 forKey:@"qpat"];
   }
 
-  v182 = [v6 prevRelayIp];
+  prevRelayIp = [v6 prevRelayIp];
 
-  if (v182)
+  if (prevRelayIp)
   {
-    v183 = [v6 prevRelayIp];
-    [v5 setObject:v183 forKey:@"qpip"];
+    prevRelayIp2 = [v6 prevRelayIp];
+    [v5 setObject:prevRelayIp2 forKey:@"qpip"];
   }
 
   if ([v6 has_prevTimestamp])
@@ -1242,20 +1242,20 @@
     [v5 setObject:v184 forKey:@"qpt"];
   }
 
-  v185 = [v6 activeAccessToken];
+  activeAccessToken = [v6 activeAccessToken];
 
-  if (v185)
+  if (activeAccessToken)
   {
-    v186 = [v6 activeAccessToken];
-    [v5 setObject:v186 forKey:@"qaat"];
+    activeAccessToken2 = [v6 activeAccessToken];
+    [v5 setObject:activeAccessToken2 forKey:@"qaat"];
   }
 
-  v187 = [v6 activeRelayIp];
+  activeRelayIp = [v6 activeRelayIp];
 
-  if (v187)
+  if (activeRelayIp)
   {
-    v188 = [v6 activeRelayIp];
-    [v5 setObject:v188 forKey:@"qaip"];
+    activeRelayIp2 = [v6 activeRelayIp];
+    [v5 setObject:activeRelayIp2 forKey:@"qaip"];
   }
 
   if ([v6 has_selfAllocTokenCountOld])
@@ -1282,12 +1282,12 @@
     [v5 setObject:v192 forKey:@"qat"];
   }
 
-  v193 = [v6 idsSessionId];
+  idsSessionId = [v6 idsSessionId];
 
-  if (v193)
+  if (idsSessionId)
   {
-    v194 = [v6 idsSessionId];
-    [v5 setObject:v194 forKey:@"qids"];
+    idsSessionId2 = [v6 idsSessionId];
+    [v5 setObject:idsSessionId2 forKey:@"qids"];
   }
 
   if ([v6 has_relayProvider])
@@ -1302,12 +1302,12 @@
     [v5 setObject:v196 forKey:@"qrss"];
   }
 
-  v197 = [v6 groupId];
+  groupId = [v6 groupId];
 
-  if (v197)
+  if (groupId)
   {
-    v198 = [v6 groupId];
-    [v5 setObject:v198 forKey:@"qgid"];
+    groupId2 = [v6 groupId];
+    [v5 setObject:groupId2 forKey:@"qgid"];
   }
 
   if ([v6 has_groupMemberCount])
@@ -1322,20 +1322,20 @@
     [v5 setObject:v200 forKey:@"qia"];
   }
 
-  v201 = [v6 relayIp];
+  relayIp = [v6 relayIp];
 
-  if (v201)
+  if (relayIp)
   {
-    v202 = [v6 relayIp];
-    [v5 setObject:v202 forKey:@"qrip"];
+    relayIp2 = [v6 relayIp];
+    [v5 setObject:relayIp2 forKey:@"qrip"];
   }
 
-  v203 = [v6 relayIpv6];
+  relayIpv6 = [v6 relayIpv6];
 
-  if (v203)
+  if (relayIpv6)
   {
-    v204 = [v6 relayIpv6];
-    [v5 setObject:v204 forKey:@"qrip6"];
+    relayIpv62 = [v6 relayIpv6];
+    [v5 setObject:relayIpv62 forKey:@"qrip6"];
   }
 
   if ([v6 has_relayPort])
@@ -1344,28 +1344,28 @@
     [v5 setObject:v205 forKey:@"qrp"];
   }
 
-  v206 = [v6 relayAccessToken];
+  relayAccessToken = [v6 relayAccessToken];
 
-  if (v206)
+  if (relayAccessToken)
   {
-    v207 = [v6 relayAccessToken];
-    [v5 setObject:v207 forKey:@"qrst"];
+    relayAccessToken2 = [v6 relayAccessToken];
+    [v5 setObject:relayAccessToken2 forKey:@"qrst"];
   }
 
-  v208 = [v6 relaySessionKey];
+  relaySessionKey = [v6 relaySessionKey];
 
-  if (v208)
+  if (relaySessionKey)
   {
-    v209 = [v6 relaySessionKey];
-    [v5 setObject:v209 forKey:@"qrsk"];
+    relaySessionKey2 = [v6 relaySessionKey];
+    [v5 setObject:relaySessionKey2 forKey:@"qrsk"];
   }
 
-  v210 = [v6 relaySessionId];
+  relaySessionId = [v6 relaySessionId];
 
-  if (v210)
+  if (relaySessionId)
   {
-    v211 = [v6 relaySessionId];
-    [v5 setObject:v211 forKey:@"qrsi"];
+    relaySessionId2 = [v6 relaySessionId];
+    [v5 setObject:relaySessionId2 forKey:@"qrsi"];
   }
 
   if ([v6 has_expiryEpochTimeMillis])
@@ -1374,12 +1374,12 @@
     [v5 setObject:v212 forKey:@"qe"];
   }
 
-  v213 = [v6 initiatorIp];
+  initiatorIp = [v6 initiatorIp];
 
-  if (v213)
+  if (initiatorIp)
   {
-    v214 = [v6 initiatorIp];
-    [v5 setObject:v214 forKey:@"qsi"];
+    initiatorIp2 = [v6 initiatorIp];
+    [v5 setObject:initiatorIp2 forKey:@"qsi"];
   }
 
   if ([v6 has_participantId])
@@ -1388,20 +1388,20 @@
     [v5 setObject:v215 forKey:@"qri"];
   }
 
-  v216 = [v6 softwareVersion];
+  softwareVersion = [v6 softwareVersion];
 
-  if (v216)
+  if (softwareVersion)
   {
-    v217 = [v6 softwareVersion];
-    [v5 setObject:v217 forKey:@"qswv"];
+    softwareVersion2 = [v6 softwareVersion];
+    [v5 setObject:softwareVersion2 forKey:@"qswv"];
   }
 
-  v218 = [v6 relayBuildVersion];
+  relayBuildVersion = [v6 relayBuildVersion];
 
-  if (v218)
+  if (relayBuildVersion)
   {
-    v219 = [v6 relayBuildVersion];
-    [v5 setObject:v219 forKey:@"qrbv"];
+    relayBuildVersion2 = [v6 relayBuildVersion];
+    [v5 setObject:relayBuildVersion2 forKey:@"qrbv"];
   }
 
   if ([v6 has_allocationEpochTimeMillis])
@@ -1421,8 +1421,8 @@
   v261 = 0u;
   v262 = 0u;
   v263 = 0u;
-  v223 = [v6 allocationStatuses];
-  v224 = [v223 countByEnumeratingWithState:&v260 objects:v273 count:16];
+  allocationStatuses = [v6 allocationStatuses];
+  v224 = [allocationStatuses countByEnumeratingWithState:&v260 objects:v273 count:16];
   if (v224)
   {
     v225 = v224;
@@ -1434,7 +1434,7 @@
       {
         if (*v261 != v226)
         {
-          objc_enumerationMutation(v223);
+          objc_enumerationMutation(allocationStatuses);
         }
 
         v228 = [(IDSAPSUserPayload *)self extractQuickRelayAllocationStatusFrom:*(*(&v260 + 1) + 8 * v227)];
@@ -1444,7 +1444,7 @@
       }
 
       while (v225 != v227);
-      v225 = [v223 countByEnumeratingWithState:&v260 objects:v273 count:16];
+      v225 = [allocationStatuses countByEnumeratingWithState:&v260 objects:v273 count:16];
     }
 
     while (v225);
@@ -1460,8 +1460,8 @@
   v257 = 0u;
   v258 = 0u;
   v259 = 0u;
-  v230 = [v6 selfAllocTokenList];
-  v231 = [v230 countByEnumeratingWithState:&v256 objects:v272 count:16];
+  selfAllocTokenList = [v6 selfAllocTokenList];
+  v231 = [selfAllocTokenList countByEnumeratingWithState:&v256 objects:v272 count:16];
   if (v231)
   {
     v232 = v231;
@@ -1473,7 +1473,7 @@
       {
         if (*v257 != v233)
         {
-          objc_enumerationMutation(v230);
+          objc_enumerationMutation(selfAllocTokenList);
         }
 
         v235 = [(IDSAPSUserPayload *)self extractQuickRelaySelfAllocTokenFrom:*(*(&v256 + 1) + 8 * v234)];
@@ -1483,7 +1483,7 @@
       }
 
       while (v232 != v234);
-      v232 = [v230 countByEnumeratingWithState:&v256 objects:v272 count:16];
+      v232 = [selfAllocTokenList countByEnumeratingWithState:&v256 objects:v272 count:16];
     }
 
     while (v232);
@@ -1494,12 +1494,12 @@
     [v5 setObject:v229 forKey:@"qsatv"];
   }
 
-  v236 = [v6 relayReportingBlob];
+  relayReportingBlob = [v6 relayReportingBlob];
 
-  if (v236)
+  if (relayReportingBlob)
   {
-    v237 = [v6 relayReportingBlob];
-    [v5 setObject:v237 forKey:@"qrep"];
+    relayReportingBlob2 = [v6 relayReportingBlob];
+    [v5 setObject:relayReportingBlob2 forKey:@"qrep"];
   }
 
   if ([v6 has_relayServerType])
@@ -1552,12 +1552,12 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v246 = [v6 errorDomain];
+    errorDomain = [v6 errorDomain];
 
-    if (v246)
+    if (errorDomain)
     {
-      v247 = [v6 errorDomain];
-      [v5 setObject:v247 forKey:@"eD"];
+      errorDomain2 = [v6 errorDomain];
+      [v5 setObject:errorDomain2 forKey:@"eD"];
     }
   }
 
@@ -1602,11 +1602,11 @@
   return v5;
 }
 
-- (void)logHeaderDiffAgainstSource:(id)a3
+- (void)logHeaderDiffAgainstSource:(id)source
 {
-  v4 = a3;
-  v5 = [(IDSAPSUserPayload *)self payload];
-  if (([v5 isEqualToDictionary:v4] & 1) == 0)
+  sourceCopy = source;
+  payload = [(IDSAPSUserPayload *)self payload];
+  if (([payload isEqualToDictionary:sourceCopy] & 1) == 0)
   {
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1620,21 +1620,21 @@
       _IDSLogV(0, @"IDSFoundation", @"IDSAPSUserPayload", @"Payload received from blastdoor does not match the incoming user payload.");
     }
 
-    [(IDSAPSUserPayload *)self logDiffBetween:v4 andTarget:v5 withKeyPath:@"."];
+    [(IDSAPSUserPayload *)self logDiffBetween:sourceCopy andTarget:payload withKeyPath:@"."];
   }
 }
 
-- (void)logDiffBetween:(id)a3 andTarget:(id)a4 withKeyPath:(id)a5
+- (void)logDiffBetween:(id)between andTarget:(id)target withKeyPath:(id)path
 {
   v68 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v48 = a5;
+  betweenCopy = between;
+  targetCopy = target;
+  pathCopy = path;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v7;
+  obj = betweenCopy;
   v9 = [obj countByEnumeratingWithState:&v54 objects:v67 count:16];
   if (v9)
   {
@@ -1654,7 +1654,7 @@
 
         v14 = *(*(&v54 + 1) + 8 * v13);
         v15 = [obj objectForKey:{v14, v39, v40, v41, v42}];
-        v16 = [v8 objectForKey:v14];
+        v16 = [targetCopy objectForKey:v14];
         v17 = v16;
         if (v15)
         {
@@ -1663,7 +1663,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
             {
-              v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@ .", v48, v14];
+              v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@ .", pathCopy, v14];
               [(IDSAPSUserPayload *)self logDiffBetween:v15 andTarget:v17 withKeyPath:v18];
             }
 
@@ -1673,7 +1673,7 @@
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138413058;
-                v60 = v48;
+                v60 = pathCopy;
                 v61 = 2112;
                 v62 = v14;
                 v63 = 2112;
@@ -1687,7 +1687,7 @@
               {
                 v41 = v15;
                 v42 = v17;
-                v39 = v48;
+                v39 = pathCopy;
                 v40 = v14;
                 _IDSLogV(0, @"IDSFoundation", v12, @"HeaderValueMismatch: key {%@%@}}, Source value {%@}, BlastDoor value {%@}");
               }
@@ -1701,14 +1701,14 @@
             {
               v21 = objc_opt_class();
               *buf = 138413058;
-              v60 = v48;
+              v60 = pathCopy;
               v61 = 2112;
               v62 = v14;
               v63 = 2112;
               v64 = v21;
               v65 = 2112;
               v66 = v15;
-              v22 = v8;
+              v22 = targetCopy;
               v23 = v11;
               v24 = v12;
               v25 = v10;
@@ -1718,7 +1718,7 @@
               v10 = v25;
               v12 = v24;
               v11 = v23;
-              v8 = v22;
+              targetCopy = v22;
               v9 = v46;
             }
 
@@ -1726,7 +1726,7 @@
             {
               v41 = objc_opt_class();
               v42 = v15;
-              v39 = v48;
+              v39 = pathCopy;
               v40 = v14;
               _IDSLogV(0, @"IDSFoundation", v12, @"MissingHeader: key {%@%@}, object class{%@}, value {%@}");
             }
@@ -1744,20 +1744,20 @@
   }
 
   v27 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v28 = [obj allKeys];
-  v43 = [v27 initWithArray:v28];
+  allKeys = [obj allKeys];
+  v43 = [v27 initWithArray:allKeys];
 
   v29 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v30 = [v8 allKeys];
-  v45 = [v29 initWithArray:v30];
+  allKeys2 = [targetCopy allKeys];
+  v45 = [v29 initWithArray:allKeys2];
 
   [v45 minusSet:v43];
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v47 = [v45 allObjects];
-  v31 = [v47 countByEnumeratingWithState:&v50 objects:v58 count:16];
+  allObjects = [v45 allObjects];
+  v31 = [allObjects countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v31)
   {
     v32 = *v51;
@@ -1767,17 +1767,17 @@
       {
         if (*v51 != v32)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(allObjects);
         }
 
         v34 = *(*(&v50 + 1) + 8 * i);
-        v35 = [v8 objectForKey:{v34, v39, v40, v41, v42}];
+        v35 = [targetCopy objectForKey:{v34, v39, v40, v41, v42}];
         v36 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
           v37 = objc_opt_class();
           *buf = 138413058;
-          v60 = v48;
+          v60 = pathCopy;
           v61 = 2112;
           v62 = v34;
           v63 = 2112;
@@ -1792,13 +1792,13 @@
         {
           v41 = objc_opt_class();
           v42 = v35;
-          v39 = v48;
+          v39 = pathCopy;
           v40 = v34;
           _IDSLogV(0, @"IDSFoundation", @"IDSAPSUserPayload", @"Extraheader: key {%@%@}, object class{%@}, value {%@}");
         }
       }
 
-      v31 = [v47 countByEnumeratingWithState:&v50 objects:v58 count:16];
+      v31 = [allObjects countByEnumeratingWithState:&v50 objects:v58 count:16];
     }
 
     while (v31);

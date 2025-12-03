@@ -1,25 +1,25 @@
 @interface EmojiForegroundCircularLayersViewController
-- (_TtC11EmojiPoster43EmojiForegroundCircularLayersViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11EmojiPoster43EmojiForegroundCircularLayersViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation EmojiForegroundCircularLayersViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_249FE609C();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5.receiver = self;
   v5.super_class = type metadata accessor for EmojiForegroundCircularLayersViewController();
   v4 = v5.receiver;
-  [(EmojiForegroundCircularLayersViewController *)&v5 viewIsAppearing:v3];
+  [(EmojiForegroundCircularLayersViewController *)&v5 viewIsAppearing:appearingCopy];
   sub_249FE64E8();
 }
 
@@ -32,7 +32,7 @@
   sub_249FE6930();
 }
 
-- (_TtC11EmojiPoster43EmojiForegroundCircularLayersViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EmojiPoster43EmojiForegroundCircularLayersViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

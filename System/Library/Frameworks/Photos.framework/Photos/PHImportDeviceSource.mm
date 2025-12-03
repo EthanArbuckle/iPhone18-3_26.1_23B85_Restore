@@ -4,52 +4,52 @@
 - (BOOL)isAvailable;
 - (BOOL)isDeleting;
 - (CGImage)icon;
-- (PHImportDeviceSource)initWithDevice:(id)a3;
-- (id)assetsByProcessingItem:(id)a3;
-- (id)cameraFilesForAssets:(id)a3;
-- (id)deleteImportAssets:(id)a3 isConfirmed:(BOOL)a4 atEnd:(id)a5;
+- (PHImportDeviceSource)initWithDevice:(id)device;
+- (id)assetsByProcessingItem:(id)item;
+- (id)cameraFilesForAssets:(id)assets;
+- (id)deleteImportAssets:(id)assets isConfirmed:(BOOL)confirmed atEnd:(id)end;
 - (id)iconSymbolName;
-- (id)importAssetForCameraFile:(id)a3 create:(BOOL)a4;
+- (id)importAssetForCameraFile:(id)file create:(BOOL)create;
 - (id)name;
 - (id)uuid;
-- (void)_removeCameraFiles:(id)a3;
-- (void)beginProcessingWithCompletion:(id)a3;
-- (void)cameraDevice:(id)a3 didAddItems:(id)a4;
-- (void)cameraDevice:(id)a3 didRemoveItems:(id)a4;
-- (void)cameraDevice:(id)a3 setAccessState:(unsigned __int8)a4;
-- (void)cameraDeviceDidChangeCapability:(id)a3;
-- (void)cameraDeviceDidEnableAccessRestriction:(id)a3;
-- (void)cameraDeviceDidRemoveAccessRestriction:(id)a3;
-- (void)deviceDidBecomeReady:(id)a3;
-- (void)deviceDidBecomeReadyWithCompleteContentCatalog:(id)a3;
-- (void)deviceFinishedEnumeratingItems:(id)a3;
-- (void)didRemoveDevice:(id)a3;
+- (void)_removeCameraFiles:(id)files;
+- (void)beginProcessingWithCompletion:(id)completion;
+- (void)cameraDevice:(id)device didAddItems:(id)items;
+- (void)cameraDevice:(id)device didRemoveItems:(id)items;
+- (void)cameraDevice:(id)device setAccessState:(unsigned __int8)state;
+- (void)cameraDeviceDidChangeCapability:(id)capability;
+- (void)cameraDeviceDidEnableAccessRestriction:(id)restriction;
+- (void)cameraDeviceDidRemoveAccessRestriction:(id)restriction;
+- (void)deviceDidBecomeReady:(id)ready;
+- (void)deviceDidBecomeReadyWithCompleteContentCatalog:(id)catalog;
+- (void)deviceFinishedEnumeratingItems:(id)items;
+- (void)didRemoveDevice:(id)device;
 - (void)eject;
-- (void)fetchMetadataForRequest:(id)a3 importAsset:(id)a4 completion:(id)a5;
-- (void)fetchMetadataUsingRequest:(id)a3 withCompletion:(id)a4;
-- (void)fetchThumbnailDataUsingRequest:(id)a3 withCompletion:(id)a4;
-- (void)removeAssetForCameraFile:(id)a3;
+- (void)fetchMetadataForRequest:(id)request importAsset:(id)asset completion:(id)completion;
+- (void)fetchMetadataUsingRequest:(id)request withCompletion:(id)completion;
+- (void)fetchThumbnailDataUsingRequest:(id)request withCompletion:(id)completion;
+- (void)removeAssetForCameraFile:(id)file;
 - (void)sendNextMetadataRequest;
 - (void)sendNextThumbnailRequest;
 @end
 
 @implementation PHImportDeviceSource
 
-- (void)_removeCameraFiles:(id)a3
+- (void)_removeCameraFiles:(id)files
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [(PHImportDeviceSource *)self deleteEjectQueue];
+  filesCopy = files;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(filesCopy, "count")}];
+  deleteEjectQueue = [(PHImportDeviceSource *)self deleteEjectQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__PHImportDeviceSource__removeCameraFiles___block_invoke;
   block[3] = &unk_1E75AB248;
   block[4] = self;
-  v10 = v4;
+  v10 = filesCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = filesCopy;
+  dispatch_async(deleteEjectQueue, block);
 }
 
 uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
@@ -123,57 +123,57 @@ uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
   return result;
 }
 
-- (void)deviceFinishedEnumeratingItems:(id)a3
+- (void)deviceFinishedEnumeratingItems:(id)items
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = PLImportGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [v3 name];
+    name = [itemsCopy name];
     v6 = 138412546;
-    v7 = v5;
+    v7 = name;
     v8 = 2080;
     v9 = "[PHImportDeviceSource deviceFinishedEnumeratingItems:]";
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_DEBUG, "%@ [%s]", &v6, 0x16u);
   }
 }
 
-- (void)cameraDeviceDidRemoveAccessRestriction:(id)a3
+- (void)cameraDeviceDidRemoveAccessRestriction:(id)restriction
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = PLImportGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PHImportDeviceSource *)self camera];
-    v6 = [v5 name];
+    camera = [(PHImportDeviceSource *)self camera];
+    name = [camera name];
     v8 = 138412290;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_INFO, "%@ state chaged to unlocked", &v8, 0xCu);
   }
 
-  v7 = [(PHImportDeviceSource *)self camera];
-  [(PHImportDeviceSource *)self cameraDevice:v7 setAccessState:2];
+  camera2 = [(PHImportDeviceSource *)self camera];
+  [(PHImportDeviceSource *)self cameraDevice:camera2 setAccessState:2];
 }
 
-- (void)cameraDeviceDidEnableAccessRestriction:(id)a3
+- (void)cameraDeviceDidEnableAccessRestriction:(id)restriction
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = PLImportGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PHImportDeviceSource *)self camera];
-    v6 = [v5 name];
+    camera = [(PHImportDeviceSource *)self camera];
+    name = [camera name];
     v8 = 138412290;
-    v9 = v6;
+    v9 = name;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_INFO, "%@ state changed to passcode locked", &v8, 0xCu);
   }
 
-  v7 = [(PHImportDeviceSource *)self camera];
-  [(PHImportDeviceSource *)self cameraDevice:v7 setAccessState:1];
+  camera2 = [(PHImportDeviceSource *)self camera];
+  [(PHImportDeviceSource *)self cameraDevice:camera2 setAccessState:1];
 }
 
-- (void)cameraDeviceDidChangeCapability:(id)a3
+- (void)cameraDeviceDidChangeCapability:(id)capability
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -183,16 +183,16 @@ uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
   [(PHImportSource *)self notifyObserversUsingBlock:v3];
 }
 
-- (void)cameraDevice:(id)a3 didRemoveItems:(id)a4
+- (void)cameraDevice:(id)device didRemoveItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  itemsCopy = items;
   v8 = PLImportGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v7 count];
+    v9 = [itemsCopy count];
     v10 = &stru_1F0FC60C8;
-    if ([v7 count] <= 1)
+    if ([itemsCopy count] <= 1)
     {
       v11 = &stru_1F0FC60C8;
     }
@@ -202,11 +202,11 @@ uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
       v11 = @"s";
     }
 
-    v12 = [v7 count];
+    v12 = [itemsCopy count];
     if (v12)
     {
       v13 = MEMORY[0x1E696AEC0];
-      v4 = [v7 valueForKey:@"name"];
+      v4 = [itemsCopy valueForKey:@"name"];
       v5 = [v4 componentsJoinedByString:{@", "}];
       v10 = [v13 stringWithFormat:@" [%@]", v5];
     }
@@ -225,9 +225,9 @@ uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
     }
   }
 
-  if ([v7 count])
+  if ([itemsCopy count])
   {
-    [(PHImportDeviceSource *)self _removeCameraFiles:v7];
+    [(PHImportDeviceSource *)self _removeCameraFiles:itemsCopy];
   }
 
   else
@@ -235,25 +235,25 @@ uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
     v14 = PLImportGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(PHImportDeviceSource *)self camera];
-      v16 = [v15 name];
+      camera = [(PHImportDeviceSource *)self camera];
+      name = [camera name];
       *buf = 138412290;
-      v18 = v16;
+      v18 = name;
       _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_DEBUG, "ImageCapture told us that the device '%@' removed no items ... weird!", buf, 0xCu);
     }
   }
 }
 
-- (void)cameraDevice:(id)a3 didAddItems:(id)a4
+- (void)cameraDevice:(id)device didAddItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  itemsCopy = items;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -289,7 +289,7 @@ uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
   [(PHImportSource *)self addItems:v6];
 }
 
-- (void)deviceDidBecomeReady:(id)a3
+- (void)deviceDidBecomeReady:(id)ready
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -299,34 +299,34 @@ uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
   [(PHImportSource *)self notifyObserversUsingBlock:v3];
 }
 
-- (void)didRemoveDevice:(id)a3
+- (void)didRemoveDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(PHImportDeviceSource *)self camera];
+  deviceCopy = device;
+  camera = [(PHImportDeviceSource *)self camera];
 
-  if (v5 == v4)
+  if (camera == deviceCopy)
   {
-    v6 = [(PHImportSource *)self progress];
-    [v6 cancel];
+    progress = [(PHImportSource *)self progress];
+    [progress cancel];
 
-    v8 = [(PHImportDeviceSource *)self camera];
-    v7 = [v8 mediaFiles];
-    [(PHImportDeviceSource *)self _removeCameraFiles:v7];
+    camera2 = [(PHImportDeviceSource *)self camera];
+    mediaFiles = [camera2 mediaFiles];
+    [(PHImportDeviceSource *)self _removeCameraFiles:mediaFiles];
   }
 }
 
-- (void)deviceDidBecomeReadyWithCompleteContentCatalog:(id)a3
+- (void)deviceDidBecomeReadyWithCompleteContentCatalog:(id)catalog
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  catalogCopy = catalog;
   v5 = PLImportGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 name];
+    name = [catalogCopy name];
     v7 = 136315394;
     v8 = "[PHImportDeviceSource deviceDidBecomeReadyWithCompleteContentCatalog:]";
     v9 = 2112;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "%s - %@", &v7, 0x16u);
   }
 
@@ -343,13 +343,13 @@ uint64_t __43__PHImportDeviceSource__removeCameraFiles___block_invoke(id *a1)
 
 - (void)eject
 {
-  v3 = [(PHImportDeviceSource *)self deleteEjectQueue];
+  deleteEjectQueue = [(PHImportDeviceSource *)self deleteEjectQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__PHImportDeviceSource_eject__block_invoke;
   block[3] = &unk_1E75AB270;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(deleteEjectQueue, block);
 }
 
 void __29__PHImportDeviceSource_eject__block_invoke(uint64_t a1)
@@ -374,73 +374,73 @@ void __29__PHImportDeviceSource_eject__block_invoke(uint64_t a1)
 
 - (BOOL)isDeleting
 {
-  v2 = [(PHImportDeviceSource *)self deleteProgress];
-  v3 = v2 != 0;
+  deleteProgress = [(PHImportDeviceSource *)self deleteProgress];
+  v3 = deleteProgress != 0;
 
   return v3;
 }
 
 - (BOOL)canEject
 {
-  v2 = [(ICCameraDevice *)self->_camera capabilities];
-  v3 = [v2 containsObject:*MEMORY[0x1E696D188]];
+  capabilities = [(ICCameraDevice *)self->_camera capabilities];
+  v3 = [capabilities containsObject:*MEMORY[0x1E696D188]];
 
   return v3;
 }
 
 - (BOOL)isAppleDevice
 {
-  v2 = [(PHImportDeviceSource *)self camera];
-  v3 = [v2 isAppleDevice];
+  camera = [(PHImportDeviceSource *)self camera];
+  isAppleDevice = [camera isAppleDevice];
 
-  return v3;
+  return isAppleDevice;
 }
 
 - (id)iconSymbolName
 {
-  v3 = [(PHImportDeviceSource *)self camera];
-  v4 = [v3 systemSymbolName];
-  v5 = v4;
-  if (v4)
+  camera = [(PHImportDeviceSource *)self camera];
+  systemSymbolName = [camera systemSymbolName];
+  v5 = systemSymbolName;
+  if (systemSymbolName)
   {
-    v6 = v4;
+    lowercaseString = systemSymbolName;
   }
 
   else
   {
-    v7 = [(PHImportDeviceSource *)self productKind];
-    v6 = [v7 lowercaseString];
+    productKind = [(PHImportDeviceSource *)self productKind];
+    lowercaseString = [productKind lowercaseString];
   }
 
-  return v6;
+  return lowercaseString;
 }
 
 - (CGImage)icon
 {
-  v2 = [(PHImportDeviceSource *)self camera];
-  v3 = [v2 icon];
+  camera = [(PHImportDeviceSource *)self camera];
+  icon = [camera icon];
 
-  return v3;
+  return icon;
 }
 
 - (id)name
 {
-  v2 = [(PHImportDeviceSource *)self camera];
-  v3 = [v2 name];
+  camera = [(PHImportDeviceSource *)self camera];
+  name = [camera name];
 
-  return v3;
+  return name;
 }
 
-- (id)cameraFilesForAssets:(id)a3
+- (id)cameraFilesForAssets:(id)assets
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  assetsCopy = assets;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -455,8 +455,8 @@ void __29__PHImportDeviceSource_eject__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) cameraFiles];
-        [v4 addObjectsFromArray:v10];
+        cameraFiles = [*(*(&v12 + 1) + 8 * i) cameraFiles];
+        [v4 addObjectsFromArray:cameraFiles];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -468,17 +468,17 @@ void __29__PHImportDeviceSource_eject__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)deleteImportAssets:(id)a3 isConfirmed:(BOOL)a4 atEnd:(id)a5
+- (id)deleteImportAssets:(id)assets isConfirmed:(BOOL)confirmed atEnd:(id)end
 {
-  v6 = a4;
+  confirmedCopy = confirmed;
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  assetsCopy = assets;
+  endCopy = end;
   v10 = PLImportGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [v8 count];
-    if (v6)
+    v11 = [assetsCopy count];
+    if (confirmedCopy)
     {
       v12 = @"YES";
     }
@@ -488,11 +488,11 @@ void __29__PHImportDeviceSource_eject__block_invoke(uint64_t a1)
       v12 = @"NO";
     }
 
-    v13 = _Block_copy(v9);
+    v13 = _Block_copy(endCopy);
     *buf = 136316162;
     v35 = "[PHImportDeviceSource deleteImportAssets:isConfirmed:atEnd:]";
     v36 = 2048;
-    v37 = v8;
+    v37 = assetsCopy;
     v38 = 2048;
     v39 = v11;
     v40 = 2112;
@@ -502,9 +502,9 @@ void __29__PHImportDeviceSource_eject__block_invoke(uint64_t a1)
     _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_DEBUG, "%s - %p[%lu], %@, %p", buf, 0x34u);
   }
 
-  v14 = [(PHImportDeviceSource *)self deleteProgress];
+  deleteProgress = [(PHImportDeviceSource *)self deleteProgress];
 
-  if (v14)
+  if (deleteProgress)
   {
     v15 = MEMORY[0x1E696ABC0];
     v32 = *MEMORY[0x1E696A278];
@@ -514,22 +514,22 @@ void __29__PHImportDeviceSource_eject__block_invoke(uint64_t a1)
     v18 = -7;
   }
 
-  else if (v6)
+  else if (confirmedCopy)
   {
-    if ([v8 count])
+    if ([assetsCopy count])
     {
 LABEL_16:
-      v23 = [(PHImportDeviceSource *)self deleteEjectQueue];
+      deleteEjectQueue = [(PHImportDeviceSource *)self deleteEjectQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __61__PHImportDeviceSource_deleteImportAssets_isConfirmed_atEnd___block_invoke;
       block[3] = &unk_1E75AA870;
       block[4] = self;
-      v26 = v8;
-      v27 = v9;
-      dispatch_sync(v23, block);
+      v26 = assetsCopy;
+      v27 = endCopy;
+      dispatch_sync(deleteEjectQueue, block);
 
-      v22 = [(PHImportDeviceSource *)self deleteProgress];
+      deleteProgress2 = [(PHImportDeviceSource *)self deleteProgress];
 
       v21 = 0;
       goto LABEL_17;
@@ -560,15 +560,15 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (v9)
+  if (endCopy)
   {
-    (*(v9 + 2))(v9, v21);
+    (*(endCopy + 2))(endCopy, v21);
   }
 
-  v22 = 0;
+  deleteProgress2 = 0;
 LABEL_17:
 
-  return v22;
+  return deleteProgress2;
 }
 
 void __61__PHImportDeviceSource_deleteImportAssets_isConfirmed_atEnd___block_invoke(uint64_t a1)
@@ -676,13 +676,13 @@ void __61__PHImportDeviceSource_deleteImportAssets_isConfirmed_atEnd___block_inv
   }
 }
 
-- (id)assetsByProcessingItem:(id)a3
+- (id)assetsByProcessingItem:(id)item
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(PHImportDeviceSource *)self importAssetForCameraFile:v4 create:1], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(PHImportDeviceSource *)self importAssetForCameraFile:itemCopy create:1], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     [v5 addObject:v6];
@@ -696,8 +696,8 @@ void __61__PHImportDeviceSource_deleteImportAssets_isConfirmed_atEnd___block_inv
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [v4 sidecarFiles];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    sidecarFiles = [itemCopy sidecarFiles];
+    v9 = [sidecarFiles countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v9)
     {
       v10 = v9;
@@ -708,7 +708,7 @@ void __61__PHImportDeviceSource_deleteImportAssets_isConfirmed_atEnd___block_inv
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sidecarFiles);
           }
 
           v13 = [PHImportDeviceAsset assetFileForFile:*(*(&v20 + 1) + 8 * i) source:self];
@@ -730,7 +730,7 @@ void __61__PHImportDeviceSource_deleteImportAssets_isConfirmed_atEnd___block_inv
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v10 = [sidecarFiles countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v10);
@@ -742,14 +742,14 @@ void __61__PHImportDeviceSource_deleteImportAssets_isConfirmed_atEnd___block_inv
     v15 = PLImportGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [v4 name];
+      name = [itemCopy name];
       *buf = 138412290;
-      v25 = v16;
+      v25 = name;
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEBUG, "UNSUPPORTED asset '%@'", buf, 0xCu);
     }
 
-    v8 = [0 fileName];
-    v17 = [(PHImportExceptionRecorder *)self addExceptionWithType:1 path:v8 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportDeviceSource.m" line:395];
+    sidecarFiles = [0 fileName];
+    v17 = [(PHImportExceptionRecorder *)self addExceptionWithType:1 path:sidecarFiles underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportDeviceSource.m" line:395];
     v7 = 0;
   }
 
@@ -767,17 +767,17 @@ LABEL_21:
   return v18;
 }
 
-- (void)removeAssetForCameraFile:(id)a3
+- (void)removeAssetForCameraFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   assetByCameraFileAccess = self->_assetByCameraFileAccess;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PHImportDeviceSource_removeAssetForCameraFile___block_invoke;
   v7[3] = &unk_1E75AAEB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = fileCopy;
+  v6 = fileCopy;
   dispatch_sync(assetByCameraFileAccess, v7);
 }
 
@@ -788,9 +788,9 @@ void __49__PHImportDeviceSource_removeAssetForCameraFile___block_invoke(uint64_t
   [v3 removeObjectForKey:v2];
 }
 
-- (id)importAssetForCameraFile:(id)a3 create:(BOOL)a4
+- (id)importAssetForCameraFile:(id)file create:(BOOL)create
 {
-  v6 = a3;
+  fileCopy = file;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -802,11 +802,11 @@ void __49__PHImportDeviceSource_removeAssetForCameraFile___block_invoke(uint64_t
   v11[1] = 3221225472;
   v11[2] = __56__PHImportDeviceSource_importAssetForCameraFile_create___block_invoke;
   v11[3] = &unk_1E75A7B30;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
-  v12 = v6;
-  v15 = a4;
-  v8 = v6;
+  v12 = fileCopy;
+  createCopy = create;
+  v8 = fileCopy;
   dispatch_sync(assetByCameraFileAccess, v11);
   v9 = v17[5];
 
@@ -838,40 +838,40 @@ void __56__PHImportDeviceSource_importAssetForCameraFile_create___block_invoke(u
   }
 }
 
-- (void)beginProcessingWithCompletion:(id)a3
+- (void)beginProcessingWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"ICEnumerationPrioritizeSpeed"];
+  completionCopy = completion;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"ICEnumerationPrioritizeSpeed"];
   if ([(PHImportSource *)self assetLoadOrder])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportSource assetLoadOrder](self, "assetLoadOrder")}];
-    [v5 setObject:v6 forKeyedSubscript:@"ICEnumerationChronologicalOrder"];
+    [dictionary setObject:v6 forKeyedSubscript:@"ICEnumerationChronologicalOrder"];
   }
 
   v7 = PLImportGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(PHImportDeviceSource *)self camera];
-    v9 = [v8 name];
+    camera = [(PHImportDeviceSource *)self camera];
+    name = [camera name];
     *buf = 138412290;
-    v16 = v9;
+    v16 = name;
     _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_INFO, "Requesting session open for device %@", buf, 0xCu);
   }
 
-  v10 = [(PHImportDeviceSource *)self camera];
-  [v10 setMediaPresentation:2];
+  camera2 = [(PHImportDeviceSource *)self camera];
+  [camera2 setMediaPresentation:2];
 
-  v11 = [(PHImportDeviceSource *)self camera];
+  camera3 = [(PHImportDeviceSource *)self camera];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__PHImportDeviceSource_beginProcessingWithCompletion___block_invoke;
   v13[3] = &unk_1E75A7B08;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
-  [v11 requestOpenSessionWithOptions:v5 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [camera3 requestOpenSessionWithOptions:dictionary completion:v13];
 }
 
 void __54__PHImportDeviceSource_beginProcessingWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -933,22 +933,22 @@ LABEL_9:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)cameraDevice:(id)a3 setAccessState:(unsigned __int8)a4
+- (void)cameraDevice:(id)device setAccessState:(unsigned __int8)state
 {
-  v4 = a4;
+  stateCopy = state;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v4 == 2)
+  deviceCopy = device;
+  if (stateCopy == 2)
   {
     if ([(PHImportSource *)self sourceAccessState]!= 2)
     {
       v11 = PLImportGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [(PHImportDeviceSource *)self camera];
-        v13 = [v12 name];
+        camera = [(PHImportDeviceSource *)self camera];
+        name = [camera name];
         *buf = 138412290;
-        v25 = v13;
+        v25 = name;
         _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_DEBUG, "Notifying observers that %@ is unlocked", buf, 0xCu);
       }
 
@@ -957,7 +957,7 @@ LABEL_9:
       v15 = 3221225472;
       v16 = __52__PHImportDeviceSource_cameraDevice_setAccessState___block_invoke_74;
       v17 = &unk_1E75A7AE0;
-      v18 = self;
+      selfCopy = self;
       v10 = &v14;
       goto LABEL_11;
     }
@@ -965,7 +965,7 @@ LABEL_9:
 
   else
   {
-    if (v4 != 1)
+    if (stateCopy != 1)
     {
       [(PHImportSource *)self setSourceAccessState:0];
       goto LABEL_13;
@@ -976,10 +976,10 @@ LABEL_9:
       v7 = PLImportGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v8 = [(PHImportDeviceSource *)self camera];
-        v9 = [v8 name];
+        camera2 = [(PHImportDeviceSource *)self camera];
+        name2 = [camera2 name];
         *buf = 138412290;
-        v25 = v9;
+        v25 = name2;
         _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEBUG, "Notifying observers that %@ is locked", buf, 0xCu);
       }
 
@@ -988,37 +988,37 @@ LABEL_9:
       v20 = 3221225472;
       v21 = __52__PHImportDeviceSource_cameraDevice_setAccessState___block_invoke;
       v22 = &unk_1E75A7AE0;
-      v23 = self;
+      selfCopy2 = self;
       v10 = &v19;
 LABEL_11:
-      [(PHImportSource *)self notifyObserversUsingBlock:v10, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23];
+      [(PHImportSource *)self notifyObserversUsingBlock:v10, v14, v15, v16, v17, selfCopy, v19, v20, v21, v22, selfCopy2];
     }
   }
 
 LABEL_13:
 }
 
-- (void)fetchMetadataForRequest:(id)a3 importAsset:(id)a4 completion:(id)a5
+- (void)fetchMetadataForRequest:(id)request importAsset:(id)asset completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 representedObject];
+  requestCopy = request;
+  assetCopy = asset;
+  completionCopy = completion;
+  representedObject = [assetCopy representedObject];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __71__PHImportDeviceSource_fetchMetadataForRequest_importAsset_completion___block_invoke;
   v17[3] = &unk_1E75A7AB8;
-  v18 = v11;
-  v19 = v8;
+  v18 = representedObject;
+  v19 = requestCopy;
   v23 = v12;
-  v20 = v9;
-  v21 = self;
-  v22 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  v16 = v11;
+  v20 = assetCopy;
+  selfCopy = self;
+  v22 = completionCopy;
+  v13 = completionCopy;
+  v14 = assetCopy;
+  v15 = requestCopy;
+  v16 = representedObject;
   [v16 requestMetadataDictionaryWithOptions:MEMORY[0x1E695E0F8] completion:v17];
 }
 
@@ -1097,19 +1097,19 @@ uint64_t __71__PHImportDeviceSource_fetchMetadataForRequest_importAsset_completi
 
     v3 = [(NSMutableArray *)self->_assetMetadataRequests objectAtIndexedSubscript:0];
     [(NSMutableArray *)self->_assetMetadataRequests removeObjectAtIndex:0];
-    v4 = [v3 requestAsset];
-    v5 = [v4 representedObject];
-    v6 = [v3 completionHandler];
-    v7 = [v3 isCanceled];
-    v8 = v7;
-    if (v7)
+    requestAsset = [v3 requestAsset];
+    representedObject = [requestAsset representedObject];
+    completionHandler = [v3 completionHandler];
+    isCanceled = [v3 isCanceled];
+    v8 = isCanceled;
+    if (isCanceled)
     {
       v9 = PLImportGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [v5 name];
+        name = [representedObject name];
         *buf = 138412546;
-        v33 = v10;
+        v33 = name;
         v34 = 2048;
         v35 = v3;
         _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_DEBUG, "META CNCL: %@ <%p>", buf, 0x16u);
@@ -1118,20 +1118,20 @@ uint64_t __71__PHImportDeviceSource_fetchMetadataForRequest_importAsset_completi
       v11 = MEMORY[0x1E696ABC0];
       v30 = v27;
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [v4 fileName];
-      v14 = [v12 stringWithFormat:@"Request for metadata for %@ was canceled.", v13];
+      fileName = [requestAsset fileName];
+      v14 = [v12 stringWithFormat:@"Request for metadata for %@ was canceled.", fileName];
       v31 = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       v16 = [v11 errorWithDomain:@"com.apple.ImportErrorDomain" code:-4 userInfo:v15];
-      (v6)[2](v6, 0, v3, v16);
+      (completionHandler)[2](completionHandler, 0, v3, v16);
     }
 
     else
     {
-      v17 = [v3 requestAsset];
-      v18 = [v17 metadata];
+      requestAsset2 = [v3 requestAsset];
+      metadata = [requestAsset2 metadata];
 
-      if (!v18)
+      if (!metadata)
       {
         goto LABEL_12;
       }
@@ -1139,21 +1139,21 @@ uint64_t __71__PHImportDeviceSource_fetchMetadataForRequest_importAsset_completi
       v19 = PLImportGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v20 = [v3 requestAsset];
-        v21 = [v20 representedObject];
-        v22 = [v21 name];
+        requestAsset3 = [v3 requestAsset];
+        representedObject2 = [requestAsset3 representedObject];
+        name2 = [representedObject2 name];
         *buf = 138412546;
-        v33 = v22;
+        v33 = name2;
         v34 = 2048;
         v35 = v3;
         _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_DEBUG, "META CACH: %@ <%p>", buf, 0x16u);
       }
 
-      if (v6)
+      if (completionHandler)
       {
-        v23 = [v3 requestAsset];
-        v24 = [v23 metadata];
-        (v6)[2](v6, v24, v3, 0);
+        requestAsset4 = [v3 requestAsset];
+        metadata2 = [requestAsset4 metadata];
+        (completionHandler)[2](completionHandler, metadata2, v3, 0);
       }
 
       else
@@ -1162,9 +1162,9 @@ LABEL_12:
         v25 = PLImportGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
-          v26 = [v5 name];
+          name3 = [representedObject name];
           *buf = 138412546;
-          v33 = v26;
+          v33 = name3;
           v34 = 2048;
           v35 = v3;
           _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_DEBUG, "META SEND: %@ <%p>", buf, 0x16u);
@@ -1176,8 +1176,8 @@ LABEL_12:
         v28[2] = __47__PHImportDeviceSource_sendNextMetadataRequest__block_invoke;
         v28[3] = &unk_1E75A7A68;
         v28[4] = self;
-        v29 = v6;
-        [(PHImportDeviceSource *)self fetchMetadataForRequest:v3 importAsset:v4 completion:v28];
+        v29 = completionHandler;
+        [(PHImportDeviceSource *)self fetchMetadataForRequest:v3 importAsset:requestAsset completion:v28];
       }
     }
   }
@@ -1205,20 +1205,20 @@ void __47__PHImportDeviceSource_sendNextMetadataRequest__block_invoke(uint64_t a
   }
 }
 
-- (void)fetchMetadataUsingRequest:(id)a3 withCompletion:(id)a4
+- (void)fetchMetadataUsingRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   assetDataRequestQueue = self->_assetDataRequestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PHImportDeviceSource_fetchMetadataUsingRequest_withCompletion___block_invoke;
   block[3] = &unk_1E75AA870;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = requestCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(assetDataRequestQueue, block);
 }
 
@@ -1319,11 +1319,11 @@ LABEL_10:
 {
   v52 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_assetDataRequestQueue);
-  v34 = self;
+  selfCopy = self;
   p_assetThumbnailHighPriorityRequests = &self->_assetThumbnailHighPriorityRequests;
   if (![(NSMutableArray *)*p_assetThumbnailHighPriorityRequests count])
   {
-    p_assetThumbnailHighPriorityRequests = &v34->_assetThumbnailRequests;
+    p_assetThumbnailHighPriorityRequests = &selfCopy->_assetThumbnailRequests;
   }
 
   v4 = *p_assetThumbnailHighPriorityRequests;
@@ -1334,37 +1334,37 @@ LABEL_10:
   {
     v5 = [(NSMutableArray *)v4 objectAtIndexedSubscript:0];
     [(NSMutableArray *)v4 removeObjectAtIndex:0];
-    v6 = [v5 requestAsset];
-    v7 = [v6 representedObject];
-    v8 = [v5 completionHandler];
-    v9 = v8;
-    if (!v7 || !v8)
+    requestAsset = [v5 requestAsset];
+    representedObject = [requestAsset representedObject];
+    completionHandler = [v5 completionHandler];
+    v9 = completionHandler;
+    if (!representedObject || !completionHandler)
     {
       v10 = PLImportGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = _Block_copy(v9);
         *buf = 138412546;
-        v47 = v7;
+        v47 = representedObject;
         v48 = 2112;
         v49 = v11;
         _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_ERROR, "Expect to have non-nil cameraFile and completionHandler: %@, %@", buf, 0x16u);
       }
     }
 
-    v12 = [v5 isCanceled];
+    isCanceled = [v5 isCanceled];
     v13 = PLImportGetLog();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
-    if (v12)
+    if (isCanceled)
     {
       if (v14)
       {
-        v15 = [v7 name];
-        v16 = [v5 longestSide];
+        name = [representedObject name];
+        longestSide = [v5 longestSide];
         *buf = 138412802;
-        v47 = v15;
+        v47 = name;
         v48 = 2048;
-        v49 = v16;
+        v49 = longestSide;
         v50 = 2048;
         v51 = v5;
         _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEBUG, "THMB CNCL: %@ (%lu) <%p>", buf, 0x20u);
@@ -1378,8 +1378,8 @@ LABEL_10:
       v17 = MEMORY[0x1E696ABC0];
       v44 = v31;
       v18 = MEMORY[0x1E696AEC0];
-      v19 = [v6 fileName];
-      v20 = [v18 stringWithFormat:@"Request for thumbnail for %@ was canceled.", v19];
+      fileName = [requestAsset fileName];
+      v20 = [v18 stringWithFormat:@"Request for thumbnail for %@ was canceled.", fileName];
       v45 = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
       v22 = [v17 errorWithDomain:@"com.apple.ImportErrorDomain" code:-4 userInfo:v21];
@@ -1390,18 +1390,18 @@ LABEL_10:
     {
       if (v14)
       {
-        v23 = [v7 name];
-        v24 = [v5 longestSide];
+        name2 = [representedObject name];
+        longestSide2 = [v5 longestSide];
         *buf = 138412802;
-        v47 = v23;
+        v47 = name2;
         v48 = 2048;
-        v49 = v24;
+        v49 = longestSide2;
         v50 = 2048;
         v51 = v5;
         _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEBUG, "THMB SEND: %@ (%lu) <%p>", buf, 0x20u);
       }
 
-      v34->_waitingForAssetThumbnailRequest = 1;
+      selfCopy->_waitingForAssetThumbnailRequest = 1;
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v26 = v25;
       v42[0] = v33;
@@ -1414,21 +1414,21 @@ LABEL_10:
       v35[1] = 3221225472;
       v35[2] = __48__PHImportDeviceSource_sendNextThumbnailRequest__block_invoke;
       v35[3] = &unk_1E75A7A40;
-      v29 = v7;
+      v29 = representedObject;
       v36 = v29;
       v30 = v5;
       v41 = v26;
       v37 = v30;
-      v38 = v34;
-      v39 = v6;
+      v38 = selfCopy;
+      v39 = requestAsset;
       v40 = v9;
       [v29 requestThumbnailDataWithOptions:v28 completion:v35];
 
-      v19 = v36;
+      fileName = v36;
     }
 
 LABEL_19:
-    if ((v12 & 1) == 0)
+    if ((isCanceled & 1) == 0)
     {
       break;
     }
@@ -1509,20 +1509,20 @@ void __48__PHImportDeviceSource_sendNextThumbnailRequest__block_invoke_65(void *
   }
 }
 
-- (void)fetchThumbnailDataUsingRequest:(id)a3 withCompletion:(id)a4
+- (void)fetchThumbnailDataUsingRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   assetDataRequestQueue = self->_assetDataRequestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__PHImportDeviceSource_fetchThumbnailDataUsingRequest_withCompletion___block_invoke;
   block[3] = &unk_1E75AA870;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = requestCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(assetDataRequestQueue, block);
 }
 
@@ -1602,36 +1602,36 @@ void __70__PHImportDeviceSource_fetchThumbnailDataUsingRequest_withCompletion___
 
 - (id)uuid
 {
-  v3 = [(ICCameraDevice *)self->_camera UUIDString];
-  v4 = v3;
-  if (v3)
+  uUIDString = [(ICCameraDevice *)self->_camera UUIDString];
+  v4 = uUIDString;
+  if (uUIDString)
   {
-    v5 = v3;
+    uuid = uUIDString;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PHImportDeviceSource;
-    v5 = [(PHImportSource *)&v8 uuid];
+    uuid = [(PHImportSource *)&v8 uuid];
   }
 
-  v6 = v5;
+  v6 = uuid;
 
   return v6;
 }
 
-- (PHImportDeviceSource)initWithDevice:(id)a3
+- (PHImportDeviceSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v36.receiver = self;
   v36.super_class = PHImportDeviceSource;
   v6 = [(PHImportSource *)&v36 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_camera, a3);
-    [v5 setDelegate:v7];
+    objc_storeStrong(&v6->_camera, device);
+    [deviceCopy setDelegate:v7];
     v8 = objc_opt_new();
     assetByCameraFile = v7->_assetByCameraFile;
     v7->_assetByCameraFile = v8;
@@ -1673,9 +1673,9 @@ void __70__PHImportDeviceSource_fetchThumbnailDataUsingRequest_withCompletion___
     assetDataRequestQueue = v7->_assetDataRequestQueue;
     v7->_assetDataRequestQueue = v25;
 
-    v27 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     assetDataRequestsByCameraItem = v7->_assetDataRequestsByCameraItem;
-    v7->_assetDataRequestsByCameraItem = v27;
+    v7->_assetDataRequestsByCameraItem = weakToStrongObjectsMapTable;
 
     [(PHImportSource *)v7 setSourceAccessState:0];
     [(PHImportSource *)v7 setOpen:1];

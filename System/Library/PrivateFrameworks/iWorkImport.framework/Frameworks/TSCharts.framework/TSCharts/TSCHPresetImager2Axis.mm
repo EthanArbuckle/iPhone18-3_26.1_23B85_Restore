@@ -1,14 +1,14 @@
 @interface TSCHPresetImager2Axis
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImager2Axis
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  width = a4.width;
+  width = size.width;
   v147[16] = *MEMORY[0x277D85DE8];
-  v11 = a6;
+  presetCopy = preset;
   objc_msgSend_p_nativeSize(self, v12, v13, v14, v15);
   v17 = width / v16;
   v132 = sub_27628CE94(20.0, 11.0, 20.0, 34.0, v17);
@@ -28,8 +28,8 @@
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v129 = v11;
-  v38 = objc_msgSend_seriesStyles(v11, v37, v30, v31, v33);
+  v129 = presetCopy;
+  v38 = objc_msgSend_seriesStyles(presetCopy, v37, v30, v31, v33);
   v43 = objc_msgSend_objectAtIndexedSubscript_(v38, v39, v40, v41, v42, 0);
   v126 = v43;
   v127 = v38;
@@ -84,10 +84,10 @@
     v134[4] = self;
     v135 = v59;
     v136 = v65;
-    v137 = a3;
+    contextCopy = context;
     v69 = v65;
     v70 = v59;
-    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v71, *&v131, *(&v131 + 1), *&v133, a3, v129, v70, 1, v134, *(&v133 + 1), v131, v133);
+    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v71, *&v131, *(&v131 + 1), *&v133, context, v129, v70, 1, v134, *(&v133 + 1), v131, v133);
 
     v56 += 4;
   }
@@ -101,13 +101,13 @@
   v146[5] = v74;
   v146[6] = sub_27628CEA8(112.0, 81.0, v17);
   v146[7] = v75;
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v78 = objc_msgSend_colorWithWhite_alpha_(MEMORY[0x277D81180], v76, 0.46, 1.0, v77);
   v83 = objc_msgSend_CGColor(v78, v79, v80, v81, v82);
-  CGContextSetStrokeColorWithColor(a3, v83);
-  CGContextSetLineCap(a3, kCGLineCapSquare);
-  CGContextSetLineJoin(a3, kCGLineJoinMiter);
-  CGContextSetLineWidth(a3, 1.0);
+  CGContextSetStrokeColorWithColor(context, v83);
+  CGContextSetLineCap(context, kCGLineCapSquare);
+  CGContextSetLineJoin(context, kCGLineJoinMiter);
+  CGContextSetLineWidth(context, 1.0);
   v148.origin.x = sub_27628CE94(16.0, 9.0, 112.0, 85.0, v17);
   x = v148.origin.x;
   y = v148.origin.y;
@@ -181,25 +181,25 @@
   v99 = CGRectGetMaxY(v159);
   v145[0] = v98;
   v145[1] = v99;
-  sub_27628C654(a3, &points.x, v141, 2, 1.0);
-  sub_27628C654(a3, v142, v143, 2, 1.0);
-  sub_27628C654(a3, v144, v145, 2, 1.0);
-  CGContextStrokeLineSegments(a3, &points, 6uLL);
-  CGContextRestoreGState(a3);
+  sub_27628C654(context, &points.x, v141, 2, 1.0);
+  sub_27628C654(context, v142, v143, 2, 1.0);
+  sub_27628C654(context, v144, v145, 2, 1.0);
+  CGContextStrokeLineSegments(context, &points, 6uLL);
+  CGContextRestoreGState(context);
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v104 = objc_msgSend_p_strokeFromStyle_specific_default_(self, v100, v101, v102, v103, v126, 1503, 0);
   v109 = objc_msgSend_mutableCopy(v104, v105, v106, v107, v108);
 
   objc_msgSend_setWidth_(v109, v110, 2.0, v111, v112);
   v113 = sub_2762A1ACC(v146, 4uLL, 0);
-  objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v109, v114, v115, v116, v117, v113, 0, a3);
+  objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v109, v114, v115, v116, v117, v113, 0, context);
   CGPathRelease(v113);
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 
-  if (a8)
+  if (cache)
   {
-    *a8 = hasAllResourcesForFill;
+    *cache = hasAllResourcesForFill;
   }
 }
 

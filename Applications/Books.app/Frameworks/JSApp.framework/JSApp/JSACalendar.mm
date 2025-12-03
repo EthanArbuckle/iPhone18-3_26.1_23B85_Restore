@@ -7,9 +7,9 @@
 + (unint64_t)firstDayOfWeek
 {
   v2 = +[NSCalendar currentCalendar];
-  v3 = [v2 firstWeekday];
+  firstWeekday = [v2 firstWeekday];
 
-  return v3;
+  return firstWeekday;
 }
 
 @end

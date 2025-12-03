@@ -1,19 +1,19 @@
 @interface TSCEFunction_MULTINOMIAL
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_MULTINOMIAL
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v94[0] = 0;
-  v9 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, v8, a3, a4, 0, 1, v94);
+  v9 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, v8, context, spec, 0, 1, v94);
   v10 = v94[0];
   if (v10)
   {
     v14 = v10;
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v11, v10, v12, v13);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v11, v10, v12, v13);
     goto LABEL_40;
   }
 
@@ -22,9 +22,9 @@
   TSUDecimal::operator=();
   TSUDecimal::operator=();
   v20 = objc_msgSend_count(v9, v16, v17, v18, v19);
-  v79 = a3;
-  v84[0] = v79;
-  v84[1] = a4;
+  contextCopy = context;
+  v84[0] = contextCopy;
+  v84[1] = spec;
   v85 = 0;
   v86[0] = 0;
   *(v86 + 7) = 0;
@@ -61,12 +61,12 @@ LABEL_28:
   }
 
   v83 = 0;
-  v32 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v26, v31, v79, a4, 0, &v83);
+  v32 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v26, v31, contextCopy, spec, 0, &v83);
   v33 = v83;
   if (v33)
   {
     v14 = v33;
-    v15 = objc_msgSend_raiseErrorOrConvert_(v79, v34, v33, v36, v37);
+    v15 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v34, v33, v36, v37);
     goto LABEL_32;
   }
 
@@ -156,9 +156,9 @@ LABEL_27:
   }
 
 LABEL_31:
-  v65 = objc_msgSend_functionName(a4, v58, v59, v60, v61);
+  v65 = objc_msgSend_functionName(spec, v58, v59, v60, v61);
   v69 = objc_msgSend_numberErrorForFunctionName_(TSCEError, v66, v65, v67, v68);
-  v15 = objc_msgSend_raiseErrorOrConvert_(v79, v70, v69, v71, v72);
+  v15 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v70, v69, v71, v72);
 
   v14 = 0;
 LABEL_32:
@@ -180,7 +180,7 @@ LABEL_33:
     v82 = v80[0];
     if (v9)
     {
-      objc_msgSend_formatWithContext_(v9, v73, v79, v74, v75);
+      objc_msgSend_formatWithContext_(v9, v73, contextCopy, v74, v75);
     }
 
     else

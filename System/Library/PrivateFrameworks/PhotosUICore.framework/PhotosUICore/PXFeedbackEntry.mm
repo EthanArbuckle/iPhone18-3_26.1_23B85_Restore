@@ -15,13 +15,13 @@
 + (id)positiveFeedbackForMemoryDetailsKeys;
 - (BOOL)userLikedResults;
 - (PXFeedbackEntry)init;
-- (PXFeedbackEntry)initWithCoder:(id)a3;
-- (PXFeedbackEntry)initWithSystemID:(id)a3 timestamp:(id)a4;
-- (id)asTextForItemKey:(id)a3;
+- (PXFeedbackEntry)initWithCoder:(id)coder;
+- (PXFeedbackEntry)initWithSystemID:(id)d timestamp:(id)timestamp;
+- (id)asTextForItemKey:(id)key;
 - (id)longDescription;
-- (id)osKeyForItemKey:(id)a3;
+- (id)osKeyForItemKey:(id)key;
 - (id)uniqueID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PXFeedbackEntry
@@ -39,26 +39,26 @@
   v35 = [v3 stringWithFormat:@"<%@: %p>]\n", v5, self];
 
   v6 = v31[5];
-  v7 = [(PXFeedbackEntry *)self uniqueID];
-  v8 = [v6 stringByAppendingFormat:@"   - uniqueID  : %@\n", v7];
+  uniqueID = [(PXFeedbackEntry *)self uniqueID];
+  v8 = [v6 stringByAppendingFormat:@"   - uniqueID  : %@\n", uniqueID];
   v9 = v31[5];
   v31[5] = v8;
 
   v10 = v31[5];
-  v11 = [(PXFeedbackEntry *)self systemID];
-  v12 = [v10 stringByAppendingFormat:@"   - systemID  : %@\n", v11];
+  systemID = [(PXFeedbackEntry *)self systemID];
+  v12 = [v10 stringByAppendingFormat:@"   - systemID  : %@\n", systemID];
   v13 = v31[5];
   v31[5] = v12;
 
   v14 = v31[5];
-  v15 = [(PXFeedbackEntry *)self appVersion];
-  v16 = [v14 stringByAppendingFormat:@"   - appVersion: %@\n", v15];
+  appVersion = [(PXFeedbackEntry *)self appVersion];
+  v16 = [v14 stringByAppendingFormat:@"   - appVersion: %@\n", appVersion];
   v17 = v31[5];
   v31[5] = v16;
 
   v18 = v31[5];
-  v19 = [(PXFeedbackEntry *)self timestamp];
-  v20 = [v18 stringByAppendingFormat:@"   - timestamp : %@\n", v19];
+  timestamp = [(PXFeedbackEntry *)self timestamp];
+  v20 = [v18 stringByAppendingFormat:@"   - timestamp : %@\n", timestamp];
   v21 = v31[5];
   v31[5] = v20;
 
@@ -70,13 +70,13 @@
   v25 = v31[5];
   v31[5] = v24;
 
-  v26 = [(PXFeedbackEntry *)self feedbackItemsDict];
+  feedbackItemsDict = [(PXFeedbackEntry *)self feedbackItemsDict];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __34__PXFeedbackEntry_longDescription__block_invoke;
   v29[3] = &unk_1E77453D8;
   v29[4] = &v30;
-  [v26 enumerateKeysAndObjectsUsingBlock:v29];
+  [feedbackItemsDict enumerateKeysAndObjectsUsingBlock:v29];
 
   v27 = v31[5];
   _Block_object_dispose(&v30, 8);
@@ -105,27 +105,27 @@ void __34__PXFeedbackEntry_longDescription__block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (id)asTextForItemKey:(id)a3
+- (id)asTextForItemKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_feedbackItemDetails objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self->_feedbackItemDetails objectForKeyedSubscript:keyCopy];
   v6 = [v5 objectForKeyedSubscript:@"asText"];
   if (![v6 length])
   {
-    NSLog(&cfstr_ErrorUknownIte.isa, v4);
+    NSLog(&cfstr_ErrorUknownIte.isa, keyCopy);
   }
 
   return v6;
 }
 
-- (id)osKeyForItemKey:(id)a3
+- (id)osKeyForItemKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_feedbackItemDetails objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self->_feedbackItemDetails objectForKeyedSubscript:keyCopy];
   v6 = [v5 objectForKeyedSubscript:@"osKey"];
   if (![v6 length])
   {
-    NSLog(&cfstr_ErrorUknownIte.isa, v4);
+    NSLog(&cfstr_ErrorUknownIte.isa, keyCopy);
   }
 
   return v6;
@@ -173,90 +173,90 @@ void __35__PXFeedbackEntry_userLikedResults__block_invoke(uint64_t a1, void *a2,
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v3 setDateFormat:@"yyyyMMdd-HHmmss.SSSSS"];
-  v4 = [(PXFeedbackEntry *)self timestamp];
-  v5 = [v3 stringFromDate:v4];
+  timestamp = [(PXFeedbackEntry *)self timestamp];
+  v5 = [v3 stringFromDate:timestamp];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(PXFeedbackEntry *)self systemID];
-  v8 = [v7 substringToIndex:6];
+  systemID = [(PXFeedbackEntry *)self systemID];
+  v8 = [systemID substringToIndex:6];
   v9 = [v6 stringWithFormat:@"%@-%@", v8, v5];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(PXFeedbackEntry *)self feedbackItemsDict];
-  [v8 encodeObject:v4 forKey:@"feedbackItemsDict"];
+  coderCopy = coder;
+  feedbackItemsDict = [(PXFeedbackEntry *)self feedbackItemsDict];
+  [coderCopy encodeObject:feedbackItemsDict forKey:@"feedbackItemsDict"];
 
-  [v8 encodeInt:-[PXFeedbackEntry generalFeedback](self forKey:{"generalFeedback"), @"generalFeedback"}];
-  v5 = [(PXFeedbackEntry *)self systemID];
-  [v8 encodeObject:v5 forKey:@"systemID"];
+  [coderCopy encodeInt:-[PXFeedbackEntry generalFeedback](self forKey:{"generalFeedback"), @"generalFeedback"}];
+  systemID = [(PXFeedbackEntry *)self systemID];
+  [coderCopy encodeObject:systemID forKey:@"systemID"];
 
-  v6 = [(PXFeedbackEntry *)self timestamp];
-  [v8 encodeObject:v6 forKey:@"timestamp"];
+  timestamp = [(PXFeedbackEntry *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
 
-  v7 = [(PXFeedbackEntry *)self appVersion];
-  [v8 encodeObject:v7 forKey:@"appVersion"];
+  appVersion = [(PXFeedbackEntry *)self appVersion];
+  [coderCopy encodeObject:appVersion forKey:@"appVersion"];
 
-  [v8 encodeBool:-[PXFeedbackEntry alreadyCollected](self forKey:{"alreadyCollected"), @"alreadyCollected"}];
+  [coderCopy encodeBool:-[PXFeedbackEntry alreadyCollected](self forKey:{"alreadyCollected"), @"alreadyCollected"}];
 }
 
-- (PXFeedbackEntry)initWithCoder:(id)a3
+- (PXFeedbackEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PXFeedbackEntry;
   v5 = [(PXFeedbackEntry *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"feedbackItemsDict"];
+    v6 = [coderCopy decodePropertyListForKey:@"feedbackItemsDict"];
     [(PXFeedbackEntry *)v5 setFeedbackItemsDict:v6];
 
-    v7 = [(PXFeedbackEntry *)v5 feedbackItemsDict];
+    feedbackItemsDict = [(PXFeedbackEntry *)v5 feedbackItemsDict];
 
-    if (!v7)
+    if (!feedbackItemsDict)
     {
       v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [(PXFeedbackEntry *)v5 setFeedbackItemsDict:v8];
     }
 
-    -[PXFeedbackEntry setGeneralFeedback:](v5, "setGeneralFeedback:", [v4 decodeIntForKey:@"generalFeedback"]);
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemID"];
+    -[PXFeedbackEntry setGeneralFeedback:](v5, "setGeneralFeedback:", [coderCopy decodeIntForKey:@"generalFeedback"]);
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemID"];
     [(PXFeedbackEntry *)v5 setSystemID:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     [(PXFeedbackEntry *)v5 setTimestamp:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appVersion"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appVersion"];
     [(PXFeedbackEntry *)v5 setAppVersion:v11];
 
-    -[PXFeedbackEntry setAlreadyCollected:](v5, "setAlreadyCollected:", [v4 decodeBoolForKey:@"alreadyCollected"]);
+    -[PXFeedbackEntry setAlreadyCollected:](v5, "setAlreadyCollected:", [coderCopy decodeBoolForKey:@"alreadyCollected"]);
   }
 
   return v5;
 }
 
-- (PXFeedbackEntry)initWithSystemID:(id)a3 timestamp:(id)a4
+- (PXFeedbackEntry)initWithSystemID:(id)d timestamp:(id)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  timestampCopy = timestamp;
   v8 = [(PXFeedbackEntry *)self init];
   v9 = v8;
   if (v8)
   {
     [(PXFeedbackEntry *)v8 setGeneralFeedback:0];
-    [(PXFeedbackEntry *)v9 setSystemID:v6];
-    [(PXFeedbackEntry *)v9 setTimestamp:v7];
+    [(PXFeedbackEntry *)v9 setSystemID:dCopy];
+    [(PXFeedbackEntry *)v9 setTimestamp:timestampCopy];
     [(PXFeedbackEntry *)v9 setAlreadyCollected:0];
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v11 = [v10 infoDictionary];
-    v12 = [v11 objectForKey:@"CFBundleShortVersionString"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v12 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
-    v13 = [MEMORY[0x1E696AAE8] mainBundle];
-    v14 = [v13 infoDictionary];
-    v15 = [v14 objectForKey:*MEMORY[0x1E695E500]];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary2 = [mainBundle2 infoDictionary];
+    v15 = [infoDictionary2 objectForKey:*MEMORY[0x1E695E500]];
 
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", v12, v15];
     appVersion = v9->_appVersion;
@@ -393,29 +393,29 @@ void __35__PXFeedbackEntry_userLikedResults__block_invoke(uint64_t a1, void *a2,
 
 + (id)createFakeTestFeedbackDictionary
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 identifierForVendor];
-  v4 = [v3 UUIDString];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  identifierForVendor = [currentDevice identifierForVendor];
+  uUIDString = [identifierForVendor UUIDString];
 
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MyApp%ld.%ld(%ld)", 1, arc4random() & 1, 101];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setValue:v4 forKey:kPXFeedbackEntrySystemIDKey];
-  [v7 setValue:v5 forKey:kPXFeedbackEntryTimestampKey];
-  [v7 setValue:v6 forKey:kPXFeedbackEntryAppVersionKey];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setValue:uUIDString forKey:kPXFeedbackEntrySystemIDKey];
+  [dictionary setValue:date forKey:kPXFeedbackEntryTimestampKey];
+  [dictionary setValue:v6 forKey:kPXFeedbackEntryAppVersionKey];
 
-  return v7;
+  return dictionary;
 }
 
 + (id)createFakeTestEntry
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 identifierForVendor];
-  v4 = [v3 UUIDString];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  identifierForVendor = [currentDevice identifierForVendor];
+  uUIDString = [identifierForVendor UUIDString];
 
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MyApp%ld.%ld(%ld)", 1, arc4random() & 1, 101];
-  v7 = [[PXFeedbackEntry alloc] initWithSystemID:v4 timestamp:v5];
+  v7 = [[PXFeedbackEntry alloc] initWithSystemID:uUIDString timestamp:date];
   [(PXFeedbackEntry *)v7 setAppVersion:v6];
 
   return v7;

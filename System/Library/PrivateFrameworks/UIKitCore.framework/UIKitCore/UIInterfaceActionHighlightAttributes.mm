@@ -1,9 +1,9 @@
 @interface UIInterfaceActionHighlightAttributes
 - (BOOL)_hasNonClearBackgroundColor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIInterfaceActionHighlightAttributes)init;
 - (double)opacity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newBackgroundHighlightView;
 @end
 
@@ -26,27 +26,27 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(UIInterfaceActionHighlightAttributes *)self opacity];
   [v4 setOpacity:?];
-  v5 = [(UIInterfaceActionHighlightAttributes *)self filters];
-  [v4 setFilters:v5];
+  filters = [(UIInterfaceActionHighlightAttributes *)self filters];
+  [v4 setFilters:filters];
 
-  v6 = [(UIInterfaceActionHighlightAttributes *)self backgroundColor];
-  [v4 setBackgroundColor:v6];
+  backgroundColor = [(UIInterfaceActionHighlightAttributes *)self backgroundColor];
+  [v4 setBackgroundColor:backgroundColor];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = equalCopy;
     [(UIInterfaceActionHighlightAttributes *)self opacity];
     v9 = v8;
     [v7 opacity];
@@ -58,15 +58,15 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v11 = [(UIInterfaceActionHighlightAttributes *)self backgroundColor];
-    v12 = [v7 backgroundColor];
-    if (v11 == v12 || (-[UIInterfaceActionHighlightAttributes backgroundColor](self, "backgroundColor"), v3 = objc_claimAutoreleasedReturnValue(), [v7 backgroundColor], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    backgroundColor = [(UIInterfaceActionHighlightAttributes *)self backgroundColor];
+    backgroundColor2 = [v7 backgroundColor];
+    if (backgroundColor == backgroundColor2 || (-[UIInterfaceActionHighlightAttributes backgroundColor](self, "backgroundColor"), v3 = objc_claimAutoreleasedReturnValue(), [v7 backgroundColor], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v14 = [(UIInterfaceActionHighlightAttributes *)self filters];
-      v15 = [v7 filters];
-      v13 = [v14 isEqual:v15];
+      filters = [(UIInterfaceActionHighlightAttributes *)self filters];
+      filters2 = [v7 filters];
+      v13 = [filters isEqual:filters2];
 
-      if (v11 == v12)
+      if (backgroundColor == backgroundColor2)
       {
 LABEL_10:
 
@@ -107,15 +107,15 @@ LABEL_12:
 - (id)newBackgroundHighlightView
 {
   v3 = [_UIBlendingHighlightView alloc];
-  v4 = [(UIInterfaceActionHighlightAttributes *)self filters];
-  v5 = [(_UIBlendingHighlightView *)v3 initWithTopLevelFilters:v4 compositingColors:MEMORY[0x1E695E0F0] compositingFilterModes:MEMORY[0x1E695E0F0]];
+  filters = [(UIInterfaceActionHighlightAttributes *)self filters];
+  v5 = [(_UIBlendingHighlightView *)v3 initWithTopLevelFilters:filters compositingColors:MEMORY[0x1E695E0F0] compositingFilterModes:MEMORY[0x1E695E0F0]];
 
-  v6 = [(UIInterfaceActionHighlightAttributes *)self backgroundColor];
+  backgroundColor = [(UIInterfaceActionHighlightAttributes *)self backgroundColor];
 
-  if (v6)
+  if (backgroundColor)
   {
-    v7 = [(UIInterfaceActionHighlightAttributes *)self backgroundColor];
-    [(UIView *)v5 setBackgroundColor:v7];
+    backgroundColor2 = [(UIInterfaceActionHighlightAttributes *)self backgroundColor];
+    [(UIView *)v5 setBackgroundColor:backgroundColor2];
   }
 
   [(UIInterfaceActionHighlightAttributes *)self opacity];

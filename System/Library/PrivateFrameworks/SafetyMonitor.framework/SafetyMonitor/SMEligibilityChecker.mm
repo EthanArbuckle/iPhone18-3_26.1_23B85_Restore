@@ -1,36 +1,36 @@
 @interface SMEligibilityChecker
-+ (id)convertEligibilityTypeToString:(int64_t)a3;
-+ (id)convertToPushTokenMap:(id)a3;
-- (BOOL)checkRecipientAccountIsUnique:(id)a3;
-- (SMEligibilityChecker)initWithQueue:(id)a3;
-- (SMEligibilityChecker)initWithQueue:(id)a3 IDSIDQueryController:(id)a4 iMessageIDSService:(id)a5 iCloudIDSService:(id)a6;
-- (int64_t)reportedEligibilityWithiMessageEligibility:(int64_t)a3 iCloudEligibility:(int64_t)a4;
-- (void)addDelegateForService:(id)a3;
-- (void)checkConversationEligibility:(id)a3 handler:(id)a4;
-- (void)checkReceiverEligibility:(id)a3 handler:(id)a4;
-- (void)resolveEndpointsForDestinations:(id)a3 service:(id)a4 requiredCapabilities:(id)a5 completionBlock:(id)a6;
++ (id)convertEligibilityTypeToString:(int64_t)string;
++ (id)convertToPushTokenMap:(id)map;
+- (BOOL)checkRecipientAccountIsUnique:(id)unique;
+- (SMEligibilityChecker)initWithQueue:(id)queue;
+- (SMEligibilityChecker)initWithQueue:(id)queue IDSIDQueryController:(id)controller iMessageIDSService:(id)service iCloudIDSService:(id)sService;
+- (int64_t)reportedEligibilityWithiMessageEligibility:(int64_t)eligibility iCloudEligibility:(int64_t)cloudEligibility;
+- (void)addDelegateForService:(id)service;
+- (void)checkConversationEligibility:(id)eligibility handler:(id)handler;
+- (void)checkReceiverEligibility:(id)eligibility handler:(id)handler;
+- (void)resolveEndpointsForDestinations:(id)destinations service:(id)service requiredCapabilities:(id)capabilities completionBlock:(id)block;
 @end
 
 @implementation SMEligibilityChecker
 
-- (SMEligibilityChecker)initWithQueue:(id)a3
+- (SMEligibilityChecker)initWithQueue:(id)queue
 {
   v4 = MEMORY[0x277D18728];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
+  queueCopy = queue;
+  sharedInstance = [v4 sharedInstance];
   v7 = [objc_alloc(MEMORY[0x277D18778]) initWithService:@"com.apple.private.alloy.safetymonitor"];
   v8 = [objc_alloc(MEMORY[0x277D18778]) initWithService:@"com.apple.private.alloy.safetymonitor.multiplex"];
-  v9 = [(SMEligibilityChecker *)self initWithQueue:v5 IDSIDQueryController:v6 iMessageIDSService:v7 iCloudIDSService:v8];
+  v9 = [(SMEligibilityChecker *)self initWithQueue:queueCopy IDSIDQueryController:sharedInstance iMessageIDSService:v7 iCloudIDSService:v8];
 
   return v9;
 }
 
-- (SMEligibilityChecker)initWithQueue:(id)a3 IDSIDQueryController:(id)a4 iMessageIDSService:(id)a5 iCloudIDSService:(id)a6
+- (SMEligibilityChecker)initWithQueue:(id)queue IDSIDQueryController:(id)controller iMessageIDSService:(id)service iCloudIDSService:(id)sService
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  controllerCopy = controller;
+  serviceCopy = service;
+  sServiceCopy = sService;
   v19.receiver = self;
   v19.super_class = SMEligibilityChecker;
   v15 = [(SMEligibilityChecker *)&v19 init];
@@ -41,12 +41,12 @@
   }
 
   v17 = 0;
-  if (v12 && v13)
+  if (controllerCopy && serviceCopy)
   {
-    objc_storeStrong(&v15->_queue, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_queue, queue);
+    objc_storeStrong(p_isa + 2, controller);
+    objc_storeStrong(p_isa + 3, service);
+    objc_storeStrong(p_isa + 4, sService);
     [p_isa addDelegateForService:@"com.apple.private.alloy.safetymonitor"];
     [p_isa addDelegateForService:@"com.apple.private.alloy.safetymonitor.multiplex"];
 LABEL_5:
@@ -56,28 +56,28 @@ LABEL_5:
   return v17;
 }
 
-- (void)addDelegateForService:(id)a3
+- (void)addDelegateForService:(id)service
 {
-  v4 = a3;
-  v6 = [(SMEligibilityChecker *)self idsIDQueryController];
-  v5 = [(SMEligibilityChecker *)self queue];
-  [v6 addDelegate:self forService:v4 listenerID:@"__kSMServiceForEligibilityCheckListenerID" queue:v5];
+  serviceCopy = service;
+  idsIDQueryController = [(SMEligibilityChecker *)self idsIDQueryController];
+  queue = [(SMEligibilityChecker *)self queue];
+  [idsIDQueryController addDelegate:self forService:serviceCopy listenerID:@"__kSMServiceForEligibilityCheckListenerID" queue:queue];
 }
 
-+ (id)convertToPushTokenMap:(id)a3
++ (id)convertToPushTokenMap:(id)map
 {
-  if (a3)
+  if (map)
   {
     v3 = MEMORY[0x277CBEB38];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    mapCopy = map;
+    v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(mapCopy, "count")}];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke;
     v9[3] = &unk_279B649D8;
     v10 = v5;
     v6 = v5;
-    [v4 enumerateObjectsUsingBlock:v9];
+    [mapCopy enumerateObjectsUsingBlock:v9];
 
     v7 = [v6 copy];
   }
@@ -98,12 +98,12 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
   [v2 setObject:v3 forKey:v4];
 }
 
-- (void)checkReceiverEligibility:(id)a3 handler:(id)a4
+- (void)checkReceiverEligibility:(id)eligibility handler:(id)handler
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7 && ([v7 primaryHandle], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  eligibilityCopy = eligibility;
+  handlerCopy = handler;
+  if (eligibilityCopy && ([eligibilityCopy primaryHandle], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     v58 = 0;
     v59 = &v58;
@@ -121,8 +121,8 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
       _os_signpost_emit_with_name_impl(&dword_26455D000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v14, "SMCheckReceiverEligibility", " enableTelemetry=YES ", &buf, 2u);
     }
 
-    v15 = [v7 primaryHandle];
-    v16 = [(SMEligibilityChecker *)self checkRecipientAccountIsUnique:v15];
+    primaryHandle = [eligibilityCopy primaryHandle];
+    v16 = [(SMEligibilityChecker *)self checkRecipientAccountIsUnique:primaryHandle];
 
     if (v16)
     {
@@ -138,8 +138,8 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
       v57[2] = 0x2020000000;
       v57[3] = 0;
       dispatch_group_enter(v17);
-      v18 = [v7 primaryHandle];
-      v64 = v18;
+      primaryHandle2 = [eligibilityCopy primaryHandle];
+      v64 = primaryHandle2;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
       v63 = *MEMORY[0x277D18918];
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
@@ -147,7 +147,7 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
       v52[1] = 3221225472;
       v52[2] = __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke;
       v52[3] = &unk_279B64A00;
-      v21 = v7;
+      v21 = eligibilityCopy;
       v53 = v21;
       v55 = v57;
       p_buf = &buf;
@@ -166,8 +166,8 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
       v49[2] = 0x2020000000;
       v49[3] = 0;
       dispatch_group_enter(v22);
-      v23 = [v21 primaryHandle];
-      v62 = v23;
+      primaryHandle3 = [v21 primaryHandle];
+      v62 = primaryHandle3;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
@@ -181,7 +181,7 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
       v46 = v26;
       [(SMEligibilityChecker *)self resolveEndpointsForDestinations:v24 service:@"com.apple.private.alloy.safetymonitor.multiplex" requiredCapabilities:MEMORY[0x277CBEBF8] completionBlock:v44];
 
-      v27 = [(SMEligibilityChecker *)self queue];
+      queue = [(SMEligibilityChecker *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke_22;
@@ -194,8 +194,8 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
       v43 = a2;
       v36 = v25;
       v42 = &v58;
-      v37 = v8;
-      dispatch_group_notify(v26, v27, block);
+      v37 = handlerCopy;
+      dispatch_group_notify(v26, queue, block);
 
       _Block_object_dispose(v49, 8);
       _Block_object_dispose(v50, 8);
@@ -220,7 +220,7 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
         _os_signpost_emit_with_name_impl(&dword_26455D000, v32, OS_SIGNPOST_INTERVAL_END, v33, "SMCheckReceiverEligibility", " enableTelemetry=YES {receiverEligibility:%{public,signpost.telemetry:number1}ld}", &buf, 0xCu);
       }
 
-      (*(v8 + 2))(v8, 2, MEMORY[0x277CBEBF8], v30);
+      (*(handlerCopy + 2))(handlerCopy, 2, MEMORY[0x277CBEBF8], v30);
     }
 
     _Block_object_dispose(&v58, 8);
@@ -232,7 +232,7 @@ void __46__SMEligibilityChecker_convertToPushTokenMap___block_invoke(uint64_t a1
     v73[0] = @"No handles in the query";
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:&v72 count:1];
     v29 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SMErrorDomain" code:7 userInfo:v28];
-    (*(v8 + 2))(v8, 2, MEMORY[0x277CBEBF8], v29);
+    (*(handlerCopy + 2))(handlerCopy, 2, MEMORY[0x277CBEBF8], v29);
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -485,12 +485,12 @@ void __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke_
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkConversationEligibility:(id)a3 handler:(id)a4
+- (void)checkConversationEligibility:(id)eligibility handler:(id)handler
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v18 = a4;
-  if (v5 && ([v5 receiverHandles], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  eligibilityCopy = eligibility;
+  handlerCopy = handler;
+  if (eligibilityCopy && ([eligibilityCopy receiverHandles], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -501,7 +501,7 @@ void __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke_
         *buf = 138412546;
         *&buf[4] = v8;
         *&buf[12] = 2112;
-        *&buf[14] = v5;
+        *&buf[14] = eligibilityCopy;
         _os_log_impl(&dword_26455D000, v7, OS_LOG_TYPE_INFO, "%@, checking eligibility for %@", buf, 0x16u);
       }
     }
@@ -523,8 +523,8 @@ void __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke_
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v10 = [v5 receiverHandles];
-    v11 = [v10 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    receiverHandles = [eligibilityCopy receiverHandles];
+    v11 = [receiverHandles countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v11)
     {
       v12 = *v33;
@@ -534,11 +534,11 @@ void __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke_
         {
           if (*v33 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(receiverHandles);
           }
 
           v14 = *(*(&v32 + 1) + 8 * i);
-          [*(*&buf[8] + 40) setObject:&unk_287611A58 forKey:{v14, v18}];
+          [*(*&buf[8] + 40) setObject:&unk_287611A58 forKey:{v14, handlerCopy}];
           dispatch_group_enter(v9);
           v27[0] = MEMORY[0x277D85DD0];
           v27[1] = 3221225472;
@@ -552,13 +552,13 @@ void __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke_
           [(SMEligibilityChecker *)self checkReceiverEligibility:v14 handler:v27];
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v32 objects:v38 count:16];
+        v11 = [receiverHandles countByEnumeratingWithState:&v32 objects:v38 count:16];
       }
 
       while (v11);
     }
 
-    v15 = [(SMEligibilityChecker *)self queue];
+    queue = [(SMEligibilityChecker *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__SMEligibilityChecker_checkConversationEligibility_handler___block_invoke_32;
@@ -566,9 +566,9 @@ void __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke_
     v24 = buf;
     v25 = v36;
     v26 = a2;
-    v22 = v5;
-    v23 = v18;
-    dispatch_group_notify(v9, v15, block);
+    v22 = eligibilityCopy;
+    v23 = handlerCopy;
+    dispatch_group_notify(v9, queue, block);
 
     _Block_object_dispose(v36, 8);
     _Block_object_dispose(buf, 8);
@@ -578,9 +578,9 @@ void __57__SMEligibilityChecker_checkReceiverEligibility_handler___block_invoke_
   {
     v43 = *MEMORY[0x277CCA450];
     v44[0] = @"No conversation or missing conversation data in the query";
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:{1, v18}];
+    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:{1, handlerCopy}];
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SMErrorDomain" code:7 userInfo:v9];
-    (*(v18 + 2))(v18, 2, v16);
+    (*(handlerCopy + 2))(handlerCopy, 2, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -714,28 +714,28 @@ LABEL_15:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveEndpointsForDestinations:(id)a3 service:(id)a4 requiredCapabilities:(id)a5 completionBlock:(id)a6
+- (void)resolveEndpointsForDestinations:(id)destinations service:(id)service requiredCapabilities:(id)capabilities completionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(SMEligibilityChecker *)self idsIDQueryController];
-  v16 = [(SMEligibilityChecker *)self queue];
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  capabilitiesCopy = capabilities;
+  blockCopy = block;
+  idsIDQueryController = [(SMEligibilityChecker *)self idsIDQueryController];
+  queue = [(SMEligibilityChecker *)self queue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __101__SMEligibilityChecker_resolveEndpointsForDestinations_service_requiredCapabilities_completionBlock___block_invoke;
   v21[3] = &unk_279B64AF0;
-  v25 = v14;
+  v25 = blockCopy;
   v26 = a2;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = v14;
-  [v15 currentRemoteDevicesForDestinations:v19 service:v18 listenerID:@"__kSMServiceForEligibilityCheckListenerID" queue:v16 completionBlockWithError:v21];
+  v22 = destinationsCopy;
+  v23 = serviceCopy;
+  v24 = capabilitiesCopy;
+  v17 = capabilitiesCopy;
+  v18 = serviceCopy;
+  v19 = destinationsCopy;
+  v20 = blockCopy;
+  [idsIDQueryController currentRemoteDevicesForDestinations:v19 service:v18 listenerID:@"__kSMServiceForEligibilityCheckListenerID" queue:queue completionBlockWithError:v21];
 }
 
 void __101__SMEligibilityChecker_resolveEndpointsForDestinations_service_requiredCapabilities_completionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -851,47 +851,47 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)convertEligibilityTypeToString:(int64_t)a3
++ (id)convertEligibilityTypeToString:(int64_t)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return @"Valid";
   }
 
   else
   {
-    return *(&off_279B64B10 + a3);
+    return *(&off_279B64B10 + string);
   }
 }
 
-- (int64_t)reportedEligibilityWithiMessageEligibility:(int64_t)a3 iCloudEligibility:(int64_t)a4
+- (int64_t)reportedEligibilityWithiMessageEligibility:(int64_t)eligibility iCloudEligibility:(int64_t)cloudEligibility
 {
-  if (a3 && a4)
+  if (eligibility && cloudEligibility)
   {
     v4 = 7;
-    v5 = a4 == 5 && a3 == 3;
-    v6 = 2;
+    v5 = cloudEligibility == 5 && eligibility == 3;
+    eligibilityCopy = 2;
     if (!v5)
     {
-      v6 = a3;
+      eligibilityCopy = eligibility;
     }
 
-    if (a4 == 7)
+    if (cloudEligibility == 7)
     {
-      v6 = 7;
+      eligibilityCopy = 7;
     }
 
-    if (a3 != 7)
+    if (eligibility != 7)
     {
-      v4 = v6;
+      v4 = eligibilityCopy;
     }
 
-    if (a4 == 6)
+    if (cloudEligibility == 6)
     {
       v4 = 6;
     }
 
-    if (a3 == 6)
+    if (eligibility == 6)
     {
       return 6;
     }
@@ -902,29 +902,29 @@ LABEL_12:
     }
   }
 
-  else if (a3)
+  else if (eligibility)
   {
-    return a3;
+    return eligibility;
   }
 
   else
   {
-    return a4;
+    return cloudEligibility;
   }
 }
 
-- (BOOL)checkRecipientAccountIsUnique:(id)a3
+- (BOOL)checkRecipientAccountIsUnique:(id)unique
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  uniqueCopy = unique;
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v7 = [(SMEligibilityChecker *)self iMessageIDSService];
-  v8 = [v7 aliases];
-  [v6 unionSet:v8];
+  iMessageIDSService = [(SMEligibilityChecker *)self iMessageIDSService];
+  aliases = [iMessageIDSService aliases];
+  [v6 unionSet:aliases];
 
-  v9 = [(SMEligibilityChecker *)self iCloudIDSService];
-  v10 = [v9 aliases];
-  [v6 unionSet:v10];
+  iCloudIDSService = [(SMEligibilityChecker *)self iCloudIDSService];
+  aliases2 = [iCloudIDSService aliases];
+  [v6 unionSet:aliases2];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -935,14 +935,14 @@ LABEL_12:
       v16 = 138412802;
       v17 = v15;
       v18 = 2112;
-      v19 = v5;
+      v19 = uniqueCopy;
       v20 = 2112;
       v21 = v6;
       _os_log_debug_impl(&dword_26455D000, v11, OS_LOG_TYPE_DEBUG, "%@, checking recipient handle, recipientHandle, %@, self aliases, %@", &v16, 0x20u);
     }
   }
 
-  v12 = [v6 containsObject:v5];
+  v12 = [v6 containsObject:uniqueCopy];
 
   v13 = *MEMORY[0x277D85DE8];
   return v12 ^ 1;

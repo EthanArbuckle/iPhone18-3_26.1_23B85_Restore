@@ -1,13 +1,13 @@
 @interface MomentsImageTextAttachment
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (_TtC9MomentsUI26MomentsImageTextAttachment)initWithCoder:(id)a3;
-- (_TtC9MomentsUI26MomentsImageTextAttachment)initWithData:(id)a3 ofType:(id)a4;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (_TtC9MomentsUI26MomentsImageTextAttachment)initWithCoder:(id)coder;
+- (_TtC9MomentsUI26MomentsImageTextAttachment)initWithData:(id)data ofType:(id)type;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
 @end
 
 @implementation MomentsImageTextAttachment
 
-- (_TtC9MomentsUI26MomentsImageTextAttachment)initWithCoder:(id)a3
+- (_TtC9MomentsUI26MomentsImageTextAttachment)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC9MomentsUI26MomentsImageTextAttachment_imageView) = 0;
   v3 = (&self->super.super.isa + OBJC_IVAR____TtC9MomentsUI26MomentsImageTextAttachment_size);
@@ -19,40 +19,40 @@
   return result;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v9 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v10 = a5;
-  v11 = self;
-  v12 = MomentsImageTextAttachment.viewProvider(for:location:textContainer:)(a3, a4, a5);
+  containerCopy = container;
+  selfCopy = self;
+  v12 = MomentsImageTextAttachment.viewProvider(for:location:textContainer:)(view, location, container);
 
   swift_unknownObjectRelease();
 
   return v12;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
-  y = a7.y;
-  x = a7.x;
-  height = a6.size.height;
-  width = a6.size.width;
-  v11 = a6.origin.y;
-  v12 = a6.origin.x;
+  y = position.y;
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v11 = fragment.origin.y;
+  v12 = fragment.origin.x;
   type metadata accessor for NSAttributedStringKey(0);
   lazy protocol witness table accessor for type NSAttributedStringKey and conformance NSAttributedStringKey();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v16 = a5;
-  v17 = self;
+  containerCopy = container;
+  selfCopy = self;
   isa = Dictionary._bridgeToObjectiveC()().super.isa;
-  v28.receiver = v17;
+  v28.receiver = selfCopy;
   v28.super_class = type metadata accessor for MomentsImageTextAttachment();
-  [(MomentsImageTextAttachment *)&v28 attachmentBoundsForAttributes:isa location:a4 textContainer:v16 proposedLineFragment:v12 position:v11, width, height, x, y];
+  [(MomentsImageTextAttachment *)&v28 attachmentBoundsForAttributes:isa location:location textContainer:containerCopy proposedLineFragment:v12 position:v11, width, height, x, y];
   v20 = v19;
 
-  v21 = (*((*MEMORY[0x277D85000] & v17->super.super.isa) + 0x80))();
+  v21 = (*((*MEMORY[0x277D85000] & selfCopy->super.super.isa) + 0x80))();
   v23 = v22;
   swift_unknownObjectRelease();
 
@@ -67,11 +67,11 @@
   return result;
 }
 
-- (_TtC9MomentsUI26MomentsImageTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC9MomentsUI26MomentsImageTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     outlined consume of Data._Representation(v5, v6);
   }

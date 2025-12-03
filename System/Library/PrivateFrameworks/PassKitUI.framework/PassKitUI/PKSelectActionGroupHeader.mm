@@ -1,14 +1,14 @@
 @interface PKSelectActionGroupHeader
-- (PKSelectActionGroupHeader)initWithTitle:(id)a3 subtitle:(id)a4;
+- (PKSelectActionGroupHeader)initWithTitle:(id)title subtitle:(id)subtitle;
 - (void)layoutSubviews;
 @end
 
 @implementation PKSelectActionGroupHeader
 
-- (PKSelectActionGroupHeader)initWithTitle:(id)a3 subtitle:(id)a4
+- (PKSelectActionGroupHeader)initWithTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v25.receiver = self;
   v25.super_class = PKSelectActionGroupHeader;
   v8 = [(PKSelectActionGroupHeader *)&v25 init];
@@ -19,10 +19,10 @@
     v8->_titleLabel = v9;
 
     v11 = v8->_titleLabel;
-    v12 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v11 setTextColor:v12];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v11 setTextColor:labelColor];
 
-    [(UILabel *)v8->_titleLabel setText:v6];
+    [(UILabel *)v8->_titleLabel setText:titleCopy];
     v13 = PKUIGetMinScreenWidthType();
     v14 = 28.0;
     if (!v13)
@@ -42,10 +42,10 @@
     subtitleLabel = v8->_subtitleLabel;
     v8->_subtitleLabel = v18;
 
-    [(UILabel *)v8->_subtitleLabel setText:v7];
+    [(UILabel *)v8->_subtitleLabel setText:subtitleCopy];
     v20 = v8->_subtitleLabel;
-    v21 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v20 setTextColor:v21];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v20 setTextColor:labelColor2];
 
     v22 = v8->_subtitleLabel;
     v23 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38]);

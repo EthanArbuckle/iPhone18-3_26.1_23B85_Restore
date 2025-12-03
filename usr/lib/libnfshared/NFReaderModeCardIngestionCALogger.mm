@@ -1,16 +1,16 @@
 @interface NFReaderModeCardIngestionCALogger
-+ (void)postAnalyticsReaderModeCardIngestionSession:(id)a3 prepOnly:(BOOL)a4;
++ (void)postAnalyticsReaderModeCardIngestionSession:(id)session prepOnly:(BOOL)only;
 @end
 
 @implementation NFReaderModeCardIngestionCALogger
 
-+ (void)postAnalyticsReaderModeCardIngestionSession:(id)a3 prepOnly:(BOOL)a4
++ (void)postAnalyticsReaderModeCardIngestionSession:(id)session prepOnly:(BOOL)only
 {
-  v5 = a3;
-  if (v5)
+  sessionCopy = session;
+  if (sessionCopy)
   {
-    v65 = v5;
-    v7 = objc_msgSend_objectForKeyedSubscript_(v5, v6, @"state");
+    v65 = sessionCopy;
+    v7 = objc_msgSend_objectForKeyedSubscript_(sessionCopy, v6, @"state");
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -87,8 +87,8 @@
       qword_280AEEF70 = v40;
     }
 
-    v5 = v65;
-    if (!a4)
+    sessionCopy = v65;
+    if (!only)
     {
       v42 = 0;
       if (qword_280AEEF68 && qword_280AEEF70)
@@ -155,7 +155,7 @@
       v64 = qword_280AEEF98;
       qword_280AEEF98 = 0;
 
-      v5 = v65;
+      sessionCopy = v65;
     }
   }
 }

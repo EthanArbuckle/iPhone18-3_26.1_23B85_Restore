@@ -1,23 +1,23 @@
 @interface NCNotificationSummaryPlatterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationSummaryPlatterView)initWithRecipe:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationSummaryPlatterView)initWithRecipe:(int64_t)recipe;
 - (NSArray)requiredVisualStyleCategories;
 - (void)_configureSummaryContentViewIfNecessary;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateStackDimmingVisualStyling;
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3;
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation NCNotificationSummaryPlatterView
 
-- (NCNotificationSummaryPlatterView)initWithRecipe:(int64_t)a3
+- (NCNotificationSummaryPlatterView)initWithRecipe:(int64_t)recipe
 {
   v6.receiver = self;
   v6.super_class = NCNotificationSummaryPlatterView;
-  v3 = [(NCPlatterView *)&v6 initWithRecipe:a3 supportsGlass:1];
+  v3 = [(NCPlatterView *)&v6 initWithRecipe:recipe supportsGlass:1];
   v4 = v3;
   if (v3)
   {
@@ -28,12 +28,12 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(NCNotificationSummaryContentView *)self->_summaryContentView sizeThatFits:a3.width + -31.0, a3.height];
-  v5 = [(NCNotificationSummaryPlatterView *)self traitCollection];
-  [v5 displayScale];
+  width = fits.width;
+  [(NCNotificationSummaryContentView *)self->_summaryContentView sizeThatFits:fits.width + -31.0, fits.height];
+  traitCollection = [(NCNotificationSummaryPlatterView *)self traitCollection];
+  [traitCollection displayScale];
   UICeilToScale();
   v7 = v6;
 
@@ -54,8 +54,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NCNotificationSummaryContentView *)self->_summaryContentView requiredVisualStyleCategories];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  requiredVisualStyleCategories = [(NCNotificationSummaryContentView *)self->_summaryContentView requiredVisualStyleCategories];
+  v4 = [requiredVisualStyleCategories countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -67,19 +67,19 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requiredVisualStyleCategories);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) integerValue];
+        integerValue = [*(*(&v11 + 1) + 8 * v7) integerValue];
         summaryContentView = self->_summaryContentView;
-        v10 = [(PLPlatterView *)self visualStylingProviderForCategory:v8];
-        [(NCNotificationSummaryContentView *)summaryContentView setVisualStylingProvider:v10 forCategory:v8];
+        v10 = [(PLPlatterView *)self visualStylingProviderForCategory:integerValue];
+        [(NCNotificationSummaryContentView *)summaryContentView setVisualStylingProvider:v10 forCategory:integerValue];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v5 = [requiredVisualStyleCategories countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v5);
@@ -123,11 +123,11 @@
   [(NCNotificationSummaryPlatterView *)self _updateStackDimmingVisualStyling];
 }
 
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform
 {
-  if (a3->a <= 0.94)
+  if (transform->a <= 0.94)
   {
-    v4 = dbl_21E946550[a3->a < 0.94];
+    v4 = dbl_21E946550[transform->a < 0.94];
   }
 
   else
@@ -174,38 +174,38 @@ uint64_t __70__NCNotificationSummaryPlatterView_configureStackDimmingForTransfor
   v3 = MEMORY[0x277CBEB58];
   v9.receiver = self;
   v9.super_class = NCNotificationSummaryPlatterView;
-  v4 = [(PLPlatterView *)&v9 requiredVisualStyleCategories];
-  v5 = [v3 setWithArray:v4];
+  requiredVisualStyleCategories = [(PLPlatterView *)&v9 requiredVisualStyleCategories];
+  v5 = [v3 setWithArray:requiredVisualStyleCategories];
 
-  v6 = [(NCNotificationSummaryContentView *)self->_summaryContentView requiredVisualStyleCategories];
-  [v5 addObjectsFromArray:v6];
+  requiredVisualStyleCategories2 = [(NCNotificationSummaryContentView *)self->_summaryContentView requiredVisualStyleCategories];
+  [v5 addObjectsFromArray:requiredVisualStyleCategories2];
 
-  v7 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
   v7.receiver = self;
   v7.super_class = NCNotificationSummaryPlatterView;
-  v6 = a3;
-  [(PLPlatterView *)&v7 setVisualStylingProvider:v6 forCategory:a4];
-  [(NCNotificationSummaryContentView *)self->_summaryContentView setVisualStylingProvider:v6 forCategory:a4, v7.receiver, v7.super_class];
+  providerCopy = provider;
+  [(PLPlatterView *)&v7 setVisualStylingProvider:providerCopy forCategory:category];
+  [(NCNotificationSummaryContentView *)self->_summaryContentView setVisualStylingProvider:providerCopy forCategory:category, v7.receiver, v7.super_class];
 }
 
 - (void)_configureSummaryContentViewIfNecessary
 {
   if (!self->_summaryContentView)
   {
-    v6 = [(PLPlatterView *)self customContentView];
+    customContentView = [(PLPlatterView *)self customContentView];
     v3 = [NCNotificationSummaryContentView alloc];
-    [v6 bounds];
+    [customContentView bounds];
     v4 = [(NCNotificationSummaryContentView *)v3 initWithFrame:?];
     summaryContentView = self->_summaryContentView;
     self->_summaryContentView = v4;
 
-    [v6 addSubview:self->_summaryContentView];
+    [customContentView addSubview:self->_summaryContentView];
   }
 }
 
@@ -213,10 +213,10 @@ uint64_t __70__NCNotificationSummaryPlatterView_configureStackDimmingForTransfor
 {
   if (self->_stackDimmingView)
   {
-    v3 = [(NCNotificationSummaryPlatterView *)self traitCollection];
-    v4 = [v3 userInterfaceStyle];
+    traitCollection = [(NCNotificationSummaryPlatterView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v5 = @"stackDimmingLight";
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
       v5 = @"stackDimmingDark";
     }

@@ -1,11 +1,11 @@
 @interface SagaRemoveLibraryPinOperation
-- (SagaRemoveLibraryPinOperation)initWithCoder:(id)a3;
-- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)a3 persistentID:(int64_t)a4 cloudAlbumID:(id)a5 completion:(id)a6;
-- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)a3 persistentID:(int64_t)a4 cloudArtistID:(id)a5 completion:(id)a6;
-- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)a3 persistentID:(int64_t)a4 cloudID:(int64_t)a5 type:(int64_t)a6 completion:(id)a7;
-- (id)_initWithConfiguration:(id)a3 type:(int64_t)a4 persistentID:(int64_t)a5 cloudID:(int64_t)a6 cloudAlbumID:(id)a7 cloudArtistID:(id)a8 clientIdentity:(id)a9 completion:(id)a10;
+- (SagaRemoveLibraryPinOperation)initWithCoder:(id)coder;
+- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)configuration persistentID:(int64_t)d cloudAlbumID:(id)iD completion:(id)completion;
+- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)configuration persistentID:(int64_t)d cloudArtistID:(id)iD completion:(id)completion;
+- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)configuration persistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type completion:(id)completion;
+- (id)_initWithConfiguration:(id)configuration type:(int64_t)type persistentID:(int64_t)d cloudID:(int64_t)iD cloudAlbumID:(id)albumID cloudArtistID:(id)artistID clientIdentity:(id)identity completion:(id)self0;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)main;
 @end
 
@@ -32,29 +32,29 @@
     v42[3] = sub_1000BE34C;
     v42[4] = sub_1000BE35C;
     v43 = 0;
-    v4 = [NSString stringWithFormat:@"%@", objc_opt_class(), context];
-    v5 = [[MSVXPCTransaction alloc] initWithName:v4];
+    context = [NSString stringWithFormat:@"%@", objc_opt_class(), context];
+    v5 = [[MSVXPCTransaction alloc] initWithName:context];
     [v5 beginTransaction];
-    v6 = [(CloudLibraryOperation *)self musicLibrary];
-    v7 = [(CloudLibraryOperation *)self clientIdentity];
-    [v6 setClientIdentity:v7];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+    [musicLibrary setClientIdentity:clientIdentity];
 
     if ([(SagaLibraryPinBaseOperation *)self state])
     {
-      v8 = [(SagaLibraryPinBaseOperation *)self localDatabaseUpdateCompletionHandler];
-      v9 = v8 == 0;
+      localDatabaseUpdateCompletionHandler = [(SagaLibraryPinBaseOperation *)self localDatabaseUpdateCompletionHandler];
+      v9 = localDatabaseUpdateCompletionHandler == 0;
 
       if (v9)
       {
 LABEL_11:
-        v14 = [(CloudLibraryOperation *)self connection];
+        connection = [(CloudLibraryOperation *)self connection];
         v15 = [ICRemovePinRequest alloc];
-        v16 = [(SagaLibraryPinBaseOperation *)self entityType];
-        v17 = [(SagaLibraryPinBaseOperation *)self sagaID];
-        v18 = [(SagaLibraryPinBaseOperation *)self cloudLibraryID];
+        entityType = [(SagaLibraryPinBaseOperation *)self entityType];
+        sagaID = [(SagaLibraryPinBaseOperation *)self sagaID];
+        cloudLibraryID = [(SagaLibraryPinBaseOperation *)self cloudLibraryID];
         v39.receiver = self;
         v39.super_class = SagaRemoveLibraryPinOperation;
-        v19 = -[ICRemovePinRequest initWithEntityType:cloudID:cloudLibraryID:databaseID:databaseRevision:](v15, "initWithEntityType:cloudID:cloudLibraryID:databaseID:databaseRevision:", v16, v17, v18, [v14 databaseID], -[SagaLibraryPinBaseOperation currentDatabaseRevision](&v39, "currentDatabaseRevision"));
+        v19 = -[ICRemovePinRequest initWithEntityType:cloudID:cloudLibraryID:databaseID:databaseRevision:](v15, "initWithEntityType:cloudID:cloudLibraryID:databaseID:databaseRevision:", entityType, sagaID, cloudLibraryID, [connection databaseID], -[SagaLibraryPinBaseOperation currentDatabaseRevision](&v39, "currentDatabaseRevision"));
 
         if (v19)
         {
@@ -64,14 +64,14 @@ LABEL_11:
           {
             v21 = objc_opt_class();
             v22 = NSStringFromClass(v21);
-            v23 = [(ICDRequest *)v19 method];
-            v24 = [(ICDRequest *)v19 action];
-            v25 = v24;
+            method = [(ICDRequest *)v19 method];
+            action = [(ICDRequest *)v19 action];
+            v25 = action;
             v26 = @"POST";
             *buf = 138544386;
             *&buf[4] = self;
             *&buf[12] = 2114;
-            if (!v23)
+            if (!method)
             {
               v26 = @"GET";
             }
@@ -82,7 +82,7 @@ LABEL_11:
             *v48 = 2114;
             *&v48[2] = v26;
             *&v48[10] = 2114;
-            *&v48[12] = v24;
+            *&v48[12] = action;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending remove pin entity request <%{public}@: %p method=%{public}@ action=%{public}@>", buf, 0x34u);
           }
 
@@ -98,11 +98,11 @@ LABEL_11:
           v34[2] = sub_1000BE968;
           v34[3] = &unk_1001DF970;
           v35 = v19;
-          v36 = self;
+          selfCopy = self;
           v38 = buf;
           v28 = v27;
           v37 = v28;
-          [v14 sendRequest:v35 withResponseHandler:v34];
+          [connection sendRequest:v35 withResponseHandler:v34];
           dispatch_semaphore_wait(v28, 0xFFFFFFFFFFFFFFFFLL);
           v29 = *(*&buf[8] + 40);
           v33.receiver = self;
@@ -112,9 +112,9 @@ LABEL_11:
           _Block_object_dispose(buf, 8);
         }
 
-        v30 = [(CloudLibraryOperation *)self musicLibrary];
+        musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
         v31 = MSVTCCIdentityForCurrentProcess();
-        [v30 setClientIdentity:v31];
+        [musicLibrary2 setClientIdentity:v31];
 
         [v5 endTransaction];
         _Block_object_dispose(v42, 8);
@@ -122,32 +122,32 @@ LABEL_11:
         goto LABEL_18;
       }
 
-      v10 = dispatch_get_global_queue(0, 0);
+      musicLibrary3 = dispatch_get_global_queue(0, 0);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000BE8F4;
       block[3] = &unk_1001DF578;
       block[4] = self;
-      dispatch_async(v10, block);
+      dispatch_async(musicLibrary3, block);
     }
 
     else
     {
-      v10 = [(CloudLibraryOperation *)self musicLibrary];
+      musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
       v41[2] = sub_1000BE364;
       v41[3] = &unk_1001DF6B8;
       v41[4] = self;
       v41[5] = v42;
-      [v10 performDatabaseTransactionWithBlock:v41];
+      [musicLibrary3 performDatabaseTransactionWithBlock:v41];
     }
 
     goto LABEL_11;
   }
 
-  v11 = [(SagaLibraryPinBaseOperation *)self localDatabaseUpdateCompletionHandler];
-  v12 = v11 == 0;
+  localDatabaseUpdateCompletionHandler2 = [(SagaLibraryPinBaseOperation *)self localDatabaseUpdateCompletionHandler];
+  v12 = localDatabaseUpdateCompletionHandler2 == 0;
 
   if (!v12)
   {
@@ -166,71 +166,71 @@ LABEL_18:
 
 - (id)description
 {
-  v3 = [(SagaLibraryPinBaseOperation *)self persistentID];
-  v4 = [(SagaLibraryPinBaseOperation *)self sagaID];
-  v5 = [(SagaLibraryPinBaseOperation *)self cloudLibraryID];
+  persistentID = [(SagaLibraryPinBaseOperation *)self persistentID];
+  sagaID = [(SagaLibraryPinBaseOperation *)self sagaID];
+  cloudLibraryID = [(SagaLibraryPinBaseOperation *)self cloudLibraryID];
   [(SagaLibraryPinBaseOperation *)self entityType];
   v6 = NSStringFromICLibraryPinEntityType();
-  v7 = [(SagaRemoveLibraryPinOperation *)self name];
-  v8 = [NSString stringWithFormat:@"<SagaRemoveLibraryPinOperation=%p, persistentID=%lld, sagaID=%lld, cloudLibraryID=%@, entityType=%@, name=%@, state=%d>", self, v3, v4, v5, v6, v7, [(SagaLibraryPinBaseOperation *)self state]];
+  name = [(SagaRemoveLibraryPinOperation *)self name];
+  v8 = [NSString stringWithFormat:@"<SagaRemoveLibraryPinOperation=%p, persistentID=%lld, sagaID=%lld, cloudLibraryID=%@, entityType=%@, name=%@, state=%d>", self, persistentID, sagaID, cloudLibraryID, v6, name, [(SagaLibraryPinBaseOperation *)self state]];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SagaRemoveLibraryPinOperation;
-  [(SagaLibraryPinBaseOperation *)&v3 encodeWithCoder:a3];
+  [(SagaLibraryPinBaseOperation *)&v3 encodeWithCoder:coder];
 }
 
-- (SagaRemoveLibraryPinOperation)initWithCoder:(id)a3
+- (SagaRemoveLibraryPinOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SagaRemoveLibraryPinOperation;
-  return [(SagaLibraryPinBaseOperation *)&v4 initWithCoder:a3];
+  return [(SagaLibraryPinBaseOperation *)&v4 initWithCoder:coder];
 }
 
-- (id)_initWithConfiguration:(id)a3 type:(int64_t)a4 persistentID:(int64_t)a5 cloudID:(int64_t)a6 cloudAlbumID:(id)a7 cloudArtistID:(id)a8 clientIdentity:(id)a9 completion:(id)a10
+- (id)_initWithConfiguration:(id)configuration type:(int64_t)type persistentID:(int64_t)d cloudID:(int64_t)iD cloudAlbumID:(id)albumID cloudArtistID:(id)artistID clientIdentity:(id)identity completion:(id)self0
 {
-  if (a4 != 4)
+  if (type != 4)
   {
-    a7 = a8;
+    albumID = artistID;
   }
 
   v13.receiver = self;
   v13.super_class = SagaRemoveLibraryPinOperation;
-  return [(SagaLibraryPinBaseOperation *)&v13 initWithConfiguration:a3 persistentID:a5 cloudID:a6 cloudLibraryID:a7 type:a4 defaultAction:1 clientIdentity:a9 position:-1 completion:a10];
+  return [(SagaLibraryPinBaseOperation *)&v13 initWithConfiguration:configuration persistentID:d cloudID:iD cloudLibraryID:albumID type:type defaultAction:1 clientIdentity:identity position:-1 completion:completion];
 }
 
-- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)a3 persistentID:(int64_t)a4 cloudArtistID:(id)a5 completion:(id)a6
+- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)configuration persistentID:(int64_t)d cloudArtistID:(id)iD completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [v12 clientIdentity];
-  v14 = [(SagaRemoveLibraryPinOperation *)self _initWithConfiguration:v12 type:3 persistentID:a4 cloudID:0 cloudAlbumID:0 cloudArtistID:v11 clientIdentity:v13 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  configurationCopy = configuration;
+  clientIdentity = [configurationCopy clientIdentity];
+  v14 = [(SagaRemoveLibraryPinOperation *)self _initWithConfiguration:configurationCopy type:3 persistentID:d cloudID:0 cloudAlbumID:0 cloudArtistID:iDCopy clientIdentity:clientIdentity completion:completionCopy];
 
   return v14;
 }
 
-- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)a3 persistentID:(int64_t)a4 cloudAlbumID:(id)a5 completion:(id)a6
+- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)configuration persistentID:(int64_t)d cloudAlbumID:(id)iD completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [v12 clientIdentity];
-  v14 = [(SagaRemoveLibraryPinOperation *)self _initWithConfiguration:v12 type:4 persistentID:a4 cloudID:0 cloudAlbumID:v11 cloudArtistID:0 clientIdentity:v13 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  configurationCopy = configuration;
+  clientIdentity = [configurationCopy clientIdentity];
+  v14 = [(SagaRemoveLibraryPinOperation *)self _initWithConfiguration:configurationCopy type:4 persistentID:d cloudID:0 cloudAlbumID:iDCopy cloudArtistID:0 clientIdentity:clientIdentity completion:completionCopy];
 
   return v14;
 }
 
-- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)a3 persistentID:(int64_t)a4 cloudID:(int64_t)a5 type:(int64_t)a6 completion:(id)a7
+- (SagaRemoveLibraryPinOperation)initWithConfiguration:(id)configuration persistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type completion:(id)completion
 {
-  v12 = a7;
-  v13 = a3;
-  v14 = [v13 clientIdentity];
-  v15 = [(SagaRemoveLibraryPinOperation *)self _initWithConfiguration:v13 type:a6 persistentID:a4 cloudID:a5 cloudAlbumID:0 cloudArtistID:0 clientIdentity:v14 completion:v12];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  clientIdentity = [configurationCopy clientIdentity];
+  v15 = [(SagaRemoveLibraryPinOperation *)self _initWithConfiguration:configurationCopy type:type persistentID:d cloudID:iD cloudAlbumID:0 cloudArtistID:0 clientIdentity:clientIdentity completion:completionCopy];
 
   return v15;
 }

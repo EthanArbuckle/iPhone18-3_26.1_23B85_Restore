@@ -1,15 +1,15 @@
 @interface CKSignatureGenerator
-+ (BOOL)isValidSignature:(id)a3;
-+ (BOOL)isValidV2Signature:(id)a3;
++ (BOOL)isValidSignature:(id)signature;
++ (BOOL)isValidV2Signature:(id)signature;
 + (id)signatureForStreamingAsset;
 - (CKSignatureGenerator)init;
-- (CKSignatureGenerator)initWithBoundaryKey:(id)a3;
-- (CKSignatureGenerator)initWithVerificationKey:(id)a3;
+- (CKSignatureGenerator)initWithBoundaryKey:(id)key;
+- (CKSignatureGenerator)initWithVerificationKey:(id)key;
 - (char)_newSignatureByFinishingGenerator;
 - (id)dataByFinishingSignature;
 - (void)dealloc;
-- (void)updateWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)updateWithData:(id)a3;
+- (void)updateWithBytes:(const void *)bytes length:(unint64_t)length;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation CKSignatureGenerator
@@ -61,9 +61,9 @@
   return result;
 }
 
-- (CKSignatureGenerator)initWithBoundaryKey:(id)a3
+- (CKSignatureGenerator)initWithBoundaryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v20.receiver = self;
   v20.super_class = CKSignatureGenerator;
   v5 = [(CKSignatureGenerator *)&v20 init];
@@ -95,7 +95,7 @@
   _Block_object_dispose(&v26, 8);
   if (v9)
   {
-    v8->_generator = v9(v4);
+    v8->_generator = v9(keyCopy);
     v8->_valid = 1;
 LABEL_6:
 
@@ -111,9 +111,9 @@ LABEL_6:
   return result;
 }
 
-- (CKSignatureGenerator)initWithVerificationKey:(id)a3
+- (CKSignatureGenerator)initWithVerificationKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v20.receiver = self;
   v20.super_class = CKSignatureGenerator;
   v5 = [(CKSignatureGenerator *)&v20 init];
@@ -145,7 +145,7 @@ LABEL_6:
   _Block_object_dispose(&v26, 8);
   if (v9)
   {
-    v8->_generator = v9(v4);
+    v8->_generator = v9(keyCopy);
     v8->_valid = 1;
 LABEL_6:
 
@@ -217,9 +217,9 @@ LABEL_6:
   return result;
 }
 
-- (void)updateWithBytes:(const void *)a3 length:(unint64_t)a4
+- (void)updateWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  if ((objc_msgSend_isValid(self, a2, a3) & 1) == 0)
+  if ((objc_msgSend_isValid(self, a2, bytes) & 1) == 0)
   {
     v11 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v12, a2, self, @"CKSignatureGenerator.m", 119, @"Attempted to update an invalidated signature generator");
@@ -227,19 +227,19 @@ LABEL_6:
 
   v10 = objc_msgSend_generator(self, v8, v9);
 
-  sub_1886C1D50(v10, a3, a4);
+  sub_1886C1D50(v10, bytes, length);
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if ((objc_msgSend_isValid(self, v6, v7) & 1) == 0)
   {
     v19 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v19, v20, a2, self, @"CKSignatureGenerator.m", 124, @"Attempted to update an invalidated signature generator");
   }
 
-  v21 = v5;
+  v21 = dataCopy;
   v12 = objc_msgSend_generator(self, v10, v11);
   v15 = objc_msgSend_bytes(v21, v13, v14);
   v18 = objc_msgSend_length(v21, v16, v17);
@@ -255,16 +255,16 @@ LABEL_6:
   return objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(v4, v8, v3, v7, 1);
 }
 
-+ (BOOL)isValidSignature:(id)a3
++ (BOOL)isValidSignature:(id)signature
 {
-  v3 = a3;
-  if (!objc_msgSend_length(v3, v4, v5) || (v8 = objc_msgSend_length(v3, v6, v7), v11 = objc_msgSend_bytes(v3, v9, v10), sub_1886C1FF8(v11, v12, v13), v8 != v16))
+  signatureCopy = signature;
+  if (!objc_msgSend_length(signatureCopy, v4, v5) || (v8 = objc_msgSend_length(signatureCopy, v6, v7), v11 = objc_msgSend_bytes(signatureCopy, v9, v10), sub_1886C1FF8(v11, v12, v13), v8 != v16))
   {
     v25 = 0;
     goto LABEL_8;
   }
 
-  v17 = objc_msgSend_bytes(v3, v14, v15);
+  v17 = objc_msgSend_bytes(signatureCopy, v14, v15);
   v20 = v17;
   v32 = 0;
   v33 = &v32;
@@ -297,16 +297,16 @@ LABEL_8:
   return result;
 }
 
-+ (BOOL)isValidV2Signature:(id)a3
++ (BOOL)isValidV2Signature:(id)signature
 {
-  v3 = a3;
-  if (!objc_msgSend_length(v3, v4, v5) || (v8 = objc_msgSend_length(v3, v6, v7), v11 = objc_msgSend_bytes(v3, v9, v10), sub_1886C1FF8(v11, v12, v13), v8 != v16))
+  signatureCopy = signature;
+  if (!objc_msgSend_length(signatureCopy, v4, v5) || (v8 = objc_msgSend_length(signatureCopy, v6, v7), v11 = objc_msgSend_bytes(signatureCopy, v9, v10), sub_1886C1FF8(v11, v12, v13), v8 != v16))
   {
     v25 = 0;
     goto LABEL_8;
   }
 
-  v17 = objc_msgSend_bytes(v3, v14, v15);
+  v17 = objc_msgSend_bytes(signatureCopy, v14, v15);
   v20 = v17;
   v32 = 0;
   v33 = &v32;

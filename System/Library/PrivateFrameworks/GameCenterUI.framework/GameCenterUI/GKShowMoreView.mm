@@ -1,31 +1,31 @@
 @interface GKShowMoreView
-- (GKShowMoreView)initWithFrame:(CGRect)a3;
+- (GKShowMoreView)initWithFrame:(CGRect)frame;
 - (SEL)showMoreAction;
 - (id)baseTextStyle;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)prepareForReuse;
-- (void)setCollectionView:(id)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setShowMoreAction:(SEL)a3;
-- (void)setTextAlignmentOffset:(double)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setCollectionView:(id)view;
+- (void)setLoading:(BOOL)loading;
+- (void)setShowMoreAction:(SEL)action;
+- (void)setTextAlignmentOffset:(double)offset;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateConstraints;
 - (void)updateLabel;
 @end
 
 @implementation GKShowMoreView
 
-- (GKShowMoreView)initWithFrame:(CGRect)a3
+- (GKShowMoreView)initWithFrame:(CGRect)frame
 {
   v28[2] = *MEMORY[0x277D85DE8];
   v26.receiver = self;
   v26.super_class = GKShowMoreView;
-  v3 = [(GKShowMoreView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKShowMoreView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(GKShowMoreView *)v3 baseTextStyle];
-    v6 = [v5 buttonTitle];
+    baseTextStyle = [(GKShowMoreView *)v3 baseTextStyle];
+    buttonTitle = [baseTextStyle buttonTitle];
 
     v7 = objc_alloc_init(GKLabel);
     label = v4->_label;
@@ -33,14 +33,14 @@
 
     v9 = GKGameCenterUIFrameworkBundle();
     v10 = GKGetLocalizedStringFromTableInBundle();
-    v11 = [v10 _gkAttributedStringByApplyingStyle:v6];
+    v11 = [v10 _gkAttributedStringByApplyingStyle:buttonTitle];
     [(GKLabel *)v4->_label setAttributedText:v11];
 
     [(GKLabel *)v4->_label setBackgroundColor:0];
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v13 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v14 = *MEMORY[0x277D0C258] & (*MEMORY[0x277D0C8F0] ^ 1);
     }
@@ -65,9 +65,9 @@
     v4->_spinner = v17;
 
     [(UIActivityIndicatorView *)v4->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [MEMORY[0x277D0C868] sharedPalette];
-    v20 = [v19 activityIndicatorColor];
-    [(UIActivityIndicatorView *)v4->_spinner setColor:v20];
+    mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+    activityIndicatorColor = [mEMORY[0x277D0C868] activityIndicatorColor];
+    [(UIActivityIndicatorView *)v4->_spinner setColor:activityIndicatorColor];
 
     [(GKShowMoreView *)v4 addSubview:v4->_spinner];
     v21 = MEMORY[0x277CCAAD0];
@@ -86,21 +86,21 @@
 
 - (id)baseTextStyle
 {
-  v2 = [MEMORY[0x277D0C8B0] textStyle];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  textStyle = [MEMORY[0x277D0C8B0] textStyle];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
+  if (userInterfaceIdiom == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
   {
-    v5 = [v2 header4];
+    header4 = [textStyle header4];
   }
 
   else
   {
-    v5 = [v2 header3];
+    header4 = [textStyle header3];
   }
 
-  v6 = v5;
+  v6 = header4;
 
   return v6;
 }
@@ -125,19 +125,19 @@
   [(GKShowMoreView *)self addConstraint:self->_horizontalContraint];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    v4 = a3;
-    self->_loading = a3;
-    v13 = [(GKShowMoreView *)self baseTextStyle];
+    loadingCopy = loading;
+    self->_loading = loading;
+    baseTextStyle = [(GKShowMoreView *)self baseTextStyle];
     v6 = GKGameCenterUIFrameworkBundle();
     GKGetLocalizedStringFromTableInBundle();
-    if (v4)
+    if (loadingCopy)
       v7 = {;
-      v8 = [v13 info];
-      v9 = [v7 _gkAttributedStringByApplyingStyle:v8];
+      info = [baseTextStyle info];
+      v9 = [v7 _gkAttributedStringByApplyingStyle:info];
       [(GKLabel *)self->_label setAttributedText:v9];
 
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
@@ -145,8 +145,8 @@
 
     else
       v10 = {;
-      v11 = [v13 buttonTitle];
-      v12 = [v10 _gkAttributedStringByApplyingStyle:v11];
+      buttonTitle = [baseTextStyle buttonTitle];
+      v12 = [v10 _gkAttributedStringByApplyingStyle:buttonTitle];
       [(GKLabel *)self->_label setAttributedText:v12];
 
       [(UIActivityIndicatorView *)self->_spinner stopAnimating];
@@ -156,24 +156,24 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = GKShowMoreView;
-  [(GKShowMoreView *)&v16 touchesEnded:v6 withEvent:v7];
+  [(GKShowMoreView *)&v16 touchesEnded:endedCopy withEvent:eventCopy];
   if (self->_showMoreAction && !self->_loading)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = v6;
+    v8 = endedCopy;
     if ([v8 countByEnumeratingWithState:&v12 objects:v17 count:16])
     {
-      v9 = [MEMORY[0x277D75128] sharedApplication];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
       if (self->_showMoreAction)
       {
         showMoreAction = self->_showMoreAction;
@@ -185,77 +185,77 @@
       }
 
       v11 = [MEMORY[0x277CCAA78] indexSetWithIndex:self->_sectionIndex];
-      [v9 _gkSendAction:showMoreAction viaResponder:self withObject:v11];
+      [mEMORY[0x277D75128] _gkSendAction:showMoreAction viaResponder:self withObject:v11];
     }
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v16.receiver = self;
   v16.super_class = GKShowMoreView;
-  [(GKShowMoreView *)&v16 applyLayoutAttributes:v4];
-  v5 = [v4 indexPath];
-  -[GKShowMoreView setSectionIndex:](self, "setSectionIndex:", [v5 section]);
+  [(GKShowMoreView *)&v16 applyLayoutAttributes:attributesCopy];
+  indexPath = [attributesCopy indexPath];
+  -[GKShowMoreView setSectionIndex:](self, "setSectionIndex:", [indexPath section]);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [v6 maxTotalItemCount];
-    v8 = v7 - [v6 currentVisibleItemCount];
-    v9 = [v6 sectionMetrics];
-    self->_numberToShow = [v9 incrementalRevealItemCount];
+    v6 = attributesCopy;
+    maxTotalItemCount = [v6 maxTotalItemCount];
+    v8 = maxTotalItemCount - [v6 currentVisibleItemCount];
+    sectionMetrics = [v6 sectionMetrics];
+    self->_numberToShow = [sectionMetrics incrementalRevealItemCount];
 
     numberToShow = self->_numberToShow;
     v12 = v8 < numberToShow || numberToShow == -1;
     self->_showShowAll = v12;
-    v13 = [MEMORY[0x277D75128] sharedApplication];
-    v14 = [v13 _gkTargetForAction:sel_applyShowMoreLayoutAttributesForShowMoreView_atIndexPath_ viaResponder:self];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v14 = [mEMORY[0x277D75128] _gkTargetForAction:sel_applyShowMoreLayoutAttributesForShowMoreView_atIndexPath_ viaResponder:self];
 
-    v15 = [v6 indexPath];
-    [v14 applyShowMoreLayoutAttributesForShowMoreView:self atIndexPath:v15];
+    indexPath2 = [v6 indexPath];
+    [v14 applyShowMoreLayoutAttributesForShowMoreView:self atIndexPath:indexPath2];
   }
 }
 
-- (void)setTextAlignmentOffset:(double)a3
+- (void)setTextAlignmentOffset:(double)offset
 {
-  if (self->_textAlignmentOffset != a3)
+  if (self->_textAlignmentOffset != offset)
   {
-    self->_textAlignmentOffset = a3;
+    self->_textAlignmentOffset = offset;
     [(GKShowMoreView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   collectionView = self->_collectionView;
-  if (collectionView != v5)
+  if (collectionView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UICollectionView *)collectionView removeConstraint:self->_horizontalContraint];
-    objc_storeStrong(&self->_collectionView, a3);
+    objc_storeStrong(&self->_collectionView, view);
     collectionView = [(GKShowMoreView *)self setNeedsUpdateConstraints];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](collectionView, v5);
+  MEMORY[0x2821F96F8](collectionView, viewCopy);
 }
 
 - (void)updateLabel
 {
-  v3 = [(GKShowMoreView *)self baseTextStyle];
-  v11 = [v3 buttonTitle];
+  baseTextStyle = [(GKShowMoreView *)self baseTextStyle];
+  buttonTitle = [baseTextStyle buttonTitle];
 
   if (self->_showShowAll)
   {
     v4 = GKGameCenterUIFrameworkBundle();
     v5 = GKGetLocalizedStringFromTableInBundle();
-    v6 = [v5 _gkAttributedStringByApplyingStyle:v11];
-    v7 = [(GKShowMoreView *)self label];
-    [v7 setAttributedText:v6];
+    v6 = [v5 _gkAttributedStringByApplyingStyle:buttonTitle];
+    label = [(GKShowMoreView *)self label];
+    [label setAttributedText:v6];
   }
 
   else
@@ -264,10 +264,10 @@
     v4 = GKGameCenterUIFrameworkBundle();
     v5 = GKGetLocalizedStringFromTableInBundle();
     v6 = GKFormattedStringWithGroupingFromInteger();
-    v7 = [v8 stringWithFormat:v5, v6];
-    v9 = [v7 _gkAttributedStringByApplyingStyle:v11];
-    v10 = [(GKShowMoreView *)self label];
-    [v10 setAttributedText:v9];
+    label = [v8 stringWithFormat:v5, v6];
+    v9 = [label _gkAttributedStringByApplyingStyle:buttonTitle];
+    label2 = [(GKShowMoreView *)self label];
+    [label2 setAttributedText:v9];
   }
 }
 
@@ -292,19 +292,19 @@
   }
 }
 
-- (void)setShowMoreAction:(SEL)a3
+- (void)setShowMoreAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_showMoreAction = v3;
+  self->_showMoreAction = actionCopy;
 }
 
 @end

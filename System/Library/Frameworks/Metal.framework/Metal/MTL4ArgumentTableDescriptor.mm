@@ -1,7 +1,7 @@
 @interface MTL4ArgumentTableDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4ArgumentTableDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -22,7 +22,7 @@
   [(MTL4ArgumentTableDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setLabel:{-[MTL4ArgumentTableDescriptor label](self, "label")}];
@@ -34,21 +34,21 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3) || *(a3 + 1) != self->_maxBufferBindCount || *(a3 + 2) != self->_maxTextureBindCount || *(a3 + 3) != self->_maxSamplerStateBindCount || *(a3 + 32) != self->_initializeBindings || *(a3 + 33) != self->_supportAttributeStrides)
+  if (Class != object_getClass(equal) || *(equal + 1) != self->_maxBufferBindCount || *(equal + 2) != self->_maxTextureBindCount || *(equal + 3) != self->_maxSamplerStateBindCount || *(equal + 32) != self->_initializeBindings || *(equal + 33) != self->_supportAttributeStrides)
   {
     return 0;
   }
 
   label = self->_label;
-  if (label == *(a3 + 5))
+  if (label == *(equal + 5))
   {
     return 1;
   }

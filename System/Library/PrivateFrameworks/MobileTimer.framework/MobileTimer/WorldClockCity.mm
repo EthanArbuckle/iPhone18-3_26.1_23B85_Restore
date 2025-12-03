@@ -1,9 +1,9 @@
 @interface WorldClockCity
-+ (BOOL)isCachedLanguageStaleForProperties:(id)a3;
-+ (BOOL)isCachedLanguageStaleForProperties:(id)a3 systemLanguage:(id)a4;
-+ (BOOL)isWorldClockCityProperties:(id)a3;
++ (BOOL)isCachedLanguageStaleForProperties:(id)properties;
++ (BOOL)isCachedLanguageStaleForProperties:(id)properties systemLanguage:(id)language;
++ (BOOL)isWorldClockCityProperties:(id)properties;
 + (id)unlocalizedExampleCity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)properties;
 - (NSNumber)alCityId;
 - (NSString)countryCode;
@@ -13,44 +13,44 @@
 - (NSString)unlocalizedCityName;
 - (NSString)unlocalizedCountryName;
 - (NSURL)idUrl;
-- (WorldClockCity)initWithALCity:(id)a3;
-- (WorldClockCity)initWithProperties:(id)a3;
-- (WorldClockCity)initWithTimeZone:(id)a3 countryCode:(id)a4 name:(id)a5 countryName:(id)a6 unlocalizedName:(id)a7 unlocalizedCountryName:(id)a8;
+- (WorldClockCity)initWithALCity:(id)city;
+- (WorldClockCity)initWithProperties:(id)properties;
+- (WorldClockCity)initWithTimeZone:(id)zone countryCode:(id)code name:(id)name countryName:(id)countryName unlocalizedName:(id)unlocalizedName unlocalizedCountryName:(id)unlocalizedCountryName;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation WorldClockCity
 
-+ (BOOL)isWorldClockCityProperties:(id)a3
++ (BOOL)isWorldClockCityProperties:(id)properties
 {
-  v3 = [a3 objectForKey:@"type"];
+  v3 = [properties objectForKey:@"type"];
   v4 = [v3 integerValue] == 2 || objc_msgSend(v3, "integerValue") == 1;
 
   return v4;
 }
 
-+ (BOOL)isCachedLanguageStaleForProperties:(id)a3
++ (BOOL)isCachedLanguageStaleForProperties:(id)properties
 {
   v4 = MEMORY[0x1E695DF58];
-  v5 = a3;
-  v6 = [v4 currentLocale];
-  v7 = [v6 objectForKey:*MEMORY[0x1E695D9B0]];
+  propertiesCopy = properties;
+  currentLocale = [v4 currentLocale];
+  v7 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
 
-  LOBYTE(a1) = [a1 isCachedLanguageStaleForProperties:v5 systemLanguage:v7];
-  return a1;
+  LOBYTE(self) = [self isCachedLanguageStaleForProperties:propertiesCopy systemLanguage:v7];
+  return self;
 }
 
-+ (BOOL)isCachedLanguageStaleForProperties:(id)a3 systemLanguage:(id)a4
++ (BOOL)isCachedLanguageStaleForProperties:(id)properties systemLanguage:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isWorldClockCityProperties:v6])
+  propertiesCopy = properties;
+  languageCopy = language;
+  if ([self isWorldClockCityProperties:propertiesCopy])
   {
-    v8 = [v6 objectForKey:@"languageCode"];
+    v8 = [propertiesCopy objectForKey:@"languageCode"];
     if (v8)
     {
-      v9 = [v7 isEqualToString:v8] ^ 1;
+      v9 = [languageCopy isEqualToString:v8] ^ 1;
     }
 
     else
@@ -74,60 +74,60 @@
   return v2;
 }
 
-- (WorldClockCity)initWithALCity:(id)a3
+- (WorldClockCity)initWithALCity:(id)city
 {
-  v5 = a3;
+  cityCopy = city;
   v10.receiver = self;
   v10.super_class = WorldClockCity;
   v6 = [(WorldClockCity *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alCity, a3);
+    objc_storeStrong(&v6->_alCity, city);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (WorldClockCity)initWithTimeZone:(id)a3 countryCode:(id)a4 name:(id)a5 countryName:(id)a6 unlocalizedName:(id)a7 unlocalizedCountryName:(id)a8
+- (WorldClockCity)initWithTimeZone:(id)zone countryCode:(id)code name:(id)name countryName:(id)countryName unlocalizedName:(id)unlocalizedName unlocalizedCountryName:(id)unlocalizedCountryName
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  zoneCopy = zone;
+  codeCopy = code;
+  nameCopy = name;
+  countryNameCopy = countryName;
+  unlocalizedNameCopy = unlocalizedName;
+  unlocalizedCountryNameCopy = unlocalizedCountryName;
   v25.receiver = self;
   v25.super_class = WorldClockCity;
   v18 = [(WorldClockCity *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_timeZone, a3);
-    objc_storeStrong(&v19->_countryCode, a4);
-    objc_storeStrong(&v19->_name, a5);
-    objc_storeStrong(&v19->_countryName, a6);
-    objc_storeStrong(&v19->_unlocalizedName, a7);
-    objc_storeStrong(&v19->_unlocalizedCountryName, a8);
+    objc_storeStrong(&v18->_timeZone, zone);
+    objc_storeStrong(&v19->_countryCode, code);
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_countryName, countryName);
+    objc_storeStrong(&v19->_unlocalizedName, unlocalizedName);
+    objc_storeStrong(&v19->_unlocalizedCountryName, unlocalizedCountryName);
     v20 = v19;
   }
 
   return v19;
 }
 
-- (WorldClockCity)initWithProperties:(id)a3
+- (WorldClockCity)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v24.receiver = self;
   v24.super_class = WorldClockCity;
   v5 = [(WorldClockCity *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"type"];
-    v7 = [v4 objectForKey:@"city"];
-    v8 = [v6 intValue];
-    if (v8 == 2)
+    v6 = [propertiesCopy objectForKey:@"type"];
+    v7 = [propertiesCopy objectForKey:@"city"];
+    intValue = [v6 intValue];
+    if (intValue == 2)
     {
       v19 = [objc_alloc(MEMORY[0x1E698B668]) initWithProperties:v7];
       v20 = 8;
@@ -135,7 +135,7 @@
 
     else
     {
-      if (v8 != 1)
+      if (intValue != 1)
       {
 LABEL_7:
         v22 = v5;
@@ -203,12 +203,12 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     alCity = self->_alCity;
     v7 = v5[1];
     if (alCity)
@@ -297,11 +297,11 @@ LABEL_10:
   {
     v6 = [v5 initWithInt:2];
     [v3 setObject:v6 forKey:@"type"];
-    v7 = [(ALCity *)self->_alCity properties];
-    [v3 setObject:v7 forKey:@"city"];
+    properties = [(ALCity *)self->_alCity properties];
+    [v3 setObject:properties forKey:@"city"];
 
-    v8 = [MEMORY[0x1E695DF58] currentLocale];
-    v9 = [v8 objectForKey:*MEMORY[0x1E695D9B0]];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v9 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
 
     v10 = @"languageCode";
   }
@@ -362,15 +362,15 @@ LABEL_10:
   alCity = self->_alCity;
   if (alCity)
   {
-    v4 = [(ALCity *)alCity timeZone];
+    timeZone = [(ALCity *)alCity timeZone];
   }
 
   else
   {
-    v4 = self->_timeZone;
+    timeZone = self->_timeZone;
   }
 
-  return v4;
+  return timeZone;
 }
 
 - (NSString)name
@@ -378,15 +378,15 @@ LABEL_10:
   alCity = self->_alCity;
   if (alCity)
   {
-    v4 = [(ALCity *)alCity name];
+    name = [(ALCity *)alCity name];
   }
 
   else
   {
-    v4 = self->_name;
+    name = self->_name;
   }
 
-  return v4;
+  return name;
 }
 
 - (NSString)countryName
@@ -394,15 +394,15 @@ LABEL_10:
   alCity = self->_alCity;
   if (alCity)
   {
-    v4 = [(ALCity *)alCity countryName];
+    countryName = [(ALCity *)alCity countryName];
   }
 
   else
   {
-    v4 = self->_countryName;
+    countryName = self->_countryName;
   }
 
-  return v4;
+  return countryName;
 }
 
 - (NSString)unlocalizedCityName
@@ -410,15 +410,15 @@ LABEL_10:
   alCity = self->_alCity;
   if (alCity)
   {
-    v4 = [(ALCity *)alCity unlocalizedName];
+    unlocalizedName = [(ALCity *)alCity unlocalizedName];
   }
 
   else
   {
-    v4 = self->_unlocalizedName;
+    unlocalizedName = self->_unlocalizedName;
   }
 
-  return v4;
+  return unlocalizedName;
 }
 
 - (NSString)unlocalizedCountryName
@@ -426,15 +426,15 @@ LABEL_10:
   alCity = self->_alCity;
   if (alCity)
   {
-    v4 = [(ALCity *)alCity unlocalizedCountryName];
+    unlocalizedCountryName = [(ALCity *)alCity unlocalizedCountryName];
   }
 
   else
   {
-    v4 = self->_unlocalizedCountryName;
+    unlocalizedCountryName = self->_unlocalizedCountryName;
   }
 
-  return v4;
+  return unlocalizedCountryName;
 }
 
 - (NSString)countryCode
@@ -442,15 +442,15 @@ LABEL_10:
   alCity = self->_alCity;
   if (alCity)
   {
-    v4 = [(ALCity *)alCity localeCode];
+    localeCode = [(ALCity *)alCity localeCode];
   }
 
   else
   {
-    v4 = self->_countryCode;
+    localeCode = self->_countryCode;
   }
 
-  return v4;
+  return localeCode;
 }
 
 - (NSURL)idUrl

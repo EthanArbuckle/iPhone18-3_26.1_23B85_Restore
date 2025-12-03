@@ -1,26 +1,26 @@
 @interface CRLFreehandDrawingFloodFillHelper
-+ (id)fillablePathFromPaths:(id)a3 atFillPoint:(CGPoint)a4 withConnectionThreshold:(double)a5 pathsUsedForFilling:(id *)a6;
-+ (id)p_bezierPathWithSectionOfBezierPath:(id)a3 centeredAtPercentAlongPath:(double)a4 withMaximumLength:(double)a5;
-+ (id)p_bitmapFillablePathFromPaths:(id)a3 atFillPoint:(CGPoint)a4 allowOverflowingPath:(BOOL)a5;
-+ (id)p_connectionPathsForFillableAreas:(id)a3 withConnectionThreshold:(double)a4;
-+ (id)p_flattenedPathForPath:(id)a3;
++ (id)fillablePathFromPaths:(id)paths atFillPoint:(CGPoint)point withConnectionThreshold:(double)threshold pathsUsedForFilling:(id *)filling;
++ (id)p_bezierPathWithSectionOfBezierPath:(id)path centeredAtPercentAlongPath:(double)alongPath withMaximumLength:(double)length;
++ (id)p_bitmapFillablePathFromPaths:(id)paths atFillPoint:(CGPoint)point allowOverflowingPath:(BOOL)path;
++ (id)p_connectionPathsForFillableAreas:(id)areas withConnectionThreshold:(double)threshold;
++ (id)p_flattenedPathForPath:(id)path;
 @end
 
 @implementation CRLFreehandDrawingFloodFillHelper
 
-+ (id)fillablePathFromPaths:(id)a3 atFillPoint:(CGPoint)a4 withConnectionThreshold:(double)a5 pathsUsedForFilling:(id *)a6
++ (id)fillablePathFromPaths:(id)paths atFillPoint:(CGPoint)point withConnectionThreshold:(double)threshold pathsUsedForFilling:(id *)filling
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  v12 = [v11 crl_arrayOfObjectsPassingTest:&stru_10186DB60];
+  y = point.y;
+  x = point.x;
+  pathsCopy = paths;
+  v12 = [pathsCopy crl_arrayOfObjectsPassingTest:&stru_10186DB60];
 
   if (![v12 count])
   {
     goto LABEL_30;
   }
 
-  v13 = [a1 p_bitmapFillablePathFromPaths:v12 atFillPoint:1 allowOverflowingPath:{x, y}];
+  v13 = [self p_bitmapFillablePathFromPaths:v12 atFillPoint:1 allowOverflowingPath:{x, y}];
   v14 = v13;
   if (!v13 || ![v13 containsElementsOtherThanMoveAndClose])
   {
@@ -78,13 +78,13 @@ LABEL_30:
   }
 
   v68 = [(CRLBezierHitTester *)v19 pathsCrossingPath:v14 withSearchThreshold:20.0];
-  v29 = [v68 allObjects];
-  v70 = [a1 p_connectionPathsForFillableAreas:v29 withConnectionThreshold:a5];
+  allObjects = [v68 allObjects];
+  v70 = [self p_connectionPathsForFillableAreas:allObjects withConnectionThreshold:threshold];
 
-  v30 = [v68 allObjects];
-  v69 = [v30 arrayByAddingObjectsFromArray:v70];
+  allObjects2 = [v68 allObjects];
+  v69 = [allObjects2 arrayByAddingObjectsFromArray:v70];
 
-  v31 = [a1 p_bitmapFillablePathFromPaths:v69 atFillPoint:0 allowOverflowingPath:{x, y}];
+  v31 = [self p_bitmapFillablePathFromPaths:v69 atFillPoint:0 allowOverflowingPath:{x, y}];
   v32 = v31;
   if (v31 && [v31 containsElementsOtherThanMoveAndClose])
   {
@@ -138,13 +138,13 @@ LABEL_30:
     v32 = v66;
     v46 = [(CRLBezierHitTester *)v19 pathsCrossingPath:v66 withSearchThreshold:20.0];
     v67 = v46;
-    if (a6)
+    if (filling)
     {
-      *a6 = [v46 allObjects];
+      *filling = [v46 allObjects];
       v46 = v67;
     }
 
-    v65 = [v46 allObjects];
+    allObjects3 = [v46 allObjects];
     v47 = [CRLBezierPathBooleanOperationHelper pathByFloodFillingPaths:x atFillPoint:y];
     v48 = v47;
     if (v47 && ([v47 containsElementsOtherThanMoveAndClose] & 1) != 0)
@@ -202,7 +202,7 @@ LABEL_30:
           v88.y = y;
           v63 = NSStringFromCGPoint(v88);
           *buf = 134218498;
-          v80 = a5;
+          thresholdCopy = threshold;
           v81 = 2112;
           v82 = v63;
           v83 = 2112;
@@ -214,9 +214,9 @@ LABEL_30:
       v49 = [CRLBezierPath smoothBezierPath:v66 withThreshold:2.0];
 
       v64 = [v49 bezierPathByOffsettingPath:objc_msgSend(v49 joinStyle:{"lineJoinStyle"), 0.25}];
-      v56 = [v64 bezierPathByRemovingRedundantElements];
-      v57 = v56;
-      if (v56 && (v58 = v56, v59 = [v56 containsElementsOtherThanMoveAndClose], v57 = v58, v59))
+      bezierPathByRemovingRedundantElements = [v64 bezierPathByRemovingRedundantElements];
+      v57 = bezierPathByRemovingRedundantElements;
+      if (bezierPathByRemovingRedundantElements && (v58 = bezierPathByRemovingRedundantElements, v59 = [bezierPathByRemovingRedundantElements containsElementsOtherThanMoveAndClose], v57 = v58, v59))
       {
         v60 = v49;
         v49 = v58;
@@ -272,15 +272,15 @@ LABEL_31:
   return v49;
 }
 
-+ (id)p_connectionPathsForFillableAreas:(id)a3 withConnectionThreshold:(double)a4
++ (id)p_connectionPathsForFillableAreas:(id)areas withConnectionThreshold:(double)threshold
 {
-  v5 = a3;
+  areasCopy = areas;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100540708;
   v20[3] = &unk_10186DC80;
-  v20[4] = a1;
-  v6 = [v5 crl_arrayByTransformingWithBlock:v20];
+  v20[4] = self;
+  v6 = [areasCopy crl_arrayByTransformingWithBlock:v20];
 
   v7 = +[NSMutableArray array];
   v18 = 0u;
@@ -324,28 +324,28 @@ LABEL_31:
   operator new();
 }
 
-+ (id)p_flattenedPathForPath:(id)a3
++ (id)p_flattenedPathForPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isFlat])
+  pathCopy = path;
+  if ([pathCopy isFlat])
   {
-    v4 = v3;
+    v4 = pathCopy;
   }
 
   else
   {
     v4 = +[CRLBezierPath bezierPath];
-    [v3 copyPathAttributesTo:v4];
-    v5 = [v3 elementCount];
-    if (v5 >= 1)
+    [pathCopy copyPathAttributesTo:v4];
+    elementCount = [pathCopy elementCount];
+    if (elementCount >= 1)
     {
-      for (i = 0; i != v5; ++i)
+      for (i = 0; i != elementCount; ++i)
       {
         v11 = xmmword_1014629F0;
         v12 = xmmword_1014629F0;
         *v13 = xmmword_1014629F0;
         *&v13[16] = xmmword_1014629F0;
-        v7 = [v3 elementAtIndex:i allPoints:&v11];
+        v7 = [pathCopy elementAtIndex:i allPoints:&v11];
         if (v7 > 1)
         {
           if (v7 == 2)
@@ -384,10 +384,10 @@ LABEL_31:
   return v4;
 }
 
-+ (id)p_bezierPathWithSectionOfBezierPath:(id)a3 centeredAtPercentAlongPath:(double)a4 withMaximumLength:(double)a5
++ (id)p_bezierPathWithSectionOfBezierPath:(id)path centeredAtPercentAlongPath:(double)alongPath withMaximumLength:(double)length
 {
-  v7 = a3;
-  [v7 length];
+  pathCopy = path;
+  [pathCopy length];
   if (v8 == 0.0)
   {
     v9 = +[CRLBezierPath bezierPath];
@@ -395,12 +395,12 @@ LABEL_31:
 
   else
   {
-    v10 = a5 / v8 * 0.5;
+    v10 = length / v8 * 0.5;
     v16 = 0.0;
-    v11 = [v7 elementPercentage:&v16 forOverallPercentage:{fmax(a4 - v10, 0.0)}];
+    v11 = [pathCopy elementPercentage:&v16 forOverallPercentage:{fmax(alongPath - v10, 0.0)}];
     v15 = 0.0;
-    v12 = [v7 elementPercentage:&v15 forOverallPercentage:{fmin(v10 + a4, 1.0)}];
-    v9 = [v7 copyFromSegment:v11 t:v12 toSegment:v16 t:v15];
+    v12 = [pathCopy elementPercentage:&v15 forOverallPercentage:{fmin(v10 + alongPath, 1.0)}];
+    v9 = [pathCopy copyFromSegment:v11 t:v12 toSegment:v16 t:v15];
   }
 
   v13 = v9;
@@ -408,11 +408,11 @@ LABEL_31:
   return v13;
 }
 
-+ (id)p_bitmapFillablePathFromPaths:(id)a3 atFillPoint:(CGPoint)a4 allowOverflowingPath:(BOOL)a5
++ (id)p_bitmapFillablePathFromPaths:(id)paths atFillPoint:(CGPoint)point allowOverflowingPath:(BOOL)path
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
+  y = point.y;
+  x = point.x;
+  pathsCopy = paths;
   v9 = CGRectNull.origin.x;
   v10 = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -421,7 +421,7 @@ LABEL_31:
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v13 = v8;
+  v13 = pathsCopy;
   v14 = [v13 countByEnumeratingWithState:&v87 objects:v92 count:16];
   if (v14)
   {
@@ -457,7 +457,7 @@ LABEL_31:
     while (v14);
   }
 
-  v80 = a5;
+  pathCopy = path;
 
   v102.origin.x = v9;
   v102.origin.y = v10;
@@ -704,7 +704,7 @@ LABEL_76:
       v75 = [v74 subtractBezierPath:v73];
 
       v27 = v75;
-      if (v80 || ![v75 containsPoint:{v37 * 5.0 * 0.5, v37 * 5.0 * 0.5}])
+      if (pathCopy || ![v75 containsPoint:{v37 * 5.0 * 0.5, v37 * 5.0 * 0.5}])
       {
         v85 = v86;
         CGAffineTransformInvert(transform, &v85);

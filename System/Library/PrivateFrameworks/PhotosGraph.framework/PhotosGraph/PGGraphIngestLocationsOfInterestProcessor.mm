@@ -1,22 +1,22 @@
 @interface PGGraphIngestLocationsOfInterestProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestLocationsOfInterestProcessor)initWithGraphBuilder:(id)a3;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestLocationsOfInterestProcessor)initWithGraphBuilder:(id)builder;
 - (void)processLocationsOfInterest;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestLocationsOfInterestProcessor
 
 - (void)processLocationsOfInterest
 {
-  v2 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
-  [v2 postProcessLocationsOfInterest];
+  serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+  [serviceManager postProcessLocationsOfInterest];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   v6 = 0.0;
   if (!v5 || (Current = CFAbsoluteTimeGetCurrent(), Current < 0.01))
   {
@@ -31,9 +31,9 @@
   {
     v6 = Current;
 LABEL_4:
-    v9 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    v10 = os_signpost_id_generate(v9);
-    v11 = v9;
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    v10 = os_signpost_id_generate(loggingConnection);
+    v11 = loggingConnection;
     v12 = v11;
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
@@ -101,33 +101,33 @@ LABEL_18:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasMomentsToInsert"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToInsert"))
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 momentUpdateTypes];
-    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & v5) != 0;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
   }
 
   return v4;
 }
 
-- (PGGraphIngestLocationsOfInterestProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestLocationsOfInterestProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestLocationsOfInterestProcessor;
   v6 = [(PGGraphIngestLocationsOfInterestProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

@@ -1,16 +1,16 @@
 @interface CNiOSABDisabledContainersPredicate
-- (CNiOSABDisabledContainersPredicate)initWithCoder:(id)a3;
-- (CNiOSABDisabledContainersPredicate)initWithDisabledContainersIncluded:(BOOL)a3;
+- (CNiOSABDisabledContainersPredicate)initWithCoder:(id)coder;
+- (CNiOSABDisabledContainersPredicate)initWithDisabledContainersIncluded:(BOOL)included;
 - (NSString)description;
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABDisabledContainersPredicate
 
-- (CNiOSABDisabledContainersPredicate)initWithDisabledContainersIncluded:(BOOL)a3
+- (CNiOSABDisabledContainersPredicate)initWithDisabledContainersIncluded:(BOOL)included
 {
-  if (a3)
+  if (included)
   {
     v5 = [@"enabled == YES" stringByAppendingString:@" || enabled == NO"];
   }
@@ -27,39 +27,39 @@
 
   if (v7)
   {
-    v7->_includesDisabledContainers = a3;
+    v7->_includesDisabledContainers = included;
   }
 
   return v7;
 }
 
-- (CNiOSABDisabledContainersPredicate)initWithCoder:(id)a3
+- (CNiOSABDisabledContainersPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CNiOSABDisabledContainersPredicate;
-  v5 = [(CNPredicate *)&v8 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_includesDisabledContainers = [v4 decodeBoolForKey:@"_includesDisabledContainers"];
+    v5->_includesDisabledContainers = [coderCopy decodeBoolForKey:@"_includesDisabledContainers"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABDisabledContainersPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_includesDisabledContainers forKey:{@"_includesDisabledContainers", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_includesDisabledContainers forKey:{@"_includesDisabledContainers", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error
 {
-  [(CNiOSABDisabledContainersPredicate *)self includesDisabledContainers:a3];
+  [(CNiOSABDisabledContainersPredicate *)self includesDisabledContainers:book];
 
   return ABAddressBookCopyArrayOfAllSourcesIncludingDisabledSources();
 }
@@ -71,9 +71,9 @@
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNiOSABDisabledContainersPredicate includesDisabledContainers](self, "includesDisabledContainers")}];
   v6 = [v3 appendName:@"includingDisabled" object:v5];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

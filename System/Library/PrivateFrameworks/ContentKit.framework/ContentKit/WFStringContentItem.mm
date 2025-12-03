@@ -1,9 +1,9 @@
 @interface WFStringContentItem
 + (id)coercions;
 + (id)contentCategories;
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 - (BOOL)includesFileRepresentationInSerializedItem;
 - (NSString)string;
@@ -12,20 +12,20 @@
 
 @implementation WFStringContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Text (plural)", @"Text");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Text (singular)", @"Text");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -83,16 +83,16 @@ void __41__WFStringContentItem_pdfCoercionHandler__block_invoke_2(uint64_t a1, v
 {
   v39[11] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v38 = [a1 stringCoercionHandler];
-  v37 = [WFCoercion coercionToClass:v3 handler:v38];
+  stringCoercionHandler = [self stringCoercionHandler];
+  v37 = [WFCoercion coercionToClass:v3 handler:stringCoercionHandler];
   v39[0] = v37;
   v36 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E20]];
-  v35 = [a1 textFileCoercionHandler];
-  v34 = [WFCoercion coercionToType:v36 handler:v35];
+  textFileCoercionHandler = [self textFileCoercionHandler];
+  v34 = [WFCoercion coercionToType:v36 handler:textFileCoercionHandler];
   v39[1] = v34;
   v33 = [WFObjectType typeWithClassName:@"UIPrintFormatter" frameworkName:@"UIKit" location:2];
-  v32 = [a1 printFormatterCoercionHandler];
-  v31 = [WFCoercion coercionToType:v33 handler:v32];
+  printFormatterCoercionHandler = [self printFormatterCoercionHandler];
+  v31 = [WFCoercion coercionToType:v33 handler:printFormatterCoercionHandler];
   v39[2] = v31;
   v4 = objc_opt_class();
   v30 = [WFCoercionHandler keyPath:@"dataDetectorResults.URLs" unavailableIfNilOrEmpty:1];
@@ -111,8 +111,8 @@ void __41__WFStringContentItem_pdfCoercionHandler__block_invoke_2(uint64_t a1, v
   v23 = [WFCoercion coercionToClass:v7 handler:v24];
   v39[6] = v23;
   v8 = objc_opt_class();
-  v9 = [a1 dictionaryCoercionHandler];
-  v10 = [WFCoercion coercionToClass:v8 handler:v9];
+  dictionaryCoercionHandler = [self dictionaryCoercionHandler];
+  v10 = [WFCoercion coercionToClass:v8 handler:dictionaryCoercionHandler];
   v39[7] = v10;
   v11 = objc_opt_class();
   v12 = [WFCoercionHandler keyPath:@"dataDetectorResults.number" unavailableIfNilOrEmpty:1];
@@ -124,8 +124,8 @@ void __41__WFStringContentItem_pdfCoercionHandler__block_invoke_2(uint64_t a1, v
   v17 = [WFCoercion coercionToClass:v15 handler:v16];
   v39[9] = v17;
   v18 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E08]];
-  v19 = [a1 pdfCoercionHandler];
-  v20 = [WFCoercion coercionToType:v18 handler:v19];
+  pdfCoercionHandler = [self pdfCoercionHandler];
+  v20 = [WFCoercion coercionToType:v18 handler:pdfCoercionHandler];
   v39[10] = v20;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:11];
 
@@ -324,24 +324,24 @@ id __44__WFStringContentItem_stringCoercionHandler__block_invoke(uint64_t a1, vo
   return v12;
 }
 
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  itemCopy = item;
+  typeCopy = type;
+  namedCopy = named;
+  setCopy = set;
+  identifierCopy = identifier;
+  if (typeCopy)
   {
 LABEL_2:
-    v17 = [v13 string];
-    v18 = [v12 objectForKey:v17];
+    string = [typeCopy string];
+    allKeys = [itemCopy objectForKey:string];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [a1 itemWithObject:v18 named:v14 attributionSet:v15 cachingIdentifier:v16];
+      v19 = [self itemWithObject:allKeys named:namedCopy attributionSet:setCopy cachingIdentifier:identifierCopy];
     }
 
     else
@@ -349,8 +349,8 @@ LABEL_2:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [WFFileRepresentation fileWithData:v18 ofType:v13 proposedFilename:v14];
-        v19 = [a1 itemWithFile:v20 attributionSet:v15 cachingIdentifier:v16];
+        v20 = [WFFileRepresentation fileWithData:allKeys ofType:typeCopy proposedFilename:namedCopy];
+        v19 = [self itemWithFile:v20 attributionSet:setCopy cachingIdentifier:identifierCopy];
       }
 
       else
@@ -359,17 +359,17 @@ LABEL_2:
       }
     }
 
-    v21 = v13;
+    ownedTypes = typeCopy;
     goto LABEL_19;
   }
 
-  v21 = [a1 ownedTypes];
+  ownedTypes = [self ownedTypes];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v18 = [v12 allKeys];
-  v22 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  allKeys = [itemCopy allKeys];
+  v22 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v22)
   {
     v19 = 0;
@@ -379,8 +379,8 @@ LABEL_19:
   }
 
   v23 = v22;
-  v27 = a1;
-  v28 = v14;
+  selfCopy = self;
+  v28 = namedCopy;
   v24 = *v30;
 LABEL_8:
   v25 = 0;
@@ -388,32 +388,32 @@ LABEL_8:
   {
     if (*v30 != v24)
     {
-      objc_enumerationMutation(v18);
+      objc_enumerationMutation(allKeys);
     }
 
-    v13 = [MEMORY[0x277D79F68] typeWithString:{*(*(&v29 + 1) + 8 * v25), v27}];
-    if ([v13 conformsToTypes:v21])
+    typeCopy = [MEMORY[0x277D79F68] typeWithString:{*(*(&v29 + 1) + 8 * v25), selfCopy}];
+    if ([typeCopy conformsToTypes:ownedTypes])
     {
       break;
     }
 
     if (v23 == ++v25)
     {
-      v23 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v23)
       {
         goto LABEL_8;
       }
 
       v19 = 0;
-      v14 = v28;
+      namedCopy = v28;
       goto LABEL_19;
     }
   }
 
-  a1 = v27;
-  v14 = v28;
-  if (v13)
+  self = selfCopy;
+  namedCopy = v28;
+  if (typeCopy)
   {
     goto LABEL_2;
   }
@@ -429,11 +429,11 @@ LABEL_20:
   dataDetectorResults = self->_dataDetectorResults;
   if (!dataDetectorResults)
   {
-    v4 = [(WFStringContentItem *)self string];
-    if (v4)
+    string = [(WFStringContentItem *)self string];
+    if (string)
     {
-      v5 = [(WFStringContentItem *)self string];
-      v6 = [WFDataDetector resultsForString:v5 ofTypes:0x600000838 error:0];
+      string2 = [(WFStringContentItem *)self string];
+      v6 = [WFDataDetector resultsForString:string2 ofTypes:0x600000838 error:0];
       v7 = self->_dataDetectorResults;
       self->_dataDetectorResults = v6;
     }
@@ -441,7 +441,7 @@ LABEL_20:
     else
     {
       v8 = objc_opt_new();
-      v5 = self->_dataDetectorResults;
+      string2 = self->_dataDetectorResults;
       self->_dataDetectorResults = v8;
     }
 
@@ -455,15 +455,15 @@ LABEL_20:
 {
   v3 = [WFObjectType typeWithClass:objc_opt_class()];
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
 - (BOOL)includesFileRepresentationInSerializedItem
 {
-  v2 = [(WFContentItem *)self internalRepresentationType];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

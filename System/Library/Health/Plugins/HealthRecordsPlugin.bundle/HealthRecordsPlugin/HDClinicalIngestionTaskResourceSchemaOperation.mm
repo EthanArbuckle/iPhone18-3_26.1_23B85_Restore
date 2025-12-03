@@ -1,10 +1,10 @@
 @interface HDClinicalIngestionTaskResourceSchemaOperation
 + (id)new;
 - (HDClinicalIngestionTaskResourceSchemaOperation)init;
-- (HDClinicalIngestionTaskResourceSchemaOperation)initWithResourceSchema:(id)a3 accountContext:(id)a4;
+- (HDClinicalIngestionTaskResourceSchemaOperation)initWithResourceSchema:(id)schema accountContext:(id)context;
 - (id)initialWorkItem;
-- (id)newResourceFetchOperationWithPredefinedURL:(id)a3;
-- (id)runResourceFetchOperationForURL:(id)a3;
+- (id)newResourceFetchOperationWithPredefinedURL:(id)l;
+- (id)runResourceFetchOperationForURL:(id)l;
 - (void)main;
 @end
 
@@ -26,20 +26,20 @@
   return 0;
 }
 
-- (HDClinicalIngestionTaskResourceSchemaOperation)initWithResourceSchema:(id)a3 accountContext:(id)a4
+- (HDClinicalIngestionTaskResourceSchemaOperation)initWithResourceSchema:(id)schema accountContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  schemaCopy = schema;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = HDClinicalIngestionTaskResourceSchemaOperation;
   v8 = [(HDClinicalIngestionTaskResourceSchemaOperation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [schemaCopy copy];
     schema = v8->_schema;
     v8->_schema = v9;
 
-    objc_storeStrong(&v8->_accountContext, a4);
+    objc_storeStrong(&v8->_accountContext, context);
     v8->_resourceFetchOperationsByURLsLock._os_unfair_lock_opaque = 0;
     v11 = objc_alloc_init(NSMutableDictionary);
     resourceFetchOperationsByURLs = v8->_resourceFetchOperationsByURLs;
@@ -52,44 +52,44 @@
 - (void)main
 {
   v15 = objc_alloc_init(NSMutableArray);
-  v3 = [(HDClinicalIngestionTaskResourceSchemaOperation *)self initialWorkItem];
-  [v15 addObject:v3];
-  LOBYTE(v4) = 0;
+  initialWorkItem = [(HDClinicalIngestionTaskResourceSchemaOperation *)self initialWorkItem];
+  [v15 addObject:initialWorkItem];
+  LOBYTE(fetchSuccess) = 0;
   do
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [v15 hk_dequeue];
-    [v6 start];
-    v7 = [v6 outcome];
-    v8 = v7;
-    if (v4)
+    hk_dequeue = [v15 hk_dequeue];
+    [hk_dequeue start];
+    outcome = [hk_dequeue outcome];
+    v8 = outcome;
+    if (fetchSuccess)
     {
-      v4 = 1;
+      fetchSuccess = 1;
     }
 
     else
     {
-      v4 = [v7 fetchSuccess];
+      fetchSuccess = [outcome fetchSuccess];
     }
 
-    v9 = [v8 followUpWorkItems];
-    v10 = [v9 count];
+    followUpWorkItems = [v8 followUpWorkItems];
+    v10 = [followUpWorkItems count];
 
     if (v10)
     {
-      v11 = [v8 followUpWorkItems];
-      [v15 addObjectsFromArray:v11];
+      followUpWorkItems2 = [v8 followUpWorkItems];
+      [v15 addObjectsFromArray:followUpWorkItems2];
     }
 
     accountContext = self->_accountContext;
-    v13 = [v8 saveableResources];
-    [(HDClinicalIngestionTaskAccountContext *)accountContext saveResourceObjects:v13];
+    saveableResources = [v8 saveableResources];
+    [(HDClinicalIngestionTaskAccountContext *)accountContext saveResourceObjects:saveableResources];
 
     objc_autoreleasePoolPop(v5);
   }
 
   while ([v15 count]);
-  if (v4)
+  if (fetchSuccess)
   {
     v14 = &__kCFBooleanTrue;
   }
@@ -110,10 +110,10 @@
   return v4;
 }
 
-- (id)runResourceFetchOperationForURL:(id)a3
+- (id)runResourceFetchOperationForURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
     sub_9E3D4(a2, self);
   }
@@ -121,7 +121,7 @@
   if ([(HDClinicalIngestionTaskAccountContext *)self->_accountContext mayMakeRequests])
   {
     os_unfair_lock_lock(&self->_resourceFetchOperationsByURLsLock);
-    v6 = [(NSMutableDictionary *)self->_resourceFetchOperationsByURLs objectForKeyedSubscript:v5];
+    v6 = [(NSMutableDictionary *)self->_resourceFetchOperationsByURLs objectForKeyedSubscript:lCopy];
     if (v6)
     {
       v7 = v6;
@@ -130,13 +130,13 @@
 
     else
     {
-      v7 = [(HDClinicalIngestionTaskResourceSchemaOperation *)self newResourceFetchOperationWithPredefinedURL:v5];
+      v7 = [(HDClinicalIngestionTaskResourceSchemaOperation *)self newResourceFetchOperationWithPredefinedURL:lCopy];
       if (!v7)
       {
         sub_9E450(a2, self);
       }
 
-      [(NSMutableDictionary *)self->_resourceFetchOperationsByURLs setObject:v7 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)self->_resourceFetchOperationsByURLs setObject:v7 forKeyedSubscript:lCopy];
       os_unfair_lock_unlock(&self->_resourceFetchOperationsByURLsLock);
       [v7 start];
     }
@@ -152,15 +152,15 @@
   return v7;
 }
 
-- (id)newResourceFetchOperationWithPredefinedURL:(id)a3
+- (id)newResourceFetchOperationWithPredefinedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [HDFHIRIngestionResourceFetchOperation alloc];
-  v6 = [(HDClinicalIngestionTaskAccountContext *)self->_accountContext task];
-  v7 = [(HDClinicalIngestionTaskAccountContext *)self->_accountContext account];
-  v8 = [(HDFHIRIngestionResourceFetchOperation *)v5 initWithTask:v6 account:v7 nextOperation:0 queryMode:[(HDClinicalIngestionTaskAccountContext *)self->_accountContext queryMode] resourceSchema:self->_schema];
+  task = [(HDClinicalIngestionTaskAccountContext *)self->_accountContext task];
+  account = [(HDClinicalIngestionTaskAccountContext *)self->_accountContext account];
+  v8 = [(HDFHIRIngestionResourceFetchOperation *)v5 initWithTask:task account:account nextOperation:0 queryMode:[(HDClinicalIngestionTaskAccountContext *)self->_accountContext queryMode] resourceSchema:self->_schema];
 
-  [(HDFHIRIngestionResourceFetchOperation *)v8 setFullRequestURL:v4];
+  [(HDFHIRIngestionResourceFetchOperation *)v8 setFullRequestURL:lCopy];
   return v8;
 }
 

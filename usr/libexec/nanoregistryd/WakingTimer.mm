@@ -1,5 +1,5 @@
 @interface WakingTimer
-- (WakingTimer)initWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 handlerQueue:(id)a6 handlerBlock:(id)a7;
+- (WakingTimer)initWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period handlerQueue:(id)queue handlerBlock:(id)block;
 - (void)dealloc;
 - (void)fireTimer;
 - (void)invalidate;
@@ -7,22 +7,22 @@
 
 @implementation WakingTimer
 
-- (WakingTimer)initWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 handlerQueue:(id)a6 handlerBlock:(id)a7
+- (WakingTimer)initWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period handlerQueue:(id)queue handlerBlock:(id)block
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  blockCopy = block;
   v22.receiver = self;
   v22.super_class = WakingTimer;
   v16 = [(WakingTimer *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_identifier, a3);
-    v17->_delay = a4;
-    v17->_gracePeriod = a5;
-    objc_storeStrong(&v17->_handlerQueue, a6);
-    v18 = objc_retainBlock(v15);
+    objc_storeStrong(&v16->_identifier, identifier);
+    v17->_delay = delay;
+    v17->_gracePeriod = period;
+    objc_storeStrong(&v17->_handlerQueue, queue);
+    v18 = objc_retainBlock(blockCopy);
     handlerBlock = v17->_handlerBlock;
     v17->_handlerBlock = v18;
 
@@ -76,14 +76,14 @@
     handlerBlock = self->_handlerBlock;
     self->_handlerBlock = 0;
 
-    v5 = [(WakingTimer *)self handlerQueue];
+    handlerQueue = [(WakingTimer *)self handlerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10008E638;
     block[3] = &unk_100175D58;
     v8 = v3;
     v6 = v3;
-    dispatch_async(v5, block);
+    dispatch_async(handlerQueue, block);
   }
 }
 

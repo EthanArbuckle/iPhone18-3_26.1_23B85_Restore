@@ -1,22 +1,22 @@
 @interface BackgroundTaskAgentMonitor
 - (BOOL)initNetworkLinkQualityMonitoring;
 - (BOOL)initPowerSourceMonitoring;
-- (BackgroundTaskAgentMonitor)initWithTarget:(id)a3 selector:(SEL)a4 queue:(id)a5;
+- (BackgroundTaskAgentMonitor)initWithTarget:(id)target selector:(SEL)selector queue:(id)queue;
 - (SEL)selector;
 - (double)getKernelMonotonicClock;
 - (void)cancelNetworkStabilizationTimer;
 - (void)dealloc;
 - (void)debugPrintMonitorStatus;
 - (void)networkStabilizationTimerHandler;
-- (void)notifyWhenBatteryLevel:(double)a3;
+- (void)notifyWhenBatteryLevel:(double)level;
 - (void)processRegistrationNotification;
 - (void)rescheduleNetworkStabilizationTimer;
-- (void)setIsInVoiceCall:(BOOL)a3;
-- (void)setIsScreenBlanked:(BOOL)a3;
-- (void)updateBatteryLevel:(unsigned int)a3;
+- (void)setIsInVoiceCall:(BOOL)call;
+- (void)setIsScreenBlanked:(BOOL)blanked;
+- (void)updateBatteryLevel:(unsigned int)level;
 - (void)updateCallState;
 - (void)updateNetworkLinkQuality;
-- (void)updatePluggedinState:(unsigned int)a3;
+- (void)updatePluggedinState:(unsigned int)state;
 - (void)updateRoamingState;
 @end
 
@@ -36,7 +36,7 @@
     [(BackgroundTaskAgentMonitor *)self cancelNetworkStabilizationTimer];
     [(BackgroundTaskAgentMonitor *)self setNetworkStabilizationTimer:[NSTimer timerWithTimeInterval:self target:"networkStabilizationTimerHandler" selector:0 userInfo:0 repeats:5.0]];
     [+[NSRunLoop mainRunLoop](NSRunLoop addTimer:"addTimer:forMode:" forMode:[(BackgroundTaskAgentMonitor *)self networkStabilizationTimer], NSDefaultRunLoopMode];
-    v3 = [(BackgroundTaskAgentMonitor *)self networkStabilizationTimer];
+    networkStabilizationTimer = [(BackgroundTaskAgentMonitor *)self networkStabilizationTimer];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       sub_6BAC();
@@ -51,7 +51,7 @@
   self->_networkStabilizationTimer = 0;
 }
 
-- (BackgroundTaskAgentMonitor)initWithTarget:(id)a3 selector:(SEL)a4 queue:(id)a5
+- (BackgroundTaskAgentMonitor)initWithTarget:(id)target selector:(SEL)selector queue:(id)queue
 {
   v19.receiver = self;
   v19.super_class = BackgroundTaskAgentMonitor;
@@ -59,19 +59,19 @@
   v9 = v8;
   if (v8)
   {
-    v8->_target = a3;
-    if (a4)
+    v8->_target = target;
+    if (selector)
     {
-      v10 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v10 = 0;
+      selectorCopy = 0;
     }
 
-    v8->_selector = v10;
-    v8->_queue = a5;
+    v8->_selector = selectorCopy;
+    v8->_queue = queue;
     v8->_primaryLinkQuality = 0;
     v8->_primaryLinkIsCellular = 0;
     v8->_networkStabilizationTimer = 0;
@@ -109,7 +109,7 @@
       [(BackgroundTaskAgentMonitor *)v9 updateRoamingState];
       v9->systemPowerPortRef = 0;
       v9->rootDomainConnect = IORegisterForSystemPower(v9, &v9->systemPowerPortRef, sub_FA0, &v9->pmNotifier);
-      IONotificationPortSetDispatchQueue(v9->systemPowerPortRef, a5);
+      IONotificationPortSetDispatchQueue(v9->systemPowerPortRef, queue);
       *&v9->_systemWillSleep = 256;
     }
 
@@ -188,9 +188,9 @@ LABEL_8:
   [(BackgroundTaskAgentMonitor *)&v11 dealloc];
 }
 
-- (void)notifyWhenBatteryLevel:(double)a3
+- (void)notifyWhenBatteryLevel:(double)level
 {
-  self->_batteryNotificationThreshold = a3;
+  self->_batteryNotificationThreshold = level;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_6A04();
@@ -469,17 +469,17 @@ LABEL_22:
   }
 }
 
-- (void)setIsScreenBlanked:(BOOL)a3
+- (void)setIsScreenBlanked:(BOOL)blanked
 {
-  if (self->_isScreenBlanked != a3)
+  if (self->_isScreenBlanked != blanked)
   {
     v14 = v7;
     v15 = v4;
     v16 = v3;
-    v9 = a3;
-    self->_isScreenBlanked = a3;
+    blankedCopy = blanked;
+    self->_isScreenBlanked = blanked;
     v11 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
-    if (v9)
+    if (blankedCopy)
     {
       if (v11)
       {
@@ -551,10 +551,10 @@ LABEL_22:
   return v6 == 0;
 }
 
-- (void)updateBatteryLevel:(unsigned int)a3
+- (void)updateBatteryLevel:(unsigned int)level
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"MaxCapacity", kCFAllocatorDefault, 0);
-  v6 = IORegistryEntryCreateCFProperty(a3, @"CurrentCapacity", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(level, @"MaxCapacity", kCFAllocatorDefault, 0);
+  v6 = IORegistryEntryCreateCFProperty(level, @"CurrentCapacity", kCFAllocatorDefault, 0);
   v7 = v6;
   if (CFProperty)
   {
@@ -624,16 +624,16 @@ LABEL_9:
   }
 }
 
-- (void)updatePluggedinState:(unsigned int)a3
+- (void)updatePluggedinState:(unsigned int)state
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"ExternalConnected", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(state, @"ExternalConnected", kCFAllocatorDefault, 0);
   isPowerPluggedin = self->_isPowerPluggedin;
-  v6 = [CFProperty intValue];
-  v7 = v6 == 1;
+  intValue = [CFProperty intValue];
+  v7 = intValue == 1;
   self->_isPowerPluggedin = v7;
   if (isPowerPluggedin != v7)
   {
-    v8 = v6;
+    v8 = intValue;
     v9 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
     if (v8 == 1)
     {
@@ -715,15 +715,15 @@ LABEL_9:
   return v2;
 }
 
-- (void)setIsInVoiceCall:(BOOL)a3
+- (void)setIsInVoiceCall:(BOOL)call
 {
-  if (self->_isInVoiceCall != a3)
+  if (self->_isInVoiceCall != call)
   {
     v11 = v4;
     v12 = v3;
-    v7 = a3;
+    callCopy = call;
     v9 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
-    if (v7)
+    if (callCopy)
     {
       if (v9)
       {
@@ -736,7 +736,7 @@ LABEL_9:
       sub_746C();
     }
 
-    self->_isInVoiceCall = v7;
+    self->_isInVoiceCall = callCopy;
     if (self->_numVoiceCallJobs >= 1)
     {
       if (self->_selector)
@@ -767,18 +767,18 @@ LABEL_9:
   Status = CTCallGetStatus();
   if ((Status - 1) < 4)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
 LABEL_11:
 
-    [(BackgroundTaskAgentMonitor *)v6 setIsInVoiceCall:v7];
+    [(BackgroundTaskAgentMonitor *)selfCopy2 setIsInVoiceCall:v7];
     return;
   }
 
   if (Status == 5 || Status == 0)
   {
 LABEL_10:
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
     goto LABEL_11;
   }

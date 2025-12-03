@@ -1,36 +1,36 @@
 @interface FHTransactionGroup
-+ (id)deleteInsightsForGroupIds:(id)a3;
++ (id)deleteInsightsForGroupIds:(id)ids;
 + (id)deleteOutdatedEntityGroupsAndInsights;
-+ (void)_updateStateForTransactionsWithIds:(id)a3;
-- (FHTransactionGroup)initWithCoder:(id)a3;
-- (FHTransactionGroup)initWithGroupIdentifier:(id)a3 transactionIds:(id)a4 groupingMethod:(unint64_t)a5 creditDebitType:(unint64_t)a6 category:(id)a7;
-- (void)encodeWithCoder:(id)a3;
++ (void)_updateStateForTransactionsWithIds:(id)ids;
+- (FHTransactionGroup)initWithCoder:(id)coder;
+- (FHTransactionGroup)initWithGroupIdentifier:(id)identifier transactionIds:(id)ids groupingMethod:(unint64_t)method creditDebitType:(unint64_t)type category:(id)category;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHTransactionGroup
 
-- (FHTransactionGroup)initWithCoder:(id)a3
+- (FHTransactionGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = FHTransactionGroup;
   v5 = [(FHTransactionGroup *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
     groupIdentifier = v5->_groupIdentifier;
     v5->_groupIdentifier = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"transactionIds"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"transactionIds"];
     transactionIds = v5->_transactionIds;
     v5->_transactionIds = v11;
 
-    v5->_groupingMethod = [v4 decodeIntegerForKey:@"groupingMethod"];
-    v5->_creditDebitType = [v4 decodeIntegerForKey:@"creditDebitType"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v5->_groupingMethod = [coderCopy decodeIntegerForKey:@"groupingMethod"];
+    v5->_creditDebitType = [coderCopy decodeIntegerForKey:@"creditDebitType"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     category = v5->_category;
     v5->_category = v13;
   }
@@ -38,33 +38,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupIdentifier = self->_groupIdentifier;
-  v5 = a3;
-  [v5 encodeObject:groupIdentifier forKey:@"groupIdentifier"];
-  [v5 encodeObject:self->_transactionIds forKey:@"transactionIds"];
-  [v5 encodeInteger:self->_groupingMethod forKey:@"groupingMethod"];
-  [v5 encodeInteger:self->_creditDebitType forKey:@"creditDebitType"];
-  [v5 encodeObject:self->_category forKey:@"category"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groupIdentifier forKey:@"groupIdentifier"];
+  [coderCopy encodeObject:self->_transactionIds forKey:@"transactionIds"];
+  [coderCopy encodeInteger:self->_groupingMethod forKey:@"groupingMethod"];
+  [coderCopy encodeInteger:self->_creditDebitType forKey:@"creditDebitType"];
+  [coderCopy encodeObject:self->_category forKey:@"category"];
 }
 
-- (FHTransactionGroup)initWithGroupIdentifier:(id)a3 transactionIds:(id)a4 groupingMethod:(unint64_t)a5 creditDebitType:(unint64_t)a6 category:(id)a7
+- (FHTransactionGroup)initWithGroupIdentifier:(id)identifier transactionIds:(id)ids groupingMethod:(unint64_t)method creditDebitType:(unint64_t)type category:(id)category
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  identifierCopy = identifier;
+  idsCopy = ids;
+  categoryCopy = category;
   v19.receiver = self;
   v19.super_class = FHTransactionGroup;
   v16 = [(FHTransactionGroup *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_groupIdentifier, a3);
-    objc_storeStrong(&v17->_transactionIds, a4);
-    v17->_groupingMethod = a5;
-    v17->_creditDebitType = a6;
-    objc_storeStrong(&v17->_category, a7);
+    objc_storeStrong(&v16->_groupIdentifier, identifier);
+    objc_storeStrong(&v17->_transactionIds, ids);
+    v17->_groupingMethod = method;
+    v17->_creditDebitType = type;
+    objc_storeStrong(&v17->_category, category);
   }
 
   return v17;
@@ -117,13 +117,13 @@
     }
 
     v13 = [v26[5] copy];
-    v14 = [a1 deleteInsightsForGroupIds:v13];
+    v14 = [self deleteInsightsForGroupIds:v13];
 
     v3 = v14;
   }
 
   v15 = [v20[5] copy];
-  [a1 _updateStateForTransactionsWithIds:v15];
+  [self _updateStateForTransactionsWithIds:v15];
 
   _Block_object_dispose(&v19, 8);
   _Block_object_dispose(&v25, 8);
@@ -188,19 +188,19 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)deleteInsightsForGroupIds:(id)a3
++ (id)deleteInsightsForGroupIds:(id)ids
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idsCopy = ids;
   v35 = [[FHDatabaseEntity alloc] initWithEntity:?];
   v31 = [[FHDatabaseEntity alloc] initWithEntity:?];
   v33 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [v33 setObject:v3 forKey:@"ENTITY-GROUPS"];
+  [v33 setObject:idsCopy forKey:@"ENTITY-GROUPS"];
   v43 = 0u;
   v44 = 0u;
   v42 = 0u;
   v41 = 0u;
-  obj = v3;
+  obj = idsCopy;
   v36 = [obj countByEnumeratingWithState:&v41 objects:v53 count:16];
   if (v36)
   {
@@ -386,16 +386,16 @@ uint64_t __48__FHTransactionGroup_deleteInsightsForGroupIds___block_invoke_3(uin
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)_updateStateForTransactionsWithIds:(id)a3
++ (void)_updateStateForTransactionsWithIds:(id)ids
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idsCopy = ids;
   v4 = [[FHDatabaseManager alloc] init:0];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = idsCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

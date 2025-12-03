@@ -1,17 +1,17 @@
 @interface PageControl.Coordinator
 - (_TtCV12GameStoreKit11PageControl11Coordinator)init;
-- (void)updateCurrentPageWithSender:(id)a3;
+- (void)updateCurrentPageWithSender:(id)sender;
 @end
 
 @implementation PageControl.Coordinator
 
-- (void)updateCurrentPageWithSender:(id)a3
+- (void)updateCurrentPageWithSender:(id)sender
 {
   v5 = *&self->control[OBJC_IVAR____TtCV12GameStoreKit11PageControl11Coordinator_control + 24];
-  v6 = a3;
-  v7 = self;
+  senderCopy = sender;
+  selfCopy = self;
 
-  [v6 currentPage];
+  [senderCopy currentPage];
 
   __swift_instantiateConcreteTypeFromMangledNameV2(qword_27F2180B8);
   sub_24F927178();

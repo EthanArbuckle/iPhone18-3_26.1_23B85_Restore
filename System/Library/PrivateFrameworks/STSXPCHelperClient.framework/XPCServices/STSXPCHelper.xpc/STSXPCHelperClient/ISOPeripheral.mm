@@ -1,15 +1,15 @@
 @interface ISOPeripheral
-- (BOOL)createGATTServer:(id)a3 serviceUUID:(id)a4 readerIdentCharacteristic:(id)a5;
+- (BOOL)createGATTServer:(id)server serviceUUID:(id)d readerIdentCharacteristic:(id)characteristic;
 @end
 
 @implementation ISOPeripheral
 
-- (BOOL)createGATTServer:(id)a3 serviceUUID:(id)a4 readerIdentCharacteristic:(id)a5
+- (BOOL)createGATTServer:(id)server serviceUUID:(id)d readerIdentCharacteristic:(id)characteristic
 {
-  v9 = a3;
+  serverCopy = server;
   if (!self->_iso18Service)
   {
-    v11 = [CBUUID UUIDWithData:a4];
+    v11 = [CBUUID UUIDWithData:d];
     v14 = v11;
     if (v11)
     {
@@ -68,7 +68,7 @@
           v40.receiver = self;
           v40.super_class = ISOPeripheral;
           [(ISO18013_3_Peripheral *)&v40 setCharacteristics:v18];
-          [v9 addService:self->_iso18Service];
+          [serverCopy addService:self->_iso18Service];
           sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ISOPeripheral createGATTServer:serviceUUID:readerIdentCharacteristic:]", 113, self, @"LE: done creating GATT", v36, v37, v39);
 
           v10 = 1;

@@ -1,12 +1,12 @@
 @interface _UINavigationBarPlatterItemView
-- (_UINavigationBarPlatterItemView)initWithCoder:(id)a3;
-- (_UINavigationBarPlatterItemView)initWithFrame:(CGRect)a3;
+- (_UINavigationBarPlatterItemView)initWithCoder:(id)coder;
+- (_UINavigationBarPlatterItemView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _UINavigationBarPlatterItemView
 
-- (_UINavigationBarPlatterItemView)initWithCoder:(id)a3
+- (_UINavigationBarPlatterItemView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____UINavigationBarPlatterItemView_animationScheduler;
   type metadata accessor for NavigationBarPlatterContainer.AnimationScheduler();
@@ -21,11 +21,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18918FF38();
 }
 
-- (_UINavigationBarPlatterItemView)initWithFrame:(CGRect)a3
+- (_UINavigationBarPlatterItemView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

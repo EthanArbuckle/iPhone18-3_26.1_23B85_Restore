@@ -1,26 +1,26 @@
 @interface PLUSSchemaPLUSContactSuggestionGenerated
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSContactSuggestionGenerated)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSContactSuggestionGenerated)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSContactSuggestionGenerated)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSContactSuggestionGenerated)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSContactSuggestionGenerated
 
-- (PLUSSchemaPLUSContactSuggestionGenerated)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSContactSuggestionGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PLUSSchemaPLUSContactSuggestionGenerated;
   v5 = [(PLUSSchemaPLUSContactSuggestionGenerated *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"generatedSuggestion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"generatedSuggestion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PLUSSchemaPLUSContactSuggestionGenerated *)v5 setGeneratedSuggestion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isSuggestionUpdated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isSuggestionUpdated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSContactSuggestionGenerated)initWithJSON:(id)a3
+- (PLUSSchemaPLUSContactSuggestionGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSContactSuggestionGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSContactSuggestionGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_generatedSuggestion)
   {
-    v4 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    generatedSuggestion = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
+    dictionaryRepresentation = [generatedSuggestion dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"generatedSuggestion"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"generatedSuggestion"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"generatedSuggestion"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"generatedSuggestion"];
     }
   }
 
   if (*(&self->_isSuggestionUpdated + 1))
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSContactSuggestionGenerated isSuggestionUpdated](self, "isSuggestionUpdated")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isSuggestionUpdated"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isSuggestionUpdated"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
-  v6 = [v4 generatedSuggestion];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  generatedSuggestion = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
+  generatedSuggestion2 = [equalCopy generatedSuggestion];
+  v7 = generatedSuggestion2;
+  if ((generatedSuggestion != 0) == (generatedSuggestion2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
-  if (v8)
+  generatedSuggestion3 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
+  if (generatedSuggestion3)
   {
-    v9 = v8;
-    v10 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
-    v11 = [v4 generatedSuggestion];
-    v12 = [v10 isEqual:v11];
+    v9 = generatedSuggestion3;
+    generatedSuggestion4 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
+    generatedSuggestion5 = [equalCopy generatedSuggestion];
+    v12 = [generatedSuggestion4 isEqual:generatedSuggestion5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if (*(&self->_isSuggestionUpdated + 1) != (v4[17] & 1))
+  if (*(&self->_isSuggestionUpdated + 1) != (equalCopy[17] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*(&self->_isSuggestionUpdated + 1))
   {
     isSuggestionUpdated = self->_isSuggestionUpdated;
-    if (isSuggestionUpdated != [v4 isSuggestionUpdated])
+    if (isSuggestionUpdated != [equalCopy isSuggestionUpdated])
     {
       goto LABEL_12;
     }
@@ -178,14 +178,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
+  toCopy = to;
+  generatedSuggestion = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
 
-  if (v4)
+  if (generatedSuggestion)
   {
-    v5 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
+    generatedSuggestion2 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion];
     PBDataWriterWriteSubmessage();
   }
 
@@ -195,17 +195,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PLUSSchemaPLUSContactSuggestionGenerated;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PLUSSchemaPLUSContactSuggestionGenerated *)self generatedSuggestion:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PLUSSchemaPLUSContactSuggestionGenerated *)self deleteGeneratedSuggestion];
   }

@@ -1,42 +1,42 @@
 @interface CPLPrequeliteFlattentPipelineMigrator
-- (BOOL)_discardResourceForUpload:(id)a3;
-- (BOOL)_enqueueResourcesForChange:(id)a3 inOutgoingResourcesWithUploadIdentifier:(id)a4;
-- (BOOL)_migratePushQueue:(id)a3;
+- (BOOL)_discardResourceForUpload:(id)upload;
+- (BOOL)_enqueueResourcesForChange:(id)change inOutgoingResourcesWithUploadIdentifier:(id)identifier;
+- (BOOL)_migratePushQueue:(id)queue;
 - (BOOL)migrate;
-- (CPLPrequeliteFlattentPipelineMigrator)initWithStore:(id)a3;
+- (CPLPrequeliteFlattentPipelineMigrator)initWithStore:(id)store;
 - (NSError)lastError;
-- (unint64_t)_availabilityOfResource:(id)a3;
-- (void)_setLastError:(id)a3;
+- (unint64_t)_availabilityOfResource:(id)resource;
+- (void)_setLastError:(id)error;
 @end
 
 @implementation CPLPrequeliteFlattentPipelineMigrator
 
-- (CPLPrequeliteFlattentPipelineMigrator)initWithStore:(id)a3
+- (CPLPrequeliteFlattentPipelineMigrator)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v23.receiver = self;
   v23.super_class = CPLPrequeliteFlattentPipelineMigrator;
   v6 = [(CPLPrequeliteFlattentPipelineMigrator *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
-    v8 = [(CPLPrequeliteStore *)v7->_store abstractObject];
-    v9 = [v5 clientCache];
+    objc_storeStrong(&v6->_store, store);
+    abstractObject = [(CPLPrequeliteStore *)v7->_store abstractObject];
+    clientCache = [storeCopy clientCache];
     clientCache = v7->_clientCache;
-    v7->_clientCache = v9;
+    v7->_clientCache = clientCache;
 
-    v11 = [v8 pushRepository];
+    pushRepository = [abstractObject pushRepository];
     pushRepository = v7->_pushRepository;
-    v7->_pushRepository = v11;
+    v7->_pushRepository = pushRepository;
 
-    v13 = [v8 outgoingResources];
+    outgoingResources = [abstractObject outgoingResources];
     outgoingResources = v7->_outgoingResources;
-    v7->_outgoingResources = v13;
+    v7->_outgoingResources = outgoingResources;
 
-    v15 = [v8 resourceStorage];
+    resourceStorage = [abstractObject resourceStorage];
     resources = v7->_resources;
-    v7->_resources = v15;
+    v7->_resources = resourceStorage;
 
     v17 = [CPLPrequeliteResourceUploadQueue alloc];
     store = v7->_store;
@@ -49,14 +49,14 @@
   return v7;
 }
 
-- (void)_setLastError:(id)a3
+- (void)_setLastError:(id)error
 {
-  v5 = a3;
-  if (v5)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_lastError, a3);
-    v5 = v6;
+    v6 = errorCopy;
+    objc_storeStrong(&self->_lastError, error);
+    errorCopy = v6;
   }
 }
 
@@ -65,34 +65,34 @@
   lastError = self->_lastError;
   if (lastError)
   {
-    v3 = lastError;
+    lastError = lastError;
   }
 
   else
   {
-    v4 = [(CPLPrequeliteStore *)self->_store pqlConnection];
-    v3 = [v4 lastError];
+    pqlConnection = [(CPLPrequeliteStore *)self->_store pqlConnection];
+    lastError = [pqlConnection lastError];
   }
 
-  return v3;
+  return lastError;
 }
 
-- (unint64_t)_availabilityOfResource:(id)a3
+- (unint64_t)_availabilityOfResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v21 = 0;
-  v5 = [(CPLPrequeliteResourceUploadQueue *)self->_uploadQueue queuedResourceForResource:v4 pendingCount:&v21];
+  v5 = [(CPLPrequeliteResourceUploadQueue *)self->_uploadQueue queuedResourceForResource:resourceCopy pendingCount:&v21];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 identity];
-    v8 = [v4 identity];
-    v9 = [v7 fingerPrint];
-    v10 = [v8 fingerPrint];
-    v11 = v10;
-    if (v9)
+    identity = [v5 identity];
+    identity2 = [resourceCopy identity];
+    fingerPrint = [identity fingerPrint];
+    fingerPrint2 = [identity2 fingerPrint];
+    v11 = fingerPrint2;
+    if (fingerPrint)
     {
-      v12 = v10 == 0;
+      v12 = fingerPrint2 == 0;
     }
 
     else
@@ -103,7 +103,7 @@
     if (v12)
     {
 
-      if (v9 | v11)
+      if (fingerPrint | v11)
       {
         goto LABEL_14;
       }
@@ -111,7 +111,7 @@
 
     else
     {
-      v14 = [v9 isEqual:v10];
+      v14 = [fingerPrint isEqual:fingerPrint2];
 
       if ((v14 & 1) == 0)
       {
@@ -119,12 +119,12 @@
       }
     }
 
-    v15 = [v7 fileUTI];
-    v16 = [v8 fileUTI];
-    v17 = v16;
-    if (v15 && v16)
+    fileUTI = [identity fileUTI];
+    fileUTI2 = [identity2 fileUTI];
+    v17 = fileUTI2;
+    if (fileUTI && fileUTI2)
     {
-      v18 = [v15 isEqual:v16];
+      v18 = [fileUTI isEqual:fileUTI2];
 
       if ((v18 & 1) == 0)
       {
@@ -139,17 +139,17 @@ LABEL_15:
     else
     {
 
-      if (v15 | v17)
+      if (fileUTI | v17)
       {
         goto LABEL_14;
       }
     }
 
-    if ([v7 isAvailable])
+    if ([identity isAvailable])
     {
-      v20 = [v7 fileURL];
+      fileURL = [identity fileURL];
 
-      v13 = v20 != 0;
+      v13 = fileURL != 0;
     }
 
     else
@@ -166,16 +166,16 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)_enqueueResourcesForChange:(id)a3 inOutgoingResourcesWithUploadIdentifier:(id)a4
+- (BOOL)_enqueueResourcesForChange:(id)change inOutgoingResourcesWithUploadIdentifier:(id)identifier
 {
-  v27 = a4;
-  v6 = [a3 resources];
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  identifierCopy = identifier;
+  resources = [change resources];
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(resources, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = resources;
   v8 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (!v8)
   {
@@ -210,8 +210,8 @@ LABEL_16:
 
           if (v18)
           {
-            v20 = [v12 identity];
-            [v20 setFileURL:v14];
+            identity = [v12 identity];
+            [identity setFileURL:v14];
 
             v7 = v16;
             [v16 addObject:v12];
@@ -220,19 +220,19 @@ LABEL_16:
           }
 
           [(CPLPrequeliteFlattentPipelineMigrator *)self _setLastError:v19];
-          v25 = [v12 identity];
-          [v25 setFileURL:v14];
+          identity2 = [v12 identity];
+          [identity2 setFileURL:v14];
 
           v7 = v16;
           [v16 addObject:v12];
 
           v15 = v19;
-          v22 = v27;
+          v22 = identifierCopy;
         }
 
         else
         {
-          v22 = v27;
+          v22 = identifierCopy;
           if ((_CPLSilentLogging & 1) == 0)
           {
             sub_1001C23AC(v12, v15);
@@ -263,8 +263,8 @@ LABEL_12:
     self->_countOfOutgoingResources += [v7 count];
     outgoingResources = self->_outgoingResources;
     v29 = 0;
-    v22 = v27;
-    v23 = [(CPLEngineOutgoingResources *)outgoingResources storeResourcesToUpload:v7 withUploadIdentifier:v27 shouldCheckResources:0 error:&v29];
+    v22 = identifierCopy;
+    v23 = [(CPLEngineOutgoingResources *)outgoingResources storeResourcesToUpload:v7 withUploadIdentifier:identifierCopy shouldCheckResources:0 error:&v29];
     v24 = v29;
     if ((v23 & 1) == 0)
     {
@@ -277,18 +277,18 @@ LABEL_20:
   else
   {
     v23 = 1;
-    v22 = v27;
+    v22 = identifierCopy;
   }
 
   return v23;
 }
 
-- (BOOL)_discardResourceForUpload:(id)a3
+- (BOOL)_discardResourceForUpload:(id)upload
 {
-  v4 = a3;
+  uploadCopy = upload;
   uploadQueue = self->_uploadQueue;
   v16 = 0;
-  v6 = [(CPLPrequeliteResourceUploadQueue *)uploadQueue discardResource:v4 discardedResource:&v16 error:0];
+  v6 = [(CPLPrequeliteResourceUploadQueue *)uploadQueue discardResource:uploadCopy discardedResource:&v16 error:0];
   v7 = v16;
   v8 = v7;
   if (v6)
@@ -303,13 +303,13 @@ LABEL_20:
 
   if (!v9)
   {
-    v10 = [v7 identity];
-    if ([v10 isAvailable])
+    identity = [v7 identity];
+    if ([identity isAvailable])
     {
-      v11 = [v8 identity];
-      v12 = [v11 fileURL];
+      identity2 = [v8 identity];
+      fileURL = [identity2 fileURL];
 
-      if (v12)
+      if (fileURL)
       {
         LOBYTE(v6) = 1;
         goto LABEL_10;
@@ -318,11 +318,11 @@ LABEL_20:
       ++self->_countOfDroppedResources;
       resources = self->_resources;
       v15 = 0;
-      LOBYTE(v6) = [(CPLEngineResourceStorage *)resources dropResourceForUpload:v4 error:&v15];
-      v10 = v15;
+      LOBYTE(v6) = [(CPLEngineResourceStorage *)resources dropResourceForUpload:uploadCopy error:&v15];
+      identity = v15;
       if ((v6 & 1) == 0)
       {
-        [(CPLPrequeliteFlattentPipelineMigrator *)self _setLastError:v10];
+        [(CPLPrequeliteFlattentPipelineMigrator *)self _setLastError:identity];
       }
     }
 
@@ -337,14 +337,14 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)_migratePushQueue:(id)a3
+- (BOOL)_migratePushQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  if ([v4 hasChanges])
+  if ([queueCopy hasChanges])
   {
     v9 = 0;
     v10 = &v9;
@@ -357,7 +357,7 @@ LABEL_10:
     v8[5] = &v9;
     v8[6] = &v13;
     v8[4] = self;
-    [v4 enumerateChangesWithBlock:v8];
+    [queueCopy enumerateChangesWithBlock:v8];
     if (*(v14 + 24) == 1 && *(v10 + 24) == 1)
     {
       v7[0] = _NSConcreteStackBlock;
@@ -366,7 +366,7 @@ LABEL_10:
       v7[3] = &unk_10027BC00;
       v7[4] = self;
       v7[5] = &v13;
-      [v4 enumerateChangesWithBlock:v7];
+      [queueCopy enumerateChangesWithBlock:v7];
     }
 
     _Block_object_dispose(&v9, 8);
@@ -380,7 +380,7 @@ LABEL_10:
 
 - (BOOL)migrate
 {
-  v3 = [(CPLPrequeliteStore *)self->_store pqlConnection];
+  pqlConnection = [(CPLPrequeliteStore *)self->_store pqlConnection];
   v4 = [CPLPrequeliteTable tableWithName:@"deletePushQueue"];
   v5 = [CPLPrequeliteTable tableWithName:@"pushQueue"];
   v6 = [[CPLPrequeliteChangePipeEnumerator alloc] initWithStore:self->_store table:v4];
@@ -397,9 +397,9 @@ LABEL_10:
 LABEL_6:
     store = self->_store;
     countOfMigratedChanges = self->_countOfMigratedChanges;
-    v12 = [v3 lastCPLError];
-    v13 = [v12 localizedDescription];
-    [(CPLPrequeliteStore *)store recordUpgradeEvent:@"failed to migrate %lu changes to flat pipeline: %@", countOfMigratedChanges, v13];
+    lastCPLError = [pqlConnection lastCPLError];
+    localizedDescription = [lastCPLError localizedDescription];
+    [(CPLPrequeliteStore *)store recordUpgradeEvent:@"failed to migrate %lu changes to flat pipeline: %@", countOfMigratedChanges, localizedDescription];
 
     v14 = 0;
     goto LABEL_9;
@@ -419,10 +419,10 @@ LABEL_6:
 
   v14 = 1;
 LABEL_9:
-  [v3 cplExecute:{@"DROP TABLE IF EXISTS %@", v4}];
-  [v3 cplExecute:{@"DROP TABLE IF EXISTS %@", v5}];
-  v15 = [(CPLPrequeliteResourceUploadQueue *)self->_uploadQueue table];
-  [v3 cplExecute:{@"DROP TABLE IF EXISTS %@", v15}];
+  [pqlConnection cplExecute:{@"DROP TABLE IF EXISTS %@", v4}];
+  [pqlConnection cplExecute:{@"DROP TABLE IF EXISTS %@", v5}];
+  table = [(CPLPrequeliteResourceUploadQueue *)self->_uploadQueue table];
+  [pqlConnection cplExecute:{@"DROP TABLE IF EXISTS %@", table}];
 
   return v14;
 }

@@ -4,7 +4,7 @@
 - (id)componentsAsString;
 - (id)copyParseRules;
 - (id)description;
-- (void)addComp:(id)a3;
+- (void)addComp:(id)comp;
 @end
 
 @implementation CalDAVSupportedCalendarComponentSet
@@ -23,9 +23,9 @@
 
 - (id)componentsAsString
 {
-  v2 = [(CalDAVSupportedCalendarComponentSet *)self compNames];
-  v3 = [v2 allObjects];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  compNames = [(CalDAVSupportedCalendarComponentSet *)self compNames];
+  allObjects = [compNames allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:sel_compare_];
   v5 = [v4 componentsJoinedByString:@"+"];
 
   return v5;
@@ -38,36 +38,36 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"%@ %p: ", v5, self];
 
-  v7 = [(CalDAVSupportedCalendarComponentSet *)self componentsAsString];
-  [v6 appendFormat:@"SUPPORTED COMPONENTS: %@", v7];
+  componentsAsString = [(CalDAVSupportedCalendarComponentSet *)self componentsAsString];
+  [v6 appendFormat:@"SUPPORTED COMPONENTS: %@", componentsAsString];
 
   return v6;
 }
 
-- (void)addComp:(id)a3
+- (void)addComp:(id)comp
 {
-  v4 = a3;
+  compCopy = comp;
   comps = self->_comps;
-  v8 = v4;
+  v8 = compCopy;
   if (!comps)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_comps;
     self->_comps = v6;
 
-    v4 = v8;
+    compCopy = v8;
     comps = self->_comps;
   }
 
-  [(NSMutableSet *)comps addObject:v4];
+  [(NSMutableSet *)comps addObject:compCopy];
 }
 
 - (id)childrenToWrite
 {
-  v3 = [(CalDAVSupportedCalendarComponentSet *)self comps];
-  v4 = [v3 allObjects];
-  v5 = [(CoreDAVItem *)self extraChildItems];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  comps = [(CalDAVSupportedCalendarComponentSet *)self comps];
+  allObjects = [comps allObjects];
+  extraChildItems = [(CoreDAVItem *)self extraChildItems];
+  v6 = [allObjects arrayByAddingObjectsFromArray:extraChildItems];
 
   return v6;
 }
@@ -76,15 +76,15 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v4 = [(CalDAVSupportedCalendarComponentSet *)self comps];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  comps = [(CalDAVSupportedCalendarComponentSet *)self comps];
+  v5 = [v3 initWithCapacity:{objc_msgSend(comps, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CalDAVSupportedCalendarComponentSet *)self comps];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  comps2 = [(CalDAVSupportedCalendarComponentSet *)self comps];
+  v7 = [comps2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -95,17 +95,17 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(comps2);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) nameAttribute];
-        if (v11)
+        nameAttribute = [*(*(&v14 + 1) + 8 * i) nameAttribute];
+        if (nameAttribute)
         {
-          [v5 addObject:v11];
+          [v5 addObject:nameAttribute];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [comps2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

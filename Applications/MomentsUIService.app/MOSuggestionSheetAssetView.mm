@@ -1,10 +1,10 @@
 @interface MOSuggestionSheetAssetView
-- (_TtC16MomentsUIService26MOSuggestionSheetAssetView)initWithCoder:(id)a3;
+- (_TtC16MomentsUIService26MOSuggestionSheetAssetView)initWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionSheetAssetView
 
-- (_TtC16MomentsUIService26MOSuggestionSheetAssetView)initWithCoder:(id)a3
+- (_TtC16MomentsUIService26MOSuggestionSheetAssetView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService26MOSuggestionSheetAssetView_currentSizeType) = 3;
   *&self->currentSizeType[OBJC_IVAR____TtC16MomentsUIService26MOSuggestionSheetAssetView_delegate] = 0;

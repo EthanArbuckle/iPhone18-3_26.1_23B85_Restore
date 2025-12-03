@@ -1,51 +1,51 @@
 @interface CKVideoTrimController
 - (CKTrimControllerDelegate)delegate;
-- (CKVideoTrimController)initWithMediaObject:(id)a3 maxTrimDuration:(double)a4;
+- (CKVideoTrimController)initWithMediaObject:(id)object maxTrimDuration:(double)duration;
 - (void)dealloc;
-- (void)videoEditorController:(id)a3 didFailWithError:(id)a4;
-- (void)videoEditorController:(id)a3 didSaveEditedVideoToPath:(id)a4;
-- (void)videoEditorController:(id)a3 didTrimVideoWithOptions:(id)a4;
-- (void)videoEditorControllerDidCancel:(id)a3;
+- (void)videoEditorController:(id)controller didFailWithError:(id)error;
+- (void)videoEditorController:(id)controller didSaveEditedVideoToPath:(id)path;
+- (void)videoEditorController:(id)controller didTrimVideoWithOptions:(id)options;
+- (void)videoEditorControllerDidCancel:(id)cancel;
 @end
 
 @implementation CKVideoTrimController
 
-- (CKVideoTrimController)initWithMediaObject:(id)a3 maxTrimDuration:(double)a4
+- (CKVideoTrimController)initWithMediaObject:(id)object maxTrimDuration:(double)duration
 {
-  v6 = a3;
+  objectCopy = object;
   v19.receiver = self;
   v19.super_class = CKVideoTrimController;
   v7 = [(CKVideoTrimController *)&v19 init];
   v8 = v7;
   if (v7)
   {
-    [(CKVideoTrimController *)v7 setOriginalMediaObject:v6];
+    [(CKVideoTrimController *)v7 setOriginalMediaObject:objectCopy];
     v9 = objc_alloc_init(CKUIVideoEditorController);
     editVideoVC = v8->_editVideoVC;
     v8->_editVideoVC = v9;
 
     [(CKUIVideoEditorController *)v8->_editVideoVC setDelegate:v8];
     [(UIVideoEditorController *)v8->_editVideoVC setVideoQuality:0];
-    [(UIVideoEditorController *)v8->_editVideoVC setVideoMaximumDuration:a4];
+    [(UIVideoEditorController *)v8->_editVideoVC setVideoMaximumDuration:duration];
     v11 = v8->_editVideoVC;
     v12 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [(UIVideoEditorController *)v11 _setValue:v12 forProperty:*MEMORY[0x1E69DE9B0]];
 
-    v13 = [v6 transcoderUserInfo];
-    v14 = [v13 objectForKey:*MEMORY[0x1E69A6F58]];
+    transcoderUserInfo = [objectCopy transcoderUserInfo];
+    v14 = [transcoderUserInfo objectForKey:*MEMORY[0x1E69A6F58]];
 
     if (v14)
     {
       v15 = v8->_editVideoVC;
-      v16 = [MEMORY[0x1E695DFF8] URLWithString:v14];
-      [(UIVideoEditorController *)v15 _setVideoURL:v16];
+      fileURL = [MEMORY[0x1E695DFF8] URLWithString:v14];
+      [(UIVideoEditorController *)v15 _setVideoURL:fileURL];
     }
 
     else
     {
-      v16 = [v6 fileURL];
-      v17 = [v16 path];
-      [(UIVideoEditorController *)v8->_editVideoVC setVideoPath:v17];
+      fileURL = [objectCopy fileURL];
+      path = [fileURL path];
+      [(UIVideoEditorController *)v8->_editVideoVC setVideoPath:path];
     }
   }
 
@@ -60,55 +60,55 @@
   [(CKVideoTrimController *)&v3 dealloc];
 }
 
-- (void)videoEditorController:(id)a3 didTrimVideoWithOptions:(id)a4
+- (void)videoEditorController:(id)controller didTrimVideoWithOptions:(id)options
 {
-  v16 = a4;
-  v5 = [(CKVideoTrimController *)self originalMediaObject];
-  v6 = [v5 transcoderUserInfo];
-  v7 = [v6 mutableCopy];
+  optionsCopy = options;
+  originalMediaObject = [(CKVideoTrimController *)self originalMediaObject];
+  transcoderUserInfo = [originalMediaObject transcoderUserInfo];
+  v7 = [transcoderUserInfo mutableCopy];
 
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v8 = CKTranscoderUserInfoForVideoTrimOptions(v16);
+  v8 = CKTranscoderUserInfoForVideoTrimOptions(optionsCopy);
   [v7 addEntriesFromDictionary:v8];
 
   v9 = +[CKMediaObjectManager sharedInstance];
-  v10 = [(CKVideoTrimController *)self originalMediaObject];
-  v11 = [v10 fileURL];
-  v12 = [v9 mediaObjectWithFileURL:v11 filename:0 transcoderUserInfo:v7];
+  originalMediaObject2 = [(CKVideoTrimController *)self originalMediaObject];
+  fileURL = [originalMediaObject2 fileURL];
+  v12 = [v9 mediaObjectWithFileURL:fileURL filename:0 transcoderUserInfo:v7];
   [(CKVideoTrimController *)self setTrimmedMediaObject:v12];
 
-  v13 = [(CKVideoTrimController *)self delegate];
-  v14 = [(CKVideoTrimController *)self originalMediaObject];
-  v15 = [(CKVideoTrimController *)self trimmedMediaObject];
-  [v13 trimController:self didFinishTrimmingMediaObject:v14 withReplacementMediaObject:v15];
+  delegate = [(CKVideoTrimController *)self delegate];
+  originalMediaObject3 = [(CKVideoTrimController *)self originalMediaObject];
+  trimmedMediaObject = [(CKVideoTrimController *)self trimmedMediaObject];
+  [delegate trimController:self didFinishTrimmingMediaObject:originalMediaObject3 withReplacementMediaObject:trimmedMediaObject];
 }
 
-- (void)videoEditorController:(id)a3 didSaveEditedVideoToPath:(id)a4
+- (void)videoEditorController:(id)controller didSaveEditedVideoToPath:(id)path
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = [v5 stringGUID];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"trimmed-%@.mov", v7];
-  v10 = [v8 im_randomTemporaryFileURLWithFileName:v9];
-  v11 = [v10 path];
+  pathCopy = path;
+  stringGUID = [v5 stringGUID];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"trimmed-%@.mov", stringGUID];
+  v10 = [defaultManager im_randomTemporaryFileURLWithFileName:v9];
+  path = [v10 path];
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v22 = 0;
-  LODWORD(v9) = [v12 moveItemAtPath:v6 toPath:v11 error:&v22];
+  LODWORD(v9) = [defaultManager2 moveItemAtPath:pathCopy toPath:path error:&v22];
 
   v13 = v22;
   if (v9)
   {
-    v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11 isDirectory:0];
+    v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:0];
     v15 = +[CKMediaObjectManager sharedInstance];
-    v16 = [(CKVideoTrimController *)self originalMediaObject];
-    v17 = [v16 transcoderUserInfo];
-    v18 = [v15 mediaObjectWithFileURL:v14 filename:0 transcoderUserInfo:v17];
+    originalMediaObject = [(CKVideoTrimController *)self originalMediaObject];
+    transcoderUserInfo = [originalMediaObject transcoderUserInfo];
+    v18 = [v15 mediaObjectWithFileURL:v14 filename:0 transcoderUserInfo:transcoderUserInfo];
     [(CKVideoTrimController *)self setTrimmedMediaObject:v18];
   }
 
@@ -121,21 +121,21 @@
     }
   }
 
-  v19 = [(CKVideoTrimController *)self delegate];
-  v20 = [(CKVideoTrimController *)self originalMediaObject];
-  v21 = [(CKVideoTrimController *)self trimmedMediaObject];
-  [v19 trimController:self didFinishTrimmingMediaObject:v20 withReplacementMediaObject:v21];
+  delegate = [(CKVideoTrimController *)self delegate];
+  originalMediaObject2 = [(CKVideoTrimController *)self originalMediaObject];
+  trimmedMediaObject = [(CKVideoTrimController *)self trimmedMediaObject];
+  [delegate trimController:self didFinishTrimmingMediaObject:originalMediaObject2 withReplacementMediaObject:trimmedMediaObject];
 }
 
-- (void)videoEditorControllerDidCancel:(id)a3
+- (void)videoEditorControllerDidCancel:(id)cancel
 {
-  v4 = [(CKVideoTrimController *)self delegate];
-  [v4 trimControllerDidCancel:self];
+  delegate = [(CKVideoTrimController *)self delegate];
+  [delegate trimControllerDidCancel:self];
 }
 
-- (void)videoEditorController:(id)a3 didFailWithError:(id)a4
+- (void)videoEditorController:(id)controller didFailWithError:(id)error
 {
-  v5 = [(CKVideoTrimController *)self delegate:a3];
+  v5 = [(CKVideoTrimController *)self delegate:controller];
   [v5 trimControllerDidCancel:self];
 }
 

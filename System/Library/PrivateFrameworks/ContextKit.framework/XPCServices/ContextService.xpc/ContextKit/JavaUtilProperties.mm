@@ -1,29 +1,29 @@
 @interface JavaUtilProperties
-- (JavaUtilProperties)initWithJavaUtilProperties:(id)a3;
-- (id)getPropertyWithNSString:(id)a3;
-- (id)getPropertyWithNSString:(id)a3 withNSString:(id)a4;
+- (JavaUtilProperties)initWithJavaUtilProperties:(id)properties;
+- (id)getPropertyWithNSString:(id)string;
+- (id)getPropertyWithNSString:(id)string withNSString:(id)sString;
 - (id)propertyNames;
 - (id)stringPropertyNames;
 - (void)dealloc;
-- (void)listToAppendableWithJavaLangAppendable:(id)a3;
-- (void)loadFromXMLWithJavaIoInputStream:(id)a3;
-- (void)load__WithJavaIoInputStream:(id)a3;
-- (void)load__WithJavaIoReader:(id)a3;
-- (void)storeToXMLWithJavaIoOutputStream:(id)a3 withNSString:(id)a4 withNSString:(id)a5;
-- (void)storeWithJavaIoOutputStream:(id)a3 withNSString:(id)a4;
-- (void)storeWithJavaIoWriter:(id)a3 withNSString:(id)a4;
+- (void)listToAppendableWithJavaLangAppendable:(id)appendable;
+- (void)loadFromXMLWithJavaIoInputStream:(id)stream;
+- (void)load__WithJavaIoInputStream:(id)stream;
+- (void)load__WithJavaIoReader:(id)reader;
+- (void)storeToXMLWithJavaIoOutputStream:(id)stream withNSString:(id)string withNSString:(id)sString;
+- (void)storeWithJavaIoOutputStream:(id)stream withNSString:(id)string;
+- (void)storeWithJavaIoWriter:(id)writer withNSString:(id)string;
 @end
 
 @implementation JavaUtilProperties
 
-- (JavaUtilProperties)initWithJavaUtilProperties:(id)a3
+- (JavaUtilProperties)initWithJavaUtilProperties:(id)properties
 {
   JavaUtilHashtable_init(self);
-  JreStrongAssign(&self->defaults_, a3);
+  JreStrongAssign(&self->defaults_, properties);
   return self;
 }
 
-- (id)getPropertyWithNSString:(id)a3
+- (id)getPropertyWithNSString:(id)string
 {
   v8.receiver = self;
   v8.super_class = JavaUtilProperties;
@@ -42,7 +42,7 @@
     defaults = self->defaults_;
     if (defaults)
     {
-      return [(JavaUtilProperties *)defaults getPropertyWithNSString:a3];
+      return [(JavaUtilProperties *)defaults getPropertyWithNSString:string];
     }
 
     else
@@ -54,7 +54,7 @@
   return v5;
 }
 
-- (id)getPropertyWithNSString:(id)a3 withNSString:(id)a4
+- (id)getPropertyWithNSString:(id)string withNSString:(id)sString
 {
   v10.receiver = self;
   v10.super_class = JavaUtilProperties;
@@ -73,7 +73,7 @@
     defaults = self->defaults_;
     if (defaults)
     {
-      v7 = [(JavaUtilProperties *)defaults getPropertyWithNSString:a3];
+      v7 = [(JavaUtilProperties *)defaults getPropertyWithNSString:string];
     }
 
     else
@@ -89,42 +89,42 @@
 
   else
   {
-    return a4;
+    return sString;
   }
 }
 
-- (void)listToAppendableWithJavaLangAppendable:(id)a3
+- (void)listToAppendableWithJavaLangAppendable:(id)appendable
 {
-  if (!a3)
+  if (!appendable)
   {
     v13 = new_JavaLangNullPointerException_initWithNSString_(@"out == null");
     objc_exception_throw(v13);
   }
 
-  v3 = a3;
+  appendableCopy = appendable;
   v4 = new_JavaLangStringBuilder_initWithInt_(0x50u);
-  v5 = [(JavaUtilProperties *)self propertyNames];
-  if (!v5)
+  propertyNames = [(JavaUtilProperties *)self propertyNames];
+  if (!propertyNames)
   {
     JreThrowNullPointerException();
   }
 
   v6 = &classRef_OrgApacheLuceneIndexMultiDocValues__3;
-  while ([v5 hasMoreElements])
+  while ([propertyNames hasMoreElements])
   {
-    v7 = [v5 nextElement];
+    nextElement = [propertyNames nextElement];
     objc_opt_class();
-    if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (nextElement && (objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
-    [(JavaLangStringBuilder *)v4 appendWithNSString:v7];
+    [(JavaLangStringBuilder *)v4 appendWithNSString:nextElement];
     [(JavaLangStringBuilder *)v4 appendWithChar:61];
     v8 = v6[257];
     v15.receiver = self;
     v15.super_class = v8;
-    v9 = [(JavaUtilHashtable *)&v15 getWithId:v7];
+    v9 = [(JavaUtilHashtable *)&v15 getWithId:nextElement];
     objc_opt_class();
     if (v9)
     {
@@ -136,24 +136,24 @@
 
     else
     {
-      v10 = v3;
+      v10 = appendableCopy;
       v11 = v6;
-      v12 = self;
+      selfCopy = self;
       do
       {
-        v12 = v12->defaults_;
-        if (!v12)
+        selfCopy = selfCopy->defaults_;
+        if (!selfCopy)
         {
           JreThrowNullPointerException();
         }
 
-        v9 = [(JavaUtilHashtable *)v12 getWithId:v7];
+        v9 = [(JavaUtilHashtable *)selfCopy getWithId:nextElement];
         objc_opt_class();
       }
 
       while (!v9);
       v6 = v11;
-      v3 = v10;
+      appendableCopy = v10;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         JreThrowClassCastException();
@@ -168,36 +168,36 @@
 
     [(JavaLangStringBuilder *)v4 appendWithNSString:v9];
     [(JavaLangStringBuilder *)v4 appendWithNSString:JavaLangSystem_lineSeparator()];
-    [v3 appendWithJavaLangCharSequence:{-[JavaLangStringBuilder description](v4, "description")}];
+    [appendableCopy appendWithJavaLangCharSequence:{-[JavaLangStringBuilder description](v4, "description")}];
     [(JavaLangAbstractStringBuilder *)v4 setLengthWithInt:0];
   }
 }
 
-- (void)load__WithJavaIoInputStream:(id)a3
+- (void)load__WithJavaIoInputStream:(id)stream
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!stream)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"in == null");
     objc_exception_throw(v5);
   }
 
-  [(JavaUtilProperties *)self load__WithJavaIoReader:new_JavaIoInputStreamReader_initWithJavaIoInputStream_withNSString_(a3, @"ISO-8859-1")];
+  [(JavaUtilProperties *)self load__WithJavaIoReader:new_JavaIoInputStreamReader_initWithJavaIoInputStream_withNSString_(stream, @"ISO-8859-1")];
 
   objc_sync_exit(self);
 }
 
-- (void)load__WithJavaIoReader:(id)a3
+- (void)load__WithJavaIoReader:(id)reader
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!reader)
   {
     v36 = new_JavaLangNullPointerException_initWithNSString_(@"in == null");
     objc_exception_throw(v36);
   }
 
   v4 = [IOSCharArray arrayWithLength:40];
-  v5 = new_JavaIoBufferedReader_initWithJavaIoReader_(a3);
+  v5 = new_JavaIoBufferedReader_initWithJavaIoReader_(reader);
   v6 = 0;
   v39 = 0;
   v7 = 0;
@@ -206,9 +206,9 @@
   while (1)
   {
     v10 = v9;
-    v11 = [(JavaIoBufferedReader *)v5 read];
-    v12 = v11;
-    if (v11 == -1)
+    read = [(JavaIoBufferedReader *)v5 read];
+    v12 = read;
+    if (read == -1)
     {
       break;
     }
@@ -412,14 +412,14 @@ LABEL_33:
 
             while (1)
             {
-              v19 = [(JavaIoBufferedReader *)v5 read];
-              if (v19 == -1)
+              read2 = [(JavaIoBufferedReader *)v5 read];
+              if (read2 == -1)
               {
                 break;
               }
 
               v8 = 1;
-              if (v19 == 10 || v19 == 13)
+              if (read2 == 10 || read2 == 13)
               {
                 goto LABEL_87;
               }
@@ -577,29 +577,29 @@ LABEL_53:
 {
   v3 = new_JavaUtilHashtable_init();
   sub_10021DA9C(self, v3, 1);
-  v4 = [(JavaUtilHashtable *)v3 keySet];
+  keySet = [(JavaUtilHashtable *)v3 keySet];
 
-  return JavaUtilCollections_unmodifiableSetWithJavaUtilSet_(v4);
+  return JavaUtilCollections_unmodifiableSetWithJavaUtilSet_(keySet);
 }
 
-- (void)storeWithJavaIoOutputStream:(id)a3 withNSString:(id)a4
+- (void)storeWithJavaIoOutputStream:(id)stream withNSString:(id)string
 {
   objc_sync_enter(self);
-  [(JavaUtilProperties *)self storeWithJavaIoWriter:new_JavaIoOutputStreamWriter_initWithJavaIoOutputStream_withNSString_(a3 withNSString:@"ISO-8859-1"), a4];
+  [(JavaUtilProperties *)self storeWithJavaIoWriter:new_JavaIoOutputStreamWriter_initWithJavaIoOutputStream_withNSString_(stream withNSString:@"ISO-8859-1"), string];
 
   objc_sync_exit(self);
 }
 
-- (void)storeWithJavaIoWriter:(id)a3 withNSString:(id)a4
+- (void)storeWithJavaIoWriter:(id)writer withNSString:(id)string
 {
   objc_sync_enter(self);
-  if (a4)
+  if (string)
   {
-    if (a3)
+    if (writer)
     {
-      [a3 writeWithNSString:@"#"];
-      [a3 writeWithNSString:a4];
-      [a3 writeWithNSString:JavaLangSystem_lineSeparator()];
+      [writer writeWithNSString:@"#"];
+      [writer writeWithNSString:string];
+      [writer writeWithNSString:JavaLangSystem_lineSeparator()];
       goto LABEL_5;
     }
 
@@ -607,28 +607,28 @@ LABEL_21:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!writer)
   {
     goto LABEL_21;
   }
 
 LABEL_5:
-  [a3 writeWithNSString:@"#"];
-  [a3 writeWithNSString:{-[JavaUtilDate description](new_JavaUtilDate_init(), "description")}];
-  [a3 writeWithNSString:JavaLangSystem_lineSeparator()];
+  [writer writeWithNSString:@"#"];
+  [writer writeWithNSString:{-[JavaUtilDate description](new_JavaUtilDate_init(), "description")}];
+  [writer writeWithNSString:JavaLangSystem_lineSeparator()];
   v7 = new_JavaLangStringBuilder_initWithInt_(0xC8u);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(JavaUtilHashtable *)self entrySet];
-  v9 = v8;
-  if (!v8)
+  entrySet = [(JavaUtilHashtable *)self entrySet];
+  v9 = entrySet;
+  if (!entrySet)
   {
     JreThrowNullPointerException();
   }
 
-  v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [entrySet countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = *v17;
@@ -647,16 +647,16 @@ LABEL_5:
           JreThrowNullPointerException();
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) getKey];
+        getKey = [*(*(&v16 + 1) + 8 * i) getKey];
         objc_opt_class();
-        if (v14 && (objc_opt_isKindOfClass() & 1) == 0 || (sub_10021CDE0(v7, v14, 1), -[JavaLangStringBuilder appendWithChar:](v7, "appendWithChar:", 61), v15 = [v13 getValue], objc_opt_class(), v15) && (objc_opt_isKindOfClass() & 1) == 0)
+        if (getKey && (objc_opt_isKindOfClass() & 1) == 0 || (sub_10021CDE0(v7, getKey, 1), -[JavaLangStringBuilder appendWithChar:](v7, "appendWithChar:", 61), v15 = [v13 getValue], objc_opt_class(), v15) && (objc_opt_isKindOfClass() & 1) == 0)
         {
           JreThrowClassCastException();
         }
 
         sub_10021CDE0(v7, v15, 0);
         [(JavaLangStringBuilder *)v7 appendWithNSString:JavaLangSystem_lineSeparator()];
-        [a3 writeWithNSString:{-[JavaLangStringBuilder description](v7, "description")}];
+        [writer writeWithNSString:{-[JavaLangStringBuilder description](v7, "description")}];
         [(JavaLangAbstractStringBuilder *)v7 setLengthWithInt:0];
       }
 
@@ -666,14 +666,14 @@ LABEL_5:
     while (v10);
   }
 
-  [a3 flush];
+  [writer flush];
   objc_sync_exit(self);
 }
 
-- (void)loadFromXMLWithJavaIoInputStream:(id)a3
+- (void)loadFromXMLWithJavaIoInputStream:(id)stream
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!stream)
   {
     v7 = new_JavaLangNullPointerException_initWithNSString_(@"in == null");
     objc_exception_throw(v7);
@@ -689,21 +689,21 @@ LABEL_5:
   JreStrongAssign(&v6->this$0_, self);
   OrgXmlSaxHelpersDefaultHandler_init(v6);
   [(OrgXmlSaxHelpersParserAdapter *)XMLReader setContentHandlerWithOrgXmlSaxContentHandler:v6];
-  [(OrgXmlSaxHelpersParserAdapter *)XMLReader parseWithOrgXmlSaxInputSource:new_OrgXmlSaxInputSource_initWithJavaIoInputStream_(a3)];
+  [(OrgXmlSaxHelpersParserAdapter *)XMLReader parseWithOrgXmlSaxInputSource:new_OrgXmlSaxInputSource_initWithJavaIoInputStream_(stream)];
 
   objc_sync_exit(self);
 }
 
-- (void)storeToXMLWithJavaIoOutputStream:(id)a3 withNSString:(id)a4 withNSString:(id)a5
+- (void)storeToXMLWithJavaIoOutputStream:(id)stream withNSString:(id)string withNSString:(id)sString
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!stream)
   {
     v19 = @"os == null";
     goto LABEL_27;
   }
 
-  if (!a5)
+  if (!sString)
   {
     v19 = @"encoding == null";
 LABEL_27:
@@ -711,25 +711,25 @@ LABEL_27:
     objc_exception_throw(v20);
   }
 
-  v8 = JavaNioCharsetCharset_forNameWithNSString_(a5);
+  v8 = JavaNioCharsetCharset_forNameWithNSString_(sString);
   if (!v8)
   {
     JreThrowNullPointerException();
   }
 
-  v9 = [v8 name];
-  v10 = new_JavaIoPrintStream_initWithJavaIoOutputStream_withBoolean_withNSString_(a3, 0, v9);
+  name = [v8 name];
+  v10 = new_JavaIoPrintStream_initWithJavaIoOutputStream_withBoolean_withNSString_(stream, 0, name);
   [(JavaIoPrintStream *)v10 printWithNSString:@"<?xml version=1.0 encoding="];
-  [(JavaIoPrintStream *)v10 printWithNSString:v9];
+  [(JavaIoPrintStream *)v10 printWithNSString:name];
   [(JavaIoPrintStream *)v10 printlnWithNSString:@"?>"];
   [(JavaIoPrintStream *)v10 printWithNSString:@"<!DOCTYPE properties SYSTEM "];
   [(JavaIoPrintStream *)v10 printWithNSString:off_1005518D0];
   [(JavaIoPrintStream *)v10 printlnWithNSString:@">"];
   [(JavaIoPrintStream *)v10 printlnWithNSString:@"<properties>"];
-  if (a4)
+  if (string)
   {
     [(JavaIoPrintStream *)v10 printWithNSString:@"<comment>"];
-    [(JavaIoPrintStream *)v10 printWithNSString:sub_10021E48C(a4)];
+    [(JavaIoPrintStream *)v10 printWithNSString:sub_10021E48C(string)];
     [(JavaIoPrintStream *)v10 printlnWithNSString:@"</comment>"];
   }
 
@@ -737,14 +737,14 @@ LABEL_27:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [(JavaUtilHashtable *)self entrySet];
-  v12 = v11;
-  if (!v11)
+  entrySet = [(JavaUtilHashtable *)self entrySet];
+  v12 = entrySet;
+  if (!entrySet)
   {
     JreThrowNullPointerException();
   }
 
-  v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v13 = [entrySet countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
     v14 = *v23;
@@ -763,24 +763,24 @@ LABEL_27:
           JreThrowNullPointerException();
         }
 
-        v17 = [*(*(&v22 + 1) + 8 * i) getKey];
+        getKey = [*(*(&v22 + 1) + 8 * i) getKey];
         objc_opt_class();
-        if (v17 && (objc_opt_isKindOfClass() & 1) == 0)
+        if (getKey && (objc_opt_isKindOfClass() & 1) == 0)
         {
           JreThrowClassCastException();
         }
 
-        v18 = [v16 getValue];
+        getValue = [v16 getValue];
         objc_opt_class();
-        if (v18 && (objc_opt_isKindOfClass() & 1) == 0)
+        if (getValue && (objc_opt_isKindOfClass() & 1) == 0)
         {
           JreThrowClassCastException();
         }
 
         [(JavaIoPrintStream *)v10 printWithNSString:@"<entry key="];
-        [(JavaIoPrintStream *)v10 printWithNSString:sub_10021E48C(v17)];
+        [(JavaIoPrintStream *)v10 printWithNSString:sub_10021E48C(getKey)];
         [(JavaIoPrintStream *)v10 printWithNSString:@">"];
-        [(JavaIoPrintStream *)v10 printWithNSString:sub_10021E48C(v18)];
+        [(JavaIoPrintStream *)v10 printWithNSString:sub_10021E48C(getValue)];
         [(JavaIoPrintStream *)v10 printlnWithNSString:@"</entry>"];
       }
 

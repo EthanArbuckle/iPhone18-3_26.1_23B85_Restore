@@ -1,25 +1,25 @@
 @interface VCSParsedLine
-+ (int64_t)tokenizeKeyword:(const char *)a3 withType:(unint64_t *)a4;
-+ (int64_t)tokenizeNSStringKeyword:(id)a3 withType:(unint64_t *)a4;
++ (int64_t)tokenizeKeyword:(const char *)keyword withType:(unint64_t *)type;
++ (int64_t)tokenizeNSStringKeyword:(id)keyword withType:(unint64_t *)type;
 - (VCSParsedLine)init;
 - (id)convertedContent;
 - (id)description;
-- (id)loadFromCString:(char *)a3 withParseState:(id)a4;
+- (id)loadFromCString:(char *)string withParseState:(id)state;
 - (void)reset;
-- (void)setContentFromCString:(char *)a3;
-- (void)setKeywordFromCString:(char *)a3;
+- (void)setContentFromCString:(char *)string;
+- (void)setKeywordFromCString:(char *)string;
 @end
 
 @implementation VCSParsedLine
 
-+ (int64_t)tokenizeKeyword:(const char *)a3 withType:(unint64_t *)a4
++ (int64_t)tokenizeKeyword:(const char *)keyword withType:(unint64_t *)type
 {
-  v5 = bsearch(a3, &vcsTokensList, 0x29uLL, 0x18uLL, vcsTokenCompare);
+  v5 = bsearch(keyword, &vcsTokensList, 0x29uLL, 0x18uLL, vcsTokenCompare);
   if (v5)
   {
-    if (a4)
+    if (type)
     {
-      *a4 = v5[2];
+      *type = v5[2];
     }
 
     return *v5;
@@ -27,21 +27,21 @@
 
   else
   {
-    if (a4)
+    if (type)
     {
-      *a4 = 0;
+      *type = 0;
     }
 
     return 50;
   }
 }
 
-+ (int64_t)tokenizeNSStringKeyword:(id)a3 withType:(unint64_t *)a4
++ (int64_t)tokenizeNSStringKeyword:(id)keyword withType:(unint64_t *)type
 {
-  v7 = a3;
-  v8 = [a3 UTF8String];
+  keywordCopy = keyword;
+  uTF8String = [keyword UTF8String];
 
-  return [a1 tokenizeKeyword:v8 withType:a4];
+  return [self tokenizeKeyword:uTF8String withType:type];
 }
 
 - (VCSParsedLine)init
@@ -82,17 +82,17 @@
   [(NSMutableDictionary *)params removeAllObjects];
 }
 
-- (id)loadFromCString:(char *)a3 withParseState:(id)a4
+- (id)loadFromCString:(char *)string withParseState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v45 = 0;
-  v7 = strlen(a3);
+  v7 = strlen(string);
   switch(v7)
   {
     case 0uLL:
       goto LABEL_66;
     case 2uLL:
-      v10 = *a3;
+      v10 = *string;
       if (v10 == 10 || v10 == 13)
       {
         goto LABEL_66;
@@ -100,8 +100,8 @@
 
       break;
     case 1uLL:
-      v8 = 0;
-      v9 = *a3;
+      selfCopy = 0;
+      v9 = *string;
       if (v9 == 10 || v9 == 13)
       {
         goto LABEL_67;
@@ -114,10 +114,10 @@
   [(VCSParsedLine *)self reset];
   for (i = 0; ; ++i)
   {
-    v14 = a3[i];
+    v14 = string[i];
     if (v14 != 45)
     {
-      if (!a3[i])
+      if (!string[i])
       {
         i = 0;
         goto LABEL_18;
@@ -130,19 +130,19 @@
     }
   }
 
-  v15 = v6;
-  memcpy(v12, a3, i);
+  v15 = stateCopy;
+  memcpy(v12, string, i);
   *(v12 + i) = 0;
   [(VCSParsedLine *)self setKeywordFromCString:v12];
   v16 = [VCSParsedLine tokenizeKeyword:v12 withType:&v45];
   [(VCSParsedLine *)self setType:v45];
   v17 = v16;
-  v6 = v15;
+  stateCopy = v15;
   [(VCSParsedLine *)self setTokenID:v17];
 LABEL_18:
   for (LODWORD(v18) = i; ; LODWORD(v18) = v18 + 1)
   {
-    v19 = a3[v18];
+    v19 = string[v18];
     if (v19 != 32)
     {
       break;
@@ -154,7 +154,7 @@ LABEL_18:
     v36 = VCSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      [VCSParsedLine loadFromCString:v6 withParseState:&a3[v18]];
+      [VCSParsedLine loadFromCString:stateCopy withParseState:&string[v18]];
     }
 
     goto LABEL_65;
@@ -169,29 +169,29 @@ LABEL_18:
       do
       {
         v39 = v38;
-        v40 = a3[v38++];
+        v40 = string[v38++];
       }
 
       while (v40 == 32);
       v41 = v39;
-      [VCSParsedLine tokenizeKeyword:&a3[v39] withType:&v44];
+      [VCSParsedLine tokenizeKeyword:&string[v39] withType:&v44];
       if (v44 != 2)
       {
         v42 = VCSLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
         {
-          [VCSParsedLine loadFromCString:v6 withParseState:?];
+          [VCSParsedLine loadFromCString:stateCopy withParseState:?];
         }
       }
 
-      v37 = &a3[v41];
+      v37 = &string[v41];
       goto LABEL_57;
     }
 
     v36 = VCSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      [VCSParsedLine loadFromCString:v6 withParseState:?];
+      [VCSParsedLine loadFromCString:stateCopy withParseState:?];
     }
 
     goto LABEL_65;
@@ -202,14 +202,14 @@ LABEL_18:
     v36 = VCSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      [VCSParsedLine loadFromCString:v12 withParseState:v6];
+      [VCSParsedLine loadFromCString:v12 withParseState:stateCopy];
     }
 
 LABEL_65:
 
     free(v12);
 LABEL_66:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_67;
   }
 
@@ -219,12 +219,12 @@ LABEL_66:
     v21 = v18 + 1;
     for (j = v18 + 1; ; ++j)
     {
-      v23 = a3[j];
+      v23 = string[j];
       if (v23 != 45)
       {
-        if (!a3[j])
+        if (!string[j])
         {
-          v24 = &a3[j];
+          v24 = &string[j];
           goto LABEL_32;
         }
 
@@ -237,14 +237,14 @@ LABEL_66:
       ++v20;
     }
 
-    v24 = &a3[j];
-    memcpy(v12, &a3[v21], v20);
+    v24 = &string[j];
+    memcpy(v12, &string[v21], v20);
     *(v12 + v20) = 0;
     i = j;
 LABEL_32:
     for (LODWORD(v18) = i; ; LODWORD(v18) = v18 + 1)
     {
-      v25 = a3[v18];
+      v25 = string[v18];
       if (v25 != 32)
       {
         break;
@@ -256,23 +256,23 @@ LABEL_32:
       v26 = strlen(v24);
       v27 = malloc_type_malloc(v26 + 1, 0x100004077774924uLL);
       LODWORD(v18) = v18 + 1;
-      v28 = a3[v18];
+      v28 = string[v18];
       v29 = v27;
       do
       {
         if (v28 == 92)
         {
-          if (a3[(v18 + 1)] == 59)
+          if (string[(v18 + 1)] == 59)
           {
             LODWORD(v18) = v18 + 1;
           }
 
-          LOBYTE(v28) = a3[v18];
+          LOBYTE(v28) = string[v18];
         }
 
         *v29++ = v28;
         v18 = (v18 + 1);
-        v28 = a3[v18];
+        v28 = string[v18];
       }
 
       while ((v28 & 0xFE) != 0x3A);
@@ -294,7 +294,7 @@ LABEL_32:
       [(NSMutableDictionary *)v34 setObject:&stru_28841D818 forKey:v35];
     }
 
-    v19 = a3[v33];
+    v19 = string[v33];
   }
 
   if (v19 != 58)
@@ -302,25 +302,25 @@ LABEL_32:
     goto LABEL_58;
   }
 
-  v37 = &a3[(v18 + 1)];
+  v37 = &string[(v18 + 1)];
 LABEL_57:
   [(VCSParsedLine *)self setContentFromCString:v37];
 LABEL_58:
   if (self)
   {
-    -[VCSParsedLine setUsePalmD4Hooks:](self, "setUsePalmD4Hooks:", [v6 palmImport]);
+    -[VCSParsedLine setUsePalmD4Hooks:](self, "setUsePalmD4Hooks:", [stateCopy palmImport]);
   }
 
   free(v12);
-  v8 = self;
+  selfCopy = self;
 LABEL_67:
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)setKeywordFromCString:(char *)a3
+- (void)setKeywordFromCString:(char *)string
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:string];
   keyword = self->_keyword;
   self->_keyword = v4;
 
@@ -341,13 +341,13 @@ LABEL_67:
   return v8;
 }
 
-- (void)setContentFromCString:(char *)a3
+- (void)setContentFromCString:(char *)string
 {
   [(NSMutableData *)self->_content setLength:0];
-  v5 = strlen(a3) + 1;
+  v5 = strlen(string) + 1;
   content = self->_content;
 
-  [(NSMutableData *)content appendBytes:a3 length:v5];
+  [(NSMutableData *)content appendBytes:string length:v5];
 }
 
 - (id)convertedContent
@@ -375,7 +375,7 @@ LABEL_67:
 
   if ([(__CFString *)v3 isEqualToString:@"QUOTED-PRINTABLE"])
   {
-    v7 = [(NSMutableData *)self->_content VCSDecodeQuotedPrintableForText:0];
+    vCSDecodeBase64 = [(NSMutableData *)self->_content VCSDecodeQuotedPrintableForText:0];
   }
 
   else
@@ -384,16 +384,16 @@ LABEL_67:
     content = self->_content;
     if (v8)
     {
-      v7 = [(NSMutableData *)content VCSDecodeBase64];
+      vCSDecodeBase64 = [(NSMutableData *)content VCSDecodeBase64];
     }
 
     else
     {
-      v7 = content;
+      vCSDecodeBase64 = content;
     }
   }
 
-  v10 = v7;
+  v10 = vCSDecodeBase64;
 
 LABEL_11:
   v11 = [(NSMutableDictionary *)self->_params objectForKey:@"CHARSET"];

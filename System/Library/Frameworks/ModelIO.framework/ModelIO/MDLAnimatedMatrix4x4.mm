@@ -2,24 +2,24 @@
 - (NSUInteger)getDouble4x4Array:(matrix_double4x4 *)valuesArray maxCount:(NSUInteger)maxCount;
 - (NSUInteger)getFloat4x4Array:(matrix_float4x4 *)valuesArray maxCount:(NSUInteger)maxCount;
 - (VtValue)defaultVtValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (matrix_float4x4)float4x4AtTime:(NSTimeInterval)time;
-- (uint64_t)double4x4AtTime:(double)a3@<D0>;
+- (uint64_t)double4x4AtTime:(double)time@<D0>;
 - (unint64_t)precision;
 - (void)resetWithDouble4x4Array:(const matrix_double4x4 *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
 - (void)resetWithFloat4x4Array:(const matrix_float4x4 *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5;
-- (void)setDouble4x4:(__int128 *)a3 atTime:;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time;
+- (void)setDouble4x4:(__int128 *)double4x4 atTime:;
 @end
 
 @implementation MDLAnimatedMatrix4x4
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDLAnimatedMatrix4x4;
-  return [(MDLAnimatedValue *)&v4 copyWithZone:a3];
+  return [(MDLAnimatedValue *)&v4 copyWithZone:zone];
 }
 
 - (unint64_t)precision
@@ -94,7 +94,7 @@ LABEL_8:
   return result;
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale
 {
   v11[2] = *MEMORY[0x277D85DE8];
   pxrInternal__aapl__pxrReserved__::UsdAttribute::GetTimeSamples();
@@ -129,7 +129,7 @@ LABEL_8:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v11[0] = 0;
@@ -137,7 +137,7 @@ LABEL_8:
   pxrInternal__aapl__pxrReserved__::UsdAttribute::Get();
   if ((sub_239F2F3BC(v11) & 1) != 0 || (sub_239F2F3BC(v11) & 1) != 0 || sub_239F2F3F4(v11))
   {
-    v9 = a5 * a4;
+    v9 = time * scale;
     sub_239E5F7D4(v10, v11);
     sub_239F237C8(&self->super._timeSampledData, &v9);
     sub_239E5B240(v10);
@@ -147,17 +147,17 @@ LABEL_8:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDouble4x4:(__int128 *)a3 atTime:
+- (void)setDouble4x4:(__int128 *)double4x4 atTime:
 {
   v13 = *MEMORY[0x277D85DE8];
-  v9 = a3[3];
-  v10 = a3[1];
-  v5 = a3[2];
-  v6 = *a3;
-  v7 = a3[7];
-  v8 = a3[5];
-  v3 = a3[6];
-  v4 = a3[4];
+  v9 = double4x4[3];
+  v10 = double4x4[1];
+  v5 = double4x4[2];
+  v6 = *double4x4;
+  v7 = double4x4[7];
+  v8 = double4x4[5];
+  v3 = double4x4[6];
+  v4 = double4x4[4];
   v11 = 0;
   v12 = &off_284D16D10 + 2;
   operator new();
@@ -240,7 +240,7 @@ LABEL_12:
   return result;
 }
 
-- (uint64_t)double4x4AtTime:(double)a3@<D0>
+- (uint64_t)double4x4AtTime:(double)time@<D0>
 {
   v49 = *MEMORY[0x277D85DE8];
   v46 = 0.0;
@@ -249,7 +249,7 @@ LABEL_12:
   v43 = 0.0;
   v44 = 0;
   v45 = 0;
-  sub_239F24610((a1 + 8), &v46, &v43, a3);
+  sub_239F24610((self + 8), &v46, &v43, time);
   if (v48)
   {
     if ((sub_239F2F3F4(&v47) & 1) != 0 || (v6 = sub_239F30278(&v47), sub_239EF2160(&v47, v6), v48))
@@ -262,7 +262,7 @@ LABEL_12:
       v12 = v7[5];
       v13 = v7[6];
       v14 = v7[7];
-      if (!*(a1 + 32))
+      if (!*(self + 32))
       {
 LABEL_9:
         *a2 = *v7;
@@ -297,7 +297,7 @@ LABEL_9:
           v17 = *(v16 + 32);
           v18 = *(v16 + 64);
           v19 = *(v16 + 96);
-          v20 = fmax(fmin((a3 - v46) / (v43 - v46), 1.0), 0.0);
+          v20 = fmax(fmin((time - v46) / (v43 - v46), 1.0), 0.0);
           v21 = 1.0 - v20;
           v22 = v21;
           *&v20 = v20;

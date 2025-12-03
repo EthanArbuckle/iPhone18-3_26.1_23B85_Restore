@@ -1,23 +1,23 @@
 @interface CKDOperationInfoCache
 + (id)sharedCache;
-- (CKDOperationInfoCache)initWithCacheDir:(id)a3;
-- (id)_locked_operationInfoForID:(id)a3;
-- (id)allOutstandingOperationIDsForAppContainerAccountTuple:(id)a3;
-- (id)operationInfoMetadataForOperationWithID:(id)a3;
-- (id)outstandingOperationInfosForIDs:(id)a3;
-- (id)resumableOperationInfosByAppContainerAccountTuplesWithProgressPurged:(BOOL)a3;
-- (void)_expungeOperationInfoForDeletedAccountID:(id)a3;
-- (void)_lockedArchiveCallback:(id)a3 forOperationID:(id)a4;
-- (void)_lockedSetOperationInfo:(id)a3 forOperationID:(id)a4 appContainerAccountTuple:(id)a5;
-- (void)_locked_enumerateCallbacksForOperationWithID:(id)a3 usingBlock:(id)a4;
-- (void)archiveCallback:(id)a3 forOperationID:(id)a4;
-- (void)enumerateCallbacksForOperationWithID:(id)a3 usingBlock:(id)a4;
-- (void)expungeOperationInfoForDeletedAccountID:(id)a3;
-- (void)registerAttemptForOperationWithID:(id)a3;
+- (CKDOperationInfoCache)initWithCacheDir:(id)dir;
+- (id)_locked_operationInfoForID:(id)d;
+- (id)allOutstandingOperationIDsForAppContainerAccountTuple:(id)tuple;
+- (id)operationInfoMetadataForOperationWithID:(id)d;
+- (id)outstandingOperationInfosForIDs:(id)ds;
+- (id)resumableOperationInfosByAppContainerAccountTuplesWithProgressPurged:(BOOL)purged;
+- (void)_expungeOperationInfoForDeletedAccountID:(id)d;
+- (void)_lockedArchiveCallback:(id)callback forOperationID:(id)d;
+- (void)_lockedSetOperationInfo:(id)info forOperationID:(id)d appContainerAccountTuple:(id)tuple;
+- (void)_locked_enumerateCallbacksForOperationWithID:(id)d usingBlock:(id)block;
+- (void)archiveCallback:(id)callback forOperationID:(id)d;
+- (void)enumerateCallbacksForOperationWithID:(id)d usingBlock:(id)block;
+- (void)expungeOperationInfoForDeletedAccountID:(id)d;
+- (void)registerAttemptForOperationWithID:(id)d;
 - (void)registerCacheEviction;
-- (void)registerDelegate:(id)a3 forOperationWithID:(id)a4;
-- (void)setOperationInfo:(id)a3 forOperationID:(id)a4 appContainerAccountTuple:(id)a5;
-- (void)unregisterDelegate:(id)a3 forOperationWithID:(id)a4;
+- (void)registerDelegate:(id)delegate forOperationWithID:(id)d;
+- (void)setOperationInfo:(id)info forOperationID:(id)d appContainerAccountTuple:(id)tuple;
+- (void)unregisterDelegate:(id)delegate forOperationWithID:(id)d;
 @end
 
 @implementation CKDOperationInfoCache
@@ -25,16 +25,16 @@
 + (id)sharedCache
 {
   v5 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, v2);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v5, v6, a2, a1, @"CKDOperationInfoCache.m", 125, @"Use -initWithDeviceContext:");
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v5, v6, a2, self, @"CKDOperationInfoCache.m", 125, @"Use -initWithDeviceContext:");
 
   return 0;
 }
 
-- (CKDOperationInfoCache)initWithCacheDir:(id)a3
+- (CKDOperationInfoCache)initWithCacheDir:(id)dir
 {
   v16.receiver = self;
   v16.super_class = CKDOperationInfoCache;
-  v3 = [(CKDSQLiteCache *)&v16 initWithCacheDir:a3];
+  v3 = [(CKDSQLiteCache *)&v16 initWithCacheDir:dir];
   v5 = v3;
   if (v3)
   {
@@ -58,44 +58,44 @@
   return v5;
 }
 
-- (void)registerDelegate:(id)a3 forOperationWithID:(id)a4
+- (void)registerDelegate:(id)delegate forOperationWithID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  dCopy = d;
   v11 = objc_msgSend_cacheQueue(self, v9, v10);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_22515B170;
   v14[3] = &unk_278546BB8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v7;
+  v15 = dCopy;
+  v16 = delegateCopy;
   v17 = a2;
-  v12 = v7;
-  v13 = v8;
+  v12 = delegateCopy;
+  v13 = dCopy;
   dispatch_sync(v11, v14);
 }
 
-- (void)unregisterDelegate:(id)a3 forOperationWithID:(id)a4
+- (void)unregisterDelegate:(id)delegate forOperationWithID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  dCopy = d;
   v10 = objc_msgSend_cacheDelegateQueue(self, v8, v9);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22515B708;
   block[3] = &unk_278546990;
   block[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v11 = v6;
-  v12 = v7;
+  v14 = dCopy;
+  v15 = delegateCopy;
+  v11 = delegateCopy;
+  v12 = dCopy;
   dispatch_async(v10, block);
 }
 
-- (id)operationInfoMetadataForOperationWithID:(id)a3
+- (id)operationInfoMetadataForOperationWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -108,9 +108,9 @@
   block[2] = sub_22515B8F4;
   block[3] = &unk_278546A08;
   block[4] = self;
-  v12 = v4;
+  v12 = dCopy;
   v13 = &v14;
-  v8 = v4;
+  v8 = dCopy;
   dispatch_sync(v7, block);
 
   v9 = v15[5];
@@ -119,42 +119,42 @@
   return v9;
 }
 
-- (void)_locked_enumerateCallbacksForOperationWithID:(id)a3 usingBlock:(id)a4
+- (void)_locked_enumerateCallbacksForOperationWithID:(id)d usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v9 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @"%@ = ?", @"operationID");
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_22515BC90;
   v15[3] = &unk_278546C08;
   v16 = v9;
-  v17 = v6;
-  v18 = v7;
-  v10 = v7;
-  v11 = v6;
+  v17 = dCopy;
+  v18 = blockCopy;
+  v10 = blockCopy;
+  v11 = dCopy;
   v12 = v9;
   v14 = objc_msgSend_performDatabaseOperation_(self, v13, v15);
 }
 
-- (void)enumerateCallbacksForOperationWithID:(id)a3 usingBlock:(id)a4
+- (void)enumerateCallbacksForOperationWithID:(id)d usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v10 = objc_msgSend_cacheQueue(self, v8, v9);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22515BF38;
   block[3] = &unk_278546C30;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = dCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = dCopy;
   dispatch_sync(v10, block);
 }
 
-- (id)resumableOperationInfosByAppContainerAccountTuplesWithProgressPurged:(BOOL)a3
+- (id)resumableOperationInfosByAppContainerAccountTuplesWithProgressPurged:(BOOL)purged
 {
   v5 = objc_opt_new();
   v8 = objc_msgSend_cacheQueue(self, v6, v7);
@@ -165,7 +165,7 @@
   block[4] = self;
   v9 = v5;
   v14 = v9;
-  v15 = a3;
+  purgedCopy = purged;
   dispatch_sync(v8, block);
 
   v10 = v14;
@@ -174,20 +174,20 @@
   return v9;
 }
 
-- (id)outstandingOperationInfosForIDs:(id)a3
+- (id)outstandingOperationInfosForIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   v8 = objc_msgSend_cacheQueue(self, v6, v7);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22515CA20;
   block[3] = &unk_278546990;
-  v15 = v4;
-  v16 = self;
+  v15 = dsCopy;
+  selfCopy = self;
   v9 = v5;
   v17 = v9;
-  v10 = v4;
+  v10 = dsCopy;
   dispatch_sync(v8, block);
 
   v11 = v17;
@@ -196,9 +196,9 @@
   return v9;
 }
 
-- (id)allOutstandingOperationIDsForAppContainerAccountTuple:(id)a3
+- (id)allOutstandingOperationIDsForAppContainerAccountTuple:(id)tuple
 {
-  v4 = a3;
+  tupleCopy = tuple;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -210,10 +210,10 @@
   block[1] = 3221225472;
   block[2] = sub_22515CEA8;
   block[3] = &unk_278546A08;
-  v12 = v4;
-  v13 = self;
+  v12 = tupleCopy;
+  selfCopy = self;
   v14 = &v15;
-  v8 = v4;
+  v8 = tupleCopy;
   dispatch_sync(v7, block);
 
   v9 = v16[5];
@@ -222,37 +222,37 @@
   return v9;
 }
 
-- (void)expungeOperationInfoForDeletedAccountID:(id)a3
+- (void)expungeOperationInfoForDeletedAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_cacheQueue(self, v5, v6);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_22515D2A4;
   v9[3] = &unk_278545898;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)_expungeOperationInfoForDeletedAccountID:(id)a3
+- (void)_expungeOperationInfoForDeletedAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_22515D34C;
   v8[3] = &unk_2785468F8;
-  v9 = v4;
-  v5 = v4;
+  v9 = dCopy;
+  v5 = dCopy;
   v7 = objc_msgSend_performDatabaseOperation_(self, v6, v8);
 }
 
-- (void)_lockedSetOperationInfo:(id)a3 forOperationID:(id)a4 appContainerAccountTuple:(id)a5
+- (void)_lockedSetOperationInfo:(id)info forOperationID:(id)d appContainerAccountTuple:(id)tuple
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  dCopy = d;
+  tupleCopy = tuple;
   v13 = objc_msgSend_cacheQueue(self, v11, v12);
   dispatch_assert_queue_V2(v13);
 
@@ -260,44 +260,44 @@
   v19[1] = 3221225472;
   v19[2] = sub_22515D65C;
   v19[3] = &unk_278546A78;
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v20 = infoCopy;
+  v21 = dCopy;
+  v22 = tupleCopy;
+  v14 = tupleCopy;
+  v15 = dCopy;
+  v16 = infoCopy;
   v18 = objc_msgSend_performDatabaseOperation_(self, v17, v19);
 }
 
-- (void)setOperationInfo:(id)a3 forOperationID:(id)a4 appContainerAccountTuple:(id)a5
+- (void)setOperationInfo:(id)info forOperationID:(id)d appContainerAccountTuple:(id)tuple
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  dCopy = d;
+  tupleCopy = tuple;
   v13 = objc_msgSend_cacheQueue(self, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_22515D984;
   v17[3] = &unk_2785463D0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = infoCopy;
+  v19 = dCopy;
+  v20 = tupleCopy;
+  v14 = tupleCopy;
+  v15 = dCopy;
+  v16 = infoCopy;
   dispatch_sync(v13, v17);
 }
 
-- (void)_lockedArchiveCallback:(id)a3 forOperationID:(id)a4
+- (void)_lockedArchiveCallback:(id)callback forOperationID:(id)d
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  dCopy = d;
   v10 = objc_msgSend_cacheQueue(self, v8, v9);
   dispatch_assert_queue_V2(v10);
 
-  v14 = objc_msgSend__locked_operationInfoForID_(self, v11, v7);
+  v14 = objc_msgSend__locked_operationInfoForID_(self, v11, dCopy);
   if (v14)
   {
     v15 = objc_msgSend_cacheDelegateQueue(self, v12, v13);
@@ -306,9 +306,9 @@
     block[2] = sub_22515DC5C;
     block[3] = &unk_278546990;
     block[4] = self;
-    v16 = v7;
+    v16 = dCopy;
     v36 = v16;
-    v17 = v6;
+    v17 = callbackCopy;
     v37 = v17;
     dispatch_sync(v15, block);
 
@@ -339,7 +339,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v39 = v7;
+      v39 = dCopy;
       _os_log_error_impl(&dword_22506F000, v27, OS_LOG_TYPE_ERROR, "Couldn't find an operation with ID %{public}@ to set the result", buf, 0xCu);
     }
   }
@@ -347,44 +347,44 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)archiveCallback:(id)a3 forOperationID:(id)a4
+- (void)archiveCallback:(id)callback forOperationID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  dCopy = d;
   v10 = objc_msgSend_cacheQueue(self, v8, v9);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22515E040;
   block[3] = &unk_278546990;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = callbackCopy;
+  v15 = dCopy;
+  v11 = dCopy;
+  v12 = callbackCopy;
   dispatch_sync(v10, block);
 }
 
-- (void)registerAttemptForOperationWithID:(id)a3
+- (void)registerAttemptForOperationWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_cacheQueue(self, v5, v6);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_22515E104;
   v9[3] = &unk_278545898;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_sync(v7, v9);
 }
 
-- (id)_locked_operationInfoForID:(id)a3
+- (id)_locked_operationInfoForID:(id)d
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  dCopy = d;
   v7 = objc_msgSend_stringWithFormat_(v4, v6, @"%@ = ?", @"operationID");
-  v17[0] = v5;
+  v17[0] = dCopy;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v17, 1);
 
   v11 = objc_msgSend_selectAllFrom_where_bindings_(self, v10, @"OperationInfo", v7, v9);

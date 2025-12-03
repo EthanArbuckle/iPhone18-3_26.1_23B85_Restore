@@ -1,25 +1,25 @@
 @interface LBFEventManager
 + (id)sharedInstance;
-- (BOOL)addDprivacydEvent:(id)a3 identifiers:(id)a4 error:(id *)a5;
-- (BOOL)addLighthousePluginEvent:(id)a3;
-- (BOOL)addLighthousePluginEvent:(id)a3 identifiers:(id)a4 error:(id *)a5;
-- (BOOL)addMLRuntimedEvent:(id)a3 identifiers:(id)a4 error:(id *)a5;
-- (BOOL)addTrialdEvent:(id)a3 identifiers:(id)a4 error:(id *)a5;
-- (BOOL)isEqualIdentifiers:(id)a3 identifiers:(id)a4;
+- (BOOL)addDprivacydEvent:(id)event identifiers:(id)identifiers error:(id *)error;
+- (BOOL)addLighthousePluginEvent:(id)event;
+- (BOOL)addLighthousePluginEvent:(id)event identifiers:(id)identifiers error:(id *)error;
+- (BOOL)addMLRuntimedEvent:(id)event identifiers:(id)identifiers error:(id *)error;
+- (BOOL)addTrialdEvent:(id)event identifiers:(id)identifiers error:(id *)error;
+- (BOOL)isEqualIdentifiers:(id)identifiers identifiers:(id)a4;
 - (LBFEventManager)init;
-- (id)convertToLBFTrialIdentifiers:(id)a3;
+- (id)convertToLBFTrialIdentifiers:(id)identifiers;
 - (id)ensureBiomeManagerDprivacyd;
 - (id)ensureBiomeManagerLighthouse;
 - (id)ensureBiomeManagerMLRuntimed;
 - (id)ensureBiomeManagerTrial;
-- (id)getLastDprivacyEvent:(id)a3;
-- (id)getLastLighthousePluginEvent:(id)a3;
-- (id)getLastMLRuntimeEvent:(id)a3;
-- (id)getLastTrialEvent:(id)a3;
-- (void)enumerateLastDprivacyEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldContinue:(id)a6;
-- (void)enumerateLastLighthousePluginEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldContinue:(id)a6;
-- (void)enumerateLastMLRuntimeEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldContinue:(id)a6;
-- (void)enumerateLastTrialEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldContinue:(id)a6;
+- (id)getLastDprivacyEvent:(id)event;
+- (id)getLastLighthousePluginEvent:(id)event;
+- (id)getLastMLRuntimeEvent:(id)event;
+- (id)getLastTrialEvent:(id)event;
+- (void)enumerateLastDprivacyEvents:(id)events startDate:(id)date endDate:(id)endDate shouldContinue:(id)continue;
+- (void)enumerateLastLighthousePluginEvents:(id)events startDate:(id)date endDate:(id)endDate shouldContinue:(id)continue;
+- (void)enumerateLastMLRuntimeEvents:(id)events startDate:(id)date endDate:(id)endDate shouldContinue:(id)continue;
+- (void)enumerateLastTrialEvents:(id)events startDate:(id)date endDate:(id)endDate shouldContinue:(id)continue;
 @end
 
 @implementation LBFEventManager
@@ -120,13 +120,13 @@
   return self->_biomeManagerDprivacyd;
 }
 
-- (BOOL)addTrialdEvent:(id)a3 identifiers:(id)a4 error:(id *)a5
+- (BOOL)addTrialdEvent:(id)event identifiers:(id)identifiers error:(id *)error
 {
-  v8 = a3;
-  v13 = a4;
-  if (!v13)
+  eventCopy = event;
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
-    if (objc_msgSend_eventType(v8, v9, v10, v11, v12) == 1)
+    if (objc_msgSend_eventType(eventCopy, v9, v10, v11, v12) == 1)
     {
       if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_ERROR))
       {
@@ -137,7 +137,7 @@
       v36 = objc_msgSend_initWithObjectsAndKeys_(v32, v33, @"Allocation event cannot have identifiers.", v34, v35, @"NSLocalizedDescriptionKey", 0);
     }
 
-    else if (objc_msgSend_eventType(v8, v28, v29, v30, v31) == 2)
+    else if (objc_msgSend_eventType(eventCopy, v28, v29, v30, v31) == 2)
     {
       if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_ERROR))
       {
@@ -150,7 +150,7 @@
 
     else
     {
-      if (objc_msgSend_eventType(v8, v44, v45, v46, v47) != 3)
+      if (objc_msgSend_eventType(eventCopy, v44, v45, v46, v47) != 3)
       {
         goto LABEL_2;
       }
@@ -165,10 +165,10 @@
     }
 
     v16 = v36;
-    if (a5)
+    if (error)
     {
       objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v37, @"com.apple.LighthouseBitacoraFramework", 1, v36);
-      *a5 = v27 = 0;
+      *error = v27 = 0;
       goto LABEL_29;
     }
 
@@ -185,7 +185,7 @@ LABEL_2:
     _os_log_impl(&dword_255ED5000, v14, OS_LOG_TYPE_INFO, "Converting dict to event.", buf, 2u);
   }
 
-  v16 = objc_msgSend_createTrialdEvent_identifiers_timestamp_(LBFBiomeStoreDataConverter, v15, v8, v13, 0);
+  v16 = objc_msgSend_createTrialdEvent_identifiers_timestamp_(LBFBiomeStoreDataConverter, v15, eventCopy, identifiersCopy, 0);
   v17 = LBFLogContextEventManager;
   if (!v16)
   {
@@ -196,9 +196,9 @@ LABEL_2:
 
     v38 = objc_alloc(MEMORY[0x277CBEAC0]);
     v43 = objc_msgSend_initWithObjectsAndKeys_(v38, v39, @"Biome event could not be generated.", v40, v41, @"NSLocalizedDescriptionKey", 0);
-    if (a5)
+    if (error)
     {
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v42, @"com.apple.LighthouseBitacoraFramework", 1, v43);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v42, @"com.apple.LighthouseBitacoraFramework", 1, v43);
     }
 
     goto LABEL_28;
@@ -226,7 +226,7 @@ LABEL_29:
   return v27;
 }
 
-- (BOOL)addLighthousePluginEvent:(id)a3
+- (BOOL)addLighthousePluginEvent:(id)event
 {
   v3 = LBFLogContextEventManager;
   if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_INFO))
@@ -238,10 +238,10 @@ LABEL_29:
   return 1;
 }
 
-- (BOOL)addLighthousePluginEvent:(id)a3 identifiers:(id)a4 error:(id *)a5
+- (BOOL)addLighthousePluginEvent:(id)event identifiers:(id)identifiers error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  identifiersCopy = identifiers;
   v10 = LBFLogContextEventManager;
   if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_INFO))
   {
@@ -249,7 +249,7 @@ LABEL_29:
     _os_log_impl(&dword_255ED5000, v10, OS_LOG_TYPE_INFO, "Converting dict to proto.", buf, 2u);
   }
 
-  v12 = objc_msgSend_createLighthousePluginEvent_identifiers_timestamp_(LBFBiomeStoreDataConverter, v11, v8, v9, 0);
+  v12 = objc_msgSend_createLighthousePluginEvent_identifiers_timestamp_(LBFBiomeStoreDataConverter, v11, eventCopy, identifiersCopy, 0);
   v13 = LBFLogContextEventManager;
   if (v12)
   {
@@ -272,18 +272,18 @@ LABEL_29:
 
     v22 = objc_alloc(MEMORY[0x277CBEAC0]);
     v18 = objc_msgSend_initWithObjectsAndKeys_(v22, v23, @"Biome event could not be generated.", v24, v25, @"NSLocalizedDescriptionKey", 0);
-    if (a5)
+    if (error)
     {
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v26, @"com.apple.LighthouseBitacoraFramework", 1, v18);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v26, @"com.apple.LighthouseBitacoraFramework", 1, v18);
     }
   }
 
   return v12 != 0;
 }
 
-- (BOOL)addMLRuntimedEvent:(id)a3 identifiers:(id)a4 error:(id *)a5
+- (BOOL)addMLRuntimedEvent:(id)event identifiers:(id)identifiers error:(id *)error
 {
-  v7 = objc_msgSend_createMLRuntimedEvent_identifiers_timestamp_(LBFBiomeStoreDataConverter, a2, a3, a4, 0);
+  v7 = objc_msgSend_createMLRuntimedEvent_identifiers_timestamp_(LBFBiomeStoreDataConverter, a2, event, identifiers, 0);
   v8 = LBFLogContextEventManager;
   if (v7)
   {
@@ -313,18 +313,18 @@ LABEL_29:
 
     v18 = objc_alloc(MEMORY[0x277CBEAC0]);
     v23 = objc_msgSend_initWithObjectsAndKeys_(v18, v19, @"Biome event could not be generated.", v20, v21, @"NSLocalizedDescriptionKey", 0);
-    if (a5)
+    if (error)
     {
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v22, @"com.apple.LighthouseBitacoraFramework", 1, v23);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v22, @"com.apple.LighthouseBitacoraFramework", 1, v23);
     }
   }
 
   return v7 != 0;
 }
 
-- (BOOL)addDprivacydEvent:(id)a3 identifiers:(id)a4 error:(id *)a5
+- (BOOL)addDprivacydEvent:(id)event identifiers:(id)identifiers error:(id *)error
 {
-  v7 = objc_msgSend_createDprivacydEvent_identifiers_timestamp_(LBFBiomeStoreDataConverter, a2, a3, a4, 0);
+  v7 = objc_msgSend_createDprivacydEvent_identifiers_timestamp_(LBFBiomeStoreDataConverter, a2, event, identifiers, 0);
   v8 = LBFLogContextEventManager;
   if (v7)
   {
@@ -354,35 +354,35 @@ LABEL_29:
 
     v18 = objc_alloc(MEMORY[0x277CBEAC0]);
     v23 = objc_msgSend_initWithObjectsAndKeys_(v18, v19, @"Biome event could not be generated.", v20, v21, @"NSLocalizedDescriptionKey", 0);
-    if (a5)
+    if (error)
     {
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v22, @"com.apple.LighthouseBitacoraFramework", 1, v23);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v22, @"com.apple.LighthouseBitacoraFramework", 1, v23);
     }
   }
 
   return v7 != 0;
 }
 
-- (BOOL)isEqualIdentifiers:(id)a3 identifiers:(id)a4
+- (BOOL)isEqualIdentifiers:(id)identifiers identifiers:(id)a4
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = a4;
   v11 = v6;
-  if (v5 | v6)
+  if (identifiersCopy | v6)
   {
-    if ((v5 == 0) == (v6 == 0))
+    if ((identifiersCopy == 0) == (v6 == 0))
     {
-      v13 = objc_msgSend_bmltIdentifiers(v5, v7, v8, v9, v10);
+      v13 = objc_msgSend_bmltIdentifiers(identifiersCopy, v7, v8, v9, v10);
       if (v13 && (v18 = v13, v19 = objc_msgSend_identifierType(v11, v14, v15, v16, v17), v18, v19 == 2))
       {
-        v20 = objc_msgSend_bmltIdentifiers(v5, v14, v15, v16, v17);
+        v20 = objc_msgSend_bmltIdentifiers(identifiersCopy, v14, v15, v16, v17);
         v25 = objc_msgSend_trialDeploymentID(v20, v21, v22, v23, v24);
         v30 = objc_msgSend_deploymentID(v11, v26, v27, v28, v29);
         isEqualToString = objc_msgSend_isEqualToString_(v25, v31, v30, v32, v33);
 
         if (isEqualToString)
         {
-          v39 = objc_msgSend_bmltIdentifiers(v5, v35, v36, v37, v38);
+          v39 = objc_msgSend_bmltIdentifiers(identifiersCopy, v35, v36, v37, v38);
           v44 = objc_msgSend_trialTaskID(v39, v40, v41, v42, v43);
           v49 = objc_msgSend_trialTaskID(v11, v45, v46, v47, v48);
 LABEL_13:
@@ -395,7 +395,7 @@ LABEL_13:
 
       else
       {
-        v53 = objc_msgSend_experimentIdentifiers(v5, v14, v15, v16, v17);
+        v53 = objc_msgSend_experimentIdentifiers(identifiersCopy, v14, v15, v16, v17);
         if (v53)
         {
           v58 = v53;
@@ -403,21 +403,21 @@ LABEL_13:
 
           if (v59 == 1)
           {
-            v64 = objc_msgSend_experimentIdentifiers(v5, v60, v61, v62, v63);
+            v64 = objc_msgSend_experimentIdentifiers(identifiersCopy, v60, v61, v62, v63);
             v69 = objc_msgSend_trialDeploymentID(v64, v65, v66, v67, v68);
             v74 = objc_msgSend_deploymentID(v11, v70, v71, v72, v73);
             v78 = objc_msgSend_isEqualToString_(v69, v75, v74, v76, v77);
 
             if (v78)
             {
-              v83 = objc_msgSend_experimentIdentifiers(v5, v79, v80, v81, v82);
+              v83 = objc_msgSend_experimentIdentifiers(identifiersCopy, v79, v80, v81, v82);
               v88 = objc_msgSend_trialExperimentID(v83, v84, v85, v86, v87);
               v93 = objc_msgSend_experimentID(v11, v89, v90, v91, v92);
               v97 = objc_msgSend_isEqualToString_(v88, v94, v93, v95, v96);
 
               if (v97)
               {
-                v39 = objc_msgSend_experimentIdentifiers(v5, v98, v99, v100, v101);
+                v39 = objc_msgSend_experimentIdentifiers(identifiersCopy, v98, v99, v100, v101);
                 v44 = objc_msgSend_trialTreatmentID(v39, v102, v103, v104, v105);
                 v49 = objc_msgSend_treatmentID(v11, v106, v107, v108, v109);
                 goto LABEL_13;
@@ -438,17 +438,17 @@ LABEL_15:
   return v12;
 }
 
-- (id)convertToLBFTrialIdentifiers:(id)a3
+- (id)convertToLBFTrialIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v8 = objc_msgSend_bmltIdentifiers(v3, v4, v5, v6, v7);
+  identifiersCopy = identifiers;
+  v8 = objc_msgSend_bmltIdentifiers(identifiersCopy, v4, v5, v6, v7);
 
   if (v8)
   {
     v13 = [LBFTrialIdentifiers alloc];
-    v18 = objc_msgSend_bmltIdentifiers(v3, v14, v15, v16, v17);
+    v18 = objc_msgSend_bmltIdentifiers(identifiersCopy, v14, v15, v16, v17);
     v23 = objc_msgSend_trialTaskID(v18, v19, v20, v21, v22);
-    v28 = objc_msgSend_bmltIdentifiers(v3, v24, v25, v26, v27);
+    v28 = objc_msgSend_bmltIdentifiers(identifiersCopy, v24, v25, v26, v27);
     v33 = objc_msgSend_trialDeploymentID(v28, v29, v30, v31, v32);
     v38 = objc_msgSend_intValue(v33, v34, v35, v36, v37);
     v41 = objc_msgSend_initWithBMLTTaskID_deploymentID_(v13, v39, v23, v38, v40);
@@ -457,17 +457,17 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v42 = objc_msgSend_experimentIdentifiers(v3, v9, v10, v11, v12);
+  v42 = objc_msgSend_experimentIdentifiers(identifiersCopy, v9, v10, v11, v12);
 
   if (v42)
   {
     v43 = [LBFTrialIdentifiers alloc];
-    v18 = objc_msgSend_experimentIdentifiers(v3, v44, v45, v46, v47);
+    v18 = objc_msgSend_experimentIdentifiers(identifiersCopy, v44, v45, v46, v47);
     v23 = objc_msgSend_trialExperimentID(v18, v48, v49, v50, v51);
-    v28 = objc_msgSend_experimentIdentifiers(v3, v52, v53, v54, v55);
+    v28 = objc_msgSend_experimentIdentifiers(identifiersCopy, v52, v53, v54, v55);
     v33 = objc_msgSend_trialDeploymentID(v28, v56, v57, v58, v59);
     v64 = objc_msgSend_intValue(v33, v60, v61, v62, v63);
-    v69 = objc_msgSend_experimentIdentifiers(v3, v65, v66, v67, v68);
+    v69 = objc_msgSend_experimentIdentifiers(identifiersCopy, v65, v66, v67, v68);
     v74 = objc_msgSend_trialTreatmentID(v69, v70, v71, v72, v73);
     v41 = objc_msgSend_initWithExperimentID_deploymentID_treatmentID_(v43, v75, v23, v64, v74);
 
@@ -480,23 +480,23 @@ LABEL_6:
   return v41;
 }
 
-- (void)enumerateLastTrialEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldContinue:(id)a6
+- (void)enumerateLastTrialEvents:(id)events startDate:(id)date endDate:(id)endDate shouldContinue:(id)continue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v17 = a6;
-  if (v10)
+  eventsCopy = events;
+  dateCopy = date;
+  endDateCopy = endDate;
+  continueCopy = continue;
+  if (eventsCopy)
   {
     v18 = objc_msgSend_ensureBiomeManagerMLRuntimed(self, v13, v14, v15, v16);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_255EF3544;
     v20[3] = &unk_279813CA0;
-    v21 = v10;
-    v22 = self;
-    v23 = v17;
-    objc_msgSend_enumerateData_endDate_reversed_shouldContinue_(v18, v19, v11, v12, 1, v20);
+    v21 = eventsCopy;
+    selfCopy = self;
+    v23 = continueCopy;
+    objc_msgSend_enumerateData_endDate_reversed_shouldContinue_(v18, v19, dateCopy, endDateCopy, 1, v20);
   }
 
   else if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_DEBUG))
@@ -505,9 +505,9 @@ LABEL_6:
   }
 }
 
-- (id)getLastTrialEvent:(id)a3
+- (id)getLastTrialEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -519,30 +519,30 @@ LABEL_6:
   v8[2] = sub_255EF3828;
   v8[3] = &unk_279813CC8;
   v8[4] = &v9;
-  objc_msgSend_enumerateLastTrialEvents_startDate_endDate_shouldContinue_(self, v5, v4, 0, 0, v8);
+  objc_msgSend_enumerateLastTrialEvents_startDate_endDate_shouldContinue_(self, v5, eventCopy, 0, 0, v8);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-- (void)enumerateLastLighthousePluginEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldContinue:(id)a6
+- (void)enumerateLastLighthousePluginEvents:(id)events startDate:(id)date endDate:(id)endDate shouldContinue:(id)continue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v17 = a6;
-  if (v10)
+  eventsCopy = events;
+  dateCopy = date;
+  endDateCopy = endDate;
+  continueCopy = continue;
+  if (eventsCopy)
   {
     v18 = objc_msgSend_ensureBiomeManagerMLRuntimed(self, v13, v14, v15, v16);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_255EF3988;
     v20[3] = &unk_279813CA0;
-    v21 = v10;
-    v22 = self;
-    v23 = v17;
-    objc_msgSend_enumerateData_endDate_reversed_shouldContinue_(v18, v19, v11, v12, 1, v20);
+    v21 = eventsCopy;
+    selfCopy = self;
+    v23 = continueCopy;
+    objc_msgSend_enumerateData_endDate_reversed_shouldContinue_(v18, v19, dateCopy, endDateCopy, 1, v20);
   }
 
   else if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_DEBUG))
@@ -551,9 +551,9 @@ LABEL_6:
   }
 }
 
-- (id)getLastLighthousePluginEvent:(id)a3
+- (id)getLastLighthousePluginEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -565,30 +565,30 @@ LABEL_6:
   v8[2] = sub_255EF3E70;
   v8[3] = &unk_279813CF0;
   v8[4] = &v9;
-  objc_msgSend_enumerateLastLighthousePluginEvents_startDate_endDate_shouldContinue_(self, v5, v4, 0, 0, v8);
+  objc_msgSend_enumerateLastLighthousePluginEvents_startDate_endDate_shouldContinue_(self, v5, eventCopy, 0, 0, v8);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-- (void)enumerateLastMLRuntimeEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldContinue:(id)a6
+- (void)enumerateLastMLRuntimeEvents:(id)events startDate:(id)date endDate:(id)endDate shouldContinue:(id)continue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v17 = a6;
-  if (v10)
+  eventsCopy = events;
+  dateCopy = date;
+  endDateCopy = endDate;
+  continueCopy = continue;
+  if (eventsCopy)
   {
     v18 = objc_msgSend_ensureBiomeManagerMLRuntimed(self, v13, v14, v15, v16);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_255EF3FD0;
     v20[3] = &unk_279813CA0;
-    v21 = v10;
-    v22 = self;
-    v23 = v17;
-    objc_msgSend_enumerateData_endDate_reversed_shouldContinue_(v18, v19, v11, v12, 1, v20);
+    v21 = eventsCopy;
+    selfCopy = self;
+    v23 = continueCopy;
+    objc_msgSend_enumerateData_endDate_reversed_shouldContinue_(v18, v19, dateCopy, endDateCopy, 1, v20);
   }
 
   else if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_DEBUG))
@@ -597,9 +597,9 @@ LABEL_6:
   }
 }
 
-- (id)getLastMLRuntimeEvent:(id)a3
+- (id)getLastMLRuntimeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -611,30 +611,30 @@ LABEL_6:
   v8[2] = sub_255EF4514;
   v8[3] = &unk_279813D18;
   v8[4] = &v9;
-  objc_msgSend_enumerateLastMLRuntimeEvents_startDate_endDate_shouldContinue_(self, v5, v4, 0, 0, v8);
+  objc_msgSend_enumerateLastMLRuntimeEvents_startDate_endDate_shouldContinue_(self, v5, eventCopy, 0, 0, v8);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-- (void)enumerateLastDprivacyEvents:(id)a3 startDate:(id)a4 endDate:(id)a5 shouldContinue:(id)a6
+- (void)enumerateLastDprivacyEvents:(id)events startDate:(id)date endDate:(id)endDate shouldContinue:(id)continue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v17 = a6;
-  if (v10)
+  eventsCopy = events;
+  dateCopy = date;
+  endDateCopy = endDate;
+  continueCopy = continue;
+  if (eventsCopy)
   {
     v18 = objc_msgSend_ensureBiomeManagerDprivacyd(self, v13, v14, v15, v16);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_255EF4674;
     v20[3] = &unk_279813CA0;
-    v21 = v10;
-    v22 = self;
-    v23 = v17;
-    objc_msgSend_enumerateData_endDate_reversed_shouldContinue_(v18, v19, v11, v12, 1, v20);
+    v21 = eventsCopy;
+    selfCopy = self;
+    v23 = continueCopy;
+    objc_msgSend_enumerateData_endDate_reversed_shouldContinue_(v18, v19, dateCopy, endDateCopy, 1, v20);
   }
 
   else if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_DEBUG))
@@ -643,9 +643,9 @@ LABEL_6:
   }
 }
 
-- (id)getLastDprivacyEvent:(id)a3
+- (id)getLastDprivacyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -657,7 +657,7 @@ LABEL_6:
   v8[2] = sub_255EF49B8;
   v8[3] = &unk_279813D40;
   v8[4] = &v9;
-  objc_msgSend_enumerateLastDprivacyEvents_startDate_endDate_shouldContinue_(self, v5, v4, 0, 0, v8);
+  objc_msgSend_enumerateLastDprivacyEvents_startDate_endDate_shouldContinue_(self, v5, eventCopy, 0, 0, v8);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 

@@ -11,20 +11,20 @@
 
 - (double)zw_boundsCenter
 {
-  [a1 bounds];
+  [self bounds];
   MidX = CGRectGetMidX(v4);
-  [a1 bounds];
+  [self bounds];
   CGRectGetMidY(v5);
   return MidX;
 }
 
 - (double)zw_convertRectToScreenCoordinates:()CACZoomExtras
 {
-  v10 = [a1 window];
-  v11 = v10;
-  if (v10)
+  window = [self window];
+  v11 = window;
+  if (window)
   {
-    [v10 convertRect:a1 fromView:{a2, a3, a4, a5}];
+    [window convertRect:self fromView:{a2, a3, a4, a5}];
     [v11 _convertRectToSceneReferenceSpace:?];
     a2 = v12;
   }
@@ -34,12 +34,12 @@
 
 - (double)zw_convertRectFromScreenCoordinates:()CACZoomExtras
 {
-  v10 = [a1 window];
-  v11 = v10;
-  if (v10)
+  window = [self window];
+  v11 = window;
+  if (window)
   {
-    [v10 _convertRectFromSceneReferenceSpace:{a2, a3, a4, a5}];
-    [v11 convertRect:a1 toView:?];
+    [window _convertRectFromSceneReferenceSpace:{a2, a3, a4, a5}];
+    [v11 convertRect:self toView:?];
     a2 = v12;
   }
 
@@ -48,11 +48,11 @@
 
 - (double)zw_convertPointToScreenCoordinates:()CACZoomExtras
 {
-  v6 = [a1 window];
-  v7 = v6;
-  if (v6)
+  window = [self window];
+  v7 = window;
+  if (window)
   {
-    [v6 convertPoint:a1 fromView:{a2, a3}];
+    [window convertPoint:self fromView:{a2, a3}];
     [v7 _convertPointToSceneReferenceSpace:?];
     a2 = v8;
   }
@@ -62,12 +62,12 @@
 
 - (double)zw_convertPointFromScreenCoordinates:()CACZoomExtras
 {
-  v6 = [a1 window];
-  v7 = v6;
-  if (v6)
+  window = [self window];
+  v7 = window;
+  if (window)
   {
-    [v6 _convertPointFromSceneReferenceSpace:{a2, a3}];
-    [v7 convertPoint:a1 toView:?];
+    [window _convertPointFromSceneReferenceSpace:{a2, a3}];
+    [v7 convertPoint:self toView:?];
     a2 = v8;
   }
 
@@ -76,9 +76,9 @@
 
 - (uint64_t)zw_convertBoundsToScreenCoordinates
 {
-  [a1 bounds];
+  [self bounds];
 
-  return [a1 zw_convertRectToScreenCoordinates:?];
+  return [self zw_convertRectToScreenCoordinates:?];
 }
 
 @end

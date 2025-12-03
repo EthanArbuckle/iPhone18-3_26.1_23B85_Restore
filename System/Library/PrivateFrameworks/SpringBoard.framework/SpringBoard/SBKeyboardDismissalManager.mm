@@ -1,32 +1,32 @@
 @interface SBKeyboardDismissalManager
-- (BOOL)_shouldPreventDismissalForTouch:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (SBKeyboardDismissalManager)initWithTouchDeliveryService:(id)a3 systemGestureManager:(id)a4 keyboardArbiterManager:(id)a5 focusController:(id)a6;
-- (id)registerKeyboardDismissalParticipant:(id)a3;
-- (void)_didTap:(id)a3;
+- (BOOL)_shouldPreventDismissalForTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (SBKeyboardDismissalManager)initWithTouchDeliveryService:(id)service systemGestureManager:(id)manager keyboardArbiterManager:(id)arbiterManager focusController:(id)controller;
+- (id)registerKeyboardDismissalParticipant:(id)participant;
+- (void)_didTap:(id)tap;
 - (void)_reset;
 - (void)dealloc;
-- (void)gestureRecognizerTransitionedToFailed:(id)a3;
+- (void)gestureRecognizerTransitionedToFailed:(id)failed;
 @end
 
 @implementation SBKeyboardDismissalManager
 
-- (SBKeyboardDismissalManager)initWithTouchDeliveryService:(id)a3 systemGestureManager:(id)a4 keyboardArbiterManager:(id)a5 focusController:(id)a6
+- (SBKeyboardDismissalManager)initWithTouchDeliveryService:(id)service systemGestureManager:(id)manager keyboardArbiterManager:(id)arbiterManager focusController:(id)controller
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  serviceCopy = service;
+  managerCopy = manager;
+  arbiterManagerCopy = arbiterManager;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = SBKeyboardDismissalManager;
   v15 = [(SBKeyboardDismissalManager *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_keyboardArbiterManager, a5);
-    objc_storeStrong(&v16->_systemGestureManager, a4);
-    objc_storeStrong(&v16->_keyboardFocusCoordinator, a6);
-    objc_storeStrong(&v16->_touchService, a3);
+    objc_storeStrong(&v15->_keyboardArbiterManager, arbiterManager);
+    objc_storeStrong(&v16->_systemGestureManager, manager);
+    objc_storeStrong(&v16->_keyboardFocusCoordinator, controller);
+    objc_storeStrong(&v16->_touchService, service);
     v17 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:@"SBKeyboardDismissalManager"];
     participantsAssertion = v16->_participantsAssertion;
     v16->_participantsAssertion = v17;
@@ -60,25 +60,25 @@
   [(SBKeyboardDismissalManager *)&v3 dealloc];
 }
 
-- (id)registerKeyboardDismissalParticipant:(id)a3
+- (id)registerKeyboardDismissalParticipant:(id)participant
 {
   participantsAssertion = self->_participantsAssertion;
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [v4 stringWithFormat:@"%@-%p", objc_opt_class(), v5];
-  v7 = [(BSCompoundAssertion *)participantsAssertion acquireForReason:v6 withContext:v5];
+  participantCopy = participant;
+  participantCopy = [v4 stringWithFormat:@"%@-%p", objc_opt_class(), participantCopy];
+  v7 = [(BSCompoundAssertion *)participantsAssertion acquireForReason:participantCopy withContext:participantCopy];
 
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   if ([(BSCompoundAssertion *)self->_participantsAssertion isActive]&& !self->_trackedTouchIdentifier)
   {
-    if (self->_dismissGestureRecognizer == v6)
+    if (self->_dismissGestureRecognizer == recognizerCopy)
     {
       v10 = SBLogKeyboardDismissal();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -86,7 +86,7 @@
         [SBKeyboardDismissalManager gestureRecognizer:shouldReceiveTouch:];
       }
 
-      v11 = [(SBKeyboardDismissalManager *)self _shouldPreventDismissalForTouch:v7];
+      v11 = [(SBKeyboardDismissalManager *)self _shouldPreventDismissalForTouch:touchCopy];
       if (!v11)
       {
         v12 = SBLogKeyboardDismissal();
@@ -96,13 +96,13 @@
           v15 = 138543618;
           v16 = v13;
           v17 = 2114;
-          v18 = v7;
+          v18 = touchCopy;
           _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ tracking touch for keyboard dismiss: %{public}@", &v15, 0x16u);
         }
 
-        v14 = [v7 _touchIdentifier];
-        self->_trackedTouchIdentifier = v14;
-        [(BKSTouchDeliveryObservationService *)self->_touchService addObserver:self forTouchIdentifier:v14];
+        _touchIdentifier = [touchCopy _touchIdentifier];
+        self->_trackedTouchIdentifier = _touchIdentifier;
+        [(BKSTouchDeliveryObservationService *)self->_touchService addObserver:self forTouchIdentifier:_touchIdentifier];
       }
 
       v8 = !v11;
@@ -122,9 +122,9 @@
   return v8;
 }
 
-- (void)_didTap:(id)a3
+- (void)_didTap:(id)tap
 {
-  v5 = a3;
+  tapCopy = tap;
   trackedTouchIdentifier = self->_trackedTouchIdentifier;
   if (trackedTouchIdentifier)
   {
@@ -173,7 +173,7 @@ uint64_t __38__SBKeyboardDismissalManager__didTap___block_invoke(uint64_t result
   return result;
 }
 
-- (void)gestureRecognizerTransitionedToFailed:(id)a3
+- (void)gestureRecognizerTransitionedToFailed:(id)failed
 {
   v4 = SBLogKeyboardDismissal();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -260,14 +260,14 @@ LABEL_16:
   return [*v2 _reset];
 }
 
-- (BOOL)_shouldPreventDismissalForTouch:(id)a3
+- (BOOL)_shouldPreventDismissalForTouch:(id)touch
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  touchCopy = touch;
   if (([(BSCompoundAssertion *)self->_participantsAssertion isActive]& 1) == 0)
   {
-    v5 = SBLogKeyboardDismissal();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    context = SBLogKeyboardDismissal();
+    if (os_log_type_enabled(context, OS_LOG_TYPE_DEBUG))
     {
       [SBKeyboardDismissalManager _shouldPreventDismissalForTouch:];
     }
@@ -281,8 +281,8 @@ LABEL_16:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(BSCompoundAssertion *)self->_participantsAssertion context];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v27 count:16];
+  context = [(BSCompoundAssertion *)self->_participantsAssertion context];
+  v6 = [context countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -293,14 +293,14 @@ LABEL_4:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(context);
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
       if (objc_opt_respondsToSelector())
       {
-        v11 = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
-        v12 = [v10 keyboardDismissalManager:self shouldPreventDismissalForTouch:v4 inWindow:v11];
+        windowForSystemGestures = [(SBSystemGestureManager *)self->_systemGestureManager windowForSystemGestures];
+        v12 = [v10 keyboardDismissalManager:self shouldPreventDismissalForTouch:touchCopy inWindow:windowForSystemGestures];
 
         v13 = SBLogKeyboardDismissal();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -323,7 +323,7 @@ LABEL_4:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v27 count:16];
+        v7 = [context countByEnumeratingWithState:&v17 objects:v27 count:16];
         if (v7)
         {
           goto LABEL_4;

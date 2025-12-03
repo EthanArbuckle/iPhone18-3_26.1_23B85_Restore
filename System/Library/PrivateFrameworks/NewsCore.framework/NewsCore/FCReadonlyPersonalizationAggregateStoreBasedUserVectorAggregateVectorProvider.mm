@@ -1,37 +1,37 @@
 @interface FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider
-- (FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider)initWithReadonlyPersonalizationAggregateStore:(id)a3 personalizationTreatment:(id)a4;
-- (id)aggregateVectorForTags:(id)a3;
+- (FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider)initWithReadonlyPersonalizationAggregateStore:(id)store personalizationTreatment:(id)treatment;
+- (id)aggregateVectorForTags:(id)tags;
 @end
 
 @implementation FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider
 
-- (FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider)initWithReadonlyPersonalizationAggregateStore:(id)a3 personalizationTreatment:(id)a4
+- (FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider)initWithReadonlyPersonalizationAggregateStore:(id)store personalizationTreatment:(id)treatment
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  treatmentCopy = treatment;
   v12.receiver = self;
   v12.super_class = FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider;
   v9 = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_aggregateStore, a3);
-    objc_storeStrong(&v10->_personalizationTreatment, a4);
+    objc_storeStrong(&v9->_aggregateStore, store);
+    objc_storeStrong(&v10->_personalizationTreatment, treatment);
   }
 
   return v10;
 }
 
-- (id)aggregateVectorForTags:(id)a3
+- (id)aggregateVectorForTags:(id)tags
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tagsCopy = tags;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = v4;
+  v6 = tagsCopy;
   v7 = [v6 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v7)
   {
@@ -57,17 +57,17 @@
     while (v8);
   }
 
-  v13 = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)self aggregateStore];
-  v14 = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)self personalizationTreatment];
-  v15 = [v13 baselineAggregateWithConfigurableValues:v14];
+  aggregateStore = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)self aggregateStore];
+  personalizationTreatment = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)self personalizationTreatment];
+  v15 = [aggregateStore baselineAggregateWithConfigurableValues:personalizationTreatment];
 
-  v16 = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)self aggregateStore];
-  v17 = [v5 allValues];
-  v18 = [v16 aggregatesForFeatures:v17];
+  aggregateStore2 = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)self aggregateStore];
+  allValues = [v5 allValues];
+  v18 = [aggregateStore2 aggregatesForFeatures:allValues];
 
-  v19 = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)self personalizationTreatment];
-  v20 = [v19 defaultScoringConfig];
-  [v20 decayFactor];
+  personalizationTreatment2 = [(FCReadonlyPersonalizationAggregateStoreBasedUserVectorAggregateVectorProvider *)self personalizationTreatment];
+  defaultScoringConfig = [personalizationTreatment2 defaultScoringConfig];
+  [defaultScoringConfig decayFactor];
   v22 = v21;
 
   [v15 personalizationValueWithBaseline:0 decayRate:v22];

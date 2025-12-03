@@ -1,33 +1,33 @@
 @interface PKShape
-+ (id)snapToShapeActionNameForNumShapes:(unint64_t)a3;
-- (PKShape)initWithShapeType:(int64_t)a3 strokes:(id)a4 originalStroke:(id)a5;
++ (id)snapToShapeActionNameForNumShapes:(unint64_t)shapes;
+- (PKShape)initWithShapeType:(int64_t)type strokes:(id)strokes originalStroke:(id)stroke;
 @end
 
 @implementation PKShape
 
-- (PKShape)initWithShapeType:(int64_t)a3 strokes:(id)a4 originalStroke:(id)a5
+- (PKShape)initWithShapeType:(int64_t)type strokes:(id)strokes originalStroke:(id)stroke
 {
-  v9 = a4;
-  v10 = a5;
+  strokesCopy = strokes;
+  strokeCopy = stroke;
   v14.receiver = self;
   v14.super_class = PKShape;
   v11 = [(PKShape *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_strokes, a4);
-    objc_storeStrong(&v12->_originalStroke, a5);
+    v11->_type = type;
+    objc_storeStrong(&v11->_strokes, strokes);
+    objc_storeStrong(&v12->_originalStroke, stroke);
   }
 
   return v12;
 }
 
-+ (id)snapToShapeActionNameForNumShapes:(unint64_t)a3
++ (id)snapToShapeActionNameForNumShapes:(unint64_t)shapes
 {
   v4 = _PencilKitBundle();
   v5 = v4;
-  if (a3 > 1)
+  if (shapes > 1)
   {
     v6 = @"Snap to Shapes";
   }

@@ -1,6 +1,6 @@
 @interface VCPVideoFramesCaptionTask
-+ (id)taskWithFrames:(id)a3 frameRate:(float)a4 timeRange:(id *)a5 andCompletionHandler:(id)a6;
-- (VCPVideoFramesCaptionTask)initWithFrames:(id)a3 frameRate:(float)a4 timeRange:(id *)a5 andCompletionHandler:(id)a6;
++ (id)taskWithFrames:(id)frames frameRate:(float)rate timeRange:(id *)range andCompletionHandler:(id)handler;
+- (VCPVideoFramesCaptionTask)initWithFrames:(id)frames frameRate:(float)rate timeRange:(id *)range andCompletionHandler:(id)handler;
 - (int)main;
 - (int)run;
 - (void)dealloc;
@@ -8,11 +8,11 @@
 
 @implementation VCPVideoFramesCaptionTask
 
-- (VCPVideoFramesCaptionTask)initWithFrames:(id)a3 frameRate:(float)a4 timeRange:(id *)a5 andCompletionHandler:(id)a6
+- (VCPVideoFramesCaptionTask)initWithFrames:(id)frames frameRate:(float)rate timeRange:(id *)range andCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
-  if ([v11 count])
+  framesCopy = frames;
+  handlerCopy = handler;
+  if ([framesCopy count])
   {
     v29.receiver = self;
     v29.super_class = VCPVideoFramesCaptionTask;
@@ -20,16 +20,16 @@
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_frames, a3);
-      v15 = *&a5->var0.var0;
-      v16 = *&a5->var0.var3;
-      *(&v14->_timeRange.duration.value + 4) = *&a5->var1.var1;
+      objc_storeStrong(&v13->_frames, frames);
+      v15 = *&range->var0.var0;
+      v16 = *&range->var0.var3;
+      *(&v14->_timeRange.duration.value + 4) = *&range->var1.var1;
       *&v14->_timeRange.start.flags = v16;
       *(&v14->_frameRate + 1) = v15;
-      v14->_frameRate = a4;
+      v14->_frameRate = rate;
       v17 = [(NSArray *)v14->_frames count];
       v14->_frameNum = v17;
-      var1 = a5->var1;
+      var1 = range->var1;
       CMTimeMultiplyByRatio(&v28, &var1, 1, v17 - 1);
       *(&v14->_timeRange.duration.epoch + 4) = v28;
       v18 = [[NSMutableString alloc] initWithString:&stru_1002890F8];
@@ -40,9 +40,9 @@
       errorMessage = v14->_errorMessage;
       v14->_errorMessage = v20;
 
-      if (v12)
+      if (handlerCopy)
       {
-        v22 = v12;
+        v22 = handlerCopy;
       }
 
       else
@@ -56,27 +56,27 @@
     }
 
     self = v14;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
-+ (id)taskWithFrames:(id)a3 frameRate:(float)a4 timeRange:(id *)a5 andCompletionHandler:(id)a6
++ (id)taskWithFrames:(id)frames frameRate:(float)rate timeRange:(id *)range andCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
+  framesCopy = frames;
+  handlerCopy = handler;
   v11 = objc_alloc(objc_opt_class());
-  v12 = *&a5->var0.var3;
-  v15[0] = *&a5->var0.var0;
+  v12 = *&range->var0.var3;
+  v15[0] = *&range->var0.var0;
   v15[1] = v12;
-  v16 = *&a5->var1.var1;
-  v13 = [v11 initWithFrames:v9 frameRate:v15 timeRange:v10 andCompletionHandler:{COERCE_DOUBLE(__PAIR64__(DWORD1(v16), LODWORD(a4)))}];
+  v16 = *&range->var1.var1;
+  v13 = [v11 initWithFrames:framesCopy frameRate:v15 timeRange:handlerCopy andCompletionHandler:{COERCE_DOUBLE(__PAIR64__(DWORD1(v16), LODWORD(rate)))}];
 
   return v13;
 }
@@ -199,7 +199,7 @@ LABEL_21:
                 objc_autoreleasePoolPop(v15);
                 if (!v18)
                 {
-                  v22 = obj;
+                  results = obj;
                   goto LABEL_36;
                 }
 
@@ -221,8 +221,8 @@ LABEL_21:
           v33 = *(&self->_timeRange.duration.value + 4);
           [v28 finishAnalysisPass:buf];
           errorMessage = self->_errorMessage;
-          v22 = [v28 results];
-          [(NSMutableString *)errorMessage addEntriesFromDictionary:v22];
+          results = [v28 results];
+          [(NSMutableString *)errorMessage addEntriesFromDictionary:results];
           v2 = 0;
 LABEL_36:
 
@@ -292,8 +292,8 @@ LABEL_36:
 - (int)run
 {
   atomic_store(1u, &self->_frameInterval.epoch + 5);
-  v3 = [(VCPVideoFramesCaptionTask *)self main];
-  if (v3)
+  main = [(VCPVideoFramesCaptionTask *)self main];
+  if (main)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
@@ -310,7 +310,7 @@ LABEL_36:
     v12 = v5;
     v6 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     completionHandler = self->_completionHandler;
-    v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v3 userInfo:v6];
+    v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:main userInfo:v6];
     completionHandler[2](completionHandler, 0, v8);
   }
 
@@ -319,7 +319,7 @@ LABEL_36:
     (*(self->_completionHandler + 2))();
   }
 
-  return v3;
+  return main;
 }
 
 @end

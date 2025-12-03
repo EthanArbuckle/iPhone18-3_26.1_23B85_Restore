@@ -1,5 +1,5 @@
 @interface TRIXPCInternalAgentToSystemServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TRIXPCInternalAgentToSystemServiceListener)init;
 @end
 
@@ -99,14 +99,14 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v4 = MEMORY[0x277D42660];
   wrapper = self->_wrapper;
   interface = self->_interface;
-  v7 = a4;
+  connectionCopy = connection;
   v8 = TRILogCategory_Server();
-  LOBYTE(v4) = [v4 shouldAcceptConnection:v7 serviceName:@"com.apple.triald.system.from-agent" whitelistedServerInterface:interface whitelistedClientInterface:0 requestHandler:wrapper validateConnection:&__block_literal_global_8 setupClientProxy:0 interruptionHandler:&__block_literal_global_159 invalidationHandler:&__block_literal_global_161 logHandle:v8];
+  LOBYTE(v4) = [v4 shouldAcceptConnection:connectionCopy serviceName:@"com.apple.triald.system.from-agent" whitelistedServerInterface:interface whitelistedClientInterface:0 requestHandler:wrapper validateConnection:&__block_literal_global_8 setupClientProxy:0 interruptionHandler:&__block_literal_global_159 invalidationHandler:&__block_literal_global_161 logHandle:v8];
 
   return v4;
 }

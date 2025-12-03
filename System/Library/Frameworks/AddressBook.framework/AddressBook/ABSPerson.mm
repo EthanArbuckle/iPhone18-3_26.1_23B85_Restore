@@ -1,54 +1,54 @@
 @interface ABSPerson
 + (BOOL)shortNameFormatEnabled;
 + (BOOL)shortNameFormatPrefersNicknames;
-+ (id)copyCompositeNameDelimiterForPerson:(id)a3;
-+ (id)createPeopleInSource:(id)a3 withVCardRepresentation:(id)a4;
++ (id)copyCompositeNameDelimiterForPerson:(id)person;
++ (id)createPeopleInSource:(id)source withVCardRepresentation:(id)representation;
 + (id)defaultKeysToFetch;
-+ (id)localizedNameForProperty:(int)a3;
-+ (id)nameForProperty:(int)a3;
-+ (id)propertyKeyForPropertyID:(int)a3;
-+ (id)vCardRepresentationForPeople:(id)a3;
-+ (unsigned)compositeNameFormatForPerson:(id)a3;
++ (id)localizedNameForProperty:(int)property;
++ (id)nameForProperty:(int)property;
++ (id)propertyKeyForPropertyID:(int)d;
++ (id)vCardRepresentationForPeople:(id)people;
++ (unsigned)compositeNameFormatForPerson:(id)person;
 + (unsigned)sortOrdering;
-+ (unsigned)typeForProperty:(int)a3;
++ (unsigned)typeForProperty:(int)property;
 + (void)initialize;
-+ (void)setCompositeNameFormat:(unsigned int)a3;
++ (void)setCompositeNameFormat:(unsigned int)format;
 - (ABSAddressBook)addressBook;
-- (ABSPerson)initWithMutableContact:(id)a3 source:(id)a4;
+- (ABSPerson)initWithMutableContact:(id)contact source:(id)source;
 - (ABSSource)source;
-- (BOOL)completeCNImplIfNeededWithKeysToFetch:(id)a3;
-- (BOOL)getIdentifier:(int *)a3 label:(id *)a4 forMultiValueMatchingValue:(id)a5 property:(int)a6;
+- (BOOL)completeCNImplIfNeededWithKeysToFetch:(id)fetch;
+- (BOOL)getIdentifier:(int *)identifier label:(id *)label forMultiValueMatchingValue:(id)value property:(int)property;
 - (BOOL)hasImageData;
-- (BOOL)removeImageDataWithError:(id *)a3;
-- (BOOL)removeProperty:(int)a3 withError:(id *)a4;
-- (BOOL)setImageData:(id)a3 withError:(id *)a4;
-- (BOOL)setValue:(void *)a3 forProperty:(int)a4 withError:(__CFError *)a5;
+- (BOOL)removeImageDataWithError:(id *)error;
+- (BOOL)removeProperty:(int)property withError:(id *)error;
+- (BOOL)setImageData:(id)data withError:(id *)error;
+- (BOOL)setValue:(void *)value forProperty:(int)property withError:(__CFError *)error;
 - (CNMutableContact)cnImpl;
 - (NSString)CNIdentifierString;
 - (NSString)compositeName;
 - (NSString)description;
-- (id)compositeNameIgnoringOrganization:(BOOL)a3;
+- (id)compositeNameIgnoringOrganization:(BOOL)organization;
 - (id)copyCompositeNameDelimiter;
 - (id)copyImageData;
-- (id)copyImageDataWithFormat:(int)a3;
+- (id)copyImageDataWithFormat:(int)format;
 - (id)linkedPeople;
 - (id)shortName;
-- (id)soundIdentifierForMultivalueIdentifier:(int)a3;
-- (id)stringFromFormatter:(id)a3;
+- (id)soundIdentifierForMultivalueIdentifier:(int)identifier;
+- (id)stringFromFormatter:(id)formatter;
 - (int)id;
-- (int64_t)comparePersonByName:(id)a3 sortOrdering:(unsigned int)a4;
+- (int64_t)comparePersonByName:(id)name sortOrdering:(unsigned int)ordering;
 - (unsigned)compositeNameFormat;
-- (void)copyValueForProperty:(int)a3;
-- (void)replaceRecordStorageWithCNObject:(id)a3;
-- (void)setAddressBook:(id)a3;
-- (void)setValue:(id)a3 forSoundIdentifier:(int)a4;
+- (void)copyValueForProperty:(int)property;
+- (void)replaceRecordStorageWithCNObject:(id)object;
+- (void)setAddressBook:(id)book;
+- (void)setValue:(id)value forSoundIdentifier:(int)identifier;
 @end
 
 @implementation ABSPerson
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___ABSPerson;
   objc_msgSendSuper2(&v2, sel_initialize);
   +[ABSAddressBook ABInitialize];
@@ -88,29 +88,29 @@ void __31__ABSPerson_defaultKeysToFetch__block_invoke()
   defaultKeysToFetch_cn_once_object_1 = v5;
 }
 
-+ (unsigned)typeForProperty:(int)a3
++ (unsigned)typeForProperty:(int)property
 {
-  v3 = *&a3;
-  v4 = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
+  v3 = *&property;
+  contactPropertiesByABSPropertyID = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:v3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 absPropertyType];
+  v6 = [contactPropertiesByABSPropertyID objectForKeyedSubscript:v5];
+  absPropertyType = [v6 absPropertyType];
 
-  return v7;
+  return absPropertyType;
 }
 
-+ (id)localizedNameForProperty:(int)a3
++ (id)localizedNameForProperty:(int)property
 {
-  v3 = [a1 nameForProperty:*&a3];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:v3 value:&stru_2849A7F60 table:0];
+  v3 = [self nameForProperty:*&property];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:v3 value:&stru_2849A7F60 table:0];
 
   return v5;
 }
 
-+ (id)nameForProperty:(int)a3
++ (id)nameForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 20:
       return @"Prefix";
@@ -161,64 +161,64 @@ void __31__ABSPerson_defaultKeysToFetch__block_invoke()
   return @"UNKNOWN_PROPERTY";
 }
 
-+ (unsigned)compositeNameFormatForPerson:(id)a3
++ (unsigned)compositeNameFormatForPerson:(id)person
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForNameOrder];
-  v15[0] = v4;
+  personCopy = person;
+  descriptorForRequiredKeysForNameOrder = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForNameOrder];
+  v15[0] = descriptorForRequiredKeysForNameOrder;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v6 = [v3 completeCNImplIfNeededWithKeysToFetch:v5];
+  v6 = [personCopy completeCNImplIfNeededWithKeysToFetch:v5];
 
   if (v6)
   {
     v7 = MEMORY[0x277CBDA78];
-    v8 = [v3 cnImpl];
-    v9 = [v7 nameOrderForContact:v8];
+    cnImpl = [personCopy cnImpl];
+    v9 = [v7 nameOrderForContact:cnImpl];
 
     v10 = +[ABSConstantsMapping CNToABCompositeNameFormatConstantsMapping];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
     v12 = [v10 mappedConstant:v11];
-    v13 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v13 = 0;
+    intValue = 0;
   }
 
-  return v13;
+  return intValue;
 }
 
-+ (void)setCompositeNameFormat:(unsigned int)a3
++ (void)setCompositeNameFormat:(unsigned int)format
 {
-  v3 = *&a3;
+  v3 = *&format;
   v4 = +[ABSConstantsMapping ABtoCNContactDisplayNameOrderConstantsMapping];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v3];
   v6 = [v4 mappedConstant:v5];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
-  v8 = [MEMORY[0x277CBDAD0] sharedDefaults];
-  [v8 setDisplayNameOrder:v7];
+  mEMORY[0x277CBDAD0] = [MEMORY[0x277CBDAD0] sharedDefaults];
+  [mEMORY[0x277CBDAD0] setDisplayNameOrder:intValue];
 }
 
-+ (id)copyCompositeNameDelimiterForPerson:(id)a3
++ (id)copyCompositeNameDelimiterForPerson:(id)person
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  personCopy = person;
+  if (personCopy)
   {
     v4 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:0];
     v11[0] = v4;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    v6 = [v3 completeCNImplIfNeededWithKeysToFetch:v5];
+    v6 = [personCopy completeCNImplIfNeededWithKeysToFetch:v5];
 
     v7 = 0;
     if (v6)
     {
       v8 = MEMORY[0x277CBDA78];
-      v9 = [v3 cnImpl];
-      v7 = [v8 delimiterForContact:v9];
+      cnImpl = [personCopy cnImpl];
+      v7 = [v8 delimiterForContact:cnImpl];
     }
   }
 
@@ -232,47 +232,47 @@ void __31__ABSPerson_defaultKeysToFetch__block_invoke()
 
 + (unsigned)sortOrdering
 {
-  v2 = [MEMORY[0x277CBDAD0] sharedDefaults];
-  v3 = [v2 sortOrder];
+  mEMORY[0x277CBDAD0] = [MEMORY[0x277CBDAD0] sharedDefaults];
+  sortOrder = [mEMORY[0x277CBDAD0] sortOrder];
 
   v4 = +[ABSConstantsMapping CNToABPersonSortOrderingConstantsMapping];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:sortOrder];
   v6 = [v4 mappedConstant:v5];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
-  return v7;
+  return intValue;
 }
 
 + (BOOL)shortNameFormatEnabled
 {
-  v2 = [MEMORY[0x277CBDAD0] sharedDefaults];
-  v3 = [v2 isShortNameFormatEnabled];
+  mEMORY[0x277CBDAD0] = [MEMORY[0x277CBDAD0] sharedDefaults];
+  isShortNameFormatEnabled = [mEMORY[0x277CBDAD0] isShortNameFormatEnabled];
 
-  return v3;
+  return isShortNameFormatEnabled;
 }
 
 + (BOOL)shortNameFormatPrefersNicknames
 {
-  v2 = [MEMORY[0x277CBDAD0] sharedDefaults];
-  v3 = [v2 shortNameFormatPrefersNicknames];
+  mEMORY[0x277CBDAD0] = [MEMORY[0x277CBDAD0] sharedDefaults];
+  shortNameFormatPrefersNicknames = [mEMORY[0x277CBDAD0] shortNameFormatPrefersNicknames];
 
-  return v3;
+  return shortNameFormatPrefersNicknames;
 }
 
-+ (id)vCardRepresentationForPeople:(id)a3
++ (id)vCardRepresentationForPeople:(id)people
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBDAC8] descriptorForRequiredKeys];
-  v26[0] = v4;
+  peopleCopy = people;
+  descriptorForRequiredKeys = [MEMORY[0x277CBDAC8] descriptorForRequiredKeys];
+  v26[0] = descriptorForRequiredKeys;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
 
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(peopleCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v3;
+  v7 = peopleCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -290,17 +290,17 @@ void __31__ABSPerson_defaultKeysToFetch__block_invoke()
         v12 = *(*(&v21 + 1) + 8 * i);
         if ([v12 completeCNImplIfNeededWithKeysToFetch:v5])
         {
-          v13 = [v12 cnImpl];
+          cnImpl = [v12 cnImpl];
         }
 
         else
         {
           v14 = MEMORY[0x277CBDA58];
-          v15 = [v12 cnImpl];
-          v13 = [v14 makeContactAndMergeValuesFromAvailableKeysInContact:v15];
+          cnImpl2 = [v12 cnImpl];
+          cnImpl = [v14 makeContactAndMergeValuesFromAvailableKeysInContact:cnImpl2];
         }
 
-        [v6 addObject:v13];
+        [v6 addObject:cnImpl];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -321,11 +321,11 @@ void __31__ABSPerson_defaultKeysToFetch__block_invoke()
   return v16;
 }
 
-+ (id)createPeopleInSource:(id)a3 withVCardRepresentation:(id)a4
++ (id)createPeopleInSource:(id)source withVCardRepresentation:(id)representation
 {
-  v6 = a3;
+  sourceCopy = source;
   v15 = 0;
-  v7 = [MEMORY[0x277CBDAC8] contactsWithData:a4 error:&v15];
+  v7 = [MEMORY[0x277CBDAC8] contactsWithData:representation error:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
@@ -334,8 +334,8 @@ void __31__ABSPerson_defaultKeysToFetch__block_invoke()
     v12[1] = 3221225472;
     v12[2] = __58__ABSPerson_createPeopleInSource_withVCardRepresentation___block_invoke;
     v12[3] = &unk_278A04720;
-    v14 = a1;
-    v13 = v6;
+    selfCopy = self;
+    v13 = sourceCopy;
     v10 = [v7 _cn_map:v12];
   }
 
@@ -359,34 +359,34 @@ id __58__ABSPerson_createPeopleInSource_withVCardRepresentation___block_invoke(u
 - (NSString)description
 {
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
-  v4 = [(ABSPerson *)self compositeName];
-  v5 = [v3 appendName:@"name" object:v4];
+  compositeName = [(ABSPerson *)self compositeName];
+  v5 = [v3 appendName:@"name" object:compositeName];
 
   v6 = [v3 appendName:@"iOSLegacyIdentifier" intValue:{-[ABSPerson id](self, "id")}];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (ABSPerson)initWithMutableContact:(id)a3 source:(id)a4
+- (ABSPerson)initWithMutableContact:(id)contact source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = ABSPerson;
   v8 = [(ABSPerson *)&v12 init];
   if (v8)
   {
-    if (!v6)
+    if (!contactCopy)
     {
-      v6 = objc_alloc_init(MEMORY[0x277CBDB38]);
+      contactCopy = objc_alloc_init(MEMORY[0x277CBDB38]);
       v9 = [MEMORY[0x277CBEB58] set];
       nonNilSetProperties = v8->_nonNilSetProperties;
       v8->_nonNilSetProperties = v9;
     }
 
-    objc_storeStrong(&v8->_cnImpl, v6);
-    objc_storeWeak(&v8->_source, v7);
+    objc_storeStrong(&v8->_cnImpl, contactCopy);
+    objc_storeWeak(&v8->_source, sourceCopy);
   }
 
   return v8;
@@ -397,15 +397,15 @@ id __58__ABSPerson_createPeopleInSource_withVCardRepresentation___block_invoke(u
   v10[1] = *MEMORY[0x277D85DE8];
   if (!self->_cnImpl)
   {
-    v3 = [(ABSPerson *)self revertedRecordIdentifier];
+    revertedRecordIdentifier = [(ABSPerson *)self revertedRecordIdentifier];
 
-    if (v3)
+    if (revertedRecordIdentifier)
     {
-      v4 = [(ABSPerson *)self addressBook];
-      v5 = [(ABSPerson *)self revertedRecordIdentifier];
-      v10[0] = v5;
+      addressBook = [(ABSPerson *)self addressBook];
+      revertedRecordIdentifier2 = [(ABSPerson *)self revertedRecordIdentifier];
+      v10[0] = revertedRecordIdentifier2;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-      v7 = [v4 peopleWithCNIdentifiers:v6];
+      v7 = [addressBook peopleWithCNIdentifiers:v6];
     }
   }
 
@@ -414,25 +414,25 @@ id __58__ABSPerson_createPeopleInSource_withVCardRepresentation___block_invoke(u
   return cnImpl;
 }
 
-- (BOOL)completeCNImplIfNeededWithKeysToFetch:(id)a3
+- (BOOL)completeCNImplIfNeededWithKeysToFetch:(id)fetch
 {
-  v4 = a3;
-  v5 = [(ABSPerson *)self cnImpl];
-  v6 = [v5 areKeysAvailable:v4];
+  fetchCopy = fetch;
+  cnImpl = [(ABSPerson *)self cnImpl];
+  v6 = [cnImpl areKeysAvailable:fetchCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(ABSPerson *)self addressBook];
+    addressBook = [(ABSPerson *)self addressBook];
 
-    if (!v7)
+    if (!addressBook)
     {
       NSLog(&cfstr_RecordDoesnTBe.isa);
       v9 = 0;
       goto LABEL_5;
     }
 
-    v8 = [(ABSPerson *)self addressBook];
-    [v8 completePerson:self withKeysToFetch:v4];
+    addressBook2 = [(ABSPerson *)self addressBook];
+    [addressBook2 completePerson:self withKeysToFetch:fetchCopy];
   }
 
   v9 = 1;
@@ -443,12 +443,12 @@ LABEL_5:
 
 - (int)id
 {
-  v2 = [(ABSPerson *)self cnImpl];
-  v3 = [v2 iOSLegacyIdentifier];
+  cnImpl = [(ABSPerson *)self cnImpl];
+  iOSLegacyIdentifier = [cnImpl iOSLegacyIdentifier];
 
-  if (v3)
+  if (iOSLegacyIdentifier)
   {
-    return v3;
+    return iOSLegacyIdentifier;
   }
 
   else
@@ -463,8 +463,8 @@ LABEL_5:
 
   if (WeakRetained)
   {
-    v4 = objc_loadWeakRetained(&self->_source);
-    if (v4)
+    defaultSource = objc_loadWeakRetained(&self->_source);
+    if (defaultSource)
     {
       goto LABEL_7;
     }
@@ -472,26 +472,26 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (-[ABSPerson id](self, "id") == -1 || (-[ABSPerson addressBook](self, "addressBook"), v5 = objc_claimAutoreleasedReturnValue(), [v5 sourceForRecord:self], v4 = objc_claimAutoreleasedReturnValue(), v5, objc_storeWeak(&self->_source, v4), !v4))
+  if (-[ABSPerson id](self, "id") == -1 || (-[ABSPerson addressBook](self, "addressBook"), v5 = objc_claimAutoreleasedReturnValue(), [v5 sourceForRecord:self], defaultSource = objc_claimAutoreleasedReturnValue(), v5, objc_storeWeak(&self->_source, defaultSource), !defaultSource))
   {
 LABEL_6:
-    v6 = [(ABSPerson *)self addressBook];
-    v4 = [v6 defaultSource];
+    addressBook = [(ABSPerson *)self addressBook];
+    defaultSource = [addressBook defaultSource];
 
-    objc_storeWeak(&self->_source, v4);
+    objc_storeWeak(&self->_source, defaultSource);
   }
 
 LABEL_7:
 
-  return v4;
+  return defaultSource;
 }
 
 - (NSString)CNIdentifierString
 {
-  v2 = [(ABSPerson *)self cnImpl];
-  v3 = [v2 identifier];
+  cnImpl = [(ABSPerson *)self cnImpl];
+  identifier = [cnImpl identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)compositeName
@@ -506,19 +506,19 @@ LABEL_7:
   if (v5)
   {
     v7 = MEMORY[0x277CBDA78];
-    v8 = [(ABSPerson *)self cnImpl];
-    v6 = [v7 stringFromContact:v8 style:0];
+    cnImpl = [(ABSPerson *)self cnImpl];
+    v6 = [v7 stringFromContact:cnImpl style:0];
   }
 
   return v6;
 }
 
-- (id)compositeNameIgnoringOrganization:(BOOL)a3
+- (id)compositeNameIgnoringOrganization:(BOOL)organization
 {
-  v3 = a3;
+  organizationCopy = organization;
   v5 = objc_alloc_init(MEMORY[0x277CBDA78]);
   [v5 setStyle:0];
-  [v5 setIgnoresOrganization:v3];
+  [v5 setIgnoresOrganization:organizationCopy];
   v6 = [(ABSPerson *)self stringFromFormatter:v5];
 
   return v6;
@@ -533,19 +533,19 @@ LABEL_7:
   return v4;
 }
 
-- (id)stringFromFormatter:(id)a3
+- (id)stringFromFormatter:(id)formatter
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 descriptorForRequiredKeys];
-  v11[0] = v5;
+  formatterCopy = formatter;
+  descriptorForRequiredKeys = [formatterCopy descriptorForRequiredKeys];
+  v11[0] = descriptorForRequiredKeys;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v7 = [(ABSPerson *)self completeCNImplIfNeededWithKeysToFetch:v6];
 
   if (v7)
   {
-    v8 = [(ABSPerson *)self cnImpl];
-    v9 = [v4 stringFromContact:v8];
+    cnImpl = [(ABSPerson *)self cnImpl];
+    v9 = [formatterCopy stringFromContact:cnImpl];
   }
 
   else
@@ -556,18 +556,18 @@ LABEL_7:
   return v9;
 }
 
-- (void)copyValueForProperty:(int)a3
+- (void)copyValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
+  contactPropertiesByABSPropertyID = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
   v6 = [MEMORY[0x277CCABB0] numberWithInt:v3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [contactPropertiesByABSPropertyID objectForKeyedSubscript:v6];
 
   if (v7 && ([v7 key], v8 = objc_claimAutoreleasedReturnValue(), v24[0] = v8, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v24, 1), v9 = objc_claimAutoreleasedReturnValue(), v10 = -[ABSPerson completeCNImplIfNeededWithKeysToFetch:](self, "completeCNImplIfNeededWithKeysToFetch:", v9), v9, v8, v10) && (-[ABSPerson cnImpl](self, "cnImpl"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "key"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isKeyAvailable:", v12), v12, v11, v13))
   {
-    v14 = [(ABSPerson *)self cnImpl];
-    v15 = [v7 CNValueForContact:v14];
+    cnImpl = [(ABSPerson *)self cnImpl];
+    v15 = [v7 CNValueForContact:cnImpl];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ![v15 count] || (objc_opt_class(), (objc_opt_isKindOfClass()) && !objc_msgSend(v15, "length")) && (-[ABSPerson nonNilSetProperties](self, "nonNilSetProperties"), (v16 = objc_claimAutoreleasedReturnValue()) != 0) && (v17 = v16, -[ABSPerson nonNilSetProperties](self, "nonNilSetProperties"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v3), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v18, "containsObject:", v19), v19, v18, v17, !v20))
@@ -595,27 +595,27 @@ LABEL_7:
   return v22;
 }
 
-- (BOOL)setValue:(void *)a3 forProperty:(int)a4 withError:(__CFError *)a5
+- (BOOL)setValue:(void *)value forProperty:(int)property withError:(__CFError *)error
 {
-  v6 = *&a4;
+  v6 = *&property;
   v29[1] = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
+  contactPropertiesByABSPropertyID = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
   v10 = [MEMORY[0x277CCABB0] numberWithInt:v6];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  v11 = [contactPropertiesByABSPropertyID objectForKeyedSubscript:v10];
 
   if (v11)
   {
-    v12 = [(ABSPerson *)self nonNilSetProperties];
+    nonNilSetProperties = [(ABSPerson *)self nonNilSetProperties];
 
-    if (a3 && v12)
+    if (value && nonNilSetProperties)
     {
-      v13 = [(ABSPerson *)self nonNilSetProperties];
+      nonNilSetProperties2 = [(ABSPerson *)self nonNilSetProperties];
       v14 = [MEMORY[0x277CCABB0] numberWithInt:v6];
-      [v13 addObject:v14];
+      [nonNilSetProperties2 addObject:v14];
     }
 
     v28 = 0;
-    v15 = [v11 convertABSValue:a3 toCNValue:&v28 error:a5];
+    v15 = [v11 convertABSValue:value toCNValue:&v28 error:error];
     v16 = v28;
     if (v15)
     {
@@ -626,18 +626,18 @@ LABEL_7:
 
       if (v19)
       {
-        v20 = [(ABSPerson *)self cnImpl];
+        cnImpl = [(ABSPerson *)self cnImpl];
         v21 = [v11 key];
-        v22 = [v20 isKeyAvailable:v21];
+        v22 = [cnImpl isKeyAvailable:v21];
 
         if (v22)
         {
           v23 = [v16 copy];
-          v24 = [(ABSPerson *)self cnImpl];
-          [v11 setCNValue:v23 onContact:v24];
+          cnImpl2 = [(ABSPerson *)self cnImpl];
+          [v11 setCNValue:v23 onContact:cnImpl2];
 
-          v25 = [(ABSPerson *)self addressBook];
-          [v25 recordUpdated:self];
+          addressBook = [(ABSPerson *)self addressBook];
+          [addressBook recordUpdated:self];
 
           v26 = 1;
 LABEL_13:
@@ -646,10 +646,10 @@ LABEL_13:
         }
       }
 
-      else if (a5)
+      else if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:@"ABSAddressBookErrorDomain" code:1 userInfo:0];
-        *a5 = v26 = 0;
+        *error = v26 = 0;
         goto LABEL_13;
       }
     }
@@ -664,13 +664,13 @@ LABEL_14:
   return v26;
 }
 
-- (BOOL)removeProperty:(int)a3 withError:(id *)a4
+- (BOOL)removeProperty:(int)property withError:(id *)error
 {
-  v5 = *&a3;
+  v5 = *&property;
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
+  contactPropertiesByABSPropertyID = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:v5];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [contactPropertiesByABSPropertyID objectForKeyedSubscript:v8];
 
   if (!v9)
   {
@@ -684,10 +684,10 @@ LABEL_14:
 
   if (!v12)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"ABSAddressBookErrorDomain" code:1 userInfo:0];
-      *a4 = v19 = 0;
+      *error = v19 = 0;
       goto LABEL_8;
     }
 
@@ -696,21 +696,21 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v13 = [(ABSPerson *)self cnImpl];
+  cnImpl = [(ABSPerson *)self cnImpl];
   v14 = [v9 key];
-  v15 = [v13 isKeyAvailable:v14];
+  v15 = [cnImpl isKeyAvailable:v14];
 
   if (!v15)
   {
     goto LABEL_7;
   }
 
-  v16 = [v9 nilValue];
-  v17 = [(ABSPerson *)self cnImpl];
-  [v9 setCNValue:v16 onContact:v17];
+  nilValue = [v9 nilValue];
+  cnImpl2 = [(ABSPerson *)self cnImpl];
+  [v9 setCNValue:nilValue onContact:cnImpl2];
 
-  v18 = [(ABSPerson *)self addressBook];
-  [v18 recordUpdated:self];
+  addressBook = [(ABSPerson *)self addressBook];
+  [addressBook recordUpdated:self];
 
   v19 = 1;
 LABEL_8:
@@ -721,8 +721,8 @@ LABEL_8:
 - (id)linkedPeople
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ABSPerson *)self addressBook];
-  v4 = [v3 peopleLinkedToPerson:self];
+  addressBook = [(ABSPerson *)self addressBook];
+  v4 = [addressBook peopleLinkedToPerson:self];
 
   if ((*(*MEMORY[0x277CFBCF8] + 16))())
   {
@@ -749,17 +749,17 @@ LABEL_8:
   return [v3 copyCompositeNameDelimiterForPerson:self];
 }
 
-- (BOOL)setImageData:(id)a3 withError:(id *)a4
+- (BOOL)setImageData:(id)data withError:(id *)error
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   v20 = *MEMORY[0x277CBF3A0];
   v21 = v8;
-  if (v6)
+  if (dataCopy)
   {
-    v9 = ABSCreateThumbnailDataAndCropRectFromImageData(v6, &v20);
+    v9 = ABSCreateThumbnailDataAndCropRectFromImageData(dataCopy, &v20);
     if (!v9)
     {
       LOBYTE(v10) = 0;
@@ -781,24 +781,24 @@ LABEL_8:
 
   if (v10)
   {
-    v13 = [(ABSPerson *)self cnImpl];
-    [v13 setImageData:v7];
+    cnImpl = [(ABSPerson *)self cnImpl];
+    [cnImpl setImageData:v7];
 
-    v14 = [(ABSPerson *)self cnImpl];
-    [v14 setThumbnailImageData:v9];
+    cnImpl2 = [(ABSPerson *)self cnImpl];
+    [cnImpl2 setThumbnailImageData:v9];
 
     v15 = v20;
     v16 = v21;
-    v17 = [(ABSPerson *)self cnImpl];
-    [v17 setCropRect:{v15, v16}];
+    cnImpl3 = [(ABSPerson *)self cnImpl];
+    [cnImpl3 setCropRect:{v15, v16}];
 
-    v18 = [(ABSPerson *)self addressBook];
-    [v18 recordUpdated:self];
+    addressBook = [(ABSPerson *)self addressBook];
+    [addressBook recordUpdated:self];
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ABSAddressBookErrorDomain" code:1 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ABSAddressBookErrorDomain" code:1 userInfo:0];
   }
 
   if (v9)
@@ -823,17 +823,17 @@ LABEL_11:
     return 0;
   }
 
-  v5 = [(ABSPerson *)self cnImpl];
-  v6 = [v5 imageData];
-  v7 = [v6 copy];
+  cnImpl = [(ABSPerson *)self cnImpl];
+  imageData = [cnImpl imageData];
+  v7 = [imageData copy];
 
   return v7;
 }
 
-- (id)copyImageDataWithFormat:(int)a3
+- (id)copyImageDataWithFormat:(int)format
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!format)
   {
     v9[0] = *MEMORY[0x277CBD158];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
@@ -841,16 +841,16 @@ LABEL_11:
 
     if (v6)
     {
-      v7 = [(ABSPerson *)self cnImpl];
-      v8 = [v7 thumbnailImageData];
+      cnImpl = [(ABSPerson *)self cnImpl];
+      thumbnailImageData = [cnImpl thumbnailImageData];
 
-      return v8;
+      return thumbnailImageData;
     }
 
     return 0;
   }
 
-  if (a3 != 2)
+  if (format != 2)
   {
     return 0;
   }
@@ -870,13 +870,13 @@ LABEL_11:
     return 0;
   }
 
-  v5 = [(ABSPerson *)self cnImpl];
-  v6 = [v5 imageDataAvailable];
+  cnImpl = [(ABSPerson *)self cnImpl];
+  imageDataAvailable = [cnImpl imageDataAvailable];
 
-  return v6;
+  return imageDataAvailable;
 }
 
-- (BOOL)removeImageDataWithError:(id *)a3
+- (BOOL)removeImageDataWithError:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CBD028];
@@ -886,40 +886,40 @@ LABEL_11:
 
   if (!v7)
   {
-    if (a3)
+    if (error)
     {
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ABSAddressBookErrorDomain" code:1 userInfo:0];
       v24 = v23;
       result = 0;
-      *a3 = v23;
+      *error = v23;
       return result;
     }
 
     return 0;
   }
 
-  v8 = [(ABSPerson *)self cnImpl];
-  v9 = [v8 isKeyAvailable:v5];
+  cnImpl = [(ABSPerson *)self cnImpl];
+  v9 = [cnImpl isKeyAvailable:v5];
 
   if (!v9)
   {
     return 0;
   }
 
-  v10 = [(ABSPerson *)self cnImpl];
-  [v10 setImageData:0];
+  cnImpl2 = [(ABSPerson *)self cnImpl];
+  [cnImpl2 setImageData:0];
 
-  v11 = [(ABSPerson *)self cnImpl];
-  v12 = [v11 isKeyAvailable:*MEMORY[0x277CBD158]];
+  cnImpl3 = [(ABSPerson *)self cnImpl];
+  v12 = [cnImpl3 isKeyAvailable:*MEMORY[0x277CBD158]];
 
   if (v12)
   {
-    v13 = [(ABSPerson *)self cnImpl];
-    [v13 setThumbnailImageData:0];
+    cnImpl4 = [(ABSPerson *)self cnImpl];
+    [cnImpl4 setThumbnailImageData:0];
   }
 
-  v14 = [(ABSPerson *)self cnImpl];
-  v15 = [v14 isKeyAvailable:*MEMORY[0x277CBCFA8]];
+  cnImpl5 = [(ABSPerson *)self cnImpl];
+  v15 = [cnImpl5 isKeyAvailable:*MEMORY[0x277CBCFA8]];
 
   if (v15)
   {
@@ -927,37 +927,37 @@ LABEL_11:
     v17 = *(MEMORY[0x277CBF3A0] + 8);
     v18 = *(MEMORY[0x277CBF3A0] + 16);
     v19 = *(MEMORY[0x277CBF3A0] + 24);
-    v20 = [(ABSPerson *)self cnImpl];
-    [v20 setCropRect:{v16, v17, v18, v19}];
+    cnImpl6 = [(ABSPerson *)self cnImpl];
+    [cnImpl6 setCropRect:{v16, v17, v18, v19}];
   }
 
-  v21 = [(ABSPerson *)self addressBook];
-  [v21 recordUpdated:self];
+  addressBook = [(ABSPerson *)self addressBook];
+  [addressBook recordUpdated:self];
 
   return 1;
 }
 
-- (int64_t)comparePersonByName:(id)a3 sortOrdering:(unsigned int)a4
+- (int64_t)comparePersonByName:(id)name sortOrdering:(unsigned int)ordering
 {
-  v4 = *&a4;
+  v4 = *&ordering;
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v7 = +[ABSConstantsMapping ABToCNContactSortOrderConstantsMapping];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v4];
   v9 = [v7 mappedConstant:v8];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
-  v11 = [MEMORY[0x277CBDA58] comparatorForNameSortOrder:v10];
-  v12 = [MEMORY[0x277CBDA58] descriptorForAllComparatorKeys];
-  v22[0] = v12;
+  v11 = [MEMORY[0x277CBDA58] comparatorForNameSortOrder:intValue];
+  descriptorForAllComparatorKeys = [MEMORY[0x277CBDA58] descriptorForAllComparatorKeys];
+  v22[0] = descriptorForAllComparatorKeys;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  LODWORD(v10) = [(ABSPerson *)self completeCNImplIfNeededWithKeysToFetch:v13];
+  LODWORD(intValue) = [(ABSPerson *)self completeCNImplIfNeededWithKeysToFetch:v13];
 
-  if (v10 && ([MEMORY[0x277CBDA58] descriptorForAllComparatorKeys], v14 = objc_claimAutoreleasedReturnValue(), v21 = v14, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v21, 1), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v6, "completeCNImplIfNeededWithKeysToFetch:", v15), v15, v14, v16))
+  if (intValue && ([MEMORY[0x277CBDA58] descriptorForAllComparatorKeys], v14 = objc_claimAutoreleasedReturnValue(), v21 = v14, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v21, 1), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(nameCopy, "completeCNImplIfNeededWithKeysToFetch:", v15), v15, v14, v16))
   {
-    v17 = [(ABSPerson *)self cnImpl];
-    v18 = [v6 cnImpl];
-    v19 = (v11)[2](v11, v17, v18);
+    cnImpl = [(ABSPerson *)self cnImpl];
+    cnImpl2 = [nameCopy cnImpl];
+    v19 = (v11)[2](v11, cnImpl, cnImpl2);
   }
 
   else
@@ -968,30 +968,30 @@ LABEL_11:
   return v19;
 }
 
-+ (id)propertyKeyForPropertyID:(int)a3
++ (id)propertyKeyForPropertyID:(int)d
 {
-  v3 = *&a3;
-  v4 = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
+  v3 = *&d;
+  contactPropertiesByABSPropertyID = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:v3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [contactPropertiesByABSPropertyID objectForKeyedSubscript:v5];
   v7 = [v6 key];
 
   return v7;
 }
 
-- (void)setAddressBook:(id)a3
+- (void)setAddressBook:(id)book
 {
-  objc_storeWeak(&self->_addressBook, a3);
+  objc_storeWeak(&self->_addressBook, book);
 
   [(ABSPerson *)self setNonNilSetProperties:0];
 }
 
-- (void)replaceRecordStorageWithCNObject:(id)a3
+- (void)replaceRecordStorageWithCNObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = v4;
+    v5 = objectCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1006,9 +1006,9 @@ LABEL_11:
 
   else
   {
-    v8 = [(ABSPerson *)self cnImpl];
-    v9 = [v8 identifier];
-    [(ABSPerson *)self setRevertedRecordIdentifier:v9];
+    cnImpl = [(ABSPerson *)self cnImpl];
+    identifier = [cnImpl identifier];
+    [(ABSPerson *)self setRevertedRecordIdentifier:identifier];
 
     v7 = 0;
   }
@@ -1017,16 +1017,16 @@ LABEL_11:
   [(ABSPerson *)self setCnImpl:v7];
 }
 
-- (BOOL)getIdentifier:(int *)a3 label:(id *)a4 forMultiValueMatchingValue:(id)a5 property:(int)a6
+- (BOOL)getIdentifier:(int *)identifier label:(id *)label forMultiValueMatchingValue:(id)value property:(int)property
 {
-  v6 = *&a6;
-  v10 = a5;
-  if (a3 | a4)
+  v6 = *&property;
+  valueCopy = value;
+  if (identifier | label)
   {
     objc_opt_class();
-    v11 = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
+    contactPropertiesByABSPropertyID = [MEMORY[0x277CBDA20] contactPropertiesByABSPropertyID];
     v12 = [MEMORY[0x277CCABB0] numberWithInt:v6];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    v13 = [contactPropertiesByABSPropertyID objectForKeyedSubscript:v12];
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -1043,24 +1043,24 @@ LABEL_11:
     if (v15)
     {
       v17 = [(ABSPerson *)self copyValueForProperty:v6];
-      v18 = [v17 allValues];
+      allValues = [v17 allValues];
       v22 = MEMORY[0x277D85DD0];
       v23 = 3221225472;
       v24 = __69__ABSPerson_getIdentifier_label_forMultiValueMatchingValue_property___block_invoke;
       v25 = &unk_278A04748;
       v26 = v15;
-      v27 = v10;
-      v19 = [v18 _cn_indexOfFirstObjectPassingTest:&v22];
+      v27 = valueCopy;
+      v19 = [allValues _cn_indexOfFirstObjectPassingTest:&v22];
 
-      if (a3)
+      if (identifier)
       {
-        *a3 = [v17 identifierAtIndex:{v19, v22, v23, v24, v25, v26}];
+        *identifier = [v17 identifierAtIndex:{v19, v22, v23, v24, v25, v26}];
       }
 
-      if (a4)
+      if (label)
       {
         v20 = [v17 labelAtIndex:v19];
-        *a4 = v20;
+        *label = v20;
       }
     }
   }
@@ -1073,7 +1073,7 @@ LABEL_11:
   return v16;
 }
 
-- (id)soundIdentifierForMultivalueIdentifier:(int)a3
+- (id)soundIdentifierForMultivalueIdentifier:(int)identifier
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v14[0] = *MEMORY[0x277CBD150];
@@ -1086,33 +1086,33 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v7 = [(ABSPerson *)self cnImpl];
-  v8 = [v7 textAlert];
+  cnImpl = [(ABSPerson *)self cnImpl];
+  textAlert = [cnImpl textAlert];
 
-  switch(a3)
+  switch(identifier)
   {
     case -102:
-      v9 = [v8 vibration];
+      vibration = [textAlert vibration];
       break;
     case -5:
-      v11 = [v8 ignoreMute];
+      ignoreMute = [textAlert ignoreMute];
       v12 = @"YES";
-      if (!v11)
+      if (!ignoreMute)
       {
         v12 = 0;
       }
 
-      v9 = v12;
+      vibration = v12;
       break;
     case -2:
-      v9 = [v8 sound];
+      vibration = [textAlert sound];
       break;
     default:
       v10 = 0;
       goto LABEL_13;
   }
 
-  v10 = v9;
+  v10 = vibration;
 LABEL_13:
 
 LABEL_14:
@@ -1120,42 +1120,42 @@ LABEL_14:
   return v10;
 }
 
-- (void)setValue:(id)a3 forSoundIdentifier:(int)a4
+- (void)setValue:(id)value forSoundIdentifier:(int)identifier
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  valueCopy = value;
   v17[0] = *MEMORY[0x277CBD150];
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   v8 = [(ABSPerson *)self completeCNImplIfNeededWithKeysToFetch:v7];
 
   if (v8)
   {
-    v9 = [(ABSPerson *)self cnImpl];
-    v10 = [v9 textAlert];
+    cnImpl = [(ABSPerson *)self cnImpl];
+    textAlert = [cnImpl textAlert];
 
     v11 = objc_alloc(MEMORY[0x277CBDB30]);
-    v12 = [v10 sound];
-    v13 = [v10 vibration];
-    v14 = [v11 initWithSound:v12 vibration:v13 ignoreMute:{objc_msgSend(v10, "ignoreMute")}];
+    sound = [textAlert sound];
+    vibration = [textAlert vibration];
+    v14 = [v11 initWithSound:sound vibration:vibration ignoreMute:{objc_msgSend(textAlert, "ignoreMute")}];
 
-    switch(a4)
+    switch(identifier)
     {
       case -102:
-        [v14 setVibration:v6];
+        [v14 setVibration:valueCopy];
         break;
       case -5:
-        [v14 setIgnoreMute:{objc_msgSend(@"YES", "isEqualToString:", v6)}];
+        [v14 setIgnoreMute:{objc_msgSend(@"YES", "isEqualToString:", valueCopy)}];
         break;
       case -2:
-        [v14 setSound:v6];
+        [v14 setSound:valueCopy];
         break;
     }
 
-    v15 = [(ABSPerson *)self cnImpl];
-    [v15 setTextAlert:v14];
+    cnImpl2 = [(ABSPerson *)self cnImpl];
+    [cnImpl2 setTextAlert:v14];
 
-    v16 = [(ABSPerson *)self addressBook];
-    [v16 recordUpdated:self];
+    addressBook = [(ABSPerson *)self addressBook];
+    [addressBook recordUpdated:self];
   }
 }
 

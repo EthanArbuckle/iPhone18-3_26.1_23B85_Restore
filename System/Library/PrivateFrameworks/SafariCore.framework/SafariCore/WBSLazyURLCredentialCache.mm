@@ -1,6 +1,6 @@
 @interface WBSLazyURLCredentialCache
 - (id)credentials;
-- (void)getCredentialsWithCompletionHandler:(id)a3;
+- (void)getCredentialsWithCompletionHandler:(id)handler;
 - (void)invalidate;
 @end
 
@@ -13,7 +13,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B8447000, v3, OS_LOG_TYPE_INFO, "Invalidating lazy credential cache <%p>", buf, 0xCu);
   }
 
@@ -89,17 +89,17 @@ void __40__WBSLazyURLCredentialCache_credentials__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getCredentialsWithCompletionHandler:(id)a3
+- (void)getCredentialsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->super._internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__WBSLazyURLCredentialCache_getCredentialsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 }
 

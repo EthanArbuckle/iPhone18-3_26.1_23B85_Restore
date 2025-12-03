@@ -4,10 +4,10 @@
 - (NSString)relation;
 - (WFAction)action;
 - (WFParameter)parameter;
-- (WFParameterRelationResource)initWithParameterKey:(id)a3 parameterValues:(id)a4 relation:(id)a5;
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
+- (WFParameterRelationResource)initWithParameterKey:(id)key parameterValues:(id)values relation:(id)relation;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
 - (void)refreshAvailability;
-- (void)setupWithAction:(id)a3 parameter:(id)a4;
+- (void)setupWithAction:(id)action parameter:(id)parameter;
 @end
 
 @implementation WFParameterRelationResource
@@ -26,11 +26,11 @@
   return WeakRetained;
 }
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
-  v5 = a4;
-  v6 = [(WFParameterRelationResource *)self parameterKey];
-  v7 = [v5 isEqualToString:v6];
+  keyCopy = key;
+  parameterKey = [(WFParameterRelationResource *)self parameterKey];
+  v7 = [keyCopy isEqualToString:parameterKey];
 
   if (v7)
   {
@@ -42,44 +42,44 @@
 - (void)refreshAvailability
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [(WFParameterRelationResource *)self action];
-  v4 = v3;
-  if (!v3)
+  action = [(WFParameterRelationResource *)self action];
+  v4 = action;
+  if (!action)
   {
     [(WFResource *)self updateAvailability:0 withError:0];
     goto LABEL_79;
   }
 
-  if ([v3 isRunning] && (objc_msgSend(v4, "processedParameters"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ([action isRunning] && (objc_msgSend(v4, "processedParameters"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 processedParameters];
-    v7 = [(WFParameterRelationResource *)self parameterKey];
-    v8 = [v6 objectForKey:v7];
+    processedParameters = [v4 processedParameters];
+    parameterKey = [(WFParameterRelationResource *)self parameterKey];
+    v8 = [processedParameters objectForKey:parameterKey];
   }
 
   else
   {
-    v6 = [(WFParameterRelationResource *)self parameterKey];
-    v9 = [v4 serializedParameterStateForKey:v6];
+    processedParameters = [(WFParameterRelationResource *)self parameterKey];
+    v9 = [v4 serializedParameterStateForKey:processedParameters];
     if (!v9)
     {
-      v11 = [(WFParameterRelationResource *)self parameter];
-      v10 = [v11 defaultSerializedRepresentation];
+      parameter = [(WFParameterRelationResource *)self parameter];
+      defaultSerializedRepresentation = [parameter defaultSerializedRepresentation];
 
-      v7 = 0;
+      parameterKey = 0;
       goto LABEL_10;
     }
 
     v8 = v9;
-    v7 = v8;
+    parameterKey = v8;
   }
 
-  v10 = v8;
+  defaultSerializedRepresentation = v8;
 LABEL_10:
 
-  v12 = [(WFParameterRelationResource *)self parameter];
-  v13 = v10;
-  v14 = v12;
+  parameter2 = [(WFParameterRelationResource *)self parameter];
+  v13 = defaultSerializedRepresentation;
+  v14 = parameter2;
   v15 = v14;
   if (v14)
   {
@@ -94,8 +94,8 @@ LABEL_10:
     }
   }
 
-  v16 = [v14 codableAttribute];
-  if (v16 && (v17 = v16, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v17, (isKindOfClass & 1) != 0))
+  codableAttribute = [v14 codableAttribute];
+  if (codableAttribute && (v17 = codableAttribute, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v17, (isKindOfClass & 1) != 0))
   {
     v19 = [v13 valueForKeyPath:@"identifier"];
   }
@@ -107,8 +107,8 @@ LABEL_10:
 
   v20 = v19;
 
-  v21 = [(WFParameterRelationResource *)self relation];
-  if ([v21 isEqualToString:@"??"])
+  relation = [(WFParameterRelationResource *)self relation];
+  if ([relation isEqualToString:@"??"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -125,14 +125,14 @@ LABEL_10:
     goto LABEL_35;
   }
 
-  if ([v21 isEqualToString:@"!="])
+  if ([relation isEqualToString:@"!="])
   {
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v23 = [(WFParameterRelationResource *)self comparedValues];
-    v24 = [v23 countByEnumeratingWithState:&v51 objects:v56 count:16];
+    comparedValues = [(WFParameterRelationResource *)self comparedValues];
+    v24 = [comparedValues countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v24)
     {
       v25 = v24;
@@ -143,18 +143,18 @@ LABEL_10:
         {
           if (*v52 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(comparedValues);
           }
 
           if ([v20 isEqual:*(*(&v51 + 1) + 8 * i)])
           {
-            v30 = self;
+            selfCopy4 = self;
             v31 = 0;
             goto LABEL_77;
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v51 objects:v56 count:16];
+        v25 = [comparedValues countByEnumeratingWithState:&v51 objects:v56 count:16];
         if (v25)
         {
           continue;
@@ -164,16 +164,16 @@ LABEL_10:
       }
     }
 
-    v28 = self;
+    selfCopy5 = self;
     v29 = 1;
     goto LABEL_36;
   }
 
-  if ([v21 isEqualToString:@"nil"])
+  if ([relation isEqualToString:@"nil"])
   {
     v29 = v20 == 0;
 LABEL_35:
-    v28 = self;
+    selfCopy5 = self;
     goto LABEL_36;
   }
 
@@ -181,8 +181,8 @@ LABEL_35:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v23 = [(WFParameterRelationResource *)self comparedValues];
-  v32 = [v23 countByEnumeratingWithState:&v47 objects:v55 count:16];
+  comparedValues = [(WFParameterRelationResource *)self comparedValues];
+  v32 = [comparedValues countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (!v32)
   {
     goto LABEL_75;
@@ -196,11 +196,11 @@ LABEL_35:
     {
       if (*v48 != v34)
       {
-        objc_enumerationMutation(v23);
+        objc_enumerationMutation(comparedValues);
       }
 
       v36 = *(*(&v47 + 1) + 8 * j);
-      if ([v21 isEqualToString:{@">", v44}])
+      if ([relation isEqualToString:{@">", v44}])
       {
         if ([v20 compare:v36] == 1)
         {
@@ -210,7 +210,7 @@ LABEL_35:
         continue;
       }
 
-      if ([v21 isEqualToString:@">="])
+      if ([relation isEqualToString:@">="])
       {
         if ([v20 compare:v36] == 1)
         {
@@ -226,7 +226,7 @@ LABEL_50:
         continue;
       }
 
-      if ([v21 isEqualToString:@"<"])
+      if ([relation isEqualToString:@"<"])
       {
         if ([v20 compare:v36] == -1)
         {
@@ -234,7 +234,7 @@ LABEL_50:
         }
       }
 
-      else if ([v21 isEqualToString:@"<="])
+      else if ([relation isEqualToString:@"<="])
       {
         if ([v20 compare:v36] == -1 || objc_msgSend(v20, "isEqual:", v36))
         {
@@ -244,7 +244,7 @@ LABEL_50:
 
       else
       {
-        if (![v21 isEqualToString:@"⊃"])
+        if (![relation isEqualToString:@"⊃"])
         {
           goto LABEL_50;
         }
@@ -301,10 +301,10 @@ LABEL_50:
           if (v46)
           {
 LABEL_76:
-            v30 = self;
+            selfCopy4 = self;
             v31 = 1;
 LABEL_77:
-            [(WFResource *)v30 updateAvailability:v31 withError:0, v44];
+            [(WFResource *)selfCopy4 updateAvailability:v31 withError:0, v44];
 
             goto LABEL_78;
           }
@@ -316,7 +316,7 @@ LABEL_77:
       }
     }
 
-    v33 = [v23 countByEnumeratingWithState:&v47 objects:v55 count:16];
+    v33 = [comparedValues countByEnumeratingWithState:&v47 objects:v55 count:16];
     if (v33)
     {
       continue;
@@ -327,31 +327,31 @@ LABEL_77:
 
 LABEL_75:
 
-  v28 = self;
+  selfCopy5 = self;
   v29 = 0;
 LABEL_36:
-  [(WFResource *)v28 updateAvailability:v29 withError:0, v44];
+  [(WFResource *)selfCopy5 updateAvailability:v29 withError:0, v44];
 LABEL_78:
 
 LABEL_79:
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupWithAction:(id)a3 parameter:(id)a4
+- (void)setupWithAction:(id)action parameter:(id)parameter
 {
-  obj = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  obj = action;
+  parameterCopy = parameter;
+  v8 = parameterCopy;
+  if (parameterCopy)
   {
-    v9 = [v7 key];
-    v10 = [(WFParameterRelationResource *)self parameterKey];
-    v11 = [v9 isEqualToString:v10];
+    v9 = [parameterCopy key];
+    parameterKey = [(WFParameterRelationResource *)self parameterKey];
+    v11 = [v9 isEqualToString:parameterKey];
 
     if ((v11 & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"WFParameterRelationResource.m" lineNumber:83 description:@"Parameter key of relation resource must match the key of the parameter passed to setupWithAction:parameter:"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WFParameterRelationResource.m" lineNumber:83 description:@"Parameter key of relation resource must match the key of the parameter passed to setupWithAction:parameter:"];
     }
   }
 
@@ -366,16 +366,16 @@ LABEL_79:
 
 - (NSString)relation
 {
-  v2 = [(WFResource *)self definition];
-  v3 = [v2 objectForKey:@"WFParameterRelation"];
+  definition = [(WFResource *)self definition];
+  v3 = [definition objectForKey:@"WFParameterRelation"];
 
   return v3;
 }
 
 - (NSString)parameterKey
 {
-  v2 = [(WFResource *)self definition];
-  v3 = [v2 objectForKey:@"WFParameterKey"];
+  definition = [(WFResource *)self definition];
+  v3 = [definition objectForKey:@"WFParameterKey"];
 
   return v3;
 }
@@ -383,11 +383,11 @@ LABEL_79:
 - (NSArray)comparedValues
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFResource *)self definition];
-  v4 = [v3 objectForKey:@"WFParameterValues"];
+  definition = [(WFResource *)self definition];
+  v4 = [definition objectForKey:@"WFParameterValues"];
 
-  v5 = [(WFResource *)self definition];
-  v6 = [v5 objectForKey:@"WFParameterValue"];
+  definition2 = [(WFResource *)self definition];
+  v6 = [definition2 objectForKey:@"WFParameterValue"];
 
   if (v4)
   {
@@ -412,23 +412,23 @@ LABEL_6:
   return v8;
 }
 
-- (WFParameterRelationResource)initWithParameterKey:(id)a3 parameterValues:(id)a4 relation:(id)a5
+- (WFParameterRelationResource)initWithParameterKey:(id)key parameterValues:(id)values relation:(id)relation
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  relationCopy = relation;
   v17[0] = @"WFParameterKey";
   v17[1] = @"WFParameterValues";
-  v18[0] = a3;
-  v18[1] = a4;
+  v18[0] = key;
+  v18[1] = values;
   v9 = MEMORY[0x1E695DF20];
-  v10 = a4;
-  v11 = a3;
+  valuesCopy = values;
+  keyCopy = key;
   v12 = [v9 dictionaryWithObjects:v18 forKeys:v17 count:2];
 
   v13 = [v12 mutableCopy];
-  if (v8)
+  if (relationCopy)
   {
-    [v13 setObject:v8 forKeyedSubscript:@"WFParameterRelation"];
+    [v13 setObject:relationCopy forKeyedSubscript:@"WFParameterRelation"];
   }
 
   v14 = [(WFResource *)self initWithDefinition:v13];

@@ -1,28 +1,28 @@
 @interface ASItemOperationsFetchCommand
-- (ASItemOperationsFetchCommand)initWithCollectionID:(id)a3 withServerID:(id)a4 withLongID:(id)a5;
+- (ASItemOperationsFetchCommand)initWithCollectionID:(id)d withServerID:(id)iD withLongID:(id)longID;
 @end
 
 @implementation ASItemOperationsFetchCommand
 
-- (ASItemOperationsFetchCommand)initWithCollectionID:(id)a3 withServerID:(id)a4 withLongID:(id)a5
+- (ASItemOperationsFetchCommand)initWithCollectionID:(id)d withServerID:(id)iD withLongID:(id)longID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  longIDCopy = longID;
   v19.receiver = self;
   v19.super_class = ASItemOperationsFetchCommand;
   v11 = [(ASItemOperationsFetchCommand *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     collectionID = v11->_collectionID;
     v11->_collectionID = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDCopy copy];
     serverID = v11->_serverID;
     v11->_serverID = v14;
 
-    v16 = [v10 copy];
+    v16 = [longIDCopy copy];
     longID = v11->_longID;
     v11->_longID = v16;
   }

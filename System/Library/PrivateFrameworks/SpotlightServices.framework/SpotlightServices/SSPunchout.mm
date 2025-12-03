@@ -1,38 +1,38 @@
 @interface SSPunchout
-+ (id)punchoutFromSFPunchout:(id)a3;
++ (id)punchoutFromSFPunchout:(id)punchout;
 @end
 
 @implementation SSPunchout
 
-+ (id)punchoutFromSFPunchout:(id)a3
++ (id)punchoutFromSFPunchout:(id)punchout
 {
-  if (a3)
+  if (punchout)
   {
-    v3 = a3;
+    punchoutCopy = punchout;
     v4 = objc_alloc_init(SSPunchout);
-    v5 = [v3 name];
-    [(SFPunchout *)v4 setName:v5];
+    name = [punchoutCopy name];
+    [(SFPunchout *)v4 setName:name];
 
-    v6 = [v3 bundleIdentifier];
-    [(SFPunchout *)v4 setBundleIdentifier:v6];
+    bundleIdentifier = [punchoutCopy bundleIdentifier];
+    [(SFPunchout *)v4 setBundleIdentifier:bundleIdentifier];
 
-    v7 = [v3 label];
-    [(SFPunchout *)v4 setLabel:v7];
+    label = [punchoutCopy label];
+    [(SFPunchout *)v4 setLabel:label];
 
-    v8 = [v3 urls];
-    [(SFPunchout *)v4 setUrls:v8];
+    urls = [punchoutCopy urls];
+    [(SFPunchout *)v4 setUrls:urls];
 
-    v9 = [v3 userActivityData];
-    [(SFPunchout *)v4 setUserActivityData:v9];
+    userActivityData = [punchoutCopy userActivityData];
+    [(SFPunchout *)v4 setUserActivityData:userActivityData];
 
-    v10 = [v3 actionTarget];
-    [(SFPunchout *)v4 setActionTarget:v10];
+    actionTarget = [punchoutCopy actionTarget];
+    [(SFPunchout *)v4 setActionTarget:actionTarget];
 
-    -[SFPunchout setIsRunnableInBackground:](v4, "setIsRunnableInBackground:", [v3 isRunnableInBackground]);
-    -[SFPunchout setHasClip:](v4, "setHasClip:", [v3 hasClip]);
-    v11 = [v3 forceOpenInBrowser];
+    -[SFPunchout setIsRunnableInBackground:](v4, "setIsRunnableInBackground:", [punchoutCopy isRunnableInBackground]);
+    -[SFPunchout setHasClip:](v4, "setHasClip:", [punchoutCopy hasClip]);
+    forceOpenInBrowser = [punchoutCopy forceOpenInBrowser];
 
-    [(SFPunchout *)v4 setForceOpenInBrowser:v11];
+    [(SFPunchout *)v4 setForceOpenInBrowser:forceOpenInBrowser];
   }
 
   else

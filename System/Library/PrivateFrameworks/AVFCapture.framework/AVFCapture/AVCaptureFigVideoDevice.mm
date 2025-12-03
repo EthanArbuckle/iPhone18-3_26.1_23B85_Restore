@@ -1,27 +1,27 @@
 @interface AVCaptureFigVideoDevice
 + (BOOL)allowsSuspendedPreferredCameras;
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)_cameraHistoryDispatchQueue;
-+ (id)_defaultDeviceWithDeviceType:(id)a3 mediaTypes:(id)a4 position:(int64_t)a5 cameraOverrideHistoryAllowed:(BOOL)a6 cameraOverrideHistorySuspendedAllowed:(BOOL)a7 wombatsMustBeMagic:(BOOL)a8 userPreferredCameraHistorySuspendedAllowed:(BOOL)a9 invalidSpecialDeviceTypes:(id)a10;
-+ (id)_devicesWithPriorRegisteredDevices:(id)a3;
++ (id)_defaultDeviceWithDeviceType:(id)type mediaTypes:(id)types position:(int64_t)position cameraOverrideHistoryAllowed:(BOOL)allowed cameraOverrideHistorySuspendedAllowed:(BOOL)suspendedAllowed wombatsMustBeMagic:(BOOL)magic userPreferredCameraHistorySuspendedAllowed:(BOOL)historySuspendedAllowed invalidSpecialDeviceTypes:(id)self0;
++ (id)_devicesWithPriorRegisteredDevices:(id)devices;
 + (id)_newFigCaptureSources;
-+ (id)_prioritizedDeviceList:(id)a3;
++ (id)_prioritizedDeviceList:(id)list;
 + (id)_userPreferredCameraOverrideHistoryKey;
-+ (id)cameraInfoForCreatorID:(id)a3 uniqueID:(id)a4 specialDeviceType:(unsigned int)a5 centerStageSupported:(BOOL)a6;
++ (id)cameraInfoForCreatorID:(id)d uniqueID:(id)iD specialDeviceType:(unsigned int)type centerStageSupported:(BOOL)supported;
 + (id)systemPreferredCamera;
 + (id)userPreferredCamera;
-+ (void)_initiateRefreshPreferredCameraProperties:(BOOL)a3;
-+ (void)_insurePreferredCameraGlobal:(id *)a3 globalName:(id)a4 preferredCamera:(id)a5;
-+ (void)_reconnectDevices:(id)a3;
-+ (void)_refreshPreferredCameraProperties:(BOOL)a3;
++ (void)_initiateRefreshPreferredCameraProperties:(BOOL)properties;
++ (void)_insurePreferredCameraGlobal:(id *)global globalName:(id)name preferredCamera:(id)camera;
++ (void)_reconnectDevices:(id)devices;
++ (void)_refreshPreferredCameraProperties:(BOOL)properties;
 + (void)_releaseStaticResources;
 + (void)_setUpCameraHistoryOnce;
 + (void)initialize;
-+ (void)setAllowsSuspendedPreferredCameras:(BOOL)a3;
-+ (void)setUserPreferredCamera:(id)a3;
-+ (void)setUserPreferredCamera:(id)a3 forClientPreferenceDomain:(id)a4;
-+ (void)updateUserPreferredCameraOverride:(BOOL)a3 cameraInfo:(id)a4;
-+ (void)updateUserPreferredCameraOverrideHistoryWithDevice:(id)a3 setOverride:(BOOL)a4;
++ (void)setAllowsSuspendedPreferredCameras:(BOOL)cameras;
++ (void)setUserPreferredCamera:(id)camera;
++ (void)setUserPreferredCamera:(id)camera forClientPreferenceDomain:(id)domain;
++ (void)updateUserPreferredCameraOverride:(BOOL)override cameraInfo:(id)info;
++ (void)updateUserPreferredCameraOverrideHistoryWithDevice:(id)device setOverride:(BOOL)override;
 - ($2825F4736939C4A6D3AD43837233062D)dynamicDimensions;
 - ($2825F4736939C4A6D3AD43837233062D)maxH264PhotoDimensions;
 - ($2825F4736939C4A6D3AD43837233062D)maxH264VideoDimensions;
@@ -38,38 +38,38 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)exposureDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minSupportedExternalSyncFrameDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minSupportedLockedVideoFrameDuration;
-- ($94F468A8D4C62B317260615823C2B210)_chromaticityValuesForDeviceWhiteBalanceGains:(id)a3 atMix:(double)a4;
-- ($94F468A8D4C62B317260615823C2B210)chromaticityValuesForDeviceWhiteBalanceGains:(id)a3;
-- ($94F468A8D4C62B317260615823C2B210)temperatureAndTintValuesForDeviceWhiteBalanceGains:(id)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)_deviceWhiteBalanceGainsForChromaticityValues:(id)a3 temperature:(double)a4;
+- ($94F468A8D4C62B317260615823C2B210)_chromaticityValuesForDeviceWhiteBalanceGains:(id)gains atMix:(double)mix;
+- ($94F468A8D4C62B317260615823C2B210)chromaticityValuesForDeviceWhiteBalanceGains:(id)gains;
+- ($94F468A8D4C62B317260615823C2B210)temperatureAndTintValuesForDeviceWhiteBalanceGains:(id)gains;
+- ($E2C29196C7A5C696474C6955C5A9CE06)_deviceWhiteBalanceGainsForChromaticityValues:(id)values temperature:(double)temperature;
 - ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGains;
-- ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGainsForChromaticityValues:(id)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGainsForTemperatureAndTintValues:(id)a3;
+- ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGainsForChromaticityValues:(id)values;
+- ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGainsForTemperatureAndTintValues:(id)values;
 - ($E2C29196C7A5C696474C6955C5A9CE06)grayWorldDeviceWhiteBalanceGains;
 - (AVCaptureFigVideoDevice)init;
 - (BOOL)_cameraAccessIsEnabled;
 - (BOOL)_centerStageRectOfInterestSupportedOnDevice;
 - (BOOL)_ensureWhiteBalanceCalibrationUnpacked;
-- (BOOL)_hasKeyValueObserversForHighFrequencyProperty:(id)a3;
-- (BOOL)_isBackgroundBlurActiveForEnabled:(BOOL)a3;
-- (BOOL)_isBackgroundReplacementActiveForEnabled:(BOOL)a3;
-- (BOOL)_isCenterStageActiveForEnabled:(BOOL)a3;
+- (BOOL)_hasKeyValueObserversForHighFrequencyProperty:(id)property;
+- (BOOL)_isBackgroundBlurActiveForEnabled:(BOOL)enabled;
+- (BOOL)_isBackgroundReplacementActiveForEnabled:(BOOL)enabled;
+- (BOOL)_isCenterStageActiveForEnabled:(BOOL)enabled;
 - (BOOL)_isDepthDataDeliveryEnabled;
 - (BOOL)_isFlashScene;
 - (BOOL)_isHighDynamicRangeScene;
 - (BOOL)_isStillImageStabilizationScene;
-- (BOOL)_isStudioLightingActiveForEnabled:(BOOL)a3;
-- (BOOL)_reactionEffectsActiveForEnabled:(BOOL)a3;
-- (BOOL)_setContinuousZoomWithDepthActiveWithEnabled:(BOOL)a3 disallowed:(BOOL)a4 isActiveDepthDataFormatChangingOut:(BOOL *)a5;
-- (BOOL)_updateContinuousZoomWithDepthActiveWithEnabled:(BOOL)a3 disallowed:(BOOL)a4 isActiveDepthDataFormatChangingOut:(BOOL *)a5;
-- (BOOL)addCMIOExtensionPropertyValueChangeHandler:(id)a3;
+- (BOOL)_isStudioLightingActiveForEnabled:(BOOL)enabled;
+- (BOOL)_reactionEffectsActiveForEnabled:(BOOL)enabled;
+- (BOOL)_setContinuousZoomWithDepthActiveWithEnabled:(BOOL)enabled disallowed:(BOOL)disallowed isActiveDepthDataFormatChangingOut:(BOOL *)out;
+- (BOOL)_updateContinuousZoomWithDepthActiveWithEnabled:(BOOL)enabled disallowed:(BOOL)disallowed isActiveDepthDataFormatChangingOut:(BOOL *)out;
+- (BOOL)addCMIOExtensionPropertyValueChangeHandler:(id)handler;
 - (BOOL)appliesSessionPresetMaxIntegrationTimeOverrideToActiveFormat;
 - (BOOL)automaticallyAdjustsFaceDrivenAutoExposureEnabled;
 - (BOOL)automaticallyAdjustsFaceDrivenAutoFocusEnabled;
 - (BOOL)automaticallyAdjustsVideoHDREnabled;
 - (BOOL)canPerformReactionEffects;
 - (BOOL)hasFlash;
-- (BOOL)hasMediaType:(id)a3;
+- (BOOL)hasMediaType:(id)type;
 - (BOOL)hasTorch;
 - (BOOL)hevcAllowBFramesForHighCTUCount;
 - (BOOL)isActiveVideoMaxFrameDurationSet;
@@ -92,12 +92,12 @@
 - (BOOL)isContinuousZoomWithDepthEnabled;
 - (BOOL)isContinuousZoomWithDepthSupported;
 - (BOOL)isDICOMSupported;
-- (BOOL)isDeskViewCameraModeSupported:(int64_t)a3;
-- (BOOL)isDiagnosticsTestSupported:(id)a3;
+- (BOOL)isDeskViewCameraModeSupported:(int64_t)supported;
+- (BOOL)isDiagnosticsTestSupported:(id)supported;
 - (BOOL)isDockedTrackingActive;
 - (BOOL)isDockedTrackingEnabled;
 - (BOOL)isDockedTrackingSupported;
-- (BOOL)isExposureModeSupported:(int64_t)a3;
+- (BOOL)isExposureModeSupported:(int64_t)supported;
 - (BOOL)isExposurePointOfInterestSupported;
 - (BOOL)isExposureRectOfInterestSupported;
 - (BOOL)isEyeClosedDetectionSupported;
@@ -108,7 +108,7 @@
 - (BOOL)isFlashActive;
 - (BOOL)isFlashAvailable;
 - (BOOL)isFlashSceneDetectedForPhotoOutput;
-- (BOOL)isFocusModeSupported:(int64_t)a3;
+- (BOOL)isFocusModeSupported:(int64_t)supported;
 - (BOOL)isFocusPointOfInterestSupported;
 - (BOOL)isFocusRectOfInterestSupported;
 - (BOOL)isFocusedAtMacro;
@@ -123,7 +123,7 @@
 - (BOOL)isHEVCRelaxedAverageBitRateTargetSupported;
 - (BOOL)isHEVCSupported;
 - (BOOL)isHidden;
-- (BOOL)isImageControlModeSupported:(int64_t)a3;
+- (BOOL)isImageControlModeSupported:(int64_t)supported;
 - (BOOL)isLensStabilizationSupported;
 - (BOOL)isLockedForConfiguration;
 - (BOOL)isLockingFocusWithCustomLensPositionSupported;
@@ -147,7 +147,7 @@
 - (BOOL)isStillImageStabilizationScene;
 - (BOOL)isStudioLightActive;
 - (BOOL)isSuspended;
-- (BOOL)isTimeOfFlightProjectorModeSupported:(int64_t)a3;
+- (BOOL)isTimeOfFlightProjectorModeSupported:(int64_t)supported;
 - (BOOL)isTorchActive;
 - (BOOL)isTorchAvailable;
 - (BOOL)isVariableFrameRateVideoCaptureEnabled;
@@ -156,33 +156,33 @@
 - (BOOL)isVideoHDRSuspended;
 - (BOOL)isVideoStabilizationSupported;
 - (BOOL)isVideoZoomSmoothingSupported;
-- (BOOL)isWhiteBalanceModeSupported:(int64_t)a3;
+- (BOOL)isWhiteBalanceModeSupported:(int64_t)supported;
 - (BOOL)isWideColorSupported;
-- (BOOL)lockForConfiguration:(id *)a3;
-- (BOOL)setTorchModeOnWithLevel:(float)a3 error:(id *)a4;
-- (BOOL)setValue:(id)a3 forCMIOExtensionProperty:(id)a4 error:(id *)a5;
-- (BOOL)supportsAVCaptureSessionPreset:(id)a3;
-- (BOOL)supportsMultiCamCaptureWithDevice:(id)a3;
+- (BOOL)lockForConfiguration:(id *)configuration;
+- (BOOL)setTorchModeOnWithLevel:(float)level error:(id *)error;
+- (BOOL)setValue:(id)value forCMIOExtensionProperty:(id)property error:(id *)error;
+- (BOOL)supportsAVCaptureSessionPreset:(id)preset;
+- (BOOL)supportsMultiCamCaptureWithDevice:(id)device;
 - (BOOL)ultraHighResolutionZeroShutterLagEnabled;
 - (BOOL)usesQuantizationScalingMatrix_H264_Steep_16_48;
 - (CGPoint)exposurePointOfInterest;
 - (CGPoint)focusPointOfInterest;
-- (CGRect)_defaultRectForExposurePointOfInterest:(CGPoint)a3;
-- (CGRect)_defaultRectForFocusPointOfInterest:(CGPoint)a3 focusMode:(int64_t)a4;
+- (CGRect)_defaultRectForExposurePointOfInterest:(CGPoint)interest;
+- (CGRect)_defaultRectForFocusPointOfInterest:(CGPoint)interest focusMode:(int64_t)mode;
 - (CGRect)centerStageRectOfInterest;
-- (CGRect)defaultRectForExposurePointOfInterest:(CGPoint)a3;
-- (CGRect)defaultRectForFocusPointOfInterest:(CGPoint)a3;
+- (CGRect)defaultRectForExposurePointOfInterest:(CGPoint)interest;
+- (CGRect)defaultRectForFocusPointOfInterest:(CGPoint)interest;
 - (CGRect)exposureRectOfInterest;
 - (CGRect)faceRectangle;
 - (CGRect)focusRectOfInterest;
-- (CGSize)_minExposureRectOfInterestSizeForFormat:(id)a3;
-- (CGSize)_minFocusRectOfInterestSizeForFormat:(id)a3;
-- (CGSize)_updateRectOfInterestSizeForSensorOrientationAndDynamicAspectRatio:(CGSize)a3;
+- (CGSize)_minExposureRectOfInterestSizeForFormat:(id)format;
+- (CGSize)_minFocusRectOfInterestSizeForFormat:(id)format;
+- (CGSize)_updateRectOfInterestSizeForSensorOrientationAndDynamicAspectRatio:(CGSize)ratio;
 - (CGSize)minExposureRectOfInterestSize;
 - (CGSize)minFocusRectOfInterestSize;
 - (CGSize)normalizedNonDestructiveCropSize;
 - (OpaqueCMClock)deviceClock;
-- (double)_predictedTempForGains:(id)a3;
+- (double)_predictedTempForGains:(id)gains;
 - (double)displayVideoZoomFactorMultiplier;
 - (double)dualCameraSwitchOverVideoZoomFactor;
 - (double)manualFramingDefaultZoomFactor;
@@ -203,15 +203,15 @@
 - (float)nominalFocalLengthIn35mmFilm;
 - (float)timeLapseCaptureRate;
 - (float)torchLevel;
-- (id)AVVideoSettingsForSessionPreset:(id)a3;
+- (id)AVVideoSettingsForSessionPreset:(id)preset;
 - (id)_cameraInfo;
-- (id)_copyFigCaptureSourceProperty:(__CFString *)a3;
+- (id)_copyFigCaptureSourceProperty:(__CFString *)property;
 - (id)_copyFormatsArray;
 - (id)_digitalFlashExposureTimes;
 - (id)_faceDetectionConfigurationDictionary;
-- (id)_getFigCaptureSourceProperty:(__CFString *)a3;
-- (id)_initWithFigCaptureSource:(OpaqueFigCaptureSource *)a3 isProxy:(BOOL)a4;
-- (id)_recommendedFrameRateRangeForVideoFormat:(id)a3 depthFormat:(id)a4 figSystemPressureLevel:(int)a5;
+- (id)_getFigCaptureSourceProperty:(__CFString *)property;
+- (id)_initWithFigCaptureSource:(OpaqueFigCaptureSource *)source isProxy:(BOOL)proxy;
+- (id)_recommendedFrameRateRangeForVideoFormat:(id)format depthFormat:(id)depthFormat figSystemPressureLevel:(int)level;
 - (id)activeDepthDataFormat;
 - (id)activeFormat;
 - (id)activePrimaryConstituentDevice;
@@ -219,9 +219,9 @@
 - (id)bravoCameraSelectionBehavior;
 - (id)cameraPoseMatrix;
 - (id)cinematicVideoCaptureSceneMonitoringStatuses;
-- (id)constituentDeviceWithDeviceType:(id)a3;
-- (id)copyValueForCMIOExtensionProperty:(id)a3 error:(id *)a4;
-- (id)deviceFormatForSessionPreset:(id)a3 sourceVideoFormat:(unsigned int)a4;
+- (id)constituentDeviceWithDeviceType:(id)type;
+- (id)copyValueForCMIOExtensionProperty:(id)property error:(id *)error;
+- (id)deviceFormatForSessionPreset:(id)preset sourceVideoFormat:(unsigned int)format;
 - (id)deviceType;
 - (id)digitalFlashSceneForPhotoOutput;
 - (id)dynamicAspectRatio;
@@ -229,10 +229,10 @@
 - (id)fallbackPrimaryConstituentDevices;
 - (id)fallbackPrimaryConstituentDevicesAsDeviceTypes;
 - (id)hardwareUniformType;
-- (id)initProxyDeviceWithUniqueID:(id)a3 targetClientAuditToken:(id *)a4;
+- (id)initProxyDeviceWithUniqueID:(id)d targetClientAuditToken:(id *)token;
 - (id)localizedName;
 - (id)preferredPrimaryConstituentDevice;
-- (id)runDiagnosticsWithTestType:(id)a3;
+- (id)runDiagnosticsWithTestType:(id)type;
 - (id)serializedProcessingSettings;
 - (id)smartFramingMonitor;
 - (id)spatialCaptureDiscomfortReasons;
@@ -243,16 +243,16 @@
 - (id)systemPressureState;
 - (id)virtualDeviceSwitchOverVideoZoomFactors;
 - (int)_orderInDevicesArray;
-- (int)_setActiveVideoMaxFrameDurationInternal:(id *)a3 isSettingExposureModeCustom:(BOOL)a4;
-- (int)_setActiveVideoMinFrameDurationInternal:(id *)a3;
-- (int)_setExposureWithMode:(int64_t)a3 duration:(id *)a4 ISO:(float)a5 requestID:(int)a6 newMaxFrameDuration:(id *)a7;
-- (int)_setFaceDetectionFeatureEnabled:(BOOL)a3 enabledState:(BOOL *)a4;
-- (int)_setFallbackPrimaryConstituentDevices:(id)a3;
-- (int)_setFigCaptureSourcePixelBufferProperty:(__CFString *)a3 withValue:(__CVBuffer *)a4;
-- (int)_setFigCaptureSourceProperty:(__CFString *)a3 withValue:(id)a4 cacheOnly:(BOOL)a5;
-- (int)_setFocusWithMode:(int64_t)a3 lensPosition:(float)a4 requestID:(int)a5;
-- (int)_setTorchMode:(int64_t)a3 withLevel:(float)a4;
-- (int)_setWhiteBalanceWithMode:(int64_t)a3 gains:(id)a4 requestID:(int)a5;
+- (int)_setActiveVideoMaxFrameDurationInternal:(id *)internal isSettingExposureModeCustom:(BOOL)custom;
+- (int)_setActiveVideoMinFrameDurationInternal:(id *)internal;
+- (int)_setExposureWithMode:(int64_t)mode duration:(id *)duration ISO:(float)o requestID:(int)d newMaxFrameDuration:(id *)frameDuration;
+- (int)_setFaceDetectionFeatureEnabled:(BOOL)enabled enabledState:(BOOL *)state;
+- (int)_setFallbackPrimaryConstituentDevices:(id)devices;
+- (int)_setFigCaptureSourcePixelBufferProperty:(__CFString *)property withValue:(__CVBuffer *)value;
+- (int)_setFigCaptureSourceProperty:(__CFString *)property withValue:(id)value cacheOnly:(BOOL)only;
+- (int)_setFocusWithMode:(int64_t)mode lensPosition:(float)position requestID:(int)d;
+- (int)_setTorchMode:(int64_t)mode withLevel:(float)level;
+- (int)_setWhiteBalanceWithMode:(int64_t)mode gains:(id)gains requestID:(int)d;
 - (int)dynamicAspectRatioRequestID;
 - (int)faceDrivenAEAFMode;
 - (int)faceRectangleAngle;
@@ -261,7 +261,7 @@
 - (int)hevcTurboModeVersion;
 - (int)minMacroblocksForHighProfileAbove30fps;
 - (int)minMacroblocksForHighProfileUpTo30fps;
-- (int)powerConsumptionAt30FPSForOISMode:(int)a3;
+- (int)powerConsumptionAt30FPSForOISMode:(int)mode;
 - (int64_t)_digitalFlashStatus;
 - (int64_t)activeColorSpace;
 - (int64_t)activePrimaryConstituentDeviceSwitchingBehavior;
@@ -288,192 +288,192 @@
 - (unint64_t)stereoVideoCaptureStatus;
 - (void)_cameraUsageRestrictionsChanged;
 - (void)_checkTCCAccess;
-- (void)_computeMinVideoZoomFactorOut:(double *)a3 maxVideoZoomFactorOut:(double *)a4 defaultVideoZoomFactorOut:(double *)a5 centerStageActiveOverride:(BOOL)a6 resetZoomFactor:(BOOL)a7;
-- (void)_decrementObserverCountForHighFrequencyProperty:(id)a3;
+- (void)_computeMinVideoZoomFactorOut:(double *)out maxVideoZoomFactorOut:(double *)factorOut defaultVideoZoomFactorOut:(double *)zoomFactorOut centerStageActiveOverride:(BOOL)override resetZoomFactor:(BOOL)factor;
+- (void)_decrementObserverCountForHighFrequencyProperty:(id)property;
 - (void)_drainDynamicAspectRatioRequestQueue;
-- (void)_drainManualControlRequestQueue:(id)a3;
+- (void)_drainManualControlRequestQueue:(id)queue;
 - (void)_drainManualControlRequestQueues;
-- (void)_handleCMIOExtensionPropertyChangeNotification:(id)a3;
-- (void)_handleLiveReconfigurationCompletionWithPayload:(id)a3;
-- (void)_handleManualControlCompletionForRequestQueue:(id)a3 withPayload:(id)a4;
-- (void)_handleNotification:(__CFString *)a3 payload:(id)a4;
-- (void)_incrementObserverCountForHighFrequencyProperty:(id)a3;
+- (void)_handleCMIOExtensionPropertyChangeNotification:(id)notification;
+- (void)_handleLiveReconfigurationCompletionWithPayload:(id)payload;
+- (void)_handleManualControlCompletionForRequestQueue:(id)queue withPayload:(id)payload;
+- (void)_handleNotification:(__CFString *)notification payload:(id)payload;
+- (void)_incrementObserverCountForHighFrequencyProperty:(id)property;
 - (void)_initDegradedCaptureQualityFactors;
-- (void)_performBlockOnMainThread:(id)a3;
-- (void)_performReaction:(id)a3;
+- (void)_performBlockOnMainThread:(id)thread;
+- (void)_performReaction:(id)reaction;
 - (void)_populateSupportedFallbackPrimaryConstituentDevices;
-- (void)_rampToVideoZoomFactor:(double)a3 withRate:(float)a4 duration:(double)a5 rampType:(int)a6 rampTuning:(int)a7;
-- (void)_reconnectToFigCaptureSource:(OpaqueFigCaptureSource *)a3;
+- (void)_rampToVideoZoomFactor:(double)factor withRate:(float)rate duration:(double)duration rampType:(int)type rampTuning:(int)tuning;
+- (void)_reconnectToFigCaptureSource:(OpaqueFigCaptureSource *)source;
 - (void)_resetDefaultVideoZoomFactor;
 - (void)_resetVideoHDRSuspended;
 - (void)_restoreFigCaptureSourceProperties;
-- (void)_setActiveFormat:(id)a3 resetVideoZoomFactorAndMinMaxFrameDurations:(BOOL)a4 sessionPreset:(id)a5;
-- (void)_setActivePrimaryConstituentDeviceSwitchingBehavior:(int64_t)a3 restrictedSwitchingBehaviorConditions:(unint64_t)a4;
-- (void)_setActiveVideoMaxFrameDuration:(id *)a3;
-- (void)_setActiveVideoMinFrameDuration:(id *)a3;
-- (void)_setAdjustingExposure:(BOOL)a3;
-- (void)_setAdjustingFocus:(BOOL)a3;
-- (void)_setAdjustingWhiteBalance:(BOOL)a3;
-- (void)_setBackgroundBlurAllowed:(BOOL)a3;
-- (void)_setBackgroundReplacementAllowed:(BOOL)a3;
-- (void)_setCameraCalibrationDataDeliveryEnabled:(BOOL)a3;
-- (void)_setCenterStageAllowed:(BOOL)a3;
-- (void)_setCenterStageFramingMode:(int64_t)a3;
-- (void)_setCinematicVideoEnabled:(BOOL)a3;
-- (void)_setConnected:(BOOL)a3;
-- (void)_setConstantColorEnabled:(BOOL)a3;
-- (void)_setContinuousZoomWithDepthDisallowed:(BOOL)a3;
-- (void)_setDepthDataDeliveryEnabled:(BOOL)a3;
-- (void)_setDigitalFlashModeInternal:(int64_t)a3;
-- (void)_setDigitalFlashSceneForPhotoOutput:(id)a3;
-- (void)_setFigCaptureSource:(OpaqueFigCaptureSource *)a3 allowSendingWorkToMainThread:(BOOL)a4;
-- (void)_setFlashActive:(BOOL)a3;
-- (void)_setFlashAvailable:(BOOL)a3;
-- (void)_setFlashSceneDetectedForPhotoOutput:(BOOL)a3;
-- (void)_setGlobalToneMappingEnabledInternal:(BOOL)a3;
-- (void)_setHDRSceneDetectedForPhotoOutput:(BOOL)a3;
-- (void)_setImageControlMode:(int64_t)a3;
-- (void)_setIsStillImageStabilizationScene:(BOOL)a3;
-- (void)_setMaxAvailableVideoZoomFactor:(double)a3;
-- (void)_setMinAvailableVideoZoomFactor:(double)a3;
-- (void)_setPhotoSettingsForSceneMonitoring:(id)a3;
-- (void)_setReactionEffectsAllowed:(BOOL)a3;
-- (void)_setShallowDepthOfFieldEffectStatus:(int64_t)a3;
-- (void)_setSimulatedAperture:(float)a3;
-- (void)_setSmartFramingMonitorRunning:(BOOL)a3;
-- (void)_setStillImageStabilizationAutomaticallyEnabled:(BOOL)a3;
-- (void)_setStudioLightingAllowed:(BOOL)a3;
-- (void)_setTorchActive:(BOOL)a3;
-- (void)_setTorchAvailable:(BOOL)a3;
-- (void)_setTorchLevel:(float)a3;
-- (void)_setVideoHDREnabled:(BOOL)a3 forceResetVideoHDRSuspended:(BOOL)a4;
-- (void)_setVideoZoomFactor:(double)a3;
+- (void)_setActiveFormat:(id)format resetVideoZoomFactorAndMinMaxFrameDurations:(BOOL)durations sessionPreset:(id)preset;
+- (void)_setActivePrimaryConstituentDeviceSwitchingBehavior:(int64_t)behavior restrictedSwitchingBehaviorConditions:(unint64_t)conditions;
+- (void)_setActiveVideoMaxFrameDuration:(id *)duration;
+- (void)_setActiveVideoMinFrameDuration:(id *)duration;
+- (void)_setAdjustingExposure:(BOOL)exposure;
+- (void)_setAdjustingFocus:(BOOL)focus;
+- (void)_setAdjustingWhiteBalance:(BOOL)balance;
+- (void)_setBackgroundBlurAllowed:(BOOL)allowed;
+- (void)_setBackgroundReplacementAllowed:(BOOL)allowed;
+- (void)_setCameraCalibrationDataDeliveryEnabled:(BOOL)enabled;
+- (void)_setCenterStageAllowed:(BOOL)allowed;
+- (void)_setCenterStageFramingMode:(int64_t)mode;
+- (void)_setCinematicVideoEnabled:(BOOL)enabled;
+- (void)_setConnected:(BOOL)connected;
+- (void)_setConstantColorEnabled:(BOOL)enabled;
+- (void)_setContinuousZoomWithDepthDisallowed:(BOOL)disallowed;
+- (void)_setDepthDataDeliveryEnabled:(BOOL)enabled;
+- (void)_setDigitalFlashModeInternal:(int64_t)internal;
+- (void)_setDigitalFlashSceneForPhotoOutput:(id)output;
+- (void)_setFigCaptureSource:(OpaqueFigCaptureSource *)source allowSendingWorkToMainThread:(BOOL)thread;
+- (void)_setFlashActive:(BOOL)active;
+- (void)_setFlashAvailable:(BOOL)available;
+- (void)_setFlashSceneDetectedForPhotoOutput:(BOOL)output;
+- (void)_setGlobalToneMappingEnabledInternal:(BOOL)internal;
+- (void)_setHDRSceneDetectedForPhotoOutput:(BOOL)output;
+- (void)_setImageControlMode:(int64_t)mode;
+- (void)_setIsStillImageStabilizationScene:(BOOL)scene;
+- (void)_setMaxAvailableVideoZoomFactor:(double)factor;
+- (void)_setMinAvailableVideoZoomFactor:(double)factor;
+- (void)_setPhotoSettingsForSceneMonitoring:(id)monitoring;
+- (void)_setReactionEffectsAllowed:(BOOL)allowed;
+- (void)_setShallowDepthOfFieldEffectStatus:(int64_t)status;
+- (void)_setSimulatedAperture:(float)aperture;
+- (void)_setSmartFramingMonitorRunning:(BOOL)running;
+- (void)_setStillImageStabilizationAutomaticallyEnabled:(BOOL)enabled;
+- (void)_setStudioLightingAllowed:(BOOL)allowed;
+- (void)_setTorchActive:(BOOL)active;
+- (void)_setTorchAvailable:(BOOL)available;
+- (void)_setTorchLevel:(float)level;
+- (void)_setVideoHDREnabled:(BOOL)enabled forceResetVideoHDRSuspended:(BOOL)suspended;
+- (void)_setVideoZoomFactor:(double)factor;
 - (void)_updateActiveDepthDataFormatForContinuousZoomWithDepth;
-- (void)_updateBackgroundBlurActiveForEnabled:(BOOL)a3;
-- (void)_updateBackgroundBlurAperture:(float)a3;
-- (void)_updateBackgroundReplacementActiveForEnabled:(BOOL)a3;
-- (void)_updateBackgroundReplacementPixelBuffer:(__CVBuffer *)a3;
-- (void)_updateCenterStageActiveForEnabled:(BOOL)a3 updateDependentProperties:(BOOL)a4;
-- (void)_updateCinematicVideoCaptureSceneMonitoringStatus:(int64_t)a3;
-- (void)_updateFallbackPrimaryConstituentDevicesForDepthDataDeliveryEnabled:(BOOL)a3;
+- (void)_updateBackgroundBlurActiveForEnabled:(BOOL)enabled;
+- (void)_updateBackgroundBlurAperture:(float)aperture;
+- (void)_updateBackgroundReplacementActiveForEnabled:(BOOL)enabled;
+- (void)_updateBackgroundReplacementPixelBuffer:(__CVBuffer *)buffer;
+- (void)_updateCenterStageActiveForEnabled:(BOOL)enabled updateDependentProperties:(BOOL)properties;
+- (void)_updateCinematicVideoCaptureSceneMonitoringStatus:(int64_t)status;
+- (void)_updateFallbackPrimaryConstituentDevicesForDepthDataDeliveryEnabled:(BOOL)enabled;
 - (void)_updateFigCaptureSourceObserverCounts;
-- (void)_updateGesturesEnabled:(BOOL)a3;
+- (void)_updateGesturesEnabled:(BOOL)enabled;
 - (void)_updateMinMaxDefaultVideoZoomFactors;
-- (void)_updateMinMaxVideoZoomFactorsWithMinZoomFactorFromCameraSelection:(double)a3;
-- (void)_updatePortraitEffectStudioLightQuality:(int64_t)a3;
-- (void)_updateReactionEffectsActiveForEnabled:(BOOL)a3;
-- (void)_updateSpatialCaptureStatus:(unint64_t)a3;
-- (void)_updateStudioLightingActiveForEnabled:(BOOL)a3;
-- (void)_updateStudioLightingIntensity:(float)a3;
-- (void)_updateSuppressedGesturesEnabled:(BOOL)a3;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
+- (void)_updateMinMaxVideoZoomFactorsWithMinZoomFactorFromCameraSelection:(double)selection;
+- (void)_updatePortraitEffectStudioLightQuality:(int64_t)quality;
+- (void)_updateReactionEffectsActiveForEnabled:(BOOL)enabled;
+- (void)_updateSpatialCaptureStatus:(unint64_t)status;
+- (void)_updateStudioLightingActiveForEnabled:(BOOL)enabled;
+- (void)_updateStudioLightingIntensity:(float)intensity;
+- (void)_updateSuppressedGesturesEnabled:(BOOL)enabled;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
 - (void)cancelVideoZoomRamp;
 - (void)dealloc;
 - (void)drainDynamicAspectRatioCompletionHandlers;
-- (void)enumerateCMIOExtensionPropertiesWithBlock:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)panWithTranslation:(CGPoint)a3;
+- (void)enumerateCMIOExtensionPropertiesWithBlock:(id)block;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)panWithTranslation:(CGPoint)translation;
 - (void)performOneShotFraming;
-- (void)rampExponentiallyToVideoZoomFactor:(float)a3 withDuration:(double)a4;
-- (void)rampToVideoZoomFactor:(float)a3 withTuning:(int64_t)a4;
-- (void)removeCMIOExtensionPropertyValueChangeHandler:(id)a3;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5;
-- (void)resetActiveLockedVideoFrameDurationForOwner:(id)a3;
+- (void)rampExponentiallyToVideoZoomFactor:(float)factor withDuration:(double)duration;
+- (void)rampToVideoZoomFactor:(float)factor withTuning:(int64_t)tuning;
+- (void)removeCMIOExtensionPropertyValueChangeHandler:(id)handler;
+- (void)removeObserver:(id)observer forKeyPath:(id)path;
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context;
+- (void)resetActiveLockedVideoFrameDurationForOwner:(id)owner;
 - (void)resetDeviceClockAndInputPortsToHostClock;
 - (void)resetFraming;
-- (void)resetVideoMinFrameDurationOverrideForOwner:(id)a3;
-- (void)setActiveColorSpace:(int64_t)a3;
-- (void)setActiveDepthDataFormat:(id)a3;
-- (void)setActiveDepthDataMinFrameDuration:(id *)a3;
-- (void)setActiveExternalSyncVideoFrameDuration:(id *)a3 withExternalSyncDevice:(id)a4 forOwner:(id)a5;
-- (void)setActiveLockedVideoFrameDuration:(id *)a3 forOwner:(id)a4;
-- (void)setActiveMaxExposureDuration:(id *)a3;
-- (void)setActiveSyncDevice:(id)a3;
-- (void)setActiveVideoMaxFrameDuration:(id *)a3;
-- (void)setActiveVideoMinFrameDuration:(id *)a3;
-- (void)setActiveVideoMinFrameDuration:(id *)a3 activeVideoMaxFrameDuration:(id *)a4;
-- (void)setAspectRatioForNonDestructiveCrop:(int64_t)a3;
-- (void)setAutoFocusRangeRestriction:(int64_t)a3;
-- (void)setAutoVideoFrameRateEnabled:(BOOL)a3;
-- (void)setAutomaticallyAdjustsFaceDrivenAutoExposureEnabled:(BOOL)a3;
-- (void)setAutomaticallyAdjustsFaceDrivenAutoFocusEnabled:(BOOL)a3;
-- (void)setAutomaticallyAdjustsImageControlMode:(BOOL)a3;
-- (void)setAutomaticallyAdjustsVideoHDREnabled:(BOOL)a3;
-- (void)setCachesFigCaptureSourceConfigurationChanges:(BOOL)a3;
-- (void)setCameraLensSmudgeDetectionEnabled:(BOOL)a3 detectionInterval:(id *)a4;
-- (void)setCenterStageFieldOfViewRestrictedToWide:(BOOL)a3;
-- (void)setCenterStageMetadataDeliveryEnabled:(BOOL)a3;
-- (void)setCenterStageRectOfInterest:(CGRect)a3;
-- (void)setCinematicVideoFixedFocusAtPoint:(CGPoint)a3 focusMode:(int64_t)a4;
-- (void)setCinematicVideoFocusAtPoint:(CGPoint)a3 objectID:(int64_t)a4 isHardFocus:(BOOL)a5 isFixedPlaneFocus:(BOOL)a6;
-- (void)setCinematicVideoTrackingFocusAtPoint:(CGPoint)a3 focusMode:(int64_t)a4;
-- (void)setCinematicVideoTrackingFocusWithDetectedObjectID:(int64_t)a3 focusMode:(int64_t)a4;
-- (void)setContinuousZoomWithDepthEnabled:(BOOL)a3;
-- (void)setDeskViewCameraMode:(int64_t)a3;
-- (void)setDigitalFlashMode:(int64_t)a3;
-- (void)setDockedTrackingEnabled:(BOOL)a3;
-- (void)setDynamicAspectRatio:(id)a3 completionHandler:(id)a4;
-- (void)setExposureMode:(int64_t)a3;
-- (void)setExposureModeCustomWithDuration:(id *)a3 ISO:(float)a4 completionHandler:(id)a5;
-- (void)setExposurePointOfInterest:(CGPoint)a3;
-- (void)setExposureRectOfInterest:(CGRect)a3;
-- (void)setExposureTargetBias:(float)a3 completionHandler:(id)a4;
-- (void)setEyeClosedDetectionEnabled:(BOOL)a3;
-- (void)setEyeDetectionEnabled:(BOOL)a3;
-- (void)setFaceDetectionDrivenImageProcessingEnabled:(BOOL)a3;
-- (void)setFaceDrivenAutoExposureEnabled:(BOOL)a3;
-- (void)setFaceDrivenAutoFocusEnabled:(BOOL)a3;
-- (void)setFallbackPrimaryConstituentDevices:(id)a3;
-- (void)setFlashMode:(int64_t)a3;
-- (void)setFocusMode:(int64_t)a3;
-- (void)setFocusModeLockedWithLensPosition:(float)a3 completionHandler:(id)a4;
-- (void)setFocusPointOfInterest:(CGPoint)a3;
-- (void)setFocusRectOfInterest:(CGRect)a3;
-- (void)setGazeSelectionEnabled:(BOOL)a3;
-- (void)setGeometricDistortionCorrectionEnabled:(BOOL)a3;
-- (void)setGlobalToneMappingEnabled:(BOOL)a3;
-- (void)setImageControlMode:(int64_t)a3;
-- (void)setLowLightVideoCaptureEnabled:(BOOL)a3;
-- (void)setManualFramingEnabled:(BOOL)a3;
-- (void)setManualFramingPanningAngleX:(float)a3;
-- (void)setManualFramingPanningAngleY:(float)a3;
-- (void)setMaxAvailableVideoZoomFactorOverride:(double)a3;
-- (void)setNonDestructiveCropEnabled:(BOOL)a3;
-- (void)setPrimaryConstituentDeviceSwitchingBehavior:(int64_t)a3 restrictedSwitchingBehaviorConditions:(unint64_t)a4;
-- (void)setProvidesStortorgetMetadata:(BOOL)a3;
-- (void)setSmileDetectionEnabled:(BOOL)a3;
-- (void)setSmoothAutoFocusEnabled:(BOOL)a3;
-- (void)setSpatialOverCaptureEnabled:(BOOL)a3;
-- (void)setSubjectAreaChangeMonitoringEnabled:(BOOL)a3;
-- (void)setTimeLapseCaptureRate:(float)a3;
-- (void)setTimeOfFlightProjectorMode:(int64_t)a3;
-- (void)setTorchMode:(int64_t)a3;
-- (void)setUltraHighResolutionZeroShutterLagEnabled:(BOOL)a3;
-- (void)setVariableFrameRateVideoCaptureEnabled:(BOOL)a3;
-- (void)setVideoHDREnabled:(BOOL)a3;
-- (void)setVideoHDRSuspended:(BOOL)a3;
-- (void)setVideoMinFrameDurationOverride:(id *)a3 forOwner:(id)a4;
-- (void)setVideoStabilizationStrength:(int64_t)a3;
-- (void)setVideoZoomFactor:(double)a3;
-- (void)setVideoZoomRampAcceleration:(float)a3;
-- (void)setWhiteBalanceMode:(int64_t)a3;
-- (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:(id)a3 completionHandler:(id)a4;
-- (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceTemperatureAndTintValues:(id)a3 completionHandler:(id)a4;
-- (void)startPanningAtPoint:(CGPoint)a3;
+- (void)resetVideoMinFrameDurationOverrideForOwner:(id)owner;
+- (void)setActiveColorSpace:(int64_t)space;
+- (void)setActiveDepthDataFormat:(id)format;
+- (void)setActiveDepthDataMinFrameDuration:(id *)duration;
+- (void)setActiveExternalSyncVideoFrameDuration:(id *)duration withExternalSyncDevice:(id)device forOwner:(id)owner;
+- (void)setActiveLockedVideoFrameDuration:(id *)duration forOwner:(id)owner;
+- (void)setActiveMaxExposureDuration:(id *)duration;
+- (void)setActiveSyncDevice:(id)device;
+- (void)setActiveVideoMaxFrameDuration:(id *)duration;
+- (void)setActiveVideoMinFrameDuration:(id *)duration;
+- (void)setActiveVideoMinFrameDuration:(id *)duration activeVideoMaxFrameDuration:(id *)frameDuration;
+- (void)setAspectRatioForNonDestructiveCrop:(int64_t)crop;
+- (void)setAutoFocusRangeRestriction:(int64_t)restriction;
+- (void)setAutoVideoFrameRateEnabled:(BOOL)enabled;
+- (void)setAutomaticallyAdjustsFaceDrivenAutoExposureEnabled:(BOOL)enabled;
+- (void)setAutomaticallyAdjustsFaceDrivenAutoFocusEnabled:(BOOL)enabled;
+- (void)setAutomaticallyAdjustsImageControlMode:(BOOL)mode;
+- (void)setAutomaticallyAdjustsVideoHDREnabled:(BOOL)enabled;
+- (void)setCachesFigCaptureSourceConfigurationChanges:(BOOL)changes;
+- (void)setCameraLensSmudgeDetectionEnabled:(BOOL)enabled detectionInterval:(id *)interval;
+- (void)setCenterStageFieldOfViewRestrictedToWide:(BOOL)wide;
+- (void)setCenterStageMetadataDeliveryEnabled:(BOOL)enabled;
+- (void)setCenterStageRectOfInterest:(CGRect)interest;
+- (void)setCinematicVideoFixedFocusAtPoint:(CGPoint)point focusMode:(int64_t)mode;
+- (void)setCinematicVideoFocusAtPoint:(CGPoint)point objectID:(int64_t)d isHardFocus:(BOOL)focus isFixedPlaneFocus:(BOOL)planeFocus;
+- (void)setCinematicVideoTrackingFocusAtPoint:(CGPoint)point focusMode:(int64_t)mode;
+- (void)setCinematicVideoTrackingFocusWithDetectedObjectID:(int64_t)d focusMode:(int64_t)mode;
+- (void)setContinuousZoomWithDepthEnabled:(BOOL)enabled;
+- (void)setDeskViewCameraMode:(int64_t)mode;
+- (void)setDigitalFlashMode:(int64_t)mode;
+- (void)setDockedTrackingEnabled:(BOOL)enabled;
+- (void)setDynamicAspectRatio:(id)ratio completionHandler:(id)handler;
+- (void)setExposureMode:(int64_t)mode;
+- (void)setExposureModeCustomWithDuration:(id *)duration ISO:(float)o completionHandler:(id)handler;
+- (void)setExposurePointOfInterest:(CGPoint)interest;
+- (void)setExposureRectOfInterest:(CGRect)interest;
+- (void)setExposureTargetBias:(float)bias completionHandler:(id)handler;
+- (void)setEyeClosedDetectionEnabled:(BOOL)enabled;
+- (void)setEyeDetectionEnabled:(BOOL)enabled;
+- (void)setFaceDetectionDrivenImageProcessingEnabled:(BOOL)enabled;
+- (void)setFaceDrivenAutoExposureEnabled:(BOOL)enabled;
+- (void)setFaceDrivenAutoFocusEnabled:(BOOL)enabled;
+- (void)setFallbackPrimaryConstituentDevices:(id)devices;
+- (void)setFlashMode:(int64_t)mode;
+- (void)setFocusMode:(int64_t)mode;
+- (void)setFocusModeLockedWithLensPosition:(float)position completionHandler:(id)handler;
+- (void)setFocusPointOfInterest:(CGPoint)interest;
+- (void)setFocusRectOfInterest:(CGRect)interest;
+- (void)setGazeSelectionEnabled:(BOOL)enabled;
+- (void)setGeometricDistortionCorrectionEnabled:(BOOL)enabled;
+- (void)setGlobalToneMappingEnabled:(BOOL)enabled;
+- (void)setImageControlMode:(int64_t)mode;
+- (void)setLowLightVideoCaptureEnabled:(BOOL)enabled;
+- (void)setManualFramingEnabled:(BOOL)enabled;
+- (void)setManualFramingPanningAngleX:(float)x;
+- (void)setManualFramingPanningAngleY:(float)y;
+- (void)setMaxAvailableVideoZoomFactorOverride:(double)override;
+- (void)setNonDestructiveCropEnabled:(BOOL)enabled;
+- (void)setPrimaryConstituentDeviceSwitchingBehavior:(int64_t)behavior restrictedSwitchingBehaviorConditions:(unint64_t)conditions;
+- (void)setProvidesStortorgetMetadata:(BOOL)metadata;
+- (void)setSmileDetectionEnabled:(BOOL)enabled;
+- (void)setSmoothAutoFocusEnabled:(BOOL)enabled;
+- (void)setSpatialOverCaptureEnabled:(BOOL)enabled;
+- (void)setSubjectAreaChangeMonitoringEnabled:(BOOL)enabled;
+- (void)setTimeLapseCaptureRate:(float)rate;
+- (void)setTimeOfFlightProjectorMode:(int64_t)mode;
+- (void)setTorchMode:(int64_t)mode;
+- (void)setUltraHighResolutionZeroShutterLagEnabled:(BOOL)enabled;
+- (void)setVariableFrameRateVideoCaptureEnabled:(BOOL)enabled;
+- (void)setVideoHDREnabled:(BOOL)enabled;
+- (void)setVideoHDRSuspended:(BOOL)suspended;
+- (void)setVideoMinFrameDurationOverride:(id *)override forOwner:(id)owner;
+- (void)setVideoStabilizationStrength:(int64_t)strength;
+- (void)setVideoZoomFactor:(double)factor;
+- (void)setVideoZoomRampAcceleration:(float)acceleration;
+- (void)setWhiteBalanceMode:(int64_t)mode;
+- (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:(id)gains completionHandler:(id)handler;
+- (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceTemperatureAndTintValues:(id)values completionHandler:(id)handler;
+- (void)startPanningAtPoint:(CGPoint)point;
 - (void)unhide;
 - (void)unlockForConfiguration;
 - (void)updateStreamingDeviceHistory;
-- (void)updateUserPreferredCameraHistoryForKey:(id)a3;
-- (void)updateUserPreferredCameraOverride:(BOOL)a3;
-- (void)updateVideoZoomFactorForSpatialVideoEnabled:(BOOL)a3;
+- (void)updateUserPreferredCameraHistoryForKey:(id)key;
+- (void)updateUserPreferredCameraOverride:(BOOL)override;
+- (void)updateVideoZoomFactorForSpatialVideoEnabled:(BOOL)enabled;
 @end
 
 @implementation AVCaptureFigVideoDevice
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -488,7 +488,7 @@
   block[1] = 3221225472;
   block[2] = __50__AVCaptureFigVideoDevice__setUpCameraHistoryOnce__block_invoke;
   block[3] = &unk_1E786EC08;
-  block[4] = a1;
+  block[4] = self;
   if (_setUpCameraHistoryOnce_onceToken != -1)
   {
     dispatch_once(&_setUpCameraHistoryOnce_onceToken, block);
@@ -1364,11 +1364,11 @@ uint64_t __50__AVCaptureFigVideoDevice__setUpCameraHistoryOnce__block_invoke_41(
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
     formatDescriptionOut = 0;
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [(AVCaptureFigVideoDevice *)self isFaceDetectionSupported];
+    array = [MEMORY[0x1E695DF70] array];
+    isFaceDetectionSupported = [(AVCaptureFigVideoDevice *)self isFaceDetectionSupported];
     v7 = MEMORY[0x1E6960348];
     v8 = MEMORY[0x1E6960338];
-    if (v6)
+    if (isFaceDetectionSupported)
     {
       v9 = *MEMORY[0x1E6960388];
       v10 = *MEMORY[0x1E6960338];
@@ -1378,7 +1378,7 @@ uint64_t __50__AVCaptureFigVideoDevice__setUpCameraHistoryOnce__block_invoke_41(
       v46[0] = v9;
       v46[1] = v11;
       v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
-      [v5 addObject:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v47, 1)}];
+      [array addObject:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v47, 1)}];
     }
 
     if ([(AVCaptureFigVideoDevice *)self isObjectDetectionSupported])
@@ -1417,7 +1417,7 @@ uint64_t __50__AVCaptureFigVideoDevice__setUpCameraHistoryOnce__block_invoke_41(
       v33[1] = v21;
       v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
       v44[3] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-      [v5 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v44, 4)}];
+      [array addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v44, 4)}];
     }
 
     if ([(AVCaptureFigVideoDevice *)self isObjectDetectionSupported]|| [(AVCaptureFigVideoDevice *)self isFaceDetectionSupported])
@@ -1426,7 +1426,7 @@ uint64_t __50__AVCaptureFigVideoDevice__setUpCameraHistoryOnce__block_invoke_41(
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v22 = [v5 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v22 = [array countByEnumeratingWithState:&v28 objects:v27 count:16];
       if (v22)
       {
         v23 = v22;
@@ -1439,7 +1439,7 @@ uint64_t __50__AVCaptureFigVideoDevice__setUpCameraHistoryOnce__block_invoke_41(
           {
             if (*v29 != v24)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(array);
             }
 
             if (!CMMetadataFormatDescriptionCreateWithMetadataSpecifications(v25, 0x6D656278u, *(*(&v28 + 1) + 8 * v26), &formatDescriptionOut))
@@ -1452,7 +1452,7 @@ uint64_t __50__AVCaptureFigVideoDevice__setUpCameraHistoryOnce__block_invoke_41(
           }
 
           while (v23 != v26);
-          v23 = [v5 countByEnumeratingWithState:&v28 objects:v27 count:16];
+          v23 = [array countByEnumeratingWithState:&v28 objects:v27 count:16];
         }
 
         while (v23);
@@ -1944,8 +1944,8 @@ id __58__AVCaptureFigVideoDevice_digitalFlashSceneForPhotoOutput__block_invoke(u
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(AVCaptureDevice *)self constituentDevices];
-    v8 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+    constituentDevices = [(AVCaptureDevice *)self constituentDevices];
+    v8 = [(NSArray *)constituentDevices countByEnumeratingWithState:&v15 objects:v14 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1956,7 +1956,7 @@ id __58__AVCaptureFigVideoDevice_digitalFlashSceneForPhotoOutput__block_invoke(u
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(constituentDevices);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
@@ -1966,7 +1966,7 @@ id __58__AVCaptureFigVideoDevice_digitalFlashSceneForPhotoOutput__block_invoke(u
           }
         }
 
-        v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+        v9 = [(NSArray *)constituentDevices countByEnumeratingWithState:&v15 objects:v14 count:16];
       }
 
       while (v9);
@@ -2474,14 +2474,14 @@ id __69__AVCaptureFigVideoDevice_supportedFallbackPrimaryConstituentDevices__blo
 {
   if (!self->_weakReference)
   {
-    v3 = [(AVCaptureFigVideoDevice *)self availableMetadataKeyGroups];
+    availableMetadataKeyGroups = [(AVCaptureFigVideoDevice *)self availableMetadataKeyGroups];
     self->_weakReference = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = [v3 allValues];
+    allValues = [availableMetadataKeyGroups allValues];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    v5 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2493,14 +2493,14 @@ id __69__AVCaptureFigVideoDevice_supportedFallbackPrimaryConstituentDevices__blo
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [(AVWeakReference *)self->_weakReference addObjectsFromArray:*(*(&v11 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
       }
 
       while (v6);
@@ -2514,14 +2514,14 @@ id __69__AVCaptureFigVideoDevice_supportedFallbackPrimaryConstituentDevices__blo
 {
   if (!self->_captureSourceSupportedMetadata)
   {
-    v3 = [(AVCaptureFigVideoDevice *)self availableMetadataKeyGroupsSupportingZeroFrameDelaySynchronization];
+    availableMetadataKeyGroupsSupportingZeroFrameDelaySynchronization = [(AVCaptureFigVideoDevice *)self availableMetadataKeyGroupsSupportingZeroFrameDelaySynchronization];
     self->_captureSourceSupportedMetadata = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = [v3 allValues];
+    allValues = [availableMetadataKeyGroupsSupportingZeroFrameDelaySynchronization allValues];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    v5 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2533,14 +2533,14 @@ id __69__AVCaptureFigVideoDevice_supportedFallbackPrimaryConstituentDevices__blo
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [(NSMutableArray *)self->_captureSourceSupportedMetadata addObjectsFromArray:*(*(&v11 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
       }
 
       while (v6);
@@ -3344,9 +3344,9 @@ float __39__AVCaptureFigVideoDevice_lensPosition__block_invoke(uint64_t a1)
 - (void)updateStreamingDeviceHistory
 {
   v2 = sStreamingCameraHistoryKey;
-  v3 = [(AVCaptureFigVideoDevice *)self _cameraInfo];
+  _cameraInfo = [(AVCaptureFigVideoDevice *)self _cameraInfo];
 
-  [AVCaptureProprietaryDefaultsSingleton updateCameraHistory:v2 withCameraInfo:v3 maxLength:10 updateCameraHistoryDownplayOverrideList:0 cameraCanBeInOverrideList:0];
+  [AVCaptureProprietaryDefaultsSingleton updateCameraHistory:v2 withCameraInfo:_cameraInfo maxLength:10 updateCameraHistoryDownplayOverrideList:0 cameraCanBeInOverrideList:0];
 }
 
 - (id)_cameraInfo
@@ -3537,14 +3537,14 @@ float __45__AVCaptureFigVideoDevice_exposureTargetBias__block_invoke(uint64_t a1
   return [v2 BOOLValue];
 }
 
-+ (id)_devicesWithPriorRegisteredDevices:(id)a3
++ (id)_devicesWithPriorRegisteredDevices:(id)devices
 {
   +[AVCaptureDevice setUpCenterStageStateOnce];
   +[AVCaptureDevice setUpBackgroundBlurStateOnce];
   +[AVCaptureDevice setUpStudioLightingStateOnce];
   +[AVCaptureDevice setUpReactionEffectsStateOnce];
   +[AVCaptureDevice setUpBackgroundReplacementStateOnce];
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -3568,7 +3568,7 @@ float __45__AVCaptureFigVideoDevice_exposureTargetBias__block_invoke(uint64_t a1
         }
 
         v8 = *(*(&v31 + 1) + 8 * i);
-        if ([a3 count])
+        if ([devices count])
         {
           v29 = 0;
           v9 = *(*(CMBaseObjectGetVTable() + 8) + 48);
@@ -3583,7 +3583,7 @@ float __45__AVCaptureFigVideoDevice_exposureTargetBias__block_invoke(uint64_t a1
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v11 = [a3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+          v11 = [devices countByEnumeratingWithState:&v25 objects:v24 count:16];
           if (v11)
           {
             v12 = v11;
@@ -3594,7 +3594,7 @@ LABEL_11:
             {
               if (*v26 != v13)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(devices);
               }
 
               v15 = *(*(&v25 + 1) + 8 * v14);
@@ -3605,7 +3605,7 @@ LABEL_11:
 
               if (v12 == ++v14)
               {
-                v12 = [a3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+                v12 = [devices countByEnumeratingWithState:&v25 objects:v24 count:16];
                 if (v12)
                 {
                   goto LABEL_11;
@@ -3631,7 +3631,7 @@ LABEL_17:
 
         v16 = [[AVCaptureFigVideoDevice alloc] _initWithFigCaptureSource:v8 isProxy:0];
 LABEL_20:
-        [v23 addObject:v16];
+        [array addObject:v16];
       }
 
       v5 = [obj countByEnumeratingWithState:&v31 objects:v30 count:16];
@@ -3640,13 +3640,13 @@ LABEL_20:
     while (v5);
   }
 
-  v17 = [MEMORY[0x1E695DF70] array];
-  [v17 addObject:{objc_msgSend(MEMORY[0x1E696AEB0], "sortDescriptorWithKey:ascending:", @"_orderInDevicesArray", 1)}];
-  [v17 addObject:{objc_msgSend(MEMORY[0x1E696AEB0], "sortDescriptorWithKey:ascending:", @"position", 1)}];
-  return [v23 sortedArrayUsingDescriptors:v17];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array2 addObject:{objc_msgSend(MEMORY[0x1E696AEB0], "sortDescriptorWithKey:ascending:", @"_orderInDevicesArray", 1)}];
+  [array2 addObject:{objc_msgSend(MEMORY[0x1E696AEB0], "sortDescriptorWithKey:ascending:", @"position", 1)}];
+  return [array sortedArrayUsingDescriptors:array2];
 }
 
-+ (void)_reconnectDevices:(id)a3
++ (void)_reconnectDevices:(id)devices
 {
   v27 = 0u;
   v28 = 0u;
@@ -3684,7 +3684,7 @@ LABEL_20:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = [a3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v11 = [devices countByEnumeratingWithState:&v21 objects:v20 count:16];
         if (v11)
         {
           v12 = v11;
@@ -3695,7 +3695,7 @@ LABEL_20:
             {
               if (*v22 != v13)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(devices);
               }
 
               v15 = *(*(&v21 + 1) + 8 * j);
@@ -3706,7 +3706,7 @@ LABEL_20:
               }
             }
 
-            v12 = [a3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+            v12 = [devices countByEnumeratingWithState:&v21 objects:v20 count:16];
             if (v12)
             {
               continue;
@@ -3745,19 +3745,19 @@ uint64_t __65__AVCaptureFigVideoDevice__userPreferredCameraOverrideHistoryKey__b
 
 + (BOOL)allowsSuspendedPreferredCameras
 {
-  [a1 _setUpCameraHistoryOnce];
+  [self _setUpCameraHistoryOnce];
   os_unfair_lock_lock(&sCameraHistoryLock);
   v2 = sAllowsSuspendedPreferredCameras;
   os_unfair_lock_unlock(&sCameraHistoryLock);
   return v2;
 }
 
-+ (void)setAllowsSuspendedPreferredCameras:(BOOL)a3
++ (void)setAllowsSuspendedPreferredCameras:(BOOL)cameras
 {
-  v3 = a3;
-  [a1 _setUpCameraHistoryOnce];
+  camerasCopy = cameras;
+  [self _setUpCameraHistoryOnce];
   os_unfair_lock_lock(&sCameraHistoryLock);
-  if (sAllowsSuspendedPreferredCameras == v3)
+  if (sAllowsSuspendedPreferredCameras == camerasCopy)
   {
 
     os_unfair_lock_unlock(&sCameraHistoryLock);
@@ -3765,7 +3765,7 @@ uint64_t __65__AVCaptureFigVideoDevice__userPreferredCameraOverrideHistoryKey__b
 
   else
   {
-    sAllowsSuspendedPreferredCameras = v3;
+    sAllowsSuspendedPreferredCameras = camerasCopy;
     os_unfair_lock_unlock(&sCameraHistoryLock);
     if (dword_1ED8069C0)
     {
@@ -3781,7 +3781,7 @@ uint64_t __65__AVCaptureFigVideoDevice__userPreferredCameraOverrideHistoryKey__b
     block[1] = 3221225472;
     block[2] = __62__AVCaptureFigVideoDevice_setAllowsSuspendedPreferredCameras___block_invoke;
     block[3] = &unk_1E786EC08;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v6, block);
     if (dword_1ED8069C0)
     {
@@ -3832,7 +3832,7 @@ uint64_t __62__AVCaptureFigVideoDevice_setAllowsSuspendedPreferredCameras___bloc
 
 + (id)userPreferredCamera
 {
-  [a1 _setUpCameraHistoryOnce];
+  [self _setUpCameraHistoryOnce];
   os_unfair_lock_lock(&sCameraHistoryLock);
   v2 = sUserPreferredCamera;
   v3 = sAllowsSuspendedPreferredCameras;
@@ -3890,12 +3890,12 @@ uint64_t __62__AVCaptureFigVideoDevice_setAllowsSuspendedPreferredCameras___bloc
   return v2;
 }
 
-+ (void)setUserPreferredCamera:(id)a3
++ (void)setUserPreferredCamera:(id)camera
 {
-  if (a3)
+  if (camera)
   {
     os_unfair_lock_lock(&sSuspendedDevicesLock);
-    if ([0 objectForKey:{objc_msgSend(a3, "uniqueID")}])
+    if ([0 objectForKey:{objc_msgSend(camera, "uniqueID")}])
     {
       if (dword_1ED8069C0)
       {
@@ -3906,7 +3906,7 @@ uint64_t __62__AVCaptureFigVideoDevice_setAllowsSuspendedPreferredCameras___bloc
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      [0 removeObjectForKey:{objc_msgSend(a3, "uniqueID", v18, v19)}];
+      [0 removeObjectForKey:{objc_msgSend(camera, "uniqueID", v18, v19)}];
     }
 
     os_unfair_lock_unlock(&sSuspendedDevicesLock);
@@ -3914,16 +3914,16 @@ uint64_t __62__AVCaptureFigVideoDevice_setAllowsSuspendedPreferredCameras___bloc
     v9 = sUserPreferredCamera;
     v10 = sSystemPreferredCamera;
     os_unfair_lock_unlock(&sCameraHistoryLock);
-    if (v9 == a3 || [a3 isEqual:v9])
+    if (v9 == camera || [camera isEqual:v9])
     {
-      if (v10 == a3)
+      if (v10 == camera)
       {
 LABEL_30:
 
         return;
       }
 
-      v11 = [a3 isEqual:v10];
+      v11 = [camera isEqual:v10];
       if ((v11 & 1) != 0 || !dword_1ED8069C0)
       {
         if (v11)
@@ -3955,7 +3955,7 @@ LABEL_30:
           v22 = 2114;
           v23 = v9;
           v24 = 2112;
-          v25 = v10;
+          cameraCopy = v10;
           LODWORD(v19) = 32;
           v18 = &v20;
           _os_log_send_and_compose_impl();
@@ -3990,7 +3990,7 @@ LABEL_30:
           v22 = 2114;
           v23 = v9;
           v24 = 2114;
-          v25 = a3;
+          cameraCopy = camera;
           LODWORD(v19) = 32;
           v18 = &v20;
           _os_log_send_and_compose_impl();
@@ -4002,13 +4002,13 @@ LABEL_30:
       [objc_opt_class() willChangeValueForKey:@"userPreferredCamera"];
       os_unfair_lock_lock(&sCameraHistoryLock);
 
-      sUserPreferredCamera = a3;
+      sUserPreferredCamera = camera;
       os_unfair_lock_unlock(&sCameraHistoryLock);
       [objc_opt_class() didChangeValueForKey:@"userPreferredCamera"];
     }
 
-    [a1 _setUpCameraHistoryOnce];
-    [a3 updateUserPreferredCameraHistory];
+    [self _setUpCameraHistoryOnce];
+    [camera updateUserPreferredCameraHistory];
     goto LABEL_30;
   }
 
@@ -4024,17 +4024,17 @@ LABEL_30:
   NSLog(&cfstr_SuppressingExc.isa, v8);
 }
 
-+ (void)setUserPreferredCamera:(id)a3 forClientPreferenceDomain:(id)a4
++ (void)setUserPreferredCamera:(id)camera forClientPreferenceDomain:(id)domain
 {
-  [a1 _setUpCameraHistoryOnce];
-  v6 = [AVCaptureFigVideoDevice _userPreferredCameraHistoryKeyForClientPreferencesDomain:a4];
+  [self _setUpCameraHistoryOnce];
+  v6 = [AVCaptureFigVideoDevice _userPreferredCameraHistoryKeyForClientPreferencesDomain:domain];
 
-  [a3 updateUserPreferredCameraHistoryForKey:v6];
+  [camera updateUserPreferredCameraHistoryForKey:v6];
 }
 
 + (id)systemPreferredCamera
 {
-  [a1 _setUpCameraHistoryOnce];
+  [self _setUpCameraHistoryOnce];
   os_unfair_lock_lock(&sCameraHistoryLock);
   v2 = sSystemPreferredCamera;
   v3 = sAllowsSuspendedPreferredCameras;
@@ -4092,9 +4092,9 @@ LABEL_30:
   return v2;
 }
 
-+ (void)_insurePreferredCameraGlobal:(id *)a3 globalName:(id)a4 preferredCamera:(id)a5
++ (void)_insurePreferredCameraGlobal:(id *)global globalName:(id)name preferredCamera:(id)camera
 {
-  if (a5)
+  if (camera)
   {
     if (dword_1ED8069C0)
     {
@@ -4110,9 +4110,9 @@ LABEL_30:
     block[1] = 3221225472;
     block[2] = __83__AVCaptureFigVideoDevice__insurePreferredCameraGlobal_globalName_preferredCamera___block_invoke;
     block[3] = &unk_1E786FF80;
-    block[5] = a4;
-    block[6] = a3;
-    block[4] = a5;
+    block[5] = name;
+    block[6] = global;
+    block[4] = camera;
     dispatch_async(v9, block);
   }
 }
@@ -4155,17 +4155,17 @@ void __83__AVCaptureFigVideoDevice__insurePreferredCameraGlobal_globalName_prefe
   fig_log_call_emit_and_clean_up_after_send_and_compose();
 }
 
-+ (void)updateUserPreferredCameraOverrideHistoryWithDevice:(id)a3 setOverride:(BOOL)a4
++ (void)updateUserPreferredCameraOverrideHistoryWithDevice:(id)device setOverride:(BOOL)override
 {
-  v4 = a4;
-  [a1 _setUpCameraHistoryOnce];
+  overrideCopy = override;
+  [self _setUpCameraHistoryOnce];
 
-  [a3 updateUserPreferredCameraOverride:v4];
+  [device updateUserPreferredCameraOverride:overrideCopy];
 }
 
-+ (id)cameraInfoForCreatorID:(id)a3 uniqueID:(id)a4 specialDeviceType:(unsigned int)a5 centerStageSupported:(BOOL)a6
++ (id)cameraInfoForCreatorID:(id)d uniqueID:(id)iD specialDeviceType:(unsigned int)type centerStageSupported:(BOOL)supported
 {
-  if (a6)
+  if (supported)
   {
     LODWORD(v6) = 2;
   }
@@ -4175,12 +4175,12 @@ void __83__AVCaptureFigVideoDevice__insurePreferredCameraGlobal_globalName_prefe
     LODWORD(v6) = 3;
   }
 
-  if (a5 == 3)
+  if (type == 3)
   {
     LODWORD(v6) = 1;
   }
 
-  if (a5 == 2)
+  if (type == 2)
   {
     v6 = 0;
   }
@@ -4190,21 +4190,21 @@ void __83__AVCaptureFigVideoDevice__insurePreferredCameraGlobal_globalName_prefe
     v6 = v6;
   }
 
-  v9[2] = [MEMORY[0x1E696AD98] numberWithInt:{v6, @"CreatorID", @"DeviceUID", @"OverrideRanking", a3, a4}];
+  v9[2] = [MEMORY[0x1E696AD98] numberWithInt:{v6, @"CreatorID", @"DeviceUID", @"OverrideRanking", d, iD}];
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:3];
 }
 
-+ (void)updateUserPreferredCameraOverride:(BOOL)a3 cameraInfo:(id)a4
++ (void)updateUserPreferredCameraOverride:(BOOL)override cameraInfo:(id)info
 {
-  v5 = a3;
-  v6 = [a1 _userPreferredCameraOverrideHistoryKey];
+  overrideCopy = override;
+  _userPreferredCameraOverrideHistoryKey = [self _userPreferredCameraOverrideHistoryKey];
 
-  [AVCaptureProprietaryDefaultsSingleton updateCameraOverrideHistory:v6 withCameraInfo:a4 setOverride:v5];
+  [AVCaptureProprietaryDefaultsSingleton updateCameraOverrideHistory:_userPreferredCameraOverrideHistoryKey withCameraInfo:info setOverride:overrideCopy];
 }
 
-+ (void)_refreshPreferredCameraProperties:(BOOL)a3
++ (void)_refreshPreferredCameraProperties:(BOOL)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   os_unfair_lock_lock(&sCameraHistoryLock);
   v4 = sAllowsSuspendedPreferredCameras;
   os_unfair_lock_unlock(&sCameraHistoryLock);
@@ -4451,7 +4451,7 @@ void __83__AVCaptureFigVideoDevice__insurePreferredCameraGlobal_globalName_prefe
   os_unfair_lock_unlock(&sCameraHistoryLock);
   if ((v22 | v23))
   {
-    if (v3)
+    if (propertiesCopy)
     {
       if (v22)
       {
@@ -4602,7 +4602,7 @@ LABEL_92:
         }
 
         os_unfair_lock_unlock(&sCameraHistoryLock);
-        if (v3)
+        if (propertiesCopy)
         {
           if (v22)
           {
@@ -4629,7 +4629,7 @@ LABEL_92:
   }
 }
 
-+ (void)_initiateRefreshPreferredCameraProperties:(BOOL)a3
++ (void)_initiateRefreshPreferredCameraProperties:(BOOL)properties
 {
   +[AVCaptureFigVideoDevice _setUpCameraHistoryOnce];
   v4 = +[AVCaptureFigVideoDevice _cameraHistoryDispatchQueue];
@@ -4637,7 +4637,7 @@ LABEL_92:
   block[1] = 3221225472;
   block[2] = __69__AVCaptureFigVideoDevice__initiateRefreshPreferredCameraProperties___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v6 = a3;
+  propertiesCopy = properties;
   dispatch_async(v4, block);
 }
 
@@ -4660,13 +4660,13 @@ uint64_t __69__AVCaptureFigVideoDevice__initiateRefreshPreferredCameraProperties
   return result;
 }
 
-+ (id)_defaultDeviceWithDeviceType:(id)a3 mediaTypes:(id)a4 position:(int64_t)a5 cameraOverrideHistoryAllowed:(BOOL)a6 cameraOverrideHistorySuspendedAllowed:(BOOL)a7 wombatsMustBeMagic:(BOOL)a8 userPreferredCameraHistorySuspendedAllowed:(BOOL)a9 invalidSpecialDeviceTypes:(id)a10
++ (id)_defaultDeviceWithDeviceType:(id)type mediaTypes:(id)types position:(int64_t)position cameraOverrideHistoryAllowed:(BOOL)allowed cameraOverrideHistorySuspendedAllowed:(BOOL)suspendedAllowed wombatsMustBeMagic:(BOOL)magic userPreferredCameraHistorySuspendedAllowed:(BOOL)historySuspendedAllowed invalidSpecialDeviceTypes:(id)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v12 = a6;
+  magicCopy = magic;
+  suspendedAllowedCopy = suspendedAllowed;
+  allowedCopy = allowed;
   +[AVCaptureFigVideoDevice _setUpCameraHistoryOnce];
-  if (a5)
+  if (position)
   {
     if (dword_1ED8069C0)
     {
@@ -4679,9 +4679,9 @@ uint64_t __69__AVCaptureFigVideoDevice__initiateRefreshPreferredCameraProperties
     return 0;
   }
 
-  v109 = a3;
-  v107 = v11;
-  v108 = v12;
+  typeCopy = type;
+  v107 = suspendedAllowedCopy;
+  v108 = allowedCopy;
   obj = [AVCaptureDevice devicesForDefaultDeviceSupport:0 includeAudioDevices:0];
   if (dword_1ED8069C0)
   {
@@ -4747,7 +4747,7 @@ uint64_t __69__AVCaptureFigVideoDevice__initiateRefreshPreferredCameraProperties
         v122 = 0u;
         v119 = 0u;
         v120 = 0u;
-        v27 = [a4 countByEnumeratingWithState:&v119 objects:v118 count:{16, v100, v104}];
+        v27 = [types countByEnumeratingWithState:&v119 objects:v118 count:{16, v100, v104}];
         if (v27)
         {
           v28 = v27;
@@ -4758,7 +4758,7 @@ LABEL_21:
           {
             if (*v120 != v29)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(types);
             }
 
             if ([v23 hasMediaType:*(*(&v119 + 1) + 8 * v30)])
@@ -4768,7 +4768,7 @@ LABEL_21:
 
             if (v28 == ++v30)
             {
-              v28 = [a4 countByEnumeratingWithState:&v119 objects:v118 count:16];
+              v28 = [types countByEnumeratingWithState:&v119 objects:v118 count:16];
               if (v28)
               {
                 goto LABEL_21;
@@ -4778,7 +4778,7 @@ LABEL_21:
             }
           }
 
-          if (([a10 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v23, "specialDeviceType"))}] & 1) != 0 || (objc_msgSend(v109, "isEqualToString:", @"All") & 1) == 0 && (objc_msgSend(objc_msgSend(v23, "deviceType"), "isEqualToString:", v109) & 1) == 0)
+          if (([deviceTypes containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v23, "specialDeviceType"))}] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"All") & 1) == 0 && (objc_msgSend(objc_msgSend(v23, "deviceType"), "isEqualToString:", typeCopy) & 1) == 0)
           {
             goto LABEL_29;
           }
@@ -4848,7 +4848,7 @@ LABEL_29:
         v132 = 136315394;
         v133 = "+[AVCaptureFigVideoDevice _defaultDeviceWithDeviceType:mediaTypes:position:cameraOverrideHistoryAllowed:cameraOverrideHistorySuspendedAllowed:wombatsMustBeMagic:userPreferredCameraHistorySuspendedAllowed:invalidSpecialDeviceTypes:]";
         v134 = 2112;
-        *v135 = a4;
+        *v135 = types;
         LODWORD(v104) = 22;
         v100 = &v132;
         _os_log_send_and_compose_impl();
@@ -4959,7 +4959,7 @@ LABEL_75:
 
     os_unfair_lock_unlock(&sCameraHistoryLock);
 LABEL_89:
-    if (v10 && !v50)
+    if (magicCopy && !v50)
     {
       os_unfair_lock_lock(&sCameraHistoryLock);
       if (sUserPreferredCameraOverrideHistory)
@@ -4977,7 +4977,7 @@ LABEL_89:
 
     if ([v49 count])
     {
-      v55 = v10 ? getFirstAvailableDeviceFromHistoryWhereWombatsMustBeMagic(v49, v111, a9, 1, v50) : getFirstAvailableDeviceFromHistory(v49, v111, a9, 1);
+      v55 = magicCopy ? getFirstAvailableDeviceFromHistoryWhereWombatsMustBeMagic(v49, v111, historySuspendedAllowed, 1, v50) : getFirstAvailableDeviceFromHistory(v49, v111, historySuspendedAllowed, 1);
       v18 = v55;
       if (v55)
       {
@@ -4999,7 +4999,7 @@ LABEL_89:
 
           if (v58)
           {
-            if (v10)
+            if (magicCopy)
             {
               v59 = 84;
             }
@@ -5009,7 +5009,7 @@ LABEL_89:
               v59 = 70;
             }
 
-            if (a9)
+            if (historySuspendedAllowed)
             {
               v60 = 84;
             }
@@ -5019,10 +5019,10 @@ LABEL_89:
               v60 = 70;
             }
 
-            v61 = [v18 isSuspended];
+            isSuspended = [v18 isSuspended];
             v132 = 136316162;
             v133 = "+[AVCaptureFigVideoDevice _defaultDeviceWithDeviceType:mediaTypes:position:cameraOverrideHistoryAllowed:cameraOverrideHistorySuspendedAllowed:wombatsMustBeMagic:userPreferredCameraHistorySuspendedAllowed:invalidSpecialDeviceTypes:]";
-            if (v61)
+            if (isSuspended)
             {
               v62 = 84;
             }
@@ -5064,7 +5064,7 @@ LABEL_89:
     os_unfair_lock_unlock(&sCameraHistoryLock);
     if ([v63 count])
     {
-      v64 = v10 ? getFirstAvailableDeviceFromHistoryWhereWombatsMustBeMagic(v63, v111, 0, 0, v50) : getFirstAvailableDeviceFromHistory(v63, v111, 0, 0);
+      v64 = magicCopy ? getFirstAvailableDeviceFromHistoryWhereWombatsMustBeMagic(v63, v111, 0, 0, v50) : getFirstAvailableDeviceFromHistory(v63, v111, 0, 0);
       v18 = v64;
       if (v64)
       {
@@ -5092,10 +5092,10 @@ LABEL_89:
           goto LABEL_208;
         }
 
-        v68 = [v18 isSuspended];
+        isSuspended2 = [v18 isSuspended];
         v132 = 136315650;
         v133 = "+[AVCaptureFigVideoDevice _defaultDeviceWithDeviceType:mediaTypes:position:cameraOverrideHistoryAllowed:cameraOverrideHistorySuspendedAllowed:wombatsMustBeMagic:userPreferredCameraHistorySuspendedAllowed:invalidSpecialDeviceTypes:]";
-        if (v68)
+        if (isSuspended2)
         {
           v69 = 84;
         }
@@ -5145,21 +5145,21 @@ LABEL_133:
         goto LABEL_153;
       }
 
-      v76 = [v75 deviceType];
-      if ([v76 isEqualToString:@"AVCaptureDeviceTypeBuiltInWideAngleCamera"])
+      deviceType = [v75 deviceType];
+      if ([deviceType isEqualToString:@"AVCaptureDeviceTypeBuiltInWideAngleCamera"])
       {
         v18 = v75;
         goto LABEL_157;
       }
 
-      if ([v76 isEqualToString:@"AVCaptureDeviceTypeBuiltInTrueDepthCamera"] && v73 < 2)
+      if ([deviceType isEqualToString:@"AVCaptureDeviceTypeBuiltInTrueDepthCamera"] && v73 < 2)
       {
         v73 = 2;
       }
 
       else
       {
-        if (![v76 isEqualToString:{@"AVCaptureDeviceTypeBuiltInUltraWideCamera", v102, v106}] || v73 >= 1)
+        if (![deviceType isEqualToString:{@"AVCaptureDeviceTypeBuiltInUltraWideCamera", typeCopy2, v106}] || v73 >= 1)
         {
           v140 = 0;
           v139 = OS_LOG_TYPE_DEFAULT;
@@ -5182,7 +5182,7 @@ LABEL_133:
             v130 = 2112;
             v131 = v75;
             LODWORD(v106) = 22;
-            v102 = type;
+            typeCopy2 = type;
             _os_log_send_and_compose_impl();
           }
 
@@ -5257,7 +5257,7 @@ LABEL_164:
             v132 = 136315138;
             v133 = "+[AVCaptureFigVideoDevice _defaultDeviceWithDeviceType:mediaTypes:position:cameraOverrideHistoryAllowed:cameraOverrideHistorySuspendedAllowed:wombatsMustBeMagic:userPreferredCameraHistorySuspendedAllowed:invalidSpecialDeviceTypes:]";
             LODWORD(v106) = 12;
-            v102 = &v132;
+            typeCopy2 = &v132;
             _os_log_send_and_compose_impl();
           }
 
@@ -5404,10 +5404,10 @@ LABEL_192:
           goto LABEL_208;
         }
 
-        v97 = [v18 isSuspended];
+        isSuspended3 = [v18 isSuspended];
         v132 = 136315650;
         v133 = "+[AVCaptureFigVideoDevice _defaultDeviceWithDeviceType:mediaTypes:position:cameraOverrideHistoryAllowed:cameraOverrideHistorySuspendedAllowed:wombatsMustBeMagic:userPreferredCameraHistorySuspendedAllowed:invalidSpecialDeviceTypes:]";
-        if (v97)
+        if (isSuspended3)
         {
           v69 = 84;
         }
@@ -5463,16 +5463,16 @@ LABEL_208:
   return v18;
 }
 
-+ (id)_prioritizedDeviceList:(id)a3
++ (id)_prioritizedDeviceList:(id)list
 {
-  v3 = a3;
-  if (a3)
+  listCopy = list;
+  if (list)
   {
-    if ([a3 count])
+    if ([list count])
     {
-      [a1 _setUpCameraHistoryOnce];
-      v5 = [MEMORY[0x1E695DF70] arrayWithArray:v3];
-      v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+      [self _setUpCameraHistoryOnce];
+      v5 = [MEMORY[0x1E695DF70] arrayWithArray:listCopy];
+      listCopy = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(listCopy, "count")}];
       os_unfair_lock_lock(&sCameraHistoryLock);
       if (sUserPreferredCameraHistory)
       {
@@ -5513,7 +5513,7 @@ LABEL_208:
       v21 = v9;
       v16 = v6;
       v17 = v5;
-      v18 = v3;
+      v18 = listCopy;
       v19 = v7;
       v20 = v8;
       __50__AVCaptureFigVideoDevice__prioritizedDeviceList___block_invoke(v13, 0, 1);
@@ -5531,7 +5531,7 @@ LABEL_208:
 
           else
           {
-            [v3 addObject:v11];
+            [listCopy addObject:v11];
             [v5 removeObjectAtIndex:v10];
           }
         }
@@ -5541,7 +5541,7 @@ LABEL_208:
 
       if ([v5 count])
       {
-        [v3 addObjectsFromArray:v5];
+        [listCopy addObjectsFromArray:v5];
       }
     }
 
@@ -5551,7 +5551,7 @@ LABEL_208:
     }
   }
 
-  return v3;
+  return listCopy;
 }
 
 unint64_t __50__AVCaptureFigVideoDevice__prioritizedDeviceList___block_invoke(uint64_t a1, int a2, int a3)
@@ -5614,80 +5614,80 @@ LABEL_10:
   return result;
 }
 
-- (void)updateUserPreferredCameraHistoryForKey:(id)a3
+- (void)updateUserPreferredCameraHistoryForKey:(id)key
 {
   v4 = (self->_specialDeviceType & 0xFFFFFFFE) == 2;
-  v5 = [(AVCaptureFigVideoDevice *)self _cameraInfo];
+  _cameraInfo = [(AVCaptureFigVideoDevice *)self _cameraInfo];
 
-  [AVCaptureProprietaryDefaultsSingleton updateCameraHistory:a3 withCameraInfo:v5 maxLength:3 updateCameraHistoryDownplayOverrideList:1 cameraCanBeInOverrideList:v4];
+  [AVCaptureProprietaryDefaultsSingleton updateCameraHistory:key withCameraInfo:_cameraInfo maxLength:3 updateCameraHistoryDownplayOverrideList:1 cameraCanBeInOverrideList:v4];
 }
 
-- (void)updateUserPreferredCameraOverride:(BOOL)a3
+- (void)updateUserPreferredCameraOverride:(BOOL)override
 {
-  v3 = a3;
+  overrideCopy = override;
   v4 = sUserPreferredCameraOverrideHistoryKey;
-  v5 = [(AVCaptureFigVideoDevice *)self _cameraInfo];
+  _cameraInfo = [(AVCaptureFigVideoDevice *)self _cameraInfo];
 
-  [AVCaptureProprietaryDefaultsSingleton updateCameraOverrideHistory:v4 withCameraInfo:v5 setOverride:v3];
+  [AVCaptureProprietaryDefaultsSingleton updateCameraOverrideHistory:v4 withCameraInfo:_cameraInfo setOverride:overrideCopy];
 }
 
-- (id)_initWithFigCaptureSource:(OpaqueFigCaptureSource *)a3 isProxy:(BOOL)a4
+- (id)_initWithFigCaptureSource:(OpaqueFigCaptureSource *)source isProxy:(BOOL)proxy
 {
-  v4 = a4;
+  proxyCopy = proxy;
   v116.receiver = self;
   v116.super_class = AVCaptureFigVideoDevice;
-  v6 = [(AVCaptureDevice *)&v116 initSubclass];
-  if (!v6)
+  initSubclass = [(AVCaptureDevice *)&v116 initSubclass];
+  if (!initSubclass)
   {
-    return v6;
+    return initSubclass;
   }
 
-  v87 = v4;
-  *(v6 + 151) = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v6];
-  *(v6 + 5) = dispatch_queue_create("com.apple.avfoundation.videocapturedevice.source_queue", 0);
+  v87 = proxyCopy;
+  *(initSubclass + 151) = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
+  *(initSubclass + 5) = dispatch_queue_create("com.apple.avfoundation.videocapturedevice.source_queue", 0);
   v7 = dispatch_queue_create("com.apple.avfoundation.videocapturedevice.state_queue", 0);
-  *(v6 + 8) = v7;
+  *(initSubclass + 8) = v7;
   dispatch_suspend(v7);
-  *(v6 + 159) = dispatch_semaphore_create(0);
-  [v6 _setFigCaptureSource:a3 allowSendingWorkToMainThread:1];
-  v8 = [v6 _copyFigCaptureSourceProperty:*MEMORY[0x1E69905E0]];
-  *(v6 + 7) = v8;
-  *(v6 + 9) = [v8 objectForKeyedSubscript:*MEMORY[0x1E6990298]];
-  *(v6 + 12) = @"com.apple";
-  *(v6 + 26) = 0;
-  *(v6 + 14) = 0;
+  *(initSubclass + 159) = dispatch_semaphore_create(0);
+  [initSubclass _setFigCaptureSource:source allowSendingWorkToMainThread:1];
+  v8 = [initSubclass _copyFigCaptureSourceProperty:*MEMORY[0x1E69905E0]];
+  *(initSubclass + 7) = v8;
+  *(initSubclass + 9) = [v8 objectForKeyedSubscript:*MEMORY[0x1E6990298]];
+  *(initSubclass + 12) = @"com.apple";
+  *(initSubclass + 26) = 0;
+  *(initSubclass + 14) = 0;
   v9 = *MEMORY[0x1E6990138];
-  if ([objc_msgSend(*(v6 + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990138]), "intValue"}] == 16)
+  if ([objc_msgSend(*(initSubclass + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990138]), "intValue"}] == 16)
   {
     v10 = 2;
   }
 
   else
   {
-    if ([objc_msgSend(*(v6 + 7) objectForKeyedSubscript:{v9), "intValue"}] != 15)
+    if ([objc_msgSend(*(initSubclass + 7) objectForKeyedSubscript:{v9), "intValue"}] != 15)
     {
-      *(v6 + 23) = 0;
+      *(initSubclass + 23) = 0;
       goto LABEL_8;
     }
 
     v10 = 3;
   }
 
-  *(v6 + 23) = v10;
+  *(initSubclass + 23) = v10;
 LABEL_8:
-  v11 = [v6 deviceType];
-  if (([(__CFString *)v11 isEqualToString:@"AVCaptureDeviceTypeExternal"]& 1) != 0)
+  deviceType = [initSubclass deviceType];
+  if (([(__CFString *)deviceType isEqualToString:@"AVCaptureDeviceTypeExternal"]& 1) != 0)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [objc_msgSend(*(v6 + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990220]), "intValue"}];
+    v12 = [objc_msgSend(*(initSubclass + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990220]), "intValue"}];
   }
 
-  *(v6 + 10) = v12;
-  if ([objc_msgSend(*(v6 + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990180]), "BOOLValue"}])
+  *(initSubclass + 10) = v12;
+  if ([objc_msgSend(*(initSubclass + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990180]), "BOOLValue"}])
   {
     v13 = 2;
   }
@@ -5697,18 +5697,18 @@ LABEL_8:
     v13 = 0;
   }
 
-  *(v6 + 50) = v13;
-  *(v6 + 119) = -1082130432;
-  *(v6 + 61) = 0;
-  v6[496] = 0;
-  v6[497] = [v6 isFocusModeSupported:2];
-  v6[498] = 0;
-  v6[499] = 0;
+  *(initSubclass + 50) = v13;
+  *(initSubclass + 119) = -1082130432;
+  *(initSubclass + 61) = 0;
+  initSubclass[496] = 0;
+  initSubclass[497] = [initSubclass isFocusModeSupported:2];
+  initSubclass[498] = 0;
+  initSubclass[499] = 0;
   v14 = *(MEMORY[0x1E695F050] + 16);
-  *(v6 + 504) = *MEMORY[0x1E695F050];
-  *(v6 + 520) = v14;
-  v6[536] = 0;
-  if ([objc_msgSend(*(v6 + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990148]), "BOOLValue"}])
+  *(initSubclass + 504) = *MEMORY[0x1E695F050];
+  *(initSubclass + 520) = v14;
+  initSubclass[536] = 0;
+  if ([objc_msgSend(*(initSubclass + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990148]), "BOOLValue"}])
   {
     v15 = 2;
   }
@@ -5718,14 +5718,14 @@ LABEL_8:
     v15 = 0;
   }
 
-  *(v6 + 68) = v15;
-  *(v6 + 71) = 0;
-  *(v6 + 552) = xmmword_1A92AB978;
-  *(v6 + 144) = -1082130432;
-  *(v6 + 145) = 0;
-  *(v6 + 146) = 2139095039;
-  v6[657] = [v6 isExposureModeSupported:2];
-  if ([objc_msgSend(*(v6 + 7) objectForKeyedSubscript:{*MEMORY[0x1E69902D0]), "BOOLValue"}])
+  *(initSubclass + 68) = v15;
+  *(initSubclass + 71) = 0;
+  *(initSubclass + 552) = xmmword_1A92AB978;
+  *(initSubclass + 144) = -1082130432;
+  *(initSubclass + 145) = 0;
+  *(initSubclass + 146) = 2139095039;
+  initSubclass[657] = [initSubclass isExposureModeSupported:2];
+  if ([objc_msgSend(*(initSubclass + 7) objectForKeyedSubscript:{*MEMORY[0x1E69902D0]), "BOOLValue"}])
   {
     v16 = 2;
   }
@@ -5735,45 +5735,45 @@ LABEL_8:
     v16 = 0;
   }
 
-  *(v6 + 89) = v16;
-  *(v6 + 90) = 0xBF800000BF800000;
-  *(v6 + 182) = -1082130432;
-  *(v6 + 732) = 0xBF800000BF800000;
-  *(v6 + 185) = -1082130432;
-  *(v6 + 98) = 0xBFF0000000000000;
-  v6[792] = 1;
-  v6[825] = 1;
-  *(v6 + 104) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
-  *(v6 + 105) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
-  *(v6 + 106) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
-  *(v6 + 107) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
-  *(v6 + 113) = 0;
-  v6[914] = 0;
-  v6[936] = [v6 hasFlash];
-  *(v6 + 118) = 0;
-  v6[952] = 0;
-  *(v6 + 239) = 0;
-  v6[960] = [v6 hasTorch];
-  v6[965] = 0;
-  v6[961] = [v6 _cameraAccessIsEnabled];
-  v6[962] = 0;
+  *(initSubclass + 89) = v16;
+  *(initSubclass + 90) = 0xBF800000BF800000;
+  *(initSubclass + 182) = -1082130432;
+  *(initSubclass + 732) = 0xBF800000BF800000;
+  *(initSubclass + 185) = -1082130432;
+  *(initSubclass + 98) = 0xBFF0000000000000;
+  initSubclass[792] = 1;
+  initSubclass[825] = 1;
+  *(initSubclass + 104) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
+  *(initSubclass + 105) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
+  *(initSubclass + 106) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
+  *(initSubclass + 107) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
+  *(initSubclass + 113) = 0;
+  initSubclass[914] = 0;
+  initSubclass[936] = [initSubclass hasFlash];
+  *(initSubclass + 118) = 0;
+  initSubclass[952] = 0;
+  *(initSubclass + 239) = 0;
+  initSubclass[960] = [initSubclass hasTorch];
+  initSubclass[965] = 0;
+  initSubclass[961] = [initSubclass _cameraAccessIsEnabled];
+  initSubclass[962] = 0;
   v17 = *(MEMORY[0x1E695F058] + 16);
-  *(v6 + 61) = *MEMORY[0x1E695F058];
-  *(v6 + 62) = v17;
-  *(v6 + 252) = 0;
-  *(v6 + 258) = 1065353216;
-  *(v6 + 259) = 0;
-  *(v6 + 260) = 0;
-  *(v6 + 261) = 1097859072;
-  *(v6 + 131) = 0x3FF0000000000000;
+  *(initSubclass + 61) = *MEMORY[0x1E695F058];
+  *(initSubclass + 62) = v17;
+  *(initSubclass + 252) = 0;
+  *(initSubclass + 258) = 1065353216;
+  *(initSubclass + 259) = 0;
+  *(initSubclass + 260) = 0;
+  *(initSubclass + 261) = 1097859072;
+  *(initSubclass + 131) = 0x3FF0000000000000;
   if (!AVGestaltGetBoolAnswer(@"AVGQCaptureFaceDrivenAEAFOnByDefault"))
   {
     goto LABEL_24;
   }
 
-  if (v6[497] == 1)
+  if (initSubclass[497] == 1)
   {
-    if (v6[657])
+    if (initSubclass[657])
     {
       v18 = 3;
     }
@@ -5786,32 +5786,32 @@ LABEL_8:
     goto LABEL_28;
   }
 
-  if (!v6[657])
+  if (!initSubclass[657])
   {
 LABEL_24:
-    *(v6 + 242) = 0;
+    *(initSubclass + 242) = 0;
     goto LABEL_29;
   }
 
   v18 = 1;
 LABEL_28:
-  *(v6 + 242) = v18;
+  *(initSubclass + 242) = v18;
 LABEL_29:
-  *(v6 + 137) = objc_alloc_init(MEMORY[0x1E695DFD8]);
-  *(v6 + 138) = objc_alloc_init(MEMORY[0x1E695DFD8]);
-  *(v6 + 139) = 1;
-  *(v6 + 112) = 0;
-  if ([v6 _isBravoVariant])
+  *(initSubclass + 137) = objc_alloc_init(MEMORY[0x1E695DFD8]);
+  *(initSubclass + 138) = objc_alloc_init(MEMORY[0x1E695DFD8]);
+  *(initSubclass + 139) = 1;
+  *(initSubclass + 112) = 0;
+  if ([initSubclass _isBravoVariant])
   {
-    *(v6 + 144) = 1;
-    *(v6 + 145) = 0;
-    *(v6 + 146) = 1;
-    *(v6 + 147) = 0;
+    *(initSubclass + 144) = 1;
+    *(initSubclass + 145) = 0;
+    *(initSubclass + 146) = 1;
+    *(initSubclass + 147) = 0;
   }
 
-  v86 = v11;
-  v6[1012] = 1;
-  *(v6 + 160) = objc_alloc_init(MEMORY[0x1E695DF90]);
+  v86 = deviceType;
+  initSubclass[1012] = 1;
+  *(initSubclass + 160) = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = *MEMORY[0x1E69906F8];
   v114[0] = @"lensPosition";
   v114[1] = @"exposureDuration";
@@ -5833,31 +5833,31 @@ LABEL_29:
   v114[6] = @"documentSceneConfidence";
   v115[6] = *MEMORY[0x1E69907B0];
   v25 = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v115 forKeys:v114 count:{7), "mutableCopy"}];
-  *(v6 + 158) = v25;
+  *(initSubclass + 158) = v25;
   v112[0] = [v25 objectForKeyedSubscript:@"lensPosition"];
   v113[0] = &unk_1F1CEA0A0;
-  v112[1] = [*(v6 + 158) objectForKeyedSubscript:@"exposureDuration"];
+  v112[1] = [*(initSubclass + 158) objectForKeyedSubscript:@"exposureDuration"];
   v113[1] = &unk_1F1CEA0A0;
-  v112[2] = [*(v6 + 158) objectForKeyedSubscript:@"ISO"];
+  v112[2] = [*(initSubclass + 158) objectForKeyedSubscript:@"ISO"];
   v113[2] = &unk_1F1CEA0A0;
-  v112[3] = [*(v6 + 158) objectForKeyedSubscript:@"exposureTargetOffset"];
+  v112[3] = [*(initSubclass + 158) objectForKeyedSubscript:@"exposureTargetOffset"];
   v113[3] = &unk_1F1CEA0A0;
-  v112[4] = [*(v6 + 158) objectForKeyedSubscript:@"deviceWhiteBalanceGains"];
+  v112[4] = [*(initSubclass + 158) objectForKeyedSubscript:@"deviceWhiteBalanceGains"];
   v113[4] = &unk_1F1CEA0A0;
-  v112[5] = [*(v6 + 158) objectForKeyedSubscript:@"grayWorldDeviceWhiteBalanceGains"];
+  v112[5] = [*(initSubclass + 158) objectForKeyedSubscript:@"grayWorldDeviceWhiteBalanceGains"];
   v113[5] = &unk_1F1CEA0A0;
-  v112[6] = [*(v6 + 158) objectForKeyedSubscript:@"documentSceneConfidence"];
+  v112[6] = [*(initSubclass + 158) objectForKeyedSubscript:@"documentSceneConfidence"];
   v113[6] = &unk_1F1CEA0A0;
-  *(v6 + 157) = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v113 forKeys:v112 count:{7), "mutableCopy"}];
-  *(v6 + 156) = dispatch_queue_create("com.apple.avfoundation.videocapturedevice.observed_properties_queue", 0);
-  v26 = [v6 _copyFormatsArray];
-  *(v6 + 16) = v26;
+  *(initSubclass + 157) = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v113 forKeys:v112 count:{7), "mutableCopy"}];
+  *(initSubclass + 156) = dispatch_queue_create("com.apple.avfoundation.videocapturedevice.observed_properties_queue", 0);
+  _copyFormatsArray = [initSubclass _copyFormatsArray];
+  *(initSubclass + 16) = _copyFormatsArray;
   v110 = 0u;
   v111 = 0u;
   v108 = 0u;
   v109 = 0u;
-  obj = v26;
-  v27 = [v26 countByEnumeratingWithState:&v108 objects:v107 count:16];
+  obj = _copyFormatsArray;
+  v27 = [_copyFormatsArray countByEnumeratingWithState:&v108 objects:v107 count:16];
   v28 = &OBJC_IVAR___AVCaptureSystemStylePicker__action;
   v29 = &OBJC_IVAR___AVCaptureSystemStylePicker__action;
   if (v27)
@@ -5874,15 +5874,15 @@ LABEL_29:
         }
 
         v32 = *(*(&v108 + 1) + 8 * i);
-        if (!*(v6 + 17) && [*(*(&v108 + 1) + 8 * i) isDefaultActiveFormat])
+        if (!*(initSubclass + 17) && [*(*(&v108 + 1) + 8 * i) isDefaultActiveFormat])
         {
-          *(v6 + 17) = v32;
-          v33 = v6 + 224;
+          *(initSubclass + 17) = v32;
+          v33 = initSubclass + 224;
           if (v32)
           {
             [v32 defaultActiveMinFrameDurationForSessionPreset:0];
             v34 = v98;
-            *(v6 + 30) = v99;
+            *(initSubclass + 30) = v99;
             *v33 = v34;
             [v32 defaultActiveMaxFrameDurationForSessionPreset:0];
           }
@@ -5890,24 +5890,24 @@ LABEL_29:
           else
           {
             *v33 = 0;
-            *(v6 + 29) = 0;
-            *(v6 + 30) = 0;
+            *(initSubclass + 29) = 0;
+            *(initSubclass + 30) = 0;
             v98 = 0uLL;
             v99 = 0;
           }
 
           v35 = v98;
-          *(v6 + 36) = v99;
-          *(v6 + 17) = v35;
+          *(initSubclass + 36) = v99;
+          *(initSubclass + 17) = v35;
           [v32 videoMaxZoomFactor];
-          *(v6 + 132) = v36;
-          *(v6 + 167) = [v32 isVideoStabilizationStrengthSupported:1];
+          *(initSubclass + 132) = v36;
+          *(initSubclass + 167) = [v32 isVideoStabilizationStrengthSupported:1];
           v105 = 0u;
           v106 = 0u;
           v103 = 0u;
           v104 = 0u;
-          v37 = [*(v6 + 17) supportedDepthDataFormats];
-          v38 = [v37 countByEnumeratingWithState:&v103 objects:v102 count:16];
+          supportedDepthDataFormats = [*(initSubclass + 17) supportedDepthDataFormats];
+          v38 = [supportedDepthDataFormats countByEnumeratingWithState:&v103 objects:v102 count:16];
           if (v38)
           {
             v39 = v38;
@@ -5918,14 +5918,14 @@ LABEL_29:
               {
                 if (*v104 != v40)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(supportedDepthDataFormats);
                 }
 
                 v42 = *(*(&v103 + 1) + 8 * j);
                 if ([v42 isDefaultActiveFormat])
                 {
                   v43 = v42;
-                  *(v6 + 18) = v43;
+                  *(initSubclass + 18) = v43;
                   v44 = [objc_msgSend(v43 "videoSupportedFrameRateRanges")];
                   if (v44)
                   {
@@ -5941,13 +5941,13 @@ LABEL_29:
                   v29 = &OBJC_IVAR___AVCaptureSystemStylePicker__action;
                   v28 = &OBJC_IVAR___AVCaptureSystemStylePicker__action;
                   v45 = v98;
-                  *(v6 + 22) = v99;
-                  *(v6 + 10) = v45;
+                  *(initSubclass + 22) = v99;
+                  *(initSubclass + 10) = v45;
                   goto LABEL_54;
                 }
               }
 
-              v39 = [v37 countByEnumeratingWithState:&v103 objects:v102 count:16];
+              v39 = [supportedDepthDataFormats countByEnumeratingWithState:&v103 objects:v102 count:16];
               v29 = &OBJC_IVAR___AVCaptureSystemStylePicker__action;
               v28 = &OBJC_IVAR___AVCaptureSystemStylePicker__action;
               if (v39)
@@ -5961,46 +5961,46 @@ LABEL_29:
         }
 
 LABEL_54:
-        if ((v6[1371] & 1) == 0)
+        if ((initSubclass[1371] & 1) == 0)
         {
-          v6[1371] = [v32 isCenterStageSupported];
+          initSubclass[1371] = [v32 isCenterStageSupported];
         }
 
-        if ((v6[1458] & 1) == 0)
+        if ((initSubclass[1458] & 1) == 0)
         {
-          v6[1458] = [objc_msgSend(v32 "figCaptureSourceVideoFormat")];
+          initSubclass[1458] = [objc_msgSend(v32 "figCaptureSourceVideoFormat")];
         }
 
-        if ((v6[1409] & 1) == 0)
+        if ((initSubclass[1409] & 1) == 0)
         {
-          v6[1409] = [v32 isBackgroundBlurSupported];
+          initSubclass[1409] = [v32 isBackgroundBlurSupported];
         }
 
-        if ((v6[1412] & 1) == 0)
+        if ((initSubclass[1412] & 1) == 0)
         {
-          v6[1412] = [v32 isStudioLightSupported];
+          initSubclass[1412] = [v32 isStudioLightSupported];
         }
 
         v46 = v28[511];
-        if ((v6[v46] & 1) == 0)
+        if ((initSubclass[v46] & 1) == 0)
         {
-          v6[v46] = [v32 reactionEffectsSupported];
+          initSubclass[v46] = [v32 reactionEffectsSupported];
         }
 
         v47 = v29[512];
-        if ((v6[v47] & 1) == 0)
+        if ((initSubclass[v47] & 1) == 0)
         {
-          v6[v47] = [v32 isBackgroundReplacementSupported];
+          initSubclass[v47] = [v32 isBackgroundReplacementSupported];
         }
 
-        if ((v6[184] & 1) == 0)
+        if ((initSubclass[184] & 1) == 0)
         {
-          v6[184] = [v32 isContinuousZoomWithDepthSupported];
+          initSubclass[184] = [v32 isContinuousZoomWithDepthSupported];
         }
 
-        if ((v6[1564] & 1) == 0)
+        if ((initSubclass[1564] & 1) == 0)
         {
-          v6[1564] = [v32 isSmartFramingSupported];
+          initSubclass[1564] = [v32 isSmartFramingSupported];
         }
       }
 
@@ -6010,32 +6010,32 @@ LABEL_54:
     while (v30);
   }
 
-  [v6 _initializeContinuousZoomWithDepthActiveWithEnabled:v6[184]];
-  [v6 _minFocusRectOfInterestSizeForFormat:*(v6 + 17)];
-  *(v6 + 53) = v48;
-  *(v6 + 54) = v49;
+  [initSubclass _initializeContinuousZoomWithDepthActiveWithEnabled:initSubclass[184]];
+  [initSubclass _minFocusRectOfInterestSizeForFormat:*(initSubclass + 17)];
+  *(initSubclass + 53) = v48;
+  *(initSubclass + 54) = v49;
   __asm { FMOV            V0.2D, #0.5 }
 
   v90 = _Q0;
-  *(v6 + 408) = _Q0;
+  *(initSubclass + 408) = _Q0;
   FloatAnswerWithDefault = 0.5;
-  [v6 _defaultRectForFocusPointOfInterest:*(v6 + 50) focusMode:{0.5, 0.5}];
-  *(v6 + 55) = v56;
-  *(v6 + 56) = v57;
-  *(v6 + 57) = v58;
-  *(v6 + 58) = v59;
-  v6[472] = 1;
-  [v6 _minExposureRectOfInterestSizeForFormat:*(v6 + 17)];
-  *(v6 + 76) = v60;
-  *(v6 + 77) = v61;
-  *(v6 + 37) = v90;
-  [v6 _defaultRectForExposurePointOfInterest:{0.5, 0.5}];
-  *(v6 + 78) = v62;
-  *(v6 + 79) = v63;
-  *(v6 + 80) = v64;
-  *(v6 + 81) = v65;
-  v6[656] = 1;
-  *(v6 + 135) = 0x3FF0000000000000;
+  [initSubclass _defaultRectForFocusPointOfInterest:*(initSubclass + 50) focusMode:{0.5, 0.5}];
+  *(initSubclass + 55) = v56;
+  *(initSubclass + 56) = v57;
+  *(initSubclass + 57) = v58;
+  *(initSubclass + 58) = v59;
+  initSubclass[472] = 1;
+  [initSubclass _minExposureRectOfInterestSizeForFormat:*(initSubclass + 17)];
+  *(initSubclass + 76) = v60;
+  *(initSubclass + 77) = v61;
+  *(initSubclass + 37) = v90;
+  [initSubclass _defaultRectForExposurePointOfInterest:{0.5, 0.5}];
+  *(initSubclass + 78) = v62;
+  *(initSubclass + 79) = v63;
+  *(initSubclass + 80) = v64;
+  *(initSubclass + 81) = v65;
+  initSubclass[656] = 1;
+  *(initSubclass + 135) = 0x3FF0000000000000;
   if ([(__CFString *)v86 isEqualToString:@"AVCaptureDeviceTypeBuiltInTelephotoCamera"])
   {
     FloatAnswerWithDefault = AVGestaltGetFloatAnswerWithDefault(@"AVGQWideCameraToTelephotoCameraRelativeZoomFactor", 1.0);
@@ -6046,11 +6046,11 @@ LABEL_54:
     goto LABEL_78;
   }
 
-  *(v6 + 135) = FloatAnswerWithDefault;
+  *(initSubclass + 135) = FloatAnswerWithDefault;
 LABEL_78:
-  if ([objc_msgSend(*(v6 + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990140]), "BOOLValue"}])
+  if ([objc_msgSend(*(initSubclass + 7) objectForKeyedSubscript:{*MEMORY[0x1E6990140]), "BOOLValue"}])
   {
-    v6[1088] = [objc_msgSend(v6 _getFigCaptureSourceProperty:{*MEMORY[0x1E6990698]), "BOOLValue"}];
+    initSubclass[1088] = [objc_msgSend(initSubclass _getFigCaptureSourceProperty:{*MEMORY[0x1E6990698]), "BOOLValue"}];
     if (dword_1ED8069C0)
     {
       v101 = 0;
@@ -6062,74 +6062,74 @@ LABEL_78:
   }
 
   v67 = 1;
-  v6[1496] = 1;
-  *(v6 + 324) = 0;
-  *(v6 + 161) = -[AVCaptureSystemPressureState initWithFigLevel:factors:recommendedFrameRateRangeForPortrait:recommendedFrameRateRangeForPhotoMode:]([AVCaptureSystemPressureState alloc], "initWithFigLevel:factors:recommendedFrameRateRangeForPortrait:recommendedFrameRateRangeForPhotoMode:", *(v6 + 324), 0, [v6 _recommendedFrameRateRangeForVideoFormat:*(v6 + 17) depthFormat:*(v6 + 18) figSystemPressureLevel:0, v84, v85], objc_msgSend(v6, "_recommendedFrameRateRangeForVideoFormat:depthFormat:figSystemPressureLevel:", *(v6 + 17), 0, *(v6 + 324)));
-  v6[1328] = [v6 isGeometricDistortionCorrectionSupported];
+  initSubclass[1496] = 1;
+  *(initSubclass + 324) = 0;
+  *(initSubclass + 161) = -[AVCaptureSystemPressureState initWithFigLevel:factors:recommendedFrameRateRangeForPortrait:recommendedFrameRateRangeForPhotoMode:]([AVCaptureSystemPressureState alloc], "initWithFigLevel:factors:recommendedFrameRateRangeForPortrait:recommendedFrameRateRangeForPhotoMode:", *(initSubclass + 324), 0, [initSubclass _recommendedFrameRateRangeForVideoFormat:*(initSubclass + 17) depthFormat:*(initSubclass + 18) figSystemPressureLevel:0, v84, v85], objc_msgSend(initSubclass, "_recommendedFrameRateRangeForVideoFormat:depthFormat:figSystemPressureLevel:", *(initSubclass + 17), 0, *(initSubclass + 324)));
+  initSubclass[1328] = [initSubclass isGeometricDistortionCorrectionSupported];
   v68 = *MEMORY[0x1E69908B0];
   v96[0] = *MEMORY[0x1E69908B8];
   v96[1] = v68;
   v97[0] = &unk_1F1CEA0B8;
   v97[1] = MEMORY[0x1E695E0F8];
-  *(v6 + 116) = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:v96 count:2];
+  *(initSubclass + 116) = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:v96 count:2];
   if (v86 == @"AVCaptureDeviceTypeBuiltInTimeOfFlightCamera")
   {
-    *(v6 + 168) = 1;
+    *(initSubclass + 168) = 1;
   }
 
-  v6[1368] = 1;
+  initSubclass[1368] = 1;
   ModelSpecificName = FigCaptureGetModelSpecificName();
   if (([ModelSpecificName isEqualToString:@"D52g"] & 1) == 0)
   {
     v67 = [ModelSpecificName isEqualToString:@"D16"];
   }
 
-  v6[1369] = v67;
-  v6[1370] = 1;
-  *(v6 + 192) = [objc_msgSend(*(v6 + 17) "supportedDynamicAspectRatios")];
-  Dimensions = CMVideoFormatDescriptionGetDimensions([*(v6 + 17) formatDescription]);
-  *(v6 + 193) = AVCaptureConvertDimensionsForAspectRatio(*&Dimensions, *(v6 + 192), NAN);
-  *(v6 + 194) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
-  v6[1372] = 0;
-  v6[1373] = 1;
-  *(v6 + 172) = 0;
-  *(v6 + 173) = 0;
+  initSubclass[1369] = v67;
+  initSubclass[1370] = 1;
+  *(initSubclass + 192) = [objc_msgSend(*(initSubclass + 17) "supportedDynamicAspectRatios")];
+  Dimensions = CMVideoFormatDescriptionGetDimensions([*(initSubclass + 17) formatDescription]);
+  *(initSubclass + 193) = AVCaptureConvertDimensionsForAspectRatio(*&Dimensions, *(initSubclass + 192), NAN);
+  *(initSubclass + 194) = objc_alloc_init(AVCaptureDeviceControlRequestQueue);
+  initSubclass[1372] = 0;
+  initSubclass[1373] = 1;
+  *(initSubclass + 172) = 0;
+  *(initSubclass + 173) = 0;
   __asm { FMOV            V0.2D, #1.0 }
 
-  *(v6 + 87) = _Q0;
-  *(v6 + 365) = 0;
-  *(v6 + 366) = 0;
-  *(v6 + 184) = 0x3FF0000000000000;
-  *(v6 + 185) = 0x4008000000000000;
-  *(v6 + 186) = *(v6 + 131);
+  *(initSubclass + 87) = _Q0;
+  *(initSubclass + 365) = 0;
+  *(initSubclass + 366) = 0;
+  *(initSubclass + 184) = 0x3FF0000000000000;
+  *(initSubclass + 185) = 0x4008000000000000;
+  *(initSubclass + 186) = *(initSubclass + 131);
   if (v86 == @"AVCaptureDeviceTypeBuiltInUltraWideCamera")
   {
-    *(v6 + 185) = 0x4018000000000000;
-    if (MGCopyAnswer() == *MEMORY[0x1E695E4D0] && [v6 position] == 2)
+    *(initSubclass + 185) = 0x4018000000000000;
+    if (MGCopyAnswer() == *MEMORY[0x1E695E4D0] && [initSubclass position] == 2)
     {
-      *(v6 + 186) = 0x4000000000000000;
+      *(initSubclass + 186) = 0x4000000000000000;
     }
   }
 
-  v6[1410] = 0;
-  v6[1411] = 1;
-  v6[1413] = 0;
-  v6[1414] = 1;
-  v6[1416] = 0;
-  v6[1417] = 1;
-  v6[1419] = 0;
-  v6[1420] = 1;
+  initSubclass[1410] = 0;
+  initSubclass[1411] = 1;
+  initSubclass[1413] = 0;
+  initSubclass[1414] = 1;
+  initSubclass[1416] = 0;
+  initSubclass[1417] = 1;
+  initSubclass[1419] = 0;
+  initSubclass[1420] = 1;
   if (v86 == @"AVCaptureDeviceTypeDeskViewCamera")
   {
-    *(v6 + 181) = 2;
+    *(initSubclass + 181) = 2;
   }
 
-  v6[963] = [objc_msgSend(v6 _copyFigCaptureSourceProperty:{*MEMORY[0x1E6990730]), "BOOLValue"}];
-  v6[964] = [objc_msgSend(v6 _copyFigCaptureSourceProperty:{*MEMORY[0x1E6990798]), "BOOLValue"}];
+  initSubclass[963] = [objc_msgSend(initSubclass _copyFigCaptureSourceProperty:{*MEMORY[0x1E6990730]), "BOOLValue"}];
+  initSubclass[964] = [objc_msgSend(initSubclass _copyFigCaptureSourceProperty:{*MEMORY[0x1E6990798]), "BOOLValue"}];
   if (v87)
   {
-    v6[88] = 1;
-    v72 = [v6 _copyFigCaptureSourceProperty:*MEMORY[0x1E6990878]];
+    initSubclass[88] = 1;
+    v72 = [initSubclass _copyFigCaptureSourceProperty:*MEMORY[0x1E6990878]];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
@@ -6152,10 +6152,10 @@ LABEL_78:
 
           v79 = *(*(&v92 + 1) + 8 * k);
           v80 = [v72 objectForKeyedSubscript:v79];
-          v81 = v6 + 1032;
+          v81 = initSubclass + 1032;
           if (([v79 isEqualToString:v76] & 1) == 0)
           {
-            v81 = v6 + 580;
+            v81 = initSubclass + 580;
             if (![v79 isEqualToString:v77])
             {
               continue;
@@ -6173,44 +6173,44 @@ LABEL_78:
     }
   }
 
-  dispatch_resume(*(v6 + 8));
-  if (v6[1371] == 1)
+  dispatch_resume(*(initSubclass + 8));
+  if (initSubclass[1371] == 1)
   {
-    [objc_opt_class() addObserver:v6 forKeyPath:@"centerStageEnabled" options:7 context:AVCaptureFigVideoDeviceCenterStageEnabledChangedContext];
-    [objc_opt_class() addObserver:v6 forKeyPath:@"centerStageFramingMode" options:3 context:AVCaptureFigVideoDeviceCenterStageFramingModeChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"centerStageEnabled" options:7 context:AVCaptureFigVideoDeviceCenterStageEnabledChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"centerStageFramingMode" options:3 context:AVCaptureFigVideoDeviceCenterStageFramingModeChangedContext];
   }
 
-  if (v6[1409] == 1)
+  if (initSubclass[1409] == 1)
   {
-    [objc_opt_class() addObserver:v6 forKeyPath:@"backgroundBlurEnabled" options:7 context:AVCaptureFigVideoDeviceBackgroundBlurEnabledChangedContext];
-    [objc_opt_class() addObserver:v6 forKeyPath:@"backgroundBlurAperture" options:7 context:AVCaptureFigVideoDeviceBackgroundBlurApertureChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"backgroundBlurEnabled" options:7 context:AVCaptureFigVideoDeviceBackgroundBlurEnabledChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"backgroundBlurAperture" options:7 context:AVCaptureFigVideoDeviceBackgroundBlurApertureChangedContext];
   }
 
-  if (v6[1412] == 1)
+  if (initSubclass[1412] == 1)
   {
-    [objc_opt_class() addObserver:v6 forKeyPath:@"studioLightEnabled" options:7 context:AVCaptureFigVideoDeviceStudioLightingEnabledChangedContext];
-    [objc_opt_class() addObserver:v6 forKeyPath:@"studioLightingIntensity" options:7 context:AVCaptureFigVideoDeviceStudioLightingIntensityChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"studioLightEnabled" options:7 context:AVCaptureFigVideoDeviceStudioLightingEnabledChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"studioLightingIntensity" options:7 context:AVCaptureFigVideoDeviceStudioLightingIntensityChangedContext];
   }
 
-  if (v6[1415] == 1)
+  if (initSubclass[1415] == 1)
   {
-    [objc_opt_class() addObserver:v6 forKeyPath:@"reactionEffectsEnabled" options:7 context:AVCaptureFigVideoDeviceReactionEffectsEnabledChangedContext];
-    [objc_opt_class() addObserver:v6 forKeyPath:@"reactionEffectGesturesEnabled" options:7 context:AVCaptureFigVideoDeviceGesturesEnabledChangedContext];
-    [objc_opt_class() addObserver:v6 forKeyPath:@"reactionEffectSuppressedGesturesEnabled" options:7 context:AVCaptureFigVideoDeviceSuppressedGesturesEnabledChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"reactionEffectsEnabled" options:7 context:AVCaptureFigVideoDeviceReactionEffectsEnabledChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"reactionEffectGesturesEnabled" options:7 context:AVCaptureFigVideoDeviceGesturesEnabledChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"reactionEffectSuppressedGesturesEnabled" options:7 context:AVCaptureFigVideoDeviceSuppressedGesturesEnabledChangedContext];
   }
 
-  if (v6[1418] == 1)
+  if (initSubclass[1418] == 1)
   {
-    [objc_opt_class() addObserver:v6 forKeyPath:@"backgroundReplacementEnabled" options:7 context:AVCaptureFigVideoDeviceBackgroundReplacementEnabledChangedContext];
-    [objc_opt_class() addObserver:v6 forKeyPath:@"backgroundReplacementPixelBuffer" options:7 context:AVCaptureFigVideoDeviceBackgroundReplacementPixelBufferChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"backgroundReplacementEnabled" options:7 context:AVCaptureFigVideoDeviceBackgroundReplacementEnabledChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"backgroundReplacementPixelBuffer" options:7 context:AVCaptureFigVideoDeviceBackgroundReplacementPixelBufferChangedContext];
   }
 
-  if ((v6[1412] & 1) != 0 || v6[1409] == 1)
+  if ((initSubclass[1412] & 1) != 0 || initSubclass[1409] == 1)
   {
-    [objc_opt_class() addObserver:v6 forKeyPath:@"portraitEffectStudioLightQuality" options:7 context:AVCaptureFigVideoDevicePortraitEffectStudioLightQualityChangedContext];
+    [objc_opt_class() addObserver:initSubclass forKeyPath:@"portraitEffectStudioLightQuality" options:7 context:AVCaptureFigVideoDevicePortraitEffectStudioLightQualityChangedContext];
   }
 
-  return v6;
+  return initSubclass;
 }
 
 - (AVCaptureFigVideoDevice)init
@@ -6237,7 +6237,7 @@ LABEL_78:
   return 0;
 }
 
-- (id)initProxyDeviceWithUniqueID:(id)a3 targetClientAuditToken:(id *)a4
+- (id)initProxyDeviceWithUniqueID:(id)d targetClientAuditToken:(id *)token
 {
   if ((AVCaptureClientHasEntitlement(AVCaptureEntitlementProxyDevices) & 1) == 0)
   {
@@ -6323,31 +6323,31 @@ LABEL_78:
   [(AVCaptureDevice *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
-  [(AVCaptureFigVideoDevice *)self _incrementObserverCountForHighFrequencyProperty:a4];
+  [(AVCaptureFigVideoDevice *)self _incrementObserverCountForHighFrequencyProperty:path];
   v11.receiver = self;
   v11.super_class = AVCaptureFigVideoDevice;
-  [(AVCaptureFigVideoDevice *)&v11 addObserver:a3 forKeyPath:a4 options:a5 context:a6];
+  [(AVCaptureFigVideoDevice *)&v11 addObserver:observer forKeyPath:path options:options context:context];
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context
 {
-  [(AVCaptureFigVideoDevice *)self _decrementObserverCountForHighFrequencyProperty:a4];
+  [(AVCaptureFigVideoDevice *)self _decrementObserverCountForHighFrequencyProperty:path];
   v9.receiver = self;
   v9.super_class = AVCaptureFigVideoDevice;
-  [(AVCaptureFigVideoDevice *)&v9 removeObserver:a3 forKeyPath:a4 context:a5];
+  [(AVCaptureFigVideoDevice *)&v9 removeObserver:observer forKeyPath:path context:context];
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4
+- (void)removeObserver:(id)observer forKeyPath:(id)path
 {
-  [(AVCaptureFigVideoDevice *)self _decrementObserverCountForHighFrequencyProperty:a4];
+  [(AVCaptureFigVideoDevice *)self _decrementObserverCountForHighFrequencyProperty:path];
   v7.receiver = self;
   v7.super_class = AVCaptureFigVideoDevice;
-  [(AVCaptureFigVideoDevice *)&v7 removeObserver:a3 forKeyPath:a4];
+  [(AVCaptureFigVideoDevice *)&v7 removeObserver:observer forKeyPath:path];
 }
 
-- (void)_incrementObserverCountForHighFrequencyProperty:(id)a3
+- (void)_incrementObserverCountForHighFrequencyProperty:(id)property
 {
   availableBoxedMetadataFormatDescriptions = self->_availableBoxedMetadataFormatDescriptions;
   v4[0] = MEMORY[0x1E69E9820];
@@ -6355,7 +6355,7 @@ LABEL_78:
   v4[2] = __75__AVCaptureFigVideoDevice__incrementObserverCountForHighFrequencyProperty___block_invoke;
   v4[3] = &unk_1E786EAA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = property;
   dispatch_async(&availableBoxedMetadataFormatDescriptions->super, v4);
 }
 
@@ -6475,7 +6475,7 @@ LABEL_7:
   }
 }
 
-- (void)_decrementObserverCountForHighFrequencyProperty:(id)a3
+- (void)_decrementObserverCountForHighFrequencyProperty:(id)property
 {
   availableBoxedMetadataFormatDescriptions = self->_availableBoxedMetadataFormatDescriptions;
   v4[0] = MEMORY[0x1E69E9820];
@@ -6483,7 +6483,7 @@ LABEL_7:
   v4[2] = __75__AVCaptureFigVideoDevice__decrementObserverCountForHighFrequencyProperty___block_invoke;
   v4[3] = &unk_1E786EAA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = property;
   dispatch_async(&availableBoxedMetadataFormatDescriptions->super, v4);
 }
 
@@ -6507,7 +6507,7 @@ void *__75__AVCaptureFigVideoDevice__decrementObserverCountForHighFrequencyPrope
   return result;
 }
 
-- (BOOL)_hasKeyValueObserversForHighFrequencyProperty:(id)a3
+- (BOOL)_hasKeyValueObserversForHighFrequencyProperty:(id)property
 {
   v7 = 0;
   v8 = &v7;
@@ -6518,7 +6518,7 @@ void *__75__AVCaptureFigVideoDevice__decrementObserverCountForHighFrequencyPrope
   block[1] = 3221225472;
   block[2] = __73__AVCaptureFigVideoDevice__hasKeyValueObserversForHighFrequencyProperty___block_invoke;
   block[3] = &unk_1E786FF08;
-  block[5] = a3;
+  block[5] = property;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(&availableBoxedMetadataFormatDescriptions->super, block);
@@ -6534,7 +6534,7 @@ uint64_t __73__AVCaptureFigVideoDevice__hasKeyValueObserversForHighFrequencyProp
   return result;
 }
 
-- (void)_setFigCaptureSource:(OpaqueFigCaptureSource *)a3 allowSendingWorkToMainThread:(BOOL)a4
+- (void)_setFigCaptureSource:(OpaqueFigCaptureSource *)source allowSendingWorkToMainThread:(BOOL)thread
 {
   fcsQueue = self->_fcsQueue;
   if (fcsQueue)
@@ -6544,8 +6544,8 @@ uint64_t __73__AVCaptureFigVideoDevice__hasKeyValueObserversForHighFrequencyProp
     block[2] = __77__AVCaptureFigVideoDevice__setFigCaptureSource_allowSendingWorkToMainThread___block_invoke;
     block[3] = &unk_1E786FFF0;
     block[4] = self;
-    block[5] = a3;
-    v7 = a4;
+    block[5] = source;
+    threadCopy = thread;
     dispatch_sync(fcsQueue, block);
   }
 
@@ -6633,10 +6633,10 @@ void *__77__AVCaptureFigVideoDevice__setFigCaptureSource_allowSendingWorkToMainT
 
 - (void)_cameraUsageRestrictionsChanged
 {
-  v3 = [(AVCaptureFigVideoDevice *)self _cameraAccessIsEnabled];
-  if (*(&self->_torchActive + 1) != v3)
+  _cameraAccessIsEnabled = [(AVCaptureFigVideoDevice *)self _cameraAccessIsEnabled];
+  if (*(&self->_torchActive + 1) != _cameraAccessIsEnabled)
   {
-    v4 = v3;
+    v4 = _cameraAccessIsEnabled;
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"connected"];
     devicePropsQueue = self->_devicePropsQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -6667,7 +6667,7 @@ void *__77__AVCaptureFigVideoDevice__setFigCaptureSource_allowSendingWorkToMainT
   }
 }
 
-- (BOOL)hasMediaType:(id)a3
+- (BOOL)hasMediaType:(id)type
 {
   if ([(AVCaptureFigVideoDevice *)self deviceType]== @"AVCaptureDeviceTypeBuiltInTimeOfFlightCamera")
   {
@@ -6681,18 +6681,18 @@ void *__77__AVCaptureFigVideoDevice__setFigCaptureSource_allowSendingWorkToMainT
 LABEL_10:
     v7 = *v6;
 
-    LOBYTE(v5) = [a3 isEqualToString:v7];
+    LOBYTE(v5) = [type isEqualToString:v7];
     return v5;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E6987608]])
+  if ([type isEqualToString:*MEMORY[0x1E6987608]])
   {
 LABEL_6:
     LOBYTE(v5) = 1;
     return v5;
   }
 
-  if ([a3 isEqualToString:AVMediaTypeForMetadataObjects()])
+  if ([type isEqualToString:AVMediaTypeForMetadataObjects()])
   {
     if ([(AVCaptureFigVideoDevice *)self isFaceDetectionSupported]|| [(AVCaptureFigVideoDevice *)self isObjectDetectionSupported])
     {
@@ -6702,21 +6702,21 @@ LABEL_6:
     LOBYTE(v5) = [(AVCaptureFigVideoDevice *)self isMachineReadableCodeDetectionSupported];
   }
 
-  else if (AVMediaTypeMetadataObjectAndAVMediaTypeMetadataAreDefined() && [a3 isEqualToString:*MEMORY[0x1E69875D0]])
+  else if (AVMediaTypeMetadataObjectAndAVMediaTypeMetadataAreDefined() && [type isEqualToString:*MEMORY[0x1E69875D0]])
   {
     LOBYTE(v5) = [-[AVCaptureFigVideoDevice availableBoxedMetadataFormatDescriptions](self "availableBoxedMetadataFormatDescriptions")] != 0;
   }
 
   else
   {
-    if ([a3 isEqualToString:*MEMORY[0x1E69875C0]])
+    if ([type isEqualToString:*MEMORY[0x1E69875C0]])
     {
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v8 = [(AVCaptureFigVideoDevice *)self formats];
-      v5 = [v8 countByEnumeratingWithState:&v33 objects:v32 count:16];
+      formats = [(AVCaptureFigVideoDevice *)self formats];
+      v5 = [formats countByEnumeratingWithState:&v33 objects:v32 count:16];
       if (!v5)
       {
         return v5;
@@ -6730,7 +6730,7 @@ LABEL_25:
       {
         if (*v34 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(formats);
         }
 
         v12 = *(*(&v33 + 1) + 8 * v11);
@@ -6741,7 +6741,7 @@ LABEL_25:
 
         if (v9 == ++v11)
         {
-          v9 = [v8 countByEnumeratingWithState:&v33 objects:v32 count:16];
+          v9 = [formats countByEnumeratingWithState:&v33 objects:v32 count:16];
           LOBYTE(v5) = 0;
           if (v9)
           {
@@ -6753,14 +6753,14 @@ LABEL_25:
       }
     }
 
-    if ([a3 isEqualToString:@"visn"])
+    if ([type isEqualToString:@"visn"])
     {
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v13 = [(AVCaptureFigVideoDevice *)self formats];
-      v5 = [v13 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      formats2 = [(AVCaptureFigVideoDevice *)self formats];
+      v5 = [formats2 countByEnumeratingWithState:&v28 objects:v27 count:16];
       if (!v5)
       {
         return v5;
@@ -6774,7 +6774,7 @@ LABEL_38:
       {
         if (*v29 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(formats2);
         }
 
         if ([*(*(&v28 + 1) + 8 * v16) isVisionDataDeliverySupported])
@@ -6784,7 +6784,7 @@ LABEL_38:
 
         if (v14 == ++v16)
         {
-          v14 = [v13 countByEnumeratingWithState:&v28 objects:v27 count:16];
+          v14 = [formats2 countByEnumeratingWithState:&v28 objects:v27 count:16];
           LOBYTE(v5) = 0;
           if (v14)
           {
@@ -6796,15 +6796,15 @@ LABEL_38:
       }
     }
 
-    LODWORD(v5) = [a3 isEqualToString:@"cacd"];
+    LODWORD(v5) = [type isEqualToString:@"cacd"];
     if (v5)
     {
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v17 = [(AVCaptureFigVideoDevice *)self formats];
-      v5 = [v17 countByEnumeratingWithState:&v23 objects:v22 count:16];
+      formats3 = [(AVCaptureFigVideoDevice *)self formats];
+      v5 = [formats3 countByEnumeratingWithState:&v23 objects:v22 count:16];
       if (v5)
       {
         v18 = v5;
@@ -6815,7 +6815,7 @@ LABEL_48:
         {
           if (*v24 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(formats3);
           }
 
           if ([*(*(&v23 + 1) + 8 * v20) isCameraCalibrationDataDeliverySupported])
@@ -6825,7 +6825,7 @@ LABEL_48:
 
           if (v18 == ++v20)
           {
-            v18 = [v17 countByEnumeratingWithState:&v23 objects:v22 count:16];
+            v18 = [formats3 countByEnumeratingWithState:&v23 objects:v22 count:16];
             LOBYTE(v5) = 0;
             if (v18)
             {
@@ -6842,9 +6842,9 @@ LABEL_48:
   return v5;
 }
 
-- (BOOL)supportsAVCaptureSessionPreset:(id)a3
+- (BOOL)supportsAVCaptureSessionPreset:(id)preset
 {
-  if ([a3 isEqual:@"AVCaptureSessionPresetInputPriority"])
+  if ([preset isEqual:@"AVCaptureSessionPresetInputPriority"])
   {
     LOBYTE(v5) = 1;
   }
@@ -6858,7 +6858,7 @@ LABEL_48:
       v7 = v5 - 1;
       do
       {
-        LOBYTE(v5) = [objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->_formats objectAtIndexedSubscript:{v6), "AVCaptureSessionPresets"), "containsObject:", a3}];
+        LOBYTE(v5) = [objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->_formats objectAtIndexedSubscript:{v6), "AVCaptureSessionPresets"), "containsObject:", preset}];
         if (v5)
         {
           break;
@@ -6897,12 +6897,12 @@ LABEL_48:
   }
 
   os_unfair_lock_unlock(&sCameraHistoryLock);
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___AVCaptureFigVideoDevice;
   objc_msgSendSuper2(&v4, sel__releaseStaticResources);
 }
 
-- (BOOL)lockForConfiguration:(id *)a3
+- (BOOL)lockForConfiguration:(id *)configuration
 {
   v7 = 0;
   v8 = &v7;
@@ -6914,7 +6914,7 @@ LABEL_48:
   block[2] = __48__AVCaptureFigVideoDevice_lockForConfiguration___block_invoke;
   block[3] = &unk_1E7870018;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = configuration;
   block[4] = self;
   dispatch_sync(fcsQueue, block);
   v4 = *(v8 + 24);
@@ -6976,9 +6976,9 @@ LABEL_9:
   return result;
 }
 
-- (void)_setActiveFormat:(id)a3 resetVideoZoomFactorAndMinMaxFrameDurations:(BOOL)a4 sessionPreset:(id)a5
+- (void)_setActiveFormat:(id)format resetVideoZoomFactorAndMinMaxFrameDurations:(BOOL)durations sessionPreset:(id)preset
 {
-  v6 = a4;
+  durationsCopy = durations;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     v258 = 0;
@@ -6986,9 +6986,9 @@ LABEL_9:
     v260 = 0x3052000000;
     v261 = __Block_byref_object_copy__7;
     v262 = __Block_byref_object_dispose__7;
-    v263 = a3;
-    v9 = [(AVCaptureFigVideoDevice *)self formats];
-    if ([v9 containsObject:v259[5]])
+    formatCopy = format;
+    formats = [(AVCaptureFigVideoDevice *)self formats];
+    if ([formats containsObject:v259[5]])
     {
       if (dword_1ED8069C0)
       {
@@ -7240,7 +7240,7 @@ LABEL_9:
       block[1] = 3221225472;
       block[2] = __102__AVCaptureFigVideoDevice__setActiveFormat_resetVideoZoomFactorAndMinMaxFrameDurations_sessionPreset___block_invoke;
       block[3] = &unk_1E7870068;
-      block[5] = a5;
+      block[5] = preset;
       block[8] = &v184;
       block[9] = &v178;
       block[10] = v146;
@@ -7258,7 +7258,7 @@ LABEL_9:
       block[22] = &v109;
       block[23] = v88;
       block[7] = &v258;
-      block[6] = a3;
+      block[6] = format;
       block[24] = &v84;
       block[25] = &v80;
       block[26] = &v249;
@@ -7296,7 +7296,7 @@ LABEL_9:
       block[58] = v78;
       block[59] = &v74;
       block[4] = self;
-      v73 = v6;
+      v73 = durationsCopy;
       dispatch_sync(devicePropsQueue, block);
       if (*(v250 + 44))
       {
@@ -7519,7 +7519,7 @@ LABEL_9:
         dispatch_sync(v34, v56);
       }
 
-      if (v6)
+      if (durationsCopy)
       {
         v35 = self->_devicePropsQueue;
         v55[0] = MEMORY[0x1E69E9820];
@@ -9219,7 +9219,7 @@ id __102__AVCaptureFigVideoDevice__setActiveFormat_resetVideoZoomFactorAndMinMax
   return result;
 }
 
-- (void)setActiveDepthDataFormat:(id)a3
+- (void)setActiveDepthDataFormat:(id)format
 {
   v15 = 0;
   v16 = &v15;
@@ -9258,7 +9258,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __52__AVCaptureFigVideoDevice_setActiveDepthDataFormat___block_invoke;
   block[3] = &unk_1E786FDA0;
-  block[4] = a3;
+  block[4] = format;
   block[5] = self;
   block[6] = &v15;
   dispatch_sync(devicePropsQueue, block);
@@ -9266,10 +9266,10 @@ LABEL_10:
   {
     v12 = *MEMORY[0x1E6960C88];
     v13 = *(MEMORY[0x1E6960C88] + 16);
-    v6 = [(NSArray *)[(AVCaptureDeviceFormat *)self->_activeDepthDataFormat videoSupportedFrameRateRanges] lastObject];
-    if (v6)
+    lastObject = [(NSArray *)[(AVCaptureDeviceFormat *)self->_activeDepthDataFormat videoSupportedFrameRateRanges] lastObject];
+    if (lastObject)
     {
-      [v6 minFrameDuration];
+      [lastObject minFrameDuration];
       v12 = v10;
       v13 = v11;
     }
@@ -9332,9 +9332,9 @@ void __52__AVCaptureFigVideoDevice_setActiveDepthDataFormat___block_invoke(uint6
   return v3;
 }
 
-- (void)setContinuousZoomWithDepthEnabled:(BOOL)a3
+- (void)setContinuousZoomWithDepthEnabled:(BOOL)enabled
 {
-  if (a3 && ![(AVCaptureFigVideoDevice *)self isContinuousZoomWithDepthSupported])
+  if (enabled && ![(AVCaptureFigVideoDevice *)self isContinuousZoomWithDepthSupported])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -9362,7 +9362,7 @@ void __52__AVCaptureFigVideoDevice_setActiveDepthDataFormat___block_invoke(uint6
     block[3] = &unk_1E78700E0;
     block[4] = self;
     block[5] = &v9;
-    v8 = a3;
+    enabledCopy = enabled;
     block[6] = &v13;
     dispatch_sync(devicePropsQueue, block);
     if (*(v14 + 24) == 1)
@@ -9387,7 +9387,7 @@ uint64_t __61__AVCaptureFigVideoDevice_setContinuousZoomWithDepthEnabled___block
   return result;
 }
 
-- (void)_setContinuousZoomWithDepthDisallowed:(BOOL)a3
+- (void)_setContinuousZoomWithDepthDisallowed:(BOOL)disallowed
 {
   v11 = 0;
   v12 = &v11;
@@ -9404,7 +9404,7 @@ uint64_t __61__AVCaptureFigVideoDevice_setContinuousZoomWithDepthEnabled___block
   v5[3] = &unk_1E78700E0;
   v5[4] = self;
   v5[5] = &v7;
-  v6 = a3;
+  disallowedCopy = disallowed;
   v5[6] = &v11;
   dispatch_sync(devicePropsQueue, v5);
   if (*(v12 + 24) == 1)
@@ -9428,22 +9428,22 @@ uint64_t __65__AVCaptureFigVideoDevice__setContinuousZoomWithDepthDisallowed___b
   return result;
 }
 
-- (BOOL)_updateContinuousZoomWithDepthActiveWithEnabled:(BOOL)a3 disallowed:(BOOL)a4 isActiveDepthDataFormatChangingOut:(BOOL *)a5
+- (BOOL)_updateContinuousZoomWithDepthActiveWithEnabled:(BOOL)enabled disallowed:(BOOL)disallowed isActiveDepthDataFormatChangingOut:(BOOL *)out
 {
-  v6 = a4;
-  v7 = a3;
+  disallowedCopy = disallowed;
+  enabledCopy = enabled;
   if (!_FigIsCurrentDispatchQueue())
   {
     [AVCaptureFigVideoDevice _updateContinuousZoomWithDepthActiveWithEnabled:disallowed:isActiveDepthDataFormatChangingOut:];
   }
 
-  return [(AVCaptureFigVideoDevice *)self _setContinuousZoomWithDepthActiveWithEnabled:v7 disallowed:v6 isActiveDepthDataFormatChangingOut:a5];
+  return [(AVCaptureFigVideoDevice *)self _setContinuousZoomWithDepthActiveWithEnabled:enabledCopy disallowed:disallowedCopy isActiveDepthDataFormatChangingOut:out];
 }
 
-- (BOOL)_setContinuousZoomWithDepthActiveWithEnabled:(BOOL)a3 disallowed:(BOOL)a4 isActiveDepthDataFormatChangingOut:(BOOL *)a5
+- (BOOL)_setContinuousZoomWithDepthActiveWithEnabled:(BOOL)enabled disallowed:(BOOL)disallowed isActiveDepthDataFormatChangingOut:(BOOL *)out
 {
-  self->_continuousZoomWithDepthEnabled = a3;
-  self->_continuousZoomWithDepthDisallowed = a4;
+  self->_continuousZoomWithDepthEnabled = enabled;
+  self->_continuousZoomWithDepthDisallowed = disallowed;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -9477,16 +9477,16 @@ uint64_t __65__AVCaptureFigVideoDevice__setContinuousZoomWithDepthDisallowed___b
     while (v9);
   }
 
-  v14 = [(AVCaptureDeviceFormat *)self->_activeFormat isContinuousZoomWithDepthEnabled];
+  isContinuousZoomWithDepthEnabled = [(AVCaptureDeviceFormat *)self->_activeFormat isContinuousZoomWithDepthEnabled];
   continuousZoomWithDepthActive = self->_continuousZoomWithDepthActive;
-  self->_continuousZoomWithDepthActive = v14;
+  self->_continuousZoomWithDepthActive = isContinuousZoomWithDepthEnabled;
   v16 = [(NSArray *)[(AVCaptureDeviceFormat *)self->_activeFormat supportedDepthDataFormats] containsObject:self->_activeDepthDataFormat];
-  if (a5)
+  if (out)
   {
-    *a5 = !v16;
+    *out = !v16;
   }
 
-  return continuousZoomWithDepthActive != v14;
+  return continuousZoomWithDepthActive != isContinuousZoomWithDepthEnabled;
 }
 
 - (void)_updateActiveDepthDataFormatForContinuousZoomWithDepth
@@ -9581,7 +9581,7 @@ __n128 __81__AVCaptureFigVideoDevice__updateActiveDepthDataFormatForContinuousZo
   return result;
 }
 
-- (void)setActiveDepthDataMinFrameDuration:(id *)a3
+- (void)setActiveDepthDataMinFrameDuration:(id *)duration
 {
   v32 = 0;
   v33 = &v32;
@@ -9591,7 +9591,7 @@ __n128 __81__AVCaptureFigVideoDevice__updateActiveDepthDataFormatForContinuousZo
   v28 = &v27;
   v29 = 0x3810000000;
   v30 = &unk_1A92DB249;
-  v31 = *a3;
+  v31 = *duration;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3052000000;
@@ -9607,7 +9607,7 @@ __n128 __81__AVCaptureFigVideoDevice__updateActiveDepthDataFormatForContinuousZo
   block[5] = &v21;
   dispatch_sync(devicePropsQueue, block);
   v6 = v22[5];
-  if ((a3->var2 & 1) == 0)
+  if ((duration->var2 & 1) == 0)
   {
     if (v6)
     {
@@ -9652,7 +9652,7 @@ LABEL_10:
   if (v6)
   {
     [v6 minFrameDuration];
-    time1 = *a3;
+    time1 = *duration;
     if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
     {
       goto LABEL_10;
@@ -9718,12 +9718,12 @@ __n128 __62__AVCaptureFigVideoDevice_setActiveDepthDataMinFrameDuration___block_
   return result;
 }
 
-- (void)setActiveVideoMinFrameDuration:(id *)a3 activeVideoMaxFrameDuration:(id *)a4
+- (void)setActiveVideoMinFrameDuration:(id *)duration activeVideoMaxFrameDuration:(id *)frameDuration
 {
   v6 = *MEMORY[0x1E695E480];
-  time = *a3;
+  time = *duration;
   v7 = CMTimeCopyAsDictionary(&time, v6);
-  time = *a4;
+  time = *frameDuration;
   v8 = CMTimeCopyAsDictionary(&time, v6);
   v9 = *MEMORY[0x1E69903F8];
   v14[0] = *MEMORY[0x1E6990400];
@@ -9767,7 +9767,7 @@ __n128 __62__AVCaptureFigVideoDevice_setActiveDepthDataMinFrameDuration___block_
   return v5 & 1;
 }
 
-- (void)setActiveLockedVideoFrameDuration:(id *)a3 forOwner:(id)a4
+- (void)setActiveLockedVideoFrameDuration:(id *)duration forOwner:(id)owner
 {
   [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"videoFrameDurationLocked"];
   devicePropsQueue = self->_devicePropsQueue;
@@ -9775,17 +9775,17 @@ __n128 __62__AVCaptureFigVideoDevice_setActiveDepthDataMinFrameDuration___block_
   block[1] = 3221225472;
   block[2] = __70__AVCaptureFigVideoDevice_setActiveLockedVideoFrameDuration_forOwner___block_invoke;
   block[3] = &unk_1E7870130;
-  v18 = *a3;
+  v18 = *duration;
   block[4] = self;
-  block[5] = a4;
+  block[5] = owner;
   dispatch_sync(devicePropsQueue, block);
-  if (a3->var2)
+  if (duration->var2)
   {
-    v14 = *&a3->var0;
-    var3 = a3->var3;
+    v14 = *&duration->var0;
+    var3 = duration->var3;
     [(AVCaptureFigVideoDevice *)self _setActiveVideoMinFrameDurationInternal:&v14];
-    v14 = *&a3->var0;
-    var3 = a3->var3;
+    v14 = *&duration->var0;
+    var3 = duration->var3;
     [(AVCaptureFigVideoDevice *)self _setActiveVideoMaxFrameDurationInternal:&v14];
     *&v14 = 0;
     *(&v14 + 1) = &v14;
@@ -9809,8 +9809,8 @@ __n128 __62__AVCaptureFigVideoDevice_setActiveDepthDataMinFrameDuration___block_
     v10[1] = 3221225472;
     v10[2] = __70__AVCaptureFigVideoDevice_setActiveLockedVideoFrameDuration_forOwner___block_invoke_3;
     v10[3] = &unk_1E7870158;
-    v11 = *&a3->var0;
-    v12 = a3->var3;
+    v11 = *&duration->var0;
+    v12 = duration->var3;
     v10[4] = self;
     v10[5] = &v14;
     dispatch_sync(v9, v10);
@@ -9886,7 +9886,7 @@ __n128 __57__AVCaptureFigVideoDevice_activeLockedVideoFrameDuration__block_invok
   return result;
 }
 
-- (void)resetActiveLockedVideoFrameDurationForOwner:(id)a3
+- (void)resetActiveLockedVideoFrameDurationForOwner:(id)owner
 {
   [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"videoFrameDurationLocked"];
   devicePropsQueue = self->_devicePropsQueue;
@@ -9895,7 +9895,7 @@ __n128 __57__AVCaptureFigVideoDevice_activeLockedVideoFrameDuration__block_invok
   v6[2] = __71__AVCaptureFigVideoDevice_resetActiveLockedVideoFrameDurationForOwner___block_invoke;
   v6[3] = &unk_1E786EAA8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = owner;
   dispatch_sync(devicePropsQueue, v6);
   [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"videoFrameDurationLocked"];
   [(AVCaptureFigVideoDevice *)self resetDeviceClockAndInputPortsToHostClock];
@@ -9930,8 +9930,8 @@ __n128 __71__AVCaptureFigVideoDevice_resetActiveLockedVideoFrameDurationForOwner
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v5 = [activeLockedVideoFrameDurationOwner ports];
-      v6 = [v5 countByEnumeratingWithState:&v22 objects:v21 count:16];
+      ports = [activeLockedVideoFrameDurationOwner ports];
+      v6 = [ports countByEnumeratingWithState:&v22 objects:v21 count:16];
       if (v6)
       {
         v7 = v6;
@@ -9943,14 +9943,14 @@ __n128 __71__AVCaptureFigVideoDevice_resetActiveLockedVideoFrameDurationForOwner
           {
             if (*v23 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(ports);
             }
 
             [*(*(&v22 + 1) + 8 * v9++) _setClock:HostTimeClock];
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v22 objects:v21 count:16];
+          v7 = [ports countByEnumeratingWithState:&v22 objects:v21 count:16];
         }
 
         while (v7);
@@ -9970,8 +9970,8 @@ __n128 __71__AVCaptureFigVideoDevice_resetActiveLockedVideoFrameDurationForOwner
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [activeExternalSyncVideoFrameDurationOwner ports];
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      ports2 = [activeExternalSyncVideoFrameDurationOwner ports];
+      v12 = [ports2 countByEnumeratingWithState:&v17 objects:v16 count:16];
       if (v12)
       {
         v13 = v12;
@@ -9983,14 +9983,14 @@ __n128 __71__AVCaptureFigVideoDevice_resetActiveLockedVideoFrameDurationForOwner
           {
             if (*v18 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(ports2);
             }
 
             [*(*(&v17 + 1) + 8 * v15++) _setClock:HostTimeClock];
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v17 objects:v16 count:16];
+          v13 = [ports2 countByEnumeratingWithState:&v17 objects:v16 count:16];
         }
 
         while (v13);
@@ -10003,7 +10003,7 @@ __n128 __71__AVCaptureFigVideoDevice_resetActiveLockedVideoFrameDurationForOwner
   [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:*MEMORY[0x1E6990668] withValue:HostTimeClock];
 }
 
-- (void)setActiveSyncDevice:(id)a3
+- (void)setActiveSyncDevice:(id)device
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -10011,7 +10011,7 @@ __n128 __71__AVCaptureFigVideoDevice_resetActiveLockedVideoFrameDurationForOwner
   v4[2] = __47__AVCaptureFigVideoDevice_setActiveSyncDevice___block_invoke;
   v4[3] = &unk_1E786EAA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = device;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -10035,7 +10035,7 @@ void __47__AVCaptureFigVideoDevice_setActiveSyncDevice___block_invoke(uint64_t a
   }
 }
 
-- (void)setActiveExternalSyncVideoFrameDuration:(id *)a3 withExternalSyncDevice:(id)a4 forOwner:(id)a5
+- (void)setActiveExternalSyncVideoFrameDuration:(id *)duration withExternalSyncDevice:(id)device forOwner:(id)owner
 {
   [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"followingExternalSyncDevice"];
   devicePropsQueue = self->_devicePropsQueue;
@@ -10043,11 +10043,11 @@ void __47__AVCaptureFigVideoDevice_setActiveSyncDevice___block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __99__AVCaptureFigVideoDevice_setActiveExternalSyncVideoFrameDuration_withExternalSyncDevice_forOwner___block_invoke;
   block[3] = &unk_1E7870130;
-  v30 = *a3;
+  v30 = *duration;
   block[4] = self;
-  block[5] = a5;
+  block[5] = owner;
   dispatch_sync(devicePropsQueue, block);
-  if (a3->var2)
+  if (duration->var2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -10056,8 +10056,8 @@ void __47__AVCaptureFigVideoDevice_setActiveSyncDevice___block_invoke(uint64_t a
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v10 = [a5 ports];
-      v11 = [v10 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      ports = [owner ports];
+      v11 = [ports countByEnumeratingWithState:&v25 objects:v24 count:16];
       if (v11)
       {
         v12 = v11;
@@ -10069,25 +10069,25 @@ void __47__AVCaptureFigVideoDevice_setActiveSyncDevice___block_invoke(uint64_t a
           {
             if (*v26 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(ports);
             }
 
-            [*(*(&v25 + 1) + 8 * v14++) _setClock:{objc_msgSend(a4, "clock")}];
+            [*(*(&v25 + 1) + 8 * v14++) _setClock:{objc_msgSend(device, "clock")}];
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v25 objects:v24 count:16];
+          v12 = [ports countByEnumeratingWithState:&v25 objects:v24 count:16];
         }
 
         while (v12);
       }
     }
 
-    v21 = *&a3->var0;
-    var3 = a3->var3;
+    v21 = *&duration->var0;
+    var3 = duration->var3;
     [(AVCaptureFigVideoDevice *)self _setActiveVideoMinFrameDurationInternal:&v21];
-    v21 = *&a3->var0;
-    var3 = a3->var3;
+    v21 = *&duration->var0;
+    var3 = duration->var3;
     [(AVCaptureFigVideoDevice *)self _setActiveVideoMaxFrameDurationInternal:&v21];
     *&v21 = 0;
     *(&v21 + 1) = &v21;
@@ -10111,8 +10111,8 @@ void __47__AVCaptureFigVideoDevice_setActiveSyncDevice___block_invoke(uint64_t a
     v17[1] = 3221225472;
     v17[2] = __99__AVCaptureFigVideoDevice_setActiveExternalSyncVideoFrameDuration_withExternalSyncDevice_forOwner___block_invoke_3;
     v17[3] = &unk_1E7870158;
-    v18 = *&a3->var0;
-    v19 = a3->var3;
+    v18 = *&duration->var0;
+    v19 = duration->var3;
     v17[4] = self;
     v17[5] = &v21;
     dispatch_sync(v16, v17);
@@ -10208,7 +10208,7 @@ __n128 __63__AVCaptureFigVideoDevice_activeExternalSyncVideoFrameDuration__block
   return v5 & 1;
 }
 
-- (void)setVideoMinFrameDurationOverride:(id *)a3 forOwner:(id)a4
+- (void)setVideoMinFrameDurationOverride:(id *)override forOwner:(id)owner
 {
   v12 = 0;
   v13 = &v12;
@@ -10221,11 +10221,11 @@ __n128 __63__AVCaptureFigVideoDevice_activeExternalSyncVideoFrameDuration__block
   block[1] = 3221225472;
   block[2] = __69__AVCaptureFigVideoDevice_setVideoMinFrameDurationOverride_forOwner___block_invoke;
   block[3] = &unk_1E7870180;
-  v6 = *&a3->var0;
-  var3 = a3->var3;
+  v6 = *&override->var0;
+  var3 = override->var3;
   v10 = v6;
   block[4] = self;
-  block[5] = a4;
+  block[5] = owner;
   block[6] = &v12;
   dispatch_sync(devicePropsQueue, block);
   if (*(v13 + 44))
@@ -10269,7 +10269,7 @@ __n128 __69__AVCaptureFigVideoDevice_setVideoMinFrameDurationOverride_forOwner__
   return result;
 }
 
-- (void)resetVideoMinFrameDurationOverrideForOwner:(id)a3
+- (void)resetVideoMinFrameDurationOverrideForOwner:(id)owner
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -10277,7 +10277,7 @@ __n128 __69__AVCaptureFigVideoDevice_setVideoMinFrameDurationOverride_forOwner__
   v4[2] = __70__AVCaptureFigVideoDevice_resetVideoMinFrameDurationOverrideForOwner___block_invoke;
   v4[3] = &unk_1E786EAA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = owner;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -10296,7 +10296,7 @@ __n128 __70__AVCaptureFigVideoDevice_resetVideoMinFrameDurationOverrideForOwner_
   return result;
 }
 
-- (int)_setActiveVideoMinFrameDurationInternal:(id *)a3
+- (int)_setActiveVideoMinFrameDurationInternal:(id *)internal
 {
   v47 = 0;
   v48 = &v47;
@@ -10329,7 +10329,7 @@ __n128 __70__AVCaptureFigVideoDevice_resetVideoMinFrameDurationOverrideForOwner_
   v20 = &v19;
   v21 = 0x3810000000;
   v22 = &unk_1A92DB249;
-  v23 = *a3;
+  v23 = *internal;
   if (dword_1ED8069C0)
   {
     v18 = 0;
@@ -11075,13 +11075,13 @@ float __67__AVCaptureFigVideoDevice__setActiveVideoMinFrameDurationInternal___bl
   return *&v2;
 }
 
-- (void)setActiveVideoMinFrameDuration:(id *)a3
+- (void)setActiveVideoMinFrameDuration:(id *)duration
 {
   v34 = 0;
   v35 = &v34;
   v36 = 0x3810000000;
   v37 = &unk_1A92DB249;
-  v38 = *a3;
+  v38 = *duration;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3052000000;
@@ -11094,7 +11094,7 @@ float __67__AVCaptureFigVideoDevice__setActiveVideoMinFrameDurationInternal___bl
   v25 = __Block_byref_object_copy__7;
   v26 = __Block_byref_object_dispose__7;
   v27 = 0;
-  if (a3->var2)
+  if (duration->var2)
   {
     if ([(AVCaptureFigVideoDevice *)self isAutoVideoFrameRateEnabled])
     {
@@ -11145,8 +11145,8 @@ LABEL_2:
     v18[1] = 3221225472;
     v18[2] = __58__AVCaptureFigVideoDevice_setActiveVideoMinFrameDuration___block_invoke_2;
     v18[3] = &unk_1E7870158;
-    v19 = *&a3->var0;
-    var3 = a3->var3;
+    v19 = *&duration->var0;
+    var3 = duration->var3;
     v18[4] = self;
     v18[5] = &v34;
     dispatch_sync(v6, v18);
@@ -11294,12 +11294,12 @@ __n128 __58__AVCaptureFigVideoDevice_setActiveVideoMinFrameDuration___block_invo
   return result;
 }
 
-- (void)_setActiveVideoMinFrameDuration:(id *)a3
+- (void)_setActiveVideoMinFrameDuration:(id *)duration
 {
   if ([(AVCaptureFigVideoDevice *)self lockForConfiguration:0])
   {
-    v5 = *&a3->var0;
-    var3 = a3->var3;
+    v5 = *&duration->var0;
+    var3 = duration->var3;
     [(AVCaptureFigVideoDevice *)self _setActiveVideoMinFrameDurationInternal:&v5];
     [(AVCaptureFigVideoDevice *)self unlockForConfiguration];
   }
@@ -11676,7 +11676,7 @@ LABEL_85:
   return result;
 }
 
-- (int)_setActiveVideoMaxFrameDurationInternal:(id *)a3 isSettingExposureModeCustom:(BOOL)a4
+- (int)_setActiveVideoMaxFrameDurationInternal:(id *)internal isSettingExposureModeCustom:(BOOL)custom
 {
   v52 = 0;
   v53 = &v52;
@@ -11708,8 +11708,8 @@ LABEL_85:
   v23 = 0;
   v24 = &v23;
   v25 = 0x3810000000;
-  v27 = *&a3->var0;
-  var3 = a3->var3;
+  v27 = *&internal->var0;
+  var3 = internal->var3;
   v26 = &unk_1A92DB249;
   v28 = var3;
   if (dword_1ED8069C0)
@@ -11741,7 +11741,7 @@ LABEL_85:
     v16[3] = &unk_1E78701F8;
     v16[4] = self;
     v16[5] = &v23;
-    v17 = a4;
+    customCopy = custom;
     v16[6] = &v52;
     v16[7] = &v40;
     v16[8] = &v33;
@@ -12268,20 +12268,20 @@ __n128 __95__AVCaptureFigVideoDevice__setActiveVideoMaxFrameDurationInternal_isS
   return result;
 }
 
-- (void)setActiveVideoMaxFrameDuration:(id *)a3
+- (void)setActiveVideoMaxFrameDuration:(id *)duration
 {
   v18 = 0;
   v19 = &v18;
   v20 = 0x3810000000;
   v21 = &unk_1A92DB249;
-  v22 = *a3;
+  v22 = *duration;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3052000000;
   v17[3] = __Block_byref_object_copy__7;
   v17[4] = __Block_byref_object_dispose__7;
   v17[5] = 0;
-  if (a3->var2)
+  if (duration->var2)
   {
     if ([(AVCaptureFigVideoDevice *)self isAutoVideoFrameRateEnabled])
     {
@@ -12320,8 +12320,8 @@ LABEL_2:
   block[1] = 3221225472;
   block[2] = __58__AVCaptureFigVideoDevice_setActiveVideoMaxFrameDuration___block_invoke;
   block[3] = &unk_1E7870220;
-  v15 = *&a3->var0;
-  var3 = a3->var3;
+  v15 = *&duration->var0;
+  var3 = duration->var3;
   block[4] = self;
   block[5] = &v18;
   block[6] = v17;
@@ -12462,12 +12462,12 @@ LABEL_15:
   }
 }
 
-- (void)_setActiveVideoMaxFrameDuration:(id *)a3
+- (void)_setActiveVideoMaxFrameDuration:(id *)duration
 {
   if ([(AVCaptureFigVideoDevice *)self lockForConfiguration:0])
   {
-    v5 = *&a3->var0;
-    var3 = a3->var3;
+    v5 = *&duration->var0;
+    var3 = duration->var3;
     [(AVCaptureFigVideoDevice *)self _setActiveVideoMaxFrameDurationInternal:&v5];
     [(AVCaptureFigVideoDevice *)self unlockForConfiguration];
   }
@@ -12539,11 +12539,11 @@ __n128 __65__AVCaptureFigVideoDevice_activeVideoMaxFrameDurationSetByClient__blo
   return result;
 }
 
-- (void)setCachesFigCaptureSourceConfigurationChanges:(BOOL)a3
+- (void)setCachesFigCaptureSourceConfigurationChanges:(BOOL)changes
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    self->_cachesFigCaptureSourceConfigurationChanges = a3;
+    self->_cachesFigCaptureSourceConfigurationChanges = changes;
   }
 
   else
@@ -12561,54 +12561,54 @@ __n128 __65__AVCaptureFigVideoDevice_activeVideoMaxFrameDurationSetByClient__blo
   }
 }
 
-- (BOOL)supportsMultiCamCaptureWithDevice:(id)a3
+- (BOOL)supportsMultiCamCaptureWithDevice:(id)device
 {
-  v5 = [(AVCaptureFigVideoDevice *)self position];
-  if (v5 != [a3 position])
+  position = [(AVCaptureFigVideoDevice *)self position];
+  if (position != [device position])
   {
     return 1;
   }
 
-  v6 = ([-[AVCaptureFigVideoDevice deviceType](self "deviceType")] & 1) != 0 ? 1 : objc_msgSend(objc_msgSend(a3, "deviceType"), "isEqualToString:", @"AVCaptureDeviceTypeBuiltInLiDARDepthCamera");
-  v7 = ([-[AVCaptureFigVideoDevice deviceType](self "deviceType")] & 1) != 0 ? 1 : objc_msgSend(objc_msgSend(a3, "deviceType"), "isEqualToString:", @"AVCaptureDeviceTypeDeskViewCamera");
-  v8 = [(AVCaptureDevice *)self isVirtualDevice];
-  if (!(v6 & 1 | (((v8 ^ [a3 isVirtualDevice]) & 1) == 0)) && !v7)
+  v6 = ([-[AVCaptureFigVideoDevice deviceType](self "deviceType")] & 1) != 0 ? 1 : objc_msgSend(objc_msgSend(device, "deviceType"), "isEqualToString:", @"AVCaptureDeviceTypeBuiltInLiDARDepthCamera");
+  v7 = ([-[AVCaptureFigVideoDevice deviceType](self "deviceType")] & 1) != 0 ? 1 : objc_msgSend(objc_msgSend(device, "deviceType"), "isEqualToString:", @"AVCaptureDeviceTypeDeskViewCamera");
+  isVirtualDevice = [(AVCaptureDevice *)self isVirtualDevice];
+  if (!(v6 & 1 | (((isVirtualDevice ^ [device isVirtualDevice]) & 1) == 0)) && !v7)
   {
     return 0;
   }
 
-  if (-[AVCaptureFigVideoDevice position](self, "position") == 2 && (-[AVCaptureFigVideoDevice deviceType](self, "deviceType") == @"AVCaptureDeviceTypeBuiltInWideAngleCamera" && [a3 deviceType] == @"AVCaptureDeviceTypeBuiltInUltraWideCamera" || -[AVCaptureFigVideoDevice deviceType](self, "deviceType") == @"AVCaptureDeviceTypeBuiltInUltraWideCamera" && objc_msgSend(a3, "deviceType") == @"AVCaptureDeviceTypeBuiltInWideAngleCamera"))
+  if (-[AVCaptureFigVideoDevice position](self, "position") == 2 && (-[AVCaptureFigVideoDevice deviceType](self, "deviceType") == @"AVCaptureDeviceTypeBuiltInWideAngleCamera" && [device deviceType] == @"AVCaptureDeviceTypeBuiltInUltraWideCamera" || -[AVCaptureFigVideoDevice deviceType](self, "deviceType") == @"AVCaptureDeviceTypeBuiltInUltraWideCamera" && objc_msgSend(device, "deviceType") == @"AVCaptureDeviceTypeBuiltInWideAngleCamera"))
   {
     return 0;
   }
 
-  v9 = [(AVCaptureDevice *)self constituentDevices];
-  if (![(NSArray *)v9 count])
+  constituentDevices = [(AVCaptureDevice *)self constituentDevices];
+  if (![(NSArray *)constituentDevices count])
   {
-    v14 = self;
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
+    selfCopy = self;
+    constituentDevices = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
   }
 
-  v10 = [a3 constituentDevices];
-  if (![v10 count])
+  constituentDevices2 = [device constituentDevices];
+  if (![constituentDevices2 count])
   {
-    v13 = a3;
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
+    deviceCopy = device;
+    constituentDevices2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&deviceCopy count:1];
   }
 
-  v11 = [MEMORY[0x1E695DFA8] setWithArray:v9];
-  [v11 intersectSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", v10)}];
-  return ![v11 count] && -[AVCaptureFigVideoDevice deviceType](self, "deviceType") != @"AVCaptureDeviceTypeBuiltInInfraredMetadataCamera" && objc_msgSend(a3, "deviceType") != @"AVCaptureDeviceTypeBuiltInWideAngleMetadataCamera" && objc_msgSend(a3, "deviceType") != @"AVCaptureDeviceTypeBuiltInUltraWideAngleMetadataCamera";
+  v11 = [MEMORY[0x1E695DFA8] setWithArray:constituentDevices];
+  [v11 intersectSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", constituentDevices2)}];
+  return ![v11 count] && -[AVCaptureFigVideoDevice deviceType](self, "deviceType") != @"AVCaptureDeviceTypeBuiltInInfraredMetadataCamera" && objc_msgSend(device, "deviceType") != @"AVCaptureDeviceTypeBuiltInWideAngleMetadataCamera" && objc_msgSend(device, "deviceType") != @"AVCaptureDeviceTypeBuiltInUltraWideAngleMetadataCamera";
 }
 
-- (id)constituentDeviceWithDeviceType:(id)a3
+- (id)constituentDeviceWithDeviceType:(id)type
 {
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AVCaptureDevice *)self constituentDevices];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  constituentDevices = [(AVCaptureDevice *)self constituentDevices];
+  v5 = [(NSArray *)constituentDevices countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (!v5)
   {
     return 0;
@@ -12622,18 +12622,18 @@ LABEL_3:
   {
     if (*v13 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(constituentDevices);
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
-    if ([v9 deviceType] == a3)
+    if ([v9 deviceType] == type)
     {
       return v9;
     }
 
     if (v6 == ++v8)
     {
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v6 = [(NSArray *)constituentDevices countByEnumeratingWithState:&v12 objects:v11 count:16];
       if (v6)
       {
         goto LABEL_3;
@@ -12651,19 +12651,19 @@ LABEL_3:
   return [v2 BOOLValue];
 }
 
-- (int)powerConsumptionAt30FPSForOISMode:(int)a3
+- (int)powerConsumptionAt30FPSForOISMode:(int)mode
 {
-  if ((a3 - 1) > 2)
+  if ((mode - 1) > 2)
   {
     return 0;
   }
 
-  v5 = [(NSDictionary *)self->_fcsAttributes objectForKeyedSubscript:**(&unk_1E78709E8 + (a3 - 1)), v3];
+  v5 = [(NSDictionary *)self->_fcsAttributes objectForKeyedSubscript:**(&unk_1E78709E8 + (mode - 1)), v3];
 
   return [v5 intValue];
 }
 
-- (void)setLowLightVideoCaptureEnabled:(BOOL)a3
+- (void)setLowLightVideoCaptureEnabled:(BOOL)enabled
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -12675,7 +12675,7 @@ LABEL_3:
       block[2] = __58__AVCaptureFigVideoDevice_setLowLightVideoCaptureEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v10 = a3;
+      enabledCopy = enabled;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -12701,14 +12701,14 @@ LABEL_3:
   NSLog(&cfstr_SuppressingExc.isa, v8);
 }
 
-- (void)setVariableFrameRateVideoCaptureEnabled:(BOOL)a3
+- (void)setVariableFrameRateVideoCaptureEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")])
     {
-      if (v3)
+      if (enabledCopy)
       {
         if ([(AVCaptureFigVideoDevice *)self isVideoFrameDurationLocked])
         {
@@ -12735,7 +12735,7 @@ LABEL_14:
       block[2] = __67__AVCaptureFigVideoDevice_setVariableFrameRateVideoCaptureEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v15 = v3;
+      v15 = enabledCopy;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -12775,9 +12775,9 @@ LABEL_9:
   return [(AVCaptureFigVideoDevice *)self isLowLightVideoCaptureEnabled];
 }
 
-- (void)setAutoVideoFrameRateEnabled:(BOOL)a3
+- (void)setAutoVideoFrameRateEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")] & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF30];
@@ -12797,7 +12797,7 @@ LABEL_9:
     return;
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     if ([(AVCaptureFigVideoDevice *)self isVideoFrameDurationLocked])
     {
@@ -12821,17 +12821,17 @@ LABEL_8:
   if ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")])
   {
 
-    [(AVCaptureFigVideoDevice *)self setVariableFrameRateVideoCaptureEnabled:v3];
+    [(AVCaptureFigVideoDevice *)self setVariableFrameRateVideoCaptureEnabled:enabledCopy];
   }
 
   else if ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")])
   {
 
-    [(AVCaptureFigVideoDevice *)self setLowLightVideoCaptureEnabled:v3];
+    [(AVCaptureFigVideoDevice *)self setLowLightVideoCaptureEnabled:enabledCopy];
   }
 }
 
-- (void)setVideoStabilizationStrength:(int64_t)a3
+- (void)setVideoStabilizationStrength:(int64_t)strength
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -12843,7 +12843,7 @@ LABEL_8:
       block[2] = __57__AVCaptureFigVideoDevice_setVideoStabilizationStrength___block_invoke;
       block[3] = &unk_1E786ECD0;
       block[4] = self;
-      block[5] = a3;
+      block[5] = strength;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -12888,7 +12888,7 @@ LABEL_8:
   return v3;
 }
 
-- (void)setDigitalFlashMode:(int64_t)a3
+- (void)setDigitalFlashMode:(int64_t)mode
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -12906,7 +12906,7 @@ LABEL_8:
       block[4] = self;
       block[5] = &v10;
       dispatch_sync(devicePropsQueue, block);
-      if (a3)
+      if (mode)
       {
         if (v11[3])
         {
@@ -12916,7 +12916,7 @@ LABEL_8:
         }
       }
 
-      [(AVCaptureFigVideoDevice *)self _setDigitalFlashModeInternal:a3];
+      [(AVCaptureFigVideoDevice *)self _setDigitalFlashModeInternal:mode];
       _Block_object_dispose(&v10, 8);
       return;
     }
@@ -12942,7 +12942,7 @@ LABEL_8:
   NSLog(&cfstr_SuppressingExc.isa, v8);
 }
 
-- (void)_setDigitalFlashModeInternal:(int64_t)a3
+- (void)_setDigitalFlashModeInternal:(int64_t)internal
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -12950,7 +12950,7 @@ LABEL_8:
   v4[2] = __56__AVCaptureFigVideoDevice__setDigitalFlashModeInternal___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = internal;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -12965,9 +12965,9 @@ uint64_t __56__AVCaptureFigVideoDevice__setDigitalFlashModeInternal___block_invo
   return result;
 }
 
-- (void)_setConnected:(BOOL)a3
+- (void)_setConnected:(BOOL)connected
 {
-  v4 = a3 && [(AVCaptureFigVideoDevice *)self _cameraAccessIsEnabled];
+  v4 = connected && [(AVCaptureFigVideoDevice *)self _cameraAccessIsEnabled];
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
@@ -13074,9 +13074,9 @@ uint64_t __33__AVCaptureFigVideoDevice_unhide__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (BOOL)isFocusModeSupported:(int64_t)a3
+- (BOOL)isFocusModeSupported:(int64_t)supported
 {
-  if (a3 > 2)
+  if (supported > 2)
   {
     return 0;
   }
@@ -13086,24 +13086,24 @@ uint64_t __33__AVCaptureFigVideoDevice_unhide__block_invoke_2(uint64_t a1)
   return [v5 BOOLValue];
 }
 
-- (int)_setFocusWithMode:(int64_t)a3 lensPosition:(float)a4 requestID:(int)a5
+- (int)_setFocusWithMode:(int64_t)mode lensPosition:(float)position requestID:(int)d
 {
-  v5 = *&a5;
+  v5 = *&d;
   if (!_FigIsCurrentDispatchQueue())
   {
     [AVCaptureFigVideoDevice _setFocusWithMode:lensPosition:requestID:];
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = v9;
-  if (a3)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v10 = dictionary;
+  if (mode)
   {
-    if (a3 > 2)
+    if (mode > 2)
     {
       goto LABEL_18;
     }
 
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
     [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69903C8]];
     if ([(AVCaptureFigVideoDevice *)self isAutoFocusRangeRestrictionSupported])
     {
@@ -13122,7 +13122,7 @@ uint64_t __33__AVCaptureFigVideoDevice_unhide__block_invoke_2(uint64_t a1)
       v14 = fvd_cgRectDictionaryForRectOfInterest(self->_focusRectOfInterest.origin.x, self->_focusRectOfInterest.origin.y, self->_focusRectOfInterest.size.width, self->_focusRectOfInterest.size.height);
       if (!v14 || (v15 = v14, self->_isDefaultFocusRectOfInterest))
       {
-        [(AVCaptureFigVideoDevice *)self _defaultRectForFocusPointOfInterest:a3 focusMode:self->_focusPointOfInterest.x, self->_focusPointOfInterest.y];
+        [(AVCaptureFigVideoDevice *)self _defaultRectForFocusPointOfInterest:mode focusMode:self->_focusPointOfInterest.x, self->_focusPointOfInterest.y];
         v15 = fvd_cgRectDictionaryForRectOfInterest(v16, v17, v18, v19);
       }
 
@@ -13135,8 +13135,8 @@ uint64_t __33__AVCaptureFigVideoDevice_unhide__block_invoke_2(uint64_t a1)
 
   else
   {
-    [v9 setObject:&unk_1F1CEA0D0 forKeyedSubscript:*MEMORY[0x1E69903C8]];
-    *&v22 = a4;
+    [dictionary setObject:&unk_1F1CEA0D0 forKeyedSubscript:*MEMORY[0x1E69903C8]];
+    *&v22 = position;
     v23 = [MEMORY[0x1E696AD98] numberWithFloat:v22];
     [v10 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69903D0]];
     if (!v5)
@@ -13155,9 +13155,9 @@ LABEL_18:
   return [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:v24 withValue:v10];
 }
 
-- (void)setFocusMode:(int64_t)a3
+- (void)setFocusMode:(int64_t)mode
 {
-  if ([(AVCaptureFigVideoDevice *)self isFocusModeSupported:?]&& (a3 == 2 || !self->_cinematicVideoEnabled))
+  if ([(AVCaptureFigVideoDevice *)self isFocusModeSupported:?]&& (mode == 2 || !self->_cinematicVideoEnabled))
   {
     v22 = 0;
     v23 = &v22;
@@ -13182,7 +13182,7 @@ LABEL_18:
     block[4] = self;
     block[5] = &v22;
     block[7] = &v15;
-    block[8] = a3;
+    block[8] = mode;
     block[6] = v19;
     dispatch_sync(devicePropsQueue, block);
     if (*(v16 + 24) == 1)
@@ -13264,10 +13264,10 @@ __n128 __40__AVCaptureFigVideoDevice_setFocusMode___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)setFocusPointOfInterest:(CGPoint)a3
+- (void)setFocusPointOfInterest:(CGPoint)interest
 {
-  y = a3.y;
-  x = a3.x;
+  y = interest.y;
+  x = interest.x;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if ([(AVCaptureFigVideoDevice *)self isFocusPointOfInterestSupported])
@@ -13431,10 +13431,10 @@ __n128 __53__AVCaptureFigVideoDevice_minFocusRectOfInterestSize__block_invoke(ui
   return result;
 }
 
-- (CGSize)_minFocusRectOfInterestSizeForFormat:(id)a3
+- (CGSize)_minFocusRectOfInterestSizeForFormat:(id)format
 {
   v4 = 0.0;
-  if (-[AVCaptureFigVideoDevice isFocusPointOfInterestSupported](self, "isFocusPointOfInterestSupported") && (v5 = [a3 sensorDimensions], v5 >= 321))
+  if (-[AVCaptureFigVideoDevice isFocusPointOfInterestSupported](self, "isFocusPointOfInterestSupported") && (v5 = [format sensorDimensions], v5 >= 321))
   {
     v6 = 0.0;
     if (SHIDWORD(v5) >= 321)
@@ -13496,12 +13496,12 @@ __n128 __46__AVCaptureFigVideoDevice_focusRectOfInterest__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setFocusRectOfInterest:(CGRect)a3
+- (void)setFocusRectOfInterest:(CGRect)interest
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if ([(AVCaptureFigVideoDevice *)self isFocusPointOfInterestSupported]&& x >= 0.0 && y >= 0.0 && width >= 0.0 && height >= 0.0 && x + width <= 1.0 && y + height <= 1.0)
@@ -13669,10 +13669,10 @@ uint64_t __50__AVCaptureFigVideoDevice_setFocusRectOfInterest___block_invoke_2(u
   return result;
 }
 
-- (CGRect)defaultRectForFocusPointOfInterest:(CGPoint)a3
+- (CGRect)defaultRectForFocusPointOfInterest:(CGPoint)interest
 {
-  y = a3.y;
-  x = a3.x;
+  y = interest.y;
+  x = interest.x;
   if ([(AVCaptureFigVideoDevice *)self isFocusRectOfInterestSupported])
   {
     [(AVCaptureFigVideoDevice *)self _defaultRectForFocusPointOfInterest:self->_focusMode focusMode:x, y];
@@ -13693,19 +13693,19 @@ uint64_t __50__AVCaptureFigVideoDevice_setFocusRectOfInterest___block_invoke_2(u
   return result;
 }
 
-- (CGRect)_defaultRectForFocusPointOfInterest:(CGPoint)a3 focusMode:(int64_t)a4
+- (CGRect)_defaultRectForFocusPointOfInterest:(CGPoint)interest focusMode:(int64_t)mode
 {
-  y = a3.y;
-  x = a3.x;
+  y = interest.y;
+  x = interest.x;
   v16.width = 0.0;
   v16.height = 0.0;
   v7 = MEMORY[0x1E6990128];
-  if (a4 != 2)
+  if (mode != 2)
   {
     v7 = MEMORY[0x1E6990118];
   }
 
-  if (a3.y != 0.5 || a3.x != 0.5)
+  if (interest.y != 0.5 || interest.x != 0.5)
   {
     v7 = MEMORY[0x1E6990120];
   }
@@ -13745,7 +13745,7 @@ uint64_t __50__AVCaptureFigVideoDevice_setFocusRectOfInterest___block_invoke_2(u
   return result;
 }
 
-- (void)_setAdjustingFocus:(BOOL)a3
+- (void)_setAdjustingFocus:(BOOL)focus
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -13753,17 +13753,17 @@ uint64_t __50__AVCaptureFigVideoDevice_setFocusRectOfInterest___block_invoke_2(u
   v4[2] = __46__AVCaptureFigVideoDevice__setAdjustingFocus___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  focusCopy = focus;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (void)setAutoFocusRangeRestriction:(int64_t)a3
+- (void)setAutoFocusRangeRestriction:(int64_t)restriction
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if ([(AVCaptureFigVideoDevice *)self isAutoFocusRangeRestrictionSupported])
     {
-      self->_autoFocusRangeRestriction = a3;
+      self->_autoFocusRangeRestriction = restriction;
       return;
     }
 
@@ -13795,7 +13795,7 @@ uint64_t __50__AVCaptureFigVideoDevice_setFocusRectOfInterest___block_invoke_2(u
   return [v2 BOOLValue];
 }
 
-- (void)setFocusModeLockedWithLensPosition:(float)a3 completionHandler:(id)a4
+- (void)setFocusModeLockedWithLensPosition:(float)position completionHandler:(id)handler
 {
   if (![(AVCaptureFigVideoDevice *)self isFocusModeSupported:0]|| self->_cinematicVideoEnabled)
   {
@@ -13803,7 +13803,7 @@ uint64_t __50__AVCaptureFigVideoDevice_setFocusRectOfInterest___block_invoke_2(u
   }
 
   LODWORD(v7) = 2139095039;
-  if (a3 != 3.4028e38)
+  if (position != 3.4028e38)
   {
     if (![(AVCaptureFigVideoDevice *)self isLockingFocusWithCustomLensPositionSupported])
     {
@@ -13822,7 +13822,7 @@ LABEL_4:
       return;
     }
 
-    if (a3 < 0.0 || a3 > 1.0)
+    if (position < 0.0 || position > 1.0)
     {
       v8 = MEMORY[0x1E695DF30];
       v9 = *MEMORY[0x1E695DA20];
@@ -13859,10 +13859,10 @@ LABEL_4:
   v17[2] = __80__AVCaptureFigVideoDevice_setFocusModeLockedWithLensPosition_completionHandler___block_invoke_2;
   v17[3] = &unk_1E7870338;
   v17[4] = self;
-  v17[5] = a4;
+  v17[5] = handler;
   v17[6] = &v24;
   v17[7] = 0;
-  v18 = a3;
+  positionCopy = position;
   dispatch_sync(v12, v17);
   v13 = *(v25 + 6);
   if (v13 == -16452)
@@ -13923,13 +13923,13 @@ uint64_t __80__AVCaptureFigVideoDevice_setFocusModeLockedWithLensPosition_comple
   return result;
 }
 
-- (void)setSmoothAutoFocusEnabled:(BOOL)a3
+- (void)setSmoothAutoFocusEnabled:(BOOL)enabled
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if ([(AVCaptureFigVideoDevice *)self isSmoothAutoFocusSupported])
     {
-      self->_smoothAutoFocusEnabled = a3;
+      self->_smoothAutoFocusEnabled = enabled;
       return;
     }
 
@@ -13973,7 +13973,7 @@ uint64_t __80__AVCaptureFigVideoDevice_setFocusModeLockedWithLensPosition_comple
   return v3;
 }
 
-- (void)setAutomaticallyAdjustsFaceDrivenAutoFocusEnabled:(BOOL)a3
+- (void)setAutomaticallyAdjustsFaceDrivenAutoFocusEnabled:(BOOL)enabled
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -13985,7 +13985,7 @@ uint64_t __80__AVCaptureFigVideoDevice_setFocusModeLockedWithLensPosition_comple
       block[2] = __77__AVCaptureFigVideoDevice_setAutomaticallyAdjustsFaceDrivenAutoFocusEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v10 = a3;
+      enabledCopy = enabled;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -14030,7 +14030,7 @@ uint64_t __80__AVCaptureFigVideoDevice_setFocusModeLockedWithLensPosition_comple
   return v3;
 }
 
-- (void)setFaceDrivenAutoFocusEnabled:(BOOL)a3
+- (void)setFaceDrivenAutoFocusEnabled:(BOOL)enabled
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -14041,7 +14041,7 @@ uint64_t __80__AVCaptureFigVideoDevice_setFocusModeLockedWithLensPosition_comple
       block[1] = 3221225472;
       block[2] = __57__AVCaptureFigVideoDevice_setFaceDrivenAutoFocusEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
-      v10 = a3;
+      enabledCopy = enabled;
       block[4] = self;
       dispatch_sync(devicePropsQueue, block);
       return;
@@ -14111,7 +14111,7 @@ uint64_t __57__AVCaptureFigVideoDevice_setFaceDrivenAutoFocusEnabled___block_inv
   return result;
 }
 
-- (void)_setAdjustingExposure:(BOOL)a3
+- (void)_setAdjustingExposure:(BOOL)exposure
 {
   v7 = 0;
   v8 = &v7;
@@ -14122,7 +14122,7 @@ uint64_t __57__AVCaptureFigVideoDevice_setFaceDrivenAutoFocusEnabled___block_inv
   block[1] = 3221225472;
   block[2] = __49__AVCaptureFigVideoDevice__setAdjustingExposure___block_invoke;
   block[3] = &unk_1E7870360;
-  v6 = a3;
+  exposureCopy = exposure;
   block[4] = self;
   block[5] = &v7;
   dispatch_sync(devicePropsQueue, block);
@@ -14148,24 +14148,24 @@ uint64_t __49__AVCaptureFigVideoDevice__setAdjustingExposure___block_invoke(uint
   return result;
 }
 
-- (BOOL)isExposureModeSupported:(int64_t)a3
+- (BOOL)isExposureModeSupported:(int64_t)supported
 {
-  if (a3 > 3)
+  if (supported > 3)
   {
     return 0;
   }
 
-  v5 = [(NSDictionary *)self->_fcsAttributes objectForKeyedSubscript:**(&unk_1E7870A00 + a3), v3];
+  v5 = [(NSDictionary *)self->_fcsAttributes objectForKeyedSubscript:**(&unk_1E7870A00 + supported), v3];
 
   return [v5 BOOLValue];
 }
 
-- (int)_setExposureWithMode:(int64_t)a3 duration:(id *)a4 ISO:(float)a5 requestID:(int)a6 newMaxFrameDuration:(id *)a7
+- (int)_setExposureWithMode:(int64_t)mode duration:(id *)duration ISO:(float)o requestID:(int)d newMaxFrameDuration:(id *)frameDuration
 {
-  v8 = *&a6;
-  if (a7)
+  v8 = *&d;
+  if (frameDuration)
   {
-    *a7 = **&MEMORY[0x1E6960C70];
+    *frameDuration = **&MEMORY[0x1E6960C70];
   }
 
   if (!_FigIsCurrentDispatchQueue())
@@ -14173,9 +14173,9 @@ uint64_t __49__AVCaptureFigVideoDevice__setAdjustingExposure___block_invoke(uint
     [AVCaptureFigVideoDevice _setExposureWithMode:duration:ISO:requestID:newMaxFrameDuration:];
   }
 
-  if (a3 != 1)
+  if (mode != 1)
   {
-    if (a3)
+    if (mode)
     {
       v13 = 0;
       goto LABEL_11;
@@ -14184,15 +14184,15 @@ uint64_t __49__AVCaptureFigVideoDevice__setAdjustingExposure___block_invoke(uint
     if (self->_exposureMode != 3)
     {
       v13 = 0;
-      a3 = 0;
+      mode = 0;
       goto LABEL_11;
     }
   }
 
   v13 = 1;
-  a3 = 2;
+  mode = 2;
 LABEL_11:
-  if (a3 != 3 && self->_exposureMode == 3)
+  if (mode != 3 && self->_exposureMode == 3)
   {
     time = self->_activeMaxFrameDuration;
     FigCaptureFrameRateFromCMTime();
@@ -14204,12 +14204,12 @@ LABEL_11:
     [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:*MEMORY[0x1E69905B8] withValue:v15 cacheOnly:self->_cachesFigCaptureSourceConfigurationChanges];
   }
 
-  v16 = [MEMORY[0x1E695DF90] dictionary];
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v16 setObject:v17 forKeyedSubscript:*MEMORY[0x1E6990370]];
-  if (a3 != 3)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  [dictionary setObject:v17 forKeyedSubscript:*MEMORY[0x1E6990370]];
+  if (mode != 3)
   {
-    if (a3 != 2)
+    if (mode != 2)
     {
       goto LABEL_30;
     }
@@ -14230,9 +14230,9 @@ LABEL_11:
         v24 = 1;
       }
 
-      [v16 setObject:v23 forKeyedSubscript:*MEMORY[0x1E6990378]];
+      [dictionary setObject:v23 forKeyedSubscript:*MEMORY[0x1E6990378]];
       v36 = [MEMORY[0x1E696AD98] numberWithBool:v24];
-      [v16 setObject:v36 forKeyedSubscript:*MEMORY[0x1E6990368]];
+      [dictionary setObject:v36 forKeyedSubscript:*MEMORY[0x1E6990368]];
     }
 
     v34 = [MEMORY[0x1E696AD98] numberWithInt:*&self->_torchAvailable];
@@ -14241,61 +14241,61 @@ LABEL_11:
   }
 
   v25 = *MEMORY[0x1E695E480];
-  time = *a4;
+  time = *duration;
   v26 = CMTimeCopyAsDictionary(&time, v25);
-  [v16 setObject:v26 forKeyedSubscript:*MEMORY[0x1E6990358]];
+  [dictionary setObject:v26 forKeyedSubscript:*MEMORY[0x1E6990358]];
 
-  var3 = a4->var3;
-  *&self->_manualWhiteBalanceControlRequests = *&a4->var0;
+  var3 = duration->var3;
+  *&self->_manualWhiteBalanceControlRequests = *&duration->var0;
   *&self->_lastCustomExposureDuration.timescale = var3;
   value = self->_activeMaxFrameDuration.value;
   timescale = self->_activeMaxFrameDuration.timescale;
   v39 = *&self->_activeMaxFrameDuration.flags;
   epoch_high = HIDWORD(self->_activeMaxFrameDuration.epoch);
-  time = *a4;
+  time = *duration;
   memset(&v38, 0, sizeof(v38));
   if (CMTimeCompare(&time, &v38))
   {
-    time = *a4;
+    time = *duration;
     v38.value = value;
     v38.timescale = timescale;
     *&v38.flags = v39;
     HIDWORD(v38.epoch) = epoch_high;
     if (CMTimeCompare(&time, &v38) >= 1)
     {
-      CMTimeMake(&time, 1, vcvtmd_s64_f64(a4->var1 / a4->var0));
+      CMTimeMake(&time, 1, vcvtmd_s64_f64(duration->var1 / duration->var0));
       value = time.value;
       timescale = time.timescale;
       v39 = *&time.flags;
       epoch_high = HIDWORD(time.epoch);
-      if (a7)
+      if (frameDuration)
       {
-        a7->var0 = time.value;
-        a7->var1 = timescale;
-        *&a7->var2 = v39;
-        HIDWORD(a7->var3) = epoch_high;
+        frameDuration->var0 = time.value;
+        frameDuration->var1 = timescale;
+        *&frameDuration->var2 = v39;
+        HIDWORD(frameDuration->var3) = epoch_high;
       }
     }
   }
 
-  v30 = [MEMORY[0x1E696AD98] numberWithDouble:timescale / value];
-  [v16 setObject:v30 forKeyedSubscript:*MEMORY[0x1E6990350]];
+  value = [MEMORY[0x1E696AD98] numberWithDouble:timescale / value];
+  [dictionary setObject:value forKeyedSubscript:*MEMORY[0x1E6990350]];
   v31 = [MEMORY[0x1E696AD98] numberWithDouble:self->_activeMinFrameDuration.timescale / self->_activeMinFrameDuration.value];
-  [v16 setObject:v31 forKeyedSubscript:*MEMORY[0x1E6990348]];
-  *&v32 = a5;
+  [dictionary setObject:v31 forKeyedSubscript:*MEMORY[0x1E6990348]];
+  *&v32 = o;
   v33 = [MEMORY[0x1E696AD98] numberWithFloat:v32];
-  [v16 setObject:v33 forKeyedSubscript:*MEMORY[0x1E6990360]];
-  *&self->_lastCustomExposureDuration.epoch = a5;
+  [dictionary setObject:v33 forKeyedSubscript:*MEMORY[0x1E6990360]];
+  *&self->_lastCustomExposureDuration.epoch = o;
   if (v8)
   {
     v34 = [MEMORY[0x1E696AD98] numberWithInt:v8];
     v35 = MEMORY[0x1E6990380];
 LABEL_29:
-    [v16 setObject:v34 forKeyedSubscript:*v35];
+    [dictionary setObject:v34 forKeyedSubscript:*v35];
   }
 
 LABEL_30:
-  result = [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:*MEMORY[0x1E69906B8] withValue:v16];
+  result = [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:*MEMORY[0x1E69906B8] withValue:dictionary];
   if (!result)
   {
     BYTE5(self->_activeMaxExposureDurationClientOverride.epoch) = v13;
@@ -14304,11 +14304,11 @@ LABEL_30:
   return result;
 }
 
-- (void)setExposureMode:(int64_t)a3
+- (void)setExposureMode:(int64_t)mode
 {
   if ([(AVCaptureFigVideoDevice *)self isExposureModeSupported:?])
   {
-    if (a3 == 3)
+    if (mode == 3)
     {
       v5 = [AVCaptureDeviceControlRequest deviceControlRequestWithCompletionBlock:0];
       [(AVCaptureDeviceControlRequestQueue *)self->_manualFocusControlRequests enqueueRequest:v5];
@@ -14329,7 +14329,7 @@ LABEL_30:
     block[2] = __43__AVCaptureFigVideoDevice_setExposureMode___block_invoke;
     block[3] = &unk_1E7870388;
     block[6] = &v15;
-    block[7] = a3;
+    block[7] = mode;
     block[4] = self;
     block[5] = v5;
     dispatch_sync(devicePropsQueue, block);
@@ -14518,7 +14518,7 @@ float __30__AVCaptureFigVideoDevice_ISO__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setExposureModeCustomWithDuration:(id *)a3 ISO:(float)a4 completionHandler:(id)a5
+- (void)setExposureModeCustomWithDuration:(id *)duration ISO:(float)o completionHandler:(id)handler
 {
   if (![(AVCaptureFigVideoDevice *)self isExposureModeSupported:3])
   {
@@ -14530,7 +14530,7 @@ LABEL_6:
     v14 = v11;
     v15 = v12;
 LABEL_14:
-    v18 = [v14 exceptionWithName:v15 reason:v13 userInfo:{0, *&v27, var1}];
+    v18 = [v14 exceptionWithName:v15 reason:v13 userInfo:{0, *&oCopy, var1}];
     if (AVCaptureShouldThrowForAPIViolations())
     {
       objc_exception_throw(v18);
@@ -14540,14 +14540,14 @@ LABEL_14:
     return;
   }
 
-  v9 = [(AVCaptureFigVideoDevice *)self activeFormat];
-  time1 = *a3;
+  activeFormat = [(AVCaptureFigVideoDevice *)self activeFormat];
+  time1 = *duration;
   memset(&time2, 0, sizeof(time2));
   if (CMTimeCompare(&time1, &time2))
   {
-    if (v9)
+    if (activeFormat)
     {
-      [v9 minExposureDuration];
+      [activeFormat minExposureDuration];
     }
 
     else
@@ -14555,15 +14555,15 @@ LABEL_14:
       memset(&time1, 0, sizeof(time1));
     }
 
-    time2 = *a3;
+    time2 = *duration;
     if (CMTimeCompare(&time2, &time1) < 0)
     {
       goto LABEL_13;
     }
 
-    if (v9)
+    if (activeFormat)
     {
-      [v9 maxExposureDuration];
+      [activeFormat maxExposureDuration];
     }
 
     else
@@ -14571,15 +14571,15 @@ LABEL_14:
       memset(&time1, 0, sizeof(time1));
     }
 
-    time2 = *a3;
+    time2 = *duration;
     if (CMTimeCompare(&time2, &time1) >= 1)
     {
 LABEL_13:
       v16 = MEMORY[0x1E695DF30];
       v17 = *MEMORY[0x1E695DA20];
       objc_opt_class();
-      v27 = *&a3->var0;
-      var1 = a3->var1;
+      oCopy = *&duration->var0;
+      var1 = duration->var1;
       v13 = AVMethodExceptionReasonWithClassAndSelector();
       v14 = v16;
       v15 = v17;
@@ -14588,15 +14588,15 @@ LABEL_13:
   }
 
   LODWORD(v10) = 2139095039;
-  if (a4 != 3.4028e38)
+  if (o != 3.4028e38)
   {
-    [v9 minISO];
-    if (v19 > a4 || ([v9 maxISO], v20 < a4))
+    [activeFormat minISO];
+    if (v19 > o || ([activeFormat maxISO], v20 < o))
     {
       v11 = MEMORY[0x1E695DF30];
       v12 = *MEMORY[0x1E695DA20];
       objc_opt_class();
-      v27 = a4;
+      oCopy = o;
       goto LABEL_6;
     }
   }
@@ -14629,16 +14629,16 @@ LABEL_13:
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"exposureMode"];
   }
 
-  v23 = [AVCaptureDeviceControlRequest deviceControlRequestWithCompletionBlock:a5];
+  v23 = [AVCaptureDeviceControlRequest deviceControlRequestWithCompletionBlock:handler];
   [(AVCaptureDeviceControlRequestQueue *)self->_manualFocusControlRequests enqueueRequest:v23];
   v24 = self->_devicePropsQueue;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __83__AVCaptureFigVideoDevice_setExposureModeCustomWithDuration_ISO_completionHandler___block_invoke_2;
   v32[3] = &unk_1E78703B0;
-  v33 = *&a3->var0;
-  var3 = a3->var3;
-  v35 = a4;
+  v33 = *&duration->var0;
+  var3 = duration->var3;
+  oCopy2 = o;
   v32[4] = self;
   v32[5] = v23;
   v32[6] = &time2;
@@ -14705,11 +14705,11 @@ uint64_t __83__AVCaptureFigVideoDevice_setExposureModeCustomWithDuration_ISO_com
   return result;
 }
 
-- (void)setExposureTargetBias:(float)a3 completionHandler:(id)a4
+- (void)setExposureTargetBias:(float)bias completionHandler:(id)handler
 {
-  v5 = a3;
-  a3 = 3.4028e38;
-  if (v5 == 3.4028e38 || ([(AVCaptureFigVideoDevice *)self minExposureTargetBias], v7 <= v5) && ([(AVCaptureFigVideoDevice *)self maxExposureTargetBias], v8 >= v5))
+  biasCopy = bias;
+  bias = 3.4028e38;
+  if (biasCopy == 3.4028e38 || ([(AVCaptureFigVideoDevice *)self minExposureTargetBias], v7 <= biasCopy) && ([(AVCaptureFigVideoDevice *)self maxExposureTargetBias], v8 >= biasCopy))
   {
     v23 = 0;
     v24 = &v23;
@@ -14725,8 +14725,8 @@ uint64_t __83__AVCaptureFigVideoDevice_setExposureModeCustomWithDuration_ISO_com
     block[2] = __67__AVCaptureFigVideoDevice_setExposureTargetBias_completionHandler___block_invoke;
     block[3] = &unk_1E78703D8;
     block[4] = self;
-    block[5] = a4;
-    v18 = v5;
+    block[5] = handler;
+    v18 = biasCopy;
     block[6] = &v19;
     block[7] = &v23;
     dispatch_sync(devicePropsQueue, block);
@@ -14768,7 +14768,7 @@ LABEL_12:
   v9 = MEMORY[0x1E695DF30];
   v10 = *MEMORY[0x1E695DA20];
   objc_opt_class();
-  v11 = [v9 exceptionWithName:v10 reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, v5}];
+  v11 = [v9 exceptionWithName:v10 reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, biasCopy}];
   if (AVCaptureShouldThrowForAPIViolations())
   {
     objc_exception_throw(v11);
@@ -14907,10 +14907,10 @@ float __47__AVCaptureFigVideoDevice_exposureTargetOffset__block_invoke_2(uint64_
   return result;
 }
 
-- (void)setExposurePointOfInterest:(CGPoint)a3
+- (void)setExposurePointOfInterest:(CGPoint)interest
 {
-  y = a3.y;
-  x = a3.x;
+  y = interest.y;
+  x = interest.x;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if ([(AVCaptureFigVideoDevice *)self isExposurePointOfInterestSupported])
@@ -15072,10 +15072,10 @@ __n128 __56__AVCaptureFigVideoDevice_minExposureRectOfInterestSize__block_invoke
   return result;
 }
 
-- (CGSize)_minExposureRectOfInterestSizeForFormat:(id)a3
+- (CGSize)_minExposureRectOfInterestSizeForFormat:(id)format
 {
   v4 = 0.0;
-  if (-[AVCaptureFigVideoDevice isExposurePointOfInterestSupported](self, "isExposurePointOfInterestSupported") && (v5 = [a3 sensorDimensions], v5 >= 321))
+  if (-[AVCaptureFigVideoDevice isExposurePointOfInterestSupported](self, "isExposurePointOfInterestSupported") && (v5 = [format sensorDimensions], v5 >= 321))
   {
     v6 = 0.0;
     if (SHIDWORD(v5) >= 321)
@@ -15137,12 +15137,12 @@ __n128 __49__AVCaptureFigVideoDevice_exposureRectOfInterest__block_invoke(uint64
   return result;
 }
 
-- (void)setExposureRectOfInterest:(CGRect)a3
+- (void)setExposureRectOfInterest:(CGRect)interest
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if ([(AVCaptureFigVideoDevice *)self isExposurePointOfInterestSupported]&& x >= 0.0 && y >= 0.0 && width >= 0.0 && height >= 0.0 && x + width <= 1.0 && y + height <= 1.0)
@@ -15318,10 +15318,10 @@ uint64_t __53__AVCaptureFigVideoDevice_setExposureRectOfInterest___block_invoke_
   return result;
 }
 
-- (CGRect)defaultRectForExposurePointOfInterest:(CGPoint)a3
+- (CGRect)defaultRectForExposurePointOfInterest:(CGPoint)interest
 {
-  y = a3.y;
-  x = a3.x;
+  y = interest.y;
+  x = interest.x;
   if ([(AVCaptureFigVideoDevice *)self isExposureRectOfInterestSupported])
   {
     [(AVCaptureFigVideoDevice *)self _defaultRectForExposurePointOfInterest:x, y];
@@ -15342,13 +15342,13 @@ uint64_t __53__AVCaptureFigVideoDevice_setExposureRectOfInterest___block_invoke_
   return result;
 }
 
-- (CGRect)_defaultRectForExposurePointOfInterest:(CGPoint)a3
+- (CGRect)_defaultRectForExposurePointOfInterest:(CGPoint)interest
 {
-  y = a3.y;
-  x = a3.x;
+  y = interest.y;
+  x = interest.x;
   v15.width = 0.0;
   v15.height = 0.0;
-  v6 = a3.y == 0.5 && a3.x == 0.5;
+  v6 = interest.y == 0.5 && interest.x == 0.5;
   fcsAttributes = self->_fcsAttributes;
   v8 = MEMORY[0x1E6990108];
   if (!v6)
@@ -15403,7 +15403,7 @@ uint64_t __53__AVCaptureFigVideoDevice_setExposureRectOfInterest___block_invoke_
   return v3;
 }
 
-- (void)setAutomaticallyAdjustsFaceDrivenAutoExposureEnabled:(BOOL)a3
+- (void)setAutomaticallyAdjustsFaceDrivenAutoExposureEnabled:(BOOL)enabled
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -15415,7 +15415,7 @@ uint64_t __53__AVCaptureFigVideoDevice_setExposureRectOfInterest___block_invoke_
       block[2] = __80__AVCaptureFigVideoDevice_setAutomaticallyAdjustsFaceDrivenAutoExposureEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v10 = a3;
+      enabledCopy = enabled;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -15460,7 +15460,7 @@ uint64_t __53__AVCaptureFigVideoDevice_setExposureRectOfInterest___block_invoke_
   return v3;
 }
 
-- (void)setFaceDrivenAutoExposureEnabled:(BOOL)a3
+- (void)setFaceDrivenAutoExposureEnabled:(BOOL)enabled
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -15471,7 +15471,7 @@ uint64_t __53__AVCaptureFigVideoDevice_setExposureRectOfInterest___block_invoke_
       block[1] = 3221225472;
       block[2] = __60__AVCaptureFigVideoDevice_setFaceDrivenAutoExposureEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
-      v10 = a3;
+      enabledCopy = enabled;
       block[4] = self;
       dispatch_sync(devicePropsQueue, block);
       return;
@@ -15582,19 +15582,19 @@ __n128 __52__AVCaptureFigVideoDevice_activeMaxExposureDuration__block_invoke(uin
   return result;
 }
 
-- (void)setActiveMaxExposureDuration:(id *)a3
+- (void)setActiveMaxExposureDuration:(id *)duration
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if ((a3->var2 & 1) == 0)
+    if ((duration->var2 & 1) == 0)
     {
       goto LABEL_3;
     }
 
-    v8 = [(AVCaptureFigVideoDevice *)self activeFormat];
-    if (v8)
+    activeFormat = [(AVCaptureFigVideoDevice *)self activeFormat];
+    if (activeFormat)
     {
-      [v8 minExposureDuration];
+      [activeFormat minExposureDuration];
     }
 
     else
@@ -15602,13 +15602,13 @@ __n128 __52__AVCaptureFigVideoDevice_activeMaxExposureDuration__block_invoke(uin
       memset(&time2, 0, sizeof(time2));
     }
 
-    time1 = *a3;
+    time1 = *duration;
     if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
     {
-      v9 = [(AVCaptureFigVideoDevice *)self activeFormat];
-      if (v9)
+      activeFormat2 = [(AVCaptureFigVideoDevice *)self activeFormat];
+      if (activeFormat2)
       {
-        [v9 maxExposureDuration];
+        [activeFormat2 maxExposureDuration];
       }
 
       else
@@ -15616,7 +15616,7 @@ __n128 __52__AVCaptureFigVideoDevice_activeMaxExposureDuration__block_invoke(uin
         memset(&time2, 0, sizeof(time2));
       }
 
-      time1 = *a3;
+      time1 = *duration;
       if (CMTimeCompare(&time1, &time2) < 1)
       {
 LABEL_3:
@@ -15626,8 +15626,8 @@ LABEL_3:
         block[2] = __56__AVCaptureFigVideoDevice_setActiveMaxExposureDuration___block_invoke;
         block[3] = &unk_1E7870450;
         block[4] = self;
-        v12 = *&a3->var0;
-        var3 = a3->var3;
+        v12 = *&duration->var0;
+        var3 = duration->var3;
         dispatch_sync(devicePropsQueue, block);
         return;
       }
@@ -15686,9 +15686,9 @@ void __56__AVCaptureFigVideoDevice_setActiveMaxExposureDuration___block_invoke(u
   return v3;
 }
 
-- (void)setGlobalToneMappingEnabled:(BOOL)a3
+- (void)setGlobalToneMappingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if ([(AVCaptureDeviceFormat *)self->_activeFormat isGlobalToneMappingSupported])
@@ -15712,7 +15712,7 @@ void __56__AVCaptureFigVideoDevice_setActiveMaxExposureDuration___block_invoke(u
         [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"digitalFlashMode"];
       }
 
-      [(AVCaptureFigVideoDevice *)self _setGlobalToneMappingEnabledInternal:v3];
+      [(AVCaptureFigVideoDevice *)self _setGlobalToneMappingEnabledInternal:enabledCopy];
       _Block_object_dispose(&v10, 8);
       return;
     }
@@ -15738,7 +15738,7 @@ void __56__AVCaptureFigVideoDevice_setActiveMaxExposureDuration___block_invoke(u
   NSLog(&cfstr_SuppressingExc.isa, v8);
 }
 
-- (void)_setGlobalToneMappingEnabledInternal:(BOOL)a3
+- (void)_setGlobalToneMappingEnabledInternal:(BOOL)internal
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -15746,7 +15746,7 @@ void __56__AVCaptureFigVideoDevice_setActiveMaxExposureDuration___block_invoke(u
   v4[2] = __64__AVCaptureFigVideoDevice__setGlobalToneMappingEnabledInternal___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  internalCopy = internal;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -15780,7 +15780,7 @@ uint64_t __64__AVCaptureFigVideoDevice__setGlobalToneMappingEnabledInternal___bl
   return v3;
 }
 
-- (void)_setAdjustingWhiteBalance:(BOOL)a3
+- (void)_setAdjustingWhiteBalance:(BOOL)balance
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -15788,13 +15788,13 @@ uint64_t __64__AVCaptureFigVideoDevice__setGlobalToneMappingEnabledInternal___bl
   v4[2] = __53__AVCaptureFigVideoDevice__setAdjustingWhiteBalance___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  balanceCopy = balance;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (BOOL)isWhiteBalanceModeSupported:(int64_t)a3
+- (BOOL)isWhiteBalanceModeSupported:(int64_t)supported
 {
-  if ((a3 | 2) != 2)
+  if ((supported | 2) != 2)
   {
     return 0;
   }
@@ -15823,7 +15823,7 @@ uint64_t __64__AVCaptureFigVideoDevice__setGlobalToneMappingEnabledInternal___bl
   return v3;
 }
 
-- (void)setWhiteBalanceMode:(int64_t)a3
+- (void)setWhiteBalanceMode:(int64_t)mode
 {
   if ([(AVCaptureFigVideoDevice *)self isWhiteBalanceModeSupported:?])
   {
@@ -15838,7 +15838,7 @@ uint64_t __64__AVCaptureFigVideoDevice__setGlobalToneMappingEnabledInternal___bl
     block[3] = &unk_1E7870310;
     block[4] = self;
     block[5] = &v12;
-    block[6] = a3;
+    block[6] = mode;
     dispatch_sync(devicePropsQueue, block);
     if (*(v13 + 6) == -16452)
     {
@@ -15861,7 +15861,7 @@ uint64_t __64__AVCaptureFigVideoDevice__setGlobalToneMappingEnabledInternal___bl
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
     objc_opt_class();
-    v10 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, a3}];
+    v10 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, mode}];
     if (AVCaptureShouldThrowForAPIViolations())
     {
       objc_exception_throw(v10);
@@ -16123,9 +16123,9 @@ void *__65__AVCaptureFigVideoDevice__ensureWhiteBalanceCalibrationUnpacked__bloc
   return [v2 BOOLValue];
 }
 
-- (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceTemperatureAndTintValues:(id)a3 completionHandler:(id)a4
+- (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceTemperatureAndTintValues:(id)values completionHandler:(id)handler
 {
-  [(AVCaptureFigVideoDevice *)self deviceWhiteBalanceGainsForTemperatureAndTintValues:*&a3, *&a3.var1];
+  [(AVCaptureFigVideoDevice *)self deviceWhiteBalanceGainsForTemperatureAndTintValues:*&values, *&values.var1];
   if (*&v6 >= *&v7)
   {
     v9 = *&v7;
@@ -16145,28 +16145,28 @@ void *__65__AVCaptureFigVideoDevice__ensureWhiteBalanceCalibrationUnpacked__bloc
   *&v7 = *&v7 / v9;
   *&v8 = *&v8 / v9;
 
-  [(AVCaptureFigVideoDevice *)self setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:a4 completionHandler:v6, v7, v8];
+  [(AVCaptureFigVideoDevice *)self setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:handler completionHandler:v6, v7, v8];
 }
 
-- (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:(id)a3 completionHandler:(id)a4
+- (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:(id)gains completionHandler:(id)handler
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v41 = a3;
+  var2 = gains.var2;
+  var1 = gains.var1;
+  var0 = gains.var0;
+  gainsCopy = gains;
   if (![(AVCaptureFigVideoDevice *)self isWhiteBalanceModeSupported:0])
   {
     goto LABEL_36;
   }
 
-  if (*&v41.var0)
+  if (*&gainsCopy.var0)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = LODWORD(v41.var2) == 0;
+    v9 = LODWORD(gainsCopy.var2) == 0;
   }
 
   if (v9)
@@ -16194,7 +16194,7 @@ LABEL_31:
       [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"whiteBalanceMode"];
     }
 
-    v23 = [AVCaptureDeviceControlRequest deviceControlRequestWithCompletionBlock:a4];
+    v23 = [AVCaptureDeviceControlRequest deviceControlRequestWithCompletionBlock:handler];
     [(AVCaptureDeviceControlRequestQueue *)self->_biasedExposureControlRequests enqueueRequest:v23];
     v24 = self->_devicePropsQueue;
     v30[0] = MEMORY[0x1E69E9820];
@@ -16203,7 +16203,7 @@ LABEL_31:
     v30[3] = &unk_1E7870478;
     v30[6] = &v37;
     v30[7] = 0;
-    v31 = v41;
+    v31 = gainsCopy;
     v30[4] = self;
     v30[5] = v23;
     dispatch_sync(v24, v30);
@@ -16264,9 +16264,9 @@ LABEL_31:
 
     v11 = var0 / v10;
     v12 = var1 / v10;
-    *&v41.var0 = __PAIR64__(LODWORD(v12), LODWORD(v11));
+    *&gainsCopy.var0 = __PAIR64__(LODWORD(v12), LODWORD(v11));
     v13 = var2 / v10;
-    v41.var2 = v13;
+    gainsCopy.var2 = v13;
     [(AVCaptureFigVideoDevice *)self maxWhiteBalanceGain];
     if (v11 >= 1.0 && v11 <= v14 && v12 >= 1.0 && v12 <= v14 && v13 >= 1.0 && v13 <= v14)
     {
@@ -16313,34 +16313,34 @@ uint64_t __98__AVCaptureFigVideoDevice_setWhiteBalanceModeLockedWithDeviceWhiteB
   return result;
 }
 
-- (int)_setWhiteBalanceWithMode:(int64_t)a3 gains:(id)a4 requestID:(int)a5
+- (int)_setWhiteBalanceWithMode:(int64_t)mode gains:(id)gains requestID:(int)d
 {
-  v5 = *&a5;
-  v13 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6990978]];
-  if (!a3)
+  v5 = *&d;
+  gainsCopy = gains;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E6990978]];
+  if (!mode)
   {
-    v10 = [MEMORY[0x1E695DEF0] dataWithBytes:&v13 length:12];
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6990970]];
+    v10 = [MEMORY[0x1E695DEF0] dataWithBytes:&gainsCopy length:12];
+    [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x1E6990970]];
     if (v5)
     {
       v11 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-      [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x1E6990980]];
+      [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E6990980]];
     }
   }
 
-  return [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:*MEMORY[0x1E6990860] withValue:v8];
+  return [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:*MEMORY[0x1E6990860] withValue:dictionary];
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)_deviceWhiteBalanceGainsForChromaticityValues:(id)a3 temperature:(double)a4
+- ($E2C29196C7A5C696474C6955C5A9CE06)_deviceWhiteBalanceGainsForChromaticityValues:(id)values temperature:(double)temperature
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = values.var1;
+  var0 = values.var0;
   if ([(AVCaptureFigVideoDevice *)self _ensureWhiteBalanceCalibrationUnpacked])
   {
-    [(AVCaptureFigVideoDevice *)self _whiteBalanceMixingFactorForTemperature:a4];
+    [(AVCaptureFigVideoDevice *)self _whiteBalanceMixingFactorForTemperature:temperature];
     v9 = 0;
     wbCalibrationTemperatures = self->_wbCalibrationTemperatures;
     v11 = *wbCalibrationTemperatures;
@@ -16398,11 +16398,11 @@ uint64_t __98__AVCaptureFigVideoDevice_setWhiteBalanceModeLockedWithDeviceWhiteB
   return result;
 }
 
-- (double)_predictedTempForGains:(id)a3
+- (double)_predictedTempForGains:(id)gains
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = gains.var2;
+  var1 = gains.var1;
+  var0 = gains.var0;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__AVCaptureFigVideoDevice__predictedTempForGains___block_invoke;
@@ -16463,7 +16463,7 @@ uint64_t __50__AVCaptureFigVideoDevice__predictedTempForGains___block_invoke(uin
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)_chromaticityValuesForDeviceWhiteBalanceGains:(id)a3 atMix:(double)a4
+- ($94F468A8D4C62B317260615823C2B210)_chromaticityValuesForDeviceWhiteBalanceGains:(id)gains atMix:(double)mix
 {
   v4 = 0;
   wbCalibrationTemperatures = self->_wbCalibrationTemperatures;
@@ -16471,16 +16471,16 @@ uint64_t __50__AVCaptureFigVideoDevice__predictedTempForGains___block_invoke(uin
   v7 = wbCalibrationTemperatures[1];
   do
   {
-    v21[v4] = *(*&v7 + v4 * 8) * a4 + *(*&v6 + v4 * 8) * (1.0 - a4);
+    v21[v4] = *(*&v7 + v4 * 8) * mix + *(*&v6 + v4 * 8) * (1.0 - mix);
     ++v4;
   }
 
   while (v4 != 9);
-  var1 = a3.var1;
+  var1 = gains.var1;
   __asm { FMOV            V1.2D, #1.0 }
 
-  v19 = vdivq_f64(_Q1, vcvtq_f64_f32(*&a3.var0));
-  v20 = 1.0 / a3.var2;
+  v19 = vdivq_f64(_Q1, vcvtq_f64_f32(*&gains.var0));
+  v20 = 1.0 / gains.var2;
   VectorMatrix(v19.f64, v21, v18);
   v16 = 0.0;
   v17 = 0.0;
@@ -16492,11 +16492,11 @@ uint64_t __50__AVCaptureFigVideoDevice__predictedTempForGains___block_invoke(uin
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)chromaticityValuesForDeviceWhiteBalanceGains:(id)a3
+- ($94F468A8D4C62B317260615823C2B210)chromaticityValuesForDeviceWhiteBalanceGains:(id)gains
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = gains.var2;
+  var1 = gains.var1;
+  var0 = gains.var0;
   v7 = 0.5;
   if (![(AVCaptureFigVideoDevice *)self _ensureWhiteBalanceCalibrationUnpacked])
   {
@@ -16668,12 +16668,12 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGainsForChromaticityValues:(id)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGainsForChromaticityValues:(id)values
 {
-  *&v3 = a3.var1;
-  *&v4 = a3.var0;
-  var1 = a3.var1;
-  v6 = vdupq_lane_s64(*&a3, 0);
+  *&v3 = values.var1;
+  *&v4 = values.var0;
+  var1 = values.var1;
+  v6 = vdupq_lane_s64(*&values, 0);
   v7.i32[0] = vmovn_s32(vcgeq_f32(v6, xmmword_1A92AB950)).u32[0];
   v7.i32[1] = vmovn_s32(vcgeq_f32(xmmword_1A92AB950, v6)).i32[1];
   if (vminv_u16(v7))
@@ -16682,7 +16682,7 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
     v17 = 0;
     v15 = v4;
     v16 = v3;
-    xy_to_tempTint(&v18, &v17, *&v4, a3.var1);
+    xy_to_tempTint(&v18, &v17, *&v4, values.var1);
     [(AVCaptureFigVideoDevice *)self _deviceWhiteBalanceGainsForChromaticityValues:v15 temperature:v16, v18];
   }
 
@@ -16709,11 +16709,11 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)temperatureAndTintValuesForDeviceWhiteBalanceGains:(id)a3
+- ($94F468A8D4C62B317260615823C2B210)temperatureAndTintValuesForDeviceWhiteBalanceGains:(id)gains
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = gains.var2;
+  var1 = gains.var1;
+  var0 = gains.var0;
   [(AVCaptureFigVideoDevice *)self maxWhiteBalanceGain];
   if (var0 < 1.0 || var0 > *&v7 || var1 < 1.0 || var1 > *&v7 || var2 < 1.0 || var2 > *&v7)
   {
@@ -16749,12 +16749,12 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGainsForTemperatureAndTintValues:(id)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)deviceWhiteBalanceGainsForTemperatureAndTintValues:(id)values
 {
   v10 = 0.0;
   v11 = 0.0;
-  var0 = a3.var0;
-  tempTint_to_xy(&v11, &v10, a3.var0, a3.var1);
+  var0 = values.var0;
+  tempTint_to_xy(&v11, &v10, values.var0, values.var1);
   HIDWORD(v6) = HIDWORD(v10);
   HIDWORD(v5) = HIDWORD(v11);
   *&v5 = v11;
@@ -16766,7 +16766,7 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
   return result;
 }
 
-- (void)_setFlashActive:(BOOL)a3
+- (void)_setFlashActive:(BOOL)active
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -16774,11 +16774,11 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
   v4[2] = __43__AVCaptureFigVideoDevice__setFlashActive___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (void)_setFlashSceneDetectedForPhotoOutput:(BOOL)a3
+- (void)_setFlashSceneDetectedForPhotoOutput:(BOOL)output
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -16786,11 +16786,11 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
   v4[2] = __64__AVCaptureFigVideoDevice__setFlashSceneDetectedForPhotoOutput___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  outputCopy = output;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (void)_setFlashAvailable:(BOOL)a3
+- (void)_setFlashAvailable:(BOOL)available
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -16798,7 +16798,7 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
   v4[2] = __46__AVCaptureFigVideoDevice__setFlashAvailable___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  availableCopy = available;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -16821,16 +16821,16 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
   return v3;
 }
 
-- (void)setFlashMode:(int64_t)a3
+- (void)setFlashMode:(int64_t)mode
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if ([(AVCaptureFigVideoDevice *)self isFlashModeSupported:a3])
+    if ([(AVCaptureFigVideoDevice *)self isFlashModeSupported:mode])
     {
       v26 = 0;
       v27 = &v26;
       v28 = 0x2020000000;
-      v29 = a3;
+      modeCopy = mode;
       v22 = 0;
       v23 = &v22;
       v24 = 0x2020000000;
@@ -16871,7 +16871,7 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
     v12 = MEMORY[0x1E695DF30];
     v13 = *MEMORY[0x1E695D940];
     objc_opt_class();
-    v16 = a3;
+    modeCopy2 = mode;
     v9 = AVMethodExceptionReasonWithClassAndSelector();
     v10 = v12;
     v11 = v13;
@@ -16887,7 +16887,7 @@ double __72__AVCaptureFigVideoDevice_chromaticityValuesForDeviceWhiteBalanceGain
     v11 = v8;
   }
 
-  v14 = [v10 exceptionWithName:v11 reason:v9 userInfo:{0, v16}];
+  v14 = [v10 exceptionWithName:v11 reason:v9 userInfo:{0, modeCopy2}];
   if (AVCaptureShouldThrowForAPIViolations())
   {
     objc_exception_throw(v14);
@@ -16915,12 +16915,12 @@ void *__40__AVCaptureFigVideoDevice_setFlashMode___block_invoke(void *result)
 - (BOOL)_isFlashScene
 {
   v2 = [(AVCaptureFigVideoDevice *)self _copyFigCaptureSourceProperty:*MEMORY[0x1E69906E8]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setTorchActive:(BOOL)a3
+- (void)_setTorchActive:(BOOL)active
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -16928,7 +16928,7 @@ void *__40__AVCaptureFigVideoDevice_setFlashMode___block_invoke(void *result)
   v4[2] = __43__AVCaptureFigVideoDevice__setTorchActive___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -16958,7 +16958,7 @@ float __37__AVCaptureFigVideoDevice_torchLevel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setTorchLevel:(float)a3
+- (void)_setTorchLevel:(float)level
 {
   v9 = 0;
   v10 = &v9;
@@ -16969,7 +16969,7 @@ float __37__AVCaptureFigVideoDevice_torchLevel__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__AVCaptureFigVideoDevice__setTorchLevel___block_invoke;
   block[3] = &unk_1E78704F0;
-  v8 = a3;
+  levelCopy = level;
   block[4] = self;
   block[5] = &v9;
   dispatch_sync(devicePropsQueue, block);
@@ -17016,7 +17016,7 @@ LABEL_7:
   return result;
 }
 
-- (void)_setTorchAvailable:(BOOL)a3
+- (void)_setTorchAvailable:(BOOL)available
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -17024,7 +17024,7 @@ LABEL_7:
   v4[2] = __46__AVCaptureFigVideoDevice__setTorchAvailable___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  availableCopy = available;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -17047,17 +17047,17 @@ LABEL_7:
   return v3;
 }
 
-- (void)setTorchMode:(int64_t)a3
+- (void)setTorchMode:(int64_t)mode
 {
   if ([(AVCaptureFigVideoDevice *)self isTorchModeSupported:?])
   {
     LODWORD(v5) = 2139095039;
-    if (a3 != 1)
+    if (mode != 1)
     {
       *&v5 = 0.0;
     }
 
-    v6 = [(AVCaptureFigVideoDevice *)self _setTorchMode:a3 withLevel:v5];
+    v6 = [(AVCaptureFigVideoDevice *)self _setTorchMode:mode withLevel:v5];
     if (v6 != -16452)
     {
       if (!v6)
@@ -17068,7 +17068,7 @@ LABEL_7:
         block[2] = __40__AVCaptureFigVideoDevice_setTorchMode___block_invoke;
         block[3] = &unk_1E786ECD0;
         block[4] = self;
-        block[5] = a3;
+        block[5] = mode;
         dispatch_sync(devicePropsQueue, block);
       }
 
@@ -17088,13 +17088,13 @@ LABEL_7:
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
     objc_opt_class();
-    v16 = a3;
+    modeCopy = mode;
     v10 = AVMethodExceptionReasonWithClassAndSelector();
     v11 = v8;
     v12 = v9;
   }
 
-  v15 = [v11 exceptionWithName:v12 reason:v10 userInfo:{0, v16}];
+  v15 = [v11 exceptionWithName:v12 reason:v10 userInfo:{0, modeCopy}];
   if (AVCaptureShouldThrowForAPIViolations())
   {
     objc_exception_throw(v15);
@@ -17103,9 +17103,9 @@ LABEL_7:
   NSLog(&cfstr_SuppressingExc.isa, v15);
 }
 
-- (BOOL)setTorchModeOnWithLevel:(float)a3 error:(id *)a4
+- (BOOL)setTorchModeOnWithLevel:(float)level error:(id *)error
 {
-  if (![(AVCaptureFigVideoDevice *)self isTorchModeSupported:1]|| a3 != 3.4028e38 && (a3 <= 0.0 || a3 > 1.0))
+  if (![(AVCaptureFigVideoDevice *)self isTorchModeSupported:1]|| level != 3.4028e38 && (level <= 0.0 || level > 1.0))
   {
     v10 = MEMORY[0x1E695DF30];
     v11 = *MEMORY[0x1E695D940];
@@ -17113,7 +17113,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  *&v7 = a3;
+  *&v7 = level;
   v8 = [(AVCaptureFigVideoDevice *)self _setTorchMode:1 withLevel:v7];
   v9 = v8;
   if (!v8)
@@ -17149,9 +17149,9 @@ LABEL_7:
 
   if (v8 != -16452)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = AVLocalizedErrorWithUnderlyingOSStatus();
+      *error = AVLocalizedErrorWithUnderlyingOSStatus();
     }
 
     return v9 == 0;
@@ -17171,23 +17171,23 @@ LABEL_9:
   return 0;
 }
 
-- (int)_setTorchMode:(int64_t)a3 withLevel:(float)a4
+- (int)_setTorchMode:(int64_t)mode withLevel:(float)level
 {
-  v7 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990600], [MEMORY[0x1E696AD98] numberWithInt:a3 == 2]);
+  v7 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990600], [MEMORY[0x1E696AD98] numberWithInt:mode == 2]);
   if (v7)
   {
     v9 = v7;
     [AVCaptureFigVideoDevice _setTorchMode:withLevel:];
   }
 
-  else if (a3 == 2)
+  else if (mode == 2)
   {
     return 0;
   }
 
   else
   {
-    *&v8 = a4;
+    *&v8 = level;
     v9 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990828], [MEMORY[0x1E696AD98] numberWithFloat:v8]);
     if (v9)
     {
@@ -17198,7 +17198,7 @@ LABEL_9:
   return v9;
 }
 
-- (void)setSubjectAreaChangeMonitoringEnabled:(BOOL)a3
+- (void)setSubjectAreaChangeMonitoringEnabled:(BOOL)enabled
 {
   v5 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E69907F0], [MEMORY[0x1E696AD98] numberWithBool:?]);
   if (v5 == -16452)
@@ -17217,11 +17217,11 @@ LABEL_9:
 
   else if (!v5)
   {
-    BYTE1(self->_torchLevel) = a3;
+    BYTE1(self->_torchLevel) = enabled;
   }
 }
 
-- (void)setProvidesStortorgetMetadata:(BOOL)a3
+- (void)setProvidesStortorgetMetadata:(BOOL)metadata
 {
   v5 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990790], [MEMORY[0x1E696AD98] numberWithBool:?]);
   if (v5 == -16452)
@@ -17240,14 +17240,14 @@ LABEL_9:
 
   else if (!v5)
   {
-    LOBYTE(self->_sceneClassificationKVO) = a3;
+    LOBYTE(self->_sceneClassificationKVO) = metadata;
   }
 }
 
-- (BOOL)isImageControlModeSupported:(int64_t)a3
+- (BOOL)isImageControlModeSupported:(int64_t)supported
 {
-  v4 = ((a3 - 5) < 2) & [-[NSDictionary objectForKeyedSubscript:](self->_fcsAttributes objectForKeyedSubscript:{*MEMORY[0x1E6990288]), "BOOLValue"}];
-  if (a3 < 5)
+  v4 = ((supported - 5) < 2) & [-[NSDictionary objectForKeyedSubscript:](self->_fcsAttributes objectForKeyedSubscript:{*MEMORY[0x1E6990288]), "BOOLValue"}];
+  if (supported < 5)
   {
     return 1;
   }
@@ -17258,7 +17258,7 @@ LABEL_9:
   }
 }
 
-- (void)setAutomaticallyAdjustsImageControlMode:(BOOL)a3
+- (void)setAutomaticallyAdjustsImageControlMode:(BOOL)mode
 {
   v5 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E69905E8], [MEMORY[0x1E696AD98] numberWithBool:?]);
   if (v5 == -16452)
@@ -17277,17 +17277,17 @@ LABEL_9:
 
   else if (!v5)
   {
-    BYTE1(self->_sceneClassificationKVO) = a3;
+    BYTE1(self->_sceneClassificationKVO) = mode;
   }
 }
 
-- (void)setImageControlMode:(int64_t)a3
+- (void)setImageControlMode:(int64_t)mode
 {
   if ([(AVCaptureFigVideoDevice *)self isImageControlModeSupported:?])
   {
     if (BYTE1(self->_sceneClassificationKVO) != 1)
     {
-      v10 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990740], [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+      v10 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990740], [MEMORY[0x1E696AD98] numberWithInteger:mode]);
       if (v10 != -16452)
       {
         if (!v10)
@@ -17298,7 +17298,7 @@ LABEL_9:
           block[2] = __47__AVCaptureFigVideoDevice_setImageControlMode___block_invoke;
           block[3] = &unk_1E786ECD0;
           block[4] = self;
-          block[5] = a3;
+          block[5] = mode;
           dispatch_sync(devicePropsQueue, block);
         }
 
@@ -17319,13 +17319,13 @@ LABEL_9:
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D940];
     objc_opt_class();
-    v15 = a3;
+    modeCopy = mode;
     v7 = AVMethodExceptionReasonWithClassAndSelector();
     v8 = v5;
     v9 = v6;
   }
 
-  v14 = [v8 exceptionWithName:v9 reason:v7 userInfo:{0, v15}];
+  v14 = [v8 exceptionWithName:v9 reason:v7 userInfo:{0, modeCopy}];
   if (AVCaptureShouldThrowForAPIViolations())
   {
     objc_exception_throw(v14);
@@ -17334,7 +17334,7 @@ LABEL_9:
   NSLog(&cfstr_SuppressingExc.isa, v14);
 }
 
-- (void)_setImageControlMode:(int64_t)a3
+- (void)_setImageControlMode:(int64_t)mode
 {
   v9 = 0;
   v10 = &v9;
@@ -17346,7 +17346,7 @@ LABEL_9:
   block[2] = __48__AVCaptureFigVideoDevice__setImageControlMode___block_invoke;
   block[3] = &unk_1E7870310;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = mode;
   block[4] = self;
   dispatch_sync(devicePropsQueue, block);
   if (*(v10 + 24) == 1)
@@ -17358,7 +17358,7 @@ LABEL_9:
     v7[2] = __48__AVCaptureFigVideoDevice__setImageControlMode___block_invoke_2;
     v7[3] = &unk_1E786ECD0;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = mode;
     dispatch_sync(v6, v7);
     [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"imageControlMode"];
   }
@@ -17366,7 +17366,7 @@ LABEL_9:
   _Block_object_dispose(&v9, 8);
 }
 
-- (id)runDiagnosticsWithTestType:(id)a3
+- (id)runDiagnosticsWithTestType:(id)type
 {
   v14 = 0;
   v15 = &v14;
@@ -17384,7 +17384,7 @@ LABEL_9:
   block[2] = __54__AVCaptureFigVideoDevice_runDiagnosticsWithTestType___block_invoke;
   block[3] = &unk_1E7870518;
   block[4] = self;
-  block[5] = a3;
+  block[5] = type;
   block[6] = &v10;
   block[7] = &v14;
   dispatch_sync(devicePropsQueue, block);
@@ -17392,7 +17392,7 @@ LABEL_9:
   {
     v5 = MEMORY[0x1E695DF30];
     objc_opt_class();
-    v6 = [v5 exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, a3}];
+    v6 = [v5 exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, type}];
     if (AVCaptureShouldThrowForAPIViolations())
     {
       objc_exception_throw(v6);
@@ -17420,9 +17420,9 @@ uint64_t __54__AVCaptureFigVideoDevice_runDiagnosticsWithTestType___block_invoke
   return result;
 }
 
-- (BOOL)isDiagnosticsTestSupported:(id)a3
+- (BOOL)isDiagnosticsTestSupported:(id)supported
 {
-  if (@"AVCaptureDeviceDiagnosticsTestTypeAutoFocusPositionSensorCalibration" != a3)
+  if (@"AVCaptureDeviceDiagnosticsTestTypeAutoFocusPositionSensorCalibration" != supported)
   {
     return 0;
   }
@@ -17432,12 +17432,12 @@ uint64_t __54__AVCaptureFigVideoDevice_runDiagnosticsWithTestType___block_invoke
   return [v6 BOOLValue];
 }
 
-- (void)setFaceDetectionDrivenImageProcessingEnabled:(BOOL)a3
+- (void)setFaceDetectionDrivenImageProcessingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isFaceDetectionSupported])
   {
-    if (v3)
+    if (enabledCopy)
     {
       v5 = 3;
     }
@@ -17549,12 +17549,12 @@ __n128 __40__AVCaptureFigVideoDevice_faceRectangle__block_invoke(uint64_t a1)
 - (BOOL)_isHighDynamicRangeScene
 {
   v2 = [(AVCaptureFigVideoDevice *)self _copyFigCaptureSourceProperty:*MEMORY[0x1E6990748]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setHDRSceneDetectedForPhotoOutput:(BOOL)a3
+- (void)_setHDRSceneDetectedForPhotoOutput:(BOOL)output
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -17562,19 +17562,19 @@ __n128 __40__AVCaptureFigVideoDevice_faceRectangle__block_invoke(uint64_t a1)
   v4[2] = __62__AVCaptureFigVideoDevice__setHDRSceneDetectedForPhotoOutput___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  outputCopy = output;
   dispatch_sync(devicePropsQueue, v4);
 }
 
 - (BOOL)_isStillImageStabilizationScene
 {
   v2 = [(AVCaptureFigVideoDevice *)self _copyFigCaptureSourceProperty:*MEMORY[0x1E6990750]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setIsStillImageStabilizationScene:(BOOL)a3
+- (void)_setIsStillImageStabilizationScene:(BOOL)scene
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -17582,16 +17582,16 @@ __n128 __40__AVCaptureFigVideoDevice_faceRectangle__block_invoke(uint64_t a1)
   v4[2] = __62__AVCaptureFigVideoDevice__setIsStillImageStabilizationScene___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  sceneCopy = scene;
   dispatch_sync(devicePropsQueue, v4);
 }
 
 - (int64_t)_digitalFlashStatus
 {
   v2 = [(AVCaptureFigVideoDevice *)self _copyFigCaptureSourceProperty:*MEMORY[0x1E6990690]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (id)_digitalFlashExposureTimes
@@ -17601,7 +17601,7 @@ __n128 __40__AVCaptureFigVideoDevice_faceRectangle__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_setDigitalFlashSceneForPhotoOutput:(id)a3
+- (void)_setDigitalFlashSceneForPhotoOutput:(id)output
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -17609,7 +17609,7 @@ __n128 __40__AVCaptureFigVideoDevice_faceRectangle__block_invoke(uint64_t a1)
   v4[2] = __63__AVCaptureFigVideoDevice__setDigitalFlashSceneForPhotoOutput___block_invoke;
   v4[3] = &unk_1E786EAA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = output;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -17620,7 +17620,7 @@ id __63__AVCaptureFigVideoDevice__setDigitalFlashSceneForPhotoOutput___block_inv
   return result;
 }
 
-- (void)_setPhotoSettingsForSceneMonitoring:(id)a3
+- (void)_setPhotoSettingsForSceneMonitoring:(id)monitoring
 {
   if ([(AVCaptureFigVideoDevice *)self lockForConfiguration:0])
   {
@@ -17633,13 +17633,13 @@ id __63__AVCaptureFigVideoDevice__setDigitalFlashSceneForPhotoOutput___block_inv
     block[1] = 3221225472;
     block[2] = __63__AVCaptureFigVideoDevice__setPhotoSettingsForSceneMonitoring___block_invoke;
     block[3] = &unk_1E786FF08;
-    block[5] = a3;
+    block[5] = monitoring;
     block[6] = &v15;
     block[4] = self;
     dispatch_sync(devicePropsQueue, block);
-    v6 = [a3 flashMode];
+    flashMode = [monitoring flashMode];
     v7 = v16[3];
-    if (v6)
+    if (flashMode)
     {
       if (v7 != 1)
       {
@@ -17649,23 +17649,23 @@ id __63__AVCaptureFigVideoDevice__setDigitalFlashSceneForPhotoOutput___block_inv
 
     else if (v7 <= 0)
     {
-      v6 = 0;
+      flashMode = 0;
       goto LABEL_8;
     }
 
-    v6 = v16[3];
+    flashMode = v16[3];
 LABEL_8:
-    v8 = [a3 HDRMode];
-    v9 = [a3 photoQualityPrioritization];
-    v10 = [a3 digitalFlashMode];
+    hDRMode = [monitoring HDRMode];
+    photoQualityPrioritization = [monitoring photoQualityPrioritization];
+    digitalFlashMode = [monitoring digitalFlashMode];
     v12[0] = *MEMORY[0x1E69908E8];
-    v13[0] = [MEMORY[0x1E696AD98] numberWithInt:v6];
+    v13[0] = [MEMORY[0x1E696AD98] numberWithInt:flashMode];
     v12[1] = *MEMORY[0x1E69908F0];
-    v13[1] = [MEMORY[0x1E696AD98] numberWithInt:v8];
+    v13[1] = [MEMORY[0x1E696AD98] numberWithInt:hDRMode];
     v12[2] = *MEMORY[0x1E69908F8];
-    v13[2] = [MEMORY[0x1E696AD98] numberWithInt:v9];
+    v13[2] = [MEMORY[0x1E696AD98] numberWithInt:photoQualityPrioritization];
     v12[3] = *MEMORY[0x1E69908E0];
-    v13[3] = [MEMORY[0x1E696AD98] numberWithInt:v10];
+    v13[3] = [MEMORY[0x1E696AD98] numberWithInt:digitalFlashMode];
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:4];
     [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:*MEMORY[0x1E69907D8] withValue:v11];
     [(AVCaptureFigVideoDevice *)self unlockForConfiguration];
@@ -17689,7 +17689,7 @@ uint64_t __63__AVCaptureFigVideoDevice__setPhotoSettingsForSceneMonitoring___blo
   return result;
 }
 
-- (void)setTimeLapseCaptureRate:(float)a3
+- (void)setTimeLapseCaptureRate:(float)rate
 {
   v4 = *MEMORY[0x1E6990818];
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:?];
@@ -17697,18 +17697,18 @@ uint64_t __63__AVCaptureFigVideoDevice__setPhotoSettingsForSceneMonitoring___blo
   [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:v4 withValue:v5];
 }
 
-- (void)setUltraHighResolutionZeroShutterLagEnabled:(BOOL)a3
+- (void)setUltraHighResolutionZeroShutterLagEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self lockForConfiguration:0])
   {
-    -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990838], [MEMORY[0x1E696AD98] numberWithBool:v3]);
+    -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990838], [MEMORY[0x1E696AD98] numberWithBool:enabledCopy]);
 
     [(AVCaptureFigVideoDevice *)self unlockForConfiguration];
   }
 }
 
-- (void)setVideoZoomRampAcceleration:(float)a3
+- (void)setVideoZoomRampAcceleration:(float)acceleration
 {
   v5 = -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E6990850], [MEMORY[0x1E696AD98] numberWithFloat:?]);
   if (v5 == -16452)
@@ -17727,25 +17727,25 @@ uint64_t __63__AVCaptureFigVideoDevice__setPhotoSettingsForSceneMonitoring___blo
 
   else if (!v5)
   {
-    self->_videoZoomRampTarget = a3;
+    self->_videoZoomRampTarget = acceleration;
   }
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  if ([a3 isEqualToString:@"videoZoomFactor"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"activeVideoMinFrameDuration") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"activeVideoMaxFrameDuration") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"minAvailableVideoZoomFactor") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"maxAvailableVideoZoomFactor") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"activeFormat"))
+  if ([key isEqualToString:@"videoZoomFactor"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"activeVideoMinFrameDuration") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"activeVideoMaxFrameDuration") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"minAvailableVideoZoomFactor") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"maxAvailableVideoZoomFactor") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"activeFormat"))
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AVCaptureFigVideoDevice;
-  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
-- (void)setVideoZoomFactor:(double)a3
+- (void)setVideoZoomFactor:(double)factor
 {
-  if (a3 >= 1.0 && ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")], v5 >= a3))
+  if (factor >= 1.0 && ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")], v5 >= factor))
   {
     v21 = 0;
     v22 = &v21;
@@ -17758,7 +17758,7 @@ uint64_t __63__AVCaptureFigVideoDevice__setPhotoSettingsForSceneMonitoring___blo
     v16[0] = 0;
     v16[1] = v16;
     v16[2] = 0x2020000000;
-    *&v16[3] = a3;
+    *&v16[3] = factor;
     devicePropsQueue = self->_devicePropsQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -17819,7 +17819,7 @@ uint64_t __63__AVCaptureFigVideoDevice__setPhotoSettingsForSceneMonitoring___blo
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
     objc_opt_class();
-    v8 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, *&a3}];
+    v8 = [v6 exceptionWithName:v7 reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, *&factor}];
     if (AVCaptureShouldThrowForAPIViolations())
     {
       objc_exception_throw(v8);
@@ -17918,7 +17918,7 @@ float __46__AVCaptureFigVideoDevice_setVideoZoomFactor___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)_setVideoZoomFactor:(double)a3
+- (void)_setVideoZoomFactor:(double)factor
 {
   [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"videoZoomFactor"];
   devicePropsQueue = self->_devicePropsQueue;
@@ -17927,7 +17927,7 @@ float __46__AVCaptureFigVideoDevice_setVideoZoomFactor___block_invoke_2(uint64_t
   v6[2] = __47__AVCaptureFigVideoDevice__setVideoZoomFactor___block_invoke;
   v6[3] = &unk_1E786ECD0;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = factor;
   dispatch_sync(devicePropsQueue, v6);
   [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"videoZoomFactor"];
 }
@@ -17939,9 +17939,9 @@ float __47__AVCaptureFigVideoDevice__setVideoZoomFactor___block_invoke(uint64_t 
   return result;
 }
 
-- (void)rampExponentiallyToVideoZoomFactor:(float)a3 withDuration:(double)a4
+- (void)rampExponentiallyToVideoZoomFactor:(float)factor withDuration:(double)duration
 {
-  if (a4 == 0.0)
+  if (duration == 0.0)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695DA20];
@@ -17957,15 +17957,15 @@ float __47__AVCaptureFigVideoDevice__setVideoZoomFactor___block_invoke(uint64_t 
 
   else
   {
-    v4 = a3;
+    factorCopy = factor;
 
-    [(AVCaptureFigVideoDevice *)self _rampToVideoZoomFactor:2 withRate:0 duration:v4 rampType:0.0 rampTuning:a4];
+    [(AVCaptureFigVideoDevice *)self _rampToVideoZoomFactor:2 withRate:0 duration:factorCopy rampType:0.0 rampTuning:duration];
   }
 }
 
-- (void)rampToVideoZoomFactor:(float)a3 withTuning:(int64_t)a4
+- (void)rampToVideoZoomFactor:(float)factor withTuning:(int64_t)tuning
 {
-  if (a4 >= 3)
+  if (tuning >= 3)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695DA20];
@@ -17981,15 +17981,15 @@ float __47__AVCaptureFigVideoDevice__setVideoZoomFactor___block_invoke(uint64_t 
 
   else
   {
-    v4 = a3;
+    factorCopy = factor;
 
-    [(AVCaptureFigVideoDevice *)self _rampToVideoZoomFactor:3 withRate:a4 duration:v4 rampType:0.0 rampTuning:1.0];
+    [(AVCaptureFigVideoDevice *)self _rampToVideoZoomFactor:3 withRate:tuning duration:factorCopy rampType:0.0 rampTuning:1.0];
   }
 }
 
-- (void)_rampToVideoZoomFactor:(double)a3 withRate:(float)a4 duration:(double)a5 rampType:(int)a6 rampTuning:(int)a7
+- (void)_rampToVideoZoomFactor:(double)factor withRate:(float)rate duration:(double)duration rampType:(int)type rampTuning:(int)tuning
 {
-  if (a3 >= 1.0 && (v8 = *&a7, v9 = *&a6, [-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")], v13 >= a3))
+  if (factor >= 1.0 && (v8 = *&tuning, v9 = *&type, [-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")], v13 >= factor))
   {
     v53 = 0;
     v54 = &v53;
@@ -18010,7 +18010,7 @@ float __47__AVCaptureFigVideoDevice__setVideoZoomFactor___block_invoke(uint64_t 
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
-    v40 = a3;
+    factorCopy = factor;
     devicePropsQueue = self->_devicePropsQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -18020,8 +18020,8 @@ float __47__AVCaptureFigVideoDevice__setVideoZoomFactor___block_invoke(uint64_t 
     block[5] = &v37;
     block[6] = &v53;
     block[7] = &v49;
-    v36 = a4;
-    *&block[10] = a5;
+    rateCopy = rate;
+    *&block[10] = duration;
     block[8] = &v41;
     block[9] = &v45;
     dispatch_sync(devicePropsQueue, block);
@@ -18055,10 +18055,10 @@ float __47__AVCaptureFigVideoDevice__setVideoZoomFactor___block_invoke(uint64_t 
         v28[0] = *MEMORY[0x1E6990910];
         v29[0] = [MEMORY[0x1E696AD98] numberWithDouble:v38[3]];
         v28[1] = *MEMORY[0x1E6990928];
-        *&v21 = a4;
+        *&v21 = rate;
         v29[1] = [MEMORY[0x1E696AD98] numberWithFloat:v21];
         v28[2] = *MEMORY[0x1E6990920];
-        v29[2] = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+        v29[2] = [MEMORY[0x1E696AD98] numberWithDouble:duration];
         v28[3] = *MEMORY[0x1E6990938];
         v29[3] = [MEMORY[0x1E696AD98] numberWithInt:v9];
         v28[4] = *MEMORY[0x1E6990930];
@@ -18145,7 +18145,7 @@ float __47__AVCaptureFigVideoDevice__setVideoZoomFactor___block_invoke(uint64_t 
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695DA20];
     objc_opt_class();
-    v16 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, *&a3}];
+    v16 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithClassAndSelector() userInfo:{0, *&factor}];
     if (AVCaptureShouldThrowForAPIViolations())
     {
       objc_exception_throw(v16);
@@ -18257,7 +18257,7 @@ float __46__AVCaptureFigVideoDevice_cancelVideoZoomRamp__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)_setMinAvailableVideoZoomFactor:(double)a3
+- (void)_setMinAvailableVideoZoomFactor:(double)factor
 {
   v13 = 0;
   v14 = &v13;
@@ -18268,7 +18268,7 @@ float __46__AVCaptureFigVideoDevice_cancelVideoZoomRamp__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __59__AVCaptureFigVideoDevice__setMinAvailableVideoZoomFactor___block_invoke;
   block[3] = &unk_1E7870310;
-  *&block[6] = a3;
+  *&block[6] = factor;
   block[4] = self;
   block[5] = &v13;
   dispatch_sync(devicePropsQueue, block);
@@ -18284,13 +18284,13 @@ float __46__AVCaptureFigVideoDevice_cancelVideoZoomRamp__block_invoke(uint64_t a
     v7[1] = 3221225472;
     v7[2] = __59__AVCaptureFigVideoDevice__setMinAvailableVideoZoomFactor___block_invoke_2;
     v7[3] = &unk_1E7870018;
-    *&v7[6] = a3;
+    *&v7[6] = factor;
     v7[4] = self;
     v7[5] = &v8;
     dispatch_sync(v6, v7);
     if (*(v9 + 24) == 1)
     {
-      [(AVCaptureFigVideoDevice *)self _setVideoZoomFactor:a3];
+      [(AVCaptureFigVideoDevice *)self _setVideoZoomFactor:factor];
     }
 
     [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"minAvailableVideoZoomFactor"];
@@ -18338,7 +18338,7 @@ double __54__AVCaptureFigVideoDevice_maxAvailableVideoZoomFactor__block_invoke(u
   return result;
 }
 
-- (void)_setMaxAvailableVideoZoomFactor:(double)a3
+- (void)_setMaxAvailableVideoZoomFactor:(double)factor
 {
   v13 = 0;
   v14 = &v13;
@@ -18349,7 +18349,7 @@ double __54__AVCaptureFigVideoDevice_maxAvailableVideoZoomFactor__block_invoke(u
   block[1] = 3221225472;
   block[2] = __59__AVCaptureFigVideoDevice__setMaxAvailableVideoZoomFactor___block_invoke;
   block[3] = &unk_1E7870310;
-  *&block[6] = a3;
+  *&block[6] = factor;
   block[4] = self;
   block[5] = &v13;
   dispatch_sync(devicePropsQueue, block);
@@ -18365,13 +18365,13 @@ double __54__AVCaptureFigVideoDevice_maxAvailableVideoZoomFactor__block_invoke(u
     v7[1] = 3221225472;
     v7[2] = __59__AVCaptureFigVideoDevice__setMaxAvailableVideoZoomFactor___block_invoke_2;
     v7[3] = &unk_1E7870018;
-    *&v7[6] = a3;
+    *&v7[6] = factor;
     v7[4] = self;
     v7[5] = &v8;
     dispatch_sync(v6, v7);
     if (*(v9 + 24) == 1)
     {
-      [(AVCaptureFigVideoDevice *)self _setVideoZoomFactor:a3];
+      [(AVCaptureFigVideoDevice *)self _setVideoZoomFactor:factor];
     }
 
     [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"maxAvailableVideoZoomFactor"];
@@ -18393,11 +18393,11 @@ uint64_t __59__AVCaptureFigVideoDevice__setMaxAvailableVideoZoomFactor___block_i
   return result;
 }
 
-- (void)setMaxAvailableVideoZoomFactorOverride:(double)a3
+- (void)setMaxAvailableVideoZoomFactorOverride:(double)override
 {
-  if (a3 != 0.0 && a3 < 1.0)
+  if (override != 0.0 && override < 1.0)
   {
-    v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, *&a3}];
+    v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, *&override}];
     if (AVCaptureShouldThrowForAPIViolations())
     {
       objc_exception_throw(v4);
@@ -18406,9 +18406,9 @@ uint64_t __59__AVCaptureFigVideoDevice__setMaxAvailableVideoZoomFactor___block_i
     NSLog(&cfstr_SuppressingExc.isa, v4);
   }
 
-  else if (self->_minAvailableVideoZoomFactor != a3)
+  else if (self->_minAvailableVideoZoomFactor != override)
   {
-    self->_maxAvailableVideoZoomFactor = a3;
+    self->_maxAvailableVideoZoomFactor = override;
 
     [(AVCaptureFigVideoDevice *)self _updateMinMaxDefaultVideoZoomFactors];
   }
@@ -18440,25 +18440,25 @@ double __62__AVCaptureFigVideoDevice_maxAvailableVideoZoomFactorOverride__block_
   return result;
 }
 
-- (void)_computeMinVideoZoomFactorOut:(double *)a3 maxVideoZoomFactorOut:(double *)a4 defaultVideoZoomFactorOut:(double *)a5 centerStageActiveOverride:(BOOL)a6 resetZoomFactor:(BOOL)a7
+- (void)_computeMinVideoZoomFactorOut:(double *)out maxVideoZoomFactorOut:(double *)factorOut defaultVideoZoomFactorOut:(double *)zoomFactorOut centerStageActiveOverride:(BOOL)override resetZoomFactor:(BOOL)factor
 {
-  v7 = a7;
-  v8 = a6;
+  factorCopy = factor;
+  overrideCopy = override;
   [(AVCaptureDeviceFormat *)self->_activeFormat videoMaxZoomFactor];
   if (self->_cinematicVideoZoomEnabled)
   {
     [objc_msgSend(-[AVCaptureDeviceFormat supportedZoomRangesForCinematicVideo](self->_activeFormat "supportedZoomRangesForCinematicVideo")];
     v15 = v14;
-    v16 = [-[AVCaptureDeviceFormat supportedZoomRangesForCinematicVideo](self->_activeFormat "supportedZoomRangesForCinematicVideo")];
+    lastObject = [-[AVCaptureDeviceFormat supportedZoomRangesForCinematicVideo](self->_activeFormat "supportedZoomRangesForCinematicVideo")];
 LABEL_3:
-    [v16 maxZoomFactor];
+    [lastObject maxZoomFactor];
 LABEL_4:
     v18 = v17;
     goto LABEL_5;
   }
 
   v18 = v13;
-  if (v8 && BYTE5(self->_degradedCaptureQualityFactors) == 1)
+  if (overrideCopy && BYTE5(self->_degradedCaptureQualityFactors) == 1)
   {
     [(AVCaptureDeviceFormat *)self->_activeFormat videoMinZoomFactorForCenterStage];
     v15 = v21;
@@ -18470,7 +18470,7 @@ LABEL_4:
   {
     [-[NSArray firstObject](-[AVCaptureDeviceFormat supportedVideoZoomRangesForDepthDataDelivery](self->_activeFormat "supportedVideoZoomRangesForDepthDataDelivery")];
     v15 = v32;
-    v16 = [(NSArray *)[(AVCaptureDeviceFormat *)self->_activeFormat supportedVideoZoomRangesForDepthDataDelivery] lastObject];
+    lastObject = [(NSArray *)[(AVCaptureDeviceFormat *)self->_activeFormat supportedVideoZoomRangesForDepthDataDelivery] lastObject];
     goto LABEL_3;
   }
 
@@ -18507,8 +18507,8 @@ LABEL_5:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v26 = [(AVCaptureDeviceFormat *)self->_activeFormat supportedVideoZoomRangesForDepthDataDelivery];
-    v27 = [(NSArray *)v26 countByEnumeratingWithState:&v34 objects:v33 count:16];
+    supportedVideoZoomRangesForDepthDataDelivery = [(AVCaptureDeviceFormat *)self->_activeFormat supportedVideoZoomRangesForDepthDataDelivery];
+    v27 = [(NSArray *)supportedVideoZoomRangesForDepthDataDelivery countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v27)
     {
       v28 = v27;
@@ -18519,7 +18519,7 @@ LABEL_27:
       {
         if (*v35 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(supportedVideoZoomRangesForDepthDataDelivery);
         }
 
         if ([*(*(&v34 + 1) + 8 * v30) containsZoomFactor:v24])
@@ -18529,7 +18529,7 @@ LABEL_27:
 
         if (v28 == ++v30)
         {
-          v28 = [(NSArray *)v26 countByEnumeratingWithState:&v34 objects:v33 count:16];
+          v28 = [(NSArray *)supportedVideoZoomRangesForDepthDataDelivery countByEnumeratingWithState:&v34 objects:v33 count:16];
           if (v28)
           {
             goto LABEL_27;
@@ -18539,7 +18539,7 @@ LABEL_27:
         }
       }
 
-      if (!v7)
+      if (!factorCopy)
       {
         goto LABEL_36;
       }
@@ -18550,30 +18550,30 @@ LABEL_35:
     v24 = v31;
   }
 
-  else if (v7 || (v15 <= v24 ? (v25 = v18 < v24) : (v25 = 1), v25))
+  else if (factorCopy || (v15 <= v24 ? (v25 = v18 < v24) : (v25 = 1), v25))
   {
     v24 = v15;
   }
 
 LABEL_36:
-  *a3 = v15;
-  *a4 = v18;
-  *a5 = v24;
+  *out = v15;
+  *factorOut = v18;
+  *zoomFactorOut = v24;
 }
 
-- (void)_updateMinMaxVideoZoomFactorsWithMinZoomFactorFromCameraSelection:(double)a3
+- (void)_updateMinMaxVideoZoomFactorsWithMinZoomFactorFromCameraSelection:(double)selection
 {
   v7 = 0;
   v8 = 0.0;
   v6 = 0;
   [(AVCaptureFigVideoDevice *)self _computeMinVideoZoomFactorOut:&v8 maxVideoZoomFactorOut:&v7 defaultVideoZoomFactorOut:&v6 centerStageActiveOverride:BYTE4(self->_degradedCaptureQualityFactors) resetZoomFactor:0];
-  v5 = v8;
-  if (v8 <= a3)
+  selectionCopy = v8;
+  if (v8 <= selection)
   {
-    v5 = a3;
+    selectionCopy = selection;
   }
 
-  v8 = v5;
+  v8 = selectionCopy;
   [(AVCaptureFigVideoDevice *)self _setMinAvailableVideoZoomFactor:?];
 }
 
@@ -18586,12 +18586,12 @@ LABEL_36:
   [(AVCaptureFigVideoDevice *)self _setVideoZoomFactor:v3];
 }
 
-- (void)setGeometricDistortionCorrectionEnabled:(BOOL)a3
+- (void)setGeometricDistortionCorrectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if (!v3 || [(AVCaptureFigVideoDevice *)self isGeometricDistortionCorrectionSupported])
+    if (!enabledCopy || [(AVCaptureFigVideoDevice *)self isGeometricDistortionCorrectionSupported])
     {
       v11 = 0;
       v12 = &v11;
@@ -18604,7 +18604,7 @@ LABEL_36:
       block[3] = &unk_1E7870248;
       block[4] = self;
       block[5] = &v11;
-      v10 = v3;
+      v10 = enabledCopy;
       dispatch_sync(devicePropsQueue, block);
       if (*(v12 + 24) == 1)
       {
@@ -18695,7 +18695,7 @@ uint64_t __43__AVCaptureFigVideoDevice_cameraPoseMatrix__block_invoke(uint64_t a
   return result;
 }
 
-- (void)_setCenterStageAllowed:(BOOL)a3
+- (void)_setCenterStageAllowed:(BOOL)allowed
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -18703,41 +18703,41 @@ uint64_t __43__AVCaptureFigVideoDevice_cameraPoseMatrix__block_invoke(uint64_t a
   v4[2] = __50__AVCaptureFigVideoDevice__setCenterStageAllowed___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  allowedCopy = allowed;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (BOOL)_isCenterStageActiveForEnabled:(BOOL)a3
+- (BOOL)_isCenterStageActiveForEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [(AVCaptureDeviceFormat *)self->_activeFormat isCenterStageSupported];
-    if (v4)
+    isCenterStageSupported = [(AVCaptureDeviceFormat *)self->_activeFormat isCenterStageSupported];
+    if (isCenterStageSupported)
     {
       if (self->_stereoVideoCaptureStatus & 1) != 0 || (LOBYTE(self->_displayVideoZoomFactorMultiplier))
       {
-        LOBYTE(v4) = 0;
+        LOBYTE(isCenterStageSupported) = 0;
       }
 
       else
       {
         height_low = LOBYTE(self->_normalizedNonDestructiveCropSize.height);
-        LOBYTE(v4) = height_low == [(AVCaptureFigVideoDevice *)self isGeometricDistortionCorrectionSupported];
+        LOBYTE(isCenterStageSupported) = height_low == [(AVCaptureFigVideoDevice *)self isGeometricDistortionCorrectionSupported];
       }
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(isCenterStageSupported) = 0;
   }
 
-  return v4;
+  return isCenterStageSupported;
 }
 
-- (void)_updateCenterStageActiveForEnabled:(BOOL)a3 updateDependentProperties:(BOOL)a4
+- (void)_updateCenterStageActiveForEnabled:(BOOL)enabled updateDependentProperties:(BOOL)properties
 {
-  v4 = a4;
+  propertiesCopy = properties;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -18765,7 +18765,7 @@ uint64_t __43__AVCaptureFigVideoDevice_cameraPoseMatrix__block_invoke(uint64_t a
   block[3] = &unk_1E7870590;
   block[4] = self;
   block[5] = &v21;
-  v10 = a3;
+  enabledCopy = enabled;
   block[6] = &v17;
   block[7] = v15;
   block[8] = v13;
@@ -18775,7 +18775,7 @@ uint64_t __43__AVCaptureFigVideoDevice_cameraPoseMatrix__block_invoke(uint64_t a
   {
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"centerStageActive"];
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"cinematicFramingActive"];
-    if (v4)
+    if (propertiesCopy)
     {
       [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"activeVideoMinFrameDuration"];
       [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"activeVideoMaxFrameDuration"];
@@ -18789,7 +18789,7 @@ uint64_t __43__AVCaptureFigVideoDevice_cameraPoseMatrix__block_invoke(uint64_t a
     v8[4] = self;
     v8[5] = &v17;
     dispatch_sync(v7, v8);
-    if (v4)
+    if (propertiesCopy)
     {
       [(AVCaptureFigVideoDevice *)self _updateMinMaxDefaultVideoZoomFactors];
       [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"activeVideoMaxFrameDuration"];
@@ -18860,12 +18860,12 @@ __n128 __52__AVCaptureFigVideoDevice_centerStageRectOfInterest__block_invoke(uin
   return result;
 }
 
-- (void)setCenterStageRectOfInterest:(CGRect)a3
+- (void)setCenterStageRectOfInterest:(CGRect)interest
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
     if (+[AVCaptureDevice isCenterStageEnabled]&& validRectInUnitRectCoordinateSpace(x, y, width, height))
@@ -18939,12 +18939,12 @@ void __56__AVCaptureFigVideoDevice_setCenterStageRectOfInterest___block_invoke(u
   return v3;
 }
 
-- (void)setCenterStageMetadataDeliveryEnabled:(BOOL)a3
+- (void)setCenterStageMetadataDeliveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if (!v3 || [(AVCaptureFigVideoDevice *)self isCenterStageMetadataDeliverySupported])
+    if (!enabledCopy || [(AVCaptureFigVideoDevice *)self isCenterStageMetadataDeliverySupported])
     {
       devicePropsQueue = self->_devicePropsQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -18952,7 +18952,7 @@ void __56__AVCaptureFigVideoDevice_setCenterStageRectOfInterest___block_invoke(u
       block[2] = __65__AVCaptureFigVideoDevice_setCenterStageMetadataDeliveryEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v15 = v3;
+      v15 = enabledCopy;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -18994,7 +18994,7 @@ uint64_t __65__AVCaptureFigVideoDevice_setCenterStageMetadataDeliveryEnabled___b
   return result;
 }
 
-- (void)_setCenterStageFramingMode:(int64_t)a3
+- (void)_setCenterStageFramingMode:(int64_t)mode
 {
   v7 = 0;
   v8 = &v7;
@@ -19007,7 +19007,7 @@ uint64_t __65__AVCaptureFigVideoDevice_setCenterStageMetadataDeliveryEnabled___b
   block[3] = &unk_1E7870018;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = mode;
   dispatch_sync(devicePropsQueue, block);
   if (*(v8 + 6) && dword_1ED8069C0)
   {
@@ -19059,12 +19059,12 @@ double __59__AVCaptureFigVideoDevice_displayVideoZoomFactorMultiplier__block_inv
   return result;
 }
 
-- (void)setManualFramingEnabled:(BOOL)a3
+- (void)setManualFramingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if (!v3 || [(AVCaptureFigVideoDevice *)self isManualFramingSupported]&& BYTE4(self->_degradedCaptureQualityFactors) != 1)
+    if (!enabledCopy || [(AVCaptureFigVideoDevice *)self isManualFramingSupported]&& BYTE4(self->_degradedCaptureQualityFactors) != 1)
     {
       devicePropsQueue = self->_devicePropsQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -19072,7 +19072,7 @@ double __59__AVCaptureFigVideoDevice_displayVideoZoomFactorMultiplier__block_inv
       block[2] = __51__AVCaptureFigVideoDevice_setManualFramingEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v10 = v3;
+      v10 = enabledCopy;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -19176,7 +19176,7 @@ double __57__AVCaptureFigVideoDevice_manualFramingDefaultZoomFactor__block_invok
   return result;
 }
 
-- (void)setGazeSelectionEnabled:(BOOL)a3
+- (void)setGazeSelectionEnabled:(BOOL)enabled
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19184,13 +19184,13 @@ double __57__AVCaptureFigVideoDevice_manualFramingDefaultZoomFactor__block_invok
   v4[2] = __51__AVCaptureFigVideoDevice_setGazeSelectionEnabled___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (BOOL)_isBackgroundBlurActiveForEnabled:(BOOL)a3
+- (BOOL)_isBackgroundBlurActiveForEnabled:(BOOL)enabled
 {
-  if (!a3 || ![(AVCaptureDeviceFormat *)self->_activeFormat isBackgroundBlurSupported])
+  if (!enabled || ![(AVCaptureDeviceFormat *)self->_activeFormat isBackgroundBlurSupported])
   {
     return 0;
   }
@@ -19198,7 +19198,7 @@ double __57__AVCaptureFigVideoDevice_manualFramingDefaultZoomFactor__block_invok
   return +[AVCaptureDevice isEligibleForBackgroundBlur];
 }
 
-- (void)_updateBackgroundBlurActiveForEnabled:(BOOL)a3
+- (void)_updateBackgroundBlurActiveForEnabled:(BOOL)enabled
 {
   v13 = 0;
   v14 = &v13;
@@ -19216,7 +19216,7 @@ double __57__AVCaptureFigVideoDevice_manualFramingDefaultZoomFactor__block_invok
   block[4] = self;
   block[5] = &v13;
   block[6] = &v9;
-  v8 = a3;
+  enabledCopy = enabled;
   dispatch_sync(devicePropsQueue, block);
   if (*(v14 + 24) != *(v10 + 24))
   {
@@ -19246,7 +19246,7 @@ uint64_t __65__AVCaptureFigVideoDevice__updateBackgroundBlurActiveForEnabled___b
   return result;
 }
 
-- (void)_updatePortraitEffectStudioLightQuality:(int64_t)a3
+- (void)_updatePortraitEffectStudioLightQuality:(int64_t)quality
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19254,7 +19254,7 @@ uint64_t __65__AVCaptureFigVideoDevice__updateBackgroundBlurActiveForEnabled___b
   v4[2] = __67__AVCaptureFigVideoDevice__updatePortraitEffectStudioLightQuality___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = quality;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -19272,7 +19272,7 @@ uint64_t __67__AVCaptureFigVideoDevice__updatePortraitEffectStudioLightQuality__
   return result;
 }
 
-- (void)_updateBackgroundBlurAperture:(float)a3
+- (void)_updateBackgroundBlurAperture:(float)aperture
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19280,7 +19280,7 @@ uint64_t __67__AVCaptureFigVideoDevice__updatePortraitEffectStudioLightQuality__
   v4[2] = __57__AVCaptureFigVideoDevice__updateBackgroundBlurAperture___block_invoke;
   v4[3] = &unk_1E78704A0;
   v4[4] = self;
-  v5 = a3;
+  apertureCopy = aperture;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -19299,9 +19299,9 @@ uint64_t __57__AVCaptureFigVideoDevice__updateBackgroundBlurAperture___block_inv
   return result;
 }
 
-- (BOOL)_isStudioLightingActiveForEnabled:(BOOL)a3
+- (BOOL)_isStudioLightingActiveForEnabled:(BOOL)enabled
 {
-  if (!a3 || ![(AVCaptureDeviceFormat *)self->_activeFormat isStudioLightSupported])
+  if (!enabled || ![(AVCaptureDeviceFormat *)self->_activeFormat isStudioLightSupported])
   {
     return 0;
   }
@@ -19309,7 +19309,7 @@ uint64_t __57__AVCaptureFigVideoDevice__updateBackgroundBlurAperture___block_inv
   return +[AVCaptureDevice isEligibleForStudioLighting];
 }
 
-- (void)_updateStudioLightingActiveForEnabled:(BOOL)a3
+- (void)_updateStudioLightingActiveForEnabled:(BOOL)enabled
 {
   v13 = 0;
   v14 = &v13;
@@ -19327,7 +19327,7 @@ uint64_t __57__AVCaptureFigVideoDevice__updateBackgroundBlurAperture___block_inv
   block[4] = self;
   block[5] = &v13;
   block[6] = &v9;
-  v8 = a3;
+  enabledCopy = enabled;
   dispatch_sync(devicePropsQueue, block);
   if (*(v14 + 24) != *(v10 + 24))
   {
@@ -19357,7 +19357,7 @@ uint64_t __65__AVCaptureFigVideoDevice__updateStudioLightingActiveForEnabled___b
   return result;
 }
 
-- (void)_setStudioLightingAllowed:(BOOL)a3
+- (void)_setStudioLightingAllowed:(BOOL)allowed
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19365,11 +19365,11 @@ uint64_t __65__AVCaptureFigVideoDevice__updateStudioLightingActiveForEnabled___b
   v4[2] = __53__AVCaptureFigVideoDevice__setStudioLightingAllowed___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  allowedCopy = allowed;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (void)_updateStudioLightingIntensity:(float)a3
+- (void)_updateStudioLightingIntensity:(float)intensity
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19377,7 +19377,7 @@ uint64_t __65__AVCaptureFigVideoDevice__updateStudioLightingActiveForEnabled___b
   v4[2] = __58__AVCaptureFigVideoDevice__updateStudioLightingIntensity___block_invoke;
   v4[3] = &unk_1E78704A0;
   v4[4] = self;
-  v5 = a3;
+  intensityCopy = intensity;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -19396,9 +19396,9 @@ uint64_t __58__AVCaptureFigVideoDevice__updateStudioLightingIntensity___block_in
   return result;
 }
 
-- (BOOL)_reactionEffectsActiveForEnabled:(BOOL)a3
+- (BOOL)_reactionEffectsActiveForEnabled:(BOOL)enabled
 {
-  if (!a3 || ![(AVCaptureDeviceFormat *)self->_activeFormat reactionEffectsSupported])
+  if (!enabled || ![(AVCaptureDeviceFormat *)self->_activeFormat reactionEffectsSupported])
   {
     return 0;
   }
@@ -19406,7 +19406,7 @@ uint64_t __58__AVCaptureFigVideoDevice__updateStudioLightingIntensity___block_in
   return +[AVCaptureDevice isEligibleForReactionEffects];
 }
 
-- (void)_updateReactionEffectsActiveForEnabled:(BOOL)a3
+- (void)_updateReactionEffectsActiveForEnabled:(BOOL)enabled
 {
   v13 = 0;
   v14 = &v13;
@@ -19424,7 +19424,7 @@ uint64_t __58__AVCaptureFigVideoDevice__updateStudioLightingIntensity___block_in
   block[4] = self;
   block[5] = &v13;
   block[6] = &v9;
-  v8 = a3;
+  enabledCopy = enabled;
   dispatch_sync(devicePropsQueue, block);
   if (*(v14 + 24) != *(v10 + 24))
   {
@@ -19452,7 +19452,7 @@ uint64_t __66__AVCaptureFigVideoDevice__updateReactionEffectsActiveForEnabled___
   return result;
 }
 
-- (void)_setReactionEffectsAllowed:(BOOL)a3
+- (void)_setReactionEffectsAllowed:(BOOL)allowed
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19460,11 +19460,11 @@ uint64_t __66__AVCaptureFigVideoDevice__updateReactionEffectsActiveForEnabled___
   v4[2] = __54__AVCaptureFigVideoDevice__setReactionEffectsAllowed___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  allowedCopy = allowed;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (void)_updateGesturesEnabled:(BOOL)a3
+- (void)_updateGesturesEnabled:(BOOL)enabled
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19472,7 +19472,7 @@ uint64_t __66__AVCaptureFigVideoDevice__updateReactionEffectsActiveForEnabled___
   v4[2] = __50__AVCaptureFigVideoDevice__updateGesturesEnabled___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -19490,7 +19490,7 @@ uint64_t __50__AVCaptureFigVideoDevice__updateGesturesEnabled___block_invoke(uin
   return result;
 }
 
-- (void)_updateSuppressedGesturesEnabled:(BOOL)a3
+- (void)_updateSuppressedGesturesEnabled:(BOOL)enabled
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19498,7 +19498,7 @@ uint64_t __50__AVCaptureFigVideoDevice__updateGesturesEnabled___block_invoke(uin
   v4[2] = __60__AVCaptureFigVideoDevice__updateSuppressedGesturesEnabled___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -19516,7 +19516,7 @@ uint64_t __60__AVCaptureFigVideoDevice__updateSuppressedGesturesEnabled___block_
   return result;
 }
 
-- (void)_performReaction:(id)a3
+- (void)_performReaction:(id)reaction
 {
   fcsQueue = self->_fcsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19524,7 +19524,7 @@ uint64_t __60__AVCaptureFigVideoDevice__updateSuppressedGesturesEnabled___block_
   v4[2] = __44__AVCaptureFigVideoDevice__performReaction___block_invoke;
   v4[3] = &unk_1E786EAA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reaction;
   dispatch_async(fcsQueue, v4);
 }
 
@@ -19549,9 +19549,9 @@ uint64_t __44__AVCaptureFigVideoDevice__performReaction___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)_isBackgroundReplacementActiveForEnabled:(BOOL)a3
+- (BOOL)_isBackgroundReplacementActiveForEnabled:(BOOL)enabled
 {
-  if (!a3 || ![(AVCaptureDeviceFormat *)self->_activeFormat isBackgroundReplacementSupported])
+  if (!enabled || ![(AVCaptureDeviceFormat *)self->_activeFormat isBackgroundReplacementSupported])
   {
     return 0;
   }
@@ -19559,7 +19559,7 @@ uint64_t __44__AVCaptureFigVideoDevice__performReaction___block_invoke(uint64_t 
   return +[AVCaptureDevice isEligibleForBackgroundReplacement];
 }
 
-- (void)_updateBackgroundReplacementActiveForEnabled:(BOOL)a3
+- (void)_updateBackgroundReplacementActiveForEnabled:(BOOL)enabled
 {
   v13 = 0;
   v14 = &v13;
@@ -19577,7 +19577,7 @@ uint64_t __44__AVCaptureFigVideoDevice__performReaction___block_invoke(uint64_t 
   block[4] = self;
   block[5] = &v13;
   block[6] = &v9;
-  v8 = a3;
+  enabledCopy = enabled;
   dispatch_sync(devicePropsQueue, block);
   if (*(v14 + 24) != *(v10 + 24))
   {
@@ -19605,7 +19605,7 @@ uint64_t __72__AVCaptureFigVideoDevice__updateBackgroundReplacementActiveForEnab
   return result;
 }
 
-- (void)_setBackgroundReplacementAllowed:(BOOL)a3
+- (void)_setBackgroundReplacementAllowed:(BOOL)allowed
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19613,11 +19613,11 @@ uint64_t __72__AVCaptureFigVideoDevice__updateBackgroundReplacementActiveForEnab
   v4[2] = __60__AVCaptureFigVideoDevice__setBackgroundReplacementAllowed___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  allowedCopy = allowed;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (void)_updateBackgroundReplacementPixelBuffer:(__CVBuffer *)a3
+- (void)_updateBackgroundReplacementPixelBuffer:(__CVBuffer *)buffer
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -19625,7 +19625,7 @@ uint64_t __72__AVCaptureFigVideoDevice__updateBackgroundReplacementActiveForEnab
   v4[2] = __67__AVCaptureFigVideoDevice__updateBackgroundReplacementPixelBuffer___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = buffer;
   dispatch_sync(devicePropsQueue, v4);
 }
 
@@ -19643,7 +19643,7 @@ uint64_t __67__AVCaptureFigVideoDevice__updateBackgroundReplacementPixelBuffer__
   return result;
 }
 
-- (void)setAutomaticallyAdjustsVideoHDREnabled:(BOOL)a3
+- (void)setAutomaticallyAdjustsVideoHDREnabled:(BOOL)enabled
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -19653,7 +19653,7 @@ uint64_t __67__AVCaptureFigVideoDevice__updateBackgroundReplacementPixelBuffer__
     block[2] = __66__AVCaptureFigVideoDevice_setAutomaticallyAdjustsVideoHDREnabled___block_invoke;
     block[3] = &unk_1E786EE40;
     block[4] = self;
-    v10 = a3;
+    enabledCopy = enabled;
     dispatch_sync(devicePropsQueue, block);
   }
 
@@ -19672,7 +19672,7 @@ uint64_t __67__AVCaptureFigVideoDevice__updateBackgroundReplacementPixelBuffer__
   }
 }
 
-- (void)setVideoHDREnabled:(BOOL)a3
+- (void)setVideoHDREnabled:(BOOL)enabled
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration]&& ![(AVCaptureFigVideoDevice *)self automaticallyAdjustsVideoHDREnabled])
   {
@@ -19683,7 +19683,7 @@ uint64_t __67__AVCaptureFigVideoDevice__updateBackgroundReplacementPixelBuffer__
     block[3] = &unk_1E786FFF0;
     block[4] = self;
     block[5] = a2;
-    v11 = a3;
+    enabledCopy = enabled;
     dispatch_sync(devicePropsQueue, block);
   }
 
@@ -19724,9 +19724,9 @@ void __46__AVCaptureFigVideoDevice_setVideoHDREnabled___block_invoke(uint64_t a1
   }
 }
 
-- (void)_setVideoHDREnabled:(BOOL)a3 forceResetVideoHDRSuspended:(BOOL)a4
+- (void)_setVideoHDREnabled:(BOOL)enabled forceResetVideoHDRSuspended:(BOOL)suspended
 {
-  v4 = a4;
+  suspendedCopy = suspended;
   [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"videoHDREnabled"];
   v10 = 0;
   v11 = &v10;
@@ -19739,9 +19739,9 @@ void __46__AVCaptureFigVideoDevice_setVideoHDREnabled___block_invoke(uint64_t a1
   block[3] = &unk_1E7870248;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
+  enabledCopy = enabled;
   dispatch_sync(devicePropsQueue, block);
-  if ((v11[3] & 1) != 0 || v4)
+  if ((v11[3] & 1) != 0 || suspendedCopy)
   {
     [(AVCaptureFigVideoDevice *)self _resetVideoHDRSuspended];
   }
@@ -19757,7 +19757,7 @@ uint64_t __75__AVCaptureFigVideoDevice__setVideoHDREnabled_forceResetVideoHDRSus
   return result;
 }
 
-- (void)setVideoHDRSuspended:(BOOL)a3
+- (void)setVideoHDRSuspended:(BOOL)suspended
 {
   if (-[AVCaptureFigVideoDevice isLockedForConfiguration](self, "isLockedForConfiguration") && ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")] & 1) != 0 && -[AVCaptureFigVideoDevice isVideoHDREnabled](self, "isVideoHDREnabled"))
   {
@@ -19767,7 +19767,7 @@ uint64_t __75__AVCaptureFigVideoDevice__setVideoHDREnabled_forceResetVideoHDRSus
     block[2] = __48__AVCaptureFigVideoDevice_setVideoHDRSuspended___block_invoke;
     block[3] = &unk_1E786EE40;
     block[4] = self;
-    v10 = a3;
+    suspendedCopy = suspended;
     dispatch_sync(devicePropsQueue, block);
   }
 
@@ -19808,7 +19808,7 @@ uint64_t __50__AVCaptureFigVideoDevice__resetVideoHDRSuspended__block_invoke(uin
   return result;
 }
 
-- (void)setActiveColorSpace:(int64_t)a3
+- (void)setActiveColorSpace:(int64_t)space
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -19818,7 +19818,7 @@ uint64_t __50__AVCaptureFigVideoDevice__resetVideoHDRSuspended__block_invoke(uin
     block[2] = __47__AVCaptureFigVideoDevice_setActiveColorSpace___block_invoke;
     block[3] = &unk_1E786ECA8;
     block[4] = self;
-    block[5] = a3;
+    block[5] = space;
     block[6] = a2;
     dispatch_sync(devicePropsQueue, block);
   }
@@ -19868,32 +19868,32 @@ void __47__AVCaptureFigVideoDevice_setActiveColorSpace___block_invoke(uint64_t a
   return [v2 BOOLValue];
 }
 
-- (void)_setStillImageStabilizationAutomaticallyEnabled:(BOOL)a3
+- (void)_setStillImageStabilizationAutomaticallyEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self lockForConfiguration:0])
   {
-    -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E69907E0], [MEMORY[0x1E696AD98] numberWithBool:v3]);
+    -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E69907E0], [MEMORY[0x1E696AD98] numberWithBool:enabledCopy]);
 
     [(AVCaptureFigVideoDevice *)self unlockForConfiguration];
   }
 }
 
-- (id)_recommendedFrameRateRangeForVideoFormat:(id)a3 depthFormat:(id)a4 figSystemPressureLevel:(int)a5
+- (id)_recommendedFrameRateRangeForVideoFormat:(id)format depthFormat:(id)depthFormat figSystemPressureLevel:(int)level
 {
-  v8 = [objc_msgSend(a4 "videoSupportedFrameRateRanges")];
+  v8 = [objc_msgSend(depthFormat "videoSupportedFrameRateRanges")];
   v9 = [(NSDictionary *)self->_fcsAttributes objectForKeyedSubscript:*MEMORY[0x1E6990190]];
   v10 = [-[NSDictionary objectForKeyedSubscript:](self->_fcsAttributes objectForKeyedSubscript:{*MEMORY[0x1E6990280]), "BOOLValue"}];
-  if (!v8 && !v10 || ![a3 isPhotoFormat])
+  if (!v8 && !v10 || ![format isPhotoFormat])
   {
     return 0;
   }
 
-  if (a5 <= 1)
+  if (level <= 1)
   {
-    if (a5)
+    if (level)
     {
-      if (a5 != 1)
+      if (level != 1)
       {
         return 0;
       }
@@ -19920,7 +19920,7 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  if (a5 == 2)
+  if (level == 2)
   {
     if (![v9 objectForKeyedSubscript:@"Serious"])
     {
@@ -19933,7 +19933,7 @@ LABEL_22:
     goto LABEL_19;
   }
 
-  if (a5 == 3)
+  if (level == 3)
   {
     if ([v9 objectForKeyedSubscript:@"Critical"])
     {
@@ -19947,7 +19947,7 @@ LABEL_27:
     goto LABEL_24;
   }
 
-  if (a5 != 4)
+  if (level != 4)
   {
     return 0;
   }
@@ -19996,23 +19996,23 @@ uint64_t __58__AVCaptureFigVideoDevice_spatialCaptureDiscomfortReasons__block_in
   return result;
 }
 
-- (void)_updateSpatialCaptureStatus:(unint64_t)a3
+- (void)_updateSpatialCaptureStatus:(unint64_t)status
 {
-  v3 = a3 & 7;
+  v3 = status & 7;
   if ((self->_cinematicVideoSceneMonitoringStatuses & 7) != v3)
   {
-    v4 = a3;
+    statusCopy = status;
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"spatialCaptureDiscomfortReasons"];
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"stereoCaptureStatus"];
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"stereoVideoCaptureStatus"];
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = v6;
-    if ((v4 & 2) != 0)
+    if ((statusCopy & 2) != 0)
     {
       [v6 addObject:@"AVSpatialCaptureDiscomfortReasonNotEnoughLight"];
     }
 
-    if ((v4 & 4) != 0)
+    if ((statusCopy & 4) != 0)
     {
       [v7 addObject:@"AVSpatialCaptureDiscomfortReasonSubjectTooClose"];
     }
@@ -20068,9 +20068,9 @@ uint64_t __71__AVCaptureFigVideoDevice_cinematicVideoCaptureSceneMonitoringStatu
   return result;
 }
 
-- (void)_updateCinematicVideoCaptureSceneMonitoringStatus:(int64_t)a3
+- (void)_updateCinematicVideoCaptureSceneMonitoringStatus:(int64_t)status
 {
-  if (a3 == 5)
+  if (status == 5)
   {
     v5 = @"AVCaptureSceneMonitoringStatusNotEnoughLight";
   }
@@ -20080,10 +20080,10 @@ uint64_t __71__AVCaptureFigVideoDevice_cinematicVideoCaptureSceneMonitoringStatu
     v5 = 0;
   }
 
-  if (a3 == 1 || v5)
+  if (status == 1 || v5)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
-    if (a3 != 1)
+    if (status != 1)
     {
       [v6 addObjectsFromArray:{-[NSSet allObjects](self->_spatialCaptureDiscomfortReasons, "allObjects")}];
       [v6 addObject:v5];
@@ -20117,9 +20117,9 @@ uint64_t __77__AVCaptureFigVideoDevice__updateCinematicVideoCaptureSceneMonitori
   return result;
 }
 
-- (void)updateVideoZoomFactorForSpatialVideoEnabled:(BOOL)a3
+- (void)updateVideoZoomFactorForSpatialVideoEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(AVCaptureFigVideoDevice *)self _setMinAvailableVideoZoomFactor:2.0];
 
@@ -20152,7 +20152,7 @@ uint64_t __77__AVCaptureFigVideoDevice__updateCinematicVideoCaptureSceneMonitori
   return v3;
 }
 
-- (void)_setShallowDepthOfFieldEffectStatus:(int64_t)a3
+- (void)_setShallowDepthOfFieldEffectStatus:(int64_t)status
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -20160,13 +20160,13 @@ uint64_t __77__AVCaptureFigVideoDevice__updateCinematicVideoCaptureSceneMonitori
   v4[2] = __63__AVCaptureFigVideoDevice__setShallowDepthOfFieldEffectStatus___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = status;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (void)_setDepthDataDeliveryEnabled:(BOOL)a3
+- (void)_setDepthDataDeliveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3052000000;
@@ -20186,13 +20186,13 @@ uint64_t __77__AVCaptureFigVideoDevice__updateCinematicVideoCaptureSceneMonitori
   block[1] = 3221225472;
   block[2] = __56__AVCaptureFigVideoDevice__setDepthDataDeliveryEnabled___block_invoke;
   block[3] = &unk_1E78705E0;
-  v12 = a3;
+  enabledCopy2 = enabled;
   block[4] = self;
   block[5] = &v13;
   block[6] = &v21;
   block[7] = &v17;
   dispatch_sync(devicePropsQueue, block);
-  if (v3 && *(v18 + 24) == 1)
+  if (enabledCopy && *(v18 + 24) == 1)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Depth data delivery and camera calibration data delivery may not both be enabled" userInfo:0]);
   }
@@ -20202,7 +20202,7 @@ uint64_t __77__AVCaptureFigVideoDevice__updateCinematicVideoCaptureSceneMonitori
     [(AVCaptureFigVideoDevice *)self _updateMinMaxDefaultVideoZoomFactors];
     if ([(AVCaptureFigVideoDevice *)self _isBravoVariant])
     {
-      [(AVCaptureFigVideoDevice *)self _updateFallbackPrimaryConstituentDevicesForDepthDataDeliveryEnabled:v3];
+      [(AVCaptureFigVideoDevice *)self _updateFallbackPrimaryConstituentDevicesForDepthDataDeliveryEnabled:enabledCopy];
     }
 
     [(AVCaptureFigVideoDevice *)self _updateCenterStageActiveForEnabled:+[AVCaptureDevice updateDependentProperties:"isCenterStageEnabled"], 0];
@@ -20264,9 +20264,9 @@ id __56__AVCaptureFigVideoDevice__setDepthDataDeliveryEnabled___block_invoke_656
   return result;
 }
 
-- (void)_setCameraCalibrationDataDeliveryEnabled:(BOOL)a3
+- (void)_setCameraCalibrationDataDeliveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -20280,12 +20280,12 @@ id __56__AVCaptureFigVideoDevice__setDepthDataDeliveryEnabled___block_invoke_656
   v6[1] = 3221225472;
   v6[2] = __68__AVCaptureFigVideoDevice__setCameraCalibrationDataDeliveryEnabled___block_invoke;
   v6[3] = &unk_1E7870608;
-  v7 = a3;
+  enabledCopy2 = enabled;
   v6[4] = self;
   v6[5] = &v12;
   v6[6] = &v8;
   dispatch_sync(devicePropsQueue, v6);
-  if (v3 && *(v9 + 24) == 1)
+  if (enabledCopy && *(v9 + 24) == 1)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Depth data delivery and camera calibration data delivery may not both be enabled" userInfo:0]);
   }
@@ -20314,7 +20314,7 @@ uint64_t __68__AVCaptureFigVideoDevice__setCameraCalibrationDataDeliveryEnabled_
   return result;
 }
 
-- (void)_setConstantColorEnabled:(BOOL)a3
+- (void)_setConstantColorEnabled:(BOOL)enabled
 {
   v6[0] = 0;
   v6[1] = v6;
@@ -20325,7 +20325,7 @@ uint64_t __68__AVCaptureFigVideoDevice__setCameraCalibrationDataDeliveryEnabled_
   block[1] = 3221225472;
   block[2] = __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke;
   block[3] = &unk_1E7870360;
-  v5 = a3;
+  enabledCopy = enabled;
   block[4] = self;
   block[5] = v6;
   dispatch_sync(devicePropsQueue, block);
@@ -20345,7 +20345,7 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
   return result;
 }
 
-- (void)_setBackgroundBlurAllowed:(BOOL)a3
+- (void)_setBackgroundBlurAllowed:(BOOL)allowed
 {
   devicePropsQueue = self->_devicePropsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -20353,16 +20353,16 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
   v4[2] = __53__AVCaptureFigVideoDevice__setBackgroundBlurAllowed___block_invoke;
   v4[3] = &unk_1E786EE40;
   v4[4] = self;
-  v5 = a3;
+  allowedCopy = allowed;
   dispatch_sync(devicePropsQueue, v4);
 }
 
-- (void)setEyeDetectionEnabled:(BOOL)a3
+- (void)setEyeDetectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isEyeDetectionSupported])
   {
-    if ([(AVCaptureFigVideoDevice *)self _setFaceDetectionFeatureEnabled:v3 enabledState:&self->_captureSourceSupportedZeroFrameDelaySynchronizationMetadata]!= -16452)
+    if ([(AVCaptureFigVideoDevice *)self _setFaceDetectionFeatureEnabled:enabledCopy enabledState:&self->_captureSourceSupportedZeroFrameDelaySynchronizationMetadata]!= -16452)
     {
       return;
     }
@@ -20388,12 +20388,12 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
   NSLog(&cfstr_SuppressingExc.isa, v7);
 }
 
-- (void)setEyeClosedDetectionEnabled:(BOOL)a3
+- (void)setEyeClosedDetectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isEyeClosedDetectionSupported])
   {
-    if ([(AVCaptureFigVideoDevice *)self _setFaceDetectionFeatureEnabled:v3 enabledState:&self->_captureSourceSupportedZeroFrameDelaySynchronizationMetadata + 1]!= -16452)
+    if ([(AVCaptureFigVideoDevice *)self _setFaceDetectionFeatureEnabled:enabledCopy enabledState:&self->_captureSourceSupportedZeroFrameDelaySynchronizationMetadata + 1]!= -16452)
     {
       return;
     }
@@ -20419,12 +20419,12 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
   NSLog(&cfstr_SuppressingExc.isa, v7);
 }
 
-- (void)setSmileDetectionEnabled:(BOOL)a3
+- (void)setSmileDetectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isSmileDetectionSupported])
   {
-    if ([(AVCaptureFigVideoDevice *)self _setFaceDetectionFeatureEnabled:v3 enabledState:&self->_captureSourceSupportedZeroFrameDelaySynchronizationMetadata + 2]!= -16452)
+    if ([(AVCaptureFigVideoDevice *)self _setFaceDetectionFeatureEnabled:enabledCopy enabledState:&self->_captureSourceSupportedZeroFrameDelaySynchronizationMetadata + 2]!= -16452)
     {
       return;
     }
@@ -20450,19 +20450,19 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
   NSLog(&cfstr_SuppressingExc.isa, v7);
 }
 
-- (int)_setFaceDetectionFeatureEnabled:(BOOL)a3 enabledState:(BOOL *)a4
+- (int)_setFaceDetectionFeatureEnabled:(BOOL)enabled enabledState:(BOOL *)state
 {
-  v4 = *a4;
-  if (v4 == a3)
+  v4 = *state;
+  if (v4 == enabled)
   {
     return 0;
   }
 
-  *a4 = a3;
+  *state = enabled;
   result = [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:*MEMORY[0x1E69906D8] withValue:[(AVCaptureFigVideoDevice *)self _faceDetectionConfigurationDictionary] cacheOnly:self->_cachesFigCaptureSourceConfigurationChanges];
   if (result)
   {
-    *a4 = v4;
+    *state = v4;
   }
 
   return result;
@@ -20494,23 +20494,23 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
 
 - (id)supportedMetadataIdentifiersForFrameRateControl
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   if (![-[NSDictionary objectForKeyedSubscript:](self->_fcsAttributes objectForKeyedSubscript:{*MEMORY[0x1E69901F0]), "BOOLValue"}])
   {
-    return v3;
+    return array;
   }
 
   return [(AVCaptureFigVideoDevice *)self supportedMetadataObjectIdentifiers];
 }
 
-- (id)deviceFormatForSessionPreset:(id)a3 sourceVideoFormat:(unsigned int)a4
+- (id)deviceFormatForSessionPreset:(id)preset sourceVideoFormat:(unsigned int)format
 {
-  if ([a3 isEqualToString:@"AVCaptureSessionPresetInputPriority"])
+  if ([preset isEqualToString:@"AVCaptureSessionPresetInputPriority"])
   {
     return self->_activeFormat;
   }
 
-  v8 = [(AVCaptureFigVideoDevice *)self deviceType];
+  deviceType = [(AVCaptureFigVideoDevice *)self deviceType];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -20537,7 +20537,7 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
       v7 = *(*(&v18 + 1) + 8 * i);
       if ([objc_msgSend(v7 "AVCaptureSessionPresets")])
       {
-        if (CMFormatDescriptionGetMediaSubType([v7 formatDescription]) == a4)
+        if (CMFormatDescriptionGetMediaSubType([v7 formatDescription]) == format)
         {
           return v7;
         }
@@ -20549,7 +20549,7 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
 
         else
         {
-          v15 = v8 == @"AVCaptureDeviceTypeExternal";
+          v15 = deviceType == @"AVCaptureDeviceTypeExternal";
         }
 
         if (v15)
@@ -20567,7 +20567,7 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
   return v7;
 }
 
-- (BOOL)setValue:(id)a3 forCMIOExtensionProperty:(id)a4 error:(id *)a5
+- (BOOL)setValue:(id)value forCMIOExtensionProperty:(id)property error:(id *)error
 {
   v16[0] = 0;
   v16[1] = v16;
@@ -20584,16 +20584,16 @@ uint64_t __52__AVCaptureFigVideoDevice__setConstantColorEnabled___block_invoke(u
   v11[2] = __67__AVCaptureFigVideoDevice_setValue_forCMIOExtensionProperty_error___block_invoke;
   v11[3] = &unk_1E7870630;
   v11[4] = self;
-  v11[5] = a4;
-  v11[6] = a3;
+  v11[5] = property;
+  v11[6] = value;
   v11[7] = v16;
   v11[8] = &v12;
-  v11[9] = a5;
+  v11[9] = error;
   dispatch_async_and_wait(devicePropsQueue, v11);
-  LOBYTE(a5) = *(v13 + 24);
+  LOBYTE(error) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
   _Block_object_dispose(v16, 8);
-  return a5;
+  return error;
 }
 
 uint64_t __67__AVCaptureFigVideoDevice_setValue_forCMIOExtensionProperty_error___block_invoke(uint64_t a1)
@@ -20614,7 +20614,7 @@ uint64_t __67__AVCaptureFigVideoDevice_setValue_forCMIOExtensionProperty_error__
   return result;
 }
 
-- (id)copyValueForCMIOExtensionProperty:(id)a3 error:(id *)a4
+- (id)copyValueForCMIOExtensionProperty:(id)property error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -20628,7 +20628,7 @@ uint64_t __67__AVCaptureFigVideoDevice_setValue_forCMIOExtensionProperty_error__
   block[1] = 3221225472;
   block[2] = __67__AVCaptureFigVideoDevice_copyValueForCMIOExtensionProperty_error___block_invoke;
   block[3] = &unk_1E786FF08;
-  block[5] = a3;
+  block[5] = property;
   block[6] = &v10;
   block[4] = self;
   dispatch_async_and_wait(devicePropsQueue, block);
@@ -20644,7 +20644,7 @@ uint64_t __67__AVCaptureFigVideoDevice_copyValueForCMIOExtensionProperty_error__
   return result;
 }
 
-- (BOOL)addCMIOExtensionPropertyValueChangeHandler:(id)a3
+- (BOOL)addCMIOExtensionPropertyValueChangeHandler:(id)handler
 {
   v8 = 0;
   v9 = &v8;
@@ -20657,12 +20657,12 @@ uint64_t __67__AVCaptureFigVideoDevice_copyValueForCMIOExtensionProperty_error__
   block[2] = __70__AVCaptureFigVideoDevice_addCMIOExtensionPropertyValueChangeHandler___block_invoke;
   block[3] = &unk_1E7870658;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   block[6] = &v8;
   dispatch_async_and_wait(devicePropsQueue, block);
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(handler) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return handler;
 }
 
 uint64_t __70__AVCaptureFigVideoDevice_addCMIOExtensionPropertyValueChangeHandler___block_invoke(void *a1)
@@ -20692,7 +20692,7 @@ id __70__AVCaptureFigVideoDevice_addCMIOExtensionPropertyValueChangeHandler___bl
   return result;
 }
 
-- (void)removeCMIOExtensionPropertyValueChangeHandler:(id)a3
+- (void)removeCMIOExtensionPropertyValueChangeHandler:(id)handler
 {
   dispatch_assert_queue_not_V2(self->_devicePropsQueue);
   devicePropsQueue = self->_devicePropsQueue;
@@ -20701,7 +20701,7 @@ id __70__AVCaptureFigVideoDevice_addCMIOExtensionPropertyValueChangeHandler___bl
   v6[2] = __73__AVCaptureFigVideoDevice_removeCMIOExtensionPropertyValueChangeHandler___block_invoke;
   v6[3] = &unk_1E786F7E8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = handler;
   dispatch_async_and_wait(devicePropsQueue, v6);
 }
 
@@ -20719,7 +20719,7 @@ uint64_t __73__AVCaptureFigVideoDevice_removeCMIOExtensionPropertyValueChangeHan
   return result;
 }
 
-- (void)enumerateCMIOExtensionPropertiesWithBlock:(id)a3
+- (void)enumerateCMIOExtensionPropertiesWithBlock:(id)block
 {
   dispatch_assert_queue_not_V2(self->_devicePropsQueue);
   devicePropsQueue = self->_devicePropsQueue;
@@ -20728,7 +20728,7 @@ uint64_t __73__AVCaptureFigVideoDevice_removeCMIOExtensionPropertyValueChangeHan
   v6[2] = __69__AVCaptureFigVideoDevice_enumerateCMIOExtensionPropertiesWithBlock___block_invoke;
   v6[3] = &unk_1E786F7E8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = block;
   dispatch_async_and_wait(devicePropsQueue, v6);
 }
 
@@ -20774,11 +20774,11 @@ uint64_t __69__AVCaptureFigVideoDevice_enumerateCMIOExtensionPropertiesWithBlock
   return v11();
 }
 
-- (id)AVVideoSettingsForSessionPreset:(id)a3
+- (id)AVVideoSettingsForSessionPreset:(id)preset
 {
   v4 = [(NSDictionary *)self->_fcsAttributes objectForKeyedSubscript:*MEMORY[0x1E6990080]];
 
-  return [v4 objectForKeyedSubscript:a3];
+  return [v4 objectForKeyedSubscript:preset];
 }
 
 - ($2825F4736939C4A6D3AD43837233062D)maxH264PhotoDimensions
@@ -20896,11 +20896,11 @@ uint64_t __69__AVCaptureFigVideoDevice_enumerateCMIOExtensionPropertiesWithBlock
   return *v3;
 }
 
-- (void)setPrimaryConstituentDeviceSwitchingBehavior:(int64_t)a3 restrictedSwitchingBehaviorConditions:(unint64_t)a4
+- (void)setPrimaryConstituentDeviceSwitchingBehavior:(int64_t)behavior restrictedSwitchingBehaviorConditions:(unint64_t)conditions
 {
   if (![(AVCaptureFigVideoDevice *)self _isBravoVariant])
   {
-    if (!a3)
+    if (!behavior)
     {
       goto LABEL_12;
     }
@@ -20908,9 +20908,9 @@ uint64_t __69__AVCaptureFigVideoDevice_enumerateCMIOExtensionPropertiesWithBlock
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (behavior == 2)
   {
-    if (a4 >= 8)
+    if (conditions >= 8)
     {
       v7 = MEMORY[0x1E695DF30];
       v8 = *MEMORY[0x1E695D940];
@@ -20920,7 +20920,7 @@ uint64_t __69__AVCaptureFigVideoDevice_enumerateCMIOExtensionPropertiesWithBlock
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!behavior)
   {
 LABEL_7:
     v7 = MEMORY[0x1E695DF30];
@@ -20928,7 +20928,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4)
+  if (conditions)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
@@ -20953,8 +20953,8 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __110__AVCaptureFigVideoDevice_setPrimaryConstituentDeviceSwitchingBehavior_restrictedSwitchingBehaviorConditions___block_invoke;
   block[3] = &unk_1E78706A8;
-  block[6] = a3;
-  block[7] = a4;
+  block[6] = behavior;
+  block[7] = conditions;
   block[4] = self;
   block[5] = &v14;
   dispatch_sync(devicePropsQueue, block);
@@ -20973,8 +20973,8 @@ LABEL_12:
     v12[2] = __110__AVCaptureFigVideoDevice_setPrimaryConstituentDeviceSwitchingBehavior_restrictedSwitchingBehaviorConditions___block_invoke_2;
     v12[3] = &unk_1E786ECA8;
     v12[4] = self;
-    v12[5] = a3;
-    v12[6] = a4;
+    v12[5] = behavior;
+    v12[6] = conditions;
     dispatch_sync(v11, v12);
     [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"primaryConstituentDeviceRestrictedSwitchingBehaviorConditions"];
     [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"primaryConstituentDeviceSwitchingBehavior"];
@@ -21112,7 +21112,7 @@ id __60__AVCaptureFigVideoDevice_fallbackPrimaryConstituentDevices__block_invoke
   return result;
 }
 
-- (void)setFallbackPrimaryConstituentDevices:(id)a3
+- (void)setFallbackPrimaryConstituentDevices:(id)devices
 {
   if ([(AVCaptureFigVideoDevice *)self _isBravoVariant]&& !self->_primaryConstituentDeviceRestrictedSwitchingBehaviorConditions)
   {
@@ -21123,7 +21123,7 @@ id __60__AVCaptureFigVideoDevice_fallbackPrimaryConstituentDevices__block_invoke
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  v5 = [devices countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -21134,7 +21134,7 @@ id __60__AVCaptureFigVideoDevice_fallbackPrimaryConstituentDevices__block_invoke
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -21154,7 +21154,7 @@ id __60__AVCaptureFigVideoDevice_fallbackPrimaryConstituentDevices__block_invoke
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v6 = [devices countByEnumeratingWithState:&v14 objects:v13 count:16];
       if (v6)
       {
         continue;
@@ -21164,60 +21164,60 @@ id __60__AVCaptureFigVideoDevice_fallbackPrimaryConstituentDevices__block_invoke
     }
   }
 
-  if (![(NSArray *)self->_supportedFallbackPrimaryConstituentDevices isEqualToArray:a3])
+  if (![(NSArray *)self->_supportedFallbackPrimaryConstituentDevices isEqualToArray:devices])
   {
-    [(AVCaptureFigVideoDevice *)self _setFallbackPrimaryConstituentDevices:a3];
+    [(AVCaptureFigVideoDevice *)self _setFallbackPrimaryConstituentDevices:devices];
   }
 }
 
-- (void)_updateFallbackPrimaryConstituentDevicesForDepthDataDeliveryEnabled:(BOOL)a3
+- (void)_updateFallbackPrimaryConstituentDevicesForDepthDataDeliveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (!self->_primaryConstituentDeviceRestrictedSwitchingBehaviorConditions)
   {
     [(AVCaptureFigVideoDevice *)self _populateSupportedFallbackPrimaryConstituentDevices];
   }
 
-  v5 = [(NSArray *)[(AVCaptureDevice *)self constituentDevices] firstObject];
-  if (v3)
+  firstObject = [(NSArray *)[(AVCaptureDevice *)self constituentDevices] firstObject];
+  if (enabledCopy)
   {
-    if (![(NSArray *)self->_supportedFallbackPrimaryConstituentDevices containsObject:v5])
+    if (![(NSArray *)self->_supportedFallbackPrimaryConstituentDevices containsObject:firstObject])
     {
       return;
     }
 
     v6 = [(NSArray *)self->_supportedFallbackPrimaryConstituentDevices mutableCopy];
-    [v6 removeObject:v5];
+    [v6 removeObject:firstObject];
   }
 
   else
   {
-    if (!self->_widestFallbackPrimaryConstituentDeviceRemovedForDepthDataDelivery || [(NSArray *)self->_supportedFallbackPrimaryConstituentDevices containsObject:v5])
+    if (!self->_widestFallbackPrimaryConstituentDeviceRemovedForDepthDataDelivery || [(NSArray *)self->_supportedFallbackPrimaryConstituentDevices containsObject:firstObject])
     {
       return;
     }
 
     v6 = [(NSArray *)self->_supportedFallbackPrimaryConstituentDevices mutableCopy];
-    [v6 addObject:v5];
+    [v6 addObject:firstObject];
   }
 
   if (v6)
   {
     if (![(AVCaptureFigVideoDevice *)self _setFallbackPrimaryConstituentDevices:v6])
     {
-      self->_widestFallbackPrimaryConstituentDeviceRemovedForDepthDataDelivery = v3;
+      self->_widestFallbackPrimaryConstituentDeviceRemovedForDepthDataDelivery = enabledCopy;
     }
   }
 }
 
-- (int)_setFallbackPrimaryConstituentDevices:(id)a3
+- (int)_setFallbackPrimaryConstituentDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = avcfvd_deviceTypesFromAVCaptureDevices(a3);
+  v5 = avcfvd_deviceTypesFromAVCaptureDevices(devices);
   devicePropsQueue = self->_devicePropsQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -21225,12 +21225,12 @@ id __60__AVCaptureFigVideoDevice_fallbackPrimaryConstituentDevices__block_invoke
   v8[3] = &unk_1E78706D0;
   v8[4] = self;
   v8[5] = v5;
-  v8[6] = v3;
+  v8[6] = devicesCopy;
   v8[7] = &v9;
   dispatch_sync(devicePropsQueue, v8);
-  LODWORD(v3) = *(v10 + 6);
+  LODWORD(devicesCopy) = *(v10 + 6);
   _Block_object_dispose(&v9, 8);
-  return v3;
+  return devicesCopy;
 }
 
 uint64_t __65__AVCaptureFigVideoDevice__setFallbackPrimaryConstituentDevices___block_invoke(uint64_t a1)
@@ -21284,24 +21284,24 @@ void *__117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitching
   return result;
 }
 
-- (BOOL)isTimeOfFlightProjectorModeSupported:(int64_t)a3
+- (BOOL)isTimeOfFlightProjectorModeSupported:(int64_t)supported
 {
   if (![-[AVCaptureFigVideoDevice deviceType](self "deviceType")])
   {
-    return a3 == 0;
+    return supported == 0;
   }
 
   v5 = [(NSDictionary *)self->_fcsAttributes objectForKeyedSubscript:*MEMORY[0x1E6990278]];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:supported];
 
   return [v5 containsObject:v6];
 }
 
-- (void)setTimeOfFlightProjectorMode:(int64_t)a3
+- (void)setTimeOfFlightProjectorMode:(int64_t)mode
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if ([(AVCaptureFigVideoDevice *)self isTimeOfFlightProjectorModeSupported:a3])
+    if ([(AVCaptureFigVideoDevice *)self isTimeOfFlightProjectorModeSupported:mode])
     {
       devicePropsQueue = self->_devicePropsQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -21309,7 +21309,7 @@ void *__117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitching
       block[2] = __56__AVCaptureFigVideoDevice_setTimeOfFlightProjectorMode___block_invoke;
       block[3] = &unk_1E786ECD0;
       block[4] = self;
-      block[5] = a3;
+      block[5] = mode;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -21340,12 +21340,12 @@ void *__117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitching
   NSLog(&cfstr_SuppressingExc.isa, v13);
 }
 
-- (void)setSpatialOverCaptureEnabled:(BOOL)a3
+- (void)setSpatialOverCaptureEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if (!v3 || ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")] & 1) != 0)
+    if (!enabledCopy || ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")] & 1) != 0)
     {
       devicePropsQueue = self->_devicePropsQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -21353,7 +21353,7 @@ void *__117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitching
       block[2] = __56__AVCaptureFigVideoDevice_setSpatialOverCaptureEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v10 = v3;
+      v10 = enabledCopy;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -21379,12 +21379,12 @@ void *__117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitching
   NSLog(&cfstr_SuppressingExc.isa, v8);
 }
 
-- (void)setNonDestructiveCropEnabled:(BOOL)a3
+- (void)setNonDestructiveCropEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if (!v3 || ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")] & 1) != 0)
+    if (!enabledCopy || ([-[AVCaptureFigVideoDevice activeFormat](self "activeFormat")] & 1) != 0)
     {
       devicePropsQueue = self->_devicePropsQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -21392,7 +21392,7 @@ void *__117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitching
       block[2] = __56__AVCaptureFigVideoDevice_setNonDestructiveCropEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v10 = v3;
+      v10 = enabledCopy;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -21437,11 +21437,11 @@ void *__117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitching
   return v3;
 }
 
-- (void)setAspectRatioForNonDestructiveCrop:(int64_t)a3
+- (void)setAspectRatioForNonDestructiveCrop:(int64_t)crop
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if (!a3 || [(AVCaptureFigVideoDevice *)self isNonDestructiveCropEnabled])
+    if (!crop || [(AVCaptureFigVideoDevice *)self isNonDestructiveCropEnabled])
     {
       devicePropsQueue = self->_devicePropsQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -21449,7 +21449,7 @@ void *__117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitching
       block[2] = __63__AVCaptureFigVideoDevice_setAspectRatioForNonDestructiveCrop___block_invoke;
       block[3] = &unk_1E786ECD0;
       block[4] = self;
-      block[5] = a3;
+      block[5] = crop;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -21579,7 +21579,7 @@ LABEL_23:
   }
 }
 
-- (id)_copyFigCaptureSourceProperty:(__CFString *)a3
+- (id)_copyFigCaptureSourceProperty:(__CFString *)property
 {
   v7 = 0;
   v8 = &v7;
@@ -21593,7 +21593,7 @@ LABEL_23:
   block[2] = __57__AVCaptureFigVideoDevice__copyFigCaptureSourceProperty___block_invoke;
   block[3] = &unk_1E7870018;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = property;
   block[4] = self;
   dispatch_sync(fcsQueue, block);
   v4 = v8[5];
@@ -21620,14 +21620,14 @@ uint64_t __57__AVCaptureFigVideoDevice__copyFigCaptureSourceProperty___block_inv
   return result;
 }
 
-- (id)_getFigCaptureSourceProperty:(__CFString *)a3
+- (id)_getFigCaptureSourceProperty:(__CFString *)property
 {
-  v3 = [(AVCaptureFigVideoDevice *)self _copyFigCaptureSourceProperty:a3];
+  v3 = [(AVCaptureFigVideoDevice *)self _copyFigCaptureSourceProperty:property];
 
   return v3;
 }
 
-- (int)_setFigCaptureSourcePixelBufferProperty:(__CFString *)a3 withValue:(__CVBuffer *)a4
+- (int)_setFigCaptureSourcePixelBufferProperty:(__CFString *)property withValue:(__CVBuffer *)value
 {
   v8 = 0;
   v9 = &v8;
@@ -21640,8 +21640,8 @@ uint64_t __57__AVCaptureFigVideoDevice__copyFigCaptureSourceProperty___block_inv
   v7[3] = &unk_1E78706A8;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = property;
+  v7[7] = value;
   dispatch_sync(fcsQueue, v7);
   v5 = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
@@ -21674,7 +21674,7 @@ uint64_t __77__AVCaptureFigVideoDevice__setFigCaptureSourcePixelBufferProperty_w
   return result;
 }
 
-- (int)_setFigCaptureSourceProperty:(__CFString *)a3 withValue:(id)a4 cacheOnly:(BOOL)a5
+- (int)_setFigCaptureSourceProperty:(__CFString *)property withValue:(id)value cacheOnly:(BOOL)only
 {
   v10 = 0;
   v11 = &v10;
@@ -21685,11 +21685,11 @@ uint64_t __77__AVCaptureFigVideoDevice__setFigCaptureSourcePixelBufferProperty_w
   block[1] = 3221225472;
   block[2] = __76__AVCaptureFigVideoDevice__setFigCaptureSourceProperty_withValue_cacheOnly___block_invoke;
   block[3] = &unk_1E78706F8;
-  v9 = a5;
+  onlyCopy = only;
   block[6] = &v10;
-  block[7] = a3;
+  block[7] = property;
   block[4] = self;
-  block[5] = a4;
+  block[5] = value;
   dispatch_sync(fcsQueue, block);
   v6 = *(v11 + 6);
   _Block_object_dispose(&v10, 8);
@@ -21781,7 +21781,7 @@ uint64_t __61__AVCaptureFigVideoDevice__restoreFigCaptureSourceProperties__block
   return result;
 }
 
-- (void)_reconnectToFigCaptureSource:(OpaqueFigCaptureSource *)a3
+- (void)_reconnectToFigCaptureSource:(OpaqueFigCaptureSource *)source
 {
   v5 = [(AVCaptureFigVideoDevice *)self _copyFigCaptureSourceProperty:*MEMORY[0x1E6990888]];
   if (v5 == *MEMORY[0x1E695E4D0])
@@ -21794,7 +21794,7 @@ uint64_t __61__AVCaptureFigVideoDevice__restoreFigCaptureSourceProperties__block
     CFRelease(v5);
   }
 
-  [(AVCaptureFigVideoDevice *)self _setFigCaptureSource:a3 allowSendingWorkToMainThread:1];
+  [(AVCaptureFigVideoDevice *)self _setFigCaptureSource:source allowSendingWorkToMainThread:1];
   [(AVCaptureFigVideoDevice *)self _restoreFigCaptureSourceProperties];
   devicePropsQueue = self->_devicePropsQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -21805,7 +21805,7 @@ uint64_t __61__AVCaptureFigVideoDevice__restoreFigCaptureSourceProperties__block
   dispatch_sync(devicePropsQueue, block);
 }
 
-- (void)_handleCMIOExtensionPropertyChangeNotification:(id)a3
+- (void)_handleCMIOExtensionPropertyChangeNotification:(id)notification
 {
   v19[0] = 0;
   v19[1] = v19;
@@ -21829,20 +21829,20 @@ uint64_t __61__AVCaptureFigVideoDevice__restoreFigCaptureSourceProperties__block
   }
 
   dispatch_assert_queue_not_V2(self->_devicePropsQueue);
-  if (a3)
+  if (notification)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = *MEMORY[0x1E6990430];
-      if ([a3 objectForKeyedSubscript:*MEMORY[0x1E6990430]])
+      if ([notification objectForKeyedSubscript:*MEMORY[0x1E6990430]])
       {
         v7 = *MEMORY[0x1E6990438];
-        if ([a3 objectForKeyedSubscript:*MEMORY[0x1E6990438]])
+        if ([notification objectForKeyedSubscript:*MEMORY[0x1E6990438]])
         {
-          if ([objc_msgSend(a3 objectForKeyedSubscript:{v6), "isEqualToString:", @"VideoZoomFactor"}])
+          if ([objc_msgSend(notification objectForKeyedSubscript:{v6), "isEqualToString:", @"VideoZoomFactor"}])
           {
-            [objc_msgSend(a3 objectForKeyedSubscript:{v7), "floatValue"}];
+            [objc_msgSend(notification objectForKeyedSubscript:{v7), "floatValue"}];
             v9 = v8;
             [(AVCaptureFigVideoDevice *)self videoZoomFactor];
             v10 = v9;
@@ -21870,7 +21870,7 @@ uint64_t __61__AVCaptureFigVideoDevice__restoreFigCaptureSourceProperties__block
             v14[3] = &unk_1E7870770;
             v14[6] = v19;
             v14[7] = v18;
-            v14[4] = a3;
+            v14[4] = notification;
             v14[5] = self;
             dispatch_async_and_wait(v13, v14);
           }
@@ -21944,9 +21944,9 @@ uint64_t __74__AVCaptureFigVideoDevice__handleCMIOExtensionPropertyChangeNotific
   return result;
 }
 
-- (void)_handleNotification:(__CFString *)a3 payload:(id)a4
+- (void)_handleNotification:(__CFString *)notification payload:(id)payload
 {
-  if (CFEqual(a3, *MEMORY[0x1E6990540]))
+  if (CFEqual(notification, *MEMORY[0x1E6990540]))
   {
     v7 = [(AVCaptureFigVideoDevice *)self _copyFigCaptureSourceProperty:*MEMORY[0x1E6990888]];
     if (v7 != *MEMORY[0x1E695E4C0])
@@ -21963,9 +21963,9 @@ uint64_t __74__AVCaptureFigVideoDevice__handleCMIOExtensionPropertyChangeNotific
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990670]))
+  if (CFEqual(notification, *MEMORY[0x1E6990670]))
   {
-    if (!self->_proxyDevice || ([objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}] & 1) != 0)
+    if (!self->_proxyDevice || ([objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}] & 1) != 0)
     {
       return;
     }
@@ -21992,24 +21992,24 @@ uint64_t __74__AVCaptureFigVideoDevice__handleCMIOExtensionPropertyChangeNotific
     goto LABEL_12;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69904C8]))
+  if (CFEqual(notification, *MEMORY[0x1E69904C8]))
   {
 
-    [(AVCaptureFigVideoDevice *)self _handleCMIOExtensionPropertyChangeNotification:a4];
+    [(AVCaptureFigVideoDevice *)self _handleCMIOExtensionPropertyChangeNotification:payload];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990578]))
+  if (CFEqual(notification, *MEMORY[0x1E6990578]))
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v11 postNotificationName:@"AVCaptureDeviceSubjectAreaDidChangeNotification" object:self];
+    [defaultCenter postNotificationName:@"AVCaptureDeviceSubjectAreaDidChangeNotification" object:self];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69905D0]))
+  if (CFEqual(notification, *MEMORY[0x1E69905D0]))
   {
-    v12 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+    v12 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
     [(AVCaptureFigVideoDevice *)self _setAdjustingFocus:v12];
     if (v12)
     {
@@ -22044,9 +22044,9 @@ uint64_t __74__AVCaptureFigVideoDevice__handleCMIOExtensionPropertyChangeNotific
     goto LABEL_12;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69906F8]))
+  if (CFEqual(notification, *MEMORY[0x1E69906F8]))
   {
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
     v16 = v15;
     v185.origin.x = 0.0;
     *&v185.origin.y = &v185;
@@ -22078,27 +22078,27 @@ uint64_t __74__AVCaptureFigVideoDevice__handleCMIOExtensionPropertyChangeNotific
     goto LABEL_12;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990510]))
+  if (CFEqual(notification, *MEMORY[0x1E6990510]))
   {
     v19 = 832;
 LABEL_32:
     v20 = *(&self->super.super.isa + v19);
 
-    [(AVCaptureFigVideoDevice *)self _handleManualControlCompletionForRequestQueue:v20 withPayload:a4];
+    [(AVCaptureFigVideoDevice *)self _handleManualControlCompletionForRequestQueue:v20 withPayload:payload];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69905C8]))
+  if (CFEqual(notification, *MEMORY[0x1E69905C8]))
   {
-    v21 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+    v21 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
 
     [(AVCaptureFigVideoDevice *)self _setAdjustingExposure:v21];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69905B0]))
+  if (CFEqual(notification, *MEMORY[0x1E69905B0]))
   {
-    v22 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990468]];
+    v22 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990468]];
     if (!v22)
     {
       return;
@@ -22120,14 +22120,14 @@ LABEL_32:
 LABEL_42:
     dispatch_sync(v24, v25);
 LABEL_43:
-    v26 = self;
+    selfCopy2 = self;
     v27 = v23;
     goto LABEL_44;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69906B0]))
+  if (CFEqual(notification, *MEMORY[0x1E69906B0]))
   {
-    v28 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990468]];
+    v28 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990468]];
     memset(&v244, 0, sizeof(v244));
     CMTimeMakeFromDictionary(&v244, v28);
     v273 = 0;
@@ -22186,9 +22186,9 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990738]))
+  if (CFEqual(notification, *MEMORY[0x1E6990738]))
   {
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
     v33 = v32;
     v185.origin.x = 0.0;
     *&v185.origin.y = &v185;
@@ -22220,9 +22220,9 @@ LABEL_50:
     goto LABEL_12;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69906C0]))
+  if (CFEqual(notification, *MEMORY[0x1E69906C0]))
   {
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
     v37 = v36;
     v185.origin.x = 0.0;
     *&v185.origin.y = &v185;
@@ -22254,12 +22254,12 @@ LABEL_50:
     goto LABEL_12;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69906D0]))
+  if (CFEqual(notification, *MEMORY[0x1E69906D0]))
   {
     v185.origin.x = 0.0;
     *&v185.origin.y = &v185;
     *&v185.size.width = 0x2020000000;
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
     LODWORD(v185.size.height) = v40;
     v273 = 0;
     v274 = &v273;
@@ -22291,29 +22291,29 @@ LABEL_50:
     goto LABEL_61;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990508]))
+  if (CFEqual(notification, *MEMORY[0x1E6990508]))
   {
     v19 = 840;
     goto LABEL_32;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69904C0]))
+  if (CFEqual(notification, *MEMORY[0x1E69904C0]))
   {
     v19 = 848;
     goto LABEL_32;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69905D8]))
+  if (CFEqual(notification, *MEMORY[0x1E69905D8]))
   {
-    v43 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+    v43 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
 
     [(AVCaptureFigVideoDevice *)self _setAdjustingWhiteBalance:v43];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990678]))
+  if (CFEqual(notification, *MEMORY[0x1E6990678]))
   {
-    v44 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990468]];
+    v44 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990468]];
     if (!v44)
     {
       return;
@@ -22360,9 +22360,9 @@ LABEL_50:
     goto LABEL_12;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990728]))
+  if (CFEqual(notification, *MEMORY[0x1E6990728]))
   {
-    v48 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990468]];
+    v48 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990468]];
     if (!v48)
     {
       return;
@@ -22391,15 +22391,15 @@ LABEL_50:
     goto LABEL_42;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990518]))
+  if (CFEqual(notification, *MEMORY[0x1E6990518]))
   {
     v19 = 856;
     goto LABEL_32;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69907A8]))
+  if (CFEqual(notification, *MEMORY[0x1E69907A8]))
   {
-    v50 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+    v50 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
     v185.origin.x = 0.0;
     *&v185.origin.y = &v185;
     *&v185.size.width = 0x2020000000;
@@ -22430,7 +22430,7 @@ LABEL_50:
     goto LABEL_12;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69907B0]))
+  if (CFEqual(notification, *MEMORY[0x1E69907B0]))
   {
     v53 = @"documentSceneConfidence";
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"documentSceneConfidence"];
@@ -22440,24 +22440,24 @@ LABEL_50:
     v246[2] = __55__AVCaptureFigVideoDevice__handleNotification_payload___block_invoke_20;
     v246[3] = &unk_1E786EAA8;
     v246[4] = self;
-    v246[5] = a4;
+    v246[5] = payload;
     v55 = v246;
 LABEL_86:
     dispatch_sync(v54, v55);
 LABEL_87:
-    v26 = self;
+    selfCopy2 = self;
     v27 = v53;
 LABEL_44:
-    [(AVCaptureFigVideoDevice *)v26 didChangeValueForKey:v27];
+    [(AVCaptureFigVideoDevice *)selfCopy2 didChangeValueForKey:v27];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990570]))
+  if (CFEqual(notification, *MEMORY[0x1E6990570]))
   {
-    v56 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69908C8]), "BOOLValue"}];
-    v57 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69908D0]), "BOOLValue"}];
-    v58 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69908D8]), "BOOLValue"}];
-    v59 = [a4 objectForKeyedSubscript:*MEMORY[0x1E69908C0]];
+    v56 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E69908C8]), "BOOLValue"}];
+    v57 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E69908D0]), "BOOLValue"}];
+    v58 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E69908D8]), "BOOLValue"}];
+    v59 = [payload objectForKeyedSubscript:*MEMORY[0x1E69908C0]];
     v273 = 0;
     v274 = &v273;
     v275 = 0x2020000000;
@@ -22530,47 +22530,47 @@ LABEL_44:
     goto LABEL_50;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69906F0]))
+  if (CFEqual(notification, *MEMORY[0x1E69906F0]))
   {
-    v61 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}] ^ 1;
+    v61 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}] ^ 1;
 
     [(AVCaptureFigVideoDevice *)self _setFlashAvailable:v61];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990820]))
+  if (CFEqual(notification, *MEMORY[0x1E6990820]))
   {
-    v62 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+    v62 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
 
     [(AVCaptureFigVideoDevice *)self _setTorchActive:v62];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990830]))
+  if (CFEqual(notification, *MEMORY[0x1E6990830]))
   {
-    v63 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}] ^ 1;
+    v63 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}] ^ 1;
 
     [(AVCaptureFigVideoDevice *)self _setTorchAvailable:v63];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990828]))
+  if (CFEqual(notification, *MEMORY[0x1E6990828]))
   {
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
 
     [(AVCaptureFigVideoDevice *)self _setTorchLevel:?];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990740]))
+  if (CFEqual(notification, *MEMORY[0x1E6990740]))
   {
-    v64 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "intValue"}];
+    v64 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "intValue"}];
 
     [(AVCaptureFigVideoDevice *)self _setImageControlMode:v64];
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990588]))
+  if (CFEqual(notification, *MEMORY[0x1E6990588]))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -22578,10 +22578,10 @@ LABEL_44:
       return;
     }
 
-    v65 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990948]];
-    v66 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990940]];
-    v67 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990950]];
-    v68 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990958]];
+    v65 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990948]];
+    v66 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990940]];
+    v67 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990950]];
+    v68 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990958]];
     v185.origin.x = 0.0;
     *&v185.origin.y = &v185;
     *&v185.size.width = 0x2020000000;
@@ -22613,8 +22613,8 @@ LABEL_44:
 
     if ([v68 BOOLValue])
     {
-      v70 = [v67 intValue];
-      if (v70 != *(v274 + 6) || *(*&v185.origin.y + 24) == 0.0)
+      intValue = [v67 intValue];
+      if (intValue != *(v274 + 6) || *(*&v185.origin.y + 24) == 0.0)
       {
         goto LABEL_140;
       }
@@ -22675,17 +22675,17 @@ LABEL_13:
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E69904E8]))
+  if (CFEqual(notification, *MEMORY[0x1E69904E8]))
   {
     v72 = *(MEMORY[0x1E695F058] + 16);
     v185.origin = *MEMORY[0x1E695F058];
     v185.size = v72;
-    if (!CGRectMakeWithDictionaryRepresentation([a4 objectForKeyedSubscript:*MEMORY[0x1E69903B8]], &v185))
+    if (!CGRectMakeWithDictionaryRepresentation([payload objectForKeyedSubscript:*MEMORY[0x1E69903B8]], &v185))
     {
       return;
     }
 
-    v73 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69903B0]), "intValue"}];
+    v73 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E69903B0]), "intValue"}];
     v53 = @"faceRectangle";
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"faceRectangle"];
     [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"faceRectangleAngle"];
@@ -22702,7 +22702,7 @@ LABEL_13:
     goto LABEL_87;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990558]))
+  if (CFEqual(notification, *MEMORY[0x1E6990558]))
   {
     v75 = *MEMORY[0x1E69908B0];
     v228[0] = *MEMORY[0x1E69908B8];
@@ -22714,16 +22714,16 @@ LABEL_13:
     return;
   }
 
-  if (CFEqual(a3, *MEMORY[0x1E6990568]))
+  if (CFEqual(notification, *MEMORY[0x1E6990568]))
   {
-    v77 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "integerValue"}];
+    v77 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "integerValue"}];
 
     [(AVCaptureFigVideoDevice *)self _updateSpatialCaptureStatus:v77];
   }
 
-  else if (CFEqual(a3, *MEMORY[0x1E6990548]))
+  else if (CFEqual(notification, *MEMORY[0x1E6990548]))
   {
-    v78 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990890]), "integerValue"}];
+    v78 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990890]), "integerValue"}];
     v79 = v78;
     if ((v78 - 13) <= 1 && v78 != *&self->_depthDataDeliveryEnabled)
     {
@@ -22760,11 +22760,11 @@ LABEL_13:
 
     [(AVCaptureFigVideoDevice *)self _setShallowDepthOfFieldEffectStatus:v79];
     v82 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v79), @"AVCaptureDeviceShallowDepthOfFieldStatusChangedKeyEffectStatus", 0}];
-    v83 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990898]];
+    v83 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990898]];
     if (v83)
     {
-      v84 = [v83 integerValue];
-      [v82 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v84), @"AVCaptureDeviceShallowDepthOfFieldStatusChangedKeyStagePreviewStatus"}];
+      integerValue = [v83 integerValue];
+      [v82 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", integerValue), @"AVCaptureDeviceShallowDepthOfFieldStatusChangedKeyStagePreviewStatus"}];
     }
 
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -22776,27 +22776,27 @@ LABEL_13:
 
   else
   {
-    if (CFEqual(a3, *MEMORY[0x1E69904B8]))
+    if (CFEqual(notification, *MEMORY[0x1E69904B8]))
     {
-      v85 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990468]];
+      v85 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990468]];
       v185.origin.x = 0.0;
       v185.origin.y = 0.0;
       [v85 getBytes:&v185 length:16];
       [(AVCaptureFigVideoDevice *)self _setActivePrimaryConstituentDeviceSwitchingBehavior:*&v185.origin.x restrictedSwitchingBehaviorConditions:*&v185.origin.y];
-      [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990460]), "floatValue"}];
+      [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990460]), "floatValue"}];
       [(AVCaptureFigVideoDevice *)self _updateMinMaxVideoZoomFactorsWithMinZoomFactorFromCameraSelection:v86];
       return;
     }
 
-    if (CFEqual(a3, *MEMORY[0x1E69904D8]))
+    if (CFEqual(notification, *MEMORY[0x1E69904D8]))
     {
-      v87 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "intValue"}];
+      v87 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "intValue"}];
       v222 = 0u;
       v223 = 0u;
       v224 = 0u;
       v225 = 0u;
-      v88 = [(AVCaptureDevice *)self constituentDevices];
-      v89 = [(NSArray *)v88 countByEnumeratingWithState:&v222 objects:v221 count:16];
+      constituentDevices = [(AVCaptureDevice *)self constituentDevices];
+      v89 = [(NSArray *)constituentDevices countByEnumeratingWithState:&v222 objects:v221 count:16];
       if (v89)
       {
         v90 = v89;
@@ -22807,7 +22807,7 @@ LABEL_160:
         {
           if (*v223 != v91)
           {
-            objc_enumerationMutation(v88);
+            objc_enumerationMutation(constituentDevices);
           }
 
           v93 = *(*(&v222 + 1) + 8 * v92);
@@ -22818,7 +22818,7 @@ LABEL_160:
 
           if (v90 == ++v92)
           {
-            v90 = [(NSArray *)v88 countByEnumeratingWithState:&v222 objects:v221 count:16];
+            v90 = [(NSArray *)constituentDevices countByEnumeratingWithState:&v222 objects:v221 count:16];
             if (v90)
             {
               goto LABEL_160;
@@ -22847,15 +22847,15 @@ LABEL_160:
       }
     }
 
-    else if (CFEqual(a3, *MEMORY[0x1E6990520]))
+    else if (CFEqual(notification, *MEMORY[0x1E6990520]))
     {
-      v94 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "intValue"}];
+      v94 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "intValue"}];
       v216 = 0u;
       v217 = 0u;
       v218 = 0u;
       v219 = 0u;
-      v95 = [(AVCaptureDevice *)self constituentDevices];
-      v96 = [(NSArray *)v95 countByEnumeratingWithState:&v216 objects:v215 count:16];
+      constituentDevices2 = [(AVCaptureDevice *)self constituentDevices];
+      v96 = [(NSArray *)constituentDevices2 countByEnumeratingWithState:&v216 objects:v215 count:16];
       if (v96)
       {
         v97 = v96;
@@ -22866,7 +22866,7 @@ LABEL_170:
         {
           if (*v217 != v98)
           {
-            objc_enumerationMutation(v95);
+            objc_enumerationMutation(constituentDevices2);
           }
 
           v100 = *(*(&v216 + 1) + 8 * v99);
@@ -22877,7 +22877,7 @@ LABEL_170:
 
           if (v97 == ++v99)
           {
-            v97 = [(NSArray *)v95 countByEnumeratingWithState:&v216 objects:v215 count:16];
+            v97 = [(NSArray *)constituentDevices2 countByEnumeratingWithState:&v216 objects:v215 count:16];
             if (v97)
             {
               goto LABEL_170;
@@ -22906,9 +22906,9 @@ LABEL_170:
 
     else
     {
-      if (CFEqual(a3, *MEMORY[0x1E69904F0]))
+      if (CFEqual(notification, *MEMORY[0x1E69904F0]))
       {
-        v102 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+        v102 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
         v185.origin.x = 0.0;
         *&v185.origin.y = &v185;
         *&v185.size.width = 0x2020000000;
@@ -22939,10 +22939,10 @@ LABEL_170:
         goto LABEL_12;
       }
 
-      if (CFEqual(a3, *MEMORY[0x1E6990810]))
+      if (CFEqual(notification, *MEMORY[0x1E6990810]))
       {
-        v105 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990908]), "intValue"}];
-        v106 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990900]), "intValue"}];
+        v105 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990908]), "intValue"}];
+        v106 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990900]), "intValue"}];
         if (v105 > SLODWORD(self->_systemPressureState))
         {
           LODWORD(self->_systemPressureState) = v105;
@@ -22979,14 +22979,14 @@ LABEL_170:
         goto LABEL_12;
       }
 
-      if (BYTE1(self->_degradedCaptureQualityFactors) == 1 && CFEqual(a3, *MEMORY[0x1E6990858]) || BYTE2(self->_degradedCaptureQualityFactors) == 1 && CFEqual(a3, *MEMORY[0x1E6990620]))
+      if (BYTE1(self->_degradedCaptureQualityFactors) == 1 && CFEqual(notification, *MEMORY[0x1E6990858]) || BYTE2(self->_degradedCaptureQualityFactors) == 1 && CFEqual(notification, *MEMORY[0x1E6990620]))
       {
         if (![(AVCaptureFigVideoDevice *)self hasFlash])
         {
           return;
         }
 
-        v110 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+        v110 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
         v185.origin.x = 0.0;
         *&v185.origin.y = &v185;
         *&v185.size.width = 0x2020000000;
@@ -23003,7 +23003,7 @@ LABEL_170:
         v207 = v110;
         v206[4] = self;
         v206[5] = &v273;
-        v206[7] = a3;
+        v206[7] = notification;
         v206[6] = &v185;
         dispatch_sync(v111, v206);
         if (*(*&v185.origin.y + 24) == 1)
@@ -23023,9 +23023,9 @@ LABEL_170:
         goto LABEL_61;
       }
 
-      if (CFEqual(a3, *MEMORY[0x1E6990730]))
+      if (CFEqual(notification, *MEMORY[0x1E6990730]))
       {
-        v113 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+        v113 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
         if (v113)
         {
           return;
@@ -23062,9 +23062,9 @@ LABEL_170:
         goto LABEL_12;
       }
 
-      if (CFEqual(a3, *MEMORY[0x1E6990798]))
+      if (CFEqual(notification, *MEMORY[0x1E6990798]))
       {
-        v117 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+        v117 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
         if (!v117)
         {
           return;
@@ -23101,17 +23101,17 @@ LABEL_170:
         goto LABEL_12;
       }
 
-      if (CFEqual(a3, *MEMORY[0x1E6990628]) || CFEqual(a3, *MEMORY[0x1E6990618]))
+      if (CFEqual(notification, *MEMORY[0x1E6990628]) || CFEqual(notification, *MEMORY[0x1E6990618]))
       {
         return;
       }
 
-      if (CFEqual(a3, *MEMORY[0x1E6990658]))
+      if (CFEqual(notification, *MEMORY[0x1E6990658]))
       {
         v121 = *(MEMORY[0x1E695F050] + 16);
         v185.origin = *MEMORY[0x1E695F050];
         v185.size = v121;
-        if (!CGRectMakeWithDictionaryRepresentation([a4 objectForKeyedSubscript:*MEMORY[0x1E6990468]], &v185))
+        if (!CGRectMakeWithDictionaryRepresentation([payload objectForKeyedSubscript:*MEMORY[0x1E6990468]], &v185))
         {
           return;
         }
@@ -23146,19 +23146,19 @@ LABEL_170:
         goto LABEL_51;
       }
 
-      if (CFEqual(a3, *MEMORY[0x1E6990648]))
+      if (CFEqual(notification, *MEMORY[0x1E6990648]))
       {
         return;
       }
 
-      if (CFEqual(a3, *MEMORY[0x1E6990538]))
+      if (CFEqual(notification, *MEMORY[0x1E6990538]))
       {
-        v124 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990468]];
+        v124 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990468]];
 
         [(AVCaptureDevice *)self updateReactionsInProgress:v124];
       }
 
-      else if (CFEqual(a3, *MEMORY[0x1E6990580]))
+      else if (CFEqual(notification, *MEMORY[0x1E6990580]))
       {
 
         [AVCaptureDevice setReactionEffectSuppressedGesture:1];
@@ -23166,9 +23166,9 @@ LABEL_170:
 
       else
       {
-        if (CFEqual(a3, *MEMORY[0x1E6990848]))
+        if (CFEqual(notification, *MEMORY[0x1E6990848]))
         {
-          [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
+          [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "floatValue"}];
           v126 = v125;
           [(AVCaptureFigVideoDevice *)self videoZoomFactor];
           if (v127 == v126)
@@ -23189,13 +23189,13 @@ LABEL_170:
           goto LABEL_42;
         }
 
-        if (CFEqual(a3, *MEMORY[0x1E6990698]))
+        if (CFEqual(notification, *MEMORY[0x1E6990698]))
         {
           v273 = 0;
           v274 = &v273;
           v275 = 0x2020000000;
           LOBYTE(v276) = 0;
-          v128 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
+          v128 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990468]), "BOOLValue"}];
           v129 = self->_devicePropsQueue;
           v190[0] = MEMORY[0x1E69E9820];
           v190[1] = 3221225472;
@@ -23235,11 +23235,11 @@ LABEL_170:
 
               if (v133)
               {
-                v134 = [(AVCaptureFigVideoDevice *)self localizedName];
+                localizedName = [(AVCaptureFigVideoDevice *)self localizedName];
                 *v269 = 136315650;
                 *&v269[4] = "[AVCaptureFigVideoDevice _handleNotification:payload:]";
                 *&v269[12] = 2114;
-                *&v269[14] = v134;
+                *&v269[14] = localizedName;
                 *&v269[22] = 1024;
                 v270 = v128;
                 LODWORD(v175) = 28;
@@ -23270,13 +23270,13 @@ LABEL_170:
               if (v138)
               {
                 v139 = +[AVCaptureDevice isCenterStageEnabled];
-                v140 = [(AVCaptureFigVideoDevice *)self isCenterStageActive];
+                isCenterStageActive = [(AVCaptureFigVideoDevice *)self isCenterStageActive];
                 *v269 = 136315650;
                 *&v269[4] = "[AVCaptureFigVideoDevice _handleNotification:payload:]";
                 *&v269[12] = 1024;
                 *&v269[14] = v139;
                 *&v269[18] = 1024;
-                *&v269[20] = v140;
+                *&v269[20] = isCenterStageActive;
                 LODWORD(v176) = 24;
                 v174 = v269;
                 _os_log_send_and_compose_impl();
@@ -23300,9 +23300,9 @@ LABEL_170:
           goto LABEL_51;
         }
 
-        if (CFEqual(a3, *MEMORY[0x1E69904F8]))
+        if (CFEqual(notification, *MEMORY[0x1E69904F8]))
         {
-          v135 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990408]), "integerValue"}];
+          v135 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990408]), "integerValue"}];
           v53 = @"cameraLensSmudgeDetectionStatus";
           [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"cameraLensSmudgeDetectionStatus"];
           v54 = self->_devicePropsQueue;
@@ -23316,15 +23316,15 @@ LABEL_170:
           goto LABEL_86;
         }
 
-        if (CFEqual(a3, *MEMORY[0x1E6990530]))
+        if (CFEqual(notification, *MEMORY[0x1E6990530]))
         {
           v141 = *MEMORY[0x1E6990470];
-          v142 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990470]];
+          v142 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990470]];
           v143 = MEMORY[0x1E6990478];
           v144 = MEMORY[0x1E69904A0];
           if (v142)
           {
-            v145 = [a4 objectForKeyedSubscript:v141];
+            v145 = [payload objectForKeyedSubscript:v141];
             v146 = *v144;
             if ([v145 objectForKeyedSubscript:*v144])
             {
@@ -23354,8 +23354,8 @@ LABEL_170:
                 v181 = 0u;
                 v182 = 0u;
                 v183 = 0u;
-                v156 = [activeLockedVideoFrameDurationOwner ports];
-                v157 = [v156 countByEnumeratingWithState:&v180 objects:v179 count:16];
+                ports = [activeLockedVideoFrameDurationOwner ports];
+                v157 = [ports countByEnumeratingWithState:&v180 objects:v179 count:16];
                 if (v157)
                 {
                   v158 = v157;
@@ -23366,13 +23366,13 @@ LABEL_170:
                     {
                       if (*v181 != v159)
                       {
-                        objc_enumerationMutation(v156);
+                        objc_enumerationMutation(ports);
                       }
 
                       [*(*(&v180 + 1) + 8 * i) _setClock:*v269];
                     }
 
-                    v158 = [v156 countByEnumeratingWithState:&v180 objects:v179 count:16];
+                    v158 = [ports countByEnumeratingWithState:&v180 objects:v179 count:16];
                   }
 
                   while (v158);
@@ -23394,41 +23394,41 @@ LABEL_170:
           }
 
           v161 = *MEMORY[0x1E6990488];
-          v162 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990488]];
+          v162 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990488]];
           v163 = MEMORY[0x1E69904A8];
           if (v162)
           {
-            v164 = [a4 objectForKeyedSubscript:v161];
+            v164 = [payload objectForKeyedSubscript:v161];
             -[AVExternalSyncDevice handleTSMSGOutOfBoundsTriggerID:error:](self->_activeExternalSyncDevice, "handleTSMSGOutOfBoundsTriggerID:error:", [objc_msgSend(v164 objectForKeyedSubscript:{*v163), "unsignedIntValue"}], objc_msgSend(objc_msgSend(v164, "objectForKeyedSubscript:", *v143), "unsignedIntValue"));
           }
 
           v165 = *MEMORY[0x1E6990480];
-          v166 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990480]];
+          v166 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990480]];
           v167 = MEMORY[0x1E6990498];
           if (v166)
           {
-            v168 = [a4 objectForKeyedSubscript:v165];
+            v168 = [payload objectForKeyedSubscript:v165];
             -[AVExternalSyncDevice handleLockStateUpdateTriggerID:lockState:](self->_activeExternalSyncDevice, "handleLockStateUpdateTriggerID:lockState:", [objc_msgSend(v168 objectForKeyedSubscript:{*v163), "unsignedIntValue"}], objc_msgSend(objc_msgSend(v168, "objectForKeyedSubscript:", *v167), "BOOLValue"));
           }
 
           v169 = *MEMORY[0x1E6990490];
-          if ([a4 objectForKeyedSubscript:*MEMORY[0x1E6990490]])
+          if ([payload objectForKeyedSubscript:*MEMORY[0x1E6990490]])
           {
-            v170 = [a4 objectForKeyedSubscript:v169];
+            v170 = [payload objectForKeyedSubscript:v169];
             -[AVExternalSyncDevice handleTSMSGSessionStoppedTriggerID:status:](self->_activeExternalSyncDevice, "handleTSMSGSessionStoppedTriggerID:status:", [objc_msgSend(v170 objectForKeyedSubscript:{*v163), "unsignedIntValue"}], objc_msgSend(objc_msgSend(v170, "objectForKeyedSubscript:", *v144), "unsignedIntValue"));
           }
 
           v171 = *MEMORY[0x1E69904B0];
-          if ([a4 objectForKeyedSubscript:*MEMORY[0x1E69904B0]])
+          if ([payload objectForKeyedSubscript:*MEMORY[0x1E69904B0]])
           {
-            v172 = [a4 objectForKeyedSubscript:v171];
+            v172 = [payload objectForKeyedSubscript:v171];
             -[AVExternalSyncDevice handleTriggerPresentTriggerID:isPresentState:](self->_activeExternalSyncDevice, "handleTriggerPresentTriggerID:isPresentState:", [objc_msgSend(v172 objectForKeyedSubscript:{*v163), "unsignedIntValue"}], objc_msgSend(objc_msgSend(v172, "objectForKeyedSubscript:", *v167), "BOOLValue"));
           }
         }
 
-        else if (CFEqual(a3, *MEMORY[0x1E6990550]))
+        else if (CFEqual(notification, *MEMORY[0x1E6990550]))
         {
-          v152 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990468]];
+          v152 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990468]];
           [-[AVCaptureFigVideoDevice smartFramingMonitor](self "smartFramingMonitor")];
           v177 = @"AVCaptureDeviceSmartFramingSuggestedFieldOfView";
           v178 = v152;
@@ -23436,10 +23436,10 @@ LABEL_170:
           [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
         }
 
-        else if (CFEqual(a3, *MEMORY[0x1E6990500]))
+        else if (CFEqual(notification, *MEMORY[0x1E6990500]))
         {
 
-          [(AVCaptureFigVideoDevice *)self _handleLiveReconfigurationCompletionWithPayload:a4];
+          [(AVCaptureFigVideoDevice *)self _handleLiveReconfigurationCompletionWithPayload:payload];
         }
       }
     }
@@ -23817,13 +23817,13 @@ float __55__AVCaptureFigVideoDevice__handleNotification_payload___block_invoke_4
   return result;
 }
 
-- (void)_handleManualControlCompletionForRequestQueue:(id)a3 withPayload:(id)a4
+- (void)_handleManualControlCompletionForRequestQueue:(id)queue withPayload:(id)payload
 {
-  v6 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6990458]), "intValue"}];
-  v7 = [a3 head];
-  if (v7)
+  v6 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990458]), "intValue"}];
+  head = [queue head];
+  if (head)
   {
-    v8 = v7;
+    head2 = head;
     v14 = *MEMORY[0x1E6990468];
     v16 = *MEMORY[0x1E6960C70];
     v9 = *(MEMORY[0x1E6960C70] + 16);
@@ -23831,8 +23831,8 @@ float __55__AVCaptureFigVideoDevice__handleNotification_payload___block_invoke_4
     {
       *&v19.value = v16;
       v19.epoch = v9;
-      v10 = [v8 requestID];
-      if (![v8 errorCode])
+      requestID = [head2 requestID];
+      if (![head2 errorCode])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -23844,42 +23844,42 @@ float __55__AVCaptureFigVideoDevice__handleNotification_payload___block_invoke_4
           block[1] = 3221225472;
           block[2] = __85__AVCaptureFigVideoDevice__handleManualControlCompletionForRequestQueue_withPayload___block_invoke;
           block[3] = &unk_1E786EAA8;
-          block[4] = v8;
+          block[4] = head2;
           block[5] = self;
           dispatch_sync(devicePropsQueue, block);
           [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"exposureTargetBias"];
           [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"exposureTargetOffset"];
-          [v8 fakeBiasCompletionTime];
+          [head2 fakeBiasCompletionTime];
         }
 
-        else if (v10 <= v6)
+        else if (requestID <= v6)
         {
-          if (v10 == v6)
+          if (requestID == v6)
           {
-            CMTimeMakeFromDictionary(&v17, [a4 objectForKeyedSubscript:v14]);
+            CMTimeMakeFromDictionary(&v17, [payload objectForKeyedSubscript:v14]);
             v19 = v17;
           }
         }
 
-        else if ([v8 requestID] > v6)
+        else if ([head2 requestID] > v6)
         {
           return;
         }
       }
 
-      if ([v8 completionBlock])
+      if ([head2 completionBlock])
       {
-        v12 = [v8 completionBlock];
-        v13 = *(v12 + 16);
+        completionBlock = [head2 completionBlock];
+        v13 = *(completionBlock + 16);
         v17 = v19;
-        v13(v12, &v17);
+        v13(completionBlock, &v17);
       }
 
-      [a3 dequeue];
-      v8 = [a3 head];
+      [queue dequeue];
+      head2 = [queue head];
     }
 
-    while (v8);
+    while (head2);
   }
 }
 
@@ -23905,37 +23905,37 @@ uint64_t __85__AVCaptureFigVideoDevice__handleManualControlCompletionForRequestQ
   [(AVCaptureFigVideoDevice *)self _drainDynamicAspectRatioRequestQueue];
 }
 
-- (void)_drainManualControlRequestQueue:(id)a3
+- (void)_drainManualControlRequestQueue:(id)queue
 {
-  v4 = [a3 dequeue];
-  if (v4)
+  dequeue = [queue dequeue];
+  if (dequeue)
   {
-    v5 = v4;
+    dequeue2 = dequeue;
     v6 = MEMORY[0x1E6960C70];
     do
     {
-      if ([v5 completionBlock])
+      if ([dequeue2 completionBlock])
       {
-        v7 = [v5 completionBlock];
-        v8 = *(v7 + 16);
+        completionBlock = [dequeue2 completionBlock];
+        v8 = *(completionBlock + 16);
         v9 = *v6;
         v10 = *(v6 + 2);
-        v8(v7, &v9);
+        v8(completionBlock, &v9);
       }
 
-      v5 = [a3 dequeue];
+      dequeue2 = [queue dequeue];
     }
 
-    while (v5);
+    while (dequeue2);
   }
 }
 
-- (void)_performBlockOnMainThread:(id)a3
+- (void)_performBlockOnMainThread:(id)thread
 {
-  if (a3)
+  if (thread)
   {
     Main = CFRunLoopGetMain();
-    CFRunLoopPerformBlock(Main, *MEMORY[0x1E695E8D0], a3);
+    CFRunLoopPerformBlock(Main, *MEMORY[0x1E695E8D0], thread);
     v5 = CFRunLoopGetMain();
 
     CFRunLoopWakeUp(v5);
@@ -23961,66 +23961,66 @@ uint64_t __42__AVCaptureFigVideoDevice__checkTCCAccess__block_invoke(uint64_t re
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVCaptureFigVideoDeviceCenterStageEnabledChangedContext == a6)
+  if (AVCaptureFigVideoDeviceCenterStageEnabledChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _updateCenterStageActiveForEnabled:updateDependentProperties:](self, "_updateCenterStageActiveForEnabled:updateDependentProperties:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], a4), "BOOLValue"}], 1);
+    -[AVCaptureFigVideoDevice _updateCenterStageActiveForEnabled:updateDependentProperties:](self, "_updateCenterStageActiveForEnabled:updateDependentProperties:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], object), "BOOLValue"}], 1);
   }
 
-  if (AVCaptureFigVideoDeviceCenterStageFramingModeChangedContext == a6)
+  if (AVCaptureFigVideoDeviceCenterStageFramingModeChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _setCenterStageFramingMode:](self, "_setCenterStageFramingMode:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "intValue"}]);
+    -[AVCaptureFigVideoDevice _setCenterStageFramingMode:](self, "_setCenterStageFramingMode:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "intValue"}]);
   }
 
-  if (AVCaptureFigVideoDeviceBackgroundBlurEnabledChangedContext == a6)
+  if (AVCaptureFigVideoDeviceBackgroundBlurEnabledChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _updateBackgroundBlurActiveForEnabled:](self, "_updateBackgroundBlurActiveForEnabled:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
+    -[AVCaptureFigVideoDevice _updateBackgroundBlurActiveForEnabled:](self, "_updateBackgroundBlurActiveForEnabled:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
   }
 
-  if (AVCaptureFigVideoDeviceStudioLightingEnabledChangedContext == a6)
+  if (AVCaptureFigVideoDeviceStudioLightingEnabledChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _updateStudioLightingActiveForEnabled:](self, "_updateStudioLightingActiveForEnabled:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
+    -[AVCaptureFigVideoDevice _updateStudioLightingActiveForEnabled:](self, "_updateStudioLightingActiveForEnabled:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
   }
 
-  if (AVCaptureFigVideoDeviceReactionEffectsEnabledChangedContext == a6)
+  if (AVCaptureFigVideoDeviceReactionEffectsEnabledChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _updateReactionEffectsActiveForEnabled:](self, "_updateReactionEffectsActiveForEnabled:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
+    -[AVCaptureFigVideoDevice _updateReactionEffectsActiveForEnabled:](self, "_updateReactionEffectsActiveForEnabled:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
   }
 
-  if (AVCaptureFigVideoDeviceBackgroundReplacementEnabledChangedContext == a6)
+  if (AVCaptureFigVideoDeviceBackgroundReplacementEnabledChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _updateBackgroundReplacementActiveForEnabled:](self, "_updateBackgroundReplacementActiveForEnabled:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
+    -[AVCaptureFigVideoDevice _updateBackgroundReplacementActiveForEnabled:](self, "_updateBackgroundReplacementActiveForEnabled:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
   }
 
-  if (AVCaptureFigVideoDevicePortraitEffectStudioLightQualityChangedContext == a6)
+  if (AVCaptureFigVideoDevicePortraitEffectStudioLightQualityChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _updatePortraitEffectStudioLightQuality:](self, "_updatePortraitEffectStudioLightQuality:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "intValue"}]);
+    -[AVCaptureFigVideoDevice _updatePortraitEffectStudioLightQuality:](self, "_updatePortraitEffectStudioLightQuality:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "intValue"}]);
   }
 
-  if (AVCaptureFigVideoDeviceBackgroundBlurApertureChangedContext == a6)
+  if (AVCaptureFigVideoDeviceBackgroundBlurApertureChangedContext == context)
   {
-    [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "floatValue"}];
+    [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "floatValue"}];
     [(AVCaptureFigVideoDevice *)self _updateBackgroundBlurAperture:?];
   }
 
-  if (AVCaptureFigVideoDeviceStudioLightingIntensityChangedContext == a6)
+  if (AVCaptureFigVideoDeviceStudioLightingIntensityChangedContext == context)
   {
-    [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "floatValue"}];
+    [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "floatValue"}];
     [(AVCaptureFigVideoDevice *)self _updateStudioLightingIntensity:?];
   }
 
-  if (AVCaptureFigVideoDeviceGesturesEnabledChangedContext == a6)
+  if (AVCaptureFigVideoDeviceGesturesEnabledChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _updateGesturesEnabled:](self, "_updateGesturesEnabled:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
+    -[AVCaptureFigVideoDevice _updateGesturesEnabled:](self, "_updateGesturesEnabled:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
   }
 
-  if (AVCaptureFigVideoDeviceSuppressedGesturesEnabledChangedContext == a6)
+  if (AVCaptureFigVideoDeviceSuppressedGesturesEnabledChangedContext == context)
   {
-    -[AVCaptureFigVideoDevice _updateSuppressedGesturesEnabled:](self, "_updateSuppressedGesturesEnabled:", [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
+    -[AVCaptureFigVideoDevice _updateSuppressedGesturesEnabled:](self, "_updateSuppressedGesturesEnabled:", [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}]);
   }
 
-  if (AVCaptureFigVideoDeviceBackgroundReplacementPixelBufferChangedContext == a6)
+  if (AVCaptureFigVideoDeviceBackgroundReplacementPixelBufferChangedContext == context)
   {
     v9 = +[AVCaptureDevice backgroundReplacementPixelBuffer];
 
@@ -24028,10 +24028,10 @@ uint64_t __42__AVCaptureFigVideoDevice__checkTCCAccess__block_invoke(uint64_t re
   }
 }
 
-- (void)setCinematicVideoFocusAtPoint:(CGPoint)a3 objectID:(int64_t)a4 isHardFocus:(BOOL)a5 isFixedPlaneFocus:(BOOL)a6
+- (void)setCinematicVideoFocusAtPoint:(CGPoint)point objectID:(int64_t)d isHardFocus:(BOOL)focus isFixedPlaneFocus:(BOOL)planeFocus
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AVCaptureFigVideoDevice *)self isCinematicVideoFocusAtPointSupported])
   {
     v21 = 0;
@@ -24045,9 +24045,9 @@ uint64_t __42__AVCaptureFigVideoDevice__checkTCCAccess__block_invoke(uint64_t re
     block[3] = &unk_1E7870928;
     *&block[6] = x;
     *&block[7] = y;
-    block[8] = a4;
-    v19 = a5;
-    v20 = a6;
+    block[8] = d;
+    focusCopy = focus;
+    planeFocusCopy = planeFocus;
     block[4] = self;
     block[5] = &v21;
     dispatch_sync(devicePropsQueue, block);
@@ -24097,7 +24097,7 @@ uint64_t __96__AVCaptureFigVideoDevice_setCinematicVideoFocusAtPoint_objectID_is
   return result;
 }
 
-- (void)setCinematicVideoTrackingFocusWithDetectedObjectID:(int64_t)a3 focusMode:(int64_t)a4
+- (void)setCinematicVideoTrackingFocusWithDetectedObjectID:(int64_t)d focusMode:(int64_t)mode
 {
   v10 = 0;
   v11 = &v10;
@@ -24110,8 +24110,8 @@ uint64_t __96__AVCaptureFigVideoDevice_setCinematicVideoFocusAtPoint_objectID_is
     block[1] = 3221225472;
     block[2] = __88__AVCaptureFigVideoDevice_setCinematicVideoTrackingFocusWithDetectedObjectID_focusMode___block_invoke;
     block[3] = &unk_1E78706A8;
-    block[6] = a3;
-    block[7] = a4;
+    block[6] = d;
+    block[7] = mode;
     block[4] = self;
     block[5] = &v10;
     dispatch_sync(devicePropsQueue, block);
@@ -24159,7 +24159,7 @@ uint64_t __88__AVCaptureFigVideoDevice_setCinematicVideoTrackingFocusWithDetecte
   return result;
 }
 
-- (void)setCinematicVideoTrackingFocusAtPoint:(CGPoint)a3 focusMode:(int64_t)a4
+- (void)setCinematicVideoTrackingFocusAtPoint:(CGPoint)point focusMode:(int64_t)mode
 {
   v12 = 0;
   v13 = &v12;
@@ -24172,8 +24172,8 @@ uint64_t __88__AVCaptureFigVideoDevice_setCinematicVideoTrackingFocusWithDetecte
     block[1] = 3221225472;
     block[2] = __75__AVCaptureFigVideoDevice_setCinematicVideoTrackingFocusAtPoint_focusMode___block_invoke;
     block[3] = &unk_1E78707C0;
-    v10 = a3;
-    v11 = a4;
+    pointCopy = point;
+    modeCopy = mode;
     block[4] = self;
     block[5] = &v12;
     dispatch_sync(devicePropsQueue, block);
@@ -24222,7 +24222,7 @@ uint64_t __75__AVCaptureFigVideoDevice_setCinematicVideoTrackingFocusAtPoint_foc
   return result;
 }
 
-- (void)setCinematicVideoFixedFocusAtPoint:(CGPoint)a3 focusMode:(int64_t)a4
+- (void)setCinematicVideoFixedFocusAtPoint:(CGPoint)point focusMode:(int64_t)mode
 {
   v12 = 0;
   v13 = &v12;
@@ -24235,8 +24235,8 @@ uint64_t __75__AVCaptureFigVideoDevice_setCinematicVideoTrackingFocusAtPoint_foc
     block[1] = 3221225472;
     block[2] = __72__AVCaptureFigVideoDevice_setCinematicVideoFixedFocusAtPoint_focusMode___block_invoke;
     block[3] = &unk_1E78707C0;
-    v10 = a3;
-    v11 = a4;
+    pointCopy = point;
+    modeCopy = mode;
     block[4] = self;
     block[5] = &v12;
     dispatch_sync(devicePropsQueue, block);
@@ -24285,21 +24285,21 @@ uint64_t __72__AVCaptureFigVideoDevice_setCinematicVideoFixedFocusAtPoint_focusM
   return result;
 }
 
-- (void)_setCinematicVideoEnabled:(BOOL)a3
+- (void)_setCinematicVideoEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(AVCaptureDeviceFormat *)self->_activeFormat isCinematicVideoCaptureSupported]|| !v3)
+  enabledCopy = enabled;
+  if ([(AVCaptureDeviceFormat *)self->_activeFormat isCinematicVideoCaptureSupported]|| !enabledCopy)
   {
     v8 = [-[AVCaptureDeviceFormat supportedZoomRangesForCinematicVideo](self->_activeFormat "supportedZoomRangesForCinematicVideo")];
-    if (self->_cinematicVideoZoomEnabled != (v3 & v8))
+    if (self->_cinematicVideoZoomEnabled != (enabledCopy & v8))
     {
-      self->_cinematicVideoZoomEnabled = v3 & v8;
+      self->_cinematicVideoZoomEnabled = enabledCopy & v8;
       [(AVCaptureFigVideoDevice *)self _updateMinMaxDefaultVideoZoomFactors];
     }
 
-    if (self->_cinematicVideoEnabled != v3)
+    if (self->_cinematicVideoEnabled != enabledCopy)
     {
-      self->_cinematicVideoEnabled = v3;
+      self->_cinematicVideoEnabled = enabledCopy;
     }
   }
 
@@ -24318,11 +24318,11 @@ uint64_t __72__AVCaptureFigVideoDevice_setCinematicVideoFixedFocusAtPoint_focusM
   }
 }
 
-- (void)_setSimulatedAperture:(float)a3
+- (void)_setSimulatedAperture:(float)aperture
 {
   if ([(AVCaptureFigVideoDevice *)self lockForConfiguration:0])
   {
-    *&v5 = a3;
+    *&v5 = aperture;
     -[AVCaptureFigVideoDevice _setFigCaptureSourceProperty:withValue:](self, "_setFigCaptureSourceProperty:withValue:", *MEMORY[0x1E69907C0], [MEMORY[0x1E696AD98] numberWithFloat:v5]);
 
     [(AVCaptureFigVideoDevice *)self unlockForConfiguration];
@@ -24336,7 +24336,7 @@ uint64_t __72__AVCaptureFigVideoDevice_setCinematicVideoFixedFocusAtPoint_focusM
   return v2;
 }
 
-- (void)setDeskViewCameraMode:(int64_t)a3
+- (void)setDeskViewCameraMode:(int64_t)mode
 {
   if ([(AVCaptureFigVideoDevice *)self isDeskViewCameraModeSupported:?])
   {
@@ -24346,7 +24346,7 @@ uint64_t __72__AVCaptureFigVideoDevice_setCinematicVideoFixedFocusAtPoint_focusM
     block[2] = __49__AVCaptureFigVideoDevice_setDeskViewCameraMode___block_invoke;
     block[3] = &unk_1E786ECD0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = mode;
     dispatch_sync(devicePropsQueue, block);
   }
 
@@ -24395,20 +24395,20 @@ uint64_t __49__AVCaptureFigVideoDevice_setDeskViewCameraMode___block_invoke(uint
   return v3;
 }
 
-- (BOOL)isDeskViewCameraModeSupported:(int64_t)a3
+- (BOOL)isDeskViewCameraModeSupported:(int64_t)supported
 {
   if (([-[AVCaptureFigVideoDevice deviceType](self "deviceType")] & 1) != 0 || objc_msgSend(-[AVCaptureFigVideoDevice deviceType](self, "deviceType"), "isEqualToString:", @"AVCaptureDeviceTypeBuiltInUltraWideCamera") && -[AVCaptureFigVideoDevice position](self, "position") == 1)
   {
-    return a3 != 0;
+    return supported != 0;
   }
 
   else
   {
-    return a3 == 0;
+    return supported == 0;
   }
 }
 
-- (void)setCenterStageFieldOfViewRestrictedToWide:(BOOL)a3
+- (void)setCenterStageFieldOfViewRestrictedToWide:(BOOL)wide
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -24420,7 +24420,7 @@ uint64_t __49__AVCaptureFigVideoDevice_setDeskViewCameraMode___block_invoke(uint
       block[2] = __69__AVCaptureFigVideoDevice_setCenterStageFieldOfViewRestrictedToWide___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v10 = a3;
+      wideCopy = wide;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -24475,7 +24475,7 @@ uint64_t __69__AVCaptureFigVideoDevice_setCenterStageFieldOfViewRestrictedToWide
   return v3;
 }
 
-- (void)setManualFramingPanningAngleX:(float)a3
+- (void)setManualFramingPanningAngleX:(float)x
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -24487,7 +24487,7 @@ uint64_t __69__AVCaptureFigVideoDevice_setCenterStageFieldOfViewRestrictedToWide
       block[2] = __57__AVCaptureFigVideoDevice_setManualFramingPanningAngleX___block_invoke;
       block[3] = &unk_1E78704A0;
       block[4] = self;
-      v10 = a3;
+      xCopy = x;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -24546,7 +24546,7 @@ float __53__AVCaptureFigVideoDevice_manualFramingPanningAngleX__block_invoke(uin
   return result;
 }
 
-- (void)setManualFramingPanningAngleY:(float)a3
+- (void)setManualFramingPanningAngleY:(float)y
 {
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
@@ -24558,7 +24558,7 @@ float __53__AVCaptureFigVideoDevice_manualFramingPanningAngleX__block_invoke(uin
       block[2] = __57__AVCaptureFigVideoDevice_setManualFramingPanningAngleY___block_invoke;
       block[3] = &unk_1E78704A0;
       block[4] = self;
-      v10 = a3;
+      yCopy = y;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -24617,14 +24617,14 @@ float __53__AVCaptureFigVideoDevice_manualFramingPanningAngleY__block_invoke(uin
   return result;
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3
+- (void)startPanningAtPoint:(CGPoint)point
 {
   devicePropsQueue = self->_devicePropsQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__AVCaptureFigVideoDevice_startPanningAtPoint___block_invoke;
   block[3] = &unk_1E786ECA8;
-  v5 = a3;
+  pointCopy = point;
   block[4] = self;
   dispatch_sync(devicePropsQueue, block);
 }
@@ -24636,7 +24636,7 @@ uint64_t __47__AVCaptureFigVideoDevice_startPanningAtPoint___block_invoke(uint64
   return result;
 }
 
-- (void)panWithTranslation:(CGPoint)a3
+- (void)panWithTranslation:(CGPoint)translation
 {
   if (self->_deskViewCameraMode)
   {
@@ -24645,7 +24645,7 @@ uint64_t __47__AVCaptureFigVideoDevice_startPanningAtPoint___block_invoke(uint64
     block[1] = 3221225472;
     block[2] = __46__AVCaptureFigVideoDevice_panWithTranslation___block_invoke;
     block[3] = &unk_1E786ECA8;
-    v8 = a3;
+    translationCopy = translation;
     block[4] = self;
     dispatch_sync(devicePropsQueue, block);
   }
@@ -24710,12 +24710,12 @@ uint64_t __46__AVCaptureFigVideoDevice_panWithTranslation___block_invoke(uint64_
   return [v2 BOOLValue];
 }
 
-- (void)setDockedTrackingEnabled:(BOOL)a3
+- (void)setDockedTrackingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureFigVideoDevice *)self isLockedForConfiguration])
   {
-    if (!v3 || [(AVCaptureFigVideoDevice *)self isDockedTrackingSupported])
+    if (!enabledCopy || [(AVCaptureFigVideoDevice *)self isDockedTrackingSupported])
     {
       devicePropsQueue = self->_devicePropsQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -24723,7 +24723,7 @@ uint64_t __46__AVCaptureFigVideoDevice_panWithTranslation___block_invoke(uint64_
       block[2] = __52__AVCaptureFigVideoDevice_setDockedTrackingEnabled___block_invoke;
       block[3] = &unk_1E786EE40;
       block[4] = self;
-      v10 = v3;
+      v10 = enabledCopy;
       dispatch_sync(devicePropsQueue, block);
       return;
     }
@@ -24889,7 +24889,7 @@ CFTypeRef __50__AVCaptureFigVideoDevice_documentSceneConfidence__block_invoke(ui
   return v3;
 }
 
-- (void)setDynamicAspectRatio:(id)a3 completionHandler:(id)a4
+- (void)setDynamicAspectRatio:(id)ratio completionHandler:(id)handler
 {
   v49 = 0;
   v50 = &v49;
@@ -24923,7 +24923,7 @@ CFTypeRef __50__AVCaptureFigVideoDevice_documentSceneConfidence__block_invoke(ui
       block[6] = &v49;
       block[7] = &v43;
       block[4] = self;
-      block[5] = a3;
+      block[5] = ratio;
       block[8] = &v39;
       dispatch_sync(devicePropsQueue, block);
       if (*(v40 + 24) == 1)
@@ -24937,7 +24937,7 @@ CFTypeRef __50__AVCaptureFigVideoDevice_documentSceneConfidence__block_invoke(ui
         v33[4] = self;
         v33[5] = &v35;
         dispatch_sync(v9, v33);
-        [*&self->_dynamicDimensions enqueueRequest:{+[AVCaptureDeviceDynamicAspectRatioRequest dynamicAspectRatioRequestWithCompletionBlock:requestID:](AVCaptureDeviceDynamicAspectRatioRequest, "dynamicAspectRatioRequestWithCompletionBlock:requestID:", a4, *(v36 + 6))}];
+        [*&self->_dynamicDimensions enqueueRequest:{+[AVCaptureDeviceDynamicAspectRatioRequest dynamicAspectRatioRequestWithCompletionBlock:requestID:](AVCaptureDeviceDynamicAspectRatioRequest, "dynamicAspectRatioRequestWithCompletionBlock:requestID:", handler, *(v36 + 6))}];
         [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"outputAspectRatio"];
         [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"outputDimensions"];
         [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"dynamicAspectRatio"];
@@ -24995,13 +24995,13 @@ CFTypeRef __50__AVCaptureFigVideoDevice_documentSceneConfidence__block_invoke(ui
         [AVCaptureFigVideoDevice setDynamicAspectRatio:? completionHandler:?];
       }
 
-      else if (a4)
+      else if (handler)
       {
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __67__AVCaptureFigVideoDevice_setDynamicAspectRatio_completionHandler___block_invoke_5;
         v14[3] = &unk_1E786F798;
-        v14[4] = a4;
+        v14[4] = handler;
         [(AVCaptureFigVideoDevice *)self _performBlockOnMainThread:v14];
       }
     }
@@ -25126,51 +25126,51 @@ void *__75__AVCaptureFigVideoDevice_dynamicAspectRatioAndDynamicAspectRatioReque
   return result;
 }
 
-- (void)_handleLiveReconfigurationCompletionWithPayload:(id)a3
+- (void)_handleLiveReconfigurationCompletionWithPayload:(id)payload
 {
-  v5 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6990468]];
+  v5 = [payload objectForKeyedSubscript:*MEMORY[0x1E6990468]];
   memset(&v13, 0, sizeof(v13));
   CMTimeMakeFromDictionary(&v13, v5);
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E6990450]), "intValue"}];
-  v7 = [*&self->_dynamicDimensions head];
+  v6 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E6990450]), "intValue"}];
+  head = [*&self->_dynamicDimensions head];
   v8 = AVLocalizedError();
-  if (v7)
+  if (head)
   {
     v9 = v8;
     do
     {
-      if ([v7 requestID] >= v6)
+      if ([head requestID] >= v6)
       {
         break;
       }
 
-      if ([v7 dynamicAspectRatioCompletionBlock])
+      if ([head dynamicAspectRatioCompletionBlock])
       {
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __75__AVCaptureFigVideoDevice__handleLiveReconfigurationCompletionWithPayload___block_invoke;
         v12[3] = &unk_1E786EAA8;
-        v12[4] = v7;
+        v12[4] = head;
         v12[5] = v9;
         [(AVCaptureFigVideoDevice *)self _performBlockOnMainThread:v12];
       }
 
       [*&self->_dynamicDimensions dequeue];
-      v7 = [*&self->_dynamicDimensions head];
+      head = [*&self->_dynamicDimensions head];
     }
 
-    while (v7);
+    while (head);
   }
 
-  if ([v7 requestID] == v6)
+  if ([head requestID] == v6)
   {
-    if ([v7 dynamicAspectRatioCompletionBlock])
+    if ([head dynamicAspectRatioCompletionBlock])
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __75__AVCaptureFigVideoDevice__handleLiveReconfigurationCompletionWithPayload___block_invoke_2;
       v10[3] = &unk_1E7870450;
-      v10[4] = v7;
+      v10[4] = head;
       v11 = v13;
       [(AVCaptureFigVideoDevice *)self _performBlockOnMainThread:v10];
     }
@@ -25210,31 +25210,31 @@ uint64_t __75__AVCaptureFigVideoDevice__handleLiveReconfigurationCompletionWithP
 
 - (void)_drainDynamicAspectRatioRequestQueue
 {
-  v3 = [*&self->_dynamicDimensions dequeue];
+  dequeue = [*&self->_dynamicDimensions dequeue];
   v4 = AVLocalizedError();
-  if (v3)
+  if (dequeue)
   {
     v5 = v4;
     v6 = MEMORY[0x1E6960C70];
     do
     {
-      if ([v3 dynamicAspectRatioCompletionBlock])
+      if ([dequeue dynamicAspectRatioCompletionBlock])
       {
-        v7 = [v3 dynamicAspectRatioCompletionBlock];
-        v8 = *(v7 + 16);
+        dynamicAspectRatioCompletionBlock = [dequeue dynamicAspectRatioCompletionBlock];
+        v8 = *(dynamicAspectRatioCompletionBlock + 16);
         v9 = *v6;
         v10 = *(v6 + 2);
-        v8(v7, &v9, v5);
+        v8(dynamicAspectRatioCompletionBlock, &v9, v5);
       }
 
-      v3 = [*&self->_dynamicDimensions dequeue];
+      dequeue = [*&self->_dynamicDimensions dequeue];
     }
 
-    while (v3);
+    while (dequeue);
   }
 }
 
-- (void)setCameraLensSmudgeDetectionEnabled:(BOOL)a3 detectionInterval:(id *)a4
+- (void)setCameraLensSmudgeDetectionEnabled:(BOOL)enabled detectionInterval:(id *)interval
 {
   v23 = 0;
   v24 = &v23;
@@ -25253,9 +25253,9 @@ uint64_t __75__AVCaptureFigVideoDevice__handleLiveReconfigurationCompletionWithP
     block[3] = &unk_1E78709A0;
     block[4] = self;
     block[5] = &v23;
-    v18 = a3;
-    v16 = *&a4->var0;
-    var3 = a4->var3;
+    enabledCopy = enabled;
+    v16 = *&interval->var0;
+    var3 = interval->var3;
     block[6] = &v19;
     dispatch_sync(devicePropsQueue, block);
     if (*(v24 + 24) == 1)
@@ -25272,9 +25272,9 @@ uint64_t __75__AVCaptureFigVideoDevice__handleLiveReconfigurationCompletionWithP
       v11[1] = 3221225472;
       v11[2] = __81__AVCaptureFigVideoDevice_setCameraLensSmudgeDetectionEnabled_detectionInterval___block_invoke_2;
       v11[3] = &unk_1E78709C8;
-      v14 = a3;
-      v12 = *&a4->var0;
-      v13 = a4->var3;
+      enabledCopy2 = enabled;
+      v12 = *&interval->var0;
+      v13 = interval->var3;
       v11[4] = self;
       v11[5] = &v19;
       dispatch_sync(v8, v11);
@@ -25364,18 +25364,18 @@ uint64_t __81__AVCaptureFigVideoDevice_setCameraLensSmudgeDetectionEnabled_detec
   return result;
 }
 
-- (void)_setSmartFramingMonitorRunning:(BOOL)a3
+- (void)_setSmartFramingMonitorRunning:(BOOL)running
 {
   v4 = *MEMORY[0x1E69907C8];
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:running];
 
   [(AVCaptureFigVideoDevice *)self _setFigCaptureSourceProperty:v4 withValue:v5];
 }
 
-- (CGSize)_updateRectOfInterestSizeForSensorOrientationAndDynamicAspectRatio:(CGSize)a3
+- (CGSize)_updateRectOfInterestSizeForSensorOrientationAndDynamicAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   Dimensions = CMVideoFormatDescriptionGetDimensions([(AVCaptureDeviceFormat *)self->_activeFormat formatDescription]);
   v7 = Dimensions;
   v8 = HIDWORD(Dimensions);
@@ -25467,9 +25467,9 @@ uint64_t __81__AVCaptureFigVideoDevice_setCameraLensSmudgeDetectionEnabled_detec
 
   else
   {
-    v5 = [(AVCaptureFigVideoDevice *)self position];
+    position = [(AVCaptureFigVideoDevice *)self position];
     IntegerAnswer = 0.0;
-    if (v5 != 2)
+    if (position != 2)
     {
       goto LABEL_14;
     }
@@ -25589,18 +25589,18 @@ LABEL_14:
   return v8;
 }
 
-- (void)_setActivePrimaryConstituentDeviceSwitchingBehavior:(int64_t)a3 restrictedSwitchingBehaviorConditions:(unint64_t)a4
+- (void)_setActivePrimaryConstituentDeviceSwitchingBehavior:(int64_t)behavior restrictedSwitchingBehaviorConditions:(unint64_t)conditions
 {
   activePrimaryConstituentDevice = self->_activePrimaryConstituentDevice;
   activePrimaryConstituentDeviceSwitchingBehavior = self->_activePrimaryConstituentDeviceSwitchingBehavior;
-  if (activePrimaryConstituentDevice != a3 || activePrimaryConstituentDeviceSwitchingBehavior != a4)
+  if (activePrimaryConstituentDevice != behavior || activePrimaryConstituentDeviceSwitchingBehavior != conditions)
   {
-    if (activePrimaryConstituentDevice != a3)
+    if (activePrimaryConstituentDevice != behavior)
     {
       [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"activePrimaryConstituentDeviceSwitchingBehavior"];
     }
 
-    if (activePrimaryConstituentDeviceSwitchingBehavior != a4)
+    if (activePrimaryConstituentDeviceSwitchingBehavior != conditions)
     {
       [(AVCaptureFigVideoDevice *)self willChangeValueForKey:@"activePrimaryConstituentDeviceRestrictedSwitchingBehaviorConditions"];
     }
@@ -25609,16 +25609,16 @@ LABEL_14:
     v12 = 3221225472;
     v13 = __117__AVCaptureFigVideoDevice__setActivePrimaryConstituentDeviceSwitchingBehavior_restrictedSwitchingBehaviorConditions___block_invoke;
     v14 = &unk_1E786ECA8;
-    v15 = self;
-    v16 = a3;
-    v17 = a4;
+    selfCopy = self;
+    behaviorCopy = behavior;
+    conditionsCopy = conditions;
     dispatch_sync(v10, block);
-    if (activePrimaryConstituentDeviceSwitchingBehavior != a4)
+    if (activePrimaryConstituentDeviceSwitchingBehavior != conditions)
     {
       [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"activePrimaryConstituentDeviceRestrictedSwitchingBehaviorConditions"];
     }
 
-    if (activePrimaryConstituentDevice != a3)
+    if (activePrimaryConstituentDevice != behavior)
     {
       [(AVCaptureFigVideoDevice *)self didChangeValueForKey:@"activePrimaryConstituentDeviceSwitchingBehavior"];
     }
@@ -25633,7 +25633,7 @@ LABEL_14:
     v5 = 3221225472;
     v6 = __42__AVCaptureFigVideoDevice__checkTCCAccess__block_invoke;
     v7 = &unk_1E786EC08;
-    v8 = self;
+    selfCopy = self;
     dispatch_sync(v3, block);
   }
 }

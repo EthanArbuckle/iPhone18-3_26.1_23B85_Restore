@@ -1,36 +1,36 @@
 @interface IDSProtoKeyTransparencyTrustedService
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)keyIndexAsString:(int)a3;
-- (int)StringAsKeyIndex:(id)a3;
+- (id)keyIndexAsString:(int)string;
+- (int)StringAsKeyIndex:(id)index;
 - (int)keyIndex;
 - (unint64_t)hash;
-- (void)addUris:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUris:(id)uris;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSProtoKeyTransparencyTrustedService
 
-- (void)addUris:(id)a3
+- (void)addUris:(id)uris
 {
-  v4 = a3;
+  urisCopy = uris;
   uris = self->_uris;
-  v8 = v4;
+  v8 = urisCopy;
   if (!uris)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_uris;
     self->_uris = v6;
 
-    v4 = v8;
+    urisCopy = v8;
     uris = self->_uris;
   }
 
-  [(NSMutableArray *)uris addObject:v4];
+  [(NSMutableArray *)uris addObject:urisCopy];
 }
 
 - (int)keyIndex
@@ -46,40 +46,40 @@
   }
 }
 
-- (id)keyIndexAsString:(int)a3
+- (id)keyIndexAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_100BE19D0 + a3);
+    v4 = *(&off_100BE19D0 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsKeyIndex:(id)a3
+- (int)StringAsKeyIndex:(id)index
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  indexCopy = index;
+  if ([indexCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"iMessage"])
+  else if ([indexCopy isEqualToString:@"iMessage"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FaceTime"])
+  else if ([indexCopy isEqualToString:@"FaceTime"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Multiplex"])
+  else if ([indexCopy isEqualToString:@"Multiplex"])
   {
     v4 = 3;
   }
@@ -97,8 +97,8 @@
   v7.receiver = self;
   v7.super_class = IDSProtoKeyTransparencyTrustedService;
   v3 = [(IDSProtoKeyTransparencyTrustedService *)&v7 description];
-  v4 = [(IDSProtoKeyTransparencyTrustedService *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(IDSProtoKeyTransparencyTrustedService *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -122,8 +122,8 @@
   ktLoggableData = self->_ktLoggableData;
   if (ktLoggableData)
   {
-    v8 = [(IDSProtoKeyTransparencyLoggableData *)ktLoggableData dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"kt_loggable_data"];
+    dictionaryRepresentation = [(IDSProtoKeyTransparencyLoggableData *)ktLoggableData dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"kt_loggable_data"];
   }
 
   deviceSignature = self->_deviceSignature;
@@ -151,9 +151,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_serviceIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -206,39 +206,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_serviceIdentifier)
   {
-    [v9 setServiceIdentifier:?];
+    [toCopy setServiceIdentifier:?];
   }
 
   if ([(IDSProtoKeyTransparencyTrustedService *)self urisCount])
   {
-    [v9 clearUris];
-    v4 = [(IDSProtoKeyTransparencyTrustedService *)self urisCount];
-    if (v4)
+    [toCopy clearUris];
+    urisCount = [(IDSProtoKeyTransparencyTrustedService *)self urisCount];
+    if (urisCount)
     {
-      v5 = v4;
+      v5 = urisCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(IDSProtoKeyTransparencyTrustedService *)self urisAtIndex:i];
-        [v9 addUris:v7];
+        [toCopy addUris:v7];
       }
     }
   }
 
   if (self->_ktLoggableData)
   {
-    [v9 setKtLoggableData:?];
+    [toCopy setKtLoggableData:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_deviceSignature)
   {
-    [v9 setDeviceSignature:?];
-    v8 = v9;
+    [toCopy setDeviceSignature:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -248,10 +248,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_serviceIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_serviceIdentifier copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -275,7 +275,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * v12) copyWithZone:{a3, v19}];
+        v13 = [*(*(&v19 + 1) + 8 * v12) copyWithZone:{zone, v19}];
         [v5 addUris:v13];
 
         v12 = v12 + 1;
@@ -288,11 +288,11 @@
     while (v10);
   }
 
-  v14 = [(IDSProtoKeyTransparencyLoggableData *)self->_ktLoggableData copyWithZone:a3];
+  v14 = [(IDSProtoKeyTransparencyLoggableData *)self->_ktLoggableData copyWithZone:zone];
   v15 = v5[3];
   v5[3] = v14;
 
-  v16 = [(NSData *)self->_deviceSignature copyWithZone:a3];
+  v16 = [(NSData *)self->_deviceSignature copyWithZone:zone];
   v17 = v5[1];
   v5[1] = v16;
 
@@ -305,16 +305,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   serviceIdentifier = self->_serviceIdentifier;
-  if (serviceIdentifier | *(v4 + 4))
+  if (serviceIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)serviceIdentifier isEqual:?])
     {
@@ -323,7 +323,7 @@
   }
 
   uris = self->_uris;
-  if (uris | *(v4 + 5))
+  if (uris | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)uris isEqual:?])
     {
@@ -332,7 +332,7 @@
   }
 
   ktLoggableData = self->_ktLoggableData;
-  if (ktLoggableData | *(v4 + 3))
+  if (ktLoggableData | *(equalCopy + 3))
   {
     if (![(IDSProtoKeyTransparencyLoggableData *)ktLoggableData isEqual:?])
     {
@@ -341,7 +341,7 @@
   }
 
   deviceSignature = self->_deviceSignature;
-  if (deviceSignature | *(v4 + 1))
+  if (deviceSignature | *(equalCopy + 1))
   {
     if (![(NSData *)deviceSignature isEqual:?])
     {
@@ -349,10 +349,10 @@
     }
   }
 
-  v9 = (*(v4 + 48) & 1) == 0;
+  v9 = (*(equalCopy + 48) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) != 0 && self->_keyIndex == *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) != 0 && self->_keyIndex == *(equalCopy + 4))
     {
       v9 = 1;
       goto LABEL_15;
@@ -386,10 +386,10 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(IDSProtoKeyTransparencyTrustedService *)self setServiceIdentifier:?];
   }
@@ -398,7 +398,7 @@ LABEL_15:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -423,7 +423,7 @@ LABEL_15:
   }
 
   ktLoggableData = self->_ktLoggableData;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   if (ktLoggableData)
   {
     if (v11)
@@ -437,14 +437,14 @@ LABEL_15:
     [(IDSProtoKeyTransparencyTrustedService *)self setKtLoggableData:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(IDSProtoKeyTransparencyTrustedService *)self setDeviceSignature:?];
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_keyIndex = *(v4 + 4);
+    self->_keyIndex = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }

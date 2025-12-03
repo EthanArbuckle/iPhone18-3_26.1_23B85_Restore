@@ -1,10 +1,10 @@
 @interface HKFeatureAvailabilityRequirementWatchLowPowerModeIsOff
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)requiredEntitlements;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementWatchLowPowerModeIsOff
@@ -21,37 +21,37 @@
   return v3;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [a3 watchLowPowerModeDataSource];
-  v6 = [v4 numberWithInt:{objc_msgSend(v5, "isWatchLowPowerModeEnabled") ^ 1}];
+  watchLowPowerModeDataSource = [source watchLowPowerModeDataSource];
+  v6 = [v4 numberWithInt:{objc_msgSend(watchLowPowerModeDataSource, "isWatchLowPowerModeEnabled") ^ 1}];
 
   return v6;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = [a4 watchLowPowerModeDataSource];
+  observerCopy = observer;
+  watchLowPowerModeDataSource = [source watchLowPowerModeDataSource];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__HKFeatureAvailabilityRequirementWatchLowPowerModeIsOff_registerObserver_forDataSource___block_invoke;
   v8[3] = &unk_1E7380E20;
   v8[4] = self;
-  [v7 registerObserver:v6 onLowPowerModeChange:v8];
+  [watchLowPowerModeDataSource registerObserver:observerCopy onLowPowerModeChange:v8];
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v5 = a3;
-  v6 = [a4 watchLowPowerModeDataSource];
-  [v6 unregisterObserver:v5];
+  observerCopy = observer;
+  watchLowPowerModeDataSource = [source watchLowPowerModeDataSource];
+  [watchLowPowerModeDataSource unregisterObserver:observerCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

@@ -1,77 +1,77 @@
 @interface DBPassengerDisplay
-- (CGRect)sceneFrameForApplication:(id)a3;
-- (DBPassengerDisplay)initWithRootScene:(id)a3 environmentConfiguration:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5;
+- (CGRect)sceneFrameForApplication:(id)application;
+- (DBPassengerDisplay)initWithRootScene:(id)scene environmentConfiguration:(id)configuration defaultSceneWorkspaceIdentifier:(id)identifier;
 - (FBSDisplayConfiguration)displayConfiguration;
 - (FBSDisplayIdentity)displayIdentity;
 - (NSString)description;
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3;
-- (id)sceneIdentifierForApplication:(id)a3;
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application;
+- (id)sceneIdentifierForApplication:(id)application;
 - (void)invalidate;
 @end
 
 @implementation DBPassengerDisplay
 
-- (DBPassengerDisplay)initWithRootScene:(id)a3 environmentConfiguration:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5
+- (DBPassengerDisplay)initWithRootScene:(id)scene environmentConfiguration:(id)configuration defaultSceneWorkspaceIdentifier:(id)identifier
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  configurationCopy = configuration;
   v50.receiver = self;
   v50.super_class = DBPassengerDisplay;
-  v9 = [(DBScreenController *)&v50 initWithRootScene:a3 environmentConfiguration:v8 defaultSceneWorkspaceIdentifier:a5];
+  v9 = [(DBScreenController *)&v50 initWithRootScene:scene environmentConfiguration:configurationCopy defaultSceneWorkspaceIdentifier:identifier];
   if (v9)
   {
-    v10 = [v8 displayConfiguration];
-    [v8 addObserver:v9];
-    v11 = [v8 session];
-    [v11 addObserver:v9];
+    displayConfiguration = [configurationCopy displayConfiguration];
+    [configurationCopy addObserver:v9];
+    session = [configurationCopy session];
+    [session addObserver:v9];
 
-    if ([v8 supportsPassengerDisplay])
+    if ([configurationCopy supportsPassengerDisplay])
     {
-      v12 = [(DBScreenController *)v9 displayInfo];
-      v13 = [v12 supportsDDPContent];
+      displayInfo = [(DBScreenController *)v9 displayInfo];
+      supportsDDPContent = [displayInfo supportsDDPContent];
 
-      if (v13)
+      if (supportsDDPContent)
       {
         v14 = [_TtC9DashBoard15DBUISyncSession alloc];
-        v15 = [(DBScreenController *)v9 environmentConfiguration];
-        v16 = [v15 uisyncChannel];
-        v17 = [(DBScreenController *)v9 environmentConfiguration];
-        v18 = [v17 vehicleID];
-        v19 = [(DBScreenController *)v9 displayInfo];
-        v20 = [v19 identifier];
-        v21 = [(DBUISyncSession *)v14 initWithChannel:v16 vehicleID:v18 displayID:v20];
+        environmentConfiguration = [(DBScreenController *)v9 environmentConfiguration];
+        uisyncChannel = [environmentConfiguration uisyncChannel];
+        environmentConfiguration2 = [(DBScreenController *)v9 environmentConfiguration];
+        vehicleID = [environmentConfiguration2 vehicleID];
+        displayInfo2 = [(DBScreenController *)v9 displayInfo];
+        identifier = [displayInfo2 identifier];
+        v21 = [(DBUISyncSession *)v14 initWithChannel:uisyncChannel vehicleID:vehicleID displayID:identifier];
 
         v22 = [[_TtC9DashBoard30DBDefaultUISyncSessionDelegate alloc] initWithUISyncSession:v21];
         [(DBPassengerDisplay *)v9 setUisyncSessionDelegate:v22];
 
-        v23 = [(DBScreenController *)v9 environmentConfiguration];
-        [v23 setUisyncSession:v21];
+        environmentConfiguration3 = [(DBScreenController *)v9 environmentConfiguration];
+        [environmentConfiguration3 setUisyncSession:v21];
 
-        v24 = [(DBScreenController *)v9 environmentConfiguration];
-        v25 = [v24 uisyncSessionEventDelegate];
-        v26 = [(DBPassengerDisplay *)v9 uisyncSessionDelegate];
-        [v26 setEventDelegate:v25];
+        environmentConfiguration4 = [(DBScreenController *)v9 environmentConfiguration];
+        uisyncSessionEventDelegate = [environmentConfiguration4 uisyncSessionEventDelegate];
+        uisyncSessionDelegate = [(DBPassengerDisplay *)v9 uisyncSessionDelegate];
+        [uisyncSessionDelegate setEventDelegate:uisyncSessionEventDelegate];
       }
     }
 
-    v27 = [(DBScreenController *)v9 interestingWindow];
-    [v8 currentViewAreaFrame];
-    [v27 setFrame:?];
+    interestingWindow = [(DBScreenController *)v9 interestingWindow];
+    [configurationCopy currentViewAreaFrame];
+    [interestingWindow setFrame:?];
 
-    [v10 bounds];
+    [displayConfiguration bounds];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
     v36 = [_TtC9DashBoard17DBPassengerWindow alloc];
-    v37 = [(DBScreenController *)v9 windowScene];
-    v38 = [(DBPassengerWindow *)v36 initWithWindowScene:v37 frame:v29, v31, v33, v35];
+    windowScene = [(DBScreenController *)v9 windowScene];
+    v38 = [(DBPassengerWindow *)v36 initWithWindowScene:windowScene frame:v29, v31, v33, v35];
     passengerWindow = v9->_passengerWindow;
     v9->_passengerWindow = v38;
 
     v40 = [_TtC9DashBoard36DBPassengerDisplayRootViewController alloc];
-    v41 = [(DBScreenController *)v9 defaultSceneWorkspaceIdentifier];
-    v42 = [(DBPassengerDisplayRootViewController *)v40 initWithEnvironment:v9 workspaceIdentifier:v41];
+    defaultSceneWorkspaceIdentifier = [(DBScreenController *)v9 defaultSceneWorkspaceIdentifier];
+    v42 = [(DBPassengerDisplayRootViewController *)v40 initWithEnvironment:v9 workspaceIdentifier:defaultSceneWorkspaceIdentifier];
     rootVC = v9->_rootVC;
     v9->_rootVC = v42;
 
@@ -81,9 +81,9 @@
     {
       v45 = objc_opt_class();
       v46 = NSStringFromClass(v45);
-      v47 = [v8 supportsDisplayPlugin];
+      supportsDisplayPlugin = [configurationCopy supportsDisplayPlugin];
       v48 = @"NO";
-      if (v47)
+      if (supportsDisplayPlugin)
       {
         v48 = @"YES";
       }
@@ -109,27 +109,27 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DBPassengerDisplay *)self displayIdentity];
-  v7 = [(DBScreenController *)self screenInfo];
-  v8 = [v3 stringWithFormat:@"<%@ displayIdentity: %@. screenInfo: %@>", v5, v6, v7];
+  displayIdentity = [(DBPassengerDisplay *)self displayIdentity];
+  screenInfo = [(DBScreenController *)self screenInfo];
+  v8 = [v3 stringWithFormat:@"<%@ displayIdentity: %@. screenInfo: %@>", v5, displayIdentity, screenInfo];
 
   return v8;
 }
 
 - (FBSDisplayIdentity)displayIdentity
 {
-  v2 = [(DBScreenController *)self environmentConfiguration];
-  v3 = [v2 displayIdentity];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  displayIdentity = [environmentConfiguration displayIdentity];
 
-  return v3;
+  return displayIdentity;
 }
 
 - (FBSDisplayConfiguration)displayConfiguration
 {
-  v2 = [(DBScreenController *)self environmentConfiguration];
-  v3 = [v2 displayConfiguration];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  displayConfiguration = [environmentConfiguration displayConfiguration];
 
-  return v3;
+  return displayConfiguration;
 }
 
 - (void)invalidate
@@ -147,15 +147,15 @@
     _os_log_impl(&dword_248146000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}s", buf, 0x16u);
   }
 
-  v6 = [(DBPassengerDisplay *)self rootVC];
-  [v6 invalidate];
+  rootVC = [(DBPassengerDisplay *)self rootVC];
+  [rootVC invalidate];
 
-  v7 = [(DBScreenController *)self environmentConfiguration];
-  v8 = [v7 session];
-  [v8 removeObserver:self];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  session = [environmentConfiguration session];
+  [session removeObserver:self];
 
-  v9 = [(DBPassengerDisplay *)self passengerWindow];
-  [v9 setHidden:1];
+  passengerWindow = [(DBPassengerDisplay *)self passengerWindow];
+  [passengerWindow setHidden:1];
 
   [(DBPassengerDisplay *)self setPassengerWindow:0];
   v10.receiver = self;
@@ -163,7 +163,7 @@
   [(DBScreenController *)&v10 invalidate];
 }
 
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application
 {
   v3 = 5.0;
   v4 = 10.0;
@@ -176,25 +176,25 @@
   return result;
 }
 
-- (CGRect)sceneFrameForApplication:(id)a3
+- (CGRect)sceneFrameForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v5 = +[DBApplicationController sharedInstance];
-  v6 = [v5 radioApplication];
-  v7 = [v4 isEqual:v6];
+  radioApplication = [v5 radioApplication];
+  v7 = [applicationCopy isEqual:radioApplication];
 
-  v8 = [(DBScreenController *)self environmentConfiguration];
-  v9 = v8;
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  v9 = environmentConfiguration;
   if (v7)
   {
-    [v8 screenScale];
+    [environmentConfiguration screenScale];
     v11 = 1.0 / v10;
 
     memset(&v28, 0, sizeof(v28));
     CGAffineTransformMakeScale(&v28, v11, v11);
-    v12 = [(DBScreenController *)self environmentConfiguration];
-    v13 = [v12 displayConfiguration];
-    [v13 bounds];
+    environmentConfiguration2 = [(DBScreenController *)self environmentConfiguration];
+    displayConfiguration = [environmentConfiguration2 displayConfiguration];
+    [displayConfiguration bounds];
     v27 = v28;
     v30 = CGRectApplyAffineTransform(v29, &v27);
     x = v30.origin.x;
@@ -205,8 +205,8 @@
 
   else
   {
-    v18 = [v8 displayConfiguration];
-    [v18 bounds];
+    displayConfiguration2 = [environmentConfiguration displayConfiguration];
+    [displayConfiguration2 bounds];
     x = v19;
     y = v20;
     width = v21;
@@ -224,34 +224,34 @@
   return result;
 }
 
-- (id)sceneIdentifierForApplication:(id)a3
+- (id)sceneIdentifierForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 appPolicy];
-  if ([v5 launchUsingTemplateUI])
+  applicationCopy = application;
+  appPolicy = [applicationCopy appPolicy];
+  if ([appPolicy launchUsingTemplateUI])
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(DBPassengerDisplay *)self displayIdentity];
+    displayIdentity = [(DBPassengerDisplay *)self displayIdentity];
     v8 = DBTemplateUIHostBundleIdentifier;
 LABEL_5:
     v9 = *v8;
-    v10 = [v4 bundleIdentifier];
-    [v6 stringWithFormat:@"%@:%@:%@:passenger", v7, v9, v10];
+    bundleIdentifier = [applicationCopy bundleIdentifier];
+    [v6 stringWithFormat:@"%@:%@:%@:passenger", displayIdentity, v9, bundleIdentifier];
     goto LABEL_6;
   }
 
-  if (([v5 launchUsingMusicUIService] & 1) != 0 || (objc_msgSend(v5, "isCarPlaySupported") & 1) == 0 && (objc_msgSend(v4, "info"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "supportsBackgroundMode:", *MEMORY[0x277D76778]), v13, v14))
+  if (([appPolicy launchUsingMusicUIService] & 1) != 0 || (objc_msgSend(appPolicy, "isCarPlaySupported") & 1) == 0 && (objc_msgSend(applicationCopy, "info"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "supportsBackgroundMode:", *MEMORY[0x277D76778]), v13, v14))
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(DBPassengerDisplay *)self displayIdentity];
+    displayIdentity = [(DBPassengerDisplay *)self displayIdentity];
     v8 = DBMusicUIServiceBundleIdentifier;
     goto LABEL_5;
   }
 
   v15 = MEMORY[0x277CCACA8];
-  v7 = [(DBPassengerDisplay *)self displayIdentity];
-  v10 = [v4 bundleIdentifier];
-  [v15 stringWithFormat:@"%@:%@", v7, v10, v16];
+  displayIdentity = [(DBPassengerDisplay *)self displayIdentity];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  [v15 stringWithFormat:@"%@:%@", displayIdentity, bundleIdentifier, v16];
   v11 = LABEL_6:;
 
   return v11;

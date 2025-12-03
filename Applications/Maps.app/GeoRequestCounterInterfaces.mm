@@ -2,15 +2,15 @@
 - (GeoRequestCounterInterfaces)init;
 - (id)currentSelection;
 - (id)currentSelectionString;
-- (id)stringForRow:(int64_t)a3;
-- (void)setSelection:(id)a3;
+- (id)stringForRow:(int64_t)row;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation GeoRequestCounterInterfaces
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -20,7 +20,7 @@
   v8[2] = sub_100655F94;
   v8[3] = &unk_101624D58;
   v8[4] = &v9;
-  [v4 enumerateIndexesUsingBlock:v8];
+  [selectionCopy enumerateIndexesUsingBlock:v8];
   v5 = v10[3];
   self->_selected = v5;
   if (!v5)
@@ -35,12 +35,12 @@
   _Block_object_dispose(&v9, 8);
 }
 
-- (id)stringForRow:(int64_t)a3
+- (id)stringForRow:(int64_t)row
 {
   v3 = GEORequestCounterInterfaceTypesToStrings();
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)currentSelection
@@ -84,9 +84,9 @@
     v3 = +[NSUserDefaults standardUserDefaults];
     v4 = [v3 valueForKey:@"_debug_geoReqCountInterfaces"];
 
-    v5 = [v4 unsignedIntegerValue];
-    v2->_selected = v5;
-    if (!v5)
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
+    v2->_selected = unsignedIntegerValue;
+    if (!unsignedIntegerValue)
     {
       v2->_selected = GEORequestCounterInterfaceType_AllMask;
     }

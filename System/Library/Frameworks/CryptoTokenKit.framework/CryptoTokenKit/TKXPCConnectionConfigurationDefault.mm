@@ -1,25 +1,25 @@
 @interface TKXPCConnectionConfigurationDefault
-- (TKXPCConnectionConfigurationDefault)initWithRemoteObjectInterface:(id)a3 exportedInterface:(id)a4 exportedObject:(id)a5 replyQueue:(id)a6;
+- (TKXPCConnectionConfigurationDefault)initWithRemoteObjectInterface:(id)interface exportedInterface:(id)exportedInterface exportedObject:(id)object replyQueue:(id)queue;
 @end
 
 @implementation TKXPCConnectionConfigurationDefault
 
-- (TKXPCConnectionConfigurationDefault)initWithRemoteObjectInterface:(id)a3 exportedInterface:(id)a4 exportedObject:(id)a5 replyQueue:(id)a6
+- (TKXPCConnectionConfigurationDefault)initWithRemoteObjectInterface:(id)interface exportedInterface:(id)exportedInterface exportedObject:(id)object replyQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  interfaceCopy = interface;
+  exportedInterfaceCopy = exportedInterface;
+  objectCopy = object;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = TKXPCConnectionConfigurationDefault;
   v15 = [(TKXPCConnectionConfigurationDefault *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_exportedObject, a5);
-    objc_storeStrong(&v16->_exportedInterface, a4);
-    objc_storeStrong(&v16->_remoteObjectInterface, a3);
-    objc_storeStrong(&v16->_replyQueue, a6);
+    objc_storeStrong(&v15->_exportedObject, object);
+    objc_storeStrong(&v16->_exportedInterface, exportedInterface);
+    objc_storeStrong(&v16->_remoteObjectInterface, interface);
+    objc_storeStrong(&v16->_replyQueue, queue);
   }
 
   return v16;

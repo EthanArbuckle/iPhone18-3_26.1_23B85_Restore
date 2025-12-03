@@ -1,8 +1,8 @@
 @interface EndpointStore
-+ (BOOL)containsWithFilter:(id)a3;
-+ (void)insertWithEndpoint:(id)a3;
-+ (void)removeWithEndpoint:(id)a3;
-+ (void)updateWithEndpoint:(id)a3;
++ (BOOL)containsWithFilter:(id)filter;
++ (void)insertWithEndpoint:(id)endpoint;
++ (void)removeWithEndpoint:(id)endpoint;
++ (void)updateWithEndpoint:(id)endpoint;
 - (_TtC10seserviced13EndpointStore)init;
 @end
 
@@ -15,60 +15,60 @@
   return [(EndpointStore *)&v3 init];
 }
 
-+ (void)insertWithEndpoint:(id)a3
++ (void)insertWithEndpoint:(id)endpoint
 {
   v3 = qword_1005019E8;
-  v4 = a3;
-  v5 = v4;
+  endpointCopy = endpoint;
+  v5 = endpointCopy;
   if (v3 != -1)
   {
-    v4 = swift_once();
+    endpointCopy = swift_once();
   }
 
   v6 = *(off_100504A68 + 3);
-  __chkstk_darwin(v4);
+  __chkstk_darwin(endpointCopy);
   os_unfair_lock_lock((v6 + 32));
   sub_10014E55C((v6 + 16));
   os_unfair_lock_unlock((v6 + 32));
 }
 
-+ (void)updateWithEndpoint:(id)a3
++ (void)updateWithEndpoint:(id)endpoint
 {
   v3 = qword_1005019E8;
-  v4 = a3;
-  v5 = v4;
+  endpointCopy = endpoint;
+  v5 = endpointCopy;
   if (v3 != -1)
   {
-    v4 = swift_once();
+    endpointCopy = swift_once();
   }
 
   v6 = *(off_100504A68 + 3);
-  __chkstk_darwin(v4);
+  __chkstk_darwin(endpointCopy);
   os_unfair_lock_lock((v6 + 32));
   sub_10014E474((v6 + 16));
   os_unfair_lock_unlock((v6 + 32));
 }
 
-+ (void)removeWithEndpoint:(id)a3
++ (void)removeWithEndpoint:(id)endpoint
 {
   v3 = qword_1005019E8;
-  v4 = a3;
-  v5 = v4;
+  endpointCopy = endpoint;
+  v5 = endpointCopy;
   if (v3 != -1)
   {
-    v4 = swift_once();
+    endpointCopy = swift_once();
   }
 
   v6 = *(off_100504A68 + 3);
-  __chkstk_darwin(v4);
+  __chkstk_darwin(endpointCopy);
   os_unfair_lock_lock((v6 + 32));
   sub_10014E454((v6 + 16));
   os_unfair_lock_unlock((v6 + 32));
 }
 
-+ (BOOL)containsWithFilter:(id)a3
++ (BOOL)containsWithFilter:(id)filter
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(filter);
   v4 = v3;
   if (qword_1005019E8 != -1)
   {

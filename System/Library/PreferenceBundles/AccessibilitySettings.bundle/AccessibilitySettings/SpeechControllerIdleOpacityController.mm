@@ -1,9 +1,9 @@
 @interface SpeechControllerIdleOpacityController
 - (id)specifiers;
-- (id)speechControllerIdleOpacity:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_handleSliderIsChanging:(id)a3;
-- (void)setSpeechControllerIdleOpacity:(id)a3 specifier:(id)a4;
+- (id)speechControllerIdleOpacity:(id)opacity;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_handleSliderIsChanging:(id)changing;
+- (void)setSpeechControllerIdleOpacity:(id)opacity specifier:(id)specifier;
 @end
 
 @implementation SpeechControllerIdleOpacityController
@@ -24,33 +24,33 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = SpeechControllerIdleOpacityController;
-  v5 = [(SpeechControllerIdleOpacityController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(SpeechControllerIdleOpacityController *)&v10 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 control];
-    if (!v6)
+    control = [v5 control];
+    if (!control)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v5 contentView];
-        v8 = [v7 subviews];
-        v6 = [v8 ax_firstObjectUsingBlock:&__block_literal_global_48];
+        contentView = [v5 contentView];
+        subviews = [contentView subviews];
+        control = [subviews ax_firstObjectUsingBlock:&__block_literal_global_48];
       }
 
       else
       {
-        v6 = 0;
+        control = 0;
       }
     }
 
-    [v6 setContinuous:1];
-    [v6 addTarget:self action:"_handleSliderIsChanging:" forControlEvents:4096];
+    [control setContinuous:1];
+    [control addTarget:self action:"_handleSliderIsChanging:" forControlEvents:4096];
   }
 
   return v5;
@@ -65,7 +65,7 @@ BOOL __73__SpeechControllerIdleOpacityController_tableView_cellForRowAtIndexPath
   return isKindOfClass & 1;
 }
 
-- (id)speechControllerIdleOpacity:(id)a3
+- (id)speechControllerIdleOpacity:(id)opacity
 {
   v3 = +[AXSettings sharedInstance];
   [v3 speechControllerIdleOpacity];
@@ -74,17 +74,17 @@ BOOL __73__SpeechControllerIdleOpacityController_tableView_cellForRowAtIndexPath
   return v4;
 }
 
-- (void)setSpeechControllerIdleOpacity:(id)a3 specifier:(id)a4
+- (void)setSpeechControllerIdleOpacity:(id)opacity specifier:(id)specifier
 {
-  [a3 floatValue];
+  [opacity floatValue];
   v5 = v4;
   v6 = +[AXSettings sharedInstance];
   [v6 setSpeechControllerIdleOpacity:v5];
 }
 
-- (void)_handleSliderIsChanging:(id)a3
+- (void)_handleSliderIsChanging:(id)changing
 {
-  [a3 value];
+  [changing value];
   v4 = v3;
   v5 = +[AXSettings sharedInstance];
   [v5 setSpeechControllerIdleOpacity:v4];

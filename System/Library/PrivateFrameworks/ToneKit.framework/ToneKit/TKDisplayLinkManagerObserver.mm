@@ -1,27 +1,27 @@
 @interface TKDisplayLinkManagerObserver
-- (BOOL)isEqual:(id)a3;
-- (TKDisplayLinkManagerObserver)initWithBlock:(id)a3 frameInterval:(unint64_t)a4;
-- (void)displayDidRefresh:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TKDisplayLinkManagerObserver)initWithBlock:(id)block frameInterval:(unint64_t)interval;
+- (void)displayDidRefresh:(id)refresh;
 @end
 
 @implementation TKDisplayLinkManagerObserver
 
-- (TKDisplayLinkManagerObserver)initWithBlock:(id)a3 frameInterval:(unint64_t)a4
+- (TKDisplayLinkManagerObserver)initWithBlock:(id)block frameInterval:(unint64_t)interval
 {
-  v6 = a3;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = TKDisplayLinkManagerObserver;
   v7 = [(TKDisplayLinkManagerObserver *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    if (v6 && a4)
+    if (blockCopy && interval)
     {
-      v9 = [v6 copy];
+      v9 = [blockCopy copy];
       block = v8->_block;
       v8->_block = v9;
 
-      v8->_frameInterval = a4;
+      v8->_frameInterval = interval;
     }
 
     else
@@ -34,16 +34,16 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_block == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_block == equalCopy[1];
 
   return v5;
 }
 
-- (void)displayDidRefresh:(id)a3
+- (void)displayDidRefresh:(id)refresh
 {
   displayDidRefreshCount = self->_displayDidRefreshCount;
   if (!(displayDidRefreshCount % self->_frameInterval))

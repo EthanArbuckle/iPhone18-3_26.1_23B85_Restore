@@ -1,12 +1,12 @@
 @interface CKMultiValueMergeableDeltaRegisterState
 + (id)newSalt;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKMultiValueMergeableDeltaRegisterState)init;
-- (CKMultiValueMergeableDeltaRegisterState)initWithCoder:(id)a3;
-- (CKMultiValueMergeableDeltaRegisterState)initWithIdentifier:(id)a3 vector:(id)a4 salt:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKMultiValueMergeableDeltaRegisterState)initWithCoder:(id)coder;
+- (CKMultiValueMergeableDeltaRegisterState)initWithIdentifier:(id)identifier vector:(id)vector salt:(id)salt;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKMultiValueMergeableDeltaRegisterState
@@ -31,25 +31,25 @@
   return v11;
 }
 
-- (CKMultiValueMergeableDeltaRegisterState)initWithIdentifier:(id)a3 vector:(id)a4 salt:(id)a5
+- (CKMultiValueMergeableDeltaRegisterState)initWithIdentifier:(id)identifier vector:(id)vector salt:(id)salt
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  vectorCopy = vector;
+  saltCopy = salt;
   v25.receiver = self;
   v25.super_class = CKMultiValueMergeableDeltaRegisterState;
   v13 = [(CKMultiValueMergeableDeltaRegisterState *)&v25 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(identifierCopy, v11, v12);
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v18 = objc_msgSend_mutableCopy(v9, v16, v17);
+    v18 = objc_msgSend_mutableCopy(vectorCopy, v16, v17);
     vector = v13->_vector;
     v13->_vector = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(saltCopy, v20, v21);
     salt = v13->_salt;
     v13->_salt = v22;
   }
@@ -57,9 +57,9 @@
   return v13;
 }
 
-- (CKMultiValueMergeableDeltaRegisterState)initWithCoder:(id)a3
+- (CKMultiValueMergeableDeltaRegisterState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = CKMultiValueMergeableDeltaRegisterState;
   v5 = [(CKMultiValueMergeableDeltaRegisterState *)&v22 init];
@@ -67,19 +67,19 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_identifier);
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v6, v7);
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v6, v7);
     identifier = v5->_identifier;
     v5->_identifier = v9;
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_vector);
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v13, v11, v12);
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v13, v11, v12);
     vector = v5->_vector;
     v5->_vector = v14;
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_salt);
-    v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v16, v17);
+    v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v16, v17);
     salt = v5->_salt;
     v5->_salt = v19;
   }
@@ -87,23 +87,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_identifier);
-  objc_msgSend_encodeObject_forKey_(v5, v7, identifier, v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, identifier, v6);
 
   vector = self->_vector;
   v9 = NSStringFromSelector(sel_vector);
-  objc_msgSend_encodeObject_forKey_(v5, v10, vector, v9);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, vector, v9);
 
   salt = self->_salt;
   v13 = NSStringFromSelector(sel_salt);
-  objc_msgSend_encodeObject_forKey_(v5, v12, salt, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, salt, v13);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_identifier(self, v5, v6);
@@ -114,10 +114,10 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -125,9 +125,9 @@
   else
   {
     v7 = objc_opt_class();
-    if (objc_msgSend_isMemberOfClass_(v6, v8, v7))
+    if (objc_msgSend_isMemberOfClass_(equalCopy, v8, v7))
     {
-      v9 = v6;
+      v9 = equalCopy;
       v12 = objc_msgSend_identifier(self, v10, v11);
       v17 = objc_msgSend_identifier(v9, v13, v14);
       if (v12 != v17)

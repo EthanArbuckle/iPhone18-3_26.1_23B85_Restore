@@ -2,18 +2,18 @@
 + (id)sharedOutputManager;
 - (VKMapViewOutputManager)init;
 - (unint64_t)outputQueueCount;
-- (void)_handleAccessibilityAnnouncementDidFinish:(id)a3;
+- (void)_handleAccessibilityAnnouncementDidFinish:(id)finish;
 - (void)clearOutputQueue;
 - (void)dealloc;
-- (void)queueOutput:(id)a3;
+- (void)queueOutput:(id)output;
 @end
 
 @implementation VKMapViewOutputManager
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VKMapViewOutputManager;
@@ -27,11 +27,11 @@
   v2 = [(VKMapViewOutputManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
-    [(VKMapViewOutputManager *)v2 setOutputQueue:v3];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [(VKMapViewOutputManager *)v2 setOutputQueue:array];
 
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v4 addObserver:v2 selector:sel__handleAccessibilityAnnouncementDidFinish_ name:*MEMORY[0x29EDC7E98] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleAccessibilityAnnouncementDidFinish_ name:*MEMORY[0x29EDC7E98] object:0];
   }
 
   return v2;
@@ -56,41 +56,41 @@ void __45__VKMapViewOutputManager_sharedOutputManager__block_invoke()
   +[VKMapViewOutputManager sharedOutputManager]::_OutputManager = v0;
 }
 
-- (void)_handleAccessibilityAnnouncementDidFinish:(id)a3
+- (void)_handleAccessibilityAnnouncementDidFinish:(id)finish
 {
-  v4 = [(VKMapViewOutputManager *)self outputQueue];
-  if ([v4 count])
+  outputQueue = [(VKMapViewOutputManager *)self outputQueue];
+  if ([outputQueue count])
   {
-    v3 = [v4 lastObject];
-    UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v3);
-    [v4 removeLastObject];
+    lastObject = [outputQueue lastObject];
+    UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], lastObject);
+    [outputQueue removeLastObject];
   }
 }
 
 - (void)clearOutputQueue
 {
-  v2 = [(VKMapViewOutputManager *)self outputQueue];
-  [v2 removeAllObjects];
+  outputQueue = [(VKMapViewOutputManager *)self outputQueue];
+  [outputQueue removeAllObjects];
 }
 
 - (unint64_t)outputQueueCount
 {
-  v2 = [(VKMapViewOutputManager *)self outputQueue];
-  v3 = [v2 count];
+  outputQueue = [(VKMapViewOutputManager *)self outputQueue];
+  v3 = [outputQueue count];
 
   return v3;
 }
 
-- (void)queueOutput:(id)a3
+- (void)queueOutput:(id)output
 {
-  argument = a3;
+  argument = output;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(VKMapViewOutputManager *)self outputQueue];
-    if ([v4 count])
+    outputQueue = [(VKMapViewOutputManager *)self outputQueue];
+    if ([outputQueue count])
     {
-      [v4 insertObject:argument atIndex:0];
+      [outputQueue insertObject:argument atIndex:0];
     }
 
     else

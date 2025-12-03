@@ -3,8 +3,8 @@
 - (id)shortDescription;
 - (unint64_t)totalBytes;
 - (unint64_t)usedBytes;
-- (void)setTotalBytes:(unint64_t)a3;
-- (void)setUsedBytes:(unint64_t)a3;
+- (void)setTotalBytes:(unint64_t)bytes;
+- (void)setUsedBytes:(unint64_t)bytes;
 @end
 
 @implementation IMMetricsMemoryEvent
@@ -31,32 +31,32 @@
   return v3;
 }
 
-- (void)setUsedBytes:(unint64_t)a3
+- (void)setUsedBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:bytes];
   [(AMSMetricsEvent *)self im_setProperty:v4 forBodyKey:@"usedBytes"];
 }
 
 - (unint64_t)usedBytes
 {
   v2 = [(IMMetricsMemoryEvent *)self propertyForBodyKey:@"usedBytes"];
-  v3 = [v2 unsignedLongValue];
+  unsignedLongValue = [v2 unsignedLongValue];
 
-  return v3;
+  return unsignedLongValue;
 }
 
-- (void)setTotalBytes:(unint64_t)a3
+- (void)setTotalBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:bytes];
   [(AMSMetricsEvent *)self im_setProperty:v4 forBodyKey:@"totalBytes"];
 }
 
 - (unint64_t)totalBytes
 {
   v2 = [(IMMetricsMemoryEvent *)self propertyForBodyKey:@"totalBytes"];
-  v3 = [v2 unsignedLongValue];
+  unsignedLongValue = [v2 unsignedLongValue];
 
-  return v3;
+  return unsignedLongValue;
 }
 
 - (id)shortDescription
@@ -64,8 +64,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v7.receiver = self;
   v7.super_class = IMMetricsMemoryEvent;
-  v4 = [(AMSMetricsEvent *)&v7 shortDescription];
-  v5 = [v3 stringWithFormat:@"%@, %lu, %lu", v4, -[IMMetricsMemoryEvent usedBytes](self, "usedBytes"), -[IMMetricsMemoryEvent totalBytes](self, "totalBytes")];
+  shortDescription = [(AMSMetricsEvent *)&v7 shortDescription];
+  v5 = [v3 stringWithFormat:@"%@, %lu, %lu", shortDescription, -[IMMetricsMemoryEvent usedBytes](self, "usedBytes"), -[IMMetricsMemoryEvent totalBytes](self, "totalBytes")];
 
   return v5;
 }

@@ -1,30 +1,30 @@
 @interface KTOctagonActualOperations
-- (BOOL)ckksViewReady:(id)a3 error:(id *)a4;
-- (BOOL)getCachedOctagonStatus:(double)a3;
-- (KTOctagonActualOperations)initWithDistributedNotificationCenter:(id)a3 octagonControl:(id)a4 ckksControl:(id)a5 logger:(id)a6;
+- (BOOL)ckksViewReady:(id)ready error:(id *)error;
+- (BOOL)getCachedOctagonStatus:(double)status;
+- (KTOctagonActualOperations)initWithDistributedNotificationCenter:(id)center octagonControl:(id)control ckksControl:(id)ckksControl logger:(id)logger;
 - (KTOctagonProtocol)octagonControl;
-- (id)ckksControl:(id *)a3;
-- (unint64_t)ckksGetKnownBadState:(id)a3;
-- (unint64_t)octagonStatus:(id *)a3;
-- (void)addPassiveMonitorForView:(id)a3;
+- (id)ckksControl:(id *)control;
+- (unint64_t)ckksGetKnownBadState:(id)state;
+- (unint64_t)octagonStatus:(id *)status;
+- (void)addPassiveMonitorForView:(id)view;
 - (void)checkAllCKKSMonitoredViews;
-- (void)checkCKKSAvailable:(id)a3;
-- (void)ckksNotify:(id)a3;
-- (void)ckksRequestViewSync:(id)a3 complete:(id)a4;
+- (void)checkCKKSAvailable:(id)available;
+- (void)ckksNotify:(id)notify;
+- (void)ckksRequestViewSync:(id)sync complete:(id)complete;
 - (void)dealloc;
 - (void)manateeChanged;
 - (void)shutdown;
-- (void)triggerActiveMonitorForView:(id)a3;
+- (void)triggerActiveMonitorForView:(id)view;
 @end
 
 @implementation KTOctagonActualOperations
 
-- (KTOctagonActualOperations)initWithDistributedNotificationCenter:(id)a3 octagonControl:(id)a4 ckksControl:(id)a5 logger:(id)a6
+- (KTOctagonActualOperations)initWithDistributedNotificationCenter:(id)center octagonControl:(id)control ckksControl:(id)ckksControl logger:(id)logger
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  centerCopy = center;
+  controlCopy = control;
+  ckksControlCopy = ckksControl;
+  loggerCopy = logger;
   v38.receiver = self;
   v38.super_class = KTOctagonActualOperations;
   v14 = [(KTOctagonActualOperations *)&v38 init];
@@ -35,7 +35,7 @@
     [(KTOctagonActualOperations *)v14 setOctagonEligibilityTimeout:5.0];
     [(KTOctagonActualOperations *)v14 setOctagonToken:0xFFFFFFFFLL];
     [(KTOctagonActualOperations *)v14 setOctagonTrusted:2];
-    [(KTOctagonActualOperations *)v14 setLogger:v13];
+    [(KTOctagonActualOperations *)v14 setLogger:loggerCopy];
     v15 = +[NSMutableSet set];
     [(KTOctagonActualOperations *)v14 setViews:v15];
 
@@ -52,7 +52,7 @@
     [(KTOctagonActualOperations *)v14 setNfs:v18];
 
     v19 = [(KTOctagonActualOperations *)v14 nfs];
-    [v13 addNFSReporting:v19];
+    [loggerCopy addNFSReporting:v19];
 
     v20 = [KTNearFutureScheduler alloc];
     v33[0] = _NSConcreteStackBlock;
@@ -63,24 +63,24 @@
     v21 = [(KTNearFutureScheduler *)v20 initWithName:@"ckksCheckerNFS" initialDelay:2000000000 exponentialBackoff:3600000000000 maximumDelay:0 keepProcessAlive:0 dependencyDescriptionCode:v33 block:1.5];
     [(KTOctagonActualOperations *)v14 setCkksCheckerNFS:v21];
 
-    v22 = [(KTOctagonActualOperations *)v14 ckksCheckerNFS];
-    [v13 addNFSReporting:v22];
+    ckksCheckerNFS = [(KTOctagonActualOperations *)v14 ckksCheckerNFS];
+    [loggerCopy addNFSReporting:ckksCheckerNFS];
 
-    [(KTOctagonActualOperations *)v14 setNotificationCenter:v10];
-    v23 = [(KTOctagonActualOperations *)v14 queue];
+    [(KTOctagonActualOperations *)v14 setNotificationCenter:centerCopy];
+    queue = [(KTOctagonActualOperations *)v14 queue];
     v28 = _NSConcreteStackBlock;
     v29 = 3221225472;
     v30 = sub_1001F7F6C;
     v31 = &unk_10031A548;
     objc_copyWeak(&v32, &location);
-    notify_register_dispatch("com.apple.security.octagon.trust-status-change", &v14->_octagonToken, v23, &v28);
+    notify_register_dispatch("com.apple.security.octagon.trust-status-change", &v14->_octagonToken, queue, &v28);
 
     v24 = [(KTOctagonActualOperations *)v14 notificationCenter:v28];
     [v24 addObserver:v14 selector:"ckksNotify:" name:@"com.apple.security.view-become-ready" object:0];
 
-    if (v11)
+    if (controlCopy)
     {
-      v25 = v11;
+      v25 = controlCopy;
     }
 
     else
@@ -89,7 +89,7 @@
     }
 
     [(KTOctagonActualOperations *)v14 setOctagonControl:v25];
-    [(KTOctagonActualOperations *)v14 setCkksControlInterface:v12];
+    [(KTOctagonActualOperations *)v14 setCkksControlInterface:ckksControlCopy];
     v26 = v14;
     objc_destroyWeak(&v32);
     objc_destroyWeak(&v34);
@@ -105,8 +105,8 @@
   v3 = [(KTOctagonActualOperations *)self nfs];
   [v3 cancel];
 
-  v4 = [(KTOctagonActualOperations *)self ckksCheckerNFS];
-  [v4 cancel];
+  ckksCheckerNFS = [(KTOctagonActualOperations *)self ckksCheckerNFS];
+  [ckksCheckerNFS cancel];
 
   if ([(KTOctagonActualOperations *)self octagonToken]!= -1)
   {
@@ -114,13 +114,13 @@
     [(KTOctagonActualOperations *)self setOctagonToken:0xFFFFFFFFLL];
   }
 
-  v5 = [(KTOctagonActualOperations *)self notificationCenter];
-  [v5 removeObserver:self name:@"com.apple.security.view-become-ready" object:0];
+  notificationCenter = [(KTOctagonActualOperations *)self notificationCenter];
+  [notificationCenter removeObserver:self name:@"com.apple.security.view-become-ready" object:0];
 }
 
-- (void)ckksNotify:(id)a3
+- (void)ckksNotify:(id)notify
 {
-  v4 = a3;
+  notifyCopy = notify;
   if (qword_10039CBB0 != -1)
   {
     sub_10025D784();
@@ -130,7 +130,7 @@
   if (os_log_type_enabled(qword_10039CBB8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = notifyCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "View become ready: %@", &buf, 0xCu);
   }
 
@@ -138,12 +138,12 @@
   *(&buf + 1) = &buf;
   v13 = 0x2020000000;
   v14 = 1;
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"view"];
+  userInfo = [notifyCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"view"];
 
   if (v7)
   {
-    v8 = [(KTOctagonActualOperations *)self queue];
+    queue = [(KTOctagonActualOperations *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001F82A0;
@@ -151,7 +151,7 @@
     p_buf = &buf;
     block[4] = self;
     v10 = v7;
-    dispatch_sync(v8, block);
+    dispatch_sync(queue, block);
   }
 
   if (*(*(&buf + 1) + 24) == 1)
@@ -172,14 +172,14 @@
 
 - (void)manateeChanged
 {
-  v3 = [(KTOctagonActualOperations *)self octagonControl];
-  v4 = [v3 octagonStatus:0];
+  octagonControl = [(KTOctagonActualOperations *)self octagonControl];
+  v4 = [octagonControl octagonStatus:0];
 
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(KTOctagonActualOperations *)self queue];
+  queue = [(KTOctagonActualOperations *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F8494;
@@ -187,16 +187,16 @@
   block[5] = &v9;
   block[6] = v4;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   if (*(v10 + 24) == 1)
   {
-    v6 = [(KTOctagonActualOperations *)self octagonObserver];
+    octagonObserver = [(KTOctagonActualOperations *)self octagonObserver];
 
-    if (v6)
+    if (octagonObserver)
     {
-      v7 = [(KTOctagonActualOperations *)self octagonObserver];
-      (v7)[2](v7, v4 != 0);
+      octagonObserver2 = [(KTOctagonActualOperations *)self octagonObserver];
+      (octagonObserver2)[2](octagonObserver2, v4 != 0);
     }
   }
 
@@ -208,7 +208,7 @@
   _Block_object_dispose(&v9, 8);
 }
 
-- (BOOL)getCachedOctagonStatus:(double)a3
+- (BOOL)getCachedOctagonStatus:(double)status
 {
   if ([(KTOctagonActualOperations *)self octagonTrusted]== 2)
   {
@@ -223,7 +223,7 @@
     v14 = v7;
     dispatch_async(v6, block);
 
-    v8 = dispatch_time(0, (a3 * 1000000000.0));
+    v8 = dispatch_time(0, (status * 1000000000.0));
     if (dispatch_semaphore_wait(v7, v8))
     {
       if (qword_10039CBB0 != -1)
@@ -239,18 +239,18 @@
       }
     }
 
-    v10 = [(KTOctagonActualOperations *)self octagonTrusted];
+    octagonTrusted = [(KTOctagonActualOperations *)self octagonTrusted];
   }
 
   else
   {
-    v10 = [(KTOctagonActualOperations *)self octagonTrusted];
+    octagonTrusted = [(KTOctagonActualOperations *)self octagonTrusted];
   }
 
-  return v10 == 1;
+  return octagonTrusted == 1;
 }
 
-- (unint64_t)octagonStatus:(id *)a3
+- (unint64_t)octagonStatus:(id *)status
 {
   v3 = objc_alloc_init(OTConfigurationContext);
   [v3 setContext:OTDefaultContext];
@@ -279,12 +279,12 @@
   return v6 == 0;
 }
 
-- (id)ckksControl:(id *)a3
+- (id)ckksControl:(id *)control
 {
   os_unfair_lock_lock(&unk_10039CBC0);
-  v4 = [(KTOctagonActualOperations *)self ckksControlInterface];
+  ckksControlInterface = [(KTOctagonActualOperations *)self ckksControlInterface];
 
-  if (v4)
+  if (ckksControlInterface)
   {
     v5 = 0;
   }
@@ -298,9 +298,9 @@
   }
 
   os_unfair_lock_unlock(&unk_10039CBC0);
-  v7 = [(KTOctagonActualOperations *)self ckksControlInterface];
+  ckksControlInterface2 = [(KTOctagonActualOperations *)self ckksControlInterface];
 
-  if (!v7)
+  if (!ckksControlInterface2)
   {
     if (qword_10039CBB0 != -1)
     {
@@ -316,14 +316,14 @@
     }
   }
 
-  v9 = [(KTOctagonActualOperations *)self ckksControlInterface];
+  ckksControlInterface3 = [(KTOctagonActualOperations *)self ckksControlInterface];
 
-  return v9;
+  return ckksControlInterface3;
 }
 
-- (BOOL)ckksViewReady:(id)a3 error:(id *)a4
+- (BOOL)ckksViewReady:(id)ready error:(id *)error
 {
-  v5 = a3;
+  readyCopy = ready;
   v24 = 0;
   v6 = [(KTOctagonActualOperations *)self ckksControl:&v24];
   v7 = v24;
@@ -340,7 +340,7 @@
     v8 = dispatch_semaphore_create(0);
     v21 = v8;
     v23 = v27;
-    v9 = v5;
+    v9 = readyCopy;
     v22 = v9;
     [v6 rpcFastStatus:v9 reply:&v17];
     [(KTOctagonActualOperations *)self ckksTimeout:v17];
@@ -394,45 +394,45 @@
     if (os_log_type_enabled(qword_10039CBB8, OS_LOG_TYPE_DEFAULT))
     {
       *v27 = 138412546;
-      *&v27[4] = v5;
+      *&v27[4] = readyCopy;
       *&v27[12] = 2112;
       *&v27[14] = v7;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "CKKS have no control, starting watcher: %@: %@", v27, 0x16u);
     }
 
-    [(KTOctagonActualOperations *)self triggerActiveMonitorForView:v5];
+    [(KTOctagonActualOperations *)self triggerActiveMonitorForView:readyCopy];
     v13 = 0;
   }
 
   return v13 & 1;
 }
 
-- (void)addPassiveMonitorForView:(id)a3
+- (void)addPassiveMonitorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(KTOctagonActualOperations *)self queue];
+  viewCopy = view;
+  queue = [(KTOctagonActualOperations *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F9250;
   v7[3] = &unk_1003180E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = viewCopy;
+  v6 = viewCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)triggerActiveMonitorForView:(id)a3
+- (void)triggerActiveMonitorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(KTOctagonActualOperations *)self queue];
+  viewCopy = view;
+  queue = [(KTOctagonActualOperations *)self queue];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1001F9424;
   v14 = &unk_1003180E0;
-  v15 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = viewCopy;
   v16 = v6;
-  dispatch_sync(v5, &v11);
+  dispatch_sync(queue, &v11);
 
   v7 = [(KTOctagonActualOperations *)self ckksCheckerNFS:v11];
   [v7 trigger];
@@ -446,9 +446,9 @@
   if (os_log_type_enabled(qword_10039CBB8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(KTOctagonActualOperations *)self ckksCheckerNFS];
+    ckksCheckerNFS = [(KTOctagonActualOperations *)self ckksCheckerNFS];
     *buf = 138412290;
-    v18 = v10;
+    v18 = ckksCheckerNFS;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Triggered CKKS checker: %@", buf, 0xCu);
   }
 }
@@ -461,14 +461,14 @@
   v19 = sub_1001F9730;
   v20 = sub_1001F9740;
   v21 = 0;
-  v3 = [(KTOctagonActualOperations *)self queue];
+  queue = [(KTOctagonActualOperations *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F9748;
   block[3] = &unk_10031DC58;
   block[4] = self;
   block[5] = &v16;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
   if (qword_10039CBB0 != -1)
   {
@@ -478,8 +478,8 @@
   v4 = qword_10039CBB8;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v17[5] allObjects];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    allObjects = [v17[5] allObjects];
+    v6 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 138412290;
     v24 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CKKS checking if views are now available %@", buf, 0xCu);
@@ -515,18 +515,18 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)checkCKKSAvailable:(id)a3
+- (void)checkCKKSAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [(KTOctagonActualOperations *)self octagonControl];
+  availableCopy = available;
+  octagonControl = [(KTOctagonActualOperations *)self octagonControl];
   v24 = 0;
-  v6 = [v5 octagonStatus:&v24];
+  v6 = [octagonControl octagonStatus:&v24];
   v7 = v24;
 
   if (v6)
   {
     v23 = 0;
-    v8 = [(KTOctagonActualOperations *)self ckksViewReady:v4 error:&v23];
+    v8 = [(KTOctagonActualOperations *)self ckksViewReady:availableCopy error:&v23];
     v9 = v23;
     if (v8)
     {
@@ -539,26 +539,26 @@
       if (os_log_type_enabled(qword_10039CBB8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = v4;
+        v26 = availableCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "CKKS view %@ is available", buf, 0xCu);
       }
 
-      v11 = [(KTOctagonActualOperations *)self queue];
+      queue = [(KTOctagonActualOperations *)self queue];
       v17 = _NSConcreteStackBlock;
       v18 = 3221225472;
       v19 = sub_1001F9B7C;
       v20 = &unk_1003180E0;
-      v21 = self;
-      v12 = v4;
+      selfCopy = self;
+      v12 = availableCopy;
       v22 = v12;
-      dispatch_sync(v11, &v17);
+      dispatch_sync(queue, &v17);
 
       v13 = [(KTOctagonActualOperations *)self ckksViewObserver:v17];
 
       if (v13)
       {
-        v14 = [(KTOctagonActualOperations *)self ckksViewObserver];
-        (v14)[2](v14, v12);
+        ckksViewObserver = [(KTOctagonActualOperations *)self ckksViewObserver];
+        (ckksViewObserver)[2](ckksViewObserver, v12);
       }
     }
 
@@ -573,7 +573,7 @@
       if (os_log_type_enabled(qword_10039CBB8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v26 = v4;
+        v26 = availableCopy;
         v27 = 2112;
         v28 = v9;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "CKKS not available for view: %{public}@: %@", buf, 0x16u);
@@ -598,10 +598,10 @@
   }
 }
 
-- (void)ckksRequestViewSync:(id)a3 complete:(id)a4
+- (void)ckksRequestViewSync:(id)sync complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  completeCopy = complete;
   v12 = 0;
   v8 = [(KTOctagonActualOperations *)self ckksControl:&v12];
   v9 = v12;
@@ -611,19 +611,19 @@
     v10[1] = 3221225472;
     v10[2] = sub_1001F9CD0;
     v10[3] = &unk_10031A768;
-    v11 = v7;
-    [v8 rpcFetchAndProcessChanges:v6 reply:v10];
+    v11 = completeCopy;
+    [v8 rpcFetchAndProcessChanges:syncCopy reply:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, v9, 600.0);
+    (*(completeCopy + 2))(completeCopy, v9, 600.0);
   }
 }
 
-- (unint64_t)ckksGetKnownBadState:(id)a3
+- (unint64_t)ckksGetKnownBadState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v23 = 0;
   v5 = [(KTOctagonActualOperations *)self ckksControl:&v23];
   v6 = v23;
@@ -639,7 +639,7 @@
     v15[2] = sub_1001F9FE8;
     v15[3] = &unk_100329498;
     v18 = &v19;
-    v16 = v4;
+    v16 = stateCopy;
     v8 = v7;
     v17 = v8;
     [v5 rpcKnownBadState:v16 reply:v15];

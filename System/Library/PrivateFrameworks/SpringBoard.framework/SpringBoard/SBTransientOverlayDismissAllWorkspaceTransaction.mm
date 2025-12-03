@@ -1,16 +1,16 @@
 @interface SBTransientOverlayDismissAllWorkspaceTransaction
-+ (BOOL)isValidForTransitionRequest:(id)a3;
-- (SBTransientOverlayDismissAllWorkspaceTransaction)initWithTransitionRequest:(id)a3;
++ (BOOL)isValidForTransitionRequest:(id)request;
+- (SBTransientOverlayDismissAllWorkspaceTransaction)initWithTransitionRequest:(id)request;
 - (void)_begin;
 @end
 
 @implementation SBTransientOverlayDismissAllWorkspaceTransaction
 
-- (SBTransientOverlayDismissAllWorkspaceTransaction)initWithTransitionRequest:(id)a3
+- (SBTransientOverlayDismissAllWorkspaceTransaction)initWithTransitionRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = SBTransientOverlayDismissAllWorkspaceTransaction;
-  result = [(SBMainWorkspaceTransaction *)&v4 initWithTransitionRequest:a3];
+  result = [(SBMainWorkspaceTransaction *)&v4 initWithTransitionRequest:request];
   if (result)
   {
     result->_animatedOverride = 0x7FFFFFFFFFFFFFFFLL;
@@ -25,12 +25,12 @@
   v27.super_class = SBTransientOverlayDismissAllWorkspaceTransaction;
   [(SBTransientOverlayDismissAllWorkspaceTransaction *)&v27 _begin];
   [(SBTransientOverlayDismissAllWorkspaceTransaction *)self addMilestone:@"_SBTransientOverlayDismissAllWorkspaceTransactionMilestoneDismissalRequest"];
-  v3 = [(SBWorkspaceTransaction *)self windowScene];
-  v4 = [v3 switcherController];
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [v5 transientOverlayContext];
-  v7 = [v6 scenePresenter];
-  v8 = [v6 presentationManager];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
+  scenePresenter = [transientOverlayContext scenePresenter];
+  presentationManager = [transientOverlayContext presentationManager];
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x3032000000;
@@ -41,15 +41,15 @@
   v21[1] = 3221225472;
   v21[2] = __58__SBTransientOverlayDismissAllWorkspaceTransaction__begin__block_invoke;
   v21[3] = &unk_2783AF390;
-  v9 = v4;
+  v9 = switcherController;
   v22 = v9;
-  v10 = v8;
+  v10 = presentationManager;
   v23 = v10;
   v24 = v25;
   [v9 enumerateTransientOverlayViewControllersUsingBlock:v21];
-  if (v7)
+  if (scenePresenter)
   {
-    [(SBTransientOverlayDismissalRequest *)SBMutableTransientOverlayDismissalRequest dismissalRequestForAllViewControllersInWindowScene:v3];
+    [(SBTransientOverlayDismissalRequest *)SBMutableTransientOverlayDismissalRequest dismissalRequestForAllViewControllersInWindowScene:windowScene];
   }
 
   else
@@ -57,7 +57,7 @@
     +[(SBTransientOverlayDismissalRequest *)SBMutableTransientOverlayDismissalRequest];
   }
   v11 = ;
-  IsYes = [v6 isAnimated];
+  IsYes = [transientOverlayContext isAnimated];
   if (self->_animatedOverride != 0x7FFFFFFFFFFFFFFFLL)
   {
     IsYes = BSSettingFlagIsYes();
@@ -71,7 +71,7 @@
   v20 = v25;
   v13 = v9;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   [v11 setCompletionHandler:&v14];
   [v10 performDismissalRequest:{v11, v14, v15, v16, v17}];
 
@@ -135,35 +135,35 @@ uint64_t __58__SBTransientOverlayDismissAllWorkspaceTransaction__begin__block_in
   return [*(a1 + 40) removeMilestone:@"_SBTransientOverlayDismissAllWorkspaceTransactionMilestoneDismissalRequest"];
 }
 
-+ (BOOL)isValidForTransitionRequest:(id)a3
++ (BOOL)isValidForTransitionRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 transientOverlayContext];
-  if ([v4 transitionType] == 1)
+  requestCopy = request;
+  transientOverlayContext = [requestCopy transientOverlayContext];
+  if ([transientOverlayContext transitionType] == 1)
   {
-    v5 = [SBApp windowSceneManager];
-    v6 = [v3 displayIdentity];
-    v7 = [v5 windowSceneForDisplayIdentity:v6];
+    windowSceneManager = [SBApp windowSceneManager];
+    displayIdentity = [requestCopy displayIdentity];
+    v7 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-    v8 = [v7 switcherController];
-    if ([v8 hasTransientOverlayAppLayouts])
+    switcherController = [v7 switcherController];
+    if ([switcherController hasTransientOverlayAppLayouts])
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [v4 scenePresenter];
-      if ([v10 hasActivePresentation])
+      scenePresenter = [transientOverlayContext scenePresenter];
+      if ([scenePresenter hasActivePresentation])
       {
         v9 = 1;
       }
 
       else
       {
-        v11 = [v4 presentationManager];
-        v12 = v11;
-        v9 = !v10 && ([v11 hasActivePresentation] & 1) != 0;
+        presentationManager = [transientOverlayContext presentationManager];
+        v12 = presentationManager;
+        v9 = !scenePresenter && ([presentationManager hasActivePresentation] & 1) != 0;
       }
     }
   }

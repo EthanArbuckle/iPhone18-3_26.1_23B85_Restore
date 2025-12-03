@@ -1,81 +1,81 @@
 @interface AKAppleIDAuthenticationContextManager
-- (AKAppleIDAuthenticationContextManager)initWithAuthenticationController:(id)a3;
+- (AKAppleIDAuthenticationContextManager)initWithAuthenticationController:(id)controller;
 - (AKAppleIDAuthenticationDelegate)delegate;
-- (id)_clientSideContextForServerContext:(id)a3;
-- (id)registerContext:(id)a3;
-- (void)activateProximitySession:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)dismissBasicLoginUIForContext:(id)a3 completion:(id)a4;
-- (void)dismissKeepUsingUIForContext:(id)a3 withCompletion:(id)a4;
-- (void)dismissNativeRecoveryUIForContext:(id)a3 completion:(id)a4;
-- (void)dismissProximityPairingUIForContext:(id)a3 completion:(id)a4;
-- (void)dismissSecondFactorUIForContext:(id)a3 completion:(id)a4;
-- (void)dismissServerProvidedUIForContext:(id)a3 completion:(id)a4;
-- (void)eraseAnisetteForContext:(id)a3 withCompletion:(id)a4;
-- (void)fetchAnisetteDataForContext:(id)a3 provisionIfNecessary:(BOOL)a4 withCompletion:(id)a5;
-- (void)fetchPeerAttestationDataForContext:(id)a3 withRequest:(id)a4 completion:(id)a5;
-- (void)launchOutOfProcessAuthentication:(id)a3 surrogateID:(id)a4 withErrorHandler:(id)a5;
-- (void)legacyAnisetteDataForContext:(id)a3 DSID:(id)a4 withCompletion:(id)a5;
-- (void)presentBasicLoginUIForContext:(id)a3 completion:(id)a4;
-- (void)presentBiometricOrPasscodeValidationForContext:(id)a3 completion:(id)a4;
-- (void)presentFidoAuthForContext:(id)a3 fidoContext:(id)a4 completion:(id)a5;
-- (void)presentKeepUsingUIForContext:(id)a3 appleID:(id)a4 completion:(id)a5;
-- (void)presentLoginAlertForContext:(id)a3 withError:(id)a4 title:(id)a5 message:(id)a6 completion:(id)a7;
-- (void)presentNativeRecoveryUIForContext:(id)a3 recoveryContext:(id)a4 completion:(id)a5;
-- (void)presentProximityBroadcastUIForContext:(id)a3 completion:(id)a4;
-- (void)presentProximityPairingUIForContext:(id)a3 verificationCode:(id)a4 completion:(id)a5;
-- (void)presentProximityPinCodeUIForContext:(id)a3 completion:(id)a4;
-- (void)presentSecondFactorAlertForContext:(id)a3 withError:(id)a4 title:(id)a5 message:(id)a6 completion:(id)a7;
-- (void)presentSecondFactorUIForContext:(id)a3 completion:(id)a4;
-- (void)presentServerProvidedUIForContext:(id)a3 withConfiguration:(id)a4 completion:(id)a5;
-- (void)provisionAnisetteForContext:(id)a3 withCompletion:(id)a4;
-- (void)shouldContinueWithAuthenticationResults:(id)a3 error:(id)a4 forContextID:(id)a5 completion:(id)a6;
-- (void)showProximityErrorForContext:(id)a3 completion:(id)a4;
-- (void)syncAnisetteForContext:(id)a3 withSIMData:(id)a4 completion:(id)a5;
-- (void)unregisterContext:(id)a3;
+- (id)_clientSideContextForServerContext:(id)context;
+- (id)registerContext:(id)context;
+- (void)activateProximitySession:(id)session context:(id)context completion:(id)completion;
+- (void)dismissBasicLoginUIForContext:(id)context completion:(id)completion;
+- (void)dismissKeepUsingUIForContext:(id)context withCompletion:(id)completion;
+- (void)dismissNativeRecoveryUIForContext:(id)context completion:(id)completion;
+- (void)dismissProximityPairingUIForContext:(id)context completion:(id)completion;
+- (void)dismissSecondFactorUIForContext:(id)context completion:(id)completion;
+- (void)dismissServerProvidedUIForContext:(id)context completion:(id)completion;
+- (void)eraseAnisetteForContext:(id)context withCompletion:(id)completion;
+- (void)fetchAnisetteDataForContext:(id)context provisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)fetchPeerAttestationDataForContext:(id)context withRequest:(id)request completion:(id)completion;
+- (void)launchOutOfProcessAuthentication:(id)authentication surrogateID:(id)d withErrorHandler:(id)handler;
+- (void)legacyAnisetteDataForContext:(id)context DSID:(id)d withCompletion:(id)completion;
+- (void)presentBasicLoginUIForContext:(id)context completion:(id)completion;
+- (void)presentBiometricOrPasscodeValidationForContext:(id)context completion:(id)completion;
+- (void)presentFidoAuthForContext:(id)context fidoContext:(id)fidoContext completion:(id)completion;
+- (void)presentKeepUsingUIForContext:(id)context appleID:(id)d completion:(id)completion;
+- (void)presentLoginAlertForContext:(id)context withError:(id)error title:(id)title message:(id)message completion:(id)completion;
+- (void)presentNativeRecoveryUIForContext:(id)context recoveryContext:(id)recoveryContext completion:(id)completion;
+- (void)presentProximityBroadcastUIForContext:(id)context completion:(id)completion;
+- (void)presentProximityPairingUIForContext:(id)context verificationCode:(id)code completion:(id)completion;
+- (void)presentProximityPinCodeUIForContext:(id)context completion:(id)completion;
+- (void)presentSecondFactorAlertForContext:(id)context withError:(id)error title:(id)title message:(id)message completion:(id)completion;
+- (void)presentSecondFactorUIForContext:(id)context completion:(id)completion;
+- (void)presentServerProvidedUIForContext:(id)context withConfiguration:(id)configuration completion:(id)completion;
+- (void)provisionAnisetteForContext:(id)context withCompletion:(id)completion;
+- (void)shouldContinueWithAuthenticationResults:(id)results error:(id)error forContextID:(id)d completion:(id)completion;
+- (void)showProximityErrorForContext:(id)context completion:(id)completion;
+- (void)syncAnisetteForContext:(id)context withSIMData:(id)data completion:(id)completion;
+- (void)unregisterContext:(id)context;
 @end
 
 @implementation AKAppleIDAuthenticationContextManager
 
-- (AKAppleIDAuthenticationContextManager)initWithAuthenticationController:(id)a3
+- (AKAppleIDAuthenticationContextManager)initWithAuthenticationController:(id)controller
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, controller);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = AKAppleIDAuthenticationContextManager;
-  v13 = [(AKAppleIDAuthenticationContextManager *)&v11 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKAppleIDAuthenticationContextManager *)&v11 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    authContextsByUUID = v13->_authContextsByUUID;
-    v13->_authContextsByUUID = v4;
+    authContextsByUUID = selfCopy->_authContextsByUUID;
+    selfCopy->_authContextsByUUID = v4;
     MEMORY[0x1E69E5920](authContextsByUUID);
-    objc_storeWeak(&v13->_authController, location[0]);
+    objc_storeWeak(&selfCopy->_authController, location[0]);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("AKContextManagerQueue", v10);
-    authContextsQueue = v13->_authContextsQueue;
-    v13->_authContextsQueue = v6;
+    authContextsQueue = selfCopy->_authContextsQueue;
+    selfCopy->_authContextsQueue = v6;
     MEMORY[0x1E69E5920](authContextsQueue);
     MEMORY[0x1E69E5920](v10);
   }
 
-  v9 = MEMORY[0x1E69E5928](v13);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (id)registerContext:(id)a3
+- (id)registerContext:(id)context
 {
   v43 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   aClass = objc_opt_class();
   v38 = NSStringFromClass(aClass);
   if ([v38 hasPrefix:@"AK"])
@@ -87,14 +87,14 @@
     v31 = __Block_byref_object_copy__3;
     v32 = __Block_byref_object_dispose__3;
     v33 = 0;
-    queue = v40->_authContextsQueue;
+    queue = selfCopy->_authContextsQueue;
     v20 = MEMORY[0x1E69E9820];
     v21 = -1073741824;
     v22 = 0;
     v23 = __57__AKAppleIDAuthenticationContextManager_registerContext___block_invoke;
     v24 = &unk_1E73D4878;
     v26[1] = &v27;
-    v25 = MEMORY[0x1E69E5928](v40);
+    v25 = MEMORY[0x1E69E5928](selfCopy);
     v26[0] = MEMORY[0x1E69E5928](location[0]);
     dispatch_barrier_sync(queue, &v20);
     if (v28[5])
@@ -103,10 +103,10 @@
       v18 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v6 = [location[0] _identifier];
-        __os_log_helper_16_2_1_8_64(v42, v6);
+        _identifier = [location[0] _identifier];
+        __os_log_helper_16_2_1_8_64(v42, _identifier);
         _os_log_error_impl(&dword_193225000, v19, v18, "Context ID %@ has already been registered for authentication!", v42, 0xCu);
-        MEMORY[0x1E69E5920](v6);
+        MEMORY[0x1E69E5920](_identifier);
       }
 
       objc_storeStrong(&v19, 0);
@@ -116,13 +116,13 @@
 
     else
     {
-      authContextsQueue = v40->_authContextsQueue;
+      authContextsQueue = selfCopy->_authContextsQueue;
       v11 = MEMORY[0x1E69E9820];
       v12 = -1073741824;
       v13 = 0;
       v14 = __57__AKAppleIDAuthenticationContextManager_registerContext___block_invoke_22;
       v15 = &unk_1E73D4080;
-      v16 = MEMORY[0x1E69E5928](v40);
+      v16 = MEMORY[0x1E69E5928](selfCopy);
       v17 = MEMORY[0x1E69E5928](location[0]);
       dispatch_barrier_async(authContextsQueue, &v11);
       v41 = 0;
@@ -183,25 +183,25 @@ uint64_t __57__AKAppleIDAuthenticationContextManager_registerContext___block_inv
   return MEMORY[0x1E69E5920](v4);
 }
 
-- (void)unregisterContext:(id)a3
+- (void)unregisterContext:(id)context
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [location[0] _identifier];
-  queue = v13->_authContextsQueue;
+  objc_storeStrong(location, context);
+  _identifier = [location[0] _identifier];
+  queue = selfCopy->_authContextsQueue;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __59__AKAppleIDAuthenticationContextManager_unregisterContext___block_invoke;
   v8 = &unk_1E73D4080;
-  v9 = MEMORY[0x1E69E5928](v11);
-  v10 = MEMORY[0x1E69E5928](v13);
+  v9 = MEMORY[0x1E69E5928](_identifier);
+  v10 = MEMORY[0x1E69E5928](selfCopy);
   dispatch_barrier_async(queue, &v4);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&_identifier, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -230,19 +230,19 @@ void __59__AKAppleIDAuthenticationContextManager_unregisterContext___block_invok
   }
 }
 
-- (void)shouldContinueWithAuthenticationResults:(id)a3 error:(id)a4 forContextID:(id)a5 completion:(id)a6
+- (void)shouldContinueWithAuthenticationResults:(id)results error:(id)error forContextID:(id)d completion:(id)completion
 {
   v92 = *MEMORY[0x1E69E9840];
-  v87 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v85 = 0;
-  objc_storeStrong(&v85, a4);
+  objc_storeStrong(&v85, error);
   v84 = 0;
-  objc_storeStrong(&v84, a5);
+  objc_storeStrong(&v84, d);
   v83 = 0;
-  objc_storeStrong(&v83, a6);
+  objc_storeStrong(&v83, completion);
   v81 = _os_activity_create(&dword_193225000, "authkit/should-continue", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v82 = v81;
   state.opaque[0] = 0;
@@ -255,14 +255,14 @@ void __59__AKAppleIDAuthenticationContextManager_unregisterContext___block_invok
   v77 = __Block_byref_object_copy__3;
   v78 = __Block_byref_object_dispose__3;
   v79 = 0;
-  queue = v87->_authContextsQueue;
+  queue = selfCopy->_authContextsQueue;
   v66 = MEMORY[0x1E69E9820];
   v67 = -1073741824;
   v68 = 0;
   v69 = __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenticationResults_error_forContextID_completion___block_invoke;
   v70 = &unk_1E73D4878;
   v72[1] = &v73;
-  v71 = MEMORY[0x1E69E5928](v87);
+  v71 = MEMORY[0x1E69E5928](selfCopy);
   v72[0] = MEMORY[0x1E69E5928](v84);
   dispatch_sync(queue, &v66);
   if (v74[5])
@@ -301,8 +301,8 @@ void __59__AKAppleIDAuthenticationContextManager_unregisterContext___block_invok
     v54 = v61;
     v53 = MEMORY[0x1E69E5928](v83);
     v55 = MEMORY[0x193B165F0](&v48);
-    v47 = [(AKAppleIDAuthenticationContextManager *)v87 delegate];
-    WeakRetained = objc_loadWeakRetained(&v87->_authController);
+    delegate = [(AKAppleIDAuthenticationContextManager *)selfCopy delegate];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_authController);
     if (objc_opt_respondsToSelector())
     {
       v45 = _AKLogSystem();
@@ -317,7 +317,7 @@ void __59__AKAppleIDAuthenticationContextManager_unregisterContext___block_invok
 
       objc_storeStrong(&v45, 0);
       v42 = [location[0] mutableCopy];
-      v41 = [v47 authenticationController:WeakRetained shouldContinueWithAuthenticationResults:v42 error:v85 forContext:v74[5]];
+      v41 = [delegate authenticationController:WeakRetained shouldContinueWithAuthenticationResults:v42 error:v85 forContext:v74[5]];
       v40 = _AKLogSystem();
       v39 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -355,7 +355,7 @@ void __59__AKAppleIDAuthenticationContextManager_unregisterContext___block_invok
 
       objc_storeStrong(&v38, 0);
       v35 = [location[0] mutableCopy];
-      v14 = v47;
+      v14 = delegate;
       v10 = WeakRetained;
       v11 = v35;
       v12 = v85;
@@ -390,7 +390,7 @@ void __59__AKAppleIDAuthenticationContextManager_unregisterContext___block_invok
     }
 
     objc_storeStrong(&WeakRetained, 0);
-    objc_storeStrong(&v47, 0);
+    objc_storeStrong(&delegate, 0);
     objc_storeStrong(&v55, 0);
     objc_storeStrong(&v53, 0);
     v63 = 0;
@@ -495,17 +495,17 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   return result;
 }
 
-- (void)presentKeepUsingUIForContext:(id)a3 appleID:(id)a4 completion:(id)a5
+- (void)presentKeepUsingUIForContext:(id)context appleID:(id)d completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, d);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
-  v26 = [(AKAppleIDAuthenticationContextManager *)v30 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v27, completion);
+  v26 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v26)
   {
     if (objc_opt_respondsToSelector())
@@ -569,15 +569,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissKeepUsingUIForContext:(id)a3 withCompletion:(id)a4
+- (void)dismissKeepUsingUIForContext:(id)context withCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v9 = [(AKAppleIDAuthenticationContextManager *)v12 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v10, completion);
+  v9 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v9)
   {
     if (objc_opt_respondsToSelector())
@@ -607,15 +607,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentBasicLoginUIForContext:(id)a3 completion:(id)a4
+- (void)presentBasicLoginUIForContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = [(AKAppleIDAuthenticationContextManager *)v17 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v15, completion);
+  v14 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v14)
   {
     if ([location[0] conformsToProtocol:&unk_1F07CAFF8])
@@ -656,15 +656,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissBasicLoginUIForContext:(id)a3 completion:(id)a4
+- (void)dismissBasicLoginUIForContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = [(AKAppleIDAuthenticationContextManager *)v17 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v15, completion);
+  v14 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v14)
   {
     if ([v14 conformsToProtocol:&unk_1F07CAFF8])
@@ -705,21 +705,21 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentLoginAlertForContext:(id)a3 withError:(id)a4 title:(id)a5 message:(id)a6 completion:(id)a7
+- (void)presentLoginAlertForContext:(id)context withError:(id)error title:(id)title message:(id)message completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, error);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, title);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
+  objc_storeStrong(&v22, message);
   v21 = 0;
-  objc_storeStrong(&v21, a7);
-  v20 = [(AKAppleIDAuthenticationContextManager *)v26 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v21, completion);
+  v20 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v20)
   {
     if ([v20 conformsToProtocol:&unk_1F07CAFF8])
@@ -763,15 +763,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentSecondFactorUIForContext:(id)a3 completion:(id)a4
+- (void)presentSecondFactorUIForContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = [(AKAppleIDAuthenticationContextManager *)v17 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v15, completion);
+  v14 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v14)
   {
     if (objc_opt_respondsToSelector())
@@ -812,15 +812,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissSecondFactorUIForContext:(id)a3 completion:(id)a4
+- (void)dismissSecondFactorUIForContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = [(AKAppleIDAuthenticationContextManager *)v17 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v15, completion);
+  v14 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v14)
   {
     if (objc_opt_respondsToSelector())
@@ -861,21 +861,21 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentSecondFactorAlertForContext:(id)a3 withError:(id)a4 title:(id)a5 message:(id)a6 completion:(id)a7
+- (void)presentSecondFactorAlertForContext:(id)context withError:(id)error title:(id)title message:(id)message completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, error);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, title);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
+  objc_storeStrong(&v22, message);
   v21 = 0;
-  objc_storeStrong(&v21, a7);
-  v20 = [(AKAppleIDAuthenticationContextManager *)v26 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v21, completion);
+  v20 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v20)
   {
     if (objc_opt_respondsToSelector())
@@ -919,53 +919,53 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentServerProvidedUIForContext:(id)a3 withConfiguration:(id)a4 completion:(id)a5
+- (void)presentServerProvidedUIForContext:(id)context withConfiguration:(id)configuration completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, configuration);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, completion);
   v25 = _AKLogSystem();
   v24 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_3_8_64_8_64_8_64(v31, v29, location[0], v27);
+    __os_log_helper_16_2_3_8_64_8_64_8_64(v31, selfCopy, location[0], v27);
     _os_log_debug_impl(&dword_193225000, v25, v24, "%@: Presenting server provided UI for context (%@) with configuration (%@)", v31, 0x20u);
   }
 
   objc_storeStrong(&v25, 0);
-  v23 = [(AKAppleIDAuthenticationContextManager *)v29 _clientSideContextForServerContext:location[0]];
+  v23 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v23)
   {
     if ([v23 conformsToProtocol:&unk_1F07D0C98])
     {
-      v10 = [v23 anisetteDataProvider];
-      MEMORY[0x1E69E5920](v10);
-      if (v10)
+      anisetteDataProvider = [v23 anisetteDataProvider];
+      MEMORY[0x1E69E5920](anisetteDataProvider);
+      if (anisetteDataProvider)
       {
         v19 = _AKLogSystem();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = v29;
-          v9 = [v23 anisetteDataProvider];
-          v8 = [v27 resourceLoadDelegate];
-          __os_log_helper_16_2_3_8_64_8_64_8_64(v30, v7, v9, v8);
+          v7 = selfCopy;
+          anisetteDataProvider2 = [v23 anisetteDataProvider];
+          resourceLoadDelegate = [v27 resourceLoadDelegate];
+          __os_log_helper_16_2_3_8_64_8_64_8_64(v30, v7, anisetteDataProvider2, resourceLoadDelegate);
           _os_log_impl(&dword_193225000, v19, OS_LOG_TYPE_DEFAULT, "%@: Setting the anisette data provider (%@) on resource load delegate (%@)", v30, 0x20u);
-          MEMORY[0x1E69E5920](v8);
-          MEMORY[0x1E69E5920](v9);
+          MEMORY[0x1E69E5920](resourceLoadDelegate);
+          MEMORY[0x1E69E5920](anisetteDataProvider2);
         }
 
         objc_storeStrong(&v19, 0);
-        v6 = [v27 resourceLoadDelegate];
-        v5 = [v23 anisetteDataProvider];
-        [v6 setAnisetteDataProvider:?];
-        MEMORY[0x1E69E5920](v5);
-        MEMORY[0x1E69E5920](v6);
+        resourceLoadDelegate2 = [v27 resourceLoadDelegate];
+        anisetteDataProvider3 = [v23 anisetteDataProvider];
+        [resourceLoadDelegate2 setAnisetteDataProvider:?];
+        MEMORY[0x1E69E5920](anisetteDataProvider3);
+        MEMORY[0x1E69E5920](resourceLoadDelegate2);
       }
 
       [v23 presentServerProvidedUIWithConfiguration:v27 completion:v26];
@@ -1006,15 +1006,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)dismissServerProvidedUIForContext:(id)a3 completion:(id)a4
+- (void)dismissServerProvidedUIForContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = [(AKAppleIDAuthenticationContextManager *)v17 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v15, completion);
+  v14 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v14)
   {
     if ([v14 conformsToProtocol:&unk_1F07D0C98])
@@ -1055,17 +1055,17 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentNativeRecoveryUIForContext:(id)a3 recoveryContext:(id)a4 completion:(id)a5
+- (void)presentNativeRecoveryUIForContext:(id)context recoveryContext:(id)recoveryContext completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, recoveryContext);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v16 = [(AKAppleIDAuthenticationContextManager *)v20 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v17, completion);
+  v16 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v16)
   {
     if ([v16 conformsToProtocol:&unk_1F07D9928])
@@ -1107,15 +1107,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissNativeRecoveryUIForContext:(id)a3 completion:(id)a4
+- (void)dismissNativeRecoveryUIForContext:(id)context completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = [(AKAppleIDAuthenticationContextManager *)v17 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v15, completion);
+  v14 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v14)
   {
     if ([v14 conformsToProtocol:&unk_1F07D9928])
@@ -1156,22 +1156,22 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentBiometricOrPasscodeValidationForContext:(id)a3 completion:(id)a4
+- (void)presentBiometricOrPasscodeValidationForContext:(id)context completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v10 = [(AKAppleIDAuthenticationContextManager *)v13 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v11, completion);
+  v10 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v10)
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [location[0] username];
+      username = [location[0] username];
       [v10 presentBiometricOrPasscodeValidationForAppleID:? completion:?];
-      MEMORY[0x1E69E5920](v4);
+      MEMORY[0x1E69E5920](username);
     }
 
     else
@@ -1196,16 +1196,16 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)launchOutOfProcessAuthentication:(id)a3 surrogateID:(id)a4 withErrorHandler:(id)a5
+- (void)launchOutOfProcessAuthentication:(id)authentication surrogateID:(id)d withErrorHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authentication);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, d);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, handler);
   v7 = v9;
   v8 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7027];
   v7[2]();
@@ -1215,17 +1215,17 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentFidoAuthForContext:(id)a3 fidoContext:(id)a4 completion:(id)a5
+- (void)presentFidoAuthForContext:(id)context fidoContext:(id)fidoContext completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, fidoContext);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
-  v26 = [(AKAppleIDAuthenticationContextManager *)v30 _clientSideContextForServerContext:location[0]];
+  objc_storeStrong(&v27, completion);
+  v26 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v26)
   {
     if (objc_opt_respondsToSelector())
@@ -1289,15 +1289,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   objc_storeStrong(location, 0);
 }
 
-- (void)presentProximityBroadcastUIForContext:(id)a3 completion:(id)a4
+- (void)presentProximityBroadcastUIForContext:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, completion);
   v23 = _AKLogSystem();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1311,12 +1311,12 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   v20 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v27, v26, location[0]);
+    __os_log_helper_16_2_2_8_64_8_64(v27, selfCopy, location[0]);
     _os_log_debug_impl(&dword_193225000, v21, v20, "%@: Called to present proximity broadcast UI for context (%@)", v27, 0x16u);
   }
 
   objc_storeStrong(&v21, 0);
-  v19 = [(AKAppleIDAuthenticationContextManager *)v26 _clientSideContextForServerContext:location[0]];
+  v19 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v19)
   {
     if (objc_opt_respondsToSelector())
@@ -1372,17 +1372,17 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)presentProximityPairingUIForContext:(id)a3 verificationCode:(id)a4 completion:(id)a5
+- (void)presentProximityPairingUIForContext:(id)context verificationCode:(id)code completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, code);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, completion);
   v25 = _AKLogSystem();
   v24 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1396,12 +1396,12 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v30, v29, location[0]);
+    __os_log_helper_16_2_2_8_64_8_64(v30, selfCopy, location[0]);
     _os_log_debug_impl(&dword_193225000, v23, v22, "%@: Called to present proximity pairing UI for context (%@)", v30, 0x16u);
   }
 
   objc_storeStrong(&v23, 0);
-  v21 = [(AKAppleIDAuthenticationContextManager *)v29 _clientSideContextForServerContext:location[0]];
+  v21 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v21)
   {
     if (objc_opt_respondsToSelector())
@@ -1458,15 +1458,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)presentProximityPinCodeUIForContext:(id)a3 completion:(id)a4
+- (void)presentProximityPinCodeUIForContext:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, completion);
   v23 = _AKLogSystem();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1480,12 +1480,12 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   v20 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v27, v26, location[0]);
+    __os_log_helper_16_2_2_8_64_8_64(v27, selfCopy, location[0]);
     _os_log_debug_impl(&dword_193225000, v21, v20, "%@: Called to present proximity PIN Entry UI for context (%@)", v27, 0x16u);
   }
 
   objc_storeStrong(&v21, 0);
-  v19 = [(AKAppleIDAuthenticationContextManager *)v26 _clientSideContextForServerContext:location[0]];
+  v19 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v19)
   {
     if (objc_opt_respondsToSelector())
@@ -1541,17 +1541,17 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)activateProximitySession:(id)a3 context:(id)a4 completion:(id)a5
+- (void)activateProximitySession:(id)session context:(id)context completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, context);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, completion);
   v25 = _AKLogSystem();
   v24 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1565,12 +1565,12 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_3_8_64_8_64_8_64(v30, v29, location[0], v27);
+    __os_log_helper_16_2_3_8_64_8_64_8_64(v30, selfCopy, location[0], v27);
     _os_log_debug_impl(&dword_193225000, v23, v22, "%@: Called to activate proximity session (%@) for context (%@)", v30, 0x20u);
   }
 
   objc_storeStrong(&v23, 0);
-  v21 = [(AKAppleIDAuthenticationContextManager *)v29 _clientSideContextForServerContext:v27];
+  v21 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:v27];
   if (v21)
   {
     if (objc_opt_respondsToSelector())
@@ -1627,15 +1627,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)dismissProximityPairingUIForContext:(id)a3 completion:(id)a4
+- (void)dismissProximityPairingUIForContext:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, completion);
   v23 = _AKLogSystem();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1649,12 +1649,12 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   v20 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v27, v26, location[0]);
+    __os_log_helper_16_2_2_8_64_8_64(v27, selfCopy, location[0]);
     _os_log_debug_impl(&dword_193225000, v21, v20, "%@: Called to dismiss proximity pairing UI for context (%@)", v27, 0x16u);
   }
 
   objc_storeStrong(&v21, 0);
-  v19 = [(AKAppleIDAuthenticationContextManager *)v26 _clientSideContextForServerContext:location[0]];
+  v19 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v19)
   {
     if (objc_opt_respondsToSelector())
@@ -1710,15 +1710,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)showProximityErrorForContext:(id)a3 completion:(id)a4
+- (void)showProximityErrorForContext:(id)context completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, completion);
   v21 = _AKLogSystem();
   v20 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1728,7 +1728,7 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   }
 
   objc_storeStrong(&v21, 0);
-  v19 = [(AKAppleIDAuthenticationContextManager *)v24 _clientSideContextForServerContext:location[0]];
+  v19 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v19)
   {
     if (objc_opt_respondsToSelector())
@@ -1784,15 +1784,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)provisionAnisetteForContext:(id)a3 withCompletion:(id)a4
+- (void)provisionAnisetteForContext:(id)context withCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   v13 = _AKLogSystem();
   v12 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1802,13 +1802,13 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   }
 
   objc_storeStrong(&v13, 0);
-  v11 = [(AKAppleIDAuthenticationContextManager *)v16 _clientSideContextForServerContext:location[0]];
+  v11 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v11)
   {
-    v9 = [v11 anisetteDataProvider];
-    if (v9)
+    anisetteDataProvider = [v11 anisetteDataProvider];
+    if (anisetteDataProvider)
     {
-      [v9 provisionAnisetteWithCompletion:v14];
+      [anisetteDataProvider provisionAnisetteWithCompletion:v14];
       v10 = 0;
     }
 
@@ -1821,7 +1821,7 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
       v10 = 1;
     }
 
-    objc_storeStrong(&v9, 0);
+    objc_storeStrong(&anisetteDataProvider, 0);
   }
 
   else
@@ -1839,17 +1839,17 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)syncAnisetteForContext:(id)a3 withSIMData:(id)a4 completion:(id)a5
+- (void)syncAnisetteForContext:(id)context withSIMData:(id)data completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, data);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, completion);
   v15 = _AKLogSystem();
   v14 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1859,13 +1859,13 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   }
 
   objc_storeStrong(&v15, 0);
-  v13 = [(AKAppleIDAuthenticationContextManager *)v19 _clientSideContextForServerContext:location[0]];
+  v13 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v13)
   {
-    v11 = [v13 anisetteDataProvider];
-    if (v11)
+    anisetteDataProvider = [v13 anisetteDataProvider];
+    if (anisetteDataProvider)
     {
-      [v11 syncAnisetteWithSIMData:v17 completion:v16];
+      [anisetteDataProvider syncAnisetteWithSIMData:v17 completion:v16];
       v12 = 0;
     }
 
@@ -1878,7 +1878,7 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
       v12 = 1;
     }
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&anisetteDataProvider, 0);
   }
 
   else
@@ -1897,15 +1897,15 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)eraseAnisetteForContext:(id)a3 withCompletion:(id)a4
+- (void)eraseAnisetteForContext:(id)context withCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   v13 = _AKLogSystem();
   v12 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1915,13 +1915,13 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   }
 
   objc_storeStrong(&v13, 0);
-  v11 = [(AKAppleIDAuthenticationContextManager *)v16 _clientSideContextForServerContext:location[0]];
+  v11 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v11)
   {
-    v9 = [v11 anisetteDataProvider];
-    if (v9)
+    anisetteDataProvider = [v11 anisetteDataProvider];
+    if (anisetteDataProvider)
     {
-      [v9 eraseAnisetteWithCompletion:v14];
+      [anisetteDataProvider eraseAnisetteWithCompletion:v14];
       v10 = 0;
     }
 
@@ -1934,7 +1934,7 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
       v10 = 1;
     }
 
-    objc_storeStrong(&v9, 0);
+    objc_storeStrong(&anisetteDataProvider, 0);
   }
 
   else
@@ -1952,16 +1952,16 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAnisetteDataForContext:(id)a3 provisionIfNecessary:(BOOL)a4 withCompletion:(id)a5
+- (void)fetchAnisetteDataForContext:(id)context provisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, context);
+  necessaryCopy = necessary;
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, completion);
   v15 = _AKLogSystem();
   v14 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1971,13 +1971,13 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   }
 
   objc_storeStrong(&v15, 0);
-  v13 = [(AKAppleIDAuthenticationContextManager *)v19 _clientSideContextForServerContext:location[0]];
+  v13 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v13)
   {
-    v11 = [v13 anisetteDataProvider];
-    if (v11)
+    anisetteDataProvider = [v13 anisetteDataProvider];
+    if (anisetteDataProvider)
     {
-      [v11 fetchAnisetteDataAndProvisionIfNecessary:v17 withCompletion:v16];
+      [anisetteDataProvider fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy withCompletion:v16];
       v12 = 0;
     }
 
@@ -1990,7 +1990,7 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
       v12 = 1;
     }
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&anisetteDataProvider, 0);
   }
 
   else
@@ -2008,17 +2008,17 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)legacyAnisetteDataForContext:(id)a3 DSID:(id)a4 withCompletion:(id)a5
+- (void)legacyAnisetteDataForContext:(id)context DSID:(id)d withCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, d);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, completion);
   v15 = _AKLogSystem();
   v14 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -2028,13 +2028,13 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   }
 
   objc_storeStrong(&v15, 0);
-  v13 = [(AKAppleIDAuthenticationContextManager *)v19 _clientSideContextForServerContext:location[0]];
+  v13 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v13)
   {
-    v11 = [v13 anisetteDataProvider];
-    if (v11)
+    anisetteDataProvider = [v13 anisetteDataProvider];
+    if (anisetteDataProvider)
     {
-      [v11 legacyAnisetteDataForDSID:v17 withCompletion:v16];
+      [anisetteDataProvider legacyAnisetteDataForDSID:v17 withCompletion:v16];
       v12 = 0;
     }
 
@@ -2047,7 +2047,7 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
       v12 = 1;
     }
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&anisetteDataProvider, 0);
   }
 
   else
@@ -2066,17 +2066,17 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchPeerAttestationDataForContext:(id)a3 withRequest:(id)a4 completion:(id)a5
+- (void)fetchPeerAttestationDataForContext:(id)context withRequest:(id)request completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, request);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, completion);
   v22 = _AKLogSystem();
   v21 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -2090,16 +2090,16 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_3_8_64_8_64_8_64(v29, v26, location[0], v24);
+    __os_log_helper_16_2_3_8_64_8_64_8_64(v29, selfCopy, location[0], v24);
     _os_log_debug_impl(&dword_193225000, v20, v19, "%@: Called to fetch peer attestation data for context (%@) with request (%@)", v29, 0x20u);
   }
 
   objc_storeStrong(&v20, 0);
-  v18 = [(AKAppleIDAuthenticationContextManager *)v26 _clientSideContextForServerContext:location[0]];
+  v18 = [(AKAppleIDAuthenticationContextManager *)selfCopy _clientSideContextForServerContext:location[0]];
   if (v18)
   {
-    v16 = [v18 anisetteDataProvider];
-    if (v16)
+    anisetteDataProvider = [v18 anisetteDataProvider];
+    if (anisetteDataProvider)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -2107,12 +2107,12 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
         v14 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_2_3_8_64_8_64_8_64(v28, v26, v16, v24);
+          __os_log_helper_16_2_3_8_64_8_64_8_64(v28, selfCopy, anisetteDataProvider, v24);
           _os_log_impl(&dword_193225000, oslog, v14, "%@: Calling anisette data provider (%@) to fetch peer attestation data for request (%@)", v28, 0x20u);
         }
 
         objc_storeStrong(&oslog, 0);
-        [v16 fetchPeerAttestationDataForRequest:v24 completion:v23];
+        [anisetteDataProvider fetchPeerAttestationDataForRequest:v24 completion:v23];
       }
 
       else
@@ -2120,7 +2120,7 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
         v13 = _AKLogSystem();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          __os_log_helper_16_2_3_8_64_8_64_8_64(v27, v26, v16, v24);
+          __os_log_helper_16_2_3_8_64_8_64_8_64(v27, selfCopy, anisetteDataProvider, v24);
           _os_log_error_impl(&dword_193225000, v13, OS_LOG_TYPE_ERROR, "%@: Unable to call anisette data provider (%@) to fetch peer attestation data for request (%@) because it does not respond to 'fetchPeerAttestationDataForRequest:completion:'", v27, 0x20u);
         }
 
@@ -2143,7 +2143,7 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
       v17 = 1;
     }
 
-    objc_storeStrong(&v16, 0);
+    objc_storeStrong(&anisetteDataProvider, 0);
   }
 
   else
@@ -2162,16 +2162,16 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
   *MEMORY[0x1E69E9840];
 }
 
-- (id)_clientSideContextForServerContext:(id)a3
+- (id)_clientSideContextForServerContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] _identifier];
-  MEMORY[0x1E69E5920](v7);
-  if (v7)
+  objc_storeStrong(location, context);
+  _identifier = [location[0] _identifier];
+  MEMORY[0x1E69E5920](_identifier);
+  if (_identifier)
   {
     v16 = 0;
     v17 = &v16;
@@ -2180,14 +2180,14 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
     v20 = __Block_byref_object_copy__3;
     v21 = __Block_byref_object_dispose__3;
     v22 = 0;
-    queue = v27->_authContextsQueue;
+    queue = selfCopy->_authContextsQueue;
     v9 = MEMORY[0x1E69E9820];
     v10 = -1073741824;
     v11 = 0;
     v12 = __76__AKAppleIDAuthenticationContextManager__clientSideContextForServerContext___block_invoke;
     v13 = &unk_1E73D4878;
     v15[1] = &v16;
-    v14 = MEMORY[0x1E69E5928](v27);
+    v14 = MEMORY[0x1E69E5928](selfCopy);
     v15[0] = MEMORY[0x1E69E5928](location[0]);
     dispatch_sync(queue, &v9);
     if (v17[5])
@@ -2202,10 +2202,10 @@ uint64_t __111__AKAppleIDAuthenticationContextManager_shouldContinueWithAuthenti
       oslog = _AKLogSystem();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        v5 = [location[0] _identifier];
-        __os_log_helper_16_2_1_8_64(v29, v5);
+        _identifier2 = [location[0] _identifier];
+        __os_log_helper_16_2_1_8_64(v29, _identifier2);
         _os_log_error_impl(&dword_193225000, oslog, OS_LOG_TYPE_ERROR, "Client has no knowledge of context ID: %@", v29, 0xCu);
-        MEMORY[0x1E69E5920](v5);
+        MEMORY[0x1E69E5920](_identifier2);
       }
 
       objc_storeStrong(&oslog, 0);

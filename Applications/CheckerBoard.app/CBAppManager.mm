@@ -1,26 +1,26 @@
 @interface CBAppManager
 + (id)sharedInstance;
 - (CBAppManager)init;
-- (double)_effectiveKeyboardSceneLevelForClientSettings:(id)a3;
+- (double)_effectiveKeyboardSceneLevelForClientSettings:(id)settings;
 - (id)_appClientSettingsDiffInspector;
 - (id)currentOpenAppBundleIDs;
 - (id)primaryAppBundleID;
 - (void)_createInputScene;
-- (void)_terminateApps:(id)a3 reason:(int64_t)a4 reportCrash:(BOOL)a5 description:(id)a6 completion:(id)a7;
-- (void)_updateLevelForScene:(id)a3 transitionContext:(id)a4;
-- (void)_windowDidBecomeKey:(id)a3;
-- (void)launchAppWithBundleID:(id)a3 suspended:(BOOL)a4 native:(BOOL)a5 completion:(id)a6;
-- (void)processManager:(id)a3 didAddProcess:(id)a4;
-- (void)processManager:(id)a3 didRemoveProcess:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)sceneManager:(id)a3 didAddScene:(id)a4;
-- (void)systemService:(id)a3 canActivateApplication:(id)a4 withResult:(id)a5;
-- (void)systemService:(id)a3 dataReset:(id)a4 completion:(id)a5;
-- (void)systemService:(id)a3 handleActions:(id)a4 origin:(id)a5 withResult:(id)a6;
-- (void)systemService:(id)a3 handleOpenApplicationRequest:(id)a4 withCompletion:(id)a5;
-- (void)systemService:(id)a3 isPasscodeLockedOrBlockedWithResult:(id)a4;
-- (void)terminateAppWithBundleID:(id)a3 reason:(int64_t)a4 reportCrash:(BOOL)a5 description:(id)a6 completion:(id)a7;
+- (void)_terminateApps:(id)apps reason:(int64_t)reason reportCrash:(BOOL)crash description:(id)description completion:(id)completion;
+- (void)_updateLevelForScene:(id)scene transitionContext:(id)context;
+- (void)_windowDidBecomeKey:(id)key;
+- (void)launchAppWithBundleID:(id)d suspended:(BOOL)suspended native:(BOOL)native completion:(id)completion;
+- (void)processManager:(id)manager didAddProcess:(id)process;
+- (void)processManager:(id)manager didRemoveProcess:(id)process;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)sceneManager:(id)manager didAddScene:(id)scene;
+- (void)systemService:(id)service canActivateApplication:(id)application withResult:(id)result;
+- (void)systemService:(id)service dataReset:(id)reset completion:(id)completion;
+- (void)systemService:(id)service handleActions:(id)actions origin:(id)origin withResult:(id)result;
+- (void)systemService:(id)service handleOpenApplicationRequest:(id)request withCompletion:(id)completion;
+- (void)systemService:(id)service isPasscodeLockedOrBlockedWithResult:(id)result;
+- (void)terminateAppWithBundleID:(id)d reason:(int64_t)reason reportCrash:(BOOL)crash description:(id)description completion:(id)completion;
 @end
 
 @implementation CBAppManager
@@ -45,8 +45,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CBAppManager *)v2 primaryAppBundleID];
-    v5 = [NSSet setWithObjects:v4, @"com.apple.DiagnosticsService", 0];
+    primaryAppBundleID = [(CBAppManager *)v2 primaryAppBundleID];
+    v5 = [NSSet setWithObjects:primaryAppBundleID, @"com.apple.DiagnosticsService", 0];
     whitelist = v3->_whitelist;
     v3->_whitelist = v5;
 
@@ -72,8 +72,8 @@
     [v15 addObserver:v3];
     v16 = [UIRootWindowScenePresentationBinder alloc];
     v17 = +[FBDisplayManager sharedInstance];
-    v18 = [v17 mainConfiguration];
-    v19 = [v16 initWithPriority:0 displayConfiguration:v18];
+    mainConfiguration = [v17 mainConfiguration];
+    v19 = [v16 initWithPriority:0 displayConfiguration:mainConfiguration];
     rootWindowSceneBinder = v3->_rootWindowSceneBinder;
     v3->_rootWindowSceneBinder = v19;
 
@@ -99,11 +99,11 @@
 - (id)primaryAppBundleID
 {
   v2 = +[CBEnvironmentManager sharedInstance];
-  v3 = [v2 currentEnvironment];
+  currentEnvironment = [v2 currentEnvironment];
 
   v4 = CheckerBoardLogHandleForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3 == 1)
+  if (currentEnvironment == 1)
   {
     if (v5)
     {
@@ -120,7 +120,7 @@ LABEL_6:
   else if (v5)
   {
     v8 = 134218242;
-    v9 = v3;
+    v9 = currentEnvironment;
     v10 = 2112;
     v11 = @"com.apple.Diagnostics";
     v6 = "Unrecognized osenvironment %ld. Defaulting to %@";
@@ -130,34 +130,34 @@ LABEL_6:
   return @"com.apple.Diagnostics";
 }
 
-- (void)launchAppWithBundleID:(id)a3 suspended:(BOOL)a4 native:(BOOL)a5 completion:(id)a6
+- (void)launchAppWithBundleID:(id)d suspended:(BOOL)suspended native:(BOOL)native completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [NSString stringWithFormat:@"FBSystemService-OpenApplicationRequest: %@", v10];
+  dCopy = d;
+  completionCopy = completion;
+  dCopy = [NSString stringWithFormat:@"FBSystemService-OpenApplicationRequest: %@", dCopy];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100014FFC;
   v16[3] = &unk_10007DBE8;
-  v20 = a4;
-  v21 = a5;
-  v17 = v10;
-  v18 = self;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = [FBWorkspaceEvent eventWithName:v12 handler:v16];
+  suspendedCopy = suspended;
+  nativeCopy = native;
+  v17 = dCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
+  v15 = [FBWorkspaceEvent eventWithName:dCopy handler:v16];
   [v15 execute];
 }
 
-- (void)terminateAppWithBundleID:(id)a3 reason:(int64_t)a4 reportCrash:(BOOL)a5 description:(id)a6 completion:(id)a7
+- (void)terminateAppWithBundleID:(id)d reason:(int64_t)reason reportCrash:(BOOL)crash description:(id)description completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (v13)
+  dCopy = d;
+  descriptionCopy = description;
+  completionCopy = completion;
+  if (descriptionCopy)
   {
-    v15 = v13;
+    v15 = descriptionCopy;
   }
 
   else
@@ -177,20 +177,20 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Terminating application (gracefully %d) because %@", &buf, 0x12u);
   }
 
-  v19 = [NSString stringWithFormat:@"TerminateApp: %@ (%@)", v12, v16];
+  v19 = [NSString stringWithFormat:@"TerminateApp: %@ (%@)", dCopy, v16];
   objc_initWeak(&buf, self);
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000153E0;
   v24[3] = &unk_10007DC10;
   objc_copyWeak(v28, &buf);
-  v20 = v12;
+  v20 = dCopy;
   v25 = v20;
-  v28[1] = a4;
-  v29 = a5;
-  v21 = v13;
+  v28[1] = reason;
+  crashCopy = crash;
+  v21 = descriptionCopy;
   v26 = v21;
-  v22 = v14;
+  v22 = completionCopy;
   v27 = v22;
   v23 = [FBWorkspaceEvent eventWithName:v19 handler:v24];
   [v23 execute];
@@ -199,22 +199,22 @@ LABEL_6:
   objc_destroyWeak(&buf);
 }
 
-- (void)_terminateApps:(id)a3 reason:(int64_t)a4 reportCrash:(BOOL)a5 description:(id)a6 completion:(id)a7
+- (void)_terminateApps:(id)apps reason:(int64_t)reason reportCrash:(BOOL)crash description:(id)description completion:(id)completion
 {
-  v29 = a5;
-  v9 = a3;
-  v31 = a6;
-  v10 = a7;
+  crashCopy = crash;
+  appsCopy = apps;
+  descriptionCopy = description;
+  completionCopy = completion;
   v11 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 description];
+    v12 = [appsCopy description];
     *buf = 138412802;
     v42 = v12;
     v43 = 2048;
-    v44 = a4;
+    reasonCopy = reason;
     v45 = 2112;
-    v46 = v31;
+    v46 = descriptionCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Processes to be killed: (%@) for reason (%ld) and description (%@)", buf, 0x20u);
   }
 
@@ -222,10 +222,10 @@ LABEL_6:
   v38[1] = 3221225472;
   v38[2] = sub_1000158B0;
   v38[3] = &unk_10007DC38;
-  v13 = v10;
+  v13 = completionCopy;
   v39 = v13;
   v14 = objc_retainBlock(v38);
-  v15 = [v9 count];
+  v15 = [appsCopy count];
   v16 = CheckerBoardLogHandleForCategory();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
   if (v15)
@@ -237,12 +237,12 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "We have at least one process to kill", buf, 2u);
     }
 
-    v18 = +[BSBlockSentinel sentinelWithQueue:signalCount:completion:](BSBlockSentinel, "sentinelWithQueue:signalCount:completion:", &_dispatch_main_q, [v9 count], v14);
+    v18 = +[BSBlockSentinel sentinelWithQueue:signalCount:completion:](BSBlockSentinel, "sentinelWithQueue:signalCount:completion:", &_dispatch_main_q, [appsCopy count], v14);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v19 = v9;
+    v19 = appsCopy;
     v20 = [v19 countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v20)
     {
@@ -258,10 +258,10 @@ LABEL_6:
           }
 
           v24 = *(*(&v34 + 1) + 8 * i);
-          v25 = [v24 isCurrentProcess];
+          isCurrentProcess = [v24 isCurrentProcess];
           v26 = CheckerBoardLogHandleForCategory();
           v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-          if (v25)
+          if (isCurrentProcess)
           {
             if (v27)
             {
@@ -285,7 +285,7 @@ LABEL_6:
             v32[2] = sub_1000158CC;
             v32[3] = &unk_10007D618;
             v33 = v18;
-            [v24 killForReason:a4 andReport:v29 withDescription:v31 completion:v32];
+            [v24 killForReason:reason andReport:crashCopy withDescription:descriptionCopy completion:v32];
           }
         }
 
@@ -317,8 +317,8 @@ LABEL_6:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CBAppManager *)self openApps];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  openApps = [(CBAppManager *)self openApps];
+  v5 = [openApps countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -329,14 +329,14 @@ LABEL_6:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(openApps);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleID];
-        [v3 addObject:v9];
+        bundleID = [*(*(&v12 + 1) + 8 * i) bundleID];
+        [v3 addObject:bundleID];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [openApps countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -347,21 +347,21 @@ LABEL_6:
   return v10;
 }
 
-- (void)processManager:(id)a3 didAddProcess:(id)a4
+- (void)processManager:(id)manager didAddProcess:(id)process
 {
-  v5 = a4;
+  processCopy = process;
   v6 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 bundleIdentifier];
+    bundleIdentifier = [processCopy bundleIdentifier];
     *buf = 138412290;
-    v15 = v7;
+    v15 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "processManager:didAddProcess: %@", buf, 0xCu);
   }
 
-  v8 = [(CBAppManager *)self primaryAppBundleID];
-  v9 = [v5 bundleIdentifier];
-  v10 = [v9 isEqual:v8];
+  primaryAppBundleID = [(CBAppManager *)self primaryAppBundleID];
+  bundleIdentifier2 = [processCopy bundleIdentifier];
+  v10 = [bundleIdentifier2 isEqual:primaryAppBundleID];
 
   if (v10)
   {
@@ -369,27 +369,27 @@ LABEL_6:
     v11[1] = 3221225472;
     v11[2] = sub_100015C14;
     v11[3] = &unk_10007D640;
-    v12 = v5;
-    v13 = self;
+    v12 = processCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, v11);
   }
 }
 
-- (void)processManager:(id)a3 didRemoveProcess:(id)a4
+- (void)processManager:(id)manager didRemoveProcess:(id)process
 {
-  v5 = a4;
+  processCopy = process;
   v6 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 bundleIdentifier];
+    bundleIdentifier = [processCopy bundleIdentifier];
     *buf = 138412290;
-    v18 = v7;
+    v18 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "processManager:didRemoveProcess: %@", buf, 0xCu);
   }
 
-  v8 = [(CBAppManager *)self primaryAppBundleID];
-  v9 = [v5 bundleIdentifier];
-  v10 = [v9 isEqual:v8];
+  primaryAppBundleID = [(CBAppManager *)self primaryAppBundleID];
+  bundleIdentifier2 = [processCopy bundleIdentifier];
+  v10 = [bundleIdentifier2 isEqual:primaryAppBundleID];
 
   if (v10)
   {
@@ -409,20 +409,20 @@ LABEL_6:
     v14[1] = 3221225472;
     v14[2] = sub_100015F68;
     v14[3] = &unk_10007D640;
-    v15 = v5;
-    v16 = self;
+    v15 = processCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, v14);
   }
 }
 
-- (void)sceneManager:(id)a3 didAddScene:(id)a4
+- (void)sceneManager:(id)manager didAddScene:(id)scene
 {
-  v5 = a4;
-  [v5 addObserver:self];
-  [(UIRootWindowScenePresentationBinder *)self->_rootWindowSceneBinder addScene:v5];
+  sceneCopy = scene;
+  [sceneCopy addObserver:self];
+  [(UIRootWindowScenePresentationBinder *)self->_rootWindowSceneBinder addScene:sceneCopy];
 }
 
-- (void)_windowDidBecomeKey:(id)a3
+- (void)_windowDidBecomeKey:(id)key
 {
   v4 = +[FBSceneManager sharedInstance];
   v5 = [CBSceneManager sceneIdentifier:1];
@@ -436,21 +436,21 @@ LABEL_6:
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 clientHandle];
-  v9 = [v8 processHandle];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  clientHandle = [sceneCopy clientHandle];
+  processHandle = [clientHandle processHandle];
   v10 = +[FBProcessManager sharedInstance];
-  v11 = [v9 identity];
-  v12 = [v10 processForIdentity:v11];
+  identity = [processHandle identity];
+  v12 = [v10 processForIdentity:identity];
 
   if ([v12 isApplicationProcess] && (objc_msgSend(v12, "isCurrentProcess") & 1) == 0)
   {
-    v20 = [v7 previousSettings];
-    v19 = [v7 transitionContext];
-    v13 = [v7 settingsDiff];
+    previousSettings = [settingsCopy previousSettings];
+    transitionContext = [settingsCopy transitionContext];
+    settingsDiff = [settingsCopy settingsDiff];
     v14 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -459,46 +459,46 @@ LABEL_6:
     }
 
     v15 = objc_alloc_init(CBAppClientSettingObserverContext);
-    [(CBAppClientSettingObserverContext *)v15 setScene:v6];
-    v16 = [v6 settings];
-    [(CBAppClientSettingObserverContext *)v15 setSettings:v16];
+    [(CBAppClientSettingObserverContext *)v15 setScene:sceneCopy];
+    settings = [sceneCopy settings];
+    [(CBAppClientSettingObserverContext *)v15 setSettings:settings];
 
-    [(CBAppClientSettingObserverContext *)v15 setOldClientSettings:v20];
-    v17 = [v6 clientSettings];
-    [(CBAppClientSettingObserverContext *)v15 setUpdatedClientSettings:v17];
+    [(CBAppClientSettingObserverContext *)v15 setOldClientSettings:previousSettings];
+    clientSettings = [sceneCopy clientSettings];
+    [(CBAppClientSettingObserverContext *)v15 setUpdatedClientSettings:clientSettings];
 
-    [(CBAppClientSettingObserverContext *)v15 setTransition:v19];
-    v18 = [(CBAppManager *)self _appClientSettingsDiffInspector];
-    [v18 inspectDiff:v13 withContext:v15];
+    [(CBAppClientSettingObserverContext *)v15 setTransition:transitionContext];
+    _appClientSettingsDiffInspector = [(CBAppManager *)self _appClientSettingsDiffInspector];
+    [_appClientSettingsDiffInspector inspectDiff:settingsDiff withContext:v15];
   }
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v8 = a3;
-  v5 = [v8 identifier];
+  sceneCopy = scene;
+  identifier = [sceneCopy identifier];
   v6 = [CBSceneManager sceneIdentifier:1];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [identifier isEqualToString:v6];
 
   if (v7)
   {
-    [(CBAppManager *)self _updateLevelForScene:v8 transitionContext:0];
+    [(CBAppManager *)self _updateLevelForScene:sceneCopy transitionContext:0];
   }
 }
 
-- (double)_effectiveKeyboardSceneLevelForClientSettings:(id)a3
+- (double)_effectiveKeyboardSceneLevelForClientSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [v3 preferredSceneHostIdentifier];
-  if (![v4 length] || (FBSystemAppBundleID(), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqualToString:", v5), v5, v7 = 11.0, v6))
+  settingsCopy = settings;
+  preferredSceneHostIdentifier = [settingsCopy preferredSceneHostIdentifier];
+  if (![preferredSceneHostIdentifier length] || (FBSystemAppBundleID(), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(preferredSceneHostIdentifier, "isEqualToString:", v5), v5, v7 = 11.0, v6))
   {
     v8 = +[UIWindow keyWindow];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 firstResponder];
+      firstResponder = [v8 firstResponder];
 
-      if (v10)
+      if (firstResponder)
       {
         [v9 windowLevel];
         v7 = v11 + 2.0;
@@ -506,7 +506,7 @@ LABEL_6:
 
       else
       {
-        [v3 preferredLevel];
+        [settingsCopy preferredLevel];
         v7 = v12;
       }
     }
@@ -520,17 +520,17 @@ LABEL_6:
   return v7;
 }
 
-- (void)_updateLevelForScene:(id)a3 transitionContext:(id)a4
+- (void)_updateLevelForScene:(id)scene transitionContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  contextCopy = context;
   [CBSceneManager windowLevel:1];
   v8 = v7;
   v9 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v5;
+    v20 = sceneCopy;
     v21 = 2048;
     v22 = v8;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Updating level for scene (%@) to client settings' preferred level %f", buf, 0x16u);
@@ -539,8 +539,8 @@ LABEL_6:
   v10 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 settings];
-    [v11 level];
+    settings = [sceneCopy settings];
+    [settings level];
     *buf = 134218240;
     v20 = v12;
     v21 = 2048;
@@ -548,8 +548,8 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Comparing scene settings level (%f) to level (%f)", buf, 0x16u);
   }
 
-  v13 = [v5 settings];
-  [v13 level];
+  settings2 = [sceneCopy settings];
+  [settings2 level];
   v15 = v14;
 
   if (v15 != v8)
@@ -558,16 +558,16 @@ LABEL_6:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v5;
+      v20 = sceneCopy;
       v21 = 2048;
       v22 = v8;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Scene (%@) is setting level to: %f", buf, 0x16u);
     }
 
-    if (v6)
+    if (contextCopy)
     {
-      v17 = [v6 animationFence];
-      [UIScene _synchronizeDrawingWithFence:v17];
+      animationFence = [contextCopy animationFence];
+      [UIScene _synchronizeDrawingWithFence:animationFence];
     }
 
     v18[0] = _NSConcreteStackBlock;
@@ -575,15 +575,15 @@ LABEL_6:
     v18[2] = sub_100016730;
     v18[3] = &unk_10007DC58;
     *&v18[4] = v8;
-    [v5 updateSettingsWithBlock:v18];
+    [sceneCopy updateSettingsWithBlock:v18];
   }
 }
 
 - (id)_appClientSettingsDiffInspector
 {
-  v3 = [(CBAppManager *)self appClientSettingsDiffInspector];
+  appClientSettingsDiffInspector = [(CBAppManager *)self appClientSettingsDiffInspector];
 
-  if (!v3)
+  if (!appClientSettingsDiffInspector)
   {
     v4 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -595,26 +595,26 @@ LABEL_6:
     v5 = objc_alloc_init(UIApplicationSceneClientSettingsDiffInspector);
     [(CBAppManager *)self setAppClientSettingsDiffInspector:v5];
 
-    v6 = [(CBAppManager *)self appClientSettingsDiffInspector];
-    [v6 observeIdleTimerDisabledWithBlock:&stru_10007DC98];
+    appClientSettingsDiffInspector2 = [(CBAppManager *)self appClientSettingsDiffInspector];
+    [appClientSettingsDiffInspector2 observeIdleTimerDisabledWithBlock:&stru_10007DC98];
   }
 
-  v7 = [(CBAppManager *)self appClientSettingsDiffInspector];
+  appClientSettingsDiffInspector3 = [(CBAppManager *)self appClientSettingsDiffInspector];
 
-  return v7;
+  return appClientSettingsDiffInspector3;
 }
 
-- (void)systemService:(id)a3 canActivateApplication:(id)a4 withResult:(id)a5
+- (void)systemService:(id)service canActivateApplication:(id)application withResult:(id)result
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CBAppManager *)self whitelist];
-  v10 = [v9 containsObject:v7];
+  applicationCopy = application;
+  resultCopy = result;
+  whitelist = [(CBAppManager *)self whitelist];
+  v10 = [whitelist containsObject:applicationCopy];
 
   if (v10)
   {
     v11 = 0;
-    if (!v8)
+    if (!resultCopy)
     {
       goto LABEL_8;
     }
@@ -629,39 +629,39 @@ LABEL_6:
   }
 
   v11 = 3;
-  if (v8)
+  if (resultCopy)
   {
 LABEL_7:
-    v8[2](v8, v11);
+    resultCopy[2](resultCopy, v11);
   }
 
 LABEL_8:
 }
 
-- (void)systemService:(id)a3 handleOpenApplicationRequest:(id)a4 withCompletion:(id)a5
+- (void)systemService:(id)service handleOpenApplicationRequest:(id)request withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 bundleIdentifier];
-  v10 = [(CBAppManager *)self whitelist];
-  v11 = [v10 containsObject:v9];
+  requestCopy = request;
+  completionCopy = completion;
+  bundleIdentifier = [requestCopy bundleIdentifier];
+  whitelist = [(CBAppManager *)self whitelist];
+  v11 = [whitelist containsObject:bundleIdentifier];
 
   if (v11)
   {
-    v12 = [v7 clientProcess];
+    clientProcess = [requestCopy clientProcess];
     v13 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v9;
+      v20 = bundleIdentifier;
       v21 = 2112;
-      v22 = v12;
+      v22 = clientProcess;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received open application request for [%@] from %@.", buf, 0x16u);
     }
 
-    v14 = [v7 options];
-    v15 = [v14 dictionary];
-    v16 = [v15 bs_safeObjectForKey:FBSOpenApplicationOptionKeyActivateSuspended ofType:objc_opt_class()];
+    options = [requestCopy options];
+    dictionary = [options dictionary];
+    v16 = [dictionary bs_safeObjectForKey:FBSOpenApplicationOptionKeyActivateSuspended ofType:objc_opt_class()];
 
     v17 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -671,7 +671,7 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Suspended request: %@", buf, 0xCu);
     }
 
-    -[CBAppManager launchAppWithBundleID:suspended:native:completion:](self, "launchAppWithBundleID:suspended:native:completion:", v9, [v16 BOOLValue], 0, v8);
+    -[CBAppManager launchAppWithBundleID:suspended:native:completion:](self, "launchAppWithBundleID:suspended:native:completion:", bundleIdentifier, [v16 BOOLValue], 0, completionCopy);
   }
 
   else
@@ -682,43 +682,43 @@ LABEL_8:
       sub_100046F54();
     }
 
-    v12 = FBSOpenApplicationErrorCreate();
-    (*(v8 + 2))(v8, v12);
-    v16 = v8;
+    clientProcess = FBSOpenApplicationErrorCreate();
+    (*(completionCopy + 2))(completionCopy, clientProcess);
+    v16 = completionCopy;
   }
 }
 
-- (void)systemService:(id)a3 isPasscodeLockedOrBlockedWithResult:(id)a4
+- (void)systemService:(id)service isPasscodeLockedOrBlockedWithResult:(id)result
 {
-  if (a4)
+  if (result)
   {
-    (*(a4 + 2))(a4, 1);
+    (*(result + 2))(result, 1);
   }
 }
 
-- (void)systemService:(id)a3 handleActions:(id)a4 origin:(id)a5 withResult:(id)a6
+- (void)systemService:(id)service handleActions:(id)actions origin:(id)origin withResult:(id)result
 {
-  if (a6)
+  if (result)
   {
-    (*(a6 + 2))(a6, 0);
+    (*(result + 2))(result, 0);
   }
 }
 
-- (void)systemService:(id)a3 dataReset:(id)a4 completion:(id)a5
+- (void)systemService:(id)service dataReset:(id)reset completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
 - (void)_createInputScene
 {
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
+  uUIDString = [v3 UUIDString];
 
   v5 = +[FBSMutableSceneDefinition definition];
-  v6 = [FBSSceneIdentity identityForIdentifier:v4];
+  v6 = [FBSSceneIdentity identityForIdentifier:uUIDString];
   [v5 setIdentity:v6];
 
   v7 = [RBSProcessIdentity identityForAngelJobLabel:@"com.apple.InputUI"];

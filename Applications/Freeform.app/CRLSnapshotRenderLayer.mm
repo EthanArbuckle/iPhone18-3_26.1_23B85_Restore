@@ -1,15 +1,15 @@
 @interface CRLSnapshotRenderLayer
-- (CRLSnapshotRenderLayer)initWithSourceLayer:(id)a3;
-- (void)_setSlotId:(id)a3;
-- (void)setContents:(id)a3;
+- (CRLSnapshotRenderLayer)initWithSourceLayer:(id)layer;
+- (void)_setSlotId:(id)id;
+- (void)setContents:(id)contents;
 @end
 
 @implementation CRLSnapshotRenderLayer
 
-- (CRLSnapshotRenderLayer)initWithSourceLayer:(id)a3
+- (CRLSnapshotRenderLayer)initWithSourceLayer:(id)layer
 {
-  v4 = a3;
-  if (!v4)
+  layerCopy = layer;
+  if (!layerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -43,24 +43,24 @@
   v8 = [(CRLSnapshotRenderLayer *)&v43 init];
   if (v8)
   {
-    [v4 bounds];
+    [layerCopy bounds];
     [(CRLSnapshotRenderLayer *)v8 setBounds:?];
-    [v4 contentsScale];
+    [layerCopy contentsScale];
     [(CRLSnapshotRenderLayer *)v8 setContentsScale:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v4 slotId];
-      [(CRLSnapshotRenderLayer *)v8 _setSlotId:v9];
+      slotId = [layerCopy slotId];
+      [(CRLSnapshotRenderLayer *)v8 _setSlotId:slotId];
 
       goto LABEL_34;
     }
 
-    v10 = [v4 context];
+    context = [layerCopy context];
 
-    if (v10)
+    if (context)
     {
-      if ([v4 hasBeenCommitted])
+      if ([layerCopy hasBeenCommitted])
       {
         v37 = *&CATransform3DIdentity.m33;
         *&v42.m31 = *&CATransform3DIdentity.m31;
@@ -78,11 +78,11 @@
         *&v42.m21 = *&CATransform3DIdentity.m21;
         v32 = *&v42.m21;
         *&v42.m23 = v31;
-        [v4 contentsScale];
+        [layerCopy contentsScale];
         v12 = v11 + v11;
-        [v4 bounds];
+        [layerCopy bounds];
         v14 = -v13;
-        [v4 bounds];
+        [layerCopy bounds];
         CATransform3DMakeTranslation(&b, v14, -v15, 0.0);
         *&a.m31 = v38;
         *&a.m33 = v37;
@@ -97,7 +97,7 @@
         v39 = v42;
         CATransform3DConcat(&b, &v39, &a);
         v42 = b;
-        [v4 bounds];
+        [layerCopy bounds];
         v18 = sub_10011F340(v16, v17, v12);
         v20 = [[CRLSnapshotImageSlotID alloc] initWithSize:v18, v19];
         [(CRLSnapshotRenderLayer *)v8 _setSlotId:v20];
@@ -107,15 +107,15 @@
         v45[0] = kCASnapshotModeLayer;
         v45[1] = @"DisplayName";
         v44[2] = kCASnapshotContextId;
-        v21 = [v4 context];
-        v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v21 contextId]);
+        context2 = [layerCopy context];
+        v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [context2 contextId]);
         v45[2] = v22;
         v44[3] = kCASnapshotLayerId;
-        v23 = [NSNumber numberWithUnsignedLongLong:v4];
+        v23 = [NSNumber numberWithUnsignedLongLong:layerCopy];
         v45[3] = v23;
         v44[4] = kCASnapshotDestination;
-        v24 = [(CRLSnapshotRenderLayer *)v8 slotId];
-        v25 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v24 value]);
+        slotId2 = [(CRLSnapshotRenderLayer *)v8 slotId];
+        v25 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [slotId2 value]);
         v45[4] = v25;
         v44[5] = kCASnapshotTransform;
         b = v42;
@@ -145,10 +145,10 @@
           v8 = 0;
         }
 
-        v28 = [v4 valueForKey:@"wantsExtendedDynamicRangeContent"];
-        v29 = [v28 BOOLValue];
+        v28 = [layerCopy valueForKey:@"wantsExtendedDynamicRangeContent"];
+        bOOLValue = [v28 BOOLValue];
 
-        if (v29)
+        if (bOOLValue)
         {
           [(CRLSnapshotRenderLayer *)v8 setValue:&__kCFBooleanTrue forKey:@"wantsExtendedDynamicRangeContent"];
         }
@@ -189,7 +189,7 @@ LABEL_34:
   return v8;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -218,16 +218,16 @@ LABEL_34:
   [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:142 isFatal:0 description:"CRLSnapshotRenderLayer.setContents is unsupported. Use -initWithSourceLayer:"];
 }
 
-- (void)_setSlotId:(id)a3
+- (void)_setSlotId:(id)id
 {
-  v4 = a3;
-  v5 = [(CRLSnapshotImageSlotID *)v4 object];
+  idCopy = id;
+  object = [(CRLSnapshotImageSlotID *)idCopy object];
   v7.receiver = self;
   v7.super_class = CRLSnapshotRenderLayer;
-  [(CRLSnapshotRenderLayer *)&v7 setContents:v5];
+  [(CRLSnapshotRenderLayer *)&v7 setContents:object];
 
   slotId = self->_slotId;
-  self->_slotId = v4;
+  self->_slotId = idCopy;
 }
 
 @end

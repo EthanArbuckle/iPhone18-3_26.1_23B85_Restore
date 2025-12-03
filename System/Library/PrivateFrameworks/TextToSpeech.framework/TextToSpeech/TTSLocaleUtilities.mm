@@ -4,9 +4,9 @@
 - (NSDictionary)generalLanguageCodeData;
 - (NSDictionary)voiceIdSampleStringData;
 - (TTSLocaleUtilities)init;
-- (id)defaultVoiceIdentifierForGeneralLanguageCode:(id)a3;
-- (id)defaultVoiceIdentifierForVoiceName:(id)a3;
-- (id)sampleStringForVoiceIdentifier:(id)a3 withPreferredLocaleID:(id)a4;
+- (id)defaultVoiceIdentifierForGeneralLanguageCode:(id)code;
+- (id)defaultVoiceIdentifierForVoiceName:(id)name;
+- (id)sampleStringForVoiceIdentifier:(id)identifier withPreferredLocaleID:(id)d;
 @end
 
 @implementation TTSLocaleUtilities
@@ -134,21 +134,21 @@
   return voiceIdSampleStringData;
 }
 
-- (id)defaultVoiceIdentifierForGeneralLanguageCode:(id)a3
+- (id)defaultVoiceIdentifierForGeneralLanguageCode:(id)code
 {
-  v4 = a3;
-  if (v4)
+  codeCopy = code;
+  if (codeCopy)
   {
     v5 = AXCLanguageCanonicalFormToGeneralLanguage();
-    if (objc_msgSend_isEqualToString_(v5, v6, v4, v7, v8))
+    if (objc_msgSend_isEqualToString_(v5, v6, codeCopy, v7, v8))
     {
       v13 = objc_msgSend_generalLanguageCodeData(self, v9, v10, v11, v12);
-      v17 = objc_msgSend_objectForKey_(v13, v14, v4, v15, v16);
+      v17 = objc_msgSend_objectForKey_(v13, v14, codeCopy, v15, v16);
 
       if (!v17)
       {
         v22 = objc_msgSend_sharedInstance(TTSAXResourceManager, v18, v19, v20, v21);
-        v25 = objc_msgSend_resourcesWithLanguage_type_(v22, v23, v4, 4, v24);
+        v25 = objc_msgSend_resourcesWithLanguage_type_(v22, v23, codeCopy, 4, v24);
         v30 = objc_msgSend_firstObject(v25, v26, v27, v28, v29);
         v17 = objc_msgSend_voiceId(v30, v31, v32, v33, v34);
       }
@@ -168,10 +168,10 @@
   return v17;
 }
 
-- (id)sampleStringForVoiceIdentifier:(id)a3 withPreferredLocaleID:(id)a4
+- (id)sampleStringForVoiceIdentifier:(id)identifier withPreferredLocaleID:(id)d
 {
-  v6 = a4;
-  v15 = objc_msgSend_lowercaseString(a3, v7, v8, v9, v10);
+  dCopy = d;
+  v15 = objc_msgSend_lowercaseString(identifier, v7, v8, v9, v10);
   if (v15)
   {
     v16 = objc_msgSend_voiceIdSampleStringData(self, v11, v12, v13, v14);
@@ -208,8 +208,8 @@ LABEL_9:
           goto LABEL_26;
         }
 
-        v44 = self;
-        objc_sync_enter(v44);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
         isPersonalVoice = objc_msgSend_isPersonalVoice(v43, v45, v46, v47, v48);
         if ((objc_msgSend_type(v43, v50, v51, v52, v53) == 3) | isPersonalVoice & 1)
         {
@@ -218,12 +218,12 @@ LABEL_9:
 
         else
         {
-          v59 = objc_msgSend_fallbackSampleStringCache(v44, v54, v55, v56, v57);
+          v59 = objc_msgSend_fallbackSampleStringCache(selfCopy, v54, v55, v56, v57);
           v64 = objc_msgSend_primaryLanguage(v43, v60, v61, v62, v63);
           v58 = objc_msgSend_objectForKeyedSubscript_(v59, v65, v64, v66, v67);
         }
 
-        objc_sync_exit(v44);
+        objc_sync_exit(selfCopy);
 
         if (v58)
         {
@@ -232,9 +232,9 @@ LABEL_9:
 
         if ((objc_msgSend_type(v43, v68, v69, v70, v71) != 3 || objc_msgSend_subtype(v43, v72, v73, v74, v75) == 7 && objc_msgSend_footprint(v43, v76, v77, v78, v79) == 3) && isPersonalVoice)
         {
-          if (!v6)
+          if (!dCopy)
           {
-            v6 = objc_msgSend_primaryLanguage(v43, v72, v73, v74, v75);
+            dCopy = objc_msgSend_primaryLanguage(v43, v72, v73, v74, v75);
           }
 
           v80 = MEMORY[0x1E696AAE8];
@@ -255,7 +255,7 @@ LABEL_9:
         if (v58)
         {
 LABEL_23:
-          v96 = v44;
+          v96 = selfCopy;
           objc_sync_enter(v96);
           if (!((objc_msgSend_type(v43, v97, v98, v99, v100) == 3) | isPersonalVoice & 1))
           {
@@ -290,11 +290,11 @@ LABEL_26:
   return v20;
 }
 
-- (id)defaultVoiceIdentifierForVoiceName:(id)a3
+- (id)defaultVoiceIdentifierForVoiceName:(id)name
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v8)
+  nameCopy = name;
+  if (nameCopy)
   {
     v49 = 0u;
     v50 = 0u;
@@ -321,7 +321,7 @@ LABEL_4:
         v25 = objc_msgSend_canonicalLanguageCodeVoiceNamesData(self, v17, v18, v19, v20);
         v29 = objc_msgSend_objectForKey_(v25, v26, v24, v27, v28);
 
-        v34 = objc_msgSend_lowercaseString(v8, v30, v31, v32, v33);
+        v34 = objc_msgSend_lowercaseString(nameCopy, v30, v31, v32, v33);
         v38 = objc_msgSend_containsObject_(v29, v35, v34, v36, v37);
 
         if (v38)
@@ -361,7 +361,7 @@ LABEL_13:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v52 = v8;
+        v52 = nameCopy;
         _os_log_impl(&dword_1A9324000, v39, OS_LOG_TYPE_INFO, "Unable to find language code for voice name: %@", buf, 0xCu);
       }
 

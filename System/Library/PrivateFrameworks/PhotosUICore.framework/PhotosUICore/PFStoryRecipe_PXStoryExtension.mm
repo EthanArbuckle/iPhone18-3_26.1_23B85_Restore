@@ -1,43 +1,43 @@
 @interface PFStoryRecipe_PXStoryExtension
-+ (BOOL)_recipe:(id)a3 isReferencingPHPhotoLibrary:(id)a4;
-+ (BOOL)_recipe:(id)a3 setPHPhotoLibrary:(id)a4 error:(id *)a5;
-+ (BOOL)addDisplayAssets:(id)a3 toRecipe:(id)a4 withCategory:(int64_t)a5 error:(id *)a6;
-+ (BOOL)addPHAssets:(id)a3 toRecipe:(id)a4 withCategory:(int64_t)a5 error:(id *)a6;
-+ (BOOL)addSyntheticAssets:(id)a3 toRecipe:(id)a4 withCategory:(int64_t)a5 error:(id *)a6;
-+ (BOOL)recipeContainsAnyDisplayAsset:(id)a3;
-+ (id)PHAssetsInRecipe:(id)a3 withCategory:(int64_t)a4 error:(id *)a5;
-+ (id)PHPhotoLibraryForRecipe:(id)a3;
-+ (id)displayAssetsInRecipe:(id)a3 withCategory:(int64_t)a4 error:(id *)a5;
++ (BOOL)_recipe:(id)_recipe isReferencingPHPhotoLibrary:(id)library;
++ (BOOL)_recipe:(id)_recipe setPHPhotoLibrary:(id)library error:(id *)error;
++ (BOOL)addDisplayAssets:(id)assets toRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error;
++ (BOOL)addPHAssets:(id)assets toRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error;
++ (BOOL)addSyntheticAssets:(id)assets toRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error;
++ (BOOL)recipeContainsAnyDisplayAsset:(id)asset;
++ (id)PHAssetsInRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error;
++ (id)PHPhotoLibraryForRecipe:(id)recipe;
++ (id)displayAssetsInRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error;
 + (id)flexFetchQueue;
-+ (id)recipe:(id)a3 withPHPhotoLibrary:(id)a4 error:(id *)a5;
-+ (id)recipeAssetFromAudioAsset:(id)a3 withCategory:(int64_t)a4 subcategory:(int64_t)a5 error:(id *)a6;
-+ (id)requestAudioAssetFromRecipeAsset:(id)a3 recipe:(id)a4 resultHandler:(id)a5;
-+ (id)syntheticAssetsInRecipe:(id)a3 withCategory:(int64_t)a4 error:(id *)a5;
-+ (void)enumerateDisplayAssetsFromRecipe:(id)a3 usingBlock:(id)a4;
++ (id)recipe:(id)recipe withPHPhotoLibrary:(id)library error:(id *)error;
++ (id)recipeAssetFromAudioAsset:(id)asset withCategory:(int64_t)category subcategory:(int64_t)subcategory error:(id *)error;
++ (id)requestAudioAssetFromRecipeAsset:(id)asset recipe:(id)recipe resultHandler:(id)handler;
++ (id)syntheticAssetsInRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error;
++ (void)enumerateDisplayAssetsFromRecipe:(id)recipe usingBlock:(id)block;
 @end
 
 @implementation PFStoryRecipe_PXStoryExtension
 
-+ (id)recipeAssetFromAudioAsset:(id)a3 withCategory:(int64_t)a4 subcategory:(int64_t)a5 error:(id *)a6
++ (id)recipeAssetFromAudioAsset:(id)asset withCategory:(int64_t)category subcategory:(int64_t)subcategory error:(id *)error
 {
-  v9 = a3;
+  assetCopy = asset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = MEMORY[0x1E69C08D0];
     v36 = *MEMORY[0x1E69C0DC8];
-    v11 = v9;
-    v12 = [v11 identifier];
-    v13 = [v11 title];
-    v14 = [v11 subtitle];
+    v11 = assetCopy;
+    identifier = [v11 identifier];
+    title = [v11 title];
+    subtitle = [v11 subtitle];
     [v11 colorGradeCategory];
-    v15 = v9;
-    v17 = v16 = a6;
+    v15 = assetCopy;
+    v17 = v16 = error;
 
-    v18 = [v10 createAssetWithCategory:a4 subcategory:a5 catalog:v36 songID:v12 title:v13 subtitle:v14 colorGradeCategory:v17];
+    v18 = [v10 createAssetWithCategory:category subcategory:subcategory catalog:v36 songID:identifier title:title subtitle:subtitle colorGradeCategory:v17];
 
-    a6 = v16;
-    v9 = v15;
+    error = v16;
+    assetCopy = v15;
 
     goto LABEL_8;
   }
@@ -45,24 +45,24 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v37 = a6;
+    errorCopy2 = error;
     v19 = MEMORY[0x1E69C08D0];
     v20 = MEMORY[0x1E69C0DD0];
 LABEL_7:
     v27 = *v20;
-    v28 = v9;
-    v29 = [v28 identifier];
-    v30 = [v28 title];
-    v31 = [v28 subtitle];
-    v32 = [v28 colorGradeCategory];
+    v28 = assetCopy;
+    identifier2 = [v28 identifier];
+    title2 = [v28 title];
+    subtitle2 = [v28 subtitle];
+    colorGradeCategory = [v28 colorGradeCategory];
 
     v33 = v19;
-    a6 = v37;
-    v18 = [v33 createAssetWithCategory:a4 subcategory:a5 catalog:v27 songID:v29 title:v30 subtitle:v31 colorGradeCategory:v32];
+    error = errorCopy2;
+    v18 = [v33 createAssetWithCategory:category subcategory:subcategory catalog:v27 songID:identifier2 title:title2 subtitle:subtitle2 colorGradeCategory:colorGradeCategory];
 
 LABEL_8:
     v34 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -73,19 +73,19 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v37 = a6;
+    errorCopy2 = error;
     v19 = MEMORY[0x1E69C08D0];
     v20 = MEMORY[0x1E69C0DD8];
     goto LABEL_7;
   }
 
-  v34 = PXStoryErrorCreateWithCodeDebugFormat(3, @"cannot create a recipe song asset from audio asset: %@", v21, v22, v23, v24, v25, v26, v9);
+  v34 = PXStoryErrorCreateWithCodeDebugFormat(3, @"cannot create a recipe song asset from audio asset: %@", v21, v22, v23, v24, v25, v26, assetCopy);
   v18 = 0;
-  if (a6)
+  if (error)
   {
 LABEL_9:
     v34 = v34;
-    *a6 = v34;
+    *error = v34;
   }
 
 LABEL_10:
@@ -93,14 +93,14 @@ LABEL_10:
   return v18;
 }
 
-+ (id)requestAudioAssetFromRecipeAsset:(id)a3 recipe:(id)a4 resultHandler:(id)a5
++ (id)requestAudioAssetFromRecipeAsset:(id)asset recipe:(id)recipe resultHandler:(id)handler
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  recipeCopy = recipe;
+  handlerCopy = handler;
   v11 = PLAudioPlaybackGetLog();
-  v12 = os_signpost_id_make_with_pointer(v11, a1);
+  v12 = os_signpost_id_make_with_pointer(v11, self);
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v13 = v12;
@@ -115,13 +115,13 @@ LABEL_10:
   aBlock[1] = 3221225472;
   aBlock[2] = __88__PFStoryRecipe_PXStoryExtension_requestAudioAssetFromRecipeAsset_recipe_resultHandler___block_invoke;
   aBlock[3] = &unk_1E77309C8;
-  v69 = a1;
-  v14 = v10;
+  selfCopy = self;
+  v14 = handlerCopy;
   v68 = v14;
   v15 = _Block_copy(aBlock);
-  if ([v8 kind] != 2)
+  if ([assetCopy kind] != 2)
   {
-    v36 = PXStoryErrorCreateWithCodeDebugFormat(1, @"not a song recipe asset: %@", v16, v17, v18, v19, v20, v21, v8);
+    v36 = PXStoryErrorCreateWithCodeDebugFormat(1, @"not a song recipe asset: %@", v16, v17, v18, v19, v20, v21, assetCopy);
     v35 = 0;
     if (!v36)
     {
@@ -135,18 +135,18 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v22 = v8;
-  v23 = [v22 catalog];
-  v24 = v23;
-  if (v23 == *MEMORY[0x1E69C0DC8] || [v23 isEqualToString:?])
+  v22 = assetCopy;
+  catalog = [v22 catalog];
+  v24 = catalog;
+  if (catalog == *MEMORY[0x1E69C0DC8] || [catalog isEqualToString:?])
   {
-    v31 = [v22 songID];
-    if (v31)
+    songID = [v22 songID];
+    if (songID)
     {
-      v32 = [PFStoryRecipe_PXStoryExtension PHPhotoLibraryForRecipe:v9];
-      v56 = v9;
+      v32 = [PFStoryRecipe_PXStoryExtension PHPhotoLibraryForRecipe:recipeCopy];
+      v56 = recipeCopy;
       v33 = objc_alloc_init(PXMusicCuratorAudioAssetRequestOptions);
-      v71[0] = v31;
+      v71[0] = songID;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];
       v65[0] = MEMORY[0x1E69E9820];
       v65[1] = 3221225472;
@@ -155,7 +155,7 @@ LABEL_10:
       v66 = v15;
       v35 = [PXMusicCurator requestAudioAssetFetchResultForAdamIDs:v34 requestOptions:v33 photoLibrary:v32 completionHandler:v65];
 
-      v9 = v56;
+      recipeCopy = v56;
 LABEL_17:
       v36 = 0;
 LABEL_26:
@@ -169,22 +169,22 @@ LABEL_26:
 
   if (v24 == *MEMORY[0x1E69C0DD0] || [v24 isEqualToString:?])
   {
-    v31 = [v22 songID];
-    if (v31)
+    songID = [v22 songID];
+    if (songID)
     {
       v46 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
-      v47 = [objc_opt_class() flexFetchQueue];
+      flexFetchQueue = [objc_opt_class() flexFetchQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __88__PFStoryRecipe_PXStoryExtension_requestAudioAssetFromRecipeAsset_recipe_resultHandler___block_invoke_2;
       block[3] = &unk_1E77425A0;
-      v60 = v31;
+      v60 = songID;
       v61 = 0;
       v62 = v22;
       v35 = v46;
       v63 = v35;
       v64 = v15;
-      dispatch_async(v47, block);
+      dispatch_async(flexFetchQueue, block);
 
       goto LABEL_17;
     }
@@ -243,16 +243,16 @@ LABEL_12:
   return v3;
 }
 
-+ (BOOL)addDisplayAssets:(id)a3 toRecipe:(id)a4 withCategory:(int64_t)a5 error:(id *)a6
++ (BOOL)addDisplayAssets:(id)assets toRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (![v10 count])
+  assetsCopy = assets;
+  recipeCopy = recipe;
+  if (![assetsCopy count])
   {
     v15 = 0;
     v13 = 1;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -260,12 +260,12 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v12 = [v10 firstObject];
+  firstObject = [assetsCopy firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v22 = 0;
-    v13 = [a1 addPHAssets:v10 toRecipe:v11 withCategory:a5 error:&v22];
+    v13 = [self addPHAssets:assetsCopy toRecipe:recipeCopy withCategory:category error:&v22];
     v14 = v22;
 LABEL_8:
     v15 = v14;
@@ -276,14 +276,14 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v21 = 0;
-    v13 = [a1 addSyntheticAssets:v10 toRecipe:v11 withCategory:a5 error:&v21];
+    v13 = [self addSyntheticAssets:assetsCopy toRecipe:recipeCopy withCategory:category error:&v21];
     v14 = v21;
     goto LABEL_8;
   }
 
   v16 = MEMORY[0x1E696ABC0];
   v23 = *MEMORY[0x1E696A278];
-  v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown display asset fetch result %@ containing %@", v10, v12];
+  v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown display asset fetch result %@ containing %@", assetsCopy, firstObject];
   v24[0] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
   v15 = [v16 errorWithDomain:@"PXStoryErrorDomain" code:1 userInfo:v18];
@@ -291,11 +291,11 @@ LABEL_8:
   v13 = 0;
 LABEL_10:
 
-  if (a6)
+  if (error)
   {
 LABEL_11:
     v19 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
 LABEL_12:
@@ -303,10 +303,10 @@ LABEL_12:
   return v13;
 }
 
-+ (id)displayAssetsInRecipe:(id)a3 withCategory:(int64_t)a4 error:(id *)a5
++ (id)displayAssetsInRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  recipeCopy = recipe;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -318,28 +318,28 @@ LABEL_12:
   v25[2] = __75__PFStoryRecipe_PXStoryExtension_displayAssetsInRecipe_withCategory_error___block_invoke;
   v25[3] = &unk_1E77309A0;
   v25[4] = &v26;
-  [v8 enumerateAssetsWithKind:1 usingBlock:v25];
+  [recipeCopy enumerateAssetsWithKind:1 usingBlock:v25];
   v9 = v27[5];
   if (!v9)
   {
     PXDisplayAssetFetchResultEmpty();
   }
 
-  v10 = [a1 schemeForPHAssets];
-  v11 = [v9 isEqualToString:v10];
+  schemeForPHAssets = [self schemeForPHAssets];
+  v11 = [v9 isEqualToString:schemeForPHAssets];
 
   if (v11)
   {
     v24 = 0;
-    v12 = [a1 PHAssetsInRecipe:v8 withCategory:a4 error:&v24];
+    v12 = [self PHAssetsInRecipe:recipeCopy withCategory:category error:&v24];
     v13 = v24;
   }
 
   else
   {
     v14 = v27[5];
-    v15 = [a1 schemeForSyntheticAssets];
-    LODWORD(v14) = [v14 isEqualToString:v15];
+    schemeForSyntheticAssets = [self schemeForSyntheticAssets];
+    LODWORD(v14) = [v14 isEqualToString:schemeForSyntheticAssets];
 
     if (!v14)
     {
@@ -352,7 +352,7 @@ LABEL_12:
       v16 = [v17 errorWithDomain:@"PXStoryErrorDomain" code:1 userInfo:v20];
 
       v12 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -361,16 +361,16 @@ LABEL_12:
     }
 
     v23 = 0;
-    v12 = [a1 syntheticAssetsInRecipe:v8 withCategory:a4 error:&v23];
+    v12 = [self syntheticAssetsInRecipe:recipeCopy withCategory:category error:&v23];
     v13 = v23;
   }
 
   v16 = v13;
-  if (a5)
+  if (error)
   {
 LABEL_10:
     v21 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
 LABEL_11:
@@ -380,9 +380,9 @@ LABEL_11:
   return v12;
 }
 
-+ (BOOL)recipeContainsAnyDisplayAsset:(id)a3
++ (BOOL)recipeContainsAnyDisplayAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -392,23 +392,23 @@ LABEL_11:
   v6[2] = __64__PFStoryRecipe_PXStoryExtension_recipeContainsAnyDisplayAsset___block_invoke;
   v6[3] = &unk_1E77309A0;
   v6[4] = &v7;
-  [v3 enumerateAssetsWithKind:1 usingBlock:v6];
+  [assetCopy enumerateAssetsWithKind:1 usingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
   return v4;
 }
 
-+ (void)enumerateDisplayAssetsFromRecipe:(id)a3 usingBlock:(id)a4
++ (void)enumerateDisplayAssetsFromRecipe:(id)recipe usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 PHPhotoLibraryForRecipe:v6];
+  recipeCopy = recipe;
+  blockCopy = block;
+  v8 = [self PHPhotoLibraryForRecipe:recipeCopy];
   if (v8)
   {
     v9 = [_PXStoryRecipeEnumerator alloc];
-    v10 = [a1 schemeForPHAssets];
-    v11 = [(_PXStoryRecipeEnumerator *)v9 initWithBatchSize:200 photoLibrary:v8 scheme:v10 block:v7];
+    schemeForPHAssets = [self schemeForPHAssets];
+    v11 = [(_PXStoryRecipeEnumerator *)v9 initWithBatchSize:200 photoLibrary:v8 scheme:schemeForPHAssets block:blockCopy];
 
     v19 = 0;
     v20 = &v19;
@@ -421,7 +421,7 @@ LABEL_11:
     v18 = &v19;
     v12 = v11;
     v17 = v12;
-    [v6 enumerateAssetsWithKind:1 usingBlock:&v13];
+    [recipeCopy enumerateAssetsWithKind:1 usingBlock:&v13];
     if (*(v20 + 24) == 1)
     {
       [(_PXStoryRecipeEnumerator *)v12 didFinishEnumeratingRecipeDisplayAssets:v13];
@@ -431,10 +431,10 @@ LABEL_11:
   }
 }
 
-+ (id)PHAssetsInRecipe:(id)a3 withCategory:(int64_t)a4 error:(id *)a5
++ (id)PHAssetsInRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  recipeCopy = recipe;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -442,18 +442,18 @@ LABEL_11:
   v40 = __Block_byref_object_dispose__55697;
   v41 = 0;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [a1 schemeForPHAssets];
+  schemeForPHAssets = [self schemeForPHAssets];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __80__PFStoryRecipe_PXStoryExtension_PhotoKit__PHAssetsInRecipe_withCategory_error___block_invoke;
   v31[3] = &unk_1E7738138;
-  v11 = v10;
+  v11 = schemeForPHAssets;
   v32 = v11;
-  v35 = a4;
+  categoryCopy = category;
   v12 = v9;
   v33 = v12;
   v34 = &v36;
-  [v8 enumerateAssetsWithKind:1 usingBlock:v31];
+  [recipeCopy enumerateAssetsWithKind:1 usingBlock:v31];
   if (v37[5] || ![v12 count])
   {
     v13 = 0;
@@ -461,7 +461,7 @@ LABEL_11:
 
   else
   {
-    v14 = [a1 PHPhotoLibraryForRecipe:v8];
+    v14 = [self PHPhotoLibraryForRecipe:recipeCopy];
     v15 = v14;
     if (v14)
     {
@@ -482,10 +482,10 @@ LABEL_11:
 
       else
       {
-        v21 = [v15 librarySpecificFetchOptions];
+        librarySpecificFetchOptions = [v15 librarySpecificFetchOptions];
         v22 = MEMORY[0x1E6978630];
         v23 = [v18 copy];
-        v13 = [v22 fetchAssetsWithLocalIdentifiers:v23 options:v21];
+        v13 = [v22 fetchAssetsWithLocalIdentifiers:v23 options:librarySpecificFetchOptions];
       }
     }
 
@@ -502,9 +502,9 @@ LABEL_11:
     }
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v37[5];
+    *error = v37[5];
   }
 
   _Block_object_dispose(&v36, 8);
@@ -512,21 +512,21 @@ LABEL_11:
   return v13;
 }
 
-+ (BOOL)addPHAssets:(id)a3 toRecipe:(id)a4 withCategory:(int64_t)a5 error:(id *)a6
++ (BOOL)addPHAssets:(id)assets toRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  assetsCopy = assets;
+  recipeCopy = recipe;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__55696;
   v36 = __Block_byref_object_dispose__55697;
   v37 = 0;
-  v11 = [v9 count];
+  v11 = [assetsCopy count];
   if (!v11)
   {
     v22 = 1;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -534,35 +534,35 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v24 = [v9 firstObject];
-  v12 = [v24 photoLibrary];
+  firstObject = [assetsCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
   v13 = (v33 + 5);
   obj = v33[5];
-  v14 = [a1 _recipe:v10 setPHPhotoLibrary:v12 error:&obj];
+  v14 = [self _recipe:recipeCopy setPHPhotoLibrary:photoLibrary error:&obj];
   objc_storeStrong(v13, obj);
   if (v14)
   {
-    v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
     if (v11 >= 1)
     {
       for (i = 0; i != v11; ++i)
       {
-        v17 = [v9 objectAtIndexedSubscript:i];
-        v18 = [v17 localIdentifier];
-        [v15 addObject:v18];
+        v17 = [assetsCopy objectAtIndexedSubscript:i];
+        localIdentifier = [v17 localIdentifier];
+        [v15 addObject:localIdentifier];
       }
     }
 
-    v19 = [a1 schemeForPHAssets];
-    v20 = [v12 cloudIdentifierMappingsForLocalIdentifiers:v15];
+    schemeForPHAssets = [self schemeForPHAssets];
+    v20 = [photoLibrary cloudIdentifierMappingsForLocalIdentifiers:v15];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __84__PFStoryRecipe_PXStoryExtension_PhotoKit__addPHAssets_toRecipe_withCategory_error___block_invoke;
     v26[3] = &unk_1E7732F00;
-    v30 = a5;
-    v21 = v19;
+    categoryCopy = category;
+    v21 = schemeForPHAssets;
     v27 = v21;
-    v28 = v10;
+    v28 = recipeCopy;
     v29 = &v32;
     [v20 enumerateKeysAndObjectsUsingBlock:v26];
     v22 = v33[5] == 0;
@@ -573,10 +573,10 @@ LABEL_11:
     v22 = 0;
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_11:
-    *a6 = v33[5];
+    *error = v33[5];
   }
 
 LABEL_12:
@@ -585,52 +585,52 @@ LABEL_12:
   return v22;
 }
 
-+ (id)PHPhotoLibraryForRecipe:(id)a3
++ (id)PHPhotoLibraryForRecipe:(id)recipe
 {
-  v3 = [a3 libraryWithKind:1];
+  v3 = [recipe libraryWithKind:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 photoLibrary];
+    photoLibrary = [v3 photoLibrary];
   }
 
   else if (v3)
   {
     v5 = objc_alloc(MEMORY[0x1E69789A8]);
     v6 = [v3 url];
-    v4 = [v5 initWithPhotoLibraryURL:v6];
+    photoLibrary = [v5 initWithPhotoLibraryURL:v6];
   }
 
   else
   {
-    v4 = 0;
+    photoLibrary = 0;
   }
 
-  return v4;
+  return photoLibrary;
 }
 
-+ (id)recipe:(id)a3 withPHPhotoLibrary:(id)a4 error:(id *)a5
++ (id)recipe:(id)recipe withPHPhotoLibrary:(id)library error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([a1 _recipe:v8 isReferencingPHPhotoLibrary:v9])
+  recipeCopy = recipe;
+  libraryCopy = library;
+  if ([self _recipe:recipeCopy isReferencingPHPhotoLibrary:libraryCopy])
   {
-    v10 = v8;
+    v10 = recipeCopy;
     v11 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
 
 LABEL_7:
     v14 = v11;
-    *a5 = v11;
+    *error = v11;
     goto LABEL_8;
   }
 
-  v12 = [v8 mutableCopyWithZone:0];
+  v12 = [recipeCopy mutableCopyWithZone:0];
   v16 = 0;
-  v13 = [a1 _recipe:v12 setPHPhotoLibrary:v9 error:&v16];
+  v13 = [self _recipe:v12 setPHPhotoLibrary:libraryCopy error:&v16];
   v11 = v16;
   v10 = 0;
   if (v13)
@@ -638,7 +638,7 @@ LABEL_7:
     v10 = [v12 copyWithZone:0];
   }
 
-  if (a5)
+  if (error)
   {
     goto LABEL_7;
   }
@@ -648,16 +648,16 @@ LABEL_8:
   return v10;
 }
 
-+ (BOOL)_recipe:(id)a3 setPHPhotoLibrary:(id)a4 error:(id *)a5
++ (BOOL)_recipe:(id)_recipe setPHPhotoLibrary:(id)library error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([a1 _recipe:v8 isReferencingPHPhotoLibrary:v9])
+  _recipeCopy = _recipe;
+  libraryCopy = library;
+  if ([self _recipe:_recipeCopy isReferencingPHPhotoLibrary:libraryCopy])
   {
     v10 = 0;
     v11 = 1;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -665,7 +665,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v12 = [v8 libraryWithKind:1];
+  v12 = [_recipeCopy libraryWithKind:1];
   v11 = v12 == 0;
   if (v12)
   {
@@ -673,8 +673,8 @@ LABEL_8:
     v22 = *MEMORY[0x1E696A278];
     v14 = objc_alloc(MEMORY[0x1E696AEC0]);
     v15 = [v12 url];
-    v16 = [v9 photoLibraryURL];
-    v17 = [v14 initWithFormat:@"Recipe referencing PhotoKit library %@ and cannot be changed to %@", v15, v16];
+    photoLibraryURL = [libraryCopy photoLibraryURL];
+    v17 = [v14 initWithFormat:@"Recipe referencing PhotoKit library %@ and cannot be changed to %@", v15, photoLibraryURL];
     v23[0] = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v10 = [v13 errorWithDomain:@"PXStoryErrorDomain" code:1 userInfo:v18];
@@ -682,17 +682,17 @@ LABEL_8:
 
   else
   {
-    v19 = [[_PXStoryRecipePhotoKitLibraryReference alloc] initWithPhotoLibrary:v9];
-    [v8 addLibrary:v19];
+    v19 = [[_PXStoryRecipePhotoKitLibraryReference alloc] initWithPhotoLibrary:libraryCopy];
+    [_recipeCopy addLibrary:v19];
 
     v10 = 0;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_8:
     v20 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
 LABEL_9:
@@ -700,20 +700,20 @@ LABEL_9:
   return v11;
 }
 
-+ (BOOL)_recipe:(id)a3 isReferencingPHPhotoLibrary:(id)a4
++ (BOOL)_recipe:(id)_recipe isReferencingPHPhotoLibrary:(id)library
 {
-  v5 = a4;
-  v6 = [a3 libraryWithKind:1];
+  libraryCopy = library;
+  v6 = [_recipe libraryWithKind:1];
   v7 = [v6 url];
-  v8 = [v5 photoLibraryURL];
+  photoLibraryURL = [libraryCopy photoLibraryURL];
 
-  LOBYTE(v5) = [v7 isEqual:v8];
-  return v5;
+  LOBYTE(libraryCopy) = [v7 isEqual:photoLibraryURL];
+  return libraryCopy;
 }
 
-+ (id)syntheticAssetsInRecipe:(id)a3 withCategory:(int64_t)a4 error:(id *)a5
++ (id)syntheticAssetsInRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error
 {
-  v8 = a3;
+  recipeCopy = recipe;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -721,26 +721,26 @@ LABEL_9:
   v26 = __Block_byref_object_dispose__98031;
   v27 = 0;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [a1 schemeForSyntheticAssets];
+  schemeForSyntheticAssets = [self schemeForSyntheticAssets];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __88__PFStoryRecipe_PXStoryExtension_Synthetic__syntheticAssetsInRecipe_withCategory_error___block_invoke;
   v17 = &unk_1E7738138;
-  v11 = v10;
+  v11 = schemeForSyntheticAssets;
   v18 = v11;
-  v21 = a4;
+  categoryCopy = category;
   v12 = v9;
   v19 = v12;
   v20 = &v22;
-  [v8 enumerateAssetsWithKind:1 usingBlock:&v14];
+  [recipeCopy enumerateAssetsWithKind:1 usingBlock:&v14];
   if (!v23[5] && [v12 count])
   {
     PXDisplayAssetFetchResultFromArray();
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v23[5];
+    *error = v23[5];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -748,20 +748,20 @@ LABEL_9:
   return 0;
 }
 
-+ (BOOL)addSyntheticAssets:(id)a3 toRecipe:(id)a4 withCategory:(int64_t)a5 error:(id *)a6
++ (BOOL)addSyntheticAssets:(id)assets toRecipe:(id)recipe withCategory:(int64_t)category error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v25 = a1;
-  v11 = [a1 schemeForSyntheticAssets];
-  v12 = [v9 count];
+  assetsCopy = assets;
+  recipeCopy = recipe;
+  selfCopy = self;
+  schemeForSyntheticAssets = [self schemeForSyntheticAssets];
+  v12 = [assetsCopy count];
   if (v12 >= 1)
   {
     v13 = v12;
     v14 = 0;
     while (1)
     {
-      v15 = [v9 objectAtIndexedSubscript:v14];
+      v15 = [assetsCopy objectAtIndexedSubscript:v14];
       if (!v15)
       {
         break;
@@ -770,20 +770,20 @@ LABEL_9:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v19 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v22 = objc_opt_class();
         v21 = NSStringFromClass(v22);
-        v24 = [v15 px_descriptionForAssertionMessage];
-        [v19 handleFailureInMethod:a2 object:v25 file:@"PFStoryRecipe+PXStory+Synthetic.m" lineNumber:27 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"syntheticAssets[index]", v21, v24}];
+        px_descriptionForAssertionMessage = [v15 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PFStoryRecipe+PXStory+Synthetic.m" lineNumber:27 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"syntheticAssets[index]", v21, px_descriptionForAssertionMessage}];
 
         goto LABEL_9;
       }
 
 LABEL_5:
       v16 = MEMORY[0x1E69C08B8];
-      v17 = [v15 serializableDescription];
-      v18 = [v16 createAssetWithCategory:a5 scheme:v11 cloudIdentifier:v17];
-      [v10 addAsset:v18];
+      serializableDescription = [v15 serializableDescription];
+      v18 = [v16 createAssetWithCategory:category scheme:schemeForSyntheticAssets cloudIdentifier:serializableDescription];
+      [recipeCopy addAsset:v18];
 
       if (v13 == ++v14)
       {
@@ -791,10 +791,10 @@ LABEL_5:
       }
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    [v19 handleFailureInMethod:a2 object:v25 file:@"PFStoryRecipe+PXStory+Synthetic.m" lineNumber:27 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"syntheticAssets[index]", v21}];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PFStoryRecipe+PXStory+Synthetic.m" lineNumber:27 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"syntheticAssets[index]", v21}];
 LABEL_9:
 
     goto LABEL_5;

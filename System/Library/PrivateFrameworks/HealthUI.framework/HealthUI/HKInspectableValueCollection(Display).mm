@@ -10,40 +10,40 @@
 - (id)displayString
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 collectionType];
-  if ((v3 - 2) < 2)
+  collectionType = [self collectionType];
+  if ((collectionType - 2) < 2)
   {
-    v5 = [a1 inspectableValues];
-    v6 = [a1 _stringsForValues:v5];
-    v1 = [a1 _joinValueStrings:v6];
+    inspectableValues = [self inspectableValues];
+    displayString = [self _stringsForValues:inspectableValues];
+    displayString3 = [self _joinValueStrings:displayString];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v3 == 1)
+  if (collectionType == 1)
   {
-    v5 = [a1 min];
-    v6 = [v5 displayString];
-    v11[0] = v6;
-    v7 = [a1 max];
-    v8 = [v7 displayString];
-    v11[1] = v8;
+    inspectableValues = [self min];
+    displayString = [inspectableValues displayString];
+    v11[0] = displayString;
+    v7 = [self max];
+    displayString2 = [v7 displayString];
+    v11[1] = displayString2;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
-    v1 = [a1 _joinValueStrings:v9];
+    displayString3 = [self _joinValueStrings:v9];
 
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!collectionType)
   {
-    v4 = [a1 inspectableValue];
-    v1 = [v4 displayString];
+    inspectableValue = [self inspectableValue];
+    displayString3 = [inspectableValue displayString];
   }
 
 LABEL_8:
 
-  return v1;
+  return displayString3;
 }
 
 - (id)_stringsForValues:()Display
@@ -70,8 +70,8 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) displayString];
-        [v4 addObject:v10];
+        displayString = [*(*(&v12 + 1) + 8 * i) displayString];
+        [v4 addObject:displayString];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -94,35 +94,35 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  v14 = [v10 inspectableValue];
-  if ([v14 valueType] == 7)
+  inspectableValue = [v10 inspectableValue];
+  if ([inspectableValue valueType] == 7)
   {
   }
 
   else
   {
-    v15 = [v10 inspectableValue];
-    v16 = [v15 valueType];
+    inspectableValue2 = [v10 inspectableValue];
+    valueType = [inspectableValue2 valueType];
 
-    if (v16 != 9)
+    if (valueType != 9)
     {
 LABEL_3:
-      [a1 parseUncodedValueCollection:v10 referenceRanges:v11 withCompletion:v13];
+      [self parseUncodedValueCollection:v10 referenceRanges:v11 withCompletion:v13];
       goto LABEL_4;
     }
   }
 
-  v17 = [v10 inspectableValue];
-  v18 = [v17 valueType];
+  inspectableValue3 = [v10 inspectableValue];
+  valueType2 = [inspectableValue3 valueType];
 
-  v19 = [v10 inspectableValue];
-  v20 = v19;
-  if (v18 == 9)
+  inspectableValue4 = [v10 inspectableValue];
+  v20 = inspectableValue4;
+  if (valueType2 == 9)
   {
-    v21 = [v19 dataAbsentReason];
-    v22 = [v21 localizedPreferredName];
+    dataAbsentReason = [inspectableValue4 dataAbsentReason];
+    localizedPreferredName = [dataAbsentReason localizedPreferredName];
 
-    if (![(__CFString *)v22 length])
+    if (![(__CFString *)localizedPreferredName length])
     {
       _HKInitializeLogging();
       v23 = *MEMORY[0x1E696B948];
@@ -131,18 +131,18 @@ LABEL_3:
         [HKInspectableValueCollection(Display) parseValueCollection:v23 referenceRanges:v10 healthRecordsStore:? withCompletion:?];
       }
 
-      v22 = &stru_1F42FFBE0;
+      localizedPreferredName = &stru_1F42FFBE0;
     }
 
-    v13[2](v13, 0, v22, &stru_1F42FFBE0, 1);
+    v13[2](v13, 0, localizedPreferredName, &stru_1F42FFBE0, 1);
   }
 
   else
   {
-    v24 = [v19 ontologyConcept];
-    v22 = [v24 localizedPreferredName];
+    ontologyConcept = [inspectableValue4 ontologyConcept];
+    localizedPreferredName = [ontologyConcept localizedPreferredName];
 
-    if (![(__CFString *)v22 length])
+    if (![(__CFString *)localizedPreferredName length])
     {
       _HKInitializeLogging();
       v25 = *MEMORY[0x1E696B948];
@@ -151,10 +151,10 @@ LABEL_3:
         [HKInspectableValueCollection(Display) parseValueCollection:v25 referenceRanges:v10 healthRecordsStore:? withCompletion:?];
       }
 
-      v22 = &stru_1F42FFBE0;
+      localizedPreferredName = &stru_1F42FFBE0;
     }
 
-    v13[2](v13, 0, v22, &stru_1F42FFBE0, 0);
+    v13[2](v13, 0, localizedPreferredName, &stru_1F42FFBE0, 0);
   }
 
 LABEL_4:
@@ -167,8 +167,8 @@ LABEL_4:
   {
     v7 = a3;
     v8 = [v7 valueInRangeWithReferenceRanges:a4 includeUnitString:1];
-    v9 = [v7 displayString];
-    a3 = [v9 hk_trimWhitespaceAndNewlines];
+    displayString = [v7 displayString];
+    a3 = [displayString hk_trimWhitespaceAndNewlines];
 
     v10 = [MEMORY[0x1E696C200] _unitStringForValueCollection:v7];
   }

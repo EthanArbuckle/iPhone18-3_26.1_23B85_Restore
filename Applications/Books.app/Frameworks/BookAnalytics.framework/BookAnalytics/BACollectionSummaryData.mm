@@ -1,11 +1,11 @@
 @interface BACollectionSummaryData
 - (BACollectionSummaryData)init;
-- (BACollectionSummaryData)initWithCollectionSummary:(id)a3;
+- (BACollectionSummaryData)initWithCollectionSummary:(id)summary;
 @end
 
 @implementation BACollectionSummaryData
 
-- (BACollectionSummaryData)initWithCollectionSummary:(id)a3
+- (BACollectionSummaryData)initWithCollectionSummary:(id)summary
 {
   type metadata accessor for BridgedCollectionIDData();
   *(&self->super.isa + OBJC_IVAR___BACollectionSummaryData_collectionSummary) = sub_1E18C0();

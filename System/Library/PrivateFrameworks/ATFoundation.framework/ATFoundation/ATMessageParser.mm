@@ -1,18 +1,18 @@
 @interface ATMessageParser
-- (ATMessageParser)initWithMessageClass:(Class)a3;
-- (BOOL)_parseObjectFromData:(id)a3;
-- (BOOL)_parseObjectLength:(const char *)a3 length:(unint64_t)a4 bytesConsumed:(unint64_t *)a5;
-- (BOOL)processData:(const char *)a3 length:(int64_t)a4;
+- (ATMessageParser)initWithMessageClass:(Class)class;
+- (BOOL)_parseObjectFromData:(id)data;
+- (BOOL)_parseObjectLength:(const char *)length length:(unint64_t)a4 bytesConsumed:(unint64_t *)consumed;
+- (BOOL)processData:(const char *)data length:(int64_t)length;
 - (void)dealloc;
 @end
 
 @implementation ATMessageParser
 
-- (BOOL)processData:(const char *)a3 length:(int64_t)a4
+- (BOOL)processData:(const char *)data length:(int64_t)length
 {
-  if (a4 >= 1)
+  if (length >= 1)
   {
-    v5 = a4;
+    lengthCopy = length;
     v7 = 0;
     v8 = 0;
     while (1)
@@ -26,9 +26,9 @@
       else
       {
         varIntDataLen = self->_varIntDataLen;
-        if (10 - varIntDataLen >= v5 - v7)
+        if (10 - varIntDataLen >= lengthCopy - v7)
         {
-          v12 = v5 - v7;
+          v12 = lengthCopy - v7;
         }
 
         else
@@ -36,7 +36,7 @@
           v12 = 10 - varIntDataLen;
         }
 
-        memcpy(&self->_varIntBuf[varIntDataLen], &a3[v7], v12);
+        memcpy(&self->_varIntBuf[varIntDataLen], &data[v7], v12);
         v13 = self->_varIntDataLen + v12;
         self->_varIntDataLen = v13;
         if (v13 == 10)
@@ -57,16 +57,16 @@
             {
               if (v7)
               {
-                v26 = [MEMORY[0x277CCA890] currentHandler];
-                [v26 handleFailureInMethod:a2 object:self file:@"ATMessageParser.m" lineNumber:115 description:{@"detected partial varIntBuffer but readOffset=%d (expected 0)", v7}];
+                currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler handleFailureInMethod:a2 object:self file:@"ATMessageParser.m" lineNumber:115 description:{@"detected partial varIntBuffer but readOffset=%d (expected 0)", v7}];
               }
 
-              v8 = malloc_type_malloc(varIntDataLen + v5, 0x46ACBAuLL);
+              v8 = malloc_type_malloc(varIntDataLen + lengthCopy, 0x46ACBAuLL);
               memcpy(v8, self->_varIntBuf, varIntDataLen);
-              memcpy(&v8[varIntDataLen], a3, v5);
+              memcpy(&v8[varIntDataLen], data, lengthCopy);
               v7 = v34;
-              v5 += varIntDataLen;
-              a3 = v8;
+              lengthCopy += varIntDataLen;
+              data = v8;
             }
           }
 
@@ -100,7 +100,7 @@
         }
       }
 
-      v18 = v5 - v7;
+      v18 = lengthCopy - v7;
       objectDataBuffer = self->_objectDataBuffer;
       if (objectDataBuffer)
       {
@@ -110,7 +110,7 @@
           v18 = curObjectLength - objectDataLen;
         }
 
-        memcpy(&objectDataBuffer[objectDataLen], &a3[v7], v18);
+        memcpy(&objectDataBuffer[objectDataLen], &data[v7], v18);
         v21 = self->_objectDataLen + v18;
         self->_objectDataLen = v21;
         if (v21 == self->_curObjectLength)
@@ -127,7 +127,7 @@
 
       else if (v18 >= curObjectLength)
       {
-        v24 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:&a3[v7] length:? freeWhenDone:?];
+        v24 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:&data[v7] length:? freeWhenDone:?];
         VarIntBuf = [(ATMessageParser *)self _parseObjectFromData:v24];
         v7 += self->_curObjectLength;
         self->_curObjectLength = 0;
@@ -149,15 +149,15 @@ LABEL_40:
           return VarIntBuf;
         }
 
-        memcpy(v23, &a3[v7], v5 - v7);
+        memcpy(v23, &data[v7], lengthCopy - v7);
         self->_objectDataLen = v18;
-        v7 = v5;
+        v7 = lengthCopy;
       }
 
 LABEL_31:
       if (VarIntBuf)
       {
-        v25 = v5 - 1 >= v7;
+        v25 = lengthCopy - 1 >= v7;
       }
 
       else
@@ -187,7 +187,7 @@ LABEL_31:
   return v29;
 }
 
-- (BOOL)_parseObjectLength:(const char *)a3 length:(unint64_t)a4 bytesConsumed:(unint64_t *)a5
+- (BOOL)_parseObjectLength:(const char *)length length:(unint64_t)a4 bytesConsumed:(unint64_t *)consumed
 {
   varIntDataLen = self->_varIntDataLen;
   if (10 - varIntDataLen >= a4)
@@ -200,7 +200,7 @@ LABEL_31:
     v8 = 10 - varIntDataLen;
   }
 
-  memcpy(&self->_varIntBuf[varIntDataLen], a3, v8);
+  memcpy(&self->_varIntBuf[varIntDataLen], length, v8);
   v9 = self->_varIntDataLen + v8;
   self->_varIntDataLen = v9;
   if (v9 == 10)
@@ -208,7 +208,7 @@ LABEL_31:
     VarIntBuf = PBReaderReadVarIntBuf();
     if (VarIntBuf)
     {
-      *a5 = -varIntDataLen;
+      *consumed = -varIntDataLen;
       self->_curObjectLength = 0;
     }
 
@@ -217,25 +217,25 @@ LABEL_31:
 
   else
   {
-    *a5 = v8;
+    *consumed = v8;
     LOBYTE(VarIntBuf) = 1;
   }
 
   return VarIntBuf;
 }
 
-- (BOOL)_parseObjectFromData:(id)a3
+- (BOOL)_parseObjectFromData:(id)data
 {
   v5 = MEMORY[0x277D43170];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[v5 alloc] initWithData:dataCopy];
 
   if (![(ATMessageParser *)self messageClass])
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"ATMessageParser.m" lineNumber:40 description:{@"You can't use %@ without setting a message class", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATMessageParser.m" lineNumber:40 description:{@"You can't use %@ without setting a message class", v15}];
   }
 
   v8 = objc_alloc_init([(ATMessageParser *)self messageClass]);
@@ -275,7 +275,7 @@ LABEL_31:
   [(ATMessageParser *)&v4 dealloc];
 }
 
-- (ATMessageParser)initWithMessageClass:(Class)a3
+- (ATMessageParser)initWithMessageClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = ATMessageParser;
@@ -283,7 +283,7 @@ LABEL_31:
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_messageClass, a3);
+    objc_storeStrong(&v4->_messageClass, class);
   }
 
   return v5;

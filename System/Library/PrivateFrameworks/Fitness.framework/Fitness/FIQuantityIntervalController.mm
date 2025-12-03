@@ -1,28 +1,28 @@
 @interface FIQuantityIntervalController
-- (BOOL)_updateTriggerWithSample:(id)a3;
+- (BOOL)_updateTriggerWithSample:(id)sample;
 - (BOOL)isIntervalEndDate;
-- (FIQuantityIntervalController)initWithIntervalQuantityType:(id)a3 threshold:(id)a4 startDate:(id)a5 trackedQuantityTypes:(id)a6;
-- (void)addSample:(id)a3;
+- (FIQuantityIntervalController)initWithIntervalQuantityType:(id)type threshold:(id)threshold startDate:(id)date trackedQuantityTypes:(id)types;
+- (void)addSample:(id)sample;
 @end
 
 @implementation FIQuantityIntervalController
 
-- (FIQuantityIntervalController)initWithIntervalQuantityType:(id)a3 threshold:(id)a4 startDate:(id)a5 trackedQuantityTypes:(id)a6
+- (FIQuantityIntervalController)initWithIntervalQuantityType:(id)type threshold:(id)threshold startDate:(id)date trackedQuantityTypes:(id)types
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  thresholdCopy = threshold;
+  dateCopy = date;
+  typesCopy = types;
   v20.receiver = self;
   v20.super_class = FIQuantityIntervalController;
   v14 = [(FIQuantityIntervalController *)&v20 init];
   if (v14)
   {
-    v15 = [[FIIntervalQuantityTrigger alloc] initWithQuantityType:v10 startDate:v12 threshold:v11];
+    v15 = [[FIIntervalQuantityTrigger alloc] initWithQuantityType:typeCopy startDate:dateCopy threshold:thresholdCopy];
     quantityTrigger = v14->_quantityTrigger;
     v14->_quantityTrigger = v15;
 
-    v17 = [FIMutableTimeSliceGroup timeSliceGroupForQuantityTypes:v13 startDate:v12];
+    v17 = [FIMutableTimeSliceGroup timeSliceGroupForQuantityTypes:typesCopy startDate:dateCopy];
     sliceGroup = v14->_sliceGroup;
     v14->_sliceGroup = v17;
   }
@@ -30,41 +30,41 @@
   return 0;
 }
 
-- (void)addSample:(id)a3
+- (void)addSample:(id)sample
 {
-  v7 = a3;
-  [(FIMutableTimeSliceGroup *)self->_sliceGroup updateSlicesWithSample:v7];
-  if ([(FIQuantityIntervalController *)self _updateTriggerWithSample:v7])
+  sampleCopy = sample;
+  [(FIMutableTimeSliceGroup *)self->_sliceGroup updateSlicesWithSample:sampleCopy];
+  if ([(FIQuantityIntervalController *)self _updateTriggerWithSample:sampleCopy])
   {
-    v4 = [(FIIntervalQuantityTrigger *)self->_quantityTrigger triggered];
+    triggered = [(FIIntervalQuantityTrigger *)self->_quantityTrigger triggered];
     sliceGroup = self->_sliceGroup;
-    if (v4)
+    if (triggered)
     {
-      v6 = [(FIIntervalQuantityTrigger *)self->_quantityTrigger triggeredDate];
-      [(FIMutableTimeSliceGroup *)sliceGroup updateSlicesWithEndDate:v6];
+      triggeredDate = [(FIIntervalQuantityTrigger *)self->_quantityTrigger triggeredDate];
+      [(FIMutableTimeSliceGroup *)sliceGroup updateSlicesWithEndDate:triggeredDate];
     }
 
     else
     {
-      v6 = [v7 endDate];
-      [(FIMutableTimeSliceGroup *)sliceGroup commitAllSlicesToDate:v6];
+      triggeredDate = [sampleCopy endDate];
+      [(FIMutableTimeSliceGroup *)sliceGroup commitAllSlicesToDate:triggeredDate];
     }
   }
 }
 
-- (BOOL)_updateTriggerWithSample:(id)a3
+- (BOOL)_updateTriggerWithSample:(id)sample
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 quantityType];
-  v6 = [(FIIntervalQuantityTrigger *)self->_quantityTrigger quantityType];
-  v7 = [v5 isEqual:v6];
+  sampleCopy = sample;
+  quantityType = [sampleCopy quantityType];
+  quantityType2 = [(FIIntervalQuantityTrigger *)self->_quantityTrigger quantityType];
+  v7 = [quantityType isEqual:quantityType2];
 
   if (v7)
   {
     quantityTrigger = self->_quantityTrigger;
     v17 = 0;
-    v9 = [(FIIntervalQuantityTrigger *)quantityTrigger addingSample:v4 error:&v17];
+    v9 = [(FIIntervalQuantityTrigger *)quantityTrigger addingSample:sampleCopy error:&v17];
     v10 = v17;
     v11 = self->_quantityTrigger;
     self->_quantityTrigger = v9;
@@ -81,7 +81,7 @@
     {
       v16 = self->_quantityTrigger;
       *buf = 138412802;
-      v19 = v4;
+      v19 = sampleCopy;
       v20 = 2112;
       v21 = v16;
       v22 = 2112;
@@ -99,8 +99,8 @@ LABEL_7:
 
 - (BOOL)isIntervalEndDate
 {
-  v2 = [(FIIntervalQuantityTrigger *)self->_quantityTrigger triggeredDate];
-  v3 = v2 != 0;
+  triggeredDate = [(FIIntervalQuantityTrigger *)self->_quantityTrigger triggeredDate];
+  v3 = triggeredDate != 0;
 
   return v3;
 }

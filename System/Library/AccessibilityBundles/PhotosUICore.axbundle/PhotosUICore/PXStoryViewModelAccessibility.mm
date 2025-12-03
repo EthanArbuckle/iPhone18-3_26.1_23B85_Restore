@@ -1,17 +1,17 @@
 @interface PXStoryViewModelAccessibility
-- (void)setWantsRelatedOverlayVisible:(BOOL)a3;
+- (void)setWantsRelatedOverlayVisible:(BOOL)visible;
 @end
 
 @implementation PXStoryViewModelAccessibility
 
-- (void)setWantsRelatedOverlayVisible:(BOOL)a3
+- (void)setWantsRelatedOverlayVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v9.receiver = self;
   v9.super_class = PXStoryViewModelAccessibility;
   [(PXStoryViewModelAccessibility *)&v9 setWantsRelatedOverlayVisible:?];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
-  if (v3)
+  if (visibleCopy)
   {
     v4 = MEMORY[0x29EDBD7E8];
     v5 = accessibilityPhotosUICoreLocalizedString(@"watch.next.memories");

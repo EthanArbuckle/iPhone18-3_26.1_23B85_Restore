@@ -1,18 +1,18 @@
 @interface HDMedicalUserDomainConceptEntity
-+ (BOOL)insertConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)updateConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)willDeleteConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 syncProvenance:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8;
++ (BOOL)insertConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)updateConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)willDeleteConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error;
 + (id)_recursiveSQLForMappedUDCs;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)newUserDomainConceptForRefreshWithCodingCollection:(id)a3 propertyCollection:(id)a4;
-+ (id)predicateMatchingSemanticDuplicatesOf:(id)a3;
-+ (id)predicateMatchingSemanticIdentifier:(id)a3;
++ (id)newUserDomainConceptForRefreshWithCodingCollection:(id)collection propertyCollection:(id)propertyCollection;
++ (id)predicateMatchingSemanticDuplicatesOf:(id)of;
++ (id)predicateMatchingSemanticIdentifier:(id)identifier;
 + (id)privateDataEntities;
 + (id)privateSubEntities;
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
-+ (void)_bindRecursiveMappedUDCStatement:(_DWORD *)a3 bindingIndex:;
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error;
++ (void)_bindRecursiveMappedUDCStatement:(_DWORD *)statement bindingIndex:;
 @end
 
 @implementation HDMedicalUserDomainConceptEntity
@@ -41,13 +41,13 @@
   return v2;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDMedicalUserDomainConceptEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDMedicalUserDomainConceptEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
@@ -62,20 +62,20 @@
   return v2;
 }
 
-+ (BOOL)insertConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 protectedDatabase];
+  conceptCopy = concept;
+  protectedDatabase = [transaction protectedDatabase];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __106__HDMedicalUserDomainConceptEntity_insertConcreteUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2;
   v13[3] = &unk_278613B58;
-  v14 = v9;
-  v15 = a4;
-  v11 = v9;
-  LOBYTE(a6) = [v10 executeCachedStatementForKey:&insertConcreteUserDomainConcept_userDomainConceptID_transaction_error__statementKey_0 error:a6 SQLGenerator:&__block_literal_global_168 bindingHandler:v13 enumerationHandler:0];
+  v14 = conceptCopy;
+  dCopy = d;
+  v11 = conceptCopy;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&insertConcreteUserDomainConcept_userDomainConceptID_transaction_error__statementKey_0 error:error SQLGenerator:&__block_literal_global_168 bindingHandler:v13 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 void __106__HDMedicalUserDomainConceptEntity_insertConcreteUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -85,20 +85,20 @@ void __106__HDMedicalUserDomainConceptEntity_insertConcreteUserDomainConcept_use
   HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)updateConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)updateConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 protectedDatabase];
+  conceptCopy = concept;
+  protectedDatabase = [transaction protectedDatabase];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __106__HDMedicalUserDomainConceptEntity_updateConcreteUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2;
   v13[3] = &unk_278613B58;
-  v14 = v9;
-  v15 = a4;
-  v11 = v9;
-  LOBYTE(a6) = [v10 executeCachedStatementForKey:&updateConcreteUserDomainConcept_userDomainConceptID_transaction_error__statementKey_0 error:a6 SQLGenerator:&__block_literal_global_328_0 bindingHandler:v13 enumerationHandler:0];
+  v14 = conceptCopy;
+  dCopy = d;
+  v11 = conceptCopy;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&updateConcreteUserDomainConcept_userDomainConceptID_transaction_error__statementKey_0 error:error SQLGenerator:&__block_literal_global_328_0 bindingHandler:v13 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __106__HDMedicalUserDomainConceptEntity_updateConcreteUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -111,25 +111,25 @@ uint64_t __106__HDMedicalUserDomainConceptEntity_updateConcreteUserDomainConcept
   return sqlite3_bind_int64(a2, 2, v5);
 }
 
-+ (BOOL)willDeleteConcreteUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 syncProvenance:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)willDeleteConcreteUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v12 daemon];
-  v15 = [v14 behavior];
-  v16 = [v15 supportsOntology];
+  conceptCopy = concept;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  daemon = [profileCopy daemon];
+  behavior = [daemon behavior];
+  supportsOntology = [behavior supportsOntology];
 
-  if (v16)
+  if (supportsOntology)
   {
-    v17 = [v12 internalContentDatabaseManager];
+    internalContentDatabaseManager = [profileCopy internalContentDatabaseManager];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __133__HDMedicalUserDomainConceptEntity_willDeleteConcreteUserDomainConcept_userDomainConceptID_syncProvenance_profile_transaction_error___block_invoke;
     v20[3] = &unk_278625CC8;
-    v21 = v11;
-    v22 = v12;
-    v18 = [v17 performTransactionWithDatabaseTransaction:v13 error:a8 transactionHandler:v20];
+    v21 = conceptCopy;
+    v22 = profileCopy;
+    v18 = [internalContentDatabaseManager performTransactionWithDatabaseTransaction:transactionCopy error:error transactionHandler:v20];
   }
 
   else
@@ -140,54 +140,54 @@ uint64_t __106__HDMedicalUserDomainConceptEntity_updateConcreteUserDomainConcept
   return v18;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"country_code"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"country_code"])
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [a1 disambiguatedDatabaseTable];
-    v7 = [v5 stringWithFormat:@"%@.%@", v6, @"country_code"];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    v7 = [v5 stringWithFormat:@"%@.%@", disambiguatedDatabaseTable, @"country_code"];
   }
 
   else
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS___HDMedicalUserDomainConceptEntity;
-    v7 = objc_msgSendSuper2(&v9, sel_disambiguatedSQLForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v9, sel_disambiguatedSQLForProperty_, propertyCopy);
   }
 
   return v7;
 }
 
-+ (id)predicateMatchingSemanticIdentifier:(id)a3
++ (id)predicateMatchingSemanticIdentifier:(id)identifier
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 UUID];
+  identifierCopy = identifier;
+  uUID = [identifierCopy UUID];
 
-  if (v4)
+  if (uUID)
   {
-    v5 = [v3 UUID];
-    v6 = HDUserDomainConceptEntityPredicateForConceptUUID(v5, 1);
+    uUID2 = [identifierCopy UUID];
+    v6 = HDUserDomainConceptEntityPredicateForConceptUUID(uUID2, 1);
   }
 
   else
   {
-    v7 = [v3 countryCode];
+    countryCode = [identifierCopy countryCode];
 
     v8 = MEMORY[0x277D10B20];
-    v5 = [v3 typeIdentifier];
-    v9 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifier(v5);
+    uUID2 = [identifierCopy typeIdentifier];
+    v9 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifier(uUID2);
     v10 = v9;
-    if (v7)
+    if (countryCode)
     {
       v18[0] = v9;
-      v11 = [v3 medicalCoding];
-      v12 = HDUserDomainConceptEntityPredicateForMedicalCoding(v11);
+      medicalCoding = [identifierCopy medicalCoding];
+      v12 = HDUserDomainConceptEntityPredicateForMedicalCoding(medicalCoding);
       v18[1] = v12;
-      v13 = [v3 countryCode];
-      v14 = [MEMORY[0x277D10B18] predicateWithProperty:@"country_code" equalToValue:v13];
+      countryCode2 = [identifierCopy countryCode];
+      v14 = [MEMORY[0x277D10B18] predicateWithProperty:@"country_code" equalToValue:countryCode2];
       v18[2] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
       v6 = [v8 predicateMatchingAllPredicates:v15];
@@ -196,11 +196,11 @@ uint64_t __106__HDMedicalUserDomainConceptEntity_updateConcreteUserDomainConcept
     else
     {
       v19[0] = v9;
-      v11 = [v3 medicalCoding];
-      v12 = HDUserDomainConceptEntityPredicateForMedicalCoding(v11);
+      medicalCoding = [identifierCopy medicalCoding];
+      v12 = HDUserDomainConceptEntityPredicateForMedicalCoding(medicalCoding);
       v19[1] = v12;
-      v13 = [MEMORY[0x277D10B60] isNullPredicateWithProperty:@"country_code"];
-      v19[2] = v13;
+      countryCode2 = [MEMORY[0x277D10B60] isNullPredicateWithProperty:@"country_code"];
+      v19[2] = countryCode2;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
       v6 = [v8 predicateMatchingAllPredicates:v14];
     }
@@ -211,84 +211,84 @@ uint64_t __106__HDMedicalUserDomainConceptEntity_updateConcreteUserDomainConcept
   return v6;
 }
 
-+ (id)newUserDomainConceptForRefreshWithCodingCollection:(id)a3 propertyCollection:(id)a4
++ (id)newUserDomainConceptForRefreshWithCodingCollection:(id)collection propertyCollection:(id)propertyCollection
 {
   v5 = MEMORY[0x277CCD610];
-  v6 = a4;
-  v7 = a3;
+  propertyCollectionCopy = propertyCollection;
+  collectionCopy = collection;
   v8 = [v5 alloc];
-  v9 = [v8 initWithCategoryTypes:MEMORY[0x277CBEBF8] countryCode:0 codingCollection:v7 propertyCollection:v6];
+  v9 = [v8 initWithCategoryTypes:MEMORY[0x277CBEBF8] countryCode:0 codingCollection:collectionCopy propertyCollection:propertyCollectionCopy];
 
   return v9;
 }
 
-+ (id)predicateMatchingSemanticDuplicatesOf:(id)a3
++ (id)predicateMatchingSemanticDuplicatesOf:(id)of
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 firstOntologyCoding];
-  v5 = [v3 firstAdhocCoding];
-  v6 = v4;
-  if ((v4 || (v6 = v5) != 0) && (HDUserDomainConceptEntityPredicateForMedicalCoding(v6), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  ofCopy = of;
+  firstOntologyCoding = [ofCopy firstOntologyCoding];
+  firstAdhocCoding = [ofCopy firstAdhocCoding];
+  v6 = firstOntologyCoding;
+  if ((firstOntologyCoding || (v6 = firstAdhocCoding) != 0) && (HDUserDomainConceptEntityPredicateForMedicalCoding(v6), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v21 = MEMORY[0x277D10B20];
-    v24 = v5;
+    v24 = firstAdhocCoding;
     v9 = MEMORY[0x277D10B18];
-    v23 = [v3 UUID];
-    v22 = [v9 predicateWithProperty:@"uuid" notEqualToValue:v23];
+    uUID = [ofCopy UUID];
+    v22 = [v9 predicateWithProperty:@"uuid" notEqualToValue:uUID];
     v25[0] = v22;
     v10 = MEMORY[0x277D10B18];
     v11 = MEMORY[0x277CCABB0];
-    v12 = [v3 identifier];
-    v13 = [v11 numberWithInteger:{objc_msgSend(v12, "code")}];
+    identifier = [ofCopy identifier];
+    v13 = [v11 numberWithInteger:{objc_msgSend(identifier, "code")}];
     v14 = [v10 predicateWithProperty:@"type" equalToValue:v13];
     v25[1] = v14;
     v25[2] = v8;
-    v15 = [v3 countryCode];
-    v16 = [MEMORY[0x277D10B18] predicateWithProperty:@"country_code" equalToValue:v15];
+    countryCode = [ofCopy countryCode];
+    v16 = [MEMORY[0x277D10B18] predicateWithProperty:@"country_code" equalToValue:countryCode];
     v25[3] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:4];
-    v18 = [v21 predicateMatchingAllPredicates:v17];
+    falsePredicate = [v21 predicateMatchingAllPredicates:v17];
 
-    v5 = v24;
+    firstAdhocCoding = v24;
   }
 
   else
   {
-    v18 = [MEMORY[0x277D10B70] falsePredicate];
+    falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return falsePredicate;
 }
 
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  profileCopy = profile;
+  dateCopy = date;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__134;
   v28 = __Block_byref_object_dispose__134;
   v29 = 0;
-  v12 = [v10 database];
+  database = [profileCopy database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __73__HDMedicalUserDomainConceptEntity_pruneWithProfile_nowDate_limit_error___block_invoke;
   v18[3] = &unk_278625CF0;
   v21 = &v24;
-  v22 = a1;
-  v13 = v10;
+  selfCopy = self;
+  v13 = profileCopy;
   v19 = v13;
-  v14 = v11;
+  v14 = dateCopy;
   v20 = v14;
-  v23 = a5;
-  LODWORD(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v18];
+  limitCopy = limit;
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v18];
 
-  if (a6)
+  if (error)
   {
     v15 = v25[5];
   }
@@ -509,7 +509,7 @@ uint64_t __107__HDMedicalUserDomainConceptEntity__clearPendingPruneDateForMapped
   return sqlite3_bind_int64(a2, v4 + 1, v5);
 }
 
-+ (void)_bindRecursiveMappedUDCStatement:(_DWORD *)a3 bindingIndex:
++ (void)_bindRecursiveMappedUDCStatement:(_DWORD *)statement bindingIndex:
 {
   v19 = *MEMORY[0x277D85DE8];
   objc_opt_self();
@@ -537,9 +537,9 @@ uint64_t __107__HDMedicalUserDomainConceptEntity__clearPendingPruneDateForMapped
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = *a3;
+          v12 = *statement;
           HDSQLiteBindFoundationValueToStatement();
-          ++*a3;
+          ++*statement;
         }
 
         v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];

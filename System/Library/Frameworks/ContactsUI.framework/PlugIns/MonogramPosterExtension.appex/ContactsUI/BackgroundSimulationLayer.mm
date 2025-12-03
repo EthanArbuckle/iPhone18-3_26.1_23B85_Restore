@@ -1,11 +1,11 @@
 @interface BackgroundSimulationLayer
-- (_TtC23MonogramPosterExtension25BackgroundSimulationLayer)initWithLayer:(id)a3;
+- (_TtC23MonogramPosterExtension25BackgroundSimulationLayer)initWithLayer:(id)layer;
 - (void)display;
 @end
 
 @implementation BackgroundSimulationLayer
 
-- (_TtC23MonogramPosterExtension25BackgroundSimulationLayer)initWithLayer:(id)a3
+- (_TtC23MonogramPosterExtension25BackgroundSimulationLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_100026C40();
@@ -15,9 +15,9 @@
 
 - (void)display
 {
-  v3 = self;
+  selfCopy = self;
   v2 = objc_autoreleasePoolPush();
-  sub_10000DD88(v3);
+  sub_10000DD88(selfCopy);
   objc_autoreleasePoolPop(v2);
 }
 

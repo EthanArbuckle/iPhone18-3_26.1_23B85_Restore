@@ -1,24 +1,24 @@
 @interface AXVoiceOverImageDescriptionsController
 - (AXImageCaptionModelAssetPolicy)imageCaptionModelAssetPolicy;
 - (BOOL)_isFeatureEnabled;
-- (id)_additionalTranslationLanguagesValueSummary:(id)a3;
-- (id)_validateAssetFromResults:(id)a3;
+- (id)_additionalTranslationLanguagesValueSummary:(id)summary;
+- (id)_validateAssetFromResults:(id)results;
 - (id)languageTranslator;
-- (id)speakDiscoveredImageDescriptions:(id)a3;
+- (id)speakDiscoveredImageDescriptions:(id)descriptions;
 - (id)specifiers;
-- (void)_addSensitiveContentFeedbackSpecifiers:(id)a3;
-- (void)_installLanguageTranslationModelForLanguageIfNeeded:(id)a3;
+- (void)_addSensitiveContentFeedbackSpecifiers:(id)specifiers;
+- (void)_installLanguageTranslationModelForLanguageIfNeeded:(id)needed;
 - (void)_optInToImageCaptionFeature;
 - (void)_optOutOfImageCaptionFeature;
-- (void)_showAdditionalLanguagesViewController:(id)a3;
-- (void)_updateAssetStatusCell:(int64_t)a3 error:(id)a4 downloaded:(int64_t)a5 expected:(int64_t)a6;
-- (void)_updatePrimaryGroupFooterTextAndReloadSpecifier:(BOOL)a3;
+- (void)_showAdditionalLanguagesViewController:(id)controller;
+- (void)_updateAssetStatusCell:(int64_t)cell error:(id)error downloaded:(int64_t)downloaded expected:(int64_t)expected;
+- (void)_updatePrimaryGroupFooterTextAndReloadSpecifier:(BOOL)specifier;
 - (void)_updateTranslationAssetStatus;
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8;
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7;
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
-- (void)setSpeakDiscoveredImageDescriptions:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining;
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads;
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
+- (void)setSpeakDiscoveredImageDescriptions:(id)descriptions specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -30,8 +30,8 @@
   v13.super_class = AXVoiceOverImageDescriptionsController;
   [(AXVoiceOverImageDescriptionsController *)&v13 viewDidLoad];
   [(AXVoiceOverImageDescriptionsController *)self _updateTranslationAssetStatus];
-  v3 = [(AXVoiceOverImageDescriptionsController *)self imageCaptionModelAssetPolicy];
-  v4 = [AXAssetController assetControllerWithPolicy:v3 qosClass:25];
+  imageCaptionModelAssetPolicy = [(AXVoiceOverImageDescriptionsController *)self imageCaptionModelAssetPolicy];
+  v4 = [AXAssetController assetControllerWithPolicy:imageCaptionModelAssetPolicy qosClass:25];
   assetController = self->_assetController;
   self->_assetController = v4;
 
@@ -50,10 +50,10 @@
 
   objc_destroyWeak(&v11);
   [(AXAssetController *)self->_assetController refreshAssetsByForceUpdatingCatalog:0 updatingCatalogIfNeeded:1 catalogRefreshOverrideTimeout:0 completion:0];
-  v7 = [(AXVoiceOverImageDescriptionsController *)self table];
+  table = [(AXVoiceOverImageDescriptionsController *)self table];
   v8 = objc_opt_class();
   v9 = +[AXAssetStatusInfoCell cellReuseIdentifier];
-  [v7 registerClass:v8 forCellReuseIdentifier:v9];
+  [table registerClass:v8 forCellReuseIdentifier:v9];
 
   objc_destroyWeak(&location);
 }
@@ -184,15 +184,15 @@ void __53__AXVoiceOverImageDescriptionsController_viewDidLoad__block_invoke(uint
   return v4;
 }
 
-- (void)_showAdditionalLanguagesViewController:(id)a3
+- (void)_showAdditionalLanguagesViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6 = [LTUITranslateSettingsDownloadController translateSettingsDownloadControllerWithUsageContext:1];
   [v6 setParentController:self];
-  v5 = [(AXVoiceOverImageDescriptionsController *)self rootController];
-  [v6 setRootController:v5];
+  rootController = [(AXVoiceOverImageDescriptionsController *)self rootController];
+  [v6 setRootController:rootController];
 
-  [v6 setSpecifier:v4];
+  [v6 setSpecifier:controllerCopy];
   [(AXVoiceOverImageDescriptionsController *)self showController:v6 animate:1];
 }
 
@@ -211,30 +211,30 @@ void __53__AXVoiceOverImageDescriptionsController_viewDidLoad__block_invoke(uint
   return languageTranslator;
 }
 
-- (void)_installLanguageTranslationModelForLanguageIfNeeded:(id)a3
+- (void)_installLanguageTranslationModelForLanguageIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = AXMediaLogLanguageTranslation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = neededCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Checking if Preferences should install translation model for: %@", &v7, 0xCu);
   }
 
   if ([(AXVoiceOverImageDescriptionsController *)self _isFeatureEnabled])
   {
-    v6 = [(AXVoiceOverImageDescriptionsController *)self languageTranslator];
-    [v6 installOfflineTranslationModelForLanguageCodeIfNeeded:v4 progress:&__block_literal_global_38 completion:&__block_literal_global_345];
+    languageTranslator = [(AXVoiceOverImageDescriptionsController *)self languageTranslator];
+    [languageTranslator installOfflineTranslationModelForLanguageCodeIfNeeded:neededCopy progress:&__block_literal_global_38 completion:&__block_literal_global_345];
   }
 
   else
   {
-    v6 = AXMediaLogLanguageTranslation();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    languageTranslator = AXMediaLogLanguageTranslation();
+    if (os_log_type_enabled(languageTranslator, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v7) = 0;
-      _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Image descriptions not enabled. Will not download translation assets", &v7, 2u);
+      _os_log_impl(&dword_0, languageTranslator, OS_LOG_TYPE_DEFAULT, "Image descriptions not enabled. Will not download translation assets", &v7, 2u);
     }
   }
 }
@@ -301,13 +301,13 @@ void __94__AXVoiceOverImageDescriptionsController__installLanguageTranslationMod
 
 - (void)_updateTranslationAssetStatus
 {
-  v3 = [(AXVoiceOverImageDescriptionsController *)self languageTranslator];
+  languageTranslator = [(AXVoiceOverImageDescriptionsController *)self languageTranslator];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __71__AXVoiceOverImageDescriptionsController__updateTranslationAssetStatus__block_invoke;
   v4[3] = &unk_257A28;
   v4[4] = self;
-  [v3 installedTranslationLocales:v4];
+  [languageTranslator installedTranslationLocales:v4];
 }
 
 void __71__AXVoiceOverImageDescriptionsController__updateTranslationAssetStatus__block_invoke(uint64_t a1, void *a2)
@@ -336,7 +336,7 @@ void *__71__AXVoiceOverImageDescriptionsController__updateTranslationAssetStatus
   return result;
 }
 
-- (id)_additionalTranslationLanguagesValueSummary:(id)a3
+- (id)_additionalTranslationLanguagesValueSummary:(id)summary
 {
   v3 = [(NSArray *)self->_installedTranslationLocales ax_filteredArrayUsingBlock:&__block_literal_global_349];
   v4 = [v3 count];
@@ -344,31 +344,31 @@ void *__71__AXVoiceOverImageDescriptionsController__updateTranslationAssetStatus
   {
     if (v4 == &dword_0 + 1)
     {
-      v5 = [v3 firstObject];
-      v6 = [v5 localeIdentifier];
-      if ([(__CFString *)v6 hasPrefix:@"ar"])
+      firstObject = [v3 firstObject];
+      localeIdentifier = [firstObject localeIdentifier];
+      if ([(__CFString *)localeIdentifier hasPrefix:@"ar"])
       {
 
-        v6 = @"ar";
+        localeIdentifier = @"ar";
       }
 
-      v7 = [IPLanguage languageWithIdentifier:v6];
-      v8 = [v7 localizedStringForName];
+      v7 = [IPLanguage languageWithIdentifier:localeIdentifier];
+      localizedStringForName = [v7 localizedStringForName];
     }
 
     else
     {
-      v5 = settingsLocString(@"IMAGE_DESCRIPTION_TRANSLATIONS_INSTALLED_LANGUAGE_COUNT", @"VoiceOverSettings");
-      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [v3 count]);
+      firstObject = settingsLocString(@"IMAGE_DESCRIPTION_TRANSLATIONS_INSTALLED_LANGUAGE_COUNT", @"VoiceOverSettings");
+      localizedStringForName = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", firstObject, [v3 count]);
     }
   }
 
   else
   {
-    v8 = &stru_25D420;
+    localizedStringForName = &stru_25D420;
   }
 
-  return v8;
+  return localizedStringForName;
 }
 
 BOOL __86__AXVoiceOverImageDescriptionsController__additionalTranslationLanguagesValueSummary___block_invoke(id a1, NSLocale *a2, unint64_t a3, BOOL *a4)
@@ -379,12 +379,12 @@ BOOL __86__AXVoiceOverImageDescriptionsController__additionalTranslationLanguage
   return v5 ^ 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[AXVoiceOverImageDescriptionsController specifierAtIndex:](self, "specifierAtIndex:", -[AXVoiceOverImageDescriptionsController indexOfGroup:](self, "indexOfGroup:", [v7 section]));
-  v9 = [(AXVoiceOverImageDescriptionsController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[AXVoiceOverImageDescriptionsController specifierAtIndex:](self, "specifierAtIndex:", -[AXVoiceOverImageDescriptionsController indexOfGroup:](self, "indexOfGroup:", [pathCopy section]));
+  v9 = [(AXVoiceOverImageDescriptionsController *)self specifierAtIndexPath:pathCopy];
   v10 = PSIDKey;
   v11 = [v8 propertyForKey:PSIDKey];
   v12 = [v11 isEqualToString:@"SensitiveContentGroup"];
@@ -394,25 +394,25 @@ BOOL __86__AXVoiceOverImageDescriptionsController__additionalTranslationLanguage
   if (v12)
   {
     v15 = +[AXSettings sharedInstance];
-    v16 = [v15 voiceOverDiscoveredSensitiveContentFeedback];
+    voiceOverDiscoveredSensitiveContentFeedback = [v15 voiceOverDiscoveredSensitiveContentFeedback];
 
     if ([v14 isEqualToString:@"SensitiveContentSpeak"])
     {
-      v16 = 0;
+      voiceOverDiscoveredSensitiveContentFeedback = 0;
     }
 
     else if ([v14 isEqualToString:@"SensitiveContentPlaySound"])
     {
-      v16 = &dword_0 + 1;
+      voiceOverDiscoveredSensitiveContentFeedback = &dword_0 + 1;
     }
 
     else if ([v14 isEqualToString:@"SensitiveContentDoNothing"])
     {
-      v16 = &dword_0 + 2;
+      voiceOverDiscoveredSensitiveContentFeedback = &dword_0 + 2;
     }
 
     v20 = +[AXSettings sharedInstance];
-    [v20 setVoiceOverDiscoveredSensitiveContentFeedback:v16];
+    [v20 setVoiceOverDiscoveredSensitiveContentFeedback:voiceOverDiscoveredSensitiveContentFeedback];
 
     goto LABEL_11;
   }
@@ -424,13 +424,13 @@ BOOL __86__AXVoiceOverImageDescriptionsController__additionalTranslationLanguage
 LABEL_11:
     v21.receiver = self;
     v21.super_class = AXVoiceOverImageDescriptionsController;
-    [(AXVoiceOverImageDescriptionsController *)&v21 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(AXVoiceOverImageDescriptionsController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     goto LABEL_12;
   }
 
   v18 = objc_alloc_init(AXAppSelectionController);
-  v19 = [(AXVoiceOverImageDescriptionsController *)self rootController];
-  [(AXAppSelectionController *)v18 setRootController:v19];
+  rootController = [(AXVoiceOverImageDescriptionsController *)self rootController];
+  [(AXAppSelectionController *)v18 setRootController:rootController];
 
   [(AXAppSelectionController *)v18 setSpecifier:v9];
   [(AXAppSelectionController *)v18 setParentController:self];
@@ -483,9 +483,9 @@ void __76__AXVoiceOverImageDescriptionsController_tableView_didSelectRowAtIndexP
 - (BOOL)_isFeatureEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverImageCaptionsEnabled];
+  voiceOverImageCaptionsEnabled = [v2 voiceOverImageCaptionsEnabled];
 
-  return v3;
+  return voiceOverImageCaptionsEnabled;
 }
 
 - (AXImageCaptionModelAssetPolicy)imageCaptionModelAssetPolicy
@@ -503,31 +503,31 @@ void __76__AXVoiceOverImageDescriptionsController_tableView_didSelectRowAtIndexP
   return imageCaptionModelAssetPolicy;
 }
 
-- (void)_updatePrimaryGroupFooterTextAndReloadSpecifier:(BOOL)a3
+- (void)_updatePrimaryGroupFooterTextAndReloadSpecifier:(BOOL)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v5 = AXLocStringKeyForModel();
   v6 = settingsLocString(v5, @"VoiceOverSettings");
   v7 = [v6 mutableCopy];
 
   [(PSSpecifier *)self->_primaryGroupSpecifier setProperty:v7 forKey:PSFooterTextGroupKey];
-  if (v3)
+  if (specifierCopy)
   {
     [(AXVoiceOverImageDescriptionsController *)self reloadSpecifier:self->_primaryGroupSpecifier];
   }
 }
 
-- (void)_updateAssetStatusCell:(int64_t)a3 error:(id)a4 downloaded:(int64_t)a5 expected:(int64_t)a6
+- (void)_updateAssetStatusCell:(int64_t)cell error:(id)error downloaded:(int64_t)downloaded expected:(int64_t)expected
 {
   assetStatusSpecifier = self->_assetStatusSpecifier;
-  v11 = a4;
-  [(PSSpecifier *)assetStatusSpecifier setAx_assetState:a3];
-  v12 = [(AXVoiceOverImageDescriptionsController *)self cachedAsset];
-  [(PSSpecifier *)self->_assetStatusSpecifier setAx_asset:v12];
+  errorCopy = error;
+  [(PSSpecifier *)assetStatusSpecifier setAx_assetState:cell];
+  cachedAsset = [(AXVoiceOverImageDescriptionsController *)self cachedAsset];
+  [(PSSpecifier *)self->_assetStatusSpecifier setAx_asset:cachedAsset];
 
-  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetError:v11];
-  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetDownloadBytesReceived:a5];
-  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetDownloadBytesExpected:a6];
+  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetError:errorCopy];
+  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetDownloadBytesReceived:downloaded];
+  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetDownloadBytesExpected:expected];
   v13 = self->_assetStatusSpecifier;
 
   [(AXVoiceOverImageDescriptionsController *)self reloadSpecifier:v13];
@@ -576,44 +576,44 @@ void __76__AXVoiceOverImageDescriptionsController_tableView_didSelectRowAtIndexP
   [(AXVoiceOverImageDescriptionsController *)self _updatePrimaryGroupFooterTextAndReloadSpecifier:1];
 }
 
-- (id)_validateAssetFromResults:(id)a3
+- (id)_validateAssetFromResults:(id)results
 {
-  v3 = a3;
-  v4 = [AXAsset newsestCompatibleImageCaptionModelAssetFromAssets:v3 withStage:@"Stable" language:@"en" isInstalled:1 isDownloadable:0];
+  resultsCopy = results;
+  v4 = [AXAsset newsestCompatibleImageCaptionModelAssetFromAssets:resultsCopy withStage:@"Stable" language:@"en" isInstalled:1 isDownloadable:0];
   if (!v4)
   {
-    v4 = [AXAsset newsestCompatibleImageCaptionModelAssetFromAssets:v3 withStage:@"Stable" language:@"en" isInstalled:0 isDownloadable:1];
+    v4 = [AXAsset newsestCompatibleImageCaptionModelAssetFromAssets:resultsCopy withStage:@"Stable" language:@"en" isInstalled:0 isDownloadable:1];
   }
 
   return v4;
 }
 
-- (void)setSpeakDiscoveredImageDescriptions:(id)a3 specifier:(id)a4
+- (void)setSpeakDiscoveredImageDescriptions:(id)descriptions specifier:(id)specifier
 {
-  v4 = a3;
+  descriptionsCopy = descriptions;
   v5 = AXLogAssetLoader();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = descriptionsCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Enable Image Descriptions toggle adjusted. inVal=%@", &v8, 0xCu);
   }
 
-  v6 = [v4 BOOLValue];
+  bOOLValue = [descriptionsCopy BOOLValue];
   v7 = +[AXSettings sharedInstance];
-  [v7 setVoiceOverImageCaptionsEnabled:v6];
+  [v7 setVoiceOverImageCaptionsEnabled:bOOLValue];
 }
 
-- (id)speakDiscoveredImageDescriptions:(id)a3
+- (id)speakDiscoveredImageDescriptions:(id)descriptions
 {
-  v3 = [(AXVoiceOverImageDescriptionsController *)self _isFeatureEnabled];
+  _isFeatureEnabled = [(AXVoiceOverImageDescriptionsController *)self _isFeatureEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:_isFeatureEnabled];
 }
 
-- (void)_addSensitiveContentFeedbackSpecifiers:(id)a3
+- (void)_addSensitiveContentFeedbackSpecifiers:(id)specifiers
 {
-  v15 = a3;
+  specifiersCopy = specifiers;
   v3 = settingsLocString(@"SENSITIVE_CONTENT_FEEDBACK_TITLE", @"VoiceOverSettings");
   v4 = [PSSpecifier groupSpecifierWithName:v3];
 
@@ -623,55 +623,55 @@ void __76__AXVoiceOverImageDescriptionsController_tableView_didSelectRowAtIndexP
   v6 = settingsLocString(@"SENSITIVE_CONTENT_FEEDBACK_FOOTER", @"VoiceOverSettings");
   [v4 setProperty:v6 forKey:PSFooterTextGroupKey];
 
-  [v15 addObject:v4];
+  [specifiersCopy addObject:v4];
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 voiceOverDiscoveredSensitiveContentFeedback];
+  voiceOverDiscoveredSensitiveContentFeedback = [v7 voiceOverDiscoveredSensitiveContentFeedback];
 
   v9 = settingsLocString(@"FEEDBACK_SPEAK", @"VoiceOverSettings");
   v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
   [v10 setProperty:@"SensitiveContentSpeak" forKey:v5];
-  if (!v8)
+  if (!voiceOverDiscoveredSensitiveContentFeedback)
   {
     [v4 setProperty:v10 forKey:PSRadioGroupCheckedSpecifierKey];
   }
 
-  [v15 addObject:v10];
+  [specifiersCopy addObject:v10];
   v11 = settingsLocString(@"FEEDBACK_PLAY_TONE", @"VoiceOverSettings");
   v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
   [v12 setProperty:@"SensitiveContentPlaySound" forKey:v5];
-  if (v8 == &dword_0 + 1)
+  if (voiceOverDiscoveredSensitiveContentFeedback == &dword_0 + 1)
   {
     [v4 setProperty:v12 forKey:PSRadioGroupCheckedSpecifierKey];
   }
 
-  [v15 addObject:v12];
+  [specifiersCopy addObject:v12];
   v13 = settingsLocString(@"FEEDBACK_DO_NOTHING", @"VoiceOverSettings");
   v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
   [v14 setProperty:@"SensitiveContentDoNothing" forKey:v5];
-  if (v8 == &dword_0 + 2)
+  if (voiceOverDiscoveredSensitiveContentFeedback == &dword_0 + 2)
   {
     [v4 setProperty:v14 forKey:PSRadioGroupCheckedSpecifierKey];
   }
 
-  [v15 addObject:v14];
+  [specifiersCopy addObject:v14];
 }
 
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
-  v9 = a4;
+  assetsCopy = assets;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __104__AXVoiceOverImageDescriptionsController_assetController_didFinishRefreshingAssets_wasSuccessful_error___block_invoke;
   v12[3] = &unk_257AD0;
-  v15 = a5;
+  successfulCopy = successful;
   v12[4] = self;
-  v13 = a6;
-  v14 = v9;
-  v10 = v9;
-  v11 = v13;
+  errorCopy = error;
+  v14 = assetsCopy;
+  v10 = assetsCopy;
+  v11 = errorCopy;
   dispatch_async(&_dispatch_main_q, v12);
 }
 
@@ -751,16 +751,16 @@ LABEL_12:
   [v3 _updateAssetStatusCell:v11 error:v10 downloaded:0 expected:0];
 }
 
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __139__AXVoiceOverImageDescriptionsController_assetController_asset_downloadProgressTotalWritten_totalExpected_isStalled_expectedTimeRemaining___block_invoke;
   v8[3] = &unk_257AF8;
-  v9 = a7;
+  stalledCopy = stalled;
   v8[4] = self;
-  v8[5] = a5;
-  v8[6] = a6;
+  v8[5] = written;
+  v8[6] = expected;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
@@ -779,16 +779,16 @@ id __139__AXVoiceOverImageDescriptionsController_assetController_asset_downloadP
   return [*(a1 + 32) _updateAssetStatusCell:v1 error:0 downloaded:*(a1 + 40) expected:*(a1 + 48)];
 }
 
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __126__AXVoiceOverImageDescriptionsController_assetController_didFinishDownloadingAsset_wasSuccessful_error_hasRemainingDownloads___block_invoke;
   block[3] = &unk_256190;
-  v10 = a5;
+  successfulCopy = successful;
   block[4] = self;
-  v9 = a6;
-  v7 = v9;
+  errorCopy = error;
+  v7 = errorCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 

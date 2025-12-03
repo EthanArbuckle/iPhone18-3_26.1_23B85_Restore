@@ -1,6 +1,6 @@
 @interface _NSClrDat
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSClrDat
@@ -14,7 +14,7 @@
   [(NSConcreteData *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = *MEMORY[0x1E69E9840];
   v4.receiver = self;
@@ -22,7 +22,7 @@
   [(NSData *)&v4 encodeWithCoder:?];
   if (objc_opt_isKindOfClass())
   {
-    [a3 encodeBool:1 forKey:@"NS.zeroing"];
+    [coder encodeBool:1 forKey:@"NS.zeroing"];
   }
 }
 

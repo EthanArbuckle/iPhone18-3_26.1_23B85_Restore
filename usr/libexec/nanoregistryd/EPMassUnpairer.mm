@@ -1,17 +1,17 @@
 @interface EPMassUnpairer
-- (EPMassUnpairer)initWithDelegate:(id)a3 UUIDs:(id)a4;
+- (EPMassUnpairer)initWithDelegate:(id)delegate UUIDs:(id)ds;
 - (id)initBase;
 - (void)dealloc;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)setTimerDuration:(double)a3 withBlock:(id)a4;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)setTimerDuration:(double)duration withBlock:(id)block;
 - (void)update;
 @end
 
 @implementation EPMassUnpairer
 
-- (void)setTimerDuration:(double)a3 withBlock:(id)a4
+- (void)setTimerDuration:(double)duration withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   currentTimer = self->_currentTimer;
   if (currentTimer)
   {
@@ -20,19 +20,19 @@
     self->_currentTimer = 0;
   }
 
-  if (v6)
+  if (blockCopy)
   {
     v9 = +[EPFactory queue];
     v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v9);
 
-    v11 = dispatch_time(0, (a3 * 1000000000.0));
+    v11 = dispatch_time(0, (duration * 1000000000.0));
     dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10009FB88;
     v14[3] = &unk_100175FA0;
     v14[4] = self;
-    v15 = v6;
+    v15 = blockCopy;
     dispatch_source_set_event_handler(v10, v14);
     dispatch_resume(v10);
     v12 = self->_currentTimer;
@@ -93,7 +93,7 @@
       *buf = 138412546;
       v10 = v7;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dealloc %@[%p]", buf, 0x16u);
     }
   }
@@ -103,19 +103,19 @@
   [(EPMassUnpairer *)&v8 dealloc];
 }
 
-- (EPMassUnpairer)initWithDelegate:(id)a3 UUIDs:(id)a4
+- (EPMassUnpairer)initWithDelegate:(id)delegate UUIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EPMassUnpairer *)self initBase];
-  v9 = v8;
-  if (v8)
+  delegateCopy = delegate;
+  dsCopy = ds;
+  initBase = [(EPMassUnpairer *)self initBase];
+  v9 = initBase;
+  if (initBase)
   {
-    objc_storeWeak(v8 + 5, v6);
-    objc_storeStrong(&v9->_requestedUUIDs, a4);
+    objc_storeWeak(initBase + 5, delegateCopy);
+    objc_storeStrong(&v9->_requestedUUIDs, ds);
     v10 = +[EPFactory sharedFactory];
-    v11 = [v10 agentManager];
-    v12 = [v11 newAgentWithDelegate:v9 fromCentral:1];
+    agentManager = [v10 agentManager];
+    v12 = [agentManager newAgentWithDelegate:v9 fromCentral:1];
     agent = v9->_agent;
     v9->_agent = v12;
 
@@ -179,9 +179,9 @@ LABEL_43:
     }
   }
 
-  v7 = [(EPPairingAgent *)self->_agent agent];
-  v8 = [v7 retrievePairedPeers];
-  v9 = [v8 mutableCopy];
+  agent = [(EPPairingAgent *)self->_agent agent];
+  retrievePairedPeers = [agent retrievePairedPeers];
+  v9 = [retrievePairedPeers mutableCopy];
 
   v56 = 0u;
   v57 = 0u;
@@ -251,10 +251,10 @@ LABEL_43:
           v28 = sub_1000A98C0();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v25 identifier];
-            v30 = [v29 UUIDString];
+            identifier = [v25 identifier];
+            uUIDString = [identifier UUIDString];
             *buf = v49;
-            v59 = v30;
+            v59 = uUIDString;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Calling CBPairingAgent unpairPeer: %@", buf, 0xCu);
           }
         }
@@ -337,9 +337,9 @@ LABEL_44:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v5 = a4;
+  unpairCopy = unpair;
   v6 = sub_1000A98C0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -348,18 +348,18 @@ LABEL_44:
     v8 = sub_1000A98C0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 identifier];
-      v10 = [v9 UUIDString];
+      identifier = [unpairCopy identifier];
+      uUIDString = [identifier UUIDString];
       v13 = 138412290;
-      v14 = v10;
+      v14 = uUIDString;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CBPairingAgentDelegate pairingAgent:peerDidUnpair %@", &v13, 0xCu);
     }
   }
 
-  [(NSMutableArray *)self->_peersToUnpair removeObject:v5];
+  [(NSMutableArray *)self->_peersToUnpair removeObject:unpairCopy];
   devicesUnpaired = self->_devicesUnpaired;
-  v12 = [v5 identifier];
-  [(NSMutableSet *)devicesUnpaired addObject:v12];
+  identifier2 = [unpairCopy identifier];
+  [(NSMutableSet *)devicesUnpaired addObject:identifier2];
 
   [(EPMassUnpairer *)self update];
 }

@@ -2,23 +2,23 @@
 + (id)snippetViewController;
 - (ACSettingsSwitchUIController)init;
 - (BOOL)_waitingOnSettingState;
-- (double)desiredHeightForWidth:(double)a3;
-- (void)_bluetoothAvailabilityChanged:(id)a3;
+- (double)desiredHeightForWidth:(double)width;
+- (void)_bluetoothAvailabilityChanged:(id)changed;
 - (void)_setSettingFromExternalChangeIfNeeded;
 - (void)_setSettingFromSwitchTapIfNeeded;
-- (void)_switchTapped:(id)a3;
-- (void)_wiFiStateChangedWithOldState:(int64_t)a3 newState:(int64_t)a4;
+- (void)_switchTapped:(id)tapped;
+- (void)_wiFiStateChangedWithOldState:(int64_t)state newState:(int64_t)newState;
 - (void)dealloc;
 - (void)loadView;
-- (void)setSnippet:(id)a3;
-- (void)settingChangedExternally:(id)a3;
+- (void)setSnippet:(id)snippet;
+- (void)settingChangedExternally:(id)externally;
 @end
 
 @implementation ACSettingsSwitchUIController
 
 + (id)snippetViewController
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -47,13 +47,13 @@
   [(ACSettingsSwitchUIController *)&v4 dealloc];
 }
 
-- (void)setSnippet:(id)a3
+- (void)setSnippet:(id)snippet
 {
-  v5 = a3;
-  objc_storeStrong(&self->_snippet, a3);
-  v6 = [(SASettingBoolSnippet *)self->_snippet settingKeys];
+  snippetCopy = snippet;
+  objc_storeStrong(&self->_snippet, snippet);
+  settingKeys = [(SASettingBoolSnippet *)self->_snippet settingKeys];
   [(ACSettingsBasicSetting *)self->_setting setDelegate:0];
-  v7 = [v6 objectAtIndex:0];
+  v7 = [settingKeys objectAtIndex:0];
   v8 = [(ACSettingsBasicSetting *)ACSettingsSwitchSetting settingWithAceString:v7];
   setting = self->_setting;
   self->_setting = v8;
@@ -96,10 +96,10 @@
   }
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(ACSettingsSwitchUIController *)self view];
-  [v4 sizeThatFits:{a3, 1.79769313e308}];
+  view = [(ACSettingsSwitchUIController *)self view];
+  [view sizeThatFits:{width, 1.79769313e308}];
   v6 = v5;
 
   return v6;
@@ -113,31 +113,31 @@
 
   [(ACSettingsSwitchUIController *)self setView:self->_settingView];
   [(ACSettingsSwitchUIController *)self setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-  v5 = [(ACSettingsSwitchView *)self->_settingView title];
-  v6 = [(ACSettingsBasicSetting *)self->_setting name];
-  [v5 setText:v6];
+  title = [(ACSettingsSwitchView *)self->_settingView title];
+  name = [(ACSettingsBasicSetting *)self->_setting name];
+  [title setText:name];
 
   v7 = self->_settingView;
-  v8 = [(ACSettingsBasicSetting *)self->_setting icon];
-  [(ACSettingsSwitchView *)v7 setIcon:v8];
+  icon = [(ACSettingsBasicSetting *)self->_setting icon];
+  [(ACSettingsSwitchView *)v7 setIcon:icon];
 
-  v9 = [(ACSettingsSwitchView *)self->_settingView switchControl];
-  [v9 setOn:{-[ACSettingsSwitchSetting enabled](self->_setting, "enabled")}];
+  switchControl = [(ACSettingsSwitchView *)self->_settingView switchControl];
+  [switchControl setOn:{-[ACSettingsSwitchSetting enabled](self->_setting, "enabled")}];
 
-  v10 = [(ACSettingsSwitchView *)self->_settingView switchControl];
-  [v10 addTarget:self action:"_switchTapped:" forControlEvents:4096];
+  switchControl2 = [(ACSettingsSwitchView *)self->_settingView switchControl];
+  [switchControl2 addTarget:self action:"_switchTapped:" forControlEvents:4096];
 }
 
 - (void)_setSettingFromSwitchTapIfNeeded
 {
   if (self->_shouldSetSettingDueToTap && ![(ACSettingsSwitchUIController *)self _waitingOnSettingState])
   {
-    v3 = [(ACSettingsSwitchView *)self->_settingView switchControl];
-    v4 = [v3 isOn];
+    switchControl = [(ACSettingsSwitchView *)self->_settingView switchControl];
+    isOn = [switchControl isOn];
 
-    [(ACSettingsSwitchSetting *)self->_setting setEnabled:v4];
-    v5 = [(ACSettingsSwitchView *)self->_settingView switchControl];
-    [v5 setUserInteractionEnabled:1];
+    [(ACSettingsSwitchSetting *)self->_setting setEnabled:isOn];
+    switchControl2 = [(ACSettingsSwitchView *)self->_settingView switchControl];
+    [switchControl2 setUserInteractionEnabled:1];
 
     self->_shouldSetSettingDueToTap = 0;
   }
@@ -147,8 +147,8 @@
 {
   if (self->_shouldSetSettingDueToExternalChange && ![(ACSettingsSwitchUIController *)self _waitingOnSettingState])
   {
-    v3 = [(ACSettingsSwitchView *)self->_settingView switchControl];
-    [v3 setOn:-[ACSettingsSwitchSetting enabled](self->_setting animated:{"enabled"), 1}];
+    switchControl = [(ACSettingsSwitchView *)self->_settingView switchControl];
+    [switchControl setOn:-[ACSettingsSwitchSetting enabled](self->_setting animated:{"enabled"), 1}];
 
     self->_shouldSetSettingDueToExternalChange = 0;
   }
@@ -170,12 +170,12 @@
   return v3;
 }
 
-- (void)_bluetoothAvailabilityChanged:(id)a3
+- (void)_bluetoothAvailabilityChanged:(id)changed
 {
-  v4 = [a3 object];
-  v5 = [v4 BOOLValue];
+  object = [changed object];
+  bOOLValue = [object BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     [(ACSettingsSwitchUIController *)self _setSettingIfNeeded:1];
     [(ACSettingsSwitchUIController *)self _setSettingFromSwitchTapIfNeeded];
@@ -184,18 +184,18 @@
   }
 }
 
-- (void)_wiFiStateChangedWithOldState:(int64_t)a3 newState:(int64_t)a4
+- (void)_wiFiStateChangedWithOldState:(int64_t)state newState:(int64_t)newState
 {
-  v6 = [(ACSettingsSwitchSetting *)self->_setting isWiFi];
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  isWiFi = [(ACSettingsSwitchSetting *)self->_setting isWiFi];
+  if ((newState & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
-    if (v6)
+    if (isWiFi)
     {
-      v7 = [(ACSettingsSwitchSetting *)self->_setting enabled];
-      v8 = [(ACSettingsSwitchView *)self->_settingView switchControl];
-      v9 = [v8 isOn];
+      enabled = [(ACSettingsSwitchSetting *)self->_setting enabled];
+      switchControl = [(ACSettingsSwitchView *)self->_settingView switchControl];
+      isOn = [switchControl isOn];
 
-      if (v7 != v9)
+      if (enabled != isOn)
       {
 
         [(ACSettingsSwitchUIController *)self _settingChangedExternally:0];
@@ -204,18 +204,18 @@
   }
 }
 
-- (void)_switchTapped:(id)a3
+- (void)_switchTapped:(id)tapped
 {
   self->_shouldSetSettingDueToTap = 1;
-  v4 = [(ACSettingsSwitchView *)self->_settingView switchControl];
-  [v4 setUserInteractionEnabled:0];
+  switchControl = [(ACSettingsSwitchView *)self->_settingView switchControl];
+  [switchControl setUserInteractionEnabled:0];
 
   [(ACSettingsSwitchUIController *)self _setSettingFromSwitchTapIfNeeded];
 }
 
-- (void)settingChangedExternally:(id)a3
+- (void)settingChangedExternally:(id)externally
 {
-  if (self->_setting == a3)
+  if (self->_setting == externally)
   {
     [(ACSettingsSwitchUIController *)self _settingChangedExternally:0];
   }

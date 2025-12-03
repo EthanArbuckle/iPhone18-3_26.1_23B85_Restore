@@ -1,25 +1,25 @@
 @interface IDSDestination
 + (NSArray)classesForStrictUnarchiving;
 + (id)defaultPairedDeviceDestination;
-+ (id)destinationWithAlias:(id)a3 pushToken:(id)a4;
-+ (id)destinationWithDestinations:(id)a3;
-+ (id)destinationWithDeviceURI:(id)a3;
-+ (id)destinationWithGroup:(id)a3;
-+ (id)destinationWithRapportPublicIdentifierURI:(id)a3;
-+ (id)destinationWithString:(id)a3;
-+ (id)destinationWithStringURI:(id)a3 isLightWeight:(BOOL)a4;
-+ (id)destinationWithStrings:(id)a3;
-+ (id)destinationWithURI:(id)a3;
++ (id)destinationWithAlias:(id)alias pushToken:(id)token;
++ (id)destinationWithDestinations:(id)destinations;
++ (id)destinationWithDeviceURI:(id)i;
++ (id)destinationWithGroup:(id)group;
++ (id)destinationWithRapportPublicIdentifierURI:(id)i;
++ (id)destinationWithString:(id)string;
++ (id)destinationWithStringURI:(id)i isLightWeight:(BOOL)weight;
++ (id)destinationWithStrings:(id)strings;
++ (id)destinationWithURI:(id)i;
 + (id)sentinelSelfAliasDestination;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDestination:(id)a3;
-- (IDSDestination)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDestination:(id)destination;
+- (IDSDestination)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)normalizedURIStrings;
 - (id)normalizedURIs;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSDestination
@@ -33,8 +33,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(IDSDestination *)self destinationURIs];
-  v3 = [v2 hash];
+  destinationURIs = [(IDSDestination *)self destinationURIs];
+  v3 = [destinationURIs hash];
 
   return v3;
 }
@@ -58,39 +58,39 @@
 
 - (id)normalizedURIs
 {
-  v2 = [(IDSDestination *)self destinationURIs];
-  v3 = [v2 __imSetByApplyingBlock:&unk_1F1AAA020];
+  destinationURIs = [(IDSDestination *)self destinationURIs];
+  v3 = [destinationURIs __imSetByApplyingBlock:&unk_1F1AAA020];
 
   return v3;
 }
 
 - (id)normalizedURIStrings
 {
-  v2 = [(IDSDestination *)self normalizedURIs];
-  v3 = [v2 __imSetByApplyingBlock:&unk_1F1AAA040];
+  normalizedURIs = [(IDSDestination *)self normalizedURIs];
+  v3 = [normalizedURIs __imSetByApplyingBlock:&unk_1F1AAA040];
 
   return v3;
 }
 
-+ (id)destinationWithAlias:(id)a3 pushToken:(id)a4
++ (id)destinationWithAlias:(id)alias pushToken:(id)token
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[IDSDestinationPushToken alloc] initWithAlias:v6 pushToken:v5];
+  tokenCopy = token;
+  aliasCopy = alias;
+  v7 = [[IDSDestinationPushToken alloc] initWithAlias:aliasCopy pushToken:tokenCopy];
 
   return v7;
 }
 
-+ (id)destinationWithDestinations:(id)a3
++ (id)destinationWithDestinations:(id)destinations
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = destinationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v7)
   {
@@ -114,14 +114,14 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [a1 destinationWithString:v12];
+        v13 = [self destinationWithString:v12];
         goto LABEL_13;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [a1 destinationWithGroup:v12];
+        v13 = [self destinationWithGroup:v12];
         goto LABEL_13;
       }
 
@@ -146,7 +146,7 @@ LABEL_14:
       {
         [v12 destinationURIs];
         v16 = v15 = v10;
-        v14 = [a1 destinationWithStrings:v16];
+        v14 = [self destinationWithStrings:v16];
 
         v10 = v15;
         if (v14)
@@ -169,40 +169,58 @@ LABEL_21:
 
   if ([v5 count] == 1)
   {
-    v18 = [v5 firstObject];
+    firstObject = [v5 firstObject];
   }
 
   else
   {
-    v18 = [[IDSDestinationComposite alloc] initWithDestinations:v5];
+    firstObject = [[IDSDestinationComposite alloc] initWithDestinations:v5];
   }
 
-  v19 = v18;
+  v19 = firstObject;
 
   return v19;
 }
 
-+ (id)destinationWithString:(id)a3
++ (id)destinationWithString:(id)string
 {
-  v4 = a3;
-  if ([IDSDestinationDevice isDeviceURI:v4])
+  stringCopy = string;
+  if ([IDSDestinationDevice isDeviceURI:stringCopy])
   {
-    v5 = [[IDSDestinationDevice alloc] initWithDeviceURI:v4];
+    defaultPairedDeviceDestination = [[IDSDestinationDevice alloc] initWithDeviceURI:stringCopy];
   }
 
-  else if ([v4 isEqualToString:@"__IDS_DEFAULT_PAIRED_DEVICE__"])
+  else if ([stringCopy isEqualToString:@"__IDS_DEFAULT_PAIRED_DEVICE__"])
   {
-    v5 = [a1 defaultPairedDeviceDestination];
+    defaultPairedDeviceDestination = [self defaultPairedDeviceDestination];
   }
 
-  else if ([v4 isEqualToString:@"____--SENTINEL--SELF--ALIAS--V0--____"])
+  else if ([stringCopy isEqualToString:@"____--SENTINEL--SELF--ALIAS--V0--____"])
   {
-    v5 = [a1 sentinelSelfAliasDestination];
+    defaultPairedDeviceDestination = [self sentinelSelfAliasDestination];
   }
 
   else
   {
-    v5 = [[IDSDestinationURI alloc] initWithURIString:v4];
+    defaultPairedDeviceDestination = [[IDSDestinationURI alloc] initWithURIString:stringCopy];
+  }
+
+  v6 = defaultPairedDeviceDestination;
+
+  return v6;
+}
+
++ (id)destinationWithURI:(id)i
+{
+  iCopy = i;
+  if ([iCopy hasPrefix:@"guest-device:"])
+  {
+    v5 = [self destinationWithRapportPublicIdentifierURI:iCopy];
+  }
+
+  else
+  {
+    v5 = [[IDSDestinationURI alloc] initWithURIString:iCopy];
   }
 
   v6 = v5;
@@ -210,34 +228,16 @@ LABEL_21:
   return v6;
 }
 
-+ (id)destinationWithURI:(id)a3
-{
-  v4 = a3;
-  if ([v4 hasPrefix:@"guest-device:"])
-  {
-    v5 = [a1 destinationWithRapportPublicIdentifierURI:v4];
-  }
-
-  else
-  {
-    v5 = [[IDSDestinationURI alloc] initWithURIString:v4];
-  }
-
-  v6 = v5;
-
-  return v6;
-}
-
-+ (id)destinationWithStrings:(id)a3
++ (id)destinationWithStrings:(id)strings
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  stringsCopy = strings;
+  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(stringsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -252,7 +252,7 @@ LABEL_21:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 destinationWithString:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self destinationWithString:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -262,24 +262,24 @@ LABEL_21:
     while (v8);
   }
 
-  v12 = [a1 destinationWithDestinations:v5];
+  v12 = [self destinationWithDestinations:v5];
 
   return v12;
 }
 
-+ (id)destinationWithGroup:(id)a3
++ (id)destinationWithGroup:(id)group
 {
-  v3 = a3;
-  v4 = [[IDSDestinationEngram alloc] initWithENGroup:v3];
+  groupCopy = group;
+  v4 = [[IDSDestinationEngram alloc] initWithENGroup:groupCopy];
 
   return v4;
 }
 
-+ (id)destinationWithStringURI:(id)a3 isLightWeight:(BOOL)a4
++ (id)destinationWithStringURI:(id)i isLightWeight:(BOOL)weight
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[IDSDestinationGroupSessionMember alloc] initWithURI:v5 isLightWeight:v4];
+  weightCopy = weight;
+  iCopy = i;
+  v6 = [[IDSDestinationGroupSessionMember alloc] initWithURI:iCopy isLightWeight:weightCopy];
 
   return v6;
 }
@@ -291,74 +291,74 @@ LABEL_21:
   return v2;
 }
 
-+ (id)destinationWithRapportPublicIdentifierURI:(id)a3
++ (id)destinationWithRapportPublicIdentifierURI:(id)i
 {
-  v3 = a3;
-  v4 = [[IDSDestinationDevice alloc] initWithRapportPublicIdentifierURI:v3];
+  iCopy = i;
+  v4 = [[IDSDestinationDevice alloc] initWithRapportPublicIdentifierURI:iCopy];
 
   return v4;
 }
 
-+ (id)destinationWithDeviceURI:(id)a3
++ (id)destinationWithDeviceURI:(id)i
 {
-  v3 = a3;
-  v4 = [[IDSDestinationDevice alloc] initWithIDSDeviceURI:v3];
+  iCopy = i;
+  v4 = [[IDSDestinationDevice alloc] initWithIDSDeviceURI:iCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"IDSDestination.m" lineNumber:125 description:@"Abstract Method"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"IDSDestination.m" lineNumber:125 description:@"Abstract Method"];
 
   return 0;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(IDSDestination *)self destinationURIs];
-  v3 = [v2 count] == 0;
+  destinationURIs = [(IDSDestination *)self destinationURIs];
+  v3 = [destinationURIs count] == 0;
 
   return v3;
 }
 
-- (IDSDestination)initWithCoder:(id)a3
+- (IDSDestination)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"IDSDestination.m" lineNumber:148 description:@"Abstract method"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"IDSDestination.m" lineNumber:148 description:@"Abstract method"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"IDSDestination.m" lineNumber:153 description:@"Abstract method"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"IDSDestination.m" lineNumber:153 description:@"Abstract method"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSDestination *)self isEqualToDestination:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSDestination *)self isEqualToDestination:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToDestination:(id)a3
+- (BOOL)isEqualToDestination:(id)destination
 {
-  if (self == a3)
+  if (self == destination)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(IDSDestination *)self destinationURIs];
-  v6 = [v4 destinationURIs];
+  destinationCopy = destination;
+  destinationURIs = [(IDSDestination *)self destinationURIs];
+  destinationURIs2 = [destinationCopy destinationURIs];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(destinationCopy) = [destinationURIs isEqual:destinationURIs2];
+  return destinationCopy;
 }
 
 @end

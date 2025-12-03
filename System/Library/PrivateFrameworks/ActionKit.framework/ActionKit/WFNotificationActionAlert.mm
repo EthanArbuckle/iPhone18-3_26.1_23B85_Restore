@@ -1,37 +1,37 @@
 @interface WFNotificationActionAlert
-- (WFNotificationActionAlert)initWithTitle:(id)a3 body:(id)a4;
+- (WFNotificationActionAlert)initWithTitle:(id)title body:(id)body;
 @end
 
 @implementation WFNotificationActionAlert
 
-- (WFNotificationActionAlert)initWithTitle:(id)a3 body:(id)a4
+- (WFNotificationActionAlert)initWithTitle:(id)title body:(id)body
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  bodyCopy = body;
   v16.receiver = self;
   v16.super_class = WFNotificationActionAlert;
   v8 = [(WFNotificationActionAlert *)&v16 init];
   if (v8)
   {
-    if ([v6 length] || objc_msgSend(v7, "length"))
+    if ([titleCopy length] || objc_msgSend(bodyCopy, "length"))
     {
-      v9 = [v7 length];
+      v9 = [bodyCopy length];
       if (v9)
       {
-        v9 = [v6 copy];
+        v9 = [titleCopy copy];
       }
 
       title = v8->_title;
       v8->_title = v9;
 
-      if ([v7 length])
+      if ([bodyCopy length])
       {
-        v11 = v7;
+        v11 = bodyCopy;
       }
 
       else
       {
-        v11 = v6;
+        v11 = titleCopy;
       }
 
       v12 = [v11 copy];

@@ -1,18 +1,18 @@
 @interface IFCRAnalytics
-+ (void)sendEventForProductionWithEventName:(id)a3 prefix:(id)a4 eventPayload:(id)a5;
++ (void)sendEventForProductionWithEventName:(id)name prefix:(id)prefix eventPayload:(id)payload;
 @end
 
 @implementation IFCRAnalytics
 
-+ (void)sendEventForProductionWithEventName:(id)a3 prefix:(id)a4 eventPayload:(id)a5
++ (void)sendEventForProductionWithEventName:(id)name prefix:(id)prefix eventPayload:(id)payload
 {
   v7 = sub_254F29450();
   v9 = v8;
-  if (a4)
+  if (prefix)
   {
     v10 = sub_254F29450();
-    a4 = v11;
-    if (!a5)
+    prefix = v11;
+    if (!payload)
     {
       goto LABEL_4;
     }
@@ -21,15 +21,15 @@
   }
 
   v10 = 0;
-  if (a5)
+  if (payload)
   {
 LABEL_3:
     sub_254EC1838();
-    a5 = sub_254F293C0();
+    payload = sub_254F293C0();
   }
 
 LABEL_4:
-  static Analytics.sendEventForProduction(eventName:prefix:eventPayload:)(v7, v9, v10, a4, a5);
+  static Analytics.sendEventForProduction(eventName:prefix:eventPayload:)(v7, v9, v10, prefix, payload);
 }
 
 @end

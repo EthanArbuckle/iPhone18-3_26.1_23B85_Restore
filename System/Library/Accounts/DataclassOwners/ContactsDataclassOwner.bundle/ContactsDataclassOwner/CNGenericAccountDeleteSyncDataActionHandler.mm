@@ -6,17 +6,17 @@
 
 - (BOOL)perform
 {
-  v3 = [(CNDataclassActionHandler *)self account];
-  v4 = [(CNDataclassActionHandler *)self childAccounts];
-  v5 = [(CNDataclassActionHandler *)self removeContactsAccountForACAccount:v3 withChildren:v4];
+  account = [(CNDataclassActionHandler *)self account];
+  childAccounts = [(CNDataclassActionHandler *)self childAccounts];
+  v5 = [(CNDataclassActionHandler *)self removeContactsAccountForACAccount:account withChildren:childAccounts];
 
-  v6 = [(CNDataclassActionHandler *)self account];
-  [(CNDataclassActionHandler *)self enableLocalSourceIfNecessaryIgnoringAccount:v6];
+  account2 = [(CNDataclassActionHandler *)self account];
+  [(CNDataclassActionHandler *)self enableLocalSourceIfNecessaryIgnoringAccount:account2];
 
   if (!v5)
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       sub_70D8();
     }

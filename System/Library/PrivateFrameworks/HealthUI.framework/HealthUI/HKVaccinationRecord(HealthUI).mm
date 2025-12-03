@@ -9,23 +9,23 @@
 
 - (id)localizedStatusDisplayString
 {
-  v1 = [a1 status];
-  v2 = [v1 localizedPreferredName];
+  status = [self status];
+  localizedPreferredName = [status localizedPreferredName];
 
-  return v2;
+  return localizedPreferredName;
 }
 
 - (id)displayItems
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 recordItem];
-  [v2 hk_addNonNilObject:v3];
+  recordItem = [self recordItem];
+  [v2 hk_addNonNilObject:recordItem];
 
-  v4 = [a1 performerItem];
-  [v2 hk_addNonNilObject:v4];
+  performerItem = [self performerItem];
+  [v2 hk_addNonNilObject:performerItem];
 
-  v5 = [a1 lotNumberItem];
-  [v2 hk_addNonNilObject:v5];
+  lotNumberItem = [self lotNumberItem];
+  [v2 hk_addNonNilObject:lotNumberItem];
 
   v6 = [v2 copy];
 
@@ -36,8 +36,8 @@
 {
   v2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v3 = [v2 localizedStringForKey:@"DETAIL_VIEW_RECORDS_PERFORMER_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
-  v4 = [a1 performer];
-  v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:v4 style:1];
+  performer = [self performer];
+  v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:performer style:1];
 
   return v5;
 }
@@ -46,8 +46,8 @@
 {
   v2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v3 = [v2 localizedStringForKey:@"DETAIL_VIEW_RECORDS_LOT_NUMBER_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
-  v4 = [a1 lotNumber];
-  v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:v4 style:1];
+  lotNumber = [self lotNumber];
+  v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:lotNumber style:1];
 
   return v5;
 }

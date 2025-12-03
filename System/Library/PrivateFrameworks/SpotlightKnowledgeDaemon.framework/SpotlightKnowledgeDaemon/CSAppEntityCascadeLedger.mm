@@ -1,19 +1,19 @@
 @interface CSAppEntityCascadeLedger
-+ (id)_acquireLockFileInDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-+ (id)_loadLedgerFileInDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-+ (id)_lockFileURLWithDirectory:(id)a3 bundleIdentifier:(id)a4;
-+ (void)deleteLedgerFilesInDirectory:(id)a3 notContainedInActiveBundles:(id)a4;
-- (BOOL)resetLedger:(id *)a3;
-- (CSAppEntityCascadeLedger)initWithDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
++ (id)_acquireLockFileInDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error;
++ (id)_loadLedgerFileInDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error;
++ (id)_lockFileURLWithDirectory:(id)directory bundleIdentifier:(id)identifier;
++ (void)deleteLedgerFilesInDirectory:(id)directory notContainedInActiveBundles:(id)bundles;
+- (BOOL)resetLedger:(id *)ledger;
+- (CSAppEntityCascadeLedger)initWithDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error;
 - (unint64_t)_fullSetDonationAttemptCount;
 - (unint64_t)_journalUpdateAttemptCount;
 - (unint64_t)failureCount;
 - (unint64_t)version;
 - (unsigned)_options;
-- (void)_releaseLock:(BOOL)a3;
+- (void)_releaseLock:(BOOL)lock;
 - (void)attemptFullSetDonation;
 - (void)attemptJournalUpdate;
-- (void)completeFullSetDonationWithVersion:(unint64_t)a3;
+- (void)completeFullSetDonationWithVersion:(unint64_t)version;
 - (void)completeJournalUpdate;
 - (void)dealloc;
 - (void)incrementVersion;
@@ -22,27 +22,27 @@
 
 @implementation CSAppEntityCascadeLedger
 
-+ (id)_lockFileURLWithDirectory:(id)a3 bundleIdentifier:(id)a4
++ (id)_lockFileURLWithDirectory:(id)directory bundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [a4 stringByAppendingString:@"-lockfile"];
-  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6 relativeToURL:v5];
+  directoryCopy = directory;
+  v6 = [identifier stringByAppendingString:@"-lockfile"];
+  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6 relativeToURL:directoryCopy];
 
   return v7;
 }
 
-+ (id)_acquireLockFileInDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
++ (id)_acquireLockFileInDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_opt_class() _lockFileURLWithDirectory:v8 bundleIdentifier:v7];
+  identifierCopy = identifier;
+  directoryCopy = directory;
+  v9 = [objc_opt_class() _lockFileURLWithDirectory:directoryCopy bundleIdentifier:identifierCopy];
 
   v10 = open([v9 fileSystemRepresentation], 514, 420);
   if (!v10)
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
-    v14 = a5;
+    errorCopy2 = error;
     v15 = 15;
     goto LABEL_9;
   }
@@ -60,10 +60,10 @@
   if (flock(v11, 2))
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
-    v14 = a5;
+    errorCopy2 = error;
     v15 = 16;
 LABEL_9:
-    _setError(v14, v15, v13);
+    _setError(errorCopy2, v15, v13);
 
     v16 = 0;
     goto LABEL_15;
@@ -92,56 +92,56 @@ LABEL_15:
   return v16;
 }
 
-+ (id)_loadLedgerFileInDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
++ (id)_loadLedgerFileInDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  identifierCopy = identifier;
   v8 = MEMORY[0x277D23B80];
-  v9 = a3;
-  v10 = [v8 currentBuildVersion];
+  directoryCopy = directory;
+  currentBuildVersion = [v8 currentBuildVersion];
   v37[0] = @"Build";
   v37[1] = @"Options";
-  v38[0] = v10;
+  v38[0] = currentBuildVersion;
   v38[1] = &unk_2846E7548;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
-  v12 = [v7 stringByAppendingString:@"-ledger"];
+  v12 = [identifierCopy stringByAppendingString:@"-ledger"];
   v28 = 0;
-  v13 = [objc_alloc(MEMORY[0x277CF0E10]) initWithFilename:v12 protectionClass:4 directory:v9 readOnly:0 create:1 initialDictionary:v11 error:&v28];
+  v13 = [objc_alloc(MEMORY[0x277CF0E10]) initWithFilename:v12 protectionClass:4 directory:directoryCopy readOnly:0 create:1 initialDictionary:v11 error:&v28];
 
   v14 = v28;
   if (!v13)
   {
-    _setError(a5, 17, v14);
+    _setError(error, 17, v14);
     v17 = 0;
     goto LABEL_18;
   }
 
   v15 = [v13 objectForKey:@"Build"];
-  if ([v10 isEqual:v15])
+  if ([currentBuildVersion isEqual:v15])
   {
     v16 = v14;
   }
 
   else
   {
-    v25 = a5;
+    errorCopy = error;
     if (SKGLogGetCurrentLoggingLevel() >= 4)
     {
       v18 = SKGLogInit();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v32 = v7;
+        v32 = identifierCopy;
         v33 = 2112;
         v34 = v15;
         v35 = 2112;
-        v36 = v10;
+        v36 = currentBuildVersion;
         _os_log_impl(&dword_231B25000, v18, OS_LOG_TYPE_DEFAULT, "Ledger file for bundle: %@ was written on build (%@) different from current (%@)", buf, 0x20u);
       }
     }
 
     v26 = v15;
-    v30[0] = v10;
+    v30[0] = currentBuildVersion;
     v30[1] = &unk_2846E7548;
     v30[2] = &unk_2846E7560;
     v30[3] = &unk_2846E7560;
@@ -157,7 +157,7 @@ LABEL_15:
 
     if ((v21 & 1) == 0)
     {
-      _setError(v25, 17, v16);
+      _setError(errorCopy, 17, v16);
       v17 = 0;
       v15 = v26;
       goto LABEL_17;
@@ -169,9 +169,9 @@ LABEL_15:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v32 = v7;
+        v32 = identifierCopy;
         v33 = 2112;
-        v34 = v10;
+        v34 = currentBuildVersion;
         v35 = 2112;
         v36 = v13;
         _os_log_impl(&dword_231B25000, v22, OS_LOG_TYPE_DEFAULT, "Reset ledger file for bundle: %@ on current build (%@): %@", buf, 0x20u);
@@ -192,27 +192,27 @@ LABEL_18:
   return v17;
 }
 
-- (CSAppEntityCascadeLedger)initWithDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (CSAppEntityCascadeLedger)initWithDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  directoryCopy = directory;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = CSAppEntityCascadeLedger;
   v11 = [(CSAppEntityCascadeLedger *)&v18 init];
   if (v11)
   {
-    v12 = [objc_opt_class() _acquireLockFileInDirectory:v9 bundleIdentifier:v10 error:a5];
+    v12 = [objc_opt_class() _acquireLockFileInDirectory:directoryCopy bundleIdentifier:identifierCopy error:error];
     fileLockHandle = v11->_fileLockHandle;
     v11->_fileLockHandle = v12;
 
-    if (!v11->_fileLockHandle || ([objc_opt_class() _loadLedgerFileInDirectory:v9 bundleIdentifier:v10 error:a5], v14 = objc_claimAutoreleasedReturnValue(), dictionary = v11->_dictionary, v11->_dictionary = v14, dictionary, !v11->_dictionary))
+    if (!v11->_fileLockHandle || ([objc_opt_class() _loadLedgerFileInDirectory:directoryCopy bundleIdentifier:identifierCopy error:error], v14 = objc_claimAutoreleasedReturnValue(), dictionary = v11->_dictionary, v11->_dictionary = v14, dictionary, !v11->_dictionary))
     {
       v16 = 0;
       goto LABEL_7;
     }
 
-    objc_storeStrong(&v11->_directory, a3);
-    objc_storeStrong(&v11->_bundleIdentifier, a4);
+    objc_storeStrong(&v11->_directory, directory);
+    objc_storeStrong(&v11->_bundleIdentifier, identifier);
     v11->_released = 0;
     v11->_journalUpdateAttempts = [(CSAppEntityCascadeLedger *)v11 _journalUpdateAttemptCount];
     v11->_fullSetDonationAttempts = [(CSAppEntityCascadeLedger *)v11 _fullSetDonationAttemptCount];
@@ -224,10 +224,10 @@ LABEL_7:
   return v16;
 }
 
-- (void)_releaseLock:(BOOL)a3
+- (void)_releaseLock:(BOOL)lock
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (lock)
   {
     v4 = [objc_opt_class() _lockFileURLWithDirectory:self->_directory bundleIdentifier:self->_bundleIdentifier];
     if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -237,13 +237,13 @@ LABEL_7:
       {
         v6 = objc_opt_class();
         bundleIdentifier = self->_bundleIdentifier;
-        v8 = [(NSFileHandle *)self->_fileLockHandle fileDescriptor];
+        fileDescriptor = [(NSFileHandle *)self->_fileLockHandle fileDescriptor];
         v12 = 138412802;
         v13 = v6;
         v14 = 2112;
         v15 = bundleIdentifier;
         v16 = 1024;
-        v17 = v8;
+        v17 = fileDescriptor;
         _os_log_impl(&dword_231B25000, v5, OS_LOG_TYPE_DEFAULT, "### %@ Deleting lock file for %@ lockFile fd %d", &v12, 0x1Cu);
       }
     }
@@ -289,41 +289,41 @@ LABEL_7:
 - (unsigned)_options
 {
   v2 = [(BMFileBackedDictionary *)self->_dictionary objectForKey:@"Options"];
-  v3 = [v2 unsignedShortValue];
+  unsignedShortValue = [v2 unsignedShortValue];
 
-  return v3;
+  return unsignedShortValue;
 }
 
 - (unint64_t)version
 {
   v2 = [(BMFileBackedDictionary *)self->_dictionary objectForKey:@"Version"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)failureCount
 {
   v2 = [(BMFileBackedDictionary *)self->_dictionary objectForKey:@"Failure"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)_journalUpdateAttemptCount
 {
   v2 = [(BMFileBackedDictionary *)self->_dictionary objectForKey:@"Journal"];
-  v3 = [v2 unsignedShortValue];
+  unsignedShortValue = [v2 unsignedShortValue];
 
-  return v3;
+  return unsignedShortValue;
 }
 
 - (unint64_t)_fullSetDonationAttemptCount
 {
   v2 = [(BMFileBackedDictionary *)self->_dictionary objectForKey:@"Full"];
-  v3 = [v2 unsignedShortValue];
+  unsignedShortValue = [v2 unsignedShortValue];
 
-  return v3;
+  return unsignedShortValue;
 }
 
 - (void)incrementVersion
@@ -342,7 +342,7 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
       v14 = v3;
       v15 = 2112;
@@ -358,14 +358,14 @@ LABEL_7:
 {
   v24[3] = *MEMORY[0x277D85DE8];
   ++self->_journalUpdateAttempts;
-  v3 = [(CSAppEntityCascadeLedger *)self version];
-  v4 = [(CSAppEntityCascadeLedger *)self failureCount];
+  version = [(CSAppEntityCascadeLedger *)self version];
+  failureCount = [(CSAppEntityCascadeLedger *)self failureCount];
   dictionary = self->_dictionary;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_journalUpdateAttempts];
   v24[0] = v6;
-  v7 = [(CSAppEntityCascadeLedger *)self _boxedVersion:v3 + 1];
+  v7 = [(CSAppEntityCascadeLedger *)self _boxedVersion:version + 1];
   v24[1] = v7;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4 + 1];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:failureCount + 1];
   v24[2] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
   v23[0] = @"Journal";
@@ -383,7 +383,7 @@ LABEL_7:
     {
       journalUpdateAttempts = self->_journalUpdateAttempts;
       *buf = 138412802;
-      v18 = self;
+      selfCopy = self;
       v19 = 1024;
       v20 = journalUpdateAttempts;
       v21 = 2112;
@@ -412,7 +412,7 @@ LABEL_7:
     {
       fullSetDonationAttempts = self->_fullSetDonationAttempts;
       *buf = 138412802;
-      v12 = self;
+      selfCopy = self;
       v13 = 1024;
       v14 = fullSetDonationAttempts;
       v15 = 2112;
@@ -432,14 +432,14 @@ LABEL_7:
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completeFullSetDonationWithVersion:(unint64_t)a3
+- (void)completeFullSetDonationWithVersion:(unint64_t)version
 {
   v27[4] = *MEMORY[0x277D85DE8];
   self->_fullSetDonationAttempts = 0;
   dictionary = self->_dictionary;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
   v27[0] = v6;
-  v7 = [(CSAppEntityCascadeLedger *)self _boxedVersion:a3];
+  v7 = [(CSAppEntityCascadeLedger *)self _boxedVersion:version];
   v27[1] = v7;
   v27[2] = &unk_2846E7560;
   v27[3] = &unk_2846E7560;
@@ -476,7 +476,7 @@ LABEL_7:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v23 = self;
+          selfCopy2 = self;
           v16 = "### %@ Ledger reset after completing full set donation";
           v17 = v15;
           v18 = 12;
@@ -495,7 +495,7 @@ LABEL_13:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2112;
         v25 = v11;
         v16 = "### %@ Failed to reset ledger after completing full set donation: %@";
@@ -519,12 +519,12 @@ LABEL_14:
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)resetLedger:(id *)a3
+- (BOOL)resetLedger:(id *)ledger
 {
   v5 = [(BMFileBackedDictionary *)self->_dictionary clear:?];
   if (v5)
   {
-    v6 = [objc_opt_class() _loadLedgerFileInDirectory:self->_directory bundleIdentifier:self->_bundleIdentifier error:a3];
+    v6 = [objc_opt_class() _loadLedgerFileInDirectory:self->_directory bundleIdentifier:self->_bundleIdentifier error:ledger];
     dictionary = self->_dictionary;
     self->_dictionary = v6;
 
@@ -534,25 +534,25 @@ LABEL_14:
   return v5;
 }
 
-+ (void)deleteLedgerFilesInDirectory:(id)a3 notContainedInActiveBundles:(id)a4
++ (void)deleteLedgerFilesInDirectory:(id)directory notContainedInActiveBundles:(id)bundles
 {
   v96 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v61 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  bundlesCopy = bundles;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = objc_opt_new();
   v79 = MEMORY[0x277D85DD0];
   v80 = 3221225472;
   v81 = __85__CSAppEntityCascadeLedger_deleteLedgerFilesInDirectory_notContainedInActiveBundles___block_invoke;
   v82 = &unk_27893C620;
-  v84 = a1;
-  v83 = v6;
+  selfCopy = self;
+  v83 = directoryCopy;
   v63 = v83;
-  v9 = [v7 enumeratorAtURL:? includingPropertiesForKeys:? options:? errorHandler:?];
+  v9 = [defaultManager enumeratorAtURL:? includingPropertiesForKeys:? options:? errorHandler:?];
 
   if (v9)
   {
-    v59 = v7;
+    v59 = defaultManager;
     v60 = objc_opt_new();
     v62 = objc_opt_new();
     v75 = 0u;
@@ -576,12 +576,12 @@ LABEL_14:
           }
 
           v15 = *(*(&v75 + 1) + 8 * i);
-          v16 = [v15 lastPathComponent];
+          lastPathComponent = [v15 lastPathComponent];
           v17 = @"-ledger";
-          if ((([v16 hasSuffix:@"-ledger"] & 1) != 0 || (v17 = @"-lockfile", objc_msgSend(v16, "hasSuffix:", @"-lockfile"))) && (objc_msgSend(v16, "substringToIndex:", objc_msgSend(v16, "length") - -[__CFString length](v17, "length")), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+          if ((([lastPathComponent hasSuffix:@"-ledger"] & 1) != 0 || (v17 = @"-lockfile", objc_msgSend(lastPathComponent, "hasSuffix:", @"-lockfile"))) && (objc_msgSend(lastPathComponent, "substringToIndex:", objc_msgSend(lastPathComponent, "length") - -[__CFString length](v17, "length")), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v19 = v18;
-            if (([v61 containsObject:v18] & 1) == 0)
+            if (([bundlesCopy containsObject:v18] & 1) == 0)
             {
               [v60 addObject:v19];
             }
@@ -617,7 +617,7 @@ LABEL_14:
           v91 = 2112;
           v92 = v63;
           v93 = 2112;
-          v94 = v61;
+          v94 = bundlesCopy;
           _os_log_impl(&dword_231B25000, v22, OS_LOG_TYPE_DEFAULT, "### %@ Deleting ledger and lockfile for bundles: [%@] in ledger directory (%@) not contained in spotlight bundles: %@", buf, 0x2Au);
         }
       }
@@ -700,12 +700,12 @@ LABEL_14:
         while (v26);
       }
 
-      v7 = v59;
+      defaultManager = v59;
     }
 
     else
     {
-      v7 = v59;
+      defaultManager = v59;
       if (CurrentLoggingLevel < 4)
       {
 LABEL_41:
@@ -753,7 +753,7 @@ LABEL_41:
 
                 v50 = *(*(&v65 + 1) + 8 * k);
                 v64 = 0;
-                v51 = [v7 removeItemAtURL:v50 error:&v64];
+                v51 = [defaultManager removeItemAtURL:v50 error:&v64];
                 v52 = v64;
                 if ((v51 & 1) == 0 && SKGLogGetCurrentLoggingLevel() >= 2)
                 {
@@ -770,7 +770,7 @@ LABEL_41:
                     _os_log_error_impl(&dword_231B25000, v53, OS_LOG_TYPE_ERROR, "### %@ Failed to clean up extraneous file (%@): %@", buf, 0x20u);
                   }
 
-                  v7 = v59;
+                  defaultManager = v59;
                 }
               }
 

@@ -1,12 +1,12 @@
 @interface SocCC
-- (SocCC)initWithParams:(__CFDictionary *)a3 listID:(int)a4;
+- (SocCC)initWithParams:(__CFDictionary *)params listID:(int)d;
 - (int)numberOfFields;
 - (void)defaultAction;
 @end
 
 @implementation SocCC
 
-- (SocCC)initWithParams:(__CFDictionary *)a3 listID:(int)a4
+- (SocCC)initWithParams:(__CFDictionary *)params listID:(int)d
 {
   v8.receiver = self;
   v8.super_class = SocCC;
@@ -15,7 +15,7 @@
   if (v5)
   {
     v5->listIDPos = 101;
-    *(&v5->super.currentPower + 1) = a4;
+    *(&v5->super.currentPower + 1) = d;
     v5->super.super.nameofComponent = CFStringCreateWithFormat(0, 0, @"%d SoC ", 3);
   }
 

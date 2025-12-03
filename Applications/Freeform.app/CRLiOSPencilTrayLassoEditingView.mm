@@ -1,31 +1,31 @@
 @interface CRLiOSPencilTrayLassoEditingView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (CRLiOSPencilTrayLassoEditingView)initWithCoder:(id)a3;
-- (CRLiOSPencilTrayLassoEditingView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (CRLiOSPencilTrayLassoEditingView)initWithCoder:(id)coder;
+- (CRLiOSPencilTrayLassoEditingView)initWithFrame:(CGRect)frame;
 - (id)p_makeZOrderButton;
 - (id)p_makeZOrderButtonConfiguration;
-- (id)p_makeZOrderButtonImageForForward:(BOOL)a3 pointSize:(double)a4;
+- (id)p_makeZOrderButtonImageForForward:(BOOL)forward pointSize:(double)size;
 - (void)dealloc;
-- (void)forBringToFrontAddTarget:(id)a3 action:(SEL)a4;
-- (void)forSendToBackAddTarget:(id)a3 action:(SEL)a4;
+- (void)forBringToFrontAddTarget:(id)target action:(SEL)action;
+- (void)forSendToBackAddTarget:(id)target action:(SEL)action;
 - (void)layoutSubviews;
 - (void)p_commonInit;
 - (void)p_updateLongPressGestureDurations;
-- (void)setBringForwardEnabled:(BOOL)a3;
-- (void)setSelectedFillColor:(id)a3;
-- (void)setSelectedStrokeColor:(id)a3;
-- (void)setSendBackwardEnabled:(BOOL)a3;
+- (void)setBringForwardEnabled:(BOOL)enabled;
+- (void)setSelectedFillColor:(id)color;
+- (void)setSelectedStrokeColor:(id)color;
+- (void)setSendBackwardEnabled:(BOOL)enabled;
 - (void)toggleFillColorPickerPresentation;
 - (void)toggleStrokeColorPickerPresentation;
 @end
 
 @implementation CRLiOSPencilTrayLassoEditingView
 
-- (CRLiOSPencilTrayLassoEditingView)initWithFrame:(CGRect)a3
+- (CRLiOSPencilTrayLassoEditingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CRLiOSPencilTrayLassoEditingView;
-  v3 = [(CRLiOSPencilTrayLassoEditingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLiOSPencilTrayLassoEditingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,11 +35,11 @@
   return v4;
 }
 
-- (CRLiOSPencilTrayLassoEditingView)initWithCoder:(id)a3
+- (CRLiOSPencilTrayLassoEditingView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLiOSPencilTrayLassoEditingView;
-  v3 = [(CRLiOSPencilTrayLassoEditingView *)&v6 initWithCoder:a3];
+  v3 = [(CRLiOSPencilTrayLassoEditingView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -72,9 +72,9 @@
   [(CRLiOSPencilTrayColorWell *)self->_strokeColorWell setIsAccessibilityElement:1];
   [(CRLiOSPencilTrayColorWell *)self->_strokeColorWell setForStrokeColor:1];
   [(CRLiOSPencilTrayLassoEditingView *)self addSubview:self->_strokeColorWell];
-  v11 = [(CRLiOSPencilTrayLassoEditingView *)self p_makeZOrderButton];
+  p_makeZOrderButton = [(CRLiOSPencilTrayLassoEditingView *)self p_makeZOrderButton];
   sendBackwardButton = self->_sendBackwardButton;
-  self->_sendBackwardButton = v11;
+  self->_sendBackwardButton = p_makeZOrderButton;
 
   v13 = +[NSBundle mainBundle];
   v27 = [v13 localizedStringForKey:@"Send backward" value:0 table:0];
@@ -93,9 +93,9 @@
 
   [(CRLAXZorderButton *)self->_sendBackwardButton addInteraction:self->_largeContentViewerInteractionForSendBackwardButton];
   [(CRLiOSPencilTrayLassoEditingView *)self addSubview:self->_sendBackwardButton];
-  v18 = [(CRLiOSPencilTrayLassoEditingView *)self p_makeZOrderButton];
+  p_makeZOrderButton2 = [(CRLiOSPencilTrayLassoEditingView *)self p_makeZOrderButton];
   bringForwardButton = self->_bringForwardButton;
-  self->_bringForwardButton = v18;
+  self->_bringForwardButton = p_makeZOrderButton2;
 
   v20 = +[NSBundle mainBundle];
   v21 = [v20 localizedStringForKey:@"Bring forward" value:0 table:0];
@@ -132,8 +132,8 @@
 - (id)p_makeZOrderButton
 {
   v3 = objc_alloc_init(CRLAXZorderButton);
-  v4 = [(CRLiOSPencilTrayLassoEditingView *)self p_makeZOrderButtonConfiguration];
-  [(CRLAXZorderButton *)v3 setConfiguration:v4];
+  p_makeZOrderButtonConfiguration = [(CRLiOSPencilTrayLassoEditingView *)self p_makeZOrderButtonConfiguration];
+  [(CRLAXZorderButton *)v3 setConfiguration:p_makeZOrderButtonConfiguration];
 
   [(CRLAXZorderButton *)v3 setIsAccessibilityElement:1];
   [(CRLAXZorderButton *)v3 setPointerInteractionEnabled:1];
@@ -155,74 +155,74 @@
   return v2;
 }
 
-- (id)p_makeZOrderButtonImageForForward:(BOOL)a3 pointSize:(double)a4
+- (id)p_makeZOrderButtonImageForForward:(BOOL)forward pointSize:(double)size
 {
   v5 = @"square.2.stack.3d.bottom.filled";
-  if (a3)
+  if (forward)
   {
     v5 = @"square.2.stack.3d.top.filled";
   }
 
   v6 = v5;
-  v7 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:2 scale:a4];
+  v7 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:2 scale:size];
   v8 = [UIImage systemImageNamed:v6 withConfiguration:v7];
 
   return v8;
 }
 
-- (void)setSelectedFillColor:(id)a3
+- (void)setSelectedFillColor:(id)color
 {
   [(CRLiOSPencilTrayColorWell *)self->_fillColorWell setSelectedColor:?];
   fillColorWell = self->_fillColorWell;
 
-  [(CRLiOSPencilTrayColorWell *)fillColorWell setHidden:a3 == 0];
+  [(CRLiOSPencilTrayColorWell *)fillColorWell setHidden:color == 0];
 }
 
-- (void)setSelectedStrokeColor:(id)a3
+- (void)setSelectedStrokeColor:(id)color
 {
   [(CRLiOSPencilTrayColorWell *)self->_strokeColorWell setSelectedColor:?];
   strokeColorWell = self->_strokeColorWell;
 
-  [(CRLiOSPencilTrayColorWell *)strokeColorWell setHidden:a3 == 0];
+  [(CRLiOSPencilTrayColorWell *)strokeColorWell setHidden:color == 0];
 }
 
-- (void)setSendBackwardEnabled:(BOOL)a3
+- (void)setSendBackwardEnabled:(BOOL)enabled
 {
-  [(CRLAXZorderButton *)self->_sendBackwardButton setEnabled:a3];
+  [(CRLAXZorderButton *)self->_sendBackwardButton setEnabled:enabled];
   sendBackwardButton = self->_sendBackwardButton;
 
   [(CRLAXZorderButton *)sendBackwardButton layoutIfNeeded];
 }
 
-- (void)setBringForwardEnabled:(BOOL)a3
+- (void)setBringForwardEnabled:(BOOL)enabled
 {
-  [(CRLAXZorderButton *)self->_bringForwardButton setEnabled:a3];
+  [(CRLAXZorderButton *)self->_bringForwardButton setEnabled:enabled];
   bringForwardButton = self->_bringForwardButton;
 
   [(CRLAXZorderButton *)bringForwardButton layoutIfNeeded];
 }
 
-- (void)forSendToBackAddTarget:(id)a3 action:(SEL)a4
+- (void)forSendToBackAddTarget:(id)target action:(SEL)action
 {
   sendToBackGR = self->_sendToBackGR;
-  v7 = a3;
-  [(UILongPressGestureRecognizer *)sendToBackGR addTarget:v7 action:a4];
-  [(CRLAXZorderButton *)self->_sendBackwardButton setTarget:v7];
+  targetCopy = target;
+  [(UILongPressGestureRecognizer *)sendToBackGR addTarget:targetCopy action:action];
+  [(CRLAXZorderButton *)self->_sendBackwardButton setTarget:targetCopy];
 
-  [(CRLAXZorderButton *)self->_sendBackwardButton setAction:a4];
+  [(CRLAXZorderButton *)self->_sendBackwardButton setAction:action];
   v9 = +[NSBundle mainBundle];
   v8 = [v9 localizedStringForKey:@"Send to back" value:0 table:0];
   [(CRLAXZorderButton *)self->_sendBackwardButton setActionTitle:v8];
 }
 
-- (void)forBringToFrontAddTarget:(id)a3 action:(SEL)a4
+- (void)forBringToFrontAddTarget:(id)target action:(SEL)action
 {
   bringToFrontGR = self->_bringToFrontGR;
-  v7 = a3;
-  [(UILongPressGestureRecognizer *)bringToFrontGR addTarget:v7 action:a4];
-  [(CRLAXZorderButton *)self->_bringForwardButton setTarget:v7];
+  targetCopy = target;
+  [(UILongPressGestureRecognizer *)bringToFrontGR addTarget:targetCopy action:action];
+  [(CRLAXZorderButton *)self->_bringForwardButton setTarget:targetCopy];
 
-  [(CRLAXZorderButton *)self->_bringForwardButton setAction:a4];
+  [(CRLAXZorderButton *)self->_bringForwardButton setAction:action];
   v9 = +[NSBundle mainBundle];
   v8 = [v9 localizedStringForKey:@"Bring to front" value:0 table:0];
   [(CRLAXZorderButton *)self->_bringForwardButton setActionTitle:v8];
@@ -314,8 +314,8 @@
   [(CRLiOSPencilTrayLassoEditingView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLiOSPencilTrayLassoEditingView *)self traitCollection];
-  if ([v7 userInterfaceIdiom] && objc_msgSend(v7, "horizontalSizeClass") != 1)
+  traitCollection = [(CRLiOSPencilTrayLassoEditingView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] && objc_msgSend(traitCollection, "horizontalSizeClass") != 1)
   {
     if (v4 >= v6)
     {
@@ -345,7 +345,7 @@
     v13 = 1;
   }
 
-  v31 = v7;
+  v31 = traitCollection;
   strokeColorWell = self->_strokeColorWell;
   v38[0] = self->_fillColorWell;
   v38[1] = strokeColorWell;
@@ -413,21 +413,21 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_sendToBackGR == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_sendToBackGR == recognizerCopy)
   {
     v9 = &OBJC_IVAR___CRLiOSPencilTrayLassoEditingView__largeContentViewerInteractionForSendBackwardButton;
 LABEL_6:
-    v10 = [*(&self->super.super.super.isa + *v9) gestureRecognizerForExclusionRelationship];
-    v8 = v10 == v7;
+    gestureRecognizerForExclusionRelationship = [*(&self->super.super.super.isa + *v9) gestureRecognizerForExclusionRelationship];
+    v8 = gestureRecognizerForExclusionRelationship == gestureRecognizerCopy;
 
     goto LABEL_7;
   }
 
-  if (self->_bringToFrontGR == v6)
+  if (self->_bringToFrontGR == recognizerCopy)
   {
     v9 = &OBJC_IVAR___CRLiOSPencilTrayLassoEditingView__largeContentViewerInteractionForBringForwardButton;
     goto LABEL_6;

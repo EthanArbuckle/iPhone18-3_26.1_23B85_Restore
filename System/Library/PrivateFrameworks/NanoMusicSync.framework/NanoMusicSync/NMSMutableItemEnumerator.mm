@@ -12,9 +12,9 @@
   v2 = [(NMSMutableItemEnumerator *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     items = v2->_items;
-    v2->_items = v3;
+    v2->_items = array;
   }
 
   return v2;

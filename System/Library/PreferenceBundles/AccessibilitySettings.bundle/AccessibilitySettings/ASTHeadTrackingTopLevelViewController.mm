@@ -1,28 +1,28 @@
 @interface ASTHeadTrackingTopLevelViewController
 - (ASTHeadTrackingTopLevelViewController)init;
-- (double)maximumValueForSpecifier:(id)a3;
-- (double)minimumValueForSpecifier:(id)a3;
-- (double)stepValueForSpecifier:(id)a3;
-- (double)valueForSpecifier:(id)a3;
-- (id)_actionForSpecifier:(id)a3;
+- (double)maximumValueForSpecifier:(id)specifier;
+- (double)minimumValueForSpecifier:(id)specifier;
+- (double)stepValueForSpecifier:(id)specifier;
+- (double)valueForSpecifier:(id)specifier;
+- (id)_actionForSpecifier:(id)specifier;
 - (id)_customizationSpecifiers;
-- (id)_setupSpecifiersForExpressions:(id)a3;
-- (id)assistiveTouchBubbleModeEnabled:(id)a3;
-- (id)dwellControlEnabled:(id)a3;
-- (id)headTrackingEnabled:(id)a3;
-- (id)modeSummary:(id)a3;
+- (id)_setupSpecifiersForExpressions:(id)expressions;
+- (id)assistiveTouchBubbleModeEnabled:(id)enabled;
+- (id)dwellControlEnabled:(id)enabled;
+- (id)headTrackingEnabled:(id)enabled;
+- (id)modeSummary:(id)summary;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (void)_disableHeadTrackingSpec:(id)a3 forSwitchControlIfNecessaryAndReload:(BOOL)a4;
-- (void)_switchControlToggled:(id)a3;
-- (void)setAssistiveTouchBubbleModeEnabled:(id)a3 specifier:(id)a4;
-- (void)setDwellControlEnabled:(id)a3 specifier:(id)a4;
-- (void)setHeadTrackingEnabled:(id)a3 specifier:(id)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (void)_disableHeadTrackingSpec:(id)spec forSwitchControlIfNecessaryAndReload:(BOOL)reload;
+- (void)_switchControlToggled:(id)toggled;
+- (void)setAssistiveTouchBubbleModeEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDwellControlEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHeadTrackingEnabled:(id)enabled specifier:(id)specifier;
 - (void)showMoreDwellControlOptions;
-- (void)specifier:(id)a3 setValue:(double)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)specifier:(id)specifier setValue:(double)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ASTHeadTrackingTopLevelViewController
@@ -41,14 +41,14 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ASTHeadTrackingTopLevelViewController;
-  [(ASTHeadTrackingTopLevelViewController *)&v6 viewWillAppear:a3];
+  [(ASTHeadTrackingTopLevelViewController *)&v6 viewWillAppear:appear];
   v4 = settingsLocString(@"AST_HEAD_TRACKING_NAVBAR_TITLE", @"HandSettings");
-  v5 = [(ASTHeadTrackingTopLevelViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(ASTHeadTrackingTopLevelViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
   [(ASTHeadTrackingTopLevelViewController *)self reloadSpecifiers];
 }
@@ -172,8 +172,8 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
     v24 = [NSArray arrayWithObjects:v50 count:2];
     [(ASTHeadTrackingTopLevelViewController *)self setSensitivitySpecifiers:v24];
 
-    v25 = [(ASTHeadTrackingTopLevelViewController *)self _customizationSpecifiers];
-    [v4 addObjectsFromArray:v25];
+    _customizationSpecifiers = [(ASTHeadTrackingTopLevelViewController *)self _customizationSpecifiers];
+    [v4 addObjectsFromArray:_customizationSpecifiers];
 
     v42 = +[PSSpecifier emptyGroupSpecifier];
     [v4 addObject:v42];
@@ -224,7 +224,7 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
   [v2 openSensitiveURL:v3 withOptions:0];
 }
 
-- (id)dwellControlEnabled:(id)a3
+- (id)dwellControlEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseDwellControlEnabled]);
@@ -232,11 +232,11 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
   return v4;
 }
 
-- (void)setDwellControlEnabled:(id)a3 specifier:(id)a4
+- (void)setDwellControlEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 assistiveTouchAlwaysShowMenuEnabled] | v4;
+  v6 = [v5 assistiveTouchAlwaysShowMenuEnabled] | bOOLValue;
   v7 = +[AXSettings sharedInstance];
   [v7 setAssistiveTouchAlwaysShowMenuEnabled:v6 & 1];
 
@@ -244,10 +244,10 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
   [v8 setAssistiveTouchMouseDwellControlShowPrompt:1];
 
   v9 = +[AXSettings sharedInstance];
-  [v9 setAssistiveTouchMouseDwellControlEnabled:v4];
+  [v9 setAssistiveTouchMouseDwellControlEnabled:bOOLValue];
 }
 
-- (id)assistiveTouchBubbleModeEnabled:(id)a3
+- (id)assistiveTouchBubbleModeEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchBubbleModeEnabled]);
@@ -255,20 +255,20 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
   return v4;
 }
 
-- (void)setAssistiveTouchBubbleModeEnabled:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchBubbleModeEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchBubbleModeEnabled:v4];
+  [v5 setAssistiveTouchBubbleModeEnabled:bOOLValue];
 }
 
-- (id)_setupSpecifiersForExpressions:(id)a3
+- (id)_setupSpecifiersForExpressions:(id)expressions
 {
-  v3 = a3;
+  expressionsCopy = expressions;
   v19 = +[NSMutableArray array];
   v4 = +[AXSSMotionTracker supportedExpressions];
-  v5 = [v4 allObjects];
-  v6 = [v5 sortedArrayUsingSelector:"compare:"];
+  allObjects = [v4 allObjects];
+  v6 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   v22 = 0u;
   v23 = 0u;
@@ -293,7 +293,7 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
         v12 = *(*(&v20 + 1) + 8 * i);
         [v12 unsignedIntegerValue];
         v13 = AXAssistiveTouchHeadTrackingExpressionForAXSSFacialExpression();
-        if (v13 && [v3 containsObject:v13])
+        if (v13 && [expressionsCopy containsObject:v13])
         {
           v14 = AXSSHumanReadableDescriptionForMotionTrackingFacialExpression();
           v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:"_actionForSpecifier:" detail:0 cell:2 edit:0];
@@ -316,19 +316,19 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
 
 - (id)_customizationSpecifiers
 {
-  v3 = [(ASTHeadTrackingTopLevelViewController *)self actionSpecifiers];
-  v4 = [(ASTHeadTrackingTopLevelViewController *)self modeSpecifiers];
-  v5 = [(ASTHeadTrackingTopLevelViewController *)self sensitivitySpecifiers];
-  v6 = [NSArray axArrayWithPossiblyNilArrays:3, v3, v4, v5];
+  actionSpecifiers = [(ASTHeadTrackingTopLevelViewController *)self actionSpecifiers];
+  modeSpecifiers = [(ASTHeadTrackingTopLevelViewController *)self modeSpecifiers];
+  sensitivitySpecifiers = [(ASTHeadTrackingTopLevelViewController *)self sensitivitySpecifiers];
+  v6 = [NSArray axArrayWithPossiblyNilArrays:3, actionSpecifiers, modeSpecifiers, sensitivitySpecifiers];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASTHeadTrackingTopLevelViewController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(ASTHeadTrackingTopLevelViewController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"ASTExpressionType"];
   v10 = [v8 propertyForKey:@"AXSSExpressionType"];
   v11 = v10;
@@ -336,8 +336,8 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
   {
     v12 = objc_alloc_init(ASTHeadTrackingTopLevelExpressionActionPickerController);
     [(ASTHeadTrackingTopLevelExpressionActionPickerController *)v12 setParentController:self];
-    v13 = [(ASTHeadTrackingTopLevelViewController *)self rootController];
-    [(ASTHeadTrackingTopLevelExpressionActionPickerController *)v12 setRootController:v13];
+    rootController = [(ASTHeadTrackingTopLevelViewController *)self rootController];
+    [(ASTHeadTrackingTopLevelExpressionActionPickerController *)v12 setRootController:rootController];
 
     v14 = settingsLocString(@"AST_HEAD_TRACKING_ACTIONS", @"HandSettings");
     v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:0 cell:-1 edit:0];
@@ -360,19 +360,19 @@ void __52__ASTHeadTrackingTopLevelViewController_viewDidLoad__block_invoke_3(uin
     {
       v19.receiver = self;
       v19.super_class = ASTHeadTrackingTopLevelViewController;
-      [(ASTHeadTrackingTopLevelViewController *)&v19 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(ASTHeadTrackingTopLevelViewController *)&v19 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
   }
 }
 
-- (id)_actionForSpecifier:(id)a3
+- (id)_actionForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"ASTExpressionType"];
+  v3 = [specifier propertyForKey:@"ASTExpressionType"];
   if (v3)
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 assistiveTouchHeadTrackingExpressionToActionMapping];
-    v6 = [v5 objectForKey:v3];
+    assistiveTouchHeadTrackingExpressionToActionMapping = [v4 assistiveTouchHeadTrackingExpressionToActionMapping];
+    v6 = [assistiveTouchHeadTrackingExpressionToActionMapping objectForKey:v3];
 
     if (v6 && ![v6 isEqualToString:@"__NONE__"])
     {
@@ -393,31 +393,31 @@ LABEL_7:
   return v8;
 }
 
-- (void)_switchControlToggled:(id)a3
+- (void)_switchControlToggled:(id)toggled
 {
   v4 = [(ASTHeadTrackingTopLevelViewController *)self specifierForID:@"ASTHeadTrackingEnabled"];
   [(ASTHeadTrackingTopLevelViewController *)self _disableHeadTrackingSpec:v4 forSwitchControlIfNecessaryAndReload:1];
 }
 
-- (void)_disableHeadTrackingSpec:(id)a3 forSwitchControlIfNecessaryAndReload:(BOOL)a4
+- (void)_disableHeadTrackingSpec:(id)spec forSwitchControlIfNecessaryAndReload:(BOOL)reload
 {
-  v4 = a4;
-  v10 = a3;
+  reloadCopy = reload;
+  specCopy = spec;
   v6 = _AXSAssistiveTouchScannerEnabled();
   v7 = [NSNumber numberWithBool:v6 == 0];
-  [v10 setProperty:v7 forKey:PSEnabledKey];
+  [specCopy setProperty:v7 forKey:PSEnabledKey];
 
-  if (v4)
+  if (reloadCopy)
   {
-    [(ASTHeadTrackingTopLevelViewController *)self reloadSpecifier:v10];
+    [(ASTHeadTrackingTopLevelViewController *)self reloadSpecifier:specCopy];
   }
 
   v8 = v6 == 0;
-  v9 = [v10 propertyForKey:PSTableCellKey];
+  v9 = [specCopy propertyForKey:PSTableCellKey];
   [v9 setCellEnabled:v8];
 }
 
-- (id)headTrackingEnabled:(id)a3
+- (id)headTrackingEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchHeadTrackingEnabled]);
@@ -425,20 +425,20 @@ LABEL_7:
   return v4;
 }
 
-- (void)setHeadTrackingEnabled:(id)a3 specifier:(id)a4
+- (void)setHeadTrackingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 assistiveTouchHeadTrackingEnabled];
+  assistiveTouchHeadTrackingEnabled = [v5 assistiveTouchHeadTrackingEnabled];
 
-  if (v4 != v6)
+  if (bOOLValue != assistiveTouchHeadTrackingEnabled)
   {
     v7 = +[AXSettings sharedInstance];
-    [v7 setAssistiveTouchHeadTrackingEnabled:v4];
+    [v7 setAssistiveTouchHeadTrackingEnabled:bOOLValue];
   }
 }
 
-- (id)modeSummary:(id)a3
+- (id)modeSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   [v3 assistiveTouchHeadTrackingMode];
@@ -447,9 +447,9 @@ LABEL_7:
   return v4;
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"ASTExpressionSensitivity"];
 
   v5 = 0.0;
@@ -463,9 +463,9 @@ LABEL_7:
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v5 = [a3 propertyForKey:PSIDKey];
+  v5 = [specifier propertyForKey:PSIDKey];
   v6 = [v5 isEqualToString:@"ASTExpressionSensitivity"];
 
   if (v6)
@@ -474,7 +474,7 @@ LABEL_7:
     [v7 assistiveTouchHeadTrackingSensitivity];
     v8 = switchControlUserPreferenceForNormalizedHeadTrackingSensitivity();
 
-    if (v8 != a4)
+    if (v8 != value)
     {
       switchControlNormalizedHeadTrackingSensitivityForUserPreference();
       v10 = v9;
@@ -484,9 +484,9 @@ LABEL_7:
   }
 }
 
-- (double)stepValueForSpecifier:(id)a3
+- (double)stepValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"ASTExpressionSensitivity"];
 
   result = 0.0;
@@ -498,9 +498,9 @@ LABEL_7:
   return result;
 }
 
-- (double)minimumValueForSpecifier:(id)a3
+- (double)minimumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"ASTExpressionSensitivity"];
 
   result = kSwitchControlHeadTrackingSensitivityMinUserPreference;
@@ -512,9 +512,9 @@ LABEL_7:
   return result;
 }
 
-- (double)maximumValueForSpecifier:(id)a3
+- (double)maximumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"ASTExpressionSensitivity"];
 
   result = kSwitchControlHeadTrackingSensitivityMaxUserPreference;
@@ -526,9 +526,9 @@ LABEL_7:
   return result;
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(ASTHeadTrackingTopLevelViewController *)self valueForSpecifier:a3];
+  [(ASTHeadTrackingTopLevelViewController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

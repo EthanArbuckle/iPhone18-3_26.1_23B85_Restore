@@ -7,20 +7,20 @@
 - (BOOL)sg_isSignificantWithStore:()Significance
 {
   v4 = a3;
-  if (v4 && ([a1 handles], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
+  if (v4 && ([self handles], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
   {
-    v7 = [a1 handles];
-    if ([v4 anyHandleIsSignificant:v7])
+    handles = [self handles];
+    if ([v4 anyHandleIsSignificant:handles])
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [a1 handles];
-      v10 = [v9 objectAtIndexedSubscript:0];
-      v11 = [a1 handleIdentifier];
-      v8 = [SGContactsInterface handleExistsInContactStoreForHandle:v10 withHandleType:v11];
+      handles2 = [self handles];
+      v10 = [handles2 objectAtIndexedSubscript:0];
+      handleIdentifier = [self handleIdentifier];
+      v8 = [SGContactsInterface handleExistsInContactStoreForHandle:v10 withHandleType:handleIdentifier];
     }
   }
 

@@ -1,64 +1,64 @@
 @interface TSTHiddenStateFormulaOwner
 - (TSKUIDStruct)ownerUID;
-- (TSTHiddenStateFormulaOwner)initWithContext:(id)a3 ownerUID:(const TSKUIDStruct *)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setNeedsToUpdateFilterSetForImport:(BOOL)a3;
-- (void)setOwnerUID:(TSKUIDStruct)a3;
-- (void)setThresholdCellValues:(id)a3;
+- (TSTHiddenStateFormulaOwner)initWithContext:(id)context ownerUID:(const TSKUIDStruct *)d;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setNeedsToUpdateFilterSetForImport:(BOOL)import;
+- (void)setOwnerUID:(TSKUIDStruct)d;
+- (void)setThresholdCellValues:(id)values;
 @end
 
 @implementation TSTHiddenStateFormulaOwner
 
-- (TSTHiddenStateFormulaOwner)initWithContext:(id)a3 ownerUID:(const TSKUIDStruct *)a4
+- (TSTHiddenStateFormulaOwner)initWithContext:(id)context ownerUID:(const TSKUIDStruct *)d
 {
   v6.receiver = self;
   v6.super_class = TSTHiddenStateFormulaOwner;
-  result = [(TSTHiddenStateFormulaOwner *)&v6 initWithContext:a3];
+  result = [(TSTHiddenStateFormulaOwner *)&v6 initWithContext:context];
   if (result)
   {
-    result->_ownerUID = *a4;
+    result->_ownerUID = *d;
     result->_needsToUpdateFilterSetForImport = 0;
   }
 
   return result;
 }
 
-- (void)setOwnerUID:(TSKUIDStruct)a3
+- (void)setOwnerUID:(TSKUIDStruct)d
 {
-  upper = a3._upper;
-  lower = a3._lower;
+  upper = d._upper;
+  lower = d._lower;
   p_ownerUID = &self->_ownerUID;
-  if (a3._lower != self->_ownerUID._lower || a3._upper != self->_ownerUID._upper)
+  if (d._lower != self->_ownerUID._lower || d._upper != self->_ownerUID._upper)
   {
-    objc_msgSend_willModify(self, a2, a3._lower, a3._upper, v3);
+    objc_msgSend_willModify(self, a2, d._lower, d._upper, v3);
     p_ownerUID->_lower = lower;
     p_ownerUID->_upper = upper;
   }
 }
 
-- (void)setNeedsToUpdateFilterSetForImport:(BOOL)a3
+- (void)setNeedsToUpdateFilterSetForImport:(BOOL)import
 {
-  if (self->_needsToUpdateFilterSetForImport != a3)
+  if (self->_needsToUpdateFilterSetForImport != import)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
-    self->_needsToUpdateFilterSetForImport = a3;
+    objc_msgSend_willModify(self, a2, import, v3, v4);
+    self->_needsToUpdateFilterSetForImport = import;
   }
 }
 
-- (void)setThresholdCellValues:(id)a3
+- (void)setThresholdCellValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   objc_msgSend_willModify(self, v5, v6, v7, v8);
   thresholdCellValues = self->_thresholdCellValues;
-  self->_thresholdCellValues = v4;
+  self->_thresholdCellValues = valuesCopy;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v11 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v11, v4, off_2812E4498[240], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[240], v5, v6);
 
   v8 = TSKUIDStruct::loadFromMessage();
   self->_ownerUID._lower = v8;
@@ -72,11 +72,11 @@
   self->_needsToUpdateFilterSetForImport = *(v7 + 56);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v29 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v29, v4, sub_22125EB60, off_2812E4498[240], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_22125EB60, off_2812E4498[240], v5);
 
   *(v6 + 16) |= 1u;
   v7 = *(v6 + 48);

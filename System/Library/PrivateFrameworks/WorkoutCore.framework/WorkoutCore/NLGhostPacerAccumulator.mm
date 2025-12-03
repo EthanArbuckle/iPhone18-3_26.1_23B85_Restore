@@ -1,12 +1,12 @@
 @interface NLGhostPacerAccumulator
 - (NLGhostPacerAccumulator)init;
-- (NLGhostPacerAccumulator)initWithActivityType:(id)a3 goalDistance:(double)a4 goalFinishTime:(double)a5;
+- (NLGhostPacerAccumulator)initWithActivityType:(id)type goalDistance:(double)distance goalFinishTime:(double)time;
 - (double)requiredPaceInMetersPerSecond;
 - (double)secondsAheadOfPacer;
-- (void)setRequiredPaceInMetersPerSecond:(double)a3;
-- (void)setSecondsAheadOfPacer:(double)a3;
-- (void)updatePacerWithStatistics:(id)a3 duration:(double)a4;
-- (void)updateWithElapsedTime:(double)a3;
+- (void)setRequiredPaceInMetersPerSecond:(double)second;
+- (void)setSecondsAheadOfPacer:(double)pacer;
+- (void)updatePacerWithStatistics:(id)statistics duration:(double)duration;
+- (void)updateWithElapsedTime:(double)time;
 @end
 
 @implementation NLGhostPacerAccumulator
@@ -18,11 +18,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setSecondsAheadOfPacer:(double)a3
+- (void)setSecondsAheadOfPacer:(double)pacer
 {
   v5 = OBJC_IVAR___NLGhostPacerAccumulator_secondsAheadOfPacer;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = pacer;
 }
 
 - (double)requiredPaceInMetersPerSecond
@@ -32,41 +32,41 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setRequiredPaceInMetersPerSecond:(double)a3
+- (void)setRequiredPaceInMetersPerSecond:(double)second
 {
   v5 = OBJC_IVAR___NLGhostPacerAccumulator_requiredPaceInMetersPerSecond;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = second;
 }
 
-- (NLGhostPacerAccumulator)initWithActivityType:(id)a3 goalDistance:(double)a4 goalFinishTime:(double)a5
+- (NLGhostPacerAccumulator)initWithActivityType:(id)type goalDistance:(double)distance goalFinishTime:(double)time
 {
-  v7 = a3;
-  v8 = specialized GhostPacerAccumulator.init(activityType:goalDistance:goalFinishTime:)(v7, a4, a5);
+  typeCopy = type;
+  v8 = specialized GhostPacerAccumulator.init(activityType:goalDistance:goalFinishTime:)(typeCopy, distance, time);
 
   return v8;
 }
 
-- (void)updatePacerWithStatistics:(id)a3 duration:(double)a4
+- (void)updatePacerWithStatistics:(id)statistics duration:(double)duration
 {
-  v6 = a3;
-  v7 = self;
-  GhostPacerAccumulator.updatePacer(statistics:duration:)(v6, a4);
+  statisticsCopy = statistics;
+  selfCopy = self;
+  GhostPacerAccumulator.updatePacer(statistics:duration:)(statisticsCopy, duration);
 }
 
-- (void)updateWithElapsedTime:(double)a3
+- (void)updateWithElapsedTime:(double)time
 {
   v5 = OBJC_IVAR___NLGhostPacerAccumulator_lastElapsedTime;
   swift_beginAccess();
-  if (*(&self->super.super.isa + v5) < a3)
+  if (*(&self->super.super.isa + v5) < time)
   {
-    *(&self->super.super.isa + v5) = a3;
+    *(&self->super.super.isa + v5) = time;
     v6 = OBJC_IVAR___NLGhostPacerAccumulator_accumulatedDistanceDuration;
     swift_beginAccess();
-    if (a3 - *(&self->super.super.isa + v6) >= 10.0)
+    if (time - *(&self->super.super.isa + v6) >= 10.0)
     {
-      v7 = self;
-      GhostPacerAccumulator.updateValuesWithTime(_:)(a3);
+      selfCopy = self;
+      GhostPacerAccumulator.updateValuesWithTime(_:)(time);
     }
   }
 }

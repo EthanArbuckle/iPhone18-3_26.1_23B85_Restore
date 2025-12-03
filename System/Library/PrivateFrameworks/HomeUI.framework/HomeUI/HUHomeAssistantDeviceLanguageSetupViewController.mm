@@ -1,7 +1,7 @@
 @interface HUHomeAssistantDeviceLanguageSetupViewController
 - (BOOL)needsToWaitForPreload;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeAssistantDeviceLanguageSetupViewController)initWithHome:(id)a3;
+- (HUHomeAssistantDeviceLanguageSetupViewController)initWithHome:(id)home;
 - (SEL)continueSelector;
 - (SEL)customizeSelector;
 - (id)hu_preloadContent;
@@ -12,20 +12,20 @@
 - (void)_completeLanguageSetup;
 - (void)_setupPersonalRequestsItemInfrastructure;
 - (void)_turnOffPersonalRequests;
-- (void)setContinueSelector:(SEL)a3;
-- (void)setCustomizeSelector:(SEL)a3;
+- (void)setContinueSelector:(SEL)selector;
+- (void)setCustomizeSelector:(SEL)selector;
 - (void)userTappedCancelFromWarning;
 - (void)userTappedContinueFromWarning;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeAssistantDeviceLanguageSetupViewController
 
-- (HUHomeAssistantDeviceLanguageSetupViewController)initWithHome:(id)a3
+- (HUHomeAssistantDeviceLanguageSetupViewController)initWithHome:(id)home
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  homeCopy = home;
   v7 = _HULocalizedStringWithDefaultValue(@"HULanguageCanRecognizeMultipleVoices_Title", @"HULanguageCanRecognizeMultipleVoices_Title", 1);
   v8 = _HULocalizedStringWithDefaultValue(@"HULanguageCanRecognizeMultipleVoices_Title", @"HULanguageCanRecognizeMultipleVoices_Title", 1);
 
@@ -36,7 +36,7 @@
 
   if (v10)
   {
-    objc_storeStrong(&v10->_home, a3);
+    objc_storeStrong(&v10->_home, home);
     [(HUHomeAssistantDeviceLanguageSetupViewController *)v10 _setupPersonalRequestsItemInfrastructure];
     v11 = +[HUHomeFeatureOnboardingUtilities fetchSupportedVoiceRecognitionLanguages];
     supportedVoiceRecognitionLanguages = v10->_supportedVoiceRecognitionLanguages;
@@ -92,40 +92,40 @@ LABEL_8:
 - (id)hu_preloadContent
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-  v5 = [v4 hf_hasHomePods];
+  home = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+  hf_hasHomePods = [home hf_hasHomePods];
 
-  v6 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-  v7 = [v6 hf_hasRMVCapableAppleTV];
+  home2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+  hf_hasRMVCapableAppleTV = [home2 hf_hasRMVCapableAppleTV];
 
-  if ((v5 & 1) != 0 || v7)
+  if ((hf_hasHomePods & 1) != 0 || hf_hasRMVCapableAppleTV)
   {
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = NSStringFromSelector(a2);
-      v13 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+      home3 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
       *buf = 138413058;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v12;
       v29 = 2048;
-      v30 = [v13 hf_numberOfHomePods];
+      hf_numberOfHomePods = [home3 hf_numberOfHomePods];
       v31 = 1024;
-      v32 = v7;
+      v32 = hf_hasRMVCapableAppleTV;
       _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@:%@ Determining which screen variant for %lu HomePods. hasRMVCapableAppleTV = %{BOOL}d", buf, 0x26u);
     }
 
-    if ((v7 & 1) != 0 || ([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && !objc_msgSend(MEMORY[0x277D14CE8], "isAVisionPro"))
+    if ((hf_hasRMVCapableAppleTV & 1) != 0 || ([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && !objc_msgSend(MEMORY[0x277D14CE8], "isAVisionPro"))
     {
-      v14 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-      v15 = [HUHomeFeatureOnboardingUtilities atLeastOneHomePodHasLanguageSettingsForHomeFuture:v14];
+      home4 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+      v15 = [HUHomeFeatureOnboardingUtilities atLeastOneHomePodHasLanguageSettingsForHomeFuture:home4];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __69__HUHomeAssistantDeviceLanguageSetupViewController_hu_preloadContent__block_invoke;
       v22[3] = &unk_277DB8E20;
-      v23 = v7;
-      v24 = v5;
+      v23 = hf_hasRMVCapableAppleTV;
+      v24 = hf_hasHomePods;
       v22[4] = self;
       v22[5] = a2;
       v16 = [v15 flatMap:v22];
@@ -500,10 +500,10 @@ void __69__HUHomeAssistantDeviceLanguageSetupViewController_hu_preloadContent__b
 
 - (BOOL)needsToWaitForPreload
 {
-  v2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-  v3 = [v2 hf_hasRMVCapableAppleTV];
+  home = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+  hf_hasRMVCapableAppleTV = [home hf_hasRMVCapableAppleTV];
 
-  return (v3 & 1) != 0 || ([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && (objc_msgSend(MEMORY[0x277D14CE8], "isAVisionPro") & 1) == 0;
+  return (hf_hasRMVCapableAppleTV & 1) != 0 || ([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && (objc_msgSend(MEMORY[0x277D14CE8], "isAVisionPro") & 1) == 0;
 }
 
 - (void)_cancelLanguageSetup
@@ -514,7 +514,7 @@ void __69__HUHomeAssistantDeviceLanguageSetupViewController_hu_preloadContent__b
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2112;
     v35 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -522,29 +522,29 @@ void __69__HUHomeAssistantDeviceLanguageSetupViewController_hu_preloadContent__b
 
   if (!-[HUHomeAssistantDeviceLanguageSetupViewController maxNumberOfVoicesReached](self, "maxNumberOfVoicesReached") && ([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && (objc_msgSend(MEMORY[0x277D14CE8], "isAVisionPro") & 1) == 0)
   {
-    v6 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-    v7 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self supportedVoiceRecognitionLanguages];
-    v8 = [HUHomeFeatureOnboardingUtilities home:v6 hasSomeHomePodsOnSupportedVoiceRecognitionLanguages:v7];
+    home = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+    supportedVoiceRecognitionLanguages = [(HUHomeAssistantDeviceLanguageSetupViewController *)self supportedVoiceRecognitionLanguages];
+    v8 = [HUHomeFeatureOnboardingUtilities home:home hasSomeHomePodsOnSupportedVoiceRecognitionLanguages:supportedVoiceRecognitionLanguages];
 
     if (v8)
     {
-      v9 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-      if ([v9 hf_currentUserIsAdministrator])
+      home2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+      if ([home2 hf_currentUserIsAdministrator])
       {
 
 LABEL_10:
-        v12 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self prEditorItemManager];
-        v13 = [v12 prDevicesModule];
-        v14 = [v13 personalRequestsDevices];
-        v15 = [v14 count] != 0;
+        prEditorItemManager = [(HUHomeAssistantDeviceLanguageSetupViewController *)self prEditorItemManager];
+        prDevicesModule = [prEditorItemManager prDevicesModule];
+        personalRequestsDevices = [prDevicesModule personalRequestsDevices];
+        v15 = [personalRequestsDevices count] != 0;
 
         goto LABEL_12;
       }
 
-      v10 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-      v11 = [v10 hf_currentUserIsOwner];
+      home3 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+      hf_currentUserIsOwner = [home3 hf_currentUserIsOwner];
 
-      if (v11)
+      if (hf_currentUserIsOwner)
       {
         goto LABEL_10;
       }
@@ -558,43 +558,43 @@ LABEL_12:
   {
     v30 = v15;
     v31 = NSStringFromSelector(a2);
-    v28 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self maxNumberOfVoicesReached];
-    v17 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-    v18 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self supportedVoiceRecognitionLanguages];
-    v29 = v17;
-    v19 = [HUHomeFeatureOnboardingUtilities home:v17 hasSomeHomePodsOnSupportedVoiceRecognitionLanguages:v18];
-    v20 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-    v21 = [v20 hf_currentUserIsAdministrator];
-    if (v21)
+    maxNumberOfVoicesReached = [(HUHomeAssistantDeviceLanguageSetupViewController *)self maxNumberOfVoicesReached];
+    home4 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+    supportedVoiceRecognitionLanguages2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self supportedVoiceRecognitionLanguages];
+    v29 = home4;
+    v19 = [HUHomeFeatureOnboardingUtilities home:home4 hasSomeHomePodsOnSupportedVoiceRecognitionLanguages:supportedVoiceRecognitionLanguages2];
+    home5 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+    hf_currentUserIsAdministrator = [home5 hf_currentUserIsAdministrator];
+    if (hf_currentUserIsAdministrator)
     {
-      v22 = 1;
+      hf_currentUserIsOwner2 = 1;
     }
 
     else
     {
-      v27 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-      v22 = [v27 hf_currentUserIsOwner];
+      home6 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+      hf_currentUserIsOwner2 = [home6 hf_currentUserIsOwner];
     }
 
-    v23 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self prEditorItemManager];
-    v24 = [v23 prDevicesModule];
-    v25 = [v24 personalRequestsDevices];
-    v26 = [v25 count];
+    prEditorItemManager2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self prEditorItemManager];
+    prDevicesModule2 = [prEditorItemManager2 prDevicesModule];
+    personalRequestsDevices2 = [prDevicesModule2 personalRequestsDevices];
+    v26 = [personalRequestsDevices2 count];
     *buf = 138413570;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2112;
     v35 = v31;
     v36 = 1024;
-    v37 = v28;
+    v37 = maxNumberOfVoicesReached;
     v38 = 1024;
     v39 = v19;
     v40 = 1024;
-    v41 = v22;
+    v41 = hf_currentUserIsOwner2;
     v42 = 2048;
     v43 = v26;
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@:%@: maxNumberOfVoicesReached = %{BOOL}d home:hasSomeHomePodsOnSupportedVoiceRecognitionLanguages = %{BOOL}d currentUserIsAdministrator/Owner = %{BOOL}d personalRequestsDevices = %lu", buf, 0x32u);
 
-    if ((v21 & 1) == 0)
+    if ((hf_currentUserIsAdministrator & 1) == 0)
     {
     }
 
@@ -620,7 +620,7 @@ LABEL_12:
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v19 = self;
+    selfCopy3 = self;
     v20 = 2112;
     v21 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ Cancelling (really)", buf, 0x16u);
@@ -632,10 +632,10 @@ LABEL_12:
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v8 = [v6 dictionaryWithDictionary:v7];
 
-  v9 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-  v10 = [v9 hf_currentUserIsOwner];
+  home = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+  hf_currentUserIsOwner = [home hf_currentUserIsOwner];
 
-  if (v10)
+  if (hf_currentUserIsOwner)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[HUHomeAssistantDeviceLanguageSetupViewController shouldSetMultiUserIsEnabled](self, "shouldSetMultiUserIsEnabled")}];
     [v8 setObject:v11 forKeyedSubscript:@"HUMultiUserKey_SetIsEnabled"];
@@ -645,7 +645,7 @@ LABEL_12:
     {
       v13 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2112;
       v21 = v13;
       v14 = "%@:%@: Turning ON MU Setting since the current user is the Home owner";
@@ -661,7 +661,7 @@ LABEL_8:
     {
       v13 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2112;
       v21 = v13;
       v14 = "%@:%@: NOT Turning ON MU Setting since the current user is NOT the Home owner";
@@ -669,8 +669,8 @@ LABEL_8:
     }
   }
 
-  v15 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self delegate];
-  [v15 viewController:self didFinishWithConfigurationResults:v8];
+  delegate = [(HUHomeAssistantDeviceLanguageSetupViewController *)self delegate];
+  [delegate viewController:self didFinishWithConfigurationResults:v8];
 }
 
 - (void)_checkForiCloudSiriEnabledAndCompleteSetup
@@ -741,7 +741,7 @@ void __94__HUHomeAssistantDeviceLanguageSetupViewController__checkForiCloudSiriE
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2112;
     v23 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -753,10 +753,10 @@ void __94__HUHomeAssistantDeviceLanguageSetupViewController__checkForiCloudSiriE
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v8 = [v6 dictionaryWithDictionary:v7];
 
-  v9 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-  v10 = [v9 hf_currentUserIsOwner];
+  home = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+  hf_currentUserIsOwner = [home hf_currentUserIsOwner];
 
-  if (v10)
+  if (hf_currentUserIsOwner)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[HUHomeAssistantDeviceLanguageSetupViewController shouldSetMultiUserIsEnabled](self, "shouldSetMultiUserIsEnabled")}];
     [v8 setObject:v11 forKeyedSubscript:@"HUMultiUserKey_SetIsEnabled"];
@@ -769,7 +769,7 @@ void __94__HUHomeAssistantDeviceLanguageSetupViewController__checkForiCloudSiriE
 
     v13 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2112;
     v23 = v13;
     v14 = "%@:%@: Turning ON MU Setting since the current user is the Home owner";
@@ -785,7 +785,7 @@ void __94__HUHomeAssistantDeviceLanguageSetupViewController__checkForiCloudSiriE
 
     v13 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2112;
     v23 = v13;
     v14 = "%@:%@: NOT Turning ON MU Setting since the current user is NOT the Home owner";
@@ -799,14 +799,14 @@ LABEL_9:
   {
     v16 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2112;
     v23 = v16;
     _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%@:%@: Now finishing HomePod language mismatch onboarding flow", buf, 0x16u);
   }
 
-  v17 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self delegate];
-  [v17 viewController:self didFinishWithConfigurationResults:v8];
+  delegate = [(HUHomeAssistantDeviceLanguageSetupViewController *)self delegate];
+  [delegate viewController:self didFinishWithConfigurationResults:v8];
 }
 
 - (void)_changeLanguage
@@ -817,7 +817,7 @@ LABEL_9:
   {
     v5 = NSStringFromSelector(a2);
     v20 = 138412546;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2112;
     v23 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", &v20, 0x16u);
@@ -825,12 +825,12 @@ LABEL_9:
 
   v6 = objc_opt_new();
   [v6 setObject:&unk_282490D28 forKey:@"HULanguageOnboardingKey_SetupLanguage_AssistantDevice_UserInput"];
-  v7 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self supportedVoiceRecognitionLanguages];
-  v8 = [v7 copy];
+  supportedVoiceRecognitionLanguages = [(HUHomeAssistantDeviceLanguageSetupViewController *)self supportedVoiceRecognitionLanguages];
+  v8 = [supportedVoiceRecognitionLanguages copy];
   [v6 setObject:v8 forKey:@"HULanguageOnboardingKey_SupportedLanguageInfo"];
 
-  v9 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-  LODWORD(v8) = [v9 hf_currentUserIsOwner];
+  home = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+  LODWORD(v8) = [home hf_currentUserIsOwner];
 
   if (v8)
   {
@@ -845,7 +845,7 @@ LABEL_9:
 
     v12 = NSStringFromSelector(a2);
     v20 = 138412546;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2112;
     v23 = v12;
     v13 = "%@:%@: Turning ON MU Setting since the current user is the Home owner";
@@ -861,7 +861,7 @@ LABEL_9:
 
     v12 = NSStringFromSelector(a2);
     v20 = 138412546;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2112;
     v23 = v12;
     v13 = "%@:%@: NOT Turning ON MU Setting since the current user is NOT the Home owner";
@@ -870,12 +870,12 @@ LABEL_9:
   _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, v13, &v20, 0x16u);
 
 LABEL_9:
-  v14 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self homeAssistantDevicesHavingLanguageMismatch];
+  homeAssistantDevicesHavingLanguageMismatch = [(HUHomeAssistantDeviceLanguageSetupViewController *)self homeAssistantDevicesHavingLanguageMismatch];
 
-  if (v14)
+  if (homeAssistantDevicesHavingLanguageMismatch)
   {
-    v15 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self homeAssistantDevicesHavingLanguageMismatch];
-    [v6 setObject:v15 forKey:@"HULanguageOnboardingKey_LanguageMismatchedHomeAssistantDevices"];
+    homeAssistantDevicesHavingLanguageMismatch2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self homeAssistantDevicesHavingLanguageMismatch];
+    [v6 setObject:homeAssistantDevicesHavingLanguageMismatch2 forKey:@"HULanguageOnboardingKey_LanguageMismatchedHomeAssistantDevices"];
   }
 
   v16 = HFLogForCategory();
@@ -883,7 +883,7 @@ LABEL_9:
   {
     v17 = NSStringFromSelector(a2);
     v20 = 138412802;
-    v21 = self;
+    selfCopy4 = self;
     v22 = 2112;
     v23 = v17;
     v24 = 2112;
@@ -891,24 +891,24 @@ LABEL_9:
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@:%@: Now transitioning to Language configuration for HomePod with results [%@]", &v20, 0x20u);
   }
 
-  v18 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self delegate];
+  delegate = [(HUHomeAssistantDeviceLanguageSetupViewController *)self delegate];
   v19 = [v6 copy];
-  [v18 viewController:self didFinishWithConfigurationResults:v19];
+  [delegate viewController:self didFinishWithConfigurationResults:v19];
 }
 
 - (void)_setupPersonalRequestsItemInfrastructure
 {
   v4 = objc_alloc(MEMORY[0x277D14C98]);
-  v5 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-  v6 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
-  v7 = [v6 currentUser];
-  v11 = [v4 initWithHome:v5 user:v7 nameStyle:0];
+  home = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+  home2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self home];
+  currentUser = [home2 currentUser];
+  v11 = [v4 initWithHome:home user:currentUser nameStyle:0];
 
   v8 = [[HUPersonalRequestsEditorItemManager alloc] initWithDelegate:0 userItem:v11 onlyShowDeviceSwitches:1];
   [(HUHomeAssistantDeviceLanguageSetupViewController *)self setPrEditorItemManager:v8];
 
-  v9 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self prEditorItemManager];
-  v10 = [v9 reloadAndUpdateAllItemsFromSenderSelector:a2];
+  prEditorItemManager = [(HUHomeAssistantDeviceLanguageSetupViewController *)self prEditorItemManager];
+  v10 = [prEditorItemManager reloadAndUpdateAllItemsFromSenderSelector:a2];
 }
 
 - (void)userTappedContinueFromWarning
@@ -919,7 +919,7 @@ LABEL_9:
   {
     v5 = NSStringFromSelector(a2);
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", &v6, 0x16u);
@@ -937,7 +937,7 @@ LABEL_9:
   {
     v5 = NSStringFromSelector(a2);
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", &v6, 0x16u);
@@ -956,9 +956,9 @@ LABEL_9:
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: Turning off all Personal Requests devices", &v8, 0xCu);
   }
 
-  v6 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self prEditorItemManager];
-  v7 = [v6 prDevicesModule];
-  [v7 setPersonalRequestsDevices:MEMORY[0x277CBEBF8]];
+  prEditorItemManager = [(HUHomeAssistantDeviceLanguageSetupViewController *)self prEditorItemManager];
+  prDevicesModule = [prEditorItemManager prDevicesModule];
+  [prDevicesModule setPersonalRequestsDevices:MEMORY[0x277CBEBF8]];
 }
 
 - (void)viewDidLoad
@@ -968,68 +968,68 @@ LABEL_9:
   v32.super_class = HUHomeAssistantDeviceLanguageSetupViewController;
   [(HUImageOBWelcomeController *)&v32 viewDidLoad];
   [(HUHomeAssistantDeviceLanguageSetupViewController *)self setModalInPresentation:1];
-  v4 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self headerView];
-  v5 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self titleString];
-  [v4 setTitle:v5];
+  headerView = [(HUHomeAssistantDeviceLanguageSetupViewController *)self headerView];
+  titleString = [(HUHomeAssistantDeviceLanguageSetupViewController *)self titleString];
+  [headerView setTitle:titleString];
 
-  v6 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self headerView];
-  v7 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self detailsString];
-  [v6 setDetailText:v7];
+  headerView2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self headerView];
+  detailsString = [(HUHomeAssistantDeviceLanguageSetupViewController *)self detailsString];
+  [headerView2 setDetailText:detailsString];
 
-  v8 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self headerView];
-  v9 = [v8 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v9 withIDDictionary:&unk_282492D60];
+  headerView3 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self headerView];
+  subviews = [headerView3 subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282492D60];
 
-  v10 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButtonString];
-  v11 = [v10 length];
+  continueButtonString = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButtonString];
+  v11 = [continueButtonString length];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277D37618] boldButton];
-    [(HUHomeAssistantDeviceLanguageSetupViewController *)self setContinueButton:v12];
+    boldButton = [MEMORY[0x277D37618] boldButton];
+    [(HUHomeAssistantDeviceLanguageSetupViewController *)self setContinueButton:boldButton];
 
-    v13 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
-    v14 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButtonString];
-    [v13 setTitle:v14 forState:0];
+    continueButton = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
+    continueButtonString2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButtonString];
+    [continueButton setTitle:continueButtonString2 forState:0];
 
-    v15 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
-    [v15 setAccessibilityIdentifier:@"Home.OnboardingView.LanguageSetUp.ContinueButton"];
+    continueButton2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
+    [continueButton2 setAccessibilityIdentifier:@"Home.OnboardingView.LanguageSetUp.ContinueButton"];
 
-    v16 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    continueButton3 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
+    [continueButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v17 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
-    [v17 addTarget:self action:-[HUHomeAssistantDeviceLanguageSetupViewController continueSelector](self forControlEvents:{"continueSelector"), 64}];
+    continueButton4 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
+    [continueButton4 addTarget:self action:-[HUHomeAssistantDeviceLanguageSetupViewController continueSelector](self forControlEvents:{"continueSelector"), 64}];
 
-    v18 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self buttonTray];
-    v19 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
-    [v18 addButton:v19];
+    buttonTray = [(HUHomeAssistantDeviceLanguageSetupViewController *)self buttonTray];
+    continueButton5 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self continueButton];
+    [buttonTray addButton:continueButton5];
   }
 
-  v20 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButtonString];
-  v21 = [v20 length];
+  customizeButtonString = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButtonString];
+  v21 = [customizeButtonString length];
 
   if (v21)
   {
-    v22 = [MEMORY[0x277D37650] linkButton];
-    [(HUHomeAssistantDeviceLanguageSetupViewController *)self setCustomizeButton:v22];
+    linkButton = [MEMORY[0x277D37650] linkButton];
+    [(HUHomeAssistantDeviceLanguageSetupViewController *)self setCustomizeButton:linkButton];
 
-    v23 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
-    v24 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButtonString];
-    [v23 setTitle:v24 forState:0];
+    customizeButton = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
+    customizeButtonString2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButtonString];
+    [customizeButton setTitle:customizeButtonString2 forState:0];
 
-    v25 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
-    [v25 setAccessibilityIdentifier:@"Home.OnboardingView.LanguageSetUp.CustomizeButton"];
+    customizeButton2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
+    [customizeButton2 setAccessibilityIdentifier:@"Home.OnboardingView.LanguageSetUp.CustomizeButton"];
 
-    v26 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
-    [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+    customizeButton3 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
+    [customizeButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v27 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
-    [v27 addTarget:self action:-[HUHomeAssistantDeviceLanguageSetupViewController customizeSelector](self forControlEvents:{"customizeSelector"), 64}];
+    customizeButton4 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
+    [customizeButton4 addTarget:self action:-[HUHomeAssistantDeviceLanguageSetupViewController customizeSelector](self forControlEvents:{"customizeSelector"), 64}];
 
-    v28 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self buttonTray];
-    v29 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
-    [v28 addButton:v29];
+    buttonTray2 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self buttonTray];
+    customizeButton5 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self customizeButton];
+    [buttonTray2 addButton:customizeButton5];
   }
 
   v30 = HFLogForCategory();
@@ -1037,19 +1037,19 @@ LABEL_9:
   {
     v31 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
     v36 = v31;
     _os_log_impl(&dword_20CEB6000, v30, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: HADLSVC", buf, 0x16u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = HUHomeAssistantDeviceLanguageSetupViewController;
-  [(OBBaseWelcomeController *)&v8 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v8 viewWillDisappear:disappear];
   if ([(HUHomeAssistantDeviceLanguageSetupViewController *)self isMovingFromParentViewController])
   {
     v5 = HFLogForCategory();
@@ -1057,14 +1057,14 @@ LABEL_9:
     {
       v6 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped BACK button", buf, 0x16u);
     }
 
-    v7 = [(HUHomeAssistantDeviceLanguageSetupViewController *)self delegate];
-    [v7 viewControllerDidGoBack:self];
+    delegate = [(HUHomeAssistantDeviceLanguageSetupViewController *)self delegate];
+    [delegate viewControllerDidGoBack:self];
   }
 }
 
@@ -1088,19 +1088,19 @@ LABEL_9:
   }
 }
 
-- (void)setContinueSelector:(SEL)a3
+- (void)setContinueSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_continueSelector = v3;
+  self->_continueSelector = selectorCopy;
 }
 
 - (SEL)customizeSelector
@@ -1116,19 +1116,19 @@ LABEL_9:
   }
 }
 
-- (void)setCustomizeSelector:(SEL)a3
+- (void)setCustomizeSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_customizeSelector = v3;
+  self->_customizeSelector = selectorCopy;
 }
 
 @end

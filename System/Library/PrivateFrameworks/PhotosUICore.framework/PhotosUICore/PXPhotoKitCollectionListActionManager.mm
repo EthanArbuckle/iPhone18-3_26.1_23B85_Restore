@@ -1,28 +1,28 @@
 @interface PXPhotoKitCollectionListActionManager
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)isDestructiveActionType:(id)a3;
-- (PXPhotoKitCollectionListActionManager)initWithCollectionList:(id)a3;
-- (id)actionPerformerForActionType:(id)a3 parameters:(id)a4;
-- (id)actionTypeForGenericType:(id)a3;
-- (id)contextMenuElementsWithHandler:(id)a3;
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4;
-- (id)systemImageNameForActionType:(id)a3;
-- (int64_t)menuActionStateForActionType:(id)a3;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)isDestructiveActionType:(id)type;
+- (PXPhotoKitCollectionListActionManager)initWithCollectionList:(id)list;
+- (id)actionPerformerForActionType:(id)type parameters:(id)parameters;
+- (id)actionTypeForGenericType:(id)type;
+- (id)contextMenuElementsWithHandler:(id)handler;
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case;
+- (id)systemImageNameForActionType:(id)type;
+- (int64_t)menuActionStateForActionType:(id)type;
 @end
 
 @implementation PXPhotoKitCollectionListActionManager
 
-- (id)contextMenuElementsWithHandler:(id)a3
+- (id)contextMenuElementsWithHandler:(id)handler
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
   v20[0] = @"PXCollectionListActionTypeSortByDateModified";
   v20[1] = @"PXCollectionListActionTypeSortByName";
   v20[2] = @"PXCollectionListActionTypeSortByCustom";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
-  v7 = [(PXActionManager *)self actionItemsForActionTypes:v6 handler:v4];
-  [v5 addObjectsFromArray:v7];
+  v7 = [(PXActionManager *)self actionItemsForActionTypes:v6 handler:handlerCopy];
+  [array addObjectsFromArray:v7];
 
   v19[0] = @"PXCollectionListActionTypeCustomize";
   v19[1] = @"PXCollectionListActionTypeMoveOut";
@@ -30,44 +30,44 @@
   v19[3] = @"PXCollectionListActionTypeCreateFolder";
   v19[4] = @"PXCollectionListActionTypeDelete";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:5];
-  v9 = [(PXActionManager *)self actionItemsForActionTypes:v8 handler:v4];
+  v9 = [(PXActionManager *)self actionItemsForActionTypes:v8 handler:handlerCopy];
 
   if ([v9 count])
   {
     v10 = objc_opt_new();
-    [v5 addObject:v10];
+    [array addObject:v10];
 
-    [v5 addObjectsFromArray:v9];
+    [array addObjectsFromArray:v9];
   }
 
   v11 = +[PXRootSettings sharedInstance];
-  v12 = [v11 canShowInternalUI];
+  canShowInternalUI = [v11 canShowInternalUI];
 
-  if (v12)
+  if (canShowInternalUI)
   {
     v13 = objc_opt_new();
-    [v5 addObject:v13];
+    [array addObject:v13];
 
     v18 = @"PXCollectionListActionTypeCopyInternalURL";
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
-    v15 = [(PXActionManager *)self actionItemsForActionTypes:v14 handler:v4];
+    v15 = [(PXActionManager *)self actionItemsForActionTypes:v14 handler:handlerCopy];
     v16 = [off_1E7721420 menuWithTitle:@" Internal" childElements:v15];
-    [v5 addObject:v16];
+    [array addObject:v16];
   }
 
-  return v5;
+  return array;
 }
 
-- (int64_t)menuActionStateForActionType:(id)a3
+- (int64_t)menuActionStateForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  performerClassByType = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
+  v6 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   if (v6)
   {
-    v7 = [(PXPhotoKitCollectionListActionManager *)self collectionList];
-    v8 = [v6 menuActionStateForCollectionList:v7 actionType:v4];
+    collectionList = [(PXPhotoKitCollectionListActionManager *)self collectionList];
+    v8 = [v6 menuActionStateForCollectionList:collectionList actionType:typeCopy];
   }
 
   else
@@ -78,11 +78,11 @@
   return v8;
 }
 
-- (BOOL)isDestructiveActionType:(id)a3
+- (BOOL)isDestructiveActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  performerClassByType = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
+  v6 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
@@ -92,16 +92,16 @@
   return [v6 isActionDestructive];
 }
 
-- (id)systemImageNameForActionType:(id)a3
+- (id)systemImageNameForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  performerClassByType = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
+  v6 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   if (v6)
   {
-    v7 = [(PXPhotoKitCollectionListActionManager *)self collectionList];
-    v8 = [v6 systemImageNameForCollectionList:v7 actionType:v4];
+    collectionList = [(PXPhotoKitCollectionListActionManager *)self collectionList];
+    v8 = [v6 systemImageNameForCollectionList:collectionList actionType:typeCopy];
   }
 
   else
@@ -112,16 +112,16 @@
   return v8;
 }
 
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case
 {
-  v5 = a3;
-  v6 = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  typeCopy = type;
+  performerClassByType = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
+  v7 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   if (v7)
   {
-    v8 = [(PXPhotoKitCollectionListActionManager *)self collectionList];
-    v9 = [v7 localizedTitleForActionType:v5 collectionList:v8];
+    collectionList = [(PXPhotoKitCollectionListActionManager *)self collectionList];
+    v9 = [v7 localizedTitleForActionType:typeCopy collectionList:collectionList];
   }
 
   else
@@ -132,48 +132,48 @@
   return v9;
 }
 
-- (id)actionPerformerForActionType:(id)a3 parameters:(id)a4
+- (id)actionPerformerForActionType:(id)type parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  typeCopy = type;
+  parametersCopy = parameters;
+  performerClassByType = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
+  v9 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   if (v9)
   {
     v10 = [v9 alloc];
-    v11 = [(PXPhotoKitCollectionListActionManager *)self collectionList];
-    v9 = [v10 initWithActionType:v6 collectionList:v11 parameters:v7];
+    collectionList = [(PXPhotoKitCollectionListActionManager *)self collectionList];
+    v9 = [v10 initWithActionType:typeCopy collectionList:collectionList parameters:parametersCopy];
 
-    v12 = [(PXActionManager *)self performerDelegate];
-    [(objc_class *)v9 setDelegate:v12];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [(objc_class *)v9 setDelegate:performerDelegate];
   }
 
   return v9;
 }
 
-- (id)actionTypeForGenericType:(id)a3
+- (id)actionTypeForGenericType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitCollectionListActionManager *)self collectionListActionTypeByGenericType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  collectionListActionTypeByGenericType = [(PXPhotoKitCollectionListActionManager *)self collectionListActionTypeByGenericType];
+  v6 = [collectionListActionTypeByGenericType objectForKeyedSubscript:typeCopy];
 
   return v6;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  performerClassByType = [(PXPhotoKitCollectionListActionManager *)self performerClassByType];
+  v6 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   if (v6)
   {
-    v7 = [(PXPhotoKitCollectionListActionManager *)self collectionList];
-    if ([v6 canPerformOnCollectionList:v7])
+    collectionList = [(PXPhotoKitCollectionListActionManager *)self collectionList];
+    if ([v6 canPerformOnCollectionList:collectionList])
     {
-      v8 = [(PXActionManager *)self isActionTypeAllowed:v4];
-      v9 = v4 == @"PXCollectionListActionTypeCopyInternalURL" || v8;
+      v8 = [(PXActionManager *)self isActionTypeAllowed:typeCopy];
+      v9 = typeCopy == @"PXCollectionListActionTypeCopyInternalURL" || v8;
     }
 
     else
@@ -190,17 +190,17 @@
   return v9;
 }
 
-- (PXPhotoKitCollectionListActionManager)initWithCollectionList:(id)a3
+- (PXPhotoKitCollectionListActionManager)initWithCollectionList:(id)list
 {
   v18[13] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  listCopy = list;
   v14.receiver = self;
   v14.super_class = PXPhotoKitCollectionListActionManager;
   v6 = [(PXPhotoKitCollectionListActionManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionList, a3);
+    objc_storeStrong(&v6->_collectionList, list);
     v17[0] = @"PXCollectionListActionTypeRename";
     v18[0] = objc_opt_class();
     v17[1] = @"PXCollectionListActionTypeCustomize";

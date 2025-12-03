@@ -1,8 +1,8 @@
 @interface SFAirDropActiveIconView
 + (id)baseImage;
-- (SFAirDropActiveIconView)initWithFrame:(CGRect)a3 grayscale:(BOOL)a4;
+- (SFAirDropActiveIconView)initWithFrame:(CGRect)frame grayscale:(BOOL)grayscale;
 - (void)layoutSubviews;
-- (void)setMasked:(BOOL)a3;
+- (void)setMasked:(BOOL)masked;
 @end
 
 @implementation SFAirDropActiveIconView
@@ -32,29 +32,29 @@ void __36__SFAirDropActiveIconView_baseImage__block_invoke()
   baseImage_image = v4;
 }
 
-- (SFAirDropActiveIconView)initWithFrame:(CGRect)a3 grayscale:(BOOL)a4
+- (SFAirDropActiveIconView)initWithFrame:(CGRect)frame grayscale:(BOOL)grayscale
 {
-  v4 = a4;
-  v6 = [objc_opt_class() baseImage];
-  [v6 size];
+  grayscaleCopy = grayscale;
+  baseImage = [objc_opt_class() baseImage];
+  [baseImage size];
   v8 = v7;
-  [v6 size];
+  [baseImage size];
   v14.receiver = self;
   v14.super_class = SFAirDropActiveIconView;
   v10 = [(SFAirDropActiveIconView *)&v14 initWithFrame:0.0, 0.0, v8, v9];
   if (v10)
   {
-    if (v4)
+    if (grayscaleCopy)
     {
-      v11 = [v6 imageWithRenderingMode:2];
+      v11 = [baseImage imageWithRenderingMode:2];
 
-      v12 = [MEMORY[0x1E69DC888] grayColor];
-      [(SFAirDropActiveIconView *)v10 setTintColor:v12];
+      grayColor = [MEMORY[0x1E69DC888] grayColor];
+      [(SFAirDropActiveIconView *)v10 setTintColor:grayColor];
 
-      v6 = v11;
+      baseImage = v11;
     }
 
-    [(SFAirDropActiveIconView *)v10 setImage:v6];
+    [(SFAirDropActiveIconView *)v10 setImage:baseImage];
     [(SFAirDropActiveIconView *)v10 setContentMode:4];
   }
 
@@ -71,20 +71,20 @@ void __36__SFAirDropActiveIconView_baseImage__block_invoke()
     circleMaskView = self->_circleMaskView;
     self->_circleMaskView = v4;
 
-    v6 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)self->_circleMaskView setBackgroundColor:v6];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)self->_circleMaskView setBackgroundColor:blackColor];
 
     [(UIView *)self->_circleMaskView bounds];
     v7 = CGRectGetWidth(v14) * 0.5;
-    v8 = [(UIView *)self->_circleMaskView layer];
-    [v8 setCornerRadius:v7];
+    layer = [(UIView *)self->_circleMaskView layer];
+    [layer setCornerRadius:v7];
 
     CGAffineTransformMakeScale(&v13, 0.0, 0.0);
     v9 = self->_circleMaskView;
     v12 = v13;
     [(UIView *)v9 setTransform:&v12];
-    v10 = [(UIView *)self->_circleMaskView layer];
-    [v10 setCompositingFilter:@"destOut"];
+    layer2 = [(UIView *)self->_circleMaskView layer];
+    [layer2 setCompositingFilter:@"destOut"];
 
     [(SFAirDropActiveIconView *)self addSubview:self->_circleMaskView];
     self->_masked = 0;
@@ -95,15 +95,15 @@ void __36__SFAirDropActiveIconView_baseImage__block_invoke()
   [(SFAirDropActiveIconView *)&v11 layoutSubviews];
 }
 
-- (void)setMasked:(BOOL)a3
+- (void)setMasked:(BOOL)masked
 {
-  if (self->_masked != a3)
+  if (self->_masked != masked)
   {
     v10 = v3;
     v11 = v4;
-    self->_masked = a3;
+    self->_masked = masked;
     memset(&v9, 0, sizeof(v9));
-    if (a3)
+    if (masked)
     {
       v6 = 1.0;
       v7 = 1.0;

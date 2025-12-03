@@ -1,35 +1,35 @@
 @interface MobileCalUserAddress
-+ (id)userAddress:(id)a3 forAccount:(id)a4;
-+ (id)userAddressFromDictionaryRepresentation:(id)a3 forAccount:(id)a4;
++ (id)userAddress:(id)address forAccount:(id)account;
++ (id)userAddressFromDictionaryRepresentation:(id)representation forAccount:(id)account;
 - (MobileCalDAVAccount)account;
-- (MobileCalUserAddress)initWithAddress:(id)a3 account:(id)a4;
+- (MobileCalUserAddress)initWithAddress:(id)address account:(id)account;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation MobileCalUserAddress
 
-- (MobileCalUserAddress)initWithAddress:(id)a3 account:(id)a4
+- (MobileCalUserAddress)initWithAddress:(id)address account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = MobileCalUserAddress;
   v8 = [(MobileCalUserAddress *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MobileCalUserAddress *)v8 setAccount:v7];
-    [(MobileCalUserAddress *)v9 setAddress:v6];
+    [(MobileCalUserAddress *)v8 setAccount:accountCopy];
+    [(MobileCalUserAddress *)v9 setAddress:addressCopy];
   }
 
   return v9;
 }
 
-+ (id)userAddress:(id)a3 forAccount:(id)a4
++ (id)userAddress:(id)address forAccount:(id)account
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MobileCalUserAddress alloc] initWithAddress:v6 account:v5];
+  accountCopy = account;
+  addressCopy = address;
+  v7 = [[MobileCalUserAddress alloc] initWithAddress:addressCopy account:accountCopy];
 
   return v7;
 }
@@ -37,23 +37,23 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(MobileCalUserAddress *)self address];
-  v5 = [v4 absoluteString];
-  [v3 setValue:v5 forKey:@"MobileCalUserAddressAddressURL"];
+  address = [(MobileCalUserAddress *)self address];
+  absoluteString = [address absoluteString];
+  [v3 setValue:absoluteString forKey:@"MobileCalUserAddressAddressURL"];
 
   return v3;
 }
 
-+ (id)userAddressFromDictionaryRepresentation:(id)a3 forAccount:(id)a4
++ (id)userAddressFromDictionaryRepresentation:(id)representation forAccount:(id)account
 {
-  v5 = a4;
-  if (a3)
+  accountCopy = account;
+  if (representation)
   {
-    v6 = [a3 objectForKeyedSubscript:@"MobileCalUserAddressAddressURL"];
+    v6 = [representation objectForKeyedSubscript:@"MobileCalUserAddressAddressURL"];
     if (v6)
     {
       v7 = [MEMORY[0x277CBEBC0] URLWithString:v6];
-      v8 = [MobileCalUserAddress userAddress:v7 forAccount:v5];
+      v8 = [MobileCalUserAddress userAddress:v7 forAccount:accountCopy];
     }
 
     else

@@ -2,26 +2,26 @@
 - (NSArray)specifiers;
 - (STGroupSpecifierProvider)init;
 - (STGroupSpecifierProviderDelegate)delegate;
-- (id)specifiersAtIndexes:(id)a3;
-- (void)_tableCellHeightDidChange:(id)a3;
+- (id)specifiersAtIndexes:(id)indexes;
+- (void)_tableCellHeightDidChange:(id)change;
 - (void)beginUpdates;
 - (void)dealloc;
-- (void)dismissViewControllerAnimated:(BOOL)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated;
 - (void)endUpdates;
-- (void)insertSpecifiers:(id)a3 atIndexes:(id)a4;
-- (void)lazyLoadBundle:(id)a3;
-- (void)popToViewControllerAnimated:(BOOL)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)reloadSectionHeaderFootersWithAnimation:(int64_t)a3;
-- (void)reloadSpecifier:(id)a3 animated:(BOOL)a4;
-- (void)removeSpecifiersAtIndexes:(id)a3;
-- (void)replaceObjectInSpecifiersAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)replaceSpecifiersAtIndexes:(id)a3 withSpecifiers:(id)a4;
-- (void)setIsHidden:(BOOL)a3;
-- (void)showConfirmationViewForSpecifier:(id)a3;
-- (void)showController:(id)a3 animated:(BOOL)a4;
-- (void)showPINSheet:(id)a3 completion:(id)a4;
+- (void)insertSpecifiers:(id)specifiers atIndexes:(id)indexes;
+- (void)lazyLoadBundle:(id)bundle;
+- (void)popToViewControllerAnimated:(BOOL)animated;
+- (void)presentViewController:(id)controller animated:(BOOL)animated;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)reloadSectionHeaderFootersWithAnimation:(int64_t)animation;
+- (void)reloadSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)removeSpecifiersAtIndexes:(id)indexes;
+- (void)replaceObjectInSpecifiersAtIndex:(unint64_t)index withObject:(id)object;
+- (void)replaceSpecifiersAtIndexes:(id)indexes withSpecifiers:(id)specifiers;
+- (void)setIsHidden:(BOOL)hidden;
+- (void)showConfirmationViewForSpecifier:(id)specifier;
+- (void)showController:(id)controller animated:(BOOL)animated;
+- (void)showPINSheet:(id)sheet completion:(id)completion;
 - (void)showStoreDemoAlert;
 @end
 
@@ -29,8 +29,8 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"STGroupSpecifierProvider.m" lineNumber:26 description:{@"%@ must be invalidated before deallocing", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"STGroupSpecifierProvider.m" lineNumber:26 description:{@"%@ must be invalidated before deallocing", a2}];
 }
 
 - (STGroupSpecifierProvider)init
@@ -51,214 +51,214 @@
     privateSpecifiers = v3->_privateSpecifiers;
     v3->_privateSpecifiers = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v3 selector:sel__tableCellHeightDidChange_ name:0x2876773C8 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__tableCellHeightDidChange_ name:0x2876773C8 object:0];
   }
 
   return v3;
 }
 
-- (void)setIsHidden:(BOOL)a3
+- (void)setIsHidden:(BOOL)hidden
 {
-  if (self->_isHidden != a3)
+  if (self->_isHidden != hidden)
   {
     [(STGroupSpecifierProvider *)self willChangeValueForKey:@"isHidden"];
-    self->_isHidden = a3;
+    self->_isHidden = hidden;
 
     [(STGroupSpecifierProvider *)self didChangeValueForKey:@"isHidden"];
   }
 }
 
-- (void)reloadSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(STGroupSpecifierProvider *)self delegate];
+  animatedCopy = animated;
+  specifierCopy = specifier;
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 specifierProvider:self reloadSpecifier:v7 animated:v4];
+    [delegate specifierProvider:self reloadSpecifier:specifierCopy animated:animatedCopy];
   }
 }
 
-- (void)reloadSectionHeaderFootersWithAnimation:(int64_t)a3
+- (void)reloadSectionHeaderFootersWithAnimation:(int64_t)animation
 {
   if (![(STGroupSpecifierProvider *)self isHidden])
   {
-    v5 = [(STGroupSpecifierProvider *)self delegate];
-    [v5 specifierProvider:self reloadSectionHeaderFootersWithAnimation:a3];
+    delegate = [(STGroupSpecifierProvider *)self delegate];
+    [delegate specifierProvider:self reloadSectionHeaderFootersWithAnimation:animation];
   }
 }
 
-- (void)showController:(id)a3 animated:(BOOL)a4
+- (void)showController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(STGroupSpecifierProvider *)self delegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 specifierProvider:self showController:v7 animated:v4];
+    [delegate specifierProvider:self showController:controllerCopy animated:animatedCopy];
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4
+- (void)presentViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(STGroupSpecifierProvider *)self delegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 specifierProvider:self presentViewController:v7 animated:v4];
+    [delegate specifierProvider:self presentViewController:controllerCopy animated:animatedCopy];
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3
+- (void)dismissViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(STGroupSpecifierProvider *)self delegate];
+  animatedCopy = animated;
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 specifierProvider:self dismissViewControllerAnimated:v3];
+    [delegate specifierProvider:self dismissViewControllerAnimated:animatedCopy];
   }
 }
 
-- (void)showConfirmationViewForSpecifier:(id)a3
+- (void)showConfirmationViewForSpecifier:(id)specifier
 {
-  v5 = a3;
-  v4 = [(STGroupSpecifierProvider *)self delegate];
+  specifierCopy = specifier;
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 specifierProvider:self showConfirmationViewForSpecifier:v5];
+    [delegate specifierProvider:self showConfirmationViewForSpecifier:specifierCopy];
   }
 }
 
-- (void)popToViewControllerAnimated:(BOOL)a3
+- (void)popToViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(STGroupSpecifierProvider *)self delegate];
+  animatedCopy = animated;
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 specifierProvider:self popToViewControllerAnimated:v3];
+    [delegate specifierProvider:self popToViewControllerAnimated:animatedCopy];
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v10 = a3;
-  v8 = a5;
-  v9 = [(STGroupSpecifierProvider *)self delegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 specifierProvider:self presentViewController:v10 animated:v6 completion:v8];
+    [delegate specifierProvider:self presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
 - (void)beginUpdates
 {
-  v3 = [(STGroupSpecifierProvider *)self delegate];
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 specifierProviderBeginUpdates:self];
+    [delegate specifierProviderBeginUpdates:self];
   }
 }
 
 - (void)endUpdates
 {
-  v3 = [(STGroupSpecifierProvider *)self delegate];
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 specifierProviderEndUpdates:self];
+    [delegate specifierProviderEndUpdates:self];
   }
 }
 
-- (void)lazyLoadBundle:(id)a3
+- (void)lazyLoadBundle:(id)bundle
 {
-  v5 = a3;
-  v4 = [(STGroupSpecifierProvider *)self delegate];
+  bundleCopy = bundle;
+  delegate = [(STGroupSpecifierProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 specifierProvider:self lazyLoadBundle:v5];
+    [delegate specifierProvider:self lazyLoadBundle:bundleCopy];
   }
 }
 
-- (void)showPINSheet:(id)a3 completion:(id)a4
+- (void)showPINSheet:(id)sheet completion:(id)completion
 {
-  v8 = a3;
-  if (a4)
+  sheetCopy = sheet;
+  if (completion)
   {
-    v6 = _Block_copy(a4);
-    [v8 setObject:v6 forKeyedSubscript:0x287675888];
+    v6 = _Block_copy(completion);
+    [sheetCopy setObject:v6 forKeyedSubscript:0x287675888];
   }
 
-  v7 = [(STGroupSpecifierProvider *)self delegate];
-  [v7 specifierProvider:self showPINSheet:v8];
+  delegate = [(STGroupSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self showPINSheet:sheetCopy];
 }
 
 - (void)showStoreDemoAlert
 {
-  v3 = [MEMORY[0x277D75110] alertControllerForFeatureNotAvailable];
-  [(STGroupSpecifierProvider *)self presentViewController:v3 animated:1];
+  alertControllerForFeatureNotAvailable = [MEMORY[0x277D75110] alertControllerForFeatureNotAvailable];
+  [(STGroupSpecifierProvider *)self presentViewController:alertControllerForFeatureNotAvailable animated:1];
 }
 
 - (NSArray)specifiers
 {
-  v2 = [(STGroupSpecifierProvider *)self privateSpecifiers];
-  v3 = [v2 copy];
+  privateSpecifiers = [(STGroupSpecifierProvider *)self privateSpecifiers];
+  v3 = [privateSpecifiers copy];
 
   return v3;
 }
 
-- (id)specifiersAtIndexes:(id)a3
+- (id)specifiersAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(STGroupSpecifierProvider *)self privateSpecifiers];
-  v6 = [v5 objectsAtIndexes:v4];
+  indexesCopy = indexes;
+  privateSpecifiers = [(STGroupSpecifierProvider *)self privateSpecifiers];
+  v6 = [privateSpecifiers objectsAtIndexes:indexesCopy];
 
   return v6;
 }
 
-- (void)insertSpecifiers:(id)a3 atIndexes:(id)a4
+- (void)insertSpecifiers:(id)specifiers atIndexes:(id)indexes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STGroupSpecifierProvider *)self privateSpecifiers];
-  [v8 insertObjects:v7 atIndexes:v6];
+  indexesCopy = indexes;
+  specifiersCopy = specifiers;
+  privateSpecifiers = [(STGroupSpecifierProvider *)self privateSpecifiers];
+  [privateSpecifiers insertObjects:specifiersCopy atIndexes:indexesCopy];
 }
 
-- (void)removeSpecifiersAtIndexes:(id)a3
+- (void)removeSpecifiersAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(STGroupSpecifierProvider *)self privateSpecifiers];
-  [v5 removeObjectsAtIndexes:v4];
+  indexesCopy = indexes;
+  privateSpecifiers = [(STGroupSpecifierProvider *)self privateSpecifiers];
+  [privateSpecifiers removeObjectsAtIndexes:indexesCopy];
 }
 
-- (void)replaceObjectInSpecifiersAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInSpecifiersAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  v7 = [(STGroupSpecifierProvider *)self privateSpecifiers];
-  [v7 setObject:v6 atIndexedSubscript:a3];
+  objectCopy = object;
+  privateSpecifiers = [(STGroupSpecifierProvider *)self privateSpecifiers];
+  [privateSpecifiers setObject:objectCopy atIndexedSubscript:index];
 }
 
-- (void)replaceSpecifiersAtIndexes:(id)a3 withSpecifiers:(id)a4
+- (void)replaceSpecifiersAtIndexes:(id)indexes withSpecifiers:(id)specifiers
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STGroupSpecifierProvider *)self privateSpecifiers];
-  [v8 replaceObjectsAtIndexes:v7 withObjects:v6];
+  specifiersCopy = specifiers;
+  indexesCopy = indexes;
+  privateSpecifiers = [(STGroupSpecifierProvider *)self privateSpecifiers];
+  [privateSpecifiers replaceObjectsAtIndexes:indexesCopy withObjects:specifiersCopy];
 }
 
-- (void)_tableCellHeightDidChange:(id)a3
+- (void)_tableCellHeightDidChange:(id)change
 {
-  v7 = [a3 object];
-  v4 = [v7 specifier];
-  if (v4)
+  object = [change object];
+  specifier = [object specifier];
+  if (specifier)
   {
-    v5 = [(STGroupSpecifierProvider *)self specifiers];
-    v6 = [v5 containsObject:v4];
+    specifiers = [(STGroupSpecifierProvider *)self specifiers];
+    v6 = [specifiers containsObject:specifier];
 
     if (v6)
     {
-      [(STGroupSpecifierProvider *)self reloadSpecifier:v4 animated:0];
+      [(STGroupSpecifierProvider *)self reloadSpecifier:specifier animated:0];
     }
   }
 }

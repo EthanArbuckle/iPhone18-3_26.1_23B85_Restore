@@ -11,8 +11,8 @@
   [(LPAppleMusicTVShowMetadata *)v3 setStoreFrontIdentifier:self->_storeFrontIdentifier];
   [(LPAppleMusicTVShowMetadata *)v3 setStoreIdentifier:self->_storeIdentifier];
   [(LPAppleMusicTVShowMetadata *)v3 setName:self->_name];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPAppleMusicTVShowMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPAppleMusicTVShowMetadata *)v3 setArtworkMetadata:metadata];
 
   return v3;
 }

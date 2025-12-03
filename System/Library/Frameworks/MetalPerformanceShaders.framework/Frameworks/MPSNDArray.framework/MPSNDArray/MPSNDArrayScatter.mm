@@ -1,28 +1,28 @@
 @interface MPSNDArrayScatter
-- (MPSNDArrayScatter)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayScatter)initWithDevice:(id)a3 operation:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSNDArrayScatter)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayScatter)initWithDevice:(id)device operation:(int)operation;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3 primarySourceArray:(id)a4 secondarySourceArray:(id)a5 destinationArray:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeToCommandBuffer:(id)buffer primarySourceArray:(id)array secondarySourceArray:(id)sourceArray destinationArray:(id)destinationArray;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayScatter
 
-- (MPSNDArrayScatter)initWithDevice:(id)a3 operation:(int)a4
+- (MPSNDArrayScatter)initWithDevice:(id)device operation:(int)operation
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayScatter;
-  v6 = [(MPSNDArrayMultiaryKernel *)&v8 initWithDevice:a3 sourceCount:3];
+  v6 = [(MPSNDArrayMultiaryKernel *)&v8 initWithDevice:device sourceCount:3];
   v6->super._encode = EncodeScatter;
   v6->super.super._encodeData = v6;
-  v6->_operation = a4;
+  v6->_operation = operation;
   v6->_batchDimensions = 0;
-  v6->_identity = [[MPSNDArrayIdentity alloc] initWithDevice:a3];
+  v6->_identity = [[MPSNDArrayIdentity alloc] initWithDevice:device];
   return v6;
 }
 
-- (MPSNDArrayScatter)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayScatter)initWithCoder:(id)coder device:(id)device
 {
   v9.receiver = self;
   v9.super_class = MPSNDArrayScatter;
@@ -32,9 +32,9 @@
     result->super._encode = EncodeScatter;
     result->super.super._encodeData = result;
     v7 = result;
-    result->_operation = [a3 decodeInt64ForKey:@"MPSNDArrayScatter.operation"];
-    v7->_batchDimensions = [a3 decodeInt64ForKey:@"MPSNDArrayScatter.batchDimensions"];
-    v8 = [[MPSNDArrayIdentity alloc] initWithDevice:a4];
+    result->_operation = [coder decodeInt64ForKey:@"MPSNDArrayScatter.operation"];
+    v7->_batchDimensions = [coder decodeInt64ForKey:@"MPSNDArrayScatter.batchDimensions"];
+    v8 = [[MPSNDArrayIdentity alloc] initWithDevice:device];
     result = v7;
     v7->_identity = v8;
   }
@@ -42,16 +42,16 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayScatter;
   [(MPSNDArrayMultiaryBase *)&v5 encodeWithCoder:?];
-  [a3 encodeInt64:self->_operation forKey:@"MPSNDArrayScatter.operation"];
-  [a3 encodeInt64:self->_batchDimensions forKey:@"MPSNDArrayScatter.batchDimensions"];
+  [coder encodeInt64:self->_operation forKey:@"MPSNDArrayScatter.operation"];
+  [coder encodeInt64:self->_batchDimensions forKey:@"MPSNDArrayScatter.batchDimensions"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSNDArrayScatter;
@@ -64,7 +64,7 @@
     *(result + 19) = self->_batchDimensions;
     identity = self->_identity;
     v9 = result;
-    v10 = [(MPSNDArrayIdentity *)identity copyWithZone:a3 device:a4];
+    v10 = [(MPSNDArrayIdentity *)identity copyWithZone:zone device:device];
     result = v9;
     v9[20] = v10;
   }
@@ -79,23 +79,23 @@
   [(MPSNDArrayMultiaryBase *)&v3 dealloc];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 primarySourceArray:(id)a4 secondarySourceArray:(id)a5 destinationArray:(id)a6
+- (void)encodeToCommandBuffer:(id)buffer primarySourceArray:(id)array secondarySourceArray:(id)sourceArray destinationArray:(id)destinationArray
 {
   v7 = MEMORY[0x277CD73F0];
-  if (*(a5 + *MEMORY[0x277CD73F0]) >= 2uLL)
+  if (*(sourceArray + *MEMORY[0x277CD73F0]) >= 2uLL)
   {
-    v11 = a6;
+    destinationArrayCopy = destinationArray;
     v13 = MTLReportFailureTypeEnabled();
-    a6 = v11;
+    destinationArray = destinationArrayCopy;
     if (v13)
     {
-      v14 = *(a5 + *v7);
+      v14 = *(sourceArray + *v7);
       MTLReportFailure();
-      a6 = v11;
+      destinationArray = destinationArrayCopy;
     }
   }
 
-  v8 = *(a6 + *MEMORY[0x277CD73C8]);
+  v8 = *(destinationArray + *MEMORY[0x277CD73C8]);
   if (v8 != 268435488 && v8 != 536870944)
   {
     if (MTLReportFailureTypeEnabled())

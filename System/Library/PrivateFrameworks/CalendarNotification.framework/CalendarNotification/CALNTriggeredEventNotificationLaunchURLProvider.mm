@@ -1,22 +1,22 @@
 @interface CALNTriggeredEventNotificationLaunchURLProvider
-+ (id)_launchURLForEventID:(id)a3 hypothesis:(id)a4 isTravelLaunchURL:(BOOL *)a5;
-+ (id)_travelLaunchURLForEventID:(id)a3 hypothesis:(id)a4;
-+ (id)launchURLForOptionalEventID:(id)a3 hypothesis:(id)a4 isTravelLaunchURL:(BOOL *)a5;
++ (id)_launchURLForEventID:(id)d hypothesis:(id)hypothesis isTravelLaunchURL:(BOOL *)l;
++ (id)_travelLaunchURLForEventID:(id)d hypothesis:(id)hypothesis;
++ (id)launchURLForOptionalEventID:(id)d hypothesis:(id)hypothesis isTravelLaunchURL:(BOOL *)l;
 @end
 
 @implementation CALNTriggeredEventNotificationLaunchURLProvider
 
-+ (id)launchURLForOptionalEventID:(id)a3 hypothesis:(id)a4 isTravelLaunchURL:(BOOL *)a5
++ (id)launchURLForOptionalEventID:(id)d hypothesis:(id)hypothesis isTravelLaunchURL:(BOOL *)l
 {
-  v7 = a3;
-  v8 = a4;
-  *a5 = 0;
-  if (v7)
+  dCopy = d;
+  hypothesisCopy = hypothesis;
+  *l = 0;
+  if (dCopy)
   {
-    v9 = [MEMORY[0x277CBEBC0] URLWithString:v7];
+    v9 = [MEMORY[0x277CBEBC0] URLWithString:dCopy];
     if (v9)
     {
-      v10 = [objc_opt_class() _launchURLForEventID:v9 hypothesis:v8 isTravelLaunchURL:a5];
+      v10 = [objc_opt_class() _launchURLForEventID:v9 hypothesis:hypothesisCopy isTravelLaunchURL:l];
     }
 
     else
@@ -24,7 +24,7 @@
       v11 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [CALNTriggeredEventNotificationLaunchURLProvider launchURLForOptionalEventID:v7 hypothesis:v11 isTravelLaunchURL:?];
+        [CALNTriggeredEventNotificationLaunchURLProvider launchURLForOptionalEventID:dCopy hypothesis:v11 isTravelLaunchURL:?];
       }
 
       v10 = 0;
@@ -39,33 +39,33 @@
   return v10;
 }
 
-+ (id)_launchURLForEventID:(id)a3 hypothesis:(id)a4 isTravelLaunchURL:(BOOL *)a5
++ (id)_launchURLForEventID:(id)d hypothesis:(id)hypothesis isTravelLaunchURL:(BOOL *)l
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9 && ([a1 _travelLaunchURLForEventID:v8 hypothesis:v9], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  dCopy = d;
+  hypothesisCopy = hypothesis;
+  if (hypothesisCopy && ([self _travelLaunchURLForEventID:dCopy hypothesis:hypothesisCopy], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
-    *a5 = 1;
+    *l = 1;
     v12 = v11;
   }
 
   else
   {
-    v12 = v8;
+    v12 = dCopy;
     v11 = 0;
   }
 
   return v12;
 }
 
-+ (id)_travelLaunchURLForEventID:(id)a3 hypothesis:(id)a4
++ (id)_travelLaunchURLForEventID:(id)d hypothesis:(id)hypothesis
 {
-  v4 = [a3 absoluteString];
-  v5 = v4;
-  if (v4)
+  absoluteString = [d absoluteString];
+  v5 = absoluteString;
+  if (absoluteString)
   {
-    v6 = [v4 stringByAppendingString:@"?travel=true"];
+    v6 = [absoluteString stringByAppendingString:@"?travel=true"];
     v7 = [MEMORY[0x277CBEBC0] URLWithString:v6];
   }
 

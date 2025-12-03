@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (BOOL)hasNonVoiceTriggerStreamsOrStreamHoldersActive;
 - (CSAudioStreamActivityMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)notifyActiveStreamsChanged:(id)a3 streamHolders:(id)a4 streamId:(unint64_t)a5;
+- (void)notifyActiveStreamsChanged:(id)changed streamHolders:(id)holders streamId:(unint64_t)id;
 @end
 
 @implementation CSAudioStreamActivityMonitor
@@ -40,22 +40,22 @@
   return v3;
 }
 
-- (void)notifyActiveStreamsChanged:(id)a3 streamHolders:(id)a4 streamId:(unint64_t)a5
+- (void)notifyActiveStreamsChanged:(id)changed streamHolders:(id)holders streamId:(unint64_t)id
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  holdersCopy = holders;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v8 = v6;
+  v8 = changedCopy;
   v9 = [v8 countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v43;
-    v33 = v7;
+    v33 = holdersCopy;
     while (2)
     {
       for (i = 0; i != v10; ++i)
@@ -66,39 +66,39 @@
         }
 
         v13 = *(*(&v42 + 1) + 8 * i);
-        v14 = [v13 streamRequest];
-        if ([v14 clientIdentity] == 3)
+        streamRequest = [v13 streamRequest];
+        if ([streamRequest clientIdentity] == 3)
         {
           goto LABEL_14;
         }
 
-        v15 = [v13 streamRequest];
-        if ([v15 clientIdentity] == 4)
+        streamRequest2 = [v13 streamRequest];
+        if ([streamRequest2 clientIdentity] == 4)
         {
 
 LABEL_14:
 LABEL_15:
           v19 = CSLogContextFacilityCoreSpeech;
           v18 = 1;
-          v7 = v33;
+          holdersCopy = v33;
           if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
           {
             v20 = v19;
-            v21 = [v13 name];
+            name = [v13 name];
             *buf = 136315394;
             v48 = "[CSAudioStreamActivityMonitor notifyActiveStreamsChanged:streamHolders:streamId:]";
             v49 = 2112;
-            v50 = v21;
+            v50 = name;
             _os_log_impl(&dword_1DDA4B000, v20, OS_LOG_TYPE_INFO, "%s stream %@ is active", buf, 0x16u);
           }
 
           goto LABEL_17;
         }
 
-        v16 = [v13 streamRequest];
-        v17 = [v16 clientIdentity];
+        streamRequest3 = [v13 streamRequest];
+        clientIdentity = [streamRequest3 clientIdentity];
 
-        if (v17 == 9)
+        if (clientIdentity == 9)
         {
           goto LABEL_15;
         }
@@ -106,7 +106,7 @@ LABEL_15:
 
       v10 = [v8 countByEnumeratingWithState:&v42 objects:v51 count:16];
       v18 = 0;
-      v7 = v33;
+      holdersCopy = v33;
       if (v10)
       {
         continue;
@@ -127,7 +127,7 @@ LABEL_17:
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
-  v22 = v7;
+  v22 = holdersCopy;
   v23 = [v22 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v23)
   {
@@ -150,11 +150,11 @@ LABEL_17:
           if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
           {
             v29 = v28;
-            v30 = [v27 name];
+            name2 = [v27 name];
             *buf = 136315394;
             v48 = "[CSAudioStreamActivityMonitor notifyActiveStreamsChanged:streamHolders:streamId:]";
             v49 = 2112;
-            v50 = v30;
+            v50 = name2;
             _os_log_impl(&dword_1DDA4B000, v29, OS_LOG_TYPE_INFO, "%s streamHolder %@ is active", buf, 0x16u);
           }
 
@@ -206,7 +206,7 @@ LABEL_28:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = CSLogContextFacilityCoreSpeech;

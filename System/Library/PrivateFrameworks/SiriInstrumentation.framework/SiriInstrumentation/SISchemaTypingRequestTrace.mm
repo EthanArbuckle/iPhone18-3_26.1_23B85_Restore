@@ -1,24 +1,24 @@
 @interface SISchemaTypingRequestTrace
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaTypingRequestTrace)initWithDictionary:(id)a3;
-- (SISchemaTypingRequestTrace)initWithJSON:(id)a3;
+- (SISchemaTypingRequestTrace)initWithDictionary:(id)dictionary;
+- (SISchemaTypingRequestTrace)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaTypingRequestTrace
 
-- (SISchemaTypingRequestTrace)initWithDictionary:(id)a3
+- (SISchemaTypingRequestTrace)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaTypingRequestTrace;
   v5 = [(SISchemaTypingRequestTrace *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"keyboardAppearanceBringUpTurnID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"keyboardAppearanceBringUpTurnID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (SISchemaTypingRequestTrace)initWithJSON:(id)a3
+- (SISchemaTypingRequestTrace)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaTypingRequestTrace *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaTypingRequestTrace *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaTypingRequestTrace *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,40 +68,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_keyboardAppearanceBringUpTurnID)
   {
-    v4 = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    keyboardAppearanceBringUpTurnID = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
+    v5 = [keyboardAppearanceBringUpTurnID base64EncodedStringWithOptions:0];
     if (v5)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"keyboardAppearanceBringUpTurnID"];
+      [dictionary setObject:v5 forKeyedSubscript:@"keyboardAppearanceBringUpTurnID"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"keyboardAppearanceBringUpTurnID"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"keyboardAppearanceBringUpTurnID"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
-    v6 = [v4 keyboardAppearanceBringUpTurnID];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    keyboardAppearanceBringUpTurnID = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
+    keyboardAppearanceBringUpTurnID2 = [equalCopy keyboardAppearanceBringUpTurnID];
+    v7 = keyboardAppearanceBringUpTurnID2;
+    if ((keyboardAppearanceBringUpTurnID != 0) != (keyboardAppearanceBringUpTurnID2 == 0))
     {
-      v8 = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
-      if (!v8)
+      keyboardAppearanceBringUpTurnID3 = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
+      if (!keyboardAppearanceBringUpTurnID3)
       {
 
 LABEL_10:
@@ -109,10 +109,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
-      v11 = [v4 keyboardAppearanceBringUpTurnID];
-      v12 = [v10 isEqual:v11];
+      v9 = keyboardAppearanceBringUpTurnID3;
+      keyboardAppearanceBringUpTurnID4 = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
+      keyboardAppearanceBringUpTurnID5 = [equalCopy keyboardAppearanceBringUpTurnID];
+      v12 = [keyboardAppearanceBringUpTurnID4 isEqual:keyboardAppearanceBringUpTurnID5];
 
       if (v12)
       {
@@ -131,12 +131,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
+  toCopy = to;
+  keyboardAppearanceBringUpTurnID = [(SISchemaTypingRequestTrace *)self keyboardAppearanceBringUpTurnID];
 
-  if (v4)
+  if (keyboardAppearanceBringUpTurnID)
   {
     PBDataWriterWriteDataField();
   }

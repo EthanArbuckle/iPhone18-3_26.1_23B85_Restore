@@ -6,9 +6,9 @@
 - (int64_t)rc_audioQuality;
 - (int64_t)rc_channelConfiguration;
 - (int64_t)rc_recentlyDeletedWindow;
-- (void)rc_setAudioQuality:(int64_t)a3;
-- (void)rc_setChannelConfiguration:(int64_t)a3;
-- (void)rc_setRecentlyDeletedWindow:(int64_t)a3;
+- (void)rc_setAudioQuality:(int64_t)quality;
+- (void)rc_setChannelConfiguration:(int64_t)configuration;
+- (void)rc_setRecentlyDeletedWindow:(int64_t)window;
 - (void)settingsChangedPostNotification;
 @end
 
@@ -20,20 +20,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 30;
+    integerValue = 30;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)rc_setRecentlyDeletedWindow:(int64_t)a3
+- (void)rc_setRecentlyDeletedWindow:(int64_t)window
 {
-  [(NSUserDefaults *)self setInteger:a3 forKey:@"RCVoiceMemosRecentlyDeletedWindowKey"];
+  [(NSUserDefaults *)self setInteger:window forKey:@"RCVoiceMemosRecentlyDeletedWindowKey"];
 
   [(NSUserDefaults *)self settingsChangedPostNotification];
 }
@@ -44,20 +44,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)rc_setAudioQuality:(int64_t)a3
+- (void)rc_setAudioQuality:(int64_t)quality
 {
-  [(NSUserDefaults *)self setInteger:a3 forKey:@"RCVoiceMemosAudioQualityKey"];
+  [(NSUserDefaults *)self setInteger:quality forKey:@"RCVoiceMemosAudioQualityKey"];
 
   [(NSUserDefaults *)self settingsChangedPostNotification];
 }
@@ -68,20 +68,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 2;
+    integerValue = 2;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)rc_setChannelConfiguration:(int64_t)a3
+- (void)rc_setChannelConfiguration:(int64_t)configuration
 {
-  [(NSUserDefaults *)self setInteger:a3 forKey:@"RCVoiceMemosChannelConfigurationKey"];
+  [(NSUserDefaults *)self setInteger:configuration forKey:@"RCVoiceMemosChannelConfigurationKey"];
 
   [(NSUserDefaults *)self settingsChangedPostNotification];
 }
@@ -92,15 +92,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)rc_useStereoRecording
@@ -109,15 +109,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)settingsChangedPostNotification
@@ -129,8 +129,8 @@
 + (BOOL)_isRunningInVoiceMemos
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.VoiceMemos"];
+  bundleIdentifier = [v2 bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.VoiceMemos"];
 
   return v4;
 }
@@ -141,7 +141,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001BFC;
   block[3] = &unk_100024E88;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100028ED8 != -1)
   {
     dispatch_once(&qword_100028ED8, block);

@@ -7,9 +7,9 @@
 + (id)sf_shapeForToolbarButton:()SafariServicesExtras
 {
   v4 = a3;
-  v5 = [v4 configuration];
-  v6 = [v5 title];
-  v7 = [v6 length];
+  configuration = [v4 configuration];
+  title = [configuration title];
+  v7 = [title length];
 
   if (v7)
   {
@@ -22,9 +22,9 @@
 
   else
   {
-    v16 = [v4 superview];
+    superview = [v4 superview];
     [v4 _selectedIndicatorBounds];
-    [v16 convertRect:v4 fromView:?];
+    [superview convertRect:v4 fromView:?];
     v9 = v17;
     v11 = v18;
     v13 = v19;
@@ -61,9 +61,9 @@
   width = v44.size.width;
   height = v44.size.height;
   v27 = CGRectGetWidth(v44);
-  v28 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v29 = 51.0;
-  if (v28)
+  if (isSolariumEnabled)
   {
     v29 = 44.0;
   }
@@ -74,9 +74,9 @@
   v45.size.width = width;
   v45.size.height = height;
   v31 = CGRectGetHeight(v45);
-  v32 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled2 = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v33 = 37.0;
-  if (v32)
+  if (isSolariumEnabled2)
   {
     v33 = 44.0;
   }
@@ -101,7 +101,7 @@
     v39 = 8.0;
   }
 
-  v40 = [a1 shapeWithRoundedRect:v35 cornerRadius:{v36, v37, v38, v39}];
+  v40 = [self shapeWithRoundedRect:v35 cornerRadius:{v36, v37, v38, v39}];
 
   return v40;
 }

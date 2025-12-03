@@ -70,11 +70,11 @@
 
 - (BOOL)calIsMissingParentAccount
 {
-  v2 = [a1 authenticationType];
-  if ([v2 isEqualToString:*MEMORY[0x1E6959AC8]])
+  authenticationType = [self authenticationType];
+  if ([authenticationType isEqualToString:*MEMORY[0x1E6959AC8]])
   {
-    v3 = [a1 parentAccount];
-    v4 = v3 == 0;
+    parentAccount = [self parentAccount];
+    v4 = parentAccount == 0;
   }
 
   else
@@ -87,27 +87,27 @@
 
 - (id)calServerURL
 {
-  if ([a1 calIsCalDAVAccount])
+  if ([self calIsCalDAVAccount])
   {
-    v2 = [a1 calHostname];
-    v3 = [a1 _schemeStringForUseSSL:{objc_msgSend(a1, "calUseSSL")}];
-    v4 = [a1 calPort];
-    if (!v4)
+    calHostname = [self calHostname];
+    v3 = [self _schemeStringForUseSSL:{objc_msgSend(self, "calUseSSL")}];
+    calPort = [self calPort];
+    if (!calPort)
     {
-      v4 = [MEMORY[0x1E695DFF8] CDVDefaultPortForScheme:v3];
+      calPort = [MEMORY[0x1E695DFF8] CDVDefaultPortForScheme:v3];
     }
 
-    if ([v2 length] && v3 && v4)
+    if ([calHostname length] && v3 && calPort)
     {
-      v5 = [MEMORY[0x1E695DFF8] CDVURLWithScheme:v3 host:v2 port:v4 path:0];
+      v5 = [MEMORY[0x1E695DFF8] CDVURLWithScheme:v3 host:calHostname port:calPort path:0];
 
       goto LABEL_12;
     }
   }
 
-  else if ([a1 calIsExchangeAccount])
+  else if ([self calIsExchangeAccount])
   {
-    v5 = [a1 objectForKeyedSubscript:*MEMORY[0x1E6959740]];
+    v5 = [self objectForKeyedSubscript:*MEMORY[0x1E6959740]];
     goto LABEL_12;
   }
 
@@ -119,19 +119,19 @@ LABEL_12:
 
 - (uint64_t)calIsCalDAVAccount
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E6959818]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v3 = [identifier isEqualToString:*MEMORY[0x1E6959818]];
 
   return v3;
 }
 
 - (id)calHostname
 {
-  if ([a1 calIsCalDAVAccount])
+  if ([self calIsCalDAVAccount])
   {
-    v2 = [a1 valueForAccountPropertyKey:*MEMORY[0x1E6959760]];
-    if (v2)
+    calServerURL = [self valueForAccountPropertyKey:*MEMORY[0x1E6959760]];
+    if (calServerURL)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -139,7 +139,7 @@ LABEL_12:
         v5 = +[CalFoundationLogSubsystem accounts];
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
-          [(ACAccount(CalAdditions) *)v2 calHostname];
+          [(ACAccount(CalAdditions) *)calServerURL calHostname];
         }
 
         v4 = 0;
@@ -147,22 +147,22 @@ LABEL_12:
       }
     }
 
-    v3 = v2;
+    host = calServerURL;
   }
 
   else
   {
-    if (![a1 calIsExchangeAccount])
+    if (![self calIsExchangeAccount])
     {
       v4 = 0;
       goto LABEL_13;
     }
 
-    v2 = [a1 calServerURL];
-    v3 = [v2 host];
+    calServerURL = [self calServerURL];
+    host = [calServerURL host];
   }
 
-  v4 = v3;
+  v4 = host;
 LABEL_12:
 
 LABEL_13:
@@ -172,163 +172,163 @@ LABEL_13:
 
 - (uint64_t)calUseSSL
 {
-  if ([a1 calIsCalDAVAccount])
+  if ([self calIsCalDAVAccount])
   {
-    v2 = [a1 valueForAccountPropertyKey:*MEMORY[0x1E69597D0]];
-    v3 = [v2 BOOLValue];
+    calServerURL = [self valueForAccountPropertyKey:*MEMORY[0x1E69597D0]];
+    bOOLValue = [calServerURL BOOLValue];
   }
 
   else
   {
-    if (![a1 calIsExchangeAccount])
+    if (![self calIsExchangeAccount])
     {
       return 0;
     }
 
-    v2 = [a1 calServerURL];
-    v4 = [v2 scheme];
-    v3 = [a1 _useSSLForSchemeString:v4];
+    calServerURL = [self calServerURL];
+    scheme = [calServerURL scheme];
+    bOOLValue = [self _useSSLForSchemeString:scheme];
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)calPort
 {
-  if ([a1 calIsCalDAVAccount])
+  if ([self calIsCalDAVAccount])
   {
-    v2 = [a1 valueForAccountPropertyKey:*MEMORY[0x1E69597A8]];
+    port = [self valueForAccountPropertyKey:*MEMORY[0x1E69597A8]];
   }
 
-  else if ([a1 calIsExchangeAccount])
+  else if ([self calIsExchangeAccount])
   {
-    v3 = [a1 calServerURL];
-    v2 = [v3 port];
+    calServerURL = [self calServerURL];
+    port = [calServerURL port];
   }
 
   else
   {
-    v2 = 0;
+    port = 0;
   }
 
-  return v2;
+  return port;
 }
 
 - (id)calPrincipals
 {
-  v1 = [a1 valueForAccountPropertyKey:@"CalDAVPrincipals"];
+  v1 = [self valueForAccountPropertyKey:@"CalDAVPrincipals"];
   v2 = v1;
   if (v1)
   {
-    v3 = v1;
+    dictionary = v1;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v4 = v3;
+  v4 = dictionary;
 
   return v4;
 }
 
 - (uint64_t)calIsExchangeAccount
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E6959840]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v3 = [identifier isEqualToString:*MEMORY[0x1E6959840]];
 
   return v3;
 }
 
 - (uint64_t)calIsEnabled
 {
-  if ([a1 calIsEnabledForCalendar])
+  if ([self calIsEnabledForCalendar])
   {
     return 1;
   }
 
-  return [a1 calIsEnabledForReminders];
+  return [self calIsEnabledForReminders];
 }
 
 - (uint64_t)calUseKerberos
 {
-  v1 = [a1 valueForAccountPropertyKey:@"kCalDAVUseKerberos"];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForAccountPropertyKey:@"kCalDAVUseKerberos"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)calRefreshInterval
 {
-  v1 = [a1 valueForAccountPropertyKey:@"kCalDAVRefreshIntervalKey"];
+  v1 = [self valueForAccountPropertyKey:@"kCalDAVRefreshIntervalKey"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v3 = 900;
+    integerValue = 900;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)calPushDisabled
 {
-  v1 = [a1 valueForAccountPropertyKey:@"kCalDAVPushDisabled"];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForAccountPropertyKey:@"kCalDAVPushDisabled"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)calCalDAVChildAccounts
 {
-  v1 = [a1 childAccounts];
-  v2 = [v1 CalFilter:&__block_literal_global_34];
+  childAccounts = [self childAccounts];
+  v2 = [childAccounts CalFilter:&__block_literal_global_34];
 
   return v2;
 }
 
 - (uint64_t)calIsGenericCalDAVAccount
 {
-  v2 = [a1 parentAccount];
-  if (v2)
+  parentAccount = [self parentAccount];
+  if (parentAccount)
   {
-    v3 = 0;
+    calIsCalDAVAccount = 0;
   }
 
   else
   {
-    v3 = [a1 calIsCalDAVAccount];
+    calIsCalDAVAccount = [self calIsCalDAVAccount];
   }
 
-  return v3;
+  return calIsCalDAVAccount;
 }
 
 - (BOOL)calIsRestrictedForCalendar
 {
-  v2 = [a1 parentAccount];
-  v3 = v2;
-  if (v2)
+  parentAccount = [self parentAccount];
+  v3 = parentAccount;
+  if (parentAccount)
   {
-    v4 = v2;
+    selfCopy = parentAccount;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
-  v6 = [v5 accountType];
+  accountType = [v5 accountType];
 
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E69597F8]];
+  identifier = [accountType identifier];
+  v8 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
   if (!v8)
   {
@@ -350,8 +350,8 @@ LABEL_13:
 
 - (id)calAccountFullName
 {
-  v2 = [a1 calMainPrincipalUID];
-  v3 = [a1 valueForKey:@"FullName" forPrincipalWithUID:v2];
+  calMainPrincipalUID = [self calMainPrincipalUID];
+  v3 = [self valueForKey:@"FullName" forPrincipalWithUID:calMainPrincipalUID];
 
   return v3;
 }
@@ -359,16 +359,16 @@ LABEL_13:
 - (void)setCalHostname:()CalAdditions
 {
   v4 = a3;
-  if (![a1 calIsCalDAVAccount])
+  if (![self calIsCalDAVAccount])
   {
-    if (![a1 calIsExchangeAccount])
+    if (![self calIsExchangeAccount])
     {
       goto LABEL_10;
     }
 
-    v5 = [a1 calServerURL];
-    v6 = [a1 _updateURL:v5 withHost:v4 port:0 useSSL:0];
-    [a1 setCalServerURL:v6];
+    calServerURL = [self calServerURL];
+    v6 = [self _updateURL:calServerURL withHost:v4 port:0 useSSL:0];
+    [self setCalServerURL:v6];
 
 LABEL_9:
     goto LABEL_10;
@@ -379,17 +379,17 @@ LABEL_9:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = +[CalFoundationLogSubsystem defaultCategory];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+      calServerURL = +[CalFoundationLogSubsystem defaultCategory];
+      if (os_log_type_enabled(calServerURL, OS_LOG_TYPE_FAULT))
       {
-        [(ACAccount(CalAdditions) *)a1 setCalHostname:v4, v5];
+        [(ACAccount(CalAdditions) *)self setCalHostname:v4, calServerURL];
       }
 
       goto LABEL_9;
     }
   }
 
-  [a1 _setCalInternalValue:v4 forAccountPropertyKey:*MEMORY[0x1E6959760]];
+  [self _setCalInternalValue:v4 forAccountPropertyKey:*MEMORY[0x1E6959760]];
 LABEL_10:
 }
 
@@ -400,7 +400,7 @@ LABEL_10:
   {
     v6 = *MEMORY[0x1E6959B48];
 
-    return [a1 _setIsEnabled:a3 forDataclass:v6];
+    return [self _setIsEnabled:a3 forDataclass:v6];
   }
 
   return result;
@@ -409,171 +409,171 @@ LABEL_10:
 - (void)setCalMainPrincipalUID:()CalAdditions
 {
   v4 = a3;
-  [a1 _setCalInternalValue:v4 forAccountPropertyKey:@"CalDAVMainPrincipalUID"];
-  [a1 createDictionaryForPrincipalWithUID:v4];
+  [self _setCalInternalValue:v4 forAccountPropertyKey:@"CalDAVMainPrincipalUID"];
+  [self createDictionaryForPrincipalWithUID:v4];
 }
 
 - (void)setCalPort:()CalAdditions
 {
   v6 = a3;
-  if ([a1 calIsCalDAVAccount])
+  if ([self calIsCalDAVAccount])
   {
-    [a1 _setCalInternalValue:v6 forAccountPropertyKey:*MEMORY[0x1E69597A8]];
+    [self _setCalInternalValue:v6 forAccountPropertyKey:*MEMORY[0x1E69597A8]];
   }
 
-  else if ([a1 calIsExchangeAccount])
+  else if ([self calIsExchangeAccount])
   {
-    v4 = [a1 calServerURL];
-    v5 = [a1 _updateURL:v4 withHost:0 port:v6 useSSL:0];
-    [a1 setCalServerURL:v5];
+    calServerURL = [self calServerURL];
+    v5 = [self _updateURL:calServerURL withHost:0 port:v6 useSSL:0];
+    [self setCalServerURL:v5];
   }
 }
 
 - (void)setCalPushDisabled:()CalAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setCalInternalValue:v2 forAccountPropertyKey:@"kCalDAVPushDisabled"];
+  [self _setCalInternalValue:v2 forAccountPropertyKey:@"kCalDAVPushDisabled"];
 }
 
 - (void)setCalRefreshInterval:()CalAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  [a1 _setCalInternalValue:v2 forAccountPropertyKey:@"kCalDAVRefreshIntervalKey"];
+  [self _setCalInternalValue:v2 forAccountPropertyKey:@"kCalDAVRefreshIntervalKey"];
 }
 
 - (void)setCalServerURL:()CalAdditions
 {
   v7 = a3;
-  if ([a1 calIsCalDAVAccount])
+  if ([self calIsCalDAVAccount])
   {
-    v4 = [v7 host];
-    [a1 setCalHostname:v4];
+    host = [v7 host];
+    [self setCalHostname:host];
 
-    v5 = [v7 port];
-    [a1 setCalPort:v5];
+    port = [v7 port];
+    [self setCalPort:port];
 
-    v6 = [v7 scheme];
-    [a1 setCalUseSSL:{objc_msgSend(a1, "_useSSLForSchemeString:", v6)}];
+    scheme = [v7 scheme];
+    [self setCalUseSSL:{objc_msgSend(self, "_useSSLForSchemeString:", scheme)}];
   }
 
-  else if ([a1 calIsExchangeAccount])
+  else if ([self calIsExchangeAccount])
   {
-    [a1 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6959740]];
+    [self setObject:v7 forKeyedSubscript:*MEMORY[0x1E6959740]];
   }
 }
 
 - (void)setCalUseSSL:()CalAdditions
 {
-  if ([a1 calIsCalDAVAccount])
+  if ([self calIsCalDAVAccount])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:a3];
     v6 = *MEMORY[0x1E69597D0];
-    v9 = v5;
-    [a1 _setCalInternalValue:? forAccountPropertyKey:?];
+    calServerURL = v5;
+    [self _setCalInternalValue:? forAccountPropertyKey:?];
   }
 
   else
   {
-    if (![a1 calIsExchangeAccount])
+    if (![self calIsExchangeAccount])
     {
       return;
     }
 
-    v9 = [a1 calServerURL];
+    calServerURL = [self calServerURL];
     v7 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    v8 = [a1 _updateURL:v9 withHost:0 port:0 useSSL:v7];
-    [a1 setCalServerURL:v8];
+    v8 = [self _updateURL:calServerURL withHost:0 port:0 useSSL:v7];
+    [self setCalServerURL:v8];
   }
 }
 
 - (uint64_t)calSupportsPush
 {
-  v2 = [a1 accountStore];
-  v3 = [v2 isPushSupportedForAccount:a1];
+  accountStore = [self accountStore];
+  v3 = [accountStore isPushSupportedForAccount:self];
 
   return v3;
 }
 
 - (uint64_t)calLocalDataMigrationHasTakenPlace
 {
-  v1 = [a1 valueForAccountPropertyKey:@"CalAccountPropertyCalDAVLocalDataMigrationHasTakenPlace"];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForAccountPropertyKey:@"CalAccountPropertyCalDAVLocalDataMigrationHasTakenPlace"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)calServerSyncHasTakenPlace
 {
-  v1 = [a1 valueForAccountPropertyKey:@"CalAccountPropertyCalDAVSyncHasTakenPlace"];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForAccountPropertyKey:@"CalAccountPropertyCalDAVSyncHasTakenPlace"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)calAttachmentDownloadHasTakenPlace
 {
-  v1 = [a1 valueForAccountPropertyKey:@"CalAccountPropertyCalDAVAttachmentDownloadHasTakenPlace"];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForAccountPropertyKey:@"CalAccountPropertyCalDAVAttachmentDownloadHasTakenPlace"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)calSkipCredentialVerification
 {
-  v1 = [a1 valueForAccountPropertyKey:@"CalAccountPropertyCalDAVSkipCredentialVerification"];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForAccountPropertyKey:@"CalAccountPropertyCalDAVSkipCredentialVerification"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setCalLocalDataMigrationHasTakenPlace:()CalAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyCalDAVLocalDataMigrationHasTakenPlace"];
+  [self _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyCalDAVLocalDataMigrationHasTakenPlace"];
 }
 
 - (void)setCalServerSyncHasTakenPlace:()CalAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyCalDAVSyncHasTakenPlace"];
+  [self _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyCalDAVSyncHasTakenPlace"];
 }
 
 - (void)setCalAttachmentDownloadHasTakenPlace:()CalAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyCalDAVAttachmentDownloadHasTakenPlace"];
+  [self _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyCalDAVAttachmentDownloadHasTakenPlace"];
 }
 
 - (void)setCalSkipCredentialVerification:()CalAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyCalDAVSkipCredentialVerification"];
+  [self _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyCalDAVSkipCredentialVerification"];
 }
 
 - (void)setCalUseKerberos:()CalAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setCalInternalValue:v2 forAccountPropertyKey:@"kCalDAVUseKerberos"];
+  [self _setCalInternalValue:v2 forAccountPropertyKey:@"kCalDAVUseKerberos"];
 }
 
 - (uint64_t)calIsiCloudCalDAVAccount
 {
-  v2 = [a1 accountType];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E6959818]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E6959818]];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [a1 parentAccount];
-  v6 = v5;
-  if (v5)
+  parentAccount = [self parentAccount];
+  v6 = parentAccount;
+  if (parentAccount)
   {
-    v7 = [v5 accountType];
-    v8 = [v7 identifier];
-    v9 = [v8 isEqualToString:*MEMORY[0x1E69597F8]];
+    accountType2 = [parentAccount accountType];
+    identifier2 = [accountType2 identifier];
+    v9 = [identifier2 isEqualToString:*MEMORY[0x1E69597F8]];
   }
 
   else
@@ -586,45 +586,45 @@ LABEL_10:
 
 - (id)calExchangeWebServicesURL
 {
-  v2 = [a1 calServerURL];
-  v3 = [a1 _createExchangeWebServicesURLFromURL:v2];
+  calServerURL = [self calServerURL];
+  v3 = [self _createExchangeWebServicesURLFromURL:calServerURL];
 
   return v3;
 }
 
 - (id)calExternalExchangeWebServicesURL
 {
-  v2 = [a1 calExternalURL];
-  v3 = [a1 _createExchangeWebServicesURLFromURL:v2];
+  calExternalURL = [self calExternalURL];
+  v3 = [self _createExchangeWebServicesURLFromURL:calExternalURL];
 
   return v3;
 }
 
 - (uint64_t)calIsDirty
 {
-  if ([a1 isDirty])
+  if ([self isDirty])
   {
     return 1;
   }
 
-  v3 = [a1 dirtyAccountProperties];
-  v2 = [v3 count] != 0;
+  dirtyAccountProperties = [self dirtyAccountProperties];
+  v2 = [dirtyAccountProperties count] != 0;
 
   return v2;
 }
 
 - (uint64_t)calUseExternalURL
 {
-  v1 = [a1 valueForAccountPropertyKey:@"CalAccountPropertyExchangeUseExternalURL"];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForAccountPropertyKey:@"CalAccountPropertyExchangeUseExternalURL"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setCalUseExternalURL:()CalAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyExchangeUseExternalURL"];
+  [self _setCalInternalValue:v2 forAccountPropertyKey:@"CalAccountPropertyExchangeUseExternalURL"];
 }
 
 - (void)addPrincipal:()CalAdditions withUID:
@@ -635,11 +635,11 @@ LABEL_10:
   if (v6 && [v7 length])
   {
     v9 = MEMORY[0x1E695DF90];
-    v10 = [a1 calPrincipals];
-    v11 = [v9 dictionaryWithDictionary:v10];
+    calPrincipals = [self calPrincipals];
+    v11 = [v9 dictionaryWithDictionary:calPrincipals];
 
     [v11 setObject:v6 forKeyedSubscript:v8];
-    [a1 setCalPrincipals:v11];
+    [self setCalPrincipals:v11];
   }
 
   else
@@ -654,19 +654,19 @@ LABEL_10:
 
 - (id)calPrincipalURLForMainPrincipal
 {
-  v2 = [a1 calMainPrincipalUID];
-  v3 = [a1 calPrincipalURLForPrincipalWithUID:v2];
+  calMainPrincipalUID = [self calMainPrincipalUID];
+  v3 = [self calPrincipalURLForPrincipalWithUID:calMainPrincipalUID];
 
   return v3;
 }
 
 - (id)calPrincipalURLForPrincipalWithUID:()CalAdditions
 {
-  v4 = [a1 valueForKey:@"PrincipalPath" forPrincipalWithUID:a3];
-  v5 = [a1 calServerURL];
-  if (v5 && [v4 length])
+  v4 = [self valueForKey:@"PrincipalPath" forPrincipalWithUID:a3];
+  calServerURL = [self calServerURL];
+  if (calServerURL && [v4 length])
   {
-    v6 = [v5 CDVURLWithPath:v4];
+    v6 = [calServerURL CDVURLWithPath:v4];
   }
 
   else
@@ -680,65 +680,65 @@ LABEL_10:
 - (void)createDictionaryForPrincipalWithUID:()CalAdditions
 {
   v6 = a3;
-  v4 = [a1 calPrincipals];
-  v5 = [v4 objectForKeyedSubscript:v6];
+  calPrincipals = [self calPrincipals];
+  v5 = [calPrincipals objectForKeyedSubscript:v6];
 
   if (!v5)
   {
-    [a1 addPrincipal:MEMORY[0x1E695E0F8] withUID:v6];
+    [self addPrincipal:MEMORY[0x1E695E0F8] withUID:v6];
   }
 }
 
 - (id)firstDifferentPropertyWithAccount:()CalAdditions
 {
-  v3 = [a1 _diffWithAccount:a3 firstPropertyOnly:1];
-  v4 = [v3 anyObject];
+  v3 = [self _diffWithAccount:a3 firstPropertyOnly:1];
+  anyObject = [v3 anyObject];
 
-  return v4;
+  return anyObject;
 }
 
 - (void)removeAccountPropertyForKey:()CalAdditions
 {
   v12 = a3;
-  if (([a1 calIsExchangeAccount] & 1) != 0 || (objc_msgSend(a1, "_calDAVDataclassProperties"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "containsObject:", v12), v4, v5))
+  if (([self calIsExchangeAccount] & 1) != 0 || (objc_msgSend(self, "_calDAVDataclassProperties"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "containsObject:", v12), v4, v5))
   {
     v6 = *MEMORY[0x1E6959AE0];
-    v7 = [a1 propertiesForDataclass:*MEMORY[0x1E6959AE0]];
+    v7 = [self propertiesForDataclass:*MEMORY[0x1E6959AE0]];
     if (v7)
     {
       v8 = v7;
       v9 = MEMORY[0x1E695DF90];
-      v10 = [a1 propertiesForDataclass:v6];
+      v10 = [self propertiesForDataclass:v6];
       v11 = [v9 dictionaryWithDictionary:v10];
 
       if (v11)
       {
         [v11 removeObjectForKey:v12];
-        [a1 setProperties:v11 forDataclass:v6];
+        [self setProperties:v11 forDataclass:v6];
       }
     }
   }
 
-  else if ([a1 calIsCalDAVAccount])
+  else if ([self calIsCalDAVAccount])
   {
-    [a1 setObject:0 forKeyedSubscript:v12];
+    [self setObject:0 forKeyedSubscript:v12];
   }
 }
 
 - (BOOL)removePrincipalWithUID:()CalAdditions
 {
   v4 = a3;
-  v5 = [a1 calPrincipals];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  calPrincipals = [self calPrincipals];
+  v6 = [calPrincipals objectForKeyedSubscript:v4];
 
   if (v6)
   {
     v7 = MEMORY[0x1E695DF90];
-    v8 = [a1 calPrincipals];
-    v9 = [v7 dictionaryWithDictionary:v8];
+    calPrincipals2 = [self calPrincipals];
+    v9 = [v7 dictionaryWithDictionary:calPrincipals2];
 
     [v9 removeObjectForKey:v4];
-    [a1 setCalPrincipals:v9];
+    [self setCalPrincipals:v9];
   }
 
   return v6 != 0;
@@ -752,19 +752,19 @@ LABEL_10:
   v10 = a5;
   if ([v9 length])
   {
-    v11 = [a1 valueForKey:v9 forPrincipalWithUID:v10];
+    v11 = [self valueForKey:v9 forPrincipalWithUID:v10];
     v12 = [v11 isEqual:v8];
 
     if (!v12)
     {
-      [a1 createDictionaryForPrincipalWithUID:v10];
+      [self createDictionaryForPrincipalWithUID:v10];
       v15 = MEMORY[0x1E695DF90];
-      v16 = [a1 calPrincipals];
-      v17 = [v16 objectForKeyedSubscript:v10];
+      calPrincipals = [self calPrincipals];
+      v17 = [calPrincipals objectForKeyedSubscript:v10];
       v18 = [v15 dictionaryWithDictionary:v17];
 
       [v18 setObject:v8 forKeyedSubscript:v9];
-      [a1 addPrincipal:v18 withUID:v10];
+      [self addPrincipal:v18 withUID:v10];
 
       v14 = 1;
       goto LABEL_9;
@@ -778,7 +778,7 @@ LABEL_10:
       v23 = 2112;
       v24 = v10;
       v25 = 2112;
-      v26 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B990D000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to set %@ on principal with UID %@ by using its current value. This is a no-op change, and we won't dirty the account by making it. %@", &v21, 0x20u);
     }
   }
@@ -793,7 +793,7 @@ LABEL_10:
       v23 = 2112;
       v24 = v10;
       v25 = 2112;
-      v26 = a1;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_1B990D000, v13, OS_LOG_TYPE_ERROR, "Attempting to set %@ on principal with UID %@ by using a nil key. %@", &v21, 0x20u);
     }
   }
@@ -808,15 +808,15 @@ LABEL_9:
 - (id)valueForAccountPropertyKey:()CalAdditions
 {
   v4 = a3;
-  if (([a1 calIsExchangeAccount] & 1) != 0 || (objc_msgSend(a1, "_calDAVDataclassProperties"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", v4), v5, v6))
+  if (([self calIsExchangeAccount] & 1) != 0 || (objc_msgSend(self, "_calDAVDataclassProperties"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", v4), v5, v6))
   {
-    v7 = [a1 propertiesForDataclass:*MEMORY[0x1E6959AE0]];
+    v7 = [self propertiesForDataclass:*MEMORY[0x1E6959AE0]];
     v8 = [v7 objectForKeyedSubscript:v4];
   }
 
-  else if ([a1 calIsCalDAVAccount])
+  else if ([self calIsCalDAVAccount])
   {
-    v8 = [a1 objectForKeyedSubscript:v4];
+    v8 = [self objectForKeyedSubscript:v4];
   }
 
   else
@@ -831,8 +831,8 @@ LABEL_9:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 calPrincipals];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  calPrincipals = [self calPrincipals];
+  v9 = [calPrincipals objectForKeyedSubscript:v6];
 
   v10 = [v9 objectForKeyedSubscript:v7];
 
@@ -842,30 +842,30 @@ LABEL_9:
 - (id)calSyncingAccountUsingChildAccounts:()CalAdditions
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 accountType];
-  v6 = [v5 syncableDataclasses];
+  childAccounts = a3;
+  accountType = [self accountType];
+  syncableDataclasses = [accountType syncableDataclasses];
   v7 = *MEMORY[0x1E6959AE0];
-  v8 = [v6 containsObject:*MEMORY[0x1E6959AE0]];
+  v8 = [syncableDataclasses containsObject:*MEMORY[0x1E6959AE0]];
 
   if (v8)
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    if (!v4)
+    if (!childAccounts)
     {
-      v4 = [a1 childAccounts];
+      childAccounts = [self childAccounts];
     }
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = v4;
-    v10 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    childAccounts = childAccounts;
+    v10 = [childAccounts countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -876,23 +876,23 @@ LABEL_9:
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(childAccounts);
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v14 accountType];
-          v16 = [v15 syncableDataclasses];
-          v17 = [v16 containsObject:v7];
+          accountType2 = [v14 accountType];
+          syncableDataclasses2 = [accountType2 syncableDataclasses];
+          v17 = [syncableDataclasses2 containsObject:v7];
 
           if (v17)
           {
-            v9 = v14;
+            selfCopy = v14;
 
             goto LABEL_17;
           }
         }
 
-        v11 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [childAccounts countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v11)
         {
           continue;
@@ -905,47 +905,47 @@ LABEL_9:
     v18 = +[CalFoundationLogSubsystem accounts];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [ACAccount(CalAdditions) calSyncingAccountUsingChildAccounts:a1];
+      [ACAccount(CalAdditions) calSyncingAccountUsingChildAccounts:self];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
 LABEL_17:
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)_accountPropertiesKeys
 {
-  if ([a1 calIsCalDAVAccount])
+  if ([self calIsCalDAVAccount])
   {
     v2 = MEMORY[0x1E695DF70];
-    v3 = [a1 _calDAVDataclassProperties];
-    v4 = [v3 allObjects];
-    v5 = [v2 arrayWithArray:v4];
+    _calDAVDataclassProperties = [self _calDAVDataclassProperties];
+    allObjects = [_calDAVDataclassProperties allObjects];
+    allKeys2 = [v2 arrayWithArray:allObjects];
 
-    v6 = [a1 accountProperties];
-    v7 = [v6 allKeys];
-    [v5 addObjectsFromArray:v7];
+    accountProperties = [self accountProperties];
+    allKeys = [accountProperties allKeys];
+    [allKeys2 addObjectsFromArray:allKeys];
   }
 
   else
   {
-    if (![a1 calIsExchangeAccount])
+    if (![self calIsExchangeAccount])
     {
       goto LABEL_7;
     }
 
-    v6 = [a1 propertiesForDataclass:*MEMORY[0x1E6959AE0]];
-    v5 = [v6 allKeys];
+    accountProperties = [self propertiesForDataclass:*MEMORY[0x1E6959AE0]];
+    allKeys2 = [accountProperties allKeys];
   }
 
-  if (v5)
+  if (allKeys2)
   {
-    v8 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+    v8 = [MEMORY[0x1E695DFD8] setWithArray:allKeys2];
 
     goto LABEL_8;
   }
@@ -960,28 +960,28 @@ LABEL_8:
 - (id)_createExchangeWebServicesURLFromURL:()CalAdditions
 {
   v4 = a3;
-  v5 = [v4 user];
-  if ([v5 length])
+  user = [v4 user];
+  if ([user length])
   {
     goto LABEL_2;
   }
 
-  v8 = [a1 username];
-  v9 = [v8 length];
+  username = [self username];
+  v9 = [username length];
 
   v6 = v4;
   if (v9)
   {
-    v5 = [v4 resourceSpecifier];
-    if ([v5 hasPrefix:@"//"])
+    user = [v4 resourceSpecifier];
+    if ([user hasPrefix:@"//"])
     {
-      v10 = [v4 scheme];
-      v11 = [a1 username];
-      v12 = [MEMORY[0x1E696AB08] URLUserAllowedCharacterSet];
-      v13 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+      scheme = [v4 scheme];
+      username2 = [self username];
+      uRLUserAllowedCharacterSet = [MEMORY[0x1E696AB08] URLUserAllowedCharacterSet];
+      v13 = [username2 stringByAddingPercentEncodingWithAllowedCharacters:uRLUserAllowedCharacterSet];
 
-      v14 = [v5 substringFromIndex:2];
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@@%@", v10, v13, v14];
+      v14 = [user substringFromIndex:2];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@@%@", scheme, v13, v14];
       v6 = [MEMORY[0x1E695DFF8] URLWithString:v15];
 
       goto LABEL_3;
@@ -998,19 +998,19 @@ LABEL_3:
 - (uint64_t)_dataclassIsEnabled:()CalAdditions
 {
   v4 = a3;
-  v5 = [a1 parentAccount];
-  if (v5)
+  parentAccount = [self parentAccount];
+  if (parentAccount)
   {
-    v6 = [a1 parentAccount];
-    v7 = [v6 enabledDataclasses];
+    parentAccount2 = [self parentAccount];
+    enabledDataclasses = [parentAccount2 enabledDataclasses];
   }
 
   else
   {
-    v7 = [a1 enabledDataclasses];
+    enabledDataclasses = [self enabledDataclasses];
   }
 
-  v8 = [v7 containsObject:v4];
+  v8 = [enabledDataclasses containsObject:v4];
   return v8;
 }
 
@@ -1018,12 +1018,12 @@ LABEL_3:
 {
   v6 = a3;
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [a1 _diffAccountPropertiesWithAccount:v6 firstPropertyOnly:a4];
+  v8 = [self _diffAccountPropertiesWithAccount:v6 firstPropertyOnly:a4];
   [v7 unionSet:v8];
 
   if (![v7 count] || (a4 & 1) == 0)
   {
-    v9 = [a1 _diffPropertiesWithAccount:v6 firstPropertyOnly:a4];
+    v9 = [self _diffPropertiesWithAccount:v6 firstPropertyOnly:a4];
     [v7 unionSet:v9];
   }
 
@@ -1036,11 +1036,11 @@ LABEL_3:
   v6 = a3;
   v20 = [MEMORY[0x1E695DFA8] set];
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [a1 _accountPropertiesKeys];
-  [v7 unionSet:v8];
+  _accountPropertiesKeys = [self _accountPropertiesKeys];
+  [v7 unionSet:_accountPropertiesKeys];
 
-  v9 = [v6 _accountPropertiesKeys];
-  [v7 unionSet:v9];
+  _accountPropertiesKeys2 = [v6 _accountPropertiesKeys];
+  [v7 unionSet:_accountPropertiesKeys2];
 
   v23 = 0u;
   v24 = 0u;
@@ -1062,7 +1062,7 @@ LABEL_3:
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [a1 valueForAccountPropertyKey:v15];
+        v16 = [self valueForAccountPropertyKey:v15];
         v17 = [v6 valueForAccountPropertyKey:v15];
         if (v16 | v17)
         {
@@ -1114,14 +1114,14 @@ LABEL_13:
   v10 = _Block_copy(aBlock);
   if (*(v62 + 24) == 1)
   {
-    v11 = [a1 accountDescription];
-    if (v11 || ([v7 accountDescription], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    accountDescription = [self accountDescription];
+    if (accountDescription || ([v7 accountDescription], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [a1 accountDescription];
-      v13 = [v7 accountDescription];
-      v14 = [v12 isEqual:v13];
+      accountDescription2 = [self accountDescription];
+      accountDescription3 = [v7 accountDescription];
+      v14 = [accountDescription2 isEqual:accountDescription3];
 
-      if (v11)
+      if (accountDescription)
       {
 
         if (v14)
@@ -1144,8 +1144,8 @@ LABEL_8:
 LABEL_9:
   if (*(v62 + 24) == 1)
   {
-    v15 = [a1 isActive];
-    if (v15 != [v7 isActive])
+    isActive = [self isActive];
+    if (isActive != [v7 isActive])
     {
       [v9 addObject:@"active"];
       v10[2](v10);
@@ -1154,8 +1154,8 @@ LABEL_9:
 
   if (*(v62 + 24) == 1)
   {
-    v16 = [a1 isAuthenticated];
-    if (v16 != [v7 isAuthenticated])
+    isAuthenticated = [self isAuthenticated];
+    if (isAuthenticated != [v7 isAuthenticated])
     {
       [v9 addObject:@"authenticated"];
       v10[2](v10);
@@ -1164,14 +1164,14 @@ LABEL_9:
 
   if (*(v62 + 24) == 1)
   {
-    v17 = [a1 credential];
-    if (v17 || ([v7 credential], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    credential = [self credential];
+    if (credential || ([v7 credential], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v18 = [a1 credential];
-      v19 = [v7 credential];
-      v20 = [v18 isEqual:v19];
+      credential2 = [self credential];
+      credential3 = [v7 credential];
+      v20 = [credential2 isEqual:credential3];
 
-      if (v17)
+      if (credential)
       {
 
         if (v20)
@@ -1194,14 +1194,14 @@ LABEL_22:
 LABEL_23:
   if (*(v62 + 24) == 1)
   {
-    v21 = [a1 enabledDataclasses];
-    if (v21 || ([v7 enabledDataclasses], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    enabledDataclasses = [self enabledDataclasses];
+    if (enabledDataclasses || ([v7 enabledDataclasses], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v22 = [a1 enabledDataclasses];
-      v23 = [v7 enabledDataclasses];
-      v24 = [v22 isEqual:v23];
+      enabledDataclasses2 = [self enabledDataclasses];
+      enabledDataclasses3 = [v7 enabledDataclasses];
+      v24 = [enabledDataclasses2 isEqual:enabledDataclasses3];
 
-      if (v21)
+      if (enabledDataclasses)
       {
 
         if (v24)
@@ -1224,14 +1224,14 @@ LABEL_30:
 LABEL_31:
   if (*(v62 + 24) == 1)
   {
-    v25 = [a1 provisionedDataclasses];
-    if (v25 || ([v7 provisionedDataclasses], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    provisionedDataclasses = [self provisionedDataclasses];
+    if (provisionedDataclasses || ([v7 provisionedDataclasses], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v26 = [a1 provisionedDataclasses];
-      v27 = [v7 provisionedDataclasses];
-      v28 = [v26 isEqual:v27];
+      provisionedDataclasses2 = [self provisionedDataclasses];
+      provisionedDataclasses3 = [v7 provisionedDataclasses];
+      v28 = [provisionedDataclasses2 isEqual:provisionedDataclasses3];
 
-      if (v25)
+      if (provisionedDataclasses)
       {
 
         if (v28)
@@ -1254,14 +1254,14 @@ LABEL_38:
 LABEL_39:
   if (*(v62 + 24) == 1)
   {
-    v29 = [a1 username];
-    if (v29 || ([v7 username], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    username = [self username];
+    if (username || ([v7 username], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v30 = [a1 username];
-      v31 = [v7 username];
-      v32 = [v30 isEqual:v31];
+      username2 = [self username];
+      username3 = [v7 username];
+      v32 = [username2 isEqual:username3];
 
-      if (v29)
+      if (username)
       {
 
         if (v32)
@@ -1284,8 +1284,8 @@ LABEL_46:
 LABEL_47:
   if (*(v62 + 24) == 1)
   {
-    v33 = [a1 isVisible];
-    if (v33 != [v7 isVisible])
+    isVisible = [self isVisible];
+    if (isVisible != [v7 isVisible])
     {
       [v9 addObject:@"visible"];
       v10[2](v10);
@@ -1294,14 +1294,14 @@ LABEL_47:
 
   if (*(v62 + 24) == 1)
   {
-    v34 = [a1 accountType];
-    if (v34 || ([v7 accountType], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    accountType = [self accountType];
+    if (accountType || ([v7 accountType], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v35 = [a1 accountType];
-      v36 = [v7 accountType];
-      v37 = [v35 isEqual:v36];
+      accountType2 = [self accountType];
+      accountType3 = [v7 accountType];
+      v37 = [accountType2 isEqual:accountType3];
 
-      if (v34)
+      if (accountType)
       {
 
         if (v37)
@@ -1324,14 +1324,14 @@ LABEL_57:
 LABEL_58:
   if (*(v62 + 24) == 1)
   {
-    v38 = [a1 creationDate];
-    if (v38 || ([v7 creationDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    creationDate = [self creationDate];
+    if (creationDate || ([v7 creationDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v39 = [a1 creationDate];
-      v40 = [v7 creationDate];
-      v41 = [v39 isEqual:v40];
+      creationDate2 = [self creationDate];
+      creationDate3 = [v7 creationDate];
+      v41 = [creationDate2 isEqual:creationDate3];
 
-      if (v38)
+      if (creationDate)
       {
 
         if (v41)
@@ -1354,14 +1354,14 @@ LABEL_65:
 LABEL_66:
   if (*(v62 + 24) == 1)
   {
-    v42 = [a1 identifier];
-    if (v42 || ([v7 identifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    identifier = [self identifier];
+    if (identifier || ([v7 identifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v43 = [a1 identifier];
-      v44 = [v7 identifier];
-      v45 = [v43 isEqual:v44];
+      identifier2 = [self identifier];
+      identifier3 = [v7 identifier];
+      v45 = [identifier2 isEqual:identifier3];
 
-      if (v42)
+      if (identifier)
       {
 
         if (v45)
@@ -1384,14 +1384,14 @@ LABEL_73:
 LABEL_74:
   if (*(v62 + 24) == 1)
   {
-    v46 = [a1 owningBundleID];
-    if (v46 || ([v7 owningBundleID], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    owningBundleID = [self owningBundleID];
+    if (owningBundleID || ([v7 owningBundleID], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v47 = [a1 owningBundleID];
-      v48 = [v7 owningBundleID];
-      v49 = [v47 isEqual:v48];
+      owningBundleID2 = [self owningBundleID];
+      owningBundleID3 = [v7 owningBundleID];
+      v49 = [owningBundleID2 isEqual:owningBundleID3];
 
-      if (v46)
+      if (owningBundleID)
       {
 
         if (v49)
@@ -1414,14 +1414,14 @@ LABEL_81:
 LABEL_82:
   if (*(v62 + 24) == 1)
   {
-    v50 = [a1 parentAccountIdentifier];
-    if (v50 || ([v7 parentAccountIdentifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    parentAccountIdentifier = [self parentAccountIdentifier];
+    if (parentAccountIdentifier || ([v7 parentAccountIdentifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v51 = [a1 parentAccountIdentifier];
-      v52 = [v7 parentAccountIdentifier];
-      v53 = [v51 isEqual:v52];
+      parentAccountIdentifier2 = [self parentAccountIdentifier];
+      parentAccountIdentifier3 = [v7 parentAccountIdentifier];
+      v53 = [parentAccountIdentifier2 isEqual:parentAccountIdentifier3];
 
-      if (v50)
+      if (parentAccountIdentifier)
       {
 
         if (v53)
@@ -1444,8 +1444,8 @@ LABEL_89:
 LABEL_90:
   if (*(v62 + 24) == 1)
   {
-    v54 = [a1 supportsAuthentication];
-    if (v54 != [v7 supportsAuthentication])
+    supportsAuthentication = [self supportsAuthentication];
+    if (supportsAuthentication != [v7 supportsAuthentication])
     {
       [v9 addObject:@"supportsAuthentication"];
       v10[2](v10);
@@ -1475,20 +1475,20 @@ LABEL_90:
 - (void)_setIsEnabled:()CalAdditions forDataclass:
 {
   v6 = a4;
-  v7 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v7)
+  if (parentAccount)
   {
     v8 = +[CalFoundationLogSubsystem accounts];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ACAccount(CalAdditions) *)v6 _setIsEnabled:a1 forDataclass:v8];
+      [(ACAccount(CalAdditions) *)v6 _setIsEnabled:self forDataclass:v8];
     }
   }
 
-  else if ([a1 _dataclassIsEnabled:v6] != a3)
+  else if ([self _dataclassIsEnabled:v6] != a3)
   {
-    [a1 setEnabled:a3 forDataclass:v6];
+    [self setEnabled:a3 forDataclass:v6];
   }
 }
 
@@ -1498,43 +1498,43 @@ LABEL_90:
   v6 = a4;
   if (v22)
   {
-    if (([a1 calIsExchangeAccount] & 1) != 0 || (objc_msgSend(a1, "_calDAVDataclassProperties"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", v6), v7, v8))
+    if (([self calIsExchangeAccount] & 1) != 0 || (objc_msgSend(self, "_calDAVDataclassProperties"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", v6), v7, v8))
     {
       v9 = *MEMORY[0x1E6959AE0];
-      v10 = [a1 propertiesForDataclass:*MEMORY[0x1E6959AE0]];
+      v10 = [self propertiesForDataclass:*MEMORY[0x1E6959AE0]];
       v11 = MEMORY[0x1E695DF90];
       if (v10)
       {
-        v12 = [a1 propertiesForDataclass:v9];
-        v13 = [v11 dictionaryWithDictionary:v12];
+        v12 = [self propertiesForDataclass:v9];
+        dictionary = [v11 dictionaryWithDictionary:v12];
       }
 
       else
       {
-        v13 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v14 = [v13 objectForKeyedSubscript:v6];
-      if (!v14 || (v15 = v14, [v13 objectForKeyedSubscript:v6], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", v22), v16, v15, (v17 & 1) == 0))
+      v14 = [dictionary objectForKeyedSubscript:v6];
+      if (!v14 || (v15 = v14, [dictionary objectForKeyedSubscript:v6], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", v22), v16, v15, (v17 & 1) == 0))
       {
-        [v13 setObject:v22 forKeyedSubscript:v6];
-        [a1 setProperties:v13 forDataclass:v9];
+        [dictionary setObject:v22 forKeyedSubscript:v6];
+        [self setProperties:dictionary forDataclass:v9];
       }
     }
 
-    else if ([a1 calIsCalDAVAccount])
+    else if ([self calIsCalDAVAccount])
     {
-      v18 = [a1 objectForKeyedSubscript:v6];
-      if (!v18 || (v19 = v18, [a1 objectForKeyedSubscript:v6], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqual:", v22), v20, v19, (v21 & 1) == 0))
+      v18 = [self objectForKeyedSubscript:v6];
+      if (!v18 || (v19 = v18, [self objectForKeyedSubscript:v6], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqual:", v22), v20, v19, (v21 & 1) == 0))
       {
-        [a1 setObject:v22 forKeyedSubscript:v6];
+        [self setObject:v22 forKeyedSubscript:v6];
       }
     }
   }
 
   else
   {
-    [a1 removeAccountPropertyForKey:v6];
+    [self removeAccountPropertyForKey:v6];
   }
 }
 
@@ -1569,7 +1569,7 @@ LABEL_90:
 
   if (v12)
   {
-    v15 = [a1 _schemeStringForUseSSL:{objc_msgSend(v12, "BOOLValue")}];
+    v15 = [self _schemeStringForUseSSL:{objc_msgSend(v12, "BOOLValue")}];
     [v14 setScheme:v15];
   }
 
@@ -1580,43 +1580,43 @@ LABEL_90:
 
 - (uint64_t)_useSSLForSchemeString:()CalAdditions
 {
-  v3 = [a3 lowercaseString];
-  v4 = [v3 isEqualToString:@"https"];
+  lowercaseString = [a3 lowercaseString];
+  v4 = [lowercaseString isEqualToString:@"https"];
 
   return v4;
 }
 
 - (id)calTopLevelAccount
 {
-  v1 = a1;
-  v2 = [v1 parentAccount];
+  selfCopy = self;
+  parentAccount = [selfCopy parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
     do
     {
-      v3 = [v1 parentAccount];
+      parentAccount2 = [selfCopy parentAccount];
 
-      v4 = [v3 parentAccount];
+      v3ParentAccount = [parentAccount2 parentAccount];
 
-      v1 = v3;
+      selfCopy = parentAccount2;
     }
 
-    while (v4);
+    while (v3ParentAccount);
   }
 
   else
   {
-    v3 = v1;
+    parentAccount2 = selfCopy;
   }
 
-  return v3;
+  return parentAccount2;
 }
 
 - (void)calHostname
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = [a2 identifier];
+  identifier = [a2 identifier];
   OUTLINED_FUNCTION_0_9();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
 

@@ -50,7 +50,7 @@
   else
   {
 LABEL_5:
-    [a1 intents_setPlistSafeObject:v12 forKey:{v10, v20}];
+    [self intents_setPlistSafeObject:v12 forKey:{v10, v20}];
   }
 }
 
@@ -72,7 +72,7 @@ LABEL_5:
 
   else
   {
-    [a1 intents_setPlistSafeObject:v11 forKey:v10];
+    [self intents_setPlistSafeObject:v11 forKey:v10];
   }
 }
 
@@ -83,7 +83,7 @@ LABEL_5:
     v5 = MEMORY[0x1E696AD98];
     v6 = a4;
     v7 = [v5 numberWithBool:1];
-    [a1 intents_setPlistSafeObject:v7 forKey:v6];
+    [self intents_setPlistSafeObject:v7 forKey:v6];
   }
 }
 
@@ -98,9 +98,9 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 absoluteString];
+      absoluteString = [v6 absoluteString];
 
-      v6 = v9;
+      v6 = absoluteString;
     }
 
     v6 = v6;
@@ -109,7 +109,7 @@ LABEL_5:
     {
 
 LABEL_13:
-      [a1 setObject:v6 forKey:v8];
+      [self setObject:v6 forKey:v8];
       goto LABEL_14;
     }
 
@@ -146,7 +146,7 @@ LABEL_14:
     v6 = MEMORY[0x1E696AD98];
     v7 = a4;
     v8 = [v6 numberWithInteger:a3];
-    [a1 intents_setPlistSafeObject:v8 forKey:v7];
+    [self intents_setPlistSafeObject:v8 forKey:v7];
   }
 }
 

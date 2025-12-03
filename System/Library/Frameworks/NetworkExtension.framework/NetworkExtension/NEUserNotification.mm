@@ -1,30 +1,30 @@
 @interface NEUserNotification
 + (BOOL)shouldPromptForLocalAuthentication;
 + (id)createLAContext;
-+ (void)cancelCurrentNotificationWithResponse:(unint64_t)a3 queue:(id)a4 completionHandler:(id)a5;
-+ (void)executeOnMainLoop:(uint64_t)a1;
-+ (void)promptForLocalAuthenticationWithReason:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (id)initAndShowAddConfigurationsForApp:(id)a3 warningHeader:(const char *)a4 warning:(const char *)a5 callbackQueue:(id)a6 callbackHandler:(id)a7;
-- (id)initAndShowAlertWithHeader:(id)a3 message:(id)a4 alternateMessage:(id)a5 defaultMessage:(id)a6 noBoldDefault:(BOOL)a7 usePrivacyIcon:(BOOL)a8 extensionItem:(id)a9 callbackQueue:(id)a10 callbackHandler:(id)a11;
-- (id)initAndShowAuthenticationWithHeader:(id)a3 options:(id)a4 flags:(unint64_t)a5 callbackQueue:(id)a6 callbackHandler:(id)a7;
-- (id)initAndShowLocalNetworkAlertWithAppName:(id)a3 reasonString:(id)a4 extensionItem:(id)a5 callbackQueue:(id)a6 callbackHandler:(id)a7;
-- (uint64_t)postNotificationWithCallbackQueue:(void *)a3 callbackHandler:;
++ (void)cancelCurrentNotificationWithResponse:(unint64_t)response queue:(id)queue completionHandler:(id)handler;
++ (void)executeOnMainLoop:(uint64_t)loop;
++ (void)promptForLocalAuthenticationWithReason:(id)reason completionQueue:(id)queue completionHandler:(id)handler;
+- (id)initAndShowAddConfigurationsForApp:(id)app warningHeader:(const char *)header warning:(const char *)warning callbackQueue:(id)queue callbackHandler:(id)handler;
+- (id)initAndShowAlertWithHeader:(id)header message:(id)message alternateMessage:(id)alternateMessage defaultMessage:(id)defaultMessage noBoldDefault:(BOOL)default usePrivacyIcon:(BOOL)icon extensionItem:(id)item callbackQueue:(id)self0 callbackHandler:(id)self1;
+- (id)initAndShowAuthenticationWithHeader:(id)header options:(id)options flags:(unint64_t)flags callbackQueue:(id)queue callbackHandler:(id)handler;
+- (id)initAndShowLocalNetworkAlertWithAppName:(id)name reasonString:(id)string extensionItem:(id)item callbackQueue:(id)queue callbackHandler:(id)handler;
+- (uint64_t)postNotificationWithCallbackQueue:(void *)queue callbackHandler:;
 - (void)cancel;
 @end
 
 @implementation NEUserNotification
 
-- (id)initAndShowLocalNetworkAlertWithAppName:(id)a3 reasonString:(id)a4 extensionItem:(id)a5 callbackQueue:(id)a6 callbackHandler:(id)a7
+- (id)initAndShowLocalNetworkAlertWithAppName:(id)name reasonString:(id)string extensionItem:(id)item callbackQueue:(id)queue callbackHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
+  stringCopy = string;
+  itemCopy = item;
+  handlerCopy = handler;
+  queueCopy = queue;
+  nameCopy = name;
   v16 = NEResourcesCopyDeviceLocalizedNSString(@"APP_WANTS_LOCAL_NETWORK_HEADER", @"APP_WANTS_LOCAL_NETWORK_HEADER");
-  if (v11)
+  if (stringCopy)
   {
-    v17 = v11;
+    v17 = stringCopy;
   }
 
   else
@@ -34,26 +34,26 @@
 
   v18 = v17;
   v19 = _os_feature_enabled_impl();
-  if (v12 && v19)
+  if (itemCopy && v19)
   {
     v20 = NEResourcesCopyDeviceLocalizedNSString(@"APP_WANTS_LOCAL_NETWORK_DISCOVERED_DEVICES_MESSAGE", @"APP_WANTS_LOCAL_NETWORK_DISCOVERED_DEVICES_MESSAGE");
     if (v20)
     {
       v29 = v16;
-      v21 = [v12 userInfo];
-      if (v21)
+      userInfo = [itemCopy userInfo];
+      if (userInfo)
       {
-        v22 = [v12 userInfo];
-        v23 = [v22 mutableCopy];
+        userInfo2 = [itemCopy userInfo];
+        dictionary = [userInfo2 mutableCopy];
       }
 
       else
       {
-        v23 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      [v23 setObject:v20 forKey:@"message"];
-      [v12 setUserInfo:v23];
+      [dictionary setObject:v20 forKey:@"message"];
+      [itemCopy setUserInfo:dictionary];
 
       v16 = v29;
     }
@@ -61,24 +61,24 @@
 
   v24 = NEResourcesCopyDeviceLocalizedNSString(@"ALLOW_BUTTON", @"ALLOW_BUTTON");
   v25 = NEResourcesCopyDeviceLocalizedNSString(@"DONT_ALLOW_BUTTON", @"DONT_ALLOW_BUTTON");
-  v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v16, v15];
+  nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v16, nameCopy];
 
-  v27 = [(NEUserNotification *)self initAndShowAlertWithHeader:v26 message:v18 alternateMessage:v25 defaultMessage:v24 noBoldDefault:1 usePrivacyIcon:1 extensionItem:v12 callbackQueue:v14 callbackHandler:v13];
+  v27 = [(NEUserNotification *)self initAndShowAlertWithHeader:nameCopy message:v18 alternateMessage:v25 defaultMessage:v24 noBoldDefault:1 usePrivacyIcon:1 extensionItem:itemCopy callbackQueue:queueCopy callbackHandler:handlerCopy];
   return v27;
 }
 
-- (id)initAndShowAddConfigurationsForApp:(id)a3 warningHeader:(const char *)a4 warning:(const char *)a5 callbackQueue:(id)a6 callbackHandler:(id)a7
+- (id)initAndShowAddConfigurationsForApp:(id)app warningHeader:(const char *)header warning:(const char *)warning callbackQueue:(id)queue callbackHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a7;
-  v11 = a6;
-  v12 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
+  appCopy = app;
   objc_opt_self();
   if (!g_UIKitBundle)
   {
     v37 = 0;
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
-    v17 = [v16 fileExistsAtPath:@"/System/Library/PrivateFrameworks/UIKitCore.framework" isDirectory:&v37];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v17 = [defaultManager fileExistsAtPath:@"/System/Library/PrivateFrameworks/UIKitCore.framework" isDirectory:&v37];
     v18 = v37;
 
     if (v17)
@@ -109,31 +109,31 @@
     }
   }
 
-  v13 = [g_UIDeviceClass currentDevice];
-  v14 = v13;
-  if (v13)
+  currentDevice = [g_UIDeviceClass currentDevice];
+  v14 = currentDevice;
+  if (currentDevice)
   {
-    v15 = [v13 localizedModel];
+    localizedModel = [currentDevice localizedModel];
   }
 
   else
   {
-    v15 = @"Mac";
+    localizedModel = @"Mac";
   }
 
   v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a4];
+  v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:header];
   v24 = NEResourcesCopyLocalizedNSString(v23, v23);
-  v25 = [v22 initWithFormat:v24, v12];
+  appCopy = [v22 initWithFormat:v24, appCopy];
 
   v26 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a5];
+  v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:warning];
   v28 = NEResourcesCopyLocalizedNSString(v27, v27);
-  v29 = [v26 initWithFormat:v28, v15, v12];
+  appCopy2 = [v26 initWithFormat:v28, localizedModel, appCopy];
 
   v30 = NEResourcesCopyLocalizedNSString(@"DONT_ALLOW_BUTTON", @"DONT_ALLOW_BUTTON");
   v31 = NEResourcesCopyLocalizedNSString(@"ALLOW_BUTTON", @"ALLOW_BUTTON");
-  v32 = [(NEUserNotification *)self initAndShowAlertWithHeader:v25 message:v29 alternateMessage:v31 defaultMessage:v30 noBoldDefault:0 usePrivacyIcon:0 extensionItem:0 callbackQueue:v11 callbackHandler:v10];
+  v32 = [(NEUserNotification *)self initAndShowAlertWithHeader:appCopy message:appCopy2 alternateMessage:v31 defaultMessage:v30 noBoldDefault:0 usePrivacyIcon:0 extensionItem:0 callbackQueue:queueCopy callbackHandler:handlerCopy];
 
   v33 = *MEMORY[0x1E69E9840];
   return v32;
@@ -225,7 +225,7 @@ LABEL_18:
   os_unfair_lock_unlock(&g_currentNotificationLock);
 }
 
-+ (void)executeOnMainLoop:(uint64_t)a1
++ (void)executeOnMainLoop:(uint64_t)loop
 {
   v2 = a2;
   objc_opt_self();
@@ -246,13 +246,13 @@ LABEL_18:
   }
 }
 
-- (id)initAndShowAuthenticationWithHeader:(id)a3 options:(id)a4 flags:(unint64_t)a5 callbackQueue:(id)a6 callbackHandler:(id)a7
+- (id)initAndShowAuthenticationWithHeader:(id)header options:(id)options flags:(unint64_t)flags callbackQueue:(id)queue callbackHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  headerCopy = header;
+  optionsCopy = options;
+  queueCopy = queue;
+  handlerCopy = handler;
   v34.receiver = self;
   v34.super_class = NEUserNotification;
   v16 = [(NEUserNotification *)&v34 init];
@@ -269,9 +269,9 @@ LABEL_18:
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v33 = [g_currentNotifications firstObject];
+      firstObject = [g_currentNotifications firstObject];
       error = 138412290;
-      v36 = v33;
+      v36 = firstObject;
       _os_log_error_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_ERROR, "Already have outstanding notification %@, cannot show an additional one", &error, 0xCu);
     }
 
@@ -300,14 +300,14 @@ LABEL_18:
   os_unfair_lock_unlock(&g_currentNotificationLock);
   error = 0;
   objc_setProperty_atomic(v16, v23, 0, 16);
-  if (v13)
+  if (optionsCopy)
   {
     v25 = NEResourcesCopyLocalizedNSString(@"CANCEL_BUTTON", @"CANCEL_BUTTON");
     v26 = *MEMORY[0x1E695E480];
-    MutableCopy = CFDictionaryCreateMutableCopy(*MEMORY[0x1E695E480], 0, v13);
-    CFDictionarySetValue(MutableCopy, *MEMORY[0x1E695EE58], v12);
+    MutableCopy = CFDictionaryCreateMutableCopy(*MEMORY[0x1E695E480], 0, optionsCopy);
+    CFDictionarySetValue(MutableCopy, *MEMORY[0x1E695EE58], headerCopy);
     CFDictionarySetValue(MutableCopy, *MEMORY[0x1E695EE70], v25);
-    v29 = CFUserNotificationCreate(v26, 150.0, a5, &error, MutableCopy);
+    v29 = CFUserNotificationCreate(v26, 150.0, flags, &error, MutableCopy);
     if (MutableCopy)
     {
       CFRelease(MutableCopy);
@@ -326,7 +326,7 @@ LABEL_18:
     objc_setProperty_atomic(v16, v28, v29, 16);
   }
 
-  if (!objc_getProperty(v16, v24, 16, 1) || ([(NEUserNotification *)v16 postNotificationWithCallbackQueue:v14 callbackHandler:v15]& 1) == 0)
+  if (!objc_getProperty(v16, v24, 16, 1) || ([(NEUserNotification *)v16 postNotificationWithCallbackQueue:queueCopy callbackHandler:handlerCopy]& 1) == 0)
   {
 LABEL_21:
     [(NEUserNotification *)v16 cancel];
@@ -343,10 +343,10 @@ LABEL_23:
   return v30;
 }
 
-- (uint64_t)postNotificationWithCallbackQueue:(void *)a3 callbackHandler:
+- (uint64_t)postNotificationWithCallbackQueue:(void *)queue callbackHandler:
 {
   v5 = a2;
-  v6 = a3;
+  queueCopy = queue;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -355,8 +355,8 @@ LABEL_23:
   v13[1] = 3221225472;
   v13[2] = __72__NEUserNotification_postNotificationWithCallbackQueue_callbackHandler___block_invoke;
   v13[3] = &unk_1E7F0AAF0;
-  v13[4] = a1;
-  v7 = v6;
+  v13[4] = self;
+  v7 = queueCopy;
   v15 = v7;
   v8 = v5;
   v14 = v8;
@@ -492,24 +492,24 @@ LABEL_9:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initAndShowAlertWithHeader:(id)a3 message:(id)a4 alternateMessage:(id)a5 defaultMessage:(id)a6 noBoldDefault:(BOOL)a7 usePrivacyIcon:(BOOL)a8 extensionItem:(id)a9 callbackQueue:(id)a10 callbackHandler:(id)a11
+- (id)initAndShowAlertWithHeader:(id)header message:(id)message alternateMessage:(id)alternateMessage defaultMessage:(id)defaultMessage noBoldDefault:(BOOL)default usePrivacyIcon:(BOOL)icon extensionItem:(id)item callbackQueue:(id)self0 callbackHandler:(id)self1
 {
-  v11 = a7;
+  defaultCopy = default;
   v67 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
+  headerCopy = header;
+  messageCopy = message;
+  alternateMessageCopy = alternateMessage;
+  defaultMessageCopy = defaultMessage;
+  itemCopy = item;
+  queueCopy = queue;
+  handlerCopy = handler;
   v63.receiver = self;
   v63.super_class = NEUserNotification;
   v23 = [(NEUserNotification *)&v63 init];
   if (v23)
   {
-    v59 = v21;
-    value = v16;
+    v59 = queueCopy;
+    value = headerCopy;
     os_unfair_lock_lock(&g_currentNotificationLock);
     v24 = [g_currentNotifications count];
     v25 = ne_log_obj();
@@ -518,9 +518,9 @@ LABEL_9:
     {
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v55 = [g_currentNotifications firstObject];
+        firstObject = [g_currentNotifications firstObject];
         *buf = 138412290;
-        v66 = *&v55;
+        v66 = *&firstObject;
         _os_log_error_impl(&dword_1BA83C000, v26, OS_LOG_TYPE_ERROR, "Already have outstanding notification %@, cannot show an additional one", buf, 0xCu);
       }
 
@@ -555,34 +555,34 @@ LABEL_9:
     {
       v34 = Mutable;
       CFDictionarySetValue(Mutable, *MEMORY[0x1E695EE58], value);
-      if (v17)
+      if (messageCopy)
       {
-        CFDictionarySetValue(v34, *MEMORY[0x1E695EE60], v17);
+        CFDictionarySetValue(v34, *MEMORY[0x1E695EE60], messageCopy);
       }
 
-      if (v18)
+      if (alternateMessageCopy)
       {
-        CFDictionarySetValue(v34, *MEMORY[0x1E695EE70], v18);
+        CFDictionarySetValue(v34, *MEMORY[0x1E695EE70], alternateMessageCopy);
       }
 
-      if (v19)
+      if (defaultMessageCopy)
       {
         v35 = MEMORY[0x1E695EE98];
-        if (!v11)
+        if (!defaultCopy)
         {
           v35 = MEMORY[0x1E695EE78];
         }
 
-        CFDictionarySetValue(v34, *v35, v19);
+        CFDictionarySetValue(v34, *v35, defaultMessageCopy);
       }
 
-      v58 = v11;
-      if (v20)
+      v58 = defaultCopy;
+      if (itemCopy)
       {
         v57 = v31;
         CFDictionarySetValue(v34, @"SBUserNotificationExtensionIdentifier", @"com.apple.corelocation.CoreLocationMapLNPromptPlugin");
         v36 = MEMORY[0x1E696ACC8];
-        v64 = v20;
+        v64 = itemCopy;
         v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
         v61 = 0;
         v38 = [v36 archivedDataWithRootObject:v37 requiringSecureCoding:1 error:&v61];
@@ -673,16 +673,16 @@ LABEL_9:
     if (objc_getProperty(v23, v33, 16, 1))
     {
       v23->_isAlert = 1;
-      v21 = v59;
-      if (([(NEUserNotification *)v23 postNotificationWithCallbackQueue:v59 callbackHandler:v22]& 1) == 0)
+      queueCopy = v59;
+      if (([(NEUserNotification *)v23 postNotificationWithCallbackQueue:v59 callbackHandler:handlerCopy]& 1) == 0)
       {
         [(NEUserNotification *)v23 cancel];
         v52 = 0;
-        v16 = value;
+        headerCopy = value;
         goto LABEL_49;
       }
 
-      v16 = value;
+      headerCopy = value;
       goto LABEL_46;
     }
 
@@ -690,8 +690,8 @@ LABEL_47:
     [(NEUserNotification *)v23 cancel];
 LABEL_48:
     v52 = 0;
-    v21 = v59;
-    v16 = value;
+    queueCopy = v59;
+    headerCopy = value;
     goto LABEL_49;
   }
 
@@ -703,12 +703,12 @@ LABEL_49:
   return v52;
 }
 
-+ (void)promptForLocalAuthenticationWithReason:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
++ (void)promptForLocalAuthenticationWithReason:(id)reason completionQueue:(id)queue completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  queueCopy = queue;
+  handlerCopy = handler;
   v10 = +[NEUserNotification createLAContext];
   v11 = v10;
   if (v10)
@@ -722,9 +722,9 @@ LABEL_49:
       v20[1] = 3221225472;
       v20[2] = __95__NEUserNotification_promptForLocalAuthenticationWithReason_completionQueue_completionHandler___block_invoke_2;
       v20[3] = &unk_1E7F0AB68;
-      v21 = v8;
-      v22 = v9;
-      [v11 evaluatePolicy:2 localizedReason:v7 reply:v20];
+      v21 = queueCopy;
+      v22 = handlerCopy;
+      [v11 evaluatePolicy:2 localizedReason:reasonCopy reply:v20];
 
       v14 = v21;
     }
@@ -743,8 +743,8 @@ LABEL_49:
       v18[1] = 3221225472;
       v18[2] = __95__NEUserNotification_promptForLocalAuthenticationWithReason_completionQueue_completionHandler___block_invoke_49;
       v18[3] = &unk_1E7F0B600;
-      v19 = v9;
-      dispatch_async(v8, v18);
+      v19 = handlerCopy;
+      dispatch_async(queueCopy, v18);
       v14 = v19;
     }
   }
@@ -762,8 +762,8 @@ LABEL_49:
     block[1] = 3221225472;
     block[2] = __95__NEUserNotification_promptForLocalAuthenticationWithReason_completionQueue_completionHandler___block_invoke;
     block[3] = &unk_1E7F0B600;
-    v25 = v9;
-    dispatch_async(v8, block);
+    v25 = handlerCopy;
+    dispatch_async(queueCopy, block);
     v13 = v25;
   }
 
@@ -777,8 +777,8 @@ LABEL_49:
   if (!g_LABundle)
   {
     v9 = 0;
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [v3 fileExistsAtPath:@"/System/Library/Frameworks/LocalAuthentication.framework" isDirectory:&v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v4 = [defaultManager fileExistsAtPath:@"/System/Library/Frameworks/LocalAuthentication.framework" isDirectory:&v9];
     v5 = v9;
 
     if (v4)
@@ -861,19 +861,19 @@ void __95__NEUserNotification_promptForLocalAuthenticationWithReason_completionQ
   return v6;
 }
 
-+ (void)cancelCurrentNotificationWithResponse:(unint64_t)a3 queue:(id)a4 completionHandler:(id)a5
++ (void)cancelCurrentNotificationWithResponse:(unint64_t)response queue:(id)queue completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__NEUserNotification_cancelCurrentNotificationWithResponse_queue_completionHandler___block_invoke;
   v11[3] = &unk_1E7F0AB90;
-  v13 = v8;
-  v14 = a3;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  v13 = handlerCopy;
+  responseCopy = response;
+  v12 = queueCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
   [NEUserNotification executeOnMainLoop:v11];
 }
 

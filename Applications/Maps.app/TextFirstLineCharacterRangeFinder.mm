@@ -5,9 +5,9 @@
 - (NSTextContainer)textContainer;
 - (NSTextContentStorage)contentStorage;
 - (NSTextLayoutManager)layoutManager;
-- (id)attributedStringForLineFragment:(id)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setTextSize:(CGSize)a3;
+- (id)attributedStringForLineFragment:(id)fragment;
+- (void)setAttributedText:(id)text;
+- (void)setTextSize:(CGSize)size;
 @end
 
 @implementation TextFirstLineCharacterRangeFinder
@@ -23,8 +23,8 @@
 
     [(NSTextContainer *)self->_textContainer setLineFragmentPadding:0.0];
     v6 = self->_textContainer;
-    v7 = [(TextFirstLineCharacterRangeFinder *)self layoutManager];
-    [v7 setTextContainer:v6];
+    layoutManager = [(TextFirstLineCharacterRangeFinder *)self layoutManager];
+    [layoutManager setTextContainer:v6];
 
     textContainer = self->_textContainer;
   }
@@ -34,9 +34,9 @@
 
 - (NSArray)lineFragments
 {
-  v3 = [(TextFirstLineCharacterRangeFinder *)self contentStorage];
-  v4 = [(NSArray *)v3 attributedString];
-  if (v4)
+  contentStorage = [(TextFirstLineCharacterRangeFinder *)self contentStorage];
+  attributedString = [(NSArray *)contentStorage attributedString];
+  if (attributedString)
   {
     lineFragments = self->_lineFragments;
 
@@ -46,7 +46,7 @@
     }
 
     v6 = objc_opt_new();
-    v7 = [(TextFirstLineCharacterRangeFinder *)self layoutManager];
+    layoutManager = [(TextFirstLineCharacterRangeFinder *)self layoutManager];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100ACA97C;
@@ -54,11 +54,11 @@
     v13[4] = self;
     v8 = v6;
     v14 = v8;
-    v9 = [v7 enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v13];
+    v9 = [layoutManager enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v13];
 
     v10 = self->_lineFragments;
     self->_lineFragments = v8;
-    v3 = v8;
+    contentStorage = v8;
   }
 
 LABEL_5:
@@ -77,8 +77,8 @@ LABEL_5:
     self->_contentStorage = v4;
 
     v6 = self->_contentStorage;
-    v7 = [(TextFirstLineCharacterRangeFinder *)self layoutManager];
-    [(NSTextContentStorage *)v6 addTextLayoutManager:v7];
+    layoutManager = [(TextFirstLineCharacterRangeFinder *)self layoutManager];
+    [(NSTextContentStorage *)v6 addTextLayoutManager:layoutManager];
 
     contentStorage = self->_contentStorage;
   }
@@ -86,11 +86,11 @@ LABEL_5:
   return contentStorage;
 }
 
-- (id)attributedStringForLineFragment:(id)a3
+- (id)attributedStringForLineFragment:(id)fragment
 {
   contentStorage = self->_contentStorage;
-  v4 = [a3 textElement];
-  v5 = [(NSTextContentStorage *)contentStorage attributedStringForTextElement:v4];
+  textElement = [fragment textElement];
+  v5 = [(NSTextContentStorage *)contentStorage attributedStringForTextElement:textElement];
 
   return v5;
 }
@@ -110,37 +110,37 @@ LABEL_5:
   return layoutManager;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v9 = a3;
-  v4 = [(TextFirstLineCharacterRangeFinder *)self contentStorage];
-  v5 = [v4 attributedString];
-  v6 = [v5 isEqual:v9];
+  textCopy = text;
+  contentStorage = [(TextFirstLineCharacterRangeFinder *)self contentStorage];
+  attributedString = [contentStorage attributedString];
+  v6 = [attributedString isEqual:textCopy];
 
   if ((v6 & 1) == 0)
   {
     lineFragments = self->_lineFragments;
     self->_lineFragments = 0;
 
-    v8 = [(TextFirstLineCharacterRangeFinder *)self contentStorage];
-    [v8 setAttributedString:v9];
+    contentStorage2 = [(TextFirstLineCharacterRangeFinder *)self contentStorage];
+    [contentStorage2 setAttributedString:textCopy];
   }
 }
 
 - (NSAttributedString)attributedText
 {
-  v2 = [(TextFirstLineCharacterRangeFinder *)self contentStorage];
-  v3 = [v2 attributedString];
+  contentStorage = [(TextFirstLineCharacterRangeFinder *)self contentStorage];
+  attributedString = [contentStorage attributedString];
 
-  return v3;
+  return attributedString;
 }
 
-- (void)setTextSize:(CGSize)a3
+- (void)setTextSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TextFirstLineCharacterRangeFinder *)self textContainer];
-  [v6 size];
+  height = size.height;
+  width = size.width;
+  textContainer = [(TextFirstLineCharacterRangeFinder *)self textContainer];
+  [textContainer size];
   v8 = v7;
   v10 = v9;
 
@@ -149,15 +149,15 @@ LABEL_5:
     lineFragments = self->_lineFragments;
     self->_lineFragments = 0;
 
-    v13 = [(TextFirstLineCharacterRangeFinder *)self textContainer];
-    [v13 setSize:{width, height}];
+    textContainer2 = [(TextFirstLineCharacterRangeFinder *)self textContainer];
+    [textContainer2 setSize:{width, height}];
   }
 }
 
 - (CGSize)textSize
 {
-  v2 = [(TextFirstLineCharacterRangeFinder *)self textContainer];
-  [v2 size];
+  textContainer = [(TextFirstLineCharacterRangeFinder *)self textContainer];
+  [textContainer size];
   v4 = v3;
   v6 = v5;
 

@@ -1,8 +1,8 @@
 @interface KTLoggableDataArrayTransformer
 + (void)registerTransformer;
 - (id)allowedTopLevelClasses;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation KTLoggableDataArrayTransformer
@@ -22,11 +22,11 @@
   [NSValueTransformer setValueTransformer:v3 forName:v2];
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v8 = 0;
-  v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v8];
+  v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:valueCopy error:&v8];
 
   v5 = v8;
   if (v5)
@@ -48,10 +48,10 @@
   return v4;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v7 = 0;
-  v3 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v3 = [NSKeyedArchiver archivedDataWithRootObject:value requiringSecureCoding:1 error:&v7];
   v4 = v7;
   if (v4)
   {

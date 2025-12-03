@@ -1,15 +1,15 @@
 @interface CRLCollaboratorCursorHUDPosition
 - (CGPoint)position;
-- (CRLCollaboratorCursorHUDPosition)initWithPosition:(CGPoint)a3 direction:(unint64_t)a4;
+- (CRLCollaboratorCursorHUDPosition)initWithPosition:(CGPoint)position direction:(unint64_t)direction;
 - (id)description;
 @end
 
 @implementation CRLCollaboratorCursorHUDPosition
 
-- (CRLCollaboratorCursorHUDPosition)initWithPosition:(CGPoint)a3 direction:(unint64_t)a4
+- (CRLCollaboratorCursorHUDPosition)initWithPosition:(CGPoint)position direction:(unint64_t)direction
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v8.receiver = self;
   v8.super_class = CRLCollaboratorCursorHUDPosition;
   result = [(CRLCollaboratorCursorHUDPosition *)&v8 init];
@@ -17,7 +17,7 @@
   {
     result->mPosition.x = x;
     result->mPosition.y = y;
-    result->mDirection = a4;
+    result->mDirection = direction;
     result->mAllowedToFlip = 1;
   }
 

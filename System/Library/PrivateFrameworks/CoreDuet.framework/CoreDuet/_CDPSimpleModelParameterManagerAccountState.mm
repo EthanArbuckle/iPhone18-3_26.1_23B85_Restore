@@ -1,7 +1,7 @@
 @interface _CDPSimpleModelParameterManagerAccountState
 - (_CDPSimpleModelParameterManagerAccountState)init;
-- (_CDPSimpleModelParameterManagerAccountState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_CDPSimpleModelParameterManagerAccountState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDPSimpleModelParameterManagerAccountState
@@ -20,26 +20,26 @@
   previousBestTuningValue = v2->_previousBestTuningValue;
   v2->_previousBestTuningValue = v8;
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   tuningValues = v2->_tuningValues;
-  v2->_tuningValues = v10;
+  v2->_tuningValues = array;
 
   return v2;
 }
 
-- (_CDPSimpleModelParameterManagerAccountState)initWithCoder:(id)a3
+- (_CDPSimpleModelParameterManagerAccountState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_CDPSimpleModelParameterManagerAccountState *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousBestTuningValue"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousBestTuningValue"];
   previousBestTuningValue = v5->_previousBestTuningValue;
   v5->_previousBestTuningValue = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tuningValues"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tuningValues"];
   tuningValues = v5->_tuningValues;
   v5->_tuningValues = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastTuningState"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastTuningState"];
 
   lastTuningState = v5->_lastTuningState;
   v5->_lastTuningState = v10;
@@ -47,13 +47,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   previousBestTuningValue = self->_previousBestTuningValue;
-  v5 = a3;
-  [v5 encodeObject:previousBestTuningValue forKey:@"previousBestTuningValue"];
-  [v5 encodeObject:self->_tuningValues forKey:@"tuningValues"];
-  [v5 encodeObject:self->_lastTuningState forKey:@"lastTuningState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:previousBestTuningValue forKey:@"previousBestTuningValue"];
+  [coderCopy encodeObject:self->_tuningValues forKey:@"tuningValues"];
+  [coderCopy encodeObject:self->_lastTuningState forKey:@"lastTuningState"];
 }
 
 @end

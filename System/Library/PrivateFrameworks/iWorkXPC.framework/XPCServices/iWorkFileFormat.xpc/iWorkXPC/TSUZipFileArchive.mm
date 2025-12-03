@@ -1,44 +1,44 @@
 @interface TSUZipFileArchive
-+ (BOOL)isZipArchiveAtFD:(int)a3;
-+ (BOOL)isZipArchiveAtURL:(id)a3 error:(id *)a4;
-+ (BOOL)isZipSignatureAllZerosAtURL:(id)a3;
-+ (id)zipArchiveFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-+ (void)readArchiveFromURL:(id)a3 options:(unint64_t)a4 queue:(id)a5 completion:(id)a6;
-- (BOOL)copyToTemporaryLocationRelativeToURL:(id)a3 error:(id *)a4;
++ (BOOL)isZipArchiveAtFD:(int)d;
++ (BOOL)isZipArchiveAtURL:(id)l error:(id *)error;
++ (BOOL)isZipSignatureAllZerosAtURL:(id)l;
++ (id)zipArchiveFromURL:(id)l options:(unint64_t)options error:(id *)error;
++ (void)readArchiveFromURL:(id)l options:(unint64_t)options queue:(id)queue completion:(id)completion;
+- (BOOL)copyToTemporaryLocationRelativeToURL:(id)l error:(id *)error;
 - (BOOL)isValid;
-- (BOOL)openWithURL:(id)a3 error:(id *)a4;
-- (BOOL)reopenWithTemporaryURL:(id)a3 error:(id *)a4;
-- (TSUZipFileArchive)initWithWriter:(id)a3 forReadingFromURL:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (BOOL)openWithURL:(id)l error:(id *)error;
+- (BOOL)reopenWithTemporaryURL:(id)l error:(id *)error;
+- (TSUZipFileArchive)initWithWriter:(id)writer forReadingFromURL:(id)l options:(unint64_t)options error:(id *)error;
 - (id)debugDescription;
-- (id)initForReadingFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)initForReadingFromURL:(id)l options:(unint64_t)options error:(id *)error;
 - (id)newArchiveReadChannel;
 - (unint64_t)archiveLength;
-- (void)createTemporaryDirectoryRelativeToURL:(id)a3;
+- (void)createTemporaryDirectoryRelativeToURL:(id)l;
 - (void)dealloc;
 - (void)removeTemporaryDirectory;
 @end
 
 @implementation TSUZipFileArchive
 
-+ (BOOL)isZipArchiveAtURL:(id)a3 error:(id *)a4
++ (BOOL)isZipArchiveAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 path];
-  if (![v7 length])
+  lCopy = l;
+  path = [lCopy path];
+  if (![path length])
   {
     v11 = 0;
     goto LABEL_7;
   }
 
-  v8 = [v6 path];
-  v9 = open([v8 fileSystemRepresentation], 0, 0);
+  path2 = [lCopy path];
+  v9 = open([path2 fileSystemRepresentation], 0, 0);
 
   if ((v9 & 0x80000000) != 0)
   {
     v11 = [NSError tsu_fileReadPOSIXErrorWithNumber:*__error() userInfo:0];
 LABEL_7:
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -46,10 +46,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = [a1 isZipArchiveAtFD:v9];
+  v10 = [self isZipArchiveAtFD:v9];
   close(v9);
   v11 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -60,13 +60,13 @@ LABEL_8:
     if (v11)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
     {
       v13 = [NSError tsu_fileReadUnknownErrorWithUserInfo:0];
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -75,10 +75,10 @@ LABEL_12:
   return v10;
 }
 
-+ (BOOL)isZipSignatureAllZerosAtURL:(id)a3
++ (BOOL)isZipSignatureAllZerosAtURL:(id)l
 {
-  v3 = [a3 path];
-  v4 = open([v3 fileSystemRepresentation], 0, 0);
+  path = [l path];
+  v4 = open([path fileSystemRepresentation], 0, 0);
 
   if (v4 < 0)
   {
@@ -94,13 +94,13 @@ LABEL_12:
   return v10;
 }
 
-+ (BOOL)isZipArchiveAtFD:(int)a3
++ (BOOL)isZipArchiveAtFD:(int)d
 {
-  v4 = lseek(a3, 0, 1);
+  v4 = lseek(d, 0, 1);
   v5 = v4;
   if ((v4 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    if (lseek(a3, 0, 0) == -1)
+    if (lseek(d, 0, 0) == -1)
     {
       goto LABEL_12;
     }
@@ -111,32 +111,32 @@ LABEL_12:
   if (v4 != -1)
   {
 LABEL_5:
-    if (read(a3, &v9, 4uLL) == 4)
+    if (read(d, &v9, 4uLL) == 4)
     {
       v7 = v9 == 67324752 || v9 == 101010256;
-      return lseek(a3, v5, 0) != -1 && v7;
+      return lseek(d, v5, 0) != -1 && v7;
     }
 
 LABEL_12:
     v7 = 0;
-    return lseek(a3, v5, 0) != -1 && v7;
+    return lseek(d, v5, 0) != -1 && v7;
   }
 
   return 0;
 }
 
-+ (void)readArchiveFromURL:(id)a3 options:(unint64_t)a4 queue:(id)a5 completion:(id)a6
++ (void)readArchiveFromURL:(id)l options:(unint64_t)options queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  lCopy = l;
   v18 = 0;
-  v13 = [[a1 alloc] initForReadingFromURL:v12 options:a4 error:&v18];
+  v13 = [[self alloc] initForReadingFromURL:lCopy options:options error:&v18];
 
   v14 = v18;
   if (v13)
   {
-    [v13 readArchiveWithQueue:v11 completion:v10];
+    [v13 readArchiveWithQueue:queueCopy completion:completionCopy];
   }
 
   else
@@ -145,17 +145,17 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = sub_10007C7C0;
     block[3] = &unk_1001CC3D8;
-    v17 = v10;
+    v17 = completionCopy;
     v16 = v14;
-    dispatch_async(v11, block);
+    dispatch_async(queueCopy, block);
 
-    v11 = v17;
+    queueCopy = v17;
   }
 }
 
-+ (id)zipArchiveFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)zipArchiveFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -169,7 +169,7 @@ LABEL_12:
   v26 = sub_10007CAC0;
   v27 = 0;
   obj = 0;
-  v9 = [a1 isZipArchiveAtURL:v8 error:&obj];
+  v9 = [self isZipArchiveAtURL:lCopy error:&obj];
   objc_storeStrong(&v27, obj);
   if (v9)
   {
@@ -183,22 +183,22 @@ LABEL_12:
     v20 = &v22;
     v12 = v10;
     v18 = v12;
-    [a1 readArchiveFromURL:v8 options:a4 queue:v11 completion:v17];
+    [self readArchiveFromURL:lCopy options:options queue:v11 completion:v17];
     dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  if (a5 && !v29[5])
+  if (error && !v29[5])
   {
     v13 = v23[5];
     if (v13)
     {
-      *a5 = v13;
+      *error = v13;
     }
 
     else
     {
       v14 = [NSError tsu_fileReadUnknownErrorWithUserInfo:0];
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -210,10 +210,10 @@ LABEL_12:
   return v15;
 }
 
-- (id)initForReadingFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)initForReadingFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  if (([v8 isFileURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -235,7 +235,7 @@ LABEL_12:
 
   v16.receiver = self;
   v16.super_class = TSUZipFileArchive;
-  v11 = [(TSUZipArchive *)&v16 initWithOptions:a4];
+  v11 = [(TSUZipArchive *)&v16 initWithOptions:options];
   if (v11)
   {
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -243,7 +243,7 @@ LABEL_12:
     accessQueue = v11->_accessQueue;
     v11->_accessQueue = v13;
 
-    if (![(TSUZipFileArchive *)v11 openWithURL:v8 error:a5])
+    if (![(TSUZipFileArchive *)v11 openWithURL:lCopy error:error])
     {
 
       v11 = 0;
@@ -253,9 +253,9 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)openWithURL:(id)a3 error:(id *)a4
+- (BOOL)openWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   if (self->_fdWrapper)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -276,21 +276,21 @@ LABEL_12:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v9 = [v6 copy];
+  v9 = [lCopy copy];
   URL = self->_URL;
   self->_URL = v9;
 
-  [v6 removeCachedResourceValueForKey:NSURLFileSizeKey];
+  [lCopy removeCachedResourceValueForKey:NSURLFileSizeKey];
   v26 = 0;
   v27 = 0;
-  v11 = [v6 getResourceValue:&v27 forKey:NSURLFileSizeKey error:&v26];
+  v11 = [lCopy getResourceValue:&v27 forKey:NSURLFileSizeKey error:&v26];
   v12 = v27;
   v13 = v26;
   if (v11)
   {
     self->_archiveLength = [v12 unsignedLongLongValue];
-    v14 = [v6 path];
-    v15 = open([v14 fileSystemRepresentation], 0, 0);
+    path = [lCopy path];
+    v15 = open([path fileSystemRepresentation], 0, 0);
 
     if ((v15 & 0x80000000) != 0)
     {
@@ -322,7 +322,7 @@ LABEL_12:
         if ([objc_opt_class() isZipArchiveAtFD:v15])
         {
           v19 = 1;
-          if (!a4)
+          if (!error)
           {
             goto LABEL_31;
           }
@@ -346,7 +346,7 @@ LABEL_12:
 
     v19 = 0;
     v13 = v23;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_31;
     }
@@ -362,17 +362,17 @@ LABEL_12:
   v20 = TSUDefaultCat_log_t;
   if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_ERROR))
   {
-    sub_10015A3BC(v6, v20, v13);
+    sub_10015A3BC(lCopy, v20, v13);
   }
 
   v19 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_29:
     if (v13)
     {
       v24 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -381,16 +381,16 @@ LABEL_31:
   return v19;
 }
 
-- (TSUZipFileArchive)initWithWriter:(id)a3 forReadingFromURL:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (TSUZipFileArchive)initWithWriter:(id)writer forReadingFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(TSUZipFileArchive *)self initForReadingFromURL:v11 options:a5 error:a6];
+  writerCopy = writer;
+  lCopy = l;
+  v12 = [(TSUZipFileArchive *)self initForReadingFromURL:lCopy options:options error:error];
   if (v12)
   {
     v13 = v12;
     archiveLength = v12->_archiveLength;
-    if (archiveLength == [v10 archiveLength])
+    if (archiveLength == [writerCopy archiveLength])
     {
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
@@ -398,7 +398,7 @@ LABEL_31:
       v25[3] = &unk_1001CC4A8;
       v15 = v13;
       v26 = v15;
-      [v10 enumerateEntriesUsingBlock:v25];
+      [writerCopy enumerateEntriesUsingBlock:v25];
       v13 = v26;
     }
 
@@ -414,7 +414,7 @@ LABEL_31:
       if (os_log_type_enabled(TSUAssertCat_log_t, OS_LOG_TYPE_ERROR))
       {
         v22 = v17;
-        v23 = [v11 path];
+        path = [lCopy path];
         v24 = v13->_archiveLength;
         *buf = 67110658;
         v28 = v16;
@@ -425,18 +425,18 @@ LABEL_31:
         v33 = 1024;
         v34 = 253;
         v35 = 2112;
-        v36 = v23;
+        v36 = path;
         v37 = 2048;
         v38 = v24;
         v39 = 2048;
-        v40 = [v10 archiveLength];
+        archiveLength = [writerCopy archiveLength];
         _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Length of archive at %@ doesn't match archive length of writer. %llu != %llu", buf, 0x40u);
       }
 
       v18 = [NSString stringWithUTF8String:"[TSUZipFileArchive initWithWriter:forReadingFromURL:options:error:]"];
       v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/utility/TSUZipFileArchive.m"];
-      v20 = [v11 path];
-      +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v18, v19, 253, 0, "Length of archive at %@ doesn't match archive length of writer. %llu != %llu", v20, v13->_archiveLength, [v10 archiveLength]);
+      path2 = [lCopy path];
+      +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v18, v19, 253, 0, "Length of archive at %@ doesn't match archive length of writer. %llu != %llu", path2, v13->_archiveLength, [writerCopy archiveLength]);
 
       +[TSUAssertionHandler logBacktraceThrottled];
       v15 = 0;
@@ -463,13 +463,13 @@ LABEL_31:
   [(TSUZipFileArchive *)&v4 dealloc];
 }
 
-- (void)createTemporaryDirectoryRelativeToURL:(id)a3
+- (void)createTemporaryDirectoryRelativeToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (!self->_temporaryDirectoryURL)
   {
-    v11 = v4;
-    if (!v4)
+    v11 = lCopy;
+    if (!lCopy)
     {
       goto LABEL_4;
     }
@@ -479,7 +479,7 @@ LABEL_31:
     temporaryDirectoryURL = self->_temporaryDirectoryURL;
     self->_temporaryDirectoryURL = v6;
 
-    v4 = v11;
+    lCopy = v11;
     if (!self->_temporaryDirectoryURL)
     {
 LABEL_4:
@@ -489,7 +489,7 @@ LABEL_4:
       v10 = self->_temporaryDirectoryURL;
       self->_temporaryDirectoryURL = v9;
 
-      v4 = v11;
+      lCopy = v11;
     }
   }
 }
@@ -523,7 +523,7 @@ LABEL_4:
   }
 }
 
-- (BOOL)reopenWithTemporaryURL:(id)a3 error:(id *)a4
+- (BOOL)reopenWithTemporaryURL:(id)l error:(id *)error
 {
   archiveLength = self->_archiveLength;
   fdWrapper = self->_fdWrapper;
@@ -531,9 +531,9 @@ LABEL_4:
   self->_archiveLength = 0;
   v10 = self->_fdWrapper;
   self->_fdWrapper = 0;
-  v11 = a3;
+  lCopy = l;
 
-  v12 = [(TSUZipFileArchive *)self openWithURL:v11 error:a4];
+  v12 = [(TSUZipFileArchive *)self openWithURL:lCopy error:error];
   if (!v12)
   {
     self->_archiveLength = archiveLength;
@@ -543,9 +543,9 @@ LABEL_4:
   return v12;
 }
 
-- (BOOL)copyToTemporaryLocationRelativeToURL:(id)a3 error:(id *)a4
+- (BOOL)copyToTemporaryLocationRelativeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -561,24 +561,24 @@ LABEL_4:
   v14 = 3221225472;
   v15 = sub_10007D978;
   v16 = &unk_1001CC5C0;
-  v17 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = lCopy;
   v18 = v8;
   v19 = &v21;
   v20 = &v27;
   dispatch_sync(accessQueue, &v13);
-  if (a4 && (v28[3] & 1) == 0)
+  if (error && (v28[3] & 1) == 0)
   {
     v9 = v22[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     else
     {
-      v10 = [NSError tsu_fileReadUnknownErrorWithUserInfo:0, v13, v14, v15, v16, v17];
-      *a4 = v10;
+      selfCopy = [NSError tsu_fileReadUnknownErrorWithUserInfo:0, v13, v14, v15, v16, selfCopy];
+      *error = selfCopy;
     }
   }
 
@@ -661,9 +661,9 @@ LABEL_4:
   v5 = [(TSUZipArchive *)&v8 debugDescription];
   [v3 addFieldValue:v5];
 
-  v6 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v6;
+  return descriptionString;
 }
 
 @end

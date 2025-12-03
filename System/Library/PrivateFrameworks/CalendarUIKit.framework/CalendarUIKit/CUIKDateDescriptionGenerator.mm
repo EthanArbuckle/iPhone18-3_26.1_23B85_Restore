@@ -1,28 +1,28 @@
 @interface CUIKDateDescriptionGenerator
-+ (id)_dateAfterTodayNextWeekFormatStringForDayOfWeek:(int64_t)a3 generateLowercaseString:(BOOL)a4;
-+ (id)_dateAfterTodayThisWeekFormatStringForDayOfWeek:(int64_t)a3 generateLowercaseString:(BOOL)a4;
-+ (id)_dateBeforeTodayLastWeekFormatStringForDayOfWeek:(int64_t)a3 generateLowercaseString:(BOOL)a4;
-+ (id)_dateBeforeTodayThisWeekFormatStringForDayOfWeek:(int64_t)a3 generateLowercaseString:(BOOL)a4;
++ (id)_dateAfterTodayNextWeekFormatStringForDayOfWeek:(int64_t)week generateLowercaseString:(BOOL)string;
++ (id)_dateAfterTodayThisWeekFormatStringForDayOfWeek:(int64_t)week generateLowercaseString:(BOOL)string;
++ (id)_dateBeforeTodayLastWeekFormatStringForDayOfWeek:(int64_t)week generateLowercaseString:(BOOL)string;
++ (id)_dateBeforeTodayThisWeekFormatStringForDayOfWeek:(int64_t)week generateLowercaseString:(BOOL)string;
 + (id)sharedGenerator;
 - (CUIKDateDescriptionGenerator)init;
 - (id)_customFormatter;
-- (id)_dateFormatterWithLongFormat:(id)a3;
-- (id)_stringForDate:(id)a3 relativeToReferenceDate:(id)a4 withLongFormatString:(id)a5 useAbbreviatedFormats:(BOOL)a6 lowerCase:(BOOL)a7;
-- (id)_stringForDateTime:(id)a3 timeZone:(__CFTimeZone *)a4;
-- (id)_stringForTime:(id)a3;
-- (id)_timeStringForDate:(id)a3;
+- (id)_dateFormatterWithLongFormat:(id)format;
+- (id)_stringForDate:(id)date relativeToReferenceDate:(id)referenceDate withLongFormatString:(id)string useAbbreviatedFormats:(BOOL)formats lowerCase:(BOOL)case;
+- (id)_stringForDateTime:(id)time timeZone:(__CFTimeZone *)zone;
+- (id)_stringForTime:(id)time;
+- (id)_timeStringForDate:(id)date;
 - (id)abbreviatedDayFormatter;
-- (id)dateStringForDate:(id)a3 allDay:(BOOL)a4 standalone:(BOOL)a5 shortFormat:(BOOL)a6;
-- (id)dateStringForDate:(id)a3 relativeToReferenceDate:(id)a4 allDay:(BOOL)a5 standalone:(BOOL)a6 shortFormat:(BOOL)a7;
-- (id)dateStringForEventInvitationWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 allDay:(BOOL)a6 withFormat:(unint64_t)a7 showTimeZone:(BOOL)a8;
+- (id)dateStringForDate:(id)date allDay:(BOOL)day standalone:(BOOL)standalone shortFormat:(BOOL)format;
+- (id)dateStringForDate:(id)date relativeToReferenceDate:(id)referenceDate allDay:(BOOL)day standalone:(BOOL)standalone shortFormat:(BOOL)format;
+- (id)dateStringForEventInvitationWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone allDay:(BOOL)day withFormat:(unint64_t)format showTimeZone:(BOOL)timeZone;
 - (id)dayFormatter;
 - (id)dayOfWeekFormatter;
-- (id)formatterForLongFormat:(id)a3;
+- (id)formatterForLongFormat:(id)format;
 - (id)fullStyleDateFormatter;
 - (id)standardTimeFormatter;
-- (id)stringForDate:(id)a3 withLongFormatString:(id)a4 useAbbreviatedFormats:(BOOL)a5 lowerCase:(BOOL)a6;
+- (id)stringForDate:(id)date withLongFormatString:(id)string useAbbreviatedFormats:(BOOL)formats lowerCase:(BOOL)case;
 - (id)timeFormatter;
-- (id)timeStringForDate:(id)a3 inTimeZone:(id)a4;
+- (id)timeStringForDate:(id)date inTimeZone:(id)zone;
 - (void)_initializeFormatters;
 @end
 
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __47__CUIKDateDescriptionGenerator_sharedGenerator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedGenerator_onceToken_0 != -1)
   {
     dispatch_once(&sharedGenerator_onceToken_0, block);
@@ -396,25 +396,25 @@ uint64_t __50__CUIKDateDescriptionGenerator_dayOfWeekFormatter__block_invoke(uin
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)_dateFormatterWithLongFormat:(id)a3
+- (id)_dateFormatterWithLongFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v4 setLocale:v5];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v4 setLocale:autoupdatingCurrentLocale];
 
   v6 = MEMORY[0x1E696AB78];
-  v7 = [v4 locale];
-  v8 = [v6 dateFormatFromTemplate:v3 options:0 locale:v7];
+  locale = [v4 locale];
+  v8 = [v6 dateFormatFromTemplate:formatCopy options:0 locale:locale];
 
   [v4 setDateFormat:v8];
 
   return v4;
 }
 
-- (id)formatterForLongFormat:(id)a3
+- (id)formatterForLongFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -426,10 +426,10 @@ uint64_t __50__CUIKDateDescriptionGenerator_dayOfWeekFormatter__block_invoke(uin
   block[1] = 3221225472;
   block[2] = __55__CUIKDateDescriptionGenerator_formatterForLongFormat___block_invoke;
   block[3] = &unk_1E839A710;
-  v10 = v4;
+  v10 = formatCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = formatCopy;
   dispatch_sync(serialFormatterEditQueue, block);
   v7 = v13[5];
 
@@ -460,39 +460,39 @@ void __55__CUIKDateDescriptionGenerator_formatterForLongFormat___block_invoke(ui
   }
 }
 
-- (id)stringForDate:(id)a3 withLongFormatString:(id)a4 useAbbreviatedFormats:(BOOL)a5 lowerCase:(BOOL)a6
+- (id)stringForDate:(id)date withLongFormatString:(id)string useAbbreviatedFormats:(BOOL)formats lowerCase:(BOOL)case
 {
-  v6 = a6;
-  v7 = a5;
+  caseCopy = case;
+  formatsCopy = formats;
   v10 = MEMORY[0x1E695DF00];
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 date];
-  v14 = [(CUIKDateDescriptionGenerator *)self _stringForDate:v12 relativeToReferenceDate:v13 withLongFormatString:v11 useAbbreviatedFormats:v7 lowerCase:v6];
+  stringCopy = string;
+  dateCopy = date;
+  date = [v10 date];
+  v14 = [(CUIKDateDescriptionGenerator *)self _stringForDate:dateCopy relativeToReferenceDate:date withLongFormatString:stringCopy useAbbreviatedFormats:formatsCopy lowerCase:caseCopy];
 
   return v14;
 }
 
-- (id)_stringForDate:(id)a3 relativeToReferenceDate:(id)a4 withLongFormatString:(id)a5 useAbbreviatedFormats:(BOOL)a6 lowerCase:(BOOL)a7
+- (id)_stringForDate:(id)date relativeToReferenceDate:(id)referenceDate withLongFormatString:(id)string useAbbreviatedFormats:(BOOL)formats lowerCase:(BOOL)case
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a4;
-  v42 = a5;
-  v13 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-  v14 = [MEMORY[0x1E695DEE8] CalGregorianCalendarForTimeZone:v13];
-  v15 = [MEMORY[0x1E695DF58] currentLocale];
-  [v14 setLocale:v15];
+  caseCopy = case;
+  dateCopy = date;
+  referenceDateCopy = referenceDate;
+  stringCopy = string;
+  defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  v14 = [MEMORY[0x1E695DEE8] CalGregorianCalendarForTimeZone:defaultTimeZone];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [v14 setLocale:currentLocale];
 
-  v16 = [v14 isDate:v11 inSameDayAsDate:v12];
-  v17 = [v12 dateByAddingDays:-1 inCalendar:v14];
-  v18 = [v14 isDate:v11 inSameDayAsDate:v17];
-  v19 = [v12 dateByAddingDays:1 inCalendar:v14];
-  v20 = [v14 isDate:v11 inSameDayAsDate:v19];
+  v16 = [v14 isDate:dateCopy inSameDayAsDate:referenceDateCopy];
+  v17 = [referenceDateCopy dateByAddingDays:-1 inCalendar:v14];
+  v18 = [v14 isDate:dateCopy inSameDayAsDate:v17];
+  v19 = [referenceDateCopy dateByAddingDays:1 inCalendar:v14];
+  v20 = [v14 isDate:dateCopy inSameDayAsDate:v19];
   if (v16)
   {
     v21 = CUIKBundle();
-    if (v7)
+    if (caseCopy)
     {
       v22 = @"today";
     }
@@ -504,14 +504,14 @@ void __55__CUIKDateDescriptionGenerator_formatterForLongFormat___block_invoke(ui
 
 LABEL_19:
     v26 = [v21 localizedStringForKey:v22 value:&stru_1F4AA8958 table:0];
-    v27 = v42;
+    v27 = stringCopy;
     goto LABEL_20;
   }
 
   if (v18)
   {
     v21 = CUIKBundle();
-    if (v7)
+    if (caseCopy)
     {
       v22 = @"yesterday";
     }
@@ -527,7 +527,7 @@ LABEL_19:
   if (v20)
   {
     v21 = CUIKBundle();
-    if (v7)
+    if (caseCopy)
     {
       v22 = @"tomorrow";
     }
@@ -540,8 +540,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v23 = [v11 CalIsAfterDate:v12];
-  v21 = [v14 components:240 fromDate:v11 toDate:v12 options:0];
+  v23 = [dateCopy CalIsAfterDate:referenceDateCopy];
+  v21 = [v14 components:240 fromDate:dateCopy toDate:referenceDateCopy options:0];
   v24 = [v21 day];
   if (v24 >= 0)
   {
@@ -555,10 +555,10 @@ LABEL_19:
 
   if (v25 > 6)
   {
-    v27 = v42;
-    if (v42)
+    v27 = stringCopy;
+    if (stringCopy)
     {
-      [(CUIKDateDescriptionGenerator *)self formatterForLongFormat:v42];
+      [(CUIKDateDescriptionGenerator *)self formatterForLongFormat:stringCopy];
     }
 
     else
@@ -567,9 +567,9 @@ LABEL_19:
     }
     v29 = ;
     v33 = v29;
-    if (v11)
+    if (dateCopy)
     {
-      v26 = [v29 stringFromDate:v11];
+      v26 = [v29 stringFromDate:dateCopy];
     }
 
     else
@@ -580,7 +580,7 @@ LABEL_19:
 
   else
   {
-    if (a6)
+    if (formats)
     {
       [(CUIKDateDescriptionGenerator *)self abbreviatedDayFormatter];
     }
@@ -590,36 +590,36 @@ LABEL_19:
       [(CUIKDateDescriptionGenerator *)self dayFormatter];
     }
     v40 = ;
-    v39 = [v40 stringFromDate:v11];
-    v38 = [v14 component:512 fromDate:v11];
-    v37 = [v14 component:0x2000 fromDate:v11];
-    v30 = [v14 component:0x2000 fromDate:v12];
+    v39 = [v40 stringFromDate:dateCopy];
+    v38 = [v14 component:512 fromDate:dateCopy];
+    v37 = [v14 component:0x2000 fromDate:dateCopy];
+    v30 = [v14 component:0x2000 fromDate:referenceDateCopy];
     v31 = objc_opt_class();
     if (v23)
     {
       if (v37 <= v30)
       {
-        [v31 _dateAfterTodayThisWeekFormatStringForDayOfWeek:v38 generateLowercaseString:v7];
+        [v31 _dateAfterTodayThisWeekFormatStringForDayOfWeek:v38 generateLowercaseString:caseCopy];
       }
 
       else
       {
-        [v31 _dateAfterTodayNextWeekFormatStringForDayOfWeek:v38 generateLowercaseString:v7];
+        [v31 _dateAfterTodayNextWeekFormatStringForDayOfWeek:v38 generateLowercaseString:caseCopy];
       }
     }
 
     else if (v37 >= v30)
     {
-      [v31 _dateBeforeTodayThisWeekFormatStringForDayOfWeek:v38 generateLowercaseString:v7];
+      [v31 _dateBeforeTodayThisWeekFormatStringForDayOfWeek:v38 generateLowercaseString:caseCopy];
     }
 
     else
     {
-      [v31 _dateBeforeTodayLastWeekFormatStringForDayOfWeek:v38 generateLowercaseString:v7];
+      [v31 _dateBeforeTodayLastWeekFormatStringForDayOfWeek:v38 generateLowercaseString:caseCopy];
     }
     v32 = ;
     v34 = v32;
-    v27 = v42;
+    v27 = stringCopy;
     v26 = &stru_1F4AA8958;
     if (v32 && v39)
     {
@@ -637,16 +637,16 @@ LABEL_20:
   return v26;
 }
 
-+ (id)_dateAfterTodayNextWeekFormatStringForDayOfWeek:(int64_t)a3 generateLowercaseString:(BOOL)a4
++ (id)_dateAfterTodayNextWeekFormatStringForDayOfWeek:(int64_t)week generateLowercaseString:(BOOL)string
 {
-  v4 = a4;
-  if (a3 <= 3)
+  stringCopy = string;
+  if (week <= 3)
   {
-    switch(a3)
+    switch(week)
     {
       case 1:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in next week ('next Thursday').  Format for #1 day of the week.";
           goto LABEL_26;
@@ -656,7 +656,7 @@ LABEL_20:
         goto LABEL_34;
       case 2:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in next week ('next Thursday').  Format for #2 day of the week..";
           goto LABEL_26;
@@ -666,7 +666,7 @@ LABEL_20:
         goto LABEL_34;
       case 3:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in next week ('next Thursday').  Format for #3 day of the week..";
           goto LABEL_26;
@@ -681,12 +681,12 @@ LABEL_34:
 
   else
   {
-    if (a3 <= 5)
+    if (week <= 5)
     {
-      if (a3 == 4)
+      if (week == 4)
       {
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in next week ('next Thursday').  Format for #4 day of the week..";
           goto LABEL_26;
@@ -698,7 +698,7 @@ LABEL_34:
       else
       {
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in next week ('next Thursday').  Format for #5 day of the week..";
 LABEL_26:
@@ -715,10 +715,10 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    if (a3 == 6)
+    if (week == 6)
     {
       v5 = CUIKBundle();
-      if (v4)
+      if (stringCopy)
       {
         v6 = @"Date after today, but in next week ('next Thursday').  Format for #6 day of the week..";
         goto LABEL_26;
@@ -728,10 +728,10 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    if (a3 == 7)
+    if (week == 7)
     {
       v5 = CUIKBundle();
-      if (v4)
+      if (stringCopy)
       {
         v6 = @"Date after today, but in next week ('next Thursday').  Format for #7 day of the week..";
         goto LABEL_26;
@@ -754,16 +754,16 @@ LABEL_36:
   return v8;
 }
 
-+ (id)_dateAfterTodayThisWeekFormatStringForDayOfWeek:(int64_t)a3 generateLowercaseString:(BOOL)a4
++ (id)_dateAfterTodayThisWeekFormatStringForDayOfWeek:(int64_t)week generateLowercaseString:(BOOL)string
 {
-  v4 = a4;
-  if (a3 <= 3)
+  stringCopy = string;
+  if (week <= 3)
   {
-    switch(a3)
+    switch(week)
     {
       case 1:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in this week ('this Friday').  Format 1.";
           goto LABEL_26;
@@ -773,7 +773,7 @@ LABEL_36:
         goto LABEL_34;
       case 2:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in this week ('this Friday').  Format 2.";
           goto LABEL_26;
@@ -783,7 +783,7 @@ LABEL_36:
         goto LABEL_34;
       case 3:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in this week ('this Friday').  Format 3.";
           goto LABEL_26;
@@ -798,12 +798,12 @@ LABEL_34:
 
   else
   {
-    if (a3 <= 5)
+    if (week <= 5)
     {
-      if (a3 == 4)
+      if (week == 4)
       {
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in this week ('this Friday').  Format 4.";
           goto LABEL_26;
@@ -815,7 +815,7 @@ LABEL_34:
       else
       {
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date after today, but in this week ('this Friday').  Format 5.";
 LABEL_26:
@@ -832,10 +832,10 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    if (a3 == 6)
+    if (week == 6)
     {
       v5 = CUIKBundle();
-      if (v4)
+      if (stringCopy)
       {
         v6 = @"Date after today, but in this week ('this Friday').  Format 6.";
         goto LABEL_26;
@@ -845,10 +845,10 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    if (a3 == 7)
+    if (week == 7)
     {
       v5 = CUIKBundle();
-      if (v4)
+      if (stringCopy)
       {
         v6 = @"Date after today, but in this week ('this Friday').  Format 7.";
         goto LABEL_26;
@@ -871,16 +871,16 @@ LABEL_36:
   return v8;
 }
 
-+ (id)_dateBeforeTodayThisWeekFormatStringForDayOfWeek:(int64_t)a3 generateLowercaseString:(BOOL)a4
++ (id)_dateBeforeTodayThisWeekFormatStringForDayOfWeek:(int64_t)week generateLowercaseString:(BOOL)string
 {
-  v4 = a4;
-  if (a3 <= 3)
+  stringCopy = string;
+  if (week <= 3)
   {
-    switch(a3)
+    switch(week)
     {
       case 1:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Prior day to today, but in this week ('this past Monday').  Format 1.";
           goto LABEL_26;
@@ -890,7 +890,7 @@ LABEL_36:
         goto LABEL_34;
       case 2:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Prior day to today, but in this week ('this past Monday').  Format 2.";
           goto LABEL_26;
@@ -900,7 +900,7 @@ LABEL_36:
         goto LABEL_34;
       case 3:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Prior day to today, but in this week ('this past Monday').  Format 3.";
           goto LABEL_26;
@@ -915,12 +915,12 @@ LABEL_34:
 
   else
   {
-    if (a3 <= 5)
+    if (week <= 5)
     {
-      if (a3 == 4)
+      if (week == 4)
       {
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Prior day to today, but in this week ('this past Monday').  Format 4.";
           goto LABEL_26;
@@ -932,7 +932,7 @@ LABEL_34:
       else
       {
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Prior day to today, but in this week ('this past Monday').  Format 5.";
 LABEL_26:
@@ -949,10 +949,10 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    if (a3 == 6)
+    if (week == 6)
     {
       v5 = CUIKBundle();
-      if (v4)
+      if (stringCopy)
       {
         v6 = @"Prior day to today, but in this week ('this past Monday').  Format 6.";
         goto LABEL_26;
@@ -962,10 +962,10 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    if (a3 == 7)
+    if (week == 7)
     {
       v5 = CUIKBundle();
-      if (v4)
+      if (stringCopy)
       {
         v6 = @"Prior day to today, but in this week ('this past Monday').  Format 7.";
         goto LABEL_26;
@@ -988,16 +988,16 @@ LABEL_36:
   return v8;
 }
 
-+ (id)_dateBeforeTodayLastWeekFormatStringForDayOfWeek:(int64_t)a3 generateLowercaseString:(BOOL)a4
++ (id)_dateBeforeTodayLastWeekFormatStringForDayOfWeek:(int64_t)week generateLowercaseString:(BOOL)string
 {
-  v4 = a4;
-  if (a3 <= 3)
+  stringCopy = string;
+  if (week <= 3)
   {
-    switch(a3)
+    switch(week)
     {
       case 1:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date prior to day, but in previous week ('last Monday').  Format 1.";
           goto LABEL_26;
@@ -1007,7 +1007,7 @@ LABEL_36:
         goto LABEL_34;
       case 2:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date prior to day, but in previous week ('last Monday').  Format 2.";
           goto LABEL_26;
@@ -1017,7 +1017,7 @@ LABEL_36:
         goto LABEL_34;
       case 3:
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date prior to day, but in previous week ('last Monday').  Format 3.";
           goto LABEL_26;
@@ -1032,12 +1032,12 @@ LABEL_34:
 
   else
   {
-    if (a3 <= 5)
+    if (week <= 5)
     {
-      if (a3 == 4)
+      if (week == 4)
       {
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date prior to day, but in previous week ('last Monday').  Format 4.";
           goto LABEL_26;
@@ -1049,7 +1049,7 @@ LABEL_34:
       else
       {
         v5 = CUIKBundle();
-        if (v4)
+        if (stringCopy)
         {
           v6 = @"Date prior to day, but in previous week ('last Monday').  Format 5.";
 LABEL_26:
@@ -1066,10 +1066,10 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    if (a3 == 6)
+    if (week == 6)
     {
       v5 = CUIKBundle();
-      if (v4)
+      if (stringCopy)
       {
         v6 = @"Date prior to day, but in previous week ('last Monday').  Format 6.";
         goto LABEL_26;
@@ -1079,10 +1079,10 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    if (a3 == 7)
+    if (week == 7)
     {
       v5 = CUIKBundle();
-      if (v4)
+      if (stringCopy)
       {
         v6 = @"Date prior to day, but in previous week ('last Monday').  Format 7.";
         goto LABEL_26;
@@ -1105,72 +1105,72 @@ LABEL_36:
   return v8;
 }
 
-- (id)_timeStringForDate:(id)a3
+- (id)_timeStringForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CUIKDateDescriptionGenerator *)self timeFormatter];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  timeFormatter = [(CUIKDateDescriptionGenerator *)self timeFormatter];
+  v6 = [timeFormatter stringFromDate:dateCopy];
 
   return v6;
 }
 
-- (id)timeStringForDate:(id)a3 inTimeZone:(id)a4
+- (id)timeStringForDate:(id)date inTimeZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CUIKDateDescriptionGenerator *)self _timeStringForDate:v7];
+  zoneCopy = zone;
+  dateCopy = date;
+  v8 = [(CUIKDateDescriptionGenerator *)self _timeStringForDate:dateCopy];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [v6 abbreviationForDate:v7];
+  v10 = [zoneCopy abbreviationForDate:dateCopy];
 
   v11 = [v9 localizedStringWithFormat:@"%@ %@", v8, v10];
 
   return v11;
 }
 
-- (id)dateStringForDate:(id)a3 allDay:(BOOL)a4 standalone:(BOOL)a5 shortFormat:(BOOL)a6
+- (id)dateStringForDate:(id)date allDay:(BOOL)day standalone:(BOOL)standalone shortFormat:(BOOL)format
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  formatCopy = format;
+  standaloneCopy = standalone;
+  dayCopy = day;
   v10 = MEMORY[0x1E695DF00];
-  v11 = a3;
-  v12 = [v10 date];
-  v13 = [(CUIKDateDescriptionGenerator *)self dateStringForDate:v11 relativeToReferenceDate:v12 allDay:v8 standalone:v7 shortFormat:v6];
+  dateCopy = date;
+  date = [v10 date];
+  v13 = [(CUIKDateDescriptionGenerator *)self dateStringForDate:dateCopy relativeToReferenceDate:date allDay:dayCopy standalone:standaloneCopy shortFormat:formatCopy];
 
   return v13;
 }
 
-- (id)dateStringForDate:(id)a3 relativeToReferenceDate:(id)a4 allDay:(BOOL)a5 standalone:(BOOL)a6 shortFormat:(BOOL)a7
+- (id)dateStringForDate:(id)date relativeToReferenceDate:(id)referenceDate allDay:(BOOL)day standalone:(BOOL)standalone shortFormat:(BOOL)format
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  if (v9)
+  formatCopy = format;
+  standaloneCopy = standalone;
+  dayCopy = day;
+  dateCopy = date;
+  referenceDateCopy = referenceDate;
+  if (dayCopy)
   {
-    v14 = [(CUIKDateDescriptionGenerator *)self _dateStringForDate:v12 relativeToReferenceDate:v13 allDay:1 shortFormat:v7 lowercase:!v8];
+    v14 = [(CUIKDateDescriptionGenerator *)self _dateStringForDate:dateCopy relativeToReferenceDate:referenceDateCopy allDay:1 shortFormat:formatCopy lowercase:!standaloneCopy];
   }
 
   else
   {
-    if (v7)
+    if (formatCopy)
     {
-      v15 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v16 = [v15 components:28 fromDate:v12];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v16 = [currentCalendar components:28 fromDate:dateCopy];
 
-      v17 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v18 = [v17 components:28 fromDate:v13];
+      currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v18 = [currentCalendar2 components:28 fromDate:referenceDateCopy];
 
-      v19 = [v18 year];
-      if (v19 == [v16 year] && (v20 = objc_msgSend(v18, "month"), v20 == objc_msgSend(v16, "month")) && (v21 = objc_msgSend(v18, "day"), v21 == objc_msgSend(v16, "day")))
+      year = [v18 year];
+      if (year == [v16 year] && (v20 = objc_msgSend(v18, "month"), v20 == objc_msgSend(v16, "month")) && (v21 = objc_msgSend(v18, "day"), v21 == objc_msgSend(v16, "day")))
       {
-        v22 = [(CUIKDateDescriptionGenerator *)self _timeStringForDate:v12];
+        v22 = [(CUIKDateDescriptionGenerator *)self _timeStringForDate:dateCopy];
       }
 
       else
       {
-        v22 = [(CUIKDateDescriptionGenerator *)self _dateStringForDate:v12 relativeToReferenceDate:v13 allDay:0 shortFormat:1 lowercase:!v8];
+        v22 = [(CUIKDateDescriptionGenerator *)self _dateStringForDate:dateCopy relativeToReferenceDate:referenceDateCopy allDay:0 shortFormat:1 lowercase:!standaloneCopy];
       }
 
       v14 = v22;
@@ -1178,9 +1178,9 @@ LABEL_36:
 
     else
     {
-      v16 = [(CUIKDateDescriptionGenerator *)self _timeStringForDate:v12];
-      v23 = [(CUIKDateDescriptionGenerator *)self _dateStringForDate:v12 relativeToReferenceDate:v13 allDay:0 shortFormat:0 lowercase:!v8];
-      v24 = [MEMORY[0x1E6992F68] requiresSingularLocalizationForDate:v12];
+      v16 = [(CUIKDateDescriptionGenerator *)self _timeStringForDate:dateCopy];
+      v23 = [(CUIKDateDescriptionGenerator *)self _dateStringForDate:dateCopy relativeToReferenceDate:referenceDateCopy allDay:0 shortFormat:0 lowercase:!standaloneCopy];
+      v24 = [MEMORY[0x1E6992F68] requiresSingularLocalizationForDate:dateCopy];
       v25 = MEMORY[0x1E696AEC0];
       v26 = CUIKBundle();
       v27 = v26;
@@ -1202,36 +1202,36 @@ LABEL_36:
   return v14;
 }
 
-- (id)dateStringForEventInvitationWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 allDay:(BOOL)a6 withFormat:(unint64_t)a7 showTimeZone:(BOOL)a8
+- (id)dateStringForEventInvitationWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone allDay:(BOOL)day withFormat:(unint64_t)format showTimeZone:(BOOL)timeZone
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  timeZoneCopy = timeZone;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
   v17 = CUIKBundle();
   v18 = v17;
-  if (a6)
+  if (day)
   {
     v19 = +[CUIKDateDescriptionGenerator sharedGenerator];
-    v20 = [v19 stringForDate:v14 withLongFormatString:0 useAbbreviatedFormats:0 lowerCase:0];
+    v20 = [v19 stringForDate:dateCopy withLongFormatString:0 useAbbreviatedFormats:0 lowerCase:0];
   }
 
   else
   {
-    v44 = v8;
+    v44 = timeZoneCopy;
     v46 = v17;
-    [v14 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     GregorianDateWithFallbackToDefaultTimeZone = CalAbsoluteTimeGetGregorianDateWithFallbackToDefaultTimeZone();
     v23 = v22;
-    v45 = v15;
-    [v15 timeIntervalSinceReferenceDate];
+    v45 = endDateCopy;
+    [endDateCopy timeIntervalSinceReferenceDate];
     v24 = CalAbsoluteTimeGetGregorianDateWithFallbackToDefaultTimeZone();
     v26 = v25;
     if ((GregorianDateWithFallbackToDefaultTimeZone & 0xFFFFFFFFFFFFLL) == (v24 & 0xFFFFFFFFFFFFLL))
     {
       +[CUIKDateDescriptionGenerator sharedGenerator];
-      v28 = v27 = a7;
-      v19 = [v28 stringForDate:v14 withLongFormatString:0 useAbbreviatedFormats:0 lowerCase:0];
+      v28 = v27 = format;
+      v19 = [v28 stringForDate:dateCopy withLongFormatString:0 useAbbreviatedFormats:0 lowerCase:0];
 
       v29 = [(CUIKDateDescriptionGenerator *)self _stringForTime:GregorianDateWithFallbackToDefaultTimeZone, v23];
       v30 = [(CUIKDateDescriptionGenerator *)self _stringForTime:v24, v26];
@@ -1250,8 +1250,8 @@ LABEL_36:
         v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v19, v33];
       }
 
-      v15 = v45;
-      v8 = v44;
+      endDateCopy = v45;
+      timeZoneCopy = v44;
 
       v18 = v46;
     }
@@ -1262,7 +1262,7 @@ LABEL_36:
       v19 = [(CUIKDateDescriptionGenerator *)self _stringForDateTime:GregorianDateWithFallbackToDefaultTimeZone timeZone:v23, v35];
       v36 = [(CUIKDateDescriptionGenerator *)self _stringForDateTime:v24 timeZone:v26, v35];
       v37 = MEMORY[0x1E696AEC0];
-      if (a7)
+      if (format)
       {
         v38 = @"%@ to %@";
       }
@@ -1277,14 +1277,14 @@ LABEL_36:
       v20 = [v37 localizedStringWithFormat:v39, v19, v36];
 
       CFRelease(v35);
-      v15 = v45;
-      v8 = v44;
+      endDateCopy = v45;
+      timeZoneCopy = v44;
     }
   }
 
-  if (v16 && v8)
+  if (zoneCopy && timeZoneCopy)
   {
-    v40 = [v16 abbreviationForDate:v14];
+    v40 = [zoneCopy abbreviationForDate:dateCopy];
     v41 = [v18 localizedStringForKey:@"Date/time string with time zone format" value:@"%@ (%@)" table:0];
     v42 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v41, v20, v40];
 
@@ -1294,10 +1294,10 @@ LABEL_36:
   return v20;
 }
 
-- (id)_stringForTime:(id)a3
+- (id)_stringForTime:(id)time
 {
-  var5 = a3.var5;
-  v4 = *&a3.var0;
+  var5 = time.var5;
+  v4 = *&time.var0;
   v6 = CalCopySystemTimeZone();
   v7 = MEMORY[0x1CCAA8570](v4, *&var5, v6);
   if (!HIBYTE(v4))
@@ -1306,10 +1306,10 @@ LABEL_36:
     v9 = v8;
     if (v8 && [v8 rangeOfString:@"H"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v9, "rangeOfString:", @"k") == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [(CUIKDateDescriptionGenerator *)self _customFormatter];
-      [v10 setDateFormat:v9];
+      _customFormatter = [(CUIKDateDescriptionGenerator *)self _customFormatter];
+      [_customFormatter setDateFormat:v9];
       v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v7];
-      v12 = [v10 stringFromDate:v11];
+      v12 = [_customFormatter stringFromDate:v11];
 
       if (v12)
       {
@@ -1322,9 +1322,9 @@ LABEL_36:
     }
   }
 
-  v13 = [(CUIKDateDescriptionGenerator *)self standardTimeFormatter];
+  standardTimeFormatter = [(CUIKDateDescriptionGenerator *)self standardTimeFormatter];
   v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v7];
-  v12 = [v13 stringFromDate:v14];
+  v12 = [standardTimeFormatter stringFromDate:v14];
 
 LABEL_9:
   CFRelease(v6);
@@ -1332,9 +1332,9 @@ LABEL_9:
   return v12;
 }
 
-- (id)_stringForDateTime:(id)a3 timeZone:(__CFTimeZone *)a4
+- (id)_stringForDateTime:(id)time timeZone:(__CFTimeZone *)zone
 {
-  if (!a3.var4)
+  if (!time.var4)
   {
     v5 = CPDateFormatStringForFormatType();
     v6 = v5;
@@ -1353,11 +1353,11 @@ LABEL_9:
   v9 = v8;
   if (v7)
   {
-    v10 = [(CUIKDateDescriptionGenerator *)self _customFormatter];
-    if (v10)
+    _customFormatter = [(CUIKDateDescriptionGenerator *)self _customFormatter];
+    if (_customFormatter)
     {
-      v11 = v10;
-      [v10 setDateFormat:v7];
+      v11 = _customFormatter;
+      [_customFormatter setDateFormat:v7];
 LABEL_11:
       v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v9];
       v15 = [v11 stringFromDate:v14];
@@ -1378,8 +1378,8 @@ LABEL_11:
     if (v12)
     {
       v11 = v12;
-      v13 = [MEMORY[0x1E695DF58] currentLocale];
-      [v11 setLocale:v13];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      [v11 setLocale:currentLocale];
 
       [v11 setTimeStyle:2];
       [v11 setDateStyle:2];

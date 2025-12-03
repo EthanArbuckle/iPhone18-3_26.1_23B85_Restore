@@ -1,26 +1,26 @@
 @interface INSExtensionService
-- (BOOL)_errorImpliesCloudRelay:(id)a3;
-- (BOOL)_isVoiceShortcutsRemoteExecutionUnavailable:(id)a3;
-- (BOOL)_prewarmExtensionWithIntent:(id)a3 applicationIdentifier:(id)a4 command:(id)a5 completionHandler:(id)a6;
-- (BOOL)_shouldPrepareAudioSessionForCommand:(id)a3 intent:(id)a4;
+- (BOOL)_errorImpliesCloudRelay:(id)relay;
+- (BOOL)_isVoiceShortcutsRemoteExecutionUnavailable:(id)unavailable;
+- (BOOL)_prewarmExtensionWithIntent:(id)intent applicationIdentifier:(id)identifier command:(id)command completionHandler:(id)handler;
+- (BOOL)_shouldPrepareAudioSessionForCommand:(id)command intent:(id)intent;
 - (INExtensionContext)extensionContext;
-- (INSExtensionService)initWithOptions:(id)a3;
+- (INSExtensionService)initWithOptions:(id)options;
 - (INSExtensionServiceDelegate)delegate;
 - (NSArray)airPlayRouteIdentifiers;
 - (NSArray)commandIdentifiers;
-- (id)_connectionForIntent:(id)a3;
+- (id)_connectionForIntent:(id)intent;
 - (id)_extensionInputItems;
 - (id)_siriLanguageCode;
-- (id)_updatedEventContextWithExtensionLoadType:(id)a3 wasPrewarmed:(BOOL)a4;
-- (id)analytics:(id)a3 contextDictionaryForCommand:(id)a4;
-- (id)analytics:(id)a3 contextDictionaryForError:(id)a4;
-- (id)completionHandlerForAppLaunchCommand:(id)a3 withCompletion:(id)a4;
-- (void)_extensionRequestDidFinishForIntent:(id)a3 error:(id)a4;
-- (void)_extensionRequestWillStartForIntent:(id)a3;
-- (void)_requiresHandlingCommand:(id)a3 completion:(id)a4;
-- (void)handleCommand:(id)a3 fromRemoteDevice:(id)a4 completionHandler:(id)a5;
+- (id)_updatedEventContextWithExtensionLoadType:(id)type wasPrewarmed:(BOOL)prewarmed;
+- (id)analytics:(id)analytics contextDictionaryForCommand:(id)command;
+- (id)analytics:(id)analytics contextDictionaryForError:(id)error;
+- (id)completionHandlerForAppLaunchCommand:(id)command withCompletion:(id)completion;
+- (void)_extensionRequestDidFinishForIntent:(id)intent error:(id)error;
+- (void)_extensionRequestWillStartForIntent:(id)intent;
+- (void)_requiresHandlingCommand:(id)command completion:(id)completion;
+- (void)handleCommand:(id)command fromRemoteDevice:(id)device completionHandler:(id)handler;
 - (void)resetExternalResources;
-- (void)setAirPlayRouteIdentifiers:(id)a3;
+- (void)setAirPlayRouteIdentifiers:(id)identifiers;
 @end
 
 @implementation INSExtensionService
@@ -50,10 +50,10 @@
 - (id)_siriLanguageCode
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(INSExtensionService *)self delegate];
+  delegate = [(INSExtensionService *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 siriLanguageCodeForExtensionService:self];
+    v4 = [delegate siriLanguageCodeForExtensionService:self];
   }
 
   else
@@ -79,12 +79,12 @@
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = MEMORY[0x277CCAAB0];
-  v5 = [(INSExtensionService *)self extensionContext];
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+  extensionContext = [(INSExtensionService *)self extensionContext];
+  v6 = [v4 archivedDataWithRootObject:extensionContext requiringSecureCoding:1 error:0];
 
   [v3 if_setObjectIfNonNil:v6 forKey:*MEMORY[0x277CD4458]];
-  v7 = [(INSExtensionService *)self _siriLanguageCode];
-  [v3 if_setObjectIfNonNil:v7 forKey:*MEMORY[0x277CD4460]];
+  _siriLanguageCode = [(INSExtensionService *)self _siriLanguageCode];
+  [v3 if_setObjectIfNonNil:_siriLanguageCode forKey:*MEMORY[0x277CD4460]];
 
   v8 = objc_alloc_init(MEMORY[0x277CCA9D8]);
   [v8 setUserInfo:v3];
@@ -96,18 +96,18 @@
   return v9;
 }
 
-- (id)completionHandlerForAppLaunchCommand:(id)a3 withCompletion:(id)a4
+- (id)completionHandlerForAppLaunchCommand:(id)command withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__INSExtensionService_completionHandlerForAppLaunchCommand_withCompletion___block_invoke;
   v11[3] = &unk_2797EAC28;
-  v12 = v5;
-  v13 = v6;
-  v7 = v5;
-  v8 = v6;
+  v12 = commandCopy;
+  v13 = completionCopy;
+  v7 = commandCopy;
+  v8 = completionCopy;
   v9 = MEMORY[0x259C379F0](v11);
 
   return v9;
@@ -142,14 +142,14 @@ uint64_t __75__INSExtensionService_completionHandlerForAppLaunchCommand_withComp
   return MEMORY[0x2821F9730]();
 }
 
-- (id)analytics:(id)a3 contextDictionaryForError:(id)a4
+- (id)analytics:(id)analytics contextDictionaryForError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(INSExtensionService *)self delegate];
+  errorCopy = error;
+  delegate = [(INSExtensionService *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 extensionService:self contextDictionaryForError:v5];
+    v7 = [delegate extensionService:self contextDictionaryForError:errorCopy];
   }
 
   else
@@ -170,14 +170,14 @@ uint64_t __75__INSExtensionService_completionHandlerForAppLaunchCommand_withComp
   return v7;
 }
 
-- (id)analytics:(id)a3 contextDictionaryForCommand:(id)a4
+- (id)analytics:(id)analytics contextDictionaryForCommand:(id)command
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(INSExtensionService *)self delegate];
+  commandCopy = command;
+  delegate = [(INSExtensionService *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 extensionService:self contextDictionaryForCommand:v5];
+    v7 = [delegate extensionService:self contextDictionaryForCommand:commandCopy];
   }
 
   else
@@ -198,17 +198,17 @@ uint64_t __75__INSExtensionService_completionHandlerForAppLaunchCommand_withComp
   return v7;
 }
 
-- (BOOL)_shouldPrepareAudioSessionForCommand:(id)a3 intent:(id)a4
+- (BOOL)_shouldPrepareAudioSessionForCommand:(id)command intent:(id)intent
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 extensionBundleId];
-  if (v7)
+  commandCopy = command;
+  intentCopy = intent;
+  extensionBundleId = [intentCopy extensionBundleId];
+  if (extensionBundleId)
   {
-    v8 = v7;
-    v9 = [v6 extensionBundleId];
-    v10 = [v9 isEqualToString:@"com.apple.siri.SiriAudioInternal.AudioInternalIntentExtension"];
+    v8 = extensionBundleId;
+    extensionBundleId2 = [intentCopy extensionBundleId];
+    v10 = [extensionBundleId2 isEqualToString:@"com.apple.siri.SiriAudioInternal.AudioInternalIntentExtension"];
 
     if (v10)
     {
@@ -228,26 +228,26 @@ uint64_t __75__INSExtensionService_completionHandlerForAppLaunchCommand_withComp
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_7:
-    v12 = 0;
+    ins_shouldPrepareAudioSession = 0;
     goto LABEL_8;
   }
 
-  v12 = [v6 ins_shouldPrepareAudioSession];
+  ins_shouldPrepareAudioSession = [intentCopy ins_shouldPrepareAudioSession];
 LABEL_8:
 
   v13 = *MEMORY[0x277D85DE8];
-  return v12;
+  return ins_shouldPrepareAudioSession;
 }
 
-- (void)_requiresHandlingCommand:(id)a3 completion:(id)a4
+- (void)_requiresHandlingCommand:(id)command completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INSExtensionService *)self delegate];
+  commandCopy = command;
+  completionCopy = completion;
+  delegate = [(INSExtensionService *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 extensionService:self requiresHandlingCommand:v6 completion:v7];
+    [delegate extensionService:self requiresHandlingCommand:commandCopy completion:completionCopy];
   }
 
   else
@@ -264,75 +264,75 @@ LABEL_8:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_prewarmExtensionWithIntent:(id)a3 applicationIdentifier:(id)a4 command:(id)a5 completionHandler:(id)a6
+- (BOOL)_prewarmExtensionWithIntent:(id)intent applicationIdentifier:(id)identifier command:(id)command completionHandler:(id)handler
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  intentCopy = intent;
+  identifierCopy = identifier;
+  commandCopy = command;
+  handlerCopy = handler;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v15 = MEMORY[0x277CD38C8];
   if (isKindOfClass)
   {
     kdebug_trace();
-    v16 = [v10 identifier];
+    identifier = [intentCopy identifier];
 
-    if (!v16)
+    if (!identifier)
     {
-      v17 = [MEMORY[0x277CCAD78] UUID];
-      v18 = [v17 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
       v19 = *v15;
       if (os_log_type_enabled(*v15, OS_LOG_TYPE_INFO))
       {
         log = v19;
-        v20 = [v10 _className];
-        v21 = [v10 launchId];
-        v22 = v21;
+        _className = [intentCopy _className];
+        launchId = [intentCopy launchId];
+        v22 = launchId;
         v23 = @"no launchId";
-        if (v21)
+        if (launchId)
         {
-          v23 = v21;
+          v23 = launchId;
         }
 
-        v24 = [v10 extensionBundleId];
-        v25 = v24;
+        extensionBundleId = [intentCopy extensionBundleId];
+        v25 = extensionBundleId;
         *buf = 136316162;
         v26 = @"no extensionBundleId";
         v41 = "[INSExtensionService _prewarmExtensionWithIntent:applicationIdentifier:command:completionHandler:]";
         v42 = 2112;
-        if (v24)
+        if (extensionBundleId)
         {
-          v26 = v24;
+          v26 = extensionBundleId;
         }
 
-        v43 = v20;
+        v43 = _className;
         v44 = 2112;
         v45 = v32;
         v46 = 2112;
         v47 = v26;
         v48 = 2112;
-        v49 = v18;
+        v49 = uUIDString;
         _os_log_impl(&dword_25553C000, log, OS_LOG_TYPE_INFO, "%s About to prewarm an extension for %@ (%@:%@) without an identifier. Assigning a new identifier: %@", buf, 0x34u);
 
         v15 = MEMORY[0x277CD38C8];
       }
 
-      [v10 setIdentifier:v18];
+      [intentCopy setIdentifier:uUIDString];
     }
 
-    v27 = [objc_alloc(MEMORY[0x277D21520]) initWithIntent:v10];
+    v27 = [objc_alloc(MEMORY[0x277D21520]) initWithIntent:intentCopy];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __99__INSExtensionService__prewarmExtensionWithIntent_applicationIdentifier_command_completionHandler___block_invoke;
     v34[3] = &unk_2797EAC00;
-    v35 = v12;
-    v39 = v13;
-    v36 = v10;
-    v37 = self;
-    v38 = v11;
+    v35 = commandCopy;
+    v39 = handlerCopy;
+    v36 = intentCopy;
+    selfCopy = self;
+    v38 = identifierCopy;
     [v27 resumeWithCompletionHandler:v34];
   }
 
@@ -463,10 +463,10 @@ void __99__INSExtensionService__prewarmExtensionWithIntent_applicationIdentifier
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_connectionForIntent:(id)a3
+- (id)_connectionForIntent:(id)intent
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intentCopy = intent;
   v5 = MEMORY[0x277CD38C8];
   v6 = *MEMORY[0x277CD38C8];
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
@@ -474,11 +474,11 @@ void __99__INSExtensionService__prewarmExtensionWithIntent_applicationIdentifier
     v32 = 136315394;
     v33 = "[INSExtensionService _connectionForIntent:]";
     v34 = 2112;
-    v35 = v4;
+    v35 = intentCopy;
     _os_log_impl(&dword_25553C000, v6, OS_LOG_TYPE_INFO, "%s Getting connection for intent: %@", &v32, 0x16u);
   }
 
-  if (!v4)
+  if (!intentCopy)
   {
     v19 = *v5;
     if (!os_log_type_enabled(*v5, OS_LOG_TYPE_ERROR))
@@ -499,9 +499,9 @@ LABEL_22:
     goto LABEL_12;
   }
 
-  v7 = [(INCExtensionConnection *)v4 identifier];
+  identifier = [(INCExtensionConnection *)intentCopy identifier];
 
-  if (!v7)
+  if (!identifier)
   {
     v19 = *v5;
     if (!os_log_type_enabled(*v5, OS_LOG_TYPE_ERROR))
@@ -520,10 +520,10 @@ LABEL_22:
 
   v9 = self->_currentConnection;
   p_currentConnection = &self->_currentConnection;
-  v10 = [(INCExtensionConnection *)v9 intent];
-  v11 = [v10 identifier];
-  v12 = [(INCExtensionConnection *)v4 identifier];
-  v13 = [v11 isEqualToString:v12];
+  intent = [(INCExtensionConnection *)v9 intent];
+  identifier2 = [intent identifier];
+  identifier3 = [(INCExtensionConnection *)intentCopy identifier];
+  v13 = [identifier2 isEqualToString:identifier3];
 
   v14 = *v5;
   v15 = os_log_type_enabled(*v5, OS_LOG_TYPE_INFO);
@@ -533,17 +533,17 @@ LABEL_22:
     {
       v16 = *p_currentConnection;
       v17 = v14;
-      v18 = [(INCExtensionConnection *)v4 identifier];
+      identifier4 = [(INCExtensionConnection *)intentCopy identifier];
       v32 = 136315650;
       v33 = "[INSExtensionService _connectionForIntent:]";
       v34 = 2112;
       v35 = v16;
       v36 = 2112;
-      v37 = v18;
+      v37 = identifier4;
       _os_log_impl(&dword_25553C000, v17, OS_LOG_TYPE_INFO, "%s Using the current connection %@ because the intent identifier matches intent identifier: %@.", &v32, 0x20u);
     }
 
-    [*p_currentConnection setIntent:v4];
+    [*p_currentConnection setIntent:intentCopy];
   }
 
   else
@@ -552,18 +552,18 @@ LABEL_22:
     {
       v22 = *p_currentConnection;
       v23 = v14;
-      v24 = [(INCExtensionConnection *)v4 identifier];
+      identifier5 = [(INCExtensionConnection *)intentCopy identifier];
       v32 = 136315650;
       v33 = "[INSExtensionService _connectionForIntent:]";
       v34 = 2112;
       v35 = v22;
       v36 = 2112;
-      v37 = v24;
+      v37 = identifier5;
       _os_log_impl(&dword_25553C000, v23, OS_LOG_TYPE_INFO, "%s Replacing the current connection %@ because the intent identifier is %@.", &v32, 0x20u);
     }
 
     [*p_currentConnection reset];
-    v25 = [objc_alloc(MEMORY[0x277D21520]) initWithIntent:v4];
+    v25 = [objc_alloc(MEMORY[0x277D21520]) initWithIntent:intentCopy];
     v26 = *p_currentConnection;
     *p_currentConnection = v25;
   }
@@ -585,11 +585,11 @@ LABEL_16:
   return v27;
 }
 
-- (id)_updatedEventContextWithExtensionLoadType:(id)a3 wasPrewarmed:(BOOL)a4
+- (id)_updatedEventContextWithExtensionLoadType:(id)type wasPrewarmed:(BOOL)prewarmed
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
-  if (a4)
+  if (prewarmed)
   {
     v5 = @"Warm";
   }
@@ -599,7 +599,7 @@ LABEL_16:
     v5 = @"Cold";
   }
 
-  v6 = a3;
+  typeCopy = type;
   v7 = [v4 stringWithFormat:@"%@.%@", @"Extension", v5];
   v8 = *MEMORY[0x277CD38C8];
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
@@ -611,7 +611,7 @@ LABEL_16:
     _os_log_impl(&dword_25553C000, v8, OS_LOG_TYPE_INFO, "%s Extension load type = %@", buf, 0x16u);
   }
 
-  v9 = [v6 mutableCopy];
+  v9 = [typeCopy mutableCopy];
 
   [v9 setObject:v7 forKey:@"ExtensionLoadType"];
   v10 = *MEMORY[0x277D85DE8];
@@ -619,17 +619,17 @@ LABEL_16:
   return v9;
 }
 
-- (void)_extensionRequestDidFinishForIntent:(id)a3 error:(id)a4
+- (void)_extensionRequestDidFinishForIntent:(id)intent error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   requestDelegateQueue = self->_requestDelegateQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__INSExtensionService__extensionRequestDidFinishForIntent_error___block_invoke;
   v8[3] = &unk_2797EABB0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(requestDelegateQueue, v8);
 }
 
@@ -639,17 +639,17 @@ void __65__INSExtensionService__extensionRequestDidFinishForIntent_error___block
   [v2 extensionService:*(a1 + 32) extensionRequestDidFinishForApplication:*(*(a1 + 32) + 32) error:*(a1 + 40)];
 }
 
-- (void)_extensionRequestWillStartForIntent:(id)a3
+- (void)_extensionRequestWillStartForIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   requestDelegateQueue = self->_requestDelegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__INSExtensionService__extensionRequestWillStartForIntent___block_invoke;
   v7[3] = &unk_2797EABB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intentCopy;
+  v6 = intentCopy;
   dispatch_async(requestDelegateQueue, v7);
 }
 
@@ -664,14 +664,14 @@ void __59__INSExtensionService__extensionRequestWillStartForIntent___block_invok
   [v5 extensionService:*(a1 + 32) extensionRequestWillStartForApplication:*(*(a1 + 32) + 32)];
 }
 
-- (BOOL)_isVoiceShortcutsRemoteExecutionUnavailable:(id)a3
+- (BOOL)_isVoiceShortcutsRemoteExecutionUnavailable:(id)unavailable
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  unavailableCopy = unavailable;
+  domain = [unavailableCopy domain];
   v5 = _INVCVoiceShortcutErrorDomain();
-  if ([v4 isEqualToString:v5])
+  if ([domain isEqualToString:v5])
   {
-    v6 = [v3 code] == 9001;
+    v6 = [unavailableCopy code] == 9001;
   }
 
   else
@@ -682,13 +682,13 @@ void __59__INSExtensionService__extensionRequestWillStartForIntent___block_invok
   return v6;
 }
 
-- (BOOL)_errorImpliesCloudRelay:(id)a3
+- (BOOL)_errorImpliesCloudRelay:(id)relay
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CD3848]])
+  relayCopy = relay;
+  domain = [relayCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CD3848]])
   {
-    v5 = [v3 code] == 2005;
+    v5 = [relayCopy code] == 2005;
   }
 
   else
@@ -696,10 +696,10 @@ void __59__INSExtensionService__extensionRequestWillStartForIntent___block_invok
     v5 = 0;
   }
 
-  v6 = [v3 domain];
-  if ([v6 isEqualToString:*MEMORY[0x277CD3838]])
+  domain2 = [relayCopy domain];
+  if ([domain2 isEqualToString:*MEMORY[0x277CD3838]])
   {
-    v7 = [v3 code] == 3001;
+    v7 = [relayCopy code] == 3001;
   }
 
   else
@@ -712,17 +712,17 @@ void __59__INSExtensionService__extensionRequestWillStartForIntent___block_invok
 
 - (NSArray)airPlayRouteIdentifiers
 {
-  v2 = [(INSExtensionService *)self extensionContext];
-  v3 = [v2 _airPlayRouteIdentifiers];
+  extensionContext = [(INSExtensionService *)self extensionContext];
+  _airPlayRouteIdentifiers = [extensionContext _airPlayRouteIdentifiers];
 
-  return v3;
+  return _airPlayRouteIdentifiers;
 }
 
-- (void)setAirPlayRouteIdentifiers:(id)a3
+- (void)setAirPlayRouteIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(INSExtensionService *)self extensionContext];
-  [v5 _setAirPlayRouteIdentifiers:v4];
+  identifiersCopy = identifiers;
+  extensionContext = [(INSExtensionService *)self extensionContext];
+  [extensionContext _setAirPlayRouteIdentifiers:identifiersCopy];
 }
 
 - (void)resetExternalResources
@@ -744,23 +744,23 @@ void __45__INSExtensionService_resetExternalResources__block_invoke(uint64_t a1)
   *(v2 + 24) = 0;
 }
 
-- (void)handleCommand:(id)a3 fromRemoteDevice:(id)a4 completionHandler:(id)a5
+- (void)handleCommand:(id)command fromRemoteDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  deviceCopy = device;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__INSExtensionService_handleCommand_fromRemoteDevice_completionHandler___block_invoke;
   v15[3] = &unk_2797EACC0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = commandCopy;
+  selfCopy = self;
+  v18 = deviceCopy;
+  v19 = handlerCopy;
+  v12 = deviceCopy;
+  v13 = handlerCopy;
+  v14 = commandCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1690,9 +1690,9 @@ void __72__INSExtensionService_handleCommand_fromRemoteDevice_completionHandler_
   return v6;
 }
 
-- (INSExtensionService)initWithOptions:(id)a3
+- (INSExtensionService)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = INSExtensionService;
   v5 = [(INSExtensionService *)&v16 init];
@@ -1708,7 +1708,7 @@ void __72__INSExtensionService_handleCommand_fromRemoteDevice_completionHandler_
     v10 = *(v5 + 2);
     *(v5 + 2) = v9;
 
-    v11 = [v4 copy];
+    v11 = [optionsCopy copy];
     v12 = *(v5 + 6);
     *(v5 + 6) = v11;
 

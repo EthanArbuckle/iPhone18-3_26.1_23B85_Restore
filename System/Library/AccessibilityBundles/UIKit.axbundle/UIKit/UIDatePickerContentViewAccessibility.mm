@@ -8,22 +8,22 @@
 
 - (id)accessibilityLabel
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   v32.receiver = self;
   v32.super_class = UIDatePickerContentViewAccessibility;
   location[0] = [(UIDatePickerContentViewAccessibility *)&v32 accessibilityLabel];
   if (!location[0])
   {
-    v25 = [(UIDatePickerContentViewAccessibility *)v34 safeValueForKey:@"titleLabel"];
-    v2 = [v25 accessibilityLabel];
+    v25 = [(UIDatePickerContentViewAccessibility *)selfCopy safeValueForKey:@"titleLabel"];
+    accessibilityLabel = [v25 accessibilityLabel];
     v3 = location[0];
-    location[0] = v2;
+    location[0] = accessibilityLabel;
     MEMORY[0x29EDC9740](v3);
     MEMORY[0x29EDC9740](v25);
   }
 
-  v31 = [(UIDatePickerContentViewAccessibility *)v34 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uidatepickervi.isa)];
+  v31 = [(UIDatePickerContentViewAccessibility *)selfCopy _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uidatepickervi.isa)];
   if (!v31)
   {
     v35 = MEMORY[0x29EDC9748](location[0]);
@@ -32,29 +32,29 @@
   }
 
   v23 = [v31 safeValueForKey:@"datePickerMode"];
-  v24 = [v23 unsignedIntValue];
+  unsignedIntValue = [v23 unsignedIntValue];
   *&v4 = MEMORY[0x29EDC9740](v23).n128_u64[0];
-  v29 = v24;
-  v28 = [(UIDatePickerContentViewAccessibility *)v34 _accessibilityDatePickerComponentType];
+  v29 = unsignedIntValue;
+  _accessibilityDatePickerComponentType = [(UIDatePickerContentViewAccessibility *)selfCopy _accessibilityDatePickerComponentType];
   v27 = 0;
-  if (v24 == 3)
+  if (unsignedIntValue == 3)
   {
-    if (v28 == 32)
+    if (_accessibilityDatePickerComponentType == 32)
     {
       v22 = [v31 safeValueForKey:@"_hourLabel"];
-      v5 = [v22 accessibilityLabel];
+      accessibilityLabel2 = [v22 accessibilityLabel];
       v6 = v27;
-      v27 = v5;
+      v27 = accessibilityLabel2;
       MEMORY[0x29EDC9740](v6);
       MEMORY[0x29EDC9740](v22);
     }
 
-    else if (v28 == 64)
+    else if (_accessibilityDatePickerComponentType == 64)
     {
       v21 = [v31 safeValueForKey:@"_minuteLabel"];
-      v7 = [v21 accessibilityLabel];
+      accessibilityLabel3 = [v21 accessibilityLabel];
       v8 = v27;
-      v27 = v7;
+      v27 = accessibilityLabel3;
       MEMORY[0x29EDC9740](v8);
       MEMORY[0x29EDC9740](v21);
     }
@@ -79,7 +79,7 @@
   if (!v29 || v29 == 2)
   {
     v26 = 0;
-    if (v28 == 32)
+    if (_accessibilityDatePickerComponentType == 32)
     {
       v17 = MEMORY[0x29EDBA0F8];
       v18 = accessibilityLocalizedString(@"date.picker.hours");
@@ -90,7 +90,7 @@
       MEMORY[0x29EDC9740](v18);
     }
 
-    else if (v28 == 64)
+    else if (_accessibilityDatePickerComponentType == 64)
     {
       v15 = MEMORY[0x29EDBA0F8];
       v16 = accessibilityLocalizedString(@"date.picker.minutes");
@@ -132,10 +132,10 @@ LABEL_27:
 
 - (unint64_t)_accessibilityDatePickerComponentType
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = [(UIDatePickerContentViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uidatepickervi.isa)];
-  v13 = [(UIDatePickerContentViewAccessibility *)v15 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uipickercolumn.isa)];
+  v13 = [(UIDatePickerContentViewAccessibility *)selfCopy _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uipickercolumn.isa)];
   v12 = [v14[0] safeValueForKey:@"_tables"];
   v11 = [v12 indexOfObject:v13];
   v6 = 0;
@@ -172,12 +172,12 @@ uint64_t __77__UIDatePickerContentViewAccessibility__accessibilityDatePickerComp
 
 - (unint64_t)accessibilityTraits
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8 = 0;
   v4 = [(UIDatePickerContentViewAccessibility *)self safeValueForKey:@"titleLabel"];
   location = [v4 safeValueForKey:@"textColor"];
-  v5 = [(UIDatePickerContentViewAccessibility *)v10 _accessibilityValueForKey:@"SelectedColor", MEMORY[0x29EDC9740](v4).n128_f64[0]];
+  v5 = [(UIDatePickerContentViewAccessibility *)selfCopy _accessibilityValueForKey:@"SelectedColor", MEMORY[0x29EDC9740](v4).n128_f64[0]];
   v6 = UIAccessibilityColorEqualToColor();
   MEMORY[0x29EDC9740](v5);
   if (v6)

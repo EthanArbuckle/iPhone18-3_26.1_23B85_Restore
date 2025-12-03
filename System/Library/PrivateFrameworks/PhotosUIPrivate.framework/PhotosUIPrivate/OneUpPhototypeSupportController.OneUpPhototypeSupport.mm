@@ -6,7 +6,7 @@
 
 - (id)phototypeWrapper
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37230D0(v5);
 
   __swift_project_boxed_opaque_existential_0Tm(v5, v5[3]);

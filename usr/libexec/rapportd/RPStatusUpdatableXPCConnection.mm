@@ -1,29 +1,29 @@
 @interface RPStatusUpdatableXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (RPStatusUpdatableXPCConnection)initWithDaemon:(id)a3 xpcCnx:(id)a4;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (RPStatusUpdatableXPCConnection)initWithDaemon:(id)daemon xpcCnx:(id)cnx;
 - (void)connectionInvalidated;
-- (void)xpcStatusProviderActivate:(id)a3 completion:(id)a4;
-- (void)xpcStatusSubscriberActivate:(id)a3 completion:(id)a4;
-- (void)xpcStatusUpdatableCancelProvideStatus:(id)a3;
-- (void)xpcStatusUpdatableProvideStatus:(id)a3 statusInfo:(id)a4;
-- (void)xpcStatusUpdatableSubscribeToStatus:(id)a3;
-- (void)xpcStatusUpdatableUnsubscribeToStatus:(id)a3;
+- (void)xpcStatusProviderActivate:(id)activate completion:(id)completion;
+- (void)xpcStatusSubscriberActivate:(id)activate completion:(id)completion;
+- (void)xpcStatusUpdatableCancelProvideStatus:(id)status;
+- (void)xpcStatusUpdatableProvideStatus:(id)status statusInfo:(id)info;
+- (void)xpcStatusUpdatableSubscribeToStatus:(id)status;
+- (void)xpcStatusUpdatableUnsubscribeToStatus:(id)status;
 @end
 
 @implementation RPStatusUpdatableXPCConnection
 
-- (RPStatusUpdatableXPCConnection)initWithDaemon:(id)a3 xpcCnx:(id)a4
+- (RPStatusUpdatableXPCConnection)initWithDaemon:(id)daemon xpcCnx:(id)cnx
 {
-  v7 = a3;
-  v8 = a4;
+  daemonCopy = daemon;
+  cnxCopy = cnx;
   v13.receiver = self;
   v13.super_class = RPStatusUpdatableXPCConnection;
   v9 = [(RPStatusUpdatableXPCConnection *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_daemon, a3);
-    objc_storeStrong(&v10->_xpcCnx, a4);
+    objc_storeStrong(&v9->_daemon, daemon);
+    objc_storeStrong(&v10->_xpcCnx, cnx);
     v11 = v10;
   }
 
@@ -58,7 +58,7 @@
   self->_xpcCnx = 0;
 }
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -79,29 +79,29 @@
   if (dword_1001D4D10 <= 90 && (dword_1001D4D10 != -1 || _LogCategory_Initialize()))
   {
     sub_10012B090(p_xpcCnx);
-    if (a3)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_9:
     v9 = RPErrorF();
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
   return 0;
 }
 
-- (void)xpcStatusUpdatableProvideStatus:(id)a3 statusInfo:(id)a4
+- (void)xpcStatusUpdatableProvideStatus:(id)status statusInfo:(id)info
 {
-  v7 = a3;
-  v6 = a4;
+  statusCopy = status;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4D10 <= 30 && (dword_1001D4D10 != -1 || _LogCategory_Initialize()))
   {
@@ -109,9 +109,9 @@ LABEL_9:
   }
 }
 
-- (void)xpcStatusUpdatableCancelProvideStatus:(id)a3
+- (void)xpcStatusUpdatableCancelProvideStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4D10 <= 30 && (dword_1001D4D10 != -1 || _LogCategory_Initialize()))
   {
@@ -119,9 +119,9 @@ LABEL_9:
   }
 }
 
-- (void)xpcStatusUpdatableSubscribeToStatus:(id)a3
+- (void)xpcStatusUpdatableSubscribeToStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4D10 <= 30 && (dword_1001D4D10 != -1 || _LogCategory_Initialize()))
   {
@@ -129,9 +129,9 @@ LABEL_9:
   }
 }
 
-- (void)xpcStatusUpdatableUnsubscribeToStatus:(id)a3
+- (void)xpcStatusUpdatableUnsubscribeToStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4D10 <= 30 && (dword_1001D4D10 != -1 || _LogCategory_Initialize()))
   {
@@ -139,19 +139,19 @@ LABEL_9:
   }
 }
 
-- (void)xpcStatusProviderActivate:(id)a3 completion:(id)a4
+- (void)xpcStatusProviderActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v11 = 0;
   [(RPStatusUpdatableXPCConnection *)self _entitledAndReturnError:&v11];
   v9 = v11;
   if (v9)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -162,19 +162,19 @@ LABEL_9:
       if (dword_1001D4D10 <= 90 && (dword_1001D4D10 != -1 || _LogCategory_Initialize()))
       {
         sub_10012B1A0();
-        if (!v8)
+        if (!completionCopy)
         {
           goto LABEL_16;
         }
       }
 
-      else if (!v8)
+      else if (!completionCopy)
       {
         goto LABEL_16;
       }
 
       v10 = RPErrorF();
-      (v8)[2](v8, &__NSArray0__struct, v10);
+      (completionCopy)[2](completionCopy, &__NSArray0__struct, v10);
 
       goto LABEL_16;
     }
@@ -184,11 +184,11 @@ LABEL_9:
       sub_10012B1D4(self);
     }
 
-    [v7 setDispatchQueue:self->_dispatchQueue];
-    objc_storeStrong(&self->_provider, a3);
-    if (v8)
+    [activateCopy setDispatchQueue:self->_dispatchQueue];
+    objc_storeStrong(&self->_provider, activate);
+    if (completionCopy)
     {
-      (v8)[2](v8, &__NSArray0__struct, 0);
+      (completionCopy)[2](completionCopy, &__NSArray0__struct, 0);
     }
 
     [(RPStatusDaemon *)self->_daemon _update];
@@ -197,19 +197,19 @@ LABEL_9:
 LABEL_16:
 }
 
-- (void)xpcStatusSubscriberActivate:(id)a3 completion:(id)a4
+- (void)xpcStatusSubscriberActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v11 = 0;
   [(RPStatusUpdatableXPCConnection *)self _entitledAndReturnError:&v11];
   v9 = v11;
   if (v9)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
     }
   }
 
@@ -220,19 +220,19 @@ LABEL_16:
       if (dword_1001D4D10 <= 90 && (dword_1001D4D10 != -1 || _LogCategory_Initialize()))
       {
         sub_10012B228();
-        if (!v8)
+        if (!completionCopy)
         {
           goto LABEL_16;
         }
       }
 
-      else if (!v8)
+      else if (!completionCopy)
       {
         goto LABEL_16;
       }
 
       v10 = RPErrorF();
-      (v8)[2](v8, &__NSArray0__struct, v10);
+      (completionCopy)[2](completionCopy, &__NSArray0__struct, v10);
 
       goto LABEL_16;
     }
@@ -243,10 +243,10 @@ LABEL_16:
     }
 
     [(RPStatusSubscriber *)self->_subscriber setDispatchQueue:self->_dispatchQueue];
-    objc_storeStrong(&self->_subscriber, a3);
-    if (v8)
+    objc_storeStrong(&self->_subscriber, activate);
+    if (completionCopy)
     {
-      (v8)[2](v8, &__NSArray0__struct, 0);
+      (completionCopy)[2](completionCopy, &__NSArray0__struct, 0);
     }
 
     [(RPStatusDaemon *)self->_daemon _update];

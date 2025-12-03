@@ -3,9 +3,9 @@
 - (NSNumber)suggestedFrameRateLimit;
 - (void)_queue_respondToCurrentThermalCondition;
 - (void)_startListeningForThermalEvents;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation DBThermalMonitor
@@ -27,10 +27,10 @@
 
   if (v4)
   {
-    v5 = [(DBThermalMonitor *)self level];
-    if ((v5 - 1) <= 2)
+    level = [(DBThermalMonitor *)self level];
+    if ((level - 1) <= 2)
     {
-      v6 = qword_278F04580[v5 - 1];
+      v6 = qword_278F04580[level - 1];
       goto LABEL_15;
     }
   }
@@ -46,8 +46,8 @@
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "frameRateLimit preference is: %lu", &v12, 0xCu);
     }
 
-    v10 = [(DBThermalMonitor *)self level];
-    if (v10 == 3 || v10 == 2 || v10 == 1)
+    level2 = [(DBThermalMonitor *)self level];
+    if (level2 == 3 || level2 == 2 || level2 == 1)
     {
       v6 = [MEMORY[0x277CCABB0] numberWithLong:v7];
       goto LABEL_15;
@@ -75,9 +75,9 @@ LABEL_15:
     v6 = *(v2 + 7);
     *(v2 + 7) = v5;
 
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v8 = *(v2 + 8);
-    *(v2 + 8) = v7;
+    *(v2 + 8) = weakObjectsHashTable;
 
     *(v2 + 12) = -1;
     [v2 _startListeningForThermalEvents];
@@ -103,25 +103,25 @@ LABEL_15:
   [(DBThermalMonitor *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBThermalMonitor *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(DBThermalMonitor *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBThermalMonitor *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(DBThermalMonitor *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)_startListeningForThermalEvents
 {
   v3 = *MEMORY[0x277D85DE8];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_248146000, a2, OS_LOG_TYPE_ERROR, "notify_register(cold) failed : status=%i", v2, 8u);
 }
 
@@ -174,7 +174,7 @@ void __51__DBThermalMonitor__startListeningForThermalEvents__block_invoke_46(uin
 - (void)_queue_respondToCurrentThermalCondition
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(DBThermalMonitor *)self queue];
+  queue = [(DBThermalMonitor *)self queue];
   BSDispatchQueueAssert();
 
   level = self->_level;
@@ -240,13 +240,13 @@ void __51__DBThermalMonitor__startListeningForThermalEvents__block_invoke_46(uin
       _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_DEFAULT, "Thermal level changed to %{public}@ (%{public}d)", buf, 0x12u);
     }
 
-    v12 = [(DBThermalMonitor *)self callbackQueue];
+    callbackQueue = [(DBThermalMonitor *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__DBThermalMonitor__queue_respondToCurrentThermalCondition__block_invoke;
     block[3] = &unk_278F01580;
     block[4] = self;
-    dispatch_async(v12, block);
+    dispatch_async(callbackQueue, block);
   }
 }
 

@@ -1,15 +1,15 @@
 @interface AnalyticsStoreMOHandler
-+ (id)sharedAnalyticsStoreMOHandlerWithContainer:(id)a3;
-- (AnalyticsStoreMOHandler)initWithContainer:(id)a3;
-- (BOOL)managedObjectContextSave:(BOOL)a3 reset:(BOOL)a4 release:(BOOL)a5 withError:(id *)a6;
-- (BOOL)saveManagedObjectContextWithError:(id *)a3;
-- (BOOL)setBssManagedObjectPropertyValueForKeyWithoutSave:(id)a3 forKey:(id)a4 withValue:(id)a5;
-- (BOOL)setNetworkManagedObjectPropertyValueForKeyWithoutSave:(id)a3 forKey:(id)a4 withValue:(id)a5;
++ (id)sharedAnalyticsStoreMOHandlerWithContainer:(id)container;
+- (AnalyticsStoreMOHandler)initWithContainer:(id)container;
+- (BOOL)managedObjectContextSave:(BOOL)save reset:(BOOL)reset release:(BOOL)release withError:(id *)error;
+- (BOOL)saveManagedObjectContextWithError:(id *)error;
+- (BOOL)setBssManagedObjectPropertyValueForKeyWithoutSave:(id)save forKey:(id)key withValue:(id)value;
+- (BOOL)setNetworkManagedObjectPropertyValueForKeyWithoutSave:(id)save forKey:(id)key withValue:(id)value;
 - (id)managedObjectContext;
-- (void)contextDidSave:(id)a3;
+- (void)contextDidSave:(id)save;
 - (void)dealloc;
-- (void)performBlockOnManagedObjectContext:(id)a3 block:(id)a4;
-- (void)performBlockOnManagedObjectContextForNSData:(id)a3 withDate:(id)a4 block:(id)a5;
+- (void)performBlockOnManagedObjectContext:(id)context block:(id)block;
+- (void)performBlockOnManagedObjectContextForNSData:(id)data withDate:(id)date block:(id)block;
 - (void)releaseBackgroundMOC;
 - (void)resetManagedObjectContext;
 - (void)updateManagedObjectContextWithoutSave;
@@ -17,15 +17,15 @@
 
 @implementation AnalyticsStoreMOHandler
 
-+ (id)sharedAnalyticsStoreMOHandlerWithContainer:(id)a3
++ (id)sharedAnalyticsStoreMOHandlerWithContainer:(id)container
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  containerCopy = container;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__AnalyticsStoreMOHandler_sharedAnalyticsStoreMOHandlerWithContainer___block_invoke;
   block[3] = &unk_1E830D880;
-  v4 = v3;
+  v4 = containerCopy;
   v11 = v4;
   if (qword_1EDE5CAF0 != -1)
   {
@@ -61,16 +61,16 @@ uint64_t __70__AnalyticsStoreMOHandler_sharedAnalyticsStoreMOHandlerWithContaine
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (AnalyticsStoreMOHandler)initWithContainer:(id)a3
+- (AnalyticsStoreMOHandler)initWithContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = AnalyticsStoreMOHandler;
   v6 = [(AnalyticsStoreMOHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentContainer, a3);
+    objc_storeStrong(&v6->_persistentContainer, container);
   }
 
   return v7;
@@ -78,8 +78,8 @@ uint64_t __70__AnalyticsStoreMOHandler_sharedAnalyticsStoreMOHandlerWithContaine
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AnalyticsStoreMOHandler;
@@ -88,16 +88,16 @@ uint64_t __70__AnalyticsStoreMOHandler_sharedAnalyticsStoreMOHandlerWithContaine
 
 - (id)managedObjectContext
 {
-  v2 = [(AnalyticsStoreMOHandler *)self persistentContainer];
-  v3 = [v2 viewContext];
+  persistentContainer = [(AnalyticsStoreMOHandler *)self persistentContainer];
+  viewContext = [persistentContainer viewContext];
 
-  return v3;
+  return viewContext;
 }
 
-- (void)performBlockOnManagedObjectContext:(id)a3 block:(id)a4
+- (void)performBlockOnManagedObjectContext:(id)context block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  blockCopy = block;
   v8 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v8))
   {
@@ -105,16 +105,16 @@ uint64_t __70__AnalyticsStoreMOHandler_sharedAnalyticsStoreMOHandlerWithContaine
     _os_signpost_emit_with_name_impl(&dword_1C8460000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AnalyticsStoreMOHandler performBlock", "", buf, 2u);
   }
 
-  v9 = [(AnalyticsStoreMOHandler *)self managedObjectContext];
+  managedObjectContext = [(AnalyticsStoreMOHandler *)self managedObjectContext];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__AnalyticsStoreMOHandler_performBlockOnManagedObjectContext_block___block_invoke;
   v13[3] = &unk_1E830EAF0;
-  v14 = v6;
-  v15 = v7;
-  v10 = v6;
-  v11 = v7;
-  [v9 performBlockAndWait:v13];
+  v14 = contextCopy;
+  v15 = blockCopy;
+  v10 = contextCopy;
+  v11 = blockCopy;
+  [managedObjectContext performBlockAndWait:v13];
 
   v12 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v12))
@@ -124,11 +124,11 @@ uint64_t __70__AnalyticsStoreMOHandler_sharedAnalyticsStoreMOHandlerWithContaine
   }
 }
 
-- (void)performBlockOnManagedObjectContextForNSData:(id)a3 withDate:(id)a4 block:(id)a5
+- (void)performBlockOnManagedObjectContextForNSData:(id)data withDate:(id)date block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  dateCopy = date;
+  blockCopy = block;
   v11 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v11))
   {
@@ -136,18 +136,18 @@ uint64_t __70__AnalyticsStoreMOHandler_sharedAnalyticsStoreMOHandlerWithContaine
     _os_signpost_emit_with_name_impl(&dword_1C8460000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AnalyticsStoreMOHandler performBlockNSData", "", buf, 2u);
   }
 
-  v12 = [(AnalyticsStoreMOHandler *)self managedObjectContext];
+  managedObjectContext = [(AnalyticsStoreMOHandler *)self managedObjectContext];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __86__AnalyticsStoreMOHandler_performBlockOnManagedObjectContextForNSData_withDate_block___block_invoke;
   v17[3] = &unk_1E830EB18;
-  v19 = v9;
-  v20 = v10;
-  v18 = v8;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
-  [v12 performBlockAndWait:v17];
+  v19 = dateCopy;
+  v20 = blockCopy;
+  v18 = dataCopy;
+  v13 = dateCopy;
+  v14 = dataCopy;
+  v15 = blockCopy;
+  [managedObjectContext performBlockAndWait:v17];
 
   v16 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v16))
@@ -177,13 +177,13 @@ uint64_t __70__AnalyticsStoreMOHandler_sharedAnalyticsStoreMOHandlerWithContaine
     _os_log_impl(&dword_1C8460000, v4, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Attempting Update MOC without save", buf, 0x12u);
   }
 
-  v5 = [(AnalyticsStoreMOHandler *)self managedObjectContext];
+  managedObjectContext = [(AnalyticsStoreMOHandler *)self managedObjectContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__AnalyticsStoreMOHandler_updateManagedObjectContextWithoutSave__block_invoke;
   v8[3] = &unk_1E830D880;
   v8[4] = self;
-  [v5 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
 
   v6 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v6))
@@ -214,14 +214,14 @@ void __64__AnalyticsStoreMOHandler_updateManagedObjectContextWithoutSave__block_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveManagedObjectContextWithError:(id *)a3
+- (BOOL)saveManagedObjectContextWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   if (!self->_backgroundStoreMoHandlerMOC)
   {
     v9 = 0;
     LOBYTE(v8) = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -265,8 +265,8 @@ void __64__AnalyticsStoreMOHandler_updateManagedObjectContextWithoutSave__block_
     else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = self->_backgroundStoreMoHandlerMOC;
-      v14 = [v9 localizedDescription];
-      v15 = [v9 userInfo];
+      localizedDescription = [v9 localizedDescription];
+      userInfo = [v9 userInfo];
       *buf = 136447234;
       v24 = "[AnalyticsStoreMOHandler saveManagedObjectContextWithError:]";
       v25 = 1024;
@@ -274,9 +274,9 @@ void __64__AnalyticsStoreMOHandler_updateManagedObjectContextWithoutSave__block_
       v27 = 2048;
       v28 = v13;
       v29 = 2112;
-      v30 = v14;
+      v30 = localizedDescription;
       v31 = 2112;
-      v32 = v15;
+      v32 = userInfo;
       _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error saving context(%p): %@ %@", buf, 0x30u);
     }
 
@@ -311,11 +311,11 @@ void __64__AnalyticsStoreMOHandler_updateManagedObjectContextWithoutSave__block_
     LOBYTE(v8) = 0;
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_13:
     v18 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
 LABEL_14:
@@ -387,7 +387,7 @@ LABEL_14:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)managedObjectContextSave:(BOOL)a3 reset:(BOOL)a4 release:(BOOL)a5 withError:(id *)a6
+- (BOOL)managedObjectContextSave:(BOOL)save reset:(BOOL)reset release:(BOOL)release withError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -406,18 +406,18 @@ LABEL_14:
     v10[1] = 3221225472;
     v10[2] = __76__AnalyticsStoreMOHandler_managedObjectContextSave_reset_release_withError___block_invoke;
     v10[3] = &unk_1E830E640;
-    v11 = a3;
+    saveCopy = save;
     v10[4] = self;
     v10[5] = &v20;
     v10[6] = &v14;
-    v12 = a4;
-    v13 = a5;
+    resetCopy = reset;
+    releaseCopy = release;
     [(NSManagedObjectContext *)backgroundStoreMoHandlerMOC performBlockAndWait:v10];
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v15[5];
+    *error = v15[5];
   }
 
   v8 = *(v21 + 24);
@@ -455,7 +455,7 @@ void __76__AnalyticsStoreMOHandler_managedObjectContextSave_reset_release_withEr
   }
 }
 
-- (void)contextDidSave:(id)a3
+- (void)contextDidSave:(id)save
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = WALogCategoryDeviceStoreHandle();
@@ -471,35 +471,35 @@ void __76__AnalyticsStoreMOHandler_managedObjectContextSave_reset_release_withEr
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setBssManagedObjectPropertyValueForKeyWithoutSave:(id)a3 forKey:(id)a4 withValue:(id)a5
+- (BOOL)setBssManagedObjectPropertyValueForKeyWithoutSave:(id)save forKey:(id)key withValue:(id)value
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  saveCopy = save;
+  keyCopy = key;
+  valueCopy = value;
   v11 = objc_autoreleasePoolPush();
-  v12 = [BSSMO setBssManagedObjectPropertyValueForKey:v8 forKey:v9 withValue:v10];
+  v12 = [BSSMO setBssManagedObjectPropertyValueForKey:saveCopy forKey:keyCopy withValue:valueCopy];
   if (v12)
   {
     [(AnalyticsStoreMOHandler *)self updateManagedObjectContextWithoutSave];
     v13 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v8 bssid];
-      v15 = [v8 network];
-      v16 = [v15 ssid];
+      bssid = [saveCopy bssid];
+      network = [saveCopy network];
+      ssid = [network ssid];
       v19 = 136447490;
       v20 = "[AnalyticsStoreMOHandler setBssManagedObjectPropertyValueForKeyWithoutSave:forKey:withValue:]";
       v21 = 1024;
       v22 = 223;
       v23 = 2112;
-      v24 = v9;
+      v24 = keyCopy;
       v25 = 2112;
-      v26 = v14;
+      v26 = bssid;
       v27 = 2112;
-      v28 = v16;
+      v28 = ssid;
       v29 = 2112;
-      v30 = v10;
+      v30 = valueCopy;
       _os_log_impl(&dword_1C8460000, v13, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Updated BSSMO unparsedBeacon property for key:%@ for bssid:%@ ssid:%@ value:%@", &v19, 0x3Au);
     }
   }
@@ -522,31 +522,31 @@ void __76__AnalyticsStoreMOHandler_managedObjectContextSave_reset_release_withEr
   return v12;
 }
 
-- (BOOL)setNetworkManagedObjectPropertyValueForKeyWithoutSave:(id)a3 forKey:(id)a4 withValue:(id)a5
+- (BOOL)setNetworkManagedObjectPropertyValueForKeyWithoutSave:(id)save forKey:(id)key withValue:(id)value
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  saveCopy = save;
+  keyCopy = key;
+  valueCopy = value;
   v11 = objc_autoreleasePoolPush();
-  v12 = [NetworkMO setNetworkManagedObjectPropertyValueForKey:v8 forKey:v9 withValue:v10];
+  v12 = [NetworkMO setNetworkManagedObjectPropertyValueForKey:saveCopy forKey:keyCopy withValue:valueCopy];
   if (v12)
   {
     [(AnalyticsStoreMOHandler *)self updateManagedObjectContextWithoutSave];
     v13 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v8 ssid];
+      ssid = [saveCopy ssid];
       v17 = 136447234;
       v18 = "[AnalyticsStoreMOHandler setNetworkManagedObjectPropertyValueForKeyWithoutSave:forKey:withValue:]";
       v19 = 1024;
       v20 = 237;
       v21 = 2112;
-      v22 = v9;
+      v22 = keyCopy;
       v23 = 2112;
-      v24 = v14;
+      v24 = ssid;
       v25 = 2112;
-      v26 = v10;
+      v26 = valueCopy;
       _os_log_impl(&dword_1C8460000, v13, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Updated NetworkMO channels property for key:%@ ssid:%@ value:%@", &v17, 0x30u);
     }
   }

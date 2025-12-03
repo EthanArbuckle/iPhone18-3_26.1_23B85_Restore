@@ -4,9 +4,9 @@
 - (CGSize)iconSize;
 - (CGSize)iconSpacing;
 - (UIEdgeInsets)iconInsets;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -52,9 +52,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -87,42 +87,42 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListViewLayoutMetrics *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListViewLayoutMetrics *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListViewLayoutMetrics *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListViewLayoutMetrics *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListViewLayoutMetrics *)self succinctDescriptionBuilder];
-  v5 = [v4 appendUnsignedInteger:self->_columns withName:@"columns"];
-  v6 = [v4 appendUnsignedInteger:self->_rows withName:@"rows"];
-  v7 = [v4 appendUnsignedInteger:self->_rowsUsedForLayout withName:@"rowsUsedForLayout"];
-  v8 = [v4 appendUnsignedInteger:self->_columnsUsedForLayout withName:@"columnsUsedForLayout"];
-  v9 = [v4 appendInteger:self->_columnOffset withName:@"columnOffset"];
-  v10 = [v4 appendSize:@"iconSpacing" withName:{self->_iconSpacing.width, self->_iconSpacing.height}];
-  v11 = [v4 appendSize:@"iconSize" withName:{self->_iconSize.width, self->_iconSize.height}];
-  v12 = [v4 appendSize:@"alignmentIconSize" withName:{self->_alignmentIconSize.width, self->_alignmentIconSize.height}];
-  v13 = [v4 appendSize:@"iconImageSize" withName:{self->_iconImageSize.width, self->_iconImageSize.height}];
-  v14 = [v4 appendFloat:@"iconContentScale" withName:self->_iconContentScale];
+  succinctDescriptionBuilder = [(SBIconListViewLayoutMetrics *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendUnsignedInteger:self->_columns withName:@"columns"];
+  v6 = [succinctDescriptionBuilder appendUnsignedInteger:self->_rows withName:@"rows"];
+  v7 = [succinctDescriptionBuilder appendUnsignedInteger:self->_rowsUsedForLayout withName:@"rowsUsedForLayout"];
+  v8 = [succinctDescriptionBuilder appendUnsignedInteger:self->_columnsUsedForLayout withName:@"columnsUsedForLayout"];
+  v9 = [succinctDescriptionBuilder appendInteger:self->_columnOffset withName:@"columnOffset"];
+  v10 = [succinctDescriptionBuilder appendSize:@"iconSpacing" withName:{self->_iconSpacing.width, self->_iconSpacing.height}];
+  v11 = [succinctDescriptionBuilder appendSize:@"iconSize" withName:{self->_iconSize.width, self->_iconSize.height}];
+  v12 = [succinctDescriptionBuilder appendSize:@"alignmentIconSize" withName:{self->_alignmentIconSize.width, self->_alignmentIconSize.height}];
+  v13 = [succinctDescriptionBuilder appendSize:@"iconImageSize" withName:{self->_iconImageSize.width, self->_iconImageSize.height}];
+  v14 = [succinctDescriptionBuilder appendFloat:@"iconContentScale" withName:self->_iconContentScale];
   v15 = NSStringFromUIEdgeInsets(self->_iconInsets);
-  [v4 appendString:v15 withName:@"iconInsets"];
+  [succinctDescriptionBuilder appendString:v15 withName:@"iconInsets"];
 
-  v16 = [v4 appendObject:self->_gridCellInfo withName:@"gridCellInfo"];
-  v17 = [v4 appendBool:self->_adjustedInsetsToFit withName:@"adjustedInsetsToFit"];
-  v18 = [v4 appendBool:self->_adjustedIconContentScaleToFit withName:@"adjustedIconContentScaleToFit"];
-  v19 = [v4 appendBool:self->_needsHorizontalColumnBumps withName:@"needsHorizontalColumnBumps"];
+  v16 = [succinctDescriptionBuilder appendObject:self->_gridCellInfo withName:@"gridCellInfo"];
+  v17 = [succinctDescriptionBuilder appendBool:self->_adjustedInsetsToFit withName:@"adjustedInsetsToFit"];
+  v18 = [succinctDescriptionBuilder appendBool:self->_adjustedIconContentScaleToFit withName:@"adjustedIconContentScaleToFit"];
+  v19 = [succinctDescriptionBuilder appendBool:self->_needsHorizontalColumnBumps withName:@"needsHorizontalColumnBumps"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)iconImageSize

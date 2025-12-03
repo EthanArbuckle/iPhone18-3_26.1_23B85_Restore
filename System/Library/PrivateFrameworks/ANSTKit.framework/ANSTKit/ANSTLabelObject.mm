@@ -1,7 +1,7 @@
 @interface ANSTLabelObject
 + (id)new;
 - (ANSTLabelObject)init;
-- (ANSTLabelObject)initWithObjectID:(unint64_t)a3 category:(id)a4 boundingBox:(CGRect)a5 confidence:(float)a6;
+- (ANSTLabelObject)initWithObjectID:(unint64_t)d category:(id)category boundingBox:(CGRect)box confidence:(float)confidence;
 @end
 
 @implementation ANSTLabelObject
@@ -15,25 +15,25 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTLabelObject)initWithObjectID:(unint64_t)a3 category:(id)a4 boundingBox:(CGRect)a5 confidence:(float)a6
+- (ANSTLabelObject)initWithObjectID:(unint64_t)d category:(id)category boundingBox:(CGRect)box confidence:(float)confidence
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  categoryCopy = category;
   v18.receiver = self;
   v18.super_class = ANSTLabelObject;
-  v15 = [(ANSTObject *)&v18 initWithObjectID:a3 groupID:0 category:@"Label" boundingBox:(a6 * 1000.0) confidence:x distance:y, width, height, 0.0];
+  v15 = [(ANSTObject *)&v18 initWithObjectID:d groupID:0 category:@"Label" boundingBox:(confidence * 1000.0) confidence:x distance:y, width, height, 0.0];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_label, a4);
+    objc_storeStrong(&v15->_label, category);
   }
 
   return v16;

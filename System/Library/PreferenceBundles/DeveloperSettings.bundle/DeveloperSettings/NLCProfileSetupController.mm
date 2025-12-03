@@ -1,6 +1,6 @@
 @interface NLCProfileSetupController
 - (NLCProfileSetupController)init;
-- (void)navigationBar:(id)a3 buttonClicked:(int)a4;
+- (void)navigationBar:(id)bar buttonClicked:(int)clicked;
 - (void)setupController;
 @end
 
@@ -30,18 +30,18 @@
   }
 }
 
-- (void)navigationBar:(id)a3 buttonClicked:(int)a4
+- (void)navigationBar:(id)bar buttonClicked:(int)clicked
 {
-  v7 = a3;
+  barCopy = bar;
   if (dword_49FB0)
   {
     NSLog(@"NLCProfileSetupController navigationBar buttonClicked");
   }
 
-  if (!a4)
+  if (!clicked)
   {
-    v6 = [(NLCProfileSetupController *)self topViewController];
-    [v6 performSelector:"saveButtonClicked:" withObject:0];
+    topViewController = [(NLCProfileSetupController *)self topViewController];
+    [topViewController performSelector:"saveButtonClicked:" withObject:0];
   }
 
   [(NLCProfileSetupController *)self dismiss];

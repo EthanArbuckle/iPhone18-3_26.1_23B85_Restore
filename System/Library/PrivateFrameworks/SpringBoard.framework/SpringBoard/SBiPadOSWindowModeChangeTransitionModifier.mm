@@ -1,27 +1,27 @@
 @interface SBiPadOSWindowModeChangeTransitionModifier
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (SBiPadOSWindowModeChangeTransitionModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5;
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (SBiPadOSWindowModeChangeTransitionModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout;
+- (unint64_t)maskedCornersForIndex:(unint64_t)index;
 @end
 
 @implementation SBiPadOSWindowModeChangeTransitionModifier
 
-- (SBiPadOSWindowModeChangeTransitionModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5
+- (SBiPadOSWindowModeChangeTransitionModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout
 {
-  v10 = a4;
-  v11 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v14.receiver = self;
   v14.super_class = SBiPadOSWindowModeChangeTransitionModifier;
-  v12 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:a3];
+  v12 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:d];
   if (v12)
   {
-    if (v10)
+    if (layoutCopy)
     {
-      if (v11)
+      if (appLayoutCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v12->_fromAppLayout, a4);
-        objc_storeStrong(&v12->_toAppLayout, a5);
+        objc_storeStrong(&v12->_fromAppLayout, layout);
+        objc_storeStrong(&v12->_toAppLayout, appLayout);
         goto LABEL_5;
       }
     }
@@ -29,7 +29,7 @@ LABEL_4:
     else
     {
       [SBiPadOSWindowModeChangeTransitionModifier initWithTransitionID:a2 fromAppLayout:v12 toAppLayout:?];
-      if (v11)
+      if (appLayoutCopy)
       {
         goto LABEL_4;
       }
@@ -44,10 +44,10 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:v6]|| [(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:v6])
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_fromAppLayout containsAnyItemFromAppLayout:layoutCopy]|| [(SBAppLayout *)self->_toAppLayout containsAnyItemFromAppLayout:layoutCopy])
   {
     v7 = 1;
   }
@@ -56,24 +56,24 @@ LABEL_5:
   {
     v9.receiver = self;
     v9.super_class = SBiPadOSWindowModeChangeTransitionModifier;
-    v7 = [(SBiPadOSWindowModeChangeTransitionModifier *)&v9 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
+    v7 = [(SBiPadOSWindowModeChangeTransitionModifier *)&v9 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3
+- (unint64_t)maskedCornersForIndex:(unint64_t)index
 {
-  v5 = [(SBiPadOSWindowModeChangeTransitionModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBiPadOSWindowModeChangeTransitionModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v11.receiver = self;
   v11.super_class = SBiPadOSWindowModeChangeTransitionModifier;
-  v7 = [(SBTransitionSwitcherModifier *)&v11 maskedCornersForIndex:a3];
+  v7 = [(SBTransitionSwitcherModifier *)&v11 maskedCornersForIndex:index];
   if ([(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:v6])
   {
-    v8 = [(SBiPadOSWindowModeChangeTransitionModifier *)self windowManagementContext];
-    if ([v8 isChamoisOrFlexibleWindowing])
+    windowManagementContext = [(SBiPadOSWindowModeChangeTransitionModifier *)self windowManagementContext];
+    if ([windowManagementContext isChamoisOrFlexibleWindowing])
     {
       v9 = [(SBiPadOSWindowModeChangeTransitionModifier *)self appLayoutContainsAnUnoccludedMaximizedDisplayItem:v6];
 

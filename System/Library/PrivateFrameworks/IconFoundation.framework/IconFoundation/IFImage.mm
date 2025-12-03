@@ -1,25 +1,25 @@
 @interface IFImage
 + (CGColorSpace)defaultCGColorSpace;
-+ (CGImage)createCGImageWithIFImageData:(id)a3;
-+ (CGImage)escapingCGImageWithCGImage:(CGImage *)a3;
-+ (id)_layerDataFromIFImageData:(id)a3;
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)imageWithContentsOfURL:(id)a3;
-- (BOOL)writeToURL:(id)a3 options:(id)a4;
++ (CGImage)createCGImageWithIFImageData:(id)data;
++ (CGImage)escapingCGImageWithCGImage:(CGImage *)image;
++ (id)_layerDataFromIFImageData:(id)data;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)imageWithContentsOfURL:(id)l;
+- (BOOL)writeToURL:(id)l options:(id)options;
 - (CGSize)pixelSize;
-- (IFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4;
-- (IFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 finalizedIcon:(id)a5;
-- (IFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 layerData:(id)a5;
-- (IFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 minimumSize:(CGSize)a5 placeholder:(BOOL)a6;
-- (IFImage)initWithCoder:(id)a3;
-- (IFImage)initWithContentsOfURL:(id)a3;
-- (IFImage)initWithContentsOfURL:(id)a3 scale:(double)a4;
-- (IFImage)initWithData:(id)a3 uuid:(id)a4 validationToken:(id)a5;
-- (IFImage)initWithIOSurface:(__IOSurface *)a3 scale:(double)a4;
+- (IFImage)initWithCGImage:(CGImage *)image scale:(double)scale;
+- (IFImage)initWithCGImage:(CGImage *)image scale:(double)scale finalizedIcon:(id)icon;
+- (IFImage)initWithCGImage:(CGImage *)image scale:(double)scale layerData:(id)data;
+- (IFImage)initWithCGImage:(CGImage *)image scale:(double)scale minimumSize:(CGSize)size placeholder:(BOOL)placeholder;
+- (IFImage)initWithCoder:(id)coder;
+- (IFImage)initWithContentsOfURL:(id)l;
+- (IFImage)initWithContentsOfURL:(id)l scale:(double)scale;
+- (IFImage)initWithData:(id)data uuid:(id)uuid validationToken:(id)token;
+- (IFImage)initWithIOSurface:(__IOSurface *)surface scale:(double)scale;
 - (NSData)bitmapData;
 - (double)dimension;
 - (id)_init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IFImage
@@ -64,10 +64,10 @@ CGColorSpaceRef __30__IFImage_defaultCGColorSpace__block_invoke()
   return result;
 }
 
-+ (id)imageWithContentsOfURL:(id)a3
++ (id)imageWithContentsOfURL:(id)l
 {
-  v3 = a3;
-  v4 = [[IFImage alloc] initWithContentsOfURL:v3];
+  lCopy = l;
+  v4 = [[IFImage alloc] initWithContentsOfURL:lCopy];
 
   if ([(IFImage *)v4 CGImage])
   {
@@ -82,16 +82,16 @@ CGColorSpaceRef __30__IFImage_defaultCGColorSpace__block_invoke()
   return v5;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __25__IFImage_allocWithZone___block_invoke;
     block[3] = &__block_descriptor_48_e5_v8__0l;
-    block[4] = a3;
-    block[5] = a1;
+    block[4] = zone;
+    block[5] = self;
     if (allocWithZone__onceToken != -1)
     {
       dispatch_once(&allocWithZone__onceToken, block);
@@ -104,9 +104,9 @@ CGColorSpaceRef __30__IFImage_defaultCGColorSpace__block_invoke()
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___IFImage;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
@@ -120,32 +120,32 @@ void __25__IFImage_allocWithZone___block_invoke(uint64_t a1)
   allocWithZone__imageFactory = v2;
 }
 
-+ (CGImage)createCGImageWithIFImageData:(id)a3
++ (CGImage)createCGImageWithIFImageData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 __IS_imageHeader];
-  if (!v4)
+  dataCopy = data;
+  __IS_imageHeader = [dataCopy __IS_imageHeader];
+  if (!__IS_imageHeader)
   {
     goto LABEL_33;
   }
 
-  v6 = v4;
-  if (*v4 != 9)
+  v6 = __IS_imageHeader;
+  if (*__IS_imageHeader != 9)
   {
     goto LABEL_33;
   }
 
-  LODWORD(v5) = *(v4 + 12);
+  LODWORD(v5) = *(__IS_imageHeader + 12);
   v7 = v5;
-  v8 = *(v4 + 36) * v7;
-  v9 = *(v4 + 32) * v7;
+  v8 = *(__IS_imageHeader + 36) * v7;
+  v9 = *(__IS_imageHeader + 32) * v7;
   if (v9 == *MEMORY[0x1E695F060] && v8 == *(MEMORY[0x1E695F060] + 8))
   {
     goto LABEL_33;
   }
 
-  v11 = *(v4 + 4);
-  v12 = [IFGraphicsContext colorSpaceFromPixelFormat:*(v4 + 40)];
+  v11 = *(__IS_imageHeader + 4);
+  v12 = [IFGraphicsContext colorSpaceFromPixelFormat:*(__IS_imageHeader + 40)];
   if (!v12)
   {
     v20 = IFDefaultLog();
@@ -158,9 +158,9 @@ void __25__IFImage_allocWithZone___block_invoke(uint64_t a1)
   }
 
   v13 = v12;
-  v14 = v3;
-  v15 = [v14 bytes];
-  v16 = CGDataProviderCreateWithData(v14, (v15 + 48), v11, MEMORY[0x1E695D7C0]);
+  v14 = dataCopy;
+  bytes = [v14 bytes];
+  v16 = CGDataProviderCreateWithData(v14, (bytes + 48), v11, MEMORY[0x1E695D7C0]);
   if (!v16)
   {
 LABEL_33:
@@ -264,12 +264,12 @@ LABEL_36:
   return v24;
 }
 
-+ (id)_layerDataFromIFImageData:(id)a3
++ (id)_layerDataFromIFImageData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (!dataCopy)
   {
     v8 = IFDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -280,8 +280,8 @@ LABEL_36:
     goto LABEL_21;
   }
 
-  v5 = [v3 __IS_imageHeader];
-  if (!v5)
+  __IS_imageHeader = [dataCopy __IS_imageHeader];
+  if (!__IS_imageHeader)
   {
     v8 = IFDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -292,7 +292,7 @@ LABEL_36:
     goto LABEL_21;
   }
 
-  v6 = *(v5 + 8);
+  v6 = *(__IS_imageHeader + 8);
   if (!v6)
   {
     v8 = IFDefaultLog();
@@ -305,7 +305,7 @@ LABEL_36:
     goto LABEL_21;
   }
 
-  v7 = *(v5 + 4);
+  v7 = *(__IS_imageHeader + 4);
   if ([v4 length] < v6)
   {
     v8 = IFDefaultLog();
@@ -392,25 +392,25 @@ LABEL_22:
   return v14;
 }
 
-- (IFImage)initWithCoder:(id)a3
+- (IFImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 _IF_decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy _IF_decodeObjectOfClass:objc_opt_class() forKey:@"data"];
 
   v6 = [objc_alloc(objc_opt_class()) initWithData:v5 uuid:0];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IFImage(ISImagePriv) *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(IFImage(ISImagePriv) *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (IFImage)initWithContentsOfURL:(id)a3 scale:(double)a4
+- (IFImage)initWithContentsOfURL:(id)l scale:(double)scale
 {
-  v6 = CGImageSourceCreateWithURL(a3, 0);
+  v6 = CGImageSourceCreateWithURL(l, 0);
   if (v6)
   {
     v7 = v6;
@@ -420,7 +420,7 @@ LABEL_22:
       CFRelease(v7);
       if (ImageAtIndex)
       {
-        v9 = [[IFConcreteImage alloc] initWithCGImage:ImageAtIndex scale:a4];
+        v9 = [[IFConcreteImage alloc] initWithCGImage:ImageAtIndex scale:scale];
 
         CFRelease(ImageAtIndex);
         return &v9->super;
@@ -436,15 +436,15 @@ LABEL_22:
   return 0;
 }
 
-- (IFImage)initWithContentsOfURL:(id)a3
+- (IFImage)initWithContentsOfURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v7 = [IFResourceMetadata metadataWithFileName:v6];
-  v8 = [v7 scale];
-  [v8 doubleValue];
+  v7 = [IFResourceMetadata metadataWithFileName:stringByDeletingPathExtension];
+  scale = [v7 scale];
+  [scale doubleValue];
   v10 = v9;
 
   if (v10 < 1.0)
@@ -452,30 +452,30 @@ LABEL_22:
     v10 = 1.0;
   }
 
-  v11 = CGImageSourceCreateWithURL(v4, 0);
+  v11 = CGImageSourceCreateWithURL(lCopy, 0);
 
   if (v11)
   {
     if (CGImageSourceGetCount(v11))
     {
       ImageAtIndex = CGImageSourceCreateImageAtIndex(v11, 0, 0);
-      v13 = [v7 scale];
+      scale2 = [v7 scale];
 
-      if (!v13)
+      if (!scale2)
       {
         v14 = CGImageSourceCopyPropertiesAtIndex(v11, 0, 0);
         v15 = [(__CFDictionary *)v14 _IF_numberForKey:*MEMORY[0x1E696D880]];
         if (v15 || ([(__CFDictionary *)v14 _IF_numberForKey:*MEMORY[0x1E696D888]], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v16 = v15;
-          v17 = [v15 integerValue];
-          v18 = v17 / 72;
-          if (v17 / 72 <= 1)
+          integerValue = [v15 integerValue];
+          v18 = integerValue / 72;
+          if (integerValue / 72 <= 1)
           {
             v18 = 1;
           }
 
-          if (v17 <= 287)
+          if (integerValue <= 287)
           {
             v10 = v18;
           }
@@ -511,37 +511,37 @@ LABEL_22:
   return &v19->super;
 }
 
-- (IFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4
+- (IFImage)initWithCGImage:(CGImage *)image scale:(double)scale
 {
-  v5 = [[IFConcreteImage alloc] initWithCGImage:a3 scale:a4];
+  v5 = [[IFConcreteImage alloc] initWithCGImage:image scale:scale];
 
   return &v5->super;
 }
 
-- (IFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 layerData:(id)a5
+- (IFImage)initWithCGImage:(CGImage *)image scale:(double)scale layerData:(id)data
 {
-  v8 = a5;
-  v9 = [[IFConcreteImage alloc] initWithCGImage:a3 scale:v8 layerData:a4];
+  dataCopy = data;
+  v9 = [[IFConcreteImage alloc] initWithCGImage:image scale:dataCopy layerData:scale];
 
   return &v9->super;
 }
 
-- (IFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 finalizedIcon:(id)a5
+- (IFImage)initWithCGImage:(CGImage *)image scale:(double)scale finalizedIcon:(id)icon
 {
-  v8 = a5;
-  v9 = [[IFConcreteImage alloc] initWithCGImage:a3 scale:v8 finalizedIcon:a4];
+  iconCopy = icon;
+  v9 = [[IFConcreteImage alloc] initWithCGImage:image scale:iconCopy finalizedIcon:scale];
 
   return &v9->super;
 }
 
-- (IFImage)initWithIOSurface:(__IOSurface *)a3 scale:(double)a4
+- (IFImage)initWithIOSurface:(__IOSurface *)surface scale:(double)scale
 {
-  v5 = [[IFConcreteImage alloc] initWithIOSurface:a3 scale:a4];
+  v5 = [[IFConcreteImage alloc] initWithIOSurface:surface scale:scale];
 
   return &v5->super;
 }
 
-+ (CGImage)escapingCGImageWithCGImage:(CGImage *)a3
++ (CGImage)escapingCGImageWithCGImage:(CGImage *)image
 {
   if (CGImageGetProperty() == *MEMORY[0x1E695E4D0])
   {
@@ -551,8 +551,8 @@ LABEL_22:
       +[IFImage escapingCGImageWithCGImage:];
     }
 
-    CGImageGetWidth(a3);
-    CGImageGetHeight(a3);
+    CGImageGetWidth(image);
+    CGImageGetHeight(image);
     CGImageGetImageProvider();
     v6 = CGImageProviderCopyImageBlockSet();
     if (v6)
@@ -583,7 +583,7 @@ LABEL_22:
     }
   }
 
-  return a3;
+  return image;
 }
 
 - (CGSize)pixelSize
@@ -599,43 +599,43 @@ LABEL_22:
   return result;
 }
 
-- (IFImage)initWithData:(id)a3 uuid:(id)a4 validationToken:(id)a5
+- (IFImage)initWithData:(id)data uuid:(id)uuid validationToken:(id)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[IFCacheImage alloc] initWithData:v10 uuid:v9 validationToken:v8];
+  tokenCopy = token;
+  uuidCopy = uuid;
+  dataCopy = data;
+  v11 = [[IFCacheImage alloc] initWithData:dataCopy uuid:uuidCopy validationToken:tokenCopy];
 
   return &v11->super.super;
 }
 
-- (IFImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 minimumSize:(CGSize)a5 placeholder:(BOOL)a6
+- (IFImage)initWithCGImage:(CGImage *)image scale:(double)scale minimumSize:(CGSize)size placeholder:(BOOL)placeholder
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
-  v9 = [(IFImage *)self initWithCGImage:a3 scale:a4];
+  placeholderCopy = placeholder;
+  height = size.height;
+  width = size.width;
+  v9 = [(IFImage *)self initWithCGImage:image scale:scale];
   v10 = v9;
   if (v9)
   {
     [(IFImage *)v9 setMinimumSize:width, height];
-    [(IFImage *)v10 setPlaceholder:v6];
-    [(IFImage *)v10 setValidationFlags:v6];
+    [(IFImage *)v10 setPlaceholder:placeholderCopy];
+    [(IFImage *)v10 setValidationFlags:placeholderCopy];
   }
 
   return v10;
 }
 
-- (BOOL)writeToURL:(id)a3 options:(id)a4
+- (BOOL)writeToURL:(id)l options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IFImage *)self CGImage];
-  v9 = CGImageDestinationCreateWithURL(v7, *MEMORY[0x1E6963860], 1uLL, 0);
+  optionsCopy = options;
+  lCopy = l;
+  cGImage = [(IFImage *)self CGImage];
+  v9 = CGImageDestinationCreateWithURL(lCopy, *MEMORY[0x1E6963860], 1uLL, 0);
 
   if (v9)
   {
-    v10 = v8 == 0;
+    v10 = cGImage == 0;
   }
 
   else
@@ -645,7 +645,7 @@ LABEL_22:
 
   if (!v10)
   {
-    CGImageDestinationAddImage(v9, v8, v6);
+    CGImageDestinationAddImage(v9, cGImage, optionsCopy);
     v12 = CGImageDestinationFinalize(v9);
 LABEL_7:
     CFRelease(v9);
@@ -676,12 +676,12 @@ LABEL_8:
     v7 = v6;
     [(IFImage *)self scale];
     v9 = [IFGraphicsContext bitmapContextWithSize:0 scale:v5 preset:v7, v8];
-    v10 = [(IFImage *)self CGImage];
+    cGImage = [(IFImage *)self CGImage];
     [(IFImage *)self size];
     v12 = v11;
     [(IFImage *)self size];
-    [v9 drawCGImage:v10 inRect:{0.0, 0.0, v12, v13}];
-    v14 = [v9 data];
+    [v9 drawCGImage:cGImage inRect:{0.0, 0.0, v12, v13}];
+    data = [v9 data];
     [(IFImage *)self size];
     v16 = v15;
     v18 = v17;
@@ -696,9 +696,9 @@ LABEL_8:
     v43 = v24;
     LODWORD(v35) = 9;
     v37 = v25;
-    HIDWORD(v35) = [v14 length];
-    v26 = [(IFImage *)self layerData];
-    v36 = [v26 length];
+    HIDWORD(v35) = [data length];
+    layerData = [(IFImage *)self layerData];
+    v36 = [layerData length];
 
     v27 = v20;
     v28 = v22;
@@ -712,9 +712,9 @@ LABEL_8:
     v39 = v31;
     v32 = objc_opt_new();
     [v32 appendBytes:&v35 length:48];
-    [v32 appendData:v14];
-    v33 = [(IFImage *)self layerData];
-    [v32 appendData:v33];
+    [v32 appendData:data];
+    layerData2 = [(IFImage *)self layerData];
+    [v32 appendData:layerData2];
 
     v3 = [v32 copy];
   }

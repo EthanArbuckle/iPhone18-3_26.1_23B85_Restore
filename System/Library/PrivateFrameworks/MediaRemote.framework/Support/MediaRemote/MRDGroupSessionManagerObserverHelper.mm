@@ -1,65 +1,65 @@
 @interface MRDGroupSessionManagerObserverHelper
-- (void)manager:(id)a3 activeSessionDidChange:(id)a4;
-- (void)manager:(id)a3 didEndHostedGroupSession:(id)a4;
-- (void)manager:(id)a3 didJoinRemoteGroupSession:(id)a4;
-- (void)manager:(id)a3 didLeaveRemoteGroupSession:(id)a4;
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4;
-- (void)manager:(id)a3 discoveredSessionsDidChange:(id)a4;
+- (void)manager:(id)manager activeSessionDidChange:(id)change;
+- (void)manager:(id)manager didEndHostedGroupSession:(id)session;
+- (void)manager:(id)manager didJoinRemoteGroupSession:(id)session;
+- (void)manager:(id)manager didLeaveRemoteGroupSession:(id)session;
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session;
+- (void)manager:(id)manager discoveredSessionsDidChange:(id)change;
 @end
 
 @implementation MRDGroupSessionManagerObserverHelper
 
-- (void)manager:(id)a3 activeSessionDidChange:(id)a4
+- (void)manager:(id)manager activeSessionDidChange:(id)change
 {
   activeSessionDidChange = self->_activeSessionDidChange;
   if (activeSessionDidChange)
   {
-    activeSessionDidChange[2](activeSessionDidChange, a4);
+    activeSessionDidChange[2](activeSessionDidChange, change);
   }
 }
 
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session
 {
   didStartHostedGroupSession = self->_didStartHostedGroupSession;
   if (didStartHostedGroupSession)
   {
-    didStartHostedGroupSession[2](didStartHostedGroupSession, a4);
+    didStartHostedGroupSession[2](didStartHostedGroupSession, session);
   }
 }
 
-- (void)manager:(id)a3 didEndHostedGroupSession:(id)a4
+- (void)manager:(id)manager didEndHostedGroupSession:(id)session
 {
   didEndHostedGroupSession = self->_didEndHostedGroupSession;
   if (didEndHostedGroupSession)
   {
-    didEndHostedGroupSession[2](didEndHostedGroupSession, a4);
+    didEndHostedGroupSession[2](didEndHostedGroupSession, session);
   }
 }
 
-- (void)manager:(id)a3 didJoinRemoteGroupSession:(id)a4
+- (void)manager:(id)manager didJoinRemoteGroupSession:(id)session
 {
   didJoinRemoteGroupSession = self->_didJoinRemoteGroupSession;
   if (didJoinRemoteGroupSession)
   {
-    didJoinRemoteGroupSession[2](didJoinRemoteGroupSession, a4);
+    didJoinRemoteGroupSession[2](didJoinRemoteGroupSession, session);
   }
 }
 
-- (void)manager:(id)a3 didLeaveRemoteGroupSession:(id)a4
+- (void)manager:(id)manager didLeaveRemoteGroupSession:(id)session
 {
   didLeaveRemoteGroupSession = self->_didLeaveRemoteGroupSession;
   if (didLeaveRemoteGroupSession)
   {
-    didLeaveRemoteGroupSession[2](didLeaveRemoteGroupSession, a4);
+    didLeaveRemoteGroupSession[2](didLeaveRemoteGroupSession, session);
   }
 }
 
-- (void)manager:(id)a3 discoveredSessionsDidChange:(id)a4
+- (void)manager:(id)manager discoveredSessionsDidChange:(id)change
 {
   discoveredSessionsDidChange = self->_discoveredSessionsDidChange;
   if (discoveredSessionsDidChange)
   {
-    discoveredSessionsDidChange[2](discoveredSessionsDidChange, a4);
+    discoveredSessionsDidChange[2](discoveredSessionsDidChange, change);
   }
 }
 

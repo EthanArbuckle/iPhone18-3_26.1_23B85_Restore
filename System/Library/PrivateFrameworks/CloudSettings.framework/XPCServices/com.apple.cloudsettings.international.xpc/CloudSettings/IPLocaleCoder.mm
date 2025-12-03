@@ -1,13 +1,13 @@
 @interface IPLocaleCoder
 + (id)localePreferenceKeysAndClasses;
-+ (id)localeWithPreferences:(id)a3;
-- (IPLocaleCoder)initWithDictionary:(id)a3;
-- (IPLocaleCoder)initWithLocaleIdentifier:(id)a3;
++ (id)localeWithPreferences:(id)preferences;
+- (IPLocaleCoder)initWithDictionary:(id)dictionary;
+- (IPLocaleCoder)initWithLocaleIdentifier:(id)identifier;
 - (NSString)localeIdentifier;
 - (id)locale;
 - (id)preferences;
-- (void)setLanguageIdentifier:(id)a3;
-- (void)setLocaleIdentifier:(id)a3;
+- (void)setLanguageIdentifier:(id)identifier;
+- (void)setLocaleIdentifier:(id)identifier;
 @end
 
 @implementation IPLocaleCoder
@@ -29,21 +29,21 @@
   return v2;
 }
 
-+ (id)localeWithPreferences:(id)a3
++ (id)localeWithPreferences:(id)preferences
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"AppleLocale"];
+  preferencesCopy = preferences;
+  v4 = [preferencesCopy objectForKey:@"AppleLocale"];
   if (!qword_1000088D0)
   {
     v5 = +[NSMutableDictionary dictionary];
-    v6 = [objc_opt_class() localePreferenceKeysAndClasses];
+    localePreferenceKeysAndClasses = [objc_opt_class() localePreferenceKeysAndClasses];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100001088;
     v13[3] = &unk_1000041F8;
     v14 = v5;
     v7 = v5;
-    [v6 enumerateKeysAndObjectsUsingBlock:v13];
+    [localePreferenceKeysAndClasses enumerateKeysAndObjectsUsingBlock:v13];
 
     v8 = [v7 copy];
     v9 = qword_1000088D0;
@@ -51,80 +51,80 @@
   }
 
   v10 = [NSMutableDictionary dictionaryWithDictionary:?];
-  [v10 setValuesForKeysWithDictionary:v3];
+  [v10 setValuesForKeysWithDictionary:preferencesCopy];
 
   v11 = _CFLocaleCopyAsIfCurrentWithOverrides();
 
   return v11;
 }
 
-- (IPLocaleCoder)initWithLocaleIdentifier:(id)a3
+- (IPLocaleCoder)initWithLocaleIdentifier:(id)identifier
 {
   v8 = @"AppleLocale";
-  v9 = a3;
-  v4 = a3;
-  v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  v5 = [NSDictionary dictionaryWithObjects:&identifierCopy forKeys:&v8 count:1];
 
   v6 = [(IPLocaleCoder *)self initWithDictionary:v5];
   return v6;
 }
 
-- (IPLocaleCoder)initWithDictionary:(id)a3
+- (IPLocaleCoder)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = IPLocaleCoder;
   v5 = [(IPLocaleCoder *)&v8 init];
   if (v5)
   {
-    v6 = [NSMutableDictionary dictionaryWithDictionary:v4];
+    v6 = [NSMutableDictionary dictionaryWithDictionary:dictionaryCopy];
     [(IPLocaleCoder *)v5 setMutablePreferences:v6];
   }
 
   return v5;
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v4 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"*** setLocaleIdentifier: object cannot be nil" userInfo:0];
     [v4 raise];
   }
 
   [(IPLocaleCoder *)self willChangeValueForKey:@"localeIdentifier"];
-  v5 = [(IPLocaleCoder *)self mutablePreferences];
-  v6 = [NSLocale canonicalLocaleIdentifierFromString:v7];
-  [v5 setObject:v6 forKey:@"AppleLocale"];
+  mutablePreferences = [(IPLocaleCoder *)self mutablePreferences];
+  v6 = [NSLocale canonicalLocaleIdentifierFromString:identifierCopy];
+  [mutablePreferences setObject:v6 forKey:@"AppleLocale"];
 
   [(IPLocaleCoder *)self didChangeValueForKey:@"localeIdentifier"];
 }
 
 - (NSString)localeIdentifier
 {
-  v2 = [(IPLocaleCoder *)self mutablePreferences];
-  v3 = [v2 objectForKey:@"AppleLocale"];
+  mutablePreferences = [(IPLocaleCoder *)self mutablePreferences];
+  v3 = [mutablePreferences objectForKey:@"AppleLocale"];
   v4 = [NSLocale canonicalLocaleIdentifierFromString:v3];
 
   return v4;
 }
 
-- (void)setLanguageIdentifier:(id)a3
+- (void)setLanguageIdentifier:(id)identifier
 {
-  v12 = a3;
-  if (!v12)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v4 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"*** setLanguageIdentifier: object cannot be nil" userInfo:0];
     [v4 raise];
   }
 
   [(IPLocaleCoder *)self willChangeValueForKey:@"languageIdentifier"];
-  v5 = [NSLocale componentsFromLocaleIdentifier:v12];
+  v5 = [NSLocale componentsFromLocaleIdentifier:identifierCopy];
   v6 = [v5 objectForKey:NSLocaleLanguageCode];
   v7 = [v5 objectForKey:NSLocaleScriptCode];
-  v8 = [(IPLocaleCoder *)self localeIdentifier];
-  v9 = [NSLocale componentsFromLocaleIdentifier:v8];
+  localeIdentifier = [(IPLocaleCoder *)self localeIdentifier];
+  v9 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier];
   v10 = [v9 mutableCopy];
 
   [v10 setObject:v6 forKey:NSLocaleLanguageCode];
@@ -146,8 +146,8 @@
 
 - (id)preferences
 {
-  v2 = [(IPLocaleCoder *)self mutablePreferences];
-  v3 = [v2 mutableCopy];
+  mutablePreferences = [(IPLocaleCoder *)self mutablePreferences];
+  v3 = [mutablePreferences mutableCopy];
 
   return v3;
 }
@@ -155,8 +155,8 @@
 - (id)locale
 {
   v3 = objc_opt_class();
-  v4 = [(IPLocaleCoder *)self preferences];
-  v5 = [v3 localeWithPreferences:v4];
+  preferences = [(IPLocaleCoder *)self preferences];
+  v5 = [v3 localeWithPreferences:preferences];
 
   return v5;
 }

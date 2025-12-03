@@ -1,9 +1,9 @@
 @interface SSApplicationScreenshotSupplementalDataCapturer
-+ (id)settingsForDocumentCapture:(BOOL)a3 elementIdentifier:(id)a4;
++ (id)settingsForDocumentCapture:(BOOL)capture elementIdentifier:(id)identifier;
 - (SSApplicationScreenshotSupplementalDataCapturer)init;
-- (void)_sendRequestForEnvironmentElement:(id)a3 info:(id)a4 completionBlock:(id)a5;
-- (void)captureDocumentForEnvironmentElement:(id)a3 withCompletionBlock:(id)a4;
-- (void)captureMetadataForEnvironmentElement:(id)a3 withCompletionBlock:(id)a4;
+- (void)_sendRequestForEnvironmentElement:(id)element info:(id)info completionBlock:(id)block;
+- (void)captureDocumentForEnvironmentElement:(id)element withCompletionBlock:(id)block;
+- (void)captureMetadataForEnvironmentElement:(id)element withCompletionBlock:(id)block;
 @end
 
 @implementation SSApplicationScreenshotSupplementalDataCapturer
@@ -13,28 +13,28 @@
   v6.receiver = self;
   v6.super_class = SSApplicationScreenshotSupplementalDataCapturer;
   v2 = [(SSApplicationScreenshotSupplementalDataCapturer *)&v6 init];
-  v3 = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
   openAppService = v2->_openAppService;
-  v2->_openAppService = v3;
+  v2->_openAppService = serviceWithDefaultShellEndpoint;
 
   return v2;
 }
 
-- (void)captureMetadataForEnvironmentElement:(id)a3 withCompletionBlock:(id)a4
+- (void)captureMetadataForEnvironmentElement:(id)element withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  blockCopy = block;
   v8 = objc_opt_class();
-  v9 = [v6 elementIdentifier];
-  v10 = [v8 settingsForDocumentCapture:0 elementIdentifier:v9];
+  elementIdentifier = [elementCopy elementIdentifier];
+  v10 = [v8 settingsForDocumentCapture:0 elementIdentifier:elementIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __108__SSApplicationScreenshotSupplementalDataCapturer_captureMetadataForEnvironmentElement_withCompletionBlock___block_invoke;
   v13[3] = &unk_1E85900F0;
-  v14 = v6;
-  v15 = v7;
-  v11 = v6;
-  v12 = v7;
+  v14 = elementCopy;
+  v15 = blockCopy;
+  v11 = elementCopy;
+  v12 = blockCopy;
   [(SSApplicationScreenshotSupplementalDataCapturer *)self _sendRequestForEnvironmentElement:v11 info:v10 completionBlock:v13];
 }
 
@@ -61,21 +61,21 @@ void __108__SSApplicationScreenshotSupplementalDataCapturer_captureMetadataForEn
   }
 }
 
-- (void)captureDocumentForEnvironmentElement:(id)a3 withCompletionBlock:(id)a4
+- (void)captureDocumentForEnvironmentElement:(id)element withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  blockCopy = block;
   v8 = objc_opt_class();
-  v9 = [v6 elementIdentifier];
-  v10 = [v8 settingsForDocumentCapture:1 elementIdentifier:v9];
+  elementIdentifier = [elementCopy elementIdentifier];
+  v10 = [v8 settingsForDocumentCapture:1 elementIdentifier:elementIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __108__SSApplicationScreenshotSupplementalDataCapturer_captureDocumentForEnvironmentElement_withCompletionBlock___block_invoke;
   v13[3] = &unk_1E85900F0;
-  v14 = v6;
-  v15 = v7;
-  v11 = v6;
-  v12 = v7;
+  v14 = elementCopy;
+  v15 = blockCopy;
+  v11 = elementCopy;
+  v12 = blockCopy;
   [(SSApplicationScreenshotSupplementalDataCapturer *)self _sendRequestForEnvironmentElement:v11 info:v10 completionBlock:v13];
 }
 
@@ -102,32 +102,32 @@ void __108__SSApplicationScreenshotSupplementalDataCapturer_captureDocumentForEn
   }
 }
 
-+ (id)settingsForDocumentCapture:(BOOL)a3 elementIdentifier:(id)a4
++ (id)settingsForDocumentCapture:(BOOL)capture elementIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E698E700];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
   [v6 setFlag:BSSettingFlagForBool() forSetting:7];
-  [v6 setObject:v5 forSetting:10];
+  [v6 setObject:identifierCopy forSetting:10];
 
   return v6;
 }
 
-- (void)_sendRequestForEnvironmentElement:(id)a3 info:(id)a4 completionBlock:(id)a5
+- (void)_sendRequestForEnvironmentElement:(id)element info:(id)info completionBlock:(id)block
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 supportsMetadataCapture])
+  elementCopy = element;
+  infoCopy = info;
+  blockCopy = block;
+  if ([elementCopy supportsMetadataCapture])
   {
     v11 = objc_alloc(MEMORY[0x1E69DCEC0]);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __106__SSApplicationScreenshotSupplementalDataCapturer__sendRequestForEnvironmentElement_info_completionBlock___block_invoke;
     v20[3] = &unk_1E8590118;
-    v21 = v10;
-    v12 = [v11 initWithInfo:v9 timeout:MEMORY[0x1E69E96A0] forResponseOnQueue:v20 withHandler:0.0];
+    v21 = blockCopy;
+    v12 = [v11 initWithInfo:infoCopy timeout:MEMORY[0x1E69E96A0] forResponseOnQueue:v20 withHandler:0.0];
     v13 = MEMORY[0x1E699FB70];
     v14 = *MEMORY[0x1E699F8D0];
     v22 = v12;
@@ -140,13 +140,13 @@ void __108__SSApplicationScreenshotSupplementalDataCapturer_captureDocumentForEn
     v17 = [v13 optionsWithDictionary:v16];
 
     openAppService = self->_openAppService;
-    v19 = [v8 bundleIdentifier];
-    [(FBSOpenApplicationService *)openAppService openApplication:v19 withOptions:v17 completion:0];
+    bundleIdentifier = [elementCopy bundleIdentifier];
+    [(FBSOpenApplicationService *)openAppService openApplication:bundleIdentifier withOptions:v17 completion:0];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 

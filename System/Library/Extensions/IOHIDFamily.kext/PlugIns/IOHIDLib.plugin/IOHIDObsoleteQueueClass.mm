@@ -1,16 +1,16 @@
 @interface IOHIDObsoleteQueueClass
-- (IOHIDObsoleteQueueClass)initWithDevice:(id)a3;
-- (int)getNextEvent:(IOHIDEventStruct *)a3;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)setEventCallout:(void *)a3 callbackTarget:(void *)a4 callbackRefcon:(void *)a5;
+- (IOHIDObsoleteQueueClass)initWithDevice:(id)device;
+- (int)getNextEvent:(IOHIDEventStruct *)event;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)setEventCallout:(void *)callout callbackTarget:(void *)target callbackRefcon:(void *)refcon;
 - (void)dealloc;
 @end
 
 @implementation IOHIDObsoleteQueueClass
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(0, 0x81u, 0x38u, 0x62u, 0x9Eu, 0x6Fu, 0x14u, 0x11u, 0xD4u, 0x97u, 0xEu, 0, 5u, 2u, 0x8Fu, 0x18u, 0xD5u);
   if (!CFEqual(v6, v7))
   {
@@ -23,7 +23,7 @@
     goto LABEL_3;
   }
 
-  *a4 = &self->_interface;
+  *outInterface = &self->_interface;
   CFRetain(self);
   v8 = 0;
   if (v6)
@@ -35,10 +35,10 @@ LABEL_3:
   return v8;
 }
 
-- (int)getNextEvent:(IOHIDEventStruct *)a3
+- (int)getNextEvent:(IOHIDEventStruct *)event
 {
   value = 0;
-  if (a3)
+  if (event)
   {
     v4 = objc_msgSend_copyNextValue_(self, a2, &value);
     v5 = 0;
@@ -49,22 +49,22 @@ LABEL_3:
       v5 = objc_msgSend_initWithElementRef_(v7, v8, Element);
       objc_msgSend_setValueRef_(v5, v9, value);
       v12 = objc_msgSend_length(v5, v10, v11);
-      a3->type = objc_msgSend_type(v5, v13, v14);
-      a3->elementCookie = objc_msgSend_elementCookie(v5, v15, v16);
-      a3->timestamp = objc_msgSend_timestamp(v5, v17, v18);
+      event->type = objc_msgSend_type(v5, v13, v14);
+      event->elementCookie = objc_msgSend_elementCookie(v5, v15, v16);
+      event->timestamp = objc_msgSend_timestamp(v5, v17, v18);
       if (v12 < 5uLL)
       {
-        a3->longValueSize = 0;
-        a3->longValue = 0;
-        a3->value = objc_msgSend_integerValue(v5, v19, v20);
+        event->longValueSize = 0;
+        event->longValue = 0;
+        event->value = objc_msgSend_integerValue(v5, v19, v20);
       }
 
       else
       {
-        a3->longValueSize = v12;
-        a3->longValue = malloc_type_malloc(v12, 0x1057AD52uLL);
+        event->longValueSize = v12;
+        event->longValue = malloc_type_malloc(v12, 0x1057AD52uLL);
         BytePtr = IOHIDValueGetBytePtr(value);
-        memmove(a3->longValue, BytePtr, v12);
+        memmove(event->longValue, BytePtr, v12);
       }
 
       CFRelease(value);
@@ -81,20 +81,20 @@ LABEL_3:
   return v4;
 }
 
-- (int)setEventCallout:(void *)a3 callbackTarget:(void *)a4 callbackRefcon:(void *)a5
+- (int)setEventCallout:(void *)callout callbackTarget:(void *)target callbackRefcon:(void *)refcon
 {
-  self->_eventCallbackTarget = a4;
-  self->_eventCallbackRefcon = a5;
-  self->_eventCallback = a3;
+  self->_eventCallbackTarget = target;
+  self->_eventCallbackRefcon = refcon;
+  self->_eventCallback = callout;
   return objc_msgSend_setValueAvailableCallback_context_(self, a2, sub_29D3F3000, self);
 }
 
-- (IOHIDObsoleteQueueClass)initWithDevice:(id)a3
+- (IOHIDObsoleteQueueClass)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = IOHIDObsoleteQueueClass;
-  v5 = [(IOHIDQueueClass *)&v12 initWithDevice:v4];
+  v5 = [(IOHIDQueueClass *)&v12 initWithDevice:deviceCopy];
   if (v5)
   {
     v6 = malloc_type_malloc(0x90uLL, 0x80040BBECCAC1uLL);

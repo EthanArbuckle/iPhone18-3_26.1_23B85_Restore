@@ -1,29 +1,29 @@
 @interface VCEncryptionRules
-+ (id)supportedCipherSuitesForStreamGroupID:(unsigned int)a3 isOneToOne:(BOOL)a4;
++ (id)supportedCipherSuitesForStreamGroupID:(unsigned int)d isOneToOne:(BOOL)one;
 @end
 
 @implementation VCEncryptionRules
 
-+ (id)supportedCipherSuitesForStreamGroupID:(unsigned int)a3 isOneToOne:(BOOL)a4
++ (id)supportedCipherSuitesForStreamGroupID:(unsigned int)d isOneToOne:(BOOL)one
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E695DFA0] orderedSet];
-  v7 = v6;
+  oneCopy = one;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  v7 = orderedSet;
   v8 = &unk_1F5799708;
-  if (a3 > 1835623281)
+  if (d > 1835623281)
   {
-    if (a3 > 1935897188)
+    if (d > 1935897188)
     {
-      if (a3 != 1937339233)
+      if (d != 1937339233)
       {
         v9 = 1935897189;
         goto LABEL_13;
       }
     }
 
-    else if (a3 != 1835623282)
+    else if (d != 1835623282)
     {
-      if (a3 != 1835623287)
+      if (d != 1835623287)
       {
         goto LABEL_19;
       }
@@ -31,7 +31,7 @@
       goto LABEL_20;
     }
 
-    if (v4)
+    if (oneCopy)
     {
       v10 = &unk_1F579CF30;
       goto LABEL_18;
@@ -42,16 +42,16 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a3 <= 1667329398)
+  if (d <= 1667329398)
   {
-    if (a3 == 1650745716)
+    if (d == 1650745716)
     {
 LABEL_14:
-      if (v4)
+      if (oneCopy)
       {
         v10 = &unk_1F579CF18;
 LABEL_18:
-        [v6 addObjectsFromArray:v10];
+        [orderedSet addObjectsFromArray:v10];
         goto LABEL_19;
       }
 
@@ -60,7 +60,7 @@ LABEL_18:
 
     v9 = 1667329381;
 LABEL_13:
-    if (a3 != v9)
+    if (d != v9)
     {
       goto LABEL_19;
     }
@@ -68,7 +68,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 != 1667329399)
+  if (d != 1667329399)
   {
     v9 = 1718909044;
     goto LABEL_13;

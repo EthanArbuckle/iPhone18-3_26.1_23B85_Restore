@@ -2,7 +2,7 @@
 - (BOOL)shouldShowFMOnboardingFlow;
 - (FMUIAccessoryOnboardingCoordinator)init;
 - (FMUIAccessoryOnboardingCoordinatorDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 @end
 
@@ -24,7 +24,7 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   sub_24B2D5694();
   sub_24B2D5684();
@@ -75,7 +75,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   AccessoryOnboardingCoordinator.start()();
 }
 

@@ -1,25 +1,25 @@
 @interface MTSchemaMTError
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTError)initWithDictionary:(id)a3;
-- (MTSchemaMTError)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTError)initWithDictionary:(id)dictionary;
+- (MTSchemaMTError)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTError
 
-- (MTSchemaMTError)initWithDictionary:(id)a3
+- (MTSchemaMTError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MTSchemaMTError;
   v5 = [(MTSchemaMTError *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(MTSchemaMTError *)v5 setErrorDomain:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"errorMessage"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(MTSchemaMTError *)v5 setErrorMessage:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (MTSchemaMTError)initWithJSON:(id)a3
+- (MTSchemaMTError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,30 +84,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[MTSchemaMTError errorCode](self, "errorCode")}];
-    [v3 setObject:v4 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v4 forKeyedSubscript:@"errorCode"];
   }
 
   if (self->_errorDomain)
   {
-    v5 = [(MTSchemaMTError *)self errorDomain];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"errorDomain"];
+    errorDomain = [(MTSchemaMTError *)self errorDomain];
+    v6 = [errorDomain copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"errorDomain"];
   }
 
   if (self->_errorMessage)
   {
-    v7 = [(MTSchemaMTError *)self errorMessage];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"errorMessage"];
+    errorMessage = [(MTSchemaMTError *)self errorMessage];
+    v8 = [errorMessage copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"errorMessage"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,28 +127,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(MTSchemaMTError *)self errorDomain];
-  v6 = [v4 errorDomain];
-  if ((v5 != 0) == (v6 == 0))
+  errorDomain = [(MTSchemaMTError *)self errorDomain];
+  errorDomain2 = [equalCopy errorDomain];
+  if ((errorDomain != 0) == (errorDomain2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(MTSchemaMTError *)self errorDomain];
-  if (v7)
+  errorDomain3 = [(MTSchemaMTError *)self errorDomain];
+  if (errorDomain3)
   {
-    v8 = v7;
-    v9 = [(MTSchemaMTError *)self errorDomain];
-    v10 = [v4 errorDomain];
-    v11 = [v9 isEqual:v10];
+    v8 = errorDomain3;
+    errorDomain4 = [(MTSchemaMTError *)self errorDomain];
+    errorDomain5 = [equalCopy errorDomain];
+    v11 = [errorDomain4 isEqual:errorDomain5];
 
     if (!v11)
     {
@@ -160,22 +160,22 @@
   {
   }
 
-  v5 = [(MTSchemaMTError *)self errorMessage];
-  v6 = [v4 errorMessage];
-  if ((v5 != 0) == (v6 == 0))
+  errorDomain = [(MTSchemaMTError *)self errorMessage];
+  errorDomain2 = [equalCopy errorMessage];
+  if ((errorDomain != 0) == (errorDomain2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(MTSchemaMTError *)self errorMessage];
-  if (v12)
+  errorMessage = [(MTSchemaMTError *)self errorMessage];
+  if (errorMessage)
   {
-    v13 = v12;
-    v14 = [(MTSchemaMTError *)self errorMessage];
-    v15 = [v4 errorMessage];
-    v16 = [v14 isEqual:v15];
+    v13 = errorMessage;
+    errorMessage2 = [(MTSchemaMTError *)self errorMessage];
+    errorMessage3 = [equalCopy errorMessage];
+    v16 = [errorMessage2 isEqual:errorMessage3];
 
     if (!v16)
     {
@@ -187,9 +187,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (errorCode = self->_errorCode, errorCode == [v4 errorCode]))
+    if ((*&self->_has & 1) == 0 || (errorCode = self->_errorCode, errorCode == [equalCopy errorCode]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -203,28 +203,28 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(MTSchemaMTError *)self errorDomain];
+  toCopy = to;
+  errorDomain = [(MTSchemaMTError *)self errorDomain];
 
-  if (v4)
+  if (errorDomain)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(MTSchemaMTError *)self errorMessage];
+  errorMessage = [(MTSchemaMTError *)self errorMessage];
 
-  if (v5)
+  if (errorMessage)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

@@ -1,15 +1,15 @@
 @interface FMFenceMapTableViewCell
-- (_TtC6FindMy23FMFenceMapTableViewCell)initWithCoder:(id)a3;
-- (_TtC6FindMy23FMFenceMapTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC6FindMy23FMFenceMapTableViewCell)initWithCoder:(id)coder;
+- (_TtC6FindMy23FMFenceMapTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation FMFenceMapTableViewCell
 
-- (_TtC6FindMy23FMFenceMapTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMy23FMFenceMapTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy23FMFenceMapTableViewCell_record) = 0;
@@ -24,7 +24,7 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for FMFenceMapTableViewCell();
-  v7 = [(FMFenceMapTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(FMFenceMapTableViewCell *)&v10 initWithStyle:style reuseIdentifier:v6];
 
   v8 = v7;
   sub_1003D0C0C();
@@ -32,7 +32,7 @@
   return v8;
 }
 
-- (_TtC6FindMy23FMFenceMapTableViewCell)initWithCoder:(id)a3
+- (_TtC6FindMy23FMFenceMapTableViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy23FMFenceMapTableViewCell_record) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -42,13 +42,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003D0D68();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003D0EA0();
 }
 

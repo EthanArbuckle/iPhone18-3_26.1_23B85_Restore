@@ -1,22 +1,22 @@
 @interface ORCHSchemaORCHExecutionBridgeContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHExecutionBridgeContext)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHExecutionBridgeContext)initWithJSON:(id)a3;
+- (ORCHSchemaORCHExecutionBridgeContext)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHExecutionBridgeContext)initWithJSON:(id)n;
 - (ORCHSchemaORCHExecutionEnded)ended;
 - (ORCHSchemaORCHExecutionFailed)failed;
 - (ORCHSchemaORCHExecutionRequestReceived)startedOrChanged;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteEnded;
 - (void)deleteFailed;
 - (void)deleteStartedOrChanged;
-- (void)setEnded:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setFailed:(id)failed;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHExecutionBridgeContext
@@ -66,15 +66,15 @@
   return v3;
 }
 
-- (ORCHSchemaORCHExecutionBridgeContext)initWithDictionary:(id)a3
+- (ORCHSchemaORCHExecutionBridgeContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = ORCHSchemaORCHExecutionBridgeContext;
   v5 = [(ORCHSchemaORCHExecutionBridgeContext *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(ORCHSchemaORCHExecutionBridgeContext *)v5 setStartedOrChanged:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(ORCHSchemaORCHExecutionBridgeContext *)v5 setEnded:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
       [(ORCHSchemaORCHExecutionBridgeContext *)v5 setFailed:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"trpId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,7 +106,7 @@
       [(ORCHSchemaORCHExecutionBridgeContext *)v5 setTrpId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,30 +120,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHExecutionBridgeContext)initWithJSON:(id)a3
+- (ORCHSchemaORCHExecutionBridgeContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHExecutionBridgeContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHExecutionBridgeContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHExecutionBridgeContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -156,90 +156,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_failed)
   {
-    v7 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    failed = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
+    dictionaryRepresentation2 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"failed"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v10 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    startedOrChanged = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
+    dictionaryRepresentation3 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"startedOrChanged"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
   if (self->_subRequestId)
   {
-    v13 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    subRequestId = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
+    dictionaryRepresentation4 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"subRequestId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_trpId)
   {
-    v16 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    trpId = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
+    dictionaryRepresentation5 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"trpId"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"trpId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -251,34 +251,34 @@
   return v6 ^ [(SISchemaUUID *)self->_subRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_28;
   }
 
-  v6 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
+  startedOrChanged2 = [equalCopy startedOrChanged];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
-  if (v8)
+  startedOrChanged3 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
+  if (startedOrChanged3)
   {
-    v9 = v8;
-    v10 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
-    v11 = [v4 startedOrChanged];
-    v12 = [v10 isEqual:v11];
+    v9 = startedOrChanged3;
+    startedOrChanged4 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
+    startedOrChanged5 = [equalCopy startedOrChanged];
+    v12 = [startedOrChanged4 isEqual:startedOrChanged5];
 
     if (!v12)
     {
@@ -290,20 +290,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
+  startedOrChanged2 = [equalCopy ended];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
-  if (v13)
+  ended = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
+  if (ended)
   {
-    v14 = v13;
-    v15 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (!v17)
     {
@@ -315,20 +315,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
+  startedOrChanged2 = [equalCopy failed];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
-  if (v18)
+  failed = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
+  if (failed)
   {
-    v19 = v18;
-    v20 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
-    v21 = [v4 failed];
-    v22 = [v20 isEqual:v21];
+    v19 = failed;
+    failed2 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
+    failed3 = [equalCopy failed];
+    v22 = [failed2 isEqual:failed3];
 
     if (!v22)
     {
@@ -340,20 +340,20 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
-  v7 = [v4 trpId];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
+  startedOrChanged2 = [equalCopy trpId];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
-  if (v23)
+  trpId = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
+  if (trpId)
   {
-    v24 = v23;
-    v25 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
-    v26 = [v4 trpId];
-    v27 = [v25 isEqual:v26];
+    v24 = trpId;
+    trpId2 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
+    trpId3 = [equalCopy trpId];
+    v27 = [trpId2 isEqual:trpId3];
 
     if (!v27)
     {
@@ -365,12 +365,12 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
-  v7 = [v4 subRequestId];
-  if ((v6 != 0) != (v7 == 0))
+  startedOrChanged = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
+  startedOrChanged2 = [equalCopy subRequestId];
+  if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
   {
-    v28 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
-    if (!v28)
+    subRequestId = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
+    if (!subRequestId)
     {
 
 LABEL_31:
@@ -378,10 +378,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
-    v31 = [v4 subRequestId];
-    v32 = [v30 isEqual:v31];
+    v29 = subRequestId;
+    subRequestId2 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v32 = [subRequestId2 isEqual:subRequestId3];
 
     if (v32)
     {
@@ -401,50 +401,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
+    startedOrChanged2 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
+  ended = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
+    ended2 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
+  failed = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
 
-  if (v8)
+  if (failed)
   {
-    v9 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
+    failed2 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
+  trpId = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
 
-  if (v10)
+  if (trpId)
   {
-    v11 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
+    trpId2 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
+  subRequestId = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (subRequestId)
   {
-    v14 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
+    subRequestId2 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -458,9 +458,9 @@ LABEL_29:
   }
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -468,14 +468,14 @@ LABEL_29:
   self->_ended = 0;
 
   v7 = 3;
-  if (!v4)
+  if (!failedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteEnded
@@ -488,18 +488,18 @@ LABEL_29:
   }
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
   failed = self->_failed;
   self->_failed = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (endedCopy != 0);
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -512,67 +512,67 @@ LABEL_29:
   }
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ended = self->_ended;
   self->_ended = 0;
 
   failed = self->_failed;
   self->_failed = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = changedCopy != 0;
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = ORCHSchemaORCHExecutionBridgeContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  startedOrChanged = [(ORCHSchemaORCHExecutionBridgeContext *)self startedOrChanged];
+  v7 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHExecutionBridgeContext *)self deleteStartedOrChanged];
   }
 
-  v9 = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ended = [(ORCHSchemaORCHExecutionBridgeContext *)self ended];
+  v10 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ORCHSchemaORCHExecutionBridgeContext *)self deleteEnded];
   }
 
-  v12 = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  failed = [(ORCHSchemaORCHExecutionBridgeContext *)self failed];
+  v13 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ORCHSchemaORCHExecutionBridgeContext *)self deleteFailed];
   }
 
-  v15 = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  trpId = [(ORCHSchemaORCHExecutionBridgeContext *)self trpId];
+  v16 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(ORCHSchemaORCHExecutionBridgeContext *)self deleteTrpId];
   }
 
-  v18 = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  subRequestId = [(ORCHSchemaORCHExecutionBridgeContext *)self subRequestId];
+  v19 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(ORCHSchemaORCHExecutionBridgeContext *)self deleteSubRequestId];
   }

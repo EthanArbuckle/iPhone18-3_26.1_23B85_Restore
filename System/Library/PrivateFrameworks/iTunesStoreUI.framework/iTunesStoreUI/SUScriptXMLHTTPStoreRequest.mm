@@ -1,44 +1,44 @@
 @interface SUScriptXMLHTTPStoreRequest
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)responseText;
 - (NSString)statusText;
-- (SUScriptXMLHTTPStoreRequest)initWithDelegate:(id)a3;
+- (SUScriptXMLHTTPStoreRequest)initWithDelegate:(id)delegate;
 - (SUScriptXMLHTTPStoreRequestDelegate)delegate;
 - (id)_clientInfoHeader;
-- (id)_gsTokenForAIDAAccount:(id)a3 accountStore:(id)a4;
-- (id)_scriptObjectForFunctionName:(id)a3;
+- (id)_gsTokenForAIDAAccount:(id)account accountStore:(id)store;
+- (id)_scriptObjectForFunctionName:(id)name;
 - (id)_uniqueDeviceID;
 - (id)getAllResponseHeaders;
-- (id)getResponseHeader:(id)a3;
+- (id)getResponseHeader:(id)header;
 - (id)isJSONEncoded;
 - (id)scriptAttributeKeys;
 - (id)shouldSendGUIDHeader;
 - (unint64_t)readyState;
 - (unint64_t)status;
 - (unint64_t)timeout;
-- (void)_callFunctionWithName:(id)a3 arguments:(id)a4;
-- (void)_setScriptObject:(id)a3 forFunctionName:(id)a4;
+- (void)_callFunctionWithName:(id)name arguments:(id)arguments;
+- (void)_setScriptObject:(id)object forFunctionName:(id)name;
 - (void)abort;
 - (void)dealloc;
-- (void)openWithHTTPMethod:(id)a3 URL:(id)a4 isAsync:(id)a5 username:(id)a6 password:(id)a7;
-- (void)sendWithBodyData:(id)a3;
-- (void)setJSONEncoded:(id)a3;
-- (void)setShouldSendGUIDHeader:(id)a3;
-- (void)setTimeout:(unint64_t)a3;
+- (void)openWithHTTPMethod:(id)method URL:(id)l isAsync:(id)async username:(id)username password:(id)password;
+- (void)sendWithBodyData:(id)data;
+- (void)setJSONEncoded:(id)encoded;
+- (void)setShouldSendGUIDHeader:(id)header;
+- (void)setTimeout:(unint64_t)timeout;
 @end
 
 @implementation SUScriptXMLHTTPStoreRequest
 
-- (SUScriptXMLHTTPStoreRequest)initWithDelegate:(id)a3
+- (SUScriptXMLHTTPStoreRequest)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(SUScriptObject *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -82,7 +82,7 @@
 
 - (id)getAllResponseHeaders
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   [(SUScriptObject *)self lock];
   v13[0] = 0;
   v13[1] = v13;
@@ -94,7 +94,7 @@
   v9 = __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke;
   v10 = &unk_1E8165010;
   v12 = v13;
-  v5 = v3;
+  v5 = string;
   v11 = v5;
   [(NSDictionary *)responseHeaders enumerateKeysAndObjectsUsingBlock:&v7];
   [(SUScriptObject *)self unlock:v7];
@@ -119,14 +119,14 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (id)getResponseHeader:(id)a3
+- (id)getResponseHeader:(id)header
 {
-  v4 = a3;
+  headerCopy = header;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUScriptObject *)self lock];
-    v5 = [(NSDictionary *)self->_responseHeaders objectForKey:v4];
+    v5 = [(NSDictionary *)self->_responseHeaders objectForKey:headerCopy];
     v6 = [v5 copy];
 
     [(SUScriptObject *)self unlock];
@@ -141,33 +141,33 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
   return v6;
 }
 
-- (void)openWithHTTPMethod:(id)a3 URL:(id)a4 isAsync:(id)a5 username:(id)a6 password:(id)a7
+- (void)openWithHTTPMethod:(id)method URL:(id)l isAsync:(id)async username:(id)username password:(id)password
 {
-  v9 = a3;
-  v10 = a4;
+  methodCopy = method;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v9 = 0;
+    methodCopy = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!methodCopy || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    v18 = [v9 uppercaseString];
+    uppercaseString = [methodCopy uppercaseString];
 
-    if (!v18 || ([v18 isEqualToString:@"GET"] & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", @"POST") & 1) != 0)
+    if (!uppercaseString || ([uppercaseString isEqualToString:@"GET"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"POST") & 1) != 0)
     {
-      v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v10];
+      v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
       v12 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:v11];
       requestProperties = self->_requestProperties;
       self->_requestProperties = v12;
 
       [(SSMutableURLRequestProperties *)self->_requestProperties setITunesStoreRequest:1];
-      if (v18)
+      if (uppercaseString)
       {
-        [(SSMutableURLRequestProperties *)self->_requestProperties setHTTPMethod:v18];
+        [(SSMutableURLRequestProperties *)self->_requestProperties setHTTPMethod:uppercaseString];
       }
 
       if (self->_useJSONEncoding)
@@ -196,19 +196,19 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
   else
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
-    v18 = v9;
+    uppercaseString = methodCopy;
   }
 }
 
-- (void)sendWithBodyData:(id)a3
+- (void)sendWithBodyData:(id)data
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v4 = 0;
+    dataCopy = 0;
   }
 
   [(SUScriptObject *)self lock];
@@ -226,26 +226,26 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v4 dataUsingEncoding:4];
+        v7 = [dataCopy dataUsingEncoding:4];
         [(SSMutableURLRequestProperties *)self->_requestProperties setHTTPBody:v7];
       }
 
       if (self->_shouldSendGUIDHeader)
       {
         v8 = self->_requestProperties;
-        v9 = [MEMORY[0x1E69E4748] sharedInstance];
-        v10 = [v9 guid];
-        [(SSMutableURLRequestProperties *)v8 setValue:v10 forHTTPHeaderField:*MEMORY[0x1E69D4C38]];
+        mEMORY[0x1E69E4748] = [MEMORY[0x1E69E4748] sharedInstance];
+        guid = [mEMORY[0x1E69E4748] guid];
+        [(SSMutableURLRequestProperties *)v8 setValue:guid forHTTPHeaderField:*MEMORY[0x1E69D4C38]];
       }
 
-      v11 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-      v12 = [v11 ams_activeiCloudAccount];
-      v42 = [v11 aida_accountForiCloudAccount:v12];
-      if (v12)
+      ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+      ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
+      v42 = [ams_sharedAccountStore aida_accountForiCloudAccount:ams_activeiCloudAccount];
+      if (ams_activeiCloudAccount)
       {
         if (v42)
         {
-          v13 = [(SUScriptXMLHTTPStoreRequest *)self _gsTokenForAIDAAccount:v42 accountStore:v11];
+          v13 = [(SUScriptXMLHTTPStoreRequest *)self _gsTokenForAIDAAccount:v42 accountStore:ams_sharedAccountStore];
           if (v13)
           {
             [(SSMutableURLRequestProperties *)self->_requestProperties setValue:v13 forHTTPHeaderField:*MEMORY[0x1E69D4C58]];
@@ -254,20 +254,20 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
 
         else
         {
-          v22 = [MEMORY[0x1E69D4938] sharedConfig];
-          v23 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+          if ([mEMORY[0x1E69D4938] shouldLogToDisk])
           {
-            v24 = v23 | 2;
+            v24 = shouldLog | 2;
           }
 
           else
           {
-            v24 = v23;
+            v24 = shouldLog;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+          oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v26 = v24;
           }
@@ -300,29 +300,29 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
           }
         }
 
-        v14 = [v12 ams_altDSID];
-        if (v14)
+        ams_altDSID = [ams_activeiCloudAccount ams_altDSID];
+        if (ams_altDSID)
         {
-          [(SSMutableURLRequestProperties *)self->_requestProperties setValue:v14 forHTTPHeaderField:*MEMORY[0x1E69D4C48]];
+          [(SSMutableURLRequestProperties *)self->_requestProperties setValue:ams_altDSID forHTTPHeaderField:*MEMORY[0x1E69D4C48]];
         }
       }
 
       else
       {
-        v14 = [MEMORY[0x1E69D4938] sharedConfig];
-        v15 = [v14 shouldLog];
-        if ([v14 shouldLogToDisk])
+        ams_altDSID = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog2 = [ams_altDSID shouldLog];
+        if ([ams_altDSID shouldLogToDisk])
         {
-          v16 = v15 | 2;
+          v16 = shouldLog2 | 2;
         }
 
         else
         {
-          v16 = v15;
+          v16 = shouldLog2;
         }
 
-        v17 = [v14 OSLogObject];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+        oSLogObject2 = [ams_altDSID OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
           v18 = v16;
         }
@@ -355,16 +355,16 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
         }
       }
 
-      v30 = [(SUScriptXMLHTTPStoreRequest *)self _clientInfoHeader];
-      if (v30)
+      _clientInfoHeader = [(SUScriptXMLHTTPStoreRequest *)self _clientInfoHeader];
+      if (_clientInfoHeader)
       {
-        [(SSMutableURLRequestProperties *)self->_requestProperties setValue:v30 forHTTPHeaderField:*MEMORY[0x1E69D4C60]];
+        [(SSMutableURLRequestProperties *)self->_requestProperties setValue:_clientInfoHeader forHTTPHeaderField:*MEMORY[0x1E69D4C60]];
       }
 
-      v31 = [(SUScriptXMLHTTPStoreRequest *)self _uniqueDeviceID];
-      if (v31)
+      _uniqueDeviceID = [(SUScriptXMLHTTPStoreRequest *)self _uniqueDeviceID];
+      if (_uniqueDeviceID)
       {
-        [(SSMutableURLRequestProperties *)self->_requestProperties setValue:v31 forHTTPHeaderField:*MEMORY[0x1E69D4C68]];
+        [(SSMutableURLRequestProperties *)self->_requestProperties setValue:_uniqueDeviceID forHTTPHeaderField:*MEMORY[0x1E69D4C68]];
       }
 
       v32 = [[SUXMLHTTPStoreRequestOperation alloc] initWithRequestProperties:self->_requestProperties];
@@ -372,12 +372,12 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
       self->_operation = v32;
 
       v34 = self->_operation;
-      v35 = [(SUScriptXMLHTTPStoreRequest *)self authenticationContext];
-      [(SUXMLHTTPStoreRequestOperation *)v34 setAuthenticationContext:v35];
+      authenticationContext = [(SUScriptXMLHTTPStoreRequest *)self authenticationContext];
+      [(SUXMLHTTPStoreRequestOperation *)v34 setAuthenticationContext:authenticationContext];
 
       v36 = self->_operation;
-      v37 = [(SUScriptXMLHTTPStoreRequest *)self dataProvider];
-      [(SUXMLHTTPStoreRequestOperation *)v36 setDataProvider:v37];
+      dataProvider = [(SUScriptXMLHTTPStoreRequest *)self dataProvider];
+      [(SUXMLHTTPStoreRequestOperation *)v36 setDataProvider:dataProvider];
 
       objc_initWeak(location, self);
       v38 = self->_operation;
@@ -387,8 +387,8 @@ void __52__SUScriptXMLHTTPStoreRequest_getAllResponseHeaders__block_invoke(uint6
       v43[3] = &unk_1E8165038;
       objc_copyWeak(&v44, location);
       [(SUXMLHTTPStoreRequestOperation *)v38 setOutputBlock:v43];
-      v39 = [MEMORY[0x1E69E4798] mainQueue];
-      [v39 addOperation:self->_operation];
+      mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+      [mainQueue addOperation:self->_operation];
 
       objc_destroyWeak(&v44);
       objc_destroyWeak(location);
@@ -515,32 +515,32 @@ void __48__SUScriptXMLHTTPStoreRequest_sendWithBodyData___block_invoke(uint64_t 
   return v3;
 }
 
-- (void)setJSONEncoded:(id)a3
+- (void)setJSONEncoded:(id)encoded
 {
-  v4 = a3;
+  encodedCopy = encoded;
   [(SUScriptObject *)self lock];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [encodedCopy BOOLValue];
 
-  self->_useJSONEncoding = v5;
+  self->_useJSONEncoding = bOOLValue;
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setShouldSendGUIDHeader:(id)a3
+- (void)setShouldSendGUIDHeader:(id)header
 {
-  v4 = a3;
+  headerCopy = header;
   [(SUScriptObject *)self lock];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [headerCopy BOOLValue];
 
-  self->_shouldSendGUIDHeader = v5;
+  self->_shouldSendGUIDHeader = bOOLValue;
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setTimeout:(unint64_t)a3
+- (void)setTimeout:(unint64_t)timeout
 {
   [(SUScriptObject *)self lock];
-  self->_timeout = a3;
+  self->_timeout = timeout;
 
   [(SUScriptObject *)self unlock];
 }
@@ -585,37 +585,37 @@ void __48__SUScriptXMLHTTPStoreRequest_sendWithBodyData___block_invoke(uint64_t 
   return timeout;
 }
 
-- (void)_callFunctionWithName:(id)a3 arguments:(id)a4
+- (void)_callFunctionWithName:(id)name arguments:(id)arguments
 {
-  v6 = a4;
-  v7 = a3;
+  argumentsCopy = arguments;
+  nameCopy = name;
   [(SUScriptObject *)self lock];
-  v8 = [(NSMutableDictionary *)self->_functions objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_functions objectForKey:nameCopy];
 
   [(SUScriptObject *)self unlock];
-  [v8 callWithArguments:v6];
+  [v8 callWithArguments:argumentsCopy];
 }
 
 - (id)_clientInfoHeader
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698B890] clientInfoHeader];
-  if (!v2)
+  clientInfoHeader = [MEMORY[0x1E698B890] clientInfoHeader];
+  if (!clientInfoHeader)
   {
-    v3 = [MEMORY[0x1E69D4938] sharedConfig];
-    v4 = [v3 shouldLog];
-    if ([v3 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v5 &= 2u;
     }
@@ -635,7 +635,7 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v11, v10, v11}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v11, v10, v11}];
       free(v8);
       SSFileLog();
     }
@@ -645,32 +645,32 @@ LABEL_11:
 
 LABEL_12:
 
-  return v2;
+  return clientInfoHeader;
 }
 
-- (id)_gsTokenForAIDAAccount:(id)a3 accountStore:(id)a4
+- (id)_gsTokenForAIDAAccount:(id)account accountStore:(id)store
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E698C240];
   v18 = 0;
-  v6 = [a4 credentialForAccount:a3 serviceID:v5 error:&v18];
+  v6 = [store credentialForAccount:account serviceID:v5 error:&v18];
   v7 = v18;
   if (v7)
   {
-    v8 = [MEMORY[0x1E69D4938] sharedConfig];
-    v9 = [v8 shouldLog];
-    if ([v8 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 &= 2u;
     }
@@ -690,11 +690,11 @@ LABEL_12:
       {
 LABEL_11:
 
-        v15 = 0;
+        token = 0;
         goto LABEL_13;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v19, v17}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v19, v17}];
       free(v14);
       SSFileLog();
     }
@@ -702,42 +702,42 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v15 = [v6 token];
+  token = [v6 token];
 LABEL_13:
 
-  return v15;
+  return token;
 }
 
-- (id)_scriptObjectForFunctionName:(id)a3
+- (id)_scriptObjectForFunctionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(SUScriptObject *)self lock];
-  v5 = [(NSMutableDictionary *)self->_functions objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_functions objectForKey:nameCopy];
 
-  v6 = [v5 scriptObject];
+  scriptObject = [v5 scriptObject];
   [(SUScriptObject *)self unlock];
 
-  return v6;
+  return scriptObject;
 }
 
-- (void)_setScriptObject:(id)a3 forFunctionName:(id)a4
+- (void)_setScriptObject:(id)object forFunctionName:(id)name
 {
-  v11 = a3;
-  v6 = a4;
+  objectCopy = object;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v11 = 0;
+    objectCopy = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUScriptObject *)self lock];
-    if (v11)
+    if (objectCopy)
     {
-      v7 = [[SUScriptFunction alloc] initWithScriptObject:v11];
+      v7 = [[SUScriptFunction alloc] initWithScriptObject:objectCopy];
       [(SUScriptFunction *)v7 setThisObject:self];
       functions = self->_functions;
       if (!functions)
@@ -749,14 +749,14 @@ LABEL_13:
         functions = self->_functions;
       }
 
-      [(NSMutableDictionary *)functions setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)functions setObject:v7 forKey:nameCopy];
     }
 
     else
     {
-      v7 = [(NSMutableDictionary *)self->_functions objectForKey:v6];
+      v7 = [(NSMutableDictionary *)self->_functions objectForKey:nameCopy];
       [(SUScriptFunction *)v7 setThisObject:0];
-      [(NSMutableDictionary *)self->_functions removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_functions removeObjectForKey:nameCopy];
     }
 
     [(SUScriptObject *)self unlock];
@@ -771,23 +771,23 @@ LABEL_13:
 - (id)_uniqueDeviceID
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698C8A8] uniqueDeviceId];
-  if (!v2)
+  uniqueDeviceId = [MEMORY[0x1E698C8A8] uniqueDeviceId];
+  if (!uniqueDeviceId)
   {
-    v3 = [MEMORY[0x1E69D4938] sharedConfig];
-    v4 = [v3 shouldLog];
-    if ([v3 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v5 &= 2u;
     }
@@ -807,7 +807,7 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v11, v10, v11}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v11, v10, v11}];
       free(v8);
       SSFileLog();
     }
@@ -817,31 +817,31 @@ LABEL_11:
 
 LABEL_12:
 
-  return v2;
+  return uniqueDeviceId;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_4 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_4 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptXMLHTTPStoreRequest;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_2, 6);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_2, 6);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptXMLHTTPStoreRequest;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -851,16 +851,16 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = SUScriptXMLHTTPStoreRequest;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_4 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_4 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_2 = sel_abort;
     unk_1EBF3A750 = @"abort";

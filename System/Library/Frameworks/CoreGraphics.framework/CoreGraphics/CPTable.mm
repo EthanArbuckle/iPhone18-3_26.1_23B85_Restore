@@ -1,14 +1,14 @@
 @interface CPTable
 - (CGColor)backgroundColor;
 - (CGRect)tableBounds;
-- (CPTable)initWithBounds:(CGRect)a3;
-- (id)backgroundGraphicAtIndex:(unsigned int)a3;
+- (CPTable)initWithBounds:(CGRect)bounds;
+- (id)backgroundGraphicAtIndex:(unsigned int)index;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
-- (void)setBackgroundGraphics:(id)a3;
-- (void)setColumnCount:(unsigned int)a3;
-- (void)setRowCount:(unsigned int)a3;
+- (void)setBackgroundGraphics:(id)graphics;
+- (void)setColumnCount:(unsigned int)count;
+- (void)setRowCount:(unsigned int)count;
 @end
 
 @implementation CPTable
@@ -26,20 +26,20 @@
   return result;
 }
 
-- (id)backgroundGraphicAtIndex:(unsigned int)a3
+- (id)backgroundGraphicAtIndex:(unsigned int)index
 {
-  if (self->backgroundGraphicCount <= a3)
+  if (self->backgroundGraphicCount <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->backgroundGraphics[a3];
+    return self->backgroundGraphics[index];
   }
 }
 
-- (void)setBackgroundGraphics:(id)a3
+- (void)setBackgroundGraphics:(id)graphics
 {
   backgroundGraphics = self->backgroundGraphics;
   if (backgroundGraphics)
@@ -60,9 +60,9 @@
   }
 
   self->backgroundGraphicCount = 0;
-  if (a3)
+  if (graphics)
   {
-    v7 = [a3 count];
+    v7 = [graphics count];
     self->backgroundGraphicCount = v7;
     if (v7)
     {
@@ -72,7 +72,7 @@
         v8 = 0;
         do
         {
-          self->backgroundGraphics[v8] = [a3 objectAtIndex:v8];
+          self->backgroundGraphics[v8] = [graphics objectAtIndex:v8];
           ++v8;
         }
 
@@ -89,11 +89,11 @@
   {
     if (self->backgroundGraphicCount == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v4 = [*self->backgroundGraphics fillColor];
-      if (v4)
+      fillColor = [*self->backgroundGraphics fillColor];
+      if (fillColor)
       {
-        backgroundColor = v4;
-        CFRetain(v4);
+        backgroundColor = fillColor;
+        CFRetain(fillColor);
         self->backgroundColor = backgroundColor;
       }
 
@@ -113,9 +113,9 @@
   return backgroundColor;
 }
 
-- (void)setColumnCount:(unsigned int)a3
+- (void)setColumnCount:(unsigned int)count
 {
-  self->columnCount = a3;
+  self->columnCount = count;
   columnX = self->columnX;
   if (columnX)
   {
@@ -123,12 +123,12 @@
     self->columnX = 0;
   }
 
-  self->columnX = malloc_type_calloc(a3 + 1, 8uLL, 0x100004000313F17uLL);
+  self->columnX = malloc_type_calloc(count + 1, 8uLL, 0x100004000313F17uLL);
 }
 
-- (void)setRowCount:(unsigned int)a3
+- (void)setRowCount:(unsigned int)count
 {
-  self->rowCount = a3;
+  self->rowCount = count;
   rowY = self->rowY;
   if (rowY)
   {
@@ -136,7 +136,7 @@
     self->rowY = 0;
   }
 
-  self->rowY = malloc_type_calloc(a3 + 1, 8uLL, 0x100004000313F17uLL);
+  self->rowY = malloc_type_calloc(count + 1, 8uLL, 0x100004000313F17uLL);
 }
 
 - (void)dealloc
@@ -193,12 +193,12 @@
   }
 }
 
-- (CPTable)initWithBounds:(CGRect)a3
+- (CPTable)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = CPTable;
   result = [(CPChunk *)&v8 init];

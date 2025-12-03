@@ -1,17 +1,17 @@
 @interface WFSageWorkflowRunRequest
-- (WFSageWorkflowRunRequest)initWithInput:(id)a3 presentationMode:(unint64_t)a4 locale:(id)a5;
+- (WFSageWorkflowRunRequest)initWithInput:(id)input presentationMode:(unint64_t)mode locale:(id)locale;
 @end
 
 @implementation WFSageWorkflowRunRequest
 
-- (WFSageWorkflowRunRequest)initWithInput:(id)a3 presentationMode:(unint64_t)a4 locale:(id)a5
+- (WFSageWorkflowRunRequest)initWithInput:(id)input presentationMode:(unint64_t)mode locale:(id)locale
 {
-  v8 = a5;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = WFSageWorkflowRunRequest;
-  v9 = [(WFWorkflowRunRequest *)&v12 initWithInput:a3 presentationMode:a4];
+  v9 = [(WFWorkflowRunRequest *)&v12 initWithInput:input presentationMode:mode];
   locale = v9->_locale;
-  v9->_locale = v8;
+  v9->_locale = localeCopy;
 
   return v9;
 }

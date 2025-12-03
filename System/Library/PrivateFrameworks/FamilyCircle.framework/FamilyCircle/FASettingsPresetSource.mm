@@ -1,47 +1,47 @@
 @interface FASettingsPresetSource
-- (BOOL)isEqual:(id)a3;
-- (FASettingsPresetSource)initWithCoder:(id)a3;
-- (FASettingsPresetSource)initWithDictionary:(id)a3;
-- (FASettingsPresetSource)initWithIdentifier:(id)a3 configuration:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (FASettingsPresetSource)initWithCoder:(id)coder;
+- (FASettingsPresetSource)initWithDictionary:(id)dictionary;
+- (FASettingsPresetSource)initWithIdentifier:(id)identifier configuration:(id)configuration;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FASettingsPresetSource
 
-- (FASettingsPresetSource)initWithIdentifier:(id)a3 configuration:(id)a4
+- (FASettingsPresetSource)initWithIdentifier:(id)identifier configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = FASettingsPresetSource;
   v8 = [(FASettingsPresetSource *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeStrong(&v8->_configuration, configuration);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     identifier = self->_identifier;
-    v7 = [v5 identifier];
-    if ([(NSString *)identifier isEqualToString:v7])
+    identifier = [v5 identifier];
+    if ([(NSString *)identifier isEqualToString:identifier])
     {
       configuration = self->_configuration;
-      v9 = [v5 configuration];
-      v10 = [(FASettingsPresetConfiguration *)configuration isEqual:v9];
+      configuration = [v5 configuration];
+      v10 = [(FASettingsPresetConfiguration *)configuration isEqual:configuration];
     }
 
     else
@@ -58,27 +58,27 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_configuration forKey:@"values"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_configuration forKey:@"values"];
 }
 
-- (FASettingsPresetSource)initWithCoder:(id)a3
+- (FASettingsPresetSource)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"values"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"values"];
 
   v7 = [(FASettingsPresetSource *)self initWithIdentifier:v5 configuration:v6];
   return v7;
 }
 
-- (FASettingsPresetSource)initWithDictionary:(id)a3
+- (FASettingsPresetSource)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -89,7 +89,7 @@
     }
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"identifier"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -102,7 +102,7 @@
     goto LABEL_13;
   }
 
-  v7 = [[FASettingsPresetConfiguration alloc] initWithDictionary:v4];
+  v7 = [[FASettingsPresetConfiguration alloc] initWithDictionary:dictionaryCopy];
   if (!v7)
   {
     v9 = _FALogSystem();
@@ -112,24 +112,24 @@
     }
 
 LABEL_13:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
   self = [(FASettingsPresetSource *)self initWithIdentifier:v6 configuration:v7];
-  v8 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FASettingsPresetSource *)self identifier];
-  v6 = [(FASettingsPresetSource *)self configuration];
-  v7 = [v3 stringWithFormat:@"<%@: %p> ({\n identifier: %@\n configuration: %@\n)}", v4, self, v5, v6];
+  identifier = [(FASettingsPresetSource *)self identifier];
+  configuration = [(FASettingsPresetSource *)self configuration];
+  v7 = [v3 stringWithFormat:@"<%@: %p> ({\n identifier: %@\n configuration: %@\n)}", v4, self, identifier, configuration];
 
   return v7;
 }

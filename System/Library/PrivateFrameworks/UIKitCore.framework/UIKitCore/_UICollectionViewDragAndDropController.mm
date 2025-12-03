@@ -1,83 +1,83 @@
 @interface _UICollectionViewDragAndDropController
-- (BOOL)_deleteShadowUpdateWithIdentifier:(id)a3;
-- (BOOL)_removeMoveShadowUpdateMatchingReorderedItem:(id)a3;
+- (BOOL)_deleteShadowUpdateWithIdentifier:(id)identifier;
+- (BOOL)_removeMoveShadowUpdateMatchingReorderedItem:(id)item;
 - (BOOL)hasShadowUpdates;
-- (BOOL)isCellInvolvedInDragOrDropAnimation:(uint64_t)a3 atIndexPath:;
-- (BOOL)placeholderContext:(id)a3 didCommitInsertionWithDataSourceUpdates:(id)a4;
-- (BOOL)rebaseForUpdates:(id)a3;
-- (BOOL)updateWillCauseInternalInconsistency:(uint64_t)a1;
+- (BOOL)isCellInvolvedInDragOrDropAnimation:(uint64_t)animation atIndexPath:;
+- (BOOL)placeholderContext:(id)context didCommitInsertionWithDataSourceUpdates:(id)updates;
+- (BOOL)rebaseForUpdates:(id)updates;
+- (BOOL)updateWillCauseInternalInconsistency:(uint64_t)inconsistency;
 - (NSArray)items;
 - (NSIndexPath)destinationIndexPath;
 - (NSString)description;
-- (_UICollectionViewDragAndDropController)initWithCollectionView:(id)a3;
-- (id)_cellAppearanceStateForIndexPath:(id)a3;
-- (id)_cellForDropCoordinatorItem:(id)a3;
-- (id)_dropCoordinatorItemForDragItem:(id)a3;
-- (id)_dropCoordinatorItemForIndexPath:(id)a3;
+- (_UICollectionViewDragAndDropController)initWithCollectionView:(id)view;
+- (id)_cellAppearanceStateForIndexPath:(id)path;
+- (id)_cellForDropCoordinatorItem:(id)item;
+- (id)_dropCoordinatorItemForDragItem:(id)item;
+- (id)_dropCoordinatorItemForIndexPath:(id)path;
 - (id)_handleForcedDruidSessionEnd;
-- (id)_presentationIndexPathForIndexPath:(id)a3 allowingAppendingInserts:(BOOL)a4;
-- (id)_shadowUpdateReuseIdentifierForItemItemAtIndexPath:(id)a3;
-- (id)cancelReorderingForced:(_BYTE *)a3 shouldCancelUsingBatchUpdate:;
-- (id)dropItem:(id)a3 intoItemAtIndexPath:(id)a4 rect:(CGRect)a5;
-- (id)dropItem:(id)a3 toItemAtIndexPath:(id)a4;
-- (id)dropItem:(id)a3 toPlaceholder:(id)a4;
-- (id)dropItem:(id)a3 toPlaceholderInsertedAtIndexPath:(id)a4 withReuseIdentifier:(id)a5 cellUpdateHandler:(id)a6;
-- (id)dropItem:(id)a3 toTarget:(id)a4;
-- (id)dropToPlaceholderCellAtIndexPath:(id)a3 reuseIdentifier:(id)a4 forDragItem:(id)a5 cellUpdateHandler:(id)a6;
+- (id)_presentationIndexPathForIndexPath:(id)path allowingAppendingInserts:(BOOL)inserts;
+- (id)_shadowUpdateReuseIdentifierForItemItemAtIndexPath:(id)path;
+- (id)cancelReorderingForced:(_BYTE *)forced shouldCancelUsingBatchUpdate:;
+- (id)dropItem:(id)item intoItemAtIndexPath:(id)path rect:(CGRect)rect;
+- (id)dropItem:(id)item toItemAtIndexPath:(id)path;
+- (id)dropItem:(id)item toPlaceholder:(id)placeholder;
+- (id)dropItem:(id)item toPlaceholderInsertedAtIndexPath:(id)path withReuseIdentifier:(id)identifier cellUpdateHandler:(id)handler;
+- (id)dropItem:(id)item toTarget:(id)target;
+- (id)dropToPlaceholderCellAtIndexPath:(id)path reuseIdentifier:(id)identifier forDragItem:(id)item cellUpdateHandler:(id)handler;
 - (id)endReordering;
 - (id)indexPathForDragAndDropInsertion;
 - (id)indexPathForOriginalReorderedItem;
-- (id)insertPlaceholderForItemAtIndexPath:(id)a3 forDragItem:(id)a4 reuseIdentifier:(id)a5 cellUpdateHandler:(id)a6;
-- (id)placeholderContextDidDismiss:(id)a3;
+- (id)insertPlaceholderForItemAtIndexPath:(id)path forDragItem:(id)item reuseIdentifier:(id)identifier cellUpdateHandler:(id)handler;
+- (id)placeholderContextDidDismiss:(id)dismiss;
 - (id)reorderedItems;
 - (id)sourceIndexPaths;
-- (id)updateReorderingForTargetPosition:(double)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)updateReorderingForTargetPosition:(double)position;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (uint64_t)canBeginReorderingSession;
 - (uint64_t)effectiveDragDestinationVisualStyle;
-- (uint64_t)isCellPerformingLegacyReorderingAtIndexPath:(uint64_t)a1;
-- (void)_addAnimationHandlers:(id)a3 toAnimator:(id)a4;
-- (void)_addDropCoordinatorItem:(id)a3;
+- (uint64_t)isCellPerformingLegacyReorderingAtIndexPath:(uint64_t)path;
+- (void)_addAnimationHandlers:(id)handlers toAnimator:(id)animator;
+- (void)_addDropCoordinatorItem:(id)item;
 - (void)_cleanupAfterOutstandingSessionCompletion;
 - (void)_decrementSessionRefCount;
 - (void)_incrementSessionRefCount;
 - (void)_invokeAllCompletionHandlers;
-- (void)_performCancelDropToIndexPath:(void *)a3 forDragItem:;
+- (void)_performCancelDropToIndexPath:(void *)path forDragItem:;
 - (void)_removeAnyDeferredReuseCells;
 - (void)_resetAllAnimationHandlers;
 - (void)_resetReorderedItems;
 - (void)_rollbackCurrentDropInsertion;
-- (void)_updateCellAppearancesForItemsAtIndexPaths:(id)a3;
-- (void)_updateCellIfNeeded:(id)a3 atIndexPath:(id)a4;
+- (void)_updateCellAppearancesForItemsAtIndexPaths:(id)paths;
+- (void)_updateCellIfNeeded:(id)needed atIndexPath:(id)path;
 - (void)_updatePreferredDraggedCellAppearanceForSessionUpdate;
-- (void)beginReorderingForItemAtIndexPath:(void *)a3 cell:;
+- (void)beginReorderingForItemAtIndexPath:(void *)path cell:;
 - (void)commitReorderedItems;
 - (void)defaultAnimationHandlers;
 - (void)didUpdateDataSource;
 - (void)didUpdateDragDelegate;
 - (void)didUpdateDropDelegate;
-- (void)dragDestinationController:(void *)a1 didCompleteDropAnimationForDragItem:;
-- (void)dragDestinationController:(void *)a3 willBeginDropAnimationForDragItem:(void *)a4 animator:;
-- (void)dragDestinationControllerSessionDidEnter:(int)a3 isNewSession:(int)a4 isResuming:;
-- (void)dragSourceController:(id *)a1 didEndForItemsAtIndexPaths:;
-- (void)dragSourceController:(void *)a1 didSupplyCancellationPreviewForItemAtIndexPath:;
-- (void)dragSourceController:(void *)a3 didCancelLiftForItemsAtIndexPaths:;
-- (void)dragSourceController:(void *)a3 didCompleteLiftForItemsAtIndexPaths:;
-- (void)dragSourceController:(void *)a3 didUpdateItemsAtIndexPaths:;
-- (void)dragSourceController:(void *)a3 willBeginAnimatingCancelForItemsAtIndexPaths:(void *)a4 withAnimator:;
-- (void)dragSourceController:(void *)a3 willBeginLiftForItemsAtIndexPaths:;
-- (void)dropToLocation:(CGPoint)a3 inContainerView:(id)a4 withTransform:(CGAffineTransform *)a5 forDragItem:(id)a6;
-- (void)placeholderContextNeedsCellUpdate:(id)a3;
+- (void)dragDestinationController:(void *)controller didCompleteDropAnimationForDragItem:;
+- (void)dragDestinationController:(void *)controller willBeginDropAnimationForDragItem:(void *)item animator:;
+- (void)dragDestinationControllerSessionDidEnter:(int)enter isNewSession:(int)session isResuming:;
+- (void)dragSourceController:(id *)controller didEndForItemsAtIndexPaths:;
+- (void)dragSourceController:(void *)controller didCancelLiftForItemsAtIndexPaths:;
+- (void)dragSourceController:(void *)controller didCompleteLiftForItemsAtIndexPaths:;
+- (void)dragSourceController:(void *)controller didSupplyCancellationPreviewForItemAtIndexPath:;
+- (void)dragSourceController:(void *)controller didUpdateItemsAtIndexPaths:;
+- (void)dragSourceController:(void *)controller willBeginAnimatingCancelForItemsAtIndexPaths:(void *)paths withAnimator:;
+- (void)dragSourceController:(void *)controller willBeginLiftForItemsAtIndexPaths:;
+- (void)dropToLocation:(CGPoint)location inContainerView:(id)view withTransform:(CGAffineTransform *)transform forDragItem:(id)item;
+- (void)placeholderContextNeedsCellUpdate:(id)update;
 - (void)placeholderContextsByIndexPath;
-- (void)rebaseCellAppearanceStatesForUpdates:(uint64_t)a1;
+- (void)rebaseCellAppearanceStatesForUpdates:(uint64_t)updates;
 - (void)reset;
-- (void)setCurrentDropInsertionShadowUpdateIdentifier:(uint64_t)a1;
-- (void)setCurrentlyInsertingPlaceholderContext:(uint64_t)a1;
-- (void)setDragInteractionEnabled:(uint64_t)a1;
-- (void)setDropCoordinatorItemsMap:(uint64_t)a1;
-- (void)setPlaceholderContextsByIndexPath:(uint64_t)a1;
-- (void)updateAppearanceForCell:(void *)a3 atIndexPath:;
+- (void)setCurrentDropInsertionShadowUpdateIdentifier:(uint64_t)identifier;
+- (void)setCurrentlyInsertingPlaceholderContext:(uint64_t)context;
+- (void)setDragInteractionEnabled:(uint64_t)enabled;
+- (void)setDropCoordinatorItemsMap:(uint64_t)map;
+- (void)setPlaceholderContextsByIndexPath:(uint64_t)path;
+- (void)updateAppearanceForCell:(void *)cell atIndexPath:;
 @end
 
 @implementation _UICollectionViewDragAndDropController
@@ -135,8 +135,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * i) cell];
-        [v9 _setReordering:0];
+        cell = [*(*(&v10 + 1) + 8 * i) cell];
+        [cell _setReordering:0];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -160,10 +160,10 @@
 - (void)didUpdateDragDelegate
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 collectionView];
-    v3 = a1[7];
+    collectionView = [self collectionView];
+    v3 = self[7];
     v4 = v3;
     if (v3)
     {
@@ -173,31 +173,31 @@
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
           v10 = 138412290;
-          v11 = v2;
+          v11 = collectionView;
           _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Warning: Changing the dragDelegate while a drag session is active will lead to undefined behavior. %@", &v10, 0xCu);
         }
       }
 
       [(_UICollectionViewDragSourceController *)v4 deactivate];
-      v6 = a1[7];
-      a1[7] = 0;
+      v6 = self[7];
+      self[7] = 0;
     }
 
-    v7 = [v2 dragDelegate];
-    if (v7 || ([v2 dragSourceDelegate], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    dragDelegate = [collectionView dragDelegate];
+    if (dragDelegate || ([collectionView dragSourceDelegate], (dragDelegate = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
-    else if (([v2 _dragAndDropNeededForReordering] & 1) == 0)
+    else if (([collectionView _dragAndDropNeededForReordering] & 1) == 0)
     {
       goto LABEL_11;
     }
 
-    v8 = [(_UICollectionViewDragDestinationController *)_UICollectionViewDragSourceController controllerForCollectionView:v2 delegate:a1];
-    v9 = a1[7];
-    a1[7] = v8;
+    v8 = [(_UICollectionViewDragDestinationController *)_UICollectionViewDragSourceController controllerForCollectionView:collectionView delegate:self];
+    v9 = self[7];
+    self[7] = v8;
 
-    -[_UICollectionViewDragSourceController setDragInteractionEnabled:](a1[7], [v2 dragInteractionEnabled]);
+    -[_UICollectionViewDragSourceController setDragInteractionEnabled:](self[7], [collectionView dragInteractionEnabled]);
 LABEL_11:
   }
 }
@@ -205,10 +205,10 @@ LABEL_11:
 - (void)didUpdateDropDelegate
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 collectionView];
-    v3 = a1[6];
+    collectionView = [self collectionView];
+    v3 = self[6];
     v4 = v3;
     if (v3)
     {
@@ -218,29 +218,29 @@ LABEL_11:
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
           v10 = 138412290;
-          v11 = v2;
+          v11 = collectionView;
           _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Warning: Changing the dropDelegate while a drag session is active will lead to undefined behavior. %@", &v10, 0xCu);
         }
       }
 
       [(_UICollectionViewDragDestinationController *)v4 deactivate];
-      v6 = a1[6];
-      a1[6] = 0;
+      v6 = self[6];
+      self[6] = 0;
     }
 
-    v7 = [v2 dropDelegate];
-    if (v7 || ([v2 dragDestinationDelegate], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    dropDelegate = [collectionView dropDelegate];
+    if (dropDelegate || ([collectionView dragDestinationDelegate], (dropDelegate = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
-    else if (([v2 _dragAndDropNeededForReordering] & 1) == 0)
+    else if (([collectionView _dragAndDropNeededForReordering] & 1) == 0)
     {
       goto LABEL_11;
     }
 
-    v8 = [_UICollectionViewDragDestinationController controllerForCollectionView:v2 delegate:a1];
-    v9 = a1[6];
-    a1[6] = v8;
+    v8 = [_UICollectionViewDragDestinationController controllerForCollectionView:collectionView delegate:self];
+    v9 = self[6];
+    self[6] = v8;
 
 LABEL_11:
   }
@@ -248,30 +248,30 @@ LABEL_11:
 
 - (void)didUpdateDataSource
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 56))
+    if (!*(self + 56))
     {
-      [(_UICollectionViewDragAndDropController *)a1 didUpdateDragDelegate];
+      [(_UICollectionViewDragAndDropController *)self didUpdateDragDelegate];
     }
 
-    if (!*(a1 + 48))
+    if (!*(self + 48))
     {
 
-      [(_UICollectionViewDragAndDropController *)a1 didUpdateDropDelegate];
+      [(_UICollectionViewDragAndDropController *)self didUpdateDropDelegate];
     }
   }
 }
 
 - (BOOL)hasShadowUpdates
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 _shadowUpdates];
-  v2 = [v1 count] != 0;
+  _shadowUpdates = [self _shadowUpdates];
+  v2 = [_shadowUpdates count] != 0;
 
   return v2;
 }
@@ -279,13 +279,13 @@ LABEL_11:
 - (void)commitReorderedItems
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v8 = 0u;
     v9 = 0u;
     v6 = 0u;
     v7 = 0u;
-    v1 = *(a1 + 168);
+    v1 = *(self + 168);
     v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
     if (v2)
     {
@@ -315,45 +315,45 @@ LABEL_11:
 
 - (id)reorderedItems
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[21] copy];
+    self = [self[21] copy];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)indexPathForOriginalReorderedItem
 {
-  if (a1 && *(a1 + 64) != 3)
+  if (self && *(self + 64) != 3)
   {
-    v2 = [*(a1 + 168) firstObject];
-    v3 = v2;
-    if (v2)
+    firstObject = [*(self + 168) firstObject];
+    v3 = firstObject;
+    if (firstObject)
     {
-      v1 = [v2 originalIndexPath];
+      originalIndexPath = [firstObject originalIndexPath];
     }
 
     else
     {
-      v1 = 0;
+      originalIndexPath = 0;
     }
   }
 
   else
   {
-    v1 = 0;
+    originalIndexPath = 0;
   }
 
-  return v1;
+  return originalIndexPath;
 }
 
-- (_UICollectionViewDragAndDropController)initWithCollectionView:(id)a3
+- (_UICollectionViewDragAndDropController)initWithCollectionView:(id)view
 {
   v17.receiver = self;
   v17.super_class = _UICollectionViewDragAndDropController;
-  v3 = [(_UICollectionViewShadowUpdatesController *)&v17 initWithCollectionView:a3];
+  v3 = [(_UICollectionViewShadowUpdatesController *)&v17 initWithCollectionView:view];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -408,8 +408,8 @@ LABEL_11:
   }
 
   [v6 appendFormat:@" reorderedItems = %@;", reorderedItems];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  [v6 appendFormat:@" shadowUpdates=%@;", v8];
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  [v6 appendFormat:@" shadowUpdates=%@;", _shadowUpdates];
 
   if (self)
   {
@@ -457,9 +457,9 @@ LABEL_11:
         goto LABEL_10;
       }
 
-      v4 = [v1 collectionView];
+      collectionView = [v1 collectionView];
       v5 = 138412290;
-      v6 = v4;
+      v6 = collectionView;
       _os_log_fault_impl(&dword_188A29000, v3, OS_LOG_TYPE_FAULT, "UICollectionView internal inconsistency: unable to begin reordering session due to the presence of placeholder contexts. Collection view: %@", &v5, 0xCu);
 LABEL_9:
 
@@ -472,9 +472,9 @@ LABEL_10:
     if (result)
     {
       v3 = v2;
-      v4 = [v1 collectionView];
+      collectionView = [v1 collectionView];
       v5 = 138412290;
-      v6 = v4;
+      v6 = collectionView;
       _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_ERROR, "UICollectionView internal inconsistency: unable to begin reordering session due to the presence of placeholder contexts. Collection view: %@", &v5, 0xCu);
       goto LABEL_9;
     }
@@ -483,16 +483,16 @@ LABEL_10:
   return result;
 }
 
-- (void)beginReorderingForItemAtIndexPath:(void *)a3 cell:
+- (void)beginReorderingForItemAtIndexPath:(void *)path cell:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  pathCopy = path;
+  v7 = pathCopy;
+  if (self)
   {
     if (v5)
     {
-      if (v6)
+      if (pathCopy)
       {
         goto LABEL_4;
       }
@@ -500,8 +500,8 @@ LABEL_10:
 
     else
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:sel_beginReorderingForItemAtIndexPath_cell_ object:a1 file:@"_UICollectionViewDragAndDropController.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_beginReorderingForItemAtIndexPath_cell_ object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
 
       if (v7)
       {
@@ -509,50 +509,50 @@ LABEL_10:
       }
     }
 
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:sel_beginReorderingForItemAtIndexPath_cell_ object:a1 file:@"_UICollectionViewDragAndDropController.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"cell != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel_beginReorderingForItemAtIndexPath_cell_ object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"cell != nil"}];
 
 LABEL_4:
-    v8 = [a1 collectionView];
-    v9 = v8;
-    v10 = *(a1 + 64);
+    collectionView = [self collectionView];
+    v9 = collectionView;
+    v10 = *(self + 64);
     if (v10 == 3)
     {
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __81___UICollectionViewDragAndDropController_beginReorderingForItemAtIndexPath_cell___block_invoke;
       v27[3] = &unk_1E70F35B8;
-      v14 = v8;
+      v14 = collectionView;
       v28 = v14;
       v15 = v5;
       v29 = v15;
       v16 = [v14 _performShadowUpdates:v27];
-      v17 = [v16 firstObject];
-      v18 = v17;
-      if (v17)
+      firstObject = [v16 firstObject];
+      v18 = firstObject;
+      if (firstObject)
       {
-        v19 = *(v17 + 88);
+        v19 = *(firstObject + 88);
       }
 
       else
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v24 handleFailureInMethod:sel_beginReorderingForItemAtIndexPath_cell_ object:a1 file:@"_UICollectionViewDragAndDropController.m" lineNumber:216 description:{@"UICollectionView internal consistency: shadow insert for placeholder cell is nil. Collection view: %@", v14}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:sel_beginReorderingForItemAtIndexPath_cell_ object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:216 description:{@"UICollectionView internal consistency: shadow insert for placeholder cell is nil. Collection view: %@", v14}];
 
         v19 = 0;
       }
 
-      objc_storeStrong((a1 + 160), v19);
+      objc_storeStrong((self + 160), v19);
       v20 = [v14 _cellForItemAtIndexPath:v15];
       if (!v20)
       {
         [MEMORY[0x1E696AAA8] currentHandler];
         v25 = v26 = v14;
-        [v25 handleFailureInMethod:sel_beginReorderingForItemAtIndexPath_cell_ object:a1 file:@"_UICollectionViewDragAndDropController.m" lineNumber:220 description:{@"UICollectionView internal consistency: unable to retrieve placeholder cell for reordering. Collection view: %@", v26}];
+        [v25 handleFailureInMethod:sel_beginReorderingForItemAtIndexPath_cell_ object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:220 description:{@"UICollectionView internal consistency: unable to retrieve placeholder cell for reordering. Collection view: %@", v26}];
       }
 
       v21 = [[UICollectionViewReorderedItem alloc] initWithCell:v20 indexPath:v15];
-      [*(a1 + 168) addObject:v21];
+      [*(self + 168) addObject:v21];
 
       goto LABEL_17;
     }
@@ -563,19 +563,19 @@ LABEL_4:
       {
 LABEL_9:
         v11 = [[UICollectionViewReorderedItem alloc] initWithCell:v7 indexPath:v5];
-        [*(a1 + 168) addObject:v11];
-        v12 = [v9 _diffableDataSourceImpl];
-        v13 = v12;
-        if (v12)
+        [*(self + 168) addObject:v11];
+        _diffableDataSourceImpl = [v9 _diffableDataSourceImpl];
+        v13 = _diffableDataSourceImpl;
+        if (_diffableDataSourceImpl)
         {
-          [v12 _willBeginReorderingForItemAtIndexPath:v5];
+          [_diffableDataSourceImpl _willBeginReorderingForItemAtIndexPath:v5];
         }
 
 LABEL_17:
         goto LABEL_18;
       }
 
-      *(a1 + 64) = 1;
+      *(self + 64) = 1;
     }
 
     [v7 _setReordering:1];
@@ -585,32 +585,32 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)setCurrentDropInsertionShadowUpdateIdentifier:(uint64_t)a1
+- (void)setCurrentDropInsertionShadowUpdateIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    objc_storeStrong((a1 + 160), 0);
+    objc_storeStrong((identifier + 160), 0);
   }
 }
 
-- (id)updateReorderingForTargetPosition:(double)a3
+- (id)updateReorderingForTargetPosition:(double)position
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v37 = 0;
     goto LABEL_41;
   }
 
-  v6 = *(a1 + 168);
+  v6 = *(self + 168);
   v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  if (!*(a1 + 64) || [(_UICollectionViewDragAndDropController *)a1 effectiveDragDestinationVisualStyle]== 2)
+  if (!*(self + 64) || [(_UICollectionViewDragAndDropController *)self effectiveDragDestinationVisualStyle]== 2)
   {
     goto LABEL_40;
   }
 
-  v7 = *(a1 + 43);
-  v8 = [a1 collectionView];
+  v7 = *(self + 43);
+  collectionView = [self collectionView];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -641,18 +641,18 @@ LABEL_18:
       }
 
       v14 = *(*(&v40 + 1) + 8 * v13);
-      v15 = [v14 originalIndexPath];
-      v16 = [v14 targetIndexPath];
+      originalIndexPath = [v14 originalIndexPath];
+      targetIndexPath = [v14 targetIndexPath];
       if (os_variant_has_internal_diagnostics())
       {
-        if (!v16)
+        if (!targetIndexPath)
         {
           v26 = __UIFaultDebugAssertLog();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
           {
-            v30 = __UICVIndexPathDescription(v15);
+            v30 = __UICVIndexPathDescription(originalIndexPath);
             *buf = v34;
-            v45 = v8;
+            v45 = collectionView;
             v46 = 2112;
             v47 = v30;
             _os_log_fault_impl(&dword_188A29000, v26, OS_LOG_TYPE_FAULT, "UIKit internal inconsistency: expected reordered item to have a previous index path. Please file a bug against UICollectionView with reproduction steps. Collection view: %@; Original index path: %@", buf, 0x16u);
@@ -660,49 +660,49 @@ LABEL_18:
         }
       }
 
-      else if (!v16)
+      else if (!targetIndexPath)
       {
         v27 = *(__UILogGetCategoryCachedImpl("Assert", &updateReorderingForTargetPosition____s_category) + 8);
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
           v28 = v27;
-          v29 = __UICVIndexPathDescription(v15);
+          v29 = __UICVIndexPathDescription(originalIndexPath);
           *buf = v34;
-          v45 = v8;
+          v45 = collectionView;
           v46 = 2112;
           v47 = v29;
           _os_log_impl(&dword_188A29000, v28, OS_LOG_TYPE_ERROR, "UIKit internal inconsistency: expected reordered item to have a previous index path. Please file a bug against UICollectionView with reproduction steps. Collection view: %@; Original index path: %@", buf, 0x16u);
         }
       }
 
-      if (*(a1 + 64) != 2)
+      if (*(self + 64) != 2)
       {
-        v18 = [v8 collectionViewLayout];
-        [v18 _targetPositionForInteractiveMovementOfItemAtIndexPath:v15 withProposedTargetPosition:{a2, a3}];
+        collectionViewLayout = [collectionView collectionViewLayout];
+        [collectionViewLayout _targetPositionForInteractiveMovementOfItemAtIndexPath:originalIndexPath withProposedTargetPosition:{a2, position}];
         v20 = v19;
         v22 = v21;
 
-        v23 = [v8 collectionViewLayout];
-        v24 = [v23 _reorderingTargetItemIndexPathForPosition:v16 withPreviousIndexPath:{v20, v22}];
+        collectionViewLayout2 = [collectionView collectionViewLayout];
+        v24 = [collectionViewLayout2 _reorderingTargetItemIndexPathForPosition:targetIndexPath withPreviousIndexPath:{v20, v22}];
 
         if (!v24)
         {
-          v17 = 0;
+          destinationIndexPath = 0;
           goto LABEL_26;
         }
 
-        v17 = [v8 _targetIndexPathForMoveOfItemFromOriginalIndexPath:v15 atCurrentIndexPath:v16 toProposedIndexPath:v24];
+        destinationIndexPath = [collectionView _targetIndexPathForMoveOfItemFromOriginalIndexPath:originalIndexPath atCurrentIndexPath:targetIndexPath toProposedIndexPath:v24];
 
-        if (!v16)
+        if (!targetIndexPath)
         {
           goto LABEL_26;
         }
 
 LABEL_17:
-        if (v17 && v16 != v17 && ([v16 isEqual:v17] & 1) == 0)
+        if (destinationIndexPath && targetIndexPath != destinationIndexPath && ([targetIndexPath isEqual:destinationIndexPath] & 1) == 0)
         {
-          [v37 setObject:v17 forKeyedSubscript:v16];
-          [v14 setTargetIndexPath:v17];
+          [v37 setObject:destinationIndexPath forKeyedSubscript:targetIndexPath];
+          [v14 setTargetIndexPath:destinationIndexPath];
           if (v38)
           {
             LOBYTE(v25) = 1;
@@ -719,14 +719,14 @@ LABEL_17:
         goto LABEL_26;
       }
 
-      if (![(_UICollectionViewDragDestinationController *)*(a1 + 48) shouldPerformMovementForCurrentProposal])
+      if (![(_UICollectionViewDragDestinationController *)*(self + 48) shouldPerformMovementForCurrentProposal])
       {
-        v17 = 0;
+        destinationIndexPath = 0;
         goto LABEL_26;
       }
 
-      v17 = [a1 destinationIndexPath];
-      if (v16)
+      destinationIndexPath = [self destinationIndexPath];
+      if (targetIndexPath)
       {
         goto LABEL_17;
       }
@@ -747,8 +747,8 @@ LABEL_37:
   v32 = v38 & 1;
   if (v32 != v35)
   {
-    *(a1 + 43) = v32;
-    [a1 _updatePreferredDraggedCellAppearanceForSessionUpdate];
+    *(self + 43) = v32;
+    [self _updatePreferredDraggedCellAppearanceForSessionUpdate];
   }
 
   v6 = v36;
@@ -764,12 +764,12 @@ LABEL_41:
   if (result)
   {
     v1 = result;
-    v2 = [result collectionView];
-    v3 = [v2 traitCollection];
-    v4 = v3;
-    if (v3)
+    collectionView = [result collectionView];
+    traitCollection = [collectionView traitCollection];
+    v4 = traitCollection;
+    if (traitCollection)
     {
-      _UIRecordTraitUsage(v3, 0x13uLL);
+      _UIRecordTraitUsage(traitCollection, 0x13uLL);
     }
 
     if (*(v1 + 72) == 2)
@@ -786,41 +786,41 @@ LABEL_41:
   return result;
 }
 
-- (id)cancelReorderingForced:(_BYTE *)a3 shouldCancelUsingBatchUpdate:
+- (id)cancelReorderingForced:(_BYTE *)forced shouldCancelUsingBatchUpdate:
 {
-  if (a1)
+  if (self)
   {
-    if (!a3)
+    if (!forced)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:sel_cancelReorderingForced_shouldCancelUsingBatchUpdate_ object:a1 file:@"_UICollectionViewDragAndDropController.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"cancelUsingBatchUpdate != NULL"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_cancelReorderingForced_shouldCancelUsingBatchUpdate_ object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"cancelUsingBatchUpdate != NULL"}];
     }
 
-    *a3 = 1;
-    v6 = a1[8];
+    *forced = 1;
+    v6 = self[8];
     switch(v6)
     {
       case 1:
-        [a1 reset];
-        a1[8] = 0;
+        [self reset];
+        self[8] = 0;
         break;
       case 3:
         if (a2)
         {
-          *a3 = 0;
-          v8 = [a1 _handleForcedDruidSessionEnd];
+          *forced = 0;
+          _handleForcedDruidSessionEnd = [self _handleForcedDruidSessionEnd];
           goto LABEL_15;
         }
 
-        [a1 _rollbackCurrentDropInsertion];
+        [self _rollbackCurrentDropInsertion];
         break;
       case 2:
         if (a2)
         {
-          v7 = [a1 _handleForcedDruidSessionEnd];
-          *a3 = 0;
+          _handleForcedDruidSessionEnd2 = [self _handleForcedDruidSessionEnd];
+          *forced = 0;
 LABEL_16:
-          v9 = _Block_copy(v7);
+          v9 = _Block_copy(_handleForcedDruidSessionEnd2);
 
           goto LABEL_17;
         }
@@ -829,14 +829,14 @@ LABEL_16:
         aBlock[1] = 3221225472;
         aBlock[2] = __94___UICollectionViewDragAndDropController_cancelReorderingForced_shouldCancelUsingBatchUpdate___block_invoke_2;
         aBlock[3] = &unk_1E70F3590;
-        aBlock[4] = a1;
-        v8 = _Block_copy(aBlock);
+        aBlock[4] = self;
+        _handleForcedDruidSessionEnd = _Block_copy(aBlock);
 LABEL_15:
-        v7 = v8;
+        _handleForcedDruidSessionEnd2 = _handleForcedDruidSessionEnd;
         goto LABEL_16;
     }
 
-    v7 = &__block_literal_global_123;
+    _handleForcedDruidSessionEnd2 = &__block_literal_global_123;
     goto LABEL_16;
   }
 
@@ -848,7 +848,7 @@ LABEL_17:
 
 - (id)_handleForcedDruidSessionEnd
 {
-  v3 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
   [(_UICollectionViewDragAndDropController *)self reset];
   [(_UICollectionViewDragDestinationController *)self->_destinationController suspendDrops];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -864,29 +864,29 @@ LABEL_17:
 
 - (id)endReordering
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[8];
+    v2 = self[8];
     switch(v2)
     {
       case 1:
-        [a1 reset];
-        a1[8] = 0;
+        [self reset];
+        self[8] = 0;
         break;
       case 3:
-        [a1 _rollbackCurrentDropInsertion];
+        [self _rollbackCurrentDropInsertion];
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __55___UICollectionViewDragAndDropController_endReordering__block_invoke_2;
         aBlock[3] = &unk_1E70F3590;
-        aBlock[4] = a1;
+        aBlock[4] = self;
         v3 = _Block_copy(aBlock);
 LABEL_9:
         v4 = _Block_copy(v3);
 
         goto LABEL_10;
       case 2:
-        [a1 reset];
+        [self reset];
         break;
     }
 
@@ -900,13 +900,13 @@ LABEL_10:
   return v4;
 }
 
-- (void)updateAppearanceForCell:(void *)a3 atIndexPath:
+- (void)updateAppearanceForCell:(void *)cell atIndexPath:
 {
   v14 = a2;
-  v5 = a3;
-  if (a1 && v14 && v5)
+  cellCopy = cell;
+  if (self && v14 && cellCopy)
   {
-    v6 = [(_UICollectionViewSubviewCollection *)*(a1 + 104) cellAtIndexPath:v5];
+    v6 = [(_UICollectionViewSubviewCollection *)*(self + 104) cellAtIndexPath:cellCopy];
     if (v6)
     {
       v7 = v6 == v14;
@@ -920,14 +920,14 @@ LABEL_10:
     if (!v7)
     {
       [v6 _setDragAppearance:0];
-      v8 = *(a1 + 104);
+      v8 = *(self + 104);
       if (v8)
       {
-        [*(v8 + 8) removeObjectForKey:v5];
+        [*(v8 + 8) removeObjectForKey:cellCopy];
       }
     }
 
-    v9 = [*(a1 + 112) objectForKeyedSubscript:v5];
+    v9 = [*(self + 112) objectForKeyedSubscript:cellCopy];
     v10 = v9;
     if (v9)
     {
@@ -969,58 +969,58 @@ LABEL_10:
         }
       }
 
-      [(_UICollectionViewSubviewCollection *)*(a1 + 104) setCell:v12 atIndexPath:v5];
+      [(_UICollectionViewSubviewCollection *)*(self + 104) setCell:v12 atIndexPath:cellCopy];
       [v14 _setDragAppearance:v13];
     }
   }
 }
 
-- (BOOL)isCellInvolvedInDragOrDropAnimation:(uint64_t)a3 atIndexPath:
+- (BOOL)isCellInvolvedInDragOrDropAnimation:(uint64_t)animation atIndexPath:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [a1 _dropCoordinatorItemForIndexPath:a3];
+    v6 = [self _dropCoordinatorItemForIndexPath:animation];
     v7 = v6;
     if (v6 && [v6 shouldRemainInHierarchy])
     {
-      v8 = [a1 _cellForDropCoordinatorItem:v7];
-      a1 = v8 == v5;
+      v8 = [self _cellForDropCoordinatorItem:v7];
+      self = v8 == v5;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setDragInteractionEnabled:(uint64_t)a1
+- (void)setDragInteractionEnabled:(uint64_t)enabled
 {
-  if (a1)
+  if (enabled)
   {
-    if (*(a1 + 40) != a2)
+    if (*(enabled + 40) != a2)
     {
-      *(a1 + 40) = a2;
-      [(_UICollectionViewDragSourceController *)*(a1 + 56) setDragInteractionEnabled:a2];
+      *(enabled + 40) = a2;
+      [(_UICollectionViewDragSourceController *)*(enabled + 56) setDragInteractionEnabled:a2];
     }
   }
 }
 
-- (uint64_t)isCellPerformingLegacyReorderingAtIndexPath:(uint64_t)a1
+- (uint64_t)isCellPerformingLegacyReorderingAtIndexPath:(uint64_t)path
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (path && v3)
   {
-    if (*(a1 + 64) == 1)
+    if (*(path + 64) == 1)
     {
-      v6 = [(_UICollectionViewDragAndDropController *)a1 indexPathForDragAndDropInsertion];
+      indexPathForDragAndDropInsertion = [(_UICollectionViewDragAndDropController *)path indexPathForDragAndDropInsertion];
       v7 = v4;
-      v8 = v6;
+      v8 = indexPathForDragAndDropInsertion;
       v9 = v8;
       if (v8 == v7)
       {
@@ -1047,9 +1047,9 @@ LABEL_18:
         {
         }
 
-        v12 = [(_UICollectionViewDragAndDropController *)a1 indexPathForOriginalReorderedItem];
+        indexPathForOriginalReorderedItem = [(_UICollectionViewDragAndDropController *)path indexPathForOriginalReorderedItem];
         v11 = v7;
-        v13 = v12;
+        v13 = indexPathForOriginalReorderedItem;
         v7 = v13;
         if (v13 == v11)
         {
@@ -1078,53 +1078,53 @@ LABEL_19:
   return v5;
 }
 
-- (void)setPlaceholderContextsByIndexPath:(uint64_t)a1
+- (void)setPlaceholderContextsByIndexPath:(uint64_t)path
 {
-  if (a1)
+  if (path)
   {
-    objc_storeStrong((a1 + 88), 0);
+    objc_storeStrong((path + 88), 0);
   }
 }
 
 - (id)indexPathForDragAndDropInsertion
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 168) firstObject];
-    v2 = v1;
-    if (v1)
+    firstObject = [*(self + 168) firstObject];
+    v2 = firstObject;
+    if (firstObject)
     {
-      v3 = [v1 targetIndexPath];
+      targetIndexPath = [firstObject targetIndexPath];
     }
 
     else
     {
-      v3 = 0;
+      targetIndexPath = 0;
     }
   }
 
   else
   {
-    v3 = 0;
+    targetIndexPath = 0;
   }
 
-  return v3;
+  return targetIndexPath;
 }
 
-- (BOOL)updateWillCauseInternalInconsistency:(uint64_t)a1
+- (BOOL)updateWillCauseInternalInconsistency:(uint64_t)inconsistency
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && [v3 updateAction] == 1)
+  if (inconsistency && [v3 updateAction] == 1)
   {
-    v5 = [(_UICollectionViewDragAndDropController *)a1 indexPathForOriginalReorderedItem];
-    if (v5)
+    indexPathForOriginalReorderedItem = [(_UICollectionViewDragAndDropController *)inconsistency indexPathForOriginalReorderedItem];
+    if (indexPathForOriginalReorderedItem)
     {
-      v6 = [(UICollectionViewUpdateItem *)v4 _indexPath];
+      _indexPath = [(UICollectionViewUpdateItem *)v4 _indexPath];
       v7 = 1;
-      if (([v6 isEqual:v5] & 1) == 0)
+      if (([_indexPath isEqual:indexPathForOriginalReorderedItem] & 1) == 0)
       {
-        if (!v4 || v4[6] != 0x7FFFFFFFFFFFFFFFLL || (v8 = [v6 section], v8 != objc_msgSend(v5, "section")))
+        if (!v4 || v4[6] != 0x7FFFFFFFFFFFFFFFLL || (v8 = [_indexPath section], v8 != objc_msgSend(indexPathForOriginalReorderedItem, "section")))
         {
           v7 = 0;
         }
@@ -1145,10 +1145,10 @@ LABEL_19:
   return v7;
 }
 
-- (id)_dropCoordinatorItemForDragItem:(id)a3
+- (id)_dropCoordinatorItemForDragItem:(id)item
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1178,9 +1178,9 @@ LABEL_19:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 dragItem];
+        dragItem = [v10 dragItem];
 
-        if (v11 == v4)
+        if (dragItem == itemCopy)
         {
           v7 = v10;
           goto LABEL_13;
@@ -1202,20 +1202,20 @@ LABEL_13:
   return v7;
 }
 
-- (id)_dropCoordinatorItemForIndexPath:(id)a3
+- (id)_dropCoordinatorItemForIndexPath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (path)
   {
-    v4 = a3;
+    pathCopy = path;
     if (self)
     {
       dropCoordinatorItemsMap = self->_dropCoordinatorItemsMap;
       if (!dropCoordinatorItemsMap)
       {
-        v6 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+        strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
         v7 = self->_dropCoordinatorItemsMap;
-        self->_dropCoordinatorItemsMap = v6;
+        self->_dropCoordinatorItemsMap = strongToWeakObjectsMapTable;
 
         v20 = 0u;
         v21 = 0u;
@@ -1237,10 +1237,10 @@ LABEL_13:
               }
 
               v13 = *(*(&v18 + 1) + 8 * i);
-              v14 = [v13 destinationIndexPath];
-              if (v14)
+              destinationIndexPath = [v13 destinationIndexPath];
+              if (destinationIndexPath)
               {
-                [(NSMapTable *)self->_dropCoordinatorItemsMap setObject:v13 forKey:v14];
+                [(NSMapTable *)self->_dropCoordinatorItemsMap setObject:v13 forKey:destinationIndexPath];
               }
             }
 
@@ -1261,7 +1261,7 @@ LABEL_13:
       v15 = 0;
     }
 
-    v16 = [(NSMapTable *)v15 objectForKey:v4, v18];
+    v16 = [(NSMapTable *)v15 objectForKey:pathCopy, v18];
   }
 
   else
@@ -1272,16 +1272,16 @@ LABEL_13:
   return v16;
 }
 
-- (id)_cellForDropCoordinatorItem:(id)a3
+- (id)_cellForDropCoordinatorItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 destinationIndexPath];
+  itemCopy = item;
+  destinationIndexPath = [itemCopy destinationIndexPath];
 
-  if (v5)
+  if (destinationIndexPath)
   {
-    v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v7 = [v4 destinationIndexPath];
-    v8 = [v6 _cellForItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    destinationIndexPath2 = [itemCopy destinationIndexPath];
+    v8 = [collectionView _cellForItemAtIndexPath:destinationIndexPath2];
   }
 
   else
@@ -1324,10 +1324,10 @@ LABEL_5:
 {
   if (dyld_program_sdk_at_least())
   {
-    v3 = [(_UICollectionViewDragAndDropController *)self hasShadowUpdates];
+    hasShadowUpdates = [(_UICollectionViewDragAndDropController *)self hasShadowUpdates];
     if (self)
     {
-      if (self->_sessionKind == 3 && v3)
+      if (self->_sessionKind == 3 && hasShadowUpdates)
       {
         [(_UICollectionViewDragDestinationController *)self->_destinationController dropWasCancelled];
       }
@@ -1351,11 +1351,11 @@ LABEL_5:
   self->_sessionKind = 0;
 }
 
-- (void)setDropCoordinatorItemsMap:(uint64_t)a1
+- (void)setDropCoordinatorItemsMap:(uint64_t)map
 {
-  if (a1)
+  if (map)
   {
-    objc_storeStrong((a1 + 128), 0);
+    objc_storeStrong((map + 128), 0);
   }
 }
 
@@ -1392,14 +1392,14 @@ LABEL_5:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-        v11 = [v10 visibleCells];
-        v12 = [v11 containsObject:v9];
+        collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+        visibleCells = [collectionView visibleCells];
+        v12 = [visibleCells containsObject:v9];
 
         if ((v12 & 1) == 0)
         {
-          v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-          [v13 _reuseCell:v9 notifyDidEndDisplaying:0];
+          collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+          [collectionView2 _reuseCell:v9 notifyDidEndDisplaying:0];
         }
       }
 
@@ -1422,19 +1422,19 @@ LABEL_5:
   [(NSMutableSet *)v14 removeAllObjects];
 }
 
-- (void)rebaseCellAppearanceStatesForUpdates:(uint64_t)a1
+- (void)rebaseCellAppearanceStatesForUpdates:(uint64_t)updates
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (updates)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = [*(a1 + 112) allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    allKeys = [*(updates + 112) allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1445,11 +1445,11 @@ LABEL_5:
         {
           if (*v24 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v23 + 1) + 8 * i);
-          v11 = [*(a1 + 112) objectForKeyedSubscript:v10];
+          v11 = [*(updates + 112) objectForKeyedSubscript:v10];
           v12 = v3[2](v3, v10);
           if (v12)
           {
@@ -1457,18 +1457,18 @@ LABEL_5:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v7);
     }
 
-    v13 = *(a1 + 112);
-    *(a1 + 112) = v4;
+    v13 = *(updates + 112);
+    *(updates + 112) = v4;
     v14 = v4;
 
     v15 = objc_alloc_init(_UICollectionViewSubviewCollection);
-    v16 = *(a1 + 104);
+    v16 = *(updates + 104);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __79___UICollectionViewDragAndDropController_rebaseCellAppearanceStatesForUpdates___block_invoke;
@@ -1477,8 +1477,8 @@ LABEL_5:
     v17 = v15;
     v21 = v17;
     [(_UICollectionViewSubviewCollection *)v16 enumerateAllViewsWithEnumerator:v20];
-    v18 = *(a1 + 104);
-    *(a1 + 104) = v17;
+    v18 = *(updates + 104);
+    *(updates + 104) = v17;
     v19 = v17;
   }
 }
@@ -1489,26 +1489,26 @@ LABEL_5:
   if (self)
   {
     v3 = !self->_hasReorderedItemInSession;
-    v4 = [(_UICollectionViewDragSourceController *)&self->_sourceController->super.isa currentSessionItemCount];
+    currentSessionItemCount = [(_UICollectionViewDragSourceController *)&self->_sourceController->super.isa currentSessionItemCount];
     destinationController = self->_destinationController;
   }
 
   else
   {
-    v4 = [(_UICollectionViewDragSourceController *)0 currentSessionItemCount];
+    currentSessionItemCount = [(_UICollectionViewDragSourceController *)0 currentSessionItemCount];
     destinationController = 0;
     v3 = 1;
   }
 
-  v6 = [(_UICollectionViewDragDestinationController *)&destinationController->super.isa supportsLocalSessionReordering];
-  v7 = [(_UICollectionViewDragAndDropController *)self effectiveDragDestinationVisualStyle];
-  v8 = v6 ^ 1;
-  if (v7 == 2)
+  supportsLocalSessionReordering = [(_UICollectionViewDragDestinationController *)&destinationController->super.isa supportsLocalSessionReordering];
+  effectiveDragDestinationVisualStyle = [(_UICollectionViewDragAndDropController *)self effectiveDragDestinationVisualStyle];
+  v8 = supportsLocalSessionReordering ^ 1;
+  if (effectiveDragDestinationVisualStyle == 2)
   {
     v8 = 1;
   }
 
-  if (v4 > 1)
+  if (currentSessionItemCount > 1)
   {
     v8 = 1;
   }
@@ -1523,7 +1523,7 @@ LABEL_5:
     v9 = v8;
   }
 
-  v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -1574,7 +1574,7 @@ LABEL_5:
           *(v20 + 10) = v9;
         }
 
-        v22 = [v10 cellForItemAtIndexPath:v17];
+        v22 = [collectionView cellForItemAtIndexPath:v17];
         [(_UICollectionViewDragAndDropController *)self updateAppearanceForCell:v22 atIndexPath:v17];
 
         ++v16;
@@ -1592,19 +1592,19 @@ LABEL_5:
 
 - (void)_rollbackCurrentDropInsertion
 {
-  v3 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
   if (self)
   {
     currentDropInsertionShadowUpdateIdentifier = self->_currentDropInsertionShadowUpdateIdentifier;
     if (currentDropInsertionShadowUpdateIdentifier)
     {
       v5 = currentDropInsertionShadowUpdateIdentifier;
-      v6 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-      v7 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v5 inShadowUpdates:v6];
+      _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+      v7 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v5 inShadowUpdates:_shadowUpdates];
 
       if (v7)
       {
-        v8 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+        updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
         v9 = 64;
         if (!*(v7 + 80))
         {
@@ -1613,7 +1613,7 @@ LABEL_5:
 
         v10 = *(v7 + v9);
         v11 = *(v7 + 88);
-        v12 = [v8 finalIndexPathForIndexPath:v10 startingAtUpdateWithIdentifier:v11];
+        v12 = [updateMap finalIndexPathForIndexPath:v10 startingAtUpdateWithIdentifier:v11];
 
         [(_UICollectionViewDragAndDropController *)self _resetReorderedItems];
         [(_UICollectionViewDragDestinationController *)self->_destinationController dropInsertionRolledBack];
@@ -1621,7 +1621,7 @@ LABEL_5:
         v17 = 3221225472;
         v18 = __71___UICollectionViewDragAndDropController__rollbackCurrentDropInsertion__block_invoke;
         v19 = &unk_1E70F35B8;
-        v20 = v3;
+        v20 = collectionView;
         v21 = v12;
         v13 = v12;
         v14 = [v20 _performShadowUpdates:&v16];
@@ -1635,13 +1635,13 @@ LABEL_5:
   }
 }
 
-- (BOOL)rebaseForUpdates:(id)a3
+- (BOOL)rebaseForUpdates:(id)updates
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  updatesCopy = updates;
+  if ([updatesCopy count])
   {
-    v5 = [(_UICollectionViewShadowUpdatesController *)self _rebasedUpdateMapForUpdates:v4];
+    v5 = [(_UICollectionViewShadowUpdatesController *)self _rebasedUpdateMapForUpdates:updatesCopy];
     if (v5 && [(_UICollectionViewShadowUpdatesController *)self _rebaseForUpdateMap:v5])
     {
       if (self && self->_rebaseShadowUpdatesOnly)
@@ -1662,7 +1662,7 @@ LABEL_5:
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v33 = v4;
+        v33 = updatesCopy;
         v34 = v5;
         if (self)
         {
@@ -1676,7 +1676,7 @@ LABEL_5:
 
         obj = reorderedItems;
         v10 = [(NSMutableArray *)obj countByEnumeratingWithState:&v41 objects:v48 count:16];
-        v32 = self;
+        selfCopy = self;
         if (v10)
         {
           v11 = v10;
@@ -1691,23 +1691,23 @@ LABEL_5:
               }
 
               v14 = *(*(&v41 + 1) + 8 * i);
-              v15 = [v14 originalIndexPath];
-              v16 = v8[2](v8, v15);
+              originalIndexPath = [v14 originalIndexPath];
+              v16 = v8[2](v8, originalIndexPath);
 
               if (!v16)
               {
                 goto LABEL_40;
               }
 
-              v17 = [v14 targetIndexPath];
-              v18 = v8[2](v8, v17);
+              targetIndexPath = [v14 targetIndexPath];
+              v18 = v8[2](v8, targetIndexPath);
 
               [v14 setOriginalIndexPath:v16];
               if (!v18)
               {
-                v19 = [v35 finalSnapshot];
-                v20 = [v14 targetIndexPath];
-                v21 = [v19 indexPathIsSectionAppendingInsert:v20];
+                finalSnapshot = [v35 finalSnapshot];
+                targetIndexPath2 = [v14 targetIndexPath];
+                v21 = [finalSnapshot indexPathIsSectionAppendingInsert:targetIndexPath2];
 
                 if (!v21 || ([v14 targetIndexPath], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
                 {
@@ -1724,7 +1724,7 @@ LABEL_40:
             }
 
             v11 = [(NSMutableArray *)obj countByEnumeratingWithState:&v41 objects:v48 count:16];
-            self = v32;
+            self = selfCopy;
             if (v11)
             {
               continue;
@@ -1765,10 +1765,10 @@ LABEL_40:
               }
 
               v29 = *(*(&v37 + 1) + 8 * j);
-              v30 = [v29 destinationIndexPath];
-              if (v30)
+              destinationIndexPath = [v29 destinationIndexPath];
+              if (destinationIndexPath)
               {
-                v31 = v8[2](v8, v30);
+                v31 = v8[2](v8, destinationIndexPath);
                 if (v31)
                 {
                   [v29 setDestinationIndexPath:v31];
@@ -1782,13 +1782,13 @@ LABEL_40:
           while (v26);
         }
 
-        [_UICollectionViewDragAndDropController setPlaceholderContextsByIndexPath:v32];
-        [(_UICollectionViewDragSourceController *)&v32->_sourceController->super.isa rebaseForUpdates:v8];
-        [(_UICollectionViewDragDestinationController *)&v32->_destinationController->super.isa rebaseForUpdates:v8];
+        [_UICollectionViewDragAndDropController setPlaceholderContextsByIndexPath:selfCopy];
+        [(_UICollectionViewDragSourceController *)&selfCopy->_sourceController->super.isa rebaseForUpdates:v8];
+        [(_UICollectionViewDragDestinationController *)&selfCopy->_destinationController->super.isa rebaseForUpdates:v8];
         v6 = 1;
 LABEL_41:
 
-        v4 = v33;
+        updatesCopy = v33;
         v5 = v34;
       }
     }
@@ -1810,21 +1810,21 @@ LABEL_41:
 - (void)placeholderContextsByIndexPath
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[11];
+    selfCopy = self;
+    v2 = self[11];
     if (!v2)
     {
       v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v4 = v1[11];
-      v1[11] = v3;
+      v4 = selfCopy[11];
+      selfCopy[11] = v3;
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      obj = v1[12];
+      obj = selfCopy[12];
       v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v5)
       {
@@ -1852,8 +1852,8 @@ LABEL_41:
             }
 
             v11 = v10;
-            v12 = [v1 _shadowUpdates];
-            v13 = [v1 _findShadowUpdateForIdentifier:v11 inShadowUpdates:v12];
+            _shadowUpdates = [selfCopy _shadowUpdates];
+            v13 = [selfCopy _findShadowUpdateForIdentifier:v11 inShadowUpdates:_shadowUpdates];
 
             if (v13)
             {
@@ -1862,7 +1862,7 @@ LABEL_41:
 
               if (v15)
               {
-                v16 = v1[11];
+                v16 = selfCopy[11];
                 if (v13[10])
                 {
                   v17 = 8;
@@ -1889,46 +1889,46 @@ LABEL_41:
         while (v19);
       }
 
-      v2 = v1[11];
+      v2 = selfCopy[11];
     }
 
-    a1 = v2;
+    self = v2;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)defaultAnimationHandlers
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[19];
+    selfCopy = self;
+    v3 = self[19];
     if (!v3)
     {
       v4 = objc_alloc_init(_UIDropAnimationHandlers);
-      v5 = v2[19];
-      v2[19] = v4;
+      v5 = selfCopy[19];
+      selfCopy[19] = v4;
 
-      v3 = v2[19];
+      v3 = selfCopy[19];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_updateCellAppearancesForItemsAtIndexPaths:(id)a3
+- (void)_updateCellAppearancesForItemsAtIndexPaths:(id)paths
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1940,12 +1940,12 @@ LABEL_41:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-        v11 = [v10 cellForItemAtIndexPath:v9];
+        collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+        v11 = [collectionView cellForItemAtIndexPath:v9];
 
         if (v11)
         {
@@ -1956,27 +1956,27 @@ LABEL_41:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)_removeMoveShadowUpdateMatchingReorderedItem:(id)a3
+- (BOOL)_removeMoveShadowUpdateMatchingReorderedItem:(id)item
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  v6 = [_shadowUpdates countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
-    v22 = self;
+    selfCopy = self;
     v8 = 0;
     v9 = *v26;
     do
@@ -1987,31 +1987,31 @@ LABEL_41:
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_shadowUpdates);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
         if ([v11 updateAction] == 3)
         {
-          v12 = [v11 indexPathBeforeUpdate];
-          v13 = [v4 originalIndexPath];
-          if ([v12 isEqual:v13])
+          indexPathBeforeUpdate = [v11 indexPathBeforeUpdate];
+          originalIndexPath = [itemCopy originalIndexPath];
+          if ([indexPathBeforeUpdate isEqual:originalIndexPath])
           {
-            v14 = [v11 indexPathAfterUpdate];
-            [v4 targetIndexPath];
+            indexPathAfterUpdate = [v11 indexPathAfterUpdate];
+            [itemCopy targetIndexPath];
             v15 = v9;
-            v16 = v4;
-            v18 = v17 = v5;
-            v24 = [v14 isEqual:v18];
+            v16 = itemCopy;
+            v18 = v17 = _shadowUpdates;
+            v24 = [indexPathAfterUpdate isEqual:v18];
 
-            v5 = v17;
-            v4 = v16;
+            _shadowUpdates = v17;
+            itemCopy = v16;
             v9 = v15;
 
             if (v24)
             {
-              v19 = [(_UICollectionViewShadowUpdatesController *)v22 _shadowUpdates];
-              [v19 removeObjectAtIndex:v8];
+              _shadowUpdates2 = [(_UICollectionViewShadowUpdatesController *)selfCopy _shadowUpdates];
+              [_shadowUpdates2 removeObjectAtIndex:v8];
 
               v20 = 1;
               goto LABEL_14;
@@ -2028,7 +2028,7 @@ LABEL_41:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v7 = [_shadowUpdates countByEnumeratingWithState:&v25 objects:v29 count:16];
       v8 = v23;
     }
 
@@ -2041,11 +2041,11 @@ LABEL_14:
   return v20;
 }
 
-- (id)_shadowUpdateReuseIdentifierForItemItemAtIndexPath:(id)a3
+- (id)_shadowUpdateReuseIdentifierForItemItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewDragAndDropController *)self placeholderContextsByIndexPath];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  pathCopy = path;
+  placeholderContextsByIndexPath = [(_UICollectionViewDragAndDropController *)self placeholderContextsByIndexPath];
+  v6 = [placeholderContextsByIndexPath objectForKeyedSubscript:pathCopy];
 
   if (v6)
   {
@@ -2064,7 +2064,7 @@ LABEL_3:
       currentlyInsertingPlaceholderContext = self->_currentlyInsertingPlaceholderContext;
       v12 = currentlyInsertingPlaceholderContext ? currentlyInsertingPlaceholderContext->_originalInsertionIndexPath : 0;
       v13 = currentlyInsertingPlaceholderContext;
-      v14 = [(NSIndexPath *)v12 isEqual:v4];
+      v14 = [(NSIndexPath *)v12 isEqual:pathCopy];
 
       if (v14)
       {
@@ -2081,28 +2081,28 @@ LABEL_3:
 
   v17.receiver = self;
   v17.super_class = _UICollectionViewDragAndDropController;
-  v8 = [(_UICollectionViewShadowUpdatesController *)&v17 _shadowUpdateReuseIdentifierForItemItemAtIndexPath:v4];
+  v8 = [(_UICollectionViewShadowUpdatesController *)&v17 _shadowUpdateReuseIdentifierForItemItemAtIndexPath:pathCopy];
 LABEL_12:
   v15 = v8;
 
   return v15;
 }
 
-- (void)_updateCellIfNeeded:(id)a3 atIndexPath:(id)a4
+- (void)_updateCellIfNeeded:(id)needed atIndexPath:(id)path
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14 && v6)
+  neededCopy = needed;
+  pathCopy = path;
+  if (neededCopy && pathCopy)
   {
-    if (self && (currentlyInsertingPlaceholderContext = self->_currentlyInsertingPlaceholderContext) != 0 && (v8 = currentlyInsertingPlaceholderContext, v9 = [v8[3] isEqual:v6], v8, v9) && (v10 = self->_currentlyInsertingPlaceholderContext) != 0)
+    if (self && (currentlyInsertingPlaceholderContext = self->_currentlyInsertingPlaceholderContext) != 0 && (v8 = currentlyInsertingPlaceholderContext, v9 = [v8[3] isEqual:pathCopy], v8, v9) && (v10 = self->_currentlyInsertingPlaceholderContext) != 0)
     {
       p_isa = &v10->super.isa;
     }
 
     else
     {
-      v12 = [(_UICollectionViewDragAndDropController *)self placeholderContextsByIndexPath];
-      p_isa = [v12 objectForKeyedSubscript:v6];
+      placeholderContextsByIndexPath = [(_UICollectionViewDragAndDropController *)self placeholderContextsByIndexPath];
+      p_isa = [placeholderContextsByIndexPath objectForKeyedSubscript:pathCopy];
 
       if (!p_isa)
       {
@@ -2115,7 +2115,7 @@ LABEL_11:
     v13 = p_isa[4];
     if (v13)
     {
-      (*(v13 + 16))(v13, v14);
+      (*(v13 + 16))(v13, neededCopy);
     }
 
     goto LABEL_11;
@@ -2124,16 +2124,16 @@ LABEL_11:
 LABEL_12:
 }
 
-- (BOOL)_deleteShadowUpdateWithIdentifier:(id)a3
+- (BOOL)_deleteShadowUpdateWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  v6 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v4 inShadowUpdates:v5];
+  identifierCopy = identifier;
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  v6 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:identifierCopy inShadowUpdates:_shadowUpdates];
 
   if (v6 && (-[_UICollectionViewShadowUpdatesController _shadowUpdates](self, "_shadowUpdates"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 indexOfObjectIdenticalTo:v6], v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v10 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    [v10 removeObjectAtIndex:v8];
+    _shadowUpdates2 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    [_shadowUpdates2 removeObjectAtIndex:v8];
 
     v9 = 1;
   }
@@ -2146,10 +2146,10 @@ LABEL_12:
   return v9;
 }
 
-- (id)_cellAppearanceStateForIndexPath:(id)a3
+- (id)_cellAppearanceStateForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v4];
+  pathCopy = path;
+  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:pathCopy];
   if (v5)
   {
     if (self)
@@ -2162,7 +2162,7 @@ LABEL_12:
       cellAppearanceStatesByIndexPaths = 0;
     }
 
-    v7 = [(NSMutableDictionary *)cellAppearanceStatesByIndexPaths objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)cellAppearanceStatesByIndexPaths objectForKeyedSubscript:pathCopy];
     if (!v7)
     {
       v7 = objc_alloc_init(_UICollectionViewCellAppearanceState);
@@ -2176,7 +2176,7 @@ LABEL_12:
         v8 = 0;
       }
 
-      [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:pathCopy];
     }
   }
 
@@ -2188,42 +2188,42 @@ LABEL_12:
   return v7;
 }
 
-- (void)_addDropCoordinatorItem:(id)a3
+- (void)_addDropCoordinatorItem:(id)item
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_dropCoordinatorItems;
   }
 
-  [(_UICollectionViewDragAndDropController *)self addObject:a3];
+  [(_UICollectionViewDragAndDropController *)self addObject:item];
 
-  [_UICollectionViewDragAndDropController setDropCoordinatorItemsMap:v3];
+  [_UICollectionViewDragAndDropController setDropCoordinatorItemsMap:selfCopy];
 }
 
-- (id)_presentationIndexPathForIndexPath:(id)a3 allowingAppendingInserts:(BOOL)a4
+- (id)_presentationIndexPathForIndexPath:(id)path allowingAppendingInserts:(BOOL)inserts
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  insertsCopy = inserts;
+  pathCopy = path;
+  if (!pathCopy)
   {
 LABEL_6:
     v7 = 0;
     goto LABEL_7;
   }
 
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathAfterShadowUpdates:v6];
-  if (!v7 && v4)
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathAfterShadowUpdates:pathCopy];
+  if (!v7 && insertsCopy)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-    v9 = [v8 initialSnapshot];
-    v10 = [v9 indexPathIsSectionAppendingInsert:v6];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+    initialSnapshot = [updateMap initialSnapshot];
+    v10 = [initialSnapshot indexPathIsSectionAppendingInsert:pathCopy];
 
     if (v10)
     {
-      v11 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-      v12 = [v11 finalSnapshot];
-      v7 = [v12 indexPathForAppendingInsertInSection:{objc_msgSend(v6, "section")}];
+      updateMap2 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+      finalSnapshot = [updateMap2 finalSnapshot];
+      v7 = [finalSnapshot indexPathForAppendingInsertInSection:{objc_msgSend(pathCopy, "section")}];
 
       goto LABEL_7;
     }
@@ -2236,17 +2236,17 @@ LABEL_7:
   return v7;
 }
 
-- (void)_addAnimationHandlers:(id)a3 toAnimator:(id)a4
+- (void)_addAnimationHandlers:(id)handlers toAnimator:(id)animator
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  handlersCopy = handlers;
+  animatorCopy = animator;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v5 alongsideAnimationHandlers];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  alongsideAnimationHandlers = [handlersCopy alongsideAnimationHandlers];
+  v8 = [alongsideAnimationHandlers countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2258,14 +2258,14 @@ LABEL_7:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(alongsideAnimationHandlers);
         }
 
-        [v6 addAnimations:*(*(&v21 + 1) + 8 * v11++)];
+        [animatorCopy addAnimations:*(*(&v21 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [alongsideAnimationHandlers countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
@@ -2275,8 +2275,8 @@ LABEL_7:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = [v5 completionHandlers];
-  v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  completionHandlers = [handlersCopy completionHandlers];
+  v13 = [completionHandlers countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -2288,14 +2288,14 @@ LABEL_7:
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(completionHandlers);
         }
 
-        [v6 addCompletion:*(*(&v17 + 1) + 8 * v16++)];
+        [animatorCopy addCompletion:*(*(&v17 + 1) + 8 * v16++)];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v14 = [completionHandlers countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v14);
@@ -2334,8 +2334,8 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v24 + 1) + 8 * i) animationHandlers];
-        [v9 invokeAllCompletionHandlers];
+        animationHandlers = [*(*(&v24 + 1) + 8 * i) animationHandlers];
+        [animationHandlers invokeAllCompletionHandlers];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -2397,8 +2397,8 @@ LABEL_7:
     while (v18);
   }
 
-  v19 = [(_UICollectionViewDragAndDropController *)self defaultAnimationHandlers];
-  [v19 invokeAllCompletionHandlers];
+  defaultAnimationHandlers = [(_UICollectionViewDragAndDropController *)self defaultAnimationHandlers];
+  [defaultAnimationHandlers invokeAllCompletionHandlers];
 }
 
 - (void)_resetAllAnimationHandlers
@@ -2433,8 +2433,8 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v24 + 1) + 8 * i) animationHandlers];
-        [v9 resetAllAnimationHandlers];
+        animationHandlers = [*(*(&v24 + 1) + 8 * i) animationHandlers];
+        [animationHandlers resetAllAnimationHandlers];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -2496,23 +2496,23 @@ LABEL_7:
     while (v18);
   }
 
-  v19 = [(_UICollectionViewDragAndDropController *)self defaultAnimationHandlers];
-  [v19 resetAllAnimationHandlers];
+  defaultAnimationHandlers = [(_UICollectionViewDragAndDropController *)self defaultAnimationHandlers];
+  [defaultAnimationHandlers resetAllAnimationHandlers];
 }
 
-- (void)dragSourceController:(void *)a3 willBeginLiftForItemsAtIndexPaths:
+- (void)dragSourceController:(void *)controller willBeginLiftForItemsAtIndexPaths:
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (a1)
+  controllerCopy = controller;
+  if (self)
   {
-    [a1 _incrementSessionRefCount];
+    [self _incrementSessionRefCount];
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = controllerCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2528,7 +2528,7 @@ LABEL_7:
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [a1 _cellAppearanceStateForIndexPath:{v11, v14}];
+          v12 = [self _cellAppearanceStateForIndexPath:{v11, v14}];
           v13 = v12;
           if (v12 && (v12[8] & 1) == 0)
           {
@@ -2543,22 +2543,22 @@ LABEL_7:
       while (v8);
     }
 
-    [a1 _updateCellAppearancesForItemsAtIndexPaths:v5];
+    [self _updateCellAppearancesForItemsAtIndexPaths:v5];
   }
 }
 
-- (void)dragSourceController:(void *)a3 didCompleteLiftForItemsAtIndexPaths:
+- (void)dragSourceController:(void *)controller didCompleteLiftForItemsAtIndexPaths:
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (a1)
+  controllerCopy = controller;
+  if (self)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = controllerCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2574,7 +2574,7 @@ LABEL_7:
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [a1 _cellAppearanceStateForIndexPath:{v11, v14}];
+          v12 = [self _cellAppearanceStateForIndexPath:{v11, v14}];
           v13 = v12;
           if (v12 && (v12[8] & 1) == 0)
           {
@@ -2590,23 +2590,23 @@ LABEL_7:
       while (v8);
     }
 
-    [a1 _updateCellAppearancesForItemsAtIndexPaths:v5];
-    [a1 _decrementSessionRefCount];
+    [self _updateCellAppearancesForItemsAtIndexPaths:v5];
+    [self _decrementSessionRefCount];
   }
 }
 
-- (void)dragSourceController:(void *)a3 didCancelLiftForItemsAtIndexPaths:
+- (void)dragSourceController:(void *)controller didCancelLiftForItemsAtIndexPaths:
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (a1)
+  controllerCopy = controller;
+  if (self)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = controllerCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2622,7 +2622,7 @@ LABEL_7:
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [a1 _cellAppearanceStateForIndexPath:{v11, v14}];
+          v12 = [self _cellAppearanceStateForIndexPath:{v11, v14}];
           v13 = v12;
           if (v12)
           {
@@ -2637,35 +2637,35 @@ LABEL_7:
       while (v8);
     }
 
-    [a1 _updateCellAppearancesForItemsAtIndexPaths:v5];
-    [a1 _decrementSessionRefCount];
+    [self _updateCellAppearancesForItemsAtIndexPaths:v5];
+    [self _decrementSessionRefCount];
   }
 }
 
-- (void)dragSourceController:(void *)a3 didUpdateItemsAtIndexPaths:
+- (void)dragSourceController:(void *)controller didUpdateItemsAtIndexPaths:
 {
-  v4 = a3;
-  if (a1)
+  controllerCopy = controller;
+  if (self)
   {
-    v6 = v4;
-    if ([a1 isDragDestinationInteractivelyReordering])
+    v6 = controllerCopy;
+    if ([self isDragDestinationInteractivelyReordering])
     {
       v5 = [v6 count];
       if (v5 >= 2)
       {
-        [(_UICollectionViewDragDestinationController *)a1[6] dragSourceSelectedItemCountDidChangeWithCount:v5];
+        [(_UICollectionViewDragDestinationController *)self[6] dragSourceSelectedItemCountDidChangeWithCount:v5];
       }
     }
 
-    [a1 _updateCellAppearancesForItemsAtIndexPaths:v6];
-    v4 = v6;
+    [self _updateCellAppearancesForItemsAtIndexPaths:v6];
+    controllerCopy = v6;
   }
 }
 
-- (void)dragSourceController:(id *)a1 didEndForItemsAtIndexPaths:
+- (void)dragSourceController:(id *)controller didEndForItemsAtIndexPaths:
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!controller)
   {
     return;
   }
@@ -2675,8 +2675,8 @@ LABEL_7:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1[14] keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  keyEnumerator = [controller[14] keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v4)
   {
     goto LABEL_17;
@@ -2690,11 +2690,11 @@ LABEL_7:
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v8 = *(*(&v11 + 1) + 8 * i);
-      v9 = [a1[14] objectForKeyedSubscript:v8];
+      v9 = [controller[14] objectForKeyedSubscript:v8];
       v10 = v9;
       if (!v9)
       {
@@ -2709,7 +2709,7 @@ LABEL_14:
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   }
 
   while (v5);
@@ -2717,17 +2717,17 @@ LABEL_17:
 
   if ([v2 count])
   {
-    [a1 _updateCellAppearancesForItemsAtIndexPaths:v2];
+    [controller _updateCellAppearancesForItemsAtIndexPaths:v2];
   }
 
-  [a1 _decrementSessionRefCount];
+  [controller _decrementSessionRefCount];
 }
 
-- (void)dragSourceController:(void *)a1 didSupplyCancellationPreviewForItemAtIndexPath:
+- (void)dragSourceController:(void *)controller didSupplyCancellationPreviewForItemAtIndexPath:
 {
-  if (a1)
+  if (controller)
   {
-    v1 = [a1 _cellAppearanceStateForIndexPath:?];
+    v1 = [controller _cellAppearanceStateForIndexPath:?];
     if (v1)
     {
       v2 = v1;
@@ -2737,24 +2737,24 @@ LABEL_17:
   }
 }
 
-- (void)dragSourceController:(void *)a3 willBeginAnimatingCancelForItemsAtIndexPaths:(void *)a4 withAnimator:
+- (void)dragSourceController:(void *)controller willBeginAnimatingCancelForItemsAtIndexPaths:(void *)paths withAnimator:
 {
   v42 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v6 = a4;
-  if (!a1)
+  controllerCopy = controller;
+  pathsCopy = paths;
+  if (!self)
   {
     goto LABEL_25;
   }
 
-  [a1 _incrementSessionRefCount];
+  [self _incrementSessionRefCount];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = [a1[14] keyEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  keyEnumerator = [self[14] keyEnumerator];
+  v9 = [keyEnumerator countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (!v9)
   {
     goto LABEL_13;
@@ -2768,11 +2768,11 @@ LABEL_17:
     {
       if (*v37 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v13 = *(*(&v36 + 1) + 8 * i);
-      v14 = [a1[14] objectForKeyedSubscript:v13];
+      v14 = [self[14] objectForKeyedSubscript:v13];
       v15 = v14;
       if (v14)
       {
@@ -2788,7 +2788,7 @@ LABEL_17:
 LABEL_11:
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    v10 = [keyEnumerator countByEnumeratingWithState:&v36 objects:v41 count:16];
   }
 
   while (v10);
@@ -2800,16 +2800,16 @@ LABEL_13:
     v34[1] = 3221225472;
     v34[2] = __121___UICollectionViewDragAndDropController_dragSourceController_willBeginAnimatingCancelForItemsAtIndexPaths_withAnimator___block_invoke;
     v34[3] = &unk_1E70F35B8;
-    v34[4] = a1;
+    v34[4] = self;
     v35 = v7;
-    [v6 addAnimations:v34];
+    [pathsCopy addAnimations:v34];
   }
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v16 = v24;
+  v16 = controllerCopy;
   v17 = [v16 countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v17)
   {
@@ -2824,7 +2824,7 @@ LABEL_13:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [a1 _cellAppearanceStateForIndexPath:*(*(&v30 + 1) + 8 * j)];
+        v21 = [self _cellAppearanceStateForIndexPath:*(*(&v30 + 1) + 8 * j)];
         v22 = v21;
         if (v21)
         {
@@ -2842,30 +2842,30 @@ LABEL_13:
   v28[1] = 3221225472;
   v28[2] = __121___UICollectionViewDragAndDropController_dragSourceController_willBeginAnimatingCancelForItemsAtIndexPaths_withAnimator___block_invoke_2;
   v28[3] = &unk_1E70F35B8;
-  v28[4] = a1;
+  v28[4] = self;
   v23 = v16;
   v29 = v23;
-  [v6 addAnimations:v28];
+  [pathsCopy addAnimations:v28];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __121___UICollectionViewDragAndDropController_dragSourceController_willBeginAnimatingCancelForItemsAtIndexPaths_withAnimator___block_invoke_3;
   v25[3] = &unk_1E71003B0;
   v26 = v23;
-  v27 = a1;
-  [v6 addCompletion:v25];
+  selfCopy = self;
+  [pathsCopy addCompletion:v25];
 
 LABEL_25:
 }
 
-- (void)dragDestinationController:(void *)a3 willBeginDropAnimationForDragItem:(void *)a4 animator:
+- (void)dragDestinationController:(void *)controller willBeginDropAnimationForDragItem:(void *)item animator:
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (a1)
+  controllerCopy = controller;
+  itemCopy = item;
+  if (self)
   {
-    [a1 _incrementSessionRefCount];
-    v8 = [a1 _dropCoordinatorItemForDragItem:v6];
+    [self _incrementSessionRefCount];
+    v8 = [self _dropCoordinatorItemForDragItem:controllerCopy];
     v9 = v8;
     if (!v8)
     {
@@ -2874,27 +2874,27 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v10 = [v8 destinationIndexPath];
-    if (!v10)
+    destinationIndexPath = [v8 destinationIndexPath];
+    if (!destinationIndexPath)
     {
 LABEL_13:
-      v17 = [v9 animationHandlers];
-      [a1 _addAnimationHandlers:v17 toAnimator:v7];
+      animationHandlers = [v9 animationHandlers];
+      [self _addAnimationHandlers:animationHandlers toAnimator:itemCopy];
 
-      v18 = [v9 animationHandlers];
-      [v18 resetAllAnimationHandlers];
+      animationHandlers2 = [v9 animationHandlers];
+      [animationHandlers2 resetAllAnimationHandlers];
 
-      v19 = v6;
+      v19 = controllerCopy;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v20 = a1[12];
+      v20 = self[12];
       v21 = [v20 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v21)
       {
-        v26 = v10;
-        v27 = v7;
+        v26 = destinationIndexPath;
+        v27 = itemCopy;
         v22 = *v29;
         while (2)
         {
@@ -2906,9 +2906,9 @@ LABEL_13:
             }
 
             v24 = *(*(&v28 + 1) + 8 * i);
-            v25 = [v24 dragItem];
+            dragItem = [v24 dragItem];
 
-            if (v25 == v19)
+            if (dragItem == v19)
             {
               v21 = v24;
               goto LABEL_23;
@@ -2925,23 +2925,23 @@ LABEL_13:
         }
 
 LABEL_23:
-        v10 = v26;
-        v7 = v27;
+        destinationIndexPath = v26;
+        itemCopy = v27;
       }
 
       if (v21)
       {
-        [a1 _addAnimationHandlers:v21[5] toAnimator:v7];
+        [self _addAnimationHandlers:v21[5] toAnimator:itemCopy];
         [v21[5] resetAllAnimationHandlers];
       }
 
       goto LABEL_27;
     }
 
-    v11 = [a1 indexPathBeforeShadowUpdates:v10];
+    v11 = [self indexPathBeforeShadowUpdates:destinationIndexPath];
     if (v11)
     {
-      v12 = [a1 _cellAppearanceStateForIndexPath:v10];
+      v12 = [self _cellAppearanceStateForIndexPath:destinationIndexPath];
       v13 = v12;
       if (!v12 || [v12 dragState] == 5)
       {
@@ -2949,24 +2949,24 @@ LABEL_23:
       }
 
       [v13 setDragState:4];
-      v32 = v10;
+      v32 = destinationIndexPath;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
-      [a1 _updateCellAppearancesForItemsAtIndexPaths:v14];
+      [self _updateCellAppearancesForItemsAtIndexPaths:v14];
     }
 
     else
     {
-      v15 = [a1 collectionView];
-      v13 = [v15 _cellForItemAtIndexPath:v10];
+      collectionView = [self collectionView];
+      v13 = [collectionView _cellForItemAtIndexPath:destinationIndexPath];
 
-      v16 = [a1 _cellAppearanceStateForIndexPath:v10];
+      v16 = [self _cellAppearanceStateForIndexPath:destinationIndexPath];
       v14 = v16;
       if (v16)
       {
         [v16 setDragState:4];
       }
 
-      [(_UICollectionViewDragAndDropController *)a1 updateAppearanceForCell:v13 atIndexPath:v10];
+      [(_UICollectionViewDragAndDropController *)self updateAppearanceForCell:v13 atIndexPath:destinationIndexPath];
     }
 
 LABEL_12:
@@ -2976,86 +2976,86 @@ LABEL_12:
 LABEL_28:
 }
 
-- (void)dragDestinationController:(void *)a1 didCompleteDropAnimationForDragItem:
+- (void)dragDestinationController:(void *)controller didCompleteDropAnimationForDragItem:
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (controller)
   {
-    v2 = [a1 _dropCoordinatorItemForDragItem:?];
+    v2 = [controller _dropCoordinatorItemForDragItem:?];
     v3 = v2;
     if (v2)
     {
-      v4 = [v2 destinationIndexPath];
-      if (v4)
+      destinationIndexPath = [v2 destinationIndexPath];
+      if (destinationIndexPath)
       {
-        v5 = [a1 indexPathBeforeShadowUpdates:v4];
+        v5 = [controller indexPathBeforeShadowUpdates:destinationIndexPath];
         if (v5)
         {
-          v6 = [a1 _cellAppearanceStateForIndexPath:v4];
+          v6 = [controller _cellAppearanceStateForIndexPath:destinationIndexPath];
           v7 = v6;
           if (v6)
           {
             [v6 setDragState:7];
           }
 
-          v12[0] = v4;
+          v12[0] = destinationIndexPath;
           v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-          [a1 _updateCellAppearancesForItemsAtIndexPaths:v8];
+          [controller _updateCellAppearancesForItemsAtIndexPaths:v8];
         }
 
         else
         {
-          v9 = [a1 collectionView];
-          v8 = [v9 _cellForItemAtIndexPath:v4];
+          collectionView = [controller collectionView];
+          v8 = [collectionView _cellForItemAtIndexPath:destinationIndexPath];
 
-          v10 = [a1 _cellAppearanceStateForIndexPath:v4];
+          v10 = [controller _cellAppearanceStateForIndexPath:destinationIndexPath];
           v11 = v10;
           if (v10)
           {
             [v10 setDragState:7];
           }
 
-          [(_UICollectionViewDragAndDropController *)a1 updateAppearanceForCell:v8 atIndexPath:v4];
+          [(_UICollectionViewDragAndDropController *)controller updateAppearanceForCell:v8 atIndexPath:destinationIndexPath];
         }
       }
     }
 
-    [a1 _decrementSessionRefCount];
+    [controller _decrementSessionRefCount];
   }
 }
 
-- (void)dragDestinationControllerSessionDidEnter:(int)a3 isNewSession:(int)a4 isResuming:
+- (void)dragDestinationControllerSessionDidEnter:(int)enter isNewSession:(int)session isResuming:
 {
   v12 = a2;
-  if (a1)
+  if (self)
   {
-    if ((a3 & 1) != 0 || a4)
+    if ((enter & 1) != 0 || session)
     {
       v7 = &OBJC_IVAR____UIKeyboardStateManager_m_shouldEnableCapsLockLanguageSwitchByDefault;
-      if ((a4 & 1) == 0 && a1[8])
+      if ((session & 1) == 0 && self[8])
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        v11 = [a1 collectionView];
-        [v10 handleFailureInMethod:sel_dragDestinationControllerSessionDidEnter_isNewSession_isResuming_ object:a1 file:@"_UICollectionViewDragAndDropController.m" lineNumber:1272 description:{@"UICollectionView internal inconsistency: attempted to enter new reordering session whilst an existing session was active. Collection view: %@", v11}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        collectionView = [self collectionView];
+        [currentHandler handleFailureInMethod:sel_dragDestinationControllerSessionDidEnter_isNewSession_isResuming_ object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1272 description:{@"UICollectionView internal inconsistency: attempted to enter new reordering session whilst an existing session was active. Collection view: %@", collectionView}];
 
         v7 = &OBJC_IVAR____UIKeyboardStateManager_m_shouldEnableCapsLockLanguageSwitchByDefault;
       }
 
-      v8 = [(_UICollectionViewDragDestinationController *)v12 supportsLocalSessionReordering];
+      supportsLocalSessionReordering = [(_UICollectionViewDragDestinationController *)v12 supportsLocalSessionReordering];
       v9 = 2;
-      if (!v8)
+      if (!supportsLocalSessionReordering)
       {
         v9 = 3;
       }
 
-      *(a1 + v7[597]) = v9;
-      if (a3)
+      *(self + v7[597]) = v9;
+      if (enter)
       {
-        [a1 _incrementSessionRefCount];
+        [self _incrementSessionRefCount];
       }
     }
 
-    [a1 _updatePreferredDraggedCellAppearanceForSessionUpdate];
+    [self _updatePreferredDraggedCellAppearanceForSessionUpdate];
   }
 }
 
@@ -3073,14 +3073,14 @@ LABEL_28:
 
 - (id)sourceIndexPaths
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 56);
+    v1 = *(self + 56);
     v2 = MEMORY[0x1E695E0F0];
     if (v1)
     {
-      v3 = [(_UICollectionViewDragSourceController *)v1 dragFromIndexPaths];
-      v4 = [v3 copy];
+      dragFromIndexPaths = [(_UICollectionViewDragSourceController *)v1 dragFromIndexPaths];
+      v4 = [dragFromIndexPaths copy];
     }
 
     else
@@ -3111,31 +3111,31 @@ LABEL_28:
 
 - (int64_t)numberOfSections
 {
-  v2 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-  v3 = [v2 finalSnapshot];
-  v4 = [v3 numberOfSections];
+  updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+  finalSnapshot = [updateMap finalSnapshot];
+  numberOfSections = [finalSnapshot numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-  v5 = [v4 finalSnapshot];
-  v6 = [v5 numberOfItemsInSection:a3];
+  updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+  finalSnapshot = [updateMap finalSnapshot];
+  v6 = [finalSnapshot numberOfItemsInSection:section];
 
   return v6;
 }
 
-- (id)insertPlaceholderForItemAtIndexPath:(id)a3 forDragItem:(id)a4 reuseIdentifier:(id)a5 cellUpdateHandler:(id)a6
+- (id)insertPlaceholderForItemAtIndexPath:(id)path forDragItem:(id)item reuseIdentifier:(id)identifier cellUpdateHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  pathCopy = path;
+  itemCopy = item;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (pathCopy)
   {
-    if (v14)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -3143,25 +3143,25 @@ LABEL_28:
 
   else
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1331 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1331 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
 
-    if (v14)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v38 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v38 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1332 description:{@"Invalid parameter not satisfying: %@", @"reuseIdentifier != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1332 description:{@"Invalid parameter not satisfying: %@", @"reuseIdentifier != nil"}];
 
 LABEL_3:
   v16 = [_UICollectionViewPlaceholderContext alloc];
-  v17 = v12;
-  v18 = v13;
-  v19 = v14;
-  v20 = self;
-  v21 = v15;
+  v17 = pathCopy;
+  v18 = itemCopy;
+  v19 = identifierCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
   if (v16)
   {
     v42.receiver = v16;
@@ -3173,10 +3173,10 @@ LABEL_3:
       shadowUpdates = v22->super.__shadowUpdates;
       v22->super.__shadowUpdates = v23;
 
-      objc_storeStrong(&v22->super._updateMap, a3);
-      objc_storeStrong(&v22->_sourceController, a4);
-      objc_storeStrong(&v22->super._initialSnapshot, a5);
-      objc_storeWeak(&v22->_destinationController, v20);
+      objc_storeStrong(&v22->super._updateMap, path);
+      objc_storeStrong(&v22->_sourceController, item);
+      objc_storeStrong(&v22->super._initialSnapshot, identifier);
+      objc_storeWeak(&v22->_destinationController, selfCopy);
       v25 = objc_alloc_init(_UIDropAnimationHandlers);
       v26 = *&v22->_dragInteractionEnabled;
       *&v22->_dragInteractionEnabled = v25;
@@ -3188,9 +3188,9 @@ LABEL_3:
     v22 = 0;
   }
 
-  if (v20)
+  if (selfCopy)
   {
-    placeholderContexts = v20->_placeholderContexts;
+    placeholderContexts = selfCopy->_placeholderContexts;
   }
 
   else
@@ -3199,24 +3199,24 @@ LABEL_3:
   }
 
   [(NSMutableSet *)placeholderContexts addObject:v22];
-  v28 = [(_UICollectionViewShadowUpdatesController *)v20 collectionView];
-  [(_UICollectionViewDragAndDropController *)v20 setCurrentlyInsertingPlaceholderContext:v22];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)selfCopy collectionView];
+  [(_UICollectionViewDragAndDropController *)selfCopy setCurrentlyInsertingPlaceholderContext:v22];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __124___UICollectionViewDragAndDropController_insertPlaceholderForItemAtIndexPath_forDragItem_reuseIdentifier_cellUpdateHandler___block_invoke;
   v39[3] = &unk_1E70F35B8;
-  v40 = v28;
+  v40 = collectionView;
   v41 = v17;
   v29 = v17;
-  v30 = v28;
+  v30 = collectionView;
   v31 = [v30 _performShadowUpdates:v39];
-  [(_UICollectionViewDragAndDropController *)v20 setCurrentlyInsertingPlaceholderContext:?];
-  [_UICollectionViewDragAndDropController setPlaceholderContextsByIndexPath:v20];
-  v32 = [v31 firstObject];
-  v33 = v32;
-  if (v32)
+  [(_UICollectionViewDragAndDropController *)selfCopy setCurrentlyInsertingPlaceholderContext:?];
+  [_UICollectionViewDragAndDropController setPlaceholderContextsByIndexPath:selfCopy];
+  firstObject = [v31 firstObject];
+  v33 = firstObject;
+  if (firstObject)
   {
-    v34 = *(v32 + 88);
+    v34 = *(firstObject + 88);
   }
 
   else
@@ -3233,20 +3233,20 @@ LABEL_3:
   return v22;
 }
 
-- (void)setCurrentlyInsertingPlaceholderContext:(uint64_t)a1
+- (void)setCurrentlyInsertingPlaceholderContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((context + 80), a2);
   }
 }
 
-- (id)placeholderContextDidDismiss:(id)a3
+- (id)placeholderContextDidDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   if (self)
   {
-    if (![(NSMutableSet *)self->_placeholderContexts containsObject:v4])
+    if (![(NSMutableSet *)self->_placeholderContexts containsObject:dismissCopy])
     {
       v16 = 0;
       goto LABEL_15;
@@ -3257,7 +3257,7 @@ LABEL_3:
 
   else
   {
-    v25 = [0 containsObject:v4];
+    v25 = [0 containsObject:dismissCopy];
     placeholderContexts = 0;
     v16 = 0;
     if ((v25 & 1) == 0)
@@ -3266,11 +3266,11 @@ LABEL_3:
     }
   }
 
-  [(NSMutableSet *)placeholderContexts removeObject:v4];
+  [(NSMutableSet *)placeholderContexts removeObject:dismissCopy];
   [_UICollectionViewDragAndDropController setPlaceholderContextsByIndexPath:?];
-  if (v4)
+  if (dismissCopy)
   {
-    v6 = v4[1];
+    v6 = dismissCopy[1];
   }
 
   else
@@ -3279,13 +3279,13 @@ LABEL_3:
   }
 
   v7 = v6;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  v9 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v7 inShadowUpdates:v8];
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  v9 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v7 inShadowUpdates:_shadowUpdates];
 
   if (v9)
   {
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v11 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
     v12 = 64;
     if (!*(v9 + 80))
     {
@@ -3294,22 +3294,22 @@ LABEL_3:
 
     v13 = *(v9 + v12);
     v14 = *(v9 + 88);
-    v15 = [v11 finalIndexPathForIndexPath:v13 startingAtUpdateWithIdentifier:v14];
+    v15 = [updateMap finalIndexPathForIndexPath:v13 startingAtUpdateWithIdentifier:v14];
 
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __71___UICollectionViewDragAndDropController_placeholderContextDidDismiss___block_invoke;
     v29 = &unk_1E70F35B8;
-    v30 = v10;
+    v30 = collectionView;
     v16 = v15;
     v31 = v16;
-    v17 = v10;
+    v17 = collectionView;
     v18 = [v17 _performShadowUpdates:&v26];
-    v19 = [v18 firstObject];
-    v20 = v19;
-    if (v19)
+    firstObject = [v18 firstObject];
+    v20 = firstObject;
+    if (firstObject)
     {
-      v21 = *(v19 + 88);
+      v21 = *(firstObject + 88);
     }
 
     else
@@ -3337,10 +3337,10 @@ LABEL_15:
   return v16;
 }
 
-- (void)placeholderContextNeedsCellUpdate:(id)a3
+- (void)placeholderContextNeedsCellUpdate:(id)update
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   if (self)
   {
     placeholderContexts = self->_placeholderContexts;
@@ -3351,11 +3351,11 @@ LABEL_15:
     placeholderContexts = 0;
   }
 
-  if ([(NSMutableSet *)placeholderContexts containsObject:v5])
+  if ([(NSMutableSet *)placeholderContexts containsObject:updateCopy])
   {
-    if (v5)
+    if (updateCopy)
     {
-      v7 = v5[1];
+      v7 = updateCopy[1];
     }
 
     else
@@ -3364,15 +3364,15 @@ LABEL_15:
     }
 
     v8 = v7;
-    v9 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    v10 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v8 inShadowUpdates:v9];
+    _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    v10 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v8 inShadowUpdates:_shadowUpdates];
 
     if (!v10)
     {
       goto LABEL_25;
     }
 
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
     v12 = 8;
     if (!v10[10])
     {
@@ -3380,18 +3380,18 @@ LABEL_15:
     }
 
     v13 = v10[v12];
-    v14 = [v11 _cellForItemAtIndexPath:v13];
+    v14 = [collectionView _cellForItemAtIndexPath:v13];
 
     if (v14)
     {
       v15 = dyld_program_sdk_at_least();
-      v16 = [v14 reuseIdentifier];
-      v17 = v16;
+      reuseIdentifier = [v14 reuseIdentifier];
+      v17 = reuseIdentifier;
       if (v15)
       {
-        if (v5)
+        if (updateCopy)
         {
-          v18 = v5[2];
+          v18 = updateCopy[2];
         }
 
         else
@@ -3399,16 +3399,16 @@ LABEL_15:
           v18 = 0;
         }
 
-        v19 = [v16 isEqualToString:v18];
+        v19 = [reuseIdentifier isEqualToString:v18];
 
         if ((v19 & 1) == 0)
         {
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
-          v21 = [v14 reuseIdentifier];
-          v22 = v21;
-          if (v5)
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          reuseIdentifier2 = [v14 reuseIdentifier];
+          v22 = reuseIdentifier2;
+          if (updateCopy)
           {
-            v23 = v5[2];
+            v23 = updateCopy[2];
           }
 
           else
@@ -3416,9 +3416,9 @@ LABEL_15:
             v23 = 0;
           }
 
-          [v20 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1402 description:{@"Error: cell reuseIdentifier (%@) does not match expected placeholder context reuseIdentifier (%@). Please file a bug against UICollectionView.", v21, v23}];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1402 description:{@"Error: cell reuseIdentifier (%@) does not match expected placeholder context reuseIdentifier (%@). Please file a bug against UICollectionView.", reuseIdentifier2, v23}];
 
-          if (!v5)
+          if (!updateCopy)
           {
             goto LABEL_24;
           }
@@ -3429,9 +3429,9 @@ LABEL_15:
 
       else
       {
-        if (v5)
+        if (updateCopy)
         {
-          v24 = v5[2];
+          v24 = updateCopy[2];
         }
 
         else
@@ -3439,18 +3439,18 @@ LABEL_15:
           v24 = 0;
         }
 
-        v25 = [v16 isEqualToString:v24];
+        v25 = [reuseIdentifier isEqualToString:v24];
 
         if ((v25 & 1) == 0)
         {
           v27 = *(__UILogGetCategoryCachedImpl("Assert", &placeholderContextNeedsCellUpdate____s_category) + 8);
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
-            v28 = [v14 reuseIdentifier];
-            v29 = v28;
-            if (v5)
+            reuseIdentifier3 = [v14 reuseIdentifier];
+            v29 = reuseIdentifier3;
+            if (updateCopy)
             {
-              v30 = v5[2];
+              v30 = updateCopy[2];
             }
 
             else
@@ -3459,13 +3459,13 @@ LABEL_15:
             }
 
             *buf = 138412546;
-            v32 = v28;
+            v32 = reuseIdentifier3;
             v33 = 2112;
             v34 = v30;
             _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_ERROR, "Error: cell reuseIdentifier (%@) does not match expected placeholder context reuseIdentifier (%@). Please file a bug against UICollectionView.", buf, 0x16u);
           }
 
-          if (!v5)
+          if (!updateCopy)
           {
             goto LABEL_24;
           }
@@ -3474,10 +3474,10 @@ LABEL_15:
         }
       }
 
-      if (v5)
+      if (updateCopy)
       {
 LABEL_22:
-        v26 = v5[4];
+        v26 = updateCopy[4];
         if (v26)
         {
           (*(v26 + 16))(v26, v14);
@@ -3491,10 +3491,10 @@ LABEL_25:
   }
 }
 
-- (BOOL)placeholderContext:(id)a3 didCommitInsertionWithDataSourceUpdates:(id)a4
+- (BOOL)placeholderContext:(id)context didCommitInsertionWithDataSourceUpdates:(id)updates
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  updatesCopy = updates;
   if (self)
   {
     placeholderContexts = self->_placeholderContexts;
@@ -3505,13 +3505,13 @@ LABEL_25:
     placeholderContexts = 0;
   }
 
-  v10 = [(NSMutableSet *)placeholderContexts containsObject:v7];
+  v10 = [(NSMutableSet *)placeholderContexts containsObject:contextCopy];
   if (v10)
   {
-    [(_UICollectionViewDragAndDropController *)self placeholderContextNeedsCellUpdate:v7];
-    if (v7)
+    [(_UICollectionViewDragAndDropController *)self placeholderContextNeedsCellUpdate:contextCopy];
+    if (contextCopy)
     {
-      v11 = v7[1];
+      v11 = contextCopy[1];
     }
 
     else
@@ -3520,11 +3520,11 @@ LABEL_25:
     }
 
     v12 = v11;
-    v13 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    v14 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v12 inShadowUpdates:v13];
+    _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    v14 = [(_UICollectionViewShadowUpdatesController *)self _findShadowUpdateForIdentifier:v12 inShadowUpdates:_shadowUpdates];
 
-    v15 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-    v16 = [(UICollectionViewUpdateItem *)v14 _indexPath];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+    _indexPath = [(UICollectionViewUpdateItem *)v14 _indexPath];
     if (v14)
     {
       v17 = v14[11];
@@ -3536,18 +3536,18 @@ LABEL_25:
     }
 
     v18 = v17;
-    v19 = [v15 initialIndexPathForIndexPath:v16 beforeUpdateWithIdentifier:v18];
+    v19 = [updateMap initialIndexPathForIndexPath:_indexPath beforeUpdateWithIdentifier:v18];
 
     if (!v19)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1419 description:@"UICollectionView internal inconsistency exception: could not locate placeholder insertion location; this should never be nil."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1419 description:@"UICollectionView internal inconsistency exception: could not locate placeholder insertion location; this should never be nil."];
     }
 
-    v20 = [(_UICollectionViewDragAndDropController *)self placeholderContextDidDismiss:v7];
+    v20 = [(_UICollectionViewDragAndDropController *)self placeholderContextDidDismiss:contextCopy];
     v21 = [[UICollectionViewUpdateItem alloc] initWithAction:0 forIndexPath:v20];
-    v22 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v23 = v22;
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v23 = collectionView;
     if (self)
     {
       rebaseShadowUpdatesOnly = self->_rebaseShadowUpdatesOnly;
@@ -3563,10 +3563,10 @@ LABEL_25:
     v30[1] = 3221225472;
     v30[2] = __101___UICollectionViewDragAndDropController_placeholderContext_didCommitInsertionWithDataSourceUpdates___block_invoke;
     v30[3] = &unk_1E7100388;
-    v31 = v22;
+    v31 = collectionView;
     v32 = v19;
     v33 = v21;
-    v34 = v8;
+    v34 = updatesCopy;
     v25 = v21;
     v26 = v19;
     v27 = v23;
@@ -3580,16 +3580,16 @@ LABEL_25:
   return v10;
 }
 
-- (void)_performCancelDropToIndexPath:(void *)a3 forDragItem:
+- (void)_performCancelDropToIndexPath:(void *)path forDragItem:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    pathCopy = path;
     v6 = a2;
-    v7 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDestinationIndexPath:v6 dragItem:v5];
+    v7 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDestinationIndexPath:v6 dragItem:pathCopy];
 
     [(_UICollectionViewDropCoordinatorItem *)v7 setShouldRemainInHierarchy:1];
-    [a1 _addDropCoordinatorItem:v7];
+    [self _addDropCoordinatorItem:v7];
   }
 }
 
@@ -3601,11 +3601,11 @@ LABEL_25:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(_UICollectionViewDragDestinationController *)&self->_destinationController->super.isa currentDropSession];
-  v5 = [v4 items];
+  currentDropSession = [(_UICollectionViewDragDestinationController *)&self->_destinationController->super.isa currentDropSession];
+  items = [currentDropSession items];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  obj = items;
+  v6 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3636,92 +3636,92 @@ LABEL_25:
   return v3;
 }
 
-- (id)dropItem:(id)a3 toPlaceholderInsertedAtIndexPath:(id)a4 withReuseIdentifier:(id)a5 cellUpdateHandler:(id)a6
+- (id)dropItem:(id)item toPlaceholderInsertedAtIndexPath:(id)path withReuseIdentifier:(id)identifier cellUpdateHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  pathCopy = path;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1475 description:@"Please pass an object of type UIDragItem."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1475 description:@"Please pass an object of type UIDragItem."];
   }
 
-  v15 = [(UICollectionViewPlaceholder *)[UICollectionViewDropPlaceholder alloc] initWithInsertionIndexPath:v14 reuseIdentifier:v13];
+  v15 = [(UICollectionViewPlaceholder *)[UICollectionViewDropPlaceholder alloc] initWithInsertionIndexPath:pathCopy reuseIdentifier:identifierCopy];
 
-  [(UICollectionViewPlaceholder *)v15 setCellUpdateHandler:v12];
-  v16 = [(_UICollectionViewDragAndDropController *)self dropItem:v11 toPlaceholder:v15];
+  [(UICollectionViewPlaceholder *)v15 setCellUpdateHandler:handlerCopy];
+  v16 = [(_UICollectionViewDragAndDropController *)self dropItem:itemCopy toPlaceholder:v15];
 
   return v16;
 }
 
-- (id)dropItem:(id)a3 toPlaceholder:(id)a4
+- (id)dropItem:(id)item toPlaceholder:(id)placeholder
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  placeholderCopy = placeholder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1483 description:@"Please pass an object of type UIDragItem."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1483 description:@"Please pass an object of type UIDragItem."];
   }
 
-  v9 = [v8 insertionIndexPath];
-  v10 = [(_UICollectionViewDragAndDropController *)self _presentationIndexPathForIndexPath:v9 allowingAppendingInserts:1];
+  insertionIndexPath = [placeholderCopy insertionIndexPath];
+  v10 = [(_UICollectionViewDragAndDropController *)self _presentationIndexPathForIndexPath:insertionIndexPath allowingAppendingInserts:1];
 
-  v11 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDestinationIndexPath:v10 dragItem:v7 placeholderConfiguration:v8];
+  v11 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDestinationIndexPath:v10 dragItem:itemCopy placeholderConfiguration:placeholderCopy];
   [(_UICollectionViewDragAndDropController *)self _addDropCoordinatorItem:v11];
-  v12 = [v8 cellReuseIdentifier];
-  v13 = [v8 cellUpdateHandler];
+  cellReuseIdentifier = [placeholderCopy cellReuseIdentifier];
+  cellUpdateHandler = [placeholderCopy cellUpdateHandler];
 
-  v14 = [(_UICollectionViewDragAndDropController *)self insertPlaceholderForItemAtIndexPath:v10 forDragItem:v7 reuseIdentifier:v12 cellUpdateHandler:v13];
+  v14 = [(_UICollectionViewDragAndDropController *)self insertPlaceholderForItemAtIndexPath:v10 forDragItem:itemCopy reuseIdentifier:cellReuseIdentifier cellUpdateHandler:cellUpdateHandler];
 
   return v14;
 }
 
-- (id)dropItem:(id)a3 toItemAtIndexPath:(id)a4
+- (id)dropItem:(id)item toItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  pathCopy = path;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1495 description:@"Please pass an object of type UIDragItem."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1495 description:@"Please pass an object of type UIDragItem."];
   }
 
-  v9 = [(_UICollectionViewDragAndDropController *)self _presentationIndexPathForIndexPath:v8 allowingAppendingInserts:1];
-  v10 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDestinationIndexPath:v9 dragItem:v7];
+  v9 = [(_UICollectionViewDragAndDropController *)self _presentationIndexPathForIndexPath:pathCopy allowingAppendingInserts:1];
+  v10 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDestinationIndexPath:v9 dragItem:itemCopy];
   [(_UICollectionViewDragAndDropController *)self _addDropCoordinatorItem:v10];
 
   return v10;
 }
 
-- (id)dropItem:(id)a3 intoItemAtIndexPath:(id)a4 rect:(CGRect)a5
+- (id)dropItem:(id)item intoItemAtIndexPath:(id)path rect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
-  v13 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  itemCopy = item;
+  pathCopy = path;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1504 description:@"Please pass an object of type UIDragItem."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1504 description:@"Please pass an object of type UIDragItem."];
   }
 
-  v14 = [(_UICollectionViewDragAndDropController *)self _presentationIndexPathForIndexPath:v13 allowingAppendingInserts:1];
-  v15 = [(_UICollectionViewDragAndDropController *)self defaultAnimationHandlers];
-  v16 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v17 = [v16 _cellForItemAtIndexPath:v14];
+  v14 = [(_UICollectionViewDragAndDropController *)self _presentationIndexPathForIndexPath:pathCopy allowingAppendingInserts:1];
+  defaultAnimationHandlers = [(_UICollectionViewDragAndDropController *)self defaultAnimationHandlers];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v17 = [collectionView _cellForItemAtIndexPath:v14];
 
   if (v17)
   {
-    [v12 _visibleDropItemSize];
+    [itemCopy _visibleDropItemSize];
     v19 = v18;
     v21 = v20;
     if ((*&x & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&y & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000 || (*&width & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000 || (*&height & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
@@ -3752,7 +3752,7 @@ LABEL_25:
     v30 = [UIDragPreviewTarget alloc];
     v37 = v38;
     v31 = [(UIPreviewTarget *)v30 initWithContainer:v17 center:&v37 transform:v26, v27];
-    v32 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDragItem:v12 target:v31];
+    v32 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDragItem:itemCopy target:v31];
     [(_UICollectionViewDropCoordinatorItem *)v32 setDestinationIndexPath:v14];
     [(_UICollectionViewDropCoordinatorItem *)v32 setShouldRemainInHierarchy:1];
     [(_UICollectionViewDragAndDropController *)self _addDropCoordinatorItem:v32];
@@ -3764,69 +3764,69 @@ LABEL_25:
       [v33 setDragState:5];
     }
 
-    v15 = v32;
+    defaultAnimationHandlers = v32;
   }
 
-  return v15;
+  return defaultAnimationHandlers;
 }
 
-- (id)dropItem:(id)a3 toTarget:(id)a4
+- (id)dropItem:(id)item toTarget:(id)target
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  targetCopy = target;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1537 description:@"Please pass an object of type UIDragItem."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1537 description:@"Please pass an object of type UIDragItem."];
   }
 
-  v9 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDragItem:v7 target:v8];
+  v9 = [[_UICollectionViewDropCoordinatorItem alloc] initWithDragItem:itemCopy target:targetCopy];
 
   [(_UICollectionViewDragAndDropController *)self _addDropCoordinatorItem:v9];
 
   return v9;
 }
 
-- (id)dropToPlaceholderCellAtIndexPath:(id)a3 reuseIdentifier:(id)a4 forDragItem:(id)a5 cellUpdateHandler:(id)a6
+- (id)dropToPlaceholderCellAtIndexPath:(id)path reuseIdentifier:(id)identifier forDragItem:(id)item cellUpdateHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  pathCopy = path;
+  identifierCopy = identifier;
+  itemCopy = item;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1550 description:@"Please pass an object of type UIDragItem."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1550 description:@"Please pass an object of type UIDragItem."];
   }
 
-  v15 = [(_UICollectionViewDragAndDropController *)self dropItem:v13 toPlaceholderInsertedAtIndexPath:v11 withReuseIdentifier:v12 cellUpdateHandler:v14];
+  v15 = [(_UICollectionViewDragAndDropController *)self dropItem:itemCopy toPlaceholderInsertedAtIndexPath:pathCopy withReuseIdentifier:identifierCopy cellUpdateHandler:handlerCopy];
 
   return v15;
 }
 
-- (void)dropToLocation:(CGPoint)a3 inContainerView:(id)a4 withTransform:(CGAffineTransform *)a5 forDragItem:(id)a6
+- (void)dropToLocation:(CGPoint)location inContainerView:(id)view withTransform:(CGAffineTransform *)transform forDragItem:(id)item
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = a6;
-  v13 = a4;
+  y = location.y;
+  x = location.x;
+  itemCopy = item;
+  viewCopy = view;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1563 description:@"Please pass an object of type UIDragItem."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewDragAndDropController.m" lineNumber:1563 description:@"Please pass an object of type UIDragItem."];
   }
 
   v14 = [UIDragPreviewTarget alloc];
-  v15 = *&a5->c;
-  v19[0] = *&a5->a;
+  v15 = *&transform->c;
+  v19[0] = *&transform->a;
   v19[1] = v15;
-  v19[2] = *&a5->tx;
-  v16 = [(UIPreviewTarget *)v14 initWithContainer:v13 center:v19 transform:x, y];
+  v19[2] = *&transform->tx;
+  v16 = [(UIPreviewTarget *)v14 initWithContainer:viewCopy center:v19 transform:x, y];
 
-  v17 = [(_UICollectionViewDragAndDropController *)self dropItem:v12 toTarget:v16];
+  v17 = [(_UICollectionViewDragAndDropController *)self dropItem:itemCopy toTarget:v16];
 }
 
 @end

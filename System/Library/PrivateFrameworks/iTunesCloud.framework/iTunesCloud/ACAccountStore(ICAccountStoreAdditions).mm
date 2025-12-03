@@ -71,7 +71,7 @@
   v11 = &v12;
   v6 = v5;
   v10 = v6;
-  [a1 ic_storeAccountForStoreAccountID:v4 completion:v9];
+  [self ic_storeAccountForStoreAccountID:v4 completion:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
 
@@ -90,7 +90,7 @@
   v7[3] = &unk_1E7BF9308;
   v8 = v5;
   v6 = v5;
-  [a1 ic_setActiveLockerAccount:v4 completion:v7];
+  [self ic_setActiveLockerAccount:v4 completion:v7];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -105,7 +105,7 @@
   v7[3] = &unk_1E7BF9308;
   v8 = v5;
   v6 = v5;
-  [a1 ic_setActiveStoreAccount:v4 completion:v7];
+  [self ic_setActiveStoreAccount:v4 completion:v7];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -126,7 +126,7 @@
   v8 = &v9;
   v3 = v2;
   v7 = v3;
-  [a1 ic_primaryAppleAccountWithCompletion:v6];
+  [self ic_primaryAppleAccountWithCompletion:v6];
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
   v4 = v10[5];
 
@@ -151,7 +151,7 @@
   v8 = &v9;
   v3 = v2;
   v7 = v3;
-  [a1 ic_activeLockerAccountWithCompletion:v6];
+  [self ic_activeLockerAccountWithCompletion:v6];
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
   v4 = v10[5];
 
@@ -176,7 +176,7 @@
   v8 = &v9;
   v3 = v2;
   v7 = v3;
-  [a1 ic_activeStoreAccountWithCompletion:v6];
+  [self ic_activeStoreAccountWithCompletion:v6];
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
   v4 = v10[5];
 
@@ -201,7 +201,7 @@
   v8 = &v9;
   v3 = v2;
   v7 = v3;
-  [a1 ic_allStoreAccountsWithCompletion:v6];
+  [self ic_allStoreAccountsWithCompletion:v6];
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
   v4 = v10[5];
 
@@ -220,7 +220,7 @@
   v17 = __Block_byref_object_dispose__15240;
   v18 = 0;
   v12 = 0;
-  v5 = [a1 ic_allStoreAccountsWithError:&v12];
+  v5 = [self ic_allStoreAccountsWithError:&v12];
   v6 = v12;
   if (v6)
   {
@@ -228,7 +228,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v20 = a1;
+      selfCopy = self;
       v21 = 2114;
       v22 = v6;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_ERROR, "ACAccountStore %p - Error retrieving local store account. err=%{public}@", buf, 0x16u);
@@ -267,7 +267,7 @@
   v6[3] = &unk_1E7BF59C0;
   v7 = v4;
   v5 = v4;
-  [a1 ic_allStoreAccountsWithCompletion:v6];
+  [self ic_allStoreAccountsWithCompletion:v6];
 }
 
 - (id)ic_storeAccountForHomeUserIdentifier:()ICAccountStoreAdditions error:
@@ -276,8 +276,8 @@
   v7 = a3;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:408 description:{@"Invalid parameter not satisfying: %@", @"homeUserID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:408 description:{@"Invalid parameter not satisfying: %@", @"homeUserID"}];
   }
 
   v19 = 0;
@@ -287,7 +287,7 @@
   v23 = __Block_byref_object_dispose__15240;
   v24 = 0;
   v18 = 0;
-  v8 = [a1 ic_allStoreAccountsWithError:&v18];
+  v8 = [self ic_allStoreAccountsWithError:&v18];
   v9 = v18;
   if (v9)
   {
@@ -295,7 +295,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v26 = a1;
+      selfCopy = self;
       v27 = 2114;
       v28 = v7;
       v29 = 2114;
@@ -335,8 +335,8 @@
   v8 = a4;
   if (!v7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:387 description:{@"Invalid parameter not satisfying: %@", @"homeUserID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:387 description:{@"Invalid parameter not satisfying: %@", @"homeUserID"}];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -347,7 +347,7 @@
   v14 = v8;
   v9 = v7;
   v10 = v8;
-  [a1 ic_allStoreAccountsWithCompletion:v12];
+  [self ic_allStoreAccountsWithCompletion:v12];
 }
 
 - (id)ic_storeAccountTypeWithError:()ICAccountStoreAdditions
@@ -355,7 +355,7 @@
   v16 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E6959930];
   v11 = 0;
-  v6 = [a1 accountTypeWithAccountTypeIdentifier:v5 error:&v11];
+  v6 = [self accountTypeWithAccountTypeIdentifier:v5 error:&v11];
   v7 = v11;
   if (v7)
   {
@@ -363,7 +363,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v13 = a1;
+      selfCopy = self;
       v14 = 2114;
       v15 = v7;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "ACAccountStore %p - Error retrieving store account type. err=%{public}@", buf, 0x16u);
@@ -389,7 +389,7 @@
   v7[3] = &unk_1E7BF5AB0;
   v8 = v4;
   v6 = v4;
-  [a1 accountTypeWithIdentifier:v5 completion:v7];
+  [self accountTypeWithIdentifier:v5 completion:v7];
 }
 
 - (id)ic_storeAccountForStoreAccountID:()ICAccountStoreAdditions error:
@@ -398,8 +398,8 @@
   v7 = a3;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"storeAccountID != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"storeAccountID != nil"}];
   }
 
   v19 = 0;
@@ -409,7 +409,7 @@
   v23 = __Block_byref_object_dispose__15240;
   v24 = 0;
   v18 = 0;
-  v8 = [a1 ic_allStoreAccountsWithError:&v18];
+  v8 = [self ic_allStoreAccountsWithError:&v18];
   v9 = v18;
   if (v9)
   {
@@ -417,7 +417,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v26 = a1;
+      selfCopy = self;
       v27 = 2114;
       v28 = v7;
       v29 = 2114;
@@ -457,8 +457,8 @@
   v8 = a4;
   if (!v7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"storeAccountID != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"storeAccountID != nil"}];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -469,7 +469,7 @@
   v14 = v8;
   v9 = v7;
   v10 = v8;
-  [a1 ic_allStoreAccountsWithCompletion:v12];
+  [self ic_allStoreAccountsWithCompletion:v12];
 }
 
 - (id)ic_primaryAppleAccountWithError:()ICAccountStoreAdditions
@@ -482,7 +482,7 @@
   v17 = __Block_byref_object_dispose__15240;
   v18 = 0;
   v12 = 0;
-  v5 = [a1 aa_appleAccountsWithError:&v12];
+  v5 = [self aa_appleAccountsWithError:&v12];
   v6 = v12;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -496,7 +496,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v20 = a1;
+      selfCopy = self;
       v21 = 2114;
       v22 = v6;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_ERROR, "ACAccountStore %p - Error fetching primary apple account. err=%{public}@", buf, 0x16u);
@@ -525,7 +525,7 @@
   v6[3] = &unk_1E7BF5A38;
   v7 = v4;
   v5 = v4;
-  [a1 aa_primaryAppleAccountWithCompletion:v6];
+  [self aa_primaryAppleAccountWithCompletion:v6];
 }
 
 - (BOOL)ic_disableActiveLockerAccount:()ICAccountStoreAdditions error:
@@ -535,8 +535,8 @@
   v8 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"account != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ACAccountStore+ICAccountStoreAdditions.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"account != nil"}];
 
 LABEL_5:
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6959978] code:1 userInfo:0];
@@ -550,7 +550,7 @@ LABEL_5:
 
   [v8 ic_setActiveLockerAccount:0];
   v16 = 0;
-  v9 = [a1 saveVerifiedAccount:v8 error:&v16];
+  v9 = [self saveVerifiedAccount:v8 error:&v16];
   v10 = v16;
   v11 = v10;
   if ((v9 & 1) == 0 && !v10)
@@ -565,7 +565,7 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v18 = a1;
+      selfCopy = self;
       v19 = 2114;
       v20 = v8;
       v21 = 2114;
@@ -600,13 +600,13 @@ LABEL_6:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v7;
+      selfCopy = v7;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "Setting %{public}@ as the active locker account", buf, 0xCu);
     }
 
     [v7 ic_setActiveLockerAccount:1];
     v22 = 0;
-    v14 = [a1 saveVerifiedAccount:v7 error:&v22];
+    v14 = [self saveVerifiedAccount:v7 error:&v22];
     v15 = v22;
     v8 = v15;
     if ((v14 & 1) == 0 && !v15)
@@ -621,7 +621,7 @@ LABEL_18:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v24 = a1;
+        selfCopy = self;
         v25 = 2114;
         v26 = v7;
         v27 = 2114;
@@ -642,7 +642,7 @@ LABEL_18:
   else
   {
     v21 = 0;
-    v9 = [a1 ic_activeStoreAccountWithError:&v21];
+    v9 = [self ic_activeStoreAccountWithError:&v21];
     v8 = v21;
     if (v8)
     {
@@ -660,7 +660,7 @@ LABEL_18:
       {
         [v9 ic_setActiveLockerAccount:0];
         v20 = 0;
-        v11 = [a1 saveVerifiedAccount:v9 error:&v20];
+        v11 = [self saveVerifiedAccount:v9 error:&v20];
         v12 = v20;
         v8 = v12;
         if ((v11 & 1) == 0 && !v12)
@@ -707,9 +707,9 @@ LABEL_26:
     v11[1] = 3221225472;
     v11[2] = __80__ACAccountStore_ICAccountStoreAdditions__ic_setActiveLockerAccount_completion___block_invoke_2;
     v11[3] = &unk_1E7BF5A60;
-    v11[4] = a1;
+    v11[4] = self;
     v12 = v7;
-    [a1 ic_activeStoreAccountWithCompletion:v11];
+    [self ic_activeStoreAccountWithCompletion:v11];
     v9 = v12;
 LABEL_8:
 
@@ -732,7 +732,7 @@ LABEL_8:
     v13[2] = __80__ACAccountStore_ICAccountStoreAdditions__ic_setActiveLockerAccount_completion___block_invoke;
     v13[3] = &unk_1E7BF8450;
     v14 = v8;
-    [a1 saveAccount:v6 withDataclassActions:0 doVerify:0 completion:v13];
+    [self saveAccount:v6 withDataclassActions:0 doVerify:0 completion:v13];
     v9 = v14;
     goto LABEL_8;
   }
@@ -744,7 +744,7 @@ LABEL_9:
 - (void)ic_activeLockerAccountWithError:()ICAccountStoreAdditions
 {
   v11 = 0;
-  v4 = [a1 ic_activeStoreAccountWithError:&v11];
+  v4 = [self ic_activeStoreAccountWithError:&v11];
   v5 = v11;
   v6 = v5;
   if (a3)
@@ -782,7 +782,7 @@ LABEL_9:
   v6[3] = &unk_1E7BF5A38;
   v7 = v4;
   v5 = v4;
-  [a1 ic_activeStoreAccountWithCompletion:v6];
+  [self ic_activeStoreAccountWithCompletion:v6];
 }
 
 - (BOOL)ic_setActiveStoreAccount:()ICAccountStoreAdditions error:
@@ -790,8 +790,8 @@ LABEL_9:
   v38 = *MEMORY[0x1E69E9840];
   v5 = a3;
   v30 = 0;
-  v24 = a1;
-  v6 = [a1 ic_allStoreAccountsWithError:&v30];
+  selfCopy = self;
+  v6 = [self ic_allStoreAccountsWithError:&v30];
   v7 = v30;
   v26 = 0u;
   v27 = 0u;
@@ -814,14 +814,14 @@ LABEL_9:
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v5 identifier];
-        v14 = [v12 identifier];
-        v15 = [v13 isEqualToString:v14];
+        identifier = [v5 identifier];
+        identifier2 = [v12 identifier];
+        v15 = [identifier isEqualToString:identifier2];
         if (v15 != [v12 ic_isActive])
         {
           [v12 setActive:v15];
           v25 = v7;
-          v16 = [v24 saveVerifiedAccount:v12 error:&v25];
+          v16 = [selfCopy saveVerifiedAccount:v12 error:&v25];
           v17 = v25;
 
           if ((v16 & 1) == 0 && !v17)
@@ -835,7 +835,7 @@ LABEL_9:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
               *buf = 134218498;
-              v32 = v24;
+              v32 = selfCopy;
               v33 = 2114;
               v34 = v12;
               v35 = 2114;
@@ -876,19 +876,19 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = __79__ACAccountStore_ICAccountStoreAdditions__ic_setActiveStoreAccount_completion___block_invoke;
   v10[3] = &unk_1E7BF8F58;
-  v12 = a1;
+  selfCopy = self;
   v13 = v7;
   v11 = v6;
   v8 = v6;
   v9 = v7;
-  [a1 ic_allStoreAccountsWithCompletion:v10];
+  [self ic_allStoreAccountsWithCompletion:v10];
 }
 
 - (id)ic_activeStoreAccountWithError:()ICAccountStoreAdditions
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0;
-  v5 = [a1 ic_allStoreAccountsWithError:&v18];
+  v5 = [self ic_allStoreAccountsWithError:&v18];
   v6 = v18;
   v12 = 0;
   v13 = &v12;
@@ -902,7 +902,7 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v20 = a1;
+      selfCopy = self;
       v21 = 2114;
       v22 = v6;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_ERROR, "ACAccountStore %p - Error retrieving all store accounts, err=%{public}@", buf, 0x16u);
@@ -940,7 +940,7 @@ LABEL_9:
   v6[3] = &unk_1E7BF59C0;
   v7 = v4;
   v5 = v4;
-  [a1 ic_allStoreAccountsWithCompletion:v6];
+  [self ic_allStoreAccountsWithCompletion:v6];
 }
 
 - (id)ic_allStoreAccountsWithError:()ICAccountStoreAdditions
@@ -948,7 +948,7 @@ LABEL_9:
   v21 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E6959930];
   v16 = 0;
-  v6 = [a1 accountTypeWithAccountTypeIdentifier:v5 error:&v16];
+  v6 = [self accountTypeWithAccountTypeIdentifier:v5 error:&v16];
   v7 = v16;
   if (v7)
   {
@@ -959,7 +959,7 @@ LABEL_9:
   else
   {
     v15 = 0;
-    v10 = [a1 accountsWithAccountType:v6 options:1 error:&v15];
+    v10 = [self accountsWithAccountType:v6 options:1 error:&v15];
     v8 = v15;
     v11 = [v10 msv_filter:&__block_literal_global_22];
     v9 = [v11 copy];
@@ -974,7 +974,7 @@ LABEL_9:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218242;
-    v18 = a1;
+    selfCopy = self;
     v19 = 2114;
     v20 = v8;
     _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "ACAccountStore %p - Error retrieving iTunesStore accounts. err=%{public}@", buf, 0x16u);
@@ -997,10 +997,10 @@ LABEL_7:
   v6[1] = 3221225472;
   v6[2] = __77__ACAccountStore_ICAccountStoreAdditions__ic_allStoreAccountsWithCompletion___block_invoke;
   v6[3] = &unk_1E7BF59E8;
-  v6[4] = a1;
+  v6[4] = self;
   v7 = v4;
   v5 = v4;
-  [a1 ic_storeAccountTypeWithCompletion:v6];
+  [self ic_storeAccountTypeWithCompletion:v6];
 }
 
 + (id)ic_sharedAccountStore

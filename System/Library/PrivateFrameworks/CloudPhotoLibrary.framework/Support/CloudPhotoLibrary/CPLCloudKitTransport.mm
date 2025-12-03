@@ -3,31 +3,31 @@
 + (BOOL)allowsSyncOverExpensiveNetwork;
 + (BOOL)allowsUserInitiatedOperationsOverExpensiveNetwork;
 + (NSArray)involvedProcesses;
-+ (id)_betterErrorForRecordId:(id)a3 recordError:(id)a4;
-+ (id)_errorsByTaskForTasksByRecordId:(id)a3 fromUnderlyingError:(id)a4;
++ (id)_betterErrorForRecordId:(id)id recordError:(id)error;
++ (id)_errorsByTaskForTasksByRecordId:(id)id fromUnderlyingError:(id)error;
 - (BOOL)_isAppLibrary;
 - (BOOL)canBoostBackgroundOperations;
 - (BOOL)canBoostOperations;
-- (BOOL)getProposedStagingScopeIdentifier:(id *)a3 stagingTransportScope:(id *)a4 forScope:(id)a5 transportScope:(id)a6 transportUserIdentifier:(id)a7;
+- (BOOL)getProposedStagingScopeIdentifier:(id *)identifier stagingTransportScope:(id *)scope forScope:(id)forScope transportScope:(id)transportScope transportUserIdentifier:(id)userIdentifier;
 - (BOOL)isAppLibrary;
 - (BOOL)isForeground;
 - (BOOL)isNetworkConnected;
-- (BOOL)isNewTransportScope:(id)a3 compatibleWithOldTransportScope:(id)a4;
-- (BOOL)isResourceDynamic:(id)a3;
+- (BOOL)isNewTransportScope:(id)scope compatibleWithOldTransportScope:(id)transportScope;
+- (BOOL)isResourceDynamic:(id)dynamic;
 - (BOOL)isSystemLibrary;
-- (BOOL)shouldIgnoreScopeWithIdentifier:(id)a3;
-- (BOOL)shouldIgnoreZoneWithZoneID:(id)a3;
-- (BOOL)shouldRunOperationsWithError:(id *)a3;
-- (CPLCloudKitTransport)initWithAbstractObject:(id)a3;
+- (BOOL)shouldIgnoreScopeWithIdentifier:(id)identifier;
+- (BOOL)shouldIgnoreZoneWithZoneID:(id)d;
+- (BOOL)shouldRunOperationsWithError:(id *)error;
+- (CPLCloudKitTransport)initWithAbstractObject:(id)object;
 - (NSArray)involvedProcesses;
 - (NSString)cloudKitClientIdentifier;
 - (NSString)defaultSourceBundleIdentifier;
 - (NSString)libraryIdentifier;
 - (NSString)mainScopeIdentifier;
-- (id)_tempDestinationURLForRecoveredDataWithTempFolderURL:(id)a3;
-- (id)acceptTaskForSharedScope:(id)a3 completionHandler:(id)a4;
-- (id)acquireReschedulerTaskWithCompletionHandler:(id)a3;
-- (id)cleanupStagedScope:(id)a3 stagingScope:(id)a4 destinationScope:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
+- (id)_tempDestinationURLForRecoveredDataWithTempFolderURL:(id)l;
+- (id)acceptTaskForSharedScope:(id)scope completionHandler:(id)handler;
+- (id)acquireReschedulerTaskWithCompletionHandler:(id)handler;
+- (id)cleanupStagedScope:(id)scope stagingScope:(id)stagingScope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (id)createGroupForAcceptingLibraryShare;
 - (id)createGroupForAcceptingMomentShare;
 - (id)createGroupForAnalysisDownload;
@@ -37,7 +37,7 @@
 - (id)createGroupForComputeStateDownloadOnDemand;
 - (id)createGroupForComputeStateDownloadPrefetch;
 - (id)createGroupForComputeStateUpload;
-- (id)createGroupForDownloadWithIntent:(unint64_t)a3 priority:(unint64_t)a4;
+- (id)createGroupForDownloadWithIntent:(unint64_t)intent priority:(unint64_t)priority;
 - (id)createGroupForExitSharedLibrary;
 - (id)createGroupForFeedback;
 - (id)createGroupForFetchScopeListChanges;
@@ -48,7 +48,7 @@
 - (id)createGroupForInitialDownload;
 - (id)createGroupForInitialUpload;
 - (id)createGroupForLibraryStateCheck;
-- (id)createGroupForMovieStreamingWithIntent:(unint64_t)a3;
+- (id)createGroupForMovieStreamingWithIntent:(unint64_t)intent;
 - (id)createGroupForPropagateChanges;
 - (id)createGroupForPruningCheck;
 - (id)createGroupForPublishingLibraryShare;
@@ -65,88 +65,88 @@
 - (id)createGroupForTransportScopeDelete;
 - (id)createGroupForTransportScopeRefresh;
 - (id)createGroupForTransportScopeUpdate;
-- (id)createReschedulerForSession:(id)a3;
-- (id)createScopeTaskForScope:(id)a3 completionHandler:(id)a4;
-- (id)deleteTransportScope:(id)a3 scope:(id)a4 completionHandler:(id)a5;
-- (id)descriptionForTransportScope:(id)a3;
-- (id)downloadBatchTaskForSyncAnchor:(id)a3 scope:(id)a4 transportScopeMapping:(id)a5 currentScopeChange:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
-- (id)downloadComputeStatesWithScopedIdentifiers:(id)a3 scope:(id)a4 sharedScope:(id)a5 targetStorageURL:(id)a6 transportScopeMapping:(id)a7 completionHandler:(id)a8;
+- (id)createReschedulerForSession:(id)session;
+- (id)createScopeTaskForScope:(id)scope completionHandler:(id)handler;
+- (id)deleteTransportScope:(id)scope scope:(id)a4 completionHandler:(id)handler;
+- (id)descriptionForTransportScope:(id)scope;
+- (id)downloadBatchTaskForSyncAnchor:(id)anchor scope:(id)scope transportScopeMapping:(id)mapping currentScopeChange:(id)change progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)downloadComputeStatesWithScopedIdentifiers:(id)identifiers scope:(id)scope sharedScope:(id)sharedScope targetStorageURL:(id)l transportScopeMapping:(id)mapping completionHandler:(id)handler;
 - (id)engineLibrary;
-- (id)fetchExistingSharedLibraryScopeTaskWithCompletionHandler:(id)a3;
-- (id)fetchRecordsTaskForRecordsWithScopedIdentifiers:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6;
-- (id)fetchScopeListChangesForScopeListSyncAnchor:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (id)fetchTaskForScopeWithShareURL:(id)a3 completionHandler:(id)a4;
-- (id)fetchTransportScopeForScope:(id)a3 transportScope:(id)a4 completionHandler:(id)a5;
-- (id)fixUpSparseRecordsTaskWithTasks:(id)a3 transportScopeMapping:(id)a4 completionHandler:(id)a5;
-- (id)getCurrentSyncAnchorWithTransportScope:(id)a3 scope:(id)a4 previousScopeChange:(id)a5 completionHandler:(id)a6;
-- (id)getScopeInfoWithTransportScope:(id)a3 scope:(id)a4 previousScopeChange:(id)a5 completionHandler:(id)a6;
-- (id)getStreamingURLTaskForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 target:(id)a7 transportScopeMapping:(id)a8 clientBundleID:(id)a9 completionHandler:(id)a10;
-- (id)inMemoryDownloadTaskForResource:(id)a3 record:(id)a4 target:(id)a5 transportScopeMapping:(id)a6 clientBundleID:(id)a7 completionHandler:(id)a8;
-- (id)interestingZoneIDsForCoordinator:(id)a3;
-- (id)queryTaskForCursor:(id)a3 class:(Class)a4 scope:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
-- (id)queryUserDetailsTaskForParticipants:(id)a3 completionHandler:(id)a4;
-- (id)rampingRequestTaskForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 completionHandler:(id)a5;
-- (id)removeParticipantInSharedLibraryTaskFromSharedScope:(id)a3 transportScope:(id)a4 share:(id)a5 retentionPolicy:(int64_t)a6 exitSource:(int64_t)a7 userIdentifiersToRemove:(id)a8 participantIDsToRemove:(id)a9 completionHandler:(id)a10;
-- (id)reshareRecordsTaskWithRecords:(id)a3 sourceScope:(id)a4 destinationScope:(id)a5 transportScopeMapping:(id)a6 completionHandler:(id)a7;
-- (id)resourceCheckTaskForResources:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6;
-- (id)resourcesDownloadTaskWithCompletionHandler:(id)a3;
-- (id)scopeNameForTransportScope:(id)a3;
-- (id)scopedIdentifierForCKRecordID:(id)a3;
-- (id)sendFeedbackTaskForMessages:(id)a3 completionHandler:(id)a4;
-- (id)sharedLibraryServerRampTaskWithCompletionHandler:(id)a3;
-- (id)simpleDescriptionForSyncAnchor:(id)a3;
-- (id)startExitTaskFromSharedScope:(id)a3 transportScope:(id)a4 share:(id)a5 retentionPolicy:(int64_t)a6 exitSource:(int64_t)a7 completionHandler:(id)a8;
-- (id)tentativeConcreteScopeForScope:(id)a3;
-- (id)transportScopeForUpgradeFromScopeName:(id)a3;
-- (id)updateContributorsTaskWithSharedScope:(id)a3 contributorsUpdates:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6;
-- (id)updateShareTaskForScope:(id)a3 transportScope:(id)a4 completionHandler:(id)a5;
-- (id)updateTransportScope:(id)a3 scope:(id)a4 scopeChange:(id)a5 completionHandler:(id)a6;
-- (id)uploadBatchTaskForBatch:(id)a3 scope:(id)a4 targetMapping:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
-- (id)uploadComputeStates:(id)a3 scope:(id)a4 sharedScope:(id)a5 targetMapping:(id)a6 transportScopeMapping:(id)a7 knownRecords:(id)a8 completionHandler:(id)a9;
-- (void)_addBackgroundSchedulingStatusToStatusEntries:(id)a3 now:(id)a4;
-- (void)_cleanTempRecoveredDataURL:(id)a3;
-- (void)_coordinator:(id)a3 provideCKAssetWithRecordID:(id)a4 fieldName:(id)a5 recordType:(id)a6 signature:(id)a7 tempFolderURL:(id)a8 completionHandler:(id)a9;
-- (void)_disableSchedulerBecauseAccountIsUnavailableWithReason:(id)a3;
+- (id)fetchExistingSharedLibraryScopeTaskWithCompletionHandler:(id)handler;
+- (id)fetchRecordsTaskForRecordsWithScopedIdentifiers:(id)identifiers targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler;
+- (id)fetchScopeListChangesForScopeListSyncAnchor:(id)anchor progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)fetchTaskForScopeWithShareURL:(id)l completionHandler:(id)handler;
+- (id)fetchTransportScopeForScope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler;
+- (id)fixUpSparseRecordsTaskWithTasks:(id)tasks transportScopeMapping:(id)mapping completionHandler:(id)handler;
+- (id)getCurrentSyncAnchorWithTransportScope:(id)scope scope:(id)a4 previousScopeChange:(id)change completionHandler:(id)handler;
+- (id)getScopeInfoWithTransportScope:(id)scope scope:(id)a4 previousScopeChange:(id)change completionHandler:(id)handler;
+- (id)getStreamingURLTaskForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range target:(id)target transportScopeMapping:(id)mapping clientBundleID:(id)d completionHandler:(id)self0;
+- (id)inMemoryDownloadTaskForResource:(id)resource record:(id)record target:(id)target transportScopeMapping:(id)mapping clientBundleID:(id)d completionHandler:(id)handler;
+- (id)interestingZoneIDsForCoordinator:(id)coordinator;
+- (id)queryTaskForCursor:(id)cursor class:(Class)class scope:(id)scope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)queryUserDetailsTaskForParticipants:(id)participants completionHandler:(id)handler;
+- (id)rampingRequestTaskForResourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler;
+- (id)removeParticipantInSharedLibraryTaskFromSharedScope:(id)scope transportScope:(id)transportScope share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source userIdentifiersToRemove:(id)remove participantIDsToRemove:(id)toRemove completionHandler:(id)self0;
+- (id)reshareRecordsTaskWithRecords:(id)records sourceScope:(id)scope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping completionHandler:(id)handler;
+- (id)resourceCheckTaskForResources:(id)resources targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler;
+- (id)resourcesDownloadTaskWithCompletionHandler:(id)handler;
+- (id)scopeNameForTransportScope:(id)scope;
+- (id)scopedIdentifierForCKRecordID:(id)d;
+- (id)sendFeedbackTaskForMessages:(id)messages completionHandler:(id)handler;
+- (id)sharedLibraryServerRampTaskWithCompletionHandler:(id)handler;
+- (id)simpleDescriptionForSyncAnchor:(id)anchor;
+- (id)startExitTaskFromSharedScope:(id)scope transportScope:(id)transportScope share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (id)tentativeConcreteScopeForScope:(id)scope;
+- (id)transportScopeForUpgradeFromScopeName:(id)name;
+- (id)updateContributorsTaskWithSharedScope:(id)scope contributorsUpdates:(id)updates transportScopeMapping:(id)mapping completionHandler:(id)handler;
+- (id)updateShareTaskForScope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler;
+- (id)updateTransportScope:(id)scope scope:(id)a4 scopeChange:(id)change completionHandler:(id)handler;
+- (id)uploadBatchTaskForBatch:(id)batch scope:(id)scope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)uploadComputeStates:(id)states scope:(id)scope sharedScope:(id)sharedScope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping knownRecords:(id)records completionHandler:(id)handler;
+- (void)_addBackgroundSchedulingStatusToStatusEntries:(id)entries now:(id)now;
+- (void)_cleanTempRecoveredDataURL:(id)l;
+- (void)_coordinator:(id)_coordinator provideCKAssetWithRecordID:(id)d fieldName:(id)name recordType:(id)type signature:(id)signature tempFolderURL:(id)l completionHandler:(id)handler;
+- (void)_disableSchedulerBecauseAccountIsUnavailableWithReason:(id)reason;
 - (void)_enableSchedulerBecauseAccountIsAvailable;
 - (void)_failAllFutureOperationsWithContainerHasBeenWipedError;
-- (void)_forceUpdateAccountInfoWithReason:(id)a3 completionHandler:(id)a4;
+- (void)_forceUpdateAccountInfoWithReason:(id)reason completionHandler:(id)handler;
 - (void)_noteContainerHasBeenWiped;
-- (void)_startWatchingAccountInfoChangesWithCompletionHandler:(id)a3;
+- (void)_startWatchingAccountInfoChangesWithCompletionHandler:(id)handler;
 - (void)_stopWatchingAccountInfoChanges;
-- (void)_updateAccountInfoWithCompletionHandler:(id)a3;
+- (void)_updateAccountInfoWithCompletionHandler:(id)handler;
 - (void)_updateBudgets;
-- (void)_updateStateWithAccountInfo:(id)a3 walrusEnabledDefault:(id)a4;
-- (void)_updateStateWithAccountStatus:(int64_t)a3;
-- (void)_withTempCKAssetForData:(id)a3 tempFolderURL:(id)a4 block:(id)a5;
-- (void)acquireHelperWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4;
-- (void)coordinator:(id)a3 provideCKAssetWithRecordID:(id)a4 fieldName:(id)a5 recordType:(id)a6 signature:(id)a7 completionHandler:(id)a8;
-- (void)coordinatorDidReceiveAPushNotification:(id)a3;
+- (void)_updateStateWithAccountInfo:(id)info walrusEnabledDefault:(id)default;
+- (void)_updateStateWithAccountStatus:(int64_t)status;
+- (void)_withTempCKAssetForData:(id)data tempFolderURL:(id)l block:(id)block;
+- (void)acquireHelperWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler;
+- (void)coordinator:(id)coordinator provideCKAssetWithRecordID:(id)d fieldName:(id)name recordType:(id)type signature:(id)signature completionHandler:(id)handler;
+- (void)coordinatorDidReceiveAPushNotification:(id)notification;
 - (void)duetTicketProviderBlockedStatusDidChange;
-- (void)findPersistedInitialSyncSession:(id)a3 completionHandler:(id)a4;
-- (void)getBackgroundSchedulingStatusDictionaryWithCompletionHandler:(id)a3;
-- (void)getBackgroundSchedulingStatusWithCompletionHandler:(id)a3;
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3;
-- (void)getStatusWithCompletionHandler:(id)a3;
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3;
-- (void)getTemporaryFolderWithName:(id)a3 completionHandler:(id)a4;
-- (void)launchOperation:(id)a3 type:(int64_t)a4;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)processTaskErrorIfNeeded:(id)a3 forTask:(id)a4;
-- (void)registerHelper:(id)a3 withIdentifier:(id)a4;
-- (void)reschedulerManager:(id)a3 didUpdateBlockedState:(id)a4;
-- (void)setIsSignificantWorkPending:(BOOL)a3;
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5;
-- (void)updateAccountEPPCapability:(int64_t)a3;
-- (void)upgradeFlags:(id)a3 fromTransportScope:(id)a4;
+- (void)findPersistedInitialSyncSession:(id)session completionHandler:(id)handler;
+- (void)getBackgroundSchedulingStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)getBackgroundSchedulingStatusWithCompletionHandler:(id)handler;
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)getStatusWithCompletionHandler:(id)handler;
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler;
+- (void)getTemporaryFolderWithName:(id)name completionHandler:(id)handler;
+- (void)launchOperation:(id)operation type:(int64_t)type;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)processTaskErrorIfNeeded:(id)needed forTask:(id)task;
+- (void)registerHelper:(id)helper withIdentifier:(id)identifier;
+- (void)reschedulerManager:(id)manager didUpdateBlockedState:(id)state;
+- (void)setIsSignificantWorkPending:(BOOL)pending;
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler;
+- (void)updateAccountEPPCapability:(int64_t)capability;
+- (void)upgradeFlags:(id)flags fromTransportScope:(id)scope;
 @end
 
 @implementation CPLCloudKitTransport
 
 - (id)createGroupForFetchScopeListChanges
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -183,88 +183,88 @@
 
 - (NSString)defaultSourceBundleIdentifier
 {
-  v2 = [(CPLCloudKitTransport *)self abstractObject];
-  v3 = [v2 engineLibrary];
-  v4 = [v3 clientAppBundleIdentifier];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  clientAppBundleIdentifier = [engineLibrary clientAppBundleIdentifier];
 
-  return v4;
+  return clientAppBundleIdentifier;
 }
 
 - (BOOL)isForeground
 {
-  v2 = [(CPLCloudKitTransport *)self engineLibrary];
-  v3 = [v2 scheduler];
-  v4 = [v3 isClientInForeground];
+  engineLibrary = [(CPLCloudKitTransport *)self engineLibrary];
+  scheduler = [engineLibrary scheduler];
+  isClientInForeground = [scheduler isClientInForeground];
 
-  return v4;
+  return isClientInForeground;
 }
 
 - (id)engineLibrary
 {
-  v2 = [(CPLCloudKitTransport *)self abstractObject];
-  v3 = [v2 engineLibrary];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
 
-  return v3;
+  return engineLibrary;
 }
 
 - (BOOL)canBoostOperations
 {
-  v2 = [(CPLCloudKitTransport *)self engineLibrary];
-  v3 = [v2 systemMonitor];
-  v4 = [v3 canBoostOperations];
+  engineLibrary = [(CPLCloudKitTransport *)self engineLibrary];
+  systemMonitor = [engineLibrary systemMonitor];
+  canBoostOperations = [systemMonitor canBoostOperations];
 
-  return v4;
+  return canBoostOperations;
 }
 
 - (BOOL)_isAppLibrary
 {
-  v2 = [(CPLCloudKitTransport *)self mainScopeIdentifier];
-  v3 = [v2 hasPrefix:CPLMainScopeIdentifierForAppPrefix];
+  mainScopeIdentifier = [(CPLCloudKitTransport *)self mainScopeIdentifier];
+  v3 = [mainScopeIdentifier hasPrefix:CPLMainScopeIdentifierForAppPrefix];
 
   return v3;
 }
 
 - (NSString)mainScopeIdentifier
 {
-  v2 = [(CPLCloudKitTransport *)self abstractObject];
-  v3 = [v2 engineLibrary];
-  v4 = [v3 mainScopeIdentifier];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  mainScopeIdentifier = [engineLibrary mainScopeIdentifier];
 
-  return v4;
+  return mainScopeIdentifier;
 }
 
 - (BOOL)isSystemLibrary
 {
-  v2 = [(CPLCloudKitTransport *)self abstractObject];
-  v3 = [v2 engineLibrary];
-  v4 = [v3 isSystemLibrary];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  isSystemLibrary = [engineLibrary isSystemLibrary];
 
-  return v4;
+  return isSystemLibrary;
 }
 
 - (BOOL)isAppLibrary
 {
-  v2 = [(CPLCloudKitTransport *)self abstractObject];
-  v3 = [v2 engineLibrary];
-  v4 = [v3 isAppLibrary];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  isAppLibrary = [engineLibrary isAppLibrary];
 
-  return v4;
+  return isAppLibrary;
 }
 
 - (NSString)libraryIdentifier
 {
-  v2 = [(CPLCloudKitTransport *)self abstractObject];
-  v3 = [v2 engineLibrary];
-  v4 = [v3 libraryIdentifier];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  libraryIdentifier = [engineLibrary libraryIdentifier];
 
-  return v4;
+  return libraryIdentifier;
 }
 
-- (CPLCloudKitTransport)initWithAbstractObject:(id)a3
+- (CPLCloudKitTransport)initWithAbstractObject:(id)object
 {
   v25.receiver = self;
   v25.super_class = CPLCloudKitTransport;
-  v3 = [(CPLCloudKitTransport *)&v25 initWithAbstractObject:a3];
+  v3 = [(CPLCloudKitTransport *)&v25 initWithAbstractObject:object];
   v4 = v3;
   if (v3)
   {
@@ -318,9 +318,9 @@
 
 - (void)_updateBudgets
 {
-  v3 = [(CPLCloudKitTransport *)self duetTicketProvider];
+  duetTicketProvider = [(CPLCloudKitTransport *)self duetTicketProvider];
 
-  if (v3)
+  if (duetTicketProvider)
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
@@ -350,16 +350,16 @@
   dispatch_async(v4, v5);
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007691C;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -367,22 +367,22 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = workQueue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000775A8;
   v12[3] = &unk_100275AF0;
-  v14 = a3;
+  deactivateCopy = deactivate;
   v12[4] = self;
-  v13 = v6;
+  v13 = handlerCopy;
   v8 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -390,307 +390,307 @@
   block[3] = &unk_100271E98;
   v16 = v8;
   v9 = workQueue;
-  v10 = v6;
+  v10 = handlerCopy;
   v11 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v9, v11);
 }
 
-- (id)acquireReschedulerTaskWithCompletionHandler:(id)a3
+- (id)acquireReschedulerTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[CPLCloudKitAcquireReschedulerTask alloc] initWithController:self completionHandler:v4];
+  handlerCopy = handler;
+  v5 = [[CPLCloudKitAcquireReschedulerTask alloc] initWithController:self completionHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)fetchRecordsTaskForRecordsWithScopedIdentifiers:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6
+- (id)fetchRecordsTaskForRecordsWithScopedIdentifiers:(id)identifiers targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[CPLCloudKitFetchRecordsTask alloc] initWithController:self scopedIdentifiers:v13 targetMapping:v12 transportScopeMapping:v11 completionHandler:v10];
+  handlerCopy = handler;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  identifiersCopy = identifiers;
+  v14 = [[CPLCloudKitFetchRecordsTask alloc] initWithController:self scopedIdentifiers:identifiersCopy targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy completionHandler:handlerCopy];
 
   return v14;
 }
 
-- (id)uploadBatchTaskForBatch:(id)a3 scope:(id)a4 targetMapping:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (id)uploadBatchTaskForBatch:(id)batch scope:(id)scope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[CPLCloudKitUploadBatchTask alloc] initWithController:self scope:v18 targetMapping:v17 transportScopeMapping:v16 progressHandler:v15 completionHandler:v14];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  scopeCopy = scope;
+  batchCopy = batch;
+  v20 = [[CPLCloudKitUploadBatchTask alloc] initWithController:self scope:scopeCopy targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
-  [(CPLCloudKitUploadBatchTask *)v20 setBatch:v19];
-  v21 = [(CPLCloudKitTransport *)self abstractObject];
-  v22 = [v21 engineLibrary];
-  v23 = [v22 store];
-  v24 = [v23 libraryCreationDate];
-  [(CPLCloudKitUploadBatchTask *)v20 setCplEnabledDate:v24];
+  [(CPLCloudKitUploadBatchTask *)v20 setBatch:batchCopy];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  store = [engineLibrary store];
+  libraryCreationDate = [store libraryCreationDate];
+  [(CPLCloudKitUploadBatchTask *)v20 setCplEnabledDate:libraryCreationDate];
 
   return v20;
 }
 
-- (id)reshareRecordsTaskWithRecords:(id)a3 sourceScope:(id)a4 destinationScope:(id)a5 transportScopeMapping:(id)a6 completionHandler:(id)a7
+- (id)reshareRecordsTaskWithRecords:(id)records sourceScope:(id)scope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[CPLCloudKitReshareRecordsTask alloc] initWithController:self records:v16 sourceScope:v15 destinationScope:v14 transportScopeMapping:v13 completionHandler:v12];
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  destinationScopeCopy = destinationScope;
+  scopeCopy = scope;
+  recordsCopy = records;
+  v17 = [[CPLCloudKitReshareRecordsTask alloc] initWithController:self records:recordsCopy sourceScope:scopeCopy destinationScope:destinationScopeCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
   return v17;
 }
 
-- (id)deleteTransportScope:(id)a3 scope:(id)a4 completionHandler:(id)a5
+- (id)deleteTransportScope:(id)scope scope:(id)a4 completionHandler:(id)handler
 {
-  v8 = a3;
+  scopeCopy = scope;
   v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
   v11 = [CPLCloudKitDeleteTransportScopeTask alloc];
   v12 = v11;
-  if (v8)
+  if (scopeCopy)
   {
-    v13 = [CPLCloudKitScope scopeFromTransportScope:v8];
-    v14 = [(CPLCloudKitDeleteTransportScopeTask *)v12 initWithController:self cloudKitScope:v13 scope:v9 completionHandler:v10];
+    v13 = [CPLCloudKitScope scopeFromTransportScope:scopeCopy];
+    v14 = [(CPLCloudKitDeleteTransportScopeTask *)v12 initWithController:self cloudKitScope:v13 scope:v9 completionHandler:handlerCopy];
   }
 
   else
   {
-    v14 = [(CPLCloudKitDeleteTransportScopeTask *)v11 initWithController:self cloudKitScope:0 scope:v9 completionHandler:v10];
+    v14 = [(CPLCloudKitDeleteTransportScopeTask *)v11 initWithController:self cloudKitScope:0 scope:v9 completionHandler:handlerCopy];
   }
 
   return v14;
 }
 
-- (id)updateTransportScope:(id)a3 scope:(id)a4 scopeChange:(id)a5 completionHandler:(id)a6
+- (id)updateTransportScope:(id)scope scope:(id)a4 scopeChange:(id)change completionHandler:(id)handler
 {
-  v10 = a3;
+  scopeCopy = scope;
   v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  changeCopy = change;
+  handlerCopy = handler;
   v14 = [CPLCloudKitUpdateTransportScopeTask alloc];
   v15 = v14;
-  if (v10)
+  if (scopeCopy)
   {
-    v16 = [CPLCloudKitScope scopeFromTransportScope:v10];
-    v17 = [(CPLCloudKitUpdateTransportScopeTask *)v15 initWithController:self cloudKitScope:v16 scope:v11 scopeChange:v12 completionHandler:v13];
+    v16 = [CPLCloudKitScope scopeFromTransportScope:scopeCopy];
+    v17 = [(CPLCloudKitUpdateTransportScopeTask *)v15 initWithController:self cloudKitScope:v16 scope:v11 scopeChange:changeCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v17 = [(CPLCloudKitUpdateTransportScopeTask *)v14 initWithController:self cloudKitScope:0 scope:v11 scopeChange:v12 completionHandler:v13];
+    v17 = [(CPLCloudKitUpdateTransportScopeTask *)v14 initWithController:self cloudKitScope:0 scope:v11 scopeChange:changeCopy completionHandler:handlerCopy];
   }
 
   return v17;
 }
 
-- (id)getScopeInfoWithTransportScope:(id)a3 scope:(id)a4 previousScopeChange:(id)a5 completionHandler:(id)a6
+- (id)getScopeInfoWithTransportScope:(id)scope scope:(id)a4 previousScopeChange:(id)change completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
+  handlerCopy = handler;
+  changeCopy = change;
   v12 = a4;
-  v13 = a3;
+  scopeCopy = scope;
   v14 = [CPLCloudKitGetScopeInfoTask alloc];
-  v15 = [CPLCloudKitScope scopeFromTransportScope:v13];
+  v15 = [CPLCloudKitScope scopeFromTransportScope:scopeCopy];
 
-  v16 = [(CPLCloudKitGetScopeInfoTask *)v14 initWithController:self cloudKitScope:v15 scope:v12 previousScopeChange:v11 completionHandler:v10];
+  v16 = [(CPLCloudKitGetScopeInfoTask *)v14 initWithController:self cloudKitScope:v15 scope:v12 previousScopeChange:changeCopy completionHandler:handlerCopy];
 
   return v16;
 }
 
-- (id)getCurrentSyncAnchorWithTransportScope:(id)a3 scope:(id)a4 previousScopeChange:(id)a5 completionHandler:(id)a6
+- (id)getCurrentSyncAnchorWithTransportScope:(id)scope scope:(id)a4 previousScopeChange:(id)change completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
+  handlerCopy = handler;
+  changeCopy = change;
   v12 = a4;
-  v13 = a3;
+  scopeCopy = scope;
   v14 = [CPLCloudKitGetCurrentSyncAnchorTask alloc];
-  v15 = [CPLCloudKitScope scopeFromTransportScope:v13];
+  v15 = [CPLCloudKitScope scopeFromTransportScope:scopeCopy];
 
-  v16 = [(CPLCloudKitGetCurrentSyncAnchorTask *)v14 initWithController:self cloudKitScope:v15 scope:v12 previousScopeChange:v11 completionHandler:v10];
+  v16 = [(CPLCloudKitGetCurrentSyncAnchorTask *)v14 initWithController:self cloudKitScope:v15 scope:v12 previousScopeChange:changeCopy completionHandler:handlerCopy];
 
   return v16;
 }
 
-- (id)fetchTransportScopeForScope:(id)a3 transportScope:(id)a4 completionHandler:(id)a5
+- (id)fetchTransportScopeForScope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  scopeCopy = scope;
+  transportScopeCopy = transportScope;
+  handlerCopy = handler;
   v11 = [CPLCloudKitFetchTransportScopeTask alloc];
   v12 = v11;
-  if (v9)
+  if (transportScopeCopy)
   {
-    v13 = [CPLCloudKitScope scopeFromTransportScope:v9];
-    v14 = [(CPLCloudKitFetchTransportScopeTask *)v12 initWithController:self scope:v8 cloudKitScope:v13 completionHandler:v10];
+    v13 = [CPLCloudKitScope scopeFromTransportScope:transportScopeCopy];
+    v14 = [(CPLCloudKitFetchTransportScopeTask *)v12 initWithController:self scope:scopeCopy cloudKitScope:v13 completionHandler:handlerCopy];
   }
 
   else
   {
-    v14 = [(CPLCloudKitFetchTransportScopeTask *)v11 initWithController:self scope:v8 cloudKitScope:0 completionHandler:v10];
+    v14 = [(CPLCloudKitFetchTransportScopeTask *)v11 initWithController:self scope:scopeCopy cloudKitScope:0 completionHandler:handlerCopy];
   }
 
   return v14;
 }
 
-- (id)queryTaskForCursor:(id)a3 class:(Class)a4 scope:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (id)queryTaskForCursor:(id)cursor class:(Class)class scope:(id)scope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
-  v19 = [[CPLCloudKitQueryTask alloc] initWithController:self cursor:v18 class:a4 scope:v17 transportScopeMapping:v16 progressHandler:v15 completionHandler:v14];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  scopeCopy = scope;
+  cursorCopy = cursor;
+  v19 = [[CPLCloudKitQueryTask alloc] initWithController:self cursor:cursorCopy class:class scope:scopeCopy transportScopeMapping:mappingCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v19;
 }
 
-- (id)downloadBatchTaskForSyncAnchor:(id)a3 scope:(id)a4 transportScopeMapping:(id)a5 currentScopeChange:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (id)downloadBatchTaskForSyncAnchor:(id)anchor scope:(id)scope transportScopeMapping:(id)mapping currentScopeChange:(id)change progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[CPLCloudKitDownloadBatchTask alloc] initWithController:self syncAnchor:v19 scope:v18 transportScopeMapping:v17 currentScopeChange:v16 progressHandler:v15 completionHandler:v14];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  changeCopy = change;
+  mappingCopy = mapping;
+  scopeCopy = scope;
+  anchorCopy = anchor;
+  v20 = [[CPLCloudKitDownloadBatchTask alloc] initWithController:self syncAnchor:anchorCopy scope:scopeCopy transportScopeMapping:mappingCopy currentScopeChange:changeCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v20;
 }
 
-- (id)uploadComputeStates:(id)a3 scope:(id)a4 sharedScope:(id)a5 targetMapping:(id)a6 transportScopeMapping:(id)a7 knownRecords:(id)a8 completionHandler:(id)a9
+- (id)uploadComputeStates:(id)states scope:(id)scope sharedScope:(id)sharedScope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping knownRecords:(id)records completionHandler:(id)handler
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [[CPLCloudKitUploadComputeStatesTask alloc] initWithController:self computeStates:v22 scope:v21 sharedScope:v20 targetMapping:v19 transportScopeMapping:v18 knownRecords:v17 completionHandler:v16];
+  handlerCopy = handler;
+  recordsCopy = records;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  sharedScopeCopy = sharedScope;
+  scopeCopy = scope;
+  statesCopy = states;
+  v23 = [[CPLCloudKitUploadComputeStatesTask alloc] initWithController:self computeStates:statesCopy scope:scopeCopy sharedScope:sharedScopeCopy targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy knownRecords:recordsCopy completionHandler:handlerCopy];
 
   [(CPLCloudKitTransportTask *)v23 setGate:self->_computeStateOperationsGate];
 
   return v23;
 }
 
-- (id)downloadComputeStatesWithScopedIdentifiers:(id)a3 scope:(id)a4 sharedScope:(id)a5 targetStorageURL:(id)a6 transportScopeMapping:(id)a7 completionHandler:(id)a8
+- (id)downloadComputeStatesWithScopedIdentifiers:(id)identifiers scope:(id)scope sharedScope:(id)sharedScope targetStorageURL:(id)l transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[CPLCloudKitDownloadComputeStatesTask alloc] initWithController:self scopedIdentifiers:v19 scope:v18 sharedScope:v17 targetStorageURL:v16 transportScopeMapping:v15 completionHandler:v14];
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  lCopy = l;
+  sharedScopeCopy = sharedScope;
+  scopeCopy = scope;
+  identifiersCopy = identifiers;
+  v20 = [[CPLCloudKitDownloadComputeStatesTask alloc] initWithController:self scopedIdentifiers:identifiersCopy scope:scopeCopy sharedScope:sharedScopeCopy targetStorageURL:lCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
   [(CPLCloudKitTransportTask *)v20 setGate:self->_computeStateOperationsGate];
 
   return v20;
 }
 
-- (id)fetchScopeListChangesForScopeListSyncAnchor:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (id)fetchScopeListChangesForScopeListSyncAnchor:(id)anchor progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CPLCloudKitFetchScopeListChangesTask alloc] initWithController:self scopeListSyncAnchor:v10 progressHandler:v9 completionHandler:v8];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  anchorCopy = anchor;
+  v11 = [[CPLCloudKitFetchScopeListChangesTask alloc] initWithController:self scopeListSyncAnchor:anchorCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v11;
 }
 
-- (id)getStreamingURLTaskForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 target:(id)a7 transportScopeMapping:(id)a8 clientBundleID:(id)a9 completionHandler:(id)a10
+- (id)getStreamingURLTaskForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range target:(id)target transportScopeMapping:(id)mapping clientBundleID:(id)d completionHandler:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a5;
-  v22 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  mappingCopy = mapping;
+  targetCopy = target;
+  hintsCopy = hints;
+  resourceCopy = resource;
   v23 = [CPLCloudKitGetStreamingURLTask alloc];
   streamingContentItemCache = self->_streamingContentItemCache;
-  v25 = *&a6->var0.var3;
-  v29[0] = *&a6->var0.var0;
+  v25 = *&range->var0.var3;
+  v29[0] = *&range->var0.var0;
   v29[1] = v25;
-  v29[2] = *&a6->var1.var1;
-  v26 = [(CPLCloudKitGetStreamingURLTask *)v23 initWithController:self resource:v22 hints:v21 timeRange:v29 target:v20 transportScopeMapping:v19 cache:streamingContentItemCache completionHandler:v17];
+  v29[2] = *&range->var1.var1;
+  v26 = [(CPLCloudKitGetStreamingURLTask *)v23 initWithController:self resource:resourceCopy hints:hintsCopy timeRange:v29 target:targetCopy transportScopeMapping:mappingCopy cache:streamingContentItemCache completionHandler:handlerCopy];
 
-  v27 = [(CPLCloudKitTransport *)self createGroupForMovieStreamingWithIntent:a4];
+  v27 = [(CPLCloudKitTransport *)self createGroupForMovieStreamingWithIntent:intent];
   [(CPLCloudKitTransportTask *)v26 setTransportGroup:v27];
 
   [(CPLCloudKitTransportTask *)v26 setGate:self->_streamingGate];
-  [(CPLCloudKitTransportTask *)v26 setSourceBundleIdentifier:v18];
+  [(CPLCloudKitTransportTask *)v26 setSourceBundleIdentifier:dCopy];
 
   return v26;
 }
 
-- (id)resourceCheckTaskForResources:(id)a3 targetMapping:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6
+- (id)resourceCheckTaskForResources:(id)resources targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[CPLCloudKitResourcesCheckTask alloc] initWithController:self resources:v13 targetMapping:v12 transportScopeMapping:v11 completionHandler:v10];
+  handlerCopy = handler;
+  scopeMappingCopy = scopeMapping;
+  mappingCopy = mapping;
+  resourcesCopy = resources;
+  v14 = [[CPLCloudKitResourcesCheckTask alloc] initWithController:self resources:resourcesCopy targetMapping:mappingCopy transportScopeMapping:scopeMappingCopy completionHandler:handlerCopy];
 
-  v15 = [(CPLCloudKitTransport *)self createGroupForPruningCheck];
-  [(CPLCloudKitTransportTask *)v14 setTransportGroup:v15];
+  createGroupForPruningCheck = [(CPLCloudKitTransport *)self createGroupForPruningCheck];
+  [(CPLCloudKitTransportTask *)v14 setTransportGroup:createGroupForPruningCheck];
 
   return v14;
 }
 
-- (id)rampingRequestTaskForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 completionHandler:(id)a5
+- (id)rampingRequestTaskForResourceType:(unint64_t)type numRequested:(unint64_t)requested completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [[CPLCloudKitRampingRequestTask alloc] initWithController:self resourceType:a3 numRequested:a4 completionHandler:v8];
+  handlerCopy = handler;
+  v9 = [[CPLCloudKitRampingRequestTask alloc] initWithController:self resourceType:type numRequested:requested completionHandler:handlerCopy];
 
-  v10 = [(CPLCloudKitTransport *)self createGroupForAnalysisDownload];
-  [(CPLCloudKitTransportTask *)v9 setTransportGroup:v10];
+  createGroupForAnalysisDownload = [(CPLCloudKitTransport *)self createGroupForAnalysisDownload];
+  [(CPLCloudKitTransportTask *)v9 setTransportGroup:createGroupForAnalysisDownload];
 
   return v9;
 }
 
-- (id)resourcesDownloadTaskWithCompletionHandler:(id)a3
+- (id)resourcesDownloadTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[CPLCloudKitResourcesDownloadTask alloc] initWithController:self completionHandler:v4];
+  handlerCopy = handler;
+  v5 = [[CPLCloudKitResourcesDownloadTask alloc] initWithController:self completionHandler:handlerCopy];
 
   [(CPLCloudKitTransportTask *)v5 setGate:self->_resourceDownloadGate];
 
   return v5;
 }
 
-- (id)inMemoryDownloadTaskForResource:(id)a3 record:(id)a4 target:(id)a5 transportScopeMapping:(id)a6 clientBundleID:(id)a7 completionHandler:(id)a8
+- (id)inMemoryDownloadTaskForResource:(id)resource record:(id)record target:(id)target transportScopeMapping:(id)mapping clientBundleID:(id)d completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[CPLCloudKitInMemoryResourceDownloadTask alloc] initWithController:self resource:v19 record:v18 target:v17 transportScopeMapping:v16 completionHandler:v14];
+  handlerCopy = handler;
+  dCopy = d;
+  mappingCopy = mapping;
+  targetCopy = target;
+  recordCopy = record;
+  resourceCopy = resource;
+  v20 = [[CPLCloudKitInMemoryResourceDownloadTask alloc] initWithController:self resource:resourceCopy record:recordCopy target:targetCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
-  v21 = [(CPLCloudKitTransport *)self createGroupForAnalysisDownload];
-  [(CPLCloudKitTransportTask *)v20 setTransportGroup:v21];
+  createGroupForAnalysisDownload = [(CPLCloudKitTransport *)self createGroupForAnalysisDownload];
+  [(CPLCloudKitTransportTask *)v20 setTransportGroup:createGroupForAnalysisDownload];
 
   [(CPLCloudKitTransportTask *)v20 setGate:self->_resourceDownloadGate];
-  [(CPLCloudKitTransportTask *)v20 setSourceBundleIdentifier:v15];
+  [(CPLCloudKitTransportTask *)v20 setSourceBundleIdentifier:dCopy];
 
   return v20;
 }
 
-- (id)createScopeTaskForScope:(id)a3 completionHandler:(id)a4
+- (id)createScopeTaskForScope:(id)scope completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CPLCloudKitCreateScopeTask alloc] initWithController:self scope:v7 completionHandler:v6];
+  handlerCopy = handler;
+  scopeCopy = scope;
+  v8 = [[CPLCloudKitCreateScopeTask alloc] initWithController:self scope:scopeCopy completionHandler:handlerCopy];
 
-  v9 = [v7 scopeType];
-  if ((v9 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  scopeType = [scopeCopy scopeType];
+  if ((scopeType & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     [(CPLCloudKitTransport *)self createGroupForPublishingLibraryShare];
   }
@@ -705,15 +705,15 @@
   return v8;
 }
 
-- (id)updateShareTaskForScope:(id)a3 transportScope:(id)a4 completionHandler:(id)a5
+- (id)updateShareTaskForScope:(id)scope transportScope:(id)transportScope completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CPLCloudKitUpdateShareTask alloc] initWithController:self scope:v10 transportScope:v9 completionHandler:v8];
+  handlerCopy = handler;
+  transportScopeCopy = transportScope;
+  scopeCopy = scope;
+  v11 = [[CPLCloudKitUpdateShareTask alloc] initWithController:self scope:scopeCopy transportScope:transportScopeCopy completionHandler:handlerCopy];
 
-  v12 = [v10 scopeType];
-  if ((v12 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  scopeType = [scopeCopy scopeType];
+  if ((scopeType & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     [(CPLCloudKitTransport *)self createGroupForPublishingLibraryShare];
   }
@@ -728,49 +728,49 @@
   return v11;
 }
 
-- (id)fetchTaskForScopeWithShareURL:(id)a3 completionHandler:(id)a4
+- (id)fetchTaskForScopeWithShareURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CPLCloudKitFetchSharedScopeTask alloc] initWithController:self shareURL:v7 completionHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  v8 = [[CPLCloudKitFetchSharedScopeTask alloc] initWithController:self shareURL:lCopy completionHandler:handlerCopy];
 
-  v9 = [v7 pathComponents];
+  pathComponents = [lCopy pathComponents];
 
-  if ([v9 count] < 2)
+  if ([pathComponents count] < 2)
   {
-    v11 = &stru_10027C2F0;
+    lowercaseString = &stru_10027C2F0;
   }
 
   else
   {
-    v10 = [v9 objectAtIndexedSubscript:1];
-    v11 = [v10 lowercaseString];
+    v10 = [pathComponents objectAtIndexedSubscript:1];
+    lowercaseString = [v10 lowercaseString];
   }
 
-  if (([(__CFString *)v11 isEqualToString:@"shared_library"]& 1) != 0 || [(__CFString *)v11 isEqualToString:@"photos_sharing"])
+  if (([(__CFString *)lowercaseString isEqualToString:@"shared_library"]& 1) != 0 || [(__CFString *)lowercaseString isEqualToString:@"photos_sharing"])
   {
-    v12 = [(CPLCloudKitTransport *)self createGroupForFetchingLibraryShare];
+    createGroupForFetchingLibraryShare = [(CPLCloudKitTransport *)self createGroupForFetchingLibraryShare];
   }
 
   else
   {
-    v12 = [(CPLCloudKitTransport *)self createGroupForFetchingMomentShare];
+    createGroupForFetchingLibraryShare = [(CPLCloudKitTransport *)self createGroupForFetchingMomentShare];
   }
 
-  v13 = v12;
-  [(CPLCloudKitTransportTask *)v8 setTransportGroup:v12];
+  v13 = createGroupForFetchingLibraryShare;
+  [(CPLCloudKitTransportTask *)v8 setTransportGroup:createGroupForFetchingLibraryShare];
 
   return v8;
 }
 
-- (id)acceptTaskForSharedScope:(id)a3 completionHandler:(id)a4
+- (id)acceptTaskForSharedScope:(id)scope completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CPLCloudKitAcceptSharedScopeTask alloc] initWithController:self scope:v7 completionHandler:v6];
+  handlerCopy = handler;
+  scopeCopy = scope;
+  v8 = [[CPLCloudKitAcceptSharedScopeTask alloc] initWithController:self scope:scopeCopy completionHandler:handlerCopy];
 
-  v9 = [v7 scopeType];
-  if ((v9 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  scopeType = [scopeCopy scopeType];
+  if ((scopeType & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     [(CPLCloudKitTransport *)self createGroupForAcceptingLibraryShare];
   }
@@ -785,158 +785,158 @@
   return v8;
 }
 
-- (id)fetchExistingSharedLibraryScopeTaskWithCompletionHandler:(id)a3
+- (id)fetchExistingSharedLibraryScopeTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[CPLCloudKitFetchExistingSharedScopeTask alloc] initWithController:self completionHandler:v4];
+  handlerCopy = handler;
+  v5 = [[CPLCloudKitFetchExistingSharedScopeTask alloc] initWithController:self completionHandler:handlerCopy];
 
-  v6 = [(CPLCloudKitTransport *)self createGroupForFetchingExistingSharedScope];
-  [(CPLCloudKitTransportTask *)v5 setTransportGroup:v6];
+  createGroupForFetchingExistingSharedScope = [(CPLCloudKitTransport *)self createGroupForFetchingExistingSharedScope];
+  [(CPLCloudKitTransportTask *)v5 setTransportGroup:createGroupForFetchingExistingSharedScope];
 
   return v5;
 }
 
-- (id)startExitTaskFromSharedScope:(id)a3 transportScope:(id)a4 share:(id)a5 retentionPolicy:(int64_t)a6 exitSource:(int64_t)a7 completionHandler:(id)a8
+- (id)startExitTaskFromSharedScope:(id)scope transportScope:(id)transportScope share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  handlerCopy = handler;
+  shareCopy = share;
+  transportScopeCopy = transportScope;
+  scopeCopy = scope;
   v18 = [CPLCloudKitExitSharedLibraryTask alloc];
-  v19 = [CPLCloudKitScope scopeFromTransportScope:v16];
+  v19 = [CPLCloudKitScope scopeFromTransportScope:transportScopeCopy];
 
-  v20 = [(CPLCloudKitExitSharedLibraryTask *)v18 initSelfExitWithController:self cloudKitScope:v19 scope:v17 share:v15 retentionPolicy:a6 exitSource:a7 completionHandler:v14];
+  v20 = [(CPLCloudKitExitSharedLibraryTask *)v18 initSelfExitWithController:self cloudKitScope:v19 scope:scopeCopy share:shareCopy retentionPolicy:policy exitSource:source completionHandler:handlerCopy];
 
   return v20;
 }
 
-- (id)removeParticipantInSharedLibraryTaskFromSharedScope:(id)a3 transportScope:(id)a4 share:(id)a5 retentionPolicy:(int64_t)a6 exitSource:(int64_t)a7 userIdentifiersToRemove:(id)a8 participantIDsToRemove:(id)a9 completionHandler:(id)a10
+- (id)removeParticipantInSharedLibraryTaskFromSharedScope:(id)scope transportScope:(id)transportScope share:(id)share retentionPolicy:(int64_t)policy exitSource:(int64_t)source userIdentifiersToRemove:(id)remove participantIDsToRemove:(id)toRemove completionHandler:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  handlerCopy = handler;
+  toRemoveCopy = toRemove;
+  removeCopy = remove;
+  shareCopy = share;
+  transportScopeCopy = transportScope;
+  scopeCopy = scope;
   v22 = [CPLCloudKitExitSharedLibraryTask alloc];
-  v23 = [CPLCloudKitScope scopeFromTransportScope:v20];
+  v23 = [CPLCloudKitScope scopeFromTransportScope:transportScopeCopy];
 
-  v24 = [(CPLCloudKitExitSharedLibraryTask *)v22 initRemoveParticipantsWithController:self cloudKitScope:v23 scope:v21 share:v19 userIdentifiersToRemove:v18 participantIDsToRemove:v17 retentionPolicy:a6 exitSource:a7 completionHandler:v16];
+  v24 = [(CPLCloudKitExitSharedLibraryTask *)v22 initRemoveParticipantsWithController:self cloudKitScope:v23 scope:scopeCopy share:shareCopy userIdentifiersToRemove:removeCopy participantIDsToRemove:toRemoveCopy retentionPolicy:policy exitSource:source completionHandler:handlerCopy];
 
   return v24;
 }
 
-- (id)fixUpSparseRecordsTaskWithTasks:(id)a3 transportScopeMapping:(id)a4 completionHandler:(id)a5
+- (id)fixUpSparseRecordsTaskWithTasks:(id)tasks transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CPLCloudKitFixUpSparseRecordTask alloc] initWithController:self tasks:v10 transportScopeMapping:v9 completionHandler:v8];
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  tasksCopy = tasks;
+  v11 = [[CPLCloudKitFixUpSparseRecordTask alloc] initWithController:self tasks:tasksCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
   return v11;
 }
 
-- (id)sharedLibraryServerRampTaskWithCompletionHandler:(id)a3
+- (id)sharedLibraryServerRampTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[CPLCloudKitSharedLibraryServerRampTask alloc] initWithController:self completionHandler:v4];
+  handlerCopy = handler;
+  v5 = [[CPLCloudKitSharedLibraryServerRampTask alloc] initWithController:self completionHandler:handlerCopy];
 
-  v6 = [(CPLCloudKitTransport *)self createGroupForSharedLibraryRampCheck];
-  [(CPLCloudKitTransportTask *)v5 setTransportGroup:v6];
+  createGroupForSharedLibraryRampCheck = [(CPLCloudKitTransport *)self createGroupForSharedLibraryRampCheck];
+  [(CPLCloudKitTransportTask *)v5 setTransportGroup:createGroupForSharedLibraryRampCheck];
 
   return v5;
 }
 
-- (id)updateContributorsTaskWithSharedScope:(id)a3 contributorsUpdates:(id)a4 transportScopeMapping:(id)a5 completionHandler:(id)a6
+- (id)updateContributorsTaskWithSharedScope:(id)scope contributorsUpdates:(id)updates transportScopeMapping:(id)mapping completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[CPLCloudKitUpdateContributorsTask alloc] initWithController:self sharedScope:v13 contributorsUpdates:v12 transportScopeMapping:v11 completionHandler:v10];
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  updatesCopy = updates;
+  scopeCopy = scope;
+  v14 = [[CPLCloudKitUpdateContributorsTask alloc] initWithController:self sharedScope:scopeCopy contributorsUpdates:updatesCopy transportScopeMapping:mappingCopy completionHandler:handlerCopy];
 
   return v14;
 }
 
-- (id)cleanupStagedScope:(id)a3 stagingScope:(id)a4 destinationScope:(id)a5 transportScopeMapping:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
+- (id)cleanupStagedScope:(id)scope stagingScope:(id)stagingScope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[CPLCloudKitCleanupStagedScopeTask alloc] initWithController:self stagedScope:v19 stagingScope:v18 destinationScope:v17 transportScopeMapping:v16 progressHandler:v15 completionHandler:v14];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  mappingCopy = mapping;
+  destinationScopeCopy = destinationScope;
+  stagingScopeCopy = stagingScope;
+  scopeCopy = scope;
+  v20 = [[CPLCloudKitCleanupStagedScopeTask alloc] initWithController:self stagedScope:scopeCopy stagingScope:stagingScopeCopy destinationScope:destinationScopeCopy transportScopeMapping:mappingCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v20;
 }
 
-- (id)queryUserDetailsTaskForParticipants:(id)a3 completionHandler:(id)a4
+- (id)queryUserDetailsTaskForParticipants:(id)participants completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CPLCloudKitQueryUserDetailsTask alloc] initWithController:self participants:v7 completionHandler:v6];
+  handlerCopy = handler;
+  participantsCopy = participants;
+  v8 = [[CPLCloudKitQueryUserDetailsTask alloc] initWithController:self participants:participantsCopy completionHandler:handlerCopy];
 
-  v9 = [(CPLCloudKitTransport *)self createGroupForQueryUserIdentities];
-  [(CPLCloudKitTransportTask *)v8 setTransportGroup:v9];
+  createGroupForQueryUserIdentities = [(CPLCloudKitTransport *)self createGroupForQueryUserIdentities];
+  [(CPLCloudKitTransportTask *)v8 setTransportGroup:createGroupForQueryUserIdentities];
 
   return v8;
 }
 
-- (id)sendFeedbackTaskForMessages:(id)a3 completionHandler:(id)a4
+- (id)sendFeedbackTaskForMessages:(id)messages completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CPLCloudKitSendFeedbackTask alloc] initWithController:self messages:v7 completionHandler:v6];
+  handlerCopy = handler;
+  messagesCopy = messages;
+  v8 = [[CPLCloudKitSendFeedbackTask alloc] initWithController:self messages:messagesCopy completionHandler:handlerCopy];
 
-  v9 = [(CPLCloudKitTransport *)self createGroupForFeedback];
-  [(CPLCloudKitTransportTask *)v8 setTransportGroup:v9];
+  createGroupForFeedback = [(CPLCloudKitTransport *)self createGroupForFeedback];
+  [(CPLCloudKitTransportTask *)v8 setTransportGroup:createGroupForFeedback];
 
   return v8;
 }
 
-- (BOOL)isResourceDynamic:(id)a3
+- (BOOL)isResourceDynamic:(id)dynamic
 {
-  v3 = a3;
-  if (CPLIsDynamicResource(v3))
+  dynamicCopy = dynamic;
+  if (CPLIsDynamicResource(dynamicCopy))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [CPLCloudKitFakeDynamicDerivatives isFakeDerivative:v3];
+    v4 = [CPLCloudKitFakeDynamicDerivatives isFakeDerivative:dynamicCopy];
   }
 
   return v4;
 }
 
-- (id)simpleDescriptionForSyncAnchor:(id)a3
+- (id)simpleDescriptionForSyncAnchor:(id)anchor
 {
-  v3 = a3;
-  if (v3)
+  anchorCopy = anchor;
+  if (anchorCopy)
   {
     if (qword_1002C53C0 != -1)
     {
       sub_1001A5DE4();
     }
 
-    v4 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:v3 classes:qword_1002C53C8];
+    v4 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:anchorCopy classes:qword_1002C53C8];
     if (v4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v5 = [NSString alloc];
-        v6 = [v4 data];
-        v7 = [v6 base64EncodedStringWithOptions:0];
+        data = [v4 data];
+        v7 = [data base64EncodedStringWithOptions:0];
         v8 = [v5 initWithFormat:@"Cursor-%@", v7];
       }
 
       else
       {
-        v6 = [v4 data];
-        v8 = [v6 base64EncodedStringWithOptions:0];
+        data = [v4 data];
+        v8 = [data base64EncodedStringWithOptions:0];
       }
     }
 
@@ -954,27 +954,27 @@
   return v8;
 }
 
-- (BOOL)getProposedStagingScopeIdentifier:(id *)a3 stagingTransportScope:(id *)a4 forScope:(id)a5 transportScope:(id)a6 transportUserIdentifier:(id)a7
+- (BOOL)getProposedStagingScopeIdentifier:(id *)identifier stagingTransportScope:(id *)scope forScope:(id)forScope transportScope:(id)transportScope transportUserIdentifier:(id)userIdentifier
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = [CPLCloudKitScope scopeFromTransportScope:a6];
+  forScopeCopy = forScope;
+  userIdentifierCopy = userIdentifier;
+  v14 = [CPLCloudKitScope scopeFromTransportScope:transportScope];
   v15 = v14;
   v16 = 0;
-  if (v13 && v14)
+  if (userIdentifierCopy && v14)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [(CPLCloudKitTransport *)self zoneIdentificationForCloudKitScope:v15 engineScope:v12];
-      v18 = [v17 proposedStagingZoneIdentificationWithCurrentUserID:v13];
+      v17 = [(CPLCloudKitTransport *)self zoneIdentificationForCloudKitScope:v15 engineScope:forScopeCopy];
+      v18 = [v17 proposedStagingZoneIdentificationWithCurrentUserID:userIdentifierCopy];
       v19 = v18;
       v16 = v18 != 0;
       if (v18)
       {
-        *a3 = [v18 scopeIdentifier];
-        v20 = [v19 cloudKitScope];
-        *a4 = [v20 transportScope];
+        *identifier = [v18 scopeIdentifier];
+        cloudKitScope = [v19 cloudKitScope];
+        *scope = [cloudKitScope transportScope];
       }
     }
 
@@ -987,20 +987,20 @@
   return v16;
 }
 
-- (void)setIsSignificantWorkPending:(BOOL)a3
+- (void)setIsSignificantWorkPending:(BOOL)pending
 {
-  v5 = [(CPLCloudKitTransport *)self duetTicketProvider];
-  v6 = v5;
-  if (v5)
+  duetTicketProvider = [(CPLCloudKitTransport *)self duetTicketProvider];
+  v6 = duetTicketProvider;
+  if (duetTicketProvider)
   {
     workQueue = self->_workQueue;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1001A5278;
     v11[3] = &unk_100273930;
-    v13 = a3;
+    pendingCopy = pending;
     v11[4] = self;
-    v12 = v5;
+    v12 = duetTicketProvider;
     v8 = v11;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1013,14 +1013,14 @@
   }
 }
 
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLCloudKitTransport *)self duetTicketProvider];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  duetTicketProvider = [(CPLCloudKitTransport *)self duetTicketProvider];
+  v6 = duetTicketProvider;
+  if (duetTicketProvider)
   {
-    [v5 getSystemBudgetsWithCompletionHandler:v4];
+    [duetTicketProvider getSystemBudgetsWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -1030,7 +1030,7 @@
     v11[1] = 3221225472;
     v11[2] = sub_100079A38;
     v11[3] = &unk_100271E98;
-    v12 = v4;
+    v12 = handlerCopy;
     v8 = v11;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1043,99 +1043,99 @@
   }
 }
 
-- (id)tentativeConcreteScopeForScope:(id)a3
+- (id)tentativeConcreteScopeForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [v4 scopeIdentifier];
-  v6 = [(CPLCloudKitTransport *)self mainScopeIdentifier];
-  if (![v5 isEqualToString:v6])
+  scopeCopy = scope;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  mainScopeIdentifier = [(CPLCloudKitTransport *)self mainScopeIdentifier];
+  if (![scopeIdentifier isEqualToString:mainScopeIdentifier])
   {
-    v10 = 0;
+    cloudKitScope = 0;
     goto LABEL_5;
   }
 
-  v7 = [v4 scopeType];
+  scopeType = [scopeCopy scopeType];
 
-  if (v7 == 1)
+  if (scopeType == 1)
   {
-    v6 = [[CKRecordZoneID alloc] initWithCPLScopeIdentifier:v5];
-    v8 = [[CPLCloudKitScope alloc] initWithZoneID:v6];
-    v9 = [(CPLCloudKitTransport *)self zoneIdentificationForCloudKitScope:v8 engineScope:v4];
-    v10 = [v9 cloudKitScope];
+    mainScopeIdentifier = [[CKRecordZoneID alloc] initWithCPLScopeIdentifier:scopeIdentifier];
+    v8 = [[CPLCloudKitScope alloc] initWithZoneID:mainScopeIdentifier];
+    v9 = [(CPLCloudKitTransport *)self zoneIdentificationForCloudKitScope:v8 engineScope:scopeCopy];
+    cloudKitScope = [v9 cloudKitScope];
 
 LABEL_5:
     goto LABEL_7;
   }
 
-  v10 = 0;
+  cloudKitScope = 0;
 LABEL_7:
 
-  return v10;
+  return cloudKitScope;
 }
 
-- (id)descriptionForTransportScope:(id)a3
+- (id)descriptionForTransportScope:(id)scope
 {
-  v3 = [CPLCloudKitScope scopeFromTransportScope:a3];
+  v3 = [CPLCloudKitScope scopeFromTransportScope:scope];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 zoneID];
-    v6 = [v5 cpl_zoneName];
+    zoneID = [v3 zoneID];
+    cpl_zoneName = [zoneID cpl_zoneName];
 
     if ([v4 isShared])
     {
-      v7 = [[NSString alloc] initWithFormat:@"%@ shared", v6];
+      v7 = [[NSString alloc] initWithFormat:@"%@ shared", cpl_zoneName];
 
-      v6 = v7;
+      cpl_zoneName = v7;
     }
   }
 
   else
   {
-    v6 = @"Invalid";
+    cpl_zoneName = @"Invalid";
   }
 
-  return v6;
+  return cpl_zoneName;
 }
 
-- (id)scopeNameForTransportScope:(id)a3
+- (id)scopeNameForTransportScope:(id)scope
 {
-  v3 = [CPLCloudKitScope scopeFromTransportScope:a3];
-  v4 = [v3 zoneID];
-  v5 = [v4 cpl_zoneName];
+  v3 = [CPLCloudKitScope scopeFromTransportScope:scope];
+  zoneID = [v3 zoneID];
+  cpl_zoneName = [zoneID cpl_zoneName];
 
-  return v5;
+  return cpl_zoneName;
 }
 
-- (id)transportScopeForUpgradeFromScopeName:(id)a3
+- (id)transportScopeForUpgradeFromScopeName:(id)name
 {
-  v3 = a3;
-  v4 = [[CKRecordZone alloc] initWithZoneName:v3];
+  nameCopy = name;
+  v4 = [[CKRecordZone alloc] initWithZoneName:nameCopy];
 
   v5 = [[CPLCloudKitScope alloc] initWithZone:v4 options:0];
-  v6 = [(CPLCloudKitScope *)v5 transportScope];
+  transportScope = [(CPLCloudKitScope *)v5 transportScope];
 
-  return v6;
+  return transportScope;
 }
 
-- (void)upgradeFlags:(id)a3 fromTransportScope:(id)a4
+- (void)upgradeFlags:(id)flags fromTransportScope:(id)scope
 {
-  v7 = a3;
-  v5 = [CPLCloudKitScope scopeFromTransportScope:a4];
+  flagsCopy = flags;
+  v5 = [CPLCloudKitScope scopeFromTransportScope:scope];
   v6 = v5;
   if (v5 && ([v5 options] & 2) != 0)
   {
-    [v7 setValue:1 forFlag:1];
+    [flagsCopy setValue:1 forFlag:1];
   }
 }
 
-- (BOOL)isNewTransportScope:(id)a3 compatibleWithOldTransportScope:(id)a4
+- (BOOL)isNewTransportScope:(id)scope compatibleWithOldTransportScope:(id)transportScope
 {
-  v5 = a4;
-  v6 = [CPLCloudKitScope scopeFromTransportScope:a3];
+  transportScopeCopy = transportScope;
+  v6 = [CPLCloudKitScope scopeFromTransportScope:scope];
   if (v6)
   {
-    v7 = [CPLCloudKitScope scopeFromTransportScope:v5];
+    v7 = [CPLCloudKitScope scopeFromTransportScope:transportScopeCopy];
     if (v7)
     {
       v8 = +[CPLCloudKitDefaultZoneManager sharedInstance];
@@ -1158,8 +1158,8 @@ LABEL_7:
 
 - (id)createGroupForSendExitStatus
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1176,8 +1176,8 @@ LABEL_7:
 
 - (id)createGroupForInitialUpload
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1194,8 +1194,8 @@ LABEL_7:
 
 - (id)createGroupForResetSync
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1212,8 +1212,8 @@ LABEL_7:
 
 - (id)createGroupForInitialDownload
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1230,8 +1230,8 @@ LABEL_7:
 
 - (id)createGroupForThumbnailPrefetch
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 0);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 0);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1282,8 +1282,8 @@ LABEL_7:
 
 - (id)createGroupForTransportScopeDelete
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1300,8 +1300,8 @@ LABEL_7:
 
 - (id)createGroupForTransportScopeUpdate
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1318,8 +1318,8 @@ LABEL_7:
 
 - (id)createGroupForTransportScopeRefresh
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1336,8 +1336,8 @@ LABEL_7:
 
 - (id)createGroupForLibraryStateCheck
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1354,8 +1354,8 @@ LABEL_7:
 
 - (id)createGroupForChangeUpload
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1372,8 +1372,8 @@ LABEL_7:
 
 - (id)createGroupForChangeDownload
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1390,8 +1390,8 @@ LABEL_7:
 
 - (id)createGroupForComputeStateUpload
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1408,8 +1408,8 @@ LABEL_7:
 
 - (id)createGroupForComputeStateDownloadOnDemand
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1426,8 +1426,8 @@ LABEL_7:
 
 - (id)createGroupForComputeStateDownloadPrefetch
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1444,8 +1444,8 @@ LABEL_7:
 
 - (id)createGroupForFixUpTasks
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1462,8 +1462,8 @@ LABEL_7:
 
 - (id)createGroupForReshare
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1480,8 +1480,8 @@ LABEL_7:
 
 - (id)createGroupForStagedScopeCleanup
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1498,8 +1498,8 @@ LABEL_7:
 
 - (id)createGroupForThumbnailsDownload
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 0);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 0);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1514,21 +1514,21 @@ LABEL_7:
   return v5;
 }
 
-- (id)createGroupForMovieStreamingWithIntent:(unint64_t)a3
+- (id)createGroupForMovieStreamingWithIntent:(unint64_t)intent
 {
-  v5 = [objc_opt_class() allowsSyncOverCellular];
-  v6 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v5, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
-  if (a3 - 1 > 5)
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v6 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
+  if (intent - 1 > 5)
   {
     v7 = @"Fetching Movie Stream";
   }
 
   else
   {
-    v7 = off_100275DF0[a3 - 1];
+    v7 = off_100275DF0[intent - 1];
   }
 
-  if (!self->_mightRejectVideoStreaming || ![(NSIndexSet *)self->_rejectedVideoStreamingIntents containsIndex:a3])
+  if (!self->_mightRejectVideoStreaming || ![(NSIndexSet *)self->_rejectedVideoStreamingIntents containsIndex:intent])
   {
     goto LABEL_17;
   }
@@ -1589,8 +1589,8 @@ LABEL_17:
 
 - (id)createGroupForAnalysisDownload
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 0);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 0);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1624,8 +1624,8 @@ LABEL_17:
 
 - (id)createGroupForPublishingMomentShare
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1642,8 +1642,8 @@ LABEL_17:
 
 - (id)createGroupForFetchingMomentShare
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1660,8 +1660,8 @@ LABEL_17:
 
 - (id)createGroupForAcceptingMomentShare
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1678,8 +1678,8 @@ LABEL_17:
 
 - (id)createGroupForPublishingLibraryShare
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1696,8 +1696,8 @@ LABEL_17:
 
 - (id)createGroupForFetchingLibraryShare
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1714,8 +1714,8 @@ LABEL_17:
 
 - (id)createGroupForAcceptingLibraryShare
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1732,8 +1732,8 @@ LABEL_17:
 
 - (id)createGroupForFetchingExistingSharedScope
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1750,8 +1750,8 @@ LABEL_17:
 
 - (id)createGroupForCleanupLibrary
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1768,8 +1768,8 @@ LABEL_17:
 
 - (id)createGroupForExitSharedLibrary
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1786,8 +1786,8 @@ LABEL_17:
 
 - (id)createGroupForSharedLibraryRampCheck
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1804,8 +1804,8 @@ LABEL_17:
 
 - (id)createGroupForQueryUserIdentities
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 1, 1, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1822,8 +1822,8 @@ LABEL_17:
 
 - (id)createGroupForPropagateChanges
 {
-  v3 = [objc_opt_class() allowsSyncOverCellular];
-  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v3, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v4 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], 0, 0, 1);
   v5 = v4;
   if (self->_operationGroupMapper)
   {
@@ -1838,18 +1838,18 @@ LABEL_17:
   return v5;
 }
 
-- (void)findPersistedInitialSyncSession:(id)a3 completionHandler:(id)a4
+- (void)findPersistedInitialSyncSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   reschedulerManager = self->_reschedulerManager;
   if (reschedulerManager)
   {
-    v10 = [(CPLCloudKitTransport *)self abstractObject];
-    v11 = [v10 engineLibrary];
-    v12 = [v11 scheduler];
-    [(CPLCloudKitReschedulerManager *)reschedulerManager findPersistedSyncSession:v6 forScheduler:v12 completionHandler:v8];
+    abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+    engineLibrary = [abstractObject engineLibrary];
+    scheduler = [engineLibrary scheduler];
+    [(CPLCloudKitReschedulerManager *)reschedulerManager findPersistedSyncSession:sessionCopy forScheduler:scheduler completionHandler:v8];
   }
 
   else
@@ -1859,7 +1859,7 @@ LABEL_17:
     v17[1] = 3221225472;
     v17[2] = sub_10007B8E0;
     v17[3] = &unk_100271E98;
-    v18 = v7;
+    v18 = handlerCopy;
     v14 = v17;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1872,9 +1872,9 @@ LABEL_17:
   }
 }
 
-- (id)createReschedulerForSession:(id)a3
+- (id)createReschedulerForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   reschedulerManager = self->_reschedulerManager;
   if (reschedulerManager)
   {
@@ -1885,7 +1885,7 @@ LABEL_17:
       {
         v7 = self->_reschedulerManager;
         v10 = 138412546;
-        v11 = self;
+        selfCopy = self;
         v12 = 2112;
         v13 = v7;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Creating CloudKit rescheduler for %@ with %@", &v10, 0x16u);
@@ -1894,7 +1894,7 @@ LABEL_17:
       reschedulerManager = self->_reschedulerManager;
     }
 
-    v8 = [(CPLCloudKitReschedulerManager *)reschedulerManager newCloudKitReschedulerForSession:v4];
+    v8 = [(CPLCloudKitReschedulerManager *)reschedulerManager newCloudKitReschedulerForSession:sessionCopy];
   }
 
   else
@@ -1934,15 +1934,15 @@ LABEL_17:
   return byte_1002BFB62;
 }
 
-- (void)_startWatchingAccountInfoChangesWithCompletionHandler:(id)a3
+- (void)_startWatchingAccountInfoChangesWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self->_accountInfoWatcher)
   {
     sub_1001A68FC(a2, self);
   }
 
-  v6 = v5;
+  v6 = handlerCopy;
   v7 = +[NSNotificationCenter defaultCenter];
   workOperationQueue = self->_workOperationQueue;
   v11[0] = _NSConcreteStackBlock;
@@ -1963,19 +1963,19 @@ LABEL_17:
   self->_accountInfoWatcher = 0;
 }
 
-- (void)_forceUpdateAccountInfoWithReason:(id)a3 completionHandler:(id)a4
+- (void)_forceUpdateAccountInfoWithReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  handlerCopy = handler;
   lastAccountInfoUpdateDate = self->_lastAccountInfoUpdateDate;
   if (lastAccountInfoUpdateDate && ([(NSDate *)lastAccountInfoUpdateDate timeIntervalSinceNow], v9 > -600.0))
   {
-    sub_1001A6A78(v7);
+    sub_1001A6A78(handlerCopy);
   }
 
   else
   {
-    if (v6 && (_CPLSilentLogging & 1) == 0)
+    if (reasonCopy && (_CPLSilentLogging & 1) == 0)
     {
       sub_1001A6B04();
     }
@@ -1984,13 +1984,13 @@ LABEL_17:
     v11 = self->_lastAccountInfoUpdateDate;
     self->_lastAccountInfoUpdateDate = v10;
 
-    [(CPLCloudKitTransport *)self _updateAccountInfoWithCompletionHandler:v7];
+    [(CPLCloudKitTransport *)self _updateAccountInfoWithCompletionHandler:handlerCopy];
   }
 }
 
-- (void)_updateAccountInfoWithCompletionHandler:(id)a3
+- (void)_updateAccountInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_accountInfoFetchGeneration + 1;
   self->_accountInfoFetchGeneration = v5;
   coordinator = self->_coordinator;
@@ -1998,10 +1998,10 @@ LABEL_17:
   v8[1] = 3221225472;
   v8[2] = sub_10007BE60;
   v8[3] = &unk_100275C00;
-  v9 = v4;
+  v9 = handlerCopy;
   v10 = v5;
   v8[4] = self;
-  v7 = v4;
+  v7 = handlerCopy;
   [(CPLCloudKitCoordinator *)coordinator fetchAccountInfoWithCompletionHandler:v8];
 }
 
@@ -2012,32 +2012,32 @@ LABEL_17:
     sub_1001A6B98(self, &self->_lastDisablingReasonBecauseOfAccountStatus);
   }
 
-  v3 = [(CPLCloudKitTransport *)self abstractObject];
-  v4 = [v3 engineLibrary];
-  v5 = [v4 containerHasBeenWiped];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  containerHasBeenWiped = [engineLibrary containerHasBeenWiped];
 
-  if ((v5 & 1) == 0)
+  if ((containerHasBeenWiped & 1) == 0)
   {
     [(CPLCloudKitTransport *)self setErrorForAllOperations:0];
   }
 }
 
-- (void)_disableSchedulerBecauseAccountIsUnavailableWithReason:(id)a3
+- (void)_disableSchedulerBecauseAccountIsUnavailableWithReason:(id)reason
 {
-  v5 = a3;
-  v6 = [(CPLCloudKitTransport *)self abstractObject];
-  v7 = [v6 engineLibrary];
-  v8 = [v7 scheduler];
+  reasonCopy = reason;
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  scheduler = [engineLibrary scheduler];
 
   lastDisablingReasonBecauseOfAccountStatus = self->_lastDisablingReasonBecauseOfAccountStatus;
   if (lastDisablingReasonBecauseOfAccountStatus)
   {
-    if ([(NSString *)lastDisablingReasonBecauseOfAccountStatus isEqualToString:v5])
+    if ([(NSString *)lastDisablingReasonBecauseOfAccountStatus isEqualToString:reasonCopy])
     {
       goto LABEL_3;
     }
 
-    if ((sub_1001A6DBC(v8, v5, &self->_lastDisablingReasonBecauseOfAccountStatus) & 1) == 0)
+    if ((sub_1001A6DBC(scheduler, reasonCopy, &self->_lastDisablingReasonBecauseOfAccountStatus) & 1) == 0)
     {
       sub_1001A6D18(&self->_lastDisablingReasonBecauseOfAccountStatus);
     }
@@ -2045,84 +2045,84 @@ LABEL_17:
 
   else
   {
-    sub_1001A6C5C(v5, v8);
+    sub_1001A6C5C(reasonCopy, scheduler);
   }
 
-  objc_storeStrong(&self->_lastDisablingReasonBecauseOfAccountStatus, a3);
-  v10 = [(CPLCloudKitTransport *)self abstractObject];
-  v11 = [v10 engineLibrary];
-  v12 = [v11 containerHasBeenWiped];
+  objc_storeStrong(&self->_lastDisablingReasonBecauseOfAccountStatus, reason);
+  abstractObject2 = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary2 = [abstractObject2 engineLibrary];
+  containerHasBeenWiped = [engineLibrary2 containerHasBeenWiped];
 
-  if ((v12 & 1) == 0)
+  if ((containerHasBeenWiped & 1) == 0)
   {
     v15 = CPLErrorRetryAfterReasonKey;
-    v16 = v5;
+    v16 = reasonCopy;
     v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    v14 = [CPLErrors cplErrorWithCode:1000 underlyingError:0 userInfo:v13 description:@"%@", v5];
+    reasonCopy = [CPLErrors cplErrorWithCode:1000 underlyingError:0 userInfo:v13 description:@"%@", reasonCopy];
 
-    [(CPLCloudKitTransport *)self setErrorForAllOperations:v14];
+    [(CPLCloudKitTransport *)self setErrorForAllOperations:reasonCopy];
   }
 
 LABEL_3:
 }
 
-+ (id)_betterErrorForRecordId:(id)a3 recordError:(id)a4
++ (id)_betterErrorForRecordId:(id)id recordError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 || (v9 = v8) == 0)
+  idCopy = id;
+  errorCopy = error;
+  if (!idCopy || (v9 = errorCopy) == 0)
   {
-    sub_1001A6E00(a2, a1);
+    sub_1001A6E00(a2, self);
   }
 
-  v10 = [v8 localizedDescription];
-  if (v10)
+  localizedDescription = [errorCopy localizedDescription];
+  if (localizedDescription)
   {
-    v11 = [NSString stringWithFormat:@"%@ (for record %@)", v10, v7];
+    idCopy = [NSString stringWithFormat:@"%@ (for record %@)", localizedDescription, idCopy];
   }
 
   else
   {
-    v11 = [NSString stringWithFormat:@"record %@", v7];
+    idCopy = [NSString stringWithFormat:@"record %@", idCopy];
   }
 
   v12 = objc_alloc_init(NSMutableDictionary);
-  v13 = [v9 userInfo];
+  userInfo = [v9 userInfo];
 
-  if (v13)
+  if (userInfo)
   {
-    v14 = [v9 userInfo];
-    [v12 setDictionary:v14];
+    userInfo2 = [v9 userInfo];
+    [v12 setDictionary:userInfo2];
 
-    [v12 setObject:v11 forKey:NSLocalizedDescriptionKey];
+    [v12 setObject:idCopy forKey:NSLocalizedDescriptionKey];
   }
 
-  v15 = [v9 domain];
-  v16 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v15, [v9 code], v12);
+  domain = [v9 domain];
+  v16 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v9 code], v12);
 
   return v16;
 }
 
-+ (id)_errorsByTaskForTasksByRecordId:(id)a3 fromUnderlyingError:(id)a4
++ (id)_errorsByTaskForTasksByRecordId:(id)id fromUnderlyingError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 domain];
-  if ([v8 isEqual:CKErrorDomain])
+  idCopy = id;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqual:CKErrorDomain])
   {
-    v9 = [v7 code];
+    code = [errorCopy code];
 
-    if (v9 == 2)
+    if (code == 2)
     {
       v10 = +[NSMapTable strongToStrongObjectsMapTable];
-      v11 = [v7 userInfo];
-      v12 = [v11 objectForKey:CKPartialErrorsByItemIDKey];
+      userInfo = [errorCopy userInfo];
+      v12 = [userInfo objectForKey:CKPartialErrorsByItemIDKey];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_10007C540;
       v15[3] = &unk_100275C28;
-      v16 = v6;
-      v18 = a1;
+      v16 = idCopy;
+      selfCopy = self;
       v13 = v10;
       v17 = v13;
       [v12 enumerateKeysAndObjectsUsingBlock:v15];
@@ -2141,56 +2141,56 @@ LABEL_6:
   return v13;
 }
 
-- (void)_addBackgroundSchedulingStatusToStatusEntries:(id)a3 now:(id)a4
+- (void)_addBackgroundSchedulingStatusToStatusEntries:(id)entries now:(id)now
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(CPLCloudKitReschedulerManager *)self->_reschedulerManager reschedulerDescription];
-  if (v7)
+  entriesCopy = entries;
+  nowCopy = now;
+  reschedulerDescription = [(CPLCloudKitReschedulerManager *)self->_reschedulerManager reschedulerDescription];
+  if (reschedulerDescription)
   {
-    v8 = [[NSString alloc] initWithFormat:@"Background scheduling: %@", v7];
-    [v18 addObject:v8];
+    v8 = [[NSString alloc] initWithFormat:@"Background scheduling: %@", reschedulerDescription];
+    [entriesCopy addObject:v8];
   }
 
-  v9 = [(CPLCloudKitReschedulerManager *)self->_reschedulerManager taskStatusesWithNow:v6];
+  v9 = [(CPLCloudKitReschedulerManager *)self->_reschedulerManager taskStatusesWithNow:nowCopy];
   if ([v9 count])
   {
     v10 = [NSString alloc];
     v11 = [v9 componentsJoinedByString:@"\n  "];
     v12 = [v10 initWithFormat:@"  %@", v11];
-    [v18 addObject:v12];
+    [entriesCopy addObject:v12];
   }
 
-  v13 = [(CPLCloudKitTransport *)self duetTicketProvider];
-  if (v13)
+  duetTicketProvider = [(CPLCloudKitTransport *)self duetTicketProvider];
+  if (duetTicketProvider)
   {
-    v14 = [(CPLCloudKitTransport *)self duetTicketProvider];
-    v15 = [v14 duetStatuses];
+    duetTicketProvider2 = [(CPLCloudKitTransport *)self duetTicketProvider];
+    duetStatuses = [duetTicketProvider2 duetStatuses];
 
-    if ([v15 count])
+    if ([duetStatuses count])
     {
-      v16 = [v15 componentsJoinedByString:@"\n  "];
+      v16 = [duetStatuses componentsJoinedByString:@"\n  "];
       v17 = [NSString stringWithFormat:@"CoreDuet State:\n  %@", v16];
-      [v18 addObject:v17];
+      [entriesCopy addObject:v17];
     }
   }
 
   else
   {
-    [v18 addObject:@"CoreDuet State: not supported for this engine"];
+    [entriesCopy addObject:@"CoreDuet State: not supported for this engine"];
   }
 }
 
-- (void)getBackgroundSchedulingStatusWithCompletionHandler:(id)a3
+- (void)getBackgroundSchedulingStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007C8E4;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2198,21 +2198,21 @@ LABEL_6:
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = workQueue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)getBackgroundSchedulingStatusDictionaryWithCompletionHandler:(id)a3
+- (void)getBackgroundSchedulingStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007CABC;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2220,35 +2220,35 @@ LABEL_6:
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = workQueue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)getStatusWithCompletionHandler:(id)a3
+- (void)getStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   coordinator = self->_coordinator;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007CC5C;
   v7[3] = &unk_100272378;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(CPLCloudKitCoordinator *)coordinator getStatusForClient:self completionHandler:v7];
 }
 
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007D748;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2256,33 +2256,33 @@ LABEL_6:
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = workQueue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 isEqual:@"reset-container"])
+  keyCopy = key;
+  handlerCopy = handler;
+  if ([keyCopy isEqual:@"reset-container"])
   {
     [(CPLCloudKitTransport *)self _noteContainerHasBeenWiped];
 LABEL_5:
-    (*(v8 + 2))(v8, 1, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0, 0);
     goto LABEL_6;
   }
 
-  if ([v7 isEqual:@"unreset-container"])
+  if ([keyCopy isEqual:@"unreset-container"])
   {
-    v9 = [(CPLCloudKitTransport *)self abstractObject];
-    v10 = [v9 engineLibrary];
-    [v10 setContainerHasBeenWiped:0];
+    abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+    engineLibrary = [abstractObject engineLibrary];
+    [engineLibrary setContainerHasBeenWiped:0];
 
     goto LABEL_5;
   }
 
-  if ([v7 isEqual:@"refresh-cloudkit"])
+  if ([keyCopy isEqual:@"refresh-cloudkit"])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -2300,7 +2300,7 @@ LABEL_5:
     v16[2] = sub_10007DA74;
     v16[3] = &unk_1002723C8;
     v16[4] = self;
-    v17 = v8;
+    v17 = handlerCopy;
     v13 = v16;
     *buf = _NSConcreteStackBlock;
     v19 = 3221225472;
@@ -2314,16 +2314,16 @@ LABEL_5:
 
   else
   {
-    (*(v8 + 2))(v8, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 
 LABEL_6:
 }
 
-- (void)_cleanTempRecoveredDataURL:(id)a3
+- (void)_cleanTempRecoveredDataURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     dispatch_assert_queue_V2(self->_workQueue);
     if (qword_1002C5400 != -1)
@@ -2340,54 +2340,54 @@ LABEL_6:
       block[1] = 3221225472;
       block[2] = sub_10007DCE0;
       block[3] = &unk_100271F40;
-      v9 = v4;
+      v9 = lCopy;
       dispatch_after(v5, workQueue, block);
     }
 
     else
     {
       v7 = +[NSFileManager defaultManager];
-      [v7 removeItemAtURL:v4 error:0];
+      [v7 removeItemAtURL:lCopy error:0];
     }
   }
 }
 
-- (id)_tempDestinationURLForRecoveredDataWithTempFolderURL:(id)a3
+- (id)_tempDestinationURLForRecoveredDataWithTempFolderURL:(id)l
 {
   workQueue = self->_workQueue;
-  v4 = a3;
+  lCopy = l;
   dispatch_assert_queue_V2(workQueue);
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
-  v7 = [v4 URLByAppendingPathComponent:v6 isDirectory:0];
+  v7 = [lCopy URLByAppendingPathComponent:uUIDString isDirectory:0];
 
   return v7;
 }
 
-- (void)_withTempCKAssetForData:(id)a3 tempFolderURL:(id)a4 block:(id)a5
+- (void)_withTempCKAssetForData:(id)data tempFolderURL:(id)l block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   workQueue = self->_workQueue;
-  v10 = a4;
-  v11 = a3;
+  lCopy = l;
+  dataCopy = data;
   dispatch_assert_queue_V2(workQueue);
-  v12 = [(CPLCloudKitTransport *)self _tempDestinationURLForRecoveredDataWithTempFolderURL:v10];
+  v12 = [(CPLCloudKitTransport *)self _tempDestinationURLForRecoveredDataWithTempFolderURL:lCopy];
 
   v15 = 0;
-  LODWORD(workQueue) = [v11 writeToURL:v12 options:1 error:&v15];
+  LODWORD(workQueue) = [dataCopy writeToURL:v12 options:1 error:&v15];
 
   v13 = v15;
   if (workQueue)
   {
     v14 = [[CKAsset alloc] initWithFileURL:v12];
     [v14 setItemTypeHint:@"fxd"];
-    v8[2](v8, v14, 0);
+    blockCopy[2](blockCopy, v14, 0);
   }
 
   else
   {
-    (v8)[2](v8, 0, v13);
+    (blockCopy)[2](blockCopy, 0, v13);
   }
 
   [(CPLCloudKitTransport *)self _cleanTempRecoveredDataURL:v12];
@@ -2395,33 +2395,33 @@ LABEL_6:
 
 - (NSString)cloudKitClientIdentifier
 {
-  v2 = [(CPLCloudKitTransport *)self engineLibrary];
-  v3 = [v2 libraryIdentifier];
+  engineLibrary = [(CPLCloudKitTransport *)self engineLibrary];
+  libraryIdentifier = [engineLibrary libraryIdentifier];
 
-  return v3;
+  return libraryIdentifier;
 }
 
-- (void)_coordinator:(id)a3 provideCKAssetWithRecordID:(id)a4 fieldName:(id)a5 recordType:(id)a6 signature:(id)a7 tempFolderURL:(id)a8 completionHandler:(id)a9
+- (void)_coordinator:(id)_coordinator provideCKAssetWithRecordID:(id)d fieldName:(id)name recordType:(id)type signature:(id)signature tempFolderURL:(id)l completionHandler:(id)handler
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  dCopy = d;
+  nameCopy = name;
+  typeCopy = type;
+  signatureCopy = signature;
+  lCopy = l;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_10007E130;
   v31[3] = &unk_100275D88;
   v31[4] = self;
-  v32 = v15;
-  v33 = v16;
-  v34 = v17;
-  v37 = v20;
+  v32 = dCopy;
+  v33 = nameCopy;
+  v34 = typeCopy;
+  v37 = handlerCopy;
   v38 = a2;
-  v35 = v19;
-  v36 = v18;
+  v35 = lCopy;
+  v36 = signatureCopy;
   v22 = v31;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2429,39 +2429,39 @@ LABEL_6:
   block[3] = &unk_100271E98;
   v40 = v22;
   v23 = workQueue;
-  v24 = v18;
-  v25 = v19;
-  v26 = v17;
-  v27 = v20;
-  v28 = v16;
-  v29 = v15;
+  v24 = signatureCopy;
+  v25 = lCopy;
+  v26 = typeCopy;
+  v27 = handlerCopy;
+  v28 = nameCopy;
+  v29 = dCopy;
   v30 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v23, v30);
 }
 
-- (void)coordinator:(id)a3 provideCKAssetWithRecordID:(id)a4 fieldName:(id)a5 recordType:(id)a6 signature:(id)a7 completionHandler:(id)a8
+- (void)coordinator:(id)coordinator provideCKAssetWithRecordID:(id)d fieldName:(id)name recordType:(id)type signature:(id)signature completionHandler:(id)handler
 {
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10007F0D4;
   v19[3] = &unk_100275DB0;
-  v20 = self;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v26 = a8;
-  v13 = v26;
-  v14 = v25;
-  v15 = v24;
-  v16 = v23;
-  v17 = v22;
-  v18 = v21;
-  [(CPLCloudKitTransport *)v20 getTemporaryFolderWithName:@"DataRepair" completionHandler:v19];
+  selfCopy = self;
+  coordinatorCopy = coordinator;
+  dCopy = d;
+  nameCopy = name;
+  typeCopy = type;
+  signatureCopy = signature;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  v14 = signatureCopy;
+  v15 = typeCopy;
+  v16 = nameCopy;
+  v17 = dCopy;
+  v18 = coordinatorCopy;
+  [(CPLCloudKitTransport *)selfCopy getTemporaryFolderWithName:@"DataRepair" completionHandler:v19];
 }
 
-- (void)coordinatorDidReceiveAPushNotification:(id)a3
+- (void)coordinatorDidReceiveAPushNotification:(id)notification
 {
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -2480,13 +2480,13 @@ LABEL_6:
   dispatch_async(v5, v6);
 }
 
-- (id)interestingZoneIDsForCoordinator:(id)a3
+- (id)interestingZoneIDsForCoordinator:(id)coordinator
 {
   if ([(CPLCloudKitTransport *)self _isAppLibrary])
   {
     v4 = [CKRecordZoneID alloc];
-    v5 = [(CPLCloudKitTransport *)self mainScopeIdentifier];
-    v6 = [v4 initWithCPLScopeIdentifier:v5];
+    mainScopeIdentifier = [(CPLCloudKitTransport *)self mainScopeIdentifier];
+    v6 = [v4 initWithCPLScopeIdentifier:mainScopeIdentifier];
     v9 = v6;
     v7 = [NSArray arrayWithObjects:&v9 count:1];
   }
@@ -2499,49 +2499,49 @@ LABEL_6:
   return v7;
 }
 
-- (id)scopedIdentifierForCKRecordID:(id)a3
+- (id)scopedIdentifierForCKRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 zoneID];
-  v6 = [(CPLCloudKitTransport *)self scopeIdentifierFromZoneID:v5];
-  v7 = [v4 cpl_scopedIdentifierWithScopeIdentifier:v6];
+  dCopy = d;
+  zoneID = [dCopy zoneID];
+  v6 = [(CPLCloudKitTransport *)self scopeIdentifierFromZoneID:zoneID];
+  v7 = [dCopy cpl_scopedIdentifierWithScopeIdentifier:v6];
 
   return v7;
 }
 
-- (void)launchOperation:(id)a3 type:(int64_t)a4
+- (void)launchOperation:(id)operation type:(int64_t)type
 {
-  v6 = a3;
-  [(CPLCloudKitCoordinator *)self->_coordinator launchOperation:v6 type:a4 forClient:self];
+  operationCopy = operation;
+  [(CPLCloudKitCoordinator *)self->_coordinator launchOperation:operationCopy type:type forClient:self];
   if (![(CPLCloudKitTransport *)self opened])
   {
-    sub_1001A77C8(v6);
+    sub_1001A77C8(operationCopy);
   }
 }
 
 - (BOOL)isNetworkConnected
 {
-  v2 = [(CPLCloudKitTransport *)self engineLibrary];
-  v3 = [v2 systemMonitor];
-  v4 = [v3 isNetworkConnected];
+  engineLibrary = [(CPLCloudKitTransport *)self engineLibrary];
+  systemMonitor = [engineLibrary systemMonitor];
+  isNetworkConnected = [systemMonitor isNetworkConnected];
 
-  return v4;
+  return isNetworkConnected;
 }
 
 - (BOOL)canBoostBackgroundOperations
 {
-  v2 = [(CPLCloudKitTransport *)self engineLibrary];
-  v3 = [v2 systemMonitor];
-  v4 = [v3 canBoostBackgroundOperations];
+  engineLibrary = [(CPLCloudKitTransport *)self engineLibrary];
+  systemMonitor = [engineLibrary systemMonitor];
+  canBoostBackgroundOperations = [systemMonitor canBoostBackgroundOperations];
 
-  return v4;
+  return canBoostBackgroundOperations;
 }
 
 - (void)_failAllFutureOperationsWithContainerHasBeenWipedError
 {
-  v3 = [(CPLCloudKitTransport *)self errorForAllOperations];
-  v4 = v3;
-  if (!v3 || ([v3 isCPLErrorWithCode:1011] & 1) == 0)
+  errorForAllOperations = [(CPLCloudKitTransport *)self errorForAllOperations];
+  v4 = errorForAllOperations;
+  if (!errorForAllOperations || ([errorForAllOperations isCPLErrorWithCode:1011] & 1) == 0)
   {
     sub_1001A7890(&v5, &v6, self);
   }
@@ -2566,15 +2566,15 @@ LABEL_6:
   dispatch_async(v4, v5);
 }
 
-- (void)processTaskErrorIfNeeded:(id)a3 forTask:(id)a4
+- (void)processTaskErrorIfNeeded:(id)needed forTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  neededCopy = needed;
+  taskCopy = task;
+  if (neededCopy)
   {
     v26 = 0;
     v27 = 0;
-    if ([CPLCloudKitErrors getCloudKitErrorCode:&v27 internalCode:&v26 fromError:v6])
+    if ([CPLCloudKitErrors getCloudKitErrorCode:&v27 internalCode:&v26 fromError:neededCopy])
     {
       if (v27 == 18 || v26 == 2039)
       {
@@ -2582,7 +2582,7 @@ LABEL_6:
         goto LABEL_21;
       }
 
-      if ([CPLCloudKitErrors isContainerHasBeenWipedError:v6])
+      if ([CPLCloudKitErrors isContainerHasBeenWipedError:neededCopy])
       {
         sub_1001A79B8(self);
         goto LABEL_21;
@@ -2590,11 +2590,11 @@ LABEL_6:
 
       if (v27 == 114)
       {
-        v8 = [(CPLCloudKitTransport *)self abstractObject];
-        v9 = [v8 engineLibrary];
-        v10 = [v9 isWalrusEnabled];
+        abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+        engineLibrary = [abstractObject engineLibrary];
+        isWalrusEnabled = [engineLibrary isWalrusEnabled];
 
-        if (!v10)
+        if (!isWalrusEnabled)
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
@@ -2602,7 +2602,7 @@ LABEL_6:
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v7;
+              *(&buf + 4) = taskCopy;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Task %@ failed because Walrus is enabled", &buf, 0xCu);
             }
           }
@@ -2632,7 +2632,7 @@ LABEL_6:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
             LODWORD(buf) = 138412290;
-            *(&buf + 4) = v7;
+            *(&buf + 4) = taskCopy;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Task %@ failed because Walrus is enabled - this might be a bug", &buf, 0xCu);
           }
 
@@ -2642,19 +2642,19 @@ LABEL_20:
 
       else if (v26 == 6000)
       {
-        v12 = [CPLCloudKitErrors realErrorForError:v6];
-        v13 = [v12 userInfo];
-        v14 = [v13 objectForKey:NSUnderlyingErrorKey];
+        v12 = [CPLCloudKitErrors realErrorForError:neededCopy];
+        userInfo = [v12 userInfo];
+        v14 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
-        v15 = [v14 userInfo];
-        v16 = [v15 objectForKey:NSUnderlyingErrorKey];
+        userInfo2 = [v14 userInfo];
+        v16 = [userInfo2 objectForKey:NSUnderlyingErrorKey];
 
         if ([v16 code] == 11)
         {
-          v17 = [(CPLCloudKitTransport *)self abstractObject];
-          v18 = [v17 engineLibrary];
-          v19 = [v18 scheduler];
-          [v19 noteStoreNeedsToUpdateDisabledFeatures];
+          abstractObject2 = [(CPLCloudKitTransport *)self abstractObject];
+          engineLibrary2 = [abstractObject2 engineLibrary];
+          scheduler = [engineLibrary2 scheduler];
+          [scheduler noteStoreNeedsToUpdateDisabledFeatures];
         }
       }
     }
@@ -2663,31 +2663,31 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)shouldRunOperationsWithError:(id *)a3
+- (BOOL)shouldRunOperationsWithError:(id *)error
 {
-  v4 = [(CPLCloudKitTransport *)self errorForAllOperations];
-  if (a3 && v4)
+  errorForAllOperations = [(CPLCloudKitTransport *)self errorForAllOperations];
+  if (error && errorForAllOperations)
   {
-    v4 = v4;
-    *a3 = v4;
+    errorForAllOperations = errorForAllOperations;
+    *error = errorForAllOperations;
   }
 
-  v5 = v4 == 0;
+  v5 = errorForAllOperations == 0;
 
   return v5;
 }
 
-- (BOOL)shouldIgnoreZoneWithZoneID:(id)a3
+- (BOOL)shouldIgnoreZoneWithZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (![(CPLCloudKitTransport *)self _isAppLibrary])
   {
-    if (-[CPLCloudKitTransport supportsSharedDatabase](self, "supportsSharedDatabase") || ([v4 ownerName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", CKCurrentUserDefaultName), v9, v10))
+    if (-[CPLCloudKitTransport supportsSharedDatabase](self, "supportsSharedDatabase") || ([dCopy ownerName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", CKCurrentUserDefaultName), v9, v10))
     {
       if ([(CPLCloudKitTransport *)self isSystemLibrary])
       {
-        v11 = [v4 zoneName];
-        v12 = [v11 hasPrefix:CPLMainScopeIdentifierForAppPrefix];
+        zoneName = [dCopy zoneName];
+        v12 = [zoneName hasPrefix:CPLMainScopeIdentifierForAppPrefix];
 
         if (v12)
         {
@@ -2695,10 +2695,10 @@ LABEL_21:
         }
       }
 
-      v13 = [(CPLCloudKitTransport *)self mainScopeIdentifier];
-      v14 = [(CPLCloudKitZoneIdentification *)CPLCloudKitLibraryShareZoneIdentification shouldIgnoreZoneID:v4 forMainScopeIdentifier:v13];
+      mainScopeIdentifier = [(CPLCloudKitTransport *)self mainScopeIdentifier];
+      v14 = [(CPLCloudKitZoneIdentification *)CPLCloudKitLibraryShareZoneIdentification shouldIgnoreZoneID:dCopy forMainScopeIdentifier:mainScopeIdentifier];
 
-      if (v14 & 1) != 0 || ([(CPLCloudKitTransport *)self mainScopeIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v16 = [(CPLCloudKitZoneIdentification *)CPLCloudKitCollectionShareZoneIdentification shouldIgnoreZoneID:v4 forMainScopeIdentifier:v15], v15, (v16))
+      if (v14 & 1) != 0 || ([(CPLCloudKitTransport *)self mainScopeIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v16 = [(CPLCloudKitZoneIdentification *)CPLCloudKitCollectionShareZoneIdentification shouldIgnoreZoneID:dCopy forMainScopeIdentifier:v15], v15, (v16))
       {
 LABEL_12:
         v8 = 1;
@@ -2708,7 +2708,7 @@ LABEL_12:
       shouldIgnoreZoneWithZoneID = self->_shouldIgnoreZoneWithZoneID;
       if (shouldIgnoreZoneWithZoneID)
       {
-        v8 = shouldIgnoreZoneWithZoneID[2](shouldIgnoreZoneWithZoneID, v4);
+        v8 = shouldIgnoreZoneWithZoneID[2](shouldIgnoreZoneWithZoneID, dCopy);
         goto LABEL_18;
       }
     }
@@ -2717,36 +2717,36 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v5 = [v4 cpl_zoneName];
-  v6 = [(CPLCloudKitTransport *)self mainScopeIdentifier];
-  v7 = v6;
-  v8 = (!v5 || !v6 || ([v5 isEqual:v6] & 1) == 0) && (v5 | v7) != 0;
+  cpl_zoneName = [dCopy cpl_zoneName];
+  mainScopeIdentifier2 = [(CPLCloudKitTransport *)self mainScopeIdentifier];
+  v7 = mainScopeIdentifier2;
+  v8 = (!cpl_zoneName || !mainScopeIdentifier2 || ([cpl_zoneName isEqual:mainScopeIdentifier2] & 1) == 0) && (cpl_zoneName | v7) != 0;
 
 LABEL_18:
   return v8;
 }
 
-- (BOOL)shouldIgnoreScopeWithIdentifier:(id)a3
+- (BOOL)shouldIgnoreScopeWithIdentifier:(id)identifier
 {
-  v3 = self;
-  v4 = [(CPLCloudKitTransport *)self zoneIDFromScopeIdentifier:a3];
-  LOBYTE(v3) = [(CPLCloudKitTransport *)v3 shouldIgnoreZoneWithZoneID:v4];
+  selfCopy = self;
+  v4 = [(CPLCloudKitTransport *)self zoneIDFromScopeIdentifier:identifier];
+  LOBYTE(selfCopy) = [(CPLCloudKitTransport *)selfCopy shouldIgnoreZoneWithZoneID:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)registerHelper:(id)a3 withIdentifier:(id)a4
+- (void)registerHelper:(id)helper withIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  helperCopy = helper;
+  identifierCopy = identifier;
   workQueue = self->_workQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10008003C;
   v15[3] = &unk_100271D68;
   v15[4] = self;
-  v16 = v8;
-  v17 = v7;
+  v16 = identifierCopy;
+  v17 = helperCopy;
   v18 = a2;
   v10 = v15;
   block[0] = _NSConcreteStackBlock;
@@ -2755,23 +2755,23 @@ LABEL_18:
   block[3] = &unk_100271E98;
   v20 = v10;
   v11 = workQueue;
-  v12 = v7;
-  v13 = v8;
+  v12 = helperCopy;
+  v13 = identifierCopy;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v14);
 }
 
-- (void)acquireHelperWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)acquireHelperWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10008022C;
   v14[3] = &unk_100272C08;
-  v15 = v6;
-  v16 = v7;
+  v15 = identifierCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = _NSConcreteStackBlock;
@@ -2780,23 +2780,23 @@ LABEL_18:
   block[3] = &unk_100271E98;
   v18 = v9;
   v10 = workQueue;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
 
-- (void)getTemporaryFolderWithName:(id)a3 completionHandler:(id)a4
+- (void)getTemporaryFolderWithName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000804B8;
   v14[3] = &unk_100272C08;
-  v15 = v6;
-  v16 = v7;
+  v15 = nameCopy;
+  v16 = handlerCopy;
   v14[4] = self;
   v9 = v14;
   block[0] = _NSConcreteStackBlock;
@@ -2805,29 +2805,29 @@ LABEL_18:
   block[3] = &unk_100271E98;
   v18 = v9;
   v10 = workQueue;
-  v11 = v6;
-  v12 = v7;
+  v11 = nameCopy;
+  v12 = handlerCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
 
-- (void)updateAccountEPPCapability:(int64_t)a3
+- (void)updateAccountEPPCapability:(int64_t)capability
 {
-  v5 = [(CPLCloudKitTransport *)self abstractObject];
-  v4 = [v5 engineLibrary];
-  [v4 setAccountEPPCapability:a3];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  [engineLibrary setAccountEPPCapability:capability];
 }
 
-- (void)reschedulerManager:(id)a3 didUpdateBlockedState:(id)a4
+- (void)reschedulerManager:(id)manager didUpdateBlockedState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   workQueue = self->_workQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100080818;
   v11[3] = &unk_1002720E0;
   v11[4] = self;
-  v12 = v5;
+  v12 = stateCopy;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2835,17 +2835,17 @@ LABEL_18:
   block[3] = &unk_100271E98;
   v14 = v7;
   v8 = workQueue;
-  v9 = v5;
+  v9 = stateCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (id)createGroupForDownloadWithIntent:(unint64_t)a3 priority:(unint64_t)a4
+- (id)createGroupForDownloadWithIntent:(unint64_t)intent priority:(unint64_t)priority
 {
-  v7 = [objc_opt_class() allowsSyncOverCellular];
-  v8 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", v7, [objc_opt_class() allowsSyncOverExpensiveNetwork], +[CPLResourceTransferTaskOptions isForegroundOperationForIntent:priority:](CPLResourceTransferTaskOptions, "isForegroundOperationForIntent:priority:", a3, a4), 0, 0);
+  allowsSyncOverCellular = [objc_opt_class() allowsSyncOverCellular];
+  v8 = -[CPLCloudKitTransport createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:](self, "createGroupAllowsCellular:allowsExpensiveNetwork:foreground:upload:metadata:", allowsSyncOverCellular, [objc_opt_class() allowsSyncOverExpensiveNetwork], +[CPLResourceTransferTaskOptions isForegroundOperationForIntent:priority:](CPLResourceTransferTaskOptions, "isForegroundOperationForIntent:priority:", intent, priority), 0, 0);
   v9 = @"Non-Derivatives Prefetch";
-  switch(a3)
+  switch(intent)
   {
     case 0uLL:
       v10 = @"Resources Download";
@@ -2858,7 +2858,7 @@ LABEL_18:
       break;
     case 3uLL:
       v10 = @"Memory Playback Resources Download";
-      if (a4 == 1)
+      if (priority == 1)
       {
         v10 = @"Memory Playback Resources Preload";
       }
@@ -2875,7 +2875,7 @@ LABEL_18:
       v10 = @"Widget Resources Download";
       v11 = @"Widget Prefetch";
 LABEL_19:
-      v12 = a4 == 2;
+      v12 = priority == 2;
       goto LABEL_20;
     case 7uLL:
       v9 = @"Grid Resources Download";
@@ -2907,7 +2907,7 @@ LABEL_19:
     case 0x10uLL:
       v10 = @"Memory Inline Playback Resources Download";
       v11 = @"Memory Inline Playback Resources Preload";
-      v12 = a4 == 1;
+      v12 = priority == 1;
 LABEL_20:
       if (v12)
       {
@@ -2930,7 +2930,7 @@ LABEL_20:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           v17 = 134217984;
-          v18 = a3;
+          intentCopy = intent;
           sub_1000139CC(&_mh_execute_header, v15, v16, "Invalid download intent: %lu", &v17);
         }
       }
@@ -2953,13 +2953,13 @@ LABEL_20:
   return v8;
 }
 
-- (void)_updateStateWithAccountInfo:(id)a3 walrusEnabledDefault:(id)a4
+- (void)_updateStateWithAccountInfo:(id)info walrusEnabledDefault:(id)default
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  infoCopy = info;
+  v7 = infoCopy;
+  if (default)
   {
-    v8 = [a4 BOOLValue];
+    bOOLValue = [default BOOLValue];
     if ((_CPLSilentLogging & 1) == 0)
     {
       v9 = sub_1000770DC();
@@ -2970,23 +2970,23 @@ LABEL_20:
       }
     }
 
-    v10 = self;
-    v11 = v8;
+    selfCopy3 = self;
+    v11 = bOOLValue;
 LABEL_7:
-    [(CPLCloudKitTransport *)v10 _updateWalrusTo:v11, *v42];
+    [(CPLCloudKitTransport *)selfCopy3 _updateWalrusTo:v11, *v42];
     goto LABEL_8;
   }
 
-  v12 = [v6 supportsDeviceToDeviceEncryption];
-  v13 = [(CPLCloudKitTransport *)self abstractObject];
-  v14 = [v13 engineLibrary];
-  [v14 setKeychainCDPEnabled:v12];
+  supportsDeviceToDeviceEncryption = [infoCopy supportsDeviceToDeviceEncryption];
+  abstractObject = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  [engineLibrary setKeychainCDPEnabled:supportsDeviceToDeviceEncryption];
 
-  v15 = [(CPLCloudKitTransport *)self abstractObject];
-  v16 = [v15 engineLibrary];
-  LOBYTE(v14) = [v16 isKeychainCDPEnabled];
+  abstractObject2 = [(CPLCloudKitTransport *)self abstractObject];
+  engineLibrary2 = [abstractObject2 engineLibrary];
+  LOBYTE(engineLibrary) = [engineLibrary2 isKeychainCDPEnabled];
 
-  if ((v14 & 1) == 0 && (_CPLSilentLogging & 1) == 0)
+  if ((engineLibrary & 1) == 0 && (_CPLSilentLogging & 1) == 0)
   {
     v17 = sub_1000770DC();
     if (sub_100003424(v17))
@@ -2997,8 +2997,8 @@ LABEL_7:
     }
   }
 
-  v23 = [v7 walrusStatus];
-  if (v23 == 2)
+  walrusStatus = [v7 walrusStatus];
+  if (walrusStatus == 2)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -3011,12 +3011,12 @@ LABEL_7:
       }
     }
 
-    v10 = self;
+    selfCopy3 = self;
     v11 = 0;
     goto LABEL_7;
   }
 
-  if (v23 == 1)
+  if (walrusStatus == 1)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -3029,12 +3029,12 @@ LABEL_7:
       }
     }
 
-    v10 = self;
+    selfCopy3 = self;
     v11 = 1;
     goto LABEL_7;
   }
 
-  if (!v23 && (_CPLSilentLogging & 1) == 0)
+  if (!walrusStatus && (_CPLSilentLogging & 1) == 0)
   {
     v24 = sub_1000770DC();
     if (sub_100003448(v24))
@@ -3048,7 +3048,7 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_updateStateWithAccountStatus:(int64_t)a3
+- (void)_updateStateWithAccountStatus:(int64_t)status
 {
   if ((_CPLSilentLogging & 1) == 0)
   {
@@ -3062,7 +3062,7 @@ LABEL_8:
     }
   }
 
-  switch(a3)
+  switch(status)
   {
     case 1:
       [(CPLCloudKitTransport *)self _enableSchedulerBecauseAccountIsAvailable];

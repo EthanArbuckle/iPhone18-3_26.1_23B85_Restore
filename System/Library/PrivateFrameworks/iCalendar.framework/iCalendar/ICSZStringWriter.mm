@@ -2,9 +2,9 @@
 - (ICSZStringWriter)init;
 - (NSString)description;
 - (id)zResult;
-- (void)_appendBytes:(const void *)a3 length:(unint64_t)a4 andFlush:(BOOL)a5;
-- (void)appendFormat:(id)a3;
-- (void)appendString:(id)a3;
+- (void)_appendBytes:(const void *)bytes length:(unint64_t)length andFlush:(BOOL)flush;
+- (void)appendFormat:(id)format;
+- (void)appendString:(id)string;
 @end
 
 @implementation ICSZStringWriter
@@ -37,10 +37,10 @@ LABEL_4:
   return v4;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v5 = a3;
-  v6 = [a3 cStringUsingEncoding:4];
+  stringCopy = string;
+  v6 = [string cStringUsingEncoding:4];
   if (v6)
   {
     v7 = v6;
@@ -53,11 +53,11 @@ LABEL_4:
   }
 }
 
-- (void)appendFormat:(id)a3
+- (void)appendFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 locale:0 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy locale:0 arguments:&v7];
 
   [(ICSZStringWriter *)self appendString:v6];
 }
@@ -71,15 +71,15 @@ LABEL_4:
   return v3;
 }
 
-- (void)_appendBytes:(const void *)a3 length:(unint64_t)a4 andFlush:(BOOL)a5
+- (void)_appendBytes:(const void *)bytes length:(unint64_t)length andFlush:(BOOL)flush
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (bytes && length)
   {
-    self->_strm.next_in = a3;
+    self->_strm.next_in = bytes;
     p_strm = &self->_strm;
-    self->_strm.avail_in = a4;
-    if (a5)
+    self->_strm.avail_in = length;
+    if (flush)
     {
       v8 = 4;
     }

@@ -1,11 +1,11 @@
 @interface VCVideoRuleCollectionsCompositorServicesMac
-- (VCVideoRuleCollectionsCompositorServicesMac)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsCompositorServicesMac)initWithHardwareSettings:(id)settings;
 - (void)dealloc;
 @end
 
 @implementation VCVideoRuleCollectionsCompositorServicesMac
 
-- (VCVideoRuleCollectionsCompositorServicesMac)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsCompositorServicesMac)initWithHardwareSettings:(id)settings
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -19,7 +19,7 @@ LABEL_8:
     return 0;
   }
 
-  v4->_hardwareSettings = a3;
+  v4->_hardwareSettings = settings;
   if (![(VCVideoRuleCollectionsCompositorServicesMac *)v4 initSupportedPayloads])
   {
     [VCVideoRuleCollectionsCompositorServicesMac initWithHardwareSettings:v4];

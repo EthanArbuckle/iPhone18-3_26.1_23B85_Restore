@@ -1,13 +1,13 @@
 @interface RecommendationModulesResponse
-- (id)itemInSection:(int64_t)a3 row:(int64_t)a4;
-- (id)itemsFor:(int64_t)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (id)itemInSection:(int64_t)section row:(int64_t)row;
+- (id)itemsFor:(int64_t)for;
+- (id)sectionAtIndex:(unint64_t)index;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 @end
 
 @implementation RecommendationModulesResponse
 
-- (id)itemsFor:(int64_t)a3
+- (id)itemsFor:(int64_t)for
 {
   v3 = *self->modulesMetadata;
 
@@ -18,38 +18,38 @@
   return v5;
 }
 
-- (id)itemInSection:(int64_t)a3 row:(int64_t)a4
+- (id)itemInSection:(int64_t)section row:(int64_t)row
 {
   v4 = *(self + 2);
   if ((v4 & 0xC000000000000001) != 0)
   {
 
-    v7 = MEMORY[0x1DA72AA90](a4, v4);
+    v7 = MEMORY[0x1DA72AA90](row, v4);
 
     v5 = v7;
     goto LABEL_5;
   }
 
-  if (a4 < 0)
+  if (row < 0)
   {
     __break(1u);
     goto LABEL_10;
   }
 
-  if (*((v4 & 0xFFFFFFFFFFFFFF8) + 0x10) <= a4)
+  if (*((v4 & 0xFFFFFFFFFFFFFF8) + 0x10) <= row)
   {
 LABEL_10:
     __break(1u);
     return self;
   }
 
-  v5 = *(v4 + 8 * a4 + 32);
+  v5 = *(v4 + 8 * row + 32);
 LABEL_5:
 
   return v5;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
   v3 = *self->modulesMetadata;
   if (!(v3 >> 62))
@@ -66,7 +66,7 @@ LABEL_5:
   return result;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
   v3 = type metadata accessor for GenericDataSourceSection();
   v4 = objc_allocWithZone(v3);

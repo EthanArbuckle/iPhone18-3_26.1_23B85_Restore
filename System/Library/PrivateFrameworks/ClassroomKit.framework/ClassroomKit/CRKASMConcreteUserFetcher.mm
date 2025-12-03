@@ -1,41 +1,41 @@
 @interface CRKASMConcreteUserFetcher
-- (CRKASMConcreteUserFetcher)initWithRosterRequirements:(id)a3;
-- (void)fetchASMUsersWithIdentifiers:(id)a3 completion:(id)a4;
+- (CRKASMConcreteUserFetcher)initWithRosterRequirements:(id)requirements;
+- (void)fetchASMUsersWithIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation CRKASMConcreteUserFetcher
 
-- (CRKASMConcreteUserFetcher)initWithRosterRequirements:(id)a3
+- (CRKASMConcreteUserFetcher)initWithRosterRequirements:(id)requirements
 {
-  v5 = a3;
+  requirementsCopy = requirements;
   v9.receiver = self;
   v9.super_class = CRKASMConcreteUserFetcher;
   v6 = [(CRKASMConcreteUserFetcher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rosterRequirements, a3);
+    objc_storeStrong(&v6->_rosterRequirements, requirements);
   }
 
   return v7;
 }
 
-- (void)fetchASMUsersWithIdentifiers:(id)a3 completion:(id)a4
+- (void)fetchASMUsersWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKASMConcreteUserFetcher *)self rosterRequirements];
-  v9 = [v8 makeQueryForPersonsWithIdentifiers:v7];
+  completionCopy = completion;
+  identifiersCopy = identifiers;
+  rosterRequirements = [(CRKASMConcreteUserFetcher *)self rosterRequirements];
+  v9 = [rosterRequirements makeQueryForPersonsWithIdentifiers:identifiersCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__CRKASMConcreteUserFetcher_fetchASMUsersWithIdentifiers_completion___block_invoke;
   v12[3] = &unk_278DC0F30;
-  v13 = v6;
-  v10 = v6;
+  v13 = completionCopy;
+  v10 = completionCopy;
   [v9 setCompletion:v12];
-  v11 = [(CRKASMConcreteUserFetcher *)self rosterRequirements];
-  [v11 executeQuery:v9];
+  rosterRequirements2 = [(CRKASMConcreteUserFetcher *)self rosterRequirements];
+  [rosterRequirements2 executeQuery:v9];
 }
 
 void __69__CRKASMConcreteUserFetcher_fetchASMUsersWithIdentifiers_completion___block_invoke(uint64_t a1, void *a2, void *a3)

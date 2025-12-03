@@ -1,16 +1,16 @@
 @interface HKOAuth2ScopeSet
-+ (id)scopeSetWithScopeString:(id)a3;
-+ (id)scopeSetWithScopes:(id)a3;
-+ (id)scopesFromScopeString:(id)a3;
-+ (unint64_t)_nonWildcardReadCompare:(id)a3 to:(id)a4;
-+ (unint64_t)_nonWildcardWriteCompare:(id)a3 to:(id)a4;
-+ (unint64_t)_readCompare:(id)a3 to:(id)a4;
-+ (unint64_t)_writeCompare:(id)a3 to:(id)a4;
-+ (unint64_t)compare:(id)a3 to:(id)a4;
++ (id)scopeSetWithScopeString:(id)string;
++ (id)scopeSetWithScopes:(id)scopes;
++ (id)scopesFromScopeString:(id)string;
++ (unint64_t)_nonWildcardReadCompare:(id)compare to:(id)to;
++ (unint64_t)_nonWildcardWriteCompare:(id)compare to:(id)to;
++ (unint64_t)_readCompare:(id)compare to:(id)to;
++ (unint64_t)_writeCompare:(id)compare to:(id)to;
++ (unint64_t)compare:(id)compare to:(id)to;
 - (BOOL)hasClinicalSharingScopes;
-- (BOOL)isMissingScopesFrom:(id)a3;
+- (BOOL)isMissingScopesFrom:(id)from;
 - (HKOAuth2ScopeSet)init;
-- (HKOAuth2ScopeSet)initWithOriginalScopes:(id)a3 readableResourceTypes:(id)a4 writableResourceTypes:(id)a5 canReadAllResourceTypes:(BOOL)a6 canWriteAllResourceTypes:(BOOL)a7 hasAtLeastOneResourceTypeScope:(BOOL)a8;
+- (HKOAuth2ScopeSet)initWithOriginalScopes:(id)scopes readableResourceTypes:(id)types writableResourceTypes:(id)resourceTypes canReadAllResourceTypes:(BOOL)allResourceTypes canWriteAllResourceTypes:(BOOL)writeAllResourceTypes hasAtLeastOneResourceTypeScope:(BOOL)scope;
 - (id)description;
 @end
 
@@ -26,47 +26,47 @@
   return 0;
 }
 
-- (HKOAuth2ScopeSet)initWithOriginalScopes:(id)a3 readableResourceTypes:(id)a4 writableResourceTypes:(id)a5 canReadAllResourceTypes:(BOOL)a6 canWriteAllResourceTypes:(BOOL)a7 hasAtLeastOneResourceTypeScope:(BOOL)a8
+- (HKOAuth2ScopeSet)initWithOriginalScopes:(id)scopes readableResourceTypes:(id)types writableResourceTypes:(id)resourceTypes canReadAllResourceTypes:(BOOL)allResourceTypes canWriteAllResourceTypes:(BOOL)writeAllResourceTypes hasAtLeastOneResourceTypeScope:(BOOL)scope
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  scopesCopy = scopes;
+  typesCopy = types;
+  resourceTypesCopy = resourceTypes;
   v25.receiver = self;
   v25.super_class = HKOAuth2ScopeSet;
   v17 = [(HKOAuth2ScopeSet *)&v25 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [scopesCopy copy];
     originalScopes = v17->_originalScopes;
     v17->_originalScopes = v18;
 
-    v20 = [v15 copy];
+    v20 = [typesCopy copy];
     readableResourceTypes = v17->_readableResourceTypes;
     v17->_readableResourceTypes = v20;
 
-    v22 = [v16 copy];
+    v22 = [resourceTypesCopy copy];
     writableResourceTypes = v17->_writableResourceTypes;
     v17->_writableResourceTypes = v22;
 
-    v17->_canReadAllResourceTypes = a6;
-    v17->_canWriteAllResourceTypes = a7;
-    v17->_hasAtLeastOneResourceTypeScope = a8;
+    v17->_canReadAllResourceTypes = allResourceTypes;
+    v17->_canWriteAllResourceTypes = writeAllResourceTypes;
+    v17->_hasAtLeastOneResourceTypeScope = scope;
   }
 
   return v17;
 }
 
-+ (id)scopeSetWithScopes:(id)a3
++ (id)scopeSetWithScopes:(id)scopes
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  scopesCopy = scopes;
   v31 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v28 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = v3;
+  v4 = scopesCopy;
   v5 = [v4 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (!v5)
   {
@@ -109,7 +109,7 @@
           if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v39 = a1;
+            selfCopy = self;
             v40 = 2114;
             v41 = v9;
             _os_log_impl(&dword_2519FE000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ invalid scope detected: %{public}@", buf, 0x16u);
@@ -233,16 +233,16 @@ LABEL_39:
   while (v6);
 LABEL_43:
 
-  v25 = [[a1 alloc] initWithOriginalScopes:v4 readableResourceTypes:v31 writableResourceTypes:v28 canReadAllResourceTypes:v29 & 1 canWriteAllResourceTypes:BYTE4(v33) & 1 hasAtLeastOneResourceTypeScope:v33 & 1];
+  v25 = [[self alloc] initWithOriginalScopes:v4 readableResourceTypes:v31 writableResourceTypes:v28 canReadAllResourceTypes:v29 & 1 canWriteAllResourceTypes:BYTE4(v33) & 1 hasAtLeastOneResourceTypeScope:v33 & 1];
   v26 = *MEMORY[0x277D85DE8];
 
   return v25;
 }
 
-+ (id)scopeSetWithScopeString:(id)a3
++ (id)scopeSetWithScopeString:(id)string
 {
-  v4 = [a1 scopesFromScopeString:a3];
-  v5 = [a1 scopeSetWithScopes:v4];
+  v4 = [self scopesFromScopeString:string];
+  v5 = [self scopeSetWithScopes:v4];
 
   return v5;
 }
@@ -263,27 +263,27 @@ LABEL_43:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NSSet *)self->_originalScopes allObjects];
-  v6 = [v5 componentsJoinedByString:@" "];
+  allObjects = [(NSSet *)self->_originalScopes allObjects];
+  v6 = [allObjects componentsJoinedByString:@" "];
   v7 = [v3 stringWithFormat:@"<%@ %p scopes: %@>", v4, self, v6];;
 
   return v7;
 }
 
-- (BOOL)isMissingScopesFrom:(id)a3
+- (BOOL)isMissingScopesFrom:(id)from
 {
-  v4 = [HKOAuth2ScopeSet scopeSetWithScopes:a3];
+  v4 = [HKOAuth2ScopeSet scopeSetWithScopes:from];
   v5 = [(HKOAuth2ScopeSet *)self compareTo:v4];
 
   return v5 > 1;
 }
 
-+ (unint64_t)compare:(id)a3 to:(id)a4
++ (unint64_t)compare:(id)compare to:(id)to
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _readCompare:v7 to:v6];
-  v9 = [a1 _writeCompare:v7 to:v6];
+  toCopy = to;
+  compareCopy = compare;
+  v8 = [self _readCompare:compareCopy to:toCopy];
+  v9 = [self _writeCompare:compareCopy to:toCopy];
 
   switch(v8)
   {
@@ -310,20 +310,20 @@ LABEL_43:
   return v9;
 }
 
-+ (unint64_t)_readCompare:(id)a3 to:(id)a4
++ (unint64_t)_readCompare:(id)compare to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 canReadAllResourceTypes];
-  v9 = [v7 canReadAllResourceTypes];
-  v10 = v9 ^ 1;
-  if (((v8 ^ 1) & 1) != 0 || v10)
+  compareCopy = compare;
+  toCopy = to;
+  canReadAllResourceTypes = [compareCopy canReadAllResourceTypes];
+  canReadAllResourceTypes2 = [toCopy canReadAllResourceTypes];
+  v10 = canReadAllResourceTypes2 ^ 1;
+  if (((canReadAllResourceTypes ^ 1) & 1) != 0 || v10)
   {
-    if ((v8 ^ 1 | v9))
+    if ((canReadAllResourceTypes ^ 1 | canReadAllResourceTypes2))
     {
-      if ((v8 | v10))
+      if ((canReadAllResourceTypes | v10))
       {
-        v11 = [a1 _nonWildcardReadCompare:v6 to:v7];
+        v11 = [self _nonWildcardReadCompare:compareCopy to:toCopy];
       }
 
       else
@@ -346,20 +346,20 @@ LABEL_43:
   return v11;
 }
 
-+ (unint64_t)_writeCompare:(id)a3 to:(id)a4
++ (unint64_t)_writeCompare:(id)compare to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 canWriteAllResourceTypes];
-  v9 = [v7 canWriteAllResourceTypes];
-  v10 = v9 ^ 1;
-  if (((v8 ^ 1) & 1) != 0 || v10)
+  compareCopy = compare;
+  toCopy = to;
+  canWriteAllResourceTypes = [compareCopy canWriteAllResourceTypes];
+  canWriteAllResourceTypes2 = [toCopy canWriteAllResourceTypes];
+  v10 = canWriteAllResourceTypes2 ^ 1;
+  if (((canWriteAllResourceTypes ^ 1) & 1) != 0 || v10)
   {
-    if ((v8 ^ 1 | v9))
+    if ((canWriteAllResourceTypes ^ 1 | canWriteAllResourceTypes2))
     {
-      if ((v8 | v10))
+      if ((canWriteAllResourceTypes | v10))
       {
-        v11 = [a1 _nonWildcardWriteCompare:v6 to:v7];
+        v11 = [self _nonWildcardWriteCompare:compareCopy to:toCopy];
       }
 
       else
@@ -382,20 +382,20 @@ LABEL_43:
   return v11;
 }
 
-+ (unint64_t)_nonWildcardReadCompare:(id)a3 to:(id)a4
++ (unint64_t)_nonWildcardReadCompare:(id)compare to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 readableResourceTypes];
-  v8 = [v6 readableResourceTypes];
-  v9 = [v7 hk_minus:v8];
+  toCopy = to;
+  compareCopy = compare;
+  readableResourceTypes = [toCopy readableResourceTypes];
+  readableResourceTypes2 = [compareCopy readableResourceTypes];
+  v9 = [readableResourceTypes hk_minus:readableResourceTypes2];
   v10 = [v9 count];
 
-  v11 = [v6 readableResourceTypes];
+  readableResourceTypes3 = [compareCopy readableResourceTypes];
 
-  v12 = [v5 readableResourceTypes];
+  readableResourceTypes4 = [toCopy readableResourceTypes];
 
-  v13 = [v11 hk_minus:v12];
+  v13 = [readableResourceTypes3 hk_minus:readableResourceTypes4];
   v14 = [v13 count];
 
   if (!(v10 | v14))
@@ -429,20 +429,20 @@ LABEL_43:
   }
 }
 
-+ (unint64_t)_nonWildcardWriteCompare:(id)a3 to:(id)a4
++ (unint64_t)_nonWildcardWriteCompare:(id)compare to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 writableResourceTypes];
-  v8 = [v6 writableResourceTypes];
-  v9 = [v7 hk_minus:v8];
+  toCopy = to;
+  compareCopy = compare;
+  writableResourceTypes = [toCopy writableResourceTypes];
+  writableResourceTypes2 = [compareCopy writableResourceTypes];
+  v9 = [writableResourceTypes hk_minus:writableResourceTypes2];
   v10 = [v9 count];
 
-  v11 = [v6 writableResourceTypes];
+  writableResourceTypes3 = [compareCopy writableResourceTypes];
 
-  v12 = [v5 writableResourceTypes];
+  writableResourceTypes4 = [toCopy writableResourceTypes];
 
-  v13 = [v11 hk_minus:v12];
+  v13 = [writableResourceTypes3 hk_minus:writableResourceTypes4];
   v14 = [v13 count];
 
   if (!(v10 | v14))
@@ -476,12 +476,12 @@ LABEL_43:
   }
 }
 
-+ (id)scopesFromScopeString:(id)a3
++ (id)scopesFromScopeString:(id)string
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  stringCopy = string;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = [v6 hk_filter:&__block_literal_global_12];
   v8 = [MEMORY[0x277CBEB98] setWithArray:v7];

@@ -1,24 +1,24 @@
 @interface LNDaemonMediator
-+ (void)getConnectionHostInterfaceForBundleIdentifier:(id)a3 completionHandler:(id)a4;
++ (void)getConnectionHostInterfaceForBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation LNDaemonMediator
 
-+ (void)getConnectionHostInterfaceForBundleIdentifier:(id)a3 completionHandler:(id)a4
++ (void)getConnectionHostInterfaceForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = getLNLogCategoryDaemonMediator();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v25 = v5;
+    v25 = identifierCopy;
   }
 
   v8 = objc_alloc(MEMORY[0x1E696B0B8]);
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.private.appintents.delegate.%@", v5];
-  v10 = [v8 initWithMachServiceName:v9 options:0];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.private.appintents.delegate.%@", identifierCopy];
+  v10 = [v8 initWithMachServiceName:identifierCopy options:0];
 
   v11 = LNConnectionHostXPCListenerEndpointVendingInterface();
   [v10 setRemoteObjectInterface:v11];
@@ -30,17 +30,17 @@
   v22[1] = 3221225472;
   v22[2] = __84__LNDaemonMediator_getConnectionHostInterfaceForBundleIdentifier_completionHandler___block_invoke_12;
   v22[3] = &unk_1E74B2848;
-  v12 = v6;
+  v12 = handlerCopy;
   v23 = v12;
   v13 = [v10 remoteObjectProxyWithErrorHandler:v22];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __84__LNDaemonMediator_getConnectionHostInterfaceForBundleIdentifier_completionHandler___block_invoke_14;
   v18[3] = &unk_1E74B2230;
-  v20 = v5;
+  v20 = identifierCopy;
   v21 = v12;
   v19 = v10;
-  v14 = v5;
+  v14 = identifierCopy;
   v15 = v12;
   v16 = v10;
   [v13 getListenerEndpointWithCompletionHandler:v18];

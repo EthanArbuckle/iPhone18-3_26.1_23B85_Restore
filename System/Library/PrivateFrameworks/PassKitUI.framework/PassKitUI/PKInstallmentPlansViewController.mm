@@ -1,48 +1,48 @@
 @interface PKInstallmentPlansViewController
-- (PKInstallmentPlansViewController)initWithAccount:(id)a3 accountUserCollection:(id)a4 physicalCards:(id)a5 accountService:(id)a6 transactionSourceCollection:(id)a7 familyCollection:(id)a8 dataProvider:(id)a9;
-- (id)_imageWithURL:(id)a3 installmentPlan:(id)a4;
-- (id)_indexPathForInstallmentPlan:(id)a3;
-- (id)_installmentPlanForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_configureCell:(id)a3 forInstallmentPlan:(id)a4;
-- (void)_handleAccountUpdatedNotification:(id)a3;
+- (PKInstallmentPlansViewController)initWithAccount:(id)account accountUserCollection:(id)collection physicalCards:(id)cards accountService:(id)service transactionSourceCollection:(id)sourceCollection familyCollection:(id)familyCollection dataProvider:(id)provider;
+- (id)_imageWithURL:(id)l installmentPlan:(id)plan;
+- (id)_indexPathForInstallmentPlan:(id)plan;
+- (id)_installmentPlanForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_configureCell:(id)cell forInstallmentPlan:(id)plan;
+- (void)_handleAccountUpdatedNotification:(id)notification;
 - (void)_updateInstallmentPlans;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKInstallmentPlansViewController
 
-- (PKInstallmentPlansViewController)initWithAccount:(id)a3 accountUserCollection:(id)a4 physicalCards:(id)a5 accountService:(id)a6 transactionSourceCollection:(id)a7 familyCollection:(id)a8 dataProvider:(id)a9
+- (PKInstallmentPlansViewController)initWithAccount:(id)account accountUserCollection:(id)collection physicalCards:(id)cards accountService:(id)service transactionSourceCollection:(id)sourceCollection familyCollection:(id)familyCollection dataProvider:(id)provider
 {
-  v16 = a3;
-  v36 = a4;
-  v17 = a5;
-  v18 = a6;
-  v35 = a7;
-  v34 = a8;
-  v33 = a9;
+  accountCopy = account;
+  collectionCopy = collection;
+  cardsCopy = cards;
+  serviceCopy = service;
+  sourceCollectionCopy = sourceCollection;
+  familyCollectionCopy = familyCollection;
+  providerCopy = provider;
   v37.receiver = self;
   v37.super_class = PKInstallmentPlansViewController;
   v19 = -[PKInstallmentPlansViewController initWithStyle:](&v37, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1]);
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_account, a3);
-    objc_storeStrong(&v20->_accountUserCollection, a4);
-    v21 = [v17 copy];
+    objc_storeStrong(&v19->_account, account);
+    objc_storeStrong(&v20->_accountUserCollection, collection);
+    v21 = [cardsCopy copy];
     physicalCards = v20->_physicalCards;
     v20->_physicalCards = v21;
 
-    objc_storeStrong(&v20->_accountService, a6);
-    objc_storeStrong(&v20->_transactionSourceCollection, a7);
-    objc_storeStrong(&v20->_familyCollection, a8);
-    objc_storeStrong(&v20->_dataProvider, a9);
+    objc_storeStrong(&v20->_accountService, service);
+    objc_storeStrong(&v20->_transactionSourceCollection, sourceCollection);
+    objc_storeStrong(&v20->_familyCollection, familyCollection);
+    objc_storeStrong(&v20->_dataProvider, provider);
     v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
     installmentPlanToDeviceName = v20->_installmentPlanToDeviceName;
     v20->_installmentPlanToDeviceName = v23;
@@ -58,17 +58,17 @@
     [(NSDateFormatter *)v20->_installmentDateFormatter setDateStyle:3];
     [(NSDateFormatter *)v20->_installmentDateFormatter setTimeStyle:0];
     [(PKInstallmentPlansViewController *)v20 _updateInstallmentPlans];
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v20 selector:sel__handleAccountUpdatedNotification_ name:*MEMORY[0x1E69B9E60] object:v18];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v20 selector:sel__handleAccountUpdatedNotification_ name:*MEMORY[0x1E69B9E60] object:serviceCopy];
 
-    v30 = [(PKInstallmentPlansViewController *)v20 navigationItem];
+    navigationItem = [(PKInstallmentPlansViewController *)v20 navigationItem];
     v31 = PKLocalizedFeatureString();
-    [v30 setTitle:v31];
+    [navigationItem setTitle:v31];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v30 pkui_setupScrollEdgeChromelessAppearance];
-      [v30 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
   }
 
@@ -80,11 +80,11 @@
   v4.receiver = self;
   v4.super_class = PKInstallmentPlansViewController;
   [(PKInstallmentPlansViewController *)&v4 viewDidLoad];
-  v3 = [(PKInstallmentPlansViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"InstallmentPlanCellReuseIdentifier"];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  [v3 setSeparatorInset:{0.0, 67.0, 0.0, 16.0}];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9890]];
+  tableView = [(PKInstallmentPlansViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"InstallmentPlanCellReuseIdentifier"];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  [tableView setSeparatorInset:{0.0, 67.0, 0.0, 16.0}];
+  [tableView setAccessibilityIdentifier:*MEMORY[0x1E69B9890]];
 }
 
 - (void)viewWillLayoutSubviews
@@ -94,17 +94,17 @@
   [(PKInstallmentPlansViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKInstallmentPlansViewController *)self tableView];
-    v4 = [(PKInstallmentPlansViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKInstallmentPlansViewController *)self tableView];
+    navigationItem = [(PKInstallmentPlansViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(PKInstallmentPlansViewController *)self tableSectionForSectionIndex:a4];
-  v8 = [(PKInstallmentPlansViewController *)self tableView:v6 viewForHeaderInSection:a4];
+  viewCopy = view;
+  v7 = [(PKInstallmentPlansViewController *)self tableSectionForSectionIndex:section];
+  v8 = [(PKInstallmentPlansViewController *)self tableView:viewCopy viewForHeaderInSection:section];
   if (!v7)
   {
     v9 = MEMORY[0x1E69B93D8];
@@ -122,7 +122,7 @@ LABEL_5:
 
   v10 = 0;
 LABEL_7:
-  if ([(PKInstallmentPlansViewController *)self tableView:v6 numberOfRowsInSection:a4]<= 0)
+  if ([(PKInstallmentPlansViewController *)self tableView:viewCopy numberOfRowsInSection:section]<= 0)
   {
     v11 = 0;
   }
@@ -137,7 +137,7 @@ LABEL_7:
   return v11;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = [(NSArray *)self->_activeInstallmentPlans count];
   v5 = [(NSArray *)self->_completedInstallmentPlans count];
@@ -158,9 +158,9 @@ LABEL_7:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKInstallmentPlansViewController *)self tableSectionForSectionIndex:a4];
+  v5 = [(PKInstallmentPlansViewController *)self tableSectionForSectionIndex:section];
   if (v5)
   {
     if (v5 != 1)
@@ -181,14 +181,14 @@ LABEL_7:
   return [v7 count];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[PKInstallmentPlansViewController tableSectionForSectionIndex:](self, "tableSectionForSectionIndex:", [v6 section]);
-  v9 = [v7 dequeueReusableCellWithIdentifier:@"InstallmentPlanCellReuseIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[PKInstallmentPlansViewController tableSectionForSectionIndex:](self, "tableSectionForSectionIndex:", [pathCopy section]);
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:@"InstallmentPlanCellReuseIdentifier" forIndexPath:pathCopy];
 
-  v10 = [(PKInstallmentPlansViewController *)self _installmentPlanForIndexPath:v6];
+  v10 = [(PKInstallmentPlansViewController *)self _installmentPlanForIndexPath:pathCopy];
 
   [(PKInstallmentPlansViewController *)self _configureCell:v9 forInstallmentPlan:v10];
   if (v8)
@@ -212,39 +212,39 @@ LABEL_6:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PKInstallmentPlansViewController *)self _installmentPlanForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(PKInstallmentPlansViewController *)self _installmentPlanForIndexPath:pathCopy];
   if (v7)
   {
     v8 = [[PKTransactionHistoryViewController alloc] initWithInstallmentPlan:v7 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards];
-    v9 = [(PKInstallmentPlansViewController *)self navigationController];
-    if ([v9 pk_settings_useStateDrivenNavigation])
+    navigationController = [(PKInstallmentPlansViewController *)self navigationController];
+    if ([navigationController pk_settings_useStateDrivenNavigation])
     {
-      [v9 pk_settings_pushViewController:v8];
+      [navigationController pk_settings_pushViewController:v8];
     }
 
     else
     {
-      [v9 pushViewController:v8 animated:1];
+      [navigationController pushViewController:v8 animated:1];
     }
   }
 
-  [v10 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PKInstallmentPlansViewController_didUpdateFamilyMembers___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = membersCopy;
+  selfCopy = self;
+  v5 = membersCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -262,34 +262,34 @@ void __59__PKInstallmentPlansViewController_didUpdateFamilyMembers___block_invok
   }
 }
 
-- (void)_configureCell:(id)a3 forInstallmentPlan:(id)a4
+- (void)_configureCell:(id)cell forInstallmentPlan:(id)plan
 {
-  v20 = a4;
-  v6 = [a3 transactionView];
-  v7 = [v20 product];
-  v8 = [v20 summary];
+  planCopy = plan;
+  transactionView = [cell transactionView];
+  product = [planCopy product];
+  summary = [planCopy summary];
   installmentPlanToDeviceName = self->_installmentPlanToDeviceName;
-  v10 = [v20 identifier];
-  v11 = [(NSMutableDictionary *)installmentPlanToDeviceName objectForKeyedSubscript:v10];
+  identifier = [planCopy identifier];
+  v11 = [(NSMutableDictionary *)installmentPlanToDeviceName objectForKeyedSubscript:identifier];
 
   if (v11)
   {
-    v12 = v11;
-    v13 = [v7 model];
+    model2 = v11;
+    model = [product model];
   }
 
   else
   {
-    v12 = [v7 model];
-    v13 = 0;
+    model2 = [product model];
+    model = 0;
   }
 
-  v14 = [v8 startDate];
-  if (v14)
+  startDate = [summary startDate];
+  if (startDate)
   {
     installmentDateFormatter = self->_installmentDateFormatter;
-    v16 = [v8 startDate];
-    v17 = [(NSDateFormatter *)installmentDateFormatter stringFromDate:v16];
+    startDate2 = [summary startDate];
+    v17 = [(NSDateFormatter *)installmentDateFormatter stringFromDate:startDate2];
   }
 
   else
@@ -297,30 +297,30 @@ void __59__PKInstallmentPlansViewController_didUpdateFamilyMembers___block_invok
     v17 = 0;
   }
 
-  v18 = [v7 iconURLForScale:0 suffix:PKUIScreenScale()];
-  v19 = [(PKInstallmentPlansViewController *)self _imageWithURL:v18 installmentPlan:v20];
-  [v6 setPrimaryString:v12];
-  [v6 setSecondaryString:v13];
-  [v6 setTertiaryString:v17];
-  [v6 setPrimaryImage:v19];
-  [v6 setShowsDisclosureView:1];
-  [v6 setStrokeImage:1];
+  v18 = [product iconURLForScale:0 suffix:PKUIScreenScale()];
+  v19 = [(PKInstallmentPlansViewController *)self _imageWithURL:v18 installmentPlan:planCopy];
+  [transactionView setPrimaryString:model2];
+  [transactionView setSecondaryString:model];
+  [transactionView setTertiaryString:v17];
+  [transactionView setPrimaryImage:v19];
+  [transactionView setShowsDisclosureView:1];
+  [transactionView setStrokeImage:1];
 }
 
-- (id)_imageWithURL:(id)a3 installmentPlan:(id)a4
+- (id)_imageWithURL:(id)l installmentPlan:(id)plan
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [(NSMutableDictionary *)self->_installmentPlanImages objectForKeyedSubscript:v8];
-  if (v6)
+  lCopy = l;
+  planCopy = plan;
+  identifier = [planCopy identifier];
+  v9 = [(NSMutableDictionary *)self->_installmentPlanImages objectForKeyedSubscript:identifier];
+  if (lCopy)
   {
-    v10 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
-    v11 = v10;
+    mEMORY[0x1E69B8A08] = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+    v11 = mEMORY[0x1E69B8A08];
     if (!v9)
     {
-      v12 = [v10 cachedDataForURL:v6];
-      if (!v12 || (v13 = v12, [MEMORY[0x1E69DCAB8] imageWithData:v12], v9 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary setObject:forKeyedSubscript:](self->_installmentPlanImages, "setObject:forKeyedSubscript:", v9, v8), v13, !v9))
+      v12 = [mEMORY[0x1E69B8A08] cachedDataForURL:lCopy];
+      if (!v12 || (v13 = v12, [MEMORY[0x1E69DCAB8] imageWithData:v12], v9 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary setObject:forKeyedSubscript:](self->_installmentPlanImages, "setObject:forKeyedSubscript:", v9, identifier), v13, !v9))
       {
         objc_initWeak(&location, self);
         v18[0] = MEMORY[0x1E69E9820];
@@ -328,9 +328,9 @@ void __59__PKInstallmentPlansViewController_didUpdateFamilyMembers___block_invok
         v18[2] = __66__PKInstallmentPlansViewController__imageWithURL_installmentPlan___block_invoke;
         v18[3] = &unk_1E8015960;
         objc_copyWeak(&v21, &location);
-        v19 = v8;
-        v20 = v7;
-        [v11 downloadFromUrl:v6 completionHandler:v18];
+        v19 = identifier;
+        v20 = planCopy;
+        [v11 downloadFromUrl:lCopy completionHandler:v18];
 
         objc_destroyWeak(&v21);
         objc_destroyWeak(&location);
@@ -417,10 +417,10 @@ void __66__PKInstallmentPlansViewController__imageWithURL_installmentPlan___bloc
   }
 }
 
-- (id)_installmentPlanForIndexPath:(id)a3
+- (id)_installmentPlanForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[PKInstallmentPlansViewController tableSectionForSectionIndex:](self, "tableSectionForSectionIndex:", [v4 section]);
+  pathCopy = path;
+  v5 = -[PKInstallmentPlansViewController tableSectionForSectionIndex:](self, "tableSectionForSectionIndex:", [pathCopy section]);
   if (!v5)
   {
     v6 = &OBJC_IVAR___PKInstallmentPlansViewController__activeInstallmentPlans;
@@ -437,7 +437,7 @@ LABEL_5:
 
   v7 = 0;
 LABEL_7:
-  v8 = [v4 row];
+  v8 = [pathCopy row];
 
   if (v8 >= [v7 count])
   {
@@ -452,19 +452,19 @@ LABEL_7:
   return v9;
 }
 
-- (id)_indexPathForInstallmentPlan:(id)a3
+- (id)_indexPathForInstallmentPlan:(id)plan
 {
-  if (a3)
+  if (plan)
   {
-    v5 = a3;
-    v6 = [v5 isComplete];
+    planCopy = plan;
+    isComplete = [planCopy isComplete];
     v7 = 10;
-    if (v6)
+    if (isComplete)
     {
       v7 = 11;
     }
 
-    v8 = [*(&self->super.super.super.super.isa + OBJC_IVAR___PKInstallmentPlansViewController__account[v7]) indexOfObject:v5];
+    v8 = [*(&self->super.super.super.super.isa + OBJC_IVAR___PKInstallmentPlansViewController__account[v7]) indexOfObject:planCopy];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -473,7 +473,7 @@ LABEL_7:
 
     else
     {
-      v9 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:{-[PKInstallmentPlansViewController sectionIndexForTableSection:](self, "sectionIndexForTableSection:", v6)}];
+      v9 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:{-[PKInstallmentPlansViewController sectionIndexForTableSection:](self, "sectionIndexForTableSection:", isComplete)}];
     }
   }
 
@@ -488,8 +488,8 @@ LABEL_7:
 - (void)_updateInstallmentPlans
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKAccount *)self->_account creditDetails];
-  v4 = [v3 installmentPlans];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  installmentPlans = [creditDetails installmentPlans];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -501,7 +501,7 @@ LABEL_7:
   v37 = v7;
   v8 = v5;
   v38 = v8;
-  [v4 enumerateObjectsUsingBlock:v36];
+  [installmentPlans enumerateObjectsUsingBlock:v36];
   v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"summary.startDate" ascending:0];
   v41[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
@@ -523,7 +523,7 @@ LABEL_7:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = v4;
+  v16 = installmentPlans;
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v17)
   {
@@ -539,18 +539,18 @@ LABEL_7:
         }
 
         v21 = *(*(&v32 + 1) + 8 * i);
-        v22 = [v21 identifier];
-        v23 = [v21 product];
-        v24 = [v23 serialNumber];
+        identifier = [v21 identifier];
+        product = [v21 product];
+        serialNumber = [product serialNumber];
 
-        if (v24)
+        if (serialNumber)
         {
           v25 = PKSerialNumber();
           v26 = v25;
-          if (v25 && (v24 == v25 || ![v24 caseInsensitiveCompare:v25]))
+          if (v25 && (serialNumber == v25 || ![serialNumber caseInsensitiveCompare:v25]))
           {
             v27 = PKDeviceName();
-            [(NSMutableDictionary *)self->_installmentPlanToDeviceName setObject:v27 forKeyedSubscript:v22];
+            [(NSMutableDictionary *)self->_installmentPlanToDeviceName setObject:v27 forKeyedSubscript:identifier];
           }
         }
       }
@@ -563,8 +563,8 @@ LABEL_7:
 
   if ([(PKInstallmentPlansViewController *)self isViewLoaded])
   {
-    v28 = [(PKInstallmentPlansViewController *)self tableView];
-    [v28 reloadData];
+    tableView = [(PKInstallmentPlansViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -581,18 +581,18 @@ void __59__PKInstallmentPlansViewController__updateInstallmentPlans__block_invok
   [*(a1 + v4) addObject:v5];
 }
 
-- (void)_handleAccountUpdatedNotification:(id)a3
+- (void)_handleAccountUpdatedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
   accountService = self->_accountService;
-  v6 = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PKInstallmentPlansViewController__handleAccountUpdatedNotification___block_invoke;
   v7[3] = &unk_1E80159B0;
   objc_copyWeak(&v8, &location);
-  [(PKAccountService *)accountService accountWithIdentifier:v6 completion:v7];
+  [(PKAccountService *)accountService accountWithIdentifier:accountIdentifier completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

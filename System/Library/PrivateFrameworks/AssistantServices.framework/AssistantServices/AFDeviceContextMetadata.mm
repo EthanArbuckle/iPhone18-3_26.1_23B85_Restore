@@ -1,13 +1,13 @@
 @interface AFDeviceContextMetadata
-- (AFDeviceContextMetadata)initWithBackingStore:(id)a3;
-- (AFDeviceContextMetadata)initWithCoder:(id)a3;
-- (AFDeviceContextMetadata)initWithType:(id)a3 deliveryDate:(id)a4 expirationDate:(id)a5 redactedKeyPaths:(id)a6 historyConfiguration:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isExpiredByDate:(id)a3;
+- (AFDeviceContextMetadata)initWithBackingStore:(id)store;
+- (AFDeviceContextMetadata)initWithCoder:(id)coder;
+- (AFDeviceContextMetadata)initWithType:(id)type deliveryDate:(id)date expirationDate:(id)expirationDate redactedKeyPaths:(id)paths historyConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isExpiredByDate:(id)date;
 - (id)backingStore;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFDeviceContextMetadata
@@ -18,10 +18,10 @@
   v10.receiver = self;
   v10.super_class = AFDeviceContextMetadata;
   v4 = [(AFDeviceContextMetadata *)&v10 description];
-  v5 = [(AFDeviceContextMetadata *)self type];
-  v6 = [(AFDeviceContextMetadata *)self deliveryDate];
-  v7 = [(AFDeviceContextMetadata *)self expirationDate];
-  v8 = [v3 stringWithFormat:@"%@ (%@, %@, expires %@)", v4, v5, v6, v7];
+  type = [(AFDeviceContextMetadata *)self type];
+  deliveryDate = [(AFDeviceContextMetadata *)self deliveryDate];
+  expirationDate = [(AFDeviceContextMetadata *)self expirationDate];
+  v8 = [v3 stringWithFormat:@"%@ (%@, %@, expires %@)", v4, type, deliveryDate, expirationDate];
 
   return v8;
 }
@@ -84,8 +84,8 @@
   v13 = self->_backingStore;
   if (historyConfiguration)
   {
-    v14 = [(AFDeviceContextHistoryConfiguration *)historyConfiguration buildDictionaryRepresentation];
-    [(NSMutableDictionary *)v13 setObject:v14 forKey:@"metadata_historyConfiguration"];
+    buildDictionaryRepresentation = [(AFDeviceContextHistoryConfiguration *)historyConfiguration buildDictionaryRepresentation];
+    [(NSMutableDictionary *)v13 setObject:buildDictionaryRepresentation forKey:@"metadata_historyConfiguration"];
   }
 
   else
@@ -98,34 +98,34 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AFDeviceContextMetadata *)self backingStore];
-  [v4 encodeObject:v5 forKey:@"serializedBackingStore"];
+  coderCopy = coder;
+  backingStore = [(AFDeviceContextMetadata *)self backingStore];
+  [coderCopy encodeObject:backingStore forKey:@"serializedBackingStore"];
 }
 
-- (AFDeviceContextMetadata)initWithCoder:(id)a3
+- (AFDeviceContextMetadata)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:3];
   v7 = [v4 setWithArray:{v6, v12, v13}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"serializedBackingStore"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"serializedBackingStore"];
 
   v9 = [(AFDeviceContextMetadata *)self initWithBackingStore:v8];
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -135,9 +135,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AFDeviceContextMetadata *)self backingStore];
-      v6 = [(AFDeviceContextMetadata *)v4 backingStore];
-      v7 = [v5 isEqual:v6];
+      backingStore = [(AFDeviceContextMetadata *)self backingStore];
+      backingStore2 = [(AFDeviceContextMetadata *)equalCopy backingStore];
+      v7 = [backingStore isEqual:backingStore2];
     }
 
     else
@@ -151,37 +151,37 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AFDeviceContextMetadata *)self backingStore];
-  v3 = [v2 hash];
+  backingStore = [(AFDeviceContextMetadata *)self backingStore];
+  v3 = [backingStore hash];
 
   return v3;
 }
 
-- (BOOL)isExpiredByDate:(id)a3
+- (BOOL)isExpiredByDate:(id)date
 {
-  v4 = a3;
-  v5 = [(AFDeviceContextMetadata *)self expirationDate];
-  v6 = [v4 compare:v5];
+  dateCopy = date;
+  expirationDate = [(AFDeviceContextMetadata *)self expirationDate];
+  v6 = [dateCopy compare:expirationDate];
 
   return v6 == 1;
 }
 
-- (AFDeviceContextMetadata)initWithBackingStore:(id)a3
+- (AFDeviceContextMetadata)initWithBackingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = [AFDeviceContextHistoryConfiguration alloc];
-  v6 = [v4 objectForKey:@"metadata_historyConfiguration"];
+  v6 = [storeCopy objectForKey:@"metadata_historyConfiguration"];
   v7 = [(AFDeviceContextHistoryConfiguration *)v5 initWithDictionaryRepresentation:v6];
 
-  v8 = [v4 objectForKey:@"metadata_type"];
-  v9 = [v4 objectForKey:@"metadata_timestamp"];
-  v10 = [v4 objectForKey:@"metadata_expirationDate"];
-  v11 = [v4 objectForKey:@"metadata_redactedKeyPaths"];
+  v8 = [storeCopy objectForKey:@"metadata_type"];
+  v9 = [storeCopy objectForKey:@"metadata_timestamp"];
+  v10 = [storeCopy objectForKey:@"metadata_expirationDate"];
+  v11 = [storeCopy objectForKey:@"metadata_redactedKeyPaths"];
   v12 = [(AFDeviceContextMetadata *)self initWithType:v8 deliveryDate:v9 expirationDate:v10 redactedKeyPaths:v11 historyConfiguration:v7];
 
   if (v12)
   {
-    v13 = [v4 mutableCopy];
+    v13 = [storeCopy mutableCopy];
     backingStore = v12->_backingStore;
     v12->_backingStore = v13;
   }
@@ -189,33 +189,33 @@
   return v12;
 }
 
-- (AFDeviceContextMetadata)initWithType:(id)a3 deliveryDate:(id)a4 expirationDate:(id)a5 redactedKeyPaths:(id)a6 historyConfiguration:(id)a7
+- (AFDeviceContextMetadata)initWithType:(id)type deliveryDate:(id)date expirationDate:(id)expirationDate redactedKeyPaths:(id)paths historyConfiguration:(id)configuration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  typeCopy = type;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  pathsCopy = paths;
+  configurationCopy = configuration;
   v29.receiver = self;
   v29.super_class = AFDeviceContextMetadata;
   v18 = [(AFDeviceContextMetadata *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_type, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_type, type);
+    v20 = [dateCopy copy];
     deliveryDate = v19->_deliveryDate;
     v19->_deliveryDate = v20;
 
-    v22 = [v15 copy];
+    v22 = [expirationDateCopy copy];
     expirationDate = v19->_expirationDate;
     v19->_expirationDate = v22;
 
-    v24 = [v16 copy];
+    v24 = [pathsCopy copy];
     redactedKeyPaths = v19->_redactedKeyPaths;
     v19->_redactedKeyPaths = v24;
 
-    v26 = [v17 copy];
+    v26 = [configurationCopy copy];
     historyConfiguration = v19->_historyConfiguration;
     v19->_historyConfiguration = v26;
   }

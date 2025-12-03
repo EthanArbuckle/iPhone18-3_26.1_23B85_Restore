@@ -3,12 +3,12 @@
 - (id)composeViewDelegate;
 - (id)stateRestorationActivityForMailScene;
 - (void)mailSceneDidBecomeActive;
-- (void)mailSceneDidConnectWithOptions:(id)a3;
+- (void)mailSceneDidConnectWithOptions:(id)options;
 - (void)mailSceneDidDisconnect;
 - (void)mailSceneDidEnterBackground;
 - (void)mailSceneWillResignActive;
-- (void)resumeCompositionOfDraft:(id)a3 legacyDraft:(id)a4;
-- (void)showComposeWithContext:(id)a3 animated:(BOOL)a4 initialTitle:(id)a5 presentationSource:(id)a6 completionBlock:(id)a7;
+- (void)resumeCompositionOfDraft:(id)draft legacyDraft:(id)legacyDraft;
+- (void)showComposeWithContext:(id)context animated:(BOOL)animated initialTitle:(id)title presentationSource:(id)source completionBlock:(id)block;
 @end
 
 @implementation MailComposeScene
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_10010B420;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD080 != -1)
   {
     dispatch_once(&qword_1006DD080, block);
@@ -30,57 +30,57 @@
   return v2;
 }
 
-- (void)mailSceneDidConnectWithOptions:(id)a3
+- (void)mailSceneDidConnectWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v25.receiver = self;
   v25.super_class = MailComposeScene;
-  [(MailScene *)&v25 mailSceneDidConnectWithOptions:v4];
+  [(MailScene *)&v25 mailSceneDidConnectWithOptions:optionsCopy];
   [CATransaction setFrameStallSkipRequest:1];
-  v5 = sub_10010B7F0(self, v4);
+  v5 = sub_10010B7F0(self, optionsCopy);
   v6 = [MFMailComposeControllerViewDelegateHandler alloc];
   v7 = +[UIApplication sharedApplication];
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 daemonInterface];
-  v10 = [(MFMailComposeControllerViewDelegateHandler *)v6 initWithUICoordinator:v7 daemonInterface:v9];
+  daemonInterface = [v8 daemonInterface];
+  v10 = [(MFMailComposeControllerViewDelegateHandler *)v6 initWithUICoordinator:v7 daemonInterface:daemonInterface];
   sub_100488810(self, v10);
 
   v11 = [[ComposeNavigationController alloc] initWithComposition:v5];
   [(MailComposeScene *)self setComposeNavigationController:v11];
 
   delegateHandler = self->_delegateHandler;
-  v13 = [(MailComposeScene *)self composeNavigationController];
-  [v13 setMailComposeDelegate:delegateHandler];
+  composeNavigationController = [(MailComposeScene *)self composeNavigationController];
+  [composeNavigationController setMailComposeDelegate:delegateHandler];
 
-  v14 = [(MailComposeScene *)self composeNavigationController];
-  v15 = [v14 autosaveIdentifier];
+  composeNavigationController2 = [(MailComposeScene *)self composeNavigationController];
+  autosaveIdentifier = [composeNavigationController2 autosaveIdentifier];
 
-  v16 = [(MailComposeScene *)self composeNavigationController];
-  v17 = [v16 originalMessageObjectID];
+  composeNavigationController3 = [(MailComposeScene *)self composeNavigationController];
+  originalMessageObjectID = [composeNavigationController3 originalMessageObjectID];
 
-  v18 = [[MFActiveDraft alloc] initWithIdentifier:v15 andOriginalMessageIdentifier:v17];
-  v19 = [(MailComposeScene *)self session];
-  [v19 mf_setActiveDraft:v18];
+  v18 = [[MFActiveDraft alloc] initWithIdentifier:autosaveIdentifier andOriginalMessageIdentifier:originalMessageObjectID];
+  session = [(MailComposeScene *)self session];
+  [session mf_setActiveDraft:v18];
 
-  v20 = v15;
-  if (!v15)
+  uUIDString = autosaveIdentifier;
+  if (!autosaveIdentifier)
   {
-    v19 = +[NSUUID UUID];
-    v20 = [v19 UUIDString];
+    session = +[NSUUID UUID];
+    uUIDString = [session UUIDString];
   }
 
   v21 = MSMailComposeWindowTargetContentIdentifierWithIdentifier();
   v22 = [NSPredicate predicateWithFormat:@"self == %@", v21];
 
-  if (!v15)
+  if (!autosaveIdentifier)
   {
   }
 
-  v23 = [(MailComposeScene *)self activationConditions];
-  [v23 setCanActivateForTargetContentIdentifierPredicate:v22];
+  activationConditions = [(MailComposeScene *)self activationConditions];
+  [activationConditions setCanActivateForTargetContentIdentifierPredicate:v22];
 
-  v24 = [(MailComposeScene *)self activationConditions];
-  [v24 setPrefersToActivateForTargetContentIdentifierPredicate:v22];
+  activationConditions2 = [(MailComposeScene *)self activationConditions];
+  [activationConditions2 setPrefersToActivateForTargetContentIdentifierPredicate:v22];
 
   sub_10010BB8C(self, v5);
 }
@@ -90,21 +90,21 @@
   v7.receiver = self;
   v7.super_class = MailComposeScene;
   [(MailScene *)&v7 mailSceneWillResignActive];
-  v3 = [(MailComposeScene *)self composeNavigationController];
-  if (![v3 resolution])
+  composeNavigationController = [(MailComposeScene *)self composeNavigationController];
+  if (![composeNavigationController resolution])
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(MailComposeScene *)self composeNavigationController];
-  v5 = [v4 resolution];
+  composeNavigationController2 = [(MailComposeScene *)self composeNavigationController];
+  resolution = [composeNavigationController2 resolution];
 
-  if (v5 == 2)
+  if (resolution == 2)
   {
 LABEL_5:
-    v6 = [(MailComposeScene *)self composeNavigationController];
-    [v6 willBeginDocking];
+    composeNavigationController3 = [(MailComposeScene *)self composeNavigationController];
+    [composeNavigationController3 willBeginDocking];
   }
 }
 
@@ -113,13 +113,13 @@ LABEL_5:
   v9.receiver = self;
   v9.super_class = MailComposeScene;
   [(MailScene *)&v9 mailSceneDidEnterBackground];
-  v3 = [(MailComposeScene *)self composeNavigationController];
-  if ([v3 resolution])
+  composeNavigationController = [(MailComposeScene *)self composeNavigationController];
+  if ([composeNavigationController resolution])
   {
-    v4 = [(MailComposeScene *)self composeNavigationController];
-    v5 = [v4 resolution];
+    composeNavigationController2 = [(MailComposeScene *)self composeNavigationController];
+    resolution = [composeNavigationController2 resolution];
 
-    if (v5 != 2)
+    if (resolution != 2)
     {
       return;
     }
@@ -129,8 +129,8 @@ LABEL_5:
   {
   }
 
-  v6 = [(MailComposeScene *)self composeNavigationController];
-  [v6 didCompleteDocking];
+  composeNavigationController3 = [(MailComposeScene *)self composeNavigationController];
+  [composeNavigationController3 didCompleteDocking];
 
   if (self)
   {
@@ -142,16 +142,16 @@ LABEL_5:
     delegateHandler = 0;
   }
 
-  v8 = [(MFMailComposeControllerViewDelegateHandler *)delegateHandler delegate];
-  [v8 composeFinishedWithResult:1];
+  delegate = [(MFMailComposeControllerViewDelegateHandler *)delegateHandler delegate];
+  [delegate composeFinishedWithResult:1];
 }
 
 - (id)stateRestorationActivityForMailScene
 {
-  v2 = [(MailComposeScene *)self composeNavigationController];
-  v3 = [v2 userActivityForRestoration];
+  composeNavigationController = [(MailComposeScene *)self composeNavigationController];
+  userActivityForRestoration = [composeNavigationController userActivityForRestoration];
 
-  return v3;
+  return userActivityForRestoration;
 }
 
 - (void)mailSceneDidDisconnect
@@ -159,41 +159,41 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = MailComposeScene;
   [(MailScene *)&v8 mailSceneDidDisconnect];
-  v3 = [(MailComposeScene *)self composeNavigationController];
-  v4 = [v3 resolution];
+  composeNavigationController = [(MailComposeScene *)self composeNavigationController];
+  resolution = [composeNavigationController resolution];
 
-  if (!v4)
+  if (!resolution)
   {
-    v5 = [(MailComposeScene *)self composeNavigationController];
-    [v5 _setCompositionContext:0];
+    composeNavigationController2 = [(MailComposeScene *)self composeNavigationController];
+    [composeNavigationController2 _setCompositionContext:0];
 
     v6 = +[UIApplication sharedApplication];
-    v7 = [v6 dockPersistence];
-    [v7 recoverAbandonedDrafts];
+    dockPersistence = [v6 dockPersistence];
+    [dockPersistence recoverAbandonedDrafts];
   }
 }
 
-- (void)resumeCompositionOfDraft:(id)a3 legacyDraft:(id)a4
+- (void)resumeCompositionOfDraft:(id)draft legacyDraft:(id)legacyDraft
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [[_MFMailCompositionContext alloc] initDraftRestoreOfMessage:v9 legacyMessage:v6];
-  v8 = [(MailComposeScene *)self composeNavigationController];
-  [v8 _setCompositionContext:v7];
+  draftCopy = draft;
+  legacyDraftCopy = legacyDraft;
+  v7 = [[_MFMailCompositionContext alloc] initDraftRestoreOfMessage:draftCopy legacyMessage:legacyDraftCopy];
+  composeNavigationController = [(MailComposeScene *)self composeNavigationController];
+  [composeNavigationController _setCompositionContext:v7];
 }
 
-- (void)showComposeWithContext:(id)a3 animated:(BOOL)a4 initialTitle:(id)a5 presentationSource:(id)a6 completionBlock:(id)a7
+- (void)showComposeWithContext:(id)context animated:(BOOL)animated initialTitle:(id)title presentationSource:(id)source completionBlock:(id)block
 {
-  v14 = a3;
-  v10 = a5;
-  v11 = a7;
-  v12 = [(MailComposeScene *)self composeNavigationController];
-  [v12 _setCompositionContext:v14];
+  contextCopy = context;
+  titleCopy = title;
+  blockCopy = block;
+  composeNavigationController = [(MailComposeScene *)self composeNavigationController];
+  [composeNavigationController _setCompositionContext:contextCopy];
 
-  v13 = [(MailComposeScene *)self composeNavigationController];
-  [v13 setInitialTitle:v10];
+  composeNavigationController2 = [(MailComposeScene *)self composeNavigationController];
+  [composeNavigationController2 setInitialTitle:titleCopy];
 
-  v11[2](v11);
+  blockCopy[2](blockCopy);
 }
 
 - (void)mailSceneDidBecomeActive

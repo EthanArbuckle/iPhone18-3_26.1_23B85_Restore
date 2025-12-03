@@ -1,24 +1,24 @@
 @interface WBSPasswordEvaluationCacheEntry
 - (NSDictionary)dictionaryRepresentation;
-- (WBSPasswordEvaluationCacheEntry)initWithCoder:(id)a3;
-- (WBSPasswordEvaluationCacheEntry)initWithDictionaryRepresentation:(id)a3;
-- (id)_initWithPasswordEvaluation:(id)a3 versionNumber:(id)a4;
-- (id)passwordEvaluationWithPassword:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WBSPasswordEvaluationCacheEntry)initWithCoder:(id)coder;
+- (WBSPasswordEvaluationCacheEntry)initWithDictionaryRepresentation:(id)representation;
+- (id)_initWithPasswordEvaluation:(id)evaluation versionNumber:(id)number;
+- (id)passwordEvaluationWithPassword:(id)password;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSPasswordEvaluationCacheEntry
 
-- (id)_initWithPasswordEvaluation:(id)a3 versionNumber:(id)a4
+- (id)_initWithPasswordEvaluation:(id)evaluation versionNumber:(id)number
 {
-  v6 = a3;
+  evaluationCopy = evaluation;
   v12.receiver = self;
   v12.super_class = WBSPasswordEvaluationCacheEntry;
   v7 = [(WBSPasswordEvaluationCacheEntry *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_evaluation, a3);
+    objc_storeStrong(&v7->_evaluation, evaluation);
     versionNumber = v8->_versionNumber;
     v8->_versionNumber = &unk_1F308EC28;
 
@@ -28,42 +28,42 @@
   return v8;
 }
 
-- (WBSPasswordEvaluationCacheEntry)initWithDictionaryRepresentation:(id)a3
+- (WBSPasswordEvaluationCacheEntry)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = [a3 objectForKeyedSubscript:@"evaluation"];
+  v4 = [representation objectForKeyedSubscript:@"evaluation"];
   v5 = [[WBSPasswordEvaluation alloc] initWithDictionaryRepresentation:v4];
   if (v5)
   {
     v6 = [v4 safari_numberForKey:@"versionNumber"];
     self = [(WBSPasswordEvaluationCacheEntry *)self _initWithPasswordEvaluation:v5 versionNumber:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)passwordEvaluationWithPassword:(id)a3
+- (id)passwordEvaluationWithPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [(WBSPasswordEvaluation *)self->_evaluation patternMatches];
+  patternMatches = [(WBSPasswordEvaluation *)self->_evaluation patternMatches];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __66__WBSPasswordEvaluationCacheEntry_passwordEvaluationWithPassword___block_invoke;
   v15 = &unk_1E7CF1F28;
-  v6 = v4;
+  v6 = passwordCopy;
   v16 = v6;
   v17 = &v18;
-  v7 = [v5 safari_mapObjectsUsingBlock:&v12];
+  v7 = [patternMatches safari_mapObjectsUsingBlock:&v12];
 
   if (v19[3])
   {
@@ -115,8 +115,8 @@ WBSPasswordPatternMatch *__66__WBSPasswordEvaluationCacheEntry_passwordEvaluatio
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DF90];
-  v3 = [(WBSPasswordEvaluation *)self->_evaluation dictionaryRepresentation];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  dictionaryRepresentation = [(WBSPasswordEvaluation *)self->_evaluation dictionaryRepresentation];
+  v4 = [v2 dictionaryWithDictionary:dictionaryRepresentation];
 
   [v4 removeObjectForKey:@"password"];
   v5 = [v4 objectForKeyedSubscript:@"patternMatches"];
@@ -141,17 +141,17 @@ id __59__WBSPasswordEvaluationCacheEntry_dictionaryRepresentation__block_invoke(
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WBSPasswordEvaluationCacheEntry *)self dictionaryRepresentation];
-  [v4 encodeObject:v5];
+  coderCopy = coder;
+  dictionaryRepresentation = [(WBSPasswordEvaluationCacheEntry *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation];
 }
 
-- (WBSPasswordEvaluationCacheEntry)initWithCoder:(id)a3
+- (WBSPasswordEvaluationCacheEntry)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObject];
-  v5 = [(WBSPasswordEvaluationCacheEntry *)self initWithDictionaryRepresentation:v4];
+  decodeObject = [coder decodeObject];
+  v5 = [(WBSPasswordEvaluationCacheEntry *)self initWithDictionaryRepresentation:decodeObject];
 
   return v5;
 }

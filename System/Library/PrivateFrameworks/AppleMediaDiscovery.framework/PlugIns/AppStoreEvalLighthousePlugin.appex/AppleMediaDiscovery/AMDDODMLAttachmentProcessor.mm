@@ -1,85 +1,85 @@
 @interface AMDDODMLAttachmentProcessor
-- (AMDDODMLAttachmentProcessor)initWithAttachmentURLs:(id)a3 withInstructions:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (AMDDODMLAttachmentProcessor)initWithHashMapDictionary:(id)a3 withDownSampleDictionary:(id)a4 withNegSampleDictionary:(id)a5;
-- (id)downSampleDictionaryForKey:(id)a3;
-- (id)getURLFromURLArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)hashMapForKey:(id)a3;
-- (id)negSampleArrayForKey:(id)a3;
-- (id)readDownSampleDictionary:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)readDownSampleDictionaryBytes:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)readHashMapDictionary:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)readHashMapDictionaryBytes:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)readNegativeSampleArray:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)readNegativeSampleArrayBytes:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)readWeightsArrayBytes:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)setHashMap:(id)a3 forKey:(id)a4;
+- (AMDDODMLAttachmentProcessor)initWithAttachmentURLs:(id)ls withInstructions:(id)instructions error:(id *)error errorDomain:(id)domain;
+- (AMDDODMLAttachmentProcessor)initWithHashMapDictionary:(id)dictionary withDownSampleDictionary:(id)sampleDictionary withNegSampleDictionary:(id)negSampleDictionary;
+- (id)downSampleDictionaryForKey:(id)key;
+- (id)getURLFromURLArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)hashMapForKey:(id)key;
+- (id)negSampleArrayForKey:(id)key;
+- (id)readDownSampleDictionary:(id)dictionary withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain;
+- (id)readDownSampleDictionaryBytes:(id)bytes withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain;
+- (id)readHashMapDictionary:(id)dictionary withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain;
+- (id)readHashMapDictionaryBytes:(id)bytes withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain;
+- (id)readNegativeSampleArray:(id)array withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain;
+- (id)readNegativeSampleArrayBytes:(id)bytes withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain;
+- (id)readWeightsArrayBytes:(id)bytes withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain;
+- (id)setHashMap:(id)map forKey:(id)key;
 @end
 
 @implementation AMDDODMLAttachmentProcessor
 
-- (AMDDODMLAttachmentProcessor)initWithHashMapDictionary:(id)a3 withDownSampleDictionary:(id)a4 withNegSampleDictionary:(id)a5
+- (AMDDODMLAttachmentProcessor)initWithHashMapDictionary:(id)dictionary withDownSampleDictionary:(id)sampleDictionary withNegSampleDictionary:(id)negSampleDictionary
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, sampleDictionary);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v12, negSampleDictionary);
+  v5 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v5;
   v11.super_class = AMDDODMLAttachmentProcessor;
   v10 = [(AMDDODMLAttachmentProcessor *)&v11 init];
-  v15 = v10;
-  objc_storeStrong(&v15, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    objc_storeStrong(&v15->_hashMapAttachments, location[0]);
-    objc_storeStrong(&v15->_downSampleAttachments, v13);
-    objc_storeStrong(&v15->_negSampleAttachements, v12);
+    objc_storeStrong(&selfCopy->_hashMapAttachments, location[0]);
+    objc_storeStrong(&selfCopy->_downSampleAttachments, v13);
+    objc_storeStrong(&selfCopy->_negSampleAttachements, v12);
   }
 
-  v7 = v15;
+  v7 = selfCopy;
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AMDDODMLAttachmentProcessor)initWithAttachmentURLs:(id)a3 withInstructions:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (AMDDODMLAttachmentProcessor)initWithAttachmentURLs:(id)ls withInstructions:(id)instructions error:(id *)error errorDomain:(id)domain
 {
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, ls);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
-  v46 = a5;
+  objc_storeStrong(&v47, instructions);
+  errorCopy = error;
   v45 = 0;
-  objc_storeStrong(&v45, a6);
-  v6 = v49;
-  v49 = 0;
+  objc_storeStrong(&v45, domain);
+  v6 = selfCopy;
+  selfCopy = 0;
   v44.receiver = v6;
   v44.super_class = AMDDODMLAttachmentProcessor;
   v38 = [(AMDDODMLAttachmentProcessor *)&v44 init];
-  v49 = v38;
-  objc_storeStrong(&v49, v38);
+  selfCopy = v38;
+  objc_storeStrong(&selfCopy, v38);
   if (v38)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
-    v8 = *(v49 + 1);
-    *(v49 + 1) = v7;
+    v8 = *(selfCopy + 1);
+    *(selfCopy + 1) = v7;
 
     v9 = objc_alloc_init(NSMutableDictionary);
-    v10 = *(v49 + 2);
-    *(v49 + 2) = v9;
+    v10 = *(selfCopy + 2);
+    *(selfCopy + 2) = v9;
 
     v11 = objc_alloc_init(NSMutableDictionary);
-    v12 = *(v49 + 3);
-    *(v49 + 3) = v11;
+    v12 = *(selfCopy + 3);
+    *(selfCopy + 3) = v11;
 
     for (i = 0; ; ++i)
     {
@@ -96,7 +96,7 @@
         v13 = [NSError alloc];
         v33 = [v13 initWithDomain:v45 code:50 userInfo:0];
         v14 = v33;
-        *v46 = v33;
+        *errorCopy = v33;
         v50 = 0;
         v40 = 1;
         goto LABEL_25;
@@ -105,7 +105,7 @@
       v39 = 0;
       if ([v41 isEqual:HashMapFile])
       {
-        v15 = [v49 readHashMapDictionary:v42 withAttachments:location[0] error:v46 errorDomain:v45];
+        v15 = [selfCopy readHashMapDictionary:v42 withAttachments:location[0] error:errorCopy errorDomain:v45];
         v16 = v39;
         v39 = v15;
 
@@ -114,7 +114,7 @@
 
       if ([v41 isEqual:HashMapFileBytes])
       {
-        v17 = [v49 readHashMapDictionaryBytes:v42 withAttachments:location[0] error:v46 errorDomain:v45];
+        v17 = [selfCopy readHashMapDictionaryBytes:v42 withAttachments:location[0] error:errorCopy errorDomain:v45];
         v18 = v39;
         v39 = v17;
 
@@ -123,7 +123,7 @@
 
       if ([v41 isEqual:NegativeSampleFile])
       {
-        v19 = [v49 readNegativeSampleArray:v42 withAttachments:location[0] error:v46 errorDomain:v45];
+        v19 = [selfCopy readNegativeSampleArray:v42 withAttachments:location[0] error:errorCopy errorDomain:v45];
         v20 = v39;
         v39 = v19;
 
@@ -132,7 +132,7 @@
 
       if ([v41 isEqual:NegativeSampleFileBytes])
       {
-        v21 = [v49 readNegativeSampleArrayBytes:v42 withAttachments:location[0] error:v46 errorDomain:v45];
+        v21 = [selfCopy readNegativeSampleArrayBytes:v42 withAttachments:location[0] error:errorCopy errorDomain:v45];
         v22 = v39;
         v39 = v21;
 
@@ -141,7 +141,7 @@
 
       if ([v41 isEqual:DownSampleFile])
       {
-        v23 = [v49 readDownSampleDictionary:v42 withAttachments:location[0] error:v46 errorDomain:v45];
+        v23 = [selfCopy readDownSampleDictionary:v42 withAttachments:location[0] error:errorCopy errorDomain:v45];
         v24 = v39;
         v39 = v23;
 
@@ -155,7 +155,7 @@
 
       if ([v41 isEqual:WeightsFileBytes])
       {
-        v27 = [v49 readWeightsArrayBytes:v42 withAttachments:location[0] error:v46 errorDomain:v45];
+        v27 = [selfCopy readWeightsArrayBytes:v42 withAttachments:location[0] error:errorCopy errorDomain:v45];
         v28 = v39;
         v39 = v27;
 
@@ -177,7 +177,7 @@ LABEL_21:
       v29 = [NSError alloc];
       v32 = [v29 initWithDomain:v45 code:50 userInfo:0];
       v30 = v32;
-      *v46 = v32;
+      *errorCopy = v32;
       v50 = 0;
       v40 = 1;
 LABEL_24:
@@ -191,7 +191,7 @@ LABEL_25:
       }
     }
 
-    v25 = [v49 readDownSampleDictionaryBytes:v42 withAttachments:location[0] error:v46 errorDomain:v45];
+    v25 = [selfCopy readDownSampleDictionaryBytes:v42 withAttachments:location[0] error:errorCopy errorDomain:v45];
     v26 = v39;
     v39 = v25;
 
@@ -199,37 +199,37 @@ LABEL_25:
   }
 
 LABEL_27:
-  v50 = v49;
+  v50 = selfCopy;
   v40 = 1;
 LABEL_28:
   objc_storeStrong(&v45, 0);
   objc_storeStrong(&v47, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v49, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v50;
 }
 
-- (id)hashMapForKey:(id)a3
+- (id)hashMapForKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v6->_hashMapAttachments objectForKey:location[0]];
+  objc_storeStrong(location, key);
+  v4 = [(NSMutableDictionary *)selfCopy->_hashMapAttachments objectForKey:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)setHashMap:(id)a3 forKey:(id)a4
+- (id)setHashMap:(id)map forKey:(id)key
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, map);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  [(NSMutableDictionary *)v9->_hashMapAttachments setObject:location[0] forKey:v7];
+  objc_storeStrong(&v7, key);
+  [(NSMutableDictionary *)selfCopy->_hashMapAttachments setObject:location[0] forKey:v7];
   v6 = [NSNumber numberWithLong:1];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
@@ -237,47 +237,47 @@ LABEL_28:
   return v6;
 }
 
-- (id)downSampleDictionaryForKey:(id)a3
+- (id)downSampleDictionaryForKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v6->_downSampleAttachments objectForKey:location[0]];
+  objc_storeStrong(location, key);
+  v4 = [(NSMutableDictionary *)selfCopy->_downSampleAttachments objectForKey:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)negSampleArrayForKey:(id)a3
+- (id)negSampleArrayForKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v6->_negSampleAttachements objectForKey:location[0]];
+  objc_storeStrong(location, key);
+  v4 = [(NSMutableDictionary *)selfCopy->_negSampleAttachements objectForKey:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)getURLFromURLArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)getURLFromURLArray:(id)array error:(id *)error errorDomain:(id)domain
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, domain);
   if ([location[0] count])
   {
     if ([location[0] count] <= 1)
     {
-      v15 = [location[0] firstObject];
-      v20 = v15;
+      firstObject = [location[0] firstObject];
+      v20 = firstObject;
       v16 = 1;
-      objc_storeStrong(&v15, 0);
+      objc_storeStrong(&firstObject, 0);
     }
 
     else
@@ -285,7 +285,7 @@ LABEL_28:
       v7 = [NSError alloc];
       v11 = [v7 initWithDomain:v17 code:95 userInfo:0];
       v8 = v11;
-      *v18 = v11;
+      *errorCopy = v11;
       v20 = 0;
       v16 = 1;
     }
@@ -296,7 +296,7 @@ LABEL_28:
     v5 = [NSError alloc];
     v12 = [v5 initWithDomain:v17 code:94 userInfo:0];
     v6 = v12;
-    *v18 = v12;
+    *errorCopy = v12;
     v20 = 0;
     v16 = 1;
   }
@@ -308,26 +308,26 @@ LABEL_28:
   return v9;
 }
 
-- (id)readNegativeSampleArray:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)readNegativeSampleArray:(id)array withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, array);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  v33 = a5;
+  objc_storeStrong(&v34, attachments);
+  errorCopy = error;
   v32 = 0;
-  objc_storeStrong(&v32, a6);
+  objc_storeStrong(&v32, domain);
   v31 = [location[0] objectForKey:FileBaseName];
   v30 = [location[0] objectForKey:OutputArray];
   if (v31 && v30)
   {
     v28 = [v34 attachmentURLsForBasename:v31];
-    v27 = [(AMDDODMLAttachmentProcessor *)v36 getURLFromURLArray:v28 error:v33 errorDomain:v32];
+    v27 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v28 error:errorCopy errorDomain:v32];
     if (v27)
     {
-      v26 = [NSString stringWithContentsOfURL:v27 encoding:4 error:v33];
+      v26 = [NSString stringWithContentsOfURL:v27 encoding:4 error:errorCopy];
       if ([v26 isEqual:0])
       {
         v37 = 0;
@@ -372,7 +372,7 @@ LABEL_28:
           }
         }
 
-        [(NSMutableDictionary *)v36->_negSampleAttachements setObject:v24 forKey:v30];
+        [(NSMutableDictionary *)selfCopy->_negSampleAttachements setObject:v24 forKey:v30];
         v37 = [NSNumber numberWithLong:1];
         v29 = 1;
         objc_storeStrong(&v24, 0);
@@ -397,7 +397,7 @@ LABEL_28:
     v6 = [NSError alloc];
     v18 = [v6 initWithDomain:v32 code:51 userInfo:0];
     v7 = v18;
-    *v33 = v18;
+    *errorCopy = v18;
     v37 = 0;
     v29 = 1;
   }
@@ -412,26 +412,26 @@ LABEL_28:
   return v8;
 }
 
-- (id)readNegativeSampleArrayBytes:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)readNegativeSampleArrayBytes:(id)bytes withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bytes);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
-  v30 = a5;
+  objc_storeStrong(&v31, attachments);
+  errorCopy = error;
   v29 = 0;
-  objc_storeStrong(&v29, a6);
+  objc_storeStrong(&v29, domain);
   v28 = [location[0] objectForKey:FileBaseName];
   v27 = [location[0] objectForKey:OutputArray];
   if (v28 && v27)
   {
     v25 = [v31 attachmentURLsForBasename:v28];
-    v24 = [(AMDDODMLAttachmentProcessor *)v33 getURLFromURLArray:v25 error:v30 errorDomain:v29];
+    v24 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v25 error:errorCopy errorDomain:v29];
     if (v24)
     {
-      v23 = [NSData dataWithContentsOfURL:v24 options:1 error:v30];
+      v23 = [NSData dataWithContentsOfURL:v24 options:1 error:errorCopy];
       if (v23)
       {
         if ([v23 length] % 8)
@@ -439,7 +439,7 @@ LABEL_28:
           v8 = [NSError alloc];
           v15 = [v8 initWithDomain:v29 code:59 userInfo:0];
           v9 = v15;
-          *v30 = v15;
+          *errorCopy = v15;
           v34 = 0;
           v26 = 1;
         }
@@ -466,7 +466,7 @@ LABEL_28:
             [v12 addObject:?];
           }
 
-          [(NSMutableDictionary *)v33->_negSampleAttachements setObject:v22 forKey:v27];
+          [(NSMutableDictionary *)selfCopy->_negSampleAttachements setObject:v22 forKey:v27];
           v34 = [NSNumber numberWithLong:1];
           v26 = 1;
           objc_storeStrong(&v22, 0);
@@ -497,7 +497,7 @@ LABEL_28:
     v6 = [NSError alloc];
     v16 = [v6 initWithDomain:v29 code:52 userInfo:0];
     v7 = v16;
-    *v30 = v16;
+    *errorCopy = v16;
     v34 = 0;
     v26 = 1;
   }
@@ -512,26 +512,26 @@ LABEL_28:
   return v10;
 }
 
-- (id)readDownSampleDictionary:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)readDownSampleDictionary:(id)dictionary withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
-  v39 = a5;
+  objc_storeStrong(&v40, attachments);
+  errorCopy = error;
   v38 = 0;
-  objc_storeStrong(&v38, a6);
+  objc_storeStrong(&v38, domain);
   v37 = [location[0] objectForKey:FileBaseName];
   v36 = [location[0] objectForKey:OutputDictionary];
   if (v37 && v36)
   {
     v34 = [v40 attachmentURLsForBasename:v37];
-    v33 = [(AMDDODMLAttachmentProcessor *)v42 getURLFromURLArray:v34 error:v39 errorDomain:v38];
+    v33 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v34 error:errorCopy errorDomain:v38];
     if (v33)
     {
-      v32 = [NSString stringWithContentsOfURL:v33 encoding:4 error:v39];
+      v32 = [NSString stringWithContentsOfURL:v33 encoding:4 error:errorCopy];
       if ([v32 isEqual:0])
       {
         v43 = 0;
@@ -580,7 +580,7 @@ LABEL_28:
               v8 = [NSError alloc];
               v14 = [v8 initWithDomain:v38 code:14 userInfo:0];
               v9 = v14;
-              *v39 = v14;
+              *errorCopy = v14;
               v43 = 0;
               v35 = 1;
             }
@@ -612,7 +612,7 @@ LABEL_18:
 
         if (!v35)
         {
-          [(NSMutableDictionary *)v42->_downSampleAttachments setObject:v30 forKey:v36];
+          [(NSMutableDictionary *)selfCopy->_downSampleAttachments setObject:v30 forKey:v36];
           v43 = [NSNumber numberWithLong:1];
           v35 = 1;
         }
@@ -639,7 +639,7 @@ LABEL_18:
     v6 = [NSError alloc];
     v21 = [v6 initWithDomain:v38 code:53 userInfo:0];
     v7 = v21;
-    *v39 = v21;
+    *errorCopy = v21;
     v43 = 0;
     v35 = 1;
   }
@@ -654,17 +654,17 @@ LABEL_18:
   return v10;
 }
 
-- (id)readDownSampleDictionaryBytes:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)readDownSampleDictionaryBytes:(id)bytes withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bytes);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
-  v39 = a5;
+  objc_storeStrong(&v40, attachments);
+  errorCopy = error;
   v38 = 0;
-  objc_storeStrong(&v38, a6);
+  objc_storeStrong(&v38, domain);
   v37 = [location[0] objectForKey:FileBaseName];
   v36 = [location[0] objectForKey:SecondFileBaseName];
   v35 = [location[0] objectForKey:OutputDictionary];
@@ -672,12 +672,12 @@ LABEL_18:
   {
     v33 = [v40 attachmentURLsForBasename:v37];
     v32 = [v40 attachmentURLsForBasename:v36];
-    v31 = [(AMDDODMLAttachmentProcessor *)v42 getURLFromURLArray:v33 error:v39 errorDomain:v38];
-    v30 = [(AMDDODMLAttachmentProcessor *)v42 getURLFromURLArray:v32 error:v39 errorDomain:v38];
+    v31 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v33 error:errorCopy errorDomain:v38];
+    v30 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v32 error:errorCopy errorDomain:v38];
     if (v31 && v30)
     {
       v29 = [NSData dataWithContentsOfURL:"dataWithContentsOfURL:options:error:" options:v31 error:?];
-      v28 = [NSData dataWithContentsOfURL:v30 options:1 error:v39];
+      v28 = [NSData dataWithContentsOfURL:v30 options:1 error:errorCopy];
       if (v29 && v28)
       {
         v17 = [v29 length];
@@ -688,7 +688,7 @@ LABEL_18:
             v10 = [NSError alloc];
             v15 = [v10 initWithDomain:v38 code:59 userInfo:0];
             v11 = v15;
-            *v39 = v15;
+            *errorCopy = v15;
             v43 = 0;
             v34 = 1;
           }
@@ -727,7 +727,7 @@ LABEL_18:
               objc_storeStrong(v23, 0);
             }
 
-            [(NSMutableDictionary *)v42->_downSampleAttachments setObject:v27 forKey:v35];
+            [(NSMutableDictionary *)selfCopy->_downSampleAttachments setObject:v27 forKey:v35];
             v43 = [NSNumber numberWithLong:1];
             v34 = 1;
             objc_storeStrong(&v27, 0);
@@ -739,7 +739,7 @@ LABEL_18:
           v8 = [NSError alloc];
           v16 = [v8 initWithDomain:v38 code:58 userInfo:0];
           v9 = v16;
-          *v39 = v16;
+          *errorCopy = v16;
           v43 = 0;
           v34 = 1;
         }
@@ -772,7 +772,7 @@ LABEL_18:
     v6 = [NSError alloc];
     v18 = [v6 initWithDomain:v38 code:54 userInfo:0];
     v7 = v18;
-    *v39 = v18;
+    *errorCopy = v18;
     v43 = 0;
     v34 = 1;
   }
@@ -788,26 +788,26 @@ LABEL_18:
   return v12;
 }
 
-- (id)readHashMapDictionary:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)readHashMapDictionary:(id)dictionary withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
-  v39 = a5;
+  objc_storeStrong(&v40, attachments);
+  errorCopy = error;
   v38 = 0;
-  objc_storeStrong(&v38, a6);
+  objc_storeStrong(&v38, domain);
   v37 = [location[0] objectForKey:FileBaseName];
   v36 = [location[0] objectForKey:OutputDictionary];
   if (v37 && v36)
   {
     v34 = [v40 attachmentURLsForBasename:v37];
-    v33 = [(AMDDODMLAttachmentProcessor *)v42 getURLFromURLArray:v34 error:v39 errorDomain:v38];
+    v33 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v34 error:errorCopy errorDomain:v38];
     if (v33)
     {
-      v32 = [NSString stringWithContentsOfURL:v33 encoding:4 error:v39];
+      v32 = [NSString stringWithContentsOfURL:v33 encoding:4 error:errorCopy];
       if ([v32 isEqual:0])
       {
         v43 = 0;
@@ -855,7 +855,7 @@ LABEL_18:
               v8 = [NSError alloc];
               v14 = [v8 initWithDomain:v38 code:14 userInfo:0];
               v9 = v14;
-              *v39 = v14;
+              *errorCopy = v14;
               v43 = 0;
               v35 = 1;
             }
@@ -887,7 +887,7 @@ LABEL_18:
 
         if (!v35)
         {
-          [(NSMutableDictionary *)v42->_hashMapAttachments setObject:v30 forKey:v36];
+          [(NSMutableDictionary *)selfCopy->_hashMapAttachments setObject:v30 forKey:v36];
           v43 = [NSNumber numberWithLong:1];
           v35 = 1;
         }
@@ -914,7 +914,7 @@ LABEL_18:
     v6 = [NSError alloc];
     v21 = [v6 initWithDomain:v38 code:55 userInfo:0];
     v7 = v21;
-    *v39 = v21;
+    *errorCopy = v21;
     v43 = 0;
     v35 = 1;
   }
@@ -929,30 +929,30 @@ LABEL_18:
   return v10;
 }
 
-- (id)readHashMapDictionaryBytes:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)readHashMapDictionaryBytes:(id)bytes withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bytes);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
-  v39 = a5;
+  objc_storeStrong(&v40, attachments);
+  errorCopy = error;
   v38 = 0;
-  objc_storeStrong(&v38, a6);
+  objc_storeStrong(&v38, domain);
   v37 = [location[0] objectForKey:FileBaseName];
   v36 = [location[0] objectForKey:SecondFileBaseName];
   v35 = [location[0] objectForKey:OutputDictionary];
   if (v37 && v36 && v35)
   {
     v33 = [v40 attachmentURLsForBasename:v37];
-    v32 = [(AMDDODMLAttachmentProcessor *)v42 getURLFromURLArray:v33 error:v39 errorDomain:v38];
+    v32 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v33 error:errorCopy errorDomain:v38];
     v31 = [v40 attachmentURLsForBasename:v36];
-    v30 = [(AMDDODMLAttachmentProcessor *)v42 getURLFromURLArray:v31 error:v39 errorDomain:v38];
+    v30 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v31 error:errorCopy errorDomain:v38];
     if (v32 && v30)
     {
       v29 = [NSData dataWithContentsOfURL:"dataWithContentsOfURL:options:error:" options:v32 error:?];
-      v28 = [NSData dataWithContentsOfURL:v30 options:1 error:v39];
+      v28 = [NSData dataWithContentsOfURL:v30 options:1 error:errorCopy];
       if (v28 && v29)
       {
         v17 = [v29 length];
@@ -963,7 +963,7 @@ LABEL_18:
             v10 = [NSError alloc];
             v15 = [v10 initWithDomain:v38 code:59 userInfo:0];
             v11 = v15;
-            *v39 = v15;
+            *errorCopy = v15;
             v43 = 0;
             v34 = 1;
           }
@@ -1002,7 +1002,7 @@ LABEL_18:
               objc_storeStrong(v23, 0);
             }
 
-            [(NSMutableDictionary *)v42->_hashMapAttachments setObject:v27 forKey:v35];
+            [(NSMutableDictionary *)selfCopy->_hashMapAttachments setObject:v27 forKey:v35];
             v43 = [NSNumber numberWithLong:1];
             v34 = 1;
             objc_storeStrong(&v27, 0);
@@ -1014,7 +1014,7 @@ LABEL_18:
           v8 = [NSError alloc];
           v16 = [v8 initWithDomain:v38 code:58 userInfo:0];
           v9 = v16;
-          *v39 = v16;
+          *errorCopy = v16;
           v43 = 0;
           v34 = 1;
         }
@@ -1047,7 +1047,7 @@ LABEL_18:
     v6 = [NSError alloc];
     v18 = [v6 initWithDomain:v38 code:56 userInfo:0];
     v7 = v18;
-    *v39 = v18;
+    *errorCopy = v18;
     v43 = 0;
     v34 = 1;
   }
@@ -1063,28 +1063,28 @@ LABEL_18:
   return v12;
 }
 
-- (id)readWeightsArrayBytes:(id)a3 withAttachments:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)readWeightsArrayBytes:(id)bytes withAttachments:(id)attachments error:(id *)error errorDomain:(id)domain
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bytes);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v20 = a5;
+  objc_storeStrong(&v21, attachments);
+  errorCopy = error;
   v19 = 0;
-  objc_storeStrong(&v19, a6);
+  objc_storeStrong(&v19, domain);
   v18 = [location[0] objectForKey:FileBaseName];
   if (v18)
   {
     v16 = [v21 attachmentURLsForBasename:v18];
-    v15 = [(AMDDODMLAttachmentProcessor *)v23 getURLFromURLArray:v16 error:v20 errorDomain:v19];
+    v15 = [(AMDDODMLAttachmentProcessor *)selfCopy getURLFromURLArray:v16 error:errorCopy errorDomain:v19];
     if (v15)
     {
-      v14 = [NSData dataWithContentsOfURL:v15 options:1 error:v20];
+      v14 = [NSData dataWithContentsOfURL:v15 options:1 error:errorCopy];
       if (v14)
       {
-        objc_storeStrong(&v23->_weightAttachment, v14);
+        objc_storeStrong(&selfCopy->_weightAttachment, v14);
         v24 = [NSNumber numberWithLong:1];
       }
 
@@ -1112,7 +1112,7 @@ LABEL_18:
     v6 = [NSError alloc];
     v10 = [v6 initWithDomain:v19 code:113 userInfo:0];
     v7 = v10;
-    *v20 = v10;
+    *errorCopy = v10;
     v24 = 0;
     v17 = 1;
   }

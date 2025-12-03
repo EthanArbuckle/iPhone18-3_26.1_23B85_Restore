@@ -1,77 +1,77 @@
 @interface SFCapsuleNavigationBar
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (BOOL)_shouldCenterButtonsBetweenEdgeAndTitle:(id)a3;
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (BOOL)_shouldCenterButtonsBetweenEdgeAndTitle:(id)title;
 - (BOOL)_shouldCenterLabels;
 - (BOOL)_showsSearchIconInTitleContainer;
-- (BOOL)_transitionFromButtons:(id)a3 toButtons:(id)a4 withConstraintsToDeactivate:(id)a5;
+- (BOOL)_transitionFromButtons:(id)buttons toButtons:(id)toButtons withConstraintsToDeactivate:(id)deactivate;
 - (CGAffineTransform)keyContentTransform;
 - (CGAffineTransform)microphoneContentTransform;
 - (CGPoint)_minimumEdgeMargin;
 - (CGPoint)_titleToEdgeMargin;
 - (CGRect)keyContentRect;
-- (CGRect)urlOutlineFrameRelativeToView:(id)a3;
+- (CGRect)urlOutlineFrameRelativeToView:(id)view;
 - (CGSize)urlSize;
 - (NSNumber)microphoneContentOriginX;
 - (SFCapsuleContentViewSizeUpdating)sizeUpdater;
-- (SFCapsuleNavigationBar)initWithCoder:(id)a3;
-- (SFCapsuleNavigationBar)initWithFrame:(CGRect)a3;
-- (SFCapsuleNavigationBar)initWithFrame:(CGRect)a3 layoutStyle:(int64_t)a4;
+- (SFCapsuleNavigationBar)initWithCoder:(id)coder;
+- (SFCapsuleNavigationBar)initWithFrame:(CGRect)frame;
+- (SFCapsuleNavigationBar)initWithFrame:(CGRect)frame layoutStyle:(int64_t)style;
 - (UIView)unclippedContainer;
 - (_SFNavigationBarDelegateCommon)delegate;
 - (double)_interButtonSpacing;
 - (double)_titleToButtonSpacing;
 - (double)keyContentBaselineBottomInset;
 - (double)keyContentCapHeightTopInset;
-- (id)_horizontalAlignmentConstraintForLabel:(id)a3;
+- (id)_horizontalAlignmentConstraintForLabel:(id)label;
 - (id)_labelTextStyle;
-- (id)availabilityDisplayController:(id)a3 determineBestLabelsForPresentation:(id)a4;
-- (id)barItemTargetForAnimatingToBarItem:(int64_t)a3;
-- (id)initForSizingWithFrame:(CGRect)a3;
-- (id)initForSizingWithFrame:(CGRect)a3 layoutStyle:(int64_t)a4;
+- (id)availabilityDisplayController:(id)controller determineBestLabelsForPresentation:(id)presentation;
+- (id)barItemTargetForAnimatingToBarItem:(int64_t)item;
+- (id)initForSizingWithFrame:(CGRect)frame;
+- (id)initForSizingWithFrame:(CGRect)frame layoutStyle:(int64_t)style;
 - (void)_createLeadingButtonConstraints;
 - (void)_createTrailingButtonConstraints;
-- (void)_initializeLayoutInfo:(id)a3 forPrimaryLabel:(BOOL)a4 addingConstraints:(id)a5;
+- (void)_initializeLayoutInfo:(id)info forPrimaryLabel:(BOOL)label addingConstraints:(id)constraints;
 - (void)_invalidateHeight;
-- (void)_setHidesTitle:(BOOL)a3;
-- (void)_updateButtonAlphaForMinimizedPercent:(double)a3;
+- (void)_setHidesTitle:(BOOL)title;
+- (void)_updateButtonAlphaForMinimizedPercent:(double)percent;
 - (void)_updateButtonsTransform;
-- (void)_updateKeyboardInputMode:(id)a3;
+- (void)_updateKeyboardInputMode:(id)mode;
 - (void)_updateLayoutDirectionIfNeeded;
-- (void)_updatePageFormatButtonForNavigationBarItem:(id)a3 shouldResetDiscovery:(BOOL)a4;
+- (void)_updatePageFormatButtonForNavigationBarItem:(id)item shouldResetDiscovery:(BOOL)discovery;
 - (void)_updateProgressViewFillColor;
 - (void)_updateSecurityAnnotation;
 - (void)_updateShowsPrivateAnnotation;
 - (void)_updateShowsProgressView;
 - (void)_updateTitleContainerAlpha;
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7;
-- (void)availabilityDisplayController:(id)a3 didUpdateWithState:(int64_t)a4;
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block;
+- (void)availabilityDisplayController:(id)controller didUpdateWithState:(int64_t)state;
 - (void)layoutSubviews;
-- (void)navigationBarItemDidUpdateContentOptions:(id)a3 resetDisplay:(BOOL)a4;
-- (void)navigationBarItemDidUpdateFluidProgressController:(id)a3;
-- (void)navigationBarItemDidUpdateMediaStateIcon:(id)a3;
-- (void)navigationBarItemDidUpdateOverlayNarrowConfiguration:(id)a3;
-- (void)navigationBarItemDidUpdateSecurityAnnotation:(id)a3;
-- (void)navigationBarItemDidUpdateShowsExtensionsAvailability:(id)a3;
-- (void)navigationBarItemDidUpdateShowsSearchIndicator:(id)a3;
-- (void)navigationBarItemDidUpdateShowsStopReloadButtons:(id)a3;
-- (void)navigationBarItemDidUpdateText:(id)a3;
-- (void)prepareForSizingNavigationBar:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)setKeyContentTransform:(CGAffineTransform *)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setLeadingButtons:(id)a3;
-- (void)setMicrophoneContentTransform:(CGAffineTransform *)a3;
-- (void)setMinimizationPercent:(double)a3;
-- (void)setMinimized:(BOOL)a3;
-- (void)setNonKeyContentAlpha:(double)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTheme:(id)a3;
-- (void)setTrailingButtons:(id)a3;
+- (void)navigationBarItemDidUpdateContentOptions:(id)options resetDisplay:(BOOL)display;
+- (void)navigationBarItemDidUpdateFluidProgressController:(id)controller;
+- (void)navigationBarItemDidUpdateMediaStateIcon:(id)icon;
+- (void)navigationBarItemDidUpdateOverlayNarrowConfiguration:(id)configuration;
+- (void)navigationBarItemDidUpdateSecurityAnnotation:(id)annotation;
+- (void)navigationBarItemDidUpdateShowsExtensionsAvailability:(id)availability;
+- (void)navigationBarItemDidUpdateShowsSearchIndicator:(id)indicator;
+- (void)navigationBarItemDidUpdateShowsStopReloadButtons:(id)buttons;
+- (void)navigationBarItemDidUpdateText:(id)text;
+- (void)prepareForSizingNavigationBar:(id)bar;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItem:(id)item;
+- (void)setKeyContentTransform:(CGAffineTransform *)transform;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setLeadingButtons:(id)buttons;
+- (void)setMicrophoneContentTransform:(CGAffineTransform *)transform;
+- (void)setMinimizationPercent:(double)percent;
+- (void)setMinimized:(BOOL)minimized;
+- (void)setNonKeyContentAlpha:(double)alpha;
+- (void)setSelected:(BOOL)selected;
+- (void)setTheme:(id)theme;
+- (void)setTrailingButtons:(id)buttons;
 - (void)updateAccessibilityIdentifier;
 - (void)updateConstraints;
-- (void)updateLabelTypesWithAvailabilityDisplayController:(id)a3 animated:(BOOL)a4;
-- (void)willChangeToMinimized:(BOOL)a3 coordinator:(id)a4;
+- (void)updateLabelTypesWithAvailabilityDisplayController:(id)controller animated:(BOOL)animated;
+- (void)willChangeToMinimized:(BOOL)minimized coordinator:(id)coordinator;
 @end
 
 @implementation SFCapsuleNavigationBar
@@ -100,8 +100,8 @@
 
 - (BOOL)_shouldCenterLabels
 {
-  v3 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer title];
-  v4 = [v3 length] != 0;
+  title = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer title];
+  v4 = [title length] != 0;
 
   return self->_isMinimized || v4;
 }
@@ -227,14 +227,14 @@
 
 - (void)_updateSecurityAnnotation
 {
-  v3 = [(SFCapsuleNavigationBar *)self _labelTextStyle];
-  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitleTextStyle:v3];
+  _labelTextStyle = [(SFCapsuleNavigationBar *)self _labelTextStyle];
+  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitleTextStyle:_labelTextStyle];
 
   [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setHasFocusedSensitiveInputField:[(SFNavigationBarItem *)self->_item hasFocusedSensitiveFieldOnCurrentPage]];
-  v4 = [(SFNavigationBarItem *)self->_item securityAnnotation];
+  securityAnnotation = [(SFNavigationBarItem *)self->_item securityAnnotation];
   titleContainer = self->_titleContainer;
 
-  [(SFUnifiedTabBarItemTitleContainerView *)titleContainer setSecurityAnnotation:v4];
+  [(SFUnifiedTabBarItemTitleContainerView *)titleContainer setSecurityAnnotation:securityAnnotation];
 }
 
 - (void)_updateShowsPrivateAnnotation
@@ -259,7 +259,7 @@
   v27.receiver = self;
   v27.super_class = SFCapsuleNavigationBar;
   [(SFCapsuleNavigationBar *)&v27 updateConstraints];
-  v3 = [(SFCapsuleNavigationBar *)self layoutMarginsGuide];
+  layoutMarginsGuide = [(SFCapsuleNavigationBar *)self layoutMarginsGuide];
   if (!self->_leadingButtonConstraints)
   {
     [(SFCapsuleNavigationBar *)self _createLeadingButtonConstraints];
@@ -274,42 +274,42 @@
   {
     [(SFCapsuleNavigationBar *)self _titleToEdgeMargin];
     v5 = v4;
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide centerYAnchor];
-    v8 = [v3 centerYAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
-    [v6 addObject:v9];
+    array = [MEMORY[0x1E695DF70] array];
+    centerYAnchor = [(UILayoutGuide *)self->_textVerticalAlignmentGuide centerYAnchor];
+    centerYAnchor2 = [layoutMarginsGuide centerYAnchor];
+    v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v9];
 
-    v10 = [(SFCapsuleNavigationBar *)self _shouldCenterLabels];
+    _shouldCenterLabels = [(SFCapsuleNavigationBar *)self _shouldCenterLabels];
     textVerticalAlignmentGuide = self->_textVerticalAlignmentGuide;
-    if (v10)
+    if (_shouldCenterLabels)
     {
-      v12 = [(UILayoutGuide *)textVerticalAlignmentGuide centerXAnchor];
+      centerXAnchor = [(UILayoutGuide *)textVerticalAlignmentGuide centerXAnchor];
       [(SFCapsuleNavigationBar *)self centerXAnchor];
     }
 
     else
     {
-      v12 = [(UILayoutGuide *)textVerticalAlignmentGuide leadingAnchor];
+      centerXAnchor = [(UILayoutGuide *)textVerticalAlignmentGuide leadingAnchor];
       [(SFCapsuleNavigationBar *)self leadingAnchor];
     }
     v13 = ;
-    v14 = [v12 constraintEqualToAnchor:v13];
+    v14 = [centerXAnchor constraintEqualToAnchor:v13];
     LODWORD(v15) = 1112276992;
     v16 = [v14 sf_withPriority:v15];
-    [v6 addObject:v16];
+    [array addObject:v16];
 
-    v17 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide topAnchor];
-    v18 = [(SFCapsuleNavigationBar *)self topAnchor];
-    v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18 constant:v5];
-    [v6 addObject:v19];
+    topAnchor = [(UILayoutGuide *)self->_textVerticalAlignmentGuide topAnchor];
+    topAnchor2 = [(SFCapsuleNavigationBar *)self topAnchor];
+    v19 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:v5];
+    [array addObject:v19];
 
-    v20 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide bottomAnchor];
-    v21 = [(SFCapsuleNavigationBar *)self bottomAnchor];
-    v22 = [v20 constraintLessThanOrEqualToAnchor:v21 constant:-v5];
-    [v6 addObject:v22];
+    bottomAnchor = [(UILayoutGuide *)self->_textVerticalAlignmentGuide bottomAnchor];
+    bottomAnchor2 = [(SFCapsuleNavigationBar *)self bottomAnchor];
+    v22 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-v5];
+    [array addObject:v22];
 
-    v23 = [v6 copy];
+    v23 = [array copy];
     textVerticalAlignmentConstraints = self->_textVerticalAlignmentConstraints;
     self->_textVerticalAlignmentConstraints = v23;
 
@@ -333,10 +333,10 @@
 
 - (CGPoint)_titleToEdgeMargin
 {
-  v3 = [(SFCapsuleNavigationBar *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(SFCapsuleNavigationBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC50]) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]) == NSOrderedAscending)
   {
     v7 = self->_layoutStyle - 1;
     v5 = 10.0;
@@ -462,8 +462,8 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
     v9 = 0;
   }
 
-  v8 = [(_SFFluidProgressView *)self->_progressView layer];
-  [v8 setCompositingFilter:v9];
+  layer = [(_SFFluidProgressView *)self->_progressView layer];
+  [layer setCompositingFilter:v9];
 
   if (v7)
   {
@@ -472,15 +472,15 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
 
 - (void)_createLeadingButtonConstraints
 {
-  v3 = [(SFCapsuleNavigationBar *)self _shouldHideButtons];
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (v3 || ![(NSArray *)self->_leadingButtons count])
+  _shouldHideButtons = [(SFCapsuleNavigationBar *)self _shouldHideButtons];
+  array = [MEMORY[0x1E695DF70] array];
+  if (_shouldHideButtons || ![(NSArray *)self->_leadingButtons count])
   {
-    v5 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide leadingAnchor];
-    v6 = [(SFCapsuleNavigationBar *)self leadingAnchor];
+    leadingAnchor = [(UILayoutGuide *)self->_textVerticalAlignmentGuide leadingAnchor];
+    leadingAnchor2 = [(SFCapsuleNavigationBar *)self leadingAnchor];
     [(SFCapsuleNavigationBar *)self _titleToEdgeMargin];
-    v7 = [v5 constraintGreaterThanOrEqualToAnchor:v6 constant:?];
-    [v4 addObject:v7];
+    v7 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:?];
+    [array addObject:v7];
   }
 
   if ([(NSArray *)self->_leadingButtons count])
@@ -496,7 +496,7 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
     }
 
     v14 = v12 * v13;
-    v15 = [(NSArray *)self->_leadingButtons firstObject];
+    firstObject = [(NSArray *)self->_leadingButtons firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     leadingButtons = self->_leadingButtons;
@@ -504,10 +504,10 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
     v47[1] = 3221225472;
     v47[2] = __57__SFCapsuleNavigationBar__createLeadingButtonConstraints__block_invoke;
     v47[3] = &unk_1E721B560;
-    v18 = v4;
+    v18 = array;
     v48 = v18;
-    v49 = self;
-    v53 = v3;
+    selfCopy = self;
+    v53 = _shouldHideButtons;
     v54 = isKindOfClass & 1;
     v50 = v9;
     v51 = v11;
@@ -518,22 +518,22 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
     {
       if (isKindOfClass)
       {
-        v20 = [v15 widthAnchor];
-        [v15 intrinsicContentSize];
-        v21 = [v20 constraintGreaterThanOrEqualToConstant:?];
+        widthAnchor = [firstObject widthAnchor];
+        [firstObject intrinsicContentSize];
+        v21 = [widthAnchor constraintGreaterThanOrEqualToConstant:?];
         [v18 addObject:v21];
       }
 
-      v22 = [v15 widthAnchor];
-      v23 = [v15 heightAnchor];
-      v24 = [v22 constraintGreaterThanOrEqualToAnchor:v23];
+      widthAnchor2 = [firstObject widthAnchor];
+      heightAnchor = [firstObject heightAnchor];
+      v24 = [widthAnchor2 constraintGreaterThanOrEqualToAnchor:heightAnchor];
       [v18 addObject:v24];
 
       v19 = 4.0;
     }
 
-    v25 = [v15 centerXAnchor];
-    v46 = v3;
+    centerXAnchor = [firstObject centerXAnchor];
+    v46 = _shouldHideButtons;
     if (isKindOfClass)
     {
       leadingButtonCenterXAnchor = [(SFCapsuleNavigationBar *)self leadingAnchor];
@@ -544,7 +544,7 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
       leadingButtonCenterXAnchor = self->_leadingButtonCenterXAnchor;
     }
 
-    v27 = [v25 constraintEqualToAnchor:leadingButtonCenterXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:leadingButtonCenterXAnchor];
     LODWORD(v28) = 1131413504;
     v29 = [v27 sf_withPriority:v28];
     [v18 addObject:v29];
@@ -552,48 +552,48 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
     if (isKindOfClass)
     {
 
-      v30 = [v15 leadingAnchor];
-      v31 = [(SFCapsuleNavigationBar *)self leadingAnchor];
-      v32 = [v30 constraintGreaterThanOrEqualToAnchor:v31 constant:v19];
+      leadingAnchor3 = [firstObject leadingAnchor];
+      leadingAnchor4 = [(SFCapsuleNavigationBar *)self leadingAnchor];
+      v32 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:v19];
       [v18 addObject:v32];
 
-      v33 = [v15 topAnchor];
-      v34 = [(SFCapsuleNavigationBar *)self topAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34 constant:v19];
+      topAnchor = [firstObject topAnchor];
+      topAnchor2 = [(SFCapsuleNavigationBar *)self topAnchor];
+      v35 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v19];
       [v18 addObject:v35];
 
-      v36 = [v15 bottomAnchor];
-      v37 = [(SFCapsuleNavigationBar *)self bottomAnchor];
-      [v36 constraintEqualToAnchor:v37 constant:-v19];
+      bottomAnchor = [firstObject bottomAnchor];
+      bottomAnchor2 = [(SFCapsuleNavigationBar *)self bottomAnchor];
+      [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v19];
     }
 
     else
     {
 
-      v36 = [v15 leadingAnchor];
-      v37 = [(SFCapsuleNavigationBar *)self leadingAnchor];
-      [v36 constraintGreaterThanOrEqualToAnchor:v37 constant:v9];
+      bottomAnchor = [firstObject leadingAnchor];
+      bottomAnchor2 = [(SFCapsuleNavigationBar *)self leadingAnchor];
+      [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:v9];
     }
     v38 = ;
     [v18 addObject:v38];
 
     if (!v46)
     {
-      v39 = [(NSArray *)self->_leadingButtons lastObject];
-      v40 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide leadingAnchor];
-      v41 = [v39 trailingAnchor];
+      lastObject = [(NSArray *)self->_leadingButtons lastObject];
+      leadingAnchor5 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide leadingAnchor];
+      trailingAnchor = [lastObject trailingAnchor];
       v42 = 2.0;
       if ((isKindOfClass & 1) == 0)
       {
         v42 = v9;
       }
 
-      v43 = [v40 constraintGreaterThanOrEqualToAnchor:v41 constant:v42];
+      v43 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:trailingAnchor constant:v42];
       [v18 addObject:v43];
     }
   }
 
-  v44 = [v4 copy];
+  v44 = [array copy];
   leadingButtonConstraints = self->_leadingButtonConstraints;
   self->_leadingButtonConstraints = v44;
 
@@ -624,10 +624,10 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
     v5 = 11.5;
   }
 
-  v6 = [(SFCapsuleNavigationBar *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(SFCapsuleNavigationBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryCompareToCategory(v7, *MEMORY[0x1E69DDC50]) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]) == NSOrderedAscending)
   {
     v3 = v5;
   }
@@ -646,10 +646,10 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
 
 - (double)_interButtonSpacing
 {
-  v2 = [(SFCapsuleNavigationBar *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(SFCapsuleNavigationBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC50]) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]) == NSOrderedAscending)
   {
     v4 = 24.0;
   }
@@ -664,15 +664,15 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
 
 - (void)_createTrailingButtonConstraints
 {
-  v3 = [(SFCapsuleNavigationBar *)self _shouldHideButtons];
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (v3 || ![(NSArray *)self->_trailingButtons count])
+  _shouldHideButtons = [(SFCapsuleNavigationBar *)self _shouldHideButtons];
+  array = [MEMORY[0x1E695DF70] array];
+  if (_shouldHideButtons || ![(NSArray *)self->_trailingButtons count])
   {
-    v5 = [(SFCapsuleNavigationBar *)self trailingAnchor];
-    v6 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide trailingAnchor];
+    trailingAnchor = [(SFCapsuleNavigationBar *)self trailingAnchor];
+    trailingAnchor2 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide trailingAnchor];
     [(SFCapsuleNavigationBar *)self _titleToEdgeMargin];
-    v7 = [v5 constraintGreaterThanOrEqualToAnchor:v6 constant:?];
-    [v4 addObject:v7];
+    v7 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:?];
+    [array addObject:v7];
   }
 
   if ([(NSArray *)self->_trailingButtons count])
@@ -693,58 +693,58 @@ void __43__SFCapsuleNavigationBar_updateConstraints__block_invoke(uint64_t a1, v
     v39 = 3221225472;
     v40 = __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke;
     v41 = &unk_1E721B588;
-    v16 = v4;
+    v16 = array;
     v42 = v16;
-    v43 = self;
-    v47 = v3;
+    selfCopy = self;
+    v47 = _shouldHideButtons;
     v44 = v9;
     v45 = v11;
     v46 = v14;
     [(NSArray *)trailingButtons enumerateObjectsUsingBlock:&v38];
     v17 = [(NSArray *)self->_trailingButtons firstObject:v38];
-    v18 = [v17 trailingAnchor];
-    v19 = [(SFCapsuleNavigationBar *)self trailingAnchor];
-    v20 = [v18 constraintLessThanOrEqualToAnchor:v19 constant:-v9];
+    trailingAnchor3 = [v17 trailingAnchor];
+    trailingAnchor4 = [(SFCapsuleNavigationBar *)self trailingAnchor];
+    v20 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-v9];
     [v16 addObject:v20];
 
-    v21 = [v17 centerXAnchor];
-    v22 = [v21 constraintEqualToAnchor:self->_trailingButtonCenterXAnchor];
+    centerXAnchor = [v17 centerXAnchor];
+    v22 = [centerXAnchor constraintEqualToAnchor:self->_trailingButtonCenterXAnchor];
     LODWORD(v23) = 1131413504;
     v24 = [v22 sf_withPriority:v23];
     [v16 addObject:v24];
 
-    if (!v3)
+    if (!_shouldHideButtons)
     {
-      v25 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide trailingAnchor];
-      v26 = [(NSArray *)self->_trailingButtons lastObject];
+      trailingAnchor5 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide trailingAnchor];
+      lastObject = [(NSArray *)self->_trailingButtons lastObject];
       if ([(SFCapsuleNavigationBar *)self _shouldCenterButtonsBetweenEdgeAndTitle:self->_trailingButtons])
       {
-        v27 = [v26 centerXAnchor];
-        v28 = [v27 constraintGreaterThanOrEqualToAnchor:v25];
+        centerXAnchor2 = [lastObject centerXAnchor];
+        v28 = [centerXAnchor2 constraintGreaterThanOrEqualToAnchor:trailingAnchor5];
         LODWORD(v29) = 1131413504;
         v30 = [v28 sf_withPriority:v29];
         [v16 addObject:v30];
 
-        v31 = [v26 leadingAnchor];
-        v32 = v31;
-        v33 = v25;
+        leadingAnchor = [lastObject leadingAnchor];
+        leadingAnchor2 = leadingAnchor;
+        v33 = trailingAnchor5;
         v34 = v9;
       }
 
       else
       {
-        v32 = [v26 leadingAnchor];
+        leadingAnchor2 = [lastObject leadingAnchor];
         [(SFCapsuleNavigationBar *)self _titleToButtonSpacing];
-        v31 = v32;
-        v33 = v25;
+        leadingAnchor = leadingAnchor2;
+        v33 = trailingAnchor5;
       }
 
-      v35 = [v31 constraintGreaterThanOrEqualToAnchor:v33 constant:v34];
+      v35 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:v33 constant:v34];
       [v16 addObject:v35];
     }
   }
 
-  v36 = [v4 copy];
+  v36 = [array copy];
   trailingButtonConstraints = self->_trailingButtonConstraints;
   self->_trailingButtonConstraints = v36;
 
@@ -838,10 +838,10 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
 - (void)_updateShowsProgressView
 {
   minimizationPercent = self->_minimizationPercent;
-  v4 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   if (self->_isSelected)
   {
-    v5 = [(_SFFluidProgressView *)self->_progressView isShowingProgress]^ 1 | (minimizationPercent > 0.0) & ~v4;
+    v5 = [(_SFFluidProgressView *)self->_progressView isShowingProgress]^ 1 | (minimizationPercent > 0.0) & ~isSolariumEnabled;
   }
 
   else
@@ -862,28 +862,28 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
   return result;
 }
 
-- (SFCapsuleNavigationBar)initWithCoder:(id)a3
+- (SFCapsuleNavigationBar)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFCapsuleNavigationBar;
-  return [(SFCapsuleNavigationBar *)&v4 initWithCoder:a3];
+  return [(SFCapsuleNavigationBar *)&v4 initWithCoder:coder];
 }
 
-- (id)initForSizingWithFrame:(CGRect)a3
+- (id)initForSizingWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = +[SFFeatureManager sharedFeatureManager];
   v9 = -[SFCapsuleNavigationBar initForSizingWithFrame:layoutStyle:](self, "initForSizingWithFrame:layoutStyle:", [v8 preferredCapsuleLayoutStyle], x, y, width, height);
 
   return v9;
 }
 
-- (id)initForSizingWithFrame:(CGRect)a3 layoutStyle:(int64_t)a4
+- (id)initForSizingWithFrame:(CGRect)frame layoutStyle:(int64_t)style
 {
-  v4 = [(SFCapsuleNavigationBar *)self initWithFrame:a4 layoutStyle:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(SFCapsuleNavigationBar *)self initWithFrame:style layoutStyle:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -894,29 +894,29 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
   return v5;
 }
 
-- (SFCapsuleNavigationBar)initWithFrame:(CGRect)a3
+- (SFCapsuleNavigationBar)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = +[SFFeatureManager sharedFeatureManager];
   v9 = -[SFCapsuleNavigationBar initWithFrame:layoutStyle:](self, "initWithFrame:layoutStyle:", [v8 preferredCapsuleLayoutStyle], x, y, width, height);
 
   return v9;
 }
 
-- (SFCapsuleNavigationBar)initWithFrame:(CGRect)a3 layoutStyle:(int64_t)a4
+- (SFCapsuleNavigationBar)initWithFrame:(CGRect)frame layoutStyle:(int64_t)style
 {
   v85[9] = *MEMORY[0x1E69E9840];
   v83.receiver = self;
   v83.super_class = SFCapsuleNavigationBar;
-  v5 = [(SFCapsuleNavigationBar *)&v83 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SFCapsuleNavigationBar *)&v83 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(SFCapsuleNavigationBar *)v5 setInsetsLayoutMarginsFromSafeArea:0];
-    v6->_layoutStyle = a4;
+    v6->_layoutStyle = style;
     v7 = [_SFFluidProgressView alloc];
     [(SFCapsuleNavigationBar *)v6 bounds];
     v8 = [(_SFFluidProgressView *)v7 initWithFrame:?];
@@ -925,8 +925,8 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
 
     [(_SFFluidProgressView *)v6->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_SFFluidProgressView *)v6->_progressView setDelegate:v6];
-    v10 = [(_SFFluidProgressView *)v6->_progressView layer];
-    [v10 setZPosition:1.0];
+    layer = [(_SFFluidProgressView *)v6->_progressView layer];
+    [layer setZPosition:1.0];
 
     [(SFCapsuleNavigationBar *)v6 addSubview:v6->_progressView];
     v11 = [MEMORY[0x1E696ACD8] safari_constraintsMatchingFrameOfView:v6->_progressView withFrameOfView:v6];
@@ -960,15 +960,15 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
     titleLabelLayoutInfo = v6->_titleLabelLayoutInfo;
     v6->_titleLabelLayoutInfo = v19;
 
-    v21 = [MEMORY[0x1E69DC668] sharedApplication];
-    v6->_keyboardInputModeIsRTL = [v21 safari_currentKeyboardInputIsRTL];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v6->_keyboardInputModeIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
     [(SFCapsuleNavigationBar *)v6 _updateLayoutDirectionIfNeeded];
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v6 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
-    [v22 addObserver:v6 selector:sel__updateKeyboardInputMode_ name:@"SFDidGetTextInputModeDirectionality" object:0];
-    v80 = v22;
-    [v22 addObserver:v6 selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
+    [defaultCenter addObserver:v6 selector:sel__updateKeyboardInputMode_ name:@"SFDidGetTextInputModeDirectionality" object:0];
+    v80 = defaultCenter;
+    [defaultCenter addObserver:v6 selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
     v23 = objc_alloc_init(MEMORY[0x1E69DCC20]);
     [v23 setIdentifier:@"SFCapsuleLeadingButtonCenterGuide"];
     [(SFCapsuleNavigationBar *)v6 addLayoutGuide:v23];
@@ -981,22 +981,22 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
     v26 = objc_alloc_init(MEMORY[0x1E69DCC20]);
     [v26 setIdentifier:@"SFCapsuleTrailingButtonCenterGuide"];
     [(SFCapsuleNavigationBar *)v6 addLayoutGuide:v26];
-    v27 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-    v28 = [v23 widthAnchor];
-    v29 = v28;
-    if (v27)
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    widthAnchor = [v23 widthAnchor];
+    v29 = widthAnchor;
+    if (isSolariumEnabled)
     {
-      v30 = [(SFCapsuleNavigationBar *)v6 heightAnchor];
-      v31 = [v29 constraintGreaterThanOrEqualToAnchor:v30 multiplier:0.5];
+      heightAnchor = [(SFCapsuleNavigationBar *)v6 heightAnchor];
+      v31 = [v29 constraintGreaterThanOrEqualToAnchor:heightAnchor multiplier:0.5];
 
-      v32 = [v26 widthAnchor];
-      v33 = [(SFCapsuleNavigationBar *)v6 heightAnchor];
-      v82 = [v32 constraintGreaterThanOrEqualToAnchor:v33 multiplier:0.5];
+      widthAnchor2 = [v26 widthAnchor];
+      heightAnchor2 = [(SFCapsuleNavigationBar *)v6 heightAnchor];
+      v82 = [widthAnchor2 constraintGreaterThanOrEqualToAnchor:heightAnchor2 multiplier:0.5];
     }
 
     else
     {
-      if (a4 == 2)
+      if (style == 2)
       {
         v34 = 18.0;
       }
@@ -1006,56 +1006,56 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
         v34 = 22.0;
       }
 
-      v31 = [v28 constraintEqualToConstant:v34];
+      v31 = [widthAnchor constraintEqualToConstant:v34];
 
-      v32 = [v26 widthAnchor];
-      v82 = [v32 constraintEqualToConstant:v34];
+      widthAnchor2 = [v26 widthAnchor];
+      v82 = [widthAnchor2 constraintEqualToConstant:v34];
     }
 
-    v35 = [v23 trailingAnchor];
+    trailingAnchor = [v23 trailingAnchor];
     leadingButtonCenterXAnchor = v6->_leadingButtonCenterXAnchor;
-    v6->_leadingButtonCenterXAnchor = v35;
+    v6->_leadingButtonCenterXAnchor = trailingAnchor;
 
-    v37 = [v26 leadingAnchor];
+    leadingAnchor = [v26 leadingAnchor];
     trailingButtonCenterXAnchor = v6->_trailingButtonCenterXAnchor;
-    v6->_trailingButtonCenterXAnchor = v37;
+    v6->_trailingButtonCenterXAnchor = leadingAnchor;
 
     v67 = MEMORY[0x1E696ACD8];
     v79 = v23;
-    v76 = [v23 leadingAnchor];
-    v75 = [(SFCapsuleNavigationBar *)v6 leadingAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    leadingAnchor2 = [v23 leadingAnchor];
+    leadingAnchor3 = [(SFCapsuleNavigationBar *)v6 leadingAnchor];
+    v74 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v85[0] = v74;
     v85[1] = v31;
     v77 = v31;
-    v73 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide widthAnchor];
-    v72 = [v73 constraintEqualToConstant:0.0];
+    widthAnchor3 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide widthAnchor];
+    v72 = [widthAnchor3 constraintEqualToConstant:0.0];
     LODWORD(v39) = 1130758144;
     v71 = [v72 sf_withPriority:v39];
     v85[2] = v71;
-    v70 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide heightAnchor];
-    v69 = [v70 constraintEqualToConstant:0.0];
+    heightAnchor3 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide heightAnchor];
+    v69 = [heightAnchor3 constraintEqualToConstant:0.0];
     LODWORD(v40) = 1130758144;
     v68 = [v69 sf_withPriority:v40];
     v85[3] = v68;
-    v66 = [(SFUnifiedTabBarItemTitleContainerView *)v6->_titleContainer leadingAnchor];
-    v65 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide leadingAnchor];
-    v64 = [v66 constraintGreaterThanOrEqualToAnchor:v65];
+    leadingAnchor4 = [(SFUnifiedTabBarItemTitleContainerView *)v6->_titleContainer leadingAnchor];
+    leadingAnchor5 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide leadingAnchor];
+    v64 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:leadingAnchor5];
     v85[4] = v64;
-    v63 = [(SFUnifiedTabBarItemTitleContainerView *)v6->_titleContainer trailingAnchor];
-    v62 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide trailingAnchor];
-    v41 = [v63 constraintLessThanOrEqualToAnchor:v62];
+    trailingAnchor2 = [(SFUnifiedTabBarItemTitleContainerView *)v6->_titleContainer trailingAnchor];
+    trailingAnchor3 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide trailingAnchor];
+    v41 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
     v85[5] = v41;
-    v42 = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide centerXAnchor];
-    v43 = [(SFCapsuleNavigationBar *)v6 centerXAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    centerXAnchor = [(UILayoutGuide *)v6->_textVerticalAlignmentGuide centerXAnchor];
+    centerXAnchor2 = [(SFCapsuleNavigationBar *)v6 centerXAnchor];
+    v44 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     LODWORD(v45) = 1132134400;
     v46 = [v44 sf_withPriority:v45];
     v85[6] = v46;
     v78 = v26;
-    v47 = [v26 trailingAnchor];
-    v48 = [(SFCapsuleNavigationBar *)v6 trailingAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    trailingAnchor4 = [v26 trailingAnchor];
+    trailingAnchor5 = [(SFCapsuleNavigationBar *)v6 trailingAnchor];
+    v49 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v85[7] = v49;
     v85[8] = v82;
     v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:9];
@@ -1068,15 +1068,15 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
     [(PKScribbleInteraction *)v6->_scribbleInteraction setDelegate:v6];
     [(SFCapsuleNavigationBar *)v6 addInteraction:v6->_scribbleInteraction];
     v6->_nonKeyContentAlpha = 1.0;
-    v53 = [MEMORY[0x1E695DF70] array];
-    [(SFCapsuleNavigationBar *)v6 _initializeLayoutInfo:v6->_titleLabelLayoutInfo forPrimaryLabel:1 addingConstraints:v53];
-    [MEMORY[0x1E696ACD8] activateConstraints:v53];
+    array = [MEMORY[0x1E695DF70] array];
+    [(SFCapsuleNavigationBar *)v6 _initializeLayoutInfo:v6->_titleLabelLayoutInfo forPrimaryLabel:1 addingConstraints:array];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
     v54 = [objc_alloc(MEMORY[0x1E69C9780]) initWithPresenter:v6];
     availabilityDisplayController = v6->_availabilityDisplayController;
     v6->_availabilityDisplayController = v54;
 
-    v56 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v57 = [v56 safari_numberForKey:@"DebugReaderGlyphDisplayDuration"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v57 = [safari_browserDefaults safari_numberForKey:@"DebugReaderGlyphDisplayDuration"];
 
     if (v57)
     {
@@ -1094,51 +1094,51 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
   return v6;
 }
 
-- (void)_updateKeyboardInputMode:(id)a3
+- (void)_updateKeyboardInputMode:(id)mode
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 safari_currentKeyboardInputIsRTL];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  safari_currentKeyboardInputIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
-  if (self->_keyboardInputModeIsRTL != v5)
+  if (self->_keyboardInputModeIsRTL != safari_currentKeyboardInputIsRTL)
   {
-    self->_keyboardInputModeIsRTL = v5;
+    self->_keyboardInputModeIsRTL = safari_currentKeyboardInputIsRTL;
 
     [(SFCapsuleNavigationBar *)self _updateLayoutDirectionIfNeeded];
   }
 }
 
-- (BOOL)_shouldCenterButtonsBetweenEdgeAndTitle:(id)a3
+- (BOOL)_shouldCenterButtonsBetweenEdgeAndTitle:(id)title
 {
-  if ([a3 count] > 1)
+  if ([title count] > 1)
   {
     return 0;
   }
 
-  v5 = [(SFCapsuleNavigationBar *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
+  traitCollection = [(SFCapsuleNavigationBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v4 = UIContentSizeCategoryCompareToCategory(v6, *MEMORY[0x1E69DDC60]) == NSOrderedAscending;
+  v4 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC60]) == NSOrderedAscending;
   return v4;
 }
 
-- (id)_horizontalAlignmentConstraintForLabel:(id)a3
+- (id)_horizontalAlignmentConstraintForLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if ([(SFCapsuleNavigationBar *)self _shouldCenterLabels])
   {
-    v5 = [v4 centerXAnchor];
+    centerXAnchor = [labelCopy centerXAnchor];
 
     [(SFCapsuleNavigationBar *)self centerXAnchor];
   }
 
   else
   {
-    v5 = [v4 leadingAnchor];
+    centerXAnchor = [labelCopy leadingAnchor];
 
     [(UILayoutGuide *)self->_textVerticalAlignmentGuide leadingAnchor];
   }
   v6 = ;
-  v7 = [v5 constraintEqualToAnchor:v6];
+  v7 = [centerXAnchor constraintEqualToAnchor:v6];
   LODWORD(v8) = 1112014848;
   v9 = [v7 sf_withPriority:v8];
 
@@ -1147,10 +1147,10 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
 
 - (double)_titleToButtonSpacing
 {
-  v2 = [(SFCapsuleNavigationBar *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(SFCapsuleNavigationBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC60]) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC60]) == NSOrderedAscending)
   {
     v4 = 20.0;
   }
@@ -1163,43 +1163,43 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
   return v4;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   item = self->_item;
-  if (item != v5)
+  if (item != itemCopy)
   {
-    v16 = v5;
+    v16 = itemCopy;
     [(SFNavigationBarItem *)item removeObserver:self];
-    v7 = [(SFNavigationBarItem *)self->_item fluidProgressController];
-    [v7 unregisterObserver:self->_progressView];
+    fluidProgressController = [(SFNavigationBarItem *)self->_item fluidProgressController];
+    [fluidProgressController unregisterObserver:self->_progressView];
 
-    LODWORD(v7) = [(SFCapsuleNavigationBar *)self _shouldCenterLabels];
-    objc_storeStrong(&self->_item, a3);
+    LODWORD(fluidProgressController) = [(SFCapsuleNavigationBar *)self _shouldCenterLabels];
+    objc_storeStrong(&self->_item, item);
     [(SFNavigationBarItem *)self->_item addObserver:self];
     progressView = self->_progressView;
-    v9 = [(SFNavigationBarItem *)self->_item fluidProgressStateSource];
-    v10 = [v9 progressState];
-    [(_SFFluidProgressView *)progressView setProgressToCurrentPositionForState:v10];
+    fluidProgressStateSource = [(SFNavigationBarItem *)self->_item fluidProgressStateSource];
+    progressState = [fluidProgressStateSource progressState];
+    [(_SFFluidProgressView *)progressView setProgressToCurrentPositionForState:progressState];
 
-    v11 = [(SFNavigationBarItem *)self->_item fluidProgressController];
-    [v11 registerObserver:self->_progressView];
+    fluidProgressController2 = [(SFNavigationBarItem *)self->_item fluidProgressController];
+    [fluidProgressController2 registerObserver:self->_progressView];
 
-    v12 = [(SFNavigationBarItem *)v16 text];
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitle:v12];
+    text = [(SFNavigationBarItem *)v16 text];
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitle:text];
 
     [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setShowsSearchIcon:[(SFCapsuleNavigationBar *)self _showsSearchIconInTitleContainer]];
     [(SFCapsuleNavigationBar *)self setLeadingButtons:self->_externalLeadingButtons];
     [(SFCapsuleNavigationBar *)self _updateSecurityAnnotation];
     [(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController resetDisplay];
-    if (v7 != [(SFCapsuleNavigationBar *)self _shouldCenterLabels])
+    if (fluidProgressController != [(SFCapsuleNavigationBar *)self _shouldCenterLabels])
     {
-      v13 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo constraintForHorizontalAlignment];
-      [v13 setActive:0];
+      constraintForHorizontalAlignment = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo constraintForHorizontalAlignment];
+      [constraintForHorizontalAlignment setActive:0];
 
       [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo setConstraintForHorizontalAlignment:0];
-      v14 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo constraintForHorizontalAlignment];
-      [v14 setActive:0];
+      constraintForHorizontalAlignment2 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo constraintForHorizontalAlignment];
+      [constraintForHorizontalAlignment2 setActive:0];
 
       [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo setConstraintForHorizontalAlignment:0];
     }
@@ -1214,37 +1214,37 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
 
     [(SFCapsuleNavigationBar *)self navigationBarItemDidUpdateShowsExtensionsAvailability:v16];
     [(SFCapsuleNavigationBar *)self navigationBarItemDidUpdateOverlayNarrowConfiguration:self->_item];
-    v5 = v16;
+    itemCopy = v16;
   }
 }
 
-- (void)prepareForSizingNavigationBar:(id)a3
+- (void)prepareForSizingNavigationBar:(id)bar
 {
-  v4 = a3;
-  v5 = [v4 leadingButtons];
-  v6 = [(SFCapsuleNavigationBar *)self leadingButtons];
-  v7 = [SFPlaceholderView placeholdersMatchingIntrinsicContentSizeOfViews:v5 reusingPlaceholders:v6];
+  barCopy = bar;
+  leadingButtons = [barCopy leadingButtons];
+  leadingButtons2 = [(SFCapsuleNavigationBar *)self leadingButtons];
+  v7 = [SFPlaceholderView placeholdersMatchingIntrinsicContentSizeOfViews:leadingButtons reusingPlaceholders:leadingButtons2];
   [(SFCapsuleNavigationBar *)self setLeadingButtons:v7];
 
-  v8 = [v4 trailingButtons];
-  v9 = [(SFCapsuleNavigationBar *)self trailingButtons];
-  v10 = [SFPlaceholderView placeholdersMatchingIntrinsicContentSizeOfViews:v8 reusingPlaceholders:v9];
+  trailingButtons = [barCopy trailingButtons];
+  trailingButtons2 = [(SFCapsuleNavigationBar *)self trailingButtons];
+  v10 = [SFPlaceholderView placeholdersMatchingIntrinsicContentSizeOfViews:trailingButtons reusingPlaceholders:trailingButtons2];
   [(SFCapsuleNavigationBar *)self setTrailingButtons:v10];
 
-  v11 = [v4 theme];
-  [(SFCapsuleNavigationBar *)self setTheme:v11];
+  theme = [barCopy theme];
+  [(SFCapsuleNavigationBar *)self setTheme:theme];
 
-  v12 = [v4 item];
-  [(SFCapsuleNavigationBar *)self setItem:v12];
+  item = [barCopy item];
+  [(SFCapsuleNavigationBar *)self setItem:item];
 
-  v13 = v4[78];
+  v13 = barCopy[78];
 
   [(SFCapsuleNavigationBar *)self updateLabelTypesWithAvailabilityDisplayController:v13 animated:0];
 }
 
-- (void)willChangeToMinimized:(BOOL)a3 coordinator:(id)a4
+- (void)willChangeToMinimized:(BOOL)minimized coordinator:(id)coordinator
 {
-  if (a3)
+  if (minimized)
   {
     v5 = 0.0;
   }
@@ -1260,20 +1260,20 @@ void __58__SFCapsuleNavigationBar__createTrailingButtonConstraints__block_invoke
   v11[2] = __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_invoke;
   v11[3] = &unk_1E721B5B0;
   v11[4] = self;
-  v12 = a3;
-  v6 = a4;
-  [v6 addKeyframeWithRelativeStartTime:v11 relativeDuration:v5 animations:0.33];
+  minimizedCopy = minimized;
+  coordinatorCopy = coordinator;
+  [coordinatorCopy addKeyframeWithRelativeStartTime:v11 relativeDuration:v5 animations:0.33];
   [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer beginTitleTextStyleAnimation];
-  v7 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo view];
-  [v7 beginTextSizeAnimation];
+  view = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo view];
+  [view beginTextSizeAnimation];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_invoke_2;
   v9[3] = &unk_1E721B400;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
-  [v6 addCompletion:v9];
+  v10 = view;
+  v8 = view;
+  [coordinatorCopy addCompletion:v9];
 }
 
 uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_invoke(uint64_t a1, double a2)
@@ -1306,12 +1306,12 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   textVerticalAlignmentConstraints = self->_textVerticalAlignmentConstraints;
   self->_textVerticalAlignmentConstraints = 0;
 
-  v6 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo constraintForHorizontalAlignment];
-  [v6 setActive:0];
+  constraintForHorizontalAlignment = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo constraintForHorizontalAlignment];
+  [constraintForHorizontalAlignment setActive:0];
 
   [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo setConstraintForHorizontalAlignment:0];
-  v7 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo constraintForHorizontalAlignment];
-  [v7 setActive:0];
+  constraintForHorizontalAlignment2 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo constraintForHorizontalAlignment];
+  [constraintForHorizontalAlignment2 setActive:0];
 
   [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo setConstraintForHorizontalAlignment:0];
   [(SFCapsuleNavigationBar *)self setNeedsUpdateConstraints];
@@ -1324,11 +1324,11 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   [(_SFBarRegistrationToken *)registration updateBarAnimated:0];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_isSelected != a3)
+  if (self->_isSelected != selected)
   {
-    self->_isSelected = a3;
+    self->_isSelected = selected;
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_leadingButtonConstraints];
     leadingButtonConstraints = self->_leadingButtonConstraints;
     self->_leadingButtonConstraints = 0;
@@ -1343,20 +1343,20 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   }
 }
 
-- (void)setMinimizationPercent:(double)a3
+- (void)setMinimizationPercent:(double)percent
 {
-  if (self->_minimizationPercent != a3)
+  if (self->_minimizationPercent != percent)
   {
-    self->_minimizationPercent = a3;
+    self->_minimizationPercent = percent;
     [(SFCapsuleNavigationBar *)self _updateButtonAlphaForMinimizedPercent:?];
   }
 }
 
-- (void)setMinimized:(BOOL)a3
+- (void)setMinimized:(BOOL)minimized
 {
-  if (self->_isMinimized != a3)
+  if (self->_isMinimized != minimized)
   {
-    self->_isMinimized = a3;
+    self->_isMinimized = minimized;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained navigationBarMinimizationChanged];
 
@@ -1381,7 +1381,7 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
     {
       v10 = v17;
       v11 = v10;
-      if (a3)
+      if (minimized)
       {
         [(_SFBarTheme *)v10 tabTitleTheme];
       }
@@ -1393,30 +1393,30 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
       v12 = ;
       [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTheme:v12];
 
-      v13 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer theme];
-      v14 = [v13 placeholderTextColor];
-      [(UIView *)self->_searchIndicatorView setTintColor:v14];
+      theme = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer theme];
+      placeholderTextColor = [theme placeholderTextColor];
+      [(UIView *)self->_searchIndicatorView setTintColor:placeholderTextColor];
     }
 
     [(SFCapsuleNavigationBar *)self _updateLabelContents];
     [(SFCapsuleNavigationBar *)self _updateButtonsTransform];
-    v15 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo constraintForHorizontalAlignment];
-    [v15 setActive:0];
+    constraintForHorizontalAlignment = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo constraintForHorizontalAlignment];
+    [constraintForHorizontalAlignment setActive:0];
 
     [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_titleLabelLayoutInfo setConstraintForHorizontalAlignment:0];
-    v16 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo constraintForHorizontalAlignment];
-    [v16 setActive:0];
+    constraintForHorizontalAlignment2 = [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo constraintForHorizontalAlignment];
+    [constraintForHorizontalAlignment2 setActive:0];
 
     [(SFCapsuleNavigationBarLabelLayoutInfo *)self->_availabilityLabelLayoutInfo setConstraintForHorizontalAlignment:0];
     [(SFCapsuleNavigationBar *)self _updateShowsPrivateAnnotation];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = SFCapsuleNavigationBar;
-  [(SFCapsuleNavigationBar *)&v5 setHighlighted:a3];
+  [(SFCapsuleNavigationBar *)&v5 setHighlighted:highlighted];
   highlightObserver = self->_highlightObserver;
   if (highlightObserver)
   {
@@ -1444,37 +1444,37 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   return result;
 }
 
-- (void)setKeyContentTransform:(CGAffineTransform *)a3
+- (void)setKeyContentTransform:(CGAffineTransform *)transform
 {
   p_keyContentTransform = &self->_keyContentTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_keyContentTransform.c;
   *&v11.a = *&self->_keyContentTransform.a;
   *&v11.c = v7;
   *&v11.tx = *&self->_keyContentTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v11))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_keyContentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_keyContentTransform->c = *&transform->c;
     *&p_keyContentTransform->tx = v9;
     *&p_keyContentTransform->a = v8;
-    v10 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v10 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v10;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTransform:&t1];
   }
 }
 
-- (void)setNonKeyContentAlpha:(double)a3
+- (void)setNonKeyContentAlpha:(double)alpha
 {
-  if (self->_nonKeyContentAlpha != a3)
+  if (self->_nonKeyContentAlpha != alpha)
   {
-    self->_nonKeyContentAlpha = a3;
+    self->_nonKeyContentAlpha = alpha;
     [(SFCapsuleNavigationBar *)self _updateButtonAlphaForMinimizedPercent:self->_minimizationPercent];
   }
 }
@@ -1499,14 +1499,14 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
 
 - (NSNumber)microphoneContentOriginX
 {
-  v3 = [(_SFBarRegistrationToken *)self->_registration microphoneButton];
-  v4 = [v3 imageView];
+  microphoneButton = [(_SFBarRegistrationToken *)self->_registration microphoneButton];
+  imageView = [microphoneButton imageView];
 
-  if ([v4 isDescendantOfView:self])
+  if ([imageView isDescendantOfView:self])
   {
     v5 = MEMORY[0x1E696AD98];
-    [v4 frame];
-    [(SFCapsuleNavigationBar *)self convertRect:v4 fromView:?];
+    [imageView frame];
+    [(SFCapsuleNavigationBar *)self convertRect:imageView fromView:?];
     v6 = [v5 numberWithDouble:CGRectGetMinX(v9)];
   }
 
@@ -1518,58 +1518,58 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   return v6;
 }
 
-- (void)setMicrophoneContentTransform:(CGAffineTransform *)a3
+- (void)setMicrophoneContentTransform:(CGAffineTransform *)transform
 {
   p_microphoneContentTransform = &self->_microphoneContentTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_microphoneContentTransform.c;
   *&t2.a = *&self->_microphoneContentTransform.a;
   *&t2.c = v7;
   *&t2.tx = *&self->_microphoneContentTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_microphoneContentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_microphoneContentTransform->c = *&transform->c;
     *&p_microphoneContentTransform->tx = v9;
     *&p_microphoneContentTransform->a = v8;
-    *&v11.a = *&a3->a;
-    *&v11.c = *&a3->c;
-    *&v11.tx = *&a3->tx;
-    v10 = [(_SFBarRegistrationToken *)self->_registration microphoneButton];
+    *&v11.a = *&transform->a;
+    *&v11.c = *&transform->c;
+    *&v11.tx = *&transform->tx;
+    microphoneButton = [(_SFBarRegistrationToken *)self->_registration microphoneButton];
     t1 = v11;
-    [v10 setTransform:&t1];
+    [microphoneButton setTransform:&t1];
   }
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(SFCapsuleNavigationBar *)self _invalidateHeight];
   }
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  themeCopy = theme;
   v6 = self->_theme;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_theme, a3);
+    objc_storeStrong(&self->_theme, theme);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 titleTheme];
-      [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTheme:v7];
+      titleTheme = [themeCopy titleTheme];
+      [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTheme:titleTheme];
     }
 
-    v8 = [(SFCapsuleNavigationBar *)self traitOverrides];
-    [v8 setNSIntegerValue:objc_msgSend(v5 forTrait:{"tintStyle"), objc_opt_class()}];
+    traitOverrides = [(SFCapsuleNavigationBar *)self traitOverrides];
+    [traitOverrides setNSIntegerValue:objc_msgSend(themeCopy forTrait:{"tintStyle"), objc_opt_class()}];
 
     [(SFCapsuleNavigationBar *)self _updateShowsPrivateAnnotation];
     [(SFCapsuleNavigationBar *)self _updateProgressViewFillColor];
@@ -1595,8 +1595,8 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
           }
 
           v14 = *(*(&v27 + 1) + 8 * v13);
-          v15 = [v5 toolbarControlsTintColor];
-          [v14 setTintColor:v15];
+          toolbarControlsTintColor = [themeCopy toolbarControlsTintColor];
+          [v14 setTintColor:toolbarControlsTintColor];
 
           ++v13;
         }
@@ -1629,8 +1629,8 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
           }
 
           v21 = *(*(&v23 + 1) + 8 * v20);
-          v22 = [v5 toolbarControlsTintColor];
-          [v21 setTintColor:v22];
+          toolbarControlsTintColor2 = [themeCopy toolbarControlsTintColor];
+          [v21 setTintColor:toolbarControlsTintColor2];
 
           ++v20;
         }
@@ -1644,14 +1644,14 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   }
 }
 
-- (void)setLeadingButtons:(id)a3
+- (void)setLeadingButtons:(id)buttons
 {
-  v4 = a3;
+  buttonsCopy = buttons;
   v5 = MEMORY[0x1E695E0F0];
-  v23 = v4;
-  if (v4)
+  v23 = buttonsCopy;
+  if (buttonsCopy)
   {
-    v5 = v4;
+    v5 = buttonsCopy;
   }
 
   v6 = v5;
@@ -1661,8 +1661,8 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
     if (!searchIndicatorView)
     {
       v12 = MEMORY[0x1E69DCAD8];
-      v13 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer titleTextStyle];
-      v14 = [v12 configurationWithTextStyle:v13 scale:2];
+      titleTextStyle = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer titleTextStyle];
+      v14 = [v12 configurationWithTextStyle:titleTextStyle scale:2];
 
       v15 = [MEMORY[0x1E69DCAD8] configurationWithWeight:5];
       v16 = [v14 configurationByApplyingConfiguration:v15];
@@ -1672,9 +1672,9 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
       v19 = self->_searchIndicatorView;
       self->_searchIndicatorView = v18;
 
-      v20 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer theme];
-      v21 = [v20 placeholderTextColor];
-      [(UIView *)self->_searchIndicatorView setTintColor:v21];
+      theme = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer theme];
+      placeholderTextColor = [theme placeholderTextColor];
+      [(UIView *)self->_searchIndicatorView setTintColor:placeholderTextColor];
 
       searchIndicatorView = self->_searchIndicatorView;
     }
@@ -1705,12 +1705,12 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   }
 }
 
-- (void)setTrailingButtons:(id)a3
+- (void)setTrailingButtons:(id)buttons
 {
-  v7 = a3;
+  buttonsCopy = buttons;
   if ([SFCapsuleNavigationBar _transitionFromButtons:"_transitionFromButtons:toButtons:withConstraintsToDeactivate:" toButtons:self->_trailingButtons withConstraintsToDeactivate:?])
   {
-    v4 = [v7 copy];
+    v4 = [buttonsCopy copy];
     trailingButtons = self->_trailingButtons;
     self->_trailingButtons = v4;
 
@@ -1721,24 +1721,24 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   }
 }
 
-- (BOOL)_transitionFromButtons:(id)a3 toButtons:(id)a4 withConstraintsToDeactivate:(id)a5
+- (BOOL)_transitionFromButtons:(id)buttons toButtons:(id)toButtons withConstraintsToDeactivate:(id)deactivate
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 isEqualToArray:v9];
+  buttonsCopy = buttons;
+  toButtonsCopy = toButtons;
+  deactivateCopy = deactivate;
+  v11 = [buttonsCopy isEqualToArray:toButtonsCopy];
   v12 = v11;
   if ((v11 & 1) == 0)
   {
-    v29 = v10;
+    v29 = deactivateCopy;
     v30 = v11;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v31 = v8;
-    v13 = v8;
+    v31 = buttonsCopy;
+    v13 = buttonsCopy;
     v14 = [v13 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v14)
     {
@@ -1768,7 +1768,7 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v18 = v9;
+    v18 = toButtonsCopy;
     v19 = [v18 countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v19)
     {
@@ -1786,8 +1786,8 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
           }
 
           v24 = *(*(&v32 + 1) + 8 * v23);
-          v25 = [(_SFBarTheme *)self->_theme toolbarControlsTintColor];
-          [v24 setTintColor:v25];
+          toolbarControlsTintColor = [(_SFBarTheme *)self->_theme toolbarControlsTintColor];
+          [v24 setTintColor:toolbarControlsTintColor];
 
           [v24 setMaximumContentSizeCategory:v22];
           LODWORD(v26) = 1132920832;
@@ -1806,20 +1806,20 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
       while (v20);
     }
 
-    v10 = v29;
+    deactivateCopy = v29;
     [MEMORY[0x1E696ACD8] deactivateConstraints:v29];
     [(SFCapsuleNavigationBar *)self setNeedsUpdateConstraints];
-    v8 = v31;
+    buttonsCopy = v31;
     v12 = v30;
   }
 
   return v12 ^ 1;
 }
 
-- (void)_updateButtonAlphaForMinimizedPercent:(double)a3
+- (void)_updateButtonAlphaForMinimizedPercent:(double)percent
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = _SFInterpolate(([(SFCapsuleNavigationBar *)self _shouldHideButtonsForMinimized:0]^ 1), ([(SFCapsuleNavigationBar *)self _shouldHideButtonsForMinimized:1]^ 1), a3) * self->_nonKeyContentAlpha;
+  v4 = _SFInterpolate(([(SFCapsuleNavigationBar *)self _shouldHideButtonsForMinimized:0]^ 1), ([(SFCapsuleNavigationBar *)self _shouldHideButtonsForMinimized:1]^ 1), percent) * self->_nonKeyContentAlpha;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1881,36 +1881,36 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
   }
 }
 
-- (void)updateLabelTypesWithAvailabilityDisplayController:(id)a3 animated:(BOOL)a4
+- (void)updateLabelTypesWithAvailabilityDisplayController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_sizeUpdater);
   v8 = WeakRetained;
   v9 = 0;
-  if (v4 && WeakRetained)
+  if (animatedCopy && WeakRetained)
   {
     v9 = !self->_isForSizing;
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = self->_availabilityLabelLayoutInfo;
-  if ([v6 isDisplaying])
+  if ([controllerCopy isDisplaying])
   {
     v12 = objc_alloc_init(SFURLLabel);
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(SFCapsuleNavigationBar *)self _labelTextStyle];
-    v15 = [v13 preferredFontForTextStyle:v14];
+    _labelTextStyle = [(SFCapsuleNavigationBar *)self _labelTextStyle];
+    v15 = [v13 preferredFontForTextStyle:_labelTextStyle];
     [(SFURLLabel *)v12 setFont:v15];
 
-    v16 = [v6 currentLabel];
-    [(SFURLLabel *)v12 setText:v16];
+    currentLabel = [controllerCopy currentLabel];
+    [(SFURLLabel *)v12 setText:currentLabel];
 
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    [(SFURLLabel *)v12 setTextColor:v17];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(SFURLLabel *)v12 setTextColor:labelColor];
 
     v18 = [[SFCapsuleNavigationBarLabelLayoutInfo alloc] initWithView:v12];
-    [(SFCapsuleNavigationBar *)self _initializeLayoutInfo:v18 forPrimaryLabel:0 addingConstraints:v10];
+    [(SFCapsuleNavigationBar *)self _initializeLayoutInfo:v18 forPrimaryLabel:0 addingConstraints:array];
   }
 
   else
@@ -1932,8 +1932,8 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
     v31 = v9;
     if (v19 != 0 && v9)
     {
-      [MEMORY[0x1E696ACD8] activateConstraints:v10];
-      [v10 removeAllObjects];
+      [MEMORY[0x1E696ACD8] activateConstraints:array];
+      [array removeAllObjects];
       [(SFCapsuleNavigationBar *)self _updateLabelContentsAtIndexes:0];
       v20 = MEMORY[0x1E69DD250];
       v41[0] = MEMORY[0x1E69E9820];
@@ -1946,15 +1946,15 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
       [v20 performWithoutAnimation:v41];
     }
 
-    v21 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer titleTextStyle];
+    titleTextStyle = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer titleTextStyle];
     [(SFCapsuleNavigationBar *)self _updateLabelContents];
-    v29 = v21;
+    v29 = titleTextStyle;
     if (v9)
     {
-      v22 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer titleTextStyle];
+      titleTextStyle2 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer titleTextStyle];
       v23 = WBSIsEqual();
 
-      [MEMORY[0x1E696ACD8] activateConstraints:v10];
+      [MEMORY[0x1E696ACD8] activateConstraints:array];
       if (v23)
       {
         v24 = 0;
@@ -1969,7 +1969,7 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
 
     else
     {
-      [MEMORY[0x1E696ACD8] activateConstraints:v10];
+      [MEMORY[0x1E696ACD8] activateConstraints:array];
       v24 = 0;
     }
 
@@ -1980,7 +1980,7 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
     v25 = v11;
     v40 = v24;
     v38 = v25;
-    v39 = self;
+    selfCopy = self;
     v26 = _Block_copy(v37);
     v27 = v26;
     if (v8)
@@ -1992,7 +1992,7 @@ uint64_t __60__SFCapsuleNavigationBar_willChangeToMinimized_coordinator___block_
       v33 = v25;
       v34 = v19;
       v28 = v30;
-      v35 = self;
+      selfCopy2 = self;
       v36 = v30;
       [v8 invalidateHeightForCapsuleContentView:self animated:v31 animations:v32 completion:v27];
     }
@@ -2051,113 +2051,113 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
   return [v4 layoutIfNeeded];
 }
 
-- (void)_initializeLayoutInfo:(id)a3 forPrimaryLabel:(BOOL)a4 addingConstraints:(id)a5
+- (void)_initializeLayoutInfo:(id)info forPrimaryLabel:(BOOL)label addingConstraints:(id)constraints
 {
-  v27 = a3;
-  v8 = a5;
-  if (!a4)
+  infoCopy = info;
+  constraintsCopy = constraints;
+  if (!label)
   {
-    v9 = [v27 view];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v9 setAdjustsFontForContentSizeCategory:1];
-    [v9 setAccessibilityIdentifier:@"TabBarItemSubtitle"];
-    [v9 setFadeOutEdge:1];
+    view = [infoCopy view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view setAdjustsFontForContentSizeCategory:1];
+    [view setAccessibilityIdentifier:@"TabBarItemSubtitle"];
+    [view setFadeOutEdge:1];
     LODWORD(v10) = 1131413504;
-    [v9 setContentHuggingPriority:0 forAxis:v10];
+    [view setContentHuggingPriority:0 forAxis:v10];
     LODWORD(v11) = 1144586240;
-    [v9 setContentCompressionResistancePriority:0 forAxis:v11];
-    [(SFCapsuleNavigationBar *)self addSubview:v9];
+    [view setContentCompressionResistancePriority:0 forAxis:v11];
+    [(SFCapsuleNavigationBar *)self addSubview:view];
   }
 
-  v12 = [v27 view];
-  v13 = [v12 topAnchor];
-  v14 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
-  [v8 addObject:v15];
+  view2 = [infoCopy view];
+  topAnchor = [view2 topAnchor];
+  topAnchor2 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [constraintsCopy addObject:v15];
 
-  v16 = [v12 bottomAnchor];
-  v17 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
-  [v8 addObject:v18];
+  bottomAnchor = [view2 bottomAnchor];
+  bottomAnchor2 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [constraintsCopy addObject:v18];
 
-  v19 = [(SFCapsuleNavigationBar *)self _horizontalAlignmentConstraintForLabel:v12];
-  [v27 setConstraintForHorizontalAlignment:v19];
+  v19 = [(SFCapsuleNavigationBar *)self _horizontalAlignmentConstraintForLabel:view2];
+  [infoCopy setConstraintForHorizontalAlignment:v19];
 
-  v20 = [v27 constraintForHorizontalAlignment];
-  [v8 addObject:v20];
+  constraintForHorizontalAlignment = [infoCopy constraintForHorizontalAlignment];
+  [constraintsCopy addObject:constraintForHorizontalAlignment];
 
-  v21 = [v12 leadingAnchor];
-  v22 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide leadingAnchor];
-  v23 = [v21 constraintGreaterThanOrEqualToAnchor:v22];
-  [v8 addObject:v23];
+  leadingAnchor = [view2 leadingAnchor];
+  leadingAnchor2 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide leadingAnchor];
+  v23 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
+  [constraintsCopy addObject:v23];
 
-  v24 = [v12 trailingAnchor];
-  v25 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide trailingAnchor];
-  v26 = [v24 constraintLessThanOrEqualToAnchor:v25];
-  [v8 addObject:v26];
+  trailingAnchor = [view2 trailingAnchor];
+  trailingAnchor2 = [(UILayoutGuide *)self->_textVerticalAlignmentGuide trailingAnchor];
+  v26 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+  [constraintsCopy addObject:v26];
 }
 
-- (void)_setHidesTitle:(BOOL)a3
+- (void)_setHidesTitle:(BOOL)title
 {
-  if (self->_hidesTitle != a3)
+  if (self->_hidesTitle != title)
   {
-    self->_hidesTitle = a3;
+    self->_hidesTitle = title;
     [(SFCapsuleNavigationBar *)self _updateTitleContainerAlpha];
   }
 }
 
-- (void)navigationBarItemDidUpdateText:(id)a3
+- (void)navigationBarItemDidUpdateText:(id)text
 {
-  v4 = [a3 text];
-  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitle:v4];
+  text = [text text];
+  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitle:text];
 
   WeakRetained = objc_loadWeakRetained(&self->_sizeUpdater);
   [WeakRetained invalidateHeightForCapsuleContentView:self];
 }
 
-- (void)navigationBarItemDidUpdateShowsSearchIndicator:(id)a3
+- (void)navigationBarItemDidUpdateShowsSearchIndicator:(id)indicator
 {
-  v4 = [(SFCapsuleNavigationBar *)self _showsSearchIconInTitleContainer];
+  _showsSearchIconInTitleContainer = [(SFCapsuleNavigationBar *)self _showsSearchIconInTitleContainer];
   titleContainer = self->_titleContainer;
 
-  [(SFUnifiedTabBarItemTitleContainerView *)titleContainer setShowsSearchIcon:v4];
+  [(SFUnifiedTabBarItemTitleContainerView *)titleContainer setShowsSearchIcon:_showsSearchIconInTitleContainer];
 }
 
-- (void)navigationBarItemDidUpdateSecurityAnnotation:(id)a3
+- (void)navigationBarItemDidUpdateSecurityAnnotation:(id)annotation
 {
   [(SFCapsuleNavigationBar *)self _updateLabelTypesAnimated:1];
 
   [(SFCapsuleNavigationBar *)self _updateSecurityAnnotation];
 }
 
-- (void)navigationBarItemDidUpdateContentOptions:(id)a3 resetDisplay:(BOOL)a4
+- (void)navigationBarItemDidUpdateContentOptions:(id)options resetDisplay:(BOOL)display
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  displayCopy = display;
+  optionsCopy = options;
+  if (displayCopy)
   {
     [(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController resetDisplay];
   }
 
-  -[WBSContentAvailabilityDisplayController updateToContentOptions:](self->_availabilityDisplayController, "updateToContentOptions:", [v6 contentOptions]);
+  -[WBSContentAvailabilityDisplayController updateToContentOptions:](self->_availabilityDisplayController, "updateToContentOptions:", [optionsCopy contentOptions]);
 }
 
-- (void)navigationBarItemDidUpdateShowsExtensionsAvailability:(id)a3
+- (void)navigationBarItemDidUpdateShowsExtensionsAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   [(SFCapsuleNavigationBar *)self _updateLabelTypesAnimated:1];
-  [(SFCapsuleNavigationBar *)self _updatePageFormatButtonForNavigationBarItem:v4 shouldResetDiscovery:0];
+  [(SFCapsuleNavigationBar *)self _updatePageFormatButtonForNavigationBarItem:availabilityCopy shouldResetDiscovery:0];
 }
 
-- (void)navigationBarItemDidUpdateMediaStateIcon:(id)a3
+- (void)navigationBarItemDidUpdateMediaStateIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   [(SFCapsuleNavigationBar *)self _updateLabelTypesAnimated:1];
   [(SFCapsuleNavigationBar *)self _updateLabelContents];
-  [(SFCapsuleNavigationBar *)self _updatePageFormatButtonForNavigationBarItem:v4 shouldResetDiscovery:0];
+  [(SFCapsuleNavigationBar *)self _updatePageFormatButtonForNavigationBarItem:iconCopy shouldResetDiscovery:0];
 }
 
-- (void)navigationBarItemDidUpdateShowsStopReloadButtons:(id)a3
+- (void)navigationBarItemDidUpdateShowsStopReloadButtons:(id)buttons
 {
   [(SFCapsuleNavigationBar *)self setNeedsLayout];
   registration = self->_registration;
@@ -2165,12 +2165,12 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
   [(_SFBarRegistrationToken *)registration updateBarAnimated:1];
 }
 
-- (void)navigationBarItemDidUpdateOverlayNarrowConfiguration:(id)a3
+- (void)navigationBarItemDidUpdateOverlayNarrowConfiguration:(id)configuration
 {
-  v4 = [a3 overlayNarrowConfiguration];
+  overlayNarrowConfiguration = [configuration overlayNarrowConfiguration];
   overlayView = self->_overlayView;
-  v16 = v4;
-  if (v4)
+  v16 = overlayNarrowConfiguration;
+  if (overlayNarrowConfiguration)
   {
     if (overlayView && (-[SFURLFieldOverlayView configuration](overlayView, "configuration"), v6 = objc_claimAutoreleasedReturnValue(), [v6 identifier], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v6, overlayView = self->_overlayView, v9))
     {
@@ -2189,12 +2189,12 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
       [(SFURLFieldOverlayView *)self->_overlayView setAutoresizingMask:18];
       [(SFCapsuleNavigationBar *)self bounds];
       [(SFURLFieldOverlayView *)self->_overlayView _setContinuousCornerRadius:CGRectGetHeight(v18) * 0.5];
-      v13 = [(SFURLFieldOverlayView *)self->_overlayView eraserView];
-      [(SFCapsuleNavigationBar *)self addSubview:v13];
+      eraserView = [(SFURLFieldOverlayView *)self->_overlayView eraserView];
+      [(SFCapsuleNavigationBar *)self addSubview:eraserView];
 
       [(SFCapsuleNavigationBar *)self addSubview:self->_overlayView];
-      v14 = [(SFURLFieldOverlayView *)self->_overlayView layer];
-      [v14 setZPosition:1.79769313e308];
+      layer = [(SFURLFieldOverlayView *)self->_overlayView layer];
+      [layer setZPosition:1.79769313e308];
 
       [(SFCapsuleNavigationBar *)self updateAccessibilityIdentifier];
       [(SFURLFieldOverlayView *)self->_overlayView present];
@@ -2209,34 +2209,34 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
   }
 }
 
-- (void)navigationBarItemDidUpdateFluidProgressController:(id)a3
+- (void)navigationBarItemDidUpdateFluidProgressController:(id)controller
 {
-  v4 = [a3 fluidProgressController];
-  [v4 registerObserver:self->_progressView];
+  fluidProgressController = [controller fluidProgressController];
+  [fluidProgressController registerObserver:self->_progressView];
 }
 
-- (void)_updatePageFormatButtonForNavigationBarItem:(id)a3 shouldResetDiscovery:(BOOL)a4
+- (void)_updatePageFormatButtonForNavigationBarItem:(id)item shouldResetDiscovery:(BOOL)discovery
 {
-  v4 = a4;
-  v29 = a3;
-  v6 = [(_SFBarRegistrationToken *)self->_registration pageFormatItemState];
-  v7 = v6;
-  if (v4)
+  discoveryCopy = discovery;
+  itemCopy = item;
+  pageFormatItemState = [(_SFBarRegistrationToken *)self->_registration pageFormatItemState];
+  v7 = pageFormatItemState;
+  if (discoveryCopy)
   {
-    v7 = v6 & 0xFFFFFFFFFFFFFFEFLL;
+    v7 = pageFormatItemState & 0xFFFFFFFFFFFFFFEFLL;
   }
 
-  else if (!v29)
+  else if (!itemCopy)
   {
-    v15 = v6 | 0x10;
+    v15 = pageFormatItemState | 0x10;
     goto LABEL_40;
   }
 
-  v8 = [(_SFBarTheme *)self->_theme tintStyle];
-  v9 = v8;
-  if (v8)
+  tintStyle = [(_SFBarTheme *)self->_theme tintStyle];
+  v9 = tintStyle;
+  if (tintStyle)
   {
-    if (_SFIsPrivateTintStyle(v8))
+    if (_SFIsPrivateTintStyle(tintStyle))
     {
       if (_SFIsDarkTintStyle(v9))
       {
@@ -2255,7 +2255,7 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
     }
   }
 
-  v10 = v29;
+  v10 = itemCopy;
   if ((v7 & 0x10) != 0)
   {
     v14 = 0;
@@ -2264,9 +2264,9 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
 
   else if ([(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController isDisplaying])
   {
-    v11 = [(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController currentOptions];
-    v12 = v11 & 0x20;
-    if ((v11 & 0x20) != 0)
+    currentOptions = [(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController currentOptions];
+    v12 = currentOptions & 0x20;
+    if ((currentOptions & 0x20) != 0)
     {
       v13 = 0;
     }
@@ -2276,7 +2276,7 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
       v13 = ([(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController currentOptions]>> 4) & 4;
     }
 
-    v10 = v29;
+    v10 = itemCopy;
     v14 = v12 >> 5;
   }
 
@@ -2284,7 +2284,7 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
   {
     v14 = 0;
     v13 = 0;
-    v10 = v29;
+    v10 = itemCopy;
   }
 
   v16 = v7 & 0xFFFFFFFFFFFF8090;
@@ -2298,9 +2298,9 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
     v17 = 0;
   }
 
-  v18 = ([v29 contentOptions] & 0x1F) != 0;
-  v19 = [v29 contentOptions];
-  if ([v29 readerButtonSelected])
+  v18 = ([itemCopy contentOptions] & 0x1F) != 0;
+  contentOptions = [itemCopy contentOptions];
+  if ([itemCopy readerButtonSelected])
   {
     v20 = 2;
   }
@@ -2310,8 +2310,8 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
     v20 = 0;
   }
 
-  v21 = (v14 | v13 | v17 | v16) & 0xFFFFFFFFFFFFEFFFLL | (v18 << 13) | ((v19 & 1) << 12) | v20;
-  if ([v29 showsTranslationIcon])
+  v21 = (v14 | v13 | v17 | v16) & 0xFFFFFFFFFFFFEFFFLL | (v18 << 13) | ((contentOptions & 1) << 12) | v20;
+  if ([itemCopy showsTranslationIcon])
   {
     v22 = 8;
   }
@@ -2321,7 +2321,7 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
     v22 = 0;
   }
 
-  if ([v29 menuButtonSelected])
+  if ([itemCopy menuButtonSelected])
   {
     v23 = 32;
   }
@@ -2331,7 +2331,7 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
     v23 = 0;
   }
 
-  if ([v29 extensionsAreActive])
+  if ([itemCopy extensionsAreActive])
   {
     v24 = 256;
   }
@@ -2341,7 +2341,7 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
     v24 = 0;
   }
 
-  if ([v29 needsExtensionBadge])
+  if ([itemCopy needsExtensionBadge])
   {
     v25 = 512;
   }
@@ -2351,10 +2351,10 @@ uint64_t __85__SFCapsuleNavigationBar_updateLabelTypesWithAvailabilityDisplayCon
     v25 = 0;
   }
 
-  v26 = [v29 mediaStateIconToDisplay] != 0;
-  v27 = [v29 hasHiddenElements];
+  v26 = [itemCopy mediaStateIconToDisplay] != 0;
+  hasHiddenElements = [itemCopy hasHiddenElements];
   v28 = 0x4000;
-  if (!v27)
+  if (!hasHiddenElements)
   {
     v28 = 0;
   }
@@ -2364,24 +2364,24 @@ LABEL_40:
   [(_SFBarRegistrationToken *)self->_registration setPageFormatItemState:v15];
 }
 
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   registration = self->_registration;
-  v15 = a7;
-  v16 = a5;
-  v22 = [(_SFBarRegistrationToken *)registration viewForBarItem:a6];
+  blockCopy = block;
+  viewCopy = view;
+  v22 = [(_SFBarRegistrationToken *)registration viewForBarItem:item];
   v17 = MEMORY[0x1E69DD250];
   [v22 bounds];
-  [v17 _sf_animateLinkImage:a3 withAnimation:1 fromRect:v16 inView:v22 toRect:0 inView:v15 afterImageDisappearsBlock:x afterDestinationLayerBouncesBlock:{y, width, height, v18, v19, v20, v21}];
+  [v17 _sf_animateLinkImage:image withAnimation:1 fromRect:viewCopy inView:v22 toRect:0 inView:blockCopy afterImageDisappearsBlock:x afterDestinationLayerBouncesBlock:{y, width, height, v18, v19, v20, v21}];
 }
 
-- (id)barItemTargetForAnimatingToBarItem:(int64_t)a3
+- (id)barItemTargetForAnimatingToBarItem:(int64_t)item
 {
-  if (a3 == 11)
+  if (item == 11)
   {
     return &unk_1EFF73DC0;
   }
@@ -2392,11 +2392,11 @@ LABEL_40:
   }
 }
 
-- (CGRect)urlOutlineFrameRelativeToView:(id)a3
+- (CGRect)urlOutlineFrameRelativeToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(SFCapsuleNavigationBar *)self bounds];
-  [(SFCapsuleNavigationBar *)self convertRect:v4 toView:?];
+  [(SFCapsuleNavigationBar *)self convertRect:viewCopy toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2413,22 +2413,22 @@ LABEL_40:
   return result;
 }
 
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  v4 = [(SFCapsuleNavigationBar *)self hitTest:0 withEvent:a4.x, a4.y];
+  v4 = [(SFCapsuleNavigationBar *)self hitTest:0 withEvent:location.x, location.y];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)availabilityDisplayController:(id)a3 didUpdateWithState:(int64_t)a4
+- (void)availabilityDisplayController:(id)controller didUpdateWithState:(int64_t)state
 {
-  v6 = a3;
+  controllerCopy = controller;
   [(SFCapsuleNavigationBar *)self _updateLabelTypesAnimated:1];
-  v7 = [v6 isDisplaying];
+  isDisplaying = [controllerCopy isDisplaying];
 
-  if (v7)
+  if (isDisplaying)
   {
     item = self->_item;
   }
@@ -2438,21 +2438,21 @@ LABEL_40:
     item = 0;
   }
 
-  [(SFCapsuleNavigationBar *)self _updatePageFormatButtonForNavigationBarItem:item shouldResetDiscovery:a4 == 0];
+  [(SFCapsuleNavigationBar *)self _updatePageFormatButtonForNavigationBarItem:item shouldResetDiscovery:state == 0];
 }
 
-- (id)availabilityDisplayController:(id)a3 determineBestLabelsForPresentation:(id)a4
+- (id)availabilityDisplayController:(id)controller determineBestLabelsForPresentation:(id)presentation
 {
-  v5 = a4;
+  presentationCopy = presentation;
   v6 = self->_availabilityLabelLayoutInfo;
   v7 = objc_alloc_init(SFURLLabel);
   v8 = MEMORY[0x1E69DB878];
-  v9 = [(SFCapsuleNavigationBar *)self _labelTextStyle];
-  v10 = [v8 preferredFontForTextStyle:v9];
+  _labelTextStyle = [(SFCapsuleNavigationBar *)self _labelTextStyle];
+  v10 = [v8 preferredFontForTextStyle:_labelTextStyle];
   [(SFURLLabel *)v7 setFont:v10];
 
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  [(SFURLLabel *)v7 setTextColor:v11];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(SFURLLabel *)v7 setTextColor:labelColor];
 
   v12 = objc_alloc_init(MEMORY[0x1E69C8A40]);
   v28[0] = MEMORY[0x1E69E9820];
@@ -2461,7 +2461,7 @@ LABEL_40:
   v28[3] = &unk_1E721B650;
   v13 = v7;
   v29 = v13;
-  v30 = self;
+  selfCopy = self;
   v26 = v6;
   v27 = v12;
   v31 = v26;
@@ -2470,15 +2470,15 @@ LABEL_40:
   availabilityLabelLayoutInfo = self->_availabilityLabelLayoutInfo;
   self->_availabilityLabelLayoutInfo = v14;
 
-  v16 = [MEMORY[0x1E695DF70] array];
-  [(SFCapsuleNavigationBar *)self _initializeLayoutInfo:self->_availabilityLabelLayoutInfo forPrimaryLabel:0 addingConstraints:v16];
-  [MEMORY[0x1E696ACD8] activateConstraints:v16];
-  v17 = [v5 count];
+  array = [MEMORY[0x1E695DF70] array];
+  [(SFCapsuleNavigationBar *)self _initializeLayoutInfo:self->_availabilityLabelLayoutInfo forPrimaryLabel:0 addingConstraints:array];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
+  v17 = [presentationCopy count];
   v18 = v17 - 1;
   if (v17 == 1)
   {
 LABEL_9:
-    v20 = [v5 lastObject];
+    lastObject = [presentationCopy lastObject];
   }
 
   else
@@ -2486,8 +2486,8 @@ LABEL_9:
     v19 = 0;
     while (1)
     {
-      v20 = [v5 objectAtIndexedSubscript:v19];
-      v21 = [v20 count];
+      lastObject = [presentationCopy objectAtIndexedSubscript:v19];
+      v21 = [lastObject count];
       if (!v21)
       {
         break;
@@ -2497,7 +2497,7 @@ LABEL_9:
       v23 = 0;
       while (1)
       {
-        v24 = [v20 textForOptionsAtIndex:v23];
+        v24 = [lastObject textForOptionsAtIndex:v23];
         [(SFURLLabel *)v13 setText:v24];
 
         [(SFCapsuleNavigationBar *)self setNeedsLayout];
@@ -2522,7 +2522,7 @@ LABEL_9:
 
 LABEL_10:
 
-  return v20;
+  return lastObject;
 }
 
 void __91__SFCapsuleNavigationBar_availabilityDisplayController_determineBestLabelsForPresentation___block_invoke(uint64_t a1)

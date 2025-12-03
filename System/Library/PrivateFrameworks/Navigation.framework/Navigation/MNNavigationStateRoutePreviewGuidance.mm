@@ -1,24 +1,24 @@
 @interface MNNavigationStateRoutePreviewGuidance
-- (MNNavigationStateRoutePreviewGuidance)initWithStateManager:(id)a3 navigationSessionManager:(id)a4 startDetails:(id)a5;
+- (MNNavigationStateRoutePreviewGuidance)initWithStateManager:(id)manager navigationSessionManager:(id)sessionManager startDetails:(id)details;
 - (void)enterState;
-- (void)setGuidanceType:(unint64_t)a3;
-- (void)stopNavigationWithReason:(unint64_t)a3;
+- (void)setGuidanceType:(unint64_t)type;
+- (void)stopNavigationWithReason:(unint64_t)reason;
 @end
 
 @implementation MNNavigationStateRoutePreviewGuidance
 
-- (void)stopNavigationWithReason:(unint64_t)a3
+- (void)stopNavigationWithReason:(unint64_t)reason
 {
   v5 = [MNNavigationStateRoutePreview alloc];
-  v6 = [(MNNavigationState *)self stateManager];
-  v7 = [(MNNavigationSessionManager *)self->super._navigationSessionManager routeManager];
-  v8 = [v7 previewRoutes];
-  v9 = [(MNNavigationSessionManager *)self->super._navigationSessionManager routeManager];
-  v11 = -[MNNavigationStateRoutePreview initWithStateManager:previewRoutes:selectedRouteIndex:](v5, "initWithStateManager:previewRoutes:selectedRouteIndex:", v6, v8, [v9 selectedRouteIndex]);
+  stateManager = [(MNNavigationState *)self stateManager];
+  routeManager = [(MNNavigationSessionManager *)self->super._navigationSessionManager routeManager];
+  previewRoutes = [routeManager previewRoutes];
+  routeManager2 = [(MNNavigationSessionManager *)self->super._navigationSessionManager routeManager];
+  v11 = -[MNNavigationStateRoutePreview initWithStateManager:previewRoutes:selectedRouteIndex:](v5, "initWithStateManager:previewRoutes:selectedRouteIndex:", stateManager, previewRoutes, [routeManager2 selectedRouteIndex]);
 
-  [(MNNavigationSessionManager *)self->super._navigationSessionManager stopNavigationWithReason:a3];
-  v10 = [(MNNavigationState *)self stateManager];
-  [v10 transitionToState:v11];
+  [(MNNavigationSessionManager *)self->super._navigationSessionManager stopNavigationWithReason:reason];
+  stateManager2 = [(MNNavigationState *)self stateManager];
+  [stateManager2 transitionToState:v11];
 }
 
 - (void)enterState
@@ -29,16 +29,16 @@
   [(MNNavigationSessionManager *)self->super._navigationSessionManager setIsNavigatingInLowGuidance:0];
 }
 
-- (void)setGuidanceType:(unint64_t)a3
+- (void)setGuidanceType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = off_1E8428DD8;
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       return;
     }
@@ -47,21 +47,21 @@
   }
 
   v5 = objc_alloc(*v4);
-  v6 = [(MNNavigationState *)self stateManager];
-  v8 = [v5 initWithStateManager:v6 navigationSessionManager:self->super._navigationSessionManager startDetails:0];
+  stateManager = [(MNNavigationState *)self stateManager];
+  v8 = [v5 initWithStateManager:stateManager navigationSessionManager:self->super._navigationSessionManager startDetails:0];
 
   if (v8)
   {
-    v7 = [(MNNavigationState *)self stateManager];
-    [v7 transitionToState:v8];
+    stateManager2 = [(MNNavigationState *)self stateManager];
+    [stateManager2 transitionToState:v8];
   }
 }
 
-- (MNNavigationStateRoutePreviewGuidance)initWithStateManager:(id)a3 navigationSessionManager:(id)a4 startDetails:(id)a5
+- (MNNavigationStateRoutePreviewGuidance)initWithStateManager:(id)manager navigationSessionManager:(id)sessionManager startDetails:(id)details
 {
   v6.receiver = self;
   v6.super_class = MNNavigationStateRoutePreviewGuidance;
-  return [(MNNavigationStateGuidance *)&v6 initWithStateManager:a3 navigationSessionManager:a4 startDetails:a5];
+  return [(MNNavigationStateGuidance *)&v6 initWithStateManager:manager navigationSessionManager:sessionManager startDetails:details];
 }
 
 @end

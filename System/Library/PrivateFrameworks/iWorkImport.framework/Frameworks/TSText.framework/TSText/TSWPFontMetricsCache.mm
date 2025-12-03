@@ -1,21 +1,21 @@
 @interface TSWPFontMetricsCache
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedCache;
-- (BOOL)p_findEntryForFont:(__CTFont *)a3 outHeightInfo:(TSWPFontHeightInfo *)a4 outWidths:(unint64_t *)a5 outCollision:(BOOL *)a6;
-- (TSWPFontHeightInfo)p_fontHeightInfoForFont:(SEL)a3 outWidths:(__CTFont *)a4;
+- (BOOL)p_findEntryForFont:(__CTFont *)font outHeightInfo:(TSWPFontHeightInfo *)info outWidths:(unint64_t *)widths outCollision:(BOOL *)collision;
+- (TSWPFontHeightInfo)p_fontHeightInfoForFont:(SEL)font outWidths:(__CTFont *)widths;
 - (TSWPFontMetricsCache)init;
 - (id).cxx_construct;
-- (unint64_t)supportedFractionalWidthsForFont:(__CTFont *)a3;
+- (unint64_t)supportedFractionalWidthsForFont:(__CTFont *)font;
 - (void)dealloc;
-- (void)validateFontHeightInfo:(const TSWPFontHeightInfo *)a3 description:(id)a4;
+- (void)validateFontHeightInfo:(const TSWPFontHeightInfo *)info description:(id)description;
 @end
 
 @implementation TSWPFontMetricsCache
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSWPFontMetricsCache;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_276DFE758;
   block[3] = &unk_27A6F3D70;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A58470 != -1)
   {
     dispatch_once(&qword_280A58470, block);
@@ -37,7 +37,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSWPFontMetricsCache allocWithZone:]");
@@ -107,48 +107,48 @@
   [(TSWPFontMetricsCache *)&v7 dealloc];
 }
 
-- (TSWPFontHeightInfo)p_fontHeightInfoForFont:(SEL)a3 outWidths:(__CTFont *)a4
+- (TSWPFontHeightInfo)p_fontHeightInfoForFont:(SEL)font outWidths:(__CTFont *)widths
 {
-  v6 = a4;
-  v7 = self;
+  widthsCopy = widths;
+  selfCopy2 = self;
   v78 = *MEMORY[0x277D85DE8];
   *retstr = *byte_276F98C20;
-  if (!a4)
+  if (!widths)
   {
     v10 = MEMORY[0x277D81150];
-    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, "[TSWPFontMetricsCache p_fontHeightInfoForFont:outWidths:]");
+    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], font, "[TSWPFontMetricsCache p_fontHeightInfoForFont:outWidths:]");
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFontMetricsCache.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v14, v11, v13, 50, 0, "invalid nil value for '%{public}s'", "font");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
-    v7 = self;
-    v6 = 0;
+    selfCopy2 = self;
+    widthsCopy = 0;
   }
 
-  pthread_rwlock_rdlock(&v7->_lock);
+  pthread_rwlock_rdlock(&selfCopy2->_lock);
   v75 = 0;
-  v64 = v7;
-  EntryForFont_outHeightInfo_outWidths_outCollision = objc_msgSend_p_findEntryForFont_outHeightInfo_outWidths_outCollision_(v7, v17, v6, retstr, a5, &v75);
-  result = pthread_rwlock_unlock(&v7->_lock);
+  v64 = selfCopy2;
+  EntryForFont_outHeightInfo_outWidths_outCollision = objc_msgSend_p_findEntryForFont_outHeightInfo_outWidths_outCollision_(selfCopy2, v17, widthsCopy, retstr, a5, &v75);
+  result = pthread_rwlock_unlock(&selfCopy2->_lock);
   if (EntryForFont_outHeightInfo_outWidths_outCollision)
   {
     return result;
   }
 
-  TSWPDefaultLineHeightForFont(a4);
+  TSWPDefaultLineHeightForFont(widths);
   Size = v20;
-  retstr->ascent = CTFontGetAscent(a4);
-  retstr->descent = CTFontGetDescent(a4);
-  retstr->capHeight = CTFontGetCapHeight(a4);
-  retstr->xHeight = CTFontGetXHeight(a4);
-  retstr->underlinePosition = CTFontGetUnderlinePosition(a4);
-  retstr->underlineThickness = CTFontGetUnderlineThickness(a4);
-  Leading = CTFontGetLeading(a4);
+  retstr->ascent = CTFontGetAscent(widths);
+  retstr->descent = CTFontGetDescent(widths);
+  retstr->capHeight = CTFontGetCapHeight(widths);
+  retstr->xHeight = CTFontGetXHeight(widths);
+  retstr->underlinePosition = CTFontGetUnderlinePosition(widths);
+  retstr->underlineThickness = CTFontGetUnderlineThickness(widths);
+  Leading = CTFontGetLeading(widths);
   ascent = retstr->ascent;
   descent = retstr->descent;
   if (ascent == 0.0)
   {
-    v27 = a4;
+    widthsCopy4 = widths;
     if (descent != 0.0 || Leading != 0.0)
     {
       goto LABEL_9;
@@ -157,39 +157,39 @@
     v28 = MEMORY[0x277D81150];
     v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSWPFontMetricsCache p_fontHeightInfoForFont:outWidths:]");
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v30, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPFontMetricsCache.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v32, v29, v31, 74, 0, "Bad metrics for font %{public}@", a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v32, v29, v31, 74, 0, "Bad metrics for font %{public}@", widths);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v33, v34);
-    Size = CTFontGetSize(a4);
+    Size = CTFontGetSize(widths);
     descent = Size * 0.5;
     retstr->descent = Size * 0.5;
     retstr->ascent = Size * 0.5;
     ascent = Size * 0.5;
   }
 
-  v27 = a4;
+  widthsCopy4 = widths;
 LABEL_9:
   if (retstr->capHeight <= 0.0)
   {
-    v35 = CTFontCopyPostScriptName(v27);
+    v35 = CTFontCopyPostScriptName(widthsCopy4);
     objc_msgSend_containsObject_(&unk_288627F08, v36, v35);
 
     ascent = retstr->ascent;
     retstr->capHeight = ascent;
     descent = retstr->descent;
-    v27 = a4;
+    widthsCopy4 = widths;
   }
 
   retstr->leadingAbove = Size - ascent - descent - Leading;
   retstr->leadingBelow = Leading;
-  v37 = objc_msgSend_description(v27, v22, v23);
-  objc_msgSend_validateFontHeightInfo_description_(v7, v38, retstr, v37);
+  v37 = objc_msgSend_description(widthsCopy4, v22, v23);
+  objc_msgSend_validateFontHeightInfo_description_(selfCopy2, v38, retstr, v37);
 
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = CTFontCopyFeatures(a4);
+  obj = CTFontCopyFeatures(widths);
   v41 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v39, &v71, v77, 16);
   if (v41)
   {
@@ -264,9 +264,9 @@ LABEL_30:
   if ((v75 & 1) == 0)
   {
     pthread_rwlock_wrlock(&v64->_lock);
-    if ((objc_msgSend_p_findEntryForFont_outHeightInfo_outWidths_outCollision_(v64, v61, a4, retstr, a5, &v75) & 1) == 0 && (v75 & 1) == 0)
+    if ((objc_msgSend_p_findEntryForFont_outHeightInfo_outWidths_outCollision_(v64, v61, widths, retstr, a5, &v75) & 1) == 0 && (v75 & 1) == 0)
     {
-      objc_msgSend_p_addEntryForFont_heightInfo_widths_(v64, v62, a4, retstr, *a5);
+      objc_msgSend_p_addEntryForFont_heightInfo_widths_(v64, v62, widths, retstr, *a5);
     }
 
     pthread_rwlock_unlock(&v64->_lock);
@@ -275,21 +275,21 @@ LABEL_30:
   return result;
 }
 
-- (unint64_t)supportedFractionalWidthsForFont:(__CTFont *)a3
+- (unint64_t)supportedFractionalWidthsForFont:(__CTFont *)font
 {
   v4 = 0;
-  objc_msgSend_p_fontHeightInfoForFont_outWidths_(self, a2, a3, &v4);
+  objc_msgSend_p_fontHeightInfoForFont_outWidths_(self, a2, font, &v4);
   return v4;
 }
 
-- (void)validateFontHeightInfo:(const TSWPFontHeightInfo *)a3 description:(id)a4
+- (void)validateFontHeightInfo:(const TSWPFontHeightInfo *)info description:(id)description
 {
-  v4 = a4;
+  descriptionCopy = description;
 }
 
-- (BOOL)p_findEntryForFont:(__CTFont *)a3 outHeightInfo:(TSWPFontHeightInfo *)a4 outWidths:(unint64_t *)a5 outCollision:(BOOL *)a6
+- (BOOL)p_findEntryForFont:(__CTFont *)font outHeightInfo:(TSWPFontHeightInfo *)info outWidths:(unint64_t *)widths outCollision:(BOOL *)collision
 {
-  v11 = CFHash(a3);
+  v11 = CFHash(font);
   left = self->_fontHashToInfoMap.__tree_.__end_node_.__left_;
   p_end_node = &self->_fontHashToInfoMap.__tree_.__end_node_;
   v12 = left;
@@ -315,27 +315,27 @@ LABEL_30:
   while (v12);
   if (v15 != p_end_node && v11 >= v15[4].__left_)
   {
-    *a6 = 0;
+    *collision = 0;
     v20 = v15[18].__left_;
-    if (v20 == a3 || (v19 = CFEqual(v20, a3)) != 0)
+    if (v20 == font || (v19 = CFEqual(v20, font)) != 0)
     {
       v21 = *&v15[7].__left_;
-      *&a4->spaceBefore = *&v15[5].__left_;
-      *&a4->ascent = v21;
+      *&info->spaceBefore = *&v15[5].__left_;
+      *&info->ascent = v21;
       v22 = *&v15[9].__left_;
       v23 = *&v15[11].__left_;
       v24 = *&v15[15].__left_;
-      *&a4->verticalHeight = *&v15[13].__left_;
-      *&a4->underlinePosition = v24;
-      *&a4->descent = v22;
-      *&a4->leadingBelow = v23;
-      *a5 = v15[17].__left_;
+      *&info->verticalHeight = *&v15[13].__left_;
+      *&info->underlinePosition = v24;
+      *&info->descent = v22;
+      *&info->leadingBelow = v23;
+      *widths = v15[17].__left_;
       LOBYTE(v19) = 1;
     }
 
     else
     {
-      *a6 = 1;
+      *collision = 1;
     }
   }
 
@@ -343,7 +343,7 @@ LABEL_30:
   {
 LABEL_9:
     LOBYTE(v19) = 0;
-    *a6 = 0;
+    *collision = 0;
   }
 
   return v19;

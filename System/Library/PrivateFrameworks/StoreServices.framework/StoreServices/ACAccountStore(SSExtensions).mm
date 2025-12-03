@@ -21,14 +21,14 @@
 - (id)_ss_accountTypeWithIdentifier:()SSExtensions error:
 {
   v6 = a3;
-  v7 = [objc_opt_class() _accountTypesCache];
-  v8 = [v7 objectForKey:v6];
+  _accountTypesCache = [objc_opt_class() _accountTypesCache];
+  v8 = [_accountTypesCache objectForKey:v6];
 
   if (!v8)
   {
-    v8 = [a1 accountTypeWithAccountTypeIdentifier:v6];
-    v9 = [objc_opt_class() _accountTypesCache];
-    [v9 setObject:v8 forKey:v6];
+    v8 = [self accountTypeWithAccountTypeIdentifier:v6];
+    _accountTypesCache2 = [objc_opt_class() _accountTypesCache];
+    [_accountTypesCache2 setObject:v8 forKey:v6];
 
     if (a4)
     {
@@ -49,22 +49,22 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 _ss_accountTypeWithIdentifier:v8 error:a5];
+  v10 = [self _ss_accountTypeWithIdentifier:v8 error:a5];
   if (v10)
   {
-    v11 = [a1 accountsWithAccountType:v10];
-    v12 = [v9 _ss_altDSID];
-    v13 = [v9 _ss_DSID];
-    v14 = [v9 username];
+    v11 = [self accountsWithAccountType:v10];
+    _ss_altDSID = [v9 _ss_altDSID];
+    _ss_DSID = [v9 _ss_DSID];
+    username = [v9 username];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __96__ACAccountStore_SSExtensions___correspondingAccountWithAccountTypeIdentifier_forAccount_error___block_invoke;
     v26[3] = &unk_1E84AFCC8;
-    v15 = v12;
+    v15 = _ss_altDSID;
     v27 = v15;
-    v16 = v13;
+    v16 = _ss_DSID;
     v28 = v16;
-    v17 = v14;
+    v17 = username;
     v29 = v17;
     v18 = [v11 _ss_firstObjectPassingTest:v26];
     v19 = v18;

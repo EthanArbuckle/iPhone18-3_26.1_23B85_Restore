@@ -1,36 +1,36 @@
 @interface MCDRadioGenresContentManager
 - (id)_modelRequest;
-- (id)itemAtIndexPath:(id)a3;
+- (id)itemAtIndexPath:(id)path;
 @end
 
 @implementation MCDRadioGenresContentManager
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDRadioGenresContentManager *)self genreCategories];
+  pathCopy = path;
+  genreCategories = [(MCDRadioGenresContentManager *)self genreCategories];
 
-  if (!v5)
+  if (!genreCategories)
   {
     v6 = +[NSMutableArray array];
-    v7 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v8 = [v7 results];
+    lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+    results = [lastReceivedResponse results];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000FCCBC;
     v18[3] = &unk_101098568;
     v19 = v6;
     v9 = v6;
-    [v8 enumerateSectionsUsingBlock:v18];
+    [results enumerateSectionsUsingBlock:v18];
 
     v10 = +[UILocalizedIndexedCollation currentCollation];
     v11 = [v10 sortedArrayFromArray:v9 collationStringSelector:"title"];
     [(MCDRadioGenresContentManager *)self setGenreCategories:v11];
   }
 
-  v12 = [v4 row];
-  v13 = [(MCDRadioGenresContentManager *)self genreCategories];
-  v14 = [v13 count];
+  v12 = [pathCopy row];
+  genreCategories2 = [(MCDRadioGenresContentManager *)self genreCategories];
+  v14 = [genreCategories2 count];
 
   if (v12 >= v14)
   {
@@ -39,8 +39,8 @@
 
   else
   {
-    v15 = [(MCDRadioGenresContentManager *)self genreCategories];
-    v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    genreCategories3 = [(MCDRadioGenresContentManager *)self genreCategories];
+    v16 = [genreCategories3 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v16;
@@ -50,23 +50,23 @@
 {
   v3 = objc_alloc_init(MPModelStoreBrowseRequest);
   [v3 setFilteringPolicy:1];
-  v4 = [(MCDFuseContentManager *)self dataSource];
+  dataSource = [(MCDFuseContentManager *)self dataSource];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MCDFuseContentManager *)self dataSource];
-    v7 = [v6 parentSection];
-    [v3 configureWithParentSection:v7];
+    dataSource2 = [(MCDFuseContentManager *)self dataSource];
+    parentSection = [dataSource2 parentSection];
+    [v3 configureWithParentSection:parentSection];
   }
 
-  v8 = [(MCDFuseContentManager *)self dataSource];
+  dataSource3 = [(MCDFuseContentManager *)self dataSource];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(MCDFuseContentManager *)self dataSource];
-    [v3 setDomain:{objc_msgSend(v10, "domain")}];
+    dataSource4 = [(MCDFuseContentManager *)self dataSource];
+    [v3 setDomain:{objc_msgSend(dataSource4, "domain")}];
   }
 
   return v3;

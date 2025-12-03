@@ -1,32 +1,32 @@
 @interface DKFollowUpExtensionViewController
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 @end
 
 @implementation DKFollowUpExtensionViewController
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  actionCopy = action;
+  completionCopy = completion;
   v8 = _DKLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v6;
+    v21 = actionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Processing follow up action: %@", buf, 0xCu);
   }
 
-  v9 = [v6 url];
+  v9 = [actionCopy url];
 
   if (v9)
   {
     v10 = +[LSApplicationWorkspace defaultWorkspace];
-    v11 = [v6 url];
+    v11 = [actionCopy url];
     v24 = FBSOpenApplicationOptionKeyPromptUnlockDevice;
     v25 = &__kCFBooleanTrue;
-    v12 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
+    domain = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v19 = 0;
-    v13 = [v10 openSensitiveURL:v11 withOptions:v12 error:&v19];
+    v13 = [v10 openSensitiveURL:v11 withOptions:domain error:&v19];
     v14 = v19;
 
     if ((v13 & 1) == 0)
@@ -34,7 +34,7 @@
       v15 = _DKLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v6 url];
+        v16 = [actionCopy url];
         if (_DKIsInternalInstall())
         {
           v17 = 0;
@@ -43,8 +43,8 @@
 
         else if (v14)
         {
-          v12 = [v14 domain];
-          v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v12, [v14 code]);
+          domain = [v14 domain];
+          v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v14 code]);
           v17 = 1;
         }
 
@@ -71,7 +71,7 @@
     +[DKFollowUp clearFollowUp];
   }
 
-  v7[2](v7, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
 @end

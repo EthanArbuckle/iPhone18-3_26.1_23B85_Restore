@@ -1,17 +1,17 @@
 @interface RBSAuditToken
-+ (id)tokenFromAuditToken:(id *)a3;
-+ (id)tokenFromAuditTokenRef:(id *)a3;
-+ (id)tokenFromXPCConnection:(id)a3;
++ (id)tokenFromAuditToken:(id *)token;
++ (id)tokenFromAuditTokenRef:(id *)ref;
++ (id)tokenFromXPCConnection:(id)connection;
 - ($115C4C562B26FF47E01F9F4EA65B5887)realToken;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSAuditToken)initWithAuditToken:(id *)a3;
-- (RBSAuditToken)initWithCoder:(id)a3;
-- (RBSAuditToken)initWithRBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RBSAuditToken)initWithAuditToken:(id *)token;
+- (RBSAuditToken)initWithCoder:(id)coder;
+- (RBSAuditToken)initWithRBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)pidversion;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSAuditToken
@@ -32,38 +32,38 @@
   return audit_token_to_pidversion(&v4);
 }
 
-+ (id)tokenFromAuditToken:(id *)a3
++ (id)tokenFromAuditToken:(id *)token
 {
-  v4 = [a1 alloc];
-  v5 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v4 = [self alloc];
+  v5 = *&token->var0[4];
+  v8[0] = *token->var0;
   v8[1] = v5;
   v6 = [v4 initWithAuditToken:v8];
 
   return v6;
 }
 
-+ (id)tokenFromAuditTokenRef:(id *)a3
++ (id)tokenFromAuditTokenRef:(id *)ref
 {
-  if (!a3)
+  if (!ref)
   {
-    [(RBSAuditToken *)a2 tokenFromAuditTokenRef:a1];
+    [(RBSAuditToken *)a2 tokenFromAuditTokenRef:self];
   }
 
-  v5 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v5 = *&ref->var0[4];
+  v8[0] = *ref->var0;
   v8[1] = v5;
-  v6 = [a1 tokenFromAuditToken:v8];
+  v6 = [self tokenFromAuditToken:v8];
 
   return v6;
 }
 
-+ (id)tokenFromXPCConnection:(id)a3
++ (id)tokenFromXPCConnection:(id)connection
 {
-  v5 = a3;
-  if (!v5)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
-    [(RBSAuditToken *)a2 tokenFromXPCConnection:a1];
+    [(RBSAuditToken *)a2 tokenFromXPCConnection:self];
   }
 
   *&v6 = -1;
@@ -80,78 +80,78 @@
   else
   {
     atoken = v9;
-    v7 = [a1 tokenFromAuditToken:&atoken];
+    v7 = [self tokenFromAuditToken:&atoken];
   }
 
   return v7;
 }
 
-- (RBSAuditToken)initWithAuditToken:(id *)a3
+- (RBSAuditToken)initWithAuditToken:(id *)token
 {
   v6.receiver = self;
   v6.super_class = RBSAuditToken;
   result = [(RBSAuditToken *)&v6 init];
   if (result)
   {
-    v5 = *a3->var0;
-    *&result->_auditToken.val[4] = *&a3->var0[4];
+    v5 = *token->var0;
+    *&result->_auditToken.val[4] = *&token->var0[4];
     *result->_auditToken.val = v5;
   }
 
   return result;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = xpc_data_create(&self->_auditToken, 0x20uLL);
   if (v4)
   {
-    [v5 encodeXPCObject:v4 forKey:@"_auditToken"];
+    [coderCopy encodeXPCObject:v4 forKey:@"_auditToken"];
   }
 }
 
-- (RBSAuditToken)initWithRBSXPCCoder:(id)a3
+- (RBSAuditToken)initWithRBSXPCCoder:(id)coder
 {
   *&v4 = -1;
   *(&v4 + 1) = -1;
   buffer = v4;
   v11 = v4;
-  v5 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E70] forKey:@"_auditToken"];
+  v5 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9E70] forKey:@"_auditToken"];
   v6 = v5;
   if (v5 && xpc_data_get_bytes(v5, &buffer, 0, 0x20uLL) == 32)
   {
     v9[0] = buffer;
     v9[1] = v11;
     self = [(RBSAuditToken *)self initWithAuditToken:v9];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (RBSAuditToken)initWithCoder:(id)a3
+- (RBSAuditToken)initWithCoder:(id)coder
 {
   *&v4 = -1;
   *(&v4 + 1) = -1;
   v7 = v4;
   v8 = v4;
-  [a3 decodeValueOfObjCType:"{?=[8I]}" at:&v7 size:32];
+  [coder decodeValueOfObjCType:"{?=[8I]}" at:&v7 size:32];
   v6[0] = v7;
   v6[1] = v8;
   return [(RBSAuditToken *)self initWithAuditToken:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -159,9 +159,9 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    if (v4)
+    if (equalCopy)
     {
-      [(RBSAuditToken *)v4 realToken];
+      [(RBSAuditToken *)equalCopy realToken];
     }
 
     if (LODWORD(v12[0]) == self->_auditToken.val[0])
@@ -236,9 +236,9 @@
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = *&self->_auditToken.val[4];
   v7[0] = *self->_auditToken.val;
   v7[1] = v5;

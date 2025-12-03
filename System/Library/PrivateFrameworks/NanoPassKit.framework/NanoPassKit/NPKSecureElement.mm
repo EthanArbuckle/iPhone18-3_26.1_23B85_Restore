@@ -2,39 +2,39 @@
 + (id)sharedInstance;
 + (unint64_t)cachedIsInFailForward;
 + (void)_initVariables;
-+ (void)isInFailForward:(id)a3;
++ (void)isInFailForward:(id)forward;
 - (NPKSecureElement)init;
-- (void)_applicationWillEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_applicationWillEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)_backgroundQueue_initHWManager;
 - (void)_fetchNFCState;
-- (void)_secureElementDidUpdateRestrictedModeState:(BOOL)a3;
+- (void)_secureElementDidUpdateRestrictedModeState:(BOOL)state;
 - (void)applicationIsAtForeground;
 - (void)dealloc;
-- (void)didChangeRadioState:(BOOL)a3;
+- (void)didChangeRadioState:(BOOL)state;
 - (void)hardwareStateDidChange;
-- (void)isInRestrictedMode:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)isInRestrictedMode:(id)mode;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation NPKSecureElement
 
 + (unint64_t)cachedIsInFailForward
 {
-  [a1 _initVariables];
+  [self _initVariables];
   v3 = atomic_load(&_atomicIsInFailForward);
   if (!v3)
   {
-    [a1 isInFailForward:0];
+    [self isInFailForward:0];
   }
 
   return v3;
 }
 
-+ (void)isInFailForward:(id)a3
++ (void)isInFailForward:(id)forward
 {
-  v4 = a3;
+  forwardCopy = forward;
   v5 = pk_ui_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -48,14 +48,14 @@
     }
   }
 
-  [a1 _initVariables];
+  [self _initVariables];
   v8 = _inFailForwardQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__NPKSecureElement_isInFailForward___block_invoke;
   block[3] = &unk_279945198;
-  v11 = v4;
-  v9 = v4;
+  v11 = forwardCopy;
+  v9 = forwardCopy;
   dispatch_async(v8, block);
 }
 
@@ -182,9 +182,9 @@ void __34__NPKSecureElement_sharedInstance__block_invoke()
     observerManager = v3->_observerManager;
     v3->_observerManager = &v6->super;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v3 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D38A10] object:0];
-    [v8 addObserver:v3 selector:sel__applicationWillEnterBackground_ name:*MEMORY[0x277D38A08] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D38A10] object:0];
+    [defaultCenter addObserver:v3 selector:sel__applicationWillEnterBackground_ name:*MEMORY[0x277D38A08] object:0];
     v9 = v3->_backgroundQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -197,17 +197,17 @@ void __34__NPKSecureElement_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)isInRestrictedMode:(id)a3
+- (void)isInRestrictedMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   backgroundQueue = self->_backgroundQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__NPKSecureElement_isInRestrictedMode___block_invoke;
   v7[3] = &unk_279945530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modeCopy;
+  v6 = modeCopy;
   dispatch_async(backgroundQueue, v7);
 }
 
@@ -258,20 +258,20 @@ LABEL_12:
   return v5();
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
-  v4 = [(NPKSecureElement *)self hardwareManager];
-  [v4 registerEventListener:self];
+  observerCopy = observer;
+  hardwareManager = [(NPKSecureElement *)self hardwareManager];
+  [hardwareManager registerEventListener:self];
 
-  [(NPKObserverManager *)self->_observerManager registerObserver:v5];
+  [(NPKObserverManager *)self->_observerManager registerObserver:observerCopy];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  [(NPKObserverManager *)self->_observerManager unregisterObserver:a3];
-  v4 = [(NPKSecureElement *)self hardwareManager];
-  [v4 unregisterEventListener:self];
+  [(NPKObserverManager *)self->_observerManager unregisterObserver:observer];
+  hardwareManager = [(NPKSecureElement *)self hardwareManager];
+  [hardwareManager unregisterEventListener:self];
 }
 
 - (void)applicationIsAtForeground
@@ -296,12 +296,12 @@ uint64_t __45__NPKSecureElement_applicationIsAtForeground__block_invoke(uint64_t
 - (void)_backgroundQueue_initHWManager
 {
   dispatch_assert_queue_V2(self->_backgroundQueue);
-  v3 = [MEMORY[0x277D2C848] sharedHardwareManagerWithNoUI];
+  mEMORY[0x277D2C848] = [MEMORY[0x277D2C848] sharedHardwareManagerWithNoUI];
   hardwareManager = self->_hardwareManager;
-  self->_hardwareManager = v3;
+  self->_hardwareManager = mEMORY[0x277D2C848];
 
-  v5 = [(NPKSecureElement *)self hardwareManager];
-  self->_supportState = [v5 getHwSupport];
+  hardwareManager = [(NPKSecureElement *)self hardwareManager];
+  self->_supportState = [hardwareManager getHwSupport];
 
   supportState = self->_supportState;
   if (supportState == 4)
@@ -319,8 +319,8 @@ uint64_t __45__NPKSecureElement_applicationIsAtForeground__block_invoke(uint64_t
       }
     }
 
-    v10 = [(NPKSecureElement *)self hardwareManager];
-    [v10 unregisterEventListener:self];
+    hardwareManager2 = [(NPKSecureElement *)self hardwareManager];
+    [hardwareManager2 unregisterEventListener:self];
 
     [(NPKSecureElement *)self setHardwareManager:0];
     atomic_store(0, &self->_atomicIsNfcDisabled);
@@ -424,16 +424,16 @@ LABEL_16:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_secureElementDidUpdateRestrictedModeState:(BOOL)a3
+- (void)_secureElementDidUpdateRestrictedModeState:(BOOL)state
 {
-  atomic_store(a3, &self->_atomicIsInRestricted);
+  atomic_store(state, &self->_atomicIsInRestricted);
   observerManager = self->_observerManager;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__NPKSecureElement__secureElementDidUpdateRestrictedModeState___block_invoke;
   v4[3] = &unk_27994B168;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   [(NPKObserverManager *)observerManager enumerateObserversUsingBlock:v4];
 }
 
@@ -448,20 +448,20 @@ void __63__NPKSecureElement__secureElementDidUpdateRestrictedModeState___block_i
 
 - (void)dealloc
 {
-  v3 = [(NPKSecureElement *)self hardwareManager];
-  [v3 unregisterEventListener:self];
+  hardwareManager = [(NPKSecureElement *)self hardwareManager];
+  [hardwareManager unregisterEventListener:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = NPKSecureElement;
   [(NPKSecureElement *)&v5 dealloc];
 }
 
-- (void)didChangeRadioState:(BOOL)a3
+- (void)didChangeRadioState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v10 = *MEMORY[0x277D85DE8];
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -472,12 +472,12 @@ void __63__NPKSecureElement__secureElementDidUpdateRestrictedModeState___block_i
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67109120;
-      v9[1] = v3;
+      v9[1] = stateCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NFHardwareEventListener received nfc radio enabled %d", v9, 8u);
     }
   }
 
-  atomic_store(!v3, &self->_atomicIsNfcDisabled);
+  atomic_store(!stateCopy, &self->_atomicIsNfcDisabled);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -498,16 +498,16 @@ void __42__NPKSecureElement_hardwareStateDidChange__block_invoke(uint64_t a1)
   [*(a1 + 32) setSupportState:{objc_msgSend(v2, "getHwSupport")}];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  v4 = [(NPKSecureElement *)self hardwareManager];
-  [v4 registerEventListener:self];
+  hardwareManager = [(NPKSecureElement *)self hardwareManager];
+  [hardwareManager registerEventListener:self];
 }
 
-- (void)_applicationWillEnterBackground:(id)a3
+- (void)_applicationWillEnterBackground:(id)background
 {
-  v4 = [(NPKSecureElement *)self hardwareManager];
-  [v4 unregisterEventListener:self];
+  hardwareManager = [(NPKSecureElement *)self hardwareManager];
+  [hardwareManager unregisterEventListener:self];
 }
 
 @end

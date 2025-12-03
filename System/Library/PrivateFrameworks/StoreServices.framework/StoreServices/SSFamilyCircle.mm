@@ -1,6 +1,6 @@
 @interface SSFamilyCircle
-- (SSFamilyCircle)initWithCacheRepresentation:(id)a3;
-- (SSFamilyCircle)initWithXPCEncoding:(id)a3;
+- (SSFamilyCircle)initWithCacheRepresentation:(id)representation;
+- (SSFamilyCircle)initWithXPCEncoding:(id)encoding;
 - (id)allITunesIdentifiers;
 - (id)copyXPCEncoding;
 - (id)newCacheRepresentation;
@@ -31,10 +31,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) iTunesIdentifier];
-        if (v9)
+        iTunesIdentifier = [*(*(&v11 + 1) + 8 * i) iTunesIdentifier];
+        if (iTunesIdentifier)
         {
-          [v3 addObject:v9];
+          [v3 addObject:iTunesIdentifier];
         }
       }
 
@@ -47,10 +47,10 @@
   return v3;
 }
 
-- (SSFamilyCircle)initWithCacheRepresentation:(id)a3
+- (SSFamilyCircle)initWithCacheRepresentation:(id)representation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -59,7 +59,7 @@
     v5 = [(SSFamilyCircle *)&v35 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"family"];
+      v6 = [representationCopy objectForKey:@"family"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -105,7 +105,7 @@
         v5->_familyMembers = v14;
       }
 
-      v16 = [v4 objectForKey:@"accountNames"];
+      v16 = [representationCopy objectForKey:@"accountNames"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -196,10 +196,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) newCacheRepresentation];
-        if (v12)
+        newCacheRepresentation = [*(*(&v14 + 1) + 8 * v11) newCacheRepresentation];
+        if (newCacheRepresentation)
         {
-          [v6 addObject:v12];
+          [v6 addObject:newCacheRepresentation];
         }
 
         ++v11;
@@ -228,11 +228,11 @@
   return v3;
 }
 
-- (SSFamilyCircle)initWithXPCEncoding:(id)a3
+- (SSFamilyCircle)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v17.receiver = self;
     v17.super_class = SSFamilyCircle;

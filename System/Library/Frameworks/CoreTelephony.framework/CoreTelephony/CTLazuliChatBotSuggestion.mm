@@ -1,11 +1,11 @@
 @interface CTLazuliChatBotSuggestion
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotSuggestion:(id)a3;
-- (CTLazuliChatBotSuggestion)initWithCoder:(id)a3;
-- (CTLazuliChatBotSuggestion)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotSuggestion:(id)suggestion;
+- (CTLazuliChatBotSuggestion)initWithCoder:(id)coder;
+- (CTLazuliChatBotSuggestion)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliChatBotSuggestion
@@ -13,27 +13,27 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotSuggestion *)self displayText];
-  [v3 appendFormat:@", displayText = %@", v4];
+  displayText = [(CTLazuliChatBotSuggestion *)self displayText];
+  [v3 appendFormat:@", displayText = %@", displayText];
 
-  v5 = [(CTLazuliChatBotSuggestion *)self postback];
-  [v3 appendFormat:@", postback = %@", v5];
+  postback = [(CTLazuliChatBotSuggestion *)self postback];
+  [v3 appendFormat:@", postback = %@", postback];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotSuggestion:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = [(CTLazuliChatBotSuggestion *)self displayText];
-  v8 = [v6 displayText];
-  if (v7 != v8)
+  suggestionCopy = suggestion;
+  displayText = [(CTLazuliChatBotSuggestion *)self displayText];
+  displayText2 = [suggestionCopy displayText];
+  if (displayText != displayText2)
   {
-    v3 = [(CTLazuliChatBotSuggestion *)self displayText];
-    v4 = [v6 displayText];
-    if (![v3 isEqualToString:v4])
+    displayText3 = [(CTLazuliChatBotSuggestion *)self displayText];
+    displayText4 = [suggestionCopy displayText];
+    if (![displayText3 isEqualToString:displayText4])
     {
       v9 = 0;
 LABEL_8:
@@ -42,10 +42,10 @@ LABEL_8:
     }
   }
 
-  v10 = [(CTLazuliChatBotSuggestion *)self postback];
-  v11 = [v6 postback];
-  v12 = v11;
-  if (v10 == v11)
+  postback = [(CTLazuliChatBotSuggestion *)self postback];
+  postback2 = [suggestionCopy postback];
+  v12 = postback2;
+  if (postback == postback2)
   {
 
     v9 = 1;
@@ -53,12 +53,12 @@ LABEL_8:
 
   else
   {
-    v13 = [(CTLazuliChatBotSuggestion *)self postback];
-    v14 = [v6 postback];
-    v9 = [v13 isEqualToCTLazuliChatBotPostbackData:v14];
+    postback3 = [(CTLazuliChatBotSuggestion *)self postback];
+    postback4 = [suggestionCopy postback];
+    v9 = [postback3 isEqualToCTLazuliChatBotPostbackData:postback4];
   }
 
-  if (v7 != v8)
+  if (displayText != displayText2)
   {
     goto LABEL_8;
   }
@@ -68,55 +68,55 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotSuggestion *)self isEqualToCTLazuliChatBotSuggestion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotSuggestion *)self isEqualToCTLazuliChatBotSuggestion:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotSuggestion allocWithZone:?];
-  v6 = [(NSString *)self->_displayText copyWithZone:a3];
+  v6 = [(NSString *)self->_displayText copyWithZone:zone];
   [(CTLazuliChatBotSuggestion *)v5 setDisplayText:v6];
 
-  v7 = [(CTLazuliChatBotPostbackData *)self->_postback copyWithZone:a3];
+  v7 = [(CTLazuliChatBotPostbackData *)self->_postback copyWithZone:zone];
   [(CTLazuliChatBotSuggestion *)v5 setPostback:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_displayText forKey:@"kDisplayTextKey"];
-  [v4 encodeObject:self->_postback forKey:@"kPostbackKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_displayText forKey:@"kDisplayTextKey"];
+  [coderCopy encodeObject:self->_postback forKey:@"kPostbackKey"];
 }
 
-- (CTLazuliChatBotSuggestion)initWithCoder:(id)a3
+- (CTLazuliChatBotSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTLazuliChatBotSuggestion;
   v5 = [(CTLazuliChatBotSuggestion *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kDisplayTextKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kDisplayTextKey"];
     displayText = v5->_displayText;
     v5->_displayText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPostbackKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPostbackKey"];
     postback = v5->_postback;
     v5->_postback = v8;
   }
@@ -124,39 +124,39 @@ LABEL_9:
   return v5;
 }
 
-- (CTLazuliChatBotSuggestion)initWithReflection:(const void *)a3
+- (CTLazuliChatBotSuggestion)initWithReflection:(const void *)reflection
 {
   v14.receiver = self;
   v14.super_class = CTLazuliChatBotSuggestion;
   v4 = [(CTLazuliChatBotSuggestion *)&v14 init];
   if (v4)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(reflection + 23) >= 0)
     {
-      v5 = a3;
+      reflectionCopy = reflection;
     }
 
     else
     {
-      v5 = *a3;
+      reflectionCopy = *reflection;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:reflectionCopy];
     displayText = v4->_displayText;
     v4->_displayText = v6;
 
-    if (*(a3 + 48) == 1)
+    if (*(reflection + 48) == 1)
     {
       v8 = v4;
       v9 = [CTLazuliChatBotPostbackData alloc];
-      if ((*(a3 + 48) & 1) == 0)
+      if ((*(reflection + 48) & 1) == 0)
       {
         v13 = std::__throw_bad_optional_access[abi:nn200100]();
 
         _Unwind_Resume(v13);
       }
 
-      v10 = [(CTLazuliChatBotPostbackData *)v9 initWithReflection:a3 + 24];
+      v10 = [(CTLazuliChatBotPostbackData *)v9 initWithReflection:reflection + 24];
     }
 
     else

@@ -1,9 +1,9 @@
 @interface MKMapSnapshotCustomFeatureAnnotation
-+ (id)customFeatureAnnotationForMapItem:(id)a3 styleAttributes:(id)a4 suppressLabel:(BOOL)a5;
++ (id)customFeatureAnnotationForMapItem:(id)item styleAttributes:(id)attributes suppressLabel:(BOOL)label;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
-- (MKMapSnapshotCustomFeatureAnnotation)initWithCoder:(id)a3;
-- (MKMapSnapshotCustomFeatureAnnotation)initWithCustomFeature:(id)a3 coordinate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MKMapSnapshotCustomFeatureAnnotation)initWithCoder:(id)coder;
+- (MKMapSnapshotCustomFeatureAnnotation)initWithCustomFeature:(id)feature coordinate:(id)coordinate;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKMapSnapshotCustomFeatureAnnotation
@@ -16,22 +16,22 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MKMapSnapshotCustomFeatureAnnotation *)self internalCustomFeatureAnnotation];
-  [v4 encodeObject:v5 forKey:@"featureAnnotation"];
+  coderCopy = coder;
+  internalCustomFeatureAnnotation = [(MKMapSnapshotCustomFeatureAnnotation *)self internalCustomFeatureAnnotation];
+  [coderCopy encodeObject:internalCustomFeatureAnnotation forKey:@"featureAnnotation"];
 }
 
-- (MKMapSnapshotCustomFeatureAnnotation)initWithCoder:(id)a3
+- (MKMapSnapshotCustomFeatureAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MKMapSnapshotCustomFeatureAnnotation;
   v5 = [(MKMapSnapshotCustomFeatureAnnotation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureAnnotation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureAnnotation"];
     internalCustomFeatureAnnotation = v5->_internalCustomFeatureAnnotation;
     v5->_internalCustomFeatureAnnotation = v6;
   }
@@ -39,11 +39,11 @@
   return v5;
 }
 
-- (MKMapSnapshotCustomFeatureAnnotation)initWithCustomFeature:(id)a3 coordinate:(id)a4
+- (MKMapSnapshotCustomFeatureAnnotation)initWithCustomFeature:(id)feature coordinate:(id)coordinate
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  featureCopy = feature;
   v12.receiver = self;
   v12.super_class = MKMapSnapshotCustomFeatureAnnotation;
   v8 = [(MKMapSnapshotCustomFeatureAnnotation *)&v12 init];
@@ -54,27 +54,27 @@
     v8->_internalCustomFeatureAnnotation = v9;
 
     [(_MKAnnotationViewCustomFeatureAnnotation *)v8->_internalCustomFeatureAnnotation setCoordinate:var0, var1];
-    [(_MKAnnotationViewCustomFeatureAnnotation *)v8->_internalCustomFeatureAnnotation setCustomFeature:v7];
+    [(_MKAnnotationViewCustomFeatureAnnotation *)v8->_internalCustomFeatureAnnotation setCustomFeature:featureCopy];
   }
 
   return v8;
 }
 
-+ (id)customFeatureAnnotationForMapItem:(id)a3 styleAttributes:(id)a4 suppressLabel:(BOOL)a5
++ (id)customFeatureAnnotationForMapItem:(id)item styleAttributes:(id)attributes suppressLabel:(BOOL)label
 {
-  v5 = a5;
+  labelCopy = label;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [v7 _coordinate];
+  itemCopy = item;
+  attributesCopy = attributes;
+  [itemCopy _coordinate];
   v10 = v9;
-  [v7 _coordinate];
+  [itemCopy _coordinate];
   v12 = v11;
   v13 = [objc_alloc(MEMORY[0x1E69DF408]) initWithCoordinate:{v10, v11}];
   v14 = MKGetAnnotationsLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    if (v5)
+    if (labelCopy)
     {
       v15 = @"YES";
     }
@@ -89,39 +89,39 @@
     _os_log_impl(&dword_1A2EA0000, v14, OS_LOG_TYPE_INFO, "suppressLabel: %@", &v29, 0xCu);
   }
 
-  if (v5)
+  if (labelCopy)
   {
     [v13 setTextDisplayMode:3];
   }
 
-  v16 = [v7 name];
-  [v13 setText:v16 locale:0];
+  name = [itemCopy name];
+  [v13 setText:name locale:0];
 
   v17 = MKGetAnnotationsLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v7 name];
+    name2 = [itemCopy name];
     LODWORD(v29) = 138412290;
-    *(&v29 + 4) = v18;
+    *(&v29 + 4) = name2;
     _os_log_impl(&dword_1A2EA0000, v17, OS_LOG_TYPE_INFO, "mapItemName: %@", &v29, 0xCu);
   }
 
-  if (v8)
+  if (attributesCopy)
   {
-    v19 = v8;
+    _styleAttributes = attributesCopy;
   }
 
   else
   {
-    v19 = [v7 _styleAttributes];
+    _styleAttributes = [itemCopy _styleAttributes];
   }
 
-  v20 = v19;
-  v21 = [v19 hasAttributes];
+  v20 = _styleAttributes;
+  hasAttributes = [_styleAttributes hasAttributes];
   v22 = MKGetAnnotationsLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
-    if (v21)
+    if (hasAttributes)
     {
       v23 = @"YES";
     }
@@ -136,11 +136,11 @@
     _os_log_impl(&dword_1A2EA0000, v22, OS_LOG_TYPE_INFO, "hasAttributes: %@", &v29, 0xCu);
   }
 
-  if ((v21 & 1) == 0)
+  if ((hasAttributes & 1) == 0)
   {
-    v24 = [MEMORY[0x1E69A1DB0] markerStyleAttributes];
+    markerStyleAttributes = [MEMORY[0x1E69A1DB0] markerStyleAttributes];
 
-    v20 = v24;
+    v20 = markerStyleAttributes;
   }
 
   v25 = MKGetAnnotationsLog();

@@ -1,12 +1,12 @@
 @interface UIInterfaceActionGroupViewState
-- (BOOL)_stateEqualToGroupViewState:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_stateEqualToGroupViewState:(id)state;
+- (BOOL)isEqual:(id)equal;
 - (UIInterfaceActionGroupViewState)init;
-- (id)copyWithResolvedPresentationStyle:(int64_t)a3;
-- (id)copyWithVerticalLayoutAxis:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithResolvedPresentationStyle:(int64_t)style;
+- (id)copyWithVerticalLayoutAxis:(BOOL)axis;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_collectStateFromGroupViewState:(id)a3;
+- (void)_collectStateFromGroupViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionGroupViewState
@@ -25,17 +25,17 @@
   return result;
 }
 
-- (id)copyWithVerticalLayoutAxis:(BOOL)a3
+- (id)copyWithVerticalLayoutAxis:(BOOL)axis
 {
   result = [(UIInterfaceActionGroupViewState *)self copy];
-  *(result + 32) = a3;
+  *(result + 32) = axis;
   return result;
 }
 
-- (id)copyWithResolvedPresentationStyle:(int64_t)a3
+- (id)copyWithResolvedPresentationStyle:(int64_t)style
 {
   result = [(UIInterfaceActionGroupViewState *)self copy];
-  *(result + 5) = a3;
+  *(result + 5) = style;
   return result;
 }
 
@@ -52,41 +52,41 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = UIInterfaceActionGroupViewState;
-  v4 = [(UIInterfaceActionVisualStyleViewState *)&v6 copyWithZone:a3];
+  v4 = [(UIInterfaceActionVisualStyleViewState *)&v6 copyWithZone:zone];
   [v4 _collectStateFromGroupViewState:self];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(UIInterfaceActionGroupViewState *)self _stateEqualToGroupViewState:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(UIInterfaceActionGroupViewState *)self _stateEqualToGroupViewState:equalCopy];
 
   return v5;
 }
 
-- (void)_collectStateFromGroupViewState:(id)a3
+- (void)_collectStateFromGroupViewState:(id)state
 {
-  v4 = a3;
-  self->_isVerticalLayoutAxis = [v4 isVerticalLayoutAxis];
-  v5 = [v4 resolvedPresentationStyle];
+  stateCopy = state;
+  self->_isVerticalLayoutAxis = [stateCopy isVerticalLayoutAxis];
+  resolvedPresentationStyle = [stateCopy resolvedPresentationStyle];
 
-  self->_resolvedPresentationStyle = v5;
+  self->_resolvedPresentationStyle = resolvedPresentationStyle;
 }
 
-- (BOOL)_stateEqualToGroupViewState:(id)a3
+- (BOOL)_stateEqualToGroupViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   isVerticalLayoutAxis = self->_isVerticalLayoutAxis;
-  if (isVerticalLayoutAxis == [v4 isVerticalLayoutAxis])
+  if (isVerticalLayoutAxis == [stateCopy isVerticalLayoutAxis])
   {
     resolvedPresentationStyle = self->_resolvedPresentationStyle;
-    v7 = resolvedPresentationStyle == [v4 resolvedPresentationStyle];
+    v7 = resolvedPresentationStyle == [stateCopy resolvedPresentationStyle];
   }
 
   else

@@ -1,5 +1,5 @@
 @interface PKFakeDisableDelegate
-+ (BOOL)_shouldAttachForView:(id)a3;
++ (BOOL)_shouldAttachForView:(id)view;
 + (id)_infoInProcess;
 @end
 
@@ -39,18 +39,18 @@ void __39__PKFakeDisableDelegate__infoInProcess__block_invoke()
   qword_1ED6A5518 = v7;
 }
 
-+ (BOOL)_shouldAttachForView:(id)a3
++ (BOOL)_shouldAttachForView:(id)view
 {
-  v4 = a3;
-  if (v4 && (dyld_program_sdk_at_least() & 1) == 0)
+  viewCopy = view;
+  if (viewCopy && (dyld_program_sdk_at_least() & 1) == 0)
   {
-    v6 = [a1 _infoInProcess];
-    if ([v6 interactionValue])
+    _infoInProcess = [self _infoInProcess];
+    if ([_infoInProcess interactionValue])
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = [v8 hash];
-      v5 = v9 == [v6 interactionValue];
+      v5 = v9 == [_infoInProcess interactionValue];
     }
 
     else

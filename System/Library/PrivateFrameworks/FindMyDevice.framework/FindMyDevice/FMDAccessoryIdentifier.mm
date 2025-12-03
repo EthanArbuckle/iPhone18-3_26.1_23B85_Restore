@@ -1,23 +1,23 @@
 @interface FMDAccessoryIdentifier
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (FMDAccessoryIdentifier)initWithAddress:(id)a3;
-- (FMDAccessoryIdentifier)initWithCoder:(id)a3;
-- (FMDAccessoryIdentifier)initWithFMDCoder:(id)a3 error:(id *)a4;
-- (FMDAccessoryIdentifier)initWithString:(id)a3;
-- (id)computeAccessoryIdentifierWithAddress:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FMDAccessoryIdentifier)initWithAddress:(id)address;
+- (FMDAccessoryIdentifier)initWithCoder:(id)coder;
+- (FMDAccessoryIdentifier)initWithFMDCoder:(id)coder error:(id *)error;
+- (FMDAccessoryIdentifier)initWithString:(id)string;
+- (id)computeAccessoryIdentifierWithAddress:(id)address;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDAccessoryIdentifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -27,9 +27,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(FMDAccessoryIdentifier *)v4 string];
-      v6 = [(FMDAccessoryIdentifier *)self string];
-      v7 = [v5 isEqualToString:v6];
+      string = [(FMDAccessoryIdentifier *)equalCopy string];
+      string2 = [(FMDAccessoryIdentifier *)self string];
+      v7 = [string isEqualToString:string2];
     }
 
     else
@@ -43,11 +43,11 @@
 
 - (BOOL)isValid
 {
-  v3 = [(FMDAccessoryIdentifier *)self string];
-  if (v3)
+  string = [(FMDAccessoryIdentifier *)self string];
+  if (string)
   {
-    v4 = [(FMDAccessoryIdentifier *)self string];
-    v5 = [v4 length] != 0;
+    string2 = [(FMDAccessoryIdentifier *)self string];
+    v5 = [string2 length] != 0;
   }
 
   else
@@ -60,15 +60,15 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FMDAccessoryIdentifier *)self string];
-  v3 = [v2 hash];
+  string = [(FMDAccessoryIdentifier *)self string];
+  v3 = [string hash];
 
   return v3;
 }
 
-- (FMDAccessoryIdentifier)initWithCoder:(id)a3
+- (FMDAccessoryIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = FMDAccessoryIdentifier;
   v5 = [(FMDAccessoryIdentifier *)&v10 init];
@@ -76,68 +76,68 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_string);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     [(FMDAccessoryIdentifier *)v5 setString:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(FMDAccessoryIdentifier *)self string];
+  coderCopy = coder;
+  string = [(FMDAccessoryIdentifier *)self string];
   v5 = NSStringFromSelector(sel_string);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:string forKey:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FMDAccessoryIdentifier allocWithZone:?]];
-  v5 = [(FMDAccessoryIdentifier *)self string];
-  [(FMDAccessoryIdentifier *)v4 setString:v5];
+  string = [(FMDAccessoryIdentifier *)self string];
+  [(FMDAccessoryIdentifier *)v4 setString:string];
 
   return v4;
 }
 
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error
 {
-  v5 = a3;
-  v6 = [(FMDAccessoryIdentifier *)self string];
+  coderCopy = coder;
+  string = [(FMDAccessoryIdentifier *)self string];
   v7 = NSStringFromSelector(sel_string);
-  [v5 encodeString:v6 forKey:v7];
+  [coderCopy encodeString:string forKey:v7];
 
   return 1;
 }
 
-- (FMDAccessoryIdentifier)initWithFMDCoder:(id)a3 error:(id *)a4
+- (FMDAccessoryIdentifier)initWithFMDCoder:(id)coder error:(id *)error
 {
-  v5 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = FMDAccessoryIdentifier;
   v6 = [(FMDAccessoryIdentifier *)&v10 init];
   if (v6)
   {
     v7 = NSStringFromSelector(sel_string);
-    v8 = [v5 decodeStringForKey:v7];
+    v8 = [coderCopy decodeStringForKey:v7];
     [(FMDAccessoryIdentifier *)v6 setString:v8];
   }
 
   return v6;
 }
 
-- (FMDAccessoryIdentifier)initWithString:(id)a3
+- (FMDAccessoryIdentifier)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = FMDAccessoryIdentifier;
   v5 = [(FMDAccessoryIdentifier *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (stringCopy)
     {
-      v7 = v4;
+      v7 = stringCopy;
     }
 
     else
@@ -151,31 +151,31 @@
   return v6;
 }
 
-- (FMDAccessoryIdentifier)initWithAddress:(id)a3
+- (FMDAccessoryIdentifier)initWithAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v9.receiver = self;
   v9.super_class = FMDAccessoryIdentifier;
   v5 = [(FMDAccessoryIdentifier *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(FMDAccessoryIdentifier *)v5 computeAccessoryIdentifierWithAddress:v4];
+    v7 = [(FMDAccessoryIdentifier *)v5 computeAccessoryIdentifierWithAddress:addressCopy];
     [(FMDAccessoryIdentifier *)v6 setString:v7];
   }
 
   return v6;
 }
 
-- (id)computeAccessoryIdentifierWithAddress:(id)a3
+- (id)computeAccessoryIdentifierWithAddress:(id)address
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BT_%@", a3];
-  v4 = [v3 dataUsingEncoding:4];
-  v5 = [v4 fm_sha256Hash];
-  v6 = [v5 fm_hexString];
-  v7 = [v6 lowercaseString];
+  address = [MEMORY[0x1E696AEC0] stringWithFormat:@"BT_%@", address];
+  v4 = [address dataUsingEncoding:4];
+  fm_sha256Hash = [v4 fm_sha256Hash];
+  fm_hexString = [fm_sha256Hash fm_hexString];
+  lowercaseString = [fm_hexString lowercaseString];
 
-  return v7;
+  return lowercaseString;
 }
 
 @end

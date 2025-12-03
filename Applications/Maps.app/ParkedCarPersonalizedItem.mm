@@ -1,7 +1,7 @@
 @interface ParkedCarPersonalizedItem
 - (CLLocationCoordinate2D)coordinate;
 - (NSSet)keys;
-- (ParkedCarPersonalizedItem)initWithParkedCar:(id)a3;
+- (ParkedCarPersonalizedItem)initWithParkedCar:(id)car;
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID;
 - (PersonalizedItemSource)source;
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes;
@@ -27,9 +27,9 @@
 
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID
 {
-  v3 = [(ParkedCarPersonalizedItem *)self styleAttributes];
-  v4 = [v3 styleAttributes];
-  v5 = [v4 poiType];
+  styleAttributes = [(ParkedCarPersonalizedItem *)self styleAttributes];
+  v3StyleAttributes = [styleAttributes styleAttributes];
+  poiType = [v3StyleAttributes poiType];
   v6 = fabs(self->_coordinate.latitude);
   v7 = floor(v6 + 0.5);
   v8 = trunc(v7 * 5.42101086e-20);
@@ -47,7 +47,7 @@
     v12 = v11;
   }
 
-  v13 = v12 ^ v5;
+  v13 = v12 ^ poiType;
   v14 = fabs(self->_coordinate.longitude);
   v15 = floor(v14 + 0.5);
   v16 = (v14 - v15) * 1.84467441e19;
@@ -67,14 +67,14 @@
 
   v21 = v13 ^ v20;
 
-  v22 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v23 = [v22 name];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  name = [_geoMapItem name];
 
-  if (v23)
+  if (name)
   {
-    v24 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v25 = [v24 name];
-    v21 ^= [v25 hash];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    name2 = [_geoMapItem2 name];
+    v21 ^= [name2 hash];
   }
 
   return [PersonalizedItemClientFeatureIDAdornment adornmentWithClientFeatureID:v21];
@@ -96,26 +96,26 @@
   return v3;
 }
 
-- (ParkedCarPersonalizedItem)initWithParkedCar:(id)a3
+- (ParkedCarPersonalizedItem)initWithParkedCar:(id)car
 {
-  v5 = a3;
+  carCopy = car;
   v15.receiver = self;
   v15.super_class = ParkedCarPersonalizedItem;
   v6 = [(ParkedCarPersonalizedItem *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parkedCar, a3);
-    v8 = [v5 mapItem];
+    objc_storeStrong(&v6->_parkedCar, car);
+    mapItem = [carCopy mapItem];
     mapItem = v7->_mapItem;
-    v7->_mapItem = v8;
+    v7->_mapItem = mapItem;
 
-    [v5 coordinate];
+    [carCopy coordinate];
     v7->_coordinate.latitude = v10;
     v7->_coordinate.longitude = v11;
-    v12 = [v5 title];
+    title = [carCopy title];
     title = v7->_title;
-    v7->_title = v12;
+    v7->_title = title;
   }
 
   return v7;

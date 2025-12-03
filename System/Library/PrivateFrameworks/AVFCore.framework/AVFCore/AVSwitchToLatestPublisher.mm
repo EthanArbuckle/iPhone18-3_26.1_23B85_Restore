@@ -1,13 +1,13 @@
 @interface AVSwitchToLatestPublisher
-+ (id)switchToLatestPublisherWithUpstream:(id)a3;
-- (AVSwitchToLatestPublisher)initWithUpstream:(id)a3;
-- (id)subscribeRequestingInitialValue:(BOOL)a3 block:(id)a4;
++ (id)switchToLatestPublisherWithUpstream:(id)upstream;
+- (AVSwitchToLatestPublisher)initWithUpstream:(id)upstream;
+- (id)subscribeRequestingInitialValue:(BOOL)value block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation AVSwitchToLatestPublisher
 
-- (AVSwitchToLatestPublisher)initWithUpstream:(id)a3
+- (AVSwitchToLatestPublisher)initWithUpstream:(id)upstream
 {
   v6.receiver = self;
   v6.super_class = AVSwitchToLatestPublisher;
@@ -15,16 +15,16 @@
   if (v4)
   {
     v4->_callbackMutex = FigReentrantMutexCreate();
-    v4->_upstream = a3;
+    v4->_upstream = upstream;
     v4->_publisherIndex = 0;
   }
 
   return v4;
 }
 
-+ (id)switchToLatestPublisherWithUpstream:(id)a3
++ (id)switchToLatestPublisherWithUpstream:(id)upstream
 {
-  v3 = [[AVSwitchToLatestPublisher alloc] initWithUpstream:a3];
+  v3 = [[AVSwitchToLatestPublisher alloc] initWithUpstream:upstream];
 
   return v3;
 }
@@ -39,12 +39,12 @@
   [(AVPublisher *)&v3 dealloc];
 }
 
-- (id)subscribeRequestingInitialValue:(BOOL)a3 block:(id)a4
+- (id)subscribeRequestingInitialValue:(BOOL)value block:(id)block
 {
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
-  v13 = a3;
+  valueCopy = value;
   objc_initWeak(&location, self);
   upstream = self->_upstream;
   v9[0] = MEMORY[0x1E69E9820];
@@ -52,7 +52,7 @@
   v9[2] = __67__AVSwitchToLatestPublisher_subscribeRequestingInitialValue_block___block_invoke;
   v9[3] = &unk_1E7463608;
   objc_copyWeak(&v10, &location);
-  v9[4] = a4;
+  v9[4] = block;
   v9[5] = v12;
   v7 = [(AVPublisher *)upstream subscribeRequestingInitialValue:1 block:v9];
   objc_destroyWeak(&v10);

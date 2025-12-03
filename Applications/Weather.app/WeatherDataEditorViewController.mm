@@ -1,5 +1,5 @@
 @interface WeatherDataEditorViewController
-- (_TtC7Weather31WeatherDataEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Weather31WeatherDataEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -8,24 +8,24 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100625358();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100849140();
 }
 
-- (_TtC7Weather31WeatherDataEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Weather31WeatherDataEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_100849330();
 }
 

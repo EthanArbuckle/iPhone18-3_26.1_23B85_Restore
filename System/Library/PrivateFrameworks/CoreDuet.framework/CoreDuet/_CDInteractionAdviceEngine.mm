@@ -1,36 +1,36 @@
 @interface _CDInteractionAdviceEngine
-+ (id)interactionAdviceEngineWithStore:(id)a3;
-- (_CDInteractionAdviceEngine)initWithStore:(id)a3;
++ (id)interactionAdviceEngineWithStore:(id)store;
+- (_CDInteractionAdviceEngine)initWithStore:(id)store;
 - (_CDSocialInteractionAdvisor)socialAdvisor;
 - (_CDTemporalInteractionAdvisor)temporalAdvisor;
-- (id)adviseInteractionsForDate:(id)a3 usingSettings:(id)a4;
-- (id)adviseInteractionsForKeywordsInString:(id)a3 usingSettings:(id)a4;
-- (id)adviseInteractionsUsingSettings:(id)a3;
-- (id)adviseSocialInteractionsForDate:(id)a3 andSeedContacts:(id)a4 usingSettings:(id)a5;
-- (id)rankCandidateContacts:(id)a3 usingSettings:(id)a4;
-- (void)tuneSocialAdvisorUsingSettings:(id)a3 heartBeatHandler:(id)a4;
+- (id)adviseInteractionsForDate:(id)date usingSettings:(id)settings;
+- (id)adviseInteractionsForKeywordsInString:(id)string usingSettings:(id)settings;
+- (id)adviseInteractionsUsingSettings:(id)settings;
+- (id)adviseSocialInteractionsForDate:(id)date andSeedContacts:(id)contacts usingSettings:(id)settings;
+- (id)rankCandidateContacts:(id)contacts usingSettings:(id)settings;
+- (void)tuneSocialAdvisorUsingSettings:(id)settings heartBeatHandler:(id)handler;
 @end
 
 @implementation _CDInteractionAdviceEngine
 
-+ (id)interactionAdviceEngineWithStore:(id)a3
++ (id)interactionAdviceEngineWithStore:(id)store
 {
-  v3 = a3;
-  v4 = [[_CDInteractionAdviceEngine alloc] initWithStore:v3];
+  storeCopy = store;
+  v4 = [[_CDInteractionAdviceEngine alloc] initWithStore:storeCopy];
 
   return v4;
 }
 
-- (_CDInteractionAdviceEngine)initWithStore:(id)a3
+- (_CDInteractionAdviceEngine)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = _CDInteractionAdviceEngine;
   v6 = [(_CDInteractionAdviceEngine *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     temporalAdvisor = v7->_temporalAdvisor;
     v7->_temporalAdvisor = 0;
 
@@ -41,30 +41,30 @@
   return v7;
 }
 
-- (id)rankCandidateContacts:(id)a3 usingSettings:(id)a4
+- (id)rankCandidateContacts:(id)contacts usingSettings:(id)settings
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v33 = a4;
+  contactsCopy = contacts;
+  settingsCopy = settings;
   v32 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(contactsCopy, "count")}];
   v7 = 0;
-  if (![v5 count])
+  if (![contactsCopy count])
   {
 LABEL_11:
-    v13 = v33;
-    v14 = [v33 seedIdentifiers];
-    v26 = [v14 allObjects];
+    v13 = settingsCopy;
+    seedIdentifiers = [settingsCopy seedIdentifiers];
+    allObjects = [seedIdentifiers allObjects];
 
-    if ([v26 count])
+    if ([allObjects count])
     {
-      v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSObject count](v26, "count")}];
+      v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSObject count](allObjects, "count")}];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v30 = v26;
-      v16 = v26;
+      v30 = allObjects;
+      v16 = allObjects;
       v17 = [v16 countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v17)
       {
@@ -89,11 +89,11 @@ LABEL_11:
         while (v18);
       }
 
-      v22 = [(_CDInteractionAdviceEngine *)self socialAdvisor];
-      v13 = v33;
-      v9 = [v22 rankContacts:v6 withSeedContacts:v15 usingSettings:v33];
+      socialAdvisor = [(_CDInteractionAdviceEngine *)self socialAdvisor];
+      v13 = settingsCopy;
+      v9 = [socialAdvisor rankContacts:v6 withSeedContacts:v15 usingSettings:settingsCopy];
 
-      v26 = v30;
+      allObjects = v30;
       if (v7)
       {
         goto LABEL_20;
@@ -102,8 +102,8 @@ LABEL_11:
 
     else
     {
-      v24 = [(_CDInteractionAdviceEngine *)self temporalAdvisor];
-      v9 = [v24 rankContacts:v6 usingSettings:v33];
+      temporalAdvisor = [(_CDInteractionAdviceEngine *)self temporalAdvisor];
+      v9 = [temporalAdvisor rankContacts:v6 usingSettings:settingsCopy];
 
       if (v7)
       {
@@ -123,7 +123,7 @@ LABEL_23:
   v8 = 0;
   while (1)
   {
-    v9 = [v5 objectAtIndexedSubscript:v8];
+    v9 = [contactsCopy objectAtIndexedSubscript:v8];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
@@ -157,8 +157,8 @@ LABEL_9:
 LABEL_5:
     if ((v7 & 1) != (isKindOfClass & 1))
     {
-      v26 = +[_CDLogging interactionChannel];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      allObjects = +[_CDLogging interactionChannel];
+      if (os_log_type_enabled(allObjects, OS_LOG_TYPE_ERROR))
       {
         [_CDInteractionAdviceEngine rankCandidateContacts:usingSettings:];
       }
@@ -168,21 +168,21 @@ LABEL_5:
 
 LABEL_10:
 
-    if (++v8 >= [v5 count])
+    if (++v8 >= [contactsCopy count])
     {
       goto LABEL_11;
     }
   }
 
-  v26 = +[_CDLogging interactionChannel];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+  allObjects = +[_CDLogging interactionChannel];
+  if (os_log_type_enabled(allObjects, OS_LOG_TYPE_ERROR))
   {
     [_CDInteractionAdviceEngine rankCandidateContacts:usingSettings:];
   }
 
 LABEL_28:
   v25 = 0;
-  v13 = v33;
+  v13 = settingsCopy;
 LABEL_29:
 
   objc_autoreleasePoolPop(v32);
@@ -191,27 +191,27 @@ LABEL_29:
   return v25;
 }
 
-- (id)adviseInteractionsUsingSettings:(id)a3
+- (id)adviseInteractionsUsingSettings:(id)settings
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 seedIdentifiers];
-  v7 = [v6 allObjects];
+  seedIdentifiers = [settingsCopy seedIdentifiers];
+  allObjects = [seedIdentifiers allObjects];
 
-  v8 = [v4 interactionDate];
-  v9 = v8;
-  if (v8)
+  interactionDate = [settingsCopy interactionDate];
+  v9 = interactionDate;
+  if (interactionDate)
   {
-    v10 = v8;
+    date = interactionDate;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v11 = v10;
+  v11 = date;
 
   v12 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -219,15 +219,15 @@ LABEL_29:
     [_CDInteractionAdviceEngine adviseInteractionsUsingSettings:];
   }
 
-  if ([v7 count])
+  if ([allObjects count])
   {
     v26 = v5;
-    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    temporalAdvisor = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(allObjects, "count")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = v7;
+    v14 = allObjects;
     v15 = [v14 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v15)
     {
@@ -243,7 +243,7 @@ LABEL_29:
           }
 
           v19 = [[_CDContact alloc] initWithIdentifier:*(*(&v27 + 1) + 8 * i) type:0 customIdentifier:0 displayName:0 displayType:0 personId:0 personIdType:0];
-          [v13 addObject:v19];
+          [temporalAdvisor addObject:v19];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -258,8 +258,8 @@ LABEL_29:
       [_CDInteractionAdviceEngine adviseInteractionsUsingSettings:];
     }
 
-    v21 = [(_CDInteractionAdviceEngine *)self socialAdvisor];
-    v22 = [v21 adviseInteractionsForDate:v11 andSeedContacts:v13 usingSettings:v4];
+    socialAdvisor = [(_CDInteractionAdviceEngine *)self socialAdvisor];
+    v22 = [socialAdvisor adviseInteractionsForDate:v11 andSeedContacts:temporalAdvisor usingSettings:settingsCopy];
 
     v5 = v26;
   }
@@ -272,8 +272,8 @@ LABEL_29:
       [_CDInteractionAdviceEngine adviseInteractionsUsingSettings:];
     }
 
-    v13 = [(_CDInteractionAdviceEngine *)self temporalAdvisor];
-    v22 = [v13 adviseInteractionsForDate:v11 usingSettings:v4];
+    temporalAdvisor = [(_CDInteractionAdviceEngine *)self temporalAdvisor];
+    v22 = [temporalAdvisor adviseInteractionsForDate:v11 usingSettings:settingsCopy];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -282,20 +282,20 @@ LABEL_29:
   return v22;
 }
 
-- (id)adviseInteractionsForDate:(id)a3 usingSettings:(id)a4
+- (id)adviseInteractionsForDate:(id)date usingSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_CDInteractionAdviceEngine *)self temporalAdvisor];
-  v9 = [v8 adviseInteractionsForDate:v7 usingSettings:v6];
+  settingsCopy = settings;
+  dateCopy = date;
+  temporalAdvisor = [(_CDInteractionAdviceEngine *)self temporalAdvisor];
+  v9 = [temporalAdvisor adviseInteractionsForDate:dateCopy usingSettings:settingsCopy];
 
   return v9;
 }
 
-- (id)adviseInteractionsForKeywordsInString:(id)a3 usingSettings:(id)a4
+- (id)adviseInteractionsForKeywordsInString:(id)string usingSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  settingsCopy = settings;
   queryAdvisor = self->_queryAdvisor;
   if (!queryAdvisor)
   {
@@ -306,62 +306,62 @@ LABEL_29:
     queryAdvisor = self->_queryAdvisor;
   }
 
-  v11 = [(_CDQueryInteractionAdvisor *)queryAdvisor adviseInteractionsForKeywordsInString:v6 usingSettings:v7];
+  v11 = [(_CDQueryInteractionAdvisor *)queryAdvisor adviseInteractionsForKeywordsInString:stringCopy usingSettings:settingsCopy];
 
   return v11;
 }
 
-- (id)adviseSocialInteractionsForDate:(id)a3 andSeedContacts:(id)a4 usingSettings:(id)a5
+- (id)adviseSocialInteractionsForDate:(id)date andSeedContacts:(id)contacts usingSettings:(id)settings
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_CDInteractionAdviceEngine *)self socialAdvisor];
-  v12 = [v11 adviseInteractionsForDate:v10 andSeedContacts:v9 usingSettings:v8];
+  settingsCopy = settings;
+  contactsCopy = contacts;
+  dateCopy = date;
+  socialAdvisor = [(_CDInteractionAdviceEngine *)self socialAdvisor];
+  v12 = [socialAdvisor adviseInteractionsForDate:dateCopy andSeedContacts:contactsCopy usingSettings:settingsCopy];
 
   return v12;
 }
 
-- (void)tuneSocialAdvisorUsingSettings:(id)a3 heartBeatHandler:(id)a4
+- (void)tuneSocialAdvisorUsingSettings:(id)settings heartBeatHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_CDInteractionAdviceEngine *)self socialAdvisor];
-  [v8 tuneUsingSettings:v7 heartBeatHandler:v6];
+  handlerCopy = handler;
+  settingsCopy = settings;
+  socialAdvisor = [(_CDInteractionAdviceEngine *)self socialAdvisor];
+  [socialAdvisor tuneUsingSettings:settingsCopy heartBeatHandler:handlerCopy];
 }
 
 - (_CDSocialInteractionAdvisor)socialAdvisor
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_socialAdvisor)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_socialAdvisor)
   {
-    v3 = [[_CDSocialInteractionAdvisor alloc] initWithStore:v2->_store];
-    socialAdvisor = v2->_socialAdvisor;
-    v2->_socialAdvisor = v3;
+    v3 = [[_CDSocialInteractionAdvisor alloc] initWithStore:selfCopy->_store];
+    socialAdvisor = selfCopy->_socialAdvisor;
+    selfCopy->_socialAdvisor = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_socialAdvisor;
+  v5 = selfCopy->_socialAdvisor;
 
   return v5;
 }
 
 - (_CDTemporalInteractionAdvisor)temporalAdvisor
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_temporalAdvisor)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_temporalAdvisor)
   {
-    v3 = [[_CDTemporalInteractionAdvisor alloc] initWithStore:v2->_store];
-    temporalAdvisor = v2->_temporalAdvisor;
-    v2->_temporalAdvisor = v3;
+    v3 = [[_CDTemporalInteractionAdvisor alloc] initWithStore:selfCopy->_store];
+    temporalAdvisor = selfCopy->_temporalAdvisor;
+    selfCopy->_temporalAdvisor = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_temporalAdvisor;
+  v5 = selfCopy->_temporalAdvisor;
 
   return v5;
 }

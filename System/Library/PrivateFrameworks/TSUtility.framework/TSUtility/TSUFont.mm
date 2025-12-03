@@ -1,33 +1,33 @@
 @interface TSUFont
-+ (id)boldSystemFontOfSize:(double)a3;
-+ (id)fontWithName:(id)a3 size:(double)a4;
-+ (id)fontWithPlatformFont:(id)a3;
-+ (id)italicSystemFontOfSize:(double)a3;
-+ (id)systemFontOfSize:(double)a3;
-+ (id)systemFontOfSize:(double)a3 weight:(double)a4;
++ (id)boldSystemFontOfSize:(double)size;
++ (id)fontWithName:(id)name size:(double)size;
++ (id)fontWithPlatformFont:(id)font;
++ (id)italicSystemFontOfSize:(double)size;
++ (id)systemFontOfSize:(double)size;
++ (id)systemFontOfSize:(double)size weight:(double)weight;
 - (NSString)familyName;
 - (NSString)fontName;
-- (TSUFont)fontWithScale:(double)a3;
-- (TSUFont)fontWithSize:(double)a3;
-- (TSUFont)initWithCTFont:(__CTFont *)a3;
+- (TSUFont)fontWithScale:(double)scale;
+- (TSUFont)fontWithSize:(double)size;
+- (TSUFont)initWithCTFont:(__CTFont *)font;
 - (UIFont)platformFont;
 - (double)lineHeight;
-- (id)convertFontToBold:(BOOL)a3 italic:(BOOL)a4;
+- (id)convertFontToBold:(BOOL)bold italic:(BOOL)italic;
 - (void)dealloc;
 @end
 
 @implementation TSUFont
 
-- (TSUFont)initWithCTFont:(__CTFont *)a3
+- (TSUFont)initWithCTFont:(__CTFont *)font
 {
   v8.receiver = self;
   v8.super_class = TSUFont;
   v4 = [(TSUFont *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (font)
     {
-      v4->_ctFont = CFRetain(a3);
+      v4->_ctFont = CFRetain(font);
     }
 
     else
@@ -57,9 +57,9 @@
   [(TSUFont *)&v4 dealloc];
 }
 
-+ (id)fontWithName:(id)a3 size:(double)a4
++ (id)fontWithName:(id)name size:(double)size
 {
-  result = CTFontCreateWithName(a3, a4, 0);
+  result = CTFontCreateWithName(name, size, 0);
   if (result)
   {
     v5 = result;
@@ -71,30 +71,30 @@
   return result;
 }
 
-+ (id)systemFontOfSize:(double)a3
++ (id)systemFontOfSize:(double)size
 {
-  v3 = [MEMORY[0x277D74300] systemFontOfSize:a3];
+  v3 = [MEMORY[0x277D74300] systemFontOfSize:size];
 
   return [TSUFont fontWithPlatformFont:v3];
 }
 
-+ (id)boldSystemFontOfSize:(double)a3
++ (id)boldSystemFontOfSize:(double)size
 {
-  v3 = [MEMORY[0x277D74300] boldSystemFontOfSize:a3];
+  v3 = [MEMORY[0x277D74300] boldSystemFontOfSize:size];
 
   return [TSUFont fontWithPlatformFont:v3];
 }
 
-+ (id)italicSystemFontOfSize:(double)a3
++ (id)italicSystemFontOfSize:(double)size
 {
-  v3 = [MEMORY[0x277D74300] italicSystemFontOfSize:a3];
+  v3 = [MEMORY[0x277D74300] italicSystemFontOfSize:size];
 
   return [TSUFont fontWithPlatformFont:v3];
 }
 
-+ (id)systemFontOfSize:(double)a3 weight:(double)a4
++ (id)systemFontOfSize:(double)size weight:(double)weight
 {
-  v4 = [MEMORY[0x277D74300] systemFontOfSize:a3 weight:a4];
+  v4 = [MEMORY[0x277D74300] systemFontOfSize:size weight:weight];
 
   return [TSUFont fontWithPlatformFont:v4];
 }
@@ -121,9 +121,9 @@
   return v4 + v5;
 }
 
-- (TSUFont)fontWithSize:(double)a3
+- (TSUFont)fontWithSize:(double)size
 {
-  result = CTFontCreateCopyWithAttributes(self->_ctFont, a3, 0, 0);
+  result = CTFontCreateCopyWithAttributes(self->_ctFont, size, 0, 0);
   if (result)
   {
     v4 = result;
@@ -135,23 +135,23 @@
   return result;
 }
 
-- (TSUFont)fontWithScale:(double)a3
+- (TSUFont)fontWithScale:(double)scale
 {
-  v4 = self;
-  if (a3 != 1.0)
+  selfCopy = self;
+  if (scale != 1.0)
   {
     [(TSUFont *)self pointSize];
-    v6 = v5 * a3;
+    v6 = v5 * scale;
 
-    return [(TSUFont *)v4 fontWithSize:v6];
+    return [(TSUFont *)selfCopy fontWithSize:v6];
   }
 
   return self;
 }
 
-- (id)convertFontToBold:(BOOL)a3 italic:(BOOL)a4
+- (id)convertFontToBold:(BOOL)bold italic:(BOOL)italic
 {
-  if (a3)
+  if (bold)
   {
     v4 = 2;
   }
@@ -161,7 +161,7 @@
     v4 = 0;
   }
 
-  result = CTFontCreateCopyWithSymbolicTraits(self->_ctFont, 0.0, 0, v4 | a4, 3u);
+  result = CTFontCreateCopyWithSymbolicTraits(self->_ctFont, 0.0, 0, v4 | italic, 3u);
   if (result)
   {
     v6 = result;
@@ -173,18 +173,18 @@
   return result;
 }
 
-+ (id)fontWithPlatformFont:(id)a3
++ (id)fontWithPlatformFont:(id)font
 {
-  v3 = [[a1 alloc] initWithPlatformFont:a3];
+  v3 = [[self alloc] initWithPlatformFont:font];
 
   return v3;
 }
 
 - (UIFont)platformFont
 {
-  v2 = [(TSUFont *)self CTFont];
+  cTFont = [(TSUFont *)self CTFont];
 
-  return v2;
+  return cTFont;
 }
 
 @end

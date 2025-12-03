@@ -8,11 +8,11 @@
 
 - (void)_performScrollTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  v5 = [v3 pptTestScrollView];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestScrollView = [testCoordinator pptTestScrollView];
 
-  v4 = [(MapsAppTest *)self testName];
-  [v5 _performScrollTest:v4 iterations:10 delta:20];
+  testName = [(MapsAppTest *)self testName];
+  [pptTestScrollView _performScrollTest:testName iterations:10 delta:20];
 }
 
 - (void)_setupTrayLayoutAndPerformScrollTest
@@ -36,8 +36,8 @@
 
 - (void)_startRecentsTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestOpenRecents];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestOpenRecents];
 
   v4 = +[_TtC4Maps32MyRecentsContaineeViewController PPTMyRecentsViewControllerDidAppearNotification];
   v5[0] = _NSConcreteStackBlock;

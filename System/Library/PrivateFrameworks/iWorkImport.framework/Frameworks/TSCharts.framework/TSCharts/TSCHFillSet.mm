@@ -1,26 +1,26 @@
 @interface TSCHFillSet
 + (CGSize)defaultMacSwatchSize;
-- (BOOL)chartAlreadyMatches:(id)a3;
+- (BOOL)chartAlreadyMatches:(id)matches;
 - (NSString)lookupString;
-- (TSCHFillSet)initWithIdentifier:(id)a3 plistPath:(id)a4;
-- (id)colorFromProperties:(id)a3;
-- (id)existingCachedImageForSize:(CGSize)a3 scaleFactor:(double)a4;
-- (id)fillForSeriesIndex:(unint64_t)a3 seriesType:(id)a4 context:(id)a5;
+- (TSCHFillSet)initWithIdentifier:(id)identifier plistPath:(id)path;
+- (id)colorFromProperties:(id)properties;
+- (id)existingCachedImageForSize:(CGSize)size scaleFactor:(double)factor;
+- (id)fillForSeriesIndex:(unint64_t)index seriesType:(id)type context:(id)context;
 - (id)fillsForDefaultSeriesType;
-- (id)fillsForSeriesType:(id)a3 context:(id)a4;
-- (id)p_propertyMapsToApplyToChart:(id)a3 context:(id)a4;
-- (id)p_sagePropertiesForSeriesIndex:(unint64_t)a3 seriesType:(id)a4;
-- (id)p_sagePropertiesForSeriesType:(id)a3;
+- (id)fillsForSeriesType:(id)type context:(id)context;
+- (id)p_propertyMapsToApplyToChart:(id)chart context:(id)context;
+- (id)p_sagePropertiesForSeriesIndex:(unint64_t)index seriesType:(id)type;
+- (id)p_sagePropertiesForSeriesType:(id)type;
 - (id)p_tangierToSageProperties;
 - (id)plistProperties;
-- (id)propertyMutationTuplesForPreviewOnChart:(id)a3;
-- (id)seriesStylesForSeriesTypes:(id)a3 context:(id)a4;
-- (id)seriesSwatchImageWithSize:(CGSize)a3 scaleFactor:(double)a4 seriesIndex:(unint64_t)a5;
-- (id)styleSwapCommandToApplyToChart:(id)a3 context:(id)a4;
-- (id)swatchImageWithSize:(CGSize)a3 scaleFactor:(double)a4;
-- (unint64_t)countOfDefinedSeriesForSeriesType:(id)a3;
+- (id)propertyMutationTuplesForPreviewOnChart:(id)chart;
+- (id)seriesStylesForSeriesTypes:(id)types context:(id)context;
+- (id)seriesSwatchImageWithSize:(CGSize)size scaleFactor:(double)factor seriesIndex:(unint64_t)index;
+- (id)styleSwapCommandToApplyToChart:(id)chart context:(id)context;
+- (id)swatchImageWithSize:(CGSize)size scaleFactor:(double)factor;
+- (unint64_t)countOfDefinedSeriesForSeriesType:(id)type;
 - (void)dealloc;
-- (void)p_createSeriesSwatchImagesWithSeriesCount:(unint64_t)a3 swatchSize:(CGSize)a4 scaleFactor:(double)a5;
+- (void)p_createSeriesSwatchImagesWithSeriesCount:(unint64_t)count swatchSize:(CGSize)size scaleFactor:(double)factor;
 @end
 
 @implementation TSCHFillSet
@@ -34,20 +34,20 @@
   return result;
 }
 
-- (TSCHFillSet)initWithIdentifier:(id)a3 plistPath:(id)a4
+- (TSCHFillSet)initWithIdentifier:(id)identifier plistPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = TSCHFillSet;
   v9 = [(TSCHFillSet *)&v22 init];
   if (v9)
   {
-    v13 = objc_msgSend_copy(v6, v8, v10, v11, v12);
+    v13 = objc_msgSend_copy(identifierCopy, v8, v10, v11, v12);
     identifier = v9->_identifier;
     v9->_identifier = v13;
 
-    v19 = objc_msgSend_copy(v7, v15, v16, v17, v18);
+    v19 = objc_msgSend_copy(pathCopy, v15, v16, v17, v18);
     PListPath = v9->_PListPath;
     v9->_PListPath = v19;
   }
@@ -87,12 +87,12 @@
 
 - (id)plistProperties
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_PListProperties)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_PListProperties)
   {
     v7 = MEMORY[0x277CBEA90];
-    v8 = objc_msgSend_plistPath(v2, v3, v4, v5, v6);
+    v8 = objc_msgSend_plistPath(selfCopy, v3, v4, v5, v6);
     v13 = objc_msgSend_dataWithContentsOfFile_(v7, v9, v10, v11, v12, v8);
 
     v47 = 0;
@@ -103,31 +103,31 @@
       v24 = MEMORY[0x277D81150];
       v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, v21, v22, v23, "[TSCHFillSet plistProperties]");
       v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v26, v27, v28, v29, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHFillSet.m");
-      v35 = objc_msgSend_plistPath(v2, v31, v32, v33, v34);
+      v35 = objc_msgSend_plistPath(selfCopy, v31, v32, v33, v34);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v24, v36, v37, v38, v39, v25, v30, 110, 0, "error occured while loading plist %@", v35);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v40, v41, v42, v43);
     }
 
-    PListProperties = v2->_PListProperties;
-    v2->_PListProperties = v18;
+    PListProperties = selfCopy->_PListProperties;
+    selfCopy->_PListProperties = v18;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v45 = v2->_PListProperties;
+  v45 = selfCopy->_PListProperties;
 
   return v45;
 }
 
-- (id)existingCachedImageForSize:(CGSize)a3 scaleFactor:(double)a4
+- (id)existingCachedImageForSize:(CGSize)size scaleFactor:(double)factor
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  swatchImage = v4->_swatchImage;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  swatchImage = selfCopy->_swatchImage;
   if (swatchImage && (objc_msgSend_size(swatchImage, v5, v6, v7, v8), TSUMultiplySizeScalar(), TSUNearlyEqualSizes()))
   {
-    v10 = v4->_swatchImage;
+    v10 = selfCopy->_swatchImage;
   }
 
   else
@@ -135,22 +135,22 @@
     v10 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (id)fillsForSeriesType:(id)a3 context:(id)a4
+- (id)fillsForSeriesType:(id)type context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_countOfDefinedSeriesForSeriesType_(self, v8, v9, v10, v11, v6);
+  typeCopy = type;
+  contextCopy = context;
+  v12 = objc_msgSend_countOfDefinedSeriesForSeriesType_(self, v8, v9, v10, v11, typeCopy);
   v18 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v13, v14, v15, v16, v12);
   if (v12)
   {
     for (i = 0; i != v12; ++i)
     {
-      v23 = objc_msgSend_fillForSeriesIndex_seriesType_context_(self, v17, v19, v20, v21, i, v6, v7);
+      v23 = objc_msgSend_fillForSeriesIndex_seriesType_context_(self, v17, v19, v20, v21, i, typeCopy, contextCopy);
       objc_msgSend_addObject_(v18, v24, v25, v26, v27, v23);
     }
   }
@@ -158,17 +158,17 @@
   return v18;
 }
 
-- (unint64_t)countOfDefinedSeriesForSeriesType:(id)a3
+- (unint64_t)countOfDefinedSeriesForSeriesType:(id)type
 {
-  v4 = a3;
-  v36 = objc_msgSend_p_sagePropertiesForSeriesType_(self, v5, v6, v7, v8, v4);
+  typeCopy = type;
+  v36 = objc_msgSend_p_sagePropertiesForSeriesType_(self, v5, v6, v7, v8, typeCopy);
   v14 = objc_msgSend_count(v36, v9, v10, v11, v12);
   if (v14)
   {
     v18 = 0;
     do
     {
-      v19 = objc_msgSend_p_sagePropertiesForSeriesIndex_seriesType_(self, v13, v15, v16, v17, v18, v4);
+      v19 = objc_msgSend_p_sagePropertiesForSeriesIndex_seriesType_(self, v13, v15, v16, v17, v18, typeCopy);
 
       if (!v19)
       {
@@ -201,10 +201,10 @@
   return v3;
 }
 
-- (id)p_sagePropertiesForSeriesType:(id)a3
+- (id)p_sagePropertiesForSeriesType:(id)type
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = objc_msgSend_fillPropertyTypeName(a3, a2, v3, v4, v5);
+  v8 = objc_msgSend_fillPropertyTypeName(type, a2, v3, v4, v5);
   v13 = objc_msgSend_stringWithFormat_(v7, v9, v10, v11, v12, @"TSCHChartSeries%@FillProperty", v8);
 
   v18 = objc_msgSend_p_tangierToSageProperties(self, v14, v15, v16, v17);
@@ -232,10 +232,10 @@
   return v55;
 }
 
-- (id)p_sagePropertiesForSeriesIndex:(unint64_t)a3 seriesType:(id)a4
+- (id)p_sagePropertiesForSeriesIndex:(unint64_t)index seriesType:(id)type
 {
-  v8 = objc_msgSend_p_sagePropertiesForSeriesType_(self, a2, v4, v5, v6, a4);
-  v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v9, v10, v11, v12, @"Series_%ld", a3);
+  v8 = objc_msgSend_p_sagePropertiesForSeriesType_(self, a2, v4, v5, v6, type);
+  v13 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v9, v10, v11, v12, @"Series_%ld", index);
   objc_opt_class();
   v18 = objc_msgSend_objectForKey_(v8, v14, v15, v16, v17, v13);
   v19 = sub_2761C47AC();
@@ -243,15 +243,15 @@
   return v19;
 }
 
-- (id)fillForSeriesIndex:(unint64_t)a3 seriesType:(id)a4 context:(id)a5
+- (id)fillForSeriesIndex:(unint64_t)index seriesType:(id)type context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v14 = objc_msgSend_countOfDefinedSeriesForSeriesType_(self, v10, v11, v12, v13, v8);
+  typeCopy = type;
+  contextCopy = context;
+  v14 = objc_msgSend_countOfDefinedSeriesForSeriesType_(self, v10, v11, v12, v13, typeCopy);
   if (v14)
   {
-    v19 = objc_msgSend_p_sagePropertiesForSeriesIndex_seriesType_(self, v15, v16, v17, v18, a3 % v14, v8);
-    v24 = objc_msgSend_fillFromSageProperties_context_(self, v20, v21, v22, v23, v19, v9);
+    v19 = objc_msgSend_p_sagePropertiesForSeriesIndex_seriesType_(self, v15, v16, v17, v18, index % v14, typeCopy);
+    v24 = objc_msgSend_fillFromSageProperties_context_(self, v20, v21, v22, v23, v19, contextCopy);
   }
 
   else
@@ -262,34 +262,34 @@
   return v24;
 }
 
-- (id)colorFromProperties:(id)a3
+- (id)colorFromProperties:(id)properties
 {
   components[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  propertiesCopy = properties;
   objc_opt_class();
-  v8 = objc_msgSend_objectForKey_(v3, v4, v5, v6, v7, @"color-type");
+  v8 = objc_msgSend_objectForKey_(propertiesCopy, v4, v5, v6, v7, @"color-type");
   v9 = sub_2761C47AC();
 
   if (objc_msgSend_isEqualToString_(v9, v10, v11, v12, v13, @"device-cmyk"))
   {
     objc_opt_class();
-    v22 = objc_msgSend_objectForKey_(v3, v18, v19, v20, v21, @"c");
+    v22 = objc_msgSend_objectForKey_(propertiesCopy, v18, v19, v20, v21, @"c");
     v23 = sub_2761C47AC();
 
     objc_opt_class();
-    v28 = objc_msgSend_objectForKey_(v3, v24, v25, v26, v27, @"m");
+    v28 = objc_msgSend_objectForKey_(propertiesCopy, v24, v25, v26, v27, @"m");
     v29 = sub_2761C47AC();
 
     objc_opt_class();
-    v34 = objc_msgSend_objectForKey_(v3, v30, v31, v32, v33, @"y");
+    v34 = objc_msgSend_objectForKey_(propertiesCopy, v30, v31, v32, v33, @"y");
     v35 = sub_2761C47AC();
 
     objc_opt_class();
-    v40 = objc_msgSend_objectForKey_(v3, v36, v37, v38, v39, @"k");
+    v40 = objc_msgSend_objectForKey_(propertiesCopy, v36, v37, v38, v39, @"k");
     v41 = sub_2761C47AC();
 
     objc_opt_class();
-    v46 = objc_msgSend_objectForKey_(v3, v42, v43, v44, v45, @"a");
+    v46 = objc_msgSend_objectForKey_(propertiesCopy, v42, v43, v44, v45, @"a");
     v47 = sub_2761C47AC();
 
     objc_msgSend_tsu_CGFloatValue(v23, v48, v49, v50, v51);
@@ -314,19 +314,19 @@ LABEL_5:
   if (objc_msgSend_isEqualToString_(v9, v14, v15, v16, v17, @"calibrated-rgb"))
   {
     objc_opt_class();
-    v84 = objc_msgSend_objectForKey_(v3, v80, v81, v82, v83, @"r");
+    v84 = objc_msgSend_objectForKey_(propertiesCopy, v80, v81, v82, v83, @"r");
     v23 = sub_2761C47AC();
 
     objc_opt_class();
-    v89 = objc_msgSend_objectForKey_(v3, v85, v86, v87, v88, @"g");
+    v89 = objc_msgSend_objectForKey_(propertiesCopy, v85, v86, v87, v88, @"g");
     v29 = sub_2761C47AC();
 
     objc_opt_class();
-    v94 = objc_msgSend_objectForKey_(v3, v90, v91, v92, v93, @"b");
+    v94 = objc_msgSend_objectForKey_(propertiesCopy, v90, v91, v92, v93, @"b");
     v35 = sub_2761C47AC();
 
     objc_opt_class();
-    v99 = objc_msgSend_objectForKey_(v3, v95, v96, v97, v98, @"a");
+    v99 = objc_msgSend_objectForKey_(propertiesCopy, v95, v96, v97, v98, @"a");
     v41 = sub_2761C47AC();
 
     v100 = MEMORY[0x277D81180];
@@ -353,15 +353,15 @@ LABEL_7:
   return v75;
 }
 
-- (BOOL)chartAlreadyMatches:(id)a3
+- (BOOL)chartAlreadyMatches:(id)matches
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchesCopy = matches;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v8 = objc_msgSend_model(v4, v5, 0.0, v6, v7);
+  v8 = objc_msgSend_model(matchesCopy, v5, 0.0, v6, v7);
   v13 = objc_msgSend_seriesList(v8, v9, v10, v11, v12);
 
   obj = v13;
@@ -382,7 +382,7 @@ LABEL_7:
         v26 = *(*(&v67 + 1) + 8 * i);
         v27 = objc_msgSend_seriesType(v26, v19, v20, v21, v22);
         v32 = objc_msgSend_seriesIndex(v26, v28, v29, v30, v31);
-        v37 = objc_msgSend_drawableInfo(v4, v33, v34, v35, v36);
+        v37 = objc_msgSend_drawableInfo(matchesCopy, v33, v34, v35, v36);
         v42 = objc_msgSend_context(v37, v38, v39, v40, v41);
         v47 = objc_msgSend_fillForSeriesIndex_seriesType_context_(self, v43, v44, v45, v46, v32, v27, v42);
 
@@ -418,18 +418,18 @@ LABEL_12:
   return v64;
 }
 
-- (id)p_propertyMapsToApplyToChart:(id)a3 context:(id)a4
+- (id)p_propertyMapsToApplyToChart:(id)chart context:(id)context
 {
   v123 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  chartCopy = chart;
+  contextCopy = context;
   v12 = objc_msgSend_set(MEMORY[0x277CBEB58], v8, v9, v10, v11);
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v110 = v6;
-  v16 = objc_msgSend_model(v6, v13, 0.0, v14, v15);
+  v110 = chartCopy;
+  v16 = objc_msgSend_model(chartCopy, v13, 0.0, v14, v15);
   v21 = objc_msgSend_seriesList(v16, v17, v18, v19, v20);
 
   v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v21, v22, v23, v24, v25, &v117, v122, 16);
@@ -504,7 +504,7 @@ LABEL_12:
           {
             for (j = 0; j != v71; ++j)
             {
-              v74 = objc_msgSend_fillForSeriesIndex_seriesType_context_(self, v59, v60, v61, v62, j, v64, v7);
+              v74 = objc_msgSend_fillForSeriesIndex_seriesType_context_(self, v59, v60, v61, v62, j, v64, contextCopy);
               while (j >= objc_msgSend_count(v54, v73, v75, v76, v77))
               {
                 v82 = objc_msgSend_propertyMap(MEMORY[0x277D80AB8], v78, v79, v80, v81);
@@ -549,23 +549,23 @@ LABEL_12:
   return v54;
 }
 
-- (id)styleSwapCommandToApplyToChart:(id)a3 context:(id)a4
+- (id)styleSwapCommandToApplyToChart:(id)chart context:(id)context
 {
-  v6 = a3;
-  v11 = objc_msgSend_p_propertyMapsToApplyToChart_context_(self, v7, v8, v9, v10, v6, a4);
-  v16 = objc_msgSend_styleSwapCommandToApplyFillSetSeriesPropertyMaps_(v6, v12, v13, v14, v15, v11);
+  chartCopy = chart;
+  v11 = objc_msgSend_p_propertyMapsToApplyToChart_context_(self, v7, v8, v9, v10, chartCopy, context);
+  v16 = objc_msgSend_styleSwapCommandToApplyFillSetSeriesPropertyMaps_(chartCopy, v12, v13, v14, v15, v11);
 
   return v16;
 }
 
-- (id)swatchImageWithSize:(CGSize)a3 scaleFactor:(double)a4
+- (id)swatchImageWithSize:(CGSize)size scaleFactor:(double)factor
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  objc_sync_enter(v7);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   TSUMultiplySizeScalar();
-  swatchImage = v7->_swatchImage;
+  swatchImage = selfCopy->_swatchImage;
   if (!swatchImage)
   {
     goto LABEL_12;
@@ -577,10 +577,10 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (!v7->_swatchImage)
+  if (!selfCopy->_swatchImage)
   {
 LABEL_12:
-    if (v7->_seriesSwatchImageRects)
+    if (selfCopy->_seriesSwatchImageRects)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCHFillSet swatchImageWithSize:scaleFactor:]");
@@ -591,17 +591,17 @@ LABEL_12:
     }
   }
 
-  free(v7->_seriesSwatchImageRects);
-  v29 = objc_msgSend_swatchFillsWithSwatchSize_scaleFactor_(v7, v28, width, height, a4);
-  v31 = objc_msgSend_newImageFromFills_size_spaceBetween_scale_borderColor_outFillRects_(TSCHRenderUtilities, v30, width, height, 1.0, v29, 0, &v7->_seriesSwatchImageRects, 1.0, a4);
+  free(selfCopy->_seriesSwatchImageRects);
+  v29 = objc_msgSend_swatchFillsWithSwatchSize_scaleFactor_(selfCopy, v28, width, height, factor);
+  v31 = objc_msgSend_newImageFromFills_size_spaceBetween_scale_borderColor_outFillRects_(TSCHRenderUtilities, v30, width, height, 1.0, v29, 0, &selfCopy->_seriesSwatchImageRects, 1.0, factor);
   v36 = objc_msgSend_imageWithCGImage_(MEMORY[0x277D811F8], v32, v33, v34, v35, v31);
-  v37 = v7->_swatchImage;
-  v7->_swatchImage = v36;
+  v37 = selfCopy->_swatchImage;
+  selfCopy->_swatchImage = v36;
 
   CGImageRelease(v31);
 LABEL_7:
-  v38 = v7->_swatchImage;
-  objc_sync_exit(v7);
+  v38 = selfCopy->_swatchImage;
+  objc_sync_exit(selfCopy);
 
   return v38;
 }
@@ -614,16 +614,16 @@ LABEL_7:
   return v11;
 }
 
-- (id)seriesSwatchImageWithSize:(CGSize)a3 scaleFactor:(double)a4 seriesIndex:(unint64_t)a5
+- (id)seriesSwatchImageWithSize:(CGSize)size scaleFactor:(double)factor seriesIndex:(unint64_t)index
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  objc_sync_enter(v9);
-  seriesSwatchImages = v9->_seriesSwatchImages;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  seriesSwatchImages = selfCopy->_seriesSwatchImages;
   if (seriesSwatchImages)
   {
-    v15 = objc_msgSend_objectAtIndexedSubscript_(seriesSwatchImages, v10, v11, v12, v13, a5);
+    v15 = objc_msgSend_objectAtIndexedSubscript_(seriesSwatchImages, v10, v11, v12, v13, index);
     objc_msgSend_size(v15, v16, v17, v18, v19);
     v20 = TSUNearlyEqualSizes();
 
@@ -641,36 +641,36 @@ LABEL_7:
   else
   {
     v40 = objc_msgSend_columnSeries(TSCHChartSeriesType, v10, v11, v12, v13);
-    v45 = objc_msgSend_countOfDefinedSeriesForSeriesType_(v9, v41, v42, v43, v44, v40);
-    objc_msgSend_p_createSeriesSwatchImagesWithSeriesCount_swatchSize_scaleFactor_(v9, v46, width, height, a4, v45);
+    v45 = objc_msgSend_countOfDefinedSeriesForSeriesType_(selfCopy, v41, v42, v43, v44, v40);
+    objc_msgSend_p_createSeriesSwatchImagesWithSeriesCount_swatchSize_scaleFactor_(selfCopy, v46, width, height, factor, v45);
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
-  v51 = v9->_seriesSwatchImages;
+  v51 = selfCopy->_seriesSwatchImages;
 
-  return objc_msgSend_objectAtIndexedSubscript_(v51, v47, v48, v49, v50, a5);
+  return objc_msgSend_objectAtIndexedSubscript_(v51, v47, v48, v49, v50, index);
 }
 
-- (void)p_createSeriesSwatchImagesWithSeriesCount:(unint64_t)a3 swatchSize:(CGSize)a4 scaleFactor:(double)a5
+- (void)p_createSeriesSwatchImagesWithSeriesCount:(unint64_t)count swatchSize:(CGSize)size scaleFactor:(double)factor
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   if (self->_seriesSwatchImages)
   {
     v10 = MEMORY[0x277D81150];
-    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a4.width, a4.height, a5, "[TSCHFillSet p_createSeriesSwatchImagesWithSeriesCount:swatchSize:scaleFactor:]");
+    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, size.width, size.height, factor, "[TSCHFillSet p_createSeriesSwatchImagesWithSeriesCount:swatchSize:scaleFactor:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHFillSet.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 347, 0, "expected nil value for '%{public}s'", "_seriesSwatchImages");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  v25 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], a2, a4.width, a4.height, a5, 6);
+  v25 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], a2, size.width, size.height, factor, 6);
   seriesSwatchImages = self->_seriesSwatchImages;
   self->_seriesSwatchImages = v25;
 
-  v68 = objc_msgSend_swatchImageWithSize_scaleFactor_(self, v27, width, height, a5);
+  v68 = objc_msgSend_swatchImageWithSize_scaleFactor_(self, v27, width, height, factor);
   if (!self->_seriesSwatchImageRects)
   {
     v32 = MEMORY[0x277D81150];
@@ -681,7 +681,7 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
   }
 
-  if (a3)
+  if (count)
   {
     v47 = 0;
     do
@@ -702,24 +702,24 @@ LABEL_7:
       objc_msgSend_addObject_(self->_seriesSwatchImages, v64, v65, v66, v67, v63);
 
       v47 += 32;
-      --a3;
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 }
 
-- (id)propertyMutationTuplesForPreviewOnChart:(id)a3
+- (id)propertyMutationTuplesForPreviewOnChart:(id)chart
 {
   v160 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chartCopy = chart;
   v9 = objc_msgSend_dictionary(MEMORY[0x277D81278], v5, v6, v7, v8);
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
   v157 = 0u;
-  v148 = v4;
-  v13 = objc_msgSend_model(v4, v10, 0.0, v11, v12);
+  v148 = chartCopy;
+  v13 = objc_msgSend_model(chartCopy, v10, 0.0, v11, v12);
   v18 = objc_msgSend_seriesList(v13, v14, v15, v16, v17);
 
   obj = v18;
@@ -815,17 +815,17 @@ LABEL_7:
   return v118;
 }
 
-- (id)seriesStylesForSeriesTypes:(id)a3 context:(id)a4
+- (id)seriesStylesForSeriesTypes:(id)types context:(id)context
 {
   v115 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  typesCopy = types;
+  contextCopy = context;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8, v9, v10);
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
-  obj = v5;
+  obj = typesCopy;
   v102 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, v13, v14, v15, &v109, v114, 16);
   if (v102)
   {
@@ -859,13 +859,13 @@ LABEL_7:
             v42 = objc_msgSend_objectAtIndexedSubscript_(v11, v38, v39, v40, v41, i);
             v43 = TSUCheckedDynamicCast();
 
-            v48 = objc_msgSend_fillForSeriesIndex_seriesType_context_(self, v44, v45, v46, v47, i, v17, v6);
+            v48 = objc_msgSend_fillForSeriesIndex_seriesType_context_(self, v44, v45, v46, v47, i, v17, contextCopy);
             objc_opt_class();
             v49 = TSUDynamicCast();
             v54 = v49;
             if (v49)
             {
-              v55 = objc_msgSend_convertForChartSeriesType_context_(v49, v50, v51, v52, v53, v17, v6);
+              v55 = objc_msgSend_convertForChartSeriesType_context_(v49, v50, v51, v52, v53, v17, contextCopy);
 
               v48 = v55;
             }
@@ -911,7 +911,7 @@ LABEL_7:
         objc_opt_class();
         v79 = TSUCheckedDynamicCast();
         v80 = [TSCHChartSeriesStyle alloc];
-        isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v80, v81, v82, v83, v84, v6, 0, v79, 0);
+        isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v80, v81, v82, v83, v84, contextCopy, 0, v79, 0);
         objc_msgSend_addObject_(v69, v86, v87, v88, v89, isVariation);
       }
 

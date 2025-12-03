@@ -1,46 +1,46 @@
 @interface MRDGroupSessionServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MRDGroupSessionEligibilityMonitor)eligibilityMonitor;
 - (MRDGroupSessionManager)sessionManager;
-- (MRDGroupSessionServer)initWithNowPlayingServer:(id)a3;
+- (MRDGroupSessionServer)initWithNowPlayingServer:(id)server;
 - (MRDRemoteControlGroupSessionCoordinator)coordinator;
 - (NSError)lastConnectionError;
 - (NSXPCListener)listener;
-- (id)clientForConnection:(id)a3;
-- (void)_completeGroupSessionRequestsWithIdentifier:(id)a3;
-- (void)_handleCreateGroupSessionTokenMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetUserIdentityForDSIDMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetUserIdentityMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGroupSessionEventMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePresentProximityCardMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRequestGroupSessionMessage:(id)a3 fromClient:(id)a4;
-- (void)addClient:(id)a3;
-- (void)collectDiagnostic:(id)a3;
+- (id)clientForConnection:(id)connection;
+- (void)_completeGroupSessionRequestsWithIdentifier:(id)identifier;
+- (void)_handleCreateGroupSessionTokenMessage:(id)message fromClient:(id)client;
+- (void)_handleGetUserIdentityForDSIDMessage:(id)message fromClient:(id)client;
+- (void)_handleGetUserIdentityMessage:(id)message fromClient:(id)client;
+- (void)_handleGroupSessionEventMessage:(id)message fromClient:(id)client;
+- (void)_handlePresentProximityCardMessage:(id)message fromClient:(id)client;
+- (void)_handleRequestGroupSessionMessage:(id)message fromClient:(id)client;
+- (void)addClient:(id)client;
+- (void)collectDiagnostic:(id)diagnostic;
 - (void)dismissProximityCard;
-- (void)handleClientConnect:(id)a3;
-- (void)handleClientInvalidate:(id)a3;
-- (void)handleGetGroupSessionServerEndpointMessage:(id)a3 fromClient:(id)a4;
-- (void)handleJoinGroupSessionMessage:(id)a3 fromClient:(id)a4;
-- (void)handleLeaveGroupSessionMessage:(id)a3 fromClient:(id)a4;
-- (void)handleUserStateChange:(id)a3;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
-- (void)joinGroupSessionViaEquivalentWHAEndpoint:(id)a3 completion:(id)a4;
-- (void)manager:(id)a3 activeSessionDidChange:(id)a4;
-- (void)manager:(id)a3 didLeaveRemoteGroupSession:(id)a4;
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4;
-- (void)manager:(id)a3 discoveredSessionsDidChange:(id)a4;
+- (void)handleClientConnect:(id)connect;
+- (void)handleClientInvalidate:(id)invalidate;
+- (void)handleGetGroupSessionServerEndpointMessage:(id)message fromClient:(id)client;
+- (void)handleJoinGroupSessionMessage:(id)message fromClient:(id)client;
+- (void)handleLeaveGroupSessionMessage:(id)message fromClient:(id)client;
+- (void)handleUserStateChange:(id)change;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
+- (void)joinGroupSessionViaEquivalentWHAEndpoint:(id)endpoint completion:(id)completion;
+- (void)manager:(id)manager activeSessionDidChange:(id)change;
+- (void)manager:(id)manager didLeaveRemoteGroupSession:(id)session;
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session;
+- (void)manager:(id)manager discoveredSessionsDidChange:(id)change;
 - (void)notifyActiveSessionStateChanged;
-- (void)notifyEligibilityChanged:(id)a3;
-- (void)presentProximityCardWithDeviceName:(id)a3 modelIdentifier:(id)a4 color:(id)a5 url:(id)a6 error:(id *)a7;
+- (void)notifyEligibilityChanged:(id)changed;
+- (void)presentProximityCardWithDeviceName:(id)name modelIdentifier:(id)identifier color:(id)color url:(id)url error:(id *)error;
 - (void)reevaluateAssertionState;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)removeClient:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)removeClient:(id)client;
 - (void)requestEligibilityMonitoring;
-- (void)requestGroupSessionWithCompletion:(id)a3;
-- (void)restoreClientState:(id)a3 handler:(id)a4;
-- (void)setLastConnectionError:(id)a3;
+- (void)requestGroupSessionWithCompletion:(id)completion;
+- (void)restoreClientState:(id)state handler:(id)handler;
+- (void)setLastConnectionError:(id)error;
 - (void)start;
 - (void)stop;
 @end
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (MRDGroupSessionServer)initWithNowPlayingServer:(id)a3
+- (MRDGroupSessionServer)initWithNowPlayingServer:(id)server
 {
-  v5 = a3;
+  serverCopy = server;
   v34.receiver = self;
   v34.super_class = MRDGroupSessionServer;
   v6 = [(MRDGroupSessionServer *)&v34 init];
@@ -94,7 +94,7 @@
     assertionsByClient = v6->_assertionsByClient;
     v6->_assertionsByClient = v17;
 
-    objc_storeStrong(&v6->_nowPlayingServer, a3);
+    objc_storeStrong(&v6->_nowPlayingServer, server);
     v19 = +[MRUserSettings currentSettings];
     LODWORD(v11) = [v19 groupSessionDelayedInitializationEnabled];
 
@@ -127,9 +127,9 @@
     }
 
     v28 = +[MRUserSettings currentSettings];
-    v29 = [v28 groupSessionDelayedInitializationEnabled];
+    groupSessionDelayedInitializationEnabled = [v28 groupSessionDelayedInitializationEnabled];
 
-    if (v29)
+    if (groupSessionDelayedInitializationEnabled)
     {
       [(MRDGroupSessionAssertionManager *)v6->_assertionManager addObserver:v6];
       if (MSVDeviceIsAppleTV())
@@ -231,15 +231,15 @@
   self->_coordinator = 0;
 
   [(MRDGroupSessionManager *)self->_sessionManager removeObserver:self];
-  v5 = [(MRDGroupSessionManager *)self->_sessionManager session];
-  if ([v5 isHosted])
+  session = [(MRDGroupSessionManager *)self->_sessionManager session];
+  if ([session isHosted])
   {
-    [(MRDGroupSessionManager *)self->_sessionManager finishRemoteControlGroupSession:v5];
+    [(MRDGroupSessionManager *)self->_sessionManager finishRemoteControlGroupSession:session];
   }
 
-  else if (v5)
+  else if (session)
   {
-    [(MRDGroupSessionManager *)self->_sessionManager leaveRemoteControlGroupSession:v5];
+    [(MRDGroupSessionManager *)self->_sessionManager leaveRemoteControlGroupSession:session];
   }
 
   sessionManager = self->_sessionManager;
@@ -262,10 +262,10 @@
   }
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = message;
+  clientCopy = client;
   uint64 = xpc_dictionary_get_uint64(xdict, "MRXPC_MESSAGE_ID_KEY");
   if (uint64 <= 0xC00000000000004)
   {
@@ -273,23 +273,23 @@
     {
       if (uint64 == 0xC00000000000003)
       {
-        [(MRDGroupSessionServer *)self handleLeaveGroupSessionMessage:xdict fromClient:v6];
+        [(MRDGroupSessionServer *)self handleLeaveGroupSessionMessage:xdict fromClient:clientCopy];
       }
 
       else
       {
-        [(MRDGroupSessionServer *)self _handleGroupSessionEventMessage:xdict fromClient:v6];
+        [(MRDGroupSessionServer *)self _handleGroupSessionEventMessage:xdict fromClient:clientCopy];
       }
     }
 
     else if (uint64 == 0xC00000000000001)
     {
-      [(MRDGroupSessionServer *)self handleGetGroupSessionServerEndpointMessage:xdict fromClient:v6];
+      [(MRDGroupSessionServer *)self handleGetGroupSessionServerEndpointMessage:xdict fromClient:clientCopy];
     }
 
     else if (uint64 == 0xC00000000000002)
     {
-      [(MRDGroupSessionServer *)self handleJoinGroupSessionMessage:xdict fromClient:v6];
+      [(MRDGroupSessionServer *)self handleJoinGroupSessionMessage:xdict fromClient:clientCopy];
     }
   }
 
@@ -297,12 +297,12 @@
   {
     if (uint64 == 0xC00000000000005)
     {
-      [(MRDGroupSessionServer *)self _handleGetUserIdentityMessage:xdict fromClient:v6];
+      [(MRDGroupSessionServer *)self _handleGetUserIdentityMessage:xdict fromClient:clientCopy];
     }
 
     else
     {
-      [(MRDGroupSessionServer *)self _handleCreateGroupSessionTokenMessage:xdict fromClient:v6];
+      [(MRDGroupSessionServer *)self _handleCreateGroupSessionTokenMessage:xdict fromClient:clientCopy];
     }
   }
 
@@ -311,39 +311,39 @@
     switch(uint64)
     {
       case 0xC00000000000007:
-        [(MRDGroupSessionServer *)self _handleGetUserIdentityForDSIDMessage:xdict fromClient:v6];
+        [(MRDGroupSessionServer *)self _handleGetUserIdentityForDSIDMessage:xdict fromClient:clientCopy];
         break;
       case 0xC00000000000008:
-        [(MRDGroupSessionServer *)self _handlePresentProximityCardMessage:xdict fromClient:v6];
+        [(MRDGroupSessionServer *)self _handlePresentProximityCardMessage:xdict fromClient:clientCopy];
         break;
       case 0xC00000000000009:
-        [(MRDGroupSessionServer *)self _handleRequestGroupSessionMessage:xdict fromClient:v6];
+        [(MRDGroupSessionServer *)self _handleRequestGroupSessionMessage:xdict fromClient:clientCopy];
         break;
     }
   }
 }
 
-- (void)handleGetGroupSessionServerEndpointMessage:(id)a3 fromClient:(id)a4
+- (void)handleGetGroupSessionServerEndpointMessage:(id)message fromClient:(id)client
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004C728;
   v4[3] = &unk_1004B6E08;
   v4[4] = self;
-  sub_100008278(a3, v4);
+  sub_100008278(message, v4);
 }
 
-- (void)handleJoinGroupSessionMessage:(id)a3 fromClient:(id)a4
+- (void)handleJoinGroupSessionMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = MRCreateDataFromXPCMessage();
   v9 = [[MRGroupSessionToken alloc] initWithData:v8];
   v10 = _MRLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v7;
+    v42 = clientCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Handling join command from client: %@", buf, 0xCu);
   }
 
@@ -351,19 +351,19 @@
   v39[1] = 3221225472;
   v39[2] = sub_10004CBAC;
   v39[3] = &unk_1004B6E58;
-  v11 = v6;
+  v11 = messageCopy;
   v40 = v11;
   v12 = objc_retainBlock(v39);
   v13 = kMREventJoinSessionModeQRCode;
-  v14 = [v9 discoveredSession];
+  discoveredSession = [v9 discoveredSession];
 
-  if (v14)
+  if (discoveredSession)
   {
-    v15 = [v9 discoveredSession];
-    v16 = [v15 source];
+    discoveredSession2 = [v9 discoveredSession];
+    source = [discoveredSession2 source];
 
     v17 = &kMREventJoinSessionModeProximity;
-    if (v16 == 1)
+    if (source == 1)
     {
       v17 = &kMREventJoinSessionModeBoop;
     }
@@ -371,9 +371,9 @@
 
   else
   {
-    v18 = [v9 sharedSecret];
+    sharedSecret = [v9 sharedSecret];
 
-    if (!v18)
+    if (!sharedSecret)
     {
       goto LABEL_10;
     }
@@ -385,20 +385,20 @@
 
   v13 = v19;
 LABEL_10:
-  v20 = [(MRDGroupSessionServer *)self networkMonitor];
-  if ([v20 isUsingWifi])
+  networkMonitor = [(MRDGroupSessionServer *)self networkMonitor];
+  if ([networkMonitor isUsingWifi])
   {
-    v21 = 1;
+    isUsingWiredEthernet = 1;
   }
 
   else
   {
-    v22 = [(MRDGroupSessionServer *)self networkMonitor];
-    v21 = [v22 isUsingWiredEthernet];
+    networkMonitor2 = [(MRDGroupSessionServer *)self networkMonitor];
+    isUsingWiredEthernet = [networkMonitor2 isUsingWiredEthernet];
   }
 
-  v23 = [v9 equivalentMediaIdentifier];
-  if (v23 && (v24 = v23, [v9 sharedSecret], v25 = objc_claimAutoreleasedReturnValue(), v26 = (v25 == 0) & v21, v25, v24, v26 == 1))
+  equivalentMediaIdentifier = [v9 equivalentMediaIdentifier];
+  if (equivalentMediaIdentifier && (v24 = equivalentMediaIdentifier, [v9 sharedSecret], v25 = objc_claimAutoreleasedReturnValue(), v26 = (v25 == 0) & isUsingWiredEthernet, v25, v24, v26 == 1))
   {
     v27 = _MRLogForCategory();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -420,10 +420,10 @@ LABEL_10:
   else
   {
     v30 = [[MRDGroupSessionJoinAttemptAnalytics alloc] initWithJoinMode:v13];
-    v31 = [(MRDGroupSessionJoinAttemptAnalytics *)v30 request];
-    [v31 start];
+    request = [(MRDGroupSessionJoinAttemptAnalytics *)v30 request];
+    [request start];
 
-    v32 = [(MRDGroupSessionServer *)self sessionManager];
+    sessionManager = [(MRDGroupSessionServer *)self sessionManager];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_10004CD14;
@@ -432,72 +432,72 @@ LABEL_10:
     v36 = v12;
     v33 = v12;
     v29 = v30;
-    [v32 joinGroupSessionWithToken:v9 completion:v34];
+    [sessionManager joinGroupSessionWithToken:v9 completion:v34];
   }
 }
 
-- (void)joinGroupSessionViaEquivalentWHAEndpoint:(id)a3 completion:(id)a4
+- (void)joinGroupSessionViaEquivalentWHAEndpoint:(id)endpoint completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  completionCopy = completion;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 equivalentMediaIdentifier];
+    equivalentMediaIdentifier = [endpointCopy equivalentMediaIdentifier];
     *buf = 138412290;
-    v30 = v9;
+    v30 = equivalentMediaIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Searching for WHA endpoint with device identifier: %@", buf, 0xCu);
   }
 
   v10 = [MRDGroupSessionJoinAttemptAnalytics alloc];
   v11 = [(MRDGroupSessionJoinAttemptAnalytics *)v10 initWithJoinMode:kMREventJoinSessionModeWHAAutoJoin];
-  v12 = [(MRDGroupSessionServer *)self sessionManager];
+  sessionManager = [(MRDGroupSessionServer *)self sessionManager];
   v13 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
-  v14 = [(MRDGroupSessionJoinAttemptAnalytics *)v11 recon];
-  [v14 start];
+  recon = [(MRDGroupSessionJoinAttemptAnalytics *)v11 recon];
+  [recon start];
 
-  v15 = [v6 equivalentMediaIdentifier];
+  equivalentMediaIdentifier2 = [endpointCopy equivalentMediaIdentifier];
   v16 = MRGroupSessionSubsystemGetQueue();
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10004D014;
   v22[3] = &unk_1004B6F98;
   v23 = v13;
-  v24 = v12;
-  v25 = v6;
+  v24 = sessionManager;
+  v25 = endpointCopy;
   v26 = v11;
-  v27 = self;
-  v28 = v7;
+  selfCopy = self;
+  v28 = completionCopy;
   v17 = v11;
-  v18 = v7;
-  v19 = v6;
-  v20 = v12;
+  v18 = completionCopy;
+  v19 = endpointCopy;
+  v20 = sessionManager;
   v21 = v13;
-  [v21 searchEndpointsForOutputDeviceUID:v15 timeout:@"MRGroupSession.waitForWHAEndpoint" reason:v16 queue:v22 completion:3.0];
+  [v21 searchEndpointsForOutputDeviceUID:equivalentMediaIdentifier2 timeout:@"MRGroupSession.waitForWHAEndpoint" reason:v16 queue:v22 completion:3.0];
 }
 
-- (void)handleLeaveGroupSessionMessage:(id)a3 fromClient:(id)a4
+- (void)handleLeaveGroupSessionMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  messageCopy = message;
   v8 = MRCreateStringFromXPCMessage();
-  v9 = [(MRDGroupSessionServer *)self sessionManager];
-  v10 = [v9 session];
+  sessionManager = [(MRDGroupSessionServer *)self sessionManager];
+  session = [sessionManager session];
   v11 = _MRLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v39 = v6;
+    v39 = clientCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Handling leave command from client: %@", buf, 0xCu);
   }
 
-  v12 = [v10 identifier];
-  v13 = v12;
-  if (v8 == v12)
+  identifier = [session identifier];
+  v13 = identifier;
+  if (v8 == identifier)
   {
 
 LABEL_7:
-    if ([v10 isHosted])
+    if ([session isHosted])
     {
       v15 = MRGroupSessionError;
       v16 = @"Cannot leave hosted session.";
@@ -505,26 +505,26 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v35 = v6;
-    v19 = [v10 joinToken];
-    v20 = [v19 equivalentMediaIdentifier];
-    v21 = v20;
-    if (v20)
+    v35 = clientCopy;
+    joinToken = [session joinToken];
+    equivalentMediaIdentifier = [joinToken equivalentMediaIdentifier];
+    v21 = equivalentMediaIdentifier;
+    if (equivalentMediaIdentifier)
     {
-      v22 = v20;
+      identifier2 = equivalentMediaIdentifier;
     }
 
     else
     {
-      v22 = [v10 identifier];
+      identifier2 = [session identifier];
     }
 
-    v23 = v22;
+    v23 = identifier2;
 
     v24 = +[MRDMediaRemoteServer server];
-    v25 = [v24 routingServer];
-    v26 = [v25 systemEndpointController];
-    v27 = [v26 activeOutputDeviceUID:0];
+    routingServer = [v24 routingServer];
+    systemEndpointController = [routingServer systemEndpointController];
+    v27 = [systemEndpointController activeOutputDeviceUID:0];
     v28 = v27;
     if (v27 == v23)
     {
@@ -541,20 +541,20 @@ LABEL_7:
     }
 
     v30 = +[MRDMediaRemoteServer server];
-    v31 = [v30 routingServer];
-    v32 = [v31 systemEndpointController];
+    routingServer2 = [v30 routingServer];
+    systemEndpointController2 = [routingServer2 systemEndpointController];
     v33 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:0 reason:@"Group session ended."];
-    [v32 updateSystemEndpointForRequest:v33];
+    [systemEndpointController2 updateSystemEndpointForRequest:v33];
 
 LABEL_18:
-    [v9 leaveRemoteControlGroupSession:v10];
+    [sessionManager leaveRemoteControlGroupSession:session];
 
     v18 = 0;
-    v6 = v35;
+    clientCopy = v35;
     goto LABEL_19;
   }
 
-  v14 = [v8 isEqual:v12];
+  v14 = [v8 isEqual:identifier];
 
   if (v14)
   {
@@ -573,47 +573,47 @@ LABEL_19:
   v36[3] = &unk_1004B6E08;
   v37 = v18;
   v34 = v18;
-  sub_100008278(v7, v36);
+  sub_100008278(messageCopy, v36);
 }
 
-- (void)_handleGetUserIdentityMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetUserIdentityMessage:(id)message fromClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10004DF84;
   v6[3] = &unk_1004B6E08;
-  v7 = a4;
-  v5 = v7;
-  sub_100008278(a3, v6);
+  clientCopy = client;
+  v5 = clientCopy;
+  sub_100008278(message, v6);
 }
 
-- (void)_handleGroupSessionEventMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGroupSessionEventMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = MRCreatePropertyListFromXPCMessage();
-  v9 = [(MRDGroupSessionServer *)self sessionManager];
+  sessionManager = [(MRDGroupSessionServer *)self sessionManager];
   v10 = [v8 objectForKeyedSubscript:MRGroupSessionEventOptionEventType];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_10004E540;
   v38[3] = &unk_1004B6FC0;
-  v12 = v6;
+  v12 = messageCopy;
   v39 = v12;
   v13 = objc_retainBlock(v38);
   v14 = v13;
-  if (v11)
+  if (integerValue)
   {
-    if ((v11 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      if (v11 == 2)
+      if (integerValue == 2)
       {
-        v15 = [(MRDGroupSessionServer *)self coordinator];
-        v16 = [v15 autoJoinMaxRetriesReached];
+        coordinator = [(MRDGroupSessionServer *)self coordinator];
+        autoJoinMaxRetriesReached = [coordinator autoJoinMaxRetriesReached];
 
-        if (v16)
+        if (autoJoinMaxRetriesReached)
         {
           v17 = _MRLogForCategory();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -622,13 +622,13 @@ LABEL_19:
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Retrying auto-join after previously exhausted retry attempts because session management became visible", buf, 2u);
           }
 
-          v18 = [(MRDGroupSessionServer *)self coordinator];
-          [v18 retryAutoJoin];
+          coordinator2 = [(MRDGroupSessionServer *)self coordinator];
+          [coordinator2 retryAutoJoin];
         }
       }
 
       os_unfair_lock_lock(&self->_lock);
-      v19 = [(NSMapTable *)self->_assertionsByClient objectForKey:v7];
+      v19 = [(NSMapTable *)self->_assertionsByClient objectForKey:clientCopy];
       v20 = v19;
       if (v19)
       {
@@ -647,20 +647,20 @@ LABEL_19:
       {
         v25 = _MRLogForCategory();
         v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-        if (v11 == 2)
+        if (integerValue == 2)
         {
           if (v26)
           {
-            v27 = [v7 bundleIdentifier];
-            v28 = v27;
-            if (!v27)
+            bundleIdentifier = [clientCopy bundleIdentifier];
+            v28 = bundleIdentifier;
+            if (!bundleIdentifier)
             {
-              v27 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 pid]);
+              bundleIdentifier = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [clientCopy pid]);
             }
 
             *buf = 138412546;
-            v34 = v27;
-            v41 = v27;
+            v34 = bundleIdentifier;
+            v41 = bundleIdentifier;
             v42 = 2112;
             v43 = v24;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Client: %@ asserting with ID: %@", buf, 0x16u);
@@ -669,24 +669,24 @@ LABEL_19:
             }
           }
 
-          v29 = [v9 assertSessionManagementScreenVisible];
-          [v23 setObject:v29 forKeyedSubscript:v24];
+          assertSessionManagementScreenVisible = [sessionManager assertSessionManagementScreenVisible];
+          [v23 setObject:assertSessionManagementScreenVisible forKeyedSubscript:v24];
         }
 
         else
         {
           if (v26)
           {
-            v30 = [v7 bundleIdentifier];
-            v31 = v30;
-            if (!v30)
+            bundleIdentifier2 = [clientCopy bundleIdentifier];
+            v31 = bundleIdentifier2;
+            if (!bundleIdentifier2)
             {
-              v30 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 pid]);
+              bundleIdentifier2 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [clientCopy pid]);
             }
 
             *buf = 138412546;
-            v35 = v30;
-            v41 = v30;
+            v35 = bundleIdentifier2;
+            v41 = bundleIdentifier2;
             v42 = 2112;
             v43 = v24;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Client: %@ removing assertion with ID: %@", buf, 0x16u);
@@ -696,19 +696,19 @@ LABEL_19:
           }
 
           [v23 setObject:0 forKeyedSubscript:v24];
-          [v9 releaseSessionManagementScreenVisibleAssertion];
+          [sessionManager releaseSessionManagementScreenVisibleAssertion];
         }
 
         v32 = [v23 count];
         assertionsByClient = self->_assertionsByClient;
         if (v32)
         {
-          [(NSMapTable *)assertionsByClient setObject:v23 forKey:v7];
+          [(NSMapTable *)assertionsByClient setObject:v23 forKey:clientCopy];
         }
 
         else
         {
-          [(NSMapTable *)assertionsByClient removeObjectForKey:v7];
+          [(NSMapTable *)assertionsByClient removeObjectForKey:clientCopy];
         }
 
         v22 = 0;
@@ -725,7 +725,7 @@ LABEL_19:
       v36[2] = sub_10004E5F0;
       v36[3] = &unk_1004B6FE8;
       v37 = v13;
-      [v9 handleGroupSessionEvent:v11 withOptions:v8 completion:v36];
+      [sessionManager handleGroupSessionEvent:integerValue withOptions:v8 completion:v36];
       v22 = v37;
     }
   }
@@ -737,12 +737,12 @@ LABEL_19:
   }
 }
 
-- (void)_handleCreateGroupSessionTokenMessage:(id)a3 fromClient:(id)a4
+- (void)_handleCreateGroupSessionTokenMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MRCreateDataFromXPCMessage();
   v6 = MRCreateStringFromXPCMessage();
-  v7 = [NSNumber numberWithLongLong:xpc_dictionary_get_int64(v4, "MRXPC_GROUP_SESSION_VERSION_KEY")];
+  v7 = [NSNumber numberWithLongLong:xpc_dictionary_get_int64(messageCopy, "MRXPC_GROUP_SESSION_VERSION_KEY")];
   v8 = [[MRGroupSessionToken alloc] initWithInvitationData:v5 sharedSecret:0 sessionIdentifier:0 equivalentMediaIdentifier:v6 version:{objc_msgSend(v7, "integerValue")}];
   v9 = 0;
   if (!v8)
@@ -758,26 +758,26 @@ LABEL_19:
   v14 = v8;
   v10 = v8;
   v11 = v9;
-  sub_100008278(v4, v12);
+  sub_100008278(messageCopy, v12);
 }
 
-- (void)_handleGetUserIdentityForDSIDMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetUserIdentityForDSIDMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MRCreateStringFromXPCMessage();
   v6 = +[MRDMusicUserStateCenter sharedCenter];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004E8E0;
   v8[3] = &unk_1004B7010;
-  v9 = v4;
-  v7 = v4;
+  v9 = messageCopy;
+  v7 = messageCopy;
   [v6 userIdentityForDSID:v5 completion:v8];
 }
 
-- (void)_handlePresentProximityCardMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePresentProximityCardMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreateStringFromXPCMessage();
   v7 = MRCreateStringFromXPCMessage();
   v8 = MRCreateStringFromXPCMessage();
@@ -790,55 +790,55 @@ LABEL_19:
   v11[3] = &unk_1004B6E08;
   v12 = v13;
   v10 = v12;
-  sub_100008278(v5, v11);
+  sub_100008278(messageCopy, v11);
 }
 
-- (void)_handleRequestGroupSessionMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRequestGroupSessionMessage:(id)message fromClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10004EC18;
   v6[3] = &unk_1004B6E58;
-  v7 = a3;
-  v5 = v7;
+  messageCopy = message;
+  v5 = messageCopy;
   [(MRDGroupSessionServer *)self requestGroupSessionWithCompletion:v6];
 }
 
-- (void)requestGroupSessionWithCompletion:(id)a3
+- (void)requestGroupSessionWithCompletion:(id)completion
 {
-  v18 = a3;
+  completionCopy = completion;
   v4 = +[MRUserSettings currentSettings];
-  v5 = [v4 groupSessionDelayedInitializationEnabled];
+  groupSessionDelayedInitializationEnabled = [v4 groupSessionDelayedInitializationEnabled];
 
-  if (v5)
+  if (groupSessionDelayedInitializationEnabled)
   {
-    v6 = [(MRDGroupSessionServer *)self sessionManager];
-    v7 = [v6 session];
+    sessionManager = [(MRDGroupSessionServer *)self sessionManager];
+    session = [sessionManager session];
 
-    if (v7)
+    if (session)
     {
-      if ([v7 isHosted])
+      if ([session isHosted])
       {
-        v8 = [v7 identifier];
+        identifier = [session identifier];
       }
 
       else
       {
-        v8 = [[NSError alloc] initWithMRError:3 description:@"joined another group session"];
+        identifier = [[NSError alloc] initWithMRError:3 description:@"joined another group session"];
       }
 
-      v18[2]();
+      completionCopy[2]();
     }
 
     else
     {
-      v9 = [(MRDGroupSessionServer *)self eligibilityMonitor];
-      v8 = [v9 eligibilityStatus];
+      eligibilityMonitor = [(MRDGroupSessionServer *)self eligibilityMonitor];
+      identifier = [eligibilityMonitor eligibilityStatus];
 
-      if (v8 && ([v8 isEligibleForHostingGroupSession] & 1) == 0)
+      if (identifier && ([identifier isEligibleForHostingGroupSession] & 1) == 0)
       {
         v17 = [[NSError alloc] initWithMRError:3 description:@"cannot host a group session"];
-        (v18[2])(v18, 0, v17);
+        (completionCopy[2])(completionCopy, 0, v17);
       }
 
       else
@@ -854,7 +854,7 @@ LABEL_19:
           requestGroupSessionCompletions = self->_requestGroupSessionCompletions;
         }
 
-        v13 = [v18 copy];
+        v13 = [completionCopy copy];
         v14 = objc_retainBlock(v13);
         [(NSMutableSet *)requestGroupSessionCompletions addObject:v14];
 
@@ -870,21 +870,21 @@ LABEL_19:
 
   else
   {
-    v7 = [[NSError alloc] initWithMRError:6 description:@"feature not enabled"];
-    (v18[2])(v18, 0, v7);
+    session = [[NSError alloc] initWithMRError:6 description:@"feature not enabled"];
+    (completionCopy[2])(completionCopy, 0, session);
   }
 }
 
-- (void)presentProximityCardWithDeviceName:(id)a3 modelIdentifier:(id)a4 color:(id)a5 url:(id)a6 error:(id *)a7
+- (void)presentProximityCardWithDeviceName:(id)name modelIdentifier:(id)identifier color:(id)color url:(id)url error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (!v12)
+  nameCopy = name;
+  identifierCopy = identifier;
+  colorCopy = color;
+  urlCopy = url;
+  v16 = urlCopy;
+  if (!nameCopy)
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -892,13 +892,13 @@ LABEL_19:
     v26 = [NSError alloc];
     v27 = @"device name is missing";
 LABEL_20:
-    *a7 = [v26 initWithMRError:2 description:v27];
+    *error = [v26 initWithMRError:2 description:v27];
     goto LABEL_21;
   }
 
-  if (!v13)
+  if (!identifierCopy)
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -908,9 +908,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v14)
+  if (!colorCopy)
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -920,9 +920,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v15)
+  if (!urlCopy)
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -948,11 +948,11 @@ LABEL_20:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v31 = v12;
+    v31 = nameCopy;
     v32 = 2112;
-    v33 = v13;
+    v33 = identifierCopy;
     v34 = 2112;
-    v35 = v14;
+    v35 = colorCopy;
     v36 = 2112;
     v37 = v16;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Presenting proximity card for device with name: %@, model: %@, color: %@, url: %@", buf, 0x2Au);
@@ -963,11 +963,11 @@ LABEL_20:
   v21 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
   v28[0] = @"deviceName";
   v28[1] = @"modelIdentifier";
-  v29[0] = v12;
-  v29[1] = v13;
+  v29[0] = nameCopy;
+  v29[1] = identifierCopy;
   v28[2] = @"color";
   v28[3] = @"url";
-  v29[2] = v14;
+  v29[2] = colorCopy;
   v29[3] = v16;
   v22 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:4];
   [v21 setUserInfo:v22];
@@ -998,37 +998,37 @@ LABEL_21:
   self->_remoteAlertHandle = 0;
 }
 
-- (void)handleClientConnect:(id)a3
+- (void)handleClientConnect:(id)connect
 {
-  v4 = [a3 object];
-  if (sub_100007AC4(v4))
+  object = [connect object];
+  if (sub_100007AC4(object))
   {
-    v5 = [(MRDGroupSessionServer *)self notificationQueue];
+    notificationQueue = [(MRDGroupSessionServer *)self notificationQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10004F3C4;
     v6[3] = &unk_1004B68F0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = object;
+    dispatch_async(notificationQueue, v6);
   }
 }
 
-- (void)handleClientInvalidate:(id)a3
+- (void)handleClientInvalidate:(id)invalidate
 {
-  v4 = [a3 object];
+  object = [invalidate object];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMapTable *)self->_assertionsByClient objectForKey:v4];
+  v5 = [(NSMapTable *)self->_assertionsByClient objectForKey:object];
   if ([v5 count])
   {
     v6 = _MRLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 bundleIdentifier];
-      v8 = v7;
-      if (!v7)
+      bundleIdentifier = [object bundleIdentifier];
+      v8 = bundleIdentifier;
+      if (!bundleIdentifier)
       {
-        v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 pid]);
+        v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [object pid]);
       }
 
       v9 = 138412546;
@@ -1036,153 +1036,153 @@ LABEL_21:
       v11 = 2112;
       v12 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Cleaning up assertions for invalidated client: %@ - %@", &v9, 0x16u);
-      if (!v7)
+      if (!bundleIdentifier)
       {
       }
     }
   }
 
-  [(NSMapTable *)self->_assertionsByClient removeObjectForKey:v4];
+  [(NSMapTable *)self->_assertionsByClient removeObjectForKey:object];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)restoreClientState:(id)a3 handler:(id)a4
+- (void)restoreClientState:(id)state handler:(id)handler
 {
-  v17 = a3;
-  v6 = a4;
-  if (sub_100007AC4(v17))
+  stateCopy = state;
+  handlerCopy = handler;
+  if (sub_100007AC4(stateCopy))
   {
-    v7 = [(MRDGroupSessionServer *)self sessionManager];
-    v8 = [v7 session];
+    sessionManager = [(MRDGroupSessionServer *)self sessionManager];
+    session = [sessionManager session];
 
     v9 = objc_alloc_init(NSMutableDictionary);
-    if (v8)
+    if (session)
     {
-      v10 = [[MRGroupSessionInfo alloc] initWithGroupSession:v8];
+      v10 = [[MRGroupSessionInfo alloc] initWithGroupSession:session];
       [v9 setObject:v10 forKeyedSubscript:MRActiveGroupSessionInfoUserInfoKey];
     }
 
-    v6[2](v6, _MRGroupSessionInfoDidChangeNotification, v9);
+    handlerCopy[2](handlerCopy, _MRGroupSessionInfoDidChangeNotification, v9);
   }
 
-  v11 = [v17 bundleIdentifier];
+  bundleIdentifier = [stateCopy bundleIdentifier];
   IsSystemMediaApplication = MRMediaRemoteApplicationIsSystemMediaApplication();
 
   if (IsSystemMediaApplication)
   {
     v13 = +[MRDMusicUserStateCenter sharedCenter];
-    v14 = [v13 localActiveIdentity];
+    localActiveIdentity = [v13 localActiveIdentity];
 
     v15 = +[NSMutableDictionary dictionary];
-    v16 = [v14 protobufData];
-    [v15 setObject:v16 forKeyedSubscript:_MRUserIdentityDataUserInfoKey];
+    protobufData = [localActiveIdentity protobufData];
+    [v15 setObject:protobufData forKeyedSubscript:_MRUserIdentityDataUserInfoKey];
 
-    v6[2](v6, _MRUserIdentityDidChangeNotification, v15);
+    handlerCopy[2](handlerCopy, _MRUserIdentityDidChangeNotification, v15);
   }
 }
 
-- (void)handleUserStateChange:(id)a3
+- (void)handleUserStateChange:(id)change
 {
   v4 = +[MRDMusicUserStateCenter sharedCenter];
-  v11 = [v4 localActiveIdentity];
+  localActiveIdentity = [v4 localActiveIdentity];
 
-  v5 = [(MRDGroupSessionServer *)self localMusicIdentity];
-  v6 = v5;
-  if (v5 != v11)
+  localMusicIdentity = [(MRDGroupSessionServer *)self localMusicIdentity];
+  v6 = localMusicIdentity;
+  if (localMusicIdentity != localActiveIdentity)
   {
-    v7 = [v5 isEqual:v11];
+    v7 = [localMusicIdentity isEqual:localActiveIdentity];
 
-    v8 = v11;
+    v8 = localActiveIdentity;
     if (v7)
     {
       goto LABEL_5;
     }
 
-    [(MRDGroupSessionServer *)self setLocalMusicIdentity:v11];
+    [(MRDGroupSessionServer *)self setLocalMusicIdentity:localActiveIdentity];
     v6 = +[NSMutableDictionary dictionary];
-    v9 = [v11 protobufData];
-    [v6 setObject:v9 forKeyedSubscript:_MRUserIdentityDataUserInfoKey];
+    protobufData = [localActiveIdentity protobufData];
+    [v6 setObject:protobufData forKeyedSubscript:_MRUserIdentityDataUserInfoKey];
 
     v10 = +[MRDMediaRemoteServer server];
     [v10 postClientNotificationNamed:_MRUserIdentityDidChangeNotification userInfo:v6 predicate:&stru_1004B7078];
   }
 
-  v8 = v11;
+  v8 = localActiveIdentity;
 LABEL_5:
 }
 
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session
 {
-  v5 = [a4 identifier];
-  [(MRDGroupSessionServer *)self _completeGroupSessionRequestsWithIdentifier:v5];
+  identifier = [session identifier];
+  [(MRDGroupSessionServer *)self _completeGroupSessionRequestsWithIdentifier:identifier];
 
   [(MRDGroupSessionServer *)self notifyActiveSessionStateChanged];
 }
 
-- (void)manager:(id)a3 activeSessionDidChange:(id)a4
+- (void)manager:(id)manager activeSessionDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(MRDGroupSessionServer *)self lastConnectionError];
-  v7 = [v6 code];
+  changeCopy = change;
+  lastConnectionError = [(MRDGroupSessionServer *)self lastConnectionError];
+  code = [lastConnectionError code];
 
-  if (v7 == 100)
+  if (code == 100)
   {
-    v8 = [v5 joinToken];
-    v9 = [v8 equivalentMediaIdentifier];
+    joinToken = [changeCopy joinToken];
+    equivalentMediaIdentifier = [joinToken equivalentMediaIdentifier];
 
-    if (v9)
+    if (equivalentMediaIdentifier)
     {
       v10 = _MRLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v16 = 138412290;
-        v17 = v9;
+        v17 = equivalentMediaIdentifier;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[MRDGroupSessionServer] Registering WHA identifier for connection failure: %@", &v16, 0xCu);
       }
 
       v11 = +[MRDMediaRemoteServer server];
-      v12 = [v11 routingServer];
-      v13 = [v12 hostedRoutingService];
-      v14 = [v13 hostedRoutingController];
-      v15 = [v14 discoverySession];
+      routingServer = [v11 routingServer];
+      hostedRoutingService = [routingServer hostedRoutingService];
+      hostedRoutingController = [hostedRoutingService hostedRoutingController];
+      discoverySession = [hostedRoutingController discoverySession];
 
-      [v15 registerConnectionFailureForWHAIdentifier:v9];
+      [discoverySession registerConnectionFailureForWHAIdentifier:equivalentMediaIdentifier];
     }
   }
 }
 
-- (void)manager:(id)a3 didLeaveRemoteGroupSession:(id)a4
+- (void)manager:(id)manager didLeaveRemoteGroupSession:(id)session
 {
-  v5 = [a4 joinToken];
-  v11 = [v5 equivalentMediaIdentifier];
+  joinToken = [session joinToken];
+  equivalentMediaIdentifier = [joinToken equivalentMediaIdentifier];
 
-  if (v11)
+  if (equivalentMediaIdentifier)
   {
     v6 = +[MRDMediaRemoteServer server];
-    v7 = [v6 routingServer];
-    v8 = [v7 hostedRoutingService];
-    v9 = [v8 hostedRoutingController];
-    v10 = [v9 discoverySession];
+    routingServer = [v6 routingServer];
+    hostedRoutingService = [routingServer hostedRoutingService];
+    hostedRoutingController = [hostedRoutingService hostedRoutingController];
+    discoverySession = [hostedRoutingController discoverySession];
 
-    [v10 unregisterConnectionFailureForWHAIdentifier:v11];
+    [discoverySession unregisterConnectionFailureForWHAIdentifier:equivalentMediaIdentifier];
   }
 
   [(MRDGroupSessionServer *)self notifyActiveSessionStateChanged];
 }
 
-- (void)manager:(id)a3 discoveredSessionsDidChange:(id)a4
+- (void)manager:(id)manager discoveredSessionsDidChange:(id)change
 {
-  v5 = [a4 msv_firstWhere:&stru_1004B70B8];
+  v5 = [change msv_firstWhere:&stru_1004B70B8];
   if (v5)
   {
-    v6 = [(MRDGroupSessionServer *)self nowPlayingServer];
-    if ([v6 activePlayerIsPlaying])
+    nowPlayingServer = [(MRDGroupSessionServer *)self nowPlayingServer];
+    if ([nowPlayingServer activePlayerIsPlaying])
     {
-      v7 = [(MRDGroupSessionServer *)self nowPlayingServer];
-      v8 = [v7 activePlayerPath];
-      v9 = [v8 isSystemMediaApplication];
+      nowPlayingServer2 = [(MRDGroupSessionServer *)self nowPlayingServer];
+      activePlayerPath = [nowPlayingServer2 activePlayerPath];
+      isSystemMediaApplication = [activePlayerPath isSystemMediaApplication];
 
-      if ((v9 & 1) == 0)
+      if ((isSystemMediaApplication & 1) == 0)
       {
         v10 = _MRLogForCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -1200,15 +1200,15 @@ LABEL_5:
     }
 
     v11 = [[MRGroupSessionToken alloc] initWithDiscoveredSession:v5 autoConnect:1];
-    v12 = [v5 hostInfo];
-    v13 = [v12 displayName];
-    v14 = [v5 hostInfo];
-    v15 = [v14 modelIdentifier];
-    v16 = [v5 hostInfo];
-    v17 = [v16 color];
-    v18 = [v11 joinURLString];
+    hostInfo = [v5 hostInfo];
+    displayName = [hostInfo displayName];
+    hostInfo2 = [v5 hostInfo];
+    modelIdentifier = [hostInfo2 modelIdentifier];
+    hostInfo3 = [v5 hostInfo];
+    color = [hostInfo3 color];
+    joinURLString = [v11 joinURLString];
     v22 = 0;
-    [(MRDGroupSessionServer *)self presentProximityCardWithDeviceName:v13 modelIdentifier:v15 color:v17 url:v18 error:&v22];
+    [(MRDGroupSessionServer *)self presentProximityCardWithDeviceName:displayName modelIdentifier:modelIdentifier color:color url:joinURLString error:&v22];
     v19 = v22;
 
     if (v19)
@@ -1238,13 +1238,13 @@ LABEL_15:
 
 - (void)notifyActiveSessionStateChanged
 {
-  v2 = [(MRDGroupSessionServer *)self sessionManager];
-  v3 = [v2 session];
+  sessionManager = [(MRDGroupSessionServer *)self sessionManager];
+  session = [sessionManager session];
 
   v4 = objc_alloc_init(NSMutableDictionary);
-  if (v3)
+  if (session)
   {
-    v5 = [[MRGroupSessionInfo alloc] initWithGroupSession:v3];
+    v5 = [[MRGroupSessionInfo alloc] initWithGroupSession:session];
     [v4 setObject:v5 forKeyedSubscript:MRActiveGroupSessionInfoUserInfoKey];
   }
 
@@ -1265,9 +1265,9 @@ LABEL_15:
   [v7 postClientNotificationNamed:_MRGroupSessionInfoDidChangeNotification userInfo:v4 predicate:&stru_1004B7100];
 }
 
-- (void)_completeGroupSessionRequestsWithIdentifier:(id)a3
+- (void)_completeGroupSessionRequestsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
@@ -1306,16 +1306,16 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)notifyEligibilityChanged:(id)a3
+- (void)notifyEligibilityChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = objc_alloc_init(NSMutableDictionary);
-  [v4 setObject:v3 forKeyedSubscript:MRGroupSessionEligibilityStatusUserInfoKey];
+  [v4 setObject:changedCopy forKeyedSubscript:MRGroupSessionEligibilityStatusUserInfoKey];
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v3;
+    v8 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Push local session state: %{public}@ to clients", &v7, 0xCu);
   }
 
@@ -1323,45 +1323,45 @@ LABEL_15:
   [v6 postClientNotificationNamed:_MRGroupSessionEligibilityDidChangeNotification userInfo:v4 predicate:&stru_1004B7120];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MRDGroupSessionServer *)self messageQueue];
-  dispatch_assert_queue_V2(v5);
+  clientCopy = client;
+  messageQueue = [(MRDGroupSessionServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = clientCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Adding client %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(MRDGroupSessionServer *)self clients];
-  [v7 addObject:v4];
+  clients = [(MRDGroupSessionServer *)self clients];
+  [clients addObject:clientCopy];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MRDGroupSessionServer *)self messageQueue];
-  dispatch_assert_queue_V2(v5);
+  clientCopy = client;
+  messageQueue = [(MRDGroupSessionServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = clientCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionServer] Removing client %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(MRDGroupSessionServer *)self clients];
-  [v7 removeObject:v4];
+  clients = [(MRDGroupSessionServer *)self clients];
+  [clients removeObject:clientCopy];
 }
 
-- (id)clientForConnection:(id)a3
+- (id)clientForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   [(MRDGroupSessionServer *)self clients];
   v13 = 0u;
   v14 = 0u;
@@ -1381,8 +1381,8 @@ LABEL_15:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 connection];
-        v11 = [v10 isEqual:v4];
+        connection = [v9 connection];
+        v11 = [connection isEqual:connectionCopy];
 
         if (v11)
         {
@@ -1427,14 +1427,14 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -1450,7 +1450,7 @@ LABEL_11:
   if (v10)
   {
     v28 = v10;
-    v29 = v6;
+    v29 = listenerCopy;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       sub_1003A4CD0(v9, v12);
@@ -1483,7 +1483,7 @@ LABEL_11:
     [v8 setExportedObject:v21];
 
     [v8 setRemoteObjectInterface:v20];
-    v22 = [(MRDGroupSessionServer *)self messageQueue];
+    messageQueue = [(MRDGroupSessionServer *)self messageQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100050E80;
@@ -1491,7 +1491,7 @@ LABEL_11:
     block[4] = self;
     v23 = v27;
     v33 = v23;
-    dispatch_sync(v22, block);
+    dispatch_sync(messageQueue, block);
 
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -1501,12 +1501,12 @@ LABEL_11:
     v31 = v23;
     v24 = v23;
     [v8 setInvalidationHandler:v30];
-    v25 = [(MRDGroupSessionServer *)self messageQueue];
-    [v8 _setQueue:v25];
+    messageQueue2 = [(MRDGroupSessionServer *)self messageQueue];
+    [v8 _setQueue:messageQueue2];
 
     [v8 resume];
     v10 = v28;
-    v6 = v29;
+    listenerCopy = v29;
   }
 
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1517,7 +1517,7 @@ LABEL_11:
   return v10 != 0;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v3 = _MRLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -1527,7 +1527,7 @@ LABEL_11:
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1540,14 +1540,14 @@ LABEL_11:
   self->_remoteAlertHandle = 0;
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[MRDGroupSessionServer] Remote alert handle did invalidate with error: %@", &v8, 0xCu);
   }
 
@@ -1557,11 +1557,11 @@ LABEL_11:
 
 - (void)reevaluateAssertionState
 {
-  v3 = [(MRDGroupSessionServer *)self assertionManager];
-  v4 = [v3 isAsserting];
+  assertionManager = [(MRDGroupSessionServer *)self assertionManager];
+  isAsserting = [assertionManager isAsserting];
   os_unfair_lock_lock(&self->_lock);
   running = self->_running;
-  if ((v4 & 1) == 0)
+  if ((isAsserting & 1) == 0)
   {
     if (self->_running)
     {
@@ -1577,8 +1577,8 @@ LABEL_11:
       v9[1] = 3221225472;
       v9[2] = sub_1000511A4;
       v9[3] = &unk_1004B68F0;
-      v10 = v3;
-      v11 = self;
+      v10 = assertionManager;
+      selfCopy = self;
       v7 = [MSVTimer timerWithInterval:0 repeats:v9 block:30.0];
       stopTimer = self->_stopTimer;
       self->_stopTimer = v7;
@@ -1618,11 +1618,11 @@ LABEL_9:
   return v3;
 }
 
-- (void)setLastConnectionError:(id)a3
+- (void)setLastConnectionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [errorCopy copy];
 
   lastConnectionError = self->_lastConnectionError;
   self->_lastConnectionError = v5;
@@ -1630,13 +1630,13 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v4 = a3;
+  diagnosticCopy = diagnostic;
   os_unfair_lock_lock(&self->_lock);
-  [(MRDRemoteControlGroupSessionCoordinator *)self->_coordinator collectDiagnostic:v4];
-  [(MRDGroupSessionManager *)self->_sessionManager collectDiagnostic:v4];
-  [(MRDGroupSessionAssertionManager *)self->_assertionManager collectDiagnostic:v4];
+  [(MRDRemoteControlGroupSessionCoordinator *)self->_coordinator collectDiagnostic:diagnosticCopy];
+  [(MRDGroupSessionManager *)self->_sessionManager collectDiagnostic:diagnosticCopy];
+  [(MRDGroupSessionAssertionManager *)self->_assertionManager collectDiagnostic:diagnosticCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

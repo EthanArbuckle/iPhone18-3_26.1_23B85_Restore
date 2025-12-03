@@ -1,5 +1,5 @@
 @interface PUIReportAppListController
-+ (BOOL)appSpecifiersWithLimit:(unint64_t)a3 completion:(id)a4;
++ (BOOL)appSpecifiersWithLimit:(unint64_t)limit completion:(id)completion;
 - (PUIReportAppListController)init;
 - (id)specifiers;
 - (void)dataDidChange;
@@ -9,14 +9,14 @@
 
 @implementation PUIReportAppListController
 
-+ (BOOL)appSpecifiersWithLimit:(unint64_t)a3 completion:(id)a4
++ (BOOL)appSpecifiersWithLimit:(unint64_t)limit completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_opt_new();
   [v7 setObject:&unk_28772B408 forKeyedSubscript:*MEMORY[0x277D6B668]];
-  if (a3)
+  if (limit)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
     [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277D6B658]];
   }
 
@@ -24,9 +24,9 @@
   v12[1] = 3221225472;
   v12[2] = __64__PUIReportAppListController_appSpecifiersWithLimit_completion___block_invoke;
   v12[3] = &unk_279BA1FE0;
-  v13 = v6;
-  v14 = a1;
-  v9 = v6;
+  v13 = completionCopy;
+  selfCopy = self;
+  v9 = completionCopy;
   v10 = [PUITrackingReportManager queryWithOptions:v7 reply:v12];
 
   return v10;
@@ -179,8 +179,8 @@ void __64__PUIReportAppListController_appSpecifiersWithLimit_completion___block_
   v2 = [(PUIReportAppListController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_dataDidChange name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_dataDidChange name:*MEMORY[0x277D76648] object:0];
 
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -192,8 +192,8 @@ void __64__PUIReportAppListController_appSpecifiersWithLimit_completion___block_
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUIReportAppListController;
@@ -212,12 +212,12 @@ void __64__PUIReportAppListController_appSpecifiersWithLimit_completion___block_
     v6 = objc_alloc(MEMORY[0x277D751E0]);
     v7 = PUI_LocalizedStringForAppReport(@"SORT_BY");
     v8 = [v6 initWithTitle:v7 style:0 target:self action:sel_sortByWasTapped];
-    v9 = [(PUIReportAppListController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [(PUIReportAppListController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
 
-    v10 = [(PUIReportAppListController *)self cachedSpecifiers];
+    cachedSpecifiers = [(PUIReportAppListController *)self cachedSpecifiers];
 
-    if (!v10)
+    if (!cachedSpecifiers)
     {
       v11 = objc_opt_class();
       v21[0] = MEMORY[0x277D85DD0];
@@ -241,12 +241,12 @@ void __64__PUIReportAppListController_appSpecifiersWithLimit_completion___block_
 
     v14 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"HEADER_GROUP" name:v13];
     [v12 addObject:v14];
-    v15 = [(PUIReportAppListController *)self alphabeticalSort];
-    v16 = [(PUIReportAppListController *)self cachedSpecifiers];
-    v17 = v16;
-    if (v15)
+    alphabeticalSort = [(PUIReportAppListController *)self alphabeticalSort];
+    cachedSpecifiers2 = [(PUIReportAppListController *)self cachedSpecifiers];
+    v17 = cachedSpecifiers2;
+    if (alphabeticalSort)
     {
-      v18 = [v16 sortedArrayUsingComparator:&__block_literal_global_14];
+      v18 = [cachedSpecifiers2 sortedArrayUsingComparator:&__block_literal_global_14];
 
       v17 = v18;
     }

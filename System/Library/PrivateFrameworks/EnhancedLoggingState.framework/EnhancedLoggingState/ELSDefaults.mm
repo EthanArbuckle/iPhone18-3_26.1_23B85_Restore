@@ -54,7 +54,7 @@ uint64_t __29__ELSDefaults_sharedInstance__block_invoke()
       _os_log_impl(&dword_24A07C000, v4, OS_LOG_TYPE_DEFAULT, "Using CloudKit environment set in user defaults: %@", &v12, 0xCu);
     }
 
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
@@ -71,7 +71,7 @@ uint64_t __29__ELSDefaults_sharedInstance__block_invoke()
         _os_log_impl(&dword_24A07C000, v8, OS_LOG_TYPE_DEFAULT, "Using UAT CloudKit environment", &v12, 2u);
       }
 
-      v5 = 1;
+      integerValue = 1;
     }
 
     else
@@ -82,12 +82,12 @@ uint64_t __29__ELSDefaults_sharedInstance__block_invoke()
         _os_log_impl(&dword_24A07C000, v8, OS_LOG_TYPE_DEFAULT, "Using production CloudKit environment", &v12, 2u);
       }
 
-      v5 = 0;
+      integerValue = 0;
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v5;
+  return integerValue;
 }
 
 @end

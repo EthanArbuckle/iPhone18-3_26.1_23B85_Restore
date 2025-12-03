@@ -1,22 +1,22 @@
 @interface NIServerAccessoryGATTServiceManager
 + (id)sharedInstance;
-- (BOOL)_isListener:(id)a3 backgroundAuthorizedForPeer:(id)a4 useCache:(BOOL)a5;
+- (BOOL)_isListener:(id)listener backgroundAuthorizedForPeer:(id)peer useCache:(BOOL)cache;
 - (id)_initInternal;
 - (id)_internalPrintableState;
 - (id)printableState;
 - (void)_cleanupExcessiveDetachedPeers;
-- (void)_connectToPeer:(id)a3;
-- (void)_peer:(id)a3 didFailWithError:(id)a4;
-- (void)addServiceListener:(id)a3 withIdentifier:(id)a4 forBluetoothPeer:(id)a5 withConfiguration:(id)a6;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)probeAuthorizationForServiceListenerWithIdentifier:(id)a3;
-- (void)removeServiceListenerWithIdentifier:(id)a3;
+- (void)_connectToPeer:(id)peer;
+- (void)_peer:(id)_peer didFailWithError:(id)error;
+- (void)addServiceListener:(id)listener withIdentifier:(id)identifier forBluetoothPeer:(id)peer withConfiguration:(id)configuration;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)probeAuthorizationForServiceListenerWithIdentifier:(id)identifier;
+- (void)removeServiceListenerWithIdentifier:(id)identifier;
 @end
 
 @implementation NIServerAccessoryGATTServiceManager
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001D5360;
   block[3] = &unk_10098AD98;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1009F0D08 != -1)
   {
     dispatch_once(&qword_1009F0D08, block);
@@ -73,54 +73,54 @@
   return v2;
 }
 
-- (void)addServiceListener:(id)a3 withIdentifier:(id)a4 forBluetoothPeer:(id)a5 withConfiguration:(id)a6
+- (void)addServiceListener:(id)listener withIdentifier:(id)identifier forBluetoothPeer:(id)peer withConfiguration:(id)configuration
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  listenerCopy = listener;
+  identifierCopy = identifier;
+  peerCopy = peer;
+  configurationCopy = configuration;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D54AC;
   block[3] = &unk_10099CBC0;
   block[4] = self;
-  v20 = v11;
-  v21 = v12;
-  v22 = v10;
-  v23 = v13;
-  v15 = v13;
-  v16 = v10;
-  v17 = v12;
-  v18 = v11;
+  v20 = identifierCopy;
+  v21 = peerCopy;
+  v22 = listenerCopy;
+  v23 = configurationCopy;
+  v15 = configurationCopy;
+  v16 = listenerCopy;
+  v17 = peerCopy;
+  v18 = identifierCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)probeAuthorizationForServiceListenerWithIdentifier:(id)a3
+- (void)probeAuthorizationForServiceListenerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001D59B0;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeServiceListenerWithIdentifier:(id)a3
+- (void)removeServiceListenerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001D617C;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
@@ -187,12 +187,12 @@
   return v11;
 }
 
-- (void)_connectToPeer:(id)a3
+- (void)_connectToPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(CBCentralManager *)self->_cbManager state];
-  if ((v5 - 2) < 3)
+  state = [(CBCentralManager *)self->_cbManager state];
+  if ((state - 2) < 3)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -200,42 +200,42 @@
     }
 
     v9 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10017 userInfo:0];
-    [(NIServerAccessoryGATTServiceManager *)self _peer:v4 didFailWithError:v9];
+    [(NIServerAccessoryGATTServiceManager *)self _peer:peerCopy didFailWithError:v9];
   }
 
-  else if (v5 >= 2)
+  else if (state >= 2)
   {
-    if (v5 != 5)
+    if (state != 5)
     {
       __assert_rtn("[NIServerAccessoryGATTServiceManager _connectToPeer:]", "NIServerAccessoryGATTServiceManager.mm", 413, "cbState == CBManagerStatePoweredOn");
     }
 
-    v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v4];
-    v11 = [v10 connectionState];
+    v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:peerCopy];
+    connectionState = [v10 connectionState];
 
-    if (v11 == 6)
+    if (connectionState == 6)
     {
       v12 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v4;
+        v36 = peerCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#bt-accessory,ConnectToPeer [%@]: already finished", buf, 0xCu);
       }
     }
 
     else
     {
-      v13 = [(CBCentralManager *)self->_cbManager sharedPairingAgent];
-      v14 = [v13 retrievePairedPeers];
+      sharedPairingAgent = [(CBCentralManager *)self->_cbManager sharedPairingAgent];
+      retrievePairedPeers = [sharedPairingAgent retrievePairedPeers];
 
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_1001D74AC;
       v33[3] = &unk_10099CC60;
-      v15 = v4;
+      v15 = peerCopy;
       v34 = v15;
-      if ([v14 indexOfObjectPassingTest:v33] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([retrievePairedPeers indexOfObjectPassingTest:v33] == 0x7FFFFFFFFFFFFFFFLL)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
@@ -282,13 +282,13 @@
           [v22 setPeripheral:v21];
 
           v23 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v17];
-          v24 = [v23 peripheral];
-          [v24 setDelegate:self];
+          peripheral = [v23 peripheral];
+          [peripheral setDelegate:self];
 
           cbManager = self->_cbManager;
           v26 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v17];
-          v27 = [v26 peripheral];
-          [(CBCentralManager *)cbManager connectPeripheral:v27 options:0];
+          peripheral2 = [v26 peripheral];
+          [(CBCentralManager *)cbManager connectPeripheral:peripheral2 options:0];
 
           v20 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v17];
           [v20 changeConnectionState:2];
@@ -303,56 +303,56 @@
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v36 = v4;
+      v36 = peerCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#bt-accessory,ConnectToPeer [%@]: wait for CBManager state update", buf, 0xCu);
     }
 
-    v7 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:peerCopy];
     [v7 changeConnectionState:1];
 
-    v8 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v4];
+    v8 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:peerCopy];
     [v8 cacheCharacteristics];
   }
 }
 
-- (void)_peer:(id)a3 didFailWithError:(id)a4
+- (void)_peer:(id)_peer didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  _peerCopy = _peer;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:_peerCopy];
   [v8 changeConnectionState:0];
 
-  v9 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:_peerCopy];
   [v9 cacheCharacteristics];
 
-  v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v6];
-  v11 = [v10 listeners];
+  v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:_peerCopy];
+  listeners = [v10 listeners];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001D76B8;
   v13[3] = &unk_10099CCB0;
   v13[4] = self;
-  v12 = v7;
+  v12 = errorCopy;
   v14 = v12;
-  [v11 enumerateObjectsUsingBlock:v13];
+  [listeners enumerateObjectsUsingBlock:v13];
 }
 
-- (BOOL)_isListener:(id)a3 backgroundAuthorizedForPeer:(id)a4 useCache:(BOOL)a5
+- (BOOL)_isListener:(id)listener backgroundAuthorizedForPeer:(id)peer useCache:(BOOL)cache
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  cacheCopy = cache;
+  listenerCopy = listener;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  v10 = [(NSMutableDictionary *)self->_listeners objectForKeyedSubscript:v8];
-  v11 = [v10 configuration];
+  v10 = [(NSMutableDictionary *)self->_listeners objectForKeyedSubscript:listenerCopy];
+  configuration = [v10 configuration];
 
   v12 = objc_opt_class();
   if (v12 == objc_opt_class())
   {
-    v14 = [v11 accessoryConfigData];
-    v15 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v9];
-    if (v5)
+    accessoryConfigData = [configuration accessoryConfigData];
+    v15 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:peerCopy];
+    if (cacheCopy)
     {
       [v15 cachedConfigCharacteristics];
     }
@@ -362,7 +362,7 @@
       [v15 resultConfigCharacteristics];
     }
     v16 = ;
-    v17 = [v16 containsObject:v14];
+    v17 = [v16 containsObject:accessoryConfigData];
 
     v13 = (v17 & 1) != 0;
   }
@@ -383,12 +383,12 @@
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v5 = 2;
+    unsignedIntValue = 2;
   }
 
   v6 = objc_opt_new();
@@ -400,7 +400,7 @@
   v8 = v6;
   v12 = v8;
   [(NSMutableDictionary *)peerDevices enumerateKeysAndObjectsUsingBlock:v11];
-  if ([v8 count] > v5)
+  if ([v8 count] > unsignedIntValue)
   {
     v9 = qword_1009F9820;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -409,7 +409,7 @@
       *buf = 67109376;
       v14 = v10;
       v15 = 1024;
-      v16 = v5;
+      v16 = unsignedIntValue;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#bt-accessory,Cleaning up detached peers. %d found, exceeds max of %d", buf, 0xEu);
     }
 
@@ -417,21 +417,21 @@
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 state];
-    if (v6 > 0xA)
+    state = [stateCopy state];
+    if (state > 0xA)
     {
       v7 = "?";
     }
 
     else
     {
-      v7 = off_10099CD90[v6];
+      v7 = off_10099CD90[state];
     }
 
     *buf = 136315138;
@@ -448,41 +448,41 @@
   [(NSMutableDictionary *)peerDevices enumerateKeysAndObjectsUsingBlock:v9];
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v5 = a4;
-  v6 = [v5 identifier];
-  v7 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v6];
+  peripheralCopy = peripheral;
+  identifier = [peripheralCopy identifier];
+  v7 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v6];
-    v9 = [v8 peripheral];
-    if (v9)
+    v8 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+    peripheral = [v8 peripheral];
+    if (peripheral)
     {
-      v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v6];
-      v11 = [v10 peripheral];
+      v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+      peripheral2 = [v10 peripheral];
 
-      if (v11 == v5)
+      if (peripheral2 == peripheralCopy)
       {
-        v12 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v6];
-        v13 = [v12 connectionState];
+        v12 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+        connectionState = [v12 connectionState];
 
         v14 = qword_1009F9820;
-        if (v13 == 2)
+        if (connectionState == 2)
         {
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v20 = v6;
+            v20 = identifier;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#bt-accessory,centralManager:didConnectPeripheral [%@]: Success", buf, 0xCu);
           }
 
           v15 = [CBUUID UUIDWithString:@"48fe3e40-0817-4bb2-8633-3073689c2dba"];
           v18 = v15;
           v16 = [NSArray arrayWithObjects:&v18 count:1];
-          [v5 discoverServices:v16];
+          [peripheralCopy discoverServices:v16];
 
-          v17 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v6];
+          v17 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
           [v17 changeConnectionState:3];
         }
 
@@ -508,40 +508,40 @@
 LABEL_11:
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 identifier];
-  v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v9];
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  identifier = [peripheralCopy identifier];
+  v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
   if (v10)
   {
-    v11 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v9];
-    v12 = [v11 peripheral];
-    if (v12)
+    v11 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+    peripheral = [v11 peripheral];
+    if (peripheral)
     {
-      v13 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v9];
-      v14 = [v13 peripheral];
+      v13 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+      peripheral2 = [v13 peripheral];
 
-      if (v14 == v7)
+      if (peripheral2 == peripheralCopy)
       {
-        v15 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v9];
-        v16 = [v15 connectionState];
+        v15 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+        connectionState = [v15 connectionState];
 
         v17 = qword_1009F9820;
-        if (v16 == 2)
+        if (connectionState == 2)
         {
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
           {
             v19 = 138412546;
-            v20 = v9;
+            v20 = identifier;
             v21 = 2112;
-            v22 = v8;
+            v22 = errorCopy;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#bt-accessory,centralManager:didFailToConnectPeripheral [%@]: Error: %@", &v19, 0x16u);
           }
 
           v18 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5882 userInfo:0];
-          [(NIServerAccessoryGATTServiceManager *)self _peer:v9 didFailWithError:v18];
+          [(NIServerAccessoryGATTServiceManager *)self _peer:identifier didFailWithError:v18];
         }
 
         else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -566,35 +566,35 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 identifier];
-  v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v9];
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  identifier = [peripheralCopy identifier];
+  v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
   if (v10)
   {
-    v11 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v9];
-    v12 = [v11 peripheral];
-    if (v12)
+    v11 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+    peripheral = [v11 peripheral];
+    if (peripheral)
     {
-      v13 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v9];
-      v14 = [v13 peripheral];
+      v13 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+      peripheral2 = [v13 peripheral];
 
-      if (v14 == v7)
+      if (peripheral2 == peripheralCopy)
       {
         v15 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           v17 = 138412546;
-          v18 = v9;
+          v18 = identifier;
           v19 = 2112;
-          v20 = v8;
+          v20 = errorCopy;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#bt-accessory,centralManager:didDisconnectPeripheral [%@]: Error: %@", &v17, 0x16u);
         }
 
         v16 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5882 userInfo:0];
-        [(NIServerAccessoryGATTServiceManager *)self _peer:v9 didFailWithError:v16];
+        [(NIServerAccessoryGATTServiceManager *)self _peer:identifier didFailWithError:v16];
 
         goto LABEL_10;
       }
@@ -613,12 +613,12 @@ LABEL_11:
 LABEL_10:
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v8];
+  peripheralCopy = peripheral;
+  servicesCopy = services;
+  identifier = [peripheralCopy identifier];
+  v9 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
   if (!v9)
   {
 LABEL_10:
@@ -630,28 +630,28 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v8];
-  v11 = [v10 peripheral];
-  if (!v11)
+  v10 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+  peripheral = [v10 peripheral];
+  if (!peripheral)
   {
 
     goto LABEL_10;
   }
 
-  v12 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v8];
-  v13 = [v12 peripheral];
+  v12 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+  peripheral2 = [v12 peripheral];
 
-  if (v13 != v6)
+  if (peripheral2 != peripheralCopy)
   {
     goto LABEL_10;
   }
 
-  v14 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v8];
-  v15 = [v14 connectionState];
+  v14 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+  connectionState = [v14 connectionState];
 
-  if (v15 == 3)
+  if (connectionState == 3)
   {
-    if (v7)
+    if (servicesCopy)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -660,13 +660,13 @@ LABEL_10:
 
 LABEL_8:
       v16 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5882 userInfo:0];
-      [(NIServerAccessoryGATTServiceManager *)self _peer:v8 didFailWithError:v16];
+      [(NIServerAccessoryGATTServiceManager *)self _peer:identifier didFailWithError:v16];
 
       goto LABEL_12;
     }
 
-    v17 = [v6 services];
-    v18 = [v17 indexOfObjectPassingTest:&stru_10099CD18];
+    services = [peripheralCopy services];
+    v18 = [services indexOfObjectPassingTest:&stru_10099CD18];
 
     v19 = qword_1009F9820;
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
@@ -682,7 +682,7 @@ LABEL_8:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = v8;
+      v28 = identifier;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#bt-accessory,peripheral:didDiscoverServices [%@]: Success", buf, 0xCu);
     }
 
@@ -690,11 +690,11 @@ LABEL_8:
     v21 = [CBUUID UUIDWithString:@"1176cf7b-bed2-4690-bd69-5f34001e820c", v20];
     v26[1] = v21;
     v22 = [NSArray arrayWithObjects:v26 count:2];
-    v23 = [v6 services];
-    v24 = [v23 objectAtIndexedSubscript:v18];
-    [v6 discoverCharacteristics:v22 forService:v24];
+    services2 = [peripheralCopy services];
+    v24 = [services2 objectAtIndexedSubscript:v18];
+    [peripheralCopy discoverCharacteristics:v22 forService:v24];
 
-    v25 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v8];
+    v25 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
     [v25 changeConnectionState:4];
   }
 
@@ -706,30 +706,30 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identifier];
-  v12 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  identifier = [peripheralCopy identifier];
+  v12 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
   if (v12)
   {
-    v13 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-    v14 = [v13 peripheral];
-    if (v14)
+    v13 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+    peripheral = [v13 peripheral];
+    if (peripheral)
     {
-      v15 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-      v16 = [v15 peripheral];
+      v15 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+      peripheral2 = [v15 peripheral];
 
-      if (v16 == v8)
+      if (peripheral2 == peripheralCopy)
       {
-        v17 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-        v18 = [v17 connectionState];
+        v17 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+        connectionState = [v17 connectionState];
 
-        if (v18 == 4)
+        if (connectionState == 4)
         {
-          if (v10)
+          if (errorCopy)
           {
             if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
             {
@@ -737,50 +737,50 @@ LABEL_12:
             }
 
             v19 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5882 userInfo:0];
-            [(NIServerAccessoryGATTServiceManager *)self _peer:v11 didFailWithError:v19];
+            [(NIServerAccessoryGATTServiceManager *)self _peer:identifier didFailWithError:v19];
           }
 
           else
           {
-            v20 = [v9 UUID];
+            uUID = [serviceCopy UUID];
             v21 = [CBUUID UUIDWithString:@"48fe3e40-0817-4bb2-8633-3073689c2dba"];
-            if (([v20 isEqual:v21] & 1) == 0)
+            if (([uUID isEqual:v21] & 1) == 0)
             {
               __assert_rtn("[NIServerAccessoryGATTServiceManager peripheral:didDiscoverCharacteristicsForService:error:]", "NIServerAccessoryGATTServiceManager.mm", 662, "[service.UUID isEqual:[CBUUID UUIDWithString:kNearbyInteractionServiceUUID]]");
             }
 
-            v22 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
+            v22 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
             [v22 setNumCharacteristicsLeftToRead:0];
 
-            v23 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
+            v23 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
             [v23 setReadingMultiConfigCharacteristics:0];
 
-            v24 = [v9 characteristics];
+            characteristics = [serviceCopy characteristics];
             v45[0] = _NSConcreteStackBlock;
             v45[1] = 3221225472;
             v45[2] = sub_1001D910C;
             v45[3] = &unk_10099CD40;
-            v25 = v8;
+            v25 = peripheralCopy;
             v46 = v25;
-            v47 = self;
-            v26 = v11;
+            selfCopy = self;
+            v26 = identifier;
             v48 = v26;
-            [v24 enumerateObjectsUsingBlock:v45];
+            [characteristics enumerateObjectsUsingBlock:v45];
 
             v27 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v26];
-            v28 = [v27 readingMultiConfigCharacteristics];
+            readingMultiConfigCharacteristics = [v27 readingMultiConfigCharacteristics];
 
-            if ((v28 & 1) == 0)
+            if ((readingMultiConfigCharacteristics & 1) == 0)
             {
-              v29 = [v9 characteristics];
+              characteristics2 = [serviceCopy characteristics];
               v41[0] = _NSConcreteStackBlock;
               v41[1] = 3221225472;
               v41[2] = sub_1001D9224;
               v41[3] = &unk_10099CD40;
               v42 = v25;
-              v43 = self;
+              selfCopy2 = self;
               v44 = v26;
-              [v29 enumerateObjectsUsingBlock:v41];
+              [characteristics2 enumerateObjectsUsingBlock:v41];
             }
 
             v30 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v26];
@@ -802,24 +802,24 @@ LABEL_12:
               v32 = qword_1009F9820;
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
-                v40 = [v9 characteristics];
-                v33 = [v40 count];
+                characteristics3 = [serviceCopy characteristics];
+                v33 = [characteristics3 count];
                 v39 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v26];
-                v34 = [v39 numCharacteristicsLeftToRead];
+                numCharacteristicsLeftToRead = [v39 numCharacteristicsLeftToRead];
                 v35 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v26];
-                v36 = [v35 readingMultiConfigCharacteristics];
+                readingMultiConfigCharacteristics2 = [v35 readingMultiConfigCharacteristics];
                 v37 = "single-config";
                 *buf = 138413058;
                 v50 = v26;
                 v51 = 1024;
-                if (v36)
+                if (readingMultiConfigCharacteristics2)
                 {
                   v37 = "multi-config";
                 }
 
                 v52 = v33;
                 v53 = 1024;
-                v54 = v34;
+                v54 = numCharacteristicsLeftToRead;
                 v55 = 2080;
                 v56 = v37;
                 _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "#bt-accessory,peripheral:didDiscoverCharacteristics [%@]: %d total characteristics discovered, and triggered reads on %d %s characteristics", buf, 0x22u);
@@ -853,13 +853,13 @@ LABEL_12:
 LABEL_12:
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identifier];
-  v12 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  identifier = [peripheralCopy identifier];
+  v12 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
   if (!v12)
   {
 LABEL_10:
@@ -871,26 +871,26 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v13 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-  v14 = [v13 peripheral];
-  if (!v14)
+  v13 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+  peripheral = [v13 peripheral];
+  if (!peripheral)
   {
 
     goto LABEL_10;
   }
 
-  v15 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-  v16 = [v15 peripheral];
+  v15 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+  peripheral2 = [v15 peripheral];
 
-  if (v16 != v8)
+  if (peripheral2 != peripheralCopy)
   {
     goto LABEL_10;
   }
 
-  v17 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-  v18 = [v17 connectionState];
+  v17 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+  connectionState = [v17 connectionState];
 
-  if (v18 != 5)
+  if (connectionState != 5)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -900,7 +900,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (v10)
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -909,44 +909,44 @@ LABEL_10:
 
 LABEL_8:
     v19 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5882 userInfo:0];
-    [(NIServerAccessoryGATTServiceManager *)self _peer:v11 didFailWithError:v19];
+    [(NIServerAccessoryGATTServiceManager *)self _peer:identifier didFailWithError:v19];
 
     goto LABEL_12;
   }
 
-  v20 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
+  v20 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
   [v20 setNumCharacteristicsLeftToRead:{objc_msgSend(v20, "numCharacteristicsLeftToRead") - 1}];
 
-  v21 = [v9 UUID];
+  uUID = [characteristicCopy UUID];
   v22 = [CBUUID UUIDWithString:@"1176cf7b-bed2-4690-bd69-5f34001e820c"];
-  v23 = [v21 isEqual:v22];
+  v23 = [uUID isEqual:v22];
 
   if (!v23)
   {
-    v26 = [v9 UUID];
+    uUID2 = [characteristicCopy UUID];
     v27 = [CBUUID UUIDWithString:@"95e8d9d5-d8ef-4721-9a4e-807375f53328"];
-    v28 = [v26 isEqual:v27];
+    v28 = [uUID2 isEqual:v27];
 
     if (v28)
     {
-      v29 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-      v30 = [v29 resultConfigCharacteristics];
-      v31 = [v9 value];
-      [v30 addObject:v31];
+      v29 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+      resultConfigCharacteristics = [v29 resultConfigCharacteristics];
+      value = [characteristicCopy value];
+      [resultConfigCharacteristics addObject:value];
 
       v32 = qword_1009F9820;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-        v34 = [v33 resultConfigCharacteristics];
-        v35 = [v34 count];
-        v36 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
+        v33 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+        resultConfigCharacteristics2 = [v33 resultConfigCharacteristics];
+        v35 = [resultConfigCharacteristics2 count];
+        v36 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
         *buf = 138412802;
-        v78 = v11;
+        v78 = identifier;
         v79 = 1024;
         v80 = v35;
         v81 = 1024;
-        v82 = [v36 numCharacteristicsLeftToRead];
+        numCharacteristicsLeftToRead = [v36 numCharacteristicsLeftToRead];
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "#bt-accessory,peripheral:didUpdateValueForCharacteristic [%@]: Read %d single-config characteristics, %d left to go", buf, 0x18u);
       }
     }
@@ -954,8 +954,8 @@ LABEL_8:
     goto LABEL_56;
   }
 
-  v24 = [v9 value];
-  v25 = [v24 length];
+  value2 = [characteristicCopy value];
+  v25 = [value2 length];
 
   v71 = v25;
   if (v25 >= 65282)
@@ -970,8 +970,8 @@ LABEL_8:
 
   buf[0] = 0;
   sub_100025100(&__p, v25);
-  v37 = [v9 value];
-  [v37 getBytes:__p length:v76 - __p];
+  value3 = [characteristicCopy value];
+  [value3 getBytes:__p length:v76 - __p];
 
   if (v25 <= 0)
   {
@@ -981,7 +981,7 @@ LABEL_8:
     }
 
     v49 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5882 userInfo:0];
-    [(NIServerAccessoryGATTServiceManager *)self _peer:v11 didFailWithError:v49];
+    [(NIServerAccessoryGATTServiceManager *)self _peer:identifier didFailWithError:v49];
 
     if (__p)
     {
@@ -997,11 +997,11 @@ LABEL_8:
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v78 = v11;
+    v78 = identifier;
     v79 = 1024;
     v80 = 1;
     v81 = 1024;
-    v82 = v71;
+    numCharacteristicsLeftToRead = v71;
     v83 = 1024;
     v84 = v38;
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "#bt-accessory,peripheral:didUpdateValueForCharacteristic [%@]: Multi-config characteristic (idx: %d, len: %d): Read config count (%d)", buf, 0x1Eu);
@@ -1030,11 +1030,11 @@ LABEL_8:
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
           {
             *buf = v68;
-            v78 = v11;
+            v78 = identifier;
             v79 = 1024;
             v80 = v45 + 1;
             v81 = 1024;
-            v82 = v71;
+            numCharacteristicsLeftToRead = v71;
             v83 = 1024;
             v84 = v69 - -v43;
             v85 = 1024;
@@ -1055,11 +1055,11 @@ LABEL_8:
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v68;
-          v78 = v11;
+          v78 = identifier;
           v79 = 1024;
           v80 = v41;
           v81 = 1024;
-          v82 = v71;
+          numCharacteristicsLeftToRead = v71;
           v83 = 1024;
           v84 = v44;
           v85 = 1024;
@@ -1085,11 +1085,11 @@ LABEL_8:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413314;
-      v78 = v11;
+      v78 = identifier;
       v79 = 1024;
       v80 = v45;
       v81 = 1024;
-      v82 = v71;
+      numCharacteristicsLeftToRead = v71;
       v83 = 1024;
       v84 = v69 - -v43;
       v85 = 1024;
@@ -1107,42 +1107,42 @@ LABEL_36:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v78 = v11;
+      v78 = identifier;
       v79 = 1024;
       v80 = v41;
       v81 = 1024;
-      v82 = v71;
+      numCharacteristicsLeftToRead = v71;
       _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "#bt-accessory,peripheral:didUpdateValueForCharacteristic [%@]: Multi-config characteristic (idx: %d, len: %d): Did not consume all bytes", buf, 0x18u);
     }
 
 LABEL_52:
     v52 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5882 userInfo:0, v68];
-    [(NIServerAccessoryGATTServiceManager *)self _peer:v11 didFailWithError:v52];
+    [(NIServerAccessoryGATTServiceManager *)self _peer:identifier didFailWithError:v52];
     v58 = 0;
     goto LABEL_53;
   }
 
-  v50 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-  v51 = [v50 resultConfigCharacteristics];
-  [v51 unionSet:v70];
+  v50 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+  resultConfigCharacteristics3 = [v50 resultConfigCharacteristics];
+  [resultConfigCharacteristics3 unionSet:v70];
 
   v52 = qword_1009F9820;
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
   {
     v72 = [v70 count];
-    v53 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-    v54 = [v53 resultConfigCharacteristics];
-    v55 = [v54 count];
-    v56 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-    v57 = [v56 numCharacteristicsLeftToRead];
+    v53 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+    resultConfigCharacteristics4 = [v53 resultConfigCharacteristics];
+    v55 = [resultConfigCharacteristics4 count];
+    v56 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+    numCharacteristicsLeftToRead2 = [v56 numCharacteristicsLeftToRead];
     *buf = 138413058;
-    v78 = v11;
+    v78 = identifier;
     v79 = 1024;
     v80 = v72;
     v81 = 1024;
-    v82 = v55;
+    numCharacteristicsLeftToRead = v55;
     v83 = 1024;
-    v84 = v57;
+    v84 = numCharacteristicsLeftToRead2;
     _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "#bt-accessory,peripheral:didUpdateValueForCharacteristic [%@]: Read %d unique configs from this multi-config characteristic. %d unique configs so far. %d characteristics left to read", buf, 0x1Eu);
   }
 
@@ -1158,27 +1158,27 @@ LABEL_53:
   if (v58)
   {
 LABEL_56:
-    v61 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11, v68];
+    v61 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier, v68];
     v62 = [v61 numCharacteristicsLeftToRead] == 0;
 
     if (v62)
     {
-      v63 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
+      v63 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
       [v63 changeConnectionState:6];
 
-      v64 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-      v65 = [v64 cachedConfigCharacteristics];
-      [v65 removeAllObjects];
+      v64 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+      cachedConfigCharacteristics = [v64 cachedConfigCharacteristics];
+      [cachedConfigCharacteristics removeAllObjects];
 
-      v66 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:v11];
-      v67 = [v66 listeners];
+      v66 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:identifier];
+      listeners = [v66 listeners];
       v73[0] = _NSConcreteStackBlock;
       v73[1] = 3221225472;
       v73[2] = sub_1001DA028;
       v73[3] = &unk_10099CCB0;
       v73[4] = self;
-      v74 = v11;
-      [v67 enumerateObjectsUsingBlock:v73];
+      v74 = identifier;
+      [listeners enumerateObjectsUsingBlock:v73];
     }
   }
 

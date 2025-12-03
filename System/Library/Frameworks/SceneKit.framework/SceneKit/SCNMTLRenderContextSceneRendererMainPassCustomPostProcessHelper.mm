@@ -1,17 +1,17 @@
 @interface SCNMTLRenderContextSceneRendererMainPassCustomPostProcessHelper
 - (MTLTexture)destinationTexture;
-- (void)drawSceneBackgroundUsingEncoder:(id)a3 commandBuffer:(id)a4 renderPassDescriptor:(id)a5;
-- (void)initWithEngineContext:(void *)a1;
+- (void)drawSceneBackgroundUsingEncoder:(id)encoder commandBuffer:(id)buffer renderPassDescriptor:(id)descriptor;
+- (void)initWithEngineContext:(void *)context;
 @end
 
 @implementation SCNMTLRenderContextSceneRendererMainPassCustomPostProcessHelper
 
 - (MTLTexture)destinationTexture
 {
-  v3 = [(SCNMTLRenderContext *)self->_renderContext clientRenderPassDescriptor];
-  if (v3)
+  clientRenderPassDescriptor = [(SCNMTLRenderContext *)self->_renderContext clientRenderPassDescriptor];
+  if (clientRenderPassDescriptor)
   {
-    v4 = [objc_msgSend(v3 "colorAttachments")];
+    v4 = [objc_msgSend(clientRenderPassDescriptor "colorAttachments")];
     result = [v4 resolveTexture];
     if (!result)
     {
@@ -30,7 +30,7 @@
   return result;
 }
 
-- (void)drawSceneBackgroundUsingEncoder:(id)a3 commandBuffer:(id)a4 renderPassDescriptor:(id)a5
+- (void)drawSceneBackgroundUsingEncoder:(id)encoder commandBuffer:(id)buffer renderPassDescriptor:(id)descriptor
 {
   if ((self->_currentPass[2].var4.var0 & 1) == 0)
   {
@@ -41,17 +41,17 @@
     }
   }
 
-  [(SCNMTLRenderContext *)self->_renderContext _SCNSceneRendererMainPassCustomPostProcessSupportDrawSceneBackgroundUsingEncoder:a3 commandBuffer:a4 renderPassDescriptor:a5];
+  [(SCNMTLRenderContext *)self->_renderContext _SCNSceneRendererMainPassCustomPostProcessSupportDrawSceneBackgroundUsingEncoder:encoder commandBuffer:buffer renderPassDescriptor:descriptor];
 }
 
-- (void)initWithEngineContext:(void *)a1
+- (void)initWithEngineContext:(void *)context
 {
-  if (!a1)
+  if (!context)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = context;
   v6.super_class = SCNMTLRenderContextSceneRendererMainPassCustomPostProcessHelper;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;

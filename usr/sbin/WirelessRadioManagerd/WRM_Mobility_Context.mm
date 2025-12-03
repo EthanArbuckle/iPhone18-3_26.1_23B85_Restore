@@ -1,9 +1,9 @@
 @interface WRM_Mobility_Context
 - (WRM_Mobility_Context)init;
 - (unint64_t)getMappedApplicationType;
-- (void)activateMobilityContext:(BOOL)a3;
+- (void)activateMobilityContext:(BOOL)context;
 - (void)dealloc;
-- (void)setMappedApplicationType:(unint64_t)a3 :(int)a4;
+- (void)setMappedApplicationType:(unint64_t)type :(int)a4;
 @end
 
 @implementation WRM_Mobility_Context
@@ -67,21 +67,21 @@
   }
 }
 
-- (void)setMappedApplicationType:(unint64_t)a3 :(int)a4
+- (void)setMappedApplicationType:(unint64_t)type :(int)a4
 {
-  v4 = a4 == 2 && a3 == 1;
-  v5 = 2;
+  v4 = a4 == 2 && type == 1;
+  typeCopy = 2;
   if (!v4)
   {
-    v5 = a3;
+    typeCopy = type;
   }
 
-  self->m_ApplicationType = v5;
+  self->m_ApplicationType = typeCopy;
 }
 
-- (void)activateMobilityContext:(BOOL)a3
+- (void)activateMobilityContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     self->m_context_stale = 0;
   }

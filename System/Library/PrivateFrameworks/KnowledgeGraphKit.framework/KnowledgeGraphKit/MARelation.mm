@@ -1,33 +1,33 @@
 @interface MARelation
-+ (MARelation)relationWithVisualString:(id)a3;
-+ (id)_scanNonChainRelationWithScanner:(id)a3;
-+ (id)chain:(id)a3;
-+ (id)union:(id)a3;
++ (MARelation)relationWithVisualString:(id)string;
++ (id)_scanNonChainRelationWithScanner:(id)scanner;
++ (id)chain:(id)chain;
++ (id)union:(id)union;
 - (MARelation)excludeSource;
 - (MARelation)inverse;
 - (MARelation)optionalStep;
 - (MARelation)transitiveClosure;
 - (NSString)visualString;
-- (id)adjacencyByJoiningWithAdjacency:(id)a3 graph:(id)a4;
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 graph:(id)a4;
+- (id)adjacencyByJoiningWithAdjacency:(id)adjacency graph:(id)graph;
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers graph:(id)graph;
 - (id)initForSubclassing;
-- (id)repeatWithCount:(unint64_t)a3;
-- (id)repeatWithMinCount:(unint64_t)a3 maxCount:(unint64_t)a4;
-- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)a3 toTargetNodeIdentifiers:(id)a4 graph:(id)a5;
+- (id)repeatWithCount:(unint64_t)count;
+- (id)repeatWithMinCount:(unint64_t)count maxCount:(unint64_t)maxCount;
+- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)identifiers toTargetNodeIdentifiers:(id)nodeIdentifiers graph:(id)graph;
 @end
 
 @implementation MARelation
 
-- (id)repeatWithMinCount:(unint64_t)a3 maxCount:(unint64_t)a4
+- (id)repeatWithMinCount:(unint64_t)count maxCount:(unint64_t)maxCount
 {
-  v4 = [[MAMultiStepRelation alloc] initWithBase:self minNumberOfSteps:a3 maxNumberOfSteps:a4];
+  v4 = [[MAMultiStepRelation alloc] initWithBase:self minNumberOfSteps:count maxNumberOfSteps:maxCount];
 
   return v4;
 }
 
-- (id)repeatWithCount:(unint64_t)a3
+- (id)repeatWithCount:(unint64_t)count
 {
-  v3 = [[MAMultiStepRelation alloc] initWithBase:self numberOfSteps:a3];
+  v3 = [[MAMultiStepRelation alloc] initWithBase:self numberOfSteps:count];
 
   return v3;
 }
@@ -65,27 +65,27 @@
   objc_exception_throw(v2);
 }
 
-- (id)adjacencyByJoiningWithAdjacency:(id)a3 graph:(id)a4
+- (id)adjacencyByJoiningWithAdjacency:(id)adjacency graph:(id)graph
 {
-  v7 = a3;
-  v8 = a4;
+  adjacencyCopy = adjacency;
+  graphCopy = graph;
   v9 = KGAbstractMethodException(self, a2);
   objc_exception_throw(v9);
 }
 
-- (id)adjacencyWithStartNodeIdentifiers:(id)a3 graph:(id)a4
+- (id)adjacencyWithStartNodeIdentifiers:(id)identifiers graph:(id)graph
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  graphCopy = graph;
   v9 = KGAbstractMethodException(self, a2);
   objc_exception_throw(v9);
 }
 
-- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)a3 toTargetNodeIdentifiers:(id)a4 graph:(id)a5
+- (void)unionAdjacencySetFromSourceNodeIdentifiers:(id)identifiers toTargetNodeIdentifiers:(id)nodeIdentifiers graph:(id)graph
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifiersCopy = identifiers;
+  nodeIdentifiersCopy = nodeIdentifiers;
+  graphCopy = graph;
   v12 = KGAbstractMethodException(self, a2);
   objc_exception_throw(v12);
 }
@@ -97,29 +97,29 @@
   return [(MARelation *)&v3 init];
 }
 
-+ (id)union:(id)a3
++ (id)union:(id)union
 {
-  v3 = a3;
-  v4 = [[MAUnionRelation alloc] initWithRelations:v3];
+  unionCopy = union;
+  v4 = [[MAUnionRelation alloc] initWithRelations:unionCopy];
 
   return v4;
 }
 
-+ (id)chain:(id)a3
++ (id)chain:(id)chain
 {
-  v3 = a3;
-  v4 = [[MAChainRelation alloc] initWithSteps:v3];
+  chainCopy = chain;
+  v4 = [[MAChainRelation alloc] initWithSteps:chainCopy];
 
   return v4;
 }
 
-+ (MARelation)relationWithVisualString:(id)a3
++ (MARelation)relationWithVisualString:(id)string
 {
   v4 = MEMORY[0x277CCAC80];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithString:stringCopy];
 
-  v7 = [a1 scanRelationWithScanner:v6];
+  v7 = [self scanRelationWithScanner:v6];
   if ([v6 isAtEnd])
   {
     v8 = v7;
@@ -133,10 +133,10 @@
   return v8;
 }
 
-+ (id)_scanNonChainRelationWithScanner:(id)a3
++ (id)_scanNonChainRelationWithScanner:(id)scanner
 {
-  v3 = a3;
-  v4 = [MANeighborRelation scanRelationWithScanner:v3];
+  scannerCopy = scanner;
+  v4 = [MANeighborRelation scanRelationWithScanner:scannerCopy];
   v5 = v4;
   if (v4)
   {
@@ -145,7 +145,7 @@
 
   else
   {
-    v7 = [MANodeFilterRelation scanRelationWithScanner:v3];
+    v7 = [MANodeFilterRelation scanRelationWithScanner:scannerCopy];
     v8 = v7;
     if (v7)
     {
@@ -154,7 +154,7 @@
 
     else
     {
-      v9 = [MAMultiStepRelation scanRelationWithScanner:v3];
+      v9 = [MAMultiStepRelation scanRelationWithScanner:scannerCopy];
       v10 = v9;
       if (v9)
       {
@@ -163,7 +163,7 @@
 
       else
       {
-        v11 = [MATransitiveClosureRelation scanRelationWithScanner:v3];
+        v11 = [MATransitiveClosureRelation scanRelationWithScanner:scannerCopy];
         v12 = v11;
         if (v11)
         {
@@ -172,7 +172,7 @@
 
         else
         {
-          v13 = [MAOptionalStepRelation scanRelationWithScanner:v3];
+          v13 = [MAOptionalStepRelation scanRelationWithScanner:scannerCopy];
           v14 = v13;
           if (v13)
           {
@@ -181,7 +181,7 @@
 
           else
           {
-            v15 = [MAExcludeSourceRelation scanRelationWithScanner:v3];
+            v15 = [MAExcludeSourceRelation scanRelationWithScanner:scannerCopy];
             v16 = v15;
             if (v15)
             {
@@ -190,7 +190,7 @@
 
             else
             {
-              v17 = [MAUnionRelation scanRelationWithScanner:v3];
+              v17 = [MAUnionRelation scanRelationWithScanner:scannerCopy];
             }
 
             v6 = v17;

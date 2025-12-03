@@ -7,9 +7,9 @@
 - (id)dynamicsPushBehaviors;
 - (void)commonInit;
 - (void)dealloc;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setSettingContentSize:(CGSize)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setSettingContentSize:(CGSize)size;
 - (void)viewDidLoad;
 @end
 
@@ -98,7 +98,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKNavigatorScrollViewController;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"indicatorStyle";
@@ -128,10 +128,10 @@
   return result;
 }
 
-- (void)setSettingContentSize:(CGSize)a3
+- (void)setSettingContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(OKNavigatorScrollViewControllerProxy *)self layoutFactor];
   v7 = width * v6;
   v9 = height * v8;
@@ -157,14 +157,14 @@
   return [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:&v4 count:1];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(UIPushBehavior *)self->_velocityPushBehavior setActive:1];
   self->super._velocity2 = 0.0;
   self->super._velocityTimestamp = CFAbsoluteTimeGetCurrent();
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_pushWatchdog_ object:0];
   velocityPushBehavior = self->_velocityPushBehavior;

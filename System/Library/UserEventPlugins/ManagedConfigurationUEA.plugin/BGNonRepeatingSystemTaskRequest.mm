@@ -1,16 +1,16 @@
 @interface BGNonRepeatingSystemTaskRequest
-+ (id)rapidReturnToServiceTaskRequestWithTimeout:(double)a3;
++ (id)rapidReturnToServiceTaskRequestWithTimeout:(double)timeout;
 @end
 
 @implementation BGNonRepeatingSystemTaskRequest
 
-+ (id)rapidReturnToServiceTaskRequestWithTimeout:(double)a3
++ (id)rapidReturnToServiceTaskRequestWithTimeout:(double)timeout
 {
   v5 = [BGNonRepeatingSystemTaskRequest alloc];
-  v6 = [a1 rapidReturnToServiceTaskIdentifier];
-  v7 = [v5 initWithIdentifier:v6];
+  rapidReturnToServiceTaskIdentifier = [self rapidReturnToServiceTaskIdentifier];
+  v7 = [v5 initWithIdentifier:rapidReturnToServiceTaskIdentifier];
 
-  [v7 setScheduleAfter:a3];
+  [v7 setScheduleAfter:timeout];
   [v7 setPriority:2];
   [v7 setRequiresExternalPower:0];
   [v7 setRequiresNetworkConnectivity:0];

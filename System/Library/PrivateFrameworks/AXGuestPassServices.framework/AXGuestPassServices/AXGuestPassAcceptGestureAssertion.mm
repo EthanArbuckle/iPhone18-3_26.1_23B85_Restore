@@ -7,7 +7,7 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D60B714();
 }
 

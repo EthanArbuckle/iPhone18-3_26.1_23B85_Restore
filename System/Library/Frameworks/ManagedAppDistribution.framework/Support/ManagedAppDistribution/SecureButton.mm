@@ -1,7 +1,7 @@
 @interface SecureButton
 - (CGSize)drawingSize;
 - (_TtC28ManagedAppDistributionDaemon12SecureButton)init;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation SecureButton
@@ -15,13 +15,13 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
-  sub_1004B44BC(v7, x, y);
+  y = point.y;
+  x = point.x;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1004B44BC(contextCopy, x, y);
 }
 
 - (_TtC28ManagedAppDistributionDaemon12SecureButton)init

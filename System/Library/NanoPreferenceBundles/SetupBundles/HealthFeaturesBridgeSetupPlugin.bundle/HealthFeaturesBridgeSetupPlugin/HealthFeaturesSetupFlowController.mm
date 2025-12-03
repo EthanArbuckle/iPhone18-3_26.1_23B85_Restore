@@ -1,16 +1,16 @@
 @interface HealthFeaturesSetupFlowController
 + (BOOL)controllerNeedsToRun;
 - (id)viewController;
-- (void)miniFlowStepComplete:(id)a3;
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4;
+- (void)miniFlowStepComplete:(id)complete;
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class;
 @end
 
 @implementation HealthFeaturesSetupFlowController
 
 - (id)viewController
 {
-  v2 = self;
-  v5 = sub_8498(v2, v3, v4);
+  selfCopy = self;
+  v5 = sub_8498(selfCopy, v3, v4);
 
   return v5;
 }
@@ -31,17 +31,17 @@
   return v3 & 1;
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_8DB4(a3);
+  selfCopy = self;
+  sub_8DB4(complete);
   swift_unknownObjectRelease();
 }
 
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class
 {
-  if (a4)
+  if (class)
   {
     ObjCClassMetadata = swift_getObjCClassMetadata();
   }
@@ -52,7 +52,7 @@
   }
 
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_A530(ObjCClassMetadata);
   swift_unknownObjectRelease();
 }

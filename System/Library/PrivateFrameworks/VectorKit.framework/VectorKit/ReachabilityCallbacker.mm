@@ -1,7 +1,7 @@
 @interface ReachabilityCallbacker
 - (ReachabilityCallbacker)initWithListener:(function<void)( queue:;
 - (id).cxx_construct;
-- (void)_reachabilityChanged:(id)a3;
+- (void)_reachabilityChanged:(id)changed;
 - (void)clearListener;
 - (void)dealloc;
 @end
@@ -19,7 +19,7 @@
   return self;
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
   objc_initWeak(&location, self);
   v4 = *(self + 5);
@@ -61,8 +61,8 @@ void __47__ReachabilityCallbacker__reachabilityChanged___block_invoke(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69A1938] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69A1938] object:0];
 
   std::__function::__value_func<void ()(void)>::operator=[abi:nn200100](self + 8);
   v4.receiver = self;
@@ -81,8 +81,8 @@ void __47__ReachabilityCallbacker__reachabilityChanged___block_invoke(uint64_t a
   {
     objc_storeStrong(v8 + 5, a4);
     std::function<void ()(void)>::operator=(v9 + 8, a3);
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v9 selector:sel__reachabilityChanged_ name:*MEMORY[0x1E69A1938] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__reachabilityChanged_ name:*MEMORY[0x1E69A1938] object:0];
   }
 
   return v9;

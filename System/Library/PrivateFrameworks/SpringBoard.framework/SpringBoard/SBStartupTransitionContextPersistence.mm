@@ -1,34 +1,34 @@
 @interface SBStartupTransitionContextPersistence
-- (SBStartupTransitionContextPersistence)initWithBootDefaults:(id)a3 loginSession:(BOOL)a4;
+- (SBStartupTransitionContextPersistence)initWithBootDefaults:(id)defaults loginSession:(BOOL)session;
 - (id)readTransitionContext;
-- (void)saveContext:(id)a3;
+- (void)saveContext:(id)context;
 @end
 
 @implementation SBStartupTransitionContextPersistence
 
-- (SBStartupTransitionContextPersistence)initWithBootDefaults:(id)a3 loginSession:(BOOL)a4
+- (SBStartupTransitionContextPersistence)initWithBootDefaults:(id)defaults loginSession:(BOOL)session
 {
-  v7 = a3;
+  defaultsCopy = defaults;
   v11.receiver = self;
   v11.super_class = SBStartupTransitionContextPersistence;
   v8 = [(SBStartupTransitionContextPersistence *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_bootDefaults, a3);
-    v9->_loginSession = a4;
+    objc_storeStrong(&v8->_bootDefaults, defaults);
+    v9->_loginSession = session;
   }
 
   return v9;
 }
 
-- (void)saveContext:(id)a3
+- (void)saveContext:(id)context
 {
   bootDefaults = self->_bootDefaults;
-  if (a3)
+  if (context)
   {
-    v5 = [a3 _representation];
-    [(SBBootDefaults *)bootDefaults setBootTransitionContext:v5];
+    _representation = [context _representation];
+    [(SBBootDefaults *)bootDefaults setBootTransitionContext:_representation];
   }
 
   else
@@ -41,8 +41,8 @@
 
 - (id)readTransitionContext
 {
-  v3 = [(SBBootDefaults *)self->_bootDefaults bootTransitionContext];
-  v4 = [[SBStartupTransitionContext alloc] _initWithRepresentation:v3 loginSession:self->_loginSession];
+  bootTransitionContext = [(SBBootDefaults *)self->_bootDefaults bootTransitionContext];
+  v4 = [[SBStartupTransitionContext alloc] _initWithRepresentation:bootTransitionContext loginSession:self->_loginSession];
 
   return v4;
 }

@@ -7,7 +7,7 @@
 
 - (BOOL)bridge_supportsElevationAscendedInSummary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FIUIWorkoutActivityType.supportsElevationAscendedInSummary.getter();
 
   return v3 & 1;
@@ -15,7 +15,7 @@
 
 - (BOOL)bridge_supportsElevationDescendedInSummary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FIUIWorkoutActivityType.supportsElevationDescendedInSummary.getter();
 
   return v3 & 1;

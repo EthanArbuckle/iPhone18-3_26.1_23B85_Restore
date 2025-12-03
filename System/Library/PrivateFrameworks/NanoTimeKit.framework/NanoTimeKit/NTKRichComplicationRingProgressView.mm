@@ -1,14 +1,14 @@
 @interface NTKRichComplicationRingProgressView
-- (NTKRichComplicationRingProgressView)initWithFamily:(int64_t)a3 curveWidth:(double)a4 padding:(double)a5 forDevice:(id)a6;
-- (void)setClockwise:(BOOL)a3;
+- (NTKRichComplicationRingProgressView)initWithFamily:(int64_t)family curveWidth:(double)width padding:(double)padding forDevice:(id)device;
+- (void)setClockwise:(BOOL)clockwise;
 @end
 
 @implementation NTKRichComplicationRingProgressView
 
-- (NTKRichComplicationRingProgressView)initWithFamily:(int64_t)a3 curveWidth:(double)a4 padding:(double)a5 forDevice:(id)a6
+- (NTKRichComplicationRingProgressView)initWithFamily:(int64_t)family curveWidth:(double)width padding:(double)padding forDevice:(id)device
 {
-  v10 = a6;
-  if (NTKShowGossamerUI(v10))
+  deviceCopy = device;
+  if (NTKShowGossamerUI(deviceCopy))
   {
     v11 = 2;
   }
@@ -18,11 +18,11 @@
     v11 = 0;
   }
 
-  v12 = [[off_27877BEB8 alloc] initWithCurveWidth:v10 padding:v11 forDevice:a4 withFilterStyle:a5];
-  v13 = [[off_27877BEB8 alloc] initWithCurveWidth:v10 padding:v11 forDevice:a4 withFilterStyle:a5];
+  v12 = [[off_27877BEB8 alloc] initWithCurveWidth:deviceCopy padding:v11 forDevice:width withFilterStyle:padding];
+  v13 = [[off_27877BEB8 alloc] initWithCurveWidth:deviceCopy padding:v11 forDevice:width withFilterStyle:padding];
   v16.receiver = self;
   v16.super_class = NTKRichComplicationRingProgressView;
-  v14 = [(CDRichComplicationProgressView *)&v16 initForFamily:a3 device:v10 backgroundShapeView:v12 foregroundShapeView:v13];
+  v14 = [(CDRichComplicationProgressView *)&v16 initForFamily:family device:deviceCopy backgroundShapeView:v12 foregroundShapeView:v13];
 
   if (v14)
   {
@@ -33,12 +33,12 @@
   return v14;
 }
 
-- (void)setClockwise:(BOOL)a3
+- (void)setClockwise:(BOOL)clockwise
 {
-  v3 = a3;
-  self->_clockwise = a3;
+  clockwiseCopy = clockwise;
+  self->_clockwise = clockwise;
   [(CDRichComplicationRingView *)self->_backgroundView setClockwise:?];
-  [(CDRichComplicationRingView *)self->_foregroundView setClockwise:v3];
+  [(CDRichComplicationRingView *)self->_foregroundView setClockwise:clockwiseCopy];
 
   [(NTKRichComplicationRingProgressView *)self setNeedsLayout];
 }

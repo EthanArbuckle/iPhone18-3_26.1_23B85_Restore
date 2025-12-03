@@ -1,7 +1,7 @@
 @interface ASAuthorizationAppleIDCredential
 - (ASAuthorizationAppleIDCredential)init;
-- (ASAuthorizationAppleIDCredential)initWithCoder:(id)a3;
-- (ASAuthorizationAppleIDCredential)initWithUser:(id)a3 authorizedScopes:(id)a4;
+- (ASAuthorizationAppleIDCredential)initWithCoder:(id)coder;
+- (ASAuthorizationAppleIDCredential)initWithUser:(id)user authorizedScopes:(id)scopes;
 - (ASUserDetectionStatus)realUserStatus;
 - (NSArray)authorizedScopes;
 - (NSData)accessToken;
@@ -13,20 +13,20 @@
 - (NSString)email;
 - (NSString)state;
 - (NSString)user;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)userAgeRange;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessToken:(id)a3;
-- (void)setAuthorizationCode:(id)a3;
-- (void)setAuthorizedScopes:(id)a3;
-- (void)setEmail:(id)a3;
-- (void)setFullName:(id)a3;
-- (void)setIdentityToken:(id)a3;
-- (void)setRealUserStatus:(int64_t)a3;
-- (void)setRefreshToken:(id)a3;
-- (void)setState:(id)a3;
-- (void)setUser:(id)a3;
-- (void)setUserAgeRange:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessToken:(id)token;
+- (void)setAuthorizationCode:(id)code;
+- (void)setAuthorizedScopes:(id)scopes;
+- (void)setEmail:(id)email;
+- (void)setFullName:(id)name;
+- (void)setIdentityToken:(id)token;
+- (void)setRealUserStatus:(int64_t)status;
+- (void)setRefreshToken:(id)token;
+- (void)setState:(id)state;
+- (void)setUser:(id)user;
+- (void)setUserAgeRange:(int64_t)range;
 @end
 
 @implementation ASAuthorizationAppleIDCredential
@@ -38,14 +38,14 @@
   return 0;
 }
 
-- (ASAuthorizationAppleIDCredential)initWithUser:(id)a3 authorizedScopes:(id)a4
+- (ASAuthorizationAppleIDCredential)initWithUser:(id)user authorizedScopes:(id)scopes
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  userCopy = user;
+  scopesCopy = scopes;
+  v9 = scopesCopy;
+  if (userCopy)
   {
-    if (v8)
+    if (scopesCopy)
     {
       goto LABEL_3;
     }
@@ -67,7 +67,7 @@ LABEL_3:
   v10 = [(ASAuthorizationAppleIDCredential *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [userCopy copy];
     user = v10->_user;
     v10->_user = v11;
 
@@ -91,7 +91,7 @@ LABEL_3:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ASAuthorizationAppleIDCredential alloc] initWithUser:self->_user authorizedScopes:self->_authorizedScopes];
   [(ASAuthorizationAppleIDCredential *)v4 setState:self->_state];
@@ -104,62 +104,62 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   user = self->_user;
-  v5 = a3;
-  [v5 encodeObject:user forKey:@"_user"];
-  [v5 encodeObject:self->_state forKey:@"_state"];
-  [v5 encodeObject:self->_authorizedScopes forKey:@"_authorizedScopes"];
-  [v5 encodeObject:self->_authorizationCode forKey:@"_authorizationCode"];
-  [v5 encodeObject:self->_identityToken forKey:@"_identityToken"];
-  [v5 encodeObject:self->_email forKey:@"_email"];
-  [v5 encodeObject:self->_fullName forKey:@"_fullName"];
-  [v5 encodeInteger:self->_realUserStatus forKey:@"_realUserStatus"];
-  [v5 encodeInteger:self->_userAgeRange forKey:@"_userAgeRange"];
+  coderCopy = coder;
+  [coderCopy encodeObject:user forKey:@"_user"];
+  [coderCopy encodeObject:self->_state forKey:@"_state"];
+  [coderCopy encodeObject:self->_authorizedScopes forKey:@"_authorizedScopes"];
+  [coderCopy encodeObject:self->_authorizationCode forKey:@"_authorizationCode"];
+  [coderCopy encodeObject:self->_identityToken forKey:@"_identityToken"];
+  [coderCopy encodeObject:self->_email forKey:@"_email"];
+  [coderCopy encodeObject:self->_fullName forKey:@"_fullName"];
+  [coderCopy encodeInteger:self->_realUserStatus forKey:@"_realUserStatus"];
+  [coderCopy encodeInteger:self->_userAgeRange forKey:@"_userAgeRange"];
 }
 
-- (ASAuthorizationAppleIDCredential)initWithCoder:(id)a3
+- (ASAuthorizationAppleIDCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = ASAuthorizationAppleIDCredential;
   v5 = [(ASAuthorizationAppleIDCredential *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_user"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_user"];
     user = v5->_user;
     v5->_user = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_state"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_state"];
     state = v5->_state;
     v5->_state = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_authorizedScopes"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_authorizedScopes"];
     authorizedScopes = v5->_authorizedScopes;
     v5->_authorizedScopes = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_authorizationCode"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_authorizationCode"];
     authorizationCode = v5->_authorizationCode;
     v5->_authorizationCode = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identityToken"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identityToken"];
     identityToken = v5->_identityToken;
     v5->_identityToken = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_email"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_email"];
     email = v5->_email;
     v5->_email = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fullName"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fullName"];
     fullName = v5->_fullName;
     v5->_fullName = v21;
 
-    v5->_realUserStatus = [v4 decodeIntegerForKey:@"_realUserStatus"];
-    v5->_userAgeRange = [v4 decodeIntegerForKey:@"_userAgeRange"];
+    v5->_realUserStatus = [coderCopy decodeIntegerForKey:@"_realUserStatus"];
+    v5->_userAgeRange = [coderCopy decodeIntegerForKey:@"_userAgeRange"];
     v23 = v5;
   }
 
@@ -175,12 +175,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setUser:(id)a3
+- (void)setUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   os_unfair_lock_lock(&self->_internalLock);
   user = self->_user;
-  self->_user = v4;
+  self->_user = userCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -194,12 +194,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_internalLock);
   state = self->_state;
-  self->_state = v4;
+  self->_state = stateCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -213,12 +213,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setAuthorizedScopes:(id)a3
+- (void)setAuthorizedScopes:(id)scopes
 {
-  v4 = a3;
+  scopesCopy = scopes;
   os_unfair_lock_lock(&self->_internalLock);
   authorizedScopes = self->_authorizedScopes;
-  self->_authorizedScopes = v4;
+  self->_authorizedScopes = scopesCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -232,12 +232,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setAuthorizationCode:(id)a3
+- (void)setAuthorizationCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   os_unfair_lock_lock(&self->_internalLock);
   authorizationCode = self->_authorizationCode;
-  self->_authorizationCode = v4;
+  self->_authorizationCode = codeCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -251,12 +251,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setIdentityToken:(id)a3
+- (void)setIdentityToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_internalLock);
   identityToken = self->_identityToken;
-  self->_identityToken = v4;
+  self->_identityToken = tokenCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -270,12 +270,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setEmail:(id)a3
+- (void)setEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   os_unfair_lock_lock(&self->_internalLock);
   email = self->_email;
-  self->_email = v4;
+  self->_email = emailCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -289,12 +289,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setFullName:(id)a3
+- (void)setFullName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_internalLock);
   fullName = self->_fullName;
-  self->_fullName = v4;
+  self->_fullName = nameCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -308,12 +308,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setAccessToken:(id)a3
+- (void)setAccessToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_internalLock);
   accessToken = self->_accessToken;
-  self->_accessToken = v4;
+  self->_accessToken = tokenCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -327,12 +327,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)setRefreshToken:(id)a3
+- (void)setRefreshToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_internalLock);
   refreshToken = self->_refreshToken;
-  self->_refreshToken = v4;
+  self->_refreshToken = tokenCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -345,10 +345,10 @@ LABEL_3:
   return realUserStatus;
 }
 
-- (void)setRealUserStatus:(int64_t)a3
+- (void)setRealUserStatus:(int64_t)status
 {
   os_unfair_lock_lock(&self->_internalLock);
-  self->_realUserStatus = a3;
+  self->_realUserStatus = status;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -361,10 +361,10 @@ LABEL_3:
   return userAgeRange;
 }
 
-- (void)setUserAgeRange:(int64_t)a3
+- (void)setUserAgeRange:(int64_t)range
 {
   os_unfair_lock_lock(&self->_internalLock);
-  self->_userAgeRange = a3;
+  self->_userAgeRange = range;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }

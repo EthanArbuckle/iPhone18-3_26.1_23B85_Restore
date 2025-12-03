@@ -1,31 +1,31 @@
 @interface FLSchemaFLCandidateCategory
-- (BOOL)isEqual:(id)a3;
-- (FLSchemaFLCandidateCategory)initWithDictionary:(id)a3;
-- (FLSchemaFLCandidateCategory)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLSchemaFLCandidateCategory)initWithDictionary:(id)dictionary;
+- (FLSchemaFLCandidateCategory)initWithJSON:(id)n;
 - (FLSchemaFLParameterCandidateCategory)parameter;
 - (FLSchemaFLToolCandidateCategory)tool;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteParameter;
 - (void)deleteTool;
-- (void)setParameter:(id)a3;
-- (void)setTool:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setParameter:(id)parameter;
+- (void)setTool:(id)tool;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLSchemaFLCandidateCategory
 
-- (FLSchemaFLCandidateCategory)initWithDictionary:(id)a3
+- (FLSchemaFLCandidateCategory)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FLSchemaFLCandidateCategory;
   v5 = [(FLSchemaFLCandidateCategory *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tool"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tool"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(FLSchemaFLCandidateCategory *)v5 setTool:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"parameter"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"parameter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (FLSchemaFLCandidateCategory)initWithJSON:(id)a3
+- (FLSchemaFLCandidateCategory)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLSchemaFLCandidateCategory *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLSchemaFLCandidateCategory *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLSchemaFLCandidateCategory *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_parameter)
   {
-    v4 = [(FLSchemaFLCandidateCategory *)self parameter];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    parameter = [(FLSchemaFLCandidateCategory *)self parameter];
+    dictionaryRepresentation = [parameter dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"parameter"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"parameter"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"parameter"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"parameter"];
     }
   }
 
   if (self->_tool)
   {
-    v7 = [(FLSchemaFLCandidateCategory *)self tool];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    tool = [(FLSchemaFLCandidateCategory *)self tool];
+    dictionaryRepresentation2 = [tool dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"tool"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"tool"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"tool"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"tool"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichCategory = self->_whichCategory;
-  if (whichCategory != [v4 whichCategory])
+  if (whichCategory != [equalCopy whichCategory])
   {
     goto LABEL_13;
   }
 
-  v6 = [(FLSchemaFLCandidateCategory *)self tool];
-  v7 = [v4 tool];
-  if ((v6 != 0) == (v7 == 0))
+  tool = [(FLSchemaFLCandidateCategory *)self tool];
+  tool2 = [equalCopy tool];
+  if ((tool != 0) == (tool2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(FLSchemaFLCandidateCategory *)self tool];
-  if (v8)
+  tool3 = [(FLSchemaFLCandidateCategory *)self tool];
+  if (tool3)
   {
-    v9 = v8;
-    v10 = [(FLSchemaFLCandidateCategory *)self tool];
-    v11 = [v4 tool];
-    v12 = [v10 isEqual:v11];
+    v9 = tool3;
+    tool4 = [(FLSchemaFLCandidateCategory *)self tool];
+    tool5 = [equalCopy tool];
+    v12 = [tool4 isEqual:tool5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(FLSchemaFLCandidateCategory *)self parameter];
-  v7 = [v4 parameter];
-  if ((v6 != 0) != (v7 == 0))
+  tool = [(FLSchemaFLCandidateCategory *)self parameter];
+  tool2 = [equalCopy parameter];
+  if ((tool != 0) != (tool2 == 0))
   {
-    v13 = [(FLSchemaFLCandidateCategory *)self parameter];
-    if (!v13)
+    parameter = [(FLSchemaFLCandidateCategory *)self parameter];
+    if (!parameter)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(FLSchemaFLCandidateCategory *)self parameter];
-    v16 = [v4 parameter];
-    v17 = [v15 isEqual:v16];
+    v14 = parameter;
+    parameter2 = [(FLSchemaFLCandidateCategory *)self parameter];
+    parameter3 = [equalCopy parameter];
+    v17 = [parameter2 isEqual:parameter3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(FLSchemaFLCandidateCategory *)self tool];
+  toCopy = to;
+  tool = [(FLSchemaFLCandidateCategory *)self tool];
 
-  if (v4)
+  if (tool)
   {
-    v5 = [(FLSchemaFLCandidateCategory *)self tool];
+    tool2 = [(FLSchemaFLCandidateCategory *)self tool];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLSchemaFLCandidateCategory *)self parameter];
+  parameter = [(FLSchemaFLCandidateCategory *)self parameter];
 
-  if (v6)
+  if (parameter)
   {
-    v7 = [(FLSchemaFLCandidateCategory *)self parameter];
+    parameter2 = [(FLSchemaFLCandidateCategory *)self parameter];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,15 +241,15 @@ LABEL_14:
   return v3;
 }
 
-- (void)setParameter:(id)a3
+- (void)setParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   tool = self->_tool;
   self->_tool = 0;
 
-  self->_whichCategory = 2 * (v4 != 0);
+  self->_whichCategory = 2 * (parameterCopy != 0);
   parameter = self->_parameter;
-  self->_parameter = v4;
+  self->_parameter = parameterCopy;
 }
 
 - (void)deleteTool
@@ -277,37 +277,37 @@ LABEL_14:
   return v3;
 }
 
-- (void)setTool:(id)a3
+- (void)setTool:(id)tool
 {
-  v4 = a3;
+  toolCopy = tool;
   parameter = self->_parameter;
   self->_parameter = 0;
 
-  self->_whichCategory = v4 != 0;
+  self->_whichCategory = toolCopy != 0;
   tool = self->_tool;
-  self->_tool = v4;
+  self->_tool = toolCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = FLSchemaFLCandidateCategory;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLSchemaFLCandidateCategory *)self tool];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  tool = [(FLSchemaFLCandidateCategory *)self tool];
+  v7 = [tool applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLSchemaFLCandidateCategory *)self deleteTool];
   }
 
-  v9 = [(FLSchemaFLCandidateCategory *)self parameter];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  parameter = [(FLSchemaFLCandidateCategory *)self parameter];
+  v10 = [parameter applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLSchemaFLCandidateCategory *)self deleteParameter];
   }

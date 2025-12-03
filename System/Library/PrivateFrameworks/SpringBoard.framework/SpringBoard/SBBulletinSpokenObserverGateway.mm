@@ -1,8 +1,8 @@
 @interface SBBulletinSpokenObserverGateway
 + (id)sharedInstance;
 - (SBBulletinSpokenObserverGateway)init;
-- (void)availableAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4;
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5 playLightsAndSirens:(BOOL)a6 withReply:(id)a7;
+- (void)availableAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform;
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed playLightsAndSirens:(BOOL)sirens withReply:(id)reply;
 @end
 
 @implementation SBBulletinSpokenObserverGateway
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __49__SBBulletinSpokenObserverGateway_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -60,13 +60,13 @@ void __49__SBBulletinSpokenObserverGateway_sharedInstance__block_invoke(uint64_t
   return v2;
 }
 
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5 playLightsAndSirens:(BOOL)a6 withReply:(id)a7
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed playLightsAndSirens:(BOOL)sirens withReply:(id)reply
 {
-  v8 = a6;
+  sirensCopy = sirens;
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  observerCopy = observer;
+  bulletinCopy = bulletin;
+  replyCopy = reply;
   v14 = MEMORY[0x277D77DB8];
   v15 = *MEMORY[0x277D77DB8];
   if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_DEFAULT))
@@ -74,29 +74,29 @@ void __49__SBBulletinSpokenObserverGateway_sharedInstance__block_invoke(uint64_t
     v16 = v15;
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v12 publisherMatchID];
-    [v19 un_logDigest];
-    v21 = v20 = v11;
-    v22 = [v12 sectionID];
+    publisherMatchID = [bulletinCopy publisherMatchID];
+    [publisherMatchID un_logDigest];
+    v21 = v20 = observerCopy;
+    sectionID = [bulletinCopy sectionID];
     *buf = 138413314;
     v49 = v18;
     v50 = 2114;
     *v51 = v21;
     *&v51[8] = 2048;
-    v52 = a5;
+    feedCopy = feed;
     *v53 = 2114;
-    *&v53[2] = v22;
+    *&v53[2] = sectionID;
     v54 = 1024;
-    v55 = v8;
+    v55 = sirensCopy;
     _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "%@ adding bulletin %{public}@ for feed %lu in section %{public}@ playLightsAndSirens: %{BOOL}u", buf, 0x30u);
 
     v14 = MEMORY[0x277D77DB8];
-    v11 = v20;
+    observerCopy = v20;
   }
 
-  if (!v8)
+  if (!sirensCopy)
   {
-    if (!v13)
+    if (!replyCopy)
     {
       goto LABEL_16;
     }
@@ -105,29 +105,29 @@ void __49__SBBulletinSpokenObserverGateway_sharedInstance__block_invoke(uint64_t
     if (os_log_type_enabled(*v14, OS_LOG_TYPE_DEFAULT))
     {
       v37 = v36;
-      v38 = [v12 publisherMatchID];
-      v39 = [v38 un_logDigest];
+      publisherMatchID2 = [bulletinCopy publisherMatchID];
+      un_logDigest = [publisherMatchID2 un_logDigest];
       *buf = 138543362;
-      v49 = v39;
+      v49 = un_logDigest;
       _os_log_impl(&dword_21ED4E000, v37, OS_LOG_TYPE_DEFAULT, "Notification %{public}@ cannot be spoken because BulletinBoard suppressed it", buf, 0xCu);
     }
 
 LABEL_15:
-    v13[2](v13, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_16;
   }
 
   v23 = +[SBLockScreenManager sharedInstance];
-  v24 = [v23 isUILocked];
+  isUILocked = [v23 isUILocked];
 
   v25 = +[SBTelephonyManager sharedTelephonyManager];
-  v26 = [v25 inCall];
+  inCall = [v25 inCall];
 
   v27 = +[SBConferenceManager sharedInstance];
-  v28 = [v27 inFaceTime];
+  inFaceTime = [v27 inFaceTime];
 
   canAnnounceNotifications = 0;
-  if (v24 && (v26 & 1) == 0 && (v28 & 1) == 0)
+  if (isUILocked && (inCall & 1) == 0 && (inFaceTime & 1) == 0)
   {
     canAnnounceNotifications = self->_canAnnounceNotifications;
   }
@@ -136,25 +136,25 @@ LABEL_15:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     v31 = v30;
-    v32 = [v12 publisherMatchID];
-    [v32 un_logDigest];
-    v33 = v40 = v11;
+    publisherMatchID3 = [bulletinCopy publisherMatchID];
+    [publisherMatchID3 un_logDigest];
+    v33 = v40 = observerCopy;
     v34 = self->_canAnnounceNotifications;
     *buf = 138544642;
     v49 = v33;
     v50 = 1024;
     *v51 = canAnnounceNotifications;
     *&v51[4] = 1024;
-    *&v51[6] = v24;
-    LOWORD(v52) = 1024;
-    *(&v52 + 2) = v26;
-    HIWORD(v52) = 1024;
-    *v53 = v28;
+    *&v51[6] = isUILocked;
+    LOWORD(feedCopy) = 1024;
+    *(&feedCopy + 2) = inCall;
+    HIWORD(feedCopy) = 1024;
+    *v53 = inFaceTime;
     *&v53[4] = 1024;
     *&v53[6] = v34;
     _os_log_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_DEFAULT, "Notification %{public}@ should be spoken: %{BOOL}u [ isUILocked: %{BOOL}u inCall: %{BOOL}u inFaceTime: %{BOOL}u canAnnounce: %{BOOL}u ]", buf, 0x2Au);
 
-    v11 = v40;
+    observerCopy = v40;
   }
 
   if (!canAnnounceNotifications)
@@ -167,11 +167,11 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __94__SBBulletinSpokenObserverGateway_observer_addBulletin_forFeed_playLightsAndSirens_withReply___block_invoke;
   block[3] = &unk_2783AA4F8;
-  v43 = v12;
-  v47 = a5;
-  v44 = v11;
-  v45 = self;
-  v46 = v13;
+  v43 = bulletinCopy;
+  feedCopy2 = feed;
+  v44 = observerCopy;
+  selfCopy = self;
+  v46 = replyCopy;
   dispatch_async(queue, block);
 
 LABEL_16:
@@ -305,12 +305,12 @@ uint64_t __94__SBBulletinSpokenObserverGateway_observer_addBulletin_forFeed_play
   return result;
 }
 
-- (void)availableAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4
+- (void)availableAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a4 == 1)
+  if (platform == 1)
   {
-    v5 = a3 & 1;
+    v5 = changed & 1;
     if (v5 != self->_canAnnounceNotifications)
     {
       v6 = *MEMORY[0x277D77DB8];

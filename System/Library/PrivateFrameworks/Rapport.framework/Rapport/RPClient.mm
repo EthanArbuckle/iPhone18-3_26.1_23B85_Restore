@@ -2,27 +2,27 @@
 + (void)primaryAccountSignedIn;
 + (void)primaryAccountSignedOut;
 - (RPClient)init;
-- (RPClient)initWithUserProvider:(id)a3;
-- (id)_XPCConnectionWithMachServiceName:(id)a3 options:(unint64_t)a4;
+- (RPClient)initWithUserProvider:(id)provider;
+- (id)_XPCConnectionWithMachServiceName:(id)name options:(unint64_t)options;
 - (id)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)activateAssertionWithIdentifier:(id)a3;
-- (void)addOrUpdateIdentity:(id)a3 source:(int)a4 completion:(id)a5;
-- (void)clientCreateDeviceMappingInternal:(int)a3 applicationService:(id)a4 deviceID:(id)a5 endpointID:(id)a6 completion:(id)a7;
-- (void)clientExchangeQUICPublicKeyFor:(id)a3 publicKey:(id)a4 completion:(id)a5;
-- (void)diagnosticCommand:(id)a3 params:(id)a4 completion:(id)a5;
-- (void)diagnosticLogControl:(id)a3 completion:(id)a4;
-- (void)diagnosticShow:(id)a3 level:(int)a4 completion:(id)a5;
-- (void)getIdentitiesWithFlags:(unsigned int)a3 completion:(id)a4;
+- (void)activateAssertionWithIdentifier:(id)identifier;
+- (void)addOrUpdateIdentity:(id)identity source:(int)source completion:(id)completion;
+- (void)clientCreateDeviceMappingInternal:(int)internal applicationService:(id)service deviceID:(id)d endpointID:(id)iD completion:(id)completion;
+- (void)clientExchangeQUICPublicKeyFor:(id)for publicKey:(id)key completion:(id)completion;
+- (void)diagnosticCommand:(id)command params:(id)params completion:(id)completion;
+- (void)diagnosticLogControl:(id)control completion:(id)completion;
+- (void)diagnosticShow:(id)show level:(int)level completion:(id)completion;
+- (void)getIdentitiesWithFlags:(unsigned int)flags completion:(id)completion;
 - (void)invalidate;
-- (void)primaryAccountSignedInWithCompletion:(id)a3;
-- (void)primaryAccountSignedOutWithCompletion:(id)a3;
-- (void)regenerateSelfIdentity:(id)a3 withCompletion:(id)a4;
-- (void)regenerateTemporarySelfIdentityWithCompletion:(id)a3;
-- (void)removeAdHocPairedIdentity:(id)a3 completion:(id)a4;
-- (void)removeSessionPairedIdentity:(id)a3 completion:(id)a4;
-- (void)setAutoMapping:(BOOL)a3 completion:(id)a4;
+- (void)primaryAccountSignedInWithCompletion:(id)completion;
+- (void)primaryAccountSignedOutWithCompletion:(id)completion;
+- (void)regenerateSelfIdentity:(id)identity withCompletion:(id)completion;
+- (void)regenerateTemporarySelfIdentityWithCompletion:(id)completion;
+- (void)removeAdHocPairedIdentity:(id)identity completion:(id)completion;
+- (void)removeSessionPairedIdentity:(id)identity completion:(id)completion;
+- (void)setAutoMapping:(BOOL)mapping completion:(id)completion;
 @end
 
 @implementation RPClient
@@ -111,9 +111,9 @@ void __35__RPClient_primaryAccountSignedOut__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (RPClient)initWithUserProvider:(id)a3
+- (RPClient)initWithUserProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = RPClient;
   v6 = [(RPClient *)&v9 init];
@@ -122,17 +122,17 @@ void __35__RPClient_primaryAccountSignedOut__block_invoke(uint64_t a1, void *a2)
   {
     objc_storeStrong(&v6->_dispatchQueue, MEMORY[0x1E69E96A0]);
     v7->_type = 1;
-    objc_storeStrong(&v7->_userProvider, a3);
+    objc_storeStrong(&v7->_userProvider, provider);
   }
 
   return v7;
 }
 
-- (id)_XPCConnectionWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (id)_XPCConnectionWithMachServiceName:(id)name options:(unint64_t)options
 {
   v5 = MEMORY[0x1E696B0B8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithMachServiceName:v6 options:a4];
+  nameCopy = name;
+  v7 = [[v5 alloc] initWithMachServiceName:nameCopy options:options];
 
   return v7;
 }
@@ -225,7 +225,7 @@ LABEL_17:
 
   if ([(NSMutableSet *)self->_assertions count])
   {
-    v3 = [(RPClient *)self _ensureXPCStarted];
+    _ensureXPCStarted = [(RPClient *)self _ensureXPCStarted];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -252,8 +252,8 @@ LABEL_17:
             [RPClient _interrupted];
           }
 
-          v10 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-          [v10 activateAssertionWithIdentifier:v9];
+          remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+          [remoteObjectProxy activateAssertionWithIdentifier:v9];
 
           ++v8;
         }
@@ -349,17 +349,17 @@ void __22__RPClient_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)activateAssertionWithIdentifier:(id)a3
+- (void)activateAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__RPClient_activateAssertionWithIdentifier___block_invoke;
   v7[3] = &unk_1E7C92D80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -382,21 +382,21 @@ void __44__RPClient_activateAssertionWithIdentifier___block_invoke(uint64_t a1)
   [v7 activateAssertionWithIdentifier:*(a1 + 40)];
 }
 
-- (void)addOrUpdateIdentity:(id)a3 source:(int)a4 completion:(id)a5
+- (void)addOrUpdateIdentity:(id)identity source:(int)source completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identityCopy = identity;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__RPClient_addOrUpdateIdentity_source_completion___block_invoke;
   v13[3] = &unk_1E7C92DD0;
-  v14 = v8;
-  v15 = v9;
+  v14 = identityCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  sourceCopy = source;
+  v11 = identityCopy;
+  v12 = completionCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -450,20 +450,20 @@ uint64_t __50__RPClient_addOrUpdateIdentity_source_completion___block_invoke_3(u
   return result;
 }
 
-- (void)regenerateSelfIdentity:(id)a3 withCompletion:(id)a4
+- (void)regenerateSelfIdentity:(id)identity withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__RPClient_regenerateSelfIdentity_withCompletion___block_invoke;
   block[3] = &unk_1E7C92DF8;
-  v12 = v6;
-  v13 = v7;
+  v12 = identityCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identityCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -516,17 +516,17 @@ uint64_t __50__RPClient_regenerateSelfIdentity_withCompletion___block_invoke_3(u
   return result;
 }
 
-- (void)regenerateTemporarySelfIdentityWithCompletion:(id)a3
+- (void)regenerateTemporarySelfIdentityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__RPClient_regenerateTemporarySelfIdentityWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -578,23 +578,23 @@ uint64_t __58__RPClient_regenerateTemporarySelfIdentityWithCompletion___block_in
   return result;
 }
 
-- (void)diagnosticCommand:(id)a3 params:(id)a4 completion:(id)a5
+- (void)diagnosticCommand:(id)command params:(id)params completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  paramsCopy = params;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __48__RPClient_diagnosticCommand_params_completion___block_invoke;
   v15[3] = &unk_1E7C92E70;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = commandCopy;
+  v17 = paramsCopy;
+  v18 = completionCopy;
+  v12 = paramsCopy;
+  v13 = commandCopy;
+  v14 = completionCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -648,20 +648,20 @@ uint64_t __48__RPClient_diagnosticCommand_params_completion___block_invoke_3(uin
   return result;
 }
 
-- (void)diagnosticLogControl:(id)a3 completion:(id)a4
+- (void)diagnosticLogControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__RPClient_diagnosticLogControl_completion___block_invoke;
   block[3] = &unk_1E7C92DF8;
-  v12 = v6;
-  v13 = v7;
+  v12 = controlCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = controlCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -728,21 +728,21 @@ void __44__RPClient_diagnosticLogControl_completion___block_invoke_3(uint64_t a1
   }
 }
 
-- (void)diagnosticShow:(id)a3 level:(int)a4 completion:(id)a5
+- (void)diagnosticShow:(id)show level:(int)level completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  showCopy = show;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __44__RPClient_diagnosticShow_level_completion___block_invoke;
   v13[3] = &unk_1E7C92DD0;
-  v14 = v8;
-  v15 = v9;
+  v14 = showCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  levelCopy = level;
+  v11 = showCopy;
+  v12 = completionCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -810,18 +810,18 @@ void __44__RPClient_diagnosticShow_level_completion___block_invoke_3(uint64_t a1
   }
 }
 
-- (void)getIdentitiesWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)getIdentitiesWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__RPClient_getIdentitiesWithFlags_completion___block_invoke;
   block[3] = &unk_1E7C92EC0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  flagsCopy = flags;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -846,17 +846,17 @@ void __46__RPClient_getIdentitiesWithFlags_completion___block_invoke(uint64_t a1
   }
 }
 
-- (void)primaryAccountSignedInWithCompletion:(id)a3
+- (void)primaryAccountSignedInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__RPClient_primaryAccountSignedInWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -908,17 +908,17 @@ uint64_t __49__RPClient_primaryAccountSignedInWithCompletion___block_invoke_3(ui
   return result;
 }
 
-- (void)primaryAccountSignedOutWithCompletion:(id)a3
+- (void)primaryAccountSignedOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__RPClient_primaryAccountSignedOutWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -970,27 +970,27 @@ uint64_t __50__RPClient_primaryAccountSignedOutWithCompletion___block_invoke_3(u
   return result;
 }
 
-- (void)clientCreateDeviceMappingInternal:(int)a3 applicationService:(id)a4 deviceID:(id)a5 endpointID:(id)a6 completion:(id)a7
+- (void)clientCreateDeviceMappingInternal:(int)internal applicationService:(id)service deviceID:(id)d endpointID:(id)iD completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __96__RPClient_clientCreateDeviceMappingInternal_applicationService_deviceID_endpointID_completion___block_invoke;
   v21[3] = &unk_1E7C92F10;
-  v22 = v12;
-  v23 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = a3;
-  v24 = self;
-  v17 = v14;
-  v18 = v15;
-  v19 = v13;
-  v20 = v12;
+  v22 = serviceCopy;
+  v23 = dCopy;
+  v25 = iDCopy;
+  v26 = completionCopy;
+  internalCopy = internal;
+  selfCopy = self;
+  v17 = iDCopy;
+  v18 = completionCopy;
+  v19 = dCopy;
+  v20 = serviceCopy;
   dispatch_async(dispatchQueue, v21);
 }
 
@@ -1051,23 +1051,23 @@ uint64_t __96__RPClient_clientCreateDeviceMappingInternal_applicationService_dev
   return result;
 }
 
-- (void)clientExchangeQUICPublicKeyFor:(id)a3 publicKey:(id)a4 completion:(id)a5
+- (void)clientExchangeQUICPublicKeyFor:(id)for publicKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  keyCopy = key;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__RPClient_clientExchangeQUICPublicKeyFor_publicKey_completion___block_invoke;
   v15[3] = &unk_1E7C92F38;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = forCopy;
+  v17 = keyCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = keyCopy;
+  v14 = forCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -1108,18 +1108,18 @@ uint64_t __64__RPClient_clientExchangeQUICPublicKeyFor_publicKey_completion___bl
   return result;
 }
 
-- (void)setAutoMapping:(BOOL)a3 completion:(id)a4
+- (void)setAutoMapping:(BOOL)mapping completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__RPClient_setAutoMapping_completion___block_invoke;
   block[3] = &unk_1E7C92F60;
-  v11 = a3;
+  mappingCopy = mapping;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1181,20 +1181,20 @@ uint64_t __38__RPClient_setAutoMapping_completion___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)removeSessionPairedIdentity:(id)a3 completion:(id)a4
+- (void)removeSessionPairedIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__RPClient_removeSessionPairedIdentity_completion___block_invoke;
   block[3] = &unk_1E7C92DF8;
-  v12 = v6;
-  v13 = v7;
+  v12 = identityCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identityCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1234,20 +1234,20 @@ uint64_t __51__RPClient_removeSessionPairedIdentity_completion___block_invoke_2(
   return result;
 }
 
-- (void)removeAdHocPairedIdentity:(id)a3 completion:(id)a4
+- (void)removeAdHocPairedIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__RPClient_removeAdHocPairedIdentity_completion___block_invoke;
   block[3] = &unk_1E7C92DF8;
-  v12 = v6;
-  v13 = v7;
+  v12 = identityCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identityCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 

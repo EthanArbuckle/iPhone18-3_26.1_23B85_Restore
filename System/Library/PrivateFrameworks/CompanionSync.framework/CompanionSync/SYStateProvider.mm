@@ -1,10 +1,10 @@
 @interface SYStateProvider
 - (SYStateProvider)init;
-- (SYStateProvider)initWithName:(id)a3 type:(unsigned int)a4 typeName:(id)a5;
+- (SYStateProvider)initWithName:(id)name type:(unsigned int)type typeName:(id)typeName;
 - (id)_encodedState;
 - (void)dealloc;
-- (void)setEncoder:(id)a3;
-- (void)updateState:(id)a3;
+- (void)setEncoder:(id)encoder;
+- (void)updateState:(id)state;
 @end
 
 @implementation SYStateProvider
@@ -16,25 +16,25 @@
   return 0;
 }
 
-- (SYStateProvider)initWithName:(id)a3 type:(unsigned int)a4 typeName:(id)a5
+- (SYStateProvider)initWithName:(id)name type:(unsigned int)type typeName:(id)typeName
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  typeNameCopy = typeName;
   v23.receiver = self;
   v23.super_class = SYStateProvider;
   v10 = [(SYStateProvider *)&v23 init];
   if (v10)
   {
-    v11 = [v8 copy];
-    v12 = [v9 copy];
-    v10->_type = a4;
+    v11 = [nameCopy copy];
+    v12 = [typeNameCopy copy];
+    v10->_type = type;
     v10->_lock._os_unfair_lock_opaque = 0;
     [(SYStateProvider *)v10 setEncoder:0];
     objc_initWeak(&location, v10);
     v13 = dispatch_get_global_queue(0, 0);
     objc_copyWeak(&v20, &location);
-    v21 = a4;
-    v18 = v9;
+    typeCopy = type;
+    v18 = typeNameCopy;
     v19 = v11;
     v14 = v11;
     v15 = v12;
@@ -97,21 +97,21 @@ _BYTE *__46__SYStateProvider_initWithName_type_typeName___block_invoke(uint64_t 
   [(SYStateProvider *)&v4 dealloc];
 }
 
-- (void)updateState:(id)a3
+- (void)updateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
-  self->_state = v4;
+  self->_state = stateCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setEncoder:(id)a3
+- (void)setEncoder:(id)encoder
 {
-  if (a3)
+  if (encoder)
   {
-    v4 = [a3 copy];
+    v4 = [encoder copy];
     encoder = self->_encoder;
     self->_encoder = v4;
 

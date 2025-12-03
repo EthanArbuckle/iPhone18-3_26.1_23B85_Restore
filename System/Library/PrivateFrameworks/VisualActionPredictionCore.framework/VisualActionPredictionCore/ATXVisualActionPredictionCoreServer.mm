@@ -6,7 +6,7 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_22633F338();
 }
 

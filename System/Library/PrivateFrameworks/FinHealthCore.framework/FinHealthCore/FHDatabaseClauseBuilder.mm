@@ -1,14 +1,14 @@
 @interface FHDatabaseClauseBuilder
 - (FHDatabaseClauseBuilder)init;
-- (void)addBetweenClauseWithFieldName:(id)a3 lowerBound:(unint64_t)a4 upperBound:(unint64_t)a5;
-- (void)addDateClause:(id)a3 fieldName:(id)a4 expression:(id)a5;
-- (void)addDecimalNumberClause:(id)a3 fieldName:(id)a4 expression:(id)a5;
-- (void)addDoubleClause:(id)a3 fieldName:(id)a4 expression:(double)a5;
-- (void)addInClause:(id)a3 fieldName:(id)a4 expressions:(id)a5;
-- (void)addIntegerClause:(id)a3 fieldName:(id)a4 expression:(int64_t)a5;
-- (void)addIsNull:(id)a3;
-- (void)addNumberClause:(id)a3 fieldName:(id)a4 expression:(id)a5;
-- (void)addStringClause:(id)a3 fieldName:(id)a4 expression:(id)a5;
+- (void)addBetweenClauseWithFieldName:(id)name lowerBound:(unint64_t)bound upperBound:(unint64_t)upperBound;
+- (void)addDateClause:(id)clause fieldName:(id)name expression:(id)expression;
+- (void)addDecimalNumberClause:(id)clause fieldName:(id)name expression:(id)expression;
+- (void)addDoubleClause:(id)clause fieldName:(id)name expression:(double)expression;
+- (void)addInClause:(id)clause fieldName:(id)name expressions:(id)expressions;
+- (void)addIntegerClause:(id)clause fieldName:(id)name expression:(int64_t)expression;
+- (void)addIsNull:(id)null;
+- (void)addNumberClause:(id)clause fieldName:(id)name expression:(id)expression;
+- (void)addStringClause:(id)clause fieldName:(id)name expression:(id)expression;
 @end
 
 @implementation FHDatabaseClauseBuilder
@@ -28,101 +28,101 @@
   return v2;
 }
 
-- (void)addStringClause:(id)a3 fieldName:(id)a4 expression:(id)a5
+- (void)addStringClause:(id)clause fieldName:(id)name expression:(id)expression
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[FHDatabaseClause alloc] initWithQuoteWrapOption:v10 fieldName:v9 expression:v8 quoteWrapExpression:1];
+  expressionCopy = expression;
+  nameCopy = name;
+  clauseCopy = clause;
+  v11 = [[FHDatabaseClause alloc] initWithQuoteWrapOption:clauseCopy fieldName:nameCopy expression:expressionCopy quoteWrapExpression:1];
 
   [(NSMutableArray *)self->_clauseStack addObject:v11];
 }
 
-- (void)addDoubleClause:(id)a3 fieldName:(id)a4 expression:(double)a5
+- (void)addDoubleClause:(id)clause fieldName:(id)name expression:(double)expression
 {
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  clauseCopy = clause;
   v10 = [FHDatabaseClause alloc];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", *&a5];
-  v12 = [(FHDatabaseClause *)v10 initWithQuoteWrapOption:v9 fieldName:v8 expression:v11 quoteWrapExpression:0];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", *&expression];
+  v12 = [(FHDatabaseClause *)v10 initWithQuoteWrapOption:clauseCopy fieldName:nameCopy expression:v11 quoteWrapExpression:0];
 
   [(NSMutableArray *)self->_clauseStack addObject:v12];
 }
 
-- (void)addIntegerClause:(id)a3 fieldName:(id)a4 expression:(int64_t)a5
+- (void)addIntegerClause:(id)clause fieldName:(id)name expression:(int64_t)expression
 {
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  clauseCopy = clause;
   v10 = [FHDatabaseClause alloc];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a5];
-  v12 = [(FHDatabaseClause *)v10 initWithQuoteWrapOption:v9 fieldName:v8 expression:v11 quoteWrapExpression:0];
+  expression = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", expression];
+  v12 = [(FHDatabaseClause *)v10 initWithQuoteWrapOption:clauseCopy fieldName:nameCopy expression:expression quoteWrapExpression:0];
 
   [(NSMutableArray *)self->_clauseStack addObject:v12];
 }
 
-- (void)addDecimalNumberClause:(id)a3 fieldName:(id)a4 expression:(id)a5
+- (void)addDecimalNumberClause:(id)clause fieldName:(id)name expression:(id)expression
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  expressionCopy = expression;
+  nameCopy = name;
+  clauseCopy = clause;
   v11 = [FHDatabaseClause alloc];
-  v12 = [v8 stringValue];
+  stringValue = [expressionCopy stringValue];
 
-  v13 = [(FHDatabaseClause *)v11 initWithQuoteWrapOption:v10 fieldName:v9 expression:v12 quoteWrapExpression:0];
+  v13 = [(FHDatabaseClause *)v11 initWithQuoteWrapOption:clauseCopy fieldName:nameCopy expression:stringValue quoteWrapExpression:0];
   [(NSMutableArray *)self->_clauseStack addObject:v13];
 }
 
-- (void)addNumberClause:(id)a3 fieldName:(id)a4 expression:(id)a5
+- (void)addNumberClause:(id)clause fieldName:(id)name expression:(id)expression
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  expressionCopy = expression;
+  nameCopy = name;
+  clauseCopy = clause;
   v11 = [FHDatabaseClause alloc];
-  v12 = [v8 stringValue];
+  stringValue = [expressionCopy stringValue];
 
-  v13 = [(FHDatabaseClause *)v11 initWithQuoteWrapOption:v10 fieldName:v9 expression:v12 quoteWrapExpression:0];
+  v13 = [(FHDatabaseClause *)v11 initWithQuoteWrapOption:clauseCopy fieldName:nameCopy expression:stringValue quoteWrapExpression:0];
   [(NSMutableArray *)self->_clauseStack addObject:v13];
 }
 
-- (void)addDateClause:(id)a3 fieldName:(id)a4 expression:(id)a5
+- (void)addDateClause:(id)clause fieldName:(id)name expression:(id)expression
 {
-  v8 = a4;
-  v9 = a3;
-  [a5 timeIntervalSinceReferenceDate];
-  [(FHDatabaseClauseBuilder *)self addDoubleClause:v9 fieldName:v8 expression:?];
+  nameCopy = name;
+  clauseCopy = clause;
+  [expression timeIntervalSinceReferenceDate];
+  [(FHDatabaseClauseBuilder *)self addDoubleClause:clauseCopy fieldName:nameCopy expression:?];
 }
 
-- (void)addInClause:(id)a3 fieldName:(id)a4 expressions:(id)a5
+- (void)addInClause:(id)clause fieldName:(id)name expressions:(id)expressions
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v15 isEqualToString:@"IN"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"NOT IN"))
+  clauseCopy = clause;
+  nameCopy = name;
+  expressionsCopy = expressions;
+  if (([clauseCopy isEqualToString:@"IN"] & 1) != 0 || objc_msgSend(clauseCopy, "isEqualToString:", @"NOT IN"))
   {
     v10 = [FHDatabaseClause alloc];
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v9 componentsJoinedByString:{@", "}];
+    v12 = [expressionsCopy componentsJoinedByString:{@", "}];
     v13 = [v11 stringWithFormat:@"(%@)", v12];
-    v14 = [(FHDatabaseClause *)v10 initWithQuoteWrapOption:v15 fieldName:v8 expression:v13 quoteWrapExpression:0];
+    v14 = [(FHDatabaseClause *)v10 initWithQuoteWrapOption:clauseCopy fieldName:nameCopy expression:v13 quoteWrapExpression:0];
 
     [(NSMutableArray *)self->_clauseStack addObject:v14];
   }
 }
 
-- (void)addBetweenClauseWithFieldName:(id)a3 lowerBound:(unint64_t)a4 upperBound:(unint64_t)a5
+- (void)addBetweenClauseWithFieldName:(id)name lowerBound:(unint64_t)bound upperBound:(unint64_t)upperBound
 {
-  v8 = a3;
+  nameCopy = name;
   v9 = [FHDatabaseClause alloc];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu AND %lu", a4, a5];
-  v11 = [(FHDatabaseClause *)v9 initWithQuoteWrapOption:@"BETWEEN" fieldName:v8 expression:v10 quoteWrapExpression:0];
+  upperBound = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu AND %lu", bound, upperBound];
+  v11 = [(FHDatabaseClause *)v9 initWithQuoteWrapOption:@"BETWEEN" fieldName:nameCopy expression:upperBound quoteWrapExpression:0];
 
   [(NSMutableArray *)self->_clauseStack addObject:v11];
 }
 
-- (void)addIsNull:(id)a3
+- (void)addIsNull:(id)null
 {
-  v4 = a3;
-  v5 = [[FHDatabaseClause alloc] initWithQuoteWrapOption:@"IS" fieldName:v4 expression:@"NULL" quoteWrapExpression:0];
+  nullCopy = null;
+  v5 = [[FHDatabaseClause alloc] initWithQuoteWrapOption:@"IS" fieldName:nullCopy expression:@"NULL" quoteWrapExpression:0];
 
   [(NSMutableArray *)self->_clauseStack addObject:v5];
 }

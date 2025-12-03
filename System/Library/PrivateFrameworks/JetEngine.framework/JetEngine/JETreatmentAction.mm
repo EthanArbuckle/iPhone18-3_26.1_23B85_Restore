@@ -1,20 +1,20 @@
 @interface JETreatmentAction
-+ (id)treatmentActionWithField:(id)a3 configuration:(id)a4 topic:(id)a5;
-- (JETreatmentAction)initWithField:(id)a3 configuration:(id)a4;
-- (id)performAction:(id)a3 context:(id)a4;
-- (id)performAction:(uint64_t)a3 atKeyIndex:(void *)a4 context:;
++ (id)treatmentActionWithField:(id)field configuration:(id)configuration topic:(id)topic;
+- (JETreatmentAction)initWithField:(id)field configuration:(id)configuration;
+- (id)performAction:(id)action context:(id)context;
+- (id)performAction:(uint64_t)action atKeyIndex:(void *)index context:;
 - (uint64_t)sourceField;
-- (void)performActionWithContext:(id)a3;
+- (void)performActionWithContext:(id)context;
 @end
 
 @implementation JETreatmentAction
 
-+ (id)treatmentActionWithField:(id)a3 configuration:(id)a4 topic:(id)a5
++ (id)treatmentActionWithField:(id)field configuration:(id)configuration topic:(id)topic
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
+  fieldCopy = field;
+  configurationCopy = configuration;
+  topicCopy = topic;
+  v10 = configurationCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -58,7 +58,7 @@
   {
     if ([v13 isEqualToString:@"hash"])
     {
-      v16 = [[JEHashTreatmentAction alloc] initWithField:v7 configuration:v11 topic:v9];
+      v16 = [[JEHashTreatmentAction alloc] initWithField:fieldCopy configuration:v11 topic:topicCopy];
       goto LABEL_14;
     }
 
@@ -88,7 +88,7 @@
     }
   }
 
-  v16 = [[v15 alloc] initWithField:v7 configuration:v11];
+  v16 = [[v15 alloc] initWithField:fieldCopy configuration:v11];
 LABEL_14:
   v14 = v16;
 
@@ -97,20 +97,20 @@ LABEL_15:
   return v14;
 }
 
-- (JETreatmentAction)initWithField:(id)a3 configuration:(id)a4
+- (JETreatmentAction)initWithField:(id)field configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  configurationCopy = configuration;
   v51.receiver = self;
   v51.super_class = JETreatmentAction;
   v8 = [(JETreatmentAction *)&v51 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [fieldCopy copy];
     field = v8->_field;
     v8->_field = v9;
 
-    v11 = [v7 objectForKeyedSubscript:@"sourceField"];
+    v11 = [configurationCopy objectForKeyedSubscript:@"sourceField"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,11 +126,11 @@ LABEL_15:
     sourceField = v8->_sourceField;
     v8->_sourceField = v13;
 
-    v15 = [v7 objectForKeyedSubscript:@"overrideFieldValue"];
+    v15 = [configurationCopy objectForKeyedSubscript:@"overrideFieldValue"];
     overrideFieldValue = v8->_overrideFieldValue;
     v8->_overrideFieldValue = v15;
 
-    v17 = [v7 objectForKeyedSubscript:@"denylisted"];
+    v17 = [configurationCopy objectForKeyedSubscript:@"denylisted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,7 +149,7 @@ LABEL_15:
 
     else
     {
-      v20 = [v7 objectForKeyedSubscript:@"blacklisted"];
+      v20 = [configurationCopy objectForKeyedSubscript:@"blacklisted"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -163,7 +163,7 @@ LABEL_15:
     }
 
     v8->_denylisted = [v19 BOOLValue];
-    v21 = [v7 objectForKeyedSubscript:@"allowlistedFields"];
+    v21 = [configurationCopy objectForKeyedSubscript:@"allowlistedFields"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -182,7 +182,7 @@ LABEL_15:
 
     else
     {
-      v24 = [v7 objectForKeyedSubscript:@"whitelistedFields"];
+      v24 = [configurationCopy objectForKeyedSubscript:@"whitelistedFields"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -199,7 +199,7 @@ LABEL_15:
     allowlistedFields = v8->_allowlistedFields;
     v8->_allowlistedFields = v25;
 
-    v27 = [v7 objectForKeyedSubscript:@"denylistedFields"];
+    v27 = [configurationCopy objectForKeyedSubscript:@"denylistedFields"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -218,7 +218,7 @@ LABEL_15:
 
     else
     {
-      v30 = [v7 objectForKeyedSubscript:@"blacklistedFields"];
+      v30 = [configurationCopy objectForKeyedSubscript:@"blacklistedFields"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -235,7 +235,7 @@ LABEL_15:
     denylistedFields = v8->_denylistedFields;
     v8->_denylistedFields = v31;
 
-    v33 = [v7 objectForKeyedSubscript:@"fieldsMap"];
+    v33 = [configurationCopy objectForKeyedSubscript:@"fieldsMap"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -251,7 +251,7 @@ LABEL_15:
     fieldsMap = v8->_fieldsMap;
     v8->_fieldsMap = v35;
 
-    v37 = [v7 objectForKeyedSubscript:@"extractAndReplace"];
+    v37 = [configurationCopy objectForKeyedSubscript:@"extractAndReplace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -295,19 +295,19 @@ LABEL_15:
   return v8;
 }
 
-- (void)performActionWithContext:(id)a3
+- (void)performActionWithContext:(id)context
 {
-  v4 = a3;
-  v6 = [(JETreatmentContext *)v4 metrics];
-  v5 = [(JETreatmentAction *)&self->super.isa performAction:v6 atKeyIndex:0 context:v4];
-  [(JETreatmentContext *)v4 setMetrics:v5];
+  contextCopy = context;
+  metrics = [(JETreatmentContext *)contextCopy metrics];
+  v5 = [(JETreatmentAction *)&self->super.isa performAction:metrics atKeyIndex:0 context:contextCopy];
+  [(JETreatmentContext *)contextCopy setMetrics:v5];
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  contextCopy = context;
   if (self)
   {
     if (self->_denylisted)
@@ -320,7 +320,7 @@ LABEL_15:
     {
       v9 = self->_overrideFieldValue;
 
-      v6 = v9;
+      actionCopy = v9;
     }
   }
 
@@ -337,10 +337,10 @@ LABEL_15:
       fieldsMap = 0;
     }
 
-    v49 = v7;
+    v49 = contextCopy;
     if ([(NSDictionary *)fieldsMap count])
     {
-      v56 = [v6 mutableCopy];
+      v56 = [actionCopy mutableCopy];
       v66 = 0u;
       v67 = 0u;
       v68 = 0u;
@@ -360,7 +360,7 @@ LABEL_15:
       if (v54)
       {
         v52 = *v67;
-        v53 = self;
+        selfCopy = self;
         do
         {
           v12 = 0;
@@ -428,7 +428,7 @@ LABEL_15:
                   }
 
                   v23 = *(*(&v62 + 1) + 8 * i);
-                  v24 = v6;
+                  v24 = actionCopy;
                   v25 = [v23 componentsSeparatedByString:@"."];
                   v26 = NullableValueForKeyPathArray(v24, v25, 0);
 
@@ -453,7 +453,7 @@ LABEL_15:
 LABEL_34:
 
             ++v12;
-            self = v53;
+            self = selfCopy;
           }
 
           while (v12 != v54);
@@ -464,7 +464,7 @@ LABEL_34:
         while (v27);
       }
 
-      v7 = v49;
+      contextCopy = v49;
       if (self)
       {
         goto LABEL_39;
@@ -473,7 +473,7 @@ LABEL_34:
 
     else
     {
-      v56 = v6;
+      v56 = actionCopy;
       if (self)
       {
 LABEL_39:
@@ -538,7 +538,7 @@ LABEL_40:
         while (v35);
       }
 
-      v7 = v50;
+      contextCopy = v50;
       if (self)
       {
         goto LABEL_53;
@@ -561,7 +561,7 @@ LABEL_54:
     if ([(NSArray *)denylistedFields count])
     {
       v41 = [v31 mutableCopy];
-      v6 = v41;
+      actionCopy = v41;
       if (self)
       {
         v42 = self->_denylistedFields;
@@ -582,7 +582,7 @@ LABEL_54:
 
     else
     {
-      v6 = v31;
+      actionCopy = v31;
       if (self)
       {
 LABEL_58:
@@ -606,30 +606,30 @@ LABEL_59:
       }
 
       v45 = v44;
-      v46 = [(JETreatmentContext *)v7 metrics];
-      v47 = [JEExtractAndReplaceField metricsAfterExtractAndReplaceSubFieldWithConfig:v45 metrics:v46];
+      metrics = [(JETreatmentContext *)contextCopy metrics];
+      v47 = [JEExtractAndReplaceField metricsAfterExtractAndReplaceSubFieldWithConfig:v45 metrics:metrics];
 
-      v6 = v47;
+      actionCopy = v47;
     }
   }
 
-  v6 = v6;
-  v8 = v6;
+  actionCopy = actionCopy;
+  v8 = actionCopy;
 LABEL_64:
 
   return v8;
 }
 
-- (id)performAction:(uint64_t)a3 atKeyIndex:(void *)a4 context:
+- (id)performAction:(uint64_t)action atKeyIndex:(void *)index context:
 {
   v39 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  indexCopy = index;
+  if (self)
   {
-    if ([a1[10] count] == a3)
+    if ([self[10] count] == action)
     {
-      a1 = [a1 performAction:v7 context:v8];
+      self = [self performAction:v7 context:indexCopy];
     }
 
     else
@@ -648,8 +648,8 @@ LABEL_64:
 
       if (v10)
       {
-        v11 = [a1[10] objectAtIndexedSubscript:a3];
-        v12 = [a1[9] objectAtIndexedSubscript:a3];
+        v11 = [self[10] objectAtIndexedSubscript:action];
+        v12 = [self[9] objectAtIndexedSubscript:action];
         if ([v11 hasSuffix:@"[]"])
         {
           v13 = [v11 substringToIndex:{objc_msgSend(v11, "length") - 2}];
@@ -692,7 +692,7 @@ LABEL_64:
                     objc_enumerationMutation(v17);
                   }
 
-                  v22 = [(JETreatmentAction *)a1 performAction:a3 + 1 atKeyIndex:v8 context:?];
+                  v22 = [(JETreatmentAction *)self performAction:action + 1 atKeyIndex:indexCopy context:?];
                   if (v22)
                   {
                     [v16 addObject:v22];
@@ -716,7 +716,7 @@ LABEL_64:
             v10 = v33;
             v24 = [v33 mutableCopy];
             [v24 setObject:v16 forKeyedSubscript:v12];
-            a1 = [v24 copy];
+            self = [v24 copy];
 
             v15 = v30;
             v13 = v31;
@@ -724,7 +724,7 @@ LABEL_64:
 
           else
           {
-            a1 = v9;
+            self = v9;
           }
 
           v11 = v13;
@@ -733,22 +733,22 @@ LABEL_64:
         else
         {
           v26 = [v10 objectForKeyedSubscript:v11];
-          v27 = [(JETreatmentAction *)a1 performAction:v26 atKeyIndex:a3 + 1 context:v8];
+          v27 = [(JETreatmentAction *)self performAction:v26 atKeyIndex:action + 1 context:indexCopy];
 
           v28 = [v10 mutableCopy];
           [v28 setObject:v27 forKeyedSubscript:v12];
-          a1 = [v28 copy];
+          self = [v28 copy];
         }
       }
 
       else
       {
-        a1 = v9;
+        self = v9;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)sourceField

@@ -1,24 +1,24 @@
 @interface BKEventDeliveryChain
-- (BOOL)isEqual:(id)a3;
-- (id)resolutionPathForEventDescriptor:(uint64_t)a1;
+- (BOOL)isEqual:(id)equal;
+- (id)resolutionPathForEventDescriptor:(uint64_t)descriptor;
 - (uint64_t)deferringPath;
 - (uint64_t)dispatchTarget;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation BKEventDeliveryChain
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  streamCopy = stream;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__BKEventDeliveryChain_appendDescriptionToStream___block_invoke;
   v13[3] = &unk_2784F7270;
-  v5 = v4;
+  v5 = streamCopy;
   v14 = v5;
-  v15 = self;
+  selfCopy = self;
   [v5 appendProem:0 block:v13];
   dispatchTarget = self->_dispatchTarget;
   if (!dispatchTarget)
@@ -50,10 +50,10 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -61,7 +61,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -130,24 +130,24 @@ LABEL_17:
   return v8;
 }
 
-- (id)resolutionPathForEventDescriptor:(uint64_t)a1
+- (id)resolutionPathForEventDescriptor:(uint64_t)descriptor
 {
   v42 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (descriptor)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [*(a1 + 8) display];
-    v6 = [*(a1 + 8) environment];
+    display = [*(descriptor + 8) display];
+    environment = [*(descriptor + 8) environment];
     v7 = MEMORY[0x277CF0638];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __57__BKEventDeliveryChain_resolutionPathForEventDescriptor___block_invoke;
     v38[3] = &unk_2784F6980;
-    v38[4] = a1;
-    v27 = v6;
+    v38[4] = descriptor;
+    v27 = environment;
     v39 = v27;
-    v25 = v5;
+    v25 = display;
     v40 = v25;
     v8 = [v7 build:v38];
     v28 = v4;
@@ -157,8 +157,8 @@ LABEL_17:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v9 = a1;
-    obj = *(a1 + 40);
+    descriptorCopy = descriptor;
+    obj = *(descriptor + 40);
     v10 = [obj countByEnumeratingWithState:&v34 objects:v41 count:16];
     if (v10)
     {
@@ -187,27 +187,27 @@ LABEL_17:
             goto LABEL_19;
           }
 
-          v17 = [v16 predicate];
-          v18 = [v17 display];
+          predicate = [v16 predicate];
+          display2 = [predicate display];
 
-          if (!v18)
+          if (!display2)
           {
-            v18 = [MEMORY[0x277CF0698] nullDisplay];
+            display2 = [MEMORY[0x277CF0698] nullDisplay];
           }
 
-          v19 = [v16 target];
-          v20 = v19;
-          if (v19)
+          target = [v16 target];
+          v20 = target;
+          if (target)
           {
             v21 = MEMORY[0x277CF0638];
             v29[0] = MEMORY[0x277D85DD0];
             v29[1] = 3221225472;
             v29[2] = __57__BKEventDeliveryChain_resolutionPathForEventDescriptor___block_invoke_2;
             v29[3] = &unk_2784F69A8;
-            v30 = v19;
+            v30 = target;
             v31 = v27;
-            v32 = v18;
-            v33 = v9;
+            v32 = display2;
+            v33 = descriptorCopy;
             v22 = [v21 build:v29];
             [v28 addObject:v22];
           }

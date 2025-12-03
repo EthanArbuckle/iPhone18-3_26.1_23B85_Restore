@@ -1,5 +1,5 @@
 @interface MPMusicPlayerControllerQueue
-- (MPMusicPlayerControllerQueue)initWithController:(id)a3;
+- (MPMusicPlayerControllerQueue)initWithController:(id)controller;
 - (void)fault;
 @end
 
@@ -7,21 +7,21 @@
 
 - (void)fault
 {
-  v5 = [(NSArray *)self->_items objectEnumerator];
-  v3 = [v5 allObjects];
+  objectEnumerator = [(NSArray *)self->_items objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
   items = self->_items;
-  self->_items = v3;
+  self->_items = allObjects;
 }
 
-- (MPMusicPlayerControllerQueue)initWithController:(id)a3
+- (MPMusicPlayerControllerQueue)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MPMusicPlayerControllerQueue;
   v5 = [(MPMusicPlayerControllerQueue *)&v9 init];
   if (v5)
   {
-    v6 = [[_MPMusicPlayerQueueItemsProxy alloc] initWithController:v4];
+    v6 = [[_MPMusicPlayerQueueItemsProxy alloc] initWithController:controllerCopy];
     items = v5->_items;
     v5->_items = &v6->super;
   }

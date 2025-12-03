@@ -1,12 +1,12 @@
 @interface PPSocialHighlightStore
 + (double)decayInterval;
-- (BOOL)iterRankedCollaborationsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 block:(id)a7;
-- (BOOL)iterRankedHighlightsForSyncedItems:(id)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 block:(id)a7;
-- (BOOL)iterRankedHighlightsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 reason:(id)a6 error:(id *)a7 block:(id)a8;
+- (BOOL)iterRankedCollaborationsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant error:(id *)error block:(id)block;
+- (BOOL)iterRankedHighlightsForSyncedItems:(id)items client:(id)client variant:(id)variant error:(id *)error block:(id)block;
+- (BOOL)iterRankedHighlightsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant reason:(id)reason error:(id *)error block:(id)block;
 - (PPSocialHighlightStore)init;
-- (id)attributionForIdentifier:(id)a3 error:(id *)a4;
-- (void)feedbackForAttributionIdentifier:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 completion:(id)a7;
-- (void)feedbackForHighlightIdentifier:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 completion:(id)a7;
+- (id)attributionForIdentifier:(id)identifier error:(id *)error;
+- (void)feedbackForAttributionIdentifier:(id)identifier type:(unint64_t)type client:(id)client variant:(id)variant completion:(id)completion;
+- (void)feedbackForHighlightIdentifier:(id)identifier type:(unint64_t)type client:(id)client variant:(id)variant completion:(id)completion;
 @end
 
 @implementation PPSocialHighlightStore
@@ -28,51 +28,51 @@ void __50__PPSocialHighlightStore__sharedAdaptiveCoalescer__block_invoke()
   return [(PPSocialHighlightStore *)&v3 init];
 }
 
-- (void)feedbackForAttributionIdentifier:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 completion:(id)a7
+- (void)feedbackForAttributionIdentifier:(id)identifier type:(unint64_t)type client:(id)client variant:(id)variant completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  completionCopy = completion;
+  variantCopy = variant;
+  clientCopy = client;
+  identifierCopy = identifier;
   v15 = +[PPSocialHighlightClient sharedInstance];
-  [v15 feedbackForAttribution:v14 type:a4 client:v13 variant:v12 completion:v11];
+  [v15 feedbackForAttribution:identifierCopy type:type client:clientCopy variant:variantCopy completion:completionCopy];
 }
 
-- (void)feedbackForHighlightIdentifier:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 completion:(id)a7
+- (void)feedbackForHighlightIdentifier:(id)identifier type:(unint64_t)type client:(id)client variant:(id)variant completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  completionCopy = completion;
+  variantCopy = variant;
+  clientCopy = client;
+  identifierCopy = identifier;
   v15 = +[PPSocialHighlightClient sharedInstance];
-  [v15 feedbackForHighlight:v14 type:a4 client:v13 variant:v12 completion:v11];
+  [v15 feedbackForHighlight:identifierCopy type:type client:clientCopy variant:variantCopy completion:completionCopy];
 }
 
-- (id)attributionForIdentifier:(id)a3 error:(id *)a4
+- (id)attributionForIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = +[PPSocialHighlightClient sharedInstance];
-  v7 = [v6 attributionForIdentifier:v5 error:a4];
+  v7 = [v6 attributionForIdentifier:identifierCopy error:error];
 
   return v7;
 }
 
-- (BOOL)iterRankedHighlightsForSyncedItems:(id)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 block:(id)a7
+- (BOOL)iterRankedHighlightsForSyncedItems:(id)items client:(id)client variant:(id)variant error:(id *)error block:(id)block
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  blockCopy = block;
+  variantCopy = variant;
+  clientCopy = client;
+  itemsCopy = items;
   v15 = +[PPSocialHighlightClient sharedInstance];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __88__PPSocialHighlightStore_iterRankedHighlightsForSyncedItems_client_variant_error_block___block_invoke;
   v18[3] = &unk_1E77F7D70;
-  v19 = v11;
-  v16 = v11;
-  LOBYTE(a6) = [v15 rankedHighlightsForSyncedItems:v14 client:v13 variant:v12 error:a6 handleBatch:v18];
+  v19 = blockCopy;
+  v16 = blockCopy;
+  LOBYTE(error) = [v15 rankedHighlightsForSyncedItems:itemsCopy client:clientCopy variant:variantCopy error:error handleBatch:v18];
 
-  return a6;
+  return error;
 }
 
 void __88__PPSocialHighlightStore_iterRankedHighlightsForSyncedItems_client_variant_error_block___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -125,21 +125,21 @@ LABEL_4:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)iterRankedCollaborationsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 block:(id)a7
+- (BOOL)iterRankedCollaborationsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant error:(id *)error block:(id)block
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
+  blockCopy = block;
+  variantCopy = variant;
+  clientCopy = client;
   v14 = +[PPSocialHighlightClient sharedInstance];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __87__PPSocialHighlightStore_iterRankedCollaborationsWithLimit_client_variant_error_block___block_invoke;
   v17[3] = &unk_1E77F7D70;
-  v18 = v11;
-  v15 = v11;
-  LOBYTE(a6) = [v14 rankedCollaborationsWithLimit:a3 client:v13 variant:v12 error:a6 handleBatch:v17];
+  v18 = blockCopy;
+  v15 = blockCopy;
+  LOBYTE(error) = [v14 rankedCollaborationsWithLimit:limit client:clientCopy variant:variantCopy error:error handleBatch:v17];
 
-  return a6;
+  return error;
 }
 
 void __87__PPSocialHighlightStore_iterRankedCollaborationsWithLimit_client_variant_error_block___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -192,12 +192,12 @@ LABEL_4:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)iterRankedHighlightsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 reason:(id)a6 error:(id *)a7 block:(id)a8
+- (BOOL)iterRankedHighlightsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant reason:(id)reason error:(id *)error block:(id)block
 {
-  v15 = a8;
-  v16 = [PPSocialHighlightStoreRequestKey socialHighlightStoreRequestKeyWithLimit:a3 client:a4 variant:a5 reason:a6];
+  blockCopy = block;
+  v16 = [PPSocialHighlightStoreRequestKey socialHighlightStoreRequestKeyWithLimit:limit client:client variant:variant reason:reason];
   v17 = objc_opt_new();
-  v18 = MEMORY[0x1AC568040](v15);
+  v18 = MEMORY[0x1AC568040](blockCopy);
 
   v19 = *(v17 + 24);
   *(v17 + 24) = v18;
@@ -224,9 +224,9 @@ LABEL_4:
   [v22 coalesceRequestKey:v16 handler:v17 executeRequestAndInvokeHandlersBlock:v23];
 
   dispatch_semaphore_wait(*(v17 + 32), 0xFFFFFFFFFFFFFFFFLL);
-  if (a7)
+  if (error)
   {
-    *a7 = *(v17 + 16);
+    *error = *(v17 + 16);
   }
 
   v24 = *(v17 + 8);

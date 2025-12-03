@@ -16,9 +16,9 @@
     return 1;
   }
 
-  v4 = [(UIScrollView *)self superview];
+  superview = [(UIScrollView *)self superview];
 
-  return [v4 isAncestorScrollViewDragging];
+  return [superview isAncestorScrollViewDragging];
 }
 
 - (BOOL)isSettledOnFirstOrLastPage
@@ -95,8 +95,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UIScrollView *)self gestureRecognizers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  gestureRecognizers = [(UIScrollView *)self gestureRecognizers];
+  v3 = [gestureRecognizers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -108,7 +108,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -122,7 +122,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [gestureRecognizers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

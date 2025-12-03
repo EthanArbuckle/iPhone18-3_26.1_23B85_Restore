@@ -1,5 +1,5 @@
 @interface ATXHeuristicCommuteFromWork
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
 @end
 
@@ -28,9 +28,9 @@
   if (v2)
   {
     v4 = [ATXInformationHeuristicRefreshContextChangeTrigger alloc];
-    v5 = [v2 keyPathForContextStore];
-    v6 = [v2 predicateForContextStoreRegistration];
-    v7 = [(ATXInformationHeuristicRefreshContextChangeTrigger *)v4 initWithCDContextualKeyPath:v5 predicate:v6 registrationIdentifier:@"commuteHome"];
+    keyPathForContextStore = [v2 keyPathForContextStore];
+    predicateForContextStoreRegistration = [v2 predicateForContextStoreRegistration];
+    v7 = [(ATXInformationHeuristicRefreshContextChangeTrigger *)v4 initWithCDContextualKeyPath:keyPathForContextStore predicate:predicateForContextStoreRegistration registrationIdentifier:@"commuteHome"];
 
     v8 = objc_autoreleasePoolPush();
     v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v7, 0}];
@@ -45,10 +45,10 @@
   return v9;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  environmentCopy = environment;
   ATXTripDuetEventClass = getATXTripDuetEventClass();
   v5 = objc_opt_new();
   v6 = v5;
@@ -58,11 +58,11 @@
     goto LABEL_34;
   }
 
-  v7 = [v3 heuristicDevice];
-  v8 = [v7 locationManager];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  locationManager = [heuristicDevice locationManager];
 
-  v9 = [v8 getCurrentLocation];
-  if (!v9)
+  getCurrentLocation = [locationManager getCurrentLocation];
+  if (!getCurrentLocation)
   {
     v28 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -74,18 +74,18 @@
     goto LABEL_33;
   }
 
-  v10 = [v8 locationOfInterestAtCurrentLocation];
-  v11 = v10;
-  if (v10)
+  locationOfInterestAtCurrentLocation = [locationManager locationOfInterestAtCurrentLocation];
+  v11 = locationOfInterestAtCurrentLocation;
+  if (locationOfInterestAtCurrentLocation)
   {
-    if ([v10 type] == 1)
+    if ([locationOfInterestAtCurrentLocation type] == 1)
     {
       v12 = objc_alloc(MEMORY[0x277CE41F8]);
       [v11 coordinate];
       v14 = v13;
       [v11 coordinate];
       v15 = [v12 initWithLatitude:v14 longitude:?];
-      [v9 distanceFromLocation:v15];
+      [getCurrentLocation distanceFromLocation:v15];
       v17 = v16;
       if (v16 >= 500.0)
       {
@@ -118,14 +118,14 @@
             _os_log_impl(&dword_23E3EA000, v20, OS_LOG_TYPE_DEFAULT, "ATXHeuristicCommuteToHome: Creating suggestion for expected trip at %@", buf, 0xCu);
           }
 
-          v22 = [v19 startDate];
-          v23 = [v22 dateByAddingTimeInterval:-3600.0];
+          startDate = [v19 startDate];
+          v23 = [startDate dateByAddingTimeInterval:-3600.0];
 
-          v24 = [v19 startDate];
-          v25 = [v24 dateByAddingTimeInterval:1800.0];
+          startDate2 = [v19 startDate];
+          v25 = [startDate2 dateByAddingTimeInterval:1800.0];
 
-          v26 = [v3 heuristicDevice];
-          v27 = [ATXHeuristicCommuteHomeUtilities heuristicResultToHomeWithValidStartDate:v23 validEndDate:v25 heuristicDevice:v26];
+          heuristicDevice2 = [environmentCopy heuristicDevice];
+          v27 = [ATXHeuristicCommuteHomeUtilities heuristicResultToHomeWithValidStartDate:v23 validEndDate:v25 heuristicDevice:heuristicDevice2];
 
           v15 = v37;
           goto LABEL_30;
@@ -137,7 +137,7 @@
           *buf = 134218240;
           *&v39 = [v19 origin];
           v40 = 2048;
-          v41 = [v19 destination];
+          destination = [v19 destination];
           v32 = "ATXHeuristicCommuteToHome: Trip not from work to home, %lu -> %lu";
           v33 = v31;
           v34 = 22;

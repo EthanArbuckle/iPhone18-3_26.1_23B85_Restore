@@ -1,24 +1,24 @@
 @interface HKSample
-+ (id)_enumerateValidIntervalsWithStartDate:(id)a3 endDate:(id)a4 sampleType:(id)a5 block:(id)a6;
-+ (id)_newSampleFromDatesWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 config:(id)a8;
-+ (id)_newSampleWithType:(id)a3 startDate:(double)a4 endDate:(double)a5 device:(id)a6 metadata:(id)a7 config:(id)a8;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)hk_dayIndexRangeWithCalendar:(id)a3;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)hk_morningIndexRangeWithCalendarWithCalendar:(id)a3;
++ (id)_enumerateValidIntervalsWithStartDate:(id)date endDate:(id)endDate sampleType:(id)type block:(id)block;
++ (id)_newSampleFromDatesWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata config:(id)config;
++ (id)_newSampleWithType:(id)type startDate:(double)date endDate:(double)endDate device:(id)device metadata:(id)metadata config:(id)config;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)hk_dayIndexRangeWithCalendar:(id)calendar;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)hk_morningIndexRangeWithCalendarWithCalendar:(id)calendar;
 - (BOOL)hasUndeterminedDuration;
-- (BOOL)isEquivalent:(id)a3;
-- (HKSample)initWithCoder:(id)a3;
+- (BOOL)isEquivalent:(id)equivalent;
+- (HKSample)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)_init;
 - (id)_timeZone;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)asJSONObject;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 - (int64_t)_externalSyncObjectCode;
-- (void)_setEndDate:(id)a3;
-- (void)_setSampleType:(id)a3;
-- (void)_setStartDate:(id)a3;
-- (void)_setType:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setEndDate:(id)date;
+- (void)_setSampleType:(id)type;
+- (void)_setStartDate:(id)date;
+- (void)_setType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSample
@@ -39,10 +39,10 @@
 
 - (int64_t)_externalSyncObjectCode
 {
-  v2 = [(HKSample *)self sampleType];
-  v3 = [v2 code];
+  sampleType = [(HKSample *)self sampleType];
+  code = [sampleType code];
 
-  return v3;
+  return code;
 }
 
 - (NSString)description
@@ -53,12 +53,12 @@
   }
 
   v3 = description_formatter_0;
-  v4 = [(HKSample *)self startDate];
-  v5 = [v3 stringFromDate:v4];
+  startDate = [(HKSample *)self startDate];
+  v5 = [v3 stringFromDate:startDate];
 
   v6 = description_formatter_0;
-  v7 = [(HKSample *)self endDate];
-  v8 = [v6 stringFromDate:v7];
+  endDate = [(HKSample *)self endDate];
+  v8 = [v6 stringFromDate:endDate];
 
   v12.receiver = self;
   v12.super_class = HKSample;
@@ -79,34 +79,34 @@ uint64_t __23__HKSample_description__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)hk_morningIndexRangeWithCalendarWithCalendar:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)hk_morningIndexRangeWithCalendarWithCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  v5 = self;
-  v6 = [(HKSample *)v5 overrideDayIndex];
+  selfCopy = self;
+  overrideDayIndex = [(HKSample *)selfCopy overrideDayIndex];
 
-  if (!v6)
+  if (!overrideDayIndex)
   {
 
 LABEL_5:
-    v10 = [(HKSample *)self startDate];
-    v8 = [v10 hk_morningIndexWithCalendar:v4];
+    startDate = [(HKSample *)self startDate];
+    v8 = [startDate hk_morningIndexWithCalendar:calendarCopy];
 
-    v11 = [(HKSample *)self endDate];
-    v12 = [v11 hk_morningIndexWithCalendar:v4];
+    endDate = [(HKSample *)self endDate];
+    v12 = [endDate hk_morningIndexWithCalendar:calendarCopy];
 
     v9 = v12 - v8 + 1;
     goto LABEL_6;
   }
 
-  v7 = [(HKSample *)v5 overrideDayIndex];
-  v8 = [v7 integerValue] - 1;
+  overrideDayIndex2 = [(HKSample *)selfCopy overrideDayIndex];
+  v8 = [overrideDayIndex2 integerValue] - 1;
 
   v9 = 3;
 LABEL_6:
@@ -122,27 +122,27 @@ LABEL_6:
 {
   v13.receiver = self;
   v13.super_class = HKSample;
-  v3 = [(HKObject *)&v13 asJSONObject];
+  asJSONObject = [(HKObject *)&v13 asJSONObject];
   if (asJSONObject_onceToken != -1)
   {
     [HKSample(HK_JSON) asJSONObject];
   }
 
   v4 = asJSONObject_formatter;
-  v5 = [(HKSample *)self startDate];
-  v6 = [v4 stringFromDate:v5];
-  [v3 setObject:v6 forKeyedSubscript:@"startDate"];
+  startDate = [(HKSample *)self startDate];
+  v6 = [v4 stringFromDate:startDate];
+  [asJSONObject setObject:v6 forKeyedSubscript:@"startDate"];
 
   v7 = asJSONObject_formatter;
-  v8 = [(HKSample *)self endDate];
-  v9 = [v7 stringFromDate:v8];
-  [v3 setObject:v9 forKeyedSubscript:@"endDate"];
+  endDate = [(HKSample *)self endDate];
+  v9 = [v7 stringFromDate:endDate];
+  [asJSONObject setObject:v9 forKeyedSubscript:@"endDate"];
 
-  v10 = [(HKSample *)self sampleType];
-  v11 = [v10 description];
-  [v3 setObject:v11 forKeyedSubscript:@"sampleType"];
+  sampleType = [(HKSample *)self sampleType];
+  v11 = [sampleType description];
+  [asJSONObject setObject:v11 forKeyedSubscript:@"sampleType"];
 
-  return v3;
+  return asJSONObject;
 }
 
 uint64_t __33__HKSample_HK_JSON__asJSONObject__block_invoke()
@@ -156,21 +156,21 @@ uint64_t __33__HKSample_HK_JSON__asJSONObject__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
 }
 
-+ (id)_newSampleWithType:(id)a3 startDate:(double)a4 endDate:(double)a5 device:(id)a6 metadata:(id)a7 config:(id)a8
++ (id)_newSampleWithType:(id)type startDate:(double)date endDate:(double)endDate device:(id)device metadata:(id)metadata config:(id)config
 {
-  v14 = a3;
-  v15 = a8;
+  typeCopy = type;
+  configCopy = config;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __72__HKSample__newSampleWithType_startDate_endDate_device_metadata_config___block_invoke;
   v20[3] = &unk_1E7384DD8;
-  v23 = a4;
-  v24 = a5;
-  v21 = v14;
-  v22 = v15;
-  v16 = v15;
-  v17 = v14;
-  v18 = [a1 _newDataObjectWithMetadata:a7 device:a6 config:v20];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v21 = typeCopy;
+  v22 = configCopy;
+  v16 = configCopy;
+  v17 = typeCopy;
+  v18 = [self _newDataObjectWithMetadata:metadata device:device config:v20];
 
   return v18;
 }
@@ -195,24 +195,24 @@ uint64_t __72__HKSample__newSampleWithType_startDate_endDate_device_metadata_con
   return MEMORY[0x1EEE66BB8](v6, v5);
 }
 
-+ (id)_newSampleFromDatesWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 config:(id)a8
++ (id)_newSampleFromDatesWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata config:(id)config
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if ([a1 _isConcreteObjectClass])
+  typeCopy = type;
+  dateCopy = date;
+  endDateCopy = endDate;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  configCopy = config;
+  if ([self _isConcreteObjectClass])
   {
-    if (v16)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v22 = 2.22507386e-308;
-    if (v17)
+    if (endDateCopy)
     {
       goto LABEL_4;
     }
@@ -222,59 +222,59 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [HKSample _newSampleFromDatesWithType:a2 startDate:a1 endDate:? device:? metadata:? config:?];
-  if (!v16)
+  [HKSample _newSampleFromDatesWithType:a2 startDate:self endDate:? device:? metadata:? config:?];
+  if (!dateCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  [v16 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v22 = v21;
-  if (!v17)
+  if (!endDateCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  [v17 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v24 = v23;
 LABEL_8:
-  v25 = [a1 _newSampleWithType:v15 startDate:v18 endDate:v19 device:v20 metadata:v22 config:v24];
+  v25 = [self _newSampleWithType:typeCopy startDate:deviceCopy endDate:metadataCopy device:configCopy metadata:v22 config:v24];
 
   return v25;
 }
 
-+ (id)_enumerateValidIntervalsWithStartDate:(id)a3 endDate:(id)a4 sampleType:(id)a5 block:(id)a6
++ (id)_enumerateValidIntervalsWithStartDate:(id)date endDate:(id)endDate sampleType:(id)type block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  [a5 maximumAllowedDuration];
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
+  [type maximumAllowedDuration];
   v13 = v12;
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v15 = v9;
+  v15 = dateCopy;
   v16 = v15;
-  if ([v15 hk_isBeforeDate:v10])
+  if ([v15 hk_isBeforeDate:endDateCopy])
   {
     v17 = v15;
     do
     {
       v16 = [v17 dateByAddingTimeInterval:v13];
-      if ([v16 hk_isAfterDate:v10])
+      if ([v16 hk_isAfterDate:endDateCopy])
       {
-        v18 = v10;
+        v18 = endDateCopy;
 
         v16 = v18;
       }
 
-      v19 = v11[2](v11, v17, v16);
+      v19 = blockCopy[2](blockCopy, v17, v16);
       [v14 addObject:v19];
 
       v17 = v16;
     }
 
-    while (([v16 hk_isBeforeDate:v10] & 1) != 0);
+    while (([v16 hk_isBeforeDate:endDateCopy] & 1) != 0);
   }
 
   return v14;
@@ -282,22 +282,22 @@ LABEL_8:
 
 - (id)_timeZone
 {
-  v2 = [(HKObject *)self _timeZoneName];
-  if (!v2 || ([MEMORY[0x1E695DFE8] timeZoneWithName:v2], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  _timeZoneName = [(HKObject *)self _timeZoneName];
+  if (!_timeZoneName || ([MEMORY[0x1E695DFE8] timeZoneWithName:_timeZoneName], (timeZone = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v3 = [v4 timeZone];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    timeZone = [currentCalendar timeZone];
   }
 
-  return v3;
+  return timeZone;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
-  var0 = a3.var0;
+  var0 = configuration.var0;
   v45.receiver = self;
   v45.super_class = HKSample;
-  v6 = [(HKObject *)&v45 _validateWithConfiguration:a3.var0, a3.var1];
+  v6 = [(HKObject *)&v45 _validateWithConfiguration:configuration.var0, configuration.var1];
   v7 = v6;
   if (v6)
   {
@@ -315,11 +315,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = [(HKSample *)self sampleType];
+  sampleType = [(HKSample *)self sampleType];
   startTimestamp = self->_startTimestamp;
   endTimestamp = self->_endTimestamp;
   v44 = 0;
-  v13 = [v10 _validateStartDate:&v44 endDate:startTimestamp error:endTimestamp];
+  v13 = [sampleType _validateStartDate:&v44 endDate:startTimestamp error:endTimestamp];
   v14 = v44;
 
   if (v13)
@@ -332,12 +332,12 @@ LABEL_14:
 
     if ((var0 & 1) == 0 && HKProgramSDKAtLeast())
     {
-      v17 = [(HKSample *)self sampleType];
-      if ([v17 isMaximumDurationRestricted])
+      sampleType2 = [(HKSample *)self sampleType];
+      if ([sampleType2 isMaximumDurationRestricted])
       {
         v18 = self->_endTimestamp - self->_startTimestamp;
-        v19 = [(HKSample *)self sampleType];
-        [v19 maximumAllowedDuration];
+        sampleType3 = [(HKSample *)self sampleType];
+        [sampleType3 maximumAllowedDuration];
         v21 = v20;
 
         if (v18 > v21)
@@ -359,12 +359,12 @@ LABEL_14:
       {
       }
 
-      v29 = [(HKSample *)self sampleType];
-      if ([v29 isMinimumDurationRestricted])
+      sampleType4 = [(HKSample *)self sampleType];
+      if ([sampleType4 isMinimumDurationRestricted])
       {
         v30 = self->_endTimestamp - self->_startTimestamp;
-        v31 = [(HKSample *)self sampleType];
-        [v31 minimumAllowedDuration];
+        sampleType5 = [(HKSample *)self sampleType];
+        [sampleType5 minimumAllowedDuration];
         v33 = v32;
 
         if (v30 < v33)
@@ -385,10 +385,10 @@ LABEL_14:
       }
     }
 
-    v37 = [(HKSample *)self sampleType];
-    v38 = [(HKObject *)self metadata];
+    sampleType6 = [(HKSample *)self sampleType];
+    metadata = [(HKObject *)self metadata];
     v43 = 0;
-    v39 = [v37 hk_validateMetadata:v38 sample:self error:&v43];
+    v39 = [sampleType6 hk_validateMetadata:metadata sample:self error:&v43];
     v40 = v43;
 
     v27 = 0;
@@ -408,29 +408,29 @@ LABEL_15:
   return v27;
 }
 
-- (void)_setSampleType:(id)a3
+- (void)_setSampleType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   sampleType = self->_sampleType;
   self->_sampleType = v4;
 
   MEMORY[0x1EEE66BB8](v4, sampleType);
 }
 
-- (void)_setType:(id)a3
+- (void)_setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   sampleType = self->_sampleType;
   self->_sampleType = v4;
 
   MEMORY[0x1EEE66BB8](v4, sampleType);
 }
 
-- (void)_setStartDate:(id)a3
+- (void)_setStartDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
   }
 
   else
@@ -441,11 +441,11 @@ LABEL_15:
   [(HKSample *)self _setStartTimestamp:v4];
 }
 
-- (void)_setEndDate:(id)a3
+- (void)_setEndDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
   }
 
   else
@@ -459,51 +459,51 @@ LABEL_15:
 - (BOOL)hasUndeterminedDuration
 {
   endTimestamp = self->_endTimestamp;
-  v3 = [MEMORY[0x1E695DF00] distantFuture];
-  [v3 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v5 = endTimestamp >= v4;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKSample;
-  v4 = a3;
-  [(HKObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"StartTS" forKey:{self->_startTimestamp, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"EndTS" forKey:self->_endTimestamp];
-  [v4 encodeObject:self->_sampleType forKey:@"DataType"];
+  coderCopy = coder;
+  [(HKObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"StartTS" forKey:{self->_startTimestamp, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"EndTS" forKey:self->_endTimestamp];
+  [coderCopy encodeObject:self->_sampleType forKey:@"DataType"];
 }
 
-- (HKSample)initWithCoder:(id)a3
+- (HKSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKSample;
-  v5 = [(HKObject *)&v15 initWithCoder:v4];
+  v5 = [(HKObject *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DataType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DataType"];
     sampleType = v5->_sampleType;
     v5->_sampleType = v6;
 
-    if ([v4 containsValueForKey:@"StartTS"])
+    if ([coderCopy containsValueForKey:@"StartTS"])
     {
-      [v4 decodeDoubleForKey:@"StartTS"];
+      [coderCopy decodeDoubleForKey:@"StartTS"];
       v5->_startTimestamp = v8;
-      [v4 decodeDoubleForKey:@"EndTS"];
+      [coderCopy decodeDoubleForKey:@"EndTS"];
       v5->_endTimestamp = v9;
     }
 
     else
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
       [v10 timeIntervalSinceReferenceDate];
       v5->_startTimestamp = v11;
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
       [v12 timeIntervalSinceReferenceDate];
       v5->_endTimestamp = v13;
     }
@@ -512,12 +512,12 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   if ([objc_opt_class() supportsEquivalence])
   {
-    if (self == v4)
+    if (self == equivalentCopy)
     {
       v14 = 1;
       goto LABEL_20;
@@ -526,26 +526,26 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKSample *)self startDate];
-      v7 = [(HKSample *)v5 startDate];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equivalentCopy;
+      startDate = [(HKSample *)self startDate];
+      startDate2 = [(HKSample *)v5 startDate];
+      v8 = startDate2;
+      if (startDate == startDate2)
       {
       }
 
       else
       {
-        v9 = [(HKSample *)v5 startDate];
-        if (!v9)
+        startDate3 = [(HKSample *)v5 startDate];
+        if (!startDate3)
         {
           goto LABEL_15;
         }
 
-        v10 = v9;
-        v11 = [(HKSample *)self startDate];
-        v12 = [(HKSample *)v5 startDate];
-        v13 = [v11 isEqualToDate:v12];
+        v10 = startDate3;
+        startDate4 = [(HKSample *)self startDate];
+        startDate5 = [(HKSample *)v5 startDate];
+        v13 = [startDate4 isEqualToDate:startDate5];
 
         if (!v13)
         {
@@ -553,10 +553,10 @@ LABEL_15:
         }
       }
 
-      v6 = [(HKSample *)self endDate];
-      v15 = [(HKSample *)v5 endDate];
-      v8 = v15;
-      if (v6 == v15)
+      startDate = [(HKSample *)self endDate];
+      endDate = [(HKSample *)v5 endDate];
+      v8 = endDate;
+      if (startDate == endDate)
       {
 
 LABEL_18:
@@ -564,13 +564,13 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v16 = [(HKSample *)v5 endDate];
-      if (v16)
+      endDate2 = [(HKSample *)v5 endDate];
+      if (endDate2)
       {
-        v17 = v16;
-        v18 = [(HKSample *)self endDate];
-        v19 = [(HKSample *)v5 endDate];
-        v20 = [v18 isEqualToDate:v19];
+        v17 = endDate2;
+        endDate3 = [(HKSample *)self endDate];
+        endDate4 = [(HKSample *)v5 endDate];
+        v20 = [endDate3 isEqualToDate:endDate4];
 
         if (v20)
         {
@@ -596,44 +596,44 @@ LABEL_20:
   return v14;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"offsetFromStartDate"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"offsetFromStartDate"])
   {
     if ([(HKSampleType *)self->_sampleType isMaximumDurationRestricted])
     {
-      v5 = [(HKSample *)self startDate];
+      startDate = [(HKSample *)self startDate];
       [(HKSampleType *)self->_sampleType maximumAllowedDuration];
-      v6 = [v5 dateByAddingTimeInterval:?];
+      v6 = [startDate dateByAddingTimeInterval:?];
 
       goto LABEL_7;
     }
 
-    v7 = [(HKSample *)self endDate];
+    endDate = [(HKSample *)self endDate];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = HKSample;
-    v7 = [(HKSample *)&v9 valueForKey:v4];
+    endDate = [(HKSample *)&v9 valueForKey:keyCopy];
   }
 
-  v6 = v7;
+  v6 = endDate;
 LABEL_7:
 
   return v6;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)hk_dayIndexRangeWithCalendar:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)hk_dayIndexRangeWithCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [(HKSample *)self startDate];
-  v6 = [v5 hk_dayIndexWithCalendar:v4];
+  calendarCopy = calendar;
+  startDate = [(HKSample *)self startDate];
+  v6 = [startDate hk_dayIndexWithCalendar:calendarCopy];
 
-  v7 = [(HKSample *)self endDate];
-  v8 = [v7 hk_dayIndexWithCalendar:v4];
+  endDate = [(HKSample *)self endDate];
+  v8 = [endDate hk_dayIndexWithCalendar:calendarCopy];
 
   v9 = v8 - v6 + 1;
   v10 = v6;

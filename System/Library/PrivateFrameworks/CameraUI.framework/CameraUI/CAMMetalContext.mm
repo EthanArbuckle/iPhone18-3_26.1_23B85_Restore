@@ -15,11 +15,11 @@
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 newCommandQueue];
-      if (v5)
+      newCommandQueue = [v3 newCommandQueue];
+      if (newCommandQueue)
       {
         objc_storeStrong(&v2->_device, v4);
-        objc_storeStrong(&v2->_commandQueue, v5);
+        objc_storeStrong(&v2->_commandQueue, newCommandQueue);
         v6 = v2;
 LABEL_12:
 
@@ -35,10 +35,10 @@ LABEL_12:
 
     else
     {
-      v5 = os_log_create("com.apple.camera", "Camera");
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      newCommandQueue = os_log_create("com.apple.camera", "Camera");
+      if (os_log_type_enabled(newCommandQueue, OS_LOG_TYPE_ERROR))
       {
-        [(CAMMetalContext *)v5 init];
+        [(CAMMetalContext *)newCommandQueue init];
       }
     }
 

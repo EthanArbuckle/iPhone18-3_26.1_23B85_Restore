@@ -1,8 +1,8 @@
 @interface ScreenSharingInteraction
 - (UIView)view;
-- (void)didMoveToView:(id)a3;
-- (void)setView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)setView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation ScreenSharingInteraction
@@ -14,25 +14,25 @@
   return v2;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  ScreenSharingInteraction.view.setter(a3);
+  viewCopy = view;
+  selfCopy = self;
+  ScreenSharingInteraction.view.setter(view);
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  ScreenSharingInteraction.willMove(to:)(v5);
+  viewCopy = view;
+  selfCopy = self;
+  ScreenSharingInteraction.willMove(to:)(selfCopy);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  ScreenSharingInteraction.didMove(to:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  ScreenSharingInteraction.didMove(to:)(view);
 }
 
 @end

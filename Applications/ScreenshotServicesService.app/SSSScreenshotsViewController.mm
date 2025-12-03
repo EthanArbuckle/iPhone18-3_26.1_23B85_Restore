@@ -21,7 +21,7 @@
 - (NSArray)dragItems;
 - (NSArray)visibleScreenshots;
 - (SSSScreenshot)currentScreenshot;
-- (SSSScreenshotsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SSSScreenshotsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SSSScreenshotsViewControllerDelegate)delegate;
 - (UICoordinateSpace)screenshotsParentCoordinateSpace;
 - (id)_accessibilityHUDWindow;
@@ -33,114 +33,114 @@
 - (id)_currentScreenshotView;
 - (id)_visionKitActivityItemIfAvailble;
 - (id)analysisButtonImageForCurrentState;
-- (id)closeMenuForPDFPageCount:(int64_t)a3;
+- (id)closeMenuForPDFPageCount:(int64_t)count;
 - (id)markupButtonImageForCurrentState;
-- (id)previewForDragItem:(id)a3 inContainer:(id)a4;
-- (id)targetForCancellingDragItem:(id)a3 inContainer:(id)a4;
+- (id)previewForDragItem:(id)item inContainer:(id)container;
+- (id)targetForCancellingDragItem:(id)item inContainer:(id)container;
 - (id)undoManager;
 - (unint64_t)state;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_actuallyPresentShareFromBarButtonItem:(id)a3;
+- (void)_actuallyPresentShareFromBarButtonItem:(id)item;
 - (void)_cancelCrop;
-- (void)_cancelSharing:(BOOL)a3 completion:(id)a4;
+- (void)_cancelSharing:(BOOL)sharing completion:(id)completion;
 - (void)_clearSecurityScopedResourcesAndTemporaryFiles;
 - (void)_configureBarButtonItems;
 - (void)_configureBarsIfNecessary;
 - (void)_deletePushed;
-- (void)_dismissActivityViewController:(BOOL)a3 completion:(id)a4;
-- (void)_dismissInflightActivity:(BOOL)a3 completion:(id)a4;
-- (void)_dismissWithDeleteOptions:(unint64_t)a3;
+- (void)_dismissActivityViewController:(BOOL)controller completion:(id)completion;
+- (void)_dismissInflightActivity:(BOOL)activity completion:(id)completion;
+- (void)_dismissWithDeleteOptions:(unint64_t)options;
 - (void)_enterCrop;
 - (void)_exitCrop;
 - (void)_exportVellumPDF;
-- (void)_handlePencilSqueezeInteractionWillShowPaletteViewNotification:(id)a3;
-- (void)_image:(id)a3 didFinishSavingWithError:(id)a4 contextInfo:(void *)a5;
+- (void)_handlePencilSqueezeInteractionWillShowPaletteViewNotification:(id)notification;
+- (void)_image:(id)_image didFinishSavingWithError:(id)error contextInfo:(void *)info;
 - (void)_opacityControlChanged;
 - (void)_opacityControlLifted;
 - (void)_performClose;
-- (void)_prepareActivityViewControllerNeedsActivityUpdate:(BOOL)a3;
-- (void)_presentActivityViewControllerFromBarButtonItem:(id)a3;
+- (void)_prepareActivityViewControllerNeedsActivityUpdate:(BOOL)update;
+- (void)_presentActivityViewControllerFromBarButtonItem:(id)item;
 - (void)_presentUndoRedoAlertControllerIfNecessary;
 - (void)_recapPushed;
 - (void)_redoPushed;
 - (void)_relevantTraitsDidChange;
 - (void)_resetCrop;
 - (void)_revertPushed;
-- (void)_saveImages:(id)a3 toQuickNoteWithDismissalCompletionBlock:(id)a4;
+- (void)_saveImages:(id)images toQuickNoteWithDismissalCompletionBlock:(id)block;
 - (void)_savePDFToPhotosPushed;
-- (void)_saveToFilesPushed:(BOOL)a3 savePDF:(BOOL)a4;
-- (void)_saveToQuickNotePushed:(BOOL)a3 savePDF:(BOOL)a4;
-- (void)_screenshotManagerDidProcessDocumentUpdate:(id)a3;
-- (void)_selectScreenshotOrFull:(id)a3;
+- (void)_saveToFilesPushed:(BOOL)pushed savePDF:(BOOL)f;
+- (void)_saveToQuickNotePushed:(BOOL)pushed savePDF:(BOOL)f;
+- (void)_screenshotManagerDidProcessDocumentUpdate:(id)update;
+- (void)_selectScreenshotOrFull:(id)full;
 - (void)_sendToDeveloper;
-- (void)_sharePushed:(id)a3;
+- (void)_sharePushed:(id)pushed;
 - (void)_showFullScreenTip;
-- (void)_undoManagerDidUndoRedoChange:(id)a3;
+- (void)_undoManagerDidUndoRedoChange:(id)change;
 - (void)_undoPushed;
-- (void)_updateBarButtonItemPositionsAnimated:(BOOL)a3 force:(BOOL)a4;
+- (void)_updateBarButtonItemPositionsAnimated:(BOOL)animated force:(BOOL)force;
 - (void)_updateFullScreenTipVisibility;
 - (void)_updatePropertiesOnManagedSubviews;
 - (void)_updateTopBarProperties;
 - (void)_updateUndoRedoEnabledState;
 - (void)_updateUserInterfaceStyle;
-- (void)aaButtonPressed:(id)a3;
-- (void)analysisButtonPressed:(id)a3;
+- (void)aaButtonPressed:(id)pressed;
+- (void)analysisButtonPressed:(id)pressed;
 - (void)annotationButtonPressed;
 - (void)commitInflightEditsIfNecessary;
 - (void)configureCloseButtonMenuIfNecessary;
-- (void)cropDidChangeForScreenshotView:(id)a3;
+- (void)cropDidChangeForScreenshotView:(id)view;
 - (void)dealloc;
-- (void)didTapOpacityOptionWithAttributeView:(id)a3;
+- (void)didTapOpacityOptionWithAttributeView:(id)view;
 - (void)dismissTFViewController;
 - (void)dismissVISheetIfNecessary;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
 - (void)endOpacityEditing;
 - (void)loadView;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
-- (void)parentScreenshotView:(id)a3 animated:(BOOL)a4;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
+- (void)parentScreenshotView:(id)view animated:(BOOL)animated;
 - (void)presentActivityViewController;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)removeChildViewControllers;
-- (void)removeScreenshots:(id)a3 forReason:(unint64_t)a4 alongsideAnimations:(id)a5 completion:(id)a6;
-- (void)screenshotsView:(id)a3 didHitTestView:(id)a4 point:(CGPoint)a5 withEvent:(id)a6;
-- (void)screenshotsView:(id)a3 isDraggingVISheetDidChange:(BOOL)a4;
-- (void)screenshotsView:(id)a3 requestsUpdateToInteractionMode:(unint64_t)a4;
-- (void)sessionDidSubmitFeedback:(id)a3;
-- (void)setAaModeEnabled:(BOOL)a3;
-- (void)setAnalysisModeEnabled:(BOOL)a3;
-- (void)setAnnotationModeEnabled:(BOOL)a3;
-- (void)setBorderViewStyleOverride:(int64_t)a3 withAnimator:(id)a4;
-- (void)setDidInvokeVICard:(BOOL)a3;
-- (void)setScreenshotsUseTrilinearMinificationFilter:(BOOL)a3;
-- (void)setShowsShadow:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSnapshotScreenshotEdits:(BOOL)a3;
-- (void)setState:(unint64_t)a3;
+- (void)removeScreenshots:(id)screenshots forReason:(unint64_t)reason alongsideAnimations:(id)animations completion:(id)completion;
+- (void)screenshotsView:(id)view didHitTestView:(id)testView point:(CGPoint)point withEvent:(id)event;
+- (void)screenshotsView:(id)view isDraggingVISheetDidChange:(BOOL)change;
+- (void)screenshotsView:(id)view requestsUpdateToInteractionMode:(unint64_t)mode;
+- (void)sessionDidSubmitFeedback:(id)feedback;
+- (void)setAaModeEnabled:(BOOL)enabled;
+- (void)setAnalysisModeEnabled:(BOOL)enabled;
+- (void)setAnnotationModeEnabled:(BOOL)enabled;
+- (void)setBorderViewStyleOverride:(int64_t)override withAnimator:(id)animator;
+- (void)setDidInvokeVICard:(BOOL)card;
+- (void)setScreenshotsUseTrilinearMinificationFilter:(BOOL)filter;
+- (void)setShowsShadow:(BOOL)shadow animated:(BOOL)animated;
+- (void)setSnapshotScreenshotEdits:(BOOL)edits;
+- (void)setState:(unint64_t)state;
 - (void)stateTransitionFinished;
-- (void)undoStackChangedForScreenshotsView:(id)a3;
-- (void)updateAnalysisButtonStateToVisible:(BOOL)a3;
+- (void)undoStackChangedForScreenshotsView:(id)view;
+- (void)updateAnalysisButtonStateToVisible:(BOOL)visible;
 - (void)updateAnnotationButtonForCurrentState;
-- (void)updateForFrame:(CGRect)a3;
-- (void)updateForScreenshotViewChangeAnimated:(BOOL)a3 oldView:(id)a4;
+- (void)updateForFrame:(CGRect)frame;
+- (void)updateForScreenshotViewChangeAnimated:(BOOL)animated oldView:(id)view;
 - (void)updatePrimaryAction;
 - (void)updateScreenshotsInteractionModeIfNecessary;
-- (void)updateScreenshotsInteractionModeToMode:(unint64_t)a3;
-- (void)viButtonPressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateScreenshotsInteractionModeToMode:(unint64_t)mode;
+- (void)viButtonPressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SSSScreenshotsViewController
 
-- (SSSScreenshotsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SSSScreenshotsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v24.receiver = self;
   v24.super_class = SSSScreenshotsViewController;
-  v8 = [(SSSScreenshotsViewController *)&v24 initWithNibName:v6 bundle:v7];
+  v8 = [(SSSScreenshotsViewController *)&v24 initWithNibName:nameCopy bundle:bundleCopy];
   v8->_contentSwitcherAlpha = 1.0;
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 addObserver:v8 selector:"_screenshotManagerDidProcessMetadataUpdate:" name:@"SSSScreenshotManagerDidProcessMetadataUpdate" object:0];
@@ -206,48 +206,48 @@
   [(SSSScreenshotsViewController *)&v8 dealloc];
 }
 
-- (void)parentScreenshotView:(id)a3 animated:(BOOL)a4
+- (void)parentScreenshotView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v6 parentScreenshotView:v10 animated:v4];
+  animatedCopy = animated;
+  viewCopy = view;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView parentScreenshotView:viewCopy animated:animatedCopy];
 
-  v7 = [v10 _internalPDFView];
+  _internalPDFView = [viewCopy _internalPDFView];
 
-  if (v7)
+  if (_internalPDFView)
   {
     v8 = +[NSNotificationCenter defaultCenter];
-    v9 = [v10 _internalPDFView];
-    [v8 addObserver:self selector:"_pdfPageChanged:" name:PDFViewPageChangedNotification object:v9];
+    _internalPDFView2 = [viewCopy _internalPDFView];
+    [v8 addObserver:self selector:"_pdfPageChanged:" name:PDFViewPageChangedNotification object:_internalPDFView2];
   }
 
-  [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:v4 force:0];
+  [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:animatedCopy force:0];
 }
 
-- (void)removeScreenshots:(id)a3 forReason:(unint64_t)a4 alongsideAnimations:(id)a5 completion:(id)a6
+- (void)removeScreenshots:(id)screenshots forReason:(unint64_t)reason alongsideAnimations:(id)animations completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(SSSScreenshotsViewController *)self delegate];
-  [v13 screenshotsViewControllerWillPerformDeleteDismissalAnimation:self];
+  screenshotsCopy = screenshots;
+  animationsCopy = animations;
+  completionCopy = completion;
+  delegate = [(SSSScreenshotsViewController *)self delegate];
+  [delegate screenshotsViewControllerWillPerformDeleteDismissalAnimation:self];
 
-  v14 = [v10 count];
-  v15 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v16 = [v15 screenshots];
-  v17 = [v16 count];
+  v14 = [screenshotsCopy count];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  screenshots = [_screenshotsView screenshots];
+  v17 = [screenshots count];
 
-  if (a4 && v14 == v17)
+  if (reason && v14 == v17)
   {
-    v18 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    [v18 setIsDismissing:1];
+    _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+    [_screenshotsView2 setIsDismissing:1];
   }
 
-  if (a4 == 1)
+  if (reason == 1)
   {
-    v19 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    v20 = [v19 viewsForScreenshots:v10];
+    _screenshotsView3 = [(SSSScreenshotsViewController *)self _screenshotsView];
+    v20 = [_screenshotsView3 viewsForScreenshots:screenshotsCopy];
   }
 
   else
@@ -285,18 +285,18 @@
     while (v23);
   }
 
-  v27 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v27 layoutIfNeeded];
+  _screenshotsView4 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView4 layoutIfNeeded];
 
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_1000476F8;
   v47[3] = &unk_1000BAEB0;
   v47[4] = self;
-  v28 = v10;
+  v28 = screenshotsCopy;
   v48 = v28;
-  v50 = a4;
-  v29 = v11;
+  reasonCopy = reason;
+  v29 = animationsCopy;
   v49 = v29;
   v30 = objc_retainBlock(v47);
   v44[0] = _NSConcreteStackBlock;
@@ -306,7 +306,7 @@
   v44[4] = self;
   v31 = v21;
   v45 = v31;
-  v32 = v12;
+  v32 = completionCopy;
   v46 = v32;
   v33 = objc_retainBlock(v44);
   v34 = [[UICubicTimingParameters alloc] initWithControlPoint1:0.289999992 controlPoint2:{0.0133330002, 0.816670001, 0.493330002}];
@@ -316,10 +316,10 @@
   v43[2] = sub_1000479C8;
   v43[3] = &unk_1000BA1B8;
   v43[4] = self;
-  v43[5] = a4;
+  v43[5] = reason;
   [v35 addAnimations:v43];
   [v35 startAnimation];
-  if (a4 == 1)
+  if (reason == 1)
   {
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -338,7 +338,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a4 == 2)
+  if (reason == 2)
   {
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -355,46 +355,46 @@ LABEL_19:
 
 - (NSArray)dragItems
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 dragItems];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  dragItems = [_screenshotsView dragItems];
 
-  return v3;
+  return dragItems;
 }
 
-- (id)previewForDragItem:(id)a3 inContainer:(id)a4
+- (id)previewForDragItem:(id)item inContainer:(id)container
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v9 = [v8 previewForDragItem:v7 inContainer:v6];
+  containerCopy = container;
+  itemCopy = item;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  v9 = [_screenshotsView previewForDragItem:itemCopy inContainer:containerCopy];
 
   return v9;
 }
 
-- (id)targetForCancellingDragItem:(id)a3 inContainer:(id)a4
+- (id)targetForCancellingDragItem:(id)item inContainer:(id)container
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v9 = [v8 targetForCancellingDragItem:v7 inContainer:v6];
+  containerCopy = container;
+  itemCopy = item;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  v9 = [_screenshotsView targetForCancellingDragItem:itemCopy inContainer:containerCopy];
 
   return v9;
 }
 
 - (NSArray)visibleScreenshots
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 visibleScreenshots];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  visibleScreenshots = [_screenshotsView visibleScreenshots];
 
-  return v3;
+  return visibleScreenshots;
 }
 
 - (SSSScreenshot)currentScreenshot
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 currentScreenshot];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  currentScreenshot = [_screenshotsView currentScreenshot];
 
-  return v3;
+  return currentScreenshot;
 }
 
 - (void)loadView
@@ -404,14 +404,14 @@ LABEL_19:
   [(SSSScreenshotsViewController *)self setView:v3];
 }
 
-- (void)updateForFrame:(CGRect)a3
+- (void)updateForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v7 updateForFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView updateForFrame:{x, y, width, height}];
 }
 
 - (void)viewDidLoad
@@ -419,51 +419,51 @@ LABEL_19:
   v8.receiver = self;
   v8.super_class = SSSScreenshotsViewController;
   [(SSSScreenshotsViewController *)&v8 viewDidLoad];
-  v3 = [(SSSScreenshotsViewController *)self imageAnalyzer];
+  imageAnalyzer = [(SSSScreenshotsViewController *)self imageAnalyzer];
 
-  if (!v3)
+  if (!imageAnalyzer)
   {
     v4 = objc_alloc_init(VKCImageAnalyzer);
     [(SSSScreenshotsViewController *)self setImageAnalyzer:v4];
 
-    v5 = [(SSSScreenshotsViewController *)self imageAnalyzer];
-    [v5 setCreateFeedbackProviders:1];
+    imageAnalyzer2 = [(SSSScreenshotsViewController *)self imageAnalyzer];
+    [imageAnalyzer2 setCreateFeedbackProviders:1];
   }
 
-  v6 = [(SSSScreenshotsViewController *)self imageAnalyzer];
-  v7 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v7 setImageAnalyzer:v6];
+  imageAnalyzer3 = [(SSSScreenshotsViewController *)self imageAnalyzer];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setImageAnalyzer:imageAnalyzer3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = SSSScreenshotsViewController;
-  [(SSSScreenshotsViewController *)&v11 viewDidAppear:a3];
-  v4 = [(SSSScreenshotsViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 _rootSheetPresentationController];
-  [v6 _setShouldScaleDownBehindDescendantSheets:0];
+  [(SSSScreenshotsViewController *)&v11 viewDidAppear:appear];
+  view = [(SSSScreenshotsViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
   [(SSSScreenshotsViewController *)self _updateUserInterfaceStyle];
   [(SSSScreenshotsViewController *)self becomeFirstResponder];
-  v7 = [(SSSScreenshotsViewController *)self view];
-  v8 = [v7 window];
-  v9 = [v8 windowScene];
-  v10 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:v9];
+  view2 = [(SSSScreenshotsViewController *)self view];
+  window2 = [view2 window];
+  windowScene = [window2 windowScene];
+  v10 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:windowScene];
 
   [v10 set_delegate:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SSSScreenshotsViewController;
-  [(SSSScreenshotsViewController *)&v5 viewWillDisappear:a3];
+  [(SSSScreenshotsViewController *)&v5 viewWillDisappear:disappear];
   [(SSSScreenshotsViewController *)self resignFirstResponder];
-  v4 = [(SSSScreenshotsViewController *)self presentedViewController];
+  presentedViewController = [(SSSScreenshotsViewController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     [(SSSScreenshotsViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
@@ -474,16 +474,16 @@ LABEL_19:
   v4.receiver = self;
   v4.super_class = SSSScreenshotsViewController;
   [(SSSScreenshotsViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v3 bringOmnibarToFront];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView bringOmnibarToFront];
 }
 
 - (BOOL)canResignFirstResponder
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 isPerformingFullscreenSetup];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  isPerformingFullscreenSetup = [_screenshotsView isPerformingFullscreenSetup];
 
-  if (v4)
+  if (isPerformingFullscreenSetup)
   {
     return 0;
   }
@@ -496,14 +496,14 @@ LABEL_19:
 - (void)_updateUserInterfaceStyle
 {
   v3 = 2 * ([(SSSScreenshotsViewController *)self state]== 1);
-  v4 = [(SSSScreenshotsViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  traitCollection = [(SSSScreenshotsViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5)
+  if (userInterfaceIdiom)
   {
-    v6 = [(SSSScreenshotsViewController *)self view];
-    v7 = [v6 window];
-    [v7 setOverrideUserInterfaceStyle:v3];
+    view = [(SSSScreenshotsViewController *)self view];
+    window = [view window];
+    [window setOverrideUserInterfaceStyle:v3];
   }
 
   [(SSSScreenshotsViewController *)self setOverrideUserInterfaceStyle:v3];
@@ -511,23 +511,23 @@ LABEL_19:
 
 - (void)_presentUndoRedoAlertControllerIfNecessary
 {
-  v3 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v4 = [v3 canUndo];
-  v5 = [v3 canRedo];
-  v6 = v5;
-  if ((v4 & 1) != 0 || v5)
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  canUndo = [_currentScreenshotView canUndo];
+  canRedo = [_currentScreenshotView canRedo];
+  v6 = canRedo;
+  if ((canUndo & 1) != 0 || canRedo)
   {
-    v7 = [(UIBarButtonItem *)self->_undoItem title];
-    v8 = [(UIBarButtonItem *)self->_redoItem title];
-    v9 = v8;
-    if (v4)
+    title = [(UIBarButtonItem *)self->_undoItem title];
+    title2 = [(UIBarButtonItem *)self->_redoItem title];
+    v9 = title2;
+    if (canUndo)
     {
-      v10 = v7;
+      v10 = title;
     }
 
     else
     {
-      v10 = v8;
+      v10 = title2;
     }
 
     v11 = v10;
@@ -544,14 +544,14 @@ LABEL_19:
     v15 = [UIAlertAction actionWithTitle:v13 style:1 handler:v25];
     [v14 addAction:v15];
 
-    if (v4)
+    if (canUndo)
     {
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_100048470;
       v23[3] = &unk_1000BAED8;
       objc_copyWeak(&v24, &location);
-      v16 = [UIAlertAction actionWithTitle:v7 style:0 handler:v23];
+      v16 = [UIAlertAction actionWithTitle:title style:0 handler:v23];
       [v14 addAction:v16];
 
       objc_destroyWeak(&v24);
@@ -577,18 +577,18 @@ LABEL_19:
   }
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  v6 = a4;
-  if (a3 == 1)
+  eventCopy = event;
+  if (ended == 1)
   {
-    v7 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-    v8 = [v7 canUndo];
-    v9 = [v7 canRedo];
-    if ((v8 & 1) != 0 || v9)
+    _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+    canUndo = [_currentScreenshotView canUndo];
+    canRedo = [_currentScreenshotView canRedo];
+    if ((canUndo & 1) != 0 || canRedo)
     {
-      v10 = [(SSSScreenshotsViewController *)self _screenshotsView];
-      [v10 dismissOverlayManagedViewControllers];
+      _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+      [_screenshotsView dismissOverlayManagedViewControllers];
 
       [(SSSScreenshotsViewController *)self _presentUndoRedoAlertControllerIfNecessary];
     }
@@ -602,7 +602,7 @@ LABEL_19:
     {
       v11.receiver = self;
       v11.super_class = SSSScreenshotsViewController;
-      [(SSSScreenshotsViewController *)&v11 motionEnded:a3 withEvent:v6];
+      [(SSSScreenshotsViewController *)&v11 motionEnded:ended withEvent:eventCopy];
     }
   }
 }
@@ -627,13 +627,13 @@ LABEL_19:
 
     else if (_SSScreenshotsRedesign2025Enabled())
     {
-      v7 = [(SSSScreenshotsViewController *)self viewIfLoaded];
-      if (v7)
+      viewIfLoaded = [(SSSScreenshotsViewController *)self viewIfLoaded];
+      if (viewIfLoaded)
       {
-        v8 = v7;
-        v9 = [(SSSScreenshotsViewController *)self state];
+        v8 = viewIfLoaded;
+        state = [(SSSScreenshotsViewController *)self state];
 
-        if (!v9)
+        if (!state)
         {
           v10 = os_log_create("com.apple.screenshotservices", "Screenshot");
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -657,34 +657,34 @@ LABEL_19:
   {
     if (self->_fullscreenTipLayoutGuide)
     {
-      v3 = [(SSSScreenshotsViewController *)self view];
-      [v3 removeLayoutGuide:self->_fullscreenTipLayoutGuide];
+      view = [(SSSScreenshotsViewController *)self view];
+      [view removeLayoutGuide:self->_fullscreenTipLayoutGuide];
     }
 
     v4 = objc_alloc_init(UILayoutGuide);
     fullscreenTipLayoutGuide = self->_fullscreenTipLayoutGuide;
     self->_fullscreenTipLayoutGuide = v4;
 
-    v6 = [(SSSScreenshotsViewController *)self view];
-    [v6 addLayoutGuide:self->_fullscreenTipLayoutGuide];
+    view2 = [(SSSScreenshotsViewController *)self view];
+    [view2 addLayoutGuide:self->_fullscreenTipLayoutGuide];
 
-    v24 = [(UILayoutGuide *)self->_fullscreenTipLayoutGuide topAnchor];
-    v25 = [(SSSScreenshotsViewController *)self view];
-    v23 = [v25 safeAreaLayoutGuide];
-    v22 = [v23 topAnchor];
-    v21 = [v24 constraintEqualToAnchor:v22 constant:0.0];
+    topAnchor = [(UILayoutGuide *)self->_fullscreenTipLayoutGuide topAnchor];
+    view3 = [(SSSScreenshotsViewController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v27[0] = v21;
-    v19 = [(UILayoutGuide *)self->_fullscreenTipLayoutGuide leadingAnchor];
-    v20 = [(SSSScreenshotsViewController *)self view];
-    v7 = [v20 safeAreaLayoutGuide];
-    v8 = [v7 leadingAnchor];
-    v9 = [v19 constraintEqualToAnchor:v8 constant:20.0];
+    leadingAnchor = [(UILayoutGuide *)self->_fullscreenTipLayoutGuide leadingAnchor];
+    view4 = [(SSSScreenshotsViewController *)self view];
+    safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v27[1] = v9;
-    v10 = [(UILayoutGuide *)self->_fullscreenTipLayoutGuide widthAnchor];
-    v11 = [v10 constraintEqualToConstant:44.0];
+    widthAnchor = [(UILayoutGuide *)self->_fullscreenTipLayoutGuide widthAnchor];
+    v11 = [widthAnchor constraintEqualToConstant:44.0];
     v27[2] = v11;
-    v12 = [(UILayoutGuide *)self->_fullscreenTipLayoutGuide heightAnchor];
-    v13 = [v12 constraintEqualToConstant:44.0];
+    heightAnchor = [(UILayoutGuide *)self->_fullscreenTipLayoutGuide heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:44.0];
     v27[3] = v13;
     v14 = [NSArray arrayWithObjects:v27 count:4];
     [NSLayoutConstraint activateConstraints:v14];
@@ -715,15 +715,15 @@ LABEL_19:
 
   if (!self->_hasAddedNavigationItemToTopBar)
   {
-    v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    v4 = [v3 topBar];
+    _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+    topBar = [_screenshotsView topBar];
 
-    if (v4)
+    if (topBar)
     {
       self->_hasAddedNavigationItemToTopBar = 1;
-      [v4 setAlpha:0.0];
-      [v4 pushNavigationItem:self->_managedNavigationItem animated:0];
-      [v4 setAlpha:1.0];
+      [topBar setAlpha:0.0];
+      [topBar pushNavigationItem:self->_managedNavigationItem animated:0];
+      [topBar setAlpha:1.0];
       [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:0 force:0];
     }
   }
@@ -757,8 +757,8 @@ LABEL_19:
 
   v12 = [UIBarButtonItem alloc];
   v13 = [UIImage systemImageNamed:@"checkmark"];
-  v14 = [(SSSScreenshotsViewController *)self _buildDoneMenu];
-  v15 = [v12 initWithImage:v13 menu:v14];
+  _buildDoneMenu = [(SSSScreenshotsViewController *)self _buildDoneMenu];
+  v15 = [v12 initWithImage:v13 menu:_buildDoneMenu];
   doneItem = self->_doneItem;
   self->_doneItem = v15;
 
@@ -882,20 +882,20 @@ LABEL_19:
   annotationEnabledButton = self->_annotationEnabledButton;
   self->_annotationEnabledButton = v62;
 
-  v64 = [(SSSScreenshotsViewController *)self markupButtonImageForCurrentState];
-  [(UIBarButtonItem *)self->_annotationEnabledButton setImage:v64];
+  markupButtonImageForCurrentState = [(SSSScreenshotsViewController *)self markupButtonImageForCurrentState];
+  [(UIBarButtonItem *)self->_annotationEnabledButton setImage:markupButtonImageForCurrentState];
 
   [(UIBarButtonItem *)self->_annotationEnabledButton setTarget:self];
   [(UIBarButtonItem *)self->_annotationEnabledButton setAction:"annotationButtonPressed"];
   v65 = +[NSBundle mainBundle];
   v66 = [v65 localizedStringForKey:@"MARKUP" value:@"Markup" table:0];
-  v67 = [(UIBarButtonItem *)self->_annotationEnabledButton image];
+  image = [(UIBarButtonItem *)self->_annotationEnabledButton image];
   v80[0] = _NSConcreteStackBlock;
   v80[1] = 3221225472;
   v80[2] = sub_1000498A8;
   v80[3] = &unk_1000BAF28;
   objc_copyWeak(&v81, &location);
-  v68 = [UIAction actionWithTitle:v66 image:v67 identifier:0 handler:v80];
+  v68 = [UIAction actionWithTitle:v66 image:image identifier:0 handler:v80];
   [(UIBarButtonItem *)self->_annotationEnabledButton setMenuRepresentation:v68];
 
   v69 = objc_alloc_init(UIBarButtonItem);
@@ -907,23 +907,23 @@ LABEL_19:
 
   [(UIBarButtonItem *)self->_visualSearchBarButtonItem setTarget:self];
   [(UIBarButtonItem *)self->_visualSearchBarButtonItem setAction:"viButtonPressed:"];
-  v72 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v72 setShareItemTarget:self];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setShareItemTarget:self];
 
-  v73 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v73 setShareItemAction:"_sharePushed:"];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView2 setShareItemAction:"_sharePushed:"];
 
-  v74 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v74 setUndoItemTarget:self];
+  _screenshotsView3 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView3 setUndoItemTarget:self];
 
-  v75 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v75 setUndoItemAction:"_undoPushed"];
+  _screenshotsView4 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView4 setUndoItemAction:"_undoPushed"];
 
-  v76 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v76 setRedoItemTarget:self];
+  _screenshotsView5 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView5 setRedoItemTarget:self];
 
-  v77 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v77 setRedoItemAction:"_redoPushed"];
+  _screenshotsView6 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView6 setRedoItemAction:"_redoPushed"];
 
   [(UIBarButtonItem *)self->_closeItem setAccessibilityIdentifier:@"close-button"];
   [(UIBarButtonItem *)self->_shareItem setAccessibilityIdentifier:@"share-button"];
@@ -953,18 +953,18 @@ LABEL_19:
 
 - (void)configureCloseButtonMenuIfNecessary
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 editMode];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  editMode = [_screenshotsView editMode];
 
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v6 = [v5 screenshots];
-  v7 = [v6 count];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  screenshots = [_screenshotsView2 screenshots];
+  v7 = [screenshots count];
 
-  v8 = [(SSSScreenshotsViewController *)self currentScreenshot];
-  v9 = [v8 PDFDocument];
-  v10 = [v9 pageCount];
+  currentScreenshot = [(SSSScreenshotsViewController *)self currentScreenshot];
+  pDFDocument = [currentScreenshot PDFDocument];
+  pageCount = [pDFDocument pageCount];
 
-  if (v4)
+  if (editMode)
   {
     v11 = 1;
   }
@@ -975,10 +975,10 @@ LABEL_19:
   }
 
   v12 = !v11;
-  v13 = v12 | (v4 == 1 && v10 > 1);
-  if (v4 == 1 && v10 > 1)
+  v13 = v12 | (editMode == 1 && pageCount > 1);
+  if (editMode == 1 && pageCount > 1)
   {
-    v14 = v10;
+    v14 = pageCount;
   }
 
   else
@@ -986,9 +986,9 @@ LABEL_19:
     v14 = 0;
   }
 
-  if (v13 != [(UIBarButtonItem *)self->_closeItem _menuIsPrimary]|| v4 != [(SSSScreenshotsViewController *)self closeMenuEditMode])
+  if (v13 != [(UIBarButtonItem *)self->_closeItem _menuIsPrimary]|| editMode != [(SSSScreenshotsViewController *)self closeMenuEditMode])
   {
-    [(SSSScreenshotsViewController *)self setCloseMenuEditMode:v4];
+    [(SSSScreenshotsViewController *)self setCloseMenuEditMode:editMode];
     if (v13)
     {
       v15 = [(SSSScreenshotsViewController *)self closeMenuForPDFPageCount:v14];
@@ -1019,25 +1019,25 @@ LABEL_19:
 - (void)_performClose
 {
   [(SSSScreenshotsViewController *)self setDismissalType:9];
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 screenshots];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  screenshots = [_screenshotsView screenshots];
 
   v5 = os_log_create("com.apple.screenshotservices", "Screenshot");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = [v4 count];
+    v8 = [screenshots count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Close item pushed, request delete %ld screenshots", &v7, 0xCu);
   }
 
-  if ([v4 count])
+  if ([screenshots count])
   {
-    v6 = [(SSSScreenshotsViewController *)self delegate];
-    [v6 screenshotsViewController:self requestsDeleteForScreenshots:v4 deleteOptions:2 forReason:1];
+    delegate = [(SSSScreenshotsViewController *)self delegate];
+    [delegate screenshotsViewController:self requestsDeleteForScreenshots:screenshots deleteOptions:2 forReason:1];
   }
 }
 
-- (id)closeMenuForPDFPageCount:(int64_t)a3
+- (id)closeMenuForPDFPageCount:(int64_t)count
 {
   v5 = +[NSBundle mainBundle];
   v19 = [v5 localizedStringForKey:@"DELETE_SCREENSHOT_ALERT_BUTTON" value:@"Delete Screenshot" table:0];
@@ -1049,7 +1049,7 @@ LABEL_19:
   v9 = [v8 localizedStringForKey:@"DELETE_ALL" value:@"Delete All" table:0];
 
   v10 = v19;
-  if (a3 > 0)
+  if (count > 0)
   {
     v10 = v7;
   }
@@ -1086,46 +1086,46 @@ LABEL_19:
 
 - (id)_accessibilityHUDWindow
 {
-  v2 = [(SSSScreenshotsViewController *)self view];
-  v3 = [v2 window];
+  view = [(SSSScreenshotsViewController *)self view];
+  window = [view window];
 
-  return v3;
+  return window;
 }
 
-- (void)_updateBarButtonItemPositionsAnimated:(BOOL)a3 force:(BOOL)a4
+- (void)_updateBarButtonItemPositionsAnimated:(BOOL)animated force:(BOOL)force
 {
-  v5 = a3;
+  animatedCopy = animated;
   [(SSSScreenshotsViewController *)self updatePrimaryAction];
-  if (!a4 && !self->_hasConfiguredBarButtonItems)
+  if (!force && !self->_hasConfiguredBarButtonItems)
   {
     return;
   }
 
-  v95 = v5;
+  v95 = animatedCopy;
   v7 = +[NSMutableArray array];
   v8 = +[NSMutableArray array];
   +[SSChromeHelper defaultBarButtonSpacing];
   v96 = [SSChromeHelper createFixedSpaceBarButtonItemWithWidth:?];
-  v9 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v10 = [v9 editMode];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  editMode = [_screenshotsView editMode];
 
-  v11 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v98 = [v11 currentLiveTextBarButtonItemIfExists];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  currentLiveTextBarButtonItemIfExists = [_screenshotsView2 currentLiveTextBarButtonItemIfExists];
 
   shouldShowSharrow = self->_shouldShowSharrow;
   recapItem = self->_recapItem;
   v14 = +[VKCImageAnalyzer supportedAnalysisTypes];
-  v15 = [(SSSScreenshotsViewController *)self traitCollection];
-  v16 = [v15 userInterfaceIdiom];
+  traitCollection = [(SSSScreenshotsViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v17 = &selRef_applicationDidBecomeActive_;
-  v94 = v16;
-  v97 = v10;
-  if (v16 == 1)
+  v94 = userInterfaceIdiom;
+  v97 = editMode;
+  if (userInterfaceIdiom == 1)
   {
     [(UIBarButtonItem *)self->_opacityItem _setFlexible:0];
-    v18 = [(SSSScreenshotsViewController *)self view];
-    [SSChromeHelper widthForOpacityControlInView:v18 withContentSwitcher:self->_contentSwitcher];
+    view = [(SSSScreenshotsViewController *)self view];
+    [SSChromeHelper widthForOpacityControlInView:view withContentSwitcher:self->_contentSwitcher];
     v20 = v19;
 
     opacityControl = self->_opacityControl;
@@ -1134,7 +1134,7 @@ LABEL_19:
     [(SSVellumOpacityControl *)opacityControl setFrame:0.0, 0.0, v20, v23];
     v24 = _SSScreenshotsRedesign2025Enabled();
     v25 = &OBJC_IVAR___SSSScreenshotsViewController__closeItem;
-    if (v10 == 2)
+    if (editMode == 2)
     {
       v25 = &OBJC_IVAR___SSSScreenshotsViewController__cancelCropItem;
     }
@@ -1157,7 +1157,7 @@ LABEL_19:
     if (_SSScreenshotsRedesign2025Enabled())
     {
       v17 = &selRef_applicationDidBecomeActive_;
-      if (v10 == 2)
+      if (editMode == 2)
       {
         goto LABEL_74;
       }
@@ -1169,7 +1169,7 @@ LABEL_19:
     else
     {
       [v7 addObject:self->_opacityItem];
-      v31 = v10 == 2;
+      v31 = editMode == 2;
       v17 = &selRef_applicationDidBecomeActive_;
       v28 = recapItem;
       if (v31)
@@ -1191,28 +1191,28 @@ LABEL_19:
       }
 
       [v8 addObject:self->_annotationEnabledButton];
-      v34 = [(SSSScreenshotsViewController *)self _screenshotsView];
-      if ([v34 editMode])
+      _screenshotsView3 = [(SSSScreenshotsViewController *)self _screenshotsView];
+      if ([_screenshotsView3 editMode])
       {
         v35 = 0;
       }
 
       else
       {
-        v53 = [(SSSScreenshotsViewController *)self _screenshotsView];
-        v54 = [v53 screenshots];
-        v55 = [v54 count] > 1;
+        _screenshotsView4 = [(SSSScreenshotsViewController *)self _screenshotsView];
+        screenshots = [_screenshotsView4 screenshots];
+        v55 = [screenshots count] > 1;
 
         v35 = v55;
       }
 
-      v56 = [(SSSScreenshotsViewController *)self _screenshotsView];
-      if ([v56 editMode] == 1)
+      _screenshotsView5 = [(SSSScreenshotsViewController *)self _screenshotsView];
+      if ([_screenshotsView5 editMode] == 1)
       {
         [(SSSScreenshotsViewController *)self currentScreenshot];
         v58 = v57 = v35;
-        v59 = [v58 PDFDocument];
-        v60 = [v59 pageCount] > 1;
+        pDFDocument = [v58 PDFDocument];
+        v60 = [pDFDocument pageCount] > 1;
 
         v35 = v57;
         v32 = &_swift_stdlib_bridgeErrorToNSError_ptr;
@@ -1228,12 +1228,12 @@ LABEL_19:
         [v8 addObject:self->_deleteItem];
       }
 
-      v61 = [(SSSScreenshotsViewController *)self _screenshotsView];
-      if ([v61 editMode] == 1)
+      _screenshotsView6 = [(SSSScreenshotsViewController *)self _screenshotsView];
+      if ([_screenshotsView6 editMode] == 1)
       {
-        v62 = [(SSSScreenshotsViewController *)self _cropPDFEnabled];
+        _cropPDFEnabled = [(SSSScreenshotsViewController *)self _cropPDFEnabled];
 
-        if (v62)
+        if (_cropPDFEnabled)
         {
           [v8 addObject:self->_cropItem];
         }
@@ -1247,9 +1247,9 @@ LABEL_19:
       [v8 addObject:v63];
 
       v17 = &selRef_applicationDidBecomeActive_;
-      if (v98 && (v14 & 1) != 0)
+      if (currentLiveTextBarButtonItemIfExists && (v14 & 1) != 0)
       {
-        [v8 addObject:v98];
+        [v8 addObject:currentLiveTextBarButtonItemIfExists];
         if ((v14 & 0x30) != 0)
         {
           [v8 addObject:self->_visualSearchBarButtonItem];
@@ -1291,9 +1291,9 @@ LABEL_73:
       }
 
       [v8 addObject:self->_annotationEnabledButton];
-      if (v98 && (v14 & 1) != 0)
+      if (currentLiveTextBarButtonItemIfExists && (v14 & 1) != 0)
       {
-        [v8 addObject:v98];
+        [v8 addObject:currentLiveTextBarButtonItemIfExists];
       }
 
       if ((v14 & 0x30) != 0)
@@ -1310,7 +1310,7 @@ LABEL_73:
     if (_SSScreenshotsRedesign2025Enabled())
     {
       v29 = &OBJC_IVAR___SSSScreenshotsViewController__closeItem;
-      if (v10 == 2)
+      if (editMode == 2)
       {
         v29 = &OBJC_IVAR___SSSScreenshotsViewController__cancelCropItem;
       }
@@ -1325,7 +1325,7 @@ LABEL_73:
       [v7 addObject:self->_doneItem];
     }
 
-    if (v10 != 2)
+    if (editMode != 2)
     {
       if ((_SSScreenshotsRedesign2025Enabled() & 1) == 0 && shouldShowSharrow)
       {
@@ -1342,7 +1342,7 @@ LABEL_73:
           [v8 addObjectsFromArray:v42];
         }
 
-        if (!v10)
+        if (!editMode)
         {
           annotationEnabledButton = self->_annotationEnabledButton;
           v43 = [NSArray arrayWithObjects:&annotationEnabledButton count:1];
@@ -1368,12 +1368,12 @@ LABEL_73:
 
       [v8 addObject:self->_annotationEnabledButton];
       [(SSSScreenshotsViewController *)self configureCloseButtonMenuIfNecessary];
-      v37 = [(SSSScreenshotsViewController *)self _screenshotsView];
-      if ([v37 editMode] == 1)
+      _screenshotsView7 = [(SSSScreenshotsViewController *)self _screenshotsView];
+      if ([_screenshotsView7 editMode] == 1)
       {
-        v38 = [(SSSScreenshotsViewController *)self _cropPDFEnabled];
+        _cropPDFEnabled2 = [(SSSScreenshotsViewController *)self _cropPDFEnabled];
 
-        if (v38)
+        if (_cropPDFEnabled2)
         {
           [v8 addObject:self->_cropItem];
         }
@@ -1393,10 +1393,10 @@ LABEL_73:
         [v8 addObject:v47];
       }
 
-      v48 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-      v49 = [v48 canUndo];
-      v50 = [v48 canRedo];
-      if ((v49 & 1) != 0 || v50)
+      _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+      canUndo = [_currentScreenshotView canUndo];
+      canRedo = [_currentScreenshotView canRedo];
+      if ((canUndo & 1) != 0 || canRedo)
       {
         redoItem = self->_redoItem;
         v102[0] = self->_undoItem;
@@ -1408,20 +1408,20 @@ LABEL_73:
   }
 
 LABEL_74:
-  v65 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v66 = [v65 topBar];
+  _screenshotsView8 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  topBar = [_screenshotsView8 topBar];
 
   [(UIView *)self->_contentSwitcherView setHidden:[(SSSScreenshotsViewController *)self _layoutShouldShowContentSwitcher]^ 1];
   [(UIView *)self->_contentSwitcherView setUserInteractionEnabled:[(SSSScreenshotsViewController *)self _layoutShouldEnableContentSwitcher]];
   if (![(SSSScreenshotsViewController *)self _layoutShouldShowContentSwitcher])
   {
-    v71 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    v72 = [v71 editMode];
+    _screenshotsView9 = [(SSSScreenshotsViewController *)self _screenshotsView];
+    editMode2 = [_screenshotsView9 editMode];
 
-    if (v72)
+    if (editMode2)
     {
-      v73 = [(SSSScreenshotsViewController *)self _screenshotsView];
-      [v73 setEditMode:0];
+      _screenshotsView10 = [(SSSScreenshotsViewController *)self _screenshotsView];
+      [_screenshotsView10 setEditMode:0];
     }
 
     goto LABEL_86;
@@ -1445,10 +1445,10 @@ LABEL_74:
     if (v97 == 2)
     {
       [v8 addObject:self->_doneItem];
-      v69 = [(SSSScreenshotsViewController *)self _screenshotsView];
-      v70 = [v69 isCropped];
+      _screenshotsView11 = [(SSSScreenshotsViewController *)self _screenshotsView];
+      isCropped = [_screenshotsView11 isCropped];
 
-      if (v70)
+      if (isCropped)
       {
         [v8 addObject:self->_resetCropItem];
       }
@@ -1481,8 +1481,8 @@ LABEL_86:
   if (![(SSSScreenshotsViewController *)self _contentSwitcherShouldMoveDown])
   {
     v86 = *(&self->super.super.super.isa + v67);
-    v87 = [(SSSScreenshotsViewController *)self view];
-    [SSChromeHelper widthForContentSwitcher:v86 forView:v87];
+    view2 = [(SSSScreenshotsViewController *)self view];
+    [SSChromeHelper widthForContentSwitcher:v86 forView:view2];
     v89 = v88;
 
     [*(&self->super.super.super.isa + v67) setWidth:0 forSegmentAtIndex:v89];
@@ -1500,13 +1500,13 @@ LABEL_86:
   v75 = [[_UINavigationBarPalette alloc] initWithContentView:self->_contentSwitcherView];
   [v75 setPreferredHeight:38.0];
   contentSwitcherView = self->_contentSwitcherView;
-  v82 = [(SSSScreenshotsViewController *)self view];
-  [v82 frame];
+  view3 = [(SSSScreenshotsViewController *)self view];
+  [view3 frame];
   [(UIView *)contentSwitcherView setFrame:0.0, 0.0];
 
   v83 = *(&self->super.super.super.isa + v67);
-  v84 = [(SSSScreenshotsViewController *)self view];
-  [v84 frame];
+  view4 = [(SSSScreenshotsViewController *)self view];
+  [view4 frame];
   [v83 setFrame:{v80, 4.0, v85 + v80 * -2.0, 30.0}];
 
 LABEL_87:
@@ -1516,57 +1516,57 @@ LABEL_88:
   [(UINavigationItem *)self->_managedNavigationItem setRightBarButtonItems:v8 animated:v95];
   [(UINavigationItem *)self->_managedNavigationItem setTitleView:v76];
   [(UINavigationItem *)self->_managedNavigationItem _setBottomPalette:v75];
-  v77 = [v66 topItem];
+  topItem = [topBar topItem];
   managedNavigationItem = self->_managedNavigationItem;
 
-  if (v77 != managedNavigationItem)
+  if (topItem != managedNavigationItem)
   {
-    v79 = [v66 popNavigationItemAnimated:0];
-    [v66 pushNavigationItem:self->_managedNavigationItem animated:0];
+    v79 = [topBar popNavigationItemAnimated:0];
+    [topBar pushNavigationItem:self->_managedNavigationItem animated:0];
   }
 }
 
 - (BOOL)_layoutShouldShowContentSwitcher
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 _layoutShouldShowContentSwitcher];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  _layoutShouldShowContentSwitcher = [_screenshotsView _layoutShouldShowContentSwitcher];
 
-  return v3;
+  return _layoutShouldShowContentSwitcher;
 }
 
 - (BOOL)_layoutShouldEnableContentSwitcher
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 _layoutShouldEnableContentSwitcher];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  _layoutShouldEnableContentSwitcher = [_screenshotsView _layoutShouldEnableContentSwitcher];
 
-  return v3;
+  return _layoutShouldEnableContentSwitcher;
 }
 
 - (BOOL)_contentSwitcherShouldMoveDown
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 _contentSwitcherShouldMoveDown];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  _contentSwitcherShouldMoveDown = [_screenshotsView _contentSwitcherShouldMoveDown];
 
-  return v3;
+  return _contentSwitcherShouldMoveDown;
 }
 
-- (void)_presentActivityViewControllerFromBarButtonItem:(id)a3
+- (void)_presentActivityViewControllerFromBarButtonItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10004AF38;
   v15[3] = &unk_1000BA208;
   objc_copyWeak(&v17, &location);
-  v5 = v4;
+  v5 = itemCopy;
   v16 = v5;
   v6 = objc_retainBlock(v15);
-  v7 = [(SSSScreenshotsViewController *)self presentedViewController];
-  v8 = v7;
-  if (v7)
+  presentedViewController = [(SSSScreenshotsViewController *)self presentedViewController];
+  v8 = presentedViewController;
+  if (presentedViewController)
   {
-    if (![v7 isBeingDismissed])
+    if (![presentedViewController isBeingDismissed])
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -1592,9 +1592,9 @@ LABEL_9:
   {
     if (([(SSSActivityViewController *)self->_activityViewController isBeingPresented]& 1) == 0)
     {
-      v11 = [(SSSActivityViewController *)self->_activityViewController presentingViewController];
+      presentingViewController = [(SSSActivityViewController *)self->_activityViewController presentingViewController];
 
-      if (!v11)
+      if (!presentingViewController)
       {
         (v6[2])(v6);
         goto LABEL_12;
@@ -1617,27 +1617,27 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)_actuallyPresentShareFromBarButtonItem:(id)a3
+- (void)_actuallyPresentShareFromBarButtonItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(SSSScreenshotsViewController *)self _updateActivityViewController];
-  [(SSSScreenshotsViewController *)self _presentActivityViewControllerFromBarButtonItem:v4];
+  [(SSSScreenshotsViewController *)self _presentActivityViewControllerFromBarButtonItem:itemCopy];
 
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:0 force:0];
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v5 setIsSharing:1];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setIsSharing:1];
 }
 
-- (void)_sharePushed:(id)a3
+- (void)_sharePushed:(id)pushed
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotsViewController *)self delegate];
+  pushedCopy = pushed;
+  delegate = [(SSSScreenshotsViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SSSScreenshotsViewController *)self delegate];
-    v8 = [v7 screenshotsViewControllerShouldAllowSharing:self];
+    delegate2 = [(SSSScreenshotsViewController *)self delegate];
+    v8 = [delegate2 screenshotsViewControllerShouldAllowSharing:self];
 
     if ((v8 & 1) == 0)
     {
@@ -1656,14 +1656,14 @@ LABEL_12:
   }
 
   [(SSSScreenshotsViewController *)self becomeFirstResponder];
-  v10 = [(SSSScreenshotsViewController *)self delegate];
+  delegate3 = [(SSSScreenshotsViewController *)self delegate];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10004B1BC;
   v11[3] = &unk_1000BAF50;
   v11[4] = self;
-  v12 = v4;
-  [v10 screenshotsViewController:self requestsPresentingActivityViewControllerWithBlock:v11];
+  v12 = pushedCopy;
+  [delegate3 screenshotsViewController:self requestsPresentingActivityViewControllerWithBlock:v11];
 
 LABEL_8:
 }
@@ -1671,12 +1671,12 @@ LABEL_8:
 - (void)annotationButtonPressed
 {
   [(SSSScreenshotsViewController *)self setAnnotationModeEnabled:[(SSSScreenshotsViewController *)self annotationModeEnabled]^ 1];
-  v3 = [(SSSScreenshotsViewController *)self annotationModeEnabled];
+  annotationModeEnabled = [(SSSScreenshotsViewController *)self annotationModeEnabled];
 
-  __SSSetAnnotationModePreference(v3);
+  __SSSetAnnotationModePreference(annotationModeEnabled);
 }
 
-- (void)_handlePencilSqueezeInteractionWillShowPaletteViewNotification:(id)a3
+- (void)_handlePencilSqueezeInteractionWillShowPaletteViewNotification:(id)notification
 {
   v4 = os_log_create("com.apple.screenshotservices", "Screenshot");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1689,14 +1689,14 @@ LABEL_8:
   if (![(SSSScreenshotsViewController *)self annotationModeEnabled])
   {
     [(SSSScreenshotsViewController *)self setAnnotationModeEnabled:1];
-    v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    [v5 setNeedsLayout];
+    _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+    [_screenshotsView setNeedsLayout];
   }
 }
 
 - (BOOL)isShowingDoneActionSheet
 {
-  v2 = [(SSSScreenshotsViewController *)self presentedViewController];
+  presentedViewController = [(SSSScreenshotsViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1726,8 +1726,8 @@ LABEL_8:
 {
   v70 = +[NSMutableArray array];
   objc_initWeak(location, self);
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 editMode];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  editMode = [_screenshotsView editMode];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"SAVE_TO_PHOTOS" value:@"Save to Photos" table:0];
@@ -1737,7 +1737,7 @@ LABEL_8:
   v94[2] = sub_10004C6FC;
   v94[3] = &unk_1000BAFC8;
   objc_copyWeak(&v95, location);
-  v96 = v4 == 0;
+  v96 = editMode == 0;
   v62 = [UIAction actionWithTitle:v6 image:v7 identifier:0 handler:v94];
 
   v69 = [UIImage systemImageNamed:@"folder"];
@@ -1748,7 +1748,7 @@ LABEL_8:
   v66 = [v9 localizedStringForKey:@"SAVE_PDF_TO_FILES" value:@"Save PDF to Files" table:0];
 
   v10 = v67;
-  if (v4)
+  if (editMode)
   {
     v10 = v66;
   }
@@ -1759,7 +1759,7 @@ LABEL_8:
   v91[2] = sub_10004C7BC;
   v91[3] = &unk_1000BAFC8;
   objc_copyWeak(&v92, location);
-  v93 = v4 == 0;
+  v93 = editMode == 0;
   v59 = [UIAction actionWithTitle:v65 image:v69 identifier:0 handler:v91];
   v61 = [UIImage _systemImageNamed:@"quicknote"];
   if (_SSScreenshotsInQuickNoteEnabled())
@@ -1792,7 +1792,7 @@ LABEL_8:
     }
 
     v14 = v11();
-    if (((v4 == 0) & v14) == 1)
+    if (((editMode == 0) & v14) == 1)
     {
       v15 = +[NSBundle mainBundle];
       v16 = [v15 localizedStringForKey:@"SAVE_TO_QUICK_NOTE" value:@"Save to Quick Note" table:0];
@@ -1888,8 +1888,8 @@ LABEL_11:
   [v27 setAttributes:2];
   v28 = +[NSBundle mainBundle];
   v29 = [v28 localizedStringForKey:@"DELETE_SCREENSHOTS_FORMAT" value:&stru_1000BC350 table:0];
-  v30 = [(SSSScreenshotsViewController *)self visibleScreenshots];
-  v31 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v29, [v30 count]);
+  visibleScreenshots = [(SSSScreenshotsViewController *)self visibleScreenshots];
+  v31 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v29, [visibleScreenshots count]);
 
   v32 = [UIImage systemImageNamed:@"trash"];
   v75[0] = _NSConcreteStackBlock;
@@ -1904,10 +1904,10 @@ LABEL_11:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v34 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v35 = [v34 visibleScreenshots];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  visibleScreenshots2 = [_screenshotsView2 visibleScreenshots];
 
-  v36 = [v35 countByEnumeratingWithState:&v71 objects:v105 count:16];
+  v36 = [visibleScreenshots2 countByEnumeratingWithState:&v71 objects:v105 count:16];
   if (!v36)
   {
 
@@ -1924,13 +1924,13 @@ LABEL_28:
     {
       if (*v72 != v38)
       {
-        objc_enumerationMutation(v35);
+        objc_enumerationMutation(visibleScreenshots2);
       }
 
       v37 |= [*(*(&v71 + 1) + 8 * i) lastViewEditMode] == 1;
     }
 
-    v36 = [v35 countByEnumeratingWithState:&v71 objects:v105 count:16];
+    v36 = [visibleScreenshots2 countByEnumeratingWithState:&v71 objects:v105 count:16];
   }
 
   while (v36);
@@ -1940,9 +1940,9 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v40 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v41 = [v40 visibleScreenshots];
-  v42 = [v41 count] > 1;
+  _screenshotsView3 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  visibleScreenshots3 = [_screenshotsView3 visibleScreenshots];
+  v42 = [visibleScreenshots3 count] > 1;
 
   if (v42)
   {
@@ -1957,12 +1957,12 @@ LABEL_28:
     goto LABEL_33;
   }
 
-  v51 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v52 = [v51 visibleScreenshots];
-  v53 = [v52 firstObject];
-  v54 = [v53 pdfCanBeConvertedToImage];
+  _screenshotsView4 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  visibleScreenshots4 = [_screenshotsView4 visibleScreenshots];
+  firstObject = [visibleScreenshots4 firstObject];
+  pdfCanBeConvertedToImage = [firstObject pdfCanBeConvertedToImage];
 
-  if (v54)
+  if (pdfCanBeConvertedToImage)
   {
     goto LABEL_28;
   }
@@ -2018,23 +2018,23 @@ LABEL_34:
 
 - (BOOL)closeIsPrimaryAction
 {
-  v2 = self;
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 currentScreenshot];
-  v5 = [v3 numberOfScreenshotImages] != 1;
-  v6 = [v4 hasUnsavedImageEdits];
-  v7 = [v3 isCropped];
-  LOBYTE(v2) = [(SSSScreenshotsViewController *)v2 didInvokeVICard]& ~(v5 | v6 | v7);
+  selfCopy = self;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  currentScreenshot = [_screenshotsView currentScreenshot];
+  v5 = [_screenshotsView numberOfScreenshotImages] != 1;
+  hasUnsavedImageEdits = [currentScreenshot hasUnsavedImageEdits];
+  isCropped = [_screenshotsView isCropped];
+  LOBYTE(selfCopy) = [(SSSScreenshotsViewController *)selfCopy didInvokeVICard]& ~(v5 | hasUnsavedImageEdits | isCropped);
 
-  return v2 & 1;
+  return selfCopy & 1;
 }
 
 - (void)updatePrimaryAction
 {
   if (_SSVisualIntelligenceV2Enabled())
   {
-    v3 = [(SSSScreenshotsViewController *)self closeIsPrimaryAction];
-    if (v3)
+    closeIsPrimaryAction = [(SSSScreenshotsViewController *)self closeIsPrimaryAction];
+    if (closeIsPrimaryAction)
     {
       v4 = 0;
     }
@@ -2044,7 +2044,7 @@ LABEL_34:
       v4 = 2;
     }
 
-    if (v3)
+    if (closeIsPrimaryAction)
     {
       v5 = 2;
     }
@@ -2061,10 +2061,10 @@ LABEL_34:
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v3 setNeedsLayout];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setNeedsLayout];
 }
 
 - (void)_savePDFToPhotosPushed
@@ -2073,8 +2073,8 @@ LABEL_34:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(SSSScreenshotsViewController *)self visibleScreenshots];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  visibleScreenshots = [(SSSScreenshotsViewController *)self visibleScreenshots];
+  v4 = [visibleScreenshots countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2085,45 +2085,45 @@ LABEL_34:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleScreenshots);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if ([v8 lastViewEditMode] == 1)
         {
-          v9 = [v8 pdfAsImage];
-          v10 = v9;
-          if (v9)
+          pdfAsImage = [v8 pdfAsImage];
+          v10 = pdfAsImage;
+          if (pdfAsImage)
           {
-            UIImageWriteToSavedPhotosAlbum(v9, self, "_image:didFinishSavingWithError:contextInfo:", 0);
+            UIImageWriteToSavedPhotosAlbum(pdfAsImage, self, "_image:didFinishSavingWithError:contextInfo:", 0);
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [visibleScreenshots countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_image:(id)a3 didFinishSavingWithError:(id)a4 contextInfo:(void *)a5
+- (void)_image:(id)_image didFinishSavingWithError:(id)error contextInfo:(void *)info
 {
-  v5 = a4;
-  if (v5)
+  errorCopy = error;
+  if (errorCopy)
   {
     v6 = os_log_create("com.apple.screenshotservices", "Screenshot");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_100074DA4(v5, v6);
+      sub_100074DA4(errorCopy, v6);
     }
   }
 }
 
-- (void)_saveToFilesPushed:(BOOL)a3 savePDF:(BOOL)a4
+- (void)_saveToFilesPushed:(BOOL)pushed savePDF:(BOOL)f
 {
-  v4 = a4;
-  v5 = a3;
+  fCopy = f;
+  pushedCopy = pushed;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10004D200;
@@ -2136,8 +2136,8 @@ LABEL_34:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [(SSSScreenshotsViewController *)self visibleScreenshots];
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  visibleScreenshots = [(SSSScreenshotsViewController *)self visibleScreenshots];
+  v11 = [visibleScreenshots countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2148,16 +2148,16 @@ LABEL_34:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(visibleScreenshots);
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
         if ([v15 lastViewEditMode])
         {
-          v16 = [v15 temporaryPDFFile];
-          if (v16)
+          temporaryPDFFile = [v15 temporaryPDFFile];
+          if (temporaryPDFFile)
           {
-            [v9 addObject:v16];
+            [v9 addObject:temporaryPDFFile];
           }
         }
 
@@ -2167,26 +2167,26 @@ LABEL_34:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v12 = [visibleScreenshots countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v12);
   }
 
-  if (v5)
+  if (pushedCopy)
   {
     v17 = +[SSSScreenshotManager sharedScreenshotManager];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10004D39C;
     v18[3] = &unk_1000BB040;
-    v21 = v4;
+    v21 = fCopy;
     v20 = v7;
     v19 = v9;
     [v17 saveScreenshotsToTemporaryLocation:v8 completion:v18];
   }
 
-  else if (v4)
+  else if (fCopy)
   {
     (v7[2])(v7, v9);
   }
@@ -2203,17 +2203,17 @@ LABEL_34:
   self->_temporaryURLs = 0;
 }
 
-- (void)_dismissWithDeleteOptions:(unint64_t)a3
+- (void)_dismissWithDeleteOptions:(unint64_t)options
 {
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10004D788;
   v20[3] = &unk_1000BB0F0;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = options;
   v5 = objc_retainBlock(v20);
-  v6 = [(SSSScreenshotsViewController *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection = [(SSSScreenshotsViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   quickNoteImages = self->_quickNoteImages;
   if (quickNoteImages)
@@ -2229,7 +2229,7 @@ LABEL_34:
   v10 = self->_quickNoteImages;
   self->_quickNoteImages = 0;
 
-  if (v7)
+  if (userInterfaceIdiom)
   {
     objc_initWeak(&location, self);
     v11 = [v9 count];
@@ -2240,7 +2240,7 @@ LABEL_34:
       v14[1] = 3221225472;
       v14[2] = sub_10004D988;
       v14[3] = &unk_1000BA208;
-      v7 = &v16;
+      userInterfaceIdiom = &v16;
       objc_copyWeak(&v16, &location);
       v3 = &v15;
       v15 = v9;
@@ -2257,7 +2257,7 @@ LABEL_34:
     if (v11)
     {
 
-      objc_destroyWeak(v7);
+      objc_destroyWeak(userInterfaceIdiom);
     }
 
     objc_destroyWeak(&location);
@@ -2279,12 +2279,12 @@ LABEL_34:
   }
 }
 
-- (void)_saveImages:(id)a3 toQuickNoteWithDismissalCompletionBlock:(id)a4
+- (void)_saveImages:(id)images toQuickNoteWithDismissalCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SSSScreenshotsViewController *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  imagesCopy = images;
+  blockCopy = block;
+  traitCollection = [(SSSScreenshotsViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v24 = 0;
   v25 = &v24;
@@ -2309,10 +2309,10 @@ LABEL_34:
   v21[1] = 3221225472;
   v21[2] = sub_10004DC44;
   v21[3] = &unk_1000BB118;
-  v13 = v6;
+  v13 = imagesCopy;
   v22 = v13;
   [v12 insertImagesData:v13 completion:v21];
-  if (!v9 && !self->_presentationControllerDismissalObserver)
+  if (!userInterfaceIdiom && !self->_presentationControllerDismissalObserver)
   {
     v14 = +[NSNotificationCenter defaultCenter];
     v15 = UIPresentationControllerDismissalTransitionDidEndNotification;
@@ -2321,35 +2321,35 @@ LABEL_34:
     v19[1] = 3221225472;
     v19[2] = sub_10004DD70;
     v19[3] = &unk_1000BB140;
-    v20 = v7;
+    v20 = blockCopy;
     v17 = [v14 addObserverForName:v15 object:0 queue:v16 usingBlock:v19];
     presentationControllerDismissalObserver = self->_presentationControllerDismissalObserver;
     self->_presentationControllerDismissalObserver = v17;
   }
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  [(SSSScreenshotsViewController *)self _dismissWithDeleteOptions:self->_saveToFilesDeleteOptions, a4];
+  [(SSSScreenshotsViewController *)self _dismissWithDeleteOptions:self->_saveToFilesDeleteOptions, ls];
   [(SSSScreenshotsViewController *)self _clearSecurityScopedResourcesAndTemporaryFiles];
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v5 setNeedsLayout];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setNeedsLayout];
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
   [(SSSScreenshotsViewController *)self _clearSecurityScopedResourcesAndTemporaryFiles];
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v4 setNeedsLayout];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setNeedsLayout];
 }
 
-- (void)_saveToQuickNotePushed:(BOOL)a3 savePDF:(BOOL)a4
+- (void)_saveToQuickNotePushed:(BOOL)pushed savePDF:(BOOL)f
 {
-  if (a3)
+  if (pushed)
   {
-    v4 = a4;
-    v6 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    v7 = [v6 imageItems];
+    fCopy = f;
+    _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+    imageItems = [_screenshotsView imageItems];
 
     v8 = +[NSMutableArray array];
     quickNoteImages = self->_quickNoteImages;
@@ -2359,7 +2359,7 @@ LABEL_34:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = v7;
+    v10 = imageItems;
     v11 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v11)
     {
@@ -2389,7 +2389,7 @@ LABEL_34:
       while (v12);
     }
 
-    if (v4 && (-[SSSScreenshotsViewController visibleScreenshots](self, "visibleScreenshots"), v17 = objc_claimAutoreleasedReturnValue(), [v17 firstObject], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "temporaryPDFFile"), v19 = objc_claimAutoreleasedReturnValue(), v18, v17, v19))
+    if (fCopy && (-[SSSScreenshotsViewController visibleScreenshots](self, "visibleScreenshots"), v17 = objc_claimAutoreleasedReturnValue(), [v17 firstObject], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "temporaryPDFFile"), v19 = objc_claimAutoreleasedReturnValue(), v18, v17, v19))
     {
       if ([v19 startAccessingSecurityScopedResource])
       {
@@ -2432,15 +2432,15 @@ LABEL_34:
 
 - (void)_deletePushed
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 editMode];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  editMode = [_screenshotsView editMode];
 
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  if ([v5 editMode] == 1)
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  if ([_screenshotsView2 editMode] == 1)
   {
-    v6 = [(SSSScreenshotsViewController *)self currentScreenshot];
-    v7 = [v6 PDFDocument];
-    v8 = [v7 pageCount] == 1;
+    currentScreenshot = [(SSSScreenshotsViewController *)self currentScreenshot];
+    pDFDocument = [currentScreenshot PDFDocument];
+    v8 = [pDFDocument pageCount] == 1;
   }
 
   else
@@ -2452,13 +2452,13 @@ LABEL_34:
   v34[1] = 3221225472;
   v34[2] = sub_10004E654;
   v34[3] = &unk_1000BB168;
-  v35 = v4 == 0;
+  v35 = editMode == 0;
   v36 = v8;
   v34[4] = self;
   v9 = objc_retainBlock(v34);
   objc_initWeak(&location, self);
   v10 = +[NSBundle mainBundle];
-  if (v4)
+  if (editMode)
   {
     [v10 localizedStringForKey:@"DELETE_PAGE_ALERT_BUTTON" value:@"Delete Page" table:0];
   }
@@ -2487,7 +2487,7 @@ LABEL_34:
   objc_copyWeak(&v29, &location);
   v16 = [UIAlertAction actionWithTitle:v15 style:1 handler:v28];
   v17 = +[NSBundle mainBundle];
-  if (v4)
+  if (editMode)
   {
     [v17 localizedStringForKey:@"DELETE_PDF_PAGE_BUTTON_TITLE" value:@"Are you sure you want to delete this page?" table:0];
   }
@@ -2505,8 +2505,8 @@ LABEL_34:
 
   [(UIAlertController *)self->_deleteActionSheet addAction:v13];
   [(UIAlertController *)self->_deleteActionSheet addAction:v16];
-  v21 = [(UIAlertController *)self->_deleteActionSheet popoverPresentationController];
-  [v21 setBarButtonItem:self->_deleteItem];
+  popoverPresentationController = [(UIAlertController *)self->_deleteActionSheet popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:self->_deleteItem];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -2514,15 +2514,15 @@ LABEL_34:
   v26[3] = &unk_1000BA2F8;
   objc_copyWeak(&v27, &location);
   v22 = objc_retainBlock(v26);
-  v23 = [(SSSScreenshotsViewController *)self presentedViewController];
-  if (v23)
+  presentedViewController = [(SSSScreenshotsViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10004E954;
     v24[3] = &unk_1000BA998;
     v25 = v22;
-    [v23 dismissViewControllerAnimated:1 completion:v24];
+    [presentedViewController dismissViewControllerAnimated:1 completion:v24];
   }
 
   else
@@ -2539,11 +2539,11 @@ LABEL_34:
 
 - (BOOL)isShowingDeleteConfirmation
 {
-  v3 = [(SSSScreenshotsViewController *)self presentedViewController];
-  if (v3)
+  presentedViewController = [(SSSScreenshotsViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v4 = [(SSSScreenshotsViewController *)self presentedViewController];
-    v5 = [v4 isEqual:self->_deleteActionSheet];
+    presentedViewController2 = [(SSSScreenshotsViewController *)self presentedViewController];
+    v5 = [presentedViewController2 isEqual:self->_deleteActionSheet];
   }
 
   else
@@ -2563,11 +2563,11 @@ LABEL_34:
 
   else
   {
-    v4 = [(SSSScreenshotsViewController *)self presentedViewController];
-    if (v4)
+    presentedViewController = [(SSSScreenshotsViewController *)self presentedViewController];
+    if (presentedViewController)
     {
-      v5 = [(SSSScreenshotsViewController *)self presentedViewController];
-      v3 = [v5 isBeingDismissed] ^ 1;
+      presentedViewController2 = [(SSSScreenshotsViewController *)self presentedViewController];
+      v3 = [presentedViewController2 isBeingDismissed] ^ 1;
     }
 
     else
@@ -2586,8 +2586,8 @@ LABEL_34:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(SSSScreenshotsViewController *)self visibleScreenshots];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  visibleScreenshots = [(SSSScreenshotsViewController *)self visibleScreenshots];
+  v5 = [visibleScreenshots countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2599,29 +2599,29 @@ LABEL_34:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleScreenshots);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) itemProviderPDF];
-        [v3 addObject:v9];
+        itemProviderPDF = [*(*(&v14 + 1) + 8 * v8) itemProviderPDF];
+        [v3 addObject:itemProviderPDF];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [visibleScreenshots countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
   v10 = [SSSActivityViewController alloc];
-  v11 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v12 = -[SSSActivityViewController initWithActivityItems:applicationActivities:editMode:](v10, "initWithActivityItems:applicationActivities:editMode:", v3, 0, [v11 editMode]);
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  v12 = -[SSSActivityViewController initWithActivityItems:applicationActivities:editMode:](v10, "initWithActivityItems:applicationActivities:editMode:", v3, 0, [_currentScreenshotView editMode]);
 
   [(SSSActivityViewController *)v12 setActivityItemProviders:v3];
-  v13 = [(SSSActivityViewController *)v12 popoverPresentationController];
-  [v13 setBarButtonItem:self->_shareItem];
+  popoverPresentationController = [(SSSActivityViewController *)v12 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:self->_shareItem];
 
   [(SSSScreenshotsViewController *)self presentViewController:v12 animated:1 completion:0];
 }
@@ -2637,16 +2637,16 @@ LABEL_34:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(SSSScreenshotsViewController *)self parentViewController];
-  v3 = [v2 supportedInterfaceOrientations];
+  parentViewController = [(SSSScreenshotsViewController *)self parentViewController];
+  supportedInterfaceOrientations = [parentViewController supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (CGRect)screenshotsExtentRect
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v2 screenshotsExtentRect];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView screenshotsExtentRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2665,36 +2665,36 @@ LABEL_34:
 
 - (UICoordinateSpace)screenshotsParentCoordinateSpace
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 screenshotsParentCoordinateSpace];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  screenshotsParentCoordinateSpace = [_screenshotsView screenshotsParentCoordinateSpace];
 
-  return v3;
+  return screenshotsParentCoordinateSpace;
 }
 
-- (void)_prepareActivityViewControllerNeedsActivityUpdate:(BOOL)a3
+- (void)_prepareActivityViewControllerNeedsActivityUpdate:(BOOL)update
 {
   v22 = +[NSMutableArray array];
-  v4 = [(SSSScreenshotsViewController *)self _betaAppActivityItemIfAvailble];
-  if (v4)
+  _betaAppActivityItemIfAvailble = [(SSSScreenshotsViewController *)self _betaAppActivityItemIfAvailble];
+  if (_betaAppActivityItemIfAvailble)
   {
-    [v22 addObject:v4];
+    [v22 addObject:_betaAppActivityItemIfAvailble];
   }
 
-  v20 = [(SSSScreenshotsViewController *)self _visionKitActivityItemIfAvailble];
-  if (v20)
+  _visionKitActivityItemIfAvailble = [(SSSScreenshotsViewController *)self _visionKitActivityItemIfAvailble];
+  if (_visionKitActivityItemIfAvailble)
   {
     [v22 addObject:?];
   }
 
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v21 = [v5 activityItems];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  activityItems = [_screenshotsView activityItems];
 
-  if ([v21 count])
+  if ([activityItems count])
   {
-    if (v4)
+    if (_betaAppActivityItemIfAvailble)
     {
-      v6 = [(SSSActivityViewController *)self->_activityViewController includedActivityTypes];
-      v7 = [v6 containsObject:@"com.apple.screenshotservicesservice.betafeedback"] ^ 1;
+      includedActivityTypes = [(SSSActivityViewController *)self->_activityViewController includedActivityTypes];
+      v7 = [includedActivityTypes containsObject:@"com.apple.screenshotservicesservice.betafeedback"] ^ 1;
     }
 
     else
@@ -2706,18 +2706,18 @@ LABEL_34:
     self->_activityViewController = 0;
 
     v9 = self->_activityViewController;
-    v10 = [(SSSScreenshotsViewController *)self traitCollection];
-    v11 = [(SSSScreenshotsViewController *)self state];
-    v12 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-    v13 = [v12 editMode];
-    v14 = [(SSSScreenshotsViewController *)self visibleScreenshots];
-    v15 = sub_1000356C8(v9, v10, v11, v13, [v14 count], (a3 | v7) & 1, v22, v21);
+    traitCollection = [(SSSScreenshotsViewController *)self traitCollection];
+    state = [(SSSScreenshotsViewController *)self state];
+    _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+    editMode = [_currentScreenshotView editMode];
+    visibleScreenshots = [(SSSScreenshotsViewController *)self visibleScreenshots];
+    v15 = sub_1000356C8(v9, traitCollection, state, editMode, [visibleScreenshots count], (update | v7) & 1, v22, activityItems);
 
     objc_storeStrong(&self->_activityViewController, v15);
-    if (v4)
+    if (_betaAppActivityItemIfAvailble)
     {
-      v16 = [objc_opt_class() activityTypeOrder];
-      [(SSSActivityViewController *)self->_activityViewController setActivityTypeOrder:v16];
+      activityTypeOrder = [objc_opt_class() activityTypeOrder];
+      [(SSSActivityViewController *)self->_activityViewController setActivityTypeOrder:activityTypeOrder];
     }
 
     else
@@ -2757,13 +2757,13 @@ LABEL_34:
   return v2;
 }
 
-- (void)cropDidChangeForScreenshotView:(id)a3
+- (void)cropDidChangeForScreenshotView:(id)view
 {
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:1 force:1];
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v5 = [v4 editMode];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  editMode = [_screenshotsView editMode];
 
-  if (v5 == 2)
+  if (editMode == 2)
   {
     v6 = +[SSStatisticsManager sharedStatisticsManager];
     [v6 didCropInFullPageMode];
@@ -2771,7 +2771,7 @@ LABEL_34:
 
   else
   {
-    if (v5)
+    if (editMode)
     {
       return;
     }
@@ -2783,8 +2783,8 @@ LABEL_34:
 
 - (void)removeChildViewControllers
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v3 dismissOverlayManagedViewControllers];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView dismissOverlayManagedViewControllers];
 
   if (![(SSSScreenshotsViewController *)self state])
   {
@@ -2793,23 +2793,23 @@ LABEL_34:
   }
 }
 
-- (void)_dismissInflightActivity:(BOOL)a3 completion:(id)a4
+- (void)_dismissInflightActivity:(BOOL)activity completion:(id)completion
 {
-  v4 = a3;
-  v8 = a4;
-  v6 = [(SSSActivityViewController *)self->_activityViewController activityViewController];
-  v7 = v6;
-  if (v6)
+  activityCopy = activity;
+  completionCopy = completion;
+  activityViewController = [(SSSActivityViewController *)self->_activityViewController activityViewController];
+  v7 = activityViewController;
+  if (activityViewController)
   {
-    [v6 dismissViewControllerAnimated:v4 completion:0];
+    [activityViewController dismissViewControllerAnimated:activityCopy completion:0];
   }
 
-  sub_10002B488(v8);
+  sub_10002B488(completionCopy);
 }
 
-- (void)_cancelSharing:(BOOL)a3 completion:(id)a4
+- (void)_cancelSharing:(BOOL)sharing completion:(id)completion
 {
-  v4 = a3;
+  sharingCopy = sharing;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004F580;
@@ -2822,9 +2822,9 @@ LABEL_34:
   v12[3] = &unk_1000BA068;
   v12[4] = self;
   v7 = objc_retainBlock(v12);
-  v8 = [(SSSActivityViewController *)self->_activityViewController presentingViewController];
+  presentingViewController = [(SSSActivityViewController *)self->_activityViewController presentingViewController];
 
-  if (v8)
+  if (presentingViewController)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -2832,7 +2832,7 @@ LABEL_34:
     v9[3] = &unk_1000BB1E0;
     v10 = v6;
     v11 = v7;
-    [(SSSScreenshotsViewController *)self _dismissActivityViewController:v4 completion:v9];
+    [(SSSScreenshotsViewController *)self _dismissActivityViewController:sharingCopy completion:v9];
   }
 
   else
@@ -2842,11 +2842,11 @@ LABEL_34:
   }
 }
 
-- (void)_dismissActivityViewController:(BOOL)a3 completion:(id)a4
+- (void)_dismissActivityViewController:(BOOL)controller completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  controllerCopy = controller;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_activityViewController)
   {
     v8[0] = _NSConcreteStackBlock;
@@ -2854,38 +2854,38 @@ LABEL_34:
     v8[2] = sub_10004F794;
     v8[3] = &unk_1000BB208;
     v8[4] = self;
-    v10 = v4;
-    v9 = v6;
-    [(SSSScreenshotsViewController *)self _dismissInflightActivity:v4 completion:v8];
+    v10 = controllerCopy;
+    v9 = completionCopy;
+    [(SSSScreenshotsViewController *)self _dismissInflightActivity:controllerCopy completion:v8];
   }
 
   else
   {
-    sub_10002B474(v6);
+    sub_10002B474(completionCopy);
   }
 }
 
-- (void)screenshotsView:(id)a3 didHitTestView:(id)a4 point:(CGPoint)a5 withEvent:(id)a6
+- (void)screenshotsView:(id)view didHitTestView:(id)testView point:(CGPoint)point withEvent:(id)event
 {
-  y = a5.y;
-  x = a5.x;
-  v19 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (v12 && [v12 type] != 11)
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  testViewCopy = testView;
+  eventCopy = event;
+  v13 = eventCopy;
+  if (eventCopy && [eventCopy type] != 11)
   {
-    v14 = [(SSSScreenshotsViewController *)self view];
-    v15 = [v14 window];
-    v16 = [v15 windowScene];
+    view = [(SSSScreenshotsViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
 
-    if (v16)
+    if (windowScene)
     {
-      v17 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:v16];
+      v17 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:windowScene];
       v18 = v17;
-      if (v17 && [v17 _paletteViewVisible] && (objc_msgSend(v18, "_isPointInsidePaletteView:fromView:withEvent:", v11, v13, x, y) & 1) == 0)
+      if (v17 && [v17 _paletteViewVisible] && (objc_msgSend(v18, "_isPointInsidePaletteView:fromView:withEvent:", testViewCopy, v13, x, y) & 1) == 0)
       {
-        [v18 _setMiniPaletteVisible:0 hoverLocation:v11 inView:{CGPointZero.x, CGPointZero.y}];
+        [v18 _setMiniPaletteVisible:0 hoverLocation:testViewCopy inView:{CGPointZero.x, CGPointZero.y}];
       }
     }
   }
@@ -2893,22 +2893,22 @@ LABEL_34:
 
 - (void)presentActivityViewController
 {
-  v6 = [(SSSScreenshotsViewController *)self delegate];
+  delegate = [(SSSScreenshotsViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SSSScreenshotsViewController *)self delegate];
-    v4 = [v3 screenshotsViewControllerShouldAllowSharing:self];
+    delegate2 = [(SSSScreenshotsViewController *)self delegate];
+    v4 = [delegate2 screenshotsViewControllerShouldAllowSharing:self];
 
     if (v4)
     {
       [(SSSScreenshotsViewController *)self _updateActivityViewControllerNeedsActivityUpdate:1];
-      v5 = [(SSSScreenshotsViewController *)self delegate];
+      delegate3 = [(SSSScreenshotsViewController *)self delegate];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_10004FA60;
       v7[3] = &unk_1000BA188;
       v7[4] = self;
-      [v5 screenshotsViewController:self requestsPresentingActivityViewControllerWithBlock:v7];
+      [delegate3 screenshotsViewController:self requestsPresentingActivityViewControllerWithBlock:v7];
     }
   }
 
@@ -2919,70 +2919,70 @@ LABEL_34:
 
 - (id)_bundleIDForBetaApp
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 visibleScreenshots];
-  v5 = [v4 count];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  visibleScreenshots = [_screenshotsView visibleScreenshots];
+  v5 = [visibleScreenshots count];
 
   while (v5-- >= 1)
   {
-    v7 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    v8 = [v7 visibleScreenshots];
-    v9 = [v8 objectAtIndex:v5];
+    _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+    visibleScreenshots2 = [_screenshotsView2 visibleScreenshots];
+    v9 = [visibleScreenshots2 objectAtIndex:v5];
 
-    v10 = [v9 environmentDescription];
-    v11 = [v10 betaApplicationBundleID];
+    environmentDescription = [v9 environmentDescription];
+    betaApplicationBundleID = [environmentDescription betaApplicationBundleID];
 
-    if (v11)
+    if (betaApplicationBundleID)
     {
       goto LABEL_6;
     }
   }
 
-  v11 = 0;
+  betaApplicationBundleID = 0;
 LABEL_6:
 
-  return v11;
+  return betaApplicationBundleID;
 }
 
 - (id)_betaApplicationName
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 visibleScreenshots];
-  v5 = [v4 count];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  visibleScreenshots = [_screenshotsView visibleScreenshots];
+  v5 = [visibleScreenshots count];
 
   while (v5-- >= 1)
   {
-    v7 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    v8 = [v7 visibleScreenshots];
-    v9 = [v8 objectAtIndex:v5];
+    _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+    visibleScreenshots2 = [_screenshotsView2 visibleScreenshots];
+    v9 = [visibleScreenshots2 objectAtIndex:v5];
 
-    v10 = [v9 environmentDescription];
-    v11 = [v10 betaApplicationName];
+    environmentDescription = [v9 environmentDescription];
+    betaApplicationName = [environmentDescription betaApplicationName];
 
-    if (v11)
+    if (betaApplicationName)
     {
       goto LABEL_6;
     }
   }
 
-  v11 = 0;
+  betaApplicationName = 0;
 LABEL_6:
 
-  return v11;
+  return betaApplicationName;
 }
 
 - (BOOL)_shouldSendToDeveloper
 {
-  v3 = [(SSSScreenshotsViewController *)self _bundleIDForBetaApp];
-  if (v3)
+  _bundleIDForBetaApp = [(SSSScreenshotsViewController *)self _bundleIDForBetaApp];
+  if (_bundleIDForBetaApp)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SSSScreenshotsViewController *)self _bundleIDForBetaApp];
-    v4 = v5 != 0;
+    _bundleIDForBetaApp2 = [(SSSScreenshotsViewController *)self _bundleIDForBetaApp];
+    v4 = _bundleIDForBetaApp2 != 0;
   }
 
   return v4;
@@ -3010,38 +3010,38 @@ LABEL_6:
 
 - (id)_visionKitActivityItemIfAvailble
 {
-  v2 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v3 = [v2 visionKitFeedbackActivity];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  visionKitFeedbackActivity = [_currentScreenshotView visionKitFeedbackActivity];
 
-  return v3;
+  return visionKitFeedbackActivity;
 }
 
 - (void)_sendToDeveloper
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 imageItems];
-  v5 = [v4 count];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  imageItems = [_screenshotsView imageItems];
+  v5 = [imageItems count];
 
   if (v5)
   {
     v6 = +[SSStatisticsManager sharedStatisticsManager];
     [v6 didTapBetaFeedbackButton];
 
-    v7 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    v8 = [v7 imageItems];
+    _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+    imageItems2 = [_screenshotsView2 imageItems];
 
-    v9 = [(SSSScreenshotsViewController *)self _bundleIDForBetaApp];
-    v10 = [(SSSScreenshotsViewController *)self delegate];
+    _bundleIDForBetaApp = [(SSSScreenshotsViewController *)self _bundleIDForBetaApp];
+    delegate = [(SSSScreenshotsViewController *)self delegate];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000500D0;
     v13[3] = &unk_1000BA8D0;
     v13[4] = self;
-    v14 = v9;
-    v15 = v8;
-    v11 = v8;
-    v12 = v9;
-    [v10 screenshotsViewController:self requestsPresentingTestFlightFeedbackControllerWithBlock:v13];
+    v14 = _bundleIDForBetaApp;
+    v15 = imageItems2;
+    v11 = imageItems2;
+    v12 = _bundleIDForBetaApp;
+    [delegate screenshotsViewController:self requestsPresentingTestFlightFeedbackControllerWithBlock:v13];
   }
 }
 
@@ -3056,13 +3056,13 @@ LABEL_6:
   [(UIViewController *)testFlightViewController dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)sessionDidSubmitFeedback:(id)a3
+- (void)sessionDidSubmitFeedback:(id)feedback
 {
   v4 = +[SSStatisticsManager sharedStatisticsManager];
-  v5 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v6 = [v5 modelModificationInfo];
-  v7 = [v6 annotations];
-  [v4 didSubmitFeedbackWithAnnotationCount:{objc_msgSend(v7, "count")}];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  modelModificationInfo = [_currentScreenshotView modelModificationInfo];
+  annotations = [modelModificationInfo annotations];
+  [v4 didSubmitFeedbackWithAnnotationCount:{objc_msgSend(annotations, "count")}];
 
   testFlightViewController = self->_testFlightViewController;
   v9[0] = _NSConcreteStackBlock;
@@ -3073,30 +3073,30 @@ LABEL_6:
   [(UIViewController *)testFlightViewController dismissViewControllerAnimated:1 completion:v9];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  v5 = [(SSSScreenshotsViewController *)self state];
-  v6 = a3 == 1 && v5 == 0;
+  state = [(SSSScreenshotsViewController *)self state];
+  v6 = state == 1 && state == 0;
   v7 = v6;
   if (v6)
   {
-    v8 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    [v8 setIsSharing:0];
+    _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+    [_screenshotsView setIsSharing:0];
 
-    v9 = [(SSSScreenshotsViewController *)self delegate];
+    delegate = [(SSSScreenshotsViewController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(SSSScreenshotsViewController *)self delegate];
-      self->_shouldShowSharrow = [v11 screenshotsViewControllerShouldAllowSharing:self];
+      delegate2 = [(SSSScreenshotsViewController *)self delegate];
+      self->_shouldShowSharrow = [delegate2 screenshotsViewControllerShouldAllowSharing:self];
     }
 
     goto LABEL_12;
   }
 
   self->_shouldShowSharrow = 0;
-  if (a3)
+  if (state)
   {
 LABEL_12:
     v12 = 0;
@@ -3110,50 +3110,50 @@ LABEL_12:
 
   v12 = 1;
 LABEL_13:
-  v13 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v13 setState:a3];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView2 setState:state];
 
   [(SSSScreenshotsViewController *)self _updateUserInterfaceStyle];
   [(SSSScreenshotsViewController *)self _updatePropertiesOnManagedSubviews];
   if ((v7 & 1) == 0)
   {
-    v14 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    [v14 _dismissVISheetIfNecessary];
+    _screenshotsView3 = [(SSSScreenshotsViewController *)self _screenshotsView];
+    [_screenshotsView3 _dismissVISheetIfNecessary];
 
-    v15 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    [v15 layoutIfNeeded];
+    _screenshotsView4 = [(SSSScreenshotsViewController *)self _screenshotsView];
+    [_screenshotsView4 layoutIfNeeded];
   }
 
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:0 force:0];
   if (v12)
   {
-    v16 = [(SSSScreenshotsViewController *)self presentedViewController];
+    presentedViewController = [(SSSScreenshotsViewController *)self presentedViewController];
 
-    if (v16)
+    if (presentedViewController)
     {
-      v17 = [(SSSScreenshotsViewController *)self presentedViewController];
-      v18 = [v17 popoverPresentationController];
+      presentedViewController2 = [(SSSScreenshotsViewController *)self presentedViewController];
+      popoverPresentationController = [presentedViewController2 popoverPresentationController];
 
-      v19 = [(SSSScreenshotsViewController *)self presentedViewController];
-      v20 = v19;
-      if (v18)
+      presentedViewController3 = [(SSSScreenshotsViewController *)self presentedViewController];
+      v20 = presentedViewController3;
+      if (popoverPresentationController)
       {
-        v21 = [(SSSActivityViewController *)v19 popoverPresentationController];
-        v22 = [v21 presentedView];
+        popoverPresentationController2 = [(SSSActivityViewController *)presentedViewController3 popoverPresentationController];
+        presentedView = [popoverPresentationController2 presentedView];
 
-        [v22 setHidden:1];
-        v23 = [(SSSScreenshotsViewController *)self presentedViewController];
+        [presentedView setHidden:1];
+        presentedViewController4 = [(SSSScreenshotsViewController *)self presentedViewController];
         activityViewController = self->_activityViewController;
 
-        if (v23 == activityViewController)
+        if (presentedViewController4 == activityViewController)
         {
           v31[0] = _NSConcreteStackBlock;
           v31[1] = 3221225472;
           v31[2] = sub_1000508AC;
           v31[3] = &unk_1000BA068;
           v25 = &v32;
-          v32 = v22;
-          v28 = v22;
+          v32 = presentedView;
+          v28 = presentedView;
           [(SSSScreenshotsViewController *)self _cancelSharing:0 completion:v31];
         }
 
@@ -3164,8 +3164,8 @@ LABEL_13:
           v29[2] = sub_1000508B8;
           v29[3] = &unk_1000BA068;
           v25 = &v30;
-          v30 = v22;
-          v26 = v22;
+          v30 = presentedView;
+          v26 = presentedView;
           [(SSSScreenshotsViewController *)self dismissViewControllerAnimated:0 completion:v29];
         }
       }
@@ -3192,126 +3192,126 @@ LABEL_13:
 
 - (unint64_t)state
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 state];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  state = [_screenshotsView state];
 
-  return v3;
+  return state;
 }
 
 - (BOOL)inStateTransition
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 inStateTransition];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  inStateTransition = [_screenshotsView inStateTransition];
 
-  return v3;
+  return inStateTransition;
 }
 
 - (void)stateTransitionFinished
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v3 stateTransitionFinished];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView stateTransitionFinished];
 
   [(SSSScreenshotsViewController *)self _updateFullScreenTipVisibility];
 }
 
 - (void)commitInflightEditsIfNecessary
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v2 commitInflightEdits];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView commitInflightEdits];
 }
 
 - (void)dismissVISheetIfNecessary
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v2 _dismissVISheetIfNecessary];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView _dismissVISheetIfNecessary];
 }
 
 - (BOOL)isShowingVICard
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 isShowingVICard];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  isShowingVICard = [_screenshotsView isShowingVICard];
 
-  return v3;
+  return isShowingVICard;
 }
 
-- (void)setScreenshotsUseTrilinearMinificationFilter:(BOOL)a3
+- (void)setScreenshotsUseTrilinearMinificationFilter:(BOOL)filter
 {
-  v3 = a3;
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v4 setScreenshotViewsUseTrilinearMinificationFilter:v3];
+  filterCopy = filter;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setScreenshotViewsUseTrilinearMinificationFilter:filterCopy];
 }
 
 - (BOOL)screenshotsUseTrilinearMinificationFilter
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 screenshotViewsUseTrilinearMinificationFilter];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  screenshotViewsUseTrilinearMinificationFilter = [_screenshotsView screenshotViewsUseTrilinearMinificationFilter];
 
-  return v3;
+  return screenshotViewsUseTrilinearMinificationFilter;
 }
 
-- (void)setShowsShadow:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsShadow:(BOOL)shadow animated:(BOOL)animated
 {
-  v4 = a3;
-  if (a4)
+  shadowCopy = shadow;
+  if (animated)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100050B88;
     v6[3] = &unk_1000BA0B8;
     v6[4] = self;
-    v7 = a3;
+    shadowCopy2 = shadow;
     [UIView _animateUsingDefaultTimingWithOptions:6 animations:v6 completion:0];
   }
 
   else
   {
-    v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-    [v5 setShowsShadow:v4];
+    _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+    [_screenshotsView setShowsShadow:shadowCopy];
   }
 }
 
 - (BOOL)showsShadow
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 showsShadow];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  showsShadow = [_screenshotsView showsShadow];
 
-  return v3;
+  return showsShadow;
 }
 
-- (void)setBorderViewStyleOverride:(int64_t)a3 withAnimator:(id)a4
+- (void)setBorderViewStyleOverride:(int64_t)override withAnimator:(id)animator
 {
-  v6 = a4;
-  v7 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v7 setBorderViewStyleOverride:a3 withAnimator:v6];
+  animatorCopy = animator;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setBorderViewStyleOverride:override withAnimator:animatorCopy];
 }
 
-- (void)setSnapshotScreenshotEdits:(BOOL)a3
+- (void)setSnapshotScreenshotEdits:(BOOL)edits
 {
-  v3 = a3;
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v4 setSnapshotScreenshotEdits:v3];
+  editsCopy = edits;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setSnapshotScreenshotEdits:editsCopy];
 }
 
 - (BOOL)snapshotScreenshotEdits
 {
-  v2 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v3 = [v2 snapshotScreenshotEdits];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  snapshotScreenshotEdits = [_screenshotsView snapshotScreenshotEdits];
 
-  return v3;
+  return snapshotScreenshotEdits;
 }
 
 - (void)_enterCrop
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v3 setEditMode:2];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setEditMode:2];
 
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:0 force:0];
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v4 enterCrop];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView2 enterCrop];
 
   [(SSSScreenshotsViewController *)self becomeFirstResponder];
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v5 setNeedsLayout];
+  _screenshotsView3 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView3 setNeedsLayout];
 }
 
 - (void)_exitCrop
@@ -3322,8 +3322,8 @@ LABEL_13:
   v19[3] = &unk_1000BA068;
   v19[4] = self;
   v3 = objc_retainBlock(v19);
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  if (![v4 isCropped])
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  if (![_screenshotsView isCropped])
   {
 
     goto LABEL_5;
@@ -3364,48 +3364,48 @@ LABEL_6:
 - (void)_resetCrop
 {
   self->_didPresentPDFCropAlertOnce = 0;
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v3 resetCrop];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView resetCrop];
 
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:1 force:0];
 }
 
 - (void)_cancelCrop
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v3 cancelCrop];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView cancelCrop];
 
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v4 setEditMode:1];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView2 setEditMode:1];
 
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:1 force:0];
   [(SSSScreenshotsViewController *)self becomeFirstResponder];
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v5 setNeedsLayout];
+  _screenshotsView3 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView3 setNeedsLayout];
 }
 
-- (void)_selectScreenshotOrFull:(id)a3
+- (void)_selectScreenshotOrFull:(id)full
 {
-  v4 = [a3 selectedSegmentIndex];
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v5 commitInflightEdits];
+  selectedSegmentIndex = [full selectedSegmentIndex];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView commitInflightEdits];
 
-  v6 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v6 setEditMode:v4 != 0];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView2 setEditMode:selectedSegmentIndex != 0];
 
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:0 force:0];
   [(SSSScreenshotsViewController *)self _updateTopBarProperties];
-  if (v4)
+  if (selectedSegmentIndex)
   {
     v7 = +[SSStatisticsManager sharedStatisticsManager];
     [v7 didTapFullPageSegment];
   }
 }
 
-- (void)setAaModeEnabled:(BOOL)a3
+- (void)setAaModeEnabled:(BOOL)enabled
 {
-  self->_aaModeEnabled = a3;
-  if (a3)
+  self->_aaModeEnabled = enabled;
+  if (enabled)
   {
     self->_annotationModeEnabled = 0;
     self->_analysisModeEnabled = 0;
@@ -3414,33 +3414,33 @@ LABEL_6:
   [(SSSScreenshotsViewController *)self updateScreenshotsInteractionModeIfNecessary];
 }
 
-- (void)setAnalysisModeEnabled:(BOOL)a3
+- (void)setAnalysisModeEnabled:(BOOL)enabled
 {
-  self->_analysisModeEnabled = a3;
-  if (a3)
+  self->_analysisModeEnabled = enabled;
+  if (enabled)
   {
     self->_annotationModeEnabled = 0;
     self->_aaModeEnabled = 0;
   }
 
-  v4 = [(SSSScreenshotsViewController *)self analysisButtonImageForCurrentState];
-  [(UIBarButtonItem *)self->_visualSearchBarButtonItem setImage:v4];
+  analysisButtonImageForCurrentState = [(SSSScreenshotsViewController *)self analysisButtonImageForCurrentState];
+  [(UIBarButtonItem *)self->_visualSearchBarButtonItem setImage:analysisButtonImageForCurrentState];
 
   [(SSSScreenshotsViewController *)self updateScreenshotsInteractionModeIfNecessary];
 }
 
 - (id)analysisButtonImageForCurrentState
 {
-  v3 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v4 = v3;
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  v4 = _currentScreenshotView;
   if (self->_analysisModeEnabled)
   {
-    [v3 vsGlyphFilled];
+    [_currentScreenshotView vsGlyphFilled];
   }
 
   else
   {
-    [v3 vsGlyph];
+    [_currentScreenshotView vsGlyph];
   }
   v5 = ;
   v6 = [UIImage _systemImageNamed:v5];
@@ -3467,10 +3467,10 @@ LABEL_6:
   return v5;
 }
 
-- (void)setAnnotationModeEnabled:(BOOL)a3
+- (void)setAnnotationModeEnabled:(BOOL)enabled
 {
-  self->_annotationModeEnabled = a3;
-  if (a3)
+  self->_annotationModeEnabled = enabled;
+  if (enabled)
   {
     self->_analysisModeEnabled = 0;
     self->_aaModeEnabled = 0;
@@ -3483,28 +3483,28 @@ LABEL_6:
 
 - (void)updateAnnotationButtonForCurrentState
 {
-  v3 = [(SSSScreenshotsViewController *)self markupButtonImageForCurrentState];
-  [(UIBarButtonItem *)self->_annotationEnabledButton setImage:v3];
+  markupButtonImageForCurrentState = [(SSSScreenshotsViewController *)self markupButtonImageForCurrentState];
+  [(UIBarButtonItem *)self->_annotationEnabledButton setImage:markupButtonImageForCurrentState];
 
-  v4 = [(SSSScreenshotsViewController *)self analysisButtonImageForCurrentState];
-  [(UIBarButtonItem *)self->_visualSearchBarButtonItem setImage:v4];
+  analysisButtonImageForCurrentState = [(SSSScreenshotsViewController *)self analysisButtonImageForCurrentState];
+  [(UIBarButtonItem *)self->_visualSearchBarButtonItem setImage:analysisButtonImageForCurrentState];
 }
 
-- (void)updateScreenshotsInteractionModeToMode:(unint64_t)a3
+- (void)updateScreenshotsInteractionModeToMode:(unint64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v8 = [(SSSScreenshotsViewController *)self isShowingVICard];
+    isShowingVICard = [(SSSScreenshotsViewController *)self isShowingVICard];
     [(SSSScreenshotsViewController *)self setDidInvokeVICard:0];
-    if (v8)
+    if (isShowingVICard)
     {
-      v13 = [(SSSScreenshotsViewController *)self _screenshotsView];
-      [v13 _dismissVISheetIfNecessary];
+      _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+      [_screenshotsView _dismissVISheetIfNecessary];
 
       v6 = 0;
       v7 = 0;
       v5 = 1;
-      v8 = 1;
+      isShowingVICard = 1;
     }
 
     else
@@ -3518,9 +3518,9 @@ LABEL_6:
   else
   {
     v5 = 0;
-    v6 = a3 == 4;
-    v7 = a3 != 4 && a3 == 3;
-    v8 = 0;
+    v6 = mode == 4;
+    v7 = mode != 4 && mode == 3;
+    isShowingVICard = 0;
   }
 
   objc_initWeak(&location, self);
@@ -3533,10 +3533,10 @@ LABEL_6:
   v19 = v6;
   v20 = v7;
   v16[4] = self;
-  v17[1] = a3;
+  v17[1] = mode;
   v9 = objc_retainBlock(v16);
   v10 = v9;
-  if (v8)
+  if (isShowingVICard)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -3554,7 +3554,7 @@ LABEL_6:
   v11 = os_log_create("com.apple.screenshotservices", "Interaction");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = sub_100031680(a3);
+    v12 = sub_100031680(mode);
     *buf = 138412290;
     v23 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Did Update To InteractionMode: %@", buf, 0xCu);
@@ -3590,24 +3590,24 @@ LABEL_6:
 - (void)_opacityControlChanged
 {
   self->_isChangingOpacity = 1;
-  v4 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v3 = [v4 viewModificationInfo];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  viewModificationInfo = [_currentScreenshotView viewModificationInfo];
   [(SSVellumOpacityControl *)self->_opacityControl value];
-  [v3 setVellumOpacity:?];
+  [viewModificationInfo setVellumOpacity:?];
 }
 
 - (void)_opacityControlLifted
 {
-  v3 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  [v3 promoteViewValueToModelValueForKey:3];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  [_currentScreenshotView promoteViewValueToModelValueForKey:3];
 
   self->_isChangingOpacity = 0;
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v5 = [v4 editMode];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  editMode = [_screenshotsView editMode];
 
   v6 = +[SSStatisticsManager sharedStatisticsManager];
   v7 = v6;
-  if (v5 == 1)
+  if (editMode == 1)
   {
     [v6 didChangeOpacityOnFullPage];
   }
@@ -3620,22 +3620,22 @@ LABEL_6:
 
 - (id)_currentScreenshotView
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [(SSSScreenshotsViewController *)self currentScreenshot];
-  v5 = [v3 screenshotViewForScreenshot:v4];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  currentScreenshot = [(SSSScreenshotsViewController *)self currentScreenshot];
+  v5 = [_screenshotsView screenshotViewForScreenshot:currentScreenshot];
 
   return v5;
 }
 
-- (void)didTapOpacityOptionWithAttributeView:(id)a3
+- (void)didTapOpacityOptionWithAttributeView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(UIView);
   opacityView = self->_opacityView;
   self->_opacityView = v5;
 
   [(UIView *)self->_opacityView addSubview:self->_opacityControl];
-  [v4 addSubview:self->_opacityView];
+  [viewCopy addSubview:self->_opacityView];
   if (_UISolariumEnabled())
   {
     +[UIColor secondaryLabelColor];
@@ -3656,75 +3656,75 @@ LABEL_6:
   [v7 addTarget:self action:"endOpacityEditing" forControlEvents:64];
   [(UIView *)self->_opacityView addSubview:v7];
   v9 = objc_alloc_init(UILargeContentViewerInteraction);
-  [v4 addInteraction:v9];
+  [viewCopy addInteraction:v9];
 
   v51 = v7;
   [v7 setShowsLargeContentViewer:1];
   [(UIView *)self->_opacityView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SSVellumOpacityControl *)self->_opacityControl setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v49 = [(UIView *)self->_opacityView bottomAnchor];
-  v46 = [v4 bottomAnchor];
-  v44 = [v49 constraintEqualToAnchor:v46];
+  bottomAnchor = [(UIView *)self->_opacityView bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v57[0] = v44;
-  v42 = [(UIView *)self->_opacityView leftAnchor];
-  v10 = [v4 leftAnchor];
-  v11 = [v42 constraintEqualToAnchor:v10 constant:10.0];
+  leftAnchor = [(UIView *)self->_opacityView leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:10.0];
   v57[1] = v11;
-  v12 = [(UIView *)self->_opacityView rightAnchor];
-  v13 = [v4 rightAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:-10.0];
+  rightAnchor = [(UIView *)self->_opacityView rightAnchor];
+  rightAnchor2 = [viewCopy rightAnchor];
+  v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-10.0];
   v57[2] = v14;
-  v15 = [(UIView *)self->_opacityView topAnchor];
-  v16 = [v4 topAnchor];
-  [v15 constraintEqualToAnchor:v16];
-  v17 = v52 = v4;
+  topAnchor = [(UIView *)self->_opacityView topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  [topAnchor constraintEqualToAnchor:topAnchor2];
+  v17 = v52 = viewCopy;
   v57[3] = v17;
   v18 = [NSArray arrayWithObjects:v57 count:4];
   [NSLayoutConstraint activateConstraints:v18];
 
-  v19 = [(SSVellumOpacityControl *)self->_opacityControl centerXAnchor];
-  v20 = [(UIView *)self->_opacityView centerXAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerXAnchor = [(SSVellumOpacityControl *)self->_opacityControl centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_opacityView centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
   LODWORD(v22) = 1144750080;
   v50 = v21;
   [v21 setPriority:v22];
   v56[0] = v21;
-  v47 = [(SSVellumOpacityControl *)self->_opacityControl leadingAnchor];
-  v23 = [(UIView *)self->_opacityView leadingAnchor];
-  v24 = [v47 constraintGreaterThanOrEqualToAnchor:v23];
+  leadingAnchor = [(SSVellumOpacityControl *)self->_opacityControl leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_opacityView leadingAnchor];
+  v24 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v56[1] = v24;
-  v25 = [(SSVellumOpacityControl *)self->_opacityControl centerYAnchor];
-  v26 = [(UIView *)self->_opacityView centerYAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerYAnchor = [(SSVellumOpacityControl *)self->_opacityControl centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_opacityView centerYAnchor];
+  v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v56[2] = v27;
-  v28 = [(SSVellumOpacityControl *)self->_opacityControl widthAnchor];
+  widthAnchor = [(SSVellumOpacityControl *)self->_opacityControl widthAnchor];
   +[SSVellumOpacityControl preferredWidth];
-  v29 = [v28 constraintEqualToConstant:?];
+  v29 = [widthAnchor constraintEqualToConstant:?];
   v56[3] = v29;
   v30 = [NSArray arrayWithObjects:v56 count:4];
   [NSLayoutConstraint activateConstraints:v30];
 
-  v48 = [v51 centerYAnchor];
-  v45 = [(SSVellumOpacityControl *)self->_opacityControl centerYAnchor];
-  v43 = [v48 constraintEqualToAnchor:v45];
+  centerYAnchor3 = [v51 centerYAnchor];
+  centerYAnchor4 = [(SSVellumOpacityControl *)self->_opacityControl centerYAnchor];
+  v43 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v55[0] = v43;
-  v41 = [v51 leadingAnchor];
-  v40 = [(SSVellumOpacityControl *)self->_opacityControl trailingAnchor];
-  v31 = [v41 constraintEqualToAnchor:v40 constant:12.0];
+  leadingAnchor3 = [v51 leadingAnchor];
+  trailingAnchor = [(SSVellumOpacityControl *)self->_opacityControl trailingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:12.0];
   v55[1] = v31;
-  v32 = [v51 trailingAnchor];
-  v33 = [(UIView *)self->_opacityView trailingAnchor];
-  v34 = [v32 constraintLessThanOrEqualToAnchor:v33];
+  trailingAnchor2 = [v51 trailingAnchor];
+  trailingAnchor3 = [(UIView *)self->_opacityView trailingAnchor];
+  v34 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
   v55[2] = v34;
-  v35 = [v51 widthAnchor];
+  widthAnchor2 = [v51 widthAnchor];
   +[SSChromeHelper defaultBarButtonWidth];
-  v36 = [v35 constraintEqualToConstant:?];
+  v36 = [widthAnchor2 constraintEqualToConstant:?];
   v55[3] = v36;
-  v37 = [v51 heightAnchor];
+  heightAnchor = [v51 heightAnchor];
   +[SSChromeHelper defaultBarButtonWidth];
-  v38 = [v37 constraintEqualToConstant:?];
+  v38 = [heightAnchor constraintEqualToConstant:?];
   v55[4] = v38;
   v39 = [NSArray arrayWithObjects:v55 count:5];
   [NSLayoutConstraint activateConstraints:v39];
@@ -3733,23 +3733,23 @@ LABEL_6:
 - (void)endOpacityEditing
 {
   [(UIView *)self->_opacityView removeFromSuperview];
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v3 endOpacityEditing];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView endOpacityEditing];
 }
 
-- (void)undoStackChangedForScreenshotsView:(id)a3
+- (void)undoStackChangedForScreenshotsView:(id)view
 {
   [(SSSScreenshotsViewController *)self _updateUndoRedoEnabledState];
 
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:0 force:1];
 }
 
-- (void)_undoManagerDidUndoRedoChange:(id)a3
+- (void)_undoManagerDidUndoRedoChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [(SSSScreenshotsViewController *)self undoManager];
+  object = [change object];
+  undoManager = [(SSSScreenshotsViewController *)self undoManager];
 
-  if (v4 == v5)
+  if (object == undoManager)
   {
     [(SSSScreenshotsViewController *)self _updateUndoRedoEnabledState];
 
@@ -3759,48 +3759,48 @@ LABEL_6:
 
 - (id)undoManager
 {
-  v3 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v4 = [v3 undoManager];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  undoManager = [_currentScreenshotView undoManager];
 
-  if (v4)
+  if (undoManager)
   {
-    v5 = v4;
+    undoManager2 = undoManager;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SSSScreenshotsViewController;
-    v5 = [(SSSScreenshotsViewController *)&v8 undoManager];
+    undoManager2 = [(SSSScreenshotsViewController *)&v8 undoManager];
   }
 
-  v6 = v5;
+  v6 = undoManager2;
 
   return v6;
 }
 
 - (void)_undoPushed
 {
-  v2 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  [v2 undo];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  [_currentScreenshotView undo];
 }
 
 - (void)_redoPushed
 {
-  v2 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  [v2 redo];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  [_currentScreenshotView redo];
 }
 
 - (void)_updateUndoRedoEnabledState
 {
-  v7 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v3 = [v7 canUndo];
-  v4 = [v7 canRedo];
-  [(UIBarButtonItem *)self->_undoItem setEnabled:v3];
-  [(UIBarButtonItem *)self->_redoItem setEnabled:v4];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  canUndo = [_currentScreenshotView canUndo];
+  canRedo = [_currentScreenshotView canRedo];
+  [(UIBarButtonItem *)self->_undoItem setEnabled:canUndo];
+  [(UIBarButtonItem *)self->_redoItem setEnabled:canRedo];
   opacityControl = self->_opacityControl;
-  v6 = [v7 viewModificationInfo];
-  [v6 vellumOpacity];
+  viewModificationInfo = [_currentScreenshotView viewModificationInfo];
+  [viewModificationInfo vellumOpacity];
   [(SSVellumOpacityControl *)opacityControl setValue:?];
 
   [(UIView *)self->_contentSwitcherView setHidden:[(SSSScreenshotsViewController *)self _layoutShouldShowContentSwitcher]^ 1];
@@ -3809,8 +3809,8 @@ LABEL_6:
 - (void)_updateTopBarProperties
 {
   [(SSSScreenshotsViewController *)self _updateUndoRedoEnabledState];
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  v4 = [v3 editMode] != 0;
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  v4 = [_screenshotsView editMode] != 0;
 
   if ([(UISegmentedControl *)self->_contentSwitcher selectedSegmentIndex]!= v4)
   {
@@ -3826,43 +3826,43 @@ LABEL_6:
 
 - (void)_revertPushed
 {
-  v3 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  [v3 revert];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  [_currentScreenshotView revert];
 
-  v4 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v4 setNeedsLayout];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView setNeedsLayout];
 }
 
-- (void)screenshotsView:(id)a3 requestsUpdateToInteractionMode:(unint64_t)a4
+- (void)screenshotsView:(id)view requestsUpdateToInteractionMode:(unint64_t)mode
 {
-  v6 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v6 bringOmnibarToFront];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView bringOmnibarToFront];
 
-  [(SSSScreenshotsViewController *)self updateScreenshotsInteractionModeToMode:a4];
+  [(SSSScreenshotsViewController *)self updateScreenshotsInteractionModeToMode:mode];
 }
 
-- (void)screenshotsView:(id)a3 isDraggingVISheetDidChange:(BOOL)a4
+- (void)screenshotsView:(id)view isDraggingVISheetDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = [(SSSScreenshotsViewController *)self delegate];
-  [v6 screenshotsViewController:self isDraggingVICardDidChange:v4];
+  changeCopy = change;
+  delegate = [(SSSScreenshotsViewController *)self delegate];
+  [delegate screenshotsViewController:self isDraggingVICardDidChange:changeCopy];
 }
 
-- (void)setDidInvokeVICard:(BOOL)a3
+- (void)setDidInvokeVICard:(BOOL)card
 {
-  if (self->_didInvokeVICard != a3)
+  if (self->_didInvokeVICard != card)
   {
-    self->_didInvokeVICard = a3;
+    self->_didInvokeVICard = card;
     [(SSSScreenshotsViewController *)self updatePrimaryAction];
   }
 }
 
-- (void)aaButtonPressed:(id)a3
+- (void)aaButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  pressedCopy = pressed;
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
 
-  if (v5 == v4)
+  if (_currentScreenshotView == pressedCopy)
   {
     v6 = [(SSSScreenshotsViewController *)self aaModeEnabled]^ 1;
 
@@ -3870,19 +3870,19 @@ LABEL_6:
   }
 }
 
-- (void)viButtonPressed:(id)a3
+- (void)viButtonPressed:(id)pressed
 {
   v4 = [(SSSScreenshotsViewController *)self analysisModeEnabled]^ 1;
 
   [(SSSScreenshotsViewController *)self setAnalysisModeEnabled:v4];
 }
 
-- (void)analysisButtonPressed:(id)a3
+- (void)analysisButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  pressedCopy = pressed;
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
 
-  if (v5 == v4)
+  if (_currentScreenshotView == pressedCopy)
   {
     [(SSSScreenshotsViewController *)self setAnalysisModeEnabled:[(SSSScreenshotsViewController *)self analysisModeEnabled]^ 1];
     [(SSSScreenshotsViewController *)self updateScreenshotsInteractionModeIfNecessary];
@@ -3894,40 +3894,40 @@ LABEL_6:
   }
 }
 
-- (void)updateAnalysisButtonStateToVisible:(BOOL)a3
+- (void)updateAnalysisButtonStateToVisible:(BOOL)visible
 {
-  v3 = a3;
-  if (a3)
+  visibleCopy = visible;
+  if (visible)
   {
     [(SSSScreenshotsViewController *)self updateAnnotationButtonForCurrentState];
   }
 
   visualSearchBarButtonItem = self->_visualSearchBarButtonItem;
 
-  [(UIBarButtonItem *)visualSearchBarButtonItem _setHidden:!v3];
+  [(UIBarButtonItem *)visualSearchBarButtonItem _setHidden:!visibleCopy];
 }
 
-- (void)updateForScreenshotViewChangeAnimated:(BOOL)a3 oldView:(id)a4
+- (void)updateForScreenshotViewChangeAnimated:(BOOL)animated oldView:(id)view
 {
-  v4 = a3;
-  v13 = a4;
+  animatedCopy = animated;
+  viewCopy = view;
   self->_aaModeEnabled = 0;
   self->_analysisModeEnabled = 0;
-  v6 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v7 = [v6 editMode];
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  editMode = [_currentScreenshotView editMode];
 
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  if (v13)
+  if (viewCopy)
   {
-    v10 = [v13 interactionMode] == 1;
+    v10 = [viewCopy interactionMode] == 1;
   }
 
   else
   {
     v11 = _SSGetAnnotationModePreference();
-    if (v9)
+    if (userInterfaceIdiom)
     {
       v10 = v11;
     }
@@ -3938,7 +3938,7 @@ LABEL_6:
     }
   }
 
-  if ((_SSScreenshotsRedesign2025Enabled() & 1) != 0 || !v7)
+  if ((_SSScreenshotsRedesign2025Enabled() & 1) != 0 || !editMode)
   {
     v12 = [(SSSScreenshotsViewController *)self initialAnnotationMode]|| v10;
   }
@@ -3950,14 +3950,14 @@ LABEL_6:
 
   [(SSSScreenshotsViewController *)self setAnnotationModeEnabled:v12 & 1];
   [(SSSScreenshotsViewController *)self setInitialAnnotationMode:0];
-  [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:v4 force:0];
+  [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:animatedCopy force:0];
 }
 
 - (void)_recapPushed
 {
   v3 = [SSSRecapViewController alloc];
-  v4 = [(SSSScreenshotsViewController *)self currentScreenshot];
-  v5 = [(SSSRecapViewController *)v3 initWithScreenshot:v4];
+  currentScreenshot = [(SSSScreenshotsViewController *)self currentScreenshot];
+  v5 = [(SSSRecapViewController *)v3 initWithScreenshot:currentScreenshot];
 
   [(SSSScreenshotsViewController *)self presentViewController:v5 animated:1 completion:0];
 }
@@ -3969,37 +3969,37 @@ LABEL_6:
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:0 force:0];
 }
 
-- (void)_screenshotManagerDidProcessDocumentUpdate:(id)a3
+- (void)_screenshotManagerDidProcessDocumentUpdate:(id)update
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:@"screenshot"];
+  userInfo = [update userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"screenshot"];
 
-  v5 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v5 didProcessDocumentUpdateForScreenshot:v7];
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView didProcessDocumentUpdateForScreenshot:v7];
 
   [(SSSScreenshotsViewController *)self _updateBarButtonItemPositionsAnimated:1 force:0];
-  v6 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  [v6 _updateThumbnailViewVisibilityIfNeededAnimated:1];
+  _screenshotsView2 = [(SSSScreenshotsViewController *)self _screenshotsView];
+  [_screenshotsView2 _updateThumbnailViewVisibilityIfNeededAnimated:1];
 }
 
 - (BOOL)_cropPDFEnabled
 {
-  v2 = [(SSSScreenshotsViewController *)self _currentScreenshotView];
-  v3 = [v2 _internalPDFView];
-  v4 = [v3 document];
-  v5 = [v4 pageCount] == 1;
+  _currentScreenshotView = [(SSSScreenshotsViewController *)self _currentScreenshotView];
+  _internalPDFView = [_currentScreenshotView _internalPDFView];
+  document = [_internalPDFView document];
+  v5 = [document pageCount] == 1;
 
   return v5;
 }
 
 - (BOOL)_isEditingSinglePagePDF
 {
-  v3 = [(SSSScreenshotsViewController *)self _screenshotsView];
-  if ([v3 editMode] == 1)
+  _screenshotsView = [(SSSScreenshotsViewController *)self _screenshotsView];
+  if ([_screenshotsView editMode] == 1)
   {
-    v4 = [(SSSScreenshotsViewController *)self currentScreenshot];
-    v5 = [v4 PDFDocument];
-    v6 = [v5 pageCount] == 1;
+    currentScreenshot = [(SSSScreenshotsViewController *)self currentScreenshot];
+    pDFDocument = [currentScreenshot PDFDocument];
+    v6 = [pDFDocument pageCount] == 1;
   }
 
   else
@@ -4012,8 +4012,8 @@ LABEL_6:
 
 - (CGRect)getVisibleBoundsForOverlay
 {
-  v2 = [(SSSScreenshotsViewController *)self view];
-  [v2 bounds];
+  view = [(SSSScreenshotsViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;

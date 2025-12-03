@@ -1,8 +1,8 @@
 @interface TSSIMUnlockListContainerView
 - (void)layoutSubviews;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setTableView:(id)a3;
+- (void)setFooterView:(id)view;
+- (void)setHeaderView:(id)view;
+- (void)setTableView:(id)view;
 @end
 
 @implementation TSSIMUnlockListContainerView
@@ -35,55 +35,55 @@
   [(UIView *)self->_footerView setFrame:0.0, v14, v4, 110.0];
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  if (headerView != v5)
+  if (headerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     [(TSSIMUnlockListContainerView *)self addSubview:self->_headerView];
     headerView = [(TSSIMUnlockListContainerView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  _objc_release_x1(headerView, v5);
+  _objc_release_x1(headerView, viewCopy);
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   tableView = self->_tableView;
-  if (tableView != v5)
+  if (tableView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UITableView *)tableView removeFromSuperview];
-    objc_storeStrong(&self->_tableView, a3);
+    objc_storeStrong(&self->_tableView, view);
     [(TSSIMUnlockListContainerView *)self addSubview:self->_tableView];
     tableView = [(TSSIMUnlockListContainerView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  _objc_release_x1(tableView, v5);
+  _objc_release_x1(tableView, viewCopy);
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  if (footerView != v5)
+  if (footerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     [(TSSIMUnlockListContainerView *)self addSubview:self->_footerView];
     footerView = [(TSSIMUnlockListContainerView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  _objc_release_x1(footerView, v5);
+  _objc_release_x1(footerView, viewCopy);
 }
 
 @end

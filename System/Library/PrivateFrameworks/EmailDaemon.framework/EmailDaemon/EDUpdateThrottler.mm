@@ -1,12 +1,12 @@
 @interface EDUpdateThrottler
 + (EFLocked)instances;
 + (OS_os_log)log;
-+ (void)_registerInstance:(id)a3;
++ (void)_registerInstance:(id)instance;
 + (void)resetAllInstances;
-- (EDUpdateThrottler)initWithName:(id)a3 delayInterval:(double)a4 resumable:(id)a5;
-- (EDUpdateThrottler)initWithName:(id)a3 delayInterval:(double)a4 scalingFactor:(int64_t)a5;
-- (id)updateWithBlock:(id)a3 unacknowledgedUpdatesCount:(unint64_t *)a4;
-- (unint64_t)unacknowledgedUpdatesCountAndTimeSinceLastAcknowledgement:(double *)a3;
+- (EDUpdateThrottler)initWithName:(id)name delayInterval:(double)interval resumable:(id)resumable;
+- (EDUpdateThrottler)initWithName:(id)name delayInterval:(double)interval scalingFactor:(int64_t)factor;
+- (id)updateWithBlock:(id)block unacknowledgedUpdatesCount:(unint64_t *)count;
+- (unint64_t)unacknowledgedUpdatesCountAndTimeSinceLastAcknowledgement:(double *)acknowledgement;
 - (void)_reset;
 - (void)dealloc;
 @end
@@ -81,13 +81,13 @@ void __38__EDUpdateThrottler_resetAllInstances__block_invoke(uint64_t a1, void *
   v16 = __Block_byref_object_copy__52;
   v17 = __Block_byref_object_dispose__52;
   v18 = 0;
-  v2 = [a1 instances];
+  instances = [self instances];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __38__EDUpdateThrottler_resetAllInstances__block_invoke;
   v12[3] = &unk_1E8259000;
   v12[4] = &v13;
-  [v2 performWhileLocked:v12];
+  [instances performWhileLocked:v12];
 
   v10 = 0u;
   v11 = 0u;
@@ -136,7 +136,7 @@ void __38__EDUpdateThrottler_resetAllInstances__block_invoke(uint64_t a1, void *
   block[1] = 3221225472;
   block[2] = __24__EDUpdateThrottler_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_108 != -1)
   {
     dispatch_once(&log_onceToken_108, block);
@@ -164,31 +164,31 @@ void __30__EDUpdateThrottler_instances__block_invoke()
   instances_instances = v1;
 }
 
-+ (void)_registerInstance:(id)a3
++ (void)_registerInstance:(id)instance
 {
-  v4 = a3;
-  v5 = [a1 instances];
+  instanceCopy = instance;
+  instances = [self instances];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__EDUpdateThrottler__registerInstance___block_invoke;
   v7[3] = &unk_1E8256378;
-  v6 = v4;
+  v6 = instanceCopy;
   v8 = v6;
-  [v5 performWhileLocked:v7];
+  [instances performWhileLocked:v7];
 }
 
-- (EDUpdateThrottler)initWithName:(id)a3 delayInterval:(double)a4 resumable:(id)a5
+- (EDUpdateThrottler)initWithName:(id)name delayInterval:(double)interval resumable:(id)resumable
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(EDUpdateThrottler *)self initWithDelayInterval:1 scalingFactor:a4];
+  nameCopy = name;
+  resumableCopy = resumable;
+  v10 = [(EDUpdateThrottler *)self initWithDelayInterval:1 scalingFactor:interval];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
-    objc_storeStrong(&v10->_resumable, a5);
+    objc_storeStrong(&v10->_resumable, resumable);
     v13 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.EmailDaemon.EDUpdateThrottler.resumeClientScheduler"];
     resumeClientScheduler = v10->_resumeClientScheduler;
     v10->_resumeClientScheduler = v13;
@@ -199,8 +199,8 @@ void __30__EDUpdateThrottler_instances__block_invoke()
     v20[1] = 3221225472;
     v20[2] = __58__EDUpdateThrottler_initWithName_delayInterval_resumable___block_invoke;
     v20[3] = &unk_1E8254CC8;
-    v21 = v9;
-    v17 = [v15 initWithTimeInterval:v16 scheduler:0 startAfter:v20 block:a4];
+    v21 = resumableCopy;
+    v17 = [v15 initWithTimeInterval:v16 scheduler:0 startAfter:v20 block:interval];
     resumeClientDebouncer = v10->_resumeClientDebouncer;
     v10->_resumeClientDebouncer = v17;
   }
@@ -208,20 +208,20 @@ void __30__EDUpdateThrottler_instances__block_invoke()
   return v10;
 }
 
-- (EDUpdateThrottler)initWithName:(id)a3 delayInterval:(double)a4 scalingFactor:(int64_t)a5
+- (EDUpdateThrottler)initWithName:(id)name delayInterval:(double)interval scalingFactor:(int64_t)factor
 {
-  v8 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = EDUpdateThrottler;
   v9 = [(EDUpdateThrottler *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
 
-    v9->_delayInterval = a4;
-    v9->_scalingFactor = a5;
+    v9->_delayInterval = interval;
+    v9->_scalingFactor = factor;
     v9->_updatesLock._os_unfair_lock_opaque = 0;
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     unacknowledgedUpdates = v9->_unacknowledgedUpdates;
@@ -233,10 +233,10 @@ void __30__EDUpdateThrottler_instances__block_invoke()
   return v9;
 }
 
-- (id)updateWithBlock:(id)a3 unacknowledgedUpdatesCount:(unint64_t *)a4
+- (id)updateWithBlock:(id)block unacknowledgedUpdatesCount:(unint64_t *)count
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_updatesLock);
   v7 = [(NSMutableArray *)self->_unacknowledgedUpdates count];
   if (v7)
@@ -251,38 +251,38 @@ void __30__EDUpdateThrottler_instances__block_invoke()
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF00]);
-  v11 = [(EDUpdateThrottler *)self lastUpdateDate];
-  [v10 ef_timeIntervalSinceDate:v11];
+  lastUpdateDate = [(EDUpdateThrottler *)self lastUpdateDate];
+  [v10 ef_timeIntervalSinceDate:lastUpdateDate];
   v13 = v12;
 
   if (v13 >= v9)
   {
-    v16 = [(EDUpdateThrottler *)self name];
+    name = [(EDUpdateThrottler *)self name];
 
-    if (v16)
+    if (name)
     {
       v17 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v18 = [(EDUpdateThrottler *)self name];
-      v19 = [(EDUpdateThrottler *)self updateCounter];
-      [(EDUpdateThrottler *)self setUpdateCounter:v19 + 1];
-      v20 = [v17 initWithFormat:@"%@ %ld", v18, v19];
+      name2 = [(EDUpdateThrottler *)self name];
+      updateCounter = [(EDUpdateThrottler *)self updateCounter];
+      [(EDUpdateThrottler *)self setUpdateCounter:updateCounter + 1];
+      v20 = [v17 initWithFormat:@"%@ %ld", name2, updateCounter];
     }
 
     else
     {
       v21 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v22 = [(EDUpdateThrottler *)self updateCounter];
-      [(EDUpdateThrottler *)self setUpdateCounter:v22 + 1];
-      v20 = [v21 initWithFormat:@"%ld", v22];
+      updateCounter2 = [(EDUpdateThrottler *)self updateCounter];
+      [(EDUpdateThrottler *)self setUpdateCounter:updateCounter2 + 1];
+      v20 = [v21 initWithFormat:@"%ld", updateCounter2];
     }
 
     v15 = [objc_alloc(MEMORY[0x1E699B7D8]) initWithLabel:v20];
     [(NSMutableArray *)self->_unacknowledgedUpdates addObject:v15];
     [(EDUpdateThrottler *)self setLastUpdateDate:v10];
     [(EDUpdateThrottler *)self setHasChangesSinceLastUpdate:0];
-    v23 = [(EDUpdateThrottler *)self resumeClientDebouncer];
-    v24 = [MEMORY[0x1E695DFB0] null];
-    [v23 debounceResult:v24];
+    resumeClientDebouncer = [(EDUpdateThrottler *)self resumeClientDebouncer];
+    null = [MEMORY[0x1E695DFB0] null];
+    [resumeClientDebouncer debounceResult:null];
   }
 
   else
@@ -310,12 +310,12 @@ void __30__EDUpdateThrottler_instances__block_invoke()
   v28[3] = &unk_1E8259028;
   objc_copyWeak(&v30, buf);
   objc_copyWeak(&v31, &location);
-  v25 = v6;
+  v25 = blockCopy;
   v29 = v25;
   [v15 addInvocationBlock:v28];
-  if (a4)
+  if (count)
   {
-    *a4 = v7;
+    *count = v7;
   }
 
   objc_destroyWeak(&v31);
@@ -354,26 +354,26 @@ void __64__EDUpdateThrottler_updateWithBlock_unacknowledgedUpdatesCount___block_
   }
 }
 
-- (unint64_t)unacknowledgedUpdatesCountAndTimeSinceLastAcknowledgement:(double *)a3
+- (unint64_t)unacknowledgedUpdatesCountAndTimeSinceLastAcknowledgement:(double *)acknowledgement
 {
   os_unfair_lock_lock(&self->_updatesLock);
   v5 = [(NSMutableArray *)self->_unacknowledgedUpdates count];
-  v6 = [(EDUpdateThrottler *)self lastAcknowledgementDate];
-  v7 = v6;
-  if (v6)
+  lastAcknowledgementDate = [(EDUpdateThrottler *)self lastAcknowledgementDate];
+  v7 = lastAcknowledgementDate;
+  if (lastAcknowledgementDate)
   {
-    v8 = v6;
+    lastUpdateDate = lastAcknowledgementDate;
   }
 
   else
   {
-    v8 = [(EDUpdateThrottler *)self lastUpdateDate];
+    lastUpdateDate = [(EDUpdateThrottler *)self lastUpdateDate];
   }
 
-  v9 = v8;
+  v9 = lastUpdateDate;
 
   os_unfair_lock_unlock(&self->_updatesLock);
-  if (a3)
+  if (acknowledgement)
   {
     if (v5)
     {
@@ -386,7 +386,7 @@ void __64__EDUpdateThrottler_updateWithBlock_unacknowledgedUpdatesCount___block_
       v11 = 0.0;
     }
 
-    *a3 = v11;
+    *acknowledgement = v11;
   }
 
   return v5;

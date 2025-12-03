@@ -1,18 +1,18 @@
 @interface SKTemporaryPassphrase
-- (SKTemporaryPassphrase)initWithPassphrase:(const char *)a3;
+- (SKTemporaryPassphrase)initWithPassphrase:(const char *)passphrase;
 - (void)dealloc;
 @end
 
 @implementation SKTemporaryPassphrase
 
-- (SKTemporaryPassphrase)initWithPassphrase:(const char *)a3
+- (SKTemporaryPassphrase)initWithPassphrase:(const char *)passphrase
 {
   v9.receiver = self;
   v9.super_class = SKTemporaryPassphrase;
   v4 = [(SKTemporaryPassphrase *)&v9 init];
   if (v4)
   {
-    v5 = strnlen(a3, 0x101uLL);
+    v5 = strnlen(passphrase, 0x101uLL);
     v6 = malloc_type_malloc(v5 + 1, 0x100004077774924uLL);
     v4->_buf = v6;
     if (!v6)
@@ -21,7 +21,7 @@
       goto LABEL_6;
     }
 
-    strlcpy(v6, a3, v5 + 1);
+    strlcpy(v6, passphrase, v5 + 1);
   }
 
   v7 = v4;

@@ -1,20 +1,20 @@
 @interface MusicKit_SoftLinking_MPMediaLibrary
 + (MusicKit_SoftLinking_MPMediaLibrary)deviceLibrary;
 + (NSArray)sharedLibraries;
-+ (void)_handleAvailableLibrariesDidChangeNotification:(id)a3;
++ (void)_handleAvailableLibrariesDidChangeNotification:(id)notification;
 + (void)beginDiscoveringMediaLibraries;
 + (void)endDiscoveringMediaLibraries;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithUnderlyingMediaLibrary:(id)a3;
-- (int64_t)downloadSizeForModelObject:(id)a3 includingNonLibraryContent:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithUnderlyingMediaLibrary:(id)library;
+- (int64_t)downloadSizeForModelObject:(id)object includingNonLibraryContent:(BOOL)content;
 - (int64_t)status;
-- (void)_handleLibraryConnectionProgressDidChangeNotification:(id)a3;
-- (void)_handleLibraryDidChangeNotification:(id)a3;
-- (void)_handleLibraryDynamicPropertiesDidChangeNotification:(id)a3;
-- (void)_handleLibraryStatusDidChangeNotification:(id)a3;
+- (void)_handleLibraryConnectionProgressDidChangeNotification:(id)notification;
+- (void)_handleLibraryDidChangeNotification:(id)notification;
+- (void)_handleLibraryDynamicPropertiesDidChangeNotification:(id)notification;
+- (void)_handleLibraryStatusDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)sdk_addItemToLibraryWithStoreID:(id)a3 completionHandler:(id)a4;
-- (void)setUserRating:(double)a3 forItemWithPersistentID:(id)a4 completionHandler:(id)a5;
+- (void)sdk_addItemToLibraryWithStoreID:(id)d completionHandler:(id)handler;
+- (void)setUserRating:(double)rating forItemWithPersistentID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPMediaLibrary
@@ -31,28 +31,28 @@
   return v3;
 }
 
-- (id)_initWithUnderlyingMediaLibrary:(id)a3
+- (id)_initWithUnderlyingMediaLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = MusicKit_SoftLinking_MPMediaLibrary;
   v6 = [(MusicKit_SoftLinking_MPMediaLibrary *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingMediaLibrary, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&v6->_underlyingMediaLibrary, library);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = getMPMediaLibraryDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleLibraryDidChangeNotification_ name:v9 object:v7->_underlyingMediaLibrary];
+    [defaultCenter addObserver:v7 selector:sel__handleLibraryDidChangeNotification_ name:v9 object:v7->_underlyingMediaLibrary];
 
     v10 = getMPMediaLibraryDynamicPropertiesDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleLibraryDynamicPropertiesDidChangeNotification_ name:v10 object:v7->_underlyingMediaLibrary];
+    [defaultCenter addObserver:v7 selector:sel__handleLibraryDynamicPropertiesDidChangeNotification_ name:v10 object:v7->_underlyingMediaLibrary];
 
     v11 = getMPMediaLibraryConnectionProgressDidChange();
-    [v8 addObserver:v7 selector:sel__handleLibraryConnectionProgressDidChangeNotification_ name:v11 object:v7->_underlyingMediaLibrary];
+    [defaultCenter addObserver:v7 selector:sel__handleLibraryConnectionProgressDidChangeNotification_ name:v11 object:v7->_underlyingMediaLibrary];
 
     v12 = getMPMediaLibraryStatusDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleLibraryStatusDidChangeNotification_ name:v12 object:v7->_underlyingMediaLibrary];
+    [defaultCenter addObserver:v7 selector:sel__handleLibraryStatusDidChangeNotification_ name:v12 object:v7->_underlyingMediaLibrary];
 
     v13 = objc_alloc_init(MEMORY[0x277CCABD8]);
     operationQueue = v7->_operationQueue;
@@ -68,46 +68,46 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = getMPMediaLibraryDidChangeNotification();
-  [v3 removeObserver:self name:v4 object:self->_underlyingMediaLibrary];
+  [defaultCenter removeObserver:self name:v4 object:self->_underlyingMediaLibrary];
 
   v5 = getMPMediaLibraryDynamicPropertiesDidChangeNotification();
-  [v3 removeObserver:self name:v5 object:self->_underlyingMediaLibrary];
+  [defaultCenter removeObserver:self name:v5 object:self->_underlyingMediaLibrary];
 
   v6 = getMPMediaLibraryConnectionProgressDidChange();
-  [v3 removeObserver:self name:v6 object:self->_underlyingMediaLibrary];
+  [defaultCenter removeObserver:self name:v6 object:self->_underlyingMediaLibrary];
 
   v7 = getMPMediaLibraryStatusDidChangeNotification();
-  [v3 removeObserver:self name:v7 object:self->_underlyingMediaLibrary];
+  [defaultCenter removeObserver:self name:v7 object:self->_underlyingMediaLibrary];
 
   v8.receiver = self;
   v8.super_class = MusicKit_SoftLinking_MPMediaLibrary;
   [(MusicKit_SoftLinking_MPMediaLibrary *)&v8 dealloc];
 }
 
-- (void)sdk_addItemToLibraryWithStoreID:(id)a3 completionHandler:(id)a4
+- (void)sdk_addItemToLibraryWithStoreID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   underlyingMediaLibrary = self->_underlyingMediaLibrary;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __89__MusicKit_SoftLinking_MPMediaLibrary_sdk_addItemToLibraryWithStoreID_completionHandler___block_invoke;
   v9[3] = &unk_278229DE8;
-  v10 = v6;
-  v8 = v6;
-  [(MPMediaLibrary *)underlyingMediaLibrary addItemWithProductID:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(MPMediaLibrary *)underlyingMediaLibrary addItemWithProductID:d completionHandler:v9];
 }
 
-- (int64_t)downloadSizeForModelObject:(id)a3 includingNonLibraryContent:(BOOL)a4
+- (int64_t)downloadSizeForModelObject:(id)object includingNonLibraryContent:(BOOL)content
 {
-  v68 = a4;
+  contentCopy = content;
   v78[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 _underlyingModelObject];
-  v7 = [v6 identifiers];
-  v8 = [v7 modelKind];
-  v9 = [v8 identityKind];
+  objectCopy = object;
+  _underlyingModelObject = [objectCopy _underlyingModelObject];
+  identifiers = [_underlyingModelObject identifiers];
+  modelKind = [identifiers modelKind];
+  identityKind = [modelKind identityKind];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2050000000;
@@ -126,15 +126,15 @@
 
   v11 = v10;
   _Block_object_dispose(&v74, 8);
-  v12 = [v10 identityKind];
-  v13 = [v9 isEqual:v12];
+  identityKind2 = [v10 identityKind];
+  v13 = [identityKind isEqual:identityKind2];
 
   if (v13)
   {
     MPMediaPropertyPredicateClass = getMPMediaPropertyPredicateClass();
     v15 = MEMORY[0x277CCABB0];
-    v16 = [v7 library];
-    v17 = [v15 numberWithLongLong:{objc_msgSend(v16, "persistentID")}];
+    library = [identifiers library];
+    v17 = [v15 numberWithLongLong:{objc_msgSend(library, "persistentID")}];
     v74 = 0;
     v75 = &v74;
     v76 = 0x2020000000;
@@ -183,14 +183,14 @@ LABEL_32:
     v23 = v22;
     _Block_object_dispose(&v74, 8);
     v24 = [v22 alloc];
-    v25 = [MEMORY[0x277CBEB98] setWithObject:v21];
-    v26 = [v24 initWithFilterPredicates:v25];
+    itemsQuery = [MEMORY[0x277CBEB98] setWithObject:v21];
+    v26 = [v24 initWithFilterPredicates:itemsQuery];
   }
 
   else
   {
-    v27 = [v7 modelKind];
-    v28 = [v27 identityKind];
+    modelKind2 = [identifiers modelKind];
+    identityKind3 = [modelKind2 identityKind];
     v74 = 0;
     v75 = &v74;
     v76 = 0x2050000000;
@@ -209,8 +209,8 @@ LABEL_32:
 
     v30 = v29;
     _Block_object_dispose(&v74, 8);
-    v31 = [v29 identityKind];
-    v32 = [v28 isEqual:v31];
+    identityKind4 = [v29 identityKind];
+    v32 = [identityKind3 isEqual:identityKind4];
 
     if (!v32)
     {
@@ -218,12 +218,12 @@ LABEL_32:
       goto LABEL_31;
     }
 
-    v33 = [getMPMediaLibraryClass() defaultMediaLibrary];
-    v34 = [v7 library];
-    v21 = [v33 playlistWithPersistentID:{objc_msgSend(v34, "persistentID")}];
+    defaultMediaLibrary = [getMPMediaLibraryClass() defaultMediaLibrary];
+    library2 = [identifiers library];
+    v21 = [defaultMediaLibrary playlistWithPersistentID:{objc_msgSend(library2, "persistentID")}];
 
-    v25 = [v21 itemsQuery];
-    v26 = [v25 copy];
+    itemsQuery = [v21 itemsQuery];
+    v26 = [itemsQuery copy];
   }
 
   v35 = v26;
@@ -310,7 +310,7 @@ LABEL_32:
 
   v52 = [v35 copy];
   [v52 addFilterPredicate:v51];
-  if (v68)
+  if (contentCopy)
   {
     [v52 setShouldIncludeNonLibraryEntities:1];
   }
@@ -344,33 +344,33 @@ LABEL_32:
   v57 = getMPMediaItemPropertyFileSize();
   v58 = [v52 valueForAggregateFunction:v56 onItemsForProperty:v57];
 
-  v59 = [v58 longLongValue];
+  longLongValue = [v58 longLongValue];
   v60 = getMPMediaPropertyPredicateClass();
   v61 = getMPMediaItemPropertyFileSize();
   v62 = [v60 predicateWithValue:&unk_282989018 forProperty:v61];
 
   v63 = [v35 copy];
   [v63 addFilterPredicate:v62];
-  if (v68)
+  if (contentCopy)
   {
     [v63 setShouldIncludeNonLibraryEntities:1];
   }
 
-  v64 = [v63 _countOfItems];
+  _countOfItems = [v63 _countOfItems];
 
-  v65 = v59 + 7000000 * v64;
+  v65 = longLongValue + 7000000 * _countOfItems;
 LABEL_31:
 
   v66 = *MEMORY[0x277D85DE8];
   return v65;
 }
 
-- (void)setUserRating:(double)a3 forItemWithPersistentID:(id)a4 completionHandler:(id)a5
+- (void)setUserRating:(double)rating forItemWithPersistentID:(id)d completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = -[MPMediaLibrary itemWithPersistentID:](self->_underlyingMediaLibrary, "itemWithPersistentID:", [v8 integerValue]);
-  v11 = [MEMORY[0x277CCABB0] numberWithDouble:a3 * 5.0];
+  dCopy = d;
+  handlerCopy = handler;
+  v10 = -[MPMediaLibrary itemWithPersistentID:](self->_underlyingMediaLibrary, "itemWithPersistentID:", [dCopy integerValue]);
+  v11 = [MEMORY[0x277CCABB0] numberWithDouble:rating * 5.0];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -402,16 +402,16 @@ LABEL_31:
   v17[1] = 3221225472;
   v17[2] = __95__MusicKit_SoftLinking_MPMediaLibrary_setUserRating_forItemWithPersistentID_completionHandler___block_invoke;
   v17[3] = &unk_278229E10;
-  v18 = v9;
-  v15 = v9;
+  v18 = handlerCopy;
+  v15 = handlerCopy;
   [v10 setValue:v11 forProperty:v14 withCompletionBlock:v17];
 }
 
 + (void)beginDiscoveringMediaLibraries
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = getMPMediaLibraryAvailableMediaLibrariesDidChangeNotification();
-  [v4 addObserver:a1 selector:sel__handleAvailableLibrariesDidChangeNotification_ name:v3 object:0];
+  [defaultCenter addObserver:self selector:sel__handleAvailableLibrariesDidChangeNotification_ name:v3 object:0];
 
   [getMPMediaLibraryClass() beginDiscoveringMediaLibraries];
 }
@@ -419,9 +419,9 @@ LABEL_31:
 + (void)endDiscoveringMediaLibraries
 {
   [getMPMediaLibraryClass() endDiscoveringMediaLibraries];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = getMPMediaLibraryAvailableMediaLibrariesDidChangeNotification();
-  [v4 removeObserver:a1 name:v3 object:0];
+  [defaultCenter removeObserver:self name:v3 object:0];
 }
 
 + (NSArray)sharedLibraries
@@ -432,8 +432,8 @@ LABEL_31:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [getMPMediaLibraryClass() sharedMediaLibraries];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sharedMediaLibraries = [getMPMediaLibraryClass() sharedMediaLibraries];
+  v5 = [sharedMediaLibraries countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -444,14 +444,14 @@ LABEL_31:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sharedMediaLibraries);
         }
 
-        v9 = [[a1 alloc] _initWithUnderlyingMediaLibrary:*(*(&v13 + 1) + 8 * i)];
+        v9 = [[self alloc] _initWithUnderlyingMediaLibrary:*(*(&v13 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [sharedMediaLibraries countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -474,60 +474,60 @@ LABEL_31:
   return result;
 }
 
-- (void)_handleLibraryDidChangeNotification:(id)a3
+- (void)_handleLibraryDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryDidChangeNotification" object:self userInfo:userInfo];
 }
 
-- (void)_handleLibraryDynamicPropertiesDidChangeNotification:(id)a3
+- (void)_handleLibraryDynamicPropertiesDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryDynamicPropertiesDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryDynamicPropertiesDidChangeNotification" object:self userInfo:userInfo];
 }
 
-+ (void)_handleAvailableLibrariesDidChangeNotification:(id)a3
++ (void)_handleAvailableLibrariesDidChangeNotification:(id)notification
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v6 = [v3 defaultCenter];
-  v5 = [v4 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v3 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v6 postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryAvailableMediaLibrariesDidChangeNotification" object:0 userInfo:v5];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryAvailableMediaLibrariesDidChangeNotification" object:0 userInfo:userInfo];
 }
 
-- (void)_handleLibraryConnectionProgressDidChangeNotification:(id)a3
+- (void)_handleLibraryConnectionProgressDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryConnectionProgressDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryConnectionProgressDidChangeNotification" object:self userInfo:userInfo];
 }
 
-- (void)_handleLibraryStatusDidChangeNotification:(id)a3
+- (void)_handleLibraryStatusDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryStatusDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPMediaLibraryStatusDidChangeNotification" object:self userInfo:userInfo];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -538,8 +538,8 @@ LABEL_31:
     if (objc_opt_isKindOfClass())
     {
       underlyingMediaLibrary = self->_underlyingMediaLibrary;
-      v6 = [(MusicKit_SoftLinking_MPMediaLibrary *)v4 _underlyingMediaLibrary];
-      v7 = [(MPMediaLibrary *)underlyingMediaLibrary isEqual:v6];
+      _underlyingMediaLibrary = [(MusicKit_SoftLinking_MPMediaLibrary *)equalCopy _underlyingMediaLibrary];
+      v7 = [(MPMediaLibrary *)underlyingMediaLibrary isEqual:_underlyingMediaLibrary];
     }
 
     else

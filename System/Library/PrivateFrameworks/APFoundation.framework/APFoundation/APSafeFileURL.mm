@@ -1,8 +1,8 @@
 @interface APSafeFileURL
-- (APSafeFileURL)initWithString:(id)a3;
-- (id)URLByAppendingPathComponent:(id)a3;
+- (APSafeFileURL)initWithString:(id)string;
+- (id)URLByAppendingPathComponent:(id)component;
 - (id)description;
-- (id)initFileURLWithPath:(id)a3 relativeToURL:(id)a4;
+- (id)initFileURLWithPath:(id)path relativeToURL:(id)l;
 @end
 
 @implementation APSafeFileURL
@@ -31,40 +31,40 @@
   return v10;
 }
 
-- (id)initFileURLWithPath:(id)a3 relativeToURL:(id)a4
+- (id)initFileURLWithPath:(id)path relativeToURL:(id)l
 {
-  v7 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = APSafeFileURL;
-  v8 = [(APSafeFileURL *)&v11 initWithString:v7 relativeToURL:a4];
+  v8 = [(APSafeFileURL *)&v11 initWithString:pathCopy relativeToURL:l];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_safeDescription, a3);
+    objc_storeStrong(&v8->_safeDescription, path);
   }
 
   return v9;
 }
 
-- (APSafeFileURL)initWithString:(id)a3
+- (APSafeFileURL)initWithString:(id)string
 {
   v4.receiver = self;
   v4.super_class = APSafeFileURL;
-  return [(APSafeFileURL *)&v4 initWithString:a3];
+  return [(APSafeFileURL *)&v4 initWithString:string];
 }
 
-- (id)URLByAppendingPathComponent:(id)a3
+- (id)URLByAppendingPathComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v8 = objc_msgSend_path(self, v5, v6, v7);
-  v11 = objc_msgSend_stringByAppendingPathComponent_(v8, v9, v4, v10);
+  v11 = objc_msgSend_stringByAppendingPathComponent_(v8, v9, componentCopy, v10);
 
   v12 = [APSafeFileURL alloc];
   inited = objc_msgSend_initFileURLWithPath_(v12, v13, v11, v14);
   v18 = inited;
   if (inited)
   {
-    objc_msgSend_setSafeDescription_(inited, v16, v4, v17);
+    objc_msgSend_setSafeDescription_(inited, v16, componentCopy, v17);
   }
 
   return v18;

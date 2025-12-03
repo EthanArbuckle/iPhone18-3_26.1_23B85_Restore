@@ -1,15 +1,15 @@
 @interface VMUGroupBy
-- (VMUGroupBy)initWithGraph:(id)a3;
+- (VMUGroupBy)initWithGraph:(id)graph;
 @end
 
 @implementation VMUGroupBy
 
-- (VMUGroupBy)initWithGraph:(id)a3
+- (VMUGroupBy)initWithGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = [(VMUGroupBy *)self init];
   graph = v5->_graph;
-  v5->_graph = v4;
+  v5->_graph = graphCopy;
 
   return v5;
 }

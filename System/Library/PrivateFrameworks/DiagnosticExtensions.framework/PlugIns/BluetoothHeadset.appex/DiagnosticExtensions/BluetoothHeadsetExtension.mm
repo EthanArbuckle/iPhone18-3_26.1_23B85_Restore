@@ -1,22 +1,22 @@
 @interface BluetoothHeadsetExtension
-- (id)attachmentsForParameters:(id)a3;
-- (id)getFilesAtPathSortedByModificationDate:(id)a3 numberOfFirstNFiles:(int)a4;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)getFilesAtPathSortedByModificationDate:(id)date numberOfFirstNFiles:(int)files;
 - (void)cancelXPCConnection;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)handleXPCError:(id)a3;
-- (void)handleXPCEvent:(id)a3;
-- (void)handleXPCMsg:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)handleXPCError:(id)error;
+- (void)handleXPCEvent:(id)event;
+- (void)handleXPCMsg:(id)msg;
 - (void)leLogRequest;
-- (void)sendXPCMsg:(id)a3 args:(id)a4;
+- (void)sendXPCMsg:(id)msg args:(id)args;
 @end
 
 @implementation BluetoothHeadsetExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   NSLog(@"attachmentsForParameters: Invoked");
   v5 = dispatch_queue_create("BluetoothHeadsetLogging", &_dispatch_queue_attr_concurrent);
   queue = self->_queue;
@@ -54,12 +54,12 @@
   v20 = g_findMySerialNumbers;
   g_findMySerialNumbers = v19;
 
-  v21 = v4;
+  v21 = parametersCopy;
   v22 = objc_opt_new();
   v23 = g_loggingFilenames;
   g_loggingFilenames = v22;
 
-  v24 = [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  v24 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
   g_loggingConsent = [v24 BOOLValue];
 
   v25 = [v21 objectForKeyedSubscript:@"componentID"];
@@ -257,10 +257,10 @@
   return v34;
 }
 
-- (id)getFilesAtPathSortedByModificationDate:(id)a3 numberOfFirstNFiles:(int)a4
+- (id)getFilesAtPathSortedByModificationDate:(id)date numberOfFirstNFiles:(int)files
 {
-  v5 = [a3 sortedArrayUsingComparator:&stru_100008340];
-  v6 = [v5 subarrayWithRange:{0, a4}];
+  v5 = [date sortedArrayUsingComparator:&stru_100008340];
+  v6 = [v5 subarrayWithRange:{0, files}];
 
   return v6;
 }
@@ -277,33 +277,33 @@
   }
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
-  v5 = a3;
-  type = xpc_get_type(v5);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_dictionary)
   {
-    [(BluetoothHeadsetExtension *)self handleXPCMsg:v5];
+    [(BluetoothHeadsetExtension *)self handleXPCMsg:eventCopy];
   }
 
   else if (type == &_xpc_type_error)
   {
-    [(BluetoothHeadsetExtension *)self handleXPCError:v5];
+    [(BluetoothHeadsetExtension *)self handleXPCError:eventCopy];
   }
 
   else
   {
-    NSLog(@"handleXPCEvent: Unexpected XPC event: %@", v5);
+    NSLog(@"handleXPCEvent: Unexpected XPC event: %@", eventCopy);
   }
 }
 
-- (void)handleXPCMsg:(id)a3
+- (void)handleXPCMsg:(id)msg
 {
-  xdict = a3;
+  xdict = msg;
   string = xpc_dictionary_get_string(xdict, "kMsgId");
   v5 = xpc_dictionary_get_value(xdict, "kMsgArgs");
-  v6 = [(BluetoothHeadsetExtension *)self xpcConnection];
-  NSLog(@"handleXPCMsg: Received XPC message from %p: %s", v6, string);
+  xpcConnection = [(BluetoothHeadsetExtension *)self xpcConnection];
+  NSLog(@"handleXPCMsg: Received XPC message from %p: %s", xpcConnection, string);
 
   if (self->_leUarpBranchDone)
   {
@@ -369,10 +369,10 @@
   }
 }
 
-- (void)handleXPCError:(id)a3
+- (void)handleXPCError:(id)error
 {
-  NSLog(@"handleXPCError: %@", a2, a3);
-  if (a3 == &_xpc_error_connection_interrupted || a3 == &_xpc_error_connection_invalid)
+  NSLog(@"handleXPCError: %@", a2, error);
+  if (error == &_xpc_error_connection_interrupted || error == &_xpc_error_connection_invalid)
   {
     if (self->_xpcConnection)
     {
@@ -393,23 +393,23 @@
   }
 }
 
-- (void)sendXPCMsg:(id)a3 args:(id)a4
+- (void)sendXPCMsg:(id)msg args:(id)args
 {
-  v11 = a3;
-  v6 = a4;
+  msgCopy = msg;
+  argsCopy = args;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = v11;
-  xpc_dictionary_set_string(v7, "kMsgId", [v11 UTF8String]);
-  if (v6)
+  v8 = msgCopy;
+  xpc_dictionary_set_string(v7, "kMsgId", [msgCopy UTF8String]);
+  if (argsCopy)
   {
-    xpc_dictionary_set_value(v7, "kMsgArgs", v6);
+    xpc_dictionary_set_value(v7, "kMsgArgs", argsCopy);
   }
 
-  v9 = [(BluetoothHeadsetExtension *)self xpcConnection];
-  NSLog(@"sendXPCMsg: Sending XPC message to %p: %@", v9, v11);
+  xpcConnection = [(BluetoothHeadsetExtension *)self xpcConnection];
+  NSLog(@"sendXPCMsg: Sending XPC message to %p: %@", xpcConnection, msgCopy);
 
-  v10 = [(BluetoothHeadsetExtension *)self xpcConnection];
-  xpc_connection_send_message(v10, v7);
+  xpcConnection2 = [(BluetoothHeadsetExtension *)self xpcConnection];
+  xpc_connection_send_message(xpcConnection2, v7);
 }
 
 - (void)leLogRequest
@@ -436,11 +436,11 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) identifier];
-        v10 = [v9 UUIDString];
+        identifier = [*(*(&v12 + 1) + 8 * v8) identifier];
+        uUIDString = [identifier UUIDString];
 
-        NSLog(@"leLogRequest: Asking for UUID %@", v10);
-        v11 = xpc_string_create([v10 UTF8String]);
+        NSLog(@"leLogRequest: Asking for UUID %@", uUIDString);
+        v11 = xpc_string_create([uUIDString UTF8String]);
         xpc_array_append_value(empty, v11);
 
         v8 = v8 + 1;
@@ -456,25 +456,25 @@
   [(BluetoothHeadsetExtension *)self sendXPCMsg:@"RetrieveLogs" args:empty];
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v5 = [a4 identifier];
-  v4 = [v5 UUIDString];
-  NSLog(@"centralManager:didConnectPeripheral: UUID %@", v4);
+  identifier = [peripheral identifier];
+  uUIDString = [identifier UUIDString];
+  NSLog(@"centralManager:didConnectPeripheral: UUID %@", uUIDString);
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v6 = a5;
-  v8 = [a4 identifier];
-  v7 = [v8 UUIDString];
-  NSLog(@"centralManager:didFailToConnectPeripheral: UUID %@ error %@", v7, v6);
+  errorCopy = error;
+  identifier = [peripheral identifier];
+  uUIDString = [identifier UUIDString];
+  NSLog(@"centralManager:didFailToConnectPeripheral: UUID %@ error %@", uUIDString, errorCopy);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  if ([v4 state] == 5 && !self->_didPeripheralConnection)
+  stateCopy = state;
+  if ([stateCopy state] == 5 && !self->_didPeripheralConnection)
   {
     self->_didPeripheralConnection = 1;
     NSLog(@"centralManagerDidUpdateState: Now on, awaiting signal");
@@ -496,7 +496,7 @@
         v8[2] = sub_10000246C;
         v8[3] = &unk_100008368;
         v8[4] = self;
-        v9 = v4;
+        v9 = stateCopy;
         [v9 retrievePeripheralsWithFindMySerialNumberStrings:v7 completion:v8];
       }
     }

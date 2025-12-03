@@ -1,25 +1,25 @@
 @interface RBSProcessBundleIdentifierPredicate
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessBundleIdentifierPredicate
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = [(RBSProcessStringPredicate *)self identifier];
-  v6 = [v4 identity];
-  v7 = [v6 embeddedApplicationIdentifier];
-  if (v7)
+  processCopy = process;
+  identifier = [(RBSProcessStringPredicate *)self identifier];
+  identity = [processCopy identity];
+  embeddedApplicationIdentifier = [identity embeddedApplicationIdentifier];
+  if (embeddedApplicationIdentifier)
   {
-    v8 = [v5 isEqualToString:v7];
+    v8 = [identifier isEqualToString:embeddedApplicationIdentifier];
   }
 
   else
   {
-    v9 = [v4 bundle];
-    v10 = [v9 identifier];
-    v8 = [v5 isEqualToString:v10];
+    bundle = [processCopy bundle];
+    identifier2 = [bundle identifier];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   return v8;

@@ -6,20 +6,20 @@
 
 - (id)safari_bestCurrentURL
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (([a1 isReadingListItem] & 1) == 0 || (objc_msgSend(MEMORY[0x277CEC5B8], "sharedNetworkObserver"), v2 = objc_claimAutoreleasedReturnValue(), v3 = objc_msgSend(v2, "isNetworkReachable"), v2, v3))
+    if (([self isReadingListItem] & 1) == 0 || (objc_msgSend(MEMORY[0x277CEC5B8], "sharedNetworkObserver"), v2 = objc_claimAutoreleasedReturnValue(), v3 = objc_msgSend(v2, "isNetworkReachable"), v2, v3))
     {
-      v4 = [v1 address];
-      v5 = [v4 _web_bestURLForUserTypedString];
+      address = [selfCopy address];
+      _web_bestURLForUserTypedString = [address _web_bestURLForUserTypedString];
       goto LABEL_5;
     }
 
-    if ([v1 isFullArchiveAvailable])
+    if ([selfCopy isFullArchiveAvailable])
     {
       v10 = 0;
-      v4 = [v1 webarchivePathInReaderForm:0 fileExists:&v10];
+      address = [selfCopy webarchivePathInReaderForm:0 fileExists:&v10];
       if (v10 != 1)
       {
         v7 = WBS_LOG_CHANNEL_PREFIXReadingList();
@@ -30,9 +30,9 @@
 
         if ([MEMORY[0x277D7B5A8] lockSync])
         {
-          [v1 setArchiveStatus:6];
-          v8 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-          [v8 saveBookmark:v1];
+          [selfCopy setArchiveStatus:6];
+          mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+          [mainBookmarkCollection saveBookmark:selfCopy];
 
           [MEMORY[0x277D7B5A8] unlockSync];
         }
@@ -46,24 +46,24 @@
           }
         }
 
-        v1 = 0;
+        selfCopy = 0;
         goto LABEL_6;
       }
 
-      v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4 isDirectory:0];
+      _web_bestURLForUserTypedString = [MEMORY[0x277CBEBC0] fileURLWithPath:address isDirectory:0];
 LABEL_5:
-      v1 = v5;
+      selfCopy = _web_bestURLForUserTypedString;
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v1 = 0;
+    selfCopy = 0;
   }
 
 LABEL_7:
 
-  return v1;
+  return selfCopy;
 }
 
 @end

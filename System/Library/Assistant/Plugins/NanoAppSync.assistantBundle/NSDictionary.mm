@@ -1,13 +1,13 @@
 @interface NSDictionary
-- (id)nas_arrayValueForKey:(id)a3 expectedContainingObjectsType:(Class)a4;
-- (id)nas_stringValueForKey:(id)a3;
+- (id)nas_arrayValueForKey:(id)key expectedContainingObjectsType:(Class)type;
+- (id)nas_stringValueForKey:(id)key;
 @end
 
 @implementation NSDictionary
 
-- (id)nas_arrayValueForKey:(id)a3 expectedContainingObjectsType:(Class)a4
+- (id)nas_arrayValueForKey:(id)key expectedContainingObjectsType:(Class)type
 {
-  v21 = a3;
+  keyCopy = key;
   v6 = [(NSDictionary *)self objectForKey:?];
   if (!v6)
   {
@@ -25,7 +25,7 @@ LABEL_17:
       *buf = 136315650;
       v27 = "[NSDictionary(NASIntentsInfoSync) nas_arrayValueForKey:expectedContainingObjectsType:]";
       v28 = 2112;
-      v29 = v21;
+      v29 = keyCopy;
       v30 = 2112;
       v31 = v6;
       _os_log_error_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "%s Value for key %@ is not an array: %@", buf, 0x20u);
@@ -69,11 +69,11 @@ LABEL_17:
           if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR))
           {
             v16 = v15;
-            v17 = NSStringFromClass(a4);
+            v17 = NSStringFromClass(type);
             *buf = 136315906;
             v27 = "[NSDictionary(NASIntentsInfoSync) nas_arrayValueForKey:expectedContainingObjectsType:]";
             v28 = 2112;
-            v29 = v21;
+            v29 = keyCopy;
             v30 = 2114;
             v31 = v17;
             v32 = 2112;
@@ -98,10 +98,10 @@ LABEL_18:
   return v8;
 }
 
-- (id)nas_stringValueForKey:(id)a3
+- (id)nas_stringValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self objectForKey:keyCopy];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v7 = AFSiriLogContextPlugin;
@@ -110,7 +110,7 @@ LABEL_18:
       v9 = 136315650;
       v10 = "[NSDictionary(NASIntentsInfoSync) nas_stringValueForKey:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = keyCopy;
       v13 = 2112;
       v14 = v5;
       _os_log_error_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "%s Value for key %@ is not a string: %@", &v9, 0x20u);

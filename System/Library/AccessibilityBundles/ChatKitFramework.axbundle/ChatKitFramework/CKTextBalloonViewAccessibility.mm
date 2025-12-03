@@ -1,10 +1,10 @@
 @interface CKTextBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_allowCustomActionHintSpeakOverride;
 - (BOOL)_axIsInvisibleInk;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityElementHelp;
-- (id)_axMainContentStringForSpeakThis:(BOOL)a3;
+- (id)_axMainContentStringForSpeakThis:(BOOL)this;
 - (id)_axMentionsDescription;
 - (id)_axMessageProvenanceDescription;
 - (id)accessibilityCustomContent;
@@ -17,38 +17,38 @@
 - (void)_accessibilityUpdateTextEffectsIfNeeded;
 - (void)invisibleInkEffectViewWasUncovered;
 - (void)prepareForDisplay;
-- (void)setAttributedText:(id)a3;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation CKTextBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTextBalloonView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTextBalloonView" hasInstanceMethod:@"setAttributedText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKTextBalloonView" hasInstanceMethod:@"prepareForDisplay" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTextBalloonView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTextBalloonView" hasInstanceMethod:@"setAttributedText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKTextBalloonView" hasInstanceMethod:@"prepareForDisplay" withFullSignature:{"v", 0}];
 }
 
-- (id)_axMainContentStringForSpeakThis:(BOOL)a3
+- (id)_axMainContentStringForSpeakThis:(BOOL)this
 {
-  if (a3)
+  if (this)
   {
-    v3 = &stru_2A21515E8;
+    accessibilityVisibleText = &stru_2A21515E8;
   }
 
   else
   {
-    v3 = [(CKTextBalloonViewAccessibility *)self accessibilityVisibleText];
+    accessibilityVisibleText = [(CKTextBalloonViewAccessibility *)self accessibilityVisibleText];
   }
 
   objc_opt_class();
   v4 = __UIAccessibilityCastAsSafeCategory();
-  v5 = [v4 _axMessageSender];
-  v6 = [0 string];
+  _axMessageSender = [v4 _axMessageSender];
+  string = [0 string];
   v7 = __UIAXStringForVariables();
 
-  v14 = [v4 _axReplyDescription];
+  _axReplyDescription = [v4 _axReplyDescription];
   v8 = __UIAXStringForVariables();
 
   if ([v7 isAXAttributedString])
@@ -76,15 +76,15 @@
   v2 = [(CKTextBalloonViewAccessibility *)self safeValueForKey:@"textView"];
   v3 = __UIAccessibilitySafeClass();
 
-  v4 = [v3 accessibilityAttributedValue];
+  accessibilityAttributedValue = [v3 accessibilityAttributedValue];
   if ([v3 safeBoolForKey:@"accessibilityContainsOneLink"])
   {
-    v5 = [v3 accessibilityLabel];
-    if (v5)
+    accessibilityLabel = [v3 accessibilityLabel];
+    if (accessibilityLabel)
     {
-      v6 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:v5];
+      v6 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:accessibilityLabel];
 
-      v4 = v6;
+      accessibilityAttributedValue = v6;
     }
   }
 
@@ -132,11 +132,11 @@
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsSafeCategory();
-  v4 = [v3 _axMessageForBalloon];
-  if ([v4 safeBoolForKey:@"hasMention"])
+  _axMessageForBalloon = [v3 _axMessageForBalloon];
+  if ([_axMessageForBalloon safeBoolForKey:@"hasMention"])
   {
     objc_opt_class();
-    v5 = [v4 safeValueForKey:@"text"];
+    v5 = [_axMessageForBalloon safeValueForKey:@"text"];
     v6 = __UIAccessibilityCastAsClass();
 
     objc_opt_class();
@@ -172,9 +172,9 @@
 - (id)_axMessageProvenanceDescription
 {
   v2 = __UIAccessibilitySafeClass();
-  v3 = [v2 color];
+  color = [v2 color];
 
-  if (v3 == 5)
+  if (color == 5)
   {
     v4 = accessibilityLocalizedString(@"apple.pay.message.provenance");
   }
@@ -193,28 +193,28 @@
   v3 = __UIAccessibilityCastAsSafeCategory();
   if ([(CKTextBalloonViewAccessibility *)self _axIsInvisibleInk])
   {
-    v4 = [(CKTextBalloonViewAccessibility *)self _axInvisibleInkDescription];
-    if (!v4)
+    _axInvisibleInkDescription = [(CKTextBalloonViewAccessibility *)self _axInvisibleInkDescription];
+    if (!_axInvisibleInkDescription)
     {
       v5 = accessibilityLocalizedString(@"balloon.effect.invisibleink.description");
-      v6 = [v3 _axMessageSender];
+      _axMessageSender = [v3 _axMessageSender];
       v16 = v5;
       v18 = @"__AXStringForVariablesSentinel";
-      v4 = __UIAXStringForVariables();
+      _axInvisibleInkDescription = __UIAXStringForVariables();
     }
   }
 
   else
   {
-    v4 = [(CKTextBalloonViewAccessibility *)self _axMainContentStringForSpeakThis:0];
+    _axInvisibleInkDescription = [(CKTextBalloonViewAccessibility *)self _axMainContentStringForSpeakThis:0];
   }
 
   [(CKTextBalloonViewAccessibility *)self _accessibilityUpdateTextEffectsIfNeeded:v16];
-  v7 = [(CKTextBalloonViewAccessibility *)self _axTextEffectMentionElements];
-  if ([v7 count])
+  _axTextEffectMentionElements = [(CKTextBalloonViewAccessibility *)self _axTextEffectMentionElements];
+  if ([_axTextEffectMentionElements count])
   {
     v8 = accessibilityLocalizedString(@"texteffect.mentions.count");
-    v17 = [v7 count];
+    v17 = [_axTextEffectMentionElements count];
     v9 = AXCFormattedString();
   }
 
@@ -223,11 +223,11 @@
     v9 = 0;
   }
 
-  v10 = [(CKTextBalloonViewAccessibility *)self _axMentionsDescription];
-  v11 = [v3 _axStickerDescription];
-  v12 = [v3 _axAcknowledgmentDescription];
-  v13 = [v3 _axMessageTime];
-  v19 = [(CKTextBalloonViewAccessibility *)self _axMessageProvenanceDescription];
+  _axMentionsDescription = [(CKTextBalloonViewAccessibility *)self _axMentionsDescription];
+  _axStickerDescription = [v3 _axStickerDescription];
+  _axAcknowledgmentDescription = [v3 _axAcknowledgmentDescription];
+  _axMessageTime = [v3 _axMessageTime];
+  _axMessageProvenanceDescription = [(CKTextBalloonViewAccessibility *)self _axMessageProvenanceDescription];
   v14 = __UIAXStringForVariables();
 
   return v14;
@@ -275,31 +275,31 @@
 
   if (![(CKTextBalloonViewAccessibility *)self _axIsVisibleInTapbackView])
   {
-    v5 = 1;
+    _axIsTapbackBalloonView = 1;
     goto LABEL_8;
   }
 
   if (![(CKTextBalloonViewAccessibility *)self _axIsVisibleInTapbackView])
   {
 LABEL_6:
-    v5 = 0;
+    _axIsTapbackBalloonView = 0;
   }
 
   else
   {
-    v5 = [(CKTextBalloonViewAccessibility *)self _axIsTapbackBalloonView];
+    _axIsTapbackBalloonView = [(CKTextBalloonViewAccessibility *)self _axIsTapbackBalloonView];
   }
 
 LABEL_8:
 
-  return v5;
+  return _axIsTapbackBalloonView;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v8.receiver = self;
   v8.super_class = CKTextBalloonViewAccessibility;
-  v3 = [(CKTextBalloonViewAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits = [(CKTextBalloonViewAccessibility *)&v8 accessibilityTraits];
   v4 = [(CKTextBalloonViewAccessibility *)self safeValueForKey:@"textView"];
   v5 = __UIAccessibilitySafeClass();
 
@@ -313,13 +313,13 @@ LABEL_8:
     v6 = 0;
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 - (id)accessibilityUserInputLabels
 {
   v2 = [(CKTextBalloonViewAccessibility *)self safeValueForKey:@"textView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
   v4 = MEMORY[0x29C2D0360]();
 
   return v4;
@@ -327,13 +327,13 @@ LABEL_8:
 
 - (id)accessibilityCustomRotors
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(CKTextBalloonViewAccessibility *)self safeValueForKey:@"textView"];
-  v5 = [v4 accessibilityCustomRotors];
-  [v3 axSafelyAddObjectsFromArray:v5];
+  accessibilityCustomRotors = [v4 accessibilityCustomRotors];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomRotors];
 
-  v6 = [(CKTextBalloonViewAccessibility *)self _axTextEffectRotor];
-  if (!v6)
+  _axTextEffectRotor = [(CKTextBalloonViewAccessibility *)self _axTextEffectRotor];
+  if (!_axTextEffectRotor)
   {
     objc_initWeak(&location, self);
     v7 = objc_alloc(MEMORY[0x29EDC78E8]);
@@ -343,25 +343,25 @@ LABEL_8:
     v16 = __59__CKTextBalloonViewAccessibility_accessibilityCustomRotors__block_invoke;
     v17 = &unk_29F2B0B10;
     objc_copyWeak(&v18, &location);
-    v6 = [v7 initWithName:v8 itemSearchBlock:&v14];
+    _axTextEffectRotor = [v7 initWithName:v8 itemSearchBlock:&v14];
 
-    [(CKTextBalloonViewAccessibility *)self _setAXTextEffectRotor:v6, v14, v15, v16, v17];
+    [(CKTextBalloonViewAccessibility *)self _setAXTextEffectRotor:_axTextEffectRotor, v14, v15, v16, v17];
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
   }
 
   [(CKTextBalloonViewAccessibility *)self _accessibilityUpdateTextEffectsIfNeeded];
-  v9 = [(CKTextBalloonViewAccessibility *)self _axTextEffectMentionElements];
-  v10 = [v9 count];
+  _axTextEffectMentionElements = [(CKTextBalloonViewAccessibility *)self _axTextEffectMentionElements];
+  v10 = [_axTextEffectMentionElements count];
 
   if (v10)
   {
-    [v3 axSafelyAddObject:v6];
+    [array axSafelyAddObject:_axTextEffectRotor];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v11 = v3;
+    v11 = array;
   }
 
   else
@@ -440,13 +440,13 @@ LABEL_14:
 {
   v23 = *MEMORY[0x29EDCA608];
   [(CKTextBalloonViewAccessibility *)self _accessibilityUpdateTextEffectsIfNeeded];
-  v3 = [(CKTextBalloonViewAccessibility *)self _axTextEffectMentionElements];
+  _axTextEffectMentionElements = [(CKTextBalloonViewAccessibility *)self _axTextEffectMentionElements];
   v4 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = _axTextEffectMentionElements;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -464,10 +464,10 @@ LABEL_14:
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = MEMORY[0x29EDB8058];
         v11 = accessibilityLocalizedString(@"texteffects.rotor.name");
-        v12 = [v9 accessibilityLabel];
-        v13 = [v9 accessibilityValue];
+        accessibilityLabel = [v9 accessibilityLabel];
+        accessibilityValue = [v9 accessibilityValue];
         v14 = __UIAXStringForVariables();
-        v15 = [v10 customContentWithLabel:v11 value:{v14, v13, @"__AXStringForVariablesSentinel"}];
+        v15 = [v10 customContentWithLabel:v11 value:{v14, accessibilityValue, @"__AXStringForVariablesSentinel"}];
         [v4 axSafelyAddObject:v15];
       }
 
@@ -496,26 +496,26 @@ LABEL_14:
 
   if (v4)
   {
-    v5 = [v4 attributedText];
-    v6 = [(CKTextBalloonViewAccessibility *)self _axAttributedText];
-    v7 = [v5 isEqualToAttributedString:v6];
+    attributedText = [v4 attributedText];
+    _axAttributedText = [(CKTextBalloonViewAccessibility *)self _axAttributedText];
+    v7 = [attributedText isEqualToAttributedString:_axAttributedText];
 
     if ((v7 & 1) == 0)
     {
       v8 = _AXCKTextEffectMentions(v4);
       [(CKTextBalloonViewAccessibility *)self _axSetTextEffectMentionElements:v8];
 
-      v9 = [v4 attributedText];
-      [(CKTextBalloonViewAccessibility *)self _axSetAttributedText:v9];
+      attributedText2 = [v4 attributedText];
+      [(CKTextBalloonViewAccessibility *)self _axSetAttributedText:attributedText2];
     }
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v4.receiver = self;
   v4.super_class = CKTextBalloonViewAccessibility;
-  [(CKTextBalloonViewAccessibility *)&v4 setAttributedText:a3];
+  [(CKTextBalloonViewAccessibility *)&v4 setAttributedText:text];
   [(CKTextBalloonViewAccessibility *)self _accessibilityUpdateTextEffectsIfNeeded];
 }
 

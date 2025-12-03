@@ -1,19 +1,19 @@
 @interface HMDDataStreamControlProtocol
-- (BOOL)isExpectedHelloControlMessage:(id)a3 header:(id)a4;
-- (HMDDataStreamControlProtocol)initWithLogIdentifier:(id)a3;
-- (void)_sendHelloMessageOnDataStream:(id)a3;
-- (void)_sendVersionRequestOnDataStream:(id)a3;
-- (void)dataStream:(id)a3 didReceiveRequest:(id)a4 header:(id)a5 payload:(id)a6;
-- (void)dataStream:(id)a3 didReceiveResponse:(id)a4 header:(id)a5 payload:(id)a6;
-- (void)dataStreamDidOpen:(id)a3;
+- (BOOL)isExpectedHelloControlMessage:(id)message header:(id)header;
+- (HMDDataStreamControlProtocol)initWithLogIdentifier:(id)identifier;
+- (void)_sendHelloMessageOnDataStream:(id)stream;
+- (void)_sendVersionRequestOnDataStream:(id)stream;
+- (void)dataStream:(id)stream didReceiveRequest:(id)request header:(id)header payload:(id)payload;
+- (void)dataStream:(id)stream didReceiveResponse:(id)response header:(id)header payload:(id)payload;
+- (void)dataStreamDidOpen:(id)open;
 @end
 
 @implementation HMDDataStreamControlProtocol
 
-- (void)_sendVersionRequestOnDataStream:(id)a3
+- (void)_sendVersionRequestOnDataStream:(id)stream
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  streamCopy = stream;
   v5 = HMFRandomUInt32();
   v9 = @"version";
   v10[0] = &unk_283E75EB8;
@@ -23,7 +23,7 @@
   v8[2] = __64__HMDDataStreamControlProtocol__sendVersionRequestOnDataStream___block_invoke;
   v8[3] = &unk_27868A250;
   v8[4] = self;
-  [v4 sendRequestForProtocol:@"control" topic:@"version" identifier:v5 payload:v6 completion:v8];
+  [streamCopy sendRequestForProtocol:@"control" topic:@"version" identifier:v5 payload:v6 completion:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -53,9 +53,9 @@ void __64__HMDDataStreamControlProtocol__sendVersionRequestOnDataStream___block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendHelloMessageOnDataStream:(id)a3
+- (void)_sendHelloMessageOnDataStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = HMFRandomUInt32();
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:v5];
   [(HMDDataStreamControlProtocol *)self setPendingHelloMessageIdentifier:v6];
@@ -65,7 +65,7 @@ void __64__HMDDataStreamControlProtocol__sendVersionRequestOnDataStream___block_
   v7[2] = __62__HMDDataStreamControlProtocol__sendHelloMessageOnDataStream___block_invoke;
   v7[3] = &unk_27868A250;
   v7[4] = self;
-  [v4 sendRequestForProtocol:@"control" topic:@"hello" identifier:v5 payload:MEMORY[0x277CBEC10] completion:v7];
+  [streamCopy sendRequestForProtocol:@"control" topic:@"hello" identifier:v5 payload:MEMORY[0x277CBEC10] completion:v7];
 }
 
 void __62__HMDDataStreamControlProtocol__sendHelloMessageOnDataStream___block_invoke(uint64_t a1, void *a2)
@@ -93,17 +93,17 @@ void __62__HMDDataStreamControlProtocol__sendHelloMessageOnDataStream___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataStream:(id)a3 didReceiveResponse:(id)a4 header:(id)a5 payload:(id)a6
+- (void)dataStream:(id)stream didReceiveResponse:(id)response header:(id)header payload:(id)payload
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(HMDDataStreamControlProtocol *)self isExpectedHelloControlMessage:v11 header:v12])
+  streamCopy = stream;
+  responseCopy = response;
+  headerCopy = header;
+  payloadCopy = payload;
+  if ([(HMDDataStreamControlProtocol *)self isExpectedHelloControlMessage:responseCopy header:headerCopy])
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -114,30 +114,30 @@ void __62__HMDDataStreamControlProtocol__sendHelloMessageOnDataStream___block_in
     }
 
     objc_autoreleasePoolPop(v14);
-    if (![(HMDDataStreamControlProtocol *)v15 helloMessageResponseReceived])
+    if (![(HMDDataStreamControlProtocol *)selfCopy helloMessageResponseReceived])
     {
-      v18 = [v13 objectForKey:@"capability-version"];
+      v18 = [payloadCopy objectForKey:@"capability-version"];
 
       if (v18)
       {
-        [(HMDDataStreamControlProtocol *)v15 _sendVersionRequestOnDataStream:v10];
+        [(HMDDataStreamControlProtocol *)selfCopy _sendVersionRequestOnDataStream:streamCopy];
       }
 
       else
       {
-        v15->_controlHandshakeComplete = 1;
+        selfCopy->_controlHandshakeComplete = 1;
       }
     }
 
-    [(HMDDataStreamControlProtocol *)v15 setHelloMessageResponseReceived:1];
-    [(HMDDataStreamControlProtocol *)v15 setPendingHelloMessageIdentifier:0];
+    [(HMDDataStreamControlProtocol *)selfCopy setHelloMessageResponseReceived:1];
+    [(HMDDataStreamControlProtocol *)selfCopy setPendingHelloMessageIdentifier:0];
   }
 
   else
   {
-    v19 = [v11 isEqual:@"version"];
+    v19 = [responseCopy isEqual:@"version"];
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_INFO);
     if (v19)
@@ -148,21 +148,21 @@ void __62__HMDDataStreamControlProtocol__sendHelloMessageOnDataStream___block_in
         v30 = 138543618;
         v31 = v24;
         v32 = 2112;
-        v33 = v13;
+        v33 = payloadCopy;
         _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Received Peer Request Version Response %@", &v30, 0x16u);
       }
 
       objc_autoreleasePoolPop(v20);
-      v25 = [v13 objectForKey:@"version"];
+      v25 = [payloadCopy objectForKey:@"version"];
 
       if (v25)
       {
-        v26 = [v13 objectForKey:@"version"];
-        peerDataStreamProtocolVersion = v21->_peerDataStreamProtocolVersion;
-        v21->_peerDataStreamProtocolVersion = v26;
+        v26 = [payloadCopy objectForKey:@"version"];
+        peerDataStreamProtocolVersion = selfCopy2->_peerDataStreamProtocolVersion;
+        selfCopy2->_peerDataStreamProtocolVersion = v26;
       }
 
-      v21->_controlHandshakeComplete = 1;
+      selfCopy2->_controlHandshakeComplete = 1;
     }
 
     else
@@ -182,28 +182,28 @@ void __62__HMDDataStreamControlProtocol__sendHelloMessageOnDataStream___block_in
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isExpectedHelloControlMessage:(id)a3 header:(id)a4
+- (BOOL)isExpectedHelloControlMessage:(id)message header:(id)header
 {
-  v6 = a4;
-  if (![a3 isEqual:@"hello"])
+  headerCopy = header;
+  if (![message isEqual:@"hello"])
   {
     goto LABEL_5;
   }
 
-  v7 = [(HMDDataStreamControlProtocol *)self pendingHelloMessageIdentifier];
+  pendingHelloMessageIdentifier = [(HMDDataStreamControlProtocol *)self pendingHelloMessageIdentifier];
 
-  if (!v7)
+  if (!pendingHelloMessageIdentifier)
   {
     goto LABEL_5;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"id"];
-  v9 = [(HMDDataStreamControlProtocol *)self pendingHelloMessageIdentifier];
-  v10 = [v8 isEqual:v9];
+  v8 = [headerCopy objectForKeyedSubscript:@"id"];
+  pendingHelloMessageIdentifier2 = [(HMDDataStreamControlProtocol *)self pendingHelloMessageIdentifier];
+  v10 = [v8 isEqual:pendingHelloMessageIdentifier2];
 
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:@"status"];
+    v11 = [headerCopy objectForKeyedSubscript:@"status"];
     v12 = [v11 isEqual:&unk_283E75320];
   }
 
@@ -216,17 +216,17 @@ LABEL_5:
   return v12;
 }
 
-- (void)dataStream:(id)a3 didReceiveRequest:(id)a4 header:(id)a5 payload:(id)a6
+- (void)dataStream:(id)stream didReceiveRequest:(id)request header:(id)header payload:(id)payload
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 isEqual:@"hello"])
+  streamCopy = stream;
+  requestCopy = request;
+  headerCopy = header;
+  payloadCopy = payload;
+  if ([requestCopy isEqual:@"hello"])
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -237,14 +237,14 @@ LABEL_5:
     }
 
     objc_autoreleasePoolPop(v14);
-    [v10 sendResponseForRequestHeader:v12 payload:MEMORY[0x277CBEC10] status:0 completion:&__block_literal_global_278185];
+    [streamCopy sendResponseForRequestHeader:headerCopy payload:MEMORY[0x277CBEC10] status:0 completion:&__block_literal_global_278185];
   }
 
   else
   {
-    v18 = [v11 isEqual:@"version"];
+    v18 = [requestCopy isEqual:@"version"];
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     v22 = v21;
     if (v18)
@@ -258,19 +258,19 @@ LABEL_5:
       }
 
       objc_autoreleasePoolPop(v19);
-      v24 = [v13 objectForKey:@"version"];
+      v24 = [payloadCopy objectForKey:@"version"];
 
       if (v24)
       {
-        v25 = [v13 objectForKey:@"version"];
-        peerDataStreamProtocolVersion = v20->_peerDataStreamProtocolVersion;
-        v20->_peerDataStreamProtocolVersion = v25;
+        v25 = [payloadCopy objectForKey:@"version"];
+        peerDataStreamProtocolVersion = selfCopy2->_peerDataStreamProtocolVersion;
+        selfCopy2->_peerDataStreamProtocolVersion = v25;
       }
 
       v34 = @"version";
       v35[0] = &unk_283E75EB8;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
-      [v10 sendResponseForRequestHeader:v12 payload:v27 status:0 completion:&__block_literal_global_3_278187];
+      [streamCopy sendResponseForRequestHeader:headerCopy payload:v27 status:0 completion:&__block_literal_global_3_278187];
     }
 
     else
@@ -281,7 +281,7 @@ LABEL_5:
         v30 = 138543618;
         v31 = v28;
         v32 = 2112;
-        v33 = v11;
+        v33 = requestCopy;
         _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Control Protocol received unexpected request '%@'", &v30, 0x16u);
       }
 
@@ -292,12 +292,12 @@ LABEL_5:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataStreamDidOpen:(id)a3
+- (void)dataStreamDidOpen:(id)open
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  openCopy = open;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -308,14 +308,14 @@ LABEL_5:
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDDataStreamControlProtocol *)v6 _sendHelloMessageOnDataStream:v4];
+  [(HMDDataStreamControlProtocol *)selfCopy _sendHelloMessageOnDataStream:openCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDDataStreamControlProtocol)initWithLogIdentifier:(id)a3
+- (HMDDataStreamControlProtocol)initWithLogIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HMDDataStreamControlProtocol;
   v5 = [(HMDDataStreamControlProtocol *)&v12 init];
@@ -326,7 +326,7 @@ LABEL_5:
     v5->_pendingHelloMessageIdentifier = 0;
 
     *&v6->_helloMessageResponseReceived = 0;
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     logIdentifier = v6->_logIdentifier;
     v6->_logIdentifier = v8;
 

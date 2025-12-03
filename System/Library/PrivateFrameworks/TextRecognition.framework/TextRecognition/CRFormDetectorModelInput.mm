@@ -1,21 +1,21 @@
 @interface CRFormDetectorModelInput
-- (CRFormDetectorModelInput)initWithMLMultiArray:(id)a3;
+- (CRFormDetectorModelInput)initWithMLMultiArray:(id)array;
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation CRFormDetectorModelInput
 
-- (CRFormDetectorModelInput)initWithMLMultiArray:(id)a3
+- (CRFormDetectorModelInput)initWithMLMultiArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = CRFormDetectorModelInput;
   v6 = [(CRFormDetectorModelInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_array, a3);
+    objc_storeStrong(&v6->_array, array);
   }
 
   return v7;
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"img_input"])
+  if ([name isEqualToString:@"img_input"])
   {
     v4 = [MEMORY[0x1E695FE60] featureValueWithMultiArray:self->_array];
   }

@@ -1,71 +1,71 @@
 @interface _UITabSidebarContent
-+ (id)contentForAction:(id)a3 group:(id)a4;
-+ (id)contentForTab:(id)a3;
++ (id)contentForAction:(id)action group:(id)group;
++ (id)contentForTab:(id)tab;
 - (BOOL)_isTabContent;
-- (BOOL)isCompatibleWithContent:(id)a3;
+- (BOOL)isCompatibleWithContent:(id)content;
 - (BOOL)isEmptyGroup;
 @end
 
 @implementation _UITabSidebarContent
 
-+ (id)contentForTab:(id)a3
++ (id)contentForTab:(id)tab
 {
-  v3 = a3;
+  tabCopy = tab;
   v4 = objc_opt_new();
   v5 = v4[1];
-  v4[1] = v3;
+  v4[1] = tabCopy;
 
   return v4;
 }
 
-+ (id)contentForAction:(id)a3 group:(id)a4
++ (id)contentForAction:(id)action group:(id)group
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  groupCopy = group;
   v7 = objc_opt_new();
   v8 = v7[2];
-  v7[2] = v5;
-  v9 = v5;
+  v7[2] = actionCopy;
+  v9 = actionCopy;
 
   v10 = v7[3];
-  v7[3] = v6;
+  v7[3] = groupCopy;
 
   return v7;
 }
 
-- (BOOL)isCompatibleWithContent:(id)a3
+- (BOOL)isCompatibleWithContent:(id)content
 {
-  v4 = a3;
-  v5 = [v4 _isTabContent];
-  if (v5 != [(_UITabSidebarContent *)self _isTabContent])
+  contentCopy = content;
+  _isTabContent = [contentCopy _isTabContent];
+  if (_isTabContent != [(_UITabSidebarContent *)self _isTabContent])
   {
 LABEL_4:
     LOBYTE(self) = 0;
     goto LABEL_10;
   }
 
-  if ([v4 _isTabContent])
+  if ([contentCopy _isTabContent])
   {
-    v6 = [v4 tab];
+    v6 = [contentCopy tab];
     v7 = [(_UITabSidebarContent *)self tab];
 
     if (v6 == v7)
     {
-      v10 = [v4 isEmptyGroup];
-      LODWORD(self) = v10 ^ [(_UITabSidebarContent *)self isEmptyGroup]^ 1;
+      isEmptyGroup = [contentCopy isEmptyGroup];
+      LODWORD(self) = isEmptyGroup ^ [(_UITabSidebarContent *)self isEmptyGroup]^ 1;
       goto LABEL_10;
     }
 
     goto LABEL_4;
   }
 
-  v8 = [v4 action];
-  v9 = [(_UITabSidebarContent *)self action];
-  if (v8 == v9)
+  action = [contentCopy action];
+  action2 = [(_UITabSidebarContent *)self action];
+  if (action == action2)
   {
-    v11 = [v4 group];
-    v12 = [(_UITabSidebarContent *)self group];
-    LOBYTE(self) = v11 == v12;
+    group = [contentCopy group];
+    group2 = [(_UITabSidebarContent *)self group];
+    LOBYTE(self) = group == group2;
   }
 
   else
@@ -82,9 +82,9 @@ LABEL_10:
   v3 = [(_UITabSidebarContent *)self tab];
   if ([v3 _isGroup])
   {
-    v4 = [(_UITabSidebarContent *)self node];
-    v5 = [v4 children];
-    v6 = [v5 count] == 0;
+    node = [(_UITabSidebarContent *)self node];
+    children = [node children];
+    v6 = [children count] == 0;
   }
 
   else

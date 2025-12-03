@@ -1,30 +1,30 @@
 @interface PKTransitAppletHistoryRecord
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransitAppletHistoryRecord:(id)a3;
-- (PKTransitAppletHistoryRecord)initWithCoder:(id)a3;
-- (PKTransitAppletHistoryRecord)initWithDictionary:(id)a3;
-- (id)_transactionAmountsWithBalanceLabels:(id)a3 planLabels:(id)a4 unitDictionary:(id)a5;
-- (id)_transactionCommutePlanUnitsWithPlanLabels:(id)a3;
-- (id)concreteTransactionWithCurrency:(id)a3 balanceLabels:(id)a4 unitDictionary:(id)a5 planLabels:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransitAppletHistoryRecord:(id)record;
+- (PKTransitAppletHistoryRecord)initWithCoder:(id)coder;
+- (PKTransitAppletHistoryRecord)initWithDictionary:(id)dictionary;
+- (id)_transactionAmountsWithBalanceLabels:(id)labels planLabels:(id)planLabels unitDictionary:(id)dictionary;
+- (id)_transactionCommutePlanUnitsWithPlanLabels:(id)labels;
+- (id)concreteTransactionWithCurrency:(id)currency balanceLabels:(id)labels unitDictionary:(id)dictionary planLabels:(id)planLabels;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)felicaHistoryRecord;
 - (int64_t)transitTransactionSubtype;
 - (unint64_t)hash;
-- (void)_setTransactionHistoryDetailsFromString:(id)a3;
+- (void)_setTransactionHistoryDetailsFromString:(id)string;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransitAppletHistoryRecord
 
 - (int64_t)transitTransactionSubtype
 {
-  v3 = [(PKTransitAppletHistoryRecord *)self subtype];
-  if (v3 > 63)
+  subtype = [(PKTransitAppletHistoryRecord *)self subtype];
+  if (subtype > 63)
   {
-    if (v3 > 127)
+    if (subtype > 127)
     {
-      if ((v3 - 128) < 3)
+      if ((subtype - 128) < 3)
       {
         return 513;
       }
@@ -32,17 +32,17 @@
 
     else
     {
-      if ((v3 - 64) < 2)
+      if ((subtype - 64) < 2)
       {
         return 515;
       }
 
-      if (v3 == 66)
+      if (subtype == 66)
       {
         return 514;
       }
 
-      if (v3 == 67)
+      if (subtype == 67)
       {
         return 518;
       }
@@ -51,9 +51,9 @@
     goto LABEL_34;
   }
 
-  if (v3 <= 3)
+  if (subtype <= 3)
   {
-    switch(v3)
+    switch(subtype)
     {
       case 1:
         if ([(PKTransitAppletHistoryRecord *)self detail]== 64)
@@ -69,15 +69,15 @@
       case 2:
         return 3;
       case 3:
-        v5 = [(PKTransitAppletHistoryRecord *)self detail];
-        if (v5)
+        detail = [(PKTransitAppletHistoryRecord *)self detail];
+        if (detail)
         {
-          if (v5 == 128)
+          if (detail == 128)
           {
             return 258;
           }
 
-          if (v5 == 129)
+          if (detail == 129)
           {
             return 257;
           }
@@ -87,26 +87,26 @@
     }
 
 LABEL_34:
-    v7 = [(PKTransitAppletHistoryRecord *)self type];
-    if (v7 > 4)
+    type = [(PKTransitAppletHistoryRecord *)self type];
+    if (type > 4)
     {
       return 1;
     }
 
     else
     {
-      return qword_1ADB99B10[v7];
+      return qword_1ADB99B10[type];
     }
   }
 
-  if (v3 > 5)
+  if (subtype > 5)
   {
-    if (v3 == 6)
+    if (subtype == 6)
     {
       return 7;
     }
 
-    if (v3 == 7)
+    if (subtype == 7)
     {
       return 8;
     }
@@ -114,23 +114,23 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (v3 == 4)
+  if (subtype == 4)
   {
-    v6 = [(PKTransitAppletHistoryRecord *)self detail];
-    if (v6 > 192)
+    detail2 = [(PKTransitAppletHistoryRecord *)self detail];
+    if (detail2 > 192)
     {
-      if (v6 == 194)
+      if (detail2 == 194)
       {
         return 261;
       }
 
-      if (v6 == 193)
+      if (detail2 == 193)
       {
         return 260;
       }
     }
 
-    else if (v6 == 192)
+    else if (detail2 == 192)
     {
       return 259;
     }
@@ -149,10 +149,10 @@ LABEL_34:
   }
 }
 
-- (id)_transactionCommutePlanUnitsWithPlanLabels:(id)a3
+- (id)_transactionCommutePlanUnitsWithPlanLabels:(id)labels
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  labelsCopy = labels;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
@@ -173,11 +173,11 @@ LABEL_34:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) commutePlanIdentifier];
-        if (v11)
+        commutePlanIdentifier = [*(*(&v16 + 1) + 8 * i) commutePlanIdentifier];
+        if (commutePlanIdentifier)
         {
-          v12 = [v4 objectForKeyedSubscript:v11];
-          v13 = [[PKTransactionCommutePlanUnit alloc] initWithTimedPlanIdentifier:v11 label:v12];
+          v12 = [labelsCopy objectForKeyedSubscript:commutePlanIdentifier];
+          v13 = [[PKTransactionCommutePlanUnit alloc] initWithTimedPlanIdentifier:commutePlanIdentifier label:v12];
           [v5 addObject:v13];
         }
       }
@@ -193,12 +193,12 @@ LABEL_34:
   return v14;
 }
 
-- (id)_transactionAmountsWithBalanceLabels:(id)a3 planLabels:(id)a4 unitDictionary:(id)a5
+- (id)_transactionAmountsWithBalanceLabels:(id)labels planLabels:(id)planLabels unitDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v32 = a4;
-  v35 = a5;
+  labelsCopy = labels;
+  planLabelsCopy = planLabels;
+  dictionaryCopy = dictionary;
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v39 = 0u;
   v40 = 0u;
@@ -219,25 +219,25 @@ LABEL_34:
         }
 
         v9 = *(*(&v39 + 1) + 8 * i);
-        v10 = [v9 balanceIdentifier];
-        if (v10)
+        balanceIdentifier = [v9 balanceIdentifier];
+        if (balanceIdentifier)
         {
-          v11 = [v36 objectForKeyedSubscript:v10];
+          v11 = [labelsCopy objectForKeyedSubscript:balanceIdentifier];
           v12 = v11;
           if (!v11 || (v13 = [v11 length], v12, !v13))
           {
-            v14 = [v32 objectForKeyedSubscript:v10];
+            v14 = [planLabelsCopy objectForKeyedSubscript:balanceIdentifier];
 
             v12 = v14;
           }
 
-          v15 = [v35 objectForKeyedSubscript:v10];
-          v16 = [v15 integerValue];
-          v17 = [v9 amount];
-          v18 = [v9 currency];
-          v19 = [v9 exponent];
-          v20 = PKLocalizedPaymentUnitKeyForType(v16);
-          v21 = v18;
+          v15 = [dictionaryCopy objectForKeyedSubscript:balanceIdentifier];
+          integerValue = [v15 integerValue];
+          amount = [v9 amount];
+          currency = [v9 currency];
+          exponent = [v9 exponent];
+          v20 = PKLocalizedPaymentUnitKeyForType(integerValue);
+          v21 = currency;
           v22 = v21;
           if (v21 == @"XXX")
           {
@@ -253,10 +253,10 @@ LABEL_15:
               goto LABEL_20;
             }
 
-            v24 = [v17 pk_absoluteValue];
-            v25 = PKLocalizedPaymentString(v20, &cfstr_Lu.isa, [v24 unsignedLongValue]);
+            pk_absoluteValue = [amount pk_absoluteValue];
+            v25 = PKLocalizedPaymentString(v20, &cfstr_Lu.isa, [pk_absoluteValue unsignedLongValue]);
 
-            v26 = [[PKCurrencyAmount alloc] initWithAmount:v17 exponent:v19 preformattedString:v25];
+            v26 = [[PKCurrencyAmount alloc] initWithAmount:amount exponent:exponent preformattedString:v25];
           }
 
           else
@@ -274,9 +274,9 @@ LABEL_15:
 
 LABEL_18:
                 v27 = PKLocalizedPaymentString(&cfstr_TransactionPen.isa, 0);
-                v26 = [[PKCurrencyAmount alloc] initWithAmount:v17 exponent:v19 preformattedString:v27];
+                v26 = [[PKCurrencyAmount alloc] initWithAmount:amount exponent:exponent preformattedString:v27];
 
-                v28 = [[PKTransactionAmount alloc] initWithPendingCurrencyAmount:v26 unitIdentifier:v10];
+                v28 = [[PKTransactionAmount alloc] initWithPendingCurrencyAmount:v26 unitIdentifier:balanceIdentifier];
 LABEL_22:
                 v29 = v28;
                 [v34 addObject:v28];
@@ -290,7 +290,7 @@ LABEL_22:
             }
 
 LABEL_20:
-            v26 = [[PKCurrencyAmount alloc] initWithAmount:v17 currency:v22 exponent:v19];
+            v26 = [[PKCurrencyAmount alloc] initWithAmount:amount currency:v22 exponent:exponent];
           }
 
           v28 = [[PKTransactionAmount alloc] initWithCurrencyAmount:v26 label:v12];
@@ -311,70 +311,70 @@ LABEL_23:
   return v30;
 }
 
-- (PKTransitAppletHistoryRecord)initWithDictionary:(id)a3
+- (PKTransitAppletHistoryRecord)initWithDictionary:(id)dictionary
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v74.receiver = self;
   v74.super_class = PKTransitAppletHistoryRecord;
   v5 = [(PKTransitAppletHistoryRecord *)&v74 init];
   v6 = v5;
-  if (!v4 || !v5)
+  if (!dictionaryCopy || !v5)
   {
     goto LABEL_46;
   }
 
-  v7 = [v4 PKNumberForKey:@"SerialNumber"];
+  v7 = [dictionaryCopy PKNumberForKey:@"SerialNumber"];
   v8 = [v7 copy];
   historySequenceNumber = v6->_historySequenceNumber;
   v6->_historySequenceNumber = v8;
 
-  v10 = [v4 PKDateComponentsForKey:@"TransactionTime"];
+  v10 = [dictionaryCopy PKDateComponentsForKey:@"TransactionTime"];
   v11 = PKDateFromDateComponents(v10);
   time = v6->_time;
   v6->_time = v11;
 
-  v13 = [v4 PKDecimalNumberForKey:@"FinalBalance"];
+  v13 = [dictionaryCopy PKDecimalNumberForKey:@"FinalBalance"];
   v14 = [v13 copy];
   balance = v6->_balance;
   v6->_balance = v14;
 
-  v16 = [v4 PKNumberForKey:@"PointsBalance"];
+  v16 = [dictionaryCopy PKNumberForKey:@"PointsBalance"];
   v17 = [v16 copy];
   loyaltyBalance = v6->_loyaltyBalance;
   v6->_loyaltyBalance = v17;
 
-  v19 = [v4 PKNumberForKey:@"CityCode"];
+  v19 = [dictionaryCopy PKNumberForKey:@"CityCode"];
   v20 = [v19 copy];
   cityCode = v6->_cityCode;
   v6->_cityCode = v20;
 
-  v22 = [v4 PKStringForKey:@"TypeDetail"];
+  v22 = [dictionaryCopy PKStringForKey:@"TypeDetail"];
   v23 = [v22 copy];
   transitDetail = v6->_transitDetail;
   v6->_transitDetail = v23;
 
   [(PKTransitAppletHistoryRecord *)v6 _setTransactionHistoryDetailsFromString:v6->_transitDetail];
-  v25 = [v4 PKDecimalNumberForKey:@"Amount"];
+  v25 = [dictionaryCopy PKDecimalNumberForKey:@"Amount"];
   v26 = [v25 copy];
   amount = v6->_amount;
   v6->_amount = v26;
 
-  v28 = [v4 PKNumberForKey:@"PointsAmount"];
+  v28 = [dictionaryCopy PKNumberForKey:@"PointsAmount"];
   v29 = [v28 copy];
   loyaltyAmount = v6->_loyaltyAmount;
   v6->_loyaltyAmount = v29;
 
-  v31 = [v4 PKDataForKey:@"StartStation"];
+  v31 = [dictionaryCopy PKDataForKey:@"StartStation"];
   startStation = v6->_startStation;
   v6->_startStation = v31;
 
-  v33 = [v4 PKDataForKey:@"EndStation"];
+  v33 = [dictionaryCopy PKDataForKey:@"EndStation"];
   endStation = v6->_endStation;
   v6->_endStation = v33;
 
   v6->_recordType = 0;
-  v35 = [v4 PKStringForKey:@"IgnoreReason"];
+  v35 = [dictionaryCopy PKStringForKey:@"IgnoreReason"];
   v36 = v35;
   if (v35)
   {
@@ -427,7 +427,7 @@ LABEL_14:
 LABEL_16:
   v64 = v36;
   v6->_transitModifiers = 0;
-  v42 = [v4 PKArrayContaining:objc_opt_class() forKey:@"TypeModifiers"];
+  v42 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"TypeModifiers"];
   v43 = v42;
   if (v42)
   {
@@ -459,7 +459,7 @@ LABEL_16:
 
   v63 = v43;
   v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v45 = [v4 PKArrayContaining:objc_opt_class() forKey:@"Amounts"];
+  v45 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"Amounts"];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
@@ -496,8 +496,8 @@ LABEL_16:
   v6->_amounts = v51;
 
   v53 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v65 = v4;
-  v54 = [v4 PKArrayContaining:objc_opt_class() forKey:@"CommutePlans"];
+  v65 = dictionaryCopy;
+  v54 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"CommutePlans"];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
@@ -533,19 +533,19 @@ LABEL_16:
   plans = v6->_plans;
   v6->_plans = v60;
 
-  v4 = v65;
+  dictionaryCopy = v65;
 LABEL_46:
 
   return v6;
 }
 
-- (void)_setTransactionHistoryDetailsFromString:(id)a3
+- (void)_setTransactionHistoryDetailsFromString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v8 = v4;
-    if ([v4 isEqual:@"Transit"])
+    v8 = stringCopy;
+    if ([stringCopy isEqual:@"Transit"])
     {
       v5 = 1;
 LABEL_4:
@@ -553,7 +553,7 @@ LABEL_4:
       self->_detail = 0;
       self->_type = v5;
 LABEL_11:
-      v4 = v8;
+      stringCopy = v8;
       goto LABEL_71;
     }
 
@@ -763,7 +763,7 @@ LABEL_59:
     }
 
     [v8 isEqual:@"Unknown"];
-    v4 = v8;
+    stringCopy = v8;
   }
 
   self->_type = 0;
@@ -772,68 +772,68 @@ LABEL_59:
 LABEL_71:
 }
 
-- (PKTransitAppletHistoryRecord)initWithCoder:(id)a3
+- (PKTransitAppletHistoryRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKTransitAppletHistoryRecord *)self initWithDictionary:0];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"historySequenceNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"historySequenceNumber"];
     historySequenceNumber = v5->_historySequenceNumber;
     v5->_historySequenceNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
     time = v5->_time;
     v5->_time = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"transactionType"];
-    v5->_subtype = [v4 decodeIntegerForKey:@"transactionSubtype"];
-    v5->_detail = [v4 decodeIntegerForKey:@"transactionDetail"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transitDetail"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"transactionType"];
+    v5->_subtype = [coderCopy decodeIntegerForKey:@"transactionSubtype"];
+    v5->_detail = [coderCopy decodeIntegerForKey:@"transactionDetail"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transitDetail"];
     transitDetail = v5->_transitDetail;
     v5->_transitDetail = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
     balance = v5->_balance;
     v5->_balance = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loyaltyBalance"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loyaltyBalance"];
     loyaltyBalance = v5->_loyaltyBalance;
     v5->_loyaltyBalance = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loyaltyAmount"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loyaltyAmount"];
     loyaltyAmount = v5->_loyaltyAmount;
     v5->_loyaltyAmount = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startStation"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startStation"];
     startStation = v5->_startStation;
     v5->_startStation = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endStation"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endStation"];
     endStation = v5->_endStation;
     v5->_endStation = v22;
 
-    v5->_recordType = [v4 decodeIntegerForKey:@"recordType"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cityCode"];
+    v5->_recordType = [coderCopy decodeIntegerForKey:@"recordType"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cityCode"];
     cityCode = v5->_cityCode;
     v5->_cityCode = v24;
 
-    v5->_transitModifiers = [v4 decodeIntegerForKey:@"transitModifiers"];
+    v5->_transitModifiers = [coderCopy decodeIntegerForKey:@"transitModifiers"];
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"amounts"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"amounts"];
     amounts = v5->_amounts;
     v5->_amounts = v29;
 
     v31 = MEMORY[0x1E695DFD8];
     v32 = objc_opt_class();
     v33 = [v31 setWithObjects:{v32, objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"plans"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"plans"];
     plans = v5->_plans;
     v5->_plans = v34;
   }
@@ -841,59 +841,59 @@ LABEL_71:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSNumber *)self->_historySequenceNumber copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSNumber *)self->_historySequenceNumber copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSDate *)self->_time copyWithZone:a3];
+  v8 = [(NSDate *)self->_time copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
   v5[3] = self->_type;
   v5[4] = self->_subtype;
   v5[5] = self->_detail;
-  v10 = [(NSString *)self->_transitDetail copyWithZone:a3];
+  v10 = [(NSString *)self->_transitDetail copyWithZone:zone];
   v11 = v5[16];
   v5[16] = v10;
 
-  v12 = [(NSDecimalNumber *)self->_balance copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_balance copyWithZone:zone];
   v13 = v5[7];
   v5[7] = v12;
 
-  v14 = [(NSNumber *)self->_loyaltyBalance copyWithZone:a3];
+  v14 = [(NSNumber *)self->_loyaltyBalance copyWithZone:zone];
   v15 = v5[8];
   v5[8] = v14;
 
-  v16 = [(NSDecimalNumber *)self->_amount copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_amount copyWithZone:zone];
   v17 = v5[9];
   v5[9] = v16;
 
-  v18 = [(NSNumber *)self->_loyaltyAmount copyWithZone:a3];
+  v18 = [(NSNumber *)self->_loyaltyAmount copyWithZone:zone];
   v19 = v5[10];
   v5[10] = v18;
 
-  v20 = [(NSData *)self->_startStation copyWithZone:a3];
+  v20 = [(NSData *)self->_startStation copyWithZone:zone];
   v21 = v5[12];
   v5[12] = v20;
 
-  v22 = [(NSData *)self->_endStation copyWithZone:a3];
+  v22 = [(NSData *)self->_endStation copyWithZone:zone];
   v23 = v5[13];
   v5[13] = v22;
 
   v5[17] = self->_recordType;
-  v24 = [(NSNumber *)self->_cityCode copyWithZone:a3];
+  v24 = [(NSNumber *)self->_cityCode copyWithZone:zone];
   v25 = v5[11];
   v5[11] = v24;
 
   v5[1] = self->_transitModifiers;
-  v26 = [(NSArray *)self->_amounts copyWithZone:a3];
+  v26 = [(NSArray *)self->_amounts copyWithZone:zone];
   v27 = v5[14];
   v5[14] = v26;
 
-  v28 = [(NSArray *)self->_plans copyWithZone:a3];
+  v28 = [(NSArray *)self->_plans copyWithZone:zone];
   v29 = v5[15];
   v5[15] = v28;
 
@@ -907,51 +907,51 @@ LABEL_71:
   [(PKTransitAppletHistoryRecord *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   historySequenceNumber = self->_historySequenceNumber;
-  v5 = a3;
-  [v5 encodeObject:historySequenceNumber forKey:@"historySequenceNumber"];
-  [v5 encodeObject:self->_time forKey:@"time"];
-  [v5 encodeInteger:self->_type forKey:@"transactionType"];
-  [v5 encodeInteger:self->_subtype forKey:@"transactionSubtype"];
-  [v5 encodeInteger:self->_detail forKey:@"transactionDetail"];
-  [v5 encodeObject:self->_transitDetail forKey:@"transitDetail"];
-  [v5 encodeObject:self->_balance forKey:@"balance"];
-  [v5 encodeObject:self->_loyaltyBalance forKey:@"loyaltyBalance"];
-  [v5 encodeObject:self->_amount forKey:@"amount"];
-  [v5 encodeObject:self->_loyaltyAmount forKey:@"loyaltyAmount"];
-  [v5 encodeObject:self->_startStation forKey:@"startStation"];
-  [v5 encodeObject:self->_endStation forKey:@"endStation"];
-  [v5 encodeInteger:self->_recordType forKey:@"recordType"];
-  [v5 encodeObject:self->_cityCode forKey:@"cityCode"];
-  [v5 encodeInteger:self->_transitModifiers forKey:@"transitModifiers"];
-  [v5 encodeObject:self->_amounts forKey:@"amounts"];
-  [v5 encodeObject:self->_plans forKey:@"plans"];
+  coderCopy = coder;
+  [coderCopy encodeObject:historySequenceNumber forKey:@"historySequenceNumber"];
+  [coderCopy encodeObject:self->_time forKey:@"time"];
+  [coderCopy encodeInteger:self->_type forKey:@"transactionType"];
+  [coderCopy encodeInteger:self->_subtype forKey:@"transactionSubtype"];
+  [coderCopy encodeInteger:self->_detail forKey:@"transactionDetail"];
+  [coderCopy encodeObject:self->_transitDetail forKey:@"transitDetail"];
+  [coderCopy encodeObject:self->_balance forKey:@"balance"];
+  [coderCopy encodeObject:self->_loyaltyBalance forKey:@"loyaltyBalance"];
+  [coderCopy encodeObject:self->_amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_loyaltyAmount forKey:@"loyaltyAmount"];
+  [coderCopy encodeObject:self->_startStation forKey:@"startStation"];
+  [coderCopy encodeObject:self->_endStation forKey:@"endStation"];
+  [coderCopy encodeInteger:self->_recordType forKey:@"recordType"];
+  [coderCopy encodeObject:self->_cityCode forKey:@"cityCode"];
+  [coderCopy encodeInteger:self->_transitModifiers forKey:@"transitModifiers"];
+  [coderCopy encodeObject:self->_amounts forKey:@"amounts"];
+  [coderCopy encodeObject:self->_plans forKey:@"plans"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransitAppletHistoryRecord *)self isEqualToTransitAppletHistoryRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransitAppletHistoryRecord *)self isEqualToTransitAppletHistoryRecord:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTransitAppletHistoryRecord:(id)a3
+- (BOOL)isEqualToTransitAppletHistoryRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   historySequenceNumber = self->_historySequenceNumber;
-  v6 = v4[2];
+  v6 = recordCopy[2];
   if (historySequenceNumber)
   {
     v7 = v6 == 0;
@@ -980,7 +980,7 @@ LABEL_71:
   }
 
   time = self->_time;
-  v10 = v4[6];
+  v10 = recordCopy[6];
   if (time && v10)
   {
     if (([(NSDate *)time isEqual:?]& 1) == 0)
@@ -994,12 +994,12 @@ LABEL_71:
     goto LABEL_68;
   }
 
-  if (self->_type != v4[3] || self->_subtype != v4[4] || self->_detail != v4[5])
+  if (self->_type != recordCopy[3] || self->_subtype != recordCopy[4] || self->_detail != recordCopy[5])
   {
     goto LABEL_68;
   }
 
-  v11 = v4[16];
+  v11 = recordCopy[16];
   v12 = self->_transitDetail;
   v13 = v11;
   v14 = v13;
@@ -1024,7 +1024,7 @@ LABEL_71:
   }
 
   balance = self->_balance;
-  v17 = v4[7];
+  v17 = recordCopy[7];
   if (balance && v17)
   {
     if (([(NSDecimalNumber *)balance isEqual:?]& 1) == 0)
@@ -1039,7 +1039,7 @@ LABEL_71:
   }
 
   loyaltyBalance = self->_loyaltyBalance;
-  v19 = v4[8];
+  v19 = recordCopy[8];
   if (loyaltyBalance && v19)
   {
     if (([(NSNumber *)loyaltyBalance isEqual:?]& 1) == 0)
@@ -1054,7 +1054,7 @@ LABEL_71:
   }
 
   amount = self->_amount;
-  v21 = v4[9];
+  v21 = recordCopy[9];
   if (amount && v21)
   {
     if (([(NSDecimalNumber *)amount isEqual:?]& 1) == 0)
@@ -1069,7 +1069,7 @@ LABEL_71:
   }
 
   loyaltyAmount = self->_loyaltyAmount;
-  v23 = v4[10];
+  v23 = recordCopy[10];
   if (loyaltyAmount && v23)
   {
     if (([(NSNumber *)loyaltyAmount isEqual:?]& 1) == 0)
@@ -1084,7 +1084,7 @@ LABEL_71:
   }
 
   startStation = self->_startStation;
-  v25 = v4[12];
+  v25 = recordCopy[12];
   if (startStation && v25)
   {
     if (([(NSData *)startStation isEqual:?]& 1) == 0)
@@ -1099,7 +1099,7 @@ LABEL_71:
   }
 
   endStation = self->_endStation;
-  v27 = v4[13];
+  v27 = recordCopy[13];
   if (endStation && v27)
   {
     if (([(NSData *)endStation isEqual:?]& 1) == 0)
@@ -1113,13 +1113,13 @@ LABEL_71:
     goto LABEL_68;
   }
 
-  if (self->_recordType != v4[17])
+  if (self->_recordType != recordCopy[17])
   {
     goto LABEL_68;
   }
 
   cityCode = self->_cityCode;
-  v29 = v4[11];
+  v29 = recordCopy[11];
   if (cityCode && v29)
   {
     if (([(NSNumber *)cityCode isEqual:?]& 1) == 0)
@@ -1133,13 +1133,13 @@ LABEL_71:
     goto LABEL_68;
   }
 
-  if (self->_transitModifiers != v4[1])
+  if (self->_transitModifiers != recordCopy[1])
   {
     goto LABEL_68;
   }
 
   amounts = self->_amounts;
-  v31 = v4[14];
+  v31 = recordCopy[14];
   if (!amounts || !v31)
   {
     if (amounts == v31)
@@ -1159,7 +1159,7 @@ LABEL_68:
 
 LABEL_64:
   plans = self->_plans;
-  v33 = v4[15];
+  v33 = recordCopy[15];
   if (plans && v33)
   {
     v34 = [(NSArray *)plans isEqual:?];
@@ -1200,39 +1200,39 @@ LABEL_69:
   return v9;
 }
 
-- (id)concreteTransactionWithCurrency:(id)a3 balanceLabels:(id)a4 unitDictionary:(id)a5 planLabels:(id)a6
+- (id)concreteTransactionWithCurrency:(id)currency balanceLabels:(id)labels unitDictionary:(id)dictionary planLabels:(id)planLabels
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  planLabelsCopy = planLabels;
+  dictionaryCopy = dictionary;
+  labelsCopy = labels;
+  currencyCopy = currency;
   v14 = [PKPaymentTransaction paymentTransactionWithSource:1];
   [v14 setOriginatedByDevice:1];
   [v14 setTransactionType:2];
   [v14 setTransitType:{-[PKTransitAppletHistoryRecord transitTransactionSubtype](self, "transitTransactionSubtype")}];
   [v14 setTransitModifiers:{-[PKTransitAppletHistoryRecord transitTransactionModifier](self, "transitTransactionModifier")}];
-  v15 = [(PKTransitAppletHistoryRecord *)self startStation];
-  [v14 setStartStationCode:v15];
+  startStation = [(PKTransitAppletHistoryRecord *)self startStation];
+  [v14 setStartStationCode:startStation];
 
-  v16 = [(PKTransitAppletHistoryRecord *)self endStation];
-  [v14 setEndStationCode:v16];
+  endStation = [(PKTransitAppletHistoryRecord *)self endStation];
+  [v14 setEndStationCode:endStation];
 
-  v17 = [(PKTransitAppletHistoryRecord *)self time];
-  [v14 setTransactionDate:v17];
+  time = [(PKTransitAppletHistoryRecord *)self time];
+  [v14 setTransactionDate:time];
 
-  v18 = [(PKTransitAppletHistoryRecord *)self cityCode];
-  [v14 setCityCode:v18];
+  cityCode = [(PKTransitAppletHistoryRecord *)self cityCode];
+  [v14 setCityCode:cityCode];
 
-  [v14 setCurrencyCode:v13];
-  v19 = [(PKTransitAppletHistoryRecord *)self _transactionAmountsWithBalanceLabels:v12 planLabels:v10 unitDictionary:v11];
+  [v14 setCurrencyCode:currencyCopy];
+  v19 = [(PKTransitAppletHistoryRecord *)self _transactionAmountsWithBalanceLabels:labelsCopy planLabels:planLabelsCopy unitDictionary:dictionaryCopy];
 
   [v14 setAmounts:v19];
-  v20 = [(PKTransitAppletHistoryRecord *)self _transactionCommutePlanUnitsWithPlanLabels:v10];
+  v20 = [(PKTransitAppletHistoryRecord *)self _transactionCommutePlanUnitsWithPlanLabels:planLabelsCopy];
 
   [v14 setPlans:v20];
-  v21 = [(PKTransitAppletHistoryRecord *)self amount];
-  v22 = [MEMORY[0x1E696AB90] zero];
-  if ([v21 isEqualToNumber:v22])
+  amount = [(PKTransitAppletHistoryRecord *)self amount];
+  zero = [MEMORY[0x1E696AB90] zero];
+  if ([amount isEqualToNumber:zero])
   {
     if ([(PKTransitAppletHistoryRecord *)self recordType]== 1)
     {
@@ -1248,9 +1248,9 @@ LABEL_69:
     v23 = 0;
   }
 
-  if (v21 && !v23)
+  if (amount && !v23)
   {
-    [v14 setAmount:v21];
+    [v14 setAmount:amount];
   }
 
 LABEL_9:
@@ -1263,15 +1263,15 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

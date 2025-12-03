@@ -6,8 +6,8 @@
 
 - (BOOL)isExpired
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [v2 compare:a1] == 1;
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [date compare:self] == 1;
 
   return v3;
 }

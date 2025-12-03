@@ -1,21 +1,21 @@
 @interface ICRadioContentReference
-+ (id)storeItemWithIdentifier:(id)a3;
-- (ICRadioContentReference)initWithCoder:(id)a3;
++ (id)storeItemWithIdentifier:(id)identifier;
+- (ICRadioContentReference)initWithCoder:(id)coder;
 @end
 
 @implementation ICRadioContentReference
 
-- (ICRadioContentReference)initWithCoder:(id)a3
+- (ICRadioContentReference)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ICRadioContentReference;
   return [(ICRadioContentReference *)&v4 init];
 }
 
-+ (id)storeItemWithIdentifier:(id)a3
++ (id)storeItemWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[ICRadioStoreContentReference alloc] initWithStoreIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[ICRadioStoreContentReference alloc] initWithStoreIdentifier:identifierCopy];
 
   return v4;
 }

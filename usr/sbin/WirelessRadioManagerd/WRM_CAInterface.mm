@@ -1,14 +1,14 @@
 @interface WRM_CAInterface
-+ (void)sendCAEvent:(id)a3 payload:(id)a4;
-+ (void)sendCAEventLazy:(id)a3 payloadBuilder:(id)a4;
++ (void)sendCAEvent:(id)event payload:(id)payload;
++ (void)sendCAEventLazy:(id)lazy payloadBuilder:(id)builder;
 @end
 
 @implementation WRM_CAInterface
 
-+ (void)sendCAEvent:(id)a3 payload:(id)a4
++ (void)sendCAEvent:(id)event payload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   v7 = [NSString stringWithUTF8String:CASendEventOptionKeyLogPayload];
   v8 = v7;
   if (v7)
@@ -26,10 +26,10 @@
   AnalyticsSendEventWithOptions();
 }
 
-+ (void)sendCAEventLazy:(id)a3 payloadBuilder:(id)a4
++ (void)sendCAEventLazy:(id)lazy payloadBuilder:(id)builder
 {
-  v5 = a3;
-  v6 = a4;
+  lazyCopy = lazy;
+  builderCopy = builder;
   v7 = [NSString stringWithUTF8String:CASendEventOptionKeyLogPayload];
   v8 = v7;
   if (v7)

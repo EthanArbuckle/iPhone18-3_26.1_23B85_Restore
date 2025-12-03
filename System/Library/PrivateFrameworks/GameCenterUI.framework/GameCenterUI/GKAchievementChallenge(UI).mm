@@ -12,18 +12,18 @@
 
 - (id)alertGoalText
 {
-  v1 = [a1 achievement];
-  v2 = [v1 title];
+  achievement = [self achievement];
+  title = [achievement title];
 
-  return v2;
+  return title;
 }
 
 - (id)listTitleText
 {
-  v1 = [a1 achievement];
-  v2 = [v1 title];
+  achievement = [self achievement];
+  title = [achievement title];
 
-  return v2;
+  return title;
 }
 
 - (id)listGoalText
@@ -31,8 +31,8 @@
   v2 = MEMORY[0x277CCACA8];
   v3 = GKGameCenterUIFrameworkBundle();
   v4 = GKGetLocalizedStringFromTableInBundle();
-  v5 = [a1 issuingPlayer];
-  v6 = [v5 displayNameWithOptions:0];
+  issuingPlayer = [self issuingPlayer];
+  v6 = [issuingPlayer displayNameWithOptions:0];
   v7 = [v2 stringWithFormat:v4, v6];
 
   return v7;
@@ -40,38 +40,38 @@
 
 - (id)composeGoalText
 {
-  v1 = [a1 achievement];
-  v2 = [v1 unachievedDescription];
-  if (!v2)
+  achievement = [self achievement];
+  unachievedDescription = [achievement unachievedDescription];
+  if (!unachievedDescription)
   {
-    v2 = [v1 title];
+    unachievedDescription = [achievement title];
   }
 
-  return v2;
+  return unachievedDescription;
 }
 
 - (id)iconSource
 {
-  v0 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v1 = [v0 untreatedAchievementImageSource];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  untreatedAchievementImageSource = [mEMORY[0x277D0C8C8] untreatedAchievementImageSource];
 
-  return v1;
+  return untreatedAchievementImageSource;
 }
 
 - (id)iconURLString
 {
-  v1 = [a1 achievement];
-  v2 = [v1 imageURL];
+  achievement = [self achievement];
+  imageURL = [achievement imageURL];
 
-  return v2;
+  return imageURL;
 }
 
 - (id)smallIconURLString
 {
-  v1 = [a1 achievement];
-  v2 = [v1 imageURL];
+  achievement = [self achievement];
+  imageURL = [achievement imageURL];
 
-  return v2;
+  return imageURL;
 }
 
 @end

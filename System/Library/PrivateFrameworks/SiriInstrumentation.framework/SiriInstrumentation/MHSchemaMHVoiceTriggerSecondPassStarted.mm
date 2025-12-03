@@ -1,49 +1,49 @@
 @interface MHSchemaMHVoiceTriggerSecondPassStarted
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHVoiceTriggerSecondPassStarted)initWithDictionary:(id)a3;
-- (MHSchemaMHVoiceTriggerSecondPassStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHVoiceTriggerSecondPassStarted)initWithDictionary:(id)dictionary;
+- (MHSchemaMHVoiceTriggerSecondPassStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addChannelSelectionScores:(id)a3;
-- (void)setHasEarlyDetectFiredTime:(BOOL)a3;
-- (void)setHasEarlyDetectFiredTimeOffsetInNs:(BOOL)a3;
-- (void)setHasFirstPassChannelSelectionDelayNs:(BOOL)a3;
-- (void)setHasFirstPassEndSampleCount:(BOOL)a3;
-- (void)setHasFirstPassFireSampleCount:(BOOL)a3;
-- (void)setHasFirstPassInfoDispatchTimeInNs:(BOOL)a3;
-- (void)setHasFirstPassInfoReceptionTimeInNs:(BOOL)a3;
-- (void)setHasFirstPassMasterChannelScoreBoost:(BOOL)a3;
-- (void)setHasFirstPassOnsetChannel:(BOOL)a3;
-- (void)setHasFirstPassOnsetScore:(BOOL)a3;
-- (void)setHasFirstPassPrimaryChannelScoreBoost:(BOOL)a3;
-- (void)setHasFirstPassScore:(BOOL)a3;
-- (void)setHasFirstPassStartSampleCount:(BOOL)a3;
-- (void)setHasFirstPassTriggerSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addChannelSelectionScores:(id)scores;
+- (void)setHasEarlyDetectFiredTime:(BOOL)time;
+- (void)setHasEarlyDetectFiredTimeOffsetInNs:(BOOL)ns;
+- (void)setHasFirstPassChannelSelectionDelayNs:(BOOL)ns;
+- (void)setHasFirstPassEndSampleCount:(BOOL)count;
+- (void)setHasFirstPassFireSampleCount:(BOOL)count;
+- (void)setHasFirstPassInfoDispatchTimeInNs:(BOOL)ns;
+- (void)setHasFirstPassInfoReceptionTimeInNs:(BOOL)ns;
+- (void)setHasFirstPassMasterChannelScoreBoost:(BOOL)boost;
+- (void)setHasFirstPassOnsetChannel:(BOOL)channel;
+- (void)setHasFirstPassOnsetScore:(BOOL)score;
+- (void)setHasFirstPassPrimaryChannelScoreBoost:(BOOL)boost;
+- (void)setHasFirstPassScore:(BOOL)score;
+- (void)setHasFirstPassStartSampleCount:(BOOL)count;
+- (void)setHasFirstPassTriggerSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHVoiceTriggerSecondPassStarted
 
-- (MHSchemaMHVoiceTriggerSecondPassStarted)initWithDictionary:(id)a3
+- (MHSchemaMHVoiceTriggerSecondPassStarted)initWithDictionary:(id)dictionary
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = MHSchemaMHVoiceTriggerSecondPassStarted;
   v5 = [(MHSchemaMHVoiceTriggerSecondPassStarted *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"firstPassDetectedChannel"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"firstPassDetectedChannel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerSecondPassStarted setFirstPassDetectedChannel:](v5, "setFirstPassDetectedChannel:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"firstPassScore"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"firstPassScore"];
     objc_opt_class();
     v39 = v7;
     if (objc_opt_isKindOfClass())
@@ -52,7 +52,7 @@
       [(MHSchemaMHVoiceTriggerSecondPassStarted *)v5 setFirstPassScore:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"firstPassOnsetChannel"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"firstPassOnsetChannel"];
     objc_opt_class();
     v38 = v8;
     if (objc_opt_isKindOfClass())
@@ -60,7 +60,7 @@
       -[MHSchemaMHVoiceTriggerSecondPassStarted setFirstPassOnsetChannel:](v5, "setFirstPassOnsetChannel:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"firstPassOnsetScore"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"firstPassOnsetScore"];
     objc_opt_class();
     v37 = v9;
     if (objc_opt_isKindOfClass())
@@ -69,7 +69,7 @@
       [(MHSchemaMHVoiceTriggerSecondPassStarted *)v5 setFirstPassOnsetScore:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"channelSelectionScores"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"channelSelectionScores"];
     objc_opt_class();
     v36 = v10;
     if (objc_opt_isKindOfClass())
@@ -109,14 +109,14 @@
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"firstPassChannelSelectionDelayNs"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"firstPassChannelSelectionDelayNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerSecondPassStarted setFirstPassChannelSelectionDelayNs:](v5, "setFirstPassChannelSelectionDelayNs:", [v18 unsignedLongLongValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"firstPassMasterChannelScoreBoost"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"firstPassMasterChannelScoreBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,14 +124,14 @@
       [(MHSchemaMHVoiceTriggerSecondPassStarted *)v5 setFirstPassMasterChannelScoreBoost:?];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"firstPassStartSampleCount"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"firstPassStartSampleCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerSecondPassStarted setFirstPassStartSampleCount:](v5, "setFirstPassStartSampleCount:", [v20 unsignedLongLongValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"firstPassEndSampleCount"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"firstPassEndSampleCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,7 +139,7 @@
     }
 
     v34 = v20;
-    v22 = [v4 objectForKeyedSubscript:@"firstPassFireSampleCount"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"firstPassFireSampleCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,21 +148,21 @@
 
     v32 = v22;
     v33 = v21;
-    v23 = [v4 objectForKeyedSubscript:@"firstPassTriggerSource"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"firstPassTriggerSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerSecondPassStarted setFirstPassTriggerSource:](v5, "setFirstPassTriggerSource:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"earlyDetectFiredTimeOffsetInNs"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"earlyDetectFiredTimeOffsetInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerSecondPassStarted setEarlyDetectFiredTimeOffsetInNs:](v5, "setEarlyDetectFiredTimeOffsetInNs:", [v24 unsignedLongLongValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"earlyDetectFiredTime"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"earlyDetectFiredTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -171,7 +171,7 @@
     }
 
     v35 = v18;
-    v26 = [v4 objectForKeyedSubscript:@"firstPassPrimaryChannelScoreBoost"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"firstPassPrimaryChannelScoreBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -180,14 +180,14 @@
     }
 
     v27 = v6;
-    v28 = [v4 objectForKeyedSubscript:@"firstPassInfoDispatchTimeInNs"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"firstPassInfoDispatchTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerSecondPassStarted setFirstPassInfoDispatchTimeInNs:](v5, "setFirstPassInfoDispatchTimeInNs:", [v28 unsignedLongLongValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"firstPassInfoReceptionTimeInNs"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"firstPassInfoReceptionTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -200,30 +200,30 @@
   return v5;
 }
 
-- (MHSchemaMHVoiceTriggerSecondPassStarted)initWithJSON:(id)a3
+- (MHSchemaMHVoiceTriggerSecondPassStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -237,10 +237,10 @@
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_channelSelectionScores count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -260,16 +260,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -279,7 +279,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"channelSelectionScores"];
+    [dictionary setObject:array forKeyedSubscript:@"channelSelectionScores"];
   }
 
   has = self->_has;
@@ -288,7 +288,7 @@
     v13 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerSecondPassStarted *)self earlyDetectFiredTime];
     v14 = [v13 numberWithFloat:?];
-    [v3 setObject:v14 forKeyedSubscript:@"earlyDetectFiredTime"];
+    [dictionary setObject:v14 forKeyedSubscript:@"earlyDetectFiredTime"];
 
     has = self->_has;
     if ((has & 0x400) == 0)
@@ -309,7 +309,7 @@ LABEL_15:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerSecondPassStarted earlyDetectFiredTimeOffsetInNs](self, "earlyDetectFiredTimeOffsetInNs", v35)}];
-  [v3 setObject:v15 forKeyedSubscript:@"earlyDetectFiredTimeOffsetInNs"];
+  [dictionary setObject:v15 forKeyedSubscript:@"earlyDetectFiredTimeOffsetInNs"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -325,7 +325,7 @@ LABEL_16:
 
 LABEL_31:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerSecondPassStarted firstPassChannelSelectionDelayNs](self, "firstPassChannelSelectionDelayNs", v35)}];
-  [v3 setObject:v16 forKeyedSubscript:@"firstPassChannelSelectionDelayNs"];
+  [dictionary setObject:v16 forKeyedSubscript:@"firstPassChannelSelectionDelayNs"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -341,7 +341,7 @@ LABEL_17:
 
 LABEL_32:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerSecondPassStarted firstPassDetectedChannel](self, "firstPassDetectedChannel", v35)}];
-  [v3 setObject:v17 forKeyedSubscript:@"firstPassDetectedChannel"];
+  [dictionary setObject:v17 forKeyedSubscript:@"firstPassDetectedChannel"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -357,7 +357,7 @@ LABEL_18:
 
 LABEL_33:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerSecondPassStarted firstPassEndSampleCount](self, "firstPassEndSampleCount", v35)}];
-  [v3 setObject:v18 forKeyedSubscript:@"firstPassEndSampleCount"];
+  [dictionary setObject:v18 forKeyedSubscript:@"firstPassEndSampleCount"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -373,7 +373,7 @@ LABEL_19:
 
 LABEL_34:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerSecondPassStarted firstPassFireSampleCount](self, "firstPassFireSampleCount", v35)}];
-  [v3 setObject:v19 forKeyedSubscript:@"firstPassFireSampleCount"];
+  [dictionary setObject:v19 forKeyedSubscript:@"firstPassFireSampleCount"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -389,7 +389,7 @@ LABEL_20:
 
 LABEL_35:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerSecondPassStarted firstPassInfoDispatchTimeInNs](self, "firstPassInfoDispatchTimeInNs", v35)}];
-  [v3 setObject:v20 forKeyedSubscript:@"firstPassInfoDispatchTimeInNs"];
+  [dictionary setObject:v20 forKeyedSubscript:@"firstPassInfoDispatchTimeInNs"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -405,7 +405,7 @@ LABEL_21:
 
 LABEL_36:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerSecondPassStarted firstPassInfoReceptionTimeInNs](self, "firstPassInfoReceptionTimeInNs", v35)}];
-  [v3 setObject:v21 forKeyedSubscript:@"firstPassInfoReceptionTimeInNs"];
+  [dictionary setObject:v21 forKeyedSubscript:@"firstPassInfoReceptionTimeInNs"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -423,7 +423,7 @@ LABEL_37:
   v22 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerSecondPassStarted *)self firstPassMasterChannelScoreBoost];
   v23 = [v22 numberWithFloat:?];
-  [v3 setObject:v23 forKeyedSubscript:@"firstPassMasterChannelScoreBoost"];
+  [dictionary setObject:v23 forKeyedSubscript:@"firstPassMasterChannelScoreBoost"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -439,7 +439,7 @@ LABEL_23:
 
 LABEL_38:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerSecondPassStarted firstPassOnsetChannel](self, "firstPassOnsetChannel", v35)}];
-  [v3 setObject:v24 forKeyedSubscript:@"firstPassOnsetChannel"];
+  [dictionary setObject:v24 forKeyedSubscript:@"firstPassOnsetChannel"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -457,7 +457,7 @@ LABEL_39:
   v25 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerSecondPassStarted *)self firstPassOnsetScore];
   v26 = [v25 numberWithFloat:?];
-  [v3 setObject:v26 forKeyedSubscript:@"firstPassOnsetScore"];
+  [dictionary setObject:v26 forKeyedSubscript:@"firstPassOnsetScore"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -475,7 +475,7 @@ LABEL_40:
   v27 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerSecondPassStarted *)self firstPassPrimaryChannelScoreBoost];
   v28 = [v27 numberWithFloat:?];
-  [v3 setObject:v28 forKeyedSubscript:@"firstPassPrimaryChannelScoreBoost"];
+  [dictionary setObject:v28 forKeyedSubscript:@"firstPassPrimaryChannelScoreBoost"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -488,7 +488,7 @@ LABEL_26:
 
 LABEL_42:
     v31 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerSecondPassStarted firstPassStartSampleCount](self, "firstPassStartSampleCount", v35)}];
-    [v3 setObject:v31 forKeyedSubscript:@"firstPassStartSampleCount"];
+    [dictionary setObject:v31 forKeyedSubscript:@"firstPassStartSampleCount"];
 
     if ((*&self->_has & 0x200) == 0)
     {
@@ -507,7 +507,7 @@ LABEL_43:
       v33 = off_1E78D9AE8[v32];
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"firstPassTriggerSource"];
+    [dictionary setObject:v33 forKeyedSubscript:@"firstPassTriggerSource"];
     goto LABEL_47;
   }
 
@@ -515,7 +515,7 @@ LABEL_41:
   v29 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerSecondPassStarted *)self firstPassScore];
   v30 = [v29 numberWithFloat:?];
-  [v3 setObject:v30 forKeyedSubscript:@"firstPassScore"];
+  [dictionary setObject:v30 forKeyedSubscript:@"firstPassScore"];
 
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -530,9 +530,9 @@ LABEL_27:
   }
 
 LABEL_47:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v35];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v35];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -865,16 +865,16 @@ LABEL_64:
   return v11 ^ v6 ^ v12 ^ v17 ^ v22 ^ v27 ^ v28 ^ v29 ^ v30 ^ v31 ^ v32 ^ v37 ^ v38 ^ v18 ^ v43 ^ v44;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_67;
   }
 
   has = self->_has;
-  v6 = v4[56];
+  v6 = equalCopy[56];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_67;
@@ -883,13 +883,13 @@ LABEL_64:
   if (*&has)
   {
     firstPassDetectedChannel = self->_firstPassDetectedChannel;
-    if (firstPassDetectedChannel != [v4 firstPassDetectedChannel])
+    if (firstPassDetectedChannel != [equalCopy firstPassDetectedChannel])
     {
       goto LABEL_67;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -901,14 +901,14 @@ LABEL_64:
   if (v8)
   {
     firstPassScore = self->_firstPassScore;
-    [v4 firstPassScore];
+    [equalCopy firstPassScore];
     if (firstPassScore != v10)
     {
       goto LABEL_67;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v11 = (*&has >> 2) & 1;
@@ -920,13 +920,13 @@ LABEL_64:
   if (v11)
   {
     firstPassOnsetChannel = self->_firstPassOnsetChannel;
-    if (firstPassOnsetChannel != [v4 firstPassOnsetChannel])
+    if (firstPassOnsetChannel != [equalCopy firstPassOnsetChannel])
     {
       goto LABEL_67;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v13 = (*&has >> 3) & 1;
@@ -938,29 +938,29 @@ LABEL_64:
   if (v13)
   {
     firstPassOnsetScore = self->_firstPassOnsetScore;
-    [v4 firstPassOnsetScore];
+    [equalCopy firstPassOnsetScore];
     if (firstPassOnsetScore != v15)
     {
       goto LABEL_67;
     }
   }
 
-  v16 = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self channelSelectionScores];
-  v17 = [v4 channelSelectionScores];
-  v18 = v17;
-  if ((v16 != 0) == (v17 == 0))
+  channelSelectionScores = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self channelSelectionScores];
+  channelSelectionScores2 = [equalCopy channelSelectionScores];
+  v18 = channelSelectionScores2;
+  if ((channelSelectionScores != 0) == (channelSelectionScores2 == 0))
   {
 
     goto LABEL_67;
   }
 
-  v19 = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self channelSelectionScores];
-  if (v19)
+  channelSelectionScores3 = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self channelSelectionScores];
+  if (channelSelectionScores3)
   {
-    v20 = v19;
-    v21 = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self channelSelectionScores];
-    v22 = [v4 channelSelectionScores];
-    v23 = [v21 isEqual:v22];
+    v20 = channelSelectionScores3;
+    channelSelectionScores4 = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self channelSelectionScores];
+    channelSelectionScores5 = [equalCopy channelSelectionScores];
+    v23 = [channelSelectionScores4 isEqual:channelSelectionScores5];
 
     if (!v23)
     {
@@ -974,7 +974,7 @@ LABEL_64:
 
   v24 = self->_has;
   v25 = (*&v24 >> 4) & 1;
-  v26 = v4[56];
+  v26 = equalCopy[56];
   if (v25 != ((v26 >> 4) & 1))
   {
 LABEL_67:
@@ -985,13 +985,13 @@ LABEL_67:
   if (v25)
   {
     firstPassChannelSelectionDelayNs = self->_firstPassChannelSelectionDelayNs;
-    if (firstPassChannelSelectionDelayNs != [v4 firstPassChannelSelectionDelayNs])
+    if (firstPassChannelSelectionDelayNs != [equalCopy firstPassChannelSelectionDelayNs])
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v28 = (*&v24 >> 5) & 1;
@@ -1003,14 +1003,14 @@ LABEL_67:
   if (v28)
   {
     firstPassMasterChannelScoreBoost = self->_firstPassMasterChannelScoreBoost;
-    [v4 firstPassMasterChannelScoreBoost];
+    [equalCopy firstPassMasterChannelScoreBoost];
     if (firstPassMasterChannelScoreBoost != v30)
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v31 = (*&v24 >> 6) & 1;
@@ -1022,13 +1022,13 @@ LABEL_67:
   if (v31)
   {
     firstPassStartSampleCount = self->_firstPassStartSampleCount;
-    if (firstPassStartSampleCount != [v4 firstPassStartSampleCount])
+    if (firstPassStartSampleCount != [equalCopy firstPassStartSampleCount])
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v33 = (*&v24 >> 7) & 1;
@@ -1040,13 +1040,13 @@ LABEL_67:
   if (v33)
   {
     firstPassEndSampleCount = self->_firstPassEndSampleCount;
-    if (firstPassEndSampleCount != [v4 firstPassEndSampleCount])
+    if (firstPassEndSampleCount != [equalCopy firstPassEndSampleCount])
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v35 = (*&v24 >> 8) & 1;
@@ -1058,13 +1058,13 @@ LABEL_67:
   if (v35)
   {
     firstPassFireSampleCount = self->_firstPassFireSampleCount;
-    if (firstPassFireSampleCount != [v4 firstPassFireSampleCount])
+    if (firstPassFireSampleCount != [equalCopy firstPassFireSampleCount])
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v37 = (*&v24 >> 9) & 1;
@@ -1076,13 +1076,13 @@ LABEL_67:
   if (v37)
   {
     firstPassTriggerSource = self->_firstPassTriggerSource;
-    if (firstPassTriggerSource != [v4 firstPassTriggerSource])
+    if (firstPassTriggerSource != [equalCopy firstPassTriggerSource])
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v39 = (*&v24 >> 10) & 1;
@@ -1094,13 +1094,13 @@ LABEL_67:
   if (v39)
   {
     earlyDetectFiredTimeOffsetInNs = self->_earlyDetectFiredTimeOffsetInNs;
-    if (earlyDetectFiredTimeOffsetInNs != [v4 earlyDetectFiredTimeOffsetInNs])
+    if (earlyDetectFiredTimeOffsetInNs != [equalCopy earlyDetectFiredTimeOffsetInNs])
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v41 = (*&v24 >> 11) & 1;
@@ -1112,14 +1112,14 @@ LABEL_67:
   if (v41)
   {
     earlyDetectFiredTime = self->_earlyDetectFiredTime;
-    [v4 earlyDetectFiredTime];
+    [equalCopy earlyDetectFiredTime];
     if (earlyDetectFiredTime != v43)
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v44 = (*&v24 >> 12) & 1;
@@ -1131,14 +1131,14 @@ LABEL_67:
   if (v44)
   {
     firstPassPrimaryChannelScoreBoost = self->_firstPassPrimaryChannelScoreBoost;
-    [v4 firstPassPrimaryChannelScoreBoost];
+    [equalCopy firstPassPrimaryChannelScoreBoost];
     if (firstPassPrimaryChannelScoreBoost != v46)
     {
       goto LABEL_67;
     }
 
     v24 = self->_has;
-    v26 = v4[56];
+    v26 = equalCopy[56];
   }
 
   v47 = (*&v24 >> 13) & 1;
@@ -1150,10 +1150,10 @@ LABEL_67:
   if (v47)
   {
     firstPassInfoDispatchTimeInNs = self->_firstPassInfoDispatchTimeInNs;
-    if (firstPassInfoDispatchTimeInNs == [v4 firstPassInfoDispatchTimeInNs])
+    if (firstPassInfoDispatchTimeInNs == [equalCopy firstPassInfoDispatchTimeInNs])
     {
       v24 = self->_has;
-      v26 = v4[56];
+      v26 = equalCopy[56];
       goto LABEL_63;
     }
 
@@ -1170,7 +1170,7 @@ LABEL_63:
   if (v49)
   {
     firstPassInfoReceptionTimeInNs = self->_firstPassInfoReceptionTimeInNs;
-    if (firstPassInfoReceptionTimeInNs != [v4 firstPassInfoReceptionTimeInNs])
+    if (firstPassInfoReceptionTimeInNs != [equalCopy firstPassInfoReceptionTimeInNs])
     {
       goto LABEL_67;
     }
@@ -1182,10 +1182,10 @@ LABEL_68:
   return v51;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1402,9 +1402,9 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)setHasFirstPassInfoReceptionTimeInNs:(BOOL)a3
+- (void)setHasFirstPassInfoReceptionTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 0x4000;
   }
@@ -1417,9 +1417,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasFirstPassInfoDispatchTimeInNs:(BOOL)a3
+- (void)setHasFirstPassInfoDispatchTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 0x2000;
   }
@@ -1432,9 +1432,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasFirstPassPrimaryChannelScoreBoost:(BOOL)a3
+- (void)setHasFirstPassPrimaryChannelScoreBoost:(BOOL)boost
 {
-  if (a3)
+  if (boost)
   {
     v3 = 4096;
   }
@@ -1447,9 +1447,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasEarlyDetectFiredTime:(BOOL)a3
+- (void)setHasEarlyDetectFiredTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2048;
   }
@@ -1462,9 +1462,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasEarlyDetectFiredTimeOffsetInNs:(BOOL)a3
+- (void)setHasEarlyDetectFiredTimeOffsetInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 1024;
   }
@@ -1477,9 +1477,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasFirstPassTriggerSource:(BOOL)a3
+- (void)setHasFirstPassTriggerSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 512;
   }
@@ -1492,9 +1492,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasFirstPassFireSampleCount:(BOOL)a3
+- (void)setHasFirstPassFireSampleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -1507,9 +1507,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasFirstPassEndSampleCount:(BOOL)a3
+- (void)setHasFirstPassEndSampleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -1522,9 +1522,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasFirstPassStartSampleCount:(BOOL)a3
+- (void)setHasFirstPassStartSampleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -1537,9 +1537,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasFirstPassMasterChannelScoreBoost:(BOOL)a3
+- (void)setHasFirstPassMasterChannelScoreBoost:(BOOL)boost
 {
-  if (a3)
+  if (boost)
   {
     v3 = 32;
   }
@@ -1552,9 +1552,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasFirstPassChannelSelectionDelayNs:(BOOL)a3
+- (void)setHasFirstPassChannelSelectionDelayNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -1567,27 +1567,27 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)addChannelSelectionScores:(id)a3
+- (void)addChannelSelectionScores:(id)scores
 {
-  v4 = a3;
+  scoresCopy = scores;
   channelSelectionScores = self->_channelSelectionScores;
-  v8 = v4;
+  v8 = scoresCopy;
   if (!channelSelectionScores)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_channelSelectionScores;
-    self->_channelSelectionScores = v6;
+    self->_channelSelectionScores = array;
 
-    v4 = v8;
+    scoresCopy = v8;
     channelSelectionScores = self->_channelSelectionScores;
   }
 
-  [(NSArray *)channelSelectionScores addObject:v4];
+  [(NSArray *)channelSelectionScores addObject:scoresCopy];
 }
 
-- (void)setHasFirstPassOnsetScore:(BOOL)a3
+- (void)setHasFirstPassOnsetScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -1600,9 +1600,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasFirstPassOnsetChannel:(BOOL)a3
+- (void)setHasFirstPassOnsetChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 4;
   }
@@ -1615,9 +1615,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasFirstPassScore:(BOOL)a3
+- (void)setHasFirstPassScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -1630,14 +1630,14 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MHSchemaMHVoiceTriggerSecondPassStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MHSchemaMHVoiceTriggerSecondPassStarted *)self channelSelectionScores:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(MHSchemaMHVoiceTriggerSecondPassStarted *)self setChannelSelectionScores:v7];
 

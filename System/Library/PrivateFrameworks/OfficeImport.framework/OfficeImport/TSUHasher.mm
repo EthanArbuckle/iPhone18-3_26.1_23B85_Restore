@@ -1,6 +1,6 @@
 @interface TSUHasher
 - (TSUHasher)init;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 @end
 
 @implementation TSUHasher
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = [a3 hash];
+  v4 = [object hash];
 
   [(TSUHasher *)self p_appendUnsignedInteger:v4];
 }

@@ -1,6 +1,6 @@
 @interface AUBandpassViewController
 - (_TtC12CoreAudioKit24AUBandpassViewController)init;
-- (_TtC12CoreAudioKit24AUBandpassViewController)initWithCoder:(id)a3;
+- (_TtC12CoreAudioKit24AUBandpassViewController)initWithCoder:(id)coder;
 @end
 
 @implementation AUBandpassViewController
@@ -12,12 +12,12 @@
   return [(AUEQViewControllerBase *)&v3 init];
 }
 
-- (_TtC12CoreAudioKit24AUBandpassViewController)initWithCoder:(id)a3
+- (_TtC12CoreAudioKit24AUBandpassViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AUBandpassViewController();
-  v4 = a3;
-  v5 = [(AUEQViewControllerBase *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AUEQViewControllerBase *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

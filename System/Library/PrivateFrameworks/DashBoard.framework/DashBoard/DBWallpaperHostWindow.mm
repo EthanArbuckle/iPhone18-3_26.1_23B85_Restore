@@ -12,7 +12,7 @@
   swift_unknownObjectWeakAssign();
   v8.receiver = v4;
   v8.super_class = v3;
-  v5 = self;
+  selfCopy = self;
   v6 = [(DBWindow *)&v8 initWithFrame:0.0, 0.0, 0.0, 0.0];
   [(DBWallpaperHostWindow *)v6 setBackgroundColor:0, v8.receiver, v8.super_class];
 

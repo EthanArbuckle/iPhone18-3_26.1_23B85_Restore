@@ -1,32 +1,32 @@
 @interface PUOneUpImageTileViewController
 - (id)dismissalProgressBlock;
 - (id)presentationProgressBlock;
-- (void)_3DToggleDidChange:(id)a3;
-- (void)_reportZoomAnalyticsForViewModel:(id)a3;
+- (void)_3DToggleDidChange:(id)change;
+- (void)_reportZoomAnalyticsForViewModel:(id)model;
 - (void)_updateAssetViewModelBestImage;
 - (void)_updateAssetViewModelContentsRect;
 - (void)_updateAssetViewModelHDRState;
 - (void)_updateInteractionHostViewRegistration;
 - (void)_updateSpatialOverlayView;
-- (void)applyLayoutInfo:(id)a3;
-- (void)assetViewModelDidChange:(id)a3;
-- (void)browsingViewModelDidChange:(id)a3;
+- (void)applyLayoutInfo:(id)info;
+- (void)assetViewModelDidChange:(id)change;
+- (void)browsingViewModelDidChange:(id)change;
 - (void)didChangeIsOnPrimaryDisplay;
 - (void)displayedImageRequestResultDidChange;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUOneUpImageTileViewController
 
 - (id)dismissalProgressBlock
 {
-  v3 = [(PUImageTileViewController *)self imageView];
-  v4 = [v3 layer];
-  v5 = [v4 preferredDynamicRange];
+  imageView = [(PUImageTileViewController *)self imageView];
+  layer = [imageView layer];
+  preferredDynamicRange = [layer preferredDynamicRange];
   v6 = *MEMORY[0x1E69792A8];
 
-  if (v5 == v6)
+  if (preferredDynamicRange == v6)
   {
     v7 = 0;
   }
@@ -83,32 +83,32 @@ void __59__PUOneUpImageTileViewController_presentationProgressBlock__block_invok
   [v4 setContentsEDRStrength:a2];
 }
 
-- (void)_reportZoomAnalyticsForViewModel:(id)a3
+- (void)_reportZoomAnalyticsForViewModel:(id)model
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isUserTransformingTile])
+  modelCopy = model;
+  if ([modelCopy isUserTransformingTile])
   {
-    v5 = [v4 modelTileTransform];
-    v6 = [v5 isZoomedOut];
+    modelTileTransform = [modelCopy modelTileTransform];
+    isZoomedOut = [modelTileTransform isZoomedOut];
   }
 
   else
   {
-    v6 = 1;
+    isZoomedOut = 1;
   }
 
-  if ([MEMORY[0x1E69C3740] enabled] && (v6 & 1) == 0)
+  if ([MEMORY[0x1E69C3740] enabled] && (isZoomedOut & 1) == 0)
   {
-    v7 = [(PUImageTileViewController *)self assetViewModel];
-    v8 = [v7 asset];
+    assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+    asset = [assetViewModel asset];
 
-    if (v8 && ![(PUOneUpImageTileViewController *)self hasReportedSpatialZoomForCurrentAsset])
+    if (asset && ![(PUOneUpImageTileViewController *)self hasReportedSpatialZoomForCurrentAsset])
     {
       [(PUOneUpImageTileViewController *)self setHasReportedSpatialZoomForCurrentAsset:1];
       v9 = MEMORY[0x1E6991F28];
       v11 = *MEMORY[0x1E6991E18];
-      v12[0] = v8;
+      v12[0] = asset;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
       [v9 sendEvent:@"com.apple.photos.CPAnalytics.zoomedWithSpatialEnabled" withPayload:v10];
     }
@@ -117,16 +117,16 @@ void __59__PUOneUpImageTileViewController_presentationProgressBlock__block_invok
 
 - (void)_updateAssetViewModelBestImage
 {
-  v3 = [(PUImageTileViewController *)self displayedImageRequestResult];
-  v4 = [(PUImageTileViewController *)self assetViewModel];
+  displayedImageRequestResult = [(PUImageTileViewController *)self displayedImageRequestResult];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PUOneUpImageTileViewController__updateAssetViewModelBestImage__block_invoke;
   v7[3] = &unk_1E7B80C38;
-  v8 = v3;
-  v9 = v4;
-  v5 = v4;
-  v6 = v3;
+  v8 = displayedImageRequestResult;
+  v9 = assetViewModel;
+  v5 = assetViewModel;
+  v6 = displayedImageRequestResult;
   [v5 performChanges:v7];
 }
 
@@ -143,21 +143,21 @@ void __64__PUOneUpImageTileViewController__updateAssetViewModelBestImage__block_
 {
   if ([(PUTileViewController *)self isOnPrimaryDisplay])
   {
-    v4 = [(PUImageTileViewController *)self assetViewModel];
-    v3 = [(PUImageTileViewController *)self imageView];
-    [v4 registerView:v3 forImageAnalysisInteractionHostMode:2];
+    assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+    imageView = [(PUImageTileViewController *)self imageView];
+    [assetViewModel registerView:imageView forImageAnalysisInteractionHostMode:2];
   }
 }
 
 - (void)_updateAssetViewModelContentsRect
 {
-  v3 = [(PUImageTileViewController *)self assetViewModel];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__block_invoke;
   v4[3] = &unk_1E7B80DD0;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [assetViewModel performChanges:v4];
 }
 
 void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__block_invoke(uint64_t a1)
@@ -175,13 +175,13 @@ void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__blo
 
 - (void)_updateSpatialOverlayView
 {
-  v14 = [(PUImageTileViewController *)self assetViewModel];
-  v3 = [(PUImageTileViewController *)self assetViewModel];
-  v4 = [v3 asset];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+  assetViewModel2 = [(PUImageTileViewController *)self assetViewModel];
+  asset = [assetViewModel2 asset];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = asset;
   }
 
   else
@@ -191,11 +191,11 @@ void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__blo
 
   if ([MEMORY[0x1E69C3740] enabled])
   {
-    v6 = [v14 isFullyInFocus];
-    v7 = v14;
+    isFullyInFocus = [assetViewModel isFullyInFocus];
+    v7 = assetViewModel;
     if (v5)
     {
-      v8 = v6;
+      v8 = isFullyInFocus;
     }
 
     else
@@ -207,25 +207,25 @@ void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__blo
   else
   {
     v8 = 0;
-    v7 = v14;
+    v7 = assetViewModel;
   }
 
-  v9 = [v7 isFullyOutOfFocus];
-  v10 = [(PUImageTileViewController *)self browsingViewModel];
+  isFullyOutOfFocus = [v7 isFullyOutOfFocus];
+  browsingViewModel = [(PUImageTileViewController *)self browsingViewModel];
 
-  if (v10)
+  if (browsingViewModel)
   {
-    v11 = [(PUImageTileViewController *)self browsingViewModel];
-    v12 = [v11 spatialOverlayController];
-    v13 = [(PUImageTileViewController *)self imageView];
+    browsingViewModel2 = [(PUImageTileViewController *)self browsingViewModel];
+    spatialOverlayController = [browsingViewModel2 spatialOverlayController];
+    imageView = [(PUImageTileViewController *)self imageView];
     if (v8)
     {
-      [v12 addOverlayViewForAsset:v5 toView:v13 animated:v9 ^ 1u];
+      [spatialOverlayController addOverlayViewForAsset:v5 toView:imageView animated:isFullyOutOfFocus ^ 1u];
     }
 
     else
     {
-      [v12 removeOverlayViewFromView:v13 animated:v9 ^ 1u];
+      [spatialOverlayController removeOverlayViewFromView:imageView animated:isFullyOutOfFocus ^ 1u];
     }
   }
 }
@@ -234,29 +234,29 @@ void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__blo
 {
   if ([(PUTileViewController *)self isOnPrimaryDisplay])
   {
-    v3 = [(PUImageTileViewController *)self displayedImageRequestResult];
-    v4 = [v3 image];
-    v5 = [v4 isHighDynamicRange];
+    displayedImageRequestResult = [(PUImageTileViewController *)self displayedImageRequestResult];
+    image = [displayedImageRequestResult image];
+    isHighDynamicRange = [image isHighDynamicRange];
 
-    v6 = [(PUImageTileViewController *)self assetViewModel];
+    assetViewModel = [(PUImageTileViewController *)self assetViewModel];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __63__PUOneUpImageTileViewController__updateAssetViewModelHDRState__block_invoke;
     v8[3] = &unk_1E7B7FF98;
-    v9 = v6;
-    v10 = v5;
-    v7 = v6;
+    v9 = assetViewModel;
+    v10 = isHighDynamicRange;
+    v7 = assetViewModel;
     [v7 performChanges:v8];
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  changeCopy = change;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = changeCopy;
 
     if (v8 && (([v8 isFullyInFocusChanged] & 1) != 0 || objc_msgSend(v8, "isFullyOutOfFocusChanged")))
     {
@@ -272,15 +272,15 @@ void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__blo
 
   if ([v8 modelTileTransformChanged])
   {
-    [(PUOneUpImageTileViewController *)self _reportZoomAnalyticsForViewModel:v6];
+    [(PUOneUpImageTileViewController *)self _reportZoomAnalyticsForViewModel:modelCopy];
   }
 
   v9.receiver = self;
   v9.super_class = PUOneUpImageTileViewController;
-  [(PUImageTileViewController *)&v9 viewModel:v6 didChange:v7];
+  [(PUImageTileViewController *)&v9 viewModel:modelCopy didChange:changeCopy];
 }
 
-- (void)_3DToggleDidChange:(id)a3
+- (void)_3DToggleDidChange:(id)change
 {
   [(PUOneUpImageTileViewController *)self _updateSpatialOverlayView];
 
@@ -305,35 +305,35 @@ void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__blo
   [(PUOneUpImageTileViewController *)self _updateAssetViewModelHDRState];
 }
 
-- (void)assetViewModelDidChange:(id)a3
+- (void)assetViewModelDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = PUOneUpImageTileViewController;
-  v4 = a3;
-  [(PUImageTileViewController *)&v6 assetViewModelDidChange:v4];
+  changeCopy = change;
+  [(PUImageTileViewController *)&v6 assetViewModelDidChange:changeCopy];
   v5 = [(PUImageTileViewController *)self imageView:v6.receiver];
-  [v4 unregisterView:v5 forImageAnalysisInteractionHostMode:2];
+  [changeCopy unregisterView:v5 forImageAnalysisInteractionHostMode:2];
 
   [(PUOneUpImageTileViewController *)self _updateInteractionHostViewRegistration];
   [(PUOneUpImageTileViewController *)self _updateSpatialOverlayView];
 }
 
-- (void)browsingViewModelDidChange:(id)a3
+- (void)browsingViewModelDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = PUOneUpImageTileViewController;
-  [(PUImageTileViewController *)&v12 browsingViewModelDidChange:a3];
-  v4 = [(PUImageTileViewController *)self browsingViewModel];
-  v5 = [v4 currentAssetReference];
-  v6 = [v5 asset];
-  v7 = [v6 uuid];
+  [(PUImageTileViewController *)&v12 browsingViewModelDidChange:change];
+  browsingViewModel = [(PUImageTileViewController *)self browsingViewModel];
+  currentAssetReference = [browsingViewModel currentAssetReference];
+  asset = [currentAssetReference asset];
+  uuid = [asset uuid];
 
-  v8 = [(PUImageTileViewController *)self browsingViewModel];
-  v9 = [v8 assetBeforeLastViewedAssetReference];
-  v10 = [v9 asset];
-  v11 = [v10 uuid];
+  browsingViewModel2 = [(PUImageTileViewController *)self browsingViewModel];
+  assetBeforeLastViewedAssetReference = [browsingViewModel2 assetBeforeLastViewedAssetReference];
+  asset2 = [assetBeforeLastViewedAssetReference asset];
+  uuid2 = [asset2 uuid];
 
-  if (([v7 isEqualToString:v11] & 1) == 0)
+  if (([uuid isEqualToString:uuid2] & 1) == 0)
   {
     [(PUOneUpImageTileViewController *)self _didChangeCurrentAsset];
   }
@@ -341,11 +341,11 @@ void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__blo
   [(PUOneUpImageTileViewController *)self _updateSpatialOverlayView];
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = PUOneUpImageTileViewController;
-  [(PUImageTileViewController *)&v4 applyLayoutInfo:a3];
+  [(PUImageTileViewController *)&v4 applyLayoutInfo:info];
   [(PUOneUpImageTileViewController *)self _updateAssetViewModelContentsRect];
 }
 
@@ -354,13 +354,13 @@ void __67__PUOneUpImageTileViewController__updateAssetViewModelContentsRect__blo
   v6.receiver = self;
   v6.super_class = PUOneUpImageTileViewController;
   [(PUTileViewController *)&v6 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [MEMORY[0x1E69C3740] notificationName3DBadgeToggled];
-  [v3 addObserver:self selector:sel__3DToggleDidChange_ name:v4 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  notificationName3DBadgeToggled = [MEMORY[0x1E69C3740] notificationName3DBadgeToggled];
+  [defaultCenter addObserver:self selector:sel__3DToggleDidChange_ name:notificationName3DBadgeToggled object:0];
 
   [(PUOneUpImageTileViewController *)self _updateInteractionHostViewRegistration];
-  v5 = [(PUImageTileViewController *)self imageView];
-  [v5 setUserInteractionEnabled:1];
+  imageView = [(PUImageTileViewController *)self imageView];
+  [imageView setUserInteractionEnabled:1];
 }
 
 @end

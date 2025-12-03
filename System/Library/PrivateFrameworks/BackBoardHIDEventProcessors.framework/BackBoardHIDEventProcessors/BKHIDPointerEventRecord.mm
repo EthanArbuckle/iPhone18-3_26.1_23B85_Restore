@@ -1,6 +1,6 @@
 @interface BKHIDPointerEventRecord
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -20,30 +20,30 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BKHIDPointerEventRecord *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKHIDPointerEventRecord *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKHIDPointerEventRecord *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKHIDPointerEventRecord *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKHIDPointerEventRecord *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_senderInfo withName:@"senderInfo"];
-  v6 = [v4 appendObject:self->_destinations withName:@"destinations"];
-  v7 = [v4 appendDouble:@"destinationCaptureTime" withName:4 decimalPrecision:self->_destinationCaptureTime];
-  v8 = [v4 appendBool:self->_trackingButtonDown withName:@"trackingButtonDown"];
-  v9 = [v4 appendBool:self->_trackingPointerMovement withName:@"trackingPointerMovement"];
+  succinctDescriptionBuilder = [(BKHIDPointerEventRecord *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_senderInfo withName:@"senderInfo"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_destinations withName:@"destinations"];
+  v7 = [succinctDescriptionBuilder appendDouble:@"destinationCaptureTime" withName:4 decimalPrecision:self->_destinationCaptureTime];
+  v8 = [succinctDescriptionBuilder appendBool:self->_trackingButtonDown withName:@"trackingButtonDown"];
+  v9 = [succinctDescriptionBuilder appendBool:self->_trackingPointerMovement withName:@"trackingPointerMovement"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

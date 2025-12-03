@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2759852D8(&OBJC_IVAR____TtC14iCloudSettings6Action__rawJsonObject);
 
   v3 = sub_2759BA258();
@@ -20,7 +20,7 @@
 {
   v2 = *(self + OBJC_IVAR____TtC14iCloudSettings6Action_type);
   v3 = *(self + OBJC_IVAR____TtC14iCloudSettings6Action_type + 8);
-  v4 = self;
+  selfCopy = self;
   v5 = sub_2759BA258();
   v6 = _ICQActionForString();
 

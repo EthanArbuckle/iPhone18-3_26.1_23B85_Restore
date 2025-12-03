@@ -1,18 +1,18 @@
 @interface UISegmentedControl
-- (void)_maps_setItems:(id)a3;
+- (void)_maps_setItems:(id)items;
 @end
 
 @implementation UISegmentedControl
 
-- (void)_maps_setItems:(id)a3
+- (void)_maps_setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   [(UISegmentedControl *)self removeAllSegments];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

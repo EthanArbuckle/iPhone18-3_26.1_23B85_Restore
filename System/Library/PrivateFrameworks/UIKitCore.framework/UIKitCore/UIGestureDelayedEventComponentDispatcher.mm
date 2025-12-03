@@ -1,18 +1,18 @@
 @interface UIGestureDelayedEventComponentDispatcher
-- (BOOL)pressesBeganWasDelayedForPress:(uint64_t)a1;
-- (BOOL)touchesBeganWasDelayedForTouch:(uint64_t)a1;
+- (BOOL)pressesBeganWasDelayedForPress:(uint64_t)press;
+- (BOOL)touchesBeganWasDelayedForTouch:(uint64_t)touch;
 - (UIGestureDelayedEventComponentDispatcher)init;
 - (uint64_t)enqueueDelayedPressToSend:(uint64_t)result;
 - (uint64_t)enqueueDelayedTouchToSend:(uint64_t)result;
 - (uint64_t)removeDelayedPress:(uint64_t)result;
-- (void)cancelDelayedPresses:(void *)a3 presses:(void *)a4 fromEvent:;
-- (void)cancelDelayedTouches:(void *)a3 touches:(void *)a4 fromEvent:;
-- (void)delayedPressForPress:(void *)a3 event:;
-- (void)delayedTouchForTouch:(void *)a3 event:;
-- (void)removeDelayedTouch:(id *)a1;
-- (void)removeDelayedTouchesToSend:(id)a3;
-- (void)removePress:(uint64_t)a1;
-- (void)removeTouch:(void *)a1;
+- (void)cancelDelayedPresses:(void *)presses presses:(void *)a4 fromEvent:;
+- (void)cancelDelayedTouches:(void *)touches touches:(void *)a4 fromEvent:;
+- (void)delayedPressForPress:(void *)press event:;
+- (void)delayedTouchForTouch:(void *)touch event:;
+- (void)removeDelayedTouch:(id *)touch;
+- (void)removeDelayedTouchesToSend:(id)send;
+- (void)removePress:(uint64_t)press;
+- (void)removeTouch:(void *)touch;
 - (void)sendDelayedPresses;
 - (void)sendDelayedTouches;
 @end
@@ -22,23 +22,23 @@
 - (void)sendDelayedPresses
 {
   v198 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    if ([a1[4] count])
+    selfCopy = self;
+    if ([self[4] count])
     {
       v170 = 0u;
       v171 = 0u;
       v168 = 0u;
       v169 = 0u;
-      v2 = v1[4];
+      v2 = selfCopy[4];
       v3 = [v2 countByEnumeratingWithState:&v168 objects:v189 count:16];
-      v140 = v1;
+      v140 = selfCopy;
       if (v3)
       {
         v4 = v3;
         obj = 0;
-        v5 = 0;
+        array2 = 0;
         v6 = *v169;
         do
         {
@@ -64,19 +64,19 @@
             v10 = v9;
             if ([v10 phase] == 4 && (!v8 ? (v11 = 0) : (v11 = *(v8 + 32)), v12 = v11, v13 = objc_msgSend(v12, "phase"), v12, !v13))
             {
-              v29 = obj;
+              array = obj;
               if (!obj)
               {
-                v29 = [MEMORY[0x1E695DF70] array];
+                array = [MEMORY[0x1E695DF70] array];
               }
 
-              obj = v29;
-              [v29 addObject:v8];
+              obj = array;
+              [array addObject:v8];
             }
 
             else
             {
-              v14 = [v10 phase];
+              phase = [v10 phase];
               if (v8)
               {
                 v15 = *(v8 + 32);
@@ -88,9 +88,9 @@
               }
 
               v16 = v15;
-              v17 = [v16 phase];
+              phase2 = [v16 phase];
 
-              if (v14 != v17)
+              if (phase != phase2)
               {
                 if ([v10 phase] != 2 || ((objc_msgSend(v10, "force"), v19 = v18, !v8) ? (v20 = 0) : (v20 = *(v8 + 32)), v21 = v20, objc_msgSend(v21, "force"), v23 = v22, v21, v19 != v23))
                 {
@@ -112,9 +112,9 @@
                   }
 
                   v25 = v24;
-                  v26 = [v25 phase];
+                  phase3 = [v25 phase];
 
-                  if (v26 == 2)
+                  if (phase3 == 2)
                   {
                     if (v8)
                     {
@@ -130,12 +130,12 @@
                     [v28 setPhase:1];
                   }
 
-                  if (!v5)
+                  if (!array2)
                   {
-                    v5 = [MEMORY[0x1E695DF70] array];
+                    array2 = [MEMORY[0x1E695DF70] array];
                   }
 
-                  [v5 addObject:v8];
+                  [array2 addObject:v8];
                 }
               }
             }
@@ -150,10 +150,10 @@
 
         while (v30);
 
-        v1 = v140;
-        if (v5)
+        selfCopy = v140;
+        if (array2)
         {
-          [v140[4] addObjectsFromArray:v5];
+          [v140[4] addObjectsFromArray:array2];
         }
 
         if (!obj)
@@ -166,12 +166,12 @@
       }
 
 LABEL_49:
-      [v1[4] sortUsingComparator:&__block_literal_global_8_0];
+      [selfCopy[4] sortUsingComparator:&__block_literal_global_8_0];
       v166 = 0u;
       v167 = 0u;
       v164 = 0u;
       v165 = 0u;
-      obja = v1[4];
+      obja = selfCopy[4];
       v31 = [obja countByEnumeratingWithState:&v164 objects:v188 count:16];
       if (!v31)
       {
@@ -334,13 +334,13 @@ LABEL_75:
                         }
 
                         v106 = v105;
-                        v107 = [v106 _phaseDescription];
+                        _phaseDescription = [v106 _phaseDescription];
                         *buf = v128;
                         v193 = v103;
                         v194 = 2048;
                         v195 = v104;
                         v196 = 2112;
-                        v197 = v107;
+                        v197 = _phaseDescription;
                         _os_log_impl(&dword_188A29000, objc, OS_LOG_TYPE_ERROR, "Dispatching delayed press <%@: %p; phase = %@>", buf, 0x20u);
 
                         v48 = v135;
@@ -445,9 +445,9 @@ LABEL_155:
                   v123 = v122;
                   if (v121 == 1)
                   {
-                    v124 = [v122 phase];
+                    phase4 = [v122 phase];
 
-                    if (v124 == 3)
+                    if (phase4 == 3)
                     {
                       v123 = *(v120 + 24);
                       [v123 setSentPressesEnded:1];
@@ -522,17 +522,17 @@ LABEL_83:
                 [v57 _loadStateFromPress:v58];
 
                 v59 = *(v56 + 32);
-                v60 = [v59 responder];
-                [v57 setResponder:v60];
+                responder = [v59 responder];
+                [v57 setResponder:responder];
 
                 v61 = *(v56 + 32);
-                v62 = [v61 window];
-                [v57 setWindow:v62];
+                window = [v61 window];
+                [v57 setWindow:window];
 
                 v63 = *(v56 + 24);
-                v64 = [v63 phase];
+                phase5 = [v63 phase];
                 v65 = *(v56 + 32);
-                [v65 setPhase:v64];
+                [v65 setPhase:phase5];
               }
             }
 
@@ -541,21 +541,21 @@ LABEL_83:
               v57 = 0;
             }
 
-            v66 = [v57 responder];
+            responder2 = [v57 responder];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
-              v68 = [v57 responder];
-              v69 = [v68 window];
-              if (v69)
+              responder3 = [v57 responder];
+              window2 = [responder3 window];
+              if (window2)
               {
 
                 goto LABEL_92;
               }
 
-              v70 = [v57 responder];
+              responder4 = [v57 responder];
               objc_opt_class();
               v71 = objc_opt_isKindOfClass();
 
@@ -570,17 +570,17 @@ LABEL_92:
             else
             {
 LABEL_93:
-              v72 = [v57 responder];
-              v68 = CFDictionaryGetValue(Mutable, v72);
+              responder5 = [v57 responder];
+              responder3 = CFDictionaryGetValue(Mutable, responder5);
 
-              if (!v68)
+              if (!responder3)
               {
-                v68 = [MEMORY[0x1E695DFA8] set];
-                v73 = [v57 responder];
-                CFDictionarySetValue(Mutable, v73, v68);
+                responder3 = [MEMORY[0x1E695DFA8] set];
+                responder6 = [v57 responder];
+                CFDictionarySetValue(Mutable, responder6, responder3);
               }
 
-              [v68 addObject:v57];
+              [responder3 addObject:v57];
             }
 
             if (v53 == ++v55)
@@ -612,9 +612,9 @@ LABEL_100:
                       objb = *(*(&v176 + 1) + 8 * i);
                       v76 = CFDictionaryGetValue(v141, objb);
                       v77 = UIApp;
-                      v78 = [v76 anyObject];
-                      v79 = [v78 window];
-                      v80 = [v77 _pressesEventForWindow:v79];
+                      anyObject = [v76 anyObject];
+                      window3 = [anyObject window];
+                      v80 = [v77 _pressesEventForWindow:window3];
 
                       v174 = 0u;
                       v175 = 0u;
@@ -637,14 +637,14 @@ LABEL_100:
 
                             v86 = *(*(&v172 + 1) + 8 * j);
                             v87 = UIApp;
-                            v88 = [v86 window];
-                            v89 = [v87 _pressesEventForWindow:v88];
+                            window4 = [v86 window];
+                            v89 = [v87 _pressesEventForWindow:window4];
 
                             if (v89 != v80)
                             {
-                              v136 = [MEMORY[0x1E696AAA8] currentHandler];
+                              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                               v90 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void sendEventForDelayedPresses(NSArray<UIGestureDelayedPress *> *const __strong)"];
-                              [v136 handleFailureInFunction:v90 file:@"UIGestureDelayedEventComponentDispatcher.m" lineNumber:512 description:@"events are from different window scenes"];
+                              [currentHandler handleFailureInFunction:v90 file:@"UIGestureDelayedEventComponentDispatcher.m" lineNumber:512 description:@"events are from different window scenes"];
                             }
 
                             [v89 _addPress:v86 forDelayedDelivery:1];
@@ -656,25 +656,25 @@ LABEL_100:
                         while (v83);
                       }
 
-                      v91 = [v81 anyObject];
-                      v92 = [v91 phase];
+                      anyObject2 = [v81 anyObject];
+                      phase6 = [anyObject2 phase];
 
-                      if (v92 > 2)
+                      if (phase6 > 2)
                       {
-                        if (v92 == 3)
+                        if (phase6 == 3)
                         {
                           [objb pressesEnded:v81 withEvent:v80];
                         }
 
-                        else if (v92 == 4)
+                        else if (phase6 == 4)
                         {
                           [objb pressesCancelled:v81 withEvent:v80];
                         }
                       }
 
-                      else if (v92)
+                      else if (phase6)
                       {
-                        if (v92 == 1)
+                        if (phase6 == 1)
                         {
                           [objb pressesChanged:v81 withEvent:v80];
                         }
@@ -715,21 +715,21 @@ LABEL_100:
   v2 = [(UIGestureDelayedEventComponentDispatcher *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     delayedTouches = v2->_delayedTouches;
-    v2->_delayedTouches = v3;
+    v2->_delayedTouches = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     delayedTouchesToSend = v2->_delayedTouchesToSend;
-    v2->_delayedTouchesToSend = v5;
+    v2->_delayedTouchesToSend = array2;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     delayedPresses = v2->_delayedPresses;
-    v2->_delayedPresses = v7;
+    v2->_delayedPresses = array3;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     delayedPressesToSend = v2->_delayedPressesToSend;
-    v2->_delayedPressesToSend = v9;
+    v2->_delayedPressesToSend = array4;
   }
 
   return v2;
@@ -738,13 +738,13 @@ LABEL_100:
 - (void)sendDelayedTouches
 {
   v188 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v1 = a1;
-  if (![a1[2] count])
+  selfCopy = self;
+  if (![self[2] count])
   {
     return;
   }
@@ -753,9 +753,9 @@ LABEL_100:
   v161 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v2 = v1[2];
+  v2 = selfCopy[2];
   v3 = [v2 countByEnumeratingWithState:&v158 objects:v179 count:16];
-  v130 = v1;
+  v130 = selfCopy;
   if (v3)
   {
     v4 = v3;
@@ -784,7 +784,7 @@ LABEL_100:
         }
 
         v10 = v9;
-        v11 = [v10 phase];
+        phase = [v10 phase];
         if (v8)
         {
           v12 = *(v8 + 32);
@@ -796,9 +796,9 @@ LABEL_100:
         }
 
         v13 = v12;
-        v14 = [v13 phase];
+        phase2 = [v13 phase];
 
-        if (v11 == 4 && !v14)
+        if (phase == 4 && !phase2)
         {
           if (!v5)
           {
@@ -809,12 +809,12 @@ LABEL_100:
           goto LABEL_36;
         }
 
-        if (v11 == v14)
+        if (phase == phase2)
         {
           goto LABEL_36;
         }
 
-        if (v11 == 2)
+        if (phase == 2)
         {
           [v10 locationInView:0];
           v16 = v15;
@@ -856,7 +856,7 @@ LABEL_100:
 
         else
         {
-          if (v14 > 2 || [v26 phase] < 5)
+          if (phase2 > 2 || [v26 phase] < 5)
           {
             goto LABEL_33;
           }
@@ -885,7 +885,7 @@ LABEL_36:
       if (!v29)
       {
 
-        v1 = v130;
+        selfCopy = v130;
         if (obj)
         {
           [v130[2] addObjectsFromArray:obj];
@@ -906,12 +906,12 @@ LABEL_36:
 LABEL_48:
 
 LABEL_49:
-  [v1[2] sortUsingComparator:&__block_literal_global_30];
+  [selfCopy[2] sortUsingComparator:&__block_literal_global_30];
   v156 = 0u;
   v157 = 0u;
   v154 = 0u;
   v155 = 0u;
-  obja = v1[2];
+  obja = selfCopy[2];
   v30 = [obja countByEnumeratingWithState:&v154 objects:v178 count:16];
   if (!v30)
   {
@@ -1070,13 +1070,13 @@ LABEL_73:
                     }
 
                     v99 = v97;
-                    v100 = [v99 _phaseDescription];
+                    _phaseDescription = [v99 _phaseDescription];
                     *buf = 138412802;
                     v183 = v95;
                     v184 = 2048;
                     v185 = v96;
                     v186 = 2112;
-                    v187 = v100;
+                    v187 = _phaseDescription;
                     _os_log_impl(&dword_188A29000, objc, OS_LOG_TYPE_ERROR, "Dispatching delayed touch <%@: %p; phase = %@>", buf, 0x20u);
 
                     v46 = v132;
@@ -1098,7 +1098,7 @@ LABEL_73:
         if ([v47 count])
         {
           v131 = v46;
-          v48 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+          strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
           objb = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
           v170 = 0u;
           v171 = 0u;
@@ -1130,17 +1130,17 @@ LABEL_73:
                     [v55 _loadStateFromTouch:v56];
 
                     v57 = *(v54 + 32);
-                    v58 = [v57 _responder];
-                    [v55 _setResponder:v58];
+                    _responder = [v57 _responder];
+                    [v55 _setResponder:_responder];
 
                     v59 = *(v54 + 32);
-                    v60 = [v59 window];
-                    [v55 setWindow:v60];
+                    window = [v59 window];
+                    [v55 setWindow:window];
 
                     v61 = *(v54 + 24);
-                    v62 = [v61 phase];
+                    phase3 = [v61 phase];
                     v63 = *(v54 + 32);
-                    [v63 setPhase:v62];
+                    [v63 setPhase:phase3];
                   }
                 }
 
@@ -1149,16 +1149,16 @@ LABEL_73:
                   v55 = 0;
                 }
 
-                v64 = [v55 _responder];
-                v65 = [v64 _eventReceivingWindow];
+                _responder2 = [v55 _responder];
+                _eventReceivingWindow = [_responder2 _eventReceivingWindow];
 
-                if (v65)
+                if (_eventReceivingWindow)
                 {
-                  v66 = [v48 objectForKey:v64];
+                  v66 = [strongToStrongObjectsMapTable objectForKey:_responder2];
                   if (!v66)
                   {
                     v66 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-                    [v48 setObject:v66 forKey:v64];
+                    [strongToStrongObjectsMapTable setObject:v66 forKey:_responder2];
                     if (v54)
                     {
                       v67 = *(v54 + 48);
@@ -1170,7 +1170,7 @@ LABEL_73:
                     }
 
                     v68 = v67;
-                    [objb setObject:v68 forKey:v64];
+                    [objb setObject:v68 forKey:_responder2];
                   }
 
                   [v66 addObject:v55];
@@ -1191,7 +1191,7 @@ LABEL_73:
           v169 = 0u;
           v166 = 0u;
           v167 = 0u;
-          v70 = v48;
+          v70 = strongToStrongObjectsMapTable;
           v71 = [v70 countByEnumeratingWithState:&v166 objects:v181 count:16];
           if (v71)
           {
@@ -1237,25 +1237,25 @@ LABEL_73:
                   while (v80);
                 }
 
-                v83 = [v78 anyObject];
-                v84 = [v83 phase];
+                anyObject = [v78 anyObject];
+                phase4 = [anyObject phase];
 
-                if (v84 > 2)
+                if (phase4 > 2)
                 {
-                  if (v84 == 3)
+                  if (phase4 == 3)
                   {
                     [v75 touchesEnded:v78 withEvent:v77];
                   }
 
-                  else if (v84 == 4)
+                  else if (phase4 == 4)
                   {
                     [v75 touchesCancelled:v78 withEvent:v77];
                   }
                 }
 
-                else if (v84)
+                else if (phase4)
                 {
-                  if (v84 == 1)
+                  if (phase4 == 1)
                   {
                     [v75 touchesMoved:v78 withEvent:v77];
                   }
@@ -1335,9 +1335,9 @@ LABEL_73:
                 v116 = v115;
                 if (v114 == 1)
                 {
-                  v117 = [v115 phase];
+                  phase5 = [v115 phase];
 
-                  if (v117 == 3)
+                  if (phase5 == 3)
                   {
                     goto LABEL_164;
                   }
@@ -1499,7 +1499,7 @@ LABEL_7:
             }
 
             v21 = v19;
-            v22 = [v21 _phaseDescription];
+            _phaseDescription = [v21 _phaseDescription];
             *buf = 138413058;
             v25 = v13;
             v26 = 2112;
@@ -1507,7 +1507,7 @@ LABEL_7:
             v28 = 2048;
             v29 = v18;
             v30 = 2112;
-            v31 = v22;
+            v31 = _phaseDescription;
             _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "%@: Sending delayed touch <%@: %p; phase = %@>", buf, 0x2Au);
           }
         }
@@ -1607,7 +1607,7 @@ LABEL_7:
             }
 
             v21 = v19;
-            v22 = [v21 _phaseDescription];
+            _phaseDescription = [v21 _phaseDescription];
             *buf = 138413058;
             v25 = v13;
             v26 = 2112;
@@ -1615,7 +1615,7 @@ LABEL_7:
             v28 = 2048;
             v29 = v18;
             v30 = 2112;
-            v31 = v22;
+            v31 = _phaseDescription;
             _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "%@: Sending delayed press <%@: %p; phase = %@>", buf, 0x2Au);
           }
         }
@@ -1634,16 +1634,16 @@ LABEL_7:
   return result;
 }
 
-- (void)delayedTouchForTouch:(void *)a3 event:
+- (void)delayedTouchForTouch:(void *)touch event:
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v6 = _UIGestureDelayedTouchForUITouch(a2, a1[1]);
+    v6 = _UIGestureDelayedTouchForUITouch(a2, self[1]);
     if (!v6)
     {
-      v7 = [a3 _cloneEvent];
-      v8 = [[UIGestureDelayedTouch alloc] initWithEvent:v7 touch:a2];
+      _cloneEvent = [touch _cloneEvent];
+      v8 = [[UIGestureDelayedTouch alloc] initWithEvent:_cloneEvent touch:a2];
       v6 = v8;
       if (v8)
       {
@@ -1658,7 +1658,7 @@ LABEL_7:
       v10 = v9;
       [v10 _loadStateFromTouch:a2];
 
-      [a1[1] addObject:v6];
+      [self[1] addObject:v6];
     }
 
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("Gesture", &delayedTouchForTouch_event____s_category);
@@ -1667,13 +1667,13 @@ LABEL_7:
       v13 = *(CategoryCachedImpl + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v19.receiver = a1;
+        v19.receiver = self;
         v19.super_class = UIGestureDelayedEventComponentDispatcher;
         v14 = v13;
         v15 = objc_msgSendSuper2(&v19, sel_description);
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
-        v18 = [a2 _phaseDescription];
+        _phaseDescription = [a2 _phaseDescription];
         *buf = 138413058;
         v21 = v15;
         v22 = 2112;
@@ -1681,7 +1681,7 @@ LABEL_7:
         v24 = 2048;
         v25 = a2;
         v26 = 2112;
-        v27 = v18;
+        v27 = _phaseDescription;
         _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "%@: Delaying touch <%@: %p; phase = %@>", buf, 0x2Au);
       }
     }
@@ -1702,16 +1702,16 @@ LABEL_7:
   return v6;
 }
 
-- (void)delayedPressForPress:(void *)a3 event:
+- (void)delayedPressForPress:(void *)press event:
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v6 = _UIGestureDelayedTouchForUITouch(a2, a1[3]);
+    v6 = _UIGestureDelayedTouchForUITouch(a2, self[3]);
     if (!v6)
     {
-      v7 = [a3 _cloneEvent];
-      v8 = [[UIGestureDelayedPress alloc] initWithEvent:v7 press:a2];
+      _cloneEvent = [press _cloneEvent];
+      v8 = [[UIGestureDelayedPress alloc] initWithEvent:_cloneEvent press:a2];
       v6 = v8;
       if (v8)
       {
@@ -1726,7 +1726,7 @@ LABEL_7:
       v10 = v9;
       [v10 _loadStateFromPress:a2];
 
-      [a1[3] addObject:v6];
+      [self[3] addObject:v6];
     }
 
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("Gesture", &delayedPressForPress_event____s_category);
@@ -1735,13 +1735,13 @@ LABEL_7:
       v13 = *(CategoryCachedImpl + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v19.receiver = a1;
+        v19.receiver = self;
         v19.super_class = UIGestureDelayedEventComponentDispatcher;
         v14 = v13;
         v15 = objc_msgSendSuper2(&v19, sel_description);
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
-        v18 = [a2 _phaseDescription];
+        _phaseDescription = [a2 _phaseDescription];
         *buf = 138413058;
         v21 = v15;
         v22 = 2112;
@@ -1749,7 +1749,7 @@ LABEL_7:
         v24 = 2048;
         v25 = a2;
         v26 = 2112;
-        v27 = v18;
+        v27 = _phaseDescription;
         _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "%@: Delaying press <%@: %p; phase = %@>", buf, 0x2Au);
       }
     }
@@ -1770,10 +1770,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)removeDelayedTouch:(id *)a1
+- (void)removeDelayedTouch:(id *)touch
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!touch)
   {
     return;
   }
@@ -1801,7 +1801,7 @@ LABEL_7:
       v8 = *(CategoryCachedImpl + 8);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v11.receiver = a1;
+        v11.receiver = touch;
         v11.super_class = UIGestureDelayedEventComponentDispatcher;
         v9 = v8;
         v10 = objc_msgSendSuper2(&v11, sel_description);
@@ -1815,7 +1815,7 @@ LABEL_7:
 
     [v6 setIsDelayed:{0, v11.receiver, v11.super_class}];
     [v6 _setIsFirstTouchForView:0];
-    [a1[1] removeObject:a2];
+    [touch[1] removeObject:a2];
   }
 }
 
@@ -1888,15 +1888,15 @@ LABEL_6:
   return result;
 }
 
-- (void)removeDelayedTouchesToSend:(id)a3
+- (void)removeDelayedTouchesToSend:(id)send
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sendCopy = send;
+  v5 = [sendCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1908,7 +1908,7 @@ LABEL_6:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sendCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -1931,7 +1931,7 @@ LABEL_6:
       }
 
       while (v6 != v8);
-      v12 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v12 = [sendCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       v6 = v12;
     }
 
@@ -1939,14 +1939,14 @@ LABEL_6:
   }
 }
 
-- (BOOL)touchesBeganWasDelayedForTouch:(uint64_t)a1
+- (BOOL)touchesBeganWasDelayedForTouch:(uint64_t)touch
 {
-  if (!a1)
+  if (!touch)
   {
     return 0;
   }
 
-  v4 = _UIGestureDelayedTouchForUITouch(a2, *(a1 + 8));
+  v4 = _UIGestureDelayedTouchForUITouch(a2, *(touch + 8));
   if (v4)
   {
     v5 = v4;
@@ -1954,7 +1954,7 @@ LABEL_6:
 
   else
   {
-    v5 = _UIGestureDelayedTouchForUITouch(a2, *(a1 + 16));
+    v5 = _UIGestureDelayedTouchForUITouch(a2, *(touch + 16));
     if (!v5)
     {
 LABEL_7:
@@ -1975,14 +1975,14 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)pressesBeganWasDelayedForPress:(uint64_t)a1
+- (BOOL)pressesBeganWasDelayedForPress:(uint64_t)press
 {
-  if (!a1)
+  if (!press)
   {
     return 0;
   }
 
-  v4 = _UIGestureDelayedTouchForUITouch(a2, *(a1 + 24));
+  v4 = _UIGestureDelayedTouchForUITouch(a2, *(press + 24));
   if (v4)
   {
     v5 = v4;
@@ -1990,7 +1990,7 @@ LABEL_8:
 
   else
   {
-    v5 = _UIGestureDelayedTouchForUITouch(a2, *(a1 + 32));
+    v5 = _UIGestureDelayedTouchForUITouch(a2, *(press + 32));
     if (!v5)
     {
 LABEL_7:
@@ -2027,12 +2027,12 @@ uint64_t __62__UIGestureDelayedEventComponentDispatcher_sendDelayedPresses__bloc
   }
 }
 
-- (void)removeTouch:(void *)a1
+- (void)removeTouch:(void *)touch
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (touch)
   {
-    v4 = _UIGestureDelayedTouchForUITouch(a2, a1[2]);
+    v4 = _UIGestureDelayedTouchForUITouch(a2, touch[2]);
     if (v4)
     {
       do
@@ -2046,22 +2046,22 @@ uint64_t __62__UIGestureDelayedEventComponentDispatcher_sendDelayedPresses__bloc
             log = v8;
             v9 = objc_opt_class();
             v11 = NSStringFromClass(v9);
-            v10 = [a2 _phaseDescription];
+            _phaseDescription = [a2 _phaseDescription];
             *buf = 138412802;
             v15 = v11;
             v16 = 2048;
             v17 = a2;
             v18 = 2112;
-            v19 = v10;
+            v19 = _phaseDescription;
             _os_log_impl(&dword_188A29000, log, OS_LOG_TYPE_ERROR, "Cancelling send of touch <%@: %p; phase = %@>", buf, 0x20u);
           }
         }
 
         v13 = v4;
         v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
-        [a1 removeDelayedTouchesToSend:v6];
+        [touch removeDelayedTouchesToSend:v6];
 
-        v7 = _UIGestureDelayedTouchForUITouch(a2, a1[2]);
+        v7 = _UIGestureDelayedTouchForUITouch(a2, touch[2]);
 
         v4 = v7;
       }
@@ -2071,12 +2071,12 @@ uint64_t __62__UIGestureDelayedEventComponentDispatcher_sendDelayedPresses__bloc
   }
 }
 
-- (void)removePress:(uint64_t)a1
+- (void)removePress:(uint64_t)press
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (press)
   {
-    v4 = _UIGestureDelayedTouchForUITouch(a2, *(a1 + 32));
+    v4 = _UIGestureDelayedTouchForUITouch(a2, *(press + 32));
     if (v4)
     {
       do
@@ -2090,19 +2090,19 @@ uint64_t __62__UIGestureDelayedEventComponentDispatcher_sendDelayedPresses__bloc
             log = v7;
             v8 = objc_opt_class();
             v10 = NSStringFromClass(v8);
-            v9 = [a2 _phaseDescription];
+            _phaseDescription = [a2 _phaseDescription];
             *buf = 138412802;
             v13 = v10;
             v14 = 2048;
             v15 = a2;
             v16 = 2112;
-            v17 = v9;
+            v17 = _phaseDescription;
             _os_log_impl(&dword_188A29000, log, OS_LOG_TYPE_ERROR, "Cancelling send of press <%@: %p; phase = %@>", buf, 0x20u);
           }
         }
 
-        [*(a1 + 32) removeObject:v4];
-        v6 = _UIGestureDelayedTouchForUITouch(a2, *(a1 + 32));
+        [*(press + 32) removeObject:v4];
+        v6 = _UIGestureDelayedTouchForUITouch(a2, *(press + 32));
 
         v4 = v6;
       }
@@ -2112,10 +2112,10 @@ uint64_t __62__UIGestureDelayedEventComponentDispatcher_sendDelayedPresses__bloc
   }
 }
 
-- (void)cancelDelayedTouches:(void *)a3 touches:(void *)a4 fromEvent:
+- (void)cancelDelayedTouches:(void *)touches touches:(void *)a4 fromEvent:
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = [a2 count];
     if (v5 < 1)
@@ -2162,13 +2162,13 @@ uint64_t __62__UIGestureDelayedEventComponentDispatcher_sendDelayedPresses__bloc
           }
 
           v13 = v12;
-          v14 = [v13 phase];
+          phase = [v13 phase];
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
           aBlock[2] = __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedTouches_touches_fromEvent___block_invoke;
           aBlock[3] = &unk_1E70F32F0;
           v43 = v13;
-          v44 = v14;
+          v44 = phase;
           v15 = v13;
           v16 = _Block_copy(aBlock);
           [v7 addObject:v16];
@@ -2209,7 +2209,7 @@ uint64_t __62__UIGestureDelayedEventComponentDispatcher_sendDelayedPresses__bloc
     v33 = __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedTouches_touches_fromEvent___block_invoke_12;
     v34 = &unk_1E70F6678;
     v35 = &v36;
-    __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedTouches_touches_fromEvent___block_invoke_12(v32, a3);
+    __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedTouches_touches_fromEvent___block_invoke_12(v32, touches);
     v33(v32, v27);
     if ([v37[5] count])
     {
@@ -2298,10 +2298,10 @@ void __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedTouches_touches
   }
 }
 
-- (void)cancelDelayedPresses:(void *)a3 presses:(void *)a4 fromEvent:
+- (void)cancelDelayedPresses:(void *)presses presses:(void *)a4 fromEvent:
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = [a2 count];
     if (v5 < 1)
@@ -2348,13 +2348,13 @@ void __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedTouches_touches
           }
 
           v13 = v12;
-          v14 = [v13 phase];
+          phase = [v13 phase];
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
           aBlock[2] = __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedPresses_presses_fromEvent___block_invoke;
           aBlock[3] = &unk_1E70F32F0;
           v43 = v13;
-          v44 = v14;
+          v44 = phase;
           v15 = v13;
           v16 = _Block_copy(aBlock);
           [v7 addObject:v16];
@@ -2395,7 +2395,7 @@ void __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedTouches_touches
     v33 = __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedPresses_presses_fromEvent___block_invoke_2;
     v34 = &unk_1E70F6678;
     v35 = &v36;
-    __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedPresses_presses_fromEvent___block_invoke_2(v32, a3);
+    __83__UIGestureDelayedEventComponentDispatcher_cancelDelayedPresses_presses_fromEvent___block_invoke_2(v32, presses);
     v33(v32, v27);
     if ([v37[5] count])
     {

@@ -1,13 +1,13 @@
 @interface MSDKPeerDemoIPDStatus
-- (MSDKPeerDemoIPDStatus)initWithCoder:(id)a3;
-- (MSDKPeerDemoIPDStatus)initWithTargetIPD:(double)a3 currentIPD:(double)a4 clipOnState:(unint64_t)a5;
+- (MSDKPeerDemoIPDStatus)initWithCoder:(id)coder;
+- (MSDKPeerDemoIPDStatus)initWithTargetIPD:(double)d currentIPD:(double)pD clipOnState:(unint64_t)state;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSDKPeerDemoIPDStatus
 
-- (MSDKPeerDemoIPDStatus)initWithTargetIPD:(double)a3 currentIPD:(double)a4 clipOnState:(unint64_t)a5
+- (MSDKPeerDemoIPDStatus)initWithTargetIPD:(double)d currentIPD:(double)pD clipOnState:(unint64_t)state
 {
   v11.receiver = self;
   v11.super_class = MSDKPeerDemoIPDStatus;
@@ -15,9 +15,9 @@
   v9 = v8;
   if (v8)
   {
-    [(MSDKPeerDemoIPDStatus *)v8 setTargetIPD:a3];
-    [(MSDKPeerDemoIPDStatus *)v9 setCurrentIPD:a4];
-    [(MSDKPeerDemoIPDStatus *)v9 setClipOnState:a5];
+    [(MSDKPeerDemoIPDStatus *)v8 setTargetIPD:d];
+    [(MSDKPeerDemoIPDStatus *)v9 setCurrentIPD:pD];
+    [(MSDKPeerDemoIPDStatus *)v9 setClipOnState:state];
   }
 
   return v9;
@@ -36,23 +36,23 @@
   return v9;
 }
 
-- (MSDKPeerDemoIPDStatus)initWithCoder:(id)a3
+- (MSDKPeerDemoIPDStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MSDKPeerDemoIPDStatus;
   v5 = [(MSDKPeerDemoIPDStatus *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TargetIPD"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TargetIPD"];
     [v6 doubleValue];
     [(MSDKPeerDemoIPDStatus *)v5 setTargetIPD:?];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CurrentIPD"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CurrentIPD"];
     [v7 doubleValue];
     [(MSDKPeerDemoIPDStatus *)v5 setCurrentIPD:?];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClipOnState"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClipOnState"];
     [v8 doubleValue];
     [(MSDKPeerDemoIPDStatus *)v5 setClipOnState:v9];
   }
@@ -60,21 +60,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   [(MSDKPeerDemoIPDStatus *)self targetIPD];
   v6 = [v4 numberWithDouble:?];
-  [v5 encodeObject:v6 forKey:@"TargetIPD"];
+  [coderCopy encodeObject:v6 forKey:@"TargetIPD"];
 
   v7 = MEMORY[0x277CCABB0];
   [(MSDKPeerDemoIPDStatus *)self currentIPD];
   v8 = [v7 numberWithDouble:?];
-  [v5 encodeObject:v8 forKey:@"CurrentIPD"];
+  [coderCopy encodeObject:v8 forKey:@"CurrentIPD"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MSDKPeerDemoIPDStatus clipOnState](self, "clipOnState")}];
-  [v5 encodeObject:v9 forKey:@"ClipOnState"];
+  [coderCopy encodeObject:v9 forKey:@"ClipOnState"];
 }
 
 @end

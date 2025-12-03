@@ -14,7 +14,7 @@
 
 - (NSString)name
 {
-  v2 = self;
+  selfCopy = self;
   sub_100068F90();
 
   v3 = String._bridgeToObjectiveC()();

@@ -1,43 +1,43 @@
 @interface PFClientSideEncryptionManager
-+ (void)applyOptions:(id)a3 toArchive:(id)a4;
-- (BOOL)archiveFileAtURL:(id)a3 outputFileURL:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)createKeychainEntryReturningKeyData:(id *)a3 keyInfo:(id *)a4;
-- (BOOL)findExistingKeychainEntryReturningKeyData:(id *)a3 keyInfo:(id *)a4;
-- (BOOL)unarchiveDirectoryAtURL:(id)a3 error:(id *)a4;
-- (BOOL)unarchiveFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5;
-- (PFClientSideEncryptionManager)initWithProfile:(id)a3;
-- (id)configurationForProfile:(id)a3;
-- (void)archiveDirectoryAtURL:(id)a3 toOutputURL:(id)a4 dataType:(int64_t)a5 options:(id)a6 entryPredicate:(id)a7 completionHandler:(id)a8;
-- (void)shutdownWithCompletionHandler:(id)a3;
++ (void)applyOptions:(id)options toArchive:(id)archive;
+- (BOOL)archiveFileAtURL:(id)l outputFileURL:(id)rL options:(id)options error:(id *)error;
+- (BOOL)createKeychainEntryReturningKeyData:(id *)data keyInfo:(id *)info;
+- (BOOL)findExistingKeychainEntryReturningKeyData:(id *)data keyInfo:(id *)info;
+- (BOOL)unarchiveDirectoryAtURL:(id)l error:(id *)error;
+- (BOOL)unarchiveFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error;
+- (PFClientSideEncryptionManager)initWithProfile:(id)profile;
+- (id)configurationForProfile:(id)profile;
+- (void)archiveDirectoryAtURL:(id)l toOutputURL:(id)rL dataType:(int64_t)type options:(id)options entryPredicate:(id)predicate completionHandler:(id)handler;
+- (void)shutdownWithCompletionHandler:(id)handler;
 - (void)start;
 @end
 
 @implementation PFClientSideEncryptionManager
 
-- (BOOL)unarchiveFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5
+- (BOOL)unarchiveFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  rLCopy = rL;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
   os_unfair_lock_unlock(&self->_lock);
   if (state == 4)
   {
-    v11 = [(PFAppleArchiveStream *)[PFAppleArchive alloc] initWithArchiveURL:v8];
+    v11 = [(PFAppleArchiveStream *)[PFAppleArchive alloc] initWithArchiveURL:lCopy];
     [(PFAppleArchiveStream *)v11 setEncryptionKey:self->_keyData];
-    v12 = [(PFAppleArchive *)v11 openForReading:a5];
+    v12 = [(PFAppleArchive *)v11 openForReading:error];
     v13 = [(NSDictionary *)self->_keyMetadata objectForKeyedSubscript:@"key-creation-date"];
-    v14 = [(PFAppleArchiveStream *)v11 encryptedArchiveMetadata];
-    v15 = [v14 objectForKeyedSubscript:@"com.apple.photos.backend.client-side-encryption.key-creation-date"];
-    v16 = [v14 objectForKeyedSubscript:@"com.apple.photos.backend.client-side-encryption.version"];
+    encryptedArchiveMetadata = [(PFAppleArchiveStream *)v11 encryptedArchiveMetadata];
+    v15 = [encryptedArchiveMetadata objectForKeyedSubscript:@"com.apple.photos.backend.client-side-encryption.key-creation-date"];
+    v16 = [encryptedArchiveMetadata objectForKeyedSubscript:@"com.apple.photos.backend.client-side-encryption.version"];
     v17 = v16;
     if (!v12)
     {
       logHandle = self->_logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        v32 = *a5;
+        v32 = *error;
         *buf = 138544130;
         *v47 = v17;
         *&v47[8] = 2114;
@@ -53,10 +53,10 @@
       goto LABEL_24;
     }
 
-    v35 = v8;
+    v35 = lCopy;
     v18 = v15;
     v37 = v16;
-    v40 = v9;
+    v40 = rLCopy;
     context = objc_autoreleasePoolPush();
     v44 = 0;
     v45 = 0;
@@ -81,11 +81,11 @@
       {
         v25 = self->_logHandle;
         v17 = v37;
-        v8 = v35;
+        lCopy = v35;
         if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
           v26 = 1;
-          v9 = v40;
+          rLCopy = v40;
           v15 = v33;
           goto LABEL_20;
         }
@@ -102,14 +102,14 @@
         _os_log_debug_impl(&dword_1B35C1000, v25, OS_LOG_TYPE_DEBUG, "Successfully unarchived single file encrypted archive, filename=%@, version=%{public}@, keychain item creation date=%{public}@, archive key creation date=%{public}@", buf, 0x2Au);
         v26 = 1;
 LABEL_19:
-        v9 = v40;
+        rLCopy = v40;
 LABEL_20:
 
         objc_autoreleasePoolPop(context);
-        if (a5 && !v26)
+        if (error && !v26)
         {
           v30 = v24;
-          *a5 = v24;
+          *error = v24;
         }
 
 LABEL_24:
@@ -127,7 +127,7 @@ LABEL_24:
       v15 = v18;
     }
 
-    v8 = v35;
+    lCopy = v35;
     v29 = self->_logHandle;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -150,7 +150,7 @@ LABEL_24:
     goto LABEL_19;
   }
 
-  if (a5)
+  if (error)
   {
     v27 = MEMORY[0x1E696ABC0];
     v53 = *MEMORY[0x1E696A278];
@@ -158,7 +158,7 @@ LABEL_24:
     v54[0] = v11;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:&v53 count:1];
     [v27 errorWithDomain:@"com.apple.PhotosFormats" code:500101 userInfo:v13];
-    *a5 = v26 = 0;
+    *error = v26 = 0;
 LABEL_25:
 
     goto LABEL_26;
@@ -170,41 +170,41 @@ LABEL_26:
   return v26;
 }
 
-- (BOOL)archiveFileAtURL:(id)a3 outputFileURL:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)archiveFileAtURL:(id)l outputFileURL:(id)rL options:(id)options error:(id *)error
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
   os_unfair_lock_unlock(&self->_lock);
   if (state == 4)
   {
-    v14 = [(PFAppleArchiveStream *)[PFAppleArchive alloc] initWithArchiveURL:v11];
-    [objc_opt_class() applyOptions:v12 toArchive:v14];
+    v14 = [(PFAppleArchiveStream *)[PFAppleArchive alloc] initWithArchiveURL:rLCopy];
+    [objc_opt_class() applyOptions:optionsCopy toArchive:v14];
     [(PFAppleArchiveStream *)v14 setEncryptionKey:self->_keyData];
     v36[0] = @"com.apple.photos.backend.client-side-encryption.key-creation-date";
     v15 = [(NSDictionary *)self->_keyMetadata objectForKeyedSubscript:@"key-creation-date"];
     v16 = [v15 description];
     v36[1] = @"com.apple.photos.backend.client-side-encryption.version";
     v37[0] = v16;
-    v17 = [&unk_1F2AAB488 stringValue];
-    v37[1] = v17;
+    stringValue = [&unk_1F2AAB488 stringValue];
+    v37[1] = stringValue;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
     [(PFAppleArchiveStream *)v14 setEncryptedArchiveMetadata:v18];
 
-    if ([(PFAppleArchive *)v14 openForWriting:a6])
+    if ([(PFAppleArchive *)v14 openForWriting:error])
     {
-      v19 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v10 options:1 error:a6];
+      v19 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:error];
       if (v19)
       {
-        v20 = [v10 lastPathComponent];
-        v21 = [(PFAppleArchive *)v14 encodeData:v19 filename:v20 error:a6];
+        lastPathComponent = [lCopy lastPathComponent];
+        v21 = [(PFAppleArchive *)v14 encodeData:v19 filename:lastPathComponent error:error];
 
-        if (v21 && [(PFAppleArchive *)v14 close:a6])
+        if (v21 && [(PFAppleArchive *)v14 close:error])
         {
-          LOBYTE(a6) = 1;
+          LOBYTE(error) = 1;
 LABEL_16:
 
           goto LABEL_17;
@@ -213,7 +213,7 @@ LABEL_16:
         logHandle = self->_logHandle;
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
-          v26 = *a6;
+          v26 = *error;
           *buf = 67109378;
           LODWORD(v35[0]) = v21;
           WORD2(v35[0]) = 2112;
@@ -231,7 +231,7 @@ LABEL_20:
         v30 = self->_logHandle;
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v33 = *a6;
+          v33 = *error;
           *buf = 138412290;
           v35[0] = v33;
           v27 = "Unable to read single-file encrypted archive input data: %@";
@@ -241,61 +241,61 @@ LABEL_20:
         }
       }
 
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
       goto LABEL_16;
     }
 
     v24 = self->_logHandle;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v32 = *a6;
+      v32 = *error;
       *buf = 138412290;
       v35[0] = v32;
       _os_log_error_impl(&dword_1B35C1000, v24, OS_LOG_TYPE_ERROR, "Error opening archive for single file writing: %@", buf, 0xCu);
     }
 
 LABEL_11:
-    LOBYTE(a6) = 0;
+    LOBYTE(error) = 0;
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  if (a6)
+  if (error)
   {
     v22 = MEMORY[0x1E696ABC0];
     v38 = *MEMORY[0x1E696A278];
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid state %tu", self->_state];
     v39[0] = v14;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-    *a6 = [v22 errorWithDomain:@"com.apple.PhotosFormats" code:500101 userInfo:v23];
+    *error = [v22 errorWithDomain:@"com.apple.PhotosFormats" code:500101 userInfo:v23];
 
     goto LABEL_11;
   }
 
 LABEL_18:
 
-  return a6;
+  return error;
 }
 
-- (BOOL)unarchiveDirectoryAtURL:(id)a3 error:(id *)a4
+- (BOOL)unarchiveDirectoryAtURL:(id)l error:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
   os_unfair_lock_unlock(&self->_lock);
   if (state == 4)
   {
-    v8 = [(PFAppleArchiveStream *)[PFAppleArchive alloc] initWithArchiveURL:v6];
+    v8 = [(PFAppleArchiveStream *)[PFAppleArchive alloc] initWithArchiveURL:lCopy];
     [(PFAppleArchiveStream *)v8 setEncryptionKey:self->_keyData];
     v33 = 0;
     v9 = [(PFAppleArchive *)v8 openForReading:&v33];
     v10 = v33;
     v30 = [(NSDictionary *)self->_keyMetadata objectForKeyedSubscript:@"key-creation-date"];
-    v11 = [(PFAppleArchiveStream *)v8 encryptedArchiveMetadata];
-    v12 = [v11 objectForKeyedSubscript:@"com.apple.photos.backend.client-side-encryption.key-creation-date"];
-    v13 = [v11 objectForKeyedSubscript:@"com.apple.photos.backend.client-side-encryption.version"];
+    encryptedArchiveMetadata = [(PFAppleArchiveStream *)v8 encryptedArchiveMetadata];
+    v12 = [encryptedArchiveMetadata objectForKeyedSubscript:@"com.apple.photos.backend.client-side-encryption.key-creation-date"];
+    v13 = [encryptedArchiveMetadata objectForKeyedSubscript:@"com.apple.photos.backend.client-side-encryption.version"];
     if (v9)
     {
       v32 = v10;
@@ -364,18 +364,18 @@ LABEL_21:
       v40 = 2112;
       v41 = v14;
       _os_log_error_impl(&dword_1B35C1000, v26, OS_LOG_TYPE_ERROR, "Failed to unarchive the directory encrypted archive, version=%{public}@, keychain item creation date=%{public}@, archive key creation date=%{public}@, error: %@", buf, 0x2Au);
-      if (a4)
+      if (error)
       {
         goto LABEL_18;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_18:
       v27 = v14;
       v19 = 0;
-      *a4 = v14;
+      *error = v14;
       goto LABEL_21;
     }
 
@@ -390,11 +390,11 @@ LABEL_18:
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:1];
   v14 = [v20 errorWithDomain:@"com.apple.PhotosFormats" code:500101 userInfo:v22];
 
-  if (a4)
+  if (error)
   {
     v23 = v14;
     v19 = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -407,31 +407,31 @@ LABEL_22:
   return v19;
 }
 
-- (void)archiveDirectoryAtURL:(id)a3 toOutputURL:(id)a4 dataType:(int64_t)a5 options:(id)a6 entryPredicate:(id)a7 completionHandler:(id)a8
+- (void)archiveDirectoryAtURL:(id)l toOutputURL:(id)rL dataType:(int64_t)type options:(id)options entryPredicate:(id)predicate completionHandler:(id)handler
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
   os_unfair_lock_unlock(&self->_lock);
   if (state == 4)
   {
-    v37 = v16;
-    v19 = v13;
-    v20 = [(PFAppleArchiveStream *)[PFAppleArchive alloc] initWithArchiveURL:v14];
-    [objc_opt_class() applyOptions:v15 toArchive:v20];
+    v37 = predicateCopy;
+    v19 = lCopy;
+    v20 = [(PFAppleArchiveStream *)[PFAppleArchive alloc] initWithArchiveURL:rLCopy];
+    [objc_opt_class() applyOptions:optionsCopy toArchive:v20];
     [(PFAppleArchiveStream *)v20 setEncryptionKey:self->_keyData];
     v43[0] = @"com.apple.photos.backend.client-side-encryption.key-creation-date";
     v21 = [(NSDictionary *)self->_keyMetadata objectForKeyedSubscript:@"key-creation-date"];
     v22 = [v21 description];
     v43[1] = @"com.apple.photos.backend.client-side-encryption.version";
     v44[0] = v22;
-    v23 = [&unk_1F2AAB488 stringValue];
-    v44[1] = v23;
+    stringValue = [&unk_1F2AAB488 stringValue];
+    v44[1] = stringValue;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:2];
     [(PFAppleArchiveStream *)v20 setEncryptedArchiveMetadata:v24];
 
@@ -442,7 +442,7 @@ LABEL_22:
     if (!v24)
     {
       logHandle = self->_logHandle;
-      v13 = v19;
+      lCopy = v19;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
@@ -451,14 +451,14 @@ LABEL_22:
       }
 
       v31 = 0;
-      v16 = v37;
+      predicateCopy = v37;
       goto LABEL_14;
     }
 
     v39 = v25;
-    v13 = v19;
+    lCopy = v19;
     v27 = v19;
-    v16 = v37;
+    predicateCopy = v37;
     v28 = [(PFAppleArchive *)v20 encodeContentOfDirectoryAtURL:v27 entryPredicate:v37 error:&v39];
     v29 = v39;
 
@@ -472,7 +472,7 @@ LABEL_22:
       {
         v31 = 1;
 LABEL_14:
-        v17[2](v17, v31, v26);
+        handlerCopy[2](handlerCopy, v31, v26);
 
         goto LABEL_15;
       }
@@ -502,25 +502,25 @@ LABEL_14:
   v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:&v45 count:1];
   v26 = [v32 errorWithDomain:@"com.apple.PhotosFormats" code:500101 userInfo:v34];
 
-  v17[2](v17, 0, v26);
+  handlerCopy[2](handlerCopy, 0, v26);
 LABEL_15:
 }
 
-- (void)shutdownWithCompletionHandler:(id)a3
+- (void)shutdownWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   self->_state = 5;
   os_unfair_lock_unlock(&self->_lock);
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy);
+    v4 = handlerCopy;
   }
 }
 
-- (BOOL)createKeychainEntryReturningKeyData:(id *)a3 keyInfo:(id *)a4
+- (BOOL)createKeychainEntryReturningKeyData:(id *)data keyInfo:(id *)info
 {
   v42 = *MEMORY[0x1E69E9840];
   v7 = SecRandomCopyBytes(0, 0x20uLL, bytes);
@@ -605,17 +605,17 @@ LABEL_15:
         _os_log_impl(&dword_1B35C1000, v31, OS_LOG_TYPE_DEFAULT, "Created client side encryption manager key with creation date %{public}@", buf, 0xCu);
       }
 
-      if (a3)
+      if (data)
       {
         v32 = v11;
-        *a3 = v11;
+        *data = v11;
       }
 
-      if (a4)
+      if (info)
       {
         v35 = @"key-creation-date";
         v36 = v29;
-        *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
+        *info = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       }
     }
   }
@@ -623,7 +623,7 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)findExistingKeychainEntryReturningKeyData:(id *)a3 keyInfo:(id *)a4
+- (BOOL)findExistingKeychainEntryReturningKeyData:(id *)data keyInfo:(id *)info
 {
   v31[7] = *MEMORY[0x1E69E9840];
   v7 = *MEMORY[0x1E697B020];
@@ -690,17 +690,17 @@ LABEL_15:
     v20 = v18 != 0;
     if (v18)
     {
-      if (a3)
+      if (data)
       {
         v21 = v18;
-        *a3 = v19;
+        *data = v19;
       }
 
-      if (a4)
+      if (info)
       {
         v26 = @"key-creation-date";
         v27 = v16;
-        *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
+        *info = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
       }
     }
 
@@ -765,7 +765,7 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)configurationForProfile:(id)a3
+- (id)configurationForProfile:(id)profile
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v21[0] = @"Photos";
@@ -777,7 +777,7 @@ LABEL_9:
   v19[2] = @"applicationLabel";
   v20[2] = @"com.apple.photos.client-side-encryption-manager";
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  profileCopy = profile;
   v6 = [v4 dictionaryWithObjects:v20 forKeys:v19 count:3];
   v22[0] = v6;
   v21[1] = @"PhotosUnitTest";
@@ -809,21 +809,21 @@ LABEL_9:
   v22[3] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:4];
 
-  v11 = [v10 objectForKeyedSubscript:v5];
+  v11 = [v10 objectForKeyedSubscript:profileCopy];
 
   return v11;
 }
 
-- (PFClientSideEncryptionManager)initWithProfile:(id)a3
+- (PFClientSideEncryptionManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v17.receiver = self;
   v17.super_class = PFClientSideEncryptionManager;
   v5 = [(PFClientSideEncryptionManager *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PFClientSideEncryptionManager *)v5 configurationForProfile:v4];
+    v7 = [(PFClientSideEncryptionManager *)v5 configurationForProfile:profileCopy];
     v8 = [v7 objectForKeyedSubscript:@"keychainAccessGroup"];
     keychainAccessGroup = v6->_keychainAccessGroup;
     v6->_keychainAccessGroup = v8;
@@ -846,14 +846,14 @@ LABEL_9:
   return v6;
 }
 
-+ (void)applyOptions:(id)a3 toArchive:(id)a4
++ (void)applyOptions:(id)options toArchive:(id)archive
 {
-  v7 = a4;
-  v5 = [a3 objectForKeyedSubscript:@"PFClientSideEncryptionManagerOptionCompressionKey"];
+  archiveCopy = archive;
+  v5 = [options objectForKeyedSubscript:@"PFClientSideEncryptionManagerOptionCompressionKey"];
   v6 = v5;
   if (v5)
   {
-    [v7 setCompression:{objc_msgSend(v5, "integerValue")}];
+    [archiveCopy setCompression:{objc_msgSend(v5, "integerValue")}];
   }
 }
 

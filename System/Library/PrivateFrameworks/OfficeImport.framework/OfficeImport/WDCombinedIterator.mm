@@ -1,21 +1,21 @@
 @interface WDCombinedIterator
-- (WDCombinedIterator)initWithParentIterator:(id)a3;
+- (WDCombinedIterator)initWithParentIterator:(id)iterator;
 - (id)next;
 - (void)incrementChildIterator;
 @end
 
 @implementation WDCombinedIterator
 
-- (WDCombinedIterator)initWithParentIterator:(id)a3
+- (WDCombinedIterator)initWithParentIterator:(id)iterator
 {
-  v5 = a3;
+  iteratorCopy = iterator;
   v9.receiver = self;
   v9.super_class = WDCombinedIterator;
   v6 = [(WDCombinedIterator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mParentIterator, a3);
+    objc_storeStrong(&v6->mParentIterator, iterator);
     [(WDCombinedIterator *)v7 incrementChildIterator];
   }
 
@@ -27,7 +27,7 @@
   mChildIterator = self->mChildIterator;
   if (mChildIterator)
   {
-    v4 = [(WDIterator *)mChildIterator next];
+    next = [(WDIterator *)mChildIterator next];
     if (![(WDIterator *)self->mChildIterator hasNext])
     {
       [(WDCombinedIterator *)self incrementChildIterator];
@@ -36,20 +36,20 @@
 
   else
   {
-    v4 = 0;
+    next = 0;
   }
 
-  return v4;
+  return next;
 }
 
 - (void)incrementChildIterator
 {
   do
   {
-    v3 = [(WDIterator *)self->mParentIterator next];
-    if (v3)
+    next = [(WDIterator *)self->mParentIterator next];
+    if (next)
     {
-      v4 = [(WDCombinedIterator *)self newChildIteratorFrom:v3];
+      v4 = [(WDCombinedIterator *)self newChildIteratorFrom:next];
       [(WDCombinedIterator *)self setChildIterator:v4];
     }
 

@@ -1,49 +1,49 @@
 @interface SXProxyAuthenticationCredentialFactory
-- (SXProxyAuthenticationCredentialFactory)initWithKeyProvider:(id)a3;
-- (void)createCredentialForResponse:(id)a3 date:(id)a4 completion:(id)a5;
+- (SXProxyAuthenticationCredentialFactory)initWithKeyProvider:(id)provider;
+- (void)createCredentialForResponse:(id)response date:(id)date completion:(id)completion;
 @end
 
 @implementation SXProxyAuthenticationCredentialFactory
 
-- (SXProxyAuthenticationCredentialFactory)initWithKeyProvider:(id)a3
+- (SXProxyAuthenticationCredentialFactory)initWithKeyProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SXProxyAuthenticationCredentialFactory;
   v6 = [(SXProxyAuthenticationCredentialFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyProvider, a3);
+    objc_storeStrong(&v6->_keyProvider, provider);
   }
 
   return v7;
 }
 
-- (void)createCredentialForResponse:(id)a3 date:(id)a4 completion:(id)a5
+- (void)createCredentialForResponse:(id)response date:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  responseCopy = response;
+  dateCopy = date;
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v9)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && dateCopy)
     {
-      v11 = [(SXProxyAuthenticationCredentialFactory *)self keyProvider];
+      keyProvider = [(SXProxyAuthenticationCredentialFactory *)self keyProvider];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __86__SXProxyAuthenticationCredentialFactory_createCredentialForResponse_date_completion___block_invoke;
       v12[3] = &unk_1E8501EB0;
-      v15 = v10;
-      v13 = v8;
-      v14 = v9;
-      [v11 requestAuthenticationKeyWithCompletion:v12];
+      v15 = completionCopy;
+      v13 = responseCopy;
+      v14 = dateCopy;
+      [keyProvider requestAuthenticationKeyWithCompletion:v12];
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }

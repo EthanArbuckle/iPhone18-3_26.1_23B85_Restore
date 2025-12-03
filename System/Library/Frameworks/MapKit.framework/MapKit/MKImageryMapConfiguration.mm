@@ -1,19 +1,19 @@
 @interface MKImageryMapConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MKImageryMapConfiguration)init;
 - (MKImageryMapConfiguration)initWithElevationStyle:(MKMapElevationStyle)elevationStyle;
 @end
 
 @implementation MKImageryMapConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7.receiver = self;
     v7.super_class = MKImageryMapConfiguration;
-    v5 = [(MKMapConfiguration *)&v7 isEqual:v4];
+    v5 = [(MKMapConfiguration *)&v7 isEqual:equalCopy];
   }
 
   else

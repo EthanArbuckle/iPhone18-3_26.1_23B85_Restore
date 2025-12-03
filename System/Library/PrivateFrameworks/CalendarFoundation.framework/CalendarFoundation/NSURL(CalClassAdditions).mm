@@ -30,11 +30,11 @@
 - (BOOL)isOnRemoteFileSystem
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 path];
-  v2 = [v1 stringByDeletingLastPathComponent];
+  path = [self path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
   memset(&v7, 0, 512);
-  v3 = statfs([v2 fileSystemRepresentation], &v7);
+  v3 = statfs([stringByDeletingLastPathComponent fileSystemRepresentation], &v7);
   v4 = (v3 | v7.f_flags & 0x1000) == 0;
 
   v5 = *MEMORY[0x1E69E9840];
@@ -43,21 +43,21 @@
 
 - (id)pathWithoutTrailingRemovingSlash
 {
-  v2 = [a1 path];
-  if (([v2 hasSuffix:@"/"] & 1) == 0)
+  path = [self path];
+  if (([path hasSuffix:@"/"] & 1) == 0)
   {
-    v3 = [a1 absoluteString];
-    v4 = [v3 hasSuffix:@"/"];
+    absoluteString = [self absoluteString];
+    v4 = [absoluteString hasSuffix:@"/"];
 
     if (v4)
     {
-      v5 = [v2 stringByAppendingString:@"/"];
+      v5 = [path stringByAppendingString:@"/"];
 
-      v2 = v5;
+      path = v5;
     }
   }
 
-  return v2;
+  return path;
 }
 
 + (id)URLWithContactIdentifier:()CalClassAdditions
@@ -72,12 +72,12 @@
 + (id)davCompatibleFilenameForFilename:()CalClassAdditions
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [v3 UTF8String];
-  v6 = *v5;
-  if (*v5)
+  string = [MEMORY[0x1E696AD60] string];
+  uTF8String = [v3 UTF8String];
+  v6 = *uTF8String;
+  if (*uTF8String)
   {
-    v7 = v5 + 1;
+    v7 = uTF8String + 1;
     do
     {
       if ((v6 - 48) < 0xA)
@@ -105,7 +105,7 @@
         }
       }
 
-      [v4 appendFormat:v8, v6];
+      [string appendFormat:v8, v6];
       v9 = *v7++;
       v6 = v9;
     }
@@ -113,26 +113,26 @@
     while (v9);
   }
 
-  return v4;
+  return string;
 }
 
 - (CFURLRef)initWithCalDirtyString:()CalClassAdditions
 {
   v4 = MEMORY[0x1E696AB08];
   v5 = a3;
-  v6 = [v4 whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+  v7 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v8 = [v7 mutableCopy];
   [(__CFString *)v8 replaceOccurrencesOfString:@" " withString:@"%20" options:2 range:0, [(__CFString *)v8 length]];
   v9 = CFURLCreateWithString(0, v8, 0);
   if (!v9)
   {
-    v10 = [(__CFString *)v8 CDVStringByXMLUnquoting];
-    v9 = CFURLCreateWithString(0, v10, 0);
+    cDVStringByXMLUnquoting = [(__CFString *)v8 CDVStringByXMLUnquoting];
+    v9 = CFURLCreateWithString(0, cDVStringByXMLUnquoting, 0);
     if (!v9)
     {
-      v11 = v10;
+      v11 = cDVStringByXMLUnquoting;
       v12 = [(__CFString *)v11 rangeOfString:@"://"];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -192,8 +192,8 @@
 
       if ([v14 length] || -[__CFString length](v11, "length"))
       {
-        v25 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-        v26 = [(__CFString *)v11 stringByAddingPercentEncodingWithAllowedCharacters:v25];
+        uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+        v26 = [(__CFString *)v11 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
         if (v26)
         {
@@ -222,7 +222,7 @@
     }
   }
 
-  v28 = [a1 initWithString:&stru_1F379FFA8];
+  v28 = [self initWithString:&stru_1F379FFA8];
 
   return v9;
 }
@@ -230,10 +230,10 @@
 - (id)queryParameters
 {
   v21 = *MEMORY[0x1E69E9840];
-  v1 = [a1 query];
-  v2 = [v1 componentsSeparatedByString:@"&"];
+  query = [self query];
+  v2 = [query componentsSeparatedByString:@"&"];
 
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -273,7 +273,7 @@
 
             if (!v13 && [v11 length])
             {
-              [v3 setObject:v12 forKey:v11];
+              [dictionary setObject:v12 forKey:v11];
             }
           }
         }
@@ -287,7 +287,7 @@
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)URLWithUsername:()CalClassAdditions withPassword:
@@ -298,49 +298,49 @@
   {
     if (v7)
     {
-      v12 = [a1 scheme];
-      v13 = [v12 stringByAppendingString:@"://"];
+      scheme = [self scheme];
+      v13 = [scheme stringByAppendingString:@"://"];
 
-      v14 = [a1 CDVURLWithUser:0];
-      v15 = [v14 absoluteString];
-      v16 = [v15 mutableCopy];
+      v14 = [self CDVURLWithUser:0];
+      absoluteString = [v14 absoluteString];
+      v16 = [absoluteString mutableCopy];
 
       if ([v16 hasPrefix:v13])
       {
-        v17 = [MEMORY[0x1E696AB08] URLUserAllowedCharacterSet];
-        v18 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v17];
+        uRLUserAllowedCharacterSet = [MEMORY[0x1E696AB08] URLUserAllowedCharacterSet];
+        v18 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:uRLUserAllowedCharacterSet];
 
-        v19 = [MEMORY[0x1E696AB08] URLPasswordAllowedCharacterSet];
-        v20 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v19];
+        uRLPasswordAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPasswordAllowedCharacterSet];
+        v20 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:uRLPasswordAllowedCharacterSet];
 
         v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@@", v18, v20];
         [v16 insertString:v21 atIndex:{objc_msgSend(v13, "length")}];
 
-        v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithCalDirtyString:v16];
+        selfCopy = [objc_alloc(MEMORY[0x1E695DFF8]) initWithCalDirtyString:v16];
       }
 
       else
       {
-        v10 = a1;
+        selfCopy = self;
       }
 
       goto LABEL_5;
     }
 
-    v8 = a1;
+    selfCopy3 = self;
     v9 = v6;
   }
 
   else
   {
-    v8 = a1;
+    selfCopy3 = self;
     v9 = 0;
   }
 
-  v10 = [v8 CDVURLWithUser:v9];
+  selfCopy = [selfCopy3 CDVURLWithUser:v9];
 LABEL_5:
 
-  return v10;
+  return selfCopy;
 }
 
 - (uint64_t)initWithScheme:()CalClassAdditions host:port:path:
@@ -356,8 +356,8 @@ LABEL_5:
     [v20 setHost:v11];
     [v20 setPath:v13];
     v18 = [v20 URL];
-    v14 = 0;
-    v15 = 0;
+    stringByAddingPercentEscapes = 0;
+    stringByAddingPercentEscapes2 = 0;
     v17 = 0;
     goto LABEL_9;
   }
@@ -367,17 +367,17 @@ LABEL_5:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"path %@ is not absolute.", v13}];
   }
 
-  v14 = [v10 stringByAddingPercentEscapes];
-  v15 = [v11 stringByAddingPercentEscapes];
-  v16 = [v13 standardizedURLPath];
-  v17 = v16;
+  stringByAddingPercentEscapes = [v10 stringByAddingPercentEscapes];
+  stringByAddingPercentEscapes2 = [v11 stringByAddingPercentEscapes];
+  standardizedURLPath = [v13 standardizedURLPath];
+  v17 = standardizedURLPath;
   v18 = 0;
-  if (v14 && v15 && v16)
+  if (stringByAddingPercentEscapes && stringByAddingPercentEscapes2 && standardizedURLPath)
   {
-    v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@://%@:%i%@", v14, v15, a5, v16];
-    v20 = [a1 initWithString:v19];
+    v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@://%@:%i%@", stringByAddingPercentEscapes, stringByAddingPercentEscapes2, a5, standardizedURLPath];
+    v20 = [self initWithString:v19];
 
-    a1 = v20;
+    self = v20;
     v18 = v20;
 LABEL_9:
   }
@@ -387,24 +387,24 @@ LABEL_9:
 
 - (id)serverURL
 {
-  v2 = [a1 port];
+  port = [self port];
 
   v3 = MEMORY[0x1E695DFF8];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [a1 scheme];
-  v6 = [a1 host];
-  v7 = v6;
-  if (v2)
+  scheme = [self scheme];
+  host = [self host];
+  v7 = host;
+  if (port)
   {
-    v8 = [a1 port];
-    v9 = [v4 stringWithFormat:@"%@://%@:%@/", v5, v7, v8];
+    port2 = [self port];
+    v9 = [v4 stringWithFormat:@"%@://%@:%@/", scheme, v7, port2];
     v10 = [v3 URLWithString:v9];
   }
 
   else
   {
-    v8 = [v4 stringWithFormat:@"%@://%@/", v5, v6];
-    v10 = [v3 URLWithString:v8];
+    port2 = [v4 stringWithFormat:@"%@://%@/", scheme, host];
+    v10 = [v3 URLWithString:port2];
   }
 
   return v10;
@@ -412,16 +412,16 @@ LABEL_9:
 
 - (id)unquotedPassword
 {
-  v1 = [a1 password];
-  v2 = [v1 stringByRemovingPercentEncoding];
+  password = [self password];
+  stringByRemovingPercentEncoding = [password stringByRemovingPercentEncoding];
 
-  return v2;
+  return stringByRemovingPercentEncoding;
 }
 
 - (uint64_t)compareToLocalString:()CalClassAdditions
 {
   v2 = [MEMORY[0x1E695DFF8] URLWithString:?];
-  v3 = [a1 compareToLocalURL:v2];
+  v3 = [self compareToLocalURL:v2];
 
   return v3;
 }
@@ -431,7 +431,7 @@ LABEL_9:
   v4 = a3;
   if (v4)
   {
-    v5 = CFURLCopyPath(a1);
+    v5 = CFURLCopyPath(self);
     v6 = CFURLCopyPath(v4);
     v7 = v6;
     if (v6)
@@ -459,53 +459,53 @@ LABEL_5:
           goto LABEL_8;
         }
 
-        v10 = [(__CFURL *)v4 port];
-        v11 = [(__CFURL *)a1 port];
-        v12 = v11;
-        if (v10)
+        port = [(__CFURL *)v4 port];
+        port2 = [(__CFURL *)self port];
+        v12 = port2;
+        if (port)
         {
-          if (v11 && ([v10 isEqualToNumber:v11] & 1) != 0)
+          if (port2 && ([port isEqualToNumber:port2] & 1) != 0)
           {
 LABEL_12:
-            v13 = [(__CFURL *)v4 absoluteString];
-            v14 = [v13 removeSlashIfNeeded];
+            absoluteString = [(__CFURL *)v4 absoluteString];
+            removeSlashIfNeeded = [absoluteString removeSlashIfNeeded];
 
-            v15 = [(__CFURL *)a1 absoluteString];
-            v16 = [v15 removeSlashIfNeeded];
+            absoluteString2 = [(__CFURL *)self absoluteString];
+            removeSlashIfNeeded2 = [absoluteString2 removeSlashIfNeeded];
 
-            if (v14 && v16 && ![v16 caseInsensitiveCompare:v14])
+            if (removeSlashIfNeeded && removeSlashIfNeeded2 && ![removeSlashIfNeeded2 caseInsensitiveCompare:removeSlashIfNeeded])
             {
               v9 = 1;
               goto LABEL_33;
             }
 
-            v17 = [(__CFURL *)v4 host];
-            v18 = [(__CFURL *)a1 host];
-            if ([v17 isEqualToString:v18])
+            host = [(__CFURL *)v4 host];
+            host2 = [(__CFURL *)self host];
+            if ([host isEqualToString:host2])
             {
               goto LABEL_16;
             }
 
-            v19 = [v17 length];
-            v20 = [v18 length];
+            v19 = [host length];
+            v20 = [host2 length];
             if (v19 >= v20)
             {
-              v21 = v18;
+              v21 = host2;
             }
 
             else
             {
-              v21 = v17;
+              v21 = host;
             }
 
             if (v19 >= v20)
             {
-              v22 = v17;
+              v22 = host;
             }
 
             else
             {
-              v22 = v18;
+              v22 = host2;
             }
 
             v23 = v21;
@@ -534,7 +534,7 @@ LABEL_33:
           }
         }
 
-        else if (!v11)
+        else if (!port2)
         {
           goto LABEL_12;
         }
@@ -560,7 +560,7 @@ LABEL_35:
 - (uint64_t)isEqualToURLIgnoringScheme:()CalClassAdditions
 {
   v4 = a3;
-  v5 = [a1 isEqual:v4];
+  v5 = [self isEqual:v4];
   if (v5)
   {
     v6 = 1;
@@ -568,7 +568,7 @@ LABEL_35:
 
   else if (v4)
   {
-    v7 = __55__NSURL_CalClassAdditions__isEqualToURLIgnoringScheme___block_invoke(v5, a1);
+    v7 = __55__NSURL_CalClassAdditions__isEqualToURLIgnoringScheme___block_invoke(v5, self);
     v8 = __55__NSURL_CalClassAdditions__isEqualToURLIgnoringScheme___block_invoke(v7, v4);
     if ([v7 length] && objc_msgSend(v8, "length"))
     {
@@ -591,37 +591,37 @@ LABEL_35:
 
 - (id)hostWithoutWWW
 {
-  v1 = [a1 host];
+  host = [self host];
   v2 = [@"//" length];
   v3 = [@"www." length];
-  if ([v1 hasPrefix:@"//"])
+  if ([host hasPrefix:@"//"])
   {
-    v4 = [v1 stringByReplacingCharactersInRange:0 withString:{v2, &stru_1F379FFA8}];
+    v4 = [host stringByReplacingCharactersInRange:0 withString:{v2, &stru_1F379FFA8}];
 
-    v1 = v4;
+    host = v4;
   }
 
-  v5 = [v1 lowercaseString];
-  v6 = [v5 hasPrefix:@"www."];
+  lowercaseString = [host lowercaseString];
+  v6 = [lowercaseString hasPrefix:@"www."];
 
   if (v6)
   {
-    v7 = [v1 stringByReplacingCharactersInRange:0 withString:{v3, &stru_1F379FFA8}];
+    v7 = [host stringByReplacingCharactersInRange:0 withString:{v3, &stru_1F379FFA8}];
 
-    v1 = v7;
+    host = v7;
   }
 
-  return v1;
+  return host;
 }
 
 - (BOOL)cal_caseInsensitiveHasScheme:()CalClassAdditions
 {
   v4 = a3;
-  v5 = [a1 scheme];
-  v6 = v5;
-  if (v5)
+  scheme = [self scheme];
+  v6 = scheme;
+  if (scheme)
   {
-    v7 = [v5 caseInsensitiveCompare:v4] == 0;
+    v7 = [scheme caseInsensitiveCompare:v4] == 0;
   }
 
   else
@@ -634,24 +634,24 @@ LABEL_35:
 
 - (id)cal_resourceSpecifierNoLeadingSlashes
 {
-  v1 = [a1 resourceSpecifier];
-  if ([v1 hasPrefix:@"//"])
+  resourceSpecifier = [self resourceSpecifier];
+  if ([resourceSpecifier hasPrefix:@"//"])
   {
-    v2 = v1;
+    v2 = resourceSpecifier;
     v3 = 2;
 LABEL_5:
     v4 = [v2 substringFromIndex:v3];
     goto LABEL_7;
   }
 
-  if ([v1 hasPrefix:@"/"])
+  if ([resourceSpecifier hasPrefix:@"/"])
   {
-    v2 = v1;
+    v2 = resourceSpecifier;
     v3 = 1;
     goto LABEL_5;
   }
 
-  v4 = v1;
+  v4 = resourceSpecifier;
 LABEL_7:
   v5 = v4;
 
@@ -660,45 +660,45 @@ LABEL_7:
 
 - (id)cal_emailAddressString
 {
-  if ([a1 cal_hasSchemeMailto])
+  if ([self cal_hasSchemeMailto])
   {
-    v2 = [a1 cal_resourceSpecifierNoLeadingSlashes];
+    cal_resourceSpecifierNoLeadingSlashes = [self cal_resourceSpecifierNoLeadingSlashes];
   }
 
   else
   {
-    v2 = 0;
+    cal_resourceSpecifierNoLeadingSlashes = 0;
   }
 
-  return v2;
+  return cal_resourceSpecifierNoLeadingSlashes;
 }
 
 - (id)cal_phoneNumberString
 {
-  if ([a1 cal_hasSchemeTel])
+  if ([self cal_hasSchemeTel])
   {
-    v2 = [a1 cal_resourceSpecifierNoLeadingSlashes];
+    cal_resourceSpecifierNoLeadingSlashes = [self cal_resourceSpecifierNoLeadingSlashes];
   }
 
   else
   {
-    v2 = 0;
+    cal_resourceSpecifierNoLeadingSlashes = 0;
   }
 
-  return v2;
+  return cal_resourceSpecifierNoLeadingSlashes;
 }
 
 - (uint64_t)cal_isEquivalentToEmailAddress:()CalClassAdditions
 {
   v4 = a3;
-  if (v4 && [a1 cal_hasSchemeMailto])
+  if (v4 && [self cal_hasSchemeMailto])
   {
-    v5 = [v4 stringRemovingMailto];
+    stringRemovingMailto = [v4 stringRemovingMailto];
 
-    v6 = [a1 cal_resourceSpecifierNoLeadingSlashes];
-    v7 = [v6 isEqualToString:v5];
+    cal_resourceSpecifierNoLeadingSlashes = [self cal_resourceSpecifierNoLeadingSlashes];
+    v7 = [cal_resourceSpecifierNoLeadingSlashes isEqualToString:stringRemovingMailto];
 
-    v4 = v5;
+    v4 = stringRemovingMailto;
   }
 
   else
@@ -712,14 +712,14 @@ LABEL_7:
 - (uint64_t)cal_isEquivalentToPhoneNumber:()CalClassAdditions
 {
   v4 = a3;
-  if (v4 && [a1 cal_hasSchemeTel])
+  if (v4 && [self cal_hasSchemeTel])
   {
-    v5 = [v4 stringRemovingTel];
+    stringRemovingTel = [v4 stringRemovingTel];
 
-    v6 = [a1 cal_resourceSpecifierNoLeadingSlashes];
-    v7 = [v6 isEqualToString:v5];
+    cal_resourceSpecifierNoLeadingSlashes = [self cal_resourceSpecifierNoLeadingSlashes];
+    v7 = [cal_resourceSpecifierNoLeadingSlashes isEqualToString:stringRemovingTel];
 
-    v4 = v5;
+    v4 = stringRemovingTel;
   }
 
   else
@@ -737,17 +737,17 @@ LABEL_7:
   v10 = a5;
   if ([v8 length])
   {
-    if (([a1 _isValidURI:v8] & 1) == 0)
+    if (([self _isValidURI:v8] & 1) == 0)
     {
       if ([v9 isEqualToString:@"mailto"] && (objc_msgSend(v8, "rangeOfString:", @"@"), v11) || objc_msgSend(v9, "isEqualToString:", @"tel") && objc_msgSend(v8, "cal_isPhoneNumber"))
       {
-        v12 = [v8 trimWhiteSpace];
+        trimWhiteSpace = [v8 trimWhiteSpace];
         v13 = MEMORY[0x1E696AEC0];
-        v14 = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
-        v15 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v14];
+        uRLFragmentAllowedCharacterSet = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
+        v15 = [trimWhiteSpace stringByAddingPercentEncodingWithAllowedCharacters:uRLFragmentAllowedCharacterSet];
         v16 = [v13 stringWithFormat:@"%@:%@", v9, v15];
 
-        v8 = v12;
+        v8 = trimWhiteSpace;
       }
 
       else
@@ -789,7 +789,7 @@ LABEL_7:
 - (uint64_t)_hasDescription:()CalClassAdditions
 {
   v4 = a3;
-  v5 = [a1 description];
+  v5 = [self description];
   v6 = [MEMORY[0x1E695DFF8] URLWithString:v4];
   v7 = [v5 isEqualToString:v4];
 
@@ -809,34 +809,34 @@ LABEL_7:
 
 - (id)cal_hostAfterGoogleRedirects
 {
-  v2 = [a1 host];
-  if (![v2 hasSuffixCaseInsensitive:@".google.com"])
+  host = [self host];
+  if (![host hasSuffixCaseInsensitive:@".google.com"])
   {
     goto LABEL_9;
   }
 
-  v3 = [a1 query];
-  if (![v3 hasPrefix:@"q="])
+  query = [self query];
+  if (![query hasPrefix:@"q="])
   {
     goto LABEL_8;
   }
 
-  v4 = [a1 path];
-  v5 = [v4 isEqualToString:@"/url"];
+  path = [self path];
+  v5 = [path isEqualToString:@"/url"];
 
   if (v5)
   {
-    v6 = [a1 query];
-    v3 = [v6 substringFromIndex:{objc_msgSend(@"q=", "length")}];
+    query2 = [self query];
+    query = [query2 substringFromIndex:{objc_msgSend(@"q=", "length")}];
 
-    v7 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+    v7 = [MEMORY[0x1E695DFF8] URLWithString:query];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 cal_hostAfterGoogleRedirects];
-      if (v9)
+      cal_hostAfterGoogleRedirects = [v7 cal_hostAfterGoogleRedirects];
+      if (cal_hostAfterGoogleRedirects)
       {
-        v10 = v9;
+        v10 = cal_hostAfterGoogleRedirects;
 
         goto LABEL_10;
       }
@@ -846,7 +846,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v10 = v2;
+  v10 = host;
 LABEL_10:
 
   return v10;

@@ -1,16 +1,16 @@
 @interface HMDHomeNFCReaderKeyTransformer
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDHomeNFCReaderKeyTransformer
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v4 = a3;
+  kCopy = k;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = kCopy;
   }
 
   else

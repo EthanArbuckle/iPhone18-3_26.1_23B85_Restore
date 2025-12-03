@@ -7,186 +7,186 @@
 - (BOOL)isPointPickerElementManager;
 - (NSString)identifier;
 - (id)allAuxiliaryElementManagers;
-- (id)auxiliaryElementAfter:(id)a3;
-- (id)auxiliaryElementBefore:(id)a3;
-- (id)auxiliaryElementManagersForRole:(int64_t)a3;
-- (id)enabledAuxiliaryElementManagersForRoles:(int64_t)a3;
-- (id)firstAuxiliaryElementWithRole:(int64_t)a3;
-- (id)lastAuxiliaryElementWithRole:(int64_t)a3;
-- (id)nextAuxiliaryElementManagerFrom:(id)a3 role:(int64_t)a4 excludeDisabled:(BOOL)a5;
-- (id)previousAuxiliaryElementManagerTo:(id)a3 role:(int64_t)a4 excludeDisabled:(BOOL)a5;
-- (id)siblingOfElement:(id)a3 inDirection:(int64_t)a4 didWrap:(BOOL *)a5 options:(int *)a6;
-- (int64_t)auxiliaryElementCountWithRole:(int64_t)a3;
-- (int64_t)roleForElement:(id)a3;
+- (id)auxiliaryElementAfter:(id)after;
+- (id)auxiliaryElementBefore:(id)before;
+- (id)auxiliaryElementManagersForRole:(int64_t)role;
+- (id)enabledAuxiliaryElementManagersForRoles:(int64_t)roles;
+- (id)firstAuxiliaryElementWithRole:(int64_t)role;
+- (id)lastAuxiliaryElementWithRole:(int64_t)role;
+- (id)nextAuxiliaryElementManagerFrom:(id)from role:(int64_t)role excludeDisabled:(BOOL)disabled;
+- (id)previousAuxiliaryElementManagerTo:(id)to role:(int64_t)role excludeDisabled:(BOOL)disabled;
+- (id)siblingOfElement:(id)element inDirection:(int64_t)direction didWrap:(BOOL *)wrap options:(int *)options;
+- (int64_t)auxiliaryElementCountWithRole:(int64_t)role;
+- (int64_t)roleForElement:(id)element;
 - (unsigned)currentDisplayID;
-- (void)appendAuxiliaryElementManager:(id)a3 withRole:(int64_t)a4;
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5;
-- (void)driver:(id)a3 willFocusOnContext:(id)a4;
-- (void)driver:(id)a3 willUnfocusFromContext:(id)a4;
-- (void)hideIfNeeded:(BOOL)a3;
-- (void)orientationDidChange:(id)a3;
-- (void)presentWithDisplayContext:(id)a3 animated:(BOOL)a4;
-- (void)redisplayIfNeeded:(BOOL)a3;
-- (void)removeAuxiliaryElementManagerForAllRoles:(id)a3;
-- (void)scannerWillMakeManagerActive:(id)a3;
-- (void)scannerWillMakeManagerActive:(id)a3 forDisplayID:(unsigned int)a4;
-- (void)scannerWillMakeManagerInactive:(id)a3 activeElementManager:(id)a4;
+- (void)appendAuxiliaryElementManager:(id)manager withRole:(int64_t)role;
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext;
+- (void)driver:(id)driver willFocusOnContext:(id)context;
+- (void)driver:(id)driver willUnfocusFromContext:(id)context;
+- (void)hideIfNeeded:(BOOL)needed;
+- (void)orientationDidChange:(id)change;
+- (void)presentWithDisplayContext:(id)context animated:(BOOL)animated;
+- (void)redisplayIfNeeded:(BOOL)needed;
+- (void)removeAuxiliaryElementManagerForAllRoles:(id)roles;
+- (void)scannerWillMakeManagerActive:(id)active;
+- (void)scannerWillMakeManagerActive:(id)active forDisplayID:(unsigned int)d;
+- (void)scannerWillMakeManagerInactive:(id)inactive activeElementManager:(id)manager;
 @end
 
 @implementation SCATElementManager
 
 - (BOOL)isElementNavElementManager
 {
-  v2 = [(SCATElementManager *)self identifier];
-  v3 = [v2 isEqualToString:off_100217388[0]];
+  identifier = [(SCATElementManager *)self identifier];
+  v3 = [identifier isEqualToString:off_100217388[0]];
 
   return v3;
 }
 
 - (BOOL)isMenuElementManager
 {
-  v2 = [(SCATElementManager *)self identifier];
-  v3 = [v2 isEqualToString:off_100217390[0]];
+  identifier = [(SCATElementManager *)self identifier];
+  v3 = [identifier isEqualToString:off_100217390[0]];
 
   return v3;
 }
 
 - (BOOL)isAppleTVRemoteElementManager
 {
-  v2 = [(SCATElementManager *)self identifier];
-  v3 = [v2 isEqualToString:off_1002173B0];
+  identifier = [(SCATElementManager *)self identifier];
+  v3 = [identifier isEqualToString:off_1002173B0];
 
   return v3;
 }
 
 - (BOOL)isPointPickerElementManager
 {
-  v2 = [(SCATElementManager *)self identifier];
-  v3 = [v2 isEqualToString:off_100217398[0]];
+  identifier = [(SCATElementManager *)self identifier];
+  v3 = [identifier isEqualToString:off_100217398[0]];
 
   return v3;
 }
 
 - (BOOL)isGestureProviderElementManager
 {
-  v2 = [(SCATElementManager *)self identifier];
-  v3 = [v2 isEqualToString:off_1002173A0[0]];
+  identifier = [(SCATElementManager *)self identifier];
+  v3 = [identifier isEqualToString:off_1002173A0[0]];
 
   return v3;
 }
 
 - (BOOL)isGestureDrawingElementManager
 {
-  v2 = [(SCATElementManager *)self identifier];
-  v3 = [v2 isEqualToString:off_1002173A8[0]];
+  identifier = [(SCATElementManager *)self identifier];
+  v3 = [identifier isEqualToString:off_1002173A8[0]];
 
   return v3;
 }
 
-- (id)siblingOfElement:(id)a3 inDirection:(int64_t)a4 didWrap:(BOOL *)a5 options:(int *)a6
+- (id)siblingOfElement:(id)element inDirection:(int64_t)direction didWrap:(BOOL *)wrap options:(int *)options
 {
-  if (a4)
+  if (direction)
   {
-    [(SCATElementManager *)self elementBefore:a3 didWrap:a5 options:a6];
+    [(SCATElementManager *)self elementBefore:element didWrap:wrap options:options];
   }
 
   else
   {
-    [(SCATElementManager *)self elementAfter:a3 didWrap:a5 options:a6];
+    [(SCATElementManager *)self elementAfter:element didWrap:wrap options:options];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)scannerWillMakeManagerActive:(id)a3
+- (void)scannerWillMakeManagerActive:(id)active
 {
-  v8 = a3;
-  v4 = [(SCATElementManager *)self currentDisplayContext];
+  activeCopy = active;
+  currentDisplayContext = [(SCATElementManager *)self currentDisplayContext];
 
-  if (!v4)
+  if (!currentDisplayContext)
   {
-    v5 = [v8 scatUIContextForDisplayID:{-[SCATElementManager currentDisplayID](self, "currentDisplayID")}];
+    v5 = [activeCopy scatUIContextForDisplayID:{-[SCATElementManager currentDisplayID](self, "currentDisplayID")}];
     [(SCATElementManager *)self setCurrentDisplayContext:v5];
   }
 
-  v6 = [(SCATElementManager *)self visualProvider];
-  v7 = [(SCATElementManager *)self currentDisplayContext];
-  [v6 presentWithDisplayContext:v7 animated:0];
+  visualProvider = [(SCATElementManager *)self visualProvider];
+  currentDisplayContext2 = [(SCATElementManager *)self currentDisplayContext];
+  [visualProvider presentWithDisplayContext:currentDisplayContext2 animated:0];
 }
 
-- (void)scannerWillMakeManagerActive:(id)a3 forDisplayID:(unsigned int)a4
+- (void)scannerWillMakeManagerActive:(id)active forDisplayID:(unsigned int)d
 {
-  v5 = [a3 scatUIContextForDisplayID:*&a4];
+  v5 = [active scatUIContextForDisplayID:*&d];
   [(SCATElementManager *)self setCurrentDisplayContext:v5];
 
-  v7 = [(SCATElementManager *)self visualProvider];
-  v6 = [(SCATElementManager *)self currentDisplayContext];
-  [v7 presentWithDisplayContext:v6 animated:0];
+  visualProvider = [(SCATElementManager *)self visualProvider];
+  currentDisplayContext = [(SCATElementManager *)self currentDisplayContext];
+  [visualProvider presentWithDisplayContext:currentDisplayContext animated:0];
 }
 
-- (void)scannerWillMakeManagerInactive:(id)a3 activeElementManager:(id)a4
+- (void)scannerWillMakeManagerInactive:(id)inactive activeElementManager:(id)manager
 {
-  [(SCATElementManager *)self setCurrentDisplayContext:0, a4];
-  v5 = [(SCATElementManager *)self visualProvider];
-  [v5 dismiss:0];
+  [(SCATElementManager *)self setCurrentDisplayContext:0, manager];
+  visualProvider = [(SCATElementManager *)self visualProvider];
+  [visualProvider dismiss:0];
 }
 
-- (void)hideIfNeeded:(BOOL)a3
+- (void)hideIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(SCATElementManager *)self visualProvider];
-  v6 = [v5 isDisplayed];
+  neededCopy = needed;
+  visualProvider = [(SCATElementManager *)self visualProvider];
+  isDisplayed = [visualProvider isDisplayed];
 
-  if (v6)
+  if (isDisplayed)
   {
-    v7 = [(SCATElementManager *)self visualProvider];
-    [v7 dismiss:v3];
+    visualProvider2 = [(SCATElementManager *)self visualProvider];
+    [visualProvider2 dismiss:neededCopy];
   }
 }
 
-- (void)redisplayIfNeeded:(BOOL)a3
+- (void)redisplayIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(SCATElementManager *)self currentDisplayContext];
+  neededCopy = needed;
+  currentDisplayContext = [(SCATElementManager *)self currentDisplayContext];
 
-  if (!v5)
+  if (!currentDisplayContext)
   {
-    v6 = [(SCATElementManager *)self currentDisplayID];
+    currentDisplayID = [(SCATElementManager *)self currentDisplayID];
     v7 = +[SCATScannerManager sharedManager];
-    v8 = [v7 scatUIContextForDisplayID:v6];
+    v8 = [v7 scatUIContextForDisplayID:currentDisplayID];
     [(SCATElementManager *)self setCurrentDisplayContext:v8];
   }
 
-  v9 = [(SCATElementManager *)self visualProvider];
-  v10 = [v9 isDisplayed];
+  visualProvider = [(SCATElementManager *)self visualProvider];
+  isDisplayed = [visualProvider isDisplayed];
 
-  v12 = [(SCATElementManager *)self visualProvider];
-  v11 = [(SCATElementManager *)self currentDisplayContext];
-  if (v10)
+  visualProvider2 = [(SCATElementManager *)self visualProvider];
+  currentDisplayContext2 = [(SCATElementManager *)self currentDisplayContext];
+  if (isDisplayed)
   {
-    [v12 didUpdateWithDisplayContext:v11 animated:v3];
+    [visualProvider2 didUpdateWithDisplayContext:currentDisplayContext2 animated:neededCopy];
   }
 
   else
   {
-    [v12 presentWithDisplayContext:v11 animated:v3];
+    [visualProvider2 presentWithDisplayContext:currentDisplayContext2 animated:neededCopy];
   }
 }
 
-- (void)presentWithDisplayContext:(id)a3 animated:(BOOL)a4
+- (void)presentWithDisplayContext:(id)context animated:(BOOL)animated
 {
-  v5 = a3;
-  [(SCATElementManager *)self setCurrentDisplayContext:v5];
-  v6 = [(SCATElementManager *)self visualProvider];
-  [v6 didUpdateWithDisplayContext:v5 animated:1];
+  contextCopy = context;
+  [(SCATElementManager *)self setCurrentDisplayContext:contextCopy];
+  visualProvider = [(SCATElementManager *)self visualProvider];
+  [visualProvider didUpdateWithDisplayContext:contextCopy animated:1];
 }
 
 - (unsigned)currentDisplayID
 {
-  v3 = [(SCATElementManager *)self currentDisplayContext];
+  currentDisplayContext = [(SCATElementManager *)self currentDisplayContext];
 
-  if (!v3)
+  if (!currentDisplayContext)
   {
     return 1;
   }
@@ -196,80 +196,80 @@
   return [(UIView *)currentDisplayContext _accessibilityDisplayId];
 }
 
-- (void)orientationDidChange:(id)a3
+- (void)orientationDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SCATElementManager *)self currentDisplayID];
-  v7 = [(SCATElementManager *)self visualProvider];
-  v6 = [v4 scatUIContextForDisplayID:v5];
+  changeCopy = change;
+  currentDisplayID = [(SCATElementManager *)self currentDisplayID];
+  visualProvider = [(SCATElementManager *)self visualProvider];
+  v6 = [changeCopy scatUIContextForDisplayID:currentDisplayID];
 
-  [v7 orientationDidChange:v6];
+  [visualProvider orientationDidChange:v6];
 }
 
-- (void)driver:(id)a3 willFocusOnContext:(id)a4
+- (void)driver:(id)driver willFocusOnContext:(id)context
 {
-  v19 = a4;
-  v6 = a3;
-  v7 = [(SCATElementManager *)self visualProvider];
-  v8 = [v19 element];
-  [v7 updateCustomFocusingViewStateForViewsWithElement:v8];
+  contextCopy = context;
+  driverCopy = driver;
+  visualProvider = [(SCATElementManager *)self visualProvider];
+  element = [contextCopy element];
+  [visualProvider updateCustomFocusingViewStateForViewsWithElement:element];
 
-  v9 = [v19 element];
-  v10 = [v9 scatAuxiliaryElementManager];
-  v11 = [(SCATElementManager *)self currentAuxiliaryElementManager];
+  element2 = [contextCopy element];
+  scatAuxiliaryElementManager = [element2 scatAuxiliaryElementManager];
+  currentAuxiliaryElementManager = [(SCATElementManager *)self currentAuxiliaryElementManager];
 
-  if (v10 != v11)
+  if (scatAuxiliaryElementManager != currentAuxiliaryElementManager)
   {
-    v12 = [(SCATElementManager *)self currentAuxiliaryElementManager];
-    [v12 willResignCurrentAuxiliaryElementManager];
+    currentAuxiliaryElementManager2 = [(SCATElementManager *)self currentAuxiliaryElementManager];
+    [currentAuxiliaryElementManager2 willResignCurrentAuxiliaryElementManager];
 
-    v13 = [v19 element];
-    v14 = [v13 scatAuxiliaryElementManager];
-    [v14 willBecomeCurrentAuxiliaryElementManager];
+    element3 = [contextCopy element];
+    scatAuxiliaryElementManager2 = [element3 scatAuxiliaryElementManager];
+    [scatAuxiliaryElementManager2 willBecomeCurrentAuxiliaryElementManager];
 
-    v15 = [v19 element];
-    v16 = [v15 scatAuxiliaryElementManager];
-    [(SCATElementManager *)self setCurrentAuxiliaryElementManager:v16];
+    element4 = [contextCopy element];
+    scatAuxiliaryElementManager3 = [element4 scatAuxiliaryElementManager];
+    [(SCATElementManager *)self setCurrentAuxiliaryElementManager:scatAuxiliaryElementManager3];
   }
 
-  v17 = [v19 element];
-  v18 = [v17 scatAuxiliaryElementManager];
-  [v18 driver:v6 willFocusOnContext:v19];
+  element5 = [contextCopy element];
+  scatAuxiliaryElementManager4 = [element5 scatAuxiliaryElementManager];
+  [scatAuxiliaryElementManager4 driver:driverCopy willFocusOnContext:contextCopy];
 }
 
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v11 = [v8 element];
-  v10 = [v11 scatAuxiliaryElementManager];
-  [v10 driver:v9 didFocusOnContext:v8 oldContext:v7];
+  oldContextCopy = oldContext;
+  contextCopy = context;
+  driverCopy = driver;
+  element = [contextCopy element];
+  scatAuxiliaryElementManager = [element scatAuxiliaryElementManager];
+  [scatAuxiliaryElementManager driver:driverCopy didFocusOnContext:contextCopy oldContext:oldContextCopy];
 }
 
-- (void)driver:(id)a3 willUnfocusFromContext:(id)a4
+- (void)driver:(id)driver willUnfocusFromContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [v5 element];
-  v7 = [v8 scatAuxiliaryElementManager];
-  [v7 driver:v6 willUnfocusFromContext:v5];
+  contextCopy = context;
+  driverCopy = driver;
+  element = [contextCopy element];
+  scatAuxiliaryElementManager = [element scatAuxiliaryElementManager];
+  [scatAuxiliaryElementManager driver:driverCopy willUnfocusFromContext:contextCopy];
 }
 
-- (void)appendAuxiliaryElementManager:(id)a3 withRole:(int64_t)a4
+- (void)appendAuxiliaryElementManager:(id)manager withRole:(int64_t)role
 {
-  v6 = a3;
-  if (v6)
+  managerCopy = manager;
+  if (managerCopy)
   {
-    v19 = v6;
-    if ([v6 role])
+    v19 = managerCopy;
+    if ([managerCopy role])
     {
       _AXAssert();
     }
 
-    v7 = [(SCATElementManager *)self auxiliaryElementManagers];
+    auxiliaryElementManagers = [(SCATElementManager *)self auxiliaryElementManagers];
 
-    if (!v7)
+    if (!auxiliaryElementManagers)
     {
       v8 = +[NSMutableDictionary dictionary];
       [(SCATElementManager *)self setAuxiliaryElementManagers:v8];
@@ -283,7 +283,7 @@
     {
       v12 = v11;
       v13 = (1 << v9);
-      if ((v13 & a4) != 0)
+      if ((v13 & role) != 0)
       {
         __b[v10++] = v13;
       }
@@ -301,55 +301,55 @@
     v14 = __b[0];
     [v19 setRole:__b[0]];
     v15 = [NSNumber numberWithInteger:v14];
-    v16 = [(SCATElementManager *)self auxiliaryElementManagers];
-    v17 = [v16 objectForKeyedSubscript:v15];
+    auxiliaryElementManagers2 = [(SCATElementManager *)self auxiliaryElementManagers];
+    v17 = [auxiliaryElementManagers2 objectForKeyedSubscript:v15];
 
     if (!v17)
     {
       v17 = +[NSMutableArray array];
-      v18 = [(SCATElementManager *)self auxiliaryElementManagers];
-      [v18 setObject:v17 forKeyedSubscript:v15];
+      auxiliaryElementManagers3 = [(SCATElementManager *)self auxiliaryElementManagers];
+      [auxiliaryElementManagers3 setObject:v17 forKeyedSubscript:v15];
     }
 
     [v17 addObject:v19];
 
-    v6 = v19;
+    managerCopy = v19;
   }
 }
 
-- (void)removeAuxiliaryElementManagerForAllRoles:(id)a3
+- (void)removeAuxiliaryElementManagerForAllRoles:(id)roles
 {
-  v4 = a3;
-  v5 = [(SCATElementManager *)self auxiliaryElementManagers];
+  rolesCopy = roles;
+  auxiliaryElementManagers = [(SCATElementManager *)self auxiliaryElementManagers];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EC888;
   v7[3] = &unk_1001D7768;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = rolesCopy;
+  v6 = rolesCopy;
+  [auxiliaryElementManagers enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 - (id)allAuxiliaryElementManagers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(SCATElementManager *)self auxiliaryElementManagers];
+  auxiliaryElementManagers = [(SCATElementManager *)self auxiliaryElementManagers];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EC960;
   v7[3] = &unk_1001D7768;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [auxiliaryElementManagers enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (id)auxiliaryElementManagersForRole:(int64_t)a3
+- (id)auxiliaryElementManagersForRole:(int64_t)role
 {
-  if (a3 == 3)
+  if (role == 3)
   {
-    v4 = [(SCATElementManager *)self allAuxiliaryElementManagers];
+    allAuxiliaryElementManagers = [(SCATElementManager *)self allAuxiliaryElementManagers];
   }
 
   else
@@ -362,7 +362,7 @@
     {
       v9 = v8;
       v10 = (1 << v6);
-      if ((v10 & a3) != 0)
+      if ((v10 & role) != 0)
       {
         __b[v7++] = v10;
       }
@@ -377,15 +377,15 @@
       _AXAssert();
     }
 
-    v11 = [(SCATElementManager *)self auxiliaryElementManagers];
+    auxiliaryElementManagers = [(SCATElementManager *)self auxiliaryElementManagers];
     v12 = [NSNumber numberWithInteger:__b[0]];
-    v4 = [v11 objectForKeyedSubscript:v12];
+    allAuxiliaryElementManagers = [auxiliaryElementManagers objectForKeyedSubscript:v12];
   }
 
-  return v4;
+  return allAuxiliaryElementManagers;
 }
 
-- (id)enabledAuxiliaryElementManagersForRoles:(int64_t)a3
+- (id)enabledAuxiliaryElementManagersForRoles:(int64_t)roles
 {
   memset_pattern16(__b, &unk_1001BD540, 0x10uLL);
   v5 = 0;
@@ -395,7 +395,7 @@
   {
     v8 = v7;
     v9 = (1 << v5);
-    if ((v9 & a3) != 0)
+    if ((v9 & roles) != 0)
     {
       __b[v6++] = v9;
     }
@@ -440,10 +440,10 @@
   return v10;
 }
 
-- (id)nextAuxiliaryElementManagerFrom:(id)a3 role:(int64_t)a4 excludeDisabled:(BOOL)a5
+- (id)nextAuxiliaryElementManagerFrom:(id)from role:(int64_t)role excludeDisabled:(BOOL)disabled
 {
-  v8 = a3;
-  if (!v8)
+  fromCopy = from;
+  if (!fromCopy)
   {
     v15 = 0;
     goto LABEL_18;
@@ -457,7 +457,7 @@
   {
     v12 = v11;
     v13 = (1 << v10);
-    if ((v13 & a4) != 0)
+    if ((v13 & role) != 0)
     {
       __b[v9++] = v13;
     }
@@ -470,7 +470,7 @@
   if (v9 <= 0)
   {
     _AXAssert();
-    if (a5)
+    if (disabled)
     {
 LABEL_8:
       v14 = [(SCATElementManager *)self enabledAuxiliaryElementManagersForRoles:__b[0]];
@@ -483,14 +483,14 @@ LABEL_8:
     }
   }
 
-  else if (a5)
+  else if (disabled)
   {
     goto LABEL_8;
   }
 
-  v16 = [(SCATElementManager *)self auxiliaryElementManagers];
+  auxiliaryElementManagers = [(SCATElementManager *)self auxiliaryElementManagers];
   v17 = [NSNumber numberWithInteger:__b[0]];
-  v14 = [v16 objectForKeyedSubscript:v17];
+  v14 = [auxiliaryElementManagers objectForKeyedSubscript:v17];
 
   if (!v14)
   {
@@ -500,7 +500,7 @@ LABEL_16:
   }
 
 LABEL_13:
-  v18 = [v14 indexOfObject:v8];
+  v18 = [v14 indexOfObject:fromCopy];
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_16;
@@ -520,10 +520,10 @@ LABEL_18:
   return v15;
 }
 
-- (id)previousAuxiliaryElementManagerTo:(id)a3 role:(int64_t)a4 excludeDisabled:(BOOL)a5
+- (id)previousAuxiliaryElementManagerTo:(id)to role:(int64_t)role excludeDisabled:(BOOL)disabled
 {
-  v8 = a3;
-  if (!v8)
+  toCopy = to;
+  if (!toCopy)
   {
     v16 = 0;
     goto LABEL_17;
@@ -537,7 +537,7 @@ LABEL_18:
   {
     v12 = v11;
     v13 = (1 << v10);
-    if ((v13 & a4) != 0)
+    if ((v13 & role) != 0)
     {
       __b[v9++] = v13;
     }
@@ -549,15 +549,15 @@ LABEL_18:
   while ((v12 & 1) != 0);
   if (v9 > 0)
   {
-    if (a5)
+    if (disabled)
     {
       goto LABEL_8;
     }
 
 LABEL_14:
-    v17 = [(SCATElementManager *)self auxiliaryElementManagers];
+    auxiliaryElementManagers = [(SCATElementManager *)self auxiliaryElementManagers];
     v18 = [NSNumber numberWithInteger:__b[0]];
-    v14 = [v17 objectForKeyedSubscript:v18];
+    v14 = [auxiliaryElementManagers objectForKeyedSubscript:v18];
 
     if (v14)
     {
@@ -568,7 +568,7 @@ LABEL_14:
   }
 
   _AXAssert();
-  if (!a5)
+  if (!disabled)
   {
     goto LABEL_14;
   }
@@ -578,7 +578,7 @@ LABEL_8:
   if (v14)
   {
 LABEL_9:
-    v15 = [v14 indexOfObject:v8];
+    v15 = [v14 indexOfObject:toCopy];
     v16 = 0;
     if (v15 && v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -597,7 +597,7 @@ LABEL_17:
   return v16;
 }
 
-- (id)firstAuxiliaryElementWithRole:(int64_t)a3
+- (id)firstAuxiliaryElementWithRole:(int64_t)role
 {
   memset_pattern16(__b, &unk_1001BD540, 0x10uLL);
   v5 = 0;
@@ -607,7 +607,7 @@ LABEL_17:
   {
     v8 = v7;
     v9 = (1 << v5);
-    if ((v9 & a3) != 0)
+    if ((v9 & role) != 0)
     {
       __b[v6++] = v9;
     }
@@ -665,7 +665,7 @@ LABEL_17:
   return v16;
 }
 
-- (id)lastAuxiliaryElementWithRole:(int64_t)a3
+- (id)lastAuxiliaryElementWithRole:(int64_t)role
 {
   memset_pattern16(__b, &unk_1001BD540, 0x10uLL);
   v5 = 0;
@@ -675,7 +675,7 @@ LABEL_17:
   {
     v8 = v7;
     v9 = (1 << v5);
-    if ((v9 & a3) != 0)
+    if ((v9 & role) != 0)
     {
       __b[v6++] = v9;
     }
@@ -695,9 +695,9 @@ LABEL_17:
   v19 = 0u;
   v20 = 0u;
   v10 = [(SCATElementManager *)self enabledAuxiliaryElementManagersForRoles:__b[0], 0];
-  v11 = [v10 reverseObjectEnumerator];
+  reverseObjectEnumerator = [v10 reverseObjectEnumerator];
 
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -708,7 +708,7 @@ LABEL_17:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v16 = [*(*(&v19 + 1) + 8 * i) lastElementWithOptions:0];
@@ -719,7 +719,7 @@ LABEL_17:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v13)
       {
         continue;
@@ -735,15 +735,15 @@ LABEL_17:
   return v17;
 }
 
-- (id)auxiliaryElementBefore:(id)a3
+- (id)auxiliaryElementBefore:(id)before
 {
-  v4 = a3;
-  v5 = [v4 scatAuxiliaryElementManager];
-  v6 = v5;
-  if (v5)
+  beforeCopy = before;
+  scatAuxiliaryElementManager = [beforeCopy scatAuxiliaryElementManager];
+  v6 = scatAuxiliaryElementManager;
+  if (scatAuxiliaryElementManager)
   {
     v12 = 0;
-    v7 = [v5 elementBefore:v4 didWrap:&v12 options:0];
+    v7 = [scatAuxiliaryElementManager elementBefore:beforeCopy didWrap:&v12 options:0];
     v8 = v7;
     if (v12 == 1)
     {
@@ -777,15 +777,15 @@ LABEL_10:
   return v8;
 }
 
-- (id)auxiliaryElementAfter:(id)a3
+- (id)auxiliaryElementAfter:(id)after
 {
-  v4 = a3;
-  v5 = [v4 scatAuxiliaryElementManager];
-  v6 = v5;
-  if (v5)
+  afterCopy = after;
+  scatAuxiliaryElementManager = [afterCopy scatAuxiliaryElementManager];
+  v6 = scatAuxiliaryElementManager;
+  if (scatAuxiliaryElementManager)
   {
     v12 = 0;
-    v7 = [v5 elementAfter:v4 didWrap:&v12 options:0];
+    v7 = [scatAuxiliaryElementManager elementAfter:afterCopy didWrap:&v12 options:0];
     v8 = v7;
     if (v12 == 1)
     {
@@ -819,7 +819,7 @@ LABEL_10:
   return v8;
 }
 
-- (int64_t)auxiliaryElementCountWithRole:(int64_t)a3
+- (int64_t)auxiliaryElementCountWithRole:(int64_t)role
 {
   memset_pattern16(__b, &unk_1001BD540, 0x10uLL);
   v5 = 0;
@@ -829,7 +829,7 @@ LABEL_10:
   {
     v8 = v7;
     v9 = (1 << v5);
-    if ((v9 & a3) != 0)
+    if ((v9 & role) != 0)
     {
       __b[v6++] = v9;
     }
@@ -881,12 +881,12 @@ LABEL_10:
   return v13;
 }
 
-- (int64_t)roleForElement:(id)a3
+- (int64_t)roleForElement:(id)element
 {
-  v3 = [a3 parentGroup];
-  v4 = [v3 scatIsMemberOfGroup];
+  parentGroup = [element parentGroup];
+  scatIsMemberOfGroup = [parentGroup scatIsMemberOfGroup];
 
-  if (v4)
+  if (scatIsMemberOfGroup)
   {
     return 2;
   }

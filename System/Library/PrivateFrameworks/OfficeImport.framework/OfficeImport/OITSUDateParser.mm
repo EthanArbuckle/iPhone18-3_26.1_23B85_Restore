@@ -1,25 +1,25 @@
 @interface OITSUDateParser
-- (OITSUDateParser)initWithLocale:(id)a3;
-- (__CFDateFormatter)specialCaseDateFormatterForLocale:(id)a3;
+- (OITSUDateParser)initWithLocale:(id)locale;
+- (__CFDateFormatter)specialCaseDateFormatterForLocale:(id)locale;
 - (id)formatStringsDictionary;
-- (id)newDateFromString:(id)a3 preferredFormatString:(id)a4 successfulFormatString:(id *)a5 tryAggressiveFormats:(BOOL)a6;
-- (id)p_initialPatternParsingFormat:(id)a3 separator:(unsigned __int16 *)a4;
-- (id)p_newDateFromStringTryingFormats:(id)a3 locale:(id)a4 formats:(id)a5 outSuccessfulFormatString:(id *)a6;
+- (id)newDateFromString:(id)string preferredFormatString:(id)formatString successfulFormatString:(id *)successfulFormatString tryAggressiveFormats:(BOOL)formats;
+- (id)p_initialPatternParsingFormat:(id)format separator:(unsigned __int16 *)separator;
+- (id)p_newDateFromStringTryingFormats:(id)formats locale:(id)locale formats:(id)a5 outSuccessfulFormatString:(id *)string;
 - (void)dealloc;
-- (void)p_addFormat:(id)a3 locale:(id)a4 formatCategoryMap:(id)a5;
+- (void)p_addFormat:(id)format locale:(id)locale formatCategoryMap:(id)map;
 @end
 
 @implementation OITSUDateParser
 
-- (OITSUDateParser)initWithLocale:(id)a3
+- (OITSUDateParser)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v69.receiver = self;
   v69.super_class = OITSUDateParser;
   v6 = [(OITSUDateParser *)&v69 init];
   if (v6)
   {
-    if (!v5)
+    if (!localeCopy)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUDateParser initWithLocale:]"];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUDateParser.m"];
@@ -28,17 +28,17 @@
       +[OITSUAssertionHandler logBacktraceThrottled];
     }
 
-    v62 = v5;
-    objc_storeStrong(&v6->_locale, a3);
+    v62 = localeCopy;
+    objc_storeStrong(&v6->_locale, locale);
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     formatCategories = v6->_formatCategories;
     v6->_formatCategories = v9;
 
-    v11 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    v12 = [v11 objectForKey:*MEMORY[0x277CBE690]];
+    gregorianCalendarLocale = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    v12 = [gregorianCalendarLocale objectForKey:*MEMORY[0x277CBE690]];
 
-    v13 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    v14 = [v13 objectForKey:*MEMORY[0x277CBE6C8]];
+    gregorianCalendarLocale2 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    v14 = [gregorianCalendarLocale2 objectForKey:*MEMORY[0x277CBE6C8]];
 
     if (v12)
     {
@@ -52,11 +52,11 @@
     v60 = v14;
     v61 = v12;
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v17 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    v18 = TSUCreateArrayOfDateFormatStringsForLocale(v17);
+    gregorianCalendarLocale3 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    v18 = TSUCreateArrayOfDateFormatStringsForLocale(gregorianCalendarLocale3);
 
-    v19 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    v20 = TSUCreateArrayOfTimeFormatStringsForLocale(v19);
+    gregorianCalendarLocale4 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    v20 = TSUCreateArrayOfTimeFormatStringsForLocale(gregorianCalendarLocale4);
 
     v68 = v18;
     v21 = [v18 count];
@@ -70,9 +70,9 @@
         v65 = v23;
         v24 = [v68 objectAtIndex:?];
         v25 = [v24 stringByAppendingString:@" "];
-        v26 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+        gregorianCalendarLocale5 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
         v63 = v24;
-        [(OITSUDateParser *)v6 p_addFormat:v24 locale:v26 formatCategoryMap:v16];
+        [(OITSUDateParser *)v6 p_addFormat:v24 locale:gregorianCalendarLocale5 formatCategoryMap:v16];
 
         if (v22)
         {
@@ -80,8 +80,8 @@
           {
             v28 = [v67 objectAtIndex:i];
             v29 = [v25 stringByAppendingString:v28];
-            v30 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-            [(OITSUDateParser *)v6 p_addFormat:v29 locale:v30 formatCategoryMap:v16];
+            gregorianCalendarLocale6 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+            [(OITSUDateParser *)v6 p_addFormat:v29 locale:gregorianCalendarLocale6 formatCategoryMap:v16];
           }
         }
 
@@ -99,9 +99,9 @@
         v66 = v31;
         v32 = [v67 objectAtIndex:?];
         v33 = [v32 stringByAppendingString:@" "];
-        v34 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+        gregorianCalendarLocale7 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
         v64 = v32;
-        [(OITSUDateParser *)v6 p_addFormat:v32 locale:v34 formatCategoryMap:v16];
+        [(OITSUDateParser *)v6 p_addFormat:v32 locale:gregorianCalendarLocale7 formatCategoryMap:v16];
 
         if (v21)
         {
@@ -109,8 +109,8 @@
           {
             v36 = [v68 objectAtIndex:j];
             v37 = [v33 stringByAppendingString:v36];
-            v38 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-            [(OITSUDateParser *)v6 p_addFormat:v37 locale:v38 formatCategoryMap:v16];
+            gregorianCalendarLocale8 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+            [(OITSUDateParser *)v6 p_addFormat:v37 locale:gregorianCalendarLocale8 formatCategoryMap:v16];
           }
         }
 
@@ -121,7 +121,7 @@
     }
 
     v39 = kCFDateFormatterNoStyle;
-    v5 = v62;
+    localeCopy = v62;
     do
     {
       for (k = kCFDateFormatterNoStyle; k != (kCFDateFormatterFullStyle|kCFDateFormatterShortStyle); ++k)
@@ -130,8 +130,8 @@
         {
           v41 = CFDateFormatterCreate(0, [(OITSULocale *)v6->_locale cfGregorianCalendarLocale], v39, k);
           v42 = CFDateFormatterGetFormat(v41);
-          v43 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-          [(OITSUDateParser *)v6 p_addFormat:v42 locale:v43 formatCategoryMap:v16];
+          gregorianCalendarLocale9 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+          [(OITSUDateParser *)v6 p_addFormat:v42 locale:gregorianCalendarLocale9 formatCategoryMap:v16];
 
           CFRelease(v41);
         }
@@ -142,32 +142,32 @@
 
     while (v39 != (kCFDateFormatterFullStyle|kCFDateFormatterShortStyle));
     v44 = TSUDefaultDateTimeFormat(v6->_locale);
-    v45 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    [(OITSUDateParser *)v6 p_addFormat:v44 locale:v45 formatCategoryMap:v16];
+    gregorianCalendarLocale10 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    [(OITSUDateParser *)v6 p_addFormat:v44 locale:gregorianCalendarLocale10 formatCategoryMap:v16];
 
     v46 = TSUShortestCompleteDateOnlyFormat(v6->_locale);
-    v47 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    [(OITSUDateParser *)v6 p_addFormat:v46 locale:v47 formatCategoryMap:v16];
+    gregorianCalendarLocale11 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    [(OITSUDateParser *)v6 p_addFormat:v46 locale:gregorianCalendarLocale11 formatCategoryMap:v16];
 
     v48 = TSUShortestCompleteTimeOnlyFormat(v6->_locale);
-    v49 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    [(OITSUDateParser *)v6 p_addFormat:v48 locale:v49 formatCategoryMap:v16];
+    gregorianCalendarLocale12 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    [(OITSUDateParser *)v6 p_addFormat:v48 locale:gregorianCalendarLocale12 formatCategoryMap:v16];
 
     v50 = TSUShortestCompleteDateTimeFormat(v6->_locale);
-    v51 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    [(OITSUDateParser *)v6 p_addFormat:v50 locale:v51 formatCategoryMap:v16];
+    gregorianCalendarLocale13 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    [(OITSUDateParser *)v6 p_addFormat:v50 locale:gregorianCalendarLocale13 formatCategoryMap:v16];
 
     v52 = TSUDefaultDateOnlyShortFormat(v6->_locale);
-    v53 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    [(OITSUDateParser *)v6 p_addFormat:v52 locale:v53 formatCategoryMap:v16];
+    gregorianCalendarLocale14 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    [(OITSUDateParser *)v6 p_addFormat:v52 locale:gregorianCalendarLocale14 formatCategoryMap:v16];
 
     v54 = TSUDefaultDateOnlyMediumFormat(v6->_locale);
-    v55 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    [(OITSUDateParser *)v6 p_addFormat:v54 locale:v55 formatCategoryMap:v16];
+    gregorianCalendarLocale15 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    [(OITSUDateParser *)v6 p_addFormat:v54 locale:gregorianCalendarLocale15 formatCategoryMap:v16];
 
     v56 = TSUDefaultTimeOnlyShortFormat(v6->_locale);
-    v57 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
-    [(OITSUDateParser *)v6 p_addFormat:v56 locale:v57 formatCategoryMap:v16];
+    gregorianCalendarLocale16 = [(OITSULocale *)v6->_locale gregorianCalendarLocale];
+    [(OITSUDateParser *)v6 p_addFormat:v56 locale:gregorianCalendarLocale16 formatCategoryMap:v16];
 
     v58 = v6;
   }
@@ -178,8 +178,8 @@
 - (id)formatStringsDictionary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -200,10 +200,10 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 initialPattern];
-        [v3 addObject:v11];
-        v12 = [v10 formatStringsDictionary];
-        [v4 addObject:v12];
+        initialPattern = [v10 initialPattern];
+        [array addObject:initialPattern];
+        formatStringsDictionary = [v10 formatStringsDictionary];
+        [array2 addObject:formatStringsDictionary];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
@@ -214,8 +214,8 @@
 
   v19[0] = @"keys";
   v19[1] = @"values";
-  v20[0] = v3;
-  v20[1] = v4;
+  v20[0] = array;
+  v20[1] = array2;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
 
   return v13;
@@ -234,21 +234,21 @@
   [(OITSUDateParser *)&v4 dealloc];
 }
 
-- (__CFDateFormatter)specialCaseDateFormatterForLocale:(id)a3
+- (__CFDateFormatter)specialCaseDateFormatterForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   specialCaseFormatter = self->_specialCaseFormatter;
   if (!specialCaseFormatter)
   {
 LABEL_5:
-    ADateFormatter = p_createADateFormatter(v4);
+    ADateFormatter = p_createADateFormatter(localeCopy);
     self->_specialCaseFormatter = ADateFormatter;
     goto LABEL_6;
   }
 
   Locale = CFDateFormatterGetLocale(specialCaseFormatter);
   ADateFormatter = self->_specialCaseFormatter;
-  if (Locale != v4)
+  if (Locale != localeCopy)
   {
     if (ADateFormatter)
     {
@@ -263,13 +263,13 @@ LABEL_6:
   return ADateFormatter;
 }
 
-- (id)p_newDateFromStringTryingFormats:(id)a3 locale:(id)a4 formats:(id)a5 outSuccessfulFormatString:(id *)a6
+- (id)p_newDateFromStringTryingFormats:(id)formats locale:(id)locale formats:(id)a5 outSuccessfulFormatString:(id *)string
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  formatsCopy = formats;
+  localeCopy = locale;
   v12 = a5;
-  if (!v11)
+  if (!localeCopy)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUDateParser p_newDateFromStringTryingFormats:locale:formats:outSuccessfulFormatString:]"];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUDateParser.m"];
@@ -278,8 +278,8 @@ LABEL_6:
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v15 = [(OITSUDateParser *)self specialCaseDateFormatterForLocale:v11];
-  v16 = [(__CFString *)v10 length];
+  v15 = [(OITSUDateParser *)self specialCaseDateFormatterForLocale:localeCopy];
+  v16 = [(__CFString *)formatsCopy length];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -289,8 +289,8 @@ LABEL_6:
   if (v17)
   {
     v18 = v17;
-    v34 = v11;
-    v35 = a6;
+    v34 = localeCopy;
+    stringCopy = string;
     v19 = *v40;
     v36 = *v40;
     do
@@ -306,7 +306,7 @@ LABEL_6:
         CFDateFormatterSetFormat(v15, v21);
         rangep.location = 0;
         rangep.length = v16;
-        v22 = CFDateFormatterCreateDateFromString(0, v15, v10, &rangep);
+        v22 = CFDateFormatterCreateDateFromString(0, v15, formatsCopy, &rangep);
         if (v22)
         {
           v23 = v22;
@@ -319,12 +319,12 @@ LABEL_6:
             v24 = TSUCreateDateWithGregorianUnitsSetToDefaultValue(v22, v21);
 
             StringWithDate = CFDateFormatterCreateStringWithDate(0, v15, v24);
-            if ([(__CFString *)v10 isEqualToString:StringWithDate])
+            if ([(__CFString *)formatsCopy isEqualToString:StringWithDate])
             {
-              if (v35)
+              if (stringCopy)
               {
                 v26 = v21;
-                *v35 = v21;
+                *stringCopy = v21;
               }
 
               v27 = v24;
@@ -335,22 +335,22 @@ LABEL_6:
               v28 = v24;
               if ([(__CFString *)v21 rangeOfString:@"yyyy"]!= 0x7FFFFFFFFFFFFFFFLL)
               {
-                v29 = [(__CFString *)v21 tsu_stringByReplacing4DigitYearStringWith2DigitYearString];
-                CFDateFormatterSetFormat(v15, v29);
-                v28 = CFDateFormatterCreateDateFromString(0, v15, v10, &rangep);
+                tsu_stringByReplacing4DigitYearStringWith2DigitYearString = [(__CFString *)v21 tsu_stringByReplacing4DigitYearStringWith2DigitYearString];
+                CFDateFormatterSetFormat(v15, tsu_stringByReplacing4DigitYearStringWith2DigitYearString);
+                v28 = CFDateFormatterCreateDateFromString(0, v15, formatsCopy, &rangep);
               }
 
               v30 = TSUCreateDateWithGregorianUnitsSetToDefaultValue(v28, v21);
 
               v24 = v30;
               v31 = CFDateFormatterCreateStringWithDate(0, v15, v24);
-              if ([(__CFString *)v10 isEqualToString:v31])
+              if ([(__CFString *)formatsCopy isEqualToString:v31])
               {
                 v27 = v24;
-                if (v35)
+                if (stringCopy)
                 {
                   v32 = v21;
-                  *v35 = v21;
+                  *stringCopy = v21;
                   v27 = v24;
                 }
               }
@@ -378,7 +378,7 @@ LABEL_6:
     while (v18);
     v27 = 0;
 LABEL_27:
-    v11 = v34;
+    localeCopy = v34;
   }
 
   else
@@ -389,29 +389,29 @@ LABEL_27:
   return v27;
 }
 
-- (id)newDateFromString:(id)a3 preferredFormatString:(id)a4 successfulFormatString:(id *)a5 tryAggressiveFormats:(BOOL)a6
+- (id)newDateFromString:(id)string preferredFormatString:(id)formatString successfulFormatString:(id *)successfulFormatString tryAggressiveFormats:(BOOL)formats
 {
-  v6 = a6;
+  formatsCopy = formats;
   v39[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if (v10 && [v10 length])
+  stringCopy = string;
+  formatStringCopy = formatString;
+  if (stringCopy && [stringCopy length])
   {
-    v12 = [v10 mutableCopy];
+    v12 = [stringCopy mutableCopy];
     CFStringTransform(v12, 0, *MEMORY[0x277CBF0A8], 0);
-    v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v14 = [(__CFString *)v12 stringByTrimmingCharactersInSet:v13];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v14 = [(__CFString *)v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v15 = [v14 stringByReplacingOccurrencesOfString:@"\u200F" withString:&stru_286EE1130];
 
     v16 = [v15 stringByReplacingOccurrencesOfString:@"\u200E" withString:&stru_286EE1130];
 
-    if (v11 && ([&stru_286EE1130 isEqualToString:v11] & 1) == 0)
+    if (formatStringCopy && ([&stru_286EE1130 isEqualToString:formatStringCopy] & 1) == 0)
     {
-      v39[0] = v11;
-      v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-      v18 = [(OITSULocale *)self->_locale gregorianCalendarLocale];
-      v19 = [(OITSUDateParser *)self p_newDateFromStringTryingFormats:v16 locale:v18 formats:v17 outSuccessfulFormatString:a5];
+      v39[0] = formatStringCopy;
+      objectEnumerator = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
+      gregorianCalendarLocale = [(OITSULocale *)self->_locale gregorianCalendarLocale];
+      v19 = [(OITSUDateParser *)self p_newDateFromStringTryingFormats:v16 locale:gregorianCalendarLocale formats:objectEnumerator outSuccessfulFormatString:successfulFormatString];
 
       if (v19)
       {
@@ -422,14 +422,14 @@ LABEL_35:
       }
     }
 
-    v35 = v6;
+    v35 = formatsCopy;
     v36 = v12;
-    v37 = v11;
-    v17 = [(NSMutableArray *)self->_formatCategories objectEnumerator];
+    v37 = formatStringCopy;
+    objectEnumerator = [(NSMutableArray *)self->_formatCategories objectEnumerator];
     v38 = 0;
-    v21 = [v17 nextObject];
-    v22 = v21;
-    if (!v21)
+    nextObject = [objectEnumerator nextObject];
+    nextObject2 = nextObject;
+    if (!nextObject)
     {
       v24 = 0;
       v23 = 0;
@@ -437,11 +437,11 @@ LABEL_23:
       if (v23)
       {
         v23 = v23;
-        v11 = v37;
-        if (a5)
+        formatStringCopy = v37;
+        if (successfulFormatString)
         {
           v29 = v24;
-          *a5 = v24;
+          *successfulFormatString = v24;
         }
 
         v27 = v23;
@@ -452,14 +452,14 @@ LABEL_23:
         if (v35)
         {
           v30 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"yy", 0}];
-          v31 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-          v32 = [v16 rangeOfCharacterFromSet:v31];
+          decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+          v32 = [v16 rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
           v27 = 0;
           if (v32 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v33 = [(OITSULocale *)self->_locale gregorianCalendarLocale];
-            v27 = [(OITSUDateParser *)self p_newDateFromStringTryingFormats:v16 locale:v33 formats:v30 outSuccessfulFormatString:a5];
+            gregorianCalendarLocale2 = [(OITSULocale *)self->_locale gregorianCalendarLocale];
+            v27 = [(OITSUDateParser *)self p_newDateFromStringTryingFormats:v16 locale:gregorianCalendarLocale2 formats:v30 outSuccessfulFormatString:successfulFormatString];
           }
 
           v23 = 0;
@@ -472,7 +472,7 @@ LABEL_23:
         }
 
 LABEL_33:
-        v11 = v37;
+        formatStringCopy = v37;
       }
 
       v20 = v27;
@@ -483,23 +483,23 @@ LABEL_33:
 
     v23 = 0;
     v24 = 0;
-    v25 = v21;
+    v25 = nextObject;
     while (1)
     {
-      v26 = [v25 newDateFromString:v16 forceAllowAMPM:self->_isJapaneseLocale successfulFormatString:a5 perfect:&v38];
+      v26 = [v25 newDateFromString:v16 forceAllowAMPM:self->_isJapaneseLocale successfulFormatString:successfulFormatString perfect:&v38];
       if (v26)
       {
         v27 = v26;
         if (v38)
         {
-          v22 = v25;
+          nextObject2 = v25;
           goto LABEL_33;
         }
 
         if (v23)
         {
 
-          if (!a5)
+          if (!successfulFormatString)
           {
             goto LABEL_19;
           }
@@ -507,26 +507,26 @@ LABEL_33:
 
         else
         {
-          if (!a5)
+          if (!successfulFormatString)
           {
             v23 = v26;
             goto LABEL_19;
           }
 
-          v28 = *a5;
+          v28 = *successfulFormatString;
 
           v24 = v28;
           v23 = v27;
         }
 
-        *a5 = 0;
+        *successfulFormatString = 0;
       }
 
 LABEL_19:
-      v22 = [v17 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v25 = v22;
-      if (!v22)
+      v25 = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_23;
       }
@@ -539,27 +539,27 @@ LABEL_36:
   return v20;
 }
 
-- (void)p_addFormat:(id)a3 locale:(id)a4 formatCategoryMap:(id)a5
+- (void)p_addFormat:(id)format locale:(id)locale formatCategoryMap:(id)map
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  formatCopy = format;
+  localeCopy = locale;
+  mapCopy = map;
   v13 = 0;
-  v11 = [(OITSUDateParser *)self p_initialPatternParsingFormat:v8 separator:&v13];
-  v12 = [v10 objectForKey:v11];
+  v11 = [(OITSUDateParser *)self p_initialPatternParsingFormat:formatCopy separator:&v13];
+  v12 = [mapCopy objectForKey:v11];
   if (!v12)
   {
-    v12 = [[OITSUDateFormatCategory alloc] initWithInitialPattern:v11 locale:v9];
+    v12 = [[OITSUDateFormatCategory alloc] initWithInitialPattern:v11 locale:localeCopy];
     [(NSMutableArray *)self->_formatCategories addObject:v12];
-    [v10 setObject:v12 forKey:v11];
+    [mapCopy setObject:v12 forKey:v11];
   }
 
-  [(OITSUDateFormatCategory *)v12 addSeparator:v13 format:v8 locale:v9];
+  [(OITSUDateFormatCategory *)v12 addSeparator:v13 format:formatCopy locale:localeCopy];
 }
 
-- (id)p_initialPatternParsingFormat:(id)a3 separator:(unsigned __int16 *)a4
+- (id)p_initialPatternParsingFormat:(id)format separator:(unsigned __int16 *)separator
 {
-  v5 = [a3 stringByReplacingOccurrencesOfString:@"\u200F" withString:&stru_286EE1130];
+  v5 = [format stringByReplacingOccurrencesOfString:@"\u200F" withString:&stru_286EE1130];
   v6 = [v5 stringByReplacingOccurrencesOfString:@"\u200E" withString:&stru_286EE1130];
 
   if (p_initialPatternParsingFormat_separator__onceToken != -1)
@@ -581,7 +581,7 @@ LABEL_36:
   v11 = v7;
   if (v10 == 0x7FFFFFFFFFFFFFFFLL || ((v12 = [v6 rangeOfCharacterFromSet:p_initialPatternParsingFormat_separator__inverseFormatCharacterSet options:0 range:{v10, v7 - v10}], v12 != 0x7FFFFFFFFFFFFFFFLL) ? (v11 = v12) : (v11 = v7), v11 >= v7))
   {
-    *a4 = 0;
+    *separator = 0;
   }
 
   else
@@ -597,7 +597,7 @@ LABEL_36:
       v14 = v13;
     }
 
-    *a4 = v14;
+    *separator = v14;
     if (v14 == 39)
     {
       if (v11 + 1 >= v7)
@@ -610,7 +610,7 @@ LABEL_36:
       }
 
       v17 = [v6 characterAtIndex:v11 + 1];
-      *a4 = v17;
+      *separator = v17;
       if (v17 == 39)
       {
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUDateParser p_initialPatternParsingFormat:separator:]"];

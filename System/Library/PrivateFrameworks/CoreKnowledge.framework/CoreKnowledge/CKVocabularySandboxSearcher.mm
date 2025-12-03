@@ -1,23 +1,23 @@
 @interface CKVocabularySandboxSearcher
-- (CKVocabularySandboxSearcher)initWithSandbox:(id)a3 userId:(id)a4 prewarm:(BOOL)a5;
+- (CKVocabularySandboxSearcher)initWithSandbox:(id)sandbox userId:(id)id prewarm:(BOOL)prewarm;
 @end
 
 @implementation CKVocabularySandboxSearcher
 
-- (CKVocabularySandboxSearcher)initWithSandbox:(id)a3 userId:(id)a4 prewarm:(BOOL)a5
+- (CKVocabularySandboxSearcher)initWithSandbox:(id)sandbox userId:(id)id prewarm:(BOOL)prewarm
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 indexMatcher];
+  prewarmCopy = prewarm;
+  sandboxCopy = sandbox;
+  idCopy = id;
+  indexMatcher = [sandboxCopy indexMatcher];
   v14.receiver = self;
   v14.super_class = CKVocabularySandboxSearcher;
-  v12 = [(CKVocabularySearcher *)&v14 initWithUserId:v10 spanMatcher:v11 prewarm:v5];
+  v12 = [(CKVocabularySearcher *)&v14 initWithUserId:idCopy spanMatcher:indexMatcher prewarm:prewarmCopy];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_sandbox, a3);
-    objc_storeStrong(&v12->_userId, a4);
+    objc_storeStrong(&v12->_sandbox, sandbox);
+    objc_storeStrong(&v12->_userId, id);
   }
 
   return v12;

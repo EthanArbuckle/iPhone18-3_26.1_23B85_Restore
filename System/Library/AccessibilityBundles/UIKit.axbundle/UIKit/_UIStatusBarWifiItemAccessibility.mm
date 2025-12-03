@@ -1,20 +1,20 @@
 @interface _UIStatusBarWifiItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_UIStatusBarWifiItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UIStatusBarWifiItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   v5 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = "@";
   v3 = @"_UIStatusBarWifiItem";
   [location[0] validateClass:"@" hasInstanceMethod:"@" withFullSignature:0];
@@ -28,19 +28,19 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13.receiver = self;
   v13.super_class = _UIStatusBarWifiItemAccessibility;
   [(_UIStatusBarWifiItemAccessibility *)&v13 _accessibilityLoadAccessibilityInformation];
-  v12 = [(_UIStatusBarWifiItemAccessibility *)v15 _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
+  v12 = [(_UIStatusBarWifiItemAccessibility *)selfCopy _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
   v8 = [v12 safeValueForKeyPath:@"data.wifiEntry"];
   v9 = [v8 safeIntegerForKey:@"type"];
   *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
   v11[1] = v9;
   if (v9 == 1)
   {
-    v11[0] = [(_UIStatusBarWifiItemAccessibility *)v15 safeValueForKey:@"networkIconView", v2];
+    v11[0] = [(_UIStatusBarWifiItemAccessibility *)selfCopy safeValueForKey:@"networkIconView", v2];
     [v11[0] setIsAccessibilityElement:1];
     v6 = v11[0];
     v7 = accessibilityLocalizedString(@"status.hotspot.active");
@@ -52,7 +52,7 @@
 
   else
   {
-    v10 = [(_UIStatusBarWifiItemAccessibility *)v15 safeUIViewForKey:@"signalView", v2];
+    v10 = [(_UIStatusBarWifiItemAccessibility *)selfCopy safeUIViewForKey:@"signalView", v2];
     if (MGGetBoolAnswer())
     {
       v4 = @"status.network.wlan.signal.bars";
@@ -88,19 +88,19 @@
   return v3;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v7.receiver = v11;
+  objc_storeStrong(&v9, item);
+  v7.receiver = selfCopy;
   v7.super_class = _UIStatusBarWifiItemAccessibility;
   v8 = [(_UIStatusBarWifiItemAccessibility *)&v7 applyUpdate:location[0] toDisplayItem:v9];
-  [(_UIStatusBarWifiItemAccessibility *)v11 _accessibilitySetRetainedValue:location[0] forKey:@"AccessibilityStatusBarUpdateData"];
-  [(_UIStatusBarWifiItemAccessibility *)v11 _accessibilityLoadAccessibilityInformation];
+  [(_UIStatusBarWifiItemAccessibility *)selfCopy _accessibilitySetRetainedValue:location[0] forKey:@"AccessibilityStatusBarUpdateData"];
+  [(_UIStatusBarWifiItemAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
   v6 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);

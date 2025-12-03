@@ -1,59 +1,59 @@
 @interface SUdYIiwa8PrJA4HA
-- (SUdYIiwa8PrJA4HA)initWithQueue:(id)a3;
-- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)a3;
-- (void)compute:(_KUwyEjpVZR65eUyl *)a3 UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)a4 SFkZRA5Ek9YzhDRs:(unsigned int)a5 jAVr67FQ6j4EzsgV:(id)a6 i4KDOQicW9Xd5WBz:(id)a7 TWWnmIjkBlMfHmma:(id)a8 withCompletion:(id)a9;
-- (void)computeHash:(_KUwyEjpVZR65eUyl *)a3 jAVr67FQ6j4EzsgV:(id)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 withCompletion:(id)a7;
-- (void)endSignpost:(_eipjLVDiD7LNwlPc *)a3 signpostId:(unint64_t)a4;
+- (SUdYIiwa8PrJA4HA)initWithQueue:(id)queue;
+- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)signpost;
+- (void)compute:(_KUwyEjpVZR65eUyl *)compute UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)ue1 SFkZRA5Ek9YzhDRs:(unsigned int)rs jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)computeHash:(_KUwyEjpVZR65eUyl *)hash jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)endSignpost:(_eipjLVDiD7LNwlPc *)signpost signpostId:(unint64_t)id;
 @end
 
 @implementation SUdYIiwa8PrJA4HA
 
-- (SUdYIiwa8PrJA4HA)initWithQueue:(id)a3
+- (SUdYIiwa8PrJA4HA)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SUdYIiwa8PrJA4HA;
   v6 = [(SUdYIiwa8PrJA4HA *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)compute:(_KUwyEjpVZR65eUyl *)a3 UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)a4 SFkZRA5Ek9YzhDRs:(unsigned int)a5 jAVr67FQ6j4EzsgV:(id)a6 i4KDOQicW9Xd5WBz:(id)a7 TWWnmIjkBlMfHmma:(id)a8 withCompletion:(id)a9
+- (void)compute:(_KUwyEjpVZR65eUyl *)compute UtPlzRffoEpw7Ue1:(_eipjLVDiD7LNwlPc *)ue1 SFkZRA5Ek9YzhDRs:(unsigned int)rs jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v11 = a9;
-  v12 = [(SUdYIiwa8PrJA4HA *)self queue];
+  completionCopy = completion;
+  queue = [(SUdYIiwa8PrJA4HA *)self queue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100020264;
   v14[3] = &unk_10068FDA0;
-  v16 = *a4;
-  v15 = v11;
-  v13 = v11;
-  dispatch_async(v12, v14);
+  v16 = *ue1;
+  v15 = completionCopy;
+  v13 = completionCopy;
+  dispatch_async(queue, v14);
 }
 
-- (void)computeHash:(_KUwyEjpVZR65eUyl *)a3 jAVr67FQ6j4EzsgV:(id)a4 i4KDOQicW9Xd5WBz:(id)a5 TWWnmIjkBlMfHmma:(id)a6 withCompletion:(id)a7
+- (void)computeHash:(_KUwyEjpVZR65eUyl *)hash jAVr67FQ6j4EzsgV:(id)v i4KDOQicW9Xd5WBz:(id)bz TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v7 = a7;
+  completionCopy = completion;
   v8 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:0];
   [v8 encodeInt64:0xE41739AED8186A8ELL forKey:@"0x5563"];
-  v7[2](v7, [Yp00msaYdVlZesvU cv2QAcQ2CDdiHuN6:v8]);
+  completionCopy[2](completionCopy, [Yp00msaYdVlZesvU cv2QAcQ2CDdiHuN6:v8]);
 }
 
-- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)a3
+- (unint64_t)beginSignpost:(_eipjLVDiD7LNwlPc *)signpost
 {
   v4 = os_signpost_id_generate(qword_1006DF788);
   v5 = qword_1006DF788;
   v6 = v5;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
-    profileIDPrefix = a3->profileIDPrefix;
-    dataframeIndex = a3->dataframeIndex;
+    profileIDPrefix = signpost->profileIDPrefix;
+    dataframeIndex = signpost->dataframeIndex;
     v10[0] = 67240448;
     v10[1] = profileIDPrefix;
     v11 = 1026;
@@ -64,19 +64,19 @@
   return v4;
 }
 
-- (void)endSignpost:(_eipjLVDiD7LNwlPc *)a3 signpostId:(unint64_t)a4
+- (void)endSignpost:(_eipjLVDiD7LNwlPc *)signpost signpostId:(unint64_t)id
 {
   v6 = qword_1006DF788;
   v7 = v6;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+  if (id - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
-    profileIDPrefix = a3->profileIDPrefix;
-    dataframeIndex = a3->dataframeIndex;
+    profileIDPrefix = signpost->profileIDPrefix;
+    dataframeIndex = signpost->dataframeIndex;
     v10[0] = 67240448;
     v10[1] = profileIDPrefix;
     v11 = 1026;
     v12 = dataframeIndex;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, a4, "mc", "p=%{public,signpost.telemetry:number1}d,i=%{public,signpost.telemetry:number2}d", v10, 0xEu);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, id, "mc", "p=%{public,signpost.telemetry:number1}d,i=%{public,signpost.telemetry:number2}d", v10, 0xEu);
   }
 }
 

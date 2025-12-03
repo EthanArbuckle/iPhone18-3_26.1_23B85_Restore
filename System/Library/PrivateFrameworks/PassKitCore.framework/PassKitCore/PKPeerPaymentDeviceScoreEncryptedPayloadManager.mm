@@ -1,48 +1,48 @@
 @interface PKPeerPaymentDeviceScoreEncryptedPayloadManager
-- (PKPeerPaymentDeviceScoreEncryptedPayloadManager)initWithDeviceScoreAttributes:(id)a3;
-- (id)_errorForUnavailableDeviceScoreWithUnderlyingError:(id)a3;
+- (PKPeerPaymentDeviceScoreEncryptedPayloadManager)initWithDeviceScoreAttributes:(id)attributes;
+- (id)_errorForUnavailableDeviceScoreWithUnderlyingError:(id)error;
 - (void)_setupDeviceScoreService;
-- (void)deviceScoreWithCompletion:(id)a3;
-- (void)provideSessionFeedbackWithIngested:(BOOL)a3;
-- (void)setDeviceScoreEncryptedPayloadVersion:(unint64_t)a3;
-- (void)updateWithNewAttributes:(id)a3;
+- (void)deviceScoreWithCompletion:(id)completion;
+- (void)provideSessionFeedbackWithIngested:(BOOL)ingested;
+- (void)setDeviceScoreEncryptedPayloadVersion:(unint64_t)version;
+- (void)updateWithNewAttributes:(id)attributes;
 @end
 
 @implementation PKPeerPaymentDeviceScoreEncryptedPayloadManager
 
-- (PKPeerPaymentDeviceScoreEncryptedPayloadManager)initWithDeviceScoreAttributes:(id)a3
+- (PKPeerPaymentDeviceScoreEncryptedPayloadManager)initWithDeviceScoreAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentDeviceScoreEncryptedPayloadManager;
   v6 = [(PKPeerPaymentDeviceScoreEncryptedPayloadManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentAttributes, a3);
-    -[PKPeerPaymentDeviceScoreEncryptedPayloadManager setDeviceScoreEncryptedPayloadVersion:](v7, "setDeviceScoreEncryptedPayloadVersion:", [v5 payloadVersion]);
-    [(PKPeerPaymentDeviceScoreEncryptedPayloadManager *)v7 updateWithNewAttributes:v5];
+    objc_storeStrong(&v6->_currentAttributes, attributes);
+    -[PKPeerPaymentDeviceScoreEncryptedPayloadManager setDeviceScoreEncryptedPayloadVersion:](v7, "setDeviceScoreEncryptedPayloadVersion:", [attributesCopy payloadVersion]);
+    [(PKPeerPaymentDeviceScoreEncryptedPayloadManager *)v7 updateWithNewAttributes:attributesCopy];
   }
 
   return v7;
 }
 
-- (void)updateWithNewAttributes:(id)a3
+- (void)updateWithNewAttributes:(id)attributes
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 endpoint];
-  if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes endpoint]!= v5)
+  attributesCopy = attributes;
+  endpoint = [attributesCopy endpoint];
+  if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes endpoint]!= endpoint)
   {
-    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setEndpoint:v5];
+    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setEndpoint:endpoint];
   }
 
-  v6 = [v4 recipientAddresses];
-  v7 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes recipientAddresses];
-  v8 = v7;
-  if (v6 && v7)
+  recipientAddresses = [attributesCopy recipientAddresses];
+  recipientAddresses2 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes recipientAddresses];
+  v8 = recipientAddresses2;
+  if (recipientAddresses && recipientAddresses2)
   {
-    v9 = [v7 isEqual:v6];
+    v9 = [recipientAddresses2 isEqual:recipientAddresses];
 
     if (v9)
     {
@@ -52,20 +52,20 @@
     goto LABEL_8;
   }
 
-  if (v8 != v6)
+  if (v8 != recipientAddresses)
   {
 LABEL_8:
-    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setRecipientAddresses:v6];
+    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setRecipientAddresses:recipientAddresses];
   }
 
 LABEL_9:
-  v10 = [v4 recipientAddress];
-  v11 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes recipientAddress];
-  v12 = v11;
-  if (!v10 || !v11)
+  recipientAddress = [attributesCopy recipientAddress];
+  recipientAddress2 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes recipientAddress];
+  v12 = recipientAddress2;
+  if (!recipientAddress || !recipientAddress2)
   {
 
-    if (v12 == v10)
+    if (v12 == recipientAddress)
     {
       goto LABEL_15;
     }
@@ -73,25 +73,25 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v13 = [v11 isEqual:v10];
+  v13 = [recipientAddress2 isEqual:recipientAddress];
 
   if ((v13 & 1) == 0)
   {
 LABEL_14:
-    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setRecipientAddress:v10];
+    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setRecipientAddress:recipientAddress];
   }
 
 LABEL_15:
-  v14 = [v4 quoteRequestDestination];
-  if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes quoteRequestDestination]!= v14)
+  quoteRequestDestination = [attributesCopy quoteRequestDestination];
+  if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes quoteRequestDestination]!= quoteRequestDestination)
   {
-    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setQuoteRequestDestination:v14];
+    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setQuoteRequestDestination:quoteRequestDestination];
   }
 
-  v15 = [v4 messagesContext];
-  if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes messagesContext]!= v15)
+  messagesContext = [attributesCopy messagesContext];
+  if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes messagesContext]!= messagesContext)
   {
-    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setMessagesContext:v15];
+    [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setMessagesContext:messagesContext];
   }
 
   [(PKPeerPaymentDeviceScoreEncryptedPayloadManager *)self _setupDeviceScoreService];
@@ -100,27 +100,27 @@ LABEL_15:
     v16 = objc_alloc_init(MEMORY[0x1E69983B0]);
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v18 = +[PKAppleAccountManager sharedInstance];
-    v19 = [v18 appleAccountInformation];
+    appleAccountInformation = [v18 appleAccountInformation];
 
-    v20 = [v19 firstName];
+    firstName = [appleAccountInformation firstName];
 
-    if (v20)
+    if (firstName)
     {
-      v21 = [v19 firstName];
-      [v17 setObject:v21 forKey:*MEMORY[0x1E6998510]];
+      firstName2 = [appleAccountInformation firstName];
+      [v17 setObject:firstName2 forKey:*MEMORY[0x1E6998510]];
     }
 
-    v22 = [v19 lastName];
+    lastName = [appleAccountInformation lastName];
 
-    if (v22)
+    if (lastName)
     {
-      v23 = [v19 lastName];
-      [v17 setObject:v23 forKey:*MEMORY[0x1E6998538]];
+      lastName2 = [appleAccountInformation lastName];
+      [v17 setObject:lastName2 forKey:*MEMORY[0x1E6998538]];
     }
 
-    v67 = v19;
-    v24 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes recipientAddress];
-    if (!v24)
+    v67 = appleAccountInformation;
+    recipientAddress3 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes recipientAddress];
+    if (!recipientAddress3)
     {
 LABEL_37:
       v47 = PKPeerPaymentDeviceScoreTransactionTypeForEndpoint([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes endpoint], [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes quoteRequestDestination], [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes messagesContext]);
@@ -156,7 +156,7 @@ LABEL_53:
 
       if (v48 == 8)
       {
-        v51 = [v6 copy];
+        v51 = [recipientAddresses copy];
         v52 = *MEMORY[0x1E6998430];
         [v17 setObject:v51 forKey:*MEMORY[0x1E6998430]];
 
@@ -240,41 +240,41 @@ LABEL_46:
     v30 = [(PKContactResolver *)v25 initWithContactStore:v26 keysToFetch:v29];
 
     v65 = v30;
-    v31 = [(PKContactResolver *)v30 contactForHandle:v24];
+    v31 = [(PKContactResolver *)v30 contactForHandle:recipientAddress3];
     v32 = v31;
     if (v31)
     {
-      v33 = [v31 givenName];
+      givenName = [v31 givenName];
 
-      if (v33)
+      if (givenName)
       {
-        v34 = [v32 givenName];
-        [v17 setObject:v34 forKey:*MEMORY[0x1E6998450]];
+        givenName2 = [v32 givenName];
+        [v17 setObject:givenName2 forKey:*MEMORY[0x1E6998450]];
       }
 
-      v35 = [v32 familyName];
+      familyName = [v32 familyName];
 
-      if (v35)
+      if (familyName)
       {
-        v36 = [v32 familyName];
-        [v17 setObject:v36 forKey:*MEMORY[0x1E6998458]];
+        familyName2 = [v32 familyName];
+        [v17 setObject:familyName2 forKey:*MEMORY[0x1E6998458]];
       }
     }
 
-    if (PKIsEmailAddress(v24))
+    if (PKIsEmailAddress(recipientAddress3))
     {
-      [v17 setObject:v24 forKey:*MEMORY[0x1E6998448]];
-      v37 = [v32 phoneNumbers];
-      v38 = [v37 count];
+      [v17 setObject:recipientAddress3 forKey:*MEMORY[0x1E6998448]];
+      phoneNumbers = [v32 phoneNumbers];
+      v38 = [phoneNumbers count];
 
       if (v38)
       {
-        v39 = [v32 phoneNumbers];
-        v40 = [v39 firstObject];
-        v41 = [v40 value];
+        phoneNumbers2 = [v32 phoneNumbers];
+        firstObject = [phoneNumbers2 firstObject];
+        value = [firstObject value];
 
-        v42 = [v41 stringValue];
-        [v17 setObject:v42 forKey:*MEMORY[0x1E6998460]];
+        stringValue = [value stringValue];
+        [v17 setObject:stringValue forKey:*MEMORY[0x1E6998460]];
 
 LABEL_35:
       }
@@ -282,17 +282,17 @@ LABEL_35:
 
     else
     {
-      [v17 setObject:v24 forKey:*MEMORY[0x1E6998460]];
-      v43 = [v32 emailAddresses];
-      v44 = [v43 count];
+      [v17 setObject:recipientAddress3 forKey:*MEMORY[0x1E6998460]];
+      emailAddresses = [v32 emailAddresses];
+      v44 = [emailAddresses count];
 
       if (v44)
       {
-        v45 = [v32 emailAddresses];
-        v46 = [v45 firstObject];
-        v41 = [v46 value];
+        emailAddresses2 = [v32 emailAddresses];
+        firstObject2 = [emailAddresses2 firstObject];
+        value = [firstObject2 value];
 
-        [v17 setObject:v41 forKey:*MEMORY[0x1E6998448]];
+        [v17 setObject:value forKey:*MEMORY[0x1E6998448]];
         goto LABEL_35;
       }
     }
@@ -304,15 +304,15 @@ LABEL_35:
 LABEL_58:
 }
 
-- (void)deviceScoreWithCompletion:(id)a3
+- (void)deviceScoreWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes endpoint]== 1)
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
     }
   }
 
@@ -341,9 +341,9 @@ LABEL_58:
       v10[3] = &unk_1E79DACB0;
       v5 = v6;
       v11 = v5;
-      v12 = self;
+      selfCopy = self;
       v14 = v8;
-      v13 = v4;
+      v13 = completionCopy;
       [(PKODIAssessment *)odiServiceProviderAssessment waitForAssessmentWithContinueBlock:v10];
     }
   }
@@ -390,12 +390,12 @@ void __77__PKPeerPaymentDeviceScoreEncryptedPayloadManager_deviceScoreWithComple
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)provideSessionFeedbackWithIngested:(BOOL)a3
+- (void)provideSessionFeedbackWithIngested:(BOOL)ingested
 {
   odiServiceProviderAssessment = self->_odiServiceProviderAssessment;
   if (odiServiceProviderAssessment)
   {
-    v5 = a3;
+    ingestedCopy = ingested;
     if ([(PKODIAssessment *)odiServiceProviderAssessment currentAssessmentDidTimeout])
     {
       v6 = 2;
@@ -403,7 +403,7 @@ void __77__PKPeerPaymentDeviceScoreEncryptedPayloadManager_deviceScoreWithComple
 
     else
     {
-      v6 = !v5;
+      v6 = !ingestedCopy;
     }
 
     v7 = self->_odiServiceProviderAssessment;
@@ -412,7 +412,7 @@ void __77__PKPeerPaymentDeviceScoreEncryptedPayloadManager_deviceScoreWithComple
   }
 }
 
-- (void)setDeviceScoreEncryptedPayloadVersion:(unint64_t)a3
+- (void)setDeviceScoreEncryptedPayloadVersion:(unint64_t)version
 {
   if (PKForcePeerPaymentDeviceScoreVersion())
   {
@@ -425,26 +425,26 @@ void __77__PKPeerPaymentDeviceScoreEncryptedPayloadManager_deviceScoreWithComple
 
     if (v5)
     {
-      a3 = v6;
+      version = v6;
     }
 
     else
     {
-      a3 = 0;
+      version = 0;
     }
   }
 
-  if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes payloadVersion]!= a3)
+  if ([(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes payloadVersion]!= version)
   {
     if (self->_isScoringInProgress)
     {
-      self->_pendingDeviceScoreEncryptedPayloadVersion = a3;
+      self->_pendingDeviceScoreEncryptedPayloadVersion = version;
     }
 
     else
     {
-      [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setPayloadVersion:a3];
-      self->_pendingDeviceScoreEncryptedPayloadVersion = a3;
+      [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes setPayloadVersion:version];
+      self->_pendingDeviceScoreEncryptedPayloadVersion = version;
 
       [(PKPeerPaymentDeviceScoreEncryptedPayloadManager *)self _setupDeviceScoreService];
     }
@@ -457,20 +457,20 @@ void __77__PKPeerPaymentDeviceScoreEncryptedPayloadManager_deviceScoreWithComple
   v3 = PKLogFacilityTypeGetObject(0xCuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes payloadVersion];
-    v5 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes endpoint];
-    if (v5 - 1 > 4)
+    payloadVersion = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes payloadVersion];
+    endpoint = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes endpoint];
+    if (endpoint - 1 > 4)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = off_1E79DAD20[v5 - 1];
+      v6 = off_1E79DAD20[endpoint - 1];
     }
 
     v22 = 134218242;
-    v23 = v4;
+    v23 = payloadVersion;
     v24 = 2112;
     v25 = v6;
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentDeviceScoreEncryptedPayloadManager: Score: Calling _setupDeviceScoreService with payload version: %lu, endpointIdentifier: %@.", &v22, 0x16u);
@@ -488,38 +488,38 @@ LABEL_32:
     }
 
     odiServiceProviderAssessment = PKPassKitCoreBundle();
-    v8 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes endpoint];
-    v9 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes quoteRequestDestination];
-    v10 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes messagesContext];
-    if (v8 == 2)
+    endpoint2 = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes endpoint];
+    quoteRequestDestination = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes quoteRequestDestination];
+    messagesContext = [(PKPeerPaymentDeviceScoreAttributes *)self->_currentAttributes messagesContext];
+    if (endpoint2 == 2)
     {
       v11 = MEMORY[0x1E6998580];
     }
 
     else
     {
-      if (v8 == 5)
+      if (endpoint2 == 5)
       {
         v11 = MEMORY[0x1E6998588];
         v12 = MEMORY[0x1E6998610];
         goto LABEL_12;
       }
 
-      if (v8 - 3 > 1)
+      if (endpoint2 - 3 > 1)
       {
         v13 = 0;
         goto LABEL_17;
       }
 
       v13 = 0;
-      if (v9 <= 2)
+      if (quoteRequestDestination <= 2)
       {
-        if (v9 < 2)
+        if (quoteRequestDestination < 2)
         {
           v11 = MEMORY[0x1E6998588];
           v12 = MEMORY[0x1E6998618];
 LABEL_12:
-          if (v10 == 2)
+          if (messagesContext == 2)
           {
             v11 = v12;
           }
@@ -527,7 +527,7 @@ LABEL_12:
           goto LABEL_16;
         }
 
-        if (v9 == 2)
+        if (quoteRequestDestination == 2)
         {
 LABEL_40:
           v11 = MEMORY[0x1E6998578];
@@ -537,23 +537,23 @@ LABEL_40:
         goto LABEL_17;
       }
 
-      if (v9 == 3)
+      if (quoteRequestDestination == 3)
       {
         v11 = MEMORY[0x1E6998598];
         goto LABEL_16;
       }
 
-      if (v9 == 4)
+      if (quoteRequestDestination == 4)
       {
         goto LABEL_40;
       }
 
-      if (v9 != 5)
+      if (quoteRequestDestination != 5)
       {
 LABEL_17:
-        v14 = [(PKODIServiceProviderAssessment *)self->_odiServiceProviderAssessment serviceIdentifier];
+        serviceIdentifier = [(PKODIServiceProviderAssessment *)self->_odiServiceProviderAssessment serviceIdentifier];
         v15 = v13;
-        v16 = v14;
+        v16 = serviceIdentifier;
         v17 = v16;
         if (v15 != v16)
         {
@@ -602,26 +602,26 @@ LABEL_16:
   }
 }
 
-- (id)_errorForUnavailableDeviceScoreWithUnderlyingError:(id)a3
+- (id)_errorForUnavailableDeviceScoreWithUnderlyingError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentGen.isa, 0);
   v5 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentGen_0.isa, 0);
   v6 = [v5 stringByAppendingString:@"\n\n(Internal Only: Device Score Unavailable)"];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:v4 forKeyedSubscript:*MEMORY[0x1E696A588]];
-  [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A598]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v4 forKeyedSubscript:*MEMORY[0x1E696A588]];
+  [dictionary setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A598]];
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v4, v6];
-  [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-  if (v3)
+  if (errorCopy)
   {
-    [v7 setObject:v3 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [dictionary setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
   }
 
   v9 = MEMORY[0x1E696ABC0];
-  v10 = [v7 copy];
+  v10 = [dictionary copy];
   v11 = [v9 errorWithDomain:@"PKPassKitErrorDomain" code:-7000 userInfo:v10];
 
   return v11;

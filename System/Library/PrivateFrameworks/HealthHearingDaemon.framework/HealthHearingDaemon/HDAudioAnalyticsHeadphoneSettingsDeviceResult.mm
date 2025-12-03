@@ -1,14 +1,14 @@
 @interface HDAudioAnalyticsHeadphoneSettingsDeviceResult
-+ (id)requiredSettingsWithSaveForEightDays:(BOOL)a3;
++ (id)requiredSettingsWithSaveForEightDays:(BOOL)days;
 @end
 
 @implementation HDAudioAnalyticsHeadphoneSettingsDeviceResult
 
-+ (id)requiredSettingsWithSaveForEightDays:(BOOL)a3
++ (id)requiredSettingsWithSaveForEightDays:(BOOL)days
 {
-  v3 = a3;
-  v4 = [a1 alloc];
-  if (v3)
+  daysCopy = days;
+  v4 = [self alloc];
+  if (daysCopy)
   {
     v5 = MEMORY[0x277CBEC38];
   }

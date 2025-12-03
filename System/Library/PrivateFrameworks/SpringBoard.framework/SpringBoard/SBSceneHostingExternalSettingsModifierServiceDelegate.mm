@@ -1,6 +1,6 @@
 @interface SBSceneHostingExternalSettingsModifierServiceDelegate
 - (SBSceneHostingExternalSettingsModifierServiceDelegate)init;
-- (id)settingsModifiersForClientProcessIdentity:(id)a3 hostedBy:(id)a4;
+- (id)settingsModifiersForClientProcessIdentity:(id)identity hostedBy:(id)by;
 @end
 
 @implementation SBSceneHostingExternalSettingsModifierServiceDelegate
@@ -22,18 +22,18 @@
   return v2;
 }
 
-- (id)settingsModifiersForClientProcessIdentity:(id)a3 hostedBy:(id)a4
+- (id)settingsModifiersForClientProcessIdentity:(id)identity hostedBy:(id)by
 {
   v5 = MEMORY[0x277D0AAC0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedInstance];
-  v9 = [v6 pid];
+  byCopy = by;
+  identityCopy = identity;
+  sharedInstance = [v5 sharedInstance];
+  v9 = [byCopy pid];
 
-  v10 = [v8 processForPID:v9];
+  v10 = [sharedInstance processForPID:v9];
 
-  v11 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v12 = [v11 processForIdentity:v7];
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+  v12 = [mEMORY[0x277D0AAC0] processForIdentity:identityCopy];
 
   if (v10 == v12 || ![v12 isExtensionProcess])
   {
@@ -42,23 +42,23 @@
 
   else
   {
-    v13 = [v12 sb_bundleIdentifierWithFallback];
-    v14 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:v13];
-    v15 = [v14 containingBundle];
+    sb_bundleIdentifierWithFallback = [v12 sb_bundleIdentifierWithFallback];
+    v14 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:sb_bundleIdentifierWithFallback];
+    containingBundle = [v14 containingBundle];
 
-    v16 = [v15 bundleType];
-    v17 = [v16 isEqualToString:*MEMORY[0x277CC1E40]];
+    bundleType = [containingBundle bundleType];
+    v17 = [bundleType isEqualToString:*MEMORY[0x277CC1E40]];
 
     if (v17)
     {
-      v18 = [v15 bundleIdentifier];
+      bundleIdentifier = [containingBundle bundleIdentifier];
       v19 = +[SBApplicationController sharedInstance];
-      v20 = [v19 applicationWithBundleIdentifier:v18];
+      v20 = [v19 applicationWithBundleIdentifier:bundleIdentifier];
 
       if (v20 && (v21 = [(SBApplication *)v20 _classicModeForHostingExtensionContainedInThisApplicationInUnknownHostingHierarchy], _SBApplicationClassicModeIsClassic(v21)))
       {
-        v32 = [MEMORY[0x277D0AA90] mainConfiguration];
-        v22 = [v20 restrictedClassicModeDisplayConfigurationForDisplayConfiguration:v32];
+        mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
+        v22 = [v20 restrictedClassicModeDisplayConfigurationForDisplayConfiguration:mainConfiguration];
         [v20 defaultLaunchingSizeForDisplayConfiguration:v22];
         v24 = v23;
         v26 = v25;

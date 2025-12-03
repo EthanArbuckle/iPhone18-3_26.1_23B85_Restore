@@ -1,33 +1,33 @@
 @interface CNVSchemaCNVActionCandidate
-- (BOOL)isEqual:(id)a3;
-- (CNVSchemaCNVActionCandidate)initWithDictionary:(id)a3;
-- (CNVSchemaCNVActionCandidate)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNVSchemaCNVActionCandidate)initWithDictionary:(id)dictionary;
+- (CNVSchemaCNVActionCandidate)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (SISchemaUUID)parseHypothesisId;
 - (SISchemaUUID)pommesId;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteParseHypothesisId;
 - (void)deletePommesId;
-- (void)setHasAffinityScore:(BOOL)a3;
-- (void)setParseHypothesisId:(id)a3;
-- (void)setPommesId:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAffinityScore:(BOOL)score;
+- (void)setParseHypothesisId:(id)id;
+- (void)setPommesId:(id)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CNVSchemaCNVActionCandidate
 
-- (CNVSchemaCNVActionCandidate)initWithDictionary:(id)a3
+- (CNVSchemaCNVActionCandidate)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = CNVSchemaCNVActionCandidate;
   v5 = [(CNVSchemaCNVActionCandidate *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionCandidateId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,14 +35,14 @@
       [(CNVSchemaCNVActionCandidate *)v5 setActionCandidateId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"plugin"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"plugin"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CNVSchemaCNVActionCandidate setPlugin:](v5, "setPlugin:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"parseHypothesisId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"parseHypothesisId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       [(CNVSchemaCNVActionCandidate *)v5 setParseHypothesisId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"pommesId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"pommesId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,14 +58,14 @@
       [(CNVSchemaCNVActionCandidate *)v5 setPommesId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"affinityScore"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"affinityScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CNVSchemaCNVActionCandidate setAffinityScore:](v5, "setAffinityScore:", [v13 unsignedIntValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"linkMetadata"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"linkMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (CNVSchemaCNVActionCandidate)initWithJSON:(id)a3
+- (CNVSchemaCNVActionCandidate)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CNVSchemaCNVActionCandidate *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CNVSchemaCNVActionCandidate *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CNVSchemaCNVActionCandidate *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -115,58 +115,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionCandidateId)
   {
-    v4 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionCandidateId = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
+    dictionaryRepresentation = [actionCandidateId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionCandidateId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionCandidateId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionCandidateId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionCandidateId"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CNVSchemaCNVActionCandidate affinityScore](self, "affinityScore")}];
-    [v3 setObject:v7 forKeyedSubscript:@"affinityScore"];
+    [dictionary setObject:v7 forKeyedSubscript:@"affinityScore"];
   }
 
   if (self->_linkMetadata)
   {
-    v8 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    linkMetadata = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
+    dictionaryRepresentation2 = [linkMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"linkMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"linkMetadata"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"linkMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"linkMetadata"];
     }
   }
 
   if (self->_parseHypothesisId)
   {
-    v11 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    parseHypothesisId = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
+    dictionaryRepresentation3 = [parseHypothesisId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"parseHypothesisId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"parseHypothesisId"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"parseHypothesisId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"parseHypothesisId"];
     }
   }
 
@@ -183,28 +183,28 @@
       v15 = off_1E78D2B38[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"plugin"];
+    [dictionary setObject:v15 forKeyedSubscript:@"plugin"];
   }
 
   if (self->_pommesId)
   {
-    v16 = [(CNVSchemaCNVActionCandidate *)self pommesId];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    pommesId = [(CNVSchemaCNVActionCandidate *)self pommesId];
+    dictionaryRepresentation4 = [pommesId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"pommesId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"pommesId"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"pommesId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"pommesId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -235,34 +235,34 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(CNVSchemaCNVLinkMetadata *)self->_linkMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   whichParseid = self->_whichParseid;
-  if (whichParseid != [v4 whichParseid])
+  if (whichParseid != [equalCopy whichParseid])
   {
     goto LABEL_29;
   }
 
-  v6 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
-  v7 = [v4 actionCandidateId];
-  if ((v6 != 0) == (v7 == 0))
+  actionCandidateId = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
+  actionCandidateId2 = [equalCopy actionCandidateId];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v8 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
-  if (v8)
+  actionCandidateId3 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
+  if (actionCandidateId3)
   {
-    v9 = v8;
-    v10 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
-    v11 = [v4 actionCandidateId];
-    v12 = [v10 isEqual:v11];
+    v9 = actionCandidateId3;
+    actionCandidateId4 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
+    actionCandidateId5 = [equalCopy actionCandidateId];
+    v12 = [actionCandidateId4 isEqual:actionCandidateId5];
 
     if (!v12)
     {
@@ -274,7 +274,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_29;
   }
@@ -282,26 +282,26 @@
   if (*&self->_has)
   {
     plugin = self->_plugin;
-    if (plugin != [v4 plugin])
+    if (plugin != [equalCopy plugin])
     {
       goto LABEL_29;
     }
   }
 
-  v6 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
-  v7 = [v4 parseHypothesisId];
-  if ((v6 != 0) == (v7 == 0))
+  actionCandidateId = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
+  actionCandidateId2 = [equalCopy parseHypothesisId];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v14 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
-  if (v14)
+  parseHypothesisId = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
+  if (parseHypothesisId)
   {
-    v15 = v14;
-    v16 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
-    v17 = [v4 parseHypothesisId];
-    v18 = [v16 isEqual:v17];
+    v15 = parseHypothesisId;
+    parseHypothesisId2 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
+    parseHypothesisId3 = [equalCopy parseHypothesisId];
+    v18 = [parseHypothesisId2 isEqual:parseHypothesisId3];
 
     if (!v18)
     {
@@ -313,20 +313,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVActionCandidate *)self pommesId];
-  v7 = [v4 pommesId];
-  if ((v6 != 0) == (v7 == 0))
+  actionCandidateId = [(CNVSchemaCNVActionCandidate *)self pommesId];
+  actionCandidateId2 = [equalCopy pommesId];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v19 = [(CNVSchemaCNVActionCandidate *)self pommesId];
-  if (v19)
+  pommesId = [(CNVSchemaCNVActionCandidate *)self pommesId];
+  if (pommesId)
   {
-    v20 = v19;
-    v21 = [(CNVSchemaCNVActionCandidate *)self pommesId];
-    v22 = [v4 pommesId];
-    v23 = [v21 isEqual:v22];
+    v20 = pommesId;
+    pommesId2 = [(CNVSchemaCNVActionCandidate *)self pommesId];
+    pommesId3 = [equalCopy pommesId];
+    v23 = [pommesId2 isEqual:pommesId3];
 
     if (!v23)
     {
@@ -339,7 +339,7 @@
   }
 
   v24 = (*&self->_has >> 1) & 1;
-  if (v24 != ((v4[56] >> 1) & 1))
+  if (v24 != ((equalCopy[56] >> 1) & 1))
   {
     goto LABEL_29;
   }
@@ -347,18 +347,18 @@
   if (v24)
   {
     affinityScore = self->_affinityScore;
-    if (affinityScore != [v4 affinityScore])
+    if (affinityScore != [equalCopy affinityScore])
     {
       goto LABEL_29;
     }
   }
 
-  v6 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
-  v7 = [v4 linkMetadata];
-  if ((v6 != 0) != (v7 == 0))
+  actionCandidateId = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
+  actionCandidateId2 = [equalCopy linkMetadata];
+  if ((actionCandidateId != 0) != (actionCandidateId2 == 0))
   {
-    v26 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
-    if (!v26)
+    linkMetadata = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
+    if (!linkMetadata)
     {
 
 LABEL_32:
@@ -366,10 +366,10 @@ LABEL_32:
       goto LABEL_30;
     }
 
-    v27 = v26;
-    v28 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
-    v29 = [v4 linkMetadata];
-    v30 = [v28 isEqual:v29];
+    v27 = linkMetadata;
+    linkMetadata2 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
+    linkMetadata3 = [equalCopy linkMetadata];
+    v30 = [linkMetadata2 isEqual:linkMetadata3];
 
     if (v30)
     {
@@ -389,14 +389,14 @@ LABEL_30:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
+  toCopy = to;
+  actionCandidateId = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
 
-  if (v4)
+  if (actionCandidateId)
   {
-    v5 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
+    actionCandidateId2 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -405,19 +405,19 @@ LABEL_30:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
+  parseHypothesisId = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
 
-  if (v6)
+  if (parseHypothesisId)
   {
-    v7 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
+    parseHypothesisId2 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(CNVSchemaCNVActionCandidate *)self pommesId];
+  pommesId = [(CNVSchemaCNVActionCandidate *)self pommesId];
 
-  if (v8)
+  if (pommesId)
   {
-    v9 = [(CNVSchemaCNVActionCandidate *)self pommesId];
+    pommesId2 = [(CNVSchemaCNVActionCandidate *)self pommesId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -426,21 +426,21 @@ LABEL_30:
     PBDataWriterWriteUint32Field();
   }
 
-  v10 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
+  linkMetadata = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (linkMetadata)
   {
-    v12 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
+    linkMetadata2 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasAffinityScore:(BOOL)a3
+- (void)setHasAffinityScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -478,15 +478,15 @@ LABEL_30:
   return v3;
 }
 
-- (void)setPommesId:(id)a3
+- (void)setPommesId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   parseHypothesisId = self->_parseHypothesisId;
   self->_parseHypothesisId = 0;
 
-  self->_whichParseid = 4 * (v4 != 0);
+  self->_whichParseid = 4 * (idCopy != 0);
   pommesId = self->_pommesId;
-  self->_pommesId = v4;
+  self->_pommesId = idCopy;
 }
 
 - (void)deleteParseHypothesisId
@@ -514,61 +514,61 @@ LABEL_30:
   return v3;
 }
 
-- (void)setParseHypothesisId:(id)a3
+- (void)setParseHypothesisId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   pommesId = self->_pommesId;
   self->_pommesId = 0;
 
   v6 = 3;
-  if (!v4)
+  if (!idCopy)
   {
     v6 = 0;
   }
 
   self->_whichParseid = v6;
   parseHypothesisId = self->_parseHypothesisId;
-  self->_parseHypothesisId = v4;
+  self->_parseHypothesisId = idCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = CNVSchemaCNVActionCandidate;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  actionCandidateId = [(CNVSchemaCNVActionCandidate *)self actionCandidateId];
+  v7 = [actionCandidateId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CNVSchemaCNVActionCandidate *)self deleteActionCandidateId];
   }
 
-  v9 = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  parseHypothesisId = [(CNVSchemaCNVActionCandidate *)self parseHypothesisId];
+  v10 = [parseHypothesisId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CNVSchemaCNVActionCandidate *)self deleteParseHypothesisId];
   }
 
-  v12 = [(CNVSchemaCNVActionCandidate *)self pommesId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  pommesId = [(CNVSchemaCNVActionCandidate *)self pommesId];
+  v13 = [pommesId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CNVSchemaCNVActionCandidate *)self deletePommesId];
   }
 
-  v15 = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  linkMetadata = [(CNVSchemaCNVActionCandidate *)self linkMetadata];
+  v16 = [linkMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(CNVSchemaCNVActionCandidate *)self deleteLinkMetadata];
   }

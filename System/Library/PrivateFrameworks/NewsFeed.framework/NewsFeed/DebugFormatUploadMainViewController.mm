@@ -1,14 +1,14 @@
 @interface DebugFormatUploadMainViewController
-- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithStyle:(int64_t)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithStyle:(int64_t)style;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation DebugFormatUploadMainViewController
 
-- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithCoder:(id)coder
 {
   result = sub_1D726402C();
   __break(1u);
@@ -27,24 +27,24 @@
   sub_1D725B35C();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(DebugFormatUploadMainViewController *)&v5 viewDidDisappear:v3];
+  [(DebugFormatUploadMainViewController *)&v5 viewDidDisappear:disappearCopy];
   [*(*&v4[OBJC_IVAR____TtC8NewsFeed35DebugFormatUploadMainViewController_editor] + OBJC_IVAR____TtC8NewsFeed17DebugFormatEditor_uploaderOperationQueue) cancelAllOperations];
 }
 
-- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithStyle:(int64_t)a3
+- (_TtC8NewsFeed35DebugFormatUploadMainViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,32 +1,32 @@
 @interface PKPaletteAttributeViewController
 - (CGSize)preferredContentSize;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPaletteAttributeViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(PKPaletteAttributeViewController *)self setDidExperienceUserInteraction:0];
   [(PKPaletteAttributeViewController *)self setDidSendDismissStatistics:0];
   v5.receiver = self;
   v5.super_class = PKPaletteAttributeViewController;
-  [(PKPaletteAttributeViewController *)&v5 viewWillAppear:v3];
+  [(PKPaletteAttributeViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKPaletteAttributeViewController;
-  [(PKPaletteAttributeViewController *)&v6 viewDidDisappear:a3];
+  [(PKPaletteAttributeViewController *)&v6 viewDidDisappear:disappear];
   if (![(PKPaletteAttributeViewController *)self didSendDismissStatistics])
   {
     v4 = +[PKStatisticsManager sharedStatisticsManager];
-    v5 = [(PKPaletteAttributeViewController *)self toolIdentifier];
+    toolIdentifier = [(PKPaletteAttributeViewController *)self toolIdentifier];
     [(PKPaletteAttributeViewController *)self didExperienceUserInteraction];
-    [PKStatisticsManager recordToolAttributePopoverAppearedForTool:v4 hadInteraction:v5];
+    [PKStatisticsManager recordToolAttributePopoverAppearedForTool:v4 hadInteraction:toolIdentifier];
 
     [(PKPaletteAttributeViewController *)self setDidSendDismissStatistics:1];
   }
@@ -41,8 +41,8 @@
     [(PKPaletteAttributeViewController *)&v15 preferredContentSize];
     v4 = v3;
     v6 = v5;
-    v7 = [(PKPaletteAttributeViewController *)self edgeLocation];
-    if (v7 == 4 || v7 == 1)
+    edgeLocation = [(PKPaletteAttributeViewController *)self edgeLocation];
+    if (edgeLocation == 4 || edgeLocation == 1)
     {
       v8 = -12.0;
 LABEL_9:
@@ -50,8 +50,8 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v11 = [(PKPaletteAttributeViewController *)self edgeLocation];
-    if (v11 == 8 || v11 == 2)
+    edgeLocation2 = [(PKPaletteAttributeViewController *)self edgeLocation];
+    if (edgeLocation2 == 8 || edgeLocation2 == 2)
     {
       v4 = v4 + -12.0;
       v8 = 1.0;

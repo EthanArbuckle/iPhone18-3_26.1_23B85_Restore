@@ -1,17 +1,17 @@
 @interface MedicationAvatarCell
-- (_TtC19HealthMedicationsUI20MedicationAvatarCell)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI20MedicationAvatarCell)initWithFrame:(CGRect)a3;
-- (void)editButtonTappedWithSender:(id)a3;
+- (_TtC19HealthMedicationsUI20MedicationAvatarCell)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI20MedicationAvatarCell)initWithFrame:(CGRect)frame;
+- (void)editButtonTappedWithSender:(id)sender;
 @end
 
 @implementation MedicationAvatarCell
 
-- (_TtC19HealthMedicationsUI20MedicationAvatarCell)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI20MedicationAvatarCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationAvatarCell____lazy_storage___pillImageView) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationAvatarCell____lazy_storage___editButton) = 0;
   v8 = self + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationAvatarCell_item;
@@ -21,13 +21,13 @@
   *(v8 + 4) = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(MedicationAvatarCell *)&v12 initWithFrame:x, y, width, height];
+  height = [(MedicationAvatarCell *)&v12 initWithFrame:x, y, width, height];
   sub_2281C3C5C();
 
-  return v10;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI20MedicationAvatarCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI20MedicationAvatarCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationAvatarCell____lazy_storage___pillImageView) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationAvatarCell____lazy_storage___editButton) = 0;
@@ -40,10 +40,10 @@
   return result;
 }
 
-- (void)editButtonTappedWithSender:(id)a3
+- (void)editButtonTappedWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_228392F90();
   swift_unknownObjectRelease();
   sub_2281C45B0();

@@ -1,21 +1,21 @@
 @interface ESAccount
 + (id)_leafExchangeAccountTypes;
-+ (id)esAccountSubclassWithBackingAccountInfo:(id)a3;
++ (id)esAccountSubclassWithBackingAccountInfo:(id)info;
 + (id)oneshotListOfAccountIDs;
-+ (void)reacquireClientRestrictions:(id)a3;
-- (void)retrieveOofSettingsForConsumer:(id)a3;
-- (void)updateOofSettingsWithParams:(id)a3 consumer:(id)a4;
++ (void)reacquireClientRestrictions:(id)restrictions;
+- (void)retrieveOofSettingsForConsumer:(id)consumer;
+- (void)updateOofSettingsWithParams:(id)params consumer:(id)consumer;
 @end
 
 @implementation ESAccount
 
-+ (id)esAccountSubclassWithBackingAccountInfo:(id)a3
++ (id)esAccountSubclassWithBackingAccountInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[ESAccountLoader sharedInstance];
-  v5 = [v4 daemonAppropriateAccountClassForACAccount:v3];
+  v5 = [v4 daemonAppropriateAccountClassForACAccount:infoCopy];
 
-  v6 = [[v5 alloc] initWithBackingAccountInfo:v3];
+  v6 = [[v5 alloc] initWithBackingAccountInfo:infoCopy];
 
   return v6;
 }
@@ -39,40 +39,40 @@ uint64_t __38__ESAccount__leafExchangeAccountTypes__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)updateOofSettingsWithParams:(id)a3 consumer:(id)a4
+- (void)updateOofSettingsWithParams:(id)params consumer:(id)consumer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  consumerCopy = consumer;
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v6, v7))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24A097000, v6, v7, "Updating oof settings requested on account %@, which does not support it", &v10, 0xCu);
   }
 
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:10 userInfo:0];
-  [v5 settingsRequestFinishedWithResults:0 status:10 error:v8];
+  [consumerCopy settingsRequestFinishedWithResults:0 status:10 error:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveOofSettingsForConsumer:(id)a3
+- (void)retrieveOofSettingsForConsumer:(id)consumer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v5, v6))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24A097000, v5, v6, "Retrieving oof settings requested on account %@, which does not support it", &v9, 0xCu);
   }
 
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:10 userInfo:0];
-  [v4 settingsRequestFinishedWithResults:0 status:10 error:v7];
+  [consumerCopy settingsRequestFinishedWithResults:0 status:10 error:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -123,10 +123,10 @@ uint64_t __38__ESAccount__leafExchangeAccountTypes__block_invoke()
                   objc_enumerationMutation(v8);
                 }
 
-                v13 = [*(*(&v18 + 1) + 8 * j) identifier];
-                if (v13)
+                identifier = [*(*(&v18 + 1) + 8 * j) identifier];
+                if (identifier)
                 {
-                  [v2 addObject:v13];
+                  [v2 addObject:identifier];
                 }
               }
 
@@ -149,13 +149,13 @@ uint64_t __38__ESAccount__leafExchangeAccountTypes__block_invoke()
   return v2;
 }
 
-+ (void)reacquireClientRestrictions:(id)a3
++ (void)reacquireClientRestrictions:(id)restrictions
 {
-  v3 = [a1 oneshotListOfAccountIDs];
-  v5 = [v3 allObjects];
+  oneshotListOfAccountIDs = [self oneshotListOfAccountIDs];
+  allObjects = [oneshotListOfAccountIDs allObjects];
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 clearUserInfoForClientUUIDs:v5];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] clearUserInfoForClientUUIDs:allObjects];
 }
 
 @end

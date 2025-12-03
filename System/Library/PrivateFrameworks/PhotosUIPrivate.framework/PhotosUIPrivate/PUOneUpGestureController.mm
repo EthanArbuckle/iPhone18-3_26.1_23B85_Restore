@@ -1,23 +1,23 @@
 @interface PUOneUpGestureController
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (PUOneUpGestureController)initWithView:(id)a3 actionsController:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (PUOneUpGestureController)initWithView:(id)view actionsController:(id)controller;
 - (PUOneUpGestureControllerDelegate)delegate;
 - (UIEdgeInsets)interactionInsets;
 - (UIView)view;
 - (void)cancelGestures;
-- (void)handleDoubleTapWithRecognizer:(id)a3;
-- (void)handleTapWithRecognizer:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)handleDoubleTapWithRecognizer:(id)recognizer;
+- (void)handleTapWithRecognizer:(id)recognizer;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PUOneUpGestureController
 
-- (PUOneUpGestureController)initWithView:(id)a3 actionsController:(id)a4
+- (PUOneUpGestureController)initWithView:(id)view actionsController:(id)controller
 {
-  v4 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
   return OneUpGestureController.init(view:actionsController:)();
 }
@@ -29,10 +29,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B3819FA4();
 }
 
@@ -55,59 +55,59 @@
 
 - (void)cancelGestures
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B381A2A4();
 }
 
-- (void)handleTapWithRecognizer:(id)a3
+- (void)handleTapWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B381A340(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_1B381A340(recognizerCopy);
 }
 
-- (void)handleDoubleTapWithRecognizer:(id)a3
+- (void)handleDoubleTapWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B381A494(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_1B381A494(recognizerCopy);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = OneUpGestureController.gestureRecognizerShouldBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = OneUpGestureController.gestureRecognizerShouldBegin(_:)(beginCopy);
 
   return self & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = OneUpGestureController.gestureRecognizer(_:shouldReceive:)(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = OneUpGestureController.gestureRecognizer(_:shouldReceive:)(recognizerCopy, touchCopy);
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = OneUpGestureController.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = OneUpGestureController.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)(recognizerCopy, gestureRecognizerCopy);
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = OneUpGestureController.gestureRecognizer(_:shouldBeRequiredToFailBy:)(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = OneUpGestureController.gestureRecognizer(_:shouldBeRequiredToFailBy:)(recognizerCopy, gestureRecognizerCopy);
 
   return v9;
 }

@@ -1,33 +1,33 @@
 @interface ATXModeTransitionMetric
-- (ATXModeTransitionMetric)initWithPreviousModeSemanticType:(id)a3 previousModeDuration:(double)a4 previousModeHadScheduledExit:(BOOL)a5 exitReason:(id)a6 enterReason:(id)a7 transitionDeviceType:(id)a8 transitionSource:(id)a9 nextModeSemanticType:(id)a10;
+- (ATXModeTransitionMetric)initWithPreviousModeSemanticType:(id)type previousModeDuration:(double)duration previousModeHadScheduledExit:(BOOL)exit exitReason:(id)reason enterReason:(id)enterReason transitionDeviceType:(id)deviceType transitionSource:(id)source nextModeSemanticType:(id)self0;
 - (id)coreAnalyticsDictionary;
 - (id)description;
 @end
 
 @implementation ATXModeTransitionMetric
 
-- (ATXModeTransitionMetric)initWithPreviousModeSemanticType:(id)a3 previousModeDuration:(double)a4 previousModeHadScheduledExit:(BOOL)a5 exitReason:(id)a6 enterReason:(id)a7 transitionDeviceType:(id)a8 transitionSource:(id)a9 nextModeSemanticType:(id)a10
+- (ATXModeTransitionMetric)initWithPreviousModeSemanticType:(id)type previousModeDuration:(double)duration previousModeHadScheduledExit:(BOOL)exit exitReason:(id)reason enterReason:(id)enterReason transitionDeviceType:(id)deviceType transitionSource:(id)source nextModeSemanticType:(id)self0
 {
-  v26 = a3;
-  v25 = a6;
-  v24 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
+  typeCopy = type;
+  reasonCopy = reason;
+  enterReasonCopy = enterReason;
+  deviceTypeCopy = deviceType;
+  sourceCopy = source;
+  semanticTypeCopy = semanticType;
   v27.receiver = self;
   v27.super_class = ATXModeTransitionMetric;
   v20 = [(_ATXCoreAnalyticsMetric *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_previousModeSemanticType, a3);
-    v21->_previousModeDuration = a4;
-    v21->_previousModeHadScheduledExit = a5;
-    objc_storeStrong(&v21->_exitReason, a6);
-    objc_storeStrong(&v21->_enterReason, a7);
-    objc_storeStrong(&v21->_transitionDeviceType, a8);
-    objc_storeStrong(&v21->_transitionSource, a9);
-    objc_storeStrong(&v21->_nextModeSemanticType, a10);
+    objc_storeStrong(&v20->_previousModeSemanticType, type);
+    v21->_previousModeDuration = duration;
+    v21->_previousModeHadScheduledExit = exit;
+    objc_storeStrong(&v21->_exitReason, reason);
+    objc_storeStrong(&v21->_enterReason, enterReason);
+    objc_storeStrong(&v21->_transitionDeviceType, deviceType);
+    objc_storeStrong(&v21->_transitionSource, source);
+    objc_storeStrong(&v21->_nextModeSemanticType, semanticType);
   }
 
   return v21;
@@ -134,33 +134,33 @@
   v50[10] = inferredModeOriginAnchorType;
   v49[11] = @"inferredModeType";
   inferredModeType = self->_inferredModeType;
-  v13 = inferredModeType;
+  null = inferredModeType;
   if (!inferredModeType)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v27 = v13;
-  v50[11] = v13;
+  v27 = null;
+  v50[11] = null;
   v49[12] = @"inferredModeUILocation";
   inferredModeUILocation = self->_inferredModeUILocation;
-  v15 = inferredModeUILocation;
+  null2 = inferredModeUILocation;
   if (!inferredModeUILocation)
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v26 = v15;
-  v50[12] = v15;
+  v26 = null2;
+  v50[12] = null2;
   v49[13] = @"previousModeOrigin";
   previousModeOrigin = self->_previousModeOrigin;
-  v17 = previousModeOrigin;
+  null3 = previousModeOrigin;
   if (!previousModeOrigin)
   {
-    v17 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v50[13] = v17;
+  v50[13] = null3;
   v49[14] = @"appBasedSchedulingEnabled";
   v18 = [MEMORY[0x277CCABB0] numberWithBool:self->_appBasedSchedulingEnabled];
   v50[14] = v18;
@@ -175,13 +175,13 @@
   v50[17] = v21;
   v49[18] = @"currentModeOrigin";
   currentModeOrigin = self->_currentModeOrigin;
-  v23 = currentModeOrigin;
+  null4 = currentModeOrigin;
   if (!currentModeOrigin)
   {
-    v23 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v50[18] = v23;
+  v50[18] = null4;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:19];
   if (!currentModeOrigin)
   {
@@ -262,27 +262,27 @@ LABEL_32:
 - (id)description
 {
   v23 = MEMORY[0x277CCACA8];
-  v22 = [(ATXModeTransitionMetric *)self previousModeSemanticType];
+  previousModeSemanticType = [(ATXModeTransitionMetric *)self previousModeSemanticType];
   [(ATXModeTransitionMetric *)self previousModeDuration];
   v4 = v3;
-  v21 = [(ATXModeTransitionMetric *)self previousModeHadScheduledExit];
-  v20 = [(ATXModeTransitionMetric *)self exitReason];
-  v19 = [(ATXModeTransitionMetric *)self enterReason];
-  v18 = [(ATXModeTransitionMetric *)self transitionDeviceType];
-  v25 = [(ATXModeTransitionMetric *)self transitionSource];
-  v15 = [(ATXModeTransitionMetric *)self nextModeSemanticType];
-  v17 = [(ATXModeTransitionMetric *)self inferredModeConfidenceScore];
-  v16 = [(ATXModeTransitionMetric *)self inferredModeDuration];
-  v14 = [(ATXModeTransitionMetric *)self inferredModeOriginAnchorType];
-  v5 = [(ATXModeTransitionMetric *)self inferredModeType];
-  v6 = [(ATXModeTransitionMetric *)self inferredModeUILocation];
-  v7 = [(ATXModeTransitionMetric *)self previousModeOrigin];
-  v8 = [(ATXModeTransitionMetric *)self appBasedSchedulingEnabled];
-  v9 = [(ATXModeTransitionMetric *)self timeBasedSchedulingEnabled];
-  v10 = [(ATXModeTransitionMetric *)self locationBasedSchedulingEnabled];
-  v11 = [(ATXModeTransitionMetric *)self smartActivationEnabled];
-  v12 = [(ATXModeTransitionMetric *)self currentModeOrigin];
-  v24 = [v23 stringWithFormat:@"ATXModeTransitionMetric previousMode:%@\npreviousModeDuration:%f\npreviousHadScheduledExit:%d\nexitReason:%@\nenterReason:%@\ntransitionDeviceType:%@\ntransitionSource:%@\nnextMode:%@\ninferredModeConfidenceScore:%@\ninferredModeDuration:%@\ninferredModeOriginAnchorType:%@\ninferredModeType:%@\ninferredModeUILocation:%@\npreviousModeOrigin:%@\nappBasedSchedulingEnabled:%d\ntimeBasedSchedulingEnabled:%d\nlocationBasedSchedulingEnabled:%d\nsmartActivationEnabled:%d\ncurrentModeOrigin:%@\n", v22, v4, v21, v20, v19, v18, v25, v15, v17, v16, v14, v5, v6, v7, v8, v9, v10, v11, v12];
+  previousModeHadScheduledExit = [(ATXModeTransitionMetric *)self previousModeHadScheduledExit];
+  exitReason = [(ATXModeTransitionMetric *)self exitReason];
+  enterReason = [(ATXModeTransitionMetric *)self enterReason];
+  transitionDeviceType = [(ATXModeTransitionMetric *)self transitionDeviceType];
+  transitionSource = [(ATXModeTransitionMetric *)self transitionSource];
+  nextModeSemanticType = [(ATXModeTransitionMetric *)self nextModeSemanticType];
+  inferredModeConfidenceScore = [(ATXModeTransitionMetric *)self inferredModeConfidenceScore];
+  inferredModeDuration = [(ATXModeTransitionMetric *)self inferredModeDuration];
+  inferredModeOriginAnchorType = [(ATXModeTransitionMetric *)self inferredModeOriginAnchorType];
+  inferredModeType = [(ATXModeTransitionMetric *)self inferredModeType];
+  inferredModeUILocation = [(ATXModeTransitionMetric *)self inferredModeUILocation];
+  previousModeOrigin = [(ATXModeTransitionMetric *)self previousModeOrigin];
+  appBasedSchedulingEnabled = [(ATXModeTransitionMetric *)self appBasedSchedulingEnabled];
+  timeBasedSchedulingEnabled = [(ATXModeTransitionMetric *)self timeBasedSchedulingEnabled];
+  locationBasedSchedulingEnabled = [(ATXModeTransitionMetric *)self locationBasedSchedulingEnabled];
+  smartActivationEnabled = [(ATXModeTransitionMetric *)self smartActivationEnabled];
+  currentModeOrigin = [(ATXModeTransitionMetric *)self currentModeOrigin];
+  v24 = [v23 stringWithFormat:@"ATXModeTransitionMetric previousMode:%@\npreviousModeDuration:%f\npreviousHadScheduledExit:%d\nexitReason:%@\nenterReason:%@\ntransitionDeviceType:%@\ntransitionSource:%@\nnextMode:%@\ninferredModeConfidenceScore:%@\ninferredModeDuration:%@\ninferredModeOriginAnchorType:%@\ninferredModeType:%@\ninferredModeUILocation:%@\npreviousModeOrigin:%@\nappBasedSchedulingEnabled:%d\ntimeBasedSchedulingEnabled:%d\nlocationBasedSchedulingEnabled:%d\nsmartActivationEnabled:%d\ncurrentModeOrigin:%@\n", previousModeSemanticType, v4, previousModeHadScheduledExit, exitReason, enterReason, transitionDeviceType, transitionSource, nextModeSemanticType, inferredModeConfidenceScore, inferredModeDuration, inferredModeOriginAnchorType, inferredModeType, inferredModeUILocation, previousModeOrigin, appBasedSchedulingEnabled, timeBasedSchedulingEnabled, locationBasedSchedulingEnabled, smartActivationEnabled, currentModeOrigin];
 
   return v24;
 }

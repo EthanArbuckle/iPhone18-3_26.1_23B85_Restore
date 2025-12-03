@@ -25,7 +25,7 @@
   v7 = v6;
   v11 = v7;
   v13 = &v14;
-  [a1 performBlockAndWait:v10];
+  [self performBlockAndWait:v10];
   v8 = *(v21 + 24);
   if (a3 && (v21[3] & 1) == 0)
   {

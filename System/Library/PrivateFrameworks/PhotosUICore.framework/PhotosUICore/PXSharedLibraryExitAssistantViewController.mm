@@ -1,18 +1,18 @@
 @interface PXSharedLibraryExitAssistantViewController
-- (PXSharedLibraryExitAssistantViewController)initWithOwnerAsCurrentUser:(BOOL)a3 keepAllCountsString:(id)a4 contributedOnlyCountsString:(id)a5;
+- (PXSharedLibraryExitAssistantViewController)initWithOwnerAsCurrentUser:(BOOL)user keepAllCountsString:(id)string contributedOnlyCountsString:(id)countsString;
 - (PXSharedLibraryExitAssistantViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)_updateCancelButton;
 - (void)_updateExitButton;
 - (void)_updateIcon;
 - (void)_updateTableView;
-- (void)cancelButtonTapped:(id)a3;
-- (void)exitButtonTapped:(id)a3;
-- (void)setDisableControlsWithBusyIndicator:(BOOL)a3;
-- (void)setExitRetentionPolicy:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)exitButtonTapped:(id)tapped;
+- (void)setDisableControlsWithBusyIndicator:(BOOL)indicator;
+- (void)setExitRetentionPolicy:(int64_t)policy;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -25,11 +25,11 @@
   return WeakRetained;
 }
 
-- (void)setExitRetentionPolicy:(int64_t)a3
+- (void)setExitRetentionPolicy:(int64_t)policy
 {
-  if (self->_exitRetentionPolicy != a3)
+  if (self->_exitRetentionPolicy != policy)
   {
-    self->_exitRetentionPolicy = a3;
+    self->_exitRetentionPolicy = policy;
     [(PXSharedLibraryExitAssistantViewController *)self _updateTableView];
 
     [(PXSharedLibraryExitAssistantViewController *)self _updateExitButton];
@@ -47,9 +47,9 @@
 - (void)_updateExitButton
 {
   [(OBBoldTrayButton *)self->_exitButton setEnabled:self->_exitRetentionPolicy != 0];
-  v3 = [(PXSharedLibraryExitAssistantViewController *)self disableControlsWithBusyIndicator];
+  disableControlsWithBusyIndicator = [(PXSharedLibraryExitAssistantViewController *)self disableControlsWithBusyIndicator];
   exitButton = self->_exitButton;
-  if (v3)
+  if (disableControlsWithBusyIndicator)
   {
 
     [(OBBoldTrayButton *)exitButton showsBusyIndicator];
@@ -64,8 +64,8 @@
 
 - (void)_updateTableView
 {
-  v2 = [(OBTableWelcomeController *)self tableView];
-  [v2 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_updateIcon
@@ -83,38 +83,38 @@
   PXSharedLibraryCreatePlatterImage(@"person.2.fill", v2);
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = [(PXSharedLibraryExitAssistantViewController *)self delegate];
-  if (!v4)
+  delegate = [(PXSharedLibraryExitAssistantViewController *)self delegate];
+  if (!delegate)
   {
     PXAssertGetLog();
   }
 
-  [v4 cancelExitAssistantViewController:self];
+  [delegate cancelExitAssistantViewController:self];
 }
 
-- (void)exitButtonTapped:(id)a3
+- (void)exitButtonTapped:(id)tapped
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = [(PXSharedLibraryExitAssistantViewController *)self delegate];
-  if (!v4)
+  delegate = [(PXSharedLibraryExitAssistantViewController *)self delegate];
+  if (!delegate)
   {
     PXAssertGetLog();
   }
 
-  [v4 completeExitAssistantViewController:self withExitRetentionPolicy:{-[PXSharedLibraryExitAssistantViewController exitRetentionPolicy](self, "exitRetentionPolicy")}];
+  [delegate completeExitAssistantViewController:self withExitRetentionPolicy:{-[PXSharedLibraryExitAssistantViewController exitRetentionPolicy](self, "exitRetentionPolicy")}];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [v6 item];
-  if (v7)
+  pathCopy = path;
+  viewCopy = view;
+  item = [pathCopy item];
+  if (item)
   {
-    v8 = v7 == 1;
+    v8 = item == 1;
   }
 
   else
@@ -123,12 +123,12 @@
   }
 
   [(PXSharedLibraryExitAssistantViewController *)self setExitRetentionPolicy:v8];
-  [v9 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(PXSharedLibraryExitAssistantViewController *)self disableControlsWithBusyIndicator])
   {
     v6 = 0;
@@ -136,7 +136,7 @@
 
   else
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   v7 = v6;
@@ -144,20 +144,20 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"CellIdentifier"];
     [v7 setSelectionStyle:0];
   }
 
-  v8 = [(PXSharedLibraryExitAssistantViewController *)self disableControlsWithBusyIndicator];
-  v9 = [v6 item];
+  disableControlsWithBusyIndicator = [(PXSharedLibraryExitAssistantViewController *)self disableControlsWithBusyIndicator];
+  item = [pathCopy item];
 
-  if (!v9)
+  if (!item)
   {
     v10 = &OBJC_IVAR___PXSharedLibraryExitAssistantViewController__keepAllCountsString;
     v11 = 2;
@@ -178,7 +178,7 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if (v9 == 1)
+  if (item == 1)
   {
     v10 = &OBJC_IVAR___PXSharedLibraryExitAssistantViewController__contributedOnlyCountsString;
     v11 = 1;
@@ -190,9 +190,9 @@ LABEL_7:
   v14 = 0;
   v13 = 0;
 LABEL_11:
-  v16 = [v7 textLabel];
-  [v16 setText:v13];
-  if (v8)
+  textLabel = [v7 textLabel];
+  [textLabel setText:v13];
+  if (disableControlsWithBusyIndicator)
   {
     [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
@@ -202,33 +202,33 @@ LABEL_11:
     [MEMORY[0x1E69DC888] labelColor];
   }
   v17 = ;
-  [v16 setTextColor:v17];
+  [textLabel setTextColor:v17];
 
-  [v16 setNumberOfLines:0];
-  [v16 setLineBreakMode:0];
-  v18 = [v7 detailTextLabel];
-  [v18 setText:v14];
-  v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v18 setTextColor:v19];
+  [textLabel setNumberOfLines:0];
+  [textLabel setLineBreakMode:0];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:v14];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [detailTextLabel setTextColor:secondaryLabelColor];
 
   [v7 setAccessoryType:v15];
-  v20 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [v7 setBackgroundColor:v20];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [v7 setBackgroundColor:secondarySystemBackgroundColor];
 
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PXSharedLibraryExitAssistantViewController;
-  v4 = a3;
-  [(PXSharedLibraryExitAssistantViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXSharedLibraryExitAssistantViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PXSharedLibraryExitAssistantViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PXSharedLibraryExitAssistantViewController *)self _updateIcon];
   }
@@ -245,44 +245,44 @@ LABEL_11:
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 setDelegate:self];
   [v4 setDataSource:self];
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v4 setBackgroundColor:systemBackgroundColor];
 
   [(OBTableWelcomeController *)self setTableView:v4];
   v6 = PXSharedLibraryExitAssistantViewButtonTitle(self->_currentUserIsOwner);
-  v7 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   exitButton = self->_exitButton;
-  self->_exitButton = v7;
+  self->_exitButton = boldButton;
 
   [(OBBoldTrayButton *)self->_exitButton setTitle:v6 forState:0];
   [(OBBoldTrayButton *)self->_exitButton addTarget:self action:sel_exitButtonTapped_ forControlEvents:0x2000];
-  v9 = [(PXSharedLibraryExitAssistantViewController *)self buttonTray];
-  [v9 addButton:self->_exitButton];
+  buttonTray = [(PXSharedLibraryExitAssistantViewController *)self buttonTray];
+  [buttonTray addButton:self->_exitButton];
 
   v10 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_exitButtonTapped_];
   [(PXSharedLibraryExitAssistantViewController *)self addKeyCommand:v10];
 
   [(PXSharedLibraryExitAssistantViewController *)self _updateExitButton];
-  v11 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   cancelButton = self->_cancelButton;
-  self->_cancelButton = v11;
+  self->_cancelButton = linkButton;
 
   v13 = self->_cancelButton;
   v14 = PXLocalizedStringFromTable(@"PXCancel", @"PhotosUICore");
   [(OBLinkTrayButton *)v13 setTitle:v14 forState:0];
 
   [(OBLinkTrayButton *)self->_cancelButton addTarget:self action:sel_cancelButtonTapped_ forControlEvents:0x2000];
-  v15 = [(PXSharedLibraryExitAssistantViewController *)self buttonTray];
-  [v15 addButton:self->_cancelButton];
+  buttonTray2 = [(PXSharedLibraryExitAssistantViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_cancelButton];
 
   [(PXSharedLibraryExitAssistantViewController *)self _updateCancelButton];
 }
 
-- (void)setDisableControlsWithBusyIndicator:(BOOL)a3
+- (void)setDisableControlsWithBusyIndicator:(BOOL)indicator
 {
-  if (self->_disableControlsWithBusyIndicator != a3)
+  if (self->_disableControlsWithBusyIndicator != indicator)
   {
-    self->_disableControlsWithBusyIndicator = a3;
+    self->_disableControlsWithBusyIndicator = indicator;
     [(PXSharedLibraryExitAssistantViewController *)self _updateTableView];
     [(PXSharedLibraryExitAssistantViewController *)self _updateExitButton];
 
@@ -290,13 +290,13 @@ LABEL_11:
   }
 }
 
-- (PXSharedLibraryExitAssistantViewController)initWithOwnerAsCurrentUser:(BOOL)a3 keepAllCountsString:(id)a4 contributedOnlyCountsString:(id)a5
+- (PXSharedLibraryExitAssistantViewController)initWithOwnerAsCurrentUser:(BOOL)user keepAllCountsString:(id)string contributedOnlyCountsString:(id)countsString
 {
-  v7 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = PXSharedLibraryExitAssistantViewTitle(v7);
-  v12 = PXSharedLibraryExitAssistantViewSubtitle(v7);
+  userCopy = user;
+  stringCopy = string;
+  countsStringCopy = countsString;
+  v11 = PXSharedLibraryExitAssistantViewTitle(userCopy);
+  v12 = PXSharedLibraryExitAssistantViewSubtitle(userCopy);
   v16.receiver = self;
   v16.super_class = PXSharedLibraryExitAssistantViewController;
   v13 = [(OBTableWelcomeController *)&v16 initWithTitle:v11 detailText:v12 icon:0 adoptTableViewScrollView:1];
@@ -304,9 +304,9 @@ LABEL_11:
   if (v13)
   {
     v13->_exitRetentionPolicy = 0;
-    v13->_currentUserIsOwner = v7;
-    objc_storeStrong(&v13->_keepAllCountsString, a4);
-    objc_storeStrong(&v14->_contributedOnlyCountsString, a5);
+    v13->_currentUserIsOwner = userCopy;
+    objc_storeStrong(&v13->_keepAllCountsString, string);
+    objc_storeStrong(&v14->_contributedOnlyCountsString, countsString);
   }
 
   return v14;

@@ -1,5 +1,5 @@
 @interface MapsSuggestionsBluetoothVehicleConnectionTrigger
-- (id)initFireOnConnect:(BOOL)a3 disconnect:(BOOL)a4 exit:(BOOL)a5;
+- (id)initFireOnConnect:(BOOL)connect disconnect:(BOOL)disconnect exit:(BOOL)exit;
 - (void)dealloc;
 - (void)didAddFirstObserver;
 - (void)didRemoveLastObserver;
@@ -7,16 +7,16 @@
 
 @implementation MapsSuggestionsBluetoothVehicleConnectionTrigger
 
-- (id)initFireOnConnect:(BOOL)a3 disconnect:(BOOL)a4 exit:(BOOL)a5
+- (id)initFireOnConnect:(BOOL)connect disconnect:(BOOL)disconnect exit:(BOOL)exit
 {
   v9.receiver = self;
   v9.super_class = MapsSuggestionsBluetoothVehicleConnectionTrigger;
   result = [(MapsSuggestionsBaseTrigger *)&v9 initWithName:@"MapsSuggestionsBluetoothVehicleConnectionTrigger"];
   if (result)
   {
-    *(result + 32) = a5;
-    *(result + 33) = a3;
-    *(result + 34) = a4;
+    *(result + 32) = exit;
+    *(result + 33) = connect;
+    *(result + 34) = disconnect;
   }
 
   return result;

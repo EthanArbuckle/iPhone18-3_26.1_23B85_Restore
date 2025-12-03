@@ -1,5 +1,5 @@
 @interface CKXStructMutableProxyBase
-- ($3CC19D079FD0B010EE84973AA846B91B)mutableListInstanceForField:(SEL)a3;
+- ($3CC19D079FD0B010EE84973AA846B91B)mutableListInstanceForField:(SEL)field;
 - (id).cxx_construct;
 - (void)commit;
 - (void)reset;
@@ -54,7 +54,7 @@
   }
 }
 
-- ($3CC19D079FD0B010EE84973AA846B91B)mutableListInstanceForField:(SEL)a3
+- ($3CC19D079FD0B010EE84973AA846B91B)mutableListInstanceForField:(SEL)field
 {
   p_fieldTokenToListInstance = &self->fieldTokenToListInstance;
   if (!sub_243985D18(&self->fieldTokenToListInstance.__table_.__bucket_list_.__ptr_, a4))

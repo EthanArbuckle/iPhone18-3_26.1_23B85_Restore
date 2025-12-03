@@ -1,10 +1,10 @@
 @interface FlexTransition
-+ (int64_t)validFadeLengthForLength:(int64_t)a3;
++ (int64_t)validFadeLengthForLength:(int64_t)length;
 - (BOOL)isDefaultTransition;
 - (FlexTransition)init;
-- (FlexTransition)initWithDictionary:(id)a3;
-- (FlexTransition)initWithTransitionSegmentNamed:(id)a3 prevented:(BOOL)a4 fadeOut:(int64_t)a5 fadeIn:(int64_t)a6 useNextSegmentForFadeOut:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FlexTransition)initWithDictionary:(id)dictionary;
+- (FlexTransition)initWithTransitionSegmentNamed:(id)named prevented:(BOOL)prevented fadeOut:(int64_t)out fadeIn:(int64_t)in useNextSegmentForFadeOut:(BOOL)fadeOut;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsDictionary;
 @end
@@ -31,49 +31,49 @@
   return v3;
 }
 
-- (FlexTransition)initWithTransitionSegmentNamed:(id)a3 prevented:(BOOL)a4 fadeOut:(int64_t)a5 fadeIn:(int64_t)a6 useNextSegmentForFadeOut:(BOOL)a7
+- (FlexTransition)initWithTransitionSegmentNamed:(id)named prevented:(BOOL)prevented fadeOut:(int64_t)out fadeIn:(int64_t)in useNextSegmentForFadeOut:(BOOL)fadeOut
 {
-  v13 = a3;
+  namedCopy = named;
   v23.receiver = self;
   v23.super_class = FlexTransition;
   v14 = [(FlexTransition *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    v14->_prevented = a4;
-    objc_storeStrong(&v14->_transitionSegmentName, a3);
-    v15->_fadeOut = objc_msgSend_validFadeLengthForLength_(FlexTransition, v16, a5, v17, v18);
-    v15->_fadeIn = objc_msgSend_validFadeLengthForLength_(FlexTransition, v19, a6, v20, v21);
-    v15->_useNextSegmentForFadeOut = a7;
+    v14->_prevented = prevented;
+    objc_storeStrong(&v14->_transitionSegmentName, named);
+    v15->_fadeOut = objc_msgSend_validFadeLengthForLength_(FlexTransition, v16, out, v17, v18);
+    v15->_fadeIn = objc_msgSend_validFadeLengthForLength_(FlexTransition, v19, in, v20, v21);
+    v15->_useNextSegmentForFadeOut = fadeOut;
   }
 
   return v15;
 }
 
-- (FlexTransition)initWithDictionary:(id)a3
+- (FlexTransition)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v52.receiver = self;
   v52.super_class = FlexTransition;
   v8 = [(FlexTransition *)&v52 init];
   if (v8)
   {
-    v9 = objc_msgSend_objectForKey_(v4, v5, @"prevented", v6, v7);
+    v9 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"prevented", v6, v7);
     v8->_prevented = objc_msgSend_BOOLValue(v9, v10, v11, v12, v13);
 
-    v17 = objc_msgSend_objectForKey_(v4, v14, @"fadeOut", v15, v16);
+    v17 = objc_msgSend_objectForKey_(dictionaryCopy, v14, @"fadeOut", v15, v16);
     v22 = objc_msgSend_integerValue(v17, v18, v19, v20, v21);
 
     v8->_fadeOut = objc_msgSend_validFadeLengthForLength_(FlexTransition, v23, v22, v24, v25);
-    v29 = objc_msgSend_objectForKey_(v4, v26, @"fadeIn", v27, v28);
+    v29 = objc_msgSend_objectForKey_(dictionaryCopy, v26, @"fadeIn", v27, v28);
     v34 = objc_msgSend_integerValue(v29, v30, v31, v32, v33);
 
     v8->_fadeIn = objc_msgSend_validFadeLengthForLength_(FlexTransition, v35, v34, v36, v37);
-    v41 = objc_msgSend_objectForKey_(v4, v38, @"transitionSegmentName", v39, v40);
+    v41 = objc_msgSend_objectForKey_(dictionaryCopy, v38, @"transitionSegmentName", v39, v40);
     transitionSegmentName = v8->_transitionSegmentName;
     v8->_transitionSegmentName = v41;
 
-    v46 = objc_msgSend_objectForKey_(v4, v43, @"useNextSegmentForFadeOut", v44, v45);
+    v46 = objc_msgSend_objectForKey_(dictionaryCopy, v43, @"useNextSegmentForFadeOut", v44, v45);
     v8->_useNextSegmentForFadeOut = objc_msgSend_BOOLValue(v46, v47, v48, v49, v50);
   }
 
@@ -117,7 +117,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = objc_alloc_init(objc_opt_class());
   if (v9)
@@ -126,7 +126,7 @@
     *(v9 + 2) = objc_msgSend_fadeOut(self, v10, v11, v12, v13);
     *(v9 + 3) = objc_msgSend_fadeIn(self, v14, v15, v16, v17);
     v22 = objc_msgSend_transitionSegmentName(self, v18, v19, v20, v21);
-    v26 = objc_msgSend_copyWithZone_(v22, v23, a3, v24, v25);
+    v26 = objc_msgSend_copyWithZone_(v22, v23, zone, v24, v25);
     v27 = *(v9 + 4);
     *(v9 + 4) = v26;
 
@@ -182,27 +182,27 @@
   return v23;
 }
 
-+ (int64_t)validFadeLengthForLength:(int64_t)a3
++ (int64_t)validFadeLengthForLength:(int64_t)length
 {
-  v3 = 25;
-  if (a3 > 0x19)
+  lengthCopy = 25;
+  if (length > 0x19)
   {
-    v3 = a3;
+    lengthCopy = length;
   }
 
-  if (v3 >= 0x7D0)
+  if (lengthCopy >= 0x7D0)
   {
-    v3 = 2000;
+    lengthCopy = 2000;
   }
 
-  if (a3 <= 0)
+  if (length <= 0)
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return lengthCopy;
   }
 }
 

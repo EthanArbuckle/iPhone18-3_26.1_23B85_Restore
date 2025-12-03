@@ -1,46 +1,46 @@
 @interface NTKAnalogVideoFaceView
 + (int64_t)uiSensitivity;
 - (CGPoint)_contentCenterOffset;
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4;
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected;
 - (CGSize)videoDialSize;
-- (NTKAnalogVideoFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (UIEdgeInsets)_insetsForDialSize:(CGSize)a3;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_handAlphaForEditMode:(int64_t)a3;
+- (NTKAnalogVideoFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (UIEdgeInsets)_insetsForDialSize:(CGSize)size;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_handAlphaForEditMode:(int64_t)mode;
 - (id)_complicationsPlatterColor;
-- (id)_slotForUtilitySlot:(int64_t)a3;
+- (id)_slotForUtilitySlot:(int64_t)slot;
 - (id)_tapHighlightImage;
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3;
-- (int64_t)_utilitySlotForSlot:(id)a3;
-- (unint64_t)_layoutStyleForSlot:(id)a3;
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot;
+- (int64_t)_utilitySlotForSlot:(id)slot;
+- (unint64_t)_layoutStyleForSlot:(id)slot;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applySlow;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterOrb:(BOOL)a3;
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
-- (void)_curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8;
+- (void)_cleanupAfterOrb:(BOOL)orb;
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
+- (void)_curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot;
 - (void)_faceLibraryDismissed;
 - (void)_handleOrdinaryScreenWake;
 - (void)_handleWristRaiseScreenWake;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
 - (void)_prepareForOrb;
-- (void)_setVideoPlayerDataSource:(id)a3;
-- (void)_transformVideoPlayerView:(unint64_t)a3;
+- (void)_setVideoPlayerDataSource:(id)source;
+- (void)_transformVideoPlayerView:(unint64_t)view;
 - (void)_unloadSnapshotContentViews;
-- (void)customizeFaceViewForListing:(id)a3 changeEvent:(unint64_t)a4 animated:(BOOL)a5;
-- (void)faceViewWasTapped:(id)a3;
+- (void)customizeFaceViewForListing:(id)listing changeEvent:(unint64_t)event animated:(BOOL)animated;
+- (void)faceViewWasTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)screenDidTurnOffAnimated:(BOOL)a3;
-- (void)setDataMode:(int64_t)a3;
-- (void)setNormalComplicationDisplayWrapper:(id)a3 forSlot:(id)a4;
-- (void)setVideoDialSize:(CGSize)a3;
+- (void)screenDidTurnOffAnimated:(BOOL)animated;
+- (void)setDataMode:(int64_t)mode;
+- (void)setNormalComplicationDisplayWrapper:(id)wrapper forSlot:(id)slot;
+- (void)setVideoDialSize:(CGSize)size;
 - (void)setupVideoPlayerView;
 @end
 
@@ -48,7 +48,7 @@
 
 + (int64_t)uiSensitivity
 {
-  if (![a1 isRichComplicationsEnabled])
+  if (![self isRichComplicationsEnabled])
   {
     return 0;
   }
@@ -56,28 +56,28 @@
   return NTKBlueRidgeUISensitivity();
 }
 
-- (NTKAnalogVideoFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKAnalogVideoFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = NTKAnalogVideoFaceView;
-  v10 = [(NTKAnalogFaceView *)&v26 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:v9];
+  v10 = [(NTKAnalogFaceView *)&v26 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifierCopy];
   v11 = v10;
   if (v10)
   {
     v10->_previousDataMode = 0;
-    v12 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     complicationColor = v11->_complicationColor;
-    v11->_complicationColor = v12;
+    v11->_complicationColor = whiteColor;
 
     v11->_videoDialSize = *MEMORY[0x277CBF3A8];
-    v14 = -[NTKColorCircularUtilitarianFaceViewComplicationFactory initWithFaceView:device:graphicCornerComplications:]([NTKColorCircularUtilitarianFaceViewComplicationFactory alloc], "initWithFaceView:device:graphicCornerComplications:", v11, v8, [objc_opt_class() isRichComplicationsEnabled]);
+    v14 = -[NTKColorCircularUtilitarianFaceViewComplicationFactory initWithFaceView:device:graphicCornerComplications:]([NTKColorCircularUtilitarianFaceViewComplicationFactory alloc], "initWithFaceView:device:graphicCornerComplications:", v11, deviceCopy, [objc_opt_class() isRichComplicationsEnabled]);
     faceViewComplicationFactory = v11->_faceViewComplicationFactory;
     v11->_faceViewComplicationFactory = v14;
 
-    v16 = [(NTKAnalogVideoFaceView *)v11 faceViewComplicationFactory];
-    [v16 setDelegate:v11];
+    faceViewComplicationFactory = [(NTKAnalogVideoFaceView *)v11 faceViewComplicationFactory];
+    [faceViewComplicationFactory setDelegate:v11];
 
     [(NTKFaceView *)v11 setComplicationFactory:v11->_faceViewComplicationFactory];
     objc_initWeak(&location, v11);
@@ -95,8 +95,8 @@
     v21[3] = &unk_278780A58;
     objc_copyWeak(&v22, &location);
     [(NTKFaceViewComplicationFactory *)v18 setPlatterColorProviderBlock:v21];
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v11 selector:sel__faceLibraryDismissed name:@"NTKFaceLibraryDismissedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__faceLibraryDismissed name:@"NTKFaceLibraryDismissedNotification" object:0];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v24);
@@ -134,11 +134,11 @@ id __71__NTKAnalogVideoFaceView_initWithFaceStyle_forDevice_clientIdentifier___b
   self->_backgroundContainerView = v4;
 
   [(UIView *)self->_backgroundContainerView setAutoresizingMask:18];
-  v6 = [(NTKFaceView *)self contentView];
-  [v6 insertSubview:self->_backgroundContainerView atIndex:0];
+  contentView = [(NTKFaceView *)self contentView];
+  [contentView insertSubview:self->_backgroundContainerView atIndex:0];
 
-  v7 = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
-  [v7 applyComplicationContentSpecificAttributesAnimated:0 faceView:self];
+  faceViewComplicationFactory = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
+  [faceViewComplicationFactory applyComplicationContentSpecificAttributesAnimated:0 faceView:self];
 
   [(NTKAnalogVideoFaceView *)self setupVideoPlayerView];
   if (!self->_faceTapControl)
@@ -148,12 +148,12 @@ id __71__NTKAnalogVideoFaceView_initWithFaceStyle_forDevice_clientIdentifier___b
     self->_faceTapControl = v8;
 
     [(NTKFaceViewTapControl *)self->_faceTapControl addTarget:self action:sel_faceViewWasTapped_ forControlEvents:64];
-    v10 = [(NTKFaceViewTapControl *)self->_faceTapControl highlightImageView];
-    v11 = [(NTKAnalogVideoFaceView *)self _tapHighlightImage];
-    [v10 setImage:v11];
+    highlightImageView = [(NTKFaceViewTapControl *)self->_faceTapControl highlightImageView];
+    _tapHighlightImage = [(NTKAnalogVideoFaceView *)self _tapHighlightImage];
+    [highlightImageView setImage:_tapHighlightImage];
 
-    v12 = [(NTKFaceView *)self contentView];
-    [v12 addSubview:self->_faceTapControl];
+    contentView2 = [(NTKFaceView *)self contentView];
+    [contentView2 addSubview:self->_faceTapControl];
   }
 }
 
@@ -175,20 +175,20 @@ id __71__NTKAnalogVideoFaceView_initWithFaceStyle_forDevice_clientIdentifier___b
   self->_faceTapControl = 0;
 }
 
-- (void)setNormalComplicationDisplayWrapper:(id)a3 forSlot:(id)a4
+- (void)setNormalComplicationDisplayWrapper:(id)wrapper forSlot:(id)slot
 {
   v4.receiver = self;
   v4.super_class = NTKAnalogVideoFaceView;
-  [(NTKFaceView *)&v4 setNormalComplicationDisplayWrapper:a3 forSlot:a4];
+  [(NTKFaceView *)&v4 setNormalComplicationDisplayWrapper:wrapper forSlot:slot];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = NTKAnalogVideoFaceView;
   [(NTKFaceView *)&v5 setDataMode:?];
   [(NTKFaceViewTapControl *)self->_faceTapControl setHighlighted:0];
-  [(NTKFaceViewTapControl *)self->_faceTapControl setUserInteractionEnabled:a3 == 1];
+  [(NTKFaceViewTapControl *)self->_faceTapControl setUserInteractionEnabled:mode == 1];
 }
 
 - (void)_applyDataMode
@@ -236,20 +236,20 @@ id __71__NTKAnalogVideoFaceView_initWithFaceStyle_forDevice_clientIdentifier___b
   [(NTKAnalogVideoFaceView *)self _customizeVideoPlayerOnSetup];
 }
 
-- (void)_setVideoPlayerDataSource:(id)a3
+- (void)_setVideoPlayerDataSource:(id)source
 {
-  v9 = a3;
-  v4 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
-  v5 = [v4 dataSource];
+  sourceCopy = source;
+  videoPlayerView = [(NTKAnalogVideoFaceView *)self videoPlayerView];
+  dataSource = [videoPlayerView dataSource];
 
-  if (v5 != v9)
+  if (dataSource != sourceCopy)
   {
-    v6 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
-    [v6 setDataSource:v9];
+    videoPlayerView2 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
+    [videoPlayerView2 setDataSource:sourceCopy];
 
-    v7 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
-    v8 = [v9 posterImage];
-    [v7 setPosterImage:v8];
+    videoPlayerView3 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
+    posterImage = [sourceCopy posterImage];
+    [videoPlayerView3 setPosterImage:posterImage];
   }
 }
 
@@ -277,11 +277,11 @@ id __71__NTKAnalogVideoFaceView_initWithFaceStyle_forDevice_clientIdentifier___b
   [(NTKVideoPlayerView *)self->_videoPlayerView applyOrbing:1];
 }
 
-- (void)_cleanupAfterOrb:(BOOL)a3
+- (void)_cleanupAfterOrb:(BOOL)orb
 {
   v4.receiver = self;
   v4.super_class = NTKAnalogVideoFaceView;
-  [(NTKFaceView *)&v4 _cleanupAfterOrb:a3];
+  [(NTKFaceView *)&v4 _cleanupAfterOrb:orb];
   [(NTKVideoPlayerView *)self->_videoPlayerView applyOrbing:0];
 }
 
@@ -303,25 +303,25 @@ id __71__NTKAnalogVideoFaceView_initWithFaceStyle_forDevice_clientIdentifier___b
   [(NTKVideoPlayerView *)self->_videoPlayerView handleOrdinaryScreenWake];
 }
 
-- (void)screenDidTurnOffAnimated:(BOOL)a3
+- (void)screenDidTurnOffAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = NTKAnalogVideoFaceView;
-  [(NTKFaceView *)&v4 screenDidTurnOffAnimated:a3];
+  [(NTKFaceView *)&v4 screenDidTurnOffAnimated:animated];
   [(NTKAnalogVideoFaceView *)self _tearDownTransitioningView:0];
   [(NTKVideoPlayerView *)self->_videoPlayerView handleScreenOff];
 }
 
-- (void)faceViewWasTapped:(id)a3
+- (void)faceViewWasTapped:(id)tapped
 {
   if ([(NTKAnalogVideoFaceView *)self _shouldAnimateComplicationsOnTap])
   {
-    v4 = [(NTKAnalogVideoFaceView *)self _complicationsTapColor];
+    _complicationsTapColor = [(NTKAnalogVideoFaceView *)self _complicationsTapColor];
     complicationColor = self->_complicationColor;
-    self->_complicationColor = v4;
+    self->_complicationColor = _complicationsTapColor;
 
-    v6 = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
-    [v6 applyComplicationContentSpecificAttributesAnimated:1 faceView:self];
+    faceViewComplicationFactory = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
+    [faceViewComplicationFactory applyComplicationContentSpecificAttributesAnimated:1 faceView:self];
   }
 
   [(NTKVideoPlayerView *)self->_videoPlayerView videoPlayerViewWasTapped];
@@ -331,33 +331,33 @@ id __71__NTKAnalogVideoFaceView_initWithFaceStyle_forDevice_clientIdentifier___b
 
 - (id)_tapHighlightImage
 {
-  v2 = [(NTKFaceView *)self device];
-  v3 = NTKNoHighlightDialTapImage(v2);
+  device = [(NTKFaceView *)self device];
+  v3 = NTKNoHighlightDialTapImage(device);
 
   return v3;
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v8.receiver = self;
   v8.super_class = NTKAnalogVideoFaceView;
-  v3 = a3;
-  [(NTKAnalogFaceView *)&v8 _configureTimeView:v3];
-  v4 = [v3 minuteHandView];
-  v5 = [MEMORY[0x277D75348] blackColor];
-  [v4 setHandDotColor:v5];
+  viewCopy = view;
+  [(NTKAnalogFaceView *)&v8 _configureTimeView:viewCopy];
+  minuteHandView = [viewCopy minuteHandView];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [minuteHandView setHandDotColor:blackColor];
 
-  v6 = [v3 secondHandView];
+  secondHandView = [viewCopy secondHandView];
 
-  v7 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v6 setColor:v7];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [secondHandView setColor:systemOrangeColor];
 }
 
-- (unint64_t)_layoutStyleForSlot:(id)a3
+- (unint64_t)_layoutStyleForSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self device];
-  if ([v5 deviceCategory] == 1)
+  slotCopy = slot;
+  device = [(NTKFaceView *)self device];
+  if ([device deviceCategory] == 1)
   {
 
 LABEL_5:
@@ -365,7 +365,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [v4 isEqualToString:@"bottom-center"];
+  v6 = [slotCopy isEqualToString:@"bottom-center"];
 
   if ((v6 & 1) == 0)
   {
@@ -378,14 +378,14 @@ LABEL_6:
   return v7;
 }
 
-- (void)_curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8
+- (void)_curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot
 {
-  v16 = a8;
+  slotCopy = slot;
   if ([(NTKAnalogVideoFaceView *)self _layoutStyleForSlot:?]== 1)
   {
-    v14 = [(NTKAnalogVideoFaceView *)self _utilitySlotForSlot:v16];
-    v15 = [(NTKFaceView *)self device];
-    [NTKUtilityComplicationFactory curvedCircleRadius:a3 centerAngle:a4 maxAngularWidth:a5 circleCenter:a6 interior:a7 forSlot:v14 forDevice:v15];
+    v14 = [(NTKAnalogVideoFaceView *)self _utilitySlotForSlot:slotCopy];
+    device = [(NTKFaceView *)self device];
+    [NTKUtilityComplicationFactory curvedCircleRadius:radius centerAngle:angle maxAngularWidth:width circleCenter:center interior:interior forSlot:v14 forDevice:device];
   }
 }
 
@@ -399,14 +399,14 @@ LABEL_6:
 
   else
   {
-    v5 = [(NTKFaceView *)self delegate];
-    v6 = [v5 faceViewComplicationIsEmptyForSlot:@"bottom-center"];
+    delegate = [(NTKFaceView *)self delegate];
+    v6 = [delegate faceViewComplicationIsEmptyForSlot:@"bottom-center"];
 
-    v7 = [(NTKFaceView *)self _complicationSlotsHiddenByCurrentConfiguration];
-    v8 = [v7 containsObject:@"bottom-center"];
+    _complicationSlotsHiddenByCurrentConfiguration = [(NTKFaceView *)self _complicationSlotsHiddenByCurrentConfiguration];
+    v8 = [_complicationSlotsHiddenByCurrentConfiguration containsObject:@"bottom-center"];
 
-    v9 = [(NTKFaceView *)self device];
-    v10 = ___LayoutConstants_block_invoke_17(v9, v9);
+    device = [(NTKFaceView *)self device];
+    v10 = ___LayoutConstants_block_invoke_17(device, device);
     v12 = v11;
     v3 = v13;
     v4 = v14;
@@ -428,14 +428,14 @@ LABEL_6:
 - (void)_faceLibraryDismissed
 {
   [(NTKVideoPlayerView *)self->_videoPlayerView faceLibraryWasDismissed];
-  v3 = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
-  [v3 applyComplicationContentSpecificAttributesAnimated:1 faceView:self];
+  faceViewComplicationFactory = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
+  [faceViewComplicationFactory applyComplicationContentSpecificAttributesAnimated:1 faceView:self];
 }
 
 - (id)_complicationsPlatterColor
 {
-  v2 = [(NTKAnalogVideoFaceView *)self _complicationsForegroundColor];
-  v3 = NTKColorByPremultiplyingAlpha(v2, 0.15);
+  _complicationsForegroundColor = [(NTKAnalogVideoFaceView *)self _complicationsForegroundColor];
+  v3 = NTKColorByPremultiplyingAlpha(_complicationsForegroundColor, 0.15);
 
   return v3;
 }
@@ -445,14 +445,14 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = NTKAnalogVideoFaceView;
   [(NTKAnalogFaceView *)&v7 _prepareForEditing];
-  v3 = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
-  [v3 prepareForEditingForFaceView:self];
+  faceViewComplicationFactory = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
+  [faceViewComplicationFactory prepareForEditingForFaceView:self];
 
   [(NTKAnalogVideoFaceView *)self _setupTransitioningViewIfNeeded:1];
   [(NTKFaceView *)self _applyEditConfigurationsWithForce:1];
   [(NTKVideoPlayerView *)self->_videoPlayerView transitionToEditing];
-  v4 = [(NTKFaceView *)self device];
-  [v4 screenCornerRadius];
+  device = [(NTKFaceView *)self device];
+  [device screenCornerRadius];
   v6 = v5;
 
   NTKApplyViewCornerRadius(self, v6);
@@ -463,89 +463,89 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = NTKAnalogVideoFaceView;
   [(NTKAnalogFaceView *)&v4 _cleanupAfterEditing];
-  v3 = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
-  [v3 cleanupAfterEditingForFaceView:self];
+  faceViewComplicationFactory = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
+  [faceViewComplicationFactory cleanupAfterEditingForFaceView:self];
 
   [(NTKAnalogVideoFaceView *)self _tearDownTransitioningView:0];
   NTKApplyViewCornerRadius(self, 0.0);
 }
 
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication
 {
-  if ([a3 isEqualToString:{@"bottom-center", a4}])
+  if ([slot isEqualToString:{@"bottom-center", complication}])
   {
-    v5 = [(NTKFaceView *)self delegate];
-    [v5 faceViewWantsCustomKeylineFramesReloadedForEditMode:12];
+    delegate = [(NTKFaceView *)self delegate];
+    [delegate faceViewWantsCustomKeylineFramesReloadedForEditMode:12];
 
-    v6 = [(NTKFaceView *)self delegate];
-    [v6 faceViewWantsCustomKeylineFramesReloadedForEditMode:15];
+    delegate2 = [(NTKFaceView *)self delegate];
+    [delegate2 faceViewWantsCustomKeylineFramesReloadedForEditMode:15];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   transitioningView = self->_transitioningView;
   if (transitioningView)
   {
-    [(NTKEditOptionTransitioningView *)transitioningView setOption:a3, a4, a5];
+    [(NTKEditOptionTransitioningView *)transitioningView setOption:option, mode, slot];
   }
 
   faceViewComplicationFactory = self->_faceViewComplicationFactory;
 
-  [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)faceViewComplicationFactory applyComplicationContentSpecificAttributesAnimated:0 faceView:self, a5];
+  [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)faceViewComplicationFactory applyComplicationContentSpecificAttributesAnimated:0 faceView:self, slot];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v8 = [(NTKFaceView *)self editing];
-  if (a4 && !a5 && v8)
+  editing = [(NTKFaceView *)self editing];
+  if (mode && !editMode && editing)
   {
     [(NTKAnalogVideoFaceView *)self _tearDownTransitioningView:0];
   }
 
-  v9 = [(NTKFaceView *)self timeView];
-  [(NTKAnalogVideoFaceView *)self _handAlphaForEditMode:a4];
-  [(NTKAnalogVideoFaceView *)self _handAlphaForEditMode:a5];
+  timeView = [(NTKFaceView *)self timeView];
+  [(NTKAnalogVideoFaceView *)self _handAlphaForEditMode:mode];
+  [(NTKAnalogVideoFaceView *)self _handAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v9 setAlpha:?];
+  [timeView setAlpha:?];
 
-  v10 = [(NTKFaceView *)self foregroundContainerView];
-  [(NTKAnalogVideoFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKAnalogVideoFaceView *)self _complicationAlphaForEditMode:a5];
+  foregroundContainerView = [(NTKFaceView *)self foregroundContainerView];
+  [(NTKAnalogVideoFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKAnalogVideoFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v10 setAlpha:?];
+  [foregroundContainerView setAlpha:?];
 
   transitioningView = self->_transitioningView;
-  [(NTKAnalogVideoFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKAnalogVideoFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKAnalogVideoFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKAnalogVideoFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
 
   [(NTKEditOptionTransitioningView *)transitioningView setDimmingAlpha:?];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = NTKAlphaForRubberBandingFraction(a3);
-  [(NTKAnalogVideoFaceView *)self _contentAlphaForEditMode:a4];
+  v8 = NTKAlphaForRubberBandingFraction(fraction);
+  [(NTKAnalogVideoFaceView *)self _contentAlphaForEditMode:mode];
   [(NTKEditOptionTransitioningView *)self->_transitioningView setDimmingAlpha:v8 * v9];
   transitioningView = self->_transitioningView;
 
-  [(NTKEditOptionTransitioningView *)transitioningView setRubberBandingFraction:a3];
+  [(NTKEditOptionTransitioningView *)transitioningView setRubberBandingFraction:fraction];
 }
 
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self device];
-  if ([v5 deviceCategory] != 1)
+  slotCopy = slot;
+  device = [(NTKFaceView *)self device];
+  if ([device deviceCategory] != 1)
   {
-    if ([v4 isEqualToString:@"top-left"])
+    if ([slotCopy isEqualToString:@"top-left"])
     {
     }
 
     else
     {
-      v7 = [v4 isEqualToString:@"top-right"];
+      v7 = [slotCopy isEqualToString:@"top-right"];
 
       if ((v7 & 1) == 0)
       {
@@ -564,14 +564,14 @@ LABEL_8:
   return v6;
 }
 
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected
 {
-  v4 = a4;
-  v6 = a3;
-  if ([objc_opt_class() isRichComplicationsEnabled] && ((objc_msgSend(v6, "isEqualToString:", @"top-left") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"top-right")))
+  selectedCopy = selected;
+  slotCopy = slot;
+  if ([objc_opt_class() isRichComplicationsEnabled] && ((objc_msgSend(slotCopy, "isEqualToString:", @"top-left") & 1) != 0 || objc_msgSend(slotCopy, "isEqualToString:", @"top-right")))
   {
-    v7 = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
-    [v7 keylineFrameForCornerComplicationSlot:v6 selected:v4];
+    faceViewComplicationFactory = [(NTKAnalogVideoFaceView *)self faceViewComplicationFactory];
+    [faceViewComplicationFactory keylineFrameForCornerComplicationSlot:slotCopy selected:selectedCopy];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -582,7 +582,7 @@ LABEL_8:
   {
     v24.receiver = self;
     v24.super_class = NTKAnalogVideoFaceView;
-    [(NTKFaceView *)&v24 _keylineFrameForComplicationSlot:v6 selected:v4];
+    [(NTKFaceView *)&v24 _keylineFrameForComplicationSlot:slotCopy selected:selectedCopy];
     v9 = v16;
     v11 = v17;
     v13 = v18;
@@ -600,51 +600,51 @@ LABEL_8:
   return result;
 }
 
-- (void)customizeFaceViewForListing:(id)a3 changeEvent:(unint64_t)a4 animated:(BOOL)a5
+- (void)customizeFaceViewForListing:(id)listing changeEvent:(unint64_t)event animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v16 = v8;
-  if (a4 != 2 || (v9 = [(NTKAnalogVideoFaceView *)self _shouldAnimateComplicationsOnTap], v8 = v16, !v9))
+  animatedCopy = animated;
+  listingCopy = listing;
+  v16 = listingCopy;
+  if (event != 2 || (v9 = [(NTKAnalogVideoFaceView *)self _shouldAnimateComplicationsOnTap], listingCopy = v16, !v9))
   {
-    v10 = [v8 color];
-    v8 = v16;
-    if (v10)
+    color = [listingCopy color];
+    listingCopy = v16;
+    if (color)
     {
-      v11 = v10;
+      v11 = color;
       complicationColor = self->_complicationColor;
-      v13 = [v16 color];
+      color2 = [v16 color];
 
-      v8 = v16;
-      if (complicationColor != v13)
+      listingCopy = v16;
+      if (complicationColor != color2)
       {
-        v14 = [v16 color];
+        color3 = [v16 color];
         v15 = self->_complicationColor;
-        self->_complicationColor = v14;
+        self->_complicationColor = color3;
 
-        [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory applyComplicationContentSpecificAttributesAnimated:v5 faceView:self];
-        v8 = v16;
+        [(NTKColorCircularUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory applyComplicationContentSpecificAttributesAnimated:animatedCopy faceView:self];
+        listingCopy = v16;
       }
     }
   }
 }
 
-- (void)_transformVideoPlayerView:(unint64_t)a3
+- (void)_transformVideoPlayerView:(unint64_t)view
 {
-  if (a3 == 2)
+  if (view == 2)
   {
     v9 = [&unk_28418AE28 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(&unk_28418AE28, "count"))}];
     [v9 floatValue];
 
-    v5 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
+    videoPlayerView = [(NTKAnalogVideoFaceView *)self videoPlayerView];
     CLKDegreesToRadians();
 LABEL_9:
     CGAffineTransformMakeRotation(&v11, v8);
-    v4 = v5;
+    videoPlayerView2 = videoPlayerView;
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (view == 1)
   {
     if (_transformVideoPlayerView__onceToken != -1)
     {
@@ -655,24 +655,24 @@ LABEL_9:
     v7 = +[NTKDate faceDate];
     NTKHourMinuteSecondAnglesForTime(0, 0, &v10, v7, _transformVideoPlayerView___calendar);
 
-    v5 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
+    videoPlayerView = [(NTKAnalogVideoFaceView *)self videoPlayerView];
     v8 = v10;
     goto LABEL_9;
   }
 
-  if (a3)
+  if (view)
   {
     return;
   }
 
-  v4 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
-  v5 = v4;
+  videoPlayerView2 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
+  videoPlayerView = videoPlayerView2;
   v6 = *(MEMORY[0x277CBF2C0] + 16);
   *&v11.a = *MEMORY[0x277CBF2C0];
   *&v11.c = v6;
   *&v11.tx = *(MEMORY[0x277CBF2C0] + 32);
 LABEL_10:
-  [v4 setVideoPlayerTransform:&v11];
+  [videoPlayerView2 setVideoPlayerTransform:&v11];
 }
 
 void __52__NTKAnalogVideoFaceView__transformVideoPlayerView___block_invoke()
@@ -682,18 +682,18 @@ void __52__NTKAnalogVideoFaceView__transformVideoPlayerView___block_invoke()
   _transformVideoPlayerView___calendar = v0;
 }
 
-- (void)setVideoDialSize:(CGSize)a3
+- (void)setVideoDialSize:(CGSize)size
 {
   p_videoDialSize = &self->_videoDialSize;
-  self->_videoDialSize = a3;
-  v5 = [(NTKAnalogVideoFaceView *)self videoPlayerView];
+  self->_videoDialSize = size;
+  videoPlayerView = [(NTKAnalogVideoFaceView *)self videoPlayerView];
   [(NTKAnalogVideoFaceView *)self _insetsForDialSize:p_videoDialSize->width, p_videoDialSize->height];
-  [v5 setVideoPlayerInset:?];
+  [videoPlayerView setVideoPlayerInset:?];
 }
 
-- (UIEdgeInsets)_insetsForDialSize:(CGSize)a3
+- (UIEdgeInsets)_insetsForDialSize:(CGSize)size
 {
-  if (a3.width == 0.0)
+  if (size.width == 0.0)
   {
     v3 = *MEMORY[0x277D768C8];
     v4 = *(MEMORY[0x277D768C8] + 8);
@@ -703,8 +703,8 @@ void __52__NTKAnalogVideoFaceView__transformVideoPlayerView___block_invoke()
 
   else
   {
-    width = a3.width;
-    v8 = [(NTKFaceView *)self device:a3.width];
+    width = size.width;
+    v8 = [(NTKFaceView *)self device:size.width];
     [v8 screenBounds];
     v10 = v9;
 
@@ -721,35 +721,35 @@ void __52__NTKAnalogVideoFaceView__transformVideoPlayerView___block_invoke()
   return result;
 }
 
-- (int64_t)_utilitySlotForSlot:(id)a3
+- (int64_t)_utilitySlotForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"top-left"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"top-left"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"top-right"])
+  else if ([slotCopy isEqualToString:@"top-right"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"bottom-left"])
+  else if ([slotCopy isEqualToString:@"bottom-left"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"bottom-right"])
+  else if ([slotCopy isEqualToString:@"bottom-right"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"bottom-center"])
+  else if ([slotCopy isEqualToString:@"bottom-center"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"date"])
+  else if ([slotCopy isEqualToString:@"date"])
   {
     v4 = 12;
   }
@@ -762,10 +762,10 @@ void __52__NTKAnalogVideoFaceView__transformVideoPlayerView___block_invoke()
   return v4;
 }
 
-- (id)_slotForUtilitySlot:(int64_t)a3
+- (id)_slotForUtilitySlot:(int64_t)slot
 {
-  v4 = a3 - 1;
-  if (a3 - 1) <= 0xB && ((0xA0Fu >> v4))
+  v4 = slot - 1;
+  if (slot - 1) <= 0xB && ((0xA0Fu >> v4))
   {
     v5 = *off_278780A78[v4];
   }
@@ -778,10 +778,10 @@ void __52__NTKAnalogVideoFaceView__transformVideoPlayerView___block_invoke()
   return v5;
 }
 
-- (double)_handAlphaForEditMode:(int64_t)a3
+- (double)_handAlphaForEditMode:(int64_t)mode
 {
   result = 0.2;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -789,10 +789,10 @@ void __52__NTKAnalogVideoFaceView__transformVideoPlayerView___block_invoke()
   return result;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = 0.2;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -800,10 +800,10 @@ void __52__NTKAnalogVideoFaceView__transformVideoPlayerView___block_invoke()
   return result;
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = 0.2;
-  if (a3 < 2)
+  if (mode < 2)
   {
     return 1.0;
   }

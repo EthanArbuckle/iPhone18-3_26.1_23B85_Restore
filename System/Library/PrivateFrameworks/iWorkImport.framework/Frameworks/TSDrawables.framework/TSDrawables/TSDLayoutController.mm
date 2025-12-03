@@ -1,47 +1,47 @@
 @interface TSDLayoutController
-+ (void)temporaryLayoutControllerForInfos:(id)a3 useInBlock:(id)a4;
++ (void)temporaryLayoutControllerForInfos:(id)infos useInBlock:(id)block;
 - (CGRect)rectOfTopLevelLayouts;
 - (TSDCanvas)canvas;
-- (TSDLayoutController)initWithCanvas:(id)a3;
-- (id)layoutForInfo:(id)a3;
-- (id)layoutForInfo:(id)a3 childOfLayout:(id)a4;
-- (id)layoutsForInfo:(id)a3;
-- (id)layoutsForInfos:(id)a3;
-- (id)sortLayoutsForDependencies:(id)a3;
-- (id)validatedLayoutForInfo:(id)a3;
-- (id)validatedLayoutForInfo:(id)a3 childOfLayout:(id)a4;
-- (id)validatedLayoutsForInfo:(id)a3;
+- (TSDLayoutController)initWithCanvas:(id)canvas;
+- (id)layoutForInfo:(id)info;
+- (id)layoutForInfo:(id)info childOfLayout:(id)layout;
+- (id)layoutsForInfo:(id)info;
+- (id)layoutsForInfos:(id)infos;
+- (id)sortLayoutsForDependencies:(id)dependencies;
+- (id)validatedLayoutForInfo:(id)info;
+- (id)validatedLayoutForInfo:(id)info childOfLayout:(id)layout;
+- (id)validatedLayoutsForInfo:(id)info;
 - (void)dealloc;
-- (void)i_enumerateLayoutsUsingBlock:(id)a3;
-- (void)i_registerLayout:(id)a3;
+- (void)i_enumerateLayoutsUsingBlock:(id)block;
+- (void)i_registerLayout:(id)layout;
 - (void)i_removeAllLayouts;
-- (void)i_unregisterLayout:(id)a3;
+- (void)i_unregisterLayout:(id)layout;
 - (void)invalidateAllLayoutFrames;
-- (void)invalidateChildrenOfLayout:(id)a3;
-- (void)invalidateLayout:(id)a3;
-- (void)invalidateLayoutForRecreation:(id)a3;
+- (void)invalidateChildrenOfLayout:(id)layout;
+- (void)invalidateLayout:(id)layout;
+- (void)invalidateLayoutForRecreation:(id)recreation;
 - (void)notifyThatLayoutsChangedOutsideOfLayout;
-- (void)p_recreateLayoutsIfNeededToValidateLayouts:(id)a3;
-- (void)p_validateLayouts:(id)a3 shouldMarkValidLayoutsThatDoNotWantValidation:(BOOL)a4;
-- (void)setInfos:(id)a3;
-- (void)validateLayoutWithDependencies:(id)a3;
+- (void)p_recreateLayoutsIfNeededToValidateLayouts:(id)layouts;
+- (void)p_validateLayouts:(id)layouts shouldMarkValidLayoutsThatDoNotWantValidation:(BOOL)validation;
+- (void)setInfos:(id)infos;
+- (void)validateLayoutWithDependencies:(id)dependencies;
 - (void)validateLayouts;
-- (void)validateLayoutsWithDependencies:(id)a3;
+- (void)validateLayoutsWithDependencies:(id)dependencies;
 @end
 
 @implementation TSDLayoutController
 
-- (TSDLayoutController)initWithCanvas:(id)a3
+- (TSDLayoutController)initWithCanvas:(id)canvas
 {
-  v4 = a3;
+  canvasCopy = canvas;
   v31.receiver = self;
   v31.super_class = TSDLayoutController;
   v5 = [(TSDLayoutController *)&v31 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_canvas, v4);
-    v9 = objc_msgSend_rootLayoutClass(v4, v7, v8);
+    objc_storeWeak(&v5->_canvas, canvasCopy);
+    v9 = objc_msgSend_rootLayoutClass(canvasCopy, v7, v8);
     if (!v9)
     {
       v9 = objc_opt_class();
@@ -69,7 +69,7 @@
     layoutsNeedingRecreating = v6->_layoutsNeedingRecreating;
     v6->_layoutsNeedingRecreating = v22;
 
-    if (objc_msgSend_isCanvasInteractive(v4, v24, v25))
+    if (objc_msgSend_isCanvasInteractive(canvasCopy, v24, v25))
     {
       v27 = qword_280A4C160;
       if (!qword_280A4C160)
@@ -97,34 +97,34 @@
   [(TSDLayoutController *)&v4 dealloc];
 }
 
-+ (void)temporaryLayoutControllerForInfos:(id)a3 useInBlock:(id)a4
++ (void)temporaryLayoutControllerForInfos:(id)infos useInBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  infosCopy = infos;
   v7 = [TSDCanvas alloc];
   v24 = objc_msgSend_initForTemporaryLayout(v7, v8, v9);
   v12 = objc_msgSend_layoutController(v24, v10, v11);
-  objc_msgSend_setInfos_(v12, v13, v6);
+  objc_msgSend_setInfos_(v12, v13, infosCopy);
 
   v16 = objc_msgSend_layoutController(v24, v14, v15);
   objc_msgSend_validateLayouts(v16, v17, v18);
 
   v21 = objc_msgSend_layoutController(v24, v19, v20);
-  v5[2](v5, v21);
+  blockCopy[2](blockCopy, v21);
 
   objc_msgSend_teardown(v24, v22, v23);
 }
 
-- (void)setInfos:(id)a3
+- (void)setInfos:(id)infos
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infosCopy = infos;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = v4;
+  v6 = infosCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v32, v36, 16);
   if (v8)
   {
@@ -175,19 +175,19 @@
   objc_msgSend_makeObjectsPerformSelector_(v5, v28, sel_updateChildrenFromInfo, v32);
 }
 
-- (void)invalidateLayout:(id)a3
+- (void)invalidateLayout:(id)layout
 {
-  if (self->_validatingLayout != a3)
+  if (self->_validatingLayout != layout)
   {
-    objc_msgSend_addObject_(self->_invalidLayouts, a2, a3);
+    objc_msgSend_addObject_(self->_invalidLayouts, a2, layout);
     WeakRetained = objc_loadWeakRetained(&self->_canvas);
     objc_msgSend_layoutInvalidated(WeakRetained, v5, v6);
   }
 }
 
-- (void)invalidateChildrenOfLayout:(id)a3
+- (void)invalidateChildrenOfLayout:(id)layout
 {
-  objc_msgSend_addObject_(self->_invalidChildrenLayouts, a2, a3);
+  objc_msgSend_addObject_(self->_invalidChildrenLayouts, a2, layout);
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   objc_msgSend_layoutInvalidated(WeakRetained, v4, v5);
 }
@@ -257,18 +257,18 @@
   }
 }
 
-- (void)invalidateLayoutForRecreation:(id)a3
+- (void)invalidateLayoutForRecreation:(id)recreation
 {
-  objc_msgSend_addObject_(self->_layoutsNeedingRecreating, a2, a3);
+  objc_msgSend_addObject_(self->_layoutsNeedingRecreating, a2, recreation);
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   objc_msgSend_layoutInvalidated(WeakRetained, v4, v5);
 }
 
-- (id)layoutForInfo:(id)a3
+- (id)layoutForInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend_layoutsForInfo_(self, v5, v4);
+  infoCopy = info;
+  v6 = objc_msgSend_layoutsForInfo_(self, v5, infoCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -311,26 +311,26 @@
   return v11;
 }
 
-- (id)layoutsForInfo:(id)a3
+- (id)layoutsForInfo:(id)info
 {
-  v3 = objc_msgSend_objectForKey_(self->_layoutsByInfo, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_layoutsByInfo, a2, info);
   v6 = objc_msgSend_copy(v3, v4, v5);
 
   return v6;
 }
 
-- (id)layoutsForInfos:(id)a3
+- (id)layoutsForInfos:(id)infos
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infosCopy = infos;
   v5 = MEMORY[0x277CBEB58];
-  v8 = objc_msgSend_count(v4, v6, v7);
+  v8 = objc_msgSend_count(infosCopy, v6, v7);
   v10 = objc_msgSend_setWithCapacity_(v5, v9, v8);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = infosCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v28, v32, 16);
   if (v12)
   {
@@ -369,11 +369,11 @@
   return v10;
 }
 
-- (id)layoutForInfo:(id)a3 childOfLayout:(id)a4
+- (id)layoutForInfo:(id)info childOfLayout:(id)layout
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  objc_msgSend_layoutsForInfo_(self, v7, a3);
+  layoutCopy = layout;
+  objc_msgSend_layoutsForInfo_(self, v7, info);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -394,7 +394,7 @@
         v15 = *(*(&v18 + 1) + 8 * i);
         v16 = objc_msgSend_parent(v15, v10, v11, v18);
 
-        if (v16 == v6)
+        if (v16 == layoutCopy)
         {
           v12 = v15;
           goto LABEL_11;
@@ -473,14 +473,14 @@ LABEL_11:
 
 - (void)validateLayouts
 {
-  v2 = self;
+  selfCopy = self;
   v125 = *MEMORY[0x277D85DE8];
   objc_msgSend_p_recreateLayoutsIfNeededToValidateLayouts_(self, a2, 0);
-  v109 = v2;
-  if (objc_msgSend_count(v2->_invalidChildrenLayouts, v3, v4))
+  v109 = selfCopy;
+  if (objc_msgSend_count(selfCopy->_invalidChildrenLayouts, v3, v4))
   {
-    v7 = objc_msgSend_copy(v2->_invalidChildrenLayouts, v5, v6);
-    objc_msgSend_removeAllObjects(v2->_invalidChildrenLayouts, v8, v9);
+    v7 = objc_msgSend_copy(selfCopy->_invalidChildrenLayouts, v5, v6);
+    objc_msgSend_removeAllObjects(selfCopy->_invalidChildrenLayouts, v8, v9);
     v120 = 0u;
     v121 = 0u;
     v118 = 0u;
@@ -509,9 +509,9 @@ LABEL_11:
       while (v15);
     }
 
-    if (objc_msgSend_intersectsSet_(v2->_invalidChildrenLayouts, v18, v10))
+    if (objc_msgSend_intersectsSet_(selfCopy->_invalidChildrenLayouts, v18, v10))
     {
-      v21 = objc_msgSend_mutableCopy(v2->_invalidChildrenLayouts, v19, v20);
+      v21 = objc_msgSend_mutableCopy(selfCopy->_invalidChildrenLayouts, v19, v20);
       objc_msgSend_intersectSet_(v21, v22, v10);
       v116 = 0u;
       v117 = 0u;
@@ -562,15 +562,15 @@ LABEL_11:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v36, v41, v38, v40, 258, 0, "one of these layouts had invalidateChildren while updating: %{public}@ %@", v28, v23);
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v42, v43);
-      v2 = v109;
+      selfCopy = v109;
     }
   }
 
-  if (objc_msgSend_count(v2->_invalidLayouts, v5, v6))
+  if (objc_msgSend_count(selfCopy->_invalidLayouts, v5, v6))
   {
     do
     {
-      v46 = objc_msgSend_copy(v2->_invalidLayouts, v44, v45);
+      v46 = objc_msgSend_copy(selfCopy->_invalidLayouts, v44, v45);
       v110 = 0u;
       v111 = 0u;
       v112 = 0u;
@@ -599,9 +599,9 @@ LABEL_11:
         while (v52);
       }
 
-      if ((objc_msgSend_isSubsetOfSet_(v2->_invalidLayouts, v55, v47) & 1) == 0)
+      if ((objc_msgSend_isSubsetOfSet_(selfCopy->_invalidLayouts, v55, v47) & 1) == 0)
       {
-        v58 = objc_msgSend_copy(v2->_invalidLayouts, v56, v57);
+        v58 = objc_msgSend_copy(selfCopy->_invalidLayouts, v56, v57);
         objc_msgSend_minusSet_(v58, v59, v47);
         v61 = objc_msgSend_tsu_setByMappingObjectsUsingBlock_(v58, v60, &unk_288574A08);
         v64 = objc_msgSend_allObjects(v61, v62, v63);
@@ -616,13 +616,13 @@ LABEL_11:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v67, v78, v69, v71, 278, 0, "a layout that was not about to be validated was invalidated as part of preparation for validation %{public}@ %{public}@, %@", v66, v77, v58);
 
         objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v79, v80);
-        v2 = v109;
+        selfCopy = v109;
       }
 
-      objc_msgSend_p_validateLayouts_shouldMarkValidLayoutsThatDoNotWantValidation_(v2, v56, v47, 1);
-      if (objc_msgSend_intersectsSet_(v2->_invalidLayouts, v81, v47))
+      objc_msgSend_p_validateLayouts_shouldMarkValidLayoutsThatDoNotWantValidation_(selfCopy, v56, v47, 1);
+      if (objc_msgSend_intersectsSet_(selfCopy->_invalidLayouts, v81, v47))
       {
-        v84 = objc_msgSend_mutableCopy(v2->_invalidLayouts, v82, v83);
+        v84 = objc_msgSend_mutableCopy(selfCopy->_invalidLayouts, v82, v83);
         objc_msgSend_intersectSet_(v84, v85, v47);
         v87 = objc_msgSend_tsu_setByMappingObjectsUsingBlock_(v84, v86, &unk_288574A28);
         v90 = objc_msgSend_allObjects(v87, v88, v89);
@@ -637,36 +637,36 @@ LABEL_11:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v93, v104, v95, v97, 294, 0, "one of these layouts was invalidated while validating: %{public}@ %{public}@ %@", v92, v103, v84);
 
         objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v105, v106);
-        v2 = v109;
+        selfCopy = v109;
       }
     }
 
-    while (objc_msgSend_count(v2->_invalidLayouts, v107, v108));
+    while (objc_msgSend_count(selfCopy->_invalidLayouts, v107, v108));
   }
 }
 
-- (id)sortLayoutsForDependencies:(id)a3
+- (id)sortLayoutsForDependencies:(id)dependencies
 {
   v220[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!objc_msgSend_count(v3, v4, v5))
+  dependenciesCopy = dependencies;
+  if (!objc_msgSend_count(dependenciesCopy, v4, v5))
   {
     v172 = MEMORY[0x277CBEBF8];
     goto LABEL_74;
   }
 
-  if (objc_msgSend_count(v3, v6, v7) != 1)
+  if (objc_msgSend_count(dependenciesCopy, v6, v7) != 1)
   {
-    v12 = objc_msgSend_mutableCopy(v3, v8, v9);
+    v12 = objc_msgSend_mutableCopy(dependenciesCopy, v8, v9);
     v13 = MEMORY[0x277CBEB18];
-    v16 = objc_msgSend_count(v3, v14, v15);
+    v16 = objc_msgSend_count(dependenciesCopy, v14, v15);
     v172 = objc_msgSend_arrayWithCapacity_(v13, v17, v16);
     v18 = objc_alloc(MEMORY[0x277D812B8]);
-    v21 = objc_msgSend_count(v3, v19, v20);
+    v21 = objc_msgSend_count(dependenciesCopy, v19, v20);
     v23 = objc_msgSend_initWithCapacity_(v18, v22, v21);
     v24 = objc_alloc(MEMORY[0x277D812B8]);
-    v178 = v3;
-    v27 = objc_msgSend_count(v3, v25, v26);
+    v178 = dependenciesCopy;
+    v27 = objc_msgSend_count(dependenciesCopy, v25, v26);
     v29 = objc_msgSend_initWithCapacity_(v24, v28, v27);
     v209 = 0u;
     v210 = 0u;
@@ -837,7 +837,7 @@ LABEL_11:
     {
 LABEL_72:
 
-      v3 = v178;
+      dependenciesCopy = v178;
       goto LABEL_73;
     }
 
@@ -988,7 +988,7 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  v10 = objc_msgSend_anyObject(v3, v8, v9);
+  v10 = objc_msgSend_anyObject(dependenciesCopy, v8, v9);
   v220[0] = v10;
   v172 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, v220, 1);
 LABEL_73:
@@ -998,10 +998,10 @@ LABEL_74:
   return v172;
 }
 
-- (void)p_validateLayouts:(id)a3 shouldMarkValidLayoutsThatDoNotWantValidation:(BOOL)a4
+- (void)p_validateLayouts:(id)layouts shouldMarkValidLayoutsThatDoNotWantValidation:(BOOL)validation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_sortLayoutsForDependencies_(self, a2, a3);
+  v6 = objc_msgSend_sortLayoutsForDependencies_(self, a2, layouts);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1031,7 +1031,7 @@ LABEL_74:
           objc_msgSend_i_didValidateLayout(v14, v18, v19);
         }
 
-        else if (!a4)
+        else if (!validation)
         {
           continue;
         }
@@ -1046,17 +1046,17 @@ LABEL_74:
   }
 }
 
-- (void)validateLayoutsWithDependencies:(id)a3
+- (void)validateLayoutsWithDependencies:(id)dependencies
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_msgSend_p_recreateLayoutsIfNeededToValidateLayouts_(self, v5, v4);
+  dependenciesCopy = dependencies;
+  objc_msgSend_p_recreateLayoutsIfNeededToValidateLayouts_(self, v5, dependenciesCopy);
   v51 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v4;
+  obj = dependenciesCopy;
   v52 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v57, v62, 16);
   if (v52)
   {
@@ -1163,29 +1163,29 @@ LABEL_27:
   }
 }
 
-- (void)validateLayoutWithDependencies:(id)a3
+- (void)validateLayoutWithDependencies:(id)dependencies
 {
-  v5 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], a2, a3);
+  v5 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], a2, dependencies);
   objc_msgSend_validateLayoutsWithDependencies_(self, v4, v5);
 }
 
-- (id)validatedLayoutForInfo:(id)a3
+- (id)validatedLayoutForInfo:(id)info
 {
-  v3 = objc_msgSend_validatedLayoutsForInfo_(self, a2, a3);
+  v3 = objc_msgSend_validatedLayoutsForInfo_(self, a2, info);
   v6 = objc_msgSend_anyObject(v3, v4, v5);
 
   return v6;
 }
 
-- (id)validatedLayoutsForInfo:(id)a3
+- (id)validatedLayoutsForInfo:(id)info
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = objc_msgSend_layoutsForInfo_(self, v5, v4);
+  infoCopy = info;
+  v8 = objc_msgSend_layoutsForInfo_(self, v5, infoCopy);
   if (!v8)
   {
-    v9 = objc_alloc(objc_msgSend_layoutClass(v4, v6, v7));
-    v12 = objc_msgSend_initWithInfo_(v9, v10, v4);
+    v9 = objc_alloc(objc_msgSend_layoutClass(infoCopy, v6, v7));
+    v12 = objc_msgSend_initWithInfo_(v9, v10, infoCopy);
     if (v12)
     {
       v8 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], v11, v12);
@@ -1266,11 +1266,11 @@ LABEL_27:
   return v8;
 }
 
-- (id)validatedLayoutForInfo:(id)a3 childOfLayout:(id)a4
+- (id)validatedLayoutForInfo:(id)info childOfLayout:(id)layout
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  objc_msgSend_validatedLayoutsForInfo_(self, v7, a3);
+  layoutCopy = layout;
+  objc_msgSend_validatedLayoutsForInfo_(self, v7, info);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1291,7 +1291,7 @@ LABEL_27:
         v15 = *(*(&v18 + 1) + 8 * i);
         v16 = objc_msgSend_parent(v15, v10, v11, v18);
 
-        if (v16 == v6)
+        if (v16 == layoutCopy)
         {
           v12 = v15;
           goto LABEL_11;
@@ -1335,13 +1335,13 @@ LABEL_11:
   }
 }
 
-- (void)i_registerLayout:(id)a3
+- (void)i_registerLayout:(id)layout
 {
-  v16 = a3;
-  objc_msgSend_willBeAddedToLayoutController_(v16, v4, self);
-  if (v16 && self->_layoutsByInfo)
+  layoutCopy = layout;
+  objc_msgSend_willBeAddedToLayoutController_(layoutCopy, v4, self);
+  if (layoutCopy && self->_layoutsByInfo)
   {
-    v8 = objc_msgSend_info(v16, v5, v6);
+    v8 = objc_msgSend_info(layoutCopy, v5, v6);
     if (v8)
     {
       v11 = objc_msgSend_objectForKey_(self->_layoutsByInfo, v7, v8);
@@ -1351,7 +1351,7 @@ LABEL_11:
         objc_msgSend_setObject_forKey_(self->_layoutsByInfo, v12, v11, v8);
       }
 
-      objc_msgSend_addObject_(v11, v9, v16);
+      objc_msgSend_addObject_(v11, v9, layoutCopy);
     }
   }
 
@@ -1359,20 +1359,20 @@ LABEL_11:
   objc_msgSend_layoutInvalidated(WeakRetained, v14, v15);
 }
 
-- (void)i_unregisterLayout:(id)a3
+- (void)i_unregisterLayout:(id)layout
 {
-  v20 = a3;
-  objc_msgSend_willBeRemovedFromLayoutController_(v20, v4, self);
-  if (v20 && self->_layoutsByInfo)
+  layoutCopy = layout;
+  objc_msgSend_willBeRemovedFromLayoutController_(layoutCopy, v4, self);
+  if (layoutCopy && self->_layoutsByInfo)
   {
-    v8 = objc_msgSend_info(v20, v5, v6);
+    v8 = objc_msgSend_info(layoutCopy, v5, v6);
     if (v8)
     {
       v9 = objc_msgSend_objectForKey_(self->_layoutsByInfo, v7, v8);
       v11 = v9;
       if (v9)
       {
-        objc_msgSend_removeObject_(v9, v10, v20);
+        objc_msgSend_removeObject_(v9, v10, layoutCopy);
         if (!objc_msgSend_count(v11, v12, v13))
         {
           objc_msgSend_removeObjectForKey_(self->_layoutsByInfo, v14, v8);
@@ -1384,8 +1384,8 @@ LABEL_11:
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   objc_msgSend_layoutInvalidated(WeakRetained, v16, v17);
 
-  objc_msgSend_removeObject_(self->_invalidLayouts, v18, v20);
-  objc_msgSend_removeObject_(self->_invalidChildrenLayouts, v19, v20);
+  objc_msgSend_removeObject_(self->_invalidLayouts, v18, layoutCopy);
+  objc_msgSend_removeObject_(self->_invalidChildrenLayouts, v19, layoutCopy);
 }
 
 - (void)i_removeAllLayouts
@@ -1398,10 +1398,10 @@ LABEL_11:
   objc_msgSend_removeAllObjects(invalidChildrenLayouts, v7, v8);
 }
 
-- (void)i_enumerateLayoutsUsingBlock:(id)a3
+- (void)i_enumerateLayoutsUsingBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1427,7 +1427,7 @@ LABEL_11:
         v16[1] = 3221225472;
         v16[2] = sub_276661A80;
         v16[3] = &unk_27A6CC680;
-        v17 = v4;
+        v17 = blockCopy;
         objc_msgSend_enumerateObjectsUsingBlock_(v13, v14, v16);
 
         ++v12;
@@ -1441,13 +1441,13 @@ LABEL_11:
   }
 }
 
-- (void)p_recreateLayoutsIfNeededToValidateLayouts:(id)a3
+- (void)p_recreateLayoutsIfNeededToValidateLayouts:(id)layouts
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   if (objc_msgSend_count(self->_layoutsNeedingRecreating, v5, v6))
   {
-    if (objc_msgSend_intersectsSet_(v4, v7, self->_layoutsNeedingRecreating))
+    if (objc_msgSend_intersectsSet_(layoutsCopy, v7, self->_layoutsNeedingRecreating))
     {
       v9 = MEMORY[0x277D81150];
       v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDLayoutController p_recreateLayoutsIfNeededToValidateLayouts:]");

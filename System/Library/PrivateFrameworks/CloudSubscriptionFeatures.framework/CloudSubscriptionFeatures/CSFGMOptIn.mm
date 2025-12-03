@@ -1,7 +1,7 @@
 @interface CSFGMOptIn
 - (BOOL)isOptedIn;
 - (CSFGMOptIn)init;
-- (CSFGMOptIn)initWithOptInProvider:(id)a3;
+- (CSFGMOptIn)initWithOptInProvider:(id)provider;
 - (unint64_t)state;
 @end
 
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (CSFGMOptIn)initWithOptInProvider:(id)a3
+- (CSFGMOptIn)initWithOptInProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = CSFGMOptIn;
   v5 = [(CSFGMOptIn *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CSFGMOptIn *)v5 setGmOptIn:v4];
+    [(CSFGMOptIn *)v5 setGmOptIn:providerCopy];
   }
 
   return v6;
@@ -32,25 +32,25 @@
 
 - (BOOL)isOptedIn
 {
-  v2 = [(CSFGMOptIn *)self gmOptIn];
-  v3 = [v2 isOptedIn];
+  gmOptIn = [(CSFGMOptIn *)self gmOptIn];
+  isOptedIn = [gmOptIn isOptedIn];
 
-  return v3;
+  return isOptedIn;
 }
 
 - (unint64_t)state
 {
-  v2 = [(CSFGMOptIn *)self gmOptIn];
-  v3 = [v2 state];
+  gmOptIn = [(CSFGMOptIn *)self gmOptIn];
+  state = [gmOptIn state];
 
-  if (v3 == 1)
+  if (state == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (state == 2);
   }
 }
 

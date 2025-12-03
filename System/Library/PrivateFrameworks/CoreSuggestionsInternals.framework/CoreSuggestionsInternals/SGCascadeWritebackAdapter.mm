@@ -1,22 +1,22 @@
 @interface SGCascadeWritebackAdapter
-+ (id)_loggingIdentifiersFromEvents:(id)a3;
-- (id)_cascadeEntityItemsFromEvents:(id)a3;
-- (void)addEvent:(id)a3;
-- (void)addEvents:(id)a3;
++ (id)_loggingIdentifiersFromEvents:(id)events;
+- (id)_cascadeEntityItemsFromEvents:(id)events;
+- (void)addEvent:(id)event;
+- (void)addEvents:(id)events;
 @end
 
 @implementation SGCascadeWritebackAdapter
 
-- (id)_cascadeEntityItemsFromEvents:(id)a3
+- (id)_cascadeEntityItemsFromEvents:(id)events
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -31,10 +31,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) cascadeEntityItemForEvent];
-        if (v10)
+        cascadeEntityItemForEvent = [*(*(&v13 + 1) + 8 * i) cascadeEntityItemForEvent];
+        if (cascadeEntityItemForEvent)
         {
-          [v4 addObject:v10];
+          [v4 addObject:cascadeEntityItemForEvent];
         }
       }
 
@@ -49,20 +49,20 @@
   return v4;
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v5)
   {
     v6 = v5;
-    v25 = self;
-    obj = v4;
+    selfCopy = self;
+    obj = eventsCopy;
     v7 = 0;
     v8 = *v36;
     do
@@ -79,8 +79,8 @@
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v11 = [v10 tags];
-        v12 = [v11 countByEnumeratingWithState:&v31 objects:v41 count:16];
+        tags = [v10 tags];
+        v12 = [tags countByEnumeratingWithState:&v31 objects:v41 count:16];
         if (v12)
         {
           v13 = v12;
@@ -91,23 +91,23 @@
             {
               if (*v32 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(tags);
               }
 
               v16 = *(*(&v31 + 1) + 8 * j);
               if ([v16 isCascadeEntitySetVersion])
               {
-                v17 = [v16 value];
-                v18 = [v17 longLongValue];
+                value = [v16 value];
+                longLongValue = [value longLongValue];
 
-                if (v18 <= v7)
+                if (longLongValue <= v7)
                 {
                   v19 = v7;
                 }
 
                 else
                 {
-                  v19 = v18;
+                  v19 = longLongValue;
                 }
 
                 if (v7)
@@ -117,12 +117,12 @@
 
                 else
                 {
-                  v7 = v18;
+                  v7 = longLongValue;
                 }
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v31 objects:v41 count:16];
+            v13 = [tags countByEnumeratingWithState:&v31 objects:v41 count:16];
           }
 
           while (v13);
@@ -133,10 +133,10 @@
     }
 
     while (v6);
-    v4 = obj;
+    eventsCopy = obj;
     if (v7)
     {
-      v20 = [(SGCascadeWritebackAdapter *)v25 _cascadeEntityItemsFromEvents:obj];
+      v20 = [(SGCascadeWritebackAdapter *)selfCopy _cascadeEntityItemsFromEvents:obj];
       if ([v20 count])
       {
         v21 = MEMORY[0x277CF9508];
@@ -171,7 +171,7 @@
   v20 = sgLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    v22 = [SGCascadeWritebackAdapter _loggingIdentifiersFromEvents:v4];
+    v22 = [SGCascadeWritebackAdapter _loggingIdentifiersFromEvents:eventsCopy];
     *buf = 138412290;
     v40 = v22;
     _os_log_error_impl(&dword_231E60000, v20, OS_LOG_TYPE_ERROR, "addEvents:[SGEvent ids: %@] bailing because events do not contain a cascade set version.", buf, 0xCu);
@@ -412,28 +412,28 @@ LABEL_40:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  eventCopy2 = event;
+  v6 = [v4 arrayWithObjects:&eventCopy count:1];
 
-  [(SGCascadeWritebackAdapter *)self addEvents:v6, v8, v9];
+  [(SGCascadeWritebackAdapter *)self addEvents:v6, eventCopy, v9];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_loggingIdentifiersFromEvents:(id)a3
++ (id)_loggingIdentifiersFromEvents:(id)events
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -448,8 +448,8 @@ LABEL_40:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) loggingIdentifier];
-        [v4 addObject:v10];
+        loggingIdentifier = [*(*(&v13 + 1) + 8 * i) loggingIdentifier];
+        [v4 addObject:loggingIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

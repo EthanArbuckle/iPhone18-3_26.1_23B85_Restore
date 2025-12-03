@@ -1,26 +1,26 @@
 @interface KTConfigBagFetchOperation
-- (KTConfigBagFetchOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 triggerInterface:(id)a6;
+- (KTConfigBagFetchOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState triggerInterface:(id)interface;
 - (void)groupStart;
 @end
 
 @implementation KTConfigBagFetchOperation
 
-- (KTConfigBagFetchOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 triggerInterface:(id)a6
+- (KTConfigBagFetchOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState triggerInterface:(id)interface
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  interfaceCopy = interface;
   v18.receiver = self;
   v18.super_class = KTConfigBagFetchOperation;
   v15 = [(KTGroupOperation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deps, a3);
-    objc_storeStrong(&v16->_intendedState, a4);
-    objc_storeStrong(&v16->_nextState, a5);
-    objc_storeStrong(&v16->_triggerInterface, a6);
+    objc_storeStrong(&v15->_deps, dependencies);
+    objc_storeStrong(&v16->_intendedState, state);
+    objc_storeStrong(&v16->_nextState, errorState);
+    objc_storeStrong(&v16->_triggerInterface, interface);
   }
 
   return v16;
@@ -31,18 +31,18 @@
   v3 = objc_alloc_init(NSOperation);
   [(KTConfigBagFetchOperation *)self setFinishedOp:v3];
 
-  v4 = [(KTConfigBagFetchOperation *)self finishedOp];
-  [(KTGroupOperation *)self dependOnBeforeGroupFinished:v4];
+  finishedOp = [(KTConfigBagFetchOperation *)self finishedOp];
+  [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
   objc_initWeak(&location, self);
-  v5 = [(KTConfigBagFetchOperation *)self deps];
-  v6 = [v5 logClient];
+  deps = [(KTConfigBagFetchOperation *)self deps];
+  logClient = [deps logClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001CA8BC;
   v7[3] = &unk_100325C40;
   objc_copyWeak(&v8, &location);
-  [v6 configureFromNetwork:v7];
+  [logClient configureFromNetwork:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

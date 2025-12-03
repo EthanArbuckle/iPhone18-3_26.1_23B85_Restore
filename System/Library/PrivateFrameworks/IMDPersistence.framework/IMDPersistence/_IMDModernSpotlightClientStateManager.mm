@@ -1,8 +1,8 @@
 @interface _IMDModernSpotlightClientStateManager
 - (_IMDModernSpotlightClientStateManager)init;
 - (id)_missingSpotlightIndexError;
-- (void)_currentClientStateWithCompletion:(id)a3;
-- (void)_saveClientState:(id)a3 withCompletion:(id)a4;
+- (void)_currentClientStateWithCompletion:(id)completion;
+- (void)_saveClientState:(id)state withCompletion:(id)completion;
 @end
 
 @implementation _IMDModernSpotlightClientStateManager
@@ -36,9 +36,9 @@
   return v7;
 }
 
-- (void)_currentClientStateWithCompletion:(id)a3
+- (void)_currentClientStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = IMCoreSpotlightCriticalIndex();
   if (v7)
   {
@@ -49,7 +49,7 @@
       v11[1] = 3221225472;
       v11[2] = sub_1B7B907C8;
       v11[3] = &unk_1E7CBB628;
-      v12 = v4;
+      v12 = completionCopy;
       objc_msgSend_fetchLastClientStateWithCompletionHandler_(v7, v10, v11);
 
       goto LABEL_10;
@@ -71,21 +71,21 @@
     v8 = objc_msgSend__missingSpotlightIndexError(self, v5, v6);
   }
 
-  (*(v4 + 2))(v4, 0, v8);
+  (*(completionCopy + 2))(completionCopy, 0, v8);
 LABEL_10:
 }
 
-- (void)_saveClientState:(id)a3 withCompletion:(id)a4
+- (void)_saveClientState:(id)state withCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   IMDIndexingAssertClientRequestQueue();
   v8 = IMLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = stateCopy;
     _os_log_impl(&dword_1B7AD5000, v8, OS_LOG_TYPE_INFO, "Saving client state: %@", buf, 0xCu);
   }
 
@@ -105,13 +105,13 @@ LABEL_10:
         }
       }
 
-      v7[2](v7, v11);
+      completionCopy[2](completionCopy, v11);
     }
 
     else
     {
       v25 = 0;
-      v16 = objc_msgSend_dataWithError_(v6, v10, &v25);
+      v16 = objc_msgSend_dataWithError_(stateCopy, v10, &v25);
       v11 = v25;
       if (v11)
       {
@@ -126,7 +126,7 @@ LABEL_10:
           }
         }
 
-        v7[2](v7, v11);
+        completionCopy[2](completionCopy, v11);
       }
 
       else
@@ -137,7 +137,7 @@ LABEL_10:
         v22[2] = sub_1B7B90E20;
         v22[3] = &unk_1E7CBB398;
         v23 = 0;
-        v24 = v7;
+        v24 = completionCopy;
         objc_msgSend_endIndexBatchWithClientState_completionHandler_(v9, v20, v16, v22);
       }
     }
@@ -156,7 +156,7 @@ LABEL_10:
     }
 
     v11 = objc_msgSend__missingSpotlightIndexError(self, v13, v14);
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   v21 = *MEMORY[0x1E69E9840];

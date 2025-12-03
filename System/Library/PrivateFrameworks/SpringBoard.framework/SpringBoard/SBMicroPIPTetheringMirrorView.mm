@@ -1,15 +1,15 @@
 @interface SBMicroPIPTetheringMirrorView
-- (SBMicroPIPTetheringMirrorView)initWithFrame:(CGRect)a3;
+- (SBMicroPIPTetheringMirrorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SBMicroPIPTetheringMirrorView
 
-- (SBMicroPIPTetheringMirrorView)initWithFrame:(CGRect)a3
+- (SBMicroPIPTetheringMirrorView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = SBMicroPIPTetheringMirrorView;
-  v3 = [(SBMicroPIPTetheringMirrorView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBMicroPIPTetheringMirrorView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SBMicroPIPTetheringMirrorContentPlaceholderView alloc];
@@ -18,8 +18,8 @@
     contentPlaceholderView = v3->_contentPlaceholderView;
     v3->_contentPlaceholderView = v5;
 
-    v7 = [(SBMicroPIPTetheringMirrorContentPlaceholderView *)v3->_contentPlaceholderView layer];
-    [v7 setAnchorPoint:{1.0, 1.0}];
+    layer = [(SBMicroPIPTetheringMirrorContentPlaceholderView *)v3->_contentPlaceholderView layer];
+    [layer setAnchorPoint:{1.0, 1.0}];
 
     [(SBMicroPIPTetheringMirrorContentPlaceholderView *)v3->_contentPlaceholderView setAutoresizingMask:36];
     v8 = v3->_contentPlaceholderView;

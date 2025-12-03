@@ -1,25 +1,25 @@
 @interface PUAlbumListViewControllerSpec
-+ (id)emptyPlaceholderImageForSystemImageNamed:(id)a3 scale:(int64_t)a4;
++ (id)emptyPlaceholderImageForSystemImageNamed:(id)named scale:(int64_t)scale;
 + (id)padSpec;
 + (id)phoneSpec;
 + (id)visionOSSpec;
-- (CGPoint)_pixelRoundedOriginForCenteredImage:(id)a3 inRect:(CGRect)a4 window:(id)a5;
-- (CGSize)cellSizeForBounds:(CGRect)a3;
-- (CGSize)cellSizeForStackSize:(CGSize)a3;
+- (CGPoint)_pixelRoundedOriginForCenteredImage:(id)image inRect:(CGRect)rect window:(id)window;
+- (CGSize)cellSizeForBounds:(CGRect)bounds;
+- (CGSize)cellSizeForStackSize:(CGSize)size;
 - (CGSize)collageImageSize;
 - (CGSize)contentSizeForViewInPopover;
 - (CGSize)imageSize;
 - (CGSize)stackSize;
-- (CGSize)tileSizeForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4 stackViewStyle:(unint64_t)a5;
+- (CGSize)tileSizeForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets stackViewStyle:(unint64_t)style;
 - (PUAlbumListViewControllerSpec)standInAlbumListViewControllerSpec;
 - (PUFontManager)_fontManager;
-- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4;
+- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)stackPerspectiveInsets;
 - (UIOffset)stackOffset;
 - (UIOffset)stackPerspectiveOffset;
-- (id)emptyAlbumPlaceholderImageForWindow:(id)a3;
-- (id)emptySharedAlbumPlaceholderImageForWindow:(id)a3;
-- (void)_getStackSize:(CGSize *)a3 outEdgeInsets:(UIEdgeInsets *)a4 forLayoutReferenceSize:(CGSize)a5 safeAreaInsets:(UIEdgeInsets)a6;
+- (id)emptyAlbumPlaceholderImageForWindow:(id)window;
+- (id)emptySharedAlbumPlaceholderImageForWindow:(id)window;
+- (void)_getStackSize:(CGSize *)size outEdgeInsets:(UIEdgeInsets *)insets forLayoutReferenceSize:(CGSize)referenceSize safeAreaInsets:(UIEdgeInsets)areaInsets;
 @end
 
 @implementation PUAlbumListViewControllerSpec
@@ -91,16 +91,16 @@
   return v2;
 }
 
-- (void)_getStackSize:(CGSize *)a3 outEdgeInsets:(UIEdgeInsets *)a4 forLayoutReferenceSize:(CGSize)a5 safeAreaInsets:(UIEdgeInsets)a6
+- (void)_getStackSize:(CGSize *)size outEdgeInsets:(UIEdgeInsets *)insets forLayoutReferenceSize:(CGSize)referenceSize safeAreaInsets:(UIEdgeInsets)areaInsets
 {
-  right = a6.right;
-  left = a6.left;
-  v11 = a5.width - a6.left - a6.right;
-  v12 = [(PUAlbumListViewControllerSpec *)self _insetsInterpolator];
-  [v12 valueForMetric:v11];
+  right = areaInsets.right;
+  left = areaInsets.left;
+  v11 = referenceSize.width - areaInsets.left - areaInsets.right;
+  _insetsInterpolator = [(PUAlbumListViewControllerSpec *)self _insetsInterpolator];
+  [_insetsInterpolator valueForMetric:v11];
   v14 = v13;
 
-  if (a4)
+  if (insets)
   {
     if (PUMainScreenScale_onceToken != -1)
     {
@@ -108,16 +108,16 @@
     }
 
     v15 = round(*&PUMainScreenScale_screenScale * v14) / *&PUMainScreenScale_screenScale;
-    a4->top = 0.0;
-    a4->left = left + v15;
-    a4->bottom = 0.0;
-    a4->right = right + v15;
+    insets->top = 0.0;
+    insets->left = left + v15;
+    insets->bottom = 0.0;
+    insets->right = right + v15;
   }
 
-  if (a3)
+  if (size)
   {
-    v16 = [(PUAlbumListViewControllerSpec *)self _stackWidthInterpolator];
-    [v16 valueForMetric:v11 + v14 * -2.0];
+    _stackWidthInterpolator = [(PUAlbumListViewControllerSpec *)self _stackWidthInterpolator];
+    [_stackWidthInterpolator valueForMetric:v11 + v14 * -2.0];
     v18 = v17;
     if (PUMainScreenScale_onceToken != -1)
     {
@@ -126,19 +126,19 @@
 
     v19 = round(*&PUMainScreenScale_screenScale * v18) / *&PUMainScreenScale_screenScale;
 
-    a3->width = v19;
-    a3->height = v19;
+    size->width = v19;
+    size->height = v19;
   }
 }
 
-- (CGPoint)_pixelRoundedOriginForCenteredImage:(id)a3 inRect:(CGRect)a4 window:(id)a5
+- (CGPoint)_pixelRoundedOriginForCenteredImage:(id)image inRect:(CGRect)rect window:(id)window
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
-  [a3 size];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  windowCopy = window;
+  [image size];
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -161,13 +161,13 @@
   return result;
 }
 
-- (id)emptySharedAlbumPlaceholderImageForWindow:(id)a3
+- (id)emptySharedAlbumPlaceholderImageForWindow:(id)window
 {
   emptySharedAlbumPlaceholderImage = self->_emptySharedAlbumPlaceholderImage;
   if (!emptySharedAlbumPlaceholderImage)
   {
-    v5 = [(PUAlbumListViewControllerSpec *)self nameOfEmptySharedAlbumPlaceholderImage];
-    v6 = [PUAlbumListViewControllerSpec emptyPlaceholderImageForSystemImageNamed:v5 scale:3];
+    nameOfEmptySharedAlbumPlaceholderImage = [(PUAlbumListViewControllerSpec *)self nameOfEmptySharedAlbumPlaceholderImage];
+    v6 = [PUAlbumListViewControllerSpec emptyPlaceholderImageForSystemImageNamed:nameOfEmptySharedAlbumPlaceholderImage scale:3];
     v7 = self->_emptySharedAlbumPlaceholderImage;
     self->_emptySharedAlbumPlaceholderImage = v6;
 
@@ -177,13 +177,13 @@
   return emptySharedAlbumPlaceholderImage;
 }
 
-- (id)emptyAlbumPlaceholderImageForWindow:(id)a3
+- (id)emptyAlbumPlaceholderImageForWindow:(id)window
 {
   emptyAlbumPlaceholderImage = self->_emptyAlbumPlaceholderImage;
   if (!emptyAlbumPlaceholderImage)
   {
-    v5 = [(PUAlbumListViewControllerSpec *)self nameOfEmptyAlbumPlaceholderImage];
-    v6 = [PUAlbumListViewControllerSpec emptyPlaceholderImageForSystemImageNamed:v5 scale:3];
+    nameOfEmptyAlbumPlaceholderImage = [(PUAlbumListViewControllerSpec *)self nameOfEmptyAlbumPlaceholderImage];
+    v6 = [PUAlbumListViewControllerSpec emptyPlaceholderImageForSystemImageNamed:nameOfEmptyAlbumPlaceholderImage scale:3];
     v7 = self->_emptyAlbumPlaceholderImage;
     self->_emptyAlbumPlaceholderImage = v6;
 
@@ -193,18 +193,18 @@
   return emptyAlbumPlaceholderImage;
 }
 
-- (CGSize)tileSizeForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4 stackViewStyle:(unint64_t)a5
+- (CGSize)tileSizeForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets stackViewStyle:(unint64_t)style
 {
-  [(PUAlbumListViewControllerSpec *)self stackSizeForLayoutReferenceSize:a3.width safeAreaInsets:a3.height, a4.top, a4.left, a4.bottom, a4.right];
-  if (a5 > 6)
+  [(PUAlbumListViewControllerSpec *)self stackSizeForLayoutReferenceSize:size.width safeAreaInsets:size.height, insets.top, insets.left, insets.bottom, insets.right];
+  if (style > 6)
   {
     v7 = 0.0;
     v6 = 0.0;
   }
 
-  else if (((1 << a5) & 0x67) == 0)
+  else if (((1 << style) & 0x67) == 0)
   {
-    if (a5 == 3)
+    if (style == 3)
     {
       v8 = 0.5;
     }
@@ -223,7 +223,7 @@
   return result;
 }
 
-- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets
 {
   v4 = 0.0;
   v5 = 0.0;
@@ -236,19 +236,19 @@
   return result;
 }
 
-- (CGSize)cellSizeForStackSize:(CGSize)a3
+- (CGSize)cellSizeForStackSize:(CGSize)size
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PUAlbumListViewControllerSpec.m" lineNumber:102 description:{@"Method %s is a responsibility of subclass %@", "-[PUAlbumListViewControllerSpec cellSizeForStackSize:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumListViewControllerSpec.m" lineNumber:102 description:{@"Method %s is a responsibility of subclass %@", "-[PUAlbumListViewControllerSpec cellSizeForStackSize:]", v7}];
 
   abort();
 }
 
-- (CGSize)cellSizeForBounds:(CGRect)a3
+- (CGSize)cellSizeForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v4 = 44.0;
   result.height = v4;
   result.width = width;
@@ -279,23 +279,23 @@
   return fontManager;
 }
 
-+ (id)emptyPlaceholderImageForSystemImageNamed:(id)a3 scale:(int64_t)a4
++ (id)emptyPlaceholderImageForSystemImageNamed:(id)named scale:(int64_t)scale
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69DC888];
-  v6 = a3;
-  v7 = [v5 systemGray4Color];
+  namedCopy = named;
+  systemGray4Color = [v5 systemGray4Color];
   v8 = [MEMORY[0x1E69DCAD8] configurationWithWeight:6];
   v9 = MEMORY[0x1E69DCAD8];
-  v17[0] = v7;
+  v17[0] = systemGray4Color;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v11 = [v9 configurationWithPaletteColors:v10];
   v12 = [v8 configurationByApplyingConfiguration:v11];
 
-  v13 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDB8] scale:a4];
+  v13 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDB8] scale:scale];
   v14 = [v12 configurationByApplyingConfiguration:v13];
 
-  v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:v6 withConfiguration:v14];
+  v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:namedCopy withConfiguration:v14];
 
   return v15;
 }

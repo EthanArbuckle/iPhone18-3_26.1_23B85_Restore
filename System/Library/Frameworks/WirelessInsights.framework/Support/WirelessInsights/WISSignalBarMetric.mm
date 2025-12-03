@@ -1,17 +1,17 @@
 @interface WISSignalBarMetric
 + (id)getSharedInstance;
 - (WISSignalBarMetric)init;
-- (id)signalStrengthInfoToString:(id)a3;
-- (int64_t)plmnPartStringToInt:(id)a3 error:(id *)a4;
-- (void)currentDataSimChanged:(id)a3;
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5;
-- (void)plmnChanged:(id)a3 plmn:(id)a4;
+- (id)signalStrengthInfoToString:(id)string;
+- (int64_t)plmnPartStringToInt:(id)int error:(id *)error;
+- (void)currentDataSimChanged:(id)changed;
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state;
+- (void)plmnChanged:(id)changed plmn:(id)plmn;
 - (void)populateSubscriptionContextsInUse;
-- (void)ratChanged:(id)a3 rat:(id)a4;
-- (void)registrationStatusChanged:(id)a3 status:(id)a4;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
+- (void)ratChanged:(id)changed rat:(id)rat;
+- (void)registrationStatusChanged:(id)changed status:(id)status;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
 - (void)subscriptionInfoDidChange;
-- (void)triggerMetric:(id)a3 currentTime:(unint64_t)a4;
+- (void)triggerMetric:(id)metric currentTime:(unint64_t)time;
 @end
 
 @implementation WISSignalBarMetric
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_100052AF0;
   block[3] = &unk_1002AB480;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D82F8 != -1)
   {
     dispatch_once(&qword_1002D82F8, block);
@@ -47,42 +47,42 @@
     v4 = +[TelephonyStateRelay sharedInstance];
     [(WISSignalBarMetric *)v2 setCtRelay:v4];
 
-    v5 = [(WISSignalBarMetric *)v2 ctRelay];
-    v6 = [v5 coreTelephonyClient];
+    ctRelay = [(WISSignalBarMetric *)v2 ctRelay];
+    coreTelephonyClient = [ctRelay coreTelephonyClient];
 
-    if (!v6 && os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
+    if (!coreTelephonyClient && os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
     {
       sub_1001FE7BC();
     }
 
-    v7 = [(WISSignalBarMetric *)v2 ctRelay];
-    [v7 addTelephonyStateDelegate:v2 withQueue:{-[WISSignalBarMetric queue](v2, "queue")}];
+    ctRelay2 = [(WISSignalBarMetric *)v2 ctRelay];
+    [ctRelay2 addTelephonyStateDelegate:v2 withQueue:{-[WISSignalBarMetric queue](v2, "queue")}];
 
-    v8 = [(WISSignalBarMetric *)v2 queue];
+    queue = [(WISSignalBarMetric *)v2 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100052D04;
     block[3] = &unk_1002AB4D0;
     v9 = v2;
     v13 = v9;
-    dispatch_async(v8, block);
+    dispatch_async(queue, block);
     v10 = v9;
   }
 
   return v2;
 }
 
-- (id)signalStrengthInfoToString:(id)a3
+- (id)signalStrengthInfoToString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    v5 = [v3 displayBars];
-    v6 = v5;
-    if (v5)
+    displayBars = [stringCopy displayBars];
+    v6 = displayBars;
+    if (displayBars)
     {
-      [v5 stringValue];
+      [displayBars stringValue];
     }
 
     else
@@ -105,12 +105,12 @@
   return v7;
 }
 
-- (int64_t)plmnPartStringToInt:(id)a3 error:(id *)a4
+- (int64_t)plmnPartStringToInt:(id)int error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 intValue];
-  v7 = v6;
-  if (v6 <= 0)
+  intCopy = int;
+  intValue = [intCopy intValue];
+  v7 = intValue;
+  if (intValue <= 0)
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
     {
@@ -120,7 +120,7 @@
     v8 = +[NSMutableDictionary dictionary];
     [v8 setValue:@"PLMN part less than or equal to zero" forKey:NSLocalizedDescriptionKey];
     v9 = [NSString stringWithUTF8String:"signalBarMonitor"];
-    *a4 = [NSError errorWithDomain:v9 code:0 userInfo:v8];
+    *error = [NSError errorWithDomain:v9 code:0 userInfo:v8];
 
     v7 = 0;
   }
@@ -130,16 +130,16 @@
 
 - (void)populateSubscriptionContextsInUse
 {
-  v2 = [(WISSignalBarMetric *)self ctRelay];
-  v3 = [v2 coreTelephonyClient];
+  ctRelay = [(WISSignalBarMetric *)self ctRelay];
+  coreTelephonyClient = [ctRelay coreTelephonyClient];
   v107 = 0;
-  v72 = [v3 getSubscriptionInfoWithError:&v107];
+  v72 = [coreTelephonyClient getSubscriptionInfoWithError:&v107];
   v4 = v107;
 
   if (!v4)
   {
-    v5 = [v72 subscriptionsInUse];
-    if (!v5)
+    subscriptionsInUse = [v72 subscriptionsInUse];
+    if (!subscriptionsInUse)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
       {
@@ -150,11 +150,11 @@
       goto LABEL_75;
     }
 
-    v79 = v5;
-    v6 = [(WISSignalBarMetric *)self ctRelay];
-    v7 = [v6 coreTelephonyClient];
+    v79 = subscriptionsInUse;
+    ctRelay2 = [(WISSignalBarMetric *)self ctRelay];
+    coreTelephonyClient2 = [ctRelay2 coreTelephonyClient];
     v106 = 0;
-    v70 = [v7 getCurrentDataSubscriptionContextSync:&v106];
+    v70 = [coreTelephonyClient2 getCurrentDataSubscriptionContextSync:&v106];
     v4 = v106;
 
     if (v4)
@@ -170,7 +170,7 @@
     }
 
     [(WISSignalBarMetric *)self setDataInitializationSuccessful:1];
-    v67 = [v70 uuid];
+    uuid = [v70 uuid];
     v66 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
     v75 = objc_alloc_init(NSMutableArray);
     v104 = 0u;
@@ -215,8 +215,8 @@
                 {
                   if ([*(*(&v98 + 1) + 8 * j) slotID])
                   {
-                    v17 = [v16 uuid];
-                    v18 = [v11 isEqual:v17];
+                    uuid2 = [v16 uuid];
+                    v18 = [v11 isEqual:uuid2];
 
                     if (v18)
                     {
@@ -253,8 +253,8 @@ LABEL_28:
       sub_1001FE92C();
     }
 
-    v19 = [(WISSignalBarMetric *)self contextStates];
-    [v19 removeObjectsForKeys:v75];
+    contextStates = [(WISSignalBarMetric *)self contextStates];
+    [contextStates removeObjectsForKeys:v75];
 
     v96 = 0u;
     v97 = 0u;
@@ -268,7 +268,7 @@ LABEL_28:
 LABEL_73:
 
 LABEL_74:
-      v5 = v79;
+      subscriptionsInUse = v79;
 LABEL_75:
 
       goto LABEL_76;
@@ -289,9 +289,9 @@ LABEL_34:
 
       if (v23 && [v23 slotID])
       {
-        v24 = [(WISSignalBarMetric *)self contextStates];
-        v25 = [v23 uuid];
-        v26 = [v24 objectForKey:v25];
+        contextStates2 = [(WISSignalBarMetric *)self contextStates];
+        uuid3 = [v23 uuid];
+        v26 = [contextStates2 objectForKey:uuid3];
         v27 = v26 == 0;
 
         v28 = os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG);
@@ -304,10 +304,10 @@ LABEL_34:
             sub_1001FE9E8();
           }
 
-          v29 = [(WISSignalBarMetric *)self ctRelay];
-          v30 = [v29 coreTelephonyClient];
+          ctRelay3 = [(WISSignalBarMetric *)self ctRelay];
+          coreTelephonyClient3 = [ctRelay3 coreTelephonyClient];
           v93 = 0;
-          v31 = [v30 copyRegistrationDisplayStatus:v23 error:&v93];
+          v31 = [coreTelephonyClient3 copyRegistrationDisplayStatus:v23 error:&v93];
           v4 = v93;
 
           if (v4)
@@ -315,23 +315,23 @@ LABEL_34:
             v32 = *(qword_1002DBE98 + 48);
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
-              v33 = [v23 uuid];
-              v34 = [v4 localizedDescription];
+              uuid4 = [v23 uuid];
+              localizedDescription = [v4 localizedDescription];
               *buf = 138412546;
-              v109 = v33;
+              v109 = uuid4;
               v110 = 2112;
-              v111 = v34;
+              v111 = localizedDescription;
               _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "SignalBarMetric:Unable to fetch registration display status for context %@: %@", buf, 0x16u);
             }
           }
 
           else
           {
-            v74 = [v31 registrationDisplayStatus];
-            v35 = [(WISSignalBarMetric *)self ctRelay];
-            v36 = [v35 coreTelephonyClient];
+            registrationDisplayStatus = [v31 registrationDisplayStatus];
+            ctRelay4 = [(WISSignalBarMetric *)self ctRelay];
+            coreTelephonyClient4 = [ctRelay4 coreTelephonyClient];
             v92 = 0;
-            v37 = [v36 getSignalStrengthInfo:v23 error:&v92];
+            v37 = [coreTelephonyClient4 getSignalStrengthInfo:v23 error:&v92];
             v4 = v92;
 
             if (v4)
@@ -339,12 +339,12 @@ LABEL_34:
               v38 = *(qword_1002DBE98 + 48);
               if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
               {
-                v39 = [v23 uuid];
-                v40 = [v4 localizedDescription];
+                uuid5 = [v23 uuid];
+                localizedDescription2 = [v4 localizedDescription];
                 *buf = 138412546;
-                v109 = v39;
+                v109 = uuid5;
                 v110 = 2112;
-                v111 = v40;
+                v111 = localizedDescription2;
                 _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "SignalBarMetric:Unable to fetch signal strength for context %@: %@", buf, 0x16u);
               }
             }
@@ -352,10 +352,10 @@ LABEL_34:
             else
             {
               v71 = [(WISSignalBarMetric *)self signalStrengthInfoToString:v37];
-              v41 = [(WISSignalBarMetric *)self ctRelay];
-              v42 = [v41 coreTelephonyClient];
+              ctRelay5 = [(WISSignalBarMetric *)self ctRelay];
+              coreTelephonyClient5 = [ctRelay5 coreTelephonyClient];
               v91 = 0;
-              v73 = [v42 copyMobileCountryCode:v23 error:&v91];
+              v73 = [coreTelephonyClient5 copyMobileCountryCode:v23 error:&v91];
               v4 = v91;
 
               if (v4)
@@ -363,12 +363,12 @@ LABEL_34:
                 v43 = *(qword_1002DBE98 + 48);
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                 {
-                  v44 = [v23 uuid];
-                  v45 = [v4 localizedDescription];
+                  uuid6 = [v23 uuid];
+                  localizedDescription3 = [v4 localizedDescription];
                   *buf = 138412546;
-                  v109 = v44;
+                  v109 = uuid6;
                   v110 = 2112;
-                  v111 = v45;
+                  v111 = localizedDescription3;
                   _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "SignalBarMetric:Unable to fetch MCC for context %@: %@", buf, 0x16u);
                 }
               }
@@ -384,22 +384,22 @@ LABEL_34:
                   v47 = *(qword_1002DBE98 + 48);
                   if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
                   {
-                    v48 = [v23 uuid];
-                    v49 = [v4 localizedDescription];
+                    uuid7 = [v23 uuid];
+                    localizedDescription4 = [v4 localizedDescription];
                     *buf = 138412546;
-                    v109 = v48;
+                    v109 = uuid7;
                     v110 = 2112;
-                    v111 = v49;
+                    v111 = localizedDescription4;
                     _os_log_error_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "SignalBarMetric:Unable to convert MCC for context %@: %@", buf, 0x16u);
                   }
                 }
 
                 else
                 {
-                  v50 = [(WISSignalBarMetric *)self ctRelay];
-                  v51 = [v50 coreTelephonyClient];
+                  ctRelay6 = [(WISSignalBarMetric *)self ctRelay];
+                  coreTelephonyClient6 = [ctRelay6 coreTelephonyClient];
                   v89 = 0;
-                  v68 = [v51 copyMobileNetworkCode:v23 error:&v89];
+                  v68 = [coreTelephonyClient6 copyMobileNetworkCode:v23 error:&v89];
                   v4 = v89;
 
                   if (v4)
@@ -407,12 +407,12 @@ LABEL_34:
                     v52 = *(qword_1002DBE98 + 48);
                     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
                     {
-                      v53 = [v23 uuid];
-                      v54 = [v4 localizedDescription];
+                      uuid8 = [v23 uuid];
+                      localizedDescription5 = [v4 localizedDescription];
                       *buf = 138412546;
-                      v109 = v53;
+                      v109 = uuid8;
                       v110 = 2112;
-                      v111 = v54;
+                      v111 = localizedDescription5;
                       _os_log_error_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "SignalBarMetric:Unable to fetch MNC for context %@: %@", buf, 0x16u);
                     }
                   }
@@ -428,23 +428,23 @@ LABEL_34:
                       v56 = *(qword_1002DBE98 + 48);
                       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
                       {
-                        v57 = [v23 uuid];
-                        v58 = [v4 localizedDescription];
+                        uuid9 = [v23 uuid];
+                        localizedDescription6 = [v4 localizedDescription];
                         *buf = 138412546;
-                        v109 = v57;
+                        v109 = uuid9;
                         v110 = 2112;
-                        v111 = v58;
+                        v111 = localizedDescription6;
                         _os_log_error_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "SignalBarMetric:Unable to convert MNC for context %@: %@", buf, 0x16u);
                       }
                     }
 
                     else
                     {
-                      v59 = [v23 uuid];
-                      v60 = [v67 isEqual:v59];
+                      uuid10 = [v23 uuid];
+                      v60 = [uuid isEqual:uuid10];
 
-                      v61 = [(WISSignalBarMetric *)self ctRelay];
-                      v62 = [v61 coreTelephonyClient];
+                      ctRelay7 = [(WISSignalBarMetric *)self ctRelay];
+                      coreTelephonyClient7 = [ctRelay7 coreTelephonyClient];
                       v80[0] = _NSConcreteStackBlock;
                       v80[1] = 3221225472;
                       v81[0] = sub_100053D78;
@@ -456,8 +456,8 @@ LABEL_34:
                       v86 = v69;
                       v87 = v60;
                       v82 = v71;
-                      v83 = v74;
-                      [v62 copyCellInfo:v23 completion:v80];
+                      v83 = registrationDisplayStatus;
+                      [coreTelephonyClient7 copyCellInfo:v23 completion:v80];
 
                       v4 = 0;
                     }
@@ -511,19 +511,19 @@ LABEL_45:
 LABEL_76:
 }
 
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state
 {
-  v9 = a3;
-  v8 = a5;
-  if (a4 > 5)
+  updateCopy = update;
+  stateCopy = state;
+  if (key > 5)
   {
-    switch(a4)
+    switch(key)
     {
       case 9:
-        [(WISSignalBarMetric *)self ratChanged:v9 rat:v8];
+        [(WISSignalBarMetric *)self ratChanged:updateCopy rat:stateCopy];
         break;
       case 8:
-        [(WISSignalBarMetric *)self registrationStatusChanged:v9 status:v8];
+        [(WISSignalBarMetric *)self registrationStatusChanged:updateCopy status:stateCopy];
         break;
       case 6:
         [(WISSignalBarMetric *)self subscriptionInfoDidChange];
@@ -533,16 +533,16 @@ LABEL_76:
 
   else
   {
-    switch(a4)
+    switch(key)
     {
       case 1:
-        [(WISSignalBarMetric *)self signalStrengthChanged:v9 info:v8];
+        [(WISSignalBarMetric *)self signalStrengthChanged:updateCopy info:stateCopy];
         break;
       case 2:
-        [(WISSignalBarMetric *)self plmnChanged:v9 plmn:v8];
+        [(WISSignalBarMetric *)self plmnChanged:updateCopy plmn:stateCopy];
         break;
       case 3:
-        [(WISSignalBarMetric *)self currentDataSimChanged:v9];
+        [(WISSignalBarMetric *)self currentDataSimChanged:updateCopy];
         break;
     }
   }
@@ -558,34 +558,34 @@ LABEL_76:
   [(WISSignalBarMetric *)self populateSubscriptionContextsInUse];
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = [v6 slotID], v7) && v8)
+  changedCopy = changed;
+  infoCopy = info;
+  if (changedCopy && (v8 = [changedCopy slotID], infoCopy) && v8)
   {
-    v9 = [(WISSignalBarMetric *)self contextStates];
-    v10 = [v6 uuid];
-    v11 = [v9 objectForKey:v10];
+    contextStates = [(WISSignalBarMetric *)self contextStates];
+    uuid = [changedCopy uuid];
+    v11 = [contextStates objectForKey:uuid];
 
     if (v11)
     {
-      v12 = [(WISSignalBarMetric *)self signalStrengthInfoToString:v7];
+      v12 = [(WISSignalBarMetric *)self signalStrengthInfoToString:infoCopy];
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        [v6 uuid];
+        [changedCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_1001FEC58();
       }
 
-      v13 = [v11 signalBarState];
-      v14 = [v13 isEqualToString:v12];
+      signalBarState = [v11 signalBarState];
+      v14 = [signalBarState isEqualToString:v12];
 
       if (v14)
       {
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
         {
-          [v6 uuid];
+          [changedCopy uuid];
           objc_claimAutoreleasedReturnValue();
           sub_1001FECE0();
         }
@@ -609,7 +609,7 @@ LABEL_76:
 
     else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [changedCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_1001FED24();
     }
@@ -621,12 +621,12 @@ LABEL_76:
   }
 }
 
-- (void)triggerMetric:(id)a3 currentTime:(unint64_t)a4
+- (void)triggerMetric:(id)metric currentTime:(unint64_t)time
 {
-  v5 = a3;
-  if ([v5 dataPreferred] && objc_msgSend(v5, "startTime") < a4)
+  metricCopy = metric;
+  if ([metricCopy dataPreferred] && objc_msgSend(metricCopy, "startTime") < time)
   {
-    v6 = a4 - [v5 startTime];
+    v6 = time - [metricCopy startTime];
     v7 = v6 / 0xF4240;
     v8 = v6 / 0x3B9ACA00;
     v9 = *(qword_1002DBE98 + 48);
@@ -643,15 +643,15 @@ LABEL_76:
     {
       if (v10)
       {
-        v12 = [v5 signalBarState];
-        v13 = [v5 rat];
-        v14 = [v5 registrationState];
+        signalBarState = [metricCopy signalBarState];
+        v13 = [metricCopy rat];
+        registrationState = [metricCopy registrationState];
         *buf = 138413314;
-        v19 = v12;
+        v19 = signalBarState;
         v20 = 2112;
         v21 = v13;
         v22 = 2112;
-        v23 = v14;
+        v23 = registrationState;
         v24 = 2048;
         v25 = v8;
         v26 = 2048;
@@ -664,26 +664,26 @@ LABEL_76:
       v15[1] = 3221225472;
       v15[2] = sub_1000549E0;
       v15[3] = &unk_1002AB2B0;
-      v16 = v5;
+      v16 = metricCopy;
       v17 = v8;
       sub_1000158DC(v11, v15);
     }
   }
 }
 
-- (void)ratChanged:(id)a3 rat:(id)a4
+- (void)ratChanged:(id)changed rat:(id)rat
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 slotID])
+  changedCopy = changed;
+  ratCopy = rat;
+  if (changedCopy && [changedCopy slotID])
   {
-    v8 = [(WISSignalBarMetric *)self contextStates];
-    v9 = [v6 uuid];
-    v10 = [v8 objectForKey:v9];
+    contextStates = [(WISSignalBarMetric *)self contextStates];
+    uuid = [changedCopy uuid];
+    v10 = [contextStates objectForKey:uuid];
 
     if (v10)
     {
-      if (!v7)
+      if (!ratCopy)
       {
         v11 = [NSString stringWithUTF8String:"Unknown"];
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
@@ -691,25 +691,25 @@ LABEL_76:
           sub_1001FEE2C();
         }
 
-        v7 = v11;
+        ratCopy = v11;
       }
 
       v12 = [v10 rat];
-      v13 = [v12 isEqualToString:v7];
+      v13 = [v12 isEqualToString:ratCopy];
 
       if (v13)
       {
         v14 = *(qword_1002DBE98 + 48);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v15 = [v6 uuid];
+          uuid2 = [changedCopy uuid];
           v16 = [v10 rat];
           v18 = 138412802;
-          v19 = v15;
+          v19 = uuid2;
           v20 = 2112;
           v21 = v16;
           v22 = 2112;
-          v23 = v7;
+          v23 = ratCopy;
           _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "SignalBarMetric:#D Received RAT change callback for context %@ but RAT did not change, old RAT: %@, new RAT: %@", &v18, 0x20u);
         }
       }
@@ -725,14 +725,14 @@ LABEL_76:
         }
 
         [(WISSignalBarMetric *)self triggerMetric:v10 currentTime:v17];
-        [v10 setRat:v7];
+        [v10 setRat:ratCopy];
         [v10 setStartTime:v17];
       }
     }
 
     else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [changedCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_1001FEEDC();
     }
@@ -744,16 +744,16 @@ LABEL_76:
   }
 }
 
-- (void)plmnChanged:(id)a3 plmn:(id)a4
+- (void)plmnChanged:(id)changed plmn:(id)plmn
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  changedCopy = changed;
+  plmnCopy = plmn;
+  v8 = plmnCopy;
+  if (changedCopy && plmnCopy)
   {
-    v9 = [(WISSignalBarMetric *)self contextStates];
-    v10 = [v6 uuid];
-    v11 = [v9 objectForKey:v10];
+    contextStates = [(WISSignalBarMetric *)self contextStates];
+    uuid = [changedCopy uuid];
+    v11 = [contextStates objectForKey:uuid];
 
     if (v11)
     {
@@ -799,7 +799,7 @@ LABEL_76:
 
     else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [changedCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_1001FF010();
     }
@@ -811,34 +811,34 @@ LABEL_76:
   }
 }
 
-- (void)registrationStatusChanged:(id)a3 status:(id)a4
+- (void)registrationStatusChanged:(id)changed status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = [v6 slotID], v7) && v8)
+  changedCopy = changed;
+  statusCopy = status;
+  if (changedCopy && (v8 = [changedCopy slotID], statusCopy) && v8)
   {
-    v9 = [(WISSignalBarMetric *)self contextStates];
-    v10 = [v6 uuid];
-    v11 = [v9 objectForKey:v10];
+    contextStates = [(WISSignalBarMetric *)self contextStates];
+    uuid = [changedCopy uuid];
+    v11 = [contextStates objectForKey:uuid];
 
     if (v11)
     {
-      v12 = [v11 registrationState];
-      v13 = [v12 isEqualToString:v7];
+      registrationState = [v11 registrationState];
+      v13 = [registrationState isEqualToString:statusCopy];
 
       if (v13)
       {
         v14 = *(qword_1002DBE98 + 48);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v15 = [v6 uuid];
-          v16 = [v11 registrationState];
+          uuid2 = [changedCopy uuid];
+          registrationState2 = [v11 registrationState];
           v18 = 138412802;
-          v19 = v15;
+          v19 = uuid2;
           v20 = 2112;
-          v21 = v16;
+          v21 = registrationState2;
           v22 = 2112;
-          v23 = v7;
+          v23 = statusCopy;
           _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "SignalBarMetric:#D Received display status change callback for context %@ but registration status did not change, old display status: %@, new display status: %@", &v18, 0x20u);
         }
       }
@@ -854,14 +854,14 @@ LABEL_76:
         }
 
         [(WISSignalBarMetric *)self triggerMetric:v11 currentTime:v17];
-        [v11 setRegistrationState:v7];
+        [v11 setRegistrationState:statusCopy];
         [v11 setStartTime:v17];
       }
     }
 
     else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [changedCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_1001FF098();
     }
@@ -873,15 +873,15 @@ LABEL_76:
   }
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 slotID])
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy && [changedCopy slotID])
   {
-    v6 = [(WISSignalBarMetric *)self dataInitializationSuccessful];
+    dataInitializationSuccessful = [(WISSignalBarMetric *)self dataInitializationSuccessful];
     v7 = os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG);
-    if (v6)
+    if (dataInitializationSuccessful)
     {
       if (v7)
       {
@@ -890,13 +890,13 @@ LABEL_76:
         sub_1001FF154();
       }
 
-      v8 = [(WISSignalBarMetric *)self contextStates];
+      contextStates = [(WISSignalBarMetric *)self contextStates];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_1000557E0;
       v9[3] = &unk_1002AC0C0;
       v10 = v5;
-      [v8 enumerateKeysAndObjectsUsingBlock:v9];
+      [contextStates enumerateKeysAndObjectsUsingBlock:v9];
     }
 
     else

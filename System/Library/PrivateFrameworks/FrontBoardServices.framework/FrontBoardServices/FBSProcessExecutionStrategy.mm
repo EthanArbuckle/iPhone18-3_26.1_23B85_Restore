@@ -1,13 +1,13 @@
 @interface FBSProcessExecutionStrategy
 + (id)background;
 + (id)backgroundWithUI;
-+ (id)policyWithReason:(unsigned int)a3 flags:(unsigned int)a4;
-+ (id)strategyForSchedulingPolicy:(int64_t)a3 graphicsPolicy:(int64_t)a4 jetsamPolicy:(int64_t)a5;
++ (id)policyWithReason:(unsigned int)reason flags:(unsigned int)flags;
++ (id)strategyForSchedulingPolicy:(int64_t)policy graphicsPolicy:(int64_t)graphicsPolicy jetsamPolicy:(int64_t)jetsamPolicy;
 + (id)userInteractive;
 + (id)userInteractiveWithoutUI;
 + (void)initialize;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     BSSelfTaskHasEntitlement();
   }
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __46__FBSProcessExecutionStrategy_userInteractive__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userInteractive_onceToken != -1)
   {
     dispatch_once(&userInteractive_onceToken, block);
@@ -56,7 +56,7 @@ uint64_t __46__FBSProcessExecutionStrategy_userInteractive__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __55__FBSProcessExecutionStrategy_userInteractiveWithoutUI__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userInteractiveWithoutUI_onceToken != -1)
   {
     dispatch_once(&userInteractiveWithoutUI_onceToken, block);
@@ -84,7 +84,7 @@ uint64_t __55__FBSProcessExecutionStrategy_userInteractiveWithoutUI__block_invok
   block[1] = 3221225472;
   block[2] = __47__FBSProcessExecutionStrategy_backgroundWithUI__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (backgroundWithUI_onceToken != -1)
   {
     dispatch_once(&backgroundWithUI_onceToken, block);
@@ -112,7 +112,7 @@ uint64_t __47__FBSProcessExecutionStrategy_backgroundWithUI__block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __41__FBSProcessExecutionStrategy_background__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (background_onceToken != -1)
   {
     dispatch_once(&background_onceToken, block);
@@ -134,20 +134,20 @@ uint64_t __41__FBSProcessExecutionStrategy_background__block_invoke(uint64_t a1)
   return [v3 setStrategyName:@"Background"];
 }
 
-+ (id)strategyForSchedulingPolicy:(int64_t)a3 graphicsPolicy:(int64_t)a4 jetsamPolicy:(int64_t)a5
++ (id)strategyForSchedulingPolicy:(int64_t)policy graphicsPolicy:(int64_t)graphicsPolicy jetsamPolicy:(int64_t)jetsamPolicy
 {
-  v8 = objc_alloc_init(a1);
-  [v8 setSchedulingPolicy:a3];
-  [v8 setGraphicsPolicy:a4];
-  [v8 setJetsamPolicy:a5];
-  if (a3 < 1)
+  v8 = objc_alloc_init(self);
+  [v8 setSchedulingPolicy:policy];
+  [v8 setGraphicsPolicy:graphicsPolicy];
+  [v8 setJetsamPolicy:jetsamPolicy];
+  if (policy < 1)
   {
     v12 = 0;
   }
 
   else
   {
-    if (a5 == 1)
+    if (jetsamPolicy == 1)
     {
       v9 = __CanTakeWorkspaceAssertions == 0;
       v10 = 9;
@@ -172,8 +172,8 @@ uint64_t __41__FBSProcessExecutionStrategy_background__block_invoke(uint64_t a1)
     }
   }
 
-  v13 = a3 > 0;
-  if (a3 <= 0)
+  v13 = policy > 0;
+  if (policy <= 0)
   {
     v14 = 2;
   }
@@ -183,17 +183,17 @@ uint64_t __41__FBSProcessExecutionStrategy_background__block_invoke(uint64_t a1)
     v14 = 3;
   }
 
-  if (a3 > 1)
+  if (policy > 1)
   {
     v13 = v14;
   }
 
-  if (a4 > 0)
+  if (graphicsPolicy > 0)
   {
     v13 |= 0x20u;
   }
 
-  if (a5 <= 0)
+  if (jetsamPolicy <= 0)
   {
     v15 = v13;
   }
@@ -210,11 +210,11 @@ uint64_t __41__FBSProcessExecutionStrategy_background__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (id)policyWithReason:(unsigned int)a3 flags:(unsigned int)a4
++ (id)policyWithReason:(unsigned int)reason flags:(unsigned int)flags
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v6 = objc_alloc_init(a1);
+  v4 = *&flags;
+  v5 = *&reason;
+  v6 = objc_alloc_init(self);
   [v6 setFlags:v4];
   [v6 setReason:v5];
   [v6 setCustomPolicy:1];
@@ -224,10 +224,10 @@ uint64_t __41__FBSProcessExecutionStrategy_background__block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(FBSProcessExecutionStrategy *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSProcessExecutionStrategy *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -296,26 +296,26 @@ uint64_t __41__FBSProcessExecutionStrategy_background__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSProcessExecutionStrategy *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSProcessExecutionStrategy *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSProcessExecutionStrategy *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSProcessExecutionStrategy *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__FBSProcessExecutionStrategy_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E76BCD60;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;

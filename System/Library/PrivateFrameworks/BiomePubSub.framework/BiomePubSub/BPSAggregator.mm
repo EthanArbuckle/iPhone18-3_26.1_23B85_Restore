@@ -1,21 +1,21 @@
 @interface BPSAggregator
-- (BPSAggregator)initWithAccumulator:(id)a3 closure:(id)a4;
+- (BPSAggregator)initWithAccumulator:(id)accumulator closure:(id)closure;
 @end
 
 @implementation BPSAggregator
 
-- (BPSAggregator)initWithAccumulator:(id)a3 closure:(id)a4
+- (BPSAggregator)initWithAccumulator:(id)accumulator closure:(id)closure
 {
-  v7 = a3;
-  v8 = a4;
+  accumulatorCopy = accumulator;
+  closureCopy = closure;
   v14.receiver = self;
   v14.super_class = BPSAggregator;
   v9 = [(BPSAggregator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accumulator, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_accumulator, accumulator);
+    v11 = _Block_copy(closureCopy);
     closure = v10->_closure;
     v10->_closure = v11;
   }

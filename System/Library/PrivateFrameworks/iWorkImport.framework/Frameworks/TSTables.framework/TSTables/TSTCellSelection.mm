@@ -1,16 +1,16 @@
 @interface TSTCellSelection
-+ (id)selectionWithTableInfo:(id)a3 cellID:(TSUCellCoord)a4;
-+ (id)selectionWithTableInfo:(id)a3 cellRegion:(id)a4;
-+ (id)selectionWithTableInfo:(id)a3 cellUID:(const TSKUIDStructCoord *)a4;
-+ (id)selectionWithTableInfo:(id)a3 columnIndices:(id)a4;
-+ (id)selectionWithTableInfo:(id)a3 rowIndices:(id)a4;
-- (BOOL)areCellsInTheSameRegionInTable:(id)a3;
-- (BOOL)canEditWithCellSubselectionInTable:(id)a3;
-- (BOOL)canEditWithControlCellSubselectionInTable:(id)a3;
-- (BOOL)canEditWithStockCellSubselectionInTable:(id)a3;
++ (id)selectionWithTableInfo:(id)info cellID:(TSUCellCoord)d;
++ (id)selectionWithTableInfo:(id)info cellRegion:(id)region;
++ (id)selectionWithTableInfo:(id)info cellUID:(const TSKUIDStructCoord *)d;
++ (id)selectionWithTableInfo:(id)info columnIndices:(id)indices;
++ (id)selectionWithTableInfo:(id)info rowIndices:(id)indices;
+- (BOOL)areCellsInTheSameRegionInTable:(id)table;
+- (BOOL)canEditWithCellSubselectionInTable:(id)table;
+- (BOOL)canEditWithControlCellSubselectionInTable:(id)table;
+- (BOOL)canEditWithStockCellSubselectionInTable:(id)table;
 - (BOOL)containsBodyColumns;
 - (BOOL)containsBodyRows;
-- (BOOL)containsCell:(TSUCellCoord)a3;
+- (BOOL)containsCell:(TSUCellCoord)cell;
 - (BOOL)containsCellsInCategoryColumn;
 - (BOOL)containsCellsInCategoryColumnsOrRows;
 - (BOOL)containsCellsInCategoryGroupingColumn;
@@ -28,92 +28,92 @@
 - (BOOL)containsOnlySpecialCategoryCells;
 - (BOOL)containsOnlySpecialCategoryOrPivotCells;
 - (BOOL)containsOnlySpecialPivotCells;
-- (BOOL)containsSelection:(id)a3;
-- (BOOL)containsSingleCellOrMergeInTable:(id)a3;
-- (BOOL)getAggregateType:(unsigned __int8 *)a3;
-- (BOOL)intersectsPartialMergeRangeInTable:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSelection:(id)a3;
+- (BOOL)containsSelection:(id)selection;
+- (BOOL)containsSingleCellOrMergeInTable:(id)table;
+- (BOOL)getAggregateType:(unsigned __int8 *)type;
+- (BOOL)intersectsPartialMergeRangeInTable:(id)table;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSelection:(id)selection;
 - (BOOL)isValid;
-- (BOOL)selectsSingleControlCellWithInteractionUIInTable:(id)a3;
+- (BOOL)selectsSingleControlCellWithInteractionUIInTable:(id)table;
 - (NSString)cellSelectionNameForContextAndActionMenus;
 - (NSString)description;
 - (TSKUIDStructCoord)anchorCellUID;
 - (TSKUIDStructCoord)cursorCellUID;
 - (TSTCellRegion)baseRegion;
 - (TSTCellRegion)cellRegion;
-- (TSTCellSelection)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSTCellSelection)initWithRdar39989167Archive:(const void *)a3 unarchiver:(id)a4;
-- (TSTCellSelection)initWithTableInfo:(id)a3 andCellRange:(TSUCellRect)a4;
-- (TSTCellSelection)initWithTableInfo:(id)a3 andPreviousSelection:(id)a4 offsetBy:(TSUColumnRowOffset)a5;
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRange:(TSUCellRect)a4 type:(int64_t)a5 anchorCellID:(TSUCellCoord)a6 cursorCellID:(TSUCellCoord)a7;
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRegion:(id)a4;
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRegion:(id)a4 anchorCellID:(TSUCellCoord)a5 cursorCellID:(TSUCellCoord)a6;
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRegion:(id)a4 anchorCellID:(TSUCellCoord)a5 cursorCellID:(TSUCellCoord)a6 baseRegion:(id)a7 selectionType:(int64_t)a8 searchReferenceRange:(_NSRange)a9 beginImplicitEditing:(BOOL)a10;
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRegion:(id)a4 anchorCellID:(TSUCellCoord)a5 cursorCellID:(TSUCellCoord)a6 selectionType:(int64_t)a7;
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellUIDRegion:(id)a4 anchorCellUID:(TSKUIDStructCoord *)a5 cursorCellUID:(TSKUIDStructCoord *)a6 baseCellUIDRegion:(id)a7 selectionType:(int64_t)a8 searchReferenceRange:(_NSRange)a9 beginImplicitEditing:(BOOL)a10;
-- (TSTCellSelection)initWithTableInfo:(id)a3 columnIndices:(id)a4;
-- (TSTCellSelection)initWithTableInfo:(id)a3 rowIndices:(id)a4;
-- (TSTCellSelection)initWithTableInfo:(id)a3 rowOrColumn:(int64_t)a4 index:(unsigned int)a5 count:(unsigned int)a6;
-- (TSTCellSelection)initWithTableInfo:(id)a3 selectionType:(int64_t)a4;
-- (TSTCellSelection)initWithTableInfo:(id)a3 startingColumnIndex:(unsigned __int16)a4 numberOfColumns:(unsigned int)a5;
-- (TSTCellSelection)initWithTableInfo:(id)a3 startingRowIndex:(unsigned int)a4 numberOfRows:(unsigned int)a5;
+- (TSTCellSelection)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSTCellSelection)initWithRdar39989167Archive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSTCellSelection)initWithTableInfo:(id)info andCellRange:(TSUCellRect)range;
+- (TSTCellSelection)initWithTableInfo:(id)info andPreviousSelection:(id)selection offsetBy:(TSUColumnRowOffset)by;
+- (TSTCellSelection)initWithTableInfo:(id)info cellRange:(TSUCellRect)range type:(int64_t)type anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD;
+- (TSTCellSelection)initWithTableInfo:(id)info cellRegion:(id)region;
+- (TSTCellSelection)initWithTableInfo:(id)info cellRegion:(id)region anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD;
+- (TSTCellSelection)initWithTableInfo:(id)info cellRegion:(id)region anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD baseRegion:(id)baseRegion selectionType:(int64_t)type searchReferenceRange:(_NSRange)range beginImplicitEditing:(BOOL)self0;
+- (TSTCellSelection)initWithTableInfo:(id)info cellRegion:(id)region anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD selectionType:(int64_t)type;
+- (TSTCellSelection)initWithTableInfo:(id)info cellUIDRegion:(id)region anchorCellUID:(TSKUIDStructCoord *)d cursorCellUID:(TSKUIDStructCoord *)iD baseCellUIDRegion:(id)dRegion selectionType:(int64_t)type searchReferenceRange:(_NSRange)range beginImplicitEditing:(BOOL)self0;
+- (TSTCellSelection)initWithTableInfo:(id)info columnIndices:(id)indices;
+- (TSTCellSelection)initWithTableInfo:(id)info rowIndices:(id)indices;
+- (TSTCellSelection)initWithTableInfo:(id)info rowOrColumn:(int64_t)column index:(unsigned int)index count:(unsigned int)count;
+- (TSTCellSelection)initWithTableInfo:(id)info selectionType:(int64_t)type;
+- (TSTCellSelection)initWithTableInfo:(id)info startingColumnIndex:(unsigned __int16)index numberOfColumns:(unsigned int)columns;
+- (TSTCellSelection)initWithTableInfo:(id)info startingRowIndex:(unsigned int)index numberOfRows:(unsigned int)rows;
 - (TSTTableInfo)tableInfo;
 - (TSUCellCoord)anchorCellID;
 - (TSUCellCoord)cursorCellID;
-- (TSUCellCoord)logicalCellIDInTable:(id)a3;
+- (TSUCellCoord)logicalCellIDInTable:(id)table;
 - (_NSRange)firstRange;
 - (_NSRange)searchReferenceRange;
 - (id)briefDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForUpgradeWithTableInfo:(id)a3 cellRegion:(id)a4 anchorCellID:(TSUCellCoord)a5 cursorCellID:(TSUCellCoord)a6 baseRegion:(id)a7 selectionType:(int64_t)a8;
-- (id)p_selectionRemovingHiddenColumnsInTableInfo:(id)a3;
-- (id)p_selectionRemovingHiddenRowsInTableInfo:(id)a3;
-- (id)selectionAdjustedForGeometryInTableInfo:(id)a3;
-- (id)selectionAdjustedForVisibilityInTableInfo:(id)a3;
-- (id)selectionAdjustedForVisibilityInTableInfo:(id)a3 alwaysCheckColumns:(BOOL)a4;
-- (id)selectionByAddingCellRange:(TSUCellRect)a3 inTable:(id)a4 withAnchor:(TSUCellCoord)a5 cursor:(TSUCellCoord)a6 selectionType:(int64_t)a7;
-- (id)selectionByExtendingWithCellRange:(TSUCellRect)a3 inTable:(id)a4 selectionType:(int64_t)a5 cursorCell:(TSUCellCoord)a6;
-- (id)selectionByRemovingCellRange:(TSUCellRect)a3 inTable:(id)a4 withAnchor:(TSUCellCoord)a5 cursor:(TSUCellCoord)a6 selectionType:(int64_t)a7;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForUpgradeWithTableInfo:(id)info cellRegion:(id)region anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD baseRegion:(id)baseRegion selectionType:(int64_t)type;
+- (id)p_selectionRemovingHiddenColumnsInTableInfo:(id)info;
+- (id)p_selectionRemovingHiddenRowsInTableInfo:(id)info;
+- (id)selectionAdjustedForGeometryInTableInfo:(id)info;
+- (id)selectionAdjustedForVisibilityInTableInfo:(id)info;
+- (id)selectionAdjustedForVisibilityInTableInfo:(id)info alwaysCheckColumns:(BOOL)columns;
+- (id)selectionByAddingCellRange:(TSUCellRect)range inTable:(id)table withAnchor:(TSUCellCoord)anchor cursor:(TSUCellCoord)cursor selectionType:(int64_t)type;
+- (id)selectionByExtendingWithCellRange:(TSUCellRect)range inTable:(id)table selectionType:(int64_t)type cursorCell:(TSUCellCoord)cell;
+- (id)selectionByRemovingCellRange:(TSUCellRect)range inTable:(id)table withAnchor:(TSUCellCoord)anchor cursor:(TSUCellCoord)cursor selectionType:(int64_t)type;
 - (id)selectionExpandedToCoverCollapsedRows;
-- (id)selectionToBeginImplicitEditingInTableInfo:(id)a3;
+- (id)selectionToBeginImplicitEditingInTableInfo:(id)info;
 - (unint64_t)cellCount;
 - (unint64_t)sizeClass;
-- (void)insert:(int64_t)a3 atIndex:(unsigned int)a4 count:(unsigned int)a5;
-- (void)p_cacheBaseRegion:(id)a3;
-- (void)p_cacheCellRegion:(id)a3;
-- (void)remove:(int64_t)a3 atIndex:(unsigned int)a4 count:(unsigned int)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setAnchorCellUID:(TSKUIDStructCoord *)a3;
-- (void)setCellRange:(TSUCellRect)a3;
-- (void)setCursorCellUID:(TSKUIDStructCoord *)a3;
+- (void)insert:(int64_t)insert atIndex:(unsigned int)index count:(unsigned int)count;
+- (void)p_cacheBaseRegion:(id)region;
+- (void)p_cacheCellRegion:(id)region;
+- (void)remove:(int64_t)remove atIndex:(unsigned int)index count:(unsigned int)count;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setAnchorCellUID:(TSKUIDStructCoord *)d;
+- (void)setCellRange:(TSUCellRect)range;
+- (void)setCursorCellUID:(TSKUIDStructCoord *)d;
 @end
 
 @implementation TSTCellSelection
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellUIDRegion:(id)a4 anchorCellUID:(TSKUIDStructCoord *)a5 cursorCellUID:(TSKUIDStructCoord *)a6 baseCellUIDRegion:(id)a7 selectionType:(int64_t)a8 searchReferenceRange:(_NSRange)a9 beginImplicitEditing:(BOOL)a10
+- (TSTCellSelection)initWithTableInfo:(id)info cellUIDRegion:(id)region anchorCellUID:(TSKUIDStructCoord *)d cursorCellUID:(TSKUIDStructCoord *)iD baseCellUIDRegion:(id)dRegion selectionType:(int64_t)type searchReferenceRange:(_NSRange)range beginImplicitEditing:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
+  infoCopy = info;
+  regionCopy = region;
+  dRegionCopy = dRegion;
   v26.receiver = self;
   v26.super_class = TSTCellSelection;
   v19 = [(TSTCellSelection *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_tableInfo, v16);
-    objc_storeStrong(&v20->_cellUIDRegion, a4);
-    row = a5->_row;
-    v20->_anchorCellUID._column = a5->_column;
+    objc_storeWeak(&v19->_tableInfo, infoCopy);
+    objc_storeStrong(&v20->_cellUIDRegion, region);
+    row = d->_row;
+    v20->_anchorCellUID._column = d->_column;
     v20->_anchorCellUID._row = row;
-    v22 = a6->_row;
-    v20->_cursorCellUID._column = a6->_column;
+    v22 = iD->_row;
+    v20->_cursorCellUID._column = iD->_column;
     v20->_cursorCellUID._row = v22;
-    objc_storeStrong(&v20->_baseCellUIDRegion, a7);
-    v20->_selectionType = a8;
-    v20->_searchReferenceRange = a9;
-    v20->_beginImplicitEditing = a10;
+    objc_storeStrong(&v20->_baseCellUIDRegion, dRegion);
+    v20->_selectionType = type;
+    v20->_searchReferenceRange = range;
+    v20->_beginImplicitEditing = editing;
     cachedCellRegion = v20->_cachedCellRegion;
     v20->_cachedCellRegion = 0;
 
@@ -127,18 +127,18 @@
   return v20;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRegion:(id)a4 anchorCellID:(TSUCellCoord)a5 cursorCellID:(TSUCellCoord)a6 baseRegion:(id)a7 selectionType:(int64_t)a8 searchReferenceRange:(_NSRange)a9 beginImplicitEditing:(BOOL)a10
+- (TSTCellSelection)initWithTableInfo:(id)info cellRegion:(id)region anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD baseRegion:(id)baseRegion selectionType:(int64_t)type searchReferenceRange:(_NSRange)range beginImplicitEditing:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a7;
-  v24 = objc_msgSend_cellUIDRegionFromCellRegion_(v16, v18, a4, v19, v20);
+  infoCopy = info;
+  baseRegionCopy = baseRegion;
+  v24 = objc_msgSend_cellUIDRegionFromCellRegion_(infoCopy, v18, region, v19, v20);
   memset(v34, 0, sizeof(v34));
-  if (v16)
+  if (infoCopy)
   {
-    objc_msgSend_cellUIDForCellID_(v16, v21, *&a5, v22, v23);
+    objc_msgSend_cellUIDForCellID_(infoCopy, v21, *&d, v22, v23);
     v32 = 0u;
     v33 = 0u;
-    objc_msgSend_cellUIDForCellID_(v16, v25, *&a6, v26, v27);
+    objc_msgSend_cellUIDForCellID_(infoCopy, v25, *&iD, v26, v27);
   }
 
   else
@@ -147,28 +147,28 @@
     v33 = 0uLL;
   }
 
-  v28 = objc_msgSend_cellUIDRegionFromCellRegion_(v16, v21, v17, v22, v23);
-  v30 = objc_msgSend_initWithTableInfo_cellUIDRegion_anchorCellUID_cursorCellUID_baseCellUIDRegion_selectionType_searchReferenceRange_beginImplicitEditing_(self, v29, v16, v24, v34, &v32, v28, a8, a9.location, a9.length, a10);
+  v28 = objc_msgSend_cellUIDRegionFromCellRegion_(infoCopy, v21, baseRegionCopy, v22, v23);
+  v30 = objc_msgSend_initWithTableInfo_cellUIDRegion_anchorCellUID_cursorCellUID_baseCellUIDRegion_selectionType_searchReferenceRange_beginImplicitEditing_(self, v29, infoCopy, v24, v34, &v32, v28, type, range.location, range.length, editing);
 
   return v30;
 }
 
-- (id)initForUpgradeWithTableInfo:(id)a3 cellRegion:(id)a4 anchorCellID:(TSUCellCoord)a5 cursorCellID:(TSUCellCoord)a6 baseRegion:(id)a7 selectionType:(int64_t)a8
+- (id)initForUpgradeWithTableInfo:(id)info cellRegion:(id)region anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD baseRegion:(id)baseRegion selectionType:(int64_t)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v20 = objc_msgSend_baseTableModel(v13, v16, v17, v18, v19);
-  v23 = objc_msgSend_cellUIDRegionFromRegion_inTableModel_(TSTCellUIDRegion, v21, v14, v20, v22);
+  infoCopy = info;
+  regionCopy = region;
+  baseRegionCopy = baseRegion;
+  v20 = objc_msgSend_baseTableModel(infoCopy, v16, v17, v18, v19);
+  v23 = objc_msgSend_cellUIDRegionFromRegion_inTableModel_(TSTCellUIDRegion, v21, regionCopy, v20, v22);
 
   v66 = 0u;
   v67 = 0u;
-  v28 = objc_msgSend_baseTableModel(v13, v24, v25, v26, v27);
+  v28 = objc_msgSend_baseTableModel(infoCopy, v24, v25, v26, v27);
   v33 = objc_msgSend_columnRowUIDMap(v28, v29, v30, v31, v32);
   v37 = v33;
   if (v33)
   {
-    objc_msgSend_cellUIDForCellID_(v33, v34, *&a5, v35, v36);
+    objc_msgSend_cellUIDForCellID_(v33, v34, *&d, v35, v36);
   }
 
   else
@@ -179,12 +179,12 @@
 
   v64 = 0u;
   v65 = 0u;
-  v42 = objc_msgSend_baseTableModel(v13, v38, v39, v40, v41);
+  v42 = objc_msgSend_baseTableModel(infoCopy, v38, v39, v40, v41);
   v47 = objc_msgSend_columnRowUIDMap(v42, v43, v44, v45, v46);
   v51 = v47;
   if (v47)
   {
-    objc_msgSend_cellUIDForCellID_(v47, v48, *&a6, v49, v50);
+    objc_msgSend_cellUIDForCellID_(v47, v48, *&iD, v49, v50);
   }
 
   else
@@ -193,56 +193,56 @@
     v65 = 0u;
   }
 
-  v56 = objc_msgSend_baseTableModel(v13, v52, v53, v54, v55);
-  v59 = objc_msgSend_cellUIDRegionFromRegion_inTableModel_(TSTCellUIDRegion, v57, v15, v56, v58);
+  v56 = objc_msgSend_baseTableModel(infoCopy, v52, v53, v54, v55);
+  v59 = objc_msgSend_cellUIDRegionFromRegion_inTableModel_(TSTCellUIDRegion, v57, baseRegionCopy, v56, v58);
 
-  v61 = objc_msgSend_initWithTableInfo_cellUIDRegion_anchorCellUID_cursorCellUID_baseCellUIDRegion_selectionType_searchReferenceRange_beginImplicitEditing_(self, v60, v13, v23, &v66, &v64, v59, a8, 0, 0, 0);
+  v61 = objc_msgSend_initWithTableInfo_cellUIDRegion_anchorCellUID_cursorCellUID_baseCellUIDRegion_selectionType_searchReferenceRange_beginImplicitEditing_(self, v60, infoCopy, v23, &v66, &v64, v59, type, 0, 0, 0);
   return v61;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRegion:(id)a4 anchorCellID:(TSUCellCoord)a5 cursorCellID:(TSUCellCoord)a6 selectionType:(int64_t)a7
+- (TSTCellSelection)initWithTableInfo:(id)info cellRegion:(id)region anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD selectionType:(int64_t)type
 {
-  v12 = a3;
-  v13 = a4;
+  infoCopy = info;
+  regionCopy = region;
   v16 = objc_msgSend_regionFromRange_(TSTCellRegion, v14, 0, 0, v15);
-  v18 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(self, v17, v12, v13, *&a5, a6, v16, a7);
+  v18 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(self, v17, infoCopy, regionCopy, *&d, iD, v16, type);
 
   return v18;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRegion:(id)a4 anchorCellID:(TSUCellCoord)a5 cursorCellID:(TSUCellCoord)a6
+- (TSTCellSelection)initWithTableInfo:(id)info cellRegion:(id)region anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD
 {
-  v10 = a3;
-  v11 = a4;
+  infoCopy = info;
+  regionCopy = region;
   v14 = objc_msgSend_regionFromRange_(TSTCellRegion, v12, 0, 0, v13);
-  v16 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_(self, v15, v10, v11, *&a5, a6, v14);
+  v16 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_(self, v15, infoCopy, regionCopy, *&d, iD, v14);
 
   return v16;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRange:(TSUCellRect)a4 type:(int64_t)a5 anchorCellID:(TSUCellCoord)a6 cursorCellID:(TSUCellCoord)a7
+- (TSTCellSelection)initWithTableInfo:(id)info cellRange:(TSUCellRect)range type:(int64_t)type anchorCellID:(TSUCellCoord)d cursorCellID:(TSUCellCoord)iD
 {
-  size = a4.size;
-  origin = a4.origin;
-  v13 = a3;
-  v16 = v13;
-  if (v13 && (a5 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  size = range.size;
+  origin = range.origin;
+  infoCopy = info;
+  v16 = infoCopy;
+  if (infoCopy && (type - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    origin = objc_msgSend_expandCellRangeToCoverMergedCells_(v13, v14, origin, size, v15);
+    origin = objc_msgSend_expandCellRangeToCoverMergedCells_(infoCopy, v14, origin, size, v15);
     size = v14;
   }
 
   v17 = objc_msgSend_regionFromRange_(TSTCellRegion, v14, origin, size, v15);
   v20 = objc_msgSend_regionFromRange_(TSTCellRegion, v18, 0, 0, v19);
-  v22 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(self, v21, v16, v17, *&a6, a7, v20, a5);
+  v22 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(self, v21, v16, v17, *&d, iD, v20, type);
 
   return v22;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 selectionType:(int64_t)a4
+- (TSTCellSelection)initWithTableInfo:(id)info selectionType:(int64_t)type
 {
-  v10 = a3;
-  if (a4 == 3)
+  infoCopy = info;
+  if (type == 3)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTCellSelection initWithTableInfo:selectionType:]", v8, v9);
@@ -252,81 +252,81 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_range(v10, v6, v7, v8, v9);
+  v22 = objc_msgSend_range(infoCopy, v6, v7, v8, v9);
   v24 = v23;
   v26 = objc_msgSend_regionFromRange_(TSTCellRegion, v23, v22, v23, v25);
-  v28 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_selectionType_(self, v27, v10, v26, v22, (v22 + (v24 << 32) + 0xFFFF00000000) & 0xFFFF00000000 | (v22 + HIDWORD(v24) - 1), 3);
+  v28 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_selectionType_(self, v27, infoCopy, v26, v22, (v22 + (v24 << 32) + 0xFFFF00000000) & 0xFFFF00000000 | (v22 + HIDWORD(v24) - 1), 3);
 
   return v28;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 andCellRange:(TSUCellRect)a4
+- (TSTCellSelection)initWithTableInfo:(id)info andCellRange:(TSUCellRect)range
 {
-  size = a4.size;
-  origin = a4.origin;
-  v12 = a4;
-  v7 = a3;
-  v8 = TSUCellRect::bottomRight(&v12);
-  v10 = objc_msgSend_initWithTableInfo_cellRange_type_anchorCellID_cursorCellID_(self, v9, v7, origin, size, 0, origin, v8, *&v12.origin, *&v12.size);
+  size = range.size;
+  origin = range.origin;
+  rangeCopy = range;
+  infoCopy = info;
+  v8 = TSUCellRect::bottomRight(&rangeCopy);
+  v10 = objc_msgSend_initWithTableInfo_cellRange_type_anchorCellID_cursorCellID_(self, v9, infoCopy, origin, size, 0, origin, v8, *&rangeCopy.origin, *&rangeCopy.size);
 
   return v10;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 startingRowIndex:(unsigned int)a4 numberOfRows:(unsigned int)a5
+- (TSTCellSelection)initWithTableInfo:(id)info startingRowIndex:(unsigned int)index numberOfRows:(unsigned int)rows
 {
-  v8 = a3;
-  v13 = objc_msgSend_numberOfColumns(v8, v9, v10, v11, v12);
-  LODWORD(v19) = objc_msgSend_numberOfRows(v8, v14, v15, v16, v17) - a4;
-  if (v19 >= a5)
+  infoCopy = info;
+  v13 = objc_msgSend_numberOfColumns(infoCopy, v9, v10, v11, v12);
+  LODWORD(rowsCopy) = objc_msgSend_numberOfRows(infoCopy, v14, v15, v16, v17) - index;
+  if (rowsCopy >= rows)
   {
-    v19 = a5;
+    rowsCopy = rows;
   }
 
   else
   {
-    v19 = v19;
+    rowsCopy = rowsCopy;
   }
 
-  v20 = objc_msgSend_initWithTableInfo_cellRange_type_anchorCellID_cursorCellID_(self, v18, v8, a4, v13 | (v19 << 32), 1, a4, (a4 + v19 - 1) | ((v13 << 32) - 1) & 0xFFFF00000000);
+  v20 = objc_msgSend_initWithTableInfo_cellRange_type_anchorCellID_cursorCellID_(self, v18, infoCopy, index, v13 | (rowsCopy << 32), 1, index, (index + rowsCopy - 1) | ((v13 << 32) - 1) & 0xFFFF00000000);
 
   return v20;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 startingColumnIndex:(unsigned __int16)a4 numberOfColumns:(unsigned int)a5
+- (TSTCellSelection)initWithTableInfo:(id)info startingColumnIndex:(unsigned __int16)index numberOfColumns:(unsigned int)columns
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v13 = objc_msgSend_numberOfColumns(v8, v9, v10, v11, v12);
-  v18 = objc_msgSend_numberOfRows(v8, v14, v15, v16, v17);
-  if (v5 >= v13 - v6)
+  columnsCopy = columns;
+  indexCopy = index;
+  infoCopy = info;
+  v13 = objc_msgSend_numberOfColumns(infoCopy, v9, v10, v11, v12);
+  v18 = objc_msgSend_numberOfRows(infoCopy, v14, v15, v16, v17);
+  if (columnsCopy >= v13 - indexCopy)
   {
-    v20 = (v13 - v6);
+    v20 = (v13 - indexCopy);
   }
 
   else
   {
-    v20 = v5;
+    v20 = columnsCopy;
   }
 
-  v21 = objc_msgSend_initWithTableInfo_cellRange_type_anchorCellID_cursorCellID_(self, v19, v8, v6 << 32, v20 | (v18 << 32), 2, v6 << 32, (v18 - 1) | ((v6 << 32) + (v20 << 32) + 0xFFFF00000000) & 0xFFFF00000000);
+  v21 = objc_msgSend_initWithTableInfo_cellRange_type_anchorCellID_cursorCellID_(self, v19, infoCopy, indexCopy << 32, v20 | (v18 << 32), 2, indexCopy << 32, (v18 - 1) | ((indexCopy << 32) + (v20 << 32) + 0xFFFF00000000) & 0xFFFF00000000);
 
   return v21;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 rowOrColumn:(int64_t)a4 index:(unsigned int)a5 count:(unsigned int)a6
+- (TSTCellSelection)initWithTableInfo:(id)info rowOrColumn:(int64_t)column index:(unsigned int)index count:(unsigned int)count
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v13 = a3;
-  if (a4 == 2)
+  v6 = *&count;
+  v7 = *&index;
+  infoCopy = info;
+  if (column == 2)
   {
-    v14 = objc_msgSend_initWithTableInfo_startingColumnIndex_numberOfColumns_(self, v10, v13, v7, v6);
+    v14 = objc_msgSend_initWithTableInfo_startingColumnIndex_numberOfColumns_(self, v10, infoCopy, v7, v6);
   }
 
   else
   {
-    if (a4 != 1)
+    if (column != 1)
     {
       v16 = MEMORY[0x277D81150];
       v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTCellSelection initWithTableInfo:rowOrColumn:index:count:]", v11, v12);
@@ -334,69 +334,69 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v22, v17, v21, 301, 0, "Invalid selection type used with rowOrColumn initializer.");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
-    v14 = objc_msgSend_initWithTableInfo_startingRowIndex_numberOfRows_(self, v10, v13, v7, v6);
+    v14 = objc_msgSend_initWithTableInfo_startingRowIndex_numberOfRows_(self, v10, infoCopy, v7, v6);
   }
 
   self = v14;
-  v15 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v15;
+  return selfCopy;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 andPreviousSelection:(id)a4 offsetBy:(TSUColumnRowOffset)a5
+- (TSTCellSelection)initWithTableInfo:(id)info andPreviousSelection:(id)selection offsetBy:(TSUColumnRowOffset)by
 {
-  v8 = a3;
-  v9 = a4;
-  v14 = objc_msgSend_cellRegion(v9, v10, v11, v12, v13);
-  v18 = objc_msgSend_regionOffsetBy_(v14, v15, *&a5, v16, v17);
-  v23 = objc_msgSend_anchorCellID(v9, v19, v20, v21, v22);
+  infoCopy = info;
+  selectionCopy = selection;
+  v14 = objc_msgSend_cellRegion(selectionCopy, v10, v11, v12, v13);
+  v18 = objc_msgSend_regionOffsetBy_(v14, v15, *&by, v16, v17);
+  v23 = objc_msgSend_anchorCellID(selectionCopy, v19, v20, v21, v22);
   v28 = 0x7FFF7FFFFFFFLL;
-  v29 = a5.var0 + WORD2(v23) > 0x3E7 || (*&a5 >> 32) + v23 > 0xF423F;
+  v29 = by.var0 + WORD2(v23) > 0x3E7 || (*&by >> 32) + v23 > 0xF423F;
   v30 = 0x7FFF7FFFFFFFLL;
   if (!v29)
   {
     v30 = TSUOffsetColumnRowCoordinate();
   }
 
-  v31 = objc_msgSend_cursorCellID(v9, v24, v25, v26, v27);
-  if (a5.var0 + WORD2(v31) <= 0x3E7 && (*&a5 >> 32) + v31 <= 0xF423F)
+  v31 = objc_msgSend_cursorCellID(selectionCopy, v24, v25, v26, v27);
+  if (by.var0 + WORD2(v31) <= 0x3E7 && (*&by >> 32) + v31 <= 0xF423F)
   {
     v28 = TSUOffsetColumnRowCoordinate();
   }
 
-  v36 = objc_msgSend_baseRegion(v9, v32, v33, v34, v35);
-  v40 = objc_msgSend_regionOffsetBy_(v36, v37, *&a5, v38, v39);
-  v45 = objc_msgSend_selectionType(v9, v41, v42, v43, v44);
-  v47 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(self, v46, v8, v18, v30, v28, v40, v45);
+  v36 = objc_msgSend_baseRegion(selectionCopy, v32, v33, v34, v35);
+  v40 = objc_msgSend_regionOffsetBy_(v36, v37, *&by, v38, v39);
+  v45 = objc_msgSend_selectionType(selectionCopy, v41, v42, v43, v44);
+  v47 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(self, v46, infoCopy, v18, v30, v28, v40, v45);
 
   return v47;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 cellRegion:(id)a4
+- (TSTCellSelection)initWithTableInfo:(id)info cellRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_suitableAnchor(v7, v8, v9, v10, v11);
-  v17 = objc_msgSend_suitableCursor(v7, v13, v14, v15, v16);
+  infoCopy = info;
+  regionCopy = region;
+  v12 = objc_msgSend_suitableAnchor(regionCopy, v8, v9, v10, v11);
+  v17 = objc_msgSend_suitableCursor(regionCopy, v13, v14, v15, v16);
   v20 = objc_msgSend_regionFromRange_(TSTCellRegion, v18, 0, 0, v19);
-  v22 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(self, v21, v6, v7, v12, v17, v20, 0);
+  v22 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(self, v21, infoCopy, regionCopy, v12, v17, v20, 0);
 
   return v22;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 rowIndices:(id)a4
+- (TSTCellSelection)initWithTableInfo:(id)info rowIndices:(id)indices
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_range(v6, v8, v9, v10, v11);
-  v14 = objc_msgSend_regionFromRowIndices_columnRange_(TSTCellRegion, v13, v7, WORD2(v12), v13);
+  infoCopy = info;
+  indicesCopy = indices;
+  v12 = objc_msgSend_range(infoCopy, v8, v9, v10, v11);
+  v14 = objc_msgSend_regionFromRowIndices_columnRange_(TSTCellRegion, v13, indicesCopy, WORD2(v12), v13);
   v19 = objc_msgSend_suitableAnchor(v14, v15, v16, v17, v18);
-  v24 = objc_msgSend_numberOfColumns(v6, v20, v21, v22, v23);
+  v24 = objc_msgSend_numberOfColumns(infoCopy, v20, v21, v22, v23);
   if (WORD2(v19) >= (v24 - 1))
   {
     v29 = v24 - 1;
@@ -408,26 +408,26 @@ LABEL_7:
   }
 
   v30 = objc_msgSend_suitableCursor(v14, v25, v26, v27, v28);
-  v35 = objc_msgSend_numberOfColumns(v6, v31, v32, v33, v34);
+  v35 = objc_msgSend_numberOfColumns(infoCopy, v31, v32, v33, v34);
   v37 = HIDWORD(v30);
   if (WORD2(v30) >= (v35 - 1))
   {
     LOWORD(v37) = v35 - 1;
   }
 
-  v38 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_selectionType_(self, v36, v6, v14, v19 & 0xFFFF0000FFFFFFFFLL | (v29 << 32), v30 & 0xFFFF0000FFFFFFFFLL | (v37 << 32), 1);
+  v38 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_selectionType_(self, v36, infoCopy, v14, v19 & 0xFFFF0000FFFFFFFFLL | (v29 << 32), v30 & 0xFFFF0000FFFFFFFFLL | (v37 << 32), 1);
 
   return v38;
 }
 
-- (TSTCellSelection)initWithTableInfo:(id)a3 columnIndices:(id)a4
+- (TSTCellSelection)initWithTableInfo:(id)info columnIndices:(id)indices
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_range(v6, v8, v9, v10, v11);
-  v14 = objc_msgSend_regionFromColumnIndices_rowRange_(TSTCellRegion, v13, v7, v12, v13 >> 32);
+  infoCopy = info;
+  indicesCopy = indices;
+  v12 = objc_msgSend_range(infoCopy, v8, v9, v10, v11);
+  v14 = objc_msgSend_regionFromColumnIndices_rowRange_(TSTCellRegion, v13, indicesCopy, v12, v13 >> 32);
   v19 = objc_msgSend_suitableAnchor(v14, v15, v16, v17, v18);
-  v24 = objc_msgSend_numberOfColumns(v6, v20, v21, v22, v23);
+  v24 = objc_msgSend_numberOfColumns(infoCopy, v20, v21, v22, v23);
   if (WORD2(v19) >= (v24 - 1))
   {
     v29 = v24 - 1;
@@ -439,66 +439,66 @@ LABEL_7:
   }
 
   v30 = objc_msgSend_suitableCursor(v14, v25, v26, v27, v28);
-  v35 = objc_msgSend_numberOfColumns(v6, v31, v32, v33, v34);
+  v35 = objc_msgSend_numberOfColumns(infoCopy, v31, v32, v33, v34);
   v37 = HIDWORD(v30);
   if (WORD2(v30) >= (v35 - 1))
   {
     LOWORD(v37) = v35 - 1;
   }
 
-  v38 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_selectionType_(self, v36, v6, v14, v19 & 0xFFFF0000FFFFFFFFLL | (v29 << 32), v30 & 0xFFFF0000FFFFFFFFLL | (v37 << 32), 2);
+  v38 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_selectionType_(self, v36, infoCopy, v14, v19 & 0xFFFF0000FFFFFFFFLL | (v29 << 32), v30 & 0xFFFF0000FFFFFFFFLL | (v37 << 32), 2);
 
   return v38;
 }
 
-+ (id)selectionWithTableInfo:(id)a3 cellID:(TSUCellCoord)a4
++ (id)selectionWithTableInfo:(id)info cellID:(TSUCellCoord)d
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v10 = objc_msgSend_initWithTableInfo_andCellID_(v7, v8, v6, *&a4, v9);
+  infoCopy = info;
+  v7 = [self alloc];
+  v10 = objc_msgSend_initWithTableInfo_andCellID_(v7, v8, infoCopy, *&d, v9);
 
   return v10;
 }
 
-+ (id)selectionWithTableInfo:(id)a3 cellUID:(const TSKUIDStructCoord *)a4
++ (id)selectionWithTableInfo:(id)info cellUID:(const TSKUIDStructCoord *)d
 {
-  v5 = a3;
-  row = a4->_row;
-  v16[0] = a4->_column;
+  infoCopy = info;
+  row = d->_row;
+  v16[0] = d->_column;
   v16[1] = row;
-  v10 = objc_msgSend_cellIDForCellUID_(v5, v7, v16, v8, v9);
+  v10 = objc_msgSend_cellIDForCellUID_(infoCopy, v7, v16, v8, v9);
   v11 = objc_opt_class();
-  v14 = objc_msgSend_selectionWithTableInfo_cellID_(v11, v12, v5, v10, v13);
+  v14 = objc_msgSend_selectionWithTableInfo_cellID_(v11, v12, infoCopy, v10, v13);
 
   return v14;
 }
 
-+ (id)selectionWithTableInfo:(id)a3 cellRegion:(id)a4
++ (id)selectionWithTableInfo:(id)info cellRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v11 = objc_msgSend_initWithTableInfo_cellRegion_(v8, v9, v6, v7, v10);
+  infoCopy = info;
+  regionCopy = region;
+  v8 = [self alloc];
+  v11 = objc_msgSend_initWithTableInfo_cellRegion_(v8, v9, infoCopy, regionCopy, v10);
 
   return v11;
 }
 
-+ (id)selectionWithTableInfo:(id)a3 rowIndices:(id)a4
++ (id)selectionWithTableInfo:(id)info rowIndices:(id)indices
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v11 = objc_msgSend_initWithTableInfo_rowIndices_(v8, v9, v6, v7, v10);
+  infoCopy = info;
+  indicesCopy = indices;
+  v8 = [self alloc];
+  v11 = objc_msgSend_initWithTableInfo_rowIndices_(v8, v9, infoCopy, indicesCopy, v10);
 
   return v11;
 }
 
-+ (id)selectionWithTableInfo:(id)a3 columnIndices:(id)a4
++ (id)selectionWithTableInfo:(id)info columnIndices:(id)indices
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v11 = objc_msgSend_initWithTableInfo_columnIndices_(v8, v9, v6, v7, v10);
+  infoCopy = info;
+  indicesCopy = indices;
+  v8 = [self alloc];
+  v11 = objc_msgSend_initWithTableInfo_columnIndices_(v8, v9, infoCopy, indicesCopy, v10);
 
   return v11;
 }
@@ -512,9 +512,9 @@ LABEL_7:
   return v12;
 }
 
-- (void)p_cacheCellRegion:(id)a3
+- (void)p_cacheCellRegion:(id)region
 {
-  objc_storeStrong(&self->_cachedCellRegion, a3);
+  objc_storeStrong(&self->_cachedCellRegion, region);
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v8 = objc_msgSend_columnRowUIDMap(WeakRetained, v4, v5, v6, v7);
   self->_cachedCellRegionVersionCounter = objc_msgSend_versionCounter(v8, v9, v10, v11, v12);
@@ -554,9 +554,9 @@ LABEL_7:
   return v8;
 }
 
-- (void)p_cacheBaseRegion:(id)a3
+- (void)p_cacheBaseRegion:(id)region
 {
-  objc_storeStrong(&self->_cachedBaseRegion, a3);
+  objc_storeStrong(&self->_cachedBaseRegion, region);
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v8 = objc_msgSend_columnRowUIDMap(WeakRetained, v4, v5, v6, v7);
   self->_cachedBaseRegionVersionCounter = objc_msgSend_versionCounter(v8, v9, v10, v11, v12);
@@ -604,9 +604,9 @@ LABEL_7:
   return v10;
 }
 
-- (TSUCellCoord)logicalCellIDInTable:(id)a3
+- (TSUCellCoord)logicalCellIDInTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v9 = objc_msgSend_cellRegion(self, v5, v6, v7, v8);
   if ((objc_msgSend_isRectangle(v9, v10, v11, v12, v13) & 1) == 0)
   {
@@ -614,7 +614,7 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  v17 = objc_msgSend_containsSingleCellOrMergeInTable_(self, v14, v4, v15, v16);
+  v17 = objc_msgSend_containsSingleCellOrMergeInTable_(self, v14, tableCopy, v15, v16);
 
   if ((v17 & 1) == 0)
   {
@@ -631,7 +631,7 @@ LABEL_5:
 
   v22 = objc_msgSend_cellRegion(self, v18, v19, v20, v21);
   CellID = objc_msgSend_firstCellID(v22, v23, v24, v25, v26);
-  v31 = objc_msgSend_mergeOriginForCellID_(v4, v28, CellID, v29, v30);
+  v31 = objc_msgSend_mergeOriginForCellID_(tableCopy, v28, CellID, v29, v30);
 
 LABEL_6:
   return v31;
@@ -645,17 +645,17 @@ LABEL_6:
   return v10;
 }
 
-- (TSTCellSelection)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSTCellSelection)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v12 = sub_22108EBB4(*(a3 + 34), v7, v8, v9, v10);
-  v13 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v12 = sub_22108EBB4(*(archive + 34), v7, v8, v9, v10);
+  v13 = *(archive + 4);
   if ((v13 & 0x10) != 0)
   {
     v16 = [TSTCellUIDRegion alloc];
-    if (*(a3 + 13))
+    if (*(archive + 13))
     {
-      v20 = objc_msgSend_initFromMessage_(v16, v17, *(a3 + 13), v18, v19);
+      v20 = objc_msgSend_initFromMessage_(v16, v17, *(archive + 13), v18, v19);
     }
 
     else
@@ -664,7 +664,7 @@ LABEL_6:
     }
 
     v14 = v20;
-    v13 = *(a3 + 4);
+    v13 = *(archive + 4);
     if ((v13 & 0x20) == 0)
     {
       goto LABEL_3;
@@ -683,9 +683,9 @@ LABEL_3:
   }
 
   v21 = [TSTCellUIDRegion alloc];
-  if (*(a3 + 14))
+  if (*(archive + 14))
   {
-    v25 = objc_msgSend_initFromMessage_(v21, v22, *(a3 + 14), v23, v24);
+    v25 = objc_msgSend_initFromMessage_(v21, v22, *(archive + 14), v23, v24);
   }
 
   else
@@ -694,28 +694,28 @@ LABEL_3:
   }
 
   v15 = v25;
-  v13 = *(a3 + 4);
+  v13 = *(archive + 4);
 LABEL_12:
   if ((v13 & 0x40) != 0)
   {
-    v26 = *(a3 + 15);
+    v26 = *(archive + 15);
     v46 = 0u;
     v47 = 0u;
     sub_2211A8FE8(v26, v11, &v46);
     v51[0] = v46;
     v51[1] = v47;
-    v13 = *(a3 + 4);
+    v13 = *(archive + 4);
   }
 
   if ((v13 & 0x80) != 0)
   {
-    v27 = *(a3 + 16);
+    v27 = *(archive + 16);
     v46 = 0u;
     v47 = 0u;
     sub_2211A8FE8(v27, v11, &v46);
     v50[0] = v46;
     v50[1] = v47;
-    v13 = *(a3 + 4);
+    v13 = *(archive + 4);
   }
 
   *&v46 = 0;
@@ -726,13 +726,13 @@ LABEL_12:
   v49 = 0;
   if ((v13 & 8) != 0)
   {
-    v28 = *(a3 + 12);
+    v28 = *(archive + 12);
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = sub_22108ECD4;
     v45[3] = &unk_27845DAB0;
     v45[4] = &v46;
-    v29 = v6;
+    v29 = unarchiverCopy;
     v30 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v29, v31, v28, v30, 0, v45);
   }
@@ -741,19 +741,19 @@ LABEL_12:
   v40 = 3221225472;
   v41 = sub_22108ECE4;
   v42 = &unk_27845DAD8;
-  v32 = self;
-  v43 = v32;
+  selfCopy = self;
+  v43 = selfCopy;
   v44 = &v46;
-  objc_msgSend_addFinalizeHandler_(v6, v33, &v39, v34, v35);
-  v37 = objc_msgSend_initWithTableInfo_cellUIDRegion_anchorCellUID_cursorCellUID_baseCellUIDRegion_selectionType_searchReferenceRange_beginImplicitEditing_(v32, v36, 0, v14, v51, v50, v15, v12, 0, 0, 0, v39, v40, v41, v42);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v33, &v39, v34, v35);
+  v37 = objc_msgSend_initWithTableInfo_cellUIDRegion_anchorCellUID_cursorCellUID_baseCellUIDRegion_selectionType_searchReferenceRange_beginImplicitEditing_(selfCopy, v36, 0, v14, v51, v50, v15, v12, 0, 0, 0, v39, v40, v41, v42);
 
   _Block_object_dispose(&v46, 8);
   return v37;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v9 = a4;
+  archiverCopy = archiver;
   v10 = self->_selectionType - 1;
   if (v10 > 2)
   {
@@ -765,68 +765,68 @@ LABEL_12:
     v11 = dword_2217E01A8[v10];
   }
 
-  v12 = *(a3 + 4);
-  *(a3 + 4) = v12 | 0x100;
-  *(a3 + 34) = v11;
+  v12 = *(archive + 4);
+  *(archive + 4) = v12 | 0x100;
+  *(archive + 34) = v11;
   cellUIDRegion = self->_cellUIDRegion;
-  *(a3 + 4) = v12 | 0x110;
-  v14 = *(a3 + 13);
+  *(archive + 4) = v12 | 0x110;
+  v14 = *(archive + 13);
   if (!v14)
   {
-    v15 = *(a3 + 1);
+    v15 = *(archive + 1);
     if (v15)
     {
       v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v14 = google::protobuf::Arena::CreateMaybeMessage<TST::CellUIDRegionArchive>(v15);
-    *(a3 + 13) = v14;
+    *(archive + 13) = v14;
   }
 
   objc_msgSend_saveToMessage_(cellUIDRegion, v6, v14, v7, v8);
   baseCellUIDRegion = self->_baseCellUIDRegion;
-  *(a3 + 4) |= 0x20u;
-  v20 = *(a3 + 14);
+  *(archive + 4) |= 0x20u;
+  v20 = *(archive + 14);
   if (!v20)
   {
-    v21 = *(a3 + 1);
+    v21 = *(archive + 1);
     if (v21)
     {
       v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v20 = google::protobuf::Arena::CreateMaybeMessage<TST::CellUIDRegionArchive>(v21);
-    *(a3 + 14) = v20;
+    *(archive + 14) = v20;
   }
 
   objc_msgSend_saveToMessage_(baseCellUIDRegion, v16, v20, v17, v18);
-  *(a3 + 4) |= 0x40u;
-  v22 = *(a3 + 15);
+  *(archive + 4) |= 0x40u;
+  v22 = *(archive + 15);
   if (!v22)
   {
-    v23 = *(a3 + 1);
+    v23 = *(archive + 1);
     if (v23)
     {
       v23 = *(v23 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v22 = MEMORY[0x223DA0330](v23);
-    *(a3 + 15) = v22;
+    *(archive + 15) = v22;
   }
 
   TSKUIDStructCoord::saveToMessage(&self->_anchorCellUID, v22);
-  *(a3 + 4) |= 0x80u;
-  v24 = *(a3 + 16);
+  *(archive + 4) |= 0x80u;
+  v24 = *(archive + 16);
   if (!v24)
   {
-    v25 = *(a3 + 1);
+    v25 = *(archive + 1);
     if (v25)
     {
       v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v24 = MEMORY[0x223DA0330](v25);
-    *(a3 + 16) = v24;
+    *(archive + 16) = v24;
   }
 
   TSKUIDStructCoord::saveToMessage(&self->_cursorCellUID, v24);
@@ -835,32 +835,32 @@ LABEL_12:
   if (v30)
   {
     v37 = objc_msgSend_tableInfo(self, v31, v32, v33, v34);
-    *(a3 + 4) |= 8u;
-    v38 = *(a3 + 12);
+    *(archive + 4) |= 8u;
+    v38 = *(archive + 12);
     if (!v38)
     {
-      v39 = *(a3 + 1);
+      v39 = *(archive + 1);
       if (v39)
       {
         v39 = *(v39 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v38 = MEMORY[0x223DA0390](v39);
-      *(a3 + 12) = v38;
+      *(archive + 12) = v38;
     }
 
-    objc_msgSend_setWeakReference_message_(v9, v35, v37, v38, v36);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v35, v37, v38, v36);
   }
 
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v9, v31, 10, a3, v34);
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v9, v40, 11, a3, v41);
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v9, v42, 12, a3, v43);
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v9, v44, 13, a3, v45);
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v9, v46, 9, a3, v47);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v31, 10, archive, v34);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v40, 11, archive, v41);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v42, 12, archive, v43);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v44, 13, archive, v45);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v46, 9, archive, v47);
   v80[0] = 0;
   v80[1] = v80;
   v80[2] = 0x2020000000;
-  v80[3] = a3;
+  v80[3] = archive;
   v52 = objc_msgSend_cellRegion(self, v48, v49, v50, v51);
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
@@ -878,51 +878,51 @@ LABEL_12:
   objc_msgSend_enumerateCellRangesUsingBlock_(v60, v61, v78, v62, v63);
 
   v68 = objc_msgSend_anchorCellID(self, v64, v65, v66, v67);
-  *(a3 + 4) |= 2u;
-  v69 = *(a3 + 10);
+  *(archive + 4) |= 2u;
+  v69 = *(archive + 10);
   if (!v69)
   {
-    v70 = *(a3 + 1);
+    v70 = *(archive + 1);
     if (v70)
     {
       v70 = *(v70 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v69 = google::protobuf::Arena::CreateMaybeMessage<TST::CellID>(v70);
-    *(a3 + 10) = v69;
+    *(archive + 10) = v69;
   }
 
   sub_221123904(v68, v69);
   v75 = objc_msgSend_cursorCellID(self, v71, v72, v73, v74);
-  *(a3 + 4) |= 4u;
-  v76 = *(a3 + 11);
+  *(archive + 4) |= 4u;
+  v76 = *(archive + 11);
   if (!v76)
   {
-    v77 = *(a3 + 1);
+    v77 = *(archive + 1);
     if (v77)
     {
       v77 = *(v77 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v76 = google::protobuf::Arena::CreateMaybeMessage<TST::CellID>(v77);
-    *(a3 + 11) = v76;
+    *(archive + 11) = v76;
   }
 
   sub_221123904(v75, v76);
   _Block_object_dispose(v80, 8);
 }
 
-- (TSTCellSelection)initWithRdar39989167Archive:(const void *)a3 unarchiver:(id)a4
+- (TSTCellSelection)initWithRdar39989167Archive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v12 = sub_22108EBB4(*(a3 + 16), v7, v8, v9, v10);
-  v13 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v12 = sub_22108EBB4(*(archive + 16), v7, v8, v9, v10);
+  v13 = *(archive + 4);
   if ((v13 & 2) != 0)
   {
     v16 = [TSTCellUIDRegion alloc];
-    if (*(a3 + 4))
+    if (*(archive + 4))
     {
-      v20 = objc_msgSend_initFromMessage_(v16, v17, *(a3 + 4), v18, v19);
+      v20 = objc_msgSend_initFromMessage_(v16, v17, *(archive + 4), v18, v19);
     }
 
     else
@@ -931,7 +931,7 @@ LABEL_12:
     }
 
     v14 = v20;
-    v13 = *(a3 + 4);
+    v13 = *(archive + 4);
     if ((v13 & 4) == 0)
     {
       goto LABEL_3;
@@ -950,9 +950,9 @@ LABEL_3:
   }
 
   v21 = [TSTCellUIDRegion alloc];
-  if (*(a3 + 5))
+  if (*(archive + 5))
   {
-    v25 = objc_msgSend_initFromMessage_(v21, v22, *(a3 + 5), v23, v24);
+    v25 = objc_msgSend_initFromMessage_(v21, v22, *(archive + 5), v23, v24);
   }
 
   else
@@ -961,28 +961,28 @@ LABEL_3:
   }
 
   v15 = v25;
-  v13 = *(a3 + 4);
+  v13 = *(archive + 4);
 LABEL_12:
   if ((v13 & 8) != 0)
   {
-    v26 = *(a3 + 6);
+    v26 = *(archive + 6);
     v46 = 0u;
     v47 = 0u;
     sub_2211A8FE8(v26, v11, &v46);
     v51[0] = v46;
     v51[1] = v47;
-    v13 = *(a3 + 4);
+    v13 = *(archive + 4);
   }
 
   if ((v13 & 0x10) != 0)
   {
-    v27 = *(a3 + 7);
+    v27 = *(archive + 7);
     v46 = 0u;
     v47 = 0u;
     sub_2211A8FE8(v27, v11, &v46);
     v50[0] = v46;
     v50[1] = v47;
-    v13 = *(a3 + 4);
+    v13 = *(archive + 4);
   }
 
   *&v46 = 0;
@@ -993,13 +993,13 @@ LABEL_12:
   v49 = 0;
   if (v13)
   {
-    v28 = *(a3 + 3);
+    v28 = *(archive + 3);
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = sub_22108F5A8;
     v45[3] = &unk_27845DAB0;
     v45[4] = &v46;
-    v29 = v6;
+    v29 = unarchiverCopy;
     v30 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v29, v31, v28, v30, 0, v45);
   }
@@ -1008,21 +1008,21 @@ LABEL_12:
   v40 = 3221225472;
   v41 = sub_22108F5B8;
   v42 = &unk_27845DAD8;
-  v32 = self;
-  v43 = v32;
+  selfCopy = self;
+  v43 = selfCopy;
   v44 = &v46;
-  objc_msgSend_addFinalizeHandler_(v6, v33, &v39, v34, v35);
-  v37 = objc_msgSend_initWithTableInfo_cellUIDRegion_anchorCellUID_cursorCellUID_baseCellUIDRegion_selectionType_searchReferenceRange_beginImplicitEditing_(v32, v36, 0, v14, v51, v50, v15, v12, 0, 0, 0, v39, v40, v41, v42);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v33, &v39, v34, v35);
+  v37 = objc_msgSend_initWithTableInfo_cellUIDRegion_anchorCellUID_cursorCellUID_baseCellUIDRegion_selectionType_searchReferenceRange_beginImplicitEditing_(selfCopy, v36, 0, v14, v51, v50, v15, v12, 0, 0, 0, v39, v40, v41, v42);
 
   _Block_object_dispose(&v46, 8);
   return v37;
 }
 
-- (id)selectionByExtendingWithCellRange:(TSUCellRect)a3 inTable:(id)a4 selectionType:(int64_t)a5 cursorCell:(TSUCellCoord)a6
+- (id)selectionByExtendingWithCellRange:(TSUCellRect)range inTable:(id)table selectionType:(int64_t)type cursorCell:(TSUCellCoord)cell
 {
-  size = a3.size;
-  origin = a3.origin;
-  v15 = a4;
+  size = range.size;
+  origin = range.origin;
+  tableCopy = table;
   if (origin == 0x7FFFFFFF || (origin & 0xFFFF00000000) == 0x7FFF00000000 || !HIDWORD(size) || !size)
   {
     v16 = MEMORY[0x277D81150];
@@ -1052,16 +1052,16 @@ LABEL_12:
   v47 = [TSTCellSelection alloc];
   v52 = objc_msgSend_anchorCellID(self, v48, v49, v50, v51);
   v57 = objc_msgSend_baseRegion(self, v53, v54, v55, v56);
-  v59 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(v47, v58, v15, v46, v52, a6, v57, a5);
+  v59 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(v47, v58, tableCopy, v46, v52, cell, v57, type);
 
   return v59;
 }
 
-- (id)selectionByAddingCellRange:(TSUCellRect)a3 inTable:(id)a4 withAnchor:(TSUCellCoord)a5 cursor:(TSUCellCoord)a6 selectionType:(int64_t)a7
+- (id)selectionByAddingCellRange:(TSUCellRect)range inTable:(id)table withAnchor:(TSUCellCoord)anchor cursor:(TSUCellCoord)cursor selectionType:(int64_t)type
 {
-  size = a3.size;
-  origin = a3.origin;
-  v16 = a4;
+  size = range.size;
+  origin = range.origin;
+  tableCopy = table;
   if (origin == 0x7FFFFFFF || (origin & 0xFFFF00000000) == 0x7FFF00000000 || !HIDWORD(size) || !size)
   {
     v17 = MEMORY[0x277D81150];
@@ -1077,16 +1077,16 @@ LABEL_12:
 
   v32 = [TSTCellSelection alloc];
   v37 = objc_msgSend_cellRegion(self, v33, v34, v35, v36);
-  v39 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(v32, v38, v16, v31, *&a5, a6, v37, a7);
+  v39 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(v32, v38, tableCopy, v31, *&anchor, cursor, v37, type);
 
   return v39;
 }
 
-- (id)selectionByRemovingCellRange:(TSUCellRect)a3 inTable:(id)a4 withAnchor:(TSUCellCoord)a5 cursor:(TSUCellCoord)a6 selectionType:(int64_t)a7
+- (id)selectionByRemovingCellRange:(TSUCellRect)range inTable:(id)table withAnchor:(TSUCellCoord)anchor cursor:(TSUCellCoord)cursor selectionType:(int64_t)type
 {
-  size = a3.size;
-  origin = a3.origin;
-  v16 = a4;
+  size = range.size;
+  origin = range.origin;
+  tableCopy = table;
   if (origin == 0x7FFFFFFF || (origin & 0xFFFF00000000) == 0x7FFF00000000 || !HIDWORD(size) || !size)
   {
     v17 = MEMORY[0x277D81150];
@@ -1102,81 +1102,81 @@ LABEL_12:
 
   v32 = [TSTCellSelection alloc];
   v37 = objc_msgSend_cellRegion(self, v33, v34, v35, v36);
-  v39 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(v32, v38, v16, v31, *&a5, a6, v37, a7);
+  v39 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_(v32, v38, tableCopy, v31, *&anchor, cursor, v37, type);
 
   return v39;
 }
 
-- (id)selectionAdjustedForVisibilityInTableInfo:(id)a3
+- (id)selectionAdjustedForVisibilityInTableInfo:(id)info
 {
-  v4 = objc_msgSend_selectionAdjustedForVisibilityInTableInfo_alwaysCheckColumns_(self, a2, a3, 0, v3);
+  v4 = objc_msgSend_selectionAdjustedForVisibilityInTableInfo_alwaysCheckColumns_(self, a2, info, 0, v3);
 
   return v4;
 }
 
-- (id)selectionAdjustedForVisibilityInTableInfo:(id)a3 alwaysCheckColumns:(BOOL)a4
+- (id)selectionAdjustedForVisibilityInTableInfo:(id)info alwaysCheckColumns:(BOOL)columns
 {
-  v6 = a3;
+  infoCopy = info;
   if (objc_msgSend_cellCount(self, v7, v8, v9, v10))
   {
-    if (objc_msgSend_isValidForInteraction(v6, v11, v12, v13, v14))
+    if (objc_msgSend_isValidForInteraction(infoCopy, v11, v12, v13, v14))
     {
-      v15 = self;
-      if (objc_msgSend_selectionType(v15, v16, v17, v18, v19) == 2)
+      selfCopy = self;
+      if (objc_msgSend_selectionType(selfCopy, v16, v17, v18, v19) == 2)
       {
-        v24 = objc_msgSend_cellRegion(v15, v20, v21, v22, v23);
+        v24 = objc_msgSend_cellRegion(selfCopy, v20, v21, v22, v23);
         v29 = objc_msgSend_intersectingColumnsIndexSet(v24, v25, v26, v27, v28);
-        v32 = objc_msgSend_selectionWithTableInfo_columnIndices_(TSTCellSelection, v30, v6, v29, v31);
+        v32 = objc_msgSend_selectionWithTableInfo_columnIndices_(TSTCellSelection, v30, infoCopy, v29, v31);
 
-        v33 = v32;
+        selfCopy2 = v32;
       }
 
       else
       {
-        objc_msgSend_p_selectionRemovingHiddenRowsInTableInfo_(v15, v20, v6, v22, v23);
-        v33 = v24 = v15;
+        objc_msgSend_p_selectionRemovingHiddenRowsInTableInfo_(selfCopy, v20, infoCopy, v22, v23);
+        selfCopy2 = v24 = selfCopy;
       }
 
-      if (a4 || objc_msgSend_isAPivotTable(v6, v34, v35, v36, v37))
+      if (columns || objc_msgSend_isAPivotTable(infoCopy, v34, v35, v36, v37))
       {
-        if (objc_msgSend_selectionType(v33, v34, v35, v36, v37) == 1)
+        if (objc_msgSend_selectionType(selfCopy2, v34, v35, v36, v37) == 1)
         {
-          v42 = objc_msgSend_cellRegion(v33, v38, v39, v40, v41);
+          v42 = objc_msgSend_cellRegion(selfCopy2, v38, v39, v40, v41);
           v47 = objc_msgSend_intersectingRowsIndexSet(v42, v43, v44, v45, v46);
-          v50 = objc_msgSend_selectionWithTableInfo_rowIndices_(TSTCellSelection, v48, v6, v47, v49);
+          v50 = objc_msgSend_selectionWithTableInfo_rowIndices_(TSTCellSelection, v48, infoCopy, v47, v49);
 
-          v33 = v50;
+          selfCopy2 = v50;
         }
 
         else
         {
-          objc_msgSend_p_selectionRemovingHiddenColumnsInTableInfo_(v33, v38, v6, v40, v41);
-          v33 = v42 = v33;
+          objc_msgSend_p_selectionRemovingHiddenColumnsInTableInfo_(selfCopy2, v38, infoCopy, v40, v41);
+          selfCopy2 = v42 = selfCopy2;
         }
       }
     }
 
     else
     {
-      v33 = 0;
+      selfCopy2 = 0;
     }
   }
 
   else
   {
-    v33 = self;
+    selfCopy2 = self;
   }
 
-  return v33;
+  return selfCopy2;
 }
 
-- (id)p_selectionRemovingHiddenRowsInTableInfo:(id)a3
+- (id)p_selectionRemovingHiddenRowsInTableInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  v10 = objc_msgSend_cellRegion(v5, v6, v7, v8, v9);
+  infoCopy = info;
+  selfCopy = self;
+  v10 = objc_msgSend_cellRegion(selfCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_intersectingRowsIndexSet(v10, v11, v12, v13, v14);
-  v19 = objc_msgSend_indexesOfVisibleRowsInRowRange_(v4, v16, v15, v17, v18);
+  v19 = objc_msgSend_indexesOfVisibleRowsInRowRange_(infoCopy, v16, v15, v17, v18);
   v24 = objc_msgSend_count(v19, v20, v21, v22, v23);
   if (v24 != objc_msgSend_count(v15, v25, v26, v27, v28))
   {
@@ -1189,16 +1189,16 @@ LABEL_12:
         goto LABEL_23;
       }
 
-      if (!objc_msgSend_selectionType(v5, v46, v47, v48, v49))
+      if (!objc_msgSend_selectionType(selfCopy, v46, v47, v48, v49))
       {
-        v61 = objc_msgSend_selectionWithTableInfo_cellRegion_(TSTCellSelection, v50, v4, v32, v53);
+        v61 = objc_msgSend_selectionWithTableInfo_cellRegion_(TSTCellSelection, v50, infoCopy, v32, v53);
 LABEL_22:
 
-        v5 = v61;
+        selfCopy = v61;
         goto LABEL_23;
       }
 
-      if (objc_msgSend_selectionType(v5, v50, v51, v52, v53) != 1)
+      if (objc_msgSend_selectionType(selfCopy, v50, v51, v52, v53) != 1)
       {
 LABEL_23:
 
@@ -1206,18 +1206,18 @@ LABEL_23:
       }
 
       v58 = objc_msgSend_intersectingRowsIndexSet(v32, v54, v55, v56, v57);
-      v61 = objc_msgSend_selectionWithTableInfo_rowIndices_(TSTCellSelection, v59, v4, v58, v60);
+      v61 = objc_msgSend_selectionWithTableInfo_rowIndices_(TSTCellSelection, v59, infoCopy, v58, v60);
     }
 
     else
     {
-      v126 = objc_msgSend_indexesForSummaryRows(v4, v37, v38, v39, v40);
+      v126 = objc_msgSend_indexesForSummaryRows(infoCopy, v37, v38, v39, v40);
       CellID = objc_msgSend_firstCellID(v10, v62, v63, v64, v65);
-      v127 = objc_msgSend_indexOfVisibleRowAfterAndIncludingRowAtIndex_(v4, v67, CellID, v68, v69);
+      v127 = objc_msgSend_indexOfVisibleRowAfterAndIncludingRowAtIndex_(infoCopy, v67, CellID, v68, v69);
       if (objc_msgSend_count(v126, v70, v71, v72, v73))
       {
         v78 = objc_msgSend_firstCellID(v10, v74, v75, v76, v77);
-        v82 = objc_msgSend_indexOfVisibleRowBeforeAndIncludingRowAtIndex_(v4, v79, v78, v80, v81);
+        v82 = objc_msgSend_indexOfVisibleRowBeforeAndIncludingRowAtIndex_(infoCopy, v79, v78, v80, v81);
         v86 = objc_msgSend_tsu_intersectsIndexesInIndexSet_(v126, v83, v15, v84, v85);
         v90 = objc_msgSend_containsIndex_(v126, v87, v127, v88, v89);
         v125 = v82;
@@ -1225,7 +1225,7 @@ LABEL_23:
         v95 = v82;
         if (v82 != 0x7FFFFFFF && (v94 & 1) == 0)
         {
-          v96 = objc_msgSend_indexesForGrandTotalRows(v4, v74, v75, v76, v77);
+          v96 = objc_msgSend_indexesForGrandTotalRows(infoCopy, v74, v75, v76, v77);
           v100 = objc_msgSend_tsu_intersectsIndexesInIndexSet_(v96, v97, v15, v98, v99);
           v104 = objc_msgSend_containsIndex_(v96, v101, v127, v102, v103);
           v94 = (v100 ^ objc_msgSend_containsIndex_(v96, v105, v125, v106, v107) ^ 1) & (v100 ^ v104);
@@ -1253,42 +1253,42 @@ LABEL_23:
       else if (v127 == 0x7FFFFFFF)
       {
         v108 = objc_msgSend_firstCellID(v10, v74, v75, v76, v77);
-        v127 = objc_msgSend_indexOfVisibleRowBeforeAndIncludingRowAtIndex_(v4, v109, v108, v110, v111);
+        v127 = objc_msgSend_indexOfVisibleRowBeforeAndIncludingRowAtIndex_(infoCopy, v109, v108, v110, v111);
       }
 
       v114 = objc_msgSend_intersectingColumnsIndexSet(v10, v74, v75, v76, v77);
       v118 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v115, v127, v116, v117);
       v121 = objc_msgSend_regionFromColumnIndexes_rowIndexes_(TSTCellRegion, v119, v114, v118, v120);
 
-      v61 = objc_msgSend_selectionWithTableInfo_cellRegion_(TSTCellSelection, v122, v4, v121, v123);
+      v61 = objc_msgSend_selectionWithTableInfo_cellRegion_(TSTCellSelection, v122, infoCopy, v121, v123);
       v32 = v121;
       v58 = v126;
     }
 
-    v5 = v58;
+    selfCopy = v58;
     goto LABEL_22;
   }
 
 LABEL_24:
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)p_selectionRemovingHiddenColumnsInTableInfo:(id)a3
+- (id)p_selectionRemovingHiddenColumnsInTableInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  v10 = objc_msgSend_cellRegion(v5, v6, v7, v8, v9);
+  infoCopy = info;
+  selfCopy = self;
+  v10 = objc_msgSend_cellRegion(selfCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_boundingCellRange(v10, v11, v12, v13, v14);
-  v149 = objc_msgSend_indexesOfVisibleColumnsInCellRange_(v4, v16, v15, v16, v17);
+  v149 = objc_msgSend_indexesOfVisibleColumnsInCellRange_(infoCopy, v16, v15, v16, v17);
 
-  v22 = objc_msgSend_cellRegion(v5, v18, v19, v20, v21);
+  v22 = objc_msgSend_cellRegion(selfCopy, v18, v19, v20, v21);
   v26 = objc_msgSend_regionByTrimmingAroundColumnIndices_(v22, v23, v149, v24, v25);
 
   if (objc_msgSend_cellCount(v26, v27, v28, v29, v30))
   {
     v35 = objc_msgSend_cellCount(v26, v31, v32, v33, v34);
-    v40 = objc_msgSend_cellRegion(v5, v36, v37, v38, v39);
+    v40 = objc_msgSend_cellRegion(selfCopy, v36, v37, v38, v39);
     v45 = objc_msgSend_cellCount(v40, v41, v42, v43, v44);
 
     if (v35 == v45)
@@ -1296,31 +1296,31 @@ LABEL_24:
       goto LABEL_18;
     }
 
-    if (!objc_msgSend_selectionType(v5, v46, v47, v48, v49))
+    if (!objc_msgSend_selectionType(selfCopy, v46, v47, v48, v49))
     {
-      v61 = objc_msgSend_selectionWithTableInfo_cellRegion_(TSTCellSelection, v50, v4, v26, v53);
+      v61 = objc_msgSend_selectionWithTableInfo_cellRegion_(TSTCellSelection, v50, infoCopy, v26, v53);
       goto LABEL_17;
     }
 
-    if (objc_msgSend_selectionType(v5, v50, v51, v52, v53) != 2)
+    if (objc_msgSend_selectionType(selfCopy, v50, v51, v52, v53) != 2)
     {
       goto LABEL_18;
     }
 
     v58 = objc_msgSend_intersectingColumnsIndexSet(v26, v54, v55, v56, v57);
-    v61 = objc_msgSend_selectionWithTableInfo_columnIndices_(TSTCellSelection, v59, v4, v58, v60);
+    v61 = objc_msgSend_selectionWithTableInfo_columnIndices_(TSTCellSelection, v59, infoCopy, v58, v60);
   }
 
   else
   {
-    v148 = objc_msgSend_indexesForSummaryColumns(v4, v31, v32, v33, v34);
-    v66 = objc_msgSend_anchorCellID(v5, v62, v63, v64, v65);
-    v70 = objc_msgSend_indexOfVisibleColumnAfterAndIncludingColumnAtIndex_(v4, v67, WORD2(v66), v68, v69);
+    v148 = objc_msgSend_indexesForSummaryColumns(infoCopy, v31, v32, v33, v34);
+    v66 = objc_msgSend_anchorCellID(selfCopy, v62, v63, v64, v65);
+    v70 = objc_msgSend_indexOfVisibleColumnAfterAndIncludingColumnAtIndex_(infoCopy, v67, WORD2(v66), v68, v69);
     if (objc_msgSend_count(v148, v71, v72, v73, v74))
     {
-      v79 = objc_msgSend_anchorCellID(v5, v75, v76, v77, v78);
-      v147 = objc_msgSend_indexOfVisibleColumnBeforeAndIncludingColumnAtIndex_(v4, v80, WORD2(v79), v81, v82);
-      v87 = objc_msgSend_cellRegion(v5, v83, v84, v85, v86);
+      v79 = objc_msgSend_anchorCellID(selfCopy, v75, v76, v77, v78);
+      v147 = objc_msgSend_indexOfVisibleColumnBeforeAndIncludingColumnAtIndex_(infoCopy, v80, WORD2(v79), v81, v82);
+      v87 = objc_msgSend_cellRegion(selfCopy, v83, v84, v85, v86);
       v92 = objc_msgSend_intersectingColumnsIndexSet(v87, v88, v89, v90, v91);
       v96 = objc_msgSend_tsu_intersectsIndexesInIndexSet_(v148, v93, v92, v94, v95);
 
@@ -1328,8 +1328,8 @@ LABEL_24:
       v104 = (((v147 == 0x7FFF) | v96 ^ objc_msgSend_containsIndex_(v148, v100, v147, v101, v102)) ^ 1) & (v96 ^ v92);
       if (v147 != 0x7FFF && (v104 & 1) == 0)
       {
-        v105 = objc_msgSend_indexesForGrandTotalColumns(v4, v75, v103, v77, v78);
-        v110 = objc_msgSend_cellRegion(v5, v106, v107, v108, v109);
+        v105 = objc_msgSend_indexesForGrandTotalColumns(infoCopy, v75, v103, v77, v78);
+        v110 = objc_msgSend_cellRegion(selfCopy, v106, v107, v108, v109);
         v115 = objc_msgSend_intersectingColumnsIndexSet(v110, v111, v112, v113, v114);
         v119 = objc_msgSend_tsu_intersectsIndexesInIndexSet_(v105, v116, v115, v117, v118);
 
@@ -1345,41 +1345,41 @@ LABEL_24:
 
     else if (v70 == 0x7FFF)
     {
-      v126 = objc_msgSend_anchorCellID(v5, v75, v76, v77, v78);
-      LOWORD(v70) = objc_msgSend_indexOfVisibleColumnBeforeAndIncludingColumnAtIndex_(v4, v127, WORD2(v126), v128, v129);
+      v126 = objc_msgSend_anchorCellID(selfCopy, v75, v76, v77, v78);
+      LOWORD(v70) = objc_msgSend_indexOfVisibleColumnBeforeAndIncludingColumnAtIndex_(infoCopy, v127, WORD2(v126), v128, v129);
     }
 
     v130 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v75, v70, v77, v78);
-    v135 = objc_msgSend_cellRegion(v5, v131, v132, v133, v134);
+    v135 = objc_msgSend_cellRegion(selfCopy, v131, v132, v133, v134);
     v140 = objc_msgSend_intersectingRowsIndexSet(v135, v136, v137, v138, v139);
     v143 = objc_msgSend_regionFromColumnIndexes_rowIndexes_(TSTCellRegion, v141, v130, v140, v142);
 
-    v61 = objc_msgSend_selectionWithTableInfo_cellRegion_(TSTCellSelection, v144, v4, v143, v145);
+    v61 = objc_msgSend_selectionWithTableInfo_cellRegion_(TSTCellSelection, v144, infoCopy, v143, v145);
     v26 = v143;
     v58 = v148;
   }
 
-  v5 = v58;
+  selfCopy = v58;
 LABEL_17:
 
-  v5 = v61;
+  selfCopy = v61;
 LABEL_18:
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)selectionAdjustedForGeometryInTableInfo:(id)a3
+- (id)selectionAdjustedForGeometryInTableInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  v10 = v5;
-  selectionType = v5->_selectionType;
+  infoCopy = info;
+  selfCopy = self;
+  v10 = selfCopy;
+  selectionType = selfCopy->_selectionType;
   if (selectionType == 2)
   {
-    v38 = objc_msgSend_cellRegion(v5, v6, v7, v8, v9);
+    v38 = objc_msgSend_cellRegion(selfCopy, v6, v7, v8, v9);
     objc_msgSend_boundingCellRange(v38, v39, v40, v41, v42);
     v44 = v43;
-    objc_msgSend_range(v4, v43, v45, v46, v47);
+    objc_msgSend_range(infoCopy, v43, v45, v46, v47);
     v49 = v48 ^ v44;
 
     if (!HIDWORD(v49))
@@ -1390,16 +1390,16 @@ LABEL_18:
     v50 = objc_opt_class();
     v29 = objc_msgSend_cellRegion(v10, v51, v52, v53, v54);
     v34 = objc_msgSend_intersectingColumnsIndexSet(v29, v55, v56, v57, v58);
-    v37 = objc_msgSend_selectionWithTableInfo_columnIndices_(v50, v59, v4, v34, v60);
+    v37 = objc_msgSend_selectionWithTableInfo_columnIndices_(v50, v59, infoCopy, v34, v60);
     goto LABEL_7;
   }
 
   if (selectionType == 1)
   {
-    v12 = objc_msgSend_cellRegion(v5, v6, v7, v8, v9);
+    v12 = objc_msgSend_cellRegion(selfCopy, v6, v7, v8, v9);
     objc_msgSend_boundingCellRange(v12, v13, v14, v15, v16);
     v18 = v17;
-    objc_msgSend_range(v4, v17, v19, v20, v21);
+    objc_msgSend_range(infoCopy, v17, v19, v20, v21);
     v23 = v22;
 
     if (v18 != v23)
@@ -1407,7 +1407,7 @@ LABEL_18:
       v24 = objc_opt_class();
       v29 = objc_msgSend_cellRegion(v10, v25, v26, v27, v28);
       v34 = objc_msgSend_intersectingRowsIndexSet(v29, v30, v31, v32, v33);
-      v37 = objc_msgSend_selectionWithTableInfo_rowIndices_(v24, v35, v4, v34, v36);
+      v37 = objc_msgSend_selectionWithTableInfo_rowIndices_(v24, v35, infoCopy, v34, v36);
 LABEL_7:
       v61 = v37;
 
@@ -1420,11 +1420,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setCellRange:(TSUCellRect)a3
+- (void)setCellRange:(TSUCellRect)range
 {
-  size = a3.size;
-  origin = a3.origin;
-  v7 = objc_msgSend_cellRegion(self, a2, *&a3.origin, *&a3.size, v3);
+  size = range.size;
+  origin = range.origin;
+  v7 = objc_msgSend_cellRegion(self, a2, *&range.origin, *&range.size, v3);
   v10 = objc_msgSend_equalsCellRange_(v7, v8, origin, size, v9);
 
   if ((v10 & 1) == 0)
@@ -1471,16 +1471,16 @@ LABEL_8:
   }
 }
 
-- (id)selectionToBeginImplicitEditingInTableInfo:(id)a3
+- (id)selectionToBeginImplicitEditingInTableInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc(objc_opt_class());
   v10 = objc_msgSend_cellRegion(self, v6, v7, v8, v9);
   v15 = objc_msgSend_anchorCellID(self, v11, v12, v13, v14);
   v20 = objc_msgSend_cursorCellID(self, v16, v17, v18, v19);
   v25 = objc_msgSend_baseRegion(self, v21, v22, v23, v24);
   v29 = 1;
-  v27 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_searchReferenceRange_beginImplicitEditing_(v5, v26, v4, v10, v15, v20, v25, self->_selectionType, self->_searchReferenceRange.location, self->_searchReferenceRange.length, v29);
+  v27 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_searchReferenceRange_beginImplicitEditing_(v5, v26, infoCopy, v10, v15, v20, v25, self->_selectionType, self->_searchReferenceRange.location, self->_searchReferenceRange.length, v29);
 
   return v27;
 }
@@ -1531,50 +1531,50 @@ LABEL_8:
 
         v45 = objc_alloc(objc_opt_class());
         v46 = objc_loadWeakRetained(&self->_tableInfo);
-        v49 = objc_msgSend_initWithTableInfo_rowIndices_(v45, v47, v46, v43, v48);
+        selfCopy = objc_msgSend_initWithTableInfo_rowIndices_(v45, v47, v46, v43, v48);
 
         goto LABEL_13;
       }
     }
   }
 
-  v49 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v49;
+  return selfCopy;
 }
 
-- (void)insert:(int64_t)a3 atIndex:(unsigned int)a4 count:(unsigned int)a5
+- (void)insert:(int64_t)insert atIndex:(unsigned int)index count:(unsigned int)count
 {
-  v30 = objc_msgSend_cellRegion(self, a2, a3, *&a4, *&a5);
+  v30 = objc_msgSend_cellRegion(self, a2, insert, *&index, *&count);
   v13 = objc_msgSend_boundingCellRange(v30, v9, v10, v11, v12);
   v15 = v14;
 
-  if (a3)
+  if (insert)
   {
     selectionType = self->_selectionType;
     if (selectionType)
     {
       if (selectionType == 1)
       {
-        v15 = v15 & 0xFFFFFFFF00000000 | (v15 + a5);
+        v15 = v15 & 0xFFFFFFFF00000000 | (v15 + count);
         goto LABEL_25;
       }
 
-      if (selectionType != 2 || v15 < 2 || WORD2(v13) > a4)
+      if (selectionType != 2 || v15 < 2 || WORD2(v13) > index)
       {
         goto LABEL_25;
       }
     }
 
-    else if (v15 < 2 || WORD2(v13) > a4)
+    else if (v15 < 2 || WORD2(v13) > index)
     {
       goto LABEL_25;
     }
 
-    if (a5 + a4 <= WORD2(v13) + v15)
+    if (count + index <= WORD2(v13) + v15)
     {
-      v15 = v15 & 0xFFFFFFFF00000000 | (v15 + a5);
+      v15 = v15 & 0xFFFFFFFF00000000 | (v15 + count);
     }
   }
 
@@ -1585,24 +1585,24 @@ LABEL_13:
     {
       if (v17 == 2)
       {
-        v15 = v15 | ((HIDWORD(v15) + a5) << 32);
+        v15 = v15 | ((HIDWORD(v15) + count) << 32);
         goto LABEL_25;
       }
 
-      if (v17 != 1 || v15 >> 33 == 0 || v13 > a4)
+      if (v17 != 1 || v15 >> 33 == 0 || v13 > index)
       {
         goto LABEL_25;
       }
     }
 
-    else if (!(v15 >> 33) || v13 > a4)
+    else if (!(v15 >> 33) || v13 > index)
     {
       goto LABEL_25;
     }
 
-    if (a5 + a4 <= HIDWORD(v15) + v13)
+    if (count + index <= HIDWORD(v15) + v13)
     {
-      v15 = v15 | ((HIDWORD(v15) + a5) << 32);
+      v15 = v15 | ((HIDWORD(v15) + count) << 32);
     }
   }
 
@@ -1614,9 +1614,9 @@ LABEL_25:
   self->_cellUIDRegion = v26;
 }
 
-- (void)remove:(int64_t)a3 atIndex:(unsigned int)a4 count:(unsigned int)a5
+- (void)remove:(int64_t)remove atIndex:(unsigned int)index count:(unsigned int)count
 {
-  v50 = objc_msgSend_cellRegion(self, a2, a3, *&a4, *&a5);
+  v50 = objc_msgSend_cellRegion(self, a2, remove, *&index, *&count);
   v13 = objc_msgSend_boundingCellRange(v50, v9, v10, v11, v12);
   v15 = v14;
   v16 = HIDWORD(v13);
@@ -1624,20 +1624,20 @@ LABEL_25:
   v18 = HIDWORD(v14);
 
   v19 = WORD2(v13);
-  if (!a3)
+  if (!remove)
   {
     v19 = v13;
   }
 
-  if ((self->_selectionType - 3) >= 0xFFFFFFFFFFFFFFFELL && v19 <= a4)
+  if ((self->_selectionType - 3) >= 0xFFFFFFFFFFFFFFFELL && v19 <= index)
   {
-    v21 = a3 ? v15 : v18;
-    if (a5 + a4 <= v19 + v21)
+    v21 = remove ? v15 : v18;
+    if (count + index <= v19 + v21)
     {
-      v41 = v21 - a5;
+      v41 = v21 - count;
       if (v41)
       {
-        if (a3)
+        if (remove)
         {
           v15 = v41;
           v18 = v18;
@@ -1653,7 +1653,7 @@ LABEL_25:
 
       if (v19)
       {
-        if (a3)
+        if (remove)
         {
           LOWORD(v16) = WORD2(v13) - 1;
 LABEL_65:
@@ -1664,7 +1664,7 @@ LABEL_65:
         LODWORD(v13) = v13 - 1;
       }
 
-      else if (a3)
+      else if (remove)
       {
         goto LABEL_65;
       }
@@ -1674,9 +1674,9 @@ LABEL_65:
     }
   }
 
-  if (v19 <= a4)
+  if (v19 <= index)
   {
-    if (a3)
+    if (remove)
     {
       v34 = v15;
     }
@@ -1687,9 +1687,9 @@ LABEL_65:
     }
 
     v35 = v19 + v34;
-    v36 = a5 + a4;
-    v37 = a4 - v35 + v34;
-    if (a3)
+    v36 = count + index;
+    v37 = index - v35 + v34;
+    if (remove)
     {
       v38 = v37;
     }
@@ -1699,7 +1699,7 @@ LABEL_65:
       v38 = v15;
     }
 
-    if (a3)
+    if (remove)
     {
       v37 = v18;
     }
@@ -1720,7 +1720,7 @@ LABEL_65:
       v37 = v18;
     }
 
-    if (a4 > v35)
+    if (index > v35)
     {
       v18 = v18;
     }
@@ -1734,8 +1734,8 @@ LABEL_65:
 
   else
   {
-    v22 = a5 + a4;
-    if (a3)
+    v22 = count + index;
+    if (remove)
     {
       v23 = v15;
     }
@@ -1749,7 +1749,7 @@ LABEL_65:
     v25 = v22 - v19;
     v26 = v23 - (v22 - v19);
     v27 = WORD2(v13) - (v22 - v19);
-    if (a3)
+    if (remove)
     {
       v28 = v26;
     }
@@ -1759,7 +1759,7 @@ LABEL_65:
       v28 = v15;
     }
 
-    if (a3)
+    if (remove)
     {
       v26 = v18;
       v25 = 0;
@@ -1789,7 +1789,7 @@ LABEL_65:
       v27 = WORD2(v13);
     }
 
-    if (a3)
+    if (remove)
     {
       v32 = 0;
     }
@@ -1799,7 +1799,7 @@ LABEL_65:
       v32 = v15;
     }
 
-    if (a3)
+    if (remove)
     {
       v33 = v18;
     }
@@ -1844,29 +1844,29 @@ LABEL_68:
   self->_cellUIDRegion = v48;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v11 = objc_msgSend_cellRegion(self, v7, v8, v9, v10);
-  v15 = objc_msgSend_copyWithZone_(v11, v12, a3, v13, v14);
+  v15 = objc_msgSend_copyWithZone_(v11, v12, zone, v13, v14);
   v20 = objc_msgSend_anchorCellID(self, v16, v17, v18, v19);
   v25 = objc_msgSend_cursorCellID(self, v21, v22, v23, v24);
   v30 = objc_msgSend_baseRegion(self, v26, v27, v28, v29);
-  v34 = objc_msgSend_copyWithZone_(v30, v31, a3, v32, v33);
+  v34 = objc_msgSend_copyWithZone_(v30, v31, zone, v32, v33);
   beginImplicitEditing = self->_beginImplicitEditing;
   v36 = objc_msgSend_initWithTableInfo_cellRegion_anchorCellID_cursorCellID_baseRegion_selectionType_searchReferenceRange_beginImplicitEditing_(v5, v35, WeakRetained, v15, v20, v25, v34, self->_selectionType, self->_searchReferenceRange.location, self->_searchReferenceRange.length, beginImplicitEditing);
 
   return v36;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5, v7, v8))
   {
-    isEqualToSelection = objc_msgSend_isEqualToSelection_(self, v9, v4, v10, v11);
+    isEqualToSelection = objc_msgSend_isEqualToSelection_(self, v9, equalCopy, v10, v11);
   }
 
   else
@@ -1877,10 +1877,10 @@ LABEL_68:
   return isEqualToSelection;
 }
 
-- (BOOL)isEqualToSelection:(id)a3
+- (BOOL)isEqualToSelection:(id)selection
 {
-  v4 = a3;
-  if (v4 == self)
+  selectionCopy = selection;
+  if (selectionCopy == self)
   {
     v27 = 1;
     goto LABEL_21;
@@ -1952,27 +1952,27 @@ LABEL_21:
   return v27;
 }
 
-- (BOOL)areCellsInTheSameRegionInTable:(id)a3
+- (BOOL)areCellsInTheSameRegionInTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v9 = objc_msgSend_cellRegion(self, v5, v6, v7, v8);
   v14 = objc_msgSend_boundingCellRange(v9, v10, v11, v12, v13);
   v16 = v15;
 
-  v20 = objc_msgSend_tableAreaForCellID_(v4, v17, v14, v18, v19);
-  v24 = objc_msgSend_tableAreaForCellID_(v4, v21, (v14 + (v16 << 32) + 0xFFFF00000000) & 0xFFFF00000000 | (v14 + HIDWORD(v16) - 1), v22, v23);
+  v20 = objc_msgSend_tableAreaForCellID_(tableCopy, v17, v14, v18, v19);
+  v24 = objc_msgSend_tableAreaForCellID_(tableCopy, v21, (v14 + (v16 << 32) + 0xFFFF00000000) & 0xFFFF00000000 | (v14 + HIDWORD(v16) - 1), v22, v23);
   v25 = v20 == 5 && v24 == 2 || v20 == 6 && v24 == 4 || v20 == v24;
 
   return v25;
 }
 
-- (BOOL)containsSelection:(id)a3
+- (BOOL)containsSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8))
+  if (objc_msgSend_isMemberOfClass_(selectionCopy, v6, v5, v7, v8))
   {
-    v9 = v4;
+    v9 = selectionCopy;
     v14 = objc_msgSend_cellRegion(self, v10, v11, v12, v13);
     v19 = objc_msgSend_cellRegion(v9, v15, v16, v17, v18);
     v23 = objc_msgSend_containsCellRegion_(v14, v20, v19, v21, v22);
@@ -1986,23 +1986,23 @@ LABEL_21:
   return v23;
 }
 
-- (BOOL)containsCell:(TSUCellCoord)a3
+- (BOOL)containsCell:(TSUCellCoord)cell
 {
-  v5 = a3;
-  v6 = objc_msgSend_cellRegion(self, a2, *&a3, v3, v4);
-  LOBYTE(v5.row) = objc_msgSend_containsCellID_(v6, v7, *&v5, v8, v9);
+  cellCopy = cell;
+  v6 = objc_msgSend_cellRegion(self, a2, *&cell, v3, v4);
+  LOBYTE(cellCopy.row) = objc_msgSend_containsCellID_(v6, v7, *&cellCopy, v8, v9);
 
-  return v5.row;
+  return cellCopy.row;
 }
 
-- (BOOL)containsSingleCellOrMergeInTable:(id)a3
+- (BOOL)containsSingleCellOrMergeInTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v9 = objc_msgSend_cellRegion(self, v5, v6, v7, v8);
-  if (objc_msgSend_isRectangle(v9, v10, v11, v12, v13) && (v18 = objc_msgSend_boundingCellRange(v9, v14, v15, v16, v17), objc_msgSend_isSingleCellOrMergeRange_(v4, v19, v18, v19, v20)))
+  if (objc_msgSend_isRectangle(v9, v10, v11, v12, v13) && (v18 = objc_msgSend_boundingCellRange(v9, v14, v15, v16, v17), objc_msgSend_isSingleCellOrMergeRange_(tableCopy, v19, v18, v19, v20)))
   {
     v25 = objc_msgSend_boundingCellRange(v9, v21, v22, v23, v24);
-    v29 = objc_msgSend_hasMergeFragmentAtCellID_(v4, v26, v25, v27, v28) ^ 1;
+    v29 = objc_msgSend_hasMergeFragmentAtCellID_(tableCopy, v26, v25, v27, v28) ^ 1;
   }
 
   else
@@ -2013,14 +2013,14 @@ LABEL_21:
   return v29;
 }
 
-- (BOOL)selectsSingleControlCellWithInteractionUIInTable:(id)a3
+- (BOOL)selectsSingleControlCellWithInteractionUIInTable:(id)table
 {
-  v4 = a3;
-  if (objc_msgSend_canEditWithControlCellSubselectionInTable_(self, v5, v4, v6, v7))
+  tableCopy = table;
+  if (objc_msgSend_canEditWithControlCellSubselectionInTable_(self, v5, tableCopy, v6, v7))
   {
     v12 = objc_msgSend_cellRegion(self, v8, v9, v10, v11);
     CellID = objc_msgSend_firstCellID(v12, v13, v14, v15, v16);
-    v21 = objc_msgSend_cellAtCellID_(v4, v18, CellID, v19, v20);
+    v21 = objc_msgSend_cellAtCellID_(tableCopy, v18, CellID, v19, v20);
 
     if (v21 && objc_msgSend_hasControl(v21, v22, v23, v24, v25))
     {
@@ -2372,9 +2372,9 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)canEditWithCellSubselectionInTable:(id)a3
+- (BOOL)canEditWithCellSubselectionInTable:(id)table
 {
-  v7 = a3;
+  tableCopy = table;
   if (self->_selectionType)
   {
     v8 = 0;
@@ -2382,21 +2382,21 @@ LABEL_10:
 
   else
   {
-    v8 = objc_msgSend_containsSingleCellOrMergeInTable_(self, v4, v7, v5, v6);
+    v8 = objc_msgSend_containsSingleCellOrMergeInTable_(self, v4, tableCopy, v5, v6);
   }
 
   return v8;
 }
 
-- (BOOL)canEditWithControlCellSubselectionInTable:(id)a3
+- (BOOL)canEditWithControlCellSubselectionInTable:(id)table
 {
-  v4 = a3;
-  if (objc_msgSend_canEditWithCellSubselectionInTable_(self, v5, v4, v6, v7))
+  tableCopy = table;
+  if (objc_msgSend_canEditWithCellSubselectionInTable_(self, v5, tableCopy, v6, v7))
   {
     v12 = objc_msgSend_cellRegion(self, v8, v9, v10, v11);
     v17 = objc_msgSend_boundingTopLeftCellID(v12, v13, v14, v15, v16);
 
-    v21 = objc_msgSend_mergeRangeAtCellID_(v4, v18, v17, v19, v20);
+    v21 = objc_msgSend_mergeRangeAtCellID_(tableCopy, v18, v17, v19, v20);
     if (v22)
     {
       v26 = v22 >> 32 == 0;
@@ -2437,8 +2437,8 @@ LABEL_10:
       v29 = v28;
     }
 
-    v30 = objc_msgSend_newCell(v4, v22, v23, v24, v25);
-    v44 = !objc_msgSend_getCell_atCellID_(v4, v31, v30, v29, v32) && (objc_msgSend_hasControl(v30, v33, v34, v35, v36) & 1) != 0 || (objc_msgSend_isCategoryColumn_(v4, v33, WORD2(v29), v35, v36) & 1) == 0 && objc_msgSend_isCategorized(v4, v37, v38, v39, v40) && (objc_msgSend_isSummaryRow_(v4, v41, v29, v42, v43) & 1) != 0;
+    v30 = objc_msgSend_newCell(tableCopy, v22, v23, v24, v25);
+    v44 = !objc_msgSend_getCell_atCellID_(tableCopy, v31, v30, v29, v32) && (objc_msgSend_hasControl(v30, v33, v34, v35, v36) & 1) != 0 || (objc_msgSend_isCategoryColumn_(tableCopy, v33, WORD2(v29), v35, v36) & 1) == 0 && objc_msgSend_isCategorized(tableCopy, v37, v38, v39, v40) && (objc_msgSend_isSummaryRow_(tableCopy, v41, v29, v42, v43) & 1) != 0;
   }
 
   else
@@ -2449,15 +2449,15 @@ LABEL_10:
   return v44;
 }
 
-- (BOOL)canEditWithStockCellSubselectionInTable:(id)a3
+- (BOOL)canEditWithStockCellSubselectionInTable:(id)table
 {
-  v4 = a3;
-  if (objc_msgSend_canEditWithCellSubselectionInTable_(self, v5, v4, v6, v7))
+  tableCopy = table;
+  if (objc_msgSend_canEditWithCellSubselectionInTable_(self, v5, tableCopy, v6, v7))
   {
     v12 = objc_msgSend_cellRegion(self, v8, v9, v10, v11);
     v17 = objc_msgSend_boundingTopLeftCellID(v12, v13, v14, v15, v16);
 
-    objc_msgSend_mergeRangeAtCellID_(v4, v18, v17, v19, v20);
+    objc_msgSend_mergeRangeAtCellID_(tableCopy, v18, v17, v19, v20);
   }
 
   return 0;
@@ -2517,12 +2517,12 @@ LABEL_10:
   return v21;
 }
 
-- (BOOL)intersectsPartialMergeRangeInTable:(id)a3
+- (BOOL)intersectsPartialMergeRangeInTable:(id)table
 {
-  v8 = a3;
-  if ((self->_selectionType - 1) <= 1 && (objc_msgSend_cellRegion(self, v4, v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_boundingCellRange(v9, v10, v11, v12, v13), v16 = v15, v9, v8))
+  tableCopy = table;
+  if ((self->_selectionType - 1) <= 1 && (objc_msgSend_cellRegion(self, v4, v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_boundingCellRange(v9, v10, v11, v12, v13), v16 = v15, v9, tableCopy))
   {
-    objc_msgSend_mergeRangesIntersectingRange_(v8, v17, v14, v16, v18);
+    objc_msgSend_mergeRangesIntersectingRange_(tableCopy, v17, v14, v16, v18);
     v23 = v37;
     if (v37 == v38)
     {
@@ -2578,9 +2578,9 @@ LABEL_15:
   return v35;
 }
 
-- (BOOL)getAggregateType:(unsigned __int8 *)a3
+- (BOOL)getAggregateType:(unsigned __int8 *)type
 {
-  if (objc_msgSend_cellCount(self, a2, a3, v3, v4) != 1 || !objc_msgSend_containsOnlyCellsInSummaryRow(self, v7, v8, v9, v10) || (objc_msgSend_containsCellsInCategoryColumn(self, v11, v12, v13, v14) & 1) != 0)
+  if (objc_msgSend_cellCount(self, a2, type, v3, v4) != 1 || !objc_msgSend_containsOnlyCellsInSummaryRow(self, v7, v8, v9, v10) || (objc_msgSend_containsCellsInCategoryColumn(self, v11, v12, v13, v14) & 1) != 0)
   {
     return 0;
   }
@@ -2590,11 +2590,11 @@ LABEL_15:
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v21 = objc_msgSend_groupLevelForGroupUid_(WeakRetained, v18, &row, v19, v20);
 
-  v15 = a3 != 0;
-  if (a3)
+  v15 = type != 0;
+  if (type)
   {
     v22 = objc_loadWeakRetained(&self->_tableInfo);
-    *a3 = objc_msgSend_aggregateTypeForColumnUID_atGroupLevel_(v22, v23, column._lower, column._upper, v21);
+    *type = objc_msgSend_aggregateTypeForColumnUID_atGroupLevel_(v22, v23, column._lower, column._upper, v21);
   }
 
   return v15;
@@ -2688,10 +2688,10 @@ LABEL_15:
   return self;
 }
 
-- (void)setAnchorCellUID:(TSKUIDStructCoord *)a3
+- (void)setAnchorCellUID:(TSKUIDStructCoord *)d
 {
-  row = a3->_row;
-  self->_anchorCellUID._column = a3->_column;
+  row = d->_row;
+  self->_anchorCellUID._column = d->_column;
   self->_anchorCellUID._row = row;
 }
 
@@ -2703,10 +2703,10 @@ LABEL_15:
   return self;
 }
 
-- (void)setCursorCellUID:(TSKUIDStructCoord *)a3
+- (void)setCursorCellUID:(TSKUIDStructCoord *)d
 {
-  row = a3->_row;
-  self->_cursorCellUID._column = a3->_column;
+  row = d->_row;
+  self->_cursorCellUID._column = d->_column;
   self->_cursorCellUID._row = row;
 }
 

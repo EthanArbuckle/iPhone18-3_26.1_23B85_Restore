@@ -1,17 +1,17 @@
 @interface IMTranscriptionUtilities
 + (id)localizedSeparatorString;
 + (id)transcoderBundle;
-+ (void)commitTranscriptionWithString:(id)a3 confidenceSum:(double)a4 numberOfSegments:(unint64_t)a5 completion:(id)a6;
-+ (void)transcribeAudioForAudioTransferURL:(id)a3 withCompletion:(id)a4;
++ (void)commitTranscriptionWithString:(id)string confidenceSum:(double)sum numberOfSegments:(unint64_t)segments completion:(id)completion;
++ (void)transcribeAudioForAudioTransferURL:(id)l withCompletion:(id)completion;
 @end
 
 @implementation IMTranscriptionUtilities
 
-+ (void)transcribeAudioForAudioTransferURL:(id)a3 withCompletion:(id)a4
++ (void)transcribeAudioForAudioTransferURL:(id)l withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  lCopy = l;
+  completionCopy = completion;
+  if (lCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x277CDCF00]);
     if (objc_msgSend_supportsOnDeviceRecognition(v7, v8, v9, v10, v11, v12, v13))
@@ -20,7 +20,7 @@
       if (objc_msgSend_isAvailable(v7, v19, v20, v21, v22, v23, v24))
       {
         v25 = objc_alloc(MEMORY[0x277CDCF08]);
-        v31 = objc_msgSend_initWithURL_(v25, v26, v5, v27, v28, v29, v30);
+        v31 = objc_msgSend_initWithURL_(v25, v26, lCopy, v27, v28, v29, v30);
         objc_msgSend_setRequiresOnDeviceRecognition_(v31, v32, 1, v33, v34, v35, v36);
         objc_msgSend_setAddsPunctuation_(v31, v37, 1, v38, v39, v40, v41);
         objc_msgSend_setShouldReportPartialResults_(v31, v42, 0, v43, v44, v45, v46);
@@ -42,7 +42,7 @@
         v67[1] = 3221225472;
         v67[2] = sub_25482629C;
         v67[3] = &unk_27978ABE0;
-        v68 = v6;
+        v68 = completionCopy;
         v69 = buf;
         v70 = v73;
         v71 = v72;
@@ -87,13 +87,13 @@ LABEL_17:
     }
 
     v31 = v61;
-    (*(v6 + 2))(v6, 0, v61);
+    (*(completionCopy + 2))(completionCopy, 0, v61);
     goto LABEL_17;
   }
 
   v52 = objc_alloc(MEMORY[0x277CCA9B8]);
   v7 = objc_msgSend_initWithDomain_code_userInfo_(v52, v53, @"__kIMTranscriptionGenerationErrorDomain", 0, 0, v54, v55);
-  (*(v6 + 2))(v6, 0, v7);
+  (*(completionCopy + 2))(completionCopy, 0, v7);
 LABEL_18:
 }
 
@@ -135,18 +135,18 @@ LABEL_18:
   return v3;
 }
 
-+ (void)commitTranscriptionWithString:(id)a3 confidenceSum:(double)a4 numberOfSegments:(unint64_t)a5 completion:(id)a6
++ (void)commitTranscriptionWithString:(id)string confidenceSum:(double)sum numberOfSegments:(unint64_t)segments completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v16 = a6;
-  if (a5)
+  stringCopy = string;
+  completionCopy = completion;
+  if (segments)
   {
-    if (objc_msgSend_length(v9, v10, v11, v12, v13, v14, v15))
+    if (objc_msgSend_length(stringCopy, v10, v11, v12, v13, v14, v15))
     {
-      if (a4 / a5 >= 0.6)
+      if (sum / segments >= 0.6)
       {
-        v16[2](v16, v9, 0);
+        completionCopy[2](completionCopy, stringCopy, 0);
         goto LABEL_20;
       }
 
@@ -197,7 +197,7 @@ LABEL_18:
     }
   }
 
-  (v16)[2](v16, 0, v21);
+  (completionCopy)[2](completionCopy, 0, v21);
 
 LABEL_20:
   v33 = *MEMORY[0x277D85DE8];

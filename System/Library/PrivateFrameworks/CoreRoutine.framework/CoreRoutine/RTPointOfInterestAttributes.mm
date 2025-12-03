@@ -1,17 +1,17 @@
 @interface RTPointOfInterestAttributes
-- (RTPointOfInterestAttributes)initWithApplePaySupport:(BOOL)a3 category:(id)a4 muid:(unint64_t)a5 nearbyPoiCount:(unint64_t)a6;
-- (RTPointOfInterestAttributes)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTPointOfInterestAttributes)initWithApplePaySupport:(BOOL)support category:(id)category muid:(unint64_t)muid nearbyPoiCount:(unint64_t)count;
+- (RTPointOfInterestAttributes)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPointOfInterestAttributes
 
-- (RTPointOfInterestAttributes)initWithApplePaySupport:(BOOL)a3 category:(id)a4 muid:(unint64_t)a5 nearbyPoiCount:(unint64_t)a6
+- (RTPointOfInterestAttributes)initWithApplePaySupport:(BOOL)support category:(id)category muid:(unint64_t)muid nearbyPoiCount:(unint64_t)count
 {
-  v11 = a4;
-  if (a5)
+  categoryCopy = category;
+  if (muid)
   {
     v17.receiver = self;
     v17.super_class = RTPointOfInterestAttributes;
@@ -19,14 +19,14 @@
     v13 = v12;
     if (v12)
     {
-      v12->_applePaySupport = a3;
-      objc_storeStrong(&v12->_category, a4);
-      v13->_muid = a5;
-      v13->_nearbyPoiCount = a6;
+      v12->_applePaySupport = support;
+      objc_storeStrong(&v12->_category, category);
+      v13->_muid = muid;
+      v13->_nearbyPoiCount = count;
     }
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -38,10 +38,10 @@
       _os_log_error_impl(&dword_1BF1C4000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: muid > 0", buf, 2u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)description
@@ -56,31 +56,31 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"muid, %lu, applePaySupport, %@, category, %@, nearbyPOICount, %lu", self->_muid, v2, category, self->_nearbyPoiCount];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   applePaySupport = self->_applePaySupport;
-  v5 = a3;
-  [v5 encodeBool:applePaySupport forKey:@"applePaySupport"];
-  [v5 encodeObject:self->_category forKey:@"category"];
-  [v5 encodeInteger:self->_muid forKey:@"muid"];
-  [v5 encodeInteger:self->_nearbyPoiCount forKey:@"nearbyPoiCount"];
+  coderCopy = coder;
+  [coderCopy encodeBool:applePaySupport forKey:@"applePaySupport"];
+  [coderCopy encodeObject:self->_category forKey:@"category"];
+  [coderCopy encodeInteger:self->_muid forKey:@"muid"];
+  [coderCopy encodeInteger:self->_nearbyPoiCount forKey:@"nearbyPoiCount"];
 }
 
-- (RTPointOfInterestAttributes)initWithCoder:(id)a3
+- (RTPointOfInterestAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"applePaySupport"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
-  v7 = [v4 decodeIntegerForKey:@"muid"];
-  v8 = [v4 decodeIntegerForKey:@"nearbyPoiCount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"applePaySupport"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+  v7 = [coderCopy decodeIntegerForKey:@"muid"];
+  v8 = [coderCopy decodeIntegerForKey:@"nearbyPoiCount"];
 
   v9 = [(RTPointOfInterestAttributes *)self initWithApplePaySupport:v5 category:v6 muid:v7 nearbyPoiCount:v8];
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   applePaySupport = self->_applePaySupport;
   muid = self->_muid;
   category = self->_category;

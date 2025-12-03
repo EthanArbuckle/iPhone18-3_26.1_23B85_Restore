@@ -3,10 +3,10 @@
 - (void)dismissEventually;
 - (void)nfcTagScanned;
 - (void)showFailureUI;
-- (void)updateButtonText:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)updateButtonText:(id)text;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NFCTagReaderScanViewController
@@ -18,16 +18,16 @@
   return WeakRetained;
 }
 
-- (void)updateButtonText:(id)a3
+- (void)updateButtonText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(NFCTagReaderScanViewController *)self mainController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F997C;
   v9 = v8[3] = &unk_1001952B0;
   v5 = v9;
-  v6 = [PRXAction actionWithTitle:v4 style:0 handler:v8];
+  v6 = [PRXAction actionWithTitle:textCopy style:0 handler:v8];
 
   [(NFCTagReaderScanViewController *)self replaceAction:self->_primaryAction withNewAction:v6];
   primaryAction = self->_primaryAction;
@@ -68,7 +68,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_mainController);
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
-    v8 = [WeakRetained dismissing];
+    dismissing = [WeakRetained dismissing];
     LogPrintF();
   }
 
@@ -110,9 +110,9 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -120,7 +120,7 @@
 
   v8.receiver = self;
   v8.super_class = NFCTagReaderScanViewController;
-  [(NFCTagReaderScanViewController *)&v8 viewDidDisappear:v3];
+  [(NFCTagReaderScanViewController *)&v8 viewDidDisappear:disappearCopy];
   timer = self->_timer;
   if (timer)
   {
@@ -131,9 +131,9 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -141,11 +141,11 @@
 
   v7.receiver = self;
   v7.super_class = NFCTagReaderScanViewController;
-  [(NFCTagReaderScanViewController *)&v7 viewDidAppear:v3];
+  [(NFCTagReaderScanViewController *)&v7 viewDidAppear:appearCopy];
   WeakRetained = objc_loadWeakRetained(&self->_mainController);
   [WeakRetained setAppeared:1];
-  v6 = [WeakRetained purpose];
-  [(NFCTagReaderScanViewController *)self setSubtitle:v6];
+  purpose = [WeakRetained purpose];
+  [(NFCTagReaderScanViewController *)self setSubtitle:purpose];
 
   if ([WeakRetained tagCount] >= 1)
   {
@@ -166,14 +166,14 @@
   v3 = [UIImage systemImageNamed:@"exclamationmark"];
   v4 = [UIImageSymbolConfiguration configurationWithPointSize:70.0];
   v5 = [v3 imageByApplyingSymbolConfiguration:v4];
-  v6 = [(PKGlyphView *)self->_nfcAnimationView primaryColor];
-  v10 = [v5 _flatImageWithColor:v6];
+  primaryColor = [(PKGlyphView *)self->_nfcAnimationView primaryColor];
+  v10 = [v5 _flatImageWithColor:primaryColor];
 
   nfcAnimationView = self->_nfcAnimationView;
   v8 = v10;
-  v9 = [v10 CGImage];
+  cGImage = [v10 CGImage];
   [v10 alignmentRectInsets];
-  [(PKGlyphView *)nfcAnimationView setCustomImage:v9 withAlignmentEdgeInsets:?];
+  [(PKGlyphView *)nfcAnimationView setCustomImage:cGImage withAlignmentEdgeInsets:?];
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -183,9 +183,9 @@
   [(NFCTagReaderScanViewController *)self dismissEventually];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE808 <= 30 && (dword_1001BE808 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -193,10 +193,10 @@
 
   v65.receiver = self;
   v65.super_class = NFCTagReaderScanViewController;
-  [(NFCTagReaderScanViewController *)&v65 viewWillAppear:v3];
+  [(NFCTagReaderScanViewController *)&v65 viewWillAppear:appearCopy];
   [(NFCTagReaderScanViewController *)self setDismissalType:1];
   WeakRetained = objc_loadWeakRetained(&self->_mainController);
-  v6 = [WeakRetained userInfo];
+  userInfo = [WeakRetained userInfo];
   self->_mode = CFDictionaryGetInt64Ranged();
 
   mode = self->_mode;
@@ -205,7 +205,7 @@
     self->_mode = 30;
   }
 
-  v9 = [WeakRetained userInfo];
+  userInfo2 = [WeakRetained userInfo];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   if (Int64Ranged)
@@ -222,8 +222,8 @@
   v13 = [v12 localizedStringForKey:v11 value:&stru_100195CA8 table:@"Localizable"];
   [(NFCTagReaderScanViewController *)self setTitle:v13];
 
-  v14 = [WeakRetained purpose];
-  [(NFCTagReaderScanViewController *)self setSubtitle:v14];
+  purpose = [WeakRetained purpose];
+  [(NFCTagReaderScanViewController *)self setSubtitle:purpose];
 
   v15 = +[NSBundle mainBundle];
   v16 = [v15 localizedStringForKey:@"CANCEL" value:&stru_100195CA8 table:@"Localizable"];
@@ -252,51 +252,51 @@
     [v23 scale];
     [(PKGlyphView *)v22 updateRasterizationScale:?];
 
-    v24 = [(NFCTagReaderScanViewController *)self contentView];
-    [v24 addSubview:self->_nfcAnimationView];
+    contentView = [(NFCTagReaderScanViewController *)self contentView];
+    [contentView addSubview:self->_nfcAnimationView];
 
-    v59 = [(PKGlyphView *)self->_nfcAnimationView heightAnchor];
-    v58 = [v59 constraintEqualToConstant:116.0];
+    heightAnchor = [(PKGlyphView *)self->_nfcAnimationView heightAnchor];
+    v58 = [heightAnchor constraintEqualToConstant:116.0];
     v66[0] = v58;
-    v57 = [(PKGlyphView *)self->_nfcAnimationView widthAnchor];
-    v56 = [v57 constraintEqualToConstant:116.0];
+    widthAnchor = [(PKGlyphView *)self->_nfcAnimationView widthAnchor];
+    v56 = [widthAnchor constraintEqualToConstant:116.0];
     v66[1] = v56;
-    v54 = [(PKGlyphView *)self->_nfcAnimationView centerXAnchor];
-    v55 = [(NFCTagReaderScanViewController *)self contentView];
-    v53 = [v55 mainContentGuide];
-    v52 = [v53 centerXAnchor];
-    v51 = [v54 constraintEqualToAnchor:v52];
+    centerXAnchor = [(PKGlyphView *)self->_nfcAnimationView centerXAnchor];
+    contentView2 = [(NFCTagReaderScanViewController *)self contentView];
+    mainContentGuide = [contentView2 mainContentGuide];
+    centerXAnchor2 = [mainContentGuide centerXAnchor];
+    v51 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v66[2] = v51;
-    v49 = [(PKGlyphView *)self->_nfcAnimationView centerYAnchor];
-    v50 = [(NFCTagReaderScanViewController *)self contentView];
-    v48 = [v50 mainContentGuide];
-    v47 = [v48 centerYAnchor];
-    v46 = [v49 constraintEqualToAnchor:v47];
+    centerYAnchor = [(PKGlyphView *)self->_nfcAnimationView centerYAnchor];
+    contentView3 = [(NFCTagReaderScanViewController *)self contentView];
+    mainContentGuide2 = [contentView3 mainContentGuide];
+    centerYAnchor2 = [mainContentGuide2 centerYAnchor];
+    v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v66[3] = v46;
-    v44 = [(PKGlyphView *)self->_nfcAnimationView leadingAnchor];
-    v45 = [(NFCTagReaderScanViewController *)self contentView];
-    v43 = [v45 mainContentGuide];
-    v42 = [v43 leadingAnchor];
-    v41 = [v44 constraintGreaterThanOrEqualToAnchor:v42];
+    leadingAnchor = [(PKGlyphView *)self->_nfcAnimationView leadingAnchor];
+    contentView4 = [(NFCTagReaderScanViewController *)self contentView];
+    mainContentGuide3 = [contentView4 mainContentGuide];
+    leadingAnchor2 = [mainContentGuide3 leadingAnchor];
+    v41 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v66[4] = v41;
-    v39 = [(PKGlyphView *)self->_nfcAnimationView trailingAnchor];
-    v40 = [(NFCTagReaderScanViewController *)self contentView];
-    v38 = [v40 mainContentGuide];
-    v37 = [v38 trailingAnchor];
-    v36 = [v39 constraintLessThanOrEqualToAnchor:v37];
+    trailingAnchor = [(PKGlyphView *)self->_nfcAnimationView trailingAnchor];
+    contentView5 = [(NFCTagReaderScanViewController *)self contentView];
+    mainContentGuide4 = [contentView5 mainContentGuide];
+    trailingAnchor2 = [mainContentGuide4 trailingAnchor];
+    v36 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v66[5] = v36;
-    v35 = [(PKGlyphView *)self->_nfcAnimationView topAnchor];
+    topAnchor = [(PKGlyphView *)self->_nfcAnimationView topAnchor];
     [(NFCTagReaderScanViewController *)self contentView];
     v25 = v62 = v16;
-    v26 = [v25 mainContentGuide];
-    v27 = [v26 topAnchor];
-    v28 = [v35 constraintGreaterThanOrEqualToAnchor:v27];
+    mainContentGuide5 = [v25 mainContentGuide];
+    topAnchor2 = [mainContentGuide5 topAnchor];
+    v28 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v66[6] = v28;
-    v29 = [(PKGlyphView *)self->_nfcAnimationView bottomAnchor];
-    v30 = [(NFCTagReaderScanViewController *)self contentView];
-    v31 = [v30 mainContentGuide];
-    v32 = [v31 bottomAnchor];
-    v33 = [v29 constraintLessThanOrEqualToAnchor:v32];
+    bottomAnchor = [(PKGlyphView *)self->_nfcAnimationView bottomAnchor];
+    contentView6 = [(NFCTagReaderScanViewController *)self contentView];
+    mainContentGuide6 = [contentView6 mainContentGuide];
+    bottomAnchor2 = [mainContentGuide6 bottomAnchor];
+    v33 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v66[7] = v33;
     v34 = [NSArray arrayWithObjects:v66 count:8];
     [NSLayoutConstraint activateConstraints:v34];

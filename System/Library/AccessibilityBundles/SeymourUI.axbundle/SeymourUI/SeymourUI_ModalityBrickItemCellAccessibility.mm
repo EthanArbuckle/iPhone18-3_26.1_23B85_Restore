@@ -1,5 +1,5 @@
 @interface SeymourUI_ModalityBrickItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,20 +7,20 @@
 
 @implementation SeymourUI_ModalityBrickItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.ModalityBrickItemCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"SeymourUI.ModalityBrickItemCell" hasSwiftField:@"iconView" withSwiftType:"ActivityTypeIconView"];
-  [v3 validateClass:@"SeymourUI.ActivityTypeIconView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.ModalityBrickItemCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"SeymourUI.ModalityBrickItemCell" hasSwiftField:@"iconView" withSwiftType:"ActivityTypeIconView"];
+  [validationsCopy validateClass:@"SeymourUI.ActivityTypeIconView" isKindOfClass:@"UIView"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(SeymourUI_ModalityBrickItemCellAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -38,13 +38,13 @@
   v3 = [(SeymourUI_ModalityBrickItemCellAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
   v4 = [(SeymourUI_ModalityBrickItemCellAccessibility *)self safeSwiftValueForKey:@"iconView"];
   v5 = [(SeymourUI_ModalityBrickItemCellAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
 
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __90__SeymourUI_ModalityBrickItemCellAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v11[3] = &unk_29F2F65C0;
-  v7 = v6;
+  v7 = accessibilityLabel;
   v12 = v7;
   [v3 _setAccessibilityIdentifierBlock:v11];
   v9[0] = MEMORY[0x29EDCA5F8];

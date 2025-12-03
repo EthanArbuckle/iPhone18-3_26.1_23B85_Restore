@@ -1,101 +1,101 @@
 @interface REMResolutionTokenMap
-+ (REMResolutionTokenMap)mapWithData:(id)a3;
-+ (REMResolutionTokenMap)resolutionTokenMapWithJSONData:(id)a3 keyMap:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (REMResolutionTokenMap)mapWithData:(id)data;
++ (REMResolutionTokenMap)resolutionTokenMapWithJSONData:(id)data keyMap:(id)map;
+- (BOOL)isEqual:(id)equal;
 - (REMResolutionTokenMap)init;
-- (REMResolutionTokenMap)initWithCoder:(id)a3;
-- (REMResolutionTokenMap)initWithMap:(id)a3;
+- (REMResolutionTokenMap)initWithCoder:(id)coder;
+- (REMResolutionTokenMap)initWithMap:(id)map;
 - (id)archivedData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)getTokenForKey:(id)a3;
+- (id)getTokenForKey:(id)key;
 - (id)getTokenKeys;
-- (int64_t)compare:(id)a3 forKey:(id)a4;
-- (int64_t)compareAndMergeWithMap:(id)a3 forKey:(id)a4;
+- (int64_t)compare:(id)compare forKey:(id)key;
+- (int64_t)compareAndMergeWithMap:(id)map forKey:(id)key;
 - (void)archivedData;
-- (void)encodeWithCoder:(id)a3;
-- (void)forceMergeFromMap:(id)a3 forKey:(id)a4;
-- (void)initTokenWithDefaultValueIfNecessaryForKey:(id)a3;
-- (void)setToken:(id)a3 forKey:(id)a4;
-- (void)updateForKey:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)forceMergeFromMap:(id)map forKey:(id)key;
+- (void)initTokenWithDefaultValueIfNecessaryForKey:(id)key;
+- (void)setToken:(id)token forKey:(id)key;
+- (void)updateForKey:(id)key;
 @end
 
 @implementation REMResolutionTokenMap
 
 - (REMResolutionTokenMap)init
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(REMResolutionTokenMap *)self initWithMap:v3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = [(REMResolutionTokenMap *)self initWithMap:dictionary];
 
   return v4;
 }
 
-- (REMResolutionTokenMap)initWithMap:(id)a3
+- (REMResolutionTokenMap)initWithMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v8.receiver = self;
   v8.super_class = REMResolutionTokenMap;
   v5 = [(REMResolutionTokenMap *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(REMResolutionTokenMap *)v5 setMap:v4];
+    [(REMResolutionTokenMap *)v5 setMap:mapCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(REMResolutionTokenMap *)self map];
-  [v4 encodeObject:v5 forKey:@"map"];
+  [coderCopy encodeObject:v5 forKey:@"map"];
 }
 
-- (REMResolutionTokenMap)initWithCoder:(id)a3
+- (REMResolutionTokenMap)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"map"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"map"];
 
   v10 = [(REMResolutionTokenMap *)self initWithMap:v9];
   return v10;
 }
 
-- (void)updateForKey:(id)a3
+- (void)updateForKey:(id)key
 {
-  v7 = a3;
+  keyCopy = key;
   v4 = [(REMResolutionTokenMap *)self map];
-  v5 = [v4 objectForKeyedSubscript:v7];
+  v5 = [v4 objectForKeyedSubscript:keyCopy];
 
   if (!v5)
   {
     v5 = objc_alloc_init(REMResolutionToken);
     v6 = [(REMResolutionTokenMap *)self map];
-    [v6 setObject:v5 forKeyedSubscript:v7];
+    [v6 setObject:v5 forKeyedSubscript:keyCopy];
   }
 
   [(REMResolutionToken *)v5 update];
 }
 
-- (void)initTokenWithDefaultValueIfNecessaryForKey:(id)a3
+- (void)initTokenWithDefaultValueIfNecessaryForKey:(id)key
 {
-  v8 = a3;
+  keyCopy = key;
   v4 = [(REMResolutionTokenMap *)self map];
-  v5 = [v4 objectForKeyedSubscript:v8];
+  v5 = [v4 objectForKeyedSubscript:keyCopy];
 
   if (!v5)
   {
-    v6 = [[REMResolutionToken alloc] initWithDefaultValue];
+    initWithDefaultValue = [[REMResolutionToken alloc] initWithDefaultValue];
     v7 = [(REMResolutionTokenMap *)self map];
-    [v7 setObject:v6 forKeyedSubscript:v8];
+    [v7 setObject:initWithDefaultValue forKeyedSubscript:keyCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMResolutionTokenMap alloc];
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
@@ -106,10 +106,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -120,7 +120,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = [(REMResolutionTokenMap *)self map];
-      v6 = [(REMResolutionTokenMap *)v4 map];
+      v6 = [(REMResolutionTokenMap *)equalCopy map];
       v7 = [v5 isEqual:v6];
     }
 
@@ -133,16 +133,16 @@
   return v7;
 }
 
-- (int64_t)compare:(id)a3 forKey:(id)a4
+- (int64_t)compare:(id)compare forKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  compareCopy = compare;
+  keyCopy = key;
   v8 = [(REMResolutionTokenMap *)self map];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:keyCopy];
 
-  v10 = [v6 map];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  v10 = [compareCopy map];
+  v11 = [v10 objectForKeyedSubscript:keyCopy];
 
   if (!(v9 | v11))
   {
@@ -150,13 +150,13 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       v21 = [(REMResolutionTokenMap *)self map];
-      v16 = [v21 allKeys];
-      v17 = [v16 componentsJoinedByString:{@", "}];
-      v18 = [v6 map];
-      v19 = [v18 allKeys];
-      v20 = [v19 componentsJoinedByString:{@", "}];
+      allKeys = [v21 allKeys];
+      v17 = [allKeys componentsJoinedByString:{@", "}];
+      v18 = [compareCopy map];
+      allKeys2 = [v18 allKeys];
+      v20 = [allKeys2 componentsJoinedByString:{@", "}];
       *buf = 138543874;
-      v23 = v7;
+      v23 = keyCopy;
       v24 = 2112;
       v25 = v17;
       v26 = 2112;
@@ -187,56 +187,56 @@ LABEL_9:
   return v12;
 }
 
-- (int64_t)compareAndMergeWithMap:(id)a3 forKey:(id)a4
+- (int64_t)compareAndMergeWithMap:(id)map forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(REMResolutionTokenMap *)self compare:v6 forKey:v7];
+  mapCopy = map;
+  keyCopy = key;
+  v8 = [(REMResolutionTokenMap *)self compare:mapCopy forKey:keyCopy];
   if (v8 == -1)
   {
-    v9 = [v6 map];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    v9 = [mapCopy map];
+    v10 = [v9 objectForKeyedSubscript:keyCopy];
     v11 = [v10 copy];
     v12 = [(REMResolutionTokenMap *)self map];
-    [v12 setObject:v11 forKeyedSubscript:v7];
+    [v12 setObject:v11 forKeyedSubscript:keyCopy];
   }
 
   return v8;
 }
 
-- (void)forceMergeFromMap:(id)a3 forKey:(id)a4
+- (void)forceMergeFromMap:(id)map forKey:(id)key
 {
-  v6 = a4;
-  v10 = [a3 map];
-  v7 = [v10 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v10 = [map map];
+  v7 = [v10 objectForKeyedSubscript:keyCopy];
   v8 = [v7 copy];
   v9 = [(REMResolutionTokenMap *)self map];
-  [v9 setObject:v8 forKeyedSubscript:v6];
+  [v9 setObject:v8 forKeyedSubscript:keyCopy];
 }
 
-- (id)getTokenForKey:(id)a3
+- (id)getTokenForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(REMResolutionTokenMap *)self map];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (void)setToken:(id)a3 forKey:(id)a4
+- (void)setToken:(id)token forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  tokenCopy = token;
   v8 = [(REMResolutionTokenMap *)self map];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  [v8 setObject:tokenCopy forKeyedSubscript:keyCopy];
 }
 
 - (id)getTokenKeys
 {
   v2 = [(REMResolutionTokenMap *)self map];
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)archivedData
@@ -267,10 +267,10 @@ LABEL_9:
   return v2;
 }
 
-+ (REMResolutionTokenMap)mapWithData:(id)a3
++ (REMResolutionTokenMap)mapWithData:(id)data
 {
   v9 = 0;
-  v3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:a1 fromData:a3 error:&v9];
+  v3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:self fromData:data error:&v9];
   v4 = v9;
   v5 = v4;
   if (v3)
@@ -303,15 +303,15 @@ LABEL_9:
   return v3;
 }
 
-+ (REMResolutionTokenMap)resolutionTokenMapWithJSONData:(id)a3 keyMap:(id)a4
++ (REMResolutionTokenMap)resolutionTokenMapWithJSONData:(id)data keyMap:(id)map
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v32 = a4;
-  if (v5 && [v5 length])
+  dataCopy = data;
+  mapCopy = map;
+  if (dataCopy && [dataCopy length])
   {
     v37 = 0;
-    v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v5 options:0 error:&v37];
+    v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v37];
     v7 = v37;
     if (v6)
     {
@@ -320,16 +320,16 @@ LABEL_9:
       if (v9)
       {
         v29 = v7;
-        v30 = v5;
-        v31 = [MEMORY[0x1E695DF90] dictionary];
+        v30 = dataCopy;
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v28 = v9;
         v10 = [v9 objectForKeyedSubscript:@"map"];
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v11 = [v10 keyEnumerator];
-        v12 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        keyEnumerator = [v10 keyEnumerator];
+        v12 = [keyEnumerator countByEnumeratingWithState:&v33 objects:v38 count:16];
         if (v12)
         {
           v13 = v12;
@@ -340,7 +340,7 @@ LABEL_9:
             {
               if (*v34 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(keyEnumerator);
               }
 
               v16 = *(*(&v33 + 1) + 8 * i);
@@ -348,7 +348,7 @@ LABEL_9:
               v18 = [REMResolutionToken resolutionTokenWithJSONObject:v17];
               if (v18)
               {
-                v19 = [v32 objectForKey:v16];
+                v19 = [mapCopy objectForKey:v16];
                 v20 = v19;
                 if (v19)
                 {
@@ -362,20 +362,20 @@ LABEL_9:
 
                 v22 = v21;
 
-                [v31 setObject:v18 forKey:v22];
+                [dictionary setObject:v18 forKey:v22];
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
+            v13 = [keyEnumerator countByEnumeratingWithState:&v33 objects:v38 count:16];
           }
 
           while (v13);
         }
 
-        v23 = v31;
-        v24 = [[REMResolutionTokenMap alloc] initWithMap:v31];
+        v23 = dictionary;
+        v24 = [[REMResolutionTokenMap alloc] initWithMap:dictionary];
 
-        v5 = v30;
+        dataCopy = v30;
         v9 = v28;
         v7 = v29;
       }

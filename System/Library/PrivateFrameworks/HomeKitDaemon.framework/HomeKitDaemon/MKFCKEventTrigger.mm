@@ -1,48 +1,48 @@
 @interface MKFCKEventTrigger
-+ (id)cloudUserWithModelID:(void *)a3 home:;
-+ (id)localUserWithModelID:(void *)a3 home:;
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (_MKFCharacteristicRangeEvent)_decodeEventCharacteristicWithEntity:(void *)a3 eventDictionary:(void *)a4 trigger:(void *)a5 context:;
-- (_MKFLocationEvent)_decodeEventLocation:(void *)a3 trigger:(void *)a4 context:;
-- (_MKFPresenceEvent)_decodeEventPresence:(void *)a3 trigger:(void *)a4 context:;
-- (_MKFSignificantTimeEvent)_decodeEventSignificantTime:(void *)a3 context:;
-- (id)_decodeCharacteristicValueForKey:(void *)a3 dictionary:(char)a4 optional:(_BYTE *)a5 success:;
-- (id)_decodeDataForKey:(void *)a3 dictionary:(_BYTE *)a4 success:;
-- (id)_decodeDataForKey:(void *)a3 dictionary:(char)a4 optional:(_BYTE *)a5 success:;
-- (id)_decodeDateComponentsData:(void *)a1;
-- (id)_decodeEventAttributeValue:(id)a3 trigger:(id)a4 context:(id)a5;
-- (id)_decodeEventDictionary:(id)a3 localModel:(id)a4 context:(id)a5;
-- (id)_decodeNumberForKey:(void *)a3 dictionary:(_BYTE *)a4 success:;
-- (id)_decodeStringForKey:(void *)a3 dictionary:(_BYTE *)a4 success:;
-- (id)_decodeUUIDForKey:(void *)a3 dictionary:(_BYTE *)a4 success:;
-- (id)_decodeValueForKey:(void *)a3 dictionary:(char)a4 optional:(_BYTE *)a5 success:;
-- (id)_encodeEvent:(id)a3 encodedEventInCloud:(id)a4 accessories:(id)a5 users:(id)a6 guests:(id)a7 shouldRemoveEvent:(BOOL *)a8 context:(id)a9;
-- (id)_encodeEventAttributeValue:(id)a3 accessories:(id)a4 context:(id)a5;
-- (id)_encodeEventCharacteristic:(void *)a3 accessories:(void *)a4 context:;
-- (id)_encodeEventPresence:(void *)a3 users:(void *)a4 guests:(_BYTE *)a5 shouldRemoveEvent:(void *)a6 context:;
-- (id)_encodeEventSignificantTime:(uint64_t)a1 context:(void *)a2;
++ (id)cloudUserWithModelID:(void *)d home:;
++ (id)localUserWithModelID:(void *)d home:;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (_MKFCharacteristicRangeEvent)_decodeEventCharacteristicWithEntity:(void *)entity eventDictionary:(void *)dictionary trigger:(void *)trigger context:;
+- (_MKFLocationEvent)_decodeEventLocation:(void *)location trigger:(void *)trigger context:;
+- (_MKFPresenceEvent)_decodeEventPresence:(void *)presence trigger:(void *)trigger context:;
+- (_MKFSignificantTimeEvent)_decodeEventSignificantTime:(void *)time context:;
+- (id)_decodeCharacteristicValueForKey:(void *)key dictionary:(char)dictionary optional:(_BYTE *)optional success:;
+- (id)_decodeDataForKey:(void *)key dictionary:(_BYTE *)dictionary success:;
+- (id)_decodeDataForKey:(void *)key dictionary:(char)dictionary optional:(_BYTE *)optional success:;
+- (id)_decodeDateComponentsData:(void *)data;
+- (id)_decodeEventAttributeValue:(id)value trigger:(id)trigger context:(id)context;
+- (id)_decodeEventDictionary:(id)dictionary localModel:(id)model context:(id)context;
+- (id)_decodeNumberForKey:(void *)key dictionary:(_BYTE *)dictionary success:;
+- (id)_decodeStringForKey:(void *)key dictionary:(_BYTE *)dictionary success:;
+- (id)_decodeUUIDForKey:(void *)key dictionary:(_BYTE *)dictionary success:;
+- (id)_decodeValueForKey:(void *)key dictionary:(char)dictionary optional:(_BYTE *)optional success:;
+- (id)_encodeEvent:(id)event encodedEventInCloud:(id)cloud accessories:(id)accessories users:(id)users guests:(id)guests shouldRemoveEvent:(BOOL *)removeEvent context:(id)context;
+- (id)_encodeEventAttributeValue:(id)value accessories:(id)accessories context:(id)context;
+- (id)_encodeEventCharacteristic:(void *)characteristic accessories:(void *)accessories context:;
+- (id)_encodeEventPresence:(void *)presence users:(void *)users guests:(_BYTE *)guests shouldRemoveEvent:(void *)event context:;
+- (id)_encodeEventSignificantTime:(uint64_t)time context:(void *)context;
 @end
 
 @implementation MKFCKEventTrigger
 
-- (id)_encodeEventSignificantTime:(uint64_t)a1 context:(void *)a2
+- (id)_encodeEventSignificantTime:(uint64_t)time context:(void *)context
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  contextCopy = context;
+  v4 = contextCopy;
+  if (time)
   {
-    v5 = [v3 offsetSeconds];
-    v6 = HMDTimeOffsetToDateComponents([v5 integerValue], 0);
+    offsetSeconds = [contextCopy offsetSeconds];
+    v6 = HMDTimeOffsetToDateComponents([offsetSeconds integerValue], 0);
 
     if (v6)
     {
       v15[0] = @"ST";
       v14[0] = @"TEt";
       v14[1] = @"TESs";
-      v7 = [v4 significantEvent];
-      v15[1] = v7;
+      significantEvent = [v4 significantEvent];
+      v15[1] = significantEvent;
       v14[2] = @"TESo";
       v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
       v15[2] = v8;
@@ -54,8 +54,8 @@
       v13[0] = @"ST";
       v12[0] = @"TEt";
       v12[1] = @"TESs";
-      v7 = [v4 significantEvent];
-      v13[1] = v7;
+      significantEvent = [v4 significantEvent];
+      v13[1] = significantEvent;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
     }
   }
@@ -70,17 +70,17 @@
   return v9;
 }
 
-- (_MKFSignificantTimeEvent)_decodeEventSignificantTime:(void *)a3 context:
+- (_MKFSignificantTimeEvent)_decodeEventSignificantTime:(void *)time context:
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  timeCopy = time;
+  if (self)
   {
     v25 = 1;
-    v7 = [(MKFCKEventTrigger *)a1 _decodeUUIDForKey:v5 dictionary:&v25 success:?];
-    v8 = [(MKFCKEventTrigger *)a1 _decodeStringForKey:v5 dictionary:&v25 success:?];
-    v9 = [(MKFCKEventTrigger *)a1 _decodeDataForKey:v5 dictionary:1 optional:&v25 success:?];
+    v7 = [(MKFCKEventTrigger *)self _decodeUUIDForKey:v5 dictionary:&v25 success:?];
+    v8 = [(MKFCKEventTrigger *)self _decodeStringForKey:v5 dictionary:&v25 success:?];
+    v9 = [(MKFCKEventTrigger *)self _decodeDataForKey:v5 dictionary:1 optional:&v25 success:?];
     if (v25 == 1)
     {
       if (HMIsValidSignificantEvent())
@@ -88,7 +88,7 @@
         if (v9)
         {
           v10 = MEMORY[0x277CCABB0];
-          v11 = [(MKFCKEventTrigger *)a1 _decodeDateComponentsData:v9];
+          v11 = [(MKFCKEventTrigger *)self _decodeDateComponentsData:v9];
           v12 = [v10 numberWithInteger:{HMDTimeOffsetFromDateComponents(v11, 0)}];
         }
 
@@ -97,16 +97,16 @@
           v12 = 0;
         }
 
-        v17 = [(_MKFModel *)_MKFSignificantTimeEvent modelWithModelID:v7 context:v6];
+        v17 = [(_MKFModel *)_MKFSignificantTimeEvent modelWithModelID:v7 context:timeCopy];
         if (!v17)
         {
-          v17 = [[_MKFSignificantTimeEvent alloc] initWithContext:v6];
+          v17 = [[_MKFSignificantTimeEvent alloc] initWithContext:timeCopy];
           [(_MKFSignificantTimeEvent *)v17 setModelID:v7];
-          v18 = [a1 writerTimestamp];
-          [(_MKFSignificantTimeEvent *)v17 setWriterTimestamp:v18];
+          writerTimestamp = [self writerTimestamp];
+          [(_MKFSignificantTimeEvent *)v17 setWriterTimestamp:writerTimestamp];
         }
 
-        v19 = [(_MKFSignificantTimeEvent *)v17 significantEvent];
+        significantEvent = [(_MKFSignificantTimeEvent *)v17 significantEvent];
         v20 = HMFEqualObjects();
 
         if ((v20 & 1) == 0)
@@ -114,7 +114,7 @@
           [(_MKFSignificantTimeEvent *)v17 setSignificantEvent:v8];
         }
 
-        v21 = [(_MKFSignificantTimeEvent *)v17 offsetSeconds];
+        offsetSeconds = [(_MKFSignificantTimeEvent *)v17 offsetSeconds];
         v22 = HMFEqualObjects();
 
         if ((v22 & 1) == 0)
@@ -126,7 +126,7 @@
       }
 
       v13 = objc_autoreleasePoolPush();
-      v14 = a1;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -157,16 +157,16 @@ LABEL_19:
   return v17;
 }
 
-- (id)_decodeEventAttributeValue:(id)a3 trigger:(id)a4 context:(id)a5
+- (id)_decodeEventAttributeValue:(id)value trigger:(id)trigger context:(id)context
 {
   v96 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  triggerCopy = trigger;
+  valueCopy = value;
   v11 = +[_MKFMatterAttributeValueEvent entity];
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v12 = valueCopy;
+  v13 = triggerCopy;
+  v14 = contextCopy;
   if (self)
   {
     v87 = 1;
@@ -179,7 +179,7 @@ LABEL_19:
     if ((v87 & 1) == 0)
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = self;
+      selfCopy = self;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -210,8 +210,8 @@ LABEL_19:
       goto LABEL_44;
     }
 
-    v18 = [v13 home];
-    v19 = [v18 accessoryWithModelID:v15 context:v14];
+    home = [v13 home];
+    v19 = [home accessoryWithModelID:v15 context:v14];
 
     v82 = v19;
     if (!v19)
@@ -219,7 +219,7 @@ LABEL_19:
       v79 = v11;
       v43 = v16;
       v44 = objc_autoreleasePoolPush();
-      v45 = self;
+      selfCopy2 = self;
       v46 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
@@ -264,7 +264,7 @@ LABEL_19:
       v48 = v15;
       v49 = v16;
       v50 = objc_autoreleasePoolPush();
-      v51 = self;
+      selfCopy3 = self;
       v52 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
@@ -309,7 +309,7 @@ LABEL_19:
       {
         v71 = v25;
         v55 = objc_autoreleasePoolPush();
-        v56 = self;
+        selfCopy4 = self;
         v57 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
         {
@@ -380,7 +380,7 @@ LABEL_44:
       }
 
       v60 = objc_autoreleasePoolPush();
-      v72 = self;
+      selfCopy5 = self;
       v61 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
       {
@@ -413,13 +413,13 @@ LABEL_33:
       {
         v42 = [[_MKFMatterAttributeValueEvent alloc] initWithContext:v14];
         [(_MKFMatterAttributeValueEvent *)v42 setModelID:v32];
-        v63 = [(MKFCKEventTrigger *)self writerTimestamp];
-        [(_MKFMatterAttributeValueEvent *)v42 setWriterTimestamp:v63];
+        writerTimestamp = [(MKFCKEventTrigger *)self writerTimestamp];
+        [(_MKFMatterAttributeValueEvent *)v42 setWriterTimestamp:writerTimestamp];
 
         [(_MKFMatterAttributeValueEvent *)v42 setMatterPath:v78];
       }
 
-      v64 = [(_MKFMatterAttributeValueEvent *)v42 eventValue];
+      eventValue = [(_MKFMatterAttributeValueEvent *)v42 eventValue];
       v59 = v70;
       v65 = HMFEqualObjects();
 
@@ -451,52 +451,52 @@ LABEL_45:
   return v42;
 }
 
-- (id)_encodeEventAttributeValue:(id)a3 accessories:(id)a4 context:(id)a5
+- (id)_encodeEventAttributeValue:(id)value accessories:(id)accessories context:(id)context
 {
   v34[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v32 = v8;
+  valueCopy = value;
+  v32 = valueCopy;
   if (self)
   {
-    v9 = v8;
-    v10 = a5;
-    v11 = a4;
+    v9 = valueCopy;
+    contextCopy = context;
+    accessoriesCopy = accessories;
     v12 = v9;
-    v13 = [v12 matterPath];
-    v30 = [v13 modelID];
+    matterPath = [v12 matterPath];
+    modelID = [matterPath modelID];
 
-    v14 = [v12 matterPath];
-    v15 = [v14 accessory];
-    v16 = [v15 modelID];
+    matterPath2 = [v12 matterPath];
+    accessory = [matterPath2 accessory];
+    modelID2 = [accessory modelID];
 
-    v31 = [(MKFCKHomeObject *)self _accessoryWithModelID:v16 context:v10];
+    v31 = [(MKFCKHomeObject *)self _accessoryWithModelID:modelID2 context:contextCopy];
 
-    [v11 addObject:v31];
+    [accessoriesCopy addObject:v31];
     v17 = MEMORY[0x277CBEB38];
     v33[0] = @"TEATam";
     v33[1] = @"TEATmpm";
-    v34[0] = v16;
-    v34[1] = v30;
+    v34[0] = modelID2;
+    v34[1] = modelID;
     v33[2] = @"TEATa";
-    v18 = [v12 matterPath];
-    v19 = [v18 attributeID];
-    v34[2] = v19;
+    matterPath3 = [v12 matterPath];
+    attributeID = [matterPath3 attributeID];
+    v34[2] = attributeID;
     v33[3] = @"TEATc";
-    v20 = [v12 matterPath];
-    v21 = [v20 clusterID];
-    v34[3] = v21;
+    matterPath4 = [v12 matterPath];
+    clusterID = [matterPath4 clusterID];
+    v34[3] = clusterID;
     v33[4] = @"TEATe";
-    v22 = [v12 matterPath];
+    matterPath5 = [v12 matterPath];
 
-    v23 = [v22 endpointID];
-    v34[4] = v23;
+    endpointID = [matterPath5 endpointID];
+    v34[4] = endpointID;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:5];
     v25 = [v17 dictionaryWithDictionary:v24];
 
     if (v25)
     {
-      v26 = [v12 eventValue];
-      [v25 setObject:v26 forKeyedSubscript:@"TEATv"];
+      eventValue = [v12 eventValue];
+      [v25 setObject:eventValue forKeyedSubscript:@"TEATv"];
 
       [v25 setObject:@"AV" forKeyedSubscript:@"TEt"];
       v27 = [v25 copy];
@@ -517,48 +517,48 @@ LABEL_6:
   return v27;
 }
 
-- (id)_encodeEventCharacteristic:(void *)a3 accessories:(void *)a4 context:
+- (id)_encodeEventCharacteristic:(void *)characteristic accessories:(void *)accessories context:
 {
   v37 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v7 service];
-  v11 = [v10 accessory];
-  v12 = [v11 modelID];
+  characteristicCopy = characteristic;
+  accessoriesCopy = accessories;
+  service = [v7 service];
+  accessory = [service accessory];
+  modelID = [accessory modelID];
 
-  v13 = [(MKFCKHomeObject *)a1 _accessoryWithModelID:v12 context:v9];
+  v13 = [(MKFCKHomeObject *)self _accessoryWithModelID:modelID context:accessoriesCopy];
   if (v13)
   {
-    [v8 addObject:v13];
+    [characteristicCopy addObject:v13];
     v14 = MEMORY[0x277CBEB38];
     v31[0] = @"TEAm";
-    v30 = [v13 modelID];
-    v32[0] = v30;
+    modelID2 = [v13 modelID];
+    v32[0] = modelID2;
     v31[1] = @"TEAs";
-    v15 = [v7 service];
-    v16 = [v15 instanceID];
-    v32[1] = v16;
+    service2 = [v7 service];
+    instanceID = [service2 instanceID];
+    v32[1] = instanceID;
     v31[2] = @"TEAc";
-    v17 = [v7 characteristicID];
-    v32[2] = v17;
+    characteristicID = [v7 characteristicID];
+    v32[2] = characteristicID;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:3];
     v18 = v7;
-    v19 = v12;
-    v20 = v9;
-    v22 = v21 = v8;
+    v19 = modelID;
+    v20 = accessoriesCopy;
+    v22 = v21 = characteristicCopy;
     v23 = [v14 dictionaryWithDictionary:v22];
 
-    v8 = v21;
-    v9 = v20;
-    v12 = v19;
+    characteristicCopy = v21;
+    accessoriesCopy = v20;
+    modelID = v19;
     v7 = v18;
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = a1;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -566,7 +566,7 @@ LABEL_6:
       *buf = 138543618;
       v34 = v27;
       v35 = 2112;
-      v36 = v12;
+      v36 = modelID;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to find accessory with model ID: %@", buf, 0x16u);
     }
 
@@ -579,38 +579,38 @@ LABEL_6:
   return v23;
 }
 
-- (_MKFCharacteristicRangeEvent)_decodeEventCharacteristicWithEntity:(void *)a3 eventDictionary:(void *)a4 trigger:(void *)a5 context:
+- (_MKFCharacteristicRangeEvent)_decodeEventCharacteristicWithEntity:(void *)entity eventDictionary:(void *)dictionary trigger:(void *)trigger context:
 {
   v87 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  entityCopy = entity;
+  dictionaryCopy = dictionary;
+  triggerCopy = trigger;
   v78 = 1;
-  v77 = [(MKFCKEventTrigger *)a1 _decodeUUIDForKey:v10 dictionary:&v78 success:?];
-  v13 = [(MKFCKEventTrigger *)a1 _decodeUUIDForKey:v10 dictionary:&v78 success:?];
-  v14 = [(MKFCKEventTrigger *)a1 _decodeNumberForKey:v10 dictionary:&v78 success:?];
-  v15 = [(MKFCKEventTrigger *)a1 _decodeNumberForKey:v10 dictionary:&v78 success:?];
+  v77 = [(MKFCKEventTrigger *)self _decodeUUIDForKey:entityCopy dictionary:&v78 success:?];
+  v13 = [(MKFCKEventTrigger *)self _decodeUUIDForKey:entityCopy dictionary:&v78 success:?];
+  v14 = [(MKFCKEventTrigger *)self _decodeNumberForKey:entityCopy dictionary:&v78 success:?];
+  v15 = [(MKFCKEventTrigger *)self _decodeNumberForKey:entityCopy dictionary:&v78 success:?];
   if (v78 != 1)
   {
     v25 = 0;
     goto LABEL_50;
   }
 
-  v16 = [v11 home];
-  v17 = [v16 accessoryWithModelID:v13 context:v12];
+  home = [dictionaryCopy home];
+  v17 = [home accessoryWithModelID:v13 context:triggerCopy];
 
   v76 = v17;
   if (!v17)
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = a1;
+    selfCopy = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
       v73 = v15;
-      v36 = v11;
+      v36 = dictionaryCopy;
       v38 = v37 = v14;
       *buf = 138544130;
       v80 = v38;
@@ -619,11 +619,11 @@ LABEL_6:
       v83 = 2112;
       v84 = v13;
       v85 = 2112;
-      v86 = v10;
+      v86 = entityCopy;
       _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_ERROR, "%{public}@Could not find accessory '%{mask.hash}@' matching event: %@", buf, 0x2Au);
 
       v14 = v37;
-      v11 = v36;
+      dictionaryCopy = v36;
       v15 = v73;
     }
 
@@ -650,10 +650,10 @@ LABEL_6:
   if (!v19)
   {
     v74 = v15;
-    v39 = v11;
+    v39 = dictionaryCopy;
     v40 = v14;
     v41 = objc_autoreleasePoolPush();
-    v42 = a1;
+    selfCopy2 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -664,7 +664,7 @@ LABEL_6:
       v81 = 2112;
       v82 = v18;
       v83 = 2112;
-      v84 = v10;
+      v84 = entityCopy;
       _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_ERROR, "%{public}@Accessory %@ is not a HAP accessory in event: %@", buf, 0x20u);
 
       v9 = v71;
@@ -673,17 +673,17 @@ LABEL_6:
     objc_autoreleasePoolPop(v41);
     v25 = 0;
     v14 = v40;
-    v11 = v39;
+    dictionaryCopy = v39;
     v15 = v74;
     goto LABEL_48;
   }
 
   v72 = v14;
-  v69 = [v18 serviceWithID:v14 context:v12];
+  v69 = [v18 serviceWithID:v14 context:triggerCopy];
   if (!v69)
   {
     v45 = objc_autoreleasePoolPush();
-    v46 = a1;
+    selfCopy3 = self;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
@@ -693,7 +693,7 @@ LABEL_6:
       *buf = 138543618;
       v80 = v50;
       v81 = 2112;
-      v82 = v10;
+      v82 = entityCopy;
       _os_log_impl(&dword_229538000, v47, OS_LOG_TYPE_ERROR, "%{public}@Could not find service matching event: %@", buf, 0x16u);
 
       v9 = v49;
@@ -711,21 +711,21 @@ LABEL_6:
   v70 = v9;
   if (v22)
   {
-    v23 = [(MKFCKEventTrigger *)a1 _decodeCharacteristicValueForKey:v10 dictionary:1 optional:&v78 success:?];
-    v24 = [(MKFCKEventTrigger *)a1 _decodeCharacteristicValueForKey:v10 dictionary:1 optional:&v78 success:?];
+    v23 = [(MKFCKEventTrigger *)self _decodeCharacteristicValueForKey:entityCopy dictionary:1 optional:&v78 success:?];
+    v24 = [(MKFCKEventTrigger *)self _decodeCharacteristicValueForKey:entityCopy dictionary:1 optional:&v78 success:?];
     if (v78 == 1)
     {
       v67 = v24;
       v68 = v23;
       if (v23 | v24)
       {
-        v25 = [(_MKFModel *)_MKFCharacteristicRangeEvent modelWithModelID:v77 context:v12];
+        v25 = [(_MKFModel *)_MKFCharacteristicRangeEvent modelWithModelID:v77 context:triggerCopy];
         if (!v25)
         {
-          v25 = [[_MKFCharacteristicRangeEvent alloc] initWithContext:v12];
+          v25 = [[_MKFCharacteristicRangeEvent alloc] initWithContext:triggerCopy];
           [(_MKFCharacteristicRangeEvent *)v25 setModelID:v77];
-          v26 = [a1 writerTimestamp];
-          [(_MKFCharacteristicRangeEvent *)v25 setWriterTimestamp:v26];
+          writerTimestamp = [self writerTimestamp];
+          [(_MKFCharacteristicRangeEvent *)v25 setWriterTimestamp:writerTimestamp];
         }
 
         v27 = [(_MKFCharacteristicRangeEvent *)v25 min];
@@ -748,7 +748,7 @@ LABEL_6:
         v32 = v68;
 LABEL_35:
 
-        v57 = [(_MKFCharacteristicRangeEvent *)v25 service];
+        service = [(_MKFCharacteristicRangeEvent *)v25 service];
         v58 = HMFEqualObjects();
 
         if ((v58 & 1) == 0)
@@ -756,7 +756,7 @@ LABEL_35:
           [(_MKFCharacteristicRangeEvent *)v25 setService:v31];
         }
 
-        v59 = [(_MKFCharacteristicRangeEvent *)v25 characteristicID];
+        characteristicID = [(_MKFCharacteristicRangeEvent *)v25 characteristicID];
         v60 = HMFEqualObjects();
 
         if ((v60 & 1) == 0)
@@ -769,7 +769,7 @@ LABEL_35:
       }
 
       v61 = objc_autoreleasePoolPush();
-      v62 = a1;
+      selfCopy4 = self;
       v63 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
@@ -777,7 +777,7 @@ LABEL_35:
         *buf = 138543618;
         v80 = v64;
         v81 = 2112;
-        v82 = v10;
+        v82 = entityCopy;
         _os_log_impl(&dword_229538000, v63, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode any range values in event: %@", buf, 0x16u);
       }
 
@@ -795,19 +795,19 @@ LABEL_44:
 
   if (v52)
   {
-    v23 = [(MKFCKEventTrigger *)a1 _decodeCharacteristicValueForKey:v10 dictionary:0 optional:&v78 success:?];
+    v23 = [(MKFCKEventTrigger *)self _decodeCharacteristicValueForKey:entityCopy dictionary:0 optional:&v78 success:?];
     if (v78 == 1)
     {
-      v25 = [(_MKFModel *)_MKFCharacteristicValueEvent modelWithModelID:v77 context:v12];
+      v25 = [(_MKFModel *)_MKFCharacteristicValueEvent modelWithModelID:v77 context:triggerCopy];
       if (!v25)
       {
-        v25 = [[_MKFCharacteristicValueEvent alloc] initWithContext:v12];
+        v25 = [[_MKFCharacteristicValueEvent alloc] initWithContext:triggerCopy];
         [(_MKFCharacteristicRangeEvent *)v25 setModelID:v77];
-        v53 = [a1 writerTimestamp];
-        [(_MKFCharacteristicRangeEvent *)v25 setWriterTimestamp:v53];
+        writerTimestamp2 = [self writerTimestamp];
+        [(_MKFCharacteristicRangeEvent *)v25 setWriterTimestamp:writerTimestamp2];
       }
 
-      v54 = [(_MKFCharacteristicRangeEvent *)v25 eventValue];
+      eventValue = [(_MKFCharacteristicRangeEvent *)v25 eventValue];
       v55 = v23;
       v56 = HMFEqualObjects();
 
@@ -842,27 +842,27 @@ LABEL_50:
   return v25;
 }
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = objc_autoreleasePoolPush();
+  modelCopy = model;
+  propertiesCopy = properties;
+  contextCopy = context;
+  contextCopy2 = objc_autoreleasePoolPush();
   v57.receiver = self;
   v57.super_class = MKFCKEventTrigger;
-  if ([(MKFCKTrigger *)&v57 exportFromLocalModel:v8 updatedProperties:v9 context:v10])
+  if ([(MKFCKTrigger *)&v57 exportFromLocalModel:modelCopy updatedProperties:propertiesCopy context:contextCopy])
   {
-    if ([(MKFCKModel *)self shouldExportUpdatedPropertyInSet:v9 name:@"events_"])
+    if ([(MKFCKModel *)self shouldExportUpdatedPropertyInSet:propertiesCopy name:@"events_"])
     {
-      context = v11;
-      v12 = v8;
-      v13 = v10;
+      context = contextCopy2;
+      v12 = modelCopy;
+      v13 = contextCopy;
       v14 = v13;
       if (self)
       {
         v15 = MEMORY[0x277CBEB58];
-        v16 = [v12 events];
-        v50 = [v15 setWithCapacity:{objc_msgSend(v16, "count")}];
+        events = [v12 events];
+        v50 = [v15 setWithCapacity:{objc_msgSend(events, "count")}];
 
         v55 = [MEMORY[0x277CBEB58] set];
         v53 = [MEMORY[0x277CBEB58] set];
@@ -871,10 +871,10 @@ LABEL_50:
         v19 = v18 = v14;
         v20 = v12;
         v21 = MEMORY[0x277CBEB38];
-        v22 = [(MKFCKEventTrigger *)self events];
-        v23 = [v21 dictionaryWithCapacity:{objc_msgSend(v22, "count")}];
+        events2 = [(MKFCKEventTrigger *)self events];
+        v23 = [v21 dictionaryWithCapacity:{objc_msgSend(events2, "count")}];
 
-        v24 = [(MKFCKEventTrigger *)self events];
+        events3 = [(MKFCKEventTrigger *)self events];
         v74[0] = MEMORY[0x277D85DD0];
         v74[1] = 3221225472;
         v74[2] = __57__MKFCKEventTrigger__exportEventsFromLocalModel_context___block_invoke;
@@ -883,14 +883,14 @@ LABEL_50:
         v75 = v47;
         v25 = v23;
         v76 = v25;
-        [v24 hmf_enumerateWithAutoreleasePoolUsingBlock:v74];
+        [events3 hmf_enumerateWithAutoreleasePoolUsingBlock:v74];
 
         v70 = 0;
         v71 = &v70;
         v72 = 0x2020000000;
         v73 = 1;
         v48 = v20;
-        v26 = [v20 events];
+        events4 = [v20 events];
         v27 = v18;
         v61[0] = MEMORY[0x277D85DD0];
         v61[1] = 3221225472;
@@ -898,7 +898,7 @@ LABEL_50:
         v61[3] = &unk_27867EC40;
         v52 = v25;
         v62 = v52;
-        v63 = self;
+        selfCopy = self;
         v56 = v55;
         v64 = v56;
         v54 = v53;
@@ -909,7 +909,7 @@ LABEL_50:
         v69 = &v70;
         v29 = v50;
         v68 = v29;
-        [v26 hmf_enumerateWithAutoreleasePoolUsingBlock:v61];
+        [events4 hmf_enumerateWithAutoreleasePoolUsingBlock:v61];
 
         v30 = *(v71 + 24);
         if (v30)
@@ -920,21 +920,21 @@ LABEL_50:
           v58[3] = &unk_278689E88;
           v31 = v29;
           v59 = v31;
-          v60 = self;
+          selfCopy2 = self;
           [v52 enumerateKeysAndObjectsUsingBlock:v58];
           v46 = v29;
           v32 = v27;
           v33 = MEMORY[0x277CBEB98];
-          v34 = [(MKFCKEventTrigger *)self events];
-          v51 = [v33 setWithArray:v34];
+          events5 = [(MKFCKEventTrigger *)self events];
+          v51 = [v33 setWithArray:events5];
 
           if ((HMFEqualObjects() & 1) == 0)
           {
-            v35 = [v31 allObjects];
-            [(MKFCKEventTrigger *)self setEvents:v35];
+            allObjects = [v31 allObjects];
+            [(MKFCKEventTrigger *)self setEvents:allObjects];
           }
 
-          v36 = [(MKFCKEventTrigger *)self accessories];
+          accessories = [(MKFCKEventTrigger *)self accessories];
           v37 = HMFEqualObjects();
 
           if ((v37 & 1) == 0)
@@ -943,7 +943,7 @@ LABEL_50:
             [(MKFCKEventTrigger *)self setAccessories:v38];
           }
 
-          v39 = [(MKFCKEventTrigger *)self users];
+          users = [(MKFCKEventTrigger *)self users];
           v40 = HMFEqualObjects();
 
           if ((v40 & 1) == 0)
@@ -952,7 +952,7 @@ LABEL_50:
             [(MKFCKEventTrigger *)self setUsers:v41];
           }
 
-          v42 = [(MKFCKEventTrigger *)self guests];
+          guests = [(MKFCKEventTrigger *)self guests];
           v43 = HMFEqualObjects();
 
           if ((v43 & 1) == 0)
@@ -975,7 +975,7 @@ LABEL_50:
         v27 = v13;
       }
 
-      v11 = context;
+      contextCopy2 = context;
     }
 
     else
@@ -989,7 +989,7 @@ LABEL_50:
     v30 = 0;
   }
 
-  objc_autoreleasePoolPop(v11);
+  objc_autoreleasePoolPop(contextCopy2);
 
   return v30;
 }
@@ -1073,24 +1073,24 @@ void __57__MKFCKEventTrigger__exportEventsFromLocalModel_context___block_invoke_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  modelCopy = model;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = MKFCKEventTrigger;
-  if ([(MKFCKTrigger *)&v23 importIntoLocalModel:v8 updatedProperties:a4 context:v9])
+  if ([(MKFCKTrigger *)&v23 importIntoLocalModel:modelCopy updatedProperties:properties context:contextCopy])
   {
-    v10 = v8;
-    v11 = v9;
+    v10 = modelCopy;
+    v11 = contextCopy;
     v12 = self != 0;
     if (self)
     {
       v13 = MEMORY[0x277CBEB58];
-      v14 = [(MKFCKEventTrigger *)self events];
-      v15 = [v13 setWithCapacity:{objc_msgSend(v14, "count")}];
+      events = [(MKFCKEventTrigger *)self events];
+      v15 = [v13 setWithCapacity:{objc_msgSend(events, "count")}];
 
-      v16 = [(MKFCKEventTrigger *)self events];
+      events2 = [(MKFCKEventTrigger *)self events];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __57__MKFCKEventTrigger__importEventsIntoLocalModel_context___block_invoke;
@@ -1102,9 +1102,9 @@ void __57__MKFCKEventTrigger__exportEventsFromLocalModel_context___block_invoke_
       v29 = v18;
       v19 = v15;
       v30 = v19;
-      [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
+      [events2 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
 
-      v20 = [v17 events];
+      events3 = [v17 events];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __57__MKFCKEventTrigger__importEventsIntoLocalModel_context___block_invoke_2;
@@ -1112,7 +1112,7 @@ void __57__MKFCKEventTrigger__exportEventsFromLocalModel_context___block_invoke_
       v25 = v19;
       v26 = v18;
       v21 = v19;
-      [v20 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
+      [events3 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
     }
   }
 
@@ -1145,15 +1145,15 @@ void __57__MKFCKEventTrigger__importEventsIntoLocalModel_context___block_invoke_
   }
 }
 
-- (id)_decodeEventDictionary:(id)a3 localModel:(id)a4 context:(id)a5
+- (id)_decodeEventDictionary:(id)dictionary localModel:(id)model context:(id)context
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  modelCopy = model;
+  contextCopy = context;
   v49 = 1;
-  v11 = [(MKFCKEventTrigger *)self _decodeNumberForKey:v8 dictionary:&v49 success:?];
-  v12 = [(MKFCKEventTrigger *)self _decodeStringForKey:v8 dictionary:&v49 success:?];
+  v11 = [(MKFCKEventTrigger *)self _decodeNumberForKey:dictionaryCopy dictionary:&v49 success:?];
+  v12 = [(MKFCKEventTrigger *)self _decodeStringForKey:dictionaryCopy dictionary:&v49 success:?];
   if (v49 != 1)
   {
     v21 = 0;
@@ -1161,9 +1161,9 @@ void __57__MKFCKEventTrigger__importEventsIntoLocalModel_context___block_invoke_
     goto LABEL_36;
   }
 
-  v13 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
   v14 = MEMORY[0x277CBEC28];
-  if (v13)
+  if (bOOLValue)
   {
     v14 = MEMORY[0x277CBEC38];
   }
@@ -1172,12 +1172,12 @@ void __57__MKFCKEventTrigger__importEventsIntoLocalModel_context___block_invoke_
 
   if ([v12 isEqualToString:@"C"])
   {
-    v48 = v9;
-    v16 = v10;
+    v48 = modelCopy;
+    v16 = contextCopy;
     if (self)
     {
       buf[0] = 1;
-      v17 = v8;
+      v17 = dictionaryCopy;
       v18 = [(MKFCKEventTrigger *)self _decodeUUIDForKey:v17 dictionary:buf success:?];
       v19 = [(MKFCKEventTrigger *)self _decodeDataForKey:v17 dictionary:buf success:?];
 
@@ -1192,11 +1192,11 @@ void __57__MKFCKEventTrigger__importEventsIntoLocalModel_context___block_invoke_
           {
             v21 = [[_MKFCalendarEvent alloc] initWithContext:v16];
             [(_MKFCalendarEvent *)v21 setModelID:v18];
-            v22 = [(MKFCKEventTrigger *)self writerTimestamp];
-            [(_MKFCalendarEvent *)v21 setWriterTimestamp:v22];
+            writerTimestamp = [(MKFCKEventTrigger *)self writerTimestamp];
+            [(_MKFCalendarEvent *)v21 setWriterTimestamp:writerTimestamp];
           }
 
-          v23 = [(_MKFCalendarEvent *)v21 fireDateComponents];
+          fireDateComponents = [(_MKFCalendarEvent *)v21 fireDateComponents];
           v24 = HMFEqualObjects();
 
           if ((v24 & 1) == 0)
@@ -1220,7 +1220,7 @@ LABEL_29:
 LABEL_32:
 
 LABEL_33:
-      v9 = v48;
+      modelCopy = v48;
       goto LABEL_34;
     }
 
@@ -1234,11 +1234,11 @@ LABEL_33:
     {
       v25 = _MKFCharacteristicRangeEvent;
 LABEL_20:
-      v26 = v10;
-      v27 = v9;
-      v28 = v8;
-      v29 = [(__objc2_class *)v25 entity];
-      v21 = [(MKFCKEventTrigger *)self _decodeEventCharacteristicWithEntity:v29 eventDictionary:v28 trigger:v27 context:v26];
+      v26 = contextCopy;
+      v27 = modelCopy;
+      v28 = dictionaryCopy;
+      entity = [(__objc2_class *)v25 entity];
+      v21 = [(MKFCKEventTrigger *)self _decodeEventCharacteristicWithEntity:entity eventDictionary:v28 trigger:v27 context:v26];
 
       v15 = v46;
       goto LABEL_34;
@@ -1264,12 +1264,12 @@ LABEL_54:
 
   if ([v12 isEqualToString:@"D"])
   {
-    v48 = v9;
-    v16 = v10;
+    v48 = modelCopy;
+    v16 = contextCopy;
     if (self)
     {
       buf[0] = 1;
-      v30 = v8;
+      v30 = dictionaryCopy;
       v18 = [(MKFCKEventTrigger *)self _decodeUUIDForKey:v30 dictionary:buf success:?];
       v19 = [(MKFCKEventTrigger *)self _decodeNumberForKey:v30 dictionary:buf success:?];
 
@@ -1281,11 +1281,11 @@ LABEL_54:
         {
           v21 = [[_MKFDurationEvent alloc] initWithContext:v16];
           [(_MKFCalendarEvent *)v21 setModelID:v18];
-          v31 = [(MKFCKEventTrigger *)self writerTimestamp];
-          [(_MKFCalendarEvent *)v21 setWriterTimestamp:v31];
+          writerTimestamp2 = [(MKFCKEventTrigger *)self writerTimestamp];
+          [(_MKFCalendarEvent *)v21 setWriterTimestamp:writerTimestamp2];
         }
 
-        v32 = [(_MKFCalendarEvent *)v21 duration];
+        duration = [(_MKFCalendarEvent *)v21 duration];
         v33 = HMFEqualObjects();
 
         if ((v33 & 1) == 0)
@@ -1307,7 +1307,7 @@ LABEL_53:
 
   if ([v12 isEqualToString:@"L"])
   {
-    v36 = [(MKFCKEventTrigger *)self _decodeEventLocation:v8 trigger:v9 context:v10];
+    v36 = [(MKFCKEventTrigger *)self _decodeEventLocation:dictionaryCopy trigger:modelCopy context:contextCopy];
 LABEL_45:
     v21 = v36;
 LABEL_34:
@@ -1321,13 +1321,13 @@ LABEL_34:
 
   if ([v12 isEqualToString:@"P"])
   {
-    v36 = [(MKFCKEventTrigger *)self _decodeEventPresence:v8 trigger:v9 context:v10];
+    v36 = [(MKFCKEventTrigger *)self _decodeEventPresence:dictionaryCopy trigger:modelCopy context:contextCopy];
     goto LABEL_45;
   }
 
   if ([v12 isEqualToString:@"ST"])
   {
-    v36 = [(MKFCKEventTrigger *)self _decodeEventSignificantTime:v8 context:v10];
+    v36 = [(MKFCKEventTrigger *)self _decodeEventSignificantTime:dictionaryCopy context:contextCopy];
     goto LABEL_45;
   }
 
@@ -1335,22 +1335,22 @@ LABEL_34:
   {
     v37 = v15;
     v38 = +[HMDCoreData featuresDataSource];
-    v39 = [v38 isRVCEnabled];
+    isRVCEnabled = [v38 isRVCEnabled];
 
-    if (!v39)
+    if (!isRVCEnabled)
     {
       v21 = 0;
       v15 = v37;
       goto LABEL_36;
     }
 
-    v21 = [(MKFCKEventTrigger *)self _decodeEventAttributeValue:v8 trigger:v9 context:v10];
+    v21 = [(MKFCKEventTrigger *)self _decodeEventAttributeValue:dictionaryCopy trigger:modelCopy context:contextCopy];
     v15 = v37;
     goto LABEL_34;
   }
 
   v40 = objc_autoreleasePoolPush();
-  v41 = self;
+  selfCopy = self;
   v42 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
   {
@@ -1361,7 +1361,7 @@ LABEL_34:
     v52 = 2114;
     v53 = v12;
     v54 = 2112;
-    v55 = v8;
+    v55 = dictionaryCopy;
     _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_ERROR, "%{public}@Unknown event type '%{public}@', ignoring: %@", buf, 0x20u);
 
     v15 = v43;
@@ -1376,14 +1376,14 @@ LABEL_36:
   return v21;
 }
 
-- (id)_decodeNumberForKey:(void *)a3 dictionary:(_BYTE *)a4 success:
+- (id)_decodeNumberForKey:(void *)key dictionary:(_BYTE *)dictionary success:
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  keyCopy = key;
+  if (self)
   {
-    v9 = [(MKFCKEventTrigger *)a1 _decodeValueForKey:v7 dictionary:v8 optional:0 success:a4];
+    v9 = [(MKFCKEventTrigger *)self _decodeValueForKey:v7 dictionary:keyCopy optional:0 success:dictionary];
     v10 = v9;
     if (v9)
     {
@@ -1404,13 +1404,13 @@ LABEL_36:
 
       if (v12)
       {
-        a1 = v11;
+        self = v11;
       }
 
       else
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = a1;
+        selfCopy = self;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
@@ -1420,35 +1420,35 @@ LABEL_36:
           v23 = 2114;
           v24 = v7;
           v25 = 2112;
-          v26 = v8;
+          v26 = keyCopy;
           _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Unexpected type for '%{public}@' in event: %@", &v21, 0x20u);
         }
 
         objc_autoreleasePoolPop(v15);
-        a1 = 0;
-        *a4 = 0;
+        self = 0;
+        *dictionary = 0;
       }
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (id)_decodeStringForKey:(void *)a3 dictionary:(_BYTE *)a4 success:
+- (id)_decodeStringForKey:(void *)key dictionary:(_BYTE *)dictionary success:
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  keyCopy = key;
+  if (self)
   {
-    v9 = [(MKFCKEventTrigger *)a1 _decodeValueForKey:v7 dictionary:v8 optional:0 success:a4];
+    v9 = [(MKFCKEventTrigger *)self _decodeValueForKey:v7 dictionary:keyCopy optional:0 success:dictionary];
     v10 = v9;
     if (v9)
     {
@@ -1469,13 +1469,13 @@ LABEL_36:
 
       if (v12)
       {
-        a1 = v11;
+        self = v11;
       }
 
       else
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = a1;
+        selfCopy = self;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
@@ -1485,40 +1485,40 @@ LABEL_36:
           v23 = 2114;
           v24 = v7;
           v25 = 2112;
-          v26 = v8;
+          v26 = keyCopy;
           _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Unexpected type for '%{public}@' in event: %@", &v21, 0x20u);
         }
 
         objc_autoreleasePoolPop(v15);
-        a1 = 0;
-        *a4 = 0;
+        self = 0;
+        *dictionary = 0;
       }
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (id)_decodeValueForKey:(void *)a3 dictionary:(char)a4 optional:(_BYTE *)a5 success:
+- (id)_decodeValueForKey:(void *)key dictionary:(char)dictionary optional:(_BYTE *)optional success:
 {
   v25 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = v10;
-  if (*a5 == 1)
+  keyCopy = key;
+  v11 = keyCopy;
+  if (*optional == 1)
   {
-    v12 = [v10 objectForKeyedSubscript:v9];
-    if (!v12 && (a4 & 1) == 0)
+    v12 = [keyCopy objectForKeyedSubscript:v9];
+    if (!v12 && (dictionary & 1) == 0)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = a1;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -1534,7 +1534,7 @@ LABEL_36:
 
       objc_autoreleasePoolPop(v13);
       v12 = 0;
-      *a5 = 0;
+      *optional = 0;
     }
   }
 
@@ -1548,28 +1548,28 @@ LABEL_36:
   return v12;
 }
 
-- (id)_encodeEvent:(id)a3 encodedEventInCloud:(id)a4 accessories:(id)a5 users:(id)a6 guests:(id)a7 shouldRemoveEvent:(BOOL *)a8 context:(id)a9
+- (id)_encodeEvent:(id)event encodedEventInCloud:(id)cloud accessories:(id)accessories users:(id)users guests:(id)guests shouldRemoveEvent:(BOOL *)removeEvent context:(id)context
 {
   v93 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v84 = a6;
-  v83 = a7;
-  v18 = a9;
+  eventCopy = event;
+  cloudCopy = cloud;
+  accessoriesCopy = accessories;
+  usersCopy = users;
+  guestsCopy = guests;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v79 = v16;
-    v81 = v17;
-    v19 = v15;
-    v20 = v18;
+    v79 = cloudCopy;
+    v81 = accessoriesCopy;
+    v19 = eventCopy;
+    v20 = contextCopy;
     if (self)
     {
       v21 = MEMORY[0x277CCAAB0];
-      v22 = [v19 fireDateComponents];
+      fireDateComponents = [v19 fireDateComponents];
       v85 = 0;
-      v23 = [v21 archivedDataWithRootObject:v22 requiringSecureCoding:1 error:&v85];
+      v23 = [v21 archivedDataWithRootObject:fireDateComponents requiringSecureCoding:1 error:&v85];
       v24 = v85;
 
       if (v23)
@@ -1584,7 +1584,7 @@ LABEL_36:
       else
       {
         v34 = objc_autoreleasePoolPush();
-        v35 = self;
+        selfCopy = self;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
@@ -1601,8 +1601,8 @@ LABEL_36:
       }
     }
 
-    v16 = v79;
-    v17 = v81;
+    cloudCopy = v79;
+    accessoriesCopy = v81;
   }
 
   else
@@ -1610,10 +1610,10 @@ LABEL_36:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = v15;
+      v25 = eventCopy;
       if (self)
       {
-        v26 = [(MKFCKEventTrigger *)self _encodeEventCharacteristic:v25 accessories:v17 context:v18];
+        v26 = [(MKFCKEventTrigger *)self _encodeEventCharacteristic:v25 accessories:accessoriesCopy context:contextCopy];
         if (v26)
         {
           v27 = [v25 min];
@@ -1648,14 +1648,14 @@ LABEL_36:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v31 = v15;
+        v31 = eventCopy;
         if (self)
         {
-          v32 = [(MKFCKEventTrigger *)self _encodeEventCharacteristic:v31 accessories:v17 context:v18];
+          v32 = [(MKFCKEventTrigger *)self _encodeEventCharacteristic:v31 accessories:accessoriesCopy context:contextCopy];
           if (v32)
           {
-            v33 = [v31 eventValue];
-            [v32 setObject:v33 forKeyedSubscript:@"TEAv"];
+            eventValue = [v31 eventValue];
+            [v32 setObject:eventValue forKeyedSubscript:@"TEAv"];
 
             [v32 setObject:@"CV" forKeyedSubscript:@"TEt"];
             self = [v32 copy];
@@ -1678,8 +1678,8 @@ LABEL_36:
             *buf = @"D";
             v88 = @"TEt";
             v89 = @"TEDd";
-            v38 = [v15 duration];
-            *&buf[8] = v38;
+            duration = [eventCopy duration];
+            *&buf[8] = duration;
             self = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:&v88 count:2];
           }
         }
@@ -1689,52 +1689,52 @@ LABEL_36:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v82 = v17;
-            v39 = v15;
-            v40 = v84;
-            v77 = v18;
-            v41 = v18;
+            v82 = accessoriesCopy;
+            v39 = eventCopy;
+            v40 = usersCopy;
+            v77 = contextCopy;
+            v41 = contextCopy;
             if (self)
             {
               v42 = MEMORY[0x277CCAAB0];
-              v43 = [v39 region];
+              region = [v39 region];
               v85 = 0;
-              v44 = [v42 archivedDataWithRootObject:v43 requiringSecureCoding:1 error:&v85];
+              v44 = [v42 archivedDataWithRootObject:region requiringSecureCoding:1 error:&v85];
               v78 = v85;
 
               if (v44)
               {
                 v76 = v41;
                 v45 = v40;
-                v80 = v16;
-                v46 = [v39 user];
+                v80 = cloudCopy;
+                user = [v39 user];
 
-                if (v46)
+                if (user)
                 {
-                  v47 = [v39 user];
-                  v48 = [v47 modelID];
-                  v49 = [(MKFCKEventTrigger *)self home];
-                  v50 = [MKFCKEventTrigger cloudUserWithModelID:v48 home:v49];
+                  user2 = [v39 user];
+                  modelID = [user2 modelID];
+                  home = [(MKFCKEventTrigger *)self home];
+                  owner = [MKFCKEventTrigger cloudUserWithModelID:modelID home:home];
                 }
 
                 else
                 {
-                  v69 = [(MKFCKEventTrigger *)self home];
-                  v50 = [v69 owner];
+                  home2 = [(MKFCKEventTrigger *)self home];
+                  owner = [home2 owner];
 
                   v70 = objc_autoreleasePoolPush();
-                  v71 = self;
+                  selfCopy2 = self;
                   v72 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
                   {
                     v73 = HMFGetLogIdentifier();
-                    v74 = [v50 modelID];
+                    modelID2 = [owner modelID];
                     *buf = 138543874;
                     *&buf[4] = v73;
                     *&buf[12] = 2160;
                     *&buf[14] = 1752392040;
                     *&buf[22] = 2112;
-                    v92 = v74;
+                    v92 = modelID2;
                     _os_log_impl(&dword_229538000, v72, OS_LOG_TYPE_INFO, "%{public}@(Export) : FixUP: No user found for the MKFLocationEvent.user. Assigning owner of the home as owner of this location event: '%{mask.hash}@'", buf, 0x20u);
                   }
 
@@ -1742,17 +1742,17 @@ LABEL_36:
                 }
 
                 v40 = v45;
-                [v45 addObject:v50];
+                [v45 addObject:owner];
                 v88 = @"TEt";
                 v89 = @"TELl";
                 *buf = @"L";
                 *&buf[8] = v44;
                 v90 = @"TELu";
-                v75 = [v50 modelID];
-                *&buf[16] = v75;
+                modelID3 = [owner modelID];
+                *&buf[16] = modelID3;
                 self = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:&v88 count:3];
 
-                v16 = v80;
+                cloudCopy = v80;
                 v41 = v76;
               }
 
@@ -1760,7 +1760,7 @@ LABEL_36:
               {
                 v60 = v40;
                 v61 = objc_autoreleasePoolPush();
-                v62 = self;
+                selfCopy3 = self;
                 v63 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
                 {
@@ -1778,8 +1778,8 @@ LABEL_36:
               }
             }
 
-            v17 = v82;
-            v18 = v77;
+            accessoriesCopy = v82;
+            contextCopy = v77;
           }
 
           else
@@ -1787,7 +1787,7 @@ LABEL_36:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v59 = [(MKFCKEventTrigger *)self _encodeEventPresence:v15 users:v84 guests:v83 shouldRemoveEvent:a8 context:v18];
+              v59 = [(MKFCKEventTrigger *)self _encodeEventPresence:eventCopy users:usersCopy guests:guestsCopy shouldRemoveEvent:removeEvent context:contextCopy];
             }
 
             else
@@ -1795,7 +1795,7 @@ LABEL_36:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v59 = [MKFCKEventTrigger _encodeEventSignificantTime:v15 context:?];
+                v59 = [MKFCKEventTrigger _encodeEventSignificantTime:eventCopy context:?];
               }
 
               else
@@ -1807,14 +1807,14 @@ LABEL_36:
                 }
 
                 v65 = +[HMDCoreData featuresDataSource];
-                v66 = [v65 isRVCEnabled];
+                isRVCEnabled = [v65 isRVCEnabled];
 
-                if (!v66)
+                if (!isRVCEnabled)
                 {
                   goto LABEL_51;
                 }
 
-                v59 = [(MKFCKEventTrigger *)self _encodeEventAttributeValue:v15 accessories:v17 context:v18];
+                v59 = [(MKFCKEventTrigger *)self _encodeEventAttributeValue:eventCopy accessories:accessoriesCopy context:contextCopy];
               }
             }
 
@@ -1834,13 +1834,13 @@ LABEL_51:
 
   v51 = MEMORY[0x277CBEB38];
   v86[0] = @"TEm";
-  v52 = [v15 modelID];
+  modelID4 = [eventCopy modelID];
   v86[1] = @"TEd";
-  v87[0] = v52;
-  v53 = [v15 endEvent];
-  v54 = [v53 BOOLValue];
+  v87[0] = modelID4;
+  endEvent = [eventCopy endEvent];
+  bOOLValue = [endEvent BOOLValue];
   v55 = MEMORY[0x277CBEC28];
-  if (v54)
+  if (bOOLValue)
   {
     v55 = MEMORY[0x277CBEC38];
   }
@@ -1850,7 +1850,7 @@ LABEL_51:
   v57 = [v51 dictionaryWithDictionary:v56];
 
   [v57 addEntriesFromDictionary:self];
-  v58 = [MKFCKModel mergedDictionaryFromCloud:v16 localModifications:v57];
+  v58 = [MKFCKModel mergedDictionaryFromCloud:cloudCopy localModifications:v57];
 
 LABEL_52:
   v67 = *MEMORY[0x277D85DE8];
@@ -1858,7 +1858,7 @@ LABEL_52:
   return v58;
 }
 
-- (id)_decodeDateComponentsData:(void *)a1
+- (id)_decodeDateComponentsData:(void *)data
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = a2;
@@ -1873,7 +1873,7 @@ LABEL_52:
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    dataCopy = data;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1893,12 +1893,12 @@ LABEL_52:
   return v4;
 }
 
-- (id)_decodeUUIDForKey:(void *)a3 dictionary:(_BYTE *)a4 success:
+- (id)_decodeUUIDForKey:(void *)key dictionary:(_BYTE *)dictionary success:
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = [(MKFCKEventTrigger *)a1 _decodeValueForKey:v7 dictionary:v8 optional:0 success:a4];
+  keyCopy = key;
+  v9 = [(MKFCKEventTrigger *)self _decodeValueForKey:v7 dictionary:keyCopy optional:0 success:dictionary];
   v10 = v9;
   if (v9)
   {
@@ -1925,7 +1925,7 @@ LABEL_52:
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = a1;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -1935,13 +1935,13 @@ LABEL_52:
         v24 = 2114;
         v25 = v7;
         v26 = 2112;
-        v27 = v8;
+        v27 = keyCopy;
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Unexpected type for '%{public}@' in event: %@", &v22, 0x20u);
       }
 
       objc_autoreleasePoolPop(v16);
       v15 = 0;
-      *a4 = 0;
+      *dictionary = 0;
     }
   }
 
@@ -1955,19 +1955,19 @@ LABEL_52:
   return v15;
 }
 
-- (id)_decodeDataForKey:(void *)a3 dictionary:(_BYTE *)a4 success:
+- (id)_decodeDataForKey:(void *)key dictionary:(_BYTE *)dictionary success:
 {
-  v4 = [(MKFCKEventTrigger *)a1 _decodeDataForKey:a2 dictionary:a3 optional:0 success:a4];
+  v4 = [(MKFCKEventTrigger *)self _decodeDataForKey:a2 dictionary:key optional:0 success:dictionary];
 
   return v4;
 }
 
-- (id)_decodeDataForKey:(void *)a3 dictionary:(char)a4 optional:(_BYTE *)a5 success:
+- (id)_decodeDataForKey:(void *)key dictionary:(char)dictionary optional:(_BYTE *)optional success:
 {
   v30 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = [(MKFCKEventTrigger *)a1 _decodeValueForKey:v9 dictionary:v10 optional:a4 success:a5];
+  keyCopy = key;
+  v11 = [(MKFCKEventTrigger *)self _decodeValueForKey:v9 dictionary:keyCopy optional:dictionary success:optional];
   v12 = v11;
   if (v11)
   {
@@ -1994,7 +1994,7 @@ LABEL_52:
     else
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = a1;
+      selfCopy = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -2004,13 +2004,13 @@ LABEL_52:
         v26 = 2114;
         v27 = v9;
         v28 = 2112;
-        v29 = v10;
+        v29 = keyCopy;
         _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Unexpected type for '%{public}@' in event: %@", &v24, 0x20u);
       }
 
       objc_autoreleasePoolPop(v18);
       v17 = 0;
-      *a5 = 0;
+      *optional = 0;
     }
   }
 
@@ -2024,12 +2024,12 @@ LABEL_52:
   return v17;
 }
 
-- (id)_decodeCharacteristicValueForKey:(void *)a3 dictionary:(char)a4 optional:(_BYTE *)a5 success:
+- (id)_decodeCharacteristicValueForKey:(void *)key dictionary:(char)dictionary optional:(_BYTE *)optional success:
 {
   v26 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = [(MKFCKEventTrigger *)a1 _decodeValueForKey:v9 dictionary:v10 optional:a4 success:a5];
+  keyCopy = key;
+  v11 = [(MKFCKEventTrigger *)self _decodeValueForKey:v9 dictionary:keyCopy optional:dictionary success:optional];
   v12 = v11;
   v13 = 0;
   if (v11 && *MEMORY[0x277CBEEE8] != v11)
@@ -2042,7 +2042,7 @@ LABEL_52:
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = a1;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -2052,13 +2052,13 @@ LABEL_52:
         v22 = 2114;
         v23 = v9;
         v24 = 2112;
-        v25 = v10;
+        v25 = keyCopy;
         _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_ERROR, "%{public}@Unexpected type for '%{public}@' in event: %@", &v20, 0x20u);
       }
 
       objc_autoreleasePoolPop(v14);
       v13 = 0;
-      *a5 = 0;
+      *optional = 0;
     }
   }
 
@@ -2067,10 +2067,10 @@ LABEL_52:
   return v13;
 }
 
-+ (id)localUserWithModelID:(void *)a3 home:
++ (id)localUserWithModelID:(void *)d home:
 {
   v4 = a2;
-  v5 = a3;
+  dCopy = d;
   objc_opt_self();
   v13 = 0;
   v14 = &v13;
@@ -2078,7 +2078,7 @@ LABEL_52:
   v16 = __Block_byref_object_copy__196576;
   v17 = __Block_byref_object_dispose__196577;
   v18 = 0;
-  v6 = [v5 users];
+  users = [dCopy users];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__MKFCKEventTrigger_Helpers__localUserWithModelID_home___block_invoke;
@@ -2086,7 +2086,7 @@ LABEL_52:
   v7 = v4;
   v11 = v7;
   v12 = &v13;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+  [users hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -2107,10 +2107,10 @@ void __56__MKFCKEventTrigger_Helpers__localUserWithModelID_home___block_invoke(u
   }
 }
 
-+ (id)cloudUserWithModelID:(void *)a3 home:
++ (id)cloudUserWithModelID:(void *)d home:
 {
   v4 = a2;
-  v5 = a3;
+  dCopy = d;
   objc_opt_self();
   v13 = 0;
   v14 = &v13;
@@ -2118,7 +2118,7 @@ void __56__MKFCKEventTrigger_Helpers__localUserWithModelID_home___block_invoke(u
   v16 = __Block_byref_object_copy__196576;
   v17 = __Block_byref_object_dispose__196577;
   v18 = 0;
-  v6 = [v5 users];
+  users = [dCopy users];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__MKFCKEventTrigger_Helpers__cloudUserWithModelID_home___block_invoke;
@@ -2126,7 +2126,7 @@ void __56__MKFCKEventTrigger_Helpers__localUserWithModelID_home___block_invoke(u
   v7 = v4;
   v11 = v7;
   v12 = &v13;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+  [users hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -2173,138 +2173,138 @@ void __57__MKFCKEventTrigger_Helpers__cloudGuestWithModelID_home___block_invoke(
   }
 }
 
-- (id)_encodeEventPresence:(void *)a3 users:(void *)a4 guests:(_BYTE *)a5 shouldRemoveEvent:(void *)a6 context:
+- (id)_encodeEventPresence:(void *)presence users:(void *)users guests:(_BYTE *)guests shouldRemoveEvent:(void *)event context:
 {
   v61 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (a1)
+  presenceCopy = presence;
+  usersCopy = users;
+  eventCopy = event;
+  if (self)
   {
-    v15 = [v11 activation];
-    v16 = v15;
-    if (v15)
+    activation = [v11 activation];
+    v16 = activation;
+    if (activation)
     {
-      [v15 unsignedIntegerValue];
-      v17 = [v11 presenceType];
-      v48 = v12;
-      if (v17)
+      [activation unsignedIntegerValue];
+      presenceType = [v11 presenceType];
+      v48 = presenceCopy;
+      if (presenceType)
       {
-        v47 = v14;
+        v47 = eventCopy;
         v18 = MEMORY[0x277CBEB18];
-        v19 = [v11 users];
-        v20 = [v18 arrayWithCapacity:{objc_msgSend(v19, "count")}];
+        users = [v11 users];
+        v20 = [v18 arrayWithCapacity:{objc_msgSend(users, "count")}];
 
-        v21 = [v11 users];
+        users2 = [v11 users];
         v52[0] = MEMORY[0x277D85DD0];
         v52[1] = 3221225472;
         v52[2] = __91__MKFCKEventTrigger_Presence___encodeEventPresence_users_guests_shouldRemoveEvent_context___block_invoke;
         v52[3] = &unk_27867F510;
-        v52[4] = a1;
+        v52[4] = self;
         v22 = v20;
         v53 = v22;
-        v54 = v12;
-        [v21 hmf_enumerateWithAutoreleasePoolUsingBlock:v52];
+        v54 = presenceCopy;
+        [users2 hmf_enumerateWithAutoreleasePoolUsingBlock:v52];
 
         v23 = MEMORY[0x277CBEB18];
-        v24 = [v11 guests];
-        v25 = [v23 arrayWithCapacity:{objc_msgSend(v24, "count")}];
+        guests = [v11 guests];
+        v25 = [v23 arrayWithCapacity:{objc_msgSend(guests, "count")}];
 
-        v26 = [v11 guests];
+        guests2 = [v11 guests];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __91__MKFCKEventTrigger_Presence___encodeEventPresence_users_guests_shouldRemoveEvent_context___block_invoke_2;
         v49[3] = &unk_27867F538;
-        v49[4] = a1;
+        v49[4] = self;
         v27 = v25;
         v50 = v27;
-        v51 = v13;
-        [v26 hmf_enumerateWithAutoreleasePoolUsingBlock:v49];
+        v51 = usersCopy;
+        [guests2 hmf_enumerateWithAutoreleasePoolUsingBlock:v49];
 
         v55[0] = @"TEt";
         v55[1] = @"TEPa";
         v56[0] = @"P";
         v56[1] = v16;
-        v56[2] = v17;
+        v56[2] = presenceType;
         v55[2] = @"TEPt";
         v55[3] = @"TEPu";
         v28 = [v22 copy];
         v56[3] = v28;
-        a1 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:4];
+        self = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:4];
 
         if ([v27 count])
         {
-          v29 = [a1 mutableCopy];
+          v29 = [self mutableCopy];
           v30 = [v27 copy];
           [v29 setObject:v30 forKeyedSubscript:@"TEPg"];
 
           v31 = [v29 copy];
-          a1 = v31;
+          self = v31;
         }
 
-        v14 = v47;
-        v12 = v48;
+        eventCopy = v47;
+        presenceCopy = v48;
       }
 
       else
       {
         v39 = objc_autoreleasePoolPush();
-        v40 = a1;
+        selfCopy = self;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
-          v42 = v13;
-          v44 = v43 = v14;
+          v42 = usersCopy;
+          v44 = v43 = eventCopy;
           *buf = 138543618;
           v58 = v44;
           v59 = 2112;
           v60 = v11;
           _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_ERROR, "%{public}@No presenceType for event: %@", buf, 0x16u);
 
-          v14 = v43;
-          v13 = v42;
+          eventCopy = v43;
+          usersCopy = v42;
         }
 
         objc_autoreleasePoolPop(v39);
-        a1 = 0;
-        *a5 = 1;
-        v12 = v48;
+        self = 0;
+        *guests = 1;
+        presenceCopy = v48;
       }
     }
 
     else
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = a1;
+      selfCopy2 = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v35 = v13;
-        v36 = v14;
-        v38 = v37 = v12;
+        v35 = usersCopy;
+        v36 = eventCopy;
+        v38 = v37 = presenceCopy;
         *buf = 138543618;
         v58 = v38;
         v59 = 2112;
         v60 = v11;
         _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_ERROR, "%{public}@No activation for event: %@", buf, 0x16u);
 
-        v12 = v37;
-        v14 = v36;
-        v13 = v35;
+        presenceCopy = v37;
+        eventCopy = v36;
+        usersCopy = v35;
       }
 
       objc_autoreleasePoolPop(v32);
-      a1 = 0;
-      *a5 = 1;
+      self = 0;
+      *guests = 1;
     }
   }
 
   v45 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 void __91__MKFCKEventTrigger_Presence___encodeEventPresence_users_guests_shouldRemoveEvent_context___block_invoke(id *a1, void *a2)
@@ -2347,21 +2347,21 @@ void __91__MKFCKEventTrigger_Presence___encodeEventPresence_users_guests_shouldR
   [a1[6] addObject:v8];
 }
 
-- (_MKFPresenceEvent)_decodeEventPresence:(void *)a3 trigger:(void *)a4 context:
+- (_MKFPresenceEvent)_decodeEventPresence:(void *)presence trigger:(void *)trigger context:
 {
   v74 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v53 = a3;
-  v52 = a4;
-  if (a1)
+  presenceCopy = presence;
+  triggerCopy = trigger;
+  if (self)
   {
     v59 = 0;
     v60 = &v59;
     v61 = 0x2020000000;
     v62[0] = 1;
-    v8 = [(MKFCKEventTrigger *)a1 _decodeUUIDForKey:v7 dictionary:v62 success:?];
-    v9 = [(MKFCKEventTrigger *)a1 _decodeNumberForKey:v7 dictionary:v60 + 24 success:?];
-    v10 = [(MKFCKEventTrigger *)a1 _decodeStringForKey:v7 dictionary:v60 + 24 success:?];
+    v8 = [(MKFCKEventTrigger *)self _decodeUUIDForKey:v7 dictionary:v62 success:?];
+    v9 = [(MKFCKEventTrigger *)self _decodeNumberForKey:v7 dictionary:v60 + 24 success:?];
+    v10 = [(MKFCKEventTrigger *)self _decodeStringForKey:v7 dictionary:v60 + 24 success:?];
     if ((v60[3] & 1) == 0)
     {
       v17 = 0;
@@ -2389,7 +2389,7 @@ LABEL_43:
     if (!v13)
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = a1;
+      selfCopy = self;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -2408,17 +2408,17 @@ LABEL_43:
       goto LABEL_42;
     }
 
-    v14 = [v53 home];
+    home = [presenceCopy home];
     v15 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v13, "count")}];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __68__MKFCKEventTrigger_Presence___decodeEventPresence_trigger_context___block_invoke;
     v54[3] = &unk_27867F560;
-    v54[4] = a1;
+    v54[4] = self;
     v16 = v7;
     v55 = v16;
     v58 = &v59;
-    v50 = v14;
+    v50 = home;
     v56 = v50;
     v51 = v15;
     v57 = v51;
@@ -2432,16 +2432,16 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v17 = [(_MKFModel *)_MKFPresenceEvent modelWithModelID:v8 context:v52];
+    v17 = [(_MKFModel *)_MKFPresenceEvent modelWithModelID:v8 context:triggerCopy];
     if (!v17)
     {
-      v17 = [[_MKFPresenceEvent alloc] initWithContext:v52];
+      v17 = [[_MKFPresenceEvent alloc] initWithContext:triggerCopy];
       [(_MKFPresenceEvent *)v17 setModelID:v8];
-      v18 = [a1 writerTimestamp];
-      [(_MKFPresenceEvent *)v17 setWriterTimestamp:v18];
+      writerTimestamp = [self writerTimestamp];
+      [(_MKFPresenceEvent *)v17 setWriterTimestamp:writerTimestamp];
     }
 
-    v19 = [(_MKFPresenceEvent *)v17 activation];
+    activation = [(_MKFPresenceEvent *)v17 activation];
     v20 = HMFEqualObjects();
 
     if ((v20 & 1) == 0)
@@ -2449,7 +2449,7 @@ LABEL_42:
       [(_MKFPresenceEvent *)v17 setActivation:v9];
     }
 
-    v21 = [(_MKFPresenceEvent *)v17 presenceType];
+    presenceType = [(_MKFPresenceEvent *)v17 presenceType];
     v22 = HMFEqualObjects();
 
     if ((v22 & 1) == 0)
@@ -2458,7 +2458,7 @@ LABEL_42:
     }
 
     v49 = [v51 copy];
-    v23 = [(_MKFPresenceEvent *)v17 users];
+    users = [(_MKFPresenceEvent *)v17 users];
     v24 = HMFEqualObjects();
 
     if ((v24 & 1) == 0)
@@ -2505,7 +2505,7 @@ LABEL_42:
         *&buf[8] = 3221225472;
         *&buf[16] = __77__MKFCKEventTrigger_Presence___decodeGuestsFromPresenceEventDictionary_home___block_invoke;
         v68 = &unk_27867F560;
-        v69 = a1;
+        selfCopy2 = self;
         v70 = v47;
         v73 = &v63;
         v71 = v46;
@@ -2530,7 +2530,7 @@ LABEL_42:
     else
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = a1;
+      selfCopy3 = self;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -2553,7 +2553,7 @@ LABEL_36:
 LABEL_37:
     if (v32)
     {
-      v41 = [(_MKFPresenceEvent *)v17 guests];
+      guests = [(_MKFPresenceEvent *)v17 guests];
       v42 = HMFEqualObjects();
 
       if ((v42 & 1) == 0)
@@ -2751,24 +2751,24 @@ void __77__MKFCKEventTrigger_Presence___decodeGuestsFromPresenceEventDictionary_
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (_MKFLocationEvent)_decodeEventLocation:(void *)a3 trigger:(void *)a4 context:
+- (_MKFLocationEvent)_decodeEventLocation:(void *)location trigger:(void *)trigger context:
 {
   v60 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  locationCopy = location;
+  triggerCopy = trigger;
+  if (self)
   {
     v51 = 1;
-    v49 = [(MKFCKEventTrigger *)a1 _decodeUUIDForKey:v7 dictionary:&v51 success:?];
-    v10 = [(MKFCKEventTrigger *)a1 _decodeDataForKey:v7 dictionary:&v51 success:?];
+    v49 = [(MKFCKEventTrigger *)self _decodeUUIDForKey:v7 dictionary:&v51 success:?];
+    v10 = [(MKFCKEventTrigger *)self _decodeDataForKey:v7 dictionary:&v51 success:?];
     v50 = 0;
     v11 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:&v50];
     v48 = v50;
     if (!v11)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy = self;
       v26 = HMFGetOSLogHandle();
       v23 = v48;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2786,7 +2786,7 @@ void __77__MKFCKEventTrigger_Presence___decodeGuestsFromPresenceEventDictionary_
       goto LABEL_26;
     }
 
-    v47 = v9;
+    v47 = triggerCopy;
     v12 = [v7 objectForKeyedSubscript:@"TELu"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2803,10 +2803,10 @@ void __77__MKFCKEventTrigger_Presence___decodeGuestsFromPresenceEventDictionary_
 
     if (v14)
     {
-      v15 = [v8 home];
-      v16 = [MKFCKEventTrigger localUserWithModelID:v14 home:v15];
+      home = [locationCopy home];
+      owner = [MKFCKEventTrigger localUserWithModelID:v14 home:home];
 
-      if (v16)
+      if (owner)
       {
 LABEL_8:
         v17 = [(_MKFModel *)_MKFLocationEvent modelWithModelID:v49 context:v47];
@@ -2814,13 +2814,13 @@ LABEL_8:
         {
           v17 = [[_MKFLocationEvent alloc] initWithContext:v47];
           [(_MKFLocationEvent *)v17 setModelID:v49];
-          v18 = [a1 writerTimestamp];
-          [(_MKFLocationEvent *)v17 setWriterTimestamp:v18];
+          writerTimestamp = [self writerTimestamp];
+          [(_MKFLocationEvent *)v17 setWriterTimestamp:writerTimestamp];
 
-          [(_MKFLocationEvent *)v17 setUser:v16];
+          [(_MKFLocationEvent *)v17 setUser:owner];
         }
 
-        v19 = [(_MKFLocationEvent *)v17 region];
+        region = [(_MKFLocationEvent *)v17 region];
         v20 = HMFEqualObjects();
 
         if ((v20 & 1) == 0)
@@ -2828,18 +2828,18 @@ LABEL_8:
           [(_MKFLocationEvent *)v17 setRegion:v11];
         }
 
-        v21 = [(_MKFLocationEvent *)v17 user];
+        user = [(_MKFLocationEvent *)v17 user];
         v22 = HMFEqualObjects();
 
         v23 = v48;
         if ((v22 & 1) == 0)
         {
-          [(_MKFLocationEvent *)v17 setUser:v16];
+          [(_MKFLocationEvent *)v17 setUser:owner];
         }
 
 LABEL_25:
 
-        v9 = v47;
+        triggerCopy = v47;
 LABEL_26:
 
         goto LABEL_27;
@@ -2849,9 +2849,9 @@ LABEL_26:
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = a1;
+      selfCopy2 = self;
       v30 = HMFGetOSLogHandle();
-      v46 = v8;
+      v46 = locationCopy;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         v31 = HMFGetLogIdentifier();
@@ -2863,20 +2863,20 @@ LABEL_26:
         v57 = v7;
         _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode '%{public}@' in event: %@", buf, 0x20u);
 
-        v8 = v46;
+        locationCopy = v46;
       }
 
       objc_autoreleasePoolPop(v28);
-      v32 = [v8 home];
-      v16 = [v32 owner];
+      home2 = [locationCopy home];
+      owner = [home2 owner];
 
       v33 = objc_autoreleasePoolPush();
-      v34 = v29;
+      v34 = selfCopy2;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         v36 = HMFGetLogIdentifier();
-        [v16 modelID];
+        [owner modelID];
         v37 = v45 = v33;
         *buf = 138543874;
         v53 = v36;
@@ -2887,23 +2887,23 @@ LABEL_26:
         _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_INFO, "%{public}@(Import) : FixUP: No user found for the MKFLocationEvent.user. Assigning owner of the home as owner of this location event: '%{mask.hash}@'", buf, 0x20u);
 
         v33 = v45;
-        v8 = v46;
+        locationCopy = v46;
       }
 
       objc_autoreleasePoolPop(v33);
-      if (v16)
+      if (owner)
       {
         goto LABEL_8;
       }
     }
 
     v38 = objc_autoreleasePoolPush();
-    v39 = a1;
+    selfCopy3 = self;
     v40 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v42 = v41 = v8;
+      v42 = v41 = locationCopy;
       *buf = 138544130;
       v53 = v42;
       v54 = 2160;
@@ -2914,7 +2914,7 @@ LABEL_26:
       v59 = v7;
       _os_log_impl(&dword_229538000, v40, OS_LOG_TYPE_ERROR, "%{public}@Could not find user '%{mask.hash}@' matching event: %@", buf, 0x2Au);
 
-      v8 = v41;
+      locationCopy = v41;
     }
 
     objc_autoreleasePoolPop(v38);

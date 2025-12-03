@@ -6,7 +6,7 @@
 
 - (unint64_t)String
 {
-  result = OUTLINED_FUNCTION_59(a1);
+  result = OUTLINED_FUNCTION_59(self);
   if (!result)
   {
     v4 = v3;

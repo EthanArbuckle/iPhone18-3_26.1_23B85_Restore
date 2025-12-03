@@ -1,18 +1,18 @@
 @interface _MKNanoAddressSnapshotViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation _MKNanoAddressSnapshotViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_MKNanoAddressSnapshotView" hasInstanceVariable:@"_mapItem" withType:"MKMapItem"];
-  [v3 validateClass:@"_MKNanoAddressSnapshotView" hasInstanceVariable:@"_showsName" withType:"B"];
-  [v3 validateClass:@"MKMapItem"];
-  [v3 validateClass:@"MKMapItem" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMapItem" hasInstanceMethod:@"_addressFormattedAsMultilineAddress" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_MKNanoAddressSnapshotView" hasInstanceVariable:@"_mapItem" withType:"MKMapItem"];
+  [validationsCopy validateClass:@"_MKNanoAddressSnapshotView" hasInstanceVariable:@"_showsName" withType:"B"];
+  [validationsCopy validateClass:@"MKMapItem"];
+  [validationsCopy validateClass:@"MKMapItem" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMapItem" hasInstanceMethod:@"_addressFormattedAsMultilineAddress" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

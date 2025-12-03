@@ -2,18 +2,18 @@
 - (BOOL)floatingEnableOverview;
 - (NSAttributedString)floatingSummarySubtitle;
 - (NSAttributedString)floatingSummaryTitle;
-- (PXPhotosGridFloatingHeaderSnapshot)initWithTitle:(id)a3 subtitle:(id)a4 buttonTitle:(id)a5 buttonActionType:(unint64_t)a6 assetCollectionReference:(id)a7;
+- (PXPhotosGridFloatingHeaderSnapshot)initWithTitle:(id)title subtitle:(id)subtitle buttonTitle:(id)buttonTitle buttonActionType:(unint64_t)type assetCollectionReference:(id)reference;
 @end
 
 @implementation PXPhotosGridFloatingHeaderSnapshot
 
 - (NSAttributedString)floatingSummarySubtitle
 {
-  v2 = [(PXPhotosGridFloatingHeaderSnapshot *)self subtitle];
-  v3 = v2;
-  if (v2)
+  subtitle = [(PXPhotosGridFloatingHeaderSnapshot *)self subtitle];
+  v3 = subtitle;
+  if (subtitle)
   {
-    v4 = v2;
+    v4 = subtitle;
   }
 
   else
@@ -28,11 +28,11 @@
 
 - (NSAttributedString)floatingSummaryTitle
 {
-  v2 = [(PXPhotosGridFloatingHeaderSnapshot *)self title];
-  v3 = v2;
-  if (v2)
+  title = [(PXPhotosGridFloatingHeaderSnapshot *)self title];
+  v3 = title;
+  if (title)
   {
-    v4 = v2;
+    v4 = title;
   }
 
   else
@@ -47,11 +47,11 @@
 
 - (BOOL)floatingEnableOverview
 {
-  v3 = [(PXPhotosGridFloatingHeaderSnapshot *)self assetCollectionReference];
-  if (v3)
+  assetCollectionReference = [(PXPhotosGridFloatingHeaderSnapshot *)self assetCollectionReference];
+  if (assetCollectionReference)
   {
-    v4 = [(PXPhotosGridFloatingHeaderSnapshot *)self buttonTitle];
-    v5 = [v4 length] == 0;
+    buttonTitle = [(PXPhotosGridFloatingHeaderSnapshot *)self buttonTitle];
+    v5 = [buttonTitle length] == 0;
   }
 
   else
@@ -62,31 +62,31 @@
   return v5;
 }
 
-- (PXPhotosGridFloatingHeaderSnapshot)initWithTitle:(id)a3 subtitle:(id)a4 buttonTitle:(id)a5 buttonActionType:(unint64_t)a6 assetCollectionReference:(id)a7
+- (PXPhotosGridFloatingHeaderSnapshot)initWithTitle:(id)title subtitle:(id)subtitle buttonTitle:(id)buttonTitle buttonActionType:(unint64_t)type assetCollectionReference:(id)reference
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  buttonTitleCopy = buttonTitle;
+  referenceCopy = reference;
   v24.receiver = self;
   v24.super_class = PXPhotosGridFloatingHeaderSnapshot;
   v16 = [(PXPhotosGridFloatingHeaderSnapshot *)&v24 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [titleCopy copy];
     title = v16->_title;
     v16->_title = v17;
 
-    v19 = [v13 copy];
+    v19 = [subtitleCopy copy];
     subtitle = v16->_subtitle;
     v16->_subtitle = v19;
 
-    v21 = [v14 copy];
+    v21 = [buttonTitleCopy copy];
     buttonTitle = v16->_buttonTitle;
     v16->_buttonTitle = v21;
 
-    v16->_buttonActionType = a6;
-    objc_storeStrong(&v16->_assetCollectionReference, a7);
+    v16->_buttonActionType = type;
+    objc_storeStrong(&v16->_assetCollectionReference, reference);
   }
 
   return v16;

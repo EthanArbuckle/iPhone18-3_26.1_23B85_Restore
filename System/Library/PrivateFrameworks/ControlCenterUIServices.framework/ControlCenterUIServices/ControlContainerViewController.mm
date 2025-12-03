@@ -1,16 +1,16 @@
 @interface ControlContainerViewController
 - (CGRect)visibleBounds;
 - (SBIconImageInfo)iconImageInfo;
-- (_TtC23ControlCenterUIServices30ControlContainerViewController)initWithCoder:(id)a3;
-- (_TtC23ControlCenterUIServices30ControlContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC23ControlCenterUIServices30ControlContainerViewController)initWithCoder:(id)coder;
+- (_TtC23ControlCenterUIServices30ControlContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)sourceView;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
 - (void)viewDidLoad;
 @end
 
 @implementation ControlContainerViewController
 
-- (_TtC23ControlCenterUIServices30ControlContainerViewController)initWithCoder:(id)a3
+- (_TtC23ControlCenterUIServices30ControlContainerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ControlCenterUIServices30ControlContainerViewController_controlHostViewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ControlCenterUIServices30ControlContainerViewController_showsSquareCorners) = 0;
@@ -35,7 +35,7 @@
   return self;
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = (self + OBJC_IVAR____TtC23ControlCenterUIServices30ControlContainerViewController_iconImageInfo);
@@ -44,13 +44,13 @@
   *(v8 + 2) = v5;
   v8[3] = v6;
   v9 = *(&self->super.super.super.isa + OBJC_IVAR____TtC23ControlCenterUIServices30ControlContainerViewController_controlHostViewController);
-  v10 = self;
+  selfCopy = self;
   [v9 setCompactContinuousCornerRadius_];
-  v11 = [(ControlContainerViewController *)v10 view];
-  if (v11)
+  view = [(ControlContainerViewController *)selfCopy view];
+  if (view)
   {
-    v12 = v11;
-    [v11 _setContinuousCornerRadius_];
+    v12 = view;
+    [view _setContinuousCornerRadius_];
   }
 
   else
@@ -61,8 +61,8 @@
 
 - (id)sourceView
 {
-  v2 = self;
-  result = [(ControlContainerViewController *)v2 view];
+  selfCopy = self;
+  result = [(ControlContainerViewController *)selfCopy view];
   if (result)
   {
     v4 = result;
@@ -88,7 +88,7 @@
   return result;
 }
 
-- (_TtC23ControlCenterUIServices30ControlContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ControlCenterUIServices30ControlContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

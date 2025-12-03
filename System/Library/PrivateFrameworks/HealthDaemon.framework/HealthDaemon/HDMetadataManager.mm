@@ -1,29 +1,29 @@
 @interface HDMetadataManager
-+ (id)_metadataPredicateClassForKey:(uint64_t)a1;
-- (BOOL)insertMetadata:(id)a3 forObjectID:(id)a4 sourceID:(id)a5 externalSyncObjectCode:(int64_t)a6 objectDeleted:(BOOL)a7 error:(id *)a8;
-- (BOOL)insertMetadata:(id)a3 forObjectID:(id)a4 sourceID:(id)a5 externalSyncObjectCode:(int64_t)a6 objectDeleted:(BOOL)a7 transaction:(id)a8 error:(id *)a9;
-- (BOOL)updateMetadataValue:(id)a3 forKey:(id)a4 object:(id)a5 error:(id *)a6;
-- (HDMetadataManager)initWithProfile:(id)a3;
-- (id)_keyEntityForKey:(char)a3 createIfNecessary:(uint64_t)a4 transaction:(uint64_t)a5 error:;
-- (id)metadataForObjectID:(int64_t)a3 baseMetadata:(id)a4 keyFilter:(id)a5 statement:(id)a6 error:(id *)a7;
-- (id)predicateWithMetadataKey:(id)a3 allowedValues:(id)a4;
-- (id)predicateWithMetadataKey:(id)a3 value:(id)a4 operatorType:(unint64_t)a5;
-- (id)unitTest_metadataForObjectID:(int64_t)a3 keyFilter:(id)a4 error:(id *)a5;
-- (id)unitTest_rawMetadataForObject:(id)a3 error:(id *)a4;
++ (id)_metadataPredicateClassForKey:(uint64_t)key;
+- (BOOL)insertMetadata:(id)metadata forObjectID:(id)d sourceID:(id)iD externalSyncObjectCode:(int64_t)code objectDeleted:(BOOL)deleted error:(id *)error;
+- (BOOL)insertMetadata:(id)metadata forObjectID:(id)d sourceID:(id)iD externalSyncObjectCode:(int64_t)code objectDeleted:(BOOL)deleted transaction:(id)transaction error:(id *)error;
+- (BOOL)updateMetadataValue:(id)value forKey:(id)key object:(id)object error:(id *)error;
+- (HDMetadataManager)initWithProfile:(id)profile;
+- (id)_keyEntityForKey:(char)key createIfNecessary:(uint64_t)necessary transaction:(uint64_t)transaction error:;
+- (id)metadataForObjectID:(int64_t)d baseMetadata:(id)metadata keyFilter:(id)filter statement:(id)statement error:(id *)error;
+- (id)predicateWithMetadataKey:(id)key allowedValues:(id)values;
+- (id)predicateWithMetadataKey:(id)key value:(id)value operatorType:(unint64_t)type;
+- (id)unitTest_metadataForObjectID:(int64_t)d keyFilter:(id)filter error:(id *)error;
+- (id)unitTest_rawMetadataForObject:(id)object error:(id *)error;
 @end
 
 @implementation HDMetadataManager
 
-- (HDMetadataManager)initWithProfile:(id)a3
+- (HDMetadataManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v16.receiver = self;
   v16.super_class = HDMetadataManager;
   v5 = [(HDMetadataManager *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = [HDDatabaseValueCache alloc];
     v8 = [(HDMetadataManager *)v6 hk_classNameWithTag:@"entities"];
     v9 = [(HDDatabaseValueCache *)v7 initWithName:v8];
@@ -40,14 +40,14 @@
   return v6;
 }
 
-- (id)metadataForObjectID:(int64_t)a3 baseMetadata:(id)a4 keyFilter:(id)a5 statement:(id)a6 error:(id *)a7
+- (id)metadataForObjectID:(int64_t)d baseMetadata:(id)metadata keyFilter:(id)filter statement:(id)statement error:(id *)error
 {
-  v12 = a5;
-  v13 = a6;
+  filterCopy = filter;
+  statementCopy = statement;
   v42 = 0;
-  v14 = a4;
-  v15 = v12;
-  v16 = v13;
+  metadataCopy = metadata;
+  v15 = filterCopy;
+  v16 = statementCopy;
   if (self)
   {
     v49 = 0;
@@ -55,7 +55,7 @@
     v51 = 0x3032000000;
     v52 = __Block_byref_object_copy__124;
     v53 = __Block_byref_object_dispose__124;
-    v54 = v14;
+    v54 = metadataCopy;
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __81__HDMetadataManager__metadataForObjectID_baseMetadata_keyFilter_statement_error___block_invoke;
@@ -63,17 +63,17 @@
     v47 = v15;
     v48 = &v49;
     v17 = _Block_copy(aBlock);
-    v18 = [v16 transaction];
+    transaction = [v16 transaction];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __81__HDMetadataManager__metadataForObjectID_baseMetadata_keyFilter_statement_error___block_invoke_2;
     v43[3] = &unk_278624AB0;
     v43[4] = self;
-    v19 = v18;
+    v19 = transaction;
     v44 = v19;
     v20 = v17;
     v45 = v20;
-    if ([v16 enumerateResultsForObjectID:a3 error:&v42 block:v43])
+    if ([v16 enumerateResultsForObjectID:d error:&v42 block:v43])
     {
       v21 = v50[5];
     }
@@ -97,17 +97,17 @@
   v24 = v23;
   if (v22 || !v23)
   {
-    v40 = a7;
-    v27 = [v16 database];
+    errorCopy = error;
+    database = [v16 database];
     v41 = v24;
     v28 = v22;
     v29 = v15;
-    v30 = v27;
+    v30 = database;
     if (self && (!v29 || v29[2](v29, *MEMORY[0x277CCC520]) && v29[2](v29, *MEMORY[0x277CCC528])))
     {
       v43[0] = 0;
       v49 = 0;
-      v31 = [HDDataExternalSyncIdentifierEntity populateSyncInfoForObjectID:a3 database:v30 localSourceIDOut:0 externalSyncObjectCodeOut:0 syncIdentifierOut:v43 syncVersionOut:&v49 deletedOut:0 errorOut:&v41];
+      v31 = [HDDataExternalSyncIdentifierEntity populateSyncInfoForObjectID:d database:v30 localSourceIDOut:0 externalSyncObjectCodeOut:0 syncIdentifierOut:v43 syncVersionOut:&v49 deletedOut:0 errorOut:&v41];
       v32 = v43[0];
       v33 = v49;
       v34 = 0;
@@ -147,11 +147,11 @@
       v26 = v38;
     }
 
-    else if (v40)
+    else if (errorCopy)
     {
       v37 = v36;
       v26 = 0;
-      *v40 = v36;
+      *errorCopy = v36;
     }
 
     else
@@ -163,11 +163,11 @@
 
   else
   {
-    if (a7)
+    if (error)
     {
       v25 = v23;
       v26 = 0;
-      *a7 = v24;
+      *error = v24;
     }
 
     else
@@ -287,9 +287,9 @@ LABEL_10:
   return v14 != 0;
 }
 
-- (id)unitTest_metadataForObjectID:(int64_t)a3 keyFilter:(id)a4 error:(id *)a5
+- (id)unitTest_metadataForObjectID:(int64_t)d keyFilter:(id)filter error:(id *)error
 {
-  v8 = a4;
+  filterCopy = filter;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -297,17 +297,17 @@ LABEL_10:
   v22 = __Block_byref_object_dispose__124;
   v23 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained database];
+  database = [WeakRetained database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__HDMetadataManager_unitTest_metadataForObjectID_keyFilter_error___block_invoke;
   v14[3] = &unk_278624AD8;
   v16 = &v18;
-  v17 = a3;
+  dCopy = d;
   v14[4] = self;
-  v11 = v8;
+  v11 = filterCopy;
   v15 = v11;
-  [(HDHealthEntity *)HDMetadataValueEntity performReadTransactionWithHealthDatabase:v10 error:a5 block:v14];
+  [(HDHealthEntity *)HDMetadataValueEntity performReadTransactionWithHealthDatabase:database error:error block:v14];
 
   v12 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -327,9 +327,9 @@ uint64_t __66__HDMetadataManager_unitTest_metadataForObjectID_keyFilter_error___
   return 1;
 }
 
-- (id)unitTest_rawMetadataForObject:(id)a3 error:(id *)a4
+- (id)unitTest_rawMetadataForObject:(id)object error:(id *)error
 {
-  v21 = a3;
+  objectCopy = object;
   v19 = MEMORY[0x277CCACA8];
   v4 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
   v5 = +[(HDSQLiteSchemaEntity *)HDMetadataValueEntity];
@@ -339,18 +339,18 @@ uint64_t __66__HDMetadataManager_unitTest_metadataForObjectID_keyFilter_error___
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __57__HDMetadataManager_unitTest_rawMetadataForObject_error___block_invoke;
   v23[3] = &unk_278615D40;
   v24 = v8;
-  v25 = v21;
+  v25 = objectCopy;
   v26 = v9;
   v12 = v9;
-  v13 = v21;
+  v13 = objectCopy;
   v14 = v8;
-  v15 = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:v11 error:a4 block:v23];
+  v15 = [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:database error:error block:v23];
 
   if (v15)
   {
@@ -464,26 +464,26 @@ LABEL_18:
   return 1;
 }
 
-- (BOOL)insertMetadata:(id)a3 forObjectID:(id)a4 sourceID:(id)a5 externalSyncObjectCode:(int64_t)a6 objectDeleted:(BOOL)a7 error:(id *)a8
+- (BOOL)insertMetadata:(id)metadata forObjectID:(id)d sourceID:(id)iD externalSyncObjectCode:(int64_t)code objectDeleted:(BOOL)deleted error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if ([v14 count])
+  metadataCopy = metadata;
+  dCopy = d;
+  iDCopy = iD;
+  if ([metadataCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v18 = [WeakRetained database];
+    database = [WeakRetained database];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __100__HDMetadataManager_insertMetadata_forObjectID_sourceID_externalSyncObjectCode_objectDeleted_error___block_invoke;
     v21[3] = &unk_278624B00;
     v21[4] = self;
-    v22 = v14;
-    v23 = v15;
-    v24 = v16;
-    v25 = a6;
-    v26 = a7;
-    v19 = [(HDHealthEntity *)HDMetadataValueEntity performWriteTransactionWithHealthDatabase:v18 error:a8 block:v21];
+    v22 = metadataCopy;
+    v23 = dCopy;
+    v24 = iDCopy;
+    codeCopy = code;
+    deletedCopy = deleted;
+    v19 = [(HDHealthEntity *)HDMetadataValueEntity performWriteTransactionWithHealthDatabase:database error:error block:v21];
   }
 
   else
@@ -494,15 +494,15 @@ LABEL_18:
   return v19;
 }
 
-- (BOOL)insertMetadata:(id)a3 forObjectID:(id)a4 sourceID:(id)a5 externalSyncObjectCode:(int64_t)a6 objectDeleted:(BOOL)a7 transaction:(id)a8 error:(id *)a9
+- (BOOL)insertMetadata:(id)metadata forObjectID:(id)d sourceID:(id)iD externalSyncObjectCode:(int64_t)code objectDeleted:(BOOL)deleted transaction:(id)transaction error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = v13;
-  v18 = v14;
-  v19 = v16;
+  metadataCopy = metadata;
+  dCopy = d;
+  iDCopy = iD;
+  transactionCopy = transaction;
+  v17 = metadataCopy;
+  v18 = dCopy;
+  v19 = transactionCopy;
   v20 = v19;
   if (self)
   {
@@ -516,7 +516,7 @@ LABEL_18:
     v59 = __Block_byref_object_copy__124;
     v60 = __Block_byref_object_dispose__124;
     v61 = 0;
-    v21 = [v18 longLongValue];
+    longLongValue = [v18 longLongValue];
     v22 = [v20 databaseForEntityClass:objc_opt_class()];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
@@ -529,7 +529,7 @@ LABEL_18:
     v51 = v24;
     v53 = &v56;
     v54 = &v62;
-    v55 = v21;
+    v55 = longLongValue;
     v25 = v22;
     v52 = v25;
     [v23 enumerateKeysAndObjectsUsingBlock:v49];
@@ -545,10 +545,10 @@ LABEL_18:
       v28 = v27;
       if (v27)
       {
-        if (a9)
+        if (error)
         {
           v29 = v27;
-          *a9 = v28;
+          *error = v28;
         }
 
         else
@@ -565,9 +565,9 @@ LABEL_18:
 
     if (v26)
     {
-      v44 = v15;
+      v44 = iDCopy;
       v45 = v18;
-      v30 = v15;
+      v30 = iDCopy;
       v31 = v24;
       v32 = *MEMORY[0x277CCC520];
       v33 = v23;
@@ -578,15 +578,15 @@ LABEL_18:
       {
         v43 = v31;
         WeakRetained = objc_loadWeakRetained(&self->_profile);
-        v37 = [WeakRetained sourceManager];
-        v38 = [v37 localSourceForSourceID:v30 copyIfNecessary:1 error:a9];
+        sourceManager = [WeakRetained sourceManager];
+        v38 = [sourceManager localSourceForSourceID:v30 copyIfNecessary:1 error:error];
 
         if (v38)
         {
           v39 = objc_loadWeakRetained(&self->_profile);
           v40 = [v43 databaseForEntityClass:objc_opt_class()];
-          LOBYTE(v42) = a7;
-          LOBYTE(self) = +[HDDataExternalSyncIdentifierEntity insertSyncIdentifierWithProfile:database:objectID:localSourceID:externalSyncObjectCode:syncIdentifier:syncVersion:deleted:errorOut:](HDDataExternalSyncIdentifierEntity, "insertSyncIdentifierWithProfile:database:objectID:localSourceID:externalSyncObjectCode:syncIdentifier:syncVersion:deleted:errorOut:", v39, v40, [v45 longLongValue], objc_msgSend(v38, "persistentID"), a6, v34, v35, v42, a9);
+          LOBYTE(v42) = deleted;
+          LOBYTE(self) = +[HDDataExternalSyncIdentifierEntity insertSyncIdentifierWithProfile:database:objectID:localSourceID:externalSyncObjectCode:syncIdentifier:syncVersion:deleted:errorOut:](HDDataExternalSyncIdentifierEntity, "insertSyncIdentifierWithProfile:database:objectID:localSourceID:externalSyncObjectCode:syncIdentifier:syncVersion:deleted:errorOut:", v39, v40, [v45 longLongValue], objc_msgSend(v38, "persistentID"), code, v34, v35, v42, error);
         }
 
         else
@@ -605,7 +605,7 @@ LABEL_18:
         v17 = v48;
       }
 
-      v15 = v44;
+      iDCopy = v44;
     }
 
     else
@@ -665,20 +665,20 @@ LABEL_8:
   }
 }
 
-- (id)_keyEntityForKey:(char)a3 createIfNecessary:(uint64_t)a4 transaction:(uint64_t)a5 error:
+- (id)_keyEntityForKey:(char)key createIfNecessary:(uint64_t)necessary transaction:(uint64_t)transaction error:
 {
   v9 = a2;
   v10 = v9;
-  if (a1)
+  if (self)
   {
-    v11 = *(a1 + 16);
+    v11 = *(self + 16);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __74__HDMetadataManager__keyEntityForKey_createIfNecessary_transaction_error___block_invoke;
     v14[3] = &unk_278624B50;
     v15 = v9;
-    v16 = a3;
-    v12 = [v11 fetchObjectForKey:v15 transaction:a4 error:a5 faultHandler:v14];
+    keyCopy = key;
+    v12 = [v11 fetchObjectForKey:v15 transaction:necessary error:transaction faultHandler:v14];
   }
 
   else
@@ -698,31 +698,31 @@ uint64_t __49__HDMetadataManager__ignoredInsertedMetadataKeys__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (BOOL)updateMetadataValue:(id)a3 forKey:(id)a4 object:(id)a5 error:(id *)a6
+- (BOOL)updateMetadataValue:(id)value forKey:(id)key object:(id)object error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  valueCopy = value;
+  keyCopy = key;
+  objectCopy = object;
+  if (!valueCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HDMetadataManager.m" lineNumber:424 description:{@"Invalid parameter not satisfying: %@", @"value"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDMetadataManager.m" lineNumber:424 description:{@"Invalid parameter not satisfying: %@", @"value"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained database];
+  database = [WeakRetained database];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __61__HDMetadataManager_updateMetadataValue_forKey_object_error___block_invoke;
   v22[3] = &unk_27861B120;
-  v23 = v13;
-  v24 = self;
-  v25 = v12;
-  v26 = v11;
-  v16 = v11;
-  v17 = v12;
-  v18 = v13;
-  v19 = [(HDHealthEntity *)HDMetadataValueEntity performWriteTransactionWithHealthDatabase:v15 error:a6 block:v22];
+  v23 = objectCopy;
+  selfCopy = self;
+  v25 = keyCopy;
+  v26 = valueCopy;
+  v16 = valueCopy;
+  v17 = keyCopy;
+  v18 = objectCopy;
+  v19 = [(HDHealthEntity *)HDMetadataValueEntity performWriteTransactionWithHealthDatabase:database error:error block:v22];
 
   return v19;
 }
@@ -838,16 +838,16 @@ LABEL_24:
   return v18;
 }
 
-- (id)predicateWithMetadataKey:(id)a3 allowedValues:(id)a4
+- (id)predicateWithMetadataKey:(id)key allowedValues:(id)values
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [+[HDMetadataManager _metadataPredicateClassForKey:](HDMetadataManager v6)];
+  valuesCopy = values;
+  keyCopy = key;
+  v7 = [+[HDMetadataManager _metadataPredicateClassForKey:](HDMetadataManager keyCopy)];
 
   return v7;
 }
 
-+ (id)_metadataPredicateClassForKey:(uint64_t)a1
++ (id)_metadataPredicateClassForKey:(uint64_t)key
 {
   v2 = a2;
   objc_opt_self();
@@ -863,11 +863,11 @@ LABEL_24:
   return v5;
 }
 
-- (id)predicateWithMetadataKey:(id)a3 value:(id)a4 operatorType:(unint64_t)a5
+- (id)predicateWithMetadataKey:(id)key value:(id)value operatorType:(unint64_t)type
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [+[HDMetadataManager _metadataPredicateClassForKey:](HDMetadataManager v8)];
+  valueCopy = value;
+  keyCopy = key;
+  v9 = [+[HDMetadataManager _metadataPredicateClassForKey:](HDMetadataManager keyCopy)];
 
   return v9;
 }

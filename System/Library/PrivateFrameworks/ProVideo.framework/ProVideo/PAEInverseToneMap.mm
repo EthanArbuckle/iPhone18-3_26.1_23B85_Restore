@@ -1,18 +1,18 @@
 @interface PAEInverseToneMap
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEInverseToneMap)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEInverseToneMap)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEInverseToneMap
 
-- (PAEInverseToneMap)initWithAPIManager:(id)a3
+- (PAEInverseToneMap)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEInverseToneMap;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -57,7 +57,7 @@ uint64_t __31__PAEInverseToneMap_properties__block_invoke()
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v9 = v8;
@@ -65,11 +65,11 @@ uint64_t __31__PAEInverseToneMap_properties__block_invoke()
   {
     v16 = 0.0;
     v17 = 0.0;
-    [v8 getFloatValue:&v17 fromParm:1 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v16 fromParm:2 atFxTime:a5->var0.var1];
-    if (a4)
+    [v8 getFloatValue:&v17 fromParm:1 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v16 fromParm:2 atFxTime:info->var0.var1];
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -100,7 +100,7 @@ uint64_t __31__PAEInverseToneMap_properties__block_invoke()
       v15 = v12;
     }
 
-    [a3 setHeliumRef:&v15];
+    [output setHeliumRef:&v15];
     if (v15)
     {
       (*(*v15 + 24))(v15);
@@ -110,15 +110,15 @@ uint64_t __31__PAEInverseToneMap_properties__block_invoke()
   return v9 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

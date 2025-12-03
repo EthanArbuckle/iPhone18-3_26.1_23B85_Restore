@@ -1,9 +1,9 @@
 @interface MPSCNNConvolutionTransposeNode
 + (MPSCNNConvolutionTransposeNode)nodeWithSource:(MPSNNImageNode *)sourceNode convolutionGradientState:(MPSCNNConvolutionGradientStateNode *)convolutionGradientState weights:(id)weights;
-+ (MPSCNNConvolutionTransposeNode)nodeWithSource:(id)a3 convolutionState:(id)a4 weights:(id)a5;
++ (MPSCNNConvolutionTransposeNode)nodeWithSource:(id)source convolutionState:(id)state weights:(id)weights;
 - (MPSCNNConvolutionGradientStateNode)convolutionGradientState;
 - (MPSCNNConvolutionTransposeNode)initWithSource:(MPSNNImageNode *)sourceNode convolutionGradientState:(MPSCNNConvolutionGradientStateNode *)convolutionGradientState weights:(id)weights;
-- (MPSCNNConvolutionTransposeNode)initWithSource:(id)a3 convolutionState:(id)a4 weights:(id)a5;
+- (MPSCNNConvolutionTransposeNode)initWithSource:(id)source convolutionState:(id)state weights:(id)weights;
 - (id)convolutionState;
 - (id)resultState;
 @end
@@ -12,7 +12,7 @@
 
 + (MPSCNNConvolutionTransposeNode)nodeWithSource:(MPSNNImageNode *)sourceNode convolutionGradientState:(MPSCNNConvolutionGradientStateNode *)convolutionGradientState weights:(id)weights
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v13 = objc_msgSend_initWithSource_convolutionGradientState_weights_(v8, v9, sourceNode, convolutionGradientState, weights, v10, v11, v12);
 
   return v13;
@@ -37,19 +37,19 @@
   return 0;
 }
 
-+ (MPSCNNConvolutionTransposeNode)nodeWithSource:(id)a3 convolutionState:(id)a4 weights:(id)a5
++ (MPSCNNConvolutionTransposeNode)nodeWithSource:(id)source convolutionState:(id)state weights:(id)weights
 {
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithSource_convolutionState_weights_(v8, v9, a3, a4, a5, v10, v11, v12);
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithSource_convolutionState_weights_(v8, v9, source, state, weights, v10, v11, v12);
 
   return v13;
 }
 
-- (MPSCNNConvolutionTransposeNode)initWithSource:(id)a3 convolutionState:(id)a4 weights:(id)a5
+- (MPSCNNConvolutionTransposeNode)initWithSource:(id)source convolutionState:(id)state weights:(id)weights
 {
   v6.receiver = self;
   v6.super_class = MPSCNNConvolutionTransposeNode;
-  return [(MPSCNNConvolutionNode *)&v6 initWithSource:a3 weights:a5 state:a4];
+  return [(MPSCNNConvolutionNode *)&v6 initWithSource:source weights:weights state:state];
 }
 
 - (id)convolutionState

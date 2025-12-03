@@ -1,30 +1,30 @@
 @interface NEIKEv2ESPSPI
-- (BOOL)isEqual:(id)a3;
-- (NEIKEv2ESPSPI)initWithValue:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NEIKEv2ESPSPI)initWithValue:(unsigned int)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation NEIKEv2ESPSPI
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEIKEv2ESPSPI allocWithZone:a3];
-  v5 = [(NEIKEv2ESPSPI *)self value];
+  v4 = [NEIKEv2ESPSPI allocWithZone:zone];
+  value = [(NEIKEv2ESPSPI *)self value];
 
-  return [(NEIKEv2ESPSPI *)v4 initWithValue:v5];
+  return [(NEIKEv2ESPSPI *)v4 initWithValue:value];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NEIKEv2ESPSPI *)self value];
-    v7 = [v5 value];
+    v5 = equalCopy;
+    value = [(NEIKEv2ESPSPI *)self value];
+    value2 = [v5 value];
 
-    v8 = v6 == v7;
+    v8 = value == value2;
   }
 
   else
@@ -42,7 +42,7 @@
   return v2;
 }
 
-- (NEIKEv2ESPSPI)initWithValue:(unsigned int)a3
+- (NEIKEv2ESPSPI)initWithValue:(unsigned int)value
 {
   v10.receiver = self;
   v10.super_class = NEIKEv2ESPSPI;
@@ -50,7 +50,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_value = a3;
+    v4->_value = value;
     v6 = v4;
   }
 

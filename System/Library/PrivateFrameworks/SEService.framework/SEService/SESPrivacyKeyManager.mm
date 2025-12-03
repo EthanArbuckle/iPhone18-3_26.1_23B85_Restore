@@ -1,10 +1,10 @@
 @interface SESPrivacyKeyManager
 + (id)sharedManager;
-- (BOOL)deletePrivacyKey:(id)a3 outError:(id *)a4;
-- (id)createPrivacyKeyForGroupIdentifier:(id)a3 withOptions:(id)a4 outError:(id *)a5;
-- (id)decryptPayload:(id)a3 withGroupIdentifier:(id)a4 outError:(id *)a5;
-- (id)encryptData:(id)a3 scheme:(id)a4 recipientPublicKey:(id)a5 outError:(id *)a6;
-- (id)privacyKeysForGroupIdentifier:(id)a3 privacyKeyIdentifier:(id)a4 outError:(id *)a5;
+- (BOOL)deletePrivacyKey:(id)key outError:(id *)error;
+- (id)createPrivacyKeyForGroupIdentifier:(id)identifier withOptions:(id)options outError:(id *)error;
+- (id)decryptPayload:(id)payload withGroupIdentifier:(id)identifier outError:(id *)error;
+- (id)encryptData:(id)data scheme:(id)scheme recipientPublicKey:(id)key outError:(id *)error;
+- (id)privacyKeysForGroupIdentifier:(id)identifier privacyKeyIdentifier:(id)keyIdentifier outError:(id *)error;
 @end
 
 @implementation SESPrivacyKeyManager
@@ -28,10 +28,10 @@ uint64_t __37__SESPrivacyKeyManager_sharedManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)privacyKeysForGroupIdentifier:(id)a3 privacyKeyIdentifier:(id)a4 outError:(id *)a5
+- (id)privacyKeysForGroupIdentifier:(id)identifier privacyKeyIdentifier:(id)keyIdentifier outError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -58,7 +58,7 @@ uint64_t __37__SESPrivacyKeyManager_sharedManager__block_invoke()
     v19[3] = &unk_1E82D0C38;
     v19[4] = &v27;
     v19[5] = &v21;
-    [v11 privacyKeysForGroupIdentifier:v7 keyIdentifier:v8 completion:v19];
+    [v11 privacyKeysForGroupIdentifier:identifierCopy keyIdentifier:keyIdentifierCopy completion:v19];
     if (!v28[5] && !v22[5])
     {
       v14 = SESDefaultLogObject();
@@ -68,19 +68,19 @@ uint64_t __37__SESPrivacyKeyManager_sharedManager__block_invoke()
       v22[5] = v16;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v22[5];
+      *error = v22[5];
     }
 
     v13 = v28[5];
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = v22[5];
     SESEnsureError();
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -108,10 +108,10 @@ void __84__SESPrivacyKeyManager_privacyKeysForGroupIdentifier_privacyKeyIdentifi
   *(v9 + 40) = v6;
 }
 
-- (id)createPrivacyKeyForGroupIdentifier:(id)a3 withOptions:(id)a4 outError:(id *)a5
+- (id)createPrivacyKeyForGroupIdentifier:(id)identifier withOptions:(id)options outError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -138,7 +138,7 @@ void __84__SESPrivacyKeyManager_privacyKeysForGroupIdentifier_privacyKeyIdentifi
     v19[3] = &unk_1E82D1710;
     v19[4] = &v27;
     v19[5] = &v21;
-    [v11 createPrivacyKeyForGroupIdentifier:v7 withOptions:v8 completion:v19];
+    [v11 createPrivacyKeyForGroupIdentifier:identifierCopy withOptions:optionsCopy completion:v19];
     if (!v28[5] && !v22[5])
     {
       v14 = SESDefaultLogObject();
@@ -148,19 +148,19 @@ void __84__SESPrivacyKeyManager_privacyKeysForGroupIdentifier_privacyKeyIdentifi
       v22[5] = v16;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v22[5];
+      *error = v22[5];
     }
 
     v13 = v28[5];
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = v22[5];
     SESEnsureError();
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -188,9 +188,9 @@ void __80__SESPrivacyKeyManager_createPrivacyKeyForGroupIdentifier_withOptions_o
   *(v9 + 40) = v6;
 }
 
-- (BOOL)deletePrivacyKey:(id)a3 outError:(id *)a4
+- (BOOL)deletePrivacyKey:(id)key outError:(id *)error
 {
-  v5 = a3;
+  keyCopy = key;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -215,7 +215,7 @@ void __80__SESPrivacyKeyManager_createPrivacyKeyForGroupIdentifier_withOptions_o
     v17[3] = &unk_1E82D0DF0;
     v17[4] = &v18;
     v17[5] = &v23;
-    [v8 deletePrivacyKey:v5 completion:v17];
+    [v8 deletePrivacyKey:keyCopy completion:v17];
     v11 = v24;
     if ((v19[3] & 1) == 0 && !v24[5])
     {
@@ -228,9 +228,9 @@ void __80__SESPrivacyKeyManager_createPrivacyKeyForGroupIdentifier_withOptions_o
       v11 = v24;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v11[5];
+      *error = v11[5];
       v11 = v24;
     }
 
@@ -238,11 +238,11 @@ void __80__SESPrivacyKeyManager_createPrivacyKeyForGroupIdentifier_withOptions_o
     _Block_object_dispose(&v18, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = v24[5];
     SESEnsureError();
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -254,10 +254,10 @@ void __80__SESPrivacyKeyManager_createPrivacyKeyForGroupIdentifier_withOptions_o
   return v10;
 }
 
-- (id)decryptPayload:(id)a3 withGroupIdentifier:(id)a4 outError:(id *)a5
+- (id)decryptPayload:(id)payload withGroupIdentifier:(id)identifier outError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  payloadCopy = payload;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -284,7 +284,7 @@ void __80__SESPrivacyKeyManager_createPrivacyKeyForGroupIdentifier_withOptions_o
     v19[3] = &unk_1E82D0E40;
     v19[4] = &v27;
     v19[5] = &v21;
-    [v11 decryptPayload:v7 withGroupIdentifier:v8 completion:v19];
+    [v11 decryptPayload:payloadCopy withGroupIdentifier:identifierCopy completion:v19];
     if (!v28[5] && !v22[5])
     {
       v14 = SESDefaultLogObject();
@@ -294,19 +294,19 @@ void __80__SESPrivacyKeyManager_createPrivacyKeyForGroupIdentifier_withOptions_o
       v22[5] = v16;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v22[5];
+      *error = v22[5];
     }
 
     v13 = v28[5];
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = v22[5];
     SESEnsureError();
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -334,11 +334,11 @@ void __68__SESPrivacyKeyManager_decryptPayload_withGroupIdentifier_outError___bl
   *(v9 + 40) = v6;
 }
 
-- (id)encryptData:(id)a3 scheme:(id)a4 recipientPublicKey:(id)a5 outError:(id *)a6
+- (id)encryptData:(id)data scheme:(id)scheme recipientPublicKey:(id)key outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  schemeCopy = scheme;
+  keyCopy = key;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -365,7 +365,7 @@ void __68__SESPrivacyKeyManager_decryptPayload_withGroupIdentifier_outError___bl
     v22[3] = &unk_1E82D1198;
     v22[4] = &v30;
     v22[5] = &v24;
-    [v14 encryptPayload:v9 encryptionScheme:v10 recipientPublicKey:v11 completion:v22];
+    [v14 encryptPayload:dataCopy encryptionScheme:schemeCopy recipientPublicKey:keyCopy completion:v22];
     if (!v31[5] && !v25[5])
     {
       v17 = SESDefaultLogObject();
@@ -375,19 +375,19 @@ void __68__SESPrivacyKeyManager_decryptPayload_withGroupIdentifier_outError___bl
       v25[5] = v19;
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v25[5];
+      *error = v25[5];
     }
 
     v16 = v31[5];
   }
 
-  else if (a6)
+  else if (error)
   {
     v15 = v25[5];
     SESEnsureError();
-    *a6 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else

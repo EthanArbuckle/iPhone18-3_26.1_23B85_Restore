@@ -1,7 +1,7 @@
 @interface SKFrameCaptureDelegate
 + (id)sharedInstance;
-- (id)archiver:(id)a3 willEncodeObject:(id)a4;
-- (void)archiver:(id)a3 didEncodeObject:(id)a4;
+- (id)archiver:(id)archiver willEncodeObject:(id)object;
+- (void)archiver:(id)archiver didEncodeObject:(id)object;
 @end
 
 @implementation SKFrameCaptureDelegate
@@ -17,23 +17,23 @@
   return v2;
 }
 
-- (id)archiver:(id)a3 willEncodeObject:(id)a4
+- (id)archiver:(id)archiver willEncodeObject:(id)object
 {
-  v4 = a4;
+  objectCopy = object;
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPerformFullCapture:1];
+    [objectCopy setPerformFullCapture:1];
   }
 
-  return v4;
+  return objectCopy;
 }
 
-- (void)archiver:(id)a3 didEncodeObject:(id)a4
+- (void)archiver:(id)archiver didEncodeObject:(id)object
 {
-  v4 = a4;
+  objectCopy = object;
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPerformFullCapture:0];
+    [objectCopy setPerformFullCapture:0];
   }
 }
 

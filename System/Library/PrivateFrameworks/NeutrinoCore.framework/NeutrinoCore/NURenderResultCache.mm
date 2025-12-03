@@ -1,9 +1,9 @@
 @interface NURenderResultCache
 + (id)shared;
 - (NURenderResultCache)init;
-- (id)resultForJob:(id)a3;
+- (id)resultForJob:(id)job;
 - (void)flush;
-- (void)setResult:(id)a3 forJob:(id)a4;
+- (void)setResult:(id)result forJob:(id)job;
 @end
 
 @implementation NURenderResultCache
@@ -36,12 +36,12 @@ uint64_t __28__NURenderResultCache_flush__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 16) removeAllObjects];
 }
 
-- (void)setResult:(id)a3 forJob:(id)a4
+- (void)setResult:(id)result forJob:(id)job
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  resultCopy = result;
+  jobCopy = job;
+  if (!jobCopy)
   {
     v14 = NUAssertLogger_29354();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -62,8 +62,8 @@ uint64_t __28__NURenderResultCache_flush__block_invoke(uint64_t a1)
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v28;
         v52 = 2114;
@@ -74,8 +74,8 @@ uint64_t __28__NURenderResultCache_flush__block_invoke(uint64_t a1)
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -84,7 +84,7 @@ uint64_t __28__NURenderResultCache_flush__block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NURenderResultCache setResult:forJob:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderResultCache.m", 52, @"Invalid parameter not satisfying: %s", v33, v34, v35, v36, "job != nil");
   }
 
-  if (!v6)
+  if (!resultCopy)
   {
     v21 = NUAssertLogger_29354();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -105,8 +105,8 @@ uint64_t __28__NURenderResultCache_flush__block_invoke(uint64_t a1)
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v38 callStackSymbols];
+        v41 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v37;
         v52 = 2114;
@@ -117,8 +117,8 @@ uint64_t __28__NURenderResultCache_flush__block_invoke(uint64_t a1)
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -127,9 +127,9 @@ uint64_t __28__NURenderResultCache_flush__block_invoke(uint64_t a1)
     _NUAssertFailHandler("[NURenderResultCache setResult:forJob:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderResultCache.m", 53, @"Invalid parameter not satisfying: %s", v42, v43, v44, v45, "result != nil");
   }
 
-  v8 = v7;
-  v9 = [v7 memoizationCacheKey];
-  if (v9)
+  v8 = jobCopy;
+  memoizationCacheKey = [jobCopy memoizationCacheKey];
+  if (memoizationCacheKey)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -140,8 +140,8 @@ uint64_t __28__NURenderResultCache_flush__block_invoke(uint64_t a1)
     block[3] = &unk_1E810B6B8;
     block[4] = self;
     v47 = v11;
-    v48 = v9;
-    v49 = v6;
+    v48 = memoizationCacheKey;
+    v49 = resultCopy;
     v13 = v11;
     dispatch_sync(queue, block);
   }
@@ -186,11 +186,11 @@ void __40__NURenderResultCache_setResult_forJob___block_invoke(void *a1)
   }
 }
 
-- (id)resultForJob:(id)a3
+- (id)resultForJob:(id)job
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  jobCopy = job;
+  if (!jobCopy)
   {
     v16 = NUAssertLogger_29354();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -211,8 +211,8 @@ void __40__NURenderResultCache_setResult_forJob___block_invoke(void *a1)
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v40 = 138543618;
         *&v40[4] = v23;
         *&v40[12] = 2114;
@@ -223,8 +223,8 @@ void __40__NURenderResultCache_setResult_forJob___block_invoke(void *a1)
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v40 = 138543362;
       *&v40[4] = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v40, 0xCu);
@@ -233,9 +233,9 @@ void __40__NURenderResultCache_setResult_forJob___block_invoke(void *a1)
     _NUAssertFailHandler("[NURenderResultCache resultForJob:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderResultCache.m", 27, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "job != nil");
   }
 
-  v5 = v4;
-  v6 = [v4 memoizationCacheKey];
-  if (!v6)
+  v5 = jobCopy;
+  memoizationCacheKey = [jobCopy memoizationCacheKey];
+  if (!memoizationCacheKey)
   {
     v14 = 0;
     goto LABEL_13;
@@ -258,7 +258,7 @@ void __40__NURenderResultCache_setResult_forJob___block_invoke(void *a1)
   v10 = v8;
   v33 = v10;
   v35 = v40;
-  v11 = v6;
+  v11 = memoizationCacheKey;
   v34 = v11;
   dispatch_sync(queue, block);
   if (*(*&v40[8] + 40))
@@ -346,9 +346,9 @@ void __36__NURenderResultCache_resultForJob___block_invoke(void *a1)
 + (id)shared
 {
   v2 = +[NUFactory sharedFactory];
-  v3 = [v2 renderResultCache];
+  renderResultCache = [v2 renderResultCache];
 
-  return v3;
+  return renderResultCache;
 }
 
 @end

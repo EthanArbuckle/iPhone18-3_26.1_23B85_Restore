@@ -1,11 +1,11 @@
 @interface RMModelStatusTestArrayValue
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithKey1:(id)a3;
-+ (id)buildWithKey1:(id)a3 key2:(id)a4;
++ (id)buildRequiredOnlyWithKey1:(id)key1;
++ (id)buildWithKey1:(id)key1 key2:(id)key2;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusTestArrayValue
@@ -24,23 +24,23 @@
   return v4;
 }
 
-+ (id)buildWithKey1:(id)a3 key2:(id)a4
++ (id)buildWithKey1:(id)key1 key2:(id)key2
 {
-  v5 = a4;
-  v6 = a3;
+  key2Copy = key2;
+  key1Copy = key1;
   v7 = objc_opt_new();
-  [v7 setStatusKey1:v6];
+  [v7 setStatusKey1:key1Copy];
 
-  [v7 setStatusKey2:v5];
+  [v7 setStatusKey2:key2Copy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithKey1:(id)a3
++ (id)buildRequiredOnlyWithKey1:(id)key1
 {
-  v3 = a3;
+  key1Copy = key1;
   v4 = objc_opt_new();
-  [v4 setStatusKey1:v3];
+  [v4 setStatusKey1:key1Copy];
 
   return v4;
 }
@@ -97,12 +97,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelStatusTestArrayValue allowedStatusKeys];
   [v10 minusSet:v11];
@@ -110,9 +110,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"key1" forKeyPath:@"statusKey1" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"key1" forKeyPath:@"statusKey1" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"key2" forKeyPath:@"statusKey2" isRequired:0 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"key2" forKeyPath:@"statusKey2" isRequired:0 defaultValue:0 error:error];
   }
 
   else
@@ -123,25 +123,25 @@
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelStatusTestArrayValue *)self statusKey1];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"key1" value:v5 isRequired:1 defaultValue:0];
+  statusKey1 = [(RMModelStatusTestArrayValue *)self statusKey1];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"key1" value:statusKey1 isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelStatusTestArrayValue *)self statusKey2];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"key2" value:v6 isRequired:0 defaultValue:0];
+  statusKey2 = [(RMModelStatusTestArrayValue *)self statusKey2];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"key2" value:statusKey2 isRequired:0 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelStatusTestArrayValue;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_statusKey1 copy];
   v6 = v4[2];
   v4[2] = v5;

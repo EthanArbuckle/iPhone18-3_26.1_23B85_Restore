@@ -1,32 +1,32 @@
 @interface MCDAlbumTracksTableViewController
-+ (id)albumTracksViewControllerForContentItem:(id)a3 showLocalContent:(BOOL)a4;
-+ (id)albumTracksViewControllerForStoreItem:(id)a3 showLocalContent:(BOOL)a4;
-- (MCDAlbumTracksTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
-- (id)shuffleContainerForContentManager:(id)a3;
-- (id)viewForHeaderViewInContentManager:(id)a3;
-- (void)_replacePlaceholderViewWithView:(id)a3;
++ (id)albumTracksViewControllerForContentItem:(id)item showLocalContent:(BOOL)content;
++ (id)albumTracksViewControllerForStoreItem:(id)item showLocalContent:(BOOL)content;
+- (MCDAlbumTracksTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
+- (id)shuffleContainerForContentManager:(id)manager;
+- (id)viewForHeaderViewInContentManager:(id)manager;
+- (void)_replacePlaceholderViewWithView:(id)view;
 - (void)_setCurrentTableView;
 - (void)_showLoadingScreen;
-- (void)contentManager:(id)a3 didFailWithError:(id)a4;
-- (void)contentManager:(id)a3 didReceiveResponse:(id)a4;
-- (void)playbackManagerShouldShowNowPlaying:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAlbum:(id)a3;
+- (void)contentManager:(id)manager didFailWithError:(id)error;
+- (void)contentManager:(id)manager didReceiveResponse:(id)response;
+- (void)playbackManagerShouldShowNowPlaying:(id)playing;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAlbum:(id)album;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MCDAlbumTracksTableViewController
 
-- (MCDAlbumTracksTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDAlbumTracksTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = MCDAlbumTracksTableViewController;
-  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {
@@ -36,57 +36,57 @@
   return v8;
 }
 
-+ (id)albumTracksViewControllerForContentItem:(id)a3 showLocalContent:(BOOL)a4
++ (id)albumTracksViewControllerForContentItem:(id)item showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[MCDAlbumTracksDataSource alloc] initWithAlbum:v5 storeContent:0];
+  contentCopy = content;
+  itemCopy = item;
+  v6 = [[MCDAlbumTracksDataSource alloc] initWithAlbum:itemCopy storeContent:0];
   v7 = [MCDAlbumTracksTableViewController alloc];
-  v8 = [(MCDLibraryTableViewController *)v7 initWithIdentifier:MCDAlbumsDetailViewControllerIdentifier showLocalContent:v4 dataSource:v6];
-  [(MCDAlbumTracksTableViewController *)v8 setAlbum:v5];
+  v8 = [(MCDLibraryTableViewController *)v7 initWithIdentifier:MCDAlbumsDetailViewControllerIdentifier showLocalContent:contentCopy dataSource:v6];
+  [(MCDAlbumTracksTableViewController *)v8 setAlbum:itemCopy];
   [(MCDAlbumTracksTableViewController *)v8 setPlayActivityFeatureName:@"album_detail"];
-  v9 = [v5 title];
+  title = [itemCopy title];
 
-  v10 = [(MCDAlbumTracksTableViewController *)v8 titleViewLabel];
-  [v10 setText:v9];
+  titleViewLabel = [(MCDAlbumTracksTableViewController *)v8 titleViewLabel];
+  [titleViewLabel setText:title];
 
   v11 = objc_opt_class();
-  v12 = [(MCDLibraryTableViewController *)v8 contentManager];
-  [v12 setTableCellClass:v11];
+  contentManager = [(MCDLibraryTableViewController *)v8 contentManager];
+  [contentManager setTableCellClass:v11];
 
   return v8;
 }
 
-+ (id)albumTracksViewControllerForStoreItem:(id)a3 showLocalContent:(BOOL)a4
++ (id)albumTracksViewControllerForStoreItem:(id)item showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
+  contentCopy = content;
+  itemCopy = item;
   v6 = objc_opt_new();
   v7 = v6;
   if (v6)
   {
-    [v6 setShowLocalContent:v4];
-    v8 = [[MCDAlbumTracksDataSource alloc] initWithAlbum:v5 storeContent:1];
+    [v6 setShowLocalContent:contentCopy];
+    v8 = [[MCDAlbumTracksDataSource alloc] initWithAlbum:itemCopy storeContent:1];
     [v7 setDataSource:v8];
 
-    [v7 setAlbum:v5];
+    [v7 setAlbum:itemCopy];
     [v7 setPlayActivityFeatureName:@"album_detail"];
-    v9 = [v5 title];
-    v10 = [v7 titleViewLabel];
-    [v10 setText:v9];
+    title = [itemCopy title];
+    titleViewLabel = [v7 titleViewLabel];
+    [titleViewLabel setText:title];
 
     [v7 setStoreContent:1];
     v11 = [MCDStoreContentManager alloc];
-    v12 = [v7 dataSource];
+    dataSource = [v7 dataSource];
     v13 = +[CPUILimitedUITrait defaultBoolValue];
     v14 = [(MCDPlaybackManager *)[MCDStorePlaybackManager alloc] initWithDelegate:v7];
     LOBYTE(v19) = 1;
-    v15 = [(_MCDContentManager *)v11 initWithDataSource:v12 limitedUI:v13 showLocalContent:v4 delegate:v7 viewController:v7 playbackManager:v14 shouldPerformRequestImmediately:v19];
+    v15 = [(_MCDContentManager *)v11 initWithDataSource:dataSource limitedUI:v13 showLocalContent:contentCopy delegate:v7 viewController:v7 playbackManager:v14 shouldPerformRequestImmediately:v19];
     [v7 setContentManager:v15];
 
     v16 = objc_opt_class();
-    v17 = [v7 contentManager];
-    [v17 setTableCellClass:v16];
+    contentManager = [v7 contentManager];
+    [contentManager setTableCellClass:v16];
   }
 
   return v7;
@@ -97,40 +97,40 @@
   v24.receiver = self;
   v24.super_class = MCDAlbumTracksTableViewController;
   [(MCDLibraryTableViewController *)&v24 viewDidLoad];
-  v3 = [(MCDLibraryTableViewController *)self contentManager];
-  [v3 setShowSiriCellInLimitedUI:1];
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager setShowSiriCellInLimitedUI:1];
 
-  v4 = [(MCDAlbumTracksTableViewController *)self tableView];
-  [v4 _setHeaderAndFooterViewsFloat:0];
+  tableView = [(MCDAlbumTracksTableViewController *)self tableView];
+  [tableView _setHeaderAndFooterViewsFloat:0];
 
   v5 = objc_opt_new();
   [(MCDAlbumTracksTableViewController *)self setTitleViewLabel:v5];
 
-  v6 = [(MCDAlbumTracksTableViewController *)self album];
-  v7 = [v6 title];
-  v8 = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
-  [v8 setText:v7];
+  album = [(MCDAlbumTracksTableViewController *)self album];
+  title = [album title];
+  titleViewLabel = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
+  [titleViewLabel setText:title];
 
   v9 = [UIFont _preferredFontForTextStyle:UIFontTextStyleCallout variant:1024];
-  v10 = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
-  [v10 setFont:v9];
+  titleViewLabel2 = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
+  [titleViewLabel2 setFont:v9];
 
-  v11 = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
-  [v11 setAlpha:0.0];
+  titleViewLabel3 = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
+  [titleViewLabel3 setAlpha:0.0];
 
-  v12 = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
-  v13 = [(MCDAlbumTracksTableViewController *)self navigationItem];
-  [v13 setTitleView:v12];
+  titleViewLabel4 = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
+  navigationItem = [(MCDAlbumTracksTableViewController *)self navigationItem];
+  [navigationItem setTitleView:titleViewLabel4];
 
-  v14 = [(MCDAlbumTracksTableViewController *)self tableView];
+  tableView2 = [(MCDAlbumTracksTableViewController *)self tableView];
   v15 = objc_opt_class();
   v16 = +[MCDAlbumsDetailTableHeaderView reuseIdentifier];
-  [v14 registerClass:v15 forHeaderFooterViewReuseIdentifier:v16];
+  [tableView2 registerClass:v15 forHeaderFooterViewReuseIdentifier:v16];
 
-  v17 = [(MCDAlbumTracksTableViewController *)self tableView];
+  tableView3 = [(MCDAlbumTracksTableViewController *)self tableView];
   v18 = objc_opt_class();
   v19 = +[(_MCDReusableCell *)MCDAlbumTracksCell];
-  [v17 registerClass:v18 forCellReuseIdentifier:v19];
+  [tableView3 registerClass:v18 forCellReuseIdentifier:v19];
 
   objc_initWeak(&location, self);
   objc_copyWeak(&v22, &location);
@@ -141,15 +141,15 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = MCDAlbumTracksTableViewController;
-  [(MCDLibraryTableViewController *)&v12 viewWillAppear:a3];
+  [(MCDLibraryTableViewController *)&v12 viewWillAppear:appear];
   if ([(MCDTableViewController *)self alwaysHideNowPlayingButton])
   {
-    v4 = [(MCDLibraryTableViewController *)self placeholderView];
-    if (v4)
+    placeholderView = [(MCDLibraryTableViewController *)self placeholderView];
+    if (placeholderView)
     {
     }
 
@@ -170,11 +170,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MCDAlbumTracksTableViewController;
-  [(MCDLibraryTableViewController *)&v5 viewWillDisappear:a3];
+  [(MCDLibraryTableViewController *)&v5 viewWillDisappear:disappear];
   if ([(MCDTableViewController *)self alwaysHideNowPlayingButton])
   {
     [(MPWeakTimer *)self->_loadingTimer invalidate];
@@ -200,32 +200,32 @@
   self->_loadingTimer = 0;
 
   [(MCDAlbumTracksTableViewController *)self _replacePlaceholderViewWithView:0];
-  v4 = [(MCDAlbumTracksTableViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(MCDAlbumTracksTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)contentManager:(id)a3 didReceiveResponse:(id)a4
+- (void)contentManager:(id)manager didReceiveResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 results];
-  if ([v8 numberOfSections] >= 1 && objc_msgSend(v8, "numberOfItemsInSection:", 0) >= 1 && -[MCDTableViewController alwaysHideNowPlayingButton](self, "alwaysHideNowPlayingButton"))
+  managerCopy = manager;
+  responseCopy = response;
+  results = [responseCopy results];
+  if ([results numberOfSections] >= 1 && objc_msgSend(results, "numberOfItemsInSection:", 0) >= 1 && -[MCDTableViewController alwaysHideNowPlayingButton](self, "alwaysHideNowPlayingButton"))
   {
-    v9 = [(MCDAlbumTracksTableViewController *)self storeContent];
-    v10 = [v8 firstSection];
-    v11 = v10;
-    if (v9)
+    storeContent = [(MCDAlbumTracksTableViewController *)self storeContent];
+    firstSection = [results firstSection];
+    v11 = firstSection;
+    if (storeContent)
     {
-      if ([v10 itemType] == 1)
+      if ([firstSection itemType] == 1)
       {
-        v12 = [v11 album];
-        [(MCDAlbumTracksTableViewController *)self setAlbum:v12];
+        album = [v11 album];
+        [(MCDAlbumTracksTableViewController *)self setAlbum:album];
       }
     }
 
     else
     {
-      [(MCDAlbumTracksTableViewController *)self setAlbum:v10];
+      [(MCDAlbumTracksTableViewController *)self setAlbum:firstSection];
     }
 
     [(MCDAlbumTracksTableViewController *)self _setCurrentTableView];
@@ -233,8 +233,8 @@
   }
 
   objc_initWeak(&location, self);
-  v13 = [v7 request];
-  v14 = [v13 copy];
+  request = [responseCopy request];
+  v14 = [request copy];
 
   v15 = self->_album;
   v24 = MPModelPropertySongDuration;
@@ -253,20 +253,20 @@
   [(MCDAlbumTracksTableViewController *)self setHasPlayableContent:1];
   v19.receiver = self;
   v19.super_class = MCDAlbumTracksTableViewController;
-  [(MCDLibraryTableViewController *)&v19 contentManager:v6 didReceiveResponse:v7];
+  [(MCDLibraryTableViewController *)&v19 contentManager:managerCopy didReceiveResponse:responseCopy];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
 }
 
-- (void)contentManager:(id)a3 didFailWithError:(id)a4
+- (void)contentManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Album tracks content manager failed to load data with error: %{public}@\nShowing error view", buf, 0xCu);
   }
 
@@ -284,22 +284,22 @@
   [(MCDAlbumTracksTableViewController *)self _replacePlaceholderViewWithView:v11];
 }
 
-- (id)viewForHeaderViewInContentManager:(id)a3
+- (id)viewForHeaderViewInContentManager:(id)manager
 {
-  v4 = [(MCDAlbumTracksTableViewController *)self tableView];
+  tableView = [(MCDAlbumTracksTableViewController *)self tableView];
   v5 = +[MCDAlbumsDetailTableHeaderView reuseIdentifier];
-  v6 = [v4 dequeueReusableHeaderFooterViewWithIdentifier:v5];
+  v6 = [tableView dequeueReusableHeaderFooterViewWithIdentifier:v5];
 
   v7 = +[UIBackgroundConfiguration clearConfiguration];
   [v6 setBackgroundConfiguration:v7];
 
-  v8 = [(MCDLibraryTableViewController *)self dataSource];
-  v9 = [v8 album];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
+  album = [dataSource album];
 
-  v10 = [v9 title];
-  if ([v10 length])
+  title = [album title];
+  if ([title length])
   {
-    [v6 setTitle:v10];
+    [v6 setTitle:title];
   }
 
   else
@@ -310,16 +310,16 @@
   }
 
   [(MCDAlbumTracksTableViewController *)self albumDuration];
-  [v6 setDuration:objc_msgSend(v9 count:{"trackCount"), v13}];
-  v14 = [v9 artworkCatalog];
-  v15 = v14;
-  if (v14)
+  [v6 setDuration:objc_msgSend(album count:{"trackCount"), v13}];
+  artworkCatalog = [album artworkCatalog];
+  v15 = artworkCatalog;
+  if (artworkCatalog)
   {
-    [v14 setFittingSize:{36.0, 36.0}];
-    v16 = [(MCDAlbumTracksTableViewController *)self view];
-    v17 = [v16 window];
-    v18 = [v17 screen];
-    [v18 scale];
+    [artworkCatalog setFittingSize:{36.0, 36.0}];
+    view = [(MCDAlbumTracksTableViewController *)self view];
+    window = [view window];
+    screen = [window screen];
+    [screen scale];
     [v15 setDestinationScale:?];
 
     v19 = objc_opt_class();
@@ -335,83 +335,83 @@
   }
 
   [v6 setContentPlayable:{-[MCDAlbumTracksTableViewController hasPlayableContent](self, "hasPlayableContent")}];
-  [v6 setFavorite:{objc_msgSend(v9, "isFavorite")}];
+  [v6 setFavorite:{objc_msgSend(album, "isFavorite")}];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100101794;
   v23[3] = &unk_1010986C0;
   v23[4] = self;
-  v24 = v9;
-  v21 = v9;
+  v24 = album;
+  v21 = album;
   [v6 setShuffleActionBlock:v23];
 
   return v6;
 }
 
-- (id)shuffleContainerForContentManager:(id)a3
+- (id)shuffleContainerForContentManager:(id)manager
 {
-  v3 = [(MCDLibraryTableViewController *)self dataSource];
-  v4 = [v3 scopedContainers];
-  v5 = [v4 firstObject];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
+  scopedContainers = [dataSource scopedContainers];
+  firstObject = [scopedContainers firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (void)setAlbum:(id)a3
+- (void)setAlbum:(id)album
 {
-  v5 = a3;
-  if (self->_album != v5)
+  albumCopy = album;
+  if (self->_album != albumCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_album, a3);
-    v6 = [(MCDLibraryTableViewController *)self dataSource];
-    [v6 setAlbum:v7];
+    v7 = albumCopy;
+    objc_storeStrong(&self->_album, album);
+    dataSource = [(MCDLibraryTableViewController *)self dataSource];
+    [dataSource setAlbum:v7];
 
-    v5 = v7;
+    albumCopy = v7;
   }
 }
 
-- (void)playbackManagerShouldShowNowPlaying:(id)a3
+- (void)playbackManagerShouldShowNowPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   if ([(MCDTableViewController *)self alwaysHideNowPlayingButton])
   {
-    v5 = [(MCDAlbumTracksTableViewController *)self navigationController];
-    v6 = [v5 popViewControllerAnimated:1];
+    navigationController = [(MCDAlbumTracksTableViewController *)self navigationController];
+    v6 = [navigationController popViewControllerAnimated:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MCDAlbumTracksTableViewController;
-    [(MCDLibraryTableViewController *)&v7 playbackManagerShouldShowNowPlaying:v4];
+    [(MCDLibraryTableViewController *)&v7 playbackManagerShouldShowNowPlaying:playingCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(MCDAlbumTracksTableViewController *)self tableView];
-  v5 = [v4 numberOfSections];
+  tableView = [(MCDAlbumTracksTableViewController *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v5 >= 1)
+  if (numberOfSections >= 1)
   {
-    v6 = [(MCDAlbumTracksTableViewController *)self tableView];
-    [v6 bounds];
+    tableView2 = [(MCDAlbumTracksTableViewController *)self tableView];
+    [tableView2 bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(MCDAlbumTracksTableViewController *)self tableView];
-    [v15 safeAreaInsets];
+    tableView3 = [(MCDAlbumTracksTableViewController *)self tableView];
+    [tableView3 safeAreaInsets];
     v17 = v10 + v16;
 
-    v18 = [(MCDAlbumTracksTableViewController *)self tableView];
-    [v18 safeAreaInsets];
+    tableView4 = [(MCDAlbumTracksTableViewController *)self tableView];
+    [tableView4 safeAreaInsets];
     v20 = v14 - v19;
 
-    v21 = [(MCDAlbumTracksTableViewController *)self tableView];
-    [v21 rectForHeaderInSection:0];
+    tableView5 = [(MCDAlbumTracksTableViewController *)self tableView];
+    [tableView5 rectForHeaderInSection:0];
     v30.origin.x = v8;
     v30.origin.y = v17;
     v30.size.width = v12;
@@ -429,8 +429,8 @@
       v23 = 1.0;
     }
 
-    v24 = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
-    [v24 alpha];
+    titleViewLabel = [(MCDAlbumTracksTableViewController *)self titleViewLabel];
+    [titleViewLabel alpha];
     v26 = v25;
 
     if (v26 != v23)
@@ -446,44 +446,44 @@
   }
 }
 
-- (void)_replacePlaceholderViewWithView:(id)a3
+- (void)_replacePlaceholderViewWithView:(id)view
 {
-  v30 = a3;
-  v4 = [(MCDLibraryTableViewController *)self placeholderView];
-  v5 = [v4 superview];
+  viewCopy = view;
+  placeholderView = [(MCDLibraryTableViewController *)self placeholderView];
+  superview = [placeholderView superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [(MCDLibraryTableViewController *)self placeholderView];
-    [v6 removeFromSuperview];
+    placeholderView2 = [(MCDLibraryTableViewController *)self placeholderView];
+    [placeholderView2 removeFromSuperview];
   }
 
-  [(MCDLibraryTableViewController *)self setPlaceholderView:v30];
-  v7 = [(MCDLibraryTableViewController *)self placeholderView];
+  [(MCDLibraryTableViewController *)self setPlaceholderView:viewCopy];
+  placeholderView3 = [(MCDLibraryTableViewController *)self placeholderView];
 
-  if (v7)
+  if (placeholderView3)
   {
-    v8 = [(MCDAlbumTracksTableViewController *)self tableView];
-    [v8 frame];
+    tableView = [(MCDAlbumTracksTableViewController *)self tableView];
+    [tableView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [(MCDAlbumTracksTableViewController *)self tableView];
-    [v17 safeAreaInsets];
+    tableView2 = [(MCDAlbumTracksTableViewController *)self tableView];
+    [tableView2 safeAreaInsets];
     v19 = v10 + v18;
     v21 = v12 + v20;
     v23 = v14 - (v18 + v22);
     v25 = v16 - (v20 + v24);
 
-    v26 = [(MCDLibraryTableViewController *)self placeholderView];
-    [v26 setFrame:{v19, v21, v23, v25}];
+    placeholderView4 = [(MCDLibraryTableViewController *)self placeholderView];
+    [placeholderView4 setFrame:{v19, v21, v23, v25}];
 
-    v27 = [(MCDAlbumTracksTableViewController *)self tableView];
-    v28 = [v27 superview];
-    v29 = [(MCDLibraryTableViewController *)self placeholderView];
-    [v28 addSubview:v29];
+    tableView3 = [(MCDAlbumTracksTableViewController *)self tableView];
+    superview2 = [tableView3 superview];
+    placeholderView5 = [(MCDLibraryTableViewController *)self placeholderView];
+    [superview2 addSubview:placeholderView5];
   }
 }
 

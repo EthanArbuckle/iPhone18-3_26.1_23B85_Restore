@@ -1,19 +1,19 @@
 @interface TIKeyboardInput
-- (TIKeyboardInput)initWithCoder:(id)a3;
+- (TIKeyboardInput)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAutoshifted:(BOOL)a3;
-- (void)setDoubleSpace:(BOOL)a3;
-- (void)setExpandSegment:(BOOL)a3;
-- (void)setFlick:(BOOL)a3;
-- (void)setGesture:(BOOL)a3;
-- (void)setMultitap:(BOOL)a3;
-- (void)setObject:(id)a3;
-- (void)setPopupVariant:(BOOL)a3;
-- (void)setRapidDelete:(BOOL)a3;
-- (void)setShiftDown:(BOOL)a3;
-- (void)setShrinkSegment:(BOOL)a3;
-- (void)setSynthesizedByAcceptingCandidate:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAutoshifted:(BOOL)autoshifted;
+- (void)setDoubleSpace:(BOOL)space;
+- (void)setExpandSegment:(BOOL)segment;
+- (void)setFlick:(BOOL)flick;
+- (void)setGesture:(BOOL)gesture;
+- (void)setMultitap:(BOOL)multitap;
+- (void)setObject:(id)object;
+- (void)setPopupVariant:(BOOL)variant;
+- (void)setRapidDelete:(BOOL)delete;
+- (void)setShiftDown:(BOOL)down;
+- (void)setShrinkSegment:(BOOL)segment;
+- (void)setSynthesizedByAcceptingCandidate:(BOOL)candidate;
 @end
 
 @implementation TIKeyboardInput
@@ -21,18 +21,18 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(TIKeyboardInput *)self string];
-  [v3 appendFormat:@"; string = %@", v4];
+  string = [(TIKeyboardInput *)self string];
+  [v3 appendFormat:@"; string = %@", string];
 
-  v5 = [(TIKeyboardInput *)self output];
-  [v3 appendFormat:@"; output = %@", v5];
+  output = [(TIKeyboardInput *)self output];
+  [v3 appendFormat:@"; output = %@", output];
 
-  v6 = [(TIKeyboardInput *)self object];
-  [v3 appendFormat:@"; object = %@", v6];
+  object = [(TIKeyboardInput *)self object];
+  [v3 appendFormat:@"; object = %@", object];
 
-  v7 = [(TIKeyboardInput *)self isBackspace];
+  isBackspace = [(TIKeyboardInput *)self isBackspace];
   v8 = "NO";
-  if (v7)
+  if (isBackspace)
   {
     v8 = "YES";
   }
@@ -90,14 +90,14 @@
   }
 
   [v3 appendString:@""]);
-  v9 = [(TIKeyboardInput *)self touchEvent];
-  [v3 appendFormat:@"; touchEvent = %@", v9];
+  touchEvent = [(TIKeyboardInput *)self touchEvent];
+  [v3 appendFormat:@"; touchEvent = %@", touchEvent];
 
-  v10 = [(TIKeyboardInput *)self acceptedCandidate];
-  [v3 appendFormat:@"; acceptedCandidate = %@", v10];
+  acceptedCandidate = [(TIKeyboardInput *)self acceptedCandidate];
+  [v3 appendFormat:@"; acceptedCandidate = %@", acceptedCandidate];
 
-  v11 = [(TIKeyboardInput *)self inputManagerHint];
-  [v3 appendFormat:@"; inputManagerHint = %@", v11];
+  inputManagerHint = [(TIKeyboardInput *)self inputManagerHint];
+  [v3 appendFormat:@"; inputManagerHint = %@", inputManagerHint];
 
   [v3 appendFormat:@"; transliterateType = %ld", -[TIKeyboardInput transliterationType](self, "transliterationType")];
   [v3 appendString:@">"];
@@ -105,126 +105,126 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   string = self->_string;
-  v13 = v4;
+  v13 = coderCopy;
   if (string)
   {
-    [v4 encodeObject:string forKey:@"string"];
-    v4 = v13;
+    [coderCopy encodeObject:string forKey:@"string"];
+    coderCopy = v13;
   }
 
   output = self->_output;
   if (output)
   {
     [v13 encodeObject:output forKey:@"output"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   handwritingStrokes = self->_handwritingStrokes;
   if (handwritingStrokes)
   {
     [v13 encodeObject:handwritingStrokes forKey:@"handwritingStrokes"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_backspace)
   {
     [v13 encodeBool:1 forKey:@"backspace"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   integerValue = self->_flags.integerValue;
   if (integerValue)
   {
     [v13 encodeInteger:integerValue forKey:@"flags"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   touchEvent = self->_touchEvent;
   if (touchEvent)
   {
     [v13 encodeObject:touchEvent forKey:@"touchEvent"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   acceptedCandidate = self->_acceptedCandidate;
   if (acceptedCandidate)
   {
     [v13 encodeObject:acceptedCandidate forKey:@"acceptedCandidate"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   inputManagerHint = self->_inputManagerHint;
   if (inputManagerHint)
   {
     [v13 encodeObject:inputManagerHint forKey:@"inputManagerHint"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   transliterationType = self->_transliterationType;
   if (transliterationType)
   {
     [v13 encodeInteger:transliterationType forKey:@"transliterateType"];
-    v4 = v13;
+    coderCopy = v13;
   }
 }
 
-- (TIKeyboardInput)initWithCoder:(id)a3
+- (TIKeyboardInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = TIKeyboardInput;
   v5 = [(TIKeyboardInput *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"string"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string"];
     string = v5->_string;
     v5->_string = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"output"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"output"];
     output = v5->_output;
     v5->_output = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handwritingStrokes"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handwritingStrokes"];
     handwritingStrokes = v5->_handwritingStrokes;
     v5->_handwritingStrokes = v10;
 
-    v5->_backspace = [v4 decodeBoolForKey:@"backspace"];
-    v5->_flags.integerValue = [v4 decodeIntegerForKey:@"flags"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"touchEvent"];
+    v5->_backspace = [coderCopy decodeBoolForKey:@"backspace"];
+    v5->_flags.integerValue = [coderCopy decodeIntegerForKey:@"flags"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"touchEvent"];
     touchEvent = v5->_touchEvent;
     v5->_touchEvent = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acceptedCandidate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acceptedCandidate"];
     acceptedCandidate = v5->_acceptedCandidate;
     v5->_acceptedCandidate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputManagerHint"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputManagerHint"];
     inputManagerHint = v5->_inputManagerHint;
     v5->_inputManagerHint = v16;
 
-    v5->_transliterationType = [v4 decodeIntForKey:@"transliterateType"];
+    v5->_transliterationType = [coderCopy decodeIntForKey:@"transliterateType"];
     v18 = v5;
   }
 
   return v5;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   objc_opt_isKindOfClass();
   handwritingStrokes = self->_handwritingStrokes;
-  self->_handwritingStrokes = v4;
+  self->_handwritingStrokes = objectCopy;
 }
 
-- (void)setSynthesizedByAcceptingCandidate:(BOOL)a3
+- (void)setSynthesizedByAcceptingCandidate:(BOOL)candidate
 {
-  if (a3)
+  if (candidate)
   {
     v3 = 64;
   }
@@ -237,9 +237,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFFBF | v3;
 }
 
-- (void)setShrinkSegment:(BOOL)a3
+- (void)setShrinkSegment:(BOOL)segment
 {
-  if (a3)
+  if (segment)
   {
     v3 = 2048;
   }
@@ -252,9 +252,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xF7FF | v3;
 }
 
-- (void)setShiftDown:(BOOL)a3
+- (void)setShiftDown:(BOOL)down
 {
-  if (a3)
+  if (down)
   {
     v3 = 512;
   }
@@ -267,9 +267,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFDFF | v3;
 }
 
-- (void)setRapidDelete:(BOOL)a3
+- (void)setRapidDelete:(BOOL)delete
 {
-  if (a3)
+  if (delete)
   {
     v3 = 256;
   }
@@ -282,9 +282,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFEFF | v3;
 }
 
-- (void)setPopupVariant:(BOOL)a3
+- (void)setPopupVariant:(BOOL)variant
 {
-  if (a3)
+  if (variant)
   {
     v3 = 4;
   }
@@ -297,9 +297,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFFFB | v3;
 }
 
-- (void)setMultitap:(BOOL)a3
+- (void)setMultitap:(BOOL)multitap
 {
-  if (a3)
+  if (multitap)
   {
     v3 = 8;
   }
@@ -312,9 +312,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFFF7 | v3;
 }
 
-- (void)setGesture:(BOOL)a3
+- (void)setGesture:(BOOL)gesture
 {
-  if (a3)
+  if (gesture)
   {
     v3 = 32;
   }
@@ -327,9 +327,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFFDF | v3;
 }
 
-- (void)setFlick:(BOOL)a3
+- (void)setFlick:(BOOL)flick
 {
-  if (a3)
+  if (flick)
   {
     v3 = 16;
   }
@@ -342,9 +342,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFFEF | v3;
 }
 
-- (void)setExpandSegment:(BOOL)a3
+- (void)setExpandSegment:(BOOL)segment
 {
-  if (a3)
+  if (segment)
   {
     v3 = 1024;
   }
@@ -357,9 +357,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFBFF | v3;
 }
 
-- (void)setDoubleSpace:(BOOL)a3
+- (void)setDoubleSpace:(BOOL)space
 {
-  if (a3)
+  if (space)
   {
     v3 = 128;
   }
@@ -372,9 +372,9 @@
   LOWORD(self->_flags.integerValue) = self->_flags.integerValue & 0xFF7F | v3;
 }
 
-- (void)setAutoshifted:(BOOL)a3
+- (void)setAutoshifted:(BOOL)autoshifted
 {
-  if (a3)
+  if (autoshifted)
   {
     v3 = 2;
   }

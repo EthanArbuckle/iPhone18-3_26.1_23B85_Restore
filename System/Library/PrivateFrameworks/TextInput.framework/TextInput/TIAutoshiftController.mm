@@ -1,14 +1,14 @@
 @interface TIAutoshiftController
-- (BOOL)isSelectionAtSentenceAutoshiftBoundaryWithDocumentState:(id)a3 inputManagerState:(id)a4;
-- (TIAutoshiftController)initWithTextInputTraits:(id)a3;
-- (unint64_t)actionForDocumentState:(id)a3 inputMangerState:(id)a4;
+- (BOOL)isSelectionAtSentenceAutoshiftBoundaryWithDocumentState:(id)state inputManagerState:(id)managerState;
+- (TIAutoshiftController)initWithTextInputTraits:(id)traits;
+- (unint64_t)actionForDocumentState:(id)state inputMangerState:(id)mangerState;
 @end
 
 @implementation TIAutoshiftController
 
-- (BOOL)isSelectionAtSentenceAutoshiftBoundaryWithDocumentState:(id)a3 inputManagerState:(id)a4
+- (BOOL)isSelectionAtSentenceAutoshiftBoundaryWithDocumentState:(id)state inputManagerState:(id)managerState
 {
-  if (!a4)
+  if (!managerState)
   {
     v22 = v4;
     v23 = v5;
@@ -20,15 +20,15 @@
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v7 = [a3 contextBeforeInput];
-    v8 = [v7 length];
+    contextBeforeInput = [state contextBeforeInput];
+    v8 = [contextBeforeInput length];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __99__TIAutoshiftController_isSelectionAtSentenceAutoshiftBoundaryWithDocumentState_inputManagerState___block_invoke;
     v13[3] = &unk_1E6F4D748;
     v13[4] = &v14;
     v13[5] = &v18;
-    [v7 _reverseEnumerateLongCharactersInRange:0 usingBlock:{v8, v13}];
+    [contextBeforeInput _reverseEnumerateLongCharactersInRange:0 usingBlock:{v8, v13}];
     v9 = v19[3];
     if (v9 > 2)
     {
@@ -60,7 +60,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  return [a4 nextInputWouldStartSentence];
+  return [managerState nextInputWouldStartSentence];
 }
 
 uint64_t __99__TIAutoshiftController_isSelectionAtSentenceAutoshiftBoundaryWithDocumentState_inputManagerState___block_invoke(uint64_t result, int a2, _BYTE *a3)
@@ -79,14 +79,14 @@ uint64_t __99__TIAutoshiftController_isSelectionAtSentenceAutoshiftBoundaryWithD
   return result;
 }
 
-- (unint64_t)actionForDocumentState:(id)a3 inputMangerState:(id)a4
+- (unint64_t)actionForDocumentState:(id)state inputMangerState:(id)mangerState
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIAutoshiftController *)self textInputTraits];
-  v9 = [v8 keyboardType];
+  stateCopy = state;
+  mangerStateCopy = mangerState;
+  textInputTraits = [(TIAutoshiftController *)self textInputTraits];
+  keyboardType = [textInputTraits keyboardType];
 
-  if (v9 <= 0xD && ((0x2930u >> v9) & 1) != 0)
+  if (keyboardType <= 0xD && ((0x2930u >> keyboardType) & 1) != 0)
   {
     goto LABEL_3;
   }
@@ -98,11 +98,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [(TIAutoshiftController *)self textInputTraits];
-  if ([v11 autocapitalizationType] == 1)
+  textInputTraits2 = [(TIAutoshiftController *)self textInputTraits];
+  if ([textInputTraits2 autocapitalizationType] == 1)
   {
-    v12 = [v6 markedText];
-    v13 = [v12 length];
+    markedText = [stateCopy markedText];
+    v13 = [markedText length];
 
     if (v13)
     {
@@ -114,22 +114,22 @@ LABEL_7:
   {
   }
 
-  if (!v6)
+  if (!stateCopy)
   {
 LABEL_3:
     v10 = 0;
     goto LABEL_8;
   }
 
-  v15 = [(TIAutoshiftController *)self textInputTraits];
-  v16 = [v15 autocapitalizationType];
+  textInputTraits3 = [(TIAutoshiftController *)self textInputTraits];
+  autocapitalizationType = [textInputTraits3 autocapitalizationType];
 
-  if (v16 == 1)
+  if (autocapitalizationType == 1)
   {
-    v17 = [v6 contextBeforeInput];
-    v18 = [v17 _lastLongCharacter];
+    contextBeforeInput = [stateCopy contextBeforeInput];
+    _lastLongCharacter = [contextBeforeInput _lastLongCharacter];
 
-    if ((v18 > 0x20 || ((1 << v18) & 0x100000401) == 0) && v18 != 160)
+    if ((_lastLongCharacter > 0x20 || ((1 << _lastLongCharacter) & 0x100000401) == 0) && _lastLongCharacter != 160)
     {
       goto LABEL_21;
     }
@@ -139,19 +139,19 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  if (v16 == 3)
+  if (autocapitalizationType == 3)
   {
     goto LABEL_20;
   }
 
-  if (v16 != 2)
+  if (autocapitalizationType != 2)
   {
 LABEL_21:
     v10 = 4;
     goto LABEL_8;
   }
 
-  if ([(TIAutoshiftController *)self isSelectionAtSentenceAutoshiftBoundaryWithDocumentState:v6 inputManagerState:v7])
+  if ([(TIAutoshiftController *)self isSelectionAtSentenceAutoshiftBoundaryWithDocumentState:stateCopy inputManagerState:mangerStateCopy])
   {
     v10 = 3;
   }
@@ -166,16 +166,16 @@ LABEL_8:
   return v10;
 }
 
-- (TIAutoshiftController)initWithTextInputTraits:(id)a3
+- (TIAutoshiftController)initWithTextInputTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   v9.receiver = self;
   v9.super_class = TIAutoshiftController;
   v6 = [(TIAutoshiftController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textInputTraits, a3);
+    objc_storeStrong(&v6->_textInputTraits, traits);
   }
 
   return v7;

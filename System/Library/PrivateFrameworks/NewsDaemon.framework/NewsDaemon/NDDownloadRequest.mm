@@ -1,36 +1,36 @@
 @interface NDDownloadRequest
-- (BOOL)isEqual:(id)a3;
-- (NDDownloadRequest)initWithCoder:(id)a3;
-- (NDDownloadRequest)initWithContentID:(id)a3 options:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (NDDownloadRequest)initWithCoder:(id)coder;
+- (NDDownloadRequest)initWithContentID:(id)d options:(int64_t)options;
 - (NSString)articleID;
 - (NSString)issueID;
 - (NSString)puzzleID;
 - (NSString)recipeID;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDDownloadRequest
 
-- (NDDownloadRequest)initWithContentID:(id)a3 options:(int64_t)a4
+- (NDDownloadRequest)initWithContentID:(id)d options:(int64_t)options
 {
-  v6 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = NDDownloadRequest;
   v7 = [(NDDownloadRequest *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     contentID = v7->_contentID;
     v7->_contentID = v8;
 
-    v7->_options = a4;
+    v7->_options = options;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __47__NDDownloadRequest_initWithContentID_options___block_invoke;
     v11[3] = &unk_27997C0E0;
-    v12 = v6;
+    v12 = dCopy;
     v7->_contentType = __47__NDDownloadRequest_initWithContentID_options___block_invoke(v11);
   }
 
@@ -73,20 +73,20 @@ uint64_t __47__NDDownloadRequest_initWithContentID_options___block_invoke(uint64
   return 4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5)
   {
-    v6 = [(NDDownloadRequest *)self contentID];
-    v7 = [v5 contentID];
-    if ([v6 isEqualToString:v7])
+    contentID = [(NDDownloadRequest *)self contentID];
+    contentID2 = [v5 contentID];
+    if ([contentID isEqualToString:contentID2])
     {
-      v8 = [(NDDownloadRequest *)self options];
-      v9 = v8 == [v5 options];
+      options = [(NDDownloadRequest *)self options];
+      v9 = options == [v5 options];
     }
 
     else
@@ -105,8 +105,8 @@ uint64_t __47__NDDownloadRequest_initWithContentID_options___block_invoke(uint64
 
 - (unint64_t)hash
 {
-  v3 = [(NDDownloadRequest *)self contentID];
-  v4 = [v3 hash];
+  contentID = [(NDDownloadRequest *)self contentID];
+  v4 = [contentID hash];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NDDownloadRequest options](self, "options")}];
   v6 = [v5 hash];
 
@@ -128,15 +128,15 @@ uint64_t __47__NDDownloadRequest_initWithContentID_options___block_invoke(uint64
   }
 
   [v3 addField:@"type" object:v5];
-  v6 = [(NDDownloadRequest *)self contentID];
-  [v3 addField:@"id" object:v6];
+  contentID = [(NDDownloadRequest *)self contentID];
+  [v3 addField:@"id" object:contentID];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NDDownloadRequest options](self, "options")}];
   [v3 addField:@"options" object:v7];
 
-  v8 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v8;
+  return descriptionString;
 }
 
 __CFString *__32__NDDownloadRequest_description__block_invoke(uint64_t a1)
@@ -153,90 +153,90 @@ __CFString *__32__NDDownloadRequest_description__block_invoke(uint64_t a1)
   }
 }
 
-- (NDDownloadRequest)initWithCoder:(id)a3
+- (NDDownloadRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentID"];
-  v6 = [v4 decodeIntegerForKey:@"options"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentID"];
+  v6 = [coderCopy decodeIntegerForKey:@"options"];
 
   v7 = [(NDDownloadRequest *)self initWithContentID:v5 options:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(NDDownloadRequest *)self contentID];
-  [v5 encodeObject:v4 forKey:@"contentID"];
+  coderCopy = coder;
+  contentID = [(NDDownloadRequest *)self contentID];
+  [coderCopy encodeObject:contentID forKey:@"contentID"];
 
-  [v5 encodeInteger:-[NDDownloadRequest options](self forKey:{"options"), @"options"}];
+  [coderCopy encodeInteger:-[NDDownloadRequest options](self forKey:{"options"), @"options"}];
 }
 
 - (NSString)articleID
 {
-  v3 = [(NDDownloadRequest *)self contentType];
-  if (v3 == 1)
+  contentType = [(NDDownloadRequest *)self contentType];
+  if (contentType == 1)
   {
-    v5 = [(NDDownloadRequest *)self contentID];
-    v4 = NDArticleIDFromAudioContentID(v5);
+    contentID = [(NDDownloadRequest *)self contentID];
+    contentID2 = NDArticleIDFromAudioContentID(contentID);
   }
 
-  else if (v3)
+  else if (contentType)
   {
-    v4 = 0;
+    contentID2 = 0;
   }
 
   else
   {
-    v4 = [(NDDownloadRequest *)self contentID];
+    contentID2 = [(NDDownloadRequest *)self contentID];
   }
 
-  return v4;
+  return contentID2;
 }
 
 - (NSString)issueID
 {
   if ([(NDDownloadRequest *)self contentType]== 2)
   {
-    v3 = [(NDDownloadRequest *)self contentID];
+    contentID = [(NDDownloadRequest *)self contentID];
   }
 
   else
   {
-    v3 = 0;
+    contentID = 0;
   }
 
-  return v3;
+  return contentID;
 }
 
 - (NSString)puzzleID
 {
   if ([(NDDownloadRequest *)self contentType]== 3)
   {
-    v3 = [(NDDownloadRequest *)self contentID];
+    contentID = [(NDDownloadRequest *)self contentID];
   }
 
   else
   {
-    v3 = 0;
+    contentID = 0;
   }
 
-  return v3;
+  return contentID;
 }
 
 - (NSString)recipeID
 {
   if ([(NDDownloadRequest *)self contentType]== 4)
   {
-    v3 = [(NDDownloadRequest *)self contentID];
+    contentID = [(NDDownloadRequest *)self contentID];
   }
 
   else
   {
-    v3 = 0;
+    contentID = 0;
   }
 
-  return v3;
+  return contentID;
 }
 
 void __47__NDDownloadRequest_initWithContentID_options___block_invoke_cold_1(void *a1)

@@ -1,17 +1,17 @@
 @interface WBSCGImage
-+ (id)imageByAdoptingCGImage:(CGImage *)a3;
-+ (id)imageWithCGImage:(CGImage *)a3;
++ (id)imageByAdoptingCGImage:(CGImage *)image;
++ (id)imageWithCGImage:(CGImage *)image;
 - (void)dealloc;
 @end
 
 @implementation WBSCGImage
 
-+ (id)imageWithCGImage:(CGImage *)a3
++ (id)imageWithCGImage:(CGImage *)image
 {
-  if (a3)
+  if (image)
   {
     v4 = objc_alloc_init(objc_opt_class());
-    v4[1] = CGImageRetain(a3);
+    v4[1] = CGImageRetain(image);
   }
 
   else
@@ -22,12 +22,12 @@
   return v4;
 }
 
-+ (id)imageByAdoptingCGImage:(CGImage *)a3
++ (id)imageByAdoptingCGImage:(CGImage *)image
 {
-  if (a3)
+  if (image)
   {
     v5 = objc_alloc_init(objc_opt_class());
-    v5[1] = a3;
+    v5[1] = image;
   }
 
   else

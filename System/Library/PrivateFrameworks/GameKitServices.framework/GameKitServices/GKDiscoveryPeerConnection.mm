@@ -4,28 +4,28 @@
 + (void)checkConstants;
 - (BOOL)shouldDecideAboutConnection;
 - (BOOL)syncSetupNewSocket;
-- (GKDiscoveryPeerConnection)initWithLocalServiceName:(id)a3;
-- (void)attachSocketDescriptor:(int)a3;
-- (void)connectToSockAddr:(const sockaddr *)a3 port:(unsigned __int16)a4;
+- (GKDiscoveryPeerConnection)initWithLocalServiceName:(id)name;
+- (void)attachSocketDescriptor:(int)descriptor;
+- (void)connectToSockAddr:(const sockaddr *)addr port:(unsigned __int16)port;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4;
-- (void)setSyncQueue:(id)a3;
-- (void)setTargetQueue:(id)a3;
+- (void)sendData:(id)data withCompletionHandler:(id)handler;
+- (void)setSyncQueue:(id)queue;
+- (void)setTargetQueue:(id)queue;
 - (void)shouldDecideAboutConnection;
 - (void)syncAcceptedConnection;
 - (void)syncCloseConnectionNow;
-- (void)syncConnected:(id)a3;
-- (void)syncReceivedData:(id)a3 error:(id)a4;
+- (void)syncConnected:(id)connected;
+- (void)syncReceivedData:(id)data error:(id)error;
 - (void)syncSendHello;
-- (void)syncSendMessage:(int)a3 data:(id)a4 withCompletionHandler:(id)a5;
-- (void)syncSendMessageReceipt:(int)a3 sequenceNumber:(unsigned int)a4;
-- (void)timeout:(id)a3;
+- (void)syncSendMessage:(int)message data:(id)data withCompletionHandler:(id)handler;
+- (void)syncSendMessageReceipt:(int)receipt sequenceNumber:(unsigned int)number;
+- (void)timeout:(id)timeout;
 @end
 
 @implementation GKDiscoveryPeerConnection
 
-- (GKDiscoveryPeerConnection)initWithLocalServiceName:(id)a3
+- (GKDiscoveryPeerConnection)initWithLocalServiceName:(id)name
 {
   v16.receiver = self;
   v16.super_class = GKDiscoveryPeerConnection;
@@ -50,7 +50,7 @@
     v4->_receivedDataHoldingQueue = v7;
     if (v7 && (v8 = objc_alloc_init(MEMORY[0x277CBEB18]), (v4->_messageReceiptHandlerList = v8) != 0) && (v9 = objc_alloc_init(MEMORY[0x277CBEB18]), (v4->_messageReceiptHandlerHoldingQueue = v9) != 0))
     {
-      [(GKDiscoveryPeerConnection *)v4 setLocalServiceName:a3];
+      [(GKDiscoveryPeerConnection *)v4 setLocalServiceName:name];
       v10 = objc_alloc_init(GKSimpleTimer);
       v4->_heartbeatTimer = v10;
       [(GKSimpleTimer *)v10 setDelegate:v4];
@@ -86,11 +86,11 @@ LABEL_11:
   return v4;
 }
 
-- (void)setSyncQueue:(id)a3
+- (void)setSyncQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   syncQueue = self->_syncQueue;
@@ -99,17 +99,17 @@ LABEL_11:
     dispatch_release(syncQueue);
   }
 
-  self->_syncQueue = a3;
+  self->_syncQueue = queue;
   connectionSocket = self->_connectionSocket;
 
-  [(GKAsyncSocket *)connectionSocket setTargetQueue:a3];
+  [(GKAsyncSocket *)connectionSocket setTargetQueue:queue];
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   targetQueue = self->_targetQueue;
@@ -118,12 +118,12 @@ LABEL_11:
     dispatch_release(targetQueue);
   }
 
-  self->_targetQueue = a3;
+  self->_targetQueue = queue;
 }
 
-- (void)syncConnected:(id)a3
+- (void)syncConnected:(id)connected
 {
-  if (a3)
+  if (connected)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -152,7 +152,7 @@ LABEL_11:
       v7[1] = 3221225472;
       v7[2] = __43__GKDiscoveryPeerConnection_syncConnected___block_invoke;
       v7[3] = &unk_279683400;
-      v7[4] = a3;
+      v7[4] = connected;
       v7[5] = connectedHandler;
       dispatch_async(targetQueue, v7);
     }
@@ -180,12 +180,12 @@ LABEL_11:
         remoteServiceName = self->_remoteServiceName;
         if (remoteServiceName)
         {
-          v7 = [[(NSString *)remoteServiceName description] UTF8String];
+          uTF8String = [[(NSString *)remoteServiceName description] UTF8String];
         }
 
         else
         {
-          v7 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         *buf = 136316418;
@@ -195,11 +195,11 @@ LABEL_11:
         v23 = 1024;
         v24 = 266;
         v25 = 2048;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2048;
         v28 = connectionSocket;
         v29 = 2080;
-        v30 = v7;
+        v30 = uTF8String;
         _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] _connectionSocket already up", buf, 0x3Au);
       }
     }
@@ -245,12 +245,12 @@ LABEL_18:
     v13 = self->_remoteServiceName;
     if (v13)
     {
-      v14 = [[(NSString *)v13 description] UTF8String];
+      uTF8String2 = [[(NSString *)v13 description] UTF8String];
     }
 
     else
     {
-      v14 = "<nil>";
+      uTF8String2 = "<nil>";
     }
 
     *buf = 136316418;
@@ -260,11 +260,11 @@ LABEL_18:
     v23 = 1024;
     v24 = 272;
     v25 = 2048;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2048;
     v28 = v12;
     v29 = 2080;
-    v30 = v14;
+    v30 = uTF8String2;
     _os_log_error_impl(&dword_24E50C000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] GKAsyncSocket alloc failed", buf, 0x3Au);
     goto LABEL_18;
   }
@@ -274,9 +274,9 @@ LABEL_15:
   return v11;
 }
 
-- (void)connectToSockAddr:(const sockaddr *)a3 port:(unsigned __int16)a4
+- (void)connectToSockAddr:(const sockaddr *)addr port:(unsigned __int16)port
 {
-  v7 = copysockaddr(&a3->sa_len);
+  v7 = copysockaddr(&addr->sa_len);
   syncQueue = self->_syncQueue;
   if (!syncQueue)
   {
@@ -290,7 +290,7 @@ LABEL_15:
   v9[4] = self;
   v9[5] = v7;
   v9[6] = a2;
-  v10 = a4;
+  portCopy = port;
   dispatch_async(syncQueue, v9);
 }
 
@@ -426,7 +426,7 @@ uint64_t __52__GKDiscoveryPeerConnection_connectToSockAddr_port___block_invoke_9
   return result;
 }
 
-- (void)attachSocketDescriptor:(int)a3
+- (void)attachSocketDescriptor:(int)descriptor
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -440,7 +440,7 @@ uint64_t __52__GKDiscoveryPeerConnection_connectToSockAddr_port___block_invoke_9
 
   block[4] = self;
   block[5] = a2;
-  v5 = a3;
+  descriptorCopy = descriptor;
   dispatch_async(syncQueue, block);
 }
 
@@ -654,7 +654,7 @@ LABEL_18:
   return v3;
 }
 
-- (void)syncSendMessage:(int)a3 data:(id)a4 withCompletionHandler:(id)a5
+- (void)syncSendMessage:(int)message data:(id)data withCompletionHandler:(id)handler
 {
   v75 = *MEMORY[0x277D85DE8];
   v9 = objc_autoreleasePoolPush();
@@ -671,12 +671,12 @@ LABEL_18:
         remoteServiceName = self->_remoteServiceName;
         if (remoteServiceName)
         {
-          v15 = [[(NSString *)remoteServiceName description] UTF8String];
+          uTF8String = [[(NSString *)remoteServiceName description] UTF8String];
         }
 
         else
         {
-          v15 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         *buf = 136316930;
@@ -686,15 +686,15 @@ LABEL_18:
         v63 = 1024;
         v64 = 411;
         v65 = 2048;
-        v66 = self;
+        selfCopy5 = self;
         v67 = 2048;
         v68 = connectionSocket;
         v69 = 2080;
-        v70 = v15;
+        v70 = uTF8String;
         v71 = 1024;
-        v72 = a3;
+        messageCopy3 = message;
         v73 = 1024;
-        v74 = [a4 length];
+        v74 = [data length];
         _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] send type [%u] data [%u]", buf, 0x46u);
       }
     }
@@ -705,12 +705,12 @@ LABEL_18:
       v17 = self->_remoteServiceName;
       if (v17)
       {
-        v18 = [[(NSString *)v17 description] UTF8String];
+        uTF8String2 = [[(NSString *)v17 description] UTF8String];
       }
 
       else
       {
-        v18 = "<nil>";
+        uTF8String2 = "<nil>";
       }
 
       *buf = 136316930;
@@ -720,28 +720,28 @@ LABEL_18:
       v63 = 1024;
       v64 = 411;
       v65 = 2048;
-      v66 = self;
+      selfCopy5 = self;
       v67 = 2048;
       v68 = v16;
       v69 = 2080;
-      v70 = v18;
+      v70 = uTF8String2;
       v71 = 1024;
-      v72 = a3;
+      messageCopy3 = message;
       v73 = 1024;
-      v74 = [a4 length];
+      v74 = [data length];
       _os_log_debug_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEBUG, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] send type [%u] data [%u]", buf, 0x46u);
     }
   }
 
-  if (a3 > 2199)
+  if (message > 2199)
   {
-    if (a3 != 2200 && a3 != 2300)
+    if (message != 2200 && message != 2300)
     {
       goto LABEL_22;
     }
   }
 
-  else if (a3 != 2000 && a3 != 2100)
+  else if (message != 2000 && message != 2100)
   {
 LABEL_22:
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -754,12 +754,12 @@ LABEL_22:
         v40 = self->_remoteServiceName;
         if (v40)
         {
-          v41 = [[(NSString *)v40 description] UTF8String];
+          uTF8String3 = [[(NSString *)v40 description] UTF8String];
         }
 
         else
         {
-          v41 = "<nil>";
+          uTF8String3 = "<nil>";
         }
 
         *buf = 136316674;
@@ -769,29 +769,29 @@ LABEL_22:
         v63 = 1024;
         v64 = 426;
         v65 = 2048;
-        v66 = self;
+        selfCopy5 = self;
         v67 = 2048;
         v68 = v39;
         v69 = 2080;
-        v70 = v41;
+        v70 = uTF8String3;
         v71 = 1024;
-        v72 = a3;
+        messageCopy3 = message;
         _os_log_error_impl(&dword_24E50C000, v27, OS_LOG_TYPE_ERROR, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] can't send bad message type [%u]", buf, 0x40u);
       }
     }
 
     v57 = *MEMORY[0x277CCA450];
     v58 = @"Unable to send unknown message type";
-    (*(a5 + 2))(a5, [MEMORY[0x277CCA9B8] errorWithDomain:@"GKDiscoveryPeerConnection" code:-2 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v58, &v57, 1)}]);
+    (*(handler + 2))(handler, [MEMORY[0x277CCA9B8] errorWithDomain:@"GKDiscoveryPeerConnection" code:-2 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v58, &v57, 1)}]);
     goto LABEL_36;
   }
 
-  v19 = [a5 copy];
-  v20 = [a4 length];
+  v19 = [handler copy];
+  v20 = [data length];
   currentSequenceNumber = self->_currentSequenceNumber;
   self->_currentSequenceNumber = (currentSequenceNumber + 1) & 0x7FFFFFFF;
-  v46[0] = BYTE1(a3);
-  v46[1] = a3;
+  v46[0] = BYTE1(message);
+  v46[1] = message;
   v47 = 0;
   v48 = HIBYTE(v20);
   v49 = BYTE2(v20);
@@ -803,9 +803,9 @@ LABEL_22:
   v55 = BYTE1(currentSequenceNumber);
   v56 = currentSequenceNumber;
   v22 = crc32(0, v46, 0x10u);
-  if ([a4 length])
+  if ([data length])
   {
-    v22 = crc32(v22, [a4 bytes], objc_msgSend(a4, "length"));
+    v22 = crc32(v22, [data bytes], objc_msgSend(data, "length"));
   }
 
   v52 = bswap32(v22);
@@ -816,7 +816,7 @@ LABEL_22:
   v45 = currentSequenceNumber;
   v44[4] = v19;
   v23 = [v44 copy];
-  if (a3 == 2100 && !self->_connected)
+  if (message == 2100 && !self->_connected)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
@@ -831,15 +831,15 @@ LABEL_22:
           v32 = self->_remoteServiceName;
           if (v32)
           {
-            v33 = [[(NSString *)v32 description] UTF8String];
+            uTF8String4 = [[(NSString *)v32 description] UTF8String];
           }
 
           else
           {
-            v33 = "<nil>";
+            uTF8String4 = "<nil>";
           }
 
-          v37 = [a4 length];
+          v37 = [data length];
           *buf = 136316674;
           v60 = v28;
           v61 = 2080;
@@ -847,13 +847,13 @@ LABEL_22:
           v63 = 1024;
           v64 = 493;
           v65 = 2048;
-          v66 = self;
+          selfCopy5 = self;
           v67 = 2048;
           v68 = v31;
           v69 = 2080;
-          v70 = v33;
+          v70 = uTF8String4;
           v71 = 1024;
-          v72 = v37;
+          messageCopy3 = v37;
           _os_log_impl(&dword_24E50C000, v29, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] still connecting - queueing data (%u) *", buf, 0x40u);
         }
       }
@@ -864,15 +864,15 @@ LABEL_22:
         v35 = self->_remoteServiceName;
         if (v35)
         {
-          v36 = [[(NSString *)v35 description] UTF8String];
+          uTF8String5 = [[(NSString *)v35 description] UTF8String];
         }
 
         else
         {
-          v36 = "<nil>";
+          uTF8String5 = "<nil>";
         }
 
-        v42 = [a4 length];
+        v42 = [data length];
         *buf = 136316674;
         v60 = v28;
         v61 = 2080;
@@ -880,27 +880,27 @@ LABEL_22:
         v63 = 1024;
         v64 = 493;
         v65 = 2048;
-        v66 = self;
+        selfCopy5 = self;
         v67 = 2048;
         v68 = v34;
         v69 = 2080;
-        v70 = v36;
+        v70 = uTF8String5;
         v71 = 1024;
-        v72 = v42;
+        messageCopy3 = v42;
         _os_log_debug_impl(&dword_24E50C000, v29, OS_LOG_TYPE_DEBUG, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] still connecting - queueing data (%u) *", buf, 0x40u);
       }
     }
 
     [(NSMutableArray *)self->_messageReceiptHandlerHoldingQueue addObject:v23];
     [(NSMutableData *)self->_dataToSendHoldingQueue appendBytes:v46 length:16];
-    [(NSMutableData *)self->_dataToSendHoldingQueue appendData:a4];
+    [(NSMutableData *)self->_dataToSendHoldingQueue appendData:data];
   }
 
   else
   {
     [(NSMutableArray *)self->_messageReceiptHandlerList addObject:v23];
     v24 = [MEMORY[0x277CBEB28] dataWithBytes:v46 length:16];
-    [v24 appendData:a4];
+    [v24 appendData:data];
     v25 = self->_connectionSocket;
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
@@ -989,11 +989,11 @@ void __72__GKDiscoveryPeerConnection_syncSendMessage_data_withCompletionHandler_
 - (void)syncSendHello
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(NSString *)self->_localServiceName UTF8String];
-  if (v3)
+  uTF8String = [(NSString *)self->_localServiceName UTF8String];
+  if (uTF8String)
   {
-    v4 = v3;
-    v5 = strlen(v3);
+    v4 = uTF8String;
+    v5 = strlen(uTF8String);
     v6 = v5 + 1;
     if (v5 < 0xFFFF)
     {
@@ -1022,12 +1022,12 @@ void __72__GKDiscoveryPeerConnection_syncSendMessage_data_withCompletionHandler_
       remoteServiceName = self->_remoteServiceName;
       if (remoteServiceName)
       {
-        v13 = [[(NSString *)remoteServiceName description] UTF8String];
+        uTF8String2 = [[(NSString *)remoteServiceName description] UTF8String];
       }
 
       else
       {
-        v13 = "<nil>";
+        uTF8String2 = "<nil>";
       }
 
       v14 = 136316674;
@@ -1037,11 +1037,11 @@ void __72__GKDiscoveryPeerConnection_syncSendMessage_data_withCompletionHandler_
       v18 = 1024;
       v19 = 525;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2048;
       v23 = connectionSocket;
       v24 = 2080;
-      v25 = v13;
+      v25 = uTF8String2;
       v26 = 1024;
       v27 = v6;
       _os_log_error_impl(&dword_24E50C000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] bad serviceName [%d] ??", &v14, 0x40u);
@@ -1128,12 +1128,12 @@ LABEL_8:
         remoteServiceName = self->_remoteServiceName;
         if (remoteServiceName)
         {
-          v18 = [[(NSString *)remoteServiceName description] UTF8String];
+          uTF8String = [[(NSString *)remoteServiceName description] UTF8String];
         }
 
         else
         {
-          v18 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         *buf = 136316418;
@@ -1143,11 +1143,11 @@ LABEL_8:
         v31 = 1024;
         v32 = 569;
         v33 = 2048;
-        v34 = self;
+        selfCopy = self;
         v35 = 2048;
         v36 = v16;
         v37 = 2080;
-        v38 = v18;
+        v38 = uTF8String;
         _os_log_impl(&dword_24E50C000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] receiveDataHandler is nil", buf, 0x3Au);
       }
     }
@@ -1172,17 +1172,17 @@ void __51__GKDiscoveryPeerConnection_syncAcceptedConnection__block_invoke(uint64
   }
 }
 
-- (void)syncSendMessageReceipt:(int)a3 sequenceNumber:(unsigned int)a4
+- (void)syncSendMessageReceipt:(int)receipt sequenceNumber:(unsigned int)number
 {
   v20 = *MEMORY[0x277D85DE8];
-  buf[0] = BYTE1(a3);
-  buf[1] = a3;
+  buf[0] = BYTE1(receipt);
+  buf[1] = receipt;
   v14 = 256;
   v15 = 0;
-  v16 = HIBYTE(a4);
-  v17 = BYTE2(a4);
-  v18 = BYTE1(a4);
-  v19 = a4;
+  v16 = HIBYTE(number);
+  v17 = BYTE2(number);
+  v18 = BYTE1(number);
+  numberCopy = number;
   HIDWORD(v15) = bswap32(crc32(0, buf, 0x10u));
   v7 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:16];
   connectionSocket = self->_connectionSocket;
@@ -1191,8 +1191,8 @@ void __51__GKDiscoveryPeerConnection_syncAcceptedConnection__block_invoke(uint64
   v10[2] = __67__GKDiscoveryPeerConnection_syncSendMessageReceipt_sequenceNumber___block_invoke;
   v10[3] = &unk_279683518;
   v10[4] = self;
-  v11 = a3;
-  v12 = a4;
+  receiptCopy = receipt;
+  numberCopy2 = number;
   [(GKAsyncSocket *)connectionSocket sendData:v7 withCompletionHandler:v10];
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -1342,7 +1342,7 @@ void __68__GKDiscoveryPeerConnection_syncProcessMessage_data_sequenceNumber___bl
   dispatch_async(v6, v4);
 }
 
-- (void)timeout:(id)a3
+- (void)timeout:(id)timeout
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1354,7 +1354,7 @@ void __68__GKDiscoveryPeerConnection_syncProcessMessage_data_sequenceNumber___bl
     syncQueue = MEMORY[0x277D85CD0];
   }
 
-  v4[4] = a3;
+  v4[4] = timeout;
   v4[5] = self;
   dispatch_async(syncQueue, v4);
 }
@@ -1531,12 +1531,12 @@ LABEL_33:
   [v2 syncSendMessage:2300 data:0 withCompletionHandler:0];
 }
 
-- (void)syncReceivedData:(id)a3 error:(id)a4
+- (void)syncReceivedData:(id)data error:(id)error
 {
   v114 = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
   v8 = v7;
-  if (!a3)
+  if (!data)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
     {
@@ -1554,11 +1554,11 @@ LABEL_33:
     remoteServiceName = self->_remoteServiceName;
     if (remoteServiceName)
     {
-      v17 = [[(NSString *)remoteServiceName description] UTF8String];
-      if (a4)
+      uTF8String = [[(NSString *)remoteServiceName description] UTF8String];
+      if (error)
       {
 LABEL_9:
-        v18 = [objc_msgSend(a4 "description")];
+        v18 = [objc_msgSend(error "description")];
 LABEL_56:
         *buf = 136316674;
         v91 = v13;
@@ -1567,26 +1567,26 @@ LABEL_56:
         v94 = 1024;
         v95 = 938;
         v96 = 2048;
-        v97 = self;
+        selfCopy = self;
         v98 = 2048;
         v99 = connectionSocket;
         v100 = 2080;
-        v101 = v17;
+        v101 = uTF8String;
         v102 = 2080;
         *v103 = v18;
         _os_log_impl(&dword_24E50C000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] end of stream: %s", buf, 0x44u);
 LABEL_57:
-        v64 = self;
+        selfCopy2 = self;
 LABEL_82:
-        [(GKDiscoveryPeerConnection *)v64 syncCloseConnectionNow];
+        [(GKDiscoveryPeerConnection *)selfCopy2 syncCloseConnectionNow];
         goto LABEL_83;
       }
     }
 
     else
     {
-      v17 = "<nil>";
-      if (a4)
+      uTF8String = "<nil>";
+      if (error)
       {
         goto LABEL_9;
       }
@@ -1600,44 +1600,44 @@ LABEL_82:
   v9 = micro();
   [(GKSimpleTimer *)self->_heartbeatTimer fireIn:self->_heartbeatIntervalInSeconds fromNow:v9];
   [(GKSimpleTimer *)self->_heartbeatTimeoutTimer fireIn:self->_heartbeatIntervalInSeconds + self->_heartbeatIntervalInSeconds fromNow:v9];
-  [(NSMutableData *)self->_dataReceived appendData:a3];
-  v10 = [(NSMutableData *)self->_dataReceived bytes];
+  [(NSMutableData *)self->_dataReceived appendData:data];
+  bytes = [(NSMutableData *)self->_dataReceived bytes];
   v11 = [(NSMutableData *)self->_dataReceived length];
-  v89 = self;
+  selfCopy3 = self;
   if (v11 >= 0x10)
   {
     p_messageReceiptHandlerHoldingQueue = &self->_messageReceiptHandlerHoldingQueue;
     p_messageReceiptHandlerList = &self->_messageReceiptHandlerList;
     while (1)
     {
-      v19 = *v10;
-      v20 = *(v10 + 3);
-      v21 = *(v10 + 2);
-      v22 = bswap32(*(v10 + 1));
-      v23 = *(v10 + 12);
-      v24 = *(v10 + 13);
-      v25 = *(v10 + 14);
-      v26 = *(v10 + 15);
+      v19 = *bytes;
+      v20 = *(bytes + 3);
+      v21 = *(bytes + 2);
+      v22 = bswap32(*(bytes + 1));
+      v23 = *(bytes + 12);
+      v24 = *(bytes + 13);
+      v25 = *(bytes + 14);
+      v26 = *(bytes + 15);
       if (+[GKDiscoveryPeerConnection receiveDataLimit]< v22)
       {
         v8 = context;
-        self = v89;
+        self = selfCopy3;
         if (VRTraceGetErrorLogLevelForModule() >= 3)
         {
           v43 = VRTraceErrorLogLevelToCSTR();
           v44 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
           {
-            v45 = v89->_connectionSocket;
-            v46 = v89->_remoteServiceName;
+            v45 = selfCopy3->_connectionSocket;
+            v46 = selfCopy3->_remoteServiceName;
             if (v46)
             {
-              v47 = [[(NSString *)v46 description] UTF8String];
+              uTF8String2 = [[(NSString *)v46 description] UTF8String];
             }
 
             else
             {
-              v47 = "<nil>";
+              uTF8String2 = "<nil>";
             }
 
             v74 = +[GKDiscoveryPeerConnection receiveDataLimit];
@@ -1648,11 +1648,11 @@ LABEL_82:
             v94 = 1024;
             v95 = 851;
             v96 = 2048;
-            v97 = v89;
+            selfCopy = selfCopy3;
             v98 = 2048;
             v99 = v45;
             v100 = 2080;
-            v101 = v47;
+            v101 = uTF8String2;
             v102 = 1024;
             *v103 = v22;
             *&v103[4] = 1024;
@@ -1679,23 +1679,23 @@ LABEL_82:
       if (v28 && v22)
       {
         v8 = context;
-        v48 = v89;
+        v48 = selfCopy3;
         if (VRTraceGetErrorLogLevelForModule() >= 3)
         {
           v54 = VRTraceErrorLogLevelToCSTR();
           v50 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
           {
-            v55 = v89->_connectionSocket;
-            v56 = v89->_remoteServiceName;
+            v55 = selfCopy3->_connectionSocket;
+            v56 = selfCopy3->_remoteServiceName;
             if (v56)
             {
-              v57 = [[(NSString *)v56 description] UTF8String];
+              uTF8String3 = [[(NSString *)v56 description] UTF8String];
             }
 
             else
             {
-              v57 = "<nil>";
+              uTF8String3 = "<nil>";
             }
 
             *buf = 136316674;
@@ -1705,11 +1705,11 @@ LABEL_82:
             v94 = 1024;
             v95 = 867;
             v96 = 2048;
-            v97 = v89;
+            selfCopy = selfCopy3;
             v98 = 2048;
             v99 = v55;
             v100 = 2080;
-            v101 = v57;
+            v101 = uTF8String3;
             v102 = 1024;
             *v103 = v22;
             v75 = " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] receipt has body size %u";
@@ -1721,9 +1721,9 @@ LABEL_82:
       }
 
       v29 = bswap32(v21);
-      *(v10 + 2) = 0;
+      *(bytes + 2) = 0;
       v30 = v22 + 16;
-      v31 = crc32(0, v10, v22 + 16);
+      v31 = crc32(0, bytes, v22 + 16);
       if (VRTraceGetErrorLogLevelForModule() >= 8)
       {
         v87 = VRTraceErrorLogLevelToCSTR();
@@ -1733,20 +1733,20 @@ LABEL_82:
         {
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v83 = v89->_connectionSocket;
-            v34 = v89->_remoteServiceName;
+            v83 = selfCopy3->_connectionSocket;
+            v34 = selfCopy3->_remoteServiceName;
             if (v34)
             {
-              v78 = [[(NSString *)v34 description] UTF8String];
+              uTF8String4 = [[(NSString *)v34 description] UTF8String];
             }
 
             else
             {
-              v78 = "<nil>";
+              uTF8String4 = "<nil>";
             }
 
-            v82 = [(NSMutableArray *)v89->_messageReceiptHandlerHoldingQueue count];
-            v38 = [(NSMutableArray *)v89->_messageReceiptHandlerList count];
+            v82 = [(NSMutableArray *)selfCopy3->_messageReceiptHandlerHoldingQueue count];
+            v38 = [(NSMutableArray *)selfCopy3->_messageReceiptHandlerList count];
             *buf = 136318210;
             v91 = v87;
             v92 = 2080;
@@ -1754,7 +1754,7 @@ LABEL_82:
             v94 = 1024;
             v95 = 875;
             v96 = 2048;
-            v97 = v89;
+            selfCopy = selfCopy3;
             v98 = 2048;
             v99 = v83;
             v100 = 2080;
@@ -1779,16 +1779,16 @@ LABEL_82:
 
         else if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
         {
-          v84 = v89->_connectionSocket;
-          v35 = v89->_remoteServiceName;
-          v36 = "<nil>";
+          v84 = selfCopy3->_connectionSocket;
+          v35 = selfCopy3->_remoteServiceName;
+          uTF8String5 = "<nil>";
           if (v35)
           {
-            v36 = [[(NSString *)v35 description] UTF8String];
+            uTF8String5 = [[(NSString *)v35 description] UTF8String];
           }
 
-          v81 = [(NSMutableArray *)v89->_messageReceiptHandlerHoldingQueue count];
-          v37 = [(NSMutableArray *)v89->_messageReceiptHandlerList count];
+          v81 = [(NSMutableArray *)selfCopy3->_messageReceiptHandlerHoldingQueue count];
+          v37 = [(NSMutableArray *)selfCopy3->_messageReceiptHandlerList count];
           *buf = 136318210;
           v91 = v87;
           v92 = 2080;
@@ -1796,7 +1796,7 @@ LABEL_82:
           v94 = 1024;
           v95 = 875;
           v96 = 2048;
-          v97 = v89;
+          selfCopy = selfCopy3;
           v98 = 2048;
           v99 = v84;
           v100 = 2080;
@@ -1822,23 +1822,23 @@ LABEL_82:
       if (v29 != v31)
       {
         v8 = context;
-        v58 = v89;
+        v58 = selfCopy3;
         if (VRTraceGetErrorLogLevelForModule() >= 3)
         {
           v59 = VRTraceErrorLogLevelToCSTR();
           v60 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
           {
-            v61 = v89->_connectionSocket;
-            v62 = v89->_remoteServiceName;
+            v61 = selfCopy3->_connectionSocket;
+            v62 = selfCopy3->_remoteServiceName;
             if (v62)
             {
-              v63 = [[(NSString *)v62 description] UTF8String];
+              uTF8String6 = [[(NSString *)v62 description] UTF8String];
             }
 
             else
             {
-              v63 = "<nil>";
+              uTF8String6 = "<nil>";
             }
 
             *buf = 136316418;
@@ -1848,11 +1848,11 @@ LABEL_82:
             v94 = 1024;
             v95 = 877;
             v96 = 2048;
-            v97 = v89;
+            selfCopy = selfCopy3;
             v98 = 2048;
             v99 = v61;
             v100 = 2080;
-            v101 = v63;
+            v101 = uTF8String6;
             v76 = " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] invalid checksum";
 LABEL_77:
             _os_log_error_impl(&dword_24E50C000, v60, OS_LOG_TYPE_ERROR, v76, buf, 0x3Au);
@@ -1860,7 +1860,7 @@ LABEL_77:
         }
 
 LABEL_60:
-        v64 = v58;
+        selfCopy2 = v58;
         goto LABEL_82;
       }
 
@@ -1870,23 +1870,23 @@ LABEL_60:
         if ((v39 != 2100 || (v40 = p_messageReceiptHandlerHoldingQueue, !-[NSMutableArray count](*p_messageReceiptHandlerHoldingQueue, "count"))) && (v40 = p_messageReceiptHandlerList, !-[NSMutableArray count](*p_messageReceiptHandlerList, "count")) || (v41 = [*v40 objectAtIndexedSubscript:0], objc_msgSend(*v40, "removeObjectAtIndex:", 0), !v41))
         {
           v8 = context;
-          v58 = v89;
+          v58 = selfCopy3;
           if (VRTraceGetErrorLogLevelForModule() >= 3)
           {
             v65 = VRTraceErrorLogLevelToCSTR();
             v60 = *MEMORY[0x277CE5818];
             if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
             {
-              v71 = v89->_connectionSocket;
-              v72 = v89->_remoteServiceName;
+              v71 = selfCopy3->_connectionSocket;
+              v72 = selfCopy3->_remoteServiceName;
               if (v72)
               {
-                v73 = [[(NSString *)v72 description] UTF8String];
+                uTF8String7 = [[(NSString *)v72 description] UTF8String];
               }
 
               else
               {
-                v73 = "<nil>";
+                uTF8String7 = "<nil>";
               }
 
               *buf = 136316418;
@@ -1896,11 +1896,11 @@ LABEL_60:
               v94 = 1024;
               v95 = 894;
               v96 = 2048;
-              v97 = v89;
+              selfCopy = selfCopy3;
               v98 = 2048;
               v99 = v71;
               v100 = 2080;
-              v101 = v73;
+              v101 = uTF8String7;
               v76 = " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] message receipt has no matching handler";
               goto LABEL_77;
             }
@@ -1915,23 +1915,23 @@ LABEL_60:
         {
           ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
           v8 = context;
-          v48 = v89;
+          v48 = selfCopy3;
           if (ErrorLogLevelForModule >= 3)
           {
             v67 = VRTraceErrorLogLevelToCSTR();
             v50 = *MEMORY[0x277CE5818];
             if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
             {
-              v68 = v89->_connectionSocket;
-              v69 = v89->_remoteServiceName;
+              v68 = selfCopy3->_connectionSocket;
+              v69 = selfCopy3->_remoteServiceName;
               if (v69)
               {
-                v70 = [[(NSString *)v69 description] UTF8String];
+                uTF8String8 = [[(NSString *)v69 description] UTF8String];
               }
 
               else
               {
-                v70 = "<nil>";
+                uTF8String8 = "<nil>";
               }
 
               *buf = 136316674;
@@ -1941,11 +1941,11 @@ LABEL_60:
               v94 = 1024;
               v95 = 902;
               v96 = 2048;
-              v97 = v89;
+              selfCopy = selfCopy3;
               v98 = 2048;
               v99 = v68;
               v100 = 2080;
-              v101 = v70;
+              v101 = uTF8String8;
               v102 = 1024;
               *v103 = v27;
               v75 = " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] unexpected sequence number [%d]";
@@ -1959,10 +1959,10 @@ LABEL_60:
 
       else
       {
-        -[GKDiscoveryPeerConnection syncProcessMessage:data:sequenceNumber:](v89, "syncProcessMessage:data:sequenceNumber:", v39, [MEMORY[0x277CBEA90] dataWithBytes:v10 + 8 length:v22], v27);
+        -[GKDiscoveryPeerConnection syncProcessMessage:data:sequenceNumber:](selfCopy3, "syncProcessMessage:data:sequenceNumber:", v39, [MEMORY[0x277CBEA90] dataWithBytes:bytes + 8 length:v22], v27);
       }
 
-      v10 = (v10 + v30);
+      bytes = (bytes + v30);
       v11 -= v30;
       if (v11 <= 0xF)
       {
@@ -1971,23 +1971,23 @@ LABEL_60:
     }
 
     v8 = context;
-    v48 = v89;
+    v48 = selfCopy3;
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
       v49 = VRTraceErrorLogLevelToCSTR();
       v50 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
       {
-        v51 = v89->_connectionSocket;
-        v52 = v89->_remoteServiceName;
+        v51 = selfCopy3->_connectionSocket;
+        v52 = selfCopy3->_remoteServiceName;
         if (v52)
         {
-          v53 = [[(NSString *)v52 description] UTF8String];
+          uTF8String9 = [[(NSString *)v52 description] UTF8String];
         }
 
         else
         {
-          v53 = "<nil>";
+          uTF8String9 = "<nil>";
         }
 
         *buf = 136316674;
@@ -1997,11 +1997,11 @@ LABEL_60:
         v94 = 1024;
         v95 = 861;
         v96 = 2048;
-        v97 = v89;
+        selfCopy = selfCopy3;
         v98 = 2048;
         v99 = v51;
         v100 = 2080;
-        v101 = v53;
+        v101 = uTF8String9;
         v102 = 1024;
         *v103 = v27;
         v75 = " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] invalidSequenceNumber [%u]";
@@ -2011,16 +2011,16 @@ LABEL_80:
     }
 
 LABEL_81:
-    v64 = v48;
+    selfCopy2 = v48;
     goto LABEL_82;
   }
 
 LABEL_3:
-  v12 = [(NSMutableData *)v89->_dataReceived length];
+  v12 = [(NSMutableData *)selfCopy3->_dataReceived length];
   v8 = context;
   if (v12 != v11)
   {
-    [(NSMutableData *)v89->_dataReceived replaceBytesInRange:0 withBytes:v12 - v11 length:0, 0];
+    [(NSMutableData *)selfCopy3->_dataReceived replaceBytesInRange:0 withBytes:v12 - v11 length:0, 0];
   }
 
 LABEL_83:
@@ -2268,12 +2268,12 @@ uint64_t __39__GKDiscoveryPeerConnection_invalidate__block_invoke(uint64_t a1)
       remoteServiceName = self->_remoteServiceName;
       if (remoteServiceName)
       {
-        v7 = [[(NSString *)remoteServiceName description] UTF8String];
+        uTF8String = [[(NSString *)remoteServiceName description] UTF8String];
       }
 
       else
       {
-        v7 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       *buf = 136316418;
@@ -2283,11 +2283,11 @@ uint64_t __39__GKDiscoveryPeerConnection_invalidate__block_invoke(uint64_t a1)
       v18 = 1024;
       v19 = 1020;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2048;
       v23 = connectionSocket;
       v24 = 2080;
-      v25 = v7;
+      v25 = uTF8String;
       _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] deallocating peerConnection object", buf, 0x3Au);
     }
   }
@@ -2321,15 +2321,15 @@ uint64_t __39__GKDiscoveryPeerConnection_invalidate__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4
+- (void)sendData:(id)data withCompletionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (data)
   {
-    v7 = [a3 length];
+    v7 = [data length];
     if (+[GKDiscoveryPeerConnection sendDataLimit]>= v7)
     {
-      v12 = [a4 copy];
+      v12 = [handler copy];
       syncQueue = self->_syncQueue;
       if (!syncQueue)
       {
@@ -2341,7 +2341,7 @@ uint64_t __39__GKDiscoveryPeerConnection_invalidate__block_invoke(uint64_t a1)
       block[2] = __60__GKDiscoveryPeerConnection_sendData_withCompletionHandler___block_invoke;
       block[3] = &unk_2796833B0;
       block[4] = self;
-      block[5] = a3;
+      block[5] = data;
       block[6] = v12;
       dispatch_async(syncQueue, block);
     }
@@ -2358,12 +2358,12 @@ uint64_t __39__GKDiscoveryPeerConnection_invalidate__block_invoke(uint64_t a1)
           remoteServiceName = self->_remoteServiceName;
           if (remoteServiceName)
           {
-            v17 = [[(NSString *)remoteServiceName description] UTF8String];
+            uTF8String = [[(NSString *)remoteServiceName description] UTF8String];
           }
 
           else
           {
-            v17 = "<nil>";
+            uTF8String = "<nil>";
           }
 
           *buf = 136316674;
@@ -2373,11 +2373,11 @@ uint64_t __39__GKDiscoveryPeerConnection_invalidate__block_invoke(uint64_t a1)
           v25 = 1024;
           v26 = 1055;
           v27 = 2048;
-          v28 = self;
+          selfCopy = self;
           v29 = 2048;
           v30 = connectionSocket;
           v31 = 2080;
-          v32 = v17;
+          v32 = uTF8String;
           v33 = 1024;
           v34 = v7;
           _os_log_error_impl(&dword_24E50C000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d ptr [%p] socketPtr [%p] remote [%s] message too big to send (length=%u)", buf, 0x40u);
@@ -2386,7 +2386,7 @@ uint64_t __39__GKDiscoveryPeerConnection_invalidate__block_invoke(uint64_t a1)
 
       v19 = *MEMORY[0x277CCA450];
       v20 = @"Message is too big to send";
-      (*(a4 + 2))(a4, [MEMORY[0x277CCA9B8] errorWithDomain:@"GKDiscoveryPeerConnection" code:-6 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v20, &v19, 1)}]);
+      (*(handler + 2))(handler, [MEMORY[0x277CCA9B8] errorWithDomain:@"GKDiscoveryPeerConnection" code:-6 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v20, &v19, 1)}]);
     }
 
     v14 = *MEMORY[0x277D85DE8];
@@ -2394,10 +2394,10 @@ uint64_t __39__GKDiscoveryPeerConnection_invalidate__block_invoke(uint64_t a1)
 
   else
   {
-    v10 = *(a4 + 2);
+    v10 = *(handler + 2);
     v11 = *MEMORY[0x277D85DE8];
 
-    v10(a4, 0);
+    v10(handler, 0);
   }
 }
 

@@ -13,7 +13,7 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 subviews];
+    subviews = [v3 subviews];
     UIAXFrameForElements();
     v7 = v6;
     v9 = v8;

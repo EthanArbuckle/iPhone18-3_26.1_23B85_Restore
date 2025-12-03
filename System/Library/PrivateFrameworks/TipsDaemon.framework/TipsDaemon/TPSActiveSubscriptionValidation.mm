@@ -1,21 +1,21 @@
 @interface TPSActiveSubscriptionValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSActiveSubscriptionValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CEC398] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277CEC398] = [MEMORY[0x277CEC398] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__TPSActiveSubscriptionValidation_validateWithCompletion___block_invoke;
   v7[3] = &unk_2789B0FF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getAllIAPsForActiveAccountWithResultHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [mEMORY[0x277CEC398] getAllIAPsForActiveAccountWithResultHandler:v7];
 }
 
 void __58__TPSActiveSubscriptionValidation_validateWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,17 +1,17 @@
 @interface OKCircleGestureRecognizer
-- (void)initDebugLayer:(CGPoint)a3;
+- (void)initDebugLayer:(CGPoint)layer;
 - (void)reset;
 - (void)resetDebug;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)updateDebug:(CGPoint)a3 angle:(double)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)updateDebug:(CGPoint)debug angle:(double)angle;
 @end
 
 @implementation OKCircleGestureRecognizer
 
-- (void)initDebugLayer:(CGPoint)a3
+- (void)initDebugLayer:(CGPoint)layer
 {
   if (!self->_roundLayer)
   {
@@ -44,13 +44,13 @@
   [v4 addSublayer:originLayer];
 }
 
-- (void)updateDebug:(CGPoint)a3 angle:(double)a4
+- (void)updateDebug:(CGPoint)debug angle:(double)angle
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = sqrt((self->_origin.x - a3.x) * (self->_origin.x - a3.x) + (self->_origin.y - a3.y) * (self->_origin.y - a3.y));
-  -[CAShapeLayer setPath:](self->_roundLayer, "setPath:", [objc_msgSend(MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:a3.x startAngle:a3.y endAngle:v8 clockwise:{0.0, 360.0), "CGPath"}]);
-  v9 = __sincos_stret(a4);
+  y = debug.y;
+  x = debug.x;
+  v8 = sqrt((self->_origin.x - debug.x) * (self->_origin.x - debug.x) + (self->_origin.y - debug.y) * (self->_origin.y - debug.y));
+  -[CAShapeLayer setPath:](self->_roundLayer, "setPath:", [objc_msgSend(MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:debug.x startAngle:debug.y endAngle:v8 clockwise:{0.0, 360.0), "CGPath"}]);
+  v9 = __sincos_stret(angle);
   v10 = [objc_msgSend(MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:x + v8 * v9.__cosval startAngle:y + v8 * v9.__sinval endAngle:20.0 clockwise:{0.0, 360.0), "CGPath"}];
   pointLayer = self->_pointLayer;
 
@@ -73,14 +73,14 @@
   self->_diffenceProgress = 0.0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v15.receiver = self;
   v15.super_class = OKCircleGestureRecognizer;
-  [(OKCircleGestureRecognizer *)&v15 touchesBegan:a3 withEvent:a4];
-  if ([a3 count] == 1)
+  [(OKCircleGestureRecognizer *)&v15 touchesBegan:began withEvent:event];
+  if ([began count] == 1)
   {
-    [objc_msgSend(a3 "anyObject")];
+    [objc_msgSend(began "anyObject")];
     self->_origin.x = v6;
     self->_origin.y = v7;
     [(OKCircleGestureRecognizer *)self setState:1];
@@ -88,7 +88,7 @@
     v9 = v8 * 0.5;
     [-[OKCircleGestureRecognizer view](self "view")];
     v11 = v10 * 0.5;
-    [objc_msgSend(a3 "anyObject")];
+    [objc_msgSend(began "anyObject")];
     v14 = atan2(v12 - v11, v13 - v9);
     if (v14 * 3.14159265 / 180.0 < 0.0)
     {
@@ -107,18 +107,18 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v15.receiver = self;
   v15.super_class = OKCircleGestureRecognizer;
-  [(OKCircleGestureRecognizer *)&v15 touchesMoved:a3 withEvent:a4];
+  [(OKCircleGestureRecognizer *)&v15 touchesMoved:moved withEvent:event];
   if ([(OKCircleGestureRecognizer *)self state]!= 5)
   {
     [-[OKCircleGestureRecognizer view](self "view")];
     v7 = v6 * 0.5;
     [-[OKCircleGestureRecognizer view](self "view")];
     v9 = v8 * 0.5;
-    [objc_msgSend(a3 "anyObject")];
+    [objc_msgSend(moved "anyObject")];
     v12 = atan2(v10 - v9, v11 - v7);
     if (v12 * 3.14159265 / 180.0 < 0.0)
     {
@@ -152,19 +152,19 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = OKCircleGestureRecognizer;
-  [(OKCircleGestureRecognizer *)&v5 touchesEnded:a3 withEvent:a4];
+  [(OKCircleGestureRecognizer *)&v5 touchesEnded:ended withEvent:event];
   [(OKCircleGestureRecognizer *)self setState:3];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = OKCircleGestureRecognizer;
-  [(OKCircleGestureRecognizer *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(OKCircleGestureRecognizer *)&v5 touchesCancelled:cancelled withEvent:event];
   [(OKCircleGestureRecognizer *)self setState:4];
   [(OKCircleGestureRecognizer *)self reset];
 }

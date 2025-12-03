@@ -1,35 +1,35 @@
 @interface _MPCAccumulatorProgressiveResult
-+ (id)progressiveItemWithRequestedIdentifiers:(void *)a3 modelObject:(void *)a4 parentResult:(int)a5 piaTag:;
-- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)a3;
++ (id)progressiveItemWithRequestedIdentifiers:(void *)identifiers modelObject:(void *)object parentResult:(int)result piaTag:;
+- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)database;
 - (BOOL)isValid;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)nextLoadableStoreID;
 - (id)progressiveIdentifiers;
 - (id)resolvedIdentifiers;
-- (uint64_t)didStartLoadingStoreID:(uint64_t)a1;
+- (uint64_t)didStartLoadingStoreID:(uint64_t)d;
 - (uint64_t)isAnonymousGroup;
 - (uint64_t)isResolved;
-- (void)setIdentifiers:(id)a3 forDatabase:(id)a4;
-- (void)setToken:(id)a3 forDatabase:(id)a4;
+- (void)setIdentifiers:(id)identifiers forDatabase:(id)database;
+- (void)setToken:(id)token forDatabase:(id)database;
 @end
 
 @implementation _MPCAccumulatorProgressiveResult
 
-- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)a3
+- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)database
 {
   v4 = MEMORY[0x1E6970950];
-  v5 = a3;
-  v6 = [v4 sharedServerObjectDatabase];
+  databaseCopy = database;
+  sharedServerObjectDatabase = [v4 sharedServerObjectDatabase];
 
   v7 = 32;
-  if (v6 == v5)
+  if (sharedServerObjectDatabase == databaseCopy)
   {
     v7 = 16;
   }
 
   v8 = 40;
-  if (v6 == v5)
+  if (sharedServerObjectDatabase == databaseCopy)
   {
     v8 = 24;
   }
@@ -42,29 +42,29 @@
   return result;
 }
 
-- (void)setToken:(id)a3 forDatabase:(id)a4
+- (void)setToken:(id)token forDatabase:(id)database
 {
-  v4 = *&a3.var1;
-  var0 = a3.var0;
+  v4 = *&token.var1;
+  var0 = token.var0;
   v7 = MEMORY[0x1E6970950];
-  v8 = a4;
-  v9 = [v7 sharedServerObjectDatabase];
+  databaseCopy = database;
+  sharedServerObjectDatabase = [v7 sharedServerObjectDatabase];
 
   v10 = 32;
-  if (v9 == v8)
+  if (sharedServerObjectDatabase == databaseCopy)
   {
     v10 = 16;
   }
 
   v11 = 40;
-  if (v9 == v8)
+  if (sharedServerObjectDatabase == databaseCopy)
   {
     v11 = 24;
   }
 
   *(&self->super.isa + v10) = var0;
   v12 = 112;
-  if (v9 != v8)
+  if (sharedServerObjectDatabase != databaseCopy)
   {
     v12 = 113;
   }
@@ -73,62 +73,62 @@
   *(&self->super.isa + v12) = var0 != 0;
 }
 
-- (void)setIdentifiers:(id)a3 forDatabase:(id)a4
+- (void)setIdentifiers:(id)identifiers forDatabase:(id)database
 {
   v54 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifiersCopy = identifiers;
+  databaseCopy = database;
+  if (!identifiersCopy)
   {
     goto LABEL_34;
   }
 
   parentResult = self->_parentResult;
-  v10 = v7;
-  v11 = [v10 modelKind];
-  v12 = [v11 identityKind];
+  v10 = identifiersCopy;
+  modelKind = [v10 modelKind];
+  identityKind = [modelKind identityKind];
   if (parentResult)
   {
-    v13 = [MEMORY[0x1E6970778] identityKind];
-    if (v12 != v13)
+    identityKind2 = [MEMORY[0x1E6970778] identityKind];
+    if (identityKind != identityKind2)
     {
-      v14 = [v12 isEqual:v13];
+      v14 = [identityKind isEqual:identityKind2];
 
       if (v14)
       {
         goto LABEL_33;
       }
 
-      v11 = [v10 modelKind];
-      v12 = [v11 identityKind];
-      v13 = [MEMORY[0x1E6970728] identityKind];
-      if (v12 != v13)
+      modelKind = [v10 modelKind];
+      identityKind = [modelKind identityKind];
+      identityKind2 = [MEMORY[0x1E6970728] identityKind];
+      if (identityKind != identityKind2)
       {
-        v15 = [v12 isEqual:v13];
+        v15 = [identityKind isEqual:identityKind2];
 
         if (v15)
         {
           goto LABEL_33;
         }
 
-        v11 = [v10 modelKind];
-        v12 = [v11 identityKind];
-        v13 = [MEMORY[0x1E69707B0] identityKind];
-        if (v12 != v13)
+        modelKind = [v10 modelKind];
+        identityKind = [modelKind identityKind];
+        identityKind2 = [MEMORY[0x1E69707B0] identityKind];
+        if (identityKind != identityKind2)
         {
-          v16 = [v12 isEqual:v13];
+          v16 = [identityKind isEqual:identityKind2];
 
           if (v16)
           {
             goto LABEL_33;
           }
 
-          v11 = [v10 modelKind];
-          v12 = [v11 identityKind];
-          v13 = [MEMORY[0x1E69706F0] identityKind];
-          if (v12 != v13)
+          modelKind = [v10 modelKind];
+          identityKind = [modelKind identityKind];
+          identityKind2 = [MEMORY[0x1E69706F0] identityKind];
+          if (identityKind != identityKind2)
           {
-            v17 = [v12 isEqual:v13];
+            v17 = [identityKind isEqual:identityKind2];
 
             if (v17)
             {
@@ -136,50 +136,50 @@
             }
 
             v18 = v10;
-            v11 = [v18 modelKind];
-            v12 = [v11 identityKind];
-            v13 = [MEMORY[0x1E6970638] identityKind];
-            if (v12 != v13)
+            modelKind = [v18 modelKind];
+            identityKind = [modelKind identityKind];
+            identityKind2 = [MEMORY[0x1E6970638] identityKind];
+            if (identityKind != identityKind2)
             {
-              v19 = [v12 isEqual:v13];
+              v19 = [identityKind isEqual:identityKind2];
 
               if (v19)
               {
                 goto LABEL_33;
               }
 
-              v11 = [v18 modelKind];
-              v12 = [v11 identityKind];
-              v13 = [MEMORY[0x1E6970730] identityKind];
-              if (v12 != v13)
+              modelKind = [v18 modelKind];
+              identityKind = [modelKind identityKind];
+              identityKind2 = [MEMORY[0x1E6970730] identityKind];
+              if (identityKind != identityKind2)
               {
-                v20 = [v12 isEqual:v13];
+                v20 = [identityKind isEqual:identityKind2];
 
                 if (v20)
                 {
                   goto LABEL_33;
                 }
 
-                v11 = [v18 modelKind];
-                v12 = [v11 identityKind];
-                v13 = [MEMORY[0x1E6970758] identityKind];
-                if (v12 != v13)
+                modelKind = [v18 modelKind];
+                identityKind = [modelKind identityKind];
+                identityKind2 = [MEMORY[0x1E6970758] identityKind];
+                if (identityKind != identityKind2)
                 {
-                  v21 = [v12 isEqual:v13];
+                  v21 = [identityKind isEqual:identityKind2];
 
                   if ((v21 & 1) == 0)
                   {
-                    v11 = [v18 modelKind];
-                    v12 = [v11 identityKind];
-                    v13 = [MEMORY[0x1E6970690] identityKind];
-                    if (v12 != v13)
+                    modelKind = [v18 modelKind];
+                    identityKind = [modelKind identityKind];
+                    identityKind2 = [MEMORY[0x1E6970690] identityKind];
+                    if (identityKind != identityKind2)
                     {
-                      v22 = [v12 isEqual:v13];
+                      v22 = [identityKind isEqual:identityKind2];
 
                       if ((v22 & 1) == 0)
                       {
-                        v23 = _MPCLogCategoryPlayback();
-                        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+                        personalizedStore = _MPCLogCategoryPlayback();
+                        if (os_log_type_enabled(personalizedStore, OS_LOG_TYPE_ERROR))
                         {
                           piaTag = self->_piaTag;
                           v50 = 67109378;
@@ -188,7 +188,7 @@
                           v53 = v18;
                           v25 = "[SPIR:%{sonic:fourCC}u] setIdentifiers:forDatabase: | ignoring identifiers [unsupported modelKind] identifiers=%{public}@";
 LABEL_31:
-                          _os_log_impl(&dword_1C5C61000, v23, OS_LOG_TYPE_ERROR, v25, &v50, 0x12u);
+                          _os_log_impl(&dword_1C5C61000, personalizedStore, OS_LOG_TYPE_ERROR, v25, &v50, 0x12u);
                           goto LABEL_48;
                         }
 
@@ -217,63 +217,63 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v13 = [MEMORY[0x1E6970638] identityKind];
-  if (v12 == v13)
+  identityKind2 = [MEMORY[0x1E6970638] identityKind];
+  if (identityKind == identityKind2)
   {
     goto LABEL_32;
   }
 
-  v26 = [v12 isEqual:v13];
+  v26 = [identityKind isEqual:identityKind2];
 
   if (v26)
   {
     goto LABEL_33;
   }
 
-  v11 = [v10 modelKind];
-  v12 = [v11 identityKind];
-  v13 = [MEMORY[0x1E6970730] identityKind];
-  if (v12 == v13)
+  modelKind = [v10 modelKind];
+  identityKind = [modelKind identityKind];
+  identityKind2 = [MEMORY[0x1E6970730] identityKind];
+  if (identityKind == identityKind2)
   {
     goto LABEL_32;
   }
 
-  v27 = [v12 isEqual:v13];
+  v27 = [identityKind isEqual:identityKind2];
 
   if (v27)
   {
     goto LABEL_33;
   }
 
-  v11 = [v10 modelKind];
-  v12 = [v11 identityKind];
-  v13 = [MEMORY[0x1E6970758] identityKind];
-  if (v12 == v13)
+  modelKind = [v10 modelKind];
+  identityKind = [modelKind identityKind];
+  identityKind2 = [MEMORY[0x1E6970758] identityKind];
+  if (identityKind == identityKind2)
   {
     goto LABEL_32;
   }
 
-  v28 = [v12 isEqual:v13];
+  v28 = [identityKind isEqual:identityKind2];
 
   if (v28)
   {
     goto LABEL_33;
   }
 
-  v11 = [v10 modelKind];
-  v12 = [v11 identityKind];
-  v13 = [MEMORY[0x1E6970690] identityKind];
-  if (v12 == v13)
+  modelKind = [v10 modelKind];
+  identityKind = [modelKind identityKind];
+  identityKind2 = [MEMORY[0x1E6970690] identityKind];
+  if (identityKind == identityKind2)
   {
     goto LABEL_32;
   }
 
-  v29 = [v12 isEqual:v13];
+  v29 = [identityKind isEqual:identityKind2];
 
   if ((v29 & 1) == 0)
   {
-    v23 = _MPCLogCategoryPlayback();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    personalizedStore = _MPCLogCategoryPlayback();
+    if (os_log_type_enabled(personalizedStore, OS_LOG_TYPE_ERROR))
     {
       v30 = self->_piaTag;
       v50 = 67109378;
@@ -290,9 +290,9 @@ LABEL_48:
   }
 
 LABEL_34:
-  v31 = [MEMORY[0x1E6970950] sharedServerObjectDatabase];
+  mEMORY[0x1E6970950] = [MEMORY[0x1E6970950] sharedServerObjectDatabase];
 
-  if (v31 == v8)
+  if (mEMORY[0x1E6970950] == databaseCopy)
   {
     p_sodIdentifiers = &self->_sodIdentifiers;
   }
@@ -300,26 +300,26 @@ LABEL_34:
   else
   {
     p_sodIdentifiers = &self->_lodIdentifiers;
-    if (!v7 && self->_lodIdentifiers)
+    if (!identifiersCopy && self->_lodIdentifiers)
     {
       v33 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         v34 = self->_piaTag;
-        v35 = [(NSMutableArray *)self->_prioritizedStoreIDs msv_compactDescription];
+        msv_compactDescription = [(NSMutableArray *)self->_prioritizedStoreIDs msv_compactDescription];
         v50 = 67109378;
         v51 = v34;
         v52 = 2114;
-        v53 = v35;
+        v53 = msv_compactDescription;
         _os_log_impl(&dword_1C5C61000, v33, OS_LOG_TYPE_ERROR, "[SPIR:%{sonic:fourCC}u] setIdentifiers:forDatabase: | failing remaining prioritizedStoreIDs [LOD identifiers lost] prioritizedStoreIDs=%{public}@", &v50, 0x12u);
       }
 
       failedStoreIDs = self->_failedStoreIDs;
       if (!failedStoreIDs)
       {
-        v37 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v38 = self->_failedStoreIDs;
-        self->_failedStoreIDs = v37;
+        self->_failedStoreIDs = array;
 
         failedStoreIDs = self->_failedStoreIDs;
       }
@@ -329,23 +329,23 @@ LABEL_34:
     }
   }
 
-  objc_storeStrong(p_sodIdentifiers, a3);
+  objc_storeStrong(p_sodIdentifiers, identifiers);
   requestedIdentifiers = self->_requestedIdentifiers;
-  v40 = [MEMORY[0x1E6970550] emptyIdentifierSet];
+  emptyIdentifierSet = [MEMORY[0x1E6970550] emptyIdentifierSet];
 
-  if (requestedIdentifiers == v40)
+  if (requestedIdentifiers == emptyIdentifierSet)
   {
-    v41 = [v7 copyWithSource:@"XL-Accumulator-Related" block:&__block_literal_global_59];
+    v41 = [identifiersCopy copyWithSource:@"XL-Accumulator-Related" block:&__block_literal_global_59];
     v42 = self->_requestedIdentifiers;
     self->_requestedIdentifiers = v41;
 
     v43 = self->_requestedIdentifiers;
-    v23 = [(MPIdentifierSet *)v43 personalizedStore];
-    v44 = [v23 personID];
-    v45 = v44;
-    if (v44)
+    personalizedStore = [(MPIdentifierSet *)v43 personalizedStore];
+    personID = [personalizedStore personID];
+    v45 = personID;
+    if (personID)
     {
-      v46 = v44;
+      v46 = personID;
     }
 
     else
@@ -364,7 +364,7 @@ LABEL_34:
 LABEL_49:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_MPCAccumulatorProgressiveResult);
   v4->_piaTag = self->_piaTag;
@@ -435,28 +435,28 @@ LABEL_49:
     [v5 addObject:@"nil"];
   }
 
-  v7 = [(_MPCAccumulatorProgressiveResult *)&self->super.isa resolvedIdentifiers];
-  requestedIdentifiers = v7;
-  if (!v7)
+  resolvedIdentifiers = [(_MPCAccumulatorProgressiveResult *)&self->super.isa resolvedIdentifiers];
+  requestedIdentifiers = resolvedIdentifiers;
+  if (!resolvedIdentifiers)
   {
     requestedIdentifiers = self->_requestedIdentifiers;
   }
 
   v9 = requestedIdentifiers;
   v10 = @"?";
-  if (v9 == v7)
+  if (v9 == resolvedIdentifiers)
   {
     v10 = &stru_1F454A698;
   }
 
   v38 = v10;
-  v11 = [(MPIdentifierSet *)v9 modelKind];
-  v12 = NSStringFromClass([v11 modelClass]);
+  modelKind = [(MPIdentifierSet *)v9 modelKind];
+  v12 = NSStringFromClass([modelKind modelClass]);
 
-  v13 = [MEMORY[0x1E6970550] emptyIdentifierSet];
+  emptyIdentifierSet = [MEMORY[0x1E6970550] emptyIdentifierSet];
 
   v40 = v9;
-  if (v9 == v13)
+  if (v9 == emptyIdentifierSet)
   {
 
     v12 = @"EMPTY";
@@ -497,82 +497,82 @@ LABEL_49:
   }
 
   v27 = MEMORY[0x1E696AEC0];
-  v28 = [(MPIdentifierSet *)self->_requestedIdentifiers sources];
-  v29 = [v28 lastObject];
+  sources = [(MPIdentifierSet *)self->_requestedIdentifiers sources];
+  lastObject = [sources lastObject];
   v30 = [v14 componentsJoinedByString:@" "];
   v37 = v4;
   [v4 componentsJoinedByString:{@", "}];
   v32 = v31 = v14;
   [v5 componentsJoinedByString:@"+"];
   v33 = v36 = v5;
-  v34 = [v27 stringWithFormat:@"<_MPCProgressiveResult %p (%@%@) sources.last='%@' %@ tokens=[%@] resolvedIDs=%@>", self, v39, v38, v29, v30, v32, v33];
+  v34 = [v27 stringWithFormat:@"<_MPCProgressiveResult %p (%@%@) sources.last='%@' %@ tokens=[%@] resolvedIDs=%@>", self, v39, v38, lastObject, v30, v32, v33];
 
   return v34;
 }
 
 - (id)resolvedIdentifiers
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1[6] modelKind];
-    v4 = [v3 identityKind];
-    v5 = [MEMORY[0x1E6970690] identityKind];
-    v6 = v5;
-    if (v4 == v5)
+    selfCopy = self;
+    modelKind = [self[6] modelKind];
+    identityKind = [modelKind identityKind];
+    identityKind2 = [MEMORY[0x1E6970690] identityKind];
+    v6 = identityKind2;
+    if (identityKind == identityKind2)
     {
     }
 
     else
     {
-      v7 = [v4 isEqual:v5];
+      v7 = [identityKind isEqual:identityKind2];
 
       if ((v7 & 1) == 0)
       {
-        v8 = v2[12];
+        v8 = selfCopy[12];
         if (v8 && ([v8 isPlaceholder] & 1) == 0)
         {
-          v11 = v2[12];
-          if (v2[13])
+          v11 = selfCopy[12];
+          if (selfCopy[13])
           {
-            a1 = [v11 unionSet:?];
+            self = [v11 unionSet:?];
           }
 
           else
           {
-            a1 = v11;
+            self = v11;
           }
 
           goto LABEL_10;
         }
 
-        v9 = v2[13];
+        v9 = selfCopy[13];
 LABEL_9:
-        a1 = v9;
+        self = v9;
 LABEL_10:
         v1 = vars8;
         goto LABEL_11;
       }
     }
 
-    v9 = v2[6];
+    v9 = selfCopy[6];
     goto LABEL_9;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
-+ (id)progressiveItemWithRequestedIdentifiers:(void *)a3 modelObject:(void *)a4 parentResult:(int)a5 piaTag:
++ (id)progressiveItemWithRequestedIdentifiers:(void *)identifiers modelObject:(void *)object parentResult:(int)result piaTag:
 {
-  v9 = a4;
-  v10 = a3;
+  objectCopy = object;
+  identifiersCopy = identifiers;
   v11 = a2;
   v12 = objc_alloc(objc_opt_self());
   v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v14 = identifiersCopy;
+  v15 = objectCopy;
   if (v12)
   {
     v25.receiver = v12;
@@ -582,12 +582,12 @@ LABEL_11:
     if (v16)
     {
       objc_storeStrong(v16 + 6, a2);
-      v17 = [v13 personalizedStore];
-      v18 = [v17 personID];
-      v19 = v18;
-      if (v18)
+      personalizedStore = [v13 personalizedStore];
+      personID = [personalizedStore personID];
+      v19 = personID;
+      if (personID)
       {
-        v20 = v18;
+        v20 = personID;
       }
 
       else
@@ -600,9 +600,9 @@ LABEL_11:
       v23 = v12[8];
       v12[8] = v22;
 
-      objc_storeStrong(v12 + 15, a3);
-      objc_storeStrong(v12 + 7, a4);
-      *(v12 + 2) = a5;
+      objc_storeStrong(v12 + 15, identifiers);
+      objc_storeStrong(v12 + 7, object);
+      *(v12 + 2) = result;
     }
   }
 
@@ -611,22 +611,22 @@ LABEL_11:
 
 - (uint64_t)isAnonymousGroup
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 48) modelKind];
-  v2 = [v1 identityKind];
-  v3 = [MEMORY[0x1E6970690] identityKind];
-  if (v2 == v3)
+  modelKind = [*(self + 48) modelKind];
+  identityKind = [modelKind identityKind];
+  identityKind2 = [MEMORY[0x1E6970690] identityKind];
+  if (identityKind == identityKind2)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v2 isEqual:v3];
+    v4 = [identityKind isEqual:identityKind2];
   }
 
   return v4;
@@ -646,34 +646,34 @@ LABEL_11:
 
 - (id)progressiveIdentifiers
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[12];
-    if (v2 && ![v2 isPlaceholder] || v1[13] || objc_msgSend(v1[8], "count"))
+    v2 = self[12];
+    if (v2 && ![v2 isPlaceholder] || selfCopy[13] || objc_msgSend(selfCopy[8], "count"))
     {
-      v3 = [(_MPCAccumulatorProgressiveResult *)v1 resolvedIdentifiers];
-      v4 = v3;
-      if (v3)
+      resolvedIdentifiers = [(_MPCAccumulatorProgressiveResult *)selfCopy resolvedIdentifiers];
+      v4 = resolvedIdentifiers;
+      if (resolvedIdentifiers)
       {
-        v5 = v3;
+        v5 = resolvedIdentifiers;
       }
 
       else
       {
-        v5 = [v1[6] copyWithSource:@"XL-Accumulator-Placeholder" block:&__block_literal_global_10544];
+        v5 = [selfCopy[6] copyWithSource:@"XL-Accumulator-Placeholder" block:&__block_literal_global_10544];
       }
 
-      v1 = v5;
+      selfCopy = v5;
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)isResolved
@@ -695,31 +695,31 @@ LABEL_11:
 
 - (id)nextLoadableStoreID
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[8] firstObject];
+    self = [self[8] firstObject];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)didStartLoadingStoreID:(uint64_t)a1
+- (uint64_t)didStartLoadingStoreID:(uint64_t)d
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (d)
   {
     v9 = v3;
-    [*(a1 + 64) removeObject:v3];
-    v5 = *(a1 + 72);
+    [*(d + 64) removeObject:v3];
+    v5 = *(d + 72);
     if (!v5)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
-      v7 = *(a1 + 72);
-      *(a1 + 72) = v6;
+      array = [MEMORY[0x1E695DF70] array];
+      v7 = *(d + 72);
+      *(d + 72) = array;
 
-      v5 = *(a1 + 72);
+      v5 = *(d + 72);
     }
 
     v3 = [v5 addObject:v9];

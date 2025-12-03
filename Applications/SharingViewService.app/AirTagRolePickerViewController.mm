@@ -1,7 +1,7 @@
 @interface AirTagRolePickerViewController
-- (_TtC18SharingViewService30AirTagRolePickerViewController)initWithContentView:(id)a3;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (_TtC18SharingViewService30AirTagRolePickerViewController)initWithContentView:(id)view;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 - (void)viewDidLoad;
 @end
 
@@ -9,24 +9,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008D29C();
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   v7 = sub_10008D9B8();
 
   return v7;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = self;
-  sub_10008DA70(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10008DA70(row);
   v10 = v9;
 
   if (v10)
@@ -42,13 +42,13 @@
   return v11;
 }
 
-- (_TtC18SharingViewService30AirTagRolePickerViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService30AirTagRolePickerViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
   v7.receiver = self;
   v7.super_class = ObjectType;
-  return [(AirTagRolePickerViewController *)&v7 initWithContentView:a3];
+  return [(AirTagRolePickerViewController *)&v7 initWithContentView:view];
 }
 
 @end

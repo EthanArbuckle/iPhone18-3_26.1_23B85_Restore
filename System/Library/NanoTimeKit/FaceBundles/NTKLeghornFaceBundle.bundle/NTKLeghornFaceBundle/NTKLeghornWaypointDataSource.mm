@@ -4,11 +4,11 @@
 - (NTKLeghornWaypointDataSource)init;
 - (id)_allWaypoints;
 - (void)_restartUpdates;
-- (void)_setAllWaypoints:(id)a3;
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6;
+- (void)_setAllWaypoints:(id)waypoints;
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion;
 - (void)start;
 - (void)stop;
-- (void)storeDidChangeWithCategories:(unint64_t)a3;
+- (void)storeDidChangeWithCategories:(unint64_t)categories;
 @end
 
 @implementation NTKLeghornWaypointDataSource
@@ -53,8 +53,8 @@
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_27E1DF030);
   if (!WeakRetained)
   {
@@ -62,7 +62,7 @@
     objc_storeWeak(&qword_27E1DF030, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
@@ -99,34 +99,34 @@
 
 - (id)_allWaypoints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_allWaypoints;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_allWaypoints;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setAllWaypoints:(id)a3
+- (void)_setAllWaypoints:(id)waypoints
 {
-  v4 = a3;
+  waypointsCopy = waypoints;
   obj = self;
   objc_sync_enter(obj);
   allWaypoints = obj->_allWaypoints;
-  obj->_allWaypoints = v4;
+  obj->_allWaypoints = waypointsCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)storeDidChangeWithCategories:(unint64_t)a3
+- (void)storeDidChangeWithCategories:(unint64_t)categories
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (categories)
   {
     v5 = NTKFoghornFaceBundleLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = NTKLeghornWaypointCategoryString(a3, v6, v7);
+      v8 = NTKLeghornWaypointCategoryString(categories, v6, v7);
       v11 = 136315394;
       v12 = "[NTKLeghornWaypointDataSource storeDidChangeWithCategories:]";
       v13 = 2112;
@@ -210,20 +210,20 @@ LABEL_18:
   return v5;
 }
 
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  locationCopy = location;
+  filterCopy = filter;
+  completionCopy = completion;
   v13 = self->_currentQuery;
-  objc_msgSend_coordinate(v10, v14, v15);
-  v18 = objc_msgSend_queryWithCenterCoordinate_radius_poiFilter_(NTKLeghornWaypointQuery, v16, v17, v11);
+  objc_msgSend_coordinate(locationCopy, v14, v15);
+  v18 = objc_msgSend_queryWithCenterCoordinate_radius_poiFilter_(NTKLeghornWaypointQuery, v16, v17, filterCopy);
   if (objc_msgSend_matchesQuery_(v13, v19, v20, v18))
   {
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_22;
@@ -232,19 +232,19 @@ LABEL_18:
   v21 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = objc_msgSend_includedCategories(v11, v22, v23);
+    v24 = objc_msgSend_includedCategories(filterCopy, v22, v23);
     v27 = NTKLeghornWaypointCategoryString(v24, v25, v26);
     *buf = 136315650;
     v55 = "[NTKLeghornWaypointDataSource setQueryCenterLocation:radius:poiFilter:completion:]";
     v56 = 2048;
-    v57 = a4;
+    radiusCopy = radius;
     v58 = 2112;
     v59 = v27;
     _os_log_impl(&dword_23BEB1000, v21, OS_LOG_TYPE_DEFAULT, "%s: new query for radius = %fm, categories = %@", buf, 0x20u);
   }
 
   objc_storeStrong(&self->_currentQuery, v18);
-  if (!v12)
+  if (!completionCopy)
   {
     v29 = 0;
     goto LABEL_10;
@@ -269,7 +269,7 @@ LABEL_11:
   v52[3] = &unk_278BA0F08;
   v32 = v29;
   v53 = v32;
-  objc_msgSend_setQueryCenterLocation_radius_poiFilter_completion_(compassWaypointManager, v33, a4, v10, v11, v52);
+  objc_msgSend_setQueryCenterLocation_radius_poiFilter_completion_(compassWaypointManager, v33, radius, locationCopy, filterCopy, v52);
   if ((v30 & 1) == 0)
   {
     dispatch_group_enter(v32);
@@ -282,7 +282,7 @@ LABEL_11:
   v50[3] = &unk_278BA0F08;
   v35 = v32;
   v51 = v35;
-  objc_msgSend_setQueryCenterLocation_radius_poiFilter_completion_(coreRoutineManager, v36, a4, v10, v11, v50);
+  objc_msgSend_setQueryCenterLocation_radius_poiFilter_completion_(coreRoutineManager, v36, radius, locationCopy, filterCopy, v50);
   if ((v30 & 1) == 0)
   {
     dispatch_group_enter(v35);
@@ -295,7 +295,7 @@ LABEL_11:
   v48[3] = &unk_278BA0F08;
   v38 = v35;
   v49 = v38;
-  objc_msgSend_setQueryCenterLocation_radius_poiFilter_completion_(mapsSyncManager, v39, a4, v10, v11, v48);
+  objc_msgSend_setQueryCenterLocation_radius_poiFilter_completion_(mapsSyncManager, v39, radius, locationCopy, filterCopy, v48);
   if ((v30 & 1) == 0)
   {
     dispatch_group_enter(v38);
@@ -308,12 +308,12 @@ LABEL_11:
   v46[3] = &unk_278BA0F08;
   v41 = v38;
   v47 = v41;
-  objc_msgSend_setQueryCenterLocation_radius_poiFilter_completion_(mapsSearchManager, v42, a4, v10, v11, v46);
+  objc_msgSend_setQueryCenterLocation_radius_poiFilter_completion_(mapsSearchManager, v42, radius, locationCopy, filterCopy, v46);
   if (v30)
   {
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -324,7 +324,7 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = sub_23BEBD340;
     block[3] = &unk_278BA0F30;
-    v45 = v12;
+    v45 = completionCopy;
     dispatch_group_notify(v41, workQueue, block);
   }
 

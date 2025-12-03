@@ -1,5 +1,5 @@
 @interface PromiseCardViewController
-- (_TtC5TeaUI25PromiseCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI25PromiseCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PromiseCardViewController.viewDidLoad()();
 }
 
-- (_TtC5TeaUI25PromiseCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI25PromiseCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   PromiseCardViewController.init(nibName:bundle:)();
 }
 

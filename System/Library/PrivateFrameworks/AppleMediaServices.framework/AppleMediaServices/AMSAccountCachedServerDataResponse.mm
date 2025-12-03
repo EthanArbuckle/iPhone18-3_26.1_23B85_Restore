@@ -1,27 +1,27 @@
 @interface AMSAccountCachedServerDataResponse
-- (AMSAccountCachedServerDataResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSAccountCachedServerDataResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSAccountCachedServerDataResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSAccountCachedServerDataResponse *)self allAccountResults];
-  [v4 encodeObject:v5 forKey:@"kAllAccountData"];
+  coderCopy = coder;
+  allAccountResults = [(AMSAccountCachedServerDataResponse *)self allAccountResults];
+  [coderCopy encodeObject:allAccountResults forKey:@"kAllAccountData"];
 }
 
-- (AMSAccountCachedServerDataResponse)initWithCoder:(id)a3
+- (AMSAccountCachedServerDataResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AMSAccountCachedServerDataResponse;
   v5 = [(AMSAccountCachedServerDataResponse *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"kAllAccountData"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"kAllAccountData"];
     allAccountResults = v5->_allAccountResults;
     v5->_allAccountResults = v7;
   }

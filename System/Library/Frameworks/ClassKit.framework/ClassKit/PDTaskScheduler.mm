@@ -1,6 +1,6 @@
 @interface PDTaskScheduler
 - (PDTaskScheduler)init;
-- (void)createTaskSchedulerRegistration:(id)a3;
+- (void)createTaskSchedulerRegistration:(id)registration;
 @end
 
 @implementation PDTaskScheduler
@@ -33,46 +33,46 @@
   return v3;
 }
 
-- (void)createTaskSchedulerRegistration:(id)a3
+- (void)createTaskSchedulerRegistration:(id)registration
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 isRepeating])
+  registrationCopy = registration;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [registrationCopy isRepeating])
   {
     v5 = +[BGSystemTaskScheduler sharedScheduler];
-    v6 = [v4 identifier];
-    v7 = [(PDTaskScheduler *)self schedulerQueue];
+    identifier = [registrationCopy identifier];
+    schedulerQueue = [(PDTaskScheduler *)self schedulerQueue];
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_10006E488;
     v24 = &unk_100203B90;
     v8 = &v25;
-    v25 = v4;
+    v25 = registrationCopy;
     v9 = &v21;
   }
 
   else
   {
     v5 = +[BGSystemTaskScheduler sharedScheduler];
-    v6 = [v4 identifier];
-    v7 = [(PDTaskScheduler *)self schedulerQueue];
+    identifier = [registrationCopy identifier];
+    schedulerQueue = [(PDTaskScheduler *)self schedulerQueue];
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_10006E494;
     v19 = &unk_100203BB8;
     v8 = &v20;
-    v20 = v4;
+    v20 = registrationCopy;
     v9 = &v16;
   }
 
-  v10 = [v5 registerForTaskWithIdentifier:v6 usingQueue:v7 launchHandler:{v9, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25}];
+  v10 = [v5 registerForTaskWithIdentifier:identifier usingQueue:schedulerQueue launchHandler:{v9, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25}];
 
   CLSInitLog();
   v11 = CLSLogDefault;
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEBUG))
   {
     v12 = v11;
-    v13 = [v4 identifier];
-    v14 = v13;
+    identifier2 = [registrationCopy identifier];
+    v14 = identifier2;
     v15 = @"unsuccessful";
     if (v10)
     {
@@ -80,7 +80,7 @@
     }
 
     *buf = 138412546;
-    v27 = v13;
+    v27 = identifier2;
     v28 = 2112;
     v29 = v15;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Setting up task registration for '%@' %@", buf, 0x16u);

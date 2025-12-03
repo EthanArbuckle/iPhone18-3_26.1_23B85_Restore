@@ -1,18 +1,18 @@
 @interface CKPendingMomentSharePhotoStackBalloonView
-- (CKPendingMomentSharePhotoStackBalloonView)initWithFrame:(CGRect)a3;
+- (CKPendingMomentSharePhotoStackBalloonView)initWithFrame:(CGRect)frame;
 - (id)_createStackView;
-- (void)configureForMessagePart:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)configureForMessagePart:(id)part;
+- (void)handleTap:(id)tap;
 - (void)prepareForDisplay;
 @end
 
 @implementation CKPendingMomentSharePhotoStackBalloonView
 
-- (CKPendingMomentSharePhotoStackBalloonView)initWithFrame:(CGRect)a3
+- (CKPendingMomentSharePhotoStackBalloonView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKPendingMomentSharePhotoStackBalloonView;
-  v3 = [(CKBalloonView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBalloonView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v3 action:sel_handleTap_];
@@ -27,17 +27,17 @@
   v8.receiver = self;
   v8.super_class = CKPendingMomentSharePhotoStackBalloonView;
   [(CKGenericPhotoStackBalloonView *)&v8 prepareForDisplay];
-  v3 = [(CKGenericPhotoStackBalloonView *)self dataSourceManager];
-  v4 = [v3 momentShare];
-  v5 = v4;
-  if (v4)
+  dataSourceManager = [(CKGenericPhotoStackBalloonView *)self dataSourceManager];
+  momentShare = [dataSourceManager momentShare];
+  v5 = momentShare;
+  if (momentShare)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62__CKPendingMomentSharePhotoStackBalloonView_prepareForDisplay__block_invoke;
     v6[3] = &unk_1E72EF818;
     v6[4] = self;
-    v7 = v4;
+    v7 = momentShare;
     [v7 forceSyncMomentShareWithCompletion:v6];
   }
 }
@@ -65,43 +65,43 @@ void __62__CKPendingMomentSharePhotoStackBalloonView_prepareForDisplay__block_in
 {
   v4.receiver = self;
   v4.super_class = CKPendingMomentSharePhotoStackBalloonView;
-  v2 = [(CKGenericPhotoStackBalloonView *)&v4 _createStackView];
-  [v2 setUserInteractionEnabled:0];
+  _createStackView = [(CKGenericPhotoStackBalloonView *)&v4 _createStackView];
+  [_createStackView setUserInteractionEnabled:0];
   if (objc_opt_respondsToSelector())
   {
-    [v2 setProvidesLoadingAppearanceAndBehavior:1];
+    [_createStackView setProvidesLoadingAppearanceAndBehavior:1];
   }
 
-  return v2;
+  return _createStackView;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = [(CKBalloonView *)self delegate];
+  delegate = [(CKBalloonView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didTapPendingMomentSharePhotoStackBalloonView:self];
+    [delegate didTapPendingMomentSharePhotoStackBalloonView:self];
   }
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v14.receiver = self;
   v14.super_class = CKPendingMomentSharePhotoStackBalloonView;
-  [(CKBalloonView *)&v14 configureForMessagePart:v4];
-  v5 = [(CKGenericPhotoStackBalloonView *)self mediaProvider];
-  if (!v5)
+  [(CKBalloonView *)&v14 configureForMessagePart:partCopy];
+  mediaProvider = [(CKGenericPhotoStackBalloonView *)self mediaProvider];
+  if (!mediaProvider)
   {
     v6 = objc_alloc_init(CKPendingMomentShareImageProvider);
     [(CKGenericPhotoStackBalloonView *)self setMediaProvider:v6];
   }
 
-  v7 = [v4 message];
+  message = [partCopy message];
   v8 = IMCoreMomentShareURLForMessage();
-  v9 = [(CKGenericPhotoStackBalloonView *)self dataSourceManager];
-  v10 = v9;
-  if (!v9 || ([v9 momentShareURL], v11 = objc_claimAutoreleasedReturnValue(), v12 = CKIsEqual(v11, v8), v11, (v12 & 1) == 0))
+  dataSourceManager = [(CKGenericPhotoStackBalloonView *)self dataSourceManager];
+  v10 = dataSourceManager;
+  if (!dataSourceManager || ([dataSourceManager momentShareURL], v11 = objc_claimAutoreleasedReturnValue(), v12 = CKIsEqual(v11, v8), v11, (v12 & 1) == 0))
   {
     v13 = [[CKMomentSharePreviewAssetsDataSourceManager alloc] initWithMomentShareURL:v8];
     [(CKGenericPhotoStackBalloonView *)self setDataSourceManager:v13];

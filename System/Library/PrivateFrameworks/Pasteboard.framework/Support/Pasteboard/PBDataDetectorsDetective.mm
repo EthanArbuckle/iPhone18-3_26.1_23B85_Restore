@@ -1,13 +1,13 @@
 @interface PBDataDetectorsDetective
-+ (id)typeForResult:(id)a3;
-- (id)detectedPatternValuesInValue:(id)a3;
++ (id)typeForResult:(id)result;
+- (id)detectedPatternValuesInValue:(id)value;
 @end
 
 @implementation PBDataDetectorsDetective
 
-+ (id)typeForResult:(id)a3
++ (id)typeForResult:(id)result
 {
-  [a3 coreResult];
+  [result coreResult];
   Category = DDResultGetCategory();
   if (Category > 3)
   {
@@ -71,11 +71,11 @@
   }
 }
 
-- (id)detectedPatternValuesInValue:(id)a3
+- (id)detectedPatternValuesInValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [v3 length]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [valueCopy length]) != 0)
   {
     v5 = v4;
     v6 = [[DDScannerServiceConfiguration alloc] initWithScannerType:0 passiveIntent:0];
@@ -90,7 +90,7 @@
       v7 = v5;
     }
 
-    v8 = [DDScannerService scanString:v3 range:0 configuration:v7, v6, v6];
+    v8 = [DDScannerService scanString:valueCopy range:0 configuration:v7, v6, v6];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;

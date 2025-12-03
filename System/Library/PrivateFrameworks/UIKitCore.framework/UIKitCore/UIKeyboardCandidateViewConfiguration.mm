@@ -4,8 +4,8 @@
 + (id)configuration;
 - (CGSize)preferredInlineFloatingViewSize;
 - (UIColor)highlightedBackgroundColor;
-- (id)candidateFontWithSize:(double)a3;
-- (id)candidateFontWithSize:(double)a3 language:(id)a4;
+- (id)candidateFontWithSize:(double)size;
+- (id)candidateFontWithSize:(double)size language:(id)language;
 - (id)initialState;
 @end
 
@@ -13,7 +13,7 @@
 
 + (id)configuration
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -31,47 +31,47 @@
   [(UIKeyboardCandidateViewState *)v3 setHasBackdrop:0];
   [(UIKeyboardCandidateViewConfiguration *)self candidateDefaultFontSize];
   v6 = [(UIKeyboardCandidateViewConfiguration *)self candidateFontWithSize:?];
-  v7 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v7 setCandidateFont:v6];
+  style = [(UIKeyboardCandidateViewState *)v3 style];
+  [style setCandidateFont:v6];
 
-  v8 = [(UIKeyboardCandidateViewState *)v3 style];
-  v9 = [v8 candidateFont];
-  CopyWithSymbolicTraits = CTFontCreateCopyWithSymbolicTraits(v9, 0.0, 0, 2u, 2u);
-  v11 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v11 setSupplementalLexiconCandidateFont:CopyWithSymbolicTraits];
+  style2 = [(UIKeyboardCandidateViewState *)v3 style];
+  candidateFont = [style2 candidateFont];
+  CopyWithSymbolicTraits = CTFontCreateCopyWithSymbolicTraits(candidateFont, 0.0, 0, 2u, 2u);
+  style3 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style3 setSupplementalLexiconCandidateFont:CopyWithSymbolicTraits];
 
-  v12 = [(UIKeyboardCandidateViewState *)v3 style];
-  [v12 setMaxNumberOfProactiveCells:2];
+  style4 = [(UIKeyboardCandidateViewState *)v3 style];
+  [style4 setMaxNumberOfProactiveCells:2];
 
   return v3;
 }
 
-- (id)candidateFontWithSize:(double)a3
+- (id)candidateFontWithSize:(double)size
 {
   v5 = +[UIKeyboardInputModeController sharedInputModeController];
-  v6 = [v5 currentInputMode];
-  v7 = [v6 primaryLanguage];
+  currentInputMode = [v5 currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
 
-  v8 = [(UIKeyboardCandidateViewConfiguration *)self candidateFontWithSize:v7 language:a3];
+  v8 = [(UIKeyboardCandidateViewConfiguration *)self candidateFontWithSize:primaryLanguage language:size];
 
   return v8;
 }
 
-- (id)candidateFontWithSize:(double)a3 language:(id)a4
+- (id)candidateFontWithSize:(double)size language:(id)language
 {
   v5 = UIApp;
-  v6 = a4;
-  v7 = [v5 preferredContentSizeCategory];
+  languageCopy = language;
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
   v8 = 0.0;
-  if (([v7 isEqualToString:@"UICTContentSizeCategoryL"] & 1) == 0)
+  if (([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryL"] & 1) == 0)
   {
     v8 = 2.0;
-    if (([v7 isEqualToString:@"UICTContentSizeCategoryXL"] & 1) == 0)
+    if (([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXL"] & 1) == 0)
     {
       v8 = 4.0;
-      if (([v7 isEqualToString:@"UICTContentSizeCategoryXXL"] & 1) == 0)
+      if (([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXXL"] & 1) == 0)
       {
-        if (([v7 isEqualToString:@"UICTContentSizeCategoryXXXL"] & 1) != 0 || (v8 = 0.0, _UIContentSizeCategoryIsAccessibilityContentSizeCategory(v7, v9)))
+        if (([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXXXL"] & 1) != 0 || (v8 = 0.0, _UIContentSizeCategoryIsAccessibilityContentSizeCategory(preferredContentSizeCategory, v9)))
         {
           v8 = 6.0;
         }
@@ -82,16 +82,16 @@
   [objc_opt_class() fontSizeMultiplierForCurrentLanguage];
   if (v10 >= 1.0)
   {
-    v12 = v8 + a3;
+    v12 = v8 + size;
   }
 
   else
   {
-    v11 = v10 * a3;
+    v11 = v10 * size;
     v12 = ceilf(v11);
   }
 
-  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, v12, v6);
+  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, v12, languageCopy);
 
   return UIFontForLanguage;
 }
@@ -100,22 +100,22 @@
 {
   v2 = MEMORY[0x1E695DF58];
   v3 = +[UIKeyboardInputModeController sharedInputModeController];
-  v4 = [v3 currentInputMode];
-  v5 = [v4 primaryLanguage];
-  v6 = [v2 localeWithLocaleIdentifier:v5];
+  currentInputMode = [v3 currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
+  v6 = [v2 localeWithLocaleIdentifier:primaryLanguage];
 
-  v7 = [v6 languageCode];
-  LOBYTE(v4) = [&unk_1EFE2C190 containsObject:v7];
+  languageCode = [v6 languageCode];
+  LOBYTE(currentInputMode) = [&unk_1EFE2C190 containsObject:languageCode];
 
-  if (v4)
+  if (currentInputMode)
   {
     v8 = 1.18;
   }
 
   else
   {
-    v9 = [v6 languageCode];
-    v10 = [&unk_1EFE2C1A8 containsObject:v9];
+    languageCode2 = [v6 languageCode];
+    v10 = [&unk_1EFE2C1A8 containsObject:languageCode2];
 
     if (v10)
     {
@@ -135,14 +135,14 @@
 {
   v2 = MEMORY[0x1E695DF58];
   v3 = +[UIKeyboardInputModeController sharedInputModeController];
-  v4 = [v3 currentInputMode];
-  v5 = [v4 primaryLanguage];
-  v6 = [v2 localeWithLocaleIdentifier:v5];
+  currentInputMode = [v3 currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
+  v6 = [v2 localeWithLocaleIdentifier:primaryLanguage];
 
-  v7 = [v6 languageCode];
-  LODWORD(v4) = [&unk_1EFE2C1C0 containsObject:v7];
+  languageCode = [v6 languageCode];
+  LODWORD(currentInputMode) = [&unk_1EFE2C1C0 containsObject:languageCode];
 
-  if (v4)
+  if (currentInputMode)
   {
     v8 = 0.9;
   }

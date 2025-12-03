@@ -6,23 +6,23 @@
 - (void)_controllerDone;
 - (void)_leaveRemoteManagementAndErase;
 - (void)_presentAboutController;
-- (void)_presentEraseAlertWithTitle:(id)a3 message:(id)a4 eraseHandler:(id)a5;
+- (void)_presentEraseAlertWithTitle:(id)title message:(id)message eraseHandler:(id)handler;
 - (void)_retrieveEnterpriseConfiguration;
 - (void)_retrieveEnterpriseConfigurationForManagementVersion1;
 - (void)_retrieveEnterpriseConfigurationForManagementVersion2;
-- (void)_retrieveEnterpriseConfigurationFromWebURL:(id)a3 withAnchorCerts:(id)a4;
+- (void)_retrieveEnterpriseConfigurationFromWebURL:(id)l withAnchorCerts:(id)certs;
 - (void)_setupForCloudConfigurationState;
 - (void)_showEraseDeviceAlert;
-- (void)_storeProfileDataAndCompleteDisclosure:(id)a3;
+- (void)_storeProfileDataAndCompleteDisclosure:(id)disclosure;
 - (void)loadView;
-- (void)recievedProfile:(id)a3;
-- (void)setConfigController:(id)a3;
+- (void)recievedProfile:(id)profile;
+- (void)setConfigController:(id)controller;
 - (void)showLeaveRemoteManagementAlert;
-- (void)showRetrievalError:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)webAuthCanceled:(id)a3;
+- (void)showRetrievalError:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)webAuthCanceled:(id)canceled;
 @end
 
 @implementation BuddyCloudConfigDisclosureViewController
@@ -61,66 +61,66 @@
 
 - (void)loadView
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = BuddyCloudConfigDisclosureViewController;
   [(BuddyCloudConfigDisclosureViewController *)&v7 loadView];
-  v2 = [(BuddyCloudConfigDisclosureViewController *)v9 headerView];
-  [v2 setDetailText:&stru_10032F900];
+  headerView = [(BuddyCloudConfigDisclosureViewController *)selfCopy headerView];
+  [headerView setDetailText:&stru_10032F900];
 
   location = +[OBHeaderAccessoryButton accessoryButton];
   v3 = +[NSBundle mainBundle];
   v4 = [(NSBundle *)v3 localizedStringForKey:@"REMOTE_MANAGEMENT_ABOUT" value:&stru_10032F900 table:@"Localizable"];
   [location setTitle:v4 forState:0];
 
-  [location addTarget:v9 action:"_presentAboutController" forControlEvents:0x2000];
-  v5 = [(BuddyCloudConfigDisclosureViewController *)v9 headerView];
-  [v5 addAccessoryButton:location];
+  [location addTarget:selfCopy action:"_presentAboutController" forControlEvents:0x2000];
+  headerView2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy headerView];
+  [headerView2 addAccessoryButton:location];
 
   objc_storeStrong(&location, 0);
 }
 
 - (void)_setupForCloudConfigurationState
 {
-  v59 = self;
+  selfCopy = self;
   v58[1] = a2;
   v58[0] = [(BuddyCloudConfigDisclosureViewController *)self managedConfiguration];
-  v2 = [(BuddyCloudConfigDisclosureViewController *)v59 configController];
-  v3 = [(BuddyCloudConfigController *)v2 cloudConfigState];
+  configController = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+  cloudConfigState = [(BuddyCloudConfigController *)configController cloudConfigState];
 
-  if (v3)
+  if (cloudConfigState)
   {
-    if (v3 != 1)
+    if (cloudConfigState != 1)
     {
-      switch(v3)
+      switch(cloudConfigState)
       {
         case 2u:
           [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"Disclosure"];
-          [(BuddyCloudConfigDisclosureViewController *)v59 _clearState];
-          v13 = [(BuddyCloudConfigDisclosureViewController *)v59 headerView];
+          [(BuddyCloudConfigDisclosureViewController *)selfCopy _clearState];
+          headerView = [(BuddyCloudConfigDisclosureViewController *)selfCopy headerView];
           v14 = +[NSBundle mainBundle];
           v15 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"CLOUD_CONFIG_ERROR_FAILED_RETRIEVE_INITIAL_CONFIG"];
           v16 = [(NSBundle *)v14 localizedStringForKey:v15 value:&stru_10032F900 table:@"Localizable"];
-          v17 = [(BuddyCloudConfigDisclosureViewController *)v59 lastRetrievalError];
-          v18 = [(NSError *)v17 localizedDescription];
-          v19 = [NSString localizedStringWithFormat:v16, v18];
-          [v13 setDetailText:v19];
+          lastRetrievalError = [(BuddyCloudConfigDisclosureViewController *)selfCopy lastRetrievalError];
+          localizedDescription = [(NSError *)lastRetrievalError localizedDescription];
+          v19 = [NSString localizedStringWithFormat:v16, localizedDescription];
+          [headerView setDetailText:v19];
 
           break;
         case 3u:
-          v29 = [v58[0] cloudConfigurationDetails];
+          cloudConfigurationDetails = [v58[0] cloudConfigurationDetails];
 
-          if (v29)
+          if (cloudConfigurationDetails)
           {
-            [(BuddyCloudConfigDisclosureViewController *)v59 _clearState];
-            v30 = [(BuddyCloudConfigDisclosureViewController *)v59 headerView];
-            v31 = [(BuddyCloudConfigDisclosureViewController *)v59 _remoteManagementText];
-            [v30 setDetailText:v31];
+            [(BuddyCloudConfigDisclosureViewController *)selfCopy _clearState];
+            headerView2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy headerView];
+            _remoteManagementText = [(BuddyCloudConfigDisclosureViewController *)selfCopy _remoteManagementText];
+            [headerView2 setDetailText:_remoteManagementText];
 
-            v32 = [(BuddyCloudConfigDisclosureViewController *)v59 buttonTray];
-            v33 = [(BuddyCloudConfigDisclosureViewController *)v59 enrollButton];
-            [v32 addButton:v33];
+            buttonTray = [(BuddyCloudConfigDisclosureViewController *)selfCopy buttonTray];
+            enrollButton = [(BuddyCloudConfigDisclosureViewController *)selfCopy enrollButton];
+            [buttonTray addButton:enrollButton];
 
             [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"Disclosure"];
             if ([v58[0] isProvisionallyEnrolled])
@@ -128,46 +128,46 @@
               v34 = +[NSBundle mainBundle];
               v35 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"REMOTE_MANAGEMENT_LEAVE"];
               v36 = [(NSBundle *)v34 localizedStringForKey:v35 value:&stru_10032F900 table:@"Localizable"];
-              [(BuddyWelcomeController *)v59 addLinkButton:v36 action:"showLeaveRemoteManagementAlert"];
+              [(BuddyWelcomeController *)selfCopy addLinkButton:v36 action:"showLeaveRemoteManagementAlert"];
             }
 
-            v37 = [(BuddyCloudConfigDisclosureViewController *)v59 view];
-            [v37 setNeedsLayout];
+            view = [(BuddyCloudConfigDisclosureViewController *)selfCopy view];
+            [view setNeedsLayout];
           }
 
           else
           {
-            v38 = [(BuddyCloudConfigDisclosureViewController *)v59 lastRetrievalError];
+            lastRetrievalError2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy lastRetrievalError];
 
-            if (v38)
+            if (lastRetrievalError2)
             {
-              v39 = [(BuddyCloudConfigDisclosureViewController *)v59 configController];
-              [(BuddyCloudConfigController *)v39 setCloudConfigState:0];
+              configController2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+              [(BuddyCloudConfigController *)configController2 setCloudConfigState:0];
 
-              [(BuddyCloudConfigDisclosureViewController *)v59 _setupForCloudConfigurationState];
+              [(BuddyCloudConfigDisclosureViewController *)selfCopy _setupForCloudConfigurationState];
             }
 
             else
             {
-              v40 = [(BuddyCloudConfigDisclosureViewController *)v59 configController];
-              [(BuddyCloudConfigController *)v40 cloudConfigDidFinishFromViewController:v59 wasApplied:0];
+              configController3 = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+              [(BuddyCloudConfigController *)configController3 cloudConfigDidFinishFromViewController:selfCopy wasApplied:0];
             }
           }
 
           break;
         case 5u:
           [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"Disclosure"];
-          [(BuddyCloudConfigDisclosureViewController *)v59 _clearState];
-          v20 = [(BuddyCloudConfigDisclosureViewController *)v59 headerView];
+          [(BuddyCloudConfigDisclosureViewController *)selfCopy _clearState];
+          headerView3 = [(BuddyCloudConfigDisclosureViewController *)selfCopy headerView];
           v21 = +[NSBundle mainBundle];
           v22 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"CLOUD_CONFIG_ERROR_FAILED_RETRIEVE_ENTERPRISE_CONFIG"];
           v23 = [(NSBundle *)v21 localizedStringForKey:v22 value:&stru_10032F900 table:@"Localizable"];
-          v24 = [v58[0] cloudConfigurationDetails];
-          v25 = [v24 objectForKeyedSubscript:kMCCCOrganizationNameKey];
-          v26 = [(BuddyCloudConfigDisclosureViewController *)v59 lastRetrievalError];
-          v27 = [(NSError *)v26 localizedDescription];
-          v28 = [NSString localizedStringWithFormat:v23, v25, v27];
-          [v20 setDetailText:v28];
+          cloudConfigurationDetails2 = [v58[0] cloudConfigurationDetails];
+          v25 = [cloudConfigurationDetails2 objectForKeyedSubscript:kMCCCOrganizationNameKey];
+          lastRetrievalError3 = [(BuddyCloudConfigDisclosureViewController *)selfCopy lastRetrievalError];
+          localizedDescription2 = [(NSError *)lastRetrievalError3 localizedDescription];
+          v28 = [NSString localizedStringWithFormat:v23, v25, localizedDescription2];
+          [headerView3 setDetailText:v28];
 
           break;
       }
@@ -176,15 +176,15 @@
 
   else
   {
-    [(BuddyCloudConfigDisclosureViewController *)v59 _clearState];
-    v4 = [(BuddyCloudConfigDisclosureViewController *)v59 buttonTray];
-    v5 = [(BuddyCloudConfigDisclosureViewController *)v59 enrollButton];
-    [v4 addButton:v5];
+    [(BuddyCloudConfigDisclosureViewController *)selfCopy _clearState];
+    buttonTray2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy buttonTray];
+    enrollButton2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy enrollButton];
+    [buttonTray2 addButton:enrollButton2];
 
     v6 = +[BuddyCloudConfigManager sharedManager];
-    LOBYTE(v5) = [v6 hasCloudConfiguration];
+    LOBYTE(enrollButton2) = [v6 hasCloudConfiguration];
 
-    if (v5)
+    if (enrollButton2)
     {
       v7 = +[BuddyCloudConfigManager sharedManager];
       location = [v7 cloudConfigurationDetails];
@@ -196,7 +196,7 @@
         v53 = 0;
         v54 = sub_100214F34;
         v55 = &unk_10032B6F0;
-        v56 = v59;
+        v56 = selfCopy;
         [v58[0] storeCloudConfigurationDetails:location completion:&v51];
         objc_storeStrong(&v56, 0);
       }
@@ -217,10 +217,10 @@
         v10 = +[BuddyCloudConfigManager sharedManager];
         [v10 setHasPreviouslyRetrievedMDMv1EnrollmentProfile:0];
 
-        v11 = [(BuddyCloudConfigDisclosureViewController *)v59 configController];
-        [(BuddyCloudConfigController *)v11 setCloudConfigState:2];
+        configController4 = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+        [(BuddyCloudConfigController *)configController4 setCloudConfigState:2];
 
-        [(BuddyCloudConfigDisclosureViewController *)v59 _setupForCloudConfigurationState];
+        [(BuddyCloudConfigDisclosureViewController *)selfCopy _setupForCloudConfigurationState];
       }
 
       objc_storeStrong(&location, 0);
@@ -228,45 +228,45 @@
 
     else
     {
-      v12 = [(BuddyCloudConfigDisclosureViewController *)v59 configController];
-      [(BuddyCloudConfigController *)v12 setCloudConfigState:1];
+      configController5 = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+      [(BuddyCloudConfigController *)configController5 setCloudConfigState:1];
 
       v42 = _NSConcreteStackBlock;
       v43 = -1073741824;
       v44 = 0;
       v45 = sub_100215154;
       v46 = &unk_10032B6F0;
-      v47 = v59;
+      v47 = selfCopy;
       [v58[0] retrieveAndStoreCloudConfigurationDetailsCompletionBlock:&v42];
       objc_storeStrong(&v47, 0);
     }
   }
 
-  v41 = [(BuddyCloudConfigDisclosureViewController *)v59 view];
-  [v41 setNeedsLayout];
+  view2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy view];
+  [view2 setNeedsLayout];
 
   objc_storeStrong(v58, 0);
 }
 
 - (void)_clearState
 {
-  v2 = [(BuddyCloudConfigDisclosureViewController *)self headerView];
-  [v2 setDetailText:&stru_10032F900];
+  headerView = [(BuddyCloudConfigDisclosureViewController *)self headerView];
+  [headerView setDetailText:&stru_10032F900];
 
-  v3 = [(BuddyCloudConfigDisclosureViewController *)self buttonTray];
-  [v3 removeAllButtons];
+  buttonTray = [(BuddyCloudConfigDisclosureViewController *)self buttonTray];
+  [buttonTray removeAllButtons];
 }
 
-- (void)_presentEraseAlertWithTitle:(id)a3 message:(id)a4 eraseHandler:(id)a5
+- (void)_presentEraseAlertWithTitle:(id)title message:(id)message eraseHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, message);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, handler);
   v14 = [UIAlertController alertControllerWithTitle:location[0] message:v16 preferredStyle:1];
   v7 = +[NSBundle mainBundle];
   v8 = [(NSBundle *)v7 localizedStringForKey:@"ERASE" value:&stru_10032F900 table:@"Localizable"];
@@ -278,8 +278,8 @@
   v12 = [UIAlertAction actionWithTitle:v10 style:1 handler:0];
 
   [v14 addAction:v12];
-  v11 = [(BuddyCloudConfigDisclosureViewController *)v18 navigationController];
-  [v11 presentViewController:v14 animated:1 completion:0];
+  navigationController = [(BuddyCloudConfigDisclosureViewController *)selfCopy navigationController];
+  [navigationController presentViewController:v14 animated:1 completion:0];
 
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -336,33 +336,33 @@
   objc_destroyWeak(location);
 }
 
-- (void)showRetrievalError:(id)a3
+- (void)showRetrievalError:(id)error
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyCloudConfigDisclosureViewController *)v5 setLastRetrievalError:location[0]];
-  v3 = [(BuddyCloudConfigDisclosureViewController *)v5 configController];
-  [(BuddyCloudConfigController *)v3 setCloudConfigState:5];
+  objc_storeStrong(location, error);
+  [(BuddyCloudConfigDisclosureViewController *)selfCopy setLastRetrievalError:location[0]];
+  configController = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+  [(BuddyCloudConfigController *)configController setCloudConfigState:5];
 
-  [(BuddyCloudConfigDisclosureViewController *)v5 _setupForCloudConfigurationState];
+  [(BuddyCloudConfigDisclosureViewController *)selfCopy _setupForCloudConfigurationState];
   objc_storeStrong(location, 0);
 }
 
 - (void)_leaveRemoteManagementAndErase
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  v2 = [(BuddyCloudConfigDisclosureViewController *)v10 managedConfiguration];
+  managedConfiguration = [(BuddyCloudConfigDisclosureViewController *)selfCopy managedConfiguration];
   v3 = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_100215D7C;
   v7 = &unk_10032F3F0;
   objc_copyWeak(v8, location);
-  [(MCProfileConnection *)v2 unenrollWithCompletionBlock:&v3];
+  [(MCProfileConnection *)managedConfiguration unenrollWithCompletionBlock:&v3];
 
   objc_destroyWeak(v8);
   objc_destroyWeak(location);
@@ -372,9 +372,9 @@
 {
   v18[2] = self;
   v18[1] = a2;
-  v2 = [(BuddyCloudConfigDisclosureViewController *)self managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 cloudConfigurationDetails];
-  v18[0] = [v3 objectForKeyedSubscript:kMCCCOrganizationNameKey];
+  managedConfiguration = [(BuddyCloudConfigDisclosureViewController *)self managedConfiguration];
+  cloudConfigurationDetails = [(MCProfileConnection *)managedConfiguration cloudConfigurationDetails];
+  v18[0] = [cloudConfigurationDetails objectForKeyedSubscript:kMCCCOrganizationNameKey];
 
   v4 = +[NSBundle mainBundle];
   v5 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"CLOUD_CONFIG_DESCRIPTION"];
@@ -415,88 +415,88 @@
   return v11;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = BuddyCloudConfigDisclosureViewController;
-  [(BuddyCloudConfigDisclosureViewController *)&v8 viewWillAppear:a3];
-  if (([(BuddyCloudConfigDisclosureViewController *)v11 isBeingPresented]& 1) != 0)
+  [(BuddyCloudConfigDisclosureViewController *)&v8 viewWillAppear:appear];
+  if (([(BuddyCloudConfigDisclosureViewController *)selfCopy isBeingPresented]& 1) != 0)
   {
-    v3 = [(BuddyCloudConfigDisclosureViewController *)v11 lastRetrievalError];
+    lastRetrievalError = [(BuddyCloudConfigDisclosureViewController *)selfCopy lastRetrievalError];
 
-    if (v3)
+    if (lastRetrievalError)
     {
-      v4 = [(BuddyCloudConfigDisclosureViewController *)v11 configController];
-      [(BuddyCloudConfigController *)v4 setCloudConfigState:5];
+      configController = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+      [(BuddyCloudConfigController *)configController setCloudConfigState:5];
     }
 
     else
     {
       v5 = +[BuddyCloudConfigManager sharedManager];
-      v6 = [v5 hasPreviouslyRetrievedMDMv1EnrollmentProfile];
+      hasPreviouslyRetrievedMDMv1EnrollmentProfile = [v5 hasPreviouslyRetrievedMDMv1EnrollmentProfile];
 
-      v7 = [(BuddyCloudConfigDisclosureViewController *)v11 configController];
-      if (v6)
+      configController2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+      if (hasPreviouslyRetrievedMDMv1EnrollmentProfile)
       {
-        [(BuddyCloudConfigController *)v7 setCloudConfigState:3];
+        [(BuddyCloudConfigController *)configController2 setCloudConfigState:3];
       }
 
       else
       {
-        [(BuddyCloudConfigController *)v7 setCloudConfigState:0];
+        [(BuddyCloudConfigController *)configController2 setCloudConfigState:0];
       }
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  disappearCopy = disappear;
   v3.receiver = self;
   v3.super_class = BuddyCloudConfigDisclosureViewController;
-  [(BuddyCloudConfigDisclosureViewController *)&v3 viewWillDisappear:a3];
-  [(BuddyCloudConfigDisclosureViewController *)v6 setLastRetrievalError:0];
+  [(BuddyCloudConfigDisclosureViewController *)&v3 viewWillDisappear:disappear];
+  [(BuddyCloudConfigDisclosureViewController *)selfCopy setLastRetrievalError:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = BuddyCloudConfigDisclosureViewController;
-  [(BuddyCloudConfigDisclosureViewController *)&v7 viewDidAppear:a3];
-  v3 = [(BuddyCloudConfigDisclosureViewController *)v10 navigationController];
-  v4 = [(BuddyCloudConfigDisclosureViewController *)v10 configController];
-  [(BuddyCloudConfigController *)v4 setNavController:v3];
+  [(BuddyCloudConfigDisclosureViewController *)&v7 viewDidAppear:appear];
+  navigationController = [(BuddyCloudConfigDisclosureViewController *)selfCopy navigationController];
+  configController = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+  [(BuddyCloudConfigController *)configController setNavController:navigationController];
 
-  v5 = [(BuddyCloudConfigDisclosureViewController *)v10 configController];
-  [(BuddyCloudConfigController *)v5 removeControllersToRemove];
+  configController2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+  [(BuddyCloudConfigController *)configController2 removeControllersToRemove];
 
-  v6 = [(BuddyCloudConfigDisclosureViewController *)v10 view];
-  [v6 setNeedsLayout];
+  view = [(BuddyCloudConfigDisclosureViewController *)selfCopy view];
+  [view setNeedsLayout];
 
-  [(BuddyCloudConfigDisclosureViewController *)v10 _setupForCloudConfigurationState];
+  [(BuddyCloudConfigDisclosureViewController *)selfCopy _setupForCloudConfigurationState];
 }
 
-- (void)setConfigController:(id)a3
+- (void)setConfigController:(id)controller
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_configController, location[0]);
+  objc_storeStrong(location, controller);
+  objc_storeStrong(&selfCopy->_configController, location[0]);
   objc_storeStrong(location, 0);
 }
 
 - (void)_retrieveEnterpriseConfiguration
 {
-  v13 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v11 = OS_LOG_TYPE_DEFAULT;
@@ -513,16 +513,16 @@
   location = [v4 mdmVersionProtocol];
 
   v5 = +[MDMCloudConfiguration sharedConfiguration];
-  v6 = [v5 enrollmentServerInfo];
+  enrollmentServerInfo = [v5 enrollmentServerInfo];
 
-  if (v6)
+  if (enrollmentServerInfo)
   {
-    [(BuddyCloudConfigDisclosureViewController *)v13 _retrieveEnterpriseConfigurationForManagementVersion2];
+    [(BuddyCloudConfigDisclosureViewController *)selfCopy _retrieveEnterpriseConfigurationForManagementVersion2];
   }
 
   else if ([location integerValue] == 1)
   {
-    [(BuddyCloudConfigDisclosureViewController *)v13 _retrieveEnterpriseConfigurationForManagementVersion1];
+    [(BuddyCloudConfigDisclosureViewController *)selfCopy _retrieveEnterpriseConfigurationForManagementVersion1];
   }
 
   else
@@ -535,10 +535,10 @@
     }
 
     objc_storeStrong(&v8, 0);
-    v7 = [(BuddyCloudConfigDisclosureViewController *)v13 configController];
-    [(BuddyCloudConfigController *)v7 setCloudConfigState:5];
+    configController = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+    [(BuddyCloudConfigController *)configController setCloudConfigState:5];
 
-    [(BuddyCloudConfigDisclosureViewController *)v13 _setupForCloudConfigurationState];
+    [(BuddyCloudConfigDisclosureViewController *)selfCopy _setupForCloudConfigurationState];
   }
 
   objc_storeStrong(&location, 0);
@@ -546,7 +546,7 @@
 
 - (void)_retrieveEnterpriseConfigurationForManagementVersion1
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v23 = OS_LOG_TYPE_DEFAULT;
@@ -559,26 +559,26 @@
   }
 
   objc_storeStrong(location, 0);
-  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v25 identifier:@"Disclosure"];
-  v21 = [(BuddyCloudConfigDisclosureViewController *)v25 managedConfiguration];
-  v20 = [v21 cloudConfigurationDetails];
-  v4 = [v20 objectForKeyedSubscript:kMCCCConfigurationWebURLKey];
+  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:selfCopy identifier:@"Disclosure"];
+  managedConfiguration = [(BuddyCloudConfigDisclosureViewController *)selfCopy managedConfiguration];
+  cloudConfigurationDetails = [managedConfiguration cloudConfigurationDetails];
+  v4 = [cloudConfigurationDetails objectForKeyedSubscript:kMCCCConfigurationWebURLKey];
   v19 = [NSURL URLWithString:v4];
 
-  v18 = [v20 objectForKeyedSubscript:kMCCCAnchorCertificatesKey];
+  v18 = [cloudConfigurationDetails objectForKeyedSubscript:kMCCCAnchorCertificatesKey];
   v17 = [BuddyCloudConfigController getCertificatesFromCertificateDataArray:v18];
   if (v19)
   {
-    [(BuddyCloudConfigDisclosureViewController *)v25 _retrieveEnterpriseConfigurationFromWebURL:v19 withAnchorCerts:v17];
+    [(BuddyCloudConfigDisclosureViewController *)selfCopy _retrieveEnterpriseConfigurationFromWebURL:v19 withAnchorCerts:v17];
     v16 = 1;
   }
 
   else
   {
-    v5 = [v20 objectForKeyedSubscript:kMCCCConfigurationURLKey];
+    v5 = [cloudConfigurationDetails objectForKeyedSubscript:kMCCCConfigurationURLKey];
     v15 = [NSURL URLWithString:v5];
 
-    v6 = [(BuddyCloudConfigDisclosureViewController *)v25 managedConfiguration];
+    managedConfiguration2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy managedConfiguration];
     v26 = kMDMCanRequestSoftwareUpdateKey;
     v7 = [NSNumber numberWithBool:1];
     v27 = v7;
@@ -587,8 +587,8 @@
     v11 = 3221225472;
     v12 = sub_100216F54;
     v13 = &unk_10032F418;
-    v14 = v25;
-    [(MCProfileConnection *)v6 retrieveCloudConfigurationFromURL:v15 username:0 password:0 anchorCertificates:v17 additionalMachineInfo:v8 completionBlock:&v10];
+    v14 = selfCopy;
+    [(MCProfileConnection *)managedConfiguration2 retrieveCloudConfigurationFromURL:v15 username:0 password:0 anchorCertificates:v17 additionalMachineInfo:v8 completionBlock:&v10];
 
     v9 = [BuddyCloudConfigManager sharedManager:v10];
     [v9 setHasPreviouslyRetrievedMDMv1EnrollmentProfile:1];
@@ -601,13 +601,13 @@
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&cloudConfigurationDetails, 0);
+  objc_storeStrong(&managedConfiguration, 0);
 }
 
 - (void)_retrieveEnterpriseConfigurationForManagementVersion2
 {
-  v17 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -620,17 +620,17 @@
   }
 
   objc_storeStrong(oslog, 0);
-  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v17 identifier:@"Disclosure"];
-  v4 = [(BuddyCloudConfigDisclosureViewController *)v17 enrollmentCoordinator];
-  v5 = v17;
-  v6 = [(BuddyCloudConfigDisclosureViewController *)v17 navigationController];
+  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:selfCopy identifier:@"Disclosure"];
+  enrollmentCoordinator = [(BuddyCloudConfigDisclosureViewController *)selfCopy enrollmentCoordinator];
+  v5 = selfCopy;
+  navigationController = [(BuddyCloudConfigDisclosureViewController *)selfCopy navigationController];
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1002174EC;
   v12 = &unk_10032F440;
-  v13 = v17;
-  [(BuddyEnrollmentCoordinator *)v4 retrieveProfileDataWithBaseViewController:v5 navigationController:v6 completionHandler:&v8];
+  v13 = selfCopy;
+  [(BuddyEnrollmentCoordinator *)enrollmentCoordinator retrieveProfileDataWithBaseViewController:v5 navigationController:navigationController completionHandler:&v8];
 
   v7 = +[BuddyCloudConfigManager sharedManager];
   [v7 setHasPreviouslyRetrievedMDMv1EnrollmentProfile:1];
@@ -638,45 +638,45 @@
   objc_storeStrong(&v13, 0);
 }
 
-- (void)_retrieveEnterpriseConfigurationFromWebURL:(id)a3 withAnchorCerts:(id)a4
+- (void)_retrieveEnterpriseConfigurationFromWebURL:(id)l withAnchorCerts:(id)certs
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, certs);
   v8 = objc_opt_new();
   [v8 setModalInPresentation:1];
   [v8 setWebURL:location[0]];
-  [v8 setDelegate:v11];
-  v5 = [(BuddyCloudConfigDisclosureViewController *)v11 _machineInfo];
-  [v8 setMachineInfo:v5];
+  [v8 setDelegate:selfCopy];
+  _machineInfo = [(BuddyCloudConfigDisclosureViewController *)selfCopy _machineInfo];
+  [v8 setMachineInfo:_machineInfo];
 
   [v8 setAnchorCerts:v9];
   v6 = [[UINavigationController alloc] initWithRootViewController:v8];
-  [(BuddyCloudConfigDisclosureViewController *)v11 presentModalViewController:v6 withTransition:8, v6];
+  [(BuddyCloudConfigDisclosureViewController *)selfCopy presentModalViewController:v6 withTransition:8, v6];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_storeProfileDataAndCompleteDisclosure:(id)a3
+- (void)_storeProfileDataAndCompleteDisclosure:(id)disclosure
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyCloudConfigDisclosureViewController *)v12 managedConfiguration];
+  objc_storeStrong(location, disclosure);
+  managedConfiguration = [(BuddyCloudConfigDisclosureViewController *)selfCopy managedConfiguration];
   v4 = location[0];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_100217CC0;
   v9 = &unk_10032B6F0;
-  v10 = v12;
-  [(MCProfileConnection *)v3 storeProfileData:v4 completion:&v5];
+  v10 = selfCopy;
+  [(MCProfileConnection *)managedConfiguration storeProfileData:v4 completion:&v5];
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
@@ -684,23 +684,23 @@
 
 - (id)_machineInfo
 {
-  v2 = [(BuddyCloudConfigDisclosureViewController *)self managedConfiguration];
+  managedConfiguration = [(BuddyCloudConfigDisclosureViewController *)self managedConfiguration];
   v7 = kMDMCanRequestSoftwareUpdateKey;
   v3 = [NSNumber numberWithBool:1];
   v8 = v3;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-  v5 = [(MCProfileConnection *)v2 getMachineInfoWithAdditionalInfo:v4];
+  v5 = [(MCProfileConnection *)managedConfiguration getMachineInfoWithAdditionalInfo:v4];
 
   return v5;
 }
 
-- (void)webAuthCanceled:(id)a3
+- (void)webAuthCanceled:(id)canceled
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyCloudConfigDisclosureViewController *)v13 dismissModalViewControllerWithTransition:9];
+  objc_storeStrong(location, canceled);
+  [(BuddyCloudConfigDisclosureViewController *)selfCopy dismissModalViewControllerWithTransition:9];
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -713,9 +713,9 @@
 
     else if (location[0])
     {
-      v10 = [location[0] domain];
+      domain = [location[0] domain];
       v9 = 1;
-      v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v10, [location[0] code]);
+      v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
       v8 = v3;
       v7 = 1;
     }
@@ -737,33 +737,33 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyCloudConfigDisclosureViewController *)v13 setLastRetrievalError:location[0]];
-  v4 = [(BuddyCloudConfigDisclosureViewController *)v13 configController];
-  [(BuddyCloudConfigController *)v4 setCloudConfigState:5];
+  [(BuddyCloudConfigDisclosureViewController *)selfCopy setLastRetrievalError:location[0]];
+  configController = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+  [(BuddyCloudConfigController *)configController setCloudConfigState:5];
 
   if ([BuddyCloudConfigController isSoftwareUpdateError:location[0]])
   {
-    v5 = [(BuddyCloudConfigDisclosureViewController *)v13 configController];
-    [(BuddyCloudConfigController *)v5 transitionToSoftwareUpdateControllerFromController:v13 lastError:location[0]];
+    configController2 = [(BuddyCloudConfigDisclosureViewController *)selfCopy configController];
+    [(BuddyCloudConfigController *)configController2 transitionToSoftwareUpdateControllerFromController:selfCopy lastError:location[0]];
   }
 
   else
   {
-    v6 = [(BuddyCloudConfigDisclosureViewController *)v13 view];
-    [v6 setNeedsLayout];
+    view = [(BuddyCloudConfigDisclosureViewController *)selfCopy view];
+    [view setNeedsLayout];
 
-    [(BuddyCloudConfigDisclosureViewController *)v13 _setupForCloudConfigurationState];
+    [(BuddyCloudConfigDisclosureViewController *)selfCopy _setupForCloudConfigurationState];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)recievedProfile:(id)a3
+- (void)recievedProfile:(id)profile
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, profile);
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -775,12 +775,12 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = v17;
+  v5 = selfCopy;
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1002184B0;
   v10 = &unk_10032B838;
-  v11 = v17;
+  v11 = selfCopy;
   v12 = location[0];
   [(BuddyCloudConfigDisclosureViewController *)v5 dismissViewControllerWithTransition:9 completion:&v7];
   v6 = [BuddyCloudConfigManager sharedManager:v7];
@@ -793,13 +793,13 @@
 
 - (void)_controllerDone
 {
-  v2 = [(BuddyCloudConfigDisclosureViewController *)self configController];
-  v3 = [(BuddyCloudConfigController *)v2 cloudConfigState];
+  configController = [(BuddyCloudConfigDisclosureViewController *)self configController];
+  cloudConfigState = [(BuddyCloudConfigController *)configController cloudConfigState];
 
-  if (v3 == 3)
+  if (cloudConfigState == 3)
   {
-    v4 = [(BuddyCloudConfigDisclosureViewController *)self configController];
-    [(BuddyCloudConfigController *)v4 setCloudConfigState:4];
+    configController2 = [(BuddyCloudConfigDisclosureViewController *)self configController];
+    [(BuddyCloudConfigController *)configController2 setCloudConfigState:4];
 
     [(BuddyCloudConfigDisclosureViewController *)self _retrieveEnterpriseConfiguration];
   }
@@ -807,15 +807,15 @@
 
 - (void)_presentAboutController
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = objc_alloc_init(BuddyCloudConfigAboutConfigurationContainerController);
-  v2 = [(BuddyCloudConfigDisclosureViewController *)v5 managedConfiguration];
-  [location[0] setCloudConfigurationFromProfileConnection:v2];
+  managedConfiguration = [(BuddyCloudConfigDisclosureViewController *)selfCopy managedConfiguration];
+  [location[0] setCloudConfigurationFromProfileConnection:managedConfiguration];
 
   v3 = [[BFFNavigationController alloc] initWithRootViewController:location[0]];
   [v3 setModalPresentationStyle:2];
-  [(BuddyCloudConfigDisclosureViewController *)v5 presentViewController:v3 animated:1 completion:0];
+  [(BuddyCloudConfigDisclosureViewController *)selfCopy presentViewController:v3 animated:1 completion:0];
   objc_storeStrong(&v3, 0);
   objc_storeStrong(location, 0);
 }

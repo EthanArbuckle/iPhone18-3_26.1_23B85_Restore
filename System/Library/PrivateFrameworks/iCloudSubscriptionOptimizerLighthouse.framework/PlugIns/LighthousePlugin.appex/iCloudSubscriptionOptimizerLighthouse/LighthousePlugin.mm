@@ -1,15 +1,15 @@
 @interface LighthousePlugin
 - (LighthousePlugin)init;
-- (id)performTrialTask:(id)a3 outError:(id *)a4;
+- (id)performTrialTask:(id)task outError:(id *)error;
 @end
 
 @implementation LighthousePlugin
 
-- (id)performTrialTask:(id)a3 outError:(id *)a4
+- (id)performTrialTask:(id)task outError:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = Plugin.perform(_:)(v5);
+  taskCopy = task;
+  selfCopy = self;
+  v7 = Plugin.perform(_:)(taskCopy);
 
   return v7;
 }

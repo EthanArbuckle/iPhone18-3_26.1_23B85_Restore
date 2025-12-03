@@ -1,9 +1,9 @@
 @interface AVTCarouselController
-+ (id)displayingCarouselForRecordDataSource:(id)a3;
-+ (id)recordingCarouselForRecordDataSource:(id)a3;
-+ (id)sessionProviderForMode:(int64_t)a3 environment:(id)a4;
-- (AVTCarouselController)initWithMode:(int64_t)a3 dataSource:(id)a4;
-- (AVTCarouselController)initWithMode:(int64_t)a3 sessionProvider:(id)a4 dataSource:(id)a5 environment:(id)a6;
++ (id)displayingCarouselForRecordDataSource:(id)source;
++ (id)recordingCarouselForRecordDataSource:(id)source;
++ (id)sessionProviderForMode:(int64_t)mode environment:(id)environment;
+- (AVTCarouselController)initWithMode:(int64_t)mode dataSource:(id)source;
+- (AVTCarouselController)initWithMode:(int64_t)mode sessionProvider:(id)provider dataSource:(id)source environment:(id)environment;
 - (AVTDisplayingCarouselControllerDelegate)displayingDelegate;
 - (AVTPresenterDelegate)presenterDelegate;
 - (AVTRecordView)focusedRecordingView;
@@ -11,51 +11,51 @@
 - (AVTView)focusedDisplayView;
 - (BOOL)allowsCreate;
 - (double)decelerationRate;
-- (id)avatarActionsViewController:(id)a3 recordUpdateForDeletingRecord:(id)a4;
-- (id)snapshotProviderFocusedOnRecordWithIdentifier:(id)a3 size:(CGSize)a4;
-- (void)avatarActionsViewControllerDidFinish:(id)a3;
-- (void)avatarEditorViewController:(id)a3 didFinishWithAvatarRecord:(id)a4;
-- (void)avatarEditorViewControllerDidCancel:(id)a3;
+- (id)avatarActionsViewController:(id)controller recordUpdateForDeletingRecord:(id)record;
+- (id)snapshotProviderFocusedOnRecordWithIdentifier:(id)identifier size:(CGSize)size;
+- (void)avatarActionsViewControllerDidFinish:(id)finish;
+- (void)avatarEditorViewController:(id)controller didFinishWithAvatarRecord:(id)record;
+- (void)avatarEditorViewControllerDidCancel:(id)cancel;
 - (void)beginAVTViewSession;
-- (void)dataSource:(id)a3 didAddRecord:(id)a4 atIndex:(unint64_t)a5;
-- (void)dataSource:(id)a3 didEditRecord:(id)a4 atIndex:(unint64_t)a5;
-- (void)dataSource:(id)a3 didRemoveRecord:(id)a4 atIndex:(unint64_t)a5;
-- (void)didBeginFocus:(id)a3;
-- (void)displayAvatarRecord:(id)a3 animated:(BOOL)a4;
-- (void)displayAvatarRecordWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)displayingController:(id)a3 didChangeCurrentRecord:(id)a4;
-- (void)displayingController:(id)a3 didMoveTowardRecord:(id)a4 withFactor:(double)a5;
-- (void)displayingControllerWantsToPresentEditorForCreation:(id)a3;
+- (void)dataSource:(id)source didAddRecord:(id)record atIndex:(unint64_t)index;
+- (void)dataSource:(id)source didEditRecord:(id)record atIndex:(unint64_t)index;
+- (void)dataSource:(id)source didRemoveRecord:(id)record atIndex:(unint64_t)index;
+- (void)didBeginFocus:(id)focus;
+- (void)displayAvatarRecord:(id)record animated:(BOOL)animated;
+- (void)displayAvatarRecordWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)displayingController:(id)controller didChangeCurrentRecord:(id)record;
+- (void)displayingController:(id)controller didMoveTowardRecord:(id)record withFactor:(double)factor;
+- (void)displayingControllerWantsToPresentEditorForCreation:(id)creation;
 - (void)loadView;
-- (void)notifyDelegateDidFocusRecord:(id)a3 avtView:(id)a4;
-- (void)notifyDelegateDidUpdateWithRecord:(id)a3;
-- (void)notifyDelegateNearnessFactorDidChange:(double)a3 towardRecord:(id)a4;
-- (void)notifyDelegateWillEndFocusOnRecord:(id)a3 avtView:(id)a4;
-- (void)presentActionsForAvatar:(id)a3;
-- (void)presentEditorForCreatingAvatar:(id)a3;
+- (void)notifyDelegateDidFocusRecord:(id)record avtView:(id)view;
+- (void)notifyDelegateDidUpdateWithRecord:(id)record;
+- (void)notifyDelegateNearnessFactorDidChange:(double)change towardRecord:(id)record;
+- (void)notifyDelegateWillEndFocusOnRecord:(id)record avtView:(id)view;
+- (void)presentActionsForAvatar:(id)avatar;
+- (void)presentEditorForCreatingAvatar:(id)avatar;
 - (void)reloadData;
-- (void)reloadDataCenteringToAvatarRecord:(id)a3;
-- (void)setAllowsCreate:(BOOL)a3;
-- (void)setAllowsCreate:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDecelerationRate:(double)a3;
-- (void)setIsPostponingBeginSession:(BOOL)a3;
-- (void)setSingleAvatarMode:(BOOL)a3;
-- (void)setSingleAvatarMode:(BOOL)a3 fillContainer:(BOOL)a4 animated:(BOOL)a5;
-- (void)setupAVTView:(id)a3;
-- (void)showMultiAvatarControllerAnimated:(BOOL)a3;
-- (void)showSingleAvatarControllerAnimated:(BOOL)a3;
-- (void)significantRecordChangeInDataSource:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willEndFocus:(id)a3;
-- (void)wrapAndPresentViewController:(id)a3 animated:(BOOL)a4;
+- (void)reloadDataCenteringToAvatarRecord:(id)record;
+- (void)setAllowsCreate:(BOOL)create;
+- (void)setAllowsCreate:(BOOL)create animated:(BOOL)animated;
+- (void)setDecelerationRate:(double)rate;
+- (void)setIsPostponingBeginSession:(BOOL)session;
+- (void)setSingleAvatarMode:(BOOL)mode;
+- (void)setSingleAvatarMode:(BOOL)mode fillContainer:(BOOL)container animated:(BOOL)animated;
+- (void)setupAVTView:(id)view;
+- (void)showMultiAvatarControllerAnimated:(BOOL)animated;
+- (void)showSingleAvatarControllerAnimated:(BOOL)animated;
+- (void)significantRecordChangeInDataSource:(id)source;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willEndFocus:(id)focus;
+- (void)wrapAndPresentViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation AVTCarouselController
 
-+ (id)sessionProviderForMode:(int64_t)a3 environment:(id)a4
++ (id)sessionProviderForMode:(int64_t)mode environment:(id)environment
 {
-  v5 = a4;
-  if (a3 == 1)
+  environmentCopy = environment;
+  if (mode == 1)
   {
     +[AVTViewSessionProvider creatorForAVTRecordView];
   }
@@ -65,58 +65,58 @@
     +[AVTViewSessionProvider creatorForAVTView];
   }
   v6 = ;
-  [AVTViewSessionProvider backingSizeForEnvironment:v5];
-  v9 = [[AVTViewSessionProvider alloc] initWithAVTViewBackingSize:v6 viewCreator:v5 environment:v7, v8];
+  [AVTViewSessionProvider backingSizeForEnvironment:environmentCopy];
+  v9 = [[AVTViewSessionProvider alloc] initWithAVTViewBackingSize:v6 viewCreator:environmentCopy environment:v7, v8];
 
   return v9;
 }
 
-+ (id)displayingCarouselForRecordDataSource:(id)a3
++ (id)displayingCarouselForRecordDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMode:0 dataSource:v4];
+  sourceCopy = source;
+  v5 = [[self alloc] initWithMode:0 dataSource:sourceCopy];
 
   return v5;
 }
 
-+ (id)recordingCarouselForRecordDataSource:(id)a3
++ (id)recordingCarouselForRecordDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMode:1 dataSource:v4];
+  sourceCopy = source;
+  v5 = [[self alloc] initWithMode:1 dataSource:sourceCopy];
 
   return v5;
 }
 
-- (AVTCarouselController)initWithMode:(int64_t)a3 dataSource:(id)a4
+- (AVTCarouselController)initWithMode:(int64_t)mode dataSource:(id)source
 {
-  v6 = a4;
+  sourceCopy = source;
   v7 = +[AVTUIEnvironment defaultEnvironment];
-  v8 = [objc_opt_class() sessionProviderForMode:a3 environment:v7];
-  v9 = [(AVTCarouselController *)self initWithMode:a3 sessionProvider:v8 dataSource:v6 environment:v7];
+  v8 = [objc_opt_class() sessionProviderForMode:mode environment:v7];
+  v9 = [(AVTCarouselController *)self initWithMode:mode sessionProvider:v8 dataSource:sourceCopy environment:v7];
 
   return v9;
 }
 
-- (AVTCarouselController)initWithMode:(int64_t)a3 sessionProvider:(id)a4 dataSource:(id)a5 environment:(id)a6
+- (AVTCarouselController)initWithMode:(int64_t)mode sessionProvider:(id)provider dataSource:(id)source environment:(id)environment
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  sourceCopy = source;
+  environmentCopy = environment;
   v19.receiver = self;
   v19.super_class = AVTCarouselController;
   v14 = [(AVTCarouselController *)&v19 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    v14->_mode = a3;
-    objc_storeStrong(&v14->_avtViewSessionProvider, a4);
-    objc_storeStrong(&v15->_dataSource, a5);
+    v14->_mode = mode;
+    objc_storeStrong(&v14->_avtViewSessionProvider, provider);
+    objc_storeStrong(&v15->_dataSource, source);
     [(AVTAvatarRecordDataSource *)v15->_dataSource addPriorityObserver:v15];
-    v16 = [(AVTUIEnvironment *)v13 logger];
+    logger = [(AVTUIEnvironment *)environmentCopy logger];
     logger = v15->_logger;
-    v15->_logger = v16;
+    v15->_logger = logger;
 
-    v15->_environment = v13;
+    v15->_environment = environmentCopy;
     v15->_singleAvatarMode = 0;
   }
 
@@ -125,29 +125,29 @@
 
 - (double)decelerationRate
 {
-  v2 = [(AVTCarouselController *)self multiAvatarController];
-  [v2 decelerationRate];
+  multiAvatarController = [(AVTCarouselController *)self multiAvatarController];
+  [multiAvatarController decelerationRate];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDecelerationRate:(double)a3
+- (void)setDecelerationRate:(double)rate
 {
-  v4 = [(AVTCarouselController *)self multiAvatarController];
-  [v4 setDecelerationRate:a3];
+  multiAvatarController = [(AVTCarouselController *)self multiAvatarController];
+  [multiAvatarController setDecelerationRate:rate];
 }
 
 - (void)loadView
 {
-  v3 = [(AVTCarouselController *)self avtViewSessionProvider];
-  [v3 avtViewBackingSize];
+  avtViewSessionProvider = [(AVTCarouselController *)self avtViewSessionProvider];
+  [avtViewSessionProvider avtViewBackingSize];
   v4 = [AVTViewCarouselLayout adaptativeLayoutWithAVTViewAspectRatio:?];
   [(AVTCarouselController *)self setAvtViewLayout:v4];
 
   v5 = objc_alloc(MEMORY[0x1E69DD250]);
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v9 = [v5 initWithFrame:?];
 
   [(AVTCarouselController *)self setView:v9];
@@ -161,16 +161,16 @@
     [(AVTCarouselController *)self showMultiAvatarControllerAnimated:0];
   }
 
-  v7 = [(AVTCarouselController *)self avatarDisplayingController];
-  v8 = [(AVTCarouselController *)self avtViewLayout];
-  [v7 prepareViewWithLayout:v8];
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
+  avtViewLayout = [(AVTCarouselController *)self avtViewLayout];
+  [avatarDisplayingController prepareViewWithLayout:avtViewLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AVTCarouselController;
-  [(AVTCarouselController *)&v4 viewWillAppear:a3];
+  [(AVTCarouselController *)&v4 viewWillAppear:appear];
   [(AVTCarouselController *)self beginAVTViewSession];
   [(AVTCarouselController *)self reloadData];
 }
@@ -179,12 +179,12 @@
 {
   if (![(AVTCarouselController *)self isPostponingBeginSession])
   {
-    v3 = [(AVTCarouselController *)self avtViewSession];
+    avtViewSession = [(AVTCarouselController *)self avtViewSession];
 
-    if (!v3)
+    if (!avtViewSession)
     {
       objc_initWeak(&location, self);
-      v4 = [(AVTCarouselController *)self avtViewSessionProvider];
+      avtViewSessionProvider = [(AVTCarouselController *)self avtViewSessionProvider];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __44__AVTCarouselController_beginAVTViewSession__block_invoke;
@@ -195,7 +195,7 @@
       v6[2] = __44__AVTCarouselController_beginAVTViewSession__block_invoke_2;
       v6[3] = &unk_1E7F3AA30;
       objc_copyWeak(&v7, &location);
-      v5 = [v4 sessionWithDidBecomeActiveHandler:v8 tearDownHandler:v6];
+      v5 = [avtViewSessionProvider sessionWithDidBecomeActiveHandler:v8 tearDownHandler:v6];
       [(AVTCarouselController *)self setAvtViewSession:v5];
 
       objc_destroyWeak(&v7);
@@ -252,28 +252,28 @@ uint64_t __44__AVTCarouselController_beginAVTViewSession__block_invoke_3(uint64_
   return v3();
 }
 
-- (void)setupAVTView:(id)a3
+- (void)setupAVTView:(id)view
 {
-  v6 = a3;
-  [v6 setEnableFaceTracking:1];
-  v4 = [(AVTCarouselController *)self view];
-  v5 = [v4 backgroundColor];
-  [v6 setBackgroundColor:v5];
+  viewCopy = view;
+  [viewCopy setEnableFaceTracking:1];
+  view = [(AVTCarouselController *)self view];
+  backgroundColor = [view backgroundColor];
+  [viewCopy setBackgroundColor:backgroundColor];
 
   if (AVTUIShowPerfHUD_once())
   {
-    [v6 setShowPerfHUD:1];
+    [viewCopy setShowPerfHUD:1];
   }
 
-  [v6 setEnableReticle:1];
+  [viewCopy setEnableReticle:1];
 }
 
-- (void)setIsPostponingBeginSession:(BOOL)a3
+- (void)setIsPostponingBeginSession:(BOOL)session
 {
-  if (self->_isPostponingBeginSession != a3)
+  if (self->_isPostponingBeginSession != session)
   {
-    self->_isPostponingBeginSession = a3;
-    if (!a3)
+    self->_isPostponingBeginSession = session;
+    if (!session)
     {
       [(AVTCarouselController *)self beginAVTViewSession];
 
@@ -284,82 +284,82 @@ uint64_t __44__AVTCarouselController_beginAVTViewSession__block_invoke_3(uint64_
 
 - (void)reloadData
 {
-  v3 = [(AVTCarouselController *)self currentAvatarRecord];
-  [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:v3];
+  currentAvatarRecord = [(AVTCarouselController *)self currentAvatarRecord];
+  [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:currentAvatarRecord];
 }
 
-- (void)reloadDataCenteringToAvatarRecord:(id)a3
+- (void)reloadDataCenteringToAvatarRecord:(id)record
 {
-  v5 = a3;
-  v4 = [(AVTCarouselController *)self avatarDisplayingController];
-  [v4 reloadData];
+  recordCopy = record;
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
+  [avatarDisplayingController reloadData];
 
-  [(AVTCarouselController *)self displayAvatarRecord:v5 animated:0];
+  [(AVTCarouselController *)self displayAvatarRecord:recordCopy animated:0];
 }
 
-- (void)setSingleAvatarMode:(BOOL)a3
+- (void)setSingleAvatarMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = [(AVTCarouselController *)self avtViewLayout];
-  -[AVTCarouselController setSingleAvatarMode:fillContainer:animated:](self, "setSingleAvatarMode:fillContainer:animated:", v3, [v5 fillContainer], 0);
+  modeCopy = mode;
+  avtViewLayout = [(AVTCarouselController *)self avtViewLayout];
+  -[AVTCarouselController setSingleAvatarMode:fillContainer:animated:](self, "setSingleAvatarMode:fillContainer:animated:", modeCopy, [avtViewLayout fillContainer], 0);
 }
 
-- (void)setSingleAvatarMode:(BOOL)a3 fillContainer:(BOOL)a4 animated:(BOOL)a5
+- (void)setSingleAvatarMode:(BOOL)mode fillContainer:(BOOL)container animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v9 = [(AVTCarouselController *)self avtViewLayout];
-  [v9 setFillContainer:v6];
+  animatedCopy = animated;
+  containerCopy = container;
+  modeCopy = mode;
+  avtViewLayout = [(AVTCarouselController *)self avtViewLayout];
+  [avtViewLayout setFillContainer:containerCopy];
 
-  if (self->_singleAvatarMode != v7)
+  if (self->_singleAvatarMode != modeCopy)
   {
-    self->_singleAvatarMode = v7;
-    v10 = [(AVTCarouselController *)self logger];
-    v11 = v10;
-    if (v7)
+    self->_singleAvatarMode = modeCopy;
+    logger = [(AVTCarouselController *)self logger];
+    v11 = logger;
+    if (modeCopy)
     {
-      [v10 logCarouselChangingToSingleMode];
+      [logger logCarouselChangingToSingleMode];
 
-      [(AVTCarouselController *)self showSingleAvatarControllerAnimated:v5];
+      [(AVTCarouselController *)self showSingleAvatarControllerAnimated:animatedCopy];
     }
 
     else
     {
-      [v10 logCarouselChangingToMultiMode];
+      [logger logCarouselChangingToMultiMode];
 
-      [(AVTCarouselController *)self showMultiAvatarControllerAnimated:v5];
+      [(AVTCarouselController *)self showMultiAvatarControllerAnimated:animatedCopy];
     }
   }
 }
 
-- (void)displayAvatarRecordWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)displayAvatarRecordWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(AVTCarouselController *)self dataSource];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  dataSource = [(AVTCarouselController *)self dataSource];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__AVTCarouselController_displayAvatarRecordWithIdentifier_animated___block_invoke;
   v14[3] = &unk_1E7F3B3B0;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
-  v9 = [v7 indexesOfRecordsPassingTest:v14];
+  v9 = [dataSource indexesOfRecordsPassingTest:v14];
 
   if ([v9 count] == 1)
   {
-    v10 = [(AVTCarouselController *)self dataSource];
-    v11 = [v10 recordAtIndex:{objc_msgSend(v9, "firstIndex")}];
+    dataSource2 = [(AVTCarouselController *)self dataSource];
+    environment = [dataSource2 recordAtIndex:{objc_msgSend(v9, "firstIndex")}];
 
-    [(AVTCarouselController *)self displayAvatarRecord:v11 animated:v4];
+    [(AVTCarouselController *)self displayAvatarRecord:environment animated:animatedCopy];
   }
 
   else
   {
-    v11 = [(AVTCarouselController *)self environment];
-    v12 = [v11 logger];
+    environment = [(AVTCarouselController *)self environment];
+    logger = [environment logger];
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't fetch record with ID %@, err: %@", v8, 0];
-    [v12 logErrorFetchingRecords:v13];
+    [logger logErrorFetchingRecords:v13];
   }
 }
 
@@ -371,102 +371,102 @@ uint64_t __68__AVTCarouselController_displayAvatarRecordWithIdentifier_animated_
   return v4;
 }
 
-- (void)displayAvatarRecord:(id)a3 animated:(BOOL)a4
+- (void)displayAvatarRecord:(id)record animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(AVTCarouselController *)self setCurrentAvatarRecord:v6];
-  v7 = [(AVTCarouselController *)self avatarDisplayingController];
-  [v7 displayAvatarForRecord:v6 animated:v4];
+  animatedCopy = animated;
+  recordCopy = record;
+  [(AVTCarouselController *)self setCurrentAvatarRecord:recordCopy];
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
+  [avatarDisplayingController displayAvatarForRecord:recordCopy animated:animatedCopy];
 }
 
 - (BOOL)allowsCreate
 {
-  v2 = [(AVTCarouselController *)self multiAvatarController];
-  v3 = [v2 allowsCreate];
+  multiAvatarController = [(AVTCarouselController *)self multiAvatarController];
+  allowsCreate = [multiAvatarController allowsCreate];
 
-  return v3;
+  return allowsCreate;
 }
 
-- (void)setAllowsCreate:(BOOL)a3
+- (void)setAllowsCreate:(BOOL)create
 {
-  v3 = a3;
-  v4 = [(AVTCarouselController *)self multiAvatarController];
-  [v4 setAllowsCreate:v3 animated:0];
+  createCopy = create;
+  multiAvatarController = [(AVTCarouselController *)self multiAvatarController];
+  [multiAvatarController setAllowsCreate:createCopy animated:0];
 }
 
-- (void)setAllowsCreate:(BOOL)a3 animated:(BOOL)a4
+- (void)setAllowsCreate:(BOOL)create animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(AVTCarouselController *)self multiAvatarController];
-  [v6 setAllowsCreate:v5 animated:v4];
+  animatedCopy = animated;
+  createCopy = create;
+  multiAvatarController = [(AVTCarouselController *)self multiAvatarController];
+  [multiAvatarController setAllowsCreate:createCopy animated:animatedCopy];
 }
 
-- (void)showMultiAvatarControllerAnimated:(BOOL)a3
+- (void)showMultiAvatarControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AVTCarouselController *)self multiAvatarController];
+  animatedCopy = animated;
+  multiAvatarController = [(AVTCarouselController *)self multiAvatarController];
 
-  if (!v5)
+  if (!multiAvatarController)
   {
     v6 = [AVTMultiAvatarController alloc];
-    v7 = [(AVTCarouselController *)self dataSource];
-    v8 = [(AVTCarouselController *)self environment];
-    v9 = [(AVTMultiAvatarController *)v6 initWithDataSource:v7 environment:v8];
+    dataSource = [(AVTCarouselController *)self dataSource];
+    environment = [(AVTCarouselController *)self environment];
+    v9 = [(AVTMultiAvatarController *)v6 initWithDataSource:dataSource environment:environment];
 
     [(AVTMultiAvatarController *)v9 setDelegate:self];
-    v10 = [(AVTMultiAvatarController *)v9 view];
-    [v10 setAutoresizingMask:18];
+    view = [(AVTMultiAvatarController *)v9 view];
+    [view setAutoresizingMask:18];
 
     [(AVTCarouselController *)self setMultiAvatarController:v9];
   }
 
-  v11 = [(AVTCarouselController *)self singleAvatarController];
+  singleAvatarController = [(AVTCarouselController *)self singleAvatarController];
 
-  v12 = [(AVTCarouselController *)self view];
-  v13 = [(AVTCarouselController *)self multiAvatarController];
-  v14 = [v13 view];
-  if (v11)
+  view2 = [(AVTCarouselController *)self view];
+  multiAvatarController2 = [(AVTCarouselController *)self multiAvatarController];
+  view3 = [multiAvatarController2 view];
+  if (singleAvatarController)
   {
-    v15 = [(AVTCarouselController *)self singleAvatarController];
-    v16 = [v15 view];
-    [v12 insertSubview:v14 aboveSubview:v16];
+    singleAvatarController2 = [(AVTCarouselController *)self singleAvatarController];
+    view4 = [singleAvatarController2 view];
+    [view2 insertSubview:view3 aboveSubview:view4];
   }
 
   else
   {
-    [v12 insertSubview:v14 atIndex:0];
+    [view2 insertSubview:view3 atIndex:0];
   }
 
-  v17 = [(AVTCarouselController *)self multiAvatarController];
-  [(AVTCarouselController *)self setAvatarDisplayingController:v17];
+  multiAvatarController3 = [(AVTCarouselController *)self multiAvatarController];
+  [(AVTCarouselController *)self setAvatarDisplayingController:multiAvatarController3];
 
-  v18 = [(AVTCarouselController *)self view];
-  [v18 bounds];
+  view5 = [(AVTCarouselController *)self view];
+  [view5 bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(AVTCarouselController *)self avatarDisplayingController];
-  v28 = [v27 view];
-  [v28 setFrame:{v20, v22, v24, v26}];
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
+  view6 = [avatarDisplayingController view];
+  [view6 setFrame:{v20, v22, v24, v26}];
 
-  v29 = [(AVTCarouselController *)self avatarDisplayingController];
-  [v29 reloadData];
+  avatarDisplayingController2 = [(AVTCarouselController *)self avatarDisplayingController];
+  [avatarDisplayingController2 reloadData];
 
-  v30 = [(AVTCarouselController *)self avatarDisplayingController];
-  v31 = [(AVTCarouselController *)self currentAvatarRecord];
-  [v30 displayAvatarForRecord:v31 animated:0];
+  avatarDisplayingController3 = [(AVTCarouselController *)self avatarDisplayingController];
+  currentAvatarRecord = [(AVTCarouselController *)self currentAvatarRecord];
+  [avatarDisplayingController3 displayAvatarForRecord:currentAvatarRecord animated:0];
 
-  v32 = [(AVTCarouselController *)self singleAvatarController];
+  singleAvatarController3 = [(AVTCarouselController *)self singleAvatarController];
   v49 = 0;
-  [v32 prepareToTransitionToVisible:0 completionHandler:&v49];
+  [singleAvatarController3 prepareToTransitionToVisible:0 completionHandler:&v49];
   v33 = v49;
 
-  v34 = [(AVTCarouselController *)self multiAvatarController];
+  multiAvatarController4 = [(AVTCarouselController *)self multiAvatarController];
   v48 = 0;
-  [v34 prepareToTransitionToVisible:1 completionHandler:&v48];
+  [multiAvatarController4 prepareToTransitionToVisible:1 completionHandler:&v48];
   v35 = v48;
 
   v47[0] = MEMORY[0x1E69E9820];
@@ -486,7 +486,7 @@ uint64_t __68__AVTCarouselController_displayAvatarRecordWithIdentifier_animated_
   v44[4] = self;
   v39 = MEMORY[0x1BFB0DE80](v44);
   v40 = v39;
-  if (v3)
+  if (animatedCopy)
   {
     v41 = MEMORY[0x1E69DD250];
     v42[0] = MEMORY[0x1E69E9820];
@@ -561,76 +561,76 @@ uint64_t __59__AVTCarouselController_showMultiAvatarControllerAnimated___block_i
   return result;
 }
 
-- (void)showSingleAvatarControllerAnimated:(BOOL)a3
+- (void)showSingleAvatarControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AVTCarouselController *)self singleAvatarController];
+  animatedCopy = animated;
+  singleAvatarController = [(AVTCarouselController *)self singleAvatarController];
 
-  if (!v5)
+  if (!singleAvatarController)
   {
     v6 = [AVTSingleAvatarController alloc];
-    v7 = [(AVTCarouselController *)self dataSource];
-    v8 = [(AVTCarouselController *)self environment];
-    v9 = [(AVTSingleAvatarController *)v6 initWithDataSource:v7 environment:v8];
+    dataSource = [(AVTCarouselController *)self dataSource];
+    environment = [(AVTCarouselController *)self environment];
+    v9 = [(AVTSingleAvatarController *)v6 initWithDataSource:dataSource environment:environment];
 
     [(AVTSingleAvatarController *)v9 setDelegate:self];
-    v10 = [(AVTSingleAvatarController *)v9 view];
-    [v10 setAutoresizingMask:18];
+    view = [(AVTSingleAvatarController *)v9 view];
+    [view setAutoresizingMask:18];
 
     [(AVTCarouselController *)self setSingleAvatarController:v9];
   }
 
-  v11 = [(AVTCarouselController *)self view];
-  v12 = [(AVTCarouselController *)self singleAvatarController];
-  v13 = [v12 view];
-  [v11 insertSubview:v13 atIndex:0];
+  view2 = [(AVTCarouselController *)self view];
+  singleAvatarController2 = [(AVTCarouselController *)self singleAvatarController];
+  view3 = [singleAvatarController2 view];
+  [view2 insertSubview:view3 atIndex:0];
 
-  v14 = [(AVTCarouselController *)self avatarDisplayingController];
-  [v14 stopUsingAVTViewSessionSynchronously:1 completionHandler:0];
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
+  [avatarDisplayingController stopUsingAVTViewSessionSynchronously:1 completionHandler:0];
 
-  v15 = [(AVTCarouselController *)self singleAvatarController];
-  [(AVTCarouselController *)self setAvatarDisplayingController:v15];
+  singleAvatarController3 = [(AVTCarouselController *)self singleAvatarController];
+  [(AVTCarouselController *)self setAvatarDisplayingController:singleAvatarController3];
 
-  v16 = [(AVTCarouselController *)self view];
-  [v16 bounds];
+  view4 = [(AVTCarouselController *)self view];
+  [view4 bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(AVTCarouselController *)self avatarDisplayingController];
-  v26 = [v25 view];
-  [v26 setFrame:{v18, v20, v22, v24}];
+  avatarDisplayingController2 = [(AVTCarouselController *)self avatarDisplayingController];
+  view5 = [avatarDisplayingController2 view];
+  [view5 setFrame:{v18, v20, v22, v24}];
 
-  v27 = [(AVTCarouselController *)self avatarDisplayingController];
-  [v27 reloadData];
+  avatarDisplayingController3 = [(AVTCarouselController *)self avatarDisplayingController];
+  [avatarDisplayingController3 reloadData];
 
-  v28 = [(AVTCarouselController *)self avatarDisplayingController];
-  v29 = [(AVTCarouselController *)self currentAvatarRecord];
-  [v28 displayAvatarForRecord:v29 animated:0];
+  avatarDisplayingController4 = [(AVTCarouselController *)self avatarDisplayingController];
+  currentAvatarRecord = [(AVTCarouselController *)self currentAvatarRecord];
+  [avatarDisplayingController4 displayAvatarForRecord:currentAvatarRecord animated:0];
 
-  v30 = [(AVTCarouselController *)self multiAvatarController];
+  multiAvatarController = [(AVTCarouselController *)self multiAvatarController];
   v53 = 0;
-  [v30 prepareToTransitionToVisible:0 completionHandler:&v53];
+  [multiAvatarController prepareToTransitionToVisible:0 completionHandler:&v53];
   v31 = v53;
 
-  v32 = [(AVTCarouselController *)self singleAvatarController];
+  singleAvatarController4 = [(AVTCarouselController *)self singleAvatarController];
   v52 = 0;
-  [v32 prepareToTransitionToVisible:1 completionHandler:&v52];
+  [singleAvatarController4 prepareToTransitionToVisible:1 completionHandler:&v52];
   v33 = v52;
 
-  v34 = [(AVTCarouselController *)self avtViewSession];
+  avtViewSession = [(AVTCarouselController *)self avtViewSession];
 
-  if (v34)
+  if (avtViewSession)
   {
-    v35 = [(AVTCarouselController *)self avatarDisplayingController];
-    v36 = [(AVTCarouselController *)self avtViewSession];
-    v37 = [(AVTCarouselController *)self avtViewLayout];
-    [v35 useAVTViewFromSession:v36 withLayout:v37];
+    avatarDisplayingController5 = [(AVTCarouselController *)self avatarDisplayingController];
+    avtViewSession2 = [(AVTCarouselController *)self avtViewSession];
+    avtViewLayout = [(AVTCarouselController *)self avtViewLayout];
+    [avatarDisplayingController5 useAVTViewFromSession:avtViewSession2 withLayout:avtViewLayout];
   }
 
-  v38 = [(AVTCarouselController *)self avatarDisplayingController];
-  v39 = [v38 view];
-  [v39 setAlpha:1.0];
+  avatarDisplayingController6 = [(AVTCarouselController *)self avatarDisplayingController];
+  view6 = [avatarDisplayingController6 view];
+  [view6 setAlpha:1.0];
 
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -649,7 +649,7 @@ uint64_t __59__AVTCarouselController_showMultiAvatarControllerAnimated___block_i
   v48[4] = self;
   v43 = MEMORY[0x1BFB0DE80](v48);
   v44 = v43;
-  if (v3)
+  if (animatedCopy)
   {
     v45 = MEMORY[0x1E69DD250];
     v46[0] = MEMORY[0x1E69E9820];
@@ -711,152 +711,152 @@ uint64_t __60__AVTCarouselController_showSingleAvatarControllerAnimated___block_
   return result;
 }
 
-- (void)presentEditorForCreatingAvatar:(id)a3
+- (void)presentEditorForCreatingAvatar:(id)avatar
 {
-  v4 = [(AVTCarouselController *)self dataSource];
-  v7 = [v4 internalRecordStore];
+  dataSource = [(AVTCarouselController *)self dataSource];
+  internalRecordStore = [dataSource internalRecordStore];
 
-  v5 = [(AVTCarouselController *)self avtViewSessionProvider];
-  v6 = [AVTAvatarEditorViewController viewControllerForCreatingAvatarInStore:v7 avtViewSessionProvider:v5];
+  avtViewSessionProvider = [(AVTCarouselController *)self avtViewSessionProvider];
+  v6 = [AVTAvatarEditorViewController viewControllerForCreatingAvatarInStore:internalRecordStore avtViewSessionProvider:avtViewSessionProvider];
 
   [v6 setDelegate:self];
   [(AVTCarouselController *)self wrapAndPresentViewController:v6 animated:1];
 }
 
-- (void)presentActionsForAvatar:(id)a3
+- (void)presentActionsForAvatar:(id)avatar
 {
-  v4 = a3;
-  if (([v4 isEditable] & 1) == 0)
+  avatarCopy = avatar;
+  if (([avatarCopy isEditable] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Record %@ is not editable!", v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Record %@ is not editable!", avatarCopy}];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v4}];
+    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", avatarCopy}];
   }
 
-  v17 = v4;
+  v17 = avatarCopy;
   v5 = [AVTAvatarActionsProvider alloc];
-  v6 = [(AVTCarouselController *)self dataSource];
-  v7 = [(AVTAvatarActionsProvider *)v5 initWithAvatarRecord:v17 dataSource:v6 allowCreate:0];
+  dataSource = [(AVTCarouselController *)self dataSource];
+  v7 = [(AVTAvatarActionsProvider *)v5 initWithAvatarRecord:v17 dataSource:dataSource allowCreate:0];
 
   v8 = [AVTAvatarInlineActionsController alloc];
-  v9 = [(AVTCarouselController *)self dataSource];
-  v10 = [(AVTCarouselController *)self avtViewSessionProvider];
-  v11 = [(AVTCarouselController *)self environment];
-  v12 = [(AVTAvatarInlineActionsController *)v8 initWithDataSource:v9 avtViewProvider:v10 environment:v11];
+  dataSource2 = [(AVTCarouselController *)self dataSource];
+  avtViewSessionProvider = [(AVTCarouselController *)self avtViewSessionProvider];
+  environment = [(AVTCarouselController *)self environment];
+  v12 = [(AVTAvatarInlineActionsController *)v8 initWithDataSource:dataSource2 avtViewProvider:avtViewSessionProvider environment:environment];
 
   [(AVTAvatarInlineActionsController *)v12 updateWithActionsModel:v7];
   v13 = [AVTAvatarActionsViewController alloc];
-  v14 = [(AVTCarouselController *)self avtViewSessionProvider];
-  v15 = [(AVTCarouselController *)self environment];
-  v16 = [(AVTAvatarActionsViewController *)v13 initWithAVTViewSessionProvider:v14 actionsController:v12 environment:v15];
+  avtViewSessionProvider2 = [(AVTCarouselController *)self avtViewSessionProvider];
+  environment2 = [(AVTCarouselController *)self environment];
+  v16 = [(AVTAvatarActionsViewController *)v13 initWithAVTViewSessionProvider:avtViewSessionProvider2 actionsController:v12 environment:environment2];
 
   [(AVTAvatarActionsViewController *)v16 setDelegate:self];
   [(AVTCarouselController *)self wrapAndPresentViewController:v16 animated:1];
 }
 
-- (void)wrapAndPresentViewController:(id)a3 animated:(BOOL)a4
+- (void)wrapAndPresentViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = [AVTUIControllerPresentation presentationWithWrappingForController:a3, a4];
-  v5 = [(AVTCarouselController *)self presenterDelegate];
-  [v5 presentAvatarUIController:v6 animated:1];
+  animated = [AVTUIControllerPresentation presentationWithWrappingForController:controller, animated];
+  presenterDelegate = [(AVTCarouselController *)self presenterDelegate];
+  [presenterDelegate presentAvatarUIController:animated animated:1];
 }
 
-- (void)didBeginFocus:(id)a3
+- (void)didBeginFocus:(id)focus
 {
-  v4 = a3;
-  v5 = [(AVTCarouselController *)self avatarDisplayingController];
+  focusCopy = focus;
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
 
-  if (v5 == v4)
+  if (avatarDisplayingController == focusCopy)
   {
-    v6 = [(AVTCarouselController *)self environment];
-    v7 = [v6 usageTrackingSession];
-    v8 = [(AVTCarouselController *)self currentAvatarRecord];
-    [v7 didStartFaceTrackingInCarouselWithAvatar:v8];
+    environment = [(AVTCarouselController *)self environment];
+    usageTrackingSession = [environment usageTrackingSession];
+    currentAvatarRecord = [(AVTCarouselController *)self currentAvatarRecord];
+    [usageTrackingSession didStartFaceTrackingInCarouselWithAvatar:currentAvatarRecord];
 
-    v11 = [(AVTCarouselController *)self currentAvatarRecord];
-    v9 = [(AVTCarouselController *)self avtViewSession];
-    v10 = [v9 avtView];
-    [(AVTCarouselController *)self notifyDelegateDidFocusRecord:v11 avtView:v10];
+    currentAvatarRecord2 = [(AVTCarouselController *)self currentAvatarRecord];
+    avtViewSession = [(AVTCarouselController *)self avtViewSession];
+    avtView = [avtViewSession avtView];
+    [(AVTCarouselController *)self notifyDelegateDidFocusRecord:currentAvatarRecord2 avtView:avtView];
   }
 }
 
-- (void)willEndFocus:(id)a3
+- (void)willEndFocus:(id)focus
 {
-  v4 = a3;
-  v5 = [(AVTCarouselController *)self avatarDisplayingController];
+  focusCopy = focus;
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
 
-  if (v5 == v4)
+  if (avatarDisplayingController == focusCopy)
   {
-    v6 = [(AVTCarouselController *)self environment];
-    v7 = [v6 usageTrackingSession];
-    [v7 didStopFaceTrackingInCarousel];
+    environment = [(AVTCarouselController *)self environment];
+    usageTrackingSession = [environment usageTrackingSession];
+    [usageTrackingSession didStopFaceTrackingInCarousel];
 
-    v10 = [(AVTCarouselController *)self currentAvatarRecord];
-    v8 = [(AVTCarouselController *)self avtViewSession];
-    v9 = [v8 avtView];
-    [(AVTCarouselController *)self notifyDelegateWillEndFocusOnRecord:v10 avtView:v9];
+    currentAvatarRecord = [(AVTCarouselController *)self currentAvatarRecord];
+    avtViewSession = [(AVTCarouselController *)self avtViewSession];
+    avtView = [avtViewSession avtView];
+    [(AVTCarouselController *)self notifyDelegateWillEndFocusOnRecord:currentAvatarRecord avtView:avtView];
   }
 }
 
-- (void)displayingController:(id)a3 didChangeCurrentRecord:(id)a4
+- (void)displayingController:(id)controller didChangeCurrentRecord:(id)record
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(AVTCarouselController *)self avatarDisplayingController];
+  recordCopy = record;
+  controllerCopy = controller;
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
 
-  if (v7 == v6)
+  if (avatarDisplayingController == controllerCopy)
   {
-    [(AVTCarouselController *)self setCurrentAvatarRecord:v10];
-    v8 = [(AVTCarouselController *)self environment];
-    v9 = [v8 usageTrackingSession];
-    [v9 didChangeCurrentAvatarInCarousel:v10];
+    [(AVTCarouselController *)self setCurrentAvatarRecord:recordCopy];
+    environment = [(AVTCarouselController *)self environment];
+    usageTrackingSession = [environment usageTrackingSession];
+    [usageTrackingSession didChangeCurrentAvatarInCarousel:recordCopy];
 
-    [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:v10];
+    [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:recordCopy];
   }
 }
 
-- (void)displayingControllerWantsToPresentEditorForCreation:(id)a3
+- (void)displayingControllerWantsToPresentEditorForCreation:(id)creation
 {
-  v7 = a3;
-  v4 = [(AVTCarouselController *)self avatarDisplayingController];
+  creationCopy = creation;
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
 
-  v5 = v7;
-  if (v4 == v7)
+  v5 = creationCopy;
+  if (avatarDisplayingController == creationCopy)
   {
-    v6 = [v7 view];
-    [(AVTCarouselController *)self presentEditorForCreatingAvatar:v6];
+    view = [creationCopy view];
+    [(AVTCarouselController *)self presentEditorForCreatingAvatar:view];
 
-    v5 = v7;
+    v5 = creationCopy;
   }
 }
 
-- (void)displayingController:(id)a3 didMoveTowardRecord:(id)a4 withFactor:(double)a5
+- (void)displayingController:(id)controller didMoveTowardRecord:(id)record withFactor:(double)factor
 {
-  v10 = a4;
-  v8 = a3;
-  v9 = [(AVTCarouselController *)self avatarDisplayingController];
+  recordCopy = record;
+  controllerCopy = controller;
+  avatarDisplayingController = [(AVTCarouselController *)self avatarDisplayingController];
 
-  if (v9 == v8)
+  if (avatarDisplayingController == controllerCopy)
   {
-    [(AVTCarouselController *)self notifyDelegateNearnessFactorDidChange:v10 towardRecord:a5];
+    [(AVTCarouselController *)self notifyDelegateNearnessFactorDidChange:recordCopy towardRecord:factor];
   }
 }
 
-- (void)notifyDelegateDidFocusRecord:(id)a3 avtView:(id)a4
+- (void)notifyDelegateDidFocusRecord:(id)record avtView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTCarouselController *)self environment];
-  v9 = [v8 logger];
-  v10 = [v6 description];
-  [v9 logCarouselDelegateDidFocusRecord:v10];
+  recordCopy = record;
+  viewCopy = view;
+  environment = [(AVTCarouselController *)self environment];
+  logger = [environment logger];
+  v10 = [recordCopy description];
+  [logger logCarouselDelegateDidFocusRecord:v10];
 
-  v11 = [(AVTCarouselController *)self mode];
-  if (v11 == 1)
+  mode = [(AVTCarouselController *)self mode];
+  if (mode == 1)
   {
     v27 = 0;
     v28 = &v27;
@@ -864,42 +864,42 @@ uint64_t __60__AVTCarouselController_showSingleAvatarControllerAnimated___block_
     v30 = __Block_byref_object_copy__14;
     v31 = __Block_byref_object_dispose__14;
     v32 = 0;
-    if (v6)
+    if (recordCopy)
     {
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __62__AVTCarouselController_notifyDelegateDidFocusRecord_avtView___block_invoke;
       v26[3] = &unk_1E7F3C6A8;
       v26[4] = &v27;
-      [v7 downcastWithAVTViewHandler:0 recordViewHandler:v26];
+      [viewCopy downcastWithAVTViewHandler:0 recordViewHandler:v26];
     }
 
-    v20 = [(AVTCarouselController *)self recordingDelegate];
+    recordingDelegate = [(AVTCarouselController *)self recordingDelegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(AVTCarouselController *)self recordingDelegate];
-      [v22 carouselController:self didFocusOnRecordView:v28[5]];
+      recordingDelegate2 = [(AVTCarouselController *)self recordingDelegate];
+      [recordingDelegate2 carouselController:self didFocusOnRecordView:v28[5]];
     }
 
-    v23 = [(AVTCarouselController *)self recordingDelegate];
+    recordingDelegate3 = [(AVTCarouselController *)self recordingDelegate];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
-      v25 = [(AVTCarouselController *)self recordingDelegate];
-      [v25 carouselController:self didUpdateWithRecord:v6];
+      recordingDelegate4 = [(AVTCarouselController *)self recordingDelegate];
+      [recordingDelegate4 carouselController:self didUpdateWithRecord:recordCopy];
     }
 
     _Block_object_dispose(&v27, 8);
   }
 
-  else if (!v11)
+  else if (!mode)
   {
-    if (v6)
+    if (recordCopy)
     {
-      v12 = v7;
+      v12 = viewCopy;
     }
 
     else
@@ -908,37 +908,37 @@ uint64_t __60__AVTCarouselController_showSingleAvatarControllerAnimated___block_
     }
 
     v13 = v12;
-    v14 = [(AVTCarouselController *)self displayingDelegate];
+    displayingDelegate = [(AVTCarouselController *)self displayingDelegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(AVTCarouselController *)self displayingDelegate];
-      [v16 carouselController:self didFocusOnView:v13];
+      displayingDelegate2 = [(AVTCarouselController *)self displayingDelegate];
+      [displayingDelegate2 carouselController:self didFocusOnView:v13];
     }
 
-    v17 = [(AVTCarouselController *)self displayingDelegate];
+    displayingDelegate3 = [(AVTCarouselController *)self displayingDelegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(AVTCarouselController *)self displayingDelegate];
-      [v19 carouselController:self didUpdateWithRecord:v6];
+      displayingDelegate4 = [(AVTCarouselController *)self displayingDelegate];
+      [displayingDelegate4 carouselController:self didUpdateWithRecord:recordCopy];
     }
   }
 }
 
-- (void)notifyDelegateWillEndFocusOnRecord:(id)a3 avtView:(id)a4
+- (void)notifyDelegateWillEndFocusOnRecord:(id)record avtView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTCarouselController *)self environment];
-  v9 = [v8 logger];
-  v10 = [v6 description];
-  [v9 logCarouselDelegateWillEndFocusRecord:v10];
+  recordCopy = record;
+  viewCopy = view;
+  environment = [(AVTCarouselController *)self environment];
+  logger = [environment logger];
+  v10 = [recordCopy description];
+  [logger logCarouselDelegateWillEndFocusRecord:v10];
 
-  v11 = [(AVTCarouselController *)self mode];
-  if (v11 == 1)
+  mode = [(AVTCarouselController *)self mode];
+  if (mode == 1)
   {
     v21 = 0;
     v22 = &v21;
@@ -946,33 +946,33 @@ uint64_t __60__AVTCarouselController_showSingleAvatarControllerAnimated___block_
     v24 = __Block_byref_object_copy__14;
     v25 = __Block_byref_object_dispose__14;
     v26 = 0;
-    if (v6)
+    if (recordCopy)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __68__AVTCarouselController_notifyDelegateWillEndFocusOnRecord_avtView___block_invoke;
       v20[3] = &unk_1E7F3C6A8;
       v20[4] = &v21;
-      [v7 downcastWithAVTViewHandler:0 recordViewHandler:v20];
+      [viewCopy downcastWithAVTViewHandler:0 recordViewHandler:v20];
     }
 
-    v17 = [(AVTCarouselController *)self recordingDelegate];
+    recordingDelegate = [(AVTCarouselController *)self recordingDelegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(AVTCarouselController *)self recordingDelegate];
-      [v19 carouselController:self willEndFocusOnRecordView:v22[5]];
+      recordingDelegate2 = [(AVTCarouselController *)self recordingDelegate];
+      [recordingDelegate2 carouselController:self willEndFocusOnRecordView:v22[5]];
     }
 
     _Block_object_dispose(&v21, 8);
   }
 
-  else if (!v11)
+  else if (!mode)
   {
-    if (v6)
+    if (recordCopy)
     {
-      v12 = v7;
+      v12 = viewCopy;
     }
 
     else
@@ -981,84 +981,84 @@ uint64_t __60__AVTCarouselController_showSingleAvatarControllerAnimated___block_
     }
 
     v13 = v12;
-    v14 = [(AVTCarouselController *)self displayingDelegate];
+    displayingDelegate = [(AVTCarouselController *)self displayingDelegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(AVTCarouselController *)self displayingDelegate];
-      [v16 carouselController:self willEndFocusOnView:v13];
+      displayingDelegate2 = [(AVTCarouselController *)self displayingDelegate];
+      [displayingDelegate2 carouselController:self willEndFocusOnView:v13];
     }
   }
 
-  [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:v6];
+  [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:recordCopy];
 }
 
-- (void)notifyDelegateNearnessFactorDidChange:(double)a3 towardRecord:(id)a4
+- (void)notifyDelegateNearnessFactorDidChange:(double)change towardRecord:(id)record
 {
-  v21 = a4;
-  v6 = [(AVTCarouselController *)self environment];
-  v7 = [v6 logger];
-  [v7 logCarouselDelegateNearnessFactorDidChange:v21 != 0 towardRecord:objc_msgSend(v21 editable:{"isEditable"), a3}];
+  recordCopy = record;
+  environment = [(AVTCarouselController *)self environment];
+  logger = [environment logger];
+  [logger logCarouselDelegateNearnessFactorDidChange:recordCopy != 0 towardRecord:objc_msgSend(recordCopy editable:{"isEditable"), change}];
 
-  v8 = [(AVTCarouselController *)self mode];
-  if (v8 == 1)
+  mode = [(AVTCarouselController *)self mode];
+  if (mode == 1)
   {
-    v15 = [(AVTCarouselController *)self recordingDelegate];
+    recordingDelegate = [(AVTCarouselController *)self recordingDelegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(AVTCarouselController *)self recordingDelegate];
-      [v17 carouselController:self didMoveTowardRecord:v21 withFactor:a3];
+      recordingDelegate2 = [(AVTCarouselController *)self recordingDelegate];
+      [recordingDelegate2 carouselController:self didMoveTowardRecord:recordCopy withFactor:change];
     }
 
-    v18 = [(AVTCarouselController *)self recordingDelegate];
+    recordingDelegate3 = [(AVTCarouselController *)self recordingDelegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v14 = [(AVTCarouselController *)self recordingDelegate];
+      recordingDelegate4 = [(AVTCarouselController *)self recordingDelegate];
       goto LABEL_11;
     }
   }
 
-  else if (!v8)
+  else if (!mode)
   {
-    v9 = [(AVTCarouselController *)self displayingDelegate];
+    displayingDelegate = [(AVTCarouselController *)self displayingDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(AVTCarouselController *)self displayingDelegate];
-      [v11 carouselController:self didMoveTowardRecord:v21 withFactor:a3];
+      displayingDelegate2 = [(AVTCarouselController *)self displayingDelegate];
+      [displayingDelegate2 carouselController:self didMoveTowardRecord:recordCopy withFactor:change];
     }
 
-    v12 = [(AVTCarouselController *)self displayingDelegate];
+    displayingDelegate3 = [(AVTCarouselController *)self displayingDelegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(AVTCarouselController *)self displayingDelegate];
+      recordingDelegate4 = [(AVTCarouselController *)self displayingDelegate];
 LABEL_11:
-      v20 = v14;
-      [v14 carouselController:self didMoveToNearestRecord:v21 withFactor:a3];
+      v20 = recordingDelegate4;
+      [recordingDelegate4 carouselController:self didMoveToNearestRecord:recordCopy withFactor:change];
     }
   }
 }
 
-- (void)notifyDelegateDidUpdateWithRecord:(id)a3
+- (void)notifyDelegateDidUpdateWithRecord:(id)record
 {
-  v14 = a3;
-  v4 = [(AVTCarouselController *)self environment];
-  v5 = [v4 logger];
-  v6 = [v14 description];
-  [v5 logCarouselDelegateDidUpdateRecord:v6];
+  recordCopy = record;
+  environment = [(AVTCarouselController *)self environment];
+  logger = [environment logger];
+  v6 = [recordCopy description];
+  [logger logCarouselDelegateDidUpdateRecord:v6];
 
-  v7 = [(AVTCarouselController *)self mode];
-  if (v7 == 1)
+  mode = [(AVTCarouselController *)self mode];
+  if (mode == 1)
   {
-    v11 = [(AVTCarouselController *)self recordingDelegate];
+    recordingDelegate = [(AVTCarouselController *)self recordingDelegate];
     v12 = objc_opt_respondsToSelector();
 
     if ((v12 & 1) == 0)
@@ -1066,21 +1066,21 @@ LABEL_11:
       goto LABEL_8;
     }
 
-    v10 = [(AVTCarouselController *)self recordingDelegate];
+    recordingDelegate2 = [(AVTCarouselController *)self recordingDelegate];
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!mode)
   {
-    v8 = [(AVTCarouselController *)self displayingDelegate];
+    displayingDelegate = [(AVTCarouselController *)self displayingDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(AVTCarouselController *)self displayingDelegate];
+      recordingDelegate2 = [(AVTCarouselController *)self displayingDelegate];
 LABEL_7:
-      v13 = v10;
-      [v10 carouselController:self didUpdateWithRecord:v14];
+      v13 = recordingDelegate2;
+      [recordingDelegate2 carouselController:self didUpdateWithRecord:recordCopy];
     }
   }
 
@@ -1097,14 +1097,14 @@ LABEL_8:
     v13 = __Block_byref_object_copy__14;
     v14 = __Block_byref_object_dispose__14;
     v15 = 0;
-    v5 = [(AVTCarouselController *)self avtViewSession];
-    v6 = [v5 avtView];
+    avtViewSession = [(AVTCarouselController *)self avtViewSession];
+    avtView = [avtViewSession avtView];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__AVTCarouselController_focusedRecordingView__block_invoke;
     v9[3] = &unk_1E7F3C6A8;
     v9[4] = &v10;
-    [v6 downcastWithAVTViewHandler:0 recordViewHandler:v9];
+    [avtView downcastWithAVTViewHandler:0 recordViewHandler:v9];
 
     v7 = v11[5];
     _Block_object_dispose(&v10, 8);
@@ -1133,14 +1133,14 @@ LABEL_8:
     v13 = __Block_byref_object_copy__14;
     v14 = __Block_byref_object_dispose__14;
     v15 = 0;
-    v5 = [(AVTCarouselController *)self avtViewSession];
-    v6 = [v5 avtView];
+    avtViewSession = [(AVTCarouselController *)self avtViewSession];
+    avtView = [avtViewSession avtView];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __43__AVTCarouselController_focusedDisplayView__block_invoke;
     v9[3] = &unk_1E7F3C6D0;
     v9[4] = &v10;
-    [v6 downcastWithAVTViewHandler:v9 recordViewHandler:0];
+    [avtView downcastWithAVTViewHandler:v9 recordViewHandler:0];
 
     v7 = v11[5];
     _Block_object_dispose(&v10, 8);
@@ -1149,29 +1149,29 @@ LABEL_8:
   return v7;
 }
 
-- (void)dataSource:(id)a3 didAddRecord:(id)a4 atIndex:(unint64_t)a5
+- (void)dataSource:(id)source didAddRecord:(id)record atIndex:(unint64_t)index
 {
-  v6 = a4;
-  [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:v6];
-  [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:v6];
+  recordCopy = record;
+  [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:recordCopy];
+  [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:recordCopy];
 }
 
-- (void)dataSource:(id)a3 didEditRecord:(id)a4 atIndex:(unint64_t)a5
+- (void)dataSource:(id)source didEditRecord:(id)record atIndex:(unint64_t)index
 {
-  v6 = a4;
-  [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:v6];
-  [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:v6];
+  recordCopy = record;
+  [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:recordCopy];
+  [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:recordCopy];
 }
 
-- (void)dataSource:(id)a3 didRemoveRecord:(id)a4 atIndex:(unint64_t)a5
+- (void)dataSource:(id)source didRemoveRecord:(id)record atIndex:(unint64_t)index
 {
-  v7 = a3;
-  v8 = [(AVTCarouselController *)self dataSource];
-  v12 = [v8 indexSetForEditableRecords];
+  sourceCopy = source;
+  dataSource = [(AVTCarouselController *)self dataSource];
+  indexSetForEditableRecords = [dataSource indexSetForEditableRecords];
 
-  if ([v12 count])
+  if ([indexSetForEditableRecords count])
   {
-    v9 = v12;
+    v9 = indexSetForEditableRecords;
   }
 
   else
@@ -1182,21 +1182,21 @@ LABEL_8:
   }
 
   v13 = v9;
-  v11 = [v7 recordAtIndex:{objc_msgSend(v9, "closestIndexToIndex:greaterIndexesFirst:", a5, 1)}];
+  v11 = [sourceCopy recordAtIndex:{objc_msgSend(v9, "closestIndexToIndex:greaterIndexesFirst:", index, 1)}];
 
   [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:v11];
   [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:v11];
 }
 
-- (void)significantRecordChangeInDataSource:(id)a3
+- (void)significantRecordChangeInDataSource:(id)source
 {
-  v4 = [(AVTCarouselController *)self dataSource];
+  dataSource = [(AVTCarouselController *)self dataSource];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__AVTCarouselController_significantRecordChangeInDataSource___block_invoke;
   v9[3] = &unk_1E7F3B3B0;
   v9[4] = self;
-  v5 = [v4 indexOfRecordPassingTest:v9];
+  v5 = [dataSource indexOfRecordPassingTest:v9];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1208,8 +1208,8 @@ LABEL_8:
     v6 = v5;
   }
 
-  v7 = [(AVTCarouselController *)self dataSource];
-  v8 = [v7 recordAtIndex:v6];
+  dataSource2 = [(AVTCarouselController *)self dataSource];
+  v8 = [dataSource2 recordAtIndex:v6];
 
   [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:v8];
   [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:v8];
@@ -1227,55 +1227,55 @@ uint64_t __61__AVTCarouselController_significantRecordChangeInDataSource___block
   return v7;
 }
 
-- (id)avatarActionsViewController:(id)a3 recordUpdateForDeletingRecord:(id)a4
+- (id)avatarActionsViewController:(id)controller recordUpdateForDeletingRecord:(id)record
 {
-  v5 = a4;
-  v6 = [(AVTCarouselController *)self dataSource];
-  v7 = [AVTAvatarActionsRecordUpdate recordUpdateForDeletingRecord:v5 withDataSource:v6];
+  recordCopy = record;
+  dataSource = [(AVTCarouselController *)self dataSource];
+  v7 = [AVTAvatarActionsRecordUpdate recordUpdateForDeletingRecord:recordCopy withDataSource:dataSource];
 
   return v7;
 }
 
-- (void)avatarActionsViewControllerDidFinish:(id)a3
+- (void)avatarActionsViewControllerDidFinish:(id)finish
 {
-  v4 = [(AVTCarouselController *)self presenterDelegate];
-  [v4 dismissAvatarUIControllerAnimated:1];
+  presenterDelegate = [(AVTCarouselController *)self presenterDelegate];
+  [presenterDelegate dismissAvatarUIControllerAnimated:1];
 
   [(AVTCarouselController *)self beginAVTViewSession];
 }
 
-- (void)avatarEditorViewController:(id)a3 didFinishWithAvatarRecord:(id)a4
+- (void)avatarEditorViewController:(id)controller didFinishWithAvatarRecord:(id)record
 {
-  v5 = a4;
-  [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:v5];
-  [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:v5];
+  recordCopy = record;
+  [(AVTCarouselController *)self reloadDataCenteringToAvatarRecord:recordCopy];
+  [(AVTCarouselController *)self notifyDelegateDidUpdateWithRecord:recordCopy];
 
-  v6 = [(AVTCarouselController *)self presenterDelegate];
-  [v6 dismissAvatarUIControllerAnimated:1];
+  presenterDelegate = [(AVTCarouselController *)self presenterDelegate];
+  [presenterDelegate dismissAvatarUIControllerAnimated:1];
 
   [(AVTCarouselController *)self beginAVTViewSession];
 }
 
-- (void)avatarEditorViewControllerDidCancel:(id)a3
+- (void)avatarEditorViewControllerDidCancel:(id)cancel
 {
-  v4 = [(AVTCarouselController *)self presenterDelegate];
-  [v4 dismissAvatarUIControllerAnimated:1];
+  presenterDelegate = [(AVTCarouselController *)self presenterDelegate];
+  [presenterDelegate dismissAvatarUIControllerAnimated:1];
 
   [(AVTCarouselController *)self beginAVTViewSession];
 }
 
-- (id)snapshotProviderFocusedOnRecordWithIdentifier:(id)a3 size:(CGSize)a4
+- (id)snapshotProviderFocusedOnRecordWithIdentifier:(id)identifier size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(AVTCarouselController *)self avtViewSessionProvider];
-  [v8 avtViewBackingSize];
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  avtViewSessionProvider = [(AVTCarouselController *)self avtViewSessionProvider];
+  [avtViewSessionProvider avtViewBackingSize];
   v10 = v9;
   v12 = v11;
-  v13 = [(AVTCarouselController *)self dataSource];
-  v14 = [(AVTCarouselController *)self environment];
-  v15 = [AVTMultiAvatarController snapshotProviderFocusedOnRecordWithIdentifier:v7 size:v13 avtViewAspectRatio:v14 dataSource:width environment:height, v10, v12];
+  dataSource = [(AVTCarouselController *)self dataSource];
+  environment = [(AVTCarouselController *)self environment];
+  v15 = [AVTMultiAvatarController snapshotProviderFocusedOnRecordWithIdentifier:identifierCopy size:dataSource avtViewAspectRatio:environment dataSource:width environment:height, v10, v12];
 
   return v15;
 }

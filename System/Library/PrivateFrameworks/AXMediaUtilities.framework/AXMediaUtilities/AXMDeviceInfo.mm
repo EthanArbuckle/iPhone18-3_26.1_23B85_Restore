@@ -844,11 +844,11 @@ void __22__AXMDeviceInfo__init__block_invoke(uint64_t a1)
 - (id)_jetsamInfo
 {
   v28 = *MEMORY[0x1E69E9840];
-  v21 = [MEMORY[0x1E695DF90] dictionary];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/System/Library/LaunchDaemons"];
   v26 = 0;
-  v4 = [v2 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:0 error:&v26];
+  v4 = [defaultManager contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:0 error:&v26];
   v5 = v26;
   if (!v5)
   {
@@ -866,7 +866,7 @@ void __22__AXMDeviceInfo__init__block_invoke(uint64_t a1)
     v8 = v7;
     v18 = v4;
     v19 = v3;
-    v20 = v2;
+    v20 = defaultManager;
     v9 = *v23;
     while (1)
     {
@@ -878,11 +878,11 @@ void __22__AXMDeviceInfo__init__block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 pathExtension];
-        if ([v12 isEqualToString:@"plist"])
+        pathExtension = [v11 pathExtension];
+        if ([pathExtension isEqualToString:@"plist"])
         {
-          v13 = [v11 path];
-          v14 = [v13 containsString:@"com.apple.jetsamproperties"];
+          path = [v11 path];
+          v14 = [path containsString:@"com.apple.jetsamproperties"];
 
           if (!v14)
           {
@@ -890,12 +890,12 @@ void __22__AXMDeviceInfo__init__block_invoke(uint64_t a1)
           }
 
           v15 = objc_alloc(MEMORY[0x1E695DF20]);
-          v16 = [v11 path];
-          v12 = [v15 initWithContentsOfFile:v16];
+          path2 = [v11 path];
+          pathExtension = [v15 initWithContentsOfFile:path2];
 
-          if (v12)
+          if (pathExtension)
           {
-            [v21 setObject:v12 forKeyedSubscript:v11];
+            [dictionary setObject:pathExtension forKeyedSubscript:v11];
           }
         }
       }
@@ -904,7 +904,7 @@ void __22__AXMDeviceInfo__init__block_invoke(uint64_t a1)
       if (!v8)
       {
         v3 = v19;
-        v2 = v20;
+        defaultManager = v20;
         v4 = v18;
         v5 = 0;
         goto LABEL_17;
@@ -920,7 +920,7 @@ void __22__AXMDeviceInfo__init__block_invoke(uint64_t a1)
 
 LABEL_17:
 
-  return v21;
+  return dictionary;
 }
 
 - (id)systemReport
@@ -928,38 +928,38 @@ LABEL_17:
   if (self->_isInternalInstall)
   {
     v22 = MEMORY[0x1E696AD60];
-    v36 = [(AXMDeviceInfo *)self deviceName];
-    v35 = [(AXMDeviceInfo *)self deviceNameClassic];
-    v34 = [(AXMDeviceInfo *)self deviceNameGS];
-    v31 = [(AXMDeviceInfo *)self deviceNameLocalized];
-    v33 = [(AXMDeviceInfo *)self computerName];
-    v32 = [(AXMDeviceInfo *)self hardwareModel];
-    v28 = [(AXMDeviceInfo *)self deviceClass];
-    v30 = [(AXMDeviceInfo *)self deviceModelNumber];
-    v19 = [(AXMDeviceInfo *)self deviceVariant];
-    v29 = [(AXMDeviceInfo *)self cpuArchitecture];
-    v27 = [(AXMDeviceInfo *)self processorCount];
-    v18 = [(AXMDeviceInfo *)self physicalMemory];
-    v21 = [(AXMDeviceInfo *)self physicalMemory];
-    [v21 doubleValue];
+    deviceName = [(AXMDeviceInfo *)self deviceName];
+    deviceNameClassic = [(AXMDeviceInfo *)self deviceNameClassic];
+    deviceNameGS = [(AXMDeviceInfo *)self deviceNameGS];
+    deviceNameLocalized = [(AXMDeviceInfo *)self deviceNameLocalized];
+    computerName = [(AXMDeviceInfo *)self computerName];
+    hardwareModel = [(AXMDeviceInfo *)self hardwareModel];
+    deviceClass = [(AXMDeviceInfo *)self deviceClass];
+    deviceModelNumber = [(AXMDeviceInfo *)self deviceModelNumber];
+    deviceVariant = [(AXMDeviceInfo *)self deviceVariant];
+    cpuArchitecture = [(AXMDeviceInfo *)self cpuArchitecture];
+    processorCount = [(AXMDeviceInfo *)self processorCount];
+    physicalMemory = [(AXMDeviceInfo *)self physicalMemory];
+    physicalMemory2 = [(AXMDeviceInfo *)self physicalMemory];
+    [physicalMemory2 doubleValue];
     v4 = v3 / 1000000.0;
-    v20 = [(AXMDeviceInfo *)self physicalMemory];
-    [v20 doubleValue];
+    physicalMemory3 = [(AXMDeviceInfo *)self physicalMemory];
+    [physicalMemory3 doubleValue];
     v6 = v5 / 1000000000.0;
-    v26 = [(AXMDeviceInfo *)self mainScreenSizeWidth];
-    v25 = [(AXMDeviceInfo *)self mainScreenSizeHeight];
-    v24 = [(AXMDeviceInfo *)self mainScreenScale];
-    v23 = [(AXMDeviceInfo *)self mainScreenOrientation];
-    v7 = [(AXMDeviceInfo *)self hasAmbientLightSensor];
-    v17 = [(AXMDeviceInfo *)self hasDualLensCamera];
-    v16 = [(AXMDeviceInfo *)self marketingName];
-    v8 = [(AXMDeviceInfo *)self marketingProductName];
-    v9 = [(AXMDeviceInfo *)self marketingVersion];
-    v10 = [(AXMDeviceInfo *)self productName];
-    v11 = [(AXMDeviceInfo *)self productType];
-    v12 = [(AXMDeviceInfo *)self productVersion];
-    v13 = [(AXMDeviceInfo *)self buildVersion];
-    v14 = [v22 stringWithFormat:@"----------------------------------\nAXMedia Utilities System Report:\n----------------------------------\n  Device:\n    Name: '%@' (classic:'%@') (GS:'%@') (Loc:'%@') (Computer:'%@')\n    Hardware Model: %@\n    Class: %@\n    Model Number: %@\n    Variant: %@\n  CPU:\n    Architecture: %@\n    # of Cores: %@\n  Memory:\n    Physical Memory: %@ (%.2f MB) (%.2f GB)\n  Display:\n    Size: %@ x %@\n    Scale: %@\n    Orientation: %@\n  Capabilities:\n    Has Ambient Light Sensor: %@\n    Has Dual Lens Camera: %@\n  Marketing:\n    Name: %@\n    Product Name: %@\n    Version: %@\n  Product:\n    Name: %@\n    Type: %@\n    Version: %@\n  Build:\n    Version: %@\n----------------------------------\n", v36, v35, v34, v31, v33, v32, v28, v30, v19, v29, v27, v18, *&v4, *&v6, v26, v25, v24, v23, v7, v17, v16, v8, v9, v10, v11, v12, v13];
+    mainScreenSizeWidth = [(AXMDeviceInfo *)self mainScreenSizeWidth];
+    mainScreenSizeHeight = [(AXMDeviceInfo *)self mainScreenSizeHeight];
+    mainScreenScale = [(AXMDeviceInfo *)self mainScreenScale];
+    mainScreenOrientation = [(AXMDeviceInfo *)self mainScreenOrientation];
+    hasAmbientLightSensor = [(AXMDeviceInfo *)self hasAmbientLightSensor];
+    hasDualLensCamera = [(AXMDeviceInfo *)self hasDualLensCamera];
+    marketingName = [(AXMDeviceInfo *)self marketingName];
+    marketingProductName = [(AXMDeviceInfo *)self marketingProductName];
+    marketingVersion = [(AXMDeviceInfo *)self marketingVersion];
+    productName = [(AXMDeviceInfo *)self productName];
+    productType = [(AXMDeviceInfo *)self productType];
+    productVersion = [(AXMDeviceInfo *)self productVersion];
+    buildVersion = [(AXMDeviceInfo *)self buildVersion];
+    v14 = [v22 stringWithFormat:@"----------------------------------\nAXMedia Utilities System Report:\n----------------------------------\n  Device:\n    Name: '%@' (classic:'%@') (GS:'%@') (Loc:'%@') (Computer:'%@')\n    Hardware Model: %@\n    Class: %@\n    Model Number: %@\n    Variant: %@\n  CPU:\n    Architecture: %@\n    # of Cores: %@\n  Memory:\n    Physical Memory: %@ (%.2f MB) (%.2f GB)\n  Display:\n    Size: %@ x %@\n    Scale: %@\n    Orientation: %@\n  Capabilities:\n    Has Ambient Light Sensor: %@\n    Has Dual Lens Camera: %@\n  Marketing:\n    Name: %@\n    Product Name: %@\n    Version: %@\n  Product:\n    Name: %@\n    Type: %@\n    Version: %@\n  Build:\n    Version: %@\n----------------------------------\n", deviceName, deviceNameClassic, deviceNameGS, deviceNameLocalized, computerName, hardwareModel, deviceClass, deviceModelNumber, deviceVariant, cpuArchitecture, processorCount, physicalMemory, *&v4, *&v6, mainScreenSizeWidth, mainScreenSizeHeight, mainScreenScale, mainScreenOrientation, hasAmbientLightSensor, hasDualLensCamera, marketingName, marketingProductName, marketingVersion, productName, productType, productVersion, buildVersion];
   }
 
   else
@@ -972,11 +972,11 @@ LABEL_17:
 
 - (id)privilegedSystemReport
 {
-  v3 = [(AXMDeviceInfo *)self systemReport];
+  systemReport = [(AXMDeviceInfo *)self systemReport];
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"  Jetsam Info:\n"];
-  v5 = [(AXMDeviceInfo *)self _jetsamInfo];
-  v6 = [v5 allKeys];
-  v7 = [v6 count];
+  _jetsamInfo = [(AXMDeviceInfo *)self _jetsamInfo];
+  allKeys = [_jetsamInfo allKeys];
+  v7 = [allKeys count];
 
   if (v7)
   {
@@ -985,10 +985,10 @@ LABEL_17:
     v10[2] = __39__AXMDeviceInfo_privilegedSystemReport__block_invoke;
     v10[3] = &unk_1E7A1EB38;
     v11 = v4;
-    [v5 enumerateKeysAndObjectsUsingBlock:v10];
+    [_jetsamInfo enumerateKeysAndObjectsUsingBlock:v10];
   }
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@----------------------------------\n", v3, v4];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@----------------------------------\n", systemReport, v4];
 
   return v8;
 }

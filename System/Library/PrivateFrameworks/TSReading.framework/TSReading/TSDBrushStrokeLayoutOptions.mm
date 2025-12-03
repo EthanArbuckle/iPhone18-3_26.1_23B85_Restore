@@ -1,6 +1,6 @@
 @interface TSDBrushStrokeLayoutOptions
 - (TSDBrushStrokeLayoutOptions)init;
-- (void)setStrokeEnd:(double)a3;
+- (void)setStrokeEnd:(double)end;
 @end
 
 @implementation TSDBrushStrokeLayoutOptions
@@ -18,16 +18,16 @@
   return result;
 }
 
-- (void)setStrokeEnd:(double)a3
+- (void)setStrokeEnd:(double)end
 {
   TSUClamp();
   self->_strokeEnd = v5;
-  if (v5 != a3)
+  if (v5 != end)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStrokeLayoutOptions setStrokeEnd:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-    [v8 handleFailureInFunction:v6 file:v7 lineNumber:167 description:{@"strokeEnd (%f) should be between 0 and 1 inclusive.", *&a3}];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:167 description:{@"strokeEnd (%f) should be between 0 and 1 inclusive.", *&end}];
   }
 }
 

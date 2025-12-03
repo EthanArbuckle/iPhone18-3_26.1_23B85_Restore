@@ -1,93 +1,93 @@
 @interface HKRelativeLineSeries
-- (BOOL)_isUserInfoIndeterminateRelativeValue:(id)a3;
-- (BOOL)_shouldForceGapBetweenUserInfo:(id)a3 andUserInfo:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4;
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4;
-- (double)_indeterminateLozengeValueForUserInfo:(id)a3;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)_colorForUserInfo:(id)a3;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (id)initFromLineSeries:(id)a3 color:(id)a4 unavailableColor:(id)a5 indeterminateLozengeLineWidth:(double)a6 chartSizeClass:(int64_t)a7;
-- (void)_drawIndeterminateLozengeForCoordinate:(id)a3 context:(CGContext *)a4 seriesRenderingDelegate:(id)a5;
-- (void)_drawIndeterminateLozengesForBlockCoordinates:(id)a3 pointTransform:(CGAffineTransform *)a4 renderContext:(CGContext *)a5 seriesRenderingDelegate:(id)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
+- (BOOL)_isUserInfoIndeterminateRelativeValue:(id)value;
+- (BOOL)_shouldForceGapBetweenUserInfo:(id)info andUserInfo:(id)userInfo;
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than;
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than;
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate;
+- (double)_indeterminateLozengeValueForUserInfo:(id)info;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)_colorForUserInfo:(id)info;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (id)initFromLineSeries:(id)series color:(id)color unavailableColor:(id)unavailableColor indeterminateLozengeLineWidth:(double)width chartSizeClass:(int64_t)class;
+- (void)_drawIndeterminateLozengeForCoordinate:(id)coordinate context:(CGContext *)context seriesRenderingDelegate:(id)delegate;
+- (void)_drawIndeterminateLozengesForBlockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context seriesRenderingDelegate:(id)delegate;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
 @end
 
 @implementation HKRelativeLineSeries
 
-- (id)initFromLineSeries:(id)a3 color:(id)a4 unavailableColor:(id)a5 indeterminateLozengeLineWidth:(double)a6 chartSizeClass:(int64_t)a7
+- (id)initFromLineSeries:(id)series color:(id)color unavailableColor:(id)unavailableColor indeterminateLozengeLineWidth:(double)width chartSizeClass:(int64_t)class
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  seriesCopy = series;
+  colorCopy = color;
+  unavailableColorCopy = unavailableColor;
   v24.receiver = self;
   v24.super_class = HKRelativeLineSeries;
   v15 = [(HKLineSeries *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_color, a4);
-    objc_storeStrong(&v16->_unavailableColor, a5);
-    v16->_indeterminateLozengeLineWidth = a6;
+    objc_storeStrong(&v15->_color, color);
+    objc_storeStrong(&v16->_unavailableColor, unavailableColor);
+    v16->_indeterminateLozengeLineWidth = width;
     v16->_indeterminateLozengeHollowLineRatio = 0.5;
-    v16->_chartSizeClass = a7;
-    v17 = [v12 unhighlightedPresentationStyles];
-    [(HKLineSeries *)v16 setUnhighlightedPresentationStyles:v17];
+    v16->_chartSizeClass = class;
+    unhighlightedPresentationStyles = [seriesCopy unhighlightedPresentationStyles];
+    [(HKLineSeries *)v16 setUnhighlightedPresentationStyles:unhighlightedPresentationStyles];
 
-    v18 = [v12 highlightedPresentationStyles];
-    [(HKLineSeries *)v16 setHighlightedPresentationStyles:v18];
+    highlightedPresentationStyles = [seriesCopy highlightedPresentationStyles];
+    [(HKLineSeries *)v16 setHighlightedPresentationStyles:highlightedPresentationStyles];
 
-    v19 = [v12 selectedPresentationStyles];
-    [(HKLineSeries *)v16 setSelectedPresentationStyles:v19];
+    selectedPresentationStyles = [seriesCopy selectedPresentationStyles];
+    [(HKLineSeries *)v16 setSelectedPresentationStyles:selectedPresentationStyles];
 
-    v20 = [v12 selectedPointMarkerStyle];
-    [(HKLineSeries *)v16 setSelectedPointMarkerStyle:v20];
+    selectedPointMarkerStyle = [seriesCopy selectedPointMarkerStyle];
+    [(HKLineSeries *)v16 setSelectedPointMarkerStyle:selectedPointMarkerStyle];
 
-    v21 = [v12 inactivePresentationStyle];
-    [(HKLineSeries *)v16 setInactivePresentationStyle:v21];
+    inactivePresentationStyle = [seriesCopy inactivePresentationStyle];
+    [(HKLineSeries *)v16 setInactivePresentationStyle:inactivePresentationStyle];
 
-    -[HKLineSeries setFlatLastValue:](v16, "setFlatLastValue:", [v12 flatLastValue]);
-    -[HKLineSeries setExtendLastValue:](v16, "setExtendLastValue:", [v12 extendLastValue]);
-    -[HKLineSeries setExtendFirstValue:](v16, "setExtendFirstValue:", [v12 extendFirstValue]);
-    v22 = [v12 maximumConnectionDistance];
-    [(HKLineSeries *)v16 setMaximumConnectionDistance:v22];
+    -[HKLineSeries setFlatLastValue:](v16, "setFlatLastValue:", [seriesCopy flatLastValue]);
+    -[HKLineSeries setExtendLastValue:](v16, "setExtendLastValue:", [seriesCopy extendLastValue]);
+    -[HKLineSeries setExtendFirstValue:](v16, "setExtendFirstValue:", [seriesCopy extendFirstValue]);
+    maximumConnectionDistance = [seriesCopy maximumConnectionDistance];
+    [(HKLineSeries *)v16 setMaximumConnectionDistance:maximumConnectionDistance];
   }
 
   return v16;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v56 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v42 = a5;
-  v41 = a8;
-  v20 = a9;
-  v21 = *&a6->c;
-  v52 = *&a6->a;
-  v39 = a6;
-  v40 = v20;
-  v22 = *&a6->tx;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  renderContextCopy = renderContext;
+  delegateCopy = delegate;
+  v21 = *&transform->c;
+  v52 = *&transform->a;
+  transformCopy = transform;
+  v40 = delegateCopy;
+  v22 = *&transform->tx;
   v53 = v21;
   v54 = v22;
-  v43 = a7;
-  [(HKRelativeLineSeries *)self _drawIndeterminateLozengesForBlockCoordinates:v19 pointTransform:&v52 renderContext:a7 seriesRenderingDelegate:?];
-  v23 = [MEMORY[0x1E695DF70] array];
+  contextCopy = context;
+  [(HKRelativeLineSeries *)self _drawIndeterminateLozengesForBlockCoordinates:coordinatesCopy pointTransform:&v52 renderContext:context seriesRenderingDelegate:?];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = [MEMORY[0x1E695DFA8] set];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v44 = v19;
-  v25 = [v19 coordinates];
-  v26 = [v25 countByEnumeratingWithState:&v48 objects:v55 count:16];
+  v44 = coordinatesCopy;
+  coordinates = [coordinatesCopy coordinates];
+  v26 = [coordinates countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v26)
   {
     v27 = v26;
@@ -99,7 +99,7 @@
       {
         if (*v49 != v29)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(coordinates);
         }
 
         v31 = *(*(&v48 + 1) + 8 * i);
@@ -111,16 +111,16 @@
           [v24 addObject:v33];
         }
 
-        v34 = [v31 userInfo];
-        v28 = [(HKRelativeLineSeries *)self _isUserInfoIndeterminateRelativeValue:v34];
+        userInfo = [v31 userInfo];
+        v28 = [(HKRelativeLineSeries *)self _isUserInfoIndeterminateRelativeValue:userInfo];
 
         if (!v28)
         {
-          [v23 addObject:v31];
+          [array addObject:v31];
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v48 objects:v55 count:16];
+      v27 = [coordinates countByEnumeratingWithState:&v48 objects:v55 count:16];
     }
 
     while (v27);
@@ -137,7 +137,7 @@
     *&v53 = 0;
   }
 
-  v35 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v23 blockPath:&v52];
+  v35 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:array blockPath:&v52];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __163__HKRelativeLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate___block_invoke;
@@ -145,13 +145,13 @@
   v47 = v24;
   v45.receiver = self;
   v45.super_class = HKRelativeLineSeries;
-  v36 = *&v39->c;
-  v52 = *&v39->a;
-  v37 = *&v39->tx;
+  v36 = *&transformCopy->c;
+  v52 = *&transformCopy->a;
+  v37 = *&transformCopy->tx;
   v53 = v36;
   v54 = v37;
   v38 = v24;
-  [(HKLineSeries *)&v45 drawSeriesWithBlockCoordinates:v35 axisRect:v42 zoomLevelConfiguration:&v52 pointTransform:v43 renderContext:v41 secondaryRenderContext:v40 seriesRenderingDelegate:x forceGapBetweenUntransformedPoints:y, width, height, v46];
+  [(HKLineSeries *)&v45 drawSeriesWithBlockCoordinates:v35 axisRect:configurationCopy zoomLevelConfiguration:&v52 pointTransform:contextCopy renderContext:renderContextCopy secondaryRenderContext:v40 seriesRenderingDelegate:x forceGapBetweenUntransformedPoints:y, width, height, v46];
 }
 
 uint64_t __163__HKRelativeLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate___block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)
@@ -162,22 +162,22 @@ uint64_t __163__HKRelativeLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoo
   return v7;
 }
 
-- (void)_drawIndeterminateLozengesForBlockCoordinates:(id)a3 pointTransform:(CGAffineTransform *)a4 renderContext:(CGContext *)a5 seriesRenderingDelegate:(id)a6
+- (void)_drawIndeterminateLozengesForBlockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context seriesRenderingDelegate:(id)delegate
 {
-  v10 = a6;
+  delegateCopy = delegate;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __123__HKRelativeLineSeries__drawIndeterminateLozengesForBlockCoordinates_pointTransform_renderContext_seriesRenderingDelegate___block_invoke;
   v14[3] = &unk_1E81BCA30;
-  v15 = v10;
-  v16 = a5;
+  v15 = delegateCopy;
+  contextCopy = context;
   v14[4] = self;
-  v11 = *&a4->c;
-  v13[0] = *&a4->a;
+  v11 = *&transform->c;
+  v13[0] = *&transform->a;
   v13[1] = v11;
-  v13[2] = *&a4->tx;
-  v12 = v10;
-  [a3 enumerateCoordinatesWithTransform:v13 roundToViewScale:1 block:v14];
+  v13[2] = *&transform->tx;
+  v12 = delegateCopy;
+  [coordinates enumerateCoordinatesWithTransform:v13 roundToViewScale:1 block:v14];
 }
 
 void __123__HKRelativeLineSeries__drawIndeterminateLozengesForBlockCoordinates_pointTransform_renderContext_seriesRenderingDelegate___block_invoke(uint64_t a1, void *a2)
@@ -194,53 +194,53 @@ void __123__HKRelativeLineSeries__drawIndeterminateLozengesForBlockCoordinates_p
   }
 }
 
-- (void)_drawIndeterminateLozengeForCoordinate:(id)a3 context:(CGContext *)a4 seriesRenderingDelegate:(id)a5
+- (void)_drawIndeterminateLozengeForCoordinate:(id)coordinate context:(CGContext *)context seriesRenderingDelegate:(id)delegate
 {
-  v7 = a3;
-  CGContextSaveGState(a4);
-  CGContextSetLineCap(a4, kCGLineCapRound);
-  [v7 start];
+  coordinateCopy = coordinate;
+  CGContextSaveGState(context);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  [coordinateCopy start];
   v9 = v8;
   v11 = v10;
-  [v7 end];
+  [coordinateCopy end];
   v13 = v12;
   v15 = v14;
-  v16 = [v7 userInfo];
+  userInfo = [coordinateCopy userInfo];
 
-  v22 = [(HKRelativeLineSeries *)self _colorForUserInfo:v16];
+  v22 = [(HKRelativeLineSeries *)self _colorForUserInfo:userInfo];
 
-  CGContextSetLineWidth(a4, self->_indeterminateLozengeLineWidth);
-  CGContextSetBlendMode(a4, kCGBlendModeNormal);
+  CGContextSetLineWidth(context, self->_indeterminateLozengeLineWidth);
+  CGContextSetBlendMode(context, kCGBlendModeNormal);
   v17 = v22;
-  CGContextSetStrokeColorWithColor(a4, [v22 CGColor]);
-  CGContextMoveToPoint(a4, v9, v11);
-  CGContextAddLineToPoint(a4, v13, v15);
-  CGContextStrokePath(a4);
+  CGContextSetStrokeColorWithColor(context, [v22 CGColor]);
+  CGContextMoveToPoint(context, v9, v11);
+  CGContextAddLineToPoint(context, v13, v15);
+  CGContextStrokePath(context);
   indeterminateLozengeHollowLineRatio = self->_indeterminateLozengeHollowLineRatio;
   if (indeterminateLozengeHollowLineRatio > 0.0)
   {
-    CGContextSetLineWidth(a4, indeterminateLozengeHollowLineRatio * self->_indeterminateLozengeLineWidth);
-    v19 = [MEMORY[0x1E69DC888] systemGray6Color];
-    v20 = [MEMORY[0x1E69DC888] systemGray5Color];
-    v21 = HKUIDynamicColorWithColors(v19, v20);
-    CGContextSetStrokeColorWithColor(a4, [v21 CGColor]);
+    CGContextSetLineWidth(context, indeterminateLozengeHollowLineRatio * self->_indeterminateLozengeLineWidth);
+    systemGray6Color = [MEMORY[0x1E69DC888] systemGray6Color];
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    v21 = HKUIDynamicColorWithColors(systemGray6Color, systemGray5Color);
+    CGContextSetStrokeColorWithColor(context, [v21 CGColor]);
 
-    CGContextMoveToPoint(a4, v9, v11);
-    CGContextAddLineToPoint(a4, v13, v15);
-    CGContextStrokePath(a4);
+    CGContextMoveToPoint(context, v9, v11);
+    CGContextAddLineToPoint(context, v13, v15);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (id)_colorForUserInfo:(id)a3
+- (id)_colorForUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(HKGraphSeries *)self allowsSelection])
   {
-    v5 = v4;
-    v6 = [v5 relativeValueState];
-    if ([v6 integerValue] == 1)
+    v5 = infoCopy;
+    relativeValueState = [v5 relativeValueState];
+    if ([relativeValueState integerValue] == 1)
     {
 
       v7 = &OBJC_IVAR___HKRelativeLineSeries__unavailableColor;
@@ -248,55 +248,55 @@ void __123__HKRelativeLineSeries__drawIndeterminateLozengesForBlockCoordinates_p
 
     else
     {
-      v9 = [v5 relativeValueState];
-      v10 = [v9 integerValue];
+      relativeValueState2 = [v5 relativeValueState];
+      integerValue = [relativeValueState2 integerValue];
 
       v7 = &OBJC_IVAR___HKRelativeLineSeries__color;
-      if (v10 == 2)
+      if (integerValue == 2)
       {
         v7 = &OBJC_IVAR___HKRelativeLineSeries__unavailableColor;
       }
     }
 
-    v8 = *(&self->super.super.super.isa + *v7);
+    hk_chartInactiveSeriesColor = *(&self->super.super.super.isa + *v7);
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] hk_chartInactiveSeriesColor];
+    hk_chartInactiveSeriesColor = [MEMORY[0x1E69DC888] hk_chartInactiveSeriesColor];
   }
 
-  return v8;
+  return hk_chartInactiveSeriesColor;
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 chartPoints];
-  if (!v12)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKRelativeLineSeries coordinatesForBlock:blockPath:xAxis:yAxis:];
   }
 
-  v13 = [v10 transform];
-  v14 = [v11 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __66__HKRelativeLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v23[3] = &unk_1E81BCA58;
-  v24 = v13;
-  v25 = self;
-  v26 = v14;
-  v27 = v15;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  [v12 enumerateObjectsUsingBlock:v23];
-  v21 = *&a4->index;
-  resolution = a4->resolution;
+  v24 = transform;
+  selfCopy = self;
+  v26 = transform2;
+  v27 = array;
+  v16 = array;
+  v17 = transform2;
+  v18 = transform;
+  [chartPoints enumerateObjectsUsingBlock:v23];
+  v21 = *&path->index;
+  resolution = path->resolution;
   v19 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v16 blockPath:&v21];
 
   return v19;
@@ -358,22 +358,22 @@ void __66__HKRelativeLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___bloc
   [v21 addObject:v31];
 }
 
-- (BOOL)_shouldForceGapBetweenUserInfo:(id)a3 andUserInfo:(id)a4
+- (BOOL)_shouldForceGapBetweenUserInfo:(id)info andUserInfo:(id)userInfo
 {
-  v6 = a4;
-  v7 = [(HKRelativeLineSeries *)self _isUserInfoIndeterminateRelativeValue:a3]|| [(HKRelativeLineSeries *)self _isUserInfoIndeterminateRelativeValue:v6];
+  userInfoCopy = userInfo;
+  v7 = [(HKRelativeLineSeries *)self _isUserInfoIndeterminateRelativeValue:info]|| [(HKRelativeLineSeries *)self _isUserInfoIndeterminateRelativeValue:userInfoCopy];
 
   return v7;
 }
 
-- (BOOL)_isUserInfoIndeterminateRelativeValue:(id)a3
+- (BOOL)_isUserInfoIndeterminateRelativeValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 relativeValueState];
-    v5 = [v4 integerValue] != 3;
+    relativeValueState = [valueCopy relativeValueState];
+    v5 = [relativeValueState integerValue] != 3;
   }
 
   else
@@ -384,15 +384,15 @@ void __66__HKRelativeLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___bloc
   return v5;
 }
 
-- (double)_indeterminateLozengeValueForUserInfo:(id)a3
+- (double)_indeterminateLozengeValueForUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 unit];
-    v6 = [MEMORY[0x1E696C510] _changeInDegreeFahrenheitUnit];
-    v7 = [v5 isEqual:v6];
+    unit = [infoCopy unit];
+    _changeInDegreeFahrenheitUnit = [MEMORY[0x1E696C510] _changeInDegreeFahrenheitUnit];
+    v7 = [unit isEqual:_changeInDegreeFahrenheitUnit];
 
     v8 = &unk_1C3D5DCB0;
     if (v7)
@@ -409,7 +409,7 @@ void __66__HKRelativeLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___bloc
     v10 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(HKRelativeLineSeries *)self _indeterminateLozengeValueForUserInfo:v4, v10];
+      [(HKRelativeLineSeries *)self _indeterminateLozengeValueForUserInfo:infoCopy, v10];
     }
 
     v9 = 0.0;
@@ -418,61 +418,61 @@ void __66__HKRelativeLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___bloc
   return v9;
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  v5 = a4;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKRelativeLineSeries distanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  [v5 midpoint];
+  [coordinateCopy midpoint];
   UIDistanceBetweenPoints();
   v7 = v6;
 
   return v7;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
-  v6 = a4;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKRelativeLineSeries xAxisDistanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  [v6 midpoint];
+  [coordinateCopy midpoint];
   v8 = vabdd_f64(v7, x);
 
   return v8;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  v6 = a4;
+  y = point.y;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKRelativeLineSeries yAxisDifferenceToPoint:blockCoordinate:chartRect:];
   }
 
-  [v6 midpoint];
+  [coordinateCopy midpoint];
   v8 = v7 - y;
 
   return v8;
 }
 
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 midpoint];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [coordinate midpoint];
   v9 = v8;
   v11 = v10;
   v12 = x;
@@ -483,23 +483,23 @@ void __66__HKRelativeLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___bloc
   return CGRectContainsPoint(*&v12, *&v9);
 }
 
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than
 {
-  v5 = a4;
-  [a3 midpoint];
+  thanCopy = than;
+  [coordinate midpoint];
   v7 = v6;
-  [v5 midpoint];
+  [thanCopy midpoint];
   v9 = v8;
 
   return v7 < v9;
 }
 
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than
 {
-  v5 = a4;
-  [a3 midpoint];
+  thanCopy = than;
+  [coordinate midpoint];
   v7 = v6;
-  [v5 midpoint];
+  [thanCopy midpoint];
   v9 = v8;
 
   return v7 > v9;

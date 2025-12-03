@@ -1,14 +1,14 @@
 @interface VESuperResolutionConfiguration
-+ (BOOL)isSupportedRevision:(int64_t)a3;
-+ (BOOL)isSupportedScaleFactor:(int64_t)a3;
++ (BOOL)isSupportedRevision:(int64_t)revision;
++ (BOOL)isSupportedScaleFactor:(int64_t)factor;
 + (int64_t)defaultRevision;
-- (VESuperResolutionConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 scaleFactor:(int64_t)a5 inputType:(int64_t)a6 usePrecomputedFlow:(BOOL)a7 qualityPrioritization:(int64_t)a8 revision:(int64_t)a9;
-- (void)downloadAssetWithCompletionHandler:(id)a3;
+- (VESuperResolutionConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height scaleFactor:(int64_t)factor inputType:(int64_t)type usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision;
+- (void)downloadAssetWithCompletionHandler:(id)handler;
 @end
 
 @implementation VESuperResolutionConfiguration
 
-- (VESuperResolutionConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 scaleFactor:(int64_t)a5 inputType:(int64_t)a6 usePrecomputedFlow:(BOOL)a7 qualityPrioritization:(int64_t)a8 revision:(int64_t)a9
+- (VESuperResolutionConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height scaleFactor:(int64_t)factor inputType:(int64_t)type usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision
 {
   v22.receiver = self;
   v22.super_class = VESuperResolutionConfiguration;
@@ -19,9 +19,9 @@
     goto LABEL_15;
   }
 
-  if (a6 == 1)
+  if (type == 1)
   {
-    if ((a3 - 1441) <= 0xFFFFFFFFFFFFFA5FLL)
+    if ((width - 1441) <= 0xFFFFFFFFFFFFFA5FLL)
     {
 LABEL_4:
       NSLog(&cfstr_InvalidInputWi.isa);
@@ -31,36 +31,36 @@ LABEL_15:
     }
   }
 
-  else if ((a3 - 1921) <= 0xFFFFFFFFFFFFF87FLL)
+  else if ((width - 1921) <= 0xFFFFFFFFFFFFF87FLL)
   {
     goto LABEL_4;
   }
 
-  if ((a4 - 1081) <= 0xFFFFFFFFFFFFFBC7)
+  if ((height - 1081) <= 0xFFFFFFFFFFFFFBC7)
   {
     NSLog(&cfstr_InvalidInputHe.isa);
     goto LABEL_15;
   }
 
-  if (![VESuperResolutionConfiguration isSupportedRevision:a9])
+  if (![VESuperResolutionConfiguration isSupportedRevision:revision])
   {
-    NSLog(&cfstr_ErrorInvalidVe.isa, a9);
+    NSLog(&cfstr_ErrorInvalidVe.isa, revision);
     goto LABEL_15;
   }
 
-  if (![VESuperResolutionConfiguration isSupportedScaleFactor:a5])
+  if (![VESuperResolutionConfiguration isSupportedScaleFactor:factor])
   {
-    NSLog(&cfstr_ErrorInvalidVe_0.isa, a5);
+    NSLog(&cfstr_ErrorInvalidVe_0.isa, factor);
     goto LABEL_15;
   }
 
-  v15->_frameHeight = a4;
-  v15->_inputType = a6;
-  v15->_usePrecomputedFlow = a7;
-  v15->_qualityPrioritization = a8;
-  v15->_frameWidth = a3;
-  v15->_scaleFactor = a5;
-  v15->_revision = a9;
+  v15->_frameHeight = height;
+  v15->_inputType = type;
+  v15->_usePrecomputedFlow = flow;
+  v15->_qualityPrioritization = prioritization;
+  v15->_frameWidth = width;
+  v15->_scaleFactor = factor;
+  v15->_revision = revision;
   v16 = getFramePreferredPixelFormats();
   framePreferredPixelFormats = v15->_framePreferredPixelFormats;
   v15->_framePreferredPixelFormats = v16;
@@ -78,30 +78,30 @@ LABEL_10:
 + (int64_t)defaultRevision
 {
   v2 = +[VESuperResolutionConfiguration supportedRevisions];
-  v3 = [v2 lastIndex];
+  lastIndex = [v2 lastIndex];
 
-  return v3;
+  return lastIndex;
 }
 
-+ (BOOL)isSupportedRevision:(int64_t)a3
++ (BOOL)isSupportedRevision:(int64_t)revision
 {
   v4 = +[VESuperResolutionConfiguration supportedRevisions];
-  LOBYTE(a3) = [v4 containsIndex:a3];
+  LOBYTE(revision) = [v4 containsIndex:revision];
 
-  return a3;
+  return revision;
 }
 
-- (void)downloadAssetWithCompletionHandler:(id)a3
+- (void)downloadAssetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277D04620];
   inputType = self->_inputType;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__VESuperResolutionConfiguration_downloadAssetWithCompletionHandler___block_invoke;
   v8[3] = &unk_279E170F0;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v5 downloadMobileAssetWithInputType:inputType withCompletionHandler:v8];
 }
 
@@ -116,10 +116,10 @@ uint64_t __69__VESuperResolutionConfiguration_downloadAssetWithCompletionHandler
   return result;
 }
 
-+ (BOOL)isSupportedScaleFactor:(int64_t)a3
++ (BOOL)isSupportedScaleFactor:(int64_t)factor
 {
   v4 = +[VESuperResolutionConfiguration supportedScaleFactors];
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:factor];
   v6 = [v4 containsObject:v5];
 
   return v6;

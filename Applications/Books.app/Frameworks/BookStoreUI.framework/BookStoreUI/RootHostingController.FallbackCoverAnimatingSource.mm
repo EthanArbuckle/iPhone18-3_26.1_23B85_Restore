@@ -21,7 +21,7 @@
 
 - (id)coverAnimationSourceView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_76078();
 
   return v3;

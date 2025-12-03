@@ -1,18 +1,18 @@
 @interface HMAccessoryCollectionSettingItem
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldBlockValueDecode;
 - (HMAccessoryCollectionSetting)setting;
 - (HMAccessoryCollectionSettingItem)init;
-- (HMAccessoryCollectionSettingItem)initWithCoder:(id)a3;
-- (HMAccessoryCollectionSettingItem)initWithIdentifier:(id)a3 value:(id)a4;
-- (HMAccessoryCollectionSettingItem)initWithValue:(id)a3;
+- (HMAccessoryCollectionSettingItem)initWithCoder:(id)coder;
+- (HMAccessoryCollectionSettingItem)initWithIdentifier:(id)identifier value:(id)value;
+- (HMAccessoryCollectionSettingItem)initWithValue:(id)value;
 - (NSData)serializedValue;
 - (NSObject)value;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessoryCollectionSettingItem
@@ -24,30 +24,30 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessoryCollectionSettingItem *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HM.identifier"];
+  coderCopy = coder;
+  identifier = [(HMAccessoryCollectionSettingItem *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HM.identifier"];
 
-  v6 = [(HMAccessoryCollectionSettingItem *)self serializedValue];
-  [v4 encodeObject:v6 forKey:@"HM.value"];
+  serializedValue = [(HMAccessoryCollectionSettingItem *)self serializedValue];
+  [coderCopy encodeObject:serializedValue forKey:@"HM.value"];
 }
 
-- (HMAccessoryCollectionSettingItem)initWithCoder:(id)a3
+- (HMAccessoryCollectionSettingItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = HMAccessoryCollectionSettingItem;
   v5 = [(HMAccessoryCollectionSettingItem *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
     v7 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v6];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.value"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.value"];
     serializedValue = v5->_serializedValue;
     v5->_serializedValue = v9;
   }
@@ -58,12 +58,12 @@
 - (BOOL)shouldBlockValueDecode
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessoryCollectionSettingItem *)self setting];
-  v4 = [v3 keyPath];
-  if (!v4)
+  setting = [(HMAccessoryCollectionSettingItem *)self setting];
+  keyPath = [setting keyPath];
+  if (!keyPath)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -71,7 +71,7 @@
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v3;
+      v17 = setting;
       _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to block decode value due to no keypath for setting: %@", &v14, 0x16u);
     }
 
@@ -79,7 +79,7 @@
     goto LABEL_7;
   }
 
-  if (![HMAccessoryCollectionSettingItem requiresCustomItemValueClassesToDecodeForKeyPath:v4])
+  if (![HMAccessoryCollectionSettingItem requiresCustomItemValueClassesToDecodeForKeyPath:keyPath])
   {
 LABEL_7:
     v7 = 0;
@@ -87,7 +87,7 @@ LABEL_7:
   }
 
   v5 = +[_HMAccessoryCollectionSettingItemClassManager sharedManager];
-  v6 = [v5 hasCustomItemValueClassesForKeyPath:v4];
+  v6 = [v5 hasCustomItemValueClassesForKeyPath:keyPath];
 
   v7 = v6 ^ 1;
 LABEL_8:
@@ -110,15 +110,15 @@ LABEL_8:
     value = self->_value;
     if (!value)
     {
-      v5 = [(HMAccessoryCollectionSettingItem *)self serializedValue];
-      v6 = self;
-      v7 = v5;
+      serializedValue = [(HMAccessoryCollectionSettingItem *)self serializedValue];
+      selfCopy = self;
+      v7 = serializedValue;
       v8 = objc_autoreleasePoolPush();
-      v9 = [(HMAccessoryCollectionSettingItem *)v6 setting];
-      v10 = v9;
-      if (v9)
+      setting = [(HMAccessoryCollectionSettingItem *)selfCopy setting];
+      v10 = setting;
+      if (setting)
       {
-        [v9 itemValueClasses];
+        [setting itemValueClasses];
       }
 
       else
@@ -130,21 +130,21 @@ LABEL_8:
       v11 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:0];
       [v11 setDecodingFailurePolicy:1];
       v12 = [v11 decodeObjectOfClasses:v23 forKey:*MEMORY[0x1E696A508]];
-      v13 = [v11 error];
+      error = [v11 error];
 
-      if (v13)
+      if (error)
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = v6;
+        v15 = selfCopy;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           v17 = HMFGetLogIdentifier();
-          v18 = [v11 error];
+          error2 = [v11 error];
           *buf = 138543618;
           v25 = v17;
           v26 = 2112;
-          v27 = v18;
+          v27 = error2;
           _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to deserialize accessory collection setting item value with error: %@", buf, 0x16u);
         }
 
@@ -179,19 +179,19 @@ LABEL_8:
 
   else
   {
-    v4 = [(HMAccessoryCollectionSettingItem *)self value];
-    v3 = encodeRootObject(v4);
+    value = [(HMAccessoryCollectionSettingItem *)self value];
+    v3 = encodeRootObject(value);
   }
 
   return v3;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [objc_opt_class() shortDescription];
-  if (v3)
+  shortDescription = [objc_opt_class() shortDescription];
+  if (pointerCopy)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %p", self];
   }
@@ -201,12 +201,12 @@ LABEL_8:
     v7 = &stru_1F0E92498;
   }
 
-  v8 = [(HMAccessoryCollectionSettingItem *)self identifier];
-  v9 = [v8 UUIDString];
-  v10 = [(HMAccessoryCollectionSettingItem *)self value];
-  v11 = [v5 stringWithFormat:@"<%@%@, Identifier = %@, Value = %@>", v6, v7, v9, v10];
+  identifier = [(HMAccessoryCollectionSettingItem *)self identifier];
+  uUIDString = [identifier UUIDString];
+  value = [(HMAccessoryCollectionSettingItem *)self value];
+  v11 = [v5 stringWithFormat:@"<%@%@, Identifier = %@, Value = %@>", shortDescription, v7, uUIDString, value];
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -216,17 +216,17 @@ LABEL_8:
 - (id)shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMAccessoryCollectionSettingItem *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMAccessoryCollectionSettingItem *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", shortDescription, identifier];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -236,7 +236,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -247,8 +247,8 @@ LABEL_8:
     v6 = v5;
     if (v6 && (-[HMAccessoryCollectionSettingItem identifier](self, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), -[HMAccessoryCollectionSettingItem identifier](v6, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v7, v9))
     {
-      v10 = [(HMAccessoryCollectionSettingItem *)self value];
-      v11 = [(HMAccessoryCollectionSettingItem *)v6 value];
+      value = [(HMAccessoryCollectionSettingItem *)self value];
+      value2 = [(HMAccessoryCollectionSettingItem *)v6 value];
       v12 = HMFEqualObjects();
     }
 
@@ -263,29 +263,29 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessoryCollectionSettingItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMAccessoryCollectionSettingItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (HMAccessoryCollectionSettingItem)initWithIdentifier:(id)a3 value:(id)a4
+- (HMAccessoryCollectionSettingItem)initWithIdentifier:(id)identifier value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  valueCopy = value;
+  if (valueCopy)
   {
-    v8 = v7;
+    v8 = valueCopy;
     v16.receiver = self;
     v16.super_class = HMAccessoryCollectionSettingItem;
     v9 = [(HMAccessoryCollectionSettingItem *)&v16 init];
     if (v9)
     {
-      v10 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v6];
+      v10 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:identifierCopy];
       identifier = v9->_identifier;
       v9->_identifier = v10;
 
-      objc_storeStrong(&v9->_value, a4);
+      objc_storeStrong(&v9->_value, value);
     }
 
     return v9;
@@ -298,12 +298,12 @@ LABEL_8:
   }
 }
 
-- (HMAccessoryCollectionSettingItem)initWithValue:(id)a3
+- (HMAccessoryCollectionSettingItem)initWithValue:(id)value
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(HMAccessoryCollectionSettingItem *)self initWithIdentifier:v6 value:v5];
+  valueCopy = value;
+  uUID = [v4 UUID];
+  v7 = [(HMAccessoryCollectionSettingItem *)self initWithIdentifier:uUID value:valueCopy];
 
   return v7;
 }

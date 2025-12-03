@@ -1,38 +1,38 @@
 @interface MTKTextureIOBufferAllocator
-- (MTKTextureIOBufferAllocator)initWithDevice:(id)a3;
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 deallocNotification:(id)a5 error:(id *)a6;
-- (id)newBufferWithLength:(unint64_t)a3;
+- (MTKTextureIOBufferAllocator)initWithDevice:(id)device;
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length deallocNotification:(id)notification error:(id *)error;
+- (id)newBufferWithLength:(unint64_t)length;
 @end
 
 @implementation MTKTextureIOBufferAllocator
 
-- (MTKTextureIOBufferAllocator)initWithDevice:(id)a3
+- (MTKTextureIOBufferAllocator)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = MTKTextureIOBufferAllocator;
   v6 = [(MTKTextureIOBufferAllocator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3
+- (id)newBufferWithLength:(unint64_t)length
 {
   v5 = [MTKTextureIOBuffer alloc];
   device = self->_device;
 
-  return [(MTKTextureIOBuffer *)v5 initWithLength:a3 device:device];
+  return [(MTKTextureIOBuffer *)v5 initWithLength:length device:device];
 }
 
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 deallocNotification:(id)a5 error:(id *)a6
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length deallocNotification:(id)notification error:(id *)error
 {
-  v10 = a5;
-  v11 = [[MTKTextureIOBuffer alloc] initWithBytesNoCopy:a3 length:a4 deallocNotification:v10 device:self->_device error:a6];
+  notificationCopy = notification;
+  v11 = [[MTKTextureIOBuffer alloc] initWithBytesNoCopy:copy length:length deallocNotification:notificationCopy device:self->_device error:error];
 
   return v11;
 }

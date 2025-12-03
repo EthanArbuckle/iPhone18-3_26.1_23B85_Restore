@@ -1,20 +1,20 @@
 @interface SBElasticValueViewControllerFactory
-+ (id)factoryWithBrightnessDataSource:(id)a3;
-+ (id)factoryWithVolumeDataSource:(id)a3;
-- (id)_initWithViewControllerGenerator:(id)a3;
++ (id)factoryWithBrightnessDataSource:(id)source;
++ (id)factoryWithVolumeDataSource:(id)source;
+- (id)_initWithViewControllerGenerator:(id)generator;
 @end
 
 @implementation SBElasticValueViewControllerFactory
 
-+ (id)factoryWithBrightnessDataSource:(id)a3
++ (id)factoryWithBrightnessDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__SBElasticValueViewControllerFactory_factoryWithBrightnessDataSource___block_invoke;
   v8[3] = &unk_2783C1C70;
-  v9 = v3;
-  v4 = v3;
+  v9 = sourceCopy;
+  v4 = sourceCopy;
   v5 = MEMORY[0x223D6F7F0](v8);
   v6 = [objc_alloc(objc_opt_class()) _initWithViewControllerGenerator:v5];
 
@@ -28,15 +28,15 @@ SBElasticBrightnessViewController *__71__SBElasticValueViewControllerFactory_fac
   return v1;
 }
 
-+ (id)factoryWithVolumeDataSource:(id)a3
++ (id)factoryWithVolumeDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__SBElasticValueViewControllerFactory_factoryWithVolumeDataSource___block_invoke;
   v8[3] = &unk_2783C1C70;
-  v9 = v3;
-  v4 = v3;
+  v9 = sourceCopy;
+  v4 = sourceCopy;
   v5 = MEMORY[0x223D6F7F0](v8);
   v6 = [objc_alloc(objc_opt_class()) _initWithViewControllerGenerator:v5];
 
@@ -50,15 +50,15 @@ SBElasticVolumeViewController *__67__SBElasticValueViewControllerFactory_factory
   return v1;
 }
 
-- (id)_initWithViewControllerGenerator:(id)a3
+- (id)_initWithViewControllerGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v9.receiver = self;
   v9.super_class = SBElasticValueViewControllerFactory;
   v5 = [(SBElasticValueViewControllerFactory *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x223D6F7F0](v4);
+    v6 = MEMORY[0x223D6F7F0](generatorCopy);
     generator = v5->_generator;
     v5->_generator = v6;
   }

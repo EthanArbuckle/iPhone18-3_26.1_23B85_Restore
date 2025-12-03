@@ -1,31 +1,31 @@
 @interface TRIRemoteAssetPatcher
-- ($A5A652246548B43F8BC05201A1C72A70)applyPatchWithFilename:(id)a3 toSrcDir:(id)a4 writingToEmptyDestDir:(id)a5 postPatchCompression:(id)a6 error:(id *)a7;
-- (TRIRemoteAssetPatcher)initWithMonitoredActivity:(id)a3;
-- (id)_tokenForSandboxExtensionWithClass:(const char *)a3 path:(id)a4;
+- ($A5A652246548B43F8BC05201A1C72A70)applyPatchWithFilename:(id)filename toSrcDir:(id)dir writingToEmptyDestDir:(id)destDir postPatchCompression:(id)compression error:(id *)error;
+- (TRIRemoteAssetPatcher)initWithMonitoredActivity:(id)activity;
+- (id)_tokenForSandboxExtensionWithClass:(const char *)class path:(id)path;
 @end
 
 @implementation TRIRemoteAssetPatcher
 
-- (TRIRemoteAssetPatcher)initWithMonitoredActivity:(id)a3
+- (TRIRemoteAssetPatcher)initWithMonitoredActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v9.receiver = self;
   v9.super_class = TRIRemoteAssetPatcher;
   v6 = [(TRIRemoteAssetPatcher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_monitoredActivity, a3);
+    objc_storeStrong(&v6->_monitoredActivity, activity);
   }
 
   return v7;
 }
 
-- (id)_tokenForSandboxExtensionWithClass:(const char *)a3 path:(id)a4
+- (id)_tokenForSandboxExtensionWithClass:(const char *)class path:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  [v4 fileSystemRepresentation];
+  pathCopy = path;
+  [pathCopy fileSystemRepresentation];
   v5 = *MEMORY[0x277D861E8];
   v6 = sandbox_extension_issue_file();
   if (v6)
@@ -41,7 +41,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = 138543362;
-      v13 = v4;
+      v13 = pathCopy;
       _os_log_error_impl(&dword_26F567000, v9, OS_LOG_TYPE_ERROR, "Failed to create sandbox extension for %{public}@", &v12, 0xCu);
     }
 
@@ -53,19 +53,19 @@
   return v8;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)applyPatchWithFilename:(id)a3 toSrcDir:(id)a4 writingToEmptyDestDir:(id)a5 postPatchCompression:(id)a6 error:(id *)a7
+- ($A5A652246548B43F8BC05201A1C72A70)applyPatchWithFilename:(id)filename toSrcDir:(id)dir writingToEmptyDestDir:(id)destDir postPatchCompression:(id)compression error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  filenameCopy = filename;
+  dirCopy = dir;
+  destDirCopy = destDir;
   v15 = objc_autoreleasePoolPush();
-  v16 = [(TRIRemoteAssetPatcher *)self _tokenForSandboxExtensionWithClass:"com.apple.app-sandbox.read" path:v12];
+  v16 = [(TRIRemoteAssetPatcher *)self _tokenForSandboxExtensionWithClass:"com.apple.app-sandbox.read" path:filenameCopy];
   if (v16)
   {
-    v17 = [(TRIRemoteAssetPatcher *)self _tokenForSandboxExtensionWithClass:"com.apple.app-sandbox.read" path:v13];
-    if (v13)
+    v17 = [(TRIRemoteAssetPatcher *)self _tokenForSandboxExtensionWithClass:"com.apple.app-sandbox.read" path:dirCopy];
+    if (dirCopy)
     {
-      v18 = [(TRIRemoteAssetPatcher *)self _tokenForSandboxExtensionWithClass:"com.apple.app-sandbox.read-write" path:v14];
+      v18 = [(TRIRemoteAssetPatcher *)self _tokenForSandboxExtensionWithClass:"com.apple.app-sandbox.read-write" path:destDirCopy];
       if (v18)
       {
         monitoredActivity = self->_monitoredActivity;
@@ -75,13 +75,13 @@
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            LOBYTE(a7) = 2;
+            LOBYTE(error) = 2;
             _os_log_impl(&dword_26F567000, v20, OS_LOG_TYPE_DEFAULT, "Deferring before start of patch application.", buf, 2u);
           }
 
           else
           {
-            LOBYTE(a7) = 2;
+            LOBYTE(error) = 2;
           }
         }
 
@@ -130,37 +130,37 @@
           v17 = v32;
           v29 = v25;
           v41 = v25;
-          v35 = v12;
+          v35 = filenameCopy;
           v36 = v16;
-          v37 = v13;
+          v37 = dirCopy;
           v38 = v32;
-          v39 = v14;
+          v39 = destDirCopy;
           v40 = v31;
           v42 = &v51;
           v43 = &v45;
-          var0 = a6.var0;
+          var0 = compression.var0;
           [TRIDeferralNotifier forwardDeferralsFromMonitoredActivity:v30 usingDarwinNotificationName:"com.apple.trial.TrialArchivingService.shouldDefer" whileExecutingBlock:v33];
           [v20 invalidate];
           v26 = *(v58 + 5);
           if (v26)
           {
             v27 = v29;
-            if (a7)
+            if (error)
             {
-              objc_storeStrong(a7, v26);
-              LOBYTE(a7) = 0;
+              objc_storeStrong(error, v26);
+              LOBYTE(error) = 0;
             }
           }
 
           else
           {
             v27 = v29;
-            if (a7)
+            if (error)
             {
-              objc_storeStrong(a7, v46[5]);
+              objc_storeStrong(error, v46[5]);
             }
 
-            LOBYTE(a7) = *(v52 + 32);
+            LOBYTE(error) = *(v52 + 32);
           }
 
           _Block_object_dispose(&v45, 8);
@@ -172,23 +172,23 @@
 
       else
       {
-        LOBYTE(a7) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
     else
     {
-      LOBYTE(a7) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a7) = 0;
+    LOBYTE(error) = 0;
   }
 
   objc_autoreleasePoolPop(v15);
-  return a7;
+  return error;
 }
 
 void __106__TRIRemoteAssetPatcher_applyPatchWithFilename_toSrcDir_writingToEmptyDestDir_postPatchCompression_error___block_invoke_2(uint64_t a1)

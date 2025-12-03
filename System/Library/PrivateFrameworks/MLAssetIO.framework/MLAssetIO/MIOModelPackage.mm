@@ -1,56 +1,56 @@
 @interface MIOModelPackage
-+ (BOOL)_upgradeModelSpecificationAtURL:(id)a3 packageURL:(id)a4 error:(id *)a5;
-+ (id)upgradeModelSpecificationAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (MIOModelPackage)initWithModelPackageAtURL:(id)a3 error:(id *)p_isa;
++ (BOOL)_upgradeModelSpecificationAtURL:(id)l packageURL:(id)rL error:(id *)error;
++ (id)upgradeModelSpecificationAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (MIOModelPackage)initWithModelPackageAtURL:(id)l error:(id *)p_isa;
 @end
 
 @implementation MIOModelPackage
 
-+ (id)upgradeModelSpecificationAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
++ (id)upgradeModelSpecificationAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v8 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  lCopy = l;
+  rLCopy = rL;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
   if (v12)
   {
-    v13 = [v8 lastPathComponent];
-    v14 = [v13 stringByDeletingPathExtension];
+    lastPathComponent = [lCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v15 = [v9 URLByAppendingPathComponent:v14 isDirectory:1];
+    v15 = [rLCopy URLByAppendingPathComponent:stringByDeletingPathExtension isDirectory:1];
     v16 = [v15 URLByAppendingPathExtension:@"mlpackage"];
 
-    v17 = [v16 path];
-    v18 = [v10 fileExistsAtPath:v17];
+    path2 = [v16 path];
+    v18 = [defaultManager fileExistsAtPath:path2];
 
     if (!v18)
     {
-      v31 = [MIOModelUtils URLForNewlyCreatedWorkingDirectoryAppropriateForURL:v9 error:a5];
+      v31 = [MIOModelUtils URLForNewlyCreatedWorkingDirectoryAppropriateForURL:rLCopy error:error];
       v32 = v31;
       if (v31)
       {
-        v33 = [v31 URLByAppendingPathComponent:v14 isDirectory:1];
+        v33 = [v31 URLByAppendingPathComponent:stringByDeletingPathExtension isDirectory:1];
         v34 = [v33 URLByAppendingPathExtension:@"mlpackage"];
 
-        if ([a1 _upgradeModelSpecificationAtURL:v8 packageURL:v34 error:a5] & 1) != 0 && (objc_msgSend(v10, "replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:", v16, v34, 0, 0, 0, a5))
+        if ([self _upgradeModelSpecificationAtURL:lCopy packageURL:v34 error:error] & 1) != 0 && (objc_msgSend(defaultManager, "replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:", v16, v34, 0, 0, 0, error))
         {
-          [v10 removeItemAtURL:v32 error:0];
-          a5 = v16;
+          [defaultManager removeItemAtURL:v32 error:0];
+          error = v16;
         }
 
         else
         {
-          [v10 removeItemAtURL:v32 error:0];
-          a5 = 0;
+          [defaultManager removeItemAtURL:v32 error:0];
+          error = 0;
         }
       }
 
       else
       {
-        a5 = 0;
+        error = 0;
       }
 
       goto LABEL_20;
@@ -58,11 +58,11 @@
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v19 = [v16 path];
-      +[MIOModelPackage upgradeModelSpecificationAtURL:toURL:error:].cold.2([v19 UTF8String], v41, v19);
+      path3 = [v16 path];
+      +[MIOModelPackage upgradeModelSpecificationAtURL:toURL:error:].cold.2([path3 UTF8String], v41, path3);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -70,15 +70,15 @@
     v20 = MEMORY[0x1E696ABC0];
     v37 = *MEMORY[0x1E696A578];
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [v16 path];
-    v23 = v22;
-    v24 = [v21 stringWithFormat:@"Model package already exists at %s", objc_msgSend(v22, "UTF8String")];
+    path4 = [v16 path];
+    v23 = path4;
+    v24 = [v21 stringWithFormat:@"Model package already exists at %s", objc_msgSend(path4, "UTF8String")];
     v38 = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-    *a5 = [v20 errorWithDomain:@"com.apple.mlassetio" code:2 userInfo:v25];
+    *error = [v20 errorWithDomain:@"com.apple.mlassetio" code:2 userInfo:v25];
 
 LABEL_11:
-    a5 = 0;
+    error = 0;
 LABEL_20:
 
     goto LABEL_21;
@@ -86,21 +86,21 @@ LABEL_20:
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v26 = [v8 path];
-    +[MIOModelPackage upgradeModelSpecificationAtURL:toURL:error:].cold.1([v26 UTF8String], v41, v26);
+    path5 = [lCopy path];
+    +[MIOModelPackage upgradeModelSpecificationAtURL:toURL:error:].cold.1([path5 UTF8String], v41, path5);
   }
 
-  if (a5)
+  if (error)
   {
     v27 = MEMORY[0x1E696ABC0];
     v39 = *MEMORY[0x1E696A578];
     v28 = MEMORY[0x1E696AEC0];
-    v14 = [v8 path];
-    v29 = v14;
-    v16 = [v28 stringWithFormat:@"Model does not exists at %s", objc_msgSend(v14, "UTF8String")];
+    stringByDeletingPathExtension = [lCopy path];
+    v29 = stringByDeletingPathExtension;
+    v16 = [v28 stringWithFormat:@"Model does not exists at %s", objc_msgSend(stringByDeletingPathExtension, "UTF8String")];
     v40 = v16;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-    *a5 = [v27 errorWithDomain:@"com.apple.mlassetio" code:1 userInfo:v30];
+    *error = [v27 errorWithDomain:@"com.apple.mlassetio" code:1 userInfo:v30];
 
     goto LABEL_11;
   }
@@ -109,28 +109,28 @@ LABEL_21:
 
   v35 = *MEMORY[0x1E69E9840];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)_upgradeModelSpecificationAtURL:(id)a3 packageURL:(id)a4 error:(id *)a5
++ (BOOL)_upgradeModelSpecificationAtURL:(id)l packageURL:(id)rL error:(id *)error
 {
   __p[7] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = objc_autoreleasePoolPush();
-  [v6 lastPathComponent];
+  [lCopy lastPathComponent];
   objc_claimAutoreleasedReturnValue();
-  std::string::basic_string[abi:ne200100]<0>(__p, [v7 fileSystemRepresentation]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [rLCopy fileSystemRepresentation]);
   MPL::ModelPackage::ModelPackage();
 }
 
-- (MIOModelPackage)initWithModelPackageAtURL:(id)a3 error:(id *)p_isa
+- (MIOModelPackage)initWithModelPackageAtURL:(id)l error:(id *)p_isa
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
@@ -138,8 +138,8 @@ LABEL_21:
     v20.super_class = MIOModelPackage;
     if ([(MIOModelPackage *)&v20 init])
     {
-      v10 = v6;
-      std::string::basic_string[abi:ne200100]<0>(&__p, [v6 fileSystemRepresentation]);
+      v10 = lCopy;
+      std::string::basic_string[abi:ne200100]<0>(&__p, [lCopy fileSystemRepresentation]);
       MPL::ModelPackage::ModelPackage();
     }
 
@@ -151,8 +151,8 @@ LABEL_21:
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v11 = [v6 path];
-      -[MIOModelPackage initWithModelPackageAtURL:error:].cold.1([v11 UTF8String], &__p, v11);
+      path2 = [lCopy path];
+      -[MIOModelPackage initWithModelPackageAtURL:error:].cold.1([path2 UTF8String], &__p, path2);
     }
 
     if (p_isa)
@@ -160,9 +160,9 @@ LABEL_21:
       v12 = MEMORY[0x1E696ABC0];
       v22 = *MEMORY[0x1E696A578];
       v13 = MEMORY[0x1E696AEC0];
-      v14 = [v6 path];
-      v15 = v14;
-      v16 = [v13 stringWithFormat:@"Model package does not exist at %s", objc_msgSend(v14, "UTF8String")];
+      path3 = [lCopy path];
+      v15 = path3;
+      v16 = [v13 stringWithFormat:@"Model package does not exist at %s", objc_msgSend(path3, "UTF8String")];
       v23[0] = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       *p_isa = [v12 errorWithDomain:@"com.apple.mlassetio" code:1 userInfo:v17];

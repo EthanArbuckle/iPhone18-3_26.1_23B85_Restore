@@ -1,33 +1,33 @@
 @interface TULinkShareItem
-- (TULinkShareItem)initWithTUConversationLink:(id)a3;
-- (TULinkShareItem)initWithTUConversationLink:(id)a3 title:(id)a4 placeholder:(id)a5;
+- (TULinkShareItem)initWithTUConversationLink:(id)link;
+- (TULinkShareItem)initWithTUConversationLink:(id)link title:(id)title placeholder:(id)placeholder;
 @end
 
 @implementation TULinkShareItem
 
-- (TULinkShareItem)initWithTUConversationLink:(id)a3 title:(id)a4 placeholder:(id)a5
+- (TULinkShareItem)initWithTUConversationLink:(id)link title:(id)title placeholder:(id)placeholder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  linkCopy = link;
+  titleCopy = title;
+  placeholderCopy = placeholder;
   v14.receiver = self;
   v14.super_class = TULinkShareItem;
   v11 = [(TULinkShareItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(TULinkShareItem *)v11 setTuConversationLink:v8];
-    [(TULinkShareItem *)v12 setTitle:v9];
-    [(TULinkShareItem *)v12 setPlaceholder:v10];
+    [(TULinkShareItem *)v11 setTuConversationLink:linkCopy];
+    [(TULinkShareItem *)v12 setTitle:titleCopy];
+    [(TULinkShareItem *)v12 setPlaceholder:placeholderCopy];
   }
 
   return v12;
 }
 
-- (TULinkShareItem)initWithTUConversationLink:(id)a3
+- (TULinkShareItem)initWithTUConversationLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 URL];
+  linkCopy = link;
+  v5 = [linkCopy URL];
   v6 = v5;
   if (v5)
   {
@@ -41,8 +41,8 @@
 
   v8 = v7;
 
-  v9 = [v4 linkName];
-  v10 = [(TULinkShareItem *)self initWithTUConversationLink:v4 title:v9 placeholder:v8];
+  linkName = [linkCopy linkName];
+  v10 = [(TULinkShareItem *)self initWithTUConversationLink:linkCopy title:linkName placeholder:v8];
 
   return v10;
 }

@@ -1,8 +1,8 @@
 @interface CSDateUtilities
 + (id)legacyDateFormatter;
-+ (id)localStringFromDate:(id)a3;
++ (id)localStringFromDate:(id)date;
 + (id)posixDateFormatter;
-+ (id)secureBackupDateFromString:(id)a3;
++ (id)secureBackupDateFromString:(id)string;
 @end
 
 @implementation CSDateUtilities
@@ -34,11 +34,11 @@
   return v2;
 }
 
-+ (id)secureBackupDateFromString:(id)a3
++ (id)secureBackupDateFromString:(id)string
 {
-  v4 = a3;
-  v7 = objc_msgSend_posixDateFormatter(a1, v5, v6);
-  v9 = objc_msgSend_dateFromString_(v7, v8, v4);
+  stringCopy = string;
+  v7 = objc_msgSend_posixDateFormatter(self, v5, v6);
+  v9 = objc_msgSend_dateFromString_(v7, v8, stringCopy);
   if (v9)
   {
     v12 = v9;
@@ -46,19 +46,19 @@
 
   else
   {
-    v13 = objc_msgSend_legacyDateFormatter(a1, v10, v11);
+    v13 = objc_msgSend_legacyDateFormatter(self, v10, v11);
 
-    v12 = objc_msgSend_dateFromString_(v13, v14, v4);
+    v12 = objc_msgSend_dateFromString_(v13, v14, stringCopy);
     v7 = v13;
   }
 
   return v12;
 }
 
-+ (id)localStringFromDate:(id)a3
++ (id)localStringFromDate:(id)date
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc(MEMORY[0x277CBEAF8]);
   v8 = objc_msgSend_initWithLocaleIdentifier_(v6, v7, @"en_US_POSIX");
@@ -68,7 +68,7 @@
   v13 = objc_msgSend_localTimeZone(MEMORY[0x277CBEBB0], v11, v12);
   objc_msgSend_setTimeZone_(v5, v14, v13);
 
-  v16 = objc_msgSend_stringFromDate_(v5, v15, v4);
+  v16 = objc_msgSend_stringFromDate_(v5, v15, dateCopy);
 
   return v16;
 }

@@ -1,25 +1,25 @@
 @interface SCMLImageSanitizer
-- (SCMLImageSanitizer)initWithConfiguration:(id)a3 error:(id *)a4;
+- (SCMLImageSanitizer)initWithConfiguration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
-- (id)_sanitizeRequest:(id)a3 error:(id *)a4;
-- (id)tempDumpURL:(id)a3 withSuffix:(id)a4;
+- (id)_sanitizeRequest:(id)request error:(id *)error;
+- (id)tempDumpURL:(id)l withSuffix:(id)suffix;
 - (uint64_t)_sanitizeRequest:error:;
 - (uint64_t)initWithConfiguration:error:;
 - (void)_sanitizeRequest:error:;
-- (void)_sanitizeRequestAsynchronously:(id)a3 completionHandler:(id)a4;
-- (void)dumpPixelBuffer:(__CVBuffer *)a3 label:(id)a4;
+- (void)_sanitizeRequestAsynchronously:(id)asynchronously completionHandler:(id)handler;
+- (void)dumpPixelBuffer:(__CVBuffer *)buffer label:(id)label;
 - (void)initWithConfiguration:error:;
-- (void)sanitizeRequestAsynchronously:(id)a3 completionHandler:(id)a4;
-- (void)updateSanitization:(id)a3 withAnalysisResult:(id)a4 forStyle:(unsigned int)a5 isChildPresent:(BOOL)a6;
-- (void)updateSanitization:(id)a3 withObservations:(id)a4;
+- (void)sanitizeRequestAsynchronously:(id)asynchronously completionHandler:(id)handler;
+- (void)updateSanitization:(id)sanitization withAnalysisResult:(id)result forStyle:(unsigned int)style isChildPresent:(BOOL)present;
+- (void)updateSanitization:(id)sanitization withObservations:(id)observations;
 @end
 
 @implementation SCMLImageSanitizer
 
-- (SCMLImageSanitizer)initWithConfiguration:(id)a3 error:(id *)a4
+- (SCMLImageSanitizer)initWithConfiguration:(id)configuration error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v38 = a3;
+  configurationCopy = configuration;
   scml::SignpostInterval::SignpostInterval(&v47);
   v4 = v47;
   v5 = v4;
@@ -38,23 +38,23 @@
   v7 = +[SCMLLog imageAnalyzer];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SCMLImageSanitizerConfiguration *)v38 mode];
-    v9 = [(SCMLImageSanitizerConfiguration *)v38 region];
-    v10 = [(SCMLImageSanitizerConfiguration *)v38 backends];
-    v11 = [(SCMLImageSanitizerConfiguration *)v38 modelManagerServicesUseCaseID];
-    v12 = [(SCMLImageSanitizerConfiguration *)v38 onBehalfOfProcessID];
+    mode = [(SCMLImageSanitizerConfiguration *)configurationCopy mode];
+    region = [(SCMLImageSanitizerConfiguration *)configurationCopy region];
+    backends = [(SCMLImageSanitizerConfiguration *)configurationCopy backends];
+    modelManagerServicesUseCaseID = [(SCMLImageSanitizerConfiguration *)configurationCopy modelManagerServicesUseCaseID];
+    onBehalfOfProcessID = [(SCMLImageSanitizerConfiguration *)configurationCopy onBehalfOfProcessID];
     *buf = 134219267;
     *&buf[4] = self;
     *&buf[12] = 1024;
-    *&buf[14] = v8;
+    *&buf[14] = mode;
     *&buf[18] = 1024;
-    *&buf[20] = v9;
+    *&buf[20] = region;
     v51[0] = 1024;
-    *&v51[1] = v10;
+    *&v51[1] = backends;
     v51[3] = 2113;
-    v52 = v11;
+    v52 = modelManagerServicesUseCaseID;
     v53 = 1024;
-    v54 = v12;
+    v54 = onBehalfOfProcessID;
     _os_log_impl(&dword_1B8A3C000, v7, OS_LOG_TYPE_DEFAULT, "Begin SCMLImageSanitizer init inst=%p mode=%d region=%d backends=0x%x useCase=%{private}@ pid=%d", buf, 0x2Eu);
   }
 
@@ -64,8 +64,8 @@
 
   if (v41)
   {
-    v13 = v38;
-    if (!v38)
+    v13 = configurationCopy;
+    if (!configurationCopy)
     {
       v13 = objc_alloc_init(SCMLImageSanitizerConfiguration);
     }
@@ -74,26 +74,26 @@
     v39 = objc_alloc_init(SCMLImageSanitizerConfiguration);
     [(SCMLImageSanitizerConfiguration *)v39 setTrackPerformance:[(SCMLImageSanitizerConfiguration *)v14 trackPerformance]];
     [(SCMLImageSanitizerConfiguration *)v39 setGranularity:[(SCMLImageSanitizerConfiguration *)v14 granularity]];
-    v15 = [(SCMLImageSanitizerConfiguration *)v14 clipClassifierConfig];
-    [(SCMLImageSanitizerConfiguration *)v39 setClipClassifierConfig:v15];
+    clipClassifierConfig = [(SCMLImageSanitizerConfiguration *)v14 clipClassifierConfig];
+    [(SCMLImageSanitizerConfiguration *)v39 setClipClassifierConfig:clipClassifierConfig];
 
     [(SCMLImageSanitizerConfiguration *)v39 setMode:[(SCMLImageSanitizerConfiguration *)v14 mode]];
-    LODWORD(v15) = [(SCMLImageSanitizerConfiguration *)v14 mode];
-    v16 = [(SCMLImageSanitizerConfiguration *)v14 backends];
+    LODWORD(clipClassifierConfig) = [(SCMLImageSanitizerConfiguration *)v14 mode];
+    backends2 = [(SCMLImageSanitizerConfiguration *)v14 backends];
     [(SCMLImageSanitizerConfiguration *)v14 region];
     [(SCMLImageSanitizerConfiguration *)v39 setRegion:[(SCMLImageSanitizerConfiguration *)v14 region]];
-    v17 = [(SCMLImageSanitizerConfiguration *)v14 modelManagerServicesUseCaseID];
-    [(SCMLImageSanitizerConfiguration *)v39 setModelManagerServicesUseCaseID:v17];
+    modelManagerServicesUseCaseID2 = [(SCMLImageSanitizerConfiguration *)v14 modelManagerServicesUseCaseID];
+    [(SCMLImageSanitizerConfiguration *)v39 setModelManagerServicesUseCaseID:modelManagerServicesUseCaseID2];
 
     [(SCMLImageSanitizerConfiguration *)v39 setOnBehalfOfProcessID:[(SCMLImageSanitizerConfiguration *)v14 onBehalfOfProcessID]];
     v18 = +[SCMLLog imageAnalyzer];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(SCMLImageSanitizerConfiguration *)v39 backends];
+      backends3 = [(SCMLImageSanitizerConfiguration *)v39 backends];
       *buf = 134218240;
       *&buf[4] = v41;
       *&buf[12] = 1024;
-      *&buf[14] = v19;
+      *&buf[14] = backends3;
       _os_log_impl(&dword_1B8A3C000, v18, OS_LOG_TYPE_DEFAULT, "Resolved config inst=%p backends=0x%x", buf, 0x12u);
     }
 
@@ -103,10 +103,10 @@
     v41->_region = [(SCMLImageSanitizerConfiguration *)v39 region];
     mode = v41->_mode;
     v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v22 = [v21 resourceURL];
-    v23 = [v22 path];
+    resourceURL = [v21 resourceURL];
+    path = [resourceURL path];
 
-    v24 = [v23 stringByAppendingPathComponent:@"Models"];
+    v24 = [path stringByAppendingPathComponent:@"Models"];
     v25 = [v24 stringByAppendingPathComponent:@"ImageSanitizer_v1.0.0"];
     v26 = @"_default";
     if (mode == 6)
@@ -173,15 +173,15 @@
   return v42;
 }
 
-- (void)updateSanitization:(id)a3 withObservations:(id)a4
+- (void)updateSanitization:(id)sanitization withObservations:(id)observations
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sanitizationCopy = sanitization;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = a4;
+  obj = observations;
   v7 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
@@ -207,7 +207,7 @@
         }
 
         v10 = *(*(&v35 + 1) + 8 * v9);
-        v11 = [v10 identifier];
+        identifier = [v10 identifier];
         {
           v40[0] = v33;
           v40[1] = v32;
@@ -232,7 +232,7 @@
           [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:10];
         }
 
-        v13 = [v12 objectForKeyedSubscript:v11];
+        v13 = [v12 objectForKeyedSubscript:identifier];
 
         if (v13)
         {
@@ -241,13 +241,13 @@
 
         else
         {
-          v14 = v11;
+          v14 = identifier;
         }
 
         v15 = v14;
 
-        v16 = v11;
-        std::string::basic_string[abi:ne200100]<0>(v41, [v11 UTF8String]);
+        v16 = identifier;
+        std::string::basic_string[abi:ne200100]<0>(v41, [identifier UTF8String]);
         v17 = std::__hash_table<std::__hash_value_type<std::string,ik::E5BufferTensor>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,ik::E5BufferTensor>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,ik::E5BufferTensor>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,ik::E5BufferTensor>>>::find<std::string>(&self->_tabooThresholds.__table_.__bucket_list_.__ptr_, v41);
         v18 = v17;
         if (SHIBYTE(v42) < 0)
@@ -270,7 +270,7 @@ LABEL_12:
         v20 = 1;
 LABEL_15:
         [v10 confidence];
-        v21 = [v6 updateSignal:v15 withSafe:v20 withScore:?];
+        v21 = [sanitizationCopy updateSignal:v15 withSafe:v20 withScore:?];
 
         ++v9;
       }
@@ -286,20 +286,20 @@ LABEL_15:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSanitization:(id)a3 withAnalysisResult:(id)a4 forStyle:(unsigned int)a5 isChildPresent:(BOOL)a6
+- (void)updateSanitization:(id)sanitization withAnalysisResult:(id)result forStyle:(unsigned int)style isChildPresent:(BOOL)present
 {
-  v47 = a6;
+  presentCopy = present;
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  sanitizationCopy = sanitization;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v49 = a4;
-  v9 = [v49 scoresForLabels];
-  v10 = [v9 allKeys];
+  resultCopy = result;
+  scoresForLabels = [resultCopy scoresForLabels];
+  allKeys = [scoresForLabels allKeys];
 
-  v11 = [v10 countByEnumeratingWithState:&v55 objects:v59 count:16];
+  v11 = [allKeys countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (!v11)
   {
     LOBYTE(v12) = 1;
@@ -308,20 +308,20 @@ LABEL_15:
 
   v48 = *v56;
   v12 = 1;
-  v45 = v8;
-  v46 = v10;
+  v45 = sanitizationCopy;
+  v46 = allKeys;
   do
   {
     for (i = 0; i != v11; ++i)
     {
       if (*v56 != v48)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allKeys);
       }
 
       v14 = *(*(&v55 + 1) + 8 * i);
-      v15 = [v49 scoresForLabels];
-      v51 = [v15 objectForKeyedSubscript:v14];
+      scoresForLabels2 = [resultCopy scoresForLabels];
+      v51 = [scoresForLabels2 objectForKeyedSubscript:v14];
 
       [v51 doubleValue];
       v17 = v16;
@@ -409,9 +409,9 @@ LABEL_22:
 
       v26 = 0;
 LABEL_26:
-      v8 = v45;
+      sanitizationCopy = v45;
 LABEL_27:
-      v10 = v46;
+      allKeys = v46;
 LABEL_28:
       v11 = v19;
       if (v54 < 0)
@@ -436,8 +436,8 @@ LABEL_43:
           v32 = v26[7];
           do
           {
-            v33 = *(v32 + 5) == 1 && *v32 == a5;
-            if (v33 && *(v32 + 4) == v47)
+            v33 = *(v32 + 5) == 1 && *v32 == style;
+            if (v33 && *(v32 + 4) == presentCopy)
             {
               v34 = (v32 + 8);
               v35 = (v32 + 16);
@@ -448,7 +448,7 @@ LABEL_43:
           }
 
           while (v32 != v31);
-          while ((*(v30 + 5) & 1) != 0 || *v30 != a5)
+          while ((*(v30 + 5) & 1) != 0 || *v30 != style)
           {
             v30 += 24;
             if (v30 == v31)
@@ -490,13 +490,13 @@ LABEL_47:
       {
         v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"jwt", v14];
         *&v41 = v17;
-        v42 = [v8 updateSignal:v40 withSafe:v36 withScore:v41];
+        v42 = [sanitizationCopy updateSignal:v40 withSafe:v36 withScore:v41];
       }
 
       v12 = v50 & v36;
     }
 
-    v11 = [v10 countByEnumeratingWithState:&v55 objects:v59 count:16];
+    v11 = [allKeys countByEnumeratingWithState:&v55 objects:v59 count:16];
   }
 
   while (v11);
@@ -504,18 +504,18 @@ LABEL_58:
 
   if (self->_granularity == 1)
   {
-    v43 = [v8 updateSignal:kSCMLImageSanitizationSignalNSFWExplicit[0] withSafe:v12 & 1];
+    v43 = [sanitizationCopy updateSignal:kSCMLImageSanitizationSignalNSFWExplicit[0] withSafe:v12 & 1];
   }
 
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_sanitizeRequest:(id)a3 error:(id *)a4
+- (id)_sanitizeRequest:(id)request error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v83 = a3;
-  v77 = [v83 pixelBuffer];
-  v79 = [v83 keepGoing];
+  requestCopy = request;
+  pixelBuffer = [requestCopy pixelBuffer];
+  keepGoing = [requestCopy keepGoing];
   v4 = [[SCMLImageSanitization alloc] initWithGranularOutput:self->_granularity != 0];
   v81 = v4;
   if (v5)
@@ -538,7 +538,7 @@ LABEL_58:
     std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v97);
     handler = self->_handler;
     v86 = 0;
-    v11 = [(SCMLHandler *)handler analyzePixelBuffer:v77 error:&v86];
+    v11 = [(SCMLHandler *)handler analyzePixelBuffer:pixelBuffer error:&v86];
     v12 = v86;
     if (v12)
     {
@@ -546,8 +546,8 @@ LABEL_58:
       scml::makeException("Failed to compute IVS", 0x15uLL, v12, exception);
     }
 
-    -[SCMLImageSanitizer updateSanitization:withAnalysisResult:forStyle:isChildPresent:](self, "updateSanitization:withAnalysisResult:forStyle:isChildPresent:", v4, v11, [v83 style], objc_msgSend(v83, "isChildPresent"));
-    if ((v79 & 1) == 0 && ![(SCMLImageSanitization *)v4 safe])
+    -[SCMLImageSanitizer updateSanitization:withAnalysisResult:forStyle:isChildPresent:](self, "updateSanitization:withAnalysisResult:forStyle:isChildPresent:", v4, v11, [requestCopy style], objc_msgSend(requestCopy, "isChildPresent"));
+    if ((keepGoing & 1) == 0 && ![(SCMLImageSanitization *)v4 safe])
     {
       v69 = v4;
 
@@ -586,7 +586,7 @@ LABEL_70:
     std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v91);
     v60 = self->_vnSession;
     v61 = objc_alloc(MEMORY[0x1E69845B8]);
-    v63 = v62 = [v61 initWithCVPixelBuffer:v77 options:MEMORY[0x1E695E0F8] session:v60];
+    v63 = v62 = [v61 initWithCVPixelBuffer:pixelBuffer options:MEMORY[0x1E695E0F8] session:v60];
     *buf = v63;
     v64 = [MEMORY[0x1E695DEC8] arrayWithObjects:buf count:1];
     v94 = 0;
@@ -599,10 +599,10 @@ LABEL_70:
       scml::makeException("Failed vision request", 0x15uLL, v66, v76);
     }
 
-    v67 = [v63 results];
+    results = [v63 results];
 
-    [(SCMLImageSanitizer *)self updateSanitization:v81 withObservations:v67];
-    if ((v79 & 1) != 0 || [(SCMLImageSanitization *)v81 safe])
+    [(SCMLImageSanitizer *)self updateSanitization:v81 withObservations:results];
+    if ((keepGoing & 1) != 0 || [(SCMLImageSanitization *)v81 safe])
     {
 
       scml::SignpostInterval::~SignpostInterval(v98);
@@ -632,12 +632,12 @@ LABEL_73:
   v93[3] = v93;
   std::__function::__value_func<void ()(void)>::operator=[abi:ne200100](&v96, v93);
   std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v93);
-  v16 = [v83 embeddings];
+  embeddings = [requestCopy embeddings];
   memset(v84, 0, sizeof(v84));
   v85 = 1065353216;
   *buf = 0u;
   memset(v105, 0, sizeof(v105));
-  v17 = v16;
+  v17 = embeddings;
   v18 = [v17 countByEnumeratingWithState:buf objects:v98 count:16];
   if (v18)
   {
@@ -653,9 +653,9 @@ LABEL_73:
 
         v21 = *(*&buf[8] + 8 * i);
         scml::ClipImageEncoder::toEmbeddingVec(v21, __p);
-        v87 = [v21 version];
-        v88 = &v87;
-        v22 = std::__hash_table<std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::__unordered_map_hasher<MADUnifiedEmbeddingVersion,std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::hash<MADUnifiedEmbeddingVersion>,std::equal_to<MADUnifiedEmbeddingVersion>,true>,std::__unordered_map_equal<MADUnifiedEmbeddingVersion,std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::equal_to<MADUnifiedEmbeddingVersion>,std::hash<MADUnifiedEmbeddingVersion>,true>,std::allocator<std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>>>::__emplace_unique_key_args<MADUnifiedEmbeddingVersion,std::piecewise_construct_t const&,std::tuple<MADUnifiedEmbeddingVersion const&>,std::tuple<>>(v84, &v87);
+        version = [v21 version];
+        v88 = &version;
+        v22 = std::__hash_table<std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::__unordered_map_hasher<MADUnifiedEmbeddingVersion,std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::hash<MADUnifiedEmbeddingVersion>,std::equal_to<MADUnifiedEmbeddingVersion>,true>,std::__unordered_map_equal<MADUnifiedEmbeddingVersion,std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::equal_to<MADUnifiedEmbeddingVersion>,std::hash<MADUnifiedEmbeddingVersion>,true>,std::allocator<std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>>>::__emplace_unique_key_args<MADUnifiedEmbeddingVersion,std::piecewise_construct_t const&,std::tuple<MADUnifiedEmbeddingVersion const&>,std::tuple<>>(v84, &version);
         v23 = v22[3];
         if (v23)
         {
@@ -730,7 +730,7 @@ LABEL_61:
         std::__throw_out_of_range[abi:ne200100]("unordered_map::at: key not found");
       }
 
-      scml::ClipImageEncoder::getEmbedding(v31[3], v77, __p);
+      scml::ClipImageEncoder::getEmbedding(v31[3], pixelBuffer, __p);
       scml::SignpostInterval::~SignpostInterval(v98);
       v27 = std::__hash_table<std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::__unordered_map_hasher<MADUnifiedEmbeddingVersion,std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::hash<MADUnifiedEmbeddingVersion>,std::equal_to<MADUnifiedEmbeddingVersion>,true>,std::__unordered_map_equal<MADUnifiedEmbeddingVersion,std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>,std::equal_to<MADUnifiedEmbeddingVersion>,std::hash<MADUnifiedEmbeddingVersion>,true>,std::allocator<std::__hash_value_type<MADUnifiedEmbeddingVersion,std::vector<float>>>>::__emplace_unique_key_args<MADUnifiedEmbeddingVersion,MADUnifiedEmbeddingVersion const&,std::vector<float>>(v84, &v88);
       if (__p[0])
@@ -755,10 +755,10 @@ LABEL_61:
     v92[3] = v92;
     std::__function::__value_func<void ()(void)>::operator=[abi:ne200100](v105, v92);
     std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v92);
-    v35 = [v83 style];
+    style = [requestCopy style];
     v36 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v37 = v36;
-    if (v35 > 9 || ((1 << v35) & 0x31E) == 0)
+    if (style > 9 || ((1 << style) & 0x31E) == 0)
     {
       [v36 addObject:@"btn.ufsspsjtu_ibuf_hspvqt"];
     }
@@ -835,7 +835,7 @@ LABEL_61:
     __p[0] = &v99;
     std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](__p);
 
-    if ((v79 & 1) == 0 && ![(SCMLImageSanitization *)v39 safe])
+    if ((keepGoing & 1) == 0 && ![(SCMLImageSanitization *)v39 safe])
     {
       break;
     }
@@ -865,21 +865,21 @@ LABEL_76:
   return v81;
 }
 
-- (id)tempDumpURL:(id)a3 withSuffix:(id)a4
+- (id)tempDumpURL:(id)l withSuffix:(id)suffix
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 temporaryDirectory];
-  v9 = [v8 path];
+  lCopy = l;
+  suffixCopy = suffix;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  path = [temporaryDirectory path];
 
   v10 = [MEMORY[0x1E695DF00] now];
   [v10 timeIntervalSince1970];
   v12 = v11;
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%.3f%@", v5, v12, v6];
-  v14 = [v9 stringByAppendingPathComponent:v13];
+  suffixCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%.3f%@", lCopy, v12, suffixCopy];
+  v14 = [path stringByAppendingPathComponent:suffixCopy];
   v15 = +[SCMLLog imageAnalyzer];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -895,17 +895,17 @@ LABEL_76:
   return v16;
 }
 
-- (void)dumpPixelBuffer:(__CVBuffer *)a3 label:(id)a4
+- (void)dumpPixelBuffer:(__CVBuffer *)buffer label:(id)label
 {
-  v5 = [(SCMLImageSanitizer *)self tempDumpURL:a4 withSuffix:@".png"];
-  saveCVPixelBufferToPng(a3, v5);
+  v5 = [(SCMLImageSanitizer *)self tempDumpURL:label withSuffix:@".png"];
+  saveCVPixelBufferToPng(buffer, v5);
 }
 
-- (void)sanitizeRequestAsynchronously:(id)a3 completionHandler:(id)a4
+- (void)sanitizeRequestAsynchronously:(id)asynchronously completionHandler:(id)handler
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  scml::SignpostInterval::createAsync(a4);
+  asynchronouslyCopy = asynchronously;
+  scml::SignpostInterval::createAsync(handler);
 }
 
 void __70__SCMLImageSanitizer_sanitizeRequestAsynchronously_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -972,37 +972,37 @@ LABEL_9:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sanitizeRequestAsynchronously:(id)a3 completionHandler:(id)a4
+- (void)_sanitizeRequestAsynchronously:(id)asynchronously completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 style] == 5)
+  asynchronouslyCopy = asynchronously;
+  handlerCopy = handler;
+  if ([asynchronouslyCopy style] == 5)
   {
     v8 = [[SCMLImageSanitization alloc] initWithGranularOutput:self->_granularity != 0];
-    v7[2](v7, v8, 0);
+    handlerCopy[2](handlerCopy, v8, 0);
   }
 
   else
   {
     v17 = 0;
-    v9 = [(SCMLImageSanitizer *)self _sanitizeRequest:v6 error:&v17];
+    v9 = [(SCMLImageSanitizer *)self _sanitizeRequest:asynchronouslyCopy error:&v17];
     v10 = v17;
-    v11 = [v6 keepGoing];
-    if (([(SCMLImageSanitization *)v9 safe]| v11))
+    keepGoing = [asynchronouslyCopy keepGoing];
+    if (([(SCMLImageSanitization *)v9 safe]| keepGoing))
     {
       combinedBackend = self->_combinedBackend;
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __71__SCMLImageSanitizer__sanitizeRequestAsynchronously_completionHandler___block_invoke;
       v14[3] = &unk_1E7EB3BA8;
-      v16 = v7;
+      v16 = handlerCopy;
       v15 = v9;
-      [(SCMLCombinedImageSanitizerBackend *)combinedBackend sanitizeWithRequest:v6 output:v15 backends:v12 completionHandler:v14];
+      [(SCMLCombinedImageSanitizerBackend *)combinedBackend sanitizeWithRequest:asynchronouslyCopy output:v15 backends:v12 completionHandler:v14];
     }
 
     else
     {
-      (v7)[2](v7, v9, v10);
+      (handlerCopy)[2](handlerCopy, v9, v10);
     }
   }
 }
@@ -1055,7 +1055,7 @@ void __71__SCMLImageSanitizer__sanitizeRequestAsynchronously_completionHandler__
 - (uint64_t)initWithConfiguration:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -1066,9 +1066,9 @@ void __71__SCMLImageSanitizer__sanitizeRequestAsynchronously_completionHandler__
 
 - (void)initWithConfiguration:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;
@@ -1079,7 +1079,7 @@ void __71__SCMLImageSanitizer__sanitizeRequestAsynchronously_completionHandler__
 - (uint64_t)_sanitizeRequest:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -1090,9 +1090,9 @@ void __71__SCMLImageSanitizer__sanitizeRequestAsynchronously_completionHandler__
 
 - (void)_sanitizeRequest:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;

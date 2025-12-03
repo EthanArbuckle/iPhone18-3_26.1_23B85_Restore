@@ -1,10 +1,10 @@
 @interface LACUISceneHostingControllerEmbeddedPasscode
 - (LACUISceneHostingControllerEmbeddedPasscode)init;
 - (void)endEditing;
-- (void)handleAction:(id)a3 completion:(id)a4;
-- (void)passcodeVerificationFinished:(id)a3;
-- (void)sceneHostingControllerDidReconnect:(id)a3;
-- (void)setContext:(id)a3;
+- (void)handleAction:(id)action completion:(id)completion;
+- (void)passcodeVerificationFinished:(id)finished;
+- (void)sceneHostingControllerDidReconnect:(id)reconnect;
+- (void)setContext:(id)context;
 - (void)startEditing;
 @end
 
@@ -26,7 +26,7 @@
   return v6;
 }
 
-- (void)sceneHostingControllerDidReconnect:(id)a3
+- (void)sceneHostingControllerDidReconnect:(id)reconnect
 {
   if (self->_context)
   {
@@ -52,11 +52,11 @@ void __57__LACUISceneHostingControllerEmbeddedPasscode_endEditing__block_invoke(
   }
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  objc_storeStrong(&self->_context, a3);
-  v5 = a3;
-  v6 = [[LACUIEmbeddedPasscodeAction alloc] initWithIdentifier:1 value:v5];
+  objc_storeStrong(&self->_context, context);
+  contextCopy = context;
+  v6 = [[LACUIEmbeddedPasscodeAction alloc] initWithIdentifier:1 value:contextCopy];
 
   [(LACUISceneHostingController *)self sendAction:v6 completion:&__block_literal_global_4];
 }
@@ -87,10 +87,10 @@ void __59__LACUISceneHostingControllerEmbeddedPasscode_startEditing__block_invok
   }
 }
 
-- (void)passcodeVerificationFinished:(id)a3
+- (void)passcodeVerificationFinished:(id)finished
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  finishedCopy = finished;
   v4 = LACLogUI();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -99,7 +99,7 @@ void __59__LACUISceneHostingControllerEmbeddedPasscode_startEditing__block_invok
     _os_log_impl(&dword_256063000, v4, OS_LOG_TYPE_INFO, "%s", &v7, 0xCu);
   }
 
-  if (v3)
+  if (finishedCopy)
   {
     v5 = LACLogUI();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -111,11 +111,11 @@ void __59__LACUISceneHostingControllerEmbeddedPasscode_startEditing__block_invok
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAction:(id)a3 completion:(id)a4
+- (void)handleAction:(id)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[LACUIEmbeddedPasscodeAction alloc] initWithAction:v7];
+  completionCopy = completion;
+  actionCopy = action;
+  v8 = [[LACUIEmbeddedPasscodeAction alloc] initWithAction:actionCopy];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -124,7 +124,7 @@ void __59__LACUISceneHostingControllerEmbeddedPasscode_startEditing__block_invok
   aBlock[4] = self;
   v9 = v8;
   v15 = v9;
-  v10 = v6;
+  v10 = completionCopy;
   v16 = v10;
   v11 = _Block_copy(aBlock);
   if ([(LACUIEmbeddedPasscodeAction *)v9 identifier]== 4)

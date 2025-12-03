@@ -7,8 +7,8 @@
 
 - (BOOL)ui_hasSupplementalItems
 {
-  v1 = [a1 supplementalItemIdentifiers];
-  v2 = [v1 count] != 0;
+  supplementalItemIdentifiers = [self supplementalItemIdentifiers];
+  v2 = [supplementalItemIdentifiers count] != 0;
 
   return v2;
 }
@@ -16,15 +16,15 @@
 - (id)ui_supplementalItems
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ([a1 ui_hasSupplementalItems])
+  if ([self ui_hasSupplementalItems])
   {
-    v2 = [a1 supplementalItemIdentifiers];
-    v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v2, "count")}];
+    supplementalItemIdentifiers = [self supplementalItemIdentifiers];
+    v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(supplementalItemIdentifiers, "count")}];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v2;
+    v4 = supplementalItemIdentifiers;
     v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {

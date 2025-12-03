@@ -1,15 +1,15 @@
 @interface PLContactStoreUtilitiesWorkaround
-+ (id)compareContactMatchingDictionary:(id)a3 withDictionary:(id)a4;
-+ (id)comparisonDictionaryDescription:(id)a3;
-+ (id)contactWithMatchingDictionary:(id)a3 keysToFetch:(id)a4 contactStore:(id)a5;
++ (id)compareContactMatchingDictionary:(id)dictionary withDictionary:(id)withDictionary;
++ (id)comparisonDictionaryDescription:(id)description;
++ (id)contactWithMatchingDictionary:(id)dictionary keysToFetch:(id)fetch contactStore:(id)store;
 @end
 
 @implementation PLContactStoreUtilitiesWorkaround
 
-+ (id)comparisonDictionaryDescription:(id)a3
++ (id)comparisonDictionaryDescription:(id)description
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = objc_alloc_init(v3);
   [v5 appendString:@"{"];
   v9[0] = MEMORY[0x1E69E9820];
@@ -18,7 +18,7 @@
   v9[3] = &unk_1E75728D8;
   v6 = v5;
   v10 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [descriptionCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   if ([v6 length] >= 2)
   {
@@ -41,18 +41,18 @@ void __69__PLContactStoreUtilitiesWorkaround_comparisonDictionaryDescription___b
   }
 }
 
-+ (id)compareContactMatchingDictionary:(id)a3 withDictionary:(id)a4
++ (id)compareContactMatchingDictionary:(id)dictionary withDictionary:(id)withDictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionaryCopy = dictionary;
+  withDictionaryCopy = withDictionary;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [v5 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
-  v11 = [v6 allKeys];
-  v12 = [v10 setByAddingObjectsFromArray:v11];
+  allKeys2 = [withDictionaryCopy allKeys];
+  v12 = [v10 setByAddingObjectsFromArray:allKeys2];
 
   v27 = 0u;
   v28 = 0u;
@@ -74,8 +74,8 @@ void __69__PLContactStoreUtilitiesWorkaround_comparisonDictionaryDescription___b
         }
 
         v18 = *(*(&v25 + 1) + 8 * i);
-        v19 = [v5 objectForKeyedSubscript:{v18, v25}];
-        v20 = [v6 objectForKeyedSubscript:v18];
+        v19 = [dictionaryCopy objectForKeyedSubscript:{v18, v25}];
+        v20 = [withDictionaryCopy objectForKeyedSubscript:v18];
         v21 = v20;
         if (v19)
         {
@@ -103,7 +103,7 @@ void __69__PLContactStoreUtilitiesWorkaround_comparisonDictionaryDescription___b
           v22 = &unk_1F0FBD840;
         }
 
-        [v7 setObject:v22 forKeyedSubscript:v18];
+        [dictionary setObject:v22 forKeyedSubscript:v18];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -112,32 +112,32 @@ void __69__PLContactStoreUtilitiesWorkaround_comparisonDictionaryDescription___b
     while (v15);
   }
 
-  v23 = [v7 copy];
+  v23 = [dictionary copy];
 
   return v23;
 }
 
-+ (id)contactWithMatchingDictionary:(id)a3 keysToFetch:(id)a4 contactStore:(id)a5
++ (id)contactWithMatchingDictionary:(id)dictionary keysToFetch:(id)fetch contactStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 contactWithMatchingDictionary:v8 keysToFetch:a4];
+  dictionaryCopy = dictionary;
+  storeCopy = store;
+  v10 = [storeCopy contactWithMatchingDictionary:dictionaryCopy keysToFetch:fetch];
   if (v10)
   {
-    v11 = [a1 matchingDictionaryForContact:v10 contactStore:v9];
+    v11 = [self matchingDictionaryForContact:v10 contactStore:storeCopy];
     if (v11)
     {
-      v12 = [a1 compareContactMatchingDictionary:v8 withDictionary:v11];
-      v13 = [a1 comparisonDictionaryDescription:v12];
+      v12 = [self compareContactMatchingDictionary:dictionaryCopy withDictionary:v11];
+      identifier2 = [self comparisonDictionaryDescription:v12];
       v14 = PLBackendGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v10 identifier];
+        identifier = [v10 identifier];
         v17 = 138543618;
-        v18 = v15;
+        v18 = identifier;
         v19 = 2114;
-        v20 = v13;
+        v20 = identifier2;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Found contact: %{public}@, match details: %{public}@", &v17, 0x16u);
       }
     }
@@ -152,9 +152,9 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v13 = [v10 identifier];
+      identifier2 = [v10 identifier];
       v17 = 138543362;
-      v18 = v13;
+      v18 = identifier2;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "No matching dictionary for contact %{public}@", &v17, 0xCu);
     }
 

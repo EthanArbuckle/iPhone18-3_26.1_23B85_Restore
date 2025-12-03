@@ -1,32 +1,32 @@
 @interface PUIDPointerEventStreamController
-- (void)addPointerEventStreamObserver:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)removePointerEventStreamObserver:(id)a3;
+- (void)addPointerEventStreamObserver:(id)observer;
+- (void)handleEvent:(id)event;
+- (void)removePointerEventStreamObserver:(id)observer;
 @end
 
 @implementation PUIDPointerEventStreamController
 
-- (void)addPointerEventStreamObserver:(id)a3
+- (void)addPointerEventStreamObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removePointerEventStreamObserver:(id)a3
+- (void)removePointerEventStreamObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -34,19 +34,19 @@
   }
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = [a3 _hidEvent];
-  if (v4)
+  _hidEvent = [event _hidEvent];
+  if (_hidEvent)
   {
-    v5 = v4;
-    v6 = sub_100015250(v4);
-    v7 = [(NSHashTable *)self->_observers allObjects];
+    v5 = _hidEvent;
+    v6 = sub_100015250(_hidEvent);
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -57,7 +57,7 @@
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v13 + 1) + 8 * i);
@@ -72,7 +72,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);

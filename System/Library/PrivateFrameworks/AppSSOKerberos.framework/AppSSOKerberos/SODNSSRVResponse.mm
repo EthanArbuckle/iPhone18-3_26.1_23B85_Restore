@@ -15,8 +15,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SODNSSRVResponse *)self host];
-  v5 = [v3 stringWithFormat:@"host: %@, port: %d", v4, -[SODNSSRVResponse port](self, "port")];
+  host = [(SODNSSRVResponse *)self host];
+  v5 = [v3 stringWithFormat:@"host: %@, port: %d", host, -[SODNSSRVResponse port](self, "port")];
 
   return v5;
 }

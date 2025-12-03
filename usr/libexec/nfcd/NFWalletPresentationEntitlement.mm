@@ -17,9 +17,9 @@
     applicationIdentifier = 0;
   }
 
-  v5 = [v3 initWithFormat:@"{ appId= %@}", applicationIdentifier];
+  applicationIdentifier = [v3 initWithFormat:@"{ appId= %@}", applicationIdentifier];
 
-  return v5;
+  return applicationIdentifier;
 }
 
 @end

@@ -1,54 +1,54 @@
 @interface VUIDownloadShowTableViewController
-- (BOOL)_episodeHasAllCanonicalIDs:(id)a3;
-- (BOOL)_mediaItemShouldShowRenewOption:(id)a3;
-- (VUIDownloadShowTableViewController)initWithDataSource:(id)a3 seasonsDataSource:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_configureDeleteAlertControllerForIndexPath:(id)a3 withCompletion:(id)a4;
-- (id)_configureRenewAlertControllerForIndexPath:(id)a3 forPreferredStyle:(int64_t)a4 withCompletion:(id)a5;
-- (id)_headerTitleForEpisodeMediaItem:(id)a3;
-- (id)_moreEpisodesURLForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_clearTableViewSelections:(BOOL)a3;
-- (void)_didPressGetMoreEpisodes:(id)a3;
+- (BOOL)_episodeHasAllCanonicalIDs:(id)ds;
+- (BOOL)_mediaItemShouldShowRenewOption:(id)option;
+- (VUIDownloadShowTableViewController)initWithDataSource:(id)source seasonsDataSource:(id)dataSource;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_configureDeleteAlertControllerForIndexPath:(id)path withCompletion:(id)completion;
+- (id)_configureRenewAlertControllerForIndexPath:(id)path forPreferredStyle:(int64_t)style withCompletion:(id)completion;
+- (id)_headerTitleForEpisodeMediaItem:(id)item;
+- (id)_moreEpisodesURLForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_clearTableViewSelections:(BOOL)selections;
+- (void)_didPressGetMoreEpisodes:(id)episodes;
 - (void)_editToggled;
 - (void)_exitEditingMode;
 - (void)_popIfNeeded;
 - (void)_updateNavigationBarPadding;
-- (void)dataSourceDidFinishFetching:(id)a3;
+- (void)dataSourceDidFinishFetching:(id)fetching;
 - (void)dealloc;
-- (void)downloadCellDidRequestCancelDownload:(id)a3;
-- (void)fullscreenPlaybackUIDidChangeNotification:(id)a3;
+- (void)downloadCellDidRequestCancelDownload:(id)download;
+- (void)fullscreenPlaybackUIDidChangeNotification:(id)notification;
 - (void)loadView;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VUIDownloadShowTableViewController
 
-- (VUIDownloadShowTableViewController)initWithDataSource:(id)a3 seasonsDataSource:(id)a4
+- (VUIDownloadShowTableViewController)initWithDataSource:(id)source seasonsDataSource:(id)dataSource
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
   v18.receiver = self;
   v18.super_class = VUIDownloadShowTableViewController;
   v9 = [(VUIDownloadShowTableViewController *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_downloadDataSource, a3);
-    objc_storeStrong(&v10->_seasonsDataSource, a4);
-    v11 = [(VUIDownloadShowTableViewController *)v10 navigationItem];
-    [v11 _setSupportsTwoLineLargeTitles:1];
+    objc_storeStrong(&v9->_downloadDataSource, source);
+    objc_storeStrong(&v10->_seasonsDataSource, dataSource);
+    navigationItem = [(VUIDownloadShowTableViewController *)v10 navigationItem];
+    [navigationItem _setSupportsTwoLineLargeTitles:1];
     objc_initWeak(&location, v10);
     v19[0] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -81,37 +81,37 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
   [(VUIDownloadShowDataSource *)self->_downloadDataSource startFetch];
   [(VUILibraryDataSource *)self->_seasonsDataSource setDelegate:self];
   [(VUIMediaEntitiesDataSource *)self->_seasonsDataSource startFetch];
-  v3 = [(VUIDownloadShowTableViewController *)self tableView];
-  [v3 setDelegate:self];
+  tableView = [(VUIDownloadShowTableViewController *)self tableView];
+  [tableView setDelegate:self];
 
-  v4 = [(VUIDownloadShowTableViewController *)self tableView];
-  [v4 setDataSource:self];
+  tableView2 = [(VUIDownloadShowTableViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
-  v5 = [(VUIDownloadShowTableViewController *)self tableView];
-  [v5 setAllowsMultipleSelectionDuringEditing:1];
+  tableView3 = [(VUIDownloadShowTableViewController *)self tableView];
+  [tableView3 setAllowsMultipleSelectionDuringEditing:1];
 
-  v6 = [(VUIDownloadShowTableViewController *)self tableView];
+  tableView4 = [(VUIDownloadShowTableViewController *)self tableView];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v6 registerClass:v7 forCellReuseIdentifier:v9];
+  [tableView4 registerClass:v7 forCellReuseIdentifier:v9];
 
-  v10 = [(VUIDownloadShowTableViewController *)self tableView];
+  tableView5 = [(VUIDownloadShowTableViewController *)self tableView];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  [v10 registerClass:v11 forHeaderFooterViewReuseIdentifier:v13];
+  [tableView5 registerClass:v11 forHeaderFooterViewReuseIdentifier:v13];
 
-  v14 = [(VUIDownloadShowTableViewController *)self tableView];
+  tableView6 = [(VUIDownloadShowTableViewController *)self tableView];
   v15 = objc_opt_new();
-  [v14 setTableFooterView:v15];
+  [tableView6 setTableFooterView:v15];
 
-  v16 = [(VUIDownloadShowTableViewController *)self tableView];
-  [v16 setSeparatorStyle:0];
+  tableView7 = [(VUIDownloadShowTableViewController *)self tableView];
+  [tableView7 setSeparatorStyle:0];
 
-  v17 = [(VUIDownloadShowTableViewController *)self tableView];
+  tableView8 = [(VUIDownloadShowTableViewController *)self tableView];
   v18 = [MEMORY[0x1E69DF678] makeAccessibilityIdentifierString:*MEMORY[0x1E69DF7C8] additionalString:@"Library.id=DownloadedShow"];
-  [v17 setAccessibilityIdentifier:v18];
+  [tableView8 setAccessibilityIdentifier:v18];
 
   if (([MEMORY[0x1E69DC668] isRunningInStoreDemoMode] & 1) == 0)
   {
@@ -122,30 +122,30 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
     rightBarButtonItem = self->_rightBarButtonItem;
     self->_rightBarButtonItem = v22;
 
-    v24 = [(VUIDownloadShowTableViewController *)self navigationItem];
-    [v24 setRightBarButtonItem:self->_rightBarButtonItem];
+    navigationItem = [(VUIDownloadShowTableViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:self->_rightBarButtonItem];
   }
 
-  v25 = [(VUIDownloadShowTableViewController *)self navigationItem];
-  v26 = [v25 leftBarButtonItem];
+  navigationItem2 = [(VUIDownloadShowTableViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
   backBarButtonItem = self->_backBarButtonItem;
-  self->_backBarButtonItem = v26;
+  self->_backBarButtonItem = leftBarButtonItem;
 
   v28 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelPressed];
   leftBarButtonItem = self->_leftBarButtonItem;
   self->_leftBarButtonItem = v28;
 
-  v30 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v30 addObserver:self selector:sel_fullscreenPlaybackUIDidChangeNotification_ name:VUIPlaybackManagerFullscreenPlaybackUIDidChangeNotification[0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_fullscreenPlaybackUIDidChangeNotification_ name:VUIPlaybackManagerFullscreenPlaybackUIDidChangeNotification[0] object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = VUIDownloadShowTableViewController;
   [(VUIDownloadShowTableViewController *)&v5 viewWillAppear:?];
-  [(VUIDownloadShowTableViewController *)self _clearTableViewSelections:v3];
+  [(VUIDownloadShowTableViewController *)self _clearTableViewSelections:appearCopy];
   [(VUIDownloadShowTableViewController *)self _updateNavigationBarPadding];
 }
 
@@ -157,70 +157,70 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
   [(VUIDownloadShowTableViewController *)self _updateNavigationBarPadding];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = VUIDownloadShowTableViewController;
-  [(VUIDownloadShowTableViewController *)&v3 viewDidAppear:a3];
+  [(VUIDownloadShowTableViewController *)&v3 viewDidAppear:appear];
   [VUILibraryMetrics recordPageEventWithPageType:@"LibraryDownloadedTvShow"];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIDownloadShowTableViewController;
   [(VUIDownloadShowTableViewController *)&v4 dealloc];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = VUIDownloadShowTableViewController;
-  v7 = a4;
-  [(VUIDownloadShowTableViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(VUIDownloadShowTableViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__VUIDownloadShowTableViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E872E788;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)dataSourceDidFinishFetching:(id)a3
+- (void)dataSourceDidFinishFetching:(id)fetching
 {
-  v4 = a3;
-  v5 = [(VUIDownloadShowTableViewController *)self downloadDataSource];
+  fetchingCopy = fetching;
+  downloadDataSource = [(VUIDownloadShowTableViewController *)self downloadDataSource];
 
-  if (v5 == v4)
+  if (downloadDataSource == fetchingCopy)
   {
-    v6 = [(VUIDownloadShowTableViewController *)self downloadDataSource];
-    v7 = [v6 grouping];
-    v8 = [v7 mutableCopy];
+    downloadDataSource2 = [(VUIDownloadShowTableViewController *)self downloadDataSource];
+    grouping = [downloadDataSource2 grouping];
+    v8 = [grouping mutableCopy];
     [(VUIDownloadShowTableViewController *)self setGroupings:v8];
   }
 
   else
   {
-    v6 = [(VUIDownloadShowTableViewController *)self seasonsDataSource];
-    v7 = [v6 mediaEntities];
-    [(VUIDownloadShowTableViewController *)self setSeasons:v7];
+    downloadDataSource2 = [(VUIDownloadShowTableViewController *)self seasonsDataSource];
+    grouping = [downloadDataSource2 mediaEntities];
+    [(VUIDownloadShowTableViewController *)self setSeasons:grouping];
   }
 
-  v12 = [(VUIDownloadShowTableViewController *)self seasonsDataSource];
-  if ([v12 hasCompletedInitialFetch])
+  seasonsDataSource = [(VUIDownloadShowTableViewController *)self seasonsDataSource];
+  if ([seasonsDataSource hasCompletedInitialFetch])
   {
-    v9 = [(VUIDownloadShowTableViewController *)self downloadDataSource];
-    v10 = [v9 hasCompletedInitialFetch];
+    downloadDataSource3 = [(VUIDownloadShowTableViewController *)self downloadDataSource];
+    hasCompletedInitialFetch = [downloadDataSource3 hasCompletedInitialFetch];
 
-    if (v10)
+    if (hasCompletedInitialFetch)
     {
-      v11 = [(VUIDownloadShowTableViewController *)self tableView];
-      [v11 reloadData];
+      tableView = [(VUIDownloadShowTableViewController *)self tableView];
+      [tableView reloadData];
 
       [(VUIDownloadShowTableViewController *)self _popIfNeeded];
     }
@@ -231,29 +231,29 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v6 dequeueReusableCellWithIdentifier:v9 forIndexPath:v7];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
-  v11 = -[NSMutableArray objectAtIndex:](self->_groupings, "objectAtIndex:", [v7 section]);
-  v12 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+  v11 = -[NSMutableArray objectAtIndex:](self->_groupings, "objectAtIndex:", [pathCopy section]);
+  v12 = [v11 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   v13 = [[VUIDownloadEntity alloc] initWithMediaEntity:v12 withDownloadType:3];
   [VUIDownloadEntityTableViewCell configureVUIDownloadEntityTableViewCell:v10 withDownloadEntity:v13 forMetrics:0];
   [v10 setDelegate:self];
-  v14 = [v10 downloadButton];
-  v15 = v14;
-  if (v14)
+  downloadButton = [v10 downloadButton];
+  v15 = downloadButton;
+  if (downloadButton)
   {
-    [v14 setPresentingViewController:self];
+    [downloadButton setPresentingViewController:self];
   }
 
-  v16 = [v6 numberOfRowsInSection:{objc_msgSend(v7, "section")}] - 1;
-  v17 = [MEMORY[0x1E696AC88] indexPathForRow:v16 inSection:{objc_msgSend(v7, "section")}];
-  if ([v7 compare:v17])
+  v16 = [viewCopy numberOfRowsInSection:{objc_msgSend(pathCopy, "section")}] - 1;
+  v17 = [MEMORY[0x1E696AC88] indexPathForRow:v16 inSection:{objc_msgSend(pathCopy, "section")}];
+  if ([pathCopy compare:v17])
   {
     v18 = objc_alloc_init(VUISeparatorView);
     [v10 setBottomSeparatorView:v18];
@@ -267,26 +267,26 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_groupings objectAtIndex:a4];
+  v4 = [(NSMutableArray *)self->_groupings objectAtIndex:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_groupings objectAtIndex:a4];
-  v8 = [v7 firstObject];
+  viewCopy = view;
+  v7 = [(NSMutableArray *)self->_groupings objectAtIndex:section];
+  firstObject = [v7 firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(VUIDownloadShowTableViewController *)self _headerTitleForEpisodeMediaItem:v8];
+    v9 = [(VUIDownloadShowTableViewController *)self _headerTitleForEpisodeMediaItem:firstObject];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v11];
+    v12 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v11];
 
     [v12 setHeaderTitle:v9];
   }
@@ -299,9 +299,9 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
   return v12;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (!self->_sizingHeader)
   {
     v7 = objc_alloc_init(VUIDownloadShowTableHeaderView);
@@ -309,17 +309,17 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
     self->_sizingHeader = v7;
   }
 
-  v9 = [(NSMutableArray *)self->_groupings objectAtIndex:a4];
-  v10 = [v9 firstObject];
+  v9 = [(NSMutableArray *)self->_groupings objectAtIndex:section];
+  firstObject = [v9 firstObject];
   objc_opt_class();
   v11 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(VUIDownloadShowTableViewController *)self _headerTitleForEpisodeMediaItem:v10];
+    v12 = [(VUIDownloadShowTableViewController *)self _headerTitleForEpisodeMediaItem:firstObject];
     [(VUIDownloadShowTableHeaderView *)self->_sizingHeader setHeaderTitle:v12];
     v13 = self->_sizingHeader;
-    v14 = [(VUIDownloadShowTableViewController *)self view];
-    [v14 bounds];
+    view = [(VUIDownloadShowTableViewController *)self view];
+    [view bounds];
     [(VUIDownloadShowTableHeaderView *)v13 sizeThatFits:CGRectGetWidth(v17), 1.79769313e308];
     v11 = v15;
   }
@@ -327,33 +327,33 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VUIDownloadShowTableViewController *)self tableView];
-  v9 = [v8 isEditing];
+  viewCopy = view;
+  pathCopy = path;
+  tableView = [(VUIDownloadShowTableViewController *)self tableView];
+  isEditing = [tableView isEditing];
 
-  if ((v9 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
-    v12 = -[NSMutableArray objectAtIndex:](self->_groupings, "objectAtIndex:", [v7 section]);
-    v13 = [v12 objectAtIndex:{objc_msgSend(v7, "row")}];
+    rightBarButtonItem2 = -[NSMutableArray objectAtIndex:](self->_groupings, "objectAtIndex:", [pathCopy section]);
+    v13 = [rightBarButtonItem2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
-      v15 = [v14 downloadExpirationDate];
-      v16 = v15;
-      if (v15 && ![v15 vui_isInTheFuture])
+      downloadExpirationDate = [v14 downloadExpirationDate];
+      v16 = downloadExpirationDate;
+      if (downloadExpirationDate && ![downloadExpirationDate vui_isInTheFuture])
       {
-        v21 = [(VUIDownloadShowTableViewController *)self _configureRenewAlertControllerForIndexPath:v7 forPreferredStyle:1 withCompletion:0];
+        v21 = [(VUIDownloadShowTableViewController *)self _configureRenewAlertControllerForIndexPath:pathCopy forPreferredStyle:1 withCompletion:0];
         if (v21)
         {
           [(VUIDownloadShowTableViewController *)self presentViewController:v21 animated:1 completion:0];
         }
 
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       }
 
       else
@@ -390,57 +390,57 @@ void __75__VUIDownloadShowTableViewController_initWithDataSource_seasonsDataSour
     goto LABEL_17;
   }
 
-  v10 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
-  v11 = [v10 isEnabled];
+  rightBarButtonItem = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
+  isEnabled = [rightBarButtonItem isEnabled];
 
-  if ((v11 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
-    v12 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
-    [v12 setEnabled:1];
+    rightBarButtonItem2 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
+    [rightBarButtonItem2 setEnabled:1];
 LABEL_17:
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = [(VUIDownloadShowTableViewController *)self tableView:a3];
-  v6 = [v5 isEditing];
+  v5 = [(VUIDownloadShowTableViewController *)self tableView:view];
+  isEditing = [v5 isEditing];
 
-  if (v6)
+  if (isEditing)
   {
-    v7 = [(VUIDownloadShowTableViewController *)self tableView];
-    v8 = [v7 indexPathsForSelectedRows];
-    v9 = [v8 count];
+    tableView = [(VUIDownloadShowTableViewController *)self tableView];
+    indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+    v9 = [indexPathsForSelectedRows count];
 
     if (!v9)
     {
-      v10 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
-      [v10 setEnabled:0];
+      rightBarButtonItem = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
+      [rightBarButtonItem setEnabled:0];
     }
   }
 }
 
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path
 {
-  v6 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem:a3];
+  v6 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem:view];
   v4 = +[VUILocalizationManager sharedInstance];
   v5 = [v4 localizedStringForKey:@"DONE"];
   [v6 setTitle:v5];
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
-  v6 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem:a3];
+  v6 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem:view];
   v4 = +[VUILocalizationManager sharedInstance];
   v5 = [v4 localizedStringForKey:@"EDIT"];
   [v6 setTitle:v5];
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v46 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([MEMORY[0x1E69DC668] isRunningInStoreDemoMode])
   {
     v7 = 0;
@@ -448,7 +448,7 @@ LABEL_17:
 
   else
   {
-    v31 = v6;
+    v31 = pathCopy;
     v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
     objc_initWeak(&location, self);
     v8 = MEMORY[0x1E69DC8E8];
@@ -459,7 +459,7 @@ LABEL_17:
     v41[2] = __99__VUIDownloadShowTableViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
     v41[3] = &unk_1E872E7B0;
     objc_copyWeak(&v43, &location);
-    v29 = v6;
+    v29 = pathCopy;
     v42 = v29;
     v30 = [v8 contextualActionWithStyle:1 title:v10 handler:v41];
 
@@ -476,12 +476,12 @@ LABEL_17:
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v13 = [(VUIDownloadShowTableViewController *)self tableView];
-      v14 = [v13 indexPathsForSelectedRows];
+      tableView = [(VUIDownloadShowTableViewController *)self tableView];
+      indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
       v12 = 0;
       v11 = 0;
-      v15 = [v14 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      v15 = [indexPathsForSelectedRows countByEnumeratingWithState:&v37 objects:v45 count:16];
       if (v15)
       {
         v16 = *v38;
@@ -494,7 +494,7 @@ LABEL_17:
           {
             if (*v38 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(indexPathsForSelectedRows);
             }
 
             v20 = *(*(&v37 + 1) + 8 * v17);
@@ -508,7 +508,7 @@ LABEL_17:
           }
 
           while (v15 != v17);
-          v15 = [v14 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          v15 = [indexPathsForSelectedRows countByEnumeratingWithState:&v37 objects:v45 count:16];
         }
 
         while (v15);
@@ -544,7 +544,7 @@ LABEL_17:
     objc_destroyWeak(&v43);
     objc_destroyWeak(&location);
 
-    v6 = v31;
+    pathCopy = v31;
   }
 
   return v7;
@@ -574,17 +574,17 @@ void __99__VUIDownloadShowTableViewController_tableView_trailingSwipeActionsConf
   }
 }
 
-- (void)downloadCellDidRequestCancelDownload:(id)a3
+- (void)downloadCellDidRequestCancelDownload:(id)download
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIDownloadShowTableViewController *)self tableView];
-  v6 = [v5 indexPathForCell:v4];
+  downloadCopy = download;
+  tableView = [(VUIDownloadShowTableViewController *)self tableView];
+  v6 = [tableView indexPathForCell:downloadCopy];
 
   if (v6)
   {
-    v7 = [(VUIDownloadShowTableViewController *)self groupings];
-    v8 = [v7 objectAtIndex:{objc_msgSend(v6, "section")}];
+    groupings = [(VUIDownloadShowTableViewController *)self groupings];
+    v8 = [groupings objectAtIndex:{objc_msgSend(v6, "section")}];
 
     v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
     objc_opt_class();
@@ -594,51 +594,51 @@ void __99__VUIDownloadShowTableViewController_tableView_trailingSwipeActionsConf
       if (([v10 markedAsDeleted] & 1) != 0 || (objc_msgSend(v10, "downloadExpirationDate"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
       {
         [v8 removeObjectAtIndex:{objc_msgSend(v6, "row")}];
-        v12 = [(VUIDownloadShowTableViewController *)self tableView];
+        tableView2 = [(VUIDownloadShowTableViewController *)self tableView];
         v14[0] = v6;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-        [v12 deleteRowsAtIndexPaths:v13 withRowAnimation:100];
+        [tableView2 deleteRowsAtIndexPaths:v13 withRowAnimation:100];
       }
     }
   }
 }
 
-- (id)_headerTitleForEpisodeMediaItem:(id)a3
+- (id)_headerTitleForEpisodeMediaItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 seasonTitle];
+  itemCopy = item;
+  seasonTitle = [itemCopy seasonTitle];
 
-  if (v4)
+  if (seasonTitle)
   {
-    v5 = [v3 seasonTitle];
+    seasonTitle2 = [itemCopy seasonTitle];
   }
 
   else
   {
-    v6 = [v3 seasonNumber];
+    seasonNumber = [itemCopy seasonNumber];
 
-    v3 = [v6 stringValue];
+    itemCopy = [seasonNumber stringValue];
 
     v7 = MEMORY[0x1E696AEC0];
     v8 = +[VUILocalizationManager sharedInstance];
     v9 = [v8 localizedStringForKey:@"SEASON_%@"];
-    v5 = [v7 stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, v3];
+    seasonTitle2 = [v7 stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, itemCopy];
   }
 
-  return v5;
+  return seasonTitle2;
 }
 
 - (void)_editToggled
 {
-  v3 = [(VUIDownloadShowTableViewController *)self tableView];
-  v4 = [v3 isEditing];
+  tableView = [(VUIDownloadShowTableViewController *)self tableView];
+  isEditing = [tableView isEditing];
 
-  v5 = [(VUIDownloadShowTableViewController *)self tableView];
-  v6 = v5;
-  if (v4)
+  tableView2 = [(VUIDownloadShowTableViewController *)self tableView];
+  v6 = tableView2;
+  if (isEditing)
   {
-    v7 = [v5 indexPathsForSelectedRows];
-    v8 = [v7 count];
+    indexPathsForSelectedRows = [tableView2 indexPathsForSelectedRows];
+    v8 = [indexPathsForSelectedRows count];
 
     if (v8)
     {
@@ -660,28 +660,28 @@ void __99__VUIDownloadShowTableViewController_tableView_trailingSwipeActionsConf
 
   else
   {
-    [v5 setEditing:1 animated:1];
+    [tableView2 setEditing:1 animated:1];
 
     rightBarButtonItem = self->_rightBarButtonItem;
     v11 = +[VUILocalizationManager sharedInstance];
     v12 = [v11 localizedStringForKey:@"DELETE"];
     [(UIBarButtonItem *)rightBarButtonItem setTitle:v12];
 
-    v13 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
-    [v13 setEnabled:0];
+    rightBarButtonItem = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
 
-    v15 = [(VUIDownloadShowTableViewController *)self navigationItem];
-    [v15 setLeftBarButtonItem:self->_leftBarButtonItem];
+    navigationItem = [(VUIDownloadShowTableViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:self->_leftBarButtonItem];
   }
 }
 
-- (id)_configureDeleteAlertControllerForIndexPath:(id)a3 withCompletion:(id)a4
+- (id)_configureDeleteAlertControllerForIndexPath:(id)path withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VUIDownloadShowTableViewController *)self tableView];
-  v9 = [v8 indexPathsForSelectedRows];
-  v10 = [v9 count];
+  pathCopy = path;
+  completionCopy = completion;
+  tableView = [(VUIDownloadShowTableViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v10 = [indexPathsForSelectedRows count];
 
   v11 = +[VUILocalizationManager sharedInstance];
   v12 = [v11 localizedStringForKey:@"DELETE_EXPLANATION"];
@@ -689,7 +689,7 @@ void __99__VUIDownloadShowTableViewController_tableView_trailingSwipeActionsConf
   v13 = +[VUILocalizationManager sharedInstance];
   v14 = [v13 localizedStringForKey:@"DELETE_DOWNLOAD"];
 
-  if (!v6 && v10 >= 2)
+  if (!pathCopy && v10 >= 2)
   {
     v15 = +[VUILocalizationManager sharedInstance];
     v16 = [v15 localizedStringForKey:@"DELETES_EXPLANATION"];
@@ -709,9 +709,9 @@ void __99__VUIDownloadShowTableViewController_tableView_trailingSwipeActionsConf
   aBlock[2] = __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerForIndexPath_withCompletion___block_invoke;
   aBlock[3] = &unk_1E872DE00;
   objc_copyWeak(&v50, location);
-  v21 = v6;
+  v21 = pathCopy;
   v48 = v21;
-  v22 = v7;
+  v22 = completionCopy;
   v49 = v22;
   v39 = _Block_copy(aBlock);
   v44[0] = MEMORY[0x1E69E9820];
@@ -724,7 +724,7 @@ void __99__VUIDownloadShowTableViewController_tableView_trailingSwipeActionsConf
   v24 = _Block_copy(v44);
   if (v21 || v10)
   {
-    v38 = self;
+    selfCopy = self;
     v25 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v12 preferredStyle:0];
     v26 = MEMORY[0x1E69DC648];
     v27 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v14 validFormatSpecifiers:@"%lu" error:0, v10];
@@ -747,15 +747,15 @@ void __99__VUIDownloadShowTableViewController_tableView_trailingSwipeActionsConf
     v32 = [v29 actionWithTitle:v31 style:1 handler:v40];
 
     [v25 addAction:v32];
-    v33 = [MEMORY[0x1E69DC938] currentDevice];
-    v34 = [v33 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v34 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [v25 setModalPresentationStyle:7];
-      v35 = [v25 popoverPresentationController];
-      v36 = [(VUIDownloadShowTableViewController *)v38 rightBarButtonItem];
-      [v35 setBarButtonItem:v36];
+      popoverPresentationController = [v25 popoverPresentationController];
+      rightBarButtonItem = [(VUIDownloadShowTableViewController *)selfCopy rightBarButtonItem];
+      [popoverPresentationController setBarButtonItem:rightBarButtonItem];
     }
   }
 
@@ -1050,17 +1050,17 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
   }
 }
 
-- (id)_configureRenewAlertControllerForIndexPath:(id)a3 forPreferredStyle:(int64_t)a4 withCompletion:(id)a5
+- (id)_configureRenewAlertControllerForIndexPath:(id)path forPreferredStyle:(int64_t)style withCompletion:(id)completion
 {
   v100 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v73 = v7;
-  v74 = a5;
+  pathCopy = path;
+  v73 = pathCopy;
+  completionCopy = completion;
   val = self;
-  if (v7)
+  if (pathCopy)
   {
-    v8 = -[NSMutableArray objectAtIndex:](self->_groupings, "objectAtIndex:", [v7 section]);
-    v9 = [v8 objectAtIndex:{objc_msgSend(v7, "row")}];
+    v8 = -[NSMutableArray objectAtIndex:](self->_groupings, "objectAtIndex:", [pathCopy section]);
+    v9 = [v8 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
@@ -1069,12 +1069,12 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v10 = [(VUIDownloadShowTableViewController *)self tableView];
-    v11 = [v10 indexPathsForSelectedRows];
+    tableView = [(VUIDownloadShowTableViewController *)self tableView];
+    indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
     v8 = 0;
     v9 = 0;
-    v12 = [v11 countByEnumeratingWithState:&v95 objects:v99 count:16];
+    v12 = [indexPathsForSelectedRows countByEnumeratingWithState:&v95 objects:v99 count:16];
     if (v12)
     {
       v13 = *v96;
@@ -1087,7 +1087,7 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
         {
           if (*v96 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(indexPathsForSelectedRows);
           }
 
           v17 = *(*(&v95 + 1) + 8 * v14);
@@ -1101,7 +1101,7 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
         }
 
         while (v12 != v14);
-        v12 = [v11 countByEnumeratingWithState:&v95 objects:v99 count:16];
+        v12 = [indexPathsForSelectedRows countByEnumeratingWithState:&v95 objects:v99 count:16];
       }
 
       while (v12);
@@ -1112,8 +1112,8 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
   if (objc_opt_isKindOfClass())
   {
     v18 = v9;
-    v72 = [v18 availabilityEndDate];
-    if (v72 && ![v72 vui_isInTheFuture])
+    availabilityEndDate = [v18 availabilityEndDate];
+    if (availabilityEndDate && ![availabilityEndDate vui_isInTheFuture])
     {
       objc_initWeak(&location, val);
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -1125,13 +1125,13 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
       v35 = v18;
       v80 = v35;
       v81 = v8;
-      v82 = v74;
+      v82 = completionCopy;
       v71 = _Block_copy(aBlock);
       v36 = MEMORY[0x1E696AEC0];
       v37 = +[VUILocalizationManager sharedInstance];
       v38 = [v37 localizedStringForKey:@"DOWNLOAD_MESSAGE_NO_LONGER_AVAILABLE"];
-      v39 = [v35 brandName];
-      v40 = [v36 stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, v39];
+      brandName = [v35 brandName];
+      v40 = [v36 stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, brandName];
 
       v41 = MEMORY[0x1E69DC650];
       v42 = +[VUILocalizationManager sharedInstance];
@@ -1156,9 +1156,9 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
 
     else if (+[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable])
     {
-      v19 = [v18 allowsManualDownloadRenewal];
-      v20 = v19;
-      if (v19)
+      allowsManualDownloadRenewal = [v18 allowsManualDownloadRenewal];
+      v20 = allowsManualDownloadRenewal;
+      if (allowsManualDownloadRenewal)
       {
         v21 = @"RENEW_DOWNLOAD";
       }
@@ -1168,7 +1168,7 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
         v21 = @"DOWNLOAD_AGAIN_BUTTON_TITLE";
       }
 
-      if (v19)
+      if (allowsManualDownloadRenewal)
       {
         v22 = @"DOWNLOAD_MESSAGE_RENEW";
       }
@@ -1178,9 +1178,9 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
         v22 = @"DOWNLOAD_MESSAGE_REDOWNLOAD";
       }
 
-      if (a4 == 1)
+      if (style == 1)
       {
-        if (v19)
+        if (allowsManualDownloadRenewal)
         {
           v23 = @"RENEW_DOWNLOAD";
         }
@@ -1205,10 +1205,10 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
       v50 = MEMORY[0x1E696AEC0];
       v51 = +[VUILocalizationManager sharedInstance];
       v52 = [v51 localizedStringForKey:v22];
-      v53 = [v18 brandName];
-      v67 = [v50 stringWithValidatedFormat:v52 validFormatSpecifiers:@"%@" error:0, v53];
+      brandName2 = [v18 brandName];
+      v67 = [v50 stringWithValidatedFormat:v52 validFormatSpecifiers:@"%@" error:0, brandName2];
 
-      v25 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v69 message:v67 preferredStyle:a4];
+      v25 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v69 message:v67 preferredStyle:style];
       objc_initWeak(&location, val);
       v54 = MEMORY[0x1E69DC648];
       v89[0] = MEMORY[0x1E69E9820];
@@ -1218,7 +1218,7 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
       objc_copyWeak(&v92, &location);
       v90 = v18;
       v93 = v20;
-      v55 = v74;
+      v55 = completionCopy;
       v91 = v55;
       v56 = [v54 actionWithTitle:v68 style:0 handler:v89];
       [v25 addAction:v56];
@@ -1256,7 +1256,7 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
       v84[1] = 3221225472;
       v84[2] = __114__VUIDownloadShowTableViewController__configureRenewAlertControllerForIndexPath_forPreferredStyle_withCompletion___block_invoke_4;
       v84[3] = &unk_1E872E850;
-      v85 = v74;
+      v85 = completionCopy;
       v34 = [v31 actionWithTitle:v33 style:1 handler:v84];
 
       [v25 addAction:v34];
@@ -1265,23 +1265,23 @@ void __97__VUIDownloadShowTableViewController__configureDeleteAlertControllerFor
 
   else
   {
-    if (v74)
+    if (completionCopy)
     {
-      v74[2]();
+      completionCopy[2]();
     }
 
     v25 = 0;
   }
 
-  v61 = [MEMORY[0x1E69DC938] currentDevice];
-  v63 = [v61 userInterfaceIdiom] == 1 && v25 != 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v63 = [currentDevice userInterfaceIdiom] == 1 && v25 != 0;
 
   if (v63)
   {
     [v25 setModalPresentationStyle:7];
-    v64 = [v25 popoverPresentationController];
-    v65 = [(VUIDownloadShowTableViewController *)val rightBarButtonItem];
-    [v64 setBarButtonItem:v65];
+    popoverPresentationController = [v25 popoverPresentationController];
+    rightBarButtonItem = [(VUIDownloadShowTableViewController *)val rightBarButtonItem];
+    [popoverPresentationController setBarButtonItem:rightBarButtonItem];
   }
 
   return v25;
@@ -1469,38 +1469,38 @@ uint64_t __114__VUIDownloadShowTableViewController__configureRenewAlertControlle
 
 - (void)_exitEditingMode
 {
-  v3 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
-  [v3 setEnabled:1];
+  rightBarButtonItem = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 
-  v4 = [(VUIDownloadShowTableViewController *)self tableView];
-  [v4 setEditing:0 animated:1];
+  tableView = [(VUIDownloadShowTableViewController *)self tableView];
+  [tableView setEditing:0 animated:1];
 
-  v5 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
+  rightBarButtonItem2 = [(VUIDownloadShowTableViewController *)self rightBarButtonItem];
   v6 = +[VUILocalizationManager sharedInstance];
   v7 = [v6 localizedStringForKey:@"EDIT"];
-  [v5 setTitle:v7];
+  [rightBarButtonItem2 setTitle:v7];
 
-  v9 = [(VUIDownloadShowTableViewController *)self navigationItem];
-  v8 = [(VUIDownloadShowTableViewController *)self backBarButtonItem];
-  [v9 setLeftBarButtonItem:v8];
+  navigationItem = [(VUIDownloadShowTableViewController *)self navigationItem];
+  backBarButtonItem = [(VUIDownloadShowTableViewController *)self backBarButtonItem];
+  [navigationItem setLeftBarButtonItem:backBarButtonItem];
 }
 
 - (void)_popIfNeeded
 {
-  v3 = [(VUIDownloadShowTableViewController *)self groupings];
-  v4 = [v3 count];
+  groupings = [(VUIDownloadShowTableViewController *)self groupings];
+  v4 = [groupings count];
 
   if (!v4)
   {
-    v6 = [(VUIDownloadShowTableViewController *)self navigationController];
-    v5 = [v6 popViewControllerAnimated:1];
+    navigationController = [(VUIDownloadShowTableViewController *)self navigationController];
+    v5 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (id)_moreEpisodesURLForSection:(int64_t)a3
+- (id)_moreEpisodesURLForSection:(int64_t)section
 {
   v38 = *MEMORY[0x1E69E9840];
-  [(NSMutableArray *)self->_groupings objectAtIndex:a3];
+  [(NSMutableArray *)self->_groupings objectAtIndex:section];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -1538,12 +1538,12 @@ LABEL_3:
       }
     }
 
-    v10 = [v9 canonicalID];
-    v11 = [v9 seasonCanonicalID];
-    v12 = [v9 showCanonicalID];
+    canonicalID = [v9 canonicalID];
+    seasonCanonicalID = [v9 seasonCanonicalID];
+    showCanonicalID = [v9 showCanonicalID];
     v13 = MEMORY[0x1E69E1580];
     v14 = objc_alloc_init(MEMORY[0x1E69E1578]);
-    v15 = [v13 _watchListAppPunchoutURLWithPlayable:v14 forContentType:3 canonicalID:v10 showCanonicalID:v12 seasonCanonicalID:v11 allowPlayAction:0 isPlaybackURL:0];
+    v15 = [v13 _watchListAppPunchoutURLWithPlayable:v14 forContentType:3 canonicalID:canonicalID showCanonicalID:showCanonicalID seasonCanonicalID:seasonCanonicalID allowPlayAction:0 isPlaybackURL:0];
 
     if (v15)
     {
@@ -1556,13 +1556,13 @@ LABEL_3:
 LABEL_10:
   }
 
-  v16 = [v4 firstObject];
+  firstObject = [v4 firstObject];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v17 = [(VUIDownloadShowTableViewController *)self seasons];
-  v15 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  seasons = [(VUIDownloadShowTableViewController *)self seasons];
+  v15 = [seasons countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v15)
   {
     v18 = *v29;
@@ -1572,13 +1572,13 @@ LABEL_14:
     {
       if (*v29 != v18)
       {
-        objc_enumerationMutation(v17);
+        objc_enumerationMutation(seasons);
       }
 
       v20 = *(*(&v28 + 1) + 8 * v19);
-      v21 = [v20 identifier];
-      v22 = [v16 seasonIdentifier];
-      v23 = [v21 isEqual:v22];
+      identifier = [v20 identifier];
+      seasonIdentifier = [firstObject seasonIdentifier];
+      v23 = [identifier isEqual:seasonIdentifier];
 
       if (v23)
       {
@@ -1587,7 +1587,7 @@ LABEL_14:
 
       if (v15 == ++v19)
       {
-        v15 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v15 = [seasons countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v15)
         {
           goto LABEL_14;
@@ -1597,15 +1597,15 @@ LABEL_14:
       }
     }
 
-    v24 = [v20 storeID];
+    storeID = [v20 storeID];
 
-    if (v24)
+    if (storeID)
     {
       v25 = MEMORY[0x1E695DFF8];
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://itunes.apple.com/us/tv-season//id%@", v24, 0];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://itunes.apple.com/us/tv-season//id%@", storeID, 0];
       v15 = [v25 URLWithString:v26];
 
-      v17 = v24;
+      seasons = storeID;
       goto LABEL_23;
     }
 
@@ -1622,17 +1622,17 @@ LABEL_26:
   return v15;
 }
 
-- (BOOL)_episodeHasAllCanonicalIDs:(id)a3
+- (BOOL)_episodeHasAllCanonicalIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [v3 canonicalID];
-  if (v4)
+  dsCopy = ds;
+  canonicalID = [dsCopy canonicalID];
+  if (canonicalID)
   {
-    v5 = [v3 seasonCanonicalID];
-    if (v5)
+    seasonCanonicalID = [dsCopy seasonCanonicalID];
+    if (seasonCanonicalID)
     {
-      v6 = [v3 showCanonicalID];
-      v7 = v6 != 0;
+      showCanonicalID = [dsCopy showCanonicalID];
+      v7 = showCanonicalID != 0;
     }
 
     else
@@ -1649,33 +1649,33 @@ LABEL_26:
   return v7;
 }
 
-- (void)_didPressGetMoreEpisodes:(id)a3
+- (void)_didPressGetMoreEpisodes:(id)episodes
 {
-  if (a3)
+  if (episodes)
   {
     v3 = MEMORY[0x1E69DC668];
-    v4 = a3;
-    v5 = [v3 sharedApplication];
-    [v5 openURL:v4 options:MEMORY[0x1E695E0F8] completionHandler:0];
+    episodesCopy = episodes;
+    sharedApplication = [v3 sharedApplication];
+    [sharedApplication openURL:episodesCopy options:MEMORY[0x1E695E0F8] completionHandler:0];
   }
 }
 
-- (BOOL)_mediaItemShouldShowRenewOption:(id)a3
+- (BOOL)_mediaItemShouldShowRenewOption:(id)option
 {
-  v3 = a3;
-  v4 = [v3 availabilityEndDate];
-  v5 = [v3 downloadExpirationDate];
-  v6 = v5;
-  if (!v5 || [v5 vui_isInTheFuture])
+  optionCopy = option;
+  availabilityEndDate = [optionCopy availabilityEndDate];
+  downloadExpirationDate = [optionCopy downloadExpirationDate];
+  v6 = downloadExpirationDate;
+  if (!downloadExpirationDate || [downloadExpirationDate vui_isInTheFuture])
   {
-    v7 = [v3 brandID];
-    if ([v7 length])
+    brandID = [optionCopy brandID];
+    if ([brandID length])
     {
       v8 = +[VUIFeaturesConfiguration sharedInstance];
-      v9 = [v8 downloadConfig];
-      v10 = [v9 blacklistedEarlyRenewalBrands];
+      downloadConfig = [v8 downloadConfig];
+      blacklistedEarlyRenewalBrands = [downloadConfig blacklistedEarlyRenewalBrands];
 
-      LOBYTE(v8) = [v10 containsObject:v7];
+      LOBYTE(v8) = [blacklistedEarlyRenewalBrands containsObject:brandID];
       if (v8)
       {
 
@@ -1686,12 +1686,12 @@ LABEL_10:
     }
   }
 
-  if (v4 && ![v4 vui_isInTheFuture])
+  if (availabilityEndDate && ![availabilityEndDate vui_isInTheFuture])
   {
     goto LABEL_10;
   }
 
-  v11 = [v3 renewsOfflineKeysAutomatically] ^ 1;
+  v11 = [optionCopy renewsOfflineKeysAutomatically] ^ 1;
 LABEL_11:
 
   return v11;
@@ -1700,17 +1700,17 @@ LABEL_11:
 - (void)_updateNavigationBarPadding
 {
   v3 = MEMORY[0x1E69DD2E8];
-  v4 = [(VUIDownloadShowTableViewController *)self view];
-  [v4 bounds];
+  view = [(VUIDownloadShowTableViewController *)self view];
+  [view bounds];
   [v3 vui_paddingForWindowWidth:CGRectGetWidth(v27)];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(VUIDownloadShowTableViewController *)self navigationController];
-  v14 = [v13 navigationBar];
-  [v14 layoutMargins];
+  navigationController = [(VUIDownloadShowTableViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar layoutMargins];
   if (v8 == v18 && v6 == v15 && v12 == v17)
   {
     v21 = v16;
@@ -1725,45 +1725,45 @@ LABEL_11:
   {
   }
 
-  v22 = [(VUIDownloadShowTableViewController *)self navigationController];
-  v23 = [v22 navigationBar];
-  [v23 setLayoutMargins:{v6, v8, v10, v12}];
+  navigationController2 = [(VUIDownloadShowTableViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setLayoutMargins:{v6, v8, v10, v12}];
 
-  v25 = [(VUIDownloadShowTableViewController *)self navigationController];
-  v24 = [v25 navigationBar];
-  [v24 setNeedsLayout];
+  navigationController3 = [(VUIDownloadShowTableViewController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
+  [navigationBar3 setNeedsLayout];
 }
 
-- (void)_clearTableViewSelections:(BOOL)a3
+- (void)_clearTableViewSelections:(BOOL)selections
 {
-  v5 = [(VUIDownloadShowTableViewController *)self tableView];
-  v6 = [v5 indexPathsForSelectedRows];
-  v7 = [v6 firstObject];
+  tableView = [(VUIDownloadShowTableViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  firstObject = [indexPathsForSelectedRows firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(VUIDownloadShowTableViewController *)self transitionCoordinator];
-    if (v8)
+    transitionCoordinator = [(VUIDownloadShowTableViewController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __64__VUIDownloadShowTableViewController__clearTableViewSelections___block_invoke;
       v12[3] = &unk_1E872D878;
-      v13 = v5;
-      v14 = v7;
-      v15 = a3;
+      v13 = tableView;
+      v14 = firstObject;
+      selectionsCopy = selections;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __64__VUIDownloadShowTableViewController__clearTableViewSelections___block_invoke_2;
       v9[3] = &unk_1E872D8A0;
       v10 = v13;
       v11 = v14;
-      [v8 animateAlongsideTransition:v12 completion:v9];
+      [transitionCoordinator animateAlongsideTransition:v12 completion:v9];
     }
 
     else
     {
-      [v5 deselectRowAtIndexPath:v7 animated:1];
+      [tableView deselectRowAtIndexPath:firstObject animated:1];
     }
   }
 }
@@ -1782,12 +1782,12 @@ uint64_t __64__VUIDownloadShowTableViewController__clearTableViewSelections___bl
   return result;
 }
 
-- (void)fullscreenPlaybackUIDidChangeNotification:(id)a3
+- (void)fullscreenPlaybackUIDidChangeNotification:(id)notification
 {
   v4 = +[VUIPlaybackManager sharedInstance];
-  v5 = [v4 isFullscreenPlaybackUIBeingShown];
+  isFullscreenPlaybackUIBeingShown = [v4 isFullscreenPlaybackUIBeingShown];
 
-  if ((v5 & 1) == 0)
+  if ((isFullscreenPlaybackUIBeingShown & 1) == 0)
   {
 
     [(VUIDownloadShowTableViewController *)self _clearTableViewSelections:1];

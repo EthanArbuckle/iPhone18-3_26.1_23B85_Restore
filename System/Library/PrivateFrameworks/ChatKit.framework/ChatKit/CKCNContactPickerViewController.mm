@@ -7,9 +7,9 @@
 - (BOOL)shouldAutorotate
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 shouldSuppressRotationInNewCompose];
+  shouldSuppressRotationInNewCompose = [v2 shouldSuppressRotationInNewCompose];
 
-  return v3 ^ 1;
+  return shouldSuppressRotationInNewCompose ^ 1;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface HDSPApplicationWorkspaceMonitor
-- (BOOL)isApplicationInstalled:(id)a3;
+- (BOOL)isApplicationInstalled:(id)installed;
 - (HDSPApplicationWorkspaceMonitor)init;
-- (void)addObserver:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation HDSPApplicationWorkspaceMonitor
@@ -26,41 +26,41 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v5 = 0;
-  [(HKSPObserverSet *)self->_observers addObserver:a3 wasFirst:&v5];
+  [(HKSPObserverSet *)self->_observers addObserver:observer wasFirst:&v5];
   if (v5 == 1)
   {
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v4 addObserver:self];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:self];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v5 = 0;
-  [(HKSPObserverSet *)self->_observers removeObserver:a3 wasLast:&v5];
+  [(HKSPObserverSet *)self->_observers removeObserver:observer wasLast:&v5];
   if (v5 == 1)
   {
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v4 removeObserver:self];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace removeObserver:self];
   }
 }
 
-- (BOOL)isApplicationInstalled:(id)a3
+- (BOOL)isApplicationInstalled:(id)installed
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
+  installedCopy = installed;
   v15 = 0;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v15];
+  v5 = [[v3 alloc] initWithBundleIdentifier:installedCopy allowPlaceholder:1 error:&v15];
 
   v6 = v15;
   if (!v5)
   {
-    v7 = HKSPLogForCategory();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    applicationState = HKSPLogForCategory();
+    if (os_log_type_enabled(applicationState, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       *buf = 138543618;
@@ -68,46 +68,46 @@
       v18 = 2114;
       v19 = v6;
       v14 = v13;
-      _os_log_error_impl(&dword_269B11000, v7, OS_LOG_TYPE_ERROR, "[%{public}@] failed to create application record: %{public}@.", buf, 0x16u);
+      _os_log_error_impl(&dword_269B11000, applicationState, OS_LOG_TYPE_ERROR, "[%{public}@] failed to create application record: %{public}@.", buf, 0x16u);
     }
 
     goto LABEL_7;
   }
 
-  v7 = [v5 applicationState];
-  if (![v7 isValid])
+  applicationState = [v5 applicationState];
+  if (![applicationState isValid])
   {
 LABEL_7:
-    v9 = 0;
+    isPlaceholder = 0;
     goto LABEL_10;
   }
 
-  v8 = [v5 applicationState];
-  if ([v8 isInstalled])
+  applicationState2 = [v5 applicationState];
+  if ([applicationState2 isInstalled])
   {
-    v9 = 1;
+    isPlaceholder = 1;
   }
 
   else
   {
-    v10 = [v5 applicationState];
-    v9 = [v10 isPlaceholder];
+    applicationState3 = [v5 applicationState];
+    isPlaceholder = [applicationState3 isPlaceholder];
   }
 
 LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
-  return v9;
+  return isPlaceholder;
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -119,24 +119,24 @@ LABEL_10:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * v8) bundleIdentifier];
+        bundleIdentifier = [*(*(&v15 + 1) + 8 * v8) bundleIdentifier];
         observers = self->_observers;
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __58__HDSPApplicationWorkspaceMonitor_applicationsDidInstall___block_invoke;
         v13[3] = &unk_279C7C1D0;
-        v14 = v9;
-        v11 = v9;
+        v14 = bundleIdentifier;
+        v11 = bundleIdentifier;
         [(HKSPObserverSet *)observers enumerateObserversWithBlock:v13];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -157,15 +157,15 @@ void __58__HDSPApplicationWorkspaceMonitor_applicationsDidInstall___block_invoke
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -177,24 +177,24 @@ void __58__HDSPApplicationWorkspaceMonitor_applicationsDidInstall___block_invoke
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * v8) bundleIdentifier];
+        bundleIdentifier = [*(*(&v15 + 1) + 8 * v8) bundleIdentifier];
         observers = self->_observers;
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __60__HDSPApplicationWorkspaceMonitor_applicationsDidUninstall___block_invoke;
         v13[3] = &unk_279C7C1D0;
-        v14 = v9;
-        v11 = v9;
+        v14 = bundleIdentifier;
+        v11 = bundleIdentifier;
         [(HKSPObserverSet *)observers enumerateObserversWithBlock:v13];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

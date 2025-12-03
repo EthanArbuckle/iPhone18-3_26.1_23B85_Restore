@@ -1,17 +1,17 @@
 @interface UIKBStrokeView
-- (UIKBStrokeView)initWithFrame:(CGRect)a3;
-- (void)addStrokePoint:(CGPoint)a3 withTimestamp:(double)a4;
-- (void)drawRect:(CGRect)a3;
+- (UIKBStrokeView)initWithFrame:(CGRect)frame;
+- (void)addStrokePoint:(CGPoint)point withTimestamp:(double)timestamp;
+- (void)drawRect:(CGRect)rect;
 - (void)resetStrokePoints;
 @end
 
 @implementation UIKBStrokeView
 
-- (UIKBStrokeView)initWithFrame:(CGRect)a3
+- (UIKBStrokeView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = UIKBStrokeView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (void)addStrokePoint:(CGPoint)a3 withTimestamp:(double)a4
+- (void)addStrokePoint:(CGPoint)point withTimestamp:(double)timestamp
 {
-  v5 = [[UIKBStrokeSample alloc] initWithPoint:a3.x timestamp:a3.y, a4];
-  [(NSMutableArray *)self->_points addObject:v5];
+  timestamp = [[UIKBStrokeSample alloc] initWithPoint:point.x timestamp:point.y, timestamp];
+  [(NSMutableArray *)self->_points addObject:timestamp];
   [(UIView *)self setNeedsDisplay];
 }
 
@@ -41,9 +41,9 @@
   [(UIView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if ([(NSMutableArray *)self->_points count:a3.origin.x]>= 2)
+  if ([(NSMutableArray *)self->_points count:rect.origin.x]>= 2)
   {
     ContextStack = GetContextStack(0);
     if (*ContextStack < 1)
@@ -73,7 +73,7 @@
       v7 = 10.0;
     }
 
-    v45 = self;
+    selfCopy = self;
     v46 = v7;
     v8 = _Block_copy(&v41);
     v9 = [(NSMutableArray *)self->_points count:v41];

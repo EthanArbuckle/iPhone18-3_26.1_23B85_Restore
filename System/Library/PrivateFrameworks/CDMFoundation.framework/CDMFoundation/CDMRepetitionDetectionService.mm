@@ -1,10 +1,10 @@
 @interface CDMRepetitionDetectionService
 + (id)getCDMServiceAssetConfig;
-- (id)doInference:(id)a3 status:(id *)a4;
-- (id)getPredictor:(id)a3 FilesPath:(id)a4 status:(id *)a5;
-- (id)handle:(id)a3;
+- (id)doInference:(id)inference status:(id *)status;
+- (id)getPredictor:(id)predictor FilesPath:(id)path status:(id *)status;
+- (id)handle:(id)handle;
 - (id)handleRequestCommandTypeNames;
-- (id)setup:(id)a3;
+- (id)setup:(id)setup;
 @end
 
 @implementation CDMRepetitionDetectionService
@@ -40,26 +40,26 @@
   return v2;
 }
 
-- (id)doInference:(id)a3 status:(id *)a4
+- (id)doInference:(id)inference status:(id *)status
 {
-  v4 = [(QueryRewriter *)self->_repetitionDetector predictWithInput:a3 status:a4];
+  v4 = [(QueryRewriter *)self->_repetitionDetector predictWithInput:inference status:status];
 
   return v4;
 }
 
-- (id)getPredictor:(id)a3 FilesPath:(id)a4 status:(id *)a5
+- (id)getPredictor:(id)predictor FilesPath:(id)path status:(id *)status
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E69AE150]) initWithLocale:v7 filesPath:v8 predictorType:0 status:a5];
+  predictorCopy = predictor;
+  pathCopy = path;
+  v9 = [objc_alloc(MEMORY[0x1E69AE150]) initWithLocale:predictorCopy filesPath:pathCopy predictorType:0 status:status];
 
   return v9;
 }
 
-- (id)handle:(id)a3
+- (id)handle:(id)handle
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -81,8 +81,8 @@
     goto LABEL_14;
   }
 
-  v6 = [v4 qrRequest];
-  v7 = v6 == 0;
+  qrRequest = [handleCopy qrRequest];
+  v7 = qrRequest == 0;
 
   if (v7)
   {
@@ -102,19 +102,19 @@ LABEL_14:
   v8 = CDMLogContext;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [v4 qrRequest];
+    qrRequest2 = [handleCopy qrRequest];
     *buf = 136315650;
     v21 = "[CDMRepetitionDetectionService handle:]";
     v22 = 2112;
     v23 = @"queryrewrite";
     v24 = 2112;
-    v25 = v18;
+    v25 = qrRequest2;
     _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s [insights-cdm-%@]:\nQUERYREWRITEQRRequest: %@", buf, 0x20u);
   }
 
-  v9 = [v4 qrRequest];
+  qrRequest3 = [handleCopy qrRequest];
   v19 = 0;
-  v10 = [(CDMRepetitionDetectionService *)self doInference:v9 status:&v19];
+  v10 = [(CDMRepetitionDetectionService *)self doInference:qrRequest3 status:&v19];
   v11 = v19;
 
   v12 = [[CDMRepetitionDetectionResponseCommand alloc] initWithResponse:v10];
@@ -162,10 +162,10 @@ LABEL_21:
   return v12;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setupCopy = setup;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -174,29 +174,29 @@ LABEL_21:
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s Setting up Repetition Detection service", buf, 0xCu);
   }
 
-  v6 = [v4 dynamicConfig];
-  v7 = [v6 getAssetForFactorName:@"com.apple.siri.nl.marrs.rd"];
+  dynamicConfig = [setupCopy dynamicConfig];
+  v7 = [dynamicConfig getAssetForFactorName:@"com.apple.siri.nl.marrs.rd"];
   nlAsset = self->_nlAsset;
   self->_nlAsset = v7;
 
-  v9 = [v4 dynamicConfig];
-  v10 = [v9 getAssetBundlePathForFactorName:@"com.apple.siri.nl.marrs.rd"];
+  dynamicConfig2 = [setupCopy dynamicConfig];
+  v10 = [dynamicConfig2 getAssetBundlePathForFactorName:@"com.apple.siri.nl.marrs.rd"];
 
   if (v10)
   {
-    v11 = [v4 dynamicConfig];
-    v12 = [v11 languageCode];
-    v13 = [v10 resourcePath];
+    dynamicConfig3 = [setupCopy dynamicConfig];
+    languageCode = [dynamicConfig3 languageCode];
+    resourcePath = [v10 resourcePath];
     v23 = 0;
-    v14 = [(CDMRepetitionDetectionService *)self getPredictor:v12 FilesPath:v13 status:&v23];
+    v14 = [(CDMRepetitionDetectionService *)self getPredictor:languageCode FilesPath:resourcePath status:&v23];
     v15 = v23;
     repetitionDetector = self->_repetitionDetector;
     self->_repetitionDetector = v14;
 
     if (v15)
     {
-      v17 = [v15 localizedDescription];
-      v18 = [(CDMBaseService *)self createErrorWithCode:1 description:v17];
+      localizedDescription = [v15 localizedDescription];
+      v18 = [(CDMBaseService *)self createErrorWithCode:1 description:localizedDescription];
 
       self->super.super._serviceState = 4;
     }
@@ -222,12 +222,12 @@ LABEL_21:
     self->super.super._serviceState = 4;
   }
 
-  v20 = [(CDMBaseService *)self createSetupResponseCommand];
-  [v20 setCmdError:v18];
+  createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
+  [createSetupResponseCommand setCmdError:v18];
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return createSetupResponseCommand;
 }
 
 @end

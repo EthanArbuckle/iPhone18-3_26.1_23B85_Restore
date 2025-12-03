@@ -1,12 +1,12 @@
 @interface EMSearchableIndexTopHitsQueryResult
 + (id)log;
-- (EMSearchableIndexTopHitsQueryResult)initWithTopHitSearchQuery:(id)a3 foundItems:(id)a4 foundMatchingHintsByPersistentID:(id)a5;
+- (EMSearchableIndexTopHitsQueryResult)initWithTopHitSearchQuery:(id)query foundItems:(id)items foundMatchingHintsByPersistentID:(id)d;
 - (NSArray)searchableItemIdentifiers;
 - (NSDictionary)mailRankingSignalsByPersistentID;
-- (int64_t)rankingIndexForConversationID:(id)a3;
-- (int64_t)rankingIndexForMessageLibraryID:(id)a3;
-- (void)userDidInteractWithConversationID:(id)a3;
-- (void)userDidInteractWithLibraryIdentifier:(id)a3;
+- (int64_t)rankingIndexForConversationID:(id)d;
+- (int64_t)rankingIndexForMessageLibraryID:(id)d;
+- (void)userDidInteractWithConversationID:(id)d;
+- (void)userDidInteractWithLibraryIdentifier:(id)identifier;
 @end
 
 @implementation EMSearchableIndexTopHitsQueryResult
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __42__EMSearchableIndexTopHitsQueryResult_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_37 != -1)
   {
     dispatch_once(&log_onceToken_37, block);
@@ -36,23 +36,23 @@ void __42__EMSearchableIndexTopHitsQueryResult_log__block_invoke(uint64_t a1)
   log_log_37 = v1;
 }
 
-- (EMSearchableIndexTopHitsQueryResult)initWithTopHitSearchQuery:(id)a3 foundItems:(id)a4 foundMatchingHintsByPersistentID:(id)a5
+- (EMSearchableIndexTopHitsQueryResult)initWithTopHitSearchQuery:(id)query foundItems:(id)items foundMatchingHintsByPersistentID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queryCopy = query;
+  itemsCopy = items;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = EMSearchableIndexTopHitsQueryResult;
   v12 = [(EMSearchableIndexTopHitsQueryResult *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_topHitSearchQuery, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_topHitSearchQuery, query);
+    v14 = [itemsCopy copy];
     foundItems = v13->_foundItems;
     v13->_foundItems = v14;
 
-    v16 = [v11 copy];
+    v16 = [dCopy copy];
     foundMatchingHintsByPersistentID = v13->_foundMatchingHintsByPersistentID;
     v13->_foundMatchingHintsByPersistentID = v16;
   }
@@ -72,9 +72,9 @@ void __42__EMSearchableIndexTopHitsQueryResult_log__block_invoke(uint64_t a1)
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v24 = self;
-    v7 = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    selfCopy = self;
+    foundItems = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
+    v8 = [foundItems countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v8)
     {
       v9 = *v26;
@@ -84,36 +84,36 @@ void __42__EMSearchableIndexTopHitsQueryResult_log__block_invoke(uint64_t a1)
         {
           if (*v26 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(foundItems);
           }
 
           v11 = *(*(&v25 + 1) + 8 * i);
-          v2 = [EMSearchableIndex persistentIDForSearchableItem:v11];
-          if (v2)
+          firstObject = [EMSearchableIndex persistentIDForSearchableItem:v11];
+          if (firstObject)
           {
-            [(NSArray *)v5 addObject:v2];
-            v12 = [v11 attributeSet];
-            v13 = [v12 matchingHints];
-            [v6 setObject:v13 forKeyedSubscript:v2];
+            [(NSArray *)v5 addObject:firstObject];
+            attributeSet = [v11 attributeSet];
+            matchingHints = [attributeSet matchingHints];
+            [v6 setObject:matchingHints forKeyedSubscript:firstObject];
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v8 = [foundItems countByEnumeratingWithState:&v25 objects:v33 count:16];
       }
 
       while (v8);
     }
 
-    v14 = [v6 allValues];
+    allValues = [v6 allValues];
     v15 = +[EMSearchableIndexTopHitsQueryResult log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v14 count];
-      v22 = [v14 count];
+      v21 = [allValues count];
+      v22 = [allValues count];
       if (v22)
       {
-        v2 = [v14 firstObject];
-        v23 = [EMCSLoggingAdditions publicDescriptionForSnippetHintsArray:v2];
+        firstObject = [allValues firstObject];
+        v23 = [EMCSLoggingAdditions publicDescriptionForSnippetHintsArray:firstObject];
       }
 
       else
@@ -132,13 +132,13 @@ void __42__EMSearchableIndexTopHitsQueryResult_log__block_invoke(uint64_t a1)
     }
 
     v16 = [v6 copy];
-    matchingHintsByPersistentID = v24->_matchingHintsByPersistentID;
-    v24->_matchingHintsByPersistentID = v16;
+    matchingHintsByPersistentID = selfCopy->_matchingHintsByPersistentID;
+    selfCopy->_matchingHintsByPersistentID = v16;
 
-    v18 = v24->_searchableItemIdentifiers;
-    v24->_searchableItemIdentifiers = v5;
+    v18 = selfCopy->_searchableItemIdentifiers;
+    selfCopy->_searchableItemIdentifiers = v5;
 
-    searchableItemIdentifiers = v24->_searchableItemIdentifiers;
+    searchableItemIdentifiers = selfCopy->_searchableItemIdentifiers;
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -162,8 +162,8 @@ void __42__EMSearchableIndexTopHitsQueryResult_log__block_invoke(uint64_t a1)
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    foundItems = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
+    v7 = [foundItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = *v19;
@@ -173,19 +173,19 @@ void __42__EMSearchableIndexTopHitsQueryResult_log__block_invoke(uint64_t a1)
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(foundItems);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
           v11 = [EMSearchableIndex persistentIDForSearchableItem:v10];
           if (v11)
           {
-            v12 = [v10 em_mailRankingSignals];
-            [v5 setObject:v12 forKeyedSubscript:v11];
+            em_mailRankingSignals = [v10 em_mailRankingSignals];
+            [v5 setObject:em_mailRankingSignals forKeyedSubscript:v11];
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [foundItems countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
@@ -204,35 +204,35 @@ void __42__EMSearchableIndexTopHitsQueryResult_log__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)userDidInteractWithLibraryIdentifier:(id)a3
+- (void)userDidInteractWithLibraryIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v4 = [(EMSearchableIndexTopHitsQueryResult *)self rankingIndexForMessageLibraryID:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(EMSearchableIndexTopHitsQueryResult *)self topHitSearchQuery];
-    v6 = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
-    v7 = [v6 objectAtIndexedSubscript:v4];
-    [v5 userEngagedWithResult:v7 interactionType:0];
+    topHitSearchQuery = [(EMSearchableIndexTopHitsQueryResult *)self topHitSearchQuery];
+    foundItems = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
+    v7 = [foundItems objectAtIndexedSubscript:v4];
+    [topHitSearchQuery userEngagedWithResult:v7 interactionType:0];
   }
 }
 
-- (int64_t)rankingIndexForMessageLibraryID:(id)a3
+- (int64_t)rankingIndexForMessageLibraryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
+  foundItems = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__EMSearchableIndexTopHitsQueryResult_rankingIndexForMessageLibraryID___block_invoke;
   v9[3] = &unk_1E826F9A0;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [foundItems enumerateObjectsUsingBlock:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -253,35 +253,35 @@ void __71__EMSearchableIndexTopHitsQueryResult_rankingIndexForMessageLibraryID__
   }
 }
 
-- (void)userDidInteractWithConversationID:(id)a3
+- (void)userDidInteractWithConversationID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v4 = [(EMSearchableIndexTopHitsQueryResult *)self rankingIndexForConversationID:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(EMSearchableIndexTopHitsQueryResult *)self topHitSearchQuery];
-    v6 = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
-    v7 = [v6 objectAtIndexedSubscript:v4];
-    [v5 userEngagedWithResult:v7 interactionType:0];
+    topHitSearchQuery = [(EMSearchableIndexTopHitsQueryResult *)self topHitSearchQuery];
+    foundItems = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
+    v7 = [foundItems objectAtIndexedSubscript:v4];
+    [topHitSearchQuery userEngagedWithResult:v7 interactionType:0];
   }
 }
 
-- (int64_t)rankingIndexForConversationID:(id)a3
+- (int64_t)rankingIndexForConversationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
+  foundItems = [(EMSearchableIndexTopHitsQueryResult *)self foundItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__EMSearchableIndexTopHitsQueryResult_rankingIndexForConversationID___block_invoke;
   v9[3] = &unk_1E826F9A0;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [foundItems enumerateObjectsUsingBlock:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);

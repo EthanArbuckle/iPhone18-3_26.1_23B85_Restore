@@ -1,75 +1,75 @@
 @interface AKAccountRecoveryController
-+ (BOOL)shouldProcessServerUIRequest:(id)a3;
-- (AKAccountRecoveryController)initWithUILiaison:(id)a3 client:(id)a4;
-- (AKAccountRecoveryController)initWithUILiaison:(id)a3 client:(id)a4 requestDispatcher:(id)a5;
-- (id)_recoveryContextFromServerInfo:(id)a3 error:(id *)a4;
-- (void)persistRecoveryKeyWithContext:(id)a3 authContext:(id)a4 completion:(id)a5;
-- (void)renewRecoveryTokenWithContext:(id)a3 completion:(id)a4;
-- (void)retrieveRecoveryDataForServerContext:(id)a3 recoveryInfo:(id)a4 completion:(id)a5;
-- (void)verifyMasterKey:(id)a3 withContext:(id)a4 completion:(id)a5;
++ (BOOL)shouldProcessServerUIRequest:(id)request;
+- (AKAccountRecoveryController)initWithUILiaison:(id)liaison client:(id)client;
+- (AKAccountRecoveryController)initWithUILiaison:(id)liaison client:(id)client requestDispatcher:(id)dispatcher;
+- (id)_recoveryContextFromServerInfo:(id)info error:(id *)error;
+- (void)persistRecoveryKeyWithContext:(id)context authContext:(id)authContext completion:(id)completion;
+- (void)renewRecoveryTokenWithContext:(id)context completion:(id)completion;
+- (void)retrieveRecoveryDataForServerContext:(id)context recoveryInfo:(id)info completion:(id)completion;
+- (void)verifyMasterKey:(id)key withContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKAccountRecoveryController
 
-- (AKAccountRecoveryController)initWithUILiaison:(id)a3 client:(id)a4 requestDispatcher:(id)a5
+- (AKAccountRecoveryController)initWithUILiaison:(id)liaison client:(id)client requestDispatcher:(id)dispatcher
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, liaison);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, client);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v5 = v14;
-  v14 = 0;
+  objc_storeStrong(&v11, dispatcher);
+  v5 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v5;
   v10.super_class = AKAccountRecoveryController;
-  v14 = [(AKAccountRecoveryController *)&v10 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  selfCopy = [(AKAccountRecoveryController *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v14->_authUILiaison, location[0]);
-    objc_storeStrong(&v14->_client, v12);
-    objc_storeStrong(&v14->_requestDispatcher, v11);
+    objc_storeStrong(&selfCopy->_authUILiaison, location[0]);
+    objc_storeStrong(&selfCopy->_client, v12);
+    objc_storeStrong(&selfCopy->_requestDispatcher, v11);
   }
 
-  v7 = _objc_retain(v14);
+  v7 = _objc_retain(selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKAccountRecoveryController)initWithUILiaison:(id)a3 client:(id)a4
+- (AKAccountRecoveryController)initWithUILiaison:(id)liaison client:(id)client
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, liaison);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v8 = v13;
+  objc_storeStrong(&v11, client);
+  v8 = selfCopy;
   v6 = location[0];
   v7 = v11;
   v9 = +[AKRequestDispatcher sharedDispatcher];
-  v13 = 0;
-  v13 = [(AKAccountRecoveryController *)v8 initWithUILiaison:v6 client:v7 requestDispatcher:?];
-  v10 = _objc_retain(v13);
+  selfCopy = 0;
+  selfCopy = [(AKAccountRecoveryController *)v8 initWithUILiaison:v6 client:v7 requestDispatcher:?];
+  v10 = _objc_retain(selfCopy);
   _objc_release(v9);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-+ (BOOL)shouldProcessServerUIRequest:(id)a3
++ (BOOL)shouldProcessServerUIRequest:(id)request
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v5 = [location[0] objectForKeyedSubscript:AKActionHeaderKey];
   v4 = 1;
   if (([v5 isEqualToString:AKActionValidateMK] & 1) == 0)
@@ -82,19 +82,19 @@
   return v4 & 1;
 }
 
-- (void)retrieveRecoveryDataForServerContext:(id)a3 recoveryInfo:(id)a4 completion:(id)a5
+- (void)retrieveRecoveryDataForServerContext:(id)context recoveryInfo:(id)info completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, info);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, completion);
   v32 = 0;
   v30 = 0;
-  v12 = [(AKAccountRecoveryController *)v36 _recoveryContextFromServerInfo:v34 error:&v30];
+  v12 = [(AKAccountRecoveryController *)selfCopy _recoveryContextFromServerInfo:v34 error:&v30];
   objc_storeStrong(&v32, v30);
   v31 = v12;
   if (v12)
@@ -110,11 +110,11 @@
     }
 
     objc_storeStrong(&v29, 0);
-    objc_initWeak(&from, v36);
-    authUILiaison = v36->_authUILiaison;
-    v7 = [location[0] authContext];
+    objc_initWeak(&from, selfCopy);
+    authUILiaison = selfCopy->_authUILiaison;
+    authContext = [location[0] authContext];
     v8 = v31;
-    client = v36->_client;
+    client = selfCopy->_client;
     v18 = _NSConcreteStackBlock;
     v19 = -1073741824;
     v20 = 0;
@@ -124,8 +124,8 @@
     v23 = _objc_retain(location[0]);
     v24 = _objc_retain(v31);
     v25 = _objc_retain(v33);
-    [(AKAuthenticationUILiaison *)authUILiaison presentNativeRecoveryUIForContext:v7 recoveryContext:v8 client:client completion:&v18];
-    _objc_release(v7);
+    [(AKAuthenticationUILiaison *)authUILiaison presentNativeRecoveryUIForContext:authContext recoveryContext:v8 client:client completion:&v18];
+    _objc_release(authContext);
     objc_storeStrong(&v25, 0);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v23, 0);
@@ -156,43 +156,43 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)renewRecoveryTokenWithContext:(id)a3 completion:(id)a4
+- (void)renewRecoveryTokenWithContext:(id)context completion:(id)completion
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
-  v44 = [location[0] decodedRecoveryIdentityTokenString];
-  if ([(AKClient *)v47->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v45, completion);
+  decodedRecoveryIdentityTokenString = [location[0] decodedRecoveryIdentityTokenString];
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
-    if ([v44 length])
+    if ([decodedRecoveryIdentityTokenString length])
     {
-      v9 = [location[0] authContext];
-      v36 = [v9 altDSID];
-      _objc_release(v9);
-      v10 = [AKURLBag bagForAltDSID:v36];
-      v35 = [v10 renewRecoveryTokenURL];
+      authContext = [location[0] authContext];
+      altDSID = [authContext altDSID];
+      _objc_release(authContext);
+      v10 = [AKURLBag bagForAltDSID:altDSID];
+      renewRecoveryTokenURL = [v10 renewRecoveryTokenURL];
       _objc_release(v10);
-      v34 = [[NSMutableURLRequest alloc] initWithURL:v35];
+      v34 = [[NSMutableURLRequest alloc] initWithURL:renewRecoveryTokenURL];
       [v34 setHTTPMethod:@"POST"];
-      v11 = [(AKClient *)v47->_client name];
+      name = [(AKClient *)selfCopy->_client name];
       [v34 ak_addClientApp:?];
-      _objc_release(v11);
-      v12 = [(AKClient *)v47->_client bundleID];
+      _objc_release(name);
+      bundleID = [(AKClient *)selfCopy->_client bundleID];
       [v34 ak_addClientBundleIDHeader:?];
-      _objc_release(v12);
+      _objc_release(bundleID);
       [v34 ak_addClientInfoHeader];
       [v34 ak_addDeviceUDIDHeader];
       [v34 ak_addInternalBuildHeader];
       [v34 ak_addSeedBuildHeader];
       [v34 ak_addFeatureMaskHeader];
-      v14 = [location[0] authContext];
-      v13 = [v14 altDSID];
-      [v34 ak_addAuthorizationHeaderWithIdentityToken:v44 forAltDSID:?];
-      _objc_release(v13);
-      _objc_release(v14);
+      authContext2 = [location[0] authContext];
+      altDSID2 = [authContext2 altDSID];
+      [v34 ak_addAuthorizationHeaderWithIdentityToken:decodedRecoveryIdentityTokenString forAltDSID:?];
+      _objc_release(altDSID2);
+      _objc_release(authContext2);
       v48[0] = AKRequestBodyKey;
       v49[0] = &__NSDictionary0__struct;
       v48[1] = AKRequestHeadersKey;
@@ -223,8 +223,8 @@
       objc_storeStrong(&v29, 0);
       objc_storeStrong(&v33, 0);
       objc_storeStrong(&v34, 0);
-      objc_storeStrong(&v35, 0);
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&renewRecoveryTokenURL, 0);
+      objc_storeStrong(&altDSID, 0);
       v40 = 0;
     }
 
@@ -269,40 +269,40 @@
     v40 = 1;
   }
 
-  objc_storeStrong(&v44, 0);
+  objc_storeStrong(&decodedRecoveryIdentityTokenString, 0);
   objc_storeStrong(&v45, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)verifyMasterKey:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)verifyMasterKey:(id)key withContext:(id)context completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, context);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
-  if ([(AKClient *)v36->_client hasInternalPrivateAccess])
+  objc_storeStrong(&v33, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalPrivateAccess])
   {
     v5 = [AKSRPAuthenticationContextHelper alloc];
-    v6 = [v34 authContext];
+    authContext = [v34 authContext];
     v28 = [(AKSRPAuthenticationContextHelper *)v5 initWithContext:?];
-    _objc_release(v6);
+    _objc_release(authContext);
     [(AKSRPContextHelper *)v28 setAccountRecoveryMasterKey:location[0]];
-    v7 = [v34 decodedRecoveryIdentityTokenString];
+    decodedRecoveryIdentityTokenString = [v34 decodedRecoveryIdentityTokenString];
     [(AKSRPContextHelper *)v28 setDecodedRecoveryIdentityToken:?];
-    _objc_release(v7);
-    v8 = [v34 decodedRecoveryPETString];
+    _objc_release(decodedRecoveryIdentityTokenString);
+    decodedRecoveryPETString = [v34 decodedRecoveryPETString];
     [(AKSRPContextHelper *)v28 setDecodedRecoveryPET:?];
-    _objc_release(v8);
-    [(AKSRPContextHelper *)v28 setClient:v36->_client];
+    _objc_release(decodedRecoveryPETString);
+    [(AKSRPContextHelper *)v28 setClient:selfCopy->_client];
     [(AKSRPContextHelper *)v28 setIgnoreInternalTokens:1];
-    v9 = [v34 authContext];
-    v27 = [v9 altDSID];
-    _objc_release(v9);
-    v11 = [AKURLBag bagForAltDSID:v27];
+    authContext2 = [v34 authContext];
+    altDSID = [authContext2 altDSID];
+    _objc_release(authContext2);
+    v11 = [AKURLBag bagForAltDSID:altDSID];
     v10 = AKURLBagKeyBasicAuthKey;
     v18 = _NSConcreteStackBlock;
     v19 = -1073741824;
@@ -312,14 +312,14 @@
     v23 = _objc_retain(v28);
     v24 = _objc_retain(v34);
     v26 = _objc_retain(v33);
-    v25 = _objc_retain(v36);
+    v25 = _objc_retain(selfCopy);
     [v11 urlForKey:v10 completion:&v18];
     _objc_release(v11);
     objc_storeStrong(&v25, 0);
     objc_storeStrong(&v26, 0);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v23, 0);
-    objc_storeStrong(&v27, 0);
+    objc_storeStrong(&altDSID, 0);
     objc_storeStrong(&v28, 0);
     v29 = 0;
   }
@@ -349,16 +349,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)persistRecoveryKeyWithContext:(id)a3 authContext:(id)a4 completion:(id)a5
+- (void)persistRecoveryKeyWithContext:(id)context authContext:(id)authContext completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, authContext);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, completion);
   v27 = _AKLogSystem();
   v26 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -376,9 +376,9 @@
   objc_storeStrong(&v24, AKURLBagKeyStoreModernRecovery);
   v5 = [AKGrandSlamRequestProvider alloc];
   v21 = [(AKURLRequestProviderImpl *)v5 initWithContext:v29 urlBagKey:v24];
-  v7 = [location[0] verifier];
+  verifier = [location[0] verifier];
   [(AKURLRequestProviderImpl *)v21 setAuthKitBody:?];
-  _objc_release(v7);
+  _objc_release(verifier);
   [(AKGrandSlamRequestProvider *)v21 setShouldSendIdentityToken:v22 & 1];
   [(AKGrandSlamRequestProvider *)v21 setRequestBodyType:v23];
   [(AKGrandSlamRequestProvider *)v21 setExpectedResponseType:v23];
@@ -404,13 +404,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_recoveryContextFromServerInfo:(id)a3 error:(id *)a4
+- (id)_recoveryContextFromServerInfo:(id)info error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
+  objc_storeStrong(location, info);
+  errorCopy = error;
   v21 = [AKAccountRecoveryContext recoveryContextWithServerInfo:location[0]];
   if ([v21 isValid])
   {
@@ -442,15 +442,15 @@
     }
 
     objc_storeStrong(&v16, 0);
-    if (v22)
+    if (errorCopy)
     {
       v7 = [NSError ak_errorWithCode:-7059];
       v4 = v7;
-      *v22 = v7;
+      *errorCopy = v7;
       oslog = _AKLogSystem();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        sub_1000194D4(v25, *v22);
+        sub_1000194D4(v25, *errorCopy);
         _os_log_error_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_ERROR, "_recoveryContextFromServerInfo error: %@", v25, 0xCu);
       }
 

@@ -1,90 +1,90 @@
 @interface HKCodableHealthRecordsEduSection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSectionAttributions:(id)a3;
-- (void)addSectionCitations:(id)a3;
-- (void)addSectionLocaleIdentifiers:(id)a3;
-- (void)addSectionValidRegionCodes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSectionAttributions:(id)attributions;
+- (void)addSectionCitations:(id)citations;
+- (void)addSectionLocaleIdentifiers:(id)identifiers;
+- (void)addSectionValidRegionCodes:(id)codes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableHealthRecordsEduSection
 
-- (void)addSectionLocaleIdentifiers:(id)a3
+- (void)addSectionLocaleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   sectionLocaleIdentifiers = self->_sectionLocaleIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!sectionLocaleIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sectionLocaleIdentifiers;
     self->_sectionLocaleIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     sectionLocaleIdentifiers = self->_sectionLocaleIdentifiers;
   }
 
-  [(NSMutableArray *)sectionLocaleIdentifiers addObject:v4];
+  [(NSMutableArray *)sectionLocaleIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addSectionValidRegionCodes:(id)a3
+- (void)addSectionValidRegionCodes:(id)codes
 {
-  v4 = a3;
+  codesCopy = codes;
   sectionValidRegionCodes = self->_sectionValidRegionCodes;
-  v8 = v4;
+  v8 = codesCopy;
   if (!sectionValidRegionCodes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sectionValidRegionCodes;
     self->_sectionValidRegionCodes = v6;
 
-    v4 = v8;
+    codesCopy = v8;
     sectionValidRegionCodes = self->_sectionValidRegionCodes;
   }
 
-  [(NSMutableArray *)sectionValidRegionCodes addObject:v4];
+  [(NSMutableArray *)sectionValidRegionCodes addObject:codesCopy];
 }
 
-- (void)addSectionAttributions:(id)a3
+- (void)addSectionAttributions:(id)attributions
 {
-  v4 = a3;
+  attributionsCopy = attributions;
   sectionAttributions = self->_sectionAttributions;
-  v8 = v4;
+  v8 = attributionsCopy;
   if (!sectionAttributions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sectionAttributions;
     self->_sectionAttributions = v6;
 
-    v4 = v8;
+    attributionsCopy = v8;
     sectionAttributions = self->_sectionAttributions;
   }
 
-  [(NSMutableArray *)sectionAttributions addObject:v4];
+  [(NSMutableArray *)sectionAttributions addObject:attributionsCopy];
 }
 
-- (void)addSectionCitations:(id)a3
+- (void)addSectionCitations:(id)citations
 {
-  v4 = a3;
+  citationsCopy = citations;
   sectionCitations = self->_sectionCitations;
-  v8 = v4;
+  v8 = citationsCopy;
   if (!sectionCitations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sectionCitations;
     self->_sectionCitations = v6;
 
-    v4 = v8;
+    citationsCopy = v8;
     sectionCitations = self->_sectionCitations;
   }
 
-  [(NSMutableArray *)sectionCitations addObject:v4];
+  [(NSMutableArray *)sectionCitations addObject:citationsCopy];
 }
 
 - (id)description
@@ -93,58 +93,58 @@
   v8.receiver = self;
   v8.super_class = HKCodableHealthRecordsEduSection;
   v4 = [(HKCodableHealthRecordsEduSection *)&v8 description];
-  v5 = [(HKCodableHealthRecordsEduSection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableHealthRecordsEduSection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sectionType];
-    [v3 setObject:v4 forKey:@"sectionType"];
+    [dictionary setObject:v4 forKey:@"sectionType"];
   }
 
   sectionLocalizedContent = self->_sectionLocalizedContent;
   if (sectionLocalizedContent)
   {
-    [v3 setObject:sectionLocalizedContent forKey:@"sectionLocalizedContent"];
+    [dictionary setObject:sectionLocalizedContent forKey:@"sectionLocalizedContent"];
   }
 
   sectionLocaleIdentifiers = self->_sectionLocaleIdentifiers;
   if (sectionLocaleIdentifiers)
   {
-    [v3 setObject:sectionLocaleIdentifiers forKey:@"sectionLocaleIdentifiers"];
+    [dictionary setObject:sectionLocaleIdentifiers forKey:@"sectionLocaleIdentifiers"];
   }
 
   sectionValidRegionCodes = self->_sectionValidRegionCodes;
   if (sectionValidRegionCodes)
   {
-    [v3 setObject:sectionValidRegionCodes forKey:@"sectionValidRegionCodes"];
+    [dictionary setObject:sectionValidRegionCodes forKey:@"sectionValidRegionCodes"];
   }
 
   sectionAttributions = self->_sectionAttributions;
   if (sectionAttributions)
   {
-    [v3 setObject:sectionAttributions forKey:@"sectionAttributions"];
+    [dictionary setObject:sectionAttributions forKey:@"sectionAttributions"];
   }
 
   sectionCitations = self->_sectionCitations;
   if (sectionCitations)
   {
-    [v3 setObject:sectionCitations forKey:@"sectionCitations"];
+    [dictionary setObject:sectionCitations forKey:@"sectionCitations"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
@@ -280,28 +280,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_sectionType;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_sectionType;
+    *(toCopy + 56) |= 1u;
   }
 
-  v21 = v4;
+  v21 = toCopy;
   if (self->_sectionLocalizedContent)
   {
-    [v4 setSectionLocalizedContent:?];
+    [toCopy setSectionLocalizedContent:?];
   }
 
   if ([(HKCodableHealthRecordsEduSection *)self sectionLocaleIdentifiersCount])
   {
     [v21 clearSectionLocaleIdentifiers];
-    v5 = [(HKCodableHealthRecordsEduSection *)self sectionLocaleIdentifiersCount];
-    if (v5)
+    sectionLocaleIdentifiersCount = [(HKCodableHealthRecordsEduSection *)self sectionLocaleIdentifiersCount];
+    if (sectionLocaleIdentifiersCount)
     {
-      v6 = v5;
+      v6 = sectionLocaleIdentifiersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HKCodableHealthRecordsEduSection *)self sectionLocaleIdentifiersAtIndex:i];
@@ -313,10 +313,10 @@
   if ([(HKCodableHealthRecordsEduSection *)self sectionValidRegionCodesCount])
   {
     [v21 clearSectionValidRegionCodes];
-    v9 = [(HKCodableHealthRecordsEduSection *)self sectionValidRegionCodesCount];
-    if (v9)
+    sectionValidRegionCodesCount = [(HKCodableHealthRecordsEduSection *)self sectionValidRegionCodesCount];
+    if (sectionValidRegionCodesCount)
     {
-      v10 = v9;
+      v10 = sectionValidRegionCodesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(HKCodableHealthRecordsEduSection *)self sectionValidRegionCodesAtIndex:j];
@@ -328,10 +328,10 @@
   if ([(HKCodableHealthRecordsEduSection *)self sectionAttributionsCount])
   {
     [v21 clearSectionAttributions];
-    v13 = [(HKCodableHealthRecordsEduSection *)self sectionAttributionsCount];
-    if (v13)
+    sectionAttributionsCount = [(HKCodableHealthRecordsEduSection *)self sectionAttributionsCount];
+    if (sectionAttributionsCount)
     {
-      v14 = v13;
+      v14 = sectionAttributionsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(HKCodableHealthRecordsEduSection *)self sectionAttributionsAtIndex:k];
@@ -343,10 +343,10 @@
   if ([(HKCodableHealthRecordsEduSection *)self sectionCitationsCount])
   {
     [v21 clearSectionCitations];
-    v17 = [(HKCodableHealthRecordsEduSection *)self sectionCitationsCount];
-    if (v17)
+    sectionCitationsCount = [(HKCodableHealthRecordsEduSection *)self sectionCitationsCount];
+    if (sectionCitationsCount)
     {
-      v18 = v17;
+      v18 = sectionCitationsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(HKCodableHealthRecordsEduSection *)self sectionCitationsAtIndex:m];
@@ -356,10 +356,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -367,7 +367,7 @@
     *(v5 + 56) |= 1u;
   }
 
-  v7 = [(NSString *)self->_sectionLocalizedContent copyWithZone:a3];
+  v7 = [(NSString *)self->_sectionLocalizedContent copyWithZone:zone];
   v8 = v6[5];
   v6[5] = v7;
 
@@ -391,7 +391,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v46 + 1) + 8 * v13) copyWithZone:a3];
+        v14 = [*(*(&v46 + 1) + 8 * v13) copyWithZone:zone];
         [v6 addSectionLocaleIdentifiers:v14];
 
         ++v13;
@@ -424,7 +424,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v42 + 1) + 8 * v19) copyWithZone:a3];
+        v20 = [*(*(&v42 + 1) + 8 * v19) copyWithZone:zone];
         [v6 addSectionValidRegionCodes:v20];
 
         ++v19;
@@ -457,7 +457,7 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v38 + 1) + 8 * v25) copyWithZone:a3];
+        v26 = [*(*(&v38 + 1) + 8 * v25) copyWithZone:zone];
         [v6 addSectionAttributions:v26];
 
         ++v25;
@@ -490,7 +490,7 @@
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v34 + 1) + 8 * v31) copyWithZone:{a3, v34}];
+        v32 = [*(*(&v34 + 1) + 8 * v31) copyWithZone:{zone, v34}];
         [v6 addSectionCitations:v32];
 
         ++v31;
@@ -506,23 +506,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_sectionType != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_sectionType != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_17:
     v10 = 0;
@@ -530,13 +530,13 @@ LABEL_17:
   }
 
   sectionLocalizedContent = self->_sectionLocalizedContent;
-  if (sectionLocalizedContent | *(v4 + 5) && ![(NSString *)sectionLocalizedContent isEqual:?])
+  if (sectionLocalizedContent | *(equalCopy + 5) && ![(NSString *)sectionLocalizedContent isEqual:?])
   {
     goto LABEL_17;
   }
 
   sectionLocaleIdentifiers = self->_sectionLocaleIdentifiers;
-  if (sectionLocaleIdentifiers | *(v4 + 4))
+  if (sectionLocaleIdentifiers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)sectionLocaleIdentifiers isEqual:?])
     {
@@ -545,7 +545,7 @@ LABEL_17:
   }
 
   sectionValidRegionCodes = self->_sectionValidRegionCodes;
-  if (sectionValidRegionCodes | *(v4 + 6))
+  if (sectionValidRegionCodes | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)sectionValidRegionCodes isEqual:?])
     {
@@ -554,7 +554,7 @@ LABEL_17:
   }
 
   sectionAttributions = self->_sectionAttributions;
-  if (sectionAttributions | *(v4 + 2))
+  if (sectionAttributions | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)sectionAttributions isEqual:?])
     {
@@ -563,7 +563,7 @@ LABEL_17:
   }
 
   sectionCitations = self->_sectionCitations;
-  if (sectionCitations | *(v4 + 3))
+  if (sectionCitations | *(equalCopy + 3))
   {
     v10 = [(NSMutableArray *)sectionCitations isEqual:?];
   }
@@ -597,18 +597,18 @@ LABEL_18:
   return v6 ^ v7 ^ [(NSMutableArray *)self->_sectionCitations hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 56))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 56))
   {
-    self->_sectionType = *(v4 + 1);
+    self->_sectionType = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HKCodableHealthRecordsEduSection *)self setSectionLocalizedContent:?];
   }

@@ -1,7 +1,7 @@
 @interface PXAssetsDataSource
-- (BOOL)getAssetCounts:(id *)a3 guestAssetCounts:(id *)a4 allowFetch:(BOOL)a5;
-- (BOOL)isFilteringDisabledForSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (BOOL)isFilteringSectionIndexPath:(PXSimpleIndexPath *)a3;
+- (BOOL)getAssetCounts:(id *)counts guestAssetCounts:(id *)assetCounts allowFetch:(BOOL)fetch;
+- (BOOL)isFilteringDisabledForSectionIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)isFilteringSectionIndexPath:(PXSimpleIndexPath *)path;
 - (PXAssetReference)endingAssetReference;
 - (PXAssetReference)firstAssetReference;
 - (PXAssetReference)startingAssetReference;
@@ -9,30 +9,30 @@
 - (PXDisplayAssetCollection)firstAssetCollection;
 - (PXDisplayAssetCollection)lastAssetCollection;
 - (PXDisplayCollection)containerCollection;
-- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)a3;
-- (id)assetAtItemIndexPath:(PXSimpleIndexPath *)a3;
-- (id)assetCollectionAtSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (id)assetCollectionReferenceAtSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (id)assetCollectionReferenceForAssetCollectionReference:(id)a3;
-- (id)assetCollectionReferenceNearestToObjectReference:(id)a3;
-- (id)assetIdentifierAtItemIndexPath:(PXSimpleIndexPath *)a3;
-- (id)assetReferenceAtItemIndexPath:(PXSimpleIndexPath *)a3;
-- (id)assetsInSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (id)displayAssetAtIndexPath:(id)a3;
-- (id)indexPathForDisplayAsset:(id)a3 hintIndexPath:(id)a4;
-- (id)objectIDAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)objectReferenceNearestToObjectReference:(id)a3 inSection:(int64_t)a4;
+- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)reference;
+- (id)assetAtItemIndexPath:(PXSimpleIndexPath *)path;
+- (id)assetCollectionAtSectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)assetCollectionReferenceAtSectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)assetCollectionReferenceForAssetCollectionReference:(id)reference;
+- (id)assetCollectionReferenceNearestToObjectReference:(id)reference;
+- (id)assetIdentifierAtItemIndexPath:(PXSimpleIndexPath *)path;
+- (id)assetReferenceAtItemIndexPath:(PXSimpleIndexPath *)path;
+- (id)assetsInSectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)displayAssetAtIndexPath:(id)path;
+- (id)indexPathForDisplayAsset:(id)asset hintIndexPath:(id)path;
+- (id)objectIDAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)objectReferenceNearestToObjectReference:(id)reference inSection:(int64_t)section;
 @end
 
 @implementation PXAssetsDataSource
 
-- (id)assetCollectionReferenceNearestToObjectReference:(id)a3
+- (id)assetCollectionReferenceNearestToObjectReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PXSectionedDataSource *)self objectReferenceForObjectReference:v4];
+    v5 = [(PXSectionedDataSource *)self objectReferenceForObjectReference:referenceCopy];
   }
 
   else
@@ -42,7 +42,7 @@
     {
       v8 = 0u;
       v9 = 0u;
-      v6 = [(PXSectionedDataSource *)self objectReferenceNearestToObjectReference:v4];
+      v6 = [(PXSectionedDataSource *)self objectReferenceNearestToObjectReference:referenceCopy];
       [(PXSectionedDataSource *)self indexPathForObjectReference:v6];
     }
 
@@ -52,9 +52,9 @@
   return v5;
 }
 
-- (id)objectReferenceNearestToObjectReference:(id)a3 inSection:(int64_t)a4
+- (id)objectReferenceNearestToObjectReference:(id)reference inSection:(int64_t)section
 {
-  v5 = [(PXSectionedDataSource *)self objectReferenceNearestToObjectReference:a3];
+  v5 = [(PXSectionedDataSource *)self objectReferenceNearestToObjectReference:reference];
   v6 = v5;
   if (v5)
   {
@@ -67,7 +67,7 @@
     v7 = 0;
   }
 
-  if (v7 == a4)
+  if (v7 == section)
   {
     v8 = v6;
   }
@@ -82,40 +82,40 @@
   return v8;
 }
 
-- (BOOL)isFilteringDisabledForSectionIndexPath:(PXSimpleIndexPath *)a3
+- (BOOL)isFilteringDisabledForSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = self;
-  v4 = *&a3->item;
-  v7[0] = *&a3->dataSourceIdentifier;
+  selfCopy = self;
+  v4 = *&path->item;
+  v7[0] = *&path->dataSourceIdentifier;
   v7[1] = v4;
   v5 = [(PXAssetsDataSource *)self assetCollectionAtSectionIndexPath:v7];
-  LOBYTE(v3) = [(PXAssetsDataSource *)v3 isFilteringDisabledForAssetCollection:v5];
+  LOBYTE(selfCopy) = [(PXAssetsDataSource *)selfCopy isFilteringDisabledForAssetCollection:v5];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isFilteringSectionIndexPath:(PXSimpleIndexPath *)a3
+- (BOOL)isFilteringSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = self;
-  v4 = *&a3->item;
-  v7[0] = *&a3->dataSourceIdentifier;
+  selfCopy = self;
+  v4 = *&path->item;
+  v7[0] = *&path->dataSourceIdentifier;
   v7[1] = v4;
   v5 = [(PXAssetsDataSource *)self assetCollectionAtSectionIndexPath:v7];
-  LOBYTE(v3) = [(PXAssetsDataSource *)v3 isFilteringAssetCollection:v5];
+  LOBYTE(selfCopy) = [(PXAssetsDataSource *)selfCopy isFilteringAssetCollection:v5];
 
-  return v3;
+  return selfCopy;
 }
 
 - (PXDisplayAsset)keyAsset
 {
-  v3 = [(PXAssetsDataSource *)self containerCollection];
-  if (![v3 canContainAssets] || (-[PXAssetsDataSource keyAssetsForAssetCollection:](self, "keyAssetsForAssetCollection:", v3), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "firstObject"), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  containerCollection = [(PXAssetsDataSource *)self containerCollection];
+  if (![containerCollection canContainAssets] || (-[PXAssetsDataSource keyAssetsForAssetCollection:](self, "keyAssetsForAssetCollection:", containerCollection), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "firstObject"), asset = objc_claimAutoreleasedReturnValue(), v4, !asset))
   {
-    v6 = [(PXAssetsDataSource *)self startingAssetReference];
-    v5 = [v6 asset];
+    startingAssetReference = [(PXAssetsDataSource *)self startingAssetReference];
+    asset = [startingAssetReference asset];
   }
 
-  return v5;
+  return asset;
 }
 
 - (PXAssetReference)endingAssetReference
@@ -183,15 +183,15 @@
   return 0;
 }
 
-- (BOOL)getAssetCounts:(id *)a3 guestAssetCounts:(id *)a4 allowFetch:(BOOL)a5
+- (BOOL)getAssetCounts:(id *)counts guestAssetCounts:(id *)assetCounts allowFetch:(BOOL)fetch
 {
-  v25 = a5;
+  fetchCopy = fetch;
   v28 = 0uLL;
   v29 = 0;
-  v23 = [(PXSectionedDataSource *)self identifier];
-  v24 = self;
-  v6 = [(PXSectionedDataSource *)self numberOfSections];
-  if (v6 < 1)
+  identifier = [(PXSectionedDataSource *)self identifier];
+  selfCopy = self;
+  numberOfSections = [(PXSectionedDataSource *)self numberOfSections];
+  if (numberOfSections < 1)
   {
     v12 = 0;
     v11 = 0;
@@ -201,7 +201,7 @@
 
   else
   {
-    v7 = v6;
+    v7 = numberOfSections;
     v8 = 0;
     v9 = 0;
     v10 = 0;
@@ -212,12 +212,12 @@
     v22 = vnegq_f64(v13);
     while (1)
     {
-      v26[0] = v23;
+      v26[0] = identifier;
       v26[1] = v9;
       v27 = v22;
-      v14 = [(PXAssetsDataSource *)v24 assetsInSectionIndexPath:v26];
+      v14 = [(PXAssetsDataSource *)selfCopy assetsInSectionIndexPath:v26];
       v15 = v14;
-      if (v25)
+      if (fetchCopy)
       {
         v16 = [v14 countOfAssetsWithMediaType:1];
         v17 = [v15 countOfAssetsWithMediaType:2];
@@ -256,62 +256,62 @@
   }
 
 LABEL_13:
-  if (a3)
+  if (counts)
   {
-    a3->var0 = v10;
-    a3->var1 = v11;
-    a3->var2 = v12;
+    counts->var0 = v10;
+    counts->var1 = v11;
+    counts->var2 = v12;
   }
 
-  if (a4)
+  if (assetCounts)
   {
-    *&a4->var0 = v28;
-    a4->var2 = v29;
+    *&assetCounts->var0 = v28;
+    assetCounts->var2 = v29;
   }
 
   return v8;
 }
 
-- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)reference
 {
   *&retstr->dataSourceIdentifier = 0u;
   *&retstr->item = 0u;
   return [(PXSectionedDataSource *)self indexPathForObjectReference:a4];
 }
 
-- (id)assetReferenceAtItemIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetReferenceAtItemIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v6[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v3;
   v4 = [(PXSectionedDataSource *)self objectReferenceAtIndexPath:v6];
 
   return v4;
 }
 
-- (id)assetCollectionReferenceForAssetCollectionReference:(id)a3
+- (id)assetCollectionReferenceForAssetCollectionReference:(id)reference
 {
-  v5 = [(PXSectionedDataSource *)self objectReferenceForObjectReference:a3];
+  v5 = [(PXSectionedDataSource *)self objectReferenceForObjectReference:reference];
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v5 px_descriptionForAssertionMessage];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXAssetsDataSource.m" lineNumber:88 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self objectReferenceForObjectReference:assetCollectionReference]", v9, v10}];
+      px_descriptionForAssertionMessage = [v5 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsDataSource.m" lineNumber:88 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self objectReferenceForObjectReference:assetCollectionReference]", v9, px_descriptionForAssertionMessage}];
     }
   }
 
   return v5;
 }
 
-- (id)assetCollectionReferenceAtSectionIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetCollectionReferenceAtSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = *&a3->item;
-  v13[0] = *&a3->dataSourceIdentifier;
+  v5 = *&path->item;
+  v13[0] = *&path->dataSourceIdentifier;
   v13[1] = v5;
   v6 = [(PXSectionedDataSource *)self objectReferenceAtIndexPath:v13];
   if (v6)
@@ -322,19 +322,19 @@ LABEL_13:
       goto LABEL_3;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v10 = NSStringFromClass(v11);
-    v12 = [v6 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXAssetsDataSource.m" lineNumber:80 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self objectReferenceAtIndexPath:indexPath]", v10, v12}];
+    px_descriptionForAssertionMessage = [v6 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsDataSource.m" lineNumber:80 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self objectReferenceAtIndexPath:indexPath]", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXAssetsDataSource.m" lineNumber:80 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self objectReferenceAtIndexPath:indexPath]", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsDataSource.m" lineNumber:80 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self objectReferenceAtIndexPath:indexPath]", v10}];
   }
 
 LABEL_3:
@@ -344,9 +344,9 @@ LABEL_3:
 
 - (PXDisplayAssetCollection)lastAssetCollection
 {
-  v3 = [(PXSectionedDataSource *)self numberOfSections];
-  v4 = v3 - 1;
-  if (v3 < 1)
+  numberOfSections = [(PXSectionedDataSource *)self numberOfSections];
+  v4 = numberOfSections - 1;
+  if (numberOfSections < 1)
   {
     v6 = 0;
   }
@@ -373,10 +373,10 @@ LABEL_3:
 
   else
   {
-    v5 = [(PXSectionedDataSource *)self identifier];
+    identifier = [(PXSectionedDataSource *)self identifier];
     v6 = xmmword_1B4074EC0;
     v7 = 0x7FFFFFFFFFFFFFFFLL;
-    v3 = [(PXAssetsDataSource *)self assetCollectionAtSectionIndexPath:&v5];
+    v3 = [(PXAssetsDataSource *)self assetCollectionAtSectionIndexPath:&identifier];
   }
 
   return v3;
@@ -386,86 +386,86 @@ LABEL_3:
 {
   if ([(PXSectionedDataSource *)self numberOfSections]== 1)
   {
-    v3 = [(PXAssetsDataSource *)self firstAssetCollection];
+    firstAssetCollection = [(PXAssetsDataSource *)self firstAssetCollection];
   }
 
   else
   {
-    v3 = 0;
+    firstAssetCollection = 0;
   }
 
-  return v3;
+  return firstAssetCollection;
 }
 
-- (id)assetIdentifierAtItemIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetIdentifierAtItemIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v7[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v7[0] = *&path->dataSourceIdentifier;
   v7[1] = v3;
   v4 = [(PXAssetsDataSource *)self assetAtItemIndexPath:v7];
-  v5 = [v4 uuid];
+  uuid = [v4 uuid];
 
-  return v5;
+  return uuid;
 }
 
-- (id)objectIDAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectIDAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v6[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v3;
   v4 = [(PXAssetsDataSource *)self assetIdentifierAtItemIndexPath:v6];
 
   return v4;
 }
 
-- (id)assetAtItemIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetAtItemIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v6[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v3;
   v4 = [(PXSectionedDataSource *)self objectAtIndexPath:v6];
 
   return v4;
 }
 
-- (id)assetsInSectionIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetsInSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v6[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v3;
   v4 = [(PXSectionedDataSource *)self objectsInIndexPath:v6];
 
   return v4;
 }
 
-- (id)assetCollectionAtSectionIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetCollectionAtSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v6[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v3;
   v4 = [(PXSectionedDataSource *)self objectAtIndexPath:v6];
 
   return v4;
 }
 
-- (id)indexPathForDisplayAsset:(id)a3 hintIndexPath:(id)a4
+- (id)indexPathForDisplayAsset:(id)asset hintIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  assetCopy = asset;
   v8 = [PXAssetReference alloc];
-  PXSimpleIndexPathFromIndexPath(COERCE_FLOAT64_T([(PXSectionedDataSource *)self identifier]), v6, v12);
+  PXSimpleIndexPathFromIndexPath(COERCE_FLOAT64_T([(PXSectionedDataSource *)self identifier]), pathCopy, v12);
 
-  v9 = [(PXSectionedObjectReference *)v8 initWithSectionObject:0 itemObject:v7 subitemObject:0 indexPath:v12];
+  v9 = [(PXSectionedObjectReference *)v8 initWithSectionObject:0 itemObject:assetCopy subitemObject:0 indexPath:v12];
   [(PXSectionedDataSource *)self indexPathForObjectReference:v9];
   v10 = PXIndexPathFromSimpleIndexPath(v12);
 
   return v10;
 }
 
-- (id)displayAssetAtIndexPath:(id)a3
+- (id)displayAssetAtIndexPath:(id)path
 {
-  v4 = a3;
-  PXSimpleIndexPathFromIndexPath(COERCE_FLOAT64_T([(PXSectionedDataSource *)self identifier]), v4, v7);
+  pathCopy = path;
+  PXSimpleIndexPathFromIndexPath(COERCE_FLOAT64_T([(PXSectionedDataSource *)self identifier]), pathCopy, v7);
 
   v5 = [(PXAssetsDataSource *)self assetAtItemIndexPath:v7];
 

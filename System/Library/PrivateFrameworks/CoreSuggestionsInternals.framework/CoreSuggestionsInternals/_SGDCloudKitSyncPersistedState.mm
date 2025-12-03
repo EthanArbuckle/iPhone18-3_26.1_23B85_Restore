@@ -1,13 +1,13 @@
 @interface _SGDCloudKitSyncPersistedState
 + (id)properties;
-- (SEL)_getterForProperty:(objc_property *)a3;
-- (SEL)_setterForProperty:(objc_property *)a3;
+- (SEL)_getterForProperty:(objc_property *)property;
+- (SEL)_setterForProperty:(objc_property *)property;
 - (_SGDCloudKitSyncPersistedState)init;
-- (_SGDCloudKitSyncPersistedState)initWithCoder:(id)a3;
+- (_SGDCloudKitSyncPersistedState)initWithCoder:(id)coder;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)setupKvo;
 - (void)stopKvo;
 @end
@@ -52,13 +52,13 @@
 
         v9 = *(*(&v27 + 1) + 8 * v8);
         v10 = objc_opt_class();
-        v11 = [v9 second];
-        Property = class_getProperty(v10, [v11 UTF8String]);
+        second = [v9 second];
+        Property = class_getProperty(v10, [second UTF8String]);
 
         if (!Property)
         {
-          v17 = [MEMORY[0x277CCA890] currentHandler];
-          [v17 handleFailureInMethod:a2 object:self file:@"SGDCloudKitSync.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"objcProperty != nil"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SGDCloudKitSync.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"objcProperty != nil"}];
         }
 
         v13 = [(_SGDCloudKitSyncPersistedState *)self _getterForProperty:Property];
@@ -66,12 +66,12 @@
         v15 = v14;
         if (!v14)
         {
-          v2 = [MEMORY[0x277CBEB68] null];
-          v15 = v2;
+          null = [MEMORY[0x277CBEB68] null];
+          v15 = null;
         }
 
-        v16 = [v9 second];
-        [v4 setObject:v15 forKeyedSubscript:v16];
+        second2 = [v9 second];
+        [v4 setObject:v15 forKeyedSubscript:second2];
 
         if (!v14)
         {
@@ -99,10 +99,10 @@
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -125,19 +125,19 @@
 
         v10 = *(*(&v20 + 1) + 8 * v9);
         v11 = objc_opt_class();
-        v12 = [v10 second];
-        Property = class_getProperty(v11, [v12 UTF8String]);
+        second = [v10 second];
+        Property = class_getProperty(v11, [second UTF8String]);
 
         if (!Property)
         {
-          v17 = [MEMORY[0x277CCA890] currentHandler];
-          [v17 handleFailureInMethod:a2 object:self file:@"SGDCloudKitSync.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"objcProperty != nil"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SGDCloudKitSync.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"objcProperty != nil"}];
         }
 
         v14 = [(_SGDCloudKitSyncPersistedState *)self _getterForProperty:Property];
         v15 = ([(_SGDCloudKitSyncPersistedState *)self methodForSelector:v14])(self, v14);
-        v16 = [v10 second];
-        [v4 encodeObject:v15 forKey:v16];
+        second2 = [v10 second];
+        [coderCopy encodeObject:v15 forKey:second2];
 
         ++v9;
       }
@@ -152,32 +152,32 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10 == self)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (objectCopy == self)
   {
     v12 = sgLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412802;
-      v17 = v9;
+      v17 = pathCopy;
       v18 = 2112;
-      v19 = v11;
+      v19 = changeCopy;
       v20 = 2112;
-      v21 = v10;
+      v21 = objectCopy;
       _os_log_debug_impl(&dword_231E60000, v12, OS_LOG_TYPE_DEBUG, "SGCK Persisted state changed (keyPath: %@, change: %@, self: %@)", &v16, 0x20u);
     }
 
-    v13 = [(_SGDCloudKitSyncPersistedState *)self changeCallback];
+    changeCallback = [(_SGDCloudKitSyncPersistedState *)self changeCallback];
 
-    if (v13)
+    if (changeCallback)
     {
-      v14 = [(_SGDCloudKitSyncPersistedState *)self changeCallback];
-      (v14)[2](v14, self);
+      changeCallback2 = [(_SGDCloudKitSyncPersistedState *)self changeCallback];
+      (changeCallback2)[2](changeCallback2, self);
     }
   }
 
@@ -207,8 +207,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) second];
-        [(_SGDCloudKitSyncPersistedState *)self removeObserver:self forKeyPath:v8 context:0];
+        second = [*(*(&v10 + 1) + 8 * v7) second];
+        [(_SGDCloudKitSyncPersistedState *)self removeObserver:self forKeyPath:second context:0];
 
         ++v7;
       }
@@ -246,8 +246,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) second];
-        [(_SGDCloudKitSyncPersistedState *)self addObserver:self forKeyPath:v8 options:0 context:0];
+        second = [*(*(&v10 + 1) + 8 * v7) second];
+        [(_SGDCloudKitSyncPersistedState *)self addObserver:self forKeyPath:second options:0 context:0];
 
         ++v7;
       }
@@ -270,10 +270,10 @@
   [(_SGDCloudKitSyncPersistedState *)&v3 dealloc];
 }
 
-- (_SGDCloudKitSyncPersistedState)initWithCoder:(id)a3
+- (_SGDCloudKitSyncPersistedState)initWithCoder:(id)coder
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = _SGDCloudKitSyncPersistedState;
   v6 = [(_SGDCloudKitSyncPersistedState *)&v31 init];
@@ -300,8 +300,8 @@
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
-          v13 = [v12 first];
-          v14 = NSClassFromString(v13);
+          first = [v12 first];
+          v14 = NSClassFromString(first);
 
           if (!v14)
           {
@@ -317,17 +317,17 @@
             goto LABEL_17;
           }
 
-          v15 = [v12 second];
-          v16 = [v5 decodeObjectOfClass:v14 forKey:v15];
+          second = [v12 second];
+          v16 = [coderCopy decodeObjectOfClass:v14 forKey:second];
 
           v17 = objc_opt_class();
-          v18 = [v12 second];
-          Property = class_getProperty(v17, [v18 UTF8String]);
+          second2 = [v12 second];
+          Property = class_getProperty(v17, [second2 UTF8String]);
 
           if (!Property)
           {
-            v21 = [MEMORY[0x277CCA890] currentHandler];
-            [v21 handleFailureInMethod:v26 object:v6 file:@"SGDCloudKitSync.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"objcProperty != nil"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:v26 object:v6 file:@"SGDCloudKitSync.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"objcProperty != nil"}];
           }
 
           v20 = [(_SGDCloudKitSyncPersistedState *)v6 _setterForProperty:Property];
@@ -354,12 +354,12 @@ LABEL_17:
   return v22;
 }
 
-- (SEL)_setterForProperty:(objc_property *)a3
+- (SEL)_setterForProperty:(objc_property *)property
 {
-  v6 = property_copyAttributeValue(a3, "S");
+  v6 = property_copyAttributeValue(property, "S");
   if (!v6)
   {
-    Name = property_getName(a3);
+    Name = property_getName(property);
     v8 = strlen(Name);
     v9 = malloc_type_malloc(v8 + 5, 0x4A67B19AuLL);
     if (!v9)
@@ -380,8 +380,8 @@ LABEL_17:
 
     if (snprintf(v9, v8 + 5, "set%c%s:", v10, v11) < 0)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"SGDCloudKitSync.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"snprintfResult >= 0"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGDCloudKitSync.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"snprintfResult >= 0"}];
     }
   }
 
@@ -390,15 +390,15 @@ LABEL_17:
   return v14;
 }
 
-- (SEL)_getterForProperty:(objc_property *)a3
+- (SEL)_getterForProperty:(objc_property *)property
 {
-  if (!a3)
+  if (!property)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGDCloudKitSync.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"property"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDCloudKitSync.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"property"}];
   }
 
-  v4 = property_copyAttributeValue(a3, "G");
+  v4 = property_copyAttributeValue(property, "G");
   if (v4)
   {
     v5 = v4;
@@ -409,7 +409,7 @@ LABEL_17:
 
   else
   {
-    Name = property_getName(a3);
+    Name = property_getName(property);
 
     return sel_registerName(Name);
   }

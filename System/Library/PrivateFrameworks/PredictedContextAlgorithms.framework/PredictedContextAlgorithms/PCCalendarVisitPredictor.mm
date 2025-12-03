@@ -1,24 +1,24 @@
 @interface PCCalendarVisitPredictor
-+ (BOOL)_locationIsValid:(id)a3;
-+ (void)_calculateLoiProbabilitiesWithLocation:(double *)a3 forEvent:(id)a4 usingHistory:(id)a5 andCalendar:(id)a6 atTime:(double)a7;
-+ (void)_calculateOverlapFraction:(double *)a3 betweenVisit:(id)a4 andCalendar:(id)a5;
-+ (void)_findAssociatedVisits:(id *)a3 forCalendarEvent:(id)a4 usingVisitHistory:(id)a5;
-+ (void)_formPrediction:(id *)a3 fromLocationCalEvent:(id)a4 probability:(double)a5 currentTime:(double)a6;
-+ (void)_formPrediction:(id *)a3 fromNoLocationCalEvent:(id)a4 probableVisit:(id)a5 currentTime:(double)a6;
-+ (void)_formPredictionCommon:(id *)a3 begin:(double)a4 end:(double)a5 probability:(double)a6 currentTime:(double)a7;
-+ (void)_parseLocationList:(id)a3 intoArray:(id *)a4;
-+ (void)predictWithHistory:(id)a3 calendarEvents:(id)a4 atTime:(double)a5 results:(id *)a6;
++ (BOOL)_locationIsValid:(id)valid;
++ (void)_calculateLoiProbabilitiesWithLocation:(double *)location forEvent:(id)event usingHistory:(id)history andCalendar:(id)calendar atTime:(double)time;
++ (void)_calculateOverlapFraction:(double *)fraction betweenVisit:(id)visit andCalendar:(id)calendar;
++ (void)_findAssociatedVisits:(id *)visits forCalendarEvent:(id)event usingVisitHistory:(id)history;
++ (void)_formPrediction:(id *)prediction fromLocationCalEvent:(id)event probability:(double)probability currentTime:(double)time;
++ (void)_formPrediction:(id *)prediction fromNoLocationCalEvent:(id)event probableVisit:(id)visit currentTime:(double)time;
++ (void)_formPredictionCommon:(id *)common begin:(double)begin end:(double)end probability:(double)probability currentTime:(double)time;
++ (void)_parseLocationList:(id)list intoArray:(id *)array;
++ (void)predictWithHistory:(id)history calendarEvents:(id)events atTime:(double)time results:(id *)results;
 @end
 
 @implementation PCCalendarVisitPredictor
 
-+ (void)_parseLocationList:(id)a3 intoArray:(id *)a4
++ (void)_parseLocationList:(id)list intoArray:(id *)array
 {
-  v12 = a3;
-  v5 = [v12 componentsSeparatedByString:@""];;
+  listCopy = list;
+  v5 = [listCopy componentsSeparatedByString:@""];;
   v6 = [v5 mutableCopy];
 
-  if ([v12 length])
+  if ([listCopy length])
   {
     v7 = 0;
     v8 = 0;
@@ -40,71 +40,71 @@
       v7 = v8;
     }
 
-    while ([v12 length] > v8);
+    while ([listCopy length] > v8);
   }
 
   v11 = v6;
-  *a4 = v6;
+  *array = v6;
 }
 
-+ (void)_calculateOverlapFraction:(double *)a3 betweenVisit:(id)a4 andCalendar:(id)a5
++ (void)_calculateOverlapFraction:(double *)fraction betweenVisit:(id)visit andCalendar:(id)calendar
 {
-  v25 = a4;
-  v7 = a5;
-  *a3 = 0.0;
-  if ([v7 hasStartTimeCFAbsolute] && objc_msgSend(v7, "hasEndTimeCFAbsolute"))
+  visitCopy = visit;
+  calendarCopy = calendar;
+  *fraction = 0.0;
+  if ([calendarCopy hasStartTimeCFAbsolute] && objc_msgSend(calendarCopy, "hasEndTimeCFAbsolute"))
   {
-    [v25 entryTimeCFAbsolute];
+    [visitCopy entryTimeCFAbsolute];
     v9 = v8;
-    [v7 startTimeCFAbsolute];
+    [calendarCopy startTimeCFAbsolute];
     if (v9 < v10)
     {
-      [v7 startTimeCFAbsolute];
+      [calendarCopy startTimeCFAbsolute];
       v9 = v11;
     }
 
-    [v25 exitTimeCFAbsolute];
+    [visitCopy exitTimeCFAbsolute];
     v13 = v12;
-    [v7 endTimeCFAbsolute];
+    [calendarCopy endTimeCFAbsolute];
     if (v13 > v14)
     {
-      [v7 endTimeCFAbsolute];
+      [calendarCopy endTimeCFAbsolute];
       v13 = v15;
     }
 
     if (v13 > v9)
     {
-      [v7 endTimeCFAbsolute];
+      [calendarCopy endTimeCFAbsolute];
       v17 = v16;
-      [v7 startTimeCFAbsolute];
+      [calendarCopy startTimeCFAbsolute];
       v19 = v17 - v18;
       v20 = 1.0;
       if (v19 >= 0.1)
       {
         v21 = v13 - v9;
-        [v7 endTimeCFAbsolute];
+        [calendarCopy endTimeCFAbsolute];
         v23 = v22;
-        [v7 startTimeCFAbsolute];
+        [calendarCopy startTimeCFAbsolute];
         v20 = v21 / (v23 - v24);
       }
 
-      *a3 = v20;
+      *fraction = v20;
     }
   }
 }
 
-+ (void)_findAssociatedVisits:(id *)a3 forCalendarEvent:(id)a4 usingVisitHistory:(id)a5
++ (void)_findAssociatedVisits:(id *)visits forCalendarEvent:(id)event usingVisitHistory:(id)history
 {
-  v24 = a3;
+  visitsCopy = visits;
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a5;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  eventCopy = event;
+  historyCopy = history;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v7;
+  v9 = historyCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -120,32 +120,32 @@
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 loiIdentifier];
+        loiIdentifier = [v14 loiIdentifier];
 
-        if (v15)
+        if (loiIdentifier)
         {
           v25 = 0.0;
-          [PCCalendarVisitPredictor _calculateOverlapFraction:&v25 betweenVisit:v14 andCalendar:v6];
+          [PCCalendarVisitPredictor _calculateOverlapFraction:&v25 betweenVisit:v14 andCalendar:eventCopy];
           v16 = v25;
           if (v25 > 0.6)
           {
-            v17 = [v14 loiIdentifier];
-            v18 = [v8 objectForKeyedSubscript:v17];
+            loiIdentifier2 = [v14 loiIdentifier];
+            v18 = [dictionary objectForKeyedSubscript:loiIdentifier2];
 
             if (v18)
             {
-              v19 = [v14 loiIdentifier];
-              v20 = [v8 objectForKeyedSubscript:v19];
-              [v20 fractionOfCalDuration];
-              [v20 setFractionOfCalDuration:v21 + v25];
+              loiIdentifier3 = [v14 loiIdentifier];
+              loiIdentifier4 = [dictionary objectForKeyedSubscript:loiIdentifier3];
+              [loiIdentifier4 fractionOfCalDuration];
+              [loiIdentifier4 setFractionOfCalDuration:v21 + v25];
             }
 
             else
             {
               v22 = [PCCalendarAssociatedVisit alloc];
-              v19 = [(PCCalendarAssociatedVisit *)v22 initWithLocation:v14 atFraction:v25];
-              v20 = [v14 loiIdentifier];
-              [v8 setObject:v19 forKeyedSubscript:v20];
+              loiIdentifier3 = [(PCCalendarAssociatedVisit *)v22 initWithLocation:v14 atFraction:v25];
+              loiIdentifier4 = [v14 loiIdentifier];
+              [dictionary setObject:loiIdentifier3 forKeyedSubscript:loiIdentifier4];
             }
           }
         }
@@ -157,19 +157,19 @@
     while (v11);
   }
 
-  *v24 = [v8 allValues];
+  *visitsCopy = [dictionary allValues];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_locationIsValid:(id)a3
++ (BOOL)_locationIsValid:(id)valid
 {
-  v3 = a3;
-  v4 = v3;
+  validCopy = valid;
+  v4 = validCopy;
   v7 = 0;
-  if (v3)
+  if (validCopy)
   {
-    if ([v3 hasLocationLatitudeDeg])
+    if ([validCopy hasLocationLatitudeDeg])
     {
       if ([v4 hasLocationLongitudeDeg])
       {
@@ -185,26 +185,26 @@
   return v7;
 }
 
-+ (void)_calculateLoiProbabilitiesWithLocation:(double *)a3 forEvent:(id)a4 usingHistory:(id)a5 andCalendar:(id)a6 atTime:(double)a7
++ (void)_calculateLoiProbabilitiesWithLocation:(double *)location forEvent:(id)event usingHistory:(id)history andCalendar:(id)calendar atTime:(double)time
 {
   v69 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v55 = a5;
-  v11 = a6;
+  eventCopy = event;
+  historyCopy = history;
+  calendarCopy = calendar;
   v12 = [PCLatLon alloc];
-  v13 = [v10 location];
-  [v13 locationLatitudeDeg];
+  location = [eventCopy location];
+  [location locationLatitudeDeg];
   v15 = v14;
-  v54 = v10;
-  v16 = [v10 location];
-  [v16 locationLongitudeDeg];
+  v54 = eventCopy;
+  location2 = [eventCopy location];
+  [location2 locationLongitudeDeg];
   v57 = [(PCLatLon *)v12 initWithLatitude:v15 longitude:v17];
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v18 = v11;
+  v18 = calendarCopy;
   v19 = [v18 countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v19)
   {
@@ -232,15 +232,15 @@
           if ([v26 hasStartTimeCFAbsolute])
           {
             [v26 endTimeCFAbsolute];
-            if (v27 <= a7)
+            if (v27 <= time)
             {
-              v28 = [v10 calendarId];
-              v29 = [v26 calendarId];
-              if ([v28 isEqual:v29])
+              calendarId = [eventCopy calendarId];
+              calendarId2 = [v26 calendarId];
+              if ([calendarId isEqual:calendarId2])
               {
                 v30 = *(v24 + 1968);
-                v31 = [v26 location];
-                LODWORD(v30) = [v30 _locationIsValid:v31];
+                location3 = [v26 location];
+                LODWORD(v30) = [v30 _locationIsValid:location3];
 
                 if (!v30)
                 {
@@ -250,14 +250,14 @@
 
                 v32 = *(v24 + 1968);
                 v62 = 0;
-                [v32 _findAssociatedVisits:&v62 forCalendarEvent:v26 usingVisitHistory:v55];
+                [v32 _findAssociatedVisits:&v62 forCalendarEvent:v26 usingVisitHistory:historyCopy];
                 v33 = v62;
                 v58 = 0u;
                 v59 = 0u;
                 v60 = 0u;
                 v61 = 0u;
-                v28 = v33;
-                v34 = [v28 countByEnumeratingWithState:&v58 objects:v67 count:16];
+                calendarId = v33;
+                v34 = [calendarId countByEnumeratingWithState:&v58 objects:v67 count:16];
                 if (v34)
                 {
                   v35 = v34;
@@ -268,18 +268,18 @@
                     {
                       if (*v59 != v36)
                       {
-                        objc_enumerationMutation(v28);
+                        objc_enumerationMutation(calendarId);
                       }
 
                       v38 = *(*(&v58 + 1) + 8 * i);
                       v39 = [PCLatLon alloc];
-                      v40 = [v38 visit];
-                      v41 = [v40 location];
-                      [v41 locationLatitudeDeg];
+                      visit = [v38 visit];
+                      location4 = [visit location];
+                      [location4 locationLatitudeDeg];
                       v43 = v42;
-                      v44 = [v38 visit];
-                      v45 = [v44 location];
-                      [v45 locationLongitudeDeg];
+                      visit2 = [v38 visit];
+                      location5 = [visit2 location];
+                      [location5 locationLongitudeDeg];
                       v47 = [(PCLatLon *)v39 initWithLatitude:v43 longitude:v46];
 
                       [(PCLatLon *)v47 distanceTo:v57];
@@ -292,7 +292,7 @@
                       }
                     }
 
-                    v35 = [v28 countByEnumeratingWithState:&v58 objects:v67 count:16];
+                    v35 = [calendarId countByEnumeratingWithState:&v58 objects:v67 count:16];
                     if (v35)
                     {
                       continue;
@@ -303,7 +303,7 @@
 
 LABEL_23:
                   v18 = v53;
-                  v10 = v54;
+                  eventCopy = v54;
                   v21 = v52;
                   v24 = 0x1E83B7000;
                 }
@@ -337,97 +337,97 @@ LABEL_26:
   v23 = 0.2;
 LABEL_30:
 
-  *a3 = v22 / v23;
+  *location = v22 / v23;
   v50 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_formPredictionCommon:(id *)a3 begin:(double)a4 end:(double)a5 probability:(double)a6 currentTime:(double)a7
++ (void)_formPredictionCommon:(id *)common begin:(double)begin end:(double)end probability:(double)probability currentTime:(double)time
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (a4 >= a7)
+  if (begin >= time)
   {
-    v12 = a4;
+    beginCopy = begin;
   }
 
   else
   {
-    v12 = a7 + 0.001;
+    beginCopy = time + 0.001;
   }
 
-  if (a7 + 86400.0 > a5)
+  if (time + 86400.0 > end)
   {
-    v13 = a5;
+    endCopy = end;
   }
 
   else
   {
-    v13 = a7 + 86400.0;
+    endCopy = time + 86400.0;
   }
 
   v14 = _plc_log_get_normal_handle(PCLogCategoryCalendarVisitPredictor);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 134219008;
-    v48 = a4;
+    beginCopy2 = begin;
     v49 = 2048;
-    v50 = a5;
+    endCopy2 = end;
     v51 = 2048;
-    v52 = v12;
+    v52 = beginCopy;
     v53 = 2048;
-    v54 = v13;
+    v54 = endCopy;
     v55 = 2048;
-    v56 = a7;
+    timeCopy = time;
     _os_log_impl(&dword_1CEE74000, v14, OS_LOG_TYPE_INFO, "begin, %.5f, end, %.5f, clampedStartTime, %.5f, clampedEndTime, %.5f, currentTime, %.5f", buf, 0x34u);
   }
 
-  if (v13 >= v12)
+  if (endCopy >= beginCopy)
   {
-    *a3 = objc_alloc_init(PCPPredictedContextLocation);
+    *common = objc_alloc_init(PCPPredictedContextLocation);
     v16 = objc_alloc_init(PCPLocationOfInterest);
-    [*a3 setLocationOfInterest:v16];
+    [*common setLocationOfInterest:v16];
 
     v17 = objc_alloc_init(PCPPredictedContext);
-    [*a3 setPredictedContext:v17];
+    [*common setPredictedContext:v17];
 
-    v18 = [*a3 predictedContext];
-    [v18 setProbability:a6];
+    predictedContext = [*common predictedContext];
+    [predictedContext setProbability:probability];
 
-    v19 = [*a3 predictedContext];
-    [v19 setContextType:1];
+    predictedContext2 = [*common predictedContext];
+    [predictedContext2 setContextType:1];
 
     v20 = objc_alloc_init(PCPPredictedContextDateInterval);
-    v21 = [*a3 predictedContext];
-    [v21 setDateInterval:v20];
+    predictedContext3 = [*common predictedContext];
+    [predictedContext3 setDateInterval:v20];
 
     v22 = objc_alloc_init(PCPPredictedContextDate);
-    v23 = [*a3 predictedContext];
-    v24 = [v23 dateInterval];
-    [v24 setStartDate:v22];
+    predictedContext4 = [*common predictedContext];
+    dateInterval = [predictedContext4 dateInterval];
+    [dateInterval setStartDate:v22];
 
-    v25 = [*a3 predictedContext];
-    v26 = [v25 dateInterval];
-    v27 = [v26 startDate];
-    [v27 setDate:v12];
+    predictedContext5 = [*common predictedContext];
+    dateInterval2 = [predictedContext5 dateInterval];
+    startDate = [dateInterval2 startDate];
+    [startDate setDate:beginCopy];
 
-    v28 = [*a3 predictedContext];
-    v29 = [v28 dateInterval];
-    v30 = [v29 startDate];
-    [v30 setConfidenceInterval:(v13 - v12) * 0.1];
+    predictedContext6 = [*common predictedContext];
+    dateInterval3 = [predictedContext6 dateInterval];
+    startDate2 = [dateInterval3 startDate];
+    [startDate2 setConfidenceInterval:(endCopy - beginCopy) * 0.1];
 
     v31 = objc_alloc_init(PCPPredictedContextDate);
-    v32 = [*a3 predictedContext];
-    v33 = [v32 dateInterval];
-    [v33 setEndDate:v31];
+    predictedContext7 = [*common predictedContext];
+    dateInterval4 = [predictedContext7 dateInterval];
+    [dateInterval4 setEndDate:v31];
 
-    v34 = [*a3 predictedContext];
-    v35 = [v34 dateInterval];
-    v36 = [v35 endDate];
-    [v36 setDate:v13];
+    predictedContext8 = [*common predictedContext];
+    dateInterval5 = [predictedContext8 dateInterval];
+    endDate = [dateInterval5 endDate];
+    [endDate setDate:endCopy];
 
-    v37 = [*a3 predictedContext];
-    v38 = [v37 dateInterval];
-    v39 = [v38 endDate];
-    [v39 setConfidenceInterval:(v13 - v12) * 0.1];
+    predictedContext9 = [*common predictedContext];
+    dateInterval6 = [predictedContext9 dateInterval];
+    endDate2 = [dateInterval6 endDate];
+    [endDate2 setConfidenceInterval:(endCopy - beginCopy) * 0.1];
 
     v15 = objc_alloc_init(PCPSource);
     v40 = objc_opt_class();
@@ -437,8 +437,8 @@ LABEL_30:
     v46 = v15;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
     v43 = [v42 mutableCopy];
-    v44 = [*a3 predictedContext];
-    [v44 setSources:v43];
+    predictedContext10 = [*common predictedContext];
+    [predictedContext10 setSources:v43];
   }
 
   else
@@ -454,27 +454,27 @@ LABEL_30:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_formPrediction:(id *)a3 fromNoLocationCalEvent:(id)a4 probableVisit:(id)a5 currentTime:(double)a6
++ (void)_formPrediction:(id *)prediction fromNoLocationCalEvent:(id)event probableVisit:(id)visit currentTime:(double)time
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a4;
-  [v10 startTimeCFAbsolute];
+  visitCopy = visit;
+  eventCopy = event;
+  [eventCopy startTimeCFAbsolute];
   v12 = v11;
-  [v10 endTimeCFAbsolute];
+  [eventCopy endTimeCFAbsolute];
   v14 = v13;
-  [v9 probability];
-  [PCCalendarVisitPredictor _formPredictionCommon:a3 begin:v12 end:v14 probability:v15 currentTime:a6];
-  v16 = [v9 visit];
-  v17 = [v16 location];
-  v18 = [*a3 locationOfInterest];
-  [v18 setLocation:v17];
+  [visitCopy probability];
+  [PCCalendarVisitPredictor _formPredictionCommon:prediction begin:v12 end:v14 probability:v15 currentTime:time];
+  visit = [visitCopy visit];
+  location = [visit location];
+  locationOfInterest = [*prediction locationOfInterest];
+  [locationOfInterest setLocation:location];
 
-  v19 = [v9 visit];
+  visit2 = [visitCopy visit];
 
-  v20 = [v19 loiIdentifier];
-  v21 = [*a3 locationOfInterest];
-  [v21 setLoiIdentifier:v20];
+  loiIdentifier = [visit2 loiIdentifier];
+  locationOfInterest2 = [*prediction locationOfInterest];
+  [locationOfInterest2 setLoiIdentifier:loiIdentifier];
 
   v22 = objc_alloc_init(PCPSource);
   v23 = objc_opt_class();
@@ -482,34 +482,34 @@ LABEL_30:
   [(PCPSource *)v22 setIdentifier:v24];
 
   v25 = objc_alloc_init(PCPPredictedContextSource);
-  [(PCPPredictedContextSource *)v25 setCalendarEvent:v10];
+  [(PCPPredictedContextSource *)v25 setCalendarEvent:eventCopy];
 
   [(PCPSource *)v22 setPredictedContextSource:v25];
   v30[0] = v22;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
   v27 = [v26 mutableCopy];
-  v28 = [*a3 predictedContext];
-  [v28 setSources:v27];
+  predictedContext = [*prediction predictedContext];
+  [predictedContext setSources:v27];
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_formPrediction:(id *)a3 fromLocationCalEvent:(id)a4 probability:(double)a5 currentTime:(double)a6
++ (void)_formPrediction:(id *)prediction fromLocationCalEvent:(id)event probability:(double)probability currentTime:(double)time
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  [v9 startTimeCFAbsolute];
+  eventCopy = event;
+  [eventCopy startTimeCFAbsolute];
   v11 = v10;
-  [v9 endTimeCFAbsolute];
-  [PCCalendarVisitPredictor _formPredictionCommon:a3 begin:v11 end:v12 probability:a5 currentTime:a6];
-  v13 = [v9 location];
-  v14 = [*a3 locationOfInterest];
-  [v14 setLocation:v13];
+  [eventCopy endTimeCFAbsolute];
+  [PCCalendarVisitPredictor _formPredictionCommon:prediction begin:v11 end:v12 probability:probability currentTime:time];
+  location = [eventCopy location];
+  locationOfInterest = [*prediction locationOfInterest];
+  [locationOfInterest setLocation:location];
 
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v16 = [PCAlgorithmsCommonUtils dataFromUUID:v15];
-  v17 = [*a3 locationOfInterest];
-  [v17 setLoiIdentifier:v16];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v16 = [PCAlgorithmsCommonUtils dataFromUUID:uUID];
+  locationOfInterest2 = [*prediction locationOfInterest];
+  [locationOfInterest2 setLoiIdentifier:v16];
 
   v18 = objc_alloc_init(PCPSource);
   v19 = objc_opt_class();
@@ -517,32 +517,32 @@ LABEL_30:
   [(PCPSource *)v18 setIdentifier:v20];
 
   v21 = objc_alloc_init(PCPPredictedContextSource);
-  [(PCPPredictedContextSource *)v21 setCalendarEvent:v9];
+  [(PCPPredictedContextSource *)v21 setCalendarEvent:eventCopy];
 
   [(PCPSource *)v18 setPredictedContextSource:v21];
   v26[0] = v18;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v23 = [v22 mutableCopy];
-  v24 = [*a3 predictedContext];
-  [v24 setSources:v23];
+  predictedContext = [*prediction predictedContext];
+  [predictedContext setSources:v23];
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)predictWithHistory:(id)a3 calendarEvents:(id)a4 atTime:(double)a5 results:(id *)a6
++ (void)predictWithHistory:(id)history calendarEvents:(id)events atTime:(double)time results:(id *)results
 {
   v46 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v9 = a4;
-  if (a6)
+  historyCopy = history;
+  eventsCopy = events;
+  if (results)
   {
-    *a6 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    *results = objc_alloc_init(MEMORY[0x1E695DF70]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v31 = v9;
-    v10 = v9;
+    v31 = eventsCopy;
+    v10 = eventsCopy;
     v11 = [v10 countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v11)
     {
@@ -563,21 +563,21 @@ LABEL_30:
             if ([v15 hasStartTimeCFAbsolute])
             {
               [v15 endTimeCFAbsolute];
-              if (v16 > a5)
+              if (v16 > time)
               {
-                v17 = [v15 location];
-                v18 = [PCCalendarVisitPredictor _locationIsValid:v17];
+                location = [v15 location];
+                v18 = [PCCalendarVisitPredictor _locationIsValid:location];
 
                 if (v18)
                 {
                   *v44 = 0;
-                  [PCCalendarVisitPredictor _calculateLoiProbabilitiesWithLocation:v44 forEvent:v15 usingHistory:v32 andCalendar:v10 atTime:a5];
+                  [PCCalendarVisitPredictor _calculateLoiProbabilitiesWithLocation:v44 forEvent:v15 usingHistory:historyCopy andCalendar:v10 atTime:time];
                   v38 = 0;
-                  [PCCalendarVisitPredictor _formPrediction:&v38 fromLocationCalEvent:v15 probability:*v44 currentTime:a5];
+                  [PCCalendarVisitPredictor _formPrediction:&v38 fromLocationCalEvent:v15 probability:*v44 currentTime:time];
                   v19 = v38;
                   if (v19)
                   {
-                    [*a6 addObject:v19];
+                    [*results addObject:v19];
                     v20 = _plc_log_get_normal_handle(PCLogCategoryCalendarVisitPredictor);
                     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
                     {
@@ -607,12 +607,12 @@ LABEL_30:
       while (v12);
     }
 
-    if (*a6 && [*a6 count])
+    if (*results && [*results count])
     {
       v21 = _plc_log_get_normal_handle(PCLogCategoryCalendarVisitPredictor);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [*a6 count];
+        v22 = [*results count];
         *v44 = 134217984;
         *&v44[4] = v22;
         _os_log_impl(&dword_1CEE74000, v21, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", v44, 0xCu);
@@ -622,7 +622,7 @@ LABEL_30:
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v23 = *a6;
+      v23 = *results;
       v24 = [v23 countByEnumeratingWithState:&v33 objects:v43 count:16];
       if (v24)
       {
@@ -664,7 +664,7 @@ LABEL_30:
       }
     }
 
-    v9 = v31;
+    eventsCopy = v31;
   }
 
   else

@@ -1,24 +1,24 @@
 @interface NoteUserActivityState
-- (NoteUserActivityState)initWithNote:(id)a3;
-- (void)updateUserActivity:(id)a3;
+- (NoteUserActivityState)initWithNote:(id)note;
+- (void)updateUserActivity:(id)activity;
 @end
 
 @implementation NoteUserActivityState
 
-- (NoteUserActivityState)initWithNote:(id)a3
+- (NoteUserActivityState)initWithNote:(id)note
 {
   v4.receiver = self;
   v4.super_class = NoteUserActivityState;
-  return [(NoteUserActivityState *)&v4 initWithNote:a3];
+  return [(NoteUserActivityState *)&v4 initWithNote:note];
 }
 
-- (void)updateUserActivity:(id)a3
+- (void)updateUserActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = NoteUserActivityState;
-  v4 = a3;
-  [(NoteUserActivityState *)&v5 updateUserActivity:v4];
-  sub_10008BE24(v4, self);
+  activityCopy = activity;
+  [(NoteUserActivityState *)&v5 updateUserActivity:activityCopy];
+  sub_10008BE24(activityCopy, self);
 }
 
 @end

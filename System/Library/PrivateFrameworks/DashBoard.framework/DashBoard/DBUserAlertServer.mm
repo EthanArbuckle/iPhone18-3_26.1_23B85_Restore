@@ -1,31 +1,31 @@
 @interface DBUserAlertServer
 - (DBAppAlertPresenting)appPresenter;
 - (DBSystemAlertPresenting)systemPresenter;
-- (DBUserAlertServer)initWithSafeAreaInsets:(UIEdgeInsets)a3 environmentConfiguration:(id)a4;
+- (DBUserAlertServer)initWithSafeAreaInsets:(UIEdgeInsets)insets environmentConfiguration:(id)configuration;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)_sceneForAlert:(id)a3;
-- (id)alertForBundleID:(id)a3;
-- (void)_dismissAlert:(id)a3;
-- (void)_dismissAlert:(id)a3 overApplication:(id)a4;
-- (void)_dismissAppAlert:(id)a3;
-- (void)_dismissSystemAlert:(id)a3;
-- (void)_presentAlert:(id)a3 overApplication:(id)a4;
-- (void)_presentSystemAlert:(id)a3;
-- (void)alertService:(id)a3 wantsDismissalForAlert:(id)a4;
-- (void)alertService:(id)a3 wantsPresentationForAlert:(id)a4 preferredPresentationStyle:(int64_t)a5;
+- (id)_sceneForAlert:(id)alert;
+- (id)alertForBundleID:(id)d;
+- (void)_dismissAlert:(id)alert;
+- (void)_dismissAlert:(id)alert overApplication:(id)application;
+- (void)_dismissAppAlert:(id)alert;
+- (void)_dismissSystemAlert:(id)alert;
+- (void)_presentAlert:(id)alert overApplication:(id)application;
+- (void)_presentSystemAlert:(id)alert;
+- (void)alertService:(id)service wantsDismissalForAlert:(id)alert;
+- (void)alertService:(id)service wantsPresentationForAlert:(id)alert preferredPresentationStyle:(int64_t)style;
 - (void)invalidate;
-- (void)updateAlertSceneFramesWithSafeAreaInsets:(UIEdgeInsets)a3;
+- (void)updateAlertSceneFramesWithSafeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation DBUserAlertServer
 
-- (DBUserAlertServer)initWithSafeAreaInsets:(UIEdgeInsets)a3 environmentConfiguration:(id)a4
+- (DBUserAlertServer)initWithSafeAreaInsets:(UIEdgeInsets)insets environmentConfiguration:(id)configuration
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v10 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  configurationCopy = configuration;
   v24.receiver = self;
   v24.super_class = DBUserAlertServer;
   v11 = [(DBUserAlertServer *)&v24 init];
@@ -36,7 +36,7 @@
     v11->_safeAreaInsets.left = left;
     v11->_safeAreaInsets.bottom = bottom;
     v11->_safeAreaInsets.right = right;
-    objc_storeStrong(&v11->_environmentConfiguration, a4);
+    objc_storeStrong(&v11->_environmentConfiguration, configuration);
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingSystemAlerts = v12->_pendingSystemAlerts;
     v12->_pendingSystemAlerts = v13;
@@ -67,29 +67,29 @@
   v21 = *MEMORY[0x277D85DE8];
   [(DBUserAlertServer *)self setSystemPresenter:0];
   [(DBUserAlertServer *)self setAppPresenter:0];
-  v3 = [(DBUserAlertServer *)self pendingSystemAlerts];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_4];
+  pendingSystemAlerts = [(DBUserAlertServer *)self pendingSystemAlerts];
+  [pendingSystemAlerts enumerateObjectsUsingBlock:&__block_literal_global_4];
 
-  v4 = [(DBUserAlertServer *)self pendingSystemAlerts];
-  [v4 removeAllObjects];
+  pendingSystemAlerts2 = [(DBUserAlertServer *)self pendingSystemAlerts];
+  [pendingSystemAlerts2 removeAllObjects];
 
-  v5 = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
-  [v5 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_91];
+  pendingAlertsForAppBundleID = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
+  [pendingAlertsForAppBundleID enumerateKeysAndObjectsUsingBlock:&__block_literal_global_91];
 
-  v6 = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
-  [v6 removeAllObjects];
+  pendingAlertsForAppBundleID2 = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
+  [pendingAlertsForAppBundleID2 removeAllObjects];
 
-  v7 = [(DBUserAlertServer *)self service];
-  [v7 invalidate];
+  service = [(DBUserAlertServer *)self service];
+  [service invalidate];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(DBUserAlertServer *)self userAlertScenes];
-  v9 = [v8 allValues];
+  userAlertScenes = [(DBUserAlertServer *)self userAlertScenes];
+  allValues = [userAlertScenes allValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -101,60 +101,60 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v16 + 1) + 8 * v13++) invalidate];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [(DBUserAlertServer *)self userAlertScenes];
-  [v14 removeAllObjects];
+  userAlertScenes2 = [(DBUserAlertServer *)self userAlertScenes];
+  [userAlertScenes2 removeAllObjects];
 
-  v15 = [(DBUserAlertServer *)self userAlertSceneWorkspace];
-  [v15 invalidate];
+  userAlertSceneWorkspace = [(DBUserAlertServer *)self userAlertSceneWorkspace];
+  [userAlertSceneWorkspace invalidate];
 }
 
-- (id)alertForBundleID:(id)a3
+- (id)alertForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  pendingAlertsForAppBundleID = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
+  v6 = [pendingAlertsForAppBundleID objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (void)updateAlertSceneFramesWithSafeAreaInsets:(UIEdgeInsets)a3
+- (void)updateAlertSceneFramesWithSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(DBUserAlertServer *)self setSafeAreaInsets:?];
-  v8 = [(DBUserAlertServer *)self environmentConfiguration];
-  [v8 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBUserAlertServer *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v10 = v9;
   v12 = v11;
 
   v13 = *MEMORY[0x277CBF348];
   v14 = *(MEMORY[0x277CBF348] + 8);
-  v15 = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
+  pendingAlertsForAppBundleID = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __62__DBUserAlertServer_updateAlertSceneFramesWithSafeAreaInsets___block_invoke;
@@ -167,7 +167,7 @@
   *&v16[9] = left;
   *&v16[10] = bottom;
   *&v16[11] = right;
-  [v15 enumerateKeysAndObjectsUsingBlock:v16];
+  [pendingAlertsForAppBundleID enumerateKeysAndObjectsUsingBlock:v16];
 }
 
 uint64_t __62__DBUserAlertServer_updateAlertSceneFramesWithSafeAreaInsets___block_invoke(_OWORD *a1, uint64_t a2, void *a3)
@@ -185,15 +185,15 @@ uint64_t __62__DBUserAlertServer_updateAlertSceneFramesWithSafeAreaInsets___bloc
   return [a3 enumerateObjectsUsingBlock:v6];
 }
 
-- (void)alertService:(id)a3 wantsPresentationForAlert:(id)a4 preferredPresentationStyle:(int64_t)a5
+- (void)alertService:(id)service wantsPresentationForAlert:(id)alert preferredPresentationStyle:(int64_t)style
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  alertCopy = alert;
   v8 = DBLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v7;
+    v14 = alertCopy;
     _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "alertService:wantsPresentationForAlert: %@", buf, 0xCu);
   }
 
@@ -202,9 +202,9 @@ uint64_t __62__DBUserAlertServer_updateAlertSceneFramesWithSafeAreaInsets___bloc
   block[2] = __87__DBUserAlertServer_alertService_wantsPresentationForAlert_preferredPresentationStyle___block_invoke;
   block[3] = &unk_278F01820;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = alertCopy;
+  styleCopy = style;
+  v9 = alertCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -294,15 +294,15 @@ void __87__DBUserAlertServer_alertService_wantsPresentationForAlert_preferredPre
   }
 }
 
-- (void)alertService:(id)a3 wantsDismissalForAlert:(id)a4
+- (void)alertService:(id)service wantsDismissalForAlert:(id)alert
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  alertCopy = alert;
   v6 = DBLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = alertCopy;
     _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "alertService:wantsDismissalForAlert: %@", buf, 0xCu);
   }
 
@@ -310,9 +310,9 @@ void __87__DBUserAlertServer_alertService_wantsPresentationForAlert_preferredPre
   v8[1] = 3221225472;
   v8[2] = __57__DBUserAlertServer_alertService_wantsDismissalForAlert___block_invoke;
   v8[3] = &unk_278F014B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = alertCopy;
+  selfCopy = self;
+  v7 = alertCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -336,12 +336,12 @@ uint64_t __57__DBUserAlertServer_alertService_wantsDismissalForAlert___block_inv
   }
 }
 
-- (id)_sceneForAlert:(id)a3
+- (id)_sceneForAlert:(id)alert
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [a3 identifier];
-  v5 = [(DBUserAlertServer *)self userAlertScenes];
-  v6 = [v5 objectForKey:v4];
+  identifier = [alert identifier];
+  userAlertScenes = [(DBUserAlertServer *)self userAlertScenes];
+  v6 = [userAlertScenes objectForKey:identifier];
 
   if (v6)
   {
@@ -351,31 +351,31 @@ uint64_t __57__DBUserAlertServer_alertService_wantsDismissalForAlert___block_inv
   else
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(DBUserAlertServer *)self environmentConfiguration];
-    v10 = [v9 displayIdentity];
-    v11 = [v8 stringWithFormat:@"UserAlert-%@-%@", v4, v10];
+    environmentConfiguration = [(DBUserAlertServer *)self environmentConfiguration];
+    displayIdentity = [environmentConfiguration displayIdentity];
+    v11 = [v8 stringWithFormat:@"UserAlert-%@-%@", identifier, displayIdentity];
 
     v12 = DBLogForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v4;
+      v21 = identifier;
       _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_DEFAULT, "Creating local scene for user alert %{public}@", buf, 0xCu);
     }
 
-    v13 = [(DBUserAlertServer *)self userAlertSceneWorkspace];
+    userAlertSceneWorkspace = [(DBUserAlertServer *)self userAlertSceneWorkspace];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __36__DBUserAlertServer__sceneForAlert___block_invoke;
     v18[3] = &unk_278F01E30;
     v14 = v11;
     v19 = v14;
-    v15 = [v13 createScene:v18];
+    v15 = [userAlertSceneWorkspace createScene:v18];
 
     if (v15)
     {
-      v16 = [(DBUserAlertServer *)self userAlertScenes];
-      [v16 setObject:v15 forKey:v4];
+      userAlertScenes2 = [(DBUserAlertServer *)self userAlertScenes];
+      [userAlertScenes2 setObject:v15 forKey:identifier];
     }
 
     v7 = v15;
@@ -396,15 +396,15 @@ void __36__DBUserAlertServer__sceneForAlert___block_invoke(uint64_t a1, void *a2
   [v3 setSpecification:v5];
 }
 
-- (void)_dismissAppAlert:(id)a3
+- (void)_dismissAppAlert:(id)alert
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertCopy = alert;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = [v4 allowedApplicationBundleIDs];
+  obj = [alertCopy allowedApplicationBundleIDs];
   v5 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v5)
   {
@@ -413,7 +413,7 @@ void __36__DBUserAlertServer__sceneForAlert___block_invoke(uint64_t a1, void *a2
     v31 = *v35;
     *&v6 = 138412290;
     v28 = v6;
-    v30 = v4;
+    v30 = alertCopy;
     do
     {
       for (i = 0; i != v7; ++i)
@@ -424,32 +424,32 @@ void __36__DBUserAlertServer__sceneForAlert___block_invoke(uint64_t a1, void *a2
         }
 
         v10 = *(*(&v34 + 1) + 8 * i);
-        v11 = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        pendingAlertsForAppBundleID = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
+        v12 = [pendingAlertsForAppBundleID objectForKeyedSubscript:v10];
 
         if (v12)
         {
-          v13 = [v12 firstObject];
-          v14 = [v13 alert];
-          v15 = v4;
-          v16 = [v14 isEqual:v4];
+          firstObject = [v12 firstObject];
+          alert = [firstObject alert];
+          v15 = alertCopy;
+          v16 = [alert isEqual:alertCopy];
 
           if (v16)
           {
-            [v12 removeObject:v13];
-            [(DBUserAlertServer *)self _dismissAlert:v13 overApplication:v10];
-            v17 = v13;
+            [v12 removeObject:firstObject];
+            [(DBUserAlertServer *)self _dismissAlert:firstObject overApplication:v10];
+            v17 = firstObject;
 
-            v18 = [v12 firstObject];
-            if (v18)
+            firstObject2 = [v12 firstObject];
+            if (firstObject2)
             {
-              [(DBUserAlertServer *)self _presentAlert:v18 overApplication:v10];
+              [(DBUserAlertServer *)self _presentAlert:firstObject2 overApplication:v10];
             }
 
             else
             {
-              v22 = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
-              [v22 removeObjectForKey:v10];
+              pendingAlertsForAppBundleID2 = [(DBUserAlertServer *)self pendingAlertsForAppBundleID];
+              [pendingAlertsForAppBundleID2 removeObjectForKey:v10];
             }
           }
 
@@ -477,22 +477,22 @@ void __36__DBUserAlertServer__sceneForAlert___block_invoke(uint64_t a1, void *a2
               v8 = v21;
             }
 
-            v18 = v33;
+            firstObject2 = v33;
             v17 = v8;
           }
 
           v8 = v17;
-          v4 = v30;
+          alertCopy = v30;
         }
 
         else
         {
-          v13 = DBLogForCategory(0);
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          firstObject = DBLogForCategory(0);
+          if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
           {
             *buf = v28;
-            v39 = v4;
-            _os_log_error_impl(&dword_248146000, v13, OS_LOG_TYPE_ERROR, "Received dismissal request for unknown alert: %@", buf, 0xCu);
+            v39 = alertCopy;
+            _os_log_error_impl(&dword_248146000, firstObject, OS_LOG_TYPE_ERROR, "Received dismissal request for unknown alert: %@", buf, 0xCu);
           }
         }
       }
@@ -508,16 +508,16 @@ void __36__DBUserAlertServer__sceneForAlert___block_invoke(uint64_t a1, void *a2
     v8 = 0;
   }
 
-  v23 = [(DBUserAlertServer *)self userAlertScenes];
-  v24 = [v4 identifier];
-  v25 = [v23 objectForKey:v24];
+  userAlertScenes = [(DBUserAlertServer *)self userAlertScenes];
+  identifier = [alertCopy identifier];
+  v25 = [userAlertScenes objectForKey:identifier];
 
   if (v25)
   {
     [v25 invalidate];
-    v26 = [(DBUserAlertServer *)self userAlertScenes];
-    v27 = [v4 identifier];
-    [v26 removeObjectForKey:v27];
+    userAlertScenes2 = [(DBUserAlertServer *)self userAlertScenes];
+    identifier2 = [alertCopy identifier];
+    [userAlertScenes2 removeObjectForKey:identifier2];
   }
 
   [v8 invalidate];
@@ -531,30 +531,30 @@ uint64_t __38__DBUserAlertServer__dismissAppAlert___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (void)_dismissAlert:(id)a3
+- (void)_dismissAlert:(id)alert
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBUserAlertServer *)self pendingSystemAlerts];
-  v6 = [v5 firstObject];
+  alertCopy = alert;
+  pendingSystemAlerts = [(DBUserAlertServer *)self pendingSystemAlerts];
+  firstObject = [pendingSystemAlerts firstObject];
 
-  v7 = [v6 alert];
-  v8 = [v7 isEqual:v4];
+  alert = [firstObject alert];
+  v8 = [alert isEqual:alertCopy];
 
-  v9 = [(DBUserAlertServer *)self pendingSystemAlerts];
-  v10 = v9;
+  pendingSystemAlerts2 = [(DBUserAlertServer *)self pendingSystemAlerts];
+  v10 = pendingSystemAlerts2;
   if (v8)
   {
-    [v9 removeObject:v6];
+    [pendingSystemAlerts2 removeObject:firstObject];
 
-    [(DBUserAlertServer *)self _dismissSystemAlert:v6];
-    v11 = v6;
-    v12 = [(DBUserAlertServer *)self pendingSystemAlerts];
-    v13 = [v12 firstObject];
+    [(DBUserAlertServer *)self _dismissSystemAlert:firstObject];
+    v11 = firstObject;
+    pendingSystemAlerts3 = [(DBUserAlertServer *)self pendingSystemAlerts];
+    firstObject2 = [pendingSystemAlerts3 firstObject];
 
-    if (v13)
+    if (firstObject2)
     {
-      [(DBUserAlertServer *)self _presentSystemAlert:v13];
+      [(DBUserAlertServer *)self _presentSystemAlert:firstObject2];
     }
   }
 
@@ -564,7 +564,7 @@ uint64_t __38__DBUserAlertServer__dismissAppAlert___block_invoke(uint64_t a1, vo
     v23[1] = 3221225472;
     v23[2] = __35__DBUserAlertServer__dismissAlert___block_invoke;
     v23[3] = &unk_278F01E58;
-    v14 = v4;
+    v14 = alertCopy;
     v24 = v14;
     v11 = [v10 bs_firstObjectPassingTest:v23];
 
@@ -578,23 +578,23 @@ uint64_t __38__DBUserAlertServer__dismissAppAlert___block_invoke(uint64_t a1, vo
         _os_log_impl(&dword_248146000, v15, OS_LOG_TYPE_DEFAULT, "Removing pending alert from the queue: %@", buf, 0xCu);
       }
 
-      v16 = [(DBUserAlertServer *)self pendingSystemAlerts];
-      [v16 removeObject:v11];
+      pendingSystemAlerts4 = [(DBUserAlertServer *)self pendingSystemAlerts];
+      [pendingSystemAlerts4 removeObject:v11];
 
       v17 = v11;
     }
   }
 
-  v18 = [(DBUserAlertServer *)self userAlertScenes];
-  v19 = [v4 identifier];
-  v20 = [v18 objectForKey:v19];
+  userAlertScenes = [(DBUserAlertServer *)self userAlertScenes];
+  identifier = [alertCopy identifier];
+  v20 = [userAlertScenes objectForKey:identifier];
 
   if (v20)
   {
     [v20 invalidate];
-    v21 = [(DBUserAlertServer *)self userAlertScenes];
-    v22 = [v4 identifier];
-    [v21 removeObjectForKey:v22];
+    userAlertScenes2 = [(DBUserAlertServer *)self userAlertScenes];
+    identifier2 = [alertCopy identifier];
+    [userAlertScenes2 removeObjectForKey:identifier2];
   }
 
   [v11 invalidate];
@@ -608,89 +608,89 @@ uint64_t __35__DBUserAlertServer__dismissAlert___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (void)_presentSystemAlert:(id)a3
+- (void)_presentSystemAlert:(id)alert
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertCopy = alert;
   v5 = DBLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 alert];
+    alert = [alertCopy alert];
     v8 = 138412290;
-    v9 = v6;
+    v9 = alert;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "presenting system alert: %@", &v8, 0xCu);
   }
 
-  v7 = [(DBUserAlertServer *)self systemPresenter];
+  systemPresenter = [(DBUserAlertServer *)self systemPresenter];
   if (objc_opt_respondsToSelector())
   {
-    [v7 alertServer:self wantsSystemPresentationForAlert:v4];
+    [systemPresenter alertServer:self wantsSystemPresentationForAlert:alertCopy];
   }
 }
 
-- (void)_dismissSystemAlert:(id)a3
+- (void)_dismissSystemAlert:(id)alert
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertCopy = alert;
   v5 = DBLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 alert];
+    alert = [alertCopy alert];
     v8 = 138412290;
-    v9 = v6;
+    v9 = alert;
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "dismissing system alert: %@", &v8, 0xCu);
   }
 
-  v7 = [(DBUserAlertServer *)self systemPresenter];
+  systemPresenter = [(DBUserAlertServer *)self systemPresenter];
   if (objc_opt_respondsToSelector())
   {
-    [v7 alertServer:self wantsSystemDismissalForAlert:v4];
+    [systemPresenter alertServer:self wantsSystemDismissalForAlert:alertCopy];
   }
 }
 
-- (void)_presentAlert:(id)a3 overApplication:(id)a4
+- (void)_presentAlert:(id)alert overApplication:(id)application
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  applicationCopy = application;
   v8 = DBLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 alert];
+    alert = [alertCopy alert];
     v11 = 138412546;
-    v12 = v9;
+    v12 = alert;
     v13 = 2112;
-    v14 = v7;
+    v14 = applicationCopy;
     _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "presenting alert: %@ over: %@", &v11, 0x16u);
   }
 
-  v10 = [(DBUserAlertServer *)self appPresenter];
+  appPresenter = [(DBUserAlertServer *)self appPresenter];
   if (objc_opt_respondsToSelector())
   {
-    [v10 alertServer:self wantsAppPresentationForAlert:v6 bundleID:v7];
+    [appPresenter alertServer:self wantsAppPresentationForAlert:alertCopy bundleID:applicationCopy];
   }
 }
 
-- (void)_dismissAlert:(id)a3 overApplication:(id)a4
+- (void)_dismissAlert:(id)alert overApplication:(id)application
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  applicationCopy = application;
   v8 = DBLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 alert];
+    alert = [alertCopy alert];
     v11 = 138412546;
-    v12 = v9;
+    v12 = alert;
     v13 = 2112;
-    v14 = v7;
+    v14 = applicationCopy;
     _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "dismissing alert: %@ over: %@", &v11, 0x16u);
   }
 
-  v10 = [(DBUserAlertServer *)self appPresenter];
+  appPresenter = [(DBUserAlertServer *)self appPresenter];
   if (objc_opt_respondsToSelector())
   {
-    [v10 alertServer:self wantsAppDismissalForAlert:v6 bundleID:v7];
+    [appPresenter alertServer:self wantsAppDismissalForAlert:alertCopy bundleID:applicationCopy];
   }
 }
 

@@ -1,138 +1,138 @@
 @interface PMLLogRegEvaluationPlan
 - (NSString)description;
-- (PMLLogRegEvaluationPlan)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (PMLLogRegEvaluationPlan)initWithStore:(id)a3 tracker:(id)a4 planId:(id)a5 sessionDescriptor:(id)a6 maxSessionsLimit:(unint64_t)a7 sessionsInBatch:(unint64_t)a8 currentModelWeights:(id)a9 intercept:(BOOL)a10 skew:(double)a11 threshold:(double)a12 isMultiLabel:(BOOL)a13 positiveLabel:(unint64_t)a14 evaluationLevel:(unint64_t)a15;
-- (id)normalizeRegressor:(id)a3;
-- (id)runWithError:(id *)a3;
-- (id)toPlistWithChunks:(id)a3;
-- (void)loadSessionsWithBlock:(id)a3;
+- (PMLLogRegEvaluationPlan)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (PMLLogRegEvaluationPlan)initWithStore:(id)store tracker:(id)tracker planId:(id)id sessionDescriptor:(id)descriptor maxSessionsLimit:(unint64_t)limit sessionsInBatch:(unint64_t)batch currentModelWeights:(id)weights intercept:(BOOL)self0 skew:(double)self1 threshold:(double)self2 isMultiLabel:(BOOL)self3 positiveLabel:(unint64_t)self4 evaluationLevel:(unint64_t)self5;
+- (id)normalizeRegressor:(id)regressor;
+- (id)runWithError:(id *)error;
+- (id)toPlistWithChunks:(id)chunks;
+- (void)loadSessionsWithBlock:(id)block;
 @end
 
 @implementation PMLLogRegEvaluationPlan
 
-- (PMLLogRegEvaluationPlan)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLLogRegEvaluationPlan)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 objectForKeyedSubscript:@"TRAINING_STORE"];
+  plistCopy = plist;
+  chunksCopy = chunks;
+  contextCopy = context;
+  v12 = [contextCopy objectForKeyedSubscript:@"TRAINING_STORE"];
 
   if (!v12)
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v44 = objc_opt_class();
     v45 = NSStringFromClass(v44);
-    [v43 handleFailureInMethod:a2 object:self file:@"PMLLogRegEvaluationPlan.m" lineNumber:182 description:{@"Can't instantiate %@. Missing store dependency.", v45}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLLogRegEvaluationPlan.m" lineNumber:182 description:{@"Can't instantiate %@. Missing store dependency.", v45}];
   }
 
-  v13 = [v9 objectForKeyedSubscript:@"PLAN_ID"];
+  v13 = [plistCopy objectForKeyedSubscript:@"PLAN_ID"];
   v14 = [PMLSessionDescriptor alloc];
-  v15 = [v9 objectForKeyedSubscript:@"SESSIONS_MODEL_HANDLE"];
-  v16 = [(PMLSessionDescriptor *)v14 initWithPlist:v15 chunks:v10 context:v11];
+  v15 = [plistCopy objectForKeyedSubscript:@"SESSIONS_MODEL_HANDLE"];
+  v16 = [(PMLSessionDescriptor *)v14 initWithPlist:v15 chunks:chunksCopy context:contextCopy];
 
   if (v16)
   {
     v17 = [PMLModelWeights alloc];
-    v18 = [v9 objectForKeyedSubscript:@"WEIGHTS"];
-    v19 = [(PMLModelWeights *)v17 initWithPlist:v18 chunks:v10 context:v11];
+    v18 = [plistCopy objectForKeyedSubscript:@"WEIGHTS"];
+    v19 = [(PMLModelWeights *)v17 initWithPlist:v18 chunks:chunksCopy context:contextCopy];
 
     if (v19)
     {
-      v63 = self;
-      v62 = [v9 objectForKeyedSubscript:@"TRACKER_TYPE"];
+      selfCopy = self;
+      v62 = [plistCopy objectForKeyedSubscript:@"TRACKER_TYPE"];
       v20 = NSClassFromString(v62);
       v58 = v19;
       if (!v20)
       {
-        v46 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v47 = objc_opt_class();
         v48 = NSStringFromClass(v47);
-        [v46 handleFailureInMethod:a2 object:v63 file:@"PMLLogRegEvaluationPlan.m" lineNumber:196 description:{@"Can't instantiate %@. Unknown tracker class: %@", v48, v62}];
+        [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"PMLLogRegEvaluationPlan.m" lineNumber:196 description:{@"Can't instantiate %@. Unknown tracker class: %@", v48, v62}];
       }
 
       v21 = [v20 alloc];
-      v22 = [v9 objectForKeyedSubscript:@"TRACKER"];
+      v22 = [plistCopy objectForKeyedSubscript:@"TRACKER"];
       v64 = @"planId";
       v65[0] = v13;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:&v64 count:1];
-      v24 = [v21 initWithPlist:v22 chunks:v10 context:v23];
+      v24 = [v21 initWithPlist:v22 chunks:chunksCopy context:v23];
 
-      v25 = [v11 objectForKeyedSubscript:@"tracker"];
+      v25 = [contextCopy objectForKeyedSubscript:@"tracker"];
 
       v60 = v13;
-      v61 = v10;
+      v61 = chunksCopy;
       v59 = v16;
       if (v25)
       {
-        v26 = [v11 objectForKeyedSubscript:@"tracker"];
+        v26 = [contextCopy objectForKeyedSubscript:@"tracker"];
 
-        v27 = v11;
+        v27 = contextCopy;
         v28 = v26;
       }
 
       else
       {
-        v27 = v11;
+        v27 = contextCopy;
         v28 = v24;
       }
 
       v57 = v27;
       v50 = [v27 objectForKeyedSubscript:@"TRAINING_STORE"];
-      v56 = [v9 objectForKeyedSubscript:@"SESSIONS_LIMIT"];
-      v53 = [v56 unsignedIntegerValue];
-      v55 = [v9 objectForKeyedSubscript:@"SESSIONS_IN_BATCH"];
-      v51 = [v55 unsignedIntegerValue];
-      v54 = [v9 objectForKeyedSubscript:@"INTERCEPT"];
-      v30 = [v54 BOOLValue];
-      v52 = [v9 objectForKeyedSubscript:@"SKEW"];
+      v56 = [plistCopy objectForKeyedSubscript:@"SESSIONS_LIMIT"];
+      unsignedIntegerValue = [v56 unsignedIntegerValue];
+      v55 = [plistCopy objectForKeyedSubscript:@"SESSIONS_IN_BATCH"];
+      unsignedIntegerValue2 = [v55 unsignedIntegerValue];
+      v54 = [plistCopy objectForKeyedSubscript:@"INTERCEPT"];
+      bOOLValue = [v54 BOOLValue];
+      v52 = [plistCopy objectForKeyedSubscript:@"SKEW"];
       [v52 doubleValue];
       v32 = v31;
-      v33 = [v9 objectForKeyedSubscript:@"THRESHOLD"];
+      v33 = [plistCopy objectForKeyedSubscript:@"THRESHOLD"];
       [v33 doubleValue];
       v35 = v34;
-      v36 = [v9 objectForKeyedSubscript:@"IS_MULTI_LABEL"];
-      v37 = [v36 BOOLValue];
-      v38 = [v9 objectForKeyedSubscript:@"POSITIVE_LABEL"];
-      v39 = [v38 unsignedIntegerValue];
-      v40 = [v9 objectForKeyedSubscript:@"EVALUATION_LEVEL"];
-      BYTE1(v49) = v37;
-      LOBYTE(v49) = v30;
+      v36 = [plistCopy objectForKeyedSubscript:@"IS_MULTI_LABEL"];
+      bOOLValue2 = [v36 BOOLValue];
+      v38 = [plistCopy objectForKeyedSubscript:@"POSITIVE_LABEL"];
+      unsignedIntegerValue3 = [v38 unsignedIntegerValue];
+      v40 = [plistCopy objectForKeyedSubscript:@"EVALUATION_LEVEL"];
+      BYTE1(v49) = bOOLValue2;
+      LOBYTE(v49) = bOOLValue;
       v19 = v58;
-      self = -[PMLLogRegEvaluationPlan initWithStore:tracker:planId:sessionDescriptor:maxSessionsLimit:sessionsInBatch:currentModelWeights:intercept:skew:threshold:isMultiLabel:positiveLabel:evaluationLevel:](v63, "initWithStore:tracker:planId:sessionDescriptor:maxSessionsLimit:sessionsInBatch:currentModelWeights:intercept:skew:threshold:isMultiLabel:positiveLabel:evaluationLevel:", v50, v28, v60, v59, v53, v51, v32, v35, v58, v49, v39, [v40 unsignedIntegerValue]);
+      self = -[PMLLogRegEvaluationPlan initWithStore:tracker:planId:sessionDescriptor:maxSessionsLimit:sessionsInBatch:currentModelWeights:intercept:skew:threshold:isMultiLabel:positiveLabel:evaluationLevel:](selfCopy, "initWithStore:tracker:planId:sessionDescriptor:maxSessionsLimit:sessionsInBatch:currentModelWeights:intercept:skew:threshold:isMultiLabel:positiveLabel:evaluationLevel:", v50, v28, v60, v59, unsignedIntegerValue, unsignedIntegerValue2, v32, v35, v58, v49, unsignedIntegerValue3, [v40 unsignedIntegerValue]);
 
       v13 = v60;
       v16 = v59;
 
-      v29 = self;
-      v10 = v61;
-      v11 = v57;
+      selfCopy2 = self;
+      chunksCopy = v61;
+      contextCopy = v57;
     }
 
     else
     {
-      v29 = 0;
+      selfCopy2 = 0;
     }
   }
 
   else
   {
-    v29 = 0;
+    selfCopy2 = 0;
   }
 
   v41 = *MEMORY[0x277D85DE8];
-  return v29;
+  return selfCopy2;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v24[13] = *MEMORY[0x277D85DE8];
   v24[0] = self->_planId;
   v23[0] = @"PLAN_ID";
   v23[1] = @"SESSIONS_MODEL_HANDLE";
   sessionDescriptor = self->_sessionDescriptor;
-  v5 = a3;
-  v22 = [(PMLSessionDescriptor *)sessionDescriptor toPlistWithChunks:v5];
+  chunksCopy = chunks;
+  v22 = [(PMLSessionDescriptor *)sessionDescriptor toPlistWithChunks:chunksCopy];
   v24[1] = v22;
   v23[2] = @"SESSIONS_LIMIT";
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_maxSessionsLimit];
@@ -141,7 +141,7 @@
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_sessionsInBatch];
   v24[3] = v20;
   v23[4] = @"WEIGHTS";
-  v6 = [(PMLModelWeights *)self->_currentModelWeights toPlistWithChunks:v5];
+  v6 = [(PMLModelWeights *)self->_currentModelWeights toPlistWithChunks:chunksCopy];
   v24[4] = v6;
   v23[5] = @"INTERCEPT";
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_intercept];
@@ -156,7 +156,7 @@
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_skew];
   v24[8] = v10;
   v23[9] = @"TRACKER";
-  v11 = [(PMLEvaluationTrackerProtocol *)self->_tracker toPlistWithChunks:v5];
+  v11 = [(PMLEvaluationTrackerProtocol *)self->_tracker toPlistWithChunks:chunksCopy];
 
   v24[9] = v11;
   v23[10] = @"THRESHOLD";
@@ -177,7 +177,7 @@
   return v17;
 }
 
-- (id)runWithError:(id *)a3
+- (id)runWithError:(id *)error
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -321,21 +321,21 @@ void __40__PMLLogRegEvaluationPlan_runWithError___block_invoke(void *a1, void *a
   return v6;
 }
 
-- (id)normalizeRegressor:(id)a3
+- (id)normalizeRegressor:(id)regressor
 {
-  v4 = a3;
-  v5 = v4;
+  regressorCopy = regressor;
+  v5 = regressorCopy;
   if (self->_isMultiLabel)
   {
-    v6 = -[PMLDenseVector initWithCount:]([PMLMutableDenseVector alloc], "initWithCount:", [v4 count]);
-    v7 = [v5 values];
-    v8 = [(PMLMutableDenseVector *)v6 mutablePtr];
+    v6 = -[PMLDenseVector initWithCount:]([PMLMutableDenseVector alloc], "initWithCount:", [regressorCopy count]);
+    values = [v5 values];
+    mutablePtr = [(PMLMutableDenseVector *)v6 mutablePtr];
     if ([v5 count])
     {
       v9 = 0;
       do
       {
-        if (*(v7 + 4 * v9) == self->_positiveLabel)
+        if (*(values + 4 * v9) == self->_positiveLabel)
         {
           v10 = 1.0;
         }
@@ -345,7 +345,7 @@ void __40__PMLLogRegEvaluationPlan_runWithError___block_invoke(void *a1, void *a
           v10 = 0.0;
         }
 
-        *(v8 + 4 * v9++) = v10;
+        *(mutablePtr + 4 * v9++) = v10;
       }
 
       while (v9 < [v5 count]);
@@ -356,34 +356,34 @@ void __40__PMLLogRegEvaluationPlan_runWithError___block_invoke(void *a1, void *a
 
   else
   {
-    v11 = v4;
+    v11 = regressorCopy;
   }
 
   return v11;
 }
 
-- (void)loadSessionsWithBlock:(id)a3
+- (void)loadSessionsWithBlock:(id)block
 {
   store = self->_store;
   sessionDescriptor = self->_sessionDescriptor;
-  v7 = a3;
+  blockCopy = block;
   +[PMLTrainingStore lastUsedTimestampLimit];
   skew = self->_skew;
-  [PMLTrainingStore loadSessionsForModel:"loadSessionsForModel:excludeItemIdsUsedWithin:limit:onlyAppleInternal:positiveLabel:skew:block:" excludeItemIdsUsedWithin:sessionDescriptor limit:self->_sessionsInBatch onlyAppleInternal:0 positiveLabel:self->_positiveLabel skew:v7 block:?];
+  [PMLTrainingStore loadSessionsForModel:"loadSessionsForModel:excludeItemIdsUsedWithin:limit:onlyAppleInternal:positiveLabel:skew:block:" excludeItemIdsUsedWithin:sessionDescriptor limit:self->_sessionsInBatch onlyAppleInternal:0 positiveLabel:self->_positiveLabel skew:blockCopy block:?];
 }
 
-- (PMLLogRegEvaluationPlan)initWithStore:(id)a3 tracker:(id)a4 planId:(id)a5 sessionDescriptor:(id)a6 maxSessionsLimit:(unint64_t)a7 sessionsInBatch:(unint64_t)a8 currentModelWeights:(id)a9 intercept:(BOOL)a10 skew:(double)a11 threshold:(double)a12 isMultiLabel:(BOOL)a13 positiveLabel:(unint64_t)a14 evaluationLevel:(unint64_t)a15
+- (PMLLogRegEvaluationPlan)initWithStore:(id)store tracker:(id)tracker planId:(id)id sessionDescriptor:(id)descriptor maxSessionsLimit:(unint64_t)limit sessionsInBatch:(unint64_t)batch currentModelWeights:(id)weights intercept:(BOOL)self0 skew:(double)self1 threshold:(double)self2 isMultiLabel:(BOOL)self3 positiveLabel:(unint64_t)self4 evaluationLevel:(unint64_t)self5
 {
-  v23 = a3;
-  v33 = a4;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
-  v34 = a9;
-  if (![PMLPlanDescriptor isValidPlanId:v25])
+  storeCopy = store;
+  trackerCopy = tracker;
+  trackerCopy2 = tracker;
+  idCopy = id;
+  descriptorCopy = descriptor;
+  weightsCopy = weights;
+  if (![PMLPlanDescriptor isValidPlanId:idCopy])
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PMLLogRegEvaluationPlan.m" lineNumber:59 description:{@"Invalid planId. Must be <name>-<version>-<locale> but got %@", v25}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLLogRegEvaluationPlan.m" lineNumber:59 description:{@"Invalid planId. Must be <name>-<version>-<locale> but got %@", idCopy}];
   }
 
   v35.receiver = self;
@@ -392,19 +392,19 @@ void __40__PMLLogRegEvaluationPlan_runWithError___block_invoke(void *a1, void *a
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_store, a3);
-    objc_storeStrong(&v28->_tracker, v33);
-    objc_storeStrong(&v28->_planId, a5);
-    objc_storeStrong(&v28->_sessionDescriptor, a6);
-    v28->_maxSessionsLimit = a7;
-    v28->_sessionsInBatch = a8;
-    objc_storeStrong(&v28->_currentModelWeights, a9);
-    v28->_intercept = a10;
-    v28->_isMultiLabel = a13;
-    v28->_positiveLabel = a14;
-    v28->_skew = a11;
-    v28->_threshold = a12;
-    v28->_evaluationLevel = a15;
+    objc_storeStrong(&v27->_store, store);
+    objc_storeStrong(&v28->_tracker, trackerCopy);
+    objc_storeStrong(&v28->_planId, id);
+    objc_storeStrong(&v28->_sessionDescriptor, descriptor);
+    v28->_maxSessionsLimit = limit;
+    v28->_sessionsInBatch = batch;
+    objc_storeStrong(&v28->_currentModelWeights, weights);
+    v28->_intercept = intercept;
+    v28->_isMultiLabel = label;
+    v28->_positiveLabel = positiveLabel;
+    v28->_skew = skew;
+    v28->_threshold = threshold;
+    v28->_evaluationLevel = level;
   }
 
   return v28;

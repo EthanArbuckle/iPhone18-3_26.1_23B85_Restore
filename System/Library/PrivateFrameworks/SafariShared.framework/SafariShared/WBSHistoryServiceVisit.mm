@@ -1,161 +1,161 @@
 @interface WBSHistoryServiceVisit
-- (WBSHistoryServiceVisit)initWithCoder:(id)a3;
-- (WBSHistoryServiceVisit)initWithSQLRow:(id)a3;
-- (WBSHistoryServiceVisit)initWithVisit:(id)a3;
-- (WBSHistoryServiceVisit)visitWithUpdatedID:(int64_t)a3 updatedItemID:(int64_t)a4;
-- (id)_initWithDatabaseID:(int64_t)a3 serviceVisit:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (WBSHistoryServiceVisit)initWithCoder:(id)coder;
+- (WBSHistoryServiceVisit)initWithSQLRow:(id)row;
+- (WBSHistoryServiceVisit)initWithVisit:(id)visit;
+- (WBSHistoryServiceVisit)visitWithUpdatedID:(int64_t)d updatedItemID:(int64_t)iD;
+- (id)_initWithDatabaseID:(int64_t)d serviceVisit:(id)visit;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHistoryServiceVisit
 
-- (WBSHistoryServiceVisit)initWithVisit:(id)a3
+- (WBSHistoryServiceVisit)initWithVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   v14.receiver = self;
   v14.super_class = WBSHistoryServiceVisit;
-  v5 = -[WBSHistoryServiceObject initWithDatabaseID:](&v14, sel_initWithDatabaseID_, [v4 databaseID]);
+  v5 = -[WBSHistoryServiceObject initWithDatabaseID:](&v14, sel_initWithDatabaseID_, [visitCopy databaseID]);
   if (v5)
   {
-    v6 = [v4 item];
-    v5->_itemID = [v6 databaseID];
+    item = [visitCopy item];
+    v5->_itemID = [item databaseID];
 
-    v7 = [v4 title];
+    title = [visitCopy title];
     title = v5->_title;
-    v5->_title = v7;
+    v5->_title = title;
 
-    [v4 visitTime];
+    [visitCopy visitTime];
     v5->_visitTime = v9;
-    v5->_loadSuccessful = [v4 loadWasSuccessful];
-    v5->_httpNonGet = [v4 wasHTTPNonGet];
-    v5->_synthesized = [v4 isSynthesized];
-    v10 = [v4 redirectSource];
-    v5->_redirectSource = [v10 databaseID];
+    v5->_loadSuccessful = [visitCopy loadWasSuccessful];
+    v5->_httpNonGet = [visitCopy wasHTTPNonGet];
+    v5->_synthesized = [visitCopy isSynthesized];
+    redirectSource = [visitCopy redirectSource];
+    v5->_redirectSource = [redirectSource databaseID];
 
-    v11 = [v4 redirectDestination];
-    v5->_redirectDestination = [v11 databaseID];
+    redirectDestination = [visitCopy redirectDestination];
+    v5->_redirectDestination = [redirectDestination databaseID];
 
-    v5->_origin = [v4 origin];
-    v5->_attributes = [v4 attributes];
+    v5->_origin = [visitCopy origin];
+    v5->_attributes = [visitCopy attributes];
     v12 = v5;
   }
 
   return v5;
 }
 
-- (WBSHistoryServiceVisit)initWithSQLRow:(id)a3
+- (WBSHistoryServiceVisit)initWithSQLRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v11.receiver = self;
   v11.super_class = WBSHistoryServiceVisit;
-  v5 = -[WBSHistoryServiceObject initWithDatabaseID:](&v11, sel_initWithDatabaseID_, [v4 int64AtIndex:0]);
+  v5 = -[WBSHistoryServiceObject initWithDatabaseID:](&v11, sel_initWithDatabaseID_, [rowCopy int64AtIndex:0]);
   if (v5)
   {
-    v5->_itemID = [v4 int64AtIndex:1];
-    [v4 doubleAtIndex:2];
+    v5->_itemID = [rowCopy int64AtIndex:1];
+    [rowCopy doubleAtIndex:2];
     v5->_visitTime = v6;
-    v7 = [v4 stringAtIndex:3];
+    v7 = [rowCopy stringAtIndex:3];
     title = v5->_title;
     v5->_title = v7;
 
-    v5->_loadSuccessful = [v4 BOOLAtIndex:4];
-    v5->_httpNonGet = [v4 BOOLAtIndex:5];
-    v5->_synthesized = [v4 BOOLAtIndex:6];
-    v5->_redirectSource = [v4 int64AtIndex:7];
-    v5->_redirectDestination = [v4 int64AtIndex:8];
-    v5->_origin = [v4 int64AtIndex:9];
-    v5->_attributes = [v4 int64AtIndex:11];
-    v5->_score = [v4 intAtIndex:12];
+    v5->_loadSuccessful = [rowCopy BOOLAtIndex:4];
+    v5->_httpNonGet = [rowCopy BOOLAtIndex:5];
+    v5->_synthesized = [rowCopy BOOLAtIndex:6];
+    v5->_redirectSource = [rowCopy int64AtIndex:7];
+    v5->_redirectDestination = [rowCopy int64AtIndex:8];
+    v5->_origin = [rowCopy int64AtIndex:9];
+    v5->_attributes = [rowCopy int64AtIndex:11];
+    v5->_score = [rowCopy intAtIndex:12];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (id)_initWithDatabaseID:(int64_t)a3 serviceVisit:(id)a4
+- (id)_initWithDatabaseID:(int64_t)d serviceVisit:(id)visit
 {
-  v6 = a4;
+  visitCopy = visit;
   v14.receiver = self;
   v14.super_class = WBSHistoryServiceVisit;
-  v7 = [(WBSHistoryServiceObject *)&v14 initWithDatabaseID:a3];
+  v7 = [(WBSHistoryServiceObject *)&v14 initWithDatabaseID:d];
   if (v7)
   {
-    v7->_itemID = [v6 itemID];
-    v8 = [v6 title];
-    v9 = [v8 copy];
+    v7->_itemID = [visitCopy itemID];
+    title = [visitCopy title];
+    v9 = [title copy];
     title = v7->_title;
     v7->_title = v9;
 
-    [v6 visitTime];
+    [visitCopy visitTime];
     v7->_visitTime = v11;
-    v7->_loadSuccessful = [v6 loadSuccessful];
-    v7->_httpNonGet = [v6 httpNonGet];
-    v7->_synthesized = [v6 synthesized];
-    v7->_redirectSource = [v6 redirectSource];
-    v7->_redirectDestination = [v6 redirectDestination];
-    v7->_origin = [v6 origin];
-    v7->_attributes = [v6 attributes];
-    v7->_score = [v6 score];
+    v7->_loadSuccessful = [visitCopy loadSuccessful];
+    v7->_httpNonGet = [visitCopy httpNonGet];
+    v7->_synthesized = [visitCopy synthesized];
+    v7->_redirectSource = [visitCopy redirectSource];
+    v7->_redirectDestination = [visitCopy redirectDestination];
+    v7->_origin = [visitCopy origin];
+    v7->_attributes = [visitCopy attributes];
+    v7->_score = [visitCopy score];
     v12 = v7;
   }
 
   return v7;
 }
 
-- (WBSHistoryServiceVisit)visitWithUpdatedID:(int64_t)a3 updatedItemID:(int64_t)a4
+- (WBSHistoryServiceVisit)visitWithUpdatedID:(int64_t)d updatedItemID:(int64_t)iD
 {
-  v5 = [[WBSHistoryServiceVisit alloc] _initWithDatabaseID:a3 serviceVisit:self];
-  v5[3] = a4;
+  v5 = [[WBSHistoryServiceVisit alloc] _initWithDatabaseID:d serviceVisit:self];
+  v5[3] = iD;
 
   return v5;
 }
 
-- (WBSHistoryServiceVisit)initWithCoder:(id)a3
+- (WBSHistoryServiceVisit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = WBSHistoryServiceVisit;
-  v5 = [(WBSHistoryServiceObject *)&v11 initWithCoder:v4];
+  v5 = [(WBSHistoryServiceObject *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_itemID = [v4 decodeInt64ForKey:@"itemID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v5->_itemID = [coderCopy decodeInt64ForKey:@"itemID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    [v4 decodeDoubleForKey:@"visitTime"];
+    [coderCopy decodeDoubleForKey:@"visitTime"];
     v5->_visitTime = v8;
-    v5->_loadSuccessful = [v4 decodeBoolForKey:@"loadSuccessful"];
-    v5->_httpNonGet = [v4 decodeBoolForKey:@"httpNonGet"];
-    v5->_synthesized = [v4 decodeBoolForKey:@"synthesized"];
-    v5->_redirectSource = [v4 decodeInt64ForKey:@"redirectSource"];
-    v5->_redirectDestination = [v4 decodeInt64ForKey:@"redirectDestination"];
-    v5->_origin = [v4 decodeInt64ForKey:@"origin"];
-    v5->_attributes = [v4 decodeInt64ForKey:@"attributes"];
-    v5->_score = [v4 decodeInt64ForKey:@"score"];
+    v5->_loadSuccessful = [coderCopy decodeBoolForKey:@"loadSuccessful"];
+    v5->_httpNonGet = [coderCopy decodeBoolForKey:@"httpNonGet"];
+    v5->_synthesized = [coderCopy decodeBoolForKey:@"synthesized"];
+    v5->_redirectSource = [coderCopy decodeInt64ForKey:@"redirectSource"];
+    v5->_redirectDestination = [coderCopy decodeInt64ForKey:@"redirectDestination"];
+    v5->_origin = [coderCopy decodeInt64ForKey:@"origin"];
+    v5->_attributes = [coderCopy decodeInt64ForKey:@"attributes"];
+    v5->_score = [coderCopy decodeInt64ForKey:@"score"];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = WBSHistoryServiceVisit;
-  [(WBSHistoryServiceObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_itemID forKey:@"itemID"];
-  [v4 encodeObject:self->_title forKey:@"title"];
-  [v4 encodeDouble:@"visitTime" forKey:self->_visitTime];
-  [v4 encodeBool:self->_loadSuccessful forKey:@"loadSuccessful"];
-  [v4 encodeBool:self->_httpNonGet forKey:@"httpNonGet"];
-  [v4 encodeBool:self->_synthesized forKey:@"synthesized"];
-  [v4 encodeInt64:self->_redirectSource forKey:@"redirectSource"];
-  [v4 encodeInt64:self->_redirectDestination forKey:@"redirectDestination"];
-  [v4 encodeInt64:self->_origin forKey:@"origin"];
-  [v4 encodeInt64:self->_attributes forKey:@"attributes"];
-  [v4 encodeInt64:self->_score forKey:@"score"];
+  [(WBSHistoryServiceObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_itemID forKey:@"itemID"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeDouble:@"visitTime" forKey:self->_visitTime];
+  [coderCopy encodeBool:self->_loadSuccessful forKey:@"loadSuccessful"];
+  [coderCopy encodeBool:self->_httpNonGet forKey:@"httpNonGet"];
+  [coderCopy encodeBool:self->_synthesized forKey:@"synthesized"];
+  [coderCopy encodeInt64:self->_redirectSource forKey:@"redirectSource"];
+  [coderCopy encodeInt64:self->_redirectDestination forKey:@"redirectDestination"];
+  [coderCopy encodeInt64:self->_origin forKey:@"origin"];
+  [coderCopy encodeInt64:self->_attributes forKey:@"attributes"];
+  [coderCopy encodeInt64:self->_score forKey:@"score"];
 }
 
 @end

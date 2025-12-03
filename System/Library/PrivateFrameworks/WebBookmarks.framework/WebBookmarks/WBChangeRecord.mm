@@ -1,5 +1,5 @@
 @interface WBChangeRecord
-- (WBChangeRecord)initWithBookmarkCollection:(id)a3 bookmark:(id)a4 changeType:(int)a5 localRecordGeneration:(int64_t)a6;
+- (WBChangeRecord)initWithBookmarkCollection:(id)collection bookmark:(id)bookmark changeType:(int)type localRecordGeneration:(int64_t)generation;
 - (id)_changeTypeDescription;
 - (id)_changedAttributeDescription;
 - (id)description;
@@ -7,20 +7,20 @@
 
 @implementation WBChangeRecord
 
-- (WBChangeRecord)initWithBookmarkCollection:(id)a3 bookmark:(id)a4 changeType:(int)a5 localRecordGeneration:(int64_t)a6
+- (WBChangeRecord)initWithBookmarkCollection:(id)collection bookmark:(id)bookmark changeType:(int)type localRecordGeneration:(int64_t)generation
 {
-  v11 = a3;
-  v12 = a4;
+  collectionCopy = collection;
+  bookmarkCopy = bookmark;
   v17.receiver = self;
   v17.super_class = WBChangeRecord;
   v13 = [(WBChangeRecord *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_collection, a3);
-    objc_storeStrong(&v14->_bookmark, a4);
-    v14->_changeType = a5;
-    v14->_localRecordGeneration = a6;
+    objc_storeStrong(&v13->_collection, collection);
+    objc_storeStrong(&v14->_bookmark, bookmark);
+    v14->_changeType = type;
+    v14->_localRecordGeneration = generation;
     v15 = v14;
   }
 
@@ -59,75 +59,75 @@
 
 - (id)_changedAttributeDescription
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:1])
   {
-    [v3 addObject:@"Title"];
+    [array addObject:@"Title"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:32])
   {
-    [v3 addObject:@"IsSelectedFavoritesFolder"];
+    [array addObject:@"IsSelectedFavoritesFolder"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:16])
   {
-    [v3 addObject:@"DateAdded"];
+    [array addObject:@"DateAdded"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:8])
   {
-    [v3 addObject:@"DateLastViewed"];
+    [array addObject:@"DateLastViewed"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:128])
   {
-    [v3 addObject:@"ImageURL"];
+    [array addObject:@"ImageURL"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:256])
   {
-    [v3 addObject:@"PreviewText"];
+    [array addObject:@"PreviewText"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:2])
   {
-    [v3 addObject:@"URL"];
+    [array addObject:@"URL"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:512])
   {
-    [v3 addObject:@"LastSelectedTab"];
+    [array addObject:@"LastSelectedTab"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:4096])
   {
-    [v3 addObject:@"SymbolImageName"];
+    [array addObject:@"SymbolImageName"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:0x40000])
   {
-    [v3 addObject:@"CustomFavoritesFolderServerID"];
+    [array addObject:@"CustomFavoritesFolderServerID"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:0x2000])
   {
-    [v3 addObject:@"BackgroundImage"];
+    [array addObject:@"BackgroundImage"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:0x10000])
   {
-    [v3 addObject:@"IsPinned"];
+    [array addObject:@"IsPinned"];
   }
 
   if ([(WebBookmark *)self->_bookmark attributesMarkedAsModified:0x200000])
   {
-    [v3 addObject:@"ShowIconOnly"];
+    [array addObject:@"ShowIconOnly"];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v4 = [v3 componentsJoinedByString:{@", "}];
+    v4 = [array componentsJoinedByString:{@", "}];
   }
 
   else
@@ -140,28 +140,28 @@
 
 - (id)description
 {
-  v3 = [(WebBookmark *)self->_bookmark isFolder];
+  isFolder = [(WebBookmark *)self->_bookmark isFolder];
   v4 = @"Leaf";
-  if (v3)
+  if (isFolder)
   {
     v4 = @"Folder";
   }
 
   v5 = v4;
-  v6 = [(WBChangeRecord *)self _changedAttributeDescription];
-  if ([v6 length])
+  _changedAttributeDescription = [(WBChangeRecord *)self _changedAttributeDescription];
+  if ([_changedAttributeDescription length])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@", Changed Attributes: %@", v6];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@", Changed Attributes: %@", _changedAttributeDescription];
 
-    v6 = v7;
+    _changedAttributeDescription = v7;
   }
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(WBChangeRecord *)self _changeTypeDescription];
-  v10 = [(WebBookmark *)self->_bookmark identifier];
-  v11 = [(WebBookmark *)self->_bookmark serverID];
-  v12 = [v11 wb_stringByRedactingBookmarkDAVServerID];
-  v13 = [v8 stringWithFormat:@"<BAChangeRecord: %p, Type: %@, Bookmark Type: %@, Bookmark ID: %d, Bookmark Sync Server ID: %@%@>", self, v9, v5, v10, v12, v6];
+  _changeTypeDescription = [(WBChangeRecord *)self _changeTypeDescription];
+  identifier = [(WebBookmark *)self->_bookmark identifier];
+  serverID = [(WebBookmark *)self->_bookmark serverID];
+  wb_stringByRedactingBookmarkDAVServerID = [serverID wb_stringByRedactingBookmarkDAVServerID];
+  v13 = [v8 stringWithFormat:@"<BAChangeRecord: %p, Type: %@, Bookmark Type: %@, Bookmark ID: %d, Bookmark Sync Server ID: %@%@>", self, _changeTypeDescription, v5, identifier, wb_stringByRedactingBookmarkDAVServerID, _changedAttributeDescription];
 
   return v13;
 }

@@ -1,6 +1,6 @@
 @interface AAEndpoint
 - (AAEndpoint)init;
-- (AAEndpoint)initWithURL:(id)a3 name:(id)a4 sharedContainerIdentifier:(id)a5;
+- (AAEndpoint)initWithURL:(id)l name:(id)name sharedContainerIdentifier:(id)identifier;
 - (NSString)name;
 - (NSString)sharedContainerIdentifier;
 - (NSURL)url;
@@ -50,7 +50,7 @@
   return v4;
 }
 
-- (AAEndpoint)initWithURL:(id)a3 name:(id)a4 sharedContainerIdentifier:(id)a5
+- (AAEndpoint)initWithURL:(id)l name:(id)name sharedContainerIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
   v8 = sub_1B6AB8BB0();
@@ -61,9 +61,9 @@
   sub_1B6AB8B60();
   v13 = sub_1B6AB92E0();
   v15 = v14;
-  if (a5)
+  if (identifier)
   {
-    a5 = sub_1B6AB92E0();
+    identifier = sub_1B6AB92E0();
     v17 = v16;
   }
 
@@ -77,7 +77,7 @@
   *v18 = v13;
   v18[1] = v15;
   v19 = (self + OBJC_IVAR___AAEndpoint_sharedContainerIdentifier);
-  *v19 = a5;
+  *v19 = identifier;
   v19[1] = v17;
   v22.receiver = self;
   v22.super_class = ObjectType;

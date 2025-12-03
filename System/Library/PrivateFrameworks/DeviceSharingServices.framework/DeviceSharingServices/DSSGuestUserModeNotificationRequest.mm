@@ -1,52 +1,52 @@
 @interface DSSGuestUserModeNotificationRequest
-- (DSSGuestUserModeNotificationRequest)initWithCoder:(id)a3;
-- (DSSGuestUserModeNotificationRequest)initWithReason:(id)a3 withType:(unint64_t)a4;
+- (DSSGuestUserModeNotificationRequest)initWithCoder:(id)coder;
+- (DSSGuestUserModeNotificationRequest)initWithReason:(id)reason withType:(unint64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DSSGuestUserModeNotificationRequest
 
-- (DSSGuestUserModeNotificationRequest)initWithReason:(id)a3 withType:(unint64_t)a4
+- (DSSGuestUserModeNotificationRequest)initWithReason:(id)reason withType:(unint64_t)type
 {
-  v7 = a3;
+  reasonCopy = reason;
   v11.receiver = self;
   v11.super_class = DSSGuestUserModeNotificationRequest;
   v8 = [(DSSGuestUserModeNotificationRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_reason, a3);
-    v9->_notificationType = a4;
+    objc_storeStrong(&v8->_reason, reason);
+    v9->_notificationType = type;
   }
 
   return v9;
 }
 
-- (DSSGuestUserModeNotificationRequest)initWithCoder:(id)a3
+- (DSSGuestUserModeNotificationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DSSGuestUserModeNotificationRequest;
   v5 = [(DSSGuestUserModeNotificationRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DSSGuestUserModeNotificationRequest.Reason"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DSSGuestUserModeNotificationRequest.Reason"];
     reason = v5->_reason;
     v5->_reason = v6;
 
-    v5->_notificationType = [v4 decodeIntegerForKey:@"DSSGuestUserModeNotificationRequest.Type"];
+    v5->_notificationType = [coderCopy decodeIntegerForKey:@"DSSGuestUserModeNotificationRequest.Type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reason = self->_reason;
-  v5 = a3;
-  [v5 encodeObject:reason forKey:@"DSSGuestUserModeNotificationRequest.Reason"];
-  [v5 encodeInteger:self->_notificationType forKey:@"DSSGuestUserModeNotificationRequest.Type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:reason forKey:@"DSSGuestUserModeNotificationRequest.Reason"];
+  [coderCopy encodeInteger:self->_notificationType forKey:@"DSSGuestUserModeNotificationRequest.Type"];
 }
 
 - (id)description

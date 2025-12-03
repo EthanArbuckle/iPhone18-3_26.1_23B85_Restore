@@ -1,20 +1,20 @@
 @interface _TPTemplatedColoredImageView
-- (void)setTemplateImageColor:(id)a3;
+- (void)setTemplateImageColor:(id)color;
 @end
 
 @implementation _TPTemplatedColoredImageView
 
-- (void)setTemplateImageColor:(id)a3
+- (void)setTemplateImageColor:(id)color
 {
-  v5 = a3;
-  if (self->_templateImageColor != v5)
+  colorCopy = color;
+  if (self->_templateImageColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_templateImageColor, a3);
-    v6 = [(_TPTemplatedColoredImageView *)self layer];
-    [v6 setContentsMultiplyColor:{-[UIColor CGColor](self->_templateImageColor, "CGColor")}];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_templateImageColor, color);
+    layer = [(_TPTemplatedColoredImageView *)self layer];
+    [layer setContentsMultiplyColor:{-[UIColor CGColor](self->_templateImageColor, "CGColor")}];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 

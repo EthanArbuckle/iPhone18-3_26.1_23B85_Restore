@@ -1,9 +1,9 @@
 @interface PBFPosterExtensionDataStorePrewarmPlan
 - (PBFPosterExtensionDataStorePrewarmPlan)init;
-- (double)timeoutIntervalForPhase:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)executionBlockForPhase:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (double)timeoutIntervalForPhase:(id)phase;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)executionBlockForPhase:(id)phase;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PBFPosterExtensionDataStorePrewarmPlan
@@ -27,66 +27,66 @@
     [(PBFPosterExtensionDataStorePrewarmPlan *)v2 setPrewarmPhasePlan:v5];
 
     [(PBFPosterExtensionDataStorePrewarmPlan *)v2 setDefaultPhaseTimeoutInterval:120.0];
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
-    v8 = [v7 substringToIndex:7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v8 = [uUIDString substringToIndex:7];
     [(PBFPosterExtensionDataStorePrewarmPlan *)v2 setIdentifier:v8];
   }
 
   return v2;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(PBFPosterExtensionDataStorePrewarmPlan *)[PBFMutablePosterExtensionDataStorePrewarmPlan allocWithZone:?]];
-  v5 = [(PBFPosterExtensionDataStorePrewarmPlan *)self prewarmPhasePlan];
-  [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setPrewarmPhasePlan:v5];
+  prewarmPhasePlan = [(PBFPosterExtensionDataStorePrewarmPlan *)self prewarmPhasePlan];
+  [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setPrewarmPhasePlan:prewarmPhasePlan];
 
-  v6 = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToPrewarmTimeout];
-  [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setPhaseToPrewarmTimeout:v6];
+  phaseToPrewarmTimeout = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToPrewarmTimeout];
+  [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setPhaseToPrewarmTimeout:phaseToPrewarmTimeout];
 
   [(PBFPosterExtensionDataStorePrewarmPlan *)self defaultPhaseTimeoutInterval];
   [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setDefaultPhaseTimeoutInterval:?];
-  v7 = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToExecutionBlock];
-  [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setPhaseToExecutionBlock:v7];
+  phaseToExecutionBlock = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToExecutionBlock];
+  [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setPhaseToExecutionBlock:phaseToExecutionBlock];
 
-  v8 = [(PBFPosterExtensionDataStorePrewarmPlan *)self identifier];
-  [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setIdentifier:v8];
+  identifier = [(PBFPosterExtensionDataStorePrewarmPlan *)self identifier];
+  [(PBFPosterExtensionDataStorePrewarmPlan *)v4 setIdentifier:identifier];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(PBFPosterExtensionDataStorePrewarmPlan *)self prewarmPhasePlan];
-  [v4 setPrewarmPhasePlan:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  prewarmPhasePlan = [(PBFPosterExtensionDataStorePrewarmPlan *)self prewarmPhasePlan];
+  [v4 setPrewarmPhasePlan:prewarmPhasePlan];
 
-  v6 = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToPrewarmTimeout];
-  [v4 setPhaseToPrewarmTimeout:v6];
+  phaseToPrewarmTimeout = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToPrewarmTimeout];
+  [v4 setPhaseToPrewarmTimeout:phaseToPrewarmTimeout];
 
   [(PBFPosterExtensionDataStorePrewarmPlan *)self defaultPhaseTimeoutInterval];
   [v4 setDefaultPhaseTimeoutInterval:?];
-  v7 = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToExecutionBlock];
-  [v4 setPhaseToExecutionBlock:v7];
+  phaseToExecutionBlock = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToExecutionBlock];
+  [v4 setPhaseToExecutionBlock:phaseToExecutionBlock];
 
-  v8 = [(PBFPosterExtensionDataStorePrewarmPlan *)self identifier];
-  [v4 setIdentifier:v8];
+  identifier = [(PBFPosterExtensionDataStorePrewarmPlan *)self identifier];
+  [v4 setIdentifier:identifier];
 
   return v4;
 }
 
-- (double)timeoutIntervalForPhase:(id)a3
+- (double)timeoutIntervalForPhase:(id)phase
 {
-  v5 = a3;
-  if (!v5)
+  phaseCopy = phase;
+  if (!phaseCopy)
   {
     [PBFPosterExtensionDataStorePrewarmPlan timeoutIntervalForPhase:a2];
   }
 
-  v6 = v5;
-  v7 = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToPrewarmTimeout];
-  v8 = [v7 objectForKey:v6];
+  v6 = phaseCopy;
+  phaseToPrewarmTimeout = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToPrewarmTimeout];
+  v8 = [phaseToPrewarmTimeout objectForKey:v6];
 
   if (v8)
   {
@@ -103,17 +103,17 @@
   return v10;
 }
 
-- (id)executionBlockForPhase:(id)a3
+- (id)executionBlockForPhase:(id)phase
 {
-  v5 = a3;
-  if (!v5)
+  phaseCopy = phase;
+  if (!phaseCopy)
   {
     [PBFPosterExtensionDataStorePrewarmPlan executionBlockForPhase:a2];
   }
 
-  v6 = v5;
-  v7 = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToExecutionBlock];
-  v8 = [v7 objectForKey:v6];
+  v6 = phaseCopy;
+  phaseToExecutionBlock = [(PBFPosterExtensionDataStorePrewarmPlan *)self phaseToExecutionBlock];
+  v8 = [phaseToExecutionBlock objectForKey:v6];
 
   return v8;
 }

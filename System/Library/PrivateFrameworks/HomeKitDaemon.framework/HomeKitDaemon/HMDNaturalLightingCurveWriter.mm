@@ -1,15 +1,15 @@
 @interface HMDNaturalLightingCurveWriter
 + (id)logCategory;
 - (HMDLightProfile)lightProfile;
-- (HMDNaturalLightingCurveWriter)initWithUUID:(id)a3 workQueue:(id)a4 logIdentifier:(id)a5;
-- (HMDNaturalLightingCurveWriter)initWithUUID:(id)a3 workQueue:(id)a4 logIdentifier:(id)a5 dataSource:(id)a6 notificationCenter:(id)a7 timerFactory:(id)a8;
-- (void)configureWithLightProfile:(id)a3;
-- (void)handleActiveTransitionContextUpdated:(id)a3;
-- (void)handleCurrentDevicePrimaryResidentChangedWithReason:(id)a3;
-- (void)handlePrimaryResidentUpdateNotification:(id)a3;
-- (void)synchronizeCurveWithActiveTransitionContext:(id)a3;
-- (void)timerDidFire:(id)a3;
-- (void)writeForNaturalLightingEnabledWithReason:(id)a3;
+- (HMDNaturalLightingCurveWriter)initWithUUID:(id)d workQueue:(id)queue logIdentifier:(id)identifier;
+- (HMDNaturalLightingCurveWriter)initWithUUID:(id)d workQueue:(id)queue logIdentifier:(id)identifier dataSource:(id)source notificationCenter:(id)center timerFactory:(id)factory;
+- (void)configureWithLightProfile:(id)profile;
+- (void)handleActiveTransitionContextUpdated:(id)updated;
+- (void)handleCurrentDevicePrimaryResidentChangedWithReason:(id)reason;
+- (void)handlePrimaryResidentUpdateNotification:(id)notification;
+- (void)synchronizeCurveWithActiveTransitionContext:(id)context;
+- (void)timerDidFire:(id)fire;
+- (void)writeForNaturalLightingEnabledWithReason:(id)reason;
 @end
 
 @implementation HMDNaturalLightingCurveWriter
@@ -21,26 +21,26 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDNaturalLightingCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDNaturalLightingCurveWriter *)self periodicCharacteristicWriteTimer];
+  periodicCharacteristicWriteTimer = [(HMDNaturalLightingCurveWriter *)self periodicCharacteristicWriteTimer];
 
-  if (v6 == v4)
+  if (periodicCharacteristicWriteTimer == fireCopy)
   {
-    v12 = [(HMDNaturalLightingCurveWriter *)self lightProfile];
-    v13 = [v12 settings];
-    v14 = [v13 isNaturalLightingEnabled];
+    lightProfile = [(HMDNaturalLightingCurveWriter *)self lightProfile];
+    settings = [lightProfile settings];
+    isNaturalLightingEnabled = [settings isNaturalLightingEnabled];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
-    if (v14)
+    if (isNaturalLightingEnabled)
     {
       if (v18)
       {
@@ -48,13 +48,13 @@
         *buf = 138543618;
         v24 = v19;
         v25 = 2112;
-        v26 = v4;
+        v26 = fireCopy;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Rewriting the characteristic because timer: %@ fired", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v15);
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"timer expired: %@", v4];
-      [(HMDNaturalLightingCurveWriter *)v16 writeForNaturalLightingEnabledWithReason:v20];
+      fireCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"timer expired: %@", fireCopy];
+      [(HMDNaturalLightingCurveWriter *)selfCopy writeForNaturalLightingEnabledWithReason:fireCopy];
     }
 
     else
@@ -68,25 +68,25 @@
       }
 
       objc_autoreleasePoolPop(v15);
-      [(HMDNaturalLightingCurveWriter *)v16 setPeriodicCharacteristicWriteTimer:0];
+      [(HMDNaturalLightingCurveWriter *)selfCopy setPeriodicCharacteristicWriteTimer:0];
     }
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(HMDNaturalLightingCurveWriter *)v8 periodicCharacteristicWriteTimer];
+      periodicCharacteristicWriteTimer2 = [(HMDNaturalLightingCurveWriter *)selfCopy2 periodicCharacteristicWriteTimer];
       *buf = 138543874;
       v24 = v10;
       v25 = 2112;
-      v26 = v11;
+      v26 = periodicCharacteristicWriteTimer2;
       v27 = 2112;
-      v28 = v4;
+      v28 = fireCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Received timer did fire callback for unknown timer. Expected: %@ received: %@", buf, 0x20u);
     }
 
@@ -96,11 +96,11 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeForNaturalLightingEnabledWithReason:(id)a3
+- (void)writeForNaturalLightingEnabledWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(HMDNaturalLightingCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  reasonCopy = reason;
+  workQueue = [(HMDNaturalLightingCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDNaturalLightingCurveWriter *)self setPeriodicCharacteristicWriteTimer:0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -108,8 +108,8 @@
   v7[2] = __74__HMDNaturalLightingCurveWriter_writeForNaturalLightingEnabledWithReason___block_invoke;
   v7[3] = &unk_27868A1D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   [(HMDNaturalLightingCurveWriter *)self writeWithNaturalLightingEnabled:1 reason:v6 completion:v7];
 }
 
@@ -161,15 +161,15 @@ LABEL_6:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)synchronizeCurveWithActiveTransitionContext:(id)a3
+- (void)synchronizeCurveWithActiveTransitionContext:(id)context
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  contextCopy = context;
+  workQueue = [(HMDNaturalLightingCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -180,14 +180,14 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDNaturalLightingCurveWriter *)v7 lightProfile];
-  v11 = [v10 accessory];
-  v12 = [v11 home];
+  lightProfile = [(HMDNaturalLightingCurveWriter *)selfCopy lightProfile];
+  accessory = [lightProfile accessory];
+  home = [accessory home];
 
-  if (!v12)
+  if (!home)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v7;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -206,10 +206,10 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (![(HMDNaturalLightingCurveWriter *)v7 isCurrentDevicePrimaryResident])
+  if (![(HMDNaturalLightingCurveWriter *)selfCopy isCurrentDevicePrimaryResident])
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v7;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -226,19 +226,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [v10 naturalLightingCurve];
-  v14 = [v13 checksum];
+  naturalLightingCurve = [lightProfile naturalLightingCurve];
+  checksum = [naturalLightingCurve checksum];
 
-  v15 = [v4 transitionChecksum];
-  v16 = [v15 unsignedLongLongValue];
+  transitionChecksum = [contextCopy transitionChecksum];
+  unsignedLongLongValue = [transitionChecksum unsignedLongLongValue];
 
-  v17 = [v4 transitionChecksum];
+  transitionChecksum2 = [contextCopy transitionChecksum];
 
   v18 = objc_autoreleasePoolPush();
-  v19 = v7;
+  v19 = selfCopy;
   v20 = HMFGetOSLogHandle();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
-  if (v17 && v14 == v16)
+  if (transitionChecksum2 && checksum == unsignedLongLongValue)
   {
     if (v21)
     {
@@ -270,58 +270,58 @@ LABEL_16:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCurrentDevicePrimaryResidentChangedWithReason:(id)a3
+- (void)handleCurrentDevicePrimaryResidentChangedWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  reasonCopy = reason;
+  workQueue = [(HMDNaturalLightingCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    [(HMDNaturalLightingCurveWriter *)v7 isCurrentDevicePrimaryResident];
+    [(HMDNaturalLightingCurveWriter *)selfCopy isCurrentDevicePrimaryResident];
     v10 = HMFBooleanToString();
     v13 = 138543874;
     v14 = v9;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v4;
+    v18 = reasonCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling current device primary resident changed: %@ with reason: %@", &v13, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDNaturalLightingCurveWriter *)v7 lightProfile];
-  if ([(HMDNaturalLightingCurveWriter *)v7 isCurrentDevicePrimaryResident])
+  lightProfile = [(HMDNaturalLightingCurveWriter *)selfCopy lightProfile];
+  if ([(HMDNaturalLightingCurveWriter *)selfCopy isCurrentDevicePrimaryResident])
   {
-    [v11 setNaturalLightingCharacteristicsNotificationEnabled:1 forObserver:v7];
+    [lightProfile setNaturalLightingCharacteristicsNotificationEnabled:1 forObserver:selfCopy];
   }
 
   else
   {
-    [v11 setNaturalLightingCharacteristicsNotificationEnabled:0 forObserver:v7];
-    [(HMDNaturalLightingCurveWriter *)v7 setPeriodicCharacteristicWriteTimer:0];
+    [lightProfile setNaturalLightingCharacteristicsNotificationEnabled:0 forObserver:selfCopy];
+    [(HMDNaturalLightingCurveWriter *)selfCopy setPeriodicCharacteristicWriteTimer:0];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePrimaryResidentUpdateNotification:(id)a3
+- (void)handlePrimaryResidentUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDNaturalLightingCurveWriter *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDNaturalLightingCurveWriter *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification___block_invoke(uint64_t a1)
@@ -362,37 +362,37 @@ void __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleActiveTransitionContextUpdated:(id)a3
+- (void)handleActiveTransitionContextUpdated:(id)updated
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  updatedCopy = updated;
+  workQueue = [(HMDNaturalLightingCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDNaturalLightingCurveWriter *)self isCurrentDevicePrimaryResident])
   {
-    if (v4)
+    if (updatedCopy)
     {
-      v6 = [(HMDNaturalLightingCurveWriter *)self dataSource];
-      v7 = [v6 date];
+      dataSource = [(HMDNaturalLightingCurveWriter *)self dataSource];
+      date = [dataSource date];
 
-      v8 = [v4 startDate];
-      v9 = [(HMDNaturalLightingCurveWriter *)self dataSource];
-      v10 = [v9 date];
-      [v10 timeIntervalSinceDate:v8];
+      startDate = [updatedCopy startDate];
+      dataSource2 = [(HMDNaturalLightingCurveWriter *)self dataSource];
+      date2 = [dataSource2 date];
+      [date2 timeIntervalSinceDate:startDate];
       v12 = v11;
 
       if (v12 >= 0.0)
       {
-        v26 = [(HMDNaturalLightingCurveWriter *)self dataSource];
-        [v26 naturalLightingCurveUpdateInterval];
+        dataSource3 = [(HMDNaturalLightingCurveWriter *)self dataSource];
+        [dataSource3 naturalLightingCurveUpdateInterval];
         v28 = v27;
 
         v29 = v28 - v12;
         if (v28 - v12 <= 0.0)
         {
           v45 = objc_autoreleasePoolPush();
-          v14 = self;
+          selfCopy3 = self;
           v46 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
           {
@@ -412,14 +412,14 @@ void __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification
 
         else
         {
-          v30 = [v4 millisecondsElapsedSinceStartDate] / 1000.0;
+          v30 = [updatedCopy millisecondsElapsedSinceStartDate] / 1000.0;
           v31 = vabdd_f64(v30, v12);
-          v32 = [(HMDNaturalLightingCurveWriter *)self dataSource];
-          [v32 naturalLightingCurveUpdateAccessoryTimeDifferenceThreshold];
+          dataSource4 = [(HMDNaturalLightingCurveWriter *)self dataSource];
+          [dataSource4 naturalLightingCurveUpdateAccessoryTimeDifferenceThreshold];
           v34 = v33;
 
           v35 = objc_autoreleasePoolPush();
-          v14 = self;
+          selfCopy3 = self;
           v36 = HMFGetOSLogHandle();
           v37 = os_log_type_enabled(v36, OS_LOG_TYPE_INFO);
           if (v31 < v34)
@@ -435,19 +435,19 @@ void __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification
             }
 
             objc_autoreleasePoolPop(v35);
-            v39 = [(HMDNaturalLightingCurveWriter *)v14 timerFactory];
-            v40 = v39[2](v39, 0, v29);
-            [(HMDNaturalLightingCurveWriter *)v14 setPeriodicCharacteristicWriteTimer:v40];
+            timerFactory = [(HMDNaturalLightingCurveWriter *)selfCopy3 timerFactory];
+            v40 = timerFactory[2](timerFactory, 0, v29);
+            [(HMDNaturalLightingCurveWriter *)selfCopy3 setPeriodicCharacteristicWriteTimer:v40];
 
-            v41 = [(HMDNaturalLightingCurveWriter *)v14 periodicCharacteristicWriteTimer];
-            [v41 setDelegate:v14];
+            periodicCharacteristicWriteTimer = [(HMDNaturalLightingCurveWriter *)selfCopy3 periodicCharacteristicWriteTimer];
+            [periodicCharacteristicWriteTimer setDelegate:selfCopy3];
 
-            v42 = [(HMDNaturalLightingCurveWriter *)v14 workQueue];
-            v43 = [(HMDNaturalLightingCurveWriter *)v14 periodicCharacteristicWriteTimer];
-            [v43 setDelegateQueue:v42];
+            workQueue2 = [(HMDNaturalLightingCurveWriter *)selfCopy3 workQueue];
+            periodicCharacteristicWriteTimer2 = [(HMDNaturalLightingCurveWriter *)selfCopy3 periodicCharacteristicWriteTimer];
+            [periodicCharacteristicWriteTimer2 setDelegateQueue:workQueue2];
 
-            v44 = [(HMDNaturalLightingCurveWriter *)v14 periodicCharacteristicWriteTimer];
-            [v44 resume];
+            periodicCharacteristicWriteTimer3 = [(HMDNaturalLightingCurveWriter *)selfCopy3 periodicCharacteristicWriteTimer];
+            [periodicCharacteristicWriteTimer3 resume];
 
             goto LABEL_25;
           }
@@ -455,8 +455,8 @@ void __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification
           if (v37)
           {
             v48 = HMFGetLogIdentifier();
-            v49 = [(HMDNaturalLightingCurveWriter *)v14 dataSource];
-            [v49 naturalLightingCurveUpdateAccessoryTimeDifferenceThreshold];
+            dataSource5 = [(HMDNaturalLightingCurveWriter *)selfCopy3 dataSource];
+            [dataSource5 naturalLightingCurveUpdateAccessoryTimeDifferenceThreshold];
             v52 = 138544386;
             v53 = v48;
             v54 = 2048;
@@ -478,7 +478,7 @@ void __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification
       else
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = self;
+        selfCopy3 = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
@@ -486,9 +486,9 @@ void __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification
           v52 = 138543874;
           v53 = v16;
           v54 = 2112;
-          v55 = *&v7;
+          v55 = *&date;
           v56 = 2112;
-          v57 = *&v8;
+          v57 = *&startDate;
           _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Updating curve because transition start date is ahead of the current date %@:%@", &v52, 0x20u);
         }
 
@@ -496,14 +496,14 @@ void __73__HMDNaturalLightingCurveWriter_handlePrimaryResidentUpdateNotification
         v17 = @"start date is ahead of the current date";
       }
 
-      [(HMDNaturalLightingCurveWriter *)v14 writeForNaturalLightingEnabledWithReason:v17];
+      [(HMDNaturalLightingCurveWriter *)selfCopy3 writeForNaturalLightingEnabledWithReason:v17];
 LABEL_25:
 
       goto LABEL_26;
     }
 
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy4 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -516,13 +516,13 @@ LABEL_25:
     }
 
     objc_autoreleasePoolPop(v22);
-    [(HMDNaturalLightingCurveWriter *)v23 setPeriodicCharacteristicWriteTimer:0];
+    [(HMDNaturalLightingCurveWriter *)selfCopy4 setPeriodicCharacteristicWriteTimer:0];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy5 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -540,19 +540,19 @@ LABEL_26:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithLightProfile:(id)a3
+- (void)configureWithLightProfile:(id)profile
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNaturalLightingCurveWriter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  profileCopy = profile;
+  workQueue = [(HMDNaturalLightingCurveWriter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 accessory];
-  v7 = [v6 home];
+  accessory = [profileCopy accessory];
+  home = [accessory home];
 
-  [(HMDNaturalLightingCurveWriter *)self setLightProfile:v4];
+  [(HMDNaturalLightingCurveWriter *)self setLightProfile:profileCopy];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -560,28 +560,28 @@ LABEL_26:
     *buf = 138543618;
     v19 = v11;
     v20 = 2112;
-    v21 = v7;
+    v21 = home;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Configuring with home: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v7 residentDeviceManager];
-  [v12 addDataSource:v9];
+  residentDeviceManager = [home residentDeviceManager];
+  [residentDeviceManager addDataSource:selfCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __59__HMDNaturalLightingCurveWriter_configureWithLightProfile___block_invoke;
   v17[3] = &unk_27868A250;
-  v17[4] = v9;
-  [v12 confirmWithCompletionHandler:v17];
-  v13 = [(HMDNaturalLightingCurveWriter *)v9 notificationCenter];
-  v14 = [v7 residentDeviceManager];
-  [v13 addObserver:v9 selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:v14];
+  v17[4] = selfCopy;
+  [residentDeviceManager confirmWithCompletionHandler:v17];
+  notificationCenter = [(HMDNaturalLightingCurveWriter *)selfCopy notificationCenter];
+  residentDeviceManager2 = [home residentDeviceManager];
+  [notificationCenter addObserver:selfCopy selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:residentDeviceManager2];
 
-  v15 = [(HMDNaturalLightingCurveWriter *)v9 notificationCenter];
-  [v15 addObserver:v9 selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+  notificationCenter2 = [(HMDNaturalLightingCurveWriter *)selfCopy notificationCenter];
+  [notificationCenter2 addObserver:selfCopy selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
 
-  -[HMDNaturalLightingCurveWriter setCurrentDevicePrimaryResident:](v9, "setCurrentDevicePrimaryResident:", [v7 isCurrentDeviceConfirmedPrimaryResident]);
-  [(HMDNaturalLightingCurveWriter *)v9 handleCurrentDevicePrimaryResidentChangedWithReason:@"Configure"];
+  -[HMDNaturalLightingCurveWriter setCurrentDevicePrimaryResident:](selfCopy, "setCurrentDevicePrimaryResident:", [home isCurrentDeviceConfirmedPrimaryResident]);
+  [(HMDNaturalLightingCurveWriter *)selfCopy handleCurrentDevicePrimaryResidentChangedWithReason:@"Configure"];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -628,41 +628,41 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDNaturalLightingCurveWriter)initWithUUID:(id)a3 workQueue:(id)a4 logIdentifier:(id)a5 dataSource:(id)a6 notificationCenter:(id)a7 timerFactory:(id)a8
+- (HMDNaturalLightingCurveWriter)initWithUUID:(id)d workQueue:(id)queue logIdentifier:(id)identifier dataSource:(id)source notificationCenter:(id)center timerFactory:(id)factory
 {
-  v24 = a3;
-  v23 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  dCopy = d;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  centerCopy = center;
+  factoryCopy = factory;
   v25.receiver = self;
   v25.super_class = HMDNaturalLightingCurveWriter;
   v19 = [(HMDNaturalLightingCurveWriter *)&v25 init];
   if (v19)
   {
-    v20 = _Block_copy(v18);
+    v20 = _Block_copy(factoryCopy);
     timerFactory = v19->_timerFactory;
     v19->_timerFactory = v20;
 
-    objc_storeStrong(&v19->_UUID, a3);
-    objc_storeStrong(&v19->_workQueue, a4);
-    objc_storeStrong(&v19->_logIdentifier, a5);
-    objc_storeStrong(&v19->_dataSource, a6);
-    objc_storeStrong(&v19->_notificationCenter, a7);
+    objc_storeStrong(&v19->_UUID, d);
+    objc_storeStrong(&v19->_workQueue, queue);
+    objc_storeStrong(&v19->_logIdentifier, identifier);
+    objc_storeStrong(&v19->_dataSource, source);
+    objc_storeStrong(&v19->_notificationCenter, center);
   }
 
   return v19;
 }
 
-- (HMDNaturalLightingCurveWriter)initWithUUID:(id)a3 workQueue:(id)a4 logIdentifier:(id)a5
+- (HMDNaturalLightingCurveWriter)initWithUUID:(id)d workQueue:(id)queue logIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  dCopy = d;
   v11 = objc_alloc_init(HMDLightProfileDataSource);
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  v13 = [(HMDNaturalLightingCurveWriter *)self initWithUUID:v10 workQueue:v9 logIdentifier:v8 dataSource:v11 notificationCenter:v12 timerFactory:&__block_literal_global_279500];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v13 = [(HMDNaturalLightingCurveWriter *)self initWithUUID:dCopy workQueue:queueCopy logIdentifier:identifierCopy dataSource:v11 notificationCenter:defaultCenter timerFactory:&__block_literal_global_279500];
 
   return v13;
 }

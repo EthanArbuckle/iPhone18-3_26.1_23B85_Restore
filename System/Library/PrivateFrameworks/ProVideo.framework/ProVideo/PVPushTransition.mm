@@ -1,23 +1,23 @@
 @interface PVPushTransition
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
++ (void)registerEffectWithID:(id)d displayName:(id)name;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
 @end
 
 @implementation PVPushTransition
 
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4
++ (void)registerEffectWithID:(id)d displayName:(id)name
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.transition", @"FFEffectProperty_EffectType", 0}];
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v7 withProperties:v6];
+  dCopy = d;
+  nameCopy = name;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.transition", @"FFEffectProperty_EffectType", 0}];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v6];
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v11 = v6;
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 0, &v34);
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 1u, &v33);
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 0, &v34);
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 1u, &v33);
   v12 = v34;
   *v11 = v34;
   if (v12)
@@ -26,7 +26,7 @@
   }
 
   memset(&v32, 0, sizeof(v32));
-  [(PVEffect *)self effectRange:a3->var0];
+  [(PVEffect *)self effectRange:time->var0];
   rhs = time;
   CMTimeSubtract(&v32, v28, &rhs);
   time = v32;
@@ -40,13 +40,13 @@
   HGXForm::HGXForm(v15);
   v16 = HGObject::operator new(0x210uLL);
   HGXForm::HGXForm(v16);
-  v17 = (*(**a6.m_Obj + 40))();
+  v17 = (*(**context.m_Obj + 40))();
   v19 = v18;
-  v20 = [(PVPushTransition *)self transitionDirection];
+  transitionDirection = [(PVPushTransition *)self transitionDirection];
   v21 = Seconds / v14;
-  if (v20 > 1)
+  if (transitionDirection > 1)
   {
-    if (v20 == 2)
+    if (transitionDirection == 2)
     {
       v26 = v19;
       HGTransform::Translate(&time, 0.0, (((1.0 - v21) * 0.0) - (v21 * v26)), 0.0);
@@ -74,7 +74,7 @@
       goto LABEL_29;
     }
 
-    if (v20 == 3)
+    if (transitionDirection == 3)
     {
       v24 = v19;
       HGTransform::Translate(&time, 0.0, (((1.0 - v21) * 0.0) + (v21 * v24)), 0.0);
@@ -105,7 +105,7 @@
     goto LABEL_18;
   }
 
-  if (!v20)
+  if (!transitionDirection)
   {
     v25 = v17;
     HGTransform::Translate(&time, (((1.0 - v21) * 0.0) - (v21 * v25)), 0.0, 0.0);
@@ -133,7 +133,7 @@
     goto LABEL_29;
   }
 
-  if (v20 != 1)
+  if (transitionDirection != 1)
   {
 LABEL_18:
     if (!v16)

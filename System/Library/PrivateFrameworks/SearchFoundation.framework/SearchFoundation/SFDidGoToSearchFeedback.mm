@@ -1,54 +1,54 @@
 @interface SFDidGoToSearchFeedback
-- (SFDidGoToSearchFeedback)initWithCoder:(id)a3;
-- (SFDidGoToSearchFeedback)initWithInput:(id)a3 endpoint:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SFDidGoToSearchFeedback)initWithCoder:(id)coder;
+- (SFDidGoToSearchFeedback)initWithInput:(id)input endpoint:(unint64_t)endpoint;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFDidGoToSearchFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFDidGoToSearchFeedback;
-  v4 = a3;
-  [(SFFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_input forKey:{@"_input", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_endpoint forKey:@"endpoint"];
-  [v4 encodeInteger:self->_triggerEvent forKey:@"_triggerEvent"];
+  coderCopy = coder;
+  [(SFFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_input forKey:{@"_input", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_endpoint forKey:@"endpoint"];
+  [coderCopy encodeInteger:self->_triggerEvent forKey:@"_triggerEvent"];
 }
 
-- (SFDidGoToSearchFeedback)initWithCoder:(id)a3
+- (SFDidGoToSearchFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFDidGoToSearchFeedback;
-  v5 = [(SFFeedback *)&v9 initWithCoder:v4];
+  v5 = [(SFFeedback *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_input"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_input"];
     input = v5->_input;
     v5->_input = v6;
 
-    v5->_endpoint = [v4 decodeIntegerForKey:@"endpoint"];
-    v5->_triggerEvent = [v4 decodeIntegerForKey:@"_triggerEvent"];
+    v5->_endpoint = [coderCopy decodeIntegerForKey:@"endpoint"];
+    v5->_triggerEvent = [coderCopy decodeIntegerForKey:@"_triggerEvent"];
   }
 
   return v5;
 }
 
-- (SFDidGoToSearchFeedback)initWithInput:(id)a3 endpoint:(unint64_t)a4
+- (SFDidGoToSearchFeedback)initWithInput:(id)input endpoint:(unint64_t)endpoint
 {
-  v6 = a3;
+  inputCopy = input;
   v11.receiver = self;
   v11.super_class = SFDidGoToSearchFeedback;
   v7 = [(SFFeedback *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [inputCopy copy];
     input = v7->_input;
     v7->_input = v8;
 
-    v7->_endpoint = a4;
+    v7->_endpoint = endpoint;
   }
 
   return v7;

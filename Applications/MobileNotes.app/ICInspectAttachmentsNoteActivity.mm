@@ -1,48 +1,48 @@
 @interface ICInspectAttachmentsNoteActivity
-- (ICInspectAttachmentsNoteActivity)initWithAttachments:(id)a3 presentingViewController:(id)a4;
+- (ICInspectAttachmentsNoteActivity)initWithAttachments:(id)attachments presentingViewController:(id)controller;
 - (UIViewController)presentingViewController;
-- (void)performActivityWithCompletion:(id)a3;
-- (void)showAttachmentInspectorWithAttachment:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
+- (void)showAttachmentInspectorWithAttachment:(id)attachment;
 - (void)showAttachmentsPickerActionSheet;
 @end
 
 @implementation ICInspectAttachmentsNoteActivity
 
-- (ICInspectAttachmentsNoteActivity)initWithAttachments:(id)a3 presentingViewController:(id)a4
+- (ICInspectAttachmentsNoteActivity)initWithAttachments:(id)attachments presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  attachmentsCopy = attachments;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = ICInspectAttachmentsNoteActivity;
   v9 = [(ICInspectAttachmentsNoteActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attachments, a3);
-    objc_storeWeak(&v10->_presentingViewController, v8);
+    objc_storeStrong(&v9->_attachments, attachments);
+    objc_storeWeak(&v10->_presentingViewController, controllerCopy);
   }
 
   return v10;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v13 = a3;
-  v4 = [(ICInspectAttachmentsNoteActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICInspectAttachmentsNoteActivity *)self presentingViewController];
 
-  v5 = self;
-  if (v4)
+  selfCopy2 = self;
+  if (presentingViewController)
   {
-    v6 = [(ICInspectAttachmentsNoteActivity *)self attachments];
-    v7 = [v6 count];
+    attachments = [(ICInspectAttachmentsNoteActivity *)self attachments];
+    v7 = [attachments count];
 
     if (v7)
     {
       if (v7 == 1)
       {
-        v8 = [(ICInspectAttachmentsNoteActivity *)self attachments];
-        v9 = [v8 firstObject];
-        [(ICInspectAttachmentsNoteActivity *)self showAttachmentInspectorWithAttachment:v9];
+        attachments2 = [(ICInspectAttachmentsNoteActivity *)self attachments];
+        firstObject = [attachments2 firstObject];
+        [(ICInspectAttachmentsNoteActivity *)self showAttachmentInspectorWithAttachment:firstObject];
       }
 
       else
@@ -51,7 +51,7 @@
       }
     }
 
-    v5 = self;
+    selfCopy2 = self;
     v10 = 1;
   }
 
@@ -60,25 +60,25 @@
     v10 = 0;
   }
 
-  [(ICInspectAttachmentsNoteActivity *)v5 activityDidFinish:v10];
-  v11 = v13;
-  if (v13)
+  [(ICInspectAttachmentsNoteActivity *)selfCopy2 activityDidFinish:v10];
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    v12 = [(ICInspectAttachmentsNoteActivity *)self activityType];
-    (*(v13 + 2))(v13, v4 != 0, v12);
+    activityType = [(ICInspectAttachmentsNoteActivity *)self activityType];
+    (*(completionCopy + 2))(completionCopy, presentingViewController != 0, activityType);
 
-    v11 = v13;
+    v11 = completionCopy;
   }
 }
 
-- (void)showAttachmentInspectorWithAttachment:(id)a3
+- (void)showAttachmentInspectorWithAttachment:(id)attachment
 {
-  v4 = a3;
-  v7 = [[ICAttachmentInspectorViewController alloc] initWithAttachment:v4];
+  attachmentCopy = attachment;
+  v7 = [[ICAttachmentInspectorViewController alloc] initWithAttachment:attachmentCopy];
 
-  v5 = [(ICAttachmentInspectorViewController *)v7 ic_embedInNavigationControllerForModalPresentation];
-  v6 = [(ICInspectAttachmentsNoteActivity *)self presentingViewController];
-  [v6 presentViewController:v5 animated:1 completion:0];
+  ic_embedInNavigationControllerForModalPresentation = [(ICAttachmentInspectorViewController *)v7 ic_embedInNavigationControllerForModalPresentation];
+  presentingViewController = [(ICInspectAttachmentsNoteActivity *)self presentingViewController];
+  [presentingViewController presentViewController:ic_embedInNavigationControllerForModalPresentation animated:1 completion:0];
 }
 
 - (void)showAttachmentsPickerActionSheet
@@ -104,11 +104,11 @@
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 title];
-        v10 = v9;
-        if (v9)
+        title = [v8 title];
+        v10 = title;
+        if (title)
         {
-          v11 = v9;
+          v11 = title;
         }
 
         else
@@ -137,8 +137,8 @@
 
   v14 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:0];
   [v3 addAction:v14];
-  v15 = [(ICInspectAttachmentsNoteActivity *)self presentingViewController];
-  [v15 presentViewController:v3 animated:1 completion:0];
+  presentingViewController = [(ICInspectAttachmentsNoteActivity *)self presentingViewController];
+  [presentingViewController presentViewController:v3 animated:1 completion:0];
 }
 
 - (UIViewController)presentingViewController

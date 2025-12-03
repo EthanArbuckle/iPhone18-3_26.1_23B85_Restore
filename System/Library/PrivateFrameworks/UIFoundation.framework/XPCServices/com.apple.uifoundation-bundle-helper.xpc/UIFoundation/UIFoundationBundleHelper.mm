@@ -1,8 +1,8 @@
 @interface UIFoundationBundleHelper
 + (id)XPCInterface;
 + (id)bundleHelper;
-- (void)__localizedInfoDictionaryObjectForKeys:(id)a3 withPlugInUUID:(id)a4 completion:(id)a5;
-- (void)__queryPhotoServiceAuthorizationStatusForPlugInUUID:(id)a3 completion:(id)a4;
+- (void)__localizedInfoDictionaryObjectForKeys:(id)keys withPlugInUUID:(id)d completion:(id)completion;
+- (void)__queryPhotoServiceAuthorizationStatusForPlugInUUID:(id)d completion:(id)completion;
 @end
 
 @implementation UIFoundationBundleHelper
@@ -31,24 +31,24 @@
   return v3;
 }
 
-- (void)__localizedInfoDictionaryObjectForKeys:(id)a3 withPlugInUUID:(id)a4 completion:(id)a5
+- (void)__localizedInfoDictionaryObjectForKeys:(id)keys withPlugInUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keysCopy = keys;
+  dCopy = d;
+  completionCopy = completion;
   v10 = +[NSMutableDictionary dictionary];
   v35 = 0;
-  v11 = [[LSApplicationExtensionRecord alloc] initWithUUID:v8 error:&v35];
+  v11 = [[LSApplicationExtensionRecord alloc] initWithUUID:dCopy error:&v35];
   v12 = v35;
   if (!v11)
   {
     v29 = 0;
-    v30 = v9;
+    v30 = completionCopy;
 
     v36 = NSLocalizedDescriptionKey;
-    v14 = [v8 UUIDString];
-    v15 = [NSString stringWithFormat:@"Unable to resolve plugin for UUID %@", v14];
-    v37 = v15;
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [NSString stringWithFormat:@"Unable to resolve plugin for UUID %@", uUIDString];
+    v37 = uUIDString2;
     v22 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     v23 = [NSError errorWithDomain:NSCocoaErrorDomain code:-2 userInfo:v22];
 LABEL_17:
@@ -57,21 +57,21 @@ LABEL_17:
     v12 = v23;
 LABEL_18:
     v11 = v29;
-    v9 = v30;
+    completionCopy = v30;
     goto LABEL_19;
   }
 
   v13 = [v11 URL];
-  v14 = [NSBundle bundleWithURL:v13];
+  uUIDString = [NSBundle bundleWithURL:v13];
 
-  if (!v14)
+  if (!uUIDString)
   {
     v29 = v11;
-    v30 = v9;
+    v30 = completionCopy;
 
     v38 = NSLocalizedDescriptionKey;
-    v15 = [v8 UUIDString];
-    v22 = [NSString stringWithFormat:@"Unable to resolve plugin for UUID %@", v15];
+    uUIDString2 = [dCopy UUIDString];
+    v22 = [NSString stringWithFormat:@"Unable to resolve plugin for UUID %@", uUIDString2];
     v39 = v22;
     v24 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     v23 = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:v24];
@@ -84,14 +84,14 @@ LABEL_18:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = v7;
-  v16 = [v15 countByEnumeratingWithState:&v31 objects:v42 count:16];
+  uUIDString2 = keysCopy;
+  v16 = [uUIDString2 countByEnumeratingWithState:&v31 objects:v42 count:16];
   if (v16)
   {
     v17 = v16;
     v29 = v11;
-    v30 = v9;
-    v28 = v7;
+    v30 = completionCopy;
+    v28 = keysCopy;
     v18 = *v32;
     while (2)
     {
@@ -99,11 +99,11 @@ LABEL_18:
       {
         if (*v32 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(uUIDString2);
         }
 
         v20 = *(*(&v31 + 1) + 8 * i);
-        v21 = [v14 objectForInfoDictionaryKey:v20];
+        v21 = [uUIDString objectForInfoDictionaryKey:v20];
         v22 = v21;
         if (v21)
         {
@@ -111,14 +111,14 @@ LABEL_18:
           {
 
             v40 = NSLocalizedDescriptionKey;
-            v25 = [v8 UUIDString];
-            v26 = [NSString stringWithFormat:@"Value of info dictionary key %@ for plugin with UUID %@ does not conform to secure coding!", v20, v25];
+            uUIDString3 = [dCopy UUIDString];
+            v26 = [NSString stringWithFormat:@"Value of info dictionary key %@ for plugin with UUID %@ does not conform to secure coding!", v20, uUIDString3];
             v41 = v26;
             v27 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
             v23 = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:v27];
 
-            v12 = v25;
-            v7 = v28;
+            v12 = uUIDString3;
+            keysCopy = v28;
             goto LABEL_17;
           }
 
@@ -126,7 +126,7 @@ LABEL_18:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v31 objects:v42 count:16];
+      v17 = [uUIDString2 countByEnumeratingWithState:&v31 objects:v42 count:16];
       if (v17)
       {
         continue;
@@ -135,22 +135,22 @@ LABEL_18:
       break;
     }
 
-    v7 = v28;
+    keysCopy = v28;
     goto LABEL_18;
   }
 
 LABEL_19:
 
-  v9[2](v9, v10, v12);
+  completionCopy[2](completionCopy, v10, v12);
 }
 
-- (void)__queryPhotoServiceAuthorizationStatusForPlugInUUID:(id)a3 completion:(id)a4
+- (void)__queryPhotoServiceAuthorizationStatusForPlugInUUID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[LSApplicationExtensionRecord alloc] initWithUUID:v5 error:0];
-  v8 = [v7 containingBundleRecord];
-  if (v8 && (Default = CFAllocatorGetDefault(), (v10 = CFBundleCreate(Default, [v8 URL])) != 0))
+  dCopy = d;
+  completionCopy = completion;
+  v7 = [[LSApplicationExtensionRecord alloc] initWithUUID:dCopy error:0];
+  containingBundleRecord = [v7 containingBundleRecord];
+  if (containingBundleRecord && (Default = CFAllocatorGetDefault(), (v10 = CFBundleCreate(Default, [containingBundleRecord URL])) != 0))
   {
     v11 = v10;
     v12 = TCCAccessCopyInformationForBundle();
@@ -165,20 +165,20 @@ LABEL_19:
     v16[3] = &unk_1000041F0;
     v16[4] = &v17;
     [v12 enumerateObjectsUsingBlock:v16];
-    (*(v6 + 2))(v6, *(v18 + 24), 0);
+    (*(completionCopy + 2))(completionCopy, *(v18 + 24), 0);
     _Block_object_dispose(&v17, 8);
   }
 
   else
   {
     v21 = NSLocalizedDescriptionKey;
-    v13 = [v5 UUIDString];
-    v14 = [NSString stringWithFormat:@"Unable to resolve plugin for UUID %@", v13];
+    uUIDString = [dCopy UUIDString];
+    v14 = [NSString stringWithFormat:@"Unable to resolve plugin for UUID %@", uUIDString];
     v22 = v14;
     v12 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
 
     v15 = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:v12];
-    (*(v6 + 2))(v6, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 

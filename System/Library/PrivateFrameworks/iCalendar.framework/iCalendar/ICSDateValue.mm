@@ -1,41 +1,41 @@
 @interface ICSDateValue
-+ (id)dateFromICSString:(id)a3;
-+ (id)dateFromICSUTF8String:(const char *)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICSDateValue)initWithCoder:(id)a3;
-- (ICSDateValue)initWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5;
++ (id)dateFromICSString:(id)string;
++ (id)dateFromICSUTF8String:(const char *)string;
+- (BOOL)isEqual:(id)equal;
+- (ICSDateValue)initWithCoder:(id)coder;
+- (ICSDateValue)initWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day;
 - (id)components;
-- (int64_t)compare:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICSDateValue
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v5 = a4;
-  [v5 appendFormat:@"%.4d%.2d%.2d", -[ICSDateValue year](self, "year"), -[ICSDateValue month](self, "month"), -[ICSDateValue day](self, "day")];
+  stringCopy = string;
+  [stringCopy appendFormat:@"%.4d%.2d%.2d", -[ICSDateValue year](self, "year"), -[ICSDateValue month](self, "month"), -[ICSDateValue day](self, "day")];
 }
 
-+ (id)dateFromICSString:(id)a3
++ (id)dateFromICSString:(id)string
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  stringCopy = string;
+  uTF8String = [string UTF8String];
 
-  return [a1 dateFromICSUTF8String:v6];
+  return [self dateFromICSUTF8String:uTF8String];
 }
 
-- (ICSDateValue)initWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5
+- (ICSDateValue)initWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day
 {
   v9.receiver = self;
   v9.super_class = ICSDateValue;
   result = [(ICSDateValue *)&v9 init];
   if (result)
   {
-    result->_year = a3;
-    result->_month = a4;
-    result->_day = a5;
+    result->_year = year;
+    result->_month = month;
+    result->_day = day;
   }
 
   return result;
@@ -51,82 +51,82 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICSDateValue *)self compare:v4]== 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICSDateValue *)self compare:equalCopy]== 0;
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ICSDateValue *)self year];
-  v6 = [(ICSDateValue *)self month];
+  compareCopy = compare;
+  year = [(ICSDateValue *)self year];
+  month = [(ICSDateValue *)self month];
   v7 = [(ICSDateValue *)self day];
-  v8 = [v4 year];
-  v9 = [v4 month];
-  v10 = [v4 day];
-  if (v5 < v8)
+  year2 = [compareCopy year];
+  month2 = [compareCopy month];
+  v10 = [compareCopy day];
+  if (year < year2)
   {
     goto LABEL_2;
   }
 
-  if (v5 != v8)
+  if (year != year2)
   {
     goto LABEL_23;
   }
 
-  if (v6 < v9 || v6 == v9 && v7 < v10)
+  if (month < month2 || month == month2 && v7 < v10)
   {
     goto LABEL_2;
   }
 
   v11 = 1;
-  if (v6 == v9 && v7 == v10)
+  if (month == month2 && v7 == v10)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(ICSDateValue *)self hour];
-      v13 = [(ICSDateValue *)self minute];
-      v14 = [(ICSDateValue *)self second];
+      hour = [(ICSDateValue *)self hour];
+      minute = [(ICSDateValue *)self minute];
+      second = [(ICSDateValue *)self second];
     }
 
     else
     {
-      v12 = 0;
-      v13 = 0;
-      v14 = 0;
+      hour = 0;
+      minute = 0;
+      second = 0;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v4 hour];
-      v16 = [v4 minute];
-      v17 = [v4 second];
+      hour2 = [compareCopy hour];
+      minute2 = [compareCopy minute];
+      second2 = [compareCopy second];
     }
 
     else
     {
-      v15 = 0;
-      v16 = 0;
-      v17 = 0;
+      hour2 = 0;
+      minute2 = 0;
+      second2 = 0;
     }
 
-    if (v12 < v15)
+    if (hour < hour2)
     {
       goto LABEL_2;
     }
 
-    if (v12 == v15)
+    if (hour == hour2)
     {
-      if (v13 >= v16 && (v13 != v16 || v14 >= v17))
+      if (minute >= minute2 && (minute != minute2 || second >= second2))
       {
-        if (v13 == v16 && v14 == v17)
+        if (minute == minute2 && second == second2)
         {
           v11 = 0;
           goto LABEL_24;
@@ -149,36 +149,36 @@ LABEL_24:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   year = self->_year;
-  v5 = a3;
-  [v5 encodeInteger:year forKey:@"Year"];
-  [v5 encodeInteger:self->_month forKey:@"Month"];
-  [v5 encodeInteger:self->_day forKey:@"Day"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:year forKey:@"Year"];
+  [coderCopy encodeInteger:self->_month forKey:@"Month"];
+  [coderCopy encodeInteger:self->_day forKey:@"Day"];
 }
 
-- (ICSDateValue)initWithCoder:(id)a3
+- (ICSDateValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ICSDateValue;
   v5 = [(ICSDateValue *)&v7 init];
   if (v5)
   {
-    v5->_year = [v4 decodeIntegerForKey:@"Year"];
-    v5->_month = [v4 decodeIntegerForKey:@"Month"];
-    v5->_day = [v4 decodeIntegerForKey:@"Day"];
+    v5->_year = [coderCopy decodeIntegerForKey:@"Year"];
+    v5->_month = [coderCopy decodeIntegerForKey:@"Month"];
+    v5->_day = [coderCopy decodeIntegerForKey:@"Day"];
   }
 
   return v5;
 }
 
-+ (id)dateFromICSUTF8String:(const char *)a3
++ (id)dateFromICSUTF8String:(const char *)string
 {
-  if (a3)
+  if (string)
   {
-    v5 = strlen(a3);
+    v5 = strlen(string);
     v6 = 0;
     v7 = 0;
     if (v5 <= 7)
@@ -190,7 +190,7 @@ LABEL_24:
           goto LABEL_30;
         }
 
-        if (a3[6] != 90)
+        if (string[6] != 90)
         {
           goto LABEL_24;
         }
@@ -201,7 +201,7 @@ LABEL_24:
       v22 = 0;
       v23 = 0;
       v21 = 0;
-      if (sscanf(a3, "%02d%02d%02d", &v22, &v21 + 4, &v21) == 3)
+      if (sscanf(string, "%02d%02d%02d", &v22, &v21 + 4, &v21) == 3)
       {
         if (v6)
         {
@@ -232,7 +232,7 @@ LABEL_24:
           v22 = 0;
           v23 = 0;
           v21 = 0;
-          if (sscanf(a3, "%04d%02d%02d", &v23 + 4, &v23, &v22 + 4) == 3)
+          if (sscanf(string, "%04d%02d%02d", &v23 + 4, &v23, &v22 + 4) == 3)
           {
             v12 = [ICSDateValue alloc];
             v7 = [(ICSDateValue *)v12 initWithYear:SHIDWORD(v23) month:v23 day:SHIDWORD(v22)];
@@ -243,7 +243,7 @@ LABEL_24:
         case 15:
           goto LABEL_8;
         case 16:
-          if (a3[15] == 90)
+          if (string[15] == 90)
           {
             v6 = 1;
 LABEL_8:
@@ -251,7 +251,7 @@ LABEL_8:
             v23 = 0;
             v21 = 0;
             v20 = 0;
-            v8 = sscanf(a3, "%04d%02d%02d%c%02d%02d%02d", &v23 + 4, &v23, &v22 + 4, &v20, &v22, &v21 + 4, &v21);
+            v8 = sscanf(string, "%04d%02d%02d%c%02d%02d%02d", &v23 + 4, &v23, &v22 + 4, &v20, &v22, &v21 + 4, &v21);
             v7 = 0;
             if (v8 != 7 || v20 != 84)
             {

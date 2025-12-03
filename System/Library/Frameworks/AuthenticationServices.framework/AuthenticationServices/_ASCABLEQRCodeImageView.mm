@@ -1,25 +1,25 @@
 @interface _ASCABLEQRCodeImageView
-- (_ASCABLEQRCodeImageView)initWithFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
+- (_ASCABLEQRCodeImageView)initWithFrame:(CGRect)frame;
+- (void)setImage:(id)image;
 @end
 
 @implementation _ASCABLEQRCodeImageView
 
-- (_ASCABLEQRCodeImageView)initWithFrame:(CGRect)a3
+- (_ASCABLEQRCodeImageView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = _ASCABLEQRCodeImageView;
-  v3 = [(_ASCABLEQRCodeImageView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_ASCABLEQRCodeImageView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v5 = *MEMORY[0x1E6979DE0];
-    v6 = [(_ASCABLEQRCodeImageView *)v3 layer];
-    [v6 setContentsGravity:v5];
+    layer = [(_ASCABLEQRCodeImageView *)v3 layer];
+    [layer setContentsGravity:v5];
 
     v7 = *MEMORY[0x1E6979CB8];
-    v8 = [(_ASCABLEQRCodeImageView *)v4 layer];
-    [v8 setMagnificationFilter:v7];
+    layer2 = [(_ASCABLEQRCodeImageView *)v4 layer];
+    [layer2 setMagnificationFilter:v7];
 
     v9 = v4;
   }
@@ -27,14 +27,14 @@
   return v4;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
-  v5 = a3;
-  v6 = [v5 CGImage];
+  objc_storeStrong(&self->_image, image);
+  imageCopy = image;
+  cGImage = [imageCopy CGImage];
 
-  v7 = [(_ASCABLEQRCodeImageView *)self layer];
-  [v7 setContents:v6];
+  layer = [(_ASCABLEQRCodeImageView *)self layer];
+  [layer setContents:cGImage];
 }
 
 @end

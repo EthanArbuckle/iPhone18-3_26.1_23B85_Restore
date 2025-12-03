@@ -1,23 +1,23 @@
 @interface MSPRidesharingInformationSource
-- (MSPRidesharingInformationSource)initWithStartWaypoint:(id)a3 endWaypoint:(id)a4;
+- (MSPRidesharingInformationSource)initWithStartWaypoint:(id)waypoint endWaypoint:(id)endWaypoint;
 @end
 
 @implementation MSPRidesharingInformationSource
 
-- (MSPRidesharingInformationSource)initWithStartWaypoint:(id)a3 endWaypoint:(id)a4
+- (MSPRidesharingInformationSource)initWithStartWaypoint:(id)waypoint endWaypoint:(id)endWaypoint
 {
-  v6 = a3;
-  v7 = a4;
+  waypointCopy = waypoint;
+  endWaypointCopy = endWaypoint;
   v14.receiver = self;
   v14.super_class = MSPRidesharingInformationSource;
   v8 = [(MSPRidesharingInformationSource *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [waypointCopy copy];
     startWaypoint = v8->_startWaypoint;
     v8->_startWaypoint = v9;
 
-    v11 = [v7 copy];
+    v11 = [endWaypointCopy copy];
     endWaypoint = v8->_endWaypoint;
     v8->_endWaypoint = v11;
   }

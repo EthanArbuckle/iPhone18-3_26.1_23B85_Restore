@@ -11,7 +11,7 @@
   if (v4)
   {
     sub_100009F78(0, &qword_10118EAF8);
-    v5 = self;
+    selfCopy = self;
     v6 = v4;
     v7 = static ICURLSessionManager.musicSession.getter();
     [v7 cancelRequest:v6];
@@ -19,7 +19,7 @@
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
   v9.receiver = self;

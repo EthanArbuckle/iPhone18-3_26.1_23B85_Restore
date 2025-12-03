@@ -1,8 +1,8 @@
 @interface CKStampButtonChatItem
 - (BOOL)wantsGUIDAppended;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 @end
 
 @implementation CKStampButtonChatItem
@@ -29,8 +29,8 @@
 
 - (BOOL)wantsGUIDAppended
 {
-  v2 = [MEMORY[0x1E69A60F0] sharedInstance];
-  if ([v2 isInternalInstall])
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  if ([mEMORY[0x1E69A60F0] isInternalInstall])
   {
     v3 = IMGetDomainBoolForKey();
   }
@@ -43,18 +43,18 @@
   return v3;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v9;
-    a4->left = v10;
-    a4->bottom = v11;
-    a4->right = v12;
+    insets->top = v9;
+    insets->left = v10;
+    insets->bottom = v11;
+    insets->right = v12;
   }
 
   v13 = +[CKChatItemSizeCache sharedInstance];
@@ -70,8 +70,8 @@
     [(CKStampButtonChatItem *)self contentInsets];
     v18 = width - (v16 + v17);
     v21 = height - (v19 + v20);
-    v22 = [(CKChatItem *)self transcriptText];
-    [v22 boundingRectWithSize:1 options:0 context:{v18, v21}];
+    transcriptText = [(CKChatItem *)self transcriptText];
+    [transcriptText boundingRectWithSize:1 options:0 context:{v18, v21}];
     v24 = v23;
     v26 = v25;
     if (CKMainScreenScale_once_65 != -1)
@@ -97,34 +97,34 @@
   return result;
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a4 - 1;
-  if (a4 >= 1 && ([v12 objectAtIndex:v14], v15 = objc_claimAutoreleasedReturnValue(), (v16 = v15) != 0))
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  v14 = index - 1;
+  if (index >= 1 && ([itemsCopy objectAtIndex:v14], v15 = objc_claimAutoreleasedReturnValue(), (v16 = v15) != 0))
   {
-    v17 = [v15 layoutType];
-    if (v17 <= 0x18)
+    layoutType = [v15 layoutType];
+    if (layoutType <= 0x18)
     {
-      if (((1 << v17) & 0x18C9B6E) != 0)
+      if (((1 << layoutType) & 0x18C9B6E) != 0)
       {
         v18 = +[CKUIBehavior sharedBehaviors];
         goto LABEL_6;
       }
 
-      if (v17 == 10)
+      if (layoutType == 10)
       {
         v18 = +[CKUIBehavior sharedBehaviors];
         [v18 balloonBalloonTranscriptSpace:{objc_msgSend(v16, "contiguousType")}];
         goto LABEL_7;
       }
 
-      if (v17 == 13)
+      if (layoutType == 13)
       {
-        v25 = [CKChatItemLayoutUtilities prevMessageIsReplyForIndex:a4 allDatasourceItems:v12];
+        v25 = [CKChatItemLayoutUtilities prevMessageIsReplyForIndex:index allDatasourceItems:itemsCopy];
         v26 = +[CKUIBehavior sharedBehaviors];
         v18 = v26;
         if (v25)

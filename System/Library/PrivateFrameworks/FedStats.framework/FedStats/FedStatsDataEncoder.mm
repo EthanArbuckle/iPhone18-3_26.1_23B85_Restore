@@ -1,33 +1,33 @@
 @interface FedStatsDataEncoder
-+ (id)createWithDataTypeContent:(id)a3 possibleError:(id *)a4;
-+ (id)defaultDataPointForDataTypeContent:(id)a3;
-+ (id)encodeDataAndRecord:(id)a3 dataTypeContent:(id)a4 baseKey:(id)a5 errorOut:(id *)a6;
-+ (id)encodeDataAndRecord:(id)a3 dataTypeContent:(id)a4 metadata:(id)a5 baseKey:(id)a6 errorOut:(id *)a7;
-+ (id)encodeDataArray:(id)a3 dataTypeContent:(id)a4 resultType:(unint64_t *)a5 errorOut:(id *)a6;
-+ (id)encodeDataArrayAndRecord:(id)a3 dataTypeContent:(id)a4 metadata:(id)a5 baseKey:(id)a6 errorOut:(id *)a7;
-+ (id)extractAssetNamesFrom:(id)a3 usingFieldValues:(id)a4;
-+ (id)extractRequiredFieldsFrom:(id)a3;
-+ (id)mutateDataTypeContent:(id)a3 usingFieldValues:(id)a4 assetURLs:(id)a5 requiredFields:(id *)a6 assetNames:(id *)a7 error:(id *)a8;
++ (id)createWithDataTypeContent:(id)content possibleError:(id *)error;
++ (id)defaultDataPointForDataTypeContent:(id)content;
++ (id)encodeDataAndRecord:(id)record dataTypeContent:(id)content baseKey:(id)key errorOut:(id *)out;
++ (id)encodeDataAndRecord:(id)record dataTypeContent:(id)content metadata:(id)metadata baseKey:(id)key errorOut:(id *)out;
++ (id)encodeDataArray:(id)array dataTypeContent:(id)content resultType:(unint64_t *)type errorOut:(id *)out;
++ (id)encodeDataArrayAndRecord:(id)record dataTypeContent:(id)content metadata:(id)metadata baseKey:(id)key errorOut:(id *)out;
++ (id)extractAssetNamesFrom:(id)from usingFieldValues:(id)values;
++ (id)extractRequiredFieldsFrom:(id)from;
++ (id)mutateDataTypeContent:(id)content usingFieldValues:(id)values assetURLs:(id)ls requiredFields:(id *)fields assetNames:(id *)names error:(id *)error;
 - (BOOL)isVectorDimensionAllowed;
-- (FedStatsDataEncoder)initWithDataTypes:(id)a3 combinationTypes:(id)a4;
-- (FedStatsDataEncoder)initWithHistogramType:(id)a3 typeName:(id)a4;
-- (id)decodeFromBitVector:(id)a3 possibleError:(id *)a4;
-- (id)decodeFromBitVector:(id)a3 withType:(id)a4 possibleError:(id *)a5;
-- (id)encodeDataArray:(id)a3 error:(id *)a4;
-- (id)encodeToBitVector:(id)a3 possibleError:(id *)a4;
-- (id)encodeToBitVector:(id)a3 withType:(id)a4 possibleError:(id *)a5;
-- (id)encodeToHistogramVector:(id)a3 error:(id *)a4;
-- (id)encodeToIndex:(id)a3 error:(id *)a4;
-- (id)encodeToIndex:(id)a3 withType:(id)a4 error:(id *)a5;
+- (FedStatsDataEncoder)initWithDataTypes:(id)types combinationTypes:(id)combinationTypes;
+- (FedStatsDataEncoder)initWithHistogramType:(id)type typeName:(id)name;
+- (id)decodeFromBitVector:(id)vector possibleError:(id *)error;
+- (id)decodeFromBitVector:(id)vector withType:(id)type possibleError:(id *)error;
+- (id)encodeDataArray:(id)array error:(id *)error;
+- (id)encodeToBitVector:(id)vector possibleError:(id *)error;
+- (id)encodeToBitVector:(id)vector withType:(id)type possibleError:(id *)error;
+- (id)encodeToHistogramVector:(id)vector error:(id *)error;
+- (id)encodeToIndex:(id)index error:(id *)error;
+- (id)encodeToIndex:(id)index withType:(id)type error:(id *)error;
 @end
 
 @implementation FedStatsDataEncoder
 
-- (FedStatsDataEncoder)initWithDataTypes:(id)a3 combinationTypes:(id)a4
+- (FedStatsDataEncoder)initWithDataTypes:(id)types combinationTypes:(id)combinationTypes
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  typesCopy = types;
+  combinationTypesCopy = combinationTypes;
   v46.receiver = self;
   v46.super_class = FedStatsDataEncoder;
   v9 = [(FedStatsDataEncoder *)&v46 init];
@@ -35,14 +35,14 @@
   if (v9)
   {
     v35 = v9;
-    objc_storeStrong(&v9->_dataTypes, a3);
-    v11 = [v8 allKeys];
-    v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_3];
+    objc_storeStrong(&v9->_dataTypes, types);
+    allKeys = [combinationTypesCopy allKeys];
+    v12 = [allKeys sortedArrayUsingComparator:&__block_literal_global_3];
 
     v13 = MEMORY[0x277CBEB58];
-    v36 = v7;
-    v14 = [v7 allKeys];
-    v15 = [v13 setWithArray:v14];
+    v36 = typesCopy;
+    allKeys2 = [typesCopy allKeys];
+    v15 = [v13 setWithArray:allKeys2];
 
     v44 = 0u;
     v45 = 0u;
@@ -68,10 +68,10 @@
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v21 = [v8 objectForKey:v20];
-          v22 = [v21 typesInCombination];
+          v21 = [combinationTypesCopy objectForKey:v20];
+          typesInCombination = [v21 typesInCombination];
 
-          v23 = [v22 countByEnumeratingWithState:&v38 objects:v47 count:16];
+          v23 = [typesInCombination countByEnumeratingWithState:&v38 objects:v47 count:16];
           if (v23)
           {
             v24 = v23;
@@ -82,13 +82,13 @@
               {
                 if (*v39 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(typesInCombination);
                 }
 
                 [v15 removeObject:*(*(&v38 + 1) + 8 * j)];
               }
 
-              v24 = [v22 countByEnumeratingWithState:&v38 objects:v47 count:16];
+              v24 = [typesInCombination countByEnumeratingWithState:&v38 objects:v47 count:16];
             }
 
             while (v24);
@@ -103,8 +103,8 @@
       while (v17);
     }
 
-    v27 = [v15 allObjects];
-    v28 = [v27 sortedArrayUsingComparator:&__block_literal_global_3];
+    allObjects = [v15 allObjects];
+    v28 = [allObjects sortedArrayUsingComparator:&__block_literal_global_3];
     v29 = [obj arrayByAddingObjectsFromArray:v28];
     v10 = v35;
     typeConfiguration = v35->_typeConfiguration;
@@ -119,30 +119,30 @@
 
     v35->_resultType = v32;
 
-    v7 = v36;
+    typesCopy = v36;
   }
 
   v33 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (FedStatsDataEncoder)initWithHistogramType:(id)a3 typeName:(id)a4
+- (FedStatsDataEncoder)initWithHistogramType:(id)type typeName:(id)name
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = FedStatsDataEncoder;
   v8 = [(FedStatsDataEncoder *)&v15 init];
   if (v8)
   {
-    v17 = v7;
-    v18[0] = v6;
+    v17 = nameCopy;
+    v18[0] = typeCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     dataTypes = v8->_dataTypes;
     v8->_dataTypes = v9;
 
-    v16 = v7;
+    v16 = nameCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
     typeConfiguration = v8->_typeConfiguration;
     v8->_typeConfiguration = v11;
@@ -154,17 +154,17 @@
   return v8;
 }
 
-+ (id)createWithDataTypeContent:(id)a3 possibleError:(id *)a4
++ (id)createWithDataTypeContent:(id)content possibleError:(id *)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  contentCopy = content;
+  v7 = contentCopy;
+  if (!contentCopy || ![contentCopy count])
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:100 description:@"Missing data type content"];
-      *a4 = v27 = 0;
+      *error = v27 = 0;
     }
 
     else
@@ -175,9 +175,9 @@
     goto LABEL_63;
   }
 
-  v53 = a1;
-  v54 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  errorCopy = error;
+  array = [MEMORY[0x277CBEB18] array];
   v59 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
   v67 = 0u;
   v68 = 0u;
@@ -186,18 +186,18 @@
   v55 = v7;
   v9 = v7;
   v10 = [v9 countByEnumeratingWithState:&v67 objects:v74 count:16];
-  v56 = v8;
+  v56 = array;
   v58 = v9;
   if (!v10)
   {
 
 LABEL_29:
-    v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+    v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(array, "count")}];
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
-    obj = v8;
+    obj = array;
     v29 = [obj countByEnumeratingWithState:&v61 objects:v73 count:16];
     if (v29)
     {
@@ -227,10 +227,10 @@ LABEL_29:
           v38 = v60;
           if (!v37)
           {
-            if (v54)
+            if (errorCopy)
             {
               v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not create data type %@", v33];
-              *v54 = [FedStatsError errorWithCode:302 underlyingError:v38 description:v44];
+              *errorCopy = [FedStatsError errorWithCode:302 underlyingError:v38 description:v44];
             }
 
             v27 = 0;
@@ -255,7 +255,7 @@ LABEL_29:
       }
     }
 
-    v39 = [v53 alloc];
+    v39 = [selfCopy alloc];
     v24 = v59;
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v59];
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v28];
@@ -284,8 +284,8 @@ LABEL_29:
       v17 = [v16 objectForKey:@"dataType"];
       if (!v17)
       {
-        v42 = v54;
-        if (v54)
+        v42 = errorCopy;
+        if (errorCopy)
         {
           v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing data type specifier key %@", @"dataType"];
           v43 = 100;
@@ -310,8 +310,8 @@ LABEL_61:
         case 5:
           if (v12)
           {
-            v42 = v54;
-            if (!v54)
+            v42 = errorCopy;
+            if (!errorCopy)
             {
               goto LABEL_60;
             }
@@ -322,13 +322,13 @@ LABEL_61:
             goto LABEL_52;
           }
 
-          if ([v8 count])
+          if ([array count])
           {
-            if (v54)
+            if (errorCopy)
             {
               v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"The data type content cannot have one histogram type and combination types"];
               [FedStatsError errorWithCode:101 description:v21];
-              *v54 = v12 = 0;
+              *errorCopy = v12 = 0;
               goto LABEL_55;
             }
 
@@ -341,8 +341,8 @@ LABEL_61:
         case 99:
           if (v12)
           {
-            v42 = v54;
-            if (!v54)
+            v42 = errorCopy;
+            if (!errorCopy)
             {
               goto LABEL_60;
             }
@@ -355,11 +355,11 @@ LABEL_52:
             goto LABEL_53;
           }
 
-          [v8 addObject:v15];
+          [array addObject:v15];
           break;
         case -1:
-          v42 = v54;
-          if (v54)
+          v42 = errorCopy;
+          if (errorCopy)
           {
             v45 = v12;
             [MEMORY[0x277CCACA8] stringWithFormat:@"The data type %@ is not supported", v17];
@@ -381,16 +381,16 @@ LABEL_60:
           {
             [v59 setValue:v20 forKey:v15];
 
-            v8 = v56;
+            array = v56;
             v12 = v19;
             v9 = v58;
             break;
           }
 
-          if (v54)
+          if (errorCopy)
           {
             v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not create data type %@", v15];
-            *v54 = [FedStatsError errorWithCode:302 underlyingError:v21 description:v48];
+            *errorCopy = [FedStatsError errorWithCode:302 underlyingError:v21 description:v48];
           }
 
           v12 = v19;
@@ -429,12 +429,12 @@ LABEL_60:
     goto LABEL_24;
   }
 
-  if (v54)
+  if (errorCopy)
   {
     v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create histogram type %@", v22];
     v12 = v22;
     v9 = v26;
-    *v54 = [FedStatsError errorWithCode:302 underlyingError:v26 description:v51];
+    *errorCopy = [FedStatsError errorWithCode:302 underlyingError:v26 description:v51];
 
     v27 = 0;
   }
@@ -455,22 +455,22 @@ LABEL_63:
   return v27;
 }
 
-- (id)encodeToIndex:(id)a3 withType:(id)a4 error:(id *)a5
+- (id)encodeToIndex:(id)index withType:(id)type error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  indexCopy = index;
+  typeCopy = type;
+  if (indexCopy)
   {
-    v10 = [(FedStatsDataEncoder *)self dataTypes];
-    v11 = [v10 objectForKey:v9];
+    dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+    v11 = [dataTypes objectForKey:typeCopy];
 
     if (!v11)
     {
-      if (a5)
+      if (error)
       {
-        v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"The data type %@ is not valid", v9];
-        *a5 = [FedStatsError errorWithCode:200 description:v26];
+        typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"The data type %@ is not valid", typeCopy];
+        *error = [FedStatsError errorWithCode:200 description:typeCopy];
       }
 
       v25 = 0;
@@ -479,15 +479,15 @@ LABEL_63:
 
     if ([v11 dataType] == 99)
     {
-      v31 = a5;
+      errorCopy = error;
       v30 = v11;
-      v12 = [v30 typesInCombination];
-      v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+      typesInCombination = [v30 typesInCombination];
+      v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(typesInCombination, "count")}];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v14 = v12;
+      v14 = typesInCombination;
       v15 = [v14 countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v15)
       {
@@ -503,7 +503,7 @@ LABEL_63:
             }
 
             v19 = *(*(&v34 + 1) + 8 * i);
-            v20 = [v8 objectForKey:v19];
+            v20 = [indexCopy objectForKey:v19];
             [v13 setValue:v20 forKey:v19];
           }
 
@@ -519,12 +519,12 @@ LABEL_63:
       v23 = [v30 encodeToIndex:v21 possibleError:&v33];
       v24 = v33;
 
-      a5 = v31;
+      error = errorCopy;
     }
 
     else
     {
-      v22 = [v8 objectForKey:v9];
+      v22 = [indexCopy objectForKey:typeCopy];
       v32 = 0;
       v23 = [v11 encodeToIndex:v22 possibleError:&v32];
       v24 = v32;
@@ -532,21 +532,21 @@ LABEL_63:
 
     if (v23)
     {
-      v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v11, "classCount")}];
-      v25 = [FedStatsDataEncoderDimensionalResult resultWithIndex:v23 dimensionality:v27];
+      typeCopy2 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v11, "classCount")}];
+      v25 = [FedStatsDataEncoderDimensionalResult resultWithIndex:v23 dimensionality:typeCopy2];
     }
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         v25 = 0;
         goto LABEL_23;
       }
 
-      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot encode data to %@", v9];
-      [FedStatsError errorWithCode:401 underlyingError:v24 description:v27];
-      *a5 = v25 = 0;
+      typeCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot encode data to %@", typeCopy];
+      [FedStatsError errorWithCode:401 underlyingError:v24 description:typeCopy2];
+      *error = v25 = 0;
     }
 
 LABEL_23:
@@ -555,10 +555,10 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a5)
+  if (error)
   {
     [FedStatsError errorWithCode:401 description:@"Provided data is empty"];
-    *a5 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -573,29 +573,29 @@ LABEL_25:
   return v25;
 }
 
-- (id)encodeToBitVector:(id)a3 withType:(id)a4 possibleError:(id *)a5
+- (id)encodeToBitVector:(id)vector withType:(id)type possibleError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  vectorCopy = vector;
+  typeCopy = type;
+  if (vectorCopy)
   {
-    v10 = [(FedStatsDataEncoder *)self dataTypes];
-    v11 = [v10 objectForKey:v9];
+    dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+    v11 = [dataTypes objectForKey:typeCopy];
 
     if (v11)
     {
       if ([v11 dataType] == 99)
       {
-        v28 = a5;
+        errorCopy = error;
         v27 = v11;
-        v12 = [v27 typesInCombination];
-        v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+        typesInCombination = [v27 typesInCombination];
+        v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(typesInCombination, "count")}];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v14 = v12;
+        v14 = typesInCombination;
         v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v15)
         {
@@ -611,7 +611,7 @@ LABEL_25:
               }
 
               v19 = *(*(&v29 + 1) + 8 * i);
-              v20 = [v8 objectForKey:v19];
+              v20 = [vectorCopy objectForKey:v19];
               [v13 setValue:v20 forKey:v19];
             }
 
@@ -622,32 +622,32 @@ LABEL_25:
         }
 
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v13];
-        v22 = [v27 encodeToOneHotVector:v21 possibleError:v28];
+        v22 = [v27 encodeToOneHotVector:v21 possibleError:errorCopy];
       }
 
       else
       {
-        v24 = [v8 objectForKey:v9];
-        v22 = [v11 encodeToOneHotVector:v24 possibleError:a5];
+        v24 = [vectorCopy objectForKey:typeCopy];
+        v22 = [v11 encodeToOneHotVector:v24 possibleError:error];
       }
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"The data type %@ is not valid", v9];
-        *a5 = [FedStatsError errorWithCode:200 description:v23];
+        typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"The data type %@ is not valid", typeCopy];
+        *error = [FedStatsError errorWithCode:200 description:typeCopy];
       }
 
       v22 = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [FedStatsError errorWithCode:401 description:@"Provided data is empty"];
-    *a5 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -660,36 +660,36 @@ LABEL_25:
   return v22;
 }
 
-- (id)decodeFromBitVector:(id)a3 withType:(id)a4 possibleError:(id *)a5
+- (id)decodeFromBitVector:(id)vector withType:(id)type possibleError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  vectorCopy = vector;
+  typeCopy = type;
+  if (vectorCopy)
   {
-    v10 = [(FedStatsDataEncoder *)self dataTypes];
-    v11 = [v10 objectForKey:v9];
+    dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+    v11 = [dataTypes objectForKey:typeCopy];
 
     if (v11)
     {
-      v12 = [v11 decodeFromOneHotVector:v8 possibleError:a5];
+      v12 = [v11 decodeFromOneHotVector:vectorCopy possibleError:error];
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"The data type %@ is not valid", v9];
-        *a5 = [FedStatsError errorWithCode:200 description:v13];
+        typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"The data type %@ is not valid", typeCopy];
+        *error = [FedStatsError errorWithCode:200 description:typeCopy];
       }
 
       v12 = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [FedStatsError errorWithCode:401 description:@"Provided data is empty"];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -707,8 +707,8 @@ LABEL_25:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  typeConfiguration = [(FedStatsDataEncoder *)self typeConfiguration];
+  v4 = [typeConfiguration countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -720,16 +720,16 @@ LABEL_25:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(typeConfiguration);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(FedStatsDataEncoder *)self dataTypes];
-        v11 = [v10 objectForKey:v9];
+        dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+        v11 = [dataTypes objectForKey:v9];
         v6 += [v11 classCount];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [typeConfiguration countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -745,16 +745,16 @@ LABEL_25:
   return v12;
 }
 
-- (id)encodeToBitVector:(id)a3 possibleError:(id *)a4
+- (id)encodeToBitVector:(id)vector possibleError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  vectorCopy = vector;
+  if (!vectorCopy)
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:401 description:@"Provided data is empty"];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_22;
     }
 
@@ -763,10 +763,10 @@ LABEL_25:
 
   if (![(FedStatsDataEncoder *)self isVectorDimensionAllowed])
   {
-    if (a4)
+    if (error)
     {
-      v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resulting vector dimension is larger than max dimension %lu", 100000];
-      *a4 = [FedStatsError errorWithCode:900 description:v18];
+      100000 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resulting vector dimension is larger than max dimension %lu", 100000];
+      *error = [FedStatsError errorWithCode:900 description:100000];
     }
 
 LABEL_17:
@@ -774,18 +774,18 @@ LABEL_17:
     goto LABEL_22;
   }
 
-  v7 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  typeConfiguration = [(FedStatsDataEncoder *)self typeConfiguration];
+  v9 = [typeConfiguration countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
-    v22 = a4;
-    obj = v8;
+    errorCopy = error;
+    obj = typeConfiguration;
     v11 = 0;
     v12 = *v26;
     while (2)
@@ -801,29 +801,29 @@ LABEL_17:
 
         v15 = *(*(&v25 + 1) + 8 * v13);
         v24 = 0;
-        v11 = [(FedStatsDataEncoder *)self encodeToBitVector:v6 withType:v15 possibleError:&v24];
+        v11 = [(FedStatsDataEncoder *)self encodeToBitVector:vectorCopy withType:v15 possibleError:&v24];
         v16 = v24;
 
         if (!v11)
         {
-          if (v22)
+          if (errorCopy)
           {
             v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error encoding %@ type", v15];
-            *v22 = [FedStatsError errorWithCode:401 underlyingError:v16 description:v19];
+            *errorCopy = [FedStatsError errorWithCode:401 underlyingError:v16 description:v19];
           }
 
           v17 = 0;
           goto LABEL_21;
         }
 
-        [v7 appendData:v11];
+        [data appendData:v11];
 
         ++v13;
         v14 = v11;
       }
 
       while (v10 != v13);
-      v8 = obj;
+      typeConfiguration = obj;
       v10 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
@@ -834,7 +834,7 @@ LABEL_17:
     }
   }
 
-  v17 = v7;
+  v17 = data;
 LABEL_21:
 
 LABEL_22:
@@ -843,22 +843,22 @@ LABEL_22:
   return v17;
 }
 
-- (id)encodeToIndex:(id)a3 error:(id *)a4
+- (id)encodeToIndex:(id)index error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v8 = [v7 count];
+  indexCopy = index;
+  typeConfiguration = [(FedStatsDataEncoder *)self typeConfiguration];
+  v8 = [typeConfiguration count];
 
   if (v8 != 1)
   {
-    if (a4)
+    if (error)
     {
       v23 = @"This API is only available for single type in encoding schema";
       v24 = 900;
 LABEL_19:
       [FedStatsError errorWithCode:v24 description:v23];
-      *a4 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_27;
     }
 
@@ -867,9 +867,9 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  if (!v6)
+  if (!indexCopy)
   {
-    if (a4)
+    if (error)
     {
       v23 = @"Provided data is empty";
       v24 = 401;
@@ -879,13 +879,13 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v32 = a4;
+  errorCopy = error;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = [(FedStatsDataEncoder *)self dataTypes];
-  v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+  v10 = [dataTypes countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
@@ -896,26 +896,26 @@ LABEL_23:
       {
         if (*v35 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(dataTypes);
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [(FedStatsDataEncoder *)self dataTypes];
-        v16 = [v15 objectForKey:v14];
+        dataTypes2 = [(FedStatsDataEncoder *)self dataTypes];
+        v16 = [dataTypes2 objectForKey:v14];
         if ([v16 dataType] == 99)
         {
         }
 
         else
         {
-          v17 = [v6 objectForKey:v14];
+          v17 = [indexCopy objectForKey:v14];
 
           if (!v17)
           {
-            if (v32)
+            if (errorCopy)
             {
               v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Provided data does not contain a value for %@", v14];
-              *v32 = [FedStatsError errorWithCode:200 description:v25];
+              *errorCopy = [FedStatsError errorWithCode:200 description:v25];
             }
 
             goto LABEL_23;
@@ -923,7 +923,7 @@ LABEL_23:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v11 = [dataTypes countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v11)
       {
         continue;
@@ -933,10 +933,10 @@ LABEL_23:
     }
   }
 
-  v18 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v19 = [v18 firstObject];
+  typeConfiguration2 = [(FedStatsDataEncoder *)self typeConfiguration];
+  firstObject = [typeConfiguration2 firstObject];
   v33 = 0;
-  v20 = [(FedStatsDataEncoder *)self encodeToIndex:v6 withType:v19 error:&v33];
+  v20 = [(FedStatsDataEncoder *)self encodeToIndex:indexCopy withType:firstObject error:&v33];
   v21 = v33;
 
   if (v20)
@@ -944,13 +944,13 @@ LABEL_23:
     v22 = v20;
   }
 
-  else if (v32)
+  else if (errorCopy)
   {
     v26 = MEMORY[0x277CCACA8];
-    v27 = [(FedStatsDataEncoder *)self typeConfiguration];
-    v28 = [v27 firstObject];
-    v29 = [v26 stringWithFormat:@"Cannot encode data to %@", v28];
-    *v32 = [FedStatsError errorWithCode:401 underlyingError:v21 description:v29];
+    typeConfiguration3 = [(FedStatsDataEncoder *)self typeConfiguration];
+    firstObject2 = [typeConfiguration3 firstObject];
+    v29 = [v26 stringWithFormat:@"Cannot encode data to %@", firstObject2];
+    *errorCopy = [FedStatsError errorWithCode:401 underlyingError:v21 description:v29];
   }
 
 LABEL_27:
@@ -959,18 +959,18 @@ LABEL_27:
   return v20;
 }
 
-- (id)encodeToHistogramVector:(id)a3 error:(id *)a4
+- (id)encodeToHistogramVector:(id)vector error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  vectorCopy = vector;
+  if (!vectorCopy)
   {
-    if (a4)
+    if (error)
     {
       v14 = @"Provided data is empty";
       v15 = 401;
 LABEL_10:
       [FedStatsError errorWithCode:v15 description:v14];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_17;
     }
 
@@ -981,7 +981,7 @@ LABEL_13:
 
   if ([(FedStatsDataEncoder *)self resultType]!= 3)
   {
-    if (a4)
+    if (error)
     {
       v14 = @"This API is only available for single histogram type in encoding schema";
       v15 = 900;
@@ -993,31 +993,31 @@ LABEL_13:
 
   if (![(FedStatsDataEncoder *)self isVectorDimensionAllowed])
   {
-    if (a4)
+    if (error)
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resulting vector dimension is larger than max dimension %lu", 100000];
-      *a4 = [FedStatsError errorWithCode:900 description:v16];
+      100000 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resulting vector dimension is larger than max dimension %lu", 100000];
+      *error = [FedStatsError errorWithCode:900 description:100000];
     }
 
     goto LABEL_13;
   }
 
-  v7 = [(FedStatsDataEncoder *)self dataTypes];
-  v8 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v9 = [v8 firstObject];
-  v10 = [v7 objectForKey:v9];
+  dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+  typeConfiguration = [(FedStatsDataEncoder *)self typeConfiguration];
+  firstObject = [typeConfiguration firstObject];
+  v10 = [dataTypes objectForKey:firstObject];
 
   v18 = 0;
-  v11 = [v10 encodeToHistogramVector:v6 possibleError:&v18];
+  v11 = [v10 encodeToHistogramVector:vectorCopy possibleError:&v18];
   v12 = v18;
   if (v11)
   {
     v13 = v11;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [FedStatsError errorWithCode:401 underlyingError:v12 description:@"Cannot encode data to histogram"];
+    *error = [FedStatsError errorWithCode:401 underlyingError:v12 description:@"Cannot encode data to histogram"];
   }
 
 LABEL_17:
@@ -1025,13 +1025,13 @@ LABEL_17:
   return v11;
 }
 
-- (id)decodeFromBitVector:(id)a3 possibleError:(id *)a4
+- (id)decodeFromBitVector:(id)vector possibleError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  vectorCopy = vector;
   v6 = MEMORY[0x277CBEB38];
-  v7 = [(FedStatsDataEncoder *)self typeConfiguration];
-  v24 = [v6 dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  typeConfiguration = [(FedStatsDataEncoder *)self typeConfiguration];
+  v24 = [v6 dictionaryWithCapacity:{objc_msgSend(typeConfiguration, "count")}];
 
   v31 = 0u;
   v32 = 0u;
@@ -1047,18 +1047,18 @@ LABEL_3:
     v9 = 0;
     while (1)
     {
-      v10 = a4;
+      errorCopy = error;
       if (*v30 != v25)
       {
         objc_enumerationMutation(obj);
       }
 
       v11 = *(*(&v29 + 1) + 8 * v9);
-      v12 = [(FedStatsDataEncoder *)self dataTypes];
-      v13 = [v12 objectForKey:v11];
+      dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+      v13 = [dataTypes objectForKey:v11];
 
-      v14 = [v13 classCount];
-      v15 = [v27 subdataWithRange:{v8, v14}];
+      classCount = [v13 classCount];
+      v15 = [vectorCopy subdataWithRange:{v8, classCount}];
       v28 = 0;
       v16 = [(FedStatsDataEncoder *)self decodeFromBitVector:v15 withType:v11 possibleError:&v28];
       v17 = v28;
@@ -1067,14 +1067,14 @@ LABEL_3:
         break;
       }
 
-      if (!v10)
+      if (!errorCopy)
       {
         goto LABEL_13;
       }
 
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"The decoder for %@ failed", v11];
-      a4 = v10;
-      *v10 = [FedStatsError errorWithCode:500 underlyingError:v17 description:v18];
+      error = errorCopy;
+      *errorCopy = [FedStatsError errorWithCode:500 underlyingError:v17 description:v18];
 
 LABEL_14:
       if (!v16)
@@ -1108,9 +1108,9 @@ LABEL_14:
       [v24 setValue:v16 forKey:v11];
     }
 
-    v8 += v14;
+    v8 += classCount;
 LABEL_13:
-    a4 = v10;
+    error = errorCopy;
     goto LABEL_14;
   }
 
@@ -1125,27 +1125,27 @@ LABEL_19:
   return v20;
 }
 
-+ (id)encodeDataArray:(id)a3 dataTypeContent:(id)a4 resultType:(unint64_t *)a5 errorOut:(id *)a6
++ (id)encodeDataArray:(id)array dataTypeContent:(id)content resultType:(unint64_t *)type errorOut:(id *)out
 {
-  v9 = a3;
-  v10 = a4;
-  if (v10)
+  arrayCopy = array;
+  contentCopy = content;
+  if (contentCopy)
   {
-    if (v9)
+    if (arrayCopy)
     {
       v16 = 0;
-      v11 = [FedStatsDataEncoder createWithDataTypeContent:v10 possibleError:&v16];
+      v11 = [FedStatsDataEncoder createWithDataTypeContent:contentCopy possibleError:&v16];
       v12 = v16;
       if (v11)
       {
-        *a5 = [v11 resultType];
-        v13 = [v11 encodeDataArray:v9 error:a6];
+        *type = [v11 resultType];
+        v13 = [v11 encodeDataArray:arrayCopy error:out];
       }
 
-      else if (a6)
+      else if (out)
       {
         [FedStatsError errorWithCode:302 underlyingError:v12 description:@"encodeDataArray encoder construction failed"];
-        *a6 = v13 = 0;
+        *out = v13 = 0;
       }
 
       else
@@ -1156,19 +1156,19 @@ LABEL_19:
       goto LABEL_15;
     }
 
-    if (a6)
+    if (out)
     {
       v14 = @"encodeDataArray missing data array";
       goto LABEL_9;
     }
   }
 
-  else if (a6)
+  else if (out)
   {
     v14 = @"encodeDataArray missing data type content";
 LABEL_9:
     [FedStatsError errorWithCode:400 description:v14];
-    *a6 = v13 = 0;
+    *out = v13 = 0;
     goto LABEL_15;
   }
 
@@ -1178,34 +1178,34 @@ LABEL_15:
   return v13;
 }
 
-- (id)encodeDataArray:(id)a3 error:(id *)a4
+- (id)encodeDataArray:(id)array error:(id *)error
 {
   v87 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  arrayCopy = array;
   v7 = [FedStatsDataSampler samplerWithCount:20];
-  v8 = [(FedStatsDataEncoder *)self resultType];
+  resultType = [(FedStatsDataEncoder *)self resultType];
   v54 = v7;
-  switch(v8)
+  switch(resultType)
   {
     case 3uLL:
-      v31 = [(FedStatsDataEncoder *)self dataTypes];
-      v32 = [v31 allValues];
-      v33 = [v32 firstObject];
+      dataTypes = [(FedStatsDataEncoder *)self dataTypes];
+      allValues = [dataTypes allValues];
+      firstObject = [allValues firstObject];
 
-      obj = v33;
-      v34 = [v33 classCount];
-      v35 = [MEMORY[0x277CBEA60] arrayWithObject:&unk_285E12DD0 repeated:v34];
+      obj = firstObject;
+      classCount = [firstObject classCount];
+      v35 = [MEMORY[0x277CBEA60] arrayWithObject:&unk_285E12DD0 repeated:classCount];
       v59 = 0u;
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v51 = v6;
-      v36 = v6;
+      v51 = arrayCopy;
+      v36 = arrayCopy;
       v37 = [v36 countByEnumeratingWithState:&v59 objects:v81 count:16];
       if (v37)
       {
         v38 = v37;
-        v39 = self;
+        selfCopy = self;
         v40 = *v60;
         do
         {
@@ -1218,7 +1218,7 @@ LABEL_15:
 
             v42 = *(*(&v59 + 1) + 8 * i);
             v58 = 0;
-            v43 = [(FedStatsDataEncoder *)v39 encodeToHistogramVector:v42 error:&v58, v51];
+            v43 = [(FedStatsDataEncoder *)selfCopy encodeToHistogramVector:v42 error:&v58, v51];
             v44 = v58;
             if (v43)
             {
@@ -1254,7 +1254,7 @@ LABEL_15:
       v65 = 0u;
       v66 = 0u;
       v64 = 0u;
-      obj = v6;
+      obj = arrayCopy;
       v24 = [obj countByEnumeratingWithState:&v64 objects:v82 count:16];
       if (v24)
       {
@@ -1299,21 +1299,21 @@ LABEL_15:
       v80 = 0u;
       v77 = 0u;
       v78 = 0u;
-      obj = v6;
+      obj = arrayCopy;
       v9 = [obj countByEnumeratingWithState:&v77 objects:v86 count:16];
       if (!v9)
       {
 LABEL_56:
 
-        v48 = [v7 getResults];
+        getResults = [v7 getResults];
         goto LABEL_57;
       }
 
       v10 = v9;
-      v51 = v6;
+      v51 = arrayCopy;
       v11 = *v78;
       v52 = *v78;
-      v53 = self;
+      selfCopy2 = self;
       do
       {
         v12 = 0;
@@ -1349,8 +1349,8 @@ LABEL_56:
               v68 = 0u;
               v69 = 0u;
               v56 = v15;
-              v17 = [v15 describe];
-              v18 = [v17 countByEnumeratingWithState:&v68 objects:v85 count:16];
+              describe = [v15 describe];
+              v18 = [describe countByEnumeratingWithState:&v68 objects:v85 count:16];
               if (v18)
               {
                 v19 = v18;
@@ -1361,7 +1361,7 @@ LABEL_56:
                   {
                     if (*v69 != v20)
                     {
-                      objc_enumerationMutation(v17);
+                      objc_enumerationMutation(describe);
                     }
 
                     v22 = *(*(&v68 + 1) + 8 * k);
@@ -1374,13 +1374,13 @@ LABEL_56:
                     }
                   }
 
-                  v19 = [v17 countByEnumeratingWithState:&v68 objects:v85 count:16];
+                  v19 = [describe countByEnumeratingWithState:&v68 objects:v85 count:16];
                 }
 
                 while (v19);
               }
 
-              self = v53;
+              self = selfCopy2;
               v7 = v54;
               v11 = v52;
               v10 = v55;
@@ -1407,39 +1407,39 @@ LABEL_56:
 
       while (v10);
 LABEL_55:
-      v6 = v51;
+      arrayCopy = v51;
       goto LABEL_56;
   }
 
-  if (a4)
+  if (error)
   {
     [FedStatsError errorWithCode:900 description:@"Result type not supported"];
-    *a4 = v48 = 0;
+    *error = getResults = 0;
   }
 
   else
   {
-    v48 = 0;
+    getResults = 0;
   }
 
 LABEL_57:
 
   v49 = *MEMORY[0x277D85DE8];
 
-  return v48;
+  return getResults;
 }
 
-+ (id)encodeDataArrayAndRecord:(id)a3 dataTypeContent:(id)a4 metadata:(id)a5 baseKey:(id)a6 errorOut:(id *)a7
++ (id)encodeDataArrayAndRecord:(id)record dataTypeContent:(id)content metadata:(id)metadata baseKey:(id)key errorOut:(id *)out
 {
   v152[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v14)
+  recordCopy = record;
+  contentCopy = content;
+  metadataCopy = metadata;
+  keyCopy = key;
+  v15 = keyCopy;
+  if (keyCopy)
   {
-    v16 = [v14 length];
+    v16 = [keyCopy length];
     if (v16 >= [@"fedstats:" length] && (objc_msgSend(v15, "substringToIndex:", objc_msgSend(@"fedstats:", "length")), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", @"fedstats:"), v17, (v18 & 1) != 0))
     {
       v19 = v15;
@@ -1458,14 +1458,14 @@ LABEL_57:
     }
 
     v138 = 0;
-    v22 = [FedStatsDataEncoder createWithDataTypeContent:v12 possibleError:&v138];
+    v22 = [FedStatsDataEncoder createWithDataTypeContent:contentCopy possibleError:&v138];
     v23 = v138;
     if (!v22)
     {
-      if (a7)
+      if (out)
       {
         [FedStatsError errorWithCode:101 underlyingError:v23 description:@"encodeDataArrayAndRecord failed at constructor"];
-        *a7 = v29 = 0;
+        *out = v29 = 0;
       }
 
       else
@@ -1477,16 +1477,16 @@ LABEL_57:
     }
 
     v137 = 0;
-    v24 = [v22 encodeDataArray:v11 error:&v137];
+    v24 = [v22 encodeDataArray:recordCopy error:&v137];
     v25 = v137;
     v121 = v25;
     v122 = v24;
     if (!v24)
     {
-      if (a7)
+      if (out)
       {
         [FedStatsError errorWithCode:401 underlyingError:v25 description:@"encodeDataArrayAndRecord failed at encoding"];
-        *a7 = v29 = 0;
+        *out = v29 = 0;
       }
 
       else
@@ -1514,10 +1514,10 @@ LABEL_57:
     v127 = [objc_alloc(MEMORY[0x277D052E8]) initWithKey:v20];
     if (!v127)
     {
-      if (a7)
+      if (out)
       {
         [FedStatsError errorWithCode:600 description:@"encodeDataArrayAndRecord failed at recorder allocation"];
-        *a7 = v29 = 0;
+        *out = v29 = 0;
       }
 
       else
@@ -1528,9 +1528,9 @@ LABEL_57:
       goto LABEL_111;
     }
 
-    if ([v13 count])
+    if ([metadataCopy count])
     {
-      v28 = v13;
+      v28 = metadataCopy;
     }
 
     else
@@ -1543,16 +1543,16 @@ LABEL_57:
     v126 = v28;
     if ([v122 count])
     {
-      v30 = [v22 resultType];
-      if (v30 == 1)
+      resultType = [v22 resultType];
+      if (resultType == 1)
       {
         v116 = v22;
         v118 = v15;
         v120 = v20;
-        v112 = v11;
-        v114 = v13;
-        v110 = v12;
-        v69 = [MEMORY[0x277CBEB38] dictionary];
+        v112 = recordCopy;
+        v114 = metadataCopy;
+        v110 = contentCopy;
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v133 = 0u;
         v134 = 0u;
         v135 = 0u;
@@ -1573,24 +1573,24 @@ LABEL_57:
               }
 
               v75 = *(*(&v133 + 1) + 8 * i);
-              v76 = [v75 dimensionality];
-              v77 = [v69 objectForKey:v76];
+              dimensionality = [v75 dimensionality];
+              v77 = [dictionary objectForKey:dimensionality];
 
               if (v77)
               {
-                v78 = [v75 index];
-                [v77 arrayByAddingObject:v78];
+                index = [v75 index];
+                [v77 arrayByAddingObject:index];
               }
 
               else
               {
                 v79 = MEMORY[0x277CBEA60];
-                v78 = [v75 index];
-                [v79 arrayWithObject:v78];
+                index = [v75 index];
+                [v79 arrayWithObject:index];
               }
               v80 = ;
-              v81 = [v75 dimensionality];
-              [v69 setObject:v80 forKey:v81];
+              dimensionality2 = [v75 dimensionality];
+              [dictionary setObject:v80 forKey:dimensionality2];
             }
 
             v72 = [v70 countByEnumeratingWithState:&v133 objects:v150 count:16];
@@ -1603,7 +1603,7 @@ LABEL_57:
         v132 = 0u;
         v129 = 0u;
         v130 = 0u;
-        v82 = v69;
+        v82 = dictionary;
         v83 = [v82 countByEnumeratingWithState:&v129 objects:v149 count:16];
         if (v83)
         {
@@ -1623,12 +1623,12 @@ LABEL_57:
               }
 
               v89 = *(*(&v129 + 1) + 8 * j);
-              v90 = [*(v33 + 3704) logger];
-              if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
+              logger = [*(v33 + 3704) logger];
+              if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
                 v148 = v89;
-                _os_log_debug_impl(&dword_24AAFE000, v90, OS_LOG_TYPE_DEBUG, "encodeDataArrayAndRecord recording with dimension = %@", buf, 0xCu);
+                _os_log_debug_impl(&dword_24AAFE000, logger, OS_LOG_TYPE_DEBUG, "encodeDataArrayAndRecord recording with dimension = %@", buf, 0xCu);
               }
 
               v91 = [v126 mutableCopy];
@@ -1637,12 +1637,12 @@ LABEL_57:
               v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v146 forKeys:&v145 count:1];
               [v91 setObject:v92 forKey:v87];
 
-              v93 = [*(v33 + 3704) logger];
-              if (os_log_type_enabled(v93, OS_LOG_TYPE_DEBUG))
+              logger2 = [*(v33 + 3704) logger];
+              if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
                 v148 = v91;
-                _os_log_debug_impl(&dword_24AAFE000, v93, OS_LOG_TYPE_DEBUG, "encodeDataArrayAndRecord one-hot recorder metadata = %@", buf, 0xCu);
+                _os_log_debug_impl(&dword_24AAFE000, logger2, OS_LOG_TYPE_DEBUG, "encodeDataArrayAndRecord one-hot recorder metadata = %@", buf, 0xCu);
               }
 
               v94 = [v82 objectForKey:v89];
@@ -1680,9 +1680,9 @@ LABEL_57:
           v33 = 0x278FF5000;
         }
 
-        v12 = v110;
-        v11 = v112;
-        v13 = v114;
+        contentCopy = v110;
+        recordCopy = v112;
+        metadataCopy = v114;
         v22 = v116;
         v15 = v118;
         v23 = v119;
@@ -1691,19 +1691,19 @@ LABEL_57:
         goto LABEL_107;
       }
 
-      if (v30 == 3)
+      if (resultType == 3)
       {
         v115 = v22;
         v117 = v15;
-        v34 = [v22 dataTypes];
-        v35 = [v34 allValues];
-        v36 = [v35 firstObject];
+        dataTypes = [v22 dataTypes];
+        allValues = [dataTypes allValues];
+        firstObject = [allValues firstObject];
 
-        v37 = [v122 firstObject];
-        v38 = [v36 clippingBound];
-        [v38 floatValue];
+        firstObject2 = [v122 firstObject];
+        clippingBound = [firstObject clippingBound];
+        [clippingBound floatValue];
         *&v40 = 1.0 / v39;
-        v41 = [v37 arrayByScalingWith:v40];
+        v41 = [firstObject2 arrayByScalingWith:v40];
 
         v123 = v41;
         v42 = [MEMORY[0x277CBEA90] dataWithArray:v41];
@@ -1726,7 +1726,7 @@ LABEL_57:
 
         v48 = +[FedStatsLog logger];
         v49 = v48;
-        v124 = v36;
+        v124 = firstObject;
         v108 = v44;
         if (v47)
         {
@@ -1736,17 +1736,17 @@ LABEL_57:
           }
 
           v50 = [FedStatsDataEncoder mutateCollectionKeyForHistogramType:v20];
-          v51 = [v36 normType];
+          normType = [firstObject normType];
 
           v107 = v50;
-          if (v51)
+          if (normType)
           {
-            v113 = v13;
-            v52 = [v36 normType];
-            v53 = [v122 firstObject];
-            v54 = [FedStatsUtils normL2:v53];
+            v113 = metadataCopy;
+            normType2 = [firstObject normType];
+            firstObject3 = [v122 firstObject];
+            v54 = [FedStatsUtils normL2:firstObject3];
             v128 = 0;
-            v55 = [v52 encodeToIndex:v54 possibleError:&v128];
+            v55 = [normType2 encodeToIndex:v54 possibleError:&v128];
             v105 = v128;
 
             v104 = v55;
@@ -1759,13 +1759,13 @@ LABEL_57:
                 v57 = *MEMORY[0x277D05390];
                 v142[0] = v106;
                 v142[1] = v57;
-                v58 = [v124 normDediscoTypeConfig];
-                v143[1] = v58;
+                normDediscoTypeConfig = [v124 normDediscoTypeConfig];
+                v143[1] = normDediscoTypeConfig;
                 v142[2] = *MEMORY[0x277D05330];
                 v140 = *MEMORY[0x277D05328];
                 v59 = MEMORY[0x277CCABB0];
-                v60 = [v124 normType];
-                v61 = [v59 numberWithUnsignedLong:{objc_msgSend(v60, "classCount")}];
+                normType3 = [v124 normType];
+                v61 = [v59 numberWithUnsignedLong:{objc_msgSend(normType3, "classCount")}];
                 v141 = v61;
                 v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v141 forKeys:&v140 count:1];
                 v143[2] = v62;
@@ -1843,7 +1843,7 @@ LABEL_57:
               v99 = v123;
             }
 
-            v13 = v113;
+            metadataCopy = v113;
           }
 
           else
@@ -1880,13 +1880,13 @@ LABEL_57:
         goto LABEL_107;
       }
 
-      if (v30 != 2)
+      if (resultType != 2)
       {
-        if (a7)
+        if (out)
         {
           v97 = v22;
           v98 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported result type %lu in data encoder", objc_msgSend(v22, "resultType")];
-          *a7 = [FedStatsError errorWithCode:900 description:v98];
+          *out = [FedStatsError errorWithCode:900 description:v98];
 
           v22 = v97;
         }
@@ -1925,8 +1925,8 @@ LABEL_57:
 
     v33 = 0x278FF5000;
 LABEL_107:
-    v101 = [*(v33 + 3704) logger];
-    if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
+    logger3 = [*(v33 + 3704) logger];
+    if (os_log_type_enabled(logger3, OS_LOG_TYPE_DEBUG))
     {
       +[FedStatsDataEncoder encodeDataArrayAndRecord:dataTypeContent:metadata:baseKey:errorOut:];
     }
@@ -1941,10 +1941,10 @@ LABEL_113:
     goto LABEL_114;
   }
 
-  if (a7)
+  if (out)
   {
     [FedStatsError errorWithCode:400 description:@"encodeDataArrayAndRecord missing collection ID key"];
-    *a7 = v29 = 0;
+    *out = v29 = 0;
   }
 
   else
@@ -1959,51 +1959,51 @@ LABEL_114:
   return v29;
 }
 
-+ (id)encodeDataAndRecord:(id)a3 dataTypeContent:(id)a4 metadata:(id)a5 baseKey:(id)a6 errorOut:(id *)a7
++ (id)encodeDataAndRecord:(id)record dataTypeContent:(id)content metadata:(id)metadata baseKey:(id)key errorOut:(id *)out
 {
   v21 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  recordCopy = record;
   v11 = MEMORY[0x277CBEA60];
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v11 arrayWithObjects:&v20 count:1];
-  v17 = [FedStatsDataEncoder encodeDataArrayAndRecord:v16 dataTypeContent:v14 metadata:v13 baseKey:v12 errorOut:a7, v20, v21];
+  keyCopy = key;
+  metadataCopy = metadata;
+  contentCopy = content;
+  recordCopy2 = record;
+  v16 = [v11 arrayWithObjects:&recordCopy count:1];
+  v17 = [FedStatsDataEncoder encodeDataArrayAndRecord:v16 dataTypeContent:contentCopy metadata:metadataCopy baseKey:keyCopy errorOut:out, recordCopy, v21];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-+ (id)encodeDataAndRecord:(id)a3 dataTypeContent:(id)a4 baseKey:(id)a5 errorOut:(id *)a6
++ (id)encodeDataAndRecord:(id)record dataTypeContent:(id)content baseKey:(id)key errorOut:(id *)out
 {
   v18 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  recordCopy = record;
   v9 = MEMORY[0x277CBEA60];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 arrayWithObjects:&v17 count:1];
-  v14 = [FedStatsDataEncoder encodeDataArrayAndRecord:v13 dataTypeContent:v11 baseKey:v10 errorOut:a6, v17, v18];
+  keyCopy = key;
+  contentCopy = content;
+  recordCopy2 = record;
+  v13 = [v9 arrayWithObjects:&recordCopy count:1];
+  v14 = [FedStatsDataEncoder encodeDataArrayAndRecord:v13 dataTypeContent:contentCopy baseKey:keyCopy errorOut:out, recordCopy, v18];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-+ (id)mutateDataTypeContent:(id)a3 usingFieldValues:(id)a4 assetURLs:(id)a5 requiredFields:(id *)a6 assetNames:(id *)a7 error:(id *)a8
++ (id)mutateDataTypeContent:(id)content usingFieldValues:(id)values assetURLs:(id)ls requiredFields:(id *)fields assetNames:(id *)names error:(id *)error
 {
   v125 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v101 = a5;
-  v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
+  contentCopy = content;
+  valuesCopy = values;
+  lsCopy = ls;
+  v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(contentCopy, "count")}];
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v13 = v10;
+  v13 = contentCopy;
   v14 = [v13 countByEnumeratingWithState:&v117 objects:v124 count:16];
   if (!v14)
   {
@@ -2062,10 +2062,10 @@ LABEL_4:
         v99 = v40;
         if (!v40)
         {
-          if (a8)
+          if (error)
           {
             v104 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot process asset specifier '%@'", v98];
-            *a8 = [FedStatsError errorWithCode:400 underlyingError:v25 description:?];
+            *error = [FedStatsError errorWithCode:400 underlyingError:v25 description:?];
             v45 = 1;
           }
 
@@ -2077,18 +2077,18 @@ LABEL_4:
           goto LABEL_122;
         }
 
-        if (v11)
+        if (valuesCopy)
         {
           v115 = v41;
-          v42 = [v40 assetSpecifierValueForDataPoint:v11 error:&v115];
+          v42 = [v40 assetSpecifierValueForDataPoint:valuesCopy error:&v115];
           v95 = v115;
 
-          v103 = v42;
+          parameters = v42;
           if (v42)
           {
-            if (v101)
+            if (lsCopy)
             {
-              v43 = [v101 objectForKey:v42];
+              v43 = [lsCopy objectForKey:v42];
               if (v43)
               {
                 [v23 setObject:v43 forKey:@"categoryFile"];
@@ -2102,7 +2102,7 @@ LABEL_4:
               else
               {
                 v12 = v90;
-                if (!a8)
+                if (!error)
                 {
                   v45 = 1;
                   goto LABEL_42;
@@ -2110,7 +2110,7 @@ LABEL_4:
 
                 v92 = v23;
                 v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"No URL found for asset name '%@'", v42];
-                *a8 = [FedStatsError errorWithCode:400 description:v44];
+                *error = [FedStatsError errorWithCode:400 description:v44];
                 v45 = 1;
               }
 
@@ -2122,9 +2122,9 @@ LABEL_151:
               goto LABEL_121;
             }
 
-            if (a7)
+            if (names)
             {
-              *a7 = [*a7 arrayByAddingObject:v42];
+              *names = [*names arrayByAddingObject:v42];
             }
 
             v45 = 3;
@@ -2133,7 +2133,7 @@ LABEL_44:
             goto LABEL_151;
           }
 
-          if (!a8)
+          if (!error)
           {
             v45 = 1;
             goto LABEL_44;
@@ -2141,23 +2141,23 @@ LABEL_44:
 
           v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot process asset specifier '%@'", v98];
           v25 = v95;
-          *a8 = [FedStatsError errorWithCode:400 underlyingError:v95 description:v47];
+          *error = [FedStatsError errorWithCode:400 underlyingError:v95 description:v47];
 
           v45 = 1;
         }
 
         else
         {
-          if (!a6)
+          if (!fields)
           {
             v45 = 3;
             v12 = v90;
             goto LABEL_122;
           }
 
-          v46 = *a6;
-          v103 = [v40 parameters];
-          *a6 = [v46 arrayByAddingObjectsFromArray:?];
+          v46 = *fields;
+          parameters = [v40 parameters];
+          *fields = [v46 arrayByAddingObjectsFromArray:?];
           v45 = 3;
         }
 
@@ -2167,7 +2167,7 @@ LABEL_44:
     }
 
     v25 = [v19 objectForKey:@"prefixSize"];
-    v26 = v101;
+    v26 = lsCopy;
     v95 = v25;
     v27 = v17;
     if (!v25)
@@ -2195,34 +2195,34 @@ LABEL_44:
         v31 = [FedStatsCategoricalTypeAssetSpecifier assetSpecifierWithKey:v30 requiredForCollectionKey:0 error:&v114];
         v32 = v114;
         v33 = v32;
-        v103 = v30;
+        parameters = v30;
         if (v31)
         {
-          if (!v11)
+          if (!valuesCopy)
           {
-            if (!a6)
+            if (!fields)
             {
               v12 = v90;
               goto LABEL_58;
             }
 
             v34 = v23;
-            v48 = *a6;
-            v35 = [v31 parameters];
-            *a6 = [v48 arrayByAddingObjectsFromArray:v35];
+            v48 = *fields;
+            parameters2 = [v31 parameters];
+            *fields = [v48 arrayByAddingObjectsFromArray:parameters2];
             goto LABEL_55;
           }
 
           v34 = v23;
           v113 = v32;
-          v35 = [v31 assetSpecifierValueForDataPoint:v11 error:&v113];
+          parameters2 = [v31 assetSpecifierValueForDataPoint:valuesCopy error:&v113];
           v36 = v113;
 
-          if (v35)
+          if (parameters2)
           {
-            if (v101)
+            if (lsCopy)
             {
-              v37 = [v101 objectForKey:v35];
+              v37 = [lsCopy objectForKey:parameters2];
               if (v37)
               {
                 v38 = v37;
@@ -2233,26 +2233,26 @@ LABEL_44:
 LABEL_56:
 
                 v23 = v34;
-                v30 = v103;
+                v30 = parameters;
                 v27 = v17;
 LABEL_58:
 
                 goto LABEL_59;
               }
 
-              if (!a8)
+              if (!error)
               {
                 goto LABEL_149;
               }
 
-              v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"No URL found for asset name '%@'", v35];
-              v50 = [FedStatsError errorWithCode:400 description:v49];
+              v103 = [MEMORY[0x277CCACA8] stringWithFormat:@"No URL found for asset name '%@'", parameters2];
+              v50 = [FedStatsError errorWithCode:400 description:v103];
               goto LABEL_148;
             }
 
-            if (a7)
+            if (names)
             {
-              *a7 = [*a7 arrayByAddingObject:v35];
+              *names = [*names arrayByAddingObject:parameters2];
             }
 
             v33 = v36;
@@ -2261,18 +2261,18 @@ LABEL_55:
             goto LABEL_56;
           }
 
-          if (a8)
+          if (error)
           {
-            v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot process asset specifier '%@'", v103];
-            v50 = [FedStatsError errorWithCode:400 underlyingError:v36 description:v49];
+            v103 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot process asset specifier '%@'", parameters];
+            v50 = [FedStatsError errorWithCode:400 underlyingError:v36 description:v103];
 LABEL_148:
-            *a8 = v50;
+            *error = v50;
           }
         }
 
         else
         {
-          if (!a8)
+          if (!error)
           {
 LABEL_150:
 
@@ -2283,8 +2283,8 @@ LABEL_150:
           }
 
           v34 = v23;
-          v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot process asset specifier '%@'", v30];
-          *a8 = [FedStatsError errorWithCode:400 underlyingError:v33 description:v35];
+          parameters2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot process asset specifier '%@'", v30];
+          *error = [FedStatsError errorWithCode:400 underlyingError:v33 description:parameters2];
           v36 = v33;
         }
 
@@ -2307,7 +2307,7 @@ LABEL_60:
     }
 
     v93 = v23;
-    v103 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v99, "count")}];
+    parameters = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v99, "count")}];
     v109 = 0u;
     v110 = 0u;
     v111 = 0u;
@@ -2345,13 +2345,13 @@ LABEL_60:
 
         if (!v59)
         {
-          if (v11)
+          if (valuesCopy)
           {
             if (v26)
             {
               v108 = 0;
-              v60 = v11;
-              v61 = [FedStatsCategoricalTypeFilterFactory forVariant:v58 mutateParameters:v57 usingFieldValues:v11 assetURLs:v26 error:&v108];
+              v60 = valuesCopy;
+              v61 = [FedStatsCategoricalTypeFilterFactory forVariant:v58 mutateParameters:v57 usingFieldValues:valuesCopy assetURLs:v26 error:&v108];
               v62 = v108;
               if (v61)
               {
@@ -2360,22 +2360,22 @@ LABEL_60:
                 v122[0] = v58;
                 v122[1] = v61;
                 v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v122 forKeys:v121 count:2];
-                [v103 addObject:v63];
+                [parameters addObject:v63];
 
-                v26 = v101;
-                v11 = v60;
+                v26 = lsCopy;
+                valuesCopy = v60;
 LABEL_79:
 
                 v27 = v105;
                 goto LABEL_80;
               }
 
-              if (a8)
+              if (error)
               {
-                *a8 = [FedStatsError errorWithCode:900 underlyingError:v62 description:@"Cannot modify specifiers with field values in filter variant"];
+                *error = [FedStatsError errorWithCode:900 underlyingError:v62 description:@"Cannot modify specifiers with field values in filter variant"];
               }
 
-              v11 = v60;
+              valuesCopy = v60;
               v12 = v90;
               v25 = v95;
 LABEL_99:
@@ -2385,17 +2385,17 @@ LABEL_99:
               goto LABEL_120;
             }
 
-            v66 = [FedStatsCategoricalTypeFilterFactory forVariant:v58 assetNamesInParameters:v57 usingFieldValues:v11];
+            v66 = [FedStatsCategoricalTypeFilterFactory forVariant:v58 assetNamesInParameters:v57 usingFieldValues:valuesCopy];
             if (v66)
             {
               v62 = v66;
-              v65 = a7;
+              fieldsCopy = names;
               goto LABEL_78;
             }
 
             v12 = v90;
             v25 = v95;
-            if (!a8)
+            if (!error)
             {
               goto LABEL_99;
             }
@@ -2409,15 +2409,15 @@ LABEL_99:
             if (v64)
             {
               v62 = v64;
-              v65 = a6;
+              fieldsCopy = fields;
 LABEL_78:
-              *v65 = [*v65 arrayByAddingObjectsFromArray:v62];
+              *fieldsCopy = [*fieldsCopy arrayByAddingObjectsFromArray:v62];
               goto LABEL_79;
             }
 
             v12 = v90;
             v25 = v95;
-            if (!a8)
+            if (!error)
             {
               goto LABEL_99;
             }
@@ -2425,7 +2425,7 @@ LABEL_78:
             v70 = @"Cannot extract required fields from filter parameters";
           }
 
-          *a8 = [FedStatsError errorWithCode:900 description:v70];
+          *error = [FedStatsError errorWithCode:900 description:v70];
           goto LABEL_99;
         }
 
@@ -2444,13 +2444,13 @@ LABEL_80:
 LABEL_82:
 
     v23 = v93;
-    [v93 setObject:v103 forKey:@"filters"];
+    [v93 setObject:parameters forKey:@"filters"];
 
     v12 = v90;
     v25 = v95;
 LABEL_83:
-    v103 = [v23 objectForKey:@"tokenizerVariant"];
-    if (!v103)
+    parameters = [v23 objectForKey:@"tokenizerVariant"];
+    if (!parameters)
     {
       goto LABEL_105;
     }
@@ -2461,15 +2461,15 @@ LABEL_83:
       goto LABEL_104;
     }
 
-    if (!v11)
+    if (!valuesCopy)
     {
-      v71 = [FedStatsCategoricalTypeTokenizerFactory forVariant:v103 requiredFieldsInParameters:v51];
+      v71 = [FedStatsCategoricalTypeTokenizerFactory forVariant:parameters requiredFieldsInParameters:v51];
       if (v71)
       {
         v69 = v71;
-        v72 = a6;
+        namesCopy3 = fields;
 LABEL_102:
-        *v72 = [*v72 arrayByAddingObjectsFromArray:v69];
+        *namesCopy3 = [*namesCopy3 arrayByAddingObjectsFromArray:v69];
         v12 = v90;
 LABEL_103:
 
@@ -2483,13 +2483,13 @@ LABEL_105:
           v74 = [v23 objectForKey:@"preEncodingParameters"];
           if (v74)
           {
-            if (v11)
+            if (valuesCopy)
             {
               if (v26)
               {
                 v75 = v23;
                 v106 = 0;
-                v76 = [FedStatsCategoricalTypePreEncoderFactory forVariant:v51 mutateParameters:v74 usingFieldValues:v11 assetURLs:v26 error:&v106];
+                v76 = [FedStatsCategoricalTypePreEncoderFactory forVariant:v51 mutateParameters:v74 usingFieldValues:valuesCopy assetURLs:v26 error:&v106];
                 v77 = v106;
                 if (v76)
                 {
@@ -2499,9 +2499,9 @@ LABEL_105:
                   goto LABEL_116;
                 }
 
-                if (a8)
+                if (error)
                 {
-                  *a8 = [FedStatsError errorWithCode:900 underlyingError:v77 description:@"Cannot modify specifiers with field values in pre-encoder variant"];
+                  *error = [FedStatsError errorWithCode:900 underlyingError:v77 description:@"Cannot modify specifiers with field values in pre-encoder variant"];
                 }
 
                 v45 = 1;
@@ -2513,19 +2513,19 @@ LABEL_119:
                 goto LABEL_120;
               }
 
-              v80 = [FedStatsCategoricalTypePreEncoderFactory forVariant:v51 assetNamesInParameters:v74 usingFieldValues:v11];
+              v80 = [FedStatsCategoricalTypePreEncoderFactory forVariant:v51 assetNamesInParameters:v74 usingFieldValues:valuesCopy];
               if (v80)
               {
                 v77 = v80;
-                v79 = a7;
+                fieldsCopy3 = names;
                 goto LABEL_115;
               }
 
-              if (a8)
+              if (error)
               {
                 v82 = @"Cannot extract asset names using field values from pre-encoding parameters";
 LABEL_143:
-                *a8 = [FedStatsError errorWithCode:900 description:v82];
+                *error = [FedStatsError errorWithCode:900 description:v82];
               }
 
               goto LABEL_144;
@@ -2534,7 +2534,7 @@ LABEL_143:
             v78 = [FedStatsCategoricalTypePreEncoderFactory forVariant:v51 requiredFieldsInParameters:v74];
             if (!v78)
             {
-              if (a8)
+              if (error)
               {
                 v82 = @"Cannot extract required fields from pre-encoding parameters";
                 goto LABEL_143;
@@ -2546,9 +2546,9 @@ LABEL_144:
             }
 
             v77 = v78;
-            v79 = a6;
+            fieldsCopy3 = fields;
 LABEL_115:
-            *v79 = [*v79 arrayByAddingObjectsFromArray:v77];
+            *fieldsCopy3 = [*fieldsCopy3 arrayByAddingObjectsFromArray:v77];
             v12 = v90;
 LABEL_116:
 
@@ -2562,7 +2562,7 @@ LABEL_116:
         goto LABEL_119;
       }
 
-      if (a8)
+      if (error)
       {
         v81 = @"Cannot extract required fields from tokenizer parameters";
         goto LABEL_138;
@@ -2575,19 +2575,19 @@ LABEL_139:
 
     if (!v26)
     {
-      v73 = [FedStatsCategoricalTypeTokenizerFactory forVariant:v103 assetNamesInParameters:v51 usingFieldValues:v11];
+      v73 = [FedStatsCategoricalTypeTokenizerFactory forVariant:parameters assetNamesInParameters:v51 usingFieldValues:valuesCopy];
       if (v73)
       {
         v69 = v73;
-        v72 = a7;
+        namesCopy3 = names;
         goto LABEL_102;
       }
 
-      if (a8)
+      if (error)
       {
         v81 = @"Cannot extract asset names using field values from tokenizer parameters";
 LABEL_138:
-        *a8 = [FedStatsError errorWithCode:900 description:v81];
+        *error = [FedStatsError errorWithCode:900 description:v81];
       }
 
       goto LABEL_139;
@@ -2595,7 +2595,7 @@ LABEL_138:
 
     v67 = v23;
     v107 = 0;
-    v68 = [FedStatsCategoricalTypeTokenizerFactory forVariant:v103 mutateParameters:v51 usingFieldValues:v11 assetURLs:v26 error:&v107];
+    v68 = [FedStatsCategoricalTypeTokenizerFactory forVariant:parameters mutateParameters:v51 usingFieldValues:valuesCopy assetURLs:v26 error:&v107];
     v69 = v107;
     if (v68)
     {
@@ -2605,9 +2605,9 @@ LABEL_138:
       goto LABEL_103;
     }
 
-    if (a8)
+    if (error)
     {
-      *a8 = [FedStatsError errorWithCode:900 underlyingError:v69 description:@"Cannot modify specifiers with field values in tokenizer variant"];
+      *error = [FedStatsError errorWithCode:900 underlyingError:v69 description:@"Cannot modify specifiers with field values in tokenizer variant"];
     }
 
     v45 = 1;
@@ -2652,40 +2652,40 @@ LABEL_155:
   return v86;
 }
 
-+ (id)extractAssetNamesFrom:(id)a3 usingFieldValues:(id)a4
++ (id)extractAssetNamesFrom:(id)from usingFieldValues:(id)values
 {
   v10 = MEMORY[0x277CBEBF8];
-  v4 = [FedStatsDataEncoder mutateDataTypeContent:a3 usingFieldValues:a4 assetURLs:0 requiredFields:0 assetNames:&v10 error:0];
+  v4 = [FedStatsDataEncoder mutateDataTypeContent:from usingFieldValues:values assetURLs:0 requiredFields:0 assetNames:&v10 error:0];
   v5 = v10;
   v6 = [MEMORY[0x277CBEB98] setWithArray:v5];
-  v7 = [v6 allObjects];
-  v8 = [v7 sortedArrayUsingSelector:sel_localizedCompare_];
+  allObjects = [v6 allObjects];
+  v8 = [allObjects sortedArrayUsingSelector:sel_localizedCompare_];
 
   return v8;
 }
 
-+ (id)extractRequiredFieldsFrom:(id)a3
++ (id)extractRequiredFieldsFrom:(id)from
 {
   v9 = MEMORY[0x277CBEBF8];
-  v3 = [FedStatsDataEncoder mutateDataTypeContent:a3 usingFieldValues:0 assetURLs:0 requiredFields:&v9 assetNames:0 error:0];
+  v3 = [FedStatsDataEncoder mutateDataTypeContent:from usingFieldValues:0 assetURLs:0 requiredFields:&v9 assetNames:0 error:0];
   v4 = v9;
   v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
-  v6 = [v5 allObjects];
-  v7 = [v6 sortedArrayUsingSelector:sel_localizedCompare_];
+  allObjects = [v5 allObjects];
+  v7 = [allObjects sortedArrayUsingSelector:sel_localizedCompare_];
 
   return v7;
 }
 
-+ (id)defaultDataPointForDataTypeContent:(id)a3
++ (id)defaultDataPointForDataTypeContent:(id)content
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  contentCopy = content;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v3;
+  v4 = contentCopy;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -2707,8 +2707,8 @@ LABEL_155:
 
         if (v12 != 99)
         {
-          v13 = [MEMORY[0x277CBEB68] null];
-          [v16 setObject:v13 forKey:v9];
+          null = [MEMORY[0x277CBEB68] null];
+          [dictionary setObject:null forKey:v9];
         }
       }
 
@@ -2720,7 +2720,7 @@ LABEL_155:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return dictionary;
 }
 
 + (void)encodeDataArrayAndRecord:dataTypeContent:metadata:baseKey:errorOut:.cold.1()

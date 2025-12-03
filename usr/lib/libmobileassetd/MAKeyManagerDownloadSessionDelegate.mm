@@ -1,28 +1,28 @@
 @interface MAKeyManagerDownloadSessionDelegate
-- (MAKeyManagerDownloadSessionDelegate)initWithName:(id)a3;
-- (MAKeyManagerDownloadSessionDelegate)initWithName:(id)a3 certType:(int)a4;
-- (__SecKey)copyKeyAndBAACerificateChain:(id *)a3;
-- (__SecKey)copyKeyAndSelfSignedCertificateChain:(id *)a3;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
+- (MAKeyManagerDownloadSessionDelegate)initWithName:(id)name;
+- (MAKeyManagerDownloadSessionDelegate)initWithName:(id)name certType:(int)type;
+- (__SecKey)copyKeyAndBAACerificateChain:(id *)chain;
+- (__SecKey)copyKeyAndSelfSignedCertificateChain:(id *)chain;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
 - (void)dealloc;
 - (void)refreshBAACertificate;
 @end
 
 @implementation MAKeyManagerDownloadSessionDelegate
 
-- (MAKeyManagerDownloadSessionDelegate)initWithName:(id)a3
+- (MAKeyManagerDownloadSessionDelegate)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = MAKeyManagerDownloadSessionDelegate;
   v5 = [(MAKeyManagerDownloadSessionDelegate *)&v14 init];
   if (v5)
   {
-    v6 = [@"com.apple.MobileAsset.KeyManagerDownloadSessionDelegate." stringByAppendingString:v4];
-    v7 = [v6 UTF8String];
+    v6 = [@"com.apple.MobileAsset.KeyManagerDownloadSessionDelegate." stringByAppendingString:nameCopy];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     underlyingQueue = v5->_underlyingQueue;
     v5->_underlyingQueue = v9;
 
@@ -37,10 +37,10 @@
   return v5;
 }
 
-- (MAKeyManagerDownloadSessionDelegate)initWithName:(id)a3 certType:(int)a4
+- (MAKeyManagerDownloadSessionDelegate)initWithName:(id)name certType:(int)type
 {
-  v4 = *&a4;
-  v5 = [(MAKeyManagerDownloadSessionDelegate *)self initWithName:a3];
+  v4 = *&type;
+  v5 = [(MAKeyManagerDownloadSessionDelegate *)self initWithName:name];
   if (v5)
   {
     v6 = [[MABAACertManager alloc] initWithCertType:v4];
@@ -74,11 +74,11 @@
   }
 }
 
-- (__SecKey)copyKeyAndBAACerificateChain:(id *)a3
+- (__SecKey)copyKeyAndBAACerificateChain:(id *)chain
 {
   v13 = 0;
-  v5 = [(MAKeyManagerDownloadSessionDelegate *)self baaCertManager];
-  v6 = [v5 issueAndCopyCerts:&v13];
+  baaCertManager = [(MAKeyManagerDownloadSessionDelegate *)self baaCertManager];
+  v6 = [baaCertManager issueAndCopyCerts:&v13];
 
   if ([v6 count])
   {
@@ -98,9 +98,9 @@
     dispatch_async(underlyingQueue, v10);
   }
 
-  if (a3)
+  if (chain)
   {
-    objc_storeStrong(a3, v6);
+    objc_storeStrong(chain, v6);
   }
 
   v8 = v13;
@@ -128,15 +128,15 @@ CFTypeRef __68__MAKeyManagerDownloadSessionDelegate_copyKeyAndBAACerificateChain
   return result;
 }
 
-- (__SecKey)copyKeyAndSelfSignedCertificateChain:(id *)a3
+- (__SecKey)copyKeyAndSelfSignedCertificateChain:(id *)chain
 {
   v8 = 0;
-  v4 = [(MAKeyManagerDownloadSessionDelegate *)self baaCertManager];
-  v5 = [v4 issueAndCopySelfSignedCert:&v8];
+  baaCertManager = [(MAKeyManagerDownloadSessionDelegate *)self baaCertManager];
+  v5 = [baaCertManager issueAndCopySelfSignedCert:&v8];
 
-  if (a3)
+  if (chain)
   {
-    objc_storeStrong(a3, v5);
+    objc_storeStrong(chain, v5);
   }
 
   v6 = v8;
@@ -144,40 +144,40 @@ CFTypeRef __68__MAKeyManagerDownloadSessionDelegate_copyKeyAndBAACerificateChain
   return v6;
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = _MAClientLog(@"KeyManager");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 configuration];
-    v8 = [v7 identifier];
+    configuration = [sessionCopy configuration];
+    identifier = [configuration identifier];
     v9 = 138412290;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "DownloadTask for session %@ did complete", &v9, 0xCu);
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_underlyingQueue);
   v11 = _MAClientLog(@"KeyManager");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    v12 = [v8 configuration];
-    v13 = [v12 identifier];
+    configuration = [sessionCopy configuration];
+    identifier = [configuration identifier];
     *buf = 138412290;
-    v48 = v13;
+    v48 = identifier;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "[MAKeyManagerDownloadSessionDelegate]: Challange handler running for session %@", buf, 0xCu);
   }
 
-  v14 = [v9 protectionSpace];
-  v15 = [v14 authenticationMethod];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
 
-  if ([v15 isEqualToString:NSURLAuthenticationMethodClientCertificate])
+  if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate])
   {
     if (os_variant_has_internal_content() && CFPreferencesGetAppBooleanValue(@"DisableMTLSForWKMS", @"com.apple.MobileAsset", 0))
     {
@@ -192,14 +192,14 @@ CFTypeRef __68__MAKeyManagerDownloadSessionDelegate_copyKeyAndBAACerificateChain
 
     else
     {
-      v22 = [(MAKeyManagerDownloadSessionDelegate *)self refKey];
-      v23 = [(MAKeyManagerDownloadSessionDelegate *)self certArray];
-      v16 = v23;
-      if (v22 && [v23 count])
+      refKey = [(MAKeyManagerDownloadSessionDelegate *)self refKey];
+      certArray = [(MAKeyManagerDownloadSessionDelegate *)self certArray];
+      v16 = certArray;
+      if (refKey && [certArray count])
       {
-        v41 = v8;
-        v24 = [v9 protectionSpace];
-        v25 = [v24 distinguishedNames];
+        v41 = sessionCopy;
+        protectionSpace2 = [challengeCopy protectionSpace];
+        distinguishedNames = [protectionSpace2 distinguishedNames];
 
         v44 = 0u;
         v45 = 0u;
@@ -221,7 +221,7 @@ CFTypeRef __68__MAKeyManagerDownloadSessionDelegate_copyKeyAndBAACerificateChain
               }
 
               v30 = SecCertificateCopyNormalizedIssuerSequence(*(*(&v42 + 1) + 8 * i));
-              if (v30 && [v25 containsObject:v30])
+              if (v30 && [distinguishedNames containsObject:v30])
               {
 
                 [v16 objectAtIndex:0];
@@ -237,8 +237,8 @@ CFTypeRef __68__MAKeyManagerDownloadSessionDelegate_copyKeyAndBAACerificateChain
                   _os_log_impl(&dword_0, v40, OS_LOG_TYPE_DEFAULT, "[MAKeyManagerDownloadSessionDelegate]: Using credential created with BAA cert for challenge handling", buf, 2u);
                 }
 
-                v10[2](v10, 0, v39);
-                v8 = v41;
+                handlerCopy[2](handlerCopy, 0, v39);
+                sessionCopy = v41;
                 goto LABEL_34;
               }
             }
@@ -262,7 +262,7 @@ CFTypeRef __68__MAKeyManagerDownloadSessionDelegate_copyKeyAndBAACerificateChain
           _os_log_impl(&dword_0, v31, OS_LOG_TYPE_DEFAULT, "[MAKeyManagerDownloadSessionDelegate]: Disabling mTLS - server does not trust our certificates (checked %lu).", buf, 0xCu);
         }
 
-        v8 = v41;
+        sessionCopy = v41;
       }
 
       else
@@ -279,20 +279,20 @@ CFTypeRef __68__MAKeyManagerDownloadSessionDelegate_copyKeyAndBAACerificateChain
     goto LABEL_31;
   }
 
-  if (![v15 isEqualToString:NSURLAuthenticationMethodServerTrust] || (MAInternalServerTrustCredential(v9), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || (MAInternalServerTrustCredential(challengeCopy), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_31:
     v34 = _MAClientLog(@"KeyManager");
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [v9 protectionSpace];
-      v36 = [v35 authenticationMethod];
+      protectionSpace3 = [challengeCopy protectionSpace];
+      authenticationMethod2 = [protectionSpace3 authenticationMethod];
       *buf = 138412290;
-      v48 = v36;
+      v48 = authenticationMethod2;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "[MAKeyManagerDownloadSessionDelegate]: AuthenticationMethod is %@. Using default challenge handling", buf, 0xCu);
     }
 
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_34;
   }
 
@@ -300,14 +300,14 @@ LABEL_31:
   v19 = _MAClientLog(@"KeyManager");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v9 protectionSpace];
-    v21 = [v20 host];
+    protectionSpace4 = [challengeCopy protectionSpace];
+    host = [protectionSpace4 host];
     *buf = 138412290;
-    v48 = v21;
+    v48 = host;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "[MAKeyManagerDownloadSessionDelegate]: Using internal server trust for %@", buf, 0xCu);
   }
 
-  v10[2](v10, 0, v18);
+  handlerCopy[2](handlerCopy, 0, v18);
 LABEL_34:
 }
 

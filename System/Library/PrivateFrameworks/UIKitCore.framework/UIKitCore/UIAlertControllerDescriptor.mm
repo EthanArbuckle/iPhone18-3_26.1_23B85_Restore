@@ -1,13 +1,13 @@
 @interface UIAlertControllerDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIEdgeInsets)containerViewSafeAreaInsets;
 @end
 
 @implementation UIAlertControllerDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -15,45 +15,45 @@
     goto LABEL_12;
   }
 
-  v5 = v4;
-  v6 = [(UIAlertControllerDescriptor *)self hasHeaderContentViewController];
-  if (v6 != [v5 hasHeaderContentViewController])
+  v5 = equalCopy;
+  hasHeaderContentViewController = [(UIAlertControllerDescriptor *)self hasHeaderContentViewController];
+  if (hasHeaderContentViewController != [v5 hasHeaderContentViewController])
   {
     goto LABEL_9;
   }
 
-  v7 = [(UIAlertControllerDescriptor *)self hasTitle];
-  if (v7 != [v5 hasTitle])
+  hasTitle = [(UIAlertControllerDescriptor *)self hasTitle];
+  if (hasTitle != [v5 hasTitle])
   {
     goto LABEL_9;
   }
 
-  v8 = [(UIAlertControllerDescriptor *)self hasMessage];
-  if (v8 != [v5 hasMessage])
+  hasMessage = [(UIAlertControllerDescriptor *)self hasMessage];
+  if (hasMessage != [v5 hasMessage])
   {
     goto LABEL_9;
   }
 
-  v9 = [(UIAlertControllerDescriptor *)self hasContentViewController];
-  if (v9 != [v5 hasContentViewController])
+  hasContentViewController = [(UIAlertControllerDescriptor *)self hasContentViewController];
+  if (hasContentViewController != [v5 hasContentViewController])
   {
     goto LABEL_9;
   }
 
-  v10 = [(UIAlertControllerDescriptor *)self numberOfActions];
-  if (v10 != [v5 numberOfActions])
+  numberOfActions = [(UIAlertControllerDescriptor *)self numberOfActions];
+  if (numberOfActions != [v5 numberOfActions])
   {
     goto LABEL_9;
   }
 
-  v11 = [(UIAlertControllerDescriptor *)self numberOfVisibleActions];
-  if (v11 != [v5 numberOfVisibleActions])
+  numberOfVisibleActions = [(UIAlertControllerDescriptor *)self numberOfVisibleActions];
+  if (numberOfVisibleActions != [v5 numberOfVisibleActions])
   {
     goto LABEL_9;
   }
 
-  v12 = [(UIAlertControllerDescriptor *)self applicationIsFullscreen];
-  if (v12 != [v5 applicationIsFullscreen])
+  applicationIsFullscreen = [(UIAlertControllerDescriptor *)self applicationIsFullscreen];
+  if (applicationIsFullscreen != [v5 applicationIsFullscreen])
   {
     goto LABEL_9;
   }
@@ -70,11 +70,11 @@
     goto LABEL_10;
   }
 
-  v27 = [(UIAlertControllerDescriptor *)self isPad];
-  if (v27 == [v5 isPad] && (v28 = -[UIAlertControllerDescriptor isSystemAlert](self, "isSystemAlert"), v28 == objc_msgSend(v5, "isSystemAlert")))
+  isPad = [(UIAlertControllerDescriptor *)self isPad];
+  if (isPad == [v5 isPad] && (v28 = -[UIAlertControllerDescriptor isSystemAlert](self, "isSystemAlert"), v28 == objc_msgSend(v5, "isSystemAlert")))
   {
-    v29 = [(UIAlertControllerDescriptor *)self hasTextfields];
-    v13 = v29 ^ [v5 hasTextfields] ^ 1;
+    hasTextfields = [(UIAlertControllerDescriptor *)self hasTextfields];
+    v13 = hasTextfields ^ [v5 hasTextfields] ^ 1;
   }
 
   else

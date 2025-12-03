@@ -1,12 +1,12 @@
 @interface ClimatePositionViews
 - (NSArray)preferredFocusEnvironments;
-- (_TtC7Climate20ClimatePositionViews)initWithCoder:(id)a3;
-- (_TtC7Climate20ClimatePositionViews)initWithFrame:(CGRect)a3;
+- (_TtC7Climate20ClimatePositionViews)initWithCoder:(id)coder;
+- (_TtC7Climate20ClimatePositionViews)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ClimatePositionViews
 
-- (_TtC7Climate20ClimatePositionViews)initWithCoder:(id)a3
+- (_TtC7Climate20ClimatePositionViews)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate20ClimatePositionViews_scale) = 0x3FF0000000000000;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate20ClimatePositionViews____lazy_storage___heightConstraint) = 0;
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC7Climate20ClimatePositionViews)initWithFrame:(CGRect)a3
+- (_TtC7Climate20ClimatePositionViews)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -26,7 +26,7 @@
 - (NSArray)preferredFocusEnvironments
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate20ClimatePositionViews_positions);
-  v3 = self;
+  selfCopy = self;
   sub_1000C5884(v2);
 
   sub_1000040E8(&unk_1001150F0);

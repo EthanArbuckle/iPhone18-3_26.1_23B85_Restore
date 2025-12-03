@@ -1,5 +1,5 @@
 @interface DurationGroup
-- (DurationGroup)initWithStart:(id)a3 end:(id)a4;
+- (DurationGroup)initWithStart:(id)start end:(id)end;
 - (id)description;
 @end
 
@@ -15,16 +15,16 @@
   return [v3 stringWithFormat:@"id: %lu, start: %flll, stop: %flll", groupId, v6, v7];
 }
 
-- (DurationGroup)initWithStart:(id)a3 end:(id)a4
+- (DurationGroup)initWithStart:(id)start end:(id)end
 {
-  v7 = a3;
-  v8 = a4;
+  startCopy = start;
+  endCopy = end;
   v9 = [(DurationGroup *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_start, a3);
-    objc_storeStrong(&v10->_end, a4);
+    objc_storeStrong(&v9->_start, start);
+    objc_storeStrong(&v10->_end, end);
     v11 = initWithStart_end__ident++;
     v10->_groupId = v11;
   }

@@ -1,8 +1,8 @@
 @interface ScrubberButton
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIImage)largeContentImage;
-- (_TtC16MagnifierSupport14ScrubberButton)initWithFrame:(CGRect)a3;
-- (void)didTap:(id)a3;
+- (_TtC16MagnifierSupport14ScrubberButton)initWithFrame:(CGRect)frame;
+- (void)didTap:(id)tap;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
 @end
@@ -11,11 +11,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_257D31E88();
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
   v4 = self + OBJC_IVAR____TtC16MagnifierSupport14ScrubberButton_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -23,7 +23,7 @@
     v5 = *(v4 + 1);
     swift_getObjectType();
     v6 = *(v5 + 8);
-    v7 = self;
+    selfCopy = self;
     v6();
     swift_unknownObjectRelease();
   }
@@ -31,11 +31,11 @@
 
 - (void)removeFromSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_257D32134();
 }
 
-- (_TtC16MagnifierSupport14ScrubberButton)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport14ScrubberButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -49,11 +49,11 @@
   return v2;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_257D326C4(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_257D326C4(beginCopy);
 
   return self & 1;
 }

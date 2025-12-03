@@ -11,8 +11,8 @@
 - (id)relativeDateFormatter;
 - (id)timeFormatter;
 - (id)timeIntervalFormatter;
-- (id)weekdayNameFormatter:(BOOL)a3;
-- (void)registerTemperatureFormatter:(id)a3;
+- (id)weekdayNameFormatter:(BOOL)formatter;
+- (void)registerTemperatureFormatter:(id)formatter;
 @end
 
 @implementation HFFormatterManager
@@ -36,10 +36,10 @@ void __36__HFFormatterManager_sharedInstance__block_invoke()
   _MergedGlobals_254 = v0;
 }
 
-- (void)registerTemperatureFormatter:(id)a3
+- (void)registerTemperatureFormatter:(id)formatter
 {
-  v4 = a3;
-  v5 = [v4 copyWithZone:MEMORY[0x20F326D80]()];
+  formatterCopy = formatter;
+  v5 = [formatterCopy copyWithZone:MEMORY[0x20F326D80]()];
 
   temperatureFormatter = self->_temperatureFormatter;
   self->_temperatureFormatter = v5;
@@ -129,14 +129,14 @@ id __40__HFFormatterManager_arcDegreeFormatter__block_invoke(uint64_t a1, void *
 {
   v2 = [[HFMeasurementFormatter alloc] initWithMeasurementBlock:&__block_literal_global_15_2];
   [(NSMeasurementFormatter *)v2 setUnitStyle:3];
-  v3 = [(NSMeasurementFormatter *)v2 numberFormatter];
-  [v3 setMaximumSignificantDigits:3];
+  numberFormatter = [(NSMeasurementFormatter *)v2 numberFormatter];
+  [numberFormatter setMaximumSignificantDigits:3];
 
-  v4 = [(NSMeasurementFormatter *)v2 numberFormatter];
-  [v4 setMaximumFractionDigits:1];
+  numberFormatter2 = [(NSMeasurementFormatter *)v2 numberFormatter];
+  [numberFormatter2 setMaximumFractionDigits:1];
 
-  v5 = [(NSMeasurementFormatter *)v2 numberFormatter];
-  [v5 setUsesSignificantDigits:1];
+  numberFormatter3 = [(NSMeasurementFormatter *)v2 numberFormatter];
+  [numberFormatter3 setUsesSignificantDigits:1];
 
   return v2;
 }
@@ -194,8 +194,8 @@ id __39__HFFormatterManager_identityFormatter__block_invoke(uint64_t a1, void *a
   v2 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v2 setDateStyle:3];
   [v2 setTimeStyle:1];
-  v3 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  [v2 setLocale:v3];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  [v2 setLocale:autoupdatingCurrentLocale];
 
   [v2 setDoesRelativeDateFormatting:1];
 
@@ -207,11 +207,11 @@ id __39__HFFormatterManager_identityFormatter__block_invoke(uint64_t a1, void *a
   v2 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v2 setDateStyle:0];
   [v2 setTimeStyle:1];
-  v3 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  [v2 setLocale:v3];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  [v2 setLocale:autoupdatingCurrentLocale];
 
-  v4 = [MEMORY[0x277CBEBB0] localTimeZone];
-  [v2 setTimeZone:v4];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  [v2 setTimeZone:localTimeZone];
 
   return v2;
 }
@@ -219,11 +219,11 @@ id __39__HFFormatterManager_identityFormatter__block_invoke(uint64_t a1, void *a
 - (id)monthDayTimeFormatter
 {
   v2 = objc_alloc_init(MEMORY[0x277CCA968]);
-  v3 = [MEMORY[0x277CBEBB0] localTimeZone];
-  [v2 setTimeZone:v3];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  [v2 setTimeZone:localTimeZone];
 
-  v4 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  [v2 setLocale:v4];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  [v2 setLocale:autoupdatingCurrentLocale];
 
   [v2 setLocalizedDateFormatFromTemplate:{@"d MMM, j:mm"}];
 
@@ -246,12 +246,12 @@ id __39__HFFormatterManager_identityFormatter__block_invoke(uint64_t a1, void *a
   return v2;
 }
 
-- (id)weekdayNameFormatter:(BOOL)a3
+- (id)weekdayNameFormatter:(BOOL)formatter
 {
-  v3 = a3;
+  formatterCopy = formatter;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   v5 = v4;
-  if (v3)
+  if (formatterCopy)
   {
     v6 = @"EEE";
   }
@@ -262,8 +262,8 @@ id __39__HFFormatterManager_identityFormatter__block_invoke(uint64_t a1, void *a
   }
 
   [v4 setDateFormat:v6];
-  v7 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  [v5 setLocale:v7];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  [v5 setLocale:autoupdatingCurrentLocale];
 
   return v5;
 }

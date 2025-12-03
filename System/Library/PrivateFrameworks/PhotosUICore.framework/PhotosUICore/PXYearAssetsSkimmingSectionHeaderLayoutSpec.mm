@@ -1,15 +1,15 @@
 @interface PXYearAssetsSkimmingSectionHeaderLayoutSpec
-- (PXYearAssetsSkimmingSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 padding:(UIEdgeInsets)a5 variant:(int64_t)a6;
+- (PXYearAssetsSkimmingSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options padding:(UIEdgeInsets)padding variant:(int64_t)variant;
 @end
 
 @implementation PXYearAssetsSkimmingSectionHeaderLayoutSpec
 
-- (PXYearAssetsSkimmingSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 padding:(UIEdgeInsets)a5 variant:(int64_t)a6
+- (PXYearAssetsSkimmingSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options padding:(UIEdgeInsets)padding variant:(int64_t)variant
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PXYearAssetsSkimmingSectionHeaderLayoutSpec;
-  v6 = [(PXYearAssetsSectionHeaderLayoutSpec *)&v9 initWithExtendedTraitCollection:a3 options:a4 padding:0 variant:a5.top, a5.left, a5.bottom, a5.right];
+  v6 = [(PXYearAssetsSectionHeaderLayoutSpec *)&v9 initWithExtendedTraitCollection:collection options:options padding:0 variant:padding.top, padding.left, padding.bottom, padding.right];
   if (v6)
   {
     [MEMORY[0x1E69DC888] whiteColor];

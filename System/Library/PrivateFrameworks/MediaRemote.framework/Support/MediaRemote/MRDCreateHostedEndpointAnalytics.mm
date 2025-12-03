@@ -5,88 +5,88 @@
 - (MRDTimingEvent)modifyOutputContext;
 - (MRDTimingEvent)searchForBuddy;
 - (MRDTimingEvent)searchForGroupUID;
-- (void)setCreateHostedEndpoint:(id)a3;
-- (void)setCreateRemoteHostedEndpoint:(id)a3;
-- (void)setModifyOutputContext:(id)a3;
-- (void)setSearchForBuddy:(id)a3;
-- (void)setSearchForGroupUID:(id)a3;
+- (void)setCreateHostedEndpoint:(id)endpoint;
+- (void)setCreateRemoteHostedEndpoint:(id)endpoint;
+- (void)setModifyOutputContext:(id)context;
+- (void)setSearchForBuddy:(id)buddy;
+- (void)setSearchForGroupUID:(id)d;
 @end
 
 @implementation MRDCreateHostedEndpointAnalytics
 
 - (MRDTimingEvent)searchForBuddy
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034F59C();
 
   return v3;
 }
 
-- (void)setSearchForBuddy:(id)a3
+- (void)setSearchForBuddy:(id)buddy
 {
   v4 = *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___searchForBuddy);
-  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___searchForBuddy) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___searchForBuddy) = buddy;
+  buddyCopy = buddy;
 }
 
 - (MRDTimingEvent)createRemoteHostedEndpoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034F624();
 
   return v3;
 }
 
-- (void)setCreateRemoteHostedEndpoint:(id)a3
+- (void)setCreateRemoteHostedEndpoint:(id)endpoint
 {
   v4 = *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___createRemoteHostedEndpoint);
-  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___createRemoteHostedEndpoint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___createRemoteHostedEndpoint) = endpoint;
+  endpointCopy = endpoint;
 }
 
 - (MRDTimingEvent)createHostedEndpoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034F6AC();
 
   return v3;
 }
 
-- (void)setCreateHostedEndpoint:(id)a3
+- (void)setCreateHostedEndpoint:(id)endpoint
 {
   v4 = *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___createHostedEndpoint);
-  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___createHostedEndpoint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___createHostedEndpoint) = endpoint;
+  endpointCopy = endpoint;
 }
 
 - (MRDTimingEvent)modifyOutputContext
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034F734();
 
   return v3;
 }
 
-- (void)setModifyOutputContext:(id)a3
+- (void)setModifyOutputContext:(id)context
 {
   v4 = *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___modifyOutputContext);
-  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___modifyOutputContext) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___modifyOutputContext) = context;
+  contextCopy = context;
 }
 
 - (MRDTimingEvent)searchForGroupUID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034F7BC();
 
   return v3;
 }
 
-- (void)setSearchForGroupUID:(id)a3
+- (void)setSearchForGroupUID:(id)d
 {
   v4 = *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___searchForGroupUID);
-  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___searchForGroupUID) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateHostedEndpointAnalytics____lazy_storage___searchForGroupUID) = d;
+  dCopy = d;
 }
 
 - (MRDCreateHostedEndpointAnalytics)init

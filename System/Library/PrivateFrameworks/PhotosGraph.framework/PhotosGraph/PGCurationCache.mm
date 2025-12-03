@@ -1,32 +1,32 @@
 @interface PGCurationCache
-- (id)_curatedAssetIdentifiersforMomentUUID:(id)a3 options:(id)a4;
-- (id)_curatedKeyAssetIdentifierforMomentUUID:(id)a3 options:(id)a4;
-- (id)_fetchCurationObjectForEntityName:(id)a3 predicate:(id)a4;
-- (id)curatedAssetIdentifiersForMoment:(id)a3 options:(id)a4;
-- (id)curatedKeyAssetIdentifierForMoment:(id)a3 options:(id)a4;
-- (void)_invalidateCacheForMomentWithUUID:(id)a3;
-- (void)_invalidateCacheForMomentsWithUUIDs:(id)a3;
-- (void)_setCuratedAssets:(id)a3 forMomentUUID:(id)a4 options:(id)a5;
-- (void)_setCuratedKeyAsset:(id)a3 forMomentUUID:(id)a4 options:(id)a5;
-- (void)_setProperties:(id)a3 forCurationObjectWithEntityName:(id)a4 momentUUID:(id)a5 predicate:(id)a6;
-- (void)setCuratedAssets:(id)a3 forMoment:(id)a4 options:(id)a5;
-- (void)setCuratedKeyAsset:(id)a3 forMoment:(id)a4 options:(id)a5;
+- (id)_curatedAssetIdentifiersforMomentUUID:(id)d options:(id)options;
+- (id)_curatedKeyAssetIdentifierforMomentUUID:(id)d options:(id)options;
+- (id)_fetchCurationObjectForEntityName:(id)name predicate:(id)predicate;
+- (id)curatedAssetIdentifiersForMoment:(id)moment options:(id)options;
+- (id)curatedKeyAssetIdentifierForMoment:(id)moment options:(id)options;
+- (void)_invalidateCacheForMomentWithUUID:(id)d;
+- (void)_invalidateCacheForMomentsWithUUIDs:(id)ds;
+- (void)_setCuratedAssets:(id)assets forMomentUUID:(id)d options:(id)options;
+- (void)_setCuratedKeyAsset:(id)asset forMomentUUID:(id)d options:(id)options;
+- (void)_setProperties:(id)properties forCurationObjectWithEntityName:(id)name momentUUID:(id)d predicate:(id)predicate;
+- (void)setCuratedAssets:(id)assets forMoment:(id)moment options:(id)options;
+- (void)setCuratedKeyAsset:(id)asset forMoment:(id)moment options:(id)options;
 @end
 
 @implementation PGCurationCache
 
-- (void)_invalidateCacheForMomentsWithUUIDs:(id)a3
+- (void)_invalidateCacheForMomentsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  dsCopy = ds;
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__PGCurationCache__invalidateCacheForMomentsWithUUIDs___block_invoke;
   v7[3] = &unk_278880B88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = dsCopy;
+  selfCopy = self;
+  v6 = dsCopy;
+  [managedObjectContext performBlockAndWait:v7];
 }
 
 void __55__PGCurationCache__invalidateCacheForMomentsWithUUIDs___block_invoke(uint64_t a1)
@@ -54,18 +54,18 @@ void __55__PGCurationCache__invalidateCacheForMomentsWithUUIDs___block_invoke(ui
   }
 }
 
-- (void)_invalidateCacheForMomentWithUUID:(id)a3
+- (void)_invalidateCacheForMomentWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  dCopy = d;
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__PGCurationCache__invalidateCacheForMomentWithUUID___block_invoke;
   v7[3] = &unk_278880B88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
+  [managedObjectContext performBlockAndWait:v7];
 }
 
 void __53__PGCurationCache__invalidateCacheForMomentWithUUID___block_invoke(uint64_t a1)
@@ -135,27 +135,27 @@ void __53__PGCurationCache__invalidateCacheForMomentWithUUID___block_invoke(uint
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setProperties:(id)a3 forCurationObjectWithEntityName:(id)a4 momentUUID:(id)a5 predicate:(id)a6
+- (void)_setProperties:(id)properties forCurationObjectWithEntityName:(id)name momentUUID:(id)d predicate:(id)predicate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CLSDBCache *)self managedObjectContext];
+  propertiesCopy = properties;
+  nameCopy = name;
+  dCopy = d;
+  predicateCopy = predicate;
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __87__PGCurationCache__setProperties_forCurationObjectWithEntityName_momentUUID_predicate___block_invoke;
   v19[3] = &unk_2788827F0;
   v19[4] = self;
-  v20 = v12;
-  v21 = v11;
-  v22 = v13;
-  v23 = v10;
-  v15 = v10;
-  v16 = v13;
-  v17 = v11;
-  v18 = v12;
-  [v14 performBlockAndWait:v19];
+  v20 = dCopy;
+  v21 = nameCopy;
+  v22 = predicateCopy;
+  v23 = propertiesCopy;
+  v15 = propertiesCopy;
+  v16 = predicateCopy;
+  v17 = nameCopy;
+  v18 = dCopy;
+  [managedObjectContext performBlockAndWait:v19];
 }
 
 void __87__PGCurationCache__setProperties_forCurationObjectWithEntityName_momentUUID_predicate___block_invoke(uint64_t a1)
@@ -245,28 +245,28 @@ void __87__PGCurationCache__setProperties_forCurationObjectWithEntityName_moment
   [*(a1 + 32) setValue:v8 forKey:v6];
 }
 
-- (id)_fetchCurationObjectForEntityName:(id)a3 predicate:(id)a4
+- (id)_fetchCurationObjectForEntityName:(id)name predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  predicateCopy = predicate;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__5540;
   v22 = __Block_byref_object_dispose__5541;
   v23 = 0;
-  v8 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_invoke;
   v13[3] = &unk_27887F7E0;
-  v9 = v6;
+  v9 = nameCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = predicateCopy;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
-  [v8 performBlockAndWait:v13];
+  [managedObjectContext performBlockAndWait:v13];
 
   v11 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -293,27 +293,27 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
   }
 }
 
-- (void)_setCuratedKeyAsset:(id)a3 forMomentUUID:(id)a4 options:(id)a5
+- (void)_setCuratedKeyAsset:(id)asset forMomentUUID:(id)d options:(id)options
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v46 = a4;
-  v8 = a3;
-  v9 = [v7 referenceAsset];
-  v10 = v9;
-  if (v9)
+  optionsCopy = options;
+  dCopy = d;
+  assetCopy = asset;
+  referenceAsset = [optionsCopy referenceAsset];
+  v10 = referenceAsset;
+  if (referenceAsset)
   {
-    v11 = [v9 localIdentifier];
+    localIdentifier = [referenceAsset localIdentifier];
   }
 
   else
   {
-    v11 = @"base";
+    localIdentifier = @"base";
   }
 
-  v12 = [v7 referenceLocation];
-  [v12 coordinate];
-  if (v12)
+  referenceLocation = [optionsCopy referenceLocation];
+  [referenceLocation coordinate];
+  if (referenceLocation)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f, %f", v13, v14];
   }
@@ -323,11 +323,11 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
     v15 = @"base";
   }
 
-  v16 = [v7 referencePersonLocalIdentifiers];
+  referencePersonLocalIdentifiers = [optionsCopy referencePersonLocalIdentifiers];
   v17 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:1 selector:sel_compare_];
   v51[0] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
-  v19 = [v16 sortedArrayUsingDescriptors:v18];
+  v19 = [referencePersonLocalIdentifiers sortedArrayUsingDescriptors:v18];
 
   if ([v19 count])
   {
@@ -341,59 +341,59 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
 
   v49[0] = @"referenceAsset";
   v49[1] = @"referenceLocation";
-  v47 = v11;
-  v50[0] = v11;
+  v47 = localIdentifier;
+  v50[0] = localIdentifier;
   v50[1] = v15;
   v44 = v20;
   v45 = v15;
   v50[2] = v20;
   v49[2] = @"referencePeople";
   v49[3] = @"complete";
-  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "complete")}];
+  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(optionsCopy, "complete")}];
   v50[3] = v21;
   v49[4] = @"focusOnPeople";
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "focusOnPeople")}];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(optionsCopy, "focusOnPeople")}];
   v50[4] = v22;
   v49[5] = @"useSummarizer";
-  v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "useSummarizer")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(optionsCopy, "useSummarizer")}];
   v50[5] = v23;
   v49[6] = @"useContextualCurationOnly";
-  v24 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "useContextualCurationOnly")}];
+  v24 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(optionsCopy, "useContextualCurationOnly")}];
   v50[6] = v24;
   v49[7] = @"prefilterAssetsWithFaces";
-  v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "prefilterAssetsWithFaces")}];
+  v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(optionsCopy, "prefilterAssetsWithFaces")}];
   v50[7] = v25;
   v49[8] = @"curatedKeyAsset";
-  v26 = [v8 localIdentifier];
+  localIdentifier2 = [assetCopy localIdentifier];
 
-  v27 = v26;
-  if (!v26)
+  null = localIdentifier2;
+  if (!localIdentifier2)
   {
-    v27 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v50[8] = v27;
+  v50[8] = null;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:9];
-  if (!v26)
+  if (!localIdentifier2)
   {
   }
 
-  v29 = v7;
-  v30 = [v29 referenceAsset];
-  v31 = v30;
-  if (v30)
+  v29 = optionsCopy;
+  referenceAsset2 = [v29 referenceAsset];
+  v31 = referenceAsset2;
+  if (referenceAsset2)
   {
-    v32 = [v30 localIdentifier];
+    localIdentifier3 = [referenceAsset2 localIdentifier];
   }
 
   else
   {
-    v32 = @"base";
+    localIdentifier3 = @"base";
   }
 
-  v33 = [v29 referenceLocation];
-  [v33 coordinate];
-  if (v33)
+  referenceLocation2 = [v29 referenceLocation];
+  [referenceLocation2 coordinate];
+  if (referenceLocation2)
   {
     v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f, %f", v34, v35];
   }
@@ -403,11 +403,11 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
     v36 = @"base";
   }
 
-  v37 = [v29 referencePersonLocalIdentifiers];
+  referencePersonLocalIdentifiers2 = [v29 referencePersonLocalIdentifiers];
   v38 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:1 selector:sel_compare_];
   v51[0] = v38;
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
-  v40 = [v37 sortedArrayUsingDescriptors:v39];
+  v40 = [referencePersonLocalIdentifiers2 sortedArrayUsingDescriptors:v39];
 
   if ([v40 count])
   {
@@ -419,32 +419,32 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
     v41 = @"base";
   }
 
-  v42 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(complete == %d) AND \t\t\t\t\t\t\t  (focusOnPeople == %d) AND \t\t\t\t\t\t\t  (useSummarizer == %d) AND \t\t\t\t\t\t\t  (prefilterAssetsWithFaces == %d) AND \t\t\t\t\t\t\t  (referenceAsset == %@) AND \t\t\t\t\t\t\t  (referenceLocation == %@) AND \t\t\t\t\t\t\t  (referencePeople == %@) AND \t\t\t\t\t\t\t  (useContextualCurationOnly == %d)", objc_msgSend(v29, "complete"), objc_msgSend(v29, "focusOnPeople"), objc_msgSend(v29, "useSummarizer"), objc_msgSend(v29, "prefilterAssetsWithFaces"), v32, v36, v41, objc_msgSend(v29, "useContextualCurationOnly")];
+  v42 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(complete == %d) AND \t\t\t\t\t\t\t  (focusOnPeople == %d) AND \t\t\t\t\t\t\t  (useSummarizer == %d) AND \t\t\t\t\t\t\t  (prefilterAssetsWithFaces == %d) AND \t\t\t\t\t\t\t  (referenceAsset == %@) AND \t\t\t\t\t\t\t  (referenceLocation == %@) AND \t\t\t\t\t\t\t  (referencePeople == %@) AND \t\t\t\t\t\t\t  (useContextualCurationOnly == %d)", objc_msgSend(v29, "complete"), objc_msgSend(v29, "focusOnPeople"), objc_msgSend(v29, "useSummarizer"), objc_msgSend(v29, "prefilterAssetsWithFaces"), localIdentifier3, v36, v41, objc_msgSend(v29, "useContextualCurationOnly")];
 
-  [(PGCurationCache *)self _setProperties:v28 forCurationObjectWithEntityName:@"CuratedKeyAsset" momentUUID:v46 predicate:v42];
+  [(PGCurationCache *)self _setProperties:v28 forCurationObjectWithEntityName:@"CuratedKeyAsset" momentUUID:dCopy predicate:v42];
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_curatedKeyAssetIdentifierforMomentUUID:(id)a3 options:(id)a4
+- (id)_curatedKeyAssetIdentifierforMomentUUID:(id)d options:(id)options
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v5 = a4;
-  v6 = [v5 referenceAsset];
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  optionsCopy = options;
+  referenceAsset = [optionsCopy referenceAsset];
+  v7 = referenceAsset;
+  if (referenceAsset)
   {
-    v8 = [v6 localIdentifier];
+    localIdentifier = [referenceAsset localIdentifier];
   }
 
   else
   {
-    v8 = @"base";
+    localIdentifier = @"base";
   }
 
-  v9 = [v5 referenceLocation];
-  [v9 coordinate];
-  if (v9)
+  referenceLocation = [optionsCopy referenceLocation];
+  [referenceLocation coordinate];
+  if (referenceLocation)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f, %f", v10, v11];
   }
@@ -454,11 +454,11 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
     v12 = @"base";
   }
 
-  v13 = [v5 referencePersonLocalIdentifiers];
+  referencePersonLocalIdentifiers = [optionsCopy referencePersonLocalIdentifiers];
   v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:1 selector:sel_compare_];
   v33 = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
-  v16 = [v13 sortedArrayUsingDescriptors:v15];
+  v16 = [referencePersonLocalIdentifiers sortedArrayUsingDescriptors:v15];
 
   if ([v16 count])
   {
@@ -470,11 +470,11 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
     v17 = @"base";
   }
 
-  v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(complete == %d) AND \t\t\t\t\t\t\t  (focusOnPeople == %d) AND \t\t\t\t\t\t\t  (useSummarizer == %d) AND \t\t\t\t\t\t\t  (prefilterAssetsWithFaces == %d) AND \t\t\t\t\t\t\t  (referenceAsset == %@) AND \t\t\t\t\t\t\t  (referenceLocation == %@) AND \t\t\t\t\t\t\t  (referencePeople == %@) AND \t\t\t\t\t\t\t  (useContextualCurationOnly == %d)", objc_msgSend(v5, "complete"), objc_msgSend(v5, "focusOnPeople"), objc_msgSend(v5, "useSummarizer"), objc_msgSend(v5, "prefilterAssetsWithFaces"), v8, v12, v17, objc_msgSend(v5, "useContextualCurationOnly")];
+  v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(complete == %d) AND \t\t\t\t\t\t\t  (focusOnPeople == %d) AND \t\t\t\t\t\t\t  (useSummarizer == %d) AND \t\t\t\t\t\t\t  (prefilterAssetsWithFaces == %d) AND \t\t\t\t\t\t\t  (referenceAsset == %@) AND \t\t\t\t\t\t\t  (referenceLocation == %@) AND \t\t\t\t\t\t\t  (referencePeople == %@) AND \t\t\t\t\t\t\t  (useContextualCurationOnly == %d)", objc_msgSend(optionsCopy, "complete"), objc_msgSend(optionsCopy, "focusOnPeople"), objc_msgSend(optionsCopy, "useSummarizer"), objc_msgSend(optionsCopy, "prefilterAssetsWithFaces"), localIdentifier, v12, v17, objc_msgSend(optionsCopy, "useContextualCurationOnly")];
 
-  v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(moment.identifier == %@)", v29];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(moment.identifier == %@)", dCopy];
   v20 = MEMORY[0x277CCA920];
-  v39[0] = v19;
+  v39[0] = dCopy;
   v39[1] = v18;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
   v22 = [v20 andPredicateWithSubpredicates:v21];
@@ -485,7 +485,7 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
   v36 = __Block_byref_object_copy__5540;
   v37 = __Block_byref_object_dispose__5541;
   v38 = 0;
-  v23 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __67__PGCurationCache__curatedKeyAssetIdentifierforMomentUUID_options___block_invoke;
@@ -494,7 +494,7 @@ void __63__PGCurationCache__fetchCurationObjectForEntityName_predicate___block_i
   v24 = v22;
   v31 = v24;
   v32 = &v33;
-  [v23 performBlockAndWait:v30];
+  [managedObjectContext performBlockAndWait:v30];
 
   v25 = v34[5];
   _Block_object_dispose(&v33, 8);
@@ -513,48 +513,48 @@ void __67__PGCurationCache__curatedKeyAssetIdentifierforMomentUUID_options___blo
   *(v3 + 40) = v2;
 }
 
-- (void)_setCuratedAssets:(id)a3 forMomentUUID:(id)a4 options:(id)a5
+- (void)_setCuratedAssets:(id)assets forMomentUUID:(id)d options:(id)options
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 valueForKey:@"uuid"];
+  optionsCopy = options;
+  dCopy = d;
+  v10 = [assets valueForKey:@"uuid"];
   v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
   v17[0] = @"duration";
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "duration")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(optionsCopy, "duration")}];
   v17[1] = @"curatedAssets";
   v18[0] = v12;
-  v13 = v11;
+  null = v11;
   if (!v11)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v18[1] = v13;
+  v18[1] = null;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   if (!v11)
   {
   }
 
-  v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"duration == %lld", objc_msgSend(v8, "duration")];
-  [(PGCurationCache *)self _setProperties:v14 forCurationObjectWithEntityName:@"CuratedAssets" momentUUID:v9 predicate:v15];
+  v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"duration == %lld", objc_msgSend(optionsCopy, "duration")];
+  [(PGCurationCache *)self _setProperties:v14 forCurationObjectWithEntityName:@"CuratedAssets" momentUUID:dCopy predicate:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_curatedAssetIdentifiersforMomentUUID:(id)a3 options:(id)a4
+- (id)_curatedAssetIdentifiersforMomentUUID:(id)d options:(id)options
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  optionsCopy = options;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__5540;
   v28 = __Block_byref_object_dispose__5541;
   v29 = 0;
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(moment.identifier == %@) AND (duration == %lld)", v6, objc_msgSend(v7, "duration")];
-  v9 = [(CLSDBCache *)self managedObjectContext];
+  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(moment.identifier == %@) AND (duration == %lld)", dCopy, objc_msgSend(optionsCopy, "duration")];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __65__PGCurationCache__curatedAssetIdentifiersforMomentUUID_options___block_invoke;
@@ -563,7 +563,7 @@ void __67__PGCurationCache__curatedKeyAssetIdentifierforMomentUUID_options___blo
   v10 = v8;
   v22 = v10;
   v23 = &v24;
-  [v9 performBlockAndWait:v21];
+  [managedObjectContext performBlockAndWait:v21];
 
   if (v25[5])
   {
@@ -604,14 +604,14 @@ void __65__PGCurationCache__curatedAssetIdentifiersforMomentUUID_options___block
   *(v3 + 40) = v2;
 }
 
-- (id)curatedKeyAssetIdentifierForMoment:(id)a3 options:(id)a4
+- (id)curatedKeyAssetIdentifierForMoment:(id)moment options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 assetCollectionType] == 3)
+  momentCopy = moment;
+  optionsCopy = options;
+  if ([momentCopy assetCollectionType] == 3)
   {
-    v8 = [v6 uuid];
-    v9 = [(PGCurationCache *)self _curatedKeyAssetIdentifierforMomentUUID:v8 options:v7];
+    uuid = [momentCopy uuid];
+    v9 = [(PGCurationCache *)self _curatedKeyAssetIdentifierforMomentUUID:uuid options:optionsCopy];
   }
 
   else
@@ -622,14 +622,14 @@ void __65__PGCurationCache__curatedAssetIdentifiersforMomentUUID_options___block
   return v9;
 }
 
-- (id)curatedAssetIdentifiersForMoment:(id)a3 options:(id)a4
+- (id)curatedAssetIdentifiersForMoment:(id)moment options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 assetCollectionType] == 3)
+  momentCopy = moment;
+  optionsCopy = options;
+  if ([momentCopy assetCollectionType] == 3)
   {
-    v8 = [v6 uuid];
-    v9 = [(PGCurationCache *)self _curatedAssetIdentifiersforMomentUUID:v8 options:v7];
+    uuid = [momentCopy uuid];
+    v9 = [(PGCurationCache *)self _curatedAssetIdentifiersforMomentUUID:uuid options:optionsCopy];
   }
 
   else
@@ -640,27 +640,27 @@ void __65__PGCurationCache__curatedAssetIdentifiersforMomentUUID_options___block
   return v9;
 }
 
-- (void)setCuratedAssets:(id)a3 forMoment:(id)a4 options:(id)a5
+- (void)setCuratedAssets:(id)assets forMoment:(id)moment options:(id)options
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 assetCollectionType] == 3)
+  assetsCopy = assets;
+  momentCopy = moment;
+  optionsCopy = options;
+  if ([momentCopy assetCollectionType] == 3)
   {
-    v10 = [v8 uuid];
-    [(PGCurationCache *)self _setCuratedAssets:v11 forMomentUUID:v10 options:v9];
+    uuid = [momentCopy uuid];
+    [(PGCurationCache *)self _setCuratedAssets:assetsCopy forMomentUUID:uuid options:optionsCopy];
   }
 }
 
-- (void)setCuratedKeyAsset:(id)a3 forMoment:(id)a4 options:(id)a5
+- (void)setCuratedKeyAsset:(id)asset forMoment:(id)moment options:(id)options
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 assetCollectionType] == 3)
+  assetCopy = asset;
+  momentCopy = moment;
+  optionsCopy = options;
+  if ([momentCopy assetCollectionType] == 3)
   {
-    v10 = [v8 uuid];
-    [(PGCurationCache *)self _setCuratedKeyAsset:v11 forMomentUUID:v10 options:v9];
+    uuid = [momentCopy uuid];
+    [(PGCurationCache *)self _setCuratedKeyAsset:assetCopy forMomentUUID:uuid options:optionsCopy];
   }
 }
 

@@ -1,39 +1,39 @@
 @interface MRGroupSymbolProvider
-+ (id)symbolNameForComposition:(id)a3;
-+ (id)symbolNameForType:(id)a3 fillVariant:(BOOL)a4 otherVariantOptions:(unint64_t)a5;
++ (id)symbolNameForComposition:(id)composition;
++ (id)symbolNameForType:(id)type fillVariant:(BOOL)variant otherVariantOptions:(unint64_t)options;
 @end
 
 @implementation MRGroupSymbolProvider
 
-+ (id)symbolNameForType:(id)a3 fillVariant:(BOOL)a4 otherVariantOptions:(unint64_t)a5
++ (id)symbolNameForType:(id)type fillVariant:(BOOL)variant otherVariantOptions:(unint64_t)options
 {
-  v6 = a4;
+  variantCopy = variant;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
+  typeCopy = type;
+  v8 = typeCopy;
   v9 = 1;
-  if (v6)
+  if (variantCopy)
   {
     v9 = 2;
   }
 
-  v10 = v9 | a5;
+  v10 = v9 | options;
   v11 = MEMORY[0x1E69A8A40];
-  v12 = [v7 identifier];
+  identifier = [typeCopy identifier];
   v21 = 0;
-  v13 = [v11 symbolForTypeIdentifier:v12 withResolutionStrategy:1 variantOptions:v10 error:&v21];
+  v13 = [v11 symbolForTypeIdentifier:identifier withResolutionStrategy:1 variantOptions:v10 error:&v21];
   v14 = v21;
 
-  v15 = [v13 name];
-  v16 = v15;
-  if (v14 || ![(__CFString *)v15 length])
+  name = [v13 name];
+  v16 = name;
+  if (v14 || ![(__CFString *)name length])
   {
     v17 = _MRLogForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v8 identifier];
+      identifier2 = [v8 identifier];
       *buf = 138544130;
-      v23 = v20;
+      v23 = identifier2;
       v24 = 2048;
       v25 = v10;
       v26 = 2114;
@@ -51,18 +51,18 @@
   return v16;
 }
 
-+ (id)symbolNameForComposition:(id)a3
++ (id)symbolNameForComposition:(id)composition
 {
-  v4 = [a3 localizedGroupComposition];
-  if ([v4 totalCount] == 1)
+  localizedGroupComposition = [composition localizedGroupComposition];
+  if ([localizedGroupComposition totalCount] == 1)
   {
-    v5 = [v4 soloModelIdentifier];
+    soloModelIdentifier = [localizedGroupComposition soloModelIdentifier];
 
-    if (v5)
+    if (soloModelIdentifier)
     {
       v6 = +[MRDeviceIdentifierSymbolProvider sharedProvider];
-      v7 = [v4 soloModelIdentifier];
-      v8 = [v6 symbolNameForModelID:v7];
+      soloModelIdentifier2 = [localizedGroupComposition soloModelIdentifier];
+      v8 = [v6 symbolNameForModelID:soloModelIdentifier2];
 
       if (v8)
       {
@@ -71,15 +71,15 @@
     }
   }
 
-  if ([v4 totalCount] == 1)
+  if ([localizedGroupComposition totalCount] == 1)
   {
-    v9 = [v4 soloProductIdentifier];
+    soloProductIdentifier = [localizedGroupComposition soloProductIdentifier];
 
-    if (v9)
+    if (soloProductIdentifier)
     {
       v10 = +[MRDeviceIdentifierSymbolProvider sharedProvider];
-      v11 = [v4 soloProductIdentifier];
-      v8 = [v10 symbolNameForProductIdentifier:v11];
+      soloProductIdentifier2 = [localizedGroupComposition soloProductIdentifier];
+      v8 = [v10 symbolNameForProductIdentifier:soloProductIdentifier2];
 
       if (v8)
       {
@@ -88,185 +88,185 @@
     }
   }
 
-  if ([v4 atvCount] && objc_msgSend(v4, "homePodCount"))
+  if ([localizedGroupComposition atvCount] && objc_msgSend(localizedGroupComposition, "homePodCount"))
   {
     v12 = MEMORY[0x1E69830F0];
 LABEL_10:
     v13 = *v12;
-    v14 = a1;
+    selfCopy2 = self;
     v15 = 0x400000;
 LABEL_21:
-    v17 = [v14 symbolNameForType:v13 fillVariant:1 otherVariantOptions:v15];
+    v17 = [selfCopy2 symbolNameForType:v13 fillVariant:1 otherVariantOptions:v15];
 LABEL_22:
     v8 = v17;
     goto LABEL_23;
   }
 
-  if ([v4 atvCount] && objc_msgSend(v4, "homePodMiniCount"))
+  if ([localizedGroupComposition atvCount] && objc_msgSend(localizedGroupComposition, "homePodMiniCount"))
   {
     v16 = MEMORY[0x1E69830F0];
 LABEL_20:
     v13 = *v16;
-    v14 = a1;
+    selfCopy2 = self;
     v15 = 0x800000;
     goto LABEL_21;
   }
 
-  if ([v4 atvCount] && objc_msgSend(v4, "hifiCount"))
+  if ([localizedGroupComposition atvCount] && objc_msgSend(localizedGroupComposition, "hifiCount"))
   {
     v8 = @"hifispeaker.and.appletv.fill";
     goto LABEL_23;
   }
 
-  if ([v4 homePodCount] && objc_msgSend(v4, "homePodMiniCount"))
+  if ([localizedGroupComposition homePodCount] && objc_msgSend(localizedGroupComposition, "homePodMiniCount"))
   {
     v16 = MEMORY[0x1E6983140];
     goto LABEL_20;
   }
 
-  if ([v4 homePodCount] && objc_msgSend(v4, "hifiCount"))
+  if ([localizedGroupComposition homePodCount] && objc_msgSend(localizedGroupComposition, "hifiCount"))
   {
     v8 = @"hifispeaker.and.homepod.fill";
     goto LABEL_23;
   }
 
-  if ([v4 homePodMiniCount] && objc_msgSend(v4, "hifiCount"))
+  if ([localizedGroupComposition homePodMiniCount] && objc_msgSend(localizedGroupComposition, "hifiCount"))
   {
     v8 = @"hifispeaker.and.homepodmini.fill";
     goto LABEL_23;
   }
 
-  if ([v4 homePodCount] >= 2)
+  if ([localizedGroupComposition homePodCount] >= 2)
   {
     v12 = MEMORY[0x1E6983140];
     goto LABEL_10;
   }
 
-  if ([v4 homePodCount])
+  if ([localizedGroupComposition homePodCount])
   {
     v19 = MEMORY[0x1E6983140];
 LABEL_36:
-    v17 = [a1 symbolNameForType:*v19 fillVariant:1];
+    v17 = [self symbolNameForType:*v19 fillVariant:1];
     goto LABEL_22;
   }
 
-  if ([v4 homePodMiniCount] >= 2)
+  if ([localizedGroupComposition homePodMiniCount] >= 2)
   {
     v20 = [MEMORY[0x1E6982C40] _typeWithDeviceModelCode:{@"AudioAccessory5, 1"}];
-    v21 = [a1 symbolNameForType:v20 fillVariant:1 otherVariantOptions:0x800000];
+    v21 = [self symbolNameForType:v20 fillVariant:1 otherVariantOptions:0x800000];
 LABEL_41:
     v8 = v21;
 
     goto LABEL_23;
   }
 
-  if ([v4 homePodMiniCount])
+  if ([localizedGroupComposition homePodMiniCount])
   {
     v20 = [MEMORY[0x1E6982C40] _typeWithDeviceModelCode:{@"AudioAccessory5, 1"}];
-    v21 = [a1 symbolNameForType:v20 fillVariant:1];
+    v21 = [self symbolNameForType:v20 fillVariant:1];
     goto LABEL_41;
   }
 
-  if ([v4 hifiCount] <= 1)
+  if ([localizedGroupComposition hifiCount] <= 1)
   {
-    if ([v4 hifiCount])
+    if ([localizedGroupComposition hifiCount])
     {
       v8 = @"hifispeaker.fill";
     }
 
     else
     {
-      if ([v4 atvCount])
+      if ([localizedGroupComposition atvCount])
       {
         v19 = MEMORY[0x1E69830F0];
         goto LABEL_36;
       }
 
-      if ([v4 setTopCount])
+      if ([localizedGroupComposition setTopCount])
       {
         v8 = @"tv.and.mediabox";
       }
 
-      else if ([v4 tvStickCount])
+      else if ([localizedGroupComposition tvStickCount])
       {
         v8 = @"mediastick";
       }
 
-      else if ([v4 tvCount])
+      else if ([localizedGroupComposition tvCount])
       {
         v8 = @"tv";
       }
 
-      else if ([v4 macCount])
+      else if ([localizedGroupComposition macCount])
       {
         v8 = @"macbook";
       }
 
-      else if ([v4 headphoneCount] <= 1)
+      else if ([localizedGroupComposition headphoneCount] <= 1)
       {
-        if ([v4 headphoneCount])
+        if ([localizedGroupComposition headphoneCount])
         {
           v8 = @"headphones";
         }
 
-        else if ([v4 bluetoothSpeakerCount])
+        else if ([localizedGroupComposition bluetoothSpeakerCount])
         {
           v8 = @"speaker.bluetooth.fill";
         }
 
-        else if ([v4 carplayCount])
+        else if ([localizedGroupComposition carplayCount])
         {
           v8 = @"carplay";
         }
 
-        else if ([v4 vehicleCount])
+        else if ([localizedGroupComposition vehicleCount])
         {
           v8 = @"car.fill";
         }
 
-        else if ([v4 legacyBeatsCount])
+        else if ([localizedGroupComposition legacyBeatsCount])
         {
           v8 = @"beatslogo";
         }
 
-        else if ([v4 iPhoneCount])
+        else if ([localizedGroupComposition iPhoneCount])
         {
           v8 = @"iphone";
         }
 
-        else if ([v4 visionCount])
+        else if ([localizedGroupComposition visionCount])
         {
           v8 = @"vision.pro.fill";
         }
 
-        else if ([v4 displayCount])
+        else if ([localizedGroupComposition displayCount])
         {
           v8 = @"display";
         }
 
-        else if ([v4 hearingDeviceCount])
+        else if ([localizedGroupComposition hearingDeviceCount])
         {
           v8 = @"hearingdevice.ear";
         }
 
-        else if ([v4 earPodCount])
+        else if ([localizedGroupComposition earPodCount])
         {
           v8 = @"earpods";
         }
 
         else
         {
-          if (![v4 lofiCount])
+          if (![localizedGroupComposition lofiCount])
           {
-            if ([v4 builtInCount] == 1 && objc_msgSend(v4, "totalCount") == 1)
+            if ([localizedGroupComposition builtInCount] == 1 && objc_msgSend(localizedGroupComposition, "totalCount") == 1)
             {
               v17 = +[MRDeviceIdentifierSymbolProvider currentDeviceRoutingSymbolName];
               goto LABEL_22;
             }
 
-            if ([v4 builtInCount] <= 1)
+            if ([localizedGroupComposition builtInCount] <= 1)
             {
-              [v4 unknownCount];
+              [localizedGroupComposition unknownCount];
             }
           }
 

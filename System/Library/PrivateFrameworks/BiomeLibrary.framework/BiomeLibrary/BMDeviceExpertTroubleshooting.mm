@@ -1,15 +1,15 @@
 @interface BMDeviceExpertTroubleshooting
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceExpertTroubleshooting)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDeviceExpertTroubleshooting)initWithType:(id)a3 step:(id)a4 status:(id)a5 version:(id)a6 session:(id)a7 flow:(id)a8 interaction:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceExpertTroubleshooting)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDeviceExpertTroubleshooting)initWithType:(id)type step:(id)step status:(id)status version:(id)version session:(id)session flow:(id)flow interaction:(id)interaction;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceExpertTroubleshooting
@@ -38,25 +38,25 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDeviceExpertTroubleshooting *)self type];
-    v7 = [v5 type];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    type = [(BMDeviceExpertTroubleshooting *)self type];
+    type2 = [v5 type];
+    v8 = type2;
+    if (type == type2)
     {
     }
 
     else
     {
-      v9 = [(BMDeviceExpertTroubleshooting *)self type];
-      v10 = [v5 type];
-      v11 = [v9 isEqual:v10];
+      type3 = [(BMDeviceExpertTroubleshooting *)self type];
+      type4 = [v5 type];
+      v11 = [type3 isEqual:type4];
 
       if (!v11)
       {
@@ -64,18 +64,18 @@
       }
     }
 
-    v13 = [(BMDeviceExpertTroubleshooting *)self step];
-    v14 = [v5 step];
-    v15 = v14;
-    if (v13 == v14)
+    step = [(BMDeviceExpertTroubleshooting *)self step];
+    step2 = [v5 step];
+    v15 = step2;
+    if (step == step2)
     {
     }
 
     else
     {
-      v16 = [(BMDeviceExpertTroubleshooting *)self step];
-      v17 = [v5 step];
-      v18 = [v16 isEqual:v17];
+      step3 = [(BMDeviceExpertTroubleshooting *)self step];
+      step4 = [v5 step];
+      v18 = [step3 isEqual:step4];
 
       if (!v18)
       {
@@ -83,18 +83,18 @@
       }
     }
 
-    v19 = [(BMDeviceExpertTroubleshooting *)self status];
-    v20 = [v5 status];
-    v21 = v20;
-    if (v19 == v20)
+    status = [(BMDeviceExpertTroubleshooting *)self status];
+    status2 = [v5 status];
+    v21 = status2;
+    if (status == status2)
     {
     }
 
     else
     {
-      v22 = [(BMDeviceExpertTroubleshooting *)self status];
-      v23 = [v5 status];
-      v24 = [v22 isEqual:v23];
+      status3 = [(BMDeviceExpertTroubleshooting *)self status];
+      status4 = [v5 status];
+      v24 = [status3 isEqual:status4];
 
       if (!v24)
       {
@@ -114,25 +114,25 @@
         goto LABEL_26;
       }
 
-      v25 = [(BMDeviceExpertTroubleshooting *)self version];
-      if (v25 != [v5 version])
+      version = [(BMDeviceExpertTroubleshooting *)self version];
+      if (version != [v5 version])
       {
         goto LABEL_26;
       }
     }
 
-    v26 = [(BMDeviceExpertTroubleshooting *)self session];
-    v27 = [v5 session];
-    v28 = v27;
-    if (v26 == v27)
+    session = [(BMDeviceExpertTroubleshooting *)self session];
+    session2 = [v5 session];
+    v28 = session2;
+    if (session == session2)
     {
     }
 
     else
     {
-      v29 = [(BMDeviceExpertTroubleshooting *)self session];
-      v30 = [v5 session];
-      v31 = [v29 isEqual:v30];
+      session3 = [(BMDeviceExpertTroubleshooting *)self session];
+      session4 = [v5 session];
+      v31 = [session3 isEqual:session4];
 
       if (!v31)
       {
@@ -140,18 +140,18 @@
       }
     }
 
-    v32 = [(BMDeviceExpertTroubleshooting *)self flow];
-    v33 = [v5 flow];
-    v34 = v33;
-    if (v32 == v33)
+    flow = [(BMDeviceExpertTroubleshooting *)self flow];
+    flow2 = [v5 flow];
+    v34 = flow2;
+    if (flow == flow2)
     {
     }
 
     else
     {
-      v35 = [(BMDeviceExpertTroubleshooting *)self flow];
-      v36 = [v5 flow];
-      v37 = [v35 isEqual:v36];
+      flow3 = [(BMDeviceExpertTroubleshooting *)self flow];
+      flow4 = [v5 flow];
+      v37 = [flow3 isEqual:flow4];
 
       if (!v37)
       {
@@ -163,18 +163,18 @@ LABEL_27:
       }
     }
 
-    v39 = [(BMDeviceExpertTroubleshooting *)self interaction];
-    v40 = [v5 interaction];
-    if (v39 == v40)
+    interaction = [(BMDeviceExpertTroubleshooting *)self interaction];
+    interaction2 = [v5 interaction];
+    if (interaction == interaction2)
     {
       v12 = 1;
     }
 
     else
     {
-      v41 = [(BMDeviceExpertTroubleshooting *)self interaction];
-      v42 = [v5 interaction];
-      v12 = [v41 isEqual:v42];
+      interaction3 = [(BMDeviceExpertTroubleshooting *)self interaction];
+      interaction4 = [v5 interaction];
+      v12 = [interaction3 isEqual:interaction4];
     }
 
     goto LABEL_27;
@@ -189,9 +189,9 @@ LABEL_28:
 - (id)jsonDictionary
 {
   v27[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDeviceExpertTroubleshooting *)self type];
-  v4 = [(BMDeviceExpertTroubleshooting *)self step];
-  v5 = [(BMDeviceExpertTroubleshooting *)self status];
+  type = [(BMDeviceExpertTroubleshooting *)self type];
+  step = [(BMDeviceExpertTroubleshooting *)self step];
+  status = [(BMDeviceExpertTroubleshooting *)self status];
   if ([(BMDeviceExpertTroubleshooting *)self hasVersion])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDeviceExpertTroubleshooting version](self, "version")}];
@@ -202,83 +202,83 @@ LABEL_28:
     v6 = 0;
   }
 
-  v7 = [(BMDeviceExpertTroubleshooting *)self session];
-  v8 = [(BMDeviceExpertTroubleshooting *)self flow];
-  v9 = [(BMDeviceExpertTroubleshooting *)self interaction];
-  v10 = [v9 jsonDictionary];
+  session = [(BMDeviceExpertTroubleshooting *)self session];
+  flow = [(BMDeviceExpertTroubleshooting *)self flow];
+  interaction = [(BMDeviceExpertTroubleshooting *)self interaction];
+  jsonDictionary = [interaction jsonDictionary];
 
   v26[0] = @"type";
-  v11 = v3;
-  if (!v3)
+  null = type;
+  if (!type)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v11;
-  v27[0] = v11;
+  v23 = null;
+  v27[0] = null;
   v26[1] = @"step";
-  v12 = v4;
-  if (!v4)
+  null2 = step;
+  if (!step)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v12;
-  v27[1] = v12;
+  v22 = null2;
+  v27[1] = null2;
   v26[2] = @"status";
-  v13 = v5;
-  if (!v5)
+  null3 = status;
+  if (!status)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v3;
-  v21 = v13;
-  v27[2] = v13;
+  v25 = type;
+  v21 = null3;
+  v27[2] = null3;
   v26[3] = @"version";
-  v14 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v4;
-  v27[3] = v14;
+  v24 = step;
+  v27[3] = null4;
   v26[4] = @"session";
-  v15 = v7;
-  if (!v7)
+  null5 = session;
+  if (!session)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v15;
+  v27[4] = null5;
   v26[5] = @"flow";
-  v16 = v8;
-  if (!v8)
+  null6 = flow;
+  if (!flow)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[5] = v16;
+  v27[5] = null6;
   v26[6] = @"interaction";
-  v17 = v10;
-  if (!v10)
+  null7 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[6] = v17;
+  v27[6] = null7;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:7];
-  if (v10)
+  if (jsonDictionary)
   {
-    if (v8)
+    if (flow)
     {
       goto LABEL_20;
     }
 
 LABEL_30:
 
-    if (v7)
+    if (session)
     {
       goto LABEL_21;
     }
@@ -286,13 +286,13 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!v8)
+  if (!flow)
   {
     goto LABEL_30;
   }
 
 LABEL_20:
-  if (v7)
+  if (session)
   {
     goto LABEL_21;
   }
@@ -304,7 +304,7 @@ LABEL_21:
   {
   }
 
-  if (v5)
+  if (status)
   {
     if (v24)
     {
@@ -340,23 +340,23 @@ LABEL_26:
   return v18;
 }
 
-- (BMDeviceExpertTroubleshooting)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceExpertTroubleshooting)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"step"];
-    v46 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"step"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v19 = 0;
@@ -369,7 +369,7 @@ LABEL_4:
         v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"step"];
         v69 = v25;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-        v11 = v26 = a4;
+        v11 = v26 = error;
         v27 = [v54 initWithDomain:v24 code:2 userInfo:v11];
         v10 = 0;
         v19 = 0;
@@ -386,7 +386,7 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"status"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     v56 = v8;
     v52 = v10;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -394,7 +394,7 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v46)
+        if (!errorCopy)
         {
           v12 = 0;
           v19 = 0;
@@ -411,7 +411,7 @@ LABEL_4:
         v10 = v52;
         v12 = 0;
         v19 = 0;
-        *v46 = [v50 initWithDomain:v31 code:2 userInfo:v13];
+        *errorCopy = [v50 initWithDomain:v31 code:2 userInfo:v13];
 LABEL_61:
 
         v8 = v56;
@@ -428,14 +428,14 @@ LABEL_62:
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"version"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     v49 = v12;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v46)
+        if (!errorCopy)
         {
           v53 = 0;
           v19 = 0;
@@ -453,7 +453,7 @@ LABEL_62:
         v34 = [v55 initWithDomain:v33 code:2 userInfo:v14];
         v53 = 0;
         v19 = 0;
-        *v46 = v34;
+        *errorCopy = v34;
         goto LABEL_60;
       }
 
@@ -465,15 +465,15 @@ LABEL_62:
       v53 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"session"];
-    v51 = self;
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"session"];
+    selfCopy = self;
     v45 = v7;
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v46)
+        if (!errorCopy)
         {
           v47 = 0;
           v19 = 0;
@@ -489,10 +489,10 @@ LABEL_62:
         v36 = [v48 initWithDomain:v35 code:2 userInfo:v15];
         v47 = 0;
         v19 = 0;
-        *v46 = v36;
+        *errorCopy = v36;
 LABEL_58:
 
-        self = v51;
+        self = selfCopy;
         v10 = v52;
 LABEL_59:
         v7 = v45;
@@ -510,13 +510,13 @@ LABEL_60:
       v47 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"flow"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"flow"];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v46)
+        if (!errorCopy)
         {
           v16 = 0;
           v19 = 0;
@@ -532,7 +532,7 @@ LABEL_60:
         v38 = [v43 initWithDomain:v37 code:2 userInfo:v18];
         v16 = 0;
         v19 = 0;
-        *v46 = v38;
+        *errorCopy = v38;
         goto LABEL_56;
       }
 
@@ -544,13 +544,13 @@ LABEL_60:
       v16 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"interaction"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"interaction"];
     if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v18 = 0;
 LABEL_22:
-      v19 = [(BMDeviceExpertTroubleshooting *)v51 initWithType:v56 step:v52 status:v49 version:v53 session:v47 flow:v16 interaction:v18];
-      v51 = v19;
+      v19 = [(BMDeviceExpertTroubleshooting *)selfCopy initWithType:v56 step:v52 status:v49 version:v53 session:v47 flow:v16 interaction:v18];
+      selfCopy = v19;
 LABEL_56:
 
 LABEL_57:
@@ -571,16 +571,16 @@ LABEL_57:
       }
 
       v17 = v28;
-      if (v46)
+      if (errorCopy)
       {
         v29 = v29;
-        *v46 = v29;
+        *errorCopy = v29;
       }
     }
 
     else
     {
-      if (!v46)
+      if (!errorCopy)
       {
         v19 = 0;
         goto LABEL_57;
@@ -592,7 +592,7 @@ LABEL_57:
       v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"interaction"];
       v59 = v18;
       v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-      *v46 = [v44 initWithDomain:v42 code:2 userInfo:v39];
+      *errorCopy = [v44 initWithDomain:v42 code:2 userInfo:v39];
     }
 
     v19 = 0;
@@ -606,7 +606,7 @@ LABEL_57:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = objc_alloc(MEMORY[0x1E696ABC0]);
     v21 = *MEMORY[0x1E698F240];
@@ -618,7 +618,7 @@ LABEL_57:
     v10 = v22;
     v8 = 0;
     v19 = 0;
-    *a4 = [v20 initWithDomain:v23 code:2 userInfo:v9];
+    *error = [v20 initWithDomain:v23 code:2 userInfo:v9];
 LABEL_63:
 
     goto LABEL_64;
@@ -636,14 +636,14 @@ LABEL_64:
 {
   v3 = objc_opt_new();
   [(BMDeviceExpertTroubleshooting *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_type)
   {
     PBDataWriterWriteStringField();
@@ -678,14 +678,14 @@ LABEL_64:
   if (self->_interaction)
   {
     PBDataWriterPlaceMark();
-    [(BMDeviceExpertTroubleshootingInteraction *)self->_interaction writeTo:v4];
+    [(BMDeviceExpertTroubleshootingInteraction *)self->_interaction writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMDeviceExpertTroubleshooting;
   v5 = [(BMEventBase *)&v31 init];
@@ -694,12 +694,12 @@ LABEL_64:
     goto LABEL_55;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_53;
       }
@@ -710,18 +710,18 @@ LABEL_64:
       while (1)
       {
         LOBYTE(v32[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v32[0] & 0x7F) << v7;
@@ -739,9 +739,9 @@ LABEL_64:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_53;
       }
@@ -763,18 +763,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v32[0]) = 0;
-            v23 = [v4 position] + 1;
-            if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+            v23 = [fromCopy position] + 1;
+            if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
             {
-              v25 = [v4 data];
-              [v25 getBytes:v32 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v22 |= (v32[0] & 0x7F) << v20;
@@ -792,7 +792,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v26 = 0;
           }
@@ -846,7 +846,7 @@ LABEL_33:
         goto LABEL_54;
       }
 
-      v18 = [[BMDeviceExpertTroubleshootingInteraction alloc] initByReadFrom:v4];
+      v18 = [[BMDeviceExpertTroubleshootingInteraction alloc] initByReadFrom:fromCopy];
       if (!v18)
       {
         goto LABEL_54;
@@ -857,8 +857,8 @@ LABEL_33:
 
       PBReaderRecallMark();
 LABEL_47:
-      v28 = [v4 position];
-      if (v28 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_53;
       }
@@ -886,7 +886,7 @@ LABEL_47:
   }
 
 LABEL_53:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_54:
     v29 = 0;
@@ -904,52 +904,52 @@ LABEL_55:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMDeviceExpertTroubleshooting *)self type];
-  v5 = [(BMDeviceExpertTroubleshooting *)self step];
-  v6 = [(BMDeviceExpertTroubleshooting *)self status];
+  type = [(BMDeviceExpertTroubleshooting *)self type];
+  step = [(BMDeviceExpertTroubleshooting *)self step];
+  status = [(BMDeviceExpertTroubleshooting *)self status];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDeviceExpertTroubleshooting version](self, "version")}];
-  v8 = [(BMDeviceExpertTroubleshooting *)self session];
-  v9 = [(BMDeviceExpertTroubleshooting *)self flow];
-  v10 = [(BMDeviceExpertTroubleshooting *)self interaction];
-  v11 = [v3 initWithFormat:@"BMDeviceExpertTroubleshooting with type: %@, step: %@, status: %@, version: %@, session: %@, flow: %@, interaction: %@", v4, v5, v6, v7, v8, v9, v10];
+  session = [(BMDeviceExpertTroubleshooting *)self session];
+  flow = [(BMDeviceExpertTroubleshooting *)self flow];
+  interaction = [(BMDeviceExpertTroubleshooting *)self interaction];
+  v11 = [v3 initWithFormat:@"BMDeviceExpertTroubleshooting with type: %@, step: %@, status: %@, version: %@, session: %@, flow: %@, interaction: %@", type, step, status, v7, session, flow, interaction];
 
   return v11;
 }
 
-- (BMDeviceExpertTroubleshooting)initWithType:(id)a3 step:(id)a4 status:(id)a5 version:(id)a6 session:(id)a7 flow:(id)a8 interaction:(id)a9
+- (BMDeviceExpertTroubleshooting)initWithType:(id)type step:(id)step status:(id)status version:(id)version session:(id)session flow:(id)flow interaction:(id)interaction
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v16 = a6;
-  v22 = a7;
-  v17 = a8;
-  v18 = a9;
+  typeCopy = type;
+  stepCopy = step;
+  statusCopy = status;
+  versionCopy = version;
+  sessionCopy = session;
+  flowCopy = flow;
+  interactionCopy = interaction;
   v26.receiver = self;
   v26.super_class = BMDeviceExpertTroubleshooting;
   v19 = [(BMEventBase *)&v26 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v19->_type, a3);
-    objc_storeStrong(&v19->_step, a4);
-    objc_storeStrong(&v19->_status, a5);
-    if (v16)
+    objc_storeStrong(&v19->_type, type);
+    objc_storeStrong(&v19->_step, step);
+    objc_storeStrong(&v19->_status, status);
+    if (versionCopy)
     {
       v19->_hasVersion = 1;
-      v20 = [v16 intValue];
+      intValue = [versionCopy intValue];
     }
 
     else
     {
       v19->_hasVersion = 0;
-      v20 = -1;
+      intValue = -1;
     }
 
-    v19->_version = v20;
-    objc_storeStrong(&v19->_session, a7);
-    objc_storeStrong(&v19->_flow, a8);
-    objc_storeStrong(&v19->_interaction, a9);
+    v19->_version = intValue;
+    objc_storeStrong(&v19->_session, session);
+    objc_storeStrong(&v19->_flow, flow);
+    objc_storeStrong(&v19->_interaction, interaction);
   }
 
   return v19;
@@ -988,9 +988,9 @@ id __40__BMDeviceExpertTroubleshooting_columns__block_invoke(uint64_t a1, void *
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -998,8 +998,8 @@ id __40__BMDeviceExpertTroubleshooting_columns__block_invoke(uint64_t a1, void *
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceExpertTroubleshooting alloc] initByReadFrom:v7];
     v4 = v8;

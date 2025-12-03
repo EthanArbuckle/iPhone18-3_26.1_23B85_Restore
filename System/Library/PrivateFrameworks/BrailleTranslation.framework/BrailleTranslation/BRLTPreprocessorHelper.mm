@@ -1,21 +1,21 @@
 @interface BRLTPreprocessorHelper
-+ (id)mergeLocationMap:(id)a3 withLocationMap:(id)a4;
-+ (void)mergePreprocessorOutputLocationMap:(id)a3 outputToPreprocessedMap:(int *)a4 outputLen:(int64_t)a5 outputToTextMap:(id *)a6;
++ (id)mergeLocationMap:(id)map withLocationMap:(id)locationMap;
++ (void)mergePreprocessorOutputLocationMap:(id)map outputToPreprocessedMap:(int *)preprocessedMap outputLen:(int64_t)len outputToTextMap:(id *)textMap;
 @end
 
 @implementation BRLTPreprocessorHelper
 
-+ (id)mergeLocationMap:(id)a3 withLocationMap:(id)a4
++ (id)mergeLocationMap:(id)map withLocationMap:(id)locationMap
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  mapCopy = map;
+  locationMapCopy = locationMap;
+  v7 = locationMapCopy;
+  if (locationMapCopy)
   {
-    v8 = [v6 bytes];
+    bytes = [locationMapCopy bytes];
     v9 = [v7 length];
-    v10 = [v5 bytes];
-    v11 = [v5 length];
+    bytes2 = [mapCopy bytes];
+    v11 = [mapCopy length];
     v12 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(v7, "length")}];
     if (v9 >= 8)
     {
@@ -23,21 +23,21 @@
       v14 = v11 >> 3;
       do
       {
-        if (*v8 >= v14)
+        if (*bytes >= v14)
         {
           v16 = v12;
-          v15 = v8;
+          v15 = bytes;
         }
 
         else
         {
-          v18 = *(v10 + 8 * *v8);
+          v18 = *(bytes2 + 8 * *bytes);
           v15 = &v18;
           v16 = v12;
         }
 
         [v16 appendBytes:v15 length:8];
-        ++v8;
+        ++bytes;
         --v13;
       }
 
@@ -47,38 +47,38 @@
 
   else
   {
-    v12 = v5;
+    v12 = mapCopy;
   }
 
   return v12;
 }
 
-+ (void)mergePreprocessorOutputLocationMap:(id)a3 outputToPreprocessedMap:(int *)a4 outputLen:(int64_t)a5 outputToTextMap:(id *)a6
++ (void)mergePreprocessorOutputLocationMap:(id)map outputToPreprocessedMap:(int *)preprocessedMap outputLen:(int64_t)len outputToTextMap:(id *)textMap
 {
-  v9 = a3;
-  if (v9 && a4 && a6)
+  mapCopy = map;
+  if (mapCopy && preprocessedMap && textMap)
   {
-    v10 = 8 * a5;
-    v16 = v9;
-    v11 = malloc_type_malloc(8 * a5, 0xE9777531uLL);
+    v10 = 8 * len;
+    v16 = mapCopy;
+    v11 = malloc_type_malloc(8 * len, 0xE9777531uLL);
     v12 = v16;
-    v13 = [v16 bytes];
-    if (a5 >= 1)
+    bytes = [v16 bytes];
+    if (len >= 1)
     {
       v14 = v11;
       do
       {
-        v15 = *a4++;
-        *v14++ = *(v13 + 8 * v15);
-        --a5;
+        v15 = *preprocessedMap++;
+        *v14++ = *(bytes + 8 * v15);
+        --len;
       }
 
-      while (a5);
+      while (len);
     }
 
-    *a6 = [MEMORY[0x277CBEA90] dataWithBytes:v11 length:v10];
+    *textMap = [MEMORY[0x277CBEA90] dataWithBytes:v11 length:v10];
     free(v11);
-    v9 = v16;
+    mapCopy = v16;
   }
 }
 

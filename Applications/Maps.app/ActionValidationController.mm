@@ -1,36 +1,36 @@
 @interface ActionValidationController
-+ (void)presentAttributedString:(id)a3 inWindow:(id)a4;
-+ (void)presentCollectionSavedValidationActionWithName:(id)a3 inWindow:(id)a4;
-+ (void)presentDefaultValidationActionWithTitle:(id)a3 inWindow:(id)a4;
-+ (void)presentString:(id)a3 withFont:(id)a4 inWindow:(id)a5;
++ (void)presentAttributedString:(id)string inWindow:(id)window;
++ (void)presentCollectionSavedValidationActionWithName:(id)name inWindow:(id)window;
++ (void)presentDefaultValidationActionWithTitle:(id)title inWindow:(id)window;
++ (void)presentString:(id)string withFont:(id)font inWindow:(id)window;
 @end
 
 @implementation ActionValidationController
 
-+ (void)presentString:(id)a3 withFont:(id)a4 inWindow:(id)a5
++ (void)presentString:(id)string withFont:(id)font inWindow:(id)window
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  windowCopy = window;
+  fontCopy = font;
+  stringCopy = string;
   v11 = [NSAttributedString alloc];
   v14 = NSFontAttributeName;
-  v15 = v9;
+  v15 = fontCopy;
   v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
 
-  v13 = [v11 initWithString:v10 attributes:v12];
-  [a1 presentAttributedString:v13 inWindow:v8];
+  v13 = [v11 initWithString:stringCopy attributes:v12];
+  [self presentAttributedString:v13 inWindow:windowCopy];
 }
 
-+ (void)presentAttributedString:(id)a3 inWindow:(id)a4
++ (void)presentAttributedString:(id)string inWindow:(id)window
 {
-  v5 = a4;
-  if (v5)
+  windowCopy = window;
+  if (windowCopy)
   {
-    v6 = a3;
+    stringCopy = string;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 keyboardHeight];
+      [windowCopy keyboardHeight];
       v8 = v7 * -0.5;
     }
 
@@ -39,28 +39,28 @@
       v8 = -0.0;
     }
 
-    v9 = [[MessageView alloc] initWithTitle:v6];
+    v9 = [[MessageView alloc] initWithTitle:stringCopy];
 
     [(MessageView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 addSubview:v9];
-    v10 = [(MessageView *)v9 offsetConstraint];
-    [v10 setConstant:v8];
+    [windowCopy addSubview:v9];
+    offsetConstraint = [(MessageView *)v9 offsetConstraint];
+    [offsetConstraint setConstant:v8];
 
-    v25 = [(MessageView *)v9 topAnchor];
-    v24 = [v5 topAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    topAnchor = [(MessageView *)v9 topAnchor];
+    topAnchor2 = [windowCopy topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[0] = v23;
-    v22 = [(MessageView *)v9 bottomAnchor];
-    v21 = [v5 bottomAnchor];
-    v11 = [v22 constraintEqualToAnchor:v21];
+    bottomAnchor = [(MessageView *)v9 bottomAnchor];
+    bottomAnchor2 = [windowCopy bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[1] = v11;
-    v12 = [(MessageView *)v9 leadingAnchor];
-    v13 = [v5 leadingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    leadingAnchor = [(MessageView *)v9 leadingAnchor];
+    leadingAnchor2 = [windowCopy leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[2] = v14;
-    v15 = [(MessageView *)v9 trailingAnchor];
-    v16 = [v5 trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    trailingAnchor = [(MessageView *)v9 trailingAnchor];
+    trailingAnchor2 = [windowCopy trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v28[3] = v17;
     v18 = [NSArray arrayWithObjects:v28 count:4];
     [NSLayoutConstraint activateConstraints:v18];
@@ -75,22 +75,22 @@
   }
 }
 
-+ (void)presentCollectionSavedValidationActionWithName:(id)a3 inWindow:(id)a4
++ (void)presentCollectionSavedValidationActionWithName:(id)name inWindow:(id)window
 {
-  v5 = a4;
-  v6 = a3;
+  windowCopy = window;
+  nameCopy = name;
   v7 = [NSMutableAttributedString alloc];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"[Collection] Saved to %@" value:@"localized string not found" table:0];
-  v10 = [NSString stringWithFormat:v9, v6];
+  nameCopy = [NSString stringWithFormat:v9, nameCopy];
   v22 = NSFontAttributeName;
   v11 = +[UIFont system17];
   v23 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-  v13 = [v7 initWithString:v10 attributes:v12];
+  v13 = [v7 initWithString:nameCopy attributes:v12];
 
-  v14 = [v13 string];
-  v15 = [v14 rangeOfString:v6];
+  string = [v13 string];
+  v15 = [string rangeOfString:nameCopy];
   v17 = v16;
 
   v20 = NSFontAttributeName;
@@ -99,15 +99,15 @@
   v19 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   [v13 addAttributes:v19 range:{v15, v17}];
 
-  [ActionValidationController presentAttributedString:v13 inWindow:v5];
+  [ActionValidationController presentAttributedString:v13 inWindow:windowCopy];
 }
 
-+ (void)presentDefaultValidationActionWithTitle:(id)a3 inWindow:(id)a4
++ (void)presentDefaultValidationActionWithTitle:(id)title inWindow:(id)window
 {
-  v6 = a4;
-  v7 = a3;
+  windowCopy = window;
+  titleCopy = title;
   v8 = +[UIFont system17SemiBold];
-  [a1 presentString:v7 withFont:v8 inWindow:v6];
+  [self presentString:titleCopy withFont:v8 inWindow:windowCopy];
 }
 
 @end

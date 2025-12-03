@@ -1,21 +1,21 @@
 @interface PHAssetPhotosInfoPanelExtendedProperties
 + (id)propertiesToFetch;
-- (PHAssetPhotosInfoPanelExtendedProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetPhotosInfoPanelExtendedProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetPhotosInfoPanelExtendedProperties
 
-- (PHAssetPhotosInfoPanelExtendedProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetPhotosInfoPanelExtendedProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v8 && (v134.receiver = self, v134.super_class = PHAssetPhotosInfoPanelExtendedProperties, v10 = [(PHAssetPhotosInfoPanelExtendedProperties *)&v134 init], (self = v10) != 0))
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
+  if (dictionaryCopy && (v134.receiver = self, v134.super_class = PHAssetPhotosInfoPanelExtendedProperties, v10 = [(PHAssetPhotosInfoPanelExtendedProperties *)&v134 init], (self = v10) != 0))
   {
-    v133 = v9;
-    objc_storeWeak(&v10->super._asset, v9);
-    v11 = !v5;
-    if (v5)
+    v133 = assetCopy;
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    v11 = !prefetchedCopy;
+    if (prefetchedCopy)
     {
       v12 = @"extendedAttributes.cameraMake";
     }
@@ -25,7 +25,7 @@
       v12 = @"cameraMake";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v13 = @"extendedAttributes.cameraModel";
     }
@@ -242,92 +242,92 @@
     }
 
     v132 = v36;
-    v37 = [v8 objectForKeyedSubscript:v12];
+    v37 = [dictionaryCopy objectForKeyedSubscript:v12];
     cameraMake = self->_cameraMake;
     self->_cameraMake = v37;
 
     v131 = self->_cameraMake;
-    v39 = [v8 objectForKeyedSubscript:v13];
+    v39 = [dictionaryCopy objectForKeyedSubscript:v13];
     cameraModel = self->_cameraModel;
     self->_cameraModel = v39;
 
     v129 = self->_cameraModel;
-    v41 = [v8 objectForKeyedSubscript:v14];
+    v41 = [dictionaryCopy objectForKeyedSubscript:v14];
     lensModel = self->_lensModel;
     self->_lensModel = v41;
 
     v127 = self->_lensModel;
-    v43 = [v8 objectForKeyedSubscript:v15];
+    v43 = [dictionaryCopy objectForKeyedSubscript:v15];
     flashFired = self->_flashFired;
     self->_flashFired = v43;
 
     v125 = self->_flashFired;
-    v45 = [v8 objectForKeyedSubscript:v16];
+    v45 = [dictionaryCopy objectForKeyedSubscript:v16];
     whiteBalance = self->_whiteBalance;
     self->_whiteBalance = v45;
 
     v101 = self->_whiteBalance;
-    v47 = [v8 objectForKeyedSubscript:v17];
+    v47 = [dictionaryCopy objectForKeyedSubscript:v17];
     meteringMode = self->_meteringMode;
     self->_meteringMode = v47;
 
     v100 = self->_meteringMode;
-    v49 = [v8 objectForKeyedSubscript:v18];
+    v49 = [dictionaryCopy objectForKeyedSubscript:v18];
     iso = self->_iso;
     self->_iso = v49;
 
     v99 = self->_iso;
-    v51 = [v8 objectForKeyedSubscript:v19];
+    v51 = [dictionaryCopy objectForKeyedSubscript:v19];
     focalLength = self->_focalLength;
     self->_focalLength = v51;
 
     v98 = self->_focalLength;
-    v53 = [v8 objectForKeyedSubscript:v102];
+    v53 = [dictionaryCopy objectForKeyedSubscript:v102];
     focalLengthIn35mm = self->_focalLengthIn35mm;
     self->_focalLengthIn35mm = v53;
 
     v103 = self->_focalLengthIn35mm;
-    v55 = [v8 objectForKeyedSubscript:v104];
+    v55 = [dictionaryCopy objectForKeyedSubscript:v104];
     exposureBias = self->_exposureBias;
     self->_exposureBias = v55;
 
     v105 = self->_exposureBias;
-    v57 = [v8 objectForKeyedSubscript:v106];
+    v57 = [dictionaryCopy objectForKeyedSubscript:v106];
     aperture = self->_aperture;
     self->_aperture = v57;
 
     v107 = self->_aperture;
-    v59 = [v8 objectForKeyedSubscript:v108];
+    v59 = [dictionaryCopy objectForKeyedSubscript:v108];
     shutterSpeed = self->_shutterSpeed;
     self->_shutterSpeed = v59;
 
     v109 = self->_shutterSpeed;
-    v61 = [v8 objectForKeyedSubscript:v110];
+    v61 = [dictionaryCopy objectForKeyedSubscript:v110];
     codec = self->_codec;
     self->_codec = v61;
 
     v111 = self->_codec;
-    v63 = [v8 objectForKeyedSubscript:v112];
+    v63 = [dictionaryCopy objectForKeyedSubscript:v112];
     fps = self->_fps;
     self->_fps = v63;
 
     v113 = self->_fps;
-    v65 = [v8 objectForKeyedSubscript:v114];
+    v65 = [dictionaryCopy objectForKeyedSubscript:v114];
     duration = self->_duration;
     self->_duration = v65;
 
     v115 = self->_duration;
-    v67 = [v8 objectForKeyedSubscript:v116];
+    v67 = [dictionaryCopy objectForKeyedSubscript:v116];
     sampleRate = self->_sampleRate;
     self->_sampleRate = v67;
 
     v117 = self->_sampleRate;
-    v69 = [v8 objectForKeyedSubscript:v118];
+    v69 = [dictionaryCopy objectForKeyedSubscript:v118];
     bitrate = self->_bitrate;
     self->_bitrate = v69;
 
     v119 = self->_bitrate;
-    v71 = [v8 objectForKeyedSubscript:v120];
+    v71 = [dictionaryCopy objectForKeyedSubscript:v120];
     trackFormat = self->_trackFormat;
     self->_trackFormat = v71;
 
@@ -337,60 +337,60 @@
     self->_formattedCameraModel = v73;
 
     v75 = self->_formattedCameraModel;
-    v76 = [v8 objectForKeyedSubscript:v122];
+    v76 = [dictionaryCopy objectForKeyedSubscript:v122];
     semanticStylePreset = self->_semanticStylePreset;
     self->_semanticStylePreset = v76;
 
     v78 = self->_semanticStylePreset;
-    v79 = [v8 objectForKeyedSubscript:v123];
+    v79 = [dictionaryCopy objectForKeyedSubscript:v123];
     digitalZoomRatio = self->_digitalZoomRatio;
     self->_digitalZoomRatio = v79;
 
     v81 = self->_digitalZoomRatio;
-    v82 = [v8 objectForKeyedSubscript:v124];
+    v82 = [dictionaryCopy objectForKeyedSubscript:v124];
     dateCreated = self->_dateCreated;
     self->_dateCreated = v82;
 
     v84 = self->_dateCreated;
-    v85 = [v8 objectForKeyedSubscript:v126];
+    v85 = [dictionaryCopy objectForKeyedSubscript:v126];
     timezoneOffset = self->_timezoneOffset;
     self->_timezoneOffset = v85;
 
     v87 = self->_timezoneOffset;
-    v88 = [v8 objectForKeyedSubscript:v128];
+    v88 = [dictionaryCopy objectForKeyedSubscript:v128];
     timezoneName = self->_timezoneName;
     self->_timezoneName = v88;
 
     v90 = self->_timezoneName;
-    v91 = [v8 objectForKeyedSubscript:v130];
+    v91 = [dictionaryCopy objectForKeyedSubscript:v130];
     generativeAIType = self->_generativeAIType;
     self->_generativeAIType = v91;
 
     v93 = self->_generativeAIType;
-    v94 = [v8 objectForKeyedSubscript:v132];
+    v94 = [dictionaryCopy objectForKeyedSubscript:v132];
     credit = self->_credit;
     self->_credit = v94;
 
     if (v131 || v129 || v127 || v125 || v101 || v100 || v99 || v98 || v103 || v105 || v107 || v109 || v111 || v113 || v115 || v117 || v119 || v121 || v75 || v78 || v81 || v84 || v87 || v90 || v93 || self->_credit)
     {
       self = self;
-      v96 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v96 = 0;
+      selfCopy = 0;
     }
 
-    v9 = v133;
+    assetCopy = v133;
   }
 
   else
   {
-    v96 = 0;
+    selfCopy = 0;
   }
 
-  return v96;
+  return selfCopy;
 }
 
 + (id)propertiesToFetch

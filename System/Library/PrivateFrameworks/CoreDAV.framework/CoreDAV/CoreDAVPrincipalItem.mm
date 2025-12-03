@@ -4,11 +4,11 @@
 - (id)hashString;
 - (id)initTypeIsAll;
 - (id)initTypeIsAuthenticated;
-- (id)initTypeIsHREFWithURL:(id)a3;
-- (id)initTypeIsProperty:(id)a3;
+- (id)initTypeIsHREFWithURL:(id)l;
+- (id)initTypeIsProperty:(id)property;
 - (id)initTypeIsSelf;
 - (id)initTypeIsUnauthenticated;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation CoreDAVPrincipalItem
@@ -25,27 +25,27 @@
   return v2;
 }
 
-- (id)initTypeIsHREFWithURL:(id)a3
+- (id)initTypeIsHREFWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(CoreDAVPrincipalItem *)self init];
   if (v5)
   {
-    v6 = [[CoreDAVHrefItem alloc] initWithURL:v4];
+    v6 = [[CoreDAVHrefItem alloc] initWithURL:lCopy];
     [(CoreDAVPrincipalItem *)v5 setHref:v6];
   }
 
   return v5;
 }
 
-- (id)initTypeIsProperty:(id)a3
+- (id)initTypeIsProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v5 = [(CoreDAVPrincipalItem *)self init];
   v6 = v5;
   if (v5)
   {
-    [(CoreDAVPrincipalItem *)v5 setProperty:v4];
+    [(CoreDAVPrincipalItem *)v5 setProperty:propertyCopy];
   }
 
   return v6;
@@ -95,39 +95,39 @@
   v4 = [(CoreDAVItem *)&v12 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVPrincipalItem *)self href];
-  [v3 appendFormat:@"\n  HREF: [%@]", v5];
+  href = [(CoreDAVPrincipalItem *)self href];
+  [v3 appendFormat:@"\n  HREF: [%@]", href];
 
   v6 = [(CoreDAVPrincipalItem *)self all];
   [v3 appendFormat:@"\n  All: [%@]", v6];
 
-  v7 = [(CoreDAVPrincipalItem *)self authenticated];
-  [v3 appendFormat:@"\n  Authenticated: [%@]", v7];
+  authenticated = [(CoreDAVPrincipalItem *)self authenticated];
+  [v3 appendFormat:@"\n  Authenticated: [%@]", authenticated];
 
-  v8 = [(CoreDAVPrincipalItem *)self unauthenticated];
-  [v3 appendFormat:@"\n  Unauthenticated: [%@]", v8];
+  unauthenticated = [(CoreDAVPrincipalItem *)self unauthenticated];
+  [v3 appendFormat:@"\n  Unauthenticated: [%@]", unauthenticated];
 
-  v9 = [(CoreDAVPrincipalItem *)self property];
-  [v3 appendFormat:@"\n  Property: [%@]", v9];
+  property = [(CoreDAVPrincipalItem *)self property];
+  [v3 appendFormat:@"\n  Property: [%@]", property];
 
-  v10 = [(CoreDAVPrincipalItem *)self selfItem];
-  [v3 appendFormat:@"\n  Self: [%@]", v10];
+  selfItem = [(CoreDAVPrincipalItem *)self selfItem];
+  [v3 appendFormat:@"\n  Self: [%@]", selfItem];
 
   return v3;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v16 = a3;
-  v4 = [(CoreDAVItem *)self name];
-  v5 = [(CoreDAVItem *)self nameSpace];
-  [v16 startElement:v4 inNamespace:v5 withAttributeNamesAndValues:0];
+  writeCopy = write;
+  name = [(CoreDAVItem *)self name];
+  nameSpace = [(CoreDAVItem *)self nameSpace];
+  [writeCopy startElement:name inNamespace:nameSpace withAttributeNamesAndValues:0];
 
-  v6 = [(CoreDAVPrincipalItem *)self href];
+  href = [(CoreDAVPrincipalItem *)self href];
 
-  if (v6)
+  if (href)
   {
-    v7 = [(CoreDAVPrincipalItem *)self href];
+    href2 = [(CoreDAVPrincipalItem *)self href];
   }
 
   else
@@ -136,65 +136,65 @@
 
     if (v8)
     {
-      v7 = [(CoreDAVPrincipalItem *)self all];
+      href2 = [(CoreDAVPrincipalItem *)self all];
     }
 
     else
     {
-      v9 = [(CoreDAVPrincipalItem *)self authenticated];
+      authenticated = [(CoreDAVPrincipalItem *)self authenticated];
 
-      if (v9)
+      if (authenticated)
       {
-        v7 = [(CoreDAVPrincipalItem *)self authenticated];
+        href2 = [(CoreDAVPrincipalItem *)self authenticated];
       }
 
       else
       {
-        v10 = [(CoreDAVPrincipalItem *)self unauthenticated];
+        unauthenticated = [(CoreDAVPrincipalItem *)self unauthenticated];
 
-        if (v10)
+        if (unauthenticated)
         {
-          v7 = [(CoreDAVPrincipalItem *)self unauthenticated];
+          href2 = [(CoreDAVPrincipalItem *)self unauthenticated];
         }
 
         else
         {
-          v11 = [(CoreDAVPrincipalItem *)self property];
+          property = [(CoreDAVPrincipalItem *)self property];
 
-          if (v11)
+          if (property)
           {
-            v7 = [(CoreDAVPrincipalItem *)self property];
+            href2 = [(CoreDAVPrincipalItem *)self property];
           }
 
           else
           {
-            v12 = [(CoreDAVPrincipalItem *)self selfItem];
+            selfItem = [(CoreDAVPrincipalItem *)self selfItem];
 
-            if (!v12)
+            if (!selfItem)
             {
               goto LABEL_14;
             }
 
-            v7 = [(CoreDAVPrincipalItem *)self selfItem];
+            href2 = [(CoreDAVPrincipalItem *)self selfItem];
           }
         }
       }
     }
   }
 
-  v13 = v7;
-  [v7 write:v16];
+  v13 = href2;
+  [href2 write:writeCopy];
 
 LABEL_14:
-  v14 = [(CoreDAVItem *)self name];
-  v15 = [(CoreDAVItem *)self nameSpace];
-  [v16 endElement:v14 inNamespace:v15];
+  name2 = [(CoreDAVItem *)self name];
+  nameSpace2 = [(CoreDAVItem *)self nameSpace];
+  [writeCopy endElement:name2 inNamespace:nameSpace2];
 }
 
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -215,7 +215,7 @@ LABEL_14:
     v5 = [v20 initWithObjectsAndKeys:{v21, v19, v18, v17, v16, v15, v14, v6, v13, v7, v8, v9, 0}];
 
     v10 = +[CoreDAVItem parseRuleCache];
-    v11 = NSStringFromClass(a1);
+    v11 = NSStringFromClass(self);
     [v10 setObject:v5 forKey:v11];
   }
 
@@ -225,8 +225,8 @@ LABEL_14:
 - (id)hashString
 {
   v15 = MEMORY[0x277CCACA8];
-  v17 = [(CoreDAVPrincipalItem *)self href];
-  v14 = [v17 payloadAsString];
+  href = [(CoreDAVPrincipalItem *)self href];
+  payloadAsString = [href payloadAsString];
   v16 = [(CoreDAVPrincipalItem *)self all];
   if (v16)
   {
@@ -238,8 +238,8 @@ LABEL_14:
     v3 = @"NO";
   }
 
-  v4 = [(CoreDAVPrincipalItem *)self authenticated];
-  if (v4)
+  authenticated = [(CoreDAVPrincipalItem *)self authenticated];
+  if (authenticated)
   {
     v5 = @"YES";
   }
@@ -249,8 +249,8 @@ LABEL_14:
     v5 = @"NO";
   }
 
-  v6 = [(CoreDAVPrincipalItem *)self unauthenticated];
-  if (v6)
+  unauthenticated = [(CoreDAVPrincipalItem *)self unauthenticated];
+  if (unauthenticated)
   {
     v7 = @"YES";
   }
@@ -260,10 +260,10 @@ LABEL_14:
     v7 = @"NO";
   }
 
-  v8 = [(CoreDAVPrincipalItem *)self property];
-  v9 = [v8 hashString];
-  v10 = [(CoreDAVPrincipalItem *)self selfItem];
-  if (v10)
+  property = [(CoreDAVPrincipalItem *)self property];
+  hashString = [property hashString];
+  selfItem = [(CoreDAVPrincipalItem *)self selfItem];
+  if (selfItem)
   {
     v11 = @"YES";
   }
@@ -273,7 +273,7 @@ LABEL_14:
     v11 = @"NO";
   }
 
-  v12 = [v15 stringWithFormat:@"href: [%@], isAll: [%@], isAuthenticated: [%@], isUnauthenticated: [%@], property: [%@], isSelf: [%@]", v14, v3, v5, v7, v9, v11];
+  v12 = [v15 stringWithFormat:@"href: [%@], isAll: [%@], isAuthenticated: [%@], isUnauthenticated: [%@], property: [%@], isSelf: [%@]", payloadAsString, v3, v5, v7, hashString, v11];
 
   return v12;
 }

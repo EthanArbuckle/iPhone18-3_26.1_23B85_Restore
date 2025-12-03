@@ -1,37 +1,37 @@
 @interface PKPaymentNonceRequest
-+ (id)nonceRequestWithBaseRequest:(id)a3;
-- (id)_legacyGetURLRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
++ (id)nonceRequestWithBaseRequest:(id)request;
+- (id)_legacyGetURLRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 - (id)bodyDictionary;
 - (id)endpointComponents;
 @end
 
 @implementation PKPaymentNonceRequest
 
-- (id)_legacyGetURLRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_legacyGetURLRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKPaymentAugmentBaseRequest *)self pass];
-  v12 = [v11 passTypeIdentifier];
-  v13 = [v11 serialNumber];
-  v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{@"devices", v9, 0}];
+  informationCopy = information;
+  identifierCopy = identifier;
+  lCopy = l;
+  pass = [(PKPaymentAugmentBaseRequest *)self pass];
+  passTypeIdentifier = [pass passTypeIdentifier];
+  serialNumber = [pass serialNumber];
+  v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{@"devices", identifierCopy, 0}];
 
   if (![(PKPaymentAugmentBaseRequest *)self type])
   {
     [v14 addObject:@"passes"];
-    [v14 addObject:v12];
-    [v14 addObject:v13];
+    [v14 addObject:passTypeIdentifier];
+    [v14 addObject:serialNumber];
   }
 
-  v15 = [(PKPaymentNonceRequest *)self endpointComponents];
-  if ([v15 count])
+  endpointComponents = [(PKPaymentNonceRequest *)self endpointComponents];
+  if ([endpointComponents count])
   {
-    [v14 addObjectsFromArray:v15];
+    [v14 addObjectsFromArray:endpointComponents];
   }
 
   v16 = [v14 copy];
-  v17 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v10 endpointComponents:v16 queryParameters:0 appleAccountInformation:v8];
+  v17 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v16 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v17 setHTTPMethod:@"GET"];
   v18 = [v17 copy];
@@ -39,29 +39,29 @@
   return v18;
 }
 
-+ (id)nonceRequestWithBaseRequest:(id)a3
++ (id)nonceRequestWithBaseRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(PKPaymentNonceRequest);
-  -[PKPaymentAugmentBaseRequest setType:](v4, "setType:", [v3 type]);
-  v5 = [v3 pass];
-  [(PKPaymentAugmentBaseRequest *)v4 setPass:v5];
+  -[PKPaymentAugmentBaseRequest setType:](v4, "setType:", [requestCopy type]);
+  pass = [requestCopy pass];
+  [(PKPaymentAugmentBaseRequest *)v4 setPass:pass];
 
-  v6 = [v3 paymentApplication];
-  [(PKPaymentAugmentBaseRequest *)v4 setPaymentApplication:v6];
+  paymentApplication = [requestCopy paymentApplication];
+  [(PKPaymentAugmentBaseRequest *)v4 setPaymentApplication:paymentApplication];
 
-  v7 = [v3 applet];
-  [(PKPaymentAugmentBaseRequest *)v4 setApplet:v7];
+  applet = [requestCopy applet];
+  [(PKPaymentAugmentBaseRequest *)v4 setApplet:applet];
 
-  v8 = [v3 merchantCountryCode];
-  [(PKPaymentAugmentBaseRequest *)v4 setMerchantCountryCode:v8];
+  merchantCountryCode = [requestCopy merchantCountryCode];
+  [(PKPaymentAugmentBaseRequest *)v4 setMerchantCountryCode:merchantCountryCode];
 
-  v9 = [v3 currencyCode];
-  [(PKPaymentAugmentBaseRequest *)v4 setCurrencyCode:v9];
+  currencyCode = [requestCopy currencyCode];
+  [(PKPaymentAugmentBaseRequest *)v4 setCurrencyCode:currencyCode];
 
-  v10 = [v3 boundInterfaceIdentifier];
+  boundInterfaceIdentifier = [requestCopy boundInterfaceIdentifier];
 
-  [(PKWebServiceRequest *)v4 setBoundInterfaceIdentifier:v10];
+  [(PKWebServiceRequest *)v4 setBoundInterfaceIdentifier:boundInterfaceIdentifier];
 
   return v4;
 }
@@ -79,17 +79,17 @@
 - (id)bodyDictionary
 {
   v3 = [(NSString *)self->_merchantIdentifier dataUsingEncoding:4];
-  v4 = [v3 SHA256Hash];
-  v5 = [v4 hexEncoding];
+  sHA256Hash = [v3 SHA256Hash];
+  hexEncoding = [sHA256Hash hexEncoding];
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [v6 setValue:v5 forKey:@"merchantId"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setValue:hexEncoding forKey:@"merchantId"];
   v10.receiver = self;
   v10.super_class = PKPaymentNonceRequest;
-  v7 = [(PKPaymentAugmentBaseRequest *)&v10 bodyDictionary];
-  [v6 addEntriesFromDictionary:v7];
+  bodyDictionary = [(PKPaymentAugmentBaseRequest *)&v10 bodyDictionary];
+  [dictionary addEntriesFromDictionary:bodyDictionary];
 
-  v8 = [v6 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }

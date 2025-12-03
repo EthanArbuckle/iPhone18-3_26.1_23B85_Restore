@@ -9,7 +9,7 @@
 
 - (id)wf_contentCollectionFromLinkValue:()ContentItem appBundleIdentifier:displayedBundleIdentifier:disclosureLevel:
 {
-  v6 = [a1 wf_contentItemFromLinkValue:a3 appBundleIdentifier:a4 displayedBundleIdentifier:a5 teamIdentifier:0 disclosureLevel:a6];
+  v6 = [self wf_contentItemFromLinkValue:a3 appBundleIdentifier:a4 displayedBundleIdentifier:a5 teamIdentifier:0 disclosureLevel:a6];
   v7 = MEMORY[0x1E6996D40];
   v8 = [MEMORY[0x1E695DEC8] if_arrayWithObjectIfNonNil:v6];
   v9 = v8;
@@ -49,13 +49,13 @@
 
   v19 = [v17 initWithLocalizedName:0 bundleIdentifier:v18 extensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:v15 supportedIntents:0 bundleURL:0 documentTypes:0];
 
-  v20 = [v12 value];
-  if (v20)
+  value = [v12 value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = v20;
+      v21 = value;
     }
 
     else
@@ -71,11 +71,11 @@
 
   v22 = v21;
 
-  v23 = [v22 managedAccountIdentifier];
+  managedAccountIdentifier = [v22 managedAccountIdentifier];
 
-  if ([v23 length])
+  if ([managedAccountIdentifier length])
   {
-    [MEMORY[0x1E6996C68] locationWithAccountIdentifier:v23 appDescriptor:v19];
+    [MEMORY[0x1E6996C68] locationWithAccountIdentifier:managedAccountIdentifier appDescriptor:v19];
   }
 
   else
@@ -83,7 +83,7 @@
     [MEMORY[0x1E6996C90] locationWithAppDescriptor:v19];
   }
   v24 = ;
-  v25 = [a1 wf_contentItemClassesWithAppBundleIdentifier:v13];
+  v25 = [self wf_contentItemClassesWithAppBundleIdentifier:v13];
   v26 = v25;
   if (!v25 || ![v25 count])
   {
@@ -128,10 +128,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v34 = [v26 firstObject];
-  v35 = [v12 value];
+  firstObject = [v26 firstObject];
+  value2 = [v12 value];
   v36 = [MEMORY[0x1E6996D60] configurationWithOrigin:v24 disclosureLevel:a7];
-  v31 = [v34 itemWithObject:v35 privacyConfiguration:v36];
+  v31 = [firstObject itemWithObject:value2 privacyConfiguration:v36];
 
 LABEL_21:
   v32 = *MEMORY[0x1E69E9840];
@@ -142,7 +142,7 @@ LABEL_21:
 - (id)wf_contentItemClassesWithAppBundleIdentifier:()ContentItem
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 wf_contentItemClassWithAppBundleIdentifier:?];
+  v1 = [self wf_contentItemClassWithAppBundleIdentifier:?];
   if (v1)
   {
     v5[0] = v1;

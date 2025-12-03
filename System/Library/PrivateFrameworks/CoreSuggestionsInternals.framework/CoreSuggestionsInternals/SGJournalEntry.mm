@@ -1,11 +1,11 @@
 @interface SGJournalEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToJournalEntry:(id)a3;
-- (SGJournalEntry)initWithOperation:(unint64_t)a3;
-- (SGJournalEntry)initWithOperation:(unint64_t)a3 contact:(id)a4;
-- (SGJournalEntry)initWithOperation:(unint64_t)a3 event:(id)a4;
-- (SGJournalEntry)initWithOperation:(unint64_t)a3 eventBatch:(id)a4;
-- (SGJournalEntry)initWithOperation:(unint64_t)a3 reminder:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToJournalEntry:(id)entry;
+- (SGJournalEntry)initWithOperation:(unint64_t)operation;
+- (SGJournalEntry)initWithOperation:(unint64_t)operation contact:(id)contact;
+- (SGJournalEntry)initWithOperation:(unint64_t)operation event:(id)event;
+- (SGJournalEntry)initWithOperation:(unint64_t)operation eventBatch:(id)batch;
+- (SGJournalEntry)initWithOperation:(unint64_t)operation reminder:(id)reminder;
 - (id)description;
 @end
 
@@ -25,15 +25,15 @@
     }
   }
 
-  v6 = [v3 initWithFormat:@"<SGJournalEntry op:%lu entity:%@", self->_operation, event];
+  event = [v3 initWithFormat:@"<SGJournalEntry op:%lu entity:%@", self->_operation, event];
 
-  return v6;
+  return event;
 }
 
-- (BOOL)isEqualToJournalEntry:(id)a3
+- (BOOL)isEqualToJournalEntry:(id)entry
 {
-  v4 = a3;
-  if (self == v4)
+  entryCopy = entry;
+  if (self == entryCopy)
   {
     v8 = 1;
   }
@@ -42,7 +42,7 @@
   {
     v5 = self->_event;
     v6 = v5;
-    if (v5 == v4->_event)
+    if (v5 == entryCopy->_event)
     {
     }
 
@@ -57,7 +57,7 @@
     }
 
     operation = self->_operation;
-    if (operation != [(SGJournalEntry *)v4 operation])
+    if (operation != [(SGJournalEntry *)entryCopy operation])
     {
 LABEL_10:
       v8 = 0;
@@ -66,7 +66,7 @@ LABEL_10:
 
     v10 = self->_contact;
     v11 = v10;
-    if (v10 == v4->_contact)
+    if (v10 == entryCopy->_contact)
     {
       v8 = 1;
     }
@@ -82,43 +82,43 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGJournalEntry *)self isEqualToJournalEntry:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGJournalEntry *)self isEqualToJournalEntry:v5];
   }
 
   return v6;
 }
 
-- (SGJournalEntry)initWithOperation:(unint64_t)a3
+- (SGJournalEntry)initWithOperation:(unint64_t)operation
 {
   v5.receiver = self;
   v5.super_class = SGJournalEntry;
   result = [(SGJournalEntry *)&v5 init];
   if (result)
   {
-    result->_operation = a3;
+    result->_operation = operation;
   }
 
   return result;
 }
 
-- (SGJournalEntry)initWithOperation:(unint64_t)a3 reminder:(id)a4
+- (SGJournalEntry)initWithOperation:(unint64_t)operation reminder:(id)reminder
 {
-  v8 = a4;
-  if (!v8)
+  reminderCopy = reminder;
+  if (!reminderCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGJournalEntry.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"reminder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGJournalEntry.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"reminder"}];
   }
 
   v13.receiver = self;
@@ -127,20 +127,20 @@ LABEL_13:
   v10 = v9;
   if (v9)
   {
-    v9->_operation = a3;
-    objc_storeStrong(&v9->_reminder, a4);
+    v9->_operation = operation;
+    objc_storeStrong(&v9->_reminder, reminder);
   }
 
   return v10;
 }
 
-- (SGJournalEntry)initWithOperation:(unint64_t)a3 contact:(id)a4
+- (SGJournalEntry)initWithOperation:(unint64_t)operation contact:(id)contact
 {
-  v8 = a4;
-  if (!v8)
+  contactCopy = contact;
+  if (!contactCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGJournalEntry.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGJournalEntry.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
   }
 
   v13.receiver = self;
@@ -149,20 +149,20 @@ LABEL_13:
   v10 = v9;
   if (v9)
   {
-    v9->_operation = a3;
-    objc_storeStrong(&v9->_contact, a4);
+    v9->_operation = operation;
+    objc_storeStrong(&v9->_contact, contact);
   }
 
   return v10;
 }
 
-- (SGJournalEntry)initWithOperation:(unint64_t)a3 eventBatch:(id)a4
+- (SGJournalEntry)initWithOperation:(unint64_t)operation eventBatch:(id)batch
 {
-  v8 = a4;
-  if (!v8)
+  batchCopy = batch;
+  if (!batchCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGJournalEntry.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"eventBatch"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGJournalEntry.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"eventBatch"}];
   }
 
   v13.receiver = self;
@@ -171,20 +171,20 @@ LABEL_13:
   v10 = v9;
   if (v9)
   {
-    v9->_operation = a3;
-    objc_storeStrong(&v9->_eventBatch, a4);
+    v9->_operation = operation;
+    objc_storeStrong(&v9->_eventBatch, batch);
   }
 
   return v10;
 }
 
-- (SGJournalEntry)initWithOperation:(unint64_t)a3 event:(id)a4
+- (SGJournalEntry)initWithOperation:(unint64_t)operation event:(id)event
 {
-  v8 = a4;
-  if (!v8)
+  eventCopy = event;
+  if (!eventCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGJournalEntry.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"event"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGJournalEntry.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
   v13.receiver = self;
@@ -193,8 +193,8 @@ LABEL_13:
   v10 = v9;
   if (v9)
   {
-    v9->_operation = a3;
-    objc_storeStrong(&v9->_event, a4);
+    v9->_operation = operation;
+    objc_storeStrong(&v9->_event, event);
   }
 
   return v10;

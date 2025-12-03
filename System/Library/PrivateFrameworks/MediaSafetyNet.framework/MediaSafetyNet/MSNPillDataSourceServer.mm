@@ -1,28 +1,28 @@
 @interface MSNPillDataSourceServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)shouldQueryPillDataSource;
-- (MSNPillDataSourceServer)initWithQueue:(id)a3;
-- (void)_callingDataUpdatedWithData:(id)a3;
+- (MSNPillDataSourceServer)initWithQueue:(id)queue;
+- (void)_callingDataUpdatedWithData:(id)data;
 - (void)dealloc;
-- (void)fetchPillRegistrationForProcess:(id)a3 withCompletion:(id)a4;
-- (void)registerPillDataSourceForIdentifiers:(id)a3;
+- (void)fetchPillRegistrationForProcess:(id)process withCompletion:(id)completion;
+- (void)registerPillDataSourceForIdentifiers:(id)identifiers;
 @end
 
 @implementation MSNPillDataSourceServer
 
-- (MSNPillDataSourceServer)initWithQueue:(id)a3
+- (MSNPillDataSourceServer)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = MSNPillDataSourceServer;
   v6 = [(MSNPillDataSourceServer *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     activeDataSources = v6->_activeDataSources;
-    v6->_activeDataSources = v7;
+    v6->_activeDataSources = array;
 
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     queue = v6->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -123,13 +123,13 @@ void __41__MSNPillDataSourceServer_initWithQueue___block_invoke_2(uint64_t a1, v
   dispatch_async(v5, v8);
 }
 
-- (void)_callingDataUpdatedWithData:(id)a3
+- (void)_callingDataUpdatedWithData:(id)data
 {
-  v5 = a3;
-  v4 = [(MSNPillDataSourceServer *)self queue];
-  dispatch_assert_queue_V2(v4);
+  dataCopy = data;
+  queue = [(MSNPillDataSourceServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(MSNPillDataSourceServer *)self setCallingData:v5];
+  [(MSNPillDataSourceServer *)self setCallingData:dataCopy];
 }
 
 - (void)dealloc
@@ -142,15 +142,15 @@ void __41__MSNPillDataSourceServer_initWithQueue___block_invoke_2(uint64_t a1, v
 
 - (BOOL)shouldQueryPillDataSource
 {
-  v3 = [(MSNPillDataSourceServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MSNPillDataSourceServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(MSNPillDataSourceServer *)self systemStatusDynamicAttributionMonitor];
-  v5 = [v4 currentAttributions];
-  if ([v5 count])
+  systemStatusDynamicAttributionMonitor = [(MSNPillDataSourceServer *)self systemStatusDynamicAttributionMonitor];
+  currentAttributions = [systemStatusDynamicAttributionMonitor currentAttributions];
+  if ([currentAttributions count])
   {
-    v6 = [(MSNPillDataSourceServer *)self activeDataSources];
-    v7 = [v6 count] != 0;
+    activeDataSources = [(MSNPillDataSourceServer *)self activeDataSources];
+    v7 = [activeDataSources count] != 0;
   }
 
   else
@@ -161,21 +161,21 @@ void __41__MSNPillDataSourceServer_initWithQueue___block_invoke_2(uint64_t a1, v
   return v7;
 }
 
-- (void)fetchPillRegistrationForProcess:(id)a3 withCompletion:(id)a4
+- (void)fetchPillRegistrationForProcess:(id)process withCompletion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v34 = a4;
-  v35 = self;
-  v6 = [(MSNPillDataSourceServer *)self queue];
-  dispatch_assert_queue_V2(v6);
+  processCopy = process;
+  completionCopy = completion;
+  selfCopy = self;
+  queue = [(MSNPillDataSourceServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
   v53 = 0;
-  v7 = [(MSNPillDataSourceServer *)self activeDataSources];
-  LODWORD(self) = [v7 count] == 0;
+  activeDataSources = [(MSNPillDataSourceServer *)self activeDataSources];
+  LODWORD(self) = [activeDataSources count] == 0;
 
   if (self)
   {
@@ -185,7 +185,7 @@ void __41__MSNPillDataSourceServer_initWithQueue___block_invoke_2(uint64_t a1, v
       [MSNPillDataSourceServer fetchPillRegistrationForProcess:v30 withCompletion:?];
     }
 
-    v34[2](v34, *(v51 + 6));
+    completionCopy[2](completionCopy, *(v51 + 6));
   }
 
   else
@@ -194,10 +194,10 @@ void __41__MSNPillDataSourceServer_initWithQueue___block_invoke_2(uint64_t a1, v
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v8 = [(MSNPillDataSourceServer *)v35 systemStatusDynamicAttributionMonitor];
-    v9 = [v8 currentAttributions];
+    systemStatusDynamicAttributionMonitor = [(MSNPillDataSourceServer *)selfCopy systemStatusDynamicAttributionMonitor];
+    currentAttributions = [systemStatusDynamicAttributionMonitor currentAttributions];
 
-    v10 = [v9 countByEnumeratingWithState:&v46 objects:v57 count:16];
+    v10 = [currentAttributions countByEnumeratingWithState:&v46 objects:v57 count:16];
     if (v10)
     {
       v11 = *v47;
@@ -207,13 +207,13 @@ LABEL_4:
       {
         if (*v47 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(currentAttributions);
         }
 
         v13 = *(*(&v46 + 1) + 8 * v12);
-        v14 = [v13 clientExecutablePath];
-        v15 = [v14 lastPathComponent];
-        v16 = [v15 isEqualToString:v33];
+        clientExecutablePath = [v13 clientExecutablePath];
+        lastPathComponent = [clientExecutablePath lastPathComponent];
+        v16 = [lastPathComponent isEqualToString:processCopy];
 
         if (v16)
         {
@@ -222,7 +222,7 @@ LABEL_4:
 
         if (v10 == ++v12)
         {
-          v10 = [v9 countByEnumeratingWithState:&v46 objects:v57 count:16];
+          v10 = [currentAttributions countByEnumeratingWithState:&v46 objects:v57 count:16];
           if (v10)
           {
             goto LABEL_4;
@@ -244,8 +244,8 @@ LABEL_4:
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v19 = [(MSNPillDataSourceServer *)v35 activeDataSources];
-      v20 = [v19 countByEnumeratingWithState:&v42 objects:v56 count:16];
+      activeDataSources2 = [(MSNPillDataSourceServer *)selfCopy activeDataSources];
+      v20 = [activeDataSources2 countByEnumeratingWithState:&v42 objects:v56 count:16];
       if (v20)
       {
         v22 = *v43;
@@ -257,24 +257,24 @@ LABEL_4:
           {
             if (*v43 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(activeDataSources2);
             }
 
-            v24 = [*(*(&v42 + 1) + 8 * i) connection];
-            v25 = [v24 remoteObjectProxy];
+            connection = [*(*(&v42 + 1) + 8 * i) connection];
+            remoteObjectProxy = [connection remoteObjectProxy];
 
-            if (v25)
+            if (remoteObjectProxy)
             {
               dispatch_group_enter(v18);
-              v26 = [v17 bundleIdentifier];
+              bundleIdentifier = [v17 bundleIdentifier];
               v39[0] = MEMORY[0x277D85DD0];
               v39[1] = 3221225472;
               v39[2] = __74__MSNPillDataSourceServer_fetchPillRegistrationForProcess_withCompletion___block_invoke;
               v39[3] = &unk_2798A3D90;
-              v39[4] = v35;
+              v39[4] = selfCopy;
               v41 = &v50;
               v40 = v18;
-              [v25 currentStatusDescriptorForIdentifier:v26 reply:v39];
+              [remoteObjectProxy currentStatusDescriptorForIdentifier:bundleIdentifier reply:v39];
             }
 
             else
@@ -284,28 +284,28 @@ LABEL_4:
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
               {
                 *buf = v32;
-                v55 = v33;
+                v55 = processCopy;
                 _os_log_debug_impl(&dword_258731000, v27, OS_LOG_TYPE_DEBUG, "Dont have data source tracking the attribution for client: %@", buf, 0xCu);
               }
 
-              v34[2](v34, *(v51 + 6));
+              completionCopy[2](completionCopy, *(v51 + 6));
             }
           }
 
-          v20 = [v19 countByEnumeratingWithState:&v42 objects:v56 count:16];
+          v20 = [activeDataSources2 countByEnumeratingWithState:&v42 objects:v56 count:16];
         }
 
         while (v20);
       }
 
-      v28 = [(MSNPillDataSourceServer *)v35 queue];
+      queue2 = [(MSNPillDataSourceServer *)selfCopy queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __74__MSNPillDataSourceServer_fetchPillRegistrationForProcess_withCompletion___block_invoke_27;
       block[3] = &unk_2798A3DB8;
-      v37 = v34;
+      v37 = completionCopy;
       v38 = &v50;
-      dispatch_group_notify(v18, v28, block);
+      dispatch_group_notify(v18, queue2, block);
     }
 
     else
@@ -316,10 +316,10 @@ LABEL_25:
       v29 = MSNLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
-        [MSNPillDataSourceServer fetchPillRegistrationForProcess:v33 withCompletion:v29];
+        [MSNPillDataSourceServer fetchPillRegistrationForProcess:processCopy withCompletion:v29];
       }
 
-      v34[2](v34, *(v51 + 6));
+      completionCopy[2](completionCopy, *(v51 + 6));
     }
   }
 
@@ -360,38 +360,38 @@ void __74__MSNPillDataSourceServer_fetchPillRegistrationForProcess_withCompletio
   dispatch_group_leave(v9);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.mediasafetynet.pilldatasource"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.mediasafetynet.pilldatasource"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2869B57C8];
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
     v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2869B6450];
-    [v5 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
-    [v5 setExportedObject:self];
-    v10 = [(MSNPillDataSourceServer *)self queue];
-    [v5 _setQueue:v10];
+    [connectionCopy setExportedObject:self];
+    queue = [(MSNPillDataSourceServer *)self queue];
+    [connectionCopy _setQueue:queue];
 
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __62__MSNPillDataSourceServer_listener_shouldAcceptNewConnection___block_invoke;
     v17 = &unk_2798A3D18;
-    v18 = self;
-    v11 = v5;
+    selfCopy = self;
+    v11 = connectionCopy;
     v19 = v11;
     v12 = MEMORY[0x259C893D0](&v14);
-    [v11 setInterruptionHandler:{v12, v14, v15, v16, v17, v18}];
+    [v11 setInterruptionHandler:{v12, v14, v15, v16, v17, selfCopy}];
     [v11 setInvalidationHandler:v12];
     [v11 resume];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 void __62__MSNPillDataSourceServer_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -461,21 +461,21 @@ void __62__MSNPillDataSourceServer_listener_shouldAcceptNewConnection___block_in
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerPillDataSourceForIdentifiers:(id)a3
+- (void)registerPillDataSourceForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
-  v6 = [(MSNPillDataSourceServer *)self queue];
+  identifiersCopy = identifiers;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  queue = [(MSNPillDataSourceServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__MSNPillDataSourceServer_registerPillDataSourceForIdentifiers___block_invoke;
   block[3] = &unk_2798A3DE0;
-  v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
-  v8 = v5;
-  dispatch_async(v6, block);
+  v10 = currentConnection;
+  v11 = identifiersCopy;
+  selfCopy = self;
+  v7 = identifiersCopy;
+  v8 = currentConnection;
+  dispatch_async(queue, block);
 }
 
 void __64__MSNPillDataSourceServer_registerPillDataSourceForIdentifiers___block_invoke(uint64_t a1)

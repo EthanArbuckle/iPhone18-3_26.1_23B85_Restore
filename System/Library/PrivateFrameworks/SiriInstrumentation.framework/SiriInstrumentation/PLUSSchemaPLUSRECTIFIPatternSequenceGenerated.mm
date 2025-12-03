@@ -1,30 +1,30 @@
 @interface PLUSSchemaPLUSRECTIFIPatternSequenceGenerated
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSRECTIFIPatternSequenceGenerated)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSRECTIFIPatternSequenceGenerated)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSRECTIFIPatternSequenceGenerated)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSRECTIFIPatternSequenceGenerated)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addConstraints:(id)a3;
-- (void)addSequence:(id)a3;
-- (void)setHasNumberOfUniqueRequestsReviewed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addConstraints:(id)constraints;
+- (void)addSequence:(id)sequence;
+- (void)setHasNumberOfUniqueRequestsReviewed:(BOOL)reviewed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSRECTIFIPatternSequenceGenerated
 
-- (PLUSSchemaPLUSRECTIFIPatternSequenceGenerated)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSRECTIFIPatternSequenceGenerated)initWithDictionary:(id)dictionary
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = PLUSSchemaPLUSRECTIFIPatternSequenceGenerated;
   v5 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)&v42 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"patternId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"patternId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)v5 setPatternId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sequence"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sequence"];
     objc_opt_class();
     v30 = v8;
     v32 = v6;
@@ -80,7 +80,7 @@
       v6 = v32;
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"constraints", v30, v32}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"constraints", v30, v32}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,7 +126,7 @@
       v6 = v33;
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"originalRequestId"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"originalRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -134,14 +134,14 @@
       [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)v5 setOriginalRequestId:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"numberOfRequestsReviewed"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"numberOfRequestsReviewed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSRECTIFIPatternSequenceGenerated setNumberOfRequestsReviewed:](v5, "setNumberOfRequestsReviewed:", [v26 unsignedIntValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"numberOfUniqueRequestsReviewed"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"numberOfUniqueRequestsReviewed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,30 +154,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSRECTIFIPatternSequenceGenerated)initWithJSON:(id)a3
+- (PLUSSchemaPLUSRECTIFIPatternSequenceGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -191,10 +191,10 @@
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_constraints count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -214,16 +214,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -233,14 +233,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"constraints"];
+    [dictionary setObject:array forKeyedSubscript:@"constraints"];
   }
 
   has = self->_has;
   if (has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSRECTIFIPatternSequenceGenerated numberOfRequestsReviewed](self, "numberOfRequestsReviewed")}];
-    [v3 setObject:v13 forKeyedSubscript:@"numberOfRequestsReviewed"];
+    [dictionary setObject:v13 forKeyedSubscript:@"numberOfRequestsReviewed"];
 
     has = self->_has;
   }
@@ -248,44 +248,44 @@
   if ((has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSRECTIFIPatternSequenceGenerated numberOfUniqueRequestsReviewed](self, "numberOfUniqueRequestsReviewed")}];
-    [v3 setObject:v14 forKeyedSubscript:@"numberOfUniqueRequestsReviewed"];
+    [dictionary setObject:v14 forKeyedSubscript:@"numberOfUniqueRequestsReviewed"];
   }
 
   if (self->_originalRequestId)
   {
-    v15 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    originalRequestId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
+    dictionaryRepresentation2 = [originalRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"originalRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"originalRequestId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"originalRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"originalRequestId"];
     }
   }
 
   if (self->_patternId)
   {
-    v18 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    patternId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
+    dictionaryRepresentation3 = [patternId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"patternId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"patternId"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"patternId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"patternId"];
     }
   }
 
   if ([(NSArray *)self->_sequences count])
   {
-    v21 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -305,16 +305,16 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
-          if (v27)
+          dictionaryRepresentation4 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v21 addObject:v27];
+            [array2 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v28 = [MEMORY[0x1E695DFB0] null];
-            [v21 addObject:v28];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null4];
           }
         }
 
@@ -324,12 +324,12 @@
       while (v24);
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"sequence"];
+    [dictionary setObject:array2 forKeyedSubscript:@"sequence"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v30];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v30];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -362,28 +362,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
-  v6 = [v4 patternId];
-  if ((v5 != 0) == (v6 == 0))
+  patternId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
+  patternId2 = [equalCopy patternId];
+  if ((patternId != 0) == (patternId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
-  if (v7)
+  patternId3 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
+  if (patternId3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
-    v10 = [v4 patternId];
-    v11 = [v9 isEqual:v10];
+    v8 = patternId3;
+    patternId4 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
+    patternId5 = [equalCopy patternId];
+    v11 = [patternId4 isEqual:patternId5];
 
     if (!v11)
     {
@@ -395,20 +395,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self sequences];
-  v6 = [v4 sequences];
-  if ((v5 != 0) == (v6 == 0))
+  patternId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self sequences];
+  patternId2 = [equalCopy sequences];
+  if ((patternId != 0) == (patternId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self sequences];
-  if (v12)
+  sequences = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self sequences];
+  if (sequences)
   {
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self sequences];
-    v15 = [v4 sequences];
-    v16 = [v14 isEqual:v15];
+    v13 = sequences;
+    sequences2 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self sequences];
+    sequences3 = [equalCopy sequences];
+    v16 = [sequences2 isEqual:sequences3];
 
     if (!v16)
     {
@@ -420,20 +420,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self constraints];
-  v6 = [v4 constraints];
-  if ((v5 != 0) == (v6 == 0))
+  patternId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self constraints];
+  patternId2 = [equalCopy constraints];
+  if ((patternId != 0) == (patternId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self constraints];
-  if (v17)
+  constraints = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self constraints];
+  if (constraints)
   {
-    v18 = v17;
-    v19 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self constraints];
-    v20 = [v4 constraints];
-    v21 = [v19 isEqual:v20];
+    v18 = constraints;
+    constraints2 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self constraints];
+    constraints3 = [equalCopy constraints];
+    v21 = [constraints2 isEqual:constraints3];
 
     if (!v21)
     {
@@ -445,22 +445,22 @@ LABEL_3:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
-  v6 = [v4 originalRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  patternId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
+  patternId2 = [equalCopy originalRequestId];
+  if ((patternId != 0) == (patternId2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
-  if (v22)
+  originalRequestId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
+  if (originalRequestId)
   {
-    v23 = v22;
-    v24 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
-    v25 = [v4 originalRequestId];
-    v26 = [v24 isEqual:v25];
+    v23 = originalRequestId;
+    originalRequestId2 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
+    originalRequestId3 = [equalCopy originalRequestId];
+    v26 = [originalRequestId2 isEqual:originalRequestId3];
 
     if (!v26)
     {
@@ -473,25 +473,25 @@ LABEL_21:
   }
 
   has = self->_has;
-  v30 = v4[48];
+  v30 = equalCopy[48];
   if ((*&has & 1) == (v30 & 1))
   {
     if (*&has)
     {
       numberOfRequestsReviewed = self->_numberOfRequestsReviewed;
-      if (numberOfRequestsReviewed != [v4 numberOfRequestsReviewed])
+      if (numberOfRequestsReviewed != [equalCopy numberOfRequestsReviewed])
       {
         goto LABEL_22;
       }
 
       has = self->_has;
-      v30 = v4[48];
+      v30 = equalCopy[48];
     }
 
     v32 = (*&has >> 1) & 1;
     if (v32 == ((v30 >> 1) & 1))
     {
-      if (!v32 || (numberOfUniqueRequestsReviewed = self->_numberOfUniqueRequestsReviewed, numberOfUniqueRequestsReviewed == [v4 numberOfUniqueRequestsReviewed]))
+      if (!v32 || (numberOfUniqueRequestsReviewed = self->_numberOfUniqueRequestsReviewed, numberOfUniqueRequestsReviewed == [equalCopy numberOfUniqueRequestsReviewed]))
       {
         v27 = 1;
         goto LABEL_23;
@@ -506,15 +506,15 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
+  toCopy = to;
+  patternId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
 
-  if (v5)
+  if (patternId)
   {
-    v6 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
+    patternId2 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -574,11 +574,11 @@ LABEL_23:
     while (v14);
   }
 
-  v17 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
+  originalRequestId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
 
-  if (v17)
+  if (originalRequestId)
   {
-    v18 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
+    originalRequestId2 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -595,9 +595,9 @@ LABEL_23:
   }
 }
 
-- (void)setHasNumberOfUniqueRequestsReviewed:(BOOL)a3
+- (void)setHasNumberOfUniqueRequestsReviewed:(BOOL)reviewed
 {
-  if (a3)
+  if (reviewed)
   {
     v3 = 2;
   }
@@ -610,70 +610,70 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addConstraints:(id)a3
+- (void)addConstraints:(id)constraints
 {
-  v4 = a3;
+  constraintsCopy = constraints;
   constraints = self->_constraints;
-  v8 = v4;
+  v8 = constraintsCopy;
   if (!constraints)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_constraints;
-    self->_constraints = v6;
+    self->_constraints = array;
 
-    v4 = v8;
+    constraintsCopy = v8;
     constraints = self->_constraints;
   }
 
-  [(NSArray *)constraints addObject:v4];
+  [(NSArray *)constraints addObject:constraintsCopy];
 }
 
-- (void)addSequence:(id)a3
+- (void)addSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   sequences = self->_sequences;
-  v8 = v4;
+  v8 = sequenceCopy;
   if (!sequences)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sequences;
-    self->_sequences = v6;
+    self->_sequences = array;
 
-    v4 = v8;
+    sequenceCopy = v8;
     sequences = self->_sequences;
   }
 
-  [(NSArray *)sequences addObject:v4];
+  [(NSArray *)sequences addObject:sequenceCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v17.receiver = self;
   v17.super_class = PLUSSchemaPLUSRECTIFIPatternSequenceGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v17 applySensitiveConditionsPolicy:v4];
-  v6 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v17 applySensitiveConditionsPolicy:policyCopy];
+  patternId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self patternId];
+  v7 = [patternId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self deletePatternId];
   }
 
-  v9 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self sequences];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  sequences = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self sequences];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:sequences underConditions:policyCopy];
   [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self setSequences:v10];
 
-  v11 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self constraints];
-  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v11 underConditions:v4];
+  constraints = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self constraints];
+  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:constraints underConditions:policyCopy];
   [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self setConstraints:v12];
 
-  v13 = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
-  v14 = [v13 applySensitiveConditionsPolicy:v4];
-  v15 = [v14 suppressMessage];
+  originalRequestId = [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self originalRequestId];
+  v14 = [originalRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v14 suppressMessage];
 
-  if (v15)
+  if (suppressMessage2)
   {
     [(PLUSSchemaPLUSRECTIFIPatternSequenceGenerated *)self deleteOriginalRequestId];
   }

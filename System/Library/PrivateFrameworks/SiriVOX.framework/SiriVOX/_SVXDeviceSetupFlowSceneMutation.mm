@@ -1,5 +1,5 @@
 @interface _SVXDeviceSetupFlowSceneMutation
-- (_SVXDeviceSetupFlowSceneMutation)initWithBaseModel:(id)a3;
+- (_SVXDeviceSetupFlowSceneMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -31,7 +31,7 @@ LABEL_5:
     }
 
 LABEL_10:
-    v7 = [(SVXDeviceSetupFlowScene *)self->_baseModel displayKeyFrames];
+    displayKeyFrames = [(SVXDeviceSetupFlowScene *)self->_baseModel displayKeyFrames];
     goto LABEL_11;
   }
 
@@ -42,26 +42,26 @@ LABEL_10:
   }
 
 LABEL_8:
-  v7 = self->_displayKeyFrames;
+  displayKeyFrames = self->_displayKeyFrames;
 LABEL_11:
-  v8 = v7;
-  v5 = [[SVXDeviceSetupFlowScene alloc] initWithSceneID:sceneID displayKeyFrames:v7];
+  v8 = displayKeyFrames;
+  v5 = [[SVXDeviceSetupFlowScene alloc] initWithSceneID:sceneID displayKeyFrames:displayKeyFrames];
 
 LABEL_12:
 
   return v5;
 }
 
-- (_SVXDeviceSetupFlowSceneMutation)initWithBaseModel:(id)a3
+- (_SVXDeviceSetupFlowSceneMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXDeviceSetupFlowSceneMutation;
   v6 = [(_SVXDeviceSetupFlowSceneMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

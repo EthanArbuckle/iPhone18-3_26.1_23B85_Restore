@@ -1,25 +1,25 @@
 @interface IFPlatformRequestSchemaIFPlatformRequestStarted
-- (BOOL)isEqual:(id)a3;
-- (IFPlatformRequestSchemaIFPlatformRequestStarted)initWithDictionary:(id)a3;
-- (IFPlatformRequestSchemaIFPlatformRequestStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFPlatformRequestSchemaIFPlatformRequestStarted)initWithDictionary:(id)dictionary;
+- (IFPlatformRequestSchemaIFPlatformRequestStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFPlatformRequestSchemaIFPlatformRequestStarted
 
-- (IFPlatformRequestSchemaIFPlatformRequestStarted)initWithDictionary:(id)a3
+- (IFPlatformRequestSchemaIFPlatformRequestStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = IFPlatformRequestSchemaIFPlatformRequestStarted;
   v5 = [(IFPlatformRequestSchemaIFPlatformRequestStarted *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ifPlatformRequestTarget"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ifPlatformRequestTarget"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (IFPlatformRequestSchemaIFPlatformRequestStarted)initWithJSON:(id)a3
+- (IFPlatformRequestSchemaIFPlatformRequestStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFPlatformRequestSchemaIFPlatformRequestStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFPlatformRequestSchemaIFPlatformRequestStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFPlatformRequestSchemaIFPlatformRequestStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,68 +68,68 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(IFPlatformRequestSchemaIFPlatformRequestStarted *)self ifPlatformRequestTarget];
+    ifPlatformRequestTarget = [(IFPlatformRequestSchemaIFPlatformRequestStarted *)self ifPlatformRequestTarget];
     v5 = @"IFPLATFORMREQUESTTARGET_UNKNOWN";
     v6 = @"IFPLATFORMREQUESTTARGET_RESPONSE_GENERATION_SERVICE_HANDLE";
     v7 = @"IFPLATFORMTARGET_SESSION_COORDINATOR_ACCEPT";
-    if (v4 != 601)
+    if (ifPlatformRequestTarget != 601)
     {
       v7 = @"IFPLATFORMREQUESTTARGET_UNKNOWN";
     }
 
-    if (v4 != 501)
+    if (ifPlatformRequestTarget != 501)
     {
       v6 = v7;
     }
 
     v8 = @"IFPLATFORMREQUESTTARGET_FULL_PLANNER_SERVICE_HANDLE";
     v9 = @"IFPLATFORMREQUESTTARGET_PLAN_RESOLVER_SERVICE_HANDLE";
-    if (v4 != 401)
+    if (ifPlatformRequestTarget != 401)
     {
       v9 = @"IFPLATFORMREQUESTTARGET_UNKNOWN";
     }
 
-    if (v4 != 301)
+    if (ifPlatformRequestTarget != 301)
     {
       v8 = v9;
     }
 
-    if (v4 <= 500)
+    if (ifPlatformRequestTarget <= 500)
     {
       v6 = v8;
     }
 
     v10 = @"IFPLATFORMREQUESTTARGET_QUERY_DECORATION_SERVICE_HANDLE";
     v11 = @"IFPLATFORMREQUESTTARGET_PLAN_OVERRIDES_SERVICE_HANDLE";
-    if (v4 != 201)
+    if (ifPlatformRequestTarget != 201)
     {
       v11 = @"IFPLATFORMREQUESTTARGET_UNKNOWN";
     }
 
-    if (v4 != 101)
+    if (ifPlatformRequestTarget != 101)
     {
       v10 = v11;
     }
 
-    if (v4 == 2)
+    if (ifPlatformRequestTarget == 2)
     {
       v5 = @"IFPLATFORMREQUESTTARGET_STANDARD_PLANNER_RUN";
     }
 
-    if (v4 == 1)
+    if (ifPlatformRequestTarget == 1)
     {
       v5 = @"IFPLATFORMREQUESTTARGET_STANDARD_PLANNER_MAKE_PLAN";
     }
 
-    if (v4 > 100)
+    if (ifPlatformRequestTarget > 100)
     {
       v5 = v10;
     }
 
-    if (v4 <= 300)
+    if (ifPlatformRequestTarget <= 300)
     {
       v12 = v5;
     }
@@ -139,12 +139,12 @@
       v12 = v6;
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"ifPlatformRequestTarget"];
+    [dictionary setObject:v12 forKeyedSubscript:@"ifPlatformRequestTarget"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -160,15 +160,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[12] & 1))
+    if ((*&self->_has & 1) == (equalCopy[12] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (ifPlatformRequestTarget = self->_ifPlatformRequestTarget, ifPlatformRequestTarget == [v4 ifPlatformRequestTarget]))
+      if ((*&self->_has & 1) == 0 || (ifPlatformRequestTarget = self->_ifPlatformRequestTarget, ifPlatformRequestTarget == [equalCopy ifPlatformRequestTarget]))
       {
         v6 = 1;
       }
@@ -178,7 +178,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {

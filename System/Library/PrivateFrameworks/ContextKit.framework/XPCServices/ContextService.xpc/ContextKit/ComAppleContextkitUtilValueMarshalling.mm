@@ -1,9 +1,9 @@
 @interface ComAppleContextkitUtilValueMarshalling
 + (id)getDefaultInstance;
 + (void)initialize;
-- (id)getValueConverterWithInt:(int)a3;
+- (id)getValueConverterWithInt:(int)int;
 - (void)dealloc;
-- (void)registerValueConverterWithIOSClass:(id)a3 withComAppleContextkitUtilValueMarshalling_ValueConverter:(id)a4;
+- (void)registerValueConverterWithIOSClass:(id)class withComAppleContextkitUtilValueMarshalling_ValueConverter:(id)converter;
 @end
 
 @implementation ComAppleContextkitUtilValueMarshalling
@@ -18,17 +18,17 @@
   return qword_100554000;
 }
 
-- (void)registerValueConverterWithIOSClass:(id)a3 withComAppleContextkitUtilValueMarshalling_ValueConverter:(id)a4
+- (void)registerValueConverterWithIOSClass:(id)class withComAppleContextkitUtilValueMarshalling_ValueConverter:(id)converter
 {
   valueConverters = self->valueConverters_;
-  if (!valueConverters || (-[JavaUtilMap putWithId:withId:](valueConverters, "putWithId:withId:", a3), !a4) || (v7 = [a4 getCode], (codeToValueConverter = self->codeToValueConverter_) == 0))
+  if (!valueConverters || (-[JavaUtilMap putWithId:withId:](valueConverters, "putWithId:withId:", class), !converter) || (v7 = [converter getCode], (codeToValueConverter = self->codeToValueConverter_) == 0))
   {
     JreThrowNullPointerException();
   }
 
   v9 = v7;
   v10 = [(JavaUtilMap *)codeToValueConverter getWithId:JavaLangInteger_valueOfWithInt_(v7)];
-  if (v10 != a4)
+  if (v10 != converter)
   {
     if (v10)
     {
@@ -39,11 +39,11 @@
     v11 = self->codeToValueConverter_;
     v12 = JavaLangInteger_valueOfWithInt_(v9);
 
-    [(JavaUtilMap *)v11 putWithId:v12 withId:a4];
+    [(JavaUtilMap *)v11 putWithId:v12 withId:converter];
   }
 }
 
-- (id)getValueConverterWithInt:(int)a3
+- (id)getValueConverterWithInt:(int)int
 {
   codeToValueConverter = self->codeToValueConverter_;
   if (!codeToValueConverter)
@@ -51,7 +51,7 @@
     JreThrowNullPointerException();
   }
 
-  result = [(JavaUtilMap *)codeToValueConverter getWithId:JavaLangInteger_valueOfWithInt_(a3)];
+  result = [(JavaUtilMap *)codeToValueConverter getWithId:JavaLangInteger_valueOfWithInt_(int)];
   if (!result)
   {
     v12 = JreStrcat("$I", v5, v6, v7, v8, v9, v10, v11, @"Can't find ValueConverter with code ");
@@ -71,7 +71,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&ComAppleContextkitUtilValueMarshalling_VALUES_CHARSEQUENCE_, [ComAppleContextkitUtilValueMarshalling__1 alloc]);
     JreStrongAssignAndConsume(&ComAppleContextkitUtilValueMarshalling_VALUES_INTEGER_, [ComAppleContextkitUtilValueMarshalling_IntegerValueConverter alloc]);

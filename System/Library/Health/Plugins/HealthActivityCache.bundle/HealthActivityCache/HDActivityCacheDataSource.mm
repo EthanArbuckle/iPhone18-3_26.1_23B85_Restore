@@ -1,37 +1,37 @@
 @interface HDActivityCacheDataSource
-- (BOOL)updateWithError:(id *)a3;
-- (HDActivityCacheDataSource)initWithProfile:(id)a3 observedQuantityTypes:(id)a4 updateOperation:(id)a5 rebuildOperation:(id)a6 queue:(id)a7;
+- (BOOL)updateWithError:(id *)error;
+- (HDActivityCacheDataSource)initWithProfile:(id)profile observedQuantityTypes:(id)types updateOperation:(id)operation rebuildOperation:(id)rebuildOperation queue:(id)queue;
 - (id).cxx_construct;
-- (id)activityCacheStatisticsBuilder:(id)a3 sourceOrderForObjectType:(id)a4;
+- (id)activityCacheStatisticsBuilder:(id)builder sourceOrderForObjectType:(id)type;
 - (int64_t)localDeviceSourceIdentifier;
-- (void)_samplesAddedToWorkoutNotification:(id)a3;
+- (void)_samplesAddedToWorkoutNotification:(id)notification;
 - (void)invalidate;
 - (void)pauseUpdates;
 - (void)reportTargetDayHeartRateAnalytics;
 - (void)resumeUpdates;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDActivityCacheDataSource
 
-- (HDActivityCacheDataSource)initWithProfile:(id)a3 observedQuantityTypes:(id)a4 updateOperation:(id)a5 rebuildOperation:(id)a6 queue:(id)a7
+- (HDActivityCacheDataSource)initWithProfile:(id)profile observedQuantityTypes:(id)types updateOperation:(id)operation rebuildOperation:(id)rebuildOperation queue:(id)queue
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  profileCopy = profile;
+  typesCopy = types;
+  operationCopy = operation;
+  rebuildOperationCopy = rebuildOperation;
+  queueCopy = queue;
   v37.receiver = self;
   v37.super_class = HDActivityCacheDataSource;
   v17 = [(HDActivityCacheDataSource *)&v37 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_profile, v12);
-    objc_storeStrong(&v18->_queue, a7);
-    objc_storeStrong(&v18->_updateOperation, a5);
-    objc_storeStrong(&v18->_rebuildOperation, a6);
+    objc_storeWeak(&v17->_profile, profileCopy);
+    objc_storeStrong(&v18->_queue, queue);
+    objc_storeStrong(&v18->_updateOperation, operation);
+    objc_storeStrong(&v18->_rebuildOperation, rebuildOperation);
     v19 = [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierAppleStandHour];
     standHoursType = v18->_standHoursType;
     v18->_standHoursType = v19;
@@ -56,13 +56,13 @@
     unfrozenSeriesCache = v18->_unfrozenSeriesCache;
     v18->_unfrozenSeriesCache = v29;
 
-    v31 = [v13 copy];
+    v31 = [typesCopy copy];
     observedQuantityTypes = v18->_observedQuantityTypes;
     v18->_observedQuantityTypes = v31;
 
     v33 = +[NSMutableSet set];
-    v34 = [v13 allObjects];
-    [v33 addObjectsFromArray:v34];
+    allObjects = [typesCopy allObjects];
+    [v33 addObjectsFromArray:allObjects];
 
     [v33 addObject:v18->_standHoursType];
     [v33 addObject:v18->_workoutType];
@@ -81,16 +81,16 @@
 
 - (void)resumeUpdates
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 360));
-    v3 = [WeakRetained dataManager];
+    WeakRetained = objc_loadWeakRetained((self + 360));
+    dataManager = [WeakRetained dataManager];
 
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = *(a1 + 112);
+    v4 = *(self + 112);
     v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v5)
     {
@@ -105,7 +105,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [v3 addObserver:a1 forDataType:{*(*(&v8 + 1) + 8 * v7), v8}];
+          [dataManager addObserver:self forDataType:{*(*(&v8 + 1) + 8 * v7), v8}];
           v7 = v7 + 1;
         }
 
@@ -130,16 +130,16 @@
 
 - (void)pauseUpdates
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 360));
-    v3 = [WeakRetained dataManager];
+    WeakRetained = objc_loadWeakRetained((self + 360));
+    dataManager = [WeakRetained dataManager];
 
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = *(a1 + 112);
+    v4 = *(self + 112);
     v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v5)
     {
@@ -154,7 +154,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [v3 removeObserver:a1 forDataType:{*(*(&v8 + 1) + 8 * v7), v8}];
+          [dataManager removeObserver:self forDataType:{*(*(&v8 + 1) + 8 * v7), v8}];
           v7 = v7 + 1;
         }
 
@@ -167,14 +167,14 @@
   }
 }
 
-- (BOOL)updateWithError:(id *)a3
+- (BOOL)updateWithError:(id *)error
 {
-  v5 = sub_DCE4(self, a3);
+  v5 = sub_DCE4(self, error);
   v6 = sub_2808(self);
-  return v5 & v6 & sub_E1E8(self, a3);
+  return v5 & v6 & sub_E1E8(self, error);
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -185,15 +185,15 @@
   dispatch_async(queue, block);
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  v5 = a3;
+  removedCopy = removed;
   _HKInitializeLogging();
   v6 = HKLogActivityCache;
   if (os_log_type_enabled(HKLogActivityCache, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = v5;
+    v10 = removedCopy;
     _os_log_impl(&def_21990, v6, OS_LOG_TYPE_DEFAULT, "Samples (%{public}@) were removed, rebuilding caches", buf, 0xCu);
   }
 
@@ -209,14 +209,14 @@
 - (int64_t)localDeviceSourceIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained sourceManager];
+  sourceManager = [WeakRetained sourceManager];
   v8 = 0;
-  v4 = [v3 localDeviceSourceWithError:&v8];
+  v4 = [sourceManager localDeviceSourceWithError:&v8];
   v5 = v8;
 
   if (v4)
   {
-    v6 = [v4 persistentID];
+    persistentID = [v4 persistentID];
   }
 
   else
@@ -227,20 +227,20 @@
       sub_21198();
     }
 
-    v6 = HDActivityCacheActiveSourceCalculatorDefaultBaseSourceIdentifier;
+    persistentID = HDActivityCacheActiveSourceCalculatorDefaultBaseSourceIdentifier;
   }
 
-  return v6;
+  return persistentID;
 }
 
-- (id)activityCacheStatisticsBuilder:(id)a3 sourceOrderForObjectType:(id)a4
+- (id)activityCacheStatisticsBuilder:(id)builder sourceOrderForObjectType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  builderCopy = builder;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained sourceOrderManager];
+  sourceOrderManager = [WeakRetained sourceOrderManager];
   v13 = 0;
-  v10 = [v9 orderedSourceIDsForObjectType:v7 error:&v13];
+  v10 = [sourceOrderManager orderedSourceIDsForObjectType:typeCopy error:&v13];
   v11 = v13;
 
   if (!v10)
@@ -255,16 +255,16 @@
   return v10;
 }
 
-- (void)_samplesAddedToWorkoutNotification:(id)a3
+- (void)_samplesAddedToWorkoutNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   _HKInitializeLogging();
   v5 = HKLogActivityCache;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138543362;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&def_21990, v5, OS_LOG_TYPE_DEFAULT, "Added new samples to workout (%{public}@), rebuilding caches", buf, 0xCu);
   }
 

@@ -1,7 +1,7 @@
 @interface TIAutofillServer
 + (id)sharedAutofillServer;
-- (BOOL)checkEntitlementForAddEntryStringWithAuditToken:(id *)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)checkEntitlementForAddEntryStringWithAuditToken:(id *)token;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TIAutofillServer)init;
 - (void)dealloc;
 @end
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_100005248;
   block[3] = &unk_10001C810;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100026598 != -1)
   {
     dispatch_once(&qword_100026598, block);
@@ -59,10 +59,10 @@
   [(TIAutofillServer *)&v3 dealloc];
 }
 
-- (BOOL)checkEntitlementForAddEntryStringWithAuditToken:(id *)a3
+- (BOOL)checkEntitlementForAddEntryStringWithAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *cf.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *cf.val = *token->var0;
   *&cf.val[4] = v3;
   v4 = SecTaskCreateWithAuditToken(0, &cf);
   if (!v4)
@@ -104,14 +104,14 @@
   return v9;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -127,8 +127,8 @@
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TIAutofillReportCandidateSelectiontHandler];
     [v8 setExportedInterface:v11];
 
-    v12 = [(TIAutofillServer *)self dispatchQueue];
-    [v8 _setQueue:v12];
+    dispatchQueue = [(TIAutofillServer *)self dispatchQueue];
+    [v8 _setQueue:dispatchQueue];
 
     [v8 resume];
   }

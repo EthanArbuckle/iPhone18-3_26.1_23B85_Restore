@@ -1,26 +1,26 @@
 @interface SBApplicationAppProtectionAssistant
 + (BOOL)areAnyApplicationsHidden;
 + (BOOL)areAnyApplicationsLocked;
-+ (BOOL)shouldHideApplicationWithBundleIdentifier:(id)a3;
-+ (BOOL)shouldShieldApplicationWithBundleIdentifier:(id)a3;
-+ (id)_assistantForBundleIdentifier:(id)a3;
-+ (id)assistantForApplication:(id)a3;
++ (BOOL)shouldHideApplicationWithBundleIdentifier:(id)identifier;
++ (BOOL)shouldShieldApplicationWithBundleIdentifier:(id)identifier;
++ (id)_assistantForBundleIdentifier:(id)identifier;
++ (id)assistantForApplication:(id)application;
 - (BOOL)isHidden;
 - (SBAppProtectionCoordinator)owningCoordinator;
-- (SBApplicationAppProtectionAssistant)initWithApplication:(id)a3;
-- (id)acquireVisibilityAssertionForReason:(id)a3;
+- (SBApplicationAppProtectionAssistant)initWithApplication:(id)application;
+- (id)acquireVisibilityAssertionForReason:(id)reason;
 - (id)createShieldUIView;
 - (id)createShieldUIViewController;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_updateShouldHide;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)requestUnshielding;
-- (void)setShouldHide:(BOOL)a3;
-- (void)setShouldShield:(BOOL)a3;
+- (void)setShouldHide:(BOOL)hide;
+- (void)setShouldShield:(BOOL)shield;
 @end
 
 @implementation SBApplicationAppProtectionAssistant
@@ -30,10 +30,10 @@
   v2 = +[SBAppProtectionCoordinator isEnabled];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEBEB8] hiddenMetaSubject];
-    v4 = [v3 isHidden];
+    hiddenMetaSubject = [MEMORY[0x277CEBEB8] hiddenMetaSubject];
+    isHidden = [hiddenMetaSubject isHidden];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = isHidden;
   }
 
   return v2;
@@ -48,10 +48,10 @@
 
 - (void)_updateShouldHide
 {
-  v3 = [(SBApplicationAppProtectionAssistant *)self shouldHideDebounceTimer];
-  v4 = [v3 isValid];
+  shouldHideDebounceTimer = [(SBApplicationAppProtectionAssistant *)self shouldHideDebounceTimer];
+  isValid = [shouldHideDebounceTimer isValid];
 
-  if ((v4 & 1) == 0 && [(SBApplicationAppProtectionAssistant *)self isHidden]&& [(SBApplicationAppProtectionAssistant *)self shouldShield])
+  if ((isValid & 1) == 0 && [(SBApplicationAppProtectionAssistant *)self isHidden]&& [(SBApplicationAppProtectionAssistant *)self shouldShield])
   {
     if (self->_shouldHide)
     {
@@ -60,10 +60,10 @@
 
     else
     {
-      v6 = [(SBApplicationAppProtectionAssistant *)self owningCoordinator];
-      v7 = [v6 shouldSuppressHiding];
+      owningCoordinator = [(SBApplicationAppProtectionAssistant *)self owningCoordinator];
+      shouldSuppressHiding = [owningCoordinator shouldSuppressHiding];
 
-      v5 = v7 ^ 1;
+      v5 = shouldSuppressHiding ^ 1;
     }
   }
 
@@ -77,29 +77,29 @@
 
 - (BOOL)isHidden
 {
-  v2 = [(SBApplicationAppProtectionAssistant *)self appProtectionApplication];
-  v3 = [v2 isHidden];
+  appProtectionApplication = [(SBApplicationAppProtectionAssistant *)self appProtectionApplication];
+  isHidden = [appProtectionApplication isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-+ (id)assistantForApplication:(id)a3
++ (id)assistantForApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[SBApplicationController sharedInstanceIfExists];
-  v5 = [v4 _appProtectionCoordinator];
-  v6 = [v5 assistantForApplication:v3];
+  _appProtectionCoordinator = [v4 _appProtectionCoordinator];
+  v6 = [_appProtectionCoordinator assistantForApplication:applicationCopy];
 
   return v6;
 }
 
-+ (id)_assistantForBundleIdentifier:(id)a3
++ (id)_assistantForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SBApplicationController sharedInstanceIfExists];
-  v6 = [v5 applicationWithBundleIdentifier:v4];
+  v6 = [v5 applicationWithBundleIdentifier:identifierCopy];
 
-  v7 = [a1 assistantForApplication:v6];
+  v7 = [self assistantForApplication:v6];
 
   return v7;
 }
@@ -109,53 +109,53 @@
   v2 = +[SBAppProtectionCoordinator isEnabled];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEBEB8] lockedMetaSubject];
-    v4 = [v3 isLocked];
+    lockedMetaSubject = [MEMORY[0x277CEBEB8] lockedMetaSubject];
+    isLocked = [lockedMetaSubject isLocked];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = isLocked;
   }
 
   return v2;
 }
 
-+ (BOOL)shouldHideApplicationWithBundleIdentifier:(id)a3
++ (BOOL)shouldHideApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (+[SBAppProtectionCoordinator isEnabled])
   {
-    v5 = [a1 _assistantForBundleIdentifier:v4];
-    v6 = [v5 shouldHide];
+    v5 = [self _assistantForBundleIdentifier:identifierCopy];
+    shouldHide = [v5 shouldHide];
   }
 
   else
   {
-    v6 = 0;
+    shouldHide = 0;
   }
 
-  return v6;
+  return shouldHide;
 }
 
-+ (BOOL)shouldShieldApplicationWithBundleIdentifier:(id)a3
++ (BOOL)shouldShieldApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (+[SBAppProtectionCoordinator isEnabled])
   {
-    v5 = [a1 _assistantForBundleIdentifier:v4];
-    v6 = [v5 shouldShield];
+    v5 = [self _assistantForBundleIdentifier:identifierCopy];
+    shouldShield = [v5 shouldShield];
   }
 
   else
   {
-    v6 = 0;
+    shouldShield = 0;
   }
 
-  return v6;
+  return shouldShield;
 }
 
-- (SBApplicationAppProtectionAssistant)initWithApplication:(id)a3
+- (SBApplicationAppProtectionAssistant)initWithApplication:(id)application
 {
-  v5 = a3;
-  if (!v5)
+  applicationCopy = application;
+  if (!applicationCopy)
   {
     [(SBApplicationAppProtectionAssistant *)a2 initWithApplication:?];
   }
@@ -166,22 +166,22 @@
   if (v6)
   {
     v7 = MEMORY[0x277CEBE80];
-    v8 = [v5 bundleIdentifier];
-    v9 = [v7 applicationWithBundleIdentifier:v8];
+    bundleIdentifier = [applicationCopy bundleIdentifier];
+    v9 = [v7 applicationWithBundleIdentifier:bundleIdentifier];
     appProtectionApplication = v6->_appProtectionApplication;
     v6->_appProtectionApplication = v9;
 
-    v11 = [v5 displayName];
+    displayName = [applicationCopy displayName];
     displayName = v6->_displayName;
-    v6->_displayName = v11;
+    v6->_displayName = displayName;
 
     objc_initWeak(&location, v6);
     v13 = MEMORY[0x277CF0BD0];
     v14 = MEMORY[0x277CCACA8];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v5 bundleIdentifier];
-    v18 = [v14 stringWithFormat:@"%@: %p - %@", v16, v6, v17];
+    bundleIdentifier2 = [applicationCopy bundleIdentifier];
+    v18 = [v14 stringWithFormat:@"%@: %p - %@", v16, v6, bundleIdentifier2];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __59__SBApplicationAppProtectionAssistant_initWithApplication___block_invoke;
@@ -229,21 +229,21 @@ void __59__SBApplicationAppProtectionAssistant_initWithApplication___block_invok
   [(NSTimer *)shouldHideDebounceTimer invalidate];
 }
 
-- (void)setShouldShield:(BOOL)a3
+- (void)setShouldShield:(BOOL)shield
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (self->_shouldShield != a3)
+  if (self->_shouldShield != shield)
   {
-    v3 = a3;
-    self->_shouldShield = a3;
+    shieldCopy = shield;
+    self->_shouldShield = shield;
     v5 = SBLogAppProtection();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SBApplicationAppProtectionAssistant *)self succinctDescription];
+      succinctDescription = [(SBApplicationAppProtectionAssistant *)self succinctDescription];
       LODWORD(buf) = 67109378;
-      HIDWORD(buf) = v3;
+      HIDWORD(buf) = shieldCopy;
       v24 = 2114;
-      v25 = v6;
+      v25 = succinctDescription;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Setting shouldShield: %{BOOL}u for %{public}@", &buf, 0x12u);
     }
 
@@ -251,8 +251,8 @@ void __59__SBApplicationAppProtectionAssistant_initWithApplication___block_invok
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(NSHashTable *)self->_observers allObjects];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v8 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = *v19;
@@ -263,7 +263,7 @@ void __59__SBApplicationAppProtectionAssistant_initWithApplication___block_invok
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v18 + 1) + 8 * v10);
@@ -276,16 +276,16 @@ void __59__SBApplicationAppProtectionAssistant_initWithApplication___block_invok
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
     }
 
-    if (v3 && [(SBApplicationAppProtectionAssistant *)self isHidden])
+    if (shieldCopy && [(SBApplicationAppProtectionAssistant *)self isHidden])
     {
-      v12 = [(SBApplicationAppProtectionAssistant *)self shouldHideDebounceTimer];
-      if (v12)
+      shouldHideDebounceTimer = [(SBApplicationAppProtectionAssistant *)self shouldHideDebounceTimer];
+      if (shouldHideDebounceTimer)
       {
       }
 
@@ -308,8 +308,8 @@ void __59__SBApplicationAppProtectionAssistant_initWithApplication___block_invok
 
     else
     {
-      v13 = [(SBApplicationAppProtectionAssistant *)self shouldHideDebounceTimer];
-      [v13 invalidate];
+      shouldHideDebounceTimer2 = [(SBApplicationAppProtectionAssistant *)self shouldHideDebounceTimer];
+      [shouldHideDebounceTimer2 invalidate];
 
       [(SBApplicationAppProtectionAssistant *)self setShouldHideDebounceTimer:0];
       [(SBApplicationAppProtectionAssistant *)self setShouldHide:0];
@@ -324,18 +324,18 @@ void __55__SBApplicationAppProtectionAssistant_setShouldShield___block_invoke(ui
   [WeakRetained _updateShouldHide];
 }
 
-- (void)setShouldHide:(BOOL)a3
+- (void)setShouldHide:(BOOL)hide
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_shouldHide != a3)
+  if (self->_shouldHide != hide)
   {
-    self->_shouldHide = a3;
+    self->_shouldHide = hide;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -347,7 +347,7 @@ void __55__SBApplicationAppProtectionAssistant_setShouldShield___block_invoke(ui
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -360,7 +360,7 @@ void __55__SBApplicationAppProtectionAssistant_setShouldShield___block_invoke(ui
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -371,9 +371,9 @@ void __55__SBApplicationAppProtectionAssistant_setShouldShield___block_invoke(ui
 - (id)createShieldUIViewController
 {
   v3 = [SBAppProtectionShieldViewController alloc];
-  v4 = [(SBApplicationAppProtectionAssistant *)self owningCoordinator];
-  v5 = [v4 systemAppOutlet];
-  v6 = [(SBAppProtectionShieldViewController *)v3 initWithAssistant:self systemAppOutlet:v5];
+  owningCoordinator = [(SBApplicationAppProtectionAssistant *)self owningCoordinator];
+  systemAppOutlet = [owningCoordinator systemAppOutlet];
+  v6 = [(SBAppProtectionShieldViewController *)v3 initWithAssistant:self systemAppOutlet:systemAppOutlet];
 
   return v6;
 }
@@ -381,61 +381,61 @@ void __55__SBApplicationAppProtectionAssistant_setShouldShield___block_invoke(ui
 - (id)createShieldUIView
 {
   v3 = [SBAppProtectionShieldView alloc];
-  v4 = [(SBApplicationAppProtectionAssistant *)self owningCoordinator];
-  v5 = [v4 systemAppOutlet];
-  v6 = [(SBAppProtectionShieldView *)v3 initWithAssistant:self systemAppOutlet:v5];
+  owningCoordinator = [(SBApplicationAppProtectionAssistant *)self owningCoordinator];
+  systemAppOutlet = [owningCoordinator systemAppOutlet];
+  v6 = [(SBAppProtectionShieldView *)v3 initWithAssistant:self systemAppOutlet:systemAppOutlet];
 
   return v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  observerCopy = observer;
+  v9 = observerCopy;
+  if (!observerCopy)
   {
     [(SBApplicationAppProtectionAssistant *)a2 addObserver:?];
-    v5 = 0;
+    observerCopy = 0;
   }
 
   observers = self->_observers;
   if (!observers)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v8 = self->_observers;
-    self->_observers = v7;
+    self->_observers = weakObjectsHashTable;
 
-    v5 = v9;
+    observerCopy = v9;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v5];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    [(NSHashTable *)self->_observers removeObject:v4];
+    v7 = observerCopy;
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     v5 = [(NSHashTable *)self->_observers count];
-    v4 = v7;
+    observerCopy = v7;
     if (!v5)
     {
       observers = self->_observers;
       self->_observers = 0;
 
-      v4 = v7;
+      observerCopy = v7;
     }
   }
 }
 
-- (id)acquireVisibilityAssertionForReason:(id)a3
+- (id)acquireVisibilityAssertionForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBApplicationAppProtectionAssistant *)self visibilityAssertions];
-  v6 = [v5 acquireForReason:v4];
+  reasonCopy = reason;
+  visibilityAssertions = [(SBApplicationAppProtectionAssistant *)self visibilityAssertions];
+  v6 = [visibilityAssertions acquireForReason:reasonCopy];
 
   return v6;
 }
@@ -446,20 +446,20 @@ void __55__SBApplicationAppProtectionAssistant_setShouldShield___block_invoke(ui
   v3 = SBLogAppProtection();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SBApplicationAppProtectionAssistant *)self succinctDescription];
+    succinctDescription = [(SBApplicationAppProtectionAssistant *)self succinctDescription];
     *buf = 138543362;
-    v9 = v4;
+    v9 = succinctDescription;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ will request unshielding", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CEBE98] sharedGuard];
-  v6 = [(SBApplicationAppProtectionAssistant *)self appProtectionApplication];
+  mEMORY[0x277CEBE98] = [MEMORY[0x277CEBE98] sharedGuard];
+  appProtectionApplication = [(SBApplicationAppProtectionAssistant *)self appProtectionApplication];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__SBApplicationAppProtectionAssistant_requestUnshielding__block_invoke;
   v7[3] = &unk_2783ACC28;
   v7[4] = self;
-  [v5 authenticateForShieldDismissalForSubject:v6 completion:v7];
+  [mEMORY[0x277CEBE98] authenticateForShieldDismissalForSubject:appProtectionApplication completion:v7];
 }
 
 void __57__SBApplicationAppProtectionAssistant_requestUnshielding__block_invoke(uint64_t a1, int a2, void *a3)
@@ -482,36 +482,36 @@ void __57__SBApplicationAppProtectionAssistant_requestUnshielding__block_invoke(
 
 - (id)succinctDescription
 {
-  v3 = [(SBApplicationAppProtectionAssistant *)self succinctDescriptionBuilder];
-  v4 = [(SBApplicationAppProtectionAssistant *)self appProtectionApplication];
-  v5 = [v4 bundleIdentifier];
-  [v3 appendString:v5 withName:@"app"];
+  succinctDescriptionBuilder = [(SBApplicationAppProtectionAssistant *)self succinctDescriptionBuilder];
+  appProtectionApplication = [(SBApplicationAppProtectionAssistant *)self appProtectionApplication];
+  bundleIdentifier = [appProtectionApplication bundleIdentifier];
+  [succinctDescriptionBuilder appendString:bundleIdentifier withName:@"app"];
 
-  v6 = [v3 build];
+  build = [succinctDescriptionBuilder build];
 
-  return v6;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBApplicationAppProtectionAssistant *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBApplicationAppProtectionAssistant *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBApplicationAppProtectionAssistant *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBApplicationAppProtectionAssistant *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__SBApplicationAppProtectionAssistant_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

@@ -1,20 +1,20 @@
 @interface JSASearchFeedController
-- (void)updateSearchText:(id)a3;
+- (void)updateSearchText:(id)text;
 @end
 
 @implementation JSASearchFeedController
 
-- (void)updateSearchText:(id)a3
+- (void)updateSearchText:(id)text
 {
-  v4 = a3;
-  if ([v4 isString])
+  textCopy = text;
+  if ([textCopy isString])
   {
-    v5 = [v4 toString];
+    toString = [textCopy toString];
   }
 
   else
   {
-    v5 = 0;
+    toString = 0;
   }
 
   objc_initWeak(&location, self);
@@ -23,7 +23,7 @@
   v12[2] = sub_14738;
   v12[3] = &unk_B2CB8;
   objc_copyWeak(&v14, &location);
-  v6 = v5;
+  v6 = toString;
   v13 = v6;
   v7 = objc_retainBlock(v12);
   if (v7)

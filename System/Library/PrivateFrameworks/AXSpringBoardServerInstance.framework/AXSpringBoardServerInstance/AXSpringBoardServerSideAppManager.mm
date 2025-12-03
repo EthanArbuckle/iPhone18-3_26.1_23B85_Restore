@@ -3,17 +3,17 @@
 + (id)_mainDisplaySceneManager;
 - (AXSpringBoardServerSideAppManager)init;
 - (AXSpringBoardServerSideAppManagerDelegate)delegate;
-- (BOOL)_isDockIconView:(id)a3;
+- (BOOL)_isDockIconView:(id)view;
 - (BOOL)canActivateMedusaForDock;
-- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)a3;
-- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)a3;
+- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)view;
+- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)view;
 - (BOOL)hasMultipleApps;
 - (BOOL)isDisplayingApp;
-- (BOOL)performMedusaGesture:(unint64_t)a3;
+- (BOOL)performMedusaGesture:(unint64_t)gesture;
 - (id)_activeApplicationBundleIdentifiers;
-- (id)_appForLayoutRole:(int64_t)a3 layoutState:(id)a4;
+- (id)_appForLayoutRole:(int64_t)role layoutState:(id)state;
 - (id)_applicationController;
-- (id)_bundleIdentifierForIconView:(id)a3;
+- (id)_bundleIdentifierForIconView:(id)view;
 - (id)_firstFloatingAppLayout;
 - (id)_floatingAppRootViewController;
 - (id)_mainDisplaySceneManager;
@@ -23,25 +23,25 @@
 - (id)_sbSwitcherTransitionRequestClass;
 - (id)_sbWorkspaceMainWorkspace;
 - (id)allowedMedusaGestures;
-- (id)appForLayoutRole:(int64_t)a3;
+- (id)appForLayoutRole:(int64_t)role;
 - (id)medusaAppBundleIdsToLayoutRoles;
 - (id)medusaApps;
 - (id)sceneLayoutState;
 - (int64_t)_currentFloatingConfiguration;
 - (int64_t)_currentSpaceConfiguration;
-- (void)_addFloatingApplicationGesturesIfAllowed:(id)a3;
-- (void)_addResizeGestureRecognizerGesturesIfAllowed:(id)a3;
+- (void)_addFloatingApplicationGesturesIfAllowed:(id)allowed;
+- (void)_addResizeGestureRecognizerGesturesIfAllowed:(id)allowed;
 - (void)_endDockIconActivationModeAfterTimeout;
-- (void)_enumerateAppsAndLayoutRoles:(id)a3;
-- (void)_performMedusaGesture:(unint64_t)a3;
-- (void)_performSwipeOnFloatingAppSwitcher:(unint64_t)a3;
+- (void)_enumerateAppsAndLayoutRoles:(id)roles;
+- (void)_performMedusaGesture:(unint64_t)gesture;
+- (void)_performSwipeOnFloatingAppSwitcher:(unint64_t)switcher;
 - (void)_performValidation;
-- (void)_requestTransactionWithPrimaryEntity:(id)a3 sideEntity:(id)a4 floatingEntity:(id)a5 spaceConfiguration:(int64_t)a6 floatingConfiguration:(int64_t)a7;
-- (void)launchApplication:(id)a3;
-- (void)launchApplicationWithFullConfiguration:(id)a3;
-- (void)launchFloatingApplication:(id)a3;
-- (void)launchPinnedApplication:(id)a3 onLeadingSide:(BOOL)a4;
-- (void)setDockIconActivationMode:(unint64_t)a3;
+- (void)_requestTransactionWithPrimaryEntity:(id)entity sideEntity:(id)sideEntity floatingEntity:(id)floatingEntity spaceConfiguration:(int64_t)configuration floatingConfiguration:(int64_t)floatingConfiguration;
+- (void)launchApplication:(id)application;
+- (void)launchApplicationWithFullConfiguration:(id)configuration;
+- (void)launchFloatingApplication:(id)application;
+- (void)launchPinnedApplication:(id)application onLeadingSide:(BOOL)side;
+- (void)setDockIconActivationMode:(unint64_t)mode;
 @end
 
 @implementation AXSpringBoardServerSideAppManager
@@ -52,7 +52,7 @@
   block[1] = 3221225472;
   block[2] = __51__AXSpringBoardServerSideAppManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -66,8 +66,8 @@
 - (BOOL)isDisplayingApp
 {
   objc_opt_class();
-  v3 = [(AXSpringBoardServerSideAppManager *)self _mainDisplaySceneManager];
-  v4 = [v3 safeValueForKey:@"externalForegroundApplicationSceneHandles"];
+  _mainDisplaySceneManager = [(AXSpringBoardServerSideAppManager *)self _mainDisplaySceneManager];
+  v4 = [_mainDisplaySceneManager safeValueForKey:@"externalForegroundApplicationSceneHandles"];
   v5 = __UIAccessibilityCastAsClass();
 
   v6 = [v5 count] != 0;
@@ -131,8 +131,8 @@ uint64_t __51__AXSpringBoardServerSideAppManager_sharedInstance__block_invoke(ui
 
 - (void)_performValidation
 {
-  v2 = [MEMORY[0x277CE69B0] sharedInstance];
-  [v2 performValidations:&__block_literal_global_3 withPreValidationHandler:&__block_literal_global_540 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_546];
+  mEMORY[0x277CE69B0] = [MEMORY[0x277CE69B0] sharedInstance];
+  [mEMORY[0x277CE69B0] performValidations:&__block_literal_global_3 withPreValidationHandler:&__block_literal_global_540 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_546];
 }
 
 uint64_t __55__AXSpringBoardServerSideAppManager__performValidation__block_invoke(uint64_t a1, void *a2)
@@ -228,14 +228,14 @@ uint64_t __55__AXSpringBoardServerSideAppManager__performValidation__block_invok
 
 - (id)allowedMedusaGestures
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (AXDeviceSupportsSideApp())
   {
     v4 = [NSClassFromString(&cfstr_Gaxspringboard.isa) safeValueForKey:@"sharedInstance"];
     v5 = v4;
     if (v4 && ([v4 safeValueForKey:@"shouldAllowMedusaGestures"], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "BOOLValue"), v6, (v7 & 1) == 0))
     {
-      v19 = v3;
+      v19 = array;
     }
 
     else
@@ -249,41 +249,41 @@ uint64_t __55__AXSpringBoardServerSideAppManager__performValidation__block_invok
       v12 = [v11 safeValueForKey:@"layoutState"];
 
       v13 = [v12 safeBoolForKey:@"isFloatingSwitcherVisible"];
-      v14 = [v10 view];
-      v15 = [v14 window];
-      v16 = [v15 isHidden];
+      view = [v10 view];
+      window = [view window];
+      isHidden = [window isHidden];
 
-      if ((v16 & 1) == 0 && (v13 & 1) == 0)
+      if ((isHidden & 1) == 0 && (v13 & 1) == 0)
       {
-        [(AXSpringBoardServerSideAppManager *)self _addFloatingApplicationGesturesIfAllowed:v3];
+        [(AXSpringBoardServerSideAppManager *)self _addFloatingApplicationGesturesIfAllowed:array];
       }
 
       if ([(AXSpringBoardServerSideAppManager *)self _hasPinnedApp])
       {
-        [(AXSpringBoardServerSideAppManager *)self _addResizeGestureRecognizerGesturesIfAllowed:v3];
+        [(AXSpringBoardServerSideAppManager *)self _addResizeGestureRecognizerGesturesIfAllowed:array];
       }
 
-      v17 = v3;
+      v17 = array;
     }
   }
 
   else
   {
-    v18 = v3;
+    v18 = array;
   }
 
-  return v3;
+  return array;
 }
 
-- (id)appForLayoutRole:(int64_t)a3
+- (id)appForLayoutRole:(int64_t)role
 {
-  v5 = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
-  v6 = [(AXSpringBoardServerSideAppManager *)self _appForLayoutRole:a3 layoutState:v5];
+  sceneLayoutState = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
+  v6 = [(AXSpringBoardServerSideAppManager *)self _appForLayoutRole:role layoutState:sceneLayoutState];
 
   return v6;
 }
 
-- (id)_appForLayoutRole:(int64_t)a3 layoutState:(id)a4
+- (id)_appForLayoutRole:(int64_t)role layoutState:(id)state
 {
   v7 = 0;
   v8 = &v7;
@@ -291,7 +291,7 @@ uint64_t __55__AXSpringBoardServerSideAppManager__performValidation__block_invok
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v6 = a4;
+  stateCopy = state;
   AXPerformSafeBlock();
   v4 = v8[5];
 
@@ -311,19 +311,19 @@ void __67__AXSpringBoardServerSideAppManager__appForLayoutRole_layoutState___blo
   *(v5 + 40) = v4;
 }
 
-- (void)_enumerateAppsAndLayoutRoles:(id)a3
+- (void)_enumerateAppsAndLayoutRoles:(id)roles
 {
-  v4 = a3;
-  v5 = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
+  rolesCopy = roles;
+  sceneLayoutState = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__AXSpringBoardServerSideAppManager__enumerateAppsAndLayoutRoles___block_invoke;
   aBlock[3] = &unk_27842C758;
   aBlock[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v6 = v4;
-  v7 = v5;
+  v10 = sceneLayoutState;
+  v11 = rolesCopy;
+  v6 = rolesCopy;
+  v7 = sceneLayoutState;
   v8 = _Block_copy(aBlock);
   v8[2](v8, 1);
   v8[2](v8, 2);
@@ -398,17 +398,17 @@ void __68__AXSpringBoardServerSideAppManager_medusaAppBundleIdsToLayoutRoles__bl
   }
 }
 
-- (BOOL)performMedusaGesture:(unint64_t)a3
+- (BOOL)performMedusaGesture:(unint64_t)gesture
 {
-  v5 = [(AXSpringBoardServerSideAppManager *)self allowedMedusaGestures];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v7 = [v5 containsObject:v6];
+  allowedMedusaGestures = [(AXSpringBoardServerSideAppManager *)self allowedMedusaGestures];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:gesture];
+  v7 = [allowedMedusaGestures containsObject:v6];
 
   if (v7)
   {
-    if (a3 >= 0x10)
+    if (gesture >= 0x10)
     {
-      if (a3 == 16)
+      if (gesture == 16)
       {
         [(AXSpringBoardServerSideAppManager *)self _performSwipeOnFloatingAppSwitcher:16];
       }
@@ -416,7 +416,7 @@ void __68__AXSpringBoardServerSideAppManager_medusaAppBundleIdsToLayoutRoles__bl
 
     else
     {
-      [(AXSpringBoardServerSideAppManager *)self _performMedusaGesture:a3];
+      [(AXSpringBoardServerSideAppManager *)self _performMedusaGesture:gesture];
     }
   }
 
@@ -431,16 +431,16 @@ void __68__AXSpringBoardServerSideAppManager_medusaAppBundleIdsToLayoutRoles__bl
 - (BOOL)hasMultipleApps
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D0AAA0] sharedInstance];
-  v3 = [v2 currentLayout];
+  mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
+  currentLayout = [mEMORY[0x277D0AAA0] currentLayout];
 
   v4 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 elements];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  elements = [currentLayout elements];
+  v6 = [elements countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -451,17 +451,17 @@ void __68__AXSpringBoardServerSideAppManager_medusaAppBundleIdsToLayoutRoles__bl
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(elements);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-        if ([v10 length])
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+        if ([bundleIdentifier length])
         {
-          [v4 addObject:v10];
+          [v4 addObject:bundleIdentifier];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [elements countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -474,18 +474,18 @@ void __68__AXSpringBoardServerSideAppManager_medusaAppBundleIdsToLayoutRoles__bl
 
 - (BOOL)canActivateMedusaForDock
 {
-  v2 = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
-  v3 = [v2 safeIntegerForKey:@"unlockedEnvironmentMode"] == 3;
+  sceneLayoutState = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
+  v3 = [sceneLayoutState safeIntegerForKey:@"unlockedEnvironmentMode"] == 3;
 
   return v3;
 }
 
-- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)a3
+- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)view
 {
-  v4 = a3;
-  if ([(AXSpringBoardServerSideAppManager *)self canLaunchAsFloatingApplicationForIconView:v4])
+  viewCopy = view;
+  if ([(AXSpringBoardServerSideAppManager *)self canLaunchAsFloatingApplicationForIconView:viewCopy])
   {
-    v5 = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
+    sceneLayoutState = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
     v12 = 0;
     v13 = &v12;
     v14 = 0x3032000000;
@@ -493,7 +493,7 @@ void __68__AXSpringBoardServerSideAppManager_medusaAppBundleIdsToLayoutRoles__bl
     v16 = __Block_byref_object_dispose__3;
     v17 = 0;
     v10 = MEMORY[0x277D85DD0];
-    v11 = v5;
+    v11 = sceneLayoutState;
     AXPerformSafeBlock();
     v6 = v13[5];
 
@@ -521,16 +521,16 @@ uint64_t __77__AXSpringBoardServerSideAppManager_canLaunchAsPinnedApplicationFor
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)a3
+- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 safeValueForKey:@"icon"];
+  viewCopy = view;
+  v5 = [viewCopy safeValueForKey:@"icon"];
   v6 = [v5 safeValueForKey:@"application"];
   v7 = [v6 safeValueForKey:@"info"];
-  if ([(AXSpringBoardServerSideAppManager *)self canActivateMedusaForDock]&& [(AXSpringBoardServerSideAppManager *)self _isDockIconView:v4])
+  if ([(AXSpringBoardServerSideAppManager *)self canActivateMedusaForDock]&& [(AXSpringBoardServerSideAppManager *)self _isDockIconView:viewCopy])
   {
     v8 = [v7 safeBoolForKey:@"supportsMultiwindow"];
-    v9 = [(AXSpringBoardServerSideAppManager *)self _bundleIdentifierForIconView:v4];
+    v9 = [(AXSpringBoardServerSideAppManager *)self _bundleIdentifierForIconView:viewCopy];
     v10 = [(AXSpringBoardServerSideAppManager *)self _appWithIdentifier:v9];
     v11 = [v10 safeBoolForKey:@"isMedusaCapable"] | v8;
   }
@@ -543,13 +543,13 @@ uint64_t __77__AXSpringBoardServerSideAppManager_canLaunchAsPinnedApplicationFor
   return v11 & 1;
 }
 
-- (void)setDockIconActivationMode:(unint64_t)a3
+- (void)setDockIconActivationMode:(unint64_t)mode
 {
-  if (self->_dockIconActivationMode != a3)
+  if (self->_dockIconActivationMode != mode)
   {
-    self->_dockIconActivationMode = a3;
+    self->_dockIconActivationMode = mode;
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__endDockIconActivationModeAfterTimeout object:0];
-    if (a3)
+    if (mode)
     {
 
       [(AXSpringBoardServerSideAppManager *)self performSelector:sel__endDockIconActivationModeAfterTimeout withObject:0 afterDelay:15.0];
@@ -566,8 +566,8 @@ uint64_t __77__AXSpringBoardServerSideAppManager_canLaunchAsPinnedApplicationFor
 
   if ([(AXSpringBoardServerSideAppManager *)self dockIconActivationMode]== 3)
   {
-    v3 = [(AXSpringBoardServerSideAppManager *)self delegate];
-    [v3 didFailToFloatAppForSideAppManager:self];
+    delegate = [(AXSpringBoardServerSideAppManager *)self delegate];
+    [delegate didFailToFloatAppForSideAppManager:self];
 LABEL_8:
 
     goto LABEL_9;
@@ -575,8 +575,8 @@ LABEL_8:
 
   if ([(AXSpringBoardServerSideAppManager *)self dockIconActivationMode]== 1 || [(AXSpringBoardServerSideAppManager *)self dockIconActivationMode]== 2)
   {
-    v3 = [(AXSpringBoardServerSideAppManager *)self delegate];
-    [v3 didFailToPinAppForSideAppManager:self];
+    delegate = [(AXSpringBoardServerSideAppManager *)self delegate];
+    [delegate didFailToPinAppForSideAppManager:self];
     goto LABEL_8;
   }
 
@@ -600,9 +600,9 @@ LABEL_9:
   return v2;
 }
 
-- (void)_addFloatingApplicationGesturesIfAllowed:(id)a3
+- (void)_addFloatingApplicationGesturesIfAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -615,18 +615,18 @@ LABEL_9:
   _Block_object_dispose(&v14, 8);
 
   v6 = [v5 safeUnsignedIntegerForKey:{@"layoutAttributes", v13, 3221225472, __78__AXSpringBoardServerSideAppManager__addFloatingApplicationGesturesIfAllowed___block_invoke, &unk_27842BBA8, self, &v14}];
-  v7 = [(AXSpringBoardServerSideAppManager *)self _currentFloatingConfiguration];
-  if ((v7 - 3) < 2)
+  _currentFloatingConfiguration = [(AXSpringBoardServerSideAppManager *)self _currentFloatingConfiguration];
+  if ((_currentFloatingConfiguration - 3) < 2)
   {
     v9 = &unk_2833B15D0;
 LABEL_11:
-    [v4 addObject:v9];
+    [allowedCopy addObject:v9];
     goto LABEL_12;
   }
 
-  if (v7 == 1)
+  if (_currentFloatingConfiguration == 1)
   {
-    [v4 addObject:&unk_2833B1528];
+    [allowedCopy addObject:&unk_2833B1528];
     if (v6)
     {
       v8 = &unk_2833B1540;
@@ -634,20 +634,20 @@ LABEL_11:
     }
 
 LABEL_10:
-    [v4 addObject:&unk_2833B1558];
-    [v4 addObject:&unk_2833B1570];
+    [allowedCopy addObject:&unk_2833B1558];
+    [allowedCopy addObject:&unk_2833B1570];
     v9 = &unk_2833B1588;
     goto LABEL_11;
   }
 
-  if (v7 == 2)
+  if (_currentFloatingConfiguration == 2)
   {
-    [v4 addObject:&unk_2833B15A0];
+    [allowedCopy addObject:&unk_2833B15A0];
     if (v6)
     {
       v8 = &unk_2833B15B8;
 LABEL_9:
-      [v4 addObject:v8];
+      [allowedCopy addObject:v8];
       goto LABEL_10;
     }
 
@@ -655,15 +655,15 @@ LABEL_9:
   }
 
 LABEL_12:
-  v10 = [(AXSpringBoardServerSideAppManager *)self _firstFloatingAppLayout];
-  if (v10)
+  _firstFloatingAppLayout = [(AXSpringBoardServerSideAppManager *)self _firstFloatingAppLayout];
+  if (_firstFloatingAppLayout)
   {
-    v11 = v10;
-    v12 = [v4 containsObject:&unk_2833B15D0];
+    v11 = _firstFloatingAppLayout;
+    v12 = [allowedCopy containsObject:&unk_2833B15D0];
 
     if ((v12 & 1) == 0)
     {
-      [v4 addObject:&unk_2833B15D0];
+      [allowedCopy addObject:&unk_2833B15D0];
     }
   }
 }
@@ -677,24 +677,24 @@ void __78__AXSpringBoardServerSideAppManager__addFloatingApplicationGesturesIfAl
   *(v3 + 40) = v2;
 }
 
-- (void)_addResizeGestureRecognizerGesturesIfAllowed:(id)a3
+- (void)_addResizeGestureRecognizerGesturesIfAllowed:(id)allowed
 {
-  v9 = a3;
-  v4 = [(AXSpringBoardServerSideAppManager *)self _currentSpaceConfiguration];
-  v5 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
-  if (v4 == 3 || (v5 - 3) > 1)
+  allowedCopy = allowed;
+  _currentSpaceConfiguration = [(AXSpringBoardServerSideAppManager *)self _currentSpaceConfiguration];
+  activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+  if (_currentSpaceConfiguration == 3 || (activeInterfaceOrientation - 3) > 1)
   {
-    v7 = v4 == 3 && (v5 - 5) < 0xFFFFFFFFFFFFFFFELL;
-    if (v4 == 4 || v7)
+    v7 = _currentSpaceConfiguration == 3 && (activeInterfaceOrientation - 5) < 0xFFFFFFFFFFFFFFFELL;
+    if (_currentSpaceConfiguration == 4 || v7)
     {
       goto LABEL_14;
     }
 
 LABEL_13:
-    [v9 addObject:&unk_2833B1600];
-    [v9 addObject:&unk_2833B1618];
-    v8 = v9;
-    if (v4 == 2)
+    [allowedCopy addObject:&unk_2833B1600];
+    [allowedCopy addObject:&unk_2833B1618];
+    v8 = allowedCopy;
+    if (_currentSpaceConfiguration == 2)
     {
       goto LABEL_15;
     }
@@ -702,24 +702,24 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  [v9 addObject:&unk_2833B15E8];
-  if (v4 != 4)
+  [allowedCopy addObject:&unk_2833B15E8];
+  if (_currentSpaceConfiguration != 4)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
-  [v9 addObject:&unk_2833B1630];
-  [v9 addObject:&unk_2833B1648];
-  v8 = v9;
+  [allowedCopy addObject:&unk_2833B1630];
+  [allowedCopy addObject:&unk_2833B1648];
+  v8 = allowedCopy;
 LABEL_15:
   [v8 addObject:&unk_2833B1660];
-  [v9 addObject:&unk_2833B1678];
-  [v9 addObject:&unk_2833B1690];
-  [v9 addObject:&unk_2833B16A8];
+  [allowedCopy addObject:&unk_2833B1678];
+  [allowedCopy addObject:&unk_2833B1690];
+  [allowedCopy addObject:&unk_2833B16A8];
 }
 
-- (void)_performMedusaGesture:(unint64_t)a3
+- (void)_performMedusaGesture:(unint64_t)gesture
 {
   [(AXSpringBoardServerSideAppManager *)self _currentSpaceConfiguration];
   v30 = 0;
@@ -977,7 +977,7 @@ void __59__AXSpringBoardServerSideAppManager__performMedusaGesture___block_invok
   [v1 _toggleFloatingAppVisibility];
 }
 
-- (void)_performSwipeOnFloatingAppSwitcher:(unint64_t)a3
+- (void)_performSwipeOnFloatingAppSwitcher:(unint64_t)switcher
 {
   v4 = [NSClassFromString(&cfstr_Sbmainswitcher.isa) safeValueForKey:@"sharedInstanceIfExists"];
   v5 = [v4 safeArrayForKey:@"_appLayouts"];
@@ -985,7 +985,7 @@ void __59__AXSpringBoardServerSideAppManager__performMedusaGesture___block_invok
 
   v7 = [v4 safeValueForKeyPath:@"_activeDisplaySwitcherController._currentFloatingAppLayout"];
   v8 = [v6 indexOfObject:v7];
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL && a3 == 16)
+  if (v8 != 0x7FFFFFFFFFFFFFFFLL && switcher == 16)
   {
     v10 = v8;
     if (v8 >= [v6 count] - 1)
@@ -1042,47 +1042,47 @@ void __72__AXSpringBoardServerSideAppManager__performSwipeOnFloatingAppSwitcher_
   [v4 setSource:18];
 }
 
-- (void)_requestTransactionWithPrimaryEntity:(id)a3 sideEntity:(id)a4 floatingEntity:(id)a5 spaceConfiguration:(int64_t)a6 floatingConfiguration:(int64_t)a7
+- (void)_requestTransactionWithPrimaryEntity:(id)entity sideEntity:(id)sideEntity floatingEntity:(id)floatingEntity spaceConfiguration:(int64_t)configuration floatingConfiguration:(int64_t)floatingConfiguration
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  entityCopy = entity;
+  sideEntityCopy = sideEntity;
+  floatingEntityCopy = floatingEntity;
+  if (entityCopy)
   {
-    if (v11)
+    if (sideEntityCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v11 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
-    if (v12)
+    sideEntityCopy = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
+    if (floatingEntityCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v12 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
+    floatingEntityCopy = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
     goto LABEL_4;
   }
 
-  v10 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
-  if (!v11)
+  entityCopy = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
+  if (!sideEntityCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v12)
+  if (!floatingEntityCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v16 = v10;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v16 = entityCopy;
+  v13 = floatingEntityCopy;
+  v14 = sideEntityCopy;
+  v15 = entityCopy;
   AXPerformSafeBlock();
 }
 
@@ -1140,9 +1140,9 @@ void __71__AXSpringBoardServerSideAppManager__requestFloatingAppSwitcherVisible_
   [v2 setSource:18];
 }
 
-- (void)launchApplication:(id)a3
+- (void)launchApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   NSClassFromString(&cfstr_Sbapplication.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -1153,7 +1153,7 @@ void __71__AXSpringBoardServerSideAppManager__requestFloatingAppSwitcherVisible_
     v12 = __Block_byref_object_dispose__3;
     v13 = 0;
     v6 = MEMORY[0x277D85DD0];
-    v7 = v4;
+    v7 = applicationCopy;
     AXPerformSafeBlock();
     v5 = v9[5];
 
@@ -1172,9 +1172,9 @@ uint64_t __55__AXSpringBoardServerSideAppManager_launchApplication___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)launchApplicationWithFullConfiguration:(id)a3
+- (void)launchApplicationWithFullConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   NSClassFromString(&cfstr_Sbapplication.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -1185,14 +1185,14 @@ uint64_t __55__AXSpringBoardServerSideAppManager_launchApplication___block_invok
     v14 = __Block_byref_object_dispose__3;
     v15 = 0;
     v8 = MEMORY[0x277D85DD0];
-    v9 = v4;
+    v9 = configurationCopy;
     AXPerformSafeBlock();
     v5 = v11[5];
 
     _Block_object_dispose(&v10, 8);
     v6 = [(AXSpringBoardServerSideAppManager *)self _sbEmptyEntity:v8];
-    v7 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
-    [(AXSpringBoardServerSideAppManager *)self _requestTransactionWithPrimaryEntity:v5 sideEntity:v6 floatingEntity:v7 spaceConfiguration:1 floatingConfiguration:3];
+    _sbPreviousEntity = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
+    [(AXSpringBoardServerSideAppManager *)self _requestTransactionWithPrimaryEntity:v5 sideEntity:v6 floatingEntity:_sbPreviousEntity spaceConfiguration:1 floatingConfiguration:3];
   }
 }
 
@@ -1206,18 +1206,18 @@ uint64_t __76__AXSpringBoardServerSideAppManager_launchApplicationWithFullConfig
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)launchPinnedApplication:(id)a3 onLeadingSide:(BOOL)a4
+- (void)launchPinnedApplication:(id)application onLeadingSide:(BOOL)side
 {
-  v4 = a4;
-  v6 = a3;
+  sideCopy = side;
+  applicationCopy = application;
   NSClassFromString(&cfstr_Sbapplication.isa);
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(AXSpringBoardServerSideAppManager *)self _currentSpaceConfiguration];
-    v8 = v7;
-    if (v7 != 4 && v7 != 2)
+    _currentSpaceConfiguration = [(AXSpringBoardServerSideAppManager *)self _currentSpaceConfiguration];
+    v8 = _currentSpaceConfiguration;
+    if (_currentSpaceConfiguration != 4 && _currentSpaceConfiguration != 2)
     {
-      if (v4)
+      if (sideCopy)
       {
         v8 = 2;
       }
@@ -1238,15 +1238,15 @@ uint64_t __76__AXSpringBoardServerSideAppManager_launchApplicationWithFullConfig
     v9 = v32[5];
     _Block_object_dispose(&v31, 8);
 
-    v10 = [(AXSpringBoardServerSideAppManager *)self _mainDisplaySceneManager];
+    _mainDisplaySceneManager = [(AXSpringBoardServerSideAppManager *)self _mainDisplaySceneManager];
     v31 = 0;
     v32 = &v31;
     v33 = 0x3032000000;
     v34 = __Block_byref_object_copy__3;
     v35 = __Block_byref_object_dispose__3;
     v36 = 0;
-    v29 = v10;
-    v30 = v6;
+    v29 = _mainDisplaySceneManager;
+    v30 = applicationCopy;
     AXPerformSafeBlock();
     v11 = v32[5];
 
@@ -1273,7 +1273,7 @@ uint64_t __76__AXSpringBoardServerSideAppManager_launchApplicationWithFullConfig
     v13 = v28;
     v14 = v12;
     AXPerformSafeBlock();
-    v25 = v6;
+    v25 = applicationCopy;
     v15 = v9;
     v16 = v8;
     v17 = v32[5];
@@ -1290,7 +1290,7 @@ uint64_t __76__AXSpringBoardServerSideAppManager_launchApplicationWithFullConfig
     v19 = v32[5];
 
     _Block_object_dispose(&v31, 8);
-    if (v4)
+    if (sideCopy)
     {
       v20 = v19;
     }
@@ -1300,7 +1300,7 @@ uint64_t __76__AXSpringBoardServerSideAppManager_launchApplicationWithFullConfig
       v20 = v15;
     }
 
-    if (v4)
+    if (sideCopy)
     {
       v21 = v15;
     }
@@ -1312,10 +1312,10 @@ uint64_t __76__AXSpringBoardServerSideAppManager_launchApplicationWithFullConfig
 
     v22 = v21;
     v23 = v20;
-    v24 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
-    [(AXSpringBoardServerSideAppManager *)self _requestTransactionWithPrimaryEntity:v23 sideEntity:v22 floatingEntity:v24 spaceConfiguration:v16 floatingConfiguration:0];
+    _sbPreviousEntity = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
+    [(AXSpringBoardServerSideAppManager *)self _requestTransactionWithPrimaryEntity:v23 sideEntity:v22 floatingEntity:_sbPreviousEntity spaceConfiguration:v16 floatingConfiguration:0];
 
-    v6 = v25;
+    applicationCopy = v25;
   }
 }
 
@@ -1370,14 +1370,14 @@ uint64_t __75__AXSpringBoardServerSideAppManager_launchPinnedApplication_onLeadi
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)launchFloatingApplication:(id)a3
+- (void)launchFloatingApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   NSClassFromString(&cfstr_Sbapplication.isa);
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
-    v6 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
+    _sbPreviousEntity = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
+    _sbPreviousEntity2 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousEntity];
     v10 = 0;
     v11 = &v10;
     v12 = 0x3032000000;
@@ -1385,12 +1385,12 @@ uint64_t __75__AXSpringBoardServerSideAppManager_launchPinnedApplication_onLeadi
     v14 = __Block_byref_object_dispose__3;
     v15 = 0;
     v8 = MEMORY[0x277D85DD0];
-    v9 = v4;
+    v9 = applicationCopy;
     AXPerformSafeBlock();
     v7 = v11[5];
 
     _Block_object_dispose(&v10, 8);
-    [(AXSpringBoardServerSideAppManager *)self _requestTransactionWithPrimaryEntity:v5 sideEntity:v6 floatingEntity:v7 spaceConfiguration:0 floatingConfiguration:2, v8, 3221225472, __63__AXSpringBoardServerSideAppManager_launchFloatingApplication___block_invoke, &unk_27842BBA8];
+    [(AXSpringBoardServerSideAppManager *)self _requestTransactionWithPrimaryEntity:_sbPreviousEntity sideEntity:_sbPreviousEntity2 floatingEntity:v7 spaceConfiguration:0 floatingConfiguration:2, v8, 3221225472, __63__AXSpringBoardServerSideAppManager_launchFloatingApplication___block_invoke, &unk_27842BBA8];
   }
 }
 
@@ -1404,10 +1404,10 @@ uint64_t __63__AXSpringBoardServerSideAppManager_launchFloatingApplication___blo
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_isDockIconView:(id)a3
+- (BOOL)_isDockIconView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 safeValueForKey:@"_iconLocation"];
+  viewCopy = view;
+  v4 = [viewCopy safeValueForKey:@"_iconLocation"];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1466,10 +1466,10 @@ LABEL_9:
   return v10;
 }
 
-- (id)_bundleIdentifierForIconView:(id)a3
+- (id)_bundleIdentifierForIconView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 safeValueForKey:@"icon"];
+  viewCopy = view;
+  v4 = [viewCopy safeValueForKey:@"icon"];
   v5 = __UIAccessibilitySafeClass();
 
   v6 = [v5 safeStringForKey:@"applicationBundleID"];
@@ -1541,8 +1541,8 @@ uint64_t __72__AXSpringBoardServerSideAppManager__activeApplicationBundleIdentif
 
 - (id)_sbPreviousEntity
 {
-  v2 = [(AXSpringBoardServerSideAppManager *)self _sbPreviousWorkspaceEntityClass];
-  v3 = [v2 safeValueForKey:@"entity"];
+  _sbPreviousWorkspaceEntityClass = [(AXSpringBoardServerSideAppManager *)self _sbPreviousWorkspaceEntityClass];
+  v3 = [_sbPreviousWorkspaceEntityClass safeValueForKey:@"entity"];
 
   return v3;
 }
@@ -1625,24 +1625,24 @@ Class __62__AXSpringBoardServerSideAppManager__sbWorkspaceMainWorkspace__block_i
 
 - (int64_t)_currentFloatingConfiguration
 {
-  v2 = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
-  v3 = [v2 safeIntegerForKey:@"floatingConfiguration"];
+  sceneLayoutState = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
+  v3 = [sceneLayoutState safeIntegerForKey:@"floatingConfiguration"];
 
   return v3;
 }
 
 - (int64_t)_currentSpaceConfiguration
 {
-  v2 = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
-  v3 = [v2 safeIntegerForKey:@"spaceConfiguration"];
+  sceneLayoutState = [(AXSpringBoardServerSideAppManager *)self sceneLayoutState];
+  v3 = [sceneLayoutState safeIntegerForKey:@"spaceConfiguration"];
 
   return v3;
 }
 
 - (id)sceneLayoutState
 {
-  v2 = [(AXSpringBoardServerSideAppManager *)self _mainDisplaySceneManager];
-  v3 = [v2 safeValueForKey:@"currentLayoutState"];
+  _mainDisplaySceneManager = [(AXSpringBoardServerSideAppManager *)self _mainDisplaySceneManager];
+  v3 = [_mainDisplaySceneManager safeValueForKey:@"currentLayoutState"];
 
   return v3;
 }
@@ -1657,13 +1657,13 @@ Class __62__AXSpringBoardServerSideAppManager__sbWorkspaceMainWorkspace__block_i
 
 - (id)_firstFloatingAppLayout
 {
-  v2 = [(AXSpringBoardServerSideAppManager *)self _floatingAppRootViewController];
-  v3 = [v2 safeArrayForKey:@"appLayouts"];
+  _floatingAppRootViewController = [(AXSpringBoardServerSideAppManager *)self _floatingAppRootViewController];
+  v3 = [_floatingAppRootViewController safeArrayForKey:@"appLayouts"];
   v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_643];
 
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (AXSpringBoardServerSideAppManagerDelegate)delegate

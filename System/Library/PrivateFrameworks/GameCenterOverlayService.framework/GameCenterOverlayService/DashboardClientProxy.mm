@@ -1,54 +1,54 @@
 @interface DashboardClientProxy
 - (void)didDismissBanner;
 - (void)didDismissDashboard;
-- (void)isPresentingDashboardFromAccessPoint:(id)a3;
+- (void)isPresentingDashboardFromAccessPoint:(id)point;
 - (void)requireOnboardingFlow;
-- (void)setGameModeWithBundleIdentifier:(id)a3 enabled:(id)a4;
-- (void)updateAccessPointFrameCoordinates:(id)a3;
+- (void)setGameModeWithBundleIdentifier:(id)identifier enabled:(id)enabled;
+- (void)updateAccessPointFrameCoordinates:(id)coordinates;
 @end
 
 @implementation DashboardClientProxy
 
 - (void)didDismissDashboard
 {
-  v2 = self;
+  selfCopy = self;
   DashboardClientProxy.didDismissDashboard()();
 }
 
 - (void)didDismissBanner
 {
-  v2 = self;
+  selfCopy = self;
   DashboardClientProxy.didDismissBanner()();
 }
 
-- (void)updateAccessPointFrameCoordinates:(id)a3
+- (void)updateAccessPointFrameCoordinates:(id)coordinates
 {
-  v4 = a3;
-  v5 = self;
-  DashboardClientProxy.updateAccessPointFrameCoordinates(_:)(v4);
+  coordinatesCopy = coordinates;
+  selfCopy = self;
+  DashboardClientProxy.updateAccessPointFrameCoordinates(_:)(coordinatesCopy);
 }
 
-- (void)isPresentingDashboardFromAccessPoint:(id)a3
+- (void)isPresentingDashboardFromAccessPoint:(id)point
 {
-  v4 = a3;
-  v5 = self;
-  DashboardClientProxy.isPresentingDashboardFromAccessPoint(_:)(v4);
+  pointCopy = point;
+  selfCopy = self;
+  DashboardClientProxy.isPresentingDashboardFromAccessPoint(_:)(pointCopy);
 }
 
-- (void)setGameModeWithBundleIdentifier:(id)a3 enabled:(id)a4
+- (void)setGameModeWithBundleIdentifier:(id)identifier enabled:(id)enabled
 {
   v6 = sub_24DD69A98();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  enabledCopy = enabled;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  DashboardClientProxy.setGameMode(bundleIdentifier:enabled:)(v11, v9);
+  DashboardClientProxy.setGameMode(bundleIdentifier:enabled:)(v11, enabledCopy);
 }
 
 - (void)requireOnboardingFlow
 {
-  v2 = self;
+  selfCopy = self;
   DashboardClientProxy.requireOnboardingFlow()();
 }
 

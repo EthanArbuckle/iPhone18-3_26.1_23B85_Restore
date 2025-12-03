@@ -6,26 +6,26 @@
 - (CGPoint)previousMovement;
 - (CGPoint)unscaledCenterPoint;
 - (CGPoint)unscaledStartPoint;
-- (THGuidedPanController)initWithInteractiveCanvasController:(id)a3;
-- (double)viewScaleForUnscaledRect:(CGRect)a3 forPage:(BOOL)a4;
-- (id)completionAnimationFromContentLocation:(id)a3 movement:(CGPoint)a4 velocity:(CGPoint)a5;
-- (id)contentLocationForMovement:(CGPoint)a3 velocity:(CGPoint)a4 placement:(id *)a5 currentLocation:(id)a6;
-- (id)p_completionAnimationUsingWellsForMovement:(CGPoint)a3 velocity:(CGPoint)a4 currentLocation:(id)a5;
-- (id)p_contentLocationUsingWellsForMovement:(CGPoint)a3 velocity:(CGPoint)a4 currentLocation:(id)a5;
+- (THGuidedPanController)initWithInteractiveCanvasController:(id)controller;
+- (double)viewScaleForUnscaledRect:(CGRect)rect forPage:(BOOL)page;
+- (id)completionAnimationFromContentLocation:(id)location movement:(CGPoint)movement velocity:(CGPoint)velocity;
+- (id)contentLocationForMovement:(CGPoint)movement velocity:(CGPoint)velocity placement:(id *)placement currentLocation:(id)location;
+- (id)p_completionAnimationUsingWellsForMovement:(CGPoint)movement velocity:(CGPoint)velocity currentLocation:(id)location;
+- (id)p_contentLocationUsingWellsForMovement:(CGPoint)movement velocity:(CGPoint)velocity currentLocation:(id)location;
 - (void)dealloc;
-- (void)guidedPanWillBeginAtPoint:(CGPoint)a3 withCenterPoint:(CGPoint)a4;
+- (void)guidedPanWillBeginAtPoint:(CGPoint)point withCenterPoint:(CGPoint)centerPoint;
 @end
 
 @implementation THGuidedPanController
 
-- (THGuidedPanController)initWithInteractiveCanvasController:(id)a3
+- (THGuidedPanController)initWithInteractiveCanvasController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = THGuidedPanController;
   v4 = [(THGuidedPanController *)&v6 init];
   if (v4)
   {
-    v4->_interactiveCanvasController = a3;
+    v4->_interactiveCanvasController = controller;
   }
 
   return v4;
@@ -38,12 +38,12 @@
   [(THGuidedPanController *)&v3 dealloc];
 }
 
-- (void)guidedPanWillBeginAtPoint:(CGPoint)a3 withCenterPoint:(CGPoint)a4
+- (void)guidedPanWillBeginAtPoint:(CGPoint)point withCenterPoint:(CGPoint)centerPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = centerPoint.y;
+  x = centerPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   [(THGuidedPanDelegate *)self->_delegate guidedPanWillBegin];
   self->_unscaledStartPoint.x = v7;
   self->_unscaledStartPoint.y = v6;
@@ -109,11 +109,11 @@
   }
 }
 
-- (id)p_contentLocationUsingWellsForMovement:(CGPoint)a3 velocity:(CGPoint)a4 currentLocation:(id)a5
+- (id)p_contentLocationUsingWellsForMovement:(CGPoint)movement velocity:(CGPoint)velocity currentLocation:(id)location
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [TSDContentLocation contentLocationWithUnscaledPoint:a5 viewScale:self->_unscaledCenterPoint.x, self->_unscaledCenterPoint.y, self->_pageViewScale, a4.y];
+  y = movement.y;
+  x = movement.x;
+  v8 = [TSDContentLocation contentLocationWithUnscaledPoint:location viewScale:self->_unscaledCenterPoint.x, self->_unscaledCenterPoint.y, self->_pageViewScale, velocity.y];
   interactiveCanvasController = self->_interactiveCanvasController;
   [(THInteractiveCanvasController *)[(THGuidedPanController *)self interactiveCanvasController] centerPlusMovementContentPlacement];
   v10 = [THInteractiveCanvasController convertContentLocation:"convertContentLocation:fromPlacement:toPlacement:" fromPlacement:v8 toPlacement:?];
@@ -196,12 +196,12 @@
   return v12;
 }
 
-- (id)p_completionAnimationUsingWellsForMovement:(CGPoint)a3 velocity:(CGPoint)a4 currentLocation:(id)a5
+- (id)p_completionAnimationUsingWellsForMovement:(CGPoint)movement velocity:(CGPoint)velocity currentLocation:(id)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v8 = movement.y;
+  v9 = movement.x;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -242,21 +242,21 @@
   if (v14 <= 1)
   {
 LABEL_11:
-    v20 = [(THGuidedPanController *)self target];
+    target = [(THGuidedPanController *)self target];
 LABEL_12:
     v21 = 0;
     v22 = 0;
     goto LABEL_13;
   }
 
-  v20 = [(THGuidedPanController *)self target];
+  target = [(THGuidedPanController *)self target];
   if (!v15)
   {
     goto LABEL_12;
   }
 
-  v22 = [v15 contentAnimationToFocalPointFromLocation:a5 withMovement:self velocity:v9 controller:{v8, x, y}];
-  v21 = [v15 guidedPanTargetWithController:self location:a5];
+  v22 = [v15 contentAnimationToFocalPointFromLocation:location withMovement:self velocity:v9 controller:{v8, x, y}];
+  v21 = [v15 guidedPanTargetWithController:self location:location];
 LABEL_13:
   [(THGuidedPanController *)self setTarget:v21];
   if (objc_opt_respondsToSelector())
@@ -270,20 +270,20 @@ LABEL_13:
     v24 = 0.2;
   }
 
-  [(THGuidedPanDelegate *)self->_delegate guidedPanWillAnimateFrom:v20 to:[(THGuidedPanController *)self target] duration:v24];
+  [(THGuidedPanDelegate *)self->_delegate guidedPanWillAnimateFrom:target to:[(THGuidedPanController *)self target] duration:v24];
   return v22;
 }
 
-- (id)contentLocationForMovement:(CGPoint)a3 velocity:(CGPoint)a4 placement:(id *)a5 currentLocation:(id)a6
+- (id)contentLocationForMovement:(CGPoint)movement velocity:(CGPoint)velocity placement:(id *)placement currentLocation:(id)location
 {
-  self->_previousMovement = a3;
-  if (a5)
+  self->_previousMovement = movement;
+  if (placement)
   {
-    *a5 = kTSDContentPlacementCenter;
+    *placement = kTSDContentPlacementCenter;
   }
 
   TSDSubtractPoints();
-  v8 = [THGuidedPanController p_contentLocationUsingWellsForMovement:"p_contentLocationUsingWellsForMovement:velocity:currentLocation:" velocity:a6 currentLocation:?];
+  v8 = [THGuidedPanController p_contentLocationUsingWellsForMovement:"p_contentLocationUsingWellsForMovement:velocity:currentLocation:" velocity:location currentLocation:?];
   [(THGuidedPanDelegate *)self->_delegate guidedPanUnscaledPageSize];
   TSDRectWithSize();
   x = v36.origin.x;
@@ -296,12 +296,12 @@ LABEL_13:
   v37.size.width = width;
   v37.size.height = height;
   MinY = CGRectGetMinY(v37);
-  v15 = [(THGuidedPanController *)self interactiveCanvasController];
+  interactiveCanvasController = [(THGuidedPanController *)self interactiveCanvasController];
   [(THInteractiveCanvasController *)[(THGuidedPanController *)self interactiveCanvasController] screenTopContentPlacement];
   v17 = v16;
   v19 = v18;
   [v8 viewScale];
-  [(THInteractiveCanvasController *)v15 clampedCenterPointForPoint:MidX withPlacement:MinY viewScale:v17, v19, v20];
+  [(THInteractiveCanvasController *)interactiveCanvasController clampedCenterPointForPoint:MidX withPlacement:MinY viewScale:v17, v19, v20];
   v38.origin.x = x;
   v38.origin.y = y;
   v38.size.width = width;
@@ -312,12 +312,12 @@ LABEL_13:
   v39.size.width = width;
   v39.size.height = height;
   MaxY = CGRectGetMaxY(v39);
-  v23 = [(THGuidedPanController *)self interactiveCanvasController];
+  interactiveCanvasController2 = [(THGuidedPanController *)self interactiveCanvasController];
   [(THInteractiveCanvasController *)[(THGuidedPanController *)self interactiveCanvasController] screenBottomContentPlacement];
   v25 = v24;
   v27 = v26;
   [v8 viewScale];
-  [(THInteractiveCanvasController *)v23 clampedCenterPointForPoint:v21 withPlacement:MaxY viewScale:v25, v27, v28];
+  [(THInteractiveCanvasController *)interactiveCanvasController2 clampedCenterPointForPoint:v21 withPlacement:MaxY viewScale:v25, v27, v28];
   [v8 unscaledPoint];
   v30 = v29;
   [v8 unscaledPoint];
@@ -328,11 +328,11 @@ LABEL_13:
   return [TSDContentLocation contentLocationWithUnscaledPoint:v30 viewScale:v32, v33];
 }
 
-- (id)completionAnimationFromContentLocation:(id)a3 movement:(CGPoint)a4 velocity:(CGPoint)a5
+- (id)completionAnimationFromContentLocation:(id)location movement:(CGPoint)movement velocity:(CGPoint)velocity
 {
   TSDSubtractPoints();
 
-  return [THGuidedPanController p_completionAnimationUsingWellsForMovement:"p_completionAnimationUsingWellsForMovement:velocity:currentLocation:" velocity:a3 currentLocation:?];
+  return [THGuidedPanController p_completionAnimationUsingWellsForMovement:"p_completionAnimationUsingWellsForMovement:velocity:currentLocation:" velocity:location currentLocation:?];
 }
 
 - (BOOL)isFocusedOnColumn
@@ -381,33 +381,33 @@ LABEL_13:
 
 - (BOOL)isFocusedOnTarget
 {
-  v3 = [(THGuidedPanTarget *)self->_target guidedPanTargetIsTargeted];
-  if (v3)
+  guidedPanTargetIsTargeted = [(THGuidedPanTarget *)self->_target guidedPanTargetIsTargeted];
+  if (guidedPanTargetIsTargeted)
   {
     if ([(THGuidedPanController *)self isFocusedOnColumn])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(guidedPanTargetIsTargeted) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(THGuidedPanController *)self isFocusedOnPage];
+      LOBYTE(guidedPanTargetIsTargeted) = [(THGuidedPanController *)self isFocusedOnPage];
     }
   }
 
-  return v3;
+  return guidedPanTargetIsTargeted;
 }
 
-- (double)viewScaleForUnscaledRect:(CGRect)a3 forPage:(BOOL)a4
+- (double)viewScaleForUnscaledRect:(CGRect)rect forPage:(BOOL)page
 {
-  if (a4)
+  if (page)
   {
-    v4 = [(THInteractiveCanvasController *)self->_interactiveCanvasController layerHost:a3.origin.x];
-    v5 = [v4 canvasLayer];
+    v4 = [(THInteractiveCanvasController *)self->_interactiveCanvasController layerHost:rect.origin.x];
+    canvasLayer = [v4 canvasLayer];
     [objc_msgSend(v4 "clippingLayer")];
-    [v5 minimumPinchViewScale];
-    [v5 maximumPinchViewScale];
+    [canvasLayer minimumPinchViewScale];
+    [canvasLayer maximumPinchViewScale];
 
     TSUClamp();
   }
@@ -416,7 +416,7 @@ LABEL_13:
   {
     interactiveCanvasController = self->_interactiveCanvasController;
 
-    [(THInteractiveCanvasController *)interactiveCanvasController viewScaleForZoomToFitRect:a3.origin.x outset:a3.origin.y fitWidthOnly:?];
+    [(THInteractiveCanvasController *)interactiveCanvasController viewScaleForZoomToFitRect:rect.origin.x outset:rect.origin.y fitWidthOnly:?];
   }
 
   return result;

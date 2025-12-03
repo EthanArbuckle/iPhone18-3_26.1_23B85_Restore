@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (BOOL)isLowPowerModeEnabled;
 - (NPKLowPowerModeLocalDeviceMonitor)init;
-- (NPKLowPowerModeLocalDeviceMonitor)initWithNotificationCenter:(id)a3;
-- (void)_lowPowerModeStateChanged:(id)a3;
-- (void)_sendLowPowerModeEnabledStateToObservers:(BOOL)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (NPKLowPowerModeLocalDeviceMonitor)initWithNotificationCenter:(id)center;
+- (void)_lowPowerModeStateChanged:(id)changed;
+- (void)_sendLowPowerModeEnabledStateToObservers:(BOOL)observers;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation NPKLowPowerModeLocalDeviceMonitor
@@ -32,15 +32,15 @@ void __51__NPKLowPowerModeLocalDeviceMonitor_sharedInstance__block_invoke()
 
 - (NPKLowPowerModeLocalDeviceMonitor)init
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(NPKLowPowerModeLocalDeviceMonitor *)self initWithNotificationCenter:v3];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = [(NPKLowPowerModeLocalDeviceMonitor *)self initWithNotificationCenter:defaultCenter];
 
   return v4;
 }
 
-- (NPKLowPowerModeLocalDeviceMonitor)initWithNotificationCenter:(id)a3
+- (NPKLowPowerModeLocalDeviceMonitor)initWithNotificationCenter:(id)center
 {
-  v4 = a3;
+  centerCopy = center;
   v9.receiver = self;
   v9.super_class = NPKLowPowerModeLocalDeviceMonitor;
   v5 = [(NPKLowPowerModeLocalDeviceMonitor *)&v9 init];
@@ -50,7 +50,7 @@ void __51__NPKLowPowerModeLocalDeviceMonitor_sharedInstance__block_invoke()
     observersManager = v5->_observersManager;
     v5->_observersManager = &v6->super;
 
-    [v4 addObserver:v5 selector:sel__lowPowerModeStateChanged_ name:*MEMORY[0x277CCA5E8] object:0];
+    [centerCopy addObserver:v5 selector:sel__lowPowerModeStateChanged_ name:*MEMORY[0x277CCA5E8] object:0];
   }
 
   return v5;
@@ -58,13 +58,13 @@ void __51__NPKLowPowerModeLocalDeviceMonitor_sharedInstance__block_invoke()
 
 - (BOOL)isLowPowerModeEnabled
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
-- (void)_lowPowerModeStateChanged:(id)a3
+- (void)_lowPowerModeStateChanged:(id)changed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -82,17 +82,17 @@ uint64_t __63__NPKLowPowerModeLocalDeviceMonitor__lowPowerModeStateChanged___blo
   return [v3 _sendLowPowerModeEnabledStateToObservers:v2];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  [(NPKObserverManager *)self->_observersManager registerObserver:v4];
+  observerCopy = observer;
+  [(NPKObserverManager *)self->_observersManager registerObserver:observerCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__NPKLowPowerModeLocalDeviceMonitor_registerObserver___block_invoke;
   v6[3] = &unk_2799454E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   NPKGuaranteeMainThread(v6);
 }
 
@@ -105,16 +105,16 @@ uint64_t __54__NPKLowPowerModeLocalDeviceMonitor_registerObserver___block_invoke
   return [v3 _sendLowPowerModeEnabled:v2 toObserver:v4];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observersManager = self->_observersManager;
-  v4 = a3;
-  [(NPKObserverManager *)observersManager unregisterObserver:v4];
+  observerCopy = observer;
+  [(NPKObserverManager *)observersManager unregisterObserver:observerCopy];
 }
 
-- (void)_sendLowPowerModeEnabledStateToObservers:(BOOL)a3
+- (void)_sendLowPowerModeEnabledStateToObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v15 = *MEMORY[0x277D85DE8];
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -125,7 +125,7 @@ uint64_t __54__NPKLowPowerModeLocalDeviceMonitor_registerObserver___block_invoke
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"disabled";
-      if (v3)
+      if (observersCopy)
       {
         v8 = @"enabled";
       }
@@ -142,7 +142,7 @@ uint64_t __54__NPKLowPowerModeLocalDeviceMonitor_registerObserver___block_invoke
   v11[2] = __78__NPKLowPowerModeLocalDeviceMonitor__sendLowPowerModeEnabledStateToObservers___block_invoke;
   v11[3] = &unk_279947260;
   v11[4] = self;
-  v12 = v3;
+  v12 = observersCopy;
   [(NPKObserverManager *)observersManager enumerateObserversUsingBlock:v11];
   v10 = *MEMORY[0x277D85DE8];
 }

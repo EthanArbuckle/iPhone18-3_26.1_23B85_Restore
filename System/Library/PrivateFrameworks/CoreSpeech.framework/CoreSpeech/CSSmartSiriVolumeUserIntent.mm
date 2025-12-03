@@ -1,7 +1,7 @@
 @interface CSSmartSiriVolumeUserIntent
-- (CSSmartSiriVolumeUserIntent)initWithStoredInformationAndAsset:(id)a3;
-- (double)applyLowerAndUpperBoundsToVolume:(float)a3;
-- (double)applyLowerAndUpperBoundsToVolumeOffset:(float)a3;
+- (CSSmartSiriVolumeUserIntent)initWithStoredInformationAndAsset:(id)asset;
+- (double)applyLowerAndUpperBoundsToVolume:(float)volume;
+- (double)applyLowerAndUpperBoundsToVolumeOffset:(float)offset;
 - (float)decreaseSiriVolumeBasedOnUserIntent;
 - (float)increaseSiriVolumeBasedOnUserIntent;
 - (void)storeASVStateInformation;
@@ -9,9 +9,9 @@
 
 @implementation CSSmartSiriVolumeUserIntent
 
-- (double)applyLowerAndUpperBoundsToVolumeOffset:(float)a3
+- (double)applyLowerAndUpperBoundsToVolumeOffset:(float)offset
 {
-  v3 = fminf(fmaxf(a3, self->kSSVCAUserIntentPermanentOffsetFactorLowerBound), self->kSSVCAUserIntentPermanentOffsetFactorUpperBound);
+  v3 = fminf(fmaxf(offset, self->kSSVCAUserIntentPermanentOffsetFactorLowerBound), self->kSSVCAUserIntentPermanentOffsetFactorUpperBound);
   v4 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
@@ -45,27 +45,27 @@
   return v3;
 }
 
-- (CSSmartSiriVolumeUserIntent)initWithStoredInformationAndAsset:(id)a3
+- (CSSmartSiriVolumeUserIntent)initWithStoredInformationAndAsset:(id)asset
 {
-  v4 = a3;
-  self->kSSVCAUserIntentValidForSeconds = [v4 SSVCAUserIntentValidForSeconds];
-  [v4 SSVCAUserIntentVolumeIncreaseFactor];
+  assetCopy = asset;
+  self->kSSVCAUserIntentValidForSeconds = [assetCopy SSVCAUserIntentValidForSeconds];
+  [assetCopy SSVCAUserIntentVolumeIncreaseFactor];
   self->kSSVCAUserIntentVolumeIncreaseFactor = v5;
-  [v4 SSVCAUserIntentVolumeDecreaseFactor];
+  [assetCopy SSVCAUserIntentVolumeDecreaseFactor];
   self->kSSVCAUserIntentVolumeDecreaseFactor = v6;
-  [v4 SSVCAUserIntentPermanentOffsetFactorDelta];
+  [assetCopy SSVCAUserIntentPermanentOffsetFactorDelta];
   self->kSSVCAUserIntentPermanentOffsetFactorDelta = v7;
-  [v4 SSVCAUserIntentPermanentOffsetFactorLowerBound];
+  [assetCopy SSVCAUserIntentPermanentOffsetFactorLowerBound];
   self->kSSVCAUserIntentPermanentOffsetFactorLowerBound = v8;
-  [v4 SSVCAUserIntentPermanentOffsetFactorUpperBound];
+  [assetCopy SSVCAUserIntentPermanentOffsetFactorUpperBound];
   self->kSSVCAUserIntentPermanentOffsetFactorUpperBound = v9;
-  [v4 SSVCADeviceSimpleMinTTSVolume];
+  [assetCopy SSVCADeviceSimpleMinTTSVolume];
   self->kSSVCA_DEVICE_SIMPLE_MIN_TTS_VOLUME = v10;
-  [v4 SSVCADeviceSimpleMaxTTSVolume];
+  [assetCopy SSVCADeviceSimpleMaxTTSVolume];
   self->kSSVCA_DEVICE_SIMPLE_MAX_TTS_VOLUME = v11;
-  [v4 SSVCADeviceDefaultMinTTSVolume];
+  [assetCopy SSVCADeviceDefaultMinTTSVolume];
   self->kSSVCA_DEVICE_DEFAULT_MIN_TTS_VOLUME = v12;
-  [v4 SSVCADeviceDefaultMaxTTSVolume];
+  [assetCopy SSVCADeviceDefaultMaxTTSVolume];
   v14 = v13;
 
   self->kSSVCA_DEVICE_DEFAULT_MAX_TTS_VOLUME = v14;
@@ -77,7 +77,7 @@
   return [(CSSmartSiriVolumeUserIntent *)self setUserIntentValidForSeconds:kSSVCAUserIntentValidForSeconds];
 }
 
-- (double)applyLowerAndUpperBoundsToVolume:(float)a3
+- (double)applyLowerAndUpperBoundsToVolume:(float)volume
 {
   v5 = +[CSUtils horsemanDeviceType];
   v6 = 36;
@@ -92,7 +92,7 @@
     v7 = 48;
   }
 
-  v8 = fminf(fmaxf(a3, *(&self->super.isa + v6)), *(&self->super.isa + v7));
+  v8 = fminf(fmaxf(volume, *(&self->super.isa + v6)), *(&self->super.isa + v7));
   v9 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {

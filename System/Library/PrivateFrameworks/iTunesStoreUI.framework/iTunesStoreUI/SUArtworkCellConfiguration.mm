@@ -1,14 +1,14 @@
 @interface SUArtworkCellConfiguration
-- (id)_artworkImageForURL:(id)a3 dataProvider:(id)a4;
-- (id)artworkImageForItemImage:(id)a3;
-- (id)artworkImageForURL:(id)a3;
+- (id)_artworkImageForURL:(id)l dataProvider:(id)provider;
+- (id)artworkImageForItemImage:(id)image;
+- (id)artworkImageForURL:(id)l;
 - (id)copyImageDataProvider;
 - (void)cancelArtworkRequests;
 - (void)dealloc;
-- (void)operation:(id)a3 failedWithError:(id)a4;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
+- (void)operation:(id)operation failedWithError:(id)error;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
 - (void)reloadAfterArtworkLoad;
-- (void)setRepresentedObject:(id)a3;
+- (void)setRepresentedObject:(id)object;
 @end
 
 @implementation SUArtworkCellConfiguration
@@ -24,16 +24,16 @@
   [(SUArrayCellConfiguration *)&v3 dealloc];
 }
 
-- (id)artworkImageForItemImage:(id)a3
+- (id)artworkImageForItemImage:(id)image
 {
-  v5 = [a3 URL];
+  v5 = [image URL];
   if (v5)
   {
     v6 = v5;
-    v7 = [(SUArtworkCellConfiguration *)self copyImageDataProvider];
-    [a3 imageScale];
-    [v7 setInputImageScale:?];
-    v8 = [(SUArtworkCellConfiguration *)self _artworkImageForURL:v6 dataProvider:v7];
+    copyImageDataProvider = [(SUArtworkCellConfiguration *)self copyImageDataProvider];
+    [image imageScale];
+    [copyImageDataProvider setInputImageScale:?];
+    v8 = [(SUArtworkCellConfiguration *)self _artworkImageForURL:v6 dataProvider:copyImageDataProvider];
 
     return v8;
   }
@@ -46,12 +46,12 @@
   }
 }
 
-- (id)artworkImageForURL:(id)a3
+- (id)artworkImageForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v5 = [(SUArtworkCellConfiguration *)self copyImageDataProvider];
-    v6 = [(SUArtworkCellConfiguration *)self _artworkImageForURL:a3 dataProvider:v5];
+    copyImageDataProvider = [(SUArtworkCellConfiguration *)self copyImageDataProvider];
+    v6 = [(SUArtworkCellConfiguration *)self _artworkImageForURL:l dataProvider:copyImageDataProvider];
 
     return v6;
   }
@@ -67,7 +67,7 @@
 - (void)cancelArtworkRequests
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [self->super.super._context imagePool];
+  imagePool = [self->super.super._context imagePool];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -89,7 +89,7 @@
 
         v9 = *(*(&v10 + 1) + 8 * i);
         [v9 setDelegate:0];
-        [v3 cancelOperation:v9];
+        [imagePool cancelOperation:v9];
       }
 
       v6 = [(NSMutableArray *)artworkLoadOperations countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -104,62 +104,62 @@
 
 - (id)copyImageDataProvider
 {
-  v2 = [self->super.super._context imageProvider];
+  imageProvider = [self->super.super._context imageProvider];
 
-  return [v2 copy];
+  return [imageProvider copy];
 }
 
 - (void)reloadAfterArtworkLoad
 {
   [(SUArrayCellConfiguration *)self reloadData];
-  v3 = [(SUCellConfiguration *)self view];
+  view = [(SUCellConfiguration *)self view];
 
-  [(SUCellConfigurationView *)v3 reloadView];
+  [(SUCellConfigurationView *)view reloadView];
 }
 
-- (void)setRepresentedObject:(id)a3
+- (void)setRepresentedObject:(id)object
 {
-  if (self->super.super._representedObject != a3)
+  if (self->super.super._representedObject != object)
   {
     v8 = v3;
     v9 = v4;
     [(SUArtworkCellConfiguration *)self cancelArtworkRequests];
     v7.receiver = self;
     v7.super_class = SUArtworkCellConfiguration;
-    [(SUCellConfiguration *)&v7 setRepresentedObject:a3];
+    [(SUCellConfiguration *)&v7 setRepresentedObject:object];
   }
 }
 
-- (void)operation:(id)a3 failedWithError:(id)a4
+- (void)operation:(id)operation failedWithError:(id)error
 {
-  [a3 setDelegate:{0, a4}];
+  [operation setDelegate:{0, error}];
   artworkLoadOperations = self->_artworkLoadOperations;
 
-  [(NSMutableArray *)artworkLoadOperations removeObject:a3];
+  [(NSMutableArray *)artworkLoadOperations removeObject:operation];
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
-  if (a4)
+  if (output)
   {
     if (!self->_artworkByURL)
     {
       self->_artworkByURL = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    v7 = [objc_msgSend(a3 "requestProperties")];
-    [(NSMutableDictionary *)self->_artworkByURL setObject:a4 forKey:v7];
+    v7 = [objc_msgSend(operation "requestProperties")];
+    [(NSMutableDictionary *)self->_artworkByURL setObject:output forKey:v7];
     [objc_msgSend(self->super.super._context "imageCache")];
     [(SUArtworkCellConfiguration *)self reloadAfterArtworkLoad];
   }
 
-  [a3 setDelegate:0];
+  [operation setDelegate:0];
   artworkLoadOperations = self->_artworkLoadOperations;
 
-  [(NSMutableArray *)artworkLoadOperations removeObject:a3];
+  [(NSMutableArray *)artworkLoadOperations removeObject:operation];
 }
 
-- (id)_artworkImageForURL:(id)a3 dataProvider:(id)a4
+- (id)_artworkImageForURL:(id)l dataProvider:(id)provider
 {
   result = [(NSMutableDictionary *)self->_artworkByURL objectForKey:?];
   if (!result)
@@ -168,11 +168,11 @@
     if (!result)
     {
       v8 = objc_alloc_init(MEMORY[0x1E69E47E0]);
-      [v8 setDataProvider:a4];
+      [v8 setDataProvider:provider];
       [v8 setDelegate:self];
       [v8 setUrlKnownToBeTrusted:1];
       [v8 setShouldMessageMainThread:1];
-      v9 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:a3];
+      v9 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:l];
       [v8 setRequestProperties:v9];
 
       artworkLoadOperations = self->_artworkLoadOperations;
@@ -184,9 +184,9 @@
 
       [(NSMutableArray *)artworkLoadOperations addObject:v8];
       [objc_msgSend(self->super.super._context "imagePool")];
-      v11 = [self->super.super._context placeholderImage];
+      placeholderImage = [self->super.super._context placeholderImage];
 
-      return v11;
+      return placeholderImage;
     }
   }
 

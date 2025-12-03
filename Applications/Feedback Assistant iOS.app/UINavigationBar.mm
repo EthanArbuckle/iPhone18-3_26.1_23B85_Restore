@@ -7,7 +7,7 @@
 
 - (UIView)largeTitleView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10005A4F4();
 
   return v3;
@@ -15,12 +15,12 @@
 
 - (BOOL)shouldHideBarButtonItem
 {
-  v2 = self;
-  v3 = [(UINavigationBar *)v2 largeTitleView];
-  if (v3)
+  selfCopy = self;
+  largeTitleView = [(UINavigationBar *)selfCopy largeTitleView];
+  if (largeTitleView)
   {
-    v4 = v3;
-    [(UIView *)v3 alpha];
+    v4 = largeTitleView;
+    [(UIView *)largeTitleView alpha];
     v6 = v5;
 
     return v6 != 0.0;

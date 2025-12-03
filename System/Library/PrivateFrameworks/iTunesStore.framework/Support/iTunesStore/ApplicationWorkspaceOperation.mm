@@ -1,20 +1,20 @@
 @interface ApplicationWorkspaceOperation
-- (ApplicationWorkspaceOperation)initWithApplicationHandle:(id)a3;
-- (BOOL)applicationIsInstalled:(id)a3;
+- (ApplicationWorkspaceOperation)initWithApplicationHandle:(id)handle;
+- (BOOL)applicationIsInstalled:(id)installed;
 - (void)dealloc;
-- (void)runWithCompletionBlock:(id)a3;
+- (void)runWithCompletionBlock:(id)block;
 @end
 
 @implementation ApplicationWorkspaceOperation
 
-- (ApplicationWorkspaceOperation)initWithApplicationHandle:(id)a3
+- (ApplicationWorkspaceOperation)initWithApplicationHandle:(id)handle
 {
   v6.receiver = self;
   v6.super_class = ApplicationWorkspaceOperation;
   v4 = [(ApplicationWorkspaceOperation *)&v6 init];
   if (v4)
   {
-    v4->_applicationHandle = [a3 copy];
+    v4->_applicationHandle = [handle copy];
   }
 
   return v4;
@@ -27,14 +27,14 @@
   [(ApplicationWorkspaceOperation *)&v3 dealloc];
 }
 
-- (BOOL)applicationIsInstalled:(id)a3
+- (BOOL)applicationIsInstalled:(id)installed
 {
-  if (a3)
+  if (installed)
   {
-    v4 = [a3 length];
+    v4 = [installed length];
     if (v4)
     {
-      v4 = [LSApplicationProxy applicationProxyForIdentifier:a3];
+      v4 = [LSApplicationProxy applicationProxyForIdentifier:installed];
       if (v4)
       {
         v5 = v4;
@@ -60,11 +60,11 @@
   return v4;
 }
 
-- (void)runWithCompletionBlock:(id)a3
+- (void)runWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, 0, 0, 0);
+    (*(block + 2))(block, 0, 0, 0);
   }
 }
 

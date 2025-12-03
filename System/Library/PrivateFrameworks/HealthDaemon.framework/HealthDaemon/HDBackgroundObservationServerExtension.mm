@@ -1,11 +1,11 @@
 @interface HDBackgroundObservationServerExtension
 - (HDBackgroundObservationServerExtension)init;
-- (id)_initWithExtension:(id)a3;
+- (id)_initWithExtension:(id)extension;
 - (id)description;
-- (void)connectWithCompletionHandler:(id)a3;
+- (void)connectWithCompletionHandler:(id)handler;
 - (void)disconnect;
 - (void)notifyExtensionOfUpcomingTimeout;
-- (void)notifyExtensionOfUpdateForSampleType:(id)a3 completionHandler:(id)a4;
+- (void)notifyExtensionOfUpdateForSampleType:(id)type completionHandler:(id)handler;
 @end
 
 @implementation HDBackgroundObservationServerExtension
@@ -20,18 +20,18 @@
   return 0;
 }
 
-- (id)_initWithExtension:(id)a3
+- (id)_initWithExtension:(id)extension
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  extensionCopy = extension;
   v27.receiver = self;
   v27.super_class = HDBackgroundObservationServerExtension;
   v6 = [(HDBackgroundObservationServerExtension *)&v27 init];
   if (v6)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [v5 identifier];
-    v9 = [v7 stringWithFormat:@"extension.%@", v8];
+    identifier = [extensionCopy identifier];
+    v9 = [v7 stringWithFormat:@"extension.%@", identifier];
     v10 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v10;
@@ -40,19 +40,19 @@
     clientQueue = v6->_clientQueue;
     v6->_clientQueue = v12;
 
-    objc_storeStrong(&v6->_extension, a3);
-    v14 = [v5 identifier];
+    objc_storeStrong(&v6->_extension, extension);
+    identifier2 = [extensionCopy identifier];
     extensionIdentifier = v6->_extensionIdentifier;
-    v6->_extensionIdentifier = v14;
+    v6->_extensionIdentifier = identifier2;
 
     v16 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:v6->_extensionIdentifier];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 containingBundle];
-      v19 = [v18 bundleIdentifier];
+      containingBundle = [v16 containingBundle];
+      bundleIdentifier = [containingBundle bundleIdentifier];
       appIdentifier = v6->_appIdentifier;
-      v6->_appIdentifier = v19;
+      v6->_appIdentifier = bundleIdentifier;
     }
 
     _HKInitializeLogging();
@@ -60,12 +60,12 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC288], OS_LOG_TYPE_DEBUG))
     {
       v24 = v21;
-      v25 = [v5 identifier];
-      v26 = [v5 extensionPointIdentifier];
+      identifier3 = [extensionCopy identifier];
+      extensionPointIdentifier = [extensionCopy extensionPointIdentifier];
       *buf = 138543618;
-      v29 = v25;
+      v29 = identifier3;
       v30 = 2114;
-      v31 = v26;
+      v31 = extensionPointIdentifier;
       _os_log_debug_impl(&dword_228986000, v24, OS_LOG_TYPE_DEBUG, "Initialized app extension server with extension ID: %{public}@ for extension point ID: %{public}@", buf, 0x16u);
     }
   }
@@ -74,15 +74,15 @@
   return v6;
 }
 
-- (void)connectWithCompletionHandler:(id)a3
+- (void)connectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__HDBackgroundObservationServerExtension_connectWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_2786173C8;
   aBlock[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v5 = _Block_copy(aBlock);
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -296,26 +296,26 @@ void __52__HDBackgroundObservationServerExtension_disconnect__block_invoke(uint6
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyExtensionOfUpdateForSampleType:(id)a3 completionHandler:(id)a4
+- (void)notifyExtensionOfUpdateForSampleType:(id)type completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__HDBackgroundObservationServerExtension_notifyExtensionOfUpdateForSampleType_completionHandler___block_invoke;
   aBlock[3] = &unk_2786173C8;
   aBlock[4] = self;
-  v16 = v7;
+  v16 = handlerCopy;
   v8 = _Block_copy(aBlock);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__HDBackgroundObservationServerExtension_notifyExtensionOfUpdateForSampleType_completionHandler___block_invoke_3;
   block[3] = &unk_278616D18;
-  v13 = v6;
+  v13 = typeCopy;
   v14 = v8;
   block[4] = self;
-  v10 = v6;
+  v10 = typeCopy;
   v11 = v8;
   dispatch_async(queue, block);
 }

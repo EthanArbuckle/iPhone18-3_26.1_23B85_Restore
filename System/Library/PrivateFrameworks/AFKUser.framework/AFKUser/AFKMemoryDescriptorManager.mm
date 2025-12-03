@@ -1,24 +1,24 @@
 @interface AFKMemoryDescriptorManager
-- (AFKMemoryDescriptorManager)initWithService:(unsigned int)a3;
+- (AFKMemoryDescriptorManager)initWithService:(unsigned int)service;
 - (void)dealloc;
 @end
 
 @implementation AFKMemoryDescriptorManager
 
-- (AFKMemoryDescriptorManager)initWithService:(unsigned int)a3
+- (AFKMemoryDescriptorManager)initWithService:(unsigned int)service
 {
   output[1] = *MEMORY[0x277D85DE8];
   outputCnt = 1;
   v9.receiver = self;
   v9.super_class = AFKMemoryDescriptorManager;
   v4 = [(AFKMemoryDescriptorManager *)&v9 init];
-  if (!v4 || IOObjectRetain(a3))
+  if (!v4 || IOObjectRetain(service))
   {
     goto LABEL_16;
   }
 
-  v4->_service = a3;
-  if (IOServiceOpen(a3, *MEMORY[0x277D85F48], 0x6D646D72u, &v4->_connect))
+  v4->_service = service;
+  if (IOServiceOpen(service, *MEMORY[0x277D85F48], 0x6D646D72u, &v4->_connect))
   {
     v6 = _AFKUserLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))

@@ -1,19 +1,19 @@
 @interface HDHRDailyHeartRateManager
-- (HDHRDailyHeartRateManager)initWithProfile:(id)a3;
-- (void)_queue_cleanupValuesForTodayCacheIndex:(int64_t)a3 yesterdayCacheIndex:(int64_t)a4;
-- (void)_queue_deleteHeartRateOfType:(id)a3 forCacheIndex:(int64_t)a4 replacementUUID:(id)a5;
-- (void)_queue_replaceHeartRate:(id)a3 ofType:(id)a4 forCacheIndex:(int64_t)a5 dateInterval:(id)a6 heartRateByCacheIndex:(id)a7;
-- (void)activityCacheManager:(id)a3 changedHeartRateSummary:(id)a4 isToday:(BOOL)a5;
-- (void)daemonReady:(id)a3;
+- (HDHRDailyHeartRateManager)initWithProfile:(id)profile;
+- (void)_queue_cleanupValuesForTodayCacheIndex:(int64_t)index yesterdayCacheIndex:(int64_t)cacheIndex;
+- (void)_queue_deleteHeartRateOfType:(id)type forCacheIndex:(int64_t)index replacementUUID:(id)d;
+- (void)_queue_replaceHeartRate:(id)rate ofType:(id)type forCacheIndex:(int64_t)index dateInterval:(id)interval heartRateByCacheIndex:(id)cacheIndex;
+- (void)activityCacheManager:(id)manager changedHeartRateSummary:(id)summary isToday:(BOOL)today;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
 @end
 
 @implementation HDHRDailyHeartRateManager
 
-- (HDHRDailyHeartRateManager)initWithProfile:(id)a3
+- (HDHRDailyHeartRateManager)initWithProfile:(id)profile
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v20.receiver = self;
   v20.super_class = HDHRDailyHeartRateManager;
   v5 = [(HDHRDailyHeartRateManager *)&v20 init];
@@ -30,23 +30,23 @@
       _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Initializing", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v9 = HDDispatchQueueName();
     v10 = dispatch_queue_create(v9, 0);
     queue = v5->_queue;
     v5->_queue = v10;
 
     WeakRetained = objc_loadWeakRetained(&v5->_profile);
-    v13 = [WeakRetained healthDaemon];
-    [v13 registerForDaemonReady:v5];
+    healthDaemon = [WeakRetained healthDaemon];
+    [healthDaemon registerForDaemonReady:v5];
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     restingHeartRateByActivityCacheIndex = v5->_restingHeartRateByActivityCacheIndex;
-    v5->_restingHeartRateByActivityCacheIndex = v14;
+    v5->_restingHeartRateByActivityCacheIndex = dictionary;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     walkingAverageHeartRateByActivityCacheIndex = v5->_walkingAverageHeartRateByActivityCacheIndex;
-    v5->_walkingAverageHeartRateByActivityCacheIndex = v16;
+    v5->_walkingAverageHeartRateByActivityCacheIndex = dictionary2;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -63,7 +63,7 @@
   [(HDHRDailyHeartRateManager *)&v4 dealloc];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v13 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -78,8 +78,8 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained activityCacheInterface];
-  objc_storeWeak(&self->_activityCacheInterface, v8);
+  activityCacheInterface = [WeakRetained activityCacheInterface];
+  objc_storeWeak(&self->_activityCacheInterface, activityCacheInterface);
 
   v9 = objc_loadWeakRetained(&self->_activityCacheInterface);
   [v9 addActivityCacheObserver:self];
@@ -87,27 +87,27 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activityCacheManager:(id)a3 changedHeartRateSummary:(id)a4 isToday:(BOOL)a5
+- (void)activityCacheManager:(id)manager changedHeartRateSummary:(id)summary isToday:(BOOL)today
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  summaryCopy = summary;
   _HKInitializeLogging();
   v7 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "activityCacheIndex")}];
-    v11 = [v6 restingHeartRate];
-    v12 = [v6 walkingAverageHeartRate];
+    v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(summaryCopy, "activityCacheIndex")}];
+    restingHeartRate = [summaryCopy restingHeartRate];
+    walkingAverageHeartRate = [summaryCopy walkingAverageHeartRate];
     *buf = 138544130;
     v20 = v9;
     v21 = 2114;
     v22 = v10;
     v23 = 2112;
-    v24 = v11;
+    v24 = restingHeartRate;
     v25 = 2112;
-    v26 = v12;
+    v26 = walkingAverageHeartRate;
     _os_log_impl(&dword_229486000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received heart rate summary (%{public}@) with resting: %@, walking: %@", buf, 0x2Au);
   }
 
@@ -116,9 +116,9 @@
   v16[1] = 3221225472;
   v16[2] = __82__HDHRDailyHeartRateManager_activityCacheManager_changedHeartRateSummary_isToday___block_invoke;
   v16[3] = &unk_27865FE98;
-  v17 = v6;
-  v18 = self;
-  v14 = v6;
+  v17 = summaryCopy;
+  selfCopy = self;
+  v14 = summaryCopy;
   dispatch_async(queue, v16);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -147,20 +147,20 @@ void __82__HDHRDailyHeartRateManager_activityCacheManager_changedHeartRateSummar
   [v9 _queue_cleanupValuesForTodayCacheIndex:v12 yesterdayCacheIndex:{objc_msgSend(v14, "cacheIndex")}];
 }
 
-- (void)_queue_replaceHeartRate:(id)a3 ofType:(id)a4 forCacheIndex:(int64_t)a5 dateInterval:(id)a6 heartRateByCacheIndex:(id)a7
+- (void)_queue_replaceHeartRate:(id)rate ofType:(id)type forCacheIndex:(int64_t)index dateInterval:(id)interval heartRateByCacheIndex:(id)cacheIndex
 {
   v57 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v13 identifier];
-  if (v12 && ![v12 _isZero])
+  rateCopy = rate;
+  typeCopy = type;
+  intervalCopy = interval;
+  cacheIndexCopy = cacheIndex;
+  identifier = [typeCopy identifier];
+  if (rateCopy && ![rateCopy _isZero])
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
-    v46 = v15;
-    v20 = [v15 objectForKeyedSubscript:v19];
-    v21 = [v12 isEqual:v20];
+    v19 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
+    v46 = cacheIndexCopy;
+    v20 = [cacheIndexCopy objectForKeyedSubscript:v19];
+    v21 = [rateCopy isEqual:v20];
 
     if (v21)
     {
@@ -168,85 +168,85 @@ void __82__HDHRDailyHeartRateManager_activityCacheManager_changedHeartRateSummar
       v17 = HKLogHeartRateCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+        v22 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
         *buf = 138543874;
         v52 = v22;
         v53 = 2114;
-        v54 = v16;
+        v54 = identifier;
         v55 = 2112;
-        v56 = v12;
+        v56 = rateCopy;
         _os_log_impl(&dword_229486000, v17, OS_LOG_TYPE_DEFAULT, "[Daily HR] ignoring activity cache (%{public}@) for %{public}@ because value (%@) did not change", buf, 0x20u);
       }
 
-      v15 = v46;
+      cacheIndexCopy = v46;
     }
 
     else
     {
       v49 = *MEMORY[0x277CCDF98];
-      v23 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+      v23 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
       v50 = v23;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
 
       v24 = MEMORY[0x277CCD800];
-      v25 = [v14 startDate];
-      v45 = v14;
-      [v14 endDate];
+      startDate = [intervalCopy startDate];
+      v45 = intervalCopy;
+      [intervalCopy endDate];
       v27 = v26 = self;
-      v28 = [v24 quantitySampleWithType:v13 quantity:v12 startDate:v25 endDate:v27 metadata:v17];
+      v28 = [v24 quantitySampleWithType:typeCopy quantity:rateCopy startDate:startDate endDate:v27 metadata:v17];
 
       WeakRetained = objc_loadWeakRetained(&v26->_profile);
-      v29 = [WeakRetained dataManager];
+      dataManager = [WeakRetained dataManager];
       v43 = v28;
       v48 = v28;
       v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
       v40 = v26;
       v31 = objc_loadWeakRetained(&v26->_profile);
-      v32 = [v31 dataProvenanceManager];
-      v33 = [v32 defaultLocalDataProvenance];
+      dataProvenanceManager = [v31 dataProvenanceManager];
+      defaultLocalDataProvenance = [dataProvenanceManager defaultLocalDataProvenance];
       v47 = 0;
-      v41 = [v29 insertDataObjects:v30 withProvenance:v33 creationDate:&v47 error:CFAbsoluteTimeGetCurrent()];
+      v41 = [dataManager insertDataObjects:v30 withProvenance:defaultLocalDataProvenance creationDate:&v47 error:CFAbsoluteTimeGetCurrent()];
       v44 = v47;
 
       _HKInitializeLogging();
       v34 = HKLogHeartRateCategory();
-      v35 = v34;
+      uUID = v34;
       if (v41)
       {
-        v15 = v46;
+        cacheIndexCopy = v46;
         v36 = v43;
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v52 = v16;
+          v52 = identifier;
           v53 = 2112;
           v54 = v43;
-          _os_log_impl(&dword_229486000, v35, OS_LOG_TYPE_DEFAULT, "[Daily HR] saved new %{public}@: %@", buf, 0x16u);
+          _os_log_impl(&dword_229486000, uUID, OS_LOG_TYPE_DEFAULT, "[Daily HR] saved new %{public}@: %@", buf, 0x16u);
         }
 
-        v37 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
-        [v46 setObject:v12 forKeyedSubscript:v37];
+        v37 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
+        [v46 setObject:rateCopy forKeyedSubscript:v37];
 
-        v35 = [v43 UUID];
-        [(HDHRDailyHeartRateManager *)v40 _queue_deleteHeartRateOfType:v13 forCacheIndex:a5 replacementUUID:v35];
+        uUID = [v43 UUID];
+        [(HDHRDailyHeartRateManager *)v40 _queue_deleteHeartRateOfType:typeCopy forCacheIndex:index replacementUUID:uUID];
         v38 = v44;
-        v14 = v45;
+        intervalCopy = v45;
       }
 
       else
       {
-        v15 = v46;
+        cacheIndexCopy = v46;
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
           v38 = v44;
           [HDHRDailyHeartRateManager _queue_replaceHeartRate:ofType:forCacheIndex:dateInterval:heartRateByCacheIndex:];
-          v14 = v45;
+          intervalCopy = v45;
         }
 
         else
         {
           v38 = v44;
-          v14 = v45;
+          intervalCopy = v45;
         }
 
         v36 = v43;
@@ -260,11 +260,11 @@ void __82__HDHRDailyHeartRateManager_activityCacheManager_changedHeartRateSummar
     v17 = HKLogHeartRateCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+      v18 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
       *buf = 138543618;
       v52 = v18;
       v53 = 2114;
-      v54 = v16;
+      v54 = identifier;
       _os_log_impl(&dword_229486000, v17, OS_LOG_TYPE_DEFAULT, "[Daily HR] ignoring activity cache (%{public}@) with no value for %{public}@", buf, 0x16u);
     }
   }
@@ -272,19 +272,19 @@ void __82__HDHRDailyHeartRateManager_activityCacheManager_changedHeartRateSummar
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_deleteHeartRateOfType:(id)a3 forCacheIndex:(int64_t)a4 replacementUUID:(id)a5
+- (void)_queue_deleteHeartRateOfType:(id)type forCacheIndex:(int64_t)index replacementUUID:(id)d
 {
   v36[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  dCopy = d;
   v10 = HDSampleEntityPredicateForDataType();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained metadataManager];
+  metadataManager = [WeakRetained metadataManager];
   v13 = *MEMORY[0x277CCDF98];
   v14 = MEMORY[0x277CBEB98];
-  v15 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+  v15 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
   v16 = [v14 setWithObject:v15];
-  v17 = [v12 predicateWithMetadataKey:v13 allowedValues:v16];
+  v17 = [metadataManager predicateWithMetadataKey:v13 allowedValues:v16];
 
   v18 = MEMORY[0x277D10B20];
   v19 = HDDataEntityPredicateForDataUUID();
@@ -300,12 +300,12 @@ void __82__HDHRDailyHeartRateManager_activityCacheManager_changedHeartRateSummar
 
   v35 = 0;
   v24 = objc_loadWeakRetained(&self->_profile);
-  v25 = [v24 dataManager];
+  dataManager = [v24 dataManager];
   v26 = HDSampleEntityClassForDataType();
   v27 = *MEMORY[0x277D10C08];
   v34 = 0;
   LOBYTE(v33) = 0;
-  LOBYTE(v16) = [v25 deleteDataObjectsOfClass:v26 predicate:v23 limit:v27 deletedSampleCount:&v35 notifyObservers:1 generateDeletedObjects:1 userRequested:v33 recursiveDeleteAuthorizationBlock:0 error:&v34];
+  LOBYTE(v16) = [dataManager deleteDataObjectsOfClass:v26 predicate:v23 limit:v27 deletedSampleCount:&v35 notifyObservers:1 generateDeletedObjects:1 userRequested:v33 recursiveDeleteAuthorizationBlock:0 error:&v34];
   v28 = v34;
 
   _HKInitializeLogging();
@@ -315,7 +315,7 @@ void __82__HDHRDailyHeartRateManager_activityCacheManager_changedHeartRateSummar
   {
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      [HDHRDailyHeartRateManager _queue_deleteHeartRateOfType:v8 forCacheIndex:v28 replacementUUID:v30];
+      [HDHRDailyHeartRateManager _queue_deleteHeartRateOfType:typeCopy forCacheIndex:v28 replacementUUID:v30];
     }
 
     goto LABEL_7;
@@ -328,7 +328,7 @@ void __82__HDHRDailyHeartRateManager_activityCacheManager_changedHeartRateSummar
     v30 = HKLogHeartRateCategory();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      [HDHRDailyHeartRateManager _queue_deleteHeartRateOfType:v8 forCacheIndex:&v35 replacementUUID:v30];
+      [HDHRDailyHeartRateManager _queue_deleteHeartRateOfType:typeCopy forCacheIndex:&v35 replacementUUID:v30];
     }
 
 LABEL_7:
@@ -337,7 +337,7 @@ LABEL_7:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_cleanupValuesForTodayCacheIndex:(int64_t)a3 yesterdayCacheIndex:(int64_t)a4
+- (void)_queue_cleanupValuesForTodayCacheIndex:(int64_t)index yesterdayCacheIndex:(int64_t)cacheIndex
 {
   v24 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CBEB18] array];
@@ -346,8 +346,8 @@ LABEL_7:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(NSMutableDictionary *)self->_restingHeartRateByActivityCacheIndex allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_restingHeartRateByActivityCacheIndex allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -359,18 +359,18 @@ LABEL_7:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
-        v12 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+        v12 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
         if ([v11 isEqualToNumber:v12])
         {
         }
 
         else
         {
-          v13 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+          v13 = [MEMORY[0x277CCABB0] numberWithLongLong:cacheIndex];
           v14 = [v11 isEqualToNumber:v13];
 
           if ((v14 & 1) == 0)
@@ -383,7 +383,7 @@ LABEL_7:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);

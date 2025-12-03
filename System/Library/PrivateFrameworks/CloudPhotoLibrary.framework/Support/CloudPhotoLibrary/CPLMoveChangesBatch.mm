@@ -1,25 +1,25 @@
 @interface CPLMoveChangesBatch
-- (CPLMoveChangesBatch)initWithCapacity:(unint64_t)a3;
+- (CPLMoveChangesBatch)initWithCapacity:(unint64_t)capacity;
 - (NSArray)changes;
 - (NSArray)destinationRecordIDs;
 - (id)redactedDescription;
-- (void)addChange:(id)a3;
+- (void)addChange:(id)change;
 @end
 
 @implementation CPLMoveChangesBatch
 
-- (CPLMoveChangesBatch)initWithCapacity:(unint64_t)a3
+- (CPLMoveChangesBatch)initWithCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = CPLMoveChangesBatch;
   v4 = [(CPLMoveChangesBatch *)&v10 init];
   if (v4)
   {
-    v5 = [[NSMutableArray alloc] initWithCapacity:a3];
+    v5 = [[NSMutableArray alloc] initWithCapacity:capacity];
     changes = v4->_changes;
     v4->_changes = v5;
 
-    v7 = [[NSMutableDictionary alloc] initWithCapacity:a3];
+    v7 = [[NSMutableDictionary alloc] initWithCapacity:capacity];
     changePerSourceRecordID = v4->_changePerSourceRecordID;
     v4->_changePerSourceRecordID = v7;
   }
@@ -56,9 +56,9 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) destinationRecord];
-        v10 = [v9 recordID];
-        [v3 addObject:v10];
+        destinationRecord = [*(*(&v12 + 1) + 8 * i) destinationRecord];
+        recordID = [destinationRecord recordID];
+        [v3 addObject:recordID];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -70,14 +70,14 @@
   return v3;
 }
 
-- (void)addChange:(id)a3
+- (void)addChange:(id)change
 {
   changes = self->_changes;
-  v5 = a3;
-  [(NSMutableArray *)changes addObject:v5];
+  changeCopy = change;
+  [(NSMutableArray *)changes addObject:changeCopy];
   changePerSourceRecordID = self->_changePerSourceRecordID;
-  v7 = [v5 sourceRecordID];
-  [(NSMutableDictionary *)changePerSourceRecordID setObject:v5 forKeyedSubscript:v7];
+  sourceRecordID = [changeCopy sourceRecordID];
+  [(NSMutableDictionary *)changePerSourceRecordID setObject:changeCopy forKeyedSubscript:sourceRecordID];
 }
 
 - (id)redactedDescription

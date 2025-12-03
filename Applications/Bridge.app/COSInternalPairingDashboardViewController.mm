@@ -1,14 +1,14 @@
 @interface COSInternalPairingDashboardViewController
 - (COSInternalPairingDashboardViewController)init;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_updateDashBoardRows:(id)a3;
-- (void)_updatePairingEvents:(id)a3;
-- (void)_updatePairingEventsWithEvent:(id)a3;
-- (void)addPairingDevice:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_updateDashBoardRows:(id)rows;
+- (void)_updatePairingEvents:(id)events;
+- (void)_updatePairingEventsWithEvent:(id)event;
+- (void)addPairingDevice:(id)device;
 - (void)dealloc;
-- (void)decorateCell:(id)a3 basedOnEvent:(id)a4;
+- (void)decorateCell:(id)cell basedOnEvent:(id)event;
 - (void)viewDidLoad;
 @end
 
@@ -22,14 +22,14 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(COSInternalPairingDashboardViewController *)v2 tableView];
-    [v4 setDelegate:v3];
+    tableView = [(COSInternalPairingDashboardViewController *)v2 tableView];
+    [tableView setDelegate:v3];
 
-    v5 = [(COSInternalPairingDashboardViewController *)v3 tableView];
-    [v5 setDataSource:v3];
+    tableView2 = [(COSInternalPairingDashboardViewController *)v3 tableView];
+    [tableView2 setDataSource:v3];
 
-    v6 = [(COSInternalPairingDashboardViewController *)v3 tableView];
-    [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"PairingDashboardCellID"];
+    tableView3 = [(COSInternalPairingDashboardViewController *)v3 tableView];
+    [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PairingDashboardCellID"];
 
     v7 = dispatch_queue_create("com.apple.InternalPairingDashboard", 0);
     [(COSInternalPairingDashboardViewController *)v3 setQueue:v7];
@@ -54,16 +54,16 @@
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
-  v8 = [(COSInternalPairingDashboardViewController *)self tableView];
-  [v8 setTableFooterView:v7];
+  tableView = [(COSInternalPairingDashboardViewController *)self tableView];
+  [tableView setTableFooterView:v7];
 
   v9 = BPSBackgroundColor();
-  v10 = [(COSInternalPairingDashboardViewController *)self tableView];
-  [v10 setBackgroundColor:v9];
+  tableView2 = [(COSInternalPairingDashboardViewController *)self tableView];
+  [tableView2 setBackgroundColor:v9];
 
-  v11 = [[COSInternalPairingDashboardHeader alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[COSInternalPairingDashboardHeader alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   watchHeader = self->_watchHeader;
-  self->_watchHeader = v11;
+  self->_watchHeader = height;
 }
 
 - (void)dealloc
@@ -76,10 +76,10 @@
   [(COSInternalPairingDashboardViewController *)&v4 dealloc];
 }
 
-- (void)_updatePairingEvents:(id)a3
+- (void)_updatePairingEvents:(id)events
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:BRPairingChangedMetricKey];
+  userInfo = [events userInfo];
+  v5 = [userInfo objectForKey:BRPairingChangedMetricKey];
 
   [(COSInternalPairingDashboardViewController *)self _updatePairingEventsWithEvent:v5];
   if ([v5 isEqualToString:@"PairingBeginsType"])
@@ -88,23 +88,23 @@
   }
 }
 
-- (void)_updatePairingEventsWithEvent:(id)a3
+- (void)_updatePairingEventsWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(COSInternalPairingDashboardViewController *)self queue];
+  eventCopy = event;
+  queue = [(COSInternalPairingDashboardViewController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003CEEC;
   v7[3] = &unk_100268358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_updateDashBoardRows:(id)a3
+- (void)_updateDashBoardRows:(id)rows
 {
-  if ([a3 count])
+  if ([rows count])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -115,66 +115,66 @@
   }
 }
 
-- (void)addPairingDevice:(id)a3
+- (void)addPairingDevice:(id)device
 {
-  v6 = a3;
-  v4 = [(COSInternalPairingDashboardViewController *)self pairingDevice];
+  deviceCopy = device;
+  pairingDevice = [(COSInternalPairingDashboardViewController *)self pairingDevice];
 
-  if (!v4)
+  if (!pairingDevice)
   {
-    [(COSInternalPairingDashboardViewController *)self setPairingDevice:v6];
-    v5 = [(COSInternalPairingDashboardViewController *)self watchHeader];
-    [v5 refreshForWatchDetails:v6];
+    [(COSInternalPairingDashboardViewController *)self setPairingDevice:deviceCopy];
+    watchHeader = [(COSInternalPairingDashboardViewController *)self watchHeader];
+    [watchHeader refreshForWatchDetails:deviceCopy];
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(COSInternalPairingDashboardViewController *)self watchHeader:a3];
+  v4 = [(COSInternalPairingDashboardViewController *)self watchHeader:view];
   [v4 totalHeaderHeight];
   v6 = v5 + 10.0;
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(COSInternalPairingDashboardViewController *)self dashboardData:a3];
-  v5 = [v4 pairingEvents];
-  v6 = [v5 count];
+  v4 = [(COSInternalPairingDashboardViewController *)self dashboardData:view];
+  pairingEvents = [v4 pairingEvents];
+  v6 = [pairingEvents count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(COSInternalPairingDashboardViewController *)self dashboardData];
-  v9 = [v8 pairingEvents];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  dashboardData = [(COSInternalPairingDashboardViewController *)self dashboardData];
+  pairingEvents = [dashboardData pairingEvents];
+  v10 = [pairingEvents objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v11 = [v7 dequeueReusableCellWithIdentifier:@"PairingDashboardCellID" forIndexPath:v6];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:@"PairingDashboardCellID" forIndexPath:pathCopy];
 
   if (!v11)
   {
     v11 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"PairingDashboardCellID"];
   }
 
-  v12 = [v11 textLabel];
-  v13 = [v10 dashboardKey];
-  [v12 setText:v13];
+  textLabel = [v11 textLabel];
+  dashboardKey = [v10 dashboardKey];
+  [textLabel setText:dashboardKey];
 
-  v14 = [v11 textLabel];
+  textLabel2 = [v11 textLabel];
   v15 = BPSTextColor();
-  [v14 setTextColor:v15];
+  [textLabel2 setTextColor:v15];
 
   v16 = BPSAccessoryColor();
   [v11 setBackgroundColor:v16];
 
-  v17 = [v11 accessoryView];
+  accessoryView = [v11 accessoryView];
   v18 = BPSAccessoryColor();
-  [v17 setTintColor:v18];
+  [accessoryView setTintColor:v18];
 
   v19 = objc_alloc_init(UIView);
   v20 = BPSCellHightlightColor();
@@ -186,10 +186,10 @@
   return v11;
 }
 
-- (void)decorateCell:(id)a3 basedOnEvent:(id)a4
+- (void)decorateCell:(id)cell basedOnEvent:(id)event
 {
-  v22 = a3;
-  v5 = a4;
+  cellCopy = cell;
+  eventCopy = event;
   v6 = [UIImage systemImageNamed:@"checkmark.circle"];
   v7 = +[UIColor systemGreenColor];
   v8 = [v6 imageWithTintColor:v7 renderingMode:1];
@@ -198,18 +198,18 @@
   v10 = +[UIColor systemGrayColor];
   v11 = [v9 imageWithTintColor:v10 renderingMode:1];
 
-  v12 = [v5 eventValue];
+  eventValue = [eventCopy eventValue];
 
-  if (v12)
+  if (eventValue)
   {
-    v13 = [v5 eventValue];
+    eventValue2 = [eventCopy eventValue];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v15 = [v5 eventValue];
-      if ([v15 isEqual:&off_100281A38])
+      eventValue3 = [eventCopy eventValue];
+      if ([eventValue3 isEqual:&off_100281A38])
       {
         v16 = v8;
       }
@@ -219,30 +219,30 @@
         v16 = v11;
       }
 
-      v17 = v16;
+      textLabel = v16;
 
-      v18 = [v22 imageView];
-      [v18 setImage:v17];
+      imageView = [cellCopy imageView];
+      [imageView setImage:textLabel];
     }
 
     else
     {
-      v19 = [v5 dashboardKey];
-      v20 = [v5 eventValue];
-      v18 = [NSString stringWithFormat:@"%@ : %@", v19, v20];
+      dashboardKey = [eventCopy dashboardKey];
+      eventValue4 = [eventCopy eventValue];
+      imageView = [NSString stringWithFormat:@"%@ : %@", dashboardKey, eventValue4];
 
-      v21 = [v22 imageView];
-      [v21 setImage:v8];
+      imageView2 = [cellCopy imageView];
+      [imageView2 setImage:v8];
 
-      v17 = [v22 textLabel];
-      [v17 setText:v18];
+      textLabel = [cellCopy textLabel];
+      [textLabel setText:imageView];
     }
   }
 
   else
   {
-    v18 = [v22 imageView];
-    [v18 setImage:v11];
+    imageView = [cellCopy imageView];
+    [imageView setImage:v11];
   }
 }
 

@@ -1,31 +1,31 @@
 @interface VSUserAccountManager
-- (id)groupedDeveloperAccounts:(id)a3;
-- (void)fetchDeveloperUserAccountsWithCompletion:(id)a3;
+- (id)groupedDeveloperAccounts:(id)accounts;
+- (void)fetchDeveloperUserAccountsWithCompletion:(id)completion;
 @end
 
 @implementation VSUserAccountManager
 
-- (void)fetchDeveloperUserAccountsWithCompletion:(id)a3
+- (void)fetchDeveloperUserAccountsWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1020;
   v4[3] = &unk_8238;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(VSUserAccountManager *)v5 queryUserAccountsWithOptions:1 completion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(VSUserAccountManager *)selfCopy queryUserAccountsWithOptions:1 completion:v4];
 }
 
-- (id)groupedDeveloperAccounts:(id)a3
+- (id)groupedDeveloperAccounts:(id)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   v4 = objc_alloc_init(NSMutableDictionary);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = accountsCopy;
   v6 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v6)
   {
@@ -41,8 +41,8 @@
         }
 
         v10 = *(*(&v33 + 1) + 8 * i);
-        v11 = [v10 sourceIdentifier];
-        v12 = [v4 objectForKeyedSubscript:v11];
+        sourceIdentifier = [v10 sourceIdentifier];
+        v12 = [v4 objectForKeyedSubscript:sourceIdentifier];
 
         if (([v10 isSignedOut] & 1) == 0)
         {
@@ -56,8 +56,8 @@
             v38 = v10;
             v13 = [NSArray arrayWithObjects:&v38 count:1];
             v14 = [v13 mutableCopy];
-            v15 = [v10 sourceIdentifier];
-            [v4 setObject:v14 forKeyedSubscript:v15];
+            sourceIdentifier2 = [v10 sourceIdentifier];
+            [v4 setObject:v14 forKeyedSubscript:sourceIdentifier2];
           }
         }
       }

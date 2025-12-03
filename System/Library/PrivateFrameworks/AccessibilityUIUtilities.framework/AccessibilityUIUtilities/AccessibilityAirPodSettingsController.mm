@@ -8,29 +8,29 @@
 - (double)toneVolumeValue;
 - (double)volumeSwipeDurationValue;
 - (id)caseTonesEnabled;
-- (id)caseTonesVolume:(id)a3;
-- (id)noiseCancellation:(id)a3;
-- (id)spatialAudioLock:(id)a3;
+- (id)caseTonesVolume:(id)volume;
+- (id)noiseCancellation:(id)cancellation;
+- (id)spatialAudioLock:(id)lock;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)toneVolume:(id)a3;
-- (id)volumeSwipeEnabled:(id)a3;
-- (void)_updateCaseTonesVolumeFooter:(float)a3;
-- (void)_updateToneVolumeFooter:(float)a3;
-- (void)confirmationViewAcceptedForSpecifier:(id)a3;
-- (void)jumpToAVSettings:(id)a3;
-- (void)loudNoiseToggled:(id)a3;
-- (void)setCaseTonesEnabled:(id)a3 specifier:(id)a4;
-- (void)setCaseTonesVolume:(id)a3 specifier:(id)a4;
-- (void)setNoiseCancellation:(id)a3 specifier:(id)a4;
-- (void)setSpatialAudioLock:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)setToneVolume:(id)a3 specifier:(id)a4;
-- (void)setVolumeSwipeEnabled:(id)a3 specifier:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)toneVolume:(id)volume;
+- (id)volumeSwipeEnabled:(id)enabled;
+- (void)_updateCaseTonesVolumeFooter:(float)footer;
+- (void)_updateToneVolumeFooter:(float)footer;
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier;
+- (void)jumpToAVSettings:(id)settings;
+- (void)loudNoiseToggled:(id)toggled;
+- (void)setCaseTonesEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCaseTonesVolume:(id)volume specifier:(id)specifier;
+- (void)setNoiseCancellation:(id)cancellation specifier:(id)specifier;
+- (void)setSpatialAudioLock:(id)lock specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)setToneVolume:(id)volume specifier:(id)specifier;
+- (void)setVolumeSwipeEnabled:(id)enabled specifier:(id)specifier;
 - (void)showLoudNoiseLearnMore;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
@@ -43,9 +43,9 @@
   v2 = [(AXUISettingsSetupCapableListController *)&v7 init];
   if (v2)
   {
-    v3 = [getPAHMSManagerClass() sharedInstance];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_reloadSpecifiers name:*MEMORY[0x1E69E4BC8] object:0];
+    sharedInstance = [getPAHMSManagerClass() sharedInstance];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reloadSpecifiers name:*MEMORY[0x1E69E4BC8] object:0];
 
     v5 = v2;
   }
@@ -55,18 +55,18 @@
 
 - (double)toneVolumeValue
 {
-  v3 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v4 = [MEMORY[0x1E6989850] sharedInstance];
-  v5 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v3)
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v4 nps_toneVolumeForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] nps_toneVolumeForDeviceAddress:_btDeviceAddress];
     v7 = v6;
   }
 
   else
   {
-    v7 = [v4 toneVolumeForDeviceAddress:v5];
+    v7 = [mEMORY[0x1E6989850] toneVolumeForDeviceAddress:_btDeviceAddress];
   }
 
   return v7;
@@ -74,28 +74,28 @@
 
 - (double)caseToneVolumeValue
 {
-  v3 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v4 = [MEMORY[0x1E6989850] sharedInstance];
-  v5 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v3)
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v4 nps_caseTonesVolumeForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] nps_caseTonesVolumeForDeviceAddress:_btDeviceAddress];
     v7 = v6;
   }
 
   else
   {
-    v7 = [v4 caseTonesVolumeForDeviceAddress:v5];
+    v7 = [mEMORY[0x1E6989850] caseTonesVolumeForDeviceAddress:_btDeviceAddress];
   }
 
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AccessibilityAirPodSettingsController;
-  [(AccessibilityAirPodSettingsController *)&v6 viewWillAppear:a3];
+  [(AccessibilityAirPodSettingsController *)&v6 viewWillAppear:appear];
   [(AccessibilityAirPodSettingsController *)self toneVolumeValue];
   *&v4 = v4;
   [(AccessibilityAirPodSettingsController *)self _updateToneVolumeFooter:v4];
@@ -122,15 +122,15 @@
   v9.receiver = self;
   v9.super_class = AccessibilityAirPodSettingsController;
   [(AXUISettingsSetupCapableListController *)&v9 viewDidLoad];
-  v3 = [(AccessibilityAirPodSettingsController *)self table];
+  table = [(AccessibilityAirPodSettingsController *)self table];
   v4 = objc_opt_class();
   v5 = +[(PSTableCell *)AXSettingsToneVolumeSliderCell];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(AccessibilityAirPodSettingsController *)self table];
+  table2 = [(AccessibilityAirPodSettingsController *)self table];
   v7 = objc_opt_class();
   v8 = +[(PSTableCell *)AXSettingsCaseTonesVolumeSliderCell];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [table2 registerClass:v7 forCellReuseIdentifier:v8];
 }
 
 - (BOOL)supportsSpatialAudio
@@ -140,48 +140,48 @@
     return 0;
   }
 
-  v3 = [MEMORY[0x1E6989850] sharedInstance];
-  v4 = [v3 supportsSpatialAudio];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  supportsSpatialAudio = [mEMORY[0x1E6989850] supportsSpatialAudio];
 
-  return v4;
+  return supportsSpatialAudio;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = AccessibilityAirPodSettingsController;
-  [(AccessibilityAirPodSettingsController *)&v7 setSpecifier:a3];
-  v4 = [(AccessibilityAirPodSettingsController *)self specifier];
-  v5 = [v4 propertyForKey:@"AirPods"];
-  v6 = [v5 firstObject];
+  [(AccessibilityAirPodSettingsController *)&v7 setSpecifier:specifier];
+  specifier = [(AccessibilityAirPodSettingsController *)self specifier];
+  v5 = [specifier propertyForKey:@"AirPods"];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    objc_storeStrong(&self->_holdGroup, v6);
+    objc_storeStrong(&self->_holdGroup, firstObject);
   }
 }
 
 - (BOOL)isBeatsProduct
 {
-  v3 = [MEMORY[0x1E6989850] sharedInstance];
-  LOBYTE(self) = [v3 isBeatsProduct:self->_holdGroup];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  LOBYTE(self) = [mEMORY[0x1E6989850] isBeatsProduct:self->_holdGroup];
 
   return self;
 }
 
 - (double)holdSpeedValue
 {
-  v3 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v4 = [MEMORY[0x1E6989850] sharedInstance];
-  v5 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v3)
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v4 nps_holdDurationForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] nps_holdDurationForDeviceAddress:_btDeviceAddress];
   }
 
   else
   {
-    [v4 holdDurationForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] holdDurationForDeviceAddress:_btDeviceAddress];
   }
 
   v7 = v6;
@@ -191,17 +191,17 @@
 
 - (double)tapSpeedValue
 {
-  v3 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v4 = [MEMORY[0x1E6989850] sharedInstance];
-  v5 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v3)
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v4 nps_tapSpeedForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] nps_tapSpeedForDeviceAddress:_btDeviceAddress];
   }
 
   else
   {
-    [v4 tapSpeedForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] tapSpeedForDeviceAddress:_btDeviceAddress];
   }
 
   v7 = v6;
@@ -211,17 +211,17 @@
 
 - (double)volumeSwipeDurationValue
 {
-  v3 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v4 = [MEMORY[0x1E6989850] sharedInstance];
-  v5 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v3)
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v4 nps_volumeSwipeDurationForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] nps_volumeSwipeDurationForDeviceAddress:_btDeviceAddress];
   }
 
   else
   {
-    [v4 volumeSwipeDurationForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] volumeSwipeDurationForDeviceAddress:_btDeviceAddress];
   }
 
   v7 = v6;
@@ -236,9 +236,9 @@
   {
     v177 = *MEMORY[0x1E69C57B8];
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [MEMORY[0x1E6989850] sharedInstance];
-    v6 = [(PSSpecifier *)self->_holdGroup address];
-    v7 = [v5 supportsTapSpeedForDeviceAddress:v6];
+    mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+    address = [(PSSpecifier *)self->_holdGroup address];
+    v7 = [mEMORY[0x1E6989850] supportsTapSpeedForDeviceAddress:address];
 
     v180 = v4;
     if (v7)
@@ -332,9 +332,9 @@
       [v180 addObjectsFromArray:v49];
     }
 
-    v50 = [MEMORY[0x1E6989850] sharedInstance];
-    v51 = [(PSSpecifier *)self->_holdGroup address];
-    v52 = [v50 supportsNoiseCancellationEnabledForDeviceAddress:v51];
+    mEMORY[0x1E6989850]2 = [MEMORY[0x1E6989850] sharedInstance];
+    address2 = [(PSSpecifier *)self->_holdGroup address];
+    v52 = [mEMORY[0x1E6989850]2 supportsNoiseCancellationEnabledForDeviceAddress:address2];
 
     if (v52)
     {
@@ -390,15 +390,15 @@
     v179 = v62;
     if (![(AccessibilityAirPodSettingsController *)self isInWatchSettings])
     {
-      v64 = [(PSSpecifier *)self->_holdGroup address];
+      address3 = [(PSSpecifier *)self->_holdGroup address];
       if (_os_feature_enabled_impl())
       {
-        v65 = [getHUAccessoryHearingSettingsClass() sharedInstance];
-        v66 = [v65 activeHearingProtectionAvailableForAddress:v64];
+        sharedInstance = [getHUAccessoryHearingSettingsClass() sharedInstance];
+        v66 = [sharedInstance activeHearingProtectionAvailableForAddress:address3];
 
         if (v66)
         {
-          v67 = [MEMORY[0x1E69C5748] emptyGroupSpecifier];
+          emptyGroupSpecifier = [MEMORY[0x1E69C5748] emptyGroupSpecifier];
           v68 = accessibilityHearingAidSupportBundle_Soft();
           v175 = [v68 localizedStringForKey:@"LoudNoiseToggleFooter" value:@"LoudNoiseToggleFooter" table:@"HearingProtection-Yodel"];
 
@@ -409,23 +409,23 @@
           v71 = [v175 stringByAppendingFormat:@" %@", v70];
           v72 = objc_opt_class();
           v73 = NSStringFromClass(v72);
-          [v67 setProperty:v73 forKey:*MEMORY[0x1E69C58D8]];
+          [emptyGroupSpecifier setProperty:v73 forKey:*MEMORY[0x1E69C58D8]];
 
           v173 = v71;
-          [v67 setProperty:v71 forKey:*MEMORY[0x1E69C58F8]];
+          [emptyGroupSpecifier setProperty:v71 forKey:*MEMORY[0x1E69C58F8]];
           v183.location = [v71 rangeOfString:v70];
           v74 = NSStringFromRange(v183);
-          [v67 setProperty:v74 forKey:*MEMORY[0x1E69C58E8]];
+          [emptyGroupSpecifier setProperty:v74 forKey:*MEMORY[0x1E69C58E8]];
 
           v75 = NSStringFromSelector(sel_showLoudNoiseLearnMore);
-          [v67 setProperty:v75 forKey:*MEMORY[0x1E69C58E0]];
+          [emptyGroupSpecifier setProperty:v75 forKey:*MEMORY[0x1E69C58E0]];
 
           v76 = [MEMORY[0x1E696B098] valueWithNonretainedObject:self];
-          [v67 setProperty:v76 forKey:*MEMORY[0x1E69C58F0]];
+          [emptyGroupSpecifier setProperty:v76 forKey:*MEMORY[0x1E69C58F0]];
 
-          [v180 addObject:v67];
-          v77 = [getHUAccessoryHearingSettingsClass() sharedInstance];
-          v78 = [v77 activeHearingProtectionEnabledForAddress:v64];
+          [v180 addObject:emptyGroupSpecifier];
+          sharedInstance2 = [getHUAccessoryHearingSettingsClass() sharedInstance];
+          v78 = [sharedInstance2 activeHearingProtectionEnabledForAddress:address3];
           v79 = @"LoudNoiseToggleOn";
           if (v78)
           {
@@ -448,9 +448,9 @@
         }
       }
 
-      v85 = [MEMORY[0x1E69C5748] emptyGroupSpecifier];
-      [v85 setProperty:v62 forKey:*MEMORY[0x1E69C5900]];
-      [v4 addObject:v85];
+      emptyGroupSpecifier2 = [MEMORY[0x1E69C5748] emptyGroupSpecifier];
+      [emptyGroupSpecifier2 setProperty:v62 forKey:*MEMORY[0x1E69C5900]];
+      [v4 addObject:emptyGroupSpecifier2];
       AXDeviceIsPhone();
       v86 = AXAirPodsLocalizedStringForKey();
       v87 = [MEMORY[0x1E69C5748] preferenceSpecifierNamed:v86 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -461,9 +461,9 @@
 
     if ([(AccessibilityAirPodSettingsController *)self supportsSpatialAudio])
     {
-      v88 = [MEMORY[0x1E6989850] sharedInstance];
-      v89 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-      v90 = [v88 supportsSpatialAudioForDeviceAddress:v89];
+      mEMORY[0x1E6989850]3 = [MEMORY[0x1E6989850] sharedInstance];
+      _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+      v90 = [mEMORY[0x1E6989850]3 supportsSpatialAudioForDeviceAddress:_btDeviceAddress];
 
       if (v90)
       {
@@ -491,9 +491,9 @@
       }
     }
 
-    v101 = [MEMORY[0x1E6989850] sharedInstance];
-    v102 = [(PSSpecifier *)self->_holdGroup address];
-    v103 = [v101 supportsCaseTonesForDeviceAddress:v102];
+    mEMORY[0x1E6989850]4 = [MEMORY[0x1E6989850] sharedInstance];
+    address4 = [(PSSpecifier *)self->_holdGroup address];
+    v103 = [mEMORY[0x1E6989850]4 supportsCaseTonesForDeviceAddress:address4];
 
     v176 = v55;
     if (v103)
@@ -514,9 +514,9 @@
       v56 = v106;
     }
 
-    v110 = [MEMORY[0x1E6989850] sharedInstance];
-    v111 = [(PSSpecifier *)self->_holdGroup address];
-    v112 = [v110 supportsCaseTonesVolumeForDeviceAddress:v111];
+    mEMORY[0x1E6989850]5 = [MEMORY[0x1E6989850] sharedInstance];
+    address5 = [(PSSpecifier *)self->_holdGroup address];
+    v112 = [mEMORY[0x1E6989850]5 supportsCaseTonesVolumeForDeviceAddress:address5];
 
     v113 = MEMORY[0x1E69C58A0];
     v114 = MEMORY[0x1E69C5860];
@@ -552,8 +552,8 @@
       [v125 setProperty:&unk_1F4051BD8 forKey:*v115];
       [v125 setProperty:MEMORY[0x1E695E118] forKey:*v124];
       [v125 setProperty:@"CASE_TONES_VOLUME" forKey:v122];
-      v128 = [(PSSpecifier *)self->_holdGroup address];
-      [v125 setProperty:v128 forKey:@"BTAddress"];
+      address6 = [(PSSpecifier *)self->_holdGroup address];
+      [v125 setProperty:address6 forKey:@"BTAddress"];
 
       v129 = [MEMORY[0x1E696AD98] numberWithBool:{-[AccessibilityAirPodSettingsController isInWatchSettings](self, "isInWatchSettings")}];
       [v125 setProperty:v129 forKey:@"isInWatchSettings"];
@@ -562,9 +562,9 @@
       v56 = v121;
     }
 
-    v130 = [MEMORY[0x1E6989850] sharedInstance];
-    v131 = [(PSSpecifier *)self->_holdGroup address];
-    v132 = [v130 supportsToneVolumeForDeviceAddress:v131];
+    mEMORY[0x1E6989850]6 = [MEMORY[0x1E6989850] sharedInstance];
+    address7 = [(PSSpecifier *)self->_holdGroup address];
+    v132 = [mEMORY[0x1E6989850]6 supportsToneVolumeForDeviceAddress:address7];
 
     if (v132)
     {
@@ -588,8 +588,8 @@
       [v137 setProperty:&unk_1F4051BD8 forKey:*v115];
       [v137 setProperty:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69C5928]];
       [v137 setProperty:@"TONE_VOLUME" forKey:v136];
-      v141 = [(PSSpecifier *)self->_holdGroup address];
-      [v137 setProperty:v141 forKey:@"BTAddress"];
+      address8 = [(PSSpecifier *)self->_holdGroup address];
+      [v137 setProperty:address8 forKey:@"BTAddress"];
 
       v142 = [MEMORY[0x1E696AD98] numberWithBool:{-[AccessibilityAirPodSettingsController isInWatchSettings](self, "isInWatchSettings")}];
       [v137 setProperty:v142 forKey:@"isInWatchSettings"];
@@ -603,9 +603,9 @@
       v140 = v180;
     }
 
-    v143 = [MEMORY[0x1E6989850] sharedInstance];
-    v144 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-    v145 = [v143 supportsVolumeSwipeForDeviceAddress:v144];
+    mEMORY[0x1E6989850]7 = [MEMORY[0x1E6989850] sharedInstance];
+    _btDeviceAddress2 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+    v145 = [mEMORY[0x1E6989850]7 supportsVolumeSwipeForDeviceAddress:_btDeviceAddress2];
 
     if (v145)
     {
@@ -626,12 +626,12 @@
       v154 = *MEMORY[0x1E69C5918];
       [v153 setProperty:@"VOLUME_SWIPE_SWITCH" forKey:*MEMORY[0x1E69C5918]];
       [v140 addObject:v153];
-      v155 = [MEMORY[0x1E69C5748] emptyGroupSpecifier];
+      emptyGroupSpecifier3 = [MEMORY[0x1E69C5748] emptyGroupSpecifier];
       v156 = AXAirPodsB698LocalizedStringForKey();
-      [v155 setProperty:v156 forKey:v150];
+      [emptyGroupSpecifier3 setProperty:v156 forKey:v150];
 
-      [v155 setProperty:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69C5938]];
-      [v155 setProperty:@"VOLUME_SWIPE_GROUP" forKey:v154];
+      [emptyGroupSpecifier3 setProperty:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69C5938]];
+      [emptyGroupSpecifier3 setProperty:@"VOLUME_SWIPE_GROUP" forKey:v154];
       v157 = MEMORY[0x1E69C5748];
       v158 = AXAirPodsB698LocalizedStringForKey();
       v159 = [v157 preferenceSpecifierNamed:v158 target:0 set:0 get:0 detail:0 cell:3 edit:0];
@@ -653,10 +653,10 @@
       v168 = v159;
       if (fabs(v167 + -0.5) <= 0.0500000007 || (v168 = v162, fabs(v167 + -0.4) <= 0.0500000007) || (v168 = v165, fabs(v167 + -0.35) <= 0.0500000007))
       {
-        [v155 setProperty:v168 forKey:*MEMORY[0x1E69C5958]];
+        [emptyGroupSpecifier3 setProperty:v168 forKey:*MEMORY[0x1E69C5958]];
       }
 
-      v169 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v155, v159, v162, v165, 0}];
+      v169 = [MEMORY[0x1E695DEC8] arrayWithObjects:{emptyGroupSpecifier3, v159, v162, v165, 0}];
       [v180 addObjectsFromArray:v169];
 
       v140 = v180;
@@ -685,44 +685,44 @@
   [v2 openURL:v3 withCompletionHandler:0];
 }
 
-- (void)confirmationViewAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier
 {
-  v4 = [getPAHMSManagerClass() sharedInstance];
-  v5 = [(PSSpecifier *)self->_holdGroup address];
-  v6 = [v4 ppeEnrolledForAddress:v5];
+  sharedInstance = [getPAHMSManagerClass() sharedInstance];
+  address = [(PSSpecifier *)self->_holdGroup address];
+  v6 = [sharedInstance ppeEnrolledForAddress:address];
 
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E695DFF8]);
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(PSSpecifier *)self->_holdGroup address];
-    v10 = [v8 stringWithFormat:@"settings-navigation://com.apple.Settings.Bluetooth/HeadphoneDetail/?identifier=%@&Selection=HEARING_PROTECTION_ID", v9];
+    address2 = [(PSSpecifier *)self->_holdGroup address];
+    v10 = [v8 stringWithFormat:@"settings-navigation://com.apple.Settings.Bluetooth/HeadphoneDetail/?identifier=%@&Selection=HEARING_PROTECTION_ID", address2];
     v14 = [v7 initWithString:v10];
 
-    v11 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v11 openSensitiveURL:v14 withOptions:0 error:0];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:v14 withOptions:0 error:0];
   }
 
   else
   {
-    v12 = [getHUAccessoryHearingSettingsClass() sharedInstance];
-    v13 = [(PSSpecifier *)self->_holdGroup address];
-    [v12 setActiveHearingProtectionEnabled:0 forAddress:v13];
+    sharedInstance2 = [getHUAccessoryHearingSettingsClass() sharedInstance];
+    address3 = [(PSSpecifier *)self->_holdGroup address];
+    [sharedInstance2 setActiveHearingProtectionEnabled:0 forAddress:address3];
 
     [(AccessibilityAirPodSettingsController *)self reloadSpecifiers];
   }
 }
 
-- (void)loudNoiseToggled:(id)a3
+- (void)loudNoiseToggled:(id)toggled
 {
   holdGroup = self->_holdGroup;
-  v5 = a3;
-  v44 = [(PSSpecifier *)holdGroup address];
-  v6 = [getHUAccessoryHearingSettingsClass() sharedInstance];
-  v7 = [v6 activeHearingProtectionEnabledForAddress:v44];
+  toggledCopy = toggled;
+  address = [(PSSpecifier *)holdGroup address];
+  sharedInstance = [getHUAccessoryHearingSettingsClass() sharedInstance];
+  v7 = [sharedInstance activeHearingProtectionEnabledForAddress:address];
 
-  v8 = [getPAHMSManagerClass() sharedInstance];
-  v9 = [v8 regionSupportedForHearingProtection:v44];
+  sharedInstance2 = [getPAHMSManagerClass() sharedInstance];
+  v9 = [sharedInstance2 regionSupportedForHearingProtection:address];
 
   v10 = @"LoudNoiseToggleAlertDescription";
   if (v9)
@@ -731,57 +731,57 @@
   }
 
   v11 = v10;
-  v12 = [getPAHMSManagerClass() sharedInstance];
-  v13 = [v12 ppeEnrolledForAddress:v44];
+  sharedInstance3 = [getPAHMSManagerClass() sharedInstance];
+  v13 = [sharedInstance3 ppeEnrolledForAddress:address];
 
   if (v13)
   {
-    v14 = objc_alloc_init(MEMORY[0x1E69C56F0]);
+    sharedInstance4 = objc_alloc_init(MEMORY[0x1E69C56F0]);
     v15 = accessibilityHearingAidSupportBundle_Soft();
     v16 = @"HearingProtection-B788";
     v17 = [v15 localizedStringForKey:@"PPEAlertTitle" value:@"PPEAlertTitle" table:@"HearingProtection-B788"];
-    [v14 setTitle:v17];
+    [sharedInstance4 setTitle:v17];
 
     v18 = MEMORY[0x1E696AEC0];
     v19 = accessibilityHearingAidSupportBundle_Soft();
     v20 = [v19 localizedStringForKey:@"PPEAlertDescription" value:@"PPEAlertDescription" table:@"HearingProtection-B788"];
-    v21 = [(PSSpecifier *)self->_holdGroup name];
-    v22 = [v18 stringWithFormat:v20, v21];
-    [v14 setPrompt:v22];
+    name = [(PSSpecifier *)self->_holdGroup name];
+    v22 = [v18 stringWithFormat:v20, name];
+    [sharedInstance4 setPrompt:v22];
 
     v23 = accessibilityHearingAidSupportBundle_Soft();
     v24 = [v23 localizedStringForKey:@"hpCancel" value:@"hpCancel" table:@"HearingProtection-Yodel"];
-    [v14 setCancelButton:v24];
+    [sharedInstance4 setCancelButton:v24];
 
     v25 = accessibilityHearingAidSupportBundle_Soft();
     v26 = v25;
     v27 = @"PPEAlertSettingsButton";
 LABEL_7:
     v37 = [v25 localizedStringForKey:v27 value:v27 table:v16];
-    [v14 setOkButton:v37];
+    [sharedInstance4 setOkButton:v37];
 
-    [(AccessibilityAirPodSettingsController *)self showConfirmationViewForSpecifier:v14 useAlert:1];
+    [(AccessibilityAirPodSettingsController *)self showConfirmationViewForSpecifier:sharedInstance4 useAlert:1];
     goto LABEL_9;
   }
 
   if (v7)
   {
-    v14 = objc_alloc_init(MEMORY[0x1E69C56F0]);
+    sharedInstance4 = objc_alloc_init(MEMORY[0x1E69C56F0]);
     v28 = accessibilityHearingAidSupportBundle_Soft();
     v16 = @"HearingProtection-Yodel";
     v29 = [v28 localizedStringForKey:@"LoudNoiseToggleAlertTitle" value:@"LoudNoiseToggleAlertTitle" table:@"HearingProtection-Yodel"];
-    [v14 setTitle:v29];
+    [sharedInstance4 setTitle:v29];
 
     v30 = MEMORY[0x1E696AEC0];
     v31 = accessibilityHearingAidSupportBundle_Soft();
     v32 = [v31 localizedStringForKey:v11 value:v11 table:@"HearingProtection-Yodel"];
-    v33 = [(PSSpecifier *)self->_holdGroup name];
-    v34 = [v30 stringWithFormat:v32, v33];
-    [v14 setPrompt:v34];
+    name2 = [(PSSpecifier *)self->_holdGroup name];
+    v34 = [v30 stringWithFormat:v32, name2];
+    [sharedInstance4 setPrompt:v34];
 
     v35 = accessibilityHearingAidSupportBundle_Soft();
     v36 = [v35 localizedStringForKey:@"hpCancel" value:@"hpCancel" table:@"HearingProtection-Yodel"];
-    [v14 setCancelButton:v36];
+    [sharedInstance4 setCancelButton:v36];
 
     v25 = accessibilityHearingAidSupportBundle_Soft();
     v26 = v25;
@@ -789,12 +789,12 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v14 = [getHUAccessoryHearingSettingsClass() sharedInstance];
-  [v14 setActiveHearingProtectionEnabled:1 forAddress:v44];
+  sharedInstance4 = [getHUAccessoryHearingSettingsClass() sharedInstance];
+  [sharedInstance4 setActiveHearingProtectionEnabled:1 forAddress:address];
 LABEL_9:
 
-  v38 = [getHUAccessoryHearingSettingsClass() sharedInstance];
-  v39 = [v38 activeHearingProtectionEnabledForAddress:v44];
+  sharedInstance5 = [getHUAccessoryHearingSettingsClass() sharedInstance];
+  v39 = [sharedInstance5 activeHearingProtectionEnabledForAddress:address];
   v40 = @"LoudNoiseToggleOn";
   if (v39)
   {
@@ -806,64 +806,64 @@ LABEL_9:
   v42 = accessibilityHearingAidSupportBundle_Soft();
   v43 = [v42 localizedStringForKey:v41 value:v41 table:@"HearingProtection-Yodel"];
 
-  [v5 setName:v43];
-  [(AccessibilityAirPodSettingsController *)self reloadSpecifier:v5];
+  [toggledCopy setName:v43];
+  [(AccessibilityAirPodSettingsController *)self reloadSpecifier:toggledCopy];
 }
 
-- (void)setVolumeSwipeEnabled:(id)a3 specifier:(id)a4
+- (void)setVolumeSwipeEnabled:(id)enabled specifier:(id)specifier
 {
   v5 = MEMORY[0x1E6989850];
-  v6 = a3;
-  v9 = [v5 sharedInstance];
-  v7 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  sharedInstance = [v5 sharedInstance];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v8 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  [v9 setVolumeSwipeEnabled:v7 forDeviceAddress:v8];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  [sharedInstance setVolumeSwipeEnabled:bOOLValue forDeviceAddress:_btDeviceAddress];
 }
 
-- (id)volumeSwipeEnabled:(id)a3
+- (id)volumeSwipeEnabled:(id)enabled
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [MEMORY[0x1E6989850] sharedInstance];
-  v6 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  v7 = [v4 numberWithBool:{objc_msgSend(v5, "volumeSwipeEnabledForDeviceAddress:", v6)}];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  v7 = [v4 numberWithBool:{objc_msgSend(mEMORY[0x1E6989850], "volumeSwipeEnabledForDeviceAddress:", _btDeviceAddress)}];
 
   return v7;
 }
 
-- (void)setCaseTonesEnabled:(id)a3 specifier:(id)a4
+- (void)setCaseTonesEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v9 = [MEMORY[0x1E6989850] sharedInstance];
-  v7 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v8 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v6)
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v9 nps_setCaseTonesEnabled:v7 forDeviceAddress:v8];
+    [mEMORY[0x1E6989850] nps_setCaseTonesEnabled:bOOLValue forDeviceAddress:_btDeviceAddress];
   }
 
   else
   {
-    [v9 setCaseTonesEnabled:v7 forDeviceAddress:v8];
+    [mEMORY[0x1E6989850] setCaseTonesEnabled:bOOLValue forDeviceAddress:_btDeviceAddress];
   }
 }
 
 - (id)caseTonesEnabled
 {
-  v3 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [MEMORY[0x1E6989850] sharedInstance];
-  v6 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v3)
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    v7 = [v5 nps_caseTonesEnabledForDeviceAddress:v6];
+    v7 = [mEMORY[0x1E6989850] nps_caseTonesEnabledForDeviceAddress:_btDeviceAddress];
   }
 
   else
   {
-    v7 = [v5 caseTonesEnabledForDeviceAddress:v6];
+    v7 = [mEMORY[0x1E6989850] caseTonesEnabledForDeviceAddress:_btDeviceAddress];
   }
 
   v8 = [v4 numberWithBool:v7];
@@ -871,10 +871,10 @@ LABEL_9:
   return v8;
 }
 
-- (void)setCaseTonesVolume:(id)a3 specifier:(id)a4
+- (void)setCaseTonesVolume:(id)volume specifier:(id)specifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  [a3 floatValue];
+  [volume floatValue];
   v6 = v5;
   if (([(AXSettingsTickedSliderCell *)self->_toneVolumeSliderCell isTracking]& 1) == 0)
   {
@@ -901,18 +901,18 @@ LABEL_9:
     _os_log_impl(&dword_1C0DFB000, v9, OS_LOG_TYPE_DEFAULT, "Set case tones volume value: %@", &v18, 0xCu);
   }
 
-  v12 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v13 = [MEMORY[0x1E6989850] sharedInstance];
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
   [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v12)
+  if (isInWatchSettings)
     v14 = {;
     *&v15 = v6;
-    [v13 nps_setCaseTonesVolume:v14 forDeviceAddress:v15];
+    [mEMORY[0x1E6989850] nps_setCaseTonesVolume:v14 forDeviceAddress:v15];
   }
 
   else
     v14 = {;
-    [v13 setCaseTonesVolume:v6 forDeviceAddress:v14];
+    [mEMORY[0x1E6989850] setCaseTonesVolume:v6 forDeviceAddress:v14];
   }
 
   toneVolumeSliderCell = self->_toneVolumeSliderCell;
@@ -926,39 +926,39 @@ LABEL_9:
   }
 }
 
-- (id)caseTonesVolume:(id)a3
+- (id)caseTonesVolume:(id)volume
 {
-  v4 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
   v5 = MEMORY[0x1E696AD98];
-  v6 = [MEMORY[0x1E6989850] sharedInstance];
-  v7 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v4)
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v6 nps_caseTonesVolumeForDeviceAddress:v7];
+    [mEMORY[0x1E6989850] nps_caseTonesVolumeForDeviceAddress:_btDeviceAddress];
     [v5 numberWithFloat:?];
   }
 
   else
   {
-    [v5 numberWithUnsignedInt:{objc_msgSend(v6, "caseTonesVolumeForDeviceAddress:", v7)}];
+    [v5 numberWithUnsignedInt:{objc_msgSend(mEMORY[0x1E6989850], "caseTonesVolumeForDeviceAddress:", _btDeviceAddress)}];
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)_updateCaseTonesVolumeFooter:(float)a3
+- (void)_updateCaseTonesVolumeFooter:(float)footer
 {
   v5 = [(AccessibilityAirPodSettingsController *)self specifierForID:@"CaseTonesVolumeFooterID"];
   if (v5)
   {
     v11 = v5;
     v6 = AXBeats463LocalizedStringForKey();
-    v7 = [MEMORY[0x1E6989850] sharedInstance];
-    v8 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-    v9 = [v7 defaultCaseTonesVolumeForDeviceAddress:v8];
+    mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+    _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+    v9 = [mEMORY[0x1E6989850] defaultCaseTonesVolumeForDeviceAddress:_btDeviceAddress];
 
-    if (v9 < a3)
+    if (v9 < footer)
     {
       v10 = AXBeats463LocalizedStringForKey();
 
@@ -972,10 +972,10 @@ LABEL_9:
   }
 }
 
-- (void)setToneVolume:(id)a3 specifier:(id)a4
+- (void)setToneVolume:(id)volume specifier:(id)specifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  [a3 floatValue];
+  [volume floatValue];
   v6 = v5;
   if (([(BluetoothDevice *)self->_btDevice isTracking]& 1) == 0)
   {
@@ -1002,18 +1002,18 @@ LABEL_9:
     _os_log_impl(&dword_1C0DFB000, v9, OS_LOG_TYPE_DEFAULT, "Set tone volume value: %@", &v17, 0xCu);
   }
 
-  v12 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v13 = [MEMORY[0x1E6989850] sharedInstance];
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
   [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v12)
+  if (isInWatchSettings)
     v14 = {;
     *&v15 = v6;
-    [v13 nps_setToneVolume:v14 forDeviceAddress:v15];
+    [mEMORY[0x1E6989850] nps_setToneVolume:v14 forDeviceAddress:v15];
   }
 
   else
     v14 = {;
-    [v13 setToneVolume:v6 forDeviceAddress:v14];
+    [mEMORY[0x1E6989850] setToneVolume:v6 forDeviceAddress:v14];
   }
 
   if (([(BluetoothDevice *)self->_btDevice isTracking]& 1) == 0)
@@ -1023,7 +1023,7 @@ LABEL_9:
   }
 }
 
-- (void)_updateToneVolumeFooter:(float)a3
+- (void)_updateToneVolumeFooter:(float)footer
 {
   v11 = [(AccessibilityAirPodSettingsController *)self specifierForID:@"ToneVolumeFooterID"];
   v5 = AXAirPodsLocalizedStringForKey();
@@ -1034,11 +1034,11 @@ LABEL_9:
     v5 = v6;
   }
 
-  v7 = [MEMORY[0x1E6989850] sharedInstance];
-  v8 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  v9 = [v7 defaultToneVolumeForDeviceAddress:v8];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  v9 = [mEMORY[0x1E6989850] defaultToneVolumeForDeviceAddress:_btDeviceAddress];
 
-  if (v9 < a3)
+  if (v9 < footer)
   {
     v10 = AXAirPodsLocalizedStringForKey();
 
@@ -1057,30 +1057,30 @@ LABEL_9:
   [(AccessibilityAirPodSettingsController *)self reloadSpecifier:v11];
 }
 
-- (id)toneVolume:(id)a3
+- (id)toneVolume:(id)volume
 {
-  v4 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
   v5 = MEMORY[0x1E696AD98];
-  v6 = [MEMORY[0x1E6989850] sharedInstance];
-  v7 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v4)
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v6 nps_toneVolumeForDeviceAddress:v7];
+    [mEMORY[0x1E6989850] nps_toneVolumeForDeviceAddress:_btDeviceAddress];
     [v5 numberWithFloat:?];
   }
 
   else
   {
-    [v5 numberWithUnsignedInt:{objc_msgSend(v6, "toneVolumeForDeviceAddress:", v7)}];
+    [v5 numberWithUnsignedInt:{objc_msgSend(mEMORY[0x1E6989850], "toneVolumeForDeviceAddress:", _btDeviceAddress)}];
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)setSpatialAudioLock:(id)a3 specifier:(id)a4
+- (void)setSpatialAudioLock:(id)lock specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([lock BOOLValue])
   {
     v4 = 3;
   }
@@ -1093,7 +1093,7 @@ LABEL_9:
   MEMORY[0x1EEE60FC8](v4);
 }
 
-- (id)spatialAudioLock:(id)a3
+- (id)spatialAudioLock:(id)lock
 {
   v3 = _AXSSpatialAudioHeadTracking() != 0;
   v4 = MEMORY[0x1E696AD98];
@@ -1101,27 +1101,27 @@ LABEL_9:
   return [v4 numberWithInt:v3];
 }
 
-- (void)jumpToAVSettings:(id)a3
+- (void)jumpToAVSettings:(id)settings
 {
   v4 = [MEMORY[0x1E695DFF8] URLWithString:@"prefs:root=ACCESSIBILITY&path=AUDIO_VISUAL_TITLE"];
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 }
 
-- (id)noiseCancellation:(id)a3
+- (id)noiseCancellation:(id)cancellation
 {
-  v4 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
   v5 = MEMORY[0x1E696AD98];
-  v6 = [MEMORY[0x1E6989850] sharedInstance];
-  v7 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v4)
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    v8 = [v6 nps_noiseCancellationEnabledWithOneUnitForDeviceAddress:v7];
+    v8 = [mEMORY[0x1E6989850] nps_noiseCancellationEnabledWithOneUnitForDeviceAddress:_btDeviceAddress];
   }
 
   else
   {
-    v8 = [v6 noiseCancellationEnabledWithOneUnitForDeviceAddress:v7];
+    v8 = [mEMORY[0x1E6989850] noiseCancellationEnabledWithOneUnitForDeviceAddress:_btDeviceAddress];
   }
 
   v9 = [v5 numberWithBool:v8];
@@ -1129,32 +1129,32 @@ LABEL_9:
   return v9;
 }
 
-- (void)setNoiseCancellation:(id)a3 specifier:(id)a4
+- (void)setNoiseCancellation:(id)cancellation specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-  v9 = [MEMORY[0x1E6989850] sharedInstance];
-  v7 = [v5 BOOLValue];
+  cancellationCopy = cancellation;
+  isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  bOOLValue = [cancellationCopy BOOLValue];
 
-  v8 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-  if (v6)
+  _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+  if (isInWatchSettings)
   {
-    [v9 nps_setNoiseCancellationEnabledWithOneUnit:v7 forDeviceAddress:v8];
+    [mEMORY[0x1E6989850] nps_setNoiseCancellationEnabledWithOneUnit:bOOLValue forDeviceAddress:_btDeviceAddress];
   }
 
   else
   {
-    [v9 setNoiseCancellationEnabledWithOneUnit:v7 forDeviceAddress:v8];
+    [mEMORY[0x1E6989850] setNoiseCancellationEnabledWithOneUnit:bOOLValue forDeviceAddress:_btDeviceAddress];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v22.receiver = self;
   v22.super_class = AccessibilityAirPodSettingsController;
-  v6 = a4;
-  v7 = [(AccessibilityAirPodSettingsController *)&v22 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(AccessibilityAirPodSettingsController *)self specifierAtIndexPath:v6, v22.receiver, v22.super_class];
+  pathCopy = path;
+  v7 = [(AccessibilityAirPodSettingsController *)&v22 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(AccessibilityAirPodSettingsController *)self specifierAtIndexPath:pathCopy, v22.receiver, v22.super_class];
 
   v9 = *MEMORY[0x1E69C5918];
   v10 = [v8 propertyForKey:*MEMORY[0x1E69C5918]];
@@ -1162,8 +1162,8 @@ LABEL_9:
   {
 
 LABEL_4:
-    v13 = [v7 textLabel];
-    [v13 setNumberOfLines:0];
+    textLabel = [v7 textLabel];
+    [textLabel setNumberOfLines:0];
 
     goto LABEL_5;
   }
@@ -1183,7 +1183,7 @@ LABEL_4:
   {
     objc_storeStrong(&self->_toneVolumeSlider, v7);
     [(UISlider *)self->_toneVolumeSlider setController:self];
-    v17 = [(UISlider *)self->_toneVolumeSlider slider];
+    slider = [(UISlider *)self->_toneVolumeSlider slider];
     v18 = 1520;
   }
 
@@ -1199,12 +1199,12 @@ LABEL_4:
 
     objc_storeStrong(&self->_caseTonesVolumeSlider, v7);
     [(UISlider *)self->_caseTonesVolumeSlider setController:self];
-    v17 = [(UISlider *)self->_caseTonesVolumeSlider slider];
+    slider = [(UISlider *)self->_caseTonesVolumeSlider slider];
     v18 = 1536;
   }
 
   v21 = *(&self->super.super.super.super.super.super.super.super.isa + v18);
-  *(&self->super.super.super.super.super.super.super.super.isa + v18) = v17;
+  *(&self->super.super.super.super.super.super.super.super.isa + v18) = slider;
 
   [v7 layoutSubviews];
 LABEL_5:
@@ -1212,15 +1212,15 @@ LABEL_5:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v43.receiver = self;
   v43.super_class = AccessibilityAirPodSettingsController;
-  v6 = a4;
-  [(AXUISettingsSetupCapableListController *)&v43 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(AXUISettingsSetupCapableListController *)&v43 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v8 = [(AccessibilityAirPodSettingsController *)self specifierAtIndex:[(AccessibilityAirPodSettingsController *)self indexOfGroup:v7]];
+  v8 = [(AccessibilityAirPodSettingsController *)self specifierAtIndex:[(AccessibilityAirPodSettingsController *)self indexOfGroup:section]];
   v9 = *MEMORY[0x1E69C5918];
   v10 = [v8 propertyForKey:*MEMORY[0x1E69C5918]];
   v11 = [v10 isEqualToString:@"TapGroup"];
@@ -1230,9 +1230,9 @@ LABEL_5:
     v12 = [v8 propertyForKey:*MEMORY[0x1E69C5958]];
     v13 = [v12 propertyForKey:v9];
 
-    v14 = [MEMORY[0x1E6989850] sharedInstance];
-    v15 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-    [v14 tapSpeedForDeviceAddress:v15];
+    mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+    _btDeviceAddress = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+    [mEMORY[0x1E6989850] tapSpeedForDeviceAddress:_btDeviceAddress];
     v17 = v16;
 
     v18 = 0.25;
@@ -1254,18 +1254,18 @@ LABEL_5:
       }
     }
 
-    v35 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-    v36 = [MEMORY[0x1E6989850] sharedInstance];
-    v37 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+    isInWatchSettings = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+    mEMORY[0x1E6989850]2 = [MEMORY[0x1E6989850] sharedInstance];
+    _btDeviceAddress2 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
     *&v38 = v18;
-    if (v35)
+    if (isInWatchSettings)
     {
-      [v36 nps_setTapSpeed:v37 forDeviceAddress:v38];
+      [mEMORY[0x1E6989850]2 nps_setTapSpeed:_btDeviceAddress2 forDeviceAddress:v38];
     }
 
     else
     {
-      [v36 setTapSpeed:v37 forDeviceAddress:v38];
+      [mEMORY[0x1E6989850]2 setTapSpeed:_btDeviceAddress2 forDeviceAddress:v38];
     }
 
 LABEL_31:
@@ -1281,9 +1281,9 @@ LABEL_31:
     v21 = [v8 propertyForKey:*MEMORY[0x1E69C5958]];
     v13 = [v21 propertyForKey:v9];
 
-    v22 = [MEMORY[0x1E6989850] sharedInstance];
-    v23 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-    [v22 holdDurationForDeviceAddress:v23];
+    mEMORY[0x1E6989850]3 = [MEMORY[0x1E6989850] sharedInstance];
+    _btDeviceAddress3 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+    [mEMORY[0x1E6989850]3 holdDurationForDeviceAddress:_btDeviceAddress3];
     v25 = v24;
 
     v26 = 0.5;
@@ -1305,18 +1305,18 @@ LABEL_31:
       }
     }
 
-    v39 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-    v36 = [MEMORY[0x1E6989850] sharedInstance];
-    v37 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+    isInWatchSettings2 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+    mEMORY[0x1E6989850]2 = [MEMORY[0x1E6989850] sharedInstance];
+    _btDeviceAddress2 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
     *&v40 = v26;
-    if (v39)
+    if (isInWatchSettings2)
     {
-      [v36 nps_setHoldDuration:v37 forDeviceAddress:v40];
+      [mEMORY[0x1E6989850]2 nps_setHoldDuration:_btDeviceAddress2 forDeviceAddress:v40];
     }
 
     else
     {
-      [v36 setHoldDuration:v37 forDeviceAddress:v40];
+      [mEMORY[0x1E6989850]2 setHoldDuration:_btDeviceAddress2 forDeviceAddress:v40];
     }
 
     goto LABEL_31;
@@ -1330,9 +1330,9 @@ LABEL_31:
     v29 = [v8 propertyForKey:*MEMORY[0x1E69C5958]];
     v13 = [v29 propertyForKey:v9];
 
-    v30 = [MEMORY[0x1E6989850] sharedInstance];
-    v31 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
-    [v30 volumeSwipeDurationForDeviceAddress:v31];
+    mEMORY[0x1E6989850]4 = [MEMORY[0x1E6989850] sharedInstance];
+    _btDeviceAddress4 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+    [mEMORY[0x1E6989850]4 volumeSwipeDurationForDeviceAddress:_btDeviceAddress4];
     v33 = v32;
 
     v34 = 0.5;
@@ -1354,18 +1354,18 @@ LABEL_31:
       }
     }
 
-    v41 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
-    v36 = [MEMORY[0x1E6989850] sharedInstance];
-    v37 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
+    isInWatchSettings3 = [(AccessibilityAirPodSettingsController *)self isInWatchSettings];
+    mEMORY[0x1E6989850]2 = [MEMORY[0x1E6989850] sharedInstance];
+    _btDeviceAddress2 = [(AccessibilityAirPodSettingsController *)self _btDeviceAddress];
     *&v42 = v34;
-    if (v41)
+    if (isInWatchSettings3)
     {
-      [v36 nps_setVolumeSwipeDuration:v37 forDeviceAddress:v42];
+      [mEMORY[0x1E6989850]2 nps_setVolumeSwipeDuration:_btDeviceAddress2 forDeviceAddress:v42];
     }
 
     else
     {
-      [v36 setVolumeSwipeDuration:v37 forDeviceAddress:v42];
+      [mEMORY[0x1E6989850]2 setVolumeSwipeDuration:_btDeviceAddress2 forDeviceAddress:v42];
     }
 
     goto LABEL_31;

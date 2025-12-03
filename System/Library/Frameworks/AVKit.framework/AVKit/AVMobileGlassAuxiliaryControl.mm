@@ -1,11 +1,11 @@
 @interface AVMobileGlassAuxiliaryControl
-+ (AVMobileGlassAuxiliaryControl)controlWithDisplayPriority:(int64_t)a3 identifier:(id)a4;
-+ (AVMobileGlassAuxiliaryControl)controlWithView:(id)a3 displayPriority:(int64_t)a4 identifier:(id)a5;
-+ (id)prominentControlWithView:(id)a3 displayPriority:(int64_t)a4 identifier:(id)a5;
++ (AVMobileGlassAuxiliaryControl)controlWithDisplayPriority:(int64_t)priority identifier:(id)identifier;
++ (AVMobileGlassAuxiliaryControl)controlWithView:(id)view displayPriority:(int64_t)priority identifier:(id)identifier;
++ (id)prominentControlWithView:(id)view displayPriority:(int64_t)priority identifier:(id)identifier;
 - (AVMobileGlassAuxiliaryControlDelegate)delegate;
 - (id)description;
-- (void)_setupMaterialBackgroundIfNeeded:(uint64_t)a1;
-- (void)setIncluded:(BOOL)a3;
+- (void)_setupMaterialBackgroundIfNeeded:(uint64_t)needed;
+- (void)setIncluded:(BOOL)included;
 @end
 
 @implementation AVMobileGlassAuxiliaryControl
@@ -28,35 +28,35 @@
   return v5;
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
-    v5 = [(AVMobileGlassAuxiliaryControl *)self delegate];
-    [v5 auxiliaryControlDidChangeState:self];
+    self->_included = included;
+    delegate = [(AVMobileGlassAuxiliaryControl *)self delegate];
+    [delegate auxiliaryControlDidChangeState:self];
   }
 }
 
-+ (id)prominentControlWithView:(id)a3 displayPriority:(int64_t)a4 identifier:(id)a5
++ (id)prominentControlWithView:(id)view displayPriority:(int64_t)priority identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a3;
+  identifierCopy = identifier;
+  viewCopy = view;
   v9 = objc_alloc_init(AVMobileGlassAuxiliaryControl);
   v9->_style = 1;
   identifier = v9->_identifier;
-  v9->_displayPriority = a4;
-  v9->_identifier = v7;
+  v9->_displayPriority = priority;
+  v9->_identifier = identifierCopy;
 
-  [(AVMobileGlassAuxiliaryControl *)v9 _setupMaterialBackgroundIfNeeded:v8];
+  [(AVMobileGlassAuxiliaryControl *)v9 _setupMaterialBackgroundIfNeeded:viewCopy];
 
   return v9;
 }
 
-- (void)_setupMaterialBackgroundIfNeeded:(uint64_t)a1
+- (void)_setupMaterialBackgroundIfNeeded:(uint64_t)needed
 {
   v3 = a2;
-  if (a1 && v3 && !*(a1 + 40))
+  if (needed && v3 && !*(needed + 40))
   {
     v8 = v3;
     v4 = [AVMobileGlassAuxiliaryControlView alloc];
@@ -68,41 +68,41 @@
     [(AVMobileGlassAuxiliaryControlView *)v5 setWrappedView:v8];
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v8 setAutoresizingMask:0];
-    v6 = [v8 layer];
-    [v6 setCompositingFilter:0];
+    layer = [v8 layer];
+    [layer setCompositingFilter:0];
 
     [(AVMobileGlassAuxiliaryControlView *)v5 addSubview:v8];
-    v7 = *(a1 + 40);
-    *(a1 + 40) = v5;
+    v7 = *(needed + 40);
+    *(needed + 40) = v5;
 
     v3 = v8;
   }
 }
 
-+ (AVMobileGlassAuxiliaryControl)controlWithDisplayPriority:(int64_t)a3 identifier:(id)a4
++ (AVMobileGlassAuxiliaryControl)controlWithDisplayPriority:(int64_t)priority identifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(AVMobileGlassAuxiliaryControl);
   identifier = v6->_identifier;
-  v6->_displayPriority = a3;
-  v6->_identifier = v5;
+  v6->_displayPriority = priority;
+  v6->_identifier = identifierCopy;
 
   v6->_style = 0;
 
   return v6;
 }
 
-+ (AVMobileGlassAuxiliaryControl)controlWithView:(id)a3 displayPriority:(int64_t)a4 identifier:(id)a5
++ (AVMobileGlassAuxiliaryControl)controlWithView:(id)view displayPriority:(int64_t)priority identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a3;
+  identifierCopy = identifier;
+  viewCopy = view;
   v9 = objc_alloc_init(AVMobileGlassAuxiliaryControl);
   identifier = v9->_identifier;
-  v9->_displayPriority = a4;
-  v9->_identifier = v7;
+  v9->_displayPriority = priority;
+  v9->_identifier = identifierCopy;
 
   v9->_style = 0;
-  [(AVMobileGlassAuxiliaryControl *)v9 _setupMaterialBackgroundIfNeeded:v8];
+  [(AVMobileGlassAuxiliaryControl *)v9 _setupMaterialBackgroundIfNeeded:viewCopy];
 
   return v9;
 }

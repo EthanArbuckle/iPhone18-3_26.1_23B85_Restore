@@ -1,5 +1,5 @@
 @interface AVAssetResourceLoadingDataRequest
-- (AVAssetResourceLoadingDataRequest)initWithLoadingRequest:(id)a3 requestedOffset:(int64_t)a4 requestedLength:(int64_t)a5 requestsAllDataToEndOfResource:(BOOL)a6 canSupplyIncrementalDataImmediately:(BOOL)a7;
+- (AVAssetResourceLoadingDataRequest)initWithLoadingRequest:(id)request requestedOffset:(int64_t)offset requestedLength:(int64_t)length requestsAllDataToEndOfResource:(BOOL)resource canSupplyIncrementalDataImmediately:(BOOL)immediately;
 - (__CFDictionary)_requestInfo;
 - (id)description;
 - (uint64_t)currentOffset;
@@ -9,22 +9,22 @@
 
 @implementation AVAssetResourceLoadingDataRequest
 
-- (AVAssetResourceLoadingDataRequest)initWithLoadingRequest:(id)a3 requestedOffset:(int64_t)a4 requestedLength:(int64_t)a5 requestsAllDataToEndOfResource:(BOOL)a6 canSupplyIncrementalDataImmediately:(BOOL)a7
+- (AVAssetResourceLoadingDataRequest)initWithLoadingRequest:(id)request requestedOffset:(int64_t)offset requestedLength:(int64_t)length requestsAllDataToEndOfResource:(BOOL)resource canSupplyIncrementalDataImmediately:(BOOL)immediately
 {
   v15.receiver = self;
   v15.super_class = AVAssetResourceLoadingDataRequest;
   v12 = [(AVAssetResourceLoadingDataRequest *)&v15 init];
   if (v12)
   {
-    if (a3 && (v13 = objc_alloc_init(AVAssetResourceLoadingDataRequestInternal), (v12->_dataRequest = v13) != 0))
+    if (request && (v13 = objc_alloc_init(AVAssetResourceLoadingDataRequestInternal), (v12->_dataRequest = v13) != 0))
     {
-      v12->_dataRequest->weakReferenceToLoadingRequest = [a3 _weakReference];
-      v12->_dataRequest->requestedOffset = a4;
-      v12->_dataRequest->requestedLength = a5;
-      v12->_dataRequest->currentOffset = a4;
+      v12->_dataRequest->weakReferenceToLoadingRequest = [request _weakReference];
+      v12->_dataRequest->requestedOffset = offset;
+      v12->_dataRequest->requestedLength = length;
+      v12->_dataRequest->currentOffset = offset;
       v12->_dataRequest->dataResponseQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avassetresourceloadingdatarequest");
-      v12->_dataRequest->requestsAllDataToEndOfResource = a6;
-      v12->_dataRequest->canSupplyIncrementalDataImmediately = a7;
+      v12->_dataRequest->requestsAllDataToEndOfResource = resource;
+      v12->_dataRequest->canSupplyIncrementalDataImmediately = immediately;
       CFRetain(v12->_dataRequest);
     }
 
@@ -64,8 +64,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AVAssetResourceLoadingDataRequest *)self requestedOffset];
-  v7 = [(AVAssetResourceLoadingDataRequest *)self requestedLength];
+  requestedOffset = [(AVAssetResourceLoadingDataRequest *)self requestedOffset];
+  requestedLength = [(AVAssetResourceLoadingDataRequest *)self requestedLength];
   if ([(AVAssetResourceLoadingDataRequest *)self requestsAllDataToEndOfResource])
   {
     v8 = @"YES";
@@ -76,7 +76,7 @@
     v8 = @"NO";
   }
 
-  return [v3 stringWithFormat:@"<%@: %p, requested offset = %lld, requested length = %lld, requests all data to end of resource = %@, current offset = %lld>", v5, self, v6, v7, v8, -[AVAssetResourceLoadingDataRequest currentOffset](self, "currentOffset")];
+  return [v3 stringWithFormat:@"<%@: %p, requested offset = %lld, requested length = %lld, requests all data to end of resource = %@, current offset = %lld>", v5, self, requestedOffset, requestedLength, v8, -[AVAssetResourceLoadingDataRequest currentOffset](self, "currentOffset")];
 }
 
 - (uint64_t)currentOffset
@@ -100,9 +100,9 @@
 
 - (__CFDictionary)_requestInfo
 {
-  v2 = [(AVAssetResourceLoadingDataRequest *)self _loadingRequest];
+  _loadingRequest = [(AVAssetResourceLoadingDataRequest *)self _loadingRequest];
 
-  return [v2 _requestInfo];
+  return [_loadingRequest _requestInfo];
 }
 
 - (void)respondWithData:(NSData *)data
@@ -112,15 +112,15 @@
   {
     v6 = v5;
     canSupplyIncrementalDataImmediately = self->_dataRequest->canSupplyIncrementalDataImmediately;
-    v8 = [(AVAssetResourceLoadingDataRequest *)self _loadingRequest];
+    _loadingRequest = [(AVAssetResourceLoadingDataRequest *)self _loadingRequest];
     if (canSupplyIncrementalDataImmediately)
     {
-      [v8 _sendDataToCustomURLHandler:data];
+      [_loadingRequest _sendDataToCustomURLHandler:data];
     }
 
     else
     {
-      [v8 _appendToCachedData:data];
+      [_loadingRequest _appendToCachedData:data];
     }
 
     dataResponseQueue = self->_dataRequest->dataResponseQueue;

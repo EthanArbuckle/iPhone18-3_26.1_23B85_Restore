@@ -3,20 +3,20 @@
 - (BOOL)_searchBarContainsFocus;
 - (_TVSearchTemplateController)init;
 - (id)_sanitizedText;
-- (id)impressionableElementsContainedInDocument:(id)a3;
-- (void)_keyboardDidChangeFrame:(id)a3;
+- (id)impressionableElementsContainedInDocument:(id)document;
+- (void)_keyboardDidChangeFrame:(id)frame;
 - (void)_recordImpressionsForVisibleView;
-- (void)_scrollToTopAnimated:(BOOL)a3;
-- (void)_setNonResultsView:(id)a3;
+- (void)_scrollToTopAnimated:(BOOL)animated;
+- (void)_setNonResultsView:(id)view;
 - (void)_updateImpressions;
 - (void)_updateKeyboardText;
 - (void)_updateSearchFieldText;
 - (void)dealloc;
 - (void)loadView;
-- (void)updateNavigationItem:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)updateWithViewElement:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateNavigationItem:(id)item;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)updateWithViewElement:(id)element;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -41,13 +41,13 @@
 
     [(UISearchController *)v2->_searchController setObscuresBackgroundDuringPresentation:0];
     [(UISearchController *)v2->_searchController setSearchResultsUpdater:v2];
-    v7 = [(UISearchController *)v2->_searchController searchBar];
-    [v7 setKeyboardType:0];
-    [v7 setSearchBarStyle:2];
-    [v7 setEnablesReturnKeyAutomatically:0];
-    [v7 setCenterPlaceholder:0];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel__keyboardDidChangeFrame_ name:*MEMORY[0x277D76B98] object:0];
+    searchBar = [(UISearchController *)v2->_searchController searchBar];
+    [searchBar setKeyboardType:0];
+    [searchBar setSearchBarStyle:2];
+    [searchBar setEnablesReturnKeyAutomatically:0];
+    [searchBar setCenterPlaceholder:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__keyboardDidChangeFrame_ name:*MEMORY[0x277D76B98] object:0];
 
     v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     spinner = v2->_spinner;
@@ -63,8 +63,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateKeyboardText object:0];
   v4.receiver = self;
@@ -72,25 +72,25 @@
   [(_TVBgImageLoadingViewController *)&v4 dealloc];
 }
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  elementCopy = element;
   v66.receiver = self;
   v66.super_class = _TVSearchTemplateController;
-  [(_TVBgImageLoadingViewController *)&v66 updateWithViewElement:v5];
-  objc_storeStrong(&self->_viewElement, a3);
-  v6 = [v5 appDocument];
-  [v6 impressionThreshold];
+  [(_TVBgImageLoadingViewController *)&v66 updateWithViewElement:elementCopy];
+  objc_storeStrong(&self->_viewElement, element);
+  appDocument = [elementCopy appDocument];
+  [appDocument impressionThreshold];
   self->_impressionThreshold = v7;
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v61 = v5;
-  v8 = [v5 children];
-  v9 = [v8 countByEnumeratingWithState:&v62 objects:v67 count:16];
+  v61 = elementCopy;
+  children = [elementCopy children];
+  v9 = [children countByEnumeratingWithState:&v62 objects:v67 count:16];
   if (v9)
   {
     v10 = v9;
@@ -104,19 +104,19 @@
       {
         if (*v63 != v14)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
         v16 = *(*(&v62 + 1) + 8 * i);
-        v17 = [v16 tv_elementType];
-        if (v17 == 10)
+        tv_elementType = [v16 tv_elementType];
+        if (tv_elementType == 10)
         {
           v19 = v16;
 
           v12 = v19;
         }
 
-        else if (v17 == 45)
+        else if (tv_elementType == 45)
         {
           v18 = v16;
 
@@ -130,7 +130,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v62 objects:v67 count:16];
+      v10 = [children countByEnumeratingWithState:&v62 objects:v67 count:16];
     }
 
     while (v10);
@@ -147,14 +147,14 @@
   objc_storeStrong(&self->_collectionListElement, v12);
   objc_storeStrong(&self->_nonResultsElement, v11);
   ikKeyboard = self->_ikKeyboard;
-  v21 = [(IKTextFieldElement *)self->_searchFieldElement keyboard];
+  keyboard = [(IKTextFieldElement *)self->_searchFieldElement keyboard];
 
-  if (ikKeyboard != v21)
+  if (ikKeyboard != keyboard)
   {
     [(IKAppKeyboard *)self->_ikKeyboard setDelegate:0];
-    v22 = [(IKTextFieldElement *)self->_searchFieldElement keyboard];
+    keyboard2 = [(IKTextFieldElement *)self->_searchFieldElement keyboard];
     v23 = self->_ikKeyboard;
-    self->_ikKeyboard = v22;
+    self->_ikKeyboard = keyboard2;
 
     [(IKAppKeyboard *)self->_ikKeyboard setDelegate:self];
   }
@@ -177,91 +177,91 @@
   }
 
   [(_TVStackCollectionViewController *)self->_resultsViewController updateWithViewElement:self->_collectionListElement];
-  v26 = [(UISearchController *)self->_searchController searchBar];
-  v27 = [(IKTextFieldElement *)self->_searchFieldElement text];
-  v28 = [v27 string];
-  [v26 setPlaceholder:v28];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  text = [(IKTextFieldElement *)self->_searchFieldElement text];
+  string = [text string];
+  [searchBar setPlaceholder:string];
 
-  v29 = [(IKTextFieldElement *)self->_searchFieldElement style];
-  [v29 tv_padding];
+  style = [(IKTextFieldElement *)self->_searchFieldElement style];
+  [style tv_padding];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
-  [v26 setContentInset:{v31, v33, v35, v37}];
-  v38 = [(IKTextFieldElement *)self->_searchFieldElement attributes];
-  v39 = [v38 objectForKeyedSubscript:@"showSpinner"];
-  v40 = [v39 BOOLValue];
+  [searchBar setContentInset:{v31, v33, v35, v37}];
+  attributes = [(IKTextFieldElement *)self->_searchFieldElement attributes];
+  v39 = [attributes objectForKeyedSubscript:@"showSpinner"];
+  bOOLValue = [v39 BOOLValue];
 
-  if (v40)
+  if (bOOLValue)
   {
     if (!self->_originalSearchFieldRightView)
     {
-      v41 = [v26 searchField];
-      v42 = [v41 rightView];
+      searchField = [searchBar searchField];
+      rightView = [searchField rightView];
       spinner = self->_spinner;
 
-      if (v42 != spinner)
+      if (rightView != spinner)
       {
-        v44 = [v26 searchField];
-        v45 = [v44 rightView];
+        searchField2 = [searchBar searchField];
+        rightView2 = [searchField2 rightView];
         originalSearchFieldRightView = self->_originalSearchFieldRightView;
-        self->_originalSearchFieldRightView = v45;
+        self->_originalSearchFieldRightView = rightView2;
 
-        v47 = [v26 searchField];
-        self->_originalSearchFieldRightViewMode = [v47 rightViewMode];
+        searchField3 = [searchBar searchField];
+        self->_originalSearchFieldRightViewMode = [searchField3 rightViewMode];
       }
     }
 
-    v48 = [v26 searchField];
+    searchField4 = [searchBar searchField];
     p_spinner = &self->_spinner;
-    [v48 setRightView:self->_spinner];
+    [searchField4 setRightView:self->_spinner];
 
-    v50 = [v26 searchField];
-    v51 = v50;
+    searchField5 = [searchBar searchField];
+    v51 = searchField5;
     v52 = 3;
     goto LABEL_31;
   }
 
-  v53 = [v26 searchField];
-  v54 = [v53 rightView];
+  searchField6 = [searchBar searchField];
+  rightView3 = [searchField6 rightView];
   p_spinner = &self->_spinner;
   v55 = self->_spinner;
 
-  if (v54 == v55)
+  if (rightView3 == v55)
   {
     v57 = self->_originalSearchFieldRightView;
-    v58 = [v26 searchField];
-    v59 = v58;
+    searchField7 = [searchBar searchField];
+    v59 = searchField7;
     if (v57)
     {
-      [v58 setRightView:self->_originalSearchFieldRightView];
+      [searchField7 setRightView:self->_originalSearchFieldRightView];
 
-      v60 = [v26 searchField];
-      [v60 setRightViewMode:self->_originalSearchFieldRightViewMode];
+      searchField8 = [searchBar searchField];
+      [searchField8 setRightViewMode:self->_originalSearchFieldRightViewMode];
 
       v51 = self->_originalSearchFieldRightView;
       self->_originalSearchFieldRightView = 0;
       goto LABEL_32;
     }
 
-    [v58 setRightView:0];
+    [searchField7 setRightView:0];
 
-    v50 = [v26 searchField];
-    v51 = v50;
+    searchField5 = [searchBar searchField];
+    v51 = searchField5;
     v52 = 0;
 LABEL_31:
-    [(UIView *)v50 setRightViewMode:v52];
+    [(UIView *)searchField5 setRightViewMode:v52];
 LABEL_32:
 
-    [(UIActivityIndicatorView *)*p_spinner setHidden:v40 ^ 1u];
+    [(UIActivityIndicatorView *)*p_spinner setHidden:bOOLValue ^ 1u];
   }
 
   if ([(_TVSearchTemplateController *)self isViewLoaded])
   {
-    v56 = [(_TVSearchTemplateController *)self view];
-    [v56 setNeedsLayout];
+    view = [(_TVSearchTemplateController *)self view];
+    [view setNeedsLayout];
   }
 
   [(_TVSearchTemplateController *)self _updateImpressions];
@@ -272,26 +272,26 @@ LABEL_32:
   v6.receiver = self;
   v6.super_class = _TVSearchTemplateController;
   [(_TVSearchTemplateController *)&v6 loadView];
-  v3 = [(_TVSearchTemplateController *)self view];
+  view = [(_TVSearchTemplateController *)self view];
   v4 = self->_resultsViewController;
   [(_TVSearchTemplateController *)self addChildViewController:v4];
-  v5 = [(_TVStackCollectionViewController *)v4 view];
-  [v5 setAutoresizingMask:18];
-  [v3 addSubview:v5];
+  view2 = [(_TVStackCollectionViewController *)v4 view];
+  [view2 setAutoresizingMask:18];
+  [view addSubview:view2];
   [(_TVStackCollectionViewController *)v4 didMoveToParentViewController:self];
   if (self->_nonResultsView)
   {
-    [v3 addSubview:?];
+    [view addSubview:?];
   }
 
   [(_TVSearchTemplateController *)self _updateSearchFieldText];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _TVSearchTemplateController;
-  [(_TVBgImageLoadingViewController *)&v4 viewDidAppear:a3];
+  [(_TVBgImageLoadingViewController *)&v4 viewDidAppear:appear];
   [(_TVSearchTemplateController *)self _updateImpressions];
 }
 
@@ -300,42 +300,42 @@ LABEL_32:
   v15.receiver = self;
   v15.super_class = _TVSearchTemplateController;
   [(_TVBgImageLoadingViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(_TVSearchTemplateController *)self view];
-  [v3 bounds];
+  view = [(_TVSearchTemplateController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_TVStackCollectionViewController *)self->_resultsViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
-  [v12 setHidden:self->_nonResultsView != 0];
-  [v3 safeAreaInsets];
+  view2 = [(_TVStackCollectionViewController *)self->_resultsViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
+  [view2 setHidden:self->_nonResultsView != 0];
+  [view safeAreaInsets];
   [(UIView *)self->_nonResultsView setFrame:v5, v7 + v13, v9, v11 - (v13 + fmax(v11 - self->_keyboardFrame.origin.y, v14))];
 }
 
-- (void)updateNavigationItem:(id)a3
+- (void)updateNavigationItem:(id)item
 {
   searchController = self->_searchController;
-  v4 = a3;
-  [v4 setSearchController:searchController];
-  [v4 setHidesSearchBarWhenScrolling:0];
+  itemCopy = item;
+  [itemCopy setSearchController:searchController];
+  [itemCopy setHidesSearchBarWhenScrolling:0];
 }
 
-- (void)_scrollToTopAnimated:(BOOL)a3
+- (void)_scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v8 = [(_TVStackCollectionViewController *)self->_resultsViewController collectionView];
-  [v8 adjustedContentInset];
-  [v8 setContentOffset:v3 animated:{0.0, -v5}];
-  v6 = [v8 collectionViewLayout];
-  [v8 bounds];
-  v7 = [v6 invalidationContextForBoundsChange:?];
-  [v6 invalidateLayoutWithContext:v7];
+  animatedCopy = animated;
+  collectionView = [(_TVStackCollectionViewController *)self->_resultsViewController collectionView];
+  [collectionView adjustedContentInset];
+  [collectionView setContentOffset:animatedCopy animated:{0.0, -v5}];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionView bounds];
+  v7 = [collectionViewLayout invalidationContextForBoundsChange:?];
+  [collectionViewLayout invalidateLayoutWithContext:v7];
 
   [(_TVStackCollectionViewController *)self->_resultsViewController resetLastFocusedIndexPath];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateKeyboardText object:0];
   if ([(_TVSearchTemplateController *)self _isAtWordEnd])
@@ -365,40 +365,40 @@ LABEL_32:
 {
   if ([(_TVSearchTemplateController *)self isViewLoaded])
   {
-    v3 = [(_TVSearchTemplateController *)self view];
-    v4 = [v3 window];
+    view = [(_TVSearchTemplateController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      v6 = [(IKViewElement *)self->_viewElement appDocument];
+      appDocument = [(IKViewElement *)self->_viewElement appDocument];
       v5 = [(_TVSearchTemplateController *)self impressionableElementsContainedInDocument:?];
       if ([v5 count])
       {
-        [v6 recordImpressionsForViewElements:v5];
+        [appDocument recordImpressionsForViewElements:v5];
       }
     }
   }
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IKViewElement *)self->_viewElement appDocument];
-  v6 = [v5 isEqual:v4];
+  documentCopy = document;
+  appDocument = [(IKViewElement *)self->_viewElement appDocument];
+  v6 = [appDocument isEqual:documentCopy];
 
   if (v6)
   {
-    v7 = [(_TVStackCollectionViewController *)self->_resultsViewController collectionView];
-    v8 = [v7 visibleCells];
-    v9 = [MEMORY[0x277CBEB18] array];
+    collectionView = [(_TVStackCollectionViewController *)self->_resultsViewController collectionView];
+    visibleCells = [collectionView visibleCells];
+    array = [MEMORY[0x277CBEB18] array];
     if ([(_TVSearchTemplateController *)self isViewLoaded])
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = v8;
+      v10 = visibleCells;
       v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
@@ -413,9 +413,9 @@ LABEL_32:
               objc_enumerationMutation(v10);
             }
 
-            v15 = [*(*(&v19 + 1) + 8 * i) viewController];
-            v16 = [v15 tv_impressionableElementsForDocument:v4];
-            [v9 addObjectsFromArray:v16];
+            viewController = [*(*(&v19 + 1) + 8 * i) viewController];
+            v16 = [viewController tv_impressionableElementsForDocument:documentCopy];
+            [array addObjectsFromArray:v16];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -425,9 +425,9 @@ LABEL_32:
       }
     }
 
-    if ([v9 count])
+    if ([array count])
     {
-      v17 = [MEMORY[0x277CBEA60] arrayWithArray:v9];
+      v17 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else
@@ -447,24 +447,24 @@ LABEL_32:
 - (void)_updateSearchFieldText
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateKeyboardText object:0];
-  v4 = [(UISearchController *)self->_searchController searchBar];
-  v3 = [(IKAppKeyboard *)self->_ikKeyboard text];
-  [v4 setText:v3];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  text = [(IKAppKeyboard *)self->_ikKeyboard text];
+  [searchBar setText:text];
 }
 
 - (void)_updateKeyboardText
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateKeyboardText object:0];
-  v3 = [(UISearchController *)self->_searchController searchBar];
-  v4 = [v3 _textInputSource];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  _textInputSource = [searchBar _textInputSource];
 
   v5 = @"dictation";
-  if (v4 != 2)
+  if (_textInputSource != 2)
   {
     v5 = 0;
   }
 
-  if (v4 == 1)
+  if (_textInputSource == 1)
   {
     v6 = @"keyboard";
   }
@@ -475,8 +475,8 @@ LABEL_32:
   }
 
   [(IKAppKeyboard *)self->_ikKeyboard _setSource:v6];
-  v7 = [(_TVSearchTemplateController *)self _sanitizedText];
-  [(IKAppKeyboard *)self->_ikKeyboard setText:v7];
+  _sanitizedText = [(_TVSearchTemplateController *)self _sanitizedText];
+  [(IKAppKeyboard *)self->_ikKeyboard setText:_sanitizedText];
 }
 
 - (BOOL)_isAtWordEnd
@@ -486,11 +486,11 @@ LABEL_32:
     [_TVSearchTemplateController _isAtWordEnd];
   }
 
-  v3 = [(_TVSearchTemplateController *)self _sanitizedText];
-  v4 = [v3 length];
+  _sanitizedText = [(_TVSearchTemplateController *)self _sanitizedText];
+  v4 = [_sanitizedText length];
   if (v4)
   {
-    v5 = [_isAtWordEnd_wordDelimiters characterIsMember:{objc_msgSend(v3, "characterAtIndex:", v4 - 1)}];
+    v5 = [_isAtWordEnd_wordDelimiters characterIsMember:{objc_msgSend(_sanitizedText, "characterAtIndex:", v4 - 1)}];
   }
 
   else
@@ -504,11 +504,11 @@ LABEL_32:
 - (id)_sanitizedText
 {
   v7 = -4;
-  v2 = [(UISearchController *)self->_searchController searchBar];
-  v3 = [v2 text];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  text = [searchBar text];
 
   v4 = [MEMORY[0x277CCACA8] stringWithCharacters:&v7 length:1];
-  v5 = [v3 stringByReplacingOccurrencesOfString:v4 withString:&stru_287E12870];
+  v5 = [text stringByReplacingOccurrencesOfString:v4 withString:&stru_287E12870];
 
   return v5;
 }
@@ -517,14 +517,14 @@ LABEL_32:
 {
   if ([(_TVSearchTemplateController *)self isViewLoaded])
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    v4 = [v3 focusedView];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    focusedView = [mainScreen focusedView];
 
-    v5 = [(_TVSearchTemplateController *)self view];
-    if ([v4 isDescendantOfView:v5])
+    view = [(_TVSearchTemplateController *)self view];
+    if ([focusedView isDescendantOfView:view])
     {
-      v6 = [(_TVStackCollectionViewController *)self->_resultsViewController view];
-      v7 = [v4 isDescendantOfView:v6] ^ 1;
+      view2 = [(_TVStackCollectionViewController *)self->_resultsViewController view];
+      v7 = [focusedView isDescendantOfView:view2] ^ 1;
     }
 
     else
@@ -541,23 +541,23 @@ LABEL_32:
   return v7;
 }
 
-- (void)_setNonResultsView:(id)a3
+- (void)_setNonResultsView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   [(UIView *)self->_nonResultsView removeFromSuperview];
-  objc_storeStrong(&self->_nonResultsView, a3);
+  objc_storeStrong(&self->_nonResultsView, view);
   if ([(_TVSearchTemplateController *)self isViewLoaded]&& self->_nonResultsView)
   {
-    v5 = [(_TVSearchTemplateController *)self view];
-    [v5 addSubview:self->_nonResultsView];
+    view = [(_TVSearchTemplateController *)self view];
+    [view addSubview:self->_nonResultsView];
   }
 }
 
-- (void)_keyboardDidChangeFrame:(id)a3
+- (void)_keyboardDidChangeFrame:(id)frame
 {
   p_keyboardFrame = &self->_keyboardFrame;
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
+  userInfo = [frame userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
   [v6 CGRectValue];
   p_keyboardFrame->origin.x = v7;
   p_keyboardFrame->origin.y = v8;
@@ -566,8 +566,8 @@ LABEL_32:
 
   if ([(_TVSearchTemplateController *)self isViewLoaded]&& self->_nonResultsView)
   {
-    v11 = [(_TVSearchTemplateController *)self view];
-    [v11 setNeedsLayout];
+    view = [(_TVSearchTemplateController *)self view];
+    [view setNeedsLayout];
   }
 }
 

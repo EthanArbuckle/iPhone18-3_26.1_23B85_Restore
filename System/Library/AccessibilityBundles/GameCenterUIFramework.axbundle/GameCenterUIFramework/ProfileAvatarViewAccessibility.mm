@@ -1,5 +1,5 @@
 @interface ProfileAvatarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_NSRange)accessibilityRowRange;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -9,16 +9,16 @@
 
 @implementation ProfileAvatarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"accessibilityIsEditable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.PlayerProfileHeaderView"];
-  [v3 validateClass:@"GameCenterUI.PlayerProfileHeaderView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"accessibilityRoundedEditButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"accessibilityProfileEditButtonBackground" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"accessibilityProfileEditLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"accessibilityIsEditable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.PlayerProfileHeaderView"];
+  [validationsCopy validateClass:@"GameCenterUI.PlayerProfileHeaderView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"accessibilityRoundedEditButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"accessibilityProfileEditButtonBackground" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.ProfileAvatarView" hasInstanceMethod:@"accessibilityProfileEditLabel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -39,8 +39,8 @@
   v3 = [v2 safeValueForKey:@"accessibilityTitleLabel"];
   v4 = MEMORY[0x29EDBA0F8];
   v5 = AXGameCenterUIFrameworkLocString(@"PLAYER_PHOTO_BUTTON_OF");
-  v6 = [v3 accessibilityLabel];
-  v7 = [v4 stringWithFormat:v5, v6];
+  accessibilityLabel = [v3 accessibilityLabel];
+  v7 = [v4 stringWithFormat:v5, accessibilityLabel];
 
   return v7;
 }
@@ -49,17 +49,17 @@
 {
   if ([(ProfileAvatarViewAccessibility *)self _axIsEditable])
   {
-    v3 = AXGameCenterUIFrameworkLocString(@"PLAYER_PHOTO_BUTTON_HINT");
+    accessibilityHint = AXGameCenterUIFrameworkLocString(@"PLAYER_PHOTO_BUTTON_HINT");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = ProfileAvatarViewAccessibility;
-    v3 = [(ProfileAvatarViewAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(ProfileAvatarViewAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (_NSRange)accessibilityRowRange
@@ -75,20 +75,20 @@
 {
   v12.receiver = self;
   v12.super_class = ProfileAvatarViewAccessibility;
-  v3 = [(ProfileAvatarViewAccessibility *)&v12 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(ProfileAvatarViewAccessibility *)&v12 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
   v8 = [(ProfileAvatarViewAccessibility *)self safeValueForKey:@"accessibilityRoundedEditButton"];
   if ([v8 _accessibilityViewIsVisible])

@@ -1,6 +1,6 @@
 @interface CESREntityCleanupConfig
-- (BOOL)_parseJsonObject:(id)a3;
-- (CESREntityCleanupConfig)initWithJsonObject:(id)a3;
+- (BOOL)_parseJsonObject:(id)object;
+- (CESREntityCleanupConfig)initWithJsonObject:(id)object;
 - (id)description;
 @end
 
@@ -67,13 +67,13 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"CESREntityCleanupConfig: enableDatatypeCleanupFromNonAppEntities=%@ enableEntityCleanup=%@ enableEmojiCleanupFromAppEntities=%@ enableEmojiCleanupFromNonAppEntities=%@ enableSpecialCharacterCleanupFromAppEntities=%@ enableSpecialCharacterCleanupFromNonAppEntities=%@ entitiesExcludedFromEmojiCleanup=%@ entitiesExcludedFromSpecialCharacterCleanup=%@ applyRegex=%@ specialCharactersToRemove=%@", v3, v4, v5, v6, v7, v2, self->_entitiesExcludedFromEmojiCleanup, self->_entitiesExcludedFromSpecialCharacterCleanup, self->_applyRegex, self->_specialCharactersToRemove];
 }
 
-- (BOOL)_parseJsonObject:(id)a3
+- (BOOL)_parseJsonObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKeyedSubscript:@"entityCleanup"];
+    v5 = [objectCopy objectForKeyedSubscript:@"entityCleanup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,15 +87,15 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 BOOLValue];
+          bOOLValue = [v8 BOOLValue];
         }
 
         else
         {
-          v9 = 0;
+          bOOLValue = 0;
         }
 
-        self->_enableEntityCleanup = v9;
+        self->_enableEntityCleanup = bOOLValue;
         v11 = [v6 objectForKeyedSubscript:@"enableEmojiCleanupFromAppEntities"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -218,15 +218,15 @@
   return isKindOfClass & 1;
 }
 
-- (CESREntityCleanupConfig)initWithJsonObject:(id)a3
+- (CESREntityCleanupConfig)initWithJsonObject:(id)object
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = CESREntityCleanupConfig;
   v5 = [(CESREntityCleanupConfig *)&v11 init];
   v6 = v5;
-  if (v5 && ![(CESREntityCleanupConfig *)v5 _parseJsonObject:v4])
+  if (v5 && ![(CESREntityCleanupConfig *)v5 _parseJsonObject:objectCopy])
   {
     v8 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))

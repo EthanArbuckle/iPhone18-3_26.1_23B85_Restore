@@ -1,20 +1,20 @@
 @interface GAXPathContext
-- (GAXPathContext)initWithLastSeenCGPath:(CGPath *)a3;
+- (GAXPathContext)initWithLastSeenCGPath:(CGPath *)path;
 - (void)dealloc;
 @end
 
 @implementation GAXPathContext
 
-- (GAXPathContext)initWithLastSeenCGPath:(CGPath *)a3
+- (GAXPathContext)initWithLastSeenCGPath:(CGPath *)path
 {
   v6.receiver = self;
   v6.super_class = GAXPathContext;
   v4 = [(GAXPathContext *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (path)
     {
-      v4->_lastSeenCGPath = CGPathRetain(a3);
+      v4->_lastSeenCGPath = CGPathRetain(path);
       v4->_linePointsContexts = AXCArrayCreate();
       v4->_linePointsIndicesPerElementIndices = AXCArrayCreate();
     }

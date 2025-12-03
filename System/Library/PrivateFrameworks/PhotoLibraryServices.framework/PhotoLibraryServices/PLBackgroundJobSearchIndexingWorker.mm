@@ -1,37 +1,37 @@
 @interface PLBackgroundJobSearchIndexingWorker
 + (id)_criteriaToUse;
-- (BOOL)_isErrorCausedByLocaleChange:(id)a3 maxDepth:(unint64_t)a4;
-- (PLBackgroundJobSearchIndexingWorker)initWithLibraryBundle:(id)a3;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
+- (BOOL)_isErrorCausedByLocaleChange:(id)change maxDepth:(unint64_t)depth;
+- (PLBackgroundJobSearchIndexingWorker)initWithLibraryBundle:(id)bundle;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
 - (signed)_jobType;
-- (void)_performWorkOnItem:(id)a3 completion:(id)a4;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)stopWorkingOnItem:(id)a3;
+- (void)_performWorkOnItem:(id)item completion:(id)completion;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)stopWorkingOnItem:(id)item;
 @end
 
 @implementation PLBackgroundJobSearchIndexingWorker
 
 - (signed)_jobType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (BOOL)_isErrorCausedByLocaleChange:(id)a3 maxDepth:(unint64_t)a4
+- (BOOL)_isErrorCausedByLocaleChange:(id)change maxDepth:(unint64_t)depth
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  changeCopy = change;
+  v7 = changeCopy;
   LOBYTE(v8) = 0;
-  if (v6 && a4)
+  if (changeCopy && depth)
   {
-    v9 = [v6 domain];
-    if ([v9 isEqual:*MEMORY[0x1E69BFF48]])
+    domain = [changeCopy domain];
+    if ([domain isEqual:*MEMORY[0x1E69BFF48]])
     {
-      v10 = [v7 code];
+      code = [v7 code];
 
-      if (v10 == 45003)
+      if (code == 45003)
       {
         LOBYTE(v8) = 1;
         goto LABEL_18;
@@ -46,19 +46,19 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = [v7 underlyingErrors];
-    v8 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    underlyingErrors = [v7 underlyingErrors];
+    v8 = [underlyingErrors countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v12 = *v17;
-      v13 = a4 - 1;
+      v13 = depth - 1;
       while (2)
       {
         for (i = 0; i != v8; ++i)
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(underlyingErrors);
           }
 
           if ([(PLBackgroundJobSearchIndexingWorker *)self _isErrorCausedByLocaleChange:*(*(&v16 + 1) + 8 * i) maxDepth:v13])
@@ -68,7 +68,7 @@
           }
         }
 
-        v8 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [underlyingErrors countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           continue;
@@ -86,34 +86,34 @@ LABEL_18:
   return v8;
 }
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = PLSearchBackendIndexStatusGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = itemCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "Request received to stop work item: %@", buf, 0xCu);
   }
 
   v6 = PLSafeResultWithUnfairLock();
-  v7 = [v6 libraryServicesManager];
-  v8 = [v7 searchIndexingEngine];
-  [v8 pauseSearchIndexRebuildWithSourceName:@"Background Job"];
+  libraryServicesManager = [v6 libraryServicesManager];
+  searchIndexingEngine = [libraryServicesManager searchIndexingEngine];
+  [searchIndexingEngine pauseSearchIndexRebuildWithSourceName:@"Background Job"];
 
   [(PLAtomicProgressIvar *)self->_progressContainer cancel];
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  if (itemCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -121,42 +121,42 @@ LABEL_18:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSearchIndexingWorker.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"_item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSearchIndexingWorker.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"_item"}];
 
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSearchIndexingWorker.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSearchIndexingWorker.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"library"}];
 
 LABEL_3:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSearchIndexingWorker.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"[_item isKindOfClass:[PLSearchIndexPendingWorkItem class]]"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSearchIndexingWorker.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"[_item isKindOfClass:[PLSearchIndexPendingWorkItem class]]"}];
   }
 
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __78__PLBackgroundJobSearchIndexingWorker_performWorkOnItem_inLibrary_completion___block_invoke;
   v23 = &unk_1E7578848;
-  v24 = self;
-  v25 = v10;
-  v12 = v10;
-  v13 = v9;
+  selfCopy = self;
+  v25 = libraryCopy;
+  v12 = libraryCopy;
+  v13 = itemCopy;
   PLSafeRunWithUnfairLock();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__PLBackgroundJobSearchIndexingWorker_performWorkOnItem_inLibrary_completion___block_invoke_2;
   v18[3] = &unk_1E7576050;
   v18[4] = self;
-  v19 = v11;
-  v14 = v11;
+  v19 = completionCopy;
+  v14 = completionCopy;
   [(PLBackgroundJobSearchIndexingWorker *)self _performWorkOnItem:v13 completion:v18];
 }
 
@@ -174,11 +174,11 @@ void __78__PLBackgroundJobSearchIndexingWorker_performWorkOnItem_inLibrary_compl
   *(v1 + 112) = 0;
 }
 
-- (void)_performWorkOnItem:(id)a3 completion:(id)a4
+- (void)_performWorkOnItem:(id)item completion:(id)completion
 {
   v53 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v6 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x3032000000;
@@ -191,19 +191,19 @@ void __78__PLBackgroundJobSearchIndexingWorker_performWorkOnItem_inLibrary_compl
   v46[5] = &unk_1E75787F8;
   v46[6] = self;
   v7 = PLSafeResultWithUnfairLock();
-  v8 = [v7 libraryServicesManager];
-  v9 = [v8 isSearchIndexingEnabled];
+  libraryServicesManager = [v7 libraryServicesManager];
+  isSearchIndexingEnabled = [libraryServicesManager isSearchIndexingEnabled];
 
-  if (v9)
+  if (isSearchIndexingEnabled)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v12 = [v11 stringByAppendingString:@".donateCompletion"];
     v13 = v12;
-    v14 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v15 = qos_class_self();
     v16 = dispatch_queue_attr_make_with_qos_class(0, v15, 0);
-    v17 = dispatch_queue_create(v14, v16);
+    v17 = dispatch_queue_create(uTF8String, v16);
 
     v18 = dispatch_group_create();
     dispatch_group_enter(v18);
@@ -225,33 +225,33 @@ void __78__PLBackgroundJobSearchIndexingWorker_performWorkOnItem_inLibrary_compl
       }
     }
 
-    if ([v35 rebuildInProgress])
+    if ([itemCopy rebuildInProgress])
     {
-      v23 = [v7 libraryServicesManager];
-      v24 = [v23 searchIndexingEngine];
+      libraryServicesManager2 = [v7 libraryServicesManager];
+      searchIndexingEngine = [libraryServicesManager2 searchIndexingEngine];
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
       v45[2] = __69__PLBackgroundJobSearchIndexingWorker__performWorkOnItem_completion___block_invoke_80;
       v45[3] = &unk_1E756B358;
       v46[1] = v47;
       v46[0] = v18;
-      [v24 resumeSearchIndexRebuildIfNeededForLibrary:v7 calledBy:@"Background Job" completion:v45];
+      [searchIndexingEngine resumeSearchIndexRebuildIfNeededForLibrary:v7 calledBy:@"Background Job" completion:v45];
       v25 = v46;
     }
 
     else
     {
-      v23 = [v7 libraryServicesManager];
-      v24 = [v23 searchIndexingEngine];
-      v28 = [v35 jobType];
-      v29 = [v35 jobFlags];
+      libraryServicesManager2 = [v7 libraryServicesManager];
+      searchIndexingEngine = [libraryServicesManager2 searchIndexingEngine];
+      jobType = [itemCopy jobType];
+      jobFlags = [itemCopy jobFlags];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __69__PLBackgroundJobSearchIndexingWorker__performWorkOnItem_completion___block_invoke_2;
       v43[3] = &unk_1E756B380;
       v44[1] = v47;
       v44[0] = v18;
-      v30 = [v24 processBatchOfJobsWithType:v28 flags:v29 library:v7 completion:v43];
+      v30 = [searchIndexingEngine processBatchOfJobsWithType:jobType flags:jobFlags library:v7 completion:v43];
       [(PLAtomicProgressIvar *)self->_progressContainer setProgress:v30];
 
       v25 = v44;
@@ -265,10 +265,10 @@ void __78__PLBackgroundJobSearchIndexingWorker_performWorkOnItem_inLibrary_compl
     v32 = log;
     v41 = v32;
     v42 = spid;
-    v37 = v35;
-    v38 = self;
+    v37 = itemCopy;
+    selfCopy = self;
     v40 = v47;
-    v39 = v6;
+    v39 = completionCopy;
     [v31 groupNotify:v18 queue:v17 block:v36];
   }
 
@@ -287,7 +287,7 @@ void __78__PLBackgroundJobSearchIndexingWorker_performWorkOnItem_inLibrary_compl
     v50 = @"Search indexing not enabled for library";
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     v18 = [v27 initWithDomain:*MEMORY[0x1E69BFF48] code:46502 userInfo:v17];
-    (*(v6 + 2))(v6, v18);
+    (*(completionCopy + 2))(completionCopy, v18);
   }
 
   _Block_object_dispose(v47, 8);
@@ -348,19 +348,19 @@ void __69__PLBackgroundJobSearchIndexingWorker__performWorkOnItem_completion___b
   }
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  libraryCopy = library;
+  criteriasCopy = criterias;
+  if (!libraryCopy)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSearchIndexingWorker.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSearchIndexingWorker.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
-  v9 = [objc_opt_class() _criteriaToUse];
-  v10 = [v8 containsObject:v9];
+  _criteriaToUse = [objc_opt_class() _criteriaToUse];
+  v10 = [criteriasCopy containsObject:_criteriaToUse];
 
   if (v10)
   {
@@ -376,37 +376,37 @@ void __69__PLBackgroundJobSearchIndexingWorker__performWorkOnItem_completion___b
       _os_signpost_emit_with_name_impl(&dword_19BF1F000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLSearchIndexBackgroundWorkerWorkItemsNeedingProcessing", "", &buf, 2u);
     }
 
-    v16 = [v7 libraryServicesManager];
-    v17 = [v16 isSearchIndexingEnabled];
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    isSearchIndexingEnabled = [libraryServicesManager isSearchIndexingEnabled];
 
-    if (v17)
+    if (isSearchIndexingEnabled)
     {
-      if (-[PLBackgroundJobSearchIndexingWorker _supportsIndexRebuild](self, "_supportsIndexRebuild") && ([v7 libraryServicesManager], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "searchIndexingEngine"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "hasRebuildWorkToDoForLibrary:", v7), v19, v18, v20))
+      if (-[PLBackgroundJobSearchIndexingWorker _supportsIndexRebuild](self, "_supportsIndexRebuild") && ([libraryCopy libraryServicesManager], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "searchIndexingEngine"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "hasRebuildWorkToDoForLibrary:", libraryCopy), v19, v18, v20))
       {
         v21 = v14;
         v22 = v21;
         if (v15 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
         {
-          v23 = [v7 libraryServicesManager];
-          v24 = [v23 wellKnownPhotoLibraryIdentifier];
+          libraryServicesManager2 = [libraryCopy libraryServicesManager];
+          wellKnownPhotoLibraryIdentifier = [libraryServicesManager2 wellKnownPhotoLibraryIdentifier];
           LODWORD(buf) = 134217984;
-          *(&buf + 4) = v24;
+          *(&buf + 4) = wellKnownPhotoLibraryIdentifier;
           _os_signpost_emit_with_name_impl(&dword_19BF1F000, v22, OS_SIGNPOST_INTERVAL_END, v12, "PLSearchIndexBackgroundWorkerWorkItemsNeedingProcessing", "WellKnownPhotoLibraryIdentifier: %tu, HasRebuildWorkToDoForLibrary", &buf, 0xCu);
         }
 
         v25 = [PLBackgroundJobWorkerPendingWorkItems alloc];
-        v26 = [objc_opt_class() _criteriaToUse];
+        _criteriaToUse2 = [objc_opt_class() _criteriaToUse];
         v27 = +[PLSearchIndexPendingWorkItem rebuildInProgressPendingWorkItem];
         v53[0] = v27;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
-        v29 = [(PLBackgroundJobWorkerPendingWorkItems *)v25 initWithCriteria:v26 workItemsNeedingProcessing:v28];
+        initWithZeroWorkItems = [(PLBackgroundJobWorkerPendingWorkItems *)v25 initWithCriteria:_criteriaToUse2 workItemsNeedingProcessing:v28];
       }
 
       else
       {
         if ([(PLBackgroundJobSearchIndexingWorker *)self _supportsIndexRebuild])
         {
-          [PLSpotlightReindexing drainSpotlightReindexIdentifiersIfNeededForLibrary:v7];
+          [PLSpotlightReindexing drainSpotlightReindexIdentifiersIfNeededForLibrary:libraryCopy];
         }
 
         *&buf = 0;
@@ -419,27 +419,27 @@ void __69__PLBackgroundJobSearchIndexingWorker__performWorkOnItem_completion___b
         v40[1] = 3221225472;
         v40[2] = __90__PLBackgroundJobSearchIndexingWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke;
         v40[3] = &unk_1E7578820;
-        v31 = v7;
+        v31 = libraryCopy;
         v41 = v31;
-        v42 = self;
+        selfCopy = self;
         p_buf = &buf;
         [v31 performBlockAndWait:v40];
         v32 = v14;
         v33 = v32;
         if (v15 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
         {
-          v34 = [v31 libraryServicesManager];
-          v35 = [v34 wellKnownPhotoLibraryIdentifier];
-          v36 = [*(*(&buf + 1) + 40) workItemsNeedingProcessing];
-          v37 = [v36 count];
+          libraryServicesManager3 = [v31 libraryServicesManager];
+          wellKnownPhotoLibraryIdentifier2 = [libraryServicesManager3 wellKnownPhotoLibraryIdentifier];
+          workItemsNeedingProcessing = [*(*(&buf + 1) + 40) workItemsNeedingProcessing];
+          v37 = [workItemsNeedingProcessing count];
           *v44 = 134218240;
-          v45 = v35;
+          v45 = wellKnownPhotoLibraryIdentifier2;
           v46 = 2048;
           v47 = v37;
           _os_signpost_emit_with_name_impl(&dword_19BF1F000, v33, OS_SIGNPOST_INTERVAL_END, v12, "PLSearchIndexBackgroundWorkerWorkItemsNeedingProcessing", "WellKnownPhotoLibraryIdentifier: %tu, PendingWorkItems: %tu", v44, 0x16u);
         }
 
-        v29 = *(*(&buf + 1) + 40);
+        initWithZeroWorkItems = *(*(&buf + 1) + 40);
         _Block_object_dispose(&buf, 8);
       }
     }
@@ -450,20 +450,20 @@ void __69__PLBackgroundJobSearchIndexingWorker__performWorkOnItem_completion___b
       if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v7;
+        *(&buf + 4) = libraryCopy;
         _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_FAULT, "Search indexing not enabled for library %@", &buf, 0xCu);
       }
 
-      v29 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+      initWithZeroWorkItems = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
     }
   }
 
   else
   {
-    v29 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItems = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
   }
 
-  return v29;
+  return initWithZeroWorkItems;
 }
 
 void __90__PLBackgroundJobSearchIndexingWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke(uint64_t a1)
@@ -596,11 +596,11 @@ void __90__PLBackgroundJobSearchIndexingWorker_workItemsNeedingProcessingInLibra
   }
 }
 
-- (PLBackgroundJobSearchIndexingWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobSearchIndexingWorker)initWithLibraryBundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = PLBackgroundJobSearchIndexingWorker;
-  v3 = [(PLBackgroundJobWorker *)&v8 initWithLibraryBundle:a3];
+  v3 = [(PLBackgroundJobWorker *)&v8 initWithLibraryBundle:bundle];
   v4 = v3;
   if (v3)
   {
@@ -615,7 +615,7 @@ void __90__PLBackgroundJobSearchIndexingWorker_workItemsNeedingProcessingInLibra
 
 + (id)_criteriaToUse
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }

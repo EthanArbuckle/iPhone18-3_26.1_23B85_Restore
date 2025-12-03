@@ -1,22 +1,22 @@
 @interface SHJSONLFileWriter
-+ (id)dataForJSONObject:(id)a3 error:(id *)a4;
-+ (int64_t)dataCompressionFromAlgorithm:(int)a3;
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)writeObject:(id)a3 error:(id *)a4;
-- (void)linkDataStream:(id)a3;
++ (id)dataForJSONObject:(id)object error:(id *)error;
++ (int64_t)dataCompressionFromAlgorithm:(int)algorithm;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)writeObject:(id)object error:(id *)error;
+- (void)linkDataStream:(id)stream;
 @end
 
 @implementation SHJSONLFileWriter
 
-- (BOOL)writeObject:(id)a3 error:(id *)a4
+- (BOOL)writeObject:(id)object error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() dataForJSONObject:v6 error:a4];
+  objectCopy = object;
+  v7 = [objc_opt_class() dataForJSONObject:objectCopy error:error];
 
   if (v7)
   {
-    v8 = [(SHJSONLFileWriter *)self outputStream];
-    v9 = [v8 processData:v7 error:a4];
+    outputStream = [(SHJSONLFileWriter *)self outputStream];
+    v9 = [outputStream processData:v7 error:error];
   }
 
   else
@@ -27,24 +27,24 @@
   return v9;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
-  v4 = [(SHJSONLFileWriter *)self outputStream];
-  LOBYTE(a3) = [v4 closeWithError:a3];
+  outputStream = [(SHJSONLFileWriter *)self outputStream];
+  LOBYTE(error) = [outputStream closeWithError:error];
 
-  return a3;
+  return error;
 }
 
-+ (int64_t)dataCompressionFromAlgorithm:(int)a3
++ (int64_t)dataCompressionFromAlgorithm:(int)algorithm
 {
-  if (a3 <= 773)
+  if (algorithm <= 773)
   {
-    if ((a3 - 256) < 2)
+    if ((algorithm - 256) < 2)
     {
       return 1;
     }
 
-    if (a3 == 517)
+    if (algorithm == 517)
     {
       return 3;
     }
@@ -61,9 +61,9 @@ LABEL_10:
     objc_exception_throw(v13);
   }
 
-  if (a3 != 2049)
+  if (algorithm != 2049)
   {
-    if (a3 == 774)
+    if (algorithm == 774)
     {
       return 2;
     }
@@ -74,19 +74,19 @@ LABEL_10:
   return 0;
 }
 
-+ (id)dataForJSONObject:(id)a3 error:(id *)a4
++ (id)dataForJSONObject:(id)object error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB28] data];
-  v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:8 error:a4];
+  objectCopy = object;
+  data = [MEMORY[0x277CBEB28] data];
+  v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:objectCopy options:8 error:error];
   if (v7)
   {
-    [v6 appendData:v7];
+    [data appendData:v7];
     v8 = [@"\n" dataUsingEncoding:4];
-    [v6 appendData:v8];
+    [data appendData:v8];
 
-    v9 = v6;
+    v9 = data;
   }
 
   else
@@ -99,28 +99,28 @@ LABEL_10:
   return v9;
 }
 
-- (void)linkDataStream:(id)a3
+- (void)linkDataStream:(id)stream
 {
-  v7 = a3;
-  if ([v7 count])
+  streamCopy = stream;
+  if ([streamCopy count])
   {
     v3 = 0;
     do
     {
-      if (v3 == [v7 count] - 1)
+      if (v3 == [streamCopy count] - 1)
       {
         break;
       }
 
       v4 = v3 + 1;
-      v5 = [v7 objectAtIndexedSubscript:v3 + 1];
-      v6 = [v7 objectAtIndexedSubscript:v3];
+      v5 = [streamCopy objectAtIndexedSubscript:v3 + 1];
+      v6 = [streamCopy objectAtIndexedSubscript:v3];
       [v6 setNext:v5];
 
       v3 = v4;
     }
 
-    while ([v7 count] > v4);
+    while ([streamCopy count] > v4);
   }
 }
 

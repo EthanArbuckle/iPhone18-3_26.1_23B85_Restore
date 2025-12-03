@@ -2,11 +2,11 @@
 - (BEEvaluateJavaScriptResultContext)init;
 - (NSArray)allKeys;
 - (id)description;
-- (id)dictionaryResultForKey:(id)a3;
-- (id)resultForKey:(id)a3;
-- (id)stringResultForKey:(id)a3;
-- (id)valueResultForKey:(id)a3;
-- (void)addResult:(id)a3 forKey:(id)a4;
+- (id)dictionaryResultForKey:(id)key;
+- (id)resultForKey:(id)key;
+- (id)stringResultForKey:(id)key;
+- (id)valueResultForKey:(id)key;
+- (void)addResult:(id)result forKey:(id)key;
 @end
 
 @implementation BEEvaluateJavaScriptResultContext
@@ -26,60 +26,60 @@
   return v2;
 }
 
-- (void)addResult:(id)a3 forKey:(id)a4
+- (void)addResult:(id)result forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = v9;
-  if (!v9)
+  resultCopy = result;
+  keyCopy = key;
+  v7 = resultCopy;
+  if (!resultCopy)
   {
     v7 = +[NSNull null];
   }
 
-  v8 = [(BEEvaluateJavaScriptResultContext *)self results];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  results = [(BEEvaluateJavaScriptResultContext *)self results];
+  [results setObject:v7 forKeyedSubscript:keyCopy];
 
-  if (!v9)
+  if (!resultCopy)
   {
   }
 }
 
-- (id)resultForKey:(id)a3
+- (id)resultForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BEEvaluateJavaScriptResultContext *)self results];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  results = [(BEEvaluateJavaScriptResultContext *)self results];
+  v6 = [results objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)stringResultForKey:(id)a3
+- (id)stringResultForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(BEEvaluateJavaScriptResultContext *)self resultForKey:v4];
+  v5 = [(BEEvaluateJavaScriptResultContext *)self resultForKey:keyCopy];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-- (id)dictionaryResultForKey:(id)a3
+- (id)dictionaryResultForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(BEEvaluateJavaScriptResultContext *)self resultForKey:v4];
+  v5 = [(BEEvaluateJavaScriptResultContext *)self resultForKey:keyCopy];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-- (id)valueResultForKey:(id)a3
+- (id)valueResultForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(BEEvaluateJavaScriptResultContext *)self resultForKey:v4];
+  v5 = [(BEEvaluateJavaScriptResultContext *)self resultForKey:keyCopy];
 
   v6 = BUDynamicCast();
 
@@ -88,18 +88,18 @@
 
 - (NSArray)allKeys
 {
-  v2 = [(BEEvaluateJavaScriptResultContext *)self results];
-  v3 = [v2 allKeys];
+  results = [(BEEvaluateJavaScriptResultContext *)self results];
+  allKeys = [results allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BEEvaluateJavaScriptResultContext *)self results];
-  v6 = [NSString stringWithFormat:@"<%@: %p> - results: %@", v4, self, v5];
+  results = [(BEEvaluateJavaScriptResultContext *)self results];
+  v6 = [NSString stringWithFormat:@"<%@: %p> - results: %@", v4, self, results];
 
   return v6;
 }

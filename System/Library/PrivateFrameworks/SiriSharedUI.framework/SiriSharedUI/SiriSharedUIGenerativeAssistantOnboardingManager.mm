@@ -3,8 +3,8 @@
 + (id)symbolName;
 - (SiriSharedUIGenerativeAssistantOnboardingManager)init;
 - (SiriSharedUIGenerativeAssistantOnboardingManagerDelegate)delegate;
-- (void)presentOnboardingFlowForCommand:(id)a3;
-- (void)setNavigationController:(id)a3;
+- (void)presentOnboardingFlowForCommand:(id)command;
+- (void)setNavigationController:(id)controller;
 @end
 
 @implementation SiriSharedUIGenerativeAssistantOnboardingManager
@@ -16,18 +16,18 @@
   return Strong;
 }
 
-- (void)setNavigationController:(id)a3
+- (void)setNavigationController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUIGenerativeAssistantOnboardingManager_navigationController);
-  *(self + OBJC_IVAR___SiriSharedUIGenerativeAssistantOnboardingManager_navigationController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUIGenerativeAssistantOnboardingManager_navigationController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)presentOnboardingFlowForCommand:(id)a3
+- (void)presentOnboardingFlowForCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  SiriSharedUIGenerativeAssistantOnboardingManager.presentOnboardingFlow(forCommand:)(v4);
+  commandCopy = command;
+  selfCopy = self;
+  SiriSharedUIGenerativeAssistantOnboardingManager.presentOnboardingFlow(forCommand:)(commandCopy);
 }
 
 + (id)modelName

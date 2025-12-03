@@ -1,28 +1,28 @@
 @interface AXAuditScreenshotManager
-+ (id)imageFromRemoteImageData:(id)a3 rotation:(double)a4;
++ (id)imageFromRemoteImageData:(id)data rotation:(double)rotation;
 + (id)imageProcessingQueue;
 + (id)sharedManager;
 - (AXAuditScreenshotManager)init;
-- (BOOL)screenshotShouldFlipOutlineForTimestamp:(id)a3;
-- (CGRect)_boundsForRect:(CGRect)a3 containerImageSize:(CGSize)a4 timestamp:(id)a5;
-- (CGRect)_elementBoundsForIssue:(id)a3 containerImageSize:(CGSize)a4;
-- (CGRect)elementBoundsInScreenShotForIssue:(id)a3;
-- (CGRect)screenshotBorderFrameForTimestamp:(id)a3;
-- (CGRect)screenshotDisplayBoundsForTimestamp:(id)a3;
-- (double)screenshotRotationForTimestamp:(id)a3;
-- (double)screenshotScaleFactorForTimestamp:(id)a3;
-- (id)screenshotForIssue:(id)a3 elementRect:(CGRect *)a4;
-- (id)screenshotHighlightingIssue:(id)a3;
-- (id)screenshotImageForTimestamp:(id)a3;
-- (id)screenshotImageForTimestamp:(id)a3 inRect:(CGRect)a4;
-- (id)thumbnailImageOfIssue:(id)a3;
-- (void)addScreenshot:(id)a3 forTimestamp:(id)a4;
-- (void)addScreenshotWithInfo:(id)a3 timestamp:(id)a4 completion:(id)a5;
+- (BOOL)screenshotShouldFlipOutlineForTimestamp:(id)timestamp;
+- (CGRect)_boundsForRect:(CGRect)rect containerImageSize:(CGSize)size timestamp:(id)timestamp;
+- (CGRect)_elementBoundsForIssue:(id)issue containerImageSize:(CGSize)size;
+- (CGRect)elementBoundsInScreenShotForIssue:(id)issue;
+- (CGRect)screenshotBorderFrameForTimestamp:(id)timestamp;
+- (CGRect)screenshotDisplayBoundsForTimestamp:(id)timestamp;
+- (double)screenshotRotationForTimestamp:(id)timestamp;
+- (double)screenshotScaleFactorForTimestamp:(id)timestamp;
+- (id)screenshotForIssue:(id)issue elementRect:(CGRect *)rect;
+- (id)screenshotHighlightingIssue:(id)issue;
+- (id)screenshotImageForTimestamp:(id)timestamp;
+- (id)screenshotImageForTimestamp:(id)timestamp inRect:(CGRect)rect;
+- (id)thumbnailImageOfIssue:(id)issue;
+- (void)addScreenshot:(id)screenshot forTimestamp:(id)timestamp;
+- (void)addScreenshotWithInfo:(id)info timestamp:(id)timestamp completion:(id)completion;
 - (void)clear;
-- (void)setScreenshotBorderFrame:(CGRect)a3 forTimestamp:(id)a4;
-- (void)setScreenshotDisplayBounds:(CGRect)a3 forTimestamp:(id)a4;
-- (void)setScreenshotRotation:(double)a3 forTimestamp:(id)a4;
-- (void)setScreenshotScaleFactor:(double)a3 forTimestamp:(id)a4;
+- (void)setScreenshotBorderFrame:(CGRect)frame forTimestamp:(id)timestamp;
+- (void)setScreenshotDisplayBounds:(CGRect)bounds forTimestamp:(id)timestamp;
+- (void)setScreenshotRotation:(double)rotation forTimestamp:(id)timestamp;
+- (void)setScreenshotScaleFactor:(double)factor forTimestamp:(id)timestamp;
 @end
 
 @implementation AXAuditScreenshotManager
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __41__AXAuditScreenshotManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_1 != -1)
   {
     dispatch_once(&sharedManager_onceToken_1, block);
@@ -102,93 +102,93 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   [(AXAuditScreenshotManager *)self set_shouldFlipOutline:v8];
 }
 
-- (void)addScreenshot:(id)a3 forTimestamp:(id)a4
+- (void)addScreenshot:(id)screenshot forTimestamp:(id)timestamp
 {
-  if (a3 && a4)
+  if (screenshot && timestamp)
   {
-    v8 = a4;
-    v6 = a3;
-    v7 = [(AXAuditScreenshotManager *)self _image];
-    [v7 setObject:v6 forKeyedSubscript:v8];
+    timestampCopy = timestamp;
+    screenshotCopy = screenshot;
+    _image = [(AXAuditScreenshotManager *)self _image];
+    [_image setObject:screenshotCopy forKeyedSubscript:timestampCopy];
 
-    [(AXAuditScreenshotManager *)self setLastTimestamp:v8];
+    [(AXAuditScreenshotManager *)self setLastTimestamp:timestampCopy];
   }
 }
 
-- (void)setScreenshotRotation:(double)a3 forTimestamp:(id)a4
+- (void)setScreenshotRotation:(double)rotation forTimestamp:(id)timestamp
 {
-  if (a4)
-  {
-    v5 = MEMORY[0x277CCABB0];
-    v6 = a3;
-    v7 = a4;
-    *&v8 = v6;
-    v10 = [v5 numberWithFloat:v8];
-    v9 = [(AXAuditScreenshotManager *)self _rotation];
-    [v9 setObject:v10 forKeyedSubscript:v7];
-  }
-}
-
-- (void)setScreenshotDisplayBounds:(CGRect)a3 forTimestamp:(id)a4
-{
-  if (a4)
-  {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v9 = MEMORY[0x277CCAE60];
-    v10 = a4;
-    v12 = [v9 valueWithRect:{x, y, width, height}];
-    v11 = [(AXAuditScreenshotManager *)self _displayBounds];
-    [v11 setObject:v12 forKeyedSubscript:v10];
-  }
-}
-
-- (void)setScreenshotBorderFrame:(CGRect)a3 forTimestamp:(id)a4
-{
-  if (a4)
-  {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v9 = MEMORY[0x277CCAE60];
-    v10 = a4;
-    v12 = [v9 valueWithRect:{x, y, width, height}];
-    v11 = [(AXAuditScreenshotManager *)self _borderFrame];
-    [v11 setObject:v12 forKeyedSubscript:v10];
-  }
-}
-
-- (void)setScreenshotScaleFactor:(double)a3 forTimestamp:(id)a4
-{
-  if (a4)
+  if (timestamp)
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = a3;
-    v7 = a4;
-    *&v8 = v6;
+    rotationCopy = rotation;
+    timestampCopy = timestamp;
+    *&v8 = rotationCopy;
     v10 = [v5 numberWithFloat:v8];
-    v9 = [(AXAuditScreenshotManager *)self _scaleFactor];
-    [v9 setObject:v10 forKeyedSubscript:v7];
+    _rotation = [(AXAuditScreenshotManager *)self _rotation];
+    [_rotation setObject:v10 forKeyedSubscript:timestampCopy];
   }
 }
 
-- (id)screenshotImageForTimestamp:(id)a3
+- (void)setScreenshotDisplayBounds:(CGRect)bounds forTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(AXAuditScreenshotManager *)self _image];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  if (timestamp)
+  {
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    v9 = MEMORY[0x277CCAE60];
+    timestampCopy = timestamp;
+    v12 = [v9 valueWithRect:{x, y, width, height}];
+    _displayBounds = [(AXAuditScreenshotManager *)self _displayBounds];
+    [_displayBounds setObject:v12 forKeyedSubscript:timestampCopy];
+  }
+}
+
+- (void)setScreenshotBorderFrame:(CGRect)frame forTimestamp:(id)timestamp
+{
+  if (timestamp)
+  {
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    v9 = MEMORY[0x277CCAE60];
+    timestampCopy = timestamp;
+    v12 = [v9 valueWithRect:{x, y, width, height}];
+    _borderFrame = [(AXAuditScreenshotManager *)self _borderFrame];
+    [_borderFrame setObject:v12 forKeyedSubscript:timestampCopy];
+  }
+}
+
+- (void)setScreenshotScaleFactor:(double)factor forTimestamp:(id)timestamp
+{
+  if (timestamp)
+  {
+    v5 = MEMORY[0x277CCABB0];
+    factorCopy = factor;
+    timestampCopy = timestamp;
+    *&v8 = factorCopy;
+    v10 = [v5 numberWithFloat:v8];
+    _scaleFactor = [(AXAuditScreenshotManager *)self _scaleFactor];
+    [_scaleFactor setObject:v10 forKeyedSubscript:timestampCopy];
+  }
+}
+
+- (id)screenshotImageForTimestamp:(id)timestamp
+{
+  timestampCopy = timestamp;
+  _image = [(AXAuditScreenshotManager *)self _image];
+  v6 = [_image objectForKeyedSubscript:timestampCopy];
 
   return v6;
 }
 
-- (double)screenshotRotationForTimestamp:(id)a3
+- (double)screenshotRotationForTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(AXAuditScreenshotManager *)self _rotation];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  timestampCopy = timestamp;
+  _rotation = [(AXAuditScreenshotManager *)self _rotation];
+  v6 = [_rotation objectForKeyedSubscript:timestampCopy];
 
   if (v6)
   {
@@ -204,11 +204,11 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (CGRect)screenshotDisplayBoundsForTimestamp:(id)a3
+- (CGRect)screenshotDisplayBoundsForTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(AXAuditScreenshotManager *)self _displayBounds];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  timestampCopy = timestamp;
+  _displayBounds = [(AXAuditScreenshotManager *)self _displayBounds];
+  v6 = [_displayBounds objectForKeyedSubscript:timestampCopy];
 
   if (v6)
   {
@@ -238,11 +238,11 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)screenshotBorderFrameForTimestamp:(id)a3
+- (CGRect)screenshotBorderFrameForTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(AXAuditScreenshotManager *)self _borderFrame];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  timestampCopy = timestamp;
+  _borderFrame = [(AXAuditScreenshotManager *)self _borderFrame];
+  v6 = [_borderFrame objectForKeyedSubscript:timestampCopy];
 
   if (v6)
   {
@@ -272,11 +272,11 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)screenshotScaleFactorForTimestamp:(id)a3
+- (double)screenshotScaleFactorForTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(AXAuditScreenshotManager *)self _scaleFactor];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  timestampCopy = timestamp;
+  _scaleFactor = [(AXAuditScreenshotManager *)self _scaleFactor];
+  v6 = [_scaleFactor objectForKeyedSubscript:timestampCopy];
 
   if (v6)
   {
@@ -292,38 +292,38 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (BOOL)screenshotShouldFlipOutlineForTimestamp:(id)a3
+- (BOOL)screenshotShouldFlipOutlineForTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(AXAuditScreenshotManager *)self _shouldFlipOutline];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  timestampCopy = timestamp;
+  _shouldFlipOutline = [(AXAuditScreenshotManager *)self _shouldFlipOutline];
+  v6 = [_shouldFlipOutline objectForKeyedSubscript:timestampCopy];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (CGRect)_elementBoundsForIssue:(id)a3 containerImageSize:(CGSize)a4
+- (CGRect)_elementBoundsForIssue:(id)issue containerImageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  [v7 elementRect];
+  height = size.height;
+  width = size.width;
+  issueCopy = issue;
+  [issueCopy elementRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 timeStamp];
+  timeStamp = [issueCopy timeStamp];
 
-  [(AXAuditScreenshotManager *)self _boundsForRect:v16 containerImageSize:v9 timestamp:v11, v13, v15, width, height];
+  [(AXAuditScreenshotManager *)self _boundsForRect:timeStamp containerImageSize:v9 timestamp:v11, v13, v15, width, height];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -340,21 +340,21 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_boundsForRect:(CGRect)a3 containerImageSize:(CGSize)a4 timestamp:(id)a5
+- (CGRect)_boundsForRect:(CGRect)rect containerImageSize:(CGSize)size timestamp:(id)timestamp
 {
-  height = a4.height;
-  width = a4.width;
-  v40 = a3.size.height;
-  v41 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a5;
-  [(AXAuditScreenshotManager *)self screenshotBorderFrameForTimestamp:v9];
+  height = size.height;
+  width = size.width;
+  v40 = rect.size.height;
+  v41 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  timestampCopy = timestamp;
+  [(AXAuditScreenshotManager *)self screenshotBorderFrameForTimestamp:timestampCopy];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [(AXAuditScreenshotManager *)self screenshotRotationForTimestamp:v9];
+  [(AXAuditScreenshotManager *)self screenshotRotationForTimestamp:timestampCopy];
   v19 = v18 * 57.2957795;
   if (fabs(v19) > 360.0)
   {
@@ -376,12 +376,12 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   v42.size.width = v15;
   v42.size.height = v17;
   v21 = NSIsEmptyRect(v42);
-  [(AXAuditScreenshotManager *)self screenshotDisplayBoundsForTimestamp:v9];
+  [(AXAuditScreenshotManager *)self screenshotDisplayBoundsForTimestamp:timestampCopy];
   v22 = v43.size.width;
   v23 = v43.size.height;
   if (NSIsEmptyRect(v43))
   {
-    [(AXAuditScreenshotManager *)self screenshotScaleFactorForTimestamp:v9];
+    [(AXAuditScreenshotManager *)self screenshotScaleFactorForTimestamp:timestampCopy];
     v25 = v24;
   }
 
@@ -441,7 +441,7 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   v31 = v45.origin.y;
   v32 = v45.size.width;
   v33 = v45.size.height;
-  if ([(AXAuditScreenshotManager *)self screenshotShouldFlipOutlineForTimestamp:v9])
+  if ([(AXAuditScreenshotManager *)self screenshotShouldFlipOutlineForTimestamp:timestampCopy])
   {
     v34 = height - v31 - v33;
   }
@@ -462,16 +462,16 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addScreenshotWithInfo:(id)a3 timestamp:(id)a4 completion:(id)a5
+- (void)addScreenshotWithInfo:(id)info timestamp:(id)timestamp completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9)
+  infoCopy = info;
+  timestampCopy = timestamp;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (infoCopy && timestampCopy)
   {
-    v12 = [v8 objectForKeyedSubscript:@"imageData"];
-    v13 = [v8 objectForKeyedSubscript:@"rotationRadians"];
+    v12 = [infoCopy objectForKeyedSubscript:@"imageData"];
+    v13 = [infoCopy objectForKeyedSubscript:@"rotationRadians"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -490,10 +490,10 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
       block[3] = &unk_278BE2F18;
       v24 = v14;
       v18 = v12;
-      v19 = self;
-      v20 = v9;
+      selfCopy = self;
+      v20 = timestampCopy;
       v21 = v13;
-      v22 = v8;
+      v22 = infoCopy;
       v23 = v11;
       dispatch_async(v16, block);
     }
@@ -506,7 +506,7 @@ uint64_t __41__AXAuditScreenshotManager_sharedManager__block_invoke(uint64_t a1)
 
   else
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -582,11 +582,11 @@ void __71__AXAuditScreenshotManager_addScreenshotWithInfo_timestamp_completion__
   (*(*(a1 + 72) + 16))();
 }
 
-- (CGRect)elementBoundsInScreenShotForIssue:(id)a3
+- (CGRect)elementBoundsInScreenShotForIssue:(id)issue
 {
-  v4 = a3;
-  v5 = [v4 timeStamp];
-  v6 = [(AXAuditScreenshotManager *)self screenshotImageForTimestamp:v5];
+  issueCopy = issue;
+  timeStamp = [issueCopy timeStamp];
+  v6 = [(AXAuditScreenshotManager *)self screenshotImageForTimestamp:timeStamp];
 
   if (v6)
   {
@@ -605,7 +605,7 @@ void __71__AXAuditScreenshotManager_addScreenshotWithInfo_timestamp_completion__
   v12 = *(MEMORY[0x277CCA868] + 24);
   if (v7 > 0.0 && v8 > 0.0)
   {
-    [(AXAuditScreenshotManager *)self _elementBoundsForIssue:v4 containerImageSize:?];
+    [(AXAuditScreenshotManager *)self _elementBoundsForIssue:issueCopy containerImageSize:?];
     v9 = v13;
     v10 = v14;
     v11 = v15;
@@ -623,16 +623,16 @@ void __71__AXAuditScreenshotManager_addScreenshotWithInfo_timestamp_completion__
   return result;
 }
 
-- (id)screenshotForIssue:(id)a3 elementRect:(CGRect *)a4
+- (id)screenshotForIssue:(id)issue elementRect:(CGRect *)rect
 {
-  v6 = a3;
-  v7 = [v6 timeStamp];
-  v8 = [(AXAuditScreenshotManager *)self screenshotImageForTimestamp:v7];
+  issueCopy = issue;
+  timeStamp = [issueCopy timeStamp];
+  v8 = [(AXAuditScreenshotManager *)self screenshotImageForTimestamp:timeStamp];
 
   if (v8)
   {
     [v8 size];
-    if (!a4)
+    if (!rect)
     {
       goto LABEL_8;
     }
@@ -642,7 +642,7 @@ void __71__AXAuditScreenshotManager_addScreenshotWithInfo_timestamp_completion__
   {
     v9 = *MEMORY[0x277CCA870];
     v10 = *(MEMORY[0x277CCA870] + 8);
-    if (!a4)
+    if (!rect)
     {
       goto LABEL_8;
     }
@@ -650,11 +650,11 @@ void __71__AXAuditScreenshotManager_addScreenshotWithInfo_timestamp_completion__
 
   if (v9 > 0.0 && v10 > 0.0)
   {
-    [(AXAuditScreenshotManager *)self _elementBoundsForIssue:v6 containerImageSize:?];
-    a4->origin.x = v11;
-    a4->origin.y = v12;
-    a4->size.width = v13;
-    a4->size.height = v14;
+    [(AXAuditScreenshotManager *)self _elementBoundsForIssue:issueCopy containerImageSize:?];
+    rect->origin.x = v11;
+    rect->origin.y = v12;
+    rect->size.width = v13;
+    rect->size.height = v14;
   }
 
 LABEL_8:
@@ -662,12 +662,12 @@ LABEL_8:
   return v8;
 }
 
-- (id)screenshotHighlightingIssue:(id)a3
+- (id)screenshotHighlightingIssue:(id)issue
 {
   v3 = *(MEMORY[0x277CBF3A0] + 16);
   v13.origin = *MEMORY[0x277CBF3A0];
   v13.size = v3;
-  v4 = [(AXAuditScreenshotManager *)self screenshotForIssue:a3 elementRect:&v13];
+  v4 = [(AXAuditScreenshotManager *)self screenshotForIssue:issue elementRect:&v13];
   v5 = v4;
   if (v4)
   {
@@ -704,31 +704,31 @@ LABEL_8:
   return v9;
 }
 
-- (id)thumbnailImageOfIssue:(id)a3
+- (id)thumbnailImageOfIssue:(id)issue
 {
-  v4 = a3;
-  v5 = [v4 timeStamp];
-  [v4 elementRect];
+  issueCopy = issue;
+  timeStamp = [issueCopy timeStamp];
+  [issueCopy elementRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(AXAuditScreenshotManager *)self screenshotImageForTimestamp:v5 inRect:v7, v9, v11, v13];
+  v14 = [(AXAuditScreenshotManager *)self screenshotImageForTimestamp:timeStamp inRect:v7, v9, v11, v13];
 
   return v14;
 }
 
-- (id)screenshotImageForTimestamp:(id)a3 inRect:(CGRect)a4
+- (id)screenshotImageForTimestamp:(id)timestamp inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  if (v9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  timestampCopy = timestamp;
+  if (timestampCopy)
   {
-    v10 = [(AXAuditScreenshotManager *)self screenshotImageForTimestamp:v9];
+    v10 = [(AXAuditScreenshotManager *)self screenshotImageForTimestamp:timestampCopy];
     v11 = v10;
     if (v10)
     {
@@ -755,17 +755,17 @@ LABEL_8:
         goto LABEL_11;
       }
 
-      [(AXAuditScreenshotManager *)self _boundsForRect:v9 containerImageSize:x timestamp:y, width, height, v13, v15];
+      [(AXAuditScreenshotManager *)self _boundsForRect:timestampCopy containerImageSize:x timestamp:y, width, height, v13, v15];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v15 - v22 - v24;
-      v26 = [v11 CGImage];
+      cGImage = [v11 CGImage];
       v32.origin.x = v19;
       v32.origin.y = v25;
       v32.size.width = v21;
       v32.size.height = v23;
-      v27 = CGImageCreateWithImageInRect(v26, v32);
+      v27 = CGImageCreateWithImageInRect(cGImage, v32);
       if (!v27)
       {
 LABEL_11:
@@ -810,12 +810,12 @@ uint64_t __48__AXAuditScreenshotManager_imageProcessingQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)imageFromRemoteImageData:(id)a3 rotation:(double)a4
++ (id)imageFromRemoteImageData:(id)data rotation:(double)rotation
 {
-  v4 = -a4;
+  v4 = -rotation;
   v5 = MEMORY[0x277D755B8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[v5 alloc] initWithData:dataCopy];
 
   [v7 size];
   v9 = v8;

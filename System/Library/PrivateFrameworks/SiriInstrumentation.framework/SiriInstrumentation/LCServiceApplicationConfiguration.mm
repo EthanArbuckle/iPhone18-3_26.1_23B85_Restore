@@ -1,30 +1,30 @@
 @interface LCServiceApplicationConfiguration
-- (BOOL)isEqual:(id)a3;
-- (LCServiceApplicationConfiguration)initWithDictionary:(id)a3;
-- (LCServiceApplicationConfiguration)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LCServiceApplicationConfiguration)initWithDictionary:(id)dictionary;
+- (LCServiceApplicationConfiguration)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)blacklistedCategoriesAtIndex:(unint64_t)a3;
+- (int)blacklistedCategoriesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addBlacklistedCategories:(int)a3;
-- (void)addCategories:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBlacklistedCategories:(int)categories;
+- (void)addCategories:(id)categories;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LCServiceApplicationConfiguration
 
-- (LCServiceApplicationConfiguration)initWithDictionary:(id)a3
+- (LCServiceApplicationConfiguration)initWithDictionary:(id)dictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = LCServiceApplicationConfiguration;
   v5 = [(LCServiceApplicationConfiguration *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(LCServiceApplicationConfiguration *)v5 setBundleIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"applicationParameters"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"applicationParameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(LCServiceApplicationConfiguration *)v5 setApplicationParameters:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"categories"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"categories"];
     objc_opt_class();
     v27 = v8;
     v29 = v6;
@@ -88,7 +88,7 @@
       v6 = v29;
     }
 
-    v18 = [v4 objectForKeyedSubscript:{@"blacklistedCategories", v27, v29}];
+    v18 = [dictionaryCopy objectForKeyedSubscript:{@"blacklistedCategories", v27, v29}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,30 +139,30 @@
   return v5;
 }
 
-- (LCServiceApplicationConfiguration)initWithJSON:(id)a3
+- (LCServiceApplicationConfiguration)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LCServiceApplicationConfiguration *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LCServiceApplicationConfiguration *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LCServiceApplicationConfiguration *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -176,40 +176,40 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationParameters)
   {
-    v4 = [(LCServiceApplicationConfiguration *)self applicationParameters];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    applicationParameters = [(LCServiceApplicationConfiguration *)self applicationParameters];
+    dictionaryRepresentation = [applicationParameters dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"applicationParameters"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"applicationParameters"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"applicationParameters"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"applicationParameters"];
     }
   }
 
   if ([(NSArray *)self->_blacklistedCategories count])
   {
-    v7 = [(LCServiceApplicationConfiguration *)self blacklistedCategories];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"blacklistedCategories"];
+    blacklistedCategories = [(LCServiceApplicationConfiguration *)self blacklistedCategories];
+    v8 = [blacklistedCategories copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"blacklistedCategories"];
   }
 
   if (self->_bundleIdentifier)
   {
-    v9 = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
+    v10 = [bundleIdentifier copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if ([(NSArray *)self->_categories count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -229,16 +229,16 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v17)
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v11 addObject:v17];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v18 = [MEMORY[0x1E695DFB0] null];
-            [v11 addObject:v18];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -248,12 +248,12 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"categories"];
+    [dictionary setObject:array forKeyedSubscript:@"categories"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v20];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v20];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -264,28 +264,28 @@
   return v4 ^ v5 ^ [(NSArray *)self->_blacklistedCategories hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  bundleIdentifier = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
+  bundleIdentifier2 = [equalCopy bundleIdentifier];
+  if ((bundleIdentifier != 0) == (bundleIdentifier2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
-  if (v7)
+  bundleIdentifier3 = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
+  if (bundleIdentifier3)
   {
-    v8 = v7;
-    v9 = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
-    v10 = [v4 bundleIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = bundleIdentifier3;
+    bundleIdentifier4 = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
+    bundleIdentifier5 = [equalCopy bundleIdentifier];
+    v11 = [bundleIdentifier4 isEqual:bundleIdentifier5];
 
     if (!v11)
     {
@@ -297,20 +297,20 @@
   {
   }
 
-  v5 = [(LCServiceApplicationConfiguration *)self applicationParameters];
-  v6 = [v4 applicationParameters];
-  if ((v5 != 0) == (v6 == 0))
+  bundleIdentifier = [(LCServiceApplicationConfiguration *)self applicationParameters];
+  bundleIdentifier2 = [equalCopy applicationParameters];
+  if ((bundleIdentifier != 0) == (bundleIdentifier2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(LCServiceApplicationConfiguration *)self applicationParameters];
-  if (v12)
+  applicationParameters = [(LCServiceApplicationConfiguration *)self applicationParameters];
+  if (applicationParameters)
   {
-    v13 = v12;
-    v14 = [(LCServiceApplicationConfiguration *)self applicationParameters];
-    v15 = [v4 applicationParameters];
-    v16 = [v14 isEqual:v15];
+    v13 = applicationParameters;
+    applicationParameters2 = [(LCServiceApplicationConfiguration *)self applicationParameters];
+    applicationParameters3 = [equalCopy applicationParameters];
+    v16 = [applicationParameters2 isEqual:applicationParameters3];
 
     if (!v16)
     {
@@ -322,20 +322,20 @@
   {
   }
 
-  v5 = [(LCServiceApplicationConfiguration *)self categories];
-  v6 = [v4 categories];
-  if ((v5 != 0) == (v6 == 0))
+  bundleIdentifier = [(LCServiceApplicationConfiguration *)self categories];
+  bundleIdentifier2 = [equalCopy categories];
+  if ((bundleIdentifier != 0) == (bundleIdentifier2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(LCServiceApplicationConfiguration *)self categories];
-  if (v17)
+  categories = [(LCServiceApplicationConfiguration *)self categories];
+  if (categories)
   {
-    v18 = v17;
-    v19 = [(LCServiceApplicationConfiguration *)self categories];
-    v20 = [v4 categories];
-    v21 = [v19 isEqual:v20];
+    v18 = categories;
+    categories2 = [(LCServiceApplicationConfiguration *)self categories];
+    categories3 = [equalCopy categories];
+    v21 = [categories2 isEqual:categories3];
 
     if (!v21)
     {
@@ -347,12 +347,12 @@
   {
   }
 
-  v5 = [(LCServiceApplicationConfiguration *)self blacklistedCategories];
-  v6 = [v4 blacklistedCategories];
-  if ((v5 != 0) != (v6 == 0))
+  bundleIdentifier = [(LCServiceApplicationConfiguration *)self blacklistedCategories];
+  bundleIdentifier2 = [equalCopy blacklistedCategories];
+  if ((bundleIdentifier != 0) != (bundleIdentifier2 == 0))
   {
-    v22 = [(LCServiceApplicationConfiguration *)self blacklistedCategories];
-    if (!v22)
+    blacklistedCategories = [(LCServiceApplicationConfiguration *)self blacklistedCategories];
+    if (!blacklistedCategories)
     {
 
 LABEL_25:
@@ -360,10 +360,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(LCServiceApplicationConfiguration *)self blacklistedCategories];
-    v25 = [v4 blacklistedCategories];
-    v26 = [v24 isEqual:v25];
+    v23 = blacklistedCategories;
+    blacklistedCategories2 = [(LCServiceApplicationConfiguration *)self blacklistedCategories];
+    blacklistedCategories3 = [equalCopy blacklistedCategories];
+    v26 = [blacklistedCategories2 isEqual:blacklistedCategories3];
 
     if (v26)
     {
@@ -383,22 +383,22 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
+  toCopy = to;
+  bundleIdentifier = [(LCServiceApplicationConfiguration *)self bundleIdentifier];
 
-  if (v5)
+  if (bundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(LCServiceApplicationConfiguration *)self applicationParameters];
+  applicationParameters = [(LCServiceApplicationConfiguration *)self applicationParameters];
 
-  if (v6)
+  if (applicationParameters)
   {
-    v7 = [(LCServiceApplicationConfiguration *)self applicationParameters];
+    applicationParameters2 = [(LCServiceApplicationConfiguration *)self applicationParameters];
     PBDataWriterWriteSubmessage();
   }
 
@@ -466,23 +466,23 @@ LABEL_23:
   }
 }
 
-- (int)blacklistedCategoriesAtIndex:(unint64_t)a3
+- (int)blacklistedCategoriesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_blacklistedCategories objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_blacklistedCategories objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addBlacklistedCategories:(int)a3
+- (void)addBlacklistedCategories:(int)categories
 {
-  v3 = *&a3;
+  v3 = *&categories;
   blacklistedCategories = self->_blacklistedCategories;
   if (!blacklistedCategories)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_blacklistedCategories;
-    self->_blacklistedCategories = v6;
+    self->_blacklistedCategories = array;
 
     blacklistedCategories = self->_blacklistedCategories;
   }
@@ -491,41 +491,41 @@ LABEL_23:
   [(NSArray *)blacklistedCategories addObject:v8];
 }
 
-- (void)addCategories:(id)a3
+- (void)addCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   categories = self->_categories;
-  v8 = v4;
+  v8 = categoriesCopy;
   if (!categories)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_categories;
-    self->_categories = v6;
+    self->_categories = array;
 
-    v4 = v8;
+    categoriesCopy = v8;
     categories = self->_categories;
   }
 
-  [(NSArray *)categories addObject:v4];
+  [(NSArray *)categories addObject:categoriesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = LCServiceApplicationConfiguration;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(LCServiceApplicationConfiguration *)self applicationParameters];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  applicationParameters = [(LCServiceApplicationConfiguration *)self applicationParameters];
+  v7 = [applicationParameters applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(LCServiceApplicationConfiguration *)self deleteApplicationParameters];
   }
 
-  v9 = [(LCServiceApplicationConfiguration *)self categories];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  categories = [(LCServiceApplicationConfiguration *)self categories];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:categories underConditions:policyCopy];
   [(LCServiceApplicationConfiguration *)self setCategories:v10];
 
   return v5;

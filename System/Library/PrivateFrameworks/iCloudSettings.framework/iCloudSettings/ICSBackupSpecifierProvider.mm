@@ -2,29 +2,29 @@
 - (AAUISpecifierProviderDelegate)delegate;
 - (ACAccount)account;
 - (BOOL)_shouldShowBackupSpecifier;
-- (ICSBackupSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (ICSBackupSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
-- (id)_dataclassState:(id)a3;
+- (id)_dataclassState:(id)state;
 - (id)_iCloudBackupSpecifier;
-- (id)_loadSpecifierProviderWithClassName:(id)a3 inBundle:(id)a4;
-- (void)_backupSpecifierWasTapped:(id)a3;
-- (void)_showBackupController:(id)a3;
+- (id)_loadSpecifierProviderWithClassName:(id)name inBundle:(id)bundle;
+- (void)_backupSpecifierWasTapped:(id)tapped;
+- (void)_showBackupController:(id)controller;
 @end
 
 @implementation ICSBackupSpecifierProvider
 
-- (ICSBackupSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (ICSBackupSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = ICSBackupSpecifierProvider;
   v9 = [(ICSBackupSpecifierProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeWeak(&v10->_listController, v8);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeWeak(&v10->_listController, presenterCopy);
   }
 
   return v10;
@@ -36,11 +36,11 @@
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [(ICSBackupSpecifierProvider *)self _iCloudBackupSpecifier];
-    v5 = v4;
-    if (v4)
+    _iCloudBackupSpecifier = [(ICSBackupSpecifierProvider *)self _iCloudBackupSpecifier];
+    v5 = _iCloudBackupSpecifier;
+    if (_iCloudBackupSpecifier)
     {
-      v10[0] = v4;
+      v10[0] = _iCloudBackupSpecifier;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
       v7 = self->_specifiers;
       self->_specifiers = v6;
@@ -56,8 +56,8 @@
 
 - (ACAccount)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -91,35 +91,35 @@
 
 - (BOOL)_shouldShowBackupSpecifier
 {
-  v3 = [(ICSBackupSpecifierProvider *)self account];
-  v4 = [v3 aa_isAccountClass:*MEMORY[0x277CEC678]];
+  account = [(ICSBackupSpecifierProvider *)self account];
+  v4 = [account aa_isAccountClass:*MEMORY[0x277CEC678]];
 
   if (v4)
   {
     return 0;
   }
 
-  v6 = [(ICSBackupSpecifierProvider *)self account];
-  v7 = [v6 isProvisionedForDataclass:*MEMORY[0x277CB8920]];
+  account2 = [(ICSBackupSpecifierProvider *)self account];
+  v7 = [account2 isProvisionedForDataclass:*MEMORY[0x277CB8920]];
 
   return v7;
 }
 
-- (id)_dataclassState:(id)a3
+- (id)_dataclassState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:v4];
+    v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:stateCopy];
 
     if (v8)
     {
-      v9 = [(ICSBackupSpecifierProvider *)self account];
-      v10 = [v9 isEnabledForDataclass:*MEMORY[0x277CB8920]];
+      account = [(ICSBackupSpecifierProvider *)self account];
+      v10 = [account isEnabledForDataclass:*MEMORY[0x277CB8920]];
 
       if (v10)
       {
@@ -149,9 +149,9 @@ LABEL_9:
   return v15;
 }
 
-- (void)_backupSpecifierWasTapped:(id)a3
+- (void)_backupSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -164,7 +164,7 @@ LABEL_9:
     v8[2] = __56__ICSBackupSpecifierProvider__backupSpecifierWasTapped___block_invoke;
     v8[3] = &unk_27A666A38;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = tappedCopy;
     [v7 validateDataclassAccessForProvider:self specifier:v9 completion:v8];
 
     objc_destroyWeak(&v10);
@@ -184,34 +184,34 @@ void __56__ICSBackupSpecifierProvider__backupSpecifierWasTapped___block_invoke(u
   }
 }
 
-- (void)_showBackupController:(id)a3
+- (void)_showBackupController:(id)controller
 {
-  v11 = a3;
+  controllerCopy = controller;
   v4 = objc_alloc(MEMORY[0x277D7F470]);
-  v5 = [(ICSBackupSpecifierProvider *)self account];
-  v6 = [v4 initWithAccount:v5];
+  account = [(ICSBackupSpecifierProvider *)self account];
+  v6 = [v4 initWithAccount:account];
 
   if (v6)
   {
-    [v6 setSpecifier:v11];
+    [v6 setSpecifier:controllerCopy];
     WeakRetained = objc_loadWeakRetained(&self->_listController);
     [v6 setParentController:WeakRetained];
 
     v8 = objc_loadWeakRetained(&self->_listController);
-    v9 = [v8 rootController];
-    [v6 setRootController:v9];
+    rootController = [v8 rootController];
+    [v6 setRootController:rootController];
 
     v10 = objc_loadWeakRetained(&self->_listController);
     [v10 showController:v6 animate:1];
   }
 }
 
-- (id)_loadSpecifierProviderWithClassName:(id)a3 inBundle:(id)a4
+- (id)_loadSpecifierProviderWithClassName:(id)name inBundle:(id)bundle
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = NSClassFromString(v6);
+  nameCopy = name;
+  bundleCopy = bundle;
+  v8 = NSClassFromString(nameCopy);
   if ([(objc_class *)v8 conformsToProtocol:&unk_2884BC2B8])
   {
     v9 = [[v8 alloc] initWithAccountManager:self->_accountManager];
@@ -225,11 +225,11 @@ void __56__ICSBackupSpecifierProvider__backupSpecifierWasTapped___block_invoke(u
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 138543874;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
-      v17 = v6;
+      v17 = nameCopy;
       v18 = 2114;
-      v19 = v7;
+      v19 = bundleCopy;
       _os_log_error_impl(&dword_275819000, v11, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load %{public}@ from bundle: %{public}@", &v14, 0x20u);
     }
 

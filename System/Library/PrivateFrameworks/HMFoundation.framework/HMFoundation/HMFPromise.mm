@@ -1,13 +1,13 @@
 @interface HMFPromise
 - (BOOL)fulfillWithNoValue;
-- (BOOL)fulfillWithValue:(id)a3;
-- (BOOL)rejectWithError:(id)a3;
-- (BOOL)resolveWithFuture:(id)a3;
+- (BOOL)fulfillWithValue:(id)value;
+- (BOOL)rejectWithError:(id)error;
+- (BOOL)resolveWithFuture:(id)future;
 - (id)errorOnlyResolverBlock;
 - (id)resolverBlock;
 - (id)voidResolverBlock;
-- (uint64_t)resolveWithOutcome:(void *)a3;
-- (void)_addCompletion:(uint64_t)a1;
+- (uint64_t)resolveWithOutcome:(void *)outcome;
+- (void)_addCompletion:(uint64_t)completion;
 - (void)dealloc;
 @end
 
@@ -46,34 +46,34 @@
   [(HMFPromise *)&v6 dealloc];
 }
 
-- (uint64_t)resolveWithOutcome:(void *)a3
+- (uint64_t)resolveWithOutcome:(void *)outcome
 {
-  v3 = a3;
-  if (a1 && (atomic_exchange((a1 + 24), 1u) & 1) == 0)
+  outcomeCopy = outcome;
+  if (self && (atomic_exchange((self + 24), 1u) & 1) == 0)
   {
-    v6 = a2;
+    outcomeIfSettled = a2;
     if (a2 == 3)
     {
-      v6 = [a3 outcomeIfSettled];
+      outcomeIfSettled = [outcome outcomeIfSettled];
       v8 = v7;
-      if (v6)
+      if (outcomeIfSettled)
       {
         v9 = v7;
 
-        v3 = v9;
+        outcomeCopy = v9;
       }
 
       else
       {
-        v6 = 3;
+        outcomeIfSettled = 3;
       }
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     v11 = WeakRetained;
     if (WeakRetained)
     {
-      if (![(HMFAsyncFuture *)WeakRetained _resolveWithState:v6 value:v3])
+      if (![(HMFAsyncFuture *)WeakRetained _resolveWithState:outcomeIfSettled value:outcomeCopy])
       {
         v5 = 0;
 LABEL_23:
@@ -81,28 +81,28 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      objc_storeWeak((a1 + 8), 0);
+      objc_storeWeak((self + 8), 0);
     }
 
-    v12 = _Block_copy(*(a1 + 16));
+    v12 = _Block_copy(*(self + 16));
     if (v12)
     {
-      v13 = *(a1 + 16);
-      *(a1 + 16) = 0;
+      v13 = *(self + 16);
+      *(self + 16) = 0;
 
-      if (v6 == 1)
+      if (outcomeIfSettled == 1)
       {
         v15 = 0;
-        v14 = v3;
+        v14 = outcomeCopy;
       }
 
       else
       {
-        if (v6 != 2)
+        if (outcomeIfSettled != 2)
         {
-          if (v6 == 3)
+          if (outcomeIfSettled == 3)
           {
-            v5 = [(HMFAsyncFuture *)v3 _callOrAddCompletionBlock:v12];
+            v5 = [(HMFAsyncFuture *)outcomeCopy _callOrAddCompletionBlock:v12];
           }
 
           else
@@ -114,7 +114,7 @@ LABEL_23:
         }
 
         v14 = 0;
-        v15 = v3;
+        v15 = outcomeCopy;
       }
 
       (*(v12 + 2))(v12, v14, v15);
@@ -132,12 +132,12 @@ LABEL_24:
   return v5;
 }
 
-- (void)_addCompletion:(uint64_t)a1
+- (void)_addCompletion:(uint64_t)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    v4 = _Block_copy(*(a1 + 16));
+    v4 = _Block_copy(*(completion + 16));
     v5 = v4;
     if (v4)
     {
@@ -148,8 +148,8 @@ LABEL_24:
       v11 = v4;
       v12 = v3;
       v8 = _Block_copy(v10);
-      v9 = *(a1 + 16);
-      *(a1 + 16) = v8;
+      v9 = *(completion + 16);
+      *(completion + 16) = v8;
 
       v7 = v11;
     }
@@ -157,8 +157,8 @@ LABEL_24:
     else
     {
       v6 = _Block_copy(v3);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(completion + 16);
+      *(completion + 16) = v6;
     }
   }
 }
@@ -176,13 +176,13 @@ void __29__HMFPromise__addCompletion___block_invoke(uint64_t a1, void *a2, void 
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)fulfillWithValue:(id)a3
+- (BOOL)fulfillWithValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
+  valueCopy = value;
+  v5 = valueCopy;
   if (self)
   {
-    LOBYTE(self) = [(HMFPromise *)self resolveWithOutcome:v4];
+    LOBYTE(self) = [(HMFPromise *)self resolveWithOutcome:valueCopy];
   }
 
   else
@@ -192,21 +192,21 @@ void __29__HMFPromise__addCompletion___block_invoke(uint64_t a1, void *a2, void 
   return self;
 }
 
-- (BOOL)rejectWithError:(id)a3
+- (BOOL)rejectWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = v4;
+    hmfUnspecifiedError = errorCopy;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
+    hmfUnspecifiedError = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
   }
 
-  v7 = v6;
+  v7 = hmfUnspecifiedError;
 
   if (self)
   {
@@ -220,18 +220,18 @@ void __29__HMFPromise__addCompletion___block_invoke(uint64_t a1, void *a2, void 
   return self;
 }
 
-- (BOOL)resolveWithFuture:(id)a3
+- (BOOL)resolveWithFuture:(id)future
 {
-  v4 = a3;
-  if (!v4)
+  futureCopy = future;
+  if (!futureCopy)
   {
     _HMFPreconditionFailure(@"future");
   }
 
-  v5 = v4;
+  v5 = futureCopy;
   if (self)
   {
-    LOBYTE(self) = [(HMFPromise *)self resolveWithOutcome:v4];
+    LOBYTE(self) = [(HMFPromise *)self resolveWithOutcome:futureCopy];
   }
 
   else

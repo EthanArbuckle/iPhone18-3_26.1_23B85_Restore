@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A4614();
 
   v3 = String._bridgeToObjectiveC()();
@@ -17,7 +17,7 @@
 
 - (TUCallTranslationSession)tuSession
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002A4CAC();
 
   return v3;

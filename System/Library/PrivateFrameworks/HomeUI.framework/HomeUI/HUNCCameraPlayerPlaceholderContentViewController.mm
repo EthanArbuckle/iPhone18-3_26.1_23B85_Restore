@@ -1,23 +1,23 @@
 @interface HUNCCameraPlayerPlaceholderContentViewController
-- (HUNCCameraPlayerPlaceholderContentViewController)initWithImageURL:(id)a3;
+- (HUNCCameraPlayerPlaceholderContentViewController)initWithImageURL:(id)l;
 - (UIImage)notificationImage;
 - (UIImageView)placeholderImageView;
-- (void)updatePlaceholderImage:(id)a3;
+- (void)updatePlaceholderImage:(id)image;
 - (void)viewDidLoad;
 @end
 
 @implementation HUNCCameraPlayerPlaceholderContentViewController
 
-- (HUNCCameraPlayerPlaceholderContentViewController)initWithImageURL:(id)a3
+- (HUNCCameraPlayerPlaceholderContentViewController)initWithImageURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = HUNCCameraPlayerPlaceholderContentViewController;
   v6 = [(HUNCCameraPlayerPlaceholderContentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageURL, a3);
+    objc_storeStrong(&v6->_imageURL, l);
   }
 
   return v7;
@@ -29,44 +29,44 @@
   v15.receiver = self;
   v15.super_class = HUNCCameraPlayerPlaceholderContentViewController;
   [(HUNCCameraPlayerPlaceholderContentViewController *)&v15 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(HUNCCameraPlayerPlaceholderContentViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(HUNCCameraPlayerPlaceholderContentViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [(HUNCCameraPlayerPlaceholderContentViewController *)self view];
-  [v5 setUserInteractionEnabled:0];
+  view2 = [(HUNCCameraPlayerPlaceholderContentViewController *)self view];
+  [view2 setUserInteractionEnabled:0];
 
-  v6 = [(HUNCCameraPlayerPlaceholderContentViewController *)self view];
-  v7 = [(HUNCCameraPlayerPlaceholderContentViewController *)self placeholderImageView];
-  [v6 addSubview:v7];
+  view3 = [(HUNCCameraPlayerPlaceholderContentViewController *)self view];
+  placeholderImageView = [(HUNCCameraPlayerPlaceholderContentViewController *)self placeholderImageView];
+  [view3 addSubview:placeholderImageView];
 
-  v8 = [(HUNCCameraPlayerPlaceholderContentViewController *)self notificationImage];
-  if (v8)
+  notificationImage = [(HUNCCameraPlayerPlaceholderContentViewController *)self notificationImage];
+  if (notificationImage)
   {
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(HUNCCameraPlayerPlaceholderContentViewController *)self imageURL];
+      imageURL = [(HUNCCameraPlayerPlaceholderContentViewController *)self imageURL];
       *buf = 138412290;
-      v17 = v10;
+      v17 = imageURL;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "(NC) Displaying placeholder image using URL:%@", buf, 0xCu);
     }
 
-    [(HUNCCameraPlayerPlaceholderContentViewController *)self updatePlaceholderImage:v8];
+    [(HUNCCameraPlayerPlaceholderContentViewController *)self updatePlaceholderImage:notificationImage];
   }
 
   v11 = MEMORY[0x277CCAAD0];
-  v12 = [(HUNCCameraPlayerPlaceholderContentViewController *)self placeholderImageView];
-  v13 = [(HUNCCameraPlayerPlaceholderContentViewController *)self view];
-  v14 = [v11 hu_constraintsSizingAnchorProvider:v12 toAnchorProvider:v13];
+  placeholderImageView2 = [(HUNCCameraPlayerPlaceholderContentViewController *)self placeholderImageView];
+  view4 = [(HUNCCameraPlayerPlaceholderContentViewController *)self view];
+  v14 = [v11 hu_constraintsSizingAnchorProvider:placeholderImageView2 toAnchorProvider:view4];
   [v11 activateConstraints:v14];
 }
 
-- (void)updatePlaceholderImage:(id)a3
+- (void)updatePlaceholderImage:(id)image
 {
-  v4 = a3;
-  v5 = [(HUNCCameraPlayerPlaceholderContentViewController *)self placeholderImageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  placeholderImageView = [(HUNCCameraPlayerPlaceholderContentViewController *)self placeholderImageView];
+  [placeholderImageView setImage:imageCopy];
 }
 
 - (UIImageView)placeholderImageView
@@ -92,16 +92,16 @@
   notificationImage = self->_notificationImage;
   if (!notificationImage)
   {
-    v4 = [(HUNCCameraPlayerPlaceholderContentViewController *)self imageURL];
-    [v4 startAccessingSecurityScopedResource];
+    imageURL = [(HUNCCameraPlayerPlaceholderContentViewController *)self imageURL];
+    [imageURL startAccessingSecurityScopedResource];
 
     v5 = MEMORY[0x277CBEA90];
-    v6 = [(HUNCCameraPlayerPlaceholderContentViewController *)self imageURL];
-    v7 = [v5 dataWithContentsOfURL:v6];
+    imageURL2 = [(HUNCCameraPlayerPlaceholderContentViewController *)self imageURL];
+    v7 = [v5 dataWithContentsOfURL:imageURL2];
 
     v8 = [MEMORY[0x277D755B8] imageWithData:v7];
-    v9 = [(HUNCCameraPlayerPlaceholderContentViewController *)self imageURL];
-    [v9 stopAccessingSecurityScopedResource];
+    imageURL3 = [(HUNCCameraPlayerPlaceholderContentViewController *)self imageURL];
+    [imageURL3 stopAccessingSecurityScopedResource];
 
     v10 = self->_notificationImage;
     self->_notificationImage = v8;

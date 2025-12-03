@@ -1,13 +1,13 @@
 @interface PocketAPIBlockDelegate
-+ (id)delegateWithLoginHandler:(id)a3;
-+ (id)delegateWithResponseHandler:(id)a3;
-+ (id)delegateWithSaveHandler:(id)a3;
++ (id)delegateWithLoginHandler:(id)handler;
++ (id)delegateWithResponseHandler:(id)handler;
++ (id)delegateWithSaveHandler:(id)handler;
 - (void)dealloc;
-- (void)pocketAPI:(id)a3 failedToSaveURL:(id)a4 error:(id)a5;
-- (void)pocketAPI:(id)a3 hadLoginError:(id)a4;
-- (void)pocketAPI:(id)a3 receivedResponse:(id)a4 forAPIMethod:(id)a5 error:(id)a6;
-- (void)pocketAPI:(id)a3 savedURL:(id)a4;
-- (void)pocketAPILoggedIn:(id)a3;
+- (void)pocketAPI:(id)i failedToSaveURL:(id)l error:(id)error;
+- (void)pocketAPI:(id)i hadLoginError:(id)error;
+- (void)pocketAPI:(id)i receivedResponse:(id)response forAPIMethod:(id)method error:(id)error;
+- (void)pocketAPI:(id)i savedURL:(id)l;
+- (void)pocketAPILoggedIn:(id)in;
 @end
 
 @implementation PocketAPIBlockDelegate
@@ -23,7 +23,7 @@
   [(PocketAPIBlockDelegate *)&v3 dealloc];
 }
 
-- (void)pocketAPI:(id)a3 receivedResponse:(id)a4 forAPIMethod:(id)a5 error:(id)a6
+- (void)pocketAPI:(id)i receivedResponse:(id)response forAPIMethod:(id)method error:(id)error
 {
   if ([(PocketAPIBlockDelegate *)self responseHandler])
   {
@@ -33,7 +33,7 @@
   }
 }
 
-- (void)pocketAPI:(id)a3 failedToSaveURL:(id)a4 error:(id)a5
+- (void)pocketAPI:(id)i failedToSaveURL:(id)l error:(id)error
 {
   if ([(PocketAPIBlockDelegate *)self saveHandler])
   {
@@ -43,7 +43,7 @@
   }
 }
 
-- (void)pocketAPI:(id)a3 savedURL:(id)a4
+- (void)pocketAPI:(id)i savedURL:(id)l
 {
   if ([(PocketAPIBlockDelegate *)self saveHandler])
   {
@@ -53,7 +53,7 @@
   }
 }
 
-- (void)pocketAPI:(id)a3 hadLoginError:(id)a4
+- (void)pocketAPI:(id)i hadLoginError:(id)error
 {
   if ([(PocketAPIBlockDelegate *)self loginHandler])
   {
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)pocketAPILoggedIn:(id)a3
+- (void)pocketAPILoggedIn:(id)in
 {
   if ([(PocketAPIBlockDelegate *)self loginHandler])
   {
@@ -73,24 +73,24 @@
   }
 }
 
-+ (id)delegateWithResponseHandler:(id)a3
++ (id)delegateWithResponseHandler:(id)handler
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setResponseHandler:{objc_msgSend(a3, "copy")}];
+  v4 = objc_alloc_init(self);
+  [v4 setResponseHandler:{objc_msgSend(handler, "copy")}];
   return v4;
 }
 
-+ (id)delegateWithSaveHandler:(id)a3
++ (id)delegateWithSaveHandler:(id)handler
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setSaveHandler:{objc_msgSend(a3, "copy")}];
+  v4 = objc_alloc_init(self);
+  [v4 setSaveHandler:{objc_msgSend(handler, "copy")}];
   return v4;
 }
 
-+ (id)delegateWithLoginHandler:(id)a3
++ (id)delegateWithLoginHandler:(id)handler
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setLoginHandler:{objc_msgSend(a3, "copy")}];
+  v4 = objc_alloc_init(self);
+  [v4 setLoginHandler:{objc_msgSend(handler, "copy")}];
   return v4;
 }
 

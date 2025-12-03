@@ -1,14 +1,14 @@
 @interface SBSAContainerDynamicsBumpAnimationProvider
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSAContainerDynamicsBumpAnimationProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = contextCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -35,9 +35,9 @@
   v61 = 0x3032000000;
   v62 = __Block_byref_object_copy__70;
   v63 = __Block_byref_object_dispose__70;
-  v10 = [v9 preferences];
+  preferences = [v9 preferences];
   v11 = objc_opt_class();
-  v12 = v10;
+  v12 = preferences;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -59,22 +59,22 @@
   v14 = v13;
 
   v64 = v14;
-  v15 = [v60[5] containerViewDescriptions];
-  v16 = [v15 mutableCopy];
+  containerViewDescriptions = [v60[5] containerViewDescriptions];
+  v16 = [containerViewDescriptions mutableCopy];
 
-  v44 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0;
   v43 = v55;
   while (v17 < [v16 count])
   {
     v18 = [v16 objectAtIndexedSubscript:v17];
-    v19 = [v9 elementContexts];
-    v20 = SBSAElementContextAssociatedWithContainerViewDescription(v18, v19, 0);
+    elementContexts = [v9 elementContexts];
+    v20 = SBSAElementContextAssociatedWithContainerViewDescription(v18, elementContexts, 0);
 
     if ([v20 activeDynamicAnimation] == 1)
     {
-      v21 = [v18 associatedSystemApertureElementIdentity];
-      [v44 addObject:v21];
+      associatedSystemApertureElementIdentity = [v18 associatedSystemApertureElementIdentity];
+      [array addObject:associatedSystemApertureElementIdentity];
 
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
@@ -94,8 +94,8 @@
     else
     {
       elementIdentitiesWithBumpApplied = self->_elementIdentitiesWithBumpApplied;
-      v25 = [v18 associatedSystemApertureElementIdentity];
-      LODWORD(elementIdentitiesWithBumpApplied) = [(NSArray *)elementIdentitiesWithBumpApplied containsObject:v25];
+      associatedSystemApertureElementIdentity2 = [v18 associatedSystemApertureElementIdentity];
+      LODWORD(elementIdentitiesWithBumpApplied) = [(NSArray *)elementIdentitiesWithBumpApplied containsObject:associatedSystemApertureElementIdentity2];
 
       if (!elementIdentitiesWithBumpApplied)
       {
@@ -127,7 +127,7 @@ LABEL_18:
     ++v17;
   }
 
-  v29 = [v44 copy];
+  v29 = [array copy];
   v30 = self->_elementIdentitiesWithBumpApplied;
   self->_elementIdentitiesWithBumpApplied = v29;
 
@@ -164,7 +164,7 @@ LABEL_18:
   v39 = v60[5];
   v60[5] = v38;
 
-  if (![v44 count])
+  if (![array count])
   {
     [(SBSABasePreferencesProvider *)self removeFromParentProvider];
   }

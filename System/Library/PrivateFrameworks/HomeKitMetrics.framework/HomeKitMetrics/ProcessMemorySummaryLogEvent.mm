@@ -2,7 +2,7 @@
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 - (_TtC14HomeKitMetrics28ProcessMemorySummaryLogEvent)init;
-- (_TtC14HomeKitMetrics28ProcessMemorySummaryLogEvent)initWithStartTime:(double)a3;
+- (_TtC14HomeKitMetrics28ProcessMemorySummaryLogEvent)initWithStartTime:(double)time;
 @end
 
 @implementation ProcessMemorySummaryLogEvent
@@ -19,7 +19,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_22B0A37E4();
 
   sub_22B0A1440();
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (_TtC14HomeKitMetrics28ProcessMemorySummaryLogEvent)initWithStartTime:(double)a3
+- (_TtC14HomeKitMetrics28ProcessMemorySummaryLogEvent)initWithStartTime:(double)time
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

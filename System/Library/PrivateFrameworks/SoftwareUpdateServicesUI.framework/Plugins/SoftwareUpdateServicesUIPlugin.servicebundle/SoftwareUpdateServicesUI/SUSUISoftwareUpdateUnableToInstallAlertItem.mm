@@ -1,5 +1,5 @@
 @interface SUSUISoftwareUpdateUnableToInstallAlertItem
-- (BOOL)errorIsMDMRequiresUnlock:(id)a3;
+- (BOOL)errorIsMDMRequiresUnlock:(id)unlock;
 - (id)_notificationMessage;
 - (id)buttons;
 - (id)graphicIcon;
@@ -12,17 +12,17 @@
 
 - (id)title
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v5 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
-  v6 = [(SUDescriptor *)v5 isSplatOnly];
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  isSplatOnly = [(SUDescriptor *)descriptor isSplatOnly];
 
-  v24 = v6;
+  v24 = isSplatOnly;
   v21 = 0;
   v19 = 0;
   v17 = 0;
   v15 = 0;
-  if (v6)
+  if (isSplatOnly)
   {
     v22 = sub_A37C();
     v21 = 1;
@@ -57,7 +57,7 @@
   {
   }
 
-  if ([(SUSUISoftwareUpdateUnableToInstallAlertItem *)v26 errorIsMDMRequiresUnlock:*(&v26->super._actionTaken + 2)])
+  if ([(SUSUISoftwareUpdateUnableToInstallAlertItem *)selfCopy errorIsMDMRequiresUnlock:*(&selfCopy->super._actionTaken + 2)])
   {
     v13 = 0;
     v11 = 0;
@@ -106,11 +106,11 @@
 
 - (id)buttons
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v22[0] = 0;
-  v21 = self;
-  if (![(SUSUIBaseAlertItem *)v23 isUILocked])
+  selfCopy2 = self;
+  if (![(SUSUIBaseAlertItem *)selfCopy isUILocked])
   {
     v6 = [SUSUIAlertButtonDefinition alloc];
     v8 = sub_A37C();
@@ -120,13 +120,13 @@
     v16 = 0;
     v17 = sub_8FC0;
     v18 = &unk_5CCB0;
-    v19 = v21;
+    v19 = selfCopy2;
     v20 = [(SUSUIAlertButtonDefinition *)v6 initWithLabel:v7 presentationStyle:0 isPreferredButton:1 handler:&v14];
 
     v9 = [SUSUIAlertButtonDefinition alloc];
     v11 = sub_A37C();
     v10 = [v11 localizedStringForKey:@"SOFTWARE_UPDATE_INSTALL_ALERT_ACTION_REMIND_ME_LATER" value:&stru_62DF0 table:@"ui_alerts"];
-    v12 = v21;
+    v12 = selfCopy2;
     v13 = [SUSUIAlertButtonDefinition initWithLabel:v9 presentationStyle:"initWithLabel:presentationStyle:isPreferredButton:handler:" isPreferredButton:v10 handler:?];
 
     v24[0] = v20;
@@ -142,7 +142,7 @@
   }
 
   v5 = v22[0];
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy2, 0);
   objc_storeStrong(v22, 0);
 
   return v5;
@@ -150,7 +150,7 @@
 
 - (void)_remindMeLaterAction
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   [(SUSUIBaseSoftwareUpdateInstallFailureAlertItem *)self setActionTaken:1];
   v13[0] = SUSUILog();
@@ -172,25 +172,25 @@
   v3 = objc_opt_class();
   v6 = NSStringFromClass(v3);
 
-  if (BYTE2(v14->super.super._controller))
+  if (BYTE2(selfCopy->super.super._controller))
   {
-    v5 = [(SUSUIBaseSoftwareUpdateAlertItem *)v14 softwareUpdateController];
-    [(SUSUISoftwareUpdateController *)v5 repopInstallAlertWithWeekDurationFromNowForReason:v10];
+    softwareUpdateController = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy softwareUpdateController];
+    [(SUSUISoftwareUpdateController *)softwareUpdateController repopInstallAlertWithWeekDurationFromNowForReason:v10];
   }
 
   else
   {
-    v4 = [(SUSUIBaseSoftwareUpdateAlertItem *)v14 softwareUpdateController];
-    [(SUSUISoftwareUpdateController *)v4 repopInstallAlertWithDefaultDurationFromNowForReason:v10];
+    softwareUpdateController2 = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy softwareUpdateController];
+    [(SUSUISoftwareUpdateController *)softwareUpdateController2 repopInstallAlertWithDefaultDurationFromNowForReason:v10];
   }
 
-  [(SUSUIBaseSoftwareUpdateInstallFailureAlertItem *)v14 dismissAlert];
+  [(SUSUIBaseSoftwareUpdateInstallFailureAlertItem *)selfCopy dismissAlert];
   objc_storeStrong(&v10, 0);
 }
 
 - (void)_installNowAction
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   [(SUSUIBaseSoftwareUpdateInstallFailureAlertItem *)self setActionTaken:1];
   v10[0] = SUSUILog();
@@ -211,16 +211,16 @@
   objc_storeStrong(v10, 0);
   v7 = objc_alloc_init(SUSUISoftwareUpdateInstallOptions);
   [(SUSUISoftwareUpdateInstallOptions *)v7 setIgnorableConstraints:1024];
-  v3 = [(SUSUIBaseSoftwareUpdateAlertItem *)v11 softwareUpdateController];
-  [(SUSUISoftwareUpdateController *)v3 installNowFromSource:0 options:v7];
+  softwareUpdateController = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy softwareUpdateController];
+  [(SUSUISoftwareUpdateController *)softwareUpdateController installNowFromSource:0 options:v7];
 
   objc_storeStrong(&v7, 0);
 }
 
 - (id)graphicIcon
 {
-  v4 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
-  if (([(SUDescriptor *)v4 isSplatOnly]& 1) != 0)
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  if (([(SUDescriptor *)descriptor isSplatOnly]& 1) != 0)
   {
     v2 = @"com.apple.graphic-icon.background-security-improvements";
   }
@@ -237,21 +237,21 @@
 
 - (id)_notificationMessage
 {
-  v63 = self;
+  selfCopy = self;
   v62[1] = a2;
   v62[0] = 0;
   v61 = 0;
-  v41 = [*(&self->super._actionTaken + 2) domain];
-  v42 = [v41 isEqualToString:SUErrorDomain];
+  domain = [*(&self->super._actionTaken + 2) domain];
+  v42 = [domain isEqualToString:SUErrorDomain];
 
-  if ((v42 & 1) != 0 && [*(&v63->super._actionTaken + 2) code] == &dword_14)
+  if ((v42 & 1) != 0 && [*(&selfCopy->super._actionTaken + 2) code] == &dword_14)
   {
-    v39 = [*(&v63->super._actionTaken + 2) userInfo];
-    v38 = [v39 objectForKey:kSUInstallationConstraintsUnmetKey];
-    v40 = [v38 integerValue];
+    userInfo = [*(&selfCopy->super._actionTaken + 2) userInfo];
+    v38 = [userInfo objectForKey:kSUInstallationConstraintsUnmetKey];
+    integerValue = [v38 integerValue];
 
-    v60 = v40;
-    if (v40 == &dword_0 + 1)
+    v60 = integerValue;
+    if (integerValue == &dword_0 + 1)
     {
       SURequiredBatteryLevelForInstall();
       v35 = [NSNumber numberWithFloat:?];
@@ -268,12 +268,12 @@
 
     else if (v60 == &dword_4)
     {
-      BYTE2(v63->super.super._controller) = 1;
-      v33 = [(SUSUIBaseSoftwareUpdateAlertItem *)v63 descriptor];
-      v34 = [(SUDescriptor *)v33 installationSize];
+      BYTE2(selfCopy->super.super._controller) = 1;
+      descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy descriptor];
+      installationSize = [(SUDescriptor *)descriptor installationSize];
 
-      v58[1] = v34;
-      if (v34)
+      v58[1] = installationSize;
+      if (installationSize)
       {
         v58[0] = CPFSSizeStrings();
         v32 = sub_A37C();
@@ -294,17 +294,17 @@
       v62[0] = v6;
     }
 
-    else if ([(SUSUISoftwareUpdateUnableToInstallAlertItem *)v63 errorIsMDMRequiresUnlock:*(&v63->super._actionTaken + 2)])
+    else if ([(SUSUISoftwareUpdateUnableToInstallAlertItem *)selfCopy errorIsMDMRequiresUnlock:*(&selfCopy->super._actionTaken + 2)])
     {
-      v29 = [(SUSUIBaseSoftwareUpdateAlertItem *)v63 updateName];
+      updateName = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
 
-      if (v29)
+      if (updateName)
       {
         v28 = sub_A37C();
         v27 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"SOFTWARE_UPDATE_INSTALL_FAILURE_MDM_REQUEST_NEEDS_UNLOCK_BODY"];
         v26 = [v28 localizedStringForKey:? value:? table:?];
-        v25 = [(SUSUIBaseSoftwareUpdateAlertItem *)v63 updateName];
-        v8 = [NSString stringWithFormat:v26, v25];
+        updateName2 = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
+        v8 = [NSString stringWithFormat:v26, updateName2];
         v9 = v62[0];
         v62[0] = v8;
       }
@@ -321,22 +321,22 @@
     }
   }
 
-  v21 = [(SUSUIBaseSoftwareUpdateAlertItem *)v63 updateName];
+  updateName3 = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
   v55 = 0;
   v53 = 0;
   v51 = 0;
   v49 = 0;
   v47 = 0;
   v45 = 0;
-  if (v21)
+  if (updateName3)
   {
     v56 = sub_A37C();
     v55 = 1;
     v54 = [v56 localizedStringForKey:@"SOFTWARE_UPDATE_INSTALL_FAILURE_GENERIC_ALERT_BODY" value:&stru_62DF0 table:@"ui_alerts"];
     v53 = 1;
-    v52 = [(SUSUIBaseSoftwareUpdateAlertItem *)v63 updateName];
+    updateName4 = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
     v51 = 1;
-    v50 = [NSString stringWithFormat:v54, v52];
+    v50 = [NSString stringWithFormat:v54, updateName4];
     v49 = 1;
     v12 = v50;
   }
@@ -386,12 +386,12 @@
   }
 
   v19 = +[BSPlatform sharedInstance];
-  v20 = [(BSPlatform *)v19 isInternalInstall];
+  isInternalInstall = [(BSPlatform *)v19 isInternalInstall];
 
-  if (v20)
+  if (isInternalInstall)
   {
-    v18 = [*(&v63->super._actionTaken + 2) userInfo];
-    v44 = [v18 objectForKey:NSLocalizedRecoverySuggestionErrorKey];
+    userInfo2 = [*(&selfCopy->super._actionTaken + 2) userInfo];
+    v44 = [userInfo2 objectForKey:NSLocalizedRecoverySuggestionErrorKey];
 
     if (v44)
     {
@@ -400,7 +400,7 @@
 
     else
     {
-      v17 = *(&v63->super._actionTaken + 2);
+      v17 = *(&selfCopy->super._actionTaken + 2);
     }
 
     v43 = [NSString stringWithFormat:@"\n\n[Internal Only]\n%@", v17];
@@ -420,15 +420,15 @@
   return v16;
 }
 
-- (BOOL)errorIsMDMRequiresUnlock:(id)a3
+- (BOOL)errorIsMDMRequiresUnlock:(id)unlock
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] domain];
+  objc_storeStrong(location, unlock);
+  domain = [location[0] domain];
   v9 = 0;
-  if ([v8 isEqualToString:SUErrorDomain])
+  if ([domain isEqualToString:SUErrorDomain])
   {
     v9 = [location[0] code] == &dword_14;
   }
@@ -438,23 +438,23 @@
     goto LABEL_13;
   }
 
-  v5 = [*(&v15->super._actionTaken + 2) userInfo];
-  v4 = [v5 objectForKey:kSUInstallationConstraintsUnmetKey];
-  v6 = [v4 integerValue];
+  userInfo = [*(&selfCopy->super._actionTaken + 2) userInfo];
+  v4 = [userInfo objectForKey:kSUInstallationConstraintsUnmetKey];
+  integerValue = [v4 integerValue];
 
   v12 = 0;
   v10 = 0;
-  v7 = 0;
-  if ((v6 & 0x10) != 0)
+  bOOLValue = 0;
+  if ((integerValue & 0x10) != 0)
   {
-    v7 = 0;
-    if ((v6 & 0x20) != 0)
+    bOOLValue = 0;
+    if ((integerValue & 0x20) != 0)
     {
-      v13 = [location[0] userInfo];
+      userInfo2 = [location[0] userInfo];
       v12 = 1;
-      v11 = [v13 objectForKey:kSUMDMInstallationRequest];
+      v11 = [userInfo2 objectForKey:kSUMDMInstallationRequest];
       v10 = 1;
-      v7 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
   }
 
@@ -466,7 +466,7 @@
   {
   }
 
-  if (v7)
+  if (bOOLValue)
   {
     v16 = 1;
   }

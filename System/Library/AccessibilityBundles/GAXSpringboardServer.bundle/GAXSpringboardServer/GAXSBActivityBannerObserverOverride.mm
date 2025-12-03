@@ -1,14 +1,14 @@
 @interface GAXSBActivityBannerObserverOverride
-- (BOOL)shouldHandleActivityItem:(id)a3;
+- (BOOL)shouldHandleActivityItem:(id)item;
 @end
 
 @implementation GAXSBActivityBannerObserverOverride
 
-- (BOOL)shouldHandleActivityItem:(id)a3
+- (BOOL)shouldHandleActivityItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = +[GAXSpringboard sharedInstance];
-  v6 = [v4 safeValueForKey:@"descriptor"];
+  v6 = [itemCopy safeValueForKey:@"descriptor"];
   v7 = [v6 safeStringForKey:@"platterTargetBundleIdentifier"];
 
   v8 = [v7 isEqualToString:@"com.apple.NetworkEndpointPickerUI"];
@@ -31,7 +31,7 @@
   {
     v12.receiver = self;
     v12.super_class = GAXSBActivityBannerObserverOverride;
-    v10 = [(GAXSBActivityBannerObserverOverride *)&v12 shouldHandleActivityItem:v4];
+    v10 = [(GAXSBActivityBannerObserverOverride *)&v12 shouldHandleActivityItem:itemCopy];
   }
 
   return v10;

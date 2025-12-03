@@ -1,7 +1,7 @@
 @interface ML3DatabaseException
-+ (id)databaseExceptionWithReason:(id)a3 sqliteError:(id)a4;
++ (id)databaseExceptionWithReason:(id)reason sqliteError:(id)error;
 - (ML3DatabaseException)init;
-- (ML3DatabaseException)initWithReason:(id)a3 sqliteError:(id)a4;
+- (ML3DatabaseException)initWithReason:(id)reason sqliteError:(id)error;
 - (void)_SQLITE_ABORT;
 - (void)_SQLITE_AUTH;
 - (void)_SQLITE_BUSY;
@@ -290,15 +290,15 @@
   v68 = sel__SQLITE_ROW;
   v69 = 101;
   v70 = sel__SQLITE_DONE;
-  v3 = [(NSError *)self->_sqliteError code];
-  v4 = v3;
+  code = [(NSError *)self->_sqliteError code];
+  v4 = code;
   v5 = 0;
   v6 = v15;
   while (1)
   {
     v7 = *v6;
     v6 += 4;
-    if (v3 == v7)
+    if (code == v7)
     {
       break;
     }
@@ -344,16 +344,16 @@ LABEL_9:
   return 0;
 }
 
-- (ML3DatabaseException)initWithReason:(id)a3 sqliteError:(id)a4
+- (ML3DatabaseException)initWithReason:(id)reason sqliteError:(id)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  reasonCopy = reason;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy)
   {
     v15 = @"ML3DatabaseExceptionErrorUserInfoKey";
-    v16[0] = v7;
+    v16[0] = errorCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   }
 
@@ -365,21 +365,21 @@ LABEL_9:
   v10 = *MEMORY[0x277CBE658];
   v14.receiver = self;
   v14.super_class = ML3DatabaseException;
-  v11 = [(ML3DatabaseException *)&v14 initWithName:v10 reason:v6 userInfo:v9];
+  v11 = [(ML3DatabaseException *)&v14 initWithName:v10 reason:reasonCopy userInfo:v9];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sqliteError, a4);
+    objc_storeStrong(&v11->_sqliteError, error);
   }
 
   return v12;
 }
 
-+ (id)databaseExceptionWithReason:(id)a3 sqliteError:(id)a4
++ (id)databaseExceptionWithReason:(id)reason sqliteError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithReason:v6 sqliteError:v5];
+  errorCopy = error;
+  reasonCopy = reason;
+  v7 = [objc_alloc(objc_opt_class()) initWithReason:reasonCopy sqliteError:errorCopy];
 
   return v7;
 }

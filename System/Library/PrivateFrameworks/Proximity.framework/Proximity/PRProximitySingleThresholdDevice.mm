@@ -1,9 +1,9 @@
 @interface PRProximitySingleThresholdDevice
 - (BOOL)proxReady;
 - (PRProximitySingleThresholdDevice)init;
-- (PRProximitySingleThresholdDevice)initWithPeer:(id)a3 andPeerModel:(id)a4 withError:(id *)a5;
+- (PRProximitySingleThresholdDevice)initWithPeer:(id)peer andPeerModel:(id)model withError:(id *)error;
 - (id).cxx_construct;
-- (void)addSample:(BtProxData *)a3;
+- (void)addSample:(BtProxData *)sample;
 @end
 
 @implementation PRProximitySingleThresholdDevice
@@ -15,11 +15,11 @@
   return 0;
 }
 
-- (PRProximitySingleThresholdDevice)initWithPeer:(id)a3 andPeerModel:(id)a4 withError:(id *)a5
+- (PRProximitySingleThresholdDevice)initWithPeer:(id)peer andPeerModel:(id)model withError:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  peerCopy = peer;
+  modelCopy = model;
   v25.receiver = self;
   v25.super_class = PRProximitySingleThresholdDevice;
   v11 = [(PRProximitySingleThresholdDevice *)&v25 init];
@@ -29,13 +29,13 @@
     v13 = *(v11 + 1);
     *(v11 + 1) = v12;
 
-    objc_storeStrong(v11 + 13, a3);
-    objc_storeStrong(v11 + 2, a4);
+    objc_storeStrong(v11 + 13, peer);
+    objc_storeStrong(v11 + 2, model);
     *(v11 + 9) = 0;
     *(v11 + 11) = 0;
     *(v11 + 12) = 0xBFF0000000000000;
     v14 = +[PRProximityDatabase getScannerDeviceModel];
-    v15 = [PRProximityDatabase getPRDeviceModelFromModelId:v10];
+    v15 = [PRProximityDatabase getPRDeviceModelFromModelId:modelCopy];
     if (v14 != 21)
     {
       v16 = v15;
@@ -69,35 +69,35 @@
       }
     }
 
-    if (a5)
+    if (error)
     {
       v21 = MEMORY[0x277CCA9B8];
       v28 = *MEMORY[0x277CCA450];
       v29[0] = @"Unknown error getting device model; prox unavailable";
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-      *a5 = [v21 errorWithDomain:@"com.apple.Proximity.ErrorDomain" code:999 userInfo:v22];
+      *error = [v21 errorWithDomain:@"com.apple.Proximity.ErrorDomain" code:999 userInfo:v22];
 
-      a5 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a5 = 0;
+    error = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (void)addSample:(BtProxData *)a3
+- (void)addSample:(BtProxData *)sample
 {
   obj = self;
   objc_sync_enter(obj);
-  SingleThresholdProx::Estimator::addRSSISample(obj->_estimator.__ptr_, a3->var1, a3->var2, a3->var0);
-  if (a3->var0 > obj->_mostRecentSampleTime)
+  SingleThresholdProx::Estimator::addRSSISample(obj->_estimator.__ptr_, sample->var1, sample->var2, sample->var0);
+  if (sample->var0 > obj->_mostRecentSampleTime)
   {
-    obj->_mostRecentSampleTime = a3->var0;
+    obj->_mostRecentSampleTime = sample->var0;
   }
 
   ++obj->_sampleCount;

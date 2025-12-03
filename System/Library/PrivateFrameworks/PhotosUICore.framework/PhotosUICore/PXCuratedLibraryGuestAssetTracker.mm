@@ -1,13 +1,13 @@
 @interface PXCuratedLibraryGuestAssetTracker
 - (BOOL)_checkForGuestAssetsVisible;
 - (BOOL)_isViewSettled;
-- (PXCuratedLibraryGuestAssetTracker)initWithViewModel:(id)a3 layout:(id)a4;
+- (PXCuratedLibraryGuestAssetTracker)initWithViewModel:(id)model layout:(id)layout;
 - (PXCuratedLibraryGuestAssetTrackerDelegate)delegate;
 - (void)_checkForVisibilityUpdates;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setCanDisplayGuestAssets:(BOOL)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setIsDisplayingGuestAssets:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setCanDisplayGuestAssets:(BOOL)assets;
+- (void)setIsActive:(BOOL)active;
+- (void)setIsDisplayingGuestAssets:(BOOL)assets;
 @end
 
 @implementation PXCuratedLibraryGuestAssetTracker
@@ -19,32 +19,32 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (CuratedLibraryViewModelObserverContext_151445 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (CuratedLibraryViewModelObserverContext_151445 == context)
   {
-    if ((v6 & 0x2800) != 0)
+    if ((changeCopy & 0x2800) != 0)
     {
 LABEL_4:
-      v11 = v9;
+      v11 = observableCopy;
       [(PXCuratedLibraryGuestAssetTracker *)self _checkForVisibilityUpdates];
-      v9 = v11;
+      observableCopy = v11;
     }
   }
 
   else
   {
-    if (operator|| != a5)
+    if (operator|| != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryGuestAssetTracker.m" lineNumber:138 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryGuestAssetTracker.m" lineNumber:138 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if (v6)
+    if (changeCopy)
     {
       goto LABEL_4;
     }
@@ -105,11 +105,11 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
 
   else
   {
-    v5 = [(PXCuratedLibraryViewModel *)v2 zoomablePhotosViewModel];
-    v6 = v5;
-    if (v5)
+    zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)v2 zoomablePhotosViewModel];
+    v6 = zoomablePhotosViewModel;
+    if (zoomablePhotosViewModel)
     {
-      [v5 zoomState];
+      [zoomablePhotosViewModel zoomState];
       v3 = v7 ^ 1;
     }
 
@@ -127,22 +127,22 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
   v22 = *MEMORY[0x1E69E9840];
   if ([(PXCuratedLibraryGuestAssetTracker *)self isActive])
   {
-    v3 = [(PXCuratedLibraryGuestAssetTracker *)self delegate];
+    delegate = [(PXCuratedLibraryGuestAssetTracker *)self delegate];
 
-    if (v3)
+    if (delegate)
     {
       v4 = self->_viewModel;
-      v5 = [(PXCuratedLibraryViewModel *)v4 zoomLevel];
-      v6 = [(PXCuratedLibraryGuestAssetTracker *)self _isViewSettled];
-      v7 = [(PXCuratedLibraryViewModel *)v4 zoomablePhotosViewModel];
-      v8 = [v7 isDisplayingIndividualItems];
+      zoomLevel = [(PXCuratedLibraryViewModel *)v4 zoomLevel];
+      _isViewSettled = [(PXCuratedLibraryGuestAssetTracker *)self _isViewSettled];
+      zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)v4 zoomablePhotosViewModel];
+      isDisplayingIndividualItems = [zoomablePhotosViewModel isDisplayingIndividualItems];
 
       v9 = PLCuratedLibraryGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v10 = objc_opt_class();
         v11 = @"Can NOT";
-        if (v5 == 4)
+        if (zoomLevel == 4)
         {
           v11 = @"CAN";
         }
@@ -150,7 +150,7 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
         v12 = @"is NOT";
         *v19 = 138544386;
         *&v19[4] = v10;
-        if (v6)
+        if (_isViewSettled)
         {
           v12 = @"IS";
         }
@@ -161,7 +161,7 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
         *&v19[22] = 2112;
         *v21 = 2112;
         *&v21[2] = v12;
-        if (v8)
+        if (isDisplayingIndividualItems)
         {
           v13 = @"YES";
         }
@@ -177,12 +177,12 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
         _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Check for visibility updates. %@ display assets. View %@ settled. Individual Items: %@", v19, 0x34u);
       }
 
-      if ((v6 & v8) == 1)
+      if ((_isViewSettled & isDisplayingIndividualItems) == 1)
       {
-        [(PXCuratedLibraryGuestAssetTracker *)self setCanDisplayGuestAssets:v5 == 4, *v19, *&v19[16], v20, *v21, *&v21[16]];
+        [(PXCuratedLibraryGuestAssetTracker *)self setCanDisplayGuestAssets:zoomLevel == 4, *v19, *&v19[16], v20, *v21, *&v21[16]];
         if ([(PXCuratedLibraryGuestAssetTracker *)self canDisplayGuestAssets])
         {
-          v15 = [(PXCuratedLibraryGuestAssetTracker *)self _checkForGuestAssetsVisible];
+          _checkForGuestAssetsVisible = [(PXCuratedLibraryGuestAssetTracker *)self _checkForGuestAssetsVisible];
           v16 = PLCuratedLibraryGetLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
@@ -198,24 +198,24 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
 
         else
         {
-          v15 = 0;
+          _checkForGuestAssetsVisible = 0;
         }
 
-        [(PXCuratedLibraryGuestAssetTracker *)self setIsDisplayingGuestAssets:v15];
+        [(PXCuratedLibraryGuestAssetTracker *)self setIsDisplayingGuestAssets:_checkForGuestAssetsVisible];
       }
     }
   }
 }
 
-- (void)setIsDisplayingGuestAssets:(BOOL)a3
+- (void)setIsDisplayingGuestAssets:(BOOL)assets
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_isDisplayingGuestAssets != a3)
+  if (self->_isDisplayingGuestAssets != assets)
   {
-    v3 = a3;
-    self->_isDisplayingGuestAssets = a3;
-    v5 = [(PXCuratedLibraryGuestAssetTracker *)self delegate];
-    [v5 guestAssetsTracker:self isDisplayingGuestAssets:v3];
+    assetsCopy = assets;
+    self->_isDisplayingGuestAssets = assets;
+    delegate = [(PXCuratedLibraryGuestAssetTracker *)self delegate];
+    [delegate guestAssetsTracker:self isDisplayingGuestAssets:assetsCopy];
 
     v6 = PLCuratedLibraryGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -223,24 +223,24 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
       v8 = 138543874;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 1024;
-      v13 = v3;
+      v13 = assetsCopy;
       v7 = v9;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> isDisplayingGuestAssets changed: %d", &v8, 0x1Cu);
     }
   }
 }
 
-- (void)setCanDisplayGuestAssets:(BOOL)a3
+- (void)setCanDisplayGuestAssets:(BOOL)assets
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_canDisplayGuestAssets != a3)
+  if (self->_canDisplayGuestAssets != assets)
   {
-    v3 = a3;
-    self->_canDisplayGuestAssets = a3;
-    v5 = [(PXCuratedLibraryGuestAssetTracker *)self delegate];
-    [v5 guestAssetsTracker:self canDisplayGuestAssets:v3];
+    assetsCopy = assets;
+    self->_canDisplayGuestAssets = assets;
+    delegate = [(PXCuratedLibraryGuestAssetTracker *)self delegate];
+    [delegate guestAssetsTracker:self canDisplayGuestAssets:assetsCopy];
 
     v6 = PLCuratedLibraryGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -248,33 +248,33 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
       v8 = 138543874;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 1024;
-      v13 = v3;
+      v13 = assetsCopy;
       v7 = v9;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> canDisplayGuestAssets changed: %d", &v8, 0x1Cu);
     }
   }
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
-    if (a3)
+    self->_isActive = active;
+    if (active)
     {
       [(PXCuratedLibraryGuestAssetTracker *)self _checkForVisibilityUpdates];
       [(PXCuratedLibraryViewModel *)self->_viewModel registerChangeObserver:self context:CuratedLibraryViewModelObserverContext_151445];
-      v5 = [(PXCuratedLibraryViewModel *)self->_viewModel zoomablePhotosViewModel];
-      [v5 registerChangeObserver:self context:operator||];
+      zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)self->_viewModel zoomablePhotosViewModel];
+      [zoomablePhotosViewModel registerChangeObserver:self context:operator||];
     }
 
     else
     {
       [(PXCuratedLibraryViewModel *)self->_viewModel unregisterChangeObserver:self context:CuratedLibraryViewModelObserverContext_151445];
-      v4 = [(PXCuratedLibraryViewModel *)self->_viewModel zoomablePhotosViewModel];
-      [v4 unregisterChangeObserver:self context:operator||];
+      zoomablePhotosViewModel2 = [(PXCuratedLibraryViewModel *)self->_viewModel zoomablePhotosViewModel];
+      [zoomablePhotosViewModel2 unregisterChangeObserver:self context:operator||];
 
       [(PXCuratedLibraryGuestAssetTracker *)self setCanDisplayGuestAssets:0];
 
@@ -283,18 +283,18 @@ void __64__PXCuratedLibraryGuestAssetTracker__checkForGuestAssetsVisible__block_
   }
 }
 
-- (PXCuratedLibraryGuestAssetTracker)initWithViewModel:(id)a3 layout:(id)a4
+- (PXCuratedLibraryGuestAssetTracker)initWithViewModel:(id)model layout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = PXCuratedLibraryGuestAssetTracker;
   v9 = [(PXCuratedLibraryGuestAssetTracker *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewModel, a3);
-    objc_storeStrong(&v10->_layout, a4);
+    objc_storeStrong(&v9->_viewModel, model);
+    objc_storeStrong(&v10->_layout, layout);
   }
 
   return v10;

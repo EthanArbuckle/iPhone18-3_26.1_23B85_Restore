@@ -1,5 +1,5 @@
 @interface CHActivityTodayWidgetViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateViewAccessibilityElements;
 - (void)loadView;
@@ -7,20 +7,20 @@
 
 @implementation CHActivityTodayWidgetViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"ringView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"moveTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"moveValueLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"exerciseTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"exerciseValueLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"standTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"standValueLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"setDeviceLocked:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"isDeviceLocked" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"ringView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"moveTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"moveValueLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"exerciseTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"exerciseValueLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"standTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"standValueLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"setDeviceLocked:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CHActivityTodayWidgetViewController" hasInstanceMethod:@"isDeviceLocked" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -43,7 +43,7 @@
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
+  view = [v3 view];
 
   if ([(CHActivityTodayWidgetViewControllerAccessibility *)self safeBoolForKey:@"isDeviceLocked"])
   {
@@ -53,9 +53,9 @@
 
   else
   {
-    v7 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axMoveHeaderValueView];
+    _axMoveHeaderValueView = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axMoveHeaderValueView];
 
-    if (!v7)
+    if (!_axMoveHeaderValueView)
     {
       v8 = [(CHActivityTodayWidgetViewControllerAccessibility *)self safeValueForKey:@"moveTitleLabel"];
       v9 = [(CHActivityTodayWidgetViewControllerAccessibility *)self safeValueForKey:@"moveValueLabel"];
@@ -74,9 +74,9 @@
       }
     }
 
-    v14 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axExerciseHeaderValueView];
+    _axExerciseHeaderValueView = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axExerciseHeaderValueView];
 
-    if (!v14)
+    if (!_axExerciseHeaderValueView)
     {
       v15 = [(CHActivityTodayWidgetViewControllerAccessibility *)self safeValueForKey:@"exerciseTitleLabel"];
       v16 = [(CHActivityTodayWidgetViewControllerAccessibility *)self safeValueForKey:@"exerciseValueLabel"];
@@ -95,9 +95,9 @@
       }
     }
 
-    v21 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axStandHeaderValueView];
+    _axStandHeaderValueView = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axStandHeaderValueView];
 
-    if (!v21)
+    if (!_axStandHeaderValueView)
     {
       v22 = [(CHActivityTodayWidgetViewControllerAccessibility *)self safeValueForKey:@"standTitleLabel"];
       v23 = [(CHActivityTodayWidgetViewControllerAccessibility *)self safeValueForKey:@"standValueLabel"];
@@ -117,13 +117,13 @@
     }
 
     v5 = [(CHActivityTodayWidgetViewControllerAccessibility *)self safeValueForKey:@"ringView"];
-    v28 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axMoveHeaderValueView];
-    v29 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axExerciseHeaderValueView];
-    v30 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axStandHeaderValueView];
-    v6 = [NSArray axArrayByIgnoringNilElementsWithCount:4, v5, v28, v29, v30];
+    _axMoveHeaderValueView2 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axMoveHeaderValueView];
+    _axExerciseHeaderValueView2 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axExerciseHeaderValueView];
+    _axStandHeaderValueView2 = [(CHActivityTodayWidgetViewControllerAccessibility *)self _axStandHeaderValueView];
+    v6 = [NSArray axArrayByIgnoringNilElementsWithCount:4, v5, _axMoveHeaderValueView2, _axExerciseHeaderValueView2, _axStandHeaderValueView2];
   }
 
-  [v4 setAccessibilityElements:v6];
+  [view setAccessibilityElements:v6];
 }
 
 @end

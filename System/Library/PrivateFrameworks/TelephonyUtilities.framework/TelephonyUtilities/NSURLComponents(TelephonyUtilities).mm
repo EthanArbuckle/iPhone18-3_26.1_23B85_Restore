@@ -16,8 +16,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a1 queryItems];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    queryItems = [self queryItems];
+    v6 = [queryItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -27,12 +27,12 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(queryItems);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 isEqualToString:v4];
+          name = [v9 name];
+          v11 = [name isEqualToString:v4];
 
           if (v11)
           {
@@ -41,7 +41,7 @@
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [queryItems countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -66,7 +66,7 @@ LABEL_12:
 
 - (BOOL)containsQueryItemWithName:()TelephonyUtilities
 {
-  v1 = [a1 firstQueryItemWithName:?];
+  v1 = [self firstQueryItemWithName:?];
   v2 = v1 != 0;
 
   return v2;
@@ -82,8 +82,8 @@ LABEL_12:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a1 percentEncodedQueryItems];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    percentEncodedQueryItems = [self percentEncodedQueryItems];
+    v6 = [percentEncodedQueryItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -93,12 +93,12 @@ LABEL_12:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(percentEncodedQueryItems);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 isEqualToString:v4];
+          name = [v9 name];
+          v11 = [name isEqualToString:v4];
 
           if (v11)
           {
@@ -107,7 +107,7 @@ LABEL_12:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [percentEncodedQueryItems countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;

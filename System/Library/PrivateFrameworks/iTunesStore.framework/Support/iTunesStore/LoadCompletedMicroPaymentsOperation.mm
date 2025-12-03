@@ -2,14 +2,14 @@
 - (BOOL)isPartialFailure;
 - (NSString)applicationUsername;
 - (StoreKitClientIdentity)clientIdentity;
-- (id)_copyResponseForIdentity:(id)a3 startID:(id)a4 endID:(id)a5 returningError:(id *)a6;
-- (id)_newFetchOperationForIdentity:(id)a3 startID:(id)a4 endID:(id)a5;
+- (id)_copyResponseForIdentity:(id)identity startID:(id)d endID:(id)iD returningError:(id *)error;
+- (id)_newFetchOperationForIdentity:(id)identity startID:(id)d endID:(id)iD;
 - (id)paymentBatchBlock;
-- (void)_runForIdentity:(id)a3;
+- (void)_runForIdentity:(id)identity;
 - (void)run;
-- (void)setApplicationUsername:(id)a3;
-- (void)setClientIdentity:(id)a3;
-- (void)setPaymentBatchBlock:(id)a3;
+- (void)setApplicationUsername:(id)username;
+- (void)setClientIdentity:(id)identity;
+- (void)setPaymentBatchBlock:(id)block;
 @end
 
 @implementation LoadCompletedMicroPaymentsOperation
@@ -50,13 +50,13 @@
   return v4;
 }
 
-- (void)setApplicationUsername:(id)a3
+- (void)setApplicationUsername:(id)username
 {
-  v6 = a3;
+  usernameCopy = username;
   [(LoadCompletedMicroPaymentsOperation *)self lock];
-  if (self->_applicationUsername != v6)
+  if (self->_applicationUsername != usernameCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)usernameCopy copy];
     applicationUsername = self->_applicationUsername;
     self->_applicationUsername = v4;
   }
@@ -64,13 +64,13 @@
   [(LoadCompletedMicroPaymentsOperation *)self unlock];
 }
 
-- (void)setClientIdentity:(id)a3
+- (void)setClientIdentity:(id)identity
 {
-  v6 = a3;
+  identityCopy = identity;
   [(LoadCompletedMicroPaymentsOperation *)self lock];
-  if (self->_clientIdentity != v6)
+  if (self->_clientIdentity != identityCopy)
   {
-    v4 = [(StoreKitClientIdentity *)v6 copy];
+    v4 = [(StoreKitClientIdentity *)identityCopy copy];
     clientIdentity = self->_clientIdentity;
     self->_clientIdentity = v4;
   }
@@ -78,13 +78,13 @@
   [(LoadCompletedMicroPaymentsOperation *)self unlock];
 }
 
-- (void)setPaymentBatchBlock:(id)a3
+- (void)setPaymentBatchBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(LoadCompletedMicroPaymentsOperation *)self lock];
-  if (self->_paymentBatchBlock != v6)
+  if (self->_paymentBatchBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     paymentBatchBlock = self->_paymentBatchBlock;
     self->_paymentBatchBlock = v4;
   }
@@ -94,29 +94,29 @@
 
 - (void)run
 {
-  v3 = [(LoadCompletedMicroPaymentsOperation *)self clientIdentity];
-  if (![v3 usesIdentityAttributes])
+  clientIdentity = [(LoadCompletedMicroPaymentsOperation *)self clientIdentity];
+  if (![clientIdentity usesIdentityAttributes])
   {
-    v4 = [v3 bundleIdentifier];
-    v5 = [LSApplicationProxy applicationProxyForIdentifier:v4];
-    v6 = [v5 appState];
-    v7 = [v6 isValid];
+    bundleIdentifier = [clientIdentity bundleIdentifier];
+    v5 = [LSApplicationProxy applicationProxyForIdentifier:bundleIdentifier];
+    appState = [v5 appState];
+    isValid = [appState isValid];
 
-    if ((v7 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
-      v8 = [AppExtensionSupport supportedProxyExtensionForBundleIdentifier:v4];
+      v8 = [AppExtensionSupport supportedProxyExtensionForBundleIdentifier:bundleIdentifier];
 
       v5 = v8;
     }
 
     if (v5)
     {
-      v9 = [v5 itemID];
-      if ([v9 integerValue])
+      itemID = [v5 itemID];
+      if ([itemID integerValue])
       {
 
 LABEL_9:
-        v12 = [v3 copy];
+        v12 = [clientIdentity copy];
         [v12 setValuesWithSoftwareApplicationProxy:v5];
         [(LoadCompletedMicroPaymentsOperation *)self _runForIdentity:v12];
 LABEL_22:
@@ -124,8 +124,8 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v10 = [v5 bundleIdentifier];
-      v11 = [v10 length];
+      bundleIdentifier2 = [v5 bundleIdentifier];
+      v11 = [bundleIdentifier2 length];
 
       if (v11)
       {
@@ -139,19 +139,19 @@ LABEL_22:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
+    shouldLog = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    v16 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v13 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 &= 2u;
     }
@@ -161,7 +161,7 @@ LABEL_22:
       *v21 = 138412546;
       *&v21[4] = objc_opt_class();
       *&v21[12] = 2112;
-      *&v21[14] = v4;
+      *&v21[14] = bundleIdentifier;
       v17 = *&v21[4];
       LODWORD(v20) = 22;
       v18 = _os_log_send_and_compose_impl();
@@ -177,7 +177,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v16 = [NSString stringWithCString:v18 encoding:4, v21, v20, *v21, *&v21[16]];
+      oSLogObject = [NSString stringWithCString:v18 encoding:4, v21, v20, *v21, *&v21[16]];
       free(v18);
       SSFileLog();
     }
@@ -185,13 +185,13 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  [(LoadCompletedMicroPaymentsOperation *)self _runForIdentity:v3];
+  [(LoadCompletedMicroPaymentsOperation *)self _runForIdentity:clientIdentity];
 LABEL_23:
 }
 
-- (id)_copyResponseForIdentity:(id)a3 startID:(id)a4 endID:(id)a5 returningError:(id *)a6
+- (id)_copyResponseForIdentity:(id)identity startID:(id)d endID:(id)iD returningError:(id *)error
 {
-  v8 = [(LoadCompletedMicroPaymentsOperation *)self _newFetchOperationForIdentity:a3 startID:a4 endID:a5];
+  v8 = [(LoadCompletedMicroPaymentsOperation *)self _newFetchOperationForIdentity:identity startID:d endID:iD];
   [v8 setDelegate:self];
   v9 = objc_alloc_init(DaemonProtocolDataProvider);
   [v8 setDataProvider:v9];
@@ -201,17 +201,17 @@ LABEL_23:
   if (v10)
   {
     v12 = [[MicroPaymentQueueResponse alloc] initWithRequestType:1];
-    v13 = [v8 authenticatedAccountDSID];
-    if (!v13)
+    authenticatedAccountDSID = [v8 authenticatedAccountDSID];
+    if (!authenticatedAccountDSID)
     {
       v14 = +[SSAccountStore defaultStore];
-      v15 = [v14 activeAccount];
-      v13 = [v15 uniqueIdentifier];
+      activeAccount = [v14 activeAccount];
+      authenticatedAccountDSID = [activeAccount uniqueIdentifier];
     }
 
-    [(MicroPaymentQueueResponse *)v12 setUserIdentifier:v13];
-    v16 = [(DaemonProtocolDataProvider *)v9 output];
-    v17 = [(MicroPaymentQueueResponse *)v12 loadFromPropertyList:v16];
+    [(MicroPaymentQueueResponse *)v12 setUserIdentifier:authenticatedAccountDSID];
+    output = [(DaemonProtocolDataProvider *)v9 output];
+    v17 = [(MicroPaymentQueueResponse *)v12 loadFromPropertyList:output];
 
     if ((v17 & 1) == 0)
     {
@@ -228,36 +228,36 @@ LABEL_23:
   }
 
   [v8 setDelegate:0];
-  if (a6 && !v12)
+  if (error && !v12)
   {
     v19 = v11;
-    *a6 = v11;
+    *error = v11;
   }
 
   return v12;
 }
 
-- (id)_newFetchOperationForIdentity:(id)a3 startID:(id)a4 endID:(id)a5
+- (id)_newFetchOperationForIdentity:(id)identity startID:(id)d endID:(id)iD
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  identityCopy = identity;
+  iDCopy = iD;
+  dCopy = d;
   v11 = objc_alloc_init(ISStoreURLOperation);
-  if (![v8 isSandboxed])
+  if (![identityCopy isSandboxed])
   {
-    v13 = +[SSAccountStore defaultStore];
-    v14 = [v13 activeAccount];
+    ams_activeiTunesAccount = +[SSAccountStore defaultStore];
+    activeAccount = [ams_activeiTunesAccount activeAccount];
     goto LABEL_5;
   }
 
   v12 = [ACAccountStore ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStoreSandbox];
-  v13 = [v12 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v12 ams_activeiTunesAccount];
 
-  if (v13)
+  if (ams_activeiTunesAccount)
   {
-    v14 = [[SSAccount alloc] initWithBackingAccount:v13];
+    activeAccount = [[SSAccount alloc] initWithBackingAccount:ams_activeiTunesAccount];
 LABEL_5:
-    v15 = v14;
+    v15 = activeAccount;
     goto LABEL_6;
   }
 
@@ -266,64 +266,64 @@ LABEL_6:
 
   v33 = v15;
   v16 = [[SSMutableAuthenticationContext alloc] initWithAccount:v15];
-  [v16 setAllowsBootstrapCellularData:{objc_msgSend(v8, "allowsBootstrapCellularData")}];
+  [v16 setAllowsBootstrapCellularData:{objc_msgSend(identityCopy, "allowsBootstrapCellularData")}];
   [v16 setTokenType:1];
   [v11 setAuthenticationContext:v16];
   v17 = objc_alloc_init(SSMutableURLRequestProperties);
   [v17 setAllowedRetryCount:0];
-  [v17 setAllowsBootstrapCellularData:{objc_msgSend(v8, "allowsBootstrapCellularData")}];
+  [v17 setAllowsBootstrapCellularData:{objc_msgSend(identityCopy, "allowsBootstrapCellularData")}];
   [v17 setCachePolicy:1];
   [v17 setHTTPMethod:@"POST"];
   [v17 setShouldDecodeResponse:0];
   [v17 setURLBagKey:@"p2-in-app-regrant-purchase-history"];
-  if ([v8 isSandboxed])
+  if ([identityCopy isSandboxed])
   {
     [v17 setURLBagType:1];
   }
 
-  v18 = sub_1000E3A24(v8);
-  v19 = [v10 itemIdentifierValue];
+  v18 = sub_1000E3A24(identityCopy);
+  itemIdentifierValue = [dCopy itemIdentifierValue];
 
-  v20 = [v9 itemIdentifierValue];
-  if (v19 - 1 < v20)
+  itemIdentifierValue2 = [iDCopy itemIdentifierValue];
+  if (itemIdentifierValue - 1 < itemIdentifierValue2)
   {
-    v21 = [NSString stringWithFormat:@"%llu", v19];
+    v21 = [NSString stringWithFormat:@"%llu", itemIdentifierValue];
     [v18 setObject:v21 forKey:kISLoadMoreStartIDParameter];
 
-    v22 = [NSString stringWithFormat:@"%llu", v20];
+    v22 = [NSString stringWithFormat:@"%llu", itemIdentifierValue2];
     [v18 setObject:v22 forKey:kISLoadMoreEndIDParameter];
 
     [v16 setPromptStyle:0];
   }
 
-  v23 = [v8 accountIdentifier];
-  v24 = v23;
-  if (v23)
+  accountIdentifier = [identityCopy accountIdentifier];
+  v24 = accountIdentifier;
+  if (accountIdentifier)
   {
-    v25 = [v23 stringValue];
-    [v18 setObject:v25 forKey:@"appDsid"];
+    stringValue = [accountIdentifier stringValue];
+    [v18 setObject:stringValue forKey:@"appDsid"];
   }
 
   v26 = +[ISDevice sharedInstance];
-  v27 = [v26 guid];
+  guid = [v26 guid];
 
-  if (v27)
+  if (guid)
   {
-    [v18 setObject:v27 forKey:@"guid"];
+    [v18 setObject:guid forKey:@"guid"];
   }
 
   v28 = +[ISDevice sharedInstance];
-  v29 = [v28 serialNumber];
+  serialNumber = [v28 serialNumber];
 
-  if (v29)
+  if (serialNumber)
   {
-    [v18 setObject:v29 forKey:@"serialNumber"];
+    [v18 setObject:serialNumber forKey:@"serialNumber"];
   }
 
-  v30 = [v8 vendorIdentifier];
-  if (v30)
+  vendorIdentifier = [identityCopy vendorIdentifier];
+  if (vendorIdentifier)
   {
-    [v18 setObject:v30 forKey:@"vid"];
+    [v18 setObject:vendorIdentifier forKey:@"vid"];
   }
 
   [(LoadCompletedMicroPaymentsOperation *)self lock];
@@ -340,23 +340,23 @@ LABEL_6:
   return v11;
 }
 
-- (void)_runForIdentity:(id)a3
+- (void)_runForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = [NSMutableArray alloc];
   v6 = [NSNumber numberWithUnsignedLongLong:0];
   v7 = [NSNumber numberWithUnsignedLongLong:0];
   v8 = [v5 initWithObjects:{v6, v7, 0}];
 
-  v56 = [(LoadCompletedMicroPaymentsOperation *)self paymentBatchBlock];
-  v62 = v4;
-  v9 = [[ClaimStoreKitClientOperation alloc] initWithClientIdentity:v4];
+  paymentBatchBlock = [(LoadCompletedMicroPaymentsOperation *)self paymentBatchBlock];
+  v62 = identityCopy;
+  v9 = [[ClaimStoreKitClientOperation alloc] initWithClientIdentity:identityCopy];
   v52 = v9;
   if ([(LoadCompletedMicroPaymentsOperation *)self runSubOperation:v9 returningError:0])
   {
-    v10 = [(ClaimStoreKitClientOperation *)v9 clientIdentity];
+    clientIdentity = [(ClaimStoreKitClientOperation *)v9 clientIdentity];
 
-    v62 = v10;
+    v62 = clientIdentity;
   }
 
   if ([v8 count] >= 2)
@@ -365,7 +365,7 @@ LABEL_6:
     v53 = 0;
     v57 = 0;
     v12 = &CFDictionaryGetValue_ptr;
-    v54 = self;
+    selfCopy = self;
     v58 = v8;
     while (1)
     {
@@ -377,25 +377,25 @@ LABEL_6:
       context = objc_autoreleasePoolPush();
       v13 = [v8 objectAtIndex:0];
       v63 = [v8 objectAtIndex:1];
-      v14 = [v12[412] sharedDaemonConfig];
-      if (!v14)
+      sharedDaemonConfig = [v12[412] sharedDaemonConfig];
+      if (!sharedDaemonConfig)
       {
-        v14 = [v12[412] sharedConfig];
+        sharedDaemonConfig = [v12[412] sharedConfig];
       }
 
-      v15 = [v14 shouldLog];
-      if ([v14 shouldLogToDisk])
+      shouldLog = [sharedDaemonConfig shouldLog];
+      if ([sharedDaemonConfig shouldLogToDisk])
       {
-        v16 = v15 | 2;
+        v16 = shouldLog | 2;
       }
 
       else
       {
-        v16 = v15;
+        v16 = shouldLog;
       }
 
-      v17 = [v14 OSLogObject];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      oSLogObject = [sharedDaemonConfig OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v18 = v16;
       }
@@ -426,9 +426,9 @@ LABEL_6:
           goto LABEL_19;
         }
 
-        v17 = [NSString stringWithCString:v22 encoding:4, &v65, v51];
+        oSLogObject = [NSString stringWithCString:v22 encoding:4, &v65, v51];
         free(v22);
-        v50 = v17;
+        v50 = oSLogObject;
         SSFileLog();
       }
 
@@ -445,32 +445,32 @@ LABEL_19:
       v25 = v24;
       if (v23)
       {
-        v26 = [v23 rangesToLoad];
-        if (v26)
+        rangesToLoad = [v23 rangesToLoad];
+        if (rangesToLoad)
         {
-          [v8 addObjectsFromArray:v26];
+          [v8 addObjectsFromArray:rangesToLoad];
         }
 
         v59 = v25;
-        v27 = [v12[412] sharedDaemonConfig];
-        if (!v27)
+        sharedDaemonConfig2 = [v12[412] sharedDaemonConfig];
+        if (!sharedDaemonConfig2)
         {
-          v27 = [v12[412] sharedConfig];
+          sharedDaemonConfig2 = [v12[412] sharedConfig];
         }
 
-        v28 = [v27 shouldLog];
-        if ([v27 shouldLogToDisk])
+        shouldLog2 = [sharedDaemonConfig2 shouldLog];
+        if ([sharedDaemonConfig2 shouldLogToDisk])
         {
-          v29 = v28 | 2;
+          v29 = shouldLog2 | 2;
         }
 
         else
         {
-          v29 = v28;
+          v29 = shouldLog2;
         }
 
-        v30 = [v27 OSLogObject];
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
+        oSLogObject2 = [sharedDaemonConfig2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
         {
           v31 = v29;
         }
@@ -484,15 +484,15 @@ LABEL_19:
         {
           v32 = objc_opt_class();
           v55 = v32;
-          v33 = [v23 appReceipt];
-          v34 = [v33 length];
-          v35 = [v62 bundleIdentifier];
+          appReceipt = [v23 appReceipt];
+          v34 = [appReceipt length];
+          bundleIdentifier = [v62 bundleIdentifier];
           v65 = 138412802;
           v66 = v32;
           v67 = 1024;
           *v68 = v34;
           *&v68[4] = 2112;
-          *&v68[6] = v35;
+          *&v68[6] = bundleIdentifier;
           LODWORD(v51) = 28;
           v50 = &v65;
           v36 = _os_log_send_and_compose_impl();
@@ -500,9 +500,9 @@ LABEL_19:
           v20 = v63;
           if (v36)
           {
-            v30 = [NSString stringWithCString:v36 encoding:4, &v65, v51];
+            oSLogObject2 = [NSString stringWithCString:v36 encoding:4, &v65, v51];
             free(v36);
-            v50 = v30;
+            v50 = oSLogObject2;
             SSFileLog();
             goto LABEL_33;
           }
@@ -513,21 +513,21 @@ LABEL_19:
 LABEL_33:
         }
 
-        v37 = [v23 appReceipt];
-        v38 = [v37 length];
+        appReceipt2 = [v23 appReceipt];
+        v38 = [appReceipt2 length];
 
         if (v38)
         {
-          v39 = [v23 appReceipt];
-          [AppReceipt writeReceipt:v39 forStoreKitClient:v62];
+          appReceipt3 = [v23 appReceipt];
+          [AppReceipt writeReceipt:appReceipt3 forStoreKitClient:v62];
         }
 
-        self = v54;
+        self = selfCopy;
         v8 = v58;
         v12 = &CFDictionaryGetValue_ptr;
-        if (v56)
+        if (paymentBatchBlock)
         {
-          v56[2]();
+          paymentBatchBlock[2]();
         }
 
         v11 = 1;
@@ -536,25 +536,25 @@ LABEL_33:
       }
 
       v41 = v24;
-      v42 = [v12[412] sharedDaemonConfig];
-      if (!v42)
+      sharedDaemonConfig3 = [v12[412] sharedDaemonConfig];
+      if (!sharedDaemonConfig3)
       {
-        v42 = [v12[412] sharedConfig];
+        sharedDaemonConfig3 = [v12[412] sharedConfig];
       }
 
-      v43 = [v42 shouldLog];
-      if ([v42 shouldLogToDisk])
+      shouldLog3 = [sharedDaemonConfig3 shouldLog];
+      if ([sharedDaemonConfig3 shouldLogToDisk])
       {
-        v44 = v43 | 2;
+        v44 = shouldLog3 | 2;
       }
 
       else
       {
-        v44 = v43;
+        v44 = shouldLog3;
       }
 
-      v45 = [v42 OSLogObject];
-      if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
+      oSLogObject3 = [sharedDaemonConfig3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
       {
         v46 = v44;
       }
@@ -589,15 +589,15 @@ LABEL_33:
       v8 = v58;
       if (v49)
       {
-        v45 = [NSString stringWithCString:v49 encoding:4, &v65, v51];
+        oSLogObject3 = [NSString stringWithCString:v49 encoding:4, &v65, v51];
         free(v49);
-        v50 = v45;
+        v50 = oSLogObject3;
         SSFileLog();
 LABEL_51:
       }
 
       v40 = v41;
-      v26 = v57;
+      rangesToLoad = v57;
       v53 = 1;
       v57 = [v41 copy];
 LABEL_53:

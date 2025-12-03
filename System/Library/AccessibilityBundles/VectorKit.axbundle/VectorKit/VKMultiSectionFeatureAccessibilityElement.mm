@@ -1,21 +1,21 @@
 @interface VKMultiSectionFeatureAccessibilityElement
-- (VKMultiSectionFeatureAccessibilityElement)initWithAccessibilityContainer:(id)a3 feature:(id)a4 ignoreMissingName:(BOOL)a5 useLocalizedLabels:(BOOL)a6;
-- (void)_startUpdatingDescriptionForBuilding:(id)a3;
+- (VKMultiSectionFeatureAccessibilityElement)initWithAccessibilityContainer:(id)container feature:(id)feature ignoreMissingName:(BOOL)name useLocalizedLabels:(BOOL)labels;
+- (void)_startUpdatingDescriptionForBuilding:(id)building;
 - (void)_updatePath;
 @end
 
 @implementation VKMultiSectionFeatureAccessibilityElement
 
-- (VKMultiSectionFeatureAccessibilityElement)initWithAccessibilityContainer:(id)a3 feature:(id)a4 ignoreMissingName:(BOOL)a5 useLocalizedLabels:(BOOL)a6
+- (VKMultiSectionFeatureAccessibilityElement)initWithAccessibilityContainer:(id)container feature:(id)feature ignoreMissingName:(BOOL)name useLocalizedLabels:(BOOL)labels
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  labelsCopy = labels;
+  nameCopy = name;
+  containerCopy = container;
+  featureCopy = feature;
   v14.receiver = self;
   v14.super_class = VKMultiSectionFeatureAccessibilityElement;
-  v12 = [(VKFeatureAccessibilityElement *)&v14 initWithAccessibilityContainer:v10 feature:v11 ignoreMissingName:v7 useLocalizedLabels:v6];
-  [(VKMultiSectionFeatureAccessibilityElement *)v12 _startUpdatingDescriptionForBuilding:v11];
+  v12 = [(VKFeatureAccessibilityElement *)&v14 initWithAccessibilityContainer:containerCopy feature:featureCopy ignoreMissingName:nameCopy useLocalizedLabels:labelsCopy];
+  [(VKMultiSectionFeatureAccessibilityElement *)v12 _startUpdatingDescriptionForBuilding:featureCopy];
 
   return v12;
 }
@@ -23,8 +23,8 @@
 - (void)_updatePath
 {
   v40 = *MEMORY[0x29EDCA608];
-  v3 = [(VKFeatureAccessibilityElement *)self paths];
-  [v3 removeAllObjects];
+  paths = [(VKFeatureAccessibilityElement *)self paths];
+  [paths removeAllObjects];
 
   [(VKFeatureAccessibilityElement *)self setHitTestPaths:0];
   v4 = MEMORY[0x29EDB90E0];
@@ -98,13 +98,13 @@
 
         [v13 closePath];
         v21 = v13;
-        v22 = [v13 CGPath];
-        if (v22)
+        cGPath = [v13 CGPath];
+        if (cGPath)
         {
-          v23 = [(VKFeatureAccessibilityElement *)self paths];
-          [v23 addObject:v22];
+          paths2 = [(VKFeatureAccessibilityElement *)self paths];
+          [paths2 addObject:cGPath];
 
-          PathBoundingBox = CGPathGetPathBoundingBox(v22);
+          PathBoundingBox = CGPathGetPathBoundingBox(cGPath);
           x = PathBoundingBox.origin.x;
           y = PathBoundingBox.origin.y;
           width = PathBoundingBox.size.width;
@@ -154,31 +154,31 @@
   [(VKFeatureAccessibilityElement *)self _updateElementStatus];
 }
 
-- (void)_startUpdatingDescriptionForBuilding:(id)a3
+- (void)_startUpdatingDescriptionForBuilding:(id)building
 {
-  v4 = a3;
-  v5 = [(VKFeatureAccessibilityElement *)self featureSet];
-  if (![v5 count])
+  buildingCopy = building;
+  featureSet = [(VKFeatureAccessibilityElement *)self featureSet];
+  if (![featureSet count])
   {
     goto LABEL_4;
   }
 
   v19.receiver = self;
   v19.super_class = VKMultiSectionFeatureAccessibilityElement;
-  v6 = [(VKFeatureAccessibilityElement *)&v19 accessibilityLabel];
+  accessibilityLabel = [(VKFeatureAccessibilityElement *)&v19 accessibilityLabel];
 
-  if (!v6)
+  if (!accessibilityLabel)
   {
     v7 = GEOMultiSectionFeatureBounds();
-    v8 = [v4 feature];
-    v9 = [v8 containingTile];
-    [v9 geoTileKey];
+    feature = [buildingCopy feature];
+    containingTile = [feature containingTile];
+    [containingTile geoTileKey];
 
     VKWorldBoundsFromGEOTileKey();
     AXVKPointForTileGLPoint(v10, v11, v12, v13, (*v7 + v7[2]) * 0.5);
     VKLocationCoordinate2DForVKPoint();
-    v5 = [objc_alloc(MEMORY[0x29EDBD238]) initWithLatitude:v14 longitude:v15];
-    [(VKFeatureAccessibilityElement *)self setLocationCoordinate:v5];
+    featureSet = [objc_alloc(MEMORY[0x29EDBD238]) initWithLatitude:v14 longitude:v15];
+    [(VKFeatureAccessibilityElement *)self setLocationCoordinate:featureSet];
     v16 = objc_alloc_init(MEMORY[0x29EDB9260]);
     v18[0] = MEMORY[0x29EDCA5F8];
     v18[1] = 3221225472;
@@ -186,7 +186,7 @@
     v18[3] = &unk_29F318650;
     v18[4] = self;
     v17 = MEMORY[0x29ED3F700](v18);
-    [v16 reverseGeocodeLocation:v5 completionHandler:v17];
+    [v16 reverseGeocodeLocation:featureSet completionHandler:v17];
     [(VKMultiSectionFeatureAccessibilityElement *)self _accessibilitySetRetainedValue:v16 forKey:@"CLGeocoder"];
 
 LABEL_4:

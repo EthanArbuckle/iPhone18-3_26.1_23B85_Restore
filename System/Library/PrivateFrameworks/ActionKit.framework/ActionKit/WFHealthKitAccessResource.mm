@@ -1,44 +1,44 @@
 @interface WFHealthKitAccessResource
-- (WFHealthKitAccessResource)initWithDefinition:(id)a3;
-- (id)importErrorReasonForStatus:(unint64_t)a3;
-- (id)localizedErrorReasonForStatus:(unint64_t)a3;
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3;
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3;
-- (id)objectTypesForAccessType:(id)a3;
+- (WFHealthKitAccessResource)initWithDefinition:(id)definition;
+- (id)importErrorReasonForStatus:(unint64_t)status;
+- (id)localizedErrorReasonForStatus:(unint64_t)status;
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status;
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context;
+- (id)objectTypesForAccessType:(id)type;
 - (id)readableUnauthorizedResourceDescription;
-- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)a3 userInterface:(id)a4 completionHandler:(id)a5;
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
+- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
 - (void)refreshAvailability;
 @end
 
 @implementation WFHealthKitAccessResource
 
-- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)a3 userInterface:(id)a4 completionHandler:(id)a5
+- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  interfaceCopy = interface;
+  handlerCopy = handler;
   if ([(WFHealthKitAccessResource *)self status]== 3)
   {
-    v9 = [MEMORY[0x277CFC248] sharedContext];
+    mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
     v10 = [MEMORY[0x277CBEBC0] URLWithString:@"x-apple-health://"];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __101__WFHealthKitAccessResource_attemptRecoveryFromErrorWithOptionIndex_userInterface_completionHandler___block_invoke;
     v11[3] = &unk_278C1CBC0;
-    v12 = v8;
-    [v9 openURL:v10 withBundleIdentifier:@"com.apple.Health" userInterface:v7 completionHandler:v11];
+    v12 = handlerCopy;
+    [mEMORY[0x277CFC248] openURL:v10 withBundleIdentifier:@"com.apple.Health" userInterface:interfaceCopy completionHandler:v11];
   }
 
   else
   {
-    [(WFHealthKitAccessResource *)self makeAvailableWithUserInterface:v7 completionHandler:v8];
+    [(WFHealthKitAccessResource *)self makeAvailableWithUserInterface:interfaceCopy completionHandler:handlerCopy];
   }
 }
 
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 3)
+  if (status == 3)
   {
     v3 = WFLocalizedString(@"Open Health");
     v9[0] = v3;
@@ -59,14 +59,14 @@
   return v5;
 }
 
-- (id)importErrorReasonForStatus:(unint64_t)a3
+- (id)importErrorReasonForStatus:(unint64_t)status
 {
-  v3 = [(WFHealthKitAccessResource *)self readableUnauthorizedResourceDescription];
-  if ([v3 length])
+  readableUnauthorizedResourceDescription = [(WFHealthKitAccessResource *)self readableUnauthorizedResourceDescription];
+  if ([readableUnauthorizedResourceDescription length])
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = WFLocalizedString(@"In order to answer this question, Shortcuts needs access to your %@ data.");
-    v6 = [v4 localizedStringWithFormat:v5, v3];
+    v6 = [v4 localizedStringWithFormat:v5, readableUnauthorizedResourceDescription];
   }
 
   else
@@ -77,13 +77,13 @@
   return v6;
 }
 
-- (id)localizedErrorReasonForStatus:(unint64_t)a3
+- (id)localizedErrorReasonForStatus:(unint64_t)status
 {
-  v4 = [(WFHealthKitAccessResource *)self readableUnauthorizedResourceDescription];
-  if ([v4 length])
+  readableUnauthorizedResourceDescription = [(WFHealthKitAccessResource *)self readableUnauthorizedResourceDescription];
+  if ([readableUnauthorizedResourceDescription length])
   {
     v5 = MEMORY[0x277CCACA8];
-    if (a3 == 3)
+    if (status == 3)
     {
       v6 = @"Health access to %@ is off. You can turn on health data categories in the Health app.";
     }
@@ -94,7 +94,7 @@
     }
 
     v7 = WFLocalizedString(v6);
-    v8 = [v5 localizedStringWithFormat:v7, v4];
+    v8 = [v5 localizedStringWithFormat:v7, readableUnauthorizedResourceDescription];
   }
 
   else
@@ -105,28 +105,28 @@
   return v8;
 }
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a4;
-  if (![a3 isRunningWithSiriUI])
+  handlerCopy = handler;
+  if (![interface isRunningWithSiriUI])
   {
-    v7 = [(WFHealthKitAccessResource *)self objectTypes];
-    if ([v7 count])
+    objectTypes = [(WFHealthKitAccessResource *)self objectTypes];
+    if ([objectTypes count])
     {
-      v8 = [(WFHealthKitAccessResource *)self healthStore];
-      v9 = [(WFHealthKitAccessResource *)self writeTypes];
+      healthStore = [(WFHealthKitAccessResource *)self healthStore];
+      writeTypes = [(WFHealthKitAccessResource *)self writeTypes];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __78__WFHealthKitAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke;
       v10[3] = &unk_278C20360;
       v10[4] = self;
-      v11 = v6;
-      [v8 requestAuthorizationToShareTypes:v9 readTypes:v7 completion:v10];
+      v11 = handlerCopy;
+      [healthStore requestAuthorizationToShareTypes:writeTypes readTypes:objectTypes completion:v10];
     }
 
     else
     {
-      (*(v6 + 2))(v6, 1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 1, 0);
     }
 
     goto LABEL_9;
@@ -137,15 +137,15 @@
     [(WFResource *)self refreshAvailabilityWithNotification];
     if (self->_status != 4)
     {
-      v7 = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
-      (*(v6 + 2))(v6, 0, v7);
+      objectTypes = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
+      (*(handlerCopy + 2))(handlerCopy, 0, objectTypes);
 LABEL_9:
 
       goto LABEL_10;
     }
   }
 
-  (*(v6 + 2))(v6, 1, 0);
+  (*(handlerCopy + 2))(handlerCopy, 1, 0);
 LABEL_10:
 }
 
@@ -178,11 +178,11 @@ uint64_t __78__WFHealthKitAccessResource_makeAvailableWithUserInterface_completi
 - (void)refreshAvailability
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(WFHealthKitAccessResource *)self objectTypes];
-  if ([v3 count])
+  objectTypes = [(WFHealthKitAccessResource *)self objectTypes];
+  if ([objectTypes count])
   {
-    v4 = [(WFHealthKitAccessResource *)self healthStore];
-    v5 = [MEMORY[0x277CCAB58] indexSet];
+    healthStore = [(WFHealthKitAccessResource *)self healthStore];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     [(WFHealthKitAccessResource *)self writeTypes];
     v37 = 0u;
     v38 = 0u;
@@ -202,7 +202,7 @@ uint64_t __78__WFHealthKitAccessResource_makeAvailableWithUserInterface_completi
             objc_enumerationMutation(v6);
           }
 
-          [v5 addIndex:{objc_msgSend(v4, "authorizationStatusForType:", *(*(&v35 + 1) + 8 * v9++))}];
+          [indexSet addIndex:{objc_msgSend(healthStore, "authorizationStatusForType:", *(*(&v35 + 1) + 8 * v9++))}];
         }
 
         while (v7 != v9);
@@ -212,7 +212,7 @@ uint64_t __78__WFHealthKitAccessResource_makeAvailableWithUserInterface_completi
       while (v7);
     }
 
-    v10 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
     [(WFHealthKitAccessResource *)self readTypes];
     v33 = 0u;
     v34 = 0u;
@@ -232,7 +232,7 @@ uint64_t __78__WFHealthKitAccessResource_makeAvailableWithUserInterface_completi
             objc_enumerationMutation(v11);
           }
 
-          [v10 addIndex:{objc_msgSend(v4, "authorizationStatusForType:", *(*(&v31 + 1) + 8 * v14++))}];
+          [indexSet2 addIndex:{objc_msgSend(healthStore, "authorizationStatusForType:", *(*(&v31 + 1) + 8 * v14++))}];
         }
 
         while (v12 != v14);
@@ -246,13 +246,13 @@ uint64_t __78__WFHealthKitAccessResource_makeAvailableWithUserInterface_completi
     v28 = &v27;
     v29 = 0x2020000000;
     v30 = 1;
-    if ([v5 containsIndex:1])
+    if ([indexSet containsIndex:1])
     {
       v28[3] = 3;
     }
 
     v15 = [MEMORY[0x277CCAA78] indexSetWithIndex:2];
-    if ([v5 isEqualToIndexSet:v15])
+    if ([indexSet isEqualToIndexSet:v15])
     {
       v16 = [v11 count] == 0;
 
@@ -280,7 +280,7 @@ uint64_t __78__WFHealthKitAccessResource_makeAvailableWithUserInterface_completi
       v26 = &v27;
       v20 = v19;
       v25 = v20;
-      [v4 getRequestStatusForAuthorizationToShareTypes:v6 readTypes:v3 completion:v24];
+      [healthStore getRequestStatusForAuthorizationToShareTypes:v6 readTypes:objectTypes completion:v24];
       v21 = dispatch_time(0, 2000000000);
       dispatch_semaphore_wait(v20, v21);
 
@@ -317,13 +317,13 @@ intptr_t __48__WFHealthKitAccessResource_refreshAvailability__block_invoke(uint6
 
 - (id)readableUnauthorizedResourceDescription
 {
-  v3 = [(WFHealthKitAccessResource *)self healthStore];
+  healthStore = [(WFHealthKitAccessResource *)self healthStore];
   v4 = objc_opt_new();
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __68__WFHealthKitAccessResource_readableUnauthorizedResourceDescription__block_invoke;
   v17 = &unk_278C18F28;
-  v5 = v3;
+  v5 = healthStore;
   v18 = v5;
   v6 = v4;
   v19 = v6;
@@ -331,8 +331,8 @@ intptr_t __48__WFHealthKitAccessResource_refreshAvailability__block_invoke(uint6
   v8 = [(WFHealthKitAccessResource *)self readTypes:v14];
   if (v7[2](v7, v8, 2))
   {
-    v9 = [(WFHealthKitAccessResource *)self writeTypes];
-    v10 = v7[2](v7, v9, 1);
+    writeTypes = [(WFHealthKitAccessResource *)self writeTypes];
+    v10 = v7[2](v7, writeTypes, 1);
 
     if (v10)
     {
@@ -427,25 +427,25 @@ LABEL_15:
   return v22;
 }
 
-- (id)objectTypesForAccessType:(id)a3
+- (id)objectTypesForAccessType:(id)type
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v45 = objc_opt_new();
-  v5 = [(WFResource *)self definition];
-  v6 = [v5 objectForKeyedSubscript:@"Resources"];
+  definition = [(WFResource *)self definition];
+  v6 = [definition objectForKeyedSubscript:@"Resources"];
   v7 = objc_opt_class();
-  v8 = WFEnforceClass(v6, v7);
+  definition2 = WFEnforceClass(v6, v7);
 
-  if (!v8)
+  if (!definition2)
   {
-    v8 = [(WFResource *)self definition];
+    definition2 = [(WFResource *)self definition];
 
-    if (v8)
+    if (definition2)
     {
-      v9 = [(WFResource *)self definition];
-      v55[0] = v9;
-      v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
+      definition3 = [(WFResource *)self definition];
+      v55[0] = definition3;
+      definition2 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
     }
   }
 
@@ -453,7 +453,7 @@ LABEL_15:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v8;
+  obj = definition2;
   v10 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v10)
   {
@@ -481,11 +481,11 @@ LABEL_15:
         v20 = v19;
         if (v19)
         {
-          if (!v4 || ([v19 objectForKeyedSubscript:@"AccessType"], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v4), v21, v22))
+          if (!typeCopy || ([v19 objectForKeyedSubscript:@"AccessType"], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", typeCopy), v21, v22))
           {
             v23 = v20;
-            v24 = [v23 objectForKeyedSubscript:@"ObjectType"];
-            if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+            workoutType = [v23 objectForKeyedSubscript:@"ObjectType"];
+            if (!workoutType || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
 
               v25 = [v23 objectForKeyedSubscript:@"ReadableType"];
@@ -518,7 +518,7 @@ LABEL_15:
 
               if ([v25 isEqualToString:@"Workout"])
               {
-                v24 = [MEMORY[0x277CCD720] workoutType];
+                workoutType = [MEMORY[0x277CCD720] workoutType];
                 goto LABEL_28;
               }
 
@@ -534,7 +534,7 @@ LABEL_15:
                 v28 = [WFHealthKitHelper sampleTypeIdentifierFromReadableTypeIdentifier:v26];
                 v29 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:v28];
 LABEL_27:
-                v24 = v29;
+                workoutType = v29;
 
                 v12 = 0x277CBE000;
               }
@@ -551,25 +551,25 @@ LABEL_27:
                   objc_exception_throw(v44);
                 }
 
-                v24 = 0;
+                workoutType = 0;
               }
 
 LABEL_28:
             }
 
-            if (![v4 isEqualToString:@"Write"] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+            if (![typeCopy isEqualToString:@"Write"] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v30 = v24;
+              v30 = workoutType;
               v31 = [MEMORY[0x277CBEB58] setWithObjects:{v30, 0}];
-              v32 = [v30 identifier];
-              if ([v32 isEqualToString:v49])
+              identifier = [v30 identifier];
+              if ([identifier isEqualToString:v49])
               {
 
                 goto LABEL_34;
               }
 
-              v33 = [v30 identifier];
-              v34 = [v33 isEqualToString:v46];
+              identifier2 = [v30 identifier];
+              v34 = [identifier2 isEqualToString:v46];
 
               v12 = 0x277CBE000;
               if (v34)
@@ -607,16 +607,16 @@ LABEL_34:
   return v45;
 }
 
-- (WFHealthKitAccessResource)initWithDefinition:(id)a3
+- (WFHealthKitAccessResource)initWithDefinition:(id)definition
 {
   v8.receiver = self;
   v8.super_class = WFHealthKitAccessResource;
-  v3 = [(WFAccessResource *)&v8 initWithDefinition:a3];
+  v3 = [(WFAccessResource *)&v8 initWithDefinition:definition];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCD4D8] wf_shortcutsAppHealthStore];
+    wf_shortcutsAppHealthStore = [MEMORY[0x277CCD4D8] wf_shortcutsAppHealthStore];
     healthStore = v3->_healthStore;
-    v3->_healthStore = v4;
+    v3->_healthStore = wf_shortcutsAppHealthStore;
 
     v6 = v3;
   }
@@ -624,11 +624,11 @@ LABEL_34:
   return v3;
 }
 
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"your Health data", @"your Health data");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

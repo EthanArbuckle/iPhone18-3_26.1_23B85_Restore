@@ -1,11 +1,11 @@
 @interface PUAlbumListViewControllerPadSpec
-- (CGSize)cellSizeForStackSize:(CGSize)a3;
+- (CGSize)cellSizeForStackSize:(CGSize)size;
 - (CGSize)collageImageSize;
 - (CGSize)imageSize;
-- (CGSize)imageSizeForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4;
+- (CGSize)imageSizeForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets;
 - (CGSize)stackSize;
-- (CGSize)stackSizeForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4;
-- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4;
+- (CGSize)stackSizeForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets;
+- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)stackPerspectiveInsets;
 - (UIOffset)stackOffset;
 - (UIOffset)stackPerspectiveOffset;
@@ -15,8 +15,8 @@
 - (id)emptyStackPhotoDecoration;
 - (id)gridViewControllerSpec;
 - (id)stackPhotoDecoration;
-- (void)configureGridLayout:(id)a3 forLayoutReferenceSize:(CGSize)a4 safeAreaInsets:(UIEdgeInsets)a5;
-- (void)configureStackViewWithGridStyle:(id)a3;
+- (void)configureGridLayout:(id)layout forLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets;
+- (void)configureStackViewWithGridStyle:(id)style;
 @end
 
 @implementation PUAlbumListViewControllerPadSpec
@@ -37,10 +37,10 @@
 
 - (double)sectionHeaderHeight
 {
-  v2 = [(PUAlbumListViewControllerSpec *)self _fontManager];
-  v3 = [v2 albumListSectionTitleLabelFont];
+  _fontManager = [(PUAlbumListViewControllerSpec *)self _fontManager];
+  albumListSectionTitleLabelFont = [_fontManager albumListSectionTitleLabelFont];
 
-  [v3 _scaledValueForValue:34.0];
+  [albumListSectionTitleLabelFont _scaledValueForValue:34.0];
   v5 = v4;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -52,7 +52,7 @@
   return v6;
 }
 
-- (CGSize)imageSizeForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4
+- (CGSize)imageSizeForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets
 {
   v4 = 256.0;
   v5 = 256.0;
@@ -61,19 +61,19 @@
   return result;
 }
 
-- (void)configureGridLayout:(id)a3 forLayoutReferenceSize:(CGSize)a4 safeAreaInsets:(UIEdgeInsets)a5
+- (void)configureGridLayout:(id)layout forLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a4.height;
-  width = a4.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
   v21 = 0.0;
   v22 = 0.0;
   v19 = 0u;
   v20 = 0u;
-  v12 = a3;
+  layoutCopy = layout;
   [(PUAlbumListViewControllerSpec *)self _getStackSize:&v21 outEdgeInsets:&v19 forLayoutReferenceSize:width safeAreaInsets:height, top, left, bottom, right];
   v13 = *(&v19 + 1);
   v15 = *(&v20 + 1);
@@ -89,20 +89,20 @@
   *(&v20 + 1) = *(&v20 + 1) - v16;
   v21 = v21 + v16 * 2.0;
   [(PUAlbumListViewControllerPadSpec *)self sectionFooterHeight:v19];
-  [v12 setSectionContentInset:{0.0, v17, v18, *(&v20 + 1)}];
-  [v12 setInterItemSpacing:{0.0, 0.0}];
+  [layoutCopy setSectionContentInset:{0.0, v17, v18, *(&v20 + 1)}];
+  [layoutCopy setInterItemSpacing:{0.0, 0.0}];
   [(PUAlbumListViewControllerPadSpec *)self cellSizeForStackSize:v21, v22];
-  [v12 setItemSize:?];
+  [layoutCopy setItemSize:?];
 }
 
-- (CGSize)cellSizeForStackSize:(CGSize)a3
+- (CGSize)cellSizeForStackSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PUAlbumListViewControllerSpec *)self _fontManager];
-  v6 = [v5 albumListTitleLabelFont];
+  height = size.height;
+  width = size.width;
+  _fontManager = [(PUAlbumListViewControllerSpec *)self _fontManager];
+  albumListTitleLabelFont = [_fontManager albumListTitleLabelFont];
 
-  [v6 _scaledValueForValue:24.0];
+  [albumListTitleLabelFont _scaledValueForValue:24.0];
   v8 = v7;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -110,10 +110,10 @@
   }
 
   v9 = *&PUMainScreenScale_screenScale;
-  v10 = [(PUAlbumListViewControllerSpec *)self _fontManager];
-  v11 = [v10 albumListSubtitleLabelFont];
+  _fontManager2 = [(PUAlbumListViewControllerSpec *)self _fontManager];
+  albumListSubtitleLabelFont = [_fontManager2 albumListSubtitleLabelFont];
 
-  [v11 _scaledValueForValue:20.0];
+  [albumListSubtitleLabelFont _scaledValueForValue:20.0];
   v13 = v12;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -121,7 +121,7 @@
   }
 
   v14 = *&PUMainScreenScale_screenScale;
-  [v6 _scaledValueForValue:10.0];
+  [albumListTitleLabelFont _scaledValueForValue:10.0];
   v16 = v15;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -129,7 +129,7 @@
   }
 
   v17 = *&PUMainScreenScale_screenScale;
-  [v11 _scaledValueForValue:10.0];
+  [albumListSubtitleLabelFont _scaledValueForValue:10.0];
   v19 = v18;
   if (PUMainScreenScale_onceToken != -1)
   {
@@ -145,11 +145,11 @@
   return result;
 }
 
-- (CGSize)stackSizeForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4
+- (CGSize)stackSizeForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets
 {
   v6 = 0.0;
   v7 = 0.0;
-  [(PUAlbumListViewControllerSpec *)self _getStackSize:&v6 outEdgeInsets:0 forLayoutReferenceSize:a3.width safeAreaInsets:a3.height, a4.top, a4.left, a4.bottom, a4.right];
+  [(PUAlbumListViewControllerSpec *)self _getStackSize:&v6 outEdgeInsets:0 forLayoutReferenceSize:size.width safeAreaInsets:size.height, insets.top, insets.left, insets.bottom, insets.right];
   v4 = v6;
   v5 = v7;
   result.height = v5;
@@ -157,12 +157,12 @@
   return result;
 }
 
-- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)a3 safeAreaInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)sectionInsetsForLayoutReferenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets
 {
   v4 = *(MEMORY[0x1E69DDCE0] + 16);
   v9 = *MEMORY[0x1E69DDCE0];
   v10 = v4;
-  [(PUAlbumListViewControllerSpec *)self _getStackSize:0 outEdgeInsets:&v9 forLayoutReferenceSize:a3.width safeAreaInsets:a3.height, a4.top, a4.left, a4.bottom, a4.right];
+  [(PUAlbumListViewControllerSpec *)self _getStackSize:0 outEdgeInsets:&v9 forLayoutReferenceSize:size.width safeAreaInsets:size.height, insets.top, insets.left, insets.bottom, insets.right];
   v6 = *(&v9 + 1);
   v5 = *&v9;
   v8 = *(&v10 + 1);
@@ -183,15 +183,15 @@
   return v4;
 }
 
-- (void)configureStackViewWithGridStyle:(id)a3
+- (void)configureStackViewWithGridStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v3 = +[PUInterfaceManager currentTheme];
-  v4 = [v3 folderCellBackgroundColor];
-  [v5 setGridBackgroundColor:v4];
+  folderCellBackgroundColor = [v3 folderCellBackgroundColor];
+  [styleCopy setGridBackgroundColor:folderCellBackgroundColor];
 
-  [v5 setGridMargin:0.0];
-  [v5 setGridItemSpacing:3.0];
+  [styleCopy setGridMargin:0.0];
+  [styleCopy setGridItemSpacing:3.0];
 }
 
 - (CGSize)collageImageSize

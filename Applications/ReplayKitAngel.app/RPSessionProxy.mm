@@ -2,16 +2,16 @@
 - (RPSessionProxy)init;
 - (id)currentSessionID;
 - (uint64_t)finish;
-- (void)startWithSessionType:(id)a3;
+- (void)startWithSessionType:(id)type;
 @end
 
 @implementation RPSessionProxy
 
-- (void)startWithSessionType:(id)a3
+- (void)startWithSessionType:(id)type
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10002F464(v4, v6);
 }
 

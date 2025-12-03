@@ -1,14 +1,14 @@
 @interface VUIIKPlaylistElementToMediaItemsMapper
-- (BOOL)_shouldDisableResumeMenuForAsset:(id)a3;
+- (BOOL)_shouldDisableResumeMenuForAsset:(id)asset;
 - (VUIIKPlaylistElementToMediaItemsMapper)init;
-- (id)_clipMediaItemsMediaItem:(id)a3 fromTimelineElement:(id)a4;
-- (id)_createClipMediaItemsIfTimeExists:(id)a3 fromMediaElement:(id)a4;
-- (id)_storeAuxMediaItemForIKMediaElement:(id)a3 isExtrasContent:(BOOL)a4;
-- (id)_storeMediaItemsForAdamID:(int64_t)a3 IKMediaElement:(id)a4;
-- (id)playlistForIKMediaElements:(id)a3 withMediaItem:(id)a4 isExtrasContent:(BOOL)a5;
-- (void)_populateMediaItem:(id)a3 withMetadatafromRelatedContentElement:(id)a4;
-- (void)_populateMediaItem:(id)a3 withMetadatafromTimelineEventElement:(id)a4;
-- (void)_populateMediaItem:(id)a3 withMetadatafromVideoElement:(id)a4;
+- (id)_clipMediaItemsMediaItem:(id)item fromTimelineElement:(id)element;
+- (id)_createClipMediaItemsIfTimeExists:(id)exists fromMediaElement:(id)element;
+- (id)_storeAuxMediaItemForIKMediaElement:(id)element isExtrasContent:(BOOL)content;
+- (id)_storeMediaItemsForAdamID:(int64_t)d IKMediaElement:(id)element;
+- (id)playlistForIKMediaElements:(id)elements withMediaItem:(id)item isExtrasContent:(BOOL)content;
+- (void)_populateMediaItem:(id)item withMetadatafromRelatedContentElement:(id)element;
+- (void)_populateMediaItem:(id)item withMetadatafromTimelineEventElement:(id)element;
+- (void)_populateMediaItem:(id)item withMetadatafromVideoElement:(id)element;
 @end
 
 @implementation VUIIKPlaylistElementToMediaItemsMapper
@@ -26,34 +26,34 @@
   return result;
 }
 
-- (BOOL)_shouldDisableResumeMenuForAsset:(id)a3
+- (BOOL)_shouldDisableResumeMenuForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if ([(VUIIKPlaylistElementToMediaItemsMapper *)self resumeMenuBehavior])
   {
-    v5 = [v4 vui_disableResumeMenu];
+    vui_disableResumeMenu = [assetCopy vui_disableResumeMenu];
   }
 
   else
   {
-    v5 = 1;
+    vui_disableResumeMenu = 1;
   }
 
-  return v5;
+  return vui_disableResumeMenu;
 }
 
-- (id)playlistForIKMediaElements:(id)a3 withMediaItem:(id)a4 isExtrasContent:(BOOL)a5
+- (id)playlistForIKMediaElements:(id)elements withMediaItem:(id)item isExtrasContent:(BOOL)content
 {
-  v30 = a5;
+  contentCopy = content;
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  elementsCopy = elements;
+  itemCopy = item;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v7;
+  obj = elementsCopy;
   v10 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -70,22 +70,22 @@
         }
 
         v14 = *(*(&v32 + 1) + 8 * v13);
-        v15 = [v14 assets];
-        v16 = [v15 firstObject];
+        assets = [v14 assets];
+        firstObject = [assets firstObject];
 
-        v17 = [v16 adamID];
-        v18 = [v17 longLongValue];
+        adamID = [firstObject adamID];
+        longLongValue = [adamID longLongValue];
 
-        if (v18 || ([v16 vui_rentalAdamIDString], v19 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v19, "longLongValue"), v19, v18))
+        if (longLongValue || ([firstObject vui_rentalAdamIDString], v19 = objc_claimAutoreleasedReturnValue(), longLongValue = objc_msgSend(v19, "longLongValue"), v19, longLongValue))
         {
-          if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+          if (itemCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v20 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _createClipMediaItemsIfTimeExists:v8 fromMediaElement:v14];
+            v20 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _createClipMediaItemsIfTimeExists:itemCopy fromMediaElement:v14];
           }
 
           else
           {
-            v20 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _storeMediaItemsForAdamID:v18 IKMediaElement:v14];
+            v20 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _storeMediaItemsForAdamID:longLongValue IKMediaElement:v14];
           }
 
           v21 = v20;
@@ -97,13 +97,13 @@
 
         else
         {
-          v22 = [v16 vui_persistentID];
-          v23 = [v22 longLongValue];
+          vui_persistentID = [firstObject vui_persistentID];
+          longLongValue2 = [vui_persistentID longLongValue];
 
-          if (v23)
+          if (longLongValue2)
           {
             v24 = MEMORY[0x1E69705D0];
-            v25 = [MEMORY[0x1E696AD98] numberWithLongLong:v23];
+            v25 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue2];
             v21 = [v24 vui_mediaItemForPersistentIdentifier:v25];
 
             v26 = [[VUILibraryMediaItem_iOS alloc] initWithMPMediaItem:v21];
@@ -112,7 +112,7 @@
 
           else
           {
-            v21 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _storeAuxMediaItemForIKMediaElement:v14 isExtrasContent:v30];
+            v21 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _storeAuxMediaItemForIKMediaElement:v14 isExtrasContent:contentCopy];
             if (v21)
             {
               [v9 addObject:v21];
@@ -136,70 +136,70 @@
   return v28;
 }
 
-- (id)_storeMediaItemsForAdamID:(int64_t)a3 IKMediaElement:(id)a4
+- (id)_storeMediaItemsForAdamID:(int64_t)d IKMediaElement:(id)element
 {
-  v6 = a4;
-  v7 = [v6 assets];
-  v8 = [v7 firstObject];
+  elementCopy = element;
+  assets = [elementCopy assets];
+  firstObject = [assets firstObject];
 
-  v9 = [[VUIStoreMediaItem_iOS alloc] initWithAdamID:a3 videoManagedObject:0 isForStartingDownload:0];
-  v10 = [v8 vui_fpsCertificateURL];
-  [(VUIStoreMediaItem_iOS *)v9 setFpsCertificateURL:v10];
+  v9 = [[VUIStoreMediaItem_iOS alloc] initWithAdamID:d videoManagedObject:0 isForStartingDownload:0];
+  vui_fpsCertificateURL = [firstObject vui_fpsCertificateURL];
+  [(VUIStoreMediaItem_iOS *)v9 setFpsCertificateURL:vui_fpsCertificateURL];
 
-  v11 = [v8 vui_fpsKeyServerURL];
-  [(VUIStoreMediaItem_iOS *)v9 setFpsKeyServerURL:v11];
+  vui_fpsKeyServerURL = [firstObject vui_fpsKeyServerURL];
+  [(VUIStoreMediaItem_iOS *)v9 setFpsKeyServerURL:vui_fpsKeyServerURL];
 
   v12 = [(VUIStoreMediaItem_iOS *)v9 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
   v13 = +[VUIMetricsController sharedInstance];
-  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v15 = [v13 iTunesLibraryPlaybackMediaMetricsForAdamID:v14 mediaType:v12];
 
   [(VUIStoreMediaItem_iOS *)v9 setMediaItemMetadata:v15 forProperty:*MEMORY[0x1E69D5C70]];
   v16 = +[VUIMetricsController sharedInstance];
-  v17 = [v16 iTunesVPAF];
-  [(VUIStoreMediaItem_iOS *)v9 setMediaItemMetadata:v17 forProperty:*MEMORY[0x1E69D5DE0]];
+  iTunesVPAF = [v16 iTunesVPAF];
+  [(VUIStoreMediaItem_iOS *)v9 setMediaItemMetadata:iTunesVPAF forProperty:*MEMORY[0x1E69D5DE0]];
 
-  v18 = [v8 vui_resumeTime];
-  if (v18)
+  vui_resumeTime = [firstObject vui_resumeTime];
+  if (vui_resumeTime)
   {
     v19 = [VUIMediaStartTimeInfo alloc];
-    v20 = [MEMORY[0x1E695DF00] date];
-    v21 = [(VUIMediaStartTimeInfo *)v19 initWithStartTime:v18 timestamp:v20 type:0 source:@"ITML/XML"];
+    date = [MEMORY[0x1E695DF00] date];
+    v21 = [(VUIMediaStartTimeInfo *)v19 initWithStartTime:vui_resumeTime timestamp:date type:0 source:@"ITML/XML"];
 
-    v22 = [(VUIBaseMediaItem *)v9 startTimeCollection];
-    [v22 addStartTimeInfo:v21];
+    startTimeCollection = [(VUIBaseMediaItem *)v9 startTimeCollection];
+    [startTimeCollection addStartTimeInfo:v21];
   }
 
-  if ([v8 vui_disableLocalAsset])
+  if ([firstObject vui_disableLocalAsset])
   {
     [(VUIStoreMediaItem_iOS *)v9 setMediaItemMetadata:MEMORY[0x1E695E118] forProperty:*MEMORY[0x1E69D5BD0]];
   }
 
-  v23 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _createClipMediaItemsIfTimeExists:v9 fromMediaElement:v6];
+  v23 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _createClipMediaItemsIfTimeExists:v9 fromMediaElement:elementCopy];
 
   return v23;
 }
 
-- (id)_storeAuxMediaItemForIKMediaElement:(id)a3 isExtrasContent:(BOOL)a4
+- (id)_storeAuxMediaItemForIKMediaElement:(id)element isExtrasContent:(BOOL)content
 {
-  v5 = a3;
-  v6 = [v5 assets];
-  v7 = [v6 firstObject];
+  elementCopy = element;
+  assets = [elementCopy assets];
+  firstObject = [assets firstObject];
 
   v8 = [VUIStoreAuxMediaItem alloc];
-  v9 = [v7 url];
+  v9 = [firstObject url];
   v10 = [(VUIStoreAuxMediaItem *)v8 initWithURL:v9];
 
-  v11 = [v7 vui_fpsCertificateURL];
-  [(VUIStoreAuxMediaItem *)v10 setFpsCertificateURL:v11];
+  vui_fpsCertificateURL = [firstObject vui_fpsCertificateURL];
+  [(VUIStoreAuxMediaItem *)v10 setFpsCertificateURL:vui_fpsCertificateURL];
 
-  v12 = [v7 vui_fpsKeyServerURL];
-  [(VUIStoreAuxMediaItem *)v10 setFpsKeyServerURL:v12];
+  vui_fpsKeyServerURL = [firstObject vui_fpsKeyServerURL];
+  [(VUIStoreAuxMediaItem *)v10 setFpsKeyServerURL:vui_fpsKeyServerURL];
 
   objc_opt_class();
   [(VUIStoreAuxMediaItem *)v10 setIsAudioOnly:objc_opt_isKindOfClass() & 1];
-  v13 = [v7 bookmarkID];
-  [(VUIStoreAuxMediaItem *)v10 setBookmarkID:v13];
+  bookmarkID = [firstObject bookmarkID];
+  [(VUIStoreAuxMediaItem *)v10 setBookmarkID:bookmarkID];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -207,11 +207,11 @@
   v20[3] = &unk_1E872E980;
   v14 = v10;
   v21 = v14;
-  v22 = v7;
-  v23 = v5;
-  v24 = a4;
-  v15 = v5;
-  v16 = v7;
+  v22 = firstObject;
+  v23 = elementCopy;
+  contentCopy = content;
+  v15 = elementCopy;
+  v16 = firstObject;
   [(TVPBaseMediaItem *)v14 performMediaItemMetadataTransactionWithBlock:v20];
   v17 = v23;
   v18 = v14;
@@ -267,51 +267,51 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
   }
 }
 
-- (id)_createClipMediaItemsIfTimeExists:(id)a3 fromMediaElement:(id)a4
+- (id)_createClipMediaItemsIfTimeExists:(id)exists fromMediaElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  existsCopy = exists;
+  elementCopy = element;
+  array = [MEMORY[0x1E695DF70] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 timelines];
-    v10 = [v9 firstObject];
+    timelines = [elementCopy timelines];
+    firstObject = [timelines firstObject];
 
-    if (v10)
+    if (firstObject)
     {
-      if (v6)
+      if (existsCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v6 setBookmarkDisabled:1];
+          [existsCopy setBookmarkDisabled:1];
         }
       }
 
-      v11 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _clipMediaItemsMediaItem:v6 fromTimelineElement:v10];
+      v11 = [(VUIIKPlaylistElementToMediaItemsMapper *)self _clipMediaItemsMediaItem:existsCopy fromTimelineElement:firstObject];
       if ([v11 count])
       {
-        [v8 addObjectsFromArray:v11];
+        [array addObjectsFromArray:v11];
       }
     }
 
     else
     {
-      [v8 addObject:v6];
+      [array addObject:existsCopy];
     }
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_clipMediaItemsMediaItem:(id)a3 fromTimelineElement:(id)a4
+- (id)_clipMediaItemsMediaItem:(id)item fromTimelineElement:(id)element
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 events];
-  v9 = [v8 count];
+  itemCopy = item;
+  elementCopy = element;
+  events = [elementCopy events];
+  v9 = [events count];
 
   if (v9)
   {
@@ -320,8 +320,8 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v24 = v7;
-    obj = [v7 events];
+    v24 = elementCopy;
+    obj = [elementCopy events];
     v11 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v11)
     {
@@ -343,7 +343,7 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
           v19 = v18;
           v20 = objc_alloc(MEMORY[0x1E69D59F8]);
           v21 = [objc_alloc(MEMORY[0x1E69D5A68]) initWithStartTime:v17 duration:v19];
-          v22 = [v20 initWithMediaItem:v6 clipTimeRange:v21];
+          v22 = [v20 initWithMediaItem:itemCopy clipTimeRange:v21];
 
           [(VUIIKPlaylistElementToMediaItemsMapper *)self _populateMediaItem:v22 withMetadatafromTimelineEventElement:v15];
           [v10 addObject:v22];
@@ -355,7 +355,7 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
       while (v12);
     }
 
-    v7 = v24;
+    elementCopy = v24;
   }
 
   else
@@ -366,34 +366,34 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
   return v10;
 }
 
-- (void)_populateMediaItem:(id)a3 withMetadatafromVideoElement:(id)a4
+- (void)_populateMediaItem:(id)item withMetadatafromVideoElement:(id)element
 {
-  v6 = a3;
-  v7 = [a4 relatedContent];
-  [(VUIIKPlaylistElementToMediaItemsMapper *)self _populateMediaItem:v6 withMetadatafromRelatedContentElement:v7];
+  itemCopy = item;
+  relatedContent = [element relatedContent];
+  [(VUIIKPlaylistElementToMediaItemsMapper *)self _populateMediaItem:itemCopy withMetadatafromRelatedContentElement:relatedContent];
 }
 
-- (void)_populateMediaItem:(id)a3 withMetadatafromTimelineEventElement:(id)a4
+- (void)_populateMediaItem:(id)item withMetadatafromTimelineEventElement:(id)element
 {
-  v6 = a3;
-  v7 = [a4 relatedContent];
-  [(VUIIKPlaylistElementToMediaItemsMapper *)self _populateMediaItem:v6 withMetadatafromRelatedContentElement:v7];
+  itemCopy = item;
+  relatedContent = [element relatedContent];
+  [(VUIIKPlaylistElementToMediaItemsMapper *)self _populateMediaItem:itemCopy withMetadatafromRelatedContentElement:relatedContent];
 }
 
-- (void)_populateMediaItem:(id)a3 withMetadatafromRelatedContentElement:(id)a4
+- (void)_populateMediaItem:(id)item withMetadatafromRelatedContentElement:(id)element
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  elementCopy = element;
   objc_opt_class();
-  v47 = v5;
+  v47 = itemCopy;
   isKindOfClass = objc_opt_isKindOfClass();
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v36 = v6;
-  obj = [v6 children];
+  v36 = elementCopy;
+  obj = [elementCopy children];
   v8 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v8)
   {
@@ -420,8 +420,8 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
         }
 
         v14 = *(*(&v52 + 1) + 8 * v13);
-        v15 = [v14 elementName];
-        v16 = [v15 isEqualToString:v11];
+        elementName = [v14 elementName];
+        v16 = [elementName isEqualToString:v11];
 
         if (v16)
         {
@@ -430,8 +430,8 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
           v51 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v17 = [v14 children];
-          v18 = [v17 countByEnumeratingWithState:&v48 objects:v56 count:16];
+          children = [v14 children];
+          v18 = [children countByEnumeratingWithState:&v48 objects:v56 count:16];
           if (!v18)
           {
             goto LABEL_25;
@@ -445,12 +445,12 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
             {
               if (*v49 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(children);
               }
 
               v22 = *(*(&v48 + 1) + 8 * i);
-              v23 = [v22 elementName];
-              v24 = [v23 isEqualToString:v12];
+              elementName2 = [v22 elementName];
+              v24 = [elementName2 isEqualToString:v12];
 
               if (v24)
               {
@@ -460,30 +460,30 @@ void __94__VUIIKPlaylistElementToMediaItemsMapper__storeAuxMediaItemForIKMediaEl
                   continue;
                 }
 
-                v25 = [v22 text];
-                v26 = [v25 string];
+                text = [v22 text];
+                string = [text string];
 
                 v27 = v47;
-                v28 = v26;
+                v28 = string;
                 v29 = v45;
                 goto LABEL_15;
               }
 
               if (isKindOfClass)
               {
-                v30 = [v22 elementName];
-                v31 = [v30 isEqualToString:v46];
+                elementName3 = [v22 elementName];
+                v31 = [elementName3 isEqualToString:v46];
 
                 if (v31)
                 {
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v32 = [v22 text];
-                    v26 = [v32 string];
+                    text2 = [v22 text];
+                    string = [text2 string];
 
                     v27 = v47;
-                    v28 = v26;
+                    v28 = string;
                     v29 = v43;
 LABEL_15:
                     [v27 setMediaItemMetadata:v28 forProperty:v29];
@@ -494,8 +494,8 @@ LABEL_15:
 
                 else
                 {
-                  v33 = [v22 elementName];
-                  v34 = [v33 isEqualToString:v44];
+                  elementName4 = [v22 elementName];
+                  v34 = [elementName4 isEqualToString:v44];
 
                   if (v34)
                   {
@@ -503,10 +503,10 @@ LABEL_15:
                     if (objc_opt_isKindOfClass())
                     {
                       v35 = [v22 url];
-                      v26 = [v35 absoluteString];
+                      string = [v35 absoluteString];
 
                       v27 = v47;
-                      v28 = v26;
+                      v28 = string;
                       v29 = v42;
                       goto LABEL_15;
                     }
@@ -515,7 +515,7 @@ LABEL_15:
               }
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v48 objects:v56 count:16];
+            v19 = [children countByEnumeratingWithState:&v48 objects:v56 count:16];
             if (!v19)
             {
 LABEL_25:

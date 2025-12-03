@@ -1,24 +1,24 @@
 @interface CKEmbeddedRichLinkView
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)transitionContextForCustomizationPickerController:(id)a3;
-- (void)balloonPluginDataSourceDidChange:(id)a3;
-- (void)customizationPickerControllerDidDismiss:(id)a3;
-- (void)customizationPickerControllerWillDismiss:(id)a3;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)transitionContextForCustomizationPickerController:(id)controller;
+- (void)balloonPluginDataSourceDidChange:(id)change;
+- (void)customizationPickerControllerDidDismiss:(id)dismiss;
+- (void)customizationPickerControllerWillDismiss:(id)dismiss;
 - (void)didMoveToWindow;
 - (void)didTapDiscardButton;
-- (void)didTapToPresentEditMenu:(id)a3;
+- (void)didTapToPresentEditMenu:(id)menu;
 - (void)layoutSubviews;
-- (void)pluginPayloadDidLoad:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)pluginPayloadDidLoad:(id)load;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CKEmbeddedRichLinkView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190AF3F74();
 }
 
@@ -33,34 +33,34 @@
   return result;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_190AF43F0(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_190AF43F0(window);
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_190AF465C();
 }
 
-- (void)didTapToPresentEditMenu:(id)a3
+- (void)didTapToPresentEditMenu:(id)menu
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_190AF7398();
   swift_unknownObjectRelease();
 }
 
 - (void)didTapDiscardButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_190AF542C();
 }
 
-- (void)pluginPayloadDidLoad:(id)a3
+- (void)pluginPayloadDidLoad:(id)load
 {
   v4 = sub_190D50FB0();
   v5 = *(v4 - 8);
@@ -76,49 +76,49 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)balloonPluginDataSourceDidChange:(id)a3
+- (void)balloonPluginDataSourceDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_190AF61D0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_190AF61D0(changeCopy);
 }
 
-- (void)customizationPickerControllerWillDismiss:(id)a3
+- (void)customizationPickerControllerWillDismiss:(id)dismiss
 {
   Strong = swift_unknownObjectWeakLoadStrong();
-  v6 = a3;
-  v7 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   if (Strong)
   {
     [Strong embeddedRichLinkViewWillDismissCustomizationPicker_];
     swift_unknownObjectRelease();
   }
 
-  v8 = *(&v7->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit22CKEmbeddedRichLinkView_discardButton);
+  v8 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit22CKEmbeddedRichLinkView_discardButton);
   [v8 setAlpha_];
   CGAffineTransformMakeScale(&v9, 0.8, 0.8);
   [v8 setTransform_];
 }
 
-- (void)customizationPickerControllerDidDismiss:(id)a3
+- (void)customizationPickerControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_190AF7680();
 }
 
-- (id)transitionContextForCustomizationPickerController:(id)a3
+- (id)transitionContextForCustomizationPickerController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_190AF78E4();
 
   return v6;
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  [(CKEmbeddedRichLinkView *)self frame:a3];
+  [(CKEmbeddedRichLinkView *)self frame:interaction];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -126,11 +126,11 @@
   return result;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
   v10 = sub_190AF7A18();
 
   return v10;

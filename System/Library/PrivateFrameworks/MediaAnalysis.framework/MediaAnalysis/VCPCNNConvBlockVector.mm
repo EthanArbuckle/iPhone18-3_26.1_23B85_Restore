@@ -1,30 +1,30 @@
 @interface VCPCNNConvBlockVector
-- (VCPCNNConvBlockVector)initWithParameters:(int)a3 filterNum:(int)a4 chunk:(int)a5 reLU:(BOOL)a6 padding:(BOOL)a7 groups:(int)a8 stride:(int)a9 batchNorm:(BOOL)a10;
+- (VCPCNNConvBlockVector)initWithParameters:(int)parameters filterNum:(int)num chunk:(int)chunk reLU:(BOOL)u padding:(BOOL)padding groups:(int)groups stride:(int)stride batchNorm:(BOOL)self0;
 - (int)chunkFourForward;
 - (int)forward;
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4;
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor;
 - (int)straightForwardForChunkFour;
 @end
 
 @implementation VCPCNNConvBlockVector
 
-- (VCPCNNConvBlockVector)initWithParameters:(int)a3 filterNum:(int)a4 chunk:(int)a5 reLU:(BOOL)a6 padding:(BOOL)a7 groups:(int)a8 stride:(int)a9 batchNorm:(BOOL)a10
+- (VCPCNNConvBlockVector)initWithParameters:(int)parameters filterNum:(int)num chunk:(int)chunk reLU:(BOOL)u padding:(BOOL)padding groups:(int)groups stride:(int)stride batchNorm:(BOOL)self0
 {
-  v10 = *&a8;
-  v11 = a7;
-  v12 = a6;
-  v13 = *&a5;
-  v14 = *&a4;
-  v15 = *&a3;
-  v16 = self;
-  if ([VCPCNNConvBlockVector isFilterSizeSupported:*(&self->super.super._executedOnGPU + 3)]&& (v16->super._filterSize & 3) == 0)
+  v10 = *&groups;
+  paddingCopy = padding;
+  uCopy = u;
+  v13 = *&chunk;
+  v14 = *&num;
+  v15 = *&parameters;
+  selfCopy = self;
+  if ([VCPCNNConvBlockVector isFilterSizeSupported:*(&self->super.super._executedOnGPU + 3)]&& (selfCopy->super._filterSize & 3) == 0)
   {
-    v20.receiver = v16;
+    v20.receiver = selfCopy;
     v20.super_class = VCPCNNConvBlockVector;
-    BYTE4(v19) = a10;
-    LODWORD(v19) = a9;
-    v16 = [(VCPCNNConvBlock *)&v20 initWithParameters:v15 filterNum:v14 chunk:v13 reLU:v12 padding:v11 groups:v10 stride:v19 batchNorm:?];
-    v17 = v16;
+    BYTE4(v19) = norm;
+    LODWORD(v19) = stride;
+    selfCopy = [(VCPCNNConvBlock *)&v20 initWithParameters:v15 filterNum:v14 chunk:v13 reLU:uCopy padding:paddingCopy groups:v10 stride:v19 batchNorm:?];
+    v17 = selfCopy;
   }
 
   else
@@ -35,9 +35,9 @@
   return v17;
 }
 
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor
 {
-  v4 = a4;
+  factorCopy = factor;
   WeakRetained = objc_loadWeakRetained(&self->super.super._inputSize);
   v8 = [WeakRetained count];
 
@@ -53,14 +53,14 @@
   filter = self->super._filter;
   if (v11)
   {
-    result = [(VCPCNNData *)filter readFromDisk:a3 quantFactor:v4];
+    result = [(VCPCNNData *)filter readFromDisk:disk quantFactor:factorCopy];
     if (result)
     {
       return result;
     }
 
     bias = self->super._bias;
-    v15 = a3;
+    diskCopy = disk;
     goto LABEL_30;
   }
 
@@ -74,21 +74,21 @@
 
   v18 = [(VCPCNNData *)self->super._filter size];
   v19 = [v18 objectAtIndexedSubscript:0];
-  __stream = a3;
-  v20 = [v19 intValue];
+  __stream = disk;
+  intValue = [v19 intValue];
 
   v21 = [(VCPCNNData *)self->super._filter size];
   v22 = [v21 objectAtIndexedSubscript:1];
-  v23 = [v22 intValue];
+  intValue2 = [v22 intValue];
 
   v24 = [(VCPCNNData *)self->super._filter size];
   v25 = [v24 objectAtIndexedSubscript:2];
-  v26 = [v25 intValue];
+  intValue3 = [v25 intValue];
   v27 = [(VCPCNNData *)self->super._filter size];
   v28 = [v27 objectAtIndexedSubscript:3];
-  v29 = [v28 intValue] * v26;
+  v29 = [v28 intValue] * intValue3;
 
-  v30 = v23 * v20 * v29;
+  v30 = intValue2 * intValue * v29;
   if (v30 < 0)
   {
     v31 = -1;
@@ -106,7 +106,7 @@
   }
 
   v33 = v32;
-  if (v4 >= 2)
+  if (factorCopy >= 2)
   {
     if (fread(v32, 2uLL, v30, __stream))
     {
@@ -115,7 +115,7 @@
         v34 = v30 - 1;
         do
         {
-          v33[v34] = *(v33 + v34) / v4;
+          v33[v34] = *(v33 + v34) / factorCopy;
           v35 = v34-- + 1;
         }
 
@@ -134,17 +134,17 @@
   }
 
 LABEL_20:
-  v36 = [(VCPCNNData *)self->super._filter data];
-  if (v20 >= 1)
+  data = [(VCPCNNData *)self->super._filter data];
+  if (intValue >= 1)
   {
     v37 = 0;
     chunk = self->super._chunk;
     v39 = v33;
     do
     {
-      if (v23 >= 1)
+      if (intValue2 >= 1)
       {
-        for (i = 0; i != v23; ++i)
+        for (i = 0; i != intValue2; ++i)
         {
           if (v29 >= 1)
           {
@@ -153,7 +153,7 @@ LABEL_20:
             do
             {
               v43 = *v39++;
-              v36[v41] = v43;
+              data[v41] = v43;
               v41 += chunk;
               --v42;
             }
@@ -164,17 +164,17 @@ LABEL_20:
       }
 
       ++v37;
-      v36 += v29 * v23;
+      data += v29 * intValue2;
     }
 
-    while (v37 != v20);
+    while (v37 != intValue);
   }
 
   MEMORY[0x1CCA95C10](v33, 0x1000C8052888210);
   bias = self->super._bias;
-  v15 = __stream;
+  diskCopy = __stream;
 LABEL_30:
-  result = [(VCPCNNData *)bias readFromDisk:v15 quantFactor:v4];
+  result = [(VCPCNNData *)bias readFromDisk:diskCopy quantFactor:factorCopy];
   if (!result)
   {
     return 0;
@@ -187,42 +187,42 @@ LABEL_30:
 {
   WeakRetained = objc_loadWeakRetained(&self->super.super._inputSize);
   v4 = [WeakRetained objectAtIndexedSubscript:1];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
   v6 = objc_loadWeakRetained(&self->super.super._inputSize);
   v7 = [v6 objectAtIndexedSubscript:2];
-  v43 = [v7 intValue];
+  intValue2 = [v7 intValue];
 
   v8 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:1];
-  v9 = [v8 intValue];
+  intValue3 = [v8 intValue];
 
   v10 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:2];
-  v42 = [v10 intValue];
+  intValue4 = [v10 intValue];
 
   v11 = objc_loadWeakRetained(&self->super.super._inputSize);
   v12 = [v11 objectAtIndexedSubscript:0];
-  v49 = [v12 intValue];
+  intValue5 = [v12 intValue];
 
   v13 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:0];
-  v14 = [v13 intValue];
+  intValue6 = [v13 intValue];
 
   if (self->super._chunk != 4)
   {
     return -50;
   }
 
-  if (v14 >= 1)
+  if (intValue6 >= 1)
   {
     v39 = 0;
     v45 = 0;
-    v36 = (4 * v42 * v9);
+    v36 = (4 * intValue4 * intValue3);
     v15 = *(&self->super.super._executedOnGPU + 3);
-    v48 = (v5 * v43);
+    v48 = (intValue * intValue2);
     v16 = v15;
-    v37 = v5;
+    v37 = intValue;
     do
     {
-      if (v16 <= v5)
+      if (v16 <= intValue)
       {
         v38 = 0;
         v44 = 0;
@@ -231,7 +231,7 @@ LABEL_30:
         v40 = v36 * (v45 / chunk);
         do
         {
-          if (v16 <= v43)
+          if (v16 <= intValue2)
           {
             v19 = 0;
             v47 = v38;
@@ -241,7 +241,7 @@ LABEL_30:
               v46 = v19;
               v20 = 0.0;
               v21 = 0.0;
-              if (v49 >= 1)
+              if (intValue5 >= 1)
               {
                 v22 = 0;
                 v23 = v47;
@@ -269,16 +269,16 @@ LABEL_30:
                           v28 = objc_loadWeakRetained(&self->super.super._input);
                           v29 = *([v28 data] + 4 * (v23 + v27));
 
-                          v30 = [(VCPCNNData *)self->super._filter data];
+                          data = [(VCPCNNData *)self->super._filter data];
                           v15 = *(&self->super.super._executedOnGPU + 3);
-                          v21 = v21 + (v29 * v30[v15 * (v26 + v24 * v15) + v27++]);
+                          v21 = v21 + (v29 * data[v15 * (v26 + v24 * v15) + v27++]);
                         }
 
                         while (v27 < v15);
                       }
 
                       ++v26;
-                      LODWORD(v23) = v23 + v43;
+                      LODWORD(v23) = v23 + intValue2;
                       LODWORD(v25) = v15;
                       v31 = v15;
                     }
@@ -292,7 +292,7 @@ LABEL_30:
                   v25 = v31;
                 }
 
-                while (v51 + 1 != v49);
+                while (v51 + 1 != intValue5);
               }
 
               v32 = self->super._chunk;
@@ -302,17 +302,17 @@ LABEL_30:
                 v20 = v21 + [(VCPCNNData *)self->super._bias data][4 * v45];
               }
 
-              ([(VCPCNNData *)self->super.super._output data]+ 4 * v40 + 4 * (padSize + v46 + (padSize + v44) * v42) * v32)[4 * v41] = v20;
+              ([(VCPCNNData *)self->super.super._output data]+ 4 * v40 + 4 * (padSize + v46 + (padSize + v44) * intValue4) * v32)[4 * v41] = v20;
               v15 = *(&self->super.super._executedOnGPU + 3);
               ++v47;
               v19 = v46 + 1;
             }
 
-            while (v46 < v43 - v15);
+            while (v46 < intValue2 - v15);
           }
 
-          v5 = v37;
-          v38 += v43;
+          intValue = v37;
+          v38 += intValue2;
           v16 = v15;
           v17 = v15;
         }
@@ -325,12 +325,12 @@ LABEL_30:
         v17 = v16;
       }
 
-      v39 += v49;
+      v39 += intValue5;
       v16 = v17;
       ++v45;
     }
 
-    while (v45 != v14);
+    while (v45 != intValue6);
   }
 
   return 0;
@@ -340,60 +340,60 @@ LABEL_30:
 {
   WeakRetained = objc_loadWeakRetained(&self->super.super._inputSize);
   v4 = [WeakRetained objectAtIndexedSubscript:1];
-  v71 = [v4 intValue];
+  intValue = [v4 intValue];
 
   v5 = objc_loadWeakRetained(&self->super.super._inputSize);
   v6 = [v5 objectAtIndexedSubscript:2];
-  v74 = [v6 intValue];
+  intValue2 = [v6 intValue];
 
   v7 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:1];
-  v66 = [v7 intValue];
+  intValue3 = [v7 intValue];
 
   v8 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:2];
-  v64 = [v8 intValue];
+  intValue4 = [v8 intValue];
 
   v9 = objc_loadWeakRetained(&self->super.super._inputSize);
   v10 = [v9 objectAtIndexedSubscript:0];
-  v11 = [v10 intValue];
+  intValue5 = [v10 intValue];
 
   v12 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:0];
-  v13 = [v12 intValue];
+  intValue6 = [v12 intValue];
 
   result = -50;
-  v15 = v71;
-  if (self->super._chunk == 4 && (v11 & 3) == 0 && (v13 & 3) == 0)
+  v15 = intValue;
+  if (self->super._chunk == 4 && (intValue5 & 3) == 0 && (intValue6 & 3) == 0)
   {
-    v61 = v11;
+    v61 = intValue5;
     v16 = *(&self->super.super._executedOnGPU + 3);
     if ([objc_opt_class() isFilterSizeSupported:v16] & 1) != 0 && (v17 = *(&self->super.super._executedOnGPU + 3) - 1, v17 <= 4) && ((0x17u >> v17))
     {
       v62 = v16;
-      v54 = v64 * v66;
-      v56 = 4 * v64 * v66;
+      v54 = intValue4 * intValue3;
+      v56 = 4 * intValue4 * intValue3;
       self->CalculateDotProductOfChunk = off_1F496A620[v17];
-      v18 = 4 * v64;
-      v19 = [(VCPCNNData *)self->super._bias data];
-      v57 = v13;
-      if (v13 / self->super._chunk >= 1)
+      v18 = 4 * intValue4;
+      data = [(VCPCNNData *)self->super._bias data];
+      v57 = intValue6;
+      if (intValue6 / self->super._chunk >= 1)
       {
-        v20 = v19;
+        v20 = data;
         v21 = 0;
         do
         {
-          v22 = [(VCPCNNData *)self->super.super._output data];
+          data2 = [(VCPCNNData *)self->super.super._output data];
           v23 = 92;
           padSize = self->super._padSize;
           if (self->super._padding)
           {
             v25 = (*(&self->super.super._executedOnGPU + 3) + ~padSize) & ~((*(&self->super.super._executedOnGPU + 3) + ~padSize) >> 31);
-            v26 = v66 - v25;
-            v27 = v64 - v25;
+            v26 = intValue3 - v25;
+            v27 = intValue4 - v25;
           }
 
           else
           {
-            v27 = v64;
-            v26 = v66;
+            v27 = intValue4;
+            v26 = intValue3;
           }
 
           chunk = self->super._chunk;
@@ -405,7 +405,7 @@ LABEL_30:
 
           else
           {
-            v72 = &v22[v21 * v56];
+            v72 = &data2[v21 * v56];
             v29 = padSize;
             v30 = v26;
             do
@@ -443,17 +443,17 @@ LABEL_30:
 
           v20 += v35;
           v21 = v68 + 1;
-          v13 = v57;
+          intValue6 = v57;
         }
 
         while (v68 + 1 < v57 / v35);
       }
 
-      v59 = [(VCPCNNData *)self->super._filter data];
-      if (v13 >= 1)
+      data3 = [(VCPCNNData *)self->super._filter data];
+      if (intValue6 >= 1)
       {
         v58 = 0;
-        v36 = 4 * v74;
+        v36 = 4 * intValue2;
         v55 = (v62 * v62 * v61);
         v63 = (4 * v62 * v62);
         v65 = v61 / 4;
@@ -462,21 +462,21 @@ LABEL_30:
         {
           v37 = self->super._chunk;
           v38 = objc_loadWeakRetained(&self->super.super._input);
-          v39 = [v38 data];
+          data4 = [v38 data];
 
-          v40 = [(VCPCNNData *)self->super.super._output data];
-          v41 = v74;
+          data5 = [(VCPCNNData *)self->super.super._output data];
+          v41 = intValue2;
           if (v65 >= 1)
           {
             v42 = 0;
-            v60 = &v40[v56 * (v58 / v37) + self->super._padSize * v18 + (v58 % v37)];
+            v60 = &data5[v56 * (v58 / v37) + self->super._padSize * v18 + (v58 % v37)];
             LODWORD(v43) = self->super._chunk;
             v44 = *(&self->super.super._executedOnGPU + 3);
-            v45 = v59;
+            v45 = data3;
             do
             {
               v67 = v42;
-              v69 = v39;
+              v69 = data4;
               if (v44 <= v15)
               {
                 v46 = 0;
@@ -488,11 +488,11 @@ LABEL_30:
                     v73 = v46;
                     v48 = -1;
                     v49 = v47;
-                    v50 = v39;
+                    v50 = data4;
                     do
                     {
                       v51 = (self->CalculateDotProductOfChunk)(v50, v36, v45);
-                      v41 = v74;
+                      v41 = intValue2;
                       *v49 = v51 + *v49;
                       v43 = self->super._chunk;
                       v50 += 4 * v43;
@@ -501,13 +501,13 @@ LABEL_30:
                       ++v48;
                     }
 
-                    while (v48 < v74 - v44);
-                    v15 = v71;
+                    while (v48 < intValue2 - v44);
+                    v15 = intValue;
                     v46 = v73;
                     v18 = v70;
                   }
 
-                  v39 += 4 * v36;
+                  data4 += 4 * v36;
                   v47 += v18;
                 }
 
@@ -515,22 +515,22 @@ LABEL_30:
               }
 
               v45 += v63;
-              v39 = v69 + 16 * v74 * v71;
+              data4 = v69 + 16 * intValue2 * intValue;
               v42 = v67 + 1;
             }
 
             while (v67 + 1 != v65);
           }
 
-          v59 += v55;
-          v13 = v57;
+          data3 += v55;
+          intValue6 = v57;
           ++v58;
         }
 
         while (v58 != v57);
       }
 
-      if (self->super._reLU && v54 * v13 >= 1)
+      if (self->super._reLU && v54 * intValue6 >= 1)
       {
         v53 = 0;
         do
@@ -544,7 +544,7 @@ LABEL_30:
           v53 += 4;
         }
 
-        while (4 * (v54 * v13) != v53);
+        while (4 * (v54 * intValue6) != v53);
       }
 
       else

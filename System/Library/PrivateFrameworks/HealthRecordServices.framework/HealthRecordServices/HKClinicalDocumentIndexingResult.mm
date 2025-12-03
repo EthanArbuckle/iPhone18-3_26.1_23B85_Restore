@@ -1,20 +1,20 @@
 @interface HKClinicalDocumentIndexingResult
-- (BOOL)isEqual:(id)a3;
-- (HKClinicalDocumentIndexingResult)initWithAttachmentIdentifiers:(id)a3;
-- (HKClinicalDocumentIndexingResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKClinicalDocumentIndexingResult)initWithAttachmentIdentifiers:(id)identifiers;
+- (HKClinicalDocumentIndexingResult)initWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalDocumentIndexingResult
 
-- (HKClinicalDocumentIndexingResult)initWithAttachmentIdentifiers:(id)a3
+- (HKClinicalDocumentIndexingResult)initWithAttachmentIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = HKClinicalDocumentIndexingResult;
   v5 = [(HKClinicalDocumentIndexingResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifiersCopy copy];
     attachmentIdentifiers = v5->_attachmentIdentifiers;
     v5->_attachmentIdentifiers = v6;
   }
@@ -22,36 +22,36 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       attachmentIdentifiers = self->_attachmentIdentifiers;
-      v8 = [(HKClinicalDocumentIndexingResult *)v6 attachmentIdentifiers];
-      if (attachmentIdentifiers == v8)
+      attachmentIdentifiers = [(HKClinicalDocumentIndexingResult *)v6 attachmentIdentifiers];
+      if (attachmentIdentifiers == attachmentIdentifiers)
       {
         v12 = 1;
       }
 
       else
       {
-        v9 = [(HKClinicalDocumentIndexingResult *)v6 attachmentIdentifiers];
-        if (v9)
+        attachmentIdentifiers2 = [(HKClinicalDocumentIndexingResult *)v6 attachmentIdentifiers];
+        if (attachmentIdentifiers2)
         {
           v10 = self->_attachmentIdentifiers;
-          v11 = [(HKClinicalDocumentIndexingResult *)v6 attachmentIdentifiers];
-          v12 = [(NSArray *)v10 isEqualToArray:v11];
+          attachmentIdentifiers3 = [(HKClinicalDocumentIndexingResult *)v6 attachmentIdentifiers];
+          v12 = [(NSArray *)v10 isEqualToArray:attachmentIdentifiers3];
         }
 
         else
@@ -70,23 +70,23 @@
   return v12;
 }
 
-- (HKClinicalDocumentIndexingResult)initWithCoder:(id)a3
+- (HKClinicalDocumentIndexingResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AttachmentIdentifiers"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AttachmentIdentifiers"];
   if (v5)
   {
     self = [(HKClinicalDocumentIndexingResult *)self initWithAttachmentIdentifiers:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v6 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

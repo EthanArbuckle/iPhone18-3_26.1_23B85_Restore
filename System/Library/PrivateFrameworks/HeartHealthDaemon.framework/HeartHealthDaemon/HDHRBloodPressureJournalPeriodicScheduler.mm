@@ -1,51 +1,51 @@
 @interface HDHRBloodPressureJournalPeriodicScheduler
-- (HDHRBloodPressureJournalPeriodicScheduler)initWithDaemon:(id)a3;
-- (void)_enqueueSchedulingOnMaintenanceOperationWithCompletion:(id)a3;
+- (HDHRBloodPressureJournalPeriodicScheduler)initWithDaemon:(id)daemon;
+- (void)_enqueueSchedulingOnMaintenanceOperationWithCompletion:(id)completion;
 - (void)_resetActivityInterval;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)performPeriodicActivity:(id)activity completion:(id)completion;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDHRBloodPressureJournalPeriodicScheduler
 
-- (HDHRBloodPressureJournalPeriodicScheduler)initWithDaemon:(id)a3
+- (HDHRBloodPressureJournalPeriodicScheduler)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v11.receiver = self;
   v11.super_class = HDHRBloodPressureJournalPeriodicScheduler;
   v5 = [(HDHRBloodPressureJournalPeriodicScheduler *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_daemon, v4);
-    v8 = [v4 primaryProfile];
-    [v8 registerProfileReadyObserver:v6 queue:0];
+    v7 = objc_storeWeak(&v5->_daemon, daemonCopy);
+    primaryProfile = [daemonCopy primaryProfile];
+    [primaryProfile registerProfileReadyObserver:v6 queue:0];
 
-    v9 = [v4 primaryProfile];
-    objc_storeWeak(&v6->_profile, v9);
+    primaryProfile2 = [daemonCopy primaryProfile];
+    objc_storeWeak(&v6->_profile, primaryProfile2);
   }
 
   return v6;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v4 = *MEMORY[0x277D86298];
   v5 = MEMORY[0x277D107E8];
-  v6 = a3;
+  readyCopy = ready;
   v7 = [v5 alloc];
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v9 = [WeakRetained primaryProfile];
+  primaryProfile = [WeakRetained primaryProfile];
   v10 = HKLogBloodPressureJournal();
-  v11 = [v7 initWithProfile:v9 name:@"com.apple.healthd.bloodPressureJournal.scheduler" interval:self delegate:v10 loggingCategory:v4];
+  v11 = [v7 initWithProfile:primaryProfile name:@"com.apple.healthd.bloodPressureJournal.scheduler" interval:self delegate:v10 loggingCategory:v4];
   periodicActivity = self->_periodicActivity;
   self->_periodicActivity = v11;
 
-  v13 = [v6 database];
+  database = [readyCopy database];
 
-  [v13 addProtectedDataObserver:self];
+  [database addProtectedDataObserver:self];
 }
 
 - (void)_resetActivityInterval
@@ -56,7 +56,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_229486000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Resetting periodic activity", &v5, 0xCu);
   }
 
@@ -64,14 +64,14 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (available)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v6 = [WeakRetained database];
-    [v6 removeProtectedDataObserver:self];
+    database = [WeakRetained database];
+    [database removeProtectedDataObserver:self];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -88,7 +88,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
       v13 = @"com.apple.healthd.bloodPressureJournal.scheduler";
       _os_log_impl(&dword_229486000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@]: periodic activity %{public}@ - protectedData not available - skipping trigger on healthd launch", buf, 0x16u);
@@ -108,13 +108,13 @@ uint64_t __86__HDHRBloodPressureJournalPeriodicScheduler_database_protectedDataD
   return result;
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 name];
-  v9 = [v8 isEqualToString:@"com.apple.healthd.bloodPressureJournal.scheduler"];
+  activityCopy = activity;
+  criteriaCopy = criteria;
+  name = [activityCopy name];
+  v9 = [name isEqualToString:@"com.apple.healthd.bloodPressureJournal.scheduler"];
 
   _HKInitializeLogging();
   v10 = HKLogBloodPressureJournal();
@@ -123,37 +123,37 @@ uint64_t __86__HDHRBloodPressureJournalPeriodicScheduler_database_protectedDataD
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 name];
+      name2 = [activityCopy name];
       v14 = 138543618;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
-      v17 = v12;
+      v17 = name2;
       _os_log_impl(&dword_229486000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]: configuring periodic activity %{public}@", &v14, 0x16u);
     }
 
-    xpc_dictionary_set_string(v7, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
-    xpc_dictionary_set_BOOL(v7, *MEMORY[0x277D86230], 1);
-    xpc_dictionary_set_BOOL(v7, *MEMORY[0x277D86378], 1);
+    xpc_dictionary_set_string(criteriaCopy, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
+    xpc_dictionary_set_BOOL(criteriaCopy, *MEMORY[0x277D86230], 1);
+    xpc_dictionary_set_BOOL(criteriaCopy, *MEMORY[0x277D86378], 1);
   }
 
   else
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(HDHRBloodPressureJournalPeriodicScheduler *)self periodicActivity:v6 configureXPCActivityCriteria:v11];
+      [(HDHRBloodPressureJournalPeriodicScheduler *)self periodicActivity:activityCopy configureXPCActivityCriteria:v11];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4
+- (void)performPeriodicActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 name];
-  if ([v7 isEqualToString:@"com.apple.healthd.bloodPressureJournal.scheduler"])
+  completionCopy = completion;
+  name = [activity name];
+  if ([name isEqualToString:@"com.apple.healthd.bloodPressureJournal.scheduler"])
   {
-    [(HDHRBloodPressureJournalPeriodicScheduler *)self _enqueueSchedulingOnMaintenanceOperationWithCompletion:v6];
+    [(HDHRBloodPressureJournalPeriodicScheduler *)self _enqueueSchedulingOnMaintenanceOperationWithCompletion:completionCopy];
   }
 
   else
@@ -162,28 +162,28 @@ uint64_t __86__HDHRBloodPressureJournalPeriodicScheduler_database_protectedDataD
     v8 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(HDHRBloodPressureJournalPeriodicScheduler *)self performPeriodicActivity:v7 completion:v8];
+      [(HDHRBloodPressureJournalPeriodicScheduler *)self performPeriodicActivity:name completion:v8];
     }
 
-    v6[2](v6, 1, 0, 0.0);
+    completionCopy[2](completionCopy, 1, 0, 0.0);
   }
 }
 
-- (void)_enqueueSchedulingOnMaintenanceOperationWithCompletion:(id)a3
+- (void)_enqueueSchedulingOnMaintenanceOperationWithCompletion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v5 stringWithFormat:@"%@-%@", v7, v9];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [v5 stringWithFormat:@"%@-%@", v7, uUIDString];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained database];
+  database = [WeakRetained database];
   v32 = 0;
-  v13 = [v12 takeAccessibilityAssertionWithOwnerIdentifier:v10 timeout:&v32 error:300.0];
+  v13 = [database takeAccessibilityAssertionWithOwnerIdentifier:v10 timeout:&v32 error:300.0];
   v14 = v32;
 
   if (!v13)
@@ -198,7 +198,7 @@ uint64_t __86__HDHRBloodPressureJournalPeriodicScheduler_database_protectedDataD
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        v34 = self;
+        selfCopy = self;
         v35 = 2114;
         v36 = v14;
         _os_log_impl(&dword_229486000, v17, OS_LOG_TYPE_INFO, "[%{public}@]: unable to take accessibility assertion: %{public}@", buf, 0x16u);
@@ -215,19 +215,19 @@ uint64_t __86__HDHRBloodPressureJournalPeriodicScheduler_database_protectedDataD
   v29[3] = &unk_278660B80;
   v29[4] = self;
   v30 = v13;
-  v31 = v4;
+  v31 = completionCopy;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __100__HDHRBloodPressureJournalPeriodicScheduler__enqueueSchedulingOnMaintenanceOperationWithCompletion___block_invoke_2;
   v27[3] = &unk_278660738;
   v28 = v30;
   v21 = v30;
-  v22 = v4;
+  v22 = completionCopy;
   v23 = [v18 maintenanceOperationWithName:v20 asynchronousBlock:v29 canceledBlock:v27];
 
   v24 = objc_loadWeakRetained(&self->_daemon);
-  v25 = [v24 maintenanceWorkCoordinator];
-  [v25 enqueueMaintenanceOperation:v23];
+  maintenanceWorkCoordinator = [v24 maintenanceWorkCoordinator];
+  [maintenanceWorkCoordinator enqueueMaintenanceOperation:v23];
 
   v26 = *MEMORY[0x277D85DE8];
 }

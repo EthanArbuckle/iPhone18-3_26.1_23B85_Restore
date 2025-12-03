@@ -1,5 +1,5 @@
 @interface CAFUISegmentedControl
-- (_TtC5CAFUI21CAFUISegmentedControl)initWithItems:(id)a3;
+- (_TtC5CAFUI21CAFUISegmentedControl)initWithItems:(id)items;
 - (void)layoutSubviews;
 @end
 
@@ -19,9 +19,9 @@
   }
 }
 
-- (_TtC5CAFUI21CAFUISegmentedControl)initWithItems:(id)a3
+- (_TtC5CAFUI21CAFUISegmentedControl)initWithItems:(id)items
 {
-  if (a3)
+  if (items)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
     v4.super.isa = Array._bridgeToObjectiveC()().super.isa;

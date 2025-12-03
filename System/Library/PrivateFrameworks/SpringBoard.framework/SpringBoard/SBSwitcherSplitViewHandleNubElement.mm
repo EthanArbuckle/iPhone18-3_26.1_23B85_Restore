@@ -1,24 +1,24 @@
 @interface SBSwitcherSplitViewHandleNubElement
-- (BOOL)isEqual:(id)a3;
-- (SBSwitcherSplitViewHandleNubElement)initWithDisplayItems:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSwitcherSplitViewHandleNubElement)initWithDisplayItems:(id)items;
 @end
 
 @implementation SBSwitcherSplitViewHandleNubElement
 
-- (SBSwitcherSplitViewHandleNubElement)initWithDisplayItems:(id)a3
+- (SBSwitcherSplitViewHandleNubElement)initWithDisplayItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v12.receiver = self;
   v12.super_class = SBSwitcherSplitViewHandleNubElement;
   v6 = [(SBSwitcherSplitViewHandleNubElement *)&v12 init];
   if (v6)
   {
-    if ([v5 count] != 2)
+    if ([itemsCopy count] != 2)
     {
       [(SBSwitcherSplitViewHandleNubElement *)a2 initWithDisplayItems:v6];
     }
 
-    v7 = [v5 copy];
+    v7 = [itemsCopy copy];
     displayItems = v6->_displayItems;
     v6->_displayItems = v7;
   }
@@ -30,10 +30,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -41,7 +41,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -64,7 +64,7 @@
 
     if (v9)
     {
-      v10 = [(SBSwitcherSplitViewHandleNubElement *)v9 displayItems];
+      displayItems = [(SBSwitcherSplitViewHandleNubElement *)v9 displayItems];
       v8 = BSEqualObjects();
     }
 

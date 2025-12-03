@@ -1,23 +1,23 @@
 @interface CardViewAnimationCoordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (void)handleWithRecognizer:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (void)handleWithRecognizer:(id)recognizer;
 @end
 
 @implementation CardViewAnimationCoordinator
 
-- (void)handleWithRecognizer:(id)a3
+- (void)handleWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D8090380(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_1D8090380(recognizerCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CardViewAnimationCoordinator.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)(v8, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  CardViewAnimationCoordinator.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)(selfCopy, gestureRecognizerCopy);
 
   return 1;
 }

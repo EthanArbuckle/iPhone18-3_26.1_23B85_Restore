@@ -1,15 +1,15 @@
 @interface MFInvocationQueue
 + (id)sharedInvocationQueue;
 + (void)flushAllInvocationQueues;
-- (MFInvocationQueue)initWithMaxThreadCount:(unint64_t)a3;
+- (MFInvocationQueue)initWithMaxThreadCount:(unint64_t)count;
 - (id)copyDiagnosticInformation;
 - (unint64_t)invocationCount;
-- (void)_drainQueue:(id)a3;
-- (void)addInvocation:(id)a3;
+- (void)_drainQueue:(id)queue;
+- (void)addInvocation:(id)invocation;
 - (void)dealloc;
-- (void)didCancel:(id)a3;
+- (void)didCancel:(id)cancel;
 - (void)removeAllItems;
-- (void)setMaxThreadCount:(unint64_t)a3;
+- (void)setMaxThreadCount:(unint64_t)count;
 @end
 
 @implementation MFInvocationQueue
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __42__MFInvocationQueue_sharedInvocationQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInvocationQueue_onceToken != -1)
   {
     dispatch_once(&sharedInvocationQueue_onceToken, block);
@@ -42,7 +42,7 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
   return [v3 setThreadRecycleTimeout:30.0];
 }
 
-- (MFInvocationQueue)initWithMaxThreadCount:(unint64_t)a3
+- (MFInvocationQueue)initWithMaxThreadCount:(unint64_t)count
 {
   v10.receiver = self;
   v10.super_class = MFInvocationQueue;
@@ -53,20 +53,20 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
     lock = v4->_lock;
     v4->_lock = v5;
 
-    if (a3 <= 1)
+    if (count <= 1)
     {
-      v7 = 1;
+      countCopy = 1;
     }
 
     else
     {
-      v7 = a3;
+      countCopy = count;
     }
 
-    v4->_maxThreads = v7;
+    v4->_maxThreads = countCopy;
     v4->_threadPriorityTrigger = 7;
-    v8 = [MEMORY[0x1E69AD6C0] sharedController];
-    [v8 addDiagnosticsGenerator:v4];
+    mEMORY[0x1E69AD6C0] = [MEMORY[0x1E69AD6C0] sharedController];
+    [mEMORY[0x1E69AD6C0] addDiagnosticsGenerator:v4];
   }
 
   return v4;
@@ -80,19 +80,19 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
   [(MFInvocationQueue *)&v3 dealloc];
 }
 
-- (void)setMaxThreadCount:(unint64_t)a3
+- (void)setMaxThreadCount:(unint64_t)count
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
-    v3 = 1;
+    countCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    countCopy = count;
   }
 
-  self->_maxThreads = v3;
+  self->_maxThreads = countCopy;
 }
 
 - (unint64_t)invocationCount
@@ -108,29 +108,29 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
   return v3;
 }
 
-- (void)addInvocation:(id)a3
+- (void)addInvocation:(id)invocation
 {
-  v20 = a3;
-  if (v20)
+  invocationCopy = invocation;
+  if (invocationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v20 monitor];
+      monitor = [invocationCopy monitor];
     }
 
     else
     {
-      v4 = 0;
+      monitor = 0;
     }
 
-    v5 = [v4 priority];
+    priority = [monitor priority];
     threadPriorityTrigger = self->_threadPriorityTrigger;
     [(NSConditionLock *)self->_lock lock];
-    v7 = [(NSConditionLock *)self->_lock condition];
-    v8 = v7;
+    condition = [(NSConditionLock *)self->_lock condition];
+    v8 = condition;
     atomic_fetch_add(_invocationCount, 1u);
-    if (v5 <= threadPriorityTrigger || v7 == 1)
+    if (priority <= threadPriorityTrigger || condition == 1)
     {
       items = self->_items;
       if (!items)
@@ -146,42 +146,42 @@ uint64_t __42__MFInvocationQueue_sharedInvocationQueue__block_invoke(uint64_t a1
       if (v13)
       {
         v14 = 0;
-        v15 = v4;
+        v15 = monitor;
         while (1)
         {
           v16 = [(NSMutableArray *)self->_items objectAtIndex:v14];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v4 = [v16 monitor];
+            monitor = [v16 monitor];
           }
 
           else
           {
-            v4 = 0;
+            monitor = 0;
           }
 
-          v17 = [v4 priority];
-          if (v5 < v17)
+          priority2 = [monitor priority];
+          if (priority < priority2)
           {
             break;
           }
 
           ++v14;
-          v15 = v4;
+          v15 = monitor;
           if (v13 == v14)
           {
             goto LABEL_17;
           }
         }
 
-        [(NSMutableArray *)self->_items insertObject:v20 atIndex:v14];
+        [(NSMutableArray *)self->_items insertObject:invocationCopy atIndex:v14];
       }
 
       else
       {
 LABEL_17:
-        [(NSMutableArray *)self->_items addObject:v20];
+        [(NSMutableArray *)self->_items addObject:invocationCopy];
       }
 
       if (v8 != 1)
@@ -202,7 +202,7 @@ LABEL_17:
     else
     {
       ++self->_numThreads;
-      v9 = [objc_alloc(MEMORY[0x1E696AF00]) initWithTarget:self selector:sel__drainQueue_ object:v20];
+      v9 = [objc_alloc(MEMORY[0x1E696AF00]) initWithTarget:self selector:sel__drainQueue_ object:invocationCopy];
       [v9 setQualityOfService:17];
       [v9 start];
       [(NSConditionLock *)self->_lock unlock];
@@ -220,9 +220,9 @@ LABEL_17:
   [(NSConditionLock *)lock unlock];
 }
 
-- (void)_drainQueue:(id)a3
+- (void)_drainQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (!_drainQueue__c)
   {
     _drainQueue__c = objc_opt_class();
@@ -231,7 +231,7 @@ LABEL_17:
   v5 = MEMORY[0x1E69E9848];
   do
   {
-    if (v4)
+    if (queueCopy)
     {
       if (_drainQueue__once != -1)
       {
@@ -239,27 +239,27 @@ LABEL_17:
       }
 
       v6 = objc_autoreleasePoolPush();
-      if ((_drainQueue__DebugInvocationThreads & 1) != 0 || (Current = 0.0, [v4 mf_shouldLogInvocation]))
+      if ((_drainQueue__DebugInvocationThreads & 1) != 0 || (Current = 0.0, [queueCopy mf_shouldLogInvocation]))
       {
         Current = CFAbsoluteTimeGetCurrent();
         v8 = *v5;
-        v9 = [v4 target];
-        v10 = [v9 description];
-        v11 = [v10 UTF8String];
-        Name = sel_getName([v4 selector]);
-        fprintf(v8, "MFInvocationQueue starting invocation %p [%s %s]\n", v4, v11, Name);
+        target = [queueCopy target];
+        v10 = [target description];
+        uTF8String = [v10 UTF8String];
+        Name = sel_getName([queueCopy selector]);
+        fprintf(v8, "MFInvocationQueue starting invocation %p [%s %s]\n", queueCopy, uTF8String, Name);
       }
 
-      [v4 invoke];
-      if ((_drainQueue__DebugInvocationThreads & 1) != 0 || [v4 mf_shouldLogInvocation])
+      [queueCopy invoke];
+      if ((_drainQueue__DebugInvocationThreads & 1) != 0 || [queueCopy mf_shouldLogInvocation])
       {
         v13 = *v5;
-        v14 = [v4 target];
-        v15 = [v14 description];
-        v16 = [v15 UTF8String];
-        v17 = sel_getName([v4 selector]);
+        target2 = [queueCopy target];
+        v15 = [target2 description];
+        uTF8String2 = [v15 UTF8String];
+        v17 = sel_getName([queueCopy selector]);
         v18 = CFAbsoluteTimeGetCurrent();
-        fprintf(v13, "MFInvocationQueue finished invocation %p [%s %s] in %5.5fs\n", v4, v16, v17, v18 - Current);
+        fprintf(v13, "MFInvocationQueue finished invocation %p [%s %s] in %5.5fs\n", queueCopy, uTF8String2, v17, v18 - Current);
       }
 
       isKindOfClass = objc_opt_isKindOfClass();
@@ -292,14 +292,14 @@ LABEL_17:
 
     if ([(NSMutableArray *)self->_items count])
     {
-      v4 = [(NSMutableArray *)self->_items objectAtIndexedSubscript:0];
+      queueCopy = [(NSMutableArray *)self->_items objectAtIndexedSubscript:0];
       [(NSMutableArray *)self->_items removeObjectAtIndex:0];
     }
 
     else
     {
 LABEL_24:
-      v4 = 0;
+      queueCopy = 0;
       --self->_numThreads;
     }
 
@@ -307,7 +307,7 @@ LABEL_24:
     objc_autoreleasePoolPop(v20);
   }
 
-  while (v4);
+  while (queueCopy);
 }
 
 void __33__MFInvocationQueue__drainQueue___block_invoke()
@@ -325,9 +325,9 @@ void __33__MFInvocationQueue__drainQueue___block_invoke()
     v3 = 0.01;
     do
     {
-      v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
       v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v3];
-      [v4 runUntilDate:v5];
+      [currentRunLoop runUntilDate:v5];
 
       v6 = 0;
       if (v3 < 1.0)
@@ -342,9 +342,9 @@ void __33__MFInvocationQueue__drainQueue___block_invoke()
   }
 }
 
-- (void)didCancel:(id)a3
+- (void)didCancel:(id)cancel
 {
-  v9 = a3;
+  cancelCopy = cancel;
   [(NSConditionLock *)self->_lock lock];
   v4 = [(NSMutableArray *)self->_items count];
   v5 = v4;
@@ -357,12 +357,12 @@ void __33__MFInvocationQueue__drainQueue___block_invoke()
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v7 monitor];
+        monitor = [v7 monitor];
 
-        if (v8 == v9)
+        if (monitor == cancelCopy)
         {
-          [v9 postActivityStarting];
-          [v9 postActivityFinished:v7];
+          [cancelCopy postActivityStarting];
+          [cancelCopy postActivityFinished:v7];
           [(NSMutableArray *)self->_items removeObjectAtIndex:v6];
         }
       }

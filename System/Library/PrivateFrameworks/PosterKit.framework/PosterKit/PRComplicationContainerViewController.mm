@@ -1,59 +1,59 @@
 @interface PRComplicationContainerViewController
 - (CGRect)bottomFrame;
 - (CGRect)topFrame;
-- (PRComplicationContainerViewController)initWithInlineComplicationDescriptor:(id)a3 graphicComplicationDescriptors:(id)a4 graphicComplicationIconLayout:(id)a5 sidebarComplicationDescriptors:(id)a6 sidebarIconLayout:(id)a7 scene:(id)a8;
+- (PRComplicationContainerViewController)initWithInlineComplicationDescriptor:(id)descriptor graphicComplicationDescriptors:(id)descriptors graphicComplicationIconLayout:(id)layout sidebarComplicationDescriptors:(id)complicationDescriptors sidebarIconLayout:(id)iconLayout scene:(id)scene;
 - (PRComplicationContainerViewControllerDelegate)delegate;
-- (void)_updateEmptyRowVisibility:(BOOL)a3;
-- (void)_updateFocusedWithAnimationSettings:(id)a3;
-- (void)_updateReticleVisibility:(BOOL)a3;
+- (void)_updateEmptyRowVisibility:(BOOL)visibility;
+- (void)_updateFocusedWithAnimationSettings:(id)settings;
+- (void)_updateReticleVisibility:(BOOL)visibility;
 - (void)dealloc;
-- (void)handlePanGesture:(id)a3;
-- (void)inlineComplicationContainerViewController:(id)a3 didEditComplication:(id)a4;
-- (void)inlineComplicationContainerViewControllerDidTapAdd:(id)a3;
+- (void)handlePanGesture:(id)gesture;
+- (void)inlineComplicationContainerViewController:(id)controller didEditComplication:(id)complication;
+- (void)inlineComplicationContainerViewControllerDidTapAdd:(id)add;
 - (void)invalidate;
 - (void)loadView;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)setFocusedElement:(int64_t)a3 animated:(BOOL)a4;
-- (void)setFocusedElement:(int64_t)a3 animationSettings:(id)a4;
-- (void)setUsesEditingLayout:(BOOL)a3 animated:(BOOL)a4;
-- (void)setUsesEditingLayout:(BOOL)a3 animationSettings:(id)a4;
-- (void)setVibrancyConfiguration:(id)a3;
-- (void)setWidgetsUseBottomLayout:(BOOL)a3;
-- (void)updateComplicationLayoutIfCovered:(BOOL)a3;
-- (void)updateForComplicationGalleryHeight:(double)a3 completion:(id)a4;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)setFocusedElement:(int64_t)element animated:(BOOL)animated;
+- (void)setFocusedElement:(int64_t)element animationSettings:(id)settings;
+- (void)setUsesEditingLayout:(BOOL)layout animated:(BOOL)animated;
+- (void)setUsesEditingLayout:(BOOL)layout animationSettings:(id)settings;
+- (void)setVibrancyConfiguration:(id)configuration;
+- (void)setWidgetsUseBottomLayout:(BOOL)layout;
+- (void)updateComplicationLayoutIfCovered:(BOOL)covered;
+- (void)updateForComplicationGalleryHeight:(double)height completion:(id)completion;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)widgetGridModelDidUpdateContent:(id)a3;
-- (void)widgetGridViewController:(id)a3 didRequestConfigurationForComplicationDescriptor:(id)a4;
-- (void)widgetGridViewController:(id)a3 isAttemptingDragToAddComplication:(id)a4;
-- (void)widgetGridViewControllerDidTapBackground:(id)a3;
+- (void)widgetGridModelDidUpdateContent:(id)content;
+- (void)widgetGridViewController:(id)controller didRequestConfigurationForComplicationDescriptor:(id)descriptor;
+- (void)widgetGridViewController:(id)controller isAttemptingDragToAddComplication:(id)complication;
+- (void)widgetGridViewControllerDidTapBackground:(id)background;
 @end
 
 @implementation PRComplicationContainerViewController
 
-- (PRComplicationContainerViewController)initWithInlineComplicationDescriptor:(id)a3 graphicComplicationDescriptors:(id)a4 graphicComplicationIconLayout:(id)a5 sidebarComplicationDescriptors:(id)a6 sidebarIconLayout:(id)a7 scene:(id)a8
+- (PRComplicationContainerViewController)initWithInlineComplicationDescriptor:(id)descriptor graphicComplicationDescriptors:(id)descriptors graphicComplicationIconLayout:(id)layout sidebarComplicationDescriptors:(id)complicationDescriptors sidebarIconLayout:(id)iconLayout scene:(id)scene
 {
-  v42 = a6;
-  v14 = a7;
-  v41 = a8;
+  complicationDescriptorsCopy = complicationDescriptors;
+  iconLayoutCopy = iconLayout;
+  sceneCopy = scene;
   v43.receiver = self;
   v43.super_class = PRComplicationContainerViewController;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  layoutCopy = layout;
+  descriptorsCopy = descriptors;
+  descriptorCopy = descriptor;
   v18 = [(PRComplicationContainerViewController *)&v43 init];
-  objc_storeStrong(&v18->_scene, a8);
+  objc_storeStrong(&v18->_scene, scene);
   v19 = objc_opt_new();
   models = v18->_models;
   v18->_models = v19;
 
-  v21 = [[PRInlineComplicationContainerViewController alloc] initWithComplicationDescriptor:v17];
+  v21 = [[PRInlineComplicationContainerViewController alloc] initWithComplicationDescriptor:descriptorCopy];
   inlineComplicationContainerViewController = v18->_inlineComplicationContainerViewController;
   v18->_inlineComplicationContainerViewController = v21;
 
   [(PRInlineComplicationContainerViewController *)v18->_inlineComplicationContainerViewController setDelegate:v18];
-  v23 = [[PRWidgetGridModel alloc] initWithComplicationDescriptors:v16 iconLayout:v15 type:0];
+  v23 = [[PRWidgetGridModel alloc] initWithComplicationDescriptors:descriptorsCopy iconLayout:layoutCopy type:0];
 
   [(PRWidgetGridModel *)v23 addWidgetGridModelObserver:v18];
   [(NSMutableArray *)v18->_models bs_safeAddObject:v23];
@@ -63,15 +63,15 @@
 
   [(PRWidgetGridViewController *)v18->_widgetGridViewController setRequiresFocusForLaunchRequests:1];
   [(PRWidgetGridViewController *)v18->_widgetGridViewController setDelegate:v18];
-  v26 = [MEMORY[0x1E69DC938] currentDevice];
-  v27 = [v26 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v27 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v28 = [[PRWidgetGridModel alloc] initWithComplicationDescriptors:v42 iconLayout:v14 type:1, v41];
-    [(PRWidgetGridModel *)v28 addWidgetGridModelObserver:v18];
-    [(NSMutableArray *)v18->_models bs_safeAddObject:v28];
-    v29 = [[PRWidgetGridViewController alloc] initWithModel:v28 iconViewProvider:0];
+    sceneCopy = [[PRWidgetGridModel alloc] initWithComplicationDescriptors:complicationDescriptorsCopy iconLayout:iconLayoutCopy type:1, sceneCopy];
+    [(PRWidgetGridModel *)sceneCopy addWidgetGridModelObserver:v18];
+    [(NSMutableArray *)v18->_models bs_safeAddObject:sceneCopy];
+    v29 = [[PRWidgetGridViewController alloc] initWithModel:sceneCopy iconViewProvider:0];
     sidebarWidgetGridViewController = v18->_sidebarWidgetGridViewController;
     v18->_sidebarWidgetGridViewController = v29;
 
@@ -83,8 +83,8 @@
   dragGestureRecognizer = v18->_dragGestureRecognizer;
   v18->_dragGestureRecognizer = v31;
 
-  v33 = [(PRWidgetGridViewController *)v18->_widgetGridViewController view];
-  [v33 addGestureRecognizer:v18->_dragGestureRecognizer];
+  view = [(PRWidgetGridViewController *)v18->_widgetGridViewController view];
+  [view addGestureRecognizer:v18->_dragGestureRecognizer];
 
   v34 = objc_alloc_init(MEMORY[0x1E698E818]);
   reticleVibrancyView = v18->_reticleVibrancyView;
@@ -138,24 +138,24 @@
   return result;
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(PRComplicationContainerViewController *)self delegate];
-  v6 = [v5 complicationContainerViewControllerAllowsWidgetGridDragInteraction:self];
+  gestureCopy = gesture;
+  delegate = [(PRComplicationContainerViewController *)self delegate];
+  v6 = [delegate complicationContainerViewControllerAllowsWidgetGridDragInteraction:self];
 
   if (v6)
   {
-    v7 = [v4 view];
-    v8 = [v7 superview];
-    [v4 translationInView:v8];
+    view = [gestureCopy view];
+    superview = [view superview];
+    [gestureCopy translationInView:superview];
     v10 = v9;
 
     [(PRComplicationContainerViewController *)self topFrame];
     MidY = CGRectGetMidY(v41);
     [(PRComplicationContainerViewController *)self bottomFrame];
     v12 = CGRectGetMidY(v42);
-    [v7 center];
+    [view center];
     v14 = v10 + v13;
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
@@ -163,7 +163,7 @@
     v36[3] = &unk_1E7845338;
     v38 = v10 + v13;
     v39 = MidY;
-    v15 = v7;
+    v15 = view;
     v37 = v15;
     v40 = v12;
     v16 = MEMORY[0x1AC574C60](v36);
@@ -176,32 +176,32 @@
     v35 = v12 - MidY;
     v17 = v15;
     v31 = v17;
-    v32 = self;
+    selfCopy = self;
     v18 = MEMORY[0x1AC574C60](v30);
-    v19 = [v4 state];
-    if ((v19 - 3) >= 3)
+    state = [gestureCopy state];
+    if ((state - 3) >= 3)
     {
-      if (v19 == 2)
+      if (state == 2)
       {
         v21 = MEMORY[0x1E69DD250];
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __58__PRComplicationContainerViewController_handlePanGesture___block_invoke_3;
         v27[3] = &unk_1E7845388;
-        v28 = v4;
+        v28 = gestureCopy;
         v22 = v17;
         v29 = v22;
         [v21 _animateUsingSpringWithDampingRatio:0 response:v16 tracking:v27 dampingRatioSmoothing:0.9 responseSmoothing:0.9 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
         [v22 center];
         v24 = (v23 - MidY) / (v12 - MidY);
-        v25 = [(PRComplicationContainerViewController *)self delegate];
-        [v25 complicationContainerViewController:self isDraggingWidgetGridWithProgress:v24];
+        delegate2 = [(PRComplicationContainerViewController *)self delegate];
+        [delegate2 complicationContainerViewController:self isDraggingWidgetGridWithProgress:v24];
       }
 
-      else if (v19 == 1)
+      else if (state == 1)
       {
-        v20 = [(PRComplicationContainerViewController *)self delegate];
-        [v20 complicationContainerViewControllerDidBeginWidgetGridDrag:self];
+        delegate3 = [(PRComplicationContainerViewController *)self delegate];
+        [delegate3 complicationContainerViewControllerDidBeginWidgetGridDrag:self];
       }
     }
 
@@ -272,30 +272,30 @@ void __58__PRComplicationContainerViewController_handlePanGesture___block_invoke
   [v2 complicationContainerViewController:*(a1 + 32) didUpdateWidgetGridPositionToBottom:{objc_msgSend(*(a1 + 32), "widgetsUseBottomLayout")}];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v9 = a4;
-  v5 = [v9 settingsDiff];
-  v6 = [v5 pr_editingModalVariantDidChange];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  pr_editingModalVariantDidChange = [settingsDiff pr_editingModalVariantDidChange];
 
-  if (v6)
+  if (pr_editingModalVariantDidChange)
   {
-    v7 = [v9 settings];
-    v8 = [v7 pr_editingModalVariant] == 1;
+    settings = [settingsCopy settings];
+    v8 = [settings pr_editingModalVariant] == 1;
 
     [(PRComplicationContainerViewController *)self updateComplicationLayoutIfCovered:v8];
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
-  v8 = a4;
-  v9 = [a3 clientSettings];
-  LODWORD(a3) = [v8 pr_shouldShowEditingReticlesDidChange];
+  diffCopy = diff;
+  clientSettings = [scene clientSettings];
+  LODWORD(scene) = [diffCopy pr_shouldShowEditingReticlesDidChange];
 
-  if (a3)
+  if (scene)
   {
-    -[PRComplicationContainerViewController setShowsEditingReticles:](self, "setShowsEditingReticles:", [v9 pr_shouldShowEditingReticles]);
+    -[PRComplicationContainerViewController setShowsEditingReticles:](self, "setShowsEditingReticles:", [clientSettings pr_shouldShowEditingReticles]);
   }
 }
 
@@ -355,14 +355,14 @@ void __58__PRComplicationContainerViewController_handlePanGesture___block_invoke
   [(PRComplicationContainerViewController *)self bs_addChildViewController:self->_inlineComplicationContainerViewController];
   [(PRComplicationContainerViewController *)self bs_addChildViewController:self->_widgetGridViewController];
   [(PRComplicationContainerViewController *)self bs_addChildViewController:self->_sidebarWidgetGridViewController];
-  v3 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-  [v3 addSubview:self->_reticleVibrancyView];
+  view = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+  [view addSubview:self->_reticleVibrancyView];
 
-  v4 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-  [v4 sendSubviewToBack:self->_reticleVibrancyView];
+  view2 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+  [view2 sendSubviewToBack:self->_reticleVibrancyView];
 
-  v5 = [(BSUIVibrancyEffectView *)self->_reticleVibrancyView contentView];
-  [v5 addSubview:self->_complicationRowReticleView];
+  contentView = [(BSUIVibrancyEffectView *)self->_reticleVibrancyView contentView];
+  [contentView addSubview:self->_complicationRowReticleView];
 
   [(PREditingReticleView *)self->_complicationRowReticleView addSubview:self->_complicationRowEmptyStateView];
 }
@@ -372,8 +372,8 @@ void __58__PRComplicationContainerViewController_handlePanGesture___block_invoke
   v77.receiver = self;
   v77.super_class = PRComplicationContainerViewController;
   [(PRComplicationContainerViewController *)&v77 viewDidLayoutSubviews];
-  v3 = [(PRComplicationContainerViewController *)self view];
-  [v3 bounds];
+  view = [(PRComplicationContainerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -425,35 +425,35 @@ void __58__PRComplicationContainerViewController_handlePanGesture___block_invoke
   v72 = v27;
   v69 = v30;
   v70 = v29;
-  v39 = [(PRInlineComplicationContainerViewController *)self->_inlineComplicationContainerViewController view];
-  [v39 setFrame:{v16, v18, v20, v22}];
+  view2 = [(PRInlineComplicationContainerViewController *)self->_inlineComplicationContainerViewController view];
+  [view2 setFrame:{v16, v18, v20, v22}];
 
   v40 = MEMORY[0x1E696AEC0];
-  v41 = [(PRComplicationContainerViewController *)self inlineComplicationDescriptor];
-  v42 = [v41 widget];
-  v43 = [v42 extensionBundleIdentifier];
-  v44 = [(PRComplicationContainerViewController *)self inlineComplicationDescriptor];
-  v45 = [v44 widget];
-  v46 = [v45 kind];
-  v47 = [v40 stringWithFormat:@"%@:%@", v43, v46];
+  inlineComplicationDescriptor = [(PRComplicationContainerViewController *)self inlineComplicationDescriptor];
+  widget = [inlineComplicationDescriptor widget];
+  extensionBundleIdentifier = [widget extensionBundleIdentifier];
+  inlineComplicationDescriptor2 = [(PRComplicationContainerViewController *)self inlineComplicationDescriptor];
+  widget2 = [inlineComplicationDescriptor2 widget];
+  kind = [widget2 kind];
+  v47 = [v40 stringWithFormat:@"%@:%@", extensionBundleIdentifier, kind];
 
-  v48 = [(PRInlineComplicationContainerViewController *)self->_inlineComplicationContainerViewController view];
-  [v48 setAccessibilityIdentifier:v47];
+  view3 = [(PRInlineComplicationContainerViewController *)self->_inlineComplicationContainerViewController view];
+  [view3 setAccessibilityIdentifier:v47];
 
-  v49 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-  [v49 setFrame:{v72, v71, v70, v69}];
+  view4 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+  [view4 setFrame:{v72, v71, v70, v69}];
 
-  v50 = [(PRWidgetGridViewController *)self->_sidebarWidgetGridViewController view];
-  [v50 setFrame:{v76, v75, v74, v73}];
+  view5 = [(PRWidgetGridViewController *)self->_sidebarWidgetGridViewController view];
+  [view5 setFrame:{v76, v75, v74, v73}];
 
   [(PREditorElementLayoutController *)v13 frameForElements:v14 variant:3 withBoundingRect:v5, v7, v9, v11];
   v52 = v51;
   v54 = v53;
   v56 = v55;
   v58 = v57;
-  v59 = [(PRComplicationContainerViewController *)self view];
-  v60 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-  [v59 convertRect:v60 toView:{v52, v54, v56, v58}];
+  view6 = [(PRComplicationContainerViewController *)self view];
+  view7 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+  [view6 convertRect:view7 toView:{v52, v54, v56, v58}];
   v62 = v61;
   v64 = v63;
   v66 = v65;
@@ -463,12 +463,12 @@ void __58__PRComplicationContainerViewController_handlePanGesture___block_invoke
   [(PRComplicationContainerViewController *)self _updateEmptyRowVisibility:0];
 }
 
-- (void)setWidgetsUseBottomLayout:(BOOL)a3
+- (void)setWidgetsUseBottomLayout:(BOOL)layout
 {
-  if (self->_widgetsUseBottomLayout != a3)
+  if (self->_widgetsUseBottomLayout != layout)
   {
-    self->_widgetsUseBottomLayout = a3;
-    if (a3)
+    self->_widgetsUseBottomLayout = layout;
+    if (layout)
     {
       v5 = 32;
     }
@@ -493,28 +493,28 @@ void __58__PRComplicationContainerViewController_handlePanGesture___block_invoke
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    view = [(PRWidgetGridViewController *)self->_widgetGridViewController view];
+    [view setFrame:{v8, v10, v12, v14}];
   }
 }
 
-- (void)updateForComplicationGalleryHeight:(double)a3 completion:(id)a4
+- (void)updateForComplicationGalleryHeight:(double)height completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_widgetsCoveredByModal && self->_widgetsUseBottomLayout)
   {
     v8 = [[PREditorElementLayoutController alloc] initWithTraitEnvironment:self];
-    v9 = [(PRComplicationContainerViewController *)self view];
-    [v9 bounds];
+    view = [(PRComplicationContainerViewController *)self view];
+    [view bounds];
     [(PREditorElementLayoutController *)v8 frameForElements:8 variant:2 withBoundingRect:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(PRComplicationContainerViewController *)self view];
-    [v16 frame];
-    v18 = v17 - a3 + -40.0 - v15;
+    view2 = [(PRComplicationContainerViewController *)self view];
+    [view2 frame];
+    v18 = v17 - height + -40.0 - v15;
 
     v19 = MEMORY[0x1E69DD250];
     v22[0] = MEMORY[0x1E69E9820];
@@ -534,9 +534,9 @@ void __58__PRComplicationContainerViewController_handlePanGesture___block_invoke
     [v19 animateWithDuration:v22 animations:v20 completion:0.2];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -557,15 +557,15 @@ uint64_t __87__PRComplicationContainerViewController_updateForComplicationGaller
   return result;
 }
 
-- (void)updateComplicationLayoutIfCovered:(BOOL)a3
+- (void)updateComplicationLayoutIfCovered:(BOOL)covered
 {
   if ([(PRComplicationContainerViewController *)self _appearState]== 2 && self->_widgetsUseBottomLayout)
   {
-    self->_widgetsCoveredByModal = a3;
-    if (!a3)
+    self->_widgetsCoveredByModal = covered;
+    if (!covered)
     {
-      v5 = [(PRComplicationContainerViewController *)self view];
-      [v5 bounds];
+      view = [(PRComplicationContainerViewController *)self view];
+      [view bounds];
       v7 = v6;
       v9 = v8;
       v11 = v10;
@@ -593,10 +593,10 @@ void __75__PRComplicationContainerViewController_updateComplicationLayoutIfCover
   [v2 setFrame:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
 }
 
-- (void)setUsesEditingLayout:(BOOL)a3 animated:(BOOL)a4
+- (void)setUsesEditingLayout:(BOOL)layout animated:(BOOL)animated
 {
-  v4 = a3;
-  if (a4)
+  layoutCopy = layout;
+  if (animated)
   {
     v6 = [MEMORY[0x1E698E608] settingsWithDuration:0.25];
   }
@@ -607,27 +607,27 @@ void __75__PRComplicationContainerViewController_updateComplicationLayoutIfCover
   }
 
   v7 = v6;
-  [(PRComplicationContainerViewController *)self setUsesEditingLayout:v4 animationSettings:v6];
+  [(PRComplicationContainerViewController *)self setUsesEditingLayout:layoutCopy animationSettings:v6];
 }
 
-- (void)setUsesEditingLayout:(BOOL)a3 animationSettings:(id)a4
+- (void)setUsesEditingLayout:(BOOL)layout animationSettings:(id)settings
 {
-  v4 = a3;
-  v6 = a4;
-  if (self->_usesEditingLayout != v4)
+  layoutCopy = layout;
+  settingsCopy = settings;
+  if (self->_usesEditingLayout != layoutCopy)
   {
-    self->_usesEditingLayout = v4;
-    v7 = [(PRComplicationContainerViewController *)self viewIfLoaded];
-    v8 = v7;
-    if (v7)
+    self->_usesEditingLayout = layoutCopy;
+    viewIfLoaded = [(PRComplicationContainerViewController *)self viewIfLoaded];
+    v8 = viewIfLoaded;
+    if (viewIfLoaded)
     {
       v9 = MEMORY[0x1E698E7D0];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __80__PRComplicationContainerViewController_setUsesEditingLayout_animationSettings___block_invoke;
       v10[3] = &unk_1E7843688;
-      v11 = v7;
-      [v9 animateWithSettings:v6 actions:v10];
+      v11 = viewIfLoaded;
+      [v9 animateWithSettings:settingsCopy actions:v10];
     }
   }
 }
@@ -640,9 +640,9 @@ uint64_t __80__PRComplicationContainerViewController_setUsesEditingLayout_animat
   return [v2 layoutIfNeeded];
 }
 
-- (void)setFocusedElement:(int64_t)a3 animated:(BOOL)a4
+- (void)setFocusedElement:(int64_t)element animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v6 = [MEMORY[0x1E698E608] settingsWithDuration:0.3];
   }
@@ -653,46 +653,46 @@ uint64_t __80__PRComplicationContainerViewController_setUsesEditingLayout_animat
   }
 
   v7 = v6;
-  [(PRComplicationContainerViewController *)self setFocusedElement:a3 animationSettings:v6];
+  [(PRComplicationContainerViewController *)self setFocusedElement:element animationSettings:v6];
 }
 
-- (void)setFocusedElement:(int64_t)a3 animationSettings:(id)a4
+- (void)setFocusedElement:(int64_t)element animationSettings:(id)settings
 {
-  if (self->_focusedElement != a3)
+  if (self->_focusedElement != element)
   {
-    self->_focusedElement = a3;
-    [(PRComplicationContainerViewController *)self _updateFocusedWithAnimationSettings:a4];
+    self->_focusedElement = element;
+    [(PRComplicationContainerViewController *)self _updateFocusedWithAnimationSettings:settings];
   }
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_vibrancyConfiguration, a3);
-  v5 = a3;
-  [(PRWidgetGridViewController *)self->_widgetGridViewController setVibrancyConfiguration:v5];
-  [(PRWidgetGridViewController *)self->_sidebarWidgetGridViewController setVibrancyConfiguration:v5];
-  [(PRInlineComplicationContainerViewController *)self->_inlineComplicationContainerViewController setVibrancyConfiguration:v5];
-  v6 = [PREditingReticleView reticleVibrancyForVibrancyConfiguration:v5];
+  objc_storeStrong(&self->_vibrancyConfiguration, configuration);
+  configurationCopy = configuration;
+  [(PRWidgetGridViewController *)self->_widgetGridViewController setVibrancyConfiguration:configurationCopy];
+  [(PRWidgetGridViewController *)self->_sidebarWidgetGridViewController setVibrancyConfiguration:configurationCopy];
+  [(PRInlineComplicationContainerViewController *)self->_inlineComplicationContainerViewController setVibrancyConfiguration:configurationCopy];
+  v6 = [PREditingReticleView reticleVibrancyForVibrancyConfiguration:configurationCopy];
   [(BSUIVibrancyEffectView *)self->_reticleVibrancyView setConfiguration:v6];
 }
 
-- (void)_updateFocusedWithAnimationSettings:(id)a3
+- (void)_updateFocusedWithAnimationSettings:(id)settings
 {
   inlineComplicationContainerViewController = self->_inlineComplicationContainerViewController;
   v5 = self->_focusedElement == 1;
-  v6 = a3;
-  [(PRInlineComplicationContainerViewController *)inlineComplicationContainerViewController setFocused:v5 animationSettings:v6];
-  [(PRWidgetGridViewController *)self->_sidebarWidgetGridViewController setFocused:self->_focusedElement == 3 animationSettings:v6];
-  [(PRWidgetGridViewController *)self->_widgetGridViewController setFocused:self->_focusedElement == 2 animationSettings:v6];
+  settingsCopy = settings;
+  [(PRInlineComplicationContainerViewController *)inlineComplicationContainerViewController setFocused:v5 animationSettings:settingsCopy];
+  [(PRWidgetGridViewController *)self->_sidebarWidgetGridViewController setFocused:self->_focusedElement == 3 animationSettings:settingsCopy];
+  [(PRWidgetGridViewController *)self->_widgetGridViewController setFocused:self->_focusedElement == 2 animationSettings:settingsCopy];
 
   [(PREditingReticleView *)self->_complicationRowReticleView setActive:self->_focusedElement == 2];
 
   [(PRComplicationContainerViewController *)self _updateReticleVisibility:1];
 }
 
-- (void)_updateReticleVisibility:(BOOL)a3
+- (void)_updateReticleVisibility:(BOOL)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   [(PREditingReticleView *)self->_complicationRowReticleView alpha];
   if ((self->_focusedElement & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
@@ -706,11 +706,11 @@ uint64_t __80__PRComplicationContainerViewController_setUsesEditingLayout_animat
 
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    v6 = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
-    v7 = [v6 complicationDescriptors];
-    v8 = [v7 count];
+    model = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
+    complicationDescriptors = [model complicationDescriptors];
+    v8 = [complicationDescriptors count];
 
-    if (v3)
+    if (visibilityCopy)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -754,14 +754,14 @@ uint64_t __66__PRComplicationContainerViewController__updateReticleVisibility___
   return [v2 setAlpha:v3];
 }
 
-- (void)_updateEmptyRowVisibility:(BOOL)a3
+- (void)_updateEmptyRowVisibility:(BOOL)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   [(PREditingReticleView *)self->_complicationRowReticleView alpha];
   IsZero = BSFloatIsZero();
-  v6 = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
-  v7 = [v6 complicationDescriptors];
-  v8 = [v7 count];
+  model = [(PRWidgetGridViewController *)self->_widgetGridViewController model];
+  complicationDescriptors = [model complicationDescriptors];
+  v8 = [complicationDescriptors count];
 
   if (v8)
   {
@@ -786,7 +786,7 @@ uint64_t __66__PRComplicationContainerViewController__updateReticleVisibility___
   [(PRComplicationEmptyStateView *)self->_complicationRowEmptyStateView alpha];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    if (v3)
+    if (visibilityCopy)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -806,53 +806,53 @@ uint64_t __66__PRComplicationContainerViewController__updateReticleVisibility___
   }
 }
 
-- (void)inlineComplicationContainerViewControllerDidTapAdd:(id)a3
+- (void)inlineComplicationContainerViewControllerDidTapAdd:(id)add
 {
-  v4 = [(PRComplicationContainerViewController *)self delegate];
-  [v4 complicationContainerViewControllerDidTapInlineGallery:self];
+  delegate = [(PRComplicationContainerViewController *)self delegate];
+  [delegate complicationContainerViewControllerDidTapInlineGallery:self];
 }
 
-- (void)inlineComplicationContainerViewController:(id)a3 didEditComplication:(id)a4
+- (void)inlineComplicationContainerViewController:(id)controller didEditComplication:(id)complication
 {
-  v5 = a4;
-  v6 = [(PRComplicationContainerViewController *)self delegate];
-  [v6 complicationContainerViewController:self didEditComplication:v5];
+  complicationCopy = complication;
+  delegate = [(PRComplicationContainerViewController *)self delegate];
+  [delegate complicationContainerViewController:self didEditComplication:complicationCopy];
 }
 
-- (void)widgetGridModelDidUpdateContent:(id)a3
+- (void)widgetGridModelDidUpdateContent:(id)content
 {
   sidebarWidgetGridViewController = self->_sidebarWidgetGridViewController;
-  v5 = a3;
-  v6 = [(PRWidgetGridViewController *)sidebarWidgetGridViewController model];
-  v7 = v6 == v5;
+  contentCopy = content;
+  model = [(PRWidgetGridViewController *)sidebarWidgetGridViewController model];
+  v7 = model == contentCopy;
 
-  v8 = [(PRComplicationContainerViewController *)self delegate];
-  [v8 complicationContainerViewController:self didUpdateModelContentForLocation:v7];
+  delegate = [(PRComplicationContainerViewController *)self delegate];
+  [delegate complicationContainerViewController:self didUpdateModelContentForLocation:v7];
 
   [(PRComplicationContainerViewController *)self _updateEmptyRowVisibility:1];
 }
 
-- (void)widgetGridViewController:(id)a3 didRequestConfigurationForComplicationDescriptor:(id)a4
+- (void)widgetGridViewController:(id)controller didRequestConfigurationForComplicationDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = [(PRComplicationContainerViewController *)self delegate];
-  [v6 complicationContainerViewController:self didEditComplication:v5];
+  descriptorCopy = descriptor;
+  delegate = [(PRComplicationContainerViewController *)self delegate];
+  [delegate complicationContainerViewController:self didEditComplication:descriptorCopy];
 }
 
-- (void)widgetGridViewControllerDidTapBackground:(id)a3
+- (void)widgetGridViewControllerDidTapBackground:(id)background
 {
-  v4 = a3;
-  v6 = [(PRComplicationContainerViewController *)self delegate];
-  v5 = [(PRComplicationContainerViewController *)self _locationForViewController:v4];
+  backgroundCopy = background;
+  delegate = [(PRComplicationContainerViewController *)self delegate];
+  v5 = [(PRComplicationContainerViewController *)self _locationForViewController:backgroundCopy];
 
-  [v6 complicationContainerViewControllerDidTapAdd:self forLocation:v5];
+  [delegate complicationContainerViewControllerDidTapAdd:self forLocation:v5];
 }
 
-- (void)widgetGridViewController:(id)a3 isAttemptingDragToAddComplication:(id)a4
+- (void)widgetGridViewController:(id)controller isAttemptingDragToAddComplication:(id)complication
 {
-  v5 = a4;
-  v6 = [(PRComplicationContainerViewController *)self delegate];
-  [v6 complicationContainerViewController:self isAttemptingDragToAddComplication:v5];
+  complicationCopy = complication;
+  delegate = [(PRComplicationContainerViewController *)self delegate];
+  [delegate complicationContainerViewController:self isAttemptingDragToAddComplication:complicationCopy];
 }
 
 - (PRComplicationContainerViewControllerDelegate)delegate

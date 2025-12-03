@@ -1,19 +1,19 @@
 @interface _NSBundleODRDataCommon
-- (BOOL)assetPacksBecameAvailable:(id)a3 error:(id *)a4;
-- (BOOL)assetPacksBecameUnavailable:(id)a3 error:(id *)a4;
-- (_NSBundleODRDataCommon)initWithBundle:(id)a3;
+- (BOOL)assetPacksBecameAvailable:(id)available error:(id *)error;
+- (BOOL)assetPacksBecameUnavailable:(id)unavailable error:(id *)error;
+- (_NSBundleODRDataCommon)initWithBundle:(id)bundle;
 - (void)dealloc;
 @end
 
 @implementation _NSBundleODRDataCommon
 
-- (_NSBundleODRDataCommon)initWithBundle:(id)a3
+- (_NSBundleODRDataCommon)initWithBundle:(id)bundle
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = _NSBundleODRDataCommon;
   v4 = [(_NSBundleODRDataCommon *)&v6 init];
-  v4->_bundle = a3;
+  v4->_bundle = bundle;
   v4->_assetPackToURL = objc_opt_new();
   v4->_lock = objc_opt_new();
   return v4;
@@ -33,7 +33,7 @@
   [(_NSBundleODRDataCommon *)&v3 dealloc];
 }
 
-- (BOOL)assetPacksBecameAvailable:(id)a3 error:(id *)a4
+- (BOOL)assetPacksBecameAvailable:(id)available error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -54,17 +54,17 @@
   v11[5] = &v18;
   v11[6] = &v12;
   v11[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  [available enumerateKeysAndObjectsUsingBlock:v11];
   [(NSLock *)self->_lock unlock];
   v7 = v13;
-  if (a4)
+  if (error)
   {
     if ((v19[3] & 1) == 0)
     {
       v8 = v13[5];
       if (v8)
       {
-        *a4 = v8;
+        *error = v8;
         v7 = v13;
       }
     }
@@ -76,7 +76,7 @@
   return v9;
 }
 
-- (BOOL)assetPacksBecameUnavailable:(id)a3 error:(id *)a4
+- (BOOL)assetPacksBecameUnavailable:(id)unavailable error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -97,17 +97,17 @@
   v11[5] = &v18;
   v11[6] = &v12;
   v11[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  [unavailable enumerateKeysAndObjectsUsingBlock:v11];
   [(NSLock *)self->_lock unlock];
   v7 = v13;
-  if (a4)
+  if (error)
   {
     if ((v19[3] & 1) == 0)
     {
       v8 = v13[5];
       if (v8)
       {
-        *a4 = v8;
+        *error = v8;
         v7 = v13;
       }
     }

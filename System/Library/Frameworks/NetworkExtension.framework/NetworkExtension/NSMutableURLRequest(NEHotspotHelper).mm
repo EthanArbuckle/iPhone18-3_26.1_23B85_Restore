@@ -6,10 +6,10 @@
 
 - (uint64_t)bindToHotspotHelperCommand:()NEHotspotHelper
 {
-  v4 = [(NEHotspotHelperCommand *)a3 interfaceName];
-  if (v4)
+  interfaceName = [(NEHotspotHelperCommand *)a3 interfaceName];
+  if (interfaceName)
   {
-    [a1 setBoundInterfaceIdentifier:v4];
+    [self setBoundInterfaceIdentifier:interfaceName];
   }
 
   return MEMORY[0x1EEE66BB8]();

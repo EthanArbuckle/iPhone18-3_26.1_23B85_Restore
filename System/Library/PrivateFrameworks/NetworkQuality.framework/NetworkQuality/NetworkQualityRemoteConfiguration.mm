@@ -1,21 +1,21 @@
 @interface NetworkQualityRemoteConfiguration
-- (NetworkQualityRemoteConfiguration)initWithData:(id)a3 andConfig:(id)a4;
-- (NetworkQualityRemoteConfiguration)initWithDictionary:(id)a3 andConfig:(id)a4;
-- (id)portForURLType:(int)a3;
+- (NetworkQualityRemoteConfiguration)initWithData:(id)data andConfig:(id)config;
+- (NetworkQualityRemoteConfiguration)initWithDictionary:(id)dictionary andConfig:(id)config;
+- (id)portForURLType:(int)type;
 @end
 
 @implementation NetworkQualityRemoteConfiguration
 
-- (NetworkQualityRemoteConfiguration)initWithData:(id)a3 andConfig:(id)a4
+- (NetworkQualityRemoteConfiguration)initWithData:(id)data andConfig:(id)config
 {
-  v6 = a4;
+  configCopy = config;
   v11 = 0;
-  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v11];
+  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v11];
   v8 = v11;
   if (v7)
   {
-    self = [(NetworkQualityRemoteConfiguration *)self initWithDictionary:v7 andConfig:v6];
-    v9 = self;
+    self = [(NetworkQualityRemoteConfiguration *)self initWithDictionary:v7 andConfig:configCopy];
+    selfCopy = self;
   }
 
   else
@@ -26,17 +26,17 @@
       [NetworkQualityRemoteConfiguration initWithData:andConfig:];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (NetworkQualityRemoteConfiguration)initWithDictionary:(id)a3 andConfig:(id)a4
+- (NetworkQualityRemoteConfiguration)initWithDictionary:(id)dictionary andConfig:(id)config
 {
   v69 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v47 = a4;
+  dictionaryCopy = dictionary;
+  configCopy = config;
   v60.receiver = self;
   v60.super_class = NetworkQualityRemoteConfiguration;
   v50 = [(NetworkQualityRemoteConfiguration *)&v60 init];
@@ -55,11 +55,11 @@
     v65 = 1024;
     v66 = 50;
     v67 = 2112;
-    v68 = v49;
+    v68 = dictionaryCopy;
     _os_log_impl(&dword_25B962000, v7, OS_LOG_TYPE_DEFAULT, "%s:%u - [Staging] Got configuration: %@", buf, 0x1Cu);
   }
 
-  v48 = [(NSString *)v49 objectForKeyedSubscript:@"version", a4];
+  config = [(NSString *)dictionaryCopy objectForKeyedSubscript:@"version", config];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -74,12 +74,12 @@ LABEL_33:
     goto LABEL_41;
   }
 
-  if (!v48)
+  if (!config)
   {
     goto LABEL_33;
   }
 
-  v8 = [(NSString *)v49 objectForKeyedSubscript:@"urls"];
+  v8 = [(NSString *)dictionaryCopy objectForKeyedSubscript:@"urls"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -185,7 +185,7 @@ LABEL_20:
   }
 
   objc_storeStrong(&v50->_urls, v51);
-  v21 = [(NSString *)v49 objectForKeyedSubscript:@"test_endpoint"];
+  v21 = [(NSString *)dictionaryCopy objectForKeyedSubscript:@"test_endpoint"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -198,16 +198,16 @@ LABEL_43:
     }
 
     v27 = MEMORY[0x277CBEBC0];
-    v28 = [v47 configuration];
-    v29 = [v27 URLWithString:v28];
+    configuration = [configCopy configuration];
+    v29 = [v27 URLWithString:configuration];
 
-    v30 = [v29 port];
-    v31 = v30 == 0;
+    port = [v29 port];
+    v31 = port == 0;
 
     if (v31)
     {
-      v35 = [v29 scheme];
-      v36 = [v35 isEqualToString:@"https"];
+      scheme = [v29 scheme];
+      v36 = [scheme isEqualToString:@"https"];
 
       if (v36)
       {
@@ -218,8 +218,8 @@ LABEL_43:
 
       else
       {
-        v39 = [v29 scheme];
-        v40 = [v39 isEqualToString:@"http"];
+        scheme2 = [v29 scheme];
+        v40 = [scheme2 isEqualToString:@"http"];
 
         if (!v40)
         {
@@ -240,9 +240,9 @@ LABEL_53:
     else
     {
       port = [v29 port];
-      v33 = [port stringValue];
+      stringValue = [port stringValue];
       v34 = v50->_port;
-      v50->_port = v33;
+      v50->_port = stringValue;
     }
 
     goto LABEL_53;
@@ -281,13 +281,13 @@ LABEL_55:
   if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_INFO))
   {
     v42 = v41;
-    v43 = [(NetworkQualityRemoteConfiguration *)v50 testEndpoint];
+    testEndpoint = [(NetworkQualityRemoteConfiguration *)v50 testEndpoint];
     *buf = 136315650;
     v64 = "[NetworkQualityRemoteConfiguration initWithDictionary:andConfig:]";
     v65 = 1024;
     v66 = 107;
     v67 = 2112;
-    v68 = v43;
+    v68 = testEndpoint;
     _os_log_impl(&dword_25B962000, v42, OS_LOG_TYPE_INFO, "%s:%u - test endpoint: %@", buf, 0x1Cu);
   }
 
@@ -302,9 +302,9 @@ LABEL_59:
   return v26;
 }
 
-- (id)portForURLType:(int)a3
+- (id)portForURLType:(int)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v4 = @"0";
   }

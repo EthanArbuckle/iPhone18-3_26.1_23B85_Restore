@@ -4,12 +4,12 @@
 - (id)moreNavigationController;
 - (id)traitCollection;
 - (void)_layoutFloatingOverlayView;
-- (void)_setSelectedViewController:(id)a3;
-- (void)moreNavigationController:(id)a3 didSelectItemAtIndex:(int64_t)a4;
-- (void)setFloatingOverlayViewController:(id)a3 animated:(BOOL)a4;
-- (void)setTransientViewController:(id)a3 animated:(BOOL)a4;
+- (void)_setSelectedViewController:(id)controller;
+- (void)moreNavigationController:(id)controller didSelectItemAtIndex:(int64_t)index;
+- (void)setFloatingOverlayViewController:(id)controller animated:(BOOL)animated;
+- (void)setTransientViewController:(id)controller animated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUITabBarController
@@ -19,22 +19,22 @@
   v13[2] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = SUUITabBarController;
-  v3 = [(SUUITabBarController *)&v12 traitCollection];
-  v4 = [(SUUITabBarController *)self view];
-  [v4 bounds];
+  traitCollection = [(SUUITabBarController *)&v12 traitCollection];
+  view = [(SUUITabBarController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v15);
   v6 = SUUICompactThreshold();
 
   if (Width <= v6)
   {
-    v10 = v3;
+    v10 = traitCollection;
   }
 
   else
   {
     v7 = [MEMORY[0x277D75C80] traitCollectionWithHorizontalSizeClass:2];
     v8 = MEMORY[0x277D75C80];
-    v13[0] = v3;
+    v13[0] = traitCollection;
     v13[1] = v7;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
     v10 = [v8 traitCollectionWithTraitsFromCollections:v9];
@@ -51,8 +51,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SUUITabBarController *)v2 tabBar];
-    [v4 setSemanticContentAttribute:storeSemanticContentAttribute()];
+    tabBar = [(SUUITabBarController *)v2 tabBar];
+    [tabBar setSemanticContentAttribute:storeSemanticContentAttribute()];
   }
 
   return v3;
@@ -62,16 +62,16 @@
 {
   v8.receiver = self;
   v8.super_class = SUUITabBarController;
-  v3 = [(SUUITabBarController *)&v8 moreNavigationController];
-  [v3 setStoreKitDelegate:self];
+  moreNavigationController = [(SUUITabBarController *)&v8 moreNavigationController];
+  [moreNavigationController setStoreKitDelegate:self];
   v4 = storeSemanticContentAttribute();
-  v5 = [v3 view];
-  [v5 setSemanticContentAttribute:v4];
+  view = [moreNavigationController view];
+  [view setSemanticContentAttribute:v4];
 
-  v6 = [v3 navigationBar];
-  [v6 setSemanticContentAttribute:v4];
+  navigationBar = [moreNavigationController navigationBar];
+  [navigationBar setSemanticContentAttribute:v4];
 
-  return v3;
+  return moreNavigationController;
 }
 
 - (void)viewDidLayoutSubviews
@@ -88,15 +88,15 @@
 
 - (BOOL)containsTransientViewControllerOnly
 {
-  v3 = [(SUUITabBarController *)self transientViewController];
-  if (v3)
+  transientViewController = [(SUUITabBarController *)self transientViewController];
+  if (transientViewController)
   {
-    v4 = [(SUUITabBarController *)self viewControllers];
-    if ([v4 count] == 1)
+    viewControllers = [(SUUITabBarController *)self viewControllers];
+    if ([viewControllers count] == 1)
     {
-      v5 = [(SUUITabBarController *)self viewControllers];
-      v6 = [v5 firstObject];
-      v7 = v6 == v3;
+      viewControllers2 = [(SUUITabBarController *)self viewControllers];
+      firstObject = [viewControllers2 firstObject];
+      v7 = firstObject == transientViewController;
     }
 
     else
@@ -113,46 +113,46 @@
   return v7;
 }
 
-- (void)setFloatingOverlayViewController:(id)a3 animated:(BOOL)a4
+- (void)setFloatingOverlayViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  v8 = controllerCopy;
   floatingOverlayViewController = self->_floatingOverlayViewController;
-  if (floatingOverlayViewController != v7)
+  if (floatingOverlayViewController != controllerCopy)
   {
-    if (v7 && floatingOverlayViewController)
+    if (controllerCopy && floatingOverlayViewController)
     {
-      objc_storeStrong(&self->_floatingOverlayViewController, a3);
+      objc_storeStrong(&self->_floatingOverlayViewController, controller);
       floatingOverlayView = self->_floatingOverlayView;
-      v11 = [(UIViewController *)self->_floatingOverlayViewController view];
-      [(SUUIFloatingOverlayView *)floatingOverlayView setContentView:v11];
+      view = [(UIViewController *)self->_floatingOverlayViewController view];
+      [(SUUIFloatingOverlayView *)floatingOverlayView setContentView:view];
 
       [(SUUITabBarController *)self _layoutFloatingOverlayView];
     }
 
-    else if (v7)
+    else if (controllerCopy)
     {
-      objc_storeStrong(&self->_floatingOverlayViewController, a3);
+      objc_storeStrong(&self->_floatingOverlayViewController, controller);
       v12 = objc_alloc_init(SUUIFloatingOverlayView);
       v13 = self->_floatingOverlayView;
       self->_floatingOverlayView = v12;
 
       [(SUUIFloatingOverlayView *)self->_floatingOverlayView setContentInset:6.0, 0.0, 6.0, 0.0];
       v14 = self->_floatingOverlayView;
-      v15 = [(UIViewController *)self->_floatingOverlayViewController view];
-      [(SUUIFloatingOverlayView *)v14 setContentView:v15];
+      view2 = [(UIViewController *)self->_floatingOverlayViewController view];
+      [(SUUIFloatingOverlayView *)v14 setContentView:view2];
 
-      v16 = [(SUUITabBarController *)self view];
-      [v16 addSubview:self->_floatingOverlayView];
+      view3 = [(SUUITabBarController *)self view];
+      [view3 addSubview:self->_floatingOverlayView];
 
       [(SUUITabBarController *)self _layoutFloatingOverlayView];
-      if (v4)
+      if (animatedCopy)
       {
         [(SUUIFloatingOverlayView *)self->_floatingOverlayView setAlpha:0.0];
         v17 = self->_floatingOverlayView;
-        v18 = [MEMORY[0x277D75348] systemBackgroundColor];
-        v19 = [v18 colorWithAlphaComponent:0.8];
+        systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+        v19 = [systemBackgroundColor colorWithAlphaComponent:0.8];
         [(SUUIFloatingOverlayView *)v17 setBackgroundColor:v19];
 
         v26[0] = MEMORY[0x277D85DD0];
@@ -177,10 +177,10 @@
       v21 = self->_floatingOverlayView;
       self->_floatingOverlayView = 0;
 
-      if (v4)
+      if (animatedCopy)
       {
-        v22 = [MEMORY[0x277D75348] systemBackgroundColor];
-        v23 = [v22 colorWithAlphaComponent:0.8];
+        systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+        v23 = [systemBackgroundColor2 colorWithAlphaComponent:0.8];
         [(SUUIFloatingOverlayView *)v20 setBackgroundColor:v23];
 
         v24 = MEMORY[0x277D75D18];
@@ -212,64 +212,64 @@ void __66__SUUITabBarController_setFloatingOverlayViewController_animated___bloc
   [v1 setBackgroundColor:v2];
 }
 
-- (void)_setSelectedViewController:(id)a3
+- (void)_setSelectedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SUUITabBarController *)self selectedViewController];
+  controllerCopy = controller;
+  selectedViewController = [(SUUITabBarController *)self selectedViewController];
   v8.receiver = self;
   v8.super_class = SUUITabBarController;
-  [(SUUITabBarController *)&v8 _setSelectedViewController:v4];
+  [(SUUITabBarController *)&v8 _setSelectedViewController:controllerCopy];
 
-  v6 = [(SUUITabBarController *)self selectedViewController];
-  if (v5 == v6)
+  selectedViewController2 = [(SUUITabBarController *)self selectedViewController];
+  if (selectedViewController == selectedViewController2)
   {
-    v7 = [(SUUITabBarController *)self delegate];
+    delegate = [(SUUITabBarController *)self delegate];
     if (![(SUUITabBarController *)self sizeTransitionInProgress]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v7 tabBarController:self didReselectViewController:v6];
+      [delegate tabBarController:self didReselectViewController:selectedViewController2];
     }
   }
 }
 
-- (void)setTransientViewController:(id)a3 animated:(BOOL)a4
+- (void)setTransientViewController:(id)controller animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = SUUITabBarController;
-  [(SUUITabBarController *)&v4 setTransientViewController:a3 animated:0];
+  [(SUUITabBarController *)&v4 setTransientViewController:controller animated:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(SUUITabBarController *)self setSizeTransitionInProgress:1];
-  v8 = [(SUUITabBarController *)self delegate];
+  delegate = [(SUUITabBarController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 tabBarController:self willTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+    [delegate tabBarController:self willTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
   }
 
   v9.receiver = self;
   v9.super_class = SUUITabBarController;
-  [(SUUITabBarController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SUUITabBarController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(SUUITabBarController *)self setSizeTransitionInProgress:0];
 }
 
-- (void)moreNavigationController:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)moreNavigationController:(id)controller didSelectItemAtIndex:(int64_t)index
 {
-  v6 = [(SUUITabBarController *)self delegate:a3];
+  v6 = [(SUUITabBarController *)self delegate:controller];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(SUUITabBarController *)self selectedViewController];
-    [v6 tabBarController:self didSelectViewController:v5];
+    selectedViewController = [(SUUITabBarController *)self selectedViewController];
+    [v6 tabBarController:self didSelectViewController:selectedViewController];
   }
 }
 
 - (void)_layoutFloatingOverlayView
 {
-  v29 = [(SUUITabBarController *)self view];
-  [v29 bounds];
+  view = [(SUUITabBarController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -283,16 +283,16 @@ void __66__SUUITabBarController_setFloatingOverlayViewController_animated___bloc
   v31.size.height = v10;
   Width = CGRectGetWidth(v31);
   v16 = SUUITabBarControllerGetActiveNavigationController(self);
-  v17 = [v16 navigationBar];
-  v18 = v17;
-  if (v17)
+  navigationBar = [v16 navigationBar];
+  v18 = navigationBar;
+  if (navigationBar)
   {
-    [v17 bounds];
-    [v18 convertRect:v29 toView:?];
+    [navigationBar bounds];
+    [v18 convertRect:view toView:?];
     v20 = v19;
     v22 = v21;
-    v23 = [MEMORY[0x277D75128] sharedApplication];
-    [v18 defaultSizeForOrientation:{objc_msgSend(v23, "statusBarOrientation")}];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [v18 defaultSizeForOrientation:{objc_msgSend(mEMORY[0x277D75128], "statusBarOrientation")}];
     v25 = v24;
     v27 = v26;
 
@@ -309,7 +309,7 @@ void __66__SUUITabBarController_setFloatingOverlayViewController_animated___bloc
   }
 
   [(SUUIFloatingOverlayView *)self->_floatingOverlayView setFrame:Width - v12 + -15.0, v28, v12, v14];
-  [v29 bringSubviewToFront:self->_floatingOverlayView];
+  [view bringSubviewToFront:self->_floatingOverlayView];
 }
 
 @end

@@ -1,61 +1,61 @@
 @interface SXDarkModePolicyHandler
-- (BOOL)shouldApplyDarkModeToBackgroundColorsOfComponentTextStyle:(id)a3 component:(id)a4 DOM:(id)a5;
-- (BOOL)shouldApplyDarkModeToBackgroundColorsOfTextStyle:(id)a3 component:(id)a4 DOM:(id)a5;
-- (BOOL)shouldApplyDarkModeToComponent:(id)a3 DOM:(id)a4;
-- (BOOL)shouldApplyDarkModeToComponentStyle:(id)a3 component:(id)a4 DOM:(id)a5;
-- (BOOL)shouldApplyDarkModeToComponentStylesForComponent:(id)a3 DOM:(id)a4;
-- (BOOL)shouldApplyDarkModeToDOM:(id)a3 layoutOptions:(id)a4;
-- (BOOL)shouldApplyDarkModeToDocumentStyle:(id)a3 DOM:(id)a4 layoutOptions:(id)a5;
-- (BOOL)shouldApplyDarkModeToForegroundColorsOfComponentTextStyle:(id)a3 component:(id)a4 DOM:(id)a5;
-- (BOOL)shouldApplyDarkModeToForegroundColorsOfTextStyle:(id)a3 component:(id)a4 DOM:(id)a5;
-- (BOOL)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)a3 DOM:(id)a4;
-- (BOOL)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)a3 DOM:(id)a4;
-- (SXDarkModePolicyHandler)initWithDocumentProvider:(id)a3 darkModeConfiguration:(id)a4;
-- (void)addPolicyException:(id)a3;
+- (BOOL)shouldApplyDarkModeToBackgroundColorsOfComponentTextStyle:(id)style component:(id)component DOM:(id)m;
+- (BOOL)shouldApplyDarkModeToBackgroundColorsOfTextStyle:(id)style component:(id)component DOM:(id)m;
+- (BOOL)shouldApplyDarkModeToComponent:(id)component DOM:(id)m;
+- (BOOL)shouldApplyDarkModeToComponentStyle:(id)style component:(id)component DOM:(id)m;
+- (BOOL)shouldApplyDarkModeToComponentStylesForComponent:(id)component DOM:(id)m;
+- (BOOL)shouldApplyDarkModeToDOM:(id)m layoutOptions:(id)options;
+- (BOOL)shouldApplyDarkModeToDocumentStyle:(id)style DOM:(id)m layoutOptions:(id)options;
+- (BOOL)shouldApplyDarkModeToForegroundColorsOfComponentTextStyle:(id)style component:(id)component DOM:(id)m;
+- (BOOL)shouldApplyDarkModeToForegroundColorsOfTextStyle:(id)style component:(id)component DOM:(id)m;
+- (BOOL)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)component DOM:(id)m;
+- (BOOL)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)component DOM:(id)m;
+- (SXDarkModePolicyHandler)initWithDocumentProvider:(id)provider darkModeConfiguration:(id)configuration;
+- (void)addPolicyException:(id)exception;
 @end
 
 @implementation SXDarkModePolicyHandler
 
-- (SXDarkModePolicyHandler)initWithDocumentProvider:(id)a3 darkModeConfiguration:(id)a4
+- (SXDarkModePolicyHandler)initWithDocumentProvider:(id)provider darkModeConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SXDarkModePolicyHandler;
   v9 = [(SXDarkModePolicyHandler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_darkModeConfiguration, a4);
-    objc_storeStrong(&v10->_documentProvider, a3);
-    v11 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v9->_darkModeConfiguration, configuration);
+    objc_storeStrong(&v10->_documentProvider, provider);
+    array = [MEMORY[0x1E695DF70] array];
     exceptions = v10->_exceptions;
-    v10->_exceptions = v11;
+    v10->_exceptions = array;
   }
 
   return v10;
 }
 
-- (void)addPolicyException:(id)a3
+- (void)addPolicyException:(id)exception
 {
-  if (a3)
+  if (exception)
   {
     [(NSMutableArray *)self->_exceptions addObject:?];
   }
 }
 
-- (BOOL)shouldApplyDarkModeToDOM:(id)a3 layoutOptions:(id)a4
+- (BOOL)shouldApplyDarkModeToDOM:(id)m layoutOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 documentStyle];
-  v9 = [v8 backgroundColor];
-  if (v9)
+  mCopy = m;
+  optionsCopy = options;
+  documentStyle = [mCopy documentStyle];
+  backgroundColor = [documentStyle backgroundColor];
+  if (backgroundColor)
   {
-    v10 = v9;
-    v11 = [v6 documentStyle];
-    v12 = [v11 backgroundColor];
-    [v12 _luminance];
+    v10 = backgroundColor;
+    documentStyle2 = [mCopy documentStyle];
+    backgroundColor2 = [documentStyle2 backgroundColor];
+    [backgroundColor2 _luminance];
     v14 = v13;
 
     if (v14 <= 0.5)
@@ -70,28 +70,28 @@ LABEL_10:
   {
   }
 
-  v15 = [v7 traitCollection];
-  v16 = [v15 userInterfaceStyle];
+  traitCollection = [optionsCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v16 != 2 || ![(SXDarkModeConfiguration *)self->_darkModeConfiguration isAutoDarkModeEnabled])
+  if (userInterfaceStyle != 2 || ![(SXDarkModeConfiguration *)self->_darkModeConfiguration isAutoDarkModeEnabled])
   {
     goto LABEL_10;
   }
 
-  v17 = [(SXDocumentProviding *)self->_documentProvider document];
-  v18 = [v17 colorScheme];
+  document = [(SXDocumentProviding *)self->_documentProvider document];
+  colorScheme = [document colorScheme];
 
-  if (v18 && ![v18 automaticDarkModeEnabled])
+  if (colorScheme && ![colorScheme automaticDarkModeEnabled])
   {
     v23 = 0;
   }
 
   else
   {
-    v19 = [v6 analysis];
-    v20 = [v19 conditionalObjectAnalysis];
-    v21 = [v20 documentStyleConditionTypes];
-    v22 = [v21 containsObject:SXConditionPreferredColorScheme];
+    analysis = [mCopy analysis];
+    conditionalObjectAnalysis = [analysis conditionalObjectAnalysis];
+    documentStyleConditionTypes = [conditionalObjectAnalysis documentStyleConditionTypes];
+    v22 = [documentStyleConditionTypes containsObject:SXConditionPreferredColorScheme];
 
     v23 = v22 ^ 1;
   }
@@ -100,20 +100,20 @@ LABEL_11:
   return v23;
 }
 
-- (BOOL)shouldApplyDarkModeToDocumentStyle:(id)a3 DOM:(id)a4 layoutOptions:(id)a5
+- (BOOL)shouldApplyDarkModeToDocumentStyle:(id)style DOM:(id)m layoutOptions:(id)options
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (UIAccessibilityIsInvertColorsEnabled() || ([v10 traitCollection], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "userInterfaceStyle"), v11, v12 == 2))
+  styleCopy = style;
+  mCopy = m;
+  optionsCopy = options;
+  if (UIAccessibilityIsInvertColorsEnabled() || ([optionsCopy traitCollection], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "userInterfaceStyle"), v11, v12 == 2))
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = self->_exceptions;
-    v14 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    analysis = self->_exceptions;
+    v14 = [(NSMutableArray *)analysis countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -124,18 +124,18 @@ LABEL_11:
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(analysis);
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
-          if ((objc_opt_respondsToSelector() & 1) != 0 && ![v18 shouldApplyDarkModeToDocumentStyle:v8 DOM:{v9, v23}])
+          if ((objc_opt_respondsToSelector() & 1) != 0 && ![v18 shouldApplyDarkModeToDocumentStyle:styleCopy DOM:{mCopy, v23}])
           {
             LOBYTE(v21) = 0;
             goto LABEL_14;
           }
         }
 
-        v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v15 = [(NSMutableArray *)analysis countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v15)
         {
           continue;
@@ -145,10 +145,10 @@ LABEL_11:
       }
     }
 
-    v13 = [v9 analysis];
-    v19 = [(NSMutableArray *)v13 conditionalObjectAnalysis];
-    v20 = [v19 documentStyleConditionTypes];
-    v21 = [v20 containsObject:SXConditionPreferredColorScheme] ^ 1;
+    analysis = [mCopy analysis];
+    conditionalObjectAnalysis = [(NSMutableArray *)analysis conditionalObjectAnalysis];
+    documentStyleConditionTypes = [conditionalObjectAnalysis documentStyleConditionTypes];
+    v21 = [documentStyleConditionTypes containsObject:SXConditionPreferredColorScheme] ^ 1;
 
 LABEL_14:
   }
@@ -161,11 +161,11 @@ LABEL_14:
   return v21;
 }
 
-- (BOOL)shouldApplyDarkModeToComponent:(id)a3 DOM:(id)a4
+- (BOOL)shouldApplyDarkModeToComponent:(id)component DOM:(id)m
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  mCopy = m;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -186,7 +186,7 @@ LABEL_14:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 shouldApplyDarkModeToComponent:v6 DOM:{v7, v19}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 shouldApplyDarkModeToComponent:componentCopy DOM:{mCopy, v19}])
         {
           LOBYTE(v17) = 0;
           goto LABEL_12;
@@ -203,10 +203,10 @@ LABEL_14:
     }
   }
 
-  v14 = [v7 analysis];
-  v15 = [v14 conditionalObjectAnalysis];
-  v16 = [v6 identifier];
-  v8 = [v15 conditionTypesUsedByComponent:v16];
+  analysis = [mCopy analysis];
+  conditionalObjectAnalysis = [analysis conditionalObjectAnalysis];
+  identifier = [componentCopy identifier];
+  v8 = [conditionalObjectAnalysis conditionTypesUsedByComponent:identifier];
 
   v17 = [(NSMutableArray *)v8 containsObject:SXConditionPreferredColorScheme]^ 1;
 LABEL_12:
@@ -214,11 +214,11 @@ LABEL_12:
   return v17;
 }
 
-- (BOOL)shouldApplyDarkModeToComponentStylesForComponent:(id)a3 DOM:(id)a4
+- (BOOL)shouldApplyDarkModeToComponentStylesForComponent:(id)component DOM:(id)m
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  mCopy = m;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -239,7 +239,7 @@ LABEL_12:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 shouldApplyDarkModeToComponentStylesForComponent:v6 DOM:{v7, v16}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 shouldApplyDarkModeToComponentStylesForComponent:componentCopy DOM:{mCopy, v16}])
         {
           v14 = 0;
           goto LABEL_12;
@@ -262,12 +262,12 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)shouldApplyDarkModeToComponentStyle:(id)a3 component:(id)a4 DOM:(id)a5
+- (BOOL)shouldApplyDarkModeToComponentStyle:(id)style component:(id)component DOM:(id)m
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  componentCopy = component;
+  mCopy = m;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -288,7 +288,7 @@ LABEL_12:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToComponentStyle:v8 component:v9 DOM:{v10, v22}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToComponentStyle:styleCopy component:componentCopy DOM:{mCopy, v22}])
         {
           LOBYTE(v20) = 0;
           goto LABEL_12;
@@ -305,10 +305,10 @@ LABEL_12:
     }
   }
 
-  v17 = [v10 analysis];
-  v18 = [v17 conditionalObjectAnalysis];
-  v19 = [v8 identifier];
-  v11 = [v18 conditionTypesUsedByComponentStyle:v19];
+  analysis = [mCopy analysis];
+  conditionalObjectAnalysis = [analysis conditionalObjectAnalysis];
+  identifier = [styleCopy identifier];
+  v11 = [conditionalObjectAnalysis conditionTypesUsedByComponentStyle:identifier];
 
   v20 = [(NSMutableArray *)v11 containsObject:SXConditionPreferredColorScheme]^ 1;
 LABEL_12:
@@ -316,11 +316,11 @@ LABEL_12:
   return v20;
 }
 
-- (BOOL)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)a3 DOM:(id)a4
+- (BOOL)shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:(id)component DOM:(id)m
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  mCopy = m;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -341,7 +341,7 @@ LABEL_12:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:v6 DOM:{v7, v16}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 shouldApplyDarkModeToTextStyleBackgroundColorsForComponent:componentCopy DOM:{mCopy, v16}])
         {
           v14 = 0;
           goto LABEL_12;
@@ -364,12 +364,12 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)shouldApplyDarkModeToBackgroundColorsOfComponentTextStyle:(id)a3 component:(id)a4 DOM:(id)a5
+- (BOOL)shouldApplyDarkModeToBackgroundColorsOfComponentTextStyle:(id)style component:(id)component DOM:(id)m
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  componentCopy = component;
+  mCopy = m;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -390,7 +390,7 @@ LABEL_12:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToBackgroundColorsOfComponentTextStyle:v8 component:v9 DOM:{v10, v22}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToBackgroundColorsOfComponentTextStyle:styleCopy component:componentCopy DOM:{mCopy, v22}])
         {
           LOBYTE(v20) = 0;
           goto LABEL_12;
@@ -407,10 +407,10 @@ LABEL_12:
     }
   }
 
-  v17 = [v10 analysis];
-  v18 = [v17 conditionalObjectAnalysis];
-  v19 = [v8 identifier];
-  v11 = [v18 conditionTypesUsedByComponentTextStyle:v19];
+  analysis = [mCopy analysis];
+  conditionalObjectAnalysis = [analysis conditionalObjectAnalysis];
+  identifier = [styleCopy identifier];
+  v11 = [conditionalObjectAnalysis conditionTypesUsedByComponentTextStyle:identifier];
 
   v20 = [(NSMutableArray *)v11 containsObject:SXConditionPreferredColorScheme]^ 1;
 LABEL_12:
@@ -418,12 +418,12 @@ LABEL_12:
   return v20;
 }
 
-- (BOOL)shouldApplyDarkModeToBackgroundColorsOfTextStyle:(id)a3 component:(id)a4 DOM:(id)a5
+- (BOOL)shouldApplyDarkModeToBackgroundColorsOfTextStyle:(id)style component:(id)component DOM:(id)m
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  componentCopy = component;
+  mCopy = m;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -444,7 +444,7 @@ LABEL_12:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToBackgroundColorsOfTextStyle:v8 component:v9 DOM:{v10, v22}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToBackgroundColorsOfTextStyle:styleCopy component:componentCopy DOM:{mCopy, v22}])
         {
           LOBYTE(v20) = 0;
           goto LABEL_12;
@@ -461,10 +461,10 @@ LABEL_12:
     }
   }
 
-  v17 = [v10 analysis];
-  v18 = [v17 conditionalObjectAnalysis];
-  v19 = [v8 identifier];
-  v11 = [v18 conditionTypesUsedByTextStyle:v19];
+  analysis = [mCopy analysis];
+  conditionalObjectAnalysis = [analysis conditionalObjectAnalysis];
+  identifier = [styleCopy identifier];
+  v11 = [conditionalObjectAnalysis conditionTypesUsedByTextStyle:identifier];
 
   v20 = [(NSMutableArray *)v11 containsObject:SXConditionPreferredColorScheme]^ 1;
 LABEL_12:
@@ -472,11 +472,11 @@ LABEL_12:
   return v20;
 }
 
-- (BOOL)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)a3 DOM:(id)a4
+- (BOOL)shouldApplyDarkModeToTextStyleForegroundColorsForComponent:(id)component DOM:(id)m
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  mCopy = m;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -497,7 +497,7 @@ LABEL_12:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 shouldApplyDarkModeToTextStyleForegroundColorsForComponent:v6 DOM:{v7, v16}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 shouldApplyDarkModeToTextStyleForegroundColorsForComponent:componentCopy DOM:{mCopy, v16}])
         {
           v14 = 0;
           goto LABEL_12;
@@ -520,12 +520,12 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)shouldApplyDarkModeToForegroundColorsOfComponentTextStyle:(id)a3 component:(id)a4 DOM:(id)a5
+- (BOOL)shouldApplyDarkModeToForegroundColorsOfComponentTextStyle:(id)style component:(id)component DOM:(id)m
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  componentCopy = component;
+  mCopy = m;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -546,7 +546,7 @@ LABEL_12:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToForegroundColorsOfComponentTextStyle:v8 component:v9 DOM:{v10, v22}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToForegroundColorsOfComponentTextStyle:styleCopy component:componentCopy DOM:{mCopy, v22}])
         {
           LOBYTE(v20) = 0;
           goto LABEL_12;
@@ -563,10 +563,10 @@ LABEL_12:
     }
   }
 
-  v17 = [v10 analysis];
-  v18 = [v17 conditionalObjectAnalysis];
-  v19 = [v8 identifier];
-  v11 = [v18 conditionTypesUsedByComponentTextStyle:v19];
+  analysis = [mCopy analysis];
+  conditionalObjectAnalysis = [analysis conditionalObjectAnalysis];
+  identifier = [styleCopy identifier];
+  v11 = [conditionalObjectAnalysis conditionTypesUsedByComponentTextStyle:identifier];
 
   v20 = [(NSMutableArray *)v11 containsObject:SXConditionPreferredColorScheme]^ 1;
 LABEL_12:
@@ -574,12 +574,12 @@ LABEL_12:
   return v20;
 }
 
-- (BOOL)shouldApplyDarkModeToForegroundColorsOfTextStyle:(id)a3 component:(id)a4 DOM:(id)a5
+- (BOOL)shouldApplyDarkModeToForegroundColorsOfTextStyle:(id)style component:(id)component DOM:(id)m
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  componentCopy = component;
+  mCopy = m;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -600,7 +600,7 @@ LABEL_12:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToForegroundColorsOfTextStyle:v8 component:v9 DOM:{v10, v22}])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v16 shouldApplyDarkModeToForegroundColorsOfTextStyle:styleCopy component:componentCopy DOM:{mCopy, v22}])
         {
           LOBYTE(v20) = 0;
           goto LABEL_12;
@@ -617,10 +617,10 @@ LABEL_12:
     }
   }
 
-  v17 = [v10 analysis];
-  v18 = [v17 conditionalObjectAnalysis];
-  v19 = [v8 identifier];
-  v11 = [v18 conditionTypesUsedByTextStyle:v19];
+  analysis = [mCopy analysis];
+  conditionalObjectAnalysis = [analysis conditionalObjectAnalysis];
+  identifier = [styleCopy identifier];
+  v11 = [conditionalObjectAnalysis conditionTypesUsedByTextStyle:identifier];
 
   v20 = [(NSMutableArray *)v11 containsObject:SXConditionPreferredColorScheme]^ 1;
 LABEL_12:

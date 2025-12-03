@@ -5,9 +5,9 @@
 - (FCArticleController)articleController;
 - (FCAssetManager)assetManager;
 - (FCBackgroundTaskable)backgroundTaskable;
-- (FCContentContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentDatabase:(id)a5 contentHostDirectory:(id)a6 networkBehaviorMonitor:(id)a7 networkReachability:(id)a8 setupCustomURLProtocols:(BOOL)a9 desiredHeadlineFieldOptions:(unint64_t)a10 feedUsage:(int64_t)a11 assetKeyManagerDelegate:(id)a12 appActivityMonitor:(id)a13 backgroundTaskable:(id)a14 pptContext:(id)a15;
-- (FCContentContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentHostDirectory:(id)a5 networkBehaviorMonitor:(id)a6 desiredHeadlineFieldOptions:(unint64_t)a7 feedUsage:(int64_t)a8 appActivityMonitor:(id)a9 backgroundTaskable:(id)a10 pptContext:(id)a11;
-- (FCContentContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentHostDirectory:(id)a5 networkBehaviorMonitor:(id)a6 networkReachability:(id)a7 desiredHeadlineFieldOptions:(unint64_t)a8 feedUsage:(int64_t)a9 assetKeyManagerDelegate:(id)a10 appActivityMonitor:(id)a11 backgroundTaskable:(id)a12 pptContext:(id)a13;
+- (FCContentContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentDatabase:(id)database contentHostDirectory:(id)directory networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability setupCustomURLProtocols:(BOOL)protocols desiredHeadlineFieldOptions:(unint64_t)self0 feedUsage:(int64_t)self1 assetKeyManagerDelegate:(id)self2 appActivityMonitor:(id)self3 backgroundTaskable:(id)self4 pptContext:(id)self5;
+- (FCContentContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentHostDirectory:(id)directory networkBehaviorMonitor:(id)monitor desiredHeadlineFieldOptions:(unint64_t)options feedUsage:(int64_t)usage appActivityMonitor:(id)activityMonitor backgroundTaskable:(id)self0 pptContext:(id)self1;
+- (FCContentContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentHostDirectory:(id)directory networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability desiredHeadlineFieldOptions:(unint64_t)options feedUsage:(int64_t)usage assetKeyManagerDelegate:(id)self0 appActivityMonitor:(id)self1 backgroundTaskable:(id)self2 pptContext:(id)self3;
 - (FCContentContextInternal)internalContentContext;
 - (FCCoreConfigurationManager)configurationManager;
 - (FCFeedDatabase)feedDatabase;
@@ -19,19 +19,19 @@
 - (NSString)contentEnvironmentToken;
 - (NSString)contentStoreFrontID;
 - (NSString)supportedContentStoreFrontID;
-- (id)convertRecords:(id)a3;
-- (id)interestTokenForContentManifest:(id)a3;
+- (id)convertRecords:(id)records;
+- (id)interestTokenForContentManifest:(id)manifest;
 - (id)magazinesConfigurationManager;
 - (id)news_core_ConfigurationManager;
-- (id)recordSourceWithSchema:(id)a3;
-- (id)recordTreeSourceWithRecordSources:(id)a3;
+- (id)recordSourceWithSchema:(id)schema;
+- (id)recordTreeSourceWithRecordSources:(id)sources;
 - (int64_t)storageSize;
 - (void)_updateReachabilityGivenRequirements;
-- (void)configurationManager:(id)a3 configurationDidChange:(id)a4;
-- (void)configurationManagerScienceExperimentFieldsDidChange:(id)a3;
+- (void)configurationManager:(id)manager configurationDidChange:(id)change;
+- (void)configurationManagerScienceExperimentFieldsDidChange:(id)change;
 - (void)dealloc;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3 exceptForFlusher:(id)a4;
-- (void)ppt_overrideFeedEndpoint:(int64_t)a3;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold exceptForFlusher:(id)flusher;
+- (void)ppt_overrideFeedEndpoint:(int64_t)endpoint;
 - (void)ppt_prewarmFeedDatabase;
 - (void)prewarmStores;
 - (void)save;
@@ -83,9 +83,9 @@
 - (NSString)contentStoreFrontID
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 contentStoreFrontID];
+  contentStoreFrontID = [v2 contentStoreFrontID];
 
-  return v3;
+  return contentStoreFrontID;
 }
 
 - (id)news_core_ConfigurationManager
@@ -259,8 +259,8 @@ LABEL_6:
 - (void)_updateReachabilityGivenRequirements
 {
   v4 = +[FCNetworkReachability sharedNetworkReachability];
-  v3 = [(FCContentContext *)self supportedCountryNetworkReachabilityRequirement];
-  [v4 setAccessRestrictedBecauseOfCountry:{objc_msgSend(v3, "isSatisfied") ^ 1}];
+  supportedCountryNetworkReachabilityRequirement = [(FCContentContext *)self supportedCountryNetworkReachabilityRequirement];
+  [v4 setAccessRestrictedBecauseOfCountry:{objc_msgSend(supportedCountryNetworkReachabilityRequirement, "isSatisfied") ^ 1}];
 }
 
 - (NSString)contentDirectory
@@ -488,41 +488,41 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
 
 - (FCFeedDatabase)feedDatabase
 {
-  v2 = [(FCContentContext *)self internalContentContext];
-  v3 = [v2 feedDatabase];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  feedDatabase = [internalContentContext feedDatabase];
 
-  return v3;
+  return feedDatabase;
 }
 
-- (FCContentContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentHostDirectory:(id)a5 networkBehaviorMonitor:(id)a6 desiredHeadlineFieldOptions:(unint64_t)a7 feedUsage:(int64_t)a8 appActivityMonitor:(id)a9 backgroundTaskable:(id)a10 pptContext:(id)a11
+- (FCContentContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentHostDirectory:(id)directory networkBehaviorMonitor:(id)monitor desiredHeadlineFieldOptions:(unint64_t)options feedUsage:(int64_t)usage appActivityMonitor:(id)activityMonitor backgroundTaskable:(id)self0 pptContext:(id)self1
 {
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  contextCopy = context;
+  taskableCopy = taskable;
+  activityMonitorCopy = activityMonitor;
+  monitorCopy = monitor;
+  directoryCopy = directory;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v24 = +[FCNetworkReachability sharedNetworkReachability];
-  v25 = [(FCContentContext *)self initWithConfiguration:v23 configurationManager:v22 contentHostDirectory:v21 networkBehaviorMonitor:v20 networkReachability:v24 desiredHeadlineFieldOptions:a7 feedUsage:a8 assetKeyManagerDelegate:0 appActivityMonitor:v19 backgroundTaskable:v18 pptContext:v17];
+  v25 = [(FCContentContext *)self initWithConfiguration:configurationCopy configurationManager:managerCopy contentHostDirectory:directoryCopy networkBehaviorMonitor:monitorCopy networkReachability:v24 desiredHeadlineFieldOptions:options feedUsage:usage assetKeyManagerDelegate:0 appActivityMonitor:activityMonitorCopy backgroundTaskable:taskableCopy pptContext:contextCopy];
 
   return v25;
 }
 
-- (FCContentContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentHostDirectory:(id)a5 networkBehaviorMonitor:(id)a6 networkReachability:(id)a7 desiredHeadlineFieldOptions:(unint64_t)a8 feedUsage:(int64_t)a9 assetKeyManagerDelegate:(id)a10 appActivityMonitor:(id)a11 backgroundTaskable:(id)a12 pptContext:(id)a13
+- (FCContentContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentHostDirectory:(id)directory networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability desiredHeadlineFieldOptions:(unint64_t)options feedUsage:(int64_t)usage assetKeyManagerDelegate:(id)self0 appActivityMonitor:(id)self1 backgroundTaskable:(id)self2 pptContext:(id)self3
 {
   v45 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v33 = a10;
-  v32 = a11;
-  v22 = a12;
-  v23 = a13;
-  v31 = v19;
-  if (!v19 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  managerCopy = manager;
+  directoryCopy = directory;
+  monitorCopy = monitor;
+  reachabilityCopy = reachability;
+  delegateCopy = delegate;
+  activityMonitorCopy = activityMonitor;
+  taskableCopy = taskable;
+  contextCopy = context;
+  v31 = directoryCopy;
+  if (!directoryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "contentHostDirectory != nil"];
     *buf = 136315906;
@@ -537,32 +537,32 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
   }
 
   v24 = [FCCKContentDatabase alloc];
-  v25 = [v17 contentContainerIdentifier];
-  v26 = -[FCCKContentDatabase initWithContainerIdentifier:productionEnvironment:networkBehaviorMonitor:networkReachability:configurationManager:](v24, "initWithContainerIdentifier:productionEnvironment:networkBehaviorMonitor:networkReachability:configurationManager:", v25, [v17 isProductionContentEnvironment], v20, v21, v18);
+  contentContainerIdentifier = [configurationCopy contentContainerIdentifier];
+  v26 = -[FCCKContentDatabase initWithContainerIdentifier:productionEnvironment:networkBehaviorMonitor:networkReachability:configurationManager:](v24, "initWithContainerIdentifier:productionEnvironment:networkBehaviorMonitor:networkReachability:configurationManager:", contentContainerIdentifier, [configurationCopy isProductionContentEnvironment], monitorCopy, reachabilityCopy, managerCopy);
 
   LOBYTE(v30) = 1;
-  v36 = [(FCContentContext *)self initWithConfiguration:v17 configurationManager:v18 contentDatabase:v26 contentHostDirectory:v31 networkBehaviorMonitor:v20 networkReachability:v21 setupCustomURLProtocols:v30 desiredHeadlineFieldOptions:a8 feedUsage:a9 assetKeyManagerDelegate:v33 appActivityMonitor:v32 backgroundTaskable:v22 pptContext:v23];
+  v36 = [(FCContentContext *)self initWithConfiguration:configurationCopy configurationManager:managerCopy contentDatabase:v26 contentHostDirectory:v31 networkBehaviorMonitor:monitorCopy networkReachability:reachabilityCopy setupCustomURLProtocols:v30 desiredHeadlineFieldOptions:options feedUsage:usage assetKeyManagerDelegate:delegateCopy appActivityMonitor:activityMonitorCopy backgroundTaskable:taskableCopy pptContext:contextCopy];
 
   v27 = *MEMORY[0x1E69E9840];
   return v36;
 }
 
-- (FCContentContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentDatabase:(id)a5 contentHostDirectory:(id)a6 networkBehaviorMonitor:(id)a7 networkReachability:(id)a8 setupCustomURLProtocols:(BOOL)a9 desiredHeadlineFieldOptions:(unint64_t)a10 feedUsage:(int64_t)a11 assetKeyManagerDelegate:(id)a12 appActivityMonitor:(id)a13 backgroundTaskable:(id)a14 pptContext:(id)a15
+- (FCContentContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentDatabase:(id)database contentHostDirectory:(id)directory networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability setupCustomURLProtocols:(BOOL)protocols desiredHeadlineFieldOptions:(unint64_t)self0 feedUsage:(int64_t)self1 assetKeyManagerDelegate:(id)self2 appActivityMonitor:(id)self3 backgroundTaskable:(id)self4 pptContext:(id)self5
 {
   v239 = *MEMORY[0x1E69E9840];
-  v226 = a3;
-  obj = a4;
-  v21 = a4;
-  v227 = a5;
-  v22 = a6;
-  v225 = a7;
-  v216 = a8;
-  v224 = a8;
-  v223 = a12;
-  v229 = a13;
-  v23 = a14;
-  v219 = a15;
-  if (!v21 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  obj = manager;
+  managerCopy = manager;
+  databaseCopy = database;
+  directoryCopy = directory;
+  monitorCopy = monitor;
+  reachabilityCopy = reachability;
+  reachabilityCopy2 = reachability;
+  delegateCopy = delegate;
+  activityMonitorCopy = activityMonitor;
+  taskableCopy = taskable;
+  contextCopy = context;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v196 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "configurationManager != nil"];
     *buf = 136315906;
@@ -576,9 +576,9 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v24 = v227;
-  v25 = v22;
-  if (!v22 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  v24 = databaseCopy;
+  v25 = directoryCopy;
+  if (!directoryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v197 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "contentHostDirectory != nil"];
     *buf = 136315906;
@@ -591,48 +591,48 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     *&v238[6] = v197;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v24 = v227;
+    v24 = databaseCopy;
   }
 
   v232.receiver = self;
   v232.super_class = FCContentContext;
   v26 = [(FCContentContext *)&v232 init];
   v27 = v26;
-  v228 = v23;
+  v228 = taskableCopy;
   if (v26)
   {
-    objc_storeStrong(&v26->_contextConfiguration, a3);
-    v28 = [v21 configuration];
-    [v24 setShouldUseSecureConnectionForCKAssetURLs:{objc_msgSend(v28, "useSecureConnectionForAssets")}];
+    objc_storeStrong(&v26->_contextConfiguration, configuration);
+    configuration = [managerCopy configuration];
+    [v24 setShouldUseSecureConnectionForCKAssetURLs:{objc_msgSend(configuration, "useSecureConnectionForAssets")}];
     if (objc_opt_respondsToSelector())
     {
-      [v24 setMaximumRetryAfterForCK:{objc_msgSend(v28, "maximumRetryAfterForCK")}];
+      [v24 setMaximumRetryAfterForCK:{objc_msgSend(configuration, "maximumRetryAfterForCK")}];
     }
 
-    v29 = [v226 contentContainerCombinationIdentifier];
-    v30 = [v22 URLByAppendingPathComponent:v29 isDirectory:1];
+    contentContainerCombinationIdentifier = [configurationCopy contentContainerCombinationIdentifier];
+    v30 = [directoryCopy URLByAppendingPathComponent:contentContainerCombinationIdentifier isDirectory:1];
 
     objc_storeStrong(&v27->_configurationManager, obj);
-    [v21 addObserver:v27];
-    objc_storeStrong(&v27->_pptContext, a15);
-    objc_storeWeak(&v27->_backgroundTaskable, v23);
-    objc_storeStrong(&v27->_contentHostDirectoryURL, a6);
-    v31 = [v30 path];
-    v32 = [v31 copy];
+    [managerCopy addObserver:v27];
+    objc_storeStrong(&v27->_pptContext, context);
+    objc_storeWeak(&v27->_backgroundTaskable, taskableCopy);
+    objc_storeStrong(&v27->_contentHostDirectoryURL, directory);
+    path = [v30 path];
+    v32 = [path copy];
     contentDirectory = v27->_contentDirectory;
     v27->_contentDirectory = v32;
 
     v34 = [v30 URLByAppendingPathComponent:@"av-assets" isDirectory:1];
-    v35 = [MEMORY[0x1E696AC08] defaultManager];
-    [v35 createDirectoryAtURL:v34 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:v34 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v36 = [[FCAVAssetKeyService alloc] initWithConfigurationManager:v21];
+    v36 = [[FCAVAssetKeyService alloc] initWithConfigurationManager:managerCopy];
     avAssetKeyService = v27->_avAssetKeyService;
     v27->_avAssetKeyService = v36;
 
     v38 = [FCAVPersistentAssetKeyCache alloc];
-    v39 = [v34 path];
-    v40 = [(FCAVPersistentAssetKeyCache *)v38 initWithCacheDirectory:v39];
+    path2 = [v34 path];
+    v40 = [(FCAVPersistentAssetKeyCache *)v38 initWithCacheDirectory:path2];
     avAssetKeyCache = v27->_avAssetKeyCache;
     v27->_avAssetKeyCache = v40;
 
@@ -641,23 +641,23 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     v27->_avAssetKeyManager = v42;
 
     v44 = [FCAVAssetCache alloc];
-    v45 = [v34 path];
-    v46 = [(FCAVAssetCache *)v44 initWithCacheDirectory:v45];
+    path3 = [v34 path];
+    v46 = [(FCAVAssetCache *)v44 initWithCacheDirectory:path3];
     avAssetCache = v27->_avAssetCache;
     v27->_avAssetCache = v46;
 
-    v48 = [[FCAVAssetDownloadManager alloc] initWithAssetCache:v27->_avAssetKeyCache keyCache:v224 networkReachability:?];
+    v48 = [[FCAVAssetDownloadManager alloc] initWithAssetCache:v27->_avAssetKeyCache keyCache:reachabilityCopy2 networkReachability:?];
     avAssetDownloadManager = v27->_avAssetDownloadManager;
     v27->_avAssetDownloadManager = v48;
 
     v50 = [FCAVAssetResourceLoader alloc];
     v205 = v34;
-    v51 = [v34 path];
-    v52 = [(FCAVAssetResourceLoader *)v50 initWithCacheDirectory:v51 networkReachability:v224];
+    path4 = [v34 path];
+    v52 = [(FCAVAssetResourceLoader *)v50 initWithCacheDirectory:path4 networkReachability:reachabilityCopy2];
     avAssetResourceLoader = v27->_avAssetResourceLoader;
     v27->_avAssetResourceLoader = v52;
 
-    objc_storeStrong(&v27->_networkReachability, v216);
+    objc_storeStrong(&v27->_networkReachability, reachabilityCopy);
     v54 = [[FCAVAssetFactory alloc] initWithAssetCache:v27->_avAssetKeyCache assetKeyCache:v27->_avAssetKeyManager assetKeyManager:v27->_avAssetResourceLoader assetResourceLoader:?];
     avAssetFactory = v27->_avAssetFactory;
     v27->_avAssetFactory = v54;
@@ -667,30 +667,30 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     v27->_avAssetPrewarmer = v56;
 
     v58 = [v30 URLByAppendingPathComponent:@"tabi-resources" isDirectory:1];
-    v59 = [v58 path];
+    path5 = [v58 path];
     tabiResourcesContentDirectory = v27->_tabiResourcesContentDirectory;
-    v27->_tabiResourcesContentDirectory = v59;
+    v27->_tabiResourcesContentDirectory = path5;
 
     v204 = v58;
-    v61 = [v58 path];
+    path6 = [v58 path];
     tabiResourcesContentDirectoryLegacy = v27->_tabiResourcesContentDirectoryLegacy;
-    v27->_tabiResourcesContentDirectoryLegacy = v61;
+    v27->_tabiResourcesContentDirectoryLegacy = path6;
 
     v63 = [v30 URLByAppendingPathComponent:@"tabi-models" isDirectory:1];
-    v64 = [v63 path];
+    path7 = [v63 path];
     tabiModelsContentDirectory = v27->_tabiModelsContentDirectory;
-    v27->_tabiModelsContentDirectory = v64;
+    v27->_tabiModelsContentDirectory = path7;
 
     v203 = v63;
-    v66 = [v63 path];
+    path8 = [v63 path];
     tabiModelsContentDirectoryLegacy = v27->_tabiModelsContentDirectoryLegacy;
-    v27->_tabiModelsContentDirectoryLegacy = v66;
+    v27->_tabiModelsContentDirectoryLegacy = path8;
 
     v221 = v30;
     v202 = [v30 URLByAppendingPathComponent:@"tabi-requests" isDirectory:1];
-    v68 = [v202 path];
+    path9 = [v202 path];
     tabiRequestsContentDirectory = v27->_tabiRequestsContentDirectory;
-    v27->_tabiRequestsContentDirectory = v68;
+    v27->_tabiRequestsContentDirectory = path9;
 
     v70 = v25;
     v230[0] = MEMORY[0x1E69E9820];
@@ -700,104 +700,104 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     v71 = v27;
     v231 = v71;
     [FCTaskScheduler scheduleLowPriorityBlock:v230];
-    v72 = [[FCAssetKeyService alloc] initWithConfigurationManager:v21];
+    v72 = [[FCAssetKeyService alloc] initWithConfigurationManager:managerCopy];
     assetKeyService = v71->_assetKeyService;
     v71->_assetKeyService = v72;
 
     v74 = [FCPersistentAssetKeyCache alloc];
-    v75 = [v70 path];
-    v76 = [(FCPersistentAssetKeyCache *)&v74->super.isa initWithCacheDirectory:v75 cacheName:@"shared-assets-lru" backgroundTaskable:v228];
+    path10 = [v70 path];
+    v76 = [(FCPersistentAssetKeyCache *)&v74->super.isa initWithCacheDirectory:path10 cacheName:@"shared-assets-lru" backgroundTaskable:v228];
     assetKeyCache = v71->_assetKeyCache;
     v71->_assetKeyCache = v76;
 
-    v78 = [[FCAssetKeyManager alloc] initWithService:v71->_assetKeyCache cache:v223 delegate:?];
+    v78 = [[FCAssetKeyManager alloc] initWithService:v71->_assetKeyCache cache:delegateCopy delegate:?];
     assetKeyManager = v71->_assetKeyManager;
     v71->_assetKeyManager = v78;
 
     v80 = [FCAssetManager alloc];
-    v81 = [v70 path];
-    v82 = [(FCAssetManager *)v80 initWithName:@"shared-assets" directory:v81 keyManager:v71->_assetKeyManager avAssetFactory:v27->_avAssetFactory resourceURLGenerator:v24 networkBehaviorMonitor:v225 networkReachability:v224];
+    path11 = [v70 path];
+    v82 = [(FCAssetManager *)v80 initWithName:@"shared-assets" directory:path11 keyManager:v71->_assetKeyManager avAssetFactory:v27->_avAssetFactory resourceURLGenerator:v24 networkBehaviorMonitor:monitorCopy networkReachability:reachabilityCopy2];
 
-    v83 = [v28 useSecureConnectionForAssets];
+    useSecureConnectionForAssets = [configuration useSecureConnectionForAssets];
     if (v82)
     {
-      v82->_shouldUseSecureConnectionForCKAssetDownloads = v83;
+      v82->_shouldUseSecureConnectionForCKAssetDownloads = useSecureConnectionForAssets;
     }
 
     v206 = v70;
     objc_storeStrong(&v71->_assetManager, v82);
     if ([(FCAssetKeyCacheType *)v71->_assetKeyCache conformsToProtocol:&unk_1F2E773E8])
     {
-      [v229 addObserver:v71->_assetKeyCache];
+      [activityMonitorCopy addObserver:v71->_assetKeyCache];
     }
 
     v84 = objc_opt_new();
     [v84 setContentDatabase:v24];
     objc_storeStrong(&v71->_internalContentContext, v84);
-    if (a9)
+    if (protocols)
     {
       [FCExcerptURLProtocol setupWithArticleDatabase:v24];
       [FCRecordFieldURLProtocol setupWithArticleDatabase:v24];
-      v85 = [v70 path];
-      [FCPuzzleThumbnailURLProtocol setupWithArticleDatabase:v24 cacheDirectory:v85];
+      path12 = [v70 path];
+      [FCPuzzleThumbnailURLProtocol setupWithArticleDatabase:v24 cacheDirectory:path12];
     }
 
-    v86 = [v30 path];
-    v217 = [v28 experimentalizableFieldPostfix];
-    v87 = [v28 currentTreatment];
-    v214 = [v87 stringValue];
+    path13 = [v30 path];
+    experimentalizableFieldPostfix = [configuration experimentalizableFieldPostfix];
+    currentTreatment = [configuration currentTreatment];
+    stringValue = [currentTreatment stringValue];
 
-    if ([v28 shouldShowAlternateHeadlines])
+    if ([configuration shouldShowAlternateHeadlines])
     {
-      v88 = a10 | 0x10000000;
+      optionsCopy = options | 0x10000000;
     }
 
     else
     {
-      v88 = a10;
+      optionsCopy = options;
     }
 
     v201 = v82;
     if (objc_opt_respondsToSelector())
     {
       v89 = v228;
-      if ([v28 articleEmbeddingsEnabled])
+      if ([configuration articleEmbeddingsEnabled])
       {
-        v90 = [v28 newsPersonalizationConfiguration];
-        v91 = [v90 articleEmbeddingsConfiguration];
+        newsPersonalizationConfiguration = [configuration newsPersonalizationConfiguration];
+        articleEmbeddingsConfiguration = [newsPersonalizationConfiguration articleEmbeddingsConfiguration];
 
-        v92 = [v91 titleEmbeddingConfiguration];
-        v93 = v21;
-        v94 = [v92 shouldFetch];
+        titleEmbeddingConfiguration = [articleEmbeddingsConfiguration titleEmbeddingConfiguration];
+        v93 = managerCopy;
+        shouldFetch = [titleEmbeddingConfiguration shouldFetch];
 
-        v95 = v94 == 0;
-        v21 = v93;
+        v95 = shouldFetch == 0;
+        managerCopy = v93;
         if (v95)
         {
-          v96 = v88;
+          v96 = optionsCopy;
         }
 
         else
         {
-          v96 = v88 | 0x800000000;
+          v96 = optionsCopy | 0x800000000;
         }
 
-        v97 = [v91 bodyEmbeddingConfiguration];
-        v98 = [v97 shouldFetch];
+        bodyEmbeddingConfiguration = [articleEmbeddingsConfiguration bodyEmbeddingConfiguration];
+        shouldFetch2 = [bodyEmbeddingConfiguration shouldFetch];
 
-        if (v98)
+        if (shouldFetch2)
         {
-          v88 = v96 | 0x1000000000;
+          optionsCopy = v96 | 0x1000000000;
         }
 
         else
         {
-          v88 = v96;
+          optionsCopy = v96;
         }
 
         v89 = v228;
 
-        v24 = v227;
+        v24 = databaseCopy;
       }
     }
 
@@ -808,7 +808,7 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
 
     if (objc_opt_respondsToSelector())
     {
-      obja = [v28 engagementCohortsExpField];
+      obja = [configuration engagementCohortsExpField];
     }
 
     else
@@ -818,12 +818,12 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
 
     if (objc_opt_respondsToSelector())
     {
-      v211 = [v28 conversionCohortsExpField];
+      conversionCohortsExpField = [configuration conversionCohortsExpField];
     }
 
     else
     {
-      v211 = 0;
+      conversionCohortsExpField = 0;
     }
 
     v99 = [FCArticleRecordSource alloc];
@@ -832,20 +832,20 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     v102 = 0.0;
     if (v100)
     {
-      [v28 defaultTTLForArticleRecords];
+      [configuration defaultTTLForArticleRecords];
     }
 
-    v103 = [(FCArticleRecordSource *)v99 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v88 & 0xF | (16 * ((v88 >> 6) & 1)) | (v88 >> 7) & 0x240000 | (v88 >> 5) & 0x1FE0 | (v88 >> 7) & 0x371BE000 | (v88 >> 24) & 0x400 desiredArticleRecordFieldOptions:v217 experimentalizableFieldsPostfix:v102 engagementCohortsExpField:obja conversionCohortsExpField:v211 activeTreatmentID:v214];
+    v103 = [(FCArticleRecordSource *)v99 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:optionsCopy & 0xF | (16 * ((optionsCopy >> 6) & 1)) | (optionsCopy >> 7) & 0x240000 | (optionsCopy >> 5) & 0x1FE0 | (optionsCopy >> 7) & 0x371BE000 | (optionsCopy >> 24) & 0x400 desiredArticleRecordFieldOptions:experimentalizableFieldPostfix experimentalizableFieldsPostfix:v102 engagementCohortsExpField:obja conversionCohortsExpField:conversionCohortsExpField activeTreatmentID:stringValue];
     [v84 setArticleRecordSource:v103];
 
     v104 = [FCPurchaseLookupRecordSource alloc];
     if (objc_opt_respondsToSelector())
     {
-      [v28 defaultTTLForPurchaseLookupRecords];
+      [configuration defaultTTLForPurchaseLookupRecords];
       v101 = v105;
     }
 
-    v106 = [(FCRecordSource *)v104 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v101];
+    v106 = [(FCRecordSource *)v104 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:v101];
     [v84 setPurchaseLookupRecordSource:v106];
 
     v107 = [FCTagRecordSource alloc];
@@ -853,20 +853,20 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     v109 = 0.0;
     if (objc_opt_respondsToSelector())
     {
-      [v28 defaultTTLForTagRecords];
+      [configuration defaultTTLForTagRecords];
       v109 = v110;
     }
 
-    v210 = [(FCTagRecordSource *)v107 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:FCDesiredTagRecordFieldOptionsWithHeadlineFieldOptions(v88) desiredTagRecordFieldOptions:v109];
+    v210 = [(FCTagRecordSource *)v107 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:FCDesiredTagRecordFieldOptionsWithHeadlineFieldOptions(optionsCopy) desiredTagRecordFieldOptions:v109];
     [v84 setTagRecordSource:?];
     v111 = [FCSportsEventRecordSource alloc];
     if (objc_opt_respondsToSelector())
     {
-      [v28 defaultTTLForSportsEventRecords];
+      [configuration defaultTTLForSportsEventRecords];
       v108 = v112;
     }
 
-    v209 = [(FCRecordSource *)v111 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v108];
+    v209 = [(FCRecordSource *)v111 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:v108];
     [v84 setSportsEventRecordSource:?];
     v113 = [FCRecipeRecordSource alloc];
     v114 = objc_opt_respondsToSelector();
@@ -874,24 +874,24 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     v116 = 0.0;
     if (v114)
     {
-      [v28 defaultTTLForRecipeRecords];
+      [configuration defaultTTLForRecipeRecords];
     }
 
-    v200 = [(FCRecordSource *)v113 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v116];
+    v200 = [(FCRecordSource *)v113 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:v116];
     [v84 setRecipeRecordSource:?];
     v117 = [FCRecipeListRecordSource alloc];
     if (objc_opt_respondsToSelector())
     {
-      [v28 defaultTTLForRecipeListRecords];
+      [configuration defaultTTLForRecipeListRecords];
       v115 = v118;
     }
 
-    v199 = [(FCRecordSource *)v117 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v115];
+    v199 = [(FCRecordSource *)v117 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:v115];
     [v84 setRecipeListRecordSource:?];
-    v119 = [(FCRecordSource *)[FCTagListRecordSource alloc] initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89];
+    v119 = [(FCRecordSource *)[FCTagListRecordSource alloc] initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89];
     [v84 setTagListRecordSource:v119];
 
-    v120 = [(FCRecordSource *)[FCResourceRecordSource alloc] initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89];
+    v120 = [(FCRecordSource *)[FCResourceRecordSource alloc] initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89];
     [v84 setResourceRecordSource:v120];
 
     v121 = [FCArticleListRecordSource alloc];
@@ -900,30 +900,30 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     v124 = 0.0;
     if (v122)
     {
-      [v28 defaultTTLForArticleListRecords];
+      [configuration defaultTTLForArticleListRecords];
     }
 
-    v125 = [(FCRecordSource *)v121 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v124];
+    v125 = [(FCRecordSource *)v121 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:v124];
     [v84 setArticleListRecordSource:v125];
 
-    v198 = [(FCRecordSource *)[FCChannelMembershipRecordSource alloc] initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89];
+    v198 = [(FCRecordSource *)[FCChannelMembershipRecordSource alloc] initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89];
     v126 = [[FCChannelMembershipController alloc] initWithChannelMembershipRecordSource:v198];
     [v84 setChannelMembershipController:v126];
 
-    v127 = [(FCRecordSource *)[FCForYouConfigRecordSource alloc] initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89];
+    v127 = [(FCRecordSource *)[FCForYouConfigRecordSource alloc] initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89];
     [v84 setForYouConfigRecordSource:v127];
 
-    v128 = [(FCRecordSource *)[FCWidgetSectionConfigRecordSource alloc] initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89];
+    v128 = [(FCRecordSource *)[FCWidgetSectionConfigRecordSource alloc] initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89];
     [v84 setWidgetSectionConfigRecordSource:v128];
 
     v129 = [FCIssueRecordSource alloc];
     if (objc_opt_respondsToSelector())
     {
-      [v28 defaultTTLForIssueRecords];
+      [configuration defaultTTLForIssueRecords];
       v123 = v130;
     }
 
-    v131 = [(FCRecordSource *)v129 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v123];
+    v131 = [(FCRecordSource *)v129 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:v123];
     [v84 setIssueRecordSource:v131];
 
     v132 = [FCIssueListRecordSource alloc];
@@ -932,62 +932,62 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     v135 = 0.0;
     if (v133)
     {
-      [v28 defaultTTLForIssueListRecords];
+      [configuration defaultTTLForIssueListRecords];
     }
 
-    v136 = [(FCRecordSource *)v132 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v135];
+    v136 = [(FCRecordSource *)v132 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:v135];
     [v84 setIssueListRecordSource:v136];
 
-    v137 = [(FCRecordSource *)[FCAudioConfigRecordSource alloc] initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89];
+    v137 = [(FCRecordSource *)[FCAudioConfigRecordSource alloc] initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89];
     [v84 setAudioConfigRecordSource:v137];
 
     v138 = [FCPuzzleRecordSource alloc];
     if (objc_opt_respondsToSelector())
     {
-      [v28 defaultTTLForPuzzleRecords];
+      [configuration defaultTTLForPuzzleRecords];
       v134 = v139;
     }
 
-    v208 = [(FCRecordSource *)v138 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v89 defaultTTL:v134];
+    v208 = [(FCRecordSource *)v138 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v89 defaultTTL:v134];
     [v84 setPuzzleRecordSource:?];
     v140 = [FCPuzzleTypeRecordSource alloc];
     v141 = objc_opt_respondsToSelector();
     v142 = 0.0;
     if (v141)
     {
-      [v28 defaultTTLForPuzzleTypeRecords];
+      [configuration defaultTTLForPuzzleTypeRecords];
     }
 
-    v207 = [(FCRecordSource *)v140 initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v228 defaultTTL:v142];
+    v207 = [(FCRecordSource *)v140 initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v228 defaultTTL:v142];
     [v84 setPuzzleTypeRecordSource:?];
-    v143 = [(FCRecordSource *)[FCNotificationItemRecordSource alloc] initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v228];
+    v143 = [(FCRecordSource *)[FCNotificationItemRecordSource alloc] initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v228];
     [v84 setNotificationItemRecordSource:v143];
 
-    v144 = [(FCRecordSource *)[FCNotificationItemListRecordSource alloc] initWithContentDatabase:v24 contentDirectory:v86 appActivityMonitor:v229 backgroundTaskable:v228];
+    v144 = [(FCRecordSource *)[FCNotificationItemListRecordSource alloc] initWithContentDatabase:v24 contentDirectory:path13 appActivityMonitor:activityMonitorCopy backgroundTaskable:v228];
     [v84 setNotificationItemListRecordSource:v144];
 
-    v145 = [(FCContentContext *)v71 assetKeyCache];
-    [v84 setAssetKeyCache:v145];
+    assetKeyCache = [(FCContentContext *)v71 assetKeyCache];
+    [v84 setAssetKeyCache:assetKeyCache];
 
-    v146 = [(FCContentContext *)v71 assetKeyManager];
-    [v84 setAssetKeyManager:v146];
+    assetKeyManager = [(FCContentContext *)v71 assetKeyManager];
+    [v84 setAssetKeyManager:assetKeyManager];
 
-    v147 = [(FCContentContext *)v71 avAssetFactory];
-    [v84 setAvAssetFactory:v147];
+    avAssetFactory = [(FCContentContext *)v71 avAssetFactory];
+    [v84 setAvAssetFactory:avAssetFactory];
 
-    v148 = [(FCContentContext *)v71 avAssetCache];
-    [v84 setAvAssetCache:v148];
+    avAssetCache = [(FCContentContext *)v71 avAssetCache];
+    [v84 setAvAssetCache:avAssetCache];
 
-    v149 = [(FCContentContext *)v71 avAssetKeyCache];
-    [v84 setAvAssetKeyCache:v149];
+    avAssetKeyCache = [(FCContentContext *)v71 avAssetKeyCache];
+    [v84 setAvAssetKeyCache:avAssetKeyCache];
 
-    v150 = [(FCContentContext *)v71 avAssetDownloadManager];
-    [v84 setAvAssetDownloadManager:v150];
+    avAssetDownloadManager = [(FCContentContext *)v71 avAssetDownloadManager];
+    [v84 setAvAssetDownloadManager:avAssetDownloadManager];
 
-    if (a11 != 1)
+    if (usage != 1)
     {
-      v151 = v21;
-      v152 = [v28 isOrderFeedEndpointEnabled];
+      v151 = managerCopy;
+      isOrderFeedEndpointEnabled = [configuration isOrderFeedEndpointEnabled];
       v153 = NewsCoreUserDefaults();
       v154 = [v153 stringForKey:@"feed_endpoint"];
 
@@ -998,36 +998,36 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
 
       else
       {
-        v155 = ([v154 isEqualToString:@"order_feed"] | v152) & 1;
+        v155 = ([v154 isEqualToString:@"order_feed"] | isOrderFeedEndpointEnabled) & 1;
       }
 
-      v156 = [[FCFeedDatabase alloc] initWithParentDirectoryURL:v221 usage:a11 endpoint:v155];
+      v156 = [[FCFeedDatabase alloc] initWithParentDirectoryURL:v221 usage:usage endpoint:v155];
       [v84 setFeedDatabase:v156];
       v157 = [[FCFeedPrewarmer alloc] initWithContentContext:v71];
       [v84 setFeedPrewarmer:v157];
 
-      v21 = v151;
+      managerCopy = v151;
     }
 
     v158 = [FCFeedItemFactory alloc];
-    v159 = [v84 articleRecordSource];
-    v160 = [(FCContentContext *)v71 contentStoreFrontID];
-    v161 = [(FCFeedItemFactory *)v158 initWithArticleRecordSource:v159 storefrontID:v160];
+    articleRecordSource = [v84 articleRecordSource];
+    contentStoreFrontID = [(FCContentContext *)v71 contentStoreFrontID];
+    v161 = [(FCFeedItemFactory *)v158 initWithArticleRecordSource:articleRecordSource storefrontID:contentStoreFrontID];
     feedItemFactory = v71->_feedItemFactory;
     v71->_feedItemFactory = v161;
 
     v163 = [FCRecipeItemFactory alloc];
-    v164 = [v84 recipeRecordSource];
-    v165 = [(FCRecipeItemFactory *)v163 initWithRecipeRecordSource:v164];
+    recipeRecordSource = [v84 recipeRecordSource];
+    v165 = [(FCRecipeItemFactory *)v163 initWithRecipeRecordSource:recipeRecordSource];
     recipeItemFactory = v71->_recipeItemFactory;
     v71->_recipeItemFactory = v165;
 
-    v24 = v227;
-    v167 = [[FCTagController alloc] initWithContentDatabase:v227 assetManager:v201 tagRecordSource:v210 configurationManager:v21];
+    v24 = databaseCopy;
+    v167 = [[FCTagController alloc] initWithContentDatabase:databaseCopy assetManager:v201 tagRecordSource:v210 configurationManager:managerCopy];
     tagController = v71->_tagController;
     v71->_tagController = v167;
 
-    v169 = [[FCSportsEventController alloc] initWithContentDatabase:v227 context:v71 sportsEventRecordSource:v209 tagController:v71->_tagController];
+    v169 = [[FCSportsEventController alloc] initWithContentDatabase:databaseCopy context:v71 sportsEventRecordSource:v209 tagController:v71->_tagController];
     sportsEventController = v71->_sportsEventController;
     v71->_sportsEventController = v169;
 
@@ -1035,13 +1035,13 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
     articleController = v71->_articleController;
     v71->_articleController = v171;
 
-    v173 = [[FCPuzzleTypeController alloc] initWithContentDatabase:v227 context:v71 assetManager:v201 puzzleTypeRecordSource:v207 configurationManager:v21];
+    v173 = [[FCPuzzleTypeController alloc] initWithContentDatabase:databaseCopy context:v71 assetManager:v201 puzzleTypeRecordSource:v207 configurationManager:managerCopy];
     puzzleTypeController = v71->_puzzleTypeController;
     v71->_puzzleTypeController = v173;
 
     v175 = [FCPuzzleController alloc];
-    v176 = [(FCContentContext *)v71 puzzleTypeController];
-    v177 = [(FCPuzzleController *)v175 initWithContentDatabase:v227 assetManager:v201 puzzleTypeController:v176 puzzleRecordSource:v208 configurationManager:v21];
+    puzzleTypeController = [(FCContentContext *)v71 puzzleTypeController];
+    v177 = [(FCPuzzleController *)v175 initWithContentDatabase:databaseCopy assetManager:v201 puzzleTypeController:puzzleTypeController puzzleRecordSource:v208 configurationManager:managerCopy];
     puzzleController = v71->_puzzleController;
     v71->_puzzleController = v177;
 
@@ -1067,43 +1067,43 @@ void __33__FCContentContext_prewarmStores__block_invoke(uint64_t a1)
 
     [(FCContentContext *)v71 _updateReachabilityGivenRequirements];
     v25 = v206;
-    v23 = v228;
+    taskableCopy = v228;
   }
 
   v184 = FCDefaultLog;
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_INFO))
   {
     v218 = v184;
-    v215 = [(FCContentContext *)v27 contentStoreFrontID];
+    contentStoreFrontID2 = [(FCContentContext *)v27 contentStoreFrontID];
     v222 = +[FCAppleAccount sharedAccount];
-    v185 = [v222 currentStoreFrontID];
-    v186 = [(FCContentContext *)v27 internalContentContext];
-    v187 = [v186 contentDatabase];
-    v188 = [v187 containerIdentifier];
+    currentStoreFrontID = [v222 currentStoreFrontID];
+    internalContentContext = [(FCContentContext *)v27 internalContentContext];
+    contentDatabase = [internalContentContext contentDatabase];
+    containerIdentifier = [contentDatabase containerIdentifier];
     [(FCContentContext *)v27 internalContentContext];
-    v190 = v189 = v21;
-    v191 = [v190 contentDatabase];
-    v192 = [v191 isProductionEnvironment];
+    v190 = v189 = managerCopy;
+    contentDatabase2 = [v190 contentDatabase];
+    isProductionEnvironment = [contentDatabase2 isProductionEnvironment];
     v193 = @" not";
     *buf = 138544130;
-    v234 = v215;
+    v234 = contentStoreFrontID2;
     v235 = 2114;
-    if (v192)
+    if (isProductionEnvironment)
     {
       v193 = &stru_1F2DC7DC0;
     }
 
-    v236 = v185;
+    v236 = currentStoreFrontID;
     v237 = 2114;
-    *v238 = v188;
+    *v238 = containerIdentifier;
     *&v238[8] = 2114;
     *&v238[10] = v193;
     _os_log_impl(&dword_1B63EF000, v218, OS_LOG_TYPE_INFO, "Initialized content context with contentStoreFrontID: %{public}@, currentStoreFrontID: %{public}@, containerID: %{public}@%{public}@ in production environment.", buf, 0x2Au);
 
-    v21 = v189;
-    v24 = v227;
+    managerCopy = v189;
+    v24 = databaseCopy;
 
-    v23 = v228;
+    taskableCopy = v228;
   }
 
   v194 = *MEMORY[0x1E69E9840];
@@ -1129,17 +1129,17 @@ void __278__FCContentContext_initWithConfiguration_configurationManager_contentD
 - (NSString)supportedContentStoreFrontID
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 supportedContentStoreFrontID];
+  supportedContentStoreFrontID = [v2 supportedContentStoreFrontID];
 
-  return v3;
+  return supportedContentStoreFrontID;
 }
 
 - (NSString)contentEnvironment
 {
-  v2 = [(FCContentContext *)self contextConfiguration];
-  v3 = [v2 contentEnvironmentDescription];
+  contextConfiguration = [(FCContentContext *)self contextConfiguration];
+  contentEnvironmentDescription = [contextConfiguration contentEnvironmentDescription];
 
-  return v3;
+  return contentEnvironmentDescription;
 }
 
 - (id)magazinesConfigurationManager
@@ -1195,69 +1195,69 @@ LABEL_6:
 
 - (NSString)contentEnvironmentToken
 {
-  v2 = [(FCContentContext *)self contextConfiguration];
-  v3 = [v2 contentContainerCombinationIdentifier];
+  contextConfiguration = [(FCContentContext *)self contextConfiguration];
+  contentContainerCombinationIdentifier = [contextConfiguration contentContainerCombinationIdentifier];
 
-  return v3;
+  return contentContainerCombinationIdentifier;
 }
 
-- (id)recordSourceWithSchema:(id)a3
+- (id)recordSourceWithSchema:(id)schema
 {
-  v4 = a3;
-  v5 = [(FCContentContext *)self configurationManager];
-  v6 = [v5 configuration];
+  schemaCopy = schema;
+  configurationManager = [(FCContentContext *)self configurationManager];
+  configuration = [configurationManager configuration];
 
   v7 = [FCJSONRecordSource alloc];
-  v8 = [(FCContentContext *)self internalContentContext];
-  v9 = [v8 contentDatabase];
-  v10 = [(FCContentContext *)self contentDirectory];
-  v11 = [v6 experimentalizableFieldPostfix];
-  v12 = [v6 currentTreatment];
-  v13 = [v12 stringValue];
-  v14 = [(FCJSONRecordSource *)v7 initWithSchema:v4 contentDatabase:v9 contentDirectory:v10 experimentationSuffix:v11 activeTreatmentID:v13];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  contentDatabase = [internalContentContext contentDatabase];
+  contentDirectory = [(FCContentContext *)self contentDirectory];
+  experimentalizableFieldPostfix = [configuration experimentalizableFieldPostfix];
+  currentTreatment = [configuration currentTreatment];
+  stringValue = [currentTreatment stringValue];
+  v14 = [(FCJSONRecordSource *)v7 initWithSchema:schemaCopy contentDatabase:contentDatabase contentDirectory:contentDirectory experimentationSuffix:experimentalizableFieldPostfix activeTreatmentID:stringValue];
 
   return v14;
 }
 
-- (id)recordTreeSourceWithRecordSources:(id)a3
+- (id)recordTreeSourceWithRecordSources:(id)sources
 {
-  v4 = a3;
-  v5 = [[FCJSONRecordTreeSource alloc] initWithContext:self jsonRecordSources:v4];
+  sourcesCopy = sources;
+  v5 = [[FCJSONRecordTreeSource alloc] initWithContext:self jsonRecordSources:sourcesCopy];
 
   return v5;
 }
 
-- (id)interestTokenForContentManifest:(id)a3
+- (id)interestTokenForContentManifest:(id)manifest
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  manifestCopy = manifest;
   context = objc_autoreleasePoolPush();
-  v5 = [(FCContentContext *)self assetManager];
-  v6 = [v4 assetURLs];
-  v35 = [v5 interestTokenForAssetURLs:v6];
+  assetManager = [(FCContentContext *)self assetManager];
+  assetURLs = [manifestCopy assetURLs];
+  v35 = [assetManager interestTokenForAssetURLs:assetURLs];
 
-  v7 = [(FCContentContext *)self assetKeyCache];
-  v8 = [v4 assetWrappingKeyIDs];
-  v34 = [v7 interestTokenForWrappingKeyIDs:v8];
+  assetKeyCache = [(FCContentContext *)self assetKeyCache];
+  assetWrappingKeyIDs = [manifestCopy assetWrappingKeyIDs];
+  v34 = [assetKeyCache interestTokenForWrappingKeyIDs:assetWrappingKeyIDs];
 
-  v9 = [(FCContentContext *)self avAssetCache];
-  v10 = [v4 avAssetIDs];
-  v33 = [v9 interestTokenForAssetIdentifiers:v10];
+  avAssetCache = [(FCContentContext *)self avAssetCache];
+  avAssetIDs = [manifestCopy avAssetIDs];
+  v33 = [avAssetCache interestTokenForAssetIdentifiers:avAssetIDs];
 
-  v11 = [(FCContentContext *)self avAssetKeyCache];
-  v37 = v4;
-  v12 = [v4 avAssetKeyURIs];
-  v32 = [v11 interestTokenForKeyURIs:v12];
+  avAssetKeyCache = [(FCContentContext *)self avAssetKeyCache];
+  v37 = manifestCopy;
+  avAssetKeyURIs = [manifestCopy avAssetKeyURIs];
+  v32 = [avAssetKeyCache interestTokenForKeyURIs:avAssetKeyURIs];
 
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v14 = [(FCContentContext *)self internalContentContext];
-  v15 = [v14 recordSources];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  recordSources = [internalContentContext recordSources];
 
-  v16 = [v15 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  v16 = [recordSources countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1268,23 +1268,23 @@ LABEL_6:
       {
         if (*v46 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(recordSources);
         }
 
         v20 = *(*(&v45 + 1) + 8 * i);
-        v21 = [v37 recordIDs];
+        recordIDs = [v37 recordIDs];
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
         v44[2] = __52__FCContentContext_interestTokenForContentManifest___block_invoke;
         v44[3] = &unk_1E7C38B40;
         v44[4] = v20;
-        v22 = [v21 fc_arrayOfObjectsPassingTest:v44];
+        v22 = [recordIDs fc_arrayOfObjectsPassingTest:v44];
 
         v23 = [v20 interestTokenForRecordIDs:v22];
-        [v13 addObject:v23];
+        [array addObject:v23];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v17 = [recordSources countByEnumeratingWithState:&v45 objects:v49 count:16];
     }
 
     while (v17);
@@ -1298,8 +1298,8 @@ LABEL_6:
   v40 = v34;
   v41 = v33;
   v42 = v32;
-  v43 = v13;
-  v24 = v13;
+  v43 = array;
+  v24 = array;
   v25 = v32;
   v26 = v33;
   v27 = v34;
@@ -1312,20 +1312,20 @@ LABEL_6:
   return v29;
 }
 
-- (id)convertRecords:(id)a3
+- (id)convertRecords:(id)records
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v5 = objc_alloc_init(FCHeldRecords);
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v7 = [(FCContentContext *)self internalContentContext];
-  v8 = [v7 recordSources];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  recordSources = [internalContentContext recordSources];
 
-  v9 = [v8 countByEnumeratingWithState:&v46 objects:v52 count:16];
+  v9 = [recordSources countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1336,26 +1336,26 @@ LABEL_6:
       {
         if (*v47 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(recordSources);
         }
 
         v13 = *(*(&v46 + 1) + 8 * i);
-        v14 = [v13 recordType];
-        [v6 setObject:v13 forKey:v14];
+        recordType = [v13 recordType];
+        [dictionary setObject:v13 forKey:recordType];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      v10 = [recordSources countByEnumeratingWithState:&v46 objects:v52 count:16];
     }
 
     while (v10);
   }
 
-  v15 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v16 = v4;
+  v16 = recordsCopy;
   v17 = [v16 countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v17)
   {
@@ -1371,17 +1371,17 @@ LABEL_6:
         }
 
         v21 = *(*(&v42 + 1) + 8 * j);
-        v22 = [v21 recordType];
-        v23 = [v15 objectForKey:v22];
+        recordType2 = [v21 recordType];
+        array = [dictionary2 objectForKey:recordType2];
 
-        if (!v23)
+        if (!array)
         {
-          v23 = [MEMORY[0x1E695DF70] array];
-          v24 = [v21 recordType];
-          [v15 setObject:v23 forKey:v24];
+          array = [MEMORY[0x1E695DF70] array];
+          recordType3 = [v21 recordType];
+          [dictionary2 setObject:array forKey:recordType3];
         }
 
-        [v23 addObject:v21];
+        [array addObject:v21];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v42 objects:v51 count:16];
@@ -1396,7 +1396,7 @@ LABEL_6:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v25 = v15;
+  v25 = dictionary2;
   v26 = [v25 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v26)
   {
@@ -1414,7 +1414,7 @@ LABEL_6:
         }
 
         v31 = *(*(&v38 + 1) + 8 * v29);
-        v32 = [v6 objectForKey:v31];
+        v32 = [dictionary objectForKey:v31];
         v33 = [v25 objectForKey:v31];
         v34 = [v32 convertRecords:v33];
         v5 = [FCHeldRecords heldRecordsByMerging:v34 with:v30];
@@ -1438,20 +1438,20 @@ LABEL_6:
 - (int64_t)storageSize
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(FCContentContext *)self assetManager];
-  v4 = [v3 storageSize];
+  assetManager = [(FCContentContext *)self assetManager];
+  storageSize = [assetManager storageSize];
 
-  v5 = [(FCContentContext *)self avAssetCache];
-  v6 = [v5 storageSize] + v4;
+  avAssetCache = [(FCContentContext *)self avAssetCache];
+  v6 = [avAssetCache storageSize] + storageSize;
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(FCContentContext *)self internalContentContext];
-  v8 = [v7 recordSources];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  recordSources = [internalContentContext recordSources];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [recordSources countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1463,14 +1463,14 @@ LABEL_6:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(recordSources);
         }
 
         v6 += [*(*(&v15 + 1) + 8 * v12++) storageSize];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [recordSources countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -1490,15 +1490,15 @@ LABEL_6:
     _os_log_impl(&dword_1B63EF000, v3, OS_LOG_TYPE_DEFAULT, "Will force-save records and assets", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(FCContentContext *)self internalContentContext];
-  v6 = [v5 recordSources];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  recordSources = [internalContentContext recordSources];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  v7 = [recordSources countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1510,7 +1510,7 @@ LABEL_6:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordSources);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
@@ -1521,57 +1521,57 @@ LABEL_6:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v8 = [recordSources countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v8);
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = [(FCContentContext *)self assetManager];
-  [v14 save];
+  assetManager = [(FCContentContext *)self assetManager];
+  [assetManager save];
 
   objc_autoreleasePoolPop(v13);
   v15 = FCDefaultLog;
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v4 fc_millisecondTimeIntervalUntilNow];
+    fc_millisecondTimeIntervalUntilNow = [date fc_millisecondTimeIntervalUntilNow];
     *buf = 134217984;
-    v24 = v17;
+    v24 = fc_millisecondTimeIntervalUntilNow;
     _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_DEFAULT, "Did force-save record sources and assets in %llums", buf, 0xCu);
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ppt_overrideFeedEndpoint:(int64_t)a3
+- (void)ppt_overrideFeedEndpoint:(int64_t)endpoint
 {
-  v5 = [(FCContentContext *)self internalContentContext];
-  v10 = [v5 feedDatabase];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  feedDatabase = [internalContentContext feedDatabase];
 
-  if ([v10 endpoint] != a3)
+  if ([feedDatabase endpoint] != endpoint)
   {
-    [v10 teardown];
+    [feedDatabase teardown];
     v6 = [FCFeedDatabase alloc];
-    v7 = [v10 parentDirectoryURL];
-    v8 = -[FCFeedDatabase initWithParentDirectoryURL:usage:endpoint:](v6, "initWithParentDirectoryURL:usage:endpoint:", v7, [v10 usage], a3);
-    v9 = [(FCContentContext *)self internalContentContext];
-    [v9 setFeedDatabase:v8];
+    parentDirectoryURL = [feedDatabase parentDirectoryURL];
+    v8 = -[FCFeedDatabase initWithParentDirectoryURL:usage:endpoint:](v6, "initWithParentDirectoryURL:usage:endpoint:", parentDirectoryURL, [feedDatabase usage], endpoint);
+    internalContentContext2 = [(FCContentContext *)self internalContentContext];
+    [internalContentContext2 setFeedDatabase:v8];
   }
 }
 
 - (void)ppt_prewarmFeedDatabase
 {
-  v3 = [(FCContentContext *)self internalContentContext];
-  v2 = [v3 feedDatabase];
-  [v2 prewarm];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  feedDatabase = [internalContentContext feedDatabase];
+  [feedDatabase prewarm];
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3 exceptForFlusher:(id)a4
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold exceptForFlusher:(id)flusher
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  flusherCopy = flusher;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __73__FCContentContext_enableFlushingWithFlushingThreshold_exceptForFlusher___block_invoke;
@@ -1598,9 +1598,9 @@ LABEL_6:
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        if (v12 != v6)
+        if (v12 != flusherCopy)
         {
-          [v12 enableFlushingWithFlushingThreshold:a3];
+          [v12 enableFlushingWithFlushingThreshold:threshold];
         }
 
         ++v11;
@@ -1644,44 +1644,44 @@ void __73__FCContentContext_enableFlushingWithFlushingThreshold_exceptForFlusher
   }
 }
 
-- (void)configurationManager:(id)a3 configurationDidChange:(id)a4
+- (void)configurationManager:(id)manager configurationDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [v5 useSecureConnectionForAssets];
-  v7 = [(FCContentContext *)self assetManager];
-  if (v7)
+  changeCopy = change;
+  useSecureConnectionForAssets = [changeCopy useSecureConnectionForAssets];
+  assetManager = [(FCContentContext *)self assetManager];
+  if (assetManager)
   {
-    v7[8] = v6;
+    assetManager[8] = useSecureConnectionForAssets;
   }
 
-  v8 = [v5 useSecureConnectionForAssets];
-  v10 = [(FCContentContext *)self internalContentContext];
-  v9 = [v10 contentDatabase];
-  [v9 setShouldUseSecureConnectionForCKAssetURLs:v8];
+  useSecureConnectionForAssets2 = [changeCopy useSecureConnectionForAssets];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  contentDatabase = [internalContentContext contentDatabase];
+  [contentDatabase setShouldUseSecureConnectionForCKAssetURLs:useSecureConnectionForAssets2];
 }
 
-- (void)configurationManagerScienceExperimentFieldsDidChange:(id)a3
+- (void)configurationManagerScienceExperimentFieldsDidChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 configuration];
+  configuration = [change configuration];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 engagementCohortsExpField];
+    engagementCohortsExpField = [configuration engagementCohortsExpField];
   }
 
   else
   {
-    v5 = 0;
+    engagementCohortsExpField = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 conversionCohortsExpField];
+    conversionCohortsExpField = [configuration conversionCohortsExpField];
   }
 
   else
   {
-    v6 = 0;
+    conversionCohortsExpField = 0;
   }
 
   v7 = NewsCoreUserDefaults();
@@ -1699,15 +1699,15 @@ void __73__FCContentContext_enableFlushingWithFlushingThreshold_exceptForFlusher
 
     *&v14[4] = v10;
     v15 = 2114;
-    v16 = v5;
+    v16 = engagementCohortsExpField;
     v17 = 2114;
-    v18 = v6;
+    v18 = conversionCohortsExpField;
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "%@ engagementCohortsExpField: %{public}@ conversionCohortsExpField: %{public}@", v14, 0x20u);
   }
 
-  v11 = [(FCContentContext *)self internalContentContext];
-  v12 = [v11 articleRecordSource];
-  [v12 updateEngagementCohortsExpField:v5 conversionCohortsExpField:v6];
+  internalContentContext = [(FCContentContext *)self internalContentContext];
+  articleRecordSource = [internalContentContext articleRecordSource];
+  [articleRecordSource updateEngagementCohortsExpField:engagementCohortsExpField conversionCohortsExpField:conversionCohortsExpField];
 
   v13 = *MEMORY[0x1E69E9840];
 }

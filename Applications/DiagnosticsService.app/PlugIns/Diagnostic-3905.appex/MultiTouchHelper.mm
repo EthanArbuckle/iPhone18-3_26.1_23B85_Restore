@@ -1,6 +1,6 @@
 @interface MultiTouchHelper
-- (id)celsiusTemperatureFromService:(__IOHIDServiceClient *)a3;
-- (id)parseHIDLocationID:(int)a3;
+- (id)celsiusTemperatureFromService:(__IOHIDServiceClient *)service;
+- (id)parseHIDLocationID:(int)d;
 - (id)temperatureData;
 @end
 
@@ -62,23 +62,23 @@
   return v3;
 }
 
-- (id)parseHIDLocationID:(int)a3
+- (id)parseHIDLocationID:(int)d
 {
-  if ((a3 >> 24) > 0x7F || (_DefaultRuneLocale.__runetype[a3 >> 24] & 0x200) != 0)
+  if ((d >> 24) > 0x7F || (_DefaultRuneLocale.__runetype[d >> 24] & 0x200) != 0)
   {
-    [NSString stringWithFormat:@"%3ld ", a3, v5, v6, v7];
+    [NSString stringWithFormat:@"%3ld ", d, v5, v6, v7];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%c%c%c%c", (a3 >> 24), BYTE2(a3), BYTE1(a3), a3];
+    [NSString stringWithFormat:@"%c%c%c%c", (d >> 24), BYTE2(d), BYTE1(d), d];
   }
   v3 = ;
 
   return v3;
 }
 
-- (id)celsiusTemperatureFromService:(__IOHIDServiceClient *)a3
+- (id)celsiusTemperatureFromService:(__IOHIDServiceClient *)service
 {
   v3 = IOHIDServiceClientCopyEvent();
   if (v3)

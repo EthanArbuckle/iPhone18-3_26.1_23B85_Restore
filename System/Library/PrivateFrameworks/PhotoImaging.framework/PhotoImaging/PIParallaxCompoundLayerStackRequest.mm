@@ -1,36 +1,36 @@
 @interface PIParallaxCompoundLayerStackRequest
-- (PIParallaxCompoundLayerStackRequest)initWithComposition:(id)a3;
-- (PIParallaxCompoundLayerStackRequest)initWithSegmentationItem:(id)a3;
-- (id)_responseWithCompoundLayerStack:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PIParallaxCompoundLayerStackRequest)initWithComposition:(id)composition;
+- (PIParallaxCompoundLayerStackRequest)initWithSegmentationItem:(id)item;
+- (id)_responseWithCompoundLayerStack:(id)stack;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)effectiveLayout;
 - (id)newRenderJob;
-- (void)_calculateLayoutPropertiesWithOrientedLayout:(id)a3 isAuxiliary:(BOOL)a4 completion:(id)a5;
-- (void)_chooseLayoutForOrientation:(int64_t)a3 completion:(id)a4;
-- (void)_generateLayerStackForOrientation:(int64_t)a3 completion:(id)a4;
-- (void)_recordError:(id)a3;
-- (void)_submit:(id)a3;
-- (void)_submitClockMaterialRequestWithLayerStack:(id)a3 completion:(id)a4;
-- (void)_submitClockOverlapRequestWithLayout:(id)a3 completion:(id)a4;
-- (void)_submitInactiveLayoutRequestWithOrientedLayout:(id)a3 completion:(id)a4;
-- (void)_submitLayerStackRequestForMode:(int64_t)a3 layout:(id)a4 auxiliaryLayout:(id)a5 completion:(id)a6;
-- (void)_submitLayerStackRequestsWithLayout:(id)a3 auxiliaryLayout:(id)a4 orientation:(int64_t)a5 completion:(id)a6;
-- (void)_submitSpatialPhotoInactiveDataRequestWithLayerStack:(id)a3 completion:(id)a4;
+- (void)_calculateLayoutPropertiesWithOrientedLayout:(id)layout isAuxiliary:(BOOL)auxiliary completion:(id)completion;
+- (void)_chooseLayoutForOrientation:(int64_t)orientation completion:(id)completion;
+- (void)_generateLayerStackForOrientation:(int64_t)orientation completion:(id)completion;
+- (void)_recordError:(id)error;
+- (void)_submit:(id)_submit;
+- (void)_submitClockMaterialRequestWithLayerStack:(id)stack completion:(id)completion;
+- (void)_submitClockOverlapRequestWithLayout:(id)layout completion:(id)completion;
+- (void)_submitInactiveLayoutRequestWithOrientedLayout:(id)layout completion:(id)completion;
+- (void)_submitLayerStackRequestForMode:(int64_t)mode layout:(id)layout auxiliaryLayout:(id)auxiliaryLayout completion:(id)completion;
+- (void)_submitLayerStackRequestsWithLayout:(id)layout auxiliaryLayout:(id)auxiliaryLayout orientation:(int64_t)orientation completion:(id)completion;
+- (void)_submitSpatialPhotoInactiveDataRequestWithLayerStack:(id)stack completion:(id)completion;
 - (void)cancel;
-- (void)submit:(id)a3;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIParallaxCompoundLayerStackRequest
 
 - (void)cancel
 {
-  v2 = [(NURenderRequest *)self renderContext];
-  [v2 cancelAllRequests];
+  renderContext = [(NURenderRequest *)self renderContext];
+  [renderContext cancelAllRequests];
 }
 
-- (id)_responseWithCompoundLayerStack:(id)a3
+- (id)_responseWithCompoundLayerStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   if (self->_error)
   {
     v5 = [objc_alloc(MEMORY[0x1E69B3C78]) initWithError:self->_error];
@@ -39,7 +39,7 @@
   else
   {
     v6 = objc_alloc_init(_PIParallaxCompoundLayerStackResult);
-    [(_PIParallaxCompoundLayerStackResult *)v6 setCompoundLayerStack:v4];
+    [(_PIParallaxCompoundLayerStackResult *)v6 setCompoundLayerStack:stackCopy];
     if ([(NSMutableArray *)self->_results count])
     {
       v7 = PFMap();
@@ -53,10 +53,10 @@
   return v5;
 }
 
-- (void)_recordError:(id)a3
+- (void)_recordError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   if (*MEMORY[0x1E69B3D78] != -1)
   {
     dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_181);
@@ -66,13 +66,13 @@
   if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v19 = v5;
+    v19 = errorCopy;
     _os_log_error_impl(&dword_1C7694000, v6, OS_LOG_TYPE_ERROR, "PIParallaxCompoundLayerStackRequest _recordError: %{public}@", buf, 0xCu);
   }
 
   if (self->_error)
   {
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -92,8 +92,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v13 + 1) + 8 * i) renderContext];
-          [v12 cancelAllRequests];
+          renderContext = [*(*(&v13 + 1) + 8 * i) renderContext];
+          [renderContext cancelAllRequests];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -104,31 +104,31 @@
   }
 }
 
-- (void)_submitLayerStackRequestForMode:(int64_t)a3 layout:(id)a4 auxiliaryLayout:(id)a5 completion:(id)a6
+- (void)_submitLayerStackRequestForMode:(int64_t)mode layout:(id)layout auxiliaryLayout:(id)auxiliaryLayout completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  completionCopy = completion;
+  auxiliaryLayoutCopy = auxiliaryLayout;
+  layoutCopy = layout;
   v13 = [PIParallaxLayerStackRequest alloc];
-  v14 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-  v15 = [(PIParallaxLayerStackRequest *)v13 initWithSegmentationItem:v14];
+  segmentationItem = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+  v15 = [(PIParallaxLayerStackRequest *)v13 initWithSegmentationItem:segmentationItem];
 
-  v16 = [(NURenderRequest *)self priority];
-  [(NURenderRequest *)v15 setPriority:v16];
+  priority = [(NURenderRequest *)self priority];
+  [(NURenderRequest *)v15 setPriority:priority];
 
-  v17 = [(NURenderRequest *)self responseQueue];
-  [(NURenderRequest *)v15 setResponseQueue:v17];
+  responseQueue = [(NURenderRequest *)self responseQueue];
+  [(NURenderRequest *)v15 setResponseQueue:responseQueue];
 
-  v18 = [(NURenderRequest *)self renderContext];
-  [(NURenderRequest *)v15 setRenderContext:v18];
+  renderContext = [(NURenderRequest *)self renderContext];
+  [(NURenderRequest *)v15 setRenderContext:renderContext];
 
-  v19 = [(PIParallaxCompoundLayerStackRequest *)self style];
-  [(PIParallaxLayerStackRequest *)v15 setStyle:v19];
+  style = [(PIParallaxCompoundLayerStackRequest *)self style];
+  [(PIParallaxLayerStackRequest *)v15 setStyle:style];
 
-  [(PIParallaxLayerStackRequest *)v15 setLayout:v12];
-  [(PIParallaxLayerStackRequest *)v15 setAuxiliaryLayout:v11];
+  [(PIParallaxLayerStackRequest *)v15 setLayout:layoutCopy];
+  [(PIParallaxLayerStackRequest *)v15 setAuxiliaryLayout:auxiliaryLayoutCopy];
 
-  [(PIParallaxLayerStackRequest *)v15 setLayerStackMode:a3];
+  [(PIParallaxLayerStackRequest *)v15 setLayerStackMode:mode];
   [(PIParallaxLayerStackRequest *)v15 setSettlingEffectEnabled:[(PIParallaxCompoundLayerStackRequest *)self isSettlingEffectEnabled]];
   [(PIParallaxLayerStackRequest *)v15 setSpatialPhotoEnabled:[(PIParallaxCompoundLayerStackRequest *)self isSpatialPhotoEnabled]];
   [(PIParallaxLayerStackRequest *)v15 setUserAdjustedVisibleFrame:[(PIParallaxCompoundLayerStackRequest *)self userAdjustedVisibleFrame]];
@@ -139,11 +139,11 @@
   v22 = 3221225472;
   v23 = __105__PIParallaxCompoundLayerStackRequest__submitLayerStackRequestForMode_layout_auxiliaryLayout_completion___block_invoke;
   v24 = &unk_1E82ACC00;
-  v25 = self;
-  v26 = v10;
-  v20 = v10;
+  selfCopy = self;
+  v26 = completionCopy;
+  v20 = completionCopy;
   [(PIParallaxLayerStackRequest *)v15 submit:&v21];
-  [(PIParallaxCompoundLayerStackRequest *)self _addChildRequest:v15, v21, v22, v23, v24, v25];
+  [(PIParallaxCompoundLayerStackRequest *)self _addChildRequest:v15, v21, v22, v23, v24, selfCopy];
 }
 
 void __105__PIParallaxCompoundLayerStackRequest__submitLayerStackRequestForMode_layout_auxiliaryLayout_completion___block_invoke(uint64_t a1, void *a2)
@@ -179,43 +179,43 @@ void __105__PIParallaxCompoundLayerStackRequest__submitLayerStackRequestForMode_
   }
 }
 
-- (void)_submitSpatialPhotoInactiveDataRequestWithLayerStack:(id)a3 completion:(id)a4
+- (void)_submitSpatialPhotoInactiveDataRequestWithLayerStack:(id)stack completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasInactiveLayers] && (objc_msgSend(v6, "spatialPhotoEnabled") & 1) != 0)
+  stackCopy = stack;
+  completionCopy = completion;
+  if ([stackCopy hasInactiveLayers] && (objc_msgSend(stackCopy, "spatialPhotoEnabled") & 1) != 0)
   {
-    v8 = [v6 backgroundLayer];
-    v9 = [v6 inactiveBackgroundLayer];
-    if ([v8 image] && objc_msgSend(v9, "image"))
+    backgroundLayer = [stackCopy backgroundLayer];
+    inactiveBackgroundLayer = [stackCopy inactiveBackgroundLayer];
+    if ([backgroundLayer image] && objc_msgSend(inactiveBackgroundLayer, "image"))
     {
-      v10 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:{objc_msgSend(v8, "image")}];
-      v11 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:{objc_msgSend(v9, "image")}];
+      v10 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:{objc_msgSend(backgroundLayer, "image")}];
+      v11 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:{objc_msgSend(inactiveBackgroundLayer, "image")}];
       v12 = [PIParallaxInactiveStyleLearnRequest alloc];
-      [v8 frame];
+      [backgroundLayer frame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      [v9 frame];
+      [inactiveBackgroundLayer frame];
       v25 = [(PIParallaxInactiveStyleLearnRequest *)v12 initWithFromPixelBuffer:v10 frame:v11 toPixelBuffer:v14 frame:v16, v18, v20, v21, v22, v23, v24];
-      v26 = [(NURenderRequest *)self priority];
-      [(NURenderRequest *)v25 setPriority:v26];
+      priority = [(NURenderRequest *)self priority];
+      [(NURenderRequest *)v25 setPriority:priority];
 
-      v27 = [(NURenderRequest *)self responseQueue];
-      [(NURenderRequest *)v25 setResponseQueue:v27];
+      responseQueue = [(NURenderRequest *)self responseQueue];
+      [(NURenderRequest *)v25 setResponseQueue:responseQueue];
 
-      v28 = [(NURenderRequest *)self renderContext];
-      [(NURenderRequest *)v25 setRenderContext:v28];
+      renderContext = [(NURenderRequest *)self renderContext];
+      [(NURenderRequest *)v25 setRenderContext:renderContext];
 
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __103__PIParallaxCompoundLayerStackRequest__submitSpatialPhotoInactiveDataRequestWithLayerStack_completion___block_invoke;
       v30[3] = &unk_1E82AC510;
       v30[4] = self;
-      v31 = v6;
-      v32 = v7;
+      v31 = stackCopy;
+      v32 = completionCopy;
       [(PIParallaxInactiveStyleLearnRequest *)v25 submit:v30];
       [(PIParallaxCompoundLayerStackRequest *)self _addChildRequest:v25];
     }
@@ -231,17 +231,17 @@ void __105__PIParallaxCompoundLayerStackRequest__submitLayerStackRequestForMode_
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v34 = v6;
+        v34 = stackCopy;
         _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Can't learn inactive style; missing layers: %@", buf, 0xCu);
       }
 
-      (*(v7 + 2))(v7, v6);
+      (*(completionCopy + 2))(completionCopy, stackCopy);
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, v6);
+    (*(completionCopy + 2))(completionCopy, stackCopy);
   }
 }
 
@@ -290,38 +290,38 @@ void __103__PIParallaxCompoundLayerStackRequest__submitSpatialPhotoInactiveDataR
   }
 }
 
-- (void)_submitClockMaterialRequestWithLayerStack:(id)a3 completion:(id)a4
+- (void)_submitClockMaterialRequestWithLayerStack:(id)stack completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PIParallaxCompoundLayerStackRequest *)self updateClockAreaLuminance];
-  if (v6 && v8 && !self->_error)
+  stackCopy = stack;
+  completionCopy = completion;
+  updateClockAreaLuminance = [(PIParallaxCompoundLayerStackRequest *)self updateClockAreaLuminance];
+  if (stackCopy && updateClockAreaLuminance && !self->_error)
   {
-    v9 = [[PIParallaxClockMaterialRequest alloc] initWithLayerStack:v6];
+    v9 = [[PIParallaxClockMaterialRequest alloc] initWithLayerStack:stackCopy];
     [(PIParallaxClockMaterialRequest *)v9 setLuminanceCalculationType:[(PIParallaxCompoundLayerStackRequest *)self fullPhotoLuminanceCalculationEnabled]];
-    v10 = [(NURenderRequest *)self priority];
-    [(NURenderRequest *)v9 setPriority:v10];
+    priority = [(NURenderRequest *)self priority];
+    [(NURenderRequest *)v9 setPriority:priority];
 
-    v11 = [(NURenderRequest *)self responseQueue];
-    [(NURenderRequest *)v9 setResponseQueue:v11];
+    responseQueue = [(NURenderRequest *)self responseQueue];
+    [(NURenderRequest *)v9 setResponseQueue:responseQueue];
 
-    v12 = [(NURenderRequest *)self renderContext];
-    [(NURenderRequest *)v9 setRenderContext:v12];
+    renderContext = [(NURenderRequest *)self renderContext];
+    [(NURenderRequest *)v9 setRenderContext:renderContext];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __92__PIParallaxCompoundLayerStackRequest__submitClockMaterialRequestWithLayerStack_completion___block_invoke;
     v13[3] = &unk_1E82AC510;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
+    v14 = stackCopy;
+    selfCopy = self;
+    v16 = completionCopy;
     [(PIParallaxClockMaterialRequest *)v9 submit:v13];
     [(PIParallaxCompoundLayerStackRequest *)self _addChildRequest:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, v6);
+    (*(completionCopy + 2))(completionCopy, stackCopy);
   }
 }
 
@@ -360,41 +360,41 @@ void __92__PIParallaxCompoundLayerStackRequest__submitClockMaterialRequestWithLa
   }
 }
 
-- (void)_submitClockOverlapRequestWithLayout:(id)a3 completion:(id)a4
+- (void)_submitClockOverlapRequestWithLayout:(id)layout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  completionCopy = completion;
   if ([(PIParallaxCompoundLayerStackRequest *)self updateClockZPosition])
   {
     v8 = [PIParallaxClockLayoutRequest alloc];
-    v9 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-    v10 = [(PIParallaxClockLayoutRequest *)v8 initWithSegmentationItem:v9];
+    segmentationItem = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+    v10 = [(PIParallaxClockLayoutRequest *)v8 initWithSegmentationItem:segmentationItem];
 
-    [(PIParallaxClockLayoutRequest *)v10 setLayout:v6];
-    v11 = [(NURenderRequest *)self priority];
-    [(NURenderRequest *)v10 setPriority:v11];
+    [(PIParallaxClockLayoutRequest *)v10 setLayout:layoutCopy];
+    priority = [(NURenderRequest *)self priority];
+    [(NURenderRequest *)v10 setPriority:priority];
 
-    v12 = [(NURenderRequest *)self responseQueue];
-    [(NURenderRequest *)v10 setResponseQueue:v12];
+    responseQueue = [(NURenderRequest *)self responseQueue];
+    [(NURenderRequest *)v10 setResponseQueue:responseQueue];
 
-    v13 = [(NURenderRequest *)self renderContext];
-    [(NURenderRequest *)v10 setRenderContext:v13];
+    renderContext = [(NURenderRequest *)self renderContext];
+    [(NURenderRequest *)v10 setRenderContext:renderContext];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __87__PIParallaxCompoundLayerStackRequest__submitClockOverlapRequestWithLayout_completion___block_invoke;
     v15[3] = &unk_1E82AC510;
     v15[4] = self;
-    v17 = v7;
-    v16 = v6;
+    v17 = completionCopy;
+    v16 = layoutCopy;
     [(PIParallaxClockLayoutRequest *)v10 submit:v15];
     [(PIParallaxCompoundLayerStackRequest *)self _addChildRequest:v10];
   }
 
   else
   {
-    v14 = [v6 clockLayerOrder];
-    (*(v7 + 2))(v7, v14, [v6 clockIntersection]);
+    clockLayerOrder = [layoutCopy clockLayerOrder];
+    (*(completionCopy + 2))(completionCopy, clockLayerOrder, [layoutCopy clockIntersection]);
   }
 }
 
@@ -434,25 +434,25 @@ void __87__PIParallaxCompoundLayerStackRequest__submitClockOverlapRequestWithLay
   }
 }
 
-- (void)_submitInactiveLayoutRequestWithOrientedLayout:(id)a3 completion:(id)a4
+- (void)_submitInactiveLayoutRequestWithOrientedLayout:(id)layout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  completionCopy = completion;
   if ([(PIParallaxCompoundLayerStackRequest *)self updateInactiveFrame])
   {
     v8 = [PIPosterInactiveFrameLayoutRequest alloc];
-    v9 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-    v10 = [(PIPosterInactiveFrameLayoutRequest *)v8 initWithSegmentationItem:v9];
+    segmentationItem = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+    v10 = [(PIPosterInactiveFrameLayoutRequest *)v8 initWithSegmentationItem:segmentationItem];
 
-    [(PIPosterInactiveFrameLayoutRequest *)v10 setLayout:v6];
-    v11 = [(NURenderRequest *)self priority];
-    [(NURenderRequest *)v10 setPriority:v11];
+    [(PIPosterInactiveFrameLayoutRequest *)v10 setLayout:layoutCopy];
+    priority = [(NURenderRequest *)self priority];
+    [(NURenderRequest *)v10 setPriority:priority];
 
-    v12 = [(NURenderRequest *)self responseQueue];
-    [(NURenderRequest *)v10 setResponseQueue:v12];
+    responseQueue = [(NURenderRequest *)self responseQueue];
+    [(NURenderRequest *)v10 setResponseQueue:responseQueue];
 
-    v13 = [(NURenderRequest *)self renderContext];
-    [(NURenderRequest *)v10 setRenderContext:v13];
+    renderContext = [(NURenderRequest *)self renderContext];
+    [(NURenderRequest *)v10 setRenderContext:renderContext];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -460,7 +460,7 @@ void __87__PIParallaxCompoundLayerStackRequest__submitClockOverlapRequestWithLay
     v15[3] = &unk_1E82AC510;
     v15[4] = self;
     v16 = v10;
-    v17 = v7;
+    v17 = completionCopy;
     v14 = v10;
     [(PIPosterInactiveFrameLayoutRequest *)v14 submit:v15];
     [(PIParallaxCompoundLayerStackRequest *)self _addChildRequest:v14];
@@ -468,7 +468,7 @@ void __87__PIParallaxCompoundLayerStackRequest__submitClockOverlapRequestWithLay
 
   else
   {
-    (*(v7 + 2))(v7, v6);
+    (*(completionCopy + 2))(completionCopy, layoutCopy);
   }
 }
 
@@ -515,42 +515,42 @@ void __97__PIParallaxCompoundLayerStackRequest__submitInactiveLayoutRequestWithO
   v8();
 }
 
-- (void)_calculateLayoutPropertiesWithOrientedLayout:(id)a3 isAuxiliary:(BOOL)a4 completion:(id)a5
+- (void)_calculateLayoutPropertiesWithOrientedLayout:(id)layout isAuxiliary:(BOOL)auxiliary completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ((!v6 || v8 && [(PIParallaxCompoundLayerStackRequest *)self isSpatialPhotoEnabled]) && [(PIParallaxCompoundLayerStackRequest *)self shouldRecalculateLayoutProperties])
+  auxiliaryCopy = auxiliary;
+  layoutCopy = layout;
+  completionCopy = completion;
+  if ((!auxiliaryCopy || layoutCopy && [(PIParallaxCompoundLayerStackRequest *)self isSpatialPhotoEnabled]) && [(PIParallaxCompoundLayerStackRequest *)self shouldRecalculateLayoutProperties])
   {
     v10 = [PIPosterLayoutPropertiesRequest alloc];
-    v11 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-    v12 = [(PIPosterLayoutPropertiesRequest *)v10 initWithSegmentationItem:v11];
+    segmentationItem = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+    v12 = [(PIPosterLayoutPropertiesRequest *)v10 initWithSegmentationItem:segmentationItem];
 
-    [(PIPosterLayoutPropertiesRequest *)v12 setLayout:v8];
+    [(PIPosterLayoutPropertiesRequest *)v12 setLayout:layoutCopy];
     [(PIPosterLayoutPropertiesRequest *)v12 setCalculateAdaptiveFrame:1];
-    v13 = [(NURenderRequest *)self priority];
-    [(NURenderRequest *)v12 setPriority:v13];
+    priority = [(NURenderRequest *)self priority];
+    [(NURenderRequest *)v12 setPriority:priority];
 
-    v14 = [(NURenderRequest *)self responseQueue];
-    [(NURenderRequest *)v12 setResponseQueue:v14];
+    responseQueue = [(NURenderRequest *)self responseQueue];
+    [(NURenderRequest *)v12 setResponseQueue:responseQueue];
 
-    v15 = [(NURenderRequest *)self renderContext];
-    [(NURenderRequest *)v12 setRenderContext:v15];
+    renderContext = [(NURenderRequest *)self renderContext];
+    [(NURenderRequest *)v12 setRenderContext:renderContext];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __107__PIParallaxCompoundLayerStackRequest__calculateLayoutPropertiesWithOrientedLayout_isAuxiliary_completion___block_invoke;
     v16[3] = &unk_1E82AC510;
     v16[4] = self;
-    v17 = v8;
-    v18 = v9;
+    v17 = layoutCopy;
+    v18 = completionCopy;
     [(PIPosterLayoutPropertiesRequest *)v12 submit:v16];
     [(PIParallaxCompoundLayerStackRequest *)self _addChildRequest:v12];
   }
 
   else
   {
-    (*(v9 + 2))(v9, v8);
+    (*(completionCopy + 2))(completionCopy, layoutCopy);
   }
 }
 
@@ -603,120 +603,120 @@ void __107__PIParallaxCompoundLayerStackRequest__calculateLayoutPropertiesWithOr
   }
 }
 
-- (void)_chooseLayoutForOrientation:(int64_t)a3 completion:(id)a4
+- (void)_chooseLayoutForOrientation:(int64_t)orientation completion:(id)completion
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 == 1)
+  completionCopy = completion;
+  if (orientation == 1)
   {
-    v12 = [(PIParallaxCompoundLayerStackRequest *)self effectiveLayout];
-    v8 = [v12 portraitLayout];
+    effectiveLayout = [(PIParallaxCompoundLayerStackRequest *)self effectiveLayout];
+    portraitLayout = [effectiveLayout portraitLayout];
 
-    v10 = [(PIParallaxCompoundLayerStackRequest *)self effectiveLayout];
-    v11 = [v10 landscapeLayout];
+    effectiveLayout2 = [(PIParallaxCompoundLayerStackRequest *)self effectiveLayout];
+    landscapeLayout = [effectiveLayout2 landscapeLayout];
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (orientation == 2)
   {
-    v9 = [(PIParallaxCompoundLayerStackRequest *)self effectiveLayout];
-    v8 = [v9 landscapeLayout];
+    effectiveLayout3 = [(PIParallaxCompoundLayerStackRequest *)self effectiveLayout];
+    portraitLayout = [effectiveLayout3 landscapeLayout];
 
-    v10 = [(PIParallaxCompoundLayerStackRequest *)self effectiveLayout];
-    v11 = [v10 portraitLayout];
+    effectiveLayout2 = [(PIParallaxCompoundLayerStackRequest *)self effectiveLayout];
+    landscapeLayout = [effectiveLayout2 portraitLayout];
 LABEL_7:
-    v7 = v11;
+    v7 = landscapeLayout;
 
 LABEL_8:
-    [v8 layoutVariant];
+    [portraitLayout layoutVariant];
     if (PFPosterIsLayoutVariantAdaptive() && ([(PIParallaxCompoundLayerStackRequest *)self allowedLayoutStrategies]& 2) == 0)
     {
-      v13 = [v8 layoutByUpdatingLayoutVariant:1];
+      v13 = [portraitLayout layoutByUpdatingLayoutVariant:1];
 
       v14 = [v7 layoutByUpdatingLayoutVariant:1];
 
       v7 = v14;
-      v8 = v13;
+      portraitLayout = v13;
     }
 
-    if (v8)
+    if (portraitLayout)
     {
-      v6[2](v6, v8, v7);
+      completionCopy[2](completionCopy, portraitLayout, v7);
     }
 
     else
     {
       v15 = [PIPosterLayoutRequest alloc];
-      v16 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-      v17 = [v16 composition];
-      v18 = [(NURenderRequest *)v15 initWithComposition:v17];
+      segmentationItem = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+      composition = [segmentationItem composition];
+      v18 = [(NURenderRequest *)v15 initWithComposition:composition];
 
-      v19 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-      v20 = [v19 layoutConfiguration];
-      v21 = v20;
-      if (v20)
+      segmentationItem2 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+      layoutConfiguration = [segmentationItem2 layoutConfiguration];
+      v21 = layoutConfiguration;
+      if (layoutConfiguration)
       {
-        v22 = v20;
+        deviceConfiguration = layoutConfiguration;
       }
 
       else
       {
-        v22 = [MEMORY[0x1E69C0938] deviceConfiguration];
+        deviceConfiguration = [MEMORY[0x1E69C0938] deviceConfiguration];
       }
 
-      v23 = v22;
+      v23 = deviceConfiguration;
 
-      v24 = [v23 landscapeConfiguration];
+      landscapeConfiguration = [v23 landscapeConfiguration];
 
-      if (a3 == 2 && !v24)
+      if (orientation == 2 && !landscapeConfiguration)
       {
         v25 = objc_alloc(MEMORY[0x1E69C0938]);
-        v26 = [v23 portraitConfiguration];
+        portraitConfiguration = [v23 portraitConfiguration];
         [MEMORY[0x1E69C0938] deviceConfiguration];
         v54 = v7;
-        v28 = v27 = v6;
-        v29 = [v28 landscapeConfiguration];
-        v30 = [v25 initWithPortraitConfiguration:v26 landscapeConfiguration:v29];
+        v28 = v27 = completionCopy;
+        landscapeConfiguration2 = [v28 landscapeConfiguration];
+        v30 = [v25 initWithPortraitConfiguration:portraitConfiguration landscapeConfiguration:landscapeConfiguration2];
 
-        v6 = v27;
+        completionCopy = v27;
         v7 = v54;
 
         v23 = v30;
       }
 
       [(PIPosterLayoutRequest *)v18 setLayoutConfiguration:v23];
-      v31 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-      v32 = [v31 regions];
-      [(PIPosterLayoutRequest *)v18 setLayoutRegions:v32];
+      segmentationItem3 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+      regions = [segmentationItem3 regions];
+      [(PIPosterLayoutRequest *)v18 setLayoutRegions:regions];
 
       [(PIPosterLayoutRequest *)v18 setAllowedLayoutStrategies:[(PIParallaxCompoundLayerStackRequest *)self allowedLayoutStrategies]];
-      v33 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-      v34 = [v33 segmentationMatte];
-      [(PIPosterLayoutRequest *)v18 setSegmentationMatte:v34];
+      segmentationItem4 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+      segmentationMatte = [segmentationItem4 segmentationMatte];
+      [(PIPosterLayoutRequest *)v18 setSegmentationMatte:segmentationMatte];
 
-      v35 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-      v36 = [v35 segmentationConfidenceMap];
-      [(PIPosterLayoutRequest *)v18 setSegmentationConfidenceMap:v36];
+      segmentationItem5 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+      segmentationConfidenceMap = [segmentationItem5 segmentationConfidenceMap];
+      [(PIPosterLayoutRequest *)v18 setSegmentationConfidenceMap:segmentationConfidenceMap];
 
-      v37 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-      -[PIPosterLayoutRequest setSegmentationClassification:](v18, "setSegmentationClassification:", [v37 classification]);
+      segmentationItem6 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+      -[PIPosterLayoutRequest setSegmentationClassification:](v18, "setSegmentationClassification:", [segmentationItem6 classification]);
 
-      v38 = [(NURenderRequest *)self responseQueue];
-      [(NURenderRequest *)v18 setResponseQueue:v38];
+      responseQueue = [(NURenderRequest *)self responseQueue];
+      [(NURenderRequest *)v18 setResponseQueue:responseQueue];
 
-      v39 = [(NURenderRequest *)self renderContext];
-      [(NURenderRequest *)v18 setRenderContext:v39];
+      renderContext = [(NURenderRequest *)self renderContext];
+      [(NURenderRequest *)v18 setRenderContext:renderContext];
 
-      v40 = [(NURenderRequest *)self priority];
-      [(NURenderRequest *)v18 setPriority:v40];
+      priority = [(NURenderRequest *)self priority];
+      [(NURenderRequest *)v18 setPriority:priority];
 
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
       v55[2] = __78__PIParallaxCompoundLayerStackRequest__chooseLayoutForOrientation_completion___block_invoke;
       v55[3] = &unk_1E82AA938;
-      v57 = a3;
+      orientationCopy = orientation;
       v55[4] = self;
-      v56 = v6;
+      v56 = completionCopy;
       [(PIPosterLayoutRequest *)v18 submit:v55];
       [(PIParallaxCompoundLayerStackRequest *)self _addChildRequest:v18];
     }
@@ -724,10 +724,10 @@ LABEL_8:
     return;
   }
 
-  if (a3)
+  if (orientation)
   {
     v7 = 0;
-    v8 = 0;
+    portraitLayout = 0;
     goto LABEL_8;
   }
 
@@ -751,8 +751,8 @@ LABEL_8:
       v49 = dispatch_get_specific(*v43);
       v50 = MEMORY[0x1E696AF00];
       v51 = v49;
-      v52 = [v50 callStackSymbols];
-      v53 = [v52 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v50 callStackSymbols];
+      v53 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v59 = v49;
       v60 = 2114;
@@ -763,8 +763,8 @@ LABEL_8:
 
   else if (v46)
   {
-    v47 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v48 = [v47 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v48 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     v59 = v48;
     _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -890,18 +890,18 @@ LABEL_22:
   __NUAssertLogger_block_invoke_9517();
 }
 
-- (void)_generateLayerStackForOrientation:(int64_t)a3 completion:(id)a4
+- (void)_generateLayerStackForOrientation:(int64_t)orientation completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __84__PIParallaxCompoundLayerStackRequest__generateLayerStackForOrientation_completion___block_invoke;
   v8[3] = &unk_1E82AA910;
-  v9 = v6;
-  v10 = a3;
+  v9 = completionCopy;
+  orientationCopy = orientation;
   v8[4] = self;
-  v7 = v6;
-  [(PIParallaxCompoundLayerStackRequest *)self _chooseLayoutForOrientation:a3 completion:v8];
+  v7 = completionCopy;
+  [(PIParallaxCompoundLayerStackRequest *)self _chooseLayoutForOrientation:orientation completion:v8];
 }
 
 void __84__PIParallaxCompoundLayerStackRequest__generateLayerStackForOrientation_completion___block_invoke(void *a1, uint64_t a2, void *a3)
@@ -1019,37 +1019,37 @@ void __84__PIParallaxCompoundLayerStackRequest__generateLayerStackForOrientation
 
 - (id)effectiveLayout
 {
-  v3 = [(PIParallaxCompoundLayerStackRequest *)self layout];
-  if (v3)
+  layout = [(PIParallaxCompoundLayerStackRequest *)self layout];
+  if (layout)
   {
-    v4 = v3;
+    originalLayout = layout;
   }
 
-  else if (!-[PIParallaxCompoundLayerStackRequest isSettlingEffectEnabled](self, "isSettlingEffectEnabled") || (-[PIParallaxCompoundLayerStackRequest segmentationItem](self, "segmentationItem"), v6 = objc_claimAutoreleasedReturnValue(), [v6 settlingEffectLayout], v4 = objc_claimAutoreleasedReturnValue(), v6, !v4))
+  else if (!-[PIParallaxCompoundLayerStackRequest isSettlingEffectEnabled](self, "isSettlingEffectEnabled") || (-[PIParallaxCompoundLayerStackRequest segmentationItem](self, "segmentationItem"), v6 = objc_claimAutoreleasedReturnValue(), [v6 settlingEffectLayout], originalLayout = objc_claimAutoreleasedReturnValue(), v6, !originalLayout))
   {
-    if (!-[PIParallaxCompoundLayerStackRequest isSpatialPhotoEnabled](self, "isSpatialPhotoEnabled") || (-[PIParallaxCompoundLayerStackRequest segmentationItem](self, "segmentationItem"), v7 = objc_claimAutoreleasedReturnValue(), [v7 spatialPhotoLayout], v4 = objc_claimAutoreleasedReturnValue(), v7, !v4))
+    if (!-[PIParallaxCompoundLayerStackRequest isSpatialPhotoEnabled](self, "isSpatialPhotoEnabled") || (-[PIParallaxCompoundLayerStackRequest segmentationItem](self, "segmentationItem"), v7 = objc_claimAutoreleasedReturnValue(), [v7 spatialPhotoLayout], originalLayout = objc_claimAutoreleasedReturnValue(), v7, !originalLayout))
     {
       if ([(PIParallaxCompoundLayerStackRequest *)self ignoreOriginalLayout])
       {
-        v4 = 0;
+        originalLayout = 0;
       }
 
       else
       {
-        v8 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
-        v4 = [v8 originalLayout];
+        segmentationItem = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+        originalLayout = [segmentationItem originalLayout];
       }
     }
   }
 
-  return v4;
+  return originalLayout;
 }
 
-- (void)_submitLayerStackRequestsWithLayout:(id)a3 auxiliaryLayout:(id)a4 orientation:(int64_t)a5 completion:(id)a6
+- (void)_submitLayerStackRequestsWithLayout:(id)layout auxiliaryLayout:(id)auxiliaryLayout orientation:(int64_t)orientation completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  layoutCopy = layout;
+  auxiliaryLayoutCopy = auxiliaryLayout;
+  completionCopy = completion;
   [MEMORY[0x1E69B3C60] begin];
   v21[0] = 0;
   v21[1] = v21;
@@ -1063,72 +1063,72 @@ void __84__PIParallaxCompoundLayerStackRequest__generateLayerStackForOrientation
   v20[3] = &unk_1E82AA848;
   v20[4] = v21;
   v13 = MEMORY[0x1CCA61740](v20);
-  if (a5 == 2)
+  if (orientation == 2)
   {
     if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 0x20) != 0)
     {
-      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:1 layout:v10 completion:v13];
+      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:1 layout:layoutCopy completion:v13];
     }
 
     if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 0x80) != 0)
     {
-      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:5 layout:v10 completion:v13];
+      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:5 layout:layoutCopy completion:v13];
     }
   }
 
-  else if (a5 == 1)
+  else if (orientation == 1)
   {
     if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 1) != 0)
     {
-      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:0 layout:v10 completion:v13];
+      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:0 layout:layoutCopy completion:v13];
     }
 
     if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 8) != 0)
     {
-      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:4 layout:v10 completion:v13];
+      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:4 layout:layoutCopy completion:v13];
     }
 
     if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 0x40) != 0)
     {
-      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:7 layout:v10 completion:v13];
+      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:7 layout:layoutCopy completion:v13];
     }
 
     if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 0x100) != 0)
     {
-      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:8 layout:v10 auxiliaryLayout:v11 completion:v13];
+      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:8 layout:layoutCopy auxiliaryLayout:auxiliaryLayoutCopy completion:v13];
     }
 
     if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 0x400) != 0)
     {
-      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:9 layout:v10 auxiliaryLayout:v11 completion:v13];
+      [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:9 layout:layoutCopy auxiliaryLayout:auxiliaryLayoutCopy completion:v13];
     }
   }
 
   if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 2) != 0)
   {
-    [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:2 layout:v10 completion:v13];
+    [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:2 layout:layoutCopy completion:v13];
   }
 
   if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 4) != 0)
   {
-    [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:3 layout:v10 completion:v13];
+    [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:3 layout:layoutCopy completion:v13];
   }
 
   if (([(PIParallaxCompoundLayerStackRequest *)self layerStackOptions]& 0x10) != 0)
   {
-    [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:6 layout:v10 completion:v13];
+    [(PIParallaxCompoundLayerStackRequest *)self _submitLayerStackRequestForMode:6 layout:layoutCopy completion:v13];
   }
 
   v14 = MEMORY[0x1E69B3C60];
-  v15 = [(NURenderRequest *)self responseQueue];
+  responseQueue = [(NURenderRequest *)self responseQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __114__PIParallaxCompoundLayerStackRequest__submitLayerStackRequestsWithLayout_auxiliaryLayout_orientation_completion___block_invoke_2;
   v17[3] = &unk_1E82AC398;
-  v16 = v12;
+  v16 = completionCopy;
   v18 = v16;
   v19 = v21;
-  [v14 commitAndNotifyOnQueue:v15 withBlock:v17];
+  [v14 commitAndNotifyOnQueue:responseQueue withBlock:v17];
 
   _Block_object_dispose(v21, 8);
 }
@@ -1157,9 +1157,9 @@ void __114__PIParallaxCompoundLayerStackRequest__submitLayerStackRequestsWithLay
   }
 }
 
-- (void)_submit:(id)a3
+- (void)_submit:(id)_submit
 {
-  v4 = a3;
+  _submitCopy = _submit;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   requests = self->_requests;
   self->_requests = v5;
@@ -1205,17 +1205,17 @@ void __114__PIParallaxCompoundLayerStackRequest__submitLayerStackRequestsWithLay
     [(PIParallaxCompoundLayerStackRequest *)self _generateLayerStackForOrientation:2 completion:v18];
   }
 
-  v12 = [(NURenderRequest *)self responseQueue];
+  responseQueue = [(NURenderRequest *)self responseQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __47__PIParallaxCompoundLayerStackRequest__submit___block_invoke_3;
   v14[3] = &unk_1E82AA820;
   v14[4] = self;
-  v15 = v4;
+  v15 = _submitCopy;
   v16 = v26;
   v17 = v21;
-  v13 = v4;
-  dispatch_group_notify(v11, v12, v14);
+  v13 = _submitCopy;
+  dispatch_group_notify(v11, responseQueue, v14);
 
   _Block_object_dispose(v21, 8);
   _Block_object_dispose(v26, 8);
@@ -1349,11 +1349,11 @@ void __47__PIParallaxCompoundLayerStackRequest__submit___block_invoke_3(uint64_t
   }
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v4 = a3;
+  submitCopy = submit;
   v5 = [(PIParallaxCompoundLayerStackRequest *)self copy];
-  [v5 _submit:v4];
+  [v5 _submit:submitCopy];
 }
 
 - (id)newRenderJob
@@ -1396,8 +1396,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -1424,8 +1424,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1441,24 +1441,24 @@ LABEL_14:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = PIParallaxCompoundLayerStackRequest;
-  v4 = [(NURenderRequest *)&v12 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v12 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
+    segmentationItem = [(PIParallaxCompoundLayerStackRequest *)self segmentationItem];
     v6 = v4[25];
-    v4[25] = v5;
+    v4[25] = segmentationItem;
 
-    v7 = [(PIParallaxCompoundLayerStackRequest *)self layout];
+    layout = [(PIParallaxCompoundLayerStackRequest *)self layout];
     v8 = v4[27];
-    v4[27] = v7;
+    v4[27] = layout;
 
-    v9 = [(PIParallaxCompoundLayerStackRequest *)self style];
+    style = [(PIParallaxCompoundLayerStackRequest *)self style];
     v10 = v4[26];
-    v4[26] = v9;
+    v4[26] = style;
 
     v4[28] = [(PIParallaxCompoundLayerStackRequest *)self layerStackOptions];
     v4[29] = [(PIParallaxCompoundLayerStackRequest *)self allowedLayoutStrategies];
@@ -1477,10 +1477,10 @@ LABEL_14:
   return v4;
 }
 
-- (PIParallaxCompoundLayerStackRequest)initWithComposition:(id)a3
+- (PIParallaxCompoundLayerStackRequest)initWithComposition:(id)composition
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  compositionCopy = composition;
   v4 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1518,8 +1518,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v4 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v4 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v26 = specific;
           v27 = 2114;
@@ -1546,8 +1546,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1563,11 +1563,11 @@ LABEL_14:
   }
 }
 
-- (PIParallaxCompoundLayerStackRequest)initWithSegmentationItem:(id)a3
+- (PIParallaxCompoundLayerStackRequest)initWithSegmentationItem:(id)item
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v10 = NUAssertLogger_9496();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1589,8 +1589,8 @@ LABEL_14:
         v18 = dispatch_get_specific(*v12);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v18;
         v26 = 2114;
@@ -1601,8 +1601,8 @@ LABEL_14:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v17;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1611,15 +1611,15 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
-  v7 = [v5 composition];
+  v6 = itemCopy;
+  composition = [itemCopy composition];
   v23.receiver = self;
   v23.super_class = PIParallaxCompoundLayerStackRequest;
-  v8 = [(NURenderRequest *)&v23 initWithComposition:v7];
+  v8 = [(NURenderRequest *)&v23 initWithComposition:composition];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_segmentationItem, a3);
+    objc_storeStrong(&v8->_segmentationItem, item);
     v8->_layerStackOptions = 1;
     v8->_allowedLayoutStrategies = 1;
   }

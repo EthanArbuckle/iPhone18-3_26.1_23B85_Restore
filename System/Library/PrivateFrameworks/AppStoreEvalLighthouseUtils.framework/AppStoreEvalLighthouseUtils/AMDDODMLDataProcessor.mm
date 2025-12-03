@@ -1,140 +1,140 @@
 @interface AMDDODMLDataProcessor
-- (AMDDODMLDataProcessor)initWithActionArray:(id)a3 withAttachmentProcessor:(id)a4;
-- (id)aggregateArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)bindToBuffer:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)checkIfArrayEmptyAndThrowError:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)combineArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)constantValueMathFunction:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)destroyArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)downSampleData:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)filterArrayOnNumber:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)generateHashFromInputs:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)getCurrentTime:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)getElementInCoreDictionary:(id)a3;
-- (id)getElementInInputDictionary:(id)a3;
-- (id)getElementInNumberInputsBounds:(id)a3;
-- (id)hashAdamIdsToIndices:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)hashFromCoreDictionary:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)ifStatement:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)insertArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)insertRawArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)padArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)parseAndCall:(id)a3 withInputs:(id)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)processForLoop:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)processForLoopHelper:(id)a3 withNumber:(id)a4 withDictionary:(id)a5;
-- (id)processRecipe:(id *)a3 errorDomain:(id)a4;
-- (id)randomizeArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)replicateArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)requestData:(id)a3 withUseStubs:(int64_t)a4 error:(id *)a5 errorDomain:(id)a6;
-- (id)sampleFromDistribution:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)sortArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)spliceArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)strideCopyAndSplitArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)strideCopyArray:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)twoArrayMathFunction:(id)a3 error:(id *)a4 errorDomain:(id)a5;
-- (id)windowFunction:(id)a3 error:(id *)a4 errorDomain:(id)a5;
+- (AMDDODMLDataProcessor)initWithActionArray:(id)array withAttachmentProcessor:(id)processor;
+- (id)aggregateArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)bindToBuffer:(id)buffer error:(id *)error errorDomain:(id)domain;
+- (id)checkIfArrayEmptyAndThrowError:(id)error error:(id *)a4 errorDomain:(id)domain;
+- (id)combineArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)constantValueMathFunction:(id)function error:(id *)error errorDomain:(id)domain;
+- (id)destroyArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)downSampleData:(id)data error:(id *)error errorDomain:(id)domain;
+- (id)filterArrayOnNumber:(id)number error:(id *)error errorDomain:(id)domain;
+- (id)generateHashFromInputs:(id)inputs error:(id *)error errorDomain:(id)domain;
+- (id)getCurrentTime:(id)time error:(id *)error errorDomain:(id)domain;
+- (id)getElementInCoreDictionary:(id)dictionary;
+- (id)getElementInInputDictionary:(id)dictionary;
+- (id)getElementInNumberInputsBounds:(id)bounds;
+- (id)hashAdamIdsToIndices:(id)indices error:(id *)error errorDomain:(id)domain;
+- (id)hashFromCoreDictionary:(id)dictionary error:(id *)error errorDomain:(id)domain;
+- (id)ifStatement:(id)statement error:(id *)error errorDomain:(id)domain;
+- (id)insertArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)insertRawArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)padArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)parseAndCall:(id)call withInputs:(id)inputs error:(id *)error errorDomain:(id)domain;
+- (id)processForLoop:(id)loop error:(id *)error errorDomain:(id)domain;
+- (id)processForLoopHelper:(id)helper withNumber:(id)number withDictionary:(id)dictionary;
+- (id)processRecipe:(id *)recipe errorDomain:(id)domain;
+- (id)randomizeArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)replicateArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)requestData:(id)data withUseStubs:(int64_t)stubs error:(id *)error errorDomain:(id)domain;
+- (id)sampleFromDistribution:(id)distribution error:(id *)error errorDomain:(id)domain;
+- (id)sortArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)spliceArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)strideCopyAndSplitArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)strideCopyArray:(id)array error:(id *)error errorDomain:(id)domain;
+- (id)twoArrayMathFunction:(id)function error:(id *)error errorDomain:(id)domain;
+- (id)windowFunction:(id)function error:(id *)error errorDomain:(id)domain;
 - (int64_t)getInputSize;
-- (void)resetDataProcessorWithRecipe:(id)a3;
-- (void)setElementInCoreDictionary:(id)a3 withKey:(id)a4;
-- (void)setElementsInCoreDictionary:(id)a3;
+- (void)resetDataProcessorWithRecipe:(id)recipe;
+- (void)setElementInCoreDictionary:(id)dictionary withKey:(id)key;
+- (void)setElementsInCoreDictionary:(id)dictionary;
 @end
 
 @implementation AMDDODMLDataProcessor
 
-- (AMDDODMLDataProcessor)initWithActionArray:(id)a3 withAttachmentProcessor:(id)a4
+- (AMDDODMLDataProcessor)initWithActionArray:(id)array withAttachmentProcessor:(id)processor
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, array);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
-  v4 = v22;
-  v22 = 0;
+  objc_storeStrong(&v20, processor);
+  v4 = selfCopy;
+  selfCopy = 0;
   v19.receiver = v4;
   v19.super_class = AMDDODMLDataProcessor;
   v18 = [(AMDDODMLDataProcessor *)&v19 init];
-  v22 = v18;
-  objc_storeStrong(&v22, v18);
+  selfCopy = v18;
+  objc_storeStrong(&selfCopy, v18);
   if (v18)
   {
-    objc_storeStrong(&v22->_actionArray, location[0]);
-    objc_storeStrong(&v22->_attachmentsProcessor, v20);
+    objc_storeStrong(&selfCopy->_actionArray, location[0]);
+    objc_storeStrong(&selfCopy->_attachmentsProcessor, v20);
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    coreDictionary = v22->_coreDictionary;
-    v22->_coreDictionary = v5;
+    coreDictionary = selfCopy->_coreDictionary;
+    selfCopy->_coreDictionary = v5;
     MEMORY[0x277D82BD8](coreDictionary);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    inputDictionary = v22->_inputDictionary;
-    v22->_inputDictionary = v7;
+    inputDictionary = selfCopy->_inputDictionary;
+    selfCopy->_inputDictionary = v7;
     MEMORY[0x277D82BD8](inputDictionary);
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    numberInputsBound = v22->_numberInputsBound;
-    v22->_numberInputsBound = v9;
+    numberInputsBound = selfCopy->_numberInputsBound;
+    selfCopy->_numberInputsBound = v9;
     MEMORY[0x277D82BD8](numberInputsBound);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    elementsInSample = v22->_elementsInSample;
-    v22->_elementsInSample = v11;
+    elementsInSample = selfCopy->_elementsInSample;
+    selfCopy->_elementsInSample = v11;
     MEMORY[0x277D82BD8](elementsInSample);
     v13 = objc_alloc_init(MEMORY[0x277CEE0A8]);
-    myAMDClient = v22->_myAMDClient;
-    v22->_myAMDClient = v13;
+    myAMDClient = selfCopy->_myAMDClient;
+    selfCopy->_myAMDClient = v13;
     MEMORY[0x277D82BD8](myAMDClient);
   }
 
-  v16 = MEMORY[0x277D82BE0](v22);
+  v16 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v16;
 }
 
-- (void)resetDataProcessorWithRecipe:(id)a3
+- (void)resetDataProcessorWithRecipe:(id)recipe
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v12->_actionArray, location[0]);
+  objc_storeStrong(location, recipe);
+  objc_storeStrong(&selfCopy->_actionArray, location[0]);
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  inputDictionary = v12->_inputDictionary;
-  v12->_inputDictionary = v3;
+  inputDictionary = selfCopy->_inputDictionary;
+  selfCopy->_inputDictionary = v3;
   MEMORY[0x277D82BD8](inputDictionary);
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  numberInputsBound = v12->_numberInputsBound;
-  v12->_numberInputsBound = v5;
+  numberInputsBound = selfCopy->_numberInputsBound;
+  selfCopy->_numberInputsBound = v5;
   MEMORY[0x277D82BD8](numberInputsBound);
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  elementsInSample = v12->_elementsInSample;
-  v12->_elementsInSample = v7;
+  elementsInSample = selfCopy->_elementsInSample;
+  selfCopy->_elementsInSample = v7;
   MEMORY[0x277D82BD8](elementsInSample);
   v9 = objc_alloc_init(MEMORY[0x277CEE0A8]);
-  myAMDClient = v12->_myAMDClient;
-  v12->_myAMDClient = v9;
+  myAMDClient = selfCopy->_myAMDClient;
+  selfCopy->_myAMDClient = v9;
   MEMORY[0x277D82BD8](myAMDClient);
   objc_storeStrong(location, 0);
 }
 
-- (void)setElementInCoreDictionary:(id)a3 withKey:(id)a4
+- (void)setElementInCoreDictionary:(id)dictionary withKey:(id)key
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(NSMutableDictionary *)v7->_coreDictionary setObject:location[0] forKey:v5];
+  objc_storeStrong(&v5, key);
+  [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:location[0] forKey:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setElementsInCoreDictionary:(id)a3
+- (void)setElementsInCoreDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
   v10 = [obj countByEnumeratingWithState:__b objects:v15 count:16];
@@ -152,7 +152,7 @@
       }
 
       v12 = *(__b[1] + 8 * v7);
-      v4 = [location[0] objectForKey:{v12, v14}];
+      v4 = [location[0] objectForKey:{v12, selfCopy}];
       [v3 setElementInCoreDictionary:? withKey:?];
       MEMORY[0x277D82BD8](v4);
       ++v7;
@@ -173,37 +173,37 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (id)getElementInCoreDictionary:(id)a3
+- (id)getElementInCoreDictionary:(id)dictionary
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v6->_coreDictionary objectForKey:location[0]];
+  objc_storeStrong(location, dictionary);
+  v4 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)getElementInInputDictionary:(id)a3
+- (id)getElementInInputDictionary:(id)dictionary
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v6->_inputDictionary objectForKey:location[0]];
+  objc_storeStrong(location, dictionary);
+  v4 = [(NSMutableDictionary *)selfCopy->_inputDictionary objectForKey:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)getElementInNumberInputsBounds:(id)a3
+- (id)getElementInNumberInputsBounds:(id)bounds
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(NSMutableDictionary *)v6->_numberInputsBound objectForKey:location[0]];
+  objc_storeStrong(location, bounds);
+  v4 = [(NSMutableDictionary *)selfCopy->_numberInputsBound objectForKey:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
@@ -212,11 +212,11 @@
 - (int64_t)getInputSize
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13 = -1;
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v15->_numberInputsBound);
+  obj = MEMORY[0x277D82BE0](selfCopy->_numberInputsBound);
   v10 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
   if (v10)
   {
@@ -232,12 +232,12 @@
       }
 
       v12 = *(__b[1] + 8 * v7);
-      v3 = [(NSMutableDictionary *)v15->_numberInputsBound objectForKey:v12];
-      v4 = [v3 longValue];
+      v3 = [(NSMutableDictionary *)selfCopy->_numberInputsBound objectForKey:v12];
+      longValue = [v3 longValue];
       MEMORY[0x277D82BD8](v3);
-      if (v4 < v13 || v13 == -1)
+      if (longValue < v13 || v13 == -1)
       {
-        v13 = v4;
+        v13 = longValue;
       }
 
       ++v7;
@@ -258,24 +258,24 @@
   return v13;
 }
 
-- (id)processRecipe:(id *)a3 errorDomain:(id)a4
+- (id)processRecipe:(id *)recipe errorDomain:(id)domain
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  recipeCopy = recipe;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, domain);
   for (i = 0; ; ++i)
   {
     v6 = i;
-    if (v6 >= [(NSArray *)v15->_actionArray count])
+    if (v6 >= [(NSArray *)selfCopy->_actionArray count])
     {
       break;
     }
 
-    v10 = [(NSArray *)v15->_actionArray objectAtIndex:i];
+    v10 = [(NSArray *)selfCopy->_actionArray objectAtIndex:i];
     v9 = [v10 objectForKey:FunctionName];
-    v8 = [(AMDDODMLDataProcessor *)v15 parseAndCall:v9 withInputs:v10 error:v13 errorDomain:location];
+    v8 = [(AMDDODMLDataProcessor *)selfCopy parseAndCall:v9 withInputs:v10 error:recipeCopy errorDomain:location];
     if (v8)
     {
       v7 = 0;
@@ -304,155 +304,155 @@ LABEL_9:
   return v4;
 }
 
-- (id)parseAndCall:(id)a3 withInputs:(id)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)parseAndCall:(id)call withInputs:(id)inputs error:(id *)error errorDomain:(id)domain
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, call);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v15 = a5;
+  objc_storeStrong(&v16, inputs);
+  errorCopy = error;
   v14 = 0;
-  objc_storeStrong(&v14, a6);
+  objc_storeStrong(&v14, domain);
   if ([location[0] isEqual:AggregateArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 aggregateArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy aggregateArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:BindToBuffer])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 bindToBuffer:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy bindToBuffer:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:CheckIfArrayEmptyAndThrowError])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 checkIfArrayEmptyAndThrowError:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy checkIfArrayEmptyAndThrowError:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:CombineArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 combineArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy combineArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:ConstantValueMathFunction])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 constantValueMathFunction:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy constantValueMathFunction:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:DownSampleData])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 downSampleData:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy downSampleData:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:DestroyArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 destroyArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy destroyArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:FilterArrayOnNumber])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 filterArrayOnNumber:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy filterArrayOnNumber:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:IfStatement])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 ifStatement:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy ifStatement:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:GenerateHashFromInputs])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 generateHashFromInputs:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy generateHashFromInputs:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:GetCurrentTime])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 getCurrentTime:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy getCurrentTime:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:HashAdamIdsToIndices])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 hashAdamIdsToIndices:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy hashAdamIdsToIndices:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:HashFromCoreDictionary])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 hashFromCoreDictionary:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy hashFromCoreDictionary:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:InsertArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 insertArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy insertArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:InsertRawArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 insertRawArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy insertRawArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:PadArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 padArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy padArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:ProcessForLoop])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 processForLoop:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy processForLoop:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:RandomizeArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 randomizeArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy randomizeArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:ReplicateArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 replicateArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy replicateArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:RequestData])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 requestData:v16 withUseStubs:0 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy requestData:v16 withUseStubs:0 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:RequestDummyData])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 requestData:v16 withUseStubs:1 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy requestData:v16 withUseStubs:1 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:SampleFromDistribution])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 sampleFromDistribution:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy sampleFromDistribution:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:SortArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 sortArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy sortArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:SpliceArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 spliceArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy spliceArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:StrideCopyAndSplitArray])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 strideCopyAndSplitArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy strideCopyAndSplitArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:StrideArrayCopy])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 strideCopyArray:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy strideCopyArray:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:TwoArrayMathFunction])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 twoArrayMathFunction:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy twoArrayMathFunction:v16 error:errorCopy errorDomain:v14];
   }
 
   else if ([location[0] isEqual:WindowFunction])
   {
-    v19 = [(AMDDODMLDataProcessor *)v18 windowFunction:v16 error:v15 errorDomain:v14];
+    v19 = [(AMDDODMLDataProcessor *)selfCopy windowFunction:v16 error:errorCopy errorDomain:v14];
   }
 
   else
@@ -460,7 +460,7 @@ LABEL_9:
     v6 = objc_alloc(MEMORY[0x277CCA9B8]);
     v10 = [v6 initWithDomain:v14 code:24 userInfo:0];
     v7 = v10;
-    *v15 = v10;
+    *errorCopy = v10;
     v19 = 0;
   }
 
@@ -472,17 +472,17 @@ LABEL_9:
   return v8;
 }
 
-- (id)processForLoopHelper:(id)a3 withNumber:(id)a4 withDictionary:(id)a5
+- (id)processForLoopHelper:(id)helper withNumber:(id)number withDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, helper);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, number);
   v31 = 0;
-  objc_storeStrong(&v31, a5);
+  objc_storeStrong(&v31, dictionary);
   memset(__b, 0, sizeof(__b));
   v24 = MEMORY[0x277D82BE0](v31);
   v25 = [v24 countByEnumeratingWithState:__b objects:v34 count:16];
@@ -511,12 +511,12 @@ LABEL_9:
       v15 = location[0];
       v14 = v30;
       v17 = [MEMORY[0x277CCABB0] numberWithDouble:v7 + v13 * v12];
-      v16 = [v17 stringValue];
+      stringValue = [v17 stringValue];
       v8 = [v15 stringByReplacingOccurrencesOfString:v14 withString:?];
       v9 = location[0];
       location[0] = v8;
       MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](stringValue);
       MEMORY[0x277D82BD8](v17);
       objc_storeStrong(&v26, 0);
       objc_storeStrong(&v27, 0);
@@ -544,16 +544,16 @@ LABEL_9:
   return v11;
 }
 
-- (id)processForLoop:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)processForLoop:(id)loop error:(id *)error errorDomain:(id)domain
 {
   v101 = *MEMORY[0x277D85DE8];
-  v96 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v94 = a4;
+  objc_storeStrong(location, loop);
+  errorCopy = error;
   v93 = 0;
-  objc_storeStrong(&v93, a5);
+  objc_storeStrong(&v93, domain);
   v92 = [location[0] objectForKey:Starting];
   v91 = [location[0] objectForKey:Ending];
   v90 = [location[0] objectForKey:StartingLikeOtherArray];
@@ -563,7 +563,7 @@ LABEL_9:
     goto LABEL_75;
   }
 
-  v88 = [(NSMutableDictionary *)v96->_coreDictionary objectForKey:v90];
+  v88 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v90];
   v87 = [location[0] objectForKey:StartingLikeOtherArrayMultiplier];
   v86 = [location[0] objectForKey:StartingLikeOtherArrayOffset];
   if (v88 && v87 && v86)
@@ -580,7 +580,7 @@ LABEL_9:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v50 = [v5 initWithDomain:v93 code:47 userInfo:0];
     v6 = v50;
-    *v94 = v50;
+    *errorCopy = v50;
     v97 = 0;
     v85 = 1;
   }
@@ -596,7 +596,7 @@ LABEL_75:
       goto LABEL_15;
     }
 
-    v84 = [(NSMutableDictionary *)v96->_coreDictionary objectForKey:v89];
+    v84 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v89];
     v83 = [location[0] objectForKey:EndingLikeOtherArrayMultiplier];
     v82 = [location[0] objectForKey:EndingLikeOtherArrayOffset];
     if (v84 && v83 && v82)
@@ -613,7 +613,7 @@ LABEL_75:
       v9 = objc_alloc(MEMORY[0x277CCA9B8]);
       v49 = [v9 initWithDomain:v93 code:146 userInfo:0];
       v10 = v49;
-      *v94 = v49;
+      *errorCopy = v49;
       v97 = 0;
       v85 = 1;
     }
@@ -769,12 +769,12 @@ LABEL_15:
                     }
 
                     v59 = *(v58[1] + 8 * v29);
-                    v57 = [(AMDDODMLDataProcessor *)v96 processForLoopHelper:v59 withNumber:v79 withDictionary:v76];
+                    v57 = [(AMDDODMLDataProcessor *)selfCopy processForLoopHelper:v59 withNumber:v79 withDictionary:v76];
                     v56 = [v61 objectForKey:v59];
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v55 = [(AMDDODMLDataProcessor *)v96 processForLoopHelper:v56 withNumber:v79 withDictionary:v76];
+                      v55 = [(AMDDODMLDataProcessor *)selfCopy processForLoopHelper:v56 withNumber:v79 withDictionary:v76];
                       [v60 setObject:v55 forKey:v57];
                       objc_storeStrong(&v55, 0);
                     }
@@ -816,7 +816,7 @@ LABEL_15:
               v22 = objc_alloc(MEMORY[0x277CCA9B8]);
               v26 = [v22 initWithDomain:v93 code:147 userInfo:0];
               v23 = v26;
-              *v94 = v26;
+              *errorCopy = v26;
               v97 = 0;
               v85 = 1;
 LABEL_54:
@@ -839,7 +839,7 @@ LABEL_54:
             }
 
             v70 = MEMORY[0x277D82BE0](v71);
-            v69 = [(AMDDODMLDataProcessor *)v96 processForLoopHelper:v70 withNumber:v79 withDictionary:v76];
+            v69 = [(AMDDODMLDataProcessor *)selfCopy processForLoopHelper:v70 withNumber:v79 withDictionary:v76];
             [v74 setObject:v69 forKey:v73];
             objc_storeStrong(&v69, 0);
             objc_storeStrong(&v70, 0);
@@ -855,7 +855,7 @@ LABEL_58:
           if (!v85)
           {
             v54 = [v74 objectForKey:FunctionName];
-            v53 = [(AMDDODMLDataProcessor *)v96 parseAndCall:v54 withInputs:v74 error:v94 errorDomain:v93];
+            v53 = [(AMDDODMLDataProcessor *)selfCopy parseAndCall:v54 withInputs:v74 error:errorCopy errorDomain:v93];
             if (v53)
             {
               v85 = 0;
@@ -909,21 +909,21 @@ LABEL_69:
   return v24;
 }
 
-- (id)aggregateArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)aggregateArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, domain);
   v31 = [location[0] objectForKey:InputArray];
   v30 = [location[0] objectForKey:OutputArray];
   v29 = [location[0] objectForKey:AggregationMethod];
   if (v31 && v30 && v29)
   {
-    v27 = [(NSMutableDictionary *)v35->_coreDictionary objectForKey:v31];
+    v27 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v31];
     if (v27)
     {
       v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -960,7 +960,7 @@ LABEL_69:
         MEMORY[0x277D82BD8](v13);
       }
 
-      [(NSMutableDictionary *)v35->_coreDictionary setObject:v26 forKey:v30];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v26 forKey:v30];
       v36 = [MEMORY[0x277CCABB0] numberWithLong:1];
       v28 = 1;
       objc_storeStrong(&v26, 0);
@@ -971,7 +971,7 @@ LABEL_69:
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v17 = [v7 initWithDomain:v32 code:142 userInfo:0];
       v8 = v17;
-      *v33 = v17;
+      *errorCopy = v17;
       v36 = 0;
       v28 = 1;
     }
@@ -984,7 +984,7 @@ LABEL_69:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v18 = [v5 initWithDomain:v32 code:141 userInfo:0];
     v6 = v18;
-    *v33 = v18;
+    *errorCopy = v18;
     v36 = 0;
     v28 = 1;
   }
@@ -999,21 +999,21 @@ LABEL_69:
   return v11;
 }
 
-- (id)bindToBuffer:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)bindToBuffer:(id)buffer error:(id *)error errorDomain:(id)domain
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v35 = a4;
+  objc_storeStrong(location, buffer);
+  errorCopy = error;
   v34 = 0;
-  objc_storeStrong(&v34, a5);
+  objc_storeStrong(&v34, domain);
   v33 = [location[0] objectForKey:InputArray];
   v32 = [location[0] objectForKey:OutputArray];
   v31 = [location[0] objectForKey:ElementsInSample];
   if (v33 && v32 && v31)
   {
-    v29 = [(NSMutableDictionary *)v37->_coreDictionary objectForKey:v33];
+    v29 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v33];
     if (v29)
     {
       v17 = [v29 count];
@@ -1032,12 +1032,12 @@ LABEL_69:
           objc_storeStrong(&v23, 0);
         }
 
-        numberInputsBound = v37->_numberInputsBound;
+        numberInputsBound = selfCopy->_numberInputsBound;
         v15 = [MEMORY[0x277CCABB0] numberWithLong:v25];
         [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
         MEMORY[0x277D82BD8](v15);
-        [(NSMutableDictionary *)v37->_elementsInSample setObject:v31 forKey:v32];
-        [(NSMutableDictionary *)v37->_inputDictionary setObject:v28 forKey:v32];
+        [(NSMutableDictionary *)selfCopy->_elementsInSample setObject:v31 forKey:v32];
+        [(NSMutableDictionary *)selfCopy->_inputDictionary setObject:v28 forKey:v32];
         v38 = [MEMORY[0x277CCABB0] numberWithLong:1];
         v30 = 1;
         objc_storeStrong(&v28, 0);
@@ -1048,7 +1048,7 @@ LABEL_69:
         v9 = objc_alloc(MEMORY[0x277CCA9B8]);
         v16 = [v9 initWithDomain:v34 code:92 userInfo:0];
         v10 = v16;
-        *v35 = v16;
+        *errorCopy = v16;
         v38 = 0;
         v30 = 1;
       }
@@ -1059,7 +1059,7 @@ LABEL_69:
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v18 = [v7 initWithDomain:v34 code:27 userInfo:0];
       v8 = v18;
-      *v35 = v18;
+      *errorCopy = v18;
       v38 = 0;
       v30 = 1;
     }
@@ -1072,7 +1072,7 @@ LABEL_69:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v19 = [v5 initWithDomain:v34 code:38 userInfo:0];
     v6 = v19;
-    *v35 = v19;
+    *errorCopy = v19;
     v38 = 0;
     v30 = 1;
   }
@@ -1087,19 +1087,19 @@ LABEL_69:
   return v12;
 }
 
-- (id)checkIfArrayEmptyAndThrowError:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)checkIfArrayEmptyAndThrowError:(id)error error:(id *)a4 errorDomain:(id)domain
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v22 = a4;
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, domain);
   v20 = [location[0] objectForKey:InputArray];
   if (v20)
   {
-    v18 = [(NSMutableDictionary *)v24->_coreDictionary objectForKey:v20];
+    v18 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v20];
     if (v18)
     {
       if ([v18 count])
@@ -1150,22 +1150,22 @@ LABEL_69:
   return v11;
 }
 
-- (id)combineArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)combineArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, domain);
   v25 = [location[0] objectForKey:InputArray];
   v24 = [location[0] objectForKey:SecondArray];
   v23 = [location[0] objectForKey:OutputArray];
   if (v25 && v23 && v24)
   {
-    v21 = [(NSMutableDictionary *)v29->_coreDictionary objectForKey:v25];
-    v20 = [(NSMutableDictionary *)v29->_coreDictionary objectForKey:v24];
+    v21 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v25];
+    v20 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v24];
     if (v21 && v20)
     {
       v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1183,7 +1183,7 @@ LABEL_69:
         MEMORY[0x277D82BD8](v11);
       }
 
-      [(NSMutableDictionary *)v29->_coreDictionary setObject:v19 forKey:v23];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v19 forKey:v23];
       v30 = [MEMORY[0x277CCABB0] numberWithLong:1];
       v22 = 1;
       objc_storeStrong(&v19, 0);
@@ -1194,7 +1194,7 @@ LABEL_69:
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v13 = [v7 initWithDomain:v26 code:28 userInfo:0];
       v8 = v13;
-      *v27 = v13;
+      *errorCopy = v13;
       v30 = 0;
       v22 = 1;
     }
@@ -1208,7 +1208,7 @@ LABEL_69:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v14 = [v5 initWithDomain:v26 code:39 userInfo:0];
     v6 = v14;
-    *v27 = v14;
+    *errorCopy = v14;
     v30 = 0;
     v22 = 1;
   }
@@ -1223,22 +1223,22 @@ LABEL_69:
   return v9;
 }
 
-- (id)destroyArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)destroyArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, domain);
   v17 = [location[0] objectForKey:InputArray];
   if (v17)
   {
-    v15 = [(NSMutableDictionary *)v21->_coreDictionary objectForKey:v17];
+    v15 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v17];
     if (v15)
     {
-      [(NSMutableDictionary *)v21->_coreDictionary removeObjectForKey:v17];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary removeObjectForKey:v17];
       v22 = [MEMORY[0x277CCABB0] numberWithLong:1];
     }
 
@@ -1247,7 +1247,7 @@ LABEL_69:
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v11 = [v7 initWithDomain:v18 code:37 userInfo:0];
       v8 = v11;
-      *v19 = v11;
+      *errorCopy = v11;
       v22 = 0;
     }
 
@@ -1260,7 +1260,7 @@ LABEL_69:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v12 = [v5 initWithDomain:v18 code:57 userInfo:0];
     v6 = v12;
-    *v19 = v12;
+    *errorCopy = v12;
     v22 = 0;
     v16 = 1;
   }
@@ -1273,16 +1273,16 @@ LABEL_69:
   return v9;
 }
 
-- (id)downSampleData:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)downSampleData:(id)data error:(id *)error errorDomain:(id)domain
 {
   v124 = *MEMORY[0x277D85DE8];
-  v117 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v115 = a4;
+  objc_storeStrong(location, data);
+  errorCopy = error;
   v114 = 0;
-  objc_storeStrong(&v114, a5);
+  objc_storeStrong(&v114, domain);
   v113 = [location[0] objectForKey:InputArray];
   v112 = [location[0] objectForKey:OutputArray];
   v111 = [location[0] objectForKey:DefaultRatio];
@@ -1298,10 +1298,10 @@ LABEL_69:
 LABEL_32:
     if (v113 && v112 && v110 && v111 && *(&v109 + 1) && v109)
     {
-      v102 = [(AMDDODMLAttachmentProcessor *)v117->_attachmentsProcessor downSampleDictionaryForKey:v110];
+      v102 = [(AMDDODMLAttachmentProcessor *)selfCopy->_attachmentsProcessor downSampleDictionaryForKey:v110];
       if (v102)
       {
-        v101 = [(NSMutableDictionary *)v117->_coreDictionary objectForKey:v113];
+        v101 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v113];
         if (v101)
         {
           v100 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -1396,9 +1396,9 @@ LABEL_32:
                   }
 
                   v36 = i;
-                  v22 = [v88 longValue];
-                  v84 = v36 * v22 + j;
-                  v83 = [(NSMutableDictionary *)v117->_coreDictionary objectForKey:v90];
+                  longValue = [v88 longValue];
+                  v84 = v36 * longValue + j;
+                  v83 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v90];
                   v37 = v84;
                   if (v37 < [v83 count])
                   {
@@ -1413,7 +1413,7 @@ LABEL_32:
                     v23 = objc_alloc(MEMORY[0x277CCA9B8]);
                     v35 = [v23 initWithDomain:v114 code:25 userInfo:0];
                     v24 = v35;
-                    *v115 = v35;
+                    *errorCopy = v35;
                     v118 = 0;
                     v108 = 1;
                   }
@@ -1486,7 +1486,7 @@ LABEL_71:
               }
 
               v81 = *(v80[1] + 8 * v31);
-              coreDictionary = v117->_coreDictionary;
+              coreDictionary = selfCopy->_coreDictionary;
               v28 = [v100 objectForKey:v81];
               [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
               MEMORY[0x277D82BD8](v28);
@@ -1504,7 +1504,7 @@ LABEL_71:
           }
 
           MEMORY[0x277D82BD8](v33);
-          [(NSMutableDictionary *)v117->_coreDictionary setObject:v96 forKey:v112];
+          [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v96 forKey:v112];
           v118 = [MEMORY[0x277CCABB0] numberWithLong:1];
           v108 = 1;
 LABEL_81:
@@ -1517,7 +1517,7 @@ LABEL_81:
           v19 = objc_alloc(MEMORY[0x277CCA9B8]);
           v54 = [v19 initWithDomain:v114 code:29 userInfo:0];
           v20 = v54;
-          *v115 = v54;
+          *errorCopy = v54;
           v118 = 0;
           v108 = 1;
         }
@@ -1530,7 +1530,7 @@ LABEL_81:
         v17 = objc_alloc(MEMORY[0x277CCA9B8]);
         v55 = [v17 initWithDomain:v114 code:21 userInfo:0];
         v18 = v55;
-        *v115 = v55;
+        *errorCopy = v55;
         v118 = 0;
         v108 = 1;
       }
@@ -1543,7 +1543,7 @@ LABEL_81:
       v15 = objc_alloc(MEMORY[0x277CCA9B8]);
       v56 = [v15 initWithDomain:v114 code:40 userInfo:0];
       v16 = v56;
-      *v115 = v56;
+      *errorCopy = v56;
       v118 = 0;
       v108 = 1;
     }
@@ -1556,7 +1556,7 @@ LABEL_81:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v77 = [v5 initWithDomain:v114 code:40 userInfo:0];
     v6 = v77;
-    *v115 = v77;
+    *errorCopy = v77;
     v118 = 0;
     v108 = 1;
     goto LABEL_84;
@@ -1586,16 +1586,16 @@ LABEL_81:
         v7 = objc_alloc(MEMORY[0x277CCA9B8]);
         v69 = [v7 initWithDomain:v114 code:40 userInfo:0];
         v8 = v69;
-        *v115 = v69;
+        *errorCopy = v69;
         v118 = 0;
         v108 = 1;
         goto LABEL_17;
       }
 
       v67 = [v109 objectForKey:v107];
-      v68 = [v67 longValue];
+      longValue2 = [v67 longValue];
       MEMORY[0x277D82BD8](v67);
-      if (v68 < 1)
+      if (longValue2 < 1)
       {
         break;
       }
@@ -1615,7 +1615,7 @@ LABEL_81:
     v9 = objc_alloc(MEMORY[0x277CCA9B8]);
     v66 = [v9 initWithDomain:v114 code:40 userInfo:0];
     v10 = v66;
-    *v115 = v66;
+    *errorCopy = v66;
     v118 = 0;
     v108 = 1;
   }
@@ -1654,7 +1654,7 @@ LABEL_17:
           break;
         }
 
-        v103 = [(NSMutableDictionary *)v117->_coreDictionary objectForKey:v105];
+        v103 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v105];
         if (v103)
         {
           v108 = 0;
@@ -1665,7 +1665,7 @@ LABEL_17:
           v13 = objc_alloc(MEMORY[0x277CCA9B8]);
           v57 = [v13 initWithDomain:v114 code:29 userInfo:0];
           v14 = v57;
-          *v115 = v57;
+          *errorCopy = v57;
           v118 = 0;
           v108 = 1;
         }
@@ -1691,7 +1691,7 @@ LABEL_17:
       v11 = objc_alloc(MEMORY[0x277CCA9B8]);
       v58 = [v11 initWithDomain:v114 code:40 userInfo:0];
       v12 = v58;
-      *v115 = v58;
+      *errorCopy = v58;
       v118 = 0;
       v108 = 1;
     }
@@ -1725,15 +1725,15 @@ LABEL_84:
   return v25;
 }
 
-- (id)constantValueMathFunction:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)constantValueMathFunction:(id)function error:(id *)error errorDomain:(id)domain
 {
-  v60 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v58 = a4;
+  objc_storeStrong(location, function);
+  errorCopy = error;
   v57 = 0;
-  objc_storeStrong(&v57, a5);
+  objc_storeStrong(&v57, domain);
   v56 = [location[0] objectForKey:InputArray];
   v55 = [location[0] objectForKey:OutputArray];
   v54 = [location[0] objectForKey:ConstantValue];
@@ -1743,7 +1743,7 @@ LABEL_84:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v43 = [v5 initWithDomain:v57 code:86 userInfo:0];
     v6 = v43;
-    *v58 = v43;
+    *errorCopy = v43;
     v61 = 0;
     v52 = 1;
     goto LABEL_31;
@@ -1755,19 +1755,19 @@ LABEL_84:
     v8 = objc_alloc(MEMORY[0x277CCA9B8]);
     v42 = [v8 initWithDomain:v57 code:86 userInfo:0];
     v9 = v42;
-    *v58 = v42;
+    *errorCopy = v42;
     v61 = 0;
     v52 = 1;
     goto LABEL_31;
   }
 
-  v51 = [(NSMutableDictionary *)v60->_coreDictionary objectForKey:v56];
+  v51 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v56];
   if (!v51)
   {
     v10 = objc_alloc(MEMORY[0x277CCA9B8]);
     v41 = [v10 initWithDomain:v57 code:85 userInfo:0];
     v11 = v41;
-    *v58 = v41;
+    *errorCopy = v41;
     v61 = 0;
     v52 = 1;
     goto LABEL_30;
@@ -1786,8 +1786,8 @@ LABEL_84:
     v47 = 0;
     if ([v53 isEqual:Modulo])
     {
-      v39 = [v48 longValue];
-      v46 = v39 % [v54 longValue];
+      longValue = [v48 longValue];
+      v46 = longValue % [v54 longValue];
       v12 = [MEMORY[0x277CCABB0] numberWithLong:v46];
       v13 = v47;
       v47 = v12;
@@ -1834,7 +1834,7 @@ LABEL_84:
         v30 = objc_alloc(MEMORY[0x277CCA9B8]);
         v34 = [v30 initWithDomain:v57 code:83 userInfo:0];
         v31 = v34;
-        *v58 = v34;
+        *errorCopy = v34;
         v61 = 0;
         v52 = 1;
         goto LABEL_26;
@@ -1860,7 +1860,7 @@ LABEL_26:
     }
   }
 
-  [(NSMutableDictionary *)v60->_coreDictionary setObject:v50 forKey:v55];
+  [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v50 forKey:v55];
   v61 = [MEMORY[0x277CCABB0] numberWithLong:1];
   v52 = 1;
 LABEL_29:
@@ -1879,16 +1879,16 @@ LABEL_31:
   return v32;
 }
 
-- (id)filterArrayOnNumber:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)filterArrayOnNumber:(id)number error:(id *)error errorDomain:(id)domain
 {
   v137 = *MEMORY[0x277D85DE8];
-  v130 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v128 = a4;
+  objc_storeStrong(location, number);
+  errorCopy = error;
   v127 = 0;
-  objc_storeStrong(&v127, a5);
+  objc_storeStrong(&v127, domain);
   v126 = [location[0] objectForKey:InputArray];
   v125 = [location[0] objectForKey:OutputArray];
   v124 = [location[0] objectForKey:FilterOperation];
@@ -1910,7 +1910,7 @@ LABEL_31:
       v5 = objc_alloc(MEMORY[0x277CCA9B8]);
       v93 = [v5 initWithDomain:v127 code:102 userInfo:0];
       v6 = v93;
-      *v128 = v93;
+      *errorCopy = v93;
       v131 = 0;
       v121 = 1;
       goto LABEL_96;
@@ -1940,16 +1940,16 @@ LABEL_31:
           v7 = objc_alloc(MEMORY[0x277CCA9B8]);
           v85 = [v7 initWithDomain:v127 code:102 userInfo:0];
           v8 = v85;
-          *v128 = v85;
+          *errorCopy = v85;
           v131 = 0;
           v121 = 1;
           goto LABEL_17;
         }
 
         v83 = [v122 objectForKey:v120];
-        v84 = [v83 longValue];
+        longValue = [v83 longValue];
         MEMORY[0x277D82BD8](v83);
-        if (v84 < 1)
+        if (longValue < 1)
         {
           break;
         }
@@ -1969,7 +1969,7 @@ LABEL_31:
       v9 = objc_alloc(MEMORY[0x277CCA9B8]);
       v82 = [v9 initWithDomain:v127 code:102 userInfo:0];
       v10 = v82;
-      *v128 = v82;
+      *errorCopy = v82;
       v131 = 0;
       v121 = 1;
     }
@@ -2011,7 +2011,7 @@ LABEL_17:
           break;
         }
 
-        v116 = [(NSMutableDictionary *)v130->_coreDictionary objectForKey:v118];
+        v116 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v118];
         if (v116)
         {
           v121 = 0;
@@ -2022,7 +2022,7 @@ LABEL_17:
           v13 = objc_alloc(MEMORY[0x277CCA9B8]);
           v73 = [v13 initWithDomain:v127 code:101 userInfo:0];
           v14 = v73;
-          *v128 = v73;
+          *errorCopy = v73;
           v131 = 0;
           v121 = 1;
         }
@@ -2048,7 +2048,7 @@ LABEL_17:
       v11 = objc_alloc(MEMORY[0x277CCA9B8]);
       v74 = [v11 initWithDomain:v127 code:102 userInfo:0];
       v12 = v74;
-      *v128 = v74;
+      *errorCopy = v74;
       v131 = 0;
       v121 = 1;
     }
@@ -2072,19 +2072,19 @@ LABEL_31:
     v15 = objc_alloc(MEMORY[0x277CCA9B8]);
     v72 = [v15 initWithDomain:v127 code:102 userInfo:0];
     v16 = v72;
-    *v128 = v72;
+    *errorCopy = v72;
     v131 = 0;
     v121 = 1;
     goto LABEL_96;
   }
 
-  v115 = [(NSMutableDictionary *)v130->_coreDictionary objectForKey:v126];
+  v115 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v126];
   if (!v115)
   {
     v17 = objc_alloc(MEMORY[0x277CCA9B8]);
     v71 = [v17 initWithDomain:v127 code:101 userInfo:0];
     v18 = v71;
-    *v128 = v71;
+    *errorCopy = v71;
     v131 = 0;
     v121 = 1;
     goto LABEL_95;
@@ -2185,7 +2185,7 @@ LABEL_31:
         v32 = objc_alloc(MEMORY[0x277CCA9B8]);
         v57 = [v32 initWithDomain:v127 code:100 userInfo:0];
         v33 = v57;
-        *v128 = v57;
+        *errorCopy = v57;
         v131 = 0;
         v121 = 1;
         goto LABEL_85;
@@ -2237,9 +2237,9 @@ LABEL_31:
           }
 
           v48 = i;
-          v34 = [v104 longValue];
-          v100 = v48 * v34 + j;
-          v99 = [(NSMutableDictionary *)v130->_coreDictionary objectForKey:v106];
+          longValue2 = [v104 longValue];
+          v100 = v48 * longValue2 + j;
+          v99 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v106];
           v49 = v100;
           if (v49 < [v99 count])
           {
@@ -2254,7 +2254,7 @@ LABEL_31:
             v35 = objc_alloc(MEMORY[0x277CCA9B8]);
             v47 = [v35 initWithDomain:v127 code:105 userInfo:0];
             v36 = v47;
-            *v128 = v47;
+            *errorCopy = v47;
             v131 = 0;
             v121 = 1;
           }
@@ -2327,7 +2327,7 @@ LABEL_85:
       }
 
       v97 = *(v96[1] + 8 * v43);
-      coreDictionary = v130->_coreDictionary;
+      coreDictionary = selfCopy->_coreDictionary;
       v40 = [v114 objectForKey:v97];
       [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
       MEMORY[0x277D82BD8](v40);
@@ -2345,7 +2345,7 @@ LABEL_85:
   }
 
   MEMORY[0x277D82BD8](v45);
-  [(NSMutableDictionary *)v130->_coreDictionary setObject:v110 forKey:v125];
+  [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v110 forKey:v125];
   v131 = [MEMORY[0x277CCABB0] numberWithLong:1];
   v121 = 1;
 LABEL_94:
@@ -2368,15 +2368,15 @@ LABEL_96:
   return v37;
 }
 
-- (id)getCurrentTime:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)getCurrentTime:(id)time error:(id *)error errorDomain:(id)domain
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18[1] = a4;
+  objc_storeStrong(location, time);
+  v18[1] = error;
   v18[0] = 0;
-  objc_storeStrong(v18, a5);
+  objc_storeStrong(v18, domain);
   v17 = [location[0] objectForKey:OutputArray];
   info = 0;
   mach_timebase_info(&info);
@@ -2389,7 +2389,7 @@ LABEL_96:
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
   [v11 addObject:?];
   MEMORY[0x277D82BD8](v12);
-  [(NSMutableDictionary *)v20->_coreDictionary setObject:v14 forKey:v17];
+  [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v14 forKey:v17];
   v13 = [MEMORY[0x277CCABB0] numberWithLong:1];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v17, 0);
@@ -2399,15 +2399,15 @@ LABEL_96:
   return v13;
 }
 
-- (id)hashFromCoreDictionary:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)hashFromCoreDictionary:(id)dictionary error:(id *)error errorDomain:(id)domain
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v38 = a4;
+  objc_storeStrong(location, dictionary);
+  errorCopy = error;
   v37 = 0;
-  objc_storeStrong(&v37, a5);
+  objc_storeStrong(&v37, domain);
   v36 = [location[0] objectForKey:InputArray];
   v35 = [location[0] objectForKey:OutputArray];
   v34 = [location[0] objectForKey:InputArrayMappingKey];
@@ -2415,9 +2415,9 @@ LABEL_96:
   v32 = [location[0] objectForKey:DefaultValue];
   if (v36 && v35 && v34 && v33)
   {
-    v30 = [(NSMutableDictionary *)v40->_coreDictionary objectForKey:v36];
-    v29 = [(NSMutableDictionary *)v40->_coreDictionary objectForKey:v34];
-    v28 = [(NSMutableDictionary *)v40->_coreDictionary objectForKey:v33];
+    v30 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v36];
+    v29 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v34];
+    v28 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v33];
     if (v30 && v29 && v28)
     {
       v17 = [v29 count];
@@ -2458,7 +2458,7 @@ LABEL_96:
           objc_storeStrong(&v23, 0);
         }
 
-        [(NSMutableDictionary *)v40->_coreDictionary setObject:v25 forKey:v35];
+        [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v25 forKey:v35];
         v41 = [MEMORY[0x277CCABB0] numberWithLong:1];
         v31 = 1;
         objc_storeStrong(&v25, 0);
@@ -2470,7 +2470,7 @@ LABEL_96:
         v9 = objc_alloc(MEMORY[0x277CCA9B8]);
         v16 = [v9 initWithDomain:v37 code:130 userInfo:0];
         v10 = v16;
-        *v38 = v16;
+        *errorCopy = v16;
         v41 = 0;
         v31 = 1;
       }
@@ -2481,7 +2481,7 @@ LABEL_96:
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v18 = [v7 initWithDomain:v37 code:129 userInfo:0];
       v8 = v18;
-      *v38 = v18;
+      *errorCopy = v18;
       v41 = 0;
       v31 = 1;
     }
@@ -2496,7 +2496,7 @@ LABEL_96:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v19 = [v5 initWithDomain:v37 code:128 userInfo:0];
     v6 = v19;
-    *v38 = v19;
+    *errorCopy = v19;
     v41 = 0;
     v31 = 1;
   }
@@ -2513,25 +2513,25 @@ LABEL_96:
   return v11;
 }
 
-- (id)hashAdamIdsToIndices:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)hashAdamIdsToIndices:(id)indices error:(id *)error errorDomain:(id)domain
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31 = a4;
+  objc_storeStrong(location, indices);
+  errorCopy = error;
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, domain);
   v29 = [location[0] objectForKey:InputArray];
   v28 = [location[0] objectForKey:OutputArray];
   v27 = [location[0] objectForKey:Mapping];
   v26 = [location[0] objectForKey:DefaultValue];
   if (v29 && v28 && v27)
   {
-    v24 = [(AMDDODMLAttachmentProcessor *)v33->_attachmentsProcessor hashMapForKey:v27];
+    v24 = [(AMDDODMLAttachmentProcessor *)selfCopy->_attachmentsProcessor hashMapForKey:v27];
     if (v24)
     {
-      v23 = [(NSMutableDictionary *)v33->_coreDictionary objectForKey:v29];
+      v23 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v29];
       if (v23)
       {
         v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2559,7 +2559,7 @@ LABEL_96:
           objc_storeStrong(&v20, 0);
         }
 
-        [(NSMutableDictionary *)v33->_coreDictionary setObject:v22 forKey:v28];
+        [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v22 forKey:v28];
         v34 = [MEMORY[0x277CCABB0] numberWithLong:1];
         v25 = 1;
         objc_storeStrong(&v22, 0);
@@ -2570,7 +2570,7 @@ LABEL_96:
         v9 = objc_alloc(MEMORY[0x277CCA9B8]);
         v14 = [v9 initWithDomain:v30 code:30 userInfo:0];
         v10 = v14;
-        *v31 = v14;
+        *errorCopy = v14;
         v34 = 0;
         v25 = 1;
       }
@@ -2583,7 +2583,7 @@ LABEL_96:
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v15 = [v7 initWithDomain:v30 code:22 userInfo:0];
       v8 = v15;
-      *v31 = v15;
+      *errorCopy = v15;
       v34 = 0;
       v25 = 1;
     }
@@ -2596,7 +2596,7 @@ LABEL_96:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v16 = [v5 initWithDomain:v30 code:41 userInfo:0];
     v6 = v16;
-    *v31 = v16;
+    *errorCopy = v16;
     v34 = 0;
     v25 = 1;
   }
@@ -2612,16 +2612,16 @@ LABEL_96:
   return v11;
 }
 
-- (id)ifStatement:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)ifStatement:(id)statement error:(id *)error errorDomain:(id)domain
 {
   v119 = *MEMORY[0x277D85DE8];
-  v114 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v112 = a4;
+  objc_storeStrong(location, statement);
+  errorCopy = error;
   v111 = 0;
-  objc_storeStrong(&v111, a5);
+  objc_storeStrong(&v111, domain);
   v110 = [location[0] objectForKey:IfStatement];
   v109 = [location[0] objectForKey:OutputArray];
   v108 = [location[0] objectForKey:AllowedIterationNumber];
@@ -2633,7 +2633,7 @@ LABEL_96:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v64 = [v5 initWithDomain:v111 code:151 userInfo:0];
     v6 = v64;
-    *v112 = v64;
+    *errorCopy = v64;
     v115 = 0;
     v104 = 1;
     goto LABEL_100;
@@ -2681,10 +2681,10 @@ LABEL_96:
       goto LABEL_30;
     }
 
-    v60 = [v107 lastObject];
-    v61 = [v60 intValue];
-    MEMORY[0x277D82BD8](v60);
-    v95 = v61;
+    lastObject = [v107 lastObject];
+    intValue = [lastObject intValue];
+    MEMORY[0x277D82BD8](lastObject);
+    v95 = intValue;
     v94 = [v101 objectForKey:Statements];
     v93 = [v94 count];
     if (v95 < v93)
@@ -2700,62 +2700,62 @@ LABEL_96:
     {
       [v107 removeLastObject];
       [v106 removeLastObject];
-      v92 = [v105 lastObject];
+      lastObject2 = [v105 lastObject];
       [v105 removeLastObject];
       v91 = [v105 count];
       if (v91 <= 0)
       {
-        objc_storeStrong(&v103, v92);
+        objc_storeStrong(&v103, lastObject2);
       }
 
       else
       {
-        v58 = [v105 lastObject];
-        v59 = [v58 BOOLValue];
-        MEMORY[0x277D82BD8](v58);
-        v90 = v59;
-        v89 = [v106 lastObject];
+        lastObject3 = [v105 lastObject];
+        bOOLValue = [lastObject3 BOOLValue];
+        MEMORY[0x277D82BD8](lastObject3);
+        v90 = bOOLValue;
+        lastObject4 = [v106 lastObject];
         [v105 removeLastObject];
-        if ([v89 isEqual:andKey])
+        if ([lastObject4 isEqual:andKey])
         {
-          v57 = 0;
+          bOOLValue2 = 0;
           if (v90)
           {
-            v57 = [v92 BOOLValue];
+            bOOLValue2 = [lastObject2 BOOLValue];
           }
 
-          v90 = v57 & 1;
+          v90 = bOOLValue2 & 1;
         }
 
-        else if ([v89 isEqual:orKey])
+        else if ([lastObject4 isEqual:orKey])
         {
-          v56 = 1;
+          bOOLValue3 = 1;
           if ((v90 & 1) == 0)
           {
-            v56 = [v92 BOOLValue];
+            bOOLValue3 = [lastObject2 BOOLValue];
           }
 
-          v90 = v56 & 1;
+          v90 = bOOLValue3 & 1;
         }
 
         v50 = v105;
         v51 = [MEMORY[0x277CCABB0] numberWithBool:v90 & 1];
         [v50 addObject:?];
         MEMORY[0x277D82BD8](v51);
-        v52 = [v107 lastObject];
-        v53 = [v52 intValue] + 1;
-        MEMORY[0x277D82BD8](v52);
+        lastObject5 = [v107 lastObject];
+        v53 = [lastObject5 intValue] + 1;
+        MEMORY[0x277D82BD8](lastObject5);
         v88 = v53;
         [v107 removeLastObject];
         v54 = v107;
         v55 = [MEMORY[0x277CCABB0] numberWithInt:v88];
         [v54 addObject:?];
         MEMORY[0x277D82BD8](v55);
-        objc_storeStrong(&v89, 0);
+        objc_storeStrong(&lastObject4, 0);
       }
 
       v104 = 2;
-      objc_storeStrong(&v92, 0);
+      objc_storeStrong(&lastObject2, 0);
     }
 
     objc_storeStrong(&v94, 0);
@@ -2782,7 +2782,7 @@ LABEL_30:
 
       v86 = [v101 objectForKey:Statement];
       v85 = [v86 objectForKey:InputArray];
-      v84 = [(NSMutableDictionary *)v114->_coreDictionary objectForKey:v85];
+      v84 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v85];
       v83 = [v86 objectForKey:ComparisonOp];
       v82 = [v86 objectForKey:ComparisonNumber];
       v81 = 0;
@@ -2802,48 +2802,48 @@ LABEL_30:
 LABEL_50:
         if ([v105 count])
         {
-          v43 = [v105 lastObject];
-          v44 = [v43 BOOLValue];
-          MEMORY[0x277D82BD8](v43);
-          v79 = v44;
-          v78 = [v106 lastObject];
+          lastObject6 = [v105 lastObject];
+          bOOLValue4 = [lastObject6 BOOLValue];
+          MEMORY[0x277D82BD8](lastObject6);
+          v79 = bOOLValue4;
+          lastObject7 = [v106 lastObject];
           [v105 removeLastObject];
-          if ([v78 isEqual:andKey])
+          if ([lastObject7 isEqual:andKey])
           {
-            v42 = 0;
+            bOOLValue5 = 0;
             if (v79)
             {
-              v42 = [v81 BOOLValue];
+              bOOLValue5 = [v81 BOOLValue];
             }
 
-            v79 = v42 & 1;
+            v79 = bOOLValue5 & 1;
           }
 
-          else if ([v78 isEqual:orKey])
+          else if ([lastObject7 isEqual:orKey])
           {
-            v41 = 1;
+            bOOLValue6 = 1;
             if ((v79 & 1) == 0)
             {
-              v41 = [v81 BOOLValue];
+              bOOLValue6 = [v81 BOOLValue];
             }
 
-            v79 = v41 & 1;
+            v79 = bOOLValue6 & 1;
           }
 
           v35 = v105;
           v36 = [MEMORY[0x277CCABB0] numberWithBool:v79 & 1];
           [v35 addObject:?];
           MEMORY[0x277D82BD8](v36);
-          v37 = [v107 lastObject];
-          v38 = [v37 intValue] + 1;
-          MEMORY[0x277D82BD8](v37);
+          lastObject8 = [v107 lastObject];
+          v38 = [lastObject8 intValue] + 1;
+          MEMORY[0x277D82BD8](lastObject8);
           v77 = v38;
           [v107 removeLastObject];
           v39 = v107;
           v40 = [MEMORY[0x277CCABB0] numberWithInt:v38];
           [v39 addObject:?];
           MEMORY[0x277D82BD8](v40);
-          objc_storeStrong(&v78, 0);
+          objc_storeStrong(&lastObject7, 0);
         }
 
         else
@@ -2863,10 +2863,10 @@ LABEL_67:
         goto LABEL_68;
       }
 
-      v80 = [v84 firstObject];
+      firstObject = [v84 firstObject];
       if ([v83 isEqual:IsEqualTo])
       {
-        [v80 doubleValue];
+        [firstObject doubleValue];
         v48 = v11;
         [v82 doubleValue];
         if (v48 == v12)
@@ -2880,7 +2880,7 @@ LABEL_48:
 
       else if ([v83 isEqual:GreaterThan])
       {
-        [v80 doubleValue];
+        [firstObject doubleValue];
         v47 = v13;
         [v82 doubleValue];
         if (v47 <= v14)
@@ -2896,7 +2896,7 @@ LABEL_47:
       {
         if ([v83 isEqual:LessThan])
         {
-          [v80 doubleValue];
+          [firstObject doubleValue];
           v46 = v15;
           [v82 doubleValue];
           if (v46 < v16)
@@ -2909,7 +2909,7 @@ LABEL_47:
 
         if ([v83 isEqual:NotEqualTo])
         {
-          [v80 doubleValue];
+          [firstObject doubleValue];
           v45 = v17;
           [v82 doubleValue];
           if (v45 != v18)
@@ -2921,7 +2921,7 @@ LABEL_47:
         }
       }
 
-      objc_storeStrong(&v80, 0);
+      objc_storeStrong(&firstObject, 0);
       goto LABEL_50;
     }
 
@@ -2951,7 +2951,7 @@ LABEL_68:
 
         v74 = *(__b[1] + 8 * v31);
         v72 = [v74 objectForKey:FunctionName];
-        v71 = [(AMDDODMLDataProcessor *)v114 parseAndCall:v72 withInputs:v74 error:v112 errorDomain:v111];
+        v71 = [(AMDDODMLDataProcessor *)selfCopy parseAndCall:v72 withInputs:v74 error:errorCopy errorDomain:v111];
         if (v71)
         {
           v104 = 0;
@@ -3021,7 +3021,7 @@ LABEL_81:
 
         v70 = *(v69[1] + 8 * v25);
         v68 = [v70 objectForKey:FunctionName];
-        v67 = [(AMDDODMLDataProcessor *)v114 parseAndCall:v68 withInputs:v70 error:v112 errorDomain:v111];
+        v67 = [(AMDDODMLDataProcessor *)selfCopy parseAndCall:v68 withInputs:v70 error:errorCopy errorDomain:v111];
         if (v67)
         {
           v104 = 0;
@@ -3063,7 +3063,7 @@ LABEL_96:
     if (!v104)
     {
 LABEL_98:
-      coreDictionary = v114->_coreDictionary;
+      coreDictionary = selfCopy->_coreDictionary;
       v116 = v103;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v116 count:1];
       [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
@@ -3091,16 +3091,16 @@ LABEL_100:
   return v19;
 }
 
-- (id)generateHashFromInputs:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)generateHashFromInputs:(id)inputs error:(id *)error errorDomain:(id)domain
 {
   v46 = *MEMORY[0x277D85DE8];
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v41 = a4;
+  objc_storeStrong(location, inputs);
+  errorCopy = error;
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, domain);
   v39 = [location[0] objectForKey:InputArray];
   v38 = [location[0] objectForKey:Mapping];
   v37 = [location[0] objectForKey:MaxHashValue];
@@ -3116,7 +3116,7 @@ LABEL_100:
       }
 
       v33 = [v39 objectAtIndex:i];
-      v32 = [(NSMutableDictionary *)v43->_coreDictionary objectForKey:v33];
+      v32 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v33];
       if (v32)
       {
         [v35 addObjectsFromArray:v32];
@@ -3128,7 +3128,7 @@ LABEL_100:
         v7 = objc_alloc(MEMORY[0x277CCA9B8]);
         v24 = [v7 initWithDomain:v40 code:110 userInfo:0];
         v8 = v24;
-        *v41 = v24;
+        *errorCopy = v24;
         v44 = 0;
         v36 = 1;
       }
@@ -3147,7 +3147,7 @@ LABEL_100:
       v9 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = [v9 initWithDomain:v40 code:112 userInfo:0];
       v10 = v22;
-      *v41 = v22;
+      *errorCopy = v22;
       v44 = 0;
       v36 = 1;
     }
@@ -3192,7 +3192,7 @@ LABEL_100:
       }
 
       MEMORY[0x277D82BD8](v21);
-      v12 = [(AMDDODMLAttachmentProcessor *)v43->_attachmentsProcessor setHashMap:v30 forKey:v38];
+      v12 = [(AMDDODMLAttachmentProcessor *)selfCopy->_attachmentsProcessor setHashMap:v30 forKey:v38];
       v44 = [MEMORY[0x277CCABB0] numberWithLong:1];
       v36 = 1;
       objc_storeStrong(&v30, 0);
@@ -3207,7 +3207,7 @@ LABEL_22:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v26 = [v5 initWithDomain:v40 code:111 userInfo:0];
     v6 = v26;
-    *v41 = v26;
+    *errorCopy = v26;
     v44 = 0;
     v36 = 1;
   }
@@ -3223,15 +3223,15 @@ LABEL_22:
   return v13;
 }
 
-- (id)insertArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)insertArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v28 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, domain);
   v26 = [location[0] objectForKey:ConstantValue];
   v25 = [location[0] objectForKey:FinalLength];
   v24 = [location[0] objectForKey:OutputArray];
@@ -3241,7 +3241,7 @@ LABEL_22:
     goto LABEL_10;
   }
 
-  v22 = [(NSMutableDictionary *)v30->_coreDictionary objectForKey:v23];
+  v22 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v23];
   v21 = [location[0] objectForKey:FinalLengthLikeOtherArrayMultiplier];
   v20 = [location[0] objectForKey:FinalLengthLikeOtherArrayOffset];
   if (v22 && v21 && v20)
@@ -3258,7 +3258,7 @@ LABEL_22:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v14 = [v5 initWithDomain:v27 code:42 userInfo:0];
     v6 = v14;
-    *v28 = v14;
+    *errorCopy = v14;
     v31 = 0;
     v19 = 1;
   }
@@ -3277,7 +3277,7 @@ LABEL_10:
         [v18 addObject:v26];
       }
 
-      [(NSMutableDictionary *)v30->_coreDictionary setObject:v18 forKey:v24];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v18 forKey:v24];
       v31 = [MEMORY[0x277CCABB0] numberWithLong:1];
       v19 = 1;
       objc_storeStrong(&v18, 0);
@@ -3288,7 +3288,7 @@ LABEL_10:
       v9 = objc_alloc(MEMORY[0x277CCA9B8]);
       v13 = [v9 initWithDomain:v27 code:42 userInfo:0];
       v10 = v13;
-      *v28 = v13;
+      *errorCopy = v13;
       v31 = 0;
       v19 = 1;
     }
@@ -3305,20 +3305,20 @@ LABEL_10:
   return v11;
 }
 
-- (id)insertRawArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)insertRawArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, domain);
   v13 = [location[0] objectForKey:InputArray];
   v12 = [location[0] objectForKey:OutputArray];
   if (v12 && v13)
   {
-    [(NSMutableDictionary *)v17->_coreDictionary setObject:v13 forKey:v12];
+    [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v13 forKey:v12];
     v18 = [MEMORY[0x277CCABB0] numberWithLong:1];
   }
 
@@ -3327,7 +3327,7 @@ LABEL_10:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v9 = [v5 initWithDomain:v14 code:150 userInfo:0];
     v6 = v9;
-    *v15 = v9;
+    *errorCopy = v9;
     v18 = 0;
   }
 
@@ -3340,15 +3340,15 @@ LABEL_10:
   return v7;
 }
 
-- (id)padArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)padArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v42 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, domain);
   v40 = [location[0] objectForKey:InputArray];
   v39 = [location[0] objectForKey:OutputArray];
   v38 = [location[0] objectForKey:PaddingValue];
@@ -3360,7 +3360,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v34 = [(NSMutableDictionary *)v44->_coreDictionary objectForKey:v35];
+  v34 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v35];
   v33 = [location[0] objectForKey:FinalLengthLikeOtherArrayMultiplier];
   v32 = [location[0] objectForKey:FinalLengthLikeOtherArrayOffset];
   if (v34 && v33 && v32)
@@ -3377,7 +3377,7 @@ LABEL_10:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v22 = [v5 initWithDomain:v41 code:43 userInfo:0];
     v6 = v22;
-    *v42 = v22;
+    *errorCopy = v22;
     v45 = 0;
     v31 = 1;
   }
@@ -3392,12 +3392,12 @@ LABEL_12:
     {
       if ([v37 isEqual:&unk_285210FE0] & 1) != 0 || (objc_msgSend(v37, "isEqual:", &unk_285210FC8))
       {
-        v30 = [(NSMutableDictionary *)v44->_coreDictionary objectForKey:v40];
+        v30 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v40];
         if (v30)
         {
           v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v18 = [v36 longValue];
-          v28 = v18 - [v30 count];
+          longValue = [v36 longValue];
+          v28 = longValue - [v30 count];
           if ([v37 isEqual:&unk_285210FE0])
           {
             for (i = 0; i < v28; ++i)
@@ -3421,7 +3421,7 @@ LABEL_12:
             }
           }
 
-          [(NSMutableDictionary *)v44->_coreDictionary setObject:v29 forKey:v39];
+          [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v29 forKey:v39];
           v45 = [MEMORY[0x277CCABB0] numberWithLong:1];
           v31 = 1;
           objc_storeStrong(&v29, 0);
@@ -3432,7 +3432,7 @@ LABEL_12:
           v13 = objc_alloc(MEMORY[0x277CCA9B8]);
           v19 = [v13 initWithDomain:v41 code:31 userInfo:0];
           v14 = v19;
-          *v42 = v19;
+          *errorCopy = v19;
           v45 = 0;
           v31 = 1;
         }
@@ -3445,7 +3445,7 @@ LABEL_12:
         v11 = objc_alloc(MEMORY[0x277CCA9B8]);
         v20 = [v11 initWithDomain:v41 code:43 userInfo:0];
         v12 = v20;
-        *v42 = v20;
+        *errorCopy = v20;
         v45 = 0;
         v31 = 1;
       }
@@ -3456,7 +3456,7 @@ LABEL_12:
       v9 = objc_alloc(MEMORY[0x277CCA9B8]);
       v21 = [v9 initWithDomain:v41 code:43 userInfo:0];
       v10 = v21;
-      *v42 = v21;
+      *errorCopy = v21;
       v45 = 0;
       v31 = 1;
     }
@@ -3475,16 +3475,16 @@ LABEL_12:
   return v15;
 }
 
-- (id)randomizeArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)randomizeArray:(id)array error:(id *)error errorDomain:(id)domain
 {
   v125 = *MEMORY[0x277D85DE8];
-  v118 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v116 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v115 = 0;
-  objc_storeStrong(&v115, a5);
+  objc_storeStrong(&v115, domain);
   v114 = [location[0] objectForKey:InputArray];
   v113 = [location[0] objectForKey:OutputArray];
   *(&v112 + 1) = [location[0] objectForKey:OtherAffectedVectorsOutputKeys];
@@ -3498,7 +3498,7 @@ LABEL_12:
 LABEL_32:
     if (v114 && v113)
     {
-      v105 = [(NSMutableDictionary *)v118->_coreDictionary objectForKey:v114];
+      v105 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v114];
       if (v105)
       {
         v104 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -3565,11 +3565,11 @@ LABEL_32:
           }
 
           v40 = [v100 objectAtIndex:k];
-          v41 = [v40 longValue];
+          longValue = [v40 longValue];
           MEMORY[0x277D82BD8](v40);
-          v92 = v41;
+          v92 = longValue;
           v42 = v94;
-          v43 = [v105 objectAtIndex:v41];
+          v43 = [v105 objectAtIndex:longValue];
           [v42 addObject:?];
           MEMORY[0x277D82BD8](v43);
           memset(v90, 0, sizeof(v90));
@@ -3601,9 +3601,9 @@ LABEL_32:
                 }
 
                 v33 = v92;
-                v19 = [v89 longValue];
-                v85 = v33 * v19 + m;
-                v84 = [(NSMutableDictionary *)v118->_coreDictionary objectForKey:v91];
+                longValue2 = [v89 longValue];
+                v85 = v33 * longValue2 + m;
+                v84 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v91];
                 v34 = v85;
                 if (v34 < [v84 count])
                 {
@@ -3618,7 +3618,7 @@ LABEL_32:
                   v20 = objc_alloc(MEMORY[0x277CCA9B8]);
                   v32 = [v20 initWithDomain:v115 code:26 userInfo:0];
                   v21 = v32;
-                  *v116 = v32;
+                  *errorCopy = v32;
                   v119 = 0;
                   v111 = 1;
                 }
@@ -3683,7 +3683,7 @@ LABEL_66:
             }
 
             v82 = *(v81[1] + 8 * v28);
-            coreDictionary = v118->_coreDictionary;
+            coreDictionary = selfCopy->_coreDictionary;
             v25 = [v104 objectForKey:v82];
             [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
             MEMORY[0x277D82BD8](v25);
@@ -3701,7 +3701,7 @@ LABEL_66:
         }
 
         MEMORY[0x277D82BD8](v30);
-        [(NSMutableDictionary *)v118->_coreDictionary setObject:v94 forKey:v113];
+        [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v94 forKey:v113];
         v119 = [MEMORY[0x277CCABB0] numberWithLong:1];
         v111 = 1;
 LABEL_76:
@@ -3715,7 +3715,7 @@ LABEL_76:
         v17 = objc_alloc(MEMORY[0x277CCA9B8]);
         v56 = [v17 initWithDomain:v115 code:32 userInfo:0];
         v18 = v56;
-        *v116 = v56;
+        *errorCopy = v56;
         v119 = 0;
         v111 = 1;
       }
@@ -3728,7 +3728,7 @@ LABEL_76:
       v15 = objc_alloc(MEMORY[0x277CCA9B8]);
       v57 = [v15 initWithDomain:v115 code:44 userInfo:0];
       v16 = v57;
-      *v116 = v57;
+      *errorCopy = v57;
       v119 = 0;
       v111 = 1;
     }
@@ -3741,7 +3741,7 @@ LABEL_76:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v78 = [v5 initWithDomain:v115 code:44 userInfo:0];
     v6 = v78;
-    *v116 = v78;
+    *errorCopy = v78;
     v119 = 0;
     v111 = 1;
     goto LABEL_78;
@@ -3771,16 +3771,16 @@ LABEL_76:
         v7 = objc_alloc(MEMORY[0x277CCA9B8]);
         v70 = [v7 initWithDomain:v115 code:44 userInfo:0];
         v8 = v70;
-        *v116 = v70;
+        *errorCopy = v70;
         v119 = 0;
         v111 = 1;
         goto LABEL_17;
       }
 
       v68 = [v112 objectForKey:v110];
-      v69 = [v68 longValue];
+      longValue3 = [v68 longValue];
       MEMORY[0x277D82BD8](v68);
-      if (v69 < 1)
+      if (longValue3 < 1)
       {
         break;
       }
@@ -3800,7 +3800,7 @@ LABEL_76:
     v9 = objc_alloc(MEMORY[0x277CCA9B8]);
     v67 = [v9 initWithDomain:v115 code:44 userInfo:0];
     v10 = v67;
-    *v116 = v67;
+    *errorCopy = v67;
     v119 = 0;
     v111 = 1;
   }
@@ -3839,7 +3839,7 @@ LABEL_17:
           break;
         }
 
-        v106 = [(NSMutableDictionary *)v118->_coreDictionary objectForKey:v108];
+        v106 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v108];
         if (v106)
         {
           v111 = 0;
@@ -3850,7 +3850,7 @@ LABEL_17:
           v13 = objc_alloc(MEMORY[0x277CCA9B8]);
           v58 = [v13 initWithDomain:v115 code:44 userInfo:0];
           v14 = v58;
-          *v116 = v58;
+          *errorCopy = v58;
           v119 = 0;
           v111 = 1;
         }
@@ -3876,7 +3876,7 @@ LABEL_17:
       v11 = objc_alloc(MEMORY[0x277CCA9B8]);
       v59 = [v11 initWithDomain:v115 code:44 userInfo:0];
       v12 = v59;
-      *v116 = v59;
+      *errorCopy = v59;
       v119 = 0;
       v111 = 1;
     }
@@ -3908,21 +3908,21 @@ LABEL_78:
   return v22;
 }
 
-- (id)replicateArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)replicateArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, domain);
   v23 = [location[0] objectForKey:InputArray];
   v22 = [location[0] objectForKey:NumberOfCopies];
   v21 = [location[0] objectForKey:OutputArray];
   if (v23 && v21 && v22)
   {
-    v19 = [(NSMutableDictionary *)v27->_coreDictionary objectForKey:v23];
+    v19 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v23];
     if (v19)
     {
       v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -3936,7 +3936,7 @@ LABEL_78:
         }
       }
 
-      [(NSMutableDictionary *)v27->_coreDictionary setObject:v18 forKey:v21];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v18 forKey:v21];
       v28 = [MEMORY[0x277CCABB0] numberWithLong:1];
       v20 = 1;
       objc_storeStrong(&v18, 0);
@@ -3947,7 +3947,7 @@ LABEL_78:
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v12 = [v7 initWithDomain:v24 code:33 userInfo:0];
       v8 = v12;
-      *v25 = v12;
+      *errorCopy = v12;
       v28 = 0;
       v20 = 1;
     }
@@ -3960,7 +3960,7 @@ LABEL_78:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v13 = [v5 initWithDomain:v24 code:45 userInfo:0];
     v6 = v13;
-    *v25 = v13;
+    *errorCopy = v13;
     v28 = 0;
     v20 = 1;
   }
@@ -3975,17 +3975,17 @@ LABEL_78:
   return v9;
 }
 
-- (id)requestData:(id)a3 withUseStubs:(int64_t)a4 error:(id *)a5 errorDomain:(id)a6
+- (id)requestData:(id)data withUseStubs:(int64_t)stubs error:(id *)error errorDomain:(id)domain
 {
   v148 = *MEMORY[0x277D85DE8];
-  v141 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v139 = a4;
-  v138 = a5;
+  objc_storeStrong(location, data);
+  stubsCopy = stubs;
+  errorCopy = error;
   v137 = 0;
-  objc_storeStrong(&v137, a6);
+  objc_storeStrong(&v137, domain);
   v136 = [location[0] objectForKey:FeatureName];
   v135 = [location[0] objectForKey:OutputArray];
   v134 = [location[0] objectForKey:Domain];
@@ -4000,7 +4000,7 @@ LABEL_78:
     v6 = objc_alloc(MEMORY[0x277CCA9B8]);
     v88 = [v6 initWithDomain:v137 code:62 userInfo:0];
     v7 = v88;
-    *v138 = v88;
+    *errorCopy = v88;
     v142 = 0;
     v127 = 1;
     goto LABEL_121;
@@ -4023,9 +4023,9 @@ LABEL_78:
   if (v126)
   {
     v125 = 0;
-    if (v139)
+    if (stubsCopy)
     {
-      v11 = [v141->_myAMDClient getFeatureStub:v126];
+      v11 = [selfCopy->_myAMDClient getFeatureStub:v126];
       v12 = v125;
       v125 = v11;
       MEMORY[0x277D82BD8](v12);
@@ -4035,7 +4035,7 @@ LABEL_78:
     {
       for (i = 0; i < 3; ++i)
       {
-        v13 = [v141->_myAMDClient getFeature:v126];
+        v13 = [selfCopy->_myAMDClient getFeature:v126];
         v14 = v125;
         v125 = v13;
         MEMORY[0x277D82BD8](v14);
@@ -4065,7 +4065,7 @@ LABEL_78:
       v15 = objc_alloc(MEMORY[0x277CCA9B8]);
       v85 = [v15 initWithDomain:v137 code:64 userInfo:0];
       v16 = v85;
-      *v138 = v85;
+      *errorCopy = v85;
       v142 = 0;
       v127 = 1;
 LABEL_119:
@@ -4079,7 +4079,7 @@ LABEL_119:
       v17 = objc_alloc(MEMORY[0x277CCA9B8]);
       v84 = [v17 initWithDomain:v137 code:65 userInfo:0];
       v18 = v84;
-      *v138 = v84;
+      *errorCopy = v84;
       v142 = 0;
       v127 = 1;
 LABEL_118:
@@ -4093,7 +4093,7 @@ LABEL_118:
       v19 = objc_alloc(MEMORY[0x277CCA9B8]);
       v83 = [v19 initWithDomain:v137 code:66 userInfo:0];
       v20 = v83;
-      *v138 = v83;
+      *errorCopy = v83;
       v142 = 0;
       v127 = 1;
 LABEL_117:
@@ -4105,7 +4105,7 @@ LABEL_117:
     if (objc_opt_isKindOfClass())
     {
       v119 = MEMORY[0x277D82BE0](v120);
-      [(NSMutableDictionary *)v141->_coreDictionary setObject:v119 forKey:v135];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v119 forKey:v135];
       v142 = [MEMORY[0x277CCABB0] numberWithLong:1];
       v127 = 1;
       objc_storeStrong(&v119, 0);
@@ -4118,7 +4118,7 @@ LABEL_117:
       v35 = objc_alloc(MEMORY[0x277CCA9B8]);
       v39 = [v35 initWithDomain:v137 code:108 userInfo:0];
       v36 = v39;
-      *v138 = v39;
+      *errorCopy = v39;
       v142 = 0;
       v127 = 1;
       goto LABEL_117;
@@ -4163,7 +4163,7 @@ LABEL_54:
           v21 = objc_alloc(MEMORY[0x277CCA9B8]);
           v76 = [v21 initWithDomain:v137 code:107 userInfo:0];
           v22 = v76;
-          *v138 = v76;
+          *errorCopy = v76;
           v142 = 0;
           v127 = 1;
         }
@@ -4187,7 +4187,7 @@ LABEL_54:
             v23 = objc_alloc(MEMORY[0x277CCA9B8]);
             v75 = [v23 initWithDomain:v137 code:107 userInfo:0];
             v24 = v75;
-            *v138 = v75;
+            *errorCopy = v75;
             v142 = 0;
             v127 = 1;
           }
@@ -4211,7 +4211,7 @@ LABEL_54:
               v25 = objc_alloc(MEMORY[0x277CCA9B8]);
               v74 = [v25 initWithDomain:v137 code:107 userInfo:0];
               v26 = v74;
-              *v138 = v74;
+              *errorCopy = v74;
               v142 = 0;
               v127 = 1;
             }
@@ -4221,7 +4221,7 @@ LABEL_54:
               v27 = objc_alloc(MEMORY[0x277CCA9B8]);
               v73 = [v27 initWithDomain:v137 code:108 userInfo:0];
               v28 = v73;
-              *v138 = v73;
+              *errorCopy = v73;
               v142 = 0;
               v127 = 1;
             }
@@ -4349,8 +4349,8 @@ LABEL_114:
 
       v105 = [v135 stringByAppendingString:v131];
       v104 = [v135 stringByAppendingString:v130];
-      [(NSMutableDictionary *)v141->_coreDictionary setObject:v113 forKey:v105];
-      [(NSMutableDictionary *)v141->_coreDictionary setObject:v112 forKey:v104];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v113 forKey:v105];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v112 forKey:v104];
       objc_storeStrong(&v104, 0);
       objc_storeStrong(&v105, 0);
       objc_storeStrong(&v112, 0);
@@ -4380,7 +4380,7 @@ LABEL_113:
 
           v103 = *(v102[1] + 8 * v57);
           v101 = [v129 stringByAppendingString:v103];
-          coreDictionary = v141->_coreDictionary;
+          coreDictionary = selfCopy->_coreDictionary;
           v54 = [v118 objectForKey:v103];
           [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
           MEMORY[0x277D82BD8](v54);
@@ -4407,7 +4407,7 @@ LABEL_113:
       v33 = objc_alloc(MEMORY[0x277CCA9B8]);
       v40 = [v33 initWithDomain:v137 code:108 userInfo:0];
       v34 = v40;
-      *v138 = v40;
+      *errorCopy = v40;
       v142 = 0;
       v127 = 1;
       goto LABEL_114;
@@ -4419,7 +4419,7 @@ LABEL_113:
       v29 = objc_alloc(MEMORY[0x277CCA9B8]);
       v52 = [v29 initWithDomain:v137 code:62 userInfo:0];
       v30 = v52;
-      *v138 = v52;
+      *errorCopy = v52;
       v142 = 0;
       v127 = 1;
       goto LABEL_110;
@@ -4477,7 +4477,7 @@ LABEL_110:
         if (([v98 containsObject:v93] & 1) == 0)
         {
           v92 = [v129 stringByAppendingString:v97];
-          v42 = v141->_coreDictionary;
+          v42 = selfCopy->_coreDictionary;
           v43 = [v95 objectForKey:v100];
           [NSMutableDictionary setObject:v42 forKey:"setObject:forKey:"];
           MEMORY[0x277D82BD8](v43);
@@ -4491,7 +4491,7 @@ LABEL_110:
       v31 = objc_alloc(MEMORY[0x277CCA9B8]);
       v41 = [v31 initWithDomain:v137 code:62 userInfo:0];
       v32 = v41;
-      *v138 = v41;
+      *errorCopy = v41;
       v142 = 0;
       v127 = 1;
 LABEL_103:
@@ -4514,7 +4514,7 @@ LABEL_103:
     }
 
     v94 = [v129 stringByAppendingString:v97];
-    v44 = v141->_coreDictionary;
+    v44 = selfCopy->_coreDictionary;
     v45 = [v95 objectForKey:v100];
     [NSMutableDictionary setObject:v44 forKey:"setObject:forKey:"];
     MEMORY[0x277D82BD8](v45);
@@ -4527,7 +4527,7 @@ LABEL_102:
   v9 = objc_alloc(MEMORY[0x277CCA9B8]);
   v87 = [v9 initWithDomain:v137 code:63 userInfo:0];
   v10 = v87;
-  *v138 = v87;
+  *errorCopy = v87;
   v142 = 0;
   v127 = 1;
 LABEL_120:
@@ -4550,16 +4550,16 @@ LABEL_121:
   return v37;
 }
 
-- (id)sampleFromDistribution:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)sampleFromDistribution:(id)distribution error:(id *)error errorDomain:(id)domain
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v50 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v48 = a4;
+  objc_storeStrong(location, distribution);
+  errorCopy = error;
   v47 = 0;
-  objc_storeStrong(&v47, a5);
+  objc_storeStrong(&v47, domain);
   v46 = [location[0] objectForKey:OutputArray];
   v45 = [location[0] objectForKey:Mapping];
   v44 = [location[0] objectForKey:NumNegSamps];
@@ -4569,7 +4569,7 @@ LABEL_121:
     goto LABEL_10;
   }
 
-  v42 = [(NSMutableDictionary *)v50->_coreDictionary objectForKey:v43];
+  v42 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v43];
   v41 = [location[0] objectForKey:NumNegSampsLikeOtherArrayMultiplier];
   v40 = [location[0] objectForKey:NumNegSampsLikeOtherArrayOffset];
   if (v42 && v41 && v40)
@@ -4586,7 +4586,7 @@ LABEL_121:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v26 = [v5 initWithDomain:v47 code:46 userInfo:0];
     v6 = v26;
-    *v48 = v26;
+    *errorCopy = v26;
     v51 = 0;
     v39 = 1;
   }
@@ -4599,7 +4599,7 @@ LABEL_121:
 LABEL_10:
     if (v46 && v45 && v44)
     {
-      v38 = [(AMDDODMLAttachmentProcessor *)v50->_attachmentsProcessor negSampleArrayForKey:v45];
+      v38 = [(AMDDODMLAttachmentProcessor *)selfCopy->_attachmentsProcessor negSampleArrayForKey:v45];
       if (v38)
       {
         v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -4644,7 +4644,7 @@ LABEL_10:
           }
         }
 
-        [(NSMutableDictionary *)v50->_coreDictionary setObject:v29 forKey:v46];
+        [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v29 forKey:v46];
         v51 = [MEMORY[0x277CCABB0] numberWithLong:1];
         v39 = 1;
         objc_storeStrong(&v29, 0);
@@ -4658,7 +4658,7 @@ LABEL_10:
         v11 = objc_alloc(MEMORY[0x277CCA9B8]);
         v24 = [v11 initWithDomain:v47 code:23 userInfo:0];
         v12 = v24;
-        *v48 = v24;
+        *errorCopy = v24;
         v51 = 0;
         v39 = 1;
       }
@@ -4671,7 +4671,7 @@ LABEL_10:
       v9 = objc_alloc(MEMORY[0x277CCA9B8]);
       v25 = [v9 initWithDomain:v47 code:46 userInfo:0];
       v10 = v25;
-      *v48 = v25;
+      *errorCopy = v25;
       v51 = 0;
       v39 = 1;
     }
@@ -4689,16 +4689,16 @@ LABEL_10:
   return v15;
 }
 
-- (id)sortArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)sortArray:(id)array error:(id *)error errorDomain:(id)domain
 {
   v132 = *MEMORY[0x277D85DE8];
-  v124 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v122 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v121 = 0;
-  objc_storeStrong(&v121, a5);
+  objc_storeStrong(&v121, domain);
   v120 = [location[0] objectForKey:InputArray];
   v119 = [location[0] objectForKey:OutputArray];
   *(&v118 + 1) = [location[0] objectForKey:OtherAffectedVectorsOutputKeys];
@@ -4712,7 +4712,7 @@ LABEL_10:
 LABEL_32:
     if (v120 && v119)
     {
-      v111 = [(NSMutableDictionary *)v124->_coreDictionary objectForKey:v120];
+      v111 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v120];
       if (v111)
       {
         v110 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -4785,9 +4785,9 @@ LABEL_32:
 
           v100 = [v103 objectAtIndex:j];
           v47 = v102;
-          v48 = [v100 lastObject];
+          lastObject = [v100 lastObject];
           [v47 addObject:?];
-          MEMORY[0x277D82BD8](v48);
+          MEMORY[0x277D82BD8](lastObject);
           objc_storeStrong(&v100, 0);
         }
 
@@ -4801,11 +4801,11 @@ LABEL_32:
           }
 
           v40 = [v102 objectAtIndex:k];
-          v41 = [v40 longValue];
+          longValue = [v40 longValue];
           MEMORY[0x277D82BD8](v40);
-          v97 = v41;
+          v97 = longValue;
           v42 = v99;
-          v43 = [v111 objectAtIndex:v41];
+          v43 = [v111 objectAtIndex:longValue];
           [v42 addObject:?];
           MEMORY[0x277D82BD8](v43);
           memset(v95, 0, sizeof(v95));
@@ -4837,9 +4837,9 @@ LABEL_32:
                 }
 
                 v33 = v97;
-                v19 = [v94 longValue];
-                v90 = v33 * v19 + m;
-                v89 = [(NSMutableDictionary *)v124->_coreDictionary objectForKey:v96];
+                longValue2 = [v94 longValue];
+                v90 = v33 * longValue2 + m;
+                v89 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v96];
                 v34 = v90;
                 if (v34 < [v89 count])
                 {
@@ -4854,7 +4854,7 @@ LABEL_32:
                   v20 = objc_alloc(MEMORY[0x277CCA9B8]);
                   v32 = [v20 initWithDomain:v121 code:26 userInfo:0];
                   v21 = v32;
-                  *v122 = v32;
+                  *errorCopy = v32;
                   v125 = 0;
                   v117 = 1;
                 }
@@ -4919,7 +4919,7 @@ LABEL_66:
             }
 
             v87 = *(v86[1] + 8 * v28);
-            coreDictionary = v124->_coreDictionary;
+            coreDictionary = selfCopy->_coreDictionary;
             v25 = [v110 objectForKey:v87];
             [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
             MEMORY[0x277D82BD8](v25);
@@ -4937,7 +4937,7 @@ LABEL_66:
         }
 
         MEMORY[0x277D82BD8](v30);
-        [(NSMutableDictionary *)v124->_coreDictionary setObject:v99 forKey:v119];
+        [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v99 forKey:v119];
         v125 = [MEMORY[0x277CCABB0] numberWithLong:1];
         v117 = 1;
 LABEL_76:
@@ -4953,7 +4953,7 @@ LABEL_76:
         v17 = objc_alloc(MEMORY[0x277CCA9B8]);
         v61 = [v17 initWithDomain:v121 code:104 userInfo:0];
         v18 = v61;
-        *v122 = v61;
+        *errorCopy = v61;
         v125 = 0;
         v117 = 1;
       }
@@ -4966,7 +4966,7 @@ LABEL_76:
       v15 = objc_alloc(MEMORY[0x277CCA9B8]);
       v62 = [v15 initWithDomain:v121 code:103 userInfo:0];
       v16 = v62;
-      *v122 = v62;
+      *errorCopy = v62;
       v125 = 0;
       v117 = 1;
     }
@@ -4979,7 +4979,7 @@ LABEL_76:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v83 = [v5 initWithDomain:v121 code:103 userInfo:0];
     v6 = v83;
-    *v122 = v83;
+    *errorCopy = v83;
     v125 = 0;
     v117 = 1;
     goto LABEL_78;
@@ -5009,16 +5009,16 @@ LABEL_76:
         v7 = objc_alloc(MEMORY[0x277CCA9B8]);
         v75 = [v7 initWithDomain:v121 code:103 userInfo:0];
         v8 = v75;
-        *v122 = v75;
+        *errorCopy = v75;
         v125 = 0;
         v117 = 1;
         goto LABEL_17;
       }
 
       v73 = [v118 objectForKey:v116];
-      v74 = [v73 longValue];
+      longValue3 = [v73 longValue];
       MEMORY[0x277D82BD8](v73);
-      if (v74 < 1)
+      if (longValue3 < 1)
       {
         break;
       }
@@ -5038,7 +5038,7 @@ LABEL_76:
     v9 = objc_alloc(MEMORY[0x277CCA9B8]);
     v72 = [v9 initWithDomain:v121 code:103 userInfo:0];
     v10 = v72;
-    *v122 = v72;
+    *errorCopy = v72;
     v125 = 0;
     v117 = 1;
   }
@@ -5077,7 +5077,7 @@ LABEL_17:
           break;
         }
 
-        v112 = [(NSMutableDictionary *)v124->_coreDictionary objectForKey:v114];
+        v112 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v114];
         if (v112)
         {
           v117 = 0;
@@ -5088,7 +5088,7 @@ LABEL_17:
           v13 = objc_alloc(MEMORY[0x277CCA9B8]);
           v63 = [v13 initWithDomain:v121 code:103 userInfo:0];
           v14 = v63;
-          *v122 = v63;
+          *errorCopy = v63;
           v125 = 0;
           v117 = 1;
         }
@@ -5114,7 +5114,7 @@ LABEL_17:
       v11 = objc_alloc(MEMORY[0x277CCA9B8]);
       v64 = [v11 initWithDomain:v121 code:103 userInfo:0];
       v12 = v64;
-      *v122 = v64;
+      *errorCopy = v64;
       v125 = 0;
       v117 = 1;
     }
@@ -5163,15 +5163,15 @@ uint64_t __53__AMDDODMLDataProcessor_sortArray_error_errorDomain___block_invoke(
   return v7;
 }
 
-- (id)spliceArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)spliceArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v43 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v42 = 0;
-  objc_storeStrong(&v42, a5);
+  objc_storeStrong(&v42, domain);
   v41 = [location[0] objectForKey:Starting];
   v40 = [location[0] objectForKey:Ending];
   v39 = [location[0] objectForKey:InputArray];
@@ -5183,7 +5183,7 @@ uint64_t __53__AMDDODMLDataProcessor_sortArray_error_errorDomain___block_invoke(
     goto LABEL_36;
   }
 
-  v35 = [(NSMutableDictionary *)v45->_coreDictionary objectForKey:v37];
+  v35 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v37];
   v34 = [location[0] objectForKey:StartingLikeOtherArrayMultiplier];
   v33 = [location[0] objectForKey:StartingLikeOtherArrayOffset];
   if (v35 && v34 && v33)
@@ -5200,7 +5200,7 @@ uint64_t __53__AMDDODMLDataProcessor_sortArray_error_errorDomain___block_invoke(
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v23 = [v5 initWithDomain:v42 code:47 userInfo:0];
     v6 = v23;
-    *v43 = v23;
+    *errorCopy = v23;
     v46 = 0;
     v32 = 1;
   }
@@ -5216,7 +5216,7 @@ LABEL_36:
       goto LABEL_18;
     }
 
-    v31 = [(NSMutableDictionary *)v45->_coreDictionary objectForKey:v36];
+    v31 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v36];
     v30 = [location[0] objectForKey:EndingLikeOtherArrayMultiplier];
     v29 = [location[0] objectForKey:EndingLikeOtherArrayOffset];
     if (v31 && v30 && v29)
@@ -5233,7 +5233,7 @@ LABEL_36:
       v9 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = [v9 initWithDomain:v42 code:47 userInfo:0];
       v10 = v22;
-      *v43 = v22;
+      *errorCopy = v22;
       v46 = 0;
       v32 = 1;
     }
@@ -5246,7 +5246,7 @@ LABEL_36:
 LABEL_18:
       if (v39 && v38 && v41 && v40)
       {
-        v28 = [(NSMutableDictionary *)v45->_coreDictionary objectForKey:v39];
+        v28 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v39];
         if (v28)
         {
           v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -5260,7 +5260,7 @@ LABEL_18:
             }
           }
 
-          [(NSMutableDictionary *)v45->_coreDictionary setObject:v27 forKey:v38];
+          [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v27 forKey:v38];
           v46 = [MEMORY[0x277CCABB0] numberWithLong:1];
           v32 = 1;
           objc_storeStrong(&v27, 0);
@@ -5271,7 +5271,7 @@ LABEL_18:
           v15 = objc_alloc(MEMORY[0x277CCA9B8]);
           v20 = [v15 initWithDomain:v42 code:34 userInfo:0];
           v16 = v20;
-          *v43 = v20;
+          *errorCopy = v20;
           v46 = 0;
           v32 = 1;
         }
@@ -5284,7 +5284,7 @@ LABEL_18:
         v13 = objc_alloc(MEMORY[0x277CCA9B8]);
         v21 = [v13 initWithDomain:v42 code:47 userInfo:0];
         v14 = v21;
-        *v43 = v21;
+        *errorCopy = v21;
         v46 = 0;
         v32 = 1;
       }
@@ -5304,15 +5304,15 @@ LABEL_18:
   return v17;
 }
 
-- (id)strideCopyArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)strideCopyArray:(id)array error:(id *)error errorDomain:(id)domain
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, domain);
   v29 = [location[0] objectForKey:StridesForSample];
   v28 = [location[0] objectForKey:ElementsInSample];
   v27 = [location[0] objectForKey:InputArray];
@@ -5325,13 +5325,13 @@ LABEL_18:
 
   if (v27 && v26 && v28 && v29)
   {
-    v23 = [(NSMutableDictionary *)v33->_coreDictionary objectForKey:v27];
+    v23 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v27];
     if (v23)
     {
       v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v13 = [v23 count];
       v21 = v13 - [v28 longValue];
-      for (i = [v25 longValue]; i <= v21; i += v9)
+      for (i = [v25 longValue]; i <= v21; i += longValue)
       {
         for (j = 0; ; ++j)
         {
@@ -5346,10 +5346,10 @@ LABEL_18:
           objc_storeStrong(&v18, 0);
         }
 
-        v9 = [v29 longValue];
+        longValue = [v29 longValue];
       }
 
-      [(NSMutableDictionary *)v33->_coreDictionary setObject:v22 forKey:v26];
+      [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v22 forKey:v26];
       v34 = [MEMORY[0x277CCABB0] numberWithLong:1];
       v24 = 1;
       objc_storeStrong(&v22, 0);
@@ -5360,7 +5360,7 @@ LABEL_18:
       v7 = objc_alloc(MEMORY[0x277CCA9B8]);
       v14 = [v7 initWithDomain:v30 code:35 userInfo:0];
       v8 = v14;
-      *v31 = v14;
+      *errorCopy = v14;
       v34 = 0;
       v24 = 1;
     }
@@ -5373,7 +5373,7 @@ LABEL_18:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v15 = [v5 initWithDomain:v30 code:48 userInfo:0];
     v6 = v15;
-    *v31 = v15;
+    *errorCopy = v15;
     v34 = 0;
     v24 = 1;
   }
@@ -5390,16 +5390,16 @@ LABEL_18:
   return v10;
 }
 
-- (id)strideCopyAndSplitArray:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)strideCopyAndSplitArray:(id)array error:(id *)error errorDomain:(id)domain
 {
   v75 = *MEMORY[0x277D85DE8];
-  v72 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v70 = a4;
+  objc_storeStrong(location, array);
+  errorCopy = error;
   v69 = 0;
-  objc_storeStrong(&v69, a5);
+  objc_storeStrong(&v69, domain);
   v68 = [location[0] objectForKey:StridesForSample];
   v67 = [location[0] objectForKey:ElementsInSample];
   v66 = [location[0] objectForKey:InputArray];
@@ -5427,8 +5427,8 @@ LABEL_18:
         v59 = [v60 objectAtIndex:1];
         if ([v59 longValue] >= 1)
         {
-          v11 = [v59 longValue];
-          v62 += v11;
+          longValue = [v59 longValue];
+          v62 += longValue;
           v63 = 0;
         }
 
@@ -5437,7 +5437,7 @@ LABEL_18:
           v9 = objc_alloc(MEMORY[0x277CCA9B8]);
           v36 = [v9 initWithDomain:v69 code:87 userInfo:0];
           v10 = v36;
-          *v70 = v36;
+          *errorCopy = v36;
           v73 = 0;
           v63 = 1;
         }
@@ -5450,7 +5450,7 @@ LABEL_18:
         v7 = objc_alloc(MEMORY[0x277CCA9B8]);
         v37 = [v7 initWithDomain:v69 code:87 userInfo:0];
         v8 = v37;
-        *v70 = v37;
+        *errorCopy = v37;
         v73 = 0;
         v63 = 1;
       }
@@ -5465,7 +5465,7 @@ LABEL_18:
     v35 = v62;
     if (v35 == [v67 longValue])
     {
-      v58 = [(NSMutableDictionary *)v72->_coreDictionary objectForKey:v66];
+      v58 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v66];
       if (v58)
       {
         v57 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -5489,7 +5489,7 @@ LABEL_18:
 
         v29 = [v58 count];
         v53 = v29 - [v67 intValue];
-        for (k = [v65 longValue]; k <= v53; k += v16)
+        for (k = [v65 longValue]; k <= v53; k += longValue2)
         {
           v51 = k;
           for (m = 0; ; ++m)
@@ -5524,7 +5524,7 @@ LABEL_18:
             objc_storeStrong(&v49, 0);
           }
 
-          v16 = [v68 longValue];
+          longValue2 = [v68 longValue];
         }
 
         memset(__b, 0, sizeof(__b));
@@ -5544,7 +5544,7 @@ LABEL_18:
             }
 
             v43 = *(__b[1] + 8 * v23);
-            coreDictionary = v72->_coreDictionary;
+            coreDictionary = selfCopy->_coreDictionary;
             v20 = [v57 objectForKey:v43];
             [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
             MEMORY[0x277D82BD8](v20);
@@ -5572,7 +5572,7 @@ LABEL_18:
         v14 = objc_alloc(MEMORY[0x277CCA9B8]);
         v33 = [v14 initWithDomain:v69 code:84 userInfo:0];
         v15 = v33;
-        *v70 = v33;
+        *errorCopy = v33;
         v73 = 0;
         v63 = 1;
       }
@@ -5585,7 +5585,7 @@ LABEL_18:
       v12 = objc_alloc(MEMORY[0x277CCA9B8]);
       v34 = [v12 initWithDomain:v69 code:87 userInfo:0];
       v13 = v34;
-      *v70 = v34;
+      *errorCopy = v34;
       v73 = 0;
       v63 = 1;
     }
@@ -5596,7 +5596,7 @@ LABEL_18:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v39 = [v5 initWithDomain:v69 code:87 userInfo:0];
     v6 = v39;
-    *v70 = v39;
+    *errorCopy = v39;
     v73 = 0;
     v63 = 1;
   }
@@ -5615,15 +5615,15 @@ LABEL_42:
   return v17;
 }
 
-- (id)twoArrayMathFunction:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)twoArrayMathFunction:(id)function error:(id *)error errorDomain:(id)domain
 {
-  v66 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v64 = a4;
+  objc_storeStrong(location, function);
+  errorCopy = error;
   v63 = 0;
-  objc_storeStrong(&v63, a5);
+  objc_storeStrong(&v63, domain);
   v62 = [location[0] objectForKey:InputArray];
   v61 = [location[0] objectForKey:OutputArray];
   v60 = [location[0] objectForKey:SecondArray];
@@ -5633,20 +5633,20 @@ LABEL_42:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v47 = [v5 initWithDomain:v63 code:88 userInfo:0];
     v6 = v47;
-    *v64 = v47;
+    *errorCopy = v47;
     v67 = 0;
     v58 = 1;
     goto LABEL_35;
   }
 
-  v57 = [(NSMutableDictionary *)v66->_coreDictionary objectForKey:v62];
-  v56 = [(NSMutableDictionary *)v66->_coreDictionary objectForKey:v60];
+  v57 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v62];
+  v56 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v60];
   if (!v57 || !v56)
   {
     v7 = objc_alloc(MEMORY[0x277CCA9B8]);
     v46 = [v7 initWithDomain:v63 code:89 userInfo:0];
     v8 = v46;
-    *v64 = v46;
+    *errorCopy = v46;
     v67 = 0;
     v58 = 1;
     goto LABEL_34;
@@ -5658,7 +5658,7 @@ LABEL_42:
     v9 = objc_alloc(MEMORY[0x277CCA9B8]);
     v44 = [v9 initWithDomain:v63 code:93 userInfo:0];
     v10 = v44;
-    *v64 = v44;
+    *errorCopy = v44;
     v67 = 0;
     v58 = 1;
     goto LABEL_34;
@@ -5681,7 +5681,7 @@ LABEL_42:
       v12 = objc_alloc(MEMORY[0x277CCA9B8]);
       v42 = [v12 initWithDomain:v63 code:90 userInfo:0];
       v13 = v42;
-      *v64 = v42;
+      *errorCopy = v42;
       v67 = 0;
       v58 = 1;
       goto LABEL_30;
@@ -5690,8 +5690,8 @@ LABEL_42:
     v51 = 0;
     if ([v59 isEqual:Modulo])
     {
-      v41 = [v53 longValue];
-      v50 = v41 % [v52 longValue];
+      longValue = [v53 longValue];
+      v50 = longValue % [v52 longValue];
       v14 = [MEMORY[0x277CCABB0] numberWithLong:v50];
       v15 = v51;
       v51 = v14;
@@ -5753,7 +5753,7 @@ LABEL_28:
     v32 = objc_alloc(MEMORY[0x277CCA9B8]);
     v36 = [v32 initWithDomain:v63 code:83 userInfo:0];
     v33 = v36;
-    *v64 = v36;
+    *errorCopy = v36;
     v67 = 0;
     v58 = 1;
 LABEL_29:
@@ -5767,7 +5767,7 @@ LABEL_30:
     }
   }
 
-  [(NSMutableDictionary *)v66->_coreDictionary setObject:v55 forKey:v61];
+  [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v55 forKey:v61];
   v67 = [MEMORY[0x277CCABB0] numberWithLong:1];
   v58 = 1;
 LABEL_33:
@@ -5787,15 +5787,15 @@ LABEL_35:
   return v34;
 }
 
-- (id)windowFunction:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)windowFunction:(id)function error:(id *)error errorDomain:(id)domain
 {
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v73 = a4;
+  objc_storeStrong(location, function);
+  errorCopy = error;
   v72 = 0;
-  objc_storeStrong(&v72, a5);
+  objc_storeStrong(&v72, domain);
   v71 = [location[0] objectForKey:WindowSize];
   v70 = [location[0] objectForKey:InputArray];
   v69 = [location[0] objectForKey:FeatureOutput];
@@ -5808,13 +5808,13 @@ LABEL_35:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v43 = [v5 initWithDomain:v72 code:49 userInfo:0];
     v6 = v43;
-    *v73 = v43;
+    *errorCopy = v43;
     v76 = 0;
     v64 = 1;
     goto LABEL_41;
   }
 
-  v63 = [(NSMutableDictionary *)v75->_coreDictionary objectForKey:v70];
+  v63 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v70];
   if (v63)
   {
     v62 = 0;
@@ -5825,7 +5825,7 @@ LABEL_35:
         v9 = objc_alloc(MEMORY[0x277CCA9B8]);
         v41 = [v9 initWithDomain:v72 code:49 userInfo:0];
         v10 = v41;
-        *v73 = v41;
+        *errorCopy = v41;
         v76 = 0;
         v64 = 1;
 LABEL_39:
@@ -5839,13 +5839,13 @@ LABEL_39:
         v12 = objc_alloc(MEMORY[0x277CCA9B8]);
         v40 = [v12 initWithDomain:v72 code:49 userInfo:0];
         v13 = v40;
-        *v73 = v40;
+        *errorCopy = v40;
         v76 = 0;
         v64 = 1;
         goto LABEL_39;
       }
 
-      v14 = [(NSMutableDictionary *)v75->_coreDictionary objectForKey:v66];
+      v14 = [(NSMutableDictionary *)selfCopy->_coreDictionary objectForKey:v66];
       v15 = v62;
       v62 = v14;
       MEMORY[0x277D82BD8](v15);
@@ -5854,7 +5854,7 @@ LABEL_39:
         v16 = objc_alloc(MEMORY[0x277CCA9B8]);
         v39 = [v16 initWithDomain:v72 code:36 userInfo:0];
         v17 = v39;
-        *v73 = v39;
+        *errorCopy = v39;
         v76 = 0;
         v64 = 1;
         goto LABEL_39;
@@ -5866,7 +5866,7 @@ LABEL_39:
         v18 = objc_alloc(MEMORY[0x277CCA9B8]);
         v37 = [v18 initWithDomain:v72 code:96 userInfo:0];
         v19 = v37;
-        *v73 = v37;
+        *errorCopy = v37;
         v76 = 0;
         v64 = 1;
         goto LABEL_39;
@@ -5966,9 +5966,9 @@ LABEL_39:
       objc_storeStrong(&v57, 0);
     }
 
-    [(NSMutableDictionary *)v75->_coreDictionary setObject:v59 forKey:v69];
-    [(NSMutableDictionary *)v75->_coreDictionary setObject:v61 forKey:v68];
-    [(NSMutableDictionary *)v75->_coreDictionary setObject:v60 forKey:v67];
+    [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v59 forKey:v69];
+    [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v61 forKey:v68];
+    [(NSMutableDictionary *)selfCopy->_coreDictionary setObject:v60 forKey:v67];
     v76 = [MEMORY[0x277CCABB0] numberWithLong:1];
     v64 = 1;
     objc_storeStrong(&v59, 0);
@@ -5980,7 +5980,7 @@ LABEL_39:
   v7 = objc_alloc(MEMORY[0x277CCA9B8]);
   v42 = [v7 initWithDomain:v72 code:36 userInfo:0];
   v8 = v42;
-  *v73 = v42;
+  *errorCopy = v42;
   v76 = 0;
   v64 = 1;
 LABEL_40:

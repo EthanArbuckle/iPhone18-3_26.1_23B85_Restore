@@ -1,34 +1,34 @@
 @interface VKCDataDetectorInfo
-+ (id)dataDetectorInfoFromAnalysis:(id)a3 dataDetectorTypes:(unint64_t)a4 unfiltered:(BOOL)a5;
-+ (void)preWarmIfNecessaryWithCompletion:(id)a3;
-- (void)createQuickActionInfosWithCompletion:(id)a3;
-- (void)populateDataDetectorElementsFromAnalysis:(id)a3 dataDetectorTypes:(unint64_t)a4 unfiltered:(BOOL)a5;
++ (id)dataDetectorInfoFromAnalysis:(id)analysis dataDetectorTypes:(unint64_t)types unfiltered:(BOOL)unfiltered;
++ (void)preWarmIfNecessaryWithCompletion:(id)completion;
+- (void)createQuickActionInfosWithCompletion:(id)completion;
+- (void)populateDataDetectorElementsFromAnalysis:(id)analysis dataDetectorTypes:(unint64_t)types unfiltered:(BOOL)unfiltered;
 @end
 
 @implementation VKCDataDetectorInfo
 
-+ (id)dataDetectorInfoFromAnalysis:(id)a3 dataDetectorTypes:(unint64_t)a4 unfiltered:(BOOL)a5
++ (id)dataDetectorInfoFromAnalysis:(id)analysis dataDetectorTypes:(unint64_t)types unfiltered:(BOOL)unfiltered
 {
-  v5 = a5;
-  v7 = a3;
+  unfilteredCopy = unfiltered;
+  analysisCopy = analysis;
   v8 = objc_alloc_init(VKCDataDetectorInfo);
-  [(VKCDataDetectorInfo *)v8 setAnalysis:v7];
-  [(VKCDataDetectorInfo *)v8 populateDataDetectorElementsFromAnalysis:v7 dataDetectorTypes:a4 unfiltered:v5];
+  [(VKCDataDetectorInfo *)v8 setAnalysis:analysisCopy];
+  [(VKCDataDetectorInfo *)v8 populateDataDetectorElementsFromAnalysis:analysisCopy dataDetectorTypes:types unfiltered:unfilteredCopy];
 
-  [(VKCDataDetectorInfo *)v8 setDataDetectorTypes:a4];
+  [(VKCDataDetectorInfo *)v8 setDataDetectorTypes:types];
 
   return v8;
 }
 
-+ (void)preWarmIfNecessaryWithCompletion:(id)a3
++ (void)preWarmIfNecessaryWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = v3;
+  completionCopy = completion;
+  v4 = completionCopy;
   if (preWarmIfNecessaryWithCompletion__didPrewarm)
   {
-    if (v3)
+    if (completionCopy)
     {
-      v3[2](v3);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -38,7 +38,7 @@
     block[1] = 3221225472;
     block[2] = __56__VKCDataDetectorInfo_preWarmIfNecessaryWithCompletion___block_invoke;
     block[3] = &unk_1E7BE3FC8;
-    v6 = v3;
+    v6 = completionCopy;
     if (preWarmIfNecessaryWithCompletion__onceToken != -1)
     {
       dispatch_once(&preWarmIfNecessaryWithCompletion__onceToken, block);
@@ -122,28 +122,28 @@ uint64_t __56__VKCDataDetectorInfo_preWarmIfNecessaryWithCompletion___block_invo
   return result;
 }
 
-- (void)populateDataDetectorElementsFromAnalysis:(id)a3 dataDetectorTypes:(unint64_t)a4 unfiltered:(BOOL)a5
+- (void)populateDataDetectorElementsFromAnalysis:(id)analysis dataDetectorTypes:(unint64_t)types unfiltered:(BOOL)unfiltered
 {
-  v8 = a3;
-  v9 = [v8 imageAnalysisResult];
-  v10 = v9;
-  if (a5)
+  analysisCopy = analysis;
+  imageAnalysisResult = [analysisCopy imageAnalysisResult];
+  v10 = imageAnalysisResult;
+  if (unfiltered)
   {
-    [v9 unfilteredDataDetectors];
+    [imageAnalysisResult unfilteredDataDetectors];
   }
 
   else
   {
-    [v9 dataDetectors];
+    [imageAnalysisResult dataDetectors];
   }
   v11 = ;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __93__VKCDataDetectorInfo_populateDataDetectorElementsFromAnalysis_dataDetectorTypes_unfiltered___block_invoke;
   v17 = &unk_1E7BE5F40;
-  v18 = v8;
-  v19 = a4;
-  v12 = v8;
+  v18 = analysisCopy;
+  typesCopy = types;
+  v12 = analysisCopy;
   v13 = [v11 vk_compactMap:&v14];
   [(VKCDataDetectorInfo *)self setElements:v13, v14, v15, v16, v17];
 }
@@ -164,29 +164,29 @@ id __93__VKCDataDetectorInfo_populateDataDetectorElementsFromAnalysis_dataDetect
   return v4;
 }
 
-- (void)createQuickActionInfosWithCompletion:(id)a3
+- (void)createQuickActionInfosWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VKCDataDetectorInfo *)self elements];
+  completionCopy = completion;
+  elements = [(VKCDataDetectorInfo *)self elements];
 
-  if (!v5)
+  if (!elements)
   {
-    v6 = [(VKCDataDetectorInfo *)self analysis];
-    [(VKCDataDetectorInfo *)self populateDataDetectorElementsFromAnalysis:v6 dataDetectorTypes:[(VKCDataDetectorInfo *)self dataDetectorTypes] unfiltered:0];
+    analysis = [(VKCDataDetectorInfo *)self analysis];
+    [(VKCDataDetectorInfo *)self populateDataDetectorElementsFromAnalysis:analysis dataDetectorTypes:[(VKCDataDetectorInfo *)self dataDetectorTypes] unfiltered:0];
   }
 
-  v7 = [(VKCDataDetectorInfo *)self analysis];
-  v8 = [v7 imageAnalysisResult];
+  analysis2 = [(VKCDataDetectorInfo *)self analysis];
+  imageAnalysisResult = [analysis2 imageAnalysisResult];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__VKCDataDetectorInfo_createQuickActionInfosWithCompletion___block_invoke;
   v11[3] = &unk_1E7BE50D8;
-  v12 = v8;
-  v13 = self;
-  v14 = v4;
-  v9 = v4;
-  v10 = v8;
+  v12 = imageAnalysisResult;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = imageAnalysisResult;
   vk_dispatchMainAfterDelay(v11, 0.0);
 }
 

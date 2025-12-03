@@ -1,25 +1,25 @@
 @interface _UIMainMenuDeferredElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UIMainMenuDeferredElement)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 uiDeferredMenuElement:(id)a4;
-- (id)_initWithUIDeferredMenuElement:(id)a3;
+- (_UIMainMenuDeferredElement)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier uiDeferredMenuElement:(id)element;
+- (id)_initWithUIDeferredMenuElement:(id)element;
 @end
 
 @implementation _UIMainMenuDeferredElement
 
-- (id)_initWithIdentifier:(id)a3 uiDeferredMenuElement:(id)a4
+- (id)_initWithIdentifier:(id)identifier uiDeferredMenuElement:(id)element
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = _UIMainMenuDeferredElement;
   v9 = [(_UIMainMenuDeferredElement *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_uiDeferredMenuElement, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_uiDeferredMenuElement, element);
     localProvidedElements = v10->_localProvidedElements;
     v10->_localProvidedElements = 0;
   }
@@ -27,25 +27,25 @@
   return v10;
 }
 
-- (id)_initWithUIDeferredMenuElement:(id)a3
+- (id)_initWithUIDeferredMenuElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = [_UIMainMenuDeferredElementIdentifier alloc];
   ++_UIMainMenuElementIdentifierNumberGenerate_lastMenuElementIdentifier;
   v6 = [(_UIMainMenuDeferredElementIdentifier *)v5 _initWithIdentifierNumber:?];
-  v7 = [(_UIMainMenuDeferredElement *)self _initWithIdentifier:v6 uiDeferredMenuElement:v4];
+  v7 = [(_UIMainMenuDeferredElement *)self _initWithIdentifier:v6 uiDeferredMenuElement:elementCopy];
 
   return v7;
 }
 
-- (_UIMainMenuDeferredElement)initWithCoder:(id)a3
+- (_UIMainMenuDeferredElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuDeferredElement *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"DeferredElementIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"DeferredElementIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
@@ -56,10 +56,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -71,7 +71,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       identifier = v7->_identifier;
       v9 = self->_identifier;
       v10 = identifier;
@@ -134,9 +134,9 @@ LABEL_18:
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_identifier withName:@"identifier"];
   v5 = [v3 appendObject:self->_uiDeferredMenuElement withName:@"uiDeferredMenuElement"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

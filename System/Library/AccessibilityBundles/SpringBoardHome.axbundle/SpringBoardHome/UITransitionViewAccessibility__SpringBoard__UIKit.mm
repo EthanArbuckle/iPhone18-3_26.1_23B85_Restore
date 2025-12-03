@@ -11,7 +11,7 @@
     [UITransitionViewAccessibility__SpringBoard__UIKit accessibilityViewIsModal];
   }
 
-  v3 = [(UITransitionViewAccessibility__SpringBoard__UIKit *)self _accessibilityWindow];
+  _accessibilityWindow = [(UITransitionViewAccessibility__SpringBoard__UIKit *)self _accessibilityWindow];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)

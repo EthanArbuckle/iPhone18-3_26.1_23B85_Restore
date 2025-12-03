@@ -1,45 +1,45 @@
 @interface _INPBGetSettingIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBGetSettingIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGetSettingIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsConfirmationValue:(id)a3;
+- (int)StringAsConfirmationValue:(id)value;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfirmationValue:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfirmationValue:(int)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGetSettingIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBGetSettingIntent *)self hasConfirmationValue])
   {
-    v4 = [(_INPBGetSettingIntent *)self confirmationValue];
-    if ((v4 - 1) >= 3)
+    confirmationValue = [(_INPBGetSettingIntent *)self confirmationValue];
+    if ((confirmationValue - 1) >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", confirmationValue];
     }
 
     else
     {
-      v5 = *(&off_1E7287D70 + (v4 - 1));
+      v5 = *(&off_1E7287D70 + (confirmationValue - 1));
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"confirmationValue"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confirmationValue"];
   }
 
-  v6 = [(_INPBGetSettingIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBGetSettingIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBGetSettingIntent *)self settingMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"settingMetadata"];
+  settingMetadata = [(_INPBGetSettingIntent *)self settingMetadata];
+  dictionaryRepresentation2 = [settingMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"settingMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -58,46 +58,46 @@
   return v4 ^ [(_INPBSettingMetadata *)self->_settingMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBGetSettingIntent *)self hasConfirmationValue];
-  if (v5 != [v4 hasConfirmationValue])
+  hasConfirmationValue = [(_INPBGetSettingIntent *)self hasConfirmationValue];
+  if (hasConfirmationValue != [equalCopy hasConfirmationValue])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBGetSettingIntent *)self hasConfirmationValue])
   {
-    if ([v4 hasConfirmationValue])
+    if ([equalCopy hasConfirmationValue])
     {
       confirmationValue = self->_confirmationValue;
-      if (confirmationValue != [v4 confirmationValue])
+      if (confirmationValue != [equalCopy confirmationValue])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v7 = [(_INPBGetSettingIntent *)self intentMetadata];
-  v8 = [v4 intentMetadata];
-  if ((v7 != 0) == (v8 == 0))
+  intentMetadata = [(_INPBGetSettingIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_15;
   }
 
-  v9 = [(_INPBGetSettingIntent *)self intentMetadata];
-  if (v9)
+  intentMetadata3 = [(_INPBGetSettingIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v10 = v9;
-    v11 = [(_INPBGetSettingIntent *)self intentMetadata];
-    v12 = [v4 intentMetadata];
-    v13 = [v11 isEqual:v12];
+    v10 = intentMetadata3;
+    intentMetadata4 = [(_INPBGetSettingIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v13 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v13)
     {
@@ -109,12 +109,12 @@
   {
   }
 
-  v7 = [(_INPBGetSettingIntent *)self settingMetadata];
-  v8 = [v4 settingMetadata];
-  if ((v7 != 0) != (v8 == 0))
+  intentMetadata = [(_INPBGetSettingIntent *)self settingMetadata];
+  intentMetadata2 = [equalCopy settingMetadata];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v14 = [(_INPBGetSettingIntent *)self settingMetadata];
-    if (!v14)
+    settingMetadata = [(_INPBGetSettingIntent *)self settingMetadata];
+    if (!settingMetadata)
     {
 
 LABEL_19:
@@ -122,10 +122,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBGetSettingIntent *)self settingMetadata];
-    v17 = [v4 settingMetadata];
-    v18 = [v16 isEqual:v17];
+    v15 = settingMetadata;
+    settingMetadata2 = [(_INPBGetSettingIntent *)self settingMetadata];
+    settingMetadata3 = [equalCopy settingMetadata];
+    v18 = [settingMetadata2 isEqual:settingMetadata3];
 
     if (v18)
     {
@@ -145,7 +145,7 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBGetSettingIntent allocWithZone:](_INPBGetSettingIntent init];
   if ([(_INPBGetSettingIntent *)self hasConfirmationValue])
@@ -153,82 +153,82 @@ LABEL_17:
     [(_INPBGetSettingIntent *)v5 setConfirmationValue:[(_INPBGetSettingIntent *)self confirmationValue]];
   }
 
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBGetSettingIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(_INPBSettingMetadata *)self->_settingMetadata copyWithZone:a3];
+  v7 = [(_INPBSettingMetadata *)self->_settingMetadata copyWithZone:zone];
   [(_INPBGetSettingIntent *)v5 setSettingMetadata:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGetSettingIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBGetSettingIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGetSettingIntent)initWithCoder:(id)a3
+- (_INPBGetSettingIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGetSettingIntent *)self initWithData:v6];
+    self = [(_INPBGetSettingIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(_INPBGetSettingIntent *)self hasConfirmationValue])
   {
     confirmationValue = self->_confirmationValue;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBGetSettingIntent *)self intentMetadata];
+  intentMetadata = [(_INPBGetSettingIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBGetSettingIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBGetSettingIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBGetSettingIntent *)self settingMetadata];
+  settingMetadata = [(_INPBGetSettingIntent *)self settingMetadata];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (settingMetadata)
   {
-    v9 = [(_INPBGetSettingIntent *)self settingMetadata];
+    settingMetadata2 = [(_INPBGetSettingIntent *)self settingMetadata];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (int)StringAsConfirmationValue:(id)a3
+- (int)StringAsConfirmationValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ON"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"ON"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OFF"])
+  else if ([valueCopy isEqualToString:@"OFF"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TOGGLE"])
+  else if ([valueCopy isEqualToString:@"TOGGLE"])
   {
     v4 = 3;
   }
@@ -241,10 +241,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setConfirmationValue:(int)a3
+- (void)setConfirmationValue:(int)value
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (value == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -252,7 +252,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 1;
-    self->_confirmationValue = a3;
+    self->_confirmationValue = value;
   }
 }
 

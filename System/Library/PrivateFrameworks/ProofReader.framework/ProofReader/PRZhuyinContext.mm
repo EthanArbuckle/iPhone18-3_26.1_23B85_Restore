@@ -9,7 +9,7 @@
 - (void)_filterModifications;
 - (void)_removeModificationsAndMoveStartingPoint;
 - (void)dealloc;
-- (void)removeNumberOfInputCharacters:(unint64_t)a3;
+- (void)removeNumberOfInputCharacters:(unint64_t)characters;
 - (void)reset;
 @end
 
@@ -64,9 +64,9 @@
     while (1)
     {
       v9 = [(NSMutableArray *)self->_modifications objectAtIndex:v8];
-      v10 = [v9 syllableRange];
-      v12 = v10 + v11;
-      if (self->_startingPoint >= v10 + v11)
+      syllableRange = [v9 syllableRange];
+      v12 = syllableRange + v11;
+      if (self->_startingPoint >= syllableRange + v11)
       {
         goto LABEL_22;
       }
@@ -77,7 +77,7 @@
         goto LABEL_22;
       }
 
-      v14 = v10;
+      v14 = syllableRange;
       v27 = v7;
       v30 = 0;
       v15 = v6;
@@ -314,13 +314,13 @@ LABEL_51:
   endIndex = self->_endIndex;
   if (startIndex + 1 < endIndex)
   {
-    v6 = self;
+    selfCopy2 = self;
     v44 = self->_lastIndexes;
     while (1)
     {
       v7 = startIndex;
       startIndex = v4;
-      buffer = v6->_buffer;
+      buffer = selfCopy2->_buffer;
       v9 = buffer[v7];
       if ((v9 - 49) >= 5)
       {
@@ -370,15 +370,15 @@ LABEL_51:
       v57 = 0;
       v56[0] = externalZhuyinFromInternal(v12);
       v56[1] = externalZhuyinFromInternal(v9);
-      v6->_buffer[v7] = v12;
-      v6->_buffer[startIndex] = v9;
+      selfCopy2->_buffer[v7] = v12;
+      selfCopy2->_buffer[startIndex] = v9;
       v51 = startIndex;
       if (v7 >= *lastIndexes)
       {
-        if (findZhuyin(&v6->_buffer[*lastIndexes], v6->_endIndex - *lastIndexes, 0, 0, 0, 0, 0, &v60, &v59, &v58, &v57, v6->_syllableLengthArray))
+        if (findZhuyin(&selfCopy2->_buffer[*lastIndexes], selfCopy2->_endIndex - *lastIndexes, 0, 0, 0, 0, 0, &v60, &v59, &v58, &v57, selfCopy2->_syllableLengthArray))
         {
           v13 = *lastIndexes;
-          if (v59 + *lastIndexes == v6->_endIndex)
+          if (v59 + *lastIndexes == selfCopy2->_endIndex)
           {
             if (v58)
             {
@@ -386,7 +386,7 @@ LABEL_51:
               v15 = 0;
               v16 = 0;
               v17 = 0;
-              v18 = (v6->_syllableLengthArray + 1);
+              v18 = (selfCopy2->_syllableLengthArray + 1);
               v19 = 0x7FFFFFFFFFFFFFFFLL;
               v45 = v58;
               while (1)
@@ -455,13 +455,13 @@ LABEL_57:
         goto LABEL_57;
       }
 
-      if (!findZhuyin(&v6->_buffer[v24], v6->_endIndex - v24, 0, 0, 0, 0, 0, &v60, &v59, &v58, &v57, v6->_syllableLengthArray))
+      if (!findZhuyin(&selfCopy2->_buffer[v24], selfCopy2->_endIndex - v24, 0, 0, 0, 0, 0, &v60, &v59, &v58, &v57, selfCopy2->_syllableLengthArray))
       {
         goto LABEL_57;
       }
 
       v25 = lastIndexes[1];
-      if (v59 + v25 != v6->_length || v57 == 1 && v7 >= v60 + v25)
+      if (v59 + v25 != selfCopy2->_length || v57 == 1 && v7 >= v60 + v25)
       {
         goto LABEL_57;
       }
@@ -483,7 +483,7 @@ LABEL_59:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      modifications = v6->_modifications;
+      modifications = selfCopy2->_modifications;
       v33 = [(NSMutableArray *)modifications countByEnumeratingWithState:&v52 objects:v61 count:16];
       if (v33)
       {
@@ -534,7 +534,7 @@ LABEL_71:
         }
       }
 
-      v6 = self;
+      selfCopy2 = self;
       self->_buffer[v7] = v9;
       startIndex = v51;
       self->_buffer[v51] = v12;
@@ -551,7 +551,7 @@ LABEL_74:
     v15 = 0;
     v16 = 0;
     v17 = 0;
-    v26 = (v6->_syllableLengthArray + 1);
+    v26 = (selfCopy2->_syllableLengthArray + 1);
     v19 = 0x7FFFFFFFFFFFFFFFLL;
     v27 = 1;
     v28 = v58 - 1;
@@ -1243,14 +1243,14 @@ LABEL_58:
               v35 = *(*(&v52 + 1) + 8 * v34);
               if ([v35 modificationType] == 4)
               {
-                v36 = [v35 range];
-                if (v7 == v36 && v37 == 1)
+                range = [v35 range];
+                if (v7 == range && v37 == 1)
                 {
                   break;
                 }
 
                 v39 = v37 == 1 ? v51 : 0;
-                if (v39 == 1 && v36 + 1 == v7)
+                if (v39 == 1 && range + 1 == v7)
                 {
                   break;
                 }
@@ -1304,19 +1304,19 @@ LABEL_81:
 
 - (void)_filterModifications
 {
-  v2 = self;
+  selfCopy = self;
   v72 = *MEMORY[0x1E69E9840];
   v3 = [(NSMutableArray *)self->_addedModifications count];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  addedModifications = v2->_addedModifications;
+  addedModifications = selfCopy->_addedModifications;
   v5 = [(NSMutableArray *)addedModifications countByEnumeratingWithState:&v64 objects:v71 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = v2;
+    v7 = selfCopy;
     v8 = 0;
     v9 = *v65;
     do
@@ -1328,10 +1328,10 @@ LABEL_81:
           objc_enumerationMutation(addedModifications);
         }
 
-        v11 = [*(*(&v64 + 1) + 8 * i) syllableCountScore];
-        if (v8 - 1 >= v11)
+        syllableCountScore = [*(*(&v64 + 1) + 8 * i) syllableCountScore];
+        if (v8 - 1 >= syllableCountScore)
         {
-          v8 = v11;
+          v8 = syllableCountScore;
         }
       }
 
@@ -1349,7 +1349,7 @@ LABEL_81:
       v12 = 1;
     }
 
-    v2 = v7;
+    selfCopy = v7;
     if (!v12)
     {
       v13 = v3 - 1;
@@ -1369,33 +1369,33 @@ LABEL_81:
     }
   }
 
-  v15 = [(NSMutableArray *)v2->_modifications count];
+  v15 = [(NSMutableArray *)selfCopy->_modifications count];
   if (v15)
   {
     v16 = v15;
-    v49 = v2;
+    v49 = selfCopy;
     do
     {
       while (1)
       {
         v50 = v16 - 1;
-        v17 = [(NSMutableArray *)v2->_modifications objectAtIndex:v16 - 1];
+        v17 = [(NSMutableArray *)selfCopy->_modifications objectAtIndex:v16 - 1];
         [v17 modificationType];
         [v17 range];
-        v18 = [v17 combinedSyllableRange];
+        combinedSyllableRange = [v17 combinedSyllableRange];
         v20 = v19;
-        v21 = [v17 syllableCountScore];
+        syllableCountScore2 = [v17 syllableCountScore];
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
-        obj = v2->_modifications;
+        obj = selfCopy->_modifications;
         v22 = [(NSMutableArray *)obj countByEnumeratingWithState:&v60 objects:v70 count:16];
         if (v22)
         {
           v23 = v22;
           v24 = *v61;
-          v25 = v18 + v20;
+          v25 = combinedSyllableRange + v20;
           while (2)
           {
             for (j = 0; j != v23; ++j)
@@ -1410,14 +1410,14 @@ LABEL_81:
               {
                 [*(*(&v60 + 1) + 8 * j) modificationType];
                 v28 = v17;
-                v29 = [v27 combinedSyllableRange];
+                combinedSyllableRange2 = [v27 combinedSyllableRange];
                 v31 = v30;
-                v32 = [v27 syllableCountScore] >= v21 || v18 >= v29 + v31;
-                v33 = !v32 && v25 > v29;
+                v32 = [v27 syllableCountScore] >= syllableCountScore2 || combinedSyllableRange >= combinedSyllableRange2 + v31;
+                v33 = !v32 && v25 > combinedSyllableRange2;
                 v17 = v28;
                 if (v33)
                 {
-                  v2 = v49;
+                  selfCopy = v49;
                   v44 = [(NSMutableArray *)v49->_addedModifications indexOfObjectIdenticalTo:v28];
                   if (v44 == 0x7FFFFFFFFFFFFFFFLL)
                   {
@@ -1449,7 +1449,7 @@ LABEL_81:
         v59 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v2 = v49;
+        selfCopy = v49;
         removedModifications = v49->_removedModifications;
         v35 = [(NSMutableArray *)removedModifications countByEnumeratingWithState:&v56 objects:v69 count:16];
         v16 = v50;
@@ -1546,7 +1546,7 @@ LABEL_45:
 
       [(NSMutableArray *)v49->_addedModifications removeObjectAtIndex:v47];
 LABEL_63:
-      [(NSMutableArray *)v2->_modifications removeObjectAtIndex:v16];
+      [(NSMutableArray *)selfCopy->_modifications removeObjectAtIndex:v16];
     }
 
     while (v16);
@@ -1556,12 +1556,12 @@ LABEL_64:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeNumberOfInputCharacters:(unint64_t)a3
+- (void)removeNumberOfInputCharacters:(unint64_t)characters
 {
   length = self->_length;
-  if (length >= a3)
+  if (length >= characters)
   {
-    v4 = length - a3;
+    v4 = length - characters;
   }
 
   else
@@ -1569,11 +1569,11 @@ LABEL_64:
     v4 = 0;
   }
 
-  if (a3 && length)
+  if (characters && length)
   {
     v7 = malloc_type_calloc(0x100uLL, 1uLL, 0xC74D66C1uLL);
     v8 = v7;
-    if (length <= a3)
+    if (length <= characters)
     {
       [(PRZhuyinContext *)self reset];
     }

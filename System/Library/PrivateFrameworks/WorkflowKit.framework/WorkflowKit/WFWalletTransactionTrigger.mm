@@ -1,14 +1,14 @@
 @interface WFWalletTransactionTrigger
 + (id)displayGlyph;
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 - (BOOL)hasValidConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WFWalletTransactionTrigger)init;
-- (WFWalletTransactionTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFWalletTransactionTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)suggestedActions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWalletTransactionTrigger
@@ -18,10 +18,10 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs];
-  v7 = [(WFWalletTransactionTrigger *)self selectedMerchantTypes];
-  v8 = [(WFWalletTransactionTrigger *)self selectedMerchants];
-  v9 = [v3 stringWithFormat:@"<%@: %p, selectedPassUniqueIDs: %@, selectedMerchantTypes: %@, selectedMerchants: %@>", v5, self, v6, v7, v8];
+  selectedPassUniqueIDs = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs];
+  selectedMerchantTypes = [(WFWalletTransactionTrigger *)self selectedMerchantTypes];
+  selectedMerchants = [(WFWalletTransactionTrigger *)self selectedMerchants];
+  v9 = [v3 stringWithFormat:@"<%@: %p, selectedPassUniqueIDs: %@, selectedMerchantTypes: %@, selectedMerchants: %@>", v5, self, selectedPassUniqueIDs, selectedMerchantTypes, selectedMerchants];
 
   return v9;
 }
@@ -44,13 +44,13 @@ BOOL __46__WFWalletTransactionTrigger_suggestedActions__block_invoke(uint64_t a1
   return (isKindOfClass & 1) == 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -59,10 +59,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs];
-    v8 = [(WFWalletTransactionTrigger *)v6 selectedPassUniqueIDs];
-    v9 = v7;
-    v10 = v8;
+    selectedPassUniqueIDs = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs];
+    selectedPassUniqueIDs2 = [(WFWalletTransactionTrigger *)v6 selectedPassUniqueIDs];
+    v9 = selectedPassUniqueIDs;
+    v10 = selectedPassUniqueIDs2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -89,10 +89,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(WFWalletTransactionTrigger *)self selectedMerchantTypes];
-    v17 = [(WFWalletTransactionTrigger *)v6 selectedMerchantTypes];
-    v14 = v16;
-    v18 = v17;
+    selectedMerchantTypes = [(WFWalletTransactionTrigger *)self selectedMerchantTypes];
+    selectedMerchantTypes2 = [(WFWalletTransactionTrigger *)v6 selectedMerchantTypes];
+    v14 = selectedMerchantTypes;
+    v18 = selectedMerchantTypes2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -119,10 +119,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(WFWalletTransactionTrigger *)self selectedMerchants];
-    v22 = [(WFWalletTransactionTrigger *)v6 selectedMerchants];
-    v20 = v21;
-    v23 = v22;
+    selectedMerchants = [(WFWalletTransactionTrigger *)self selectedMerchants];
+    selectedMerchants2 = [(WFWalletTransactionTrigger *)v6 selectedMerchants];
+    v20 = selectedMerchants;
+    v23 = selectedMerchants2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -147,31 +147,31 @@ LABEL_28:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = WFWalletTransactionTrigger;
-  v4 = [(WFTrigger *)&v10 copyWithZone:a3];
-  v5 = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs];
-  v6 = [v5 copy];
+  v4 = [(WFTrigger *)&v10 copyWithZone:zone];
+  selectedPassUniqueIDs = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs];
+  v6 = [selectedPassUniqueIDs copy];
   [v4 setSelectedPassUniqueIDs:v6];
 
-  v7 = [(WFWalletTransactionTrigger *)self selectedMerchantTypes];
-  [v4 setSelectedMerchantTypes:v7];
+  selectedMerchantTypes = [(WFWalletTransactionTrigger *)self selectedMerchantTypes];
+  [v4 setSelectedMerchantTypes:selectedMerchantTypes];
 
-  v8 = [(WFWalletTransactionTrigger *)self selectedMerchants];
-  [v4 setSelectedMerchants:v8];
+  selectedMerchants = [(WFWalletTransactionTrigger *)self selectedMerchants];
+  [v4 setSelectedMerchants:selectedMerchants];
 
   return v4;
 }
 
-- (WFWalletTransactionTrigger)initWithCoder:(id)a3
+- (WFWalletTransactionTrigger)initWithCoder:(id)coder
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = WFWalletTransactionTrigger;
-  v5 = [(WFTrigger *)&v24 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -179,7 +179,7 @@ LABEL_28:
     v27[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"selectedPassUniqueIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"selectedPassUniqueIDs"];
     selectedPassUniqueIDs = v5->_selectedPassUniqueIDs;
     v5->_selectedPassUniqueIDs = v9;
 
@@ -188,7 +188,7 @@ LABEL_28:
     v26[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"selectedMerchantTypes"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"selectedMerchantTypes"];
     selectedMerchantTypes = v5->_selectedMerchantTypes;
     v5->_selectedMerchantTypes = v14;
 
@@ -197,7 +197,7 @@ LABEL_28:
     v25[1] = objc_opt_class();
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"selectedMerchants"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"selectedMerchants"];
     selectedMerchants = v5->_selectedMerchants;
     v5->_selectedMerchants = v19;
 
@@ -208,26 +208,26 @@ LABEL_28:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = WFWalletTransactionTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v8 encodeWithCoder:coderCopy];
   v5 = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"selectedPassUniqueIDs"];
+  [coderCopy encodeObject:v5 forKey:@"selectedPassUniqueIDs"];
 
-  v6 = [(WFWalletTransactionTrigger *)self selectedMerchantTypes];
-  [v4 encodeObject:v6 forKey:@"selectedMerchantTypes"];
+  selectedMerchantTypes = [(WFWalletTransactionTrigger *)self selectedMerchantTypes];
+  [coderCopy encodeObject:selectedMerchantTypes forKey:@"selectedMerchantTypes"];
 
-  v7 = [(WFWalletTransactionTrigger *)self selectedMerchants];
-  [v4 encodeObject:v7 forKey:@"selectedMerchants"];
+  selectedMerchants = [(WFWalletTransactionTrigger *)self selectedMerchants];
+  [coderCopy encodeObject:selectedMerchants forKey:@"selectedMerchants"];
 }
 
 - (BOOL)hasValidConfiguration
 {
-  v2 = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs];
-  v3 = [v2 count] != 0;
+  selectedPassUniqueIDs = [(WFWalletTransactionTrigger *)self selectedPassUniqueIDs];
+  v3 = [selectedPassUniqueIDs count] != 0;
 
   return v3;
 }
@@ -255,17 +255,17 @@ LABEL_28:
 + (id)displayGlyph
 {
   v2 = MEMORY[0x1E69E0B58];
-  v3 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
+  v3 = [MEMORY[0x1E696AAE8] bundleForClass:self];
   v4 = [v2 imageNamed:@"Wallet" inBundle:v3];
 
   return v4;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Wallet", @"Wallet");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

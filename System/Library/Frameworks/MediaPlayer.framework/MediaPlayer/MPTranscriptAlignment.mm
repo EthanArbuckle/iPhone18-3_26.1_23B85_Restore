@@ -1,5 +1,5 @@
 @interface MPTranscriptAlignment
-- (MPTranscriptAlignment)initWithPlayerStartTime:(double)a3 playerEndTime:(double)a4 referenceStartTime:(double)a5 referenceEndTime:(double)a6 matchedBeginning:(BOOL)a7 matchedEnd:(BOOL)a8;
+- (MPTranscriptAlignment)initWithPlayerStartTime:(double)time playerEndTime:(double)endTime referenceStartTime:(double)startTime referenceEndTime:(double)referenceEndTime matchedBeginning:(BOOL)beginning matchedEnd:(BOOL)end;
 - (id)description;
 @end
 
@@ -22,19 +22,19 @@
   return v13;
 }
 
-- (MPTranscriptAlignment)initWithPlayerStartTime:(double)a3 playerEndTime:(double)a4 referenceStartTime:(double)a5 referenceEndTime:(double)a6 matchedBeginning:(BOOL)a7 matchedEnd:(BOOL)a8
+- (MPTranscriptAlignment)initWithPlayerStartTime:(double)time playerEndTime:(double)endTime referenceStartTime:(double)startTime referenceEndTime:(double)referenceEndTime matchedBeginning:(BOOL)beginning matchedEnd:(BOOL)end
 {
   v15.receiver = self;
   v15.super_class = MPTranscriptAlignment;
   result = [(MPTranscriptAlignment *)&v15 init];
   if (result)
   {
-    result->_playerStartTime = a3;
-    result->_playerEndTime = a4;
-    result->_referenceStartTime = a5;
-    result->_referenceEndTime = a6;
-    result->_matchedBeginning = a7;
-    result->_matchedEnd = a8;
+    result->_playerStartTime = time;
+    result->_playerEndTime = endTime;
+    result->_referenceStartTime = startTime;
+    result->_referenceEndTime = referenceEndTime;
+    result->_matchedBeginning = beginning;
+    result->_matchedEnd = end;
   }
 
   return result;

@@ -1,12 +1,12 @@
 @interface BuddyTransferDataController
 - (BuddyTransferDataController)init;
 - (BuddyTransferDataFlowDelegate)transferFlowDelegate;
-- (void)_continueTapped:(id)a3;
-- (void)_otherOptionsTapped:(id)a3;
+- (void)_continueTapped:(id)tapped;
+- (void)_otherOptionsTapped:(id)tapped;
 - (void)_setupButtons;
-- (void)_updateAnalyticsWithChoice:(id)a3;
+- (void)_updateAnalyticsWithChoice:(id)choice;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BuddyTransferDataController
@@ -25,27 +25,27 @@
 
 - (void)viewDidLoad
 {
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
   v31.receiver = self;
   v31.super_class = BuddyTransferDataController;
   [(BuddyTransferDataController *)&v31 viewDidLoad];
   v30 = 0;
   v2 = +[BYDevice currentDevice];
-  v3 = [v2 hasHomeButton];
+  hasHomeButton = [v2 hasHomeButton];
 
-  v29 = v3;
-  v4 = [(BuddyTransferDataController *)v33 proximitySetupController];
-  v5 = [(ProximitySetupController *)v4 information];
-  v6 = [(SASProximityInformation *)v5 hasHomeButton];
+  v29 = hasHomeButton;
+  proximitySetupController = [(BuddyTransferDataController *)selfCopy proximitySetupController];
+  information = [(ProximitySetupController *)proximitySetupController information];
+  hasHomeButton2 = [(SASProximityInformation *)information hasHomeButton];
 
-  v28 = v6;
-  v7 = [(BuddyTransferDataController *)v33 miscState];
-  v8 = [(BuddyMiscState *)v7 migrationManager];
-  v9 = [(BuddyTargetDeviceMigrationManager *)v8 connectionInfo];
-  v10 = [v9 connectionType];
+  v28 = hasHomeButton2;
+  miscState = [(BuddyTransferDataController *)selfCopy miscState];
+  migrationManager = [(BuddyMiscState *)miscState migrationManager];
+  connectionInfo = [(BuddyTargetDeviceMigrationManager *)migrationManager connectionInfo];
+  connectionType = [connectionInfo connectionType];
 
-  if (v10 == 1)
+  if (connectionType == 1)
   {
     if (v29)
     {
@@ -81,49 +81,49 @@
     v30 = v13;
   }
 
-  v15 = [(BuddyTransferDataController *)v33 headerView];
-  [v15 setIcon:v30 accessibilityLabel:0];
+  headerView = [(BuddyTransferDataController *)selfCopy headerView];
+  [headerView setIcon:v30 accessibilityLabel:0];
 
-  v16 = [(BuddyTransferDataController *)v33 proximitySetupController];
-  location = [(ProximitySetupController *)v16 deviceName];
+  proximitySetupController2 = [(BuddyTransferDataController *)selfCopy proximitySetupController];
+  location = [(ProximitySetupController *)proximitySetupController2 deviceName];
 
   v17 = +[NSBundle mainBundle];
   v18 = [(NSBundle *)v17 localizedStringForKey:@"TRANSFER_DATA_TITLE" value:&stru_10032F900 table:@"Localizable"];
-  v19 = [NSString localizedStringWithFormat:v18, location];
-  v20 = [(BuddyTransferDataController *)v33 headerView];
-  [v20 setTitle:v19];
+  location = [NSString localizedStringWithFormat:v18, location];
+  headerView2 = [(BuddyTransferDataController *)selfCopy headerView];
+  [headerView2 setTitle:location];
 
   v21 = +[NSBundle mainBundle];
   v22 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"TRANSFER_DATA_DESCRIPTION"];
   v23 = [(NSBundle *)v21 localizedStringForKey:v22 value:&stru_10032F900 table:@"Localizable"];
-  v24 = [(BuddyTransferDataController *)v33 estimatedMigrationDuration];
-  v25 = [NSString localizedStringWithFormat:v23, location, v24];
-  v26 = [(BuddyTransferDataController *)v33 headerView];
-  [v26 setDetailText:v25];
+  estimatedMigrationDuration = [(BuddyTransferDataController *)selfCopy estimatedMigrationDuration];
+  v25 = [NSString localizedStringWithFormat:v23, location, estimatedMigrationDuration];
+  headerView3 = [(BuddyTransferDataController *)selfCopy headerView];
+  [headerView3 setDetailText:v25];
 
-  [(BuddyTransferDataController *)v33 _setupButtons];
+  [(BuddyTransferDataController *)selfCopy _setupButtons];
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v30, 0);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  disappearCopy = disappear;
   v13.receiver = self;
   v13.super_class = BuddyTransferDataController;
-  [(BuddyTransferDataController *)&v13 viewWillDisappear:a3];
+  [(BuddyTransferDataController *)&v13 viewWillDisappear:disappear];
   v11 = 0;
   v9 = 0;
   v3 = 0;
-  if (([(BuddyTransferDataController *)v16 isMovingFromParentViewController]& 1) == 0)
+  if (([(BuddyTransferDataController *)selfCopy isMovingFromParentViewController]& 1) == 0)
   {
-    v12 = [(BuddyTransferDataController *)v16 navigationController];
+    navigationController = [(BuddyTransferDataController *)selfCopy navigationController];
     v11 = 1;
-    v10 = [v12 topViewController];
+    topViewController = [navigationController topViewController];
     v9 = 1;
-    v3 = v10 != v16;
+    v3 = topViewController != selfCopy;
   }
 
   if (v9)
@@ -136,9 +136,9 @@
 
   if (v3)
   {
-    v4 = [(BuddyTransferDataController *)v16 deferredMigrationWork];
+    deferredMigrationWork = [(BuddyTransferDataController *)selfCopy deferredMigrationWork];
 
-    if (!v4)
+    if (!deferredMigrationWork)
     {
       v7 = [NSException exceptionWithName:v6 reason:0 userInfo:0];
       v8 = v7;
@@ -146,102 +146,102 @@
       objc_exception_throw(v7);
     }
 
-    v5 = [(BuddyTransferDataController *)v16 deferredMigrationWork];
-    v5[2](v5);
+    deferredMigrationWork2 = [(BuddyTransferDataController *)selfCopy deferredMigrationWork];
+    deferredMigrationWork2[2](deferredMigrationWork2);
 
-    [(BuddyTransferDataController *)v16 setDeferredMigrationWork:0];
+    [(BuddyTransferDataController *)selfCopy setDeferredMigrationWork:0];
   }
 }
 
 - (void)_setupButtons
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = +[OBBoldTrayButton boldButton];
   v2 = +[NSBundle mainBundle];
   v3 = [(NSBundle *)v2 localizedStringForKey:@"CONTINUE" value:&stru_10032F900 table:@"Localizable"];
   [location[0] setTitle:v3 forState:0];
 
-  [location[0] addTarget:v10 action:"_continueTapped:" forControlEvents:64];
-  v4 = [(BuddyTransferDataController *)v10 buttonTray];
-  [v4 addButton:location[0]];
+  [location[0] addTarget:selfCopy action:"_continueTapped:" forControlEvents:64];
+  buttonTray = [(BuddyTransferDataController *)selfCopy buttonTray];
+  [buttonTray addButton:location[0]];
 
   v8 = +[OBLinkTrayButton linkButton];
   v5 = +[NSBundle mainBundle];
   v6 = [(NSBundle *)v5 localizedStringForKey:@"TRANSFER_OPTIONS_OTHER_OPTIONS" value:&stru_10032F900 table:@"Localizable"];
   [v8 setTitle:v6 forState:0];
 
-  [v8 addTarget:v10 action:"_otherOptionsTapped:" forControlEvents:64];
-  v7 = [(BuddyTransferDataController *)v10 buttonTray];
-  [v7 addButton:v8];
+  [v8 addTarget:selfCopy action:"_otherOptionsTapped:" forControlEvents:64];
+  buttonTray2 = [(BuddyTransferDataController *)selfCopy buttonTray];
+  [buttonTray2 addButton:v8];
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_continueTapped:(id)a3
+- (void)_continueTapped:(id)tapped
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyTransferDataController *)v13 transferFlowDelegate];
-  [(BuddyTransferDataFlowDelegate *)v3 prepareUserSignalToMigrate:1];
+  objc_storeStrong(location, tapped);
+  transferFlowDelegate = [(BuddyTransferDataController *)selfCopy transferFlowDelegate];
+  [(BuddyTransferDataFlowDelegate *)transferFlowDelegate prepareUserSignalToMigrate:1];
 
-  objc_initWeak(&from, v13);
+  objc_initWeak(&from, selfCopy);
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_1001F48A0;
   v9 = &unk_10032AF58;
   objc_copyWeak(&v10, &from);
-  [(BuddyTransferDataController *)v13 setDeferredMigrationWork:&v5];
-  v4 = [(BuddyWelcomeController *)v13 delegate];
-  [(BFFFlowItemDelegate *)v4 flowItemDone:v13];
+  [(BuddyTransferDataController *)selfCopy setDeferredMigrationWork:&v5];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&from);
   objc_storeStrong(location, 0);
 }
 
-- (void)_otherOptionsTapped:(id)a3
+- (void)_otherOptionsTapped:(id)tapped
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyTransferDataController *)v13 transferFlowDelegate];
-  [(BuddyTransferDataFlowDelegate *)v3 prepareUserSignalToMigrate:0];
+  objc_storeStrong(location, tapped);
+  transferFlowDelegate = [(BuddyTransferDataController *)selfCopy transferFlowDelegate];
+  [(BuddyTransferDataFlowDelegate *)transferFlowDelegate prepareUserSignalToMigrate:0];
 
-  objc_initWeak(&from, v13);
+  objc_initWeak(&from, selfCopy);
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_1001F4B5C;
   v9 = &unk_10032AF58;
   objc_copyWeak(&v10, &from);
-  [(BuddyTransferDataController *)v13 setDeferredMigrationWork:&v5];
-  v4 = [(BuddyWelcomeController *)v13 delegate];
-  [(BFFFlowItemDelegate *)v4 flowItemDone:v13];
+  [(BuddyTransferDataController *)selfCopy setDeferredMigrationWork:&v5];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&from);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateAnalyticsWithChoice:(id)a3
+- (void)_updateAnalyticsWithChoice:(id)choice
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   v5[0] = 0;
-  objc_storeStrong(v5, a3);
-  v3 = [(BuddyTransferDataController *)v6 analyticsManager];
+  objc_storeStrong(v5, choice);
+  analyticsManager = [(BuddyTransferDataController *)selfCopy analyticsManager];
   v7[0] = @"choice";
   v8[0] = v5[0];
   v7[1] = @"type";
   v8[1] = @"heavy";
   v4 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
-  [(BYAnalyticsManager *)v3 addEvent:@"com.apple.setupassistant.ios.migrationUpsell" withPayload:v4 persist:1];
+  [(BYAnalyticsManager *)analyticsManager addEvent:@"com.apple.setupassistant.ios.migrationUpsell" withPayload:v4 persist:1];
 
   objc_storeStrong(v5, 0);
 }

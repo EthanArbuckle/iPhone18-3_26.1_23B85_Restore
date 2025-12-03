@@ -1,16 +1,16 @@
 @interface DMFRefreshStatusResultObject
-- (DMFRefreshStatusResultObject)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFRefreshStatusResultObject)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFRefreshStatusResultObject
 
-- (DMFRefreshStatusResultObject)initWithCoder:(id)a3
+- (DMFRefreshStatusResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = DMFRefreshStatusResultObject;
-  v5 = [(CATTaskResultObject *)&v21 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v20 = MEMORY[0x1E695DFD8];
@@ -25,7 +25,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v20 setWithObjects:{v19, v18, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"numberOfUpdates"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"numberOfUpdates"];
     numberOfUpdates = v5->_numberOfUpdates;
     v5->_numberOfUpdates = v15;
   }
@@ -33,14 +33,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFRefreshStatusResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFRefreshStatusResultObject *)self numberOfUpdates:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"numberOfUpdates"];
+  [coderCopy encodeObject:v5 forKey:@"numberOfUpdates"];
 }
 
 @end

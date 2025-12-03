@@ -1,50 +1,50 @@
 @interface FeedbackRemoteViewController
-- (_TtC18FeedbackRemoteView28FeedbackRemoteViewController)initWithCoder:(id)a3;
-- (_TtC18FeedbackRemoteView28FeedbackRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (_TtC18FeedbackRemoteView28FeedbackRemoteViewController)initWithCoder:(id)coder;
+- (_TtC18FeedbackRemoteView28FeedbackRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didInvalidateForRemoteAlert;
-- (void)feedbackDraftViewController:(id)a3 didCompleteWithFeedbackID:(id)a4;
-- (void)feedbackDraftViewController:(id)a3 didFailToAttachURL:(id)a4 error:(int64_t)a5;
-- (void)feedbackDraftViewController:(id)a3 didFailToStartWithError:(int64_t)a4;
-- (void)feedbackDraftViewController:(id)a3 didFailToSubmitFeedback:(id)a4;
-- (void)feedbackDraftViewControllerDidCancel:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)feedbackDraftViewController:(id)controller didCompleteWithFeedbackID:(id)d;
+- (void)feedbackDraftViewController:(id)controller didFailToAttachURL:(id)l error:(int64_t)error;
+- (void)feedbackDraftViewController:(id)controller didFailToStartWithError:(int64_t)error;
+- (void)feedbackDraftViewController:(id)controller didFailToSubmitFeedback:(id)feedback;
+- (void)feedbackDraftViewControllerDidCancel:(id)cancel;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FeedbackRemoteViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000018A8(a3);
+  selfCopy = self;
+  sub_1000018A8(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100001BAC(a3);
+  selfCopy = self;
+  sub_100001BAC(appear);
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_100006860;
   }
 
-  v7 = a3;
-  v8 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1000054A8(v6);
   sub_100006434(v6);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -57,20 +57,20 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_100002674(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100002674(context, v6, v7);
   sub_100006434(v6);
 }
 
-- (_TtC18FeedbackRemoteView28FeedbackRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18FeedbackRemoteView28FeedbackRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18FeedbackRemoteView28FeedbackRemoteViewController_state] = 0xF000000000000007;
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18FeedbackRemoteView28FeedbackRemoteViewController_feedbackd] = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
@@ -78,25 +78,25 @@
   {
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18FeedbackRemoteView28FeedbackRemoteViewController_state] = 0xF000000000000007;
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18FeedbackRemoteView28FeedbackRemoteViewController_feedbackd] = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for FeedbackRemoteViewController();
-  v9 = [(FeedbackRemoteViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(FeedbackRemoteViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC18FeedbackRemoteView28FeedbackRemoteViewController)initWithCoder:(id)a3
+- (_TtC18FeedbackRemoteView28FeedbackRemoteViewController)initWithCoder:(id)coder
 {
   *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18FeedbackRemoteView28FeedbackRemoteViewController_state] = 0xF000000000000007;
   *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18FeedbackRemoteView28FeedbackRemoteViewController_feedbackd] = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for FeedbackRemoteViewController();
-  v4 = a3;
-  v5 = [(FeedbackRemoteViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FeedbackRemoteViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -105,23 +105,23 @@
   return v5;
 }
 
-- (void)feedbackDraftViewController:(id)a3 didCompleteWithFeedbackID:(id)a4
+- (void)feedbackDraftViewController:(id)controller didCompleteWithFeedbackID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_100005600(v6, v8);
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToStartWithError:(int64_t)a4
+- (void)feedbackDraftViewController:(id)controller didFailToStartWithError:(int64_t)error
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_100005764();
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToAttachURL:(id)a4 error:(int64_t)a5
+- (void)feedbackDraftViewController:(id)controller didFailToAttachURL:(id)l error:(int64_t)error
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
@@ -133,19 +133,19 @@
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)feedbackDraftViewControllerDidCancel:(id)a3
+- (void)feedbackDraftViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_100005B78();
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToSubmitFeedback:(id)a4
+- (void)feedbackDraftViewController:(id)controller didFailToSubmitFeedback:(id)feedback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100005C64(v7);
+  controllerCopy = controller;
+  feedbackCopy = feedback;
+  selfCopy = self;
+  sub_100005C64(feedbackCopy);
 }
 
 - (void)didInvalidateForRemoteAlert
@@ -179,8 +179,8 @@
     _os_log_impl(&_mh_execute_header, v5, v6, "Terminating self", v7, 2u);
   }
 
-  v8 = [objc_opt_self() sharedApplication];
-  [v8 terminateWithSuccess];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication terminateWithSuccess];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface UIEventSessionHeatMapAnalyzer
-+ ($5E4061BE7C3C8BB942C4587960135C41)determineGridCoordinateWithLocationInWindow:(SEL)a3 withWindowFrame:(CGPoint)a4;
-+ (id)stringForHardwareAttachedType:(int64_t)a3;
-+ (id)stringForTouchPhase:(int64_t)a3;
-+ (id)stringForTouchType:(int64_t)a3;
-- (BOOL)checkIfGestureComplete:(id)a3;
++ ($5E4061BE7C3C8BB942C4587960135C41)determineGridCoordinateWithLocationInWindow:(SEL)window withWindowFrame:(CGPoint)frame;
++ (id)stringForHardwareAttachedType:(int64_t)type;
++ (id)stringForTouchPhase:(int64_t)phase;
++ (id)stringForTouchType:(int64_t)type;
+- (BOOL)checkIfGestureComplete:(id)complete;
 - (UIEventSessionHeatMapAnalyzer)init;
-- (void)completeGesture:(id)a3;
-- (void)didTouchWithID:(id)a3 withPhase:(int64_t)a4 withType:(int64_t)a5 withLocationInWindow:(CGPoint)a6 withWindowFrame:(CGRect)a7 withUIInterfaceOrientation:(int64_t)a8 withHardwareKeyboardState:(int64_t)a9 withMagicKeyboardState:(int64_t)a10;
-- (void)sendAnalyticsEventWithName:(id)a3 payload:(id)a4;
-- (void)sendCoordinateReportForTouch:(id)a3 atCoordinate:(id *)a4 withGesture:(id)a5;
-- (void)sendFingerReportsForGesture:(id)a3;
-- (void)sendGestureReportsForGesture:(id)a3;
+- (void)completeGesture:(id)gesture;
+- (void)didTouchWithID:(id)d withPhase:(int64_t)phase withType:(int64_t)type withLocationInWindow:(CGPoint)window withWindowFrame:(CGRect)frame withUIInterfaceOrientation:(int64_t)orientation withHardwareKeyboardState:(int64_t)state withMagicKeyboardState:(int64_t)self0;
+- (void)sendAnalyticsEventWithName:(id)name payload:(id)payload;
+- (void)sendCoordinateReportForTouch:(id)touch atCoordinate:(id *)coordinate withGesture:(id)gesture;
+- (void)sendFingerReportsForGesture:(id)gesture;
+- (void)sendGestureReportsForGesture:(id)gesture;
 @end
 
 @implementation UIEventSessionHeatMapAnalyzer
@@ -37,57 +37,57 @@
   return v2;
 }
 
-+ (id)stringForTouchType:(int64_t)a3
++ (id)stringForTouchType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7107F30[a3];
+    return off_1E7107F30[type];
   }
 }
 
-+ (id)stringForTouchPhase:(int64_t)a3
++ (id)stringForTouchPhase:(int64_t)phase
 {
-  if (a3 > 7)
+  if (phase > 7)
   {
     v4 = @"Unknown";
   }
 
   else
   {
-    v4 = stringForTouchPhase__touchPhases[a3];
+    v4 = stringForTouchPhase__touchPhases[phase];
   }
 
   return v4;
 }
 
-+ (id)stringForHardwareAttachedType:(int64_t)a3
++ (id)stringForHardwareAttachedType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7107F50[a3];
+    return off_1E7107F50[type];
   }
 }
 
-+ ($5E4061BE7C3C8BB942C4587960135C41)determineGridCoordinateWithLocationInWindow:(SEL)a3 withWindowFrame:(CGPoint)a4
++ ($5E4061BE7C3C8BB942C4587960135C41)determineGridCoordinateWithLocationInWindow:(SEL)window withWindowFrame:(CGPoint)frame
 {
   height = a5.size.height;
   width = a5.size.width;
   y = a5.origin.y;
   x = a5.origin.x;
-  v33 = a4.y;
-  v34 = a4.x;
-  v10 = [objc_opt_self() mainScreen];
-  [v10 bounds];
+  v33 = frame.y;
+  v34 = frame.x;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -174,46 +174,46 @@
   return result;
 }
 
-- (void)sendAnalyticsEventWithName:(id)a3 payload:(id)a4
+- (void)sendAnalyticsEventWithName:(id)name payload:(id)payload
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 && v5)
+  payloadCopy = payload;
+  v6 = payloadCopy;
+  if (name && payloadCopy)
   {
-    v7 = v5;
+    v7 = payloadCopy;
     AnalyticsSendEventLazy();
   }
 }
 
-- (void)sendCoordinateReportForTouch:(id)a3 atCoordinate:(id *)a4 withGesture:(id)a5
+- (void)sendCoordinateReportForTouch:(id)touch atCoordinate:(id *)coordinate withGesture:(id)gesture
 {
   v19[6] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (gesture)
   {
-    if (a4->var2)
+    if (coordinate->var2)
     {
-      v7 = a5;
-      v8 = +[_UIEventSessionAction getUIEventSourceForUITouchType:](_UIEventSessionAction, "getUIEventSourceForUITouchType:", [v7 touchType]);
+      gestureCopy = gesture;
+      v8 = +[_UIEventSessionAction getUIEventSourceForUITouchType:](_UIEventSessionAction, "getUIEventSourceForUITouchType:", [gestureCopy touchType]);
       v18[0] = @"inputSource";
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
       v19[0] = v9;
       v18[1] = @"hardwareKeyboardAttachmentState";
-      v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "hardwareKeyboardState")}];
+      v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(gestureCopy, "hardwareKeyboardState")}];
       v19[1] = v10;
       v18[2] = @"magicKeyboardAttachmentState";
-      v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "magicKeyboardState")}];
+      v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(gestureCopy, "magicKeyboardState")}];
       v19[2] = v11;
       v18[3] = @"uiInterfaceOrientation";
       v12 = MEMORY[0x1E696AD98];
-      v13 = [v7 uiInterfaceOrientation];
+      uiInterfaceOrientation = [gestureCopy uiInterfaceOrientation];
 
-      v14 = [v12 numberWithInteger:v13];
+      v14 = [v12 numberWithInteger:uiInterfaceOrientation];
       v19[3] = v14;
       v18[4] = @"xGridCoordinate";
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4->var1];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:coordinate->var1];
       v19[4] = v15;
       v18[5] = @"yGridCoordinate";
-      v16 = [MEMORY[0x1E696AD98] numberWithInteger:a4->var0];
+      v16 = [MEMORY[0x1E696AD98] numberWithInteger:coordinate->var0];
       v19[5] = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:6];
 
@@ -222,14 +222,14 @@
   }
 }
 
-- (void)sendFingerReportsForGesture:(id)a3
+- (void)sendFingerReportsForGesture:(id)gesture
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  gestureCopy = gesture;
+  v4 = gestureCopy;
+  if (gestureCopy)
   {
-    v18 = +[_UIEventSessionAction getUIEventSourceForUITouchType:](_UIEventSessionAction, "getUIEventSourceForUITouchType:", [v3 touchType]);
+    v18 = +[_UIEventSessionAction getUIEventSourceForUITouchType:](_UIEventSessionAction, "getUIEventSourceForUITouchType:", [gestureCopy touchType]);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -250,8 +250,8 @@
           }
 
           v6 = *(*(&v23 + 1) + 8 * v5);
-          v7 = [v4 touches];
-          v8 = [v7 objectForKeyedSubscript:v6];
+          touches = [v4 touches];
+          v8 = [touches objectForKeyedSubscript:v6];
 
           v27[0] = @"inputSource";
           v22 = [MEMORY[0x1E696AD98] numberWithInteger:v18];
@@ -292,20 +292,20 @@
   }
 }
 
-- (void)sendGestureReportsForGesture:(id)a3
+- (void)sendGestureReportsForGesture:(id)gesture
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  gestureCopy = gesture;
+  v5 = gestureCopy;
+  if (gestureCopy)
   {
-    v6 = +[_UIEventSessionAction getUIEventSourceForUITouchType:](_UIEventSessionAction, "getUIEventSourceForUITouchType:", [v4 touchType]);
+    v6 = +[_UIEventSessionAction getUIEventSourceForUITouchType:](_UIEventSessionAction, "getUIEventSourceForUITouchType:", [gestureCopy touchType]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = [v5 touches];
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    touches = [v5 touches];
+    v8 = [touches countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v8)
     {
       v9 = v8;
@@ -317,22 +317,22 @@ LABEL_4:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(touches);
         }
 
         v13 = *(*(&v26 + 1) + 8 * v12);
-        v14 = [v5 touches];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        touches2 = [v5 touches];
+        v15 = [touches2 objectForKeyedSubscript:v13];
 
-        v16 = [v15 tapDragState];
-        if (v16 == 2)
+        tapDragState = [v15 tapDragState];
+        if (tapDragState == 2)
         {
           break;
         }
 
         if (v9 == ++v12)
         {
-          v9 = [v7 countByEnumeratingWithState:&v26 objects:v32 count:16];
+          v9 = [touches countByEnumeratingWithState:&v26 objects:v32 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -366,8 +366,8 @@ LABEL_10:
     v31[4] = v21;
     v30[5] = @"fingerCount";
     v22 = MEMORY[0x1E696AD98];
-    v23 = [v5 touches];
-    v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(v23, "count")}];
+    touches3 = [v5 touches];
+    v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(touches3, "count")}];
     v31[5] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:6];
 
@@ -375,29 +375,29 @@ LABEL_10:
   }
 }
 
-- (void)completeGesture:(id)a3
+- (void)completeGesture:(id)gesture
 {
-  if (a3)
+  if (gesture)
   {
-    v4 = a3;
-    [(UIEventSessionHeatMapAnalyzer *)self sendFingerReportsForGesture:v4];
-    [(UIEventSessionHeatMapAnalyzer *)self sendGestureReportsForGesture:v4];
+    gestureCopy = gesture;
+    [(UIEventSessionHeatMapAnalyzer *)self sendFingerReportsForGesture:gestureCopy];
+    [(UIEventSessionHeatMapAnalyzer *)self sendGestureReportsForGesture:gestureCopy];
   }
 }
 
-- (BOOL)checkIfGestureComplete:(id)a3
+- (BOOL)checkIfGestureComplete:(id)complete
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completeCopy = complete;
+  v5 = completeCopy;
+  if (completeCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v4 touches];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    touches = [completeCopy touches];
+    v7 = [touches countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -408,18 +408,18 @@ LABEL_10:
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(touches);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v5 touches];
-          v13 = [v12 objectForKeyedSubscript:v11];
+          touches2 = [v5 touches];
+          v13 = [touches2 objectForKeyedSubscript:v11];
 
           if (v13)
           {
-            v14 = [v13 upDownState];
+            upDownState = [v13 upDownState];
 
-            if (v14 == 2)
+            if (upDownState == 2)
             {
               continue;
             }
@@ -428,7 +428,7 @@ LABEL_10:
           goto LABEL_13;
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [touches countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           continue;
@@ -451,17 +451,17 @@ LABEL_13:
   return v15;
 }
 
-- (void)didTouchWithID:(id)a3 withPhase:(int64_t)a4 withType:(int64_t)a5 withLocationInWindow:(CGPoint)a6 withWindowFrame:(CGRect)a7 withUIInterfaceOrientation:(int64_t)a8 withHardwareKeyboardState:(int64_t)a9 withMagicKeyboardState:(int64_t)a10
+- (void)didTouchWithID:(id)d withPhase:(int64_t)phase withType:(int64_t)type withLocationInWindow:(CGPoint)window withWindowFrame:(CGRect)frame withUIInterfaceOrientation:(int64_t)orientation withHardwareKeyboardState:(int64_t)state withMagicKeyboardState:(int64_t)self0
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a6.y;
-  v16 = a6.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v15 = window.y;
+  v16 = window.x;
   v20 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (!a5)
+  dCopy = d;
+  if (!type)
   {
     v18 = 0uLL;
     v19 = 0;

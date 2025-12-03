@@ -1,42 +1,42 @@
 @interface RemoteBrowsingGuestPairingViewController
-- (_TtC9SeymourUI40RemoteBrowsingGuestPairingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI40RemoteBrowsingGuestPairingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RemoteBrowsingGuestPairingViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BF114AC();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RemoteBrowsingGuestPairingViewController();
   v4 = v5.receiver;
-  [(RemoteBrowsingGuestPairingViewController *)&v5 viewDidDisappear:v3];
+  [(RemoteBrowsingGuestPairingViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_20B8F2CBC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20BF11CCC(a3);
+  selfCopy = self;
+  sub_20BF11CCC(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20BF12244(a3);
+  selfCopy = self;
+  sub_20BF12244(disappear);
 }
 
-- (_TtC9SeymourUI40RemoteBrowsingGuestPairingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI40RemoteBrowsingGuestPairingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

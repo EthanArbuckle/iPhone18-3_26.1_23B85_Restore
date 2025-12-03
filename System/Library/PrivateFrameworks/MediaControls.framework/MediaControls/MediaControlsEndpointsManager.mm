@@ -1,34 +1,34 @@
 @interface MediaControlsEndpointsManager
-- (BOOL)_homeHasRoute:(id)a3;
+- (BOOL)_homeHasRoute:(id)route;
 - (BOOL)isActiveSystemEndpointEqualToLocalEndpoint;
 - (MPAVEndpointRoute)activeSystemRoute;
 - (MPAVEndpointRoute)resolvedActiveSystemRoute;
-- (MediaControlsEndpointsManager)initWithConfiguration:(id)a3;
+- (MediaControlsEndpointsManager)initWithConfiguration:(id)configuration;
 - (MediaControlsEndpointsManagerDelegate)delegate;
-- (id)_createSectionedCollectionFromRoutes:(id)a3;
-- (id)_endpointControllerContainingOutputDevice:(id)a3 endpointWrapper:(id *)a4;
-- (id)endpointControllerForRoute:(id)a3;
-- (int64_t)_indexOfRouteWithUID:(id)a3;
-- (void)_activeSystemRouteDidChange:(id)a3;
-- (void)_setRoutes:(id)a3 withChangeDetails:(id)a4;
-- (void)_updateWithRoutes:(id)a3;
+- (id)_createSectionedCollectionFromRoutes:(id)routes;
+- (id)_endpointControllerContainingOutputDevice:(id)device endpointWrapper:(id *)wrapper;
+- (id)endpointControllerForRoute:(id)route;
+- (int64_t)_indexOfRouteWithUID:(id)d;
+- (void)_activeSystemRouteDidChange:(id)change;
+- (void)_setRoutes:(id)routes withChangeDetails:(id)details;
+- (void)_updateWithRoutes:(id)routes;
 - (void)dealloc;
-- (void)getOutputDeviceIsPlaying:(id)a3 completion:(id)a4;
-- (void)homeObserverDidUpdateKnownUIDs:(id)a3;
+- (void)getOutputDeviceIsPlaying:(id)playing completion:(id)completion;
+- (void)homeObserverDidUpdateKnownUIDs:(id)ds;
 - (void)loadActiveSystemRoute;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
-- (void)setActiveSystemRoute:(id)a3 reason:(id)a4;
-- (void)setActiveSystemRoute:(id)a3 requestDetails:(id)a4;
-- (void)setDiscoveryMode:(int64_t)a3;
-- (void)updateActiveSystemRoute:(id)a3;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
+- (void)setActiveSystemRoute:(id)route reason:(id)reason;
+- (void)setActiveSystemRoute:(id)route requestDetails:(id)details;
+- (void)setDiscoveryMode:(int64_t)mode;
+- (void)updateActiveSystemRoute:(id)route;
 @end
 
 @implementation MediaControlsEndpointsManager
 
-- (MediaControlsEndpointsManager)initWithConfiguration:(id)a3
+- (MediaControlsEndpointsManager)initWithConfiguration:(id)configuration
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v26.receiver = self;
   v26.super_class = MediaControlsEndpointsManager;
   v5 = [(MediaControlsEndpointsManager *)&v26 init];
@@ -42,7 +42,7 @@
     endpointControllersMap = v5->_endpointControllersMap;
     v5->_endpointControllersMap = v8;
 
-    v10 = [v4 copy];
+    v10 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v10;
 
@@ -53,14 +53,14 @@
 
     [(MediaControlsHomeObserver *)v5->_homeObserver setDelegate:v5];
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(endpoints)", objc_opt_class()];
-    v15 = [(MPMediaControlsConfiguration *)v5->_configuration style];
-    if (v15 <= 6)
+    style = [(MPMediaControlsConfiguration *)v5->_configuration style];
+    if (style <= 6)
     {
-      if (((1 << v15) & 0x72) != 0)
+      if (((1 << style) & 0x72) != 0)
       {
         v16 = MEMORY[0x1E6970490];
-        v17 = [(MPMediaControlsConfiguration *)v5->_configuration routingContextUID];
-        v18 = [v16 systemRouteWithContextUID:v17];
+        routingContextUID = [(MPMediaControlsConfiguration *)v5->_configuration routingContextUID];
+        v18 = [v16 systemRouteWithContextUID:routingContextUID];
 
         v27[0] = v18;
         [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
@@ -69,8 +69,8 @@
       else
       {
         v18 = objc_alloc_init(MEMORY[0x1E6970458]);
-        v19 = [(MPMediaControlsConfiguration *)v5->_configuration routingContextUID];
-        [v18 setRoutingContextUID:v19];
+        routingContextUID2 = [(MPMediaControlsConfiguration *)v5->_configuration routingContextUID];
+        [v18 setRoutingContextUID:routingContextUID2];
 
         v20 = [objc_alloc(MEMORY[0x1E6970490]) initWithDataSource:v18 name:v14];
         routingController = v5->_routingController;
@@ -78,8 +78,8 @@
 
         [(MPAVRoutingController *)v5->_routingController setDelegate:v5];
         [(MPAVRoutingController *)v5->_routingController setDiscoveryMode:v5->_discoveryMode];
-        v22 = [v4 presentingAppBundleID];
-        [(MPAVRoutingController *)v5->_routingController setPresentedBundleID:v22];
+        presentingAppBundleID = [configurationCopy presentingAppBundleID];
+        [(MPAVRoutingController *)v5->_routingController setPresentedBundleID:presentingAppBundleID];
 
         [(MPAVRoutingController *)v5->_routingController availableRoutes];
       }
@@ -87,8 +87,8 @@
       [(MediaControlsEndpointsManager *)v5 _updateWithRoutes:v23];
     }
 
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 addObserver:v5 selector:sel__activeSystemRouteDidChange_ name:*MEMORY[0x1E696F870] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__activeSystemRouteDidChange_ name:*MEMORY[0x1E696F870] object:0];
 
     [(MediaControlsEndpointsManager *)v5 loadActiveSystemRoute];
   }
@@ -105,38 +105,38 @@
   [(MediaControlsEndpointsManager *)&v3 dealloc];
 }
 
-- (void)setActiveSystemRoute:(id)a3 reason:(id)a4
+- (void)setActiveSystemRoute:(id)route reason:(id)reason
 {
   v6 = MEMORY[0x1E69B0AE0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithName:@"setActiveSystemRoute:reason:" requestID:0 reason:v7 userInitiated:0];
+  reasonCopy = reason;
+  routeCopy = route;
+  v9 = [[v6 alloc] initWithName:@"setActiveSystemRoute:reason:" requestID:0 reason:reasonCopy userInitiated:0];
 
-  [(MediaControlsEndpointsManager *)self setActiveSystemRoute:v8 requestDetails:v9];
+  [(MediaControlsEndpointsManager *)self setActiveSystemRoute:routeCopy requestDetails:v9];
 }
 
-- (void)setActiveSystemRoute:(id)a3 requestDetails:(id)a4
+- (void)setActiveSystemRoute:(id)route requestDetails:(id)details
 {
-  v6 = a4;
-  v7 = [a3 routeUID];
-  if (a3)
+  detailsCopy = details;
+  routeUID = [route routeUID];
+  if (route)
   {
     activeSystemRouteUID = self->_activeSystemRouteUID;
-    if (activeSystemRouteUID != v7 && ([(NSString *)activeSystemRouteUID isEqual:v7]& 1) == 0)
+    if (activeSystemRouteUID != routeUID && ([(NSString *)activeSystemRouteUID isEqual:routeUID]& 1) == 0)
     {
-      [(MediaControlsEndpointsManager *)self updateActiveSystemRoute:v7];
-      v9 = [(MediaControlsEndpointsManager *)self activeSystemRoute];
+      [(MediaControlsEndpointsManager *)self updateActiveSystemRoute:routeUID];
+      activeSystemRoute = [(MediaControlsEndpointsManager *)self activeSystemRoute];
       v10 = MEMORY[0x1E6970490];
-      v11 = [v6 reason];
+      reason = [detailsCopy reason];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __69__MediaControlsEndpointsManager_setActiveSystemRoute_requestDetails___block_invoke;
       v13[3] = &unk_1E7664380;
-      v14 = v9;
-      v15 = v6;
-      v16 = self;
-      v12 = v9;
-      [v10 setActiveRoute:v12 reason:v11 completion:v13];
+      v14 = activeSystemRoute;
+      v15 = detailsCopy;
+      selfCopy = self;
+      v12 = activeSystemRoute;
+      [v10 setActiveRoute:v12 reason:reason completion:v13];
     }
   }
 }
@@ -213,13 +213,13 @@ void __54__MediaControlsEndpointsManager_loadActiveSystemRoute__block_invoke_2(u
   }
 }
 
-- (void)updateActiveSystemRoute:(id)a3
+- (void)updateActiveSystemRoute:(id)route
 {
-  v13 = a3;
+  routeCopy = route;
   v5 = [(MediaControlsEndpointsManager *)self _indexOfRouteWithUID:?];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(NSString *)v13 copy];
+    v6 = [(NSString *)routeCopy copy];
     pendingActiveSystemRouteUID = self->_pendingActiveSystemRouteUID;
     self->_pendingActiveSystemRouteUID = v6;
   }
@@ -229,7 +229,7 @@ void __54__MediaControlsEndpointsManager_loadActiveSystemRoute__block_invoke_2(u
     v8 = v5;
     v9 = self->_activeSystemRouteUID;
     pendingActiveSystemRouteUID = v9;
-    if (v9 != v13)
+    if (v9 != routeCopy)
     {
       v10 = [(NSString *)v9 isEqual:?];
 
@@ -238,13 +238,13 @@ void __54__MediaControlsEndpointsManager_loadActiveSystemRoute__block_invoke_2(u
         goto LABEL_7;
       }
 
-      objc_storeStrong(&self->_activeSystemRouteUID, a3);
+      objc_storeStrong(&self->_activeSystemRouteUID, route);
       v11 = self->_pendingActiveSystemRouteUID;
       self->_pendingActiveSystemRouteUID = 0;
 
       pendingActiveSystemRouteUID = [(NSArray *)self->_routes objectAtIndex:v8];
-      v12 = [(MediaControlsEndpointsManager *)self delegate];
-      [v12 endpointsManager:self activeSystemRouteDidChange:pendingActiveSystemRouteUID];
+      delegate = [(MediaControlsEndpointsManager *)self delegate];
+      [delegate endpointsManager:self activeSystemRouteDidChange:pendingActiveSystemRouteUID];
     }
   }
 
@@ -257,8 +257,8 @@ LABEL_7:
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = MEMORY[0x1E6970490];
-    v5 = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
-    v6 = [v4 systemRouteWithContextUID:v5];
+    routingContextUID = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
+    v6 = [v4 systemRouteWithContextUID:routingContextUID];
   }
 
   else
@@ -285,15 +285,15 @@ LABEL_7:
   return v4;
 }
 
-- (void)setDiscoveryMode:(int64_t)a3
+- (void)setDiscoveryMode:(int64_t)mode
 {
   discoveryMode = self->_discoveryMode;
-  if (discoveryMode != a3)
+  if (discoveryMode != mode)
   {
-    self->_discoveryMode = a3;
+    self->_discoveryMode = mode;
     [(MPAVRoutingController *)self->_routingController setDiscoveryMode:?];
     homeObserver = self->_homeObserver;
-    if (a3)
+    if (mode)
     {
       [(MediaControlsHomeObserver *)homeObserver beginObserving];
       if (discoveryMode)
@@ -311,16 +311,16 @@ LABEL_7:
       }
     }
 
-    v7 = [(MPAVRoutingController *)self->_routingController availableRoutes];
-    [(MediaControlsEndpointsManager *)self _updateWithRoutes:v7];
+    availableRoutes = [(MPAVRoutingController *)self->_routingController availableRoutes];
+    [(MediaControlsEndpointsManager *)self _updateWithRoutes:availableRoutes];
   }
 }
 
-- (id)endpointControllerForRoute:(id)a3
+- (id)endpointControllerForRoute:(id)route
 {
   endpointControllersMap = self->_endpointControllersMap;
-  v4 = [a3 routeUID];
-  v5 = [(NSMutableDictionary *)endpointControllersMap objectForKey:v4];
+  routeUID = [route routeUID];
+  v5 = [(NSMutableDictionary *)endpointControllersMap objectForKey:routeUID];
 
   return v5;
 }
@@ -328,23 +328,23 @@ LABEL_7:
 - (BOOL)isActiveSystemEndpointEqualToLocalEndpoint
 {
   activeSystemRouteUID = self->_activeSystemRouteUID;
-  v3 = [MEMORY[0x1E6970490] systemRoute];
-  v4 = [v3 routeUID];
-  LOBYTE(activeSystemRouteUID) = [(NSString *)activeSystemRouteUID isEqualToString:v4];
+  systemRoute = [MEMORY[0x1E6970490] systemRoute];
+  routeUID = [systemRoute routeUID];
+  LOBYTE(activeSystemRouteUID) = [(NSString *)activeSystemRouteUID isEqualToString:routeUID];
 
   return activeSystemRouteUID;
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
-  v4 = [a3 availableRoutes];
+  availableRoutes = [change availableRoutes];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__MediaControlsEndpointsManager_routingControllerAvailableRoutesDidChange___block_invoke;
   v6[3] = &unk_1E76639D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = availableRoutes;
+  v5 = availableRoutes;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -359,24 +359,24 @@ _BYTE *__75__MediaControlsEndpointsManager_routingControllerAvailableRoutesDidCh
   return result;
 }
 
-- (void)getOutputDeviceIsPlaying:(id)a3 completion:(id)a4
+- (void)getOutputDeviceIsPlaying:(id)playing completion:(id)completion
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  playingCopy = playing;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v27 = 0;
-    v8 = [(MediaControlsEndpointsManager *)self _endpointControllerContainingOutputDevice:v6 endpointWrapper:&v27];
+    v8 = [(MediaControlsEndpointsManager *)self _endpointControllerContainingOutputDevice:playingCopy endpointWrapper:&v27];
     v9 = v27;
-    v10 = [v8 route];
-    v11 = v10;
+    route = [v8 route];
+    v11 = route;
     if (v8 && v9)
     {
-      if ([v10 supportsRemoteControl])
+      if ([route supportsRemoteControl])
       {
-        v12 = [MEMORY[0x1E696AFB0] UUID];
-        v13 = [v12 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
 
         v14 = _MRLogForCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -387,26 +387,26 @@ _BYTE *__75__MediaControlsEndpointsManager_routingControllerAvailableRoutesDidCh
         v15 = *MEMORY[0x1E696F858];
         v28[0] = *MEMORY[0x1E696F848];
         v28[1] = v15;
-        v29[0] = v13;
+        v29[0] = uUIDString;
         v29[1] = @"MediaControlsEndpointsManager-getOutputDeviceIsPlaying";
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
-        v17 = [v8 route];
-        v18 = [v17 connection];
+        route2 = [v8 route];
+        connection = [route2 connection];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __69__MediaControlsEndpointsManager_getOutputDeviceIsPlaying_completion___block_invoke;
         v24[3] = &unk_1E7666480;
-        v26 = v7;
+        v26 = completionCopy;
         v25 = v9;
-        [v18 connectWithUserInfo:v16 completion:v24];
+        [connection connectWithUserInfo:v16 completion:v24];
 
         goto LABEL_12;
       }
 
-      v20 = [v8 route];
-      v21 = [v20 isDeviceRoute];
+      route3 = [v8 route];
+      isDeviceRoute = [route3 isDeviceRoute];
 
-      if (v21)
+      if (isDeviceRoute)
       {
         v22 = _MRLogForCategory();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -415,7 +415,7 @@ _BYTE *__75__MediaControlsEndpointsManager_routingControllerAvailableRoutesDidCh
         }
 
         MRMediaRemoteGetLocalOrigin();
-        v23 = v7;
+        v23 = completionCopy;
         MRMediaRemoteGetNowPlayingApplicationPlaybackStateForOrigin();
 
         goto LABEL_12;
@@ -431,7 +431,7 @@ _BYTE *__75__MediaControlsEndpointsManager_routingControllerAvailableRoutesDidCh
       }
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
 LABEL_12:
   }
 }
@@ -489,7 +489,7 @@ uint64_t __69__MediaControlsEndpointsManager_getOutputDeviceIsPlaying_completion
   return v2();
 }
 
-- (void)homeObserverDidUpdateKnownUIDs:(id)a3
+- (void)homeObserverDidUpdateKnownUIDs:(id)ds
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -507,24 +507,24 @@ void __64__MediaControlsEndpointsManager_homeObserverDidUpdateKnownUIDs___block_
   [v1 _updateWithRoutes:v2];
 }
 
-- (void)_activeSystemRouteDidChange:(id)a3
+- (void)_activeSystemRouteDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B0C20]];
-  v6 = [v5 intValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B0C20]];
+  intValue = [v5 intValue];
 
-  if (!v6)
+  if (!intValue)
   {
 
     [(MediaControlsEndpointsManager *)self loadActiveSystemRoute];
   }
 }
 
-- (int64_t)_indexOfRouteWithUID:(id)a3
+- (int64_t)_indexOfRouteWithUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_routes && [v4 length])
+  dCopy = d;
+  v5 = dCopy;
+  if (self->_routes && [dCopy length])
   {
     routes = self->_routes;
     v9[0] = MEMORY[0x1E69E9820];
@@ -551,10 +551,10 @@ uint64_t __54__MediaControlsEndpointsManager__indexOfRouteWithUID___block_invoke
   return v4;
 }
 
-- (id)_endpointControllerContainingOutputDevice:(id)a3 endpointWrapper:(id *)a4
+- (id)_endpointControllerContainingOutputDevice:(id)device endpointWrapper:(id *)wrapper
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = [a3 routeUID];
+  routeUID = [device routeUID];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -574,10 +574,10 @@ LABEL_3:
       }
 
       v8 = *(*(&v28 + 1) + 8 * v7);
-      v9 = [v8 route];
-      v10 = [v9 endpointWrapper];
+      route = [v8 route];
+      endpointWrapper = [route endpointWrapper];
 
-      [v10 unwrappedValue];
+      [endpointWrapper unwrappedValue];
       v11 = MRAVEndpointCopyOutputDevices();
       v24 = 0u;
       v25 = 0u;
@@ -599,12 +599,12 @@ LABEL_3:
             }
 
             v17 = MRAVOutputDeviceCopyUniqueIdentifier();
-            if ([v17 isEqualToString:v6])
+            if ([v17 isEqualToString:routeUID])
             {
-              if (a4)
+              if (wrapper)
               {
-                v19 = v10;
-                *a4 = v10;
+                v19 = endpointWrapper;
+                *wrapper = endpointWrapper;
               }
 
               v18 = v8;
@@ -653,29 +653,29 @@ LABEL_21:
   return v18;
 }
 
-- (BOOL)_homeHasRoute:(id)a3
+- (BOOL)_homeHasRoute:(id)route
 {
   homeObserver = self->_homeObserver;
-  v4 = [a3 routeUID];
-  LOBYTE(homeObserver) = [(MediaControlsHomeObserver *)homeObserver hasAccessoryWithUID:v4];
+  routeUID = [route routeUID];
+  LOBYTE(homeObserver) = [(MediaControlsHomeObserver *)homeObserver hasAccessoryWithUID:routeUID];
 
   return homeObserver;
 }
 
-- (void)_setRoutes:(id)a3 withChangeDetails:(id)a4
+- (void)_setRoutes:(id)routes withChangeDetails:(id)details
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
-  v10 = [v7 deletedItemIndexPaths];
+  routesCopy = routes;
+  detailsCopy = details;
+  v8 = routesCopy;
+  v9 = detailsCopy;
+  deletedItemIndexPaths = [detailsCopy deletedItemIndexPaths];
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v64[2] = __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_invoke;
   v64[3] = &unk_1E76664D0;
   v64[4] = self;
-  [v10 enumerateObjectsUsingBlock:v64];
+  [deletedItemIndexPaths enumerateObjectsUsingBlock:v64];
 
   v11 = [v8 copy];
   routes = self->_routes;
@@ -689,7 +689,7 @@ LABEL_21:
   v13 = _Block_copy(aBlock);
   v14 = [v8 mutableCopy];
   v47 = v9;
-  v15 = [v9 insertedItemIndexPaths];
+  insertedItemIndexPaths = [v9 insertedItemIndexPaths];
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
   v60[2] = __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_invoke_3;
@@ -699,7 +699,7 @@ LABEL_21:
   v62 = v16;
   v17 = v14;
   v61 = v17;
-  [v15 enumerateObjectsUsingBlock:v60];
+  [insertedItemIndexPaths enumerateObjectsUsingBlock:v60];
 
   v58 = 0u;
   v59 = 0u;
@@ -721,8 +721,8 @@ LABEL_21:
         }
 
         v23 = *(*(&v56 + 1) + 8 * i);
-        v24 = [v23 routeUID];
-        v25 = [(NSMutableDictionary *)self->_endpointControllersMap objectForKey:v24];
+        routeUID = [v23 routeUID];
+        v25 = [(NSMutableDictionary *)self->_endpointControllersMap objectForKey:routeUID];
         [v25 setRoute:v23];
       }
 
@@ -757,8 +757,8 @@ LABEL_21:
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v52 + 1) + 8 * j) routeUID];
-          [v28 addObject:v34];
+          routeUID2 = [*(*(&v52 + 1) + 8 * j) routeUID];
+          [v28 addObject:routeUID2];
         }
 
         v31 = [(NSArray *)v29 countByEnumeratingWithState:&v52 objects:v66 count:16];
@@ -772,8 +772,8 @@ LABEL_21:
     [v27 appendFormat:@"\nRoute Count : %@, UIDs : %@", v35, v36];
 
     v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSMutableDictionary count](self->_endpointControllersMap, "count")}];
-    v38 = [(NSMutableDictionary *)self->_endpointControllersMap allKeys];
-    v39 = [v38 componentsJoinedByString:{@", "}];
+    allKeys = [(NSMutableDictionary *)self->_endpointControllersMap allKeys];
+    v39 = [allKeys componentsJoinedByString:{@", "}];
     [v27 appendFormat:@"\nEndpoint Controller Map Count : %@, UIDs : %@", v37, v39];
 
     [v27 appendFormat:@"\nChange details: %@", v47];
@@ -846,13 +846,13 @@ void __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_in
   [*(a1 + 40) removeObject:v3];
 }
 
-- (void)_updateWithRoutes:(id)a3
+- (void)_updateWithRoutes:(id)routes
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  routesCopy = routes;
   if (self->_isUpdatingRoutes)
   {
-    objc_storeStrong(&self->_pendingRoutesToUpdate, a3);
+    objc_storeStrong(&self->_pendingRoutesToUpdate, routes);
   }
 
   else
@@ -861,13 +861,13 @@ void __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_in
     pendingRoutesToUpdate = self->_pendingRoutesToUpdate;
     self->_pendingRoutesToUpdate = 0;
 
-    v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(routesCopy, "count")}];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v45 = v5;
-    v8 = v5;
+    v45 = routesCopy;
+    v8 = routesCopy;
     v9 = [v8 countByEnumeratingWithState:&v56 objects:v61 count:16];
     if (v9)
     {
@@ -901,10 +901,10 @@ void __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_in
     v55[3] = &unk_1E7666548;
     v55[4] = self;
     [v7 sortUsingComparator:v55];
-    v14 = [MEMORY[0x1E69B0B28] currentSettings];
-    v15 = [v14 supportRouteRecommendations];
+    currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+    supportRouteRecommendations = [currentSettings supportRouteRecommendations];
 
-    if (v15)
+    if (supportRouteRecommendations)
     {
       v16 = +[MRURouteRecommender sharedInstance];
       [v16 updateRecommendations];
@@ -914,8 +914,8 @@ void __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_in
 
       v19 = [v18 mutableCopy];
       v20 = MEMORY[0x1E6970490];
-      v21 = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
-      v22 = [v20 systemRouteWithContextUID:v21];
+      routingContextUID = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
+      v22 = [v20 systemRouteWithContextUID:routingContextUID];
 
       [v19 removeObject:v22];
       [v19 insertObject:v22 atIndex:0];
@@ -926,8 +926,8 @@ void __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_in
     if (![v7 count])
     {
       v23 = MEMORY[0x1E6970490];
-      v24 = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
-      v25 = [v23 systemRouteWithContextUID:v24];
+      routingContextUID2 = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
+      v25 = [v23 systemRouteWithContextUID:routingContextUID2];
       [v7 addObject:v25];
     }
 
@@ -957,8 +957,8 @@ void __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_in
 
           v32 = *(*(&v51 + 1) + 8 * j);
           v33 = [(NSMutableDictionary *)self->_endpointControllersMap objectForKey:v32, v41];
-          v34 = [v33 routeNames];
-          v35 = [v34 copy];
+          routeNames = [v33 routeNames];
+          v35 = [routeNames copy];
           [v26 setObject:v35 forKey:v32];
         }
 
@@ -984,7 +984,7 @@ void __62__MediaControlsEndpointsManager__setRoutes_withChangeDetails___block_in
     v40 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, 0, block);
     dispatch_async(self->_serialQueue, v40);
 
-    v5 = v45;
+    routesCopy = v45;
   }
 }
 
@@ -1212,13 +1212,13 @@ id __51__MediaControlsEndpointsManager__updateWithRoutes___block_invoke_8(uint64
   return v2;
 }
 
-- (id)_createSectionedCollectionFromRoutes:(id)a3
+- (id)_createSectionedCollectionFromRoutes:(id)routes
 {
   v3 = MEMORY[0x1E6970818];
-  v4 = a3;
+  routesCopy = routes;
   v5 = objc_alloc_init(v3);
   [v5 appendSection:@"SECTION"];
-  [v5 appendItems:v4];
+  [v5 appendItems:routesCopy];
 
   return v5;
 }

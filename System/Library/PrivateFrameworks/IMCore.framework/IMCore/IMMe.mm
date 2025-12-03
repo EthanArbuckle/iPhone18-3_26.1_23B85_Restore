@@ -1,13 +1,13 @@
 @interface IMMe
 + (id)firstNameFromFallbackUserName;
-+ (id)imHandleForService:(id)a3;
++ (id)imHandleForService:(id)service;
 + (id)lastNameFromFallbackUserName;
 + (id)me;
-- (BOOL)addIMHandle:(id)a3;
-- (BOOL)addLoginIMHandle:(id)a3;
-- (BOOL)isIMHandleLoginIMHandle:(id)a3;
-- (BOOL)removeIMHandle:(id)a3;
-- (BOOL)removeLoginIMHandle:(id)a3;
+- (BOOL)addIMHandle:(id)handle;
+- (BOOL)addLoginIMHandle:(id)handle;
+- (BOOL)isIMHandleLoginIMHandle:(id)handle;
+- (BOOL)removeIMHandle:(id)handle;
+- (BOOL)removeLoginIMHandle:(id)handle;
 - (IMHandle)bestIMHandle;
 - (IMMe)init;
 - (NSArray)emails;
@@ -16,12 +16,12 @@
 - (NSString)fullName;
 - (NSString)lastName;
 - (NSString)nickname;
-- (id)_imHandlesWithIDs:(id)a3 onAccount:(id)a4;
+- (id)_imHandlesWithIDs:(id)ds onAccount:(id)account;
 - (id)description;
 - (void)myPictureChanged;
 - (void)rebuildIMHandles;
 - (void)resetABPerson;
-- (void)setCNContact:(id)a3;
+- (void)setCNContact:(id)contact;
 @end
 
 @implementation IMMe
@@ -31,7 +31,7 @@
   v3 = qword_1ED7677E8;
   if (!qword_1ED7677E8)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = qword_1ED7677E8;
     qword_1ED7677E8 = v4;
 
@@ -140,18 +140,18 @@
   return v12;
 }
 
-- (id)_imHandlesWithIDs:(id)a3 onAccount:(id)a4
+- (id)_imHandlesWithIDs:(id)ds onAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  accountCopy = account;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (objc_msgSend_count(v5, v8, v9))
+  if (objc_msgSend_count(dsCopy, v8, v9))
   {
     v11 = 0;
     do
     {
-      v12 = objc_msgSend_objectAtIndex_(v5, v10, v11);
-      v14 = objc_msgSend_imHandleWithID_(v6, v13, v12);
+      v12 = objc_msgSend_objectAtIndex_(dsCopy, v10, v11);
+      v14 = objc_msgSend_imHandleWithID_(accountCopy, v13, v12);
 
       if (v14)
       {
@@ -161,7 +161,7 @@
       ++v11;
     }
 
-    while (v11 < objc_msgSend_count(v5, v16, v17));
+    while (v11 < objc_msgSend_count(dsCopy, v16, v17));
   }
 
   return v7;
@@ -189,60 +189,60 @@
   objc_msgSend___mainThreadPostNotificationName_object_(v13, v12, @"__kIMMeChangedNotification", 0);
 }
 
-- (void)setCNContact:(id)a3
+- (void)setCNContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   cnContact = self->_cnContact;
   p_cnContact = &self->_cnContact;
-  if (cnContact != v5)
+  if (cnContact != contactCopy)
   {
-    v12 = v5;
-    objc_storeStrong(p_cnContact, a3);
+    v12 = contactCopy;
+    objc_storeStrong(p_cnContact, contact);
     v10 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v8, v9);
     objc_msgSend___mainThreadPostNotificationName_object_(v10, v11, @"__kIMMeChangedNotification", 0);
 
-    v5 = v12;
+    contactCopy = v12;
   }
 }
 
-- (BOOL)addLoginIMHandle:(id)a3
+- (BOOL)addLoginIMHandle:(id)handle
 {
-  v4 = a3;
-  if ((objc_msgSend_containsObjectIdenticalTo_(self->_loginIMHandles, v5, v4) & 1) == 0)
+  handleCopy = handle;
+  if ((objc_msgSend_containsObjectIdenticalTo_(self->_loginIMHandles, v5, handleCopy) & 1) == 0)
   {
-    objc_msgSend_addObject_(self->_loginIMHandles, v6, v4);
+    objc_msgSend_addObject_(self->_loginIMHandles, v6, handleCopy);
   }
 
   return 1;
 }
 
-- (BOOL)removeLoginIMHandle:(id)a3
+- (BOOL)removeLoginIMHandle:(id)handle
 {
-  v4 = a3;
-  if (objc_msgSend_containsObjectIdenticalTo_(self->_loginIMHandles, v5, v4))
+  handleCopy = handle;
+  if (objc_msgSend_containsObjectIdenticalTo_(self->_loginIMHandles, v5, handleCopy))
   {
-    objc_msgSend_removeObject_(self->_loginIMHandles, v6, v4);
+    objc_msgSend_removeObject_(self->_loginIMHandles, v6, handleCopy);
     v9 = objc_msgSend_sharedInstance(IMHandleRegistrar, v7, v8);
-    objc_msgSend_unregisterIMHandle_(v9, v10, v4);
+    objc_msgSend_unregisterIMHandle_(v9, v10, handleCopy);
 
     v13 = objc_msgSend_sharedInstance(IMHandleRegistrar, v11, v12);
-    v15 = objc_msgSend_cnContactWithKeys_(v4, v14, MEMORY[0x1E695E0F0]);
+    v15 = objc_msgSend_cnContactWithKeys_(handleCopy, v14, MEMORY[0x1E695E0F0]);
     v18 = objc_msgSend_identifier(v15, v16, v17);
-    objc_msgSend_removeHandleFromCNIDMap_withCNID_(v13, v19, v4, v18);
+    objc_msgSend_removeHandleFromCNIDMap_withCNID_(v13, v19, handleCopy, v18);
   }
 
   return 1;
 }
 
-- (BOOL)addIMHandle:(id)a3
+- (BOOL)addIMHandle:(id)handle
 {
-  v4 = a3;
-  if ((objc_msgSend_containsObjectIdenticalTo_(self->_cnIMHandles, v5, v4) & 1) == 0)
+  handleCopy = handle;
+  if ((objc_msgSend_containsObjectIdenticalTo_(self->_cnIMHandles, v5, handleCopy) & 1) == 0)
   {
-    objc_msgSend_addObject_(self->_cnIMHandles, v6, v4);
-    if ((objc_msgSend_hasLocation(v4, v7, v8) & 1) == 0)
+    objc_msgSend_addObject_(self->_cnIMHandles, v6, handleCopy);
+    if ((objc_msgSend_hasLocation(handleCopy, v7, v8) & 1) == 0)
     {
-      v11 = objc_msgSend_dependentIMHandles(v4, v9, v10);
+      v11 = objc_msgSend_dependentIMHandles(handleCopy, v9, v10);
       v14 = objc_msgSend_count(v11, v12, v13);
       if (v14 >= 1)
       {
@@ -263,10 +263,10 @@
   return 0;
 }
 
-- (BOOL)isIMHandleLoginIMHandle:(id)a3
+- (BOOL)isIMHandleLoginIMHandle:(id)handle
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -291,11 +291,11 @@
         v8 = *(*(&v29 + 1) + 8 * v10);
 
         v14 = objc_msgSend_service(v8, v12, v13, v29);
-        v17 = objc_msgSend_service(v4, v15, v16);
+        v17 = objc_msgSend_service(handleCopy, v15, v16);
 
         if (v14 == v17)
         {
-          v20 = objc_msgSend_ID(v4, v18, v19);
+          v20 = objc_msgSend_ID(handleCopy, v18, v19);
           v23 = objc_msgSend_ID(v8, v21, v22);
           v25 = objc_msgSend_equalID_andID_(v14, v24, v20, v23);
 
@@ -329,15 +329,15 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)removeIMHandle:(id)a3
+- (BOOL)removeIMHandle:(id)handle
 {
-  v4 = a3;
-  if (objc_msgSend_containsObjectIdenticalTo_(self->_cnIMHandles, v5, v4))
+  handleCopy = handle;
+  if (objc_msgSend_containsObjectIdenticalTo_(self->_cnIMHandles, v5, handleCopy))
   {
-    objc_msgSend_removeObject_(self->_cnIMHandles, v6, v4);
-    if ((objc_msgSend_hasLocation(v4, v7, v8) & 1) == 0)
+    objc_msgSend_removeObject_(self->_cnIMHandles, v6, handleCopy);
+    if ((objc_msgSend_hasLocation(handleCopy, v7, v8) & 1) == 0)
     {
-      v11 = objc_msgSend_dependentIMHandles(v4, v9, v10);
+      v11 = objc_msgSend_dependentIMHandles(handleCopy, v9, v10);
       v14 = objc_msgSend_count(v11, v12, v13);
       if (v14 >= 1)
       {
@@ -509,10 +509,10 @@ LABEL_12:
   return v17;
 }
 
-+ (id)imHandleForService:(id)a3
++ (id)imHandleForService:(id)service
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  serviceCopy = service;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -536,7 +536,7 @@ LABEL_12:
         v16 = *(*(&v20 + 1) + 8 * i);
         v17 = objc_msgSend_service(v16, v11, v12);
 
-        if (v17 == v3)
+        if (v17 == serviceCopy)
         {
           v13 = v16;
           goto LABEL_11;

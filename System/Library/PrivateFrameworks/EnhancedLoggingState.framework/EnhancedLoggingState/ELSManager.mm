@@ -1,30 +1,30 @@
 @interface ELSManager
 + (id)sharedManager;
-- (BOOL)array:(id)a3 isEqualToArray:(id)a4;
-- (BOOL)commitConsentDataTransaction:(id)a3;
-- (BOOL)commitConsentHandlesTransaction:(id)a3;
-- (BOOL)commitConsentTransaction:(id)a3;
-- (BOOL)commitDatesTransaction:(id)a3;
-- (BOOL)commitDeviceSelectionMap:(id)a3;
-- (BOOL)commitFollowUpOptions:(id)a3;
-- (BOOL)commitIdentifiersToRetryTransaction:(id)a3;
-- (BOOL)commitMetadataTransaction:(id)a3;
-- (BOOL)commitQueueTransaction:(id)a3;
-- (BOOL)commitRetriesRemainingTransaction:(id)a3;
-- (BOOL)commitSessionDeviceTransaction:(id)a3;
-- (BOOL)commitSessionIDTransaction:(id)a3;
-- (BOOL)commitStatusTransaction:(id)a3;
-- (BOOL)commitTopLevelPrivacyPolicy:(id)a3;
-- (BOOL)commitUploadCompletedPercentage:(id)a3;
-- (BOOL)object:(id)a3 isEqualToObject:(id)a4;
-- (BOOL)privacyPolicy:(id)a3 isEqualToPolicy:(id)a4;
+- (BOOL)array:(id)array isEqualToArray:(id)toArray;
+- (BOOL)commitConsentDataTransaction:(id)transaction;
+- (BOOL)commitConsentHandlesTransaction:(id)transaction;
+- (BOOL)commitConsentTransaction:(id)transaction;
+- (BOOL)commitDatesTransaction:(id)transaction;
+- (BOOL)commitDeviceSelectionMap:(id)map;
+- (BOOL)commitFollowUpOptions:(id)options;
+- (BOOL)commitIdentifiersToRetryTransaction:(id)transaction;
+- (BOOL)commitMetadataTransaction:(id)transaction;
+- (BOOL)commitQueueTransaction:(id)transaction;
+- (BOOL)commitRetriesRemainingTransaction:(id)transaction;
+- (BOOL)commitSessionDeviceTransaction:(id)transaction;
+- (BOOL)commitSessionIDTransaction:(id)transaction;
+- (BOOL)commitStatusTransaction:(id)transaction;
+- (BOOL)commitTopLevelPrivacyPolicy:(id)policy;
+- (BOOL)commitUploadCompletedPercentage:(id)percentage;
+- (BOOL)object:(id)object isEqualToObject:(id)toObject;
+- (BOOL)privacyPolicy:(id)policy isEqualToPolicy:(id)toPolicy;
 - (id)initSingleton;
 - (void)beginUpdates;
-- (void)commitBatchTransaction:(id)a3;
+- (void)commitBatchTransaction:(id)transaction;
 - (void)dealloc;
-- (void)getBugSessionActivityWithCompletion:(id)a3;
-- (void)refreshWithCompletion:(id)a3;
-- (void)transactionWithBlock:(id)a3 completion:(id)a4;
+- (void)getBugSessionActivityWithCompletion:(id)completion;
+- (void)refreshWithCompletion:(id)completion;
+- (void)transactionWithBlock:(id)block completion:(id)completion;
 @end
 
 @implementation ELSManager
@@ -76,8 +76,8 @@ uint64_t __27__ELSManager_sharedManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ELSManager;
@@ -86,14 +86,14 @@ uint64_t __27__ELSManager_sharedManager__block_invoke()
 
 - (void)beginUpdates
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __26__ELSManager_beginUpdates__block_invoke;
   v6[3] = &unk_278FC4958;
   v6[4] = self;
-  v5 = [v3 addObserverForName:@"ELSDidBatchUpdate" object:0 queue:v4 usingBlock:v6];
+  v5 = [defaultCenter addObserverForName:@"ELSDidBatchUpdate" object:0 queue:mainQueue usingBlock:v6];
 }
 
 void __26__ELSManager_beginUpdates__block_invoke(uint64_t a1)
@@ -137,21 +137,21 @@ void __26__ELSManager_beginUpdates__block_invoke_2(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionWithBlock:(id)a3 completion:(id)a4
+- (void)transactionWithBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ELSManager *)self transactionQueue];
+  blockCopy = block;
+  completionCopy = completion;
+  transactionQueue = [(ELSManager *)self transactionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__ELSManager_transactionWithBlock_completion___block_invoke;
   block[3] = &unk_278FC4980;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = blockCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = blockCopy;
+  dispatch_async(transactionQueue, block);
 }
 
 void __46__ELSManager_transactionWithBlock_completion___block_invoke(uint64_t a1)
@@ -260,66 +260,66 @@ void __34__ELSManager_flushWithCompletion___block_invoke(uint64_t a1, void *a2)
   [v2 setDeviceSelection:0];
 }
 
-- (void)commitBatchTransaction:(id)a3
+- (void)commitBatchTransaction:(id)transaction
 {
-  v4 = a3;
-  v14 = [(ELSManager *)self commitSessionIDTransaction:v4];
-  v15 = [(ELSManager *)self commitStatusTransaction:v4];
-  v16 = [(ELSManager *)self commitConsentTransaction:v4];
-  v17 = [(ELSManager *)self commitDatesTransaction:v4];
-  v18 = [(ELSManager *)self commitQueueTransaction:v4];
-  v19 = [(ELSManager *)self commitConsentHandlesTransaction:v4];
-  v20 = [(ELSManager *)self commitRetriesRemainingTransaction:v4];
-  v5 = [(ELSManager *)self commitIdentifiersToRetryTransaction:v4];
-  v6 = [(ELSManager *)self commitMetadataTransaction:v4];
-  v7 = [(ELSManager *)self commitUploadCompletedPercentage:v4];
-  v8 = [(ELSManager *)self commitFollowUpOptions:v4];
-  v9 = [(ELSManager *)self commitSessionDeviceTransaction:v4];
-  v10 = [(ELSManager *)self commitConsentDataTransaction:v4];
-  v11 = [(ELSManager *)self commitTopLevelPrivacyPolicy:v4];
-  v12 = [(ELSManager *)self commitDeviceSelectionMap:v4];
+  transactionCopy = transaction;
+  v14 = [(ELSManager *)self commitSessionIDTransaction:transactionCopy];
+  v15 = [(ELSManager *)self commitStatusTransaction:transactionCopy];
+  v16 = [(ELSManager *)self commitConsentTransaction:transactionCopy];
+  v17 = [(ELSManager *)self commitDatesTransaction:transactionCopy];
+  v18 = [(ELSManager *)self commitQueueTransaction:transactionCopy];
+  v19 = [(ELSManager *)self commitConsentHandlesTransaction:transactionCopy];
+  v20 = [(ELSManager *)self commitRetriesRemainingTransaction:transactionCopy];
+  v5 = [(ELSManager *)self commitIdentifiersToRetryTransaction:transactionCopy];
+  v6 = [(ELSManager *)self commitMetadataTransaction:transactionCopy];
+  v7 = [(ELSManager *)self commitUploadCompletedPercentage:transactionCopy];
+  v8 = [(ELSManager *)self commitFollowUpOptions:transactionCopy];
+  v9 = [(ELSManager *)self commitSessionDeviceTransaction:transactionCopy];
+  v10 = [(ELSManager *)self commitConsentDataTransaction:transactionCopy];
+  v11 = [(ELSManager *)self commitTopLevelPrivacyPolicy:transactionCopy];
+  v12 = [(ELSManager *)self commitDeviceSelectionMap:transactionCopy];
 
   if (v12 || v11 || v10 || v9 || v8 || v7 || v6 || v5 || v20 || v19 || v18 || v17 || v16 || v15 || v14)
   {
-    v13 = [(ELSManager *)self defaults];
-    [v13 synchronize];
+    defaults = [(ELSManager *)self defaults];
+    [defaults synchronize];
 
-    v21 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v21 postNotificationName:@"ELSDidBatchUpdate" object:0 userInfo:0 deliverImmediately:1];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"ELSDidBatchUpdate" object:0 userInfo:0 deliverImmediately:1];
   }
 }
 
-- (BOOL)commitSessionIDTransaction:(id)a3
+- (BOOL)commitSessionIDTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 sessionID];
-  if (v5)
+  transactionCopy = transaction;
+  sessionID = [transactionCopy sessionID];
+  if (sessionID)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 sessionID];
+    snapshot = [(ELSManager *)self snapshot];
+    sessionID2 = [snapshot sessionID];
 
-    if (v14)
+    if (sessionID2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"sessionID"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"sessionID"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 sessionID];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 sessionID];
-  v9 = [v6 isEqualToString:v8];
+  sessionID3 = [transactionCopy sessionID];
+  snapshot2 = [(ELSManager *)self snapshot];
+  sessionID4 = [snapshot2 sessionID];
+  v9 = [sessionID3 isEqualToString:sessionID4];
 
   if ((v9 & 1) == 0)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 sessionID];
-    [v11 setObject:v12 forKey:@"sessionID"];
+    defaults = [(ELSManager *)self defaults];
+    sessionID5 = [transactionCopy sessionID];
+    [defaults setObject:sessionID5 forKey:@"sessionID"];
 
 LABEL_8:
     v10 = 1;
@@ -332,31 +332,31 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitStatusTransaction:(id)a3
+- (BOOL)commitStatusTransaction:(id)transaction
 {
-  v4 = a3;
-  if (![v4 status])
+  transactionCopy = transaction;
+  if (![transactionCopy status])
   {
-    v11 = [(ELSManager *)self snapshot];
-    v12 = [v11 status];
+    snapshot = [(ELSManager *)self snapshot];
+    status = [snapshot status];
 
-    if (v12)
+    if (status)
     {
-      v9 = [(ELSManager *)self defaults];
-      [v9 removeObjectForKey:@"status"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"status"];
       goto LABEL_7;
     }
   }
 
-  v5 = [v4 status];
-  v6 = [(ELSManager *)self snapshot];
-  v7 = [v6 status];
+  status2 = [transactionCopy status];
+  snapshot2 = [(ELSManager *)self snapshot];
+  status3 = [snapshot2 status];
 
-  if (v5 != v7)
+  if (status2 != status3)
   {
-    v9 = [(ELSManager *)self defaults];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "status")}];
-    [v9 setObject:v10 forKey:@"status"];
+    defaults = [(ELSManager *)self defaults];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(transactionCopy, "status")}];
+    [defaults setObject:v10 forKey:@"status"];
 
 LABEL_7:
     v8 = 1;
@@ -369,31 +369,31 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)commitConsentTransaction:(id)a3
+- (BOOL)commitConsentTransaction:(id)transaction
 {
-  v4 = a3;
-  if (![v4 consent])
+  transactionCopy = transaction;
+  if (![transactionCopy consent])
   {
-    v11 = [(ELSManager *)self snapshot];
-    v12 = [v11 consent];
+    snapshot = [(ELSManager *)self snapshot];
+    consent = [snapshot consent];
 
-    if (v12)
+    if (consent)
     {
-      v9 = [(ELSManager *)self defaults];
-      [v9 removeObjectForKey:@"consent"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"consent"];
       goto LABEL_7;
     }
   }
 
-  v5 = [v4 consent];
-  v6 = [(ELSManager *)self snapshot];
-  v7 = [v6 consent];
+  consent2 = [transactionCopy consent];
+  snapshot2 = [(ELSManager *)self snapshot];
+  consent3 = [snapshot2 consent];
 
-  if (v5 != v7)
+  if (consent2 != consent3)
   {
-    v9 = [(ELSManager *)self defaults];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "consent")}];
-    [v9 setObject:v10 forKey:@"consent"];
+    defaults = [(ELSManager *)self defaults];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(transactionCopy, "consent")}];
+    [defaults setObject:v10 forKey:@"consent"];
 
 LABEL_7:
     v8 = 1;
@@ -406,93 +406,93 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)commitDatesTransaction:(id)a3
+- (BOOL)commitDatesTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(ELSManager *)self defaults];
-  v6 = [v5 objectForKey:@"dates"];
+  transactionCopy = transaction;
+  defaults = [(ELSManager *)self defaults];
+  v6 = [defaults objectForKey:@"dates"];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v9 = v8;
+  v9 = dictionary;
 
   v10 = [v9 mutableCopy];
-  v11 = [v4 startDate];
-  v12 = [(ELSManager *)self snapshot];
-  v13 = [v12 startDate];
-  if ([(ELSManager *)self object:v11 isEqualToObject:v13])
+  startDate = [transactionCopy startDate];
+  snapshot = [(ELSManager *)self snapshot];
+  startDate2 = [snapshot startDate];
+  if ([(ELSManager *)self object:startDate isEqualToObject:startDate2])
   {
   }
 
   else
   {
-    v14 = [v4 startDate];
+    startDate3 = [transactionCopy startDate];
 
-    if (v14)
+    if (startDate3)
     {
-      v15 = [v4 startDate];
-      [v10 setObject:v15 forKeyedSubscript:@"startDate"];
+      startDate4 = [transactionCopy startDate];
+      [v10 setObject:startDate4 forKeyedSubscript:@"startDate"];
 
       goto LABEL_12;
     }
   }
 
-  v16 = [v4 startDate];
-  if (v16)
+  startDate5 = [transactionCopy startDate];
+  if (startDate5)
   {
   }
 
   else
   {
-    v17 = [(ELSManager *)self snapshot];
-    v18 = [v17 startDate];
+    snapshot2 = [(ELSManager *)self snapshot];
+    startDate6 = [snapshot2 startDate];
 
-    if (v18)
+    if (startDate6)
     {
       [v10 removeObjectForKey:@"startDate"];
     }
   }
 
 LABEL_12:
-  v19 = [v4 endDate];
-  v20 = [(ELSManager *)self snapshot];
-  v21 = [v20 endDate];
-  if ([(ELSManager *)self object:v19 isEqualToObject:v21])
+  endDate = [transactionCopy endDate];
+  snapshot3 = [(ELSManager *)self snapshot];
+  endDate2 = [snapshot3 endDate];
+  if ([(ELSManager *)self object:endDate isEqualToObject:endDate2])
   {
   }
 
   else
   {
-    v22 = [v4 endDate];
+    endDate3 = [transactionCopy endDate];
 
-    if (v22)
+    if (endDate3)
     {
-      v23 = [v4 endDate];
-      [v10 setObject:v23 forKeyedSubscript:@"endDate"];
+      endDate4 = [transactionCopy endDate];
+      [v10 setObject:endDate4 forKeyedSubscript:@"endDate"];
 
       goto LABEL_20;
     }
   }
 
-  v24 = [v4 endDate];
-  if (v24)
+  endDate5 = [transactionCopy endDate];
+  if (endDate5)
   {
   }
 
   else
   {
-    v25 = [(ELSManager *)self snapshot];
-    v26 = [v25 endDate];
+    snapshot4 = [(ELSManager *)self snapshot];
+    endDate6 = [snapshot4 endDate];
 
-    if (v26)
+    if (endDate6)
     {
       [v10 removeObjectForKey:@"endDate"];
     }
@@ -500,28 +500,28 @@ LABEL_12:
 
 LABEL_20:
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v10];
-  v28 = [v27 allKeys];
-  if ([v28 count])
+  allKeys = [v27 allKeys];
+  if ([allKeys count])
   {
   }
 
   else
   {
-    v31 = [v9 allKeys];
-    v32 = [v31 count];
+    allKeys2 = [v9 allKeys];
+    v32 = [allKeys2 count];
 
     if (v32)
     {
-      v30 = [(ELSManager *)self defaults];
-      [v30 removeObjectForKey:@"dates"];
+      defaults2 = [(ELSManager *)self defaults];
+      [defaults2 removeObjectForKey:@"dates"];
       goto LABEL_27;
     }
   }
 
   if (![(ELSManager *)self object:v27 isEqualToObject:v9])
   {
-    v30 = [(ELSManager *)self defaults];
-    [v30 setObject:v27 forKey:@"dates"];
+    defaults2 = [(ELSManager *)self defaults];
+    [defaults2 setObject:v27 forKey:@"dates"];
 LABEL_27:
 
     v29 = 1;
@@ -534,37 +534,37 @@ LABEL_28:
   return v29;
 }
 
-- (BOOL)commitQueueTransaction:(id)a3
+- (BOOL)commitQueueTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 queue];
-  if (v5)
+  transactionCopy = transaction;
+  queue = [transactionCopy queue];
+  if (queue)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 queue];
+    snapshot = [(ELSManager *)self snapshot];
+    queue2 = [snapshot queue];
 
-    if (v14)
+    if (queue2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"queue"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"queue"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 queue];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 queue];
-  v9 = [(ELSManager *)self object:v6 isEqualToObject:v8];
+  queue3 = [transactionCopy queue];
+  snapshot2 = [(ELSManager *)self snapshot];
+  queue4 = [snapshot2 queue];
+  v9 = [(ELSManager *)self object:queue3 isEqualToObject:queue4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 encodedQueue];
-    [v11 setObject:v12 forKey:@"queue"];
+    defaults = [(ELSManager *)self defaults];
+    encodedQueue = [transactionCopy encodedQueue];
+    [defaults setObject:encodedQueue forKey:@"queue"];
 
 LABEL_8:
     v10 = 1;
@@ -577,37 +577,37 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitConsentHandlesTransaction:(id)a3
+- (BOOL)commitConsentHandlesTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 consentHandles];
-  if (v5)
+  transactionCopy = transaction;
+  consentHandles = [transactionCopy consentHandles];
+  if (consentHandles)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 consentHandles];
+    snapshot = [(ELSManager *)self snapshot];
+    consentHandles2 = [snapshot consentHandles];
 
-    if (v14)
+    if (consentHandles2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"consentHandles"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"consentHandles"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 consentHandles];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 consentHandles];
-  v9 = [(ELSManager *)self object:v6 isEqualToObject:v8];
+  consentHandles3 = [transactionCopy consentHandles];
+  snapshot2 = [(ELSManager *)self snapshot];
+  consentHandles4 = [snapshot2 consentHandles];
+  v9 = [(ELSManager *)self object:consentHandles3 isEqualToObject:consentHandles4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 consentHandles];
-    [v11 setObject:v12 forKey:@"consentHandles"];
+    defaults = [(ELSManager *)self defaults];
+    consentHandles5 = [transactionCopy consentHandles];
+    [defaults setObject:consentHandles5 forKey:@"consentHandles"];
 
 LABEL_8:
     v10 = 1;
@@ -620,33 +620,33 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitSessionDeviceTransaction:(id)a3
+- (BOOL)commitSessionDeviceTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 targetDevices];
-  if (v5)
+  transactionCopy = transaction;
+  targetDevices = [transactionCopy targetDevices];
+  if (targetDevices)
   {
   }
 
   else
   {
-    v16 = [(ELSManager *)self snapshot];
-    v17 = [v16 targetDevices];
+    snapshot = [(ELSManager *)self snapshot];
+    targetDevices2 = [snapshot targetDevices];
 
-    if (v17)
+    if (targetDevices2)
     {
-      v18 = [(ELSManager *)self defaults];
-      [v18 removeObjectForKey:@"targetDevices"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"targetDevices"];
 
       v10 = 1;
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 targetDevices];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 targetDevices];
-  v9 = [(ELSManager *)self array:v6 isEqualToArray:v8];
+  targetDevices3 = [transactionCopy targetDevices];
+  snapshot2 = [(ELSManager *)self snapshot];
+  targetDevices4 = [snapshot2 targetDevices];
+  v9 = [(ELSManager *)self array:targetDevices3 isEqualToArray:targetDevices4];
 
   if (v9)
   {
@@ -656,13 +656,13 @@ LABEL_9:
   else
   {
     v11 = MEMORY[0x277CCAAB0];
-    v12 = [v4 targetDevices];
+    targetDevices5 = [transactionCopy targetDevices];
     v20 = 0;
-    v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:0 error:&v20];
+    v13 = [v11 archivedDataWithRootObject:targetDevices5 requiringSecureCoding:0 error:&v20];
     v14 = v20;
 
-    v15 = [(ELSManager *)self defaults];
-    [v15 setObject:v13 forKey:@"targetDevices"];
+    defaults2 = [(ELSManager *)self defaults];
+    [defaults2 setObject:v13 forKey:@"targetDevices"];
 
     v10 = v14 == 0;
   }
@@ -672,37 +672,37 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)commitConsentDataTransaction:(id)a3
+- (BOOL)commitConsentDataTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 consentData];
-  if (v5)
+  transactionCopy = transaction;
+  consentData = [transactionCopy consentData];
+  if (consentData)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 consentData];
+    snapshot = [(ELSManager *)self snapshot];
+    consentData2 = [snapshot consentData];
 
-    if (v14)
+    if (consentData2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"consentData"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"consentData"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 consentData];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 consentData];
-  v9 = [(ELSManager *)self object:v6 isEqualToObject:v8];
+  consentData3 = [transactionCopy consentData];
+  snapshot2 = [(ELSManager *)self snapshot];
+  consentData4 = [snapshot2 consentData];
+  v9 = [(ELSManager *)self object:consentData3 isEqualToObject:consentData4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 consentData];
-    [v11 setObject:v12 forKey:@"consentData"];
+    defaults = [(ELSManager *)self defaults];
+    consentData5 = [transactionCopy consentData];
+    [defaults setObject:consentData5 forKey:@"consentData"];
 
 LABEL_8:
     v10 = 1;
@@ -715,31 +715,31 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitRetriesRemainingTransaction:(id)a3
+- (BOOL)commitRetriesRemainingTransaction:(id)transaction
 {
-  v4 = a3;
-  if (![v4 retriesRemaining])
+  transactionCopy = transaction;
+  if (![transactionCopy retriesRemaining])
   {
-    v11 = [(ELSManager *)self snapshot];
-    v12 = [v11 retriesRemaining];
+    snapshot = [(ELSManager *)self snapshot];
+    retriesRemaining = [snapshot retriesRemaining];
 
-    if (v12)
+    if (retriesRemaining)
     {
-      v9 = [(ELSManager *)self defaults];
-      [v9 removeObjectForKey:@"retriesRemaining"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"retriesRemaining"];
       goto LABEL_7;
     }
   }
 
-  v5 = [v4 retriesRemaining];
-  v6 = [(ELSManager *)self snapshot];
-  v7 = [v6 retriesRemaining];
+  retriesRemaining2 = [transactionCopy retriesRemaining];
+  snapshot2 = [(ELSManager *)self snapshot];
+  retriesRemaining3 = [snapshot2 retriesRemaining];
 
-  if (v5 != v7)
+  if (retriesRemaining2 != retriesRemaining3)
   {
-    v9 = [(ELSManager *)self defaults];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "retriesRemaining")}];
-    [v9 setObject:v10 forKey:@"retriesRemaining"];
+    defaults = [(ELSManager *)self defaults];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(transactionCopy, "retriesRemaining")}];
+    [defaults setObject:v10 forKey:@"retriesRemaining"];
 
 LABEL_7:
     v8 = 1;
@@ -752,37 +752,37 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)commitIdentifiersToRetryTransaction:(id)a3
+- (BOOL)commitIdentifiersToRetryTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 identifiersToRetry];
-  if (v5)
+  transactionCopy = transaction;
+  identifiersToRetry = [transactionCopy identifiersToRetry];
+  if (identifiersToRetry)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 identifiersToRetry];
+    snapshot = [(ELSManager *)self snapshot];
+    identifiersToRetry2 = [snapshot identifiersToRetry];
 
-    if (v14)
+    if (identifiersToRetry2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"identifiersToRetry"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"identifiersToRetry"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 identifiersToRetry];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 identifiersToRetry];
-  v9 = [(ELSManager *)self object:v6 isEqualToObject:v8];
+  identifiersToRetry3 = [transactionCopy identifiersToRetry];
+  snapshot2 = [(ELSManager *)self snapshot];
+  identifiersToRetry4 = [snapshot2 identifiersToRetry];
+  v9 = [(ELSManager *)self object:identifiersToRetry3 isEqualToObject:identifiersToRetry4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 identifiersToRetry];
-    [v11 setObject:v12 forKey:@"identifiersToRetry"];
+    defaults = [(ELSManager *)self defaults];
+    identifiersToRetry5 = [transactionCopy identifiersToRetry];
+    [defaults setObject:identifiersToRetry5 forKey:@"identifiersToRetry"];
 
 LABEL_8:
     v10 = 1;
@@ -795,37 +795,37 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitMetadataTransaction:(id)a3
+- (BOOL)commitMetadataTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 metadata];
-  if (v5)
+  transactionCopy = transaction;
+  metadata = [transactionCopy metadata];
+  if (metadata)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 metadata];
+    snapshot = [(ELSManager *)self snapshot];
+    metadata2 = [snapshot metadata];
 
-    if (v14)
+    if (metadata2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"metadata"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"metadata"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 metadata];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 metadata];
-  v9 = [(ELSManager *)self object:v6 isEqualToObject:v8];
+  metadata3 = [transactionCopy metadata];
+  snapshot2 = [(ELSManager *)self snapshot];
+  metadata4 = [snapshot2 metadata];
+  v9 = [(ELSManager *)self object:metadata3 isEqualToObject:metadata4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 metadata];
-    [v11 setObject:v12 forKey:@"metadata"];
+    defaults = [(ELSManager *)self defaults];
+    metadata5 = [transactionCopy metadata];
+    [defaults setObject:metadata5 forKey:@"metadata"];
 
 LABEL_8:
     v10 = 1;
@@ -838,37 +838,37 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitUploadCompletedPercentage:(id)a3
+- (BOOL)commitUploadCompletedPercentage:(id)percentage
 {
-  v4 = a3;
-  v5 = [v4 uploadCompletedPercentage];
-  if (v5)
+  percentageCopy = percentage;
+  uploadCompletedPercentage = [percentageCopy uploadCompletedPercentage];
+  if (uploadCompletedPercentage)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 uploadCompletedPercentage];
+    snapshot = [(ELSManager *)self snapshot];
+    uploadCompletedPercentage2 = [snapshot uploadCompletedPercentage];
 
-    if (v14)
+    if (uploadCompletedPercentage2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"uploadCompletedPercentage"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"uploadCompletedPercentage"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 uploadCompletedPercentage];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 uploadCompletedPercentage];
-  v9 = [(ELSManager *)self object:v6 isEqualToObject:v8];
+  uploadCompletedPercentage3 = [percentageCopy uploadCompletedPercentage];
+  snapshot2 = [(ELSManager *)self snapshot];
+  uploadCompletedPercentage4 = [snapshot2 uploadCompletedPercentage];
+  v9 = [(ELSManager *)self object:uploadCompletedPercentage3 isEqualToObject:uploadCompletedPercentage4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 uploadCompletedPercentage];
-    [v11 setObject:v12 forKey:@"uploadCompletedPercentage"];
+    defaults = [(ELSManager *)self defaults];
+    uploadCompletedPercentage5 = [percentageCopy uploadCompletedPercentage];
+    [defaults setObject:uploadCompletedPercentage5 forKey:@"uploadCompletedPercentage"];
 
 LABEL_8:
     v10 = 1;
@@ -881,37 +881,37 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitFollowUpOptions:(id)a3
+- (BOOL)commitFollowUpOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 followUpOptions];
-  if (v5)
+  optionsCopy = options;
+  followUpOptions = [optionsCopy followUpOptions];
+  if (followUpOptions)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 followUpOptions];
+    snapshot = [(ELSManager *)self snapshot];
+    followUpOptions2 = [snapshot followUpOptions];
 
-    if (v14)
+    if (followUpOptions2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"followUpOptions"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"followUpOptions"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 followUpOptions];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 followUpOptions];
-  v9 = [(ELSManager *)self object:v6 isEqualToObject:v8];
+  followUpOptions3 = [optionsCopy followUpOptions];
+  snapshot2 = [(ELSManager *)self snapshot];
+  followUpOptions4 = [snapshot2 followUpOptions];
+  v9 = [(ELSManager *)self object:followUpOptions3 isEqualToObject:followUpOptions4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 followUpOptions];
-    [v11 setObject:v12 forKey:@"followUpOptions"];
+    defaults = [(ELSManager *)self defaults];
+    followUpOptions5 = [optionsCopy followUpOptions];
+    [defaults setObject:followUpOptions5 forKey:@"followUpOptions"];
 
 LABEL_8:
     v10 = 1;
@@ -924,38 +924,38 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitTopLevelPrivacyPolicy:(id)a3
+- (BOOL)commitTopLevelPrivacyPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [v4 topLevelPrivacyPolicy];
-  if (v5)
+  policyCopy = policy;
+  topLevelPrivacyPolicy = [policyCopy topLevelPrivacyPolicy];
+  if (topLevelPrivacyPolicy)
   {
   }
 
   else
   {
-    v14 = [(ELSManager *)self snapshot];
-    v15 = [v14 topLevelPrivacyPolicy];
+    snapshot = [(ELSManager *)self snapshot];
+    topLevelPrivacyPolicy2 = [snapshot topLevelPrivacyPolicy];
 
-    if (v15)
+    if (topLevelPrivacyPolicy2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"topLevelPrivacyPolicy"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"topLevelPrivacyPolicy"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 topLevelPrivacyPolicy];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 topLevelPrivacyPolicy];
-  v9 = [(ELSManager *)self privacyPolicy:v6 isEqualToPolicy:v8];
+  topLevelPrivacyPolicy3 = [policyCopy topLevelPrivacyPolicy];
+  snapshot2 = [(ELSManager *)self snapshot];
+  topLevelPrivacyPolicy4 = [snapshot2 topLevelPrivacyPolicy];
+  v9 = [(ELSManager *)self privacyPolicy:topLevelPrivacyPolicy3 isEqualToPolicy:topLevelPrivacyPolicy4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 topLevelPrivacyPolicy];
-    v13 = [v12 dictionaryRepresentation];
-    [v11 setObject:v13 forKey:@"topLevelPrivacyPolicy"];
+    defaults = [(ELSManager *)self defaults];
+    topLevelPrivacyPolicy5 = [policyCopy topLevelPrivacyPolicy];
+    dictionaryRepresentation = [topLevelPrivacyPolicy5 dictionaryRepresentation];
+    [defaults setObject:dictionaryRepresentation forKey:@"topLevelPrivacyPolicy"];
 
 LABEL_8:
     v10 = 1;
@@ -968,37 +968,37 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)commitDeviceSelectionMap:(id)a3
+- (BOOL)commitDeviceSelectionMap:(id)map
 {
-  v4 = a3;
-  v5 = [v4 deviceSelection];
-  if (v5)
+  mapCopy = map;
+  deviceSelection = [mapCopy deviceSelection];
+  if (deviceSelection)
   {
   }
 
   else
   {
-    v13 = [(ELSManager *)self snapshot];
-    v14 = [v13 deviceSelection];
+    snapshot = [(ELSManager *)self snapshot];
+    deviceSelection2 = [snapshot deviceSelection];
 
-    if (v14)
+    if (deviceSelection2)
     {
-      v11 = [(ELSManager *)self defaults];
-      [v11 removeObjectForKey:@"deviceSelection"];
+      defaults = [(ELSManager *)self defaults];
+      [defaults removeObjectForKey:@"deviceSelection"];
       goto LABEL_8;
     }
   }
 
-  v6 = [v4 deviceSelection];
-  v7 = [(ELSManager *)self snapshot];
-  v8 = [v7 deviceSelection];
-  v9 = [(ELSManager *)self object:v6 isEqualToObject:v8];
+  deviceSelection3 = [mapCopy deviceSelection];
+  snapshot2 = [(ELSManager *)self snapshot];
+  deviceSelection4 = [snapshot2 deviceSelection];
+  v9 = [(ELSManager *)self object:deviceSelection3 isEqualToObject:deviceSelection4];
 
   if (!v9)
   {
-    v11 = [(ELSManager *)self defaults];
-    v12 = [v4 deviceSelection];
-    [v11 setObject:v12 forKey:@"deviceSelection"];
+    defaults = [(ELSManager *)self defaults];
+    deviceSelection5 = [mapCopy deviceSelection];
+    [defaults setObject:deviceSelection5 forKey:@"deviceSelection"];
 
 LABEL_8:
     v10 = 1;
@@ -1011,11 +1011,11 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)object:(id)a3 isEqualToObject:(id)a4
+- (BOOL)object:(id)object isEqualToObject:(id)toObject
 {
-  if (a3 | a4)
+  if (object | toObject)
   {
-    return [a3 isEqual:a4];
+    return [object isEqual:toObject];
   }
 
   else
@@ -1024,11 +1024,11 @@ LABEL_9:
   }
 }
 
-- (BOOL)array:(id)a3 isEqualToArray:(id)a4
+- (BOOL)array:(id)array isEqualToArray:(id)toArray
 {
-  if (a3 | a4)
+  if (array | toArray)
   {
-    return [a3 isEqualToArray:a4];
+    return [array isEqualToArray:toArray];
   }
 
   else
@@ -1037,11 +1037,11 @@ LABEL_9:
   }
 }
 
-- (BOOL)privacyPolicy:(id)a3 isEqualToPolicy:(id)a4
+- (BOOL)privacyPolicy:(id)policy isEqualToPolicy:(id)toPolicy
 {
-  if (a3 | a4)
+  if (policy | toPolicy)
   {
-    return [a3 isEqualToDescription:a4];
+    return [policy isEqualToDescription:toPolicy];
   }
 
   else
@@ -1050,10 +1050,10 @@ LABEL_9:
   }
 }
 
-- (void)refreshWithCompletion:(id)a3
+- (void)refreshWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = ELSLogHandleForCategory(11);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1064,17 +1064,17 @@ LABEL_9:
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
-  v6 = [(ELSManager *)self snapshot];
-  v7 = [v6 status];
+  snapshot = [(ELSManager *)self snapshot];
+  status = [snapshot status];
 
-  v24[3] = v7;
+  v24[3] = status;
   *buf = 0;
   v19 = buf;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
-  v8 = [(ELSManager *)self snapshot];
-  v23 = [v8 dedSessionIdentifier];
+  snapshot2 = [(ELSManager *)self snapshot];
+  dedSessionIdentifier = [snapshot2 dedSessionIdentifier];
 
   v9 = ELSLogHandleForCategory(11);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1093,7 +1093,7 @@ LABEL_9:
   v15 = buf;
   v16 = v24;
   objc_copyWeak(&v17, v25);
-  v11 = v4;
+  v11 = completionCopy;
   v14 = v11;
   [(ELSManager *)self getBugSessionActivityWithCompletion:v13];
 
@@ -1244,24 +1244,24 @@ void __36__ELSManager_refreshWithCompletion___block_invoke_29(uint64_t a1, void 
   }
 }
 
-- (void)getBugSessionActivityWithCompletion:(id)a3
+- (void)getBugSessionActivityWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = ELSLogHandleForCategory(11);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ELSManager *)self snapshot];
-    v7 = [v6 dedSessionIdentifier];
+    snapshot = [(ELSManager *)self snapshot];
+    dedSessionIdentifier = [snapshot dedSessionIdentifier];
     v17 = 138412290;
-    v18 = v7;
+    v18 = dedSessionIdentifier;
     _os_log_impl(&dword_24A07C000, v5, OS_LOG_TYPE_DEFAULT, "Checking %@ bug session activity (defaults scan)...", &v17, 0xCu);
   }
 
-  v8 = [(ELSManager *)self snapshot];
-  v9 = [v8 targetDevices];
+  snapshot2 = [(ELSManager *)self snapshot];
+  targetDevices = [snapshot2 targetDevices];
 
-  if (v9)
+  if (targetDevices)
   {
     v10 = 1;
   }
@@ -1275,9 +1275,9 @@ void __36__ELSManager_refreshWithCompletion___block_invoke_29(uint64_t a1, void 
       v13 = [v11 objectForKey:@"sessionIdentifiers"];
       if (v13)
       {
-        v14 = [(ELSManager *)self snapshot];
-        v15 = [v14 dedSessionIdentifier];
-        v10 = [v13 containsObject:v15];
+        snapshot3 = [(ELSManager *)self snapshot];
+        dedSessionIdentifier2 = [snapshot3 dedSessionIdentifier];
+        v10 = [v13 containsObject:dedSessionIdentifier2];
       }
 
       else
@@ -1292,7 +1292,7 @@ void __36__ELSManager_refreshWithCompletion___block_invoke_29(uint64_t a1, void 
     }
   }
 
-  v4[2](v4, v10);
+  completionCopy[2](completionCopy, v10);
 
   v16 = *MEMORY[0x277D85DE8];
 }

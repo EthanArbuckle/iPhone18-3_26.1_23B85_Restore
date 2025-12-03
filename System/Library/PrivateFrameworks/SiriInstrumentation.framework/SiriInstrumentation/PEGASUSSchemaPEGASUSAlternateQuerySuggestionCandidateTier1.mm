@@ -1,33 +1,33 @@
 @interface PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1
 
-- (PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1;
   v5 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"alternateQuerySuggestionType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"alternateQuerySuggestionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 setAlternateQuerySuggestionType:](v5, "setAlternateQuerySuggestionType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"text"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,7 +77,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     if ([(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self alternateQuerySuggestionType]== 1)
@@ -90,19 +90,19 @@
       v4 = @"PEGASUSALTERNATEQUERYSUGGESTIONCANDIDATETYPE_UNSPECIFIED";
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"alternateQuerySuggestionType"];
+    [dictionary setObject:v4 forKeyedSubscript:@"alternateQuerySuggestionType"];
   }
 
   if (self->_text)
   {
-    v5 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"text"];
+    text = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
+    v6 = [text copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"text"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,22 +120,22 @@
   return [(NSString *)self->_text hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (alternateQuerySuggestionType = self->_alternateQuerySuggestionType, alternateQuerySuggestionType == [v4 alternateQuerySuggestionType]))
+      if ((*&self->_has & 1) == 0 || (alternateQuerySuggestionType = self->_alternateQuerySuggestionType, alternateQuerySuggestionType == [equalCopy alternateQuerySuggestionType]))
       {
-        v6 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
-        v7 = [v4 text];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        text = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
+        text2 = [equalCopy text];
+        v8 = text2;
+        if ((text != 0) != (text2 == 0))
         {
-          v9 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
-          if (!v9)
+          text3 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
+          if (!text3)
           {
 
 LABEL_13:
@@ -143,10 +143,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
-          v12 = [v4 text];
-          v13 = [v11 isEqual:v12];
+          v10 = text3;
+          text4 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
+          text5 = [equalCopy text];
+          v13 = [text4 isEqual:text5];
 
           if (v13)
           {
@@ -167,51 +167,51 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
+  text = [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self text];
 
-  v5 = v6;
-  if (v4)
+  v5 = toCopy;
+  if (text)
   {
     PBDataWriterWriteStringField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self deleteText];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self deleteText];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self deleteText];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self deleteText];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionCandidateTier1 *)self deleteText];
   }

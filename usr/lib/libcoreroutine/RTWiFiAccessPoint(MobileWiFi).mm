@@ -22,7 +22,7 @@
     {
       if (!v5)
       {
-        v6 = 0x8000000000000000;
+        integerValue2 = 0x8000000000000000;
 LABEL_10:
         v8 = WiFiNetworkGetProperty();
         objc_opt_class();
@@ -30,7 +30,7 @@ LABEL_10:
         {
           if (!v8)
           {
-            v9 = 0x8000000000000000;
+            integerValue = 0x8000000000000000;
 LABEL_15:
             v10 = WiFiNetworkGetProperty();
             objc_opt_class();
@@ -52,38 +52,38 @@ LABEL_15:
 
 LABEL_20:
             v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-v11];
-            a1 = [a1 initWithMac:v4 rssi:v6 channel:v9 age:v12 date:v11];
+            self = [self initWithMac:v4 rssi:integerValue2 channel:integerValue age:v12 date:v11];
 
-            v7 = a1;
+            selfCopy = self;
             goto LABEL_21;
           }
 
-          v9 = [v8 integerValue];
+          integerValue = [v8 integerValue];
         }
 
         else
         {
-          v9 = 0x8000000000000000;
+          integerValue = 0x8000000000000000;
         }
 
         goto LABEL_15;
       }
 
-      v6 = [v5 integerValue];
+      integerValue2 = [v5 integerValue];
     }
 
     else
     {
-      v6 = 0x8000000000000000;
+      integerValue2 = 0x8000000000000000;
     }
 
     goto LABEL_10;
   }
 
-  v7 = 0;
+  selfCopy = 0;
 LABEL_21:
 
-  return v7;
+  return selfCopy;
 }
 
 @end

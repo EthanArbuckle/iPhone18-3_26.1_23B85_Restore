@@ -1,26 +1,26 @@
 @interface IFResourceNames
-- (IFResourceNames)initWithRootNames:(id)a3 variants:(id)a4;
+- (IFResourceNames)initWithRootNames:(id)names variants:(id)variants;
 - (id)extrapolateFullNamesForIOS;
 - (id)extrapolateFullNamesForMacOS;
 @end
 
 @implementation IFResourceNames
 
-- (IFResourceNames)initWithRootNames:(id)a3 variants:(id)a4
+- (IFResourceNames)initWithRootNames:(id)names variants:(id)variants
 {
-  v6 = a3;
-  v7 = a4;
+  namesCopy = names;
+  variantsCopy = variants;
   v15.receiver = self;
   v15.super_class = IFResourceNames;
   v8 = [(IFResourceNames *)&v15 init];
   v9 = v8;
-  if (v6 && v8)
+  if (namesCopy && v8)
   {
-    v10 = [v6 copy];
+    v10 = [namesCopy copy];
     rootNames = v9->_rootNames;
     v9->_rootNames = v10;
 
-    v12 = [v7 copy];
+    v12 = [variantsCopy copy];
     variants = v9->_variants;
     v9->_variants = v12;
   }
@@ -36,7 +36,7 @@
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v38 = self;
+  selfCopy = self;
   obj = [(IFResourceNames *)self rootNames];
   v4 = [obj countByEnumeratingWithState:&v58 objects:v65 count:16];
   if (v4)
@@ -58,25 +58,25 @@
         }
 
         v9 = *(*(&v58 + 1) + 8 * v8);
-        v10 = [v9 pathExtension];
+        pathExtension = [v9 pathExtension];
         v11 = [*(v6 + 2824) characterSetWithCharactersInString:@"0123456789"];
-        v12 = [v11 invertedSet];
+        invertedSet = [v11 invertedSet];
 
-        if ([(__CFString *)v10 length]&& [(__CFString *)v10 rangeOfCharacterFromSet:v12]!= 0x7FFFFFFFFFFFFFFFLL)
+        if ([(__CFString *)pathExtension length]&& [(__CFString *)pathExtension rangeOfCharacterFromSet:invertedSet]!= 0x7FFFFFFFFFFFFFFFLL)
         {
-          v13 = [v9 stringByDeletingPathExtension];
+          stringByDeletingPathExtension = [v9 stringByDeletingPathExtension];
         }
 
         else
         {
 
-          v13 = v9;
-          v10 = @"png";
+          stringByDeletingPathExtension = v9;
+          pathExtension = @"png";
         }
 
-        if (v13)
+        if (stringByDeletingPathExtension)
         {
-          v14 = v10 == 0;
+          v14 = pathExtension == 0;
         }
 
         else
@@ -87,19 +87,19 @@
         if (!v14)
         {
           v15 = objc_opt_new();
-          [v15 addObject:v13];
-          if (([v13 hasSuffix:@"2x"] & 1) == 0)
+          [v15 addObject:stringByDeletingPathExtension];
+          if (([stringByDeletingPathExtension hasSuffix:@"2x"] & 1) == 0)
           {
-            v16 = [v13 stringByAppendingString:@"@2x"];
+            v16 = [stringByDeletingPathExtension stringByAppendingString:@"@2x"];
             [v15 addObject:v16];
           }
 
-          v41 = v12;
-          v42 = v10;
+          v41 = invertedSet;
+          v42 = pathExtension;
           v43 = v8;
-          if (([v13 hasSuffix:@"3x"] & 1) == 0)
+          if (([stringByDeletingPathExtension hasSuffix:@"3x"] & 1) == 0)
           {
-            v17 = [v13 stringByAppendingString:@"@3x"];
+            v17 = [stringByDeletingPathExtension stringByAppendingString:@"@3x"];
             [v15 addObject:v17];
           }
 
@@ -107,9 +107,9 @@
           v57 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v45 = [(IFResourceNames *)v38 variants];
-          v18 = [v45 countByEnumeratingWithState:&v54 objects:v64 count:16];
-          v44 = v13;
+          variants = [(IFResourceNames *)selfCopy variants];
+          v18 = [variants countByEnumeratingWithState:&v54 objects:v64 count:16];
+          v44 = stringByDeletingPathExtension;
           if (v18)
           {
             v19 = v18;
@@ -120,11 +120,11 @@
               {
                 if (*v55 != v20)
                 {
-                  objc_enumerationMutation(v45);
+                  objc_enumerationMutation(variants);
                 }
 
                 v22 = *(*(&v54 + 1) + 8 * i);
-                if (([v13 hasSuffix:v22] & 1) == 0)
+                if (([stringByDeletingPathExtension hasSuffix:v22] & 1) == 0)
                 {
                   v52 = 0u;
                   v53 = 0u;
@@ -155,11 +155,11 @@
                     while (v25);
                   }
 
-                  v13 = v44;
+                  stringByDeletingPathExtension = v44;
                 }
               }
 
-              v19 = [v45 countByEnumeratingWithState:&v54 objects:v64 count:16];
+              v19 = [variants countByEnumeratingWithState:&v54 objects:v64 count:16];
             }
 
             while (v19);
@@ -173,9 +173,9 @@
           v30 = [v29 countByEnumeratingWithState:&v46 objects:v62 count:16];
           v3 = v37;
           v5 = v39;
-          v10 = v42;
+          pathExtension = v42;
           v8 = v43;
-          v12 = v41;
+          invertedSet = v41;
           if (v30)
           {
             v31 = v30;
@@ -204,7 +204,7 @@
 
           v6 = 0x1E696A000;
           v7 = v36;
-          v13 = v44;
+          stringByDeletingPathExtension = v44;
         }
 
         ++v8;
@@ -228,8 +228,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(IFResourceNames *)self rootNames];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  rootNames = [(IFResourceNames *)self rootNames];
+  v5 = [rootNames countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -240,26 +240,26 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(rootNames);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 pathExtension];
-        if ([(__CFString *)v10 length])
+        pathExtension = [v9 pathExtension];
+        if ([(__CFString *)pathExtension length])
         {
-          v11 = [v9 stringByDeletingPathExtension];
+          stringByDeletingPathExtension = [v9 stringByDeletingPathExtension];
         }
 
         else
         {
 
-          v11 = v9;
-          v10 = @"icns";
+          stringByDeletingPathExtension = v9;
+          pathExtension = @"icns";
         }
 
-        if (v10)
+        if (pathExtension)
         {
-          v12 = v11 == 0;
+          v12 = stringByDeletingPathExtension == 0;
         }
 
         else
@@ -269,7 +269,7 @@
 
         if (!v12)
         {
-          v13 = [v11 stringByAppendingPathExtension:v10];
+          v13 = [stringByDeletingPathExtension stringByAppendingPathExtension:pathExtension];
           if (v13)
           {
             [v3 addObject:v13];
@@ -277,7 +277,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [rootNames countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

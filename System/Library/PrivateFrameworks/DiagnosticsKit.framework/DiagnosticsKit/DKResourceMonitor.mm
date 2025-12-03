@@ -1,12 +1,12 @@
 @interface DKResourceMonitor
-- (BOOL)canProceedWithResources:(id)a3;
-- (BOOL)reserveIfAvailable:(id)a3;
+- (BOOL)canProceedWithResources:(id)resources;
+- (BOOL)reserveIfAvailable:(id)available;
 - (DKResourceMonitor)init;
 - (void)cancelAndResetReservations;
-- (void)executeWhenSafe:(id)a3 withCompletion:(id)a4;
+- (void)executeWhenSafe:(id)safe withCompletion:(id)completion;
 - (void)proceedWithAllSafeExectuions;
-- (void)releaseResources:(id)a3;
-- (void)reserveResources:(id)a3;
+- (void)releaseResources:(id)resources;
+- (void)reserveResources:(id)resources;
 @end
 
 @implementation DKResourceMonitor
@@ -18,13 +18,13 @@
   v2 = [(DKResourceMonitor *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     resourceUsage = v2->_resourceUsage;
-    v2->_resourceUsage = v3;
+    v2->_resourceUsage = dictionary;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     executionQueue = v2->_executionQueue;
-    v2->_executionQueue = v5;
+    v2->_executionQueue = array;
 
     v2->_isExecutingBlocks = 0;
   }
@@ -32,15 +32,15 @@
   return v2;
 }
 
-- (BOOL)canProceedWithResources:(id)a3
+- (BOOL)canProceedWithResources:(id)resources
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  resourcesCopy = resources;
+  v5 = [resourcesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -51,12 +51,12 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resourcesCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(DKResourceMonitor *)self resourceUsage];
-        v11 = [v10 objectForKey:v9];
+        resourceUsage = [(DKResourceMonitor *)self resourceUsage];
+        v11 = [resourceUsage objectForKey:v9];
 
         if (v11 && ([v11 BOOLValue] & 1) != 0)
         {
@@ -66,7 +66,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [resourcesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -83,15 +83,15 @@ LABEL_12:
   return v12;
 }
 
-- (void)reserveResources:(id)a3
+- (void)reserveResources:(id)resources
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resourcesCopy = resources;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [resourcesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -103,19 +103,19 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resourcesCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(DKResourceMonitor *)self resourceUsage];
+        resourceUsage = [(DKResourceMonitor *)self resourceUsage];
         v11 = [MEMORY[0x277CCABB0] numberWithBool:1];
-        [v10 setValue:v11 forKey:v9];
+        [resourceUsage setValue:v11 forKey:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [resourcesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -124,43 +124,43 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)reserveIfAvailable:(id)a3
+- (BOOL)reserveIfAvailable:(id)available
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DKResourceMonitor *)self resourceUsage];
-  objc_sync_enter(v5);
-  v6 = [(DKResourceMonitor *)self canProceedWithResources:v4];
+  availableCopy = available;
+  resourceUsage = [(DKResourceMonitor *)self resourceUsage];
+  objc_sync_enter(resourceUsage);
+  v6 = [(DKResourceMonitor *)self canProceedWithResources:availableCopy];
   if (v6)
   {
     v7 = DiagnosticsKitLogHandleForCategory(1);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = availableCopy;
       _os_log_impl(&dword_248B9D000, v7, OS_LOG_TYPE_DEFAULT, "Reserving these component resources %@", &v10, 0xCu);
     }
 
-    [(DKResourceMonitor *)self reserveResources:v4];
+    [(DKResourceMonitor *)self reserveResources:availableCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(resourceUsage);
 
   v8 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (void)releaseResources:(id)a3
+- (void)releaseResources:(id)resources
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DKResourceMonitor *)self resourceUsage];
-  objc_sync_enter(v5);
+  resourcesCopy = resources;
+  resourceUsage = [(DKResourceMonitor *)self resourceUsage];
+  objc_sync_enter(resourceUsage);
   v6 = DiagnosticsKitLogHandleForCategory(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = resourcesCopy;
     _os_log_impl(&dword_248B9D000, v6, OS_LOG_TYPE_DEFAULT, "Releasing these resources: %@", buf, 0xCu);
   }
 
@@ -168,7 +168,7 @@ LABEL_12:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = resourcesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -184,9 +184,9 @@ LABEL_12:
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(DKResourceMonitor *)self resourceUsage];
+        resourceUsage2 = [(DKResourceMonitor *)self resourceUsage];
         v13 = [MEMORY[0x277CCABB0] numberWithBool:0];
-        [v12 setValue:v13 forKey:v11];
+        [resourceUsage2 setValue:v13 forKey:v11];
 
         ++v10;
       }
@@ -198,7 +198,7 @@ LABEL_12:
     while (v8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(resourceUsage);
   [(DKResourceMonitor *)self proceedWithAllSafeExectuions];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -212,13 +212,13 @@ LABEL_12:
   if (![(DKResourceMonitor *)self isExecutingBlocks])
   {
     [(DKResourceMonitor *)self setIsExecutingBlocks:1];
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(DKResourceMonitor *)self executionQueue];
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    executionQueue = [(DKResourceMonitor *)self executionQueue];
+    v5 = [executionQueue countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v5)
     {
       v6 = *v18;
@@ -228,40 +228,40 @@ LABEL_12:
         {
           if (*v18 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(executionQueue);
           }
 
           v8 = *(*(&v17 + 1) + 8 * i);
-          v9 = [v8 resources];
-          v10 = [(DKResourceMonitor *)self reserveIfAvailable:v9];
+          resources = [v8 resources];
+          v10 = [(DKResourceMonitor *)self reserveIfAvailable:resources];
 
           if (v10)
           {
             v11 = DiagnosticsKitLogHandleForCategory(1);
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
-              v12 = [v8 resources];
+              resources2 = [v8 resources];
               *buf = 138412290;
-              v22 = v12;
+              v22 = resources2;
               _os_log_impl(&dword_248B9D000, v11, OS_LOG_TYPE_DEFAULT, "Calling resource reservation callback for %@", buf, 0xCu);
             }
 
-            v13 = [v8 completion];
-            v13[2](v13, 0);
+            completion = [v8 completion];
+            completion[2](completion, 0);
 
             [v8 setCompletion:0];
-            [v3 addObject:v8];
+            [array addObject:v8];
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v5 = [executionQueue countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v5);
     }
 
-    v14 = [(DKResourceMonitor *)self executionQueue];
-    [v14 removeObjectsInArray:v3];
+    executionQueue2 = [(DKResourceMonitor *)self executionQueue];
+    [executionQueue2 removeObjectsInArray:array];
 
     [(DKResourceMonitor *)self setIsExecutingBlocks:0];
   }
@@ -271,30 +271,30 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)executeWhenSafe:(id)a3 withCompletion:(id)a4
+- (void)executeWhenSafe:(id)safe withCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DKResourceMonitor *)self executionQueue];
-  objc_sync_enter(v8);
+  safeCopy = safe;
+  completionCopy = completion;
+  executionQueue = [(DKResourceMonitor *)self executionQueue];
+  objc_sync_enter(executionQueue);
   v9 = DiagnosticsKitLogHandleForCategory(1);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v6;
+    v15 = safeCopy;
     _os_log_impl(&dword_248B9D000, v9, OS_LOG_TYPE_DEFAULT, "Queue %@ for execution", &v14, 0xCu);
   }
 
   v10 = objc_opt_new();
-  [v10 setResources:v6];
-  v11 = [v7 copy];
+  [v10 setResources:safeCopy];
+  v11 = [completionCopy copy];
   [v10 setCompletion:v11];
 
-  v12 = [(DKResourceMonitor *)self executionQueue];
-  [v12 addObject:v10];
+  executionQueue2 = [(DKResourceMonitor *)self executionQueue];
+  [executionQueue2 addObject:v10];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(executionQueue);
   [(DKResourceMonitor *)self proceedWithAllSafeExectuions];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -303,14 +303,14 @@ LABEL_12:
 - (void)cancelAndResetReservations
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(DKResourceMonitor *)self executionQueue];
-  objc_sync_enter(v2);
+  executionQueue = [(DKResourceMonitor *)self executionQueue];
+  objc_sync_enter(executionQueue);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(DKResourceMonitor *)self executionQueue];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  executionQueue2 = [(DKResourceMonitor *)self executionQueue];
+  v4 = [executionQueue2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = *v16;
@@ -321,35 +321,35 @@ LABEL_12:
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(executionQueue2);
         }
 
         v7 = *(*(&v15 + 1) + 8 * v6);
         v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DKResourceUsageMonitor" code:0 userInfo:0];
-        v9 = [v7 completion];
-        (v9)[2](v9, v8);
+        completion = [v7 completion];
+        (completion)[2](completion, v8);
 
         [v7 setCompletion:0];
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [executionQueue2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  [(DKResourceMonitor *)self setExecutionQueue:v10];
+  array = [MEMORY[0x277CBEB18] array];
+  [(DKResourceMonitor *)self setExecutionQueue:array];
 
-  objc_sync_exit(v2);
-  v11 = [(DKResourceMonitor *)self resourceUsage];
-  objc_sync_enter(v11);
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  [(DKResourceMonitor *)self setResourceUsage:v12];
+  objc_sync_exit(executionQueue);
+  resourceUsage = [(DKResourceMonitor *)self resourceUsage];
+  objc_sync_enter(resourceUsage);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(DKResourceMonitor *)self setResourceUsage:dictionary];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(resourceUsage);
   v13 = *MEMORY[0x277D85DE8];
 }
 

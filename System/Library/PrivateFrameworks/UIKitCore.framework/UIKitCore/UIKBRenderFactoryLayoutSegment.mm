@@ -1,32 +1,32 @@
 @interface UIKBRenderFactoryLayoutSegment
-+ (id)segmentWithTraits:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3 inRect:(CGRect)a4 withKeyplane:(id)a5;
-- (BOOL)shouldOverlayTraitsForKey:(id)a3;
-- (UIKBRenderFactoryLayoutSegment)initWithTraits:(id)a3;
-- (void)addLayoutRect:(CGRect)a3 asTriangle:(unint64_t)a4;
-- (void)addRelativeLayoutRectFromEdge:(unint64_t)a3 ofCachedKey:(id)a4;
++ (id)segmentWithTraits:(id)traits;
+- (BOOL)containsPoint:(CGPoint)point inRect:(CGRect)rect withKeyplane:(id)keyplane;
+- (BOOL)shouldOverlayTraitsForKey:(id)key;
+- (UIKBRenderFactoryLayoutSegment)initWithTraits:(id)traits;
+- (void)addLayoutRect:(CGRect)rect asTriangle:(unint64_t)triangle;
+- (void)addRelativeLayoutRectFromEdge:(unint64_t)edge ofCachedKey:(id)key;
 @end
 
 @implementation UIKBRenderFactoryLayoutSegment
 
-+ (id)segmentWithTraits:(id)a3
++ (id)segmentWithTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTraits:v4];
+  traitsCopy = traits;
+  v5 = [[self alloc] initWithTraits:traitsCopy];
 
   return v5;
 }
 
-- (UIKBRenderFactoryLayoutSegment)initWithTraits:(id)a3
+- (UIKBRenderFactoryLayoutSegment)initWithTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   v9.receiver = self;
   v9.super_class = UIKBRenderFactoryLayoutSegment;
   v6 = [(UIKBRenderFactoryLayoutSegment *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_traits, a3);
+    objc_storeStrong(&v6->_traits, traits);
     v7->_rectCount = 0;
     v7->_edgeCount = 0;
   }
@@ -34,12 +34,12 @@
   return v7;
 }
 
-- (void)addLayoutRect:(CGRect)a3 asTriangle:(unint64_t)a4
+- (void)addLayoutRect:(CGRect)rect asTriangle:(unint64_t)triangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   rectCount = self->_rectCount;
   if (rectCount < 10 || ([MEMORY[0x1E696AAA8] currentHandler], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"UIKBRenderFactory.m", 189, @"Too many layout rects"), v13, rectCount = self->_rectCount, rectCount <= 9))
   {
@@ -48,42 +48,42 @@
     v11[3] = y;
     v11[4] = width;
     v11[5] = height;
-    self->_triangleCorners[rectCount] = a4;
+    self->_triangleCorners[rectCount] = triangle;
     self->_rectCount = rectCount + 1;
   }
 }
 
-- (void)addRelativeLayoutRectFromEdge:(unint64_t)a3 ofCachedKey:(id)a4
+- (void)addRelativeLayoutRectFromEdge:(unint64_t)edge ofCachedKey:(id)key
 {
-  v11 = a4;
+  keyCopy = key;
   edgeCount = self->_edgeCount;
   if (edgeCount < 10 || ([MEMORY[0x1E696AAA8] currentHandler], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"UIKBRenderFactory.m", 199, @"Too many layout edges"), v10, edgeCount = self->_edgeCount, edgeCount <= 9))
   {
     v9 = &self->super.isa + edgeCount;
-    v9[53] = a3;
-    objc_storeStrong(v9 + 63, a4);
+    v9[53] = edge;
+    objc_storeStrong(v9 + 63, key);
     ++self->_edgeCount;
   }
 }
 
-- (BOOL)shouldOverlayTraitsForKey:(id)a3
+- (BOOL)shouldOverlayTraitsForKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 dynamicLayout] && (objc_msgSend(v3, "displayType") == 21 || objc_msgSend(v3, "displayType") == 18 || objc_msgSend(v3, "displayType") == 3 || objc_msgSend(v3, "displayType") == 5 || objc_msgSend(v3, "displayType") == 26 || objc_msgSend(v3, "displayType") == 4 || objc_msgSend(v3, "displayType") == 53 || objc_msgSend(v3, "displayType") == 32 || objc_msgSend(v3, "displayType") == 33 || objc_msgSend(v3, "interactionType") == 44 || objc_msgSend(v3, "interactionType") == 41 || objc_msgSend(v3, "interactionType") == 38 || objc_msgSend(v3, "interactionType") == 9 || objc_msgSend(v3, "interactionType") == 10 || objc_msgSend(v3, "interactionType") == 14 || objc_msgSend(v3, "interactionType") == 12 || objc_msgSend(v3, "interactionType") == 17 || (objc_msgSend(v3, "usesControlKeyAppearance") & 1) != 0);
+  keyCopy = key;
+  v4 = [keyCopy dynamicLayout] && (objc_msgSend(keyCopy, "displayType") == 21 || objc_msgSend(keyCopy, "displayType") == 18 || objc_msgSend(keyCopy, "displayType") == 3 || objc_msgSend(keyCopy, "displayType") == 5 || objc_msgSend(keyCopy, "displayType") == 26 || objc_msgSend(keyCopy, "displayType") == 4 || objc_msgSend(keyCopy, "displayType") == 53 || objc_msgSend(keyCopy, "displayType") == 32 || objc_msgSend(keyCopy, "displayType") == 33 || objc_msgSend(keyCopy, "interactionType") == 44 || objc_msgSend(keyCopy, "interactionType") == 41 || objc_msgSend(keyCopy, "interactionType") == 38 || objc_msgSend(keyCopy, "interactionType") == 9 || objc_msgSend(keyCopy, "interactionType") == 10 || objc_msgSend(keyCopy, "interactionType") == 14 || objc_msgSend(keyCopy, "interactionType") == 12 || objc_msgSend(keyCopy, "interactionType") == 17 || (objc_msgSend(keyCopy, "usesControlKeyAppearance") & 1) != 0);
 
   return v4;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 inRect:(CGRect)a4 withKeyplane:(id)a5
+- (BOOL)containsPoint:(CGPoint)point inRect:(CGRect)rect withKeyplane:(id)keyplane
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
-  v7 = a3.y;
-  v8 = a3.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  v7 = point.y;
+  v8 = point.x;
   v63 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  keyplaneCopy = keyplane;
   rectCount = self->_rectCount;
   v55 = height;
   if (rectCount)
@@ -150,7 +150,7 @@ LABEL_11:
     }
 
     v21 = 0;
-    if (!v10)
+    if (!keyplaneCopy)
     {
       goto LABEL_54;
     }
@@ -160,15 +160,15 @@ LABEL_11:
   {
 LABEL_14:
     v21 = 1;
-    if (!v10)
+    if (!keyplaneCopy)
     {
       goto LABEL_54;
     }
   }
 
-  v22 = [v10 cache];
+  cache = [keyplaneCopy cache];
 
-  if (!v22)
+  if (!cache)
   {
     goto LABEL_54;
   }
@@ -196,7 +196,7 @@ LABEL_14:
   {
     v27 = edges[v24];
     v28 = cachedKeyNames[v24];
-    v29 = [v10 cachedKeysByKeyName:v28];
+    v29 = [keyplaneCopy cachedKeysByKeyName:v28];
     v30 = v29;
     if (!v29 || (v60 = 0u, v61 = 0u, v58 = 0u, v59 = 0u, (v31 = [v29 countByEnumeratingWithState:&v58 objects:v62 count:16]) == 0))
     {
@@ -324,7 +324,7 @@ LABEL_44:
   rectCount = v54;
   edgeCount = v52;
 LABEL_45:
-  v47 = [(UIKBRenderFactoryLayoutSegment *)self requireAllMatches];
+  requireAllMatches = [(UIKBRenderFactoryLayoutSegment *)self requireAllMatches];
   if (edgeCount)
   {
     v48 = v46;
@@ -346,7 +346,7 @@ LABEL_45:
   }
 
   v50 = v49 | v48;
-  if (v47)
+  if (requireAllMatches)
   {
     v21 &= v46;
   }

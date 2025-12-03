@@ -1,21 +1,21 @@
 @interface PMLPlanSimulator
-+ (id)simulatorWithDbPaths:(id)a3 sessionDescriptor:(id)a4 sessionsInBatch:(unint64_t)a5 maxSessionsLimit:(unint64_t)a6 seed:(unint64_t)a7;
-- (PMLPlanSimulator)initWithStores:(id)a3 sessionDescriptor:(id)a4 seed:(unint64_t)a5;
++ (id)simulatorWithDbPaths:(id)paths sessionDescriptor:(id)descriptor sessionsInBatch:(unint64_t)batch maxSessionsLimit:(unint64_t)limit seed:(unint64_t)seed;
+- (PMLPlanSimulator)initWithStores:(id)stores sessionDescriptor:(id)descriptor seed:(unint64_t)seed;
 - (id)_randomStore;
-- (id)_randomStores:(unint64_t)a3;
-- (id)runParallelPlansWithPlanId:(id)a3 tracker:(id)a4 noiseScaleFactors:(id)a5 noiseMinimumMagnitude:(float)a6 weights:(id)a7 serverIteration:(unint64_t)a8 useIntercept:(BOOL)a9 noiseMechanism:(int64_t)a10 usingRandomlySelected:(unint64_t)a11;
+- (id)_randomStores:(unint64_t)stores;
+- (id)runParallelPlansWithPlanId:(id)id tracker:(id)tracker noiseScaleFactors:(id)factors noiseMinimumMagnitude:(float)magnitude weights:(id)weights serverIteration:(unint64_t)iteration useIntercept:(BOOL)intercept noiseMechanism:(int64_t)self0 usingRandomlySelected:(unint64_t)self1;
 @end
 
 @implementation PMLPlanSimulator
 
-- (id)runParallelPlansWithPlanId:(id)a3 tracker:(id)a4 noiseScaleFactors:(id)a5 noiseMinimumMagnitude:(float)a6 weights:(id)a7 serverIteration:(unint64_t)a8 useIntercept:(BOOL)a9 noiseMechanism:(int64_t)a10 usingRandomlySelected:(unint64_t)a11
+- (id)runParallelPlansWithPlanId:(id)id tracker:(id)tracker noiseScaleFactors:(id)factors noiseMinimumMagnitude:(float)magnitude weights:(id)weights serverIteration:(unint64_t)iteration useIntercept:(BOOL)intercept noiseMechanism:(int64_t)self0 usingRandomlySelected:(unint64_t)self1
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v19 = a3;
-  v20 = a4;
-  v21 = a7;
-  v22 = [(PMLPlanSimulator *)self _randomStores:a11];
+  var1 = factors.var1;
+  var0 = factors.var0;
+  idCopy = id;
+  trackerCopy = tracker;
+  weightsCopy = weights;
+  v22 = [(PMLPlanSimulator *)self _randomStores:selected];
   v23 = objc_opt_new();
   v24 = dispatch_get_global_queue(33, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -24,22 +24,22 @@
   block[3] = &unk_279ABFA18;
   v43 = var0;
   v44 = var1;
-  v45 = a6;
-  v41 = a8;
-  v42 = a10;
+  magnitudeCopy = magnitude;
+  iterationCopy = iteration;
+  mechanismCopy = mechanism;
   v35 = v22;
-  v36 = v20;
-  v37 = v19;
-  v38 = self;
-  v39 = v21;
-  v46 = a9;
+  v36 = trackerCopy;
+  v37 = idCopy;
+  selfCopy = self;
+  v39 = weightsCopy;
+  interceptCopy = intercept;
   v25 = v23;
   v40 = v25;
-  v26 = v21;
-  v27 = v19;
-  v28 = v20;
+  v26 = weightsCopy;
+  v27 = idCopy;
+  v28 = trackerCopy;
   v29 = v22;
-  dispatch_apply(a11, v24, block);
+  dispatch_apply(selected, v24, block);
 
   v30 = v40;
   v31 = v25;
@@ -76,12 +76,12 @@ void __169__PMLPlanSimulator_runParallelPlansWithPlanId_tracker_noiseScaleFactor
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_randomStores:(unint64_t)a3
+- (id)_randomStores:(unint64_t)stores
 {
-  for (i = objc_opt_new(); a3; --a3)
+  for (i = objc_opt_new(); stores; --stores)
   {
-    v6 = [(PMLPlanSimulator *)self _randomStore];
-    [i addObject:v6];
+    _randomStore = [(PMLPlanSimulator *)self _randomStore];
+    [i addObject:_randomStore];
   }
 
   return i;
@@ -89,26 +89,26 @@ void __169__PMLPlanSimulator_runParallelPlansWithPlanId_tracker_noiseScaleFactor
 
 - (id)_randomStore
 {
-  v3 = [(_PASRng *)self->_rng next];
-  v4 = v3 % [(NSArray *)self->_stores count];
+  next = [(_PASRng *)self->_rng next];
+  v4 = next % [(NSArray *)self->_stores count];
   stores = self->_stores;
 
   return [(NSArray *)stores objectAtIndexedSubscript:v4];
 }
 
-- (PMLPlanSimulator)initWithStores:(id)a3 sessionDescriptor:(id)a4 seed:(unint64_t)a5
+- (PMLPlanSimulator)initWithStores:(id)stores sessionDescriptor:(id)descriptor seed:(unint64_t)seed
 {
-  v9 = a3;
-  v10 = a4;
+  storesCopy = stores;
+  descriptorCopy = descriptor;
   v16.receiver = self;
   v16.super_class = PMLPlanSimulator;
   v11 = [(PMLPlanSimulator *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_stores, a3);
-    objc_storeStrong(&v12->_sessionDescriptor, a4);
-    v13 = [objc_alloc(MEMORY[0x277D42618]) initWithSeed:a5];
+    objc_storeStrong(&v11->_stores, stores);
+    objc_storeStrong(&v12->_sessionDescriptor, descriptor);
+    v13 = [objc_alloc(MEMORY[0x277D42618]) initWithSeed:seed];
     rng = v12->_rng;
     v12->_rng = v13;
   }
@@ -116,36 +116,36 @@ void __169__PMLPlanSimulator_runParallelPlansWithPlanId_tracker_noiseScaleFactor
   return v12;
 }
 
-+ (id)simulatorWithDbPaths:(id)a3 sessionDescriptor:(id)a4 sessionsInBatch:(unint64_t)a5 maxSessionsLimit:(unint64_t)a6 seed:(unint64_t)a7
++ (id)simulatorWithDbPaths:(id)paths sessionDescriptor:(id)descriptor sessionsInBatch:(unint64_t)batch maxSessionsLimit:(unint64_t)limit seed:(unint64_t)seed
 {
-  v13 = a3;
-  v14 = a4;
-  if (![v13 count])
+  pathsCopy = paths;
+  descriptorCopy = descriptor;
+  if (![pathsCopy count])
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PMLPlanSimulator.m" lineNumber:91 description:{@"Can't instantiate simulator, need at least one db file."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLPlanSimulator.m" lineNumber:91 description:{@"Can't instantiate simulator, need at least one db file."}];
   }
 
-  if (a5 != a6)
+  if (batch != limit)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PMLPlanSimulator.m" lineNumber:92 description:@"Multiple batches not supported in simulation."];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLPlanSimulator.m" lineNumber:92 description:@"Multiple batches not supported in simulation."];
   }
 
   v15 = objc_opt_new();
-  v16 = [v13 count];
+  v16 = [pathsCopy count];
   v17 = dispatch_get_global_queue(33, 0);
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = __97__PMLPlanSimulator_simulatorWithDbPaths_sessionDescriptor_sessionsInBatch_maxSessionsLimit_seed___block_invoke;
   v32 = &unk_279ABF9F0;
-  v18 = v13;
+  v18 = pathsCopy;
   v33 = v18;
   v36 = a2;
-  v37 = a1;
-  v19 = v14;
+  selfCopy = self;
+  v19 = descriptorCopy;
   v34 = v19;
-  v38 = a6;
+  limitCopy = limit;
   v20 = v15;
   v35 = v20;
   dispatch_apply(v16, v17, &v29);
@@ -166,7 +166,7 @@ void __169__PMLPlanSimulator_runParallelPlansWithPlanId_tracker_noiseScaleFactor
     while (v22 < [v18 count]);
   }
 
-  v25 = [[a1 alloc] initWithStores:v21 sessionDescriptor:v19 seed:a7];
+  v25 = [[self alloc] initWithStores:v21 sessionDescriptor:v19 seed:seed];
 
   return v25;
 }

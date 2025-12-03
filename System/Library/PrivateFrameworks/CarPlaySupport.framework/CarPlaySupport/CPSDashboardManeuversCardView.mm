@@ -1,24 +1,24 @@
 @interface CPSDashboardManeuversCardView
 - (BOOL)wantsLargeSize;
 - (CGSize)intrinsicContentSize;
-- (CPSDashboardManeuversCardView)initWithFrame:(CGRect)a3;
+- (CPSDashboardManeuversCardView)initWithFrame:(CGRect)frame;
 - (void)_updateConstraints;
 - (void)_updateStyleOverridesForSubviews;
 - (void)layoutSubviews;
-- (void)showManeuvers:(id)a3 usingDisplayStyles:(id)a4;
-- (void)updateEstimates:(id)a3 forManeuver:(id)a4;
+- (void)showManeuvers:(id)maneuvers usingDisplayStyles:(id)styles;
+- (void)updateEstimates:(id)estimates forManeuver:(id)maneuver;
 @end
 
 @implementation CPSDashboardManeuversCardView
 
-- (CPSDashboardManeuversCardView)initWithFrame:(CGRect)a3
+- (CPSDashboardManeuversCardView)initWithFrame:(CGRect)frame
 {
-  v8 = a3;
+  frameCopy = frame;
   v6 = a2;
   v7 = 0;
   v5.receiver = self;
   v5.super_class = CPSDashboardManeuversCardView;
-  v7 = [(CPSDashboardManeuversCardView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(CPSDashboardManeuversCardView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v7, v7);
   if (v7)
   {
@@ -37,15 +37,15 @@
   CGSizeMake_2();
   v13 = v2;
   v14 = v3;
-  v9 = [(CPSDashboardManeuversCardView *)self primaryManeuverView];
-  [(CPSPrimaryManeuverView *)v9 bounds];
+  primaryManeuverView = [(CPSDashboardManeuversCardView *)self primaryManeuverView];
+  [(CPSPrimaryManeuverView *)primaryManeuverView bounds];
   v15 = v14 + v4;
   v10 = 0;
   if ([(CPSDashboardManeuversCardView *)self showSecondaryManeuverView])
   {
-    v11 = [(CPSDashboardManeuversCardView *)self secondaryManeuverView];
+    secondaryManeuverView = [(CPSDashboardManeuversCardView *)self secondaryManeuverView];
     v10 = 1;
-    [(CPSDashboardSecondaryManeuverView *)v11 bounds];
+    [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView bounds];
     v8 = v5;
   }
 
@@ -57,7 +57,7 @@
   v16 = v15 + v8;
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](secondaryManeuverView);
   }
 
   v6 = v13;
@@ -70,133 +70,133 @@
 - (void)_updateConstraints
 {
   v58[3] = *MEMORY[0x277D85DE8];
-  v54 = self;
+  selfCopy = self;
   v53[1] = a2;
-  v51 = [(CPSDashboardManeuversCardView *)self primaryManeuverView];
-  MEMORY[0x277D82BD8](v51);
-  if (v51)
+  primaryManeuverView = [(CPSDashboardManeuversCardView *)self primaryManeuverView];
+  MEMORY[0x277D82BD8](primaryManeuverView);
+  if (primaryManeuverView)
   {
     v53[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v49 = [(CPSDashboardManeuversCardView *)v54 primaryManeuverView];
-    v48 = [(CPSPrimaryManeuverView *)v49 topAnchor];
-    v47 = [(CPSDashboardManeuversCardView *)v54 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:0.0 constant:?];
+    primaryManeuverView2 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+    topAnchor = [(CPSPrimaryManeuverView *)primaryManeuverView2 topAnchor];
+    topAnchor2 = [(CPSDashboardManeuversCardView *)selfCopy topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:0.0 constant:?];
     v58[0] = v46;
-    v45 = [(CPSDashboardManeuversCardView *)v54 primaryManeuverView];
-    v44 = [(CPSPrimaryManeuverView *)v45 leadingAnchor];
-    v43 = [(CPSDashboardManeuversCardView *)v54 leadingAnchor];
-    v42 = [v44 constraintEqualToAnchor:?];
+    primaryManeuverView3 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+    leadingAnchor = [(CPSPrimaryManeuverView *)primaryManeuverView3 leadingAnchor];
+    leadingAnchor2 = [(CPSDashboardManeuversCardView *)selfCopy leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:?];
     v58[1] = v42;
-    v41 = [(CPSDashboardManeuversCardView *)v54 primaryManeuverView];
-    v40 = [(CPSPrimaryManeuverView *)v41 trailingAnchor];
-    v39 = [(CPSDashboardManeuversCardView *)v54 trailingAnchor];
-    v38 = [v40 constraintEqualToAnchor:?];
+    primaryManeuverView4 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+    trailingAnchor = [(CPSPrimaryManeuverView *)primaryManeuverView4 trailingAnchor];
+    trailingAnchor2 = [(CPSDashboardManeuversCardView *)selfCopy trailingAnchor];
+    v38 = [trailingAnchor constraintEqualToAnchor:?];
     v58[2] = v38;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:3];
     [v53[0] addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v37);
     MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
-    MEMORY[0x277D82BD8](v40);
-    MEMORY[0x277D82BD8](v41);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](trailingAnchor);
+    MEMORY[0x277D82BD8](primaryManeuverView4);
     MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v43);
-    MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](leadingAnchor);
+    MEMORY[0x277D82BD8](primaryManeuverView3);
     MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
-    MEMORY[0x277D82BD8](v48);
-    v50 = [(CPSDashboardManeuversCardView *)v54 secondaryManeuverView];
-    *&v2 = MEMORY[0x277D82BD8](v50).n128_u64[0];
-    if (v50)
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](topAnchor);
+    secondaryManeuverView = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+    *&v2 = MEMORY[0x277D82BD8](secondaryManeuverView).n128_u64[0];
+    if (secondaryManeuverView)
     {
-      v36 = [(CPSDashboardManeuversCardView *)v54 secondaryManeveuverConstraints];
-      *&v3 = MEMORY[0x277D82BD8](v36).n128_u64[0];
-      if (v36)
+      secondaryManeveuverConstraints = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeveuverConstraints];
+      *&v3 = MEMORY[0x277D82BD8](secondaryManeveuverConstraints).n128_u64[0];
+      if (secondaryManeveuverConstraints)
       {
         v34 = MEMORY[0x277CCAAD0];
-        v35 = [(CPSDashboardManeuversCardView *)v54 secondaryManeveuverConstraints];
+        secondaryManeveuverConstraints2 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeveuverConstraints];
         [v34 deactivateConstraints:?];
-        [(CPSDashboardManeuversCardView *)v54 setSecondaryManeveuverConstraints:0, MEMORY[0x277D82BD8](v35).n128_f64[0]];
+        [(CPSDashboardManeuversCardView *)selfCopy setSecondaryManeveuverConstraints:0, MEMORY[0x277D82BD8](secondaryManeveuverConstraints2).n128_f64[0]];
       }
 
       v52 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v33 = [(CPSDashboardManeuversCardView *)v54 primaryManeuverView];
-      v32 = [(CPSPrimaryManeuverView *)v33 bottomAnchor];
-      v31 = [(CPSDashboardManeuversCardView *)v54 secondaryManeuverView];
-      v30 = [(CPSDashboardSecondaryManeuverView *)v31 topAnchor];
-      v29 = [v32 constraintEqualToAnchor:0.0 constant:?];
+      primaryManeuverView5 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+      bottomAnchor = [(CPSPrimaryManeuverView *)primaryManeuverView5 bottomAnchor];
+      secondaryManeuverView2 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+      topAnchor3 = [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView2 topAnchor];
+      v29 = [bottomAnchor constraintEqualToAnchor:0.0 constant:?];
       v57[0] = v29;
-      v28 = [(CPSDashboardManeuversCardView *)v54 secondaryManeuverView];
-      v27 = [(CPSDashboardSecondaryManeuverView *)v28 leadingAnchor];
-      v26 = [(CPSDashboardManeuversCardView *)v54 leadingAnchor];
-      v25 = [v27 constraintEqualToAnchor:?];
+      secondaryManeuverView3 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+      leadingAnchor3 = [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView3 leadingAnchor];
+      leadingAnchor4 = [(CPSDashboardManeuversCardView *)selfCopy leadingAnchor];
+      v25 = [leadingAnchor3 constraintEqualToAnchor:?];
       v57[1] = v25;
-      v24 = [(CPSDashboardManeuversCardView *)v54 secondaryManeuverView];
-      v23 = [(CPSDashboardSecondaryManeuverView *)v24 trailingAnchor];
-      v22 = [(CPSDashboardManeuversCardView *)v54 trailingAnchor];
-      v21 = [v23 constraintEqualToAnchor:?];
+      secondaryManeuverView4 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+      trailingAnchor3 = [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView4 trailingAnchor];
+      trailingAnchor4 = [(CPSDashboardManeuversCardView *)selfCopy trailingAnchor];
+      v21 = [trailingAnchor3 constraintEqualToAnchor:?];
       v57[2] = v21;
-      v20 = [(CPSDashboardManeuversCardView *)v54 secondaryManeuverView];
-      v19 = [(CPSDashboardSecondaryManeuverView *)v20 bottomAnchor];
-      v18 = [(CPSDashboardManeuversCardView *)v54 bottomAnchor];
-      v17 = [v19 constraintEqualToAnchor:?];
+      secondaryManeuverView5 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+      bottomAnchor2 = [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView5 bottomAnchor];
+      bottomAnchor3 = [(CPSDashboardManeuversCardView *)selfCopy bottomAnchor];
+      v17 = [bottomAnchor2 constraintEqualToAnchor:?];
       v57[3] = v17;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:4];
       [v52 addObjectsFromArray:?];
       MEMORY[0x277D82BD8](v16);
       MEMORY[0x277D82BD8](v17);
-      MEMORY[0x277D82BD8](v18);
-      MEMORY[0x277D82BD8](v19);
-      MEMORY[0x277D82BD8](v20);
+      MEMORY[0x277D82BD8](bottomAnchor3);
+      MEMORY[0x277D82BD8](bottomAnchor2);
+      MEMORY[0x277D82BD8](secondaryManeuverView5);
       MEMORY[0x277D82BD8](v21);
-      MEMORY[0x277D82BD8](v22);
-      MEMORY[0x277D82BD8](v23);
-      MEMORY[0x277D82BD8](v24);
+      MEMORY[0x277D82BD8](trailingAnchor4);
+      MEMORY[0x277D82BD8](trailingAnchor3);
+      MEMORY[0x277D82BD8](secondaryManeuverView4);
       MEMORY[0x277D82BD8](v25);
-      MEMORY[0x277D82BD8](v26);
-      MEMORY[0x277D82BD8](v27);
-      MEMORY[0x277D82BD8](v28);
+      MEMORY[0x277D82BD8](leadingAnchor4);
+      MEMORY[0x277D82BD8](leadingAnchor3);
+      MEMORY[0x277D82BD8](secondaryManeuverView3);
       MEMORY[0x277D82BD8](v29);
-      MEMORY[0x277D82BD8](v30);
-      MEMORY[0x277D82BD8](v31);
-      MEMORY[0x277D82BD8](v32);
-      if (![(CPSDashboardManeuversCardView *)v54 showSecondaryManeuverView])
+      MEMORY[0x277D82BD8](topAnchor3);
+      MEMORY[0x277D82BD8](secondaryManeuverView2);
+      MEMORY[0x277D82BD8](bottomAnchor);
+      if (![(CPSDashboardManeuversCardView *)selfCopy showSecondaryManeuverView])
       {
-        v15 = [(CPSDashboardManeuversCardView *)v54 secondaryManeuverView];
-        v14 = [(CPSDashboardSecondaryManeuverView *)v15 heightAnchor];
-        v13 = [v14 constraintEqualToConstant:0.0];
+        secondaryManeuverView6 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+        heightAnchor = [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView6 heightAnchor];
+        v13 = [heightAnchor constraintEqualToConstant:0.0];
         v56 = v13;
         v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
         [v52 addObjectsFromArray:?];
         MEMORY[0x277D82BD8](v12);
         MEMORY[0x277D82BD8](v13);
-        MEMORY[0x277D82BD8](v14);
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](heightAnchor);
+        MEMORY[0x277D82BD8](secondaryManeuverView6);
       }
 
-      [(CPSDashboardManeuversCardView *)v54 setSecondaryManeveuverConstraints:v52];
+      [(CPSDashboardManeuversCardView *)selfCopy setSecondaryManeveuverConstraints:v52];
       v10 = v53[0];
-      v11 = [(CPSDashboardManeuversCardView *)v54 secondaryManeveuverConstraints];
+      secondaryManeveuverConstraints3 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeveuverConstraints];
       [v10 addObjectsFromArray:?];
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](secondaryManeveuverConstraints3);
       objc_storeStrong(&v52, 0);
     }
 
     else
     {
-      v9 = [(CPSDashboardManeuversCardView *)v54 primaryManeuverView];
-      v8 = [(CPSPrimaryManeuverView *)v9 bottomAnchor];
-      v7 = [(CPSDashboardManeuversCardView *)v54 bottomAnchor];
-      v6 = [v8 constraintEqualToAnchor:0.0 constant:?];
+      primaryManeuverView6 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+      bottomAnchor4 = [(CPSPrimaryManeuverView *)primaryManeuverView6 bottomAnchor];
+      bottomAnchor5 = [(CPSDashboardManeuversCardView *)selfCopy bottomAnchor];
+      v6 = [bottomAnchor4 constraintEqualToAnchor:0.0 constant:?];
       v55 = v6;
       v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
       [v53[0] addObjectsFromArray:?];
       MEMORY[0x277D82BD8](v5);
       MEMORY[0x277D82BD8](v6);
-      MEMORY[0x277D82BD8](v7);
-      MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](bottomAnchor5);
+      MEMORY[0x277D82BD8](bottomAnchor4);
+      MEMORY[0x277D82BD8](primaryManeuverView6);
     }
 
     [MEMORY[0x277CCAAD0] activateConstraints:{v53[0], v53}];
@@ -206,49 +206,49 @@
 
 - (void)_updateStyleOverridesForSubviews
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
-  v16 = [(CPSDashboardManeuversCardView *)self primaryManeuverView];
-  v17 = [(CPSPrimaryManeuverView *)v16 maneuver];
-  v18 = [(CPManeuver *)v17 cardBackgroundColor];
+  primaryManeuverView = [(CPSDashboardManeuversCardView *)self primaryManeuverView];
+  maneuver = [(CPSPrimaryManeuverView *)primaryManeuverView maneuver];
+  cardBackgroundColor = [(CPManeuver *)maneuver cardBackgroundColor];
   allowsCustomBackgroundColorForManeuver = 0;
-  if (v18)
+  if (cardBackgroundColor)
   {
-    allowsCustomBackgroundColorForManeuver = v21->_allowsCustomBackgroundColorForManeuver;
+    allowsCustomBackgroundColorForManeuver = selfCopy->_allowsCustomBackgroundColorForManeuver;
   }
 
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v17);
-  *&v2 = MEMORY[0x277D82BD8](v16).n128_u64[0];
+  MEMORY[0x277D82BD8](cardBackgroundColor);
+  MEMORY[0x277D82BD8](maneuver);
+  *&v2 = MEMORY[0x277D82BD8](primaryManeuverView).n128_u64[0];
   if (allowsCustomBackgroundColorForManeuver)
   {
-    v6 = [(CPSDashboardManeuversCardView *)v21 primaryManeuverView];
-    v5 = [(CPSPrimaryManeuverView *)v6 maneuver];
-    v4 = [(CPManeuver *)v5 cardBackgroundColor];
-    [(CPSDashboardManeuversCardView *)v21 setBackgroundColor:?];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    v11 = [(CPSDashboardManeuversCardView *)v21 secondaryManeuverView];
+    primaryManeuverView2 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+    maneuver2 = [(CPSPrimaryManeuverView *)primaryManeuverView2 maneuver];
+    cardBackgroundColor2 = [(CPManeuver *)maneuver2 cardBackgroundColor];
+    [(CPSDashboardManeuversCardView *)selfCopy setBackgroundColor:?];
+    MEMORY[0x277D82BD8](cardBackgroundColor2);
+    MEMORY[0x277D82BD8](maneuver2);
+    secondaryManeuverView = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
     v7 = MEMORY[0x277D75348];
     v10 = CPSFrameworkBundle();
-    v9 = [(CPSDashboardManeuversCardView *)v21 traitCollection];
+    traitCollection = [(CPSDashboardManeuversCardView *)selfCopy traitCollection];
     v8 = [v7 colorNamed:@"GuidanceColor30AlphaLightWhiteDarkBlack" inBundle:v10 compatibleWithTraitCollection:?];
-    [(CPSDashboardSecondaryManeuverView *)v11 setBackgroundColor:?];
+    [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView setBackgroundColor:?];
     MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](traitCollection);
     MEMORY[0x277D82BD8](v10);
-    v13 = [(CPSDashboardManeuversCardView *)v21 backgroundColor];
-    v12 = [(CPSDashboardManeuversCardView *)v21 traitCollection];
-    location[0] = [v13 resolvedColorWithTraitCollection:?];
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
+    backgroundColor = [(CPSDashboardManeuversCardView *)selfCopy backgroundColor];
+    traitCollection2 = [(CPSDashboardManeuversCardView *)selfCopy traitCollection];
+    location[0] = [backgroundColor resolvedColorWithTraitCollection:?];
+    MEMORY[0x277D82BD8](traitCollection2);
+    MEMORY[0x277D82BD8](backgroundColor);
     v15 = CPContrastingColorForColor();
-    v14 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     [v15 isEqual:?];
-    MEMORY[0x277D82BD8](v14);
-    v3 = [(CPSDashboardManeuversCardView *)v21 subviews];
-    [v3 enumerateObjectsUsingBlock:?];
-    MEMORY[0x277D82BD8](v3);
+    MEMORY[0x277D82BD8](whiteColor);
+    subviews = [(CPSDashboardManeuversCardView *)selfCopy subviews];
+    [subviews enumerateObjectsUsingBlock:?];
+    MEMORY[0x277D82BD8](subviews);
     objc_storeStrong(location, 0);
   }
 }
@@ -264,178 +264,178 @@ void __65__CPSDashboardManeuversCardView__updateStyleOverridesForSubviews__block
 
 - (void)layoutSubviews
 {
-  v85 = self;
+  selfCopy = self;
   v84 = a2;
   v83.receiver = self;
   v83.super_class = CPSDashboardManeuversCardView;
   [(CPSDashboardManeuversCardView *)&v83 layoutSubviews];
-  v62 = [(CPSDashboardManeuversCardView *)v85 primaryManeuverView];
+  primaryManeuverView = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
   v81 = 0;
   v63 = 0;
-  if (!v62)
+  if (!primaryManeuverView)
   {
-    v82 = [(CPSDashboardManeuversCardView *)v85 maneuvers];
+    maneuvers = [(CPSDashboardManeuversCardView *)selfCopy maneuvers];
     v81 = 1;
-    v63 = [(NSArray *)v82 count]!= 0;
+    v63 = [(NSArray *)maneuvers count]!= 0;
   }
 
   if (v81)
   {
-    MEMORY[0x277D82BD8](v82);
+    MEMORY[0x277D82BD8](maneuvers);
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v62).n128_u64[0];
+  *&v2 = MEMORY[0x277D82BD8](primaryManeuverView).n128_u64[0];
   if (v63)
   {
     v59 = [CPSDashboardPrimaryManeuverView alloc];
-    v61 = [(CPSDashboardManeuversCardView *)v85 maneuvers];
-    v60 = [(NSArray *)v61 firstObject];
+    maneuvers2 = [(CPSDashboardManeuversCardView *)selfCopy maneuvers];
+    firstObject = [(NSArray *)maneuvers2 firstObject];
     v80 = [(CPSPrimaryManeuverView *)v59 initWithManeuver:?];
-    MEMORY[0x277D82BD8](v60);
-    *&v3 = MEMORY[0x277D82BD8](v61).n128_u64[0];
-    [(CPSDashboardManeuversCardView *)v85 addSubview:v80, v3];
-    [(CPSDashboardManeuversCardView *)v85 setPrimaryManeuverView:v80];
+    MEMORY[0x277D82BD8](firstObject);
+    *&v3 = MEMORY[0x277D82BD8](maneuvers2).n128_u64[0];
+    [(CPSDashboardManeuversCardView *)selfCopy addSubview:v80, v3];
+    [(CPSDashboardManeuversCardView *)selfCopy setPrimaryManeuverView:v80];
     objc_storeStrong(&v80, 0);
   }
 
-  v57 = [(CPSDashboardManeuversCardView *)v85 secondaryManeuverView];
+  secondaryManeuverView = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
   v78 = 0;
   v58 = 0;
-  if (!v57)
+  if (!secondaryManeuverView)
   {
-    v79 = [(CPSDashboardManeuversCardView *)v85 maneuvers];
+    maneuvers3 = [(CPSDashboardManeuversCardView *)selfCopy maneuvers];
     v78 = 1;
-    v58 = [(NSArray *)v79 count]> 1;
+    v58 = [(NSArray *)maneuvers3 count]> 1;
   }
 
   if (v78)
   {
-    MEMORY[0x277D82BD8](v79);
+    MEMORY[0x277D82BD8](maneuvers3);
   }
 
-  *&v4 = MEMORY[0x277D82BD8](v57).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](secondaryManeuverView).n128_u64[0];
   if (v58)
   {
     v55 = [CPSDashboardSecondaryManeuverView alloc];
-    v56 = [(NSArray *)v85->_maneuvers objectAtIndex:1];
+    v56 = [(NSArray *)selfCopy->_maneuvers objectAtIndex:1];
     v77 = [(CPSDashboardSecondaryManeuverView *)v55 initWithManeuver:?];
     *&v5 = MEMORY[0x277D82BD8](v56).n128_u64[0];
-    [(CPSDashboardManeuversCardView *)v85 addSubview:v77, v5];
-    [(CPSDashboardManeuversCardView *)v85 setSecondaryManeuverView:v77];
+    [(CPSDashboardManeuversCardView *)selfCopy addSubview:v77, v5];
+    [(CPSDashboardManeuversCardView *)selfCopy setSecondaryManeuverView:v77];
     objc_storeStrong(&v77, 0);
   }
 
-  [(CPSDashboardManeuversCardView *)v85 _updateStyleOverridesForSubviews];
-  [(CPSDashboardManeuversCardView *)v85 bounds];
+  [(CPSDashboardManeuversCardView *)selfCopy _updateStyleOverridesForSubviews];
+  [(CPSDashboardManeuversCardView *)selfCopy bounds];
   v74[1] = v6;
   v74[2] = v7;
   *&v75 = v8;
   *(&v75 + 1) = v9;
   v76 = v75;
   v74[0] = 0;
-  v53 = [(CPSDashboardManeuversCardView *)v85 maneuvers];
-  v52 = [(NSArray *)v53 firstObject];
-  v54 = [v52 junctionImage];
-  MEMORY[0x277D82BD8](v54);
-  MEMORY[0x277D82BD8](v52);
-  v10 = MEMORY[0x277D82BD8](v53).n128_u64[0];
-  if (v54)
+  maneuvers4 = [(CPSDashboardManeuversCardView *)selfCopy maneuvers];
+  firstObject2 = [(NSArray *)maneuvers4 firstObject];
+  junctionImage = [firstObject2 junctionImage];
+  MEMORY[0x277D82BD8](junctionImage);
+  MEMORY[0x277D82BD8](firstObject2);
+  v10 = MEMORY[0x277D82BD8](maneuvers4).n128_u64[0];
+  if (junctionImage)
   {
-    v51 = [(CPSDashboardManeuversCardView *)v85 primaryManeuverView];
-    v11 = [(CPSPrimaryManeuverView *)v51 shortestJunctionViewlayoutConfigurationForSize:v76];
+    primaryManeuverView2 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+    v11 = [(CPSPrimaryManeuverView *)primaryManeuverView2 shortestJunctionViewlayoutConfigurationForSize:v76];
     v12 = v74[0];
     v74[0] = v11;
     MEMORY[0x277D82BD8](v12);
-    v10 = MEMORY[0x277D82BD8](v51).n128_u64[0];
+    v10 = MEMORY[0x277D82BD8](primaryManeuverView2).n128_u64[0];
   }
 
   if (!v74[0])
   {
-    v50 = [(CPSDashboardManeuversCardView *)v85 primaryManeuverView];
-    v74[0] = [(CPSPrimaryManeuverView *)v50 layoutConfigurationForSize:v76];
+    primaryManeuverView3 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+    v74[0] = [(CPSPrimaryManeuverView *)primaryManeuverView3 layoutConfigurationForSize:v76];
     MEMORY[0x277D82BD8](0);
-    MEMORY[0x277D82BD8](v50);
+    MEMORY[0x277D82BD8](primaryManeuverView3);
   }
 
   v73 = 0.0;
-  v49 = [(CPSDashboardManeuversCardView *)v85 secondaryManeuverView];
-  v13 = MEMORY[0x277D82BD8](v49).n128_u64[0];
-  if (v49)
+  secondaryManeuverView2 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+  v13 = MEMORY[0x277D82BD8](secondaryManeuverView2).n128_u64[0];
+  if (secondaryManeuverView2)
   {
-    v47 = [(CPSDashboardManeuversCardView *)v85 secondaryManeuverView];
-    [(CPSDashboardManeuversCardView *)v85 bounds];
+    secondaryManeuverView3 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+    [(CPSDashboardManeuversCardView *)selfCopy bounds];
     v70[5] = v14;
     v70[6] = v15;
     *&v71 = v16;
     *(&v71 + 1) = v17;
     v72 = v71;
-    [(CPSSecondaryManeuverView *)v47 generateLayoutConfigurationsForSizeIfNecessary:0 force:v16, v17];
-    *&v18 = MEMORY[0x277D82BD8](v47).n128_u64[0];
-    v48 = [(CPSDashboardManeuversCardView *)v85 secondaryManeuverView];
-    [(CPSSecondaryManeuverView *)v48 generatedHeight];
+    [(CPSSecondaryManeuverView *)secondaryManeuverView3 generateLayoutConfigurationsForSizeIfNecessary:0 force:v16, v17];
+    *&v18 = MEMORY[0x277D82BD8](secondaryManeuverView3).n128_u64[0];
+    secondaryManeuverView4 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+    [(CPSSecondaryManeuverView *)secondaryManeuverView4 generatedHeight];
     v73 = v19;
-    v13 = MEMORY[0x277D82BD8](v48).n128_u64[0];
+    v13 = MEMORY[0x277D82BD8](secondaryManeuverView4).n128_u64[0];
   }
 
   [v74[0] height];
   v46 = v20 + v73;
-  [(CPSDashboardManeuversCardView *)v85 bounds];
+  [(CPSDashboardManeuversCardView *)selfCopy bounds];
   v70[1] = v21;
   v70[2] = v22;
   v70[3] = v23;
   v70[4] = v24;
   if (v46 <= *&v24)
   {
-    v36 = [(CPSDashboardManeuversCardView *)v85 secondaryManeuverView];
-    [(CPSDashboardManeuversCardView *)v85 setShowSecondaryManeuverView:v36 != 0];
-    MEMORY[0x277D82BD8](v36);
+    secondaryManeuverView5 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+    [(CPSDashboardManeuversCardView *)selfCopy setShowSecondaryManeuverView:secondaryManeuverView5 != 0];
+    MEMORY[0x277D82BD8](secondaryManeuverView5);
   }
 
   else
   {
-    v45 = [(CPSDashboardManeuversCardView *)v85 secondaryManeuverView];
-    *&v25 = MEMORY[0x277D82BD8](v45).n128_u64[0];
-    if (v45)
+    secondaryManeuverView6 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+    *&v25 = MEMORY[0x277D82BD8](secondaryManeuverView6).n128_u64[0];
+    if (secondaryManeuverView6)
     {
       v70[0] = 0;
-      v43 = [(CPSDashboardManeuversCardView *)v85 maneuvers];
-      v42 = [(NSArray *)v43 firstObject];
-      v44 = [v42 junctionImage];
-      MEMORY[0x277D82BD8](v44);
-      MEMORY[0x277D82BD8](v42);
-      v26 = MEMORY[0x277D82BD8](v43).n128_u64[0];
-      if (v44)
+      maneuvers5 = [(CPSDashboardManeuversCardView *)selfCopy maneuvers];
+      firstObject3 = [(NSArray *)maneuvers5 firstObject];
+      junctionImage2 = [firstObject3 junctionImage];
+      MEMORY[0x277D82BD8](junctionImage2);
+      MEMORY[0x277D82BD8](firstObject3);
+      v26 = MEMORY[0x277D82BD8](maneuvers5).n128_u64[0];
+      if (junctionImage2)
       {
-        v41 = [(CPSDashboardManeuversCardView *)v85 primaryManeuverView];
-        v27 = [(CPSPrimaryManeuverView *)v41 shortestJunctionViewlayoutConfigurationForSize:v76];
+        primaryManeuverView4 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+        v27 = [(CPSPrimaryManeuverView *)primaryManeuverView4 shortestJunctionViewlayoutConfigurationForSize:v76];
         v28 = v70[0];
         v70[0] = v27;
         MEMORY[0x277D82BD8](v28);
-        v26 = MEMORY[0x277D82BD8](v41).n128_u64[0];
+        v26 = MEMORY[0x277D82BD8](primaryManeuverView4).n128_u64[0];
       }
 
       if (!v70[0])
       {
-        v40 = [(CPSDashboardManeuversCardView *)v85 primaryManeuverView];
-        v70[0] = [(CPSPrimaryManeuverView *)v40 shortestInstructionlayoutConfigurationForSize:v76];
+        primaryManeuverView5 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+        v70[0] = [(CPSPrimaryManeuverView *)primaryManeuverView5 shortestInstructionlayoutConfigurationForSize:v76];
         MEMORY[0x277D82BD8](0);
-        v26 = MEMORY[0x277D82BD8](v40).n128_u64[0];
+        v26 = MEMORY[0x277D82BD8](primaryManeuverView5).n128_u64[0];
       }
 
-      if (v70[0] && ([v70[0] height], v39 = v29 + v73, -[CPSDashboardManeuversCardView bounds](v85, "bounds"), v31 = v30, v26 = *&v39, v69[1] = v31, v69[2] = v32, v69[3] = v33, v69[4] = v34, v39 <= *&v34))
+      if (v70[0] && ([v70[0] height], v39 = v29 + v73, -[CPSDashboardManeuversCardView bounds](selfCopy, "bounds"), v31 = v30, v26 = *&v39, v69[1] = v31, v69[2] = v32, v69[3] = v33, v69[4] = v34, v39 <= *&v34))
       {
-        [(CPSDashboardManeuversCardView *)v85 setShowSecondaryManeuverView:1, v39];
-        v37 = [(CPSDashboardManeuversCardView *)v85 secondaryManeuverView];
-        [(CPSDashboardSecondaryManeuverView *)v37 setHidden:0];
-        MEMORY[0x277D82BD8](v37);
+        [(CPSDashboardManeuversCardView *)selfCopy setShowSecondaryManeuverView:1, v39];
+        secondaryManeuverView7 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+        [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView7 setHidden:0];
+        MEMORY[0x277D82BD8](secondaryManeuverView7);
       }
 
       else
       {
-        [(CPSDashboardManeuversCardView *)v85 setShowSecondaryManeuverView:0, *&v26];
-        v38 = [(CPSDashboardManeuversCardView *)v85 secondaryManeuverView];
-        [(CPSDashboardSecondaryManeuverView *)v38 setHidden:1];
-        MEMORY[0x277D82BD8](v38);
+        [(CPSDashboardManeuversCardView *)selfCopy setShowSecondaryManeuverView:0, *&v26];
+        secondaryManeuverView8 = [(CPSDashboardManeuversCardView *)selfCopy secondaryManeuverView];
+        [(CPSDashboardSecondaryManeuverView *)secondaryManeuverView8 setHidden:1];
+        MEMORY[0x277D82BD8](secondaryManeuverView8);
       }
 
       objc_storeStrong(v70, 0);
@@ -448,21 +448,21 @@ void __65__CPSDashboardManeuversCardView__updateStyleOverridesForSubviews__block
   v66 = 0;
   v67 = __47__CPSDashboardManeuversCardView_layoutSubviews__block_invoke;
   v68 = &unk_278D913E8;
-  v69[0] = MEMORY[0x277D82BE0](v85);
+  v69[0] = MEMORY[0x277D82BE0](selfCopy);
   [v35 performWithoutAnimation:&v64];
   objc_storeStrong(v69, 0);
   objc_storeStrong(v74, 0);
 }
 
-- (void)showManeuvers:(id)a3 usingDisplayStyles:(id)a4
+- (void)showManeuvers:(id)maneuvers usingDisplayStyles:(id)styles
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, maneuvers);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, styles);
   oslog = CarPlaySupportGeneralLogging();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -471,35 +471,35 @@ void __65__CPSDashboardManeuversCardView__updateStyleOverridesForSubviews__block
   }
 
   objc_storeStrong(&oslog, 0);
-  objc_storeStrong(&v8->_maneuvers, location[0]);
-  [(CPSDashboardManeuversCardView *)v8 setNeedsLayout];
+  objc_storeStrong(&selfCopy->_maneuvers, location[0]);
+  [(CPSDashboardManeuversCardView *)selfCopy setNeedsLayout];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)updateEstimates:(id)a3 forManeuver:(id)a4
+- (void)updateEstimates:(id)estimates forManeuver:(id)maneuver
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v11 = [(CPSDashboardManeuversCardView *)v15 primaryManeuverView];
-  v10 = [(CPSPrimaryManeuverView *)v11 maneuver];
-  v9 = [(CPManeuver *)v10 identifier];
-  v8 = [v13 identifier];
-  v12 = [v9 isEqual:?];
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  *&v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+  objc_storeStrong(&v13, maneuver);
+  primaryManeuverView = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+  maneuver = [(CPSPrimaryManeuverView *)primaryManeuverView maneuver];
+  identifier = [(CPManeuver *)maneuver identifier];
+  identifier2 = [v13 identifier];
+  v12 = [identifier isEqual:?];
+  MEMORY[0x277D82BD8](identifier2);
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](maneuver);
+  *&v4 = MEMORY[0x277D82BD8](primaryManeuverView).n128_u64[0];
   if (v12)
   {
-    v6 = [(CPSDashboardManeuversCardView *)v15 primaryManeuverView];
-    [(CPSPrimaryManeuverView *)v6 setCurrentTravelEstimates:location[0]];
-    *&v5 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    [(CPSDashboardManeuversCardView *)v15 setNeedsLayout];
+    primaryManeuverView2 = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+    [(CPSPrimaryManeuverView *)primaryManeuverView2 setCurrentTravelEstimates:location[0]];
+    *&v5 = MEMORY[0x277D82BD8](primaryManeuverView2).n128_u64[0];
+    [(CPSDashboardManeuversCardView *)selfCopy setNeedsLayout];
   }
 
   objc_storeStrong(&v13, 0);
@@ -508,32 +508,32 @@ void __65__CPSDashboardManeuversCardView__updateStyleOverridesForSubviews__block
 
 - (BOOL)wantsLargeSize
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
-  v12 = [(CPSDashboardManeuversCardView *)self maneuvers];
-  v11 = [(NSArray *)v12 firstObject];
-  v13 = [v11 junctionImage];
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  if (v13)
+  maneuvers = [(CPSDashboardManeuversCardView *)self maneuvers];
+  firstObject = [(NSArray *)maneuvers firstObject];
+  junctionImage = [firstObject junctionImage];
+  MEMORY[0x277D82BD8](junctionImage);
+  MEMORY[0x277D82BD8](firstObject);
+  MEMORY[0x277D82BD8](maneuvers);
+  if (junctionImage)
   {
     v6 = objc_opt_class();
-    v7 = [(CPSDashboardManeuversCardView *)v19 window];
-    v18[0] = CPSSafeCast_7(v6, v7);
-    *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-    v9 = [v18[0] widgetSizes];
-    v8 = [v9 lastObject];
-    [v8 CGSizeValue];
+    window = [(CPSDashboardManeuversCardView *)selfCopy window];
+    v18[0] = CPSSafeCast_7(v6, window);
+    *&v2 = MEMORY[0x277D82BD8](window).n128_u64[0];
+    widgetSizes = [v18[0] widgetSizes];
+    lastObject = [widgetSizes lastObject];
+    [lastObject CGSizeValue];
     v16 = v3;
     v17 = v4;
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](lastObject);
+    MEMORY[0x277D82BD8](widgetSizes);
     *&v15 = v16;
     *(&v15 + 1) = v17 - 12.0;
-    v10 = [(CPSDashboardManeuversCardView *)v19 primaryManeuverView];
-    v14 = [(CPSPrimaryManeuverView *)v10 shortestJunctionViewlayoutConfigurationForSize:v15];
-    MEMORY[0x277D82BD8](v10);
+    primaryManeuverView = [(CPSDashboardManeuversCardView *)selfCopy primaryManeuverView];
+    v14 = [(CPSPrimaryManeuverView *)primaryManeuverView shortestJunctionViewlayoutConfigurationForSize:v15];
+    MEMORY[0x277D82BD8](primaryManeuverView);
     v20 = v14 != 0;
     objc_storeStrong(&v14, 0);
     objc_storeStrong(v18, 0);

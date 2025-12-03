@@ -1,11 +1,11 @@
 @interface ESAHealthSampleAnalyticsStore
 - (ESAHealthSampleAnalyticsStore)init;
-- (ESAHealthSampleAnalyticsStore)initWithStorage:(id)a3;
+- (ESAHealthSampleAnalyticsStore)initWithStorage:(id)storage;
 - (HealthSampleUpdate)lastUpdate;
 - (NSDate)lastHealthCheckTimestamp;
 - (id)lastHealthSample;
 - (id)performUpdate;
-- (id)updateWithHealthSample:(id)a3;
+- (id)updateWithHealthSample:(id)sample;
 @end
 
 @implementation ESAHealthSampleAnalyticsStore
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (ESAHealthSampleAnalyticsStore)initWithStorage:(id)a3
+- (ESAHealthSampleAnalyticsStore)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = ESAHealthSampleAnalyticsStore;
   v6 = [(ESAHealthSampleAnalyticsStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
   }
 
   return v7;
@@ -60,19 +60,19 @@
 
 - (id)lastHealthSample
 {
-  v2 = [(ESAHealthSampleAnalyticsStore *)self lastUpdate];
-  v3 = [v2 lastHealthSample];
+  lastUpdate = [(ESAHealthSampleAnalyticsStore *)self lastUpdate];
+  lastHealthSample = [lastUpdate lastHealthSample];
 
-  return v3;
+  return lastHealthSample;
 }
 
 - (NSDate)lastHealthCheckTimestamp
 {
-  v2 = [(ESAHealthSampleAnalyticsStore *)self lastUpdate];
-  v3 = [v2 lastHealthSample];
-  v4 = [v3 timestamp];
+  lastUpdate = [(ESAHealthSampleAnalyticsStore *)self lastUpdate];
+  lastHealthSample = [lastUpdate lastHealthSample];
+  timestamp = [lastHealthSample timestamp];
 
-  return v4;
+  return timestamp;
 }
 
 - (id)performUpdate
@@ -83,14 +83,14 @@
   return v4;
 }
 
-- (id)updateWithHealthSample:(id)a3
+- (id)updateWithHealthSample:(id)sample
 {
-  v4 = a3;
-  v5 = [(ESAHealthSampleAnalyticsStore *)self lastUpdate];
-  v6 = v5;
-  if (v5)
+  sampleCopy = sample;
+  lastUpdate = [(ESAHealthSampleAnalyticsStore *)self lastUpdate];
+  v6 = lastUpdate;
+  if (lastUpdate)
   {
-    v7 = v5;
+    v7 = lastUpdate;
   }
 
   else
@@ -100,7 +100,7 @@
 
   v8 = v7;
 
-  v9 = [(HealthSampleUpdate *)v8 updatedValueWithHealthSample:v4];
+  v9 = [(HealthSampleUpdate *)v8 updatedValueWithHealthSample:sampleCopy];
 
   objc_storeStrong(&self->_lastUpdate, v9);
   v14 = 0;

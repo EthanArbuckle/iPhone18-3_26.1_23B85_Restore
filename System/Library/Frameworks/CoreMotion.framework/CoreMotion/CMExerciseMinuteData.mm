@@ -1,15 +1,15 @@
 @interface CMExerciseMinuteData
-- (CMExerciseMinuteData)initWithCoder:(id)a3;
-- (CMExerciseMinuteData)initWithStartDate:(double)a3 recordId:(int64_t)a4 sourceId:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMExerciseMinuteData)initWithCoder:(id)coder;
+- (CMExerciseMinuteData)initWithStartDate:(double)date recordId:(int64_t)id sourceId:(id)sourceId;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMExerciseMinuteData
 
-- (CMExerciseMinuteData)initWithStartDate:(double)a3 recordId:(int64_t)a4 sourceId:(id)a5
+- (CMExerciseMinuteData)initWithStartDate:(double)date recordId:(int64_t)id sourceId:(id)sourceId
 {
   v13.receiver = self;
   v13.super_class = CMExerciseMinuteData;
@@ -17,9 +17,9 @@
   v11 = v8;
   if (v8)
   {
-    v8->fStartDate = a3;
-    v8->fRecordId = a4;
-    v8->fSourceId = objc_msgSend_copy(a5, v9, v10);
+    v8->fStartDate = date;
+    v8->fRecordId = id;
+    v8->fSourceId = objc_msgSend_copy(sourceId, v9, v10);
   }
 
   return v11;
@@ -32,27 +32,27 @@
   [(CMExerciseMinuteData *)&v3 dealloc];
 }
 
-- (CMExerciseMinuteData)initWithCoder:(id)a3
+- (CMExerciseMinuteData)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CMExerciseMinuteData;
   v5 = [(CMExerciseMinuteData *)&v11 init];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"kExerciseMinuteDataCodingKeyStartDate");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"kExerciseMinuteDataCodingKeyStartDate");
     v5->fStartDate = v6;
-    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kExerciseMinuteDataCodingKeyRecordId");
+    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kExerciseMinuteDataCodingKeyRecordId");
     v8 = objc_opt_class();
-    v5->fSourceId = objc_msgSend_decodeObjectOfClass_forKey_(a3, v9, v8, @"kExerciseMinuteDataCodingKeySourceId");
+    v5->fSourceId = objc_msgSend_decodeObjectOfClass_forKey_(coder, v9, v8, @"kExerciseMinuteDataCodingKeySourceId");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   fStartDate = self->fStartDate;
   fRecordId = self->fRecordId;
   fSourceId = self->fSourceId;
@@ -60,13 +60,13 @@
   return MEMORY[0x1EEE66B58](v7, sel_initWithStartDate_recordId_sourceId_, fRecordId);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeDouble_forKey_(a3, a2, @"kExerciseMinuteDataCodingKeyStartDate", self->fStartDate);
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->fRecordId, @"kExerciseMinuteDataCodingKeyRecordId");
+  objc_msgSend_encodeDouble_forKey_(coder, a2, @"kExerciseMinuteDataCodingKeyStartDate", self->fStartDate);
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->fRecordId, @"kExerciseMinuteDataCodingKeyRecordId");
   fSourceId = self->fSourceId;
 
-  objc_msgSend_encodeObject_forKey_(a3, v6, fSourceId, @"kExerciseMinuteDataCodingKeySourceId");
+  objc_msgSend_encodeObject_forKey_(coder, v6, fSourceId, @"kExerciseMinuteDataCodingKeySourceId");
 }
 
 - (id)description

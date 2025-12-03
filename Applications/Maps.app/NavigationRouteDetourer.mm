@@ -1,8 +1,8 @@
 @interface NavigationRouteDetourer
-- (NavigationRouteDetourer)initWithNavigationService:(id)a3 platformController:(id)a4 routeInfoProvider:(id)a5 routeInterrupter:(id)a6;
+- (NavigationRouteDetourer)initWithNavigationService:(id)service platformController:(id)controller routeInfoProvider:(id)provider routeInterrupter:(id)interrupter;
 - (PlatformController)platformController;
-- (void)detourRouteToMapItem:(id)a3;
-- (void)detourRouteToWaypoint:(id)a3 replacingWaypoint:(id)a4;
+- (void)detourRouteToMapItem:(id)item;
+- (void)detourRouteToWaypoint:(id)waypoint replacingWaypoint:(id)replacingWaypoint;
 @end
 
 @implementation NavigationRouteDetourer
@@ -14,17 +14,17 @@
   return WeakRetained;
 }
 
-- (void)detourRouteToWaypoint:(id)a3 replacingWaypoint:(id)a4
+- (void)detourRouteToWaypoint:(id)waypoint replacingWaypoint:(id)replacingWaypoint
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NavigationRouteDetourer *)self navigationService];
-  v9 = [v8 navigationTransportType];
-  if (v9 <= 2)
+  waypointCopy = waypoint;
+  replacingWaypointCopy = replacingWaypoint;
+  navigationService = [(NavigationRouteDetourer *)self navigationService];
+  navigationTransportType = [navigationService navigationTransportType];
+  if (navigationTransportType <= 2)
   {
-    if (v9 != 1)
+    if (navigationTransportType != 1)
     {
-      if (v9 == 2)
+      if (navigationTransportType == 2)
       {
         IsEnabled_Maps182 = MapsFeature_IsEnabled_Maps182();
         goto LABEL_14;
@@ -46,9 +46,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (v9 != 3)
+  if (navigationTransportType != 3)
   {
-    if (v9 != 6)
+    if (navigationTransportType != 6)
     {
       goto LABEL_8;
     }
@@ -64,26 +64,26 @@ LABEL_14:
   {
 LABEL_15:
     WeakRetained = objc_loadWeakRetained(&self->_platformController);
-    v19 = [WeakRetained currentNavigationSession];
-    v14 = [v19 waypointController];
+    currentNavigationSession = [WeakRetained currentNavigationSession];
+    waypointController = [currentNavigationSession waypointController];
 
-    if (v14)
+    if (waypointController)
     {
-      if (v7)
+      if (replacingWaypointCopy)
       {
         v20 = sub_100006E1C();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v21 = [v7 name];
-          v22 = [v6 name];
+          name = [replacingWaypointCopy name];
+          name2 = [waypointCopy name];
           v26 = 138412546;
-          v27 = v21;
+          v27 = name;
           v28 = 2112;
-          v29 = v22;
+          v29 = name2;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[MPR] replacing waypoint %@ with %@", &v26, 0x16u);
         }
 
-        [v14 replaceWaypoint:v7 with:v6];
+        [waypointController replaceWaypoint:replacingWaypointCopy with:waypointCopy];
       }
 
       else
@@ -91,13 +91,13 @@ LABEL_15:
         v24 = sub_100035E6C();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
-          v25 = [v6 name];
+          name3 = [waypointCopy name];
           v26 = 138412290;
-          v27 = v25;
+          v27 = name3;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[MPR] inserting new waypoint %@", &v26, 0xCu);
         }
 
-        [v14 insertWaypoint:v6];
+        [waypointController insertWaypoint:waypointCopy];
       }
     }
 
@@ -110,65 +110,65 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_FAULT, "Failed to reach nav waypoint controller from NavigationRouteDetourer", &v26, 2u);
       }
 
-      v14 = 0;
+      waypointController = 0;
     }
 
     goto LABEL_12;
   }
 
 LABEL_9:
-  v12 = [(NavigationRouteDetourer *)self navigationService];
-  [v12 updateDestination:v6];
+  navigationService2 = [(NavigationRouteDetourer *)self navigationService];
+  [navigationService2 updateDestination:waypointCopy];
 
-  v13 = [(NavigationRouteDetourer *)self routeInfoProvider];
-  v14 = [v13 historyEntryRoute];
+  routeInfoProvider = [(NavigationRouteDetourer *)self routeInfoProvider];
+  waypointController = [routeInfoProvider historyEntryRoute];
 
   v15 = sub_100035E6C();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v26 = 138412290;
-    v27 = v14;
+    v27 = waypointController;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Will interrupt route with history entry: %@.", &v26, 0xCu);
   }
 
-  v16 = [(NavigationRouteDetourer *)self routeInterrupter];
-  [v16 interruptHistoryEntryRoute:v14 withCompletion:0];
+  routeInterrupter = [(NavigationRouteDetourer *)self routeInterrupter];
+  [routeInterrupter interruptHistoryEntryRoute:waypointController withCompletion:0];
 
 LABEL_12:
 }
 
-- (void)detourRouteToMapItem:(id)a3
+- (void)detourRouteToMapItem:(id)item
 {
-  v16 = a3;
-  v4 = [v16 _geoMapItemStorageForPersistence];
-  v5 = [[GEOComposedWaypoint alloc] initWithMapItem:v4];
+  itemCopy = item;
+  _geoMapItemStorageForPersistence = [itemCopy _geoMapItemStorageForPersistence];
+  v5 = [[GEOComposedWaypoint alloc] initWithMapItem:_geoMapItemStorageForPersistence];
   v6 = +[MNNavigationService sharedService];
-  v7 = [v6 arrivalInfo];
+  arrivalInfo = [v6 arrivalInfo];
 
   v8 = +[MNNavigationService sharedService];
-  v9 = [v8 route];
+  route = [v8 route];
 
-  v10 = [v9 legs];
-  v11 = [v7 legIndex];
-  if (v11 >= [v10 count])
+  legs = [route legs];
+  legIndex = [arrivalInfo legIndex];
+  if (legIndex >= [legs count])
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v10 objectAtIndex:v11];
+    v12 = [legs objectAtIndex:legIndex];
   }
 
-  v13 = [v16 pointOfInterestCategory];
-  if ([v13 isEqualToString:MKPointOfInterestCategoryEVCharger] && ((objc_msgSend(v7, "isInArrivalState") & 1) != 0 || (objc_msgSend(v7, "isInParkingState") & 1) != 0))
+  pointOfInterestCategory = [itemCopy pointOfInterestCategory];
+  if ([pointOfInterestCategory isEqualToString:MKPointOfInterestCategoryEVCharger] && ((objc_msgSend(arrivalInfo, "isInArrivalState") & 1) != 0 || (objc_msgSend(arrivalInfo, "isInParkingState") & 1) != 0))
   {
-    v14 = [v12 chargingStationInfo];
+    chargingStationInfo = [v12 chargingStationInfo];
 
-    if (v14)
+    if (chargingStationInfo)
     {
-      v15 = [v7 destination];
-      [(NavigationRouteDetourer *)self detourRouteToWaypoint:v5 replacingWaypoint:v15];
+      destination = [arrivalInfo destination];
+      [(NavigationRouteDetourer *)self detourRouteToWaypoint:v5 replacingWaypoint:destination];
 
       goto LABEL_11;
     }
@@ -182,22 +182,22 @@ LABEL_12:
 LABEL_11:
 }
 
-- (NavigationRouteDetourer)initWithNavigationService:(id)a3 platformController:(id)a4 routeInfoProvider:(id)a5 routeInterrupter:(id)a6
+- (NavigationRouteDetourer)initWithNavigationService:(id)service platformController:(id)controller routeInfoProvider:(id)provider routeInterrupter:(id)interrupter
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  serviceCopy = service;
+  controllerCopy = controller;
+  providerCopy = provider;
+  interrupterCopy = interrupter;
   v18.receiver = self;
   v18.super_class = NavigationRouteDetourer;
   v15 = [(NavigationRouteDetourer *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_navigationService, a3);
-    objc_storeWeak(&v16->_platformController, v12);
-    objc_storeStrong(&v16->_routeInfoProvider, a5);
-    objc_storeStrong(&v16->_routeInterrupter, a6);
+    objc_storeStrong(&v15->_navigationService, service);
+    objc_storeWeak(&v16->_platformController, controllerCopy);
+    objc_storeStrong(&v16->_routeInfoProvider, provider);
+    objc_storeStrong(&v16->_routeInterrupter, interrupter);
   }
 
   return v16;

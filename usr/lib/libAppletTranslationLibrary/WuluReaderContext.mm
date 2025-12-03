@@ -1,18 +1,18 @@
 @interface WuluReaderContext
-- (id)readAll:(id)a3 debug:(BOOL)a4 error:(id *)a5;
-- (id)readBalance:(id)a3 error:(id *)a4;
+- (id)readAll:(id)all debug:(BOOL)debug error:(id *)error;
+- (id)readBalance:(id)balance error:(id *)error;
 - (void)dumpAllFiles;
-- (void)readAdditionalFile:(id)a3 cityCode:(id)a4;
+- (void)readAdditionalFile:(id)file cityCode:(id)code;
 @end
 
 @implementation WuluReaderContext
 
-- (id)readAll:(id)a3 debug:(BOOL)a4 error:(id *)a5
+- (id)readAll:(id)all debug:(BOOL)debug error:(id *)error
 {
-  v6 = a4;
+  debugCopy = debug;
   v99[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(WuluReaderContext *)self readBalance:v8 error:a5];
+  allCopy = all;
+  v9 = [(WuluReaderContext *)self readBalance:allCopy error:error];
   v10 = v9;
   if (!v9)
   {
@@ -25,12 +25,12 @@
 
     v26 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to get balance"];
     v18 = v26;
-    if (a5)
+    if (error)
     {
-      v27 = *a5;
+      v27 = *error;
       v20 = MEMORY[0x277CCA9B8];
       v28 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v29 = *MEMORY[0x277CCA7E8];
         v96[0] = *MEMORY[0x277CCA450];
@@ -54,7 +54,7 @@ LABEL_56:
     }
 
 LABEL_42:
-    v55 = 0;
+    selfCopy = 0;
     goto LABEL_65;
   }
 
@@ -64,20 +64,20 @@ LABEL_42:
   v12 = [v10 objectAtIndexedSubscript:1];
   [(WuluReaderContext *)self setOverdraft:v12];
 
-  v13 = [(WuluReaderContext *)self balance];
-  if (![v13 unsignedIntValue])
+  balance = [(WuluReaderContext *)self balance];
+  if (![balance unsignedIntValue])
   {
 
     goto LABEL_16;
   }
 
-  v14 = [(WuluReaderContext *)self overdraft];
-  v15 = [v14 unsignedIntValue];
+  overdraft = [(WuluReaderContext *)self overdraft];
+  unsignedIntValue = [overdraft unsignedIntValue];
 
-  if (!v15)
+  if (!unsignedIntValue)
   {
 LABEL_16:
-    v18 = [(WuluReaderContext *)self readBinary:v8 sfi:21 error:a5];
+    v18 = [(WuluReaderContext *)self readBinary:allCopy sfi:21 error:error];
     if ([v18 length] != 30)
     {
       v56 = ATLLogObject();
@@ -89,12 +89,12 @@ LABEL_16:
 
       v57 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to read SFI 15"];
       v31 = v57;
-      if (a5)
+      if (error)
       {
-        v58 = *a5;
+        v58 = *error;
         v59 = MEMORY[0x277CCA9B8];
         v60 = *MEMORY[0x277CCA450];
-        if (*a5)
+        if (*error)
         {
           v61 = *MEMORY[0x277CCA7E8];
           v88[0] = *MEMORY[0x277CCA450];
@@ -119,16 +119,16 @@ LABEL_16:
 
         v54 = [v62 dictionaryWithObjects:v63 forKeys:v64 count:v65];
         [v59 errorWithDomain:@"ATL" code:5 userInfo:v54];
-        *a5 = v55 = 0;
+        *error = selfCopy = 0;
         goto LABEL_63;
       }
 
-      v55 = 0;
+      selfCopy = 0;
       goto LABEL_64;
     }
 
     [(WuluReaderContext *)self setFile15:v18];
-    v31 = [(WuluReaderContext *)self readBinary:v8 sfi:23 error:a5];
+    v31 = [(WuluReaderContext *)self readBinary:allCopy sfi:23 error:error];
     if ([v31 length] != 60)
     {
       v66 = ATLLogObject();
@@ -140,12 +140,12 @@ LABEL_16:
 
       v67 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to read SFI 17"];
       v54 = v67;
-      if (a5)
+      if (error)
       {
-        v68 = *a5;
+        v68 = *error;
         v69 = MEMORY[0x277CCA9B8];
         v70 = *MEMORY[0x277CCA450];
-        if (*a5)
+        if (*error)
         {
           v71 = *MEMORY[0x277CCA7E8];
           v84[0] = *MEMORY[0x277CCA450];
@@ -169,16 +169,16 @@ LABEL_16:
         }
 
         v76 = [v72 dictionaryWithObjects:v73 forKeys:v74 count:v75];
-        *a5 = [v69 errorWithDomain:@"ATL" code:5 userInfo:v76];
+        *error = [v69 errorWithDomain:@"ATL" code:5 userInfo:v76];
       }
 
-      v55 = 0;
+      selfCopy = 0;
 LABEL_63:
 
       goto LABEL_64;
     }
 
-    v81 = v6;
+    v81 = debugCopy;
     v79 = v31;
     v80 = v18;
     [(WuluReaderContext *)self setFile17:v31];
@@ -191,25 +191,25 @@ LABEL_63:
     v34 = 1;
     while (1)
     {
-      v35 = [(WuluReaderContext *)self readRecord:v8 sfi:24 index:v34 error:a5];
+      v35 = [(WuluReaderContext *)self readRecord:allCopy sfi:24 index:v34 error:error];
       if ([v35 length] == 23 && (objc_msgSend(v35, "isAll00") & 1) == 0)
       {
-        v36 = [(WuluReaderContext *)self file18];
+        file18 = [(WuluReaderContext *)self file18];
         v37 = +[WuluRecord withRecordSfi:recordNumber:recordData:associatedSerialNumber:](WuluRecord, "withRecordSfi:recordNumber:recordData:associatedSerialNumber:", 24, v34, v35, bswap32(*[v35 bytes]) >> 16);
-        [v36 addObject:v37];
+        [file18 addObject:v37];
       }
 
-      v38 = [(WuluReaderContext *)self readExtendedRecord:v8 sfi:30 index:v34 error:a5];
-      v39 = [v38 data];
-      if ([v39 length] != 48)
+      v38 = [(WuluReaderContext *)self readExtendedRecord:allCopy sfi:30 index:v34 error:error];
+      data = [v38 data];
+      if ([data length] != 48)
       {
         goto LABEL_25;
       }
 
-      v40 = [v38 data];
-      v41 = [v40 isAll00];
+      data2 = [v38 data];
+      isAll00 = [data2 isAll00];
 
-      if ((v41 & 1) == 0)
+      if ((isAll00 & 1) == 0)
       {
         break;
       }
@@ -226,31 +226,31 @@ LABEL_26:
         while (1)
         {
           v45 = readAll_debug_error__file1A_indices[v44];
-          v46 = [(WuluReaderContext *)self readExtendedRecord:v8 sfi:26 index:readAll_debug_error__file1A_indices[v44] error:0];
+          v46 = [(WuluReaderContext *)self readExtendedRecord:allCopy sfi:26 index:readAll_debug_error__file1A_indices[v44] error:0];
           v47 = v46;
           if (!v46)
           {
             break;
           }
 
-          v48 = [v46 data];
-          v49 = *([v48 bytes] + 14);
+          data3 = [v46 data];
+          v49 = *([data3 bytes] + 14);
 
           if (v49)
           {
-            v50 = [(WuluReaderContext *)self file1A];
-            [v50 addObject:v47];
+            file1A = [(WuluReaderContext *)self file1A];
+            [file1A addObject:v47];
             goto LABEL_37;
           }
 
           if (v81)
           {
-            v50 = ATLLogObject();
-            if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+            file1A = ATLLogObject();
+            if (os_log_type_enabled(file1A, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109120;
               v83 = v45;
-              v51 = v50;
+              v51 = file1A;
               v52 = "SFI 0x1A index %d is not initialized";
 LABEL_36:
               _os_log_impl(&dword_22EEF5000, v51, OS_LOG_TYPE_DEFAULT, v52, buf, 8u);
@@ -263,28 +263,28 @@ LABEL_38:
 
           if (++v44 == 3)
           {
-            v53 = [(WuluReaderContext *)self file17];
-            v54 = [v53 subdataWithOffset:6 length:2];
+            file17 = [(WuluReaderContext *)self file17];
+            v54 = [file17 subdataWithOffset:6 length:2];
 
-            [(WuluReaderContext *)self readAdditionalFile:v8 cityCode:v54];
+            [(WuluReaderContext *)self readAdditionalFile:allCopy cityCode:v54];
             if (v81)
             {
               [(WuluReaderContext *)self dumpAllFiles];
             }
 
-            v55 = self;
+            selfCopy = self;
             v31 = v79;
             v18 = v80;
             goto LABEL_63;
           }
         }
 
-        v50 = ATLLogObject();
-        if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+        file1A = ATLLogObject();
+        if (os_log_type_enabled(file1A, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
           v83 = v45;
-          v51 = v50;
+          v51 = file1A;
           v52 = "Failed to get SFI 0x1A index %u";
           goto LABEL_36;
         }
@@ -295,8 +295,8 @@ LABEL_37:
       }
     }
 
-    v39 = [(WuluReaderContext *)self file1E];
-    [v39 addObject:v38];
+    data = [(WuluReaderContext *)self file1E];
+    [data addObject:v38];
 LABEL_25:
 
     goto LABEL_26;
@@ -311,14 +311,14 @@ LABEL_25:
 
   v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Balance and overdraft are not consistent."];
   v18 = v17;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_42;
   }
 
-  v19 = *a5;
+  v19 = *error;
   v20 = MEMORY[0x277CCA9B8];
-  if (!*a5)
+  if (!*error)
   {
     v94 = *MEMORY[0x277CCA450];
     v95 = v17;
@@ -341,24 +341,24 @@ LABEL_14:
 LABEL_57:
   v31 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v30];
   [v20 errorWithDomain:@"ATL" code:5 userInfo:v31];
-  *a5 = v55 = 0;
+  *error = selfCopy = 0;
 LABEL_64:
 
 LABEL_65:
   v77 = *MEMORY[0x277D85DE8];
 
-  return v55;
+  return selfCopy;
 }
 
-- (void)readAdditionalFile:(id)a3 cityCode:(id)a4
+- (void)readAdditionalFile:(id)file cityCode:(id)code
 {
   v83[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  codeCopy = code;
   v8 = +[AppletConfigurationData getWuluSettings];
   v9 = [v8 objectForKeyedSubscript:@"cityRules"];
-  v10 = [v7 asHexString];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  asHexString = [codeCopy asHexString];
+  v11 = [v9 objectForKeyedSubscript:asHexString];
 
   if (!v11)
   {
@@ -369,18 +369,18 @@ LABEL_65:
     }
 
     *buf = 138412290;
-    v77 = v7;
+    v77 = codeCopy;
     v32 = "Configuration does not define city rules for city code %@";
     goto LABEL_40;
   }
 
-  v12 = [v11 unsignedIntValue];
-  if ((v12 - 7) < 2 || v12 == 5)
+  unsignedIntValue = [v11 unsignedIntValue];
+  if ((unsignedIntValue - 7) < 2 || unsignedIntValue == 5)
   {
     v14 = +[AppletConfigurationData getWuluSettings];
     v15 = [v14 objectForKeyedSubscript:@"localLogSettings"];
-    v16 = [v7 asHexString];
-    v17 = [v15 objectForKeyedSubscript:v16];
+    asHexString2 = [codeCopy asHexString];
+    v17 = [v15 objectForKeyedSubscript:asHexString2];
 
     if (v17)
     {
@@ -397,7 +397,7 @@ LABEL_65:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v77 = v7;
+          v77 = codeCopy;
           _os_log_impl(&dword_22EEF5000, v27, OS_LOG_TYPE_DEFAULT, "Local log data is not retrived from settings for city %@.", buf, 0xCu);
         }
 
@@ -411,14 +411,14 @@ LABEL_65:
       v24 = [MEMORY[0x277CBEA90] dataWithHexString:v21];
       v25 = [v24 u8:0];
 
-      v26 = [(WuluReaderContext *)self readWuluRecord:v6 sfi:v23 index:v25];
+      v26 = [(WuluReaderContext *)self readWuluRecord:fileCopy sfi:v23 index:v25];
       if (!v26)
       {
         v27 = ATLLogObject();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v77 = v7;
+          v77 = codeCopy;
           _os_log_impl(&dword_22EEF5000, v27, OS_LOG_TYPE_DEFAULT, "Local record not read for city %@.", buf, 0xCu);
         }
 
@@ -426,16 +426,16 @@ LABEL_65:
       }
 
       v27 = v26;
-      v28 = [(WuluReaderContext *)self localRecords];
-      [v28 addObject:v27];
+      localRecords = [(WuluReaderContext *)self localRecords];
+      [localRecords addObject:v27];
 
       if ([v11 unsignedIntValue] == 5 || objc_msgSend(v11, "unsignedIntValue") == 8)
       {
-        v29 = [(WuluReaderContext *)self localRecords];
-        [v29 addObject:v27];
+        localRecords2 = [(WuluReaderContext *)self localRecords];
+        [localRecords2 addObject:v27];
 
-        v30 = [(WuluReaderContext *)self localRecords];
-        [v30 addObject:v27];
+        localRecords3 = [(WuluReaderContext *)self localRecords];
+        [localRecords3 addObject:v27];
 
 LABEL_63:
         v11 = v60;
@@ -445,7 +445,7 @@ LABEL_64:
         goto LABEL_65;
       }
 
-      v44 = v7;
+      v44 = codeCopy;
       v45 = MEMORY[0x277CBEA90];
       v46 = [v64 objectForKey:@"metroEntryStationCode"];
       v47 = [v45 dataWithHexString:v46];
@@ -463,7 +463,7 @@ LABEL_64:
         goto LABEL_62;
       }
 
-      v48 = -[WuluReaderContext readWuluRecord:sfi:index:](self, "readWuluRecord:sfi:index:", v6, [v47 u8:2], objc_msgSend(v47, "u8:", 3));
+      v48 = -[WuluReaderContext readWuluRecord:sfi:index:](self, "readWuluRecord:sfi:index:", fileCopy, [v47 u8:2], objc_msgSend(v47, "u8:", 3));
 
       v27 = v48;
       if (v48)
@@ -476,8 +476,8 @@ LABEL_64:
           _os_log_impl(&dword_22EEF5000, v49, OS_LOG_TYPE_DEFAULT, "Local entry record not read for city %@.", buf, 0xCu);
         }
 
-        v50 = [(WuluReaderContext *)self localRecords];
-        [v50 addObject:v27];
+        localRecords4 = [(WuluReaderContext *)self localRecords];
+        [localRecords4 addObject:v27];
       }
 
       v51 = MEMORY[0x277CBEA90];
@@ -486,7 +486,7 @@ LABEL_64:
 
       if (v53 && [v53 length]== 4)
       {
-        v54 = [(WuluReaderContext *)self readWuluRecord:v6 sfi:[v53 u8:2] index:[v53 u8:3]];
+        v54 = [(WuluReaderContext *)self readWuluRecord:fileCopy sfi:[v53 u8:2] index:[v53 u8:3]];
         v55 = v27;
         v27 = v54;
 
@@ -494,7 +494,7 @@ LABEL_64:
         {
 LABEL_62:
 
-          v7 = v44;
+          codeCopy = v44;
           goto LABEL_63;
         }
 
@@ -506,18 +506,18 @@ LABEL_62:
           _os_log_impl(&dword_22EEF5000, v56, OS_LOG_TYPE_DEFAULT, "Local exit record not read for city %@.", buf, 0xCu);
         }
 
-        v57 = [(WuluReaderContext *)self localRecords];
-        [v57 addObject:v27];
+        localRecords5 = [(WuluReaderContext *)self localRecords];
+        [localRecords5 addObject:v27];
       }
 
       else
       {
-        v57 = ATLLogObject();
-        if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
+        localRecords5 = ATLLogObject();
+        if (os_log_type_enabled(localRecords5, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
           v77 = v44;
-          _os_log_impl(&dword_22EEF5000, v57, OS_LOG_TYPE_DEFAULT, "Local log extra data is not retrived from settings for city %@.", buf, 0xCu);
+          _os_log_impl(&dword_22EEF5000, localRecords5, OS_LOG_TYPE_DEFAULT, "Local log extra data is not retrived from settings for city %@.", buf, 0xCu);
         }
       }
 
@@ -531,14 +531,14 @@ LABEL_62:
     }
 
     *buf = 138412290;
-    v77 = v7;
+    v77 = codeCopy;
     v32 = "Local log data settings missing for city %@.";
 LABEL_40:
     _os_log_impl(&dword_22EEF5000, v31, OS_LOG_TYPE_DEFAULT, v32, buf, 0xCu);
     goto LABEL_65;
   }
 
-  if (v12 != 4)
+  if (unsignedIntValue != 4)
   {
     v31 = ATLLogObject();
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -552,7 +552,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v59 = v7;
+  v59 = codeCopy;
   v61 = v11;
   v82[0] = &unk_2843C6920;
   v82[1] = &unk_2843C6980;
@@ -606,23 +606,23 @@ LABEL_40:
               }
 
               v41 = *(*(&v68 + 1) + 8 * i);
-              v42 = -[WuluReaderContext readWuluRecord:sfi:index:](self, "readWuluRecord:sfi:index:", v6, [v35 unsignedCharValue], objc_msgSend(v41, "unsignedCharValue"));
+              v42 = -[WuluReaderContext readWuluRecord:sfi:index:](self, "readWuluRecord:sfi:index:", fileCopy, [v35 unsignedCharValue], objc_msgSend(v41, "unsignedCharValue"));
               if (v42)
               {
-                v43 = [(WuluReaderContext *)self localRecords];
-                [v43 addObject:v42];
+                localRecords6 = [(WuluReaderContext *)self localRecords];
+                [localRecords6 addObject:v42];
               }
 
               else
               {
-                v43 = ATLLogObject();
-                if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+                localRecords6 = ATLLogObject();
+                if (os_log_type_enabled(localRecords6, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
                   v77 = v35;
                   v78 = 2112;
                   v79 = v41;
-                  _os_log_impl(&dword_22EEF5000, v43, OS_LOG_TYPE_DEFAULT, "Failed to get SFI %@ index %@", buf, 0x16u);
+                  _os_log_impl(&dword_22EEF5000, localRecords6, OS_LOG_TYPE_DEFAULT, "Failed to get SFI %@ index %@", buf, 0x16u);
                 }
               }
             }
@@ -644,7 +644,7 @@ LABEL_40:
     while (v66);
   }
 
-  v7 = v59;
+  codeCopy = v59;
   v11 = v61;
 LABEL_65:
 
@@ -664,32 +664,32 @@ LABEL_65:
   v4 = ATLLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(WuluReaderContext *)self balance];
+    balance = [(WuluReaderContext *)self balance];
     *buf = 138412290;
-    v44 = v5;
+    v44 = balance;
     _os_log_impl(&dword_22EEF5000, v4, OS_LOG_TYPE_INFO, "    Balance File %@", buf, 0xCu);
   }
 
-  v6 = [(WuluReaderContext *)self file15];
-  v7 = [v6 bytes];
-  v8 = [(WuluReaderContext *)self file15];
-  v9 = [v8 length];
-  LogBinary(OS_LOG_TYPE_DEFAULT, "[WuluReaderContext dumpAllFiles]", 242, v7, v9, @"    SFI 0x15:", v10, v11, v35);
+  file15 = [(WuluReaderContext *)self file15];
+  bytes = [file15 bytes];
+  file152 = [(WuluReaderContext *)self file15];
+  v9 = [file152 length];
+  LogBinary(OS_LOG_TYPE_DEFAULT, "[WuluReaderContext dumpAllFiles]", 242, bytes, v9, @"    SFI 0x15:", v10, v11, v35);
 
-  v12 = [(WuluReaderContext *)self file17];
-  v13 = [v12 bytes];
-  v14 = [(WuluReaderContext *)self file17];
-  v15 = [v14 length];
-  LogBinary(OS_LOG_TYPE_DEFAULT, "[WuluReaderContext dumpAllFiles]", 243, v13, v15, @"    SFI 0x17:", v16, v17, v36);
+  file17 = [(WuluReaderContext *)self file17];
+  bytes2 = [file17 bytes];
+  file172 = [(WuluReaderContext *)self file17];
+  v15 = [file172 length];
+  LogBinary(OS_LOG_TYPE_DEFAULT, "[WuluReaderContext dumpAllFiles]", 243, bytes2, v15, @"    SFI 0x17:", v16, v17, v36);
 
-  v18 = [(WuluReaderContext *)self file18];
-  [v18 enumerateObjectsUsingBlock:&__block_literal_global_5];
+  file18 = [(WuluReaderContext *)self file18];
+  [file18 enumerateObjectsUsingBlock:&__block_literal_global_5];
 
-  v19 = [(WuluReaderContext *)self file1E];
-  [v19 enumerateObjectsUsingBlock:&__block_literal_global_753];
+  file1E = [(WuluReaderContext *)self file1E];
+  [file1E enumerateObjectsUsingBlock:&__block_literal_global_753];
 
-  v20 = [(WuluReaderContext *)self file1A];
-  [v20 enumerateObjectsUsingBlock:&__block_literal_global_758];
+  file1A = [(WuluReaderContext *)self file1A];
+  [file1A enumerateObjectsUsingBlock:&__block_literal_global_758];
 
   v40 = 0u;
   v41 = 0u;
@@ -711,14 +711,14 @@ LABEL_65:
         }
 
         v25 = *(*(&v38 + 1) + 8 * i);
-        v26 = [v25 data];
-        v27 = [v26 bytes];
-        v28 = [v25 data];
-        v29 = [v28 length];
+        data = [v25 data];
+        bytes3 = [data bytes];
+        data2 = [v25 data];
+        v29 = [data2 length];
         v30 = [v25 sfi];
         [v25 number];
         [v25 associatedSerialNumber];
-        LogBinary(OS_LOG_TYPE_DEFAULT, "[WuluReaderContext dumpAllFiles]", 255, v27, v29, @"    SFI %02X record %u (SN 0x%X) localRecord", v31, v32, v30);
+        LogBinary(OS_LOG_TYPE_DEFAULT, "[WuluReaderContext dumpAllFiles]", 255, bytes3, v29, @"    SFI %02X record %u (SN 0x%X) localRecord", v31, v32, v30);
       }
 
       v22 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -779,11 +779,11 @@ void __33__WuluReaderContext_dumpAllFiles__block_invoke_3(uint64_t a1, void *a2)
   LogBinary(OS_LOG_TYPE_DEFAULT, "[WuluReaderContext dumpAllFiles]_block_invoke_3", 251, v4, v6, @"    SFI 1A record %u (SN 0x%X)", v8, v9, v7);
 }
 
-- (id)readBalance:(id)a3 error:(id *)a4
+- (id)readBalance:(id)balance error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 transceiveBytesAndCheckSW:&readBalance_error__getBalanceCmd_0 length:5 error:a4];
+  balanceCopy = balance;
+  v6 = [balanceCopy transceiveBytesAndCheckSW:&readBalance_error__getBalanceCmd_0 length:5 error:error];
   v7 = v6;
   if (v6 && [v6 length] == 16)
   {
@@ -806,16 +806,16 @@ void __33__WuluReaderContext_dumpAllFiles__block_invoke_3(uint64_t a1, void *a2)
 
     v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed or short balance %u", objc_msgSend(v7, "length")];
     v8 = v12;
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_13;
     }
 
-    v13 = *a4;
+    v13 = *error;
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277CCA450];
-    if (*a4)
+    if (*error)
     {
       v16 = *MEMORY[0x277CCA7E8];
       v24[0] = *MEMORY[0x277CCA450];
@@ -840,7 +840,7 @@ void __33__WuluReaderContext_dumpAllFiles__block_invoke_3(uint64_t a1, void *a2)
 
     v9 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:v20];
     [v14 errorWithDomain:@"ATL" code:5 userInfo:v9];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_13:

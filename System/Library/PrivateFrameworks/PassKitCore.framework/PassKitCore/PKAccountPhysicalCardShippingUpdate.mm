@@ -1,48 +1,48 @@
 @interface PKAccountPhysicalCardShippingUpdate
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPhysicalCardShippingUpdate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPhysicalCardShippingUpdate:(id)update;
 - (NSString)description;
 - (NSString)formattedEstimatedDeliveryDate;
 - (NSURL)shipmentTrackingURL;
-- (PKAccountPhysicalCardShippingUpdate)initWithCoder:(id)a3;
-- (PKAccountPhysicalCardShippingUpdate)initWithRecord:(id)a3;
+- (PKAccountPhysicalCardShippingUpdate)initWithCoder:(id)coder;
+- (PKAccountPhysicalCardShippingUpdate)initWithRecord:(id)record;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRecord:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRecord:(id)record;
 @end
 
 @implementation PKAccountPhysicalCardShippingUpdate
 
-- (PKAccountPhysicalCardShippingUpdate)initWithCoder:(id)a3
+- (PKAccountPhysicalCardShippingUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKAccountPhysicalCardShippingUpdate;
   v5 = [(PKAccountPhysicalCardShippingUpdate *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"physicalCardIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"physicalCardIdentifier"];
     physicalCardIdentifier = v5->_physicalCardIdentifier;
     v5->_physicalCardIdentifier = v6;
 
-    v5->_shippingStatus = [v4 decodeIntegerForKey:@"shippingStatus"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deliveryExceptionReason"];
+    v5->_shippingStatus = [coderCopy decodeIntegerForKey:@"shippingStatus"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deliveryExceptionReason"];
     localizedDeliveryExceptionReason = v5->_localizedDeliveryExceptionReason;
     v5->_localizedDeliveryExceptionReason = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingNumber"];
     trackingNumber = v5->_trackingNumber;
     v5->_trackingNumber = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingCompany"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingCompany"];
     shippingCompany = v5->_shippingCompany;
     v5->_shippingCompany = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusTimestamp"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusTimestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedDeliveryDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedDeliveryDate"];
     estimatedDeliveryDate = v5->_estimatedDeliveryDate;
     v5->_estimatedDeliveryDate = v16;
   }
@@ -50,51 +50,51 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   physicalCardIdentifier = self->_physicalCardIdentifier;
-  v5 = a3;
-  [v5 encodeObject:physicalCardIdentifier forKey:@"physicalCardIdentifier"];
-  [v5 encodeInteger:self->_shippingStatus forKey:@"shippingStatus"];
-  [v5 encodeObject:self->_localizedDeliveryExceptionReason forKey:@"deliveryExceptionReason"];
-  [v5 encodeObject:self->_trackingNumber forKey:@"trackingNumber"];
-  [v5 encodeObject:self->_shippingCompany forKey:@"shippingCompany"];
-  [v5 encodeObject:self->_timestamp forKey:@"statusTimestamp"];
-  [v5 encodeObject:self->_estimatedDeliveryDate forKey:@"estimatedDeliveryDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:physicalCardIdentifier forKey:@"physicalCardIdentifier"];
+  [coderCopy encodeInteger:self->_shippingStatus forKey:@"shippingStatus"];
+  [coderCopy encodeObject:self->_localizedDeliveryExceptionReason forKey:@"deliveryExceptionReason"];
+  [coderCopy encodeObject:self->_trackingNumber forKey:@"trackingNumber"];
+  [coderCopy encodeObject:self->_shippingCompany forKey:@"shippingCompany"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"statusTimestamp"];
+  [coderCopy encodeObject:self->_estimatedDeliveryDate forKey:@"estimatedDeliveryDate"];
 }
 
-- (PKAccountPhysicalCardShippingUpdate)initWithRecord:(id)a3
+- (PKAccountPhysicalCardShippingUpdate)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v24.receiver = self;
   v24.super_class = PKAccountPhysicalCardShippingUpdate;
   v5 = [(PKAccountPhysicalCardShippingUpdate *)&v24 init];
   if (v5)
   {
-    v6 = [v4 pk_encryptedStringForKey:@"physicalCardIdentifier"];
+    v6 = [recordCopy pk_encryptedStringForKey:@"physicalCardIdentifier"];
     physicalCardIdentifier = v5->_physicalCardIdentifier;
     v5->_physicalCardIdentifier = v6;
 
-    v8 = [v4 pk_encryptedStringForKey:@"shippingStatus"];
+    v8 = [recordCopy pk_encryptedStringForKey:@"shippingStatus"];
     v5->_shippingStatus = PKPhysicalCardShippingStatusFromString(v8);
 
-    v9 = [v4 pk_encryptedStringForKey:@"deliveryExceptionReason"];
+    v9 = [recordCopy pk_encryptedStringForKey:@"deliveryExceptionReason"];
     localizedDeliveryExceptionReason = v5->_localizedDeliveryExceptionReason;
     v5->_localizedDeliveryExceptionReason = v9;
 
-    v11 = [v4 pk_encryptedStringForKey:@"trackingNumber"];
+    v11 = [recordCopy pk_encryptedStringForKey:@"trackingNumber"];
     trackingNumber = v5->_trackingNumber;
     v5->_trackingNumber = v11;
 
-    v13 = [v4 pk_encryptedStringForKey:@"shippingCompany"];
+    v13 = [recordCopy pk_encryptedStringForKey:@"shippingCompany"];
     shippingCompany = v5->_shippingCompany;
     v5->_shippingCompany = v13;
 
-    v15 = [v4 pk_encryptedDateForKey:@"statusTimestamp"];
+    v15 = [recordCopy pk_encryptedDateForKey:@"statusTimestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v15;
 
-    v17 = [v4 pk_encryptedStringForKey:@"estimatedDeliveryDate"];
+    v17 = [recordCopy pk_encryptedStringForKey:@"estimatedDeliveryDate"];
     if (v17)
     {
       v18 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -110,19 +110,19 @@
   return v5;
 }
 
-- (void)encodeWithRecord:(id)a3
+- (void)encodeWithRecord:(id)record
 {
-  v10 = [a3 encryptedValues];
+  encryptedValues = [record encryptedValues];
   if (PKApplePayContainerEnvironment() == 2)
   {
-    [v10 setObject:self->_physicalCardIdentifier forKey:@"physicalCardIdentifier"];
+    [encryptedValues setObject:self->_physicalCardIdentifier forKey:@"physicalCardIdentifier"];
     v4 = self->_shippingStatus - 1;
     v5 = v4 > 3 ? 0 : off_1E79E2348[v4];
-    [v10 setObject:v5 forKey:@"shippingStatus"];
-    [v10 setObject:self->_localizedDeliveryExceptionReason forKey:@"deliveryExceptionReason"];
-    [v10 setObject:self->_trackingNumber forKey:@"trackingNumber"];
-    [v10 setObject:self->_shippingCompany forKey:@"shippingCompany"];
-    [v10 setObject:self->_timestamp forKey:@"statusTimestamp"];
+    [encryptedValues setObject:v5 forKey:@"shippingStatus"];
+    [encryptedValues setObject:self->_localizedDeliveryExceptionReason forKey:@"deliveryExceptionReason"];
+    [encryptedValues setObject:self->_trackingNumber forKey:@"trackingNumber"];
+    [encryptedValues setObject:self->_shippingCompany forKey:@"shippingCompany"];
+    [encryptedValues setObject:self->_timestamp forKey:@"statusTimestamp"];
     if (self->_estimatedDeliveryDate)
     {
       v6 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
@@ -131,7 +131,7 @@
       v8 = objc_alloc_init(MEMORY[0x1E696AB78]);
       [v8 setDateFormat:@"yyyy-MM-dd"];
       v9 = [v8 stringFromDate:v7];
-      [v10 setObject:v9 forKey:@"estimatedDeliveryDate"];
+      [encryptedValues setObject:v9 forKey:@"estimatedDeliveryDate"];
     }
   }
 }
@@ -141,12 +141,12 @@
   if ([(NSString *)self->_shippingCompany length]&& [(NSString *)self->_trackingNumber length])
   {
     trackingNumber = self->_trackingNumber;
-    v4 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-    v5 = [(NSString *)trackingNumber stringByAddingPercentEncodingWithAllowedCharacters:v4];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+    v5 = [(NSString *)trackingNumber stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
     shippingCompany = self->_shippingCompany;
-    v7 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-    v8 = [(NSString *)shippingCompany stringByAddingPercentEncodingWithAllowedCharacters:v7];
+    uRLQueryAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+    v8 = [(NSString *)shippingCompany stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet2];
 
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://trackingshipment.apple.com/?Company=%@&TrackingNumber=%@", v8, v5];
     v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
@@ -178,10 +178,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -189,16 +189,16 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKAccountPhysicalCardShippingUpdate *)self isEqualToPhysicalCardShippingUpdate:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKAccountPhysicalCardShippingUpdate *)self isEqualToPhysicalCardShippingUpdate:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToPhysicalCardShippingUpdate:(id)a3
+- (BOOL)isEqualToPhysicalCardShippingUpdate:(id)update
 {
-  v4 = a3;
-  v5 = v4[1];
+  updateCopy = update;
+  v5 = updateCopy[1];
   v6 = self->_physicalCardIdentifier;
   v7 = v5;
   v8 = v7;
@@ -231,12 +231,12 @@
     }
   }
 
-  if (self->_shippingStatus != v4[2])
+  if (self->_shippingStatus != updateCopy[2])
   {
     goto LABEL_36;
   }
 
-  v11 = v4[3];
+  v11 = updateCopy[3];
   v6 = self->_localizedDeliveryExceptionReason;
   v12 = v11;
   v8 = v12;
@@ -259,7 +259,7 @@
     }
   }
 
-  v14 = v4[4];
+  v14 = updateCopy[4];
   v6 = self->_trackingNumber;
   v15 = v14;
   v8 = v15;
@@ -282,7 +282,7 @@
     }
   }
 
-  v17 = v4[5];
+  v17 = updateCopy[5];
   v6 = self->_shippingCompany;
   v18 = v17;
   v8 = v18;
@@ -308,7 +308,7 @@ LABEL_7:
 
 LABEL_29:
   timestamp = self->_timestamp;
-  v21 = v4[6];
+  v21 = updateCopy[6];
   if (!timestamp || !v21)
   {
     if (timestamp == v21)
@@ -328,7 +328,7 @@ LABEL_36:
 
 LABEL_32:
   estimatedDeliveryDate = self->_estimatedDeliveryDate;
-  v23 = v4[7];
+  v23 = updateCopy[7];
   if (estimatedDeliveryDate && v23)
   {
     v24 = [(NSDateComponents *)estimatedDeliveryDate isEqual:?];

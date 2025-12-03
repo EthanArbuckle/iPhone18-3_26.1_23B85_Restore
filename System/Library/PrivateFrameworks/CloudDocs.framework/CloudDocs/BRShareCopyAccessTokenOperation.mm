@@ -1,16 +1,16 @@
 @interface BRShareCopyAccessTokenOperation
-- (BRShareCopyAccessTokenOperation)initWithURL:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRShareCopyAccessTokenOperation)initWithURL:(id)l;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRShareCopyAccessTokenOperation
 
-- (BRShareCopyAccessTokenOperation)initWithURL:(id)a3
+- (BRShareCopyAccessTokenOperation)initWithURL:(id)l
 {
   v4.receiver = self;
   v4.super_class = BRShareCopyAccessTokenOperation;
-  return [(BRShareOperation *)&v4 initWithURL:a3];
+  return [(BRShareOperation *)&v4 initWithURL:l];
 }
 
 - (void)main
@@ -18,7 +18,7 @@
   OUTLINED_FUNCTION_6_1();
   v11 = *MEMORY[0x1E69E9840];
   v1 = [v0 url];
-  v2 = [v1 path];
+  path = [v1 path];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_2_0(&dword_1AE2A9000, v3, v4, "[DEBUG] copying access token for '%@'%@", v5, v6, v7, v8, v10);
 
@@ -52,23 +52,23 @@ void __39__BRShareCopyAccessTokenOperation_main__block_invoke(uint64_t a1, void 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRShareCopyAccessTokenOperation *)self shareCopyAccessTokenCompletionBlock];
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  shareCopyAccessTokenCompletionBlock = [(BRShareCopyAccessTokenOperation *)self shareCopyAccessTokenCompletionBlock];
+  if (shareCopyAccessTokenCompletionBlock)
   {
-    v9 = [v6 objectAtIndexedSubscript:0];
-    v10 = [v6 objectAtIndexedSubscript:1];
-    (v8)[2](v8, v9, v10, v7);
+    v9 = [resultCopy objectAtIndexedSubscript:0];
+    v10 = [resultCopy objectAtIndexedSubscript:1];
+    (shareCopyAccessTokenCompletionBlock)[2](shareCopyAccessTokenCompletionBlock, v9, v10, errorCopy);
 
     [(BRShareCopyAccessTokenOperation *)self setShareCopyAccessTokenCompletionBlock:0];
   }
 
   v11.receiver = self;
   v11.super_class = BRShareCopyAccessTokenOperation;
-  [(BROperation *)&v11 finishWithResult:v6 error:v7];
+  [(BROperation *)&v11 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

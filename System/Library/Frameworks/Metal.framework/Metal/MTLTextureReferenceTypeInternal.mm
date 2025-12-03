@@ -1,7 +1,7 @@
 @interface MTLTextureReferenceTypeInternal
-- (BOOL)isEqual:(id)a3;
-- (MTLTextureReferenceTypeInternal)initWithDataType:(unint64_t)a3 textureType:(unint64_t)a4 access:(unint64_t)a5 isDepthTexture:(BOOL)a6;
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTLTextureReferenceTypeInternal)initWithDataType:(unint64_t)type textureType:(unint64_t)textureType access:(unint64_t)access isDepthTexture:(BOOL)texture;
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types;
 - (void)dealloc;
 @end
 
@@ -14,23 +14,23 @@
   [(MTLTextureReferenceTypeInternal *)&v2 dealloc];
 }
 
-- (MTLTextureReferenceTypeInternal)initWithDataType:(unint64_t)a3 textureType:(unint64_t)a4 access:(unint64_t)a5 isDepthTexture:(BOOL)a6
+- (MTLTextureReferenceTypeInternal)initWithDataType:(unint64_t)type textureType:(unint64_t)textureType access:(unint64_t)access isDepthTexture:(BOOL)texture
 {
   v11.receiver = self;
   v11.super_class = MTLTextureReferenceTypeInternal;
   result = [(MTLTextureReferenceTypeInternal *)&v11 init];
   result->_dataType = 58;
-  result->_textureDataType = a3;
-  result->_textureType = a4;
-  result->_access = a5;
-  result->_isDepthTexture = a6;
+  result->_textureDataType = type;
+  result->_textureType = textureType;
+  result->_access = access;
+  result->_isDepthTexture = texture;
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types
 {
   v11[15] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x1E696AEC0];
   v11[0] = v5;
   v11[1] = @"DataType =";
@@ -63,15 +63,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   objc_opt_class();
-  return (objc_opt_isKindOfClass() & 1) != 0 && self->_dataType == *(a3 + 1) && self->_textureDataType == *(a3 + 2) && self->_textureType == *(a3 + 3) && self->_access == *(a3 + 4) && self->_isDepthTexture == *(a3 + 40);
+  return (objc_opt_isKindOfClass() & 1) != 0 && self->_dataType == *(equal + 1) && self->_textureDataType == *(equal + 2) && self->_textureType == *(equal + 3) && self->_access == *(equal + 4) && self->_isDepthTexture == *(equal + 40);
 }
 
 @end

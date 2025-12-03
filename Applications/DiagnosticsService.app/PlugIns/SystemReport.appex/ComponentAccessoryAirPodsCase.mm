@@ -1,7 +1,7 @@
 @interface ComponentAccessoryAirPodsCase
 - (BOOL)isPresent;
 - (ComponentAccessoryAirPodsCase)init;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentAccessoryAirPodsCase
@@ -23,18 +23,18 @@
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentAccessoryAirPodsCase *)self device];
-  v3 = v2 != 0;
+  device = [(ComponentAccessoryAirPodsCase *)self device];
+  v3 = device != 0;
 
   return v3;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v6 = [(ComponentAccessoryAirPodsCase *)self device];
-  v5 = [v6 information];
-  [v4 addEntriesFromDictionary:v5];
+  attributesCopy = attributes;
+  device = [(ComponentAccessoryAirPodsCase *)self device];
+  information = [device information];
+  [attributesCopy addEntriesFromDictionary:information];
 }
 
 @end

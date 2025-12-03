@@ -1,30 +1,30 @@
 @interface SHCampaignTokens
-- (SHCampaignTokens)initWithConfiguration:(id)a3;
-- (id)tokenForClientIdentifier:(id)a3;
+- (SHCampaignTokens)initWithConfiguration:(id)configuration;
+- (id)tokenForClientIdentifier:(id)identifier;
 @end
 
 @implementation SHCampaignTokens
 
-- (SHCampaignTokens)initWithConfiguration:(id)a3
+- (SHCampaignTokens)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = SHCampaignTokens;
   v6 = [(SHCampaignTokens *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_campaignTokens, a3);
+    objc_storeStrong(&v6->_campaignTokens, configuration);
   }
 
   return v7;
 }
 
-- (id)tokenForClientIdentifier:(id)a3
+- (id)tokenForClientIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"itsct", a3];
-  v5 = [(SHCampaignTokens *)self campaignTokens];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"itsct", identifier];
+  campaignTokens = [(SHCampaignTokens *)self campaignTokens];
+  v6 = [campaignTokens objectForKeyedSubscript:identifier];
   v7 = v6;
   if (v6)
   {

@@ -1,12 +1,12 @@
 @interface REConcurrentDictionary
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initStrongToStrongDictionary;
 - (id)initWeakToStrongDictionary;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation REConcurrentDictionary
@@ -75,9 +75,9 @@ uint64_t __31__REConcurrentDictionary_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -89,10 +89,10 @@ uint64_t __31__REConcurrentDictionary_count__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__REConcurrentDictionary_objectForKey___block_invoke;
   block[3] = &unk_2785FC2F0;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -111,34 +111,34 @@ uint64_t __39__REConcurrentDictionary_objectForKey___block_invoke(void *a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__REConcurrentDictionary_removeObjectForKey___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__REConcurrentDictionary_setObject_forKey___block_invoke;
   block[3] = &unk_2785FB070;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = objectCopy;
+  selfCopy = self;
+  v14 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
   dispatch_async(queue, block);
 }
 
@@ -168,9 +168,9 @@ uint64_t __43__REConcurrentDictionary_setObject_forKey___block_invoke(void *a1)
   dispatch_async(queue, block);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initStrongToStrongDictionary"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initStrongToStrongDictionary"}];
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -178,7 +178,7 @@ uint64_t __43__REConcurrentDictionary_setObject_forKey___block_invoke(void *a1)
   v9[3] = &unk_2785F9AE0;
   v6 = v4;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(queue, v9);
   v7 = v6;
 

@@ -1,42 +1,42 @@
 @interface PGSuggestionSession
-+ (id)suggesterClassesWithProfile:(unsigned __int8)a3;
-- (BOOL)suggesterClass:(Class)a3 supportsOptions:(id)a4;
-- (BOOL)suggestion:(id)a3 collidesWithMemories:(id)a4;
-- (BOOL)suggestion:(id)a3 isEqualToSuggestion:(id)a4;
-- (BOOL)supportsRelaxedCollisionRulesForSuggester:(id)a3;
-- (PGSuggestionSession)initWithProfile:(unsigned __int8)a3 workingContext:(id)a4;
++ (id)suggesterClassesWithProfile:(unsigned __int8)profile;
+- (BOOL)suggesterClass:(Class)class supportsOptions:(id)options;
+- (BOOL)suggestion:(id)suggestion collidesWithMemories:(id)memories;
+- (BOOL)suggestion:(id)suggestion isEqualToSuggestion:(id)toSuggestion;
+- (BOOL)supportsRelaxedCollisionRulesForSuggester:(id)suggester;
+- (PGSuggestionSession)initWithProfile:(unsigned __int8)profile workingContext:(id)context;
 - (double)topTierAestheticScore;
-- (id)activeSuggestersWithOptions:(id)a3;
-- (id)coordinatedSuggestionsWithOptions:(id)a3 progress:(id)a4;
-- (id)electedSuggestionsFromSuggestions:(id)a3 options:(id)a4 progress:(id)a5;
-- (id)existingSuggestionsWithState:(unsigned __int16)a3 count:(unint64_t)a4;
-- (id)infoWithSuggestion:(id)a3;
-- (id)infosWithSuggestions:(id)a3;
+- (id)activeSuggestersWithOptions:(id)options;
+- (id)coordinatedSuggestionsWithOptions:(id)options progress:(id)progress;
+- (id)electedSuggestionsFromSuggestions:(id)suggestions options:(id)options progress:(id)progress;
+- (id)existingSuggestionsWithState:(unsigned __int16)state count:(unint64_t)count;
+- (id)infoWithSuggestion:(id)suggestion;
+- (id)infosWithSuggestions:(id)suggestions;
 - (id)suggesterClasses;
-- (id)suggestionsByCollisionReasonCollidingWithSuggestion:(id)a3 inSuggestions:(id)a4 relaxCollisionRules:(BOOL)a5;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
-- (id)uncoordinatedSuggestionsWithOptions:(id)a3 progress:(id)a4;
-- (unint64_t)deniedSuggestion:(id)a3 collidesWithSuggestion:(id)a4;
-- (unint64_t)outstanderSuggestion:(id)a3 collidesWithSuggestion:(id)a4 relaxCollisionRules:(BOOL)a5;
-- (unint64_t)singleAssetSuggestion:(id)a3 collidesWithSuggestion:(id)a4;
-- (void)setExistingSuggestions:(id)a3;
+- (id)suggestionsByCollisionReasonCollidingWithSuggestion:(id)suggestion inSuggestions:(id)suggestions relaxCollisionRules:(BOOL)rules;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
+- (id)uncoordinatedSuggestionsWithOptions:(id)options progress:(id)progress;
+- (unint64_t)deniedSuggestion:(id)suggestion collidesWithSuggestion:(id)withSuggestion;
+- (unint64_t)outstanderSuggestion:(id)suggestion collidesWithSuggestion:(id)withSuggestion relaxCollisionRules:(BOOL)rules;
+- (unint64_t)singleAssetSuggestion:(id)suggestion collidesWithSuggestion:(id)withSuggestion;
+- (void)setExistingSuggestions:(id)suggestions;
 @end
 
 @implementation PGSuggestionSession
 
-- (id)existingSuggestionsWithState:(unsigned __int16)a3 count:(unint64_t)a4
+- (id)existingSuggestionsWithState:(unsigned __int16)state count:(unint64_t)count
 {
-  v5 = a3;
+  stateCopy = state;
   v23 = *MEMORY[0x277D85DE8];
   v7 = [(NSArray *)self->_existingSuggestions count];
-  if (v7 >= a4)
+  if (v7 >= count)
   {
-    v8 = a4;
+    countCopy = count;
   }
 
   else
   {
-    v8 = v7;
+    countCopy = v7;
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -60,10 +60,10 @@ LABEL_6:
       }
 
       v15 = *(*(&v18 + 1) + 8 * v14);
-      if ([v15 state] == v5)
+      if ([v15 state] == stateCopy)
       {
         [v9 addObject:v15];
-        if ([v9 count] >= v8)
+        if ([v9 count] >= countCopy)
         {
           break;
         }
@@ -87,16 +87,16 @@ LABEL_6:
   return v9;
 }
 
-- (id)infosWithSuggestions:(id)a3
+- (id)infosWithSuggestions:(id)suggestions
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v24 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  suggestionsCopy = suggestions;
+  v24 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = suggestionsCopy;
   v25 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v25)
   {
@@ -117,8 +117,8 @@ LABEL_6:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v7 = [(NSArray *)self->_existingSuggestions reverseObjectEnumerator];
-        v8 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        reverseObjectEnumerator = [(NSArray *)self->_existingSuggestions reverseObjectEnumerator];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v36 count:16];
         v26 = v5;
         if (!v8)
         {
@@ -135,7 +135,7 @@ LABEL_6:
           {
             if (*v29 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v13 = *(*(&v28 + 1) + 8 * i);
@@ -172,7 +172,7 @@ LABEL_6:
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v36 count:16];
         }
 
         while (v9);
@@ -198,65 +198,65 @@ LABEL_24:
   return v24;
 }
 
-- (id)infoWithSuggestion:(id)a3
+- (id)infoWithSuggestion:(id)suggestion
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  suggestionCopy = suggestion;
   v23[0] = @"type";
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v3, "type")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(suggestionCopy, "type")}];
   v23[1] = @"subtype";
   v24[0] = v4;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v3, "subtype")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(suggestionCopy, "subtype")}];
   v24[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v7 = [v6 mutableCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isInvalid")}];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(suggestionCopy, "isInvalid")}];
     [v7 setObject:v8 forKeyedSubscript:@"isInvalid"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v3 uuid];
-    [v7 setObject:v9 forKeyedSubscript:@"uuid"];
+    uuid = [suggestionCopy uuid];
+    [v7 setObject:uuid forKeyedSubscript:@"uuid"];
   }
 
-  v10 = [v3 universalStartDate];
-  [v7 setObject:v10 forKeyedSubscript:@"universalStartDate"];
+  universalStartDate = [suggestionCopy universalStartDate];
+  [v7 setObject:universalStartDate forKeyedSubscript:@"universalStartDate"];
 
-  v11 = [v3 universalEndDate];
-  [v7 setObject:v11 forKeyedSubscript:@"universalEndDate"];
+  universalEndDate = [suggestionCopy universalEndDate];
+  [v7 setObject:universalEndDate forKeyedSubscript:@"universalEndDate"];
 
-  v12 = [v3 keyAssets];
-  v13 = [v12 firstObject];
+  keyAssets = [suggestionCopy keyAssets];
+  firstObject = [keyAssets firstObject];
 
-  if (v13)
+  if (firstObject)
   {
-    v14 = [v13 uuid];
-    [v7 setObject:v14 forKeyedSubscript:@"keyAssetUUID"];
+    uuid2 = [firstObject uuid];
+    [v7 setObject:uuid2 forKeyedSubscript:@"keyAssetUUID"];
 
-    v15 = [v13 creationDate];
-    [v7 setObject:v15 forKeyedSubscript:@"keyAssetCreationDate"];
+    creationDate = [firstObject creationDate];
+    [v7 setObject:creationDate forKeyedSubscript:@"keyAssetCreationDate"];
   }
 
-  v16 = [v3 creationDate];
-  [v7 setObject:v16 forKeyedSubscript:@"creationDate"];
+  creationDate2 = [suggestionCopy creationDate];
+  [v7 setObject:creationDate2 forKeyedSubscript:@"creationDate"];
 
-  v17 = [v3 title];
-  [v7 setObject:v17 forKeyedSubscript:@"title"];
+  title = [suggestionCopy title];
+  [v7 setObject:title forKeyedSubscript:@"title"];
 
-  v18 = [v3 subtitle];
-  [v7 setObject:v18 forKeyedSubscript:@"subtitle"];
+  subtitle = [suggestionCopy subtitle];
+  [v7 setObject:subtitle forKeyedSubscript:@"subtitle"];
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v3 reasons];
-    if (v19)
+    reasons = [suggestionCopy reasons];
+    if (reasons)
     {
-      v20 = v19;
-      [v7 setObject:v19 forKeyedSubscript:@"reasons"];
+      v20 = reasons;
+      [v7 setObject:reasons forKeyedSubscript:@"reasons"];
     }
   }
 
@@ -265,20 +265,20 @@ LABEL_24:
   return v7;
 }
 
-- (BOOL)suggestion:(id)a3 isEqualToSuggestion:(id)a4
+- (BOOL)suggestion:(id)suggestion isEqualToSuggestion:(id)toSuggestion
 {
-  v7 = a3;
-  v8 = a4;
-  v53 = [v7 type];
-  v52 = [v8 type];
-  v9 = [v7 subtype];
-  v51 = [v8 subtype];
-  v10 = [v7 keyAssets];
-  v11 = [v10 count];
+  suggestionCopy = suggestion;
+  toSuggestionCopy = toSuggestion;
+  type = [suggestionCopy type];
+  type2 = [toSuggestionCopy type];
+  subtype = [suggestionCopy subtype];
+  subtype2 = [toSuggestionCopy subtype];
+  keyAssets = [suggestionCopy keyAssets];
+  v11 = [keyAssets count];
   if (!v11)
   {
-    v4 = [v8 keyAssets];
-    if (![v4 count])
+    keyAssets2 = [toSuggestionCopy keyAssets];
+    if (![keyAssets2 count])
     {
       v50 = 1;
 LABEL_6:
@@ -287,9 +287,9 @@ LABEL_6:
     }
   }
 
-  v12 = [v7 keyAssets];
-  v13 = [v8 keyAssets];
-  v50 = [v12 isEqualToArray:v13];
+  keyAssets3 = [suggestionCopy keyAssets];
+  keyAssets4 = [toSuggestionCopy keyAssets];
+  v50 = [keyAssets3 isEqualToArray:keyAssets4];
 
   if (!v11)
   {
@@ -298,12 +298,12 @@ LABEL_6:
 
 LABEL_7:
 
-  v14 = [v7 representativeAssets];
-  v15 = [v14 count];
+  representativeAssets = [suggestionCopy representativeAssets];
+  v15 = [representativeAssets count];
   if (!v15)
   {
-    v5 = [v8 representativeAssets];
-    if (![v5 count])
+    representativeAssets2 = [toSuggestionCopy representativeAssets];
+    if (![representativeAssets2 count])
     {
       v49 = 1;
 LABEL_12:
@@ -312,9 +312,9 @@ LABEL_12:
     }
   }
 
-  v16 = [v7 representativeAssets];
-  v17 = [v8 representativeAssets];
-  v49 = [v16 isEqualToArray:v17];
+  representativeAssets3 = [suggestionCopy representativeAssets];
+  representativeAssets4 = [toSuggestionCopy representativeAssets];
+  v49 = [representativeAssets3 isEqualToArray:representativeAssets4];
 
   if (!v15)
   {
@@ -323,13 +323,13 @@ LABEL_12:
 
 LABEL_13:
 
-  v18 = [v7 features];
-  v19 = [v18 count];
-  if (v19 || ([v8 features], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "count")))
+  features = [suggestionCopy features];
+  v19 = [features count];
+  if (v19 || ([toSuggestionCopy features], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "count")))
   {
-    v20 = [v7 features];
-    v21 = [v8 features];
-    v22 = [v20 isEqualToSet:v21];
+    features2 = [suggestionCopy features];
+    features3 = [toSuggestionCopy features];
+    v22 = [features2 isEqualToSet:features3];
 
     if (v19)
     {
@@ -343,15 +343,15 @@ LABEL_13:
   }
 
 LABEL_19:
-  v23 = [v7 suggestedPersonLocalIdentifiers];
-  if ([v23 count])
+  suggestedPersonLocalIdentifiers = [suggestionCopy suggestedPersonLocalIdentifiers];
+  if ([suggestedPersonLocalIdentifiers count])
   {
-    v24 = [v8 suggestedPersonLocalIdentifiers];
-    if ([v24 count])
+    suggestedPersonLocalIdentifiers2 = [toSuggestionCopy suggestedPersonLocalIdentifiers];
+    if ([suggestedPersonLocalIdentifiers2 count])
     {
-      v25 = [v7 suggestedPersonLocalIdentifiers];
-      v26 = [v8 suggestedPersonLocalIdentifiers];
-      v27 = [v25 isEqualToArray:v26];
+      suggestedPersonLocalIdentifiers3 = [suggestionCopy suggestedPersonLocalIdentifiers];
+      suggestedPersonLocalIdentifiers4 = [toSuggestionCopy suggestedPersonLocalIdentifiers];
+      v27 = [suggestedPersonLocalIdentifiers3 isEqualToArray:suggestedPersonLocalIdentifiers4];
 
       v28 = v27 ^ 1;
     }
@@ -367,48 +367,48 @@ LABEL_19:
     v28 = 0;
   }
 
-  v29 = [v7 title];
-  v30 = [v8 title];
-  if (v29 == v30)
+  title = [suggestionCopy title];
+  title2 = [toSuggestionCopy title];
+  if (title == title2)
   {
     v33 = 1;
   }
 
   else
   {
-    v31 = [v7 title];
-    v32 = [v8 title];
-    v33 = [v31 isEqualToString:v32];
+    title3 = [suggestionCopy title];
+    title4 = [toSuggestionCopy title];
+    v33 = [title3 isEqualToString:title4];
   }
 
-  v34 = [v7 subtitle];
-  v35 = [v8 subtitle];
-  if (v34 == v35)
+  subtitle = [suggestionCopy subtitle];
+  subtitle2 = [toSuggestionCopy subtitle];
+  if (subtitle == subtitle2)
   {
     v43 = 1;
   }
 
   else
   {
-    v36 = [v7 subtitle];
-    [v8 subtitle];
-    v48 = v7;
-    v37 = v8;
+    subtitle3 = [suggestionCopy subtitle];
+    [toSuggestionCopy subtitle];
+    v48 = suggestionCopy;
+    v37 = toSuggestionCopy;
     v38 = v33;
     v39 = v28;
     v40 = v22;
-    v42 = v41 = v9;
-    v43 = [v36 isEqualToString:v42];
+    v42 = v41 = subtype;
+    v43 = [subtitle3 isEqualToString:v42];
 
-    v9 = v41;
+    subtype = v41;
     v22 = v40;
     v28 = v39;
     v33 = v38;
-    v8 = v37;
-    v7 = v48;
+    toSuggestionCopy = v37;
+    suggestionCopy = v48;
   }
 
-  v45 = v53 != v52 || v9 != v51;
+  v45 = type != type2 || subtype != subtype2;
   v46 = v33 & ~(v45 | v50 ^ 1 | v49 ^ 1 | v22 ^ 1 | v28) & v43;
 
   return v46 & 1;
@@ -421,25 +421,25 @@ LABEL_19:
   {
     v11[9] = v2;
     v11[10] = v3;
-    v6 = [(PGSuggestionSession *)self workingContext];
+    workingContext = [(PGSuggestionSession *)self workingContext];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __44__PGSuggestionSession_topTierAestheticScore__block_invoke;
     v11[3] = &unk_27888A3B8;
     v11[4] = self;
-    [v6 performSynchronousConcurrentGraphReadUsingBlock:v11];
+    [workingContext performSynchronousConcurrentGraphReadUsingBlock:v11];
 
     if (self->_topTierAestheticScore == 2.22507386e-308)
     {
-      v7 = [(PGSuggestionSession *)self loggingConnection];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      loggingConnection = [(PGSuggestionSession *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *v10 = 0;
-        _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_DEFAULT, "topTierAestheticScore could not be determined from the graph, computing it from the photoLibrary.", v10, 2u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "topTierAestheticScore could not be determined from the graph, computing it from the photoLibrary.", v10, 2u);
       }
 
-      v8 = [(PGSuggestionSession *)self photoLibrary];
-      [PGGraphBuilder topTierAestheticScoreForRatio:v8 inPhotoLibrary:0.01];
+      photoLibrary = [(PGSuggestionSession *)self photoLibrary];
+      [PGGraphBuilder topTierAestheticScoreForRatio:photoLibrary inPhotoLibrary:0.01];
       self->_topTierAestheticScore = v9;
     }
 
@@ -462,11 +462,11 @@ void __44__PGSuggestionSession_topTierAestheticScore__block_invoke(uint64_t a1, 
   }
 }
 
-- (id)uncoordinatedSuggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)uncoordinatedSuggestionsWithOptions:(id)options progress:(id)progress
 {
   v102 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v65 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v95 = 0;
   v96 = &v95;
   v97 = 0x2020000000;
@@ -475,7 +475,7 @@ void __44__PGSuggestionSession_topTierAestheticScore__block_invoke(uint64_t a1, 
   v92 = &v91;
   v93 = 0x2020000000;
   v94 = 0;
-  v78 = _Block_copy(v65);
+  v78 = _Block_copy(progressCopy);
   if (v78)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -529,17 +529,17 @@ void __44__PGSuggestionSession_topTierAestheticScore__block_invoke(uint64_t a1, 
   mach_timebase_info(&info);
   v62 = mach_absolute_time();
   v13 = MEMORY[0x277D27690];
-  v14 = [v5 localToday];
-  v15 = [v13 universalDateFromLocalDate:v14];
+  localToday = [optionsCopy localToday];
+  v15 = [v13 universalDateFromLocalDate:localToday];
   universalToday = self->_universalToday;
   self->_universalToday = v15;
 
-  v69 = [(PGSuggestionSession *)self activeSuggestersWithOptions:v5];
+  v69 = [(PGSuggestionSession *)self activeSuggestersWithOptions:optionsCopy];
   v72 = [v69 count];
-  v17 = [v5 maximumNumberOfSuggestions];
-  if (v17)
+  maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
+  if (maximumNumberOfSuggestions)
   {
-    v18 = v17;
+    v18 = maximumNumberOfSuggestions;
   }
 
   else
@@ -693,9 +693,9 @@ void __44__PGSuggestionSession_topTierAestheticScore__block_invoke(uint64_t a1, 
       goto LABEL_73;
     }
 
-    if (([v5 ignoreCollisionsWithExistingSuggestions] & 1) != 0 || !-[PGSuggestionSession _suggestionIsColliding:relaxCollisionRules:](self, "_suggestionIsColliding:relaxCollisionRules:", v30, objc_msgSend(v68, "containsIndex:", v75)))
+    if (([optionsCopy ignoreCollisionsWithExistingSuggestions] & 1) != 0 || !-[PGSuggestionSession _suggestionIsColliding:relaxCollisionRules:](self, "_suggestionIsColliding:relaxCollisionRules:", v30, objc_msgSend(v68, "containsIndex:", v75)))
     {
-      if ([v5 ignoreCollisionsWithSameBatchSuggestions])
+      if ([optionsCopy ignoreCollisionsWithSameBatchSuggestions])
       {
         v37 = 0;
         goto LABEL_71;
@@ -709,7 +709,7 @@ void __44__PGSuggestionSession_topTierAestheticScore__block_invoke(uint64_t a1, 
       v40 = [v38 countByEnumeratingWithState:&v80 objects:v99 count:16];
       if (v40)
       {
-        v61 = v5;
+        v61 = optionsCopy;
         v41 = *v81;
         while (2)
         {
@@ -726,7 +726,7 @@ void __44__PGSuggestionSession_topTierAestheticScore__block_invoke(uint64_t a1, 
             if (v44)
             {
               v46 = v45;
-              v5 = v61;
+              optionsCopy = v61;
               if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
               {
                 v47 = @"Unknown";
@@ -767,7 +767,7 @@ void __44__PGSuggestionSession_topTierAestheticScore__block_invoke(uint64_t a1, 
         }
 
         v37 = 0;
-        v5 = v61;
+        optionsCopy = v61;
       }
 
       else
@@ -883,11 +883,11 @@ void __68__PGSuggestionSession_uncoordinatedSuggestionsWithOptions_progress___bl
   }
 }
 
-- (id)coordinatedSuggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)coordinatedSuggestionsWithOptions:(id)options progress:(id)progress
 {
   v89 = *MEMORY[0x277D85DE8];
-  v58 = a3;
-  v53 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v83 = 0;
   v84 = &v83;
   v85 = 0x2020000000;
@@ -896,7 +896,7 @@ void __68__PGSuggestionSession_uncoordinatedSuggestionsWithOptions_progress___bl
   v80 = &v79;
   v81 = 0x2020000000;
   v82 = 0;
-  v63 = _Block_copy(v53);
+  v63 = _Block_copy(progressCopy);
   if (v63)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -950,12 +950,12 @@ void __68__PGSuggestionSession_uncoordinatedSuggestionsWithOptions_progress___bl
   mach_timebase_info(&info);
   v50 = mach_absolute_time();
   v12 = MEMORY[0x277D27690];
-  v13 = [v58 localToday];
-  v14 = [v12 universalDateFromLocalDate:v13];
+  localToday = [optionsCopy localToday];
+  v14 = [v12 universalDateFromLocalDate:localToday];
   universalToday = self->_universalToday;
   self->_universalToday = v14;
 
-  v59 = [(PGSuggestionSession *)self activeSuggestersWithOptions:v58];
+  v59 = [(PGSuggestionSession *)self activeSuggestersWithOptions:optionsCopy];
   v62 = [v59 count];
   v64 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v57 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v62];
@@ -1055,13 +1055,13 @@ void __68__PGSuggestionSession_uncoordinatedSuggestionsWithOptions_progress___bl
         [v20 setLastSuggestionWasColliding:0];
         if (v26)
         {
-          if (([v58 ignoreCollisionsWithExistingSuggestions] & 1) != 0 || !-[PGSuggestionSession _suggestionIsColliding:relaxCollisionRules:](self, "_suggestionIsColliding:relaxCollisionRules:", v26, objc_msgSend(v56, "containsIndex:", v16)))
+          if (([optionsCopy ignoreCollisionsWithExistingSuggestions] & 1) != 0 || !-[PGSuggestionSession _suggestionIsColliding:relaxCollisionRules:](self, "_suggestionIsColliding:relaxCollisionRules:", v26, objc_msgSend(v56, "containsIndex:", v16)))
           {
             *buf = 0;
             *&buf[8] = buf;
             *&buf[16] = 0x2020000000;
             v88 = 1;
-            if (([v58 ignoreCollisionsWithSameBatchSuggestions] & 1) == 0 && objc_msgSend(v57, "count"))
+            if (([optionsCopy ignoreCollisionsWithSameBatchSuggestions] & 1) == 0 && objc_msgSend(v57, "count"))
             {
               v34 = objc_alloc_init(MEMORY[0x277CCAB58]);
               v68[0] = MEMORY[0x277D85DD0];
@@ -1136,7 +1136,7 @@ LABEL_54:
     }
   }
 
-  v38 = [v57 allValues];
+  allValues = [v57 allValues];
   v39 = mach_absolute_time();
   v40 = info.numer;
   v41 = info.denom;
@@ -1160,11 +1160,11 @@ LABEL_54:
   v44 = self->_loggingConnection;
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
   {
-    v45 = [v38 count];
+    v45 = [allValues count];
     *buf = 134218242;
     *&buf[4] = v45;
     *&buf[12] = 2112;
-    *&buf[14] = v38;
+    *&buf[14] = allValues;
     _os_log_impl(&dword_22F0FC000, v44, OS_LOG_TYPE_DEFAULT, "Generated %lu suggestions:\n%@", buf, 0x16u);
   }
 
@@ -1184,7 +1184,7 @@ LABEL_54:
 
   else
   {
-    v55 = v38;
+    v55 = allValues;
   }
 
 LABEL_71:
@@ -1284,16 +1284,16 @@ uint64_t __66__PGSuggestionSession_coordinatedSuggestionsWithOptions_progress___
   return [v6 removeIndex:a2];
 }
 
-- (id)activeSuggestersWithOptions:(id)a3
+- (id)activeSuggestersWithOptions:(id)options
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGSuggestionSession *)self suggesterClasses];
+  optionsCopy = options;
+  suggesterClasses = [(PGSuggestionSession *)self suggesterClasses];
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     v7 = loggingConnection;
-    v8 = [v5 count];
+    v8 = [suggesterClasses count];
     profile = self->_profile;
     *buf = 134218240;
     v31 = v8;
@@ -1307,7 +1307,7 @@ uint64_t __66__PGSuggestionSession_coordinatedSuggestionsWithOptions_progress___
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = v5;
+  v10 = suggesterClasses;
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
@@ -1326,7 +1326,7 @@ uint64_t __66__PGSuggestionSession_coordinatedSuggestionsWithOptions_progress___
 
         v16 = *(*(&v25 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
-        if ([(PGSuggestionSession *)self suggesterClass:v16 supportsOptions:v4])
+        if ([(PGSuggestionSession *)self suggesterClass:v16 supportsOptions:optionsCopy])
         {
           v18 = [v16 suggesterWithSession:self];
           v19 = self->_loggingConnection;
@@ -1339,7 +1339,7 @@ uint64_t __66__PGSuggestionSession_coordinatedSuggestionsWithOptions_progress___
             _os_log_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_DEFAULT, "Querying Suggester of class %@ - %@", buf, 0x16u);
           }
 
-          [v18 startSuggestingWithOptions:{v4, v23}];
+          [v18 startSuggestingWithOptions:{optionsCopy, v23}];
           [v24 addObject:v18];
         }
 
@@ -1368,11 +1368,11 @@ uint64_t __66__PGSuggestionSession_coordinatedSuggestionsWithOptions_progress___
   return v24;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v84 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v75 = 0;
   v76 = &v75;
   v77 = 0x2020000000;
@@ -1381,8 +1381,8 @@ uint64_t __66__PGSuggestionSession_coordinatedSuggestionsWithOptions_progress___
   v72 = &v71;
   v73 = 0x2020000000;
   v74 = 0;
-  v53 = _Block_copy(v6);
-  v49 = v6;
+  v53 = _Block_copy(progressCopy);
+  v49 = progressCopy;
   if (v53)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -1411,17 +1411,17 @@ uint64_t __66__PGSuggestionSession_coordinatedSuggestionsWithOptions_progress___
   }
 
   v10 = MEMORY[0x277D27690];
-  v11 = [v52 localToday];
-  v12 = [v10 universalDateFromLocalDate:v11];
+  localToday = [optionsCopy localToday];
+  v12 = [v10 universalDateFromLocalDate:localToday];
   universalToday = self->_universalToday;
   self->_universalToday = v12;
 
   v50 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v14 = [(PGSuggestionSession *)self suggesterClasses];
+  suggesterClasses = [(PGSuggestionSession *)self suggesterClasses];
   v15 = self->_loggingConnection;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v14 count];
+    v16 = [suggesterClasses count];
     profile = self->_profile;
     *buf = 134218240;
     *v80 = v16;
@@ -1430,12 +1430,12 @@ uint64_t __66__PGSuggestionSession_coordinatedSuggestionsWithOptions_progress___
     _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_DEFAULT, "Querying %lu Suggesters for profile %lu", buf, 0x16u);
   }
 
-  v18 = [v14 count];
+  v18 = [suggesterClasses count];
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v14;
+  obj = suggesterClasses;
   v19 = [obj countByEnumeratingWithState:&v66 objects:v83 count:16];
   if (!v19)
   {
@@ -1484,7 +1484,7 @@ LABEL_55:
       }
 
       v27 = objc_autoreleasePoolPush();
-      if ([(PGSuggestionSession *)self suggesterClass:v24 supportsOptions:v52])
+      if ([(PGSuggestionSession *)self suggesterClass:v24 supportsOptions:optionsCopy])
       {
         v28 = [v24 suggesterWithSession:self];
         loggingConnection = self->_loggingConnection;
@@ -1507,7 +1507,7 @@ LABEL_55:
         v65 = v20;
         v63 = 0x3F847AE147AE147BLL;
         v62 = &v75;
-        v30 = [v28 suggestionsWithOptions:v52 progress:v59];
+        v30 = [v28 suggestionsWithOptions:optionsCopy progress:v59];
         v31 = *(v76 + 24);
         if (v31 == 1)
         {
@@ -1599,7 +1599,7 @@ LABEL_34:
     v56 = &v71;
     v57 = &v75;
     v58 = 0x3F847AE147AE147BLL;
-    v41 = [(PGSuggestionSession *)self electedSuggestionsFromSuggestions:v50 options:v52 progress:v54];
+    v41 = [(PGSuggestionSession *)self electedSuggestionsFromSuggestions:v50 options:optionsCopy progress:v54];
     if (*(v76 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1708,27 +1708,27 @@ void __55__PGSuggestionSession_suggestionsWithOptions_progress___block_invoke_27
   }
 }
 
-- (BOOL)suggesterClass:(Class)a3 supportsOptions:(id)a4
+- (BOOL)suggesterClass:(Class)class supportsOptions:(id)options
 {
-  v5 = a4;
-  v6 = [v5 suggestionTypeWhitelist];
-  v7 = [v5 suggestionTypeBlocklist];
-  if (v6 | v7)
+  optionsCopy = options;
+  suggestionTypeWhitelist = [optionsCopy suggestionTypeWhitelist];
+  suggestionTypeBlocklist = [optionsCopy suggestionTypeBlocklist];
+  if (suggestionTypeWhitelist | suggestionTypeBlocklist)
   {
-    v8 = [(objc_class *)a3 suggestionTypes];
-    if (v6 && ![v6 pg_intersectsIndexSet:v8] || v7 && (objc_msgSend(v7, "containsIndexes:", v8) & 1) != 0)
+    suggestionTypes = [(objc_class *)class suggestionTypes];
+    if (suggestionTypeWhitelist && ![suggestionTypeWhitelist pg_intersectsIndexSet:suggestionTypes] || suggestionTypeBlocklist && (objc_msgSend(suggestionTypeBlocklist, "containsIndexes:", suggestionTypes) & 1) != 0)
     {
       v9 = 0;
       goto LABEL_18;
     }
   }
 
-  v8 = [v5 suggestionSubtypeWhitelist];
-  v10 = [v5 suggestionSubtypeBlocklist];
-  if (v8 | v10)
+  suggestionTypes = [optionsCopy suggestionSubtypeWhitelist];
+  suggestionSubtypeBlocklist = [optionsCopy suggestionSubtypeBlocklist];
+  if (suggestionTypes | suggestionSubtypeBlocklist)
   {
-    v11 = [(objc_class *)a3 suggestionSubtypes];
-    v9 = (!v8 || [v8 pg_intersectsIndexSet:v11]) && (!v10 || !objc_msgSend(v10, "containsIndexes:", v11));
+    suggestionSubtypes = [(objc_class *)class suggestionSubtypes];
+    v9 = (!suggestionTypes || [suggestionTypes pg_intersectsIndexSet:suggestionSubtypes]) && (!suggestionSubtypeBlocklist || !objc_msgSend(suggestionSubtypeBlocklist, "containsIndexes:", suggestionSubtypes));
   }
 
   else
@@ -1748,12 +1748,12 @@ LABEL_18:
   return [v3 suggesterClassesWithProfile:profile];
 }
 
-- (id)electedSuggestionsFromSuggestions:(id)a3 options:(id)a4 progress:(id)a5
+- (id)electedSuggestionsFromSuggestions:(id)suggestions options:(id)options progress:(id)progress
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = _Block_copy(a5);
+  suggestionsCopy = suggestions;
+  optionsCopy = options;
+  v10 = _Block_copy(progress);
   v11 = 0.0;
   if (v10)
   {
@@ -1782,13 +1782,13 @@ LABEL_18:
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = [v8 count];
+  v15 = [suggestionsCopy count];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v45 = v8;
-  v16 = v8;
+  v45 = suggestionsCopy;
+  v16 = suggestionsCopy;
   v17 = [v16 countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (!v17)
   {
@@ -1838,10 +1838,10 @@ LABEL_18:
       }
 
       v47 = 0;
-      if ([v9 ignoreCollisionsWithExistingSuggestions])
+      if ([optionsCopy ignoreCollisionsWithExistingSuggestions])
       {
 LABEL_18:
-        if (([v9 ignoreCollisionsWithSameBatchSuggestions] & 1) != 0 || (-[PGSuggestionSession anySuggestionCollidingWithSuggestion:inSuggestions:relaxCollisionRules:collisionReason:](self, "anySuggestionCollidingWithSuggestion:inSuggestions:relaxCollisionRules:collisionReason:", v23, v14, 0, &v47), (v25 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (([optionsCopy ignoreCollisionsWithSameBatchSuggestions] & 1) != 0 || (-[PGSuggestionSession anySuggestionCollidingWithSuggestion:inSuggestions:relaxCollisionRules:collisionReason:](self, "anySuggestionCollidingWithSuggestion:inSuggestions:relaxCollisionRules:collisionReason:", v23, v14, 0, &v47), (v25 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           [v14 addObject:v23];
           goto LABEL_37;
@@ -1959,7 +1959,7 @@ LABEL_42:
 
   if (v10 && CFAbsoluteTimeGetCurrent() - v11 >= 0.01 && (LOBYTE(v47) = 0, v10[2](v10, &v47, 1.0), v47))
   {
-    v8 = v45;
+    suggestionsCopy = v45;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
@@ -1976,7 +1976,7 @@ LABEL_42:
   {
     v13 = v14;
 LABEL_52:
-    v8 = v45;
+    suggestionsCopy = v45;
   }
 
 LABEL_54:
@@ -1985,18 +1985,18 @@ LABEL_54:
   return v13;
 }
 
-- (BOOL)suggestion:(id)a3 collidesWithMemories:(id)a4
+- (BOOL)suggestion:(id)suggestion collidesWithMemories:(id)memories
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 universalStartDate];
-  v8 = [v5 universalEndDate];
+  suggestionCopy = suggestion;
+  memoriesCopy = memories;
+  universalStartDate = [suggestionCopy universalStartDate];
+  universalEndDate = [suggestionCopy universalEndDate];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = memoriesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -2011,9 +2011,9 @@ LABEL_54:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 cls_universalStartDate];
-        v15 = [v13 cls_universalEndDate];
-        if ([v14 compare:v8] != 1 && objc_msgSend(v15, "compare:", v7) != -1)
+        cls_universalStartDate = [v13 cls_universalStartDate];
+        cls_universalEndDate = [v13 cls_universalEndDate];
+        if ([cls_universalStartDate compare:universalEndDate] != 1 && objc_msgSend(cls_universalEndDate, "compare:", universalStartDate) != -1)
         {
 
           LOBYTE(v10) = 1;
@@ -2037,18 +2037,18 @@ LABEL_12:
   return v10;
 }
 
-- (id)suggestionsByCollisionReasonCollidingWithSuggestion:(id)a3 inSuggestions:(id)a4 relaxCollisionRules:(BOOL)a5
+- (id)suggestionsByCollisionReasonCollidingWithSuggestion:(id)suggestion inSuggestions:(id)suggestions relaxCollisionRules:(BOOL)rules
 {
-  v24 = a5;
+  rulesCopy = rules;
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  suggestionCopy = suggestion;
+  suggestionsCopy = suggestions;
   v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v8;
+  obj = suggestionsCopy;
   v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -2065,7 +2065,7 @@ LABEL_12:
 
         v13 = *(*(&v25 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [(PGSuggestionSession *)self reasonForSuggestion:v7 collidingWithSuggestion:v13 relaxCollisionRules:v24];
+        v15 = [(PGSuggestionSession *)self reasonForSuggestion:suggestionCopy collidingWithSuggestion:v13 relaxCollisionRules:rulesCopy];
         if (v15)
         {
           v16 = v15;
@@ -2096,35 +2096,35 @@ LABEL_12:
   return v23;
 }
 
-- (BOOL)supportsRelaxedCollisionRulesForSuggester:(id)a3
+- (BOOL)supportsRelaxedCollisionRulesForSuggester:(id)suggester
 {
-  v3 = a3;
+  suggesterCopy = suggester;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (unint64_t)deniedSuggestion:(id)a3 collidesWithSuggestion:(id)a4
+- (unint64_t)deniedSuggestion:(id)suggestion collidesWithSuggestion:(id)withSuggestion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 state] == 4)
+  suggestionCopy = suggestion;
+  withSuggestionCopy = withSuggestion;
+  if ([suggestionCopy state] == 4)
   {
-    v7 = [v6 universalStartDate];
-    v8 = [v7 dateByAddingTimeInterval:-120.0];
+    universalStartDate = [withSuggestionCopy universalStartDate];
+    v8 = [universalStartDate dateByAddingTimeInterval:-120.0];
 
-    v9 = [v6 universalEndDate];
-    v10 = [v9 dateByAddingTimeInterval:120.0];
+    universalEndDate = [withSuggestionCopy universalEndDate];
+    v10 = [universalEndDate dateByAddingTimeInterval:120.0];
 
-    v11 = [v5 universalStartDate];
-    v12 = [v5 universalEndDate];
-    if ([v11 compare:v10] == 1)
+    universalStartDate2 = [suggestionCopy universalStartDate];
+    universalEndDate2 = [suggestionCopy universalEndDate];
+    if ([universalStartDate2 compare:v10] == 1)
     {
       v13 = 0;
     }
 
-    else if ([v12 compare:v8] == -1)
+    else if ([universalEndDate2 compare:v8] == -1)
     {
       v13 = 0;
     }
@@ -2143,23 +2143,23 @@ LABEL_12:
   return v13;
 }
 
-- (unint64_t)outstanderSuggestion:(id)a3 collidesWithSuggestion:(id)a4 relaxCollisionRules:(BOOL)a5
+- (unint64_t)outstanderSuggestion:(id)suggestion collidesWithSuggestion:(id)withSuggestion relaxCollisionRules:(BOOL)rules
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 creationDate];
-  universalToday = v10;
-  if (!v10)
+  rulesCopy = rules;
+  suggestionCopy = suggestion;
+  withSuggestionCopy = withSuggestion;
+  creationDate = [suggestionCopy creationDate];
+  universalToday = creationDate;
+  if (!creationDate)
   {
     universalToday = self->_universalToday;
   }
 
   v12 = universalToday;
 
-  v13 = [v9 creationDate];
-  v14 = v13;
-  if (!v13)
+  creationDate2 = [withSuggestionCopy creationDate];
+  v14 = creationDate2;
+  if (!creationDate2)
   {
     v14 = self->_universalToday;
   }
@@ -2170,14 +2170,14 @@ LABEL_12:
   v17 = v16;
 
   v18 = fabs(v17);
-  if (v18 >= 15552000.0 || v18 >= 2592000.0 && v5)
+  if (v18 >= 15552000.0 || v18 >= 2592000.0 && rulesCopy)
   {
     v19 = 0;
   }
 
   else
   {
-    if (v18 >= 2592000.0 || v5)
+    if (v18 >= 2592000.0 || rulesCopy)
     {
       v21 = 3600.0;
     }
@@ -2187,37 +2187,37 @@ LABEL_12:
       v21 = 43200.0;
     }
 
-    v22 = [v8 universalStartDate];
-    v23 = [v22 dateByAddingTimeInterval:-v21];
+    universalStartDate = [suggestionCopy universalStartDate];
+    v23 = [universalStartDate dateByAddingTimeInterval:-v21];
 
-    v24 = [v8 universalEndDate];
-    v25 = [v24 dateByAddingTimeInterval:v21];
+    universalEndDate = [suggestionCopy universalEndDate];
+    v25 = [universalEndDate dateByAddingTimeInterval:v21];
 
-    v26 = [v9 universalStartDate];
-    v27 = [v9 universalEndDate];
-    v19 = [v26 compare:v25] != 1 && objc_msgSend(v27, "compare:", v23) != -1;
+    universalStartDate2 = [withSuggestionCopy universalStartDate];
+    universalEndDate2 = [withSuggestionCopy universalEndDate];
+    v19 = [universalStartDate2 compare:v25] != 1 && objc_msgSend(universalEndDate2, "compare:", v23) != -1;
   }
 
   return v19;
 }
 
-- (unint64_t)singleAssetSuggestion:(id)a3 collidesWithSuggestion:(id)a4
+- (unint64_t)singleAssetSuggestion:(id)suggestion collidesWithSuggestion:(id)withSuggestion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 creationDate];
-  universalToday = v8;
-  if (!v8)
+  suggestionCopy = suggestion;
+  withSuggestionCopy = withSuggestion;
+  creationDate = [suggestionCopy creationDate];
+  universalToday = creationDate;
+  if (!creationDate)
   {
     universalToday = self->_universalToday;
   }
 
   v10 = universalToday;
 
-  v11 = [v7 creationDate];
-  v12 = v11;
-  if (!v11)
+  creationDate2 = [withSuggestionCopy creationDate];
+  v12 = creationDate2;
+  if (!creationDate2)
   {
     v12 = self->_universalToday;
   }
@@ -2234,15 +2234,15 @@ LABEL_12:
   else
   {
     v16 = dbl_22F78BF80[v15 < 604800.0];
-    v17 = [v6 universalStartDate];
-    v18 = [v17 dateByAddingTimeInterval:-v16];
+    universalStartDate = [suggestionCopy universalStartDate];
+    v18 = [universalStartDate dateByAddingTimeInterval:-v16];
 
-    v19 = [v6 universalEndDate];
-    v20 = [v19 dateByAddingTimeInterval:v16];
+    universalEndDate = [suggestionCopy universalEndDate];
+    v20 = [universalEndDate dateByAddingTimeInterval:v16];
 
-    v21 = [v7 universalStartDate];
-    v22 = [v7 universalEndDate];
-    if ([v21 compare:v20] == 1 || objc_msgSend(v22, "compare:", v18) == -1)
+    universalStartDate2 = [withSuggestionCopy universalStartDate];
+    universalEndDate2 = [withSuggestionCopy universalEndDate];
+    if ([universalStartDate2 compare:v20] == 1 || objc_msgSend(universalEndDate2, "compare:", v18) == -1)
     {
       if (v15 < 259200.0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -2251,15 +2251,15 @@ LABEL_12:
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v24 = [v6 features];
-        v37 = [v24 countByEnumeratingWithState:&v48 objects:v53 count:16];
+        features = [suggestionCopy features];
+        v37 = [features countByEnumeratingWithState:&v48 objects:v53 count:16];
         if (v37)
         {
           v25 = *v49;
           v41 = v20;
           v42 = v18;
-          v39 = v24;
-          v40 = v22;
+          v39 = features;
+          v40 = universalEndDate2;
           v36 = *v49;
           do
           {
@@ -2268,7 +2268,7 @@ LABEL_12:
             {
               if (*v49 != v25)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(features);
               }
 
               v38 = v26;
@@ -2277,8 +2277,8 @@ LABEL_12:
               v45 = 0u;
               v46 = 0u;
               v47 = 0u;
-              v28 = [v7 features];
-              v29 = [v28 countByEnumeratingWithState:&v44 objects:v52 count:16];
+              features2 = [withSuggestionCopy features];
+              v29 = [features2 countByEnumeratingWithState:&v44 objects:v52 count:16];
               if (v29)
               {
                 v30 = v29;
@@ -2289,7 +2289,7 @@ LABEL_12:
                   {
                     if (*v45 != v31)
                     {
-                      objc_enumerationMutation(v28);
+                      objc_enumerationMutation(features2);
                     }
 
                     if ([v27 collidesWithFeature:*(*(&v44 + 1) + 8 * i)])
@@ -2298,13 +2298,13 @@ LABEL_12:
                       v23 = 2;
                       v20 = v41;
                       v18 = v42;
-                      v24 = v39;
-                      v22 = v40;
+                      features = v39;
+                      universalEndDate2 = v40;
                       goto LABEL_34;
                     }
                   }
 
-                  v30 = [v28 countByEnumeratingWithState:&v44 objects:v52 count:16];
+                  v30 = [features2 countByEnumeratingWithState:&v44 objects:v52 count:16];
                   if (v30)
                   {
                     continue;
@@ -2317,8 +2317,8 @@ LABEL_12:
               v26 = v38 + 1;
               v20 = v41;
               v18 = v42;
-              v24 = v39;
-              v22 = v40;
+              features = v39;
+              universalEndDate2 = v40;
               v25 = v36;
             }
 
@@ -2358,36 +2358,36 @@ LABEL_34:
   return v23;
 }
 
-- (void)setExistingSuggestions:(id)a3
+- (void)setExistingSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   if (self->_profile == 1)
   {
     v5 = [PGSuggestionNotificationProfile alloc];
-    v6 = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
-    v7 = [(PGSuggestionNotificationProfile *)v5 initWithExistingSuggestions:v4 serviceManager:v6];
+    serviceManager = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
+    v7 = [(PGSuggestionNotificationProfile *)v5 initWithExistingSuggestions:suggestionsCopy serviceManager:serviceManager];
     notificationProfile = self->_notificationProfile;
     self->_notificationProfile = v7;
   }
 
   existingSuggestions = self->_existingSuggestions;
-  self->_existingSuggestions = v4;
+  self->_existingSuggestions = suggestionsCopy;
 }
 
-- (PGSuggestionSession)initWithProfile:(unsigned __int8)a3 workingContext:(id)a4
+- (PGSuggestionSession)initWithProfile:(unsigned __int8)profile workingContext:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = PGSuggestionSession;
   v8 = [(PGSuggestionSession *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_profile = a3;
-    objc_storeStrong(&v8->_workingContext, a4);
+    v8->_profile = profile;
+    objc_storeStrong(&v8->_workingContext, context);
     v10 = objc_alloc(MEMORY[0x277D3C790]);
-    v11 = [v7 photoLibrary];
-    v12 = [v10 initWithPhotoLibrary:v11];
+    photoLibrary = [contextCopy photoLibrary];
+    v12 = [v10 initWithPhotoLibrary:photoLibrary];
     curationContext = v9->_curationContext;
     v9->_curationContext = v12;
 
@@ -2431,15 +2431,15 @@ void __63__PGSuggestionSession_availableSuggestionTypeInfosWithProfile___block_i
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)suggesterClassesWithProfile:(unsigned __int8)a3
++ (id)suggesterClassesWithProfile:(unsigned __int8)profile
 {
   v3 = 0;
   v32[6] = *MEMORY[0x277D85DE8];
-  if (a3 > 3)
+  if (profile > 3)
   {
-    if (a3 > 5)
+    if (profile > 5)
     {
-      if (a3 == 6)
+      if (profile == 6)
       {
         v15 = objc_opt_class();
         v16 = objc_opt_class();
@@ -2452,7 +2452,7 @@ void __63__PGSuggestionSession_availableSuggestionTypeInfosWithProfile___block_i
         goto LABEL_21;
       }
 
-      if (a3 != 7)
+      if (profile != 7)
       {
         goto LABEL_22;
       }
@@ -2464,7 +2464,7 @@ void __63__PGSuggestionSession_availableSuggestionTypeInfosWithProfile___block_i
       goto LABEL_14;
     }
 
-    if (a3 != 4)
+    if (profile != 4)
     {
       v20 = objc_opt_class();
       v21 = objc_opt_class();
@@ -2487,9 +2487,9 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  if (a3 > 1)
+  if (profile > 1)
   {
-    if (a3 == 2)
+    if (profile == 2)
     {
       v7 = MEMORY[0x277CBEB18];
       v29[0] = objc_opt_class();
@@ -2520,7 +2520,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!profile)
   {
     v32[0] = objc_opt_class();
     v32[1] = objc_opt_class();
@@ -2533,7 +2533,7 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  if (a3 != 1)
+  if (profile != 1)
   {
     goto LABEL_22;
   }

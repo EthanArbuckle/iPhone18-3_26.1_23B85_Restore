@@ -1,15 +1,15 @@
 @interface VASMerchantInternal
 - (_TtC19ProximityReaderCore19VASMerchantInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VASMerchantInternal
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  VASMerchantInternal.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  VASMerchantInternal.encode(with:)(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore19VASMerchantInternal)init

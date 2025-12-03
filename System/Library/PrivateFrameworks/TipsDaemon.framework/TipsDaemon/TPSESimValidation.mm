@@ -1,31 +1,31 @@
 @interface TPSESimValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSESimValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CF96D8];
-  v5 = a3;
-  v6 = [v4 sharedManager];
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  sharedManager = [v4 sharedManager];
+  v7 = sharedManager;
+  if (sharedManager)
   {
-    (*(v5 + 2))(v5, ([v6 getSupportedFlowTypes] == 0) ^ -[TPSTargetingValidation BOOLValue](self, "BOOLValue"), 0);
-    v8 = v5;
+    (*(completionCopy + 2))(completionCopy, ([sharedManager getSupportedFlowTypes] == 0) ^ -[TPSTargetingValidation BOOLValue](self, "BOOLValue"), 0);
+    v8 = completionCopy;
   }
 
   else
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
-    v9 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
     {
-      [(TPSESimValidation *)self validateWithCompletion:v9];
+      [(TPSESimValidation *)self validateWithCompletion:targeting];
     }
 
-    (*(v5 + 2))(v5, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 

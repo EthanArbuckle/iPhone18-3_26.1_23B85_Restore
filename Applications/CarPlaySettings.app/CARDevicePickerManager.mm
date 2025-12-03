@@ -8,11 +8,11 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC15CarPlaySettings22CARDevicePickerManager_viewController);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   dispatch thunk of CAFUIDevicePickerViewController.delegate.setter();
 
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for CARDevicePickerManager();
   [(CARDevicePickerManager *)&v5 dealloc];
 }

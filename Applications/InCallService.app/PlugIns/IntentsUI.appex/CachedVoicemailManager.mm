@@ -1,9 +1,9 @@
 @interface CachedVoicemailManager
 - (_TtC9IntentsUI22CachedVoicemailManager)init;
 - (int64_t)estimatedCount;
-- (void)fetchMessagesWithCompletion:(id)a3;
-- (void)setEstimatedCount:(int64_t)a3;
-- (void)voicemailWithIdentifier:(MPMessageID *)a3 completion:(id)a4;
+- (void)fetchMessagesWithCompletion:(id)completion;
+- (void)setEstimatedCount:(int64_t)count;
+- (void)voicemailWithIdentifier:(MPMessageID *)identifier completion:(id)completion;
 @end
 
 @implementation CachedVoicemailManager
@@ -11,7 +11,7 @@
 - (int64_t)estimatedCount
 {
   v2 = self + OBJC_IVAR____TtC9IntentsUI22CachedVoicemailManager__estimatedCount;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   v4 = *(v2 + 1);
   os_unfair_lock_unlock(v2);
@@ -19,18 +19,18 @@
   return v4;
 }
 
-- (void)setEstimatedCount:(int64_t)a3
+- (void)setEstimatedCount:(int64_t)count
 {
-  v4 = self;
-  sub_100035F80(a3);
+  selfCopy = self;
+  sub_100035F80(count);
 }
 
-- (void)fetchMessagesWithCompletion:(id)a3
+- (void)fetchMessagesWithCompletion:(id)completion
 {
   v5 = sub_100030744(&qword_1000C5110);
   __chkstk_darwin(v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -46,18 +46,18 @@
   v13[3] = 0;
   v13[4] = &unk_1000A18D8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100052478(0, 0, v8, &unk_1000A18E0, v13);
 }
 
-- (void)voicemailWithIdentifier:(MPMessageID *)a3 completion:(id)a4
+- (void)voicemailWithIdentifier:(MPMessageID *)identifier completion:(id)completion
 {
   v7 = sub_100030744(&qword_1000C5110);
   __chkstk_darwin(v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_10007B608();
@@ -72,8 +72,8 @@
   v15[3] = 0;
   v15[4] = &unk_1000A1DF0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_100052478(0, 0, v10, &unk_1000A18C0, v15);
 }
 

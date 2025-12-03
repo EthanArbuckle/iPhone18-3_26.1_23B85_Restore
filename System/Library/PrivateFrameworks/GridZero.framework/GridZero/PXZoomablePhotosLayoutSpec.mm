@@ -1,11 +1,11 @@
 @interface PXZoomablePhotosLayoutSpec
-- (PXZoomablePhotosLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
-- (PXZoomablePhotosLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 availableThumbnailSizes:(id)a5 gridStyle:(int64_t)a6 itemAspectRatio:(double)a7 userDefaults:(id)a8 forceSaliency:(BOOL)a9 preferredUserInterfaceStyle:(int64_t)a10 additionalAspectFitEdgeMargins:(UIEdgeInsets)a11 overrideDefaultNumberOfColumns:(int64_t)a12;
+- (PXZoomablePhotosLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
+- (PXZoomablePhotosLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options availableThumbnailSizes:(id)sizes gridStyle:(int64_t)style itemAspectRatio:(double)ratio userDefaults:(id)defaults forceSaliency:(BOOL)saliency preferredUserInterfaceStyle:(int64_t)self0 additionalAspectFitEdgeMargins:(UIEdgeInsets)self1 overrideDefaultNumberOfColumns:(int64_t)self2;
 - (UIEdgeInsets)aspectFitEdgeMargins;
 - (UIEdgeInsets)miniModeEdgeMargins;
 - (UIEdgeInsets)squareEdgeMargins;
 - (id)defaultBackgroundColor;
-- (int64_t)bestColumnIndexForPreferredNumberOfColumns:(int64_t)a3 allowedColumns:(id)a4;
+- (int64_t)bestColumnIndexForPreferredNumberOfColumns:(int64_t)columns allowedColumns:(id)allowedColumns;
 @end
 
 @implementation PXZoomablePhotosLayoutSpec
@@ -28,17 +28,17 @@
   explicitBackgroundColor = self->_explicitBackgroundColor;
   if (explicitBackgroundColor)
   {
-    v3 = explicitBackgroundColor;
+    defaultBackgroundColor = explicitBackgroundColor;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PXZoomablePhotosLayoutSpec;
-    v3 = [(PXZoomablePhotosLayoutSpec *)&v5 defaultBackgroundColor];
+    defaultBackgroundColor = [(PXZoomablePhotosLayoutSpec *)&v5 defaultBackgroundColor];
   }
 
-  return v3;
+  return defaultBackgroundColor;
 }
 
 - (UIEdgeInsets)miniModeEdgeMargins
@@ -67,15 +67,15 @@
   return result;
 }
 
-- (int64_t)bestColumnIndexForPreferredNumberOfColumns:(int64_t)a3 allowedColumns:(id)a4
+- (int64_t)bestColumnIndexForPreferredNumberOfColumns:(int64_t)columns allowedColumns:(id)allowedColumns
 {
-  v6 = a4;
-  v7 = [(PXZoomablePhotosLayoutSpec *)self maxColumnsForIndividualItems];
+  allowedColumnsCopy = allowedColumns;
+  maxColumnsForIndividualItems = [(PXZoomablePhotosLayoutSpec *)self maxColumnsForIndividualItems];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v9 = [v6 indexOfObject:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:columns];
+  v9 = [allowedColumnsCopy indexOfObject:v8];
 
   v16 = v9;
   v10 = v14[3];
@@ -87,9 +87,9 @@
     v12[2] = __88__PXZoomablePhotosLayoutSpec_bestColumnIndexForPreferredNumberOfColumns_allowedColumns___block_invoke;
     v12[3] = &unk_2782979D8;
     v12[4] = &v13;
-    v12[5] = v7;
-    v12[6] = a3;
-    [v6 enumerateObjectsUsingBlock:v12];
+    v12[5] = maxColumnsForIndividualItems;
+    v12[6] = columns;
+    [allowedColumnsCopy enumerateObjectsUsingBlock:v12];
     v10 = v14[3];
   }
 
@@ -107,24 +107,24 @@ void __88__PXZoomablePhotosLayoutSpec_bestColumnIndexForPreferredNumberOfColumns
   }
 }
 
-- (PXZoomablePhotosLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 availableThumbnailSizes:(id)a5 gridStyle:(int64_t)a6 itemAspectRatio:(double)a7 userDefaults:(id)a8 forceSaliency:(BOOL)a9 preferredUserInterfaceStyle:(int64_t)a10 additionalAspectFitEdgeMargins:(UIEdgeInsets)a11 overrideDefaultNumberOfColumns:(int64_t)a12
+- (PXZoomablePhotosLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options availableThumbnailSizes:(id)sizes gridStyle:(int64_t)style itemAspectRatio:(double)ratio userDefaults:(id)defaults forceSaliency:(BOOL)saliency preferredUserInterfaceStyle:(int64_t)self0 additionalAspectFitEdgeMargins:(UIEdgeInsets)self1 overrideDefaultNumberOfColumns:(int64_t)self2
 {
-  v12 = a9;
+  saliencyCopy = saliency;
   v197 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a5;
-  v166 = a8;
+  collectionCopy = collection;
+  sizesCopy = sizes;
+  defaultsCopy = defaults;
   v189.receiver = self;
   v189.super_class = PXZoomablePhotosLayoutSpec;
-  v22 = [(PXZoomablePhotosLayoutSpec *)&v189 initWithExtendedTraitCollection:v20 options:a4];
+  v22 = [(PXZoomablePhotosLayoutSpec *)&v189 initWithExtendedTraitCollection:collectionCopy options:options];
   if (v22)
   {
     v152 = a2;
-    v163 = v21;
-    v23 = a12;
+    v163 = sizesCopy;
+    columnsCopy = columns;
     v24 = +[PXZoomablePhotosSettings sharedInstance];
-    v162 = [v20 userInterfaceIdiom];
-    v161 = [v20 userInterfaceIdiom];
+    userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+    userInterfaceIdiom2 = [collectionCopy userInterfaceIdiom];
     v25 = objc_alloc_init(MEMORY[0x277CCAB58]);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -134,27 +134,27 @@ void __88__PXZoomablePhotosLayoutSpec_bestColumnIndexForPreferredNumberOfColumns
     v185 = v26;
     v167 = v24;
     v186 = v167;
-    v187 = a6;
-    v188 = a7 != 1.0;
+    styleCopy = style;
+    v188 = ratio != 1.0;
     v27 = _Block_copy(aBlock);
     v27[2]();
-    [v20 layoutReferenceSize];
+    [collectionCopy layoutReferenceSize];
     v29 = v28;
     v31 = v30;
     v157 = v27;
-    if ([v20 layoutSizeClass] == 1)
+    if ([collectionCopy layoutSizeClass] == 1)
     {
       v32 = 1;
     }
 
     else
     {
-      v33 = [v20 rootExtendedTraitCollection];
+      rootExtendedTraitCollection = [collectionCopy rootExtendedTraitCollection];
 
-      if (v33)
+      if (rootExtendedTraitCollection)
       {
-        v34 = [v20 rootExtendedTraitCollection];
-        [v34 layoutReferenceSize];
+        rootExtendedTraitCollection2 = [collectionCopy rootExtendedTraitCollection];
+        [rootExtendedTraitCollection2 layoutReferenceSize];
         v32 = v35 <= 528.0;
       }
 
@@ -165,37 +165,37 @@ void __88__PXZoomablePhotosLayoutSpec_bestColumnIndexForPreferredNumberOfColumns
     }
 
     v160 = v26;
-    v165 = a6;
-    if (a6 <= 6)
+    styleCopy2 = style;
+    if (style <= 6)
     {
-      if (((1 << a6) & 0x38) != 0)
+      if (((1 << style) & 0x38) != 0)
       {
-        if (v161 == 5)
+        if (userInterfaceIdiom2 == 5)
         {
           v22->_itemCornerRadius = 9.0;
           v22->_interitemSpacing = 4.0;
-          v40 = [MEMORY[0x277D75348] blackColor];
+          blackColor = [MEMORY[0x277D75348] blackColor];
           explicitBackgroundColor = v22->_explicitBackgroundColor;
-          v22->_explicitBackgroundColor = v40;
+          v22->_explicitBackgroundColor = blackColor;
 
-          v22->_preferredUserInterfaceStyle = a10;
-          if (v162 != 4)
+          v22->_preferredUserInterfaceStyle = interfaceStyle;
+          if (userInterfaceIdiom != 4)
           {
 LABEL_22:
             [v26 addIndex:1];
             [v26 addIndex:3];
-            v52 = 5;
+            columnsCopy2 = 5;
             [v26 addIndex:5];
             [v26 addIndex:7];
             v53 = PFIsPhotosPicker();
             if (v53)
             {
               [v26 removeIndex:7];
-              v52 = a12;
+              columnsCopy2 = columns;
             }
 
-            v50 = [v26 lastIndex];
-            v54 = v166;
+            lastIndex = [v26 lastIndex];
+            v54 = defaultsCopy;
             if (v29 > v31)
             {
               v55 = 3;
@@ -210,19 +210,19 @@ LABEL_22:
               v55 = 3;
             }
 
-            if (v52)
+            if (columnsCopy2)
             {
-              v55 = v52;
+              v55 = columnsCopy2;
             }
 
-            if (a12)
+            if (columns)
             {
-              v56 = a12;
+              columnsCopy6 = columns;
             }
 
             else
             {
-              v56 = v55;
+              columnsCopy6 = v55;
             }
 
             v22->_aspectFitInteritemSpacing = 10.0;
@@ -253,24 +253,24 @@ LABEL_22:
           v22->_aspectFitItemCornerRadius = v44;
           [v167 aspectFitInteritemSpacing];
           v22->_aspectFitInteritemSpacing = v45;
-          v46 = [MEMORY[0x277D75348] systemBackgroundColor];
+          systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
           v47 = v22->_explicitBackgroundColor;
-          v22->_explicitBackgroundColor = v46;
+          v22->_explicitBackgroundColor = systemBackgroundColor;
 
-          v22->_preferredUserInterfaceStyle = a10;
-          if (v162 != 4)
+          v22->_preferredUserInterfaceStyle = interfaceStyle;
+          if (userInterfaceIdiom != 4)
           {
             goto LABEL_31;
           }
         }
 
 LABEL_19:
-        v50 = 5;
+        lastIndex = 5;
         [v26 addIndex:5];
         [v26 addIndex:7];
         if (v29 >= 400.0)
         {
-          v50 = 9;
+          lastIndex = 9;
           [v26 addIndex:9];
           v51 = 5;
         }
@@ -280,15 +280,15 @@ LABEL_19:
           v51 = 3;
         }
 
-        v54 = v166;
-        if (a12)
+        v54 = defaultsCopy;
+        if (columns)
         {
-          v56 = a12;
+          columnsCopy6 = columns;
         }
 
         else
         {
-          v56 = v51;
+          columnsCopy6 = v51;
         }
 
         v22->_aspectFitInteritemSpacing = 17.0;
@@ -296,11 +296,11 @@ LABEL_19:
         v58 = 17.0;
         v156 = 18.0;
         v59 = 5.45;
-        v55 = v56;
+        v55 = columnsCopy6;
         goto LABEL_72;
       }
 
-      if (((1 << a6) & 0x45) != 0)
+      if (((1 << style) & 0x45) != 0)
       {
         [v167 cornerRadius];
         v22->_itemCornerRadius = v36;
@@ -324,13 +324,13 @@ LABEL_19:
       v22->_aspectFitInteritemSpacing = v39;
     }
 
-    v22->_preferredUserInterfaceStyle = a10;
-    if (v162 == 4)
+    v22->_preferredUserInterfaceStyle = interfaceStyle;
+    if (userInterfaceIdiom == 4)
     {
       goto LABEL_19;
     }
 
-    if (v161 == 5)
+    if (userInterfaceIdiom2 == 5)
     {
       goto LABEL_22;
     }
@@ -339,7 +339,7 @@ LABEL_31:
     if (!v32)
     {
       v61 = v22;
-      [v20 layoutReferenceSize];
+      [collectionCopy layoutReferenceSize];
       v181[0] = MEMORY[0x277D85DD0];
       v181[1] = 3221225472;
       v181[2] = __237__PXZoomablePhotosLayoutSpec_initWithExtendedTraitCollection_options_availableThumbnailSizes_gridStyle_itemAspectRatio_userDefaults_forceSaliency_preferredUserInterfaceStyle_additionalAspectFitEdgeMargins_overrideDefaultNumberOfColumns___block_invoke_25;
@@ -349,19 +349,19 @@ LABEL_31:
       v63 = _Block_copy(v181);
       v64 = v63[2](176.0);
       [v26 addIndex:v64];
-      if (a6 == 1)
+      if (style == 1)
       {
         goto LABEL_50;
       }
 
-      if (a6 == 2)
+      if (style == 2)
       {
         [v26 addIndex:{(v63[2])(v63, 130.0)}];
         [v26 addIndex:{(v63[2])(v63, 165.0)}];
         [v26 addIndex:{(v63[2])(v63, 230.0)}];
       }
 
-      if ([v20 userInterfaceIdiom] == 3)
+      if ([collectionCopy userInterfaceIdiom] == 3)
       {
 LABEL_50:
         v65 = 5;
@@ -370,32 +370,32 @@ LABEL_50:
       else
       {
         v65 = 7;
-        if (a6 != 3)
+        if (style != 3)
         {
           v65 = v64;
         }
       }
 
-      if (a12)
+      if (columns)
       {
-        v56 = a12;
+        columnsCopy6 = columns;
       }
 
       else
       {
-        v56 = v65;
+        columnsCopy6 = v65;
       }
 
-      v66 = [v26 lastIndex];
+      lastIndex2 = [v26 lastIndex];
       v67 = 10.0;
-      if (v66 > 5)
+      if (lastIndex2 > 5)
       {
         v67 = 17.0;
       }
 
       v68 = v61;
       v61->_aspectFitInteritemSpacing = v67;
-      v50 = [v26 lastIndex];
+      lastIndex = [v26 lastIndex];
       [v167 panoramaRegularInteritemSpacing];
       v58 = v69;
 
@@ -403,44 +403,44 @@ LABEL_50:
       v57 = 0x7FFFFFFFFFFFFFFFLL;
       v156 = 0.0;
       v59 = 5.45;
-      v55 = v56;
-      v54 = v166;
+      v55 = columnsCopy6;
+      v54 = defaultsCopy;
 LABEL_72:
-      v22->_maxColumnsForStickyHeaderDisplay = v50;
+      v22->_maxColumnsForStickyHeaderDisplay = lastIndex;
       v22->_defaultNumberOfColumns = v55;
-      v22->_staticNumberOfColumns = v56;
-      v22->_maxColumnsForIndividualItems = v50;
-      v22->_maxColumnsForBadges = v50;
+      v22->_staticNumberOfColumns = columnsCopy6;
+      v22->_maxColumnsForIndividualItems = lastIndex;
+      v22->_maxColumnsForBadges = lastIndex;
       v22->_minColumnsForMiniBadges = v57;
       v22->_initialNumberOfColumns = v55;
-      v71 = [v54 preferredIndividualItemsColumnsNumber];
-      v72 = [v71 integerValue];
+      preferredIndividualItemsColumnsNumber = [v54 preferredIndividualItemsColumnsNumber];
+      integerValue = [preferredIndividualItemsColumnsNumber integerValue];
 
-      if (v72)
+      if (integerValue)
       {
-        v22->_initialNumberOfColumns = v72;
+        v22->_initialNumberOfColumns = integerValue;
       }
 
       v22->_panoramaItemAspectRatio = v59;
       v22->_panoramaInteritemSpacing = v58;
-      if (v165 == 1)
+      if (styleCopy2 == 1)
       {
         [v167 cardsAspectRatio];
-        a7 = v73;
+        ratio = v73;
         if (v29 > v31)
         {
-          a7 = 1.0 / v73;
+          ratio = 1.0 / v73;
         }
       }
 
-      else if (a7 == 0.0)
+      else if (ratio == 0.0)
       {
-        [v20 fullScreenReferenceRect];
+        [collectionCopy fullScreenReferenceRect];
         v76 = v74;
         v77 = v75;
         if (v74 == 0.0 || v75 == 0.0 || v74 == *MEMORY[0x277D3A858] && v75 == *(MEMORY[0x277D3A858] + 8))
         {
-          a7 = 1.0;
+          ratio = 1.0;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
           {
             *buf = 134218496;
@@ -455,20 +455,20 @@ LABEL_72:
 
         else
         {
-          a7 = fabs(v74 / v75);
+          ratio = fabs(v74 / v75);
         }
       }
 
-      v22->_itemAspectRatio = a7;
-      if ([v20 userInterfaceIdiom] == 4)
+      v22->_itemAspectRatio = ratio;
+      if ([collectionCopy userInterfaceIdiom] == 4)
       {
         v78 = ceil(v29 / 200.0) * 200.0;
       }
 
       else
       {
-        v79 = [v20 rootExtendedTraitCollection];
-        [v79 layoutReferenceSize];
+        rootExtendedTraitCollection3 = [collectionCopy rootExtendedTraitCollection];
+        [rootExtendedTraitCollection3 layoutReferenceSize];
         v78 = v80;
       }
 
@@ -484,19 +484,19 @@ LABEL_72:
       v172[1] = 3221225472;
       v172[2] = __237__PXZoomablePhotosLayoutSpec_initWithExtendedTraitCollection_options_availableThumbnailSizes_gridStyle_itemAspectRatio_userDefaults_forceSaliency_preferredUserInterfaceStyle_additionalAspectFitEdgeMargins_overrideDefaultNumberOfColumns___block_invoke_3;
       v172[3] = &unk_2782979B0;
-      v175 = v165;
+      v175 = styleCopy2;
       v176 = v29;
       v177 = v31;
       v178 = v78;
-      v154 = v20;
+      v154 = collectionCopy;
       v173 = v154;
       v83 = v82;
       v174 = v83;
       v164 = _Block_copy(v172);
       if ([v163 count])
       {
-        v84 = [v163 firstObject];
-        [v84 CGSizeValue];
+        firstObject = [v163 firstObject];
+        [firstObject CGSizeValue];
         v86 = v85;
         v88 = v87;
       }
@@ -515,7 +515,7 @@ LABEL_72:
 
       else
       {
-        if (v162 == 4)
+        if (userInterfaceIdiom == 4)
         {
           [v163 lastObject];
         }
@@ -576,7 +576,7 @@ LABEL_72:
       }
 
       v155 = v83;
-      v159 = v20;
+      v159 = collectionCopy;
       v104 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v168 = 0u;
       v169 = 0u;
@@ -600,15 +600,15 @@ LABEL_72:
 
             v110 = *(*(&v168 + 1) + 8 * j);
             IsEmpty = PXSizeIsEmpty();
-            if ((a4 & 0x20) != 0 || IsEmpty)
+            if ((options & 0x20) != 0 || IsEmpty)
             {
               [v104 addObject:&unk_282C47FB8];
             }
 
             else
             {
-              v112 = [v110 integerValue];
-              if (v112 <= v50)
+              integerValue2 = [v110 integerValue];
+              if (integerValue2 <= lastIndex)
               {
                 [v167 individualLevelMinimumScreensOfContent];
               }
@@ -618,7 +618,7 @@ LABEL_72:
                 [v167 denseLevelMinimumScreensOfContent];
               }
 
-              v114 = floor(v78 / v112);
+              v114 = floor(v78 / integerValue2);
               v115 = [MEMORY[0x277CCABB0] numberWithInteger:vcvtpd_s64_f64(v113 * (vcvtpd_s64_f64(v78 / v114) * vcvtpd_s64_f64(v31 / v114)))];
               [v104 addObject:v115];
             }
@@ -638,14 +638,14 @@ LABEL_72:
       v118 = [(NSArray *)v158->_supportedColumns count];
       if (v118 != [(NSArray *)v158->_minimumAssetsRequiredByColumn count])
       {
-        v151 = [MEMORY[0x277CCA890] currentHandler];
-        [v151 handleFailureInMethod:v152 object:v158 file:@"PXZoomablePhotosLayoutSpec.m" lineNumber:357 description:{@"Count mismatch: %lu != %lu", -[NSArray count](v158->_supportedColumns, "count"), -[NSArray count](v158->_minimumAssetsRequiredByColumn, "count")}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:v152 object:v158 file:@"PXZoomablePhotosLayoutSpec.m" lineNumber:357 description:{@"Count mismatch: %lu != %lu", -[NSArray count](v158->_supportedColumns, "count"), -[NSArray count](v158->_minimumAssetsRequiredByColumn, "count")}];
       }
 
       p_aspectFitEdgeMargins = &v158->_aspectFitEdgeMargins;
-      v20 = v159;
-      v21 = v163;
-      if (v161 == 5)
+      collectionCopy = v159;
+      sizesCopy = v163;
+      if (userInterfaceIdiom2 == 5)
       {
         PXEdgeInsetsWithValueForEdges();
         *&p_aspectFitEdgeMargins->top = v120;
@@ -653,7 +653,7 @@ LABEL_72:
         v158->_aspectFitEdgeMargins.bottom = v122;
         v158->_aspectFitEdgeMargins.right = v123;
         p_top = &v158->_squareEdgeMargins.top;
-        if (v165 == 1)
+        if (styleCopy2 == 1)
         {
           PXEdgeInsetsWithValueForEdges();
           *p_top = v125;
@@ -687,16 +687,16 @@ LABEL_72:
       v158->_aspectFitEdgeMargins.left = v136;
       v158->_aspectFitEdgeMargins.bottom = v137;
       v158->_aspectFitEdgeMargins.right = v138;
-      LOBYTE(v139) = v165;
-      if (v165 != 1)
+      LOBYTE(v139) = styleCopy2;
+      if (styleCopy2 != 1)
       {
-        v139 = [v167 forceSaliency] | v12;
+        v139 = [v167 forceSaliency] | saliencyCopy;
       }
 
       v158->_useSaliency = v139;
       v158->_maxColumnsForSaliency = [v167 maxColumnsForSaliency];
       v158->_captionSpacing = v156;
-      v140 = [[PXZoomableInlineHeadersLayoutSpec alloc] initWithExtendedTraitCollection:v154 options:a4];
+      v140 = [[PXZoomableInlineHeadersLayoutSpec alloc] initWithExtendedTraitCollection:v154 options:options];
       inlineHeadersSpec = v158->_inlineHeadersSpec;
       v158->_inlineHeadersSpec = v140;
 
@@ -746,7 +746,7 @@ LABEL_136:
         v60 = 5;
       }
 
-      if (a12)
+      if (columns)
       {
         goto LABEL_34;
       }
@@ -755,12 +755,12 @@ LABEL_136:
     else
     {
       v60 = 3;
-      if (a12)
+      if (columns)
       {
 LABEL_34:
-        v50 = 5;
-        v56 = a12;
-        v54 = v166;
+        lastIndex = 5;
+        columnsCopy6 = columns;
+        v54 = defaultsCopy;
 LABEL_68:
         if (v29 > v31)
         {
@@ -769,25 +769,25 @@ LABEL_68:
 
         else
         {
-          v57 = v50;
+          v57 = lastIndex;
         }
 
         [v167 panoramaCompactInteritemSpacing];
         v58 = v70;
         v59 = 5.25;
         v156 = 0.0;
-        v55 = v23;
+        v55 = columnsCopy;
         goto LABEL_72;
       }
     }
 
-    v50 = 5;
-    if (a6 == 3)
+    lastIndex = 5;
+    if (style == 3)
     {
-      v54 = v166;
+      v54 = defaultsCopy;
       if (v29 > v31)
       {
-        v50 = 7;
+        lastIndex = 7;
         [v26 addIndex:7];
         v60 = 7;
       }
@@ -795,11 +795,11 @@ LABEL_68:
 
     else
     {
-      v54 = v166;
+      v54 = defaultsCopy;
     }
 
-    v56 = [MEMORY[0x277D3CD60] photosGridLayoutColumnsForWidth:v29];
-    v23 = v60;
+    columnsCopy6 = [MEMORY[0x277D3CD60] photosGridLayoutColumnsForWidth:v29];
+    columnsCopy = v60;
     goto LABEL_68;
   }
 
@@ -901,11 +901,11 @@ void __237__PXZoomablePhotosLayoutSpec_initWithExtendedTraitCollection_options_a
   }
 }
 
-- (PXZoomablePhotosLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXZoomablePhotosLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosLayoutSpec.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXZoomablePhotosLayoutSpec initWithExtendedTraitCollection:options:]"}];
+  collectionCopy = collection;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosLayoutSpec.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXZoomablePhotosLayoutSpec initWithExtendedTraitCollection:options:]"}];
 
   abort();
 }

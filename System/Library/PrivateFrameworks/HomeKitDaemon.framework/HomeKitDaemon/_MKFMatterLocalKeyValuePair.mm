@@ -1,6 +1,6 @@
 @interface _MKFMatterLocalKeyValuePair
 + (NSPredicate)homeRelation;
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 - (MKFMatterLocalKeyValuePairDatabaseID)databaseID;
 @end
 
@@ -13,7 +13,7 @@
   return v2;
 }
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
   v12.receiver = self;
   v12.super_class = _MKFMatterLocalKeyValuePair;
@@ -33,10 +33,10 @@
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ is required", @"home"];
       v9 = [v7 hmd_validationErrorWithDescription:v8 managedObject:self attributeName:@"home"];
 
-      if (a3)
+      if (update)
       {
         v10 = v9;
-        *a3 = v9;
+        *update = v9;
       }
 
       LOBYTE(v5) = 0;

@@ -1,15 +1,15 @@
 @interface GMEnrollmentSetupIntroViewManager
 - (_TtC14VoiceTriggerUI33GMEnrollmentSetupIntroViewManager)init;
-- (id)createViewControllerWithIntroViewControllerDelegate:(id)a3;
+- (id)createViewControllerWithIntroViewControllerDelegate:(id)delegate;
 @end
 
 @implementation GMEnrollmentSetupIntroViewManager
 
-- (id)createViewControllerWithIntroViewControllerDelegate:(id)a3
+- (id)createViewControllerWithIntroViewControllerDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_2729161E0(a3);
+  selfCopy = self;
+  v6 = sub_2729161E0(delegate);
   swift_unknownObjectRelease();
 
   return v6;

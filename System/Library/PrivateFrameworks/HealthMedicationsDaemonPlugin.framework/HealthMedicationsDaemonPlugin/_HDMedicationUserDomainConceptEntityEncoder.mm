@@ -1,6 +1,6 @@
 @interface _HDMedicationUserDomainConceptEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -8,29 +8,29 @@
 
 - (id)orderedProperties
 {
-  v2 = [(HDEntityEncoder *)self superclassEncoder];
-  v3 = [v2 orderedProperties];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
 
-  return v3;
+  return orderedProperties;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277D115B8]) _initBareObject];
+  _initBareObject = [objc_alloc(MEMORY[0x277D115B8]) _initBareObject];
 
-  return v3;
+  return _initBareObject;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  LODWORD(a5) = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  LODWORD(row) = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
-  if (a5)
+  if (row)
   {
-    v12 = [(HDEntityEncoder *)self transaction];
-    v13 = [(HDUserDomainConceptEntity *)HDMedicationUserDomainConceptEntity retrievePrivateDataEntitiesForUserDomainConcept:v10 persistentID:a4 transaction:v12 error:a6];
+    transaction = [(HDEntityEncoder *)self transaction];
+    v13 = [(HDUserDomainConceptEntity *)HDMedicationUserDomainConceptEntity retrievePrivateDataEntitiesForUserDomainConcept:objectCopy persistentID:d transaction:transaction error:error];
   }
 
   else

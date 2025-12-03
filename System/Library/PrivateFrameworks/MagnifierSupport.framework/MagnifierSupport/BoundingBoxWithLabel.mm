@@ -1,10 +1,10 @@
 @interface BoundingBoxWithLabel
-- (BoundingBoxWithLabel)initWithLabel:(unsigned __int16)a3;
+- (BoundingBoxWithLabel)initWithLabel:(unsigned __int16)label;
 @end
 
 @implementation BoundingBoxWithLabel
 
-- (BoundingBoxWithLabel)initWithLabel:(unsigned __int16)a3
+- (BoundingBoxWithLabel)initWithLabel:(unsigned __int16)label
 {
   v9.receiver = self;
   v9.super_class = BoundingBoxWithLabel;
@@ -18,7 +18,7 @@
     v4->_depth = 0.0;
     v4->_maxX = 0;
     v4->_maxY = 0;
-    v4->_label = a3;
+    v4->_label = label;
     v4->_alias = 0;
     v7 = v4;
   }

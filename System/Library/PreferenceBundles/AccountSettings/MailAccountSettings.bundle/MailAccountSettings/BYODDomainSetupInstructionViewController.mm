@@ -1,21 +1,21 @@
 @interface BYODDomainSetupInstructionViewController
-- (BYODDomainSetupInstructionViewController)initWithDnsRecords:(id)a3;
-- (id)dnsPropertyWithSpecifier:(id)a3;
+- (BYODDomainSetupInstructionViewController)initWithDnsRecords:(id)records;
+- (id)dnsPropertyWithSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_viewInstructionsOnWeb:(id)a3;
+- (void)_viewInstructionsOnWeb:(id)web;
 - (void)viewDidLoad;
 @end
 
 @implementation BYODDomainSetupInstructionViewController
 
-- (BYODDomainSetupInstructionViewController)initWithDnsRecords:(id)a3
+- (BYODDomainSetupInstructionViewController)initWithDnsRecords:(id)records
 {
   v5.receiver = self;
   v5.super_class = BYODDomainSetupInstructionViewController;
   result = [(BYODDomainSetupInstructionViewController *)&v5 init];
   if (result)
   {
-    result->_dnsRecords = a3;
+    result->_dnsRecords = records;
   }
 
   return result;
@@ -57,8 +57,8 @@
   [v10 setButtonAction:"_viewInstructionsOnWeb:"];
   [v49 addObject:v10];
   [v53 addObjectsFromArray:v49];
-  v11 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
-  v12 = [v11 count];
+  dnsRecords = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
+  v12 = [dnsRecords count];
 
   v50 = v10;
   if (v12)
@@ -70,21 +70,21 @@
     v58 = PSCellClassKey;
     while (1)
     {
-      v14 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
+      dnsRecords2 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
       v2 = v52;
-      v15 = [v14 count];
+      v15 = [dnsRecords2 count];
 
       if (v13 >= v15)
       {
         break;
       }
 
-      v16 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
-      v56 = [v16 objectAtIndexedSubscript:v13];
+      dnsRecords3 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
+      v56 = [dnsRecords3 objectAtIndexedSubscript:v13];
 
       v17 = objc_alloc_init(NSMutableArray);
-      v18 = [v56 dnsRecordType];
-      v19 = [PSSpecifier groupSpecifierWithName:v18];
+      dnsRecordType = [v56 dnsRecordType];
+      v19 = [PSSpecifier groupSpecifierWithName:dnsRecordType];
 
       v55 = v19;
       [v17 addObject:v19];
@@ -119,11 +119,11 @@
       [v30 setProperty:objc_opt_class() forKey:v58];
       [v30 setProperty:&__kCFBooleanTrue forKey:v57];
       [v17 addObject:v30];
-      v32 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
-      v33 = [v32 objectAtIndexedSubscript:v13];
-      v34 = [v33 priority];
+      dnsRecords4 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
+      v33 = [dnsRecords4 objectAtIndexedSubscript:v13];
+      priority = [v33 priority];
 
-      if ((v34 & 0x8000000000000000) == 0)
+      if ((priority & 0x8000000000000000) == 0)
       {
         v35 = [NSBundle bundleForClass:objc_opt_class()];
         v36 = [v35 localizedStringForKey:@"BYOD_PRIORITY" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -162,7 +162,7 @@
   return v45;
 }
 
-- (void)_viewInstructionsOnWeb:(id)a3
+- (void)_viewInstructionsOnWeb:(id)web
 {
   v4 = [SFSafariViewController alloc];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -174,37 +174,37 @@
   [(BYODDomainSetupInstructionViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)dnsPropertyWithSpecifier:(id)a3
+- (id)dnsPropertyWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 properties];
-  v6 = [v5 objectForKey:PSKeyNameKey];
+  specifierCopy = specifier;
+  properties = [specifierCopy properties];
+  v6 = [properties objectForKey:PSKeyNameKey];
 
-  v7 = [v4 properties];
-  v8 = [v7 objectForKey:PSIDKey];
+  properties2 = [specifierCopy properties];
+  v8 = [properties2 objectForKey:PSIDKey];
 
   v9 = [v8 substringFromIndex:{-[__CFString length](v6, "length")}];
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
   if (v6 == @"DNSRecordType")
   {
-    v12 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
-    v13 = [v12 objectAtIndexedSubscript:v10];
-    v14 = [v13 type];
+    dnsRecords = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
+    v13 = [dnsRecords objectAtIndexedSubscript:integerValue];
+    type = [v13 type];
   }
 
   else if (v6 == @"DNSRecordHost")
   {
-    v12 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
-    v13 = [v12 objectAtIndexedSubscript:v10];
-    v14 = [v13 host];
+    dnsRecords = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
+    v13 = [dnsRecords objectAtIndexedSubscript:integerValue];
+    type = [v13 host];
   }
 
   else if (v6 == @"DNSRecordValue")
   {
-    v12 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
-    v13 = [v12 objectAtIndexedSubscript:v10];
-    v14 = [v13 value];
+    dnsRecords = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
+    v13 = [dnsRecords objectAtIndexedSubscript:integerValue];
+    type = [v13 value];
   }
 
   else
@@ -215,12 +215,12 @@
       goto LABEL_11;
     }
 
-    v12 = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
-    v13 = [v12 objectAtIndexedSubscript:v10];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v13 priority]);
+    dnsRecords = [(BYODDomainSetupInstructionViewController *)self dnsRecords];
+    v13 = [dnsRecords objectAtIndexedSubscript:integerValue];
+    type = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v13 priority]);
   }
 
-  v11 = v14;
+  v11 = type;
 
 LABEL_11:
 

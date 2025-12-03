@@ -1,28 +1,28 @@
 @interface _LSApplicationProxyForIdentifierQuery
 + (NSSet)alwaysAllowedBundleIdentifiers;
-+ (id)queryWithIdentifier:(id)a3;
++ (id)queryWithIdentifier:(id)identifier;
 - (BOOL)_requiresDatabaseMappingEntitlement;
-- (BOOL)isEqual:(id)a3;
-- (_LSApplicationProxyForIdentifierQuery)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_LSApplicationProxyForIdentifierQuery)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSApplicationProxyForIdentifierQuery
 
-+ (id)queryWithIdentifier:(id)a3
++ (id)queryWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _init];
-  if (v5)
+  identifierCopy = identifier;
+  _init = [[self alloc] _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    v7 = v5[2];
-    v5[2] = v6;
+    v6 = [identifierCopy copy];
+    v7 = _init[2];
+    _init[2] = v6;
   }
 
-  return v5;
+  return _init;
 }
 
 + (NSSet)alwaysAllowedBundleIdentifiers
@@ -37,14 +37,14 @@
   return v3;
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
+  connectionCopy = connection;
+  blockCopy = block;
+  identifier = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
 
-  if (v8)
+  if (identifier)
   {
     v23 = 0;
     v20 = 0;
@@ -55,9 +55,9 @@
 
     if (v10)
     {
-      v11 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
-      v12 = [LSApplicationProxy applicationProxyForIdentifier:v11 withContext:v10];
-      v7[2](v7, v12, 0);
+      identifier2 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
+      v12 = [LSApplicationProxy applicationProxyForIdentifier:identifier2 withContext:v10];
+      blockCopy[2](blockCopy, v12, 0);
     }
 
     else
@@ -67,15 +67,15 @@
 
       if (v16)
       {
-        v11 = 0;
+        identifier2 = 0;
       }
 
       else
       {
-        v11 = v23;
+        identifier2 = v23;
       }
 
-      (v7)[2](v7, 0, v11);
+      (blockCopy)[2](blockCopy, 0, identifier2);
     }
 
     if (v20 && v22 == 1)
@@ -98,7 +98,7 @@
     v25[0] = @"invalid input parameters";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v14 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v13, "[_LSApplicationProxyForIdentifierQuery _enumerateWithXPCConnection:block:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSBundleQuery.mm", 582);
-    (v7)[2](v7, 0, v14);
+    (blockCopy)[2](blockCopy, 0, v14);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -106,12 +106,12 @@
 
 - (BOOL)_requiresDatabaseMappingEntitlement
 {
-  v3 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
-  if (v3)
+  identifier = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
+  if (identifier)
   {
-    v4 = [objc_opt_class() alwaysAllowedBundleIdentifiers];
-    v5 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
-    v6 = [v4 containsObject:v5] ^ 1;
+    alwaysAllowedBundleIdentifiers = [objc_opt_class() alwaysAllowedBundleIdentifiers];
+    identifier2 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
+    v6 = [alwaysAllowedBundleIdentifiers containsObject:identifier2] ^ 1;
   }
 
   else
@@ -122,23 +122,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _LSApplicationProxyForIdentifierQuery;
-  if ([(_LSQuery *)&v12 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(_LSQuery *)&v12 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 identifier];
-    if (v6)
+    v5 = equalCopy;
+    identifier = [v5 identifier];
+    if (identifier)
     {
-      v7 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
-      if (v7)
+      identifier2 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
+      if (identifier2)
       {
-        v8 = [v5 identifier];
-        v9 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
-        v10 = [v8 isEqual:v9];
+        identifier3 = [v5 identifier];
+        identifier4 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
+        v10 = [identifier3 isEqual:identifier4];
       }
 
       else
@@ -163,8 +163,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
+  v4 = [identifier hash];
   v7.receiver = self;
   v7.super_class = _LSApplicationProxyForIdentifierQuery;
   v5 = [(_LSQuery *)&v7 hash];
@@ -172,25 +172,25 @@
   return v5 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = _LSApplicationProxyForIdentifierQuery;
-  [(_LSQuery *)&v6 encodeWithCoder:v4];
-  v5 = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  [(_LSQuery *)&v6 encodeWithCoder:coderCopy];
+  identifier = [(_LSApplicationProxyForIdentifierQuery *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (_LSApplicationProxyForIdentifierQuery)initWithCoder:(id)a3
+- (_LSApplicationProxyForIdentifierQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _LSApplicationProxyForIdentifierQuery;
-  v5 = [(_LSQuery *)&v9 initWithCoder:v4];
+  v5 = [(_LSQuery *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }

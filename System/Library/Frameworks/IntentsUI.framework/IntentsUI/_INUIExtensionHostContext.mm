@@ -2,8 +2,8 @@
 + (id)_allowedItemPayloadClasses;
 - (INUIExtensionHostContextDelegate)extensionHostContextDelegate;
 - (id)_errorHandlingExtensionContextProxy;
-- (void)requestHandlingOfIntent:(id)a3;
-- (void)setExtensionContextState:(id)a3 completion:(id)a4;
+- (void)requestHandlingOfIntent:(id)intent;
+- (void)setExtensionContextState:(id)state completion:(id)completion;
 - (void)willBeginEditing;
 @end
 
@@ -26,31 +26,31 @@
 
 - (void)willBeginEditing
 {
-  v3 = [(_INUIExtensionHostContext *)self extensionHostContextDelegate];
-  [v3 extensionHostContextWillBeginEditing:self];
+  extensionHostContextDelegate = [(_INUIExtensionHostContext *)self extensionHostContextDelegate];
+  [extensionHostContextDelegate extensionHostContextWillBeginEditing:self];
 }
 
-- (void)requestHandlingOfIntent:(id)a3
+- (void)requestHandlingOfIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [(_INUIExtensionHostContext *)self extensionHostContextDelegate];
-  [v5 extensionHostContext:self wantsToHandleIntent:v4];
+  intentCopy = intent;
+  extensionHostContextDelegate = [(_INUIExtensionHostContext *)self extensionHostContextDelegate];
+  [extensionHostContextDelegate extensionHostContext:self wantsToHandleIntent:intentCopy];
 }
 
 - (id)_errorHandlingExtensionContextProxy
 {
-  v2 = [(_INUIExtensionHostContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_357];
+  _auxiliaryConnection = [(_INUIExtensionHostContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_357];
 
   return v3;
 }
 
-- (void)setExtensionContextState:(id)a3 completion:(id)a4
+- (void)setExtensionContextState:(id)state completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_INUIExtensionHostContext *)self _errorHandlingExtensionContextProxy];
-  [v8 setExtensionContextState:v7 completion:v6];
+  completionCopy = completion;
+  stateCopy = state;
+  _errorHandlingExtensionContextProxy = [(_INUIExtensionHostContext *)self _errorHandlingExtensionContextProxy];
+  [_errorHandlingExtensionContextProxy setExtensionContextState:stateCopy completion:completionCopy];
 }
 
 @end

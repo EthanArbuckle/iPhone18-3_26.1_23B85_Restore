@@ -1,30 +1,30 @@
 @interface VUIListCollectionViewCell
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShouldAppearSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setShouldAppearSelected:(BOOL)selected;
 @end
 
 @implementation VUIListCollectionViewCell
 
-- (void)setShouldAppearSelected:(BOOL)a3
+- (void)setShouldAppearSelected:(BOOL)selected
 {
-  if (self->_shouldAppearSelected != a3)
+  if (self->_shouldAppearSelected != selected)
   {
-    self->_shouldAppearSelected = a3;
+    self->_shouldAppearSelected = selected;
     [(VUIListCollectionViewCell *)self setSelected:?];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self->_shouldAppearSelected || a3;
+  v4 = self->_shouldAppearSelected || highlighted;
   v7.receiver = self;
   v7.super_class = VUIListCollectionViewCell;
   [(VUIListCollectionViewCell *)&v7 setHighlighted:v4];
   if (self->_highlightedBackgroundColor && self->_backgroundColor)
   {
-    v5 = [(VUIListCollectionViewCell *)self contentView];
+    contentView = [(VUIListCollectionViewCell *)self contentView];
     if ((v4 | [(VUIListCollectionViewCell *)self isSelected]))
     {
       p_highlightedBackgroundColor = &self->_highlightedBackgroundColor;
@@ -35,22 +35,22 @@
       p_highlightedBackgroundColor = &self->_backgroundColor;
     }
 
-    [v5 setBackgroundColor:*p_highlightedBackgroundColor];
+    [contentView setBackgroundColor:*p_highlightedBackgroundColor];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = VUIListCollectionViewCell;
   [(VUIListCollectionViewCell *)&v18 setSelected:?];
   if (self->_highlightedBackgroundColor && self->_backgroundColor)
   {
-    v5 = [(VUIListCollectionViewCell *)self contentView];
-    v6 = v5;
-    if (v3)
+    contentView = [(VUIListCollectionViewCell *)self contentView];
+    v6 = contentView;
+    if (selectedCopy)
     {
       p_highlightedBackgroundColor = &self->_highlightedBackgroundColor;
     }
@@ -60,17 +60,17 @@
       p_highlightedBackgroundColor = &self->_backgroundColor;
     }
 
-    [v5 setBackgroundColor:*p_highlightedBackgroundColor];
+    [contentView setBackgroundColor:*p_highlightedBackgroundColor];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(VUIListCollectionViewCell *)self contentView];
-  v9 = [v8 subviews];
+  contentView2 = [(VUIListCollectionViewCell *)self contentView];
+  subviews = [contentView2 subviews];
 
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v10 = [subviews countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -82,14 +82,14 @@
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) setHighlighted:v3];
+        [*(*(&v14 + 1) + 8 * v13++) setHighlighted:selectedCopy];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v11);

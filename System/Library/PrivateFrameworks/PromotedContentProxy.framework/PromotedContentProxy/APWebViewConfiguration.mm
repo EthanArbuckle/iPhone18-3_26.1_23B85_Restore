@@ -4,8 +4,8 @@
 - (WKWebViewConfiguration)videoConfigurationWithBackgroundPriority;
 - (WKWebViewConfiguration)webProcessConfiguration;
 - (WKWebViewConfiguration)webProcessConfigurationWithBackgroundPriority;
-- (id)_injectionScriptForResource:(id)a3 injectionTime:(int64_t)a4;
-- (id)_injectionStyleForResource:(id)a3;
+- (id)_injectionScriptForResource:(id)resource injectionTime:(int64_t)time;
+- (id)_injectionStyleForResource:(id)resource;
 @end
 
 @implementation APWebViewConfiguration
@@ -121,26 +121,26 @@
   return v22;
 }
 
-- (id)_injectionScriptForResource:(id)a3 injectionTime:(int64_t)a4
+- (id)_injectionScriptForResource:(id)resource injectionTime:(int64_t)time
 {
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a3;
+  resourceCopy = resource;
   v10 = objc_msgSend_bundleWithIdentifier_(v5, v7, @"com.apple.ap.PromotedContentUI", v8, v9);
-  v13 = objc_msgSend_URLForResource_withExtension_(v10, v11, v6, @"js", v12);
+  v13 = objc_msgSend_URLForResource_withExtension_(v10, v11, resourceCopy, @"js", v12);
 
   v15 = objc_msgSend_stringWithContentsOfURL_encoding_error_(MEMORY[0x277CCACA8], v14, v13, 4, 0);
   v16 = objc_alloc(MEMORY[0x277CE3838]);
-  v18 = objc_msgSend_initWithSource_injectionTime_forMainFrameOnly_(v16, v17, v15, a4, 0);
+  v18 = objc_msgSend_initWithSource_injectionTime_forMainFrameOnly_(v16, v17, v15, time, 0);
 
   return v18;
 }
 
-- (id)_injectionStyleForResource:(id)a3
+- (id)_injectionStyleForResource:(id)resource
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  resourceCopy = resource;
   v8 = objc_msgSend_bundleWithIdentifier_(v3, v5, @"com.apple.ap.PromotedContentUI", v6, v7);
-  v11 = objc_msgSend_URLForResource_withExtension_(v8, v9, v4, @"css", v10);
+  v11 = objc_msgSend_URLForResource_withExtension_(v8, v9, resourceCopy, @"css", v10);
 
   v13 = objc_msgSend_stringWithContentsOfURL_encoding_error_(MEMORY[0x277CCACA8], v12, v11, 4, 0);
   v14 = objc_alloc(MEMORY[0x277CE38B0]);

@@ -1,14 +1,14 @@
 @interface SBHWidgetContainerView
-- (SBHWidgetContainerView)initWithGridSizeClass:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 applicationName:(id)a5 logIdentifier:(id)a6;
+- (SBHWidgetContainerView)initWithGridSizeClass:(id)class iconImageInfo:(SBIconImageInfo *)info applicationName:(id)name logIdentifier:(id)identifier;
 - (UIView)widgetView;
-- (id)_fontWithTextStyle:(id)a3 symbolicTraits:(unsigned int)a4 maxSizeCategory:(id)a5;
+- (id)_fontWithTextStyle:(id)style symbolicTraits:(unsigned int)traits maxSizeCategory:(id)category;
 - (void)_reloadScreenTimeExpirationUI;
 - (void)_updateIconEffect;
 - (void)_updateScreenTimeLockoutView;
 - (void)layoutSubviews;
-- (void)setBackgroundView:(id)a3;
-- (void)setBlockedForScreenTimeExpiration:(BOOL)a3;
-- (void)setClipsToBounds:(BOOL)a3;
+- (void)setBackgroundView:(id)view;
+- (void)setBlockedForScreenTimeExpiration:(BOOL)expiration;
+- (void)setClipsToBounds:(BOOL)bounds;
 @end
 
 @implementation SBHWidgetContainerView
@@ -203,22 +203,22 @@ void *__40__SBHWidgetContainerView_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (SBHWidgetContainerView)initWithGridSizeClass:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 applicationName:(id)a5 logIdentifier:(id)a6
+- (SBHWidgetContainerView)initWithGridSizeClass:(id)class iconImageInfo:(SBIconImageInfo *)info applicationName:(id)name logIdentifier:(id)identifier
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
   v34[1] = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  classCopy = class;
+  infoCopy = info;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = SBHWidgetContainerView;
   v20 = [(SBHWidgetContainerView *)&v32 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v20)
   {
-    v21 = [v17 copy];
+    v21 = [classCopy copy];
     gridSizeClass = v20->_gridSizeClass;
     v20->_gridSizeClass = v21;
 
@@ -226,12 +226,12 @@ void *__40__SBHWidgetContainerView_layoutSubviews__block_invoke(uint64_t a1)
     v20->_iconImageInfo.size.height = v14;
     v20->_iconImageInfo.scale = v13;
     v20->_iconImageInfo.continuousCornerRadius = v12;
-    v23 = [(SBIconImageInfo *)v18 copy];
+    v23 = [(SBIconImageInfo *)infoCopy copy];
     applicationName = v20->_applicationName;
     v20->_applicationName = v23;
 
     v20->_lastRequestedClipToBoundsValue = 0;
-    objc_storeStrong(&v20->_logIdentifier, a5);
+    objc_storeStrong(&v20->_logIdentifier, name);
     [(SBHWidgetContainerView *)v20 setAutoresizingMask:18];
     [(SBHWidgetContainerView *)v20 setAutoresizesSubviews:1];
     v25 = objc_opt_self();
@@ -250,10 +250,10 @@ void *__40__SBHWidgetContainerView_layoutSubviews__block_invoke(uint64_t a1)
   return v20;
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  self->_lastRequestedClipToBoundsValue = a3;
-  v5 = a3 || self->_requiresClippingToBounds || self->_blockedForScreenTimeExpiration;
+  self->_lastRequestedClipToBoundsValue = bounds;
+  v5 = bounds || self->_requiresClippingToBounds || self->_blockedForScreenTimeExpiration;
   v7 = v3;
   v8 = v4;
   v6.receiver = self;
@@ -261,10 +261,10 @@ void *__40__SBHWidgetContainerView_layoutSubviews__block_invoke(uint64_t a1)
   [(SBHWidgetContainerView *)&v6 setClipsToBounds:v5];
 }
 
-- (void)setBlockedForScreenTimeExpiration:(BOOL)a3
+- (void)setBlockedForScreenTimeExpiration:(BOOL)expiration
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_blockedForScreenTimeExpiration != a3)
+  if (self->_blockedForScreenTimeExpiration != expiration)
   {
     v5 = SBLogWidgets();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -279,39 +279,39 @@ void *__40__SBHWidgetContainerView_layoutSubviews__block_invoke(uint64_t a1)
     }
   }
 
-  self->_blockedForScreenTimeExpiration = a3;
+  self->_blockedForScreenTimeExpiration = expiration;
   [(SBHWidgetContainerView *)self _updateScreenTimeLockoutView];
   [(SBHWidgetContainerView *)self setClipsToBounds:self->_lastRequestedClipToBoundsValue];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (([(UIView *)self->_backgroundView isEqual:?]& 1) == 0)
   {
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 setAutoresizingMask:0];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [viewCopy setAutoresizingMask:0];
     [(UIView *)self->_backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(SBHWidgetContainerView *)self bounds];
-    [v5 setFrame:?];
+    [viewCopy setFrame:?];
     [(SBHWidgetContainerView *)self setNeedsLayout];
   }
 }
 
-- (id)_fontWithTextStyle:(id)a3 symbolicTraits:(unsigned int)a4 maxSizeCategory:(id)a5
+- (id)_fontWithTextStyle:(id)style symbolicTraits:(unsigned int)traits maxSizeCategory:(id)category
 {
-  v5 = *&a4;
+  v5 = *&traits;
   v8 = MEMORY[0x1E69DD1B8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SBHWidgetContainerView *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  v13 = SBHContentSizeCategoryClip(v12, *MEMORY[0x1E69DDC68], v9);
+  categoryCopy = category;
+  styleCopy = style;
+  traitCollection = [(SBHWidgetContainerView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v13 = SBHContentSizeCategoryClip(preferredContentSizeCategory, *MEMORY[0x1E69DDC68], categoryCopy);
 
   v14 = [v8 traitCollectionWithPreferredContentSizeCategory:v13];
 
-  v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v10 compatibleWithTraitCollection:v14];
+  v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:v14];
 
   v16 = [v15 fontDescriptorWithSymbolicTraits:v5];
   v17 = [MEMORY[0x1E69DB878] fontWithDescriptor:v16 size:0.0];
@@ -335,22 +335,22 @@ void *__40__SBHWidgetContainerView_layoutSubviews__block_invoke(uint64_t a1)
   effectView = self->_effectView;
   self->_effectView = 0;
 
-  v4 = [(SBHWidgetContainerView *)self traitCollection];
-  v9 = [v4 sbh_iconEffect];
+  traitCollection = [(SBHWidgetContainerView *)self traitCollection];
+  sbh_iconEffect = [traitCollection sbh_iconEffect];
 
-  v5 = v9;
-  if (v9)
+  v5 = sbh_iconEffect;
+  if (sbh_iconEffect)
   {
-    v6 = [v9 makeNewEffectView];
+    makeNewEffectView = [sbh_iconEffect makeNewEffectView];
     [(SBHWidgetContainerView *)self bounds];
-    [(UIView *)v6 setFrame:?];
-    [(UIView *)v6 _setContinuousCornerRadius:self->_iconImageInfo.continuousCornerRadius];
+    [(UIView *)makeNewEffectView setFrame:?];
+    [(UIView *)makeNewEffectView _setContinuousCornerRadius:self->_iconImageInfo.continuousCornerRadius];
     v7 = self->_effectView;
-    self->_effectView = v6;
-    v8 = v6;
+    self->_effectView = makeNewEffectView;
+    v8 = makeNewEffectView;
 
     [(SBHWidgetContainerView *)self addSubview:v8];
-    v5 = v9;
+    v5 = sbh_iconEffect;
   }
 }
 

@@ -43,7 +43,7 @@
   }
 
   v39 = 0;
-  v7 = [a1 _baseQueryDictionaryForIdentifier:v6 numValues:&v39];
+  v7 = [self _baseQueryDictionaryForIdentifier:v6 numValues:&v39];
   MutableCopy = CFDictionaryCreateMutableCopy(*MEMORY[0x1E695E480], v39 + 1, v7);
   CFDictionaryAddValue(MutableCopy, *MEMORY[0x1E697B318], *MEMORY[0x1E695E4D0]);
   result = 0;
@@ -57,8 +57,8 @@
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
@@ -66,24 +66,24 @@
       v18 = v17;
       if (v15)
       {
-        a1 = AMSLogKey();
-        [v16 stringWithFormat:@"%@: [%@] ", v18, a1];
+        self = AMSLogKey();
+        [v16 stringWithFormat:@"%@: [%@] ", v18, self];
       }
 
       else
       {
         [v16 stringWithFormat:@"%@: ", v17];
       }
-      v19 = ;
+      selfCopy = ;
       *buf = 138543618;
-      v43 = v19;
+      v43 = selfCopy;
       v44 = 2114;
       v45 = v6;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_INFO, "%{public}@We don't have a secure token stored for %{public}@.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@We don't have a secure token stored for %{public}@.", buf, 0x16u);
       if (v15)
       {
 
-        v19 = a1;
+        selfCopy = self;
       }
     }
 
@@ -99,8 +99,8 @@
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = AMSLogKey();
       v23 = MEMORY[0x1E696AEC0];
@@ -123,7 +123,7 @@
       v45 = v6;
       v46 = 1024;
       v47 = v11;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch the secure token (X-Token) for %{public}@. error = %d", buf, 0x1Cu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch the secure token (X-Token) for %{public}@. error = %d", buf, 0x1Cu);
       if (v22)
       {
 
@@ -153,8 +153,8 @@ LABEL_33:
       v27 = +[AMSLogConfig sharedConfig];
     }
 
-    v28 = [v27 OSLogObject];
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v27 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v29 = AMSLogKey();
       v30 = MEMORY[0x1E696AEC0];
@@ -162,24 +162,24 @@ LABEL_33:
       v32 = v31;
       if (v29)
       {
-        a1 = AMSLogKey();
-        [v30 stringWithFormat:@"%@: [%@] ", v32, a1];
+        self = AMSLogKey();
+        [v30 stringWithFormat:@"%@: [%@] ", v32, self];
       }
 
       else
       {
         [v30 stringWithFormat:@"%@: ", v31];
       }
-      v33 = ;
+      selfCopy2 = ;
       *buf = 138543618;
-      v43 = v33;
+      v43 = selfCopy2;
       v44 = 2114;
       v45 = v6;
-      _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_ERROR, "%{public}@Secure token query succeeded but no data was returned. identifier = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Secure token query succeeded but no data was returned. identifier = %{public}@", buf, 0x16u);
       if (v29)
       {
 
-        v33 = a1;
+        selfCopy2 = self;
       }
     }
 
@@ -212,12 +212,12 @@ LABEL_35:
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 = AMSLogKey();
     v10 = MEMORY[0x1E696AEC0];
-    v11 = a1;
+    selfCopy = self;
     v12 = objc_opt_class();
     if (v9)
     {
@@ -237,20 +237,20 @@ LABEL_35:
     v51 = v14;
     v52 = 2114;
     v53 = v15;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_INFO, "%{public}@Fetching secure token for account: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Fetching secure token for account: %{public}@", buf, 0x16u);
     if (v9)
     {
 
       v14 = v3;
     }
 
-    a1 = v11;
+    self = selfCopy;
   }
 
   v16 = MEMORY[0x1E6959A48];
-  v17 = [v6 identifier];
+  identifier = [v6 identifier];
   v49 = 0;
-  v18 = [v16 _secureTokenForIdentifier:v17 error:&v49];
+  v18 = [v16 _secureTokenForIdentifier:identifier error:&v49];
   v19 = v49;
 
   if (v18)
@@ -266,13 +266,13 @@ LABEL_35:
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = a2;
       v23 = AMSLogKey();
       v43 = MEMORY[0x1E696AEC0];
-      v47 = a1;
+      selfCopy2 = self;
       v24 = objc_opt_class();
       v45 = v23;
       if (v23)
@@ -299,18 +299,18 @@ LABEL_35:
       v53 = v27;
       v54 = 2114;
       v55 = v28;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@Error fetching secure token. account = %{public}@ | error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Error fetching secure token. account = %{public}@ | error = %{public}@", buf, 0x20u);
       if (v45)
       {
 
         v26 = v42;
       }
 
-      a1 = v47;
+      self = selfCopy2;
     }
   }
 
-  if ([v6 ams_isiCloudAccount] && (objc_msgSend(a1, "ams_iTunesAccountForAccount:", v6), (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ([v6 ams_isiCloudAccount] && (objc_msgSend(self, "ams_iTunesAccountForAccount:", v6), (v29 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v30 = v29;
     v31 = +[AMSLogConfig sharedAccountsConfig];
@@ -319,12 +319,12 @@ LABEL_35:
       v31 = +[AMSLogConfig sharedConfig];
     }
 
-    v32 = [v31 OSLogObject];
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v31 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v33 = AMSLogKey();
       v34 = MEMORY[0x1E696AEC0];
-      v48 = a1;
+      selfCopy3 = self;
       v35 = objc_opt_class();
       v46 = v33;
       if (v33)
@@ -348,17 +348,17 @@ LABEL_35:
       v53 = v40;
       v54 = 2114;
       v55 = v41;
-      _os_log_impl(&dword_192869000, v32, OS_LOG_TYPE_INFO, "%{public}@Found iTunes account for iCloud account, fetching secure token. account = %{public}@ | iTunesAccount = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_INFO, "%{public}@Found iTunes account for iCloud account, fetching secure token. account = %{public}@ | iTunesAccount = %{public}@", buf, 0x20u);
       if (v46)
       {
 
         v37 = v44;
       }
 
-      a1 = v48;
+      self = selfCopy3;
     }
 
-    v38 = [a1 ams_secureTokenForAccount:v30];
+    v38 = [self ams_secureTokenForAccount:v30];
   }
 
   else
@@ -375,8 +375,8 @@ LABEL_29:
   v64 = *MEMORY[0x1E69E9840];
   v9 = a3;
   v10 = a4;
-  v11 = [v10 identifier];
-  v12 = [v11 length];
+  identifier = [v10 identifier];
+  v12 = [identifier length];
 
   if (!v12)
   {
@@ -392,8 +392,8 @@ LABEL_29:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v56 = a5;
       v16 = AMSLogKey();
@@ -419,7 +419,7 @@ LABEL_29:
       v63 = v23;
       v24 = "%{public}@Setting secure token for account: %{public}@";
 LABEL_17:
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_INFO, v24, buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, v24, buf, 0x16u);
       if (v16)
       {
 
@@ -437,8 +437,8 @@ LABEL_17:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v56 = a5;
       v16 = AMSLogKey();
@@ -469,13 +469,13 @@ LABEL_17:
 
   v59 = 0;
   v25 = objc_opt_class();
-  v26 = [v10 identifier];
-  v27 = [v25 _baseQueryDictionaryForIdentifier:v26 numValues:&v59];
+  identifier2 = [v10 identifier];
+  v27 = [v25 _baseQueryDictionaryForIdentifier:identifier2 numValues:&v59];
 
   if (v9)
   {
     v28 = [v9 dataUsingEncoding:4];
-    v29 = [a1 ams_secureTokenForAccount:v10];
+    v29 = [self ams_secureTokenForAccount:v10];
     v30 = v29;
     if (v29)
     {
@@ -491,8 +491,8 @@ LABEL_17:
         v40 = +[AMSLogConfig sharedConfig];
       }
 
-      v41 = [v40 OSLogObject];
-      if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v40 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v58 = a5;
         v42 = AMSLogKey();
@@ -515,7 +515,7 @@ LABEL_17:
         v61 = v46;
         v62 = 2114;
         v63 = v50;
-        _os_log_impl(&dword_192869000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@Updating an existing secure token. account = %{public}@.", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Updating an existing secure token. account = %{public}@.", buf, 0x16u);
         if (v42)
         {
 
@@ -539,8 +539,8 @@ LABEL_17:
         v33 = +[AMSLogConfig sharedConfig];
       }
 
-      v34 = [v33 OSLogObject];
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v33 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v57 = a5;
         v35 = AMSLogKey();
@@ -563,7 +563,7 @@ LABEL_17:
         v61 = v39;
         v62 = 2114;
         v63 = v47;
-        _os_log_impl(&dword_192869000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@Adding a new secure token to keychain. account = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@Adding a new secure token to keychain. account = %{public}@", buf, 0x16u);
         if (v35)
         {
 
@@ -601,8 +601,8 @@ LABEL_25:
 
 LABEL_48:
   v51 = MEMORY[0x1E696AEC0];
-  v52 = [v10 identifier];
-  v53 = [v51 stringWithFormat:@"Failed to set the secure token for %@. err = %d", v52, v31];
+  identifier3 = [v10 identifier];
+  v53 = [v51 stringWithFormat:@"Failed to set the secure token for %@. err = %d", identifier3, v31];
 
   if (a5)
   {

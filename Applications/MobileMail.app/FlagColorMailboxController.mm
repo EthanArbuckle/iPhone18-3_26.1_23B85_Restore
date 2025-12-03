@@ -1,6 +1,6 @@
 @interface FlagColorMailboxController
 - (CGPoint)iconOffset;
-- (FlagColorMailboxController)initWithType:(unint64_t)a3 flagColor:(unint64_t)a4;
+- (FlagColorMailboxController)initWithType:(unint64_t)type flagColor:(unint64_t)color;
 - (id)criterion;
 - (id)iconTintColor;
 - (id)mailboxTitle;
@@ -10,14 +10,14 @@
 
 @implementation FlagColorMailboxController
 
-- (FlagColorMailboxController)initWithType:(unint64_t)a3 flagColor:(unint64_t)a4
+- (FlagColorMailboxController)initWithType:(unint64_t)type flagColor:(unint64_t)color
 {
   v6.receiver = self;
   v6.super_class = FlagColorMailboxController;
-  result = [(SharedMailboxController *)&v6 initWithType:a3];
+  result = [(SharedMailboxController *)&v6 initWithType:type];
   if (result)
   {
-    result->_flagColor = a4;
+    result->_flagColor = color;
   }
 
   return result;
@@ -25,29 +25,29 @@
 
 - (id)unscopedCountPredicate
 {
-  v2 = [(FlagColorMailboxController *)self flagColor];
+  flagColor = [(FlagColorMailboxController *)self flagColor];
 
-  return [EMMessageListItemPredicates predicateForFlagColor:v2];
+  return [EMMessageListItemPredicates predicateForFlagColor:flagColor];
 }
 
 - (id)criterion
 {
-  v2 = [(FlagColorMailboxController *)self flagColor];
+  flagColor = [(FlagColorMailboxController *)self flagColor];
 
-  return [MFMessageCriterion criterionForFlagColor:v2];
+  return [MFMessageCriterion criterionForFlagColor:flagColor];
 }
 
 - (id)mailboxTitle
 {
-  v2 = [(FlagColorMailboxController *)self flagColor];
-  if (v2 > 6)
+  flagColor = [(FlagColorMailboxController *)self flagColor];
+  if (flagColor > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_10064F200[v2];
+    v3 = off_10064F200[flagColor];
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_100662A88 table:@"Main"];
   }
@@ -57,15 +57,15 @@
 
 - (id)navigationTitle
 {
-  v2 = [(FlagColorMailboxController *)self flagColor];
-  if (v2 > 6)
+  flagColor = [(FlagColorMailboxController *)self flagColor];
+  if (flagColor > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_10064F238[v2];
+    v3 = off_10064F238[flagColor];
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_100662A88 table:@"Main"];
   }
@@ -75,9 +75,9 @@
 
 - (id)iconTintColor
 {
-  v2 = [(FlagColorMailboxController *)self flagColor];
+  flagColor = [(FlagColorMailboxController *)self flagColor];
 
-  return [UIColor mf_colorFromFlagColor:v2];
+  return [UIColor mf_colorFromFlagColor:flagColor];
 }
 
 - (CGPoint)iconOffset

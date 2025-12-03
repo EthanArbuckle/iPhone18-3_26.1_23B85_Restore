@@ -1,10 +1,10 @@
 @interface VNImageSignatureDetector
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)_calculateImageSignatureHashDescriptorFrom:(const void *)a3 options:(id)a4 error:(id *)a5;
-- (shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)_calculateImageSignatureprintDescriptorFromOptions:(id)a3 error:(id *)a4;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)_calculateImageSignatureHashDescriptorFrom:(const void *)from options:(id)options error:(id *)error;
+- (shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)_calculateImageSignatureprintDescriptorFromOptions:(id)options error:(id *)error;
 @end
 
 @implementation VNImageSignatureDetector
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __65__VNImageSignatureDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNImageSignatureDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNImageSignatureDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -40,23 +40,23 @@ void __65__VNImageSignatureDetector_configurationOptionKeysForDetectorKey__block
   +[VNImageSignatureDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-- (shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)_calculateImageSignatureHashDescriptorFrom:(const void *)a3 options:(id)a4 error:(id *)a5
+- (shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)_calculateImageSignatureHashDescriptorFrom:(const void *)from options:(id)options error:(id *)error
 {
   v9 = v5;
-  v10 = a4;
+  optionsCopy = options;
   v16 = 0;
-  if (![VNValidationUtilities getNSUIntegerValue:&v16 forKey:@"VNImageSignatureDetectorInitOption_ImageSignatureHashType" inOptions:v10 error:a5])
+  if (![VNValidationUtilities getNSUIntegerValue:&v16 forKey:@"VNImageSignatureDetectorInitOption_ImageSignatureHashType" inOptions:optionsCopy error:error])
   {
 LABEL_7:
     *v9 = 0;
@@ -67,16 +67,16 @@ LABEL_7:
   v11 = v16;
   if (v11 != [(VNImageSignatureDetector *)self imageSignatureHashType])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [VNError errorForInvalidArgumentWithLocalizedDescription:@"Mismatch in signature hash type"];
+      *error = [VNError errorForInvalidArgumentWithLocalizedDescription:@"Mismatch in signature hash type"];
     }
 
     goto LABEL_7;
   }
 
   (*(*self->_hyperplaneLSHProcessor.__ptr_ + 64))(&v15);
-  v12 = (*(*self->_hyperplaneLSHProcessor.__ptr_ + 160))(self->_hyperplaneLSHProcessor.__ptr_, *a3, v15);
+  v12 = (*(*self->_hyperplaneLSHProcessor.__ptr_ + 160))(self->_hyperplaneLSHProcessor.__ptr_, *from, v15);
   if (v12 == 128)
   {
     *v9 = v15;
@@ -84,9 +84,9 @@ LABEL_7:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = VNErrorForCVMLStatus(v12);
+      *error = VNErrorForCVMLStatus(v12);
     }
 
     *v9 = 0;
@@ -104,17 +104,17 @@ LABEL_8:
   return result;
 }
 
-- (shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)_calculateImageSignatureprintDescriptorFromOptions:(id)a3 error:(id *)a4
+- (shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)_calculateImageSignatureprintDescriptorFromOptions:(id)options error:(id *)error
 {
   v7 = v4;
-  v8 = a3;
+  optionsCopy = options;
   v16 = 0;
-  v9 = [VNValidationUtilities getOptionalObject:&v16 ofClass:objc_opt_class() forKey:@"VNImageSignatureDetectorProcessOption_ImageSignatureprintInput" inOptions:v8 error:a4];
+  v9 = [VNValidationUtilities getOptionalObject:&v16 ofClass:objc_opt_class() forKey:@"VNImageSignatureDetectorProcessOption_ImageSignatureprintInput" inOptions:optionsCopy error:error];
   v10 = v16;
   if (v9)
   {
     v15 = 0;
-    if ([VNValidationUtilities getNSUIntegerValue:&v15 forKey:@"VNImageSignatureDetectorInitOption_ImageSignatureprintType" inOptions:v8 error:a4])
+    if ([VNValidationUtilities getNSUIntegerValue:&v15 forKey:@"VNImageSignatureDetectorInitOption_ImageSignatureprintType" inOptions:optionsCopy error:error])
     {
       v11 = v15;
       if (v11 == [(VNImageSignatureDetector *)self imageSignatureprintType])
@@ -127,18 +127,18 @@ LABEL_8:
           operator new();
         }
 
-        if (a4)
+        if (error)
         {
           v12 = [VNError errorForInvalidArgumentWithLocalizedDescription:@"Unknown signature print type"];
           goto LABEL_10;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v12 = [VNError errorForInvalidArgumentWithLocalizedDescription:@"Mismatch in signature print type"];
 LABEL_10:
-        *a4 = v12;
+        *error = v12;
       }
     }
   }
@@ -151,25 +151,25 @@ LABEL_10:
   return result;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
-  v14 = a8;
-  v15 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 error:a7];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v15 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v15)
   {
-    v16 = [(VNDetector *)self computeDeviceForComputeStage:@"VNComputeStageMain" processingOptions:v12 error:a7];
+    v16 = [(VNDetector *)self computeDeviceForComputeStage:@"VNComputeStageMain" processingOptions:optionsCopy error:error];
     if (v16)
     {
-      [(VNImageSignatureDetector *)self _calculateImageSignatureprintDescriptorFromOptions:v12 error:a7];
+      [(VNImageSignatureDetector *)self _calculateImageSignatureprintDescriptorFromOptions:optionsCopy error:error];
       if (v28)
       {
         v17 = (*(*v28 + 104))(v28);
         v18 = [VN6Ac6Cyl5O5oK19HboyMBR alloc];
         v19 = [(VN6Ac6Cyl5O5oK19HboyMBR *)v18 initWithData:v28[7] elementCount:v17 >> 2 elementType:1 lengthInBytes:v17 imageSignatureprintType:[(VNImageSignatureDetector *)self imageSignatureprintType] originatingRequestSpecifier:v15];
-        [(VNImageSignatureDetector *)self _calculateImageSignatureHashDescriptorFrom:&v28 options:v12 error:a7];
+        [(VNImageSignatureDetector *)self _calculateImageSignatureHashDescriptorFrom:&v28 options:optionsCopy error:error];
         if (v26)
         {
           v20 = (*(*v26 + 104))();
@@ -182,10 +182,10 @@ LABEL_10:
             v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
           }
 
-          else if (a7)
+          else if (error)
           {
             [VNError errorForInternalErrorWithLocalizedDescription:@"Unknown error creating VNObservation object"];
-            *a7 = v24 = 0;
+            *error = v24 = 0;
           }
 
           else
@@ -230,14 +230,14 @@ LABEL_10:
   return v24;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = VNImageSignatureDetector;
-  if ([(VNDetector *)&v11 completeInitializationForSession:a3 error:?])
+  if ([(VNDetector *)&v11 completeInitializationForSession:session error:?])
   {
-    v6 = [(VNDetector *)self configurationOptions];
-    if ([VNValidationUtilities getNSUIntegerValue:&self->_imageSignatureprintType forKey:@"VNImageSignatureDetectorInitOption_ImageSignatureprintType" inOptions:v6 error:a4]&& [VNValidationUtilities getNSUIntegerValue:&self->_imageSignatureHashType forKey:@"VNImageSignatureDetectorInitOption_ImageSignatureHashType" inOptions:v6 error:a4])
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    if ([VNValidationUtilities getNSUIntegerValue:&self->_imageSignatureprintType forKey:@"VNImageSignatureDetectorInitOption_ImageSignatureprintType" inOptions:configurationOptions error:error]&& [VNValidationUtilities getNSUIntegerValue:&self->_imageSignatureHashType forKey:@"VNImageSignatureDetectorInitOption_ImageSignatureHashType" inOptions:configurationOptions error:error])
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -247,30 +247,30 @@ LABEL_10:
       v7 = _Block_copy(aBlock);
       if ([(VNImageSignatureDetector *)self imageSignatureprintType]== 3)
       {
-        LOBYTE(a4) = v7[2](v7, @"neuralhash_128x96_seed1", a4);
+        LOBYTE(error) = v7[2](v7, @"neuralhash_128x96_seed1", error);
       }
 
-      else if (a4)
+      else if (error)
       {
         v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown signature print type: %lu", -[VNImageSignatureDetector imageSignatureprintType](self, "imageSignatureprintType")];
-        *a4 = [VNError errorForInvalidArgumentWithLocalizedDescription:v8];
+        *error = [VNError errorForInvalidArgumentWithLocalizedDescription:v8];
 
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
     else
     {
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
 BOOL __67__VNImageSignatureDetector_completeInitializationForSession_error___block_invoke(uint64_t a1, void *a2, void *a3)

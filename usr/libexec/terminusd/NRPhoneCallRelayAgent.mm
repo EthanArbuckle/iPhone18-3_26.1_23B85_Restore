@@ -1,14 +1,14 @@
 @interface NRPhoneCallRelayAgent
 + (id)agentDomain;
 + (id)agentType;
-- (BOOL)assertAgentWithOptions:(id)a3;
+- (BOOL)assertAgentWithOptions:(id)options;
 - (void)dealloc;
-- (void)unassertAgentWithOptions:(id)a3;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation NRPhoneCallRelayAgent
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
   if (self)
   {
@@ -28,7 +28,7 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
   if (self)
   {

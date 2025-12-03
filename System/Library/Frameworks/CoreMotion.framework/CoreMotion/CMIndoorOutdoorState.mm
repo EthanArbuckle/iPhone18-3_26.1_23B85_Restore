@@ -1,24 +1,24 @@
 @interface CMIndoorOutdoorState
-- (CMIndoorOutdoorState)initWithCoder:(id)a3;
-- (CMIndoorOutdoorState)initWithStartDate:(id)a3 type:(int64_t)a4 confidence:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMIndoorOutdoorState)initWithCoder:(id)coder;
+- (CMIndoorOutdoorState)initWithStartDate:(id)date type:(int64_t)type confidence:(int64_t)confidence;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMIndoorOutdoorState
 
-- (CMIndoorOutdoorState)initWithStartDate:(id)a3 type:(int64_t)a4 confidence:(int64_t)a5
+- (CMIndoorOutdoorState)initWithStartDate:(id)date type:(int64_t)type confidence:(int64_t)confidence
 {
   v10.receiver = self;
   v10.super_class = CMIndoorOutdoorState;
   v8 = [(CMIndoorOutdoorState *)&v10 init];
   if (v8)
   {
-    v8->fStartDate = a3;
-    v8->fType = a4;
-    v8->fConfidence = a5;
+    v8->fStartDate = date;
+    v8->fType = type;
+    v8->fConfidence = confidence;
   }
 
   return v8;
@@ -31,7 +31,7 @@
   [(CMIndoorOutdoorState *)&v3 dealloc];
 }
 
-- (CMIndoorOutdoorState)initWithCoder:(id)a3
+- (CMIndoorOutdoorState)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CMIndoorOutdoorState;
@@ -39,18 +39,18 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->fStartDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kIndoorOutdoorStateCodingKeyStartDate");
-    v4->fType = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kIndoorOutdoorStateCodingKeyType");
-    v4->fConfidence = objc_msgSend_decodeIntegerForKey_(a3, v8, @"kIndoorOutdoorStateCodingKeyConfidence");
+    v4->fStartDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kIndoorOutdoorStateCodingKeyStartDate");
+    v4->fType = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kIndoorOutdoorStateCodingKeyType");
+    v4->fConfidence = objc_msgSend_decodeIntegerForKey_(coder, v8, @"kIndoorOutdoorStateCodingKeyConfidence");
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   fStartDate = self->fStartDate;
   fType = self->fType;
   fConfidence = self->fConfidence;
@@ -58,13 +58,13 @@
   return MEMORY[0x1EEE66B58](v7, sel_initWithStartDate_type_confidence_, fStartDate);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fStartDate, @"kIndoorOutdoorStateCodingKeyStartDate");
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->fType, @"kIndoorOutdoorStateCodingKeyType");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fStartDate, @"kIndoorOutdoorStateCodingKeyStartDate");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->fType, @"kIndoorOutdoorStateCodingKeyType");
   fConfidence = self->fConfidence;
 
-  objc_msgSend_encodeInteger_forKey_(a3, v6, fConfidence, @"kIndoorOutdoorStateCodingKeyConfidence");
+  objc_msgSend_encodeInteger_forKey_(coder, v6, fConfidence, @"kIndoorOutdoorStateCodingKeyConfidence");
 }
 
 - (id)description

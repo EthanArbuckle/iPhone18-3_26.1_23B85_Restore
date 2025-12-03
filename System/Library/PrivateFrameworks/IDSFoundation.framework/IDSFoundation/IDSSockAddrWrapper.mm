@@ -1,10 +1,10 @@
 @interface IDSSockAddrWrapper
-+ (id)wrapperWithAddressString:(id)a3 withPortHostOrder:(unsigned __int16)a4 withInterfaceName:(id)a5;
-+ (id)wrapperWithSockAddr:(const sockaddr *)a3;
-+ (id)wrapperWithWrapper:(id)a3 andPortHostOrder:(unsigned __int16)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWrapper:(id)a3;
-- (IDSSockAddrWrapper)initWithSockAddr:(const sockaddr *)a3;
++ (id)wrapperWithAddressString:(id)string withPortHostOrder:(unsigned __int16)order withInterfaceName:(id)name;
++ (id)wrapperWithSockAddr:(const sockaddr *)addr;
++ (id)wrapperWithWrapper:(id)wrapper andPortHostOrder:(unsigned __int16)order;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWrapper:(id)wrapper;
+- (IDSSockAddrWrapper)initWithSockAddr:(const sockaddr *)addr;
 - (id)description;
 - (id)ipData;
 - (id)ipString;
@@ -12,19 +12,19 @@
 
 @implementation IDSSockAddrWrapper
 
-+ (id)wrapperWithSockAddr:(const sockaddr *)a3
++ (id)wrapperWithSockAddr:(const sockaddr *)addr
 {
-  v3 = [[IDSSockAddrWrapper alloc] initWithSockAddr:a3];
+  v3 = [[IDSSockAddrWrapper alloc] initWithSockAddr:addr];
 
   return v3;
 }
 
-+ (id)wrapperWithAddressString:(id)a3 withPortHostOrder:(unsigned __int16)a4 withInterfaceName:(id)a5
++ (id)wrapperWithAddressString:(id)string withPortHostOrder:(unsigned __int16)order withInterfaceName:(id)name
 {
-  v5 = a4;
+  orderCopy = order;
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [a3 UTF8String];
+  nameCopy = name;
+  uTF8String = [string UTF8String];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -33,22 +33,22 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  if (inet_pton(2, v8, &v11 + 4))
+  if (inet_pton(2, uTF8String, &v11 + 4))
   {
     LOWORD(v11) = 528;
-    WORD1(v11) = __rev16(v5);
+    WORD1(v11) = __rev16(orderCopy);
 LABEL_3:
     v9 = [[IDSSockAddrWrapper alloc] initWithSockAddr:&v11];
     goto LABEL_4;
   }
 
-  if (inet_pton(30, v8, &v11 + 8))
+  if (inet_pton(30, uTF8String, &v11 + 8))
   {
     LOWORD(v11) = 7708;
-    WORD1(v11) = __rev16(v5);
-    if (v7)
+    WORD1(v11) = __rev16(orderCopy);
+    if (nameCopy)
     {
-      DWORD2(v12) = if_nametoindex([v7 UTF8String]);
+      DWORD2(v12) = if_nametoindex([nameCopy UTF8String]);
     }
 
     goto LABEL_3;
@@ -60,7 +60,7 @@ LABEL_4:
   return v9;
 }
 
-- (IDSSockAddrWrapper)initWithSockAddr:(const sockaddr *)a3
+- (IDSSockAddrWrapper)initWithSockAddr:(const sockaddr *)addr
 {
   v8.receiver = self;
   v8.super_class = IDSSockAddrWrapper;
@@ -69,25 +69,25 @@ LABEL_4:
   if (!v4)
   {
 LABEL_7:
-    a3 = v5;
+    addr = v5;
     goto LABEL_9;
   }
 
-  if (a3)
+  if (addr)
   {
-    if (!a3->sa_len || (sa_family = a3->sa_family, sa_family != 30) && sa_family != 2)
+    if (!addr->sa_len || (sa_family = addr->sa_family, sa_family != 30) && sa_family != 2)
     {
-      a3 = 0;
+      addr = 0;
       goto LABEL_9;
     }
 
-    memcpy(&v4->_sa, a3, a3->sa_len);
+    memcpy(&v4->_sa, addr, addr->sa_len);
     goto LABEL_7;
   }
 
 LABEL_9:
 
-  return a3;
+  return addr;
 }
 
 - (id)description
@@ -140,12 +140,12 @@ LABEL_12:
   return v9;
 }
 
-+ (id)wrapperWithWrapper:(id)a3 andPortHostOrder:(unsigned __int16)a4
++ (id)wrapperWithWrapper:(id)wrapper andPortHostOrder:(unsigned __int16)order
 {
-  v4 = a4;
-  v5 = a3;
+  orderCopy = order;
+  wrapperCopy = wrapper;
   v6 = [IDSSockAddrWrapper alloc];
-  v7 = [v5 sa];
+  v7 = [wrapperCopy sa];
 
   v8 = [(IDSSockAddrWrapper *)v6 initWithSockAddr:v7];
   if ([(IDSSockAddrWrapper *)v8 sa][1] == 2)
@@ -158,19 +158,19 @@ LABEL_12:
     v9 = [(IDSSockAddrWrapper *)v8 sa6];
   }
 
-  *(v9 + 2) = __rev16(v4);
+  *(v9 + 2) = __rev16(orderCopy);
 
   return v8;
 }
 
-- (BOOL)isEqualToWrapper:(id)a3
+- (BOOL)isEqualToWrapper:(id)wrapper
 {
-  if (self == a3)
+  if (self == wrapper)
   {
     return 1;
   }
 
-  v5 = [a3 sa];
+  v5 = [wrapper sa];
 
   return sub_1A7C11AEC(&self->_sa, v5);
 }
@@ -239,11 +239,11 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && [(IDSSockAddrWrapper *)self isEqualToWrapper:v4];
+  v6 = v5 == objc_opt_class() && [(IDSSockAddrWrapper *)self isEqualToWrapper:equalCopy];
 
   return v6;
 }

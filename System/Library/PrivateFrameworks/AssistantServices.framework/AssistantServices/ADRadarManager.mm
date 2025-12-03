@@ -1,16 +1,16 @@
 @interface ADRadarManager
 + (id)sharedInstance;
 - (id)_init;
-- (void)_sharedCreateDraft:(id)a3 withDisplayReason:(id)a4 reproducibility:(int64_t)a5 classification:(int64_t)a6 completionHandler:(id)a7;
+- (void)_sharedCreateDraft:(id)draft withDisplayReason:(id)reason reproducibility:(int64_t)reproducibility classification:(int64_t)classification completionHandler:(id)handler;
 @end
 
 @implementation ADRadarManager
 
-- (void)_sharedCreateDraft:(id)a3 withDisplayReason:(id)a4 reproducibility:(int64_t)a5 classification:(int64_t)a6 completionHandler:(id)a7
+- (void)_sharedCreateDraft:(id)draft withDisplayReason:(id)reason reproducibility:(int64_t)reproducibility classification:(int64_t)classification completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  draftCopy = draft;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2050000000;
@@ -30,32 +30,32 @@
   v15 = v14;
   _Block_object_dispose(&v39, 8);
   v16 = objc_alloc_init(v14);
-  v17 = [v11 title];
-  [v16 setTitle:v17];
+  title = [draftCopy title];
+  [v16 setTitle:title];
 
-  v18 = [v11 problemDescription];
-  [v16 setProblemDescription:v18];
+  problemDescription = [draftCopy problemDescription];
+  [v16 setProblemDescription:problemDescription];
 
-  [v16 setIsUserInitiated:{objc_msgSend(v11, "isUserInitiated")}];
-  v19 = [v11 deviceIDs];
-  [v16 setDeviceIDs:v19];
+  [v16 setIsUserInitiated:{objc_msgSend(draftCopy, "isUserInitiated")}];
+  deviceIDs = [draftCopy deviceIDs];
+  [v16 setDeviceIDs:deviceIDs];
 
-  v20 = [v11 componentName];
-  if (v20)
+  componentName = [draftCopy componentName];
+  if (componentName)
   {
-    v21 = v20;
-    v22 = [v11 componentVersion];
-    if (!v22)
+    componentName2 = componentName;
+    componentVersion = [draftCopy componentVersion];
+    if (!componentVersion)
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v23 = v22;
-    v24 = [v11 componentIdentifier];
+    v23 = componentVersion;
+    componentIdentifier = [draftCopy componentIdentifier];
 
-    if (v24)
+    if (componentIdentifier)
     {
       v39 = 0;
       v40 = &v39;
@@ -76,9 +76,9 @@ LABEL_9:
       v26 = v25;
       _Block_object_dispose(&v39, 8);
       v27 = [v25 alloc];
-      v21 = [v11 componentName];
-      v28 = [v11 componentVersion];
-      v29 = [v27 initWithName:v21 version:v28 identifier:{objc_msgSend(v11, "componentIdentifier")}];
+      componentName2 = [draftCopy componentName];
+      componentVersion2 = [draftCopy componentVersion];
+      v29 = [v27 initWithName:componentName2 version:componentVersion2 identifier:{objc_msgSend(draftCopy, "componentIdentifier")}];
       [v16 setComponent:v29];
 
       goto LABEL_9;
@@ -87,16 +87,16 @@ LABEL_9:
 
 LABEL_10:
   [v16 setBundleID:@"com.apple.siri"];
-  [v16 setReproducibility:a5];
-  [v16 setClassification:a6];
-  v30 = [sub_1002F067C() shared];
+  [v16 setReproducibility:reproducibility];
+  [v16 setClassification:classification];
+  shared = [sub_1002F067C() shared];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1002F075C;
   v32[3] = &unk_10051D2F0;
-  v33 = v13;
-  v31 = v13;
-  [v30 createDraft:v16 forProcessNamed:@"Siri" withDisplayReason:v12 completionHandler:v32];
+  v33 = handlerCopy;
+  v31 = handlerCopy;
+  [shared createDraft:v16 forProcessNamed:@"Siri" withDisplayReason:reasonCopy completionHandler:v32];
 }
 
 - (id)_init

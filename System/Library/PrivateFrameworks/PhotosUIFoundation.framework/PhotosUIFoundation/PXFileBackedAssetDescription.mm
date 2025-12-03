@@ -1,7 +1,7 @@
 @interface PXFileBackedAssetDescription
-+ (id)simpleImageDescriptionWithURL:(id)a3 previewImage:(id)a4;
++ (id)simpleImageDescriptionWithURL:(id)l previewImage:(id)image;
 - (PXFileBackedAssetDescription)init;
-- (PXFileBackedAssetDescription)initWithURL:(id)a3 previewImage:(id)a4;
+- (PXFileBackedAssetDescription)initWithURL:(id)l previewImage:(id)image;
 - (id)description;
 @end
 
@@ -18,14 +18,14 @@
   return v5;
 }
 
-- (PXFileBackedAssetDescription)initWithURL:(id)a3 previewImage:(id)a4
+- (PXFileBackedAssetDescription)initWithURL:(id)l previewImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  imageCopy = image;
+  if (!lCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXFileBackedAsset.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFileBackedAsset.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
   v17.receiver = self;
@@ -34,8 +34,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_previewImage, a4);
-    v11 = [v7 copy];
+    objc_storeStrong(&v9->_previewImage, image);
+    v11 = [lCopy copy];
     url = v10->_url;
     v10->_url = v11;
 
@@ -49,17 +49,17 @@
 
 - (PXFileBackedAssetDescription)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFileBackedAsset.m" lineNumber:50 description:{@"%s is not available as initializer", "-[PXFileBackedAssetDescription init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFileBackedAsset.m" lineNumber:50 description:{@"%s is not available as initializer", "-[PXFileBackedAssetDescription init]"}];
 
   abort();
 }
 
-+ (id)simpleImageDescriptionWithURL:(id)a3 previewImage:(id)a4
++ (id)simpleImageDescriptionWithURL:(id)l previewImage:(id)image
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PXFileBackedAssetDescription alloc] initWithURL:v6 previewImage:v5];
+  imageCopy = image;
+  lCopy = l;
+  v7 = [[PXFileBackedAssetDescription alloc] initWithURL:lCopy previewImage:imageCopy];
 
   [(PXFileBackedAssetDescription *)v7 setObject:&unk_1F2BAC8F8 forKeyedSubscript:@"mediaType"];
   [(PXFileBackedAssetDescription *)v7 setObject:&unk_1F2BAC910 forKeyedSubscript:@"mediaSubtypes"];

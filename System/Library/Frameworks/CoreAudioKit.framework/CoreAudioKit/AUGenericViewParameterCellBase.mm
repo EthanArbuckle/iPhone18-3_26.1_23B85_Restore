@@ -4,8 +4,8 @@
 - (UIColor)tintColor;
 - (UILabel)parameterName;
 - (UILabel)valueLabel;
-- (_TtC12CoreAudioKit30AUGenericViewParameterCellBase)initWithFrame:(CGRect)a3;
-- (void)setTintColor:(id)a3;
+- (_TtC12CoreAudioKit30AUGenericViewParameterCellBase)initWithFrame:(CGRect)frame;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation AUGenericViewParameterCellBase
@@ -42,22 +42,22 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for AUGenericViewParameterCellBase();
-  v2 = [(AUGenericViewParameterCellBase *)&v4 tintColor];
+  tintColor = [(AUGenericViewParameterCellBase *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for AUGenericViewParameterCellBase();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(AUGenericViewParameterCellBase *)&v6 setTintColor:v4];
+  [(AUGenericViewParameterCellBase *)&v6 setTintColor:colorCopy];
   sub_2371530BC();
 }
 
-- (_TtC12CoreAudioKit30AUGenericViewParameterCellBase)initWithFrame:(CGRect)a3
+- (_TtC12CoreAudioKit30AUGenericViewParameterCellBase)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

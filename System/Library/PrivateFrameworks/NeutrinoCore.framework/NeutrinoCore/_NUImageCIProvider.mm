@@ -1,19 +1,19 @@
 @interface _NUImageCIProvider
-- (_NUImageCIProvider)initWithImage:(id)a3;
+- (_NUImageCIProvider)initWithImage:(id)image;
 - (void)dealloc;
-- (void)provideImageData:(void *)a3 bytesPerRow:(unint64_t)a4 origin:(unint64_t)a5 :(unint64_t)a6 size:(unint64_t)a7 :(unint64_t)a8 userInfo:(id)a9;
+- (void)provideImageData:(void *)data bytesPerRow:(unint64_t)row origin:(unint64_t)origin :(unint64_t)a6 size:(unint64_t)size :(unint64_t)a8 userInfo:(id)info;
 @end
 
 @implementation _NUImageCIProvider
 
-- (void)provideImageData:(void *)a3 bytesPerRow:(unint64_t)a4 origin:(unint64_t)a5 :(unint64_t)a6 size:(unint64_t)a7 :(unint64_t)a8 userInfo:(id)a9
+- (void)provideImageData:(void *)data bytesPerRow:(unint64_t)row origin:(unint64_t)origin :(unint64_t)a6 size:(unint64_t)size :(unint64_t)a8 userInfo:(id)info
 {
   image = self->_image;
-  v11[0] = a5;
+  v11[0] = origin;
   v11[1] = a6;
-  v11[2] = a7;
+  v11[2] = size;
   v11[3] = a8;
-  [NUImageUtilities copyPixelsFromImage:image rect:v11 destPtr:a3 destPtrRowBytes:a4];
+  [NUImageUtilities copyPixelsFromImage:image rect:v11 destPtr:data destPtrRowBytes:row];
 }
 
 - (void)dealloc
@@ -26,16 +26,16 @@
   [(_NUImageCIProvider *)&v4 dealloc];
 }
 
-- (_NUImageCIProvider)initWithImage:(id)a3
+- (_NUImageCIProvider)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = _NUImageCIProvider;
   v6 = [(_NUImageCIProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_image, a3);
+    objc_storeStrong(&v6->_image, image);
   }
 
   return v7;

@@ -1,14 +1,14 @@
 @interface AVCameraCalibrationData
-- (AVCameraCalibrationData)cameraCalibrationDataWithExifOrientation:(unsigned int)a3;
-- (AVCameraCalibrationData)initWithAuxiliaryMetadata:(CGImageMetadata *)a3;
-- (AVCameraCalibrationData)initWithCameraCalibrationDataDictionary:(id)a3 error:(id *)a4;
-- (AVCameraCalibrationData)initWithDepthMetadataDictionary:(id)a3;
+- (AVCameraCalibrationData)cameraCalibrationDataWithExifOrientation:(unsigned int)orientation;
+- (AVCameraCalibrationData)initWithAuxiliaryMetadata:(CGImageMetadata *)metadata;
+- (AVCameraCalibrationData)initWithCameraCalibrationDataDictionary:(id)dictionary error:(id *)error;
+- (AVCameraCalibrationData)initWithDepthMetadataDictionary:(id)dictionary;
 - (CGImageMetadata)copyAuxiliaryMetadata;
 - (CGPoint)lensDistortionCenter;
 - (CGSize)intrinsicMatrixReferenceDimensions;
 - (NSData)inverseLensDistortionLookupTable;
 - (NSData)lensDistortionLookupTable;
-- (id)_distortionLookupTableFromCoefficients:(id)a3 distortionCenter:(CGPoint)a4 pixelSize:(float)a5 referenceDimensions:(CGSize)a6 lookupTableLength:(int)a7;
+- (id)_distortionLookupTableFromCoefficients:(id)coefficients distortionCenter:(CGPoint)center pixelSize:(float)size referenceDimensions:(CGSize)dimensions lookupTableLength:(int)length;
 - (id)_initEmpty;
 - (id)cameraCalibrationDataDictionary;
 - (id)debugDescription;
@@ -165,20 +165,20 @@
   return result;
 }
 
-- (AVCameraCalibrationData)initWithCameraCalibrationDataDictionary:(id)a3 error:(id *)a4
+- (AVCameraCalibrationData)initWithCameraCalibrationDataDictionary:(id)dictionary error:(id *)error
 {
-  v7 = [a3 objectForKeyedSubscript:@"VersionMajor"];
-  v8 = [a3 objectForKeyedSubscript:@"VersionMinor"];
-  if ([v7 intValue] != 1 || objc_msgSend(v8, "intValue") || (result = -[AVCameraCalibrationData initWithDepthMetadataDictionary:](self, "initWithDepthMetadataDictionary:", a3)) == 0)
+  v7 = [dictionary objectForKeyedSubscript:@"VersionMajor"];
+  v8 = [dictionary objectForKeyedSubscript:@"VersionMinor"];
+  if ([v7 intValue] != 1 || objc_msgSend(v8, "intValue") || (result = -[AVCameraCalibrationData initWithDepthMetadataDictionary:](self, "initWithDepthMetadataDictionary:", dictionary)) == 0)
   {
     v9 = AVLocalizedError();
     result = 0;
-    if (a4)
+    if (error)
     {
       if (v9)
       {
         result = 0;
-        *a4 = v9;
+        *error = v9;
       }
     }
   }
@@ -191,23 +191,23 @@
   result = self->_internal->cameraCalibrationDataDictionary;
   if (!result)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    [v4 setObject:&unk_1F1CEA010 forKeyedSubscript:@"VersionMajor"];
-    [v4 setObject:&unk_1F1CEA028 forKeyedSubscript:@"VersionMinor"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:&unk_1F1CEA010 forKeyedSubscript:@"VersionMajor"];
+    [dictionary setObject:&unk_1F1CEA028 forKeyedSubscript:@"VersionMinor"];
     v5 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_internal->_anon_10 length:48];
-    [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E698F888]];
-    [v4 setObject:CGSizeCreateDictionaryRepresentation(self->_internal->intrinsicMatrixReferenceDimensions) forKeyedSubscript:*MEMORY[0x1E698F890]];
+    [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E698F888]];
+    [dictionary setObject:CGSizeCreateDictionaryRepresentation(self->_internal->intrinsicMatrixReferenceDimensions) forKeyedSubscript:*MEMORY[0x1E698F890]];
     v6 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_internal->_anon_50 length:64];
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E698F880]];
+    [dictionary setObject:v6 forKeyedSubscript:*MEMORY[0x1E698F880]];
     *&v7 = self->_internal->pixelSize;
     v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
-    [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x1E698F8B0]];
+    [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E698F8B0]];
     internal = self->_internal;
     lensDistortionCoefficients = internal->lensDistortionCoefficients;
     if (lensDistortionCoefficients)
     {
       v11 = [(NSData *)lensDistortionCoefficients copy];
-      [v4 setObject:v11 forKeyedSubscript:*MEMORY[0x1E698F8A8]];
+      [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E698F8A8]];
       internal = self->_internal;
     }
 
@@ -215,7 +215,7 @@
     if (inverseLensDistortionCoefficients)
     {
       v13 = [(NSData *)inverseLensDistortionCoefficients copy];
-      [v4 setObject:v13 forKeyedSubscript:*MEMORY[0x1E698F898]];
+      [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x1E698F898]];
       internal = self->_internal;
     }
 
@@ -223,17 +223,17 @@
     y = internal->lensDistortionCenter.y;
     if (x != *MEMORY[0x1E695EFF8] || y != *(MEMORY[0x1E695EFF8] + 8))
     {
-      [v4 setObject:CGPointCreateDictionaryRepresentation(*&x) forKeyedSubscript:*MEMORY[0x1E698F8A0]];
+      [dictionary setObject:CGPointCreateDictionaryRepresentation(*&x) forKeyedSubscript:*MEMORY[0x1E698F8A0]];
     }
 
-    self->_internal->cameraCalibrationDataDictionary = [v4 copy];
+    self->_internal->cameraCalibrationDataDictionary = [dictionary copy];
     return self->_internal->cameraCalibrationDataDictionary;
   }
 
   return result;
 }
 
-- (AVCameraCalibrationData)initWithAuxiliaryMetadata:(CGImageMetadata *)a3
+- (AVCameraCalibrationData)initWithAuxiliaryMetadata:(CGImageMetadata *)metadata
 {
   v69.receiver = self;
   v69.super_class = AVCameraCalibrationData;
@@ -248,7 +248,7 @@
     }
 
     v6 = *MEMORY[0x1E6991340];
-    v7 = AVAuxiliaryMetadataArrayTagWithPrefixedKey(a3, *MEMORY[0x1E6991340], *MEMORY[0x1E6991360]);
+    v7 = AVAuxiliaryMetadataArrayTagWithPrefixedKey(metadata, *MEMORY[0x1E6991340], *MEMORY[0x1E6991360]);
     if ([(CGImageMetadataTag *)v7 count]!= 9)
     {
       goto LABEL_35;
@@ -276,16 +276,16 @@
       *&v4->_internal->_anon_10[40] = v16;
     }
 
-    v17 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a3, v6, *MEMORY[0x1E6991370]);
-    if (v17 && ([v17 floatValue], v4->_internal->intrinsicMatrixReferenceDimensions.width = v18, (v19 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a3, v6, *MEMORY[0x1E6991368])) != 0) && (objc_msgSend(v19, "floatValue"), v4->_internal->intrinsicMatrixReferenceDimensions.height = v20, v21 = AVAuxiliaryMetadataArrayTagWithPrefixedKey(a3, v6, *MEMORY[0x1E6991350]), -[CGImageMetadataTag count](v21, "count") == 12) && (objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 0), "floatValue"), *v4->_internal->_anon_50 = v22, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 1), "floatValue"), *&v4->_internal->_anon_50[4] = v23, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 2), "floatValue"), *&v4->_internal->_anon_50[8] = v24, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 3), "floatValue"), *&v4->_internal->_anon_50[16] = v25, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 4), "floatValue"), *&v4->_internal->_anon_50[20] = v26, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 5), "floatValue"), *&v4->_internal->_anon_50[24] = v27, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 6), "floatValue"), *&v4->_internal->_anon_50[32] = v28, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 7), "floatValue"), *&v4->_internal->_anon_50[36] = v29, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 8), "floatValue"), *&v4->_internal->_anon_50[40] = v30, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 9), "floatValue"), *&v4->_internal->_anon_50[48] = v31, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 10), "floatValue"), *&v4->_internal->_anon_50[52] = v32, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 11), "floatValue"), *&v4->_internal->_anon_50[56] = v33, (v34 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a3, v6, *MEMORY[0x1E6991398])) != 0))
+    v17 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, v6, *MEMORY[0x1E6991370]);
+    if (v17 && ([v17 floatValue], v4->_internal->intrinsicMatrixReferenceDimensions.width = v18, (v19 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, v6, *MEMORY[0x1E6991368])) != 0) && (objc_msgSend(v19, "floatValue"), v4->_internal->intrinsicMatrixReferenceDimensions.height = v20, v21 = AVAuxiliaryMetadataArrayTagWithPrefixedKey(metadata, v6, *MEMORY[0x1E6991350]), -[CGImageMetadataTag count](v21, "count") == 12) && (objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 0), "floatValue"), *v4->_internal->_anon_50 = v22, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 1), "floatValue"), *&v4->_internal->_anon_50[4] = v23, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 2), "floatValue"), *&v4->_internal->_anon_50[8] = v24, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 3), "floatValue"), *&v4->_internal->_anon_50[16] = v25, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 4), "floatValue"), *&v4->_internal->_anon_50[20] = v26, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 5), "floatValue"), *&v4->_internal->_anon_50[24] = v27, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 6), "floatValue"), *&v4->_internal->_anon_50[32] = v28, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 7), "floatValue"), *&v4->_internal->_anon_50[36] = v29, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 8), "floatValue"), *&v4->_internal->_anon_50[40] = v30, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 9), "floatValue"), *&v4->_internal->_anon_50[48] = v31, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 10), "floatValue"), *&v4->_internal->_anon_50[52] = v32, objc_msgSend(-[CGImageMetadataTag objectAtIndexedSubscript:](v21, "objectAtIndexedSubscript:", 11), "floatValue"), *&v4->_internal->_anon_50[56] = v33, (v34 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, v6, *MEMORY[0x1E6991398])) != 0))
     {
       [v34 floatValue];
       v4->_internal->pixelSize = v35;
-      v36 = AVAuxiliaryMetadataArrayTagWithPrefixedKey(a3, v6, *MEMORY[0x1E6991390]);
+      v36 = AVAuxiliaryMetadataArrayTagWithPrefixedKey(metadata, v6, *MEMORY[0x1E6991390]);
       if ([(CGImageMetadataTag *)v36 count]== 8)
       {
         v37 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:32];
-        v38 = [(NSData *)v37 mutableBytes];
+        mutableBytes = [(NSData *)v37 mutableBytes];
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
@@ -305,7 +305,7 @@
               }
 
               [*(*(&v65 + 1) + 8 * i) floatValue];
-              *v38++ = v43;
+              *mutableBytes++ = v43;
             }
 
             v40 = [(CGImageMetadataTag *)v36 countByEnumeratingWithState:&v65 objects:v64 count:16];
@@ -317,11 +317,11 @@
         v4->_internal->lensDistortionCoefficients = v37;
       }
 
-      v44 = AVAuxiliaryMetadataArrayTagWithPrefixedKey(a3, v6, *MEMORY[0x1E6991378]);
+      v44 = AVAuxiliaryMetadataArrayTagWithPrefixedKey(metadata, v6, *MEMORY[0x1E6991378]);
       if ([(CGImageMetadataTag *)v44 count]== 8)
       {
         v45 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:32];
-        v46 = [(NSData *)v45 mutableBytes];
+        mutableBytes2 = [(NSData *)v45 mutableBytes];
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
@@ -341,7 +341,7 @@
               }
 
               [*(*(&v60 + 1) + 8 * j) floatValue];
-              *v46++ = v51;
+              *mutableBytes2++ = v51;
             }
 
             v48 = [(CGImageMetadataTag *)v44 countByEnumeratingWithState:&v60 objects:v59 count:16];
@@ -353,7 +353,7 @@
         v4->_internal->inverseLensDistortionCoefficients = v45;
       }
 
-      v52 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a3, v6, *MEMORY[0x1E6991380]);
+      v52 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, v6, *MEMORY[0x1E6991380]);
       v53 = 0.0;
       v54 = 0.0;
       if (v52)
@@ -363,7 +363,7 @@
       }
 
       v4->_internal->lensDistortionCenter.x = v54;
-      v56 = AVAuxiliaryMetadataStringTagWithPrefixedKey(a3, v6, *MEMORY[0x1E6991388]);
+      v56 = AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata, v6, *MEMORY[0x1E6991388]);
       if (v56)
       {
         [v56 floatValue];
@@ -384,7 +384,7 @@ LABEL_35:
   return v4;
 }
 
-- (AVCameraCalibrationData)initWithDepthMetadataDictionary:(id)a3
+- (AVCameraCalibrationData)initWithDepthMetadataDictionary:(id)dictionary
 {
   v17.receiver = self;
   v17.super_class = AVCameraCalibrationData;
@@ -401,14 +401,14 @@ LABEL_35:
     goto LABEL_17;
   }
 
-  v6 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69913F0]];
+  v6 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E69913F0]];
   if ([v6 length] != 48)
   {
     goto LABEL_17;
   }
 
   [v6 getBytes:v4->_internal->_anon_10 length:48];
-  v7 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69913F8]];
+  v7 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E69913F8]];
   if (!v7)
   {
     goto LABEL_17;
@@ -419,14 +419,14 @@ LABEL_35:
     goto LABEL_17;
   }
 
-  v8 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69913E0]];
+  v8 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E69913E0]];
   if ([v8 length] != 64)
   {
     goto LABEL_17;
   }
 
   [v8 getBytes:v4->_internal->_anon_50 length:64];
-  v9 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6991418]];
+  v9 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E6991418]];
   if (!v9)
   {
     goto LABEL_17;
@@ -434,7 +434,7 @@ LABEL_35:
 
   [v9 floatValue];
   v4->_internal->pixelSize = v10;
-  v11 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6991410]];
+  v11 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E6991410]];
   if (v11)
   {
     v12 = v11;
@@ -446,7 +446,7 @@ LABEL_35:
     v4->_internal->lensDistortionCoefficients = [v12 copy];
   }
 
-  v13 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6991400]];
+  v13 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E6991400]];
   if (!v13)
   {
     goto LABEL_14;
@@ -462,7 +462,7 @@ LABEL_17:
 
   v4->_internal->inverseLensDistortionCoefficients = [v14 copy];
 LABEL_14:
-  v15 = [a3 objectForKeyedSubscript:*MEMORY[0x1E6991408]];
+  v15 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E6991408]];
   if (v15)
   {
     CGPointMakeWithDictionaryRepresentation(v15, &v4->_internal->lensDistortionCenter);
@@ -471,11 +471,11 @@ LABEL_14:
   return v4;
 }
 
-- (AVCameraCalibrationData)cameraCalibrationDataWithExifOrientation:(unsigned int)a3
+- (AVCameraCalibrationData)cameraCalibrationDataWithExifOrientation:(unsigned int)orientation
 {
-  v4 = [[AVCameraCalibrationData alloc] _initEmpty];
-  v5 = v4;
-  if (v4 && (internal = self->_internal, v7 = v4[1], v8 = *internal->_anon_10, v9 = *&internal->_anon_10[32], *(v7 + 32) = *&internal->_anon_10[16], *(v7 + 48) = v9, *(v7 + 16) = v8, *(v7 + 64) = internal->intrinsicMatrixReferenceDimensions, v10 = *internal->_anon_50, v11 = *&internal->_anon_50[16], v12 = *&internal->_anon_50[48], *(v7 + 112) = *&internal->_anon_50[32], *(v7 + 128) = v12, *(v7 + 80) = v10, *(v7 + 96) = v11, *(v7 + 144) = internal->pixelSize, *(v7 + 152) = internal->lensDistortionCoefficients, *(v7 + 160) = internal->inverseLensDistortionCoefficients, *(v7 + 168) = internal->lensDistortionCenter, *(v7 + 184) = internal->lensDistortionLookupTable, *(v7 + 192) = internal->inverseLensDistortionLookupTable, FigCaptureRotateCalibrationData()))
+  _initEmpty = [[AVCameraCalibrationData alloc] _initEmpty];
+  v5 = _initEmpty;
+  if (_initEmpty && (internal = self->_internal, v7 = _initEmpty[1], v8 = *internal->_anon_10, v9 = *&internal->_anon_10[32], *(v7 + 32) = *&internal->_anon_10[16], *(v7 + 48) = v9, *(v7 + 16) = v8, *(v7 + 64) = internal->intrinsicMatrixReferenceDimensions, v10 = *internal->_anon_50, v11 = *&internal->_anon_50[16], v12 = *&internal->_anon_50[48], *(v7 + 112) = *&internal->_anon_50[32], *(v7 + 128) = v12, *(v7 + 80) = v10, *(v7 + 96) = v11, *(v7 + 144) = internal->pixelSize, *(v7 + 152) = internal->lensDistortionCoefficients, *(v7 + 160) = internal->inverseLensDistortionCoefficients, *(v7 + 168) = internal->lensDistortionCenter, *(v7 + 184) = internal->lensDistortionLookupTable, *(v7 + 192) = internal->inverseLensDistortionLookupTable, FigCaptureRotateCalibrationData()))
   {
 
     return 0;
@@ -583,15 +583,15 @@ LABEL_14:
 
   if ([(NSData *)self->_internal->lensDistortionCoefficients length]== 32)
   {
-    v31 = [MEMORY[0x1E695DF70] array];
-    v32 = [(NSData *)self->_internal->lensDistortionCoefficients bytes];
+    array = [MEMORY[0x1E695DF70] array];
+    bytes = [(NSData *)self->_internal->lensDistortionCoefficients bytes];
     for (i = 0; i != 32; i += 4)
     {
-      LODWORD(v33) = *&v32[i];
-      [v31 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", v33)}];
+      LODWORD(v33) = *&bytes[i];
+      [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", v33)}];
     }
 
-    if (!AVAuxiliaryMetadataAddValue(v4, v5, v6, *MEMORY[0x1E6991390], v31))
+    if (!AVAuxiliaryMetadataAddValue(v4, v5, v6, *MEMORY[0x1E6991390], array))
     {
       [AVCameraCalibrationData copyAuxiliaryMetadata];
       goto LABEL_34;
@@ -600,15 +600,15 @@ LABEL_14:
 
   if ([(NSData *)self->_internal->inverseLensDistortionCoefficients length]== 32)
   {
-    v35 = [MEMORY[0x1E695DF70] array];
-    v36 = [(NSData *)self->_internal->inverseLensDistortionCoefficients bytes];
+    array2 = [MEMORY[0x1E695DF70] array];
+    bytes2 = [(NSData *)self->_internal->inverseLensDistortionCoefficients bytes];
     for (j = 0; j != 32; j += 4)
     {
-      LODWORD(v37) = *&v36[j];
-      [v35 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", v37)}];
+      LODWORD(v37) = *&bytes2[j];
+      [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", v37)}];
     }
 
-    if (!AVAuxiliaryMetadataAddValue(v4, v5, v6, *MEMORY[0x1E6991378], v35))
+    if (!AVAuxiliaryMetadataAddValue(v4, v5, v6, *MEMORY[0x1E6991378], array2))
     {
       [AVCameraCalibrationData copyAuxiliaryMetadata];
       goto LABEL_34;
@@ -672,29 +672,29 @@ LABEL_34:
   [(AVCameraCalibrationData *)&v4 dealloc];
 }
 
-- (id)_distortionLookupTableFromCoefficients:(id)a3 distortionCenter:(CGPoint)a4 pixelSize:(float)a5 referenceDimensions:(CGSize)a6 lookupTableLength:(int)a7
+- (id)_distortionLookupTableFromCoefficients:(id)coefficients distortionCenter:(CGPoint)center pixelSize:(float)size referenceDimensions:(CGSize)dimensions lookupTableLength:(int)length
 {
-  if (!a3)
+  if (!coefficients)
   {
     [AVCameraCalibrationData _distortionLookupTableFromCoefficients:distortionCenter:pixelSize:referenceDimensions:lookupTableLength:];
 LABEL_18:
     v15 = 0;
 LABEL_20:
-    v16 = 0;
+    mutableBytes = 0;
     goto LABEL_15;
   }
 
-  height = a6.height;
-  width = a6.width;
-  y = a4.y;
-  x = a4.x;
-  if ([a3 length] != 32)
+  height = dimensions.height;
+  width = dimensions.width;
+  y = center.y;
+  x = center.x;
+  if ([coefficients length] != 32)
   {
     [AVCameraCalibrationData _distortionLookupTableFromCoefficients:distortionCenter:pixelSize:referenceDimensions:lookupTableLength:];
     goto LABEL_18;
   }
 
-  v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * a7];
+  v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * length];
   v15 = v14;
   if (!v14)
   {
@@ -702,10 +702,10 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v16 = [v14 mutableBytes];
-  if (v16)
+  mutableBytes = [v14 mutableBytes];
+  if (mutableBytes)
   {
-    v17 = [a3 bytes];
+    bytes = [coefficients bytes];
     v18 = width - x;
     if (x > width - x)
     {
@@ -718,31 +718,31 @@ LABEL_20:
       v19 = y;
     }
 
-    if (a7 >= 1)
+    if (length >= 1)
     {
       v20 = 0;
       v21 = sqrt(v19 * v19 + v18 * v18);
-      v18 = (a7 - 1);
-      v19 = v21 * a5;
+      v18 = (length - 1);
+      v19 = v21 * size;
       do
       {
         v22 = v19 * v20 / v18 * (v19 * v20 / v18);
         v23 = v22 * v22;
         v24 = v22 * (v22 * v22);
-        v25 = (v22 * v17[1] + *v17 + v17[2] * v23 + v17[3] * v24 + v17[4] * (v23 * v23) + v17[5] * (v22 * v22 * v24) + v17[6] * (v24 * v24) + v17[7] * (v23 * v23 * v24)) / 100.0 + 1.0;
+        v25 = (v22 * bytes[1] + *bytes + bytes[2] * v23 + bytes[3] * v24 + bytes[4] * (v23 * v23) + bytes[5] * (v22 * v22 * v24) + bytes[6] * (v24 * v24) + bytes[7] * (v23 * v23 * v24)) / 100.0 + 1.0;
         v26 = 0.0;
         if (v25 > 0.0)
         {
           v26 = 1.0 / v25 + -1.0;
         }
 
-        v16[v20++] = v26;
+        mutableBytes[v20++] = v26;
       }
 
-      while (a7 != v20);
+      while (length != v20);
     }
 
-    v16 = [MEMORY[0x1E695DEF0] dataWithData:{v15, v18, v19}];
+    mutableBytes = [MEMORY[0x1E695DEF0] dataWithData:{v15, v18, v19}];
   }
 
   else
@@ -752,7 +752,7 @@ LABEL_20:
 
 LABEL_15:
 
-  return v16;
+  return mutableBytes;
 }
 
 - (uint64_t)copyAuxiliaryMetadata

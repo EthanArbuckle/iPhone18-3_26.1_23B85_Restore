@@ -1,46 +1,46 @@
 @interface HMPersonSettingsManager
 + (id)logCategory;
-+ (id)personSettingsManagerUUIDFromHomeUUID:(id)a3;
++ (id)personSettingsManagerUUIDFromHomeUUID:(id)d;
 - (HMFMessageDestination)messageDestination;
-- (HMPersonSettingsManager)initWithContext:(id)a3 UUID:(id)a4;
-- (HMPersonSettingsManager)initWithHome:(id)a3;
+- (HMPersonSettingsManager)initWithContext:(id)context UUID:(id)d;
+- (HMPersonSettingsManager)initWithHome:(id)home;
 - (id)logIdentifier;
-- (void)_sendMessageWithName:(id)a3 payload:(id)a4 responseHandler:(id)a5;
-- (void)fetchClassificationNotificationsEnabledForPersonWithUUID:(id)a3 completion:(id)a4;
+- (void)_sendMessageWithName:(id)name payload:(id)payload responseHandler:(id)handler;
+- (void)fetchClassificationNotificationsEnabledForPersonWithUUID:(id)d completion:(id)completion;
 @end
 
 @implementation HMPersonSettingsManager
 
 - (id)logIdentifier
 {
-  v2 = [(HMPersonSettingsManager *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMPersonSettingsManager *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (HMFMessageDestination)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(HMPersonSettingsManager *)self UUID];
-  v5 = [v3 initWithTarget:v4];
+  uUID = [(HMPersonSettingsManager *)self UUID];
+  v5 = [v3 initWithTarget:uUID];
 
   return v5;
 }
 
-- (void)_sendMessageWithName:(id)a3 payload:(id)a4 responseHandler:(id)a5
+- (void)_sendMessageWithName:(id)name payload:(id)payload responseHandler:(id)handler
 {
   v8 = MEMORY[0x1E69A2A10];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(HMPersonSettingsManager *)self messageDestination];
-  v15 = [v8 messageWithName:v11 destination:v12 payload:v10];
+  handlerCopy = handler;
+  payloadCopy = payload;
+  nameCopy = name;
+  messageDestination = [(HMPersonSettingsManager *)self messageDestination];
+  v15 = [v8 messageWithName:nameCopy destination:messageDestination payload:payloadCopy];
 
-  [v15 setResponseHandler:v9];
-  v13 = [(HMPersonSettingsManager *)self context];
-  v14 = [v13 messageDispatcher];
-  [v14 sendMessage:v15];
+  [v15 setResponseHandler:handlerCopy];
+  context = [(HMPersonSettingsManager *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v15];
 }
 
 void __97__HMPersonSettingsManager_updateClassificationNotificationsEnabled_forPersonWithUUID_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -91,13 +91,13 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchClassificationNotificationsEnabledForPersonWithUUID:(id)a3 completion:(id)a4
+- (void)fetchClassificationNotificationsEnabledForPersonWithUUID:(id)d completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -105,22 +105,22 @@ LABEL_6:
     *buf = 138543618;
     v20 = v11;
     v21 = 2112;
-    v22 = v6;
+    v22 = dCopy;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Fetching classification notifications enabled for person with uuid: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   v17 = @"HMPersonSettingsManagerPersonUUIDKey";
-  v18 = v6;
+  v18 = dCopy;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __95__HMPersonSettingsManager_fetchClassificationNotificationsEnabledForPersonWithUUID_completion___block_invoke;
   v15[3] = &unk_1E754DE00;
-  v15[4] = v9;
-  v16 = v7;
-  v13 = v7;
-  [(HMPersonSettingsManager *)v9 _sendMessageWithName:@"HMPersonSettingsManagerFetchClassificationNotificationsEnabledMessage" payload:v12 responseHandler:v15];
+  v15[4] = selfCopy;
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [(HMPersonSettingsManager *)selfCopy _sendMessageWithName:@"HMPersonSettingsManagerFetchClassificationNotificationsEnabledMessage" payload:v12 responseHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -241,18 +241,18 @@ uint64_t __95__HMPersonSettingsManager_fetchClassificationNotificationsEnabledFo
   return result;
 }
 
-- (HMPersonSettingsManager)initWithContext:(id)a3 UUID:(id)a4
+- (HMPersonSettingsManager)initWithContext:(id)context UUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = HMPersonSettingsManager;
   v9 = [(HMPersonSettingsManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    v11 = [objc_opt_class() personSettingsManagerUUIDFromHomeUUID:v8];
+    objc_storeStrong(&v9->_context, context);
+    v11 = [objc_opt_class() personSettingsManagerUUIDFromHomeUUID:dCopy];
     UUID = v10->_UUID;
     v10->_UUID = v11;
   }
@@ -260,13 +260,13 @@ uint64_t __95__HMPersonSettingsManager_fetchClassificationNotificationsEnabledFo
   return v10;
 }
 
-- (HMPersonSettingsManager)initWithHome:(id)a3
+- (HMPersonSettingsManager)initWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v4 uuid];
+  homeCopy = home;
+  context = [homeCopy context];
+  uuid = [homeCopy uuid];
 
-  v7 = [(HMPersonSettingsManager *)self initWithContext:v5 UUID:v6];
+  v7 = [(HMPersonSettingsManager *)self initWithContext:context UUID:uuid];
   return v7;
 }
 
@@ -292,15 +292,15 @@ uint64_t __38__HMPersonSettingsManager_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)personSettingsManagerUUIDFromHomeUUID:(id)a3
++ (id)personSettingsManagerUUIDFromHomeUUID:(id)d
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"C23FC973-0266-4A09-BC05-8BB8A48F79C9"];
   v6 = MEMORY[0x1E696AFB0];
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [uUIDString dataUsingEncoding:4];
   v9 = [v6 hmf_UUIDWithNamespace:v5 data:v8];
 
   return v9;

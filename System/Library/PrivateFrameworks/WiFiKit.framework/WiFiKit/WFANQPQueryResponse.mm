@@ -1,19 +1,19 @@
 @interface WFANQPQueryResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWFANQPResponse:(id)a3;
-- (WFANQPQueryResponse)initWithScanResult:(id)a3 ANQPResponse:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWFANQPResponse:(id)response;
+- (WFANQPQueryResponse)initWithScanResult:(id)result ANQPResponse:(id)response;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation WFANQPQueryResponse
 
-- (WFANQPQueryResponse)initWithScanResult:(id)a3 ANQPResponse:(id)a4
+- (WFANQPQueryResponse)initWithScanResult:(id)result ANQPResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  resultCopy = result;
+  responseCopy = response;
+  v9 = responseCopy;
   if (!self)
   {
     v18 = 0;
@@ -24,7 +24,7 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!resultCopy)
   {
     [WFANQPQueryResponse initWithScanResult:buf ANQPResponse:?];
 LABEL_15:
@@ -35,16 +35,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v8)
+  if (!responseCopy)
   {
     [WFANQPQueryResponse initWithScanResult:buf ANQPResponse:?];
     goto LABEL_15;
   }
 
-  objc_storeStrong(&self->_scanResult, a3);
-  v10 = [v7 networkName];
+  objc_storeStrong(&self->_scanResult, result);
+  networkName = [resultCopy networkName];
   ssid = self->_ssid;
-  self->_ssid = v10;
+  self->_ssid = networkName;
 
   v12 = [v9 objectForKey:@"ANQP_CELL_NETWORK_INFO"];
   cellNetworkInfo = self->_cellNetworkInfo;
@@ -97,10 +97,10 @@ LABEL_16:
   }
 
 LABEL_11:
-  v27 = self;
+  selfCopy = self;
 
   v28 = *MEMORY[0x277D85DE8];
-  return v27;
+  return selfCopy;
 }
 
 - (id)description
@@ -108,38 +108,38 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFANQPQueryResponse *)self bssid];
-  v7 = [(WFANQPQueryResponse *)self operatorName];
-  v8 = [v3 stringWithFormat:@"%@- BSSID %@ | Operator Name %@", v5, v6, v7];
+  bssid = [(WFANQPQueryResponse *)self bssid];
+  operatorName = [(WFANQPQueryResponse *)self operatorName];
+  v8 = [v3 stringWithFormat:@"%@- BSSID %@ | Operator Name %@", v5, bssid, operatorName];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFANQPQueryResponse *)self bssid];
-  v3 = [v2 hash];
+  bssid = [(WFANQPQueryResponse *)self bssid];
+  v3 = [bssid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFANQPQueryResponse *)self isEqualToWFANQPResponse:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFANQPQueryResponse *)self isEqualToWFANQPResponse:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToWFANQPResponse:(id)a3
+- (BOOL)isEqualToWFANQPResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(WFANQPQueryResponse *)self bssid];
-  v6 = [v4 bssid];
+  responseCopy = response;
+  bssid = [(WFANQPQueryResponse *)self bssid];
+  bssid2 = [responseCopy bssid];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(responseCopy) = [bssid isEqualToString:bssid2];
+  return responseCopy;
 }
 
 - (void)initWithScanResult:(NSObject *)a1 ANQPResponse:(void *)a2 .cold.1(NSObject **a1, void *a2)

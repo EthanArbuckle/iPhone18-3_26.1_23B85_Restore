@@ -1,18 +1,18 @@
 @interface _LTTranslationGenderAlternative
-+ (id)genderAlternativeFromDictionary:(id)a3 withGroup:(id)a4;
-+ (id)genderAlternativesFromDictionary:(id)a3;
-- (_LTTranslationGenderAlternative)initWithCoder:(id)a3;
++ (id)genderAlternativeFromDictionary:(id)dictionary withGroup:(id)group;
++ (id)genderAlternativesFromDictionary:(id)dictionary;
+- (_LTTranslationGenderAlternative)initWithCoder:(id)coder;
 - (_NSRange)sourceRange;
 - (_NSRange)targetRange;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTTranslationGenderAlternative
 
-+ (id)genderAlternativesFromDictionary:(id)a3
++ (id)genderAlternativesFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"group"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"group"];
   if (v4)
   {
     objc_opt_class();
@@ -34,7 +34,7 @@
 
   v6 = v5;
 
-  v7 = [v3 objectForKeyedSubscript:@"spans"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"spans"];
 
   if (v7)
   {
@@ -71,13 +71,13 @@
   return v10;
 }
 
-+ (id)genderAlternativeFromDictionary:(id)a3 withGroup:(id)a4
++ (id)genderAlternativeFromDictionary:(id)dictionary withGroup:(id)group
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"start"];
-  v8 = [v6 objectForKeyedSubscript:@"end"];
-  v9 = [v6 objectForKeyedSubscript:@"projection"];
+  groupCopy = group;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"start"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"end"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"projection"];
 
   v10 = [v9 objectForKeyedSubscript:@"start"];
   v11 = [v9 objectForKeyedSubscript:@"end"];
@@ -86,7 +86,7 @@
   if (v7 && v8 && v10 && v11)
   {
     v13 = objc_alloc_init(_LTTranslationGenderAlternative);
-    [(_LTTranslationGenderAlternative *)v13 setGroup:v5];
+    [(_LTTranslationGenderAlternative *)v13 setGroup:groupCopy];
     -[_LTTranslationGenderAlternative setSourceRange:](v13, "setSourceRange:", [v7 intValue], (objc_msgSend(v8, "intValue") - objc_msgSend(v7, "intValue") + 1));
     -[_LTTranslationGenderAlternative setTargetRange:](v13, "setTargetRange:", [v10 intValue], (objc_msgSend(v11, "intValue") - objc_msgSend(v10, "intValue") + 1));
     [(_LTTranslationGenderAlternative *)v13 setDefaultGender:v12];
@@ -95,25 +95,25 @@
   return v13;
 }
 
-- (_LTTranslationGenderAlternative)initWithCoder:(id)a3
+- (_LTTranslationGenderAlternative)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _LTTranslationGenderAlternative;
   v5 = [(_LTTranslationGenderAlternative *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"group"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"group"];
     group = v5->_group;
     v5->_group = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceRange"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceRange"];
     v5->_sourceRange.location = [v8 rangeValue];
     v5->_sourceRange.length = v9;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetRange"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetRange"];
     v5->_targetRange.location = [v10 rangeValue];
     v5->_targetRange.length = v11;
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultGender"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultGender"];
     defaultGender = v5->_defaultGender;
     v5->_defaultGender = v12;
 
@@ -123,16 +123,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   group = self->_group;
-  v5 = a3;
-  [v5 encodeObject:group forKey:@"group"];
+  coderCopy = coder;
+  [coderCopy encodeObject:group forKey:@"group"];
   v7 = [MEMORY[0x277CCAE60] valueWithRange:{self->_sourceRange.location, self->_sourceRange.length}];
-  [v5 encodeObject:v7 forKey:@"sourceRange"];
+  [coderCopy encodeObject:v7 forKey:@"sourceRange"];
   v6 = [MEMORY[0x277CCAE60] valueWithRange:{self->_targetRange.location, self->_targetRange.length}];
-  [v5 encodeObject:v6 forKey:@"targetRange"];
-  [v5 encodeObject:self->_defaultGender forKey:@"defaultGender"];
+  [coderCopy encodeObject:v6 forKey:@"targetRange"];
+  [coderCopy encodeObject:self->_defaultGender forKey:@"defaultGender"];
 }
 
 - (_NSRange)sourceRange

@@ -5,15 +5,15 @@
 - (NSDate)expirationDate;
 - (NSString)description;
 - (_TtC5AskTo10ATQuestion)init;
-- (_TtC5AskTo10ATQuestion)initWithId:(id)a3 topic:(id)a4 title:(id)a5 summary:(id)a6;
-- (_TtC5AskTo10ATQuestion)initWithId:(id)a3 topic:(id)a4 title:(id)a5 summary:(id)a6 shortTitle:(id)a7 shortSummary:(id)a8;
-- (_TtC5AskTo10ATQuestion)initWithSystemId:(id)a3 version:(double)a4 id:(id)a5 topic:(id)a6 title:(id)a7 summary:(id)a8 longTitle:(id)a9 longSummary:(id)a10 notificationText:(id)a11 answerChoices:(id)a12;
+- (_TtC5AskTo10ATQuestion)initWithId:(id)id topic:(id)topic title:(id)title summary:(id)summary;
+- (_TtC5AskTo10ATQuestion)initWithId:(id)id topic:(id)topic title:(id)title summary:(id)summary shortTitle:(id)shortTitle shortSummary:(id)shortSummary;
+- (_TtC5AskTo10ATQuestion)initWithSystemId:(id)id version:(double)version id:(id)a5 topic:(id)topic title:(id)title summary:(id)summary longTitle:(id)longTitle longSummary:(id)self0 notificationText:(id)self1 answerChoices:(id)self2;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAnswerChoices:(id)a3;
-- (void)setCustomTopicData:(id)a3;
-- (void)setExpirationDate:(id)a3;
-- (void)setTopic:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAnswerChoices:(id)choices;
+- (void)setCustomTopicData:(id)data;
+- (void)setExpirationDate:(id)date;
+- (void)setTopic:(id)topic;
 @end
 
 @implementation ATQuestion
@@ -25,13 +25,13 @@
   return *(self + v3);
 }
 
-- (void)setTopic:(id)a3
+- (void)setTopic:(id)topic
 {
   v5 = OBJC_IVAR____TtC5AskTo10ATQuestion_topic;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = topic;
+  topicCopy = topic;
 }
 
 - (NSData)customTopicData
@@ -52,20 +52,20 @@
   return v3;
 }
 
-- (void)setCustomTopicData:(id)a3
+- (void)setCustomTopicData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_2410DEE40();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = sub_2410DEE40();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -73,7 +73,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = dataCopy;
   v10[1] = v8;
   sub_2410861E4(v11, v12);
 }
@@ -90,7 +90,7 @@
   return v5;
 }
 
-- (void)setAnswerChoices:(id)a3
+- (void)setAnswerChoices:(id)choices
 {
   type metadata accessor for ATAnswerChoice();
   v4 = sub_2410DF2C0();
@@ -123,13 +123,13 @@
   return v11;
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E525FE8, &qword_2410E39F8);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (date)
   {
     sub_2410DEE80();
     v9 = sub_2410DEE90();
@@ -144,34 +144,34 @@
 
   v11 = OBJC_IVAR____TtC5AskTo10ATQuestion_expirationDate;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_2410BC314(v8, self + v11, &qword_27E525FE8, &qword_2410E39F8);
   swift_endAccess();
 }
 
-- (_TtC5AskTo10ATQuestion)initWithId:(id)a3 topic:(id)a4 title:(id)a5 summary:(id)a6
+- (_TtC5AskTo10ATQuestion)initWithId:(id)id topic:(id)topic title:(id)title summary:(id)summary
 {
   v7 = sub_2410DF0C0();
   v9 = v8;
   v10 = sub_2410DF0C0();
   v12 = v11;
   v13 = sub_2410DF0C0();
-  v14 = a4;
-  v15 = sub_2410BBDE8(v7, v9, v14, v10, v12, v13);
+  topicCopy = topic;
+  v15 = sub_2410BBDE8(v7, v9, topicCopy, v10, v12, v13);
 
   return v15;
 }
 
-- (_TtC5AskTo10ATQuestion)initWithId:(id)a3 topic:(id)a4 title:(id)a5 summary:(id)a6 shortTitle:(id)a7 shortSummary:(id)a8
+- (_TtC5AskTo10ATQuestion)initWithId:(id)id topic:(id)topic title:(id)title summary:(id)summary shortTitle:(id)shortTitle shortSummary:(id)shortSummary
 {
   v20 = sub_2410DF0C0();
   v12 = v11;
   v13 = sub_2410DF0C0();
   v15 = v14;
   v16 = sub_2410DF0C0();
-  if (!a7)
+  if (!shortTitle)
   {
-    if (!a8)
+    if (!shortSummary)
     {
       goto LABEL_5;
     }
@@ -180,24 +180,24 @@
   }
 
   sub_2410DF0C0();
-  if (a8)
+  if (shortSummary)
   {
 LABEL_3:
     sub_2410DF0C0();
   }
 
 LABEL_5:
-  v17 = a4;
-  v18 = sub_2410BC074(v20, v12, v17, v13, v15, v16);
+  topicCopy = topic;
+  v18 = sub_2410BC074(v20, v12, topicCopy, v13, v15, v16);
 
   return v18;
 }
 
-- (_TtC5AskTo10ATQuestion)initWithSystemId:(id)a3 version:(double)a4 id:(id)a5 topic:(id)a6 title:(id)a7 summary:(id)a8 longTitle:(id)a9 longSummary:(id)a10 notificationText:(id)a11 answerChoices:(id)a12
+- (_TtC5AskTo10ATQuestion)initWithSystemId:(id)id version:(double)version id:(id)a5 topic:(id)topic title:(id)title summary:(id)summary longTitle:(id)longTitle longSummary:(id)self0 notificationText:(id)self1 answerChoices:(id)self2
 {
-  v41 = a6;
-  v42 = self;
-  v14 = a10;
+  topicCopy = topic;
+  selfCopy = self;
+  longSummaryCopy = longSummary;
   v15 = sub_2410DEF00();
   v16 = *(*(v15 - 8) + 64);
   v17 = MEMORY[0x28223BE20](v15 - 8);
@@ -212,19 +212,19 @@ LABEL_5:
   v24 = sub_2410DF0C0();
   v37 = v25;
   v38 = v24;
-  if (a9)
+  if (longTitle)
   {
     v26 = sub_2410DF0C0();
     v28 = v27;
-    v29 = a11;
-    if (a10)
+    textCopy2 = text;
+    if (longSummary)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v31 = 0;
-    if (v29)
+    if (textCopy2)
     {
       goto LABEL_4;
     }
@@ -236,28 +236,28 @@ LABEL_7:
 
   v26 = 0;
   v28 = 0;
-  v29 = a11;
-  if (!a10)
+  textCopy2 = text;
+  if (!longSummary)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v14 = sub_2410DF0C0();
+  longSummaryCopy = sub_2410DF0C0();
   v31 = v30;
-  if (!v29)
+  if (!textCopy2)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v29 = sub_2410DF0C0();
+  textCopy2 = sub_2410DF0C0();
   v33 = v32;
 LABEL_8:
-  v34 = v41;
+  v34 = topicCopy;
   type metadata accessor for ATAnswerChoice();
   v35 = sub_2410DF2C0();
-  return sub_2410B0FD4(v21, v19, v34, v40, v39, v38, v37, v26, a4, v28, v14, v31, v29, v33, v35);
+  return sub_2410B0FD4(v21, v19, v34, v40, v39, v38, v37, v26, version, v28, longSummaryCopy, v31, textCopy2, v33, v35);
 }
 
 - (_TtC5AskTo10ATQuestion)init
@@ -269,7 +269,7 @@ LABEL_8:
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ATQuestion.hash.getter();
 
   return v3;
@@ -277,7 +277,7 @@ LABEL_8:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ATQuestion.description.getter();
 
   v3 = sub_2410DF0A0();
@@ -285,11 +285,11 @@ LABEL_8:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ATQuestion.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ATQuestion.encode(with:)(coderCopy);
 }
 
 @end

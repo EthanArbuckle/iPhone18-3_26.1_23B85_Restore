@@ -1,16 +1,16 @@
 @interface MADServiceVideoProcessingSubtask
-+ (Class)taskClassForRequest:(id)a3;
-+ (id)taskWithRequest:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-+ (void)unimplementedExceptionForMethodName:(id)a3;
-- (MADServiceVideoProcessingSubtask)initWithRequest:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
++ (Class)taskClassForRequest:(id)request;
++ (id)taskWithRequest:(id)request forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
++ (void)unimplementedExceptionForMethodName:(id)name;
+- (MADServiceVideoProcessingSubtask)initWithRequest:(id)request forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 @end
 
 @implementation MADServiceVideoProcessingSubtask
 
-+ (Class)taskClassForRequest:(id)a3
++ (Class)taskClassForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  requestCopy = request;
+  v4 = [requestCopy isMemberOfClass:objc_opt_class()];
 
   if (v4)
   {
@@ -25,27 +25,27 @@
   return v5;
 }
 
-+ (id)taskWithRequest:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
++ (id)taskWithRequest:(id)request forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [objc_alloc(objc_msgSend(a1 taskClassForRequest:{v16)), "initWithRequest:forAsset:cancelBlock:progressHandler:andCompletionHandler:", v16, v15, v14, v13, v12}];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  blockCopy = block;
+  assetCopy = asset;
+  requestCopy = request;
+  v17 = [objc_alloc(objc_msgSend(self taskClassForRequest:{requestCopy)), "initWithRequest:forAsset:cancelBlock:progressHandler:andCompletionHandler:", requestCopy, assetCopy, blockCopy, handlerCopy, completionHandlerCopy}];
 
   return v17;
 }
 
-+ (void)unimplementedExceptionForMethodName:(id)a3
++ (void)unimplementedExceptionForMethodName:(id)name
 {
-  v3 = a3;
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADServiceVideoProcessingSubtask %@] should not be called", v3];
+  nameCopy = name;
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADServiceVideoProcessingSubtask %@] should not be called", nameCopy];
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:@"NotImplementedException" reason:objc_claimAutoreleasedReturnValue() userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (MADServiceVideoProcessingSubtask)initWithRequest:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (MADServiceVideoProcessingSubtask)initWithRequest:(id)request forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
   [objc_opt_class() unimplementedExceptionForMethodName:@"initWithRequest:forAsset:cancelBlock:andCompletionHandler:"];
 

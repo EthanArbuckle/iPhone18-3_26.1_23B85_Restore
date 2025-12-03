@@ -1,27 +1,27 @@
 @interface HFLockMechanismServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
 @end
 
 @implementation HFLockMechanismServiceItem
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  optionsCopy = options;
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
   v6 = [HFValueTransformer transformerForValueClass:objc_opt_class() transformBlock:&__block_literal_global_182 reverseTransformBlock:&__block_literal_global_6_7];
   v7 = MEMORY[0x277CBEB98];
   v8 = [HFPrimaryStateControlItem alloc];
   v9 = *MEMORY[0x277CCFB40];
   v16[0] = @"title";
-  v10 = HFItemOptionalLocalizedString(@"HFControlShortTitleLockState", v4);
+  v10 = HFItemOptionalLocalizedString(@"HFControlShortTitleLockState", optionsCopy);
 
   v16[1] = @"actionRequiresDeviceUnlock";
   v17[0] = v10;
   v17[1] = MEMORY[0x277CBEC38];
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  v12 = [(HFPrimaryStateControlItem *)v8 initWithValueSource:v5 characteristicType:v9 valueTransformer:v6 displayResults:v11];
+  v12 = [(HFPrimaryStateControlItem *)v8 initWithValueSource:controlItemValueSourceForPrimaryService characteristicType:v9 valueTransformer:v6 displayResults:v11];
   v13 = [v7 setWithObject:v12];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -73,7 +73,7 @@ uint64_t __60__HFLockMechanismServiceItem_createControlItemsWithOptions___block_
   return [v2 numberWithInteger:v4];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
@@ -82,11 +82,11 @@ uint64_t __60__HFLockMechanismServiceItem_createControlItemsWithOptions___block_
   v15[1] = v5;
   v15[2] = *MEMORY[0x277CCF9A0];
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
+  optionsCopy = options;
   v8 = [v6 arrayWithObjects:v15 count:3];
   v9 = [v4 setWithArray:v8];
 
-  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:v7];
+  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:optionsCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;

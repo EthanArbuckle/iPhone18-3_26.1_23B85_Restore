@@ -1,23 +1,23 @@
 @interface CKDMMCSPackageSignatureGenerator
-- (CKDMMCSPackageSignatureGenerator)initWithBoundaryKey:(id)a3;
+- (CKDMMCSPackageSignatureGenerator)initWithBoundaryKey:(id)key;
 - (id)_finishGenerator;
 - (id)dataByFinishingSignature;
 - (id)dataByFinishingVerificationKey;
 - (void)dealloc;
-- (void)updateWithData:(id)a3;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation CKDMMCSPackageSignatureGenerator
 
-- (CKDMMCSPackageSignatureGenerator)initWithBoundaryKey:(id)a3
+- (CKDMMCSPackageSignatureGenerator)initWithBoundaryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8.receiver = self;
   v8.super_class = CKDMMCSPackageSignatureGenerator;
   v5 = [(CKDMMCSPackageSignatureGenerator *)&v8 init];
   if (v5)
   {
-    if (v4)
+    if (keyCopy)
     {
       v6 = MMCSPackageSectionSignatureGeneratorCreateWithBoundaryKey();
       v5->_usesMMCSV2 = 1;
@@ -62,16 +62,16 @@
   return v9;
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if ((objc_msgSend_isValid(self, v6, v7) & 1) == 0)
   {
     v19 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v19, v20, a2, self, @"CKDMMCSPackageSignatureGenerator.m", 54, @"Attempted to update an invalidated signature generator");
   }
 
-  v21 = v5;
+  v21 = dataCopy;
   v12 = objc_msgSend_generator(self, v10, v11);
   v15 = objc_msgSend_bytes(v21, v13, v14);
   v18 = objc_msgSend_length(v21, v16, v17);

@@ -1,37 +1,37 @@
 @interface MERemoteExtensionContext
 + (id)log;
 - (MEExtensionRemoteHostProtocol)remoteHostPoxy;
-- (MERemoteExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (MERemoteExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 - (NSArray)requiredHeaders;
-- (id)_composeSessionInterfaceForSession:(id)a3;
+- (id)_composeSessionInterfaceForSession:(id)session;
 - (id)_contentBlockerInterface;
 - (id)_createPrincipalObject;
 - (id)_extensionInterface;
 - (id)_mailActionInterface;
 - (id)_messageSecurityHandlerInterface;
-- (id)additionalHeadersForSession:(id)a3;
+- (id)additionalHeadersForSession:(id)session;
 - (id)contentRulesJSON;
-- (id)decodedMessageForMessageData:(id)a3;
-- (id)decodedMessageForMessageData:(id)a3 decodeContext:(id)a4;
-- (id)extensionViewControllerForMessageContext:(id)a3;
-- (id)extensionViewControllerForMessageSigners:(id)a3;
+- (id)decodedMessageForMessageData:(id)data;
+- (id)decodedMessageForMessageData:(id)data decodeContext:(id)context;
+- (id)extensionViewControllerForMessageContext:(id)context;
+- (id)extensionViewControllerForMessageSigners:(id)signers;
 - (id)remoteProxy;
-- (id)viewControllerForSession:(id)a3;
+- (id)viewControllerForSession:(id)session;
 - (void)_createPrincipalObject;
-- (void)contentRulesJSONWithCompletionHandler:(id)a3;
+- (void)contentRulesJSONWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)decideActionForMessage:(id)a3 completionHandler:(id)a4;
-- (void)decodedMessageForMessageData:(id)a3 decodeContext:(id)a4 withCompletionHandler:(id)a5;
-- (void)encodeMessage:(id)a3 composeContext:(id)a4 completionHandler:(id)a5;
-- (void)getEncodingStatusForMessage:(id)a3 composeContext:(id)a4 completionHandler:(id)a5;
-- (void)mailComposeSessionDidBegin:(id)a3;
-- (void)mailComposeSessionDidEnd:(id)a3;
-- (void)primaryActionClickedForMessageContext:(id)a3 completionHandler:(id)a4;
-- (void)requiredHeadersWithCompletion:(id)a3;
-- (void)session:(id)a3 annotateAddressesWithCompletionHandler:(id)a4;
-- (void)session:(id)a3 canSendMessageWithCompletionHandler:(id)a4;
-- (void)session:(id)a3 getAdditionalHeadersWithCompletion:(id)a4;
-- (void)session:(id)a3 hasSendMessageCheckWithCompletion:(id)a4;
+- (void)decideActionForMessage:(id)message completionHandler:(id)handler;
+- (void)decodedMessageForMessageData:(id)data decodeContext:(id)context withCompletionHandler:(id)handler;
+- (void)encodeMessage:(id)message composeContext:(id)context completionHandler:(id)handler;
+- (void)getEncodingStatusForMessage:(id)message composeContext:(id)context completionHandler:(id)handler;
+- (void)mailComposeSessionDidBegin:(id)begin;
+- (void)mailComposeSessionDidEnd:(id)end;
+- (void)primaryActionClickedForMessageContext:(id)context completionHandler:(id)handler;
+- (void)requiredHeadersWithCompletion:(id)completion;
+- (void)session:(id)session annotateAddressesWithCompletionHandler:(id)handler;
+- (void)session:(id)session canSendMessageWithCompletionHandler:(id)handler;
+- (void)session:(id)session getAdditionalHeadersWithCompletion:(id)completion;
+- (void)session:(id)session hasSendMessageCheckWithCompletion:(id)completion;
 @end
 
 @implementation MERemoteExtensionContext
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __31__MERemoteExtensionContext_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_4 != -1)
   {
     dispatch_once(&log_onceToken_4, block);
@@ -61,14 +61,14 @@ void __31__MERemoteExtensionContext_log__block_invoke(uint64_t a1)
   log_log_4 = v1;
 }
 
-- (MERemoteExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (MERemoteExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  endpointCopy = endpoint;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = MERemoteExtensionContext;
-  v11 = [(MERemoteExtensionContext *)&v13 initWithInputItems:v8 listenerEndpoint:v9 contextUUID:v10];
+  v11 = [(MERemoteExtensionContext *)&v13 initWithInputItems:itemsCopy listenerEndpoint:endpointCopy contextUUID:dCopy];
   if (v11)
   {
     NSLog(&cfstr_S.isa, "[MERemoteExtensionContext initWithInputItems:listenerEndpoint:contextUUID:]");
@@ -84,7 +84,7 @@ void __31__MERemoteExtensionContext_log__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_257F67000, v3, OS_LOG_TYPE_DEFAULT, "<MERemoteExtensionContext:%p> deallocated", buf, 0xCu);
   }
 
@@ -96,21 +96,21 @@ void __31__MERemoteExtensionContext_log__block_invoke(uint64_t a1)
 
 - (id)remoteProxy
 {
-  v2 = [(MERemoteExtensionContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxy];
+  _auxiliaryConnection = [(MERemoteExtensionContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (MEExtensionRemoteHostProtocol)remoteHostPoxy
 {
-  v3 = [(MERemoteExtensionContext *)self _auxiliaryConnection];
+  _auxiliaryConnection = [(MERemoteExtensionContext *)self _auxiliaryConnection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__MERemoteExtensionContext_remoteHostPoxy__block_invoke;
   v6[3] = &unk_279858F20;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -128,11 +128,11 @@ void __42__MERemoteExtensionContext_remoteHostPoxy__block_invoke(uint64_t a1, vo
 - (id)_extensionInterface
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [(MERemoteExtensionContext *)self _principalObject];
+  _principalObject = [(MERemoteExtensionContext *)self _principalObject];
 
-  if (v4)
+  if (_principalObject)
   {
-    v5 = [(MERemoteExtensionContext *)self _principalObject];
+    _principalObject2 = [(MERemoteExtensionContext *)self _principalObject];
   }
 
   else
@@ -141,70 +141,70 @@ void __42__MERemoteExtensionContext_remoteHostPoxy__block_invoke(uint64_t a1, vo
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2112;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_257F67000, v6, OS_LOG_TYPE_DEFAULT, "ExtensionContext<%p>: Creating new _principalObject for extension Context:%@", buf, 0x16u);
     }
 
-    v7 = [(MERemoteExtensionContext *)self _createPrincipalObject];
-    v8 = [MEMORY[0x277CCAEB0] _sharedExtensionContextVendor];
-    v9 = [(MERemoteExtensionContext *)self _UUID];
-    [v8 _setPrincipalObject:v7 forUUID:v9];
+    _createPrincipalObject = [(MERemoteExtensionContext *)self _createPrincipalObject];
+    _sharedExtensionContextVendor = [MEMORY[0x277CCAEB0] _sharedExtensionContextVendor];
+    _UUID = [(MERemoteExtensionContext *)self _UUID];
+    [_sharedExtensionContextVendor _setPrincipalObject:_createPrincipalObject forUUID:_UUID];
 
-    v5 = v7;
+    _principalObject2 = _createPrincipalObject;
   }
 
-  if (([v5 conformsToProtocol:&unk_28693AEF8] & 1) == 0)
+  if (([_principalObject2 conformsToProtocol:&unk_28693AEF8] & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    v15 = [(MERemoteExtensionContext *)self _principalObject];
-    [v14 handleFailureInMethod:a2 object:self file:@"MERemoteExtensionContext.m" lineNumber:82 description:{@"ExtensionContext<%p>: _principalObject %@ does not conform to MEExtension protocol in ExtensionContext :%@", self, v15, self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    _principalObject3 = [(MERemoteExtensionContext *)self _principalObject];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MERemoteExtensionContext.m" lineNumber:82 description:{@"ExtensionContext<%p>: _principalObject %@ does not conform to MEExtension protocol in ExtensionContext :%@", self, _principalObject3, self}];
   }
 
   v10 = +[MERemoteExtensionContext log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MERemoteExtensionContext *)self _principalObject];
+    _principalObject4 = [(MERemoteExtensionContext *)self _principalObject];
     *buf = 134218498;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2112;
-    v19 = v11;
+    selfCopy2 = _principalObject4;
     v20 = 2112;
-    v21 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_257F67000, v10, OS_LOG_TYPE_DEFAULT, "ExtensionContext<%p>: _principalObject is %@ in ExtensionContext :%@", buf, 0x20u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return _principalObject2;
 }
 
 - (id)_createPrincipalObject
 {
   v40 = *MEMORY[0x277D85DE8];
-  v27 = [MEMORY[0x277CC1E50] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x277CC1E50] bundleRecordForCurrentProcess];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    [v16 handleFailureInMethod:a2 object:self file:@"MERemoteExtensionContext.m" lineNumber:90 description:{@"Unexpected bunde record class '%@'", v18}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MERemoteExtensionContext.m" lineNumber:90 description:{@"Unexpected bunde record class '%@'", v18}];
   }
 
-  v2 = [v27 infoDictionary];
-  v26 = [v2 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+  infoDictionary = [bundleRecordForCurrentProcess infoDictionary];
+  v26 = [infoDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
 
   v3 = +[MERemoteExtensionContext log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v35 = self;
+    selfCopy3 = self;
     v36 = 2112;
     v37 = v26;
     v38 = 2112;
-    v39 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_257F67000, v3, OS_LOG_TYPE_DEFAULT, "ExtensionContext<%p>: extensionDictionary is %@ for Extension Context :%@", buf, 0x20u);
   }
 
@@ -226,11 +226,11 @@ void __42__MERemoteExtensionContext_remoteHostPoxy__block_invoke(uint64_t a1, vo
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v35 = self;
+    selfCopy3 = self;
     v36 = 2112;
     v37 = v4;
     v38 = 2112;
-    v39 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_257F67000, v5, OS_LOG_TYPE_DEFAULT, "ExtensionContext<%p>: principalObject is %@ for Extension Context :%@", buf, 0x20u);
   }
 
@@ -258,22 +258,22 @@ void __42__MERemoteExtensionContext_remoteHostPoxy__block_invoke(uint64_t a1, vo
           v9 = *(*(&v29 + 1) + 8 * i);
           if ([v9 isEqualToString:@"MEComposeSessionHandler"] && (objc_opt_respondsToSelector() & 1) == 0)
           {
-            v19 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
           }
 
           if ([v9 isEqualToString:@"MEMessageActionHandler"] && (objc_opt_respondsToSelector() & 1) == 0)
           {
-            v20 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
           }
 
           if ([v9 isEqualToString:@"MEContentBlocker"] && (objc_opt_respondsToSelector() & 1) == 0)
           {
-            v21 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
           }
 
           if ([v9 isEqualToString:@"MEMessageSecurityHandler"] && (objc_opt_respondsToSelector() & 1) == 0)
           {
-            v10 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
           }
         }
 
@@ -290,9 +290,9 @@ LABEL_32:
 
   v11 = 0;
 LABEL_34:
-  v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   composeSessionToHandlerMap = self->_composeSessionToHandlerMap;
-  self->_composeSessionToHandlerMap = v12;
+  self->_composeSessionToHandlerMap = strongToStrongObjectsMapTable;
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -302,13 +302,13 @@ LABEL_34:
 - (id)_contentBlockerInterface
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(MERemoteExtensionContext *)self _extensionInterface];
+  _extensionInterface = [(MERemoteExtensionContext *)self _extensionInterface];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MERemoteExtensionContext *)self _extensionInterface];
-    v6 = [v5 handlerForContentBlocker];
+    _extensionInterface2 = [(MERemoteExtensionContext *)self _extensionInterface];
+    handlerForContentBlocker = [_extensionInterface2 handlerForContentBlocker];
   }
 
   else
@@ -316,20 +316,20 @@ LABEL_34:
     v7 = +[MERemoteExtensionContext log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(MERemoteExtensionContext *)self _extensionInterface];
+      _extensionInterface3 = [(MERemoteExtensionContext *)self _extensionInterface];
       v11 = 138412546;
-      v12 = v8;
+      v12 = _extensionInterface3;
       v13 = 2112;
       v14 = @"handlerForContentBlocker";
       _os_log_impl(&dword_257F67000, v7, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ does not implement %@", &v11, 0x16u);
     }
 
-    v6 = 0;
+    handlerForContentBlocker = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return handlerForContentBlocker;
 }
 
 - (id)contentRulesJSON
@@ -340,37 +340,37 @@ LABEL_34:
   {
     v5 = NSStringFromSelector(a2);
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v5;
     _os_log_impl(&dword_257F67000, v4, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v10, 0x16u);
   }
 
-  v6 = [(MERemoteExtensionContext *)self _contentBlockerInterface];
-  v7 = [v6 contentRulesJSON];
+  _contentBlockerInterface = [(MERemoteExtensionContext *)self _contentBlockerInterface];
+  contentRulesJSON = [_contentBlockerInterface contentRulesJSON];
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return contentRulesJSON;
 }
 
-- (void)contentRulesJSONWithCompletionHandler:(id)a3
+- (void)contentRulesJSONWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(MERemoteExtensionContext *)self contentRulesJSON];
-  v5[2](v5, v4);
+  handlerCopy = handler;
+  contentRulesJSON = [(MERemoteExtensionContext *)self contentRulesJSON];
+  handlerCopy[2](handlerCopy, contentRulesJSON);
 }
 
 - (id)_mailActionInterface
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(MERemoteExtensionContext *)self _extensionInterface];
+  _extensionInterface = [(MERemoteExtensionContext *)self _extensionInterface];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MERemoteExtensionContext *)self _extensionInterface];
-    v6 = [v5 handlerForMessageActions];
+    _extensionInterface2 = [(MERemoteExtensionContext *)self _extensionInterface];
+    handlerForMessageActions = [_extensionInterface2 handlerForMessageActions];
   }
 
   else
@@ -378,40 +378,40 @@ LABEL_34:
     v7 = +[MERemoteExtensionContext log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(MERemoteExtensionContext *)self _extensionInterface];
+      _extensionInterface3 = [(MERemoteExtensionContext *)self _extensionInterface];
       v11 = 138412546;
-      v12 = v8;
+      v12 = _extensionInterface3;
       v13 = 2112;
       v14 = @"handlerForMessageActions";
       _os_log_impl(&dword_257F67000, v7, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ does not implement %@", &v11, 0x16u);
     }
 
-    v6 = 0;
+    handlerForMessageActions = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return handlerForMessageActions;
 }
 
-- (void)decideActionForMessage:(id)a3 completionHandler:(id)a4
+- (void)decideActionForMessage:(id)message completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v9 = +[MERemoteExtensionContext log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
     v13 = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v10;
     _os_log_impl(&dword_257F67000, v9, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v13, 0x16u);
   }
 
-  v11 = [(MERemoteExtensionContext *)self _mailActionInterface];
-  [v11 decideActionForMessage:v7 completionHandler:v8];
+  _mailActionInterface = [(MERemoteExtensionContext *)self _mailActionInterface];
+  [_mailActionInterface decideActionForMessage:messageCopy completionHandler:handlerCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -424,54 +424,54 @@ LABEL_34:
   {
     v5 = NSStringFromSelector(a2);
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v5;
     _os_log_impl(&dword_257F67000, v4, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v10, 0x16u);
   }
 
-  v6 = [(MERemoteExtensionContext *)self _mailActionInterface];
+  _mailActionInterface = [(MERemoteExtensionContext *)self _mailActionInterface];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 requiredHeaders];
+    requiredHeaders = [_mailActionInterface requiredHeaders];
   }
 
   else
   {
-    v7 = MEMORY[0x277CBEBF8];
+    requiredHeaders = MEMORY[0x277CBEBF8];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return requiredHeaders;
 }
 
-- (void)requiredHeadersWithCompletion:(id)a3
+- (void)requiredHeadersWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(MERemoteExtensionContext *)self requiredHeaders];
-  v5[2](v5, v4);
+  completionCopy = completion;
+  requiredHeaders = [(MERemoteExtensionContext *)self requiredHeaders];
+  completionCopy[2](completionCopy, requiredHeaders);
 }
 
-- (id)_composeSessionInterfaceForSession:(id)a3
+- (id)_composeSessionInterfaceForSession:(id)session
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MERemoteExtensionContext *)self remoteHostPoxy];
-  [v4 setRemoteHostContext:v5];
+  sessionCopy = session;
+  remoteHostPoxy = [(MERemoteExtensionContext *)self remoteHostPoxy];
+  [sessionCopy setRemoteHostContext:remoteHostPoxy];
 
-  v6 = [(NSMapTable *)self->_composeSessionToHandlerMap objectForKey:v4];
+  v6 = [(NSMapTable *)self->_composeSessionToHandlerMap objectForKey:sessionCopy];
   if (!v6)
   {
-    v7 = [(MERemoteExtensionContext *)self _extensionInterface];
+    _extensionInterface = [(MERemoteExtensionContext *)self _extensionInterface];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(MERemoteExtensionContext *)self _extensionInterface];
-      v6 = [v9 handlerForComposeSession:v4];
+      _extensionInterface2 = [(MERemoteExtensionContext *)self _extensionInterface];
+      v6 = [_extensionInterface2 handlerForComposeSession:sessionCopy];
 
-      [(NSMapTable *)self->_composeSessionToHandlerMap setObject:v6 forKey:v4];
+      [(NSMapTable *)self->_composeSessionToHandlerMap setObject:v6 forKey:sessionCopy];
     }
 
     else
@@ -479,9 +479,9 @@ LABEL_34:
       v10 = +[MERemoteExtensionContext log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(MERemoteExtensionContext *)self _extensionInterface];
+        _extensionInterface3 = [(MERemoteExtensionContext *)self _extensionInterface];
         v14 = 138412546;
-        v15 = v11;
+        v15 = _extensionInterface3;
         v16 = 2112;
         v17 = @"handlerForComposeSession:";
         _os_log_impl(&dword_257F67000, v10, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ does not implement %@", &v14, 0x16u);
@@ -496,55 +496,55 @@ LABEL_34:
   return v6;
 }
 
-- (void)mailComposeSessionDidBegin:(id)a3
+- (void)mailComposeSessionDidBegin:(id)begin
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  beginCopy = begin;
   v6 = +[MERemoteExtensionContext log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_257F67000, v6, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v10, 0x16u);
   }
 
-  v8 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:v5];
-  [v8 mailComposeSessionDidBegin:v5];
+  v8 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:beginCopy];
+  [v8 mailComposeSessionDidBegin:beginCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mailComposeSessionDidEnd:(id)a3
+- (void)mailComposeSessionDidEnd:(id)end
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  endCopy = end;
   v6 = +[MERemoteExtensionContext log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_257F67000, v6, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v10, 0x16u);
   }
 
-  v8 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:v5];
-  [v8 mailComposeSessionDidEnd:v5];
+  v8 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:endCopy];
+  [v8 mailComposeSessionDidEnd:endCopy];
 
-  [(NSMapTable *)self->_composeSessionToHandlerMap removeObjectForKey:v5];
+  [(NSMapTable *)self->_composeSessionToHandlerMap removeObjectForKey:endCopy];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)viewControllerForSession:(id)a3
+- (id)viewControllerForSession:(id)session
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:v4];
-  v6 = [v5 viewControllerForSession:v4];
+  sessionCopy = session;
+  v5 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:sessionCopy];
+  v6 = [v5 viewControllerForSession:sessionCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -552,7 +552,7 @@ LABEL_34:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v6;
       _os_log_impl(&dword_257F67000, v7, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ returned view controller: %@", &v12, 0x16u);
@@ -577,12 +577,12 @@ LABEL_34:
   return v8;
 }
 
-- (void)session:(id)a3 annotateAddressesWithCompletionHandler:(id)a4
+- (void)session:(id)session annotateAddressesWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:v7];
+  sessionCopy = session;
+  handlerCopy = handler;
+  v9 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:sessionCopy];
   if (objc_opt_respondsToSelector())
   {
     v10 = +[MERemoteExtensionContext log];
@@ -590,13 +590,13 @@ LABEL_34:
     {
       v11 = NSStringFromSelector(a2);
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_257F67000, v10, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v15, 0x16u);
     }
 
-    [v9 session:v7 annotateAddressesWithCompletionHandler:v8];
+    [v9 session:sessionCopy annotateAddressesWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -606,24 +606,24 @@ LABEL_34:
     {
       v13 = NSStringFromSelector(a2);
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v13;
       _os_log_impl(&dword_257F67000, v12, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Does not implement selector [%@]", &v15, 0x16u);
     }
 
-    v8[2](v8, MEMORY[0x277CBEC10]);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEC10]);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 canSendMessageWithCompletionHandler:(id)a4
+- (void)session:(id)session canSendMessageWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:v7];
+  sessionCopy = session;
+  handlerCopy = handler;
+  v9 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:sessionCopy];
   if (objc_opt_respondsToSelector())
   {
     v10 = +[MERemoteExtensionContext log];
@@ -631,13 +631,13 @@ LABEL_34:
     {
       v11 = NSStringFromSelector(a2);
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_257F67000, v10, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v15, 0x16u);
     }
 
-    [v9 session:v7 canSendMessageWithCompletionHandler:v8];
+    [v9 session:sessionCopy canSendMessageWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -647,31 +647,31 @@ LABEL_34:
     {
       v13 = NSStringFromSelector(a2);
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v13;
       _os_log_impl(&dword_257F67000, v12, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Does not implement selector [%@]", &v15, 0x16u);
     }
 
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 hasSendMessageCheckWithCompletion:(id)a4
+- (void)session:(id)session hasSendMessageCheckWithCompletion:(id)completion
 {
-  v8 = a4;
-  v6 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:a3];
+  completionCopy = completion;
+  v6 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:session];
   v7 = objc_opt_respondsToSelector();
-  v8[2](v8, v7 & 1);
+  completionCopy[2](completionCopy, v7 & 1);
 }
 
-- (id)additionalHeadersForSession:(id)a3
+- (id)additionalHeadersForSession:(id)session
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:v5];
+  sessionCopy = session;
+  v6 = [(MERemoteExtensionContext *)self _composeSessionInterfaceForSession:sessionCopy];
   if (objc_opt_respondsToSelector())
   {
     v7 = +[MERemoteExtensionContext log];
@@ -679,13 +679,13 @@ LABEL_34:
     {
       v8 = NSStringFromSelector(a2);
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&dword_257F67000, v7, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v14, 0x16u);
     }
 
-    v9 = [v6 additionalHeadersForSession:v5];
+    v9 = [v6 additionalHeadersForSession:sessionCopy];
   }
 
   else
@@ -695,7 +695,7 @@ LABEL_34:
     {
       v11 = NSStringFromSelector(a2);
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
       v17 = v11;
       _os_log_impl(&dword_257F67000, v10, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Does not implement selector [%@]", &v14, 0x16u);
@@ -709,23 +709,23 @@ LABEL_34:
   return v9;
 }
 
-- (void)session:(id)a3 getAdditionalHeadersWithCompletion:(id)a4
+- (void)session:(id)session getAdditionalHeadersWithCompletion:(id)completion
 {
-  v7 = a4;
-  v6 = [(MERemoteExtensionContext *)self additionalHeadersForSession:a3];
-  v7[2](v7, v6);
+  completionCopy = completion;
+  v6 = [(MERemoteExtensionContext *)self additionalHeadersForSession:session];
+  completionCopy[2](completionCopy, v6);
 }
 
 - (id)_messageSecurityHandlerInterface
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(MERemoteExtensionContext *)self _extensionInterface];
+  _extensionInterface = [(MERemoteExtensionContext *)self _extensionInterface];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MERemoteExtensionContext *)self _extensionInterface];
-    v6 = [v5 handlerForMessageSecurity];
+    _extensionInterface2 = [(MERemoteExtensionContext *)self _extensionInterface];
+    handlerForMessageSecurity = [_extensionInterface2 handlerForMessageSecurity];
   }
 
   else
@@ -733,69 +733,69 @@ LABEL_34:
     v7 = +[MERemoteExtensionContext log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(MERemoteExtensionContext *)self _extensionInterface];
+      _extensionInterface3 = [(MERemoteExtensionContext *)self _extensionInterface];
       v11 = 138412546;
-      v12 = v8;
+      v12 = _extensionInterface3;
       v13 = 2112;
       v14 = @"handlerForMessageSecurity";
       _os_log_impl(&dword_257F67000, v7, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ does not implement %@", &v11, 0x16u);
     }
 
-    v6 = 0;
+    handlerForMessageSecurity = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return handlerForMessageSecurity;
 }
 
-- (void)getEncodingStatusForMessage:(id)a3 composeContext:(id)a4 completionHandler:(id)a5
+- (void)getEncodingStatusForMessage:(id)message composeContext:(id)context completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  contextCopy = context;
+  handlerCopy = handler;
   v12 = +[MERemoteExtensionContext log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = NSStringFromSelector(a2);
     v16 = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v13;
     _os_log_impl(&dword_257F67000, v12, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v16, 0x16u);
   }
 
-  v14 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
-  [v14 getEncodingStatusForMessage:v9 composeContext:v10 completionHandler:v11];
+  _messageSecurityHandlerInterface = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
+  [_messageSecurityHandlerInterface getEncodingStatusForMessage:messageCopy composeContext:contextCopy completionHandler:handlerCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeMessage:(id)a3 composeContext:(id)a4 completionHandler:(id)a5
+- (void)encodeMessage:(id)message composeContext:(id)context completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  contextCopy = context;
+  handlerCopy = handler;
   v12 = +[MERemoteExtensionContext log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = NSStringFromSelector(a2);
     v16 = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v13;
     _os_log_impl(&dword_257F67000, v12, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ Forwarding invocation [%@]", &v16, 0x16u);
   }
 
-  v14 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
-  [v14 encodeMessage:v9 composeContext:v10 completionHandler:v11];
+  _messageSecurityHandlerInterface = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
+  [_messageSecurityHandlerInterface encodeMessage:messageCopy composeContext:contextCopy completionHandler:handlerCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decodedMessageForMessageData:(id)a3
+- (id)decodedMessageForMessageData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = +[MERemoteExtensionContext log];
@@ -809,41 +809,41 @@ LABEL_34:
   return 0;
 }
 
-- (id)decodedMessageForMessageData:(id)a3 decodeContext:(id)a4
+- (id)decodedMessageForMessageData:(id)data decodeContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
+  dataCopy = data;
+  contextCopy = context;
+  _messageSecurityHandlerInterface = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
   v9 = objc_opt_respondsToSelector();
 
-  v10 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
+  _messageSecurityHandlerInterface2 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
   if (v9)
   {
-    [v10 performSelector:sel_decodedMessageForMessageData_decodeContext_ withObject:v6 withObject:v7];
+    [_messageSecurityHandlerInterface2 performSelector:sel_decodedMessageForMessageData_decodeContext_ withObject:dataCopy withObject:contextCopy];
   }
 
   else
   {
-    [v10 decodedMessageForMessageData:v6];
+    [_messageSecurityHandlerInterface2 decodedMessageForMessageData:dataCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-- (void)decodedMessageForMessageData:(id)a3 decodeContext:(id)a4 withCompletionHandler:(id)a5
+- (void)decodedMessageForMessageData:(id)data decodeContext:(id)context withCompletionHandler:(id)handler
 {
-  v9 = a5;
-  v8 = [(MERemoteExtensionContext *)self decodedMessageForMessageData:a3 decodeContext:a4];
-  v9[2](v9, v8);
+  handlerCopy = handler;
+  v8 = [(MERemoteExtensionContext *)self decodedMessageForMessageData:data decodeContext:context];
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (id)extensionViewControllerForMessageSigners:(id)a3
+- (id)extensionViewControllerForMessageSigners:(id)signers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
-  v6 = [v5 extensionViewControllerForMessageSigners:v4];
+  signersCopy = signers;
+  _messageSecurityHandlerInterface = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
+  v6 = [_messageSecurityHandlerInterface extensionViewControllerForMessageSigners:signersCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -852,7 +852,7 @@ LABEL_34:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v6;
       _os_log_impl(&dword_257F67000, v7, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ returned view controller: %@", &v12, 0x16u);
@@ -877,12 +877,12 @@ LABEL_34:
   return v8;
 }
 
-- (id)extensionViewControllerForMessageContext:(id)a3
+- (id)extensionViewControllerForMessageContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
-  v6 = [v5 extensionViewControllerForMessageContext:v4];
+  contextCopy = context;
+  _messageSecurityHandlerInterface = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
+  v6 = [_messageSecurityHandlerInterface extensionViewControllerForMessageContext:contextCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -891,7 +891,7 @@ LABEL_34:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v6;
       _os_log_impl(&dword_257F67000, v7, OS_LOG_TYPE_DEFAULT, "ExtensionContext:%@ returned view controller: %@", &v12, 0x16u);
@@ -916,27 +916,27 @@ LABEL_34:
   return v8;
 }
 
-- (void)primaryActionClickedForMessageContext:(id)a3 completionHandler:(id)a4
+- (void)primaryActionClickedForMessageContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
+  contextCopy = context;
+  handlerCopy = handler;
+  _messageSecurityHandlerInterface = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
 
-  if (v8)
+  if (_messageSecurityHandlerInterface)
   {
-    v9 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
+    _messageSecurityHandlerInterface2 = [(MERemoteExtensionContext *)self _messageSecurityHandlerInterface];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __84__MERemoteExtensionContext_primaryActionClickedForMessageContext_completionHandler___block_invoke;
     v10[3] = &unk_279859380;
     v10[4] = self;
-    v11 = v7;
-    [v9 primaryActionClickedForMessageContext:v6 completionHandler:v10];
+    v11 = handlerCopy;
+    [_messageSecurityHandlerInterface2 primaryActionClickedForMessageContext:contextCopy completionHandler:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

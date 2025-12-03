@@ -3,7 +3,7 @@
 + (id)sharedInstance;
 - (id)createLayout;
 - (void)setDefaultValues;
-- (void)setDefaultValuesWithPresetName:(id)a3;
+- (void)setDefaultValuesWithPresetName:(id)name;
 @end
 
 @implementation PXGPPTSettings
@@ -24,9 +24,9 @@
 
 - (id)createLayout
 {
-  v3 = [(PXGPPTSettings *)self useMultipleScrollableRows];
+  useMultipleScrollableRows = [(PXGPPTSettings *)self useMultipleScrollableRows];
   v4 = off_1E771E010;
-  if (!v3)
+  if (!useMultipleScrollableRows)
   {
     v4 = off_1E771DFE8;
   }
@@ -36,33 +36,33 @@
   return v5;
 }
 
-- (void)setDefaultValuesWithPresetName:(id)a3
+- (void)setDefaultValuesWithPresetName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   [(PXGPPTSettings *)self setDefaultValues];
-  if ([v8 isEqualToString:@"10k_Grid"])
+  if ([nameCopy isEqualToString:@"10k_Grid"])
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 10000;
 LABEL_5:
-    [(PXGPPTSettings *)v5 setNumberOfItems:v6];
+    [(PXGPPTSettings *)selfCopy2 setNumberOfItems:v6];
     goto LABEL_6;
   }
 
-  if ([v8 isEqualToString:@"100k_Grid"])
+  if ([nameCopy isEqualToString:@"100k_Grid"])
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 100000;
     goto LABEL_5;
   }
 
-  if ([v8 isEqualToString:@"10k_Sections"])
+  if ([nameCopy isEqualToString:@"10k_Sections"])
   {
     [(PXGPPTSettings *)self setNumberOfItems:500000];
     [(PXGPPTSettings *)self setNumberOfSections:10000];
   }
 
-  else if ([v8 isEqualToString:@"10k_Sections_Decorated"])
+  else if ([nameCopy isEqualToString:@"10k_Sections_Decorated"])
   {
     [(PXGPPTSettings *)self setNumberOfItems:500000];
     [(PXGPPTSettings *)self setNumberOfSections:10000];
@@ -72,17 +72,17 @@ LABEL_5:
 
   else
   {
-    if (![v8 hasPrefix:@"ScrollableRows_"])
+    if (![nameCopy hasPrefix:@"ScrollableRows_"])
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXGPPTSettings.m" lineNumber:74 description:{@"unknown presetName %@", v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGPPTSettings.m" lineNumber:74 description:{@"unknown presetName %@", nameCopy}];
 
       abort();
     }
 
     [(PXGPPTSettings *)self setUseMultipleScrollableRows:1];
     [(PXGPPTSettings *)self setNumberOfSections:10000];
-    if ([v8 hasSuffix:@"_HorizontalRow"])
+    if ([nameCopy hasSuffix:@"_HorizontalRow"])
     {
       [(PXGPPTSettings *)self setShouldTestNestedScrollView:1];
     }
@@ -114,14 +114,14 @@ void __32__PXGPPTSettings_sharedInstance__block_invoke()
 + (id)settingsControllerModule
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [a1 sharedInstance];
+  sharedInstance = [self sharedInstance];
   v4 = MEMORY[0x1E69C6638];
   v5 = MEMORY[0x1E69C65E8];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__PXGPPTSettings_UI__settingsControllerModule__block_invoke;
   v10[3] = &unk_1E773B578;
-  v6 = v3;
+  v6 = sharedInstance;
   v10[4] = v6;
   v7 = [v5 px_rowWithTitle:@"Show Benchmarked View" action:v10];
   v11[0] = v7;
@@ -129,7 +129,7 @@ void __32__PXGPPTSettings_sharedInstance__block_invoke()
   [v4 sectionWithRows:v8 title:@"(Double-tap to dismiss)"];
   objc_claimAutoreleasedReturnValue();
 
-  [a1 allPresetNames];
+  [self allPresetNames];
   objc_claimAutoreleasedReturnValue();
   v6;
   PXMap();

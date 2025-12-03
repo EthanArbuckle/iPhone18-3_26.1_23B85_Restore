@@ -12,7 +12,7 @@
 {
   v2 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:?];
 
-  return [a1 initWithData:v2];
+  return [self initWithData:v2];
 }
 
 - (uint64_t)initPCXImageWithSize:()PCXImageAdditions
@@ -20,14 +20,14 @@
   UIGraphicsBeginImageContextWithOptions(*&a2, 0, 0.0);
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v5 = [(UIImage *)ImageFromCurrentImageContext CGImage];
+  cGImage = [(UIImage *)ImageFromCurrentImageContext CGImage];
 
-  return [a1 initWithCGImage:v5];
+  return [self initWithCGImage:cGImage];
 }
 
 + (UIImage)pcxImageWithSize:()PCXImageAdditions flipped:drawingHandler:
 {
-  UIGraphicsBeginImageContextWithOptions(*&a1, 0, 0.0);
+  UIGraphicsBeginImageContextWithOptions(*&self, 0, 0.0);
   if (!a6)
   {
     goto LABEL_9;
@@ -54,7 +54,7 @@
 
   v12 = 1;
 LABEL_7:
-  (*(a6 + 16))(a6, 0.0, 0.0, a1, a2);
+  (*(a6 + 16))(a6, 0.0, 0.0, self, a2);
   if ((v12 & 1) == 0)
   {
     CGContextRestoreGState(v11);
@@ -75,7 +75,7 @@ LABEL_9:
 
   v4 = DeviceRGB_result;
 
-  return [a1 pcxImageWithAlpha:v4 colorSpace:a2];
+  return [self pcxImageWithAlpha:v4 colorSpace:a2];
 }
 
 - (uint64_t)pcxImageWithAlpha:()PCXImageAdditions colorSpace:
@@ -90,9 +90,9 @@ LABEL_9:
     v7 = a2;
   }
 
-  v8 = [a1 CGImage];
-  Width = CGImageGetWidth(v8);
-  Height = CGImageGetHeight(v8);
+  cGImage = [self CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v11 = malloc_type_malloc(4 * Width * Height, 0x5651D9EuLL);
   if (!v11)
   {
@@ -113,14 +113,14 @@ LABEL_9:
     v21.origin.y = 0.0;
     v21.size.width = Width;
     v21.size.height = Height;
-    CGContextDrawImage(v14, v21, v8);
+    CGContextDrawImage(v14, v21, cGImage);
     Image = CGBitmapContextCreateImage(v14);
     if (Image)
     {
       v16 = Image;
       v17 = MEMORY[0x277D755B8];
-      [a1 scale];
-      v19 = [v17 imageWithCGImage:v16 scale:objc_msgSend(a1 orientation:{"imageOrientation"), v18}];
+      [self scale];
+      v19 = [v17 imageWithCGImage:v16 scale:objc_msgSend(self orientation:{"imageOrientation"), v18}];
       CGImageRelease(v16);
     }
 

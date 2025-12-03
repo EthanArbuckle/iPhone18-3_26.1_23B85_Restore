@@ -1,6 +1,6 @@
 @interface BFFLinkHandler
 - (BFFLinkHandler)init;
-- (void)buttonPressed:(id)a3;
+- (void)buttonPressed:(id)pressed;
 @end
 
 @implementation BFFLinkHandler
@@ -18,8 +18,8 @@
   button = v2->_button;
   v2->_button = v5;
 
-  v7 = [(UIButton *)v2->_button titleLabel];
-  [v7 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [(UIButton *)v2->_button titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
   if ([(BuddyFeatureFlags *)v2->_featureFlags isSolariumEnabled])
   {
     v8 = 4;
@@ -30,22 +30,22 @@
     v8 = 1;
   }
 
-  [v7 setTextAlignment:v8];
-  [v7 setNumberOfLines:0];
+  [titleLabel setTextAlignment:v8];
+  [titleLabel setNumberOfLines:0];
   [(UIButton *)v2->_button setExclusiveTouch:1];
   [(UIButton *)v2->_button addTarget:v2 action:sel_buttonPressed_ forControlEvents:64];
 
   return v2;
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = [(BFFLinkHandler *)self handler];
+  handler = [(BFFLinkHandler *)self handler];
 
-  if (v4)
+  if (handler)
   {
-    v5 = [(BFFLinkHandler *)self handler];
-    v5[2]();
+    handler2 = [(BFFLinkHandler *)self handler];
+    handler2[2]();
   }
 }
 

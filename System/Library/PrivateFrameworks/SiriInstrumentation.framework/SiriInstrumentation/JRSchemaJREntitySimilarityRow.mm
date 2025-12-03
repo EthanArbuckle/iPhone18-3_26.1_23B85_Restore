@@ -1,26 +1,26 @@
 @interface JRSchemaJREntitySimilarityRow
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJREntitySimilarityRow)initWithDictionary:(id)a3;
-- (JRSchemaJREntitySimilarityRow)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJREntitySimilarityRow)initWithDictionary:(id)dictionary;
+- (JRSchemaJREntitySimilarityRow)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJREntitySimilarityRow
 
-- (JRSchemaJREntitySimilarityRow)initWithDictionary:(id)a3
+- (JRSchemaJREntitySimilarityRow)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = JRSchemaJREntitySimilarityRow;
   v5 = [(JRSchemaJREntitySimilarityRow *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"candidateA"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"candidateA"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(JRSchemaJREntitySimilarityRow *)v5 setCandidateA:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"candidateB"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"candidateB"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(JRSchemaJREntitySimilarityRow *)v5 setCandidateB:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"similarityScore"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"similarityScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (JRSchemaJREntitySimilarityRow)initWithJSON:(id)a3
+- (JRSchemaJREntitySimilarityRow)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJREntitySimilarityRow *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJREntitySimilarityRow *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJREntitySimilarityRow *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,36 +86,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_candidateA)
   {
-    v4 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    candidateA = [(JRSchemaJREntitySimilarityRow *)self candidateA];
+    dictionaryRepresentation = [candidateA dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"candidateA"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"candidateA"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"candidateA"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"candidateA"];
     }
   }
 
   if (self->_candidateB)
   {
-    v7 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    candidateB = [(JRSchemaJREntitySimilarityRow *)self candidateB];
+    dictionaryRepresentation2 = [candidateB dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"candidateB"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"candidateB"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"candidateB"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"candidateB"];
     }
   }
 
@@ -124,12 +124,12 @@
     v10 = MEMORY[0x1E696AD98];
     [(JRSchemaJREntitySimilarityRow *)self similarityScore];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"similarityScore"];
+    [dictionary setObject:v11 forKeyedSubscript:@"similarityScore"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -177,28 +177,28 @@
   return v4 ^ v3 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
-  v6 = [v4 candidateA];
-  if ((v5 != 0) == (v6 == 0))
+  candidateA = [(JRSchemaJREntitySimilarityRow *)self candidateA];
+  candidateA2 = [equalCopy candidateA];
+  if ((candidateA != 0) == (candidateA2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
-  if (v7)
+  candidateA3 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
+  if (candidateA3)
   {
-    v8 = v7;
-    v9 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
-    v10 = [v4 candidateA];
-    v11 = [v9 isEqual:v10];
+    v8 = candidateA3;
+    candidateA4 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
+    candidateA5 = [equalCopy candidateA];
+    v11 = [candidateA4 isEqual:candidateA5];
 
     if (!v11)
     {
@@ -210,22 +210,22 @@
   {
   }
 
-  v5 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
-  v6 = [v4 candidateB];
-  if ((v5 != 0) == (v6 == 0))
+  candidateA = [(JRSchemaJREntitySimilarityRow *)self candidateB];
+  candidateA2 = [equalCopy candidateB];
+  if ((candidateA != 0) == (candidateA2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
-  if (v12)
+  candidateB = [(JRSchemaJREntitySimilarityRow *)self candidateB];
+  if (candidateB)
   {
-    v13 = v12;
-    v14 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
-    v15 = [v4 candidateB];
-    v16 = [v14 isEqual:v15];
+    v13 = candidateB;
+    candidateB2 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
+    candidateB3 = [equalCopy candidateB];
+    v16 = [candidateB2 isEqual:candidateB3];
 
     if (!v16)
     {
@@ -237,9 +237,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (similarityScore = self->_similarityScore, [v4 similarityScore], similarityScore == v20))
+    if ((*&self->_has & 1) == 0 || (similarityScore = self->_similarityScore, [equalCopy similarityScore], similarityScore == v20))
     {
       v17 = 1;
       goto LABEL_13;
@@ -253,22 +253,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
+  toCopy = to;
+  candidateA = [(JRSchemaJREntitySimilarityRow *)self candidateA];
 
-  if (v4)
+  if (candidateA)
   {
-    v5 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
+    candidateA2 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
+  candidateB = [(JRSchemaJREntitySimilarityRow *)self candidateB];
 
-  if (v6)
+  if (candidateB)
   {
-    v7 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
+    candidateB2 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
     PBDataWriterWriteSubmessage();
   }
 
@@ -278,26 +278,26 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = JRSchemaJREntitySimilarityRow;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(JRSchemaJREntitySimilarityRow *)self candidateA];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  candidateA = [(JRSchemaJREntitySimilarityRow *)self candidateA];
+  v7 = [candidateA applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(JRSchemaJREntitySimilarityRow *)self deleteCandidateA];
   }
 
-  v9 = [(JRSchemaJREntitySimilarityRow *)self candidateB];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  candidateB = [(JRSchemaJREntitySimilarityRow *)self candidateB];
+  v10 = [candidateB applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(JRSchemaJREntitySimilarityRow *)self deleteCandidateB];
   }

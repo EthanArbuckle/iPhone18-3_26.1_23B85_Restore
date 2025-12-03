@@ -1,8 +1,8 @@
 @interface PHAssociatedObjectsEntry
 - (PHAssociatedObjectsEntry)init;
-- (id)associatedObjectForKey:(uint64_t)a1;
-- (id)setAssociatedObjectIfNotSet:(void *)a3 forKey:;
-- (void)setAssociatedObject:(void *)a3 forKey:;
+- (id)associatedObjectForKey:(uint64_t)key;
+- (id)setAssociatedObjectIfNotSet:(void *)set forKey:;
+- (void)setAssociatedObject:(void *)object forKey:;
 @end
 
 @implementation PHAssociatedObjectsEntry
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (id)associatedObjectForKey:(uint64_t)a1
+- (id)associatedObjectForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 8));
-    v4 = [*(a1 + 16) objectForKeyedSubscript:v3];
+    os_unfair_lock_lock((key + 8));
+    v4 = [*(key + 16) objectForKeyedSubscript:v3];
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((key + 8));
   }
 
   else
@@ -45,34 +45,34 @@
   return v4;
 }
 
-- (void)setAssociatedObject:(void *)a3 forKey:
+- (void)setAssociatedObject:(void *)object forKey:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    objectCopy = object;
     v6 = a2;
-    os_unfair_lock_lock((a1 + 8));
-    [*(a1 + 16) setObject:v6 forKeyedSubscript:v5];
+    os_unfair_lock_lock((self + 8));
+    [*(self + 16) setObject:v6 forKeyedSubscript:objectCopy];
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 }
 
-- (id)setAssociatedObjectIfNotSet:(void *)a3 forKey:
+- (id)setAssociatedObjectIfNotSet:(void *)set forKey:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  setCopy = set;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v7 = [*(a1 + 16) objectForKeyedSubscript:v6];
+    os_unfair_lock_lock((self + 8));
+    v7 = [*(self + 16) objectForKeyedSubscript:setCopy];
     if (!v7)
     {
-      [*(a1 + 16) setObject:v5 forKeyedSubscript:v6];
+      [*(self + 16) setObject:v5 forKeyedSubscript:setCopy];
       v7 = v5;
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 
   else

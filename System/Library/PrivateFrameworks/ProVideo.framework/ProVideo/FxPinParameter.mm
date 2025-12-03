@@ -1,7 +1,7 @@
 @interface FxPinParameter
 - (FxPinParameter)init;
 - (void)dealloc;
-- (void)setDefaultValue:(id)a3;
+- (void)setDefaultValue:(id)value;
 @end
 
 @implementation FxPinParameter
@@ -28,14 +28,14 @@
   [(FxPin *)&v9 dealloc];
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   defaultValue = self->defaultValue;
   if (defaultValue)
   {
   }
 
-  self->defaultValue = a3;
+  self->defaultValue = value;
 }
 
 @end

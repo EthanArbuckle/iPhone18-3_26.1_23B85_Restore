@@ -1,17 +1,17 @@
 @interface BKHIDEventRecognizerEngine
 - (BKHIDEventRecognizerEngine)init;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (void)addRecognizer:(id)a3 recognitionBlock:(id)a4;
-- (void)removeRecognizer:(id)a3;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (void)addRecognizer:(id)recognizer recognitionBlock:(id)block;
+- (void)removeRecognizer:(id)recognizer;
 @end
 
 @implementation BKHIDEventRecognizerEngine
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = *a3;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v10 = *event;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -60,11 +60,11 @@ void __61__BKHIDEventRecognizerEngine_processEvent_sender_dispatcher___block_inv
   }
 }
 
-- (void)removeRecognizer:(id)a3
+- (void)removeRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableArray *)self->_recognizers indexOfObject:v4];
+  v5 = [(NSMutableArray *)self->_recognizers indexOfObject:recognizerCopy];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -75,13 +75,13 @@ void __61__BKHIDEventRecognizerEngine_processEvent_sender_dispatcher___block_inv
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addRecognizer:(id)a3 recognitionBlock:(id)a4
+- (void)addRecognizer:(id)recognizer recognitionBlock:(id)block
 {
-  v17 = a3;
-  v7 = a4;
-  if (v17)
+  recognizerCopy = recognizer;
+  blockCopy = block;
+  if (recognizerCopy)
   {
-    if (v7)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -89,17 +89,17 @@ void __61__BKHIDEventRecognizerEngine_processEvent_sender_dispatcher___block_inv
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"BKHIDEventRecognizerEngine.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"recognizer != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKHIDEventRecognizerEngine.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"recognizer != nil"}];
 
-    if (v7)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"BKHIDEventRecognizerEngine.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BKHIDEventRecognizerEngine.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
 
 LABEL_3:
   os_unfair_lock_lock(&self->_lock);
@@ -117,9 +117,9 @@ LABEL_3:
     recognizers = self->_recognizers;
   }
 
-  [(NSMutableArray *)recognizers addObject:v17];
+  [(NSMutableArray *)recognizers addObject:recognizerCopy];
   v13 = self->_blocks;
-  v14 = MEMORY[0x223DF7D60](v7);
+  v14 = MEMORY[0x223DF7D60](blockCopy);
   [(NSMutableArray *)v13 addObject:v14];
 
   os_unfair_lock_unlock(&self->_lock);

@@ -1,25 +1,25 @@
 @interface MediaSocialAuthenticationCoordinator
-- (MediaSocialAuthenticationCoordinator)initWithDispatchQueue:(id)a3;
+- (MediaSocialAuthenticationCoordinator)initWithDispatchQueue:(id)queue;
 - (MediaSocialAuthenticationDelegate)delegate;
-- (id)_enqueueOperationIfNecessaryWithAccountIdentifier:(id)a3;
-- (id)_newAuthenticateOperationWithAccountIdentifier:(id)a3;
-- (void)_finishResponse:(id)a3;
-- (void)authenticateForPostWithIdentifier:(int64_t)a3 accountIdentifier:(id)a4;
-- (void)authenticateForUploadWithIdentifier:(int64_t)a3 accountIdentifier:(id)a4;
+- (id)_enqueueOperationIfNecessaryWithAccountIdentifier:(id)identifier;
+- (id)_newAuthenticateOperationWithAccountIdentifier:(id)identifier;
+- (void)_finishResponse:(id)response;
+- (void)authenticateForPostWithIdentifier:(int64_t)identifier accountIdentifier:(id)accountIdentifier;
+- (void)authenticateForUploadWithIdentifier:(int64_t)identifier accountIdentifier:(id)accountIdentifier;
 @end
 
 @implementation MediaSocialAuthenticationCoordinator
 
-- (MediaSocialAuthenticationCoordinator)initWithDispatchQueue:(id)a3
+- (MediaSocialAuthenticationCoordinator)initWithDispatchQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = MediaSocialAuthenticationCoordinator;
   v6 = [(MediaSocialAuthenticationCoordinator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
     v8 = objc_alloc_init(ISOperationQueue);
     operationQueue = v7->_operationQueue;
     v7->_operationQueue = v8;
@@ -31,21 +31,21 @@
   return v7;
 }
 
-- (void)authenticateForPostWithIdentifier:(int64_t)a3 accountIdentifier:(id)a4
+- (void)authenticateForPostWithIdentifier:(int64_t)identifier accountIdentifier:(id)accountIdentifier
 {
-  v5 = [(MediaSocialAuthenticationCoordinator *)self _enqueueOperationIfNecessaryWithAccountIdentifier:a4];
-  [v5 addPostIdentifier:a3];
+  v5 = [(MediaSocialAuthenticationCoordinator *)self _enqueueOperationIfNecessaryWithAccountIdentifier:accountIdentifier];
+  [v5 addPostIdentifier:identifier];
 }
 
-- (void)authenticateForUploadWithIdentifier:(int64_t)a3 accountIdentifier:(id)a4
+- (void)authenticateForUploadWithIdentifier:(int64_t)identifier accountIdentifier:(id)accountIdentifier
 {
-  v5 = [(MediaSocialAuthenticationCoordinator *)self _enqueueOperationIfNecessaryWithAccountIdentifier:a4];
-  [v5 addUploadIdentifier:a3];
+  v5 = [(MediaSocialAuthenticationCoordinator *)self _enqueueOperationIfNecessaryWithAccountIdentifier:accountIdentifier];
+  [v5 addUploadIdentifier:identifier];
 }
 
-- (id)_enqueueOperationIfNecessaryWithAccountIdentifier:(id)a3
+- (id)_enqueueOperationIfNecessaryWithAccountIdentifier:(id)identifier
 {
-  v20 = a3;
+  identifierCopy = identifier;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -57,7 +57,7 @@
 
 LABEL_13:
     v14 = objc_alloc_init(MediaSocialAuthenticationResponse);
-    [(MediaSocialAuthenticationResponse *)v14 setAccountIdentifier:v20];
+    [(MediaSocialAuthenticationResponse *)v14 setAccountIdentifier:identifierCopy];
     pendingResponses = self->_pendingResponses;
     if (!pendingResponses)
     {
@@ -68,8 +68,8 @@ LABEL_13:
       pendingResponses = self->_pendingResponses;
     }
 
-    [(NSMutableArray *)pendingResponses addObject:v14, v20];
-    v18 = [(MediaSocialAuthenticationCoordinator *)self _newAuthenticateOperationWithAccountIdentifier:v20];
+    [(NSMutableArray *)pendingResponses addObject:v14, identifierCopy];
+    v18 = [(MediaSocialAuthenticationCoordinator *)self _newAuthenticateOperationWithAccountIdentifier:identifierCopy];
     objc_initWeak(&location, v18);
     objc_initWeak(&from, self);
     v21[0] = _NSConcreteStackBlock;
@@ -103,9 +103,9 @@ LABEL_13:
       }
 
       v9 = *(*(&v27 + 1) + 8 * i);
-      v10 = [v9 accountIdentifier];
-      v11 = [v9 accountIdentifier];
-      v12 = [v10 isEqual:v11];
+      accountIdentifier = [v9 accountIdentifier];
+      accountIdentifier2 = [v9 accountIdentifier];
+      v12 = [accountIdentifier isEqual:accountIdentifier2];
 
       if (v12)
       {
@@ -130,9 +130,9 @@ LABEL_16:
   return v6;
 }
 
-- (void)_finishResponse:(id)a3
+- (void)_finishResponse:(id)response
 {
-  v6 = a3;
+  responseCopy = response;
   [(NSMutableArray *)self->_pendingResponses removeObject:?];
   if (![(NSMutableArray *)self->_pendingResponses count])
   {
@@ -140,29 +140,29 @@ LABEL_16:
     self->_pendingResponses = 0;
   }
 
-  v5 = [(MediaSocialAuthenticationCoordinator *)self delegate];
+  delegate = [(MediaSocialAuthenticationCoordinator *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 authenticationCoordinator:self didFinishAuthenticationWithResponse:v6];
+    [delegate authenticationCoordinator:self didFinishAuthenticationWithResponse:responseCopy];
   }
 }
 
-- (id)_newAuthenticateOperationWithAccountIdentifier:(id)a3
+- (id)_newAuthenticateOperationWithAccountIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[SSMutableAuthenticationContext alloc] initWithAccountIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[SSMutableAuthenticationContext alloc] initWithAccountIdentifier:identifierCopy];
   [v4 setCanCreateNewAccount:0];
   [v4 setCanSetActiveAccount:0];
   [v4 setPromptStyle:1];
   v5 = +[SSAccountStore defaultStore];
-  v6 = [v5 accountWithUniqueIdentifier:v3];
+  v6 = [v5 accountWithUniqueIdentifier:identifierCopy];
 
-  v7 = [v6 accountName];
-  if ([v7 length])
+  accountName = [v6 accountName];
+  if ([accountName length])
   {
     v8 = [NSBundle bundleWithIdentifier:@"com.apple.storeservices"];
     v9 = [v8 localizedStringForKey:@"MEDIA_SOCIAL_ENTER_PASSWORD_FORMAT_%@" value:&stru_10033CC30 table:@"MediaSocial"];
-    v10 = [NSString stringWithFormat:v9, v7];
+    v10 = [NSString stringWithFormat:v9, accountName];
     [v4 setReasonDescription:v10];
   }
 

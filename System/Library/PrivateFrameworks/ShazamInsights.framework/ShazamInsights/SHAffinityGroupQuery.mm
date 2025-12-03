@@ -1,47 +1,47 @@
 @interface SHAffinityGroupQuery
-+ (void)affinityGroupsForLocation:(id)a3 atDate:(id)a4 completionHandler:(id)a5;
-+ (void)affinityGroupsForLocation:(id)a3 atDate:(id)a4 configuration:(id)a5 completionHandler:(id)a6;
++ (void)affinityGroupsForLocation:(id)location atDate:(id)date completionHandler:(id)handler;
++ (void)affinityGroupsForLocation:(id)location atDate:(id)date configuration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation SHAffinityGroupQuery
 
-+ (void)affinityGroupsForLocation:(id)a3 atDate:(id)a4 completionHandler:(id)a5
++ (void)affinityGroupsForLocation:(id)location atDate:(id)date completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  dateCopy = date;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__SHAffinityGroupQuery_affinityGroupsForLocation_atDate_completionHandler___block_invoke;
   v14[3] = &unk_279BBEE98;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v18 = a1;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = locationCopy;
+  v16 = dateCopy;
+  v17 = handlerCopy;
+  selfCopy = self;
+  v11 = handlerCopy;
+  v12 = dateCopy;
+  v13 = locationCopy;
   [SHInsightsConfiguration fetchSharedInstanceWithCompletion:v14];
 }
 
-+ (void)affinityGroupsForLocation:(id)a3 atDate:(id)a4 configuration:(id)a5 completionHandler:(id)a6
++ (void)affinityGroupsForLocation:(id)location atDate:(id)date configuration:(id)configuration completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  locationCopy = location;
+  dateCopy = date;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __89__SHAffinityGroupQuery_affinityGroupsForLocation_atDate_configuration_completionHandler___block_invoke;
   v17[3] = &unk_279BBEF10;
-  v18 = v11;
-  v19 = v10;
-  v20 = v9;
-  v21 = v12;
-  v13 = v9;
-  v14 = v10;
-  v15 = v11;
-  v16 = v12;
+  v18 = configurationCopy;
+  v19 = dateCopy;
+  v20 = locationCopy;
+  v21 = handlerCopy;
+  v13 = locationCopy;
+  v14 = dateCopy;
+  v15 = configurationCopy;
+  v16 = handlerCopy;
   [v15 geoHashLengthsWithCompletionHandler:v17];
 }
 

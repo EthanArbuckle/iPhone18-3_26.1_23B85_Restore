@@ -1,27 +1,27 @@
 @interface TPSAltAccountPairingValidation
-+ (id)deviceSelectorBlockForMatchingType:(int64_t)a3;
-- (void)validateWithCompletion:(id)a3;
++ (id)deviceSelectorBlockForMatchingType:(int64_t)type;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSAltAccountPairingValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSTargetingValidation *)self value];
+  completionCopy = completion;
+  value = [(TPSTargetingValidation *)self value];
   v6 = 0x277D71000uLL;
-  if (v5 && (v7 = v5, [(TPSTargetingValidation *)self value], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, v7, (isKindOfClass & 1) != 0))
+  if (value && (v7 = value, [(TPSTargetingValidation *)self value], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, v7, (isKindOfClass & 1) != 0))
   {
-    v10 = [(TPSTargetingValidation *)self value];
-    v11 = [v10 TPSSafeIntegerForKey:@"matchingType"];
+    value2 = [(TPSTargetingValidation *)self value];
+    v11 = [value2 TPSSafeIntegerForKey:@"matchingType"];
 
-    v12 = [(TPSTargetingValidation *)self value];
-    v13 = [v12 TPSSafeBoolForKey:@"value"];
+    value3 = [(TPSTargetingValidation *)self value];
+    v13 = [value3 TPSSafeBoolForKey:@"value"];
 
-    v14 = [objc_opt_class() deviceSelectorBlockForMatchingType:v11];
-    v15 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v16 = [v15 getAllDevicesWithArchivedAltAccountDevicesMatching:v14];
+    targeting = [objc_opt_class() deviceSelectorBlockForMatchingType:v11];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    v16 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:targeting];
 
     v34 = 0u;
     v35 = 0u;
@@ -32,7 +32,7 @@
     if (v18)
     {
       v19 = v18;
-      v31 = v4;
+      v31 = completionCopy;
       v20 = *v33;
       v21 = *MEMORY[0x277D2BB28];
       while (2)
@@ -45,9 +45,9 @@
           }
 
           v23 = [*(*(&v32 + 1) + 8 * i) valueForProperty:v21];
-          v24 = [v23 BOOLValue];
+          bOOLValue = [v23 BOOLValue];
 
-          if (v13 == v24)
+          if (v13 == bOOLValue)
           {
             v25 = 1;
             goto LABEL_16;
@@ -65,7 +65,7 @@
 
       v25 = 0;
 LABEL_16:
-      v4 = v31;
+      completionCopy = v31;
       v6 = 0x277D71000;
     }
 
@@ -77,42 +77,42 @@ LABEL_16:
 
   else
   {
-    v14 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_INFO))
     {
-      v26 = [(TPSTargetingValidation *)self value];
-      v27 = [(TPSTargetingValidation *)self value];
+      value4 = [(TPSTargetingValidation *)self value];
+      value5 = [(TPSTargetingValidation *)self value];
       *buf = 138412546;
-      v37 = v26;
+      v37 = value4;
       v38 = 2112;
       v39 = objc_opt_class();
       v28 = v39;
-      _os_log_impl(&dword_232D6F000, v14, OS_LOG_TYPE_INFO, "Unexpected value: %@ with class %@.", buf, 0x16u);
+      _os_log_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_INFO, "Unexpected value: %@ with class %@.", buf, 0x16u);
     }
 
     v25 = 0;
   }
 
-  v29 = [*(v6 + 1912) targeting];
-  if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+  targeting2 = [*(v6 + 1912) targeting];
+  if (os_log_type_enabled(targeting2, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v25, v29];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:v25, targeting2];
   }
 
-  v4[2](v4, v25, 0);
+  completionCopy[2](completionCopy, v25, 0);
   v30 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)deviceSelectorBlockForMatchingType:(int64_t)a3
++ (id)deviceSelectorBlockForMatchingType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = [MEMORY[0x277D2BCF8] activeDeviceSelectorBlock];
+    activeDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activeDeviceSelectorBlock];
   }
 
   else
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       [MEMORY[0x277D2BCF8] pairedDevicesSelectorBlock];
     }
@@ -121,10 +121,10 @@ LABEL_16:
     {
       [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
     }
-    v3 = ;
+    activeDeviceSelectorBlock = ;
   }
 
-  return v3;
+  return activeDeviceSelectorBlock;
 }
 
 @end

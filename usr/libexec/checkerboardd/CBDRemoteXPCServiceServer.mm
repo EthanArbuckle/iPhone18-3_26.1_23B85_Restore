@@ -1,19 +1,19 @@
 @interface CBDRemoteXPCServiceServer
-- (CBDRemoteXPCServiceServer)initWithAllowedMessageClasses:(id)a3;
+- (CBDRemoteXPCServiceServer)initWithAllowedMessageClasses:(id)classes;
 - (CBDRemoteXPCServiceServerDelegate)delegate;
-- (void)_dispatchReceivedMessage:(id)a3 event:(id)a4 client:(id)a5;
-- (void)_handleError:(id)a3;
-- (void)_handleEvent:(id)a3;
-- (void)_sendReply:(id)a3 event:(id)a4 client:(id)a5;
+- (void)_dispatchReceivedMessage:(id)message event:(id)event client:(id)client;
+- (void)_handleError:(id)error;
+- (void)_handleEvent:(id)event;
+- (void)_sendReply:(id)reply event:(id)event client:(id)client;
 - (void)invalidate;
 - (void)resume;
 @end
 
 @implementation CBDRemoteXPCServiceServer
 
-- (CBDRemoteXPCServiceServer)initWithAllowedMessageClasses:(id)a3
+- (CBDRemoteXPCServiceServer)initWithAllowedMessageClasses:(id)classes
 {
-  v5 = a3;
+  classesCopy = classes;
   v14.receiver = self;
   v14.super_class = CBDRemoteXPCServiceServer;
   v6 = [(CBDRemoteXPCServiceServer *)&v14 init];
@@ -23,7 +23,7 @@
     listener = v6->_listener;
     v6->_listener = 0;
 
-    objc_storeStrong(&v7->_allowedClasses, a3);
+    objc_storeStrong(&v7->_allowedClasses, classes);
     v9 = dispatch_queue_create("com.apple.checkerboard.easyrider.xpc_listener", 0);
     serviceQueue = v7->_serviceQueue;
     v7->_serviceQueue = v9;
@@ -52,21 +52,21 @@
   v11[3] = &unk_100010460;
   objc_copyWeak(&v12, buf);
   v4 = objc_retainBlock(v11);
-  v5 = [(CBDRemoteXPCServiceServer *)self listener];
+  listener = [(CBDRemoteXPCServiceServer *)self listener];
 
-  if (!v5)
+  if (!listener)
   {
-    v6 = [(CBDRemoteXPCServiceServer *)self serviceQueue];
+    serviceQueue = [(CBDRemoteXPCServiceServer *)self serviceQueue];
     remote_service_listener = xpc_remote_connection_create_remote_service_listener();
     [(CBDRemoteXPCServiceServer *)self setListener:remote_service_listener];
 
-    v8 = [(CBDRemoteXPCServiceServer *)self listener];
+    listener2 = [(CBDRemoteXPCServiceServer *)self listener];
     xpc_remote_connection_set_event_handler();
 
-    v9 = [(CBDRemoteXPCServiceServer *)self listener];
+    listener3 = [(CBDRemoteXPCServiceServer *)self listener];
     xpc_remote_connection_set_local_service_version();
 
-    v10 = [(CBDRemoteXPCServiceServer *)self listener];
+    listener4 = [(CBDRemoteXPCServiceServer *)self listener];
     xpc_remote_connection_activate();
   }
 
@@ -76,20 +76,20 @@
 
 - (void)invalidate
 {
-  v3 = [(CBDRemoteXPCServiceServer *)self listener];
+  listener = [(CBDRemoteXPCServiceServer *)self listener];
 
-  if (v3)
+  if (listener)
   {
 
     [(CBDRemoteXPCServiceServer *)self setListener:0];
   }
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == &_xpc_error_connection_invalid)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy == &_xpc_error_connection_invalid)
   {
     v8 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -97,22 +97,22 @@
       sub_100007200();
     }
 
-    v9 = [(CBDRemoteXPCServiceServer *)self invalidationHandler];
+    invalidationHandler = [(CBDRemoteXPCServiceServer *)self invalidationHandler];
 
-    if (v9)
+    if (invalidationHandler)
     {
-      v10 = [(CBDRemoteXPCServiceServer *)self invalidationHandler];
+      invalidationHandler2 = [(CBDRemoteXPCServiceServer *)self invalidationHandler];
 LABEL_14:
-      v13 = v10;
-      (*(v10 + 16))();
+      v13 = invalidationHandler2;
+      (*(invalidationHandler2 + 16))();
     }
   }
 
   else
   {
-    if (v4 != &_xpc_error_connection_interrupted)
+    if (errorCopy != &_xpc_error_connection_interrupted)
     {
-      v6 = xpc_copy_description(v4);
+      v6 = xpc_copy_description(errorCopy);
       v7 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
@@ -129,11 +129,11 @@ LABEL_14:
       sub_1000071C0();
     }
 
-    v12 = [(CBDRemoteXPCServiceServer *)self interruptionHandler];
+    interruptionHandler = [(CBDRemoteXPCServiceServer *)self interruptionHandler];
 
-    if (v12)
+    if (interruptionHandler)
     {
-      v10 = [(CBDRemoteXPCServiceServer *)self interruptionHandler];
+      invalidationHandler2 = [(CBDRemoteXPCServiceServer *)self interruptionHandler];
       goto LABEL_14;
     }
   }
@@ -141,10 +141,10 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
+  eventCopy = event;
+  v5 = xpc_dictionary_get_remote_connection(eventCopy);
   v6 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -152,37 +152,37 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Attempting to decode XPC object...", buf, 2u);
   }
 
-  v7 = [(CBDRemoteXPCServiceServer *)self allowedClasses];
+  allowedClasses = [(CBDRemoteXPCServiceServer *)self allowedClasses];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100003210;
   v8[3] = &unk_100010488;
   v9 = v5;
-  v10 = self;
-  v11 = v4;
-  [NSKeyedUnarchiver unarchiveObjectFromXPCObject:v11 allowedClasses:v7 completion:v8];
+  selfCopy = self;
+  v11 = eventCopy;
+  [NSKeyedUnarchiver unarchiveObjectFromXPCObject:v11 allowedClasses:allowedClasses completion:v8];
 }
 
-- (void)_dispatchReceivedMessage:(id)a3 event:(id)a4 client:(id)a5
+- (void)_dispatchReceivedMessage:(id)message event:(id)event client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CBDRemoteXPCServiceServer *)self delegate];
+  messageCopy = message;
+  eventCopy = event;
+  clientCopy = client;
+  delegate = [(CBDRemoteXPCServiceServer *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(CBDRemoteXPCServiceServer *)self messageQueue];
+    messageQueue = [(CBDRemoteXPCServiceServer *)self messageQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100003494;
     v15[3] = &unk_1000104D8;
-    v16 = v8;
-    v17 = self;
-    v18 = v9;
-    v19 = v10;
-    dispatch_async(v13, v15);
+    v16 = messageCopy;
+    selfCopy = self;
+    v18 = eventCopy;
+    v19 = clientCopy;
+    dispatch_async(messageQueue, v15);
 
     v14 = v16;
   }
@@ -192,24 +192,24 @@ LABEL_15:
     v14 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_1000072F4(v8, self);
+      sub_1000072F4(messageCopy, self);
     }
   }
 }
 
-- (void)_sendReply:(id)a3 event:(id)a4 client:(id)a5
+- (void)_sendReply:(id)reply event:(id)event client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  reply = xpc_dictionary_create_reply(a4);
-  [NSKeyedArchiver archiveObject:v8 toXPCObject:reply];
+  clientCopy = client;
+  replyCopy = reply;
+  reply = xpc_dictionary_create_reply(event);
+  [NSKeyedArchiver archiveObject:replyCopy toXPCObject:reply];
 
   v10 = xpc_copy_description(reply);
   v11 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = clientCopy;
     v14 = 2080;
     v15 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Sending reply to %@: %s", &v12, 0x16u);

@@ -1,24 +1,24 @@
 @interface XPCFinancialDataPersistentHistoryChange
 - (XPCFinancialDataPersistentHistoryChange)init;
-- (XPCFinancialDataPersistentHistoryChange)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (XPCFinancialDataPersistentHistoryChange)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCFinancialDataPersistentHistoryChange
 
-- (XPCFinancialDataPersistentHistoryChange)initWithCoder:(id)a3
+- (XPCFinancialDataPersistentHistoryChange)initWithCoder:(id)coder
 {
   swift_getObjectType();
-  v4 = sub_1B7207BC0(a3);
+  v4 = sub_1B7207BC0(coder);
   swift_deallocPartialClassInstance();
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B7206190(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B7206190(coderCopy);
 }
 
 - (XPCFinancialDataPersistentHistoryChange)init

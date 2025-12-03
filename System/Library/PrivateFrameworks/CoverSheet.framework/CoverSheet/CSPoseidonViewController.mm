@@ -1,12 +1,12 @@
 @interface CSPoseidonViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (BOOL)hasBiometricAuthenticationCapabilityEnabled;
 - (BOOL)isBiometricLockedOut;
 - (UIView)poseidonView;
-- (void)aggregateAppearance:(id)a3;
+- (void)aggregateAppearance:(id)appearance;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CSPoseidonViewController
@@ -27,145 +27,145 @@
   v13.receiver = self;
   v13.super_class = CSPoseidonViewController;
   [(CSCoverSheetViewControllerBase *)&v13 viewDidLayoutSubviews];
-  v3 = [(CSPoseidonViewController *)self view];
-  [v3 bounds];
+  view = [(CSPoseidonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SBUIPoseidonContainerViewController *)self->_poseidonContainerViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(SBUIPoseidonContainerViewController *)self->_poseidonContainerViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (UIView)poseidonView
 {
-  v2 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-  v3 = [v2 view];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self poseidonContainerViewController];
+  view = [poseidonContainerViewController view];
 
-  return v3;
+  return view;
 }
 
 - (BOOL)isBiometricLockedOut
 {
-  v2 = [(CSPoseidonViewController *)self biometricResource];
-  v3 = [v2 biometricLockoutState] != 0;
+  biometricResource = [(CSPoseidonViewController *)self biometricResource];
+  v3 = [biometricResource biometricLockoutState] != 0;
 
   return v3;
 }
 
 - (BOOL)hasBiometricAuthenticationCapabilityEnabled
 {
-  v2 = [(CSPoseidonViewController *)self biometricResource];
-  v3 = [v2 hasBiometricAuthenticationCapabilityEnabled];
+  biometricResource = [(CSPoseidonViewController *)self biometricResource];
+  hasBiometricAuthenticationCapabilityEnabled = [biometricResource hasBiometricAuthenticationCapabilityEnabled];
 
-  return v3;
+  return hasBiometricAuthenticationCapabilityEnabled;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v19.receiver = self;
   v19.super_class = CSPoseidonViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v19, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v19, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    v5 = 0;
-    if (v6 <= 13)
+    type = [eventCopy type];
+    isConsumable = 0;
+    if (type <= 13)
     {
-      if (v6 > 10)
+      if (type > 10)
       {
-        if (v6 != 11)
+        if (type != 11)
         {
-          if (v6 != 13)
+          if (type != 13)
           {
             goto LABEL_27;
           }
 
-          v11 = [v4 value];
-          v12 = [v11 BOOLValue];
+          value = [eventCopy value];
+          bOOLValue = [value BOOLValue];
 
-          v8 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-          [v8 setAuthenticated:v12];
+          poseidonContainerViewController = [(CSPoseidonViewController *)self poseidonContainerViewController];
+          [poseidonContainerViewController setAuthenticated:bOOLValue];
           goto LABEL_25;
         }
 
-        v7 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-        v8 = v7;
+        poseidonContainerViewController2 = [(CSPoseidonViewController *)self poseidonContainerViewController];
+        poseidonContainerViewController = poseidonContainerViewController2;
         v9 = 0;
         goto LABEL_23;
       }
 
-      if (v6 != 1)
+      if (type != 1)
       {
-        if (v6 != 10)
+        if (type != 10)
         {
           goto LABEL_27;
         }
 
-        v7 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-        v8 = v7;
+        poseidonContainerViewController2 = [(CSPoseidonViewController *)self poseidonContainerViewController];
+        poseidonContainerViewController = poseidonContainerViewController2;
         v9 = 1;
 LABEL_23:
-        [v7 setResignActive:v9];
+        [poseidonContainerViewController2 setResignActive:v9];
         goto LABEL_25;
       }
 
-      v15 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-      v16 = [v15 legibilitySettings];
+      activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+      legibilitySettings = [activeAppearance legibilitySettings];
 
-      v17 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-      [v17 setLegibilitySettings:v16];
+      poseidonContainerViewController3 = [(CSPoseidonViewController *)self poseidonContainerViewController];
+      [poseidonContainerViewController3 setLegibilitySettings:legibilitySettings];
 
 LABEL_26:
-      v5 = 0;
+      isConsumable = 0;
       goto LABEL_27;
     }
 
-    if (v6 > 24)
+    if (type > 24)
     {
-      if (v6 == 25)
+      if (type == 25)
       {
-        v8 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-        [v8 setScreenOn:0];
+        poseidonContainerViewController = [(CSPoseidonViewController *)self poseidonContainerViewController];
+        [poseidonContainerViewController setScreenOn:0];
         goto LABEL_25;
       }
 
-      if (v6 != 36)
+      if (type != 36)
       {
         goto LABEL_27;
       }
 
-      v13 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-      v14 = [v13 isAuthenticated];
+      poseidonContainerViewController4 = [(CSPoseidonViewController *)self poseidonContainerViewController];
+      isAuthenticated = [poseidonContainerViewController4 isAuthenticated];
 
-      if (!v14)
+      if (!isAuthenticated)
       {
         goto LABEL_26;
       }
 
-      v8 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-      [v8 startRestToOpenCoaching:0 withCompletion:0];
+      poseidonContainerViewController = [(CSPoseidonViewController *)self poseidonContainerViewController];
+      [poseidonContainerViewController startRestToOpenCoaching:0 withCompletion:0];
     }
 
     else
     {
-      if (v6 != 14)
+      if (type != 14)
       {
-        if (v6 != 24)
+        if (type != 24)
         {
           goto LABEL_27;
         }
 
-        v10 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-        [v10 setScreenOn:1];
+        poseidonContainerViewController5 = [(CSPoseidonViewController *)self poseidonContainerViewController];
+        [poseidonContainerViewController5 setScreenOn:1];
 
         [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
         goto LABEL_26;
       }
 
-      v8 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-      [v8 setBioLockout:1];
+      poseidonContainerViewController = [(CSPoseidonViewController *)self poseidonContainerViewController];
+      [poseidonContainerViewController setBioLockout:1];
     }
 
 LABEL_25:
@@ -173,66 +173,66 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_27:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = CSPoseidonViewController;
-  [(CSCoverSheetViewControllerBase *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(CSCoverSheetViewControllerBase *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v29.receiver = self;
   v29.super_class = CSPoseidonViewController;
-  [(CSCoverSheetViewControllerBase *)&v29 aggregateAppearance:v4];
-  v5 = [(CSPoseidonViewController *)self poseidonContainerViewController];
-  v6 = [v5 coachingActive];
+  [(CSCoverSheetViewControllerBase *)&v29 aggregateAppearance:appearanceCopy];
+  poseidonContainerViewController = [(CSPoseidonViewController *)self poseidonContainerViewController];
+  coachingActive = [poseidonContainerViewController coachingActive];
 
-  if (v6)
+  if (coachingActive)
   {
     v7 = +[CSComponent footerCallToActionLabel];
     v8 = [v7 priority:60];
-    v9 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-    v10 = [v8 identifier:v9];
+    coverSheetIdentifier = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+    v10 = [v8 identifier:coverSheetIdentifier];
     v11 = [v10 hidden:1];
-    [v4 addComponent:v11];
+    [appearanceCopy addComponent:v11];
 
     v12 = objc_opt_new();
     v13 = [v12 priority:60];
-    v14 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-    v15 = [v13 identifier:v14];
+    coverSheetIdentifier2 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+    v15 = [v13 identifier:coverSheetIdentifier2];
     v16 = [v15 suppressTeachableMomentsAnimation:1];
-    [v4 addComponent:v16];
+    [appearanceCopy addComponent:v16];
 
-    v17 = [(CSPoseidonViewController *)self view];
-    v18 = [v17 window];
-    v19 = [v18 _toWindowOrientation];
+    view = [(CSPoseidonViewController *)self view];
+    window = [view window];
+    _toWindowOrientation = [window _toWindowOrientation];
 
-    if (v19 == 1)
+    if (_toWindowOrientation == 1)
     {
       v20 = objc_opt_new();
       v21 = [v20 priority:60];
-      v22 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-      v23 = [v21 identifier:v22];
+      appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+      v23 = [v21 identifier:appearanceIdentifier];
 
       [v23 setHidden:1];
       [v23 setFakeStatusBar:0];
       [v23 setPriority:60];
-      [v4 addComponent:v23];
+      [appearanceCopy addComponent:v23];
       v24 = +[CSComponent controlCenterGrabber];
       v25 = [v24 priority:60];
-      v26 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-      v27 = [v25 identifier:v26];
+      coverSheetIdentifier3 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+      v27 = [v25 identifier:coverSheetIdentifier3];
       v28 = [v27 hidden:1];
-      [v4 addComponent:v28];
+      [appearanceCopy addComponent:v28];
     }
   }
 }

@@ -1,63 +1,63 @@
 @interface PXWallpaperSmartAlbumDataSource
-+ (BOOL)isAnySmartAlbumAvailableInPhotoLibrary:(id)a3;
-+ (id)suggestionPredicateForSmartAlbumTypes:(unint64_t)a3;
-- (BOOL)shouldIncludeCenterMediaWithPreviewAssets:(id)a3;
++ (BOOL)isAnySmartAlbumAvailableInPhotoLibrary:(id)library;
++ (id)suggestionPredicateForSmartAlbumTypes:(unint64_t)types;
+- (BOOL)shouldIncludeCenterMediaWithPreviewAssets:(id)assets;
 - (PHSuggestion)workQueue_centerSuggestion;
-- (PXWallpaperSmartAlbumDataSource)initWithPhotoLibrary:(id)a3 changeObserver:(id)a4 registerForPhotoLibraryChanges:(BOOL)a5 centerMedia:(id)a6;
+- (PXWallpaperSmartAlbumDataSource)initWithPhotoLibrary:(id)library changeObserver:(id)observer registerForPhotoLibraryChanges:(BOOL)changes centerMedia:(id)media;
 - (id)customPeopleSuggestions;
-- (id)fetchAssetIfNeededForAssetUUID:(id)a3;
-- (id)fetchShuffleSuggestionContainingAsset:(id)a3;
-- (id)fetchSuggestionsForPersonLocalIdentifier:(id)a3;
+- (id)fetchAssetIfNeededForAssetUUID:(id)d;
+- (id)fetchShuffleSuggestionContainingAsset:(id)asset;
+- (id)fetchSuggestionsForPersonLocalIdentifier:(id)identifier;
 - (void)fetchSuggestions;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 - (void)setupPreviewAssets;
 @end
 
 @implementation PXWallpaperSmartAlbumDataSource
 
-- (id)fetchShuffleSuggestionContainingAsset:(id)a3
+- (id)fetchShuffleSuggestionContainingAsset:(id)asset
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPassiveContentDataSourceBase *)self photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  assetCopy = asset;
+  photoLibrary = [(PXPassiveContentDataSourceBase *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v7 = MEMORY[0x1E696AB28];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"state", 4];
   v21[0] = v8;
-  v9 = [MEMORY[0x1E6978AE8] predicateForAllShuffleWallpaperSuggestions];
-  v21[1] = v9;
+  predicateForAllShuffleWallpaperSuggestions = [MEMORY[0x1E6978AE8] predicateForAllShuffleWallpaperSuggestions];
+  v21[1] = predicateForAllShuffleWallpaperSuggestions;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v11 = [v7 andPredicateWithSubpredicates:v10];
-  [v6 setPredicate:v11];
+  [librarySpecificFetchOptions setPredicate:v11];
 
   v12 = MEMORY[0x1E6978650];
-  v20 = v4;
+  v20 = assetCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-  v14 = [v12 fetchAssetCollectionsContainingAssets:v13 withType:8 options:v6];
-  v15 = [v14 firstObject];
+  v14 = [v12 fetchAssetCollectionsContainingAssets:v13 withType:8 options:librarySpecificFetchOptions];
+  firstObject = [v14 firstObject];
 
-  if (!v15)
+  if (!firstObject)
   {
     v16 = PLWallpaperGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = assetCopy;
       _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_ERROR, "[PXWallpaperSmartAlbumDataSource] Cannot find suggestion with asset: %@", buf, 0xCu);
     }
   }
 
-  return v15;
+  return firstObject;
 }
 
-- (id)fetchAssetIfNeededForAssetUUID:(id)a3
+- (id)fetchAssetIfNeededForAssetUUID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPassiveContentDataSourceBase *)self keyAssetBySuggestionUUID];
-  v6 = [v5 allValues];
-  v7 = [v6 copy];
+  dCopy = d;
+  keyAssetBySuggestionUUID = [(PXPassiveContentDataSourceBase *)self keyAssetBySuggestionUUID];
+  allValues = [keyAssetBySuggestionUUID allValues];
+  v7 = [allValues copy];
 
   v26 = 0u;
   v27 = 0u;
@@ -79,12 +79,12 @@
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 uuid];
-        v15 = [v14 isEqualToString:v4];
+        uuid = [v13 uuid];
+        v15 = [uuid isEqualToString:dCopy];
 
         if (v15)
         {
-          v21 = v13;
+          firstObject = v13;
           v22 = v8;
           goto LABEL_14;
         }
@@ -101,42 +101,42 @@
   }
 
   v16 = MEMORY[0x1E6978630];
-  v30 = v4;
+  v30 = dCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-  v18 = [(PXPassiveContentDataSourceBase *)self photoLibrary];
-  v19 = [v18 librarySpecificFetchOptions];
-  v20 = [v16 fetchAssetsWithUUIDs:v17 options:v19];
-  v21 = [v20 firstObject];
+  photoLibrary = [(PXPassiveContentDataSourceBase *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v20 = [v16 fetchAssetsWithUUIDs:v17 options:librarySpecificFetchOptions];
+  firstObject = [v20 firstObject];
 
-  if (!v21)
+  if (!firstObject)
   {
     v22 = PLWallpaperGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v29 = v4;
+      v29 = dCopy;
       _os_log_impl(&dword_1A3C1C000, v22, OS_LOG_TYPE_ERROR, "[PXWallpaperSmartAlbumDataSource] Missing Key Asset for CenterMedia %@", buf, 0xCu);
     }
 
-    v21 = 0;
+    firstObject = 0;
 LABEL_14:
   }
 
-  return v21;
+  return firstObject;
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PXPassiveContentDataSourceBase *)self workQueue];
+  changeCopy = change;
+  workQueue = [(PXPassiveContentDataSourceBase *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__PXWallpaperSmartAlbumDataSource_photoLibraryDidChange___block_invoke;
   v7[3] = &unk_1E774C620;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __57__PXWallpaperSmartAlbumDataSource_photoLibraryDidChange___block_invoke(uint64_t a1)
@@ -192,13 +192,13 @@ LABEL_10:
 - (id)customPeopleSuggestions
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPassiveContentDataSourceBase *)self peopleLocalIdentifiers];
+  peopleLocalIdentifiers = [(PXPassiveContentDataSourceBase *)self peopleLocalIdentifiers];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = v3;
+  v5 = peopleLocalIdentifiers;
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
@@ -214,14 +214,14 @@ LABEL_10:
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
-        v11 = [(PXPassiveContentDataSourceBase *)self personSuggestionsByPersonLocalIdentifier];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        personSuggestionsByPersonLocalIdentifier = [(PXPassiveContentDataSourceBase *)self personSuggestionsByPersonLocalIdentifier];
+        v12 = [personSuggestionsByPersonLocalIdentifier objectForKeyedSubscript:v10];
 
         if ([v12 count])
         {
           v13 = objc_alloc(MEMORY[0x1E695DF70]);
-          v14 = [v12 fetchedObjects];
-          v15 = [v13 initWithArray:v14];
+          fetchedObjects = [v12 fetchedObjects];
+          v15 = [v13 initWithArray:fetchedObjects];
 
           [v4 addObject:v15];
         }
@@ -257,11 +257,11 @@ LABEL_10:
           }
 
           v23 = *(*(&v27 + 1) + 8 * j);
-          v24 = [v23 firstObject];
-          if (v24)
+          firstObject = [v23 firstObject];
+          if (firstObject)
           {
-            [v16 addObject:v24];
-            [v23 removeObject:v24];
+            [v16 addObject:firstObject];
+            [v23 removeObject:firstObject];
           }
 
           if (![v23 count])
@@ -287,39 +287,39 @@ LABEL_10:
 - (PHSuggestion)workQueue_centerSuggestion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPassiveContentDataSourceBase *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(PXPassiveContentDataSourceBase *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(PXWallpaperSmartAlbumDataSource *)self centerMedia];
+  centerMedia = [(PXWallpaperSmartAlbumDataSource *)self centerMedia];
 
-  if (v4)
+  if (centerMedia)
   {
     workQueue_centerSuggestion = self->_workQueue_centerSuggestion;
     if (!workQueue_centerSuggestion)
     {
-      v6 = [(PXPassiveContentDataSourceBase *)self photoLibrary];
-      v7 = [v6 librarySpecificFetchOptions];
+      photoLibrary = [(PXPassiveContentDataSourceBase *)self photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
       v8 = MEMORY[0x1E696AE18];
-      v9 = [(PXWallpaperSmartAlbumDataSource *)self centerMedia];
-      v10 = [v9 suggestionUUID];
-      v11 = [v8 predicateWithFormat:@"%K = %@", @"uuid", v10];
-      [v7 setPredicate:v11];
+      centerMedia2 = [(PXWallpaperSmartAlbumDataSource *)self centerMedia];
+      suggestionUUID = [centerMedia2 suggestionUUID];
+      v11 = [v8 predicateWithFormat:@"%K = %@", @"uuid", suggestionUUID];
+      [librarySpecificFetchOptions setPredicate:v11];
 
-      [v7 setFetchLimit:1];
-      v12 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:v7];
-      v13 = [v12 firstObject];
+      [librarySpecificFetchOptions setFetchLimit:1];
+      v12 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
+      firstObject = [v12 firstObject];
       v14 = self->_workQueue_centerSuggestion;
-      self->_workQueue_centerSuggestion = v13;
+      self->_workQueue_centerSuggestion = firstObject;
 
       if (!self->_workQueue_centerSuggestion)
       {
         v15 = PLWallpaperGetLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v16 = [(PXWallpaperSmartAlbumDataSource *)self centerMedia];
+          centerMedia3 = [(PXWallpaperSmartAlbumDataSource *)self centerMedia];
           *buf = 138412290;
-          v20 = v16;
+          v20 = centerMedia3;
           _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_ERROR, "[PXWallpaperSmartAlbumDataSource] Cannot find suggestion for centerMedia %@", buf, 0xCu);
         }
       }
@@ -338,13 +338,13 @@ LABEL_10:
   return v17;
 }
 
-- (BOOL)shouldIncludeCenterMediaWithPreviewAssets:(id)a3
+- (BOOL)shouldIncludeCenterMediaWithPreviewAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PXWallpaperSmartAlbumDataSource *)self centerMedia];
-  if (v5)
+  assetsCopy = assets;
+  centerMedia = [(PXWallpaperSmartAlbumDataSource *)self centerMedia];
+  if (centerMedia)
   {
-    v5;
+    centerMedia;
     PXExists();
   }
 
@@ -362,13 +362,13 @@ uint64_t __77__PXWallpaperSmartAlbumDataSource_shouldIncludeCenterMediaWithPrevi
 
 - (void)setupPreviewAssets
 {
-  v3 = [(PXPassiveContentDataSourceBase *)self workQueue];
+  workQueue = [(PXPassiveContentDataSourceBase *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__PXWallpaperSmartAlbumDataSource_setupPreviewAssets__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __53__PXWallpaperSmartAlbumDataSource_setupPreviewAssets__block_invoke(uint64_t a1)
@@ -605,11 +605,11 @@ void __53__PXWallpaperSmartAlbumDataSource_setupPreviewAssets__block_invoke_278(
   [v12 setObject:v7 forKeyedSubscript:v13];
 }
 
-- (id)fetchSuggestionsForPersonLocalIdentifier:(id)a3
+- (id)fetchSuggestionsForPersonLocalIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PXWallpaperSmartAlbumDataSource;
-  v3 = [(PXPassiveContentDataSourceBase *)&v6 fetchSuggestionsForPersonLocalIdentifier:a3];
+  v3 = [(PXPassiveContentDataSourceBase *)&v6 fetchSuggestionsForPersonLocalIdentifier:identifier];
   v4 = [MEMORY[0x1E69C15B0] randomizedSuggestionsFromSuggestions:v3 limit:*MEMORY[0x1E69C1728]];
 
   return v4;
@@ -618,8 +618,8 @@ void __53__PXWallpaperSmartAlbumDataSource_setupPreviewAssets__block_invoke_278(
 - (void)fetchSuggestions
 {
   v3 = objc_opt_class();
-  v4 = [(PXPassiveContentDataSourceBase *)self photoLibrary];
-  v14 = [v3 baseSuggestionFetchOptionsForPhotoLibrary:v4];
+  photoLibrary = [(PXPassiveContentDataSourceBase *)self photoLibrary];
+  v14 = [v3 baseSuggestionFetchOptionsForPhotoLibrary:photoLibrary];
 
   v5 = [objc_opt_class() fetchSuggestionsWithSubtype:652 options:v14];
   v6 = *MEMORY[0x1E69C1728];
@@ -639,40 +639,40 @@ void __53__PXWallpaperSmartAlbumDataSource_setupPreviewAssets__block_invoke_278(
   [(PXPassiveContentDataSourceBase *)self setCityscapeSuggestions:v13];
 }
 
-- (PXWallpaperSmartAlbumDataSource)initWithPhotoLibrary:(id)a3 changeObserver:(id)a4 registerForPhotoLibraryChanges:(BOOL)a5 centerMedia:(id)a6
+- (PXWallpaperSmartAlbumDataSource)initWithPhotoLibrary:(id)library changeObserver:(id)observer registerForPhotoLibraryChanges:(BOOL)changes centerMedia:(id)media
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
+  changesCopy = changes;
+  libraryCopy = library;
+  mediaCopy = media;
   v15.receiver = self;
   v15.super_class = PXWallpaperSmartAlbumDataSource;
-  v12 = [(PXPassiveContentDataSourceBase *)&v15 initWithPhotoLibrary:v10 changeObserver:a4];
+  v12 = [(PXPassiveContentDataSourceBase *)&v15 initWithPhotoLibrary:libraryCopy changeObserver:observer];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_centerMedia, a6);
-    if (v7)
+    objc_storeStrong(&v12->_centerMedia, media);
+    if (changesCopy)
     {
-      [v10 registerChangeObserver:v13];
+      [libraryCopy registerChangeObserver:v13];
     }
   }
 
   return v13;
 }
 
-+ (BOOL)isAnySmartAlbumAvailableInPhotoLibrary:(id)a3
++ (BOOL)isAnySmartAlbumAvailableInPhotoLibrary:(id)library
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() baseSuggestionFetchOptionsForPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [objc_opt_class() baseSuggestionFetchOptionsForPhotoLibrary:libraryCopy];
 
   [v4 setFetchLimit:1];
   [v4 setShouldPrefetchCount:1];
   v5 = MEMORY[0x1E696AB28];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"state", 4];
   v12[0] = v6;
-  v7 = [MEMORY[0x1E6978AE8] predicateForAllShuffleWallpaperSuggestions];
-  v12[1] = v7;
+  predicateForAllShuffleWallpaperSuggestions = [MEMORY[0x1E6978AE8] predicateForAllShuffleWallpaperSuggestions];
+  v12[1] = predicateForAllShuffleWallpaperSuggestions;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v9 = [v5 andPredicateWithSubpredicates:v8];
   [v4 setInternalPredicate:v9];
@@ -683,19 +683,19 @@ void __53__PXWallpaperSmartAlbumDataSource_setupPreviewAssets__block_invoke_278(
   return v9;
 }
 
-+ (id)suggestionPredicateForSmartAlbumTypes:(unint64_t)a3
++ (id)suggestionPredicateForSmartAlbumTypes:(unint64_t)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v3)
+  if (typesCopy)
   {
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"subtype", 652];
     [v4 addObject:v8];
 
-    if ((v3 & 2) == 0)
+    if ((typesCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((typesCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -704,7 +704,7 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((typesCopy & 2) == 0)
   {
     goto LABEL_3;
   }
@@ -712,10 +712,10 @@ LABEL_3:
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"subtype", 653];
   [v4 addObject:v9];
 
-  if ((v3 & 4) == 0)
+  if ((typesCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((typesCopy & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -727,7 +727,7 @@ LABEL_11:
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"subtype", 654];
   [v4 addObject:v10];
 
-  if ((v3 & 8) != 0)
+  if ((typesCopy & 8) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"subtype", 655];

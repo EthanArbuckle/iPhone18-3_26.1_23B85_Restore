@@ -1,19 +1,19 @@
 @interface SBUIContinuitySessionAppLaunchEvent
-+ (id)eventWithData:(id)a3 error:(id *)a4;
++ (id)eventWithData:(id)data error:(id *)error;
 - (LSApplicationRecord)lsApplicationRecord;
-- (SBUIContinuitySessionAppLaunchEvent)initWithBundleIdentifier:(id)a3 encodedRemoteAppIdentifier:(id)a4;
-- (SBUIContinuitySessionAppLaunchEvent)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SBUIContinuitySessionAppLaunchEvent)initWithBundleIdentifier:(id)identifier encodedRemoteAppIdentifier:(id)appIdentifier;
+- (SBUIContinuitySessionAppLaunchEvent)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)lsApplicationRecord;
 @end
 
 @implementation SBUIContinuitySessionAppLaunchEvent
 
-- (SBUIContinuitySessionAppLaunchEvent)initWithBundleIdentifier:(id)a3 encodedRemoteAppIdentifier:(id)a4
+- (SBUIContinuitySessionAppLaunchEvent)initWithBundleIdentifier:(id)identifier encodedRemoteAppIdentifier:(id)appIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  if (!(v8 | v9))
+  identifierCopy = identifier;
+  appIdentifierCopy = appIdentifier;
+  if (!(identifierCopy | appIdentifierCopy))
   {
     [SBUIContinuitySessionAppLaunchEvent initWithBundleIdentifier:a2 encodedRemoteAppIdentifier:self];
   }
@@ -24,8 +24,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bundleIdentifier, a3);
-    objc_storeStrong(&v11->_encodedRemoteAppIdentifier, a4);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
+    objc_storeStrong(&v11->_encodedRemoteAppIdentifier, appIdentifier);
   }
 
   return v11;
@@ -84,28 +84,28 @@
   return lsApplicationRecord;
 }
 
-+ (id)eventWithData:(id)a3 error:(id *)a4
++ (id)eventWithData:(id)data error:(id *)error
 {
   v5 = MEMORY[0x1E696ACD0];
-  v6 = a3;
-  v7 = [v5 unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:a4];
+  dataCopy = data;
+  v7 = [v5 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:error];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_encodedRemoteAppIdentifier forKey:@"encodedRemoteAppIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_encodedRemoteAppIdentifier forKey:@"encodedRemoteAppIdentifier"];
 }
 
-- (SBUIContinuitySessionAppLaunchEvent)initWithCoder:(id)a3
+- (SBUIContinuitySessionAppLaunchEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encodedRemoteAppIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encodedRemoteAppIdentifier"];
 
   v7 = [(SBUIContinuitySessionAppLaunchEvent *)self initWithBundleIdentifier:v5 encodedRemoteAppIdentifier:v6];
   return v7;
@@ -121,7 +121,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1A9A79000, a2, OS_LOG_TYPE_ERROR, "Failed to decode encoded remote app identifier: %{public}@", &v2, 0xCu);
 }
 

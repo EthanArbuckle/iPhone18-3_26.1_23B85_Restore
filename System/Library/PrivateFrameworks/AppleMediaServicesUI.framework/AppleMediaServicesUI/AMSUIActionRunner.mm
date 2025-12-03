@@ -1,41 +1,41 @@
 @interface AMSUIActionRunner
-+ (BOOL)canHandle:(id)a3 context:(id)a4;
-+ (id)handle:(id)a3 context:(id)a4;
-+ (void)handle:(NSDictionary *)a3 context:(AMSUIActionContext *)a4 completionHandler:(id)a5;
++ (BOOL)canHandle:(id)handle context:(id)context;
++ (id)handle:(id)handle context:(id)context;
++ (void)handle:(NSDictionary *)handle context:(AMSUIActionContext *)context completionHandler:(id)handler;
 @end
 
 @implementation AMSUIActionRunner
 
-+ (BOOL)canHandle:(id)a3 context:(id)a4
++ (BOOL)canHandle:(id)handle context:(id)context
 {
   v5 = sub_1BB1DD2D8();
   swift_getObjCClassMetadata();
-  v6 = a4;
-  LOBYTE(a4) = static UIActionRunner.canHandle(_:context:)(v5, a4);
+  contextCopy = context;
+  LOBYTE(context) = static UIActionRunner.canHandle(_:context:)(v5, context);
 
-  return a4 & 1;
+  return context & 1;
 }
 
-+ (void)handle:(NSDictionary *)a3 context:(AMSUIActionContext *)a4 completionHandler:(id)a5
++ (void)handle:(NSDictionary *)handle context:(AMSUIActionContext *)context completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = handle;
+  v9[3] = context;
   v9[4] = v8;
-  v9[5] = a1;
-  v10 = a3;
-  v11 = a4;
+  v9[5] = self;
+  handleCopy = handle;
+  contextCopy = context;
 
   sub_1BB1C9020(&unk_1BB1F9C90, v9);
 }
 
-+ (id)handle:(id)a3 context:(id)a4
++ (id)handle:(id)handle context:(id)context
 {
   v5 = sub_1BB1DD2D8();
   swift_getObjCClassMetadata();
-  v6 = a4;
-  v7 = static UIActionRunner.handle(_:context:)(v5, a4);
+  contextCopy = context;
+  v7 = static UIActionRunner.handle(_:context:)(v5, context);
 
   return v7;
 }

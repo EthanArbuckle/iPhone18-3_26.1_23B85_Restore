@@ -1,10 +1,10 @@
 @interface HKMHNotification
 + (id)allNotificationCategories;
 + (id)assessmentsNotificationCategories;
-+ (id)notificationCategoryForString:(id)a3;
++ (id)notificationCategoryForString:(id)string;
 + (id)stateOfMindNotificationCategories;
 - (HKMHNotification)init;
-- (HKMHNotification)initWithCategory:(id)a3;
+- (HKMHNotification)initWithCategory:(id)category;
 @end
 
 @implementation HKMHNotification
@@ -19,16 +19,16 @@
   return 0;
 }
 
-- (HKMHNotification)initWithCategory:(id)a3
+- (HKMHNotification)initWithCategory:(id)category
 {
-  v5 = a3;
+  categoryCopy = category;
   v9.receiver = self;
   v9.super_class = HKMHNotification;
   v6 = [(HKMHNotification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_category, a3);
+    objc_storeStrong(&v6->_category, category);
   }
 
   return v7;
@@ -36,9 +36,9 @@
 
 + (id)allNotificationCategories
 {
-  v3 = [a1 stateOfMindNotificationCategories];
-  v4 = [a1 assessmentsNotificationCategories];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  stateOfMindNotificationCategories = [self stateOfMindNotificationCategories];
+  assessmentsNotificationCategories = [self assessmentsNotificationCategories];
+  v5 = [stateOfMindNotificationCategories arrayByAddingObjectsFromArray:assessmentsNotificationCategories];
 
   return v5;
 }
@@ -65,16 +65,16 @@
   return v2;
 }
 
-+ (id)notificationCategoryForString:(id)a3
++ (id)notificationCategoryForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[HKMHNotification allNotificationCategories];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__HKMHNotification_notificationCategoryForString___block_invoke;
   v8[3] = &unk_2798A9930;
-  v9 = v3;
-  v5 = v3;
+  v9 = stringCopy;
+  v5 = stringCopy;
   v6 = [v4 hk_firstObjectPassingTest:v8];
 
   return v6;

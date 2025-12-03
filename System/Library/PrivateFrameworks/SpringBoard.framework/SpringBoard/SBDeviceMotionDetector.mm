@@ -2,8 +2,8 @@
 - (SBDeviceMotionDetector)init;
 - (SBDeviceMotionVector)gravity;
 - (SBDeviceMotionVector)rotationRate;
-- (id)_initWithGravity:(id)a3 rotationRate:(id)a4;
-- (void)startWithTimeout:(double)a3;
+- (id)_initWithGravity:(id)gravity rotationRate:(id)rate;
+- (void)startWithTimeout:(double)timeout;
 - (void)stop;
 @end
 
@@ -18,10 +18,10 @@
   return v5;
 }
 
-- (id)_initWithGravity:(id)a3 rotationRate:(id)a4
+- (id)_initWithGravity:(id)gravity rotationRate:(id)rate
 {
-  v7 = a3;
-  v8 = a4;
+  gravityCopy = gravity;
+  rateCopy = rate;
   v13.receiver = self;
   v13.super_class = SBDeviceMotionDetector;
   v9 = [(SBDeviceMotionDetector *)&v13 init];
@@ -31,42 +31,42 @@
     motionManager = v9->_motionManager;
     v9->_motionManager = v10;
 
-    objc_storeStrong(&v9->_gravity, a3);
-    objc_storeStrong(&v9->_rotationRate, a4);
+    objc_storeStrong(&v9->_gravity, gravity);
+    objc_storeStrong(&v9->_rotationRate, rate);
   }
 
   return v9;
 }
 
-- (void)startWithTimeout:(double)a3
+- (void)startWithTimeout:(double)timeout
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (!v4->_started)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_started)
   {
-    [(CMMotionManager *)v4->_motionManager startDeviceMotionUpdates];
-    v4->_started = 1;
+    [(CMMotionManager *)selfCopy->_motionManager startDeviceMotionUpdates];
+    selfCopy->_started = 1;
   }
 
-  if (a3 != 0.0)
+  if (timeout != 0.0)
   {
-    [(NSTimer *)v4->_stopTimer invalidate];
-    objc_initWeak(&location, v4);
+    [(NSTimer *)selfCopy->_stopTimer invalidate];
+    objc_initWeak(&location, selfCopy);
     v5 = MEMORY[0x277CBEBB8];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __43__SBDeviceMotionDetector_startWithTimeout___block_invoke;
     v8[3] = &unk_2783AA438;
     objc_copyWeak(&v9, &location);
-    v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v8 block:a3];
-    stopTimer = v4->_stopTimer;
-    v4->_stopTimer = v6;
+    v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v8 block:timeout];
+    stopTimer = selfCopy->_stopTimer;
+    selfCopy->_stopTimer = v6;
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __43__SBDeviceMotionDetector_startWithTimeout___block_invoke(uint64_t a1)
@@ -94,40 +94,40 @@ void __43__SBDeviceMotionDetector_startWithTimeout___block_invoke(uint64_t a1)
 
 - (SBDeviceMotionVector)gravity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CMMotionManager *)v2->_motionManager deviceMotion];
-  [v3 gravity];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceMotion = [(CMMotionManager *)selfCopy->_motionManager deviceMotion];
+  [deviceMotion gravity];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
   v10 = [[SBDeviceMotionVector alloc] initWithX:v5 y:v7 z:v9];
-  gravity = v2->_gravity;
-  v2->_gravity = v10;
+  gravity = selfCopy->_gravity;
+  selfCopy->_gravity = v10;
 
-  objc_sync_exit(v2);
-  v12 = v2->_gravity;
+  objc_sync_exit(selfCopy);
+  v12 = selfCopy->_gravity;
 
   return v12;
 }
 
 - (SBDeviceMotionVector)rotationRate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CMMotionManager *)v2->_motionManager deviceMotion];
-  [v3 rotationRate];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceMotion = [(CMMotionManager *)selfCopy->_motionManager deviceMotion];
+  [deviceMotion rotationRate];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
   v10 = [[SBDeviceMotionVector alloc] initWithX:v5 y:v7 z:v9];
-  rotationRate = v2->_rotationRate;
-  v2->_rotationRate = v10;
+  rotationRate = selfCopy->_rotationRate;
+  selfCopy->_rotationRate = v10;
 
-  objc_sync_exit(v2);
-  v12 = v2->_rotationRate;
+  objc_sync_exit(selfCopy);
+  v12 = selfCopy->_rotationRate;
 
   return v12;
 }

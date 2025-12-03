@@ -1,7 +1,7 @@
 @interface TRIXPCServerContextPromise
 - (TRIXPCServerContextPromise)init;
-- (void)addBlockToExecuteAfterPromiseFullfillment:(id)a3;
-- (void)fullfillWithContext:(id)a3 taskQueue:(id)a4;
+- (void)addBlockToExecuteAfterPromiseFullfillment:(id)fullfillment;
+- (void)fullfillWithContext:(id)context taskQueue:(id)queue;
 - (void)reject;
 @end
 
@@ -22,39 +22,39 @@
 
     [(TRIXPCServerContextPromise *)v2 setServerContext:0];
     [(TRIXPCServerContextPromise *)v2 setTaskQueue:0];
-    v7 = [(TRIXPCServerContextPromise *)v2 fullfillmentQueue];
-    dispatch_suspend(v7);
+    fullfillmentQueue = [(TRIXPCServerContextPromise *)v2 fullfillmentQueue];
+    dispatch_suspend(fullfillmentQueue);
   }
 
   return v2;
 }
 
-- (void)fullfillWithContext:(id)a3 taskQueue:(id)a4
+- (void)fullfillWithContext:(id)context taskQueue:(id)queue
 {
-  v6 = a4;
-  [(TRIXPCServerContextPromise *)self setServerContext:a3];
-  [(TRIXPCServerContextPromise *)self setTaskQueue:v6];
+  queueCopy = queue;
+  [(TRIXPCServerContextPromise *)self setServerContext:context];
+  [(TRIXPCServerContextPromise *)self setTaskQueue:queueCopy];
 
-  v7 = [(TRIXPCServerContextPromise *)self fullfillmentQueue];
-  dispatch_resume(v7);
+  fullfillmentQueue = [(TRIXPCServerContextPromise *)self fullfillmentQueue];
+  dispatch_resume(fullfillmentQueue);
 }
 
 - (void)reject
 {
-  v2 = [(TRIXPCServerContextPromise *)self fullfillmentQueue];
-  dispatch_resume(v2);
+  fullfillmentQueue = [(TRIXPCServerContextPromise *)self fullfillmentQueue];
+  dispatch_resume(fullfillmentQueue);
 }
 
-- (void)addBlockToExecuteAfterPromiseFullfillment:(id)a3
+- (void)addBlockToExecuteAfterPromiseFullfillment:(id)fullfillment
 {
-  v4 = a3;
+  fullfillmentCopy = fullfillment;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __72__TRIXPCServerContextPromise_addBlockToExecuteAfterPromiseFullfillment___block_invoke;
   v11 = &unk_279DDF7C8;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = fullfillmentCopy;
+  v5 = fullfillmentCopy;
   v6 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &v8);
   v7 = [(TRIXPCServerContextPromise *)self fullfillmentQueue:v8];
   dispatch_async(v7, v6);

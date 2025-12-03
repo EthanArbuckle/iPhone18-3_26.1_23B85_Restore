@@ -1,29 +1,29 @@
 @interface PHAssetExportRequest
-+ (BOOL)errorIsLowDiskSpaceRelated:(id)a3;
++ (BOOL)errorIsLowDiskSpaceRelated:(id)related;
 + (id)assetExportLog;
-+ (id)exportRequestForAsset:(id)a3 variants:(id)a4 error:(id *)a5;
-+ (id)variantsForAsset:(id)a3 asUnmodifiedOriginal:(BOOL)a4 error:(id *)a5;
-- (BOOL)reassembleAdjustmentsPropertyListIfNeeded:(id)a3 toOutputDirectory:(id)a4 outputURL:(id *)a5 error:(id *)a6;
++ (id)exportRequestForAsset:(id)asset variants:(id)variants error:(id *)error;
++ (id)variantsForAsset:(id)asset asUnmodifiedOriginal:(BOOL)original error:(id *)error;
+- (BOOL)reassembleAdjustmentsPropertyListIfNeeded:(id)needed toOutputDirectory:(id)directory outputURL:(id *)l error:(id *)error;
 - (NSString)description;
 - (PFMetadata)assetMetadata;
 - (PHAssetExportRequest)init;
-- (PHAssetExportRequest)initWithAsset:(id)a3 variants:(id)a4;
+- (PHAssetExportRequest)initWithAsset:(id)asset variants:(id)variants;
 - (PHAssetExportRequestDelegate)delegate;
-- (id)_generateAnalyticsPayloadWithTimingInfo:(id)a3 preparationOptions:(id)a4;
-- (id)copyFileURLsIfNeeded:(id)a3 toOutputDirectory:(id)a4 options:(id)a5 originalFilenameBase:(id)a6 error:(id *)a7;
+- (id)_generateAnalyticsPayloadWithTimingInfo:(id)info preparationOptions:(id)options;
+- (id)copyFileURLsIfNeeded:(id)needed toOutputDirectory:(id)directory options:(id)options originalFilenameBase:(id)base error:(id *)error;
 - (id)finalizeTotalPreparationDurationTimingInfoDictionary;
-- (id)outputDirectoryFromOptions:(id)a3;
-- (void)bundleResourcesIfNeededForAsset:(id)a3 withFileURLs:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)commitTimingInfoForPreparationStep:(id)a3 fromStartTime:(id)a4;
-- (void)exportWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)handleResultWithFileURLs:(id)a3 cancelled:(BOOL)a4 withError:(id)a5 forAsset:(id)a6 withOptions:(id)a7 progress:(id)a8 processingUnitCount:(int64_t)a9 completionHandler:(id)a10;
-- (void)performCompletionWithFileURLs:(id)a3 preparationOptions:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)preflightExportWithOptions:(id)a3 assetAvailability:(int64_t *)a4 isProcessingRequired:(BOOL *)a5 fileURLs:(id *)a6 info:(id *)a7;
-- (void)processResourcesAtFileURLs:(id)a3 forAsset:(id)a4 withOptions:(id)a5 progress:(id)a6 processingUnitCount:(int64_t)a7 completion:(id)a8;
+- (id)outputDirectoryFromOptions:(id)options;
+- (void)bundleResourcesIfNeededForAsset:(id)asset withFileURLs:(id)ls options:(id)options completion:(id)completion;
+- (void)commitTimingInfoForPreparationStep:(id)step fromStartTime:(id)time;
+- (void)exportWithOptions:(id)options completionHandler:(id)handler;
+- (void)handleResultWithFileURLs:(id)ls cancelled:(BOOL)cancelled withError:(id)error forAsset:(id)asset withOptions:(id)options progress:(id)progress processingUnitCount:(int64_t)count completionHandler:(id)self0;
+- (void)performCompletionWithFileURLs:(id)ls preparationOptions:(id)options error:(id)error completionHandler:(id)handler;
+- (void)preflightExportWithOptions:(id)options assetAvailability:(int64_t *)availability isProcessingRequired:(BOOL *)required fileURLs:(id *)ls info:(id *)info;
+- (void)processResourcesAtFileURLs:(id)ls forAsset:(id)asset withOptions:(id)options progress:(id)progress processingUnitCount:(int64_t)count completion:(id)completion;
 - (void)resetPreparationStepTimingInfos;
-- (void)sendPreparationCompletedEventWithPreparationTimingInfo:(id)a3 forActivityType:(id)a4 preparationOptions:(id)a5 withError:(id)a6 didCancel:(BOOL)a7;
-- (void)setState:(unint64_t)a3;
-- (void)updateSignpostIntervalsChangingFromState:(unint64_t)a3 toState:(unint64_t)a4;
+- (void)sendPreparationCompletedEventWithPreparationTimingInfo:(id)info forActivityType:(id)type preparationOptions:(id)options withError:(id)error didCancel:(BOOL)cancel;
+- (void)setState:(unint64_t)state;
+- (void)updateSignpostIntervalsChangingFromState:(unint64_t)state toState:(unint64_t)toState;
 @end
 
 @implementation PHAssetExportRequest
@@ -35,47 +35,47 @@
   return WeakRetained;
 }
 
-- (id)_generateAnalyticsPayloadWithTimingInfo:(id)a3 preparationOptions:(id)a4
+- (id)_generateAnalyticsPayloadWithTimingInfo:(id)info preparationOptions:(id)options
 {
   v38[6] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v6 = a4;
-  v7 = [v6 treatLivePhotoAsStill];
-  v8 = [v6 shouldStripLocation];
-  v9 = [v6 shouldStripCaption];
-  v10 = [v6 shouldStripAccessibilityDescription];
-  v11 = [v6 includeAllAssetResources];
+  infoCopy = info;
+  optionsCopy = options;
+  treatLivePhotoAsStill = [optionsCopy treatLivePhotoAsStill];
+  shouldStripLocation = [optionsCopy shouldStripLocation];
+  shouldStripCaption = [optionsCopy shouldStripCaption];
+  shouldStripAccessibilityDescription = [optionsCopy shouldStripAccessibilityDescription];
+  includeAllAssetResources = [optionsCopy includeAllAssetResources];
   v12 = MEMORY[0x1E695DF90];
   v37[0] = *MEMORY[0x1E6991E20];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
   v38[0] = v14;
   v37[1] = @"excludeLiveness";
-  v15 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v15 = [MEMORY[0x1E696AD98] numberWithBool:treatLivePhotoAsStill];
   v38[1] = v15;
   v37[2] = @"excludeLocation";
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:shouldStripLocation];
   v38[2] = v16;
   v37[3] = @"excludeCaption";
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:shouldStripCaption];
   v38[3] = v17;
   v37[4] = @"excludeAccessibilityDescription";
-  v18 = [MEMORY[0x1E696AD98] numberWithBool:v10];
+  v18 = [MEMORY[0x1E696AD98] numberWithBool:shouldStripAccessibilityDescription];
   v38[4] = v18;
   v37[5] = @"sendAsOriginals";
-  v19 = [MEMORY[0x1E696AD98] numberWithBool:v11];
+  v19 = [MEMORY[0x1E696AD98] numberWithBool:includeAllAssetResources];
   v38[5] = v19;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:6];
   v21 = [v12 dictionaryWithDictionary:v20];
 
-  v22 = [(PHAssetExportRequest *)self asset];
-  [v21 setObject:v22 forKeyedSubscript:*MEMORY[0x1E6991E18]];
+  asset = [(PHAssetExportRequest *)self asset];
+  [v21 setObject:asset forKeyedSubscript:*MEMORY[0x1E6991E18]];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v23 = v31;
+  v23 = infoCopy;
   v24 = [v23 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v24)
   {
@@ -91,7 +91,7 @@
         }
 
         v28 = *(*(&v32 + 1) + 8 * i);
-        v29 = [v23 objectForKeyedSubscript:{v28, v31}];
+        v29 = [v23 objectForKeyedSubscript:{v28, infoCopy}];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -108,25 +108,25 @@
   return v21;
 }
 
-- (void)sendPreparationCompletedEventWithPreparationTimingInfo:(id)a3 forActivityType:(id)a4 preparationOptions:(id)a5 withError:(id)a6 didCancel:(BOOL)a7
+- (void)sendPreparationCompletedEventWithPreparationTimingInfo:(id)info forActivityType:(id)type preparationOptions:(id)options withError:(id)error didCancel:(BOOL)cancel
 {
-  v7 = a7;
+  cancelCopy = cancel;
   v21 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
-  v14 = [(PHAssetExportRequest *)self _generateAnalyticsPayloadWithTimingInfo:a3 preparationOptions:a5];
-  if ([v12 length])
+  typeCopy = type;
+  errorCopy = error;
+  v14 = [(PHAssetExportRequest *)self _generateAnalyticsPayloadWithTimingInfo:info preparationOptions:options];
+  if ([typeCopy length])
   {
-    [v14 setObject:v12 forKeyedSubscript:@"activityType"];
+    [v14 setObject:typeCopy forKeyedSubscript:@"activityType"];
   }
 
-  if (v13)
+  if (errorCopy)
   {
-    [v14 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6991E28]];
+    [v14 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E6991E28]];
     v15 = @"Failed";
   }
 
-  else if (v7)
+  else if (cancelCopy)
   {
     v15 = @"Canceled";
   }
@@ -146,16 +146,16 @@
   }
 
   v17 = MEMORY[0x1E6991F28];
-  v18 = [(PHAssetExportRequest *)self prepareItemEventCPAnalyticsSignpostId];
-  [v17 endSignpost:v18 forEventName:*MEMORY[0x1E6991C50] withPayload:v14];
+  prepareItemEventCPAnalyticsSignpostId = [(PHAssetExportRequest *)self prepareItemEventCPAnalyticsSignpostId];
+  [v17 endSignpost:prepareItemEventCPAnalyticsSignpostId forEventName:*MEMORY[0x1E6991C50] withPayload:v14];
   [(PHAssetExportRequest *)self setPrepareItemEventCPAnalyticsSignpostId:0];
 }
 
 - (id)finalizeTotalPreparationDurationTimingInfoDictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(PHAssetExportRequest *)self preparationStepTimingInfo];
-  v3 = [v2 mutableCopy];
+  preparationStepTimingInfo = [(PHAssetExportRequest *)self preparationStepTimingInfo];
+  v3 = [preparationStepTimingInfo mutableCopy];
 
   v17 = 0u;
   v18 = 0u;
@@ -222,13 +222,13 @@
   self->_preparationStepTimingInfo = v4;
 }
 
-- (void)commitTimingInfoForPreparationStep:(id)a3 fromStartTime:(id)a4
+- (void)commitTimingInfoForPreparationStep:(id)step fromStartTime:(id)time
 {
-  v21 = a3;
-  v6 = a4;
-  if (v21)
+  stepCopy = step;
+  timeCopy = time;
+  if (stepCopy)
   {
-    if (v6)
+    if (timeCopy)
     {
       goto LABEL_3;
     }
@@ -236,34 +236,34 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PHAssetExportRequest commitTimingInfoForPreparationStep:fromStartTime:]"];
-    [v17 handleFailureInFunction:v18 file:@"PHAssetExportRequest.m" lineNumber:1765 description:{@"Invalid parameter not satisfying: %@", @"preparationStep"}];
+    [currentHandler handleFailureInFunction:v18 file:@"PHAssetExportRequest.m" lineNumber:1765 description:{@"Invalid parameter not satisfying: %@", @"preparationStep"}];
 
-    if (v6)
+    if (timeCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PHAssetExportRequest commitTimingInfoForPreparationStep:fromStartTime:]"];
-  [v19 handleFailureInFunction:v20 file:@"PHAssetExportRequest.m" lineNumber:1766 description:{@"Invalid parameter not satisfying: %@", @"startTime"}];
+  [currentHandler2 handleFailureInFunction:v20 file:@"PHAssetExportRequest.m" lineNumber:1766 description:{@"Invalid parameter not satisfying: %@", @"startTime"}];
 
 LABEL_3:
-  v7 = [(PHAssetExportRequest *)self preparationStepTimingInfo];
+  preparationStepTimingInfo = [(PHAssetExportRequest *)self preparationStepTimingInfo];
 
-  if (!v7)
+  if (!preparationStepTimingInfo)
   {
     [(PHAssetExportRequest *)self resetPreparationStepTimingInfos];
   }
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSinceDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:timeCopy];
   v10 = v9;
 
-  v11 = [(PHAssetExportRequest *)self preparationStepTimingInfo];
-  v12 = [v11 objectForKeyedSubscript:v21];
+  preparationStepTimingInfo2 = [(PHAssetExportRequest *)self preparationStepTimingInfo];
+  v12 = [preparationStepTimingInfo2 objectForKeyedSubscript:stepCopy];
 
   if (v12)
   {
@@ -276,23 +276,23 @@ LABEL_3:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
-  v16 = [(PHAssetExportRequest *)self preparationStepTimingInfo];
-  [v16 setObject:v15 forKeyedSubscript:v21];
+  preparationStepTimingInfo3 = [(PHAssetExportRequest *)self preparationStepTimingInfo];
+  [preparationStepTimingInfo3 setObject:v15 forKeyedSubscript:stepCopy];
 }
 
-- (void)updateSignpostIntervalsChangingFromState:(unint64_t)a3 toState:(unint64_t)a4
+- (void)updateSignpostIntervalsChangingFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = [objc_opt_class() assetExportLog];
-  v8 = [(PHAssetExportRequest *)self signpostId];
-  v9 = [MEMORY[0x1E6991F28] isAllowed];
+  assetExportLog = [objc_opt_class() assetExportLog];
+  signpostId = [(PHAssetExportRequest *)self signpostId];
+  isAllowed = [MEMORY[0x1E6991F28] isAllowed];
   if ([(PHAssetExportRequest *)self shouldSendTimingIntervalsToAnalytics])
   {
-    if (v9)
+    if (isAllowed)
     {
-      v10 = [(PHAssetExportRequest *)self prepareItemEventCPAnalyticsSignpostId];
-      if (a4)
+      prepareItemEventCPAnalyticsSignpostId = [(PHAssetExportRequest *)self prepareItemEventCPAnalyticsSignpostId];
+      if (toState)
       {
-        if (!v10)
+        if (!prepareItemEventCPAnalyticsSignpostId)
         {
           -[PHAssetExportRequest setPrepareItemEventCPAnalyticsSignpostId:](self, "setPrepareItemEventCPAnalyticsSignpostId:", [MEMORY[0x1E6991F28] startSignpost]);
         }
@@ -300,16 +300,16 @@ LABEL_3:
     }
   }
 
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 1uLL:
-        v17 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
-        [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_assetExportPreflight" fromStartTime:v17];
+        preparationStepSignpostIntervalStartTime = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
+        [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_assetExportPreflight" fromStartTime:preparationStepSignpostIntervalStartTime];
 
-        v18 = v7;
-        if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        v18 = assetExportLog;
+        if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_32;
         }
@@ -324,11 +324,11 @@ LABEL_3:
         v14 = "PerformingAssetExportPreflight";
         break;
       case 2uLL:
-        v21 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
-        [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_retrievingFromDisk" fromStartTime:v21];
+        preparationStepSignpostIntervalStartTime2 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
+        [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_retrievingFromDisk" fromStartTime:preparationStepSignpostIntervalStartTime2];
 
-        v22 = v7;
-        if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        v22 = assetExportLog;
+        if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_32;
         }
@@ -343,11 +343,11 @@ LABEL_3:
         v14 = "RetrievingFromDisk";
         break;
       case 3uLL:
-        v11 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
-        [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_downloading" fromStartTime:v11];
+        preparationStepSignpostIntervalStartTime3 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
+        [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_downloading" fromStartTime:preparationStepSignpostIntervalStartTime3];
 
-        v12 = v7;
-        if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        v12 = assetExportLog;
+        if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_32;
         }
@@ -368,13 +368,13 @@ LABEL_3:
     goto LABEL_31;
   }
 
-  if (a3 == 4)
+  if (state == 4)
   {
-    v19 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
-    [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_generatingDeferredResources" fromStartTime:v19];
+    preparationStepSignpostIntervalStartTime4 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
+    [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_generatingDeferredResources" fromStartTime:preparationStepSignpostIntervalStartTime4];
 
-    v20 = v7;
-    if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+    v20 = assetExportLog;
+    if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
     {
       goto LABEL_32;
     }
@@ -390,13 +390,13 @@ LABEL_3:
     goto LABEL_31;
   }
 
-  if (a3 == 5)
+  if (state == 5)
   {
-    v23 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
-    [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_additionalProcessing" fromStartTime:v23];
+    preparationStepSignpostIntervalStartTime5 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
+    [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_additionalProcessing" fromStartTime:preparationStepSignpostIntervalStartTime5];
 
-    v24 = v7;
-    if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+    v24 = assetExportLog;
+    if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
     {
       goto LABEL_32;
     }
@@ -412,16 +412,16 @@ LABEL_3:
     goto LABEL_31;
   }
 
-  if (a3 != 6)
+  if (state != 6)
   {
     goto LABEL_33;
   }
 
-  v15 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
-  [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_bundling" fromStartTime:v15];
+  preparationStepSignpostIntervalStartTime6 = [(PHAssetExportRequest *)self preparationStepSignpostIntervalStartTime];
+  [(PHAssetExportRequest *)self commitTimingInfoForPreparationStep:@"time_bundling" fromStartTime:preparationStepSignpostIntervalStartTime6];
 
-  v16 = v7;
-  if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  v16 = assetExportLog;
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v13 = v16;
     if (os_signpost_enabled(v16))
@@ -429,20 +429,20 @@ LABEL_3:
       *v44 = 0;
       v14 = "Bundling";
 LABEL_31:
-      _os_signpost_emit_with_name_impl(&dword_19C86F000, v13, OS_SIGNPOST_INTERVAL_END, v8, v14, " enableTelemetry=YES ", v44, 2u);
+      _os_signpost_emit_with_name_impl(&dword_19C86F000, v13, OS_SIGNPOST_INTERVAL_END, signpostId, v14, " enableTelemetry=YES ", v44, 2u);
     }
   }
 
 LABEL_32:
 
 LABEL_33:
-  if (a4 <= 2)
+  if (toState <= 2)
   {
-    switch(a4)
+    switch(toState)
     {
       case 0uLL:
-        v34 = v7;
-        if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        v34 = assetExportLog;
+        if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_64;
         }
@@ -460,11 +460,11 @@ LABEL_33:
         v37 = OS_SIGNPOST_EVENT;
         goto LABEL_63;
       case 1uLL:
-        v42 = [MEMORY[0x1E695DF00] date];
-        [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:v42];
+        date = [MEMORY[0x1E695DF00] date];
+        [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:date];
 
-        v43 = v7;
-        if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        v43 = assetExportLog;
+        if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_64;
         }
@@ -480,11 +480,11 @@ LABEL_33:
         v29 = " enableTelemetry=YES ";
         break;
       case 2uLL:
-        v30 = [MEMORY[0x1E695DF00] date];
-        [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:v30];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:date2];
 
-        v31 = v7;
-        if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        v31 = assetExportLog;
+        if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_64;
         }
@@ -507,21 +507,21 @@ LABEL_62:
     v36 = v27;
     v37 = OS_SIGNPOST_INTERVAL_BEGIN;
 LABEL_63:
-    _os_signpost_emit_with_name_impl(&dword_19C86F000, v36, v37, v8, v28, v29, v44, 2u);
+    _os_signpost_emit_with_name_impl(&dword_19C86F000, v36, v37, signpostId, v28, v29, v44, 2u);
 LABEL_64:
 
     goto LABEL_65;
   }
 
-  if (a4 <= 4)
+  if (toState <= 4)
   {
-    if (a4 == 3)
+    if (toState == 3)
     {
-      v38 = [MEMORY[0x1E695DF00] date];
-      [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:v38];
+      date3 = [MEMORY[0x1E695DF00] date];
+      [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:date3];
 
-      v39 = v7;
-      if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+      v39 = assetExportLog;
+      if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_64;
       }
@@ -539,11 +539,11 @@ LABEL_64:
 
     else
     {
-      v25 = [MEMORY[0x1E695DF00] date];
-      [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:v25];
+      date4 = [MEMORY[0x1E695DF00] date];
+      [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:date4];
 
-      v26 = v7;
-      if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+      v26 = assetExportLog;
+      if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_64;
       }
@@ -562,13 +562,13 @@ LABEL_64:
     goto LABEL_62;
   }
 
-  if (a4 == 5)
+  if (toState == 5)
   {
-    v40 = [MEMORY[0x1E695DF00] date];
-    [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:v40];
+    date5 = [MEMORY[0x1E695DF00] date];
+    [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:date5];
 
-    v41 = v7;
-    if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+    v41 = assetExportLog;
+    if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
     {
       goto LABEL_64;
     }
@@ -585,13 +585,13 @@ LABEL_64:
     goto LABEL_62;
   }
 
-  if (a4 == 6)
+  if (toState == 6)
   {
-    v32 = [MEMORY[0x1E695DF00] date];
-    [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:v32];
+    date6 = [MEMORY[0x1E695DF00] date];
+    [(PHAssetExportRequest *)self setPreparationStepSignpostIntervalStartTime:date6];
 
-    v33 = v7;
-    if (v8 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+    v33 = assetExportLog;
+    if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
     {
       goto LABEL_64;
     }
@@ -611,115 +611,115 @@ LABEL_64:
 LABEL_65:
 }
 
-- (void)exportWithOptions:(id)a3 completionHandler:(id)a4
+- (void)exportWithOptions:(id)options completionHandler:(id)handler
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v8 handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:1665 description:{@"Method %s is a responsibility of subclasses of %@", "-[PHAssetExportRequest exportWithOptions:completionHandler:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:1665 description:{@"Method %s is a responsibility of subclasses of %@", "-[PHAssetExportRequest exportWithOptions:completionHandler:]", v7}];
 }
 
-- (void)preflightExportWithOptions:(id)a3 assetAvailability:(int64_t *)a4 isProcessingRequired:(BOOL *)a5 fileURLs:(id *)a6 info:(id *)a7
+- (void)preflightExportWithOptions:(id)options assetAvailability:(int64_t *)availability isProcessingRequired:(BOOL *)required fileURLs:(id *)ls info:(id *)info
 {
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v11 handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:1660 description:{@"Method %s is a responsibility of subclasses of %@", "-[PHAssetExportRequest preflightExportWithOptions:assetAvailability:isProcessingRequired:fileURLs:info:]", v10}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:1660 description:{@"Method %s is a responsibility of subclasses of %@", "-[PHAssetExportRequest preflightExportWithOptions:assetAvailability:isProcessingRequired:fileURLs:info:]", v10}];
 }
 
-- (void)performCompletionWithFileURLs:(id)a3 preparationOptions:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)performCompletionWithFileURLs:(id)ls preparationOptions:(id)options error:(id)error completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!(v11 | v13))
+  lsCopy = ls;
+  optionsCopy = options;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (!(lsCopy | errorCopy))
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:1626 description:{@"Invalid parameter not satisfying: %@", @"fileURLs || error"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:1626 description:{@"Invalid parameter not satisfying: %@", @"fileURLs || error"}];
 LABEL_23:
 
     goto LABEL_4;
   }
 
-  if (v11 && ![v11 count])
+  if (lsCopy && ![lsCopy count])
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:1627 description:{@"Invalid parameter not satisfying: %@", @"!fileURLs || fileURLs.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:1627 description:{@"Invalid parameter not satisfying: %@", @"!fileURLs || fileURLs.count"}];
     goto LABEL_23;
   }
 
 LABEL_4:
   [(PHAssetExportRequest *)self setState:0];
-  v15 = [(PHAssetExportRequest *)self finalizeTotalPreparationDurationTimingInfoDictionary];
+  finalizeTotalPreparationDurationTimingInfoDictionary = [(PHAssetExportRequest *)self finalizeTotalPreparationDurationTimingInfoDictionary];
   v16 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(PHAssetExportRequest *)self asset];
-    v18 = [v17 uuid];
+    asset = [(PHAssetExportRequest *)self asset];
+    uuid = [asset uuid];
     *buf = 138543618;
-    v36 = v18;
+    v36 = uuid;
     v37 = 2114;
-    v38 = v15;
+    v38 = finalizeTotalPreparationDurationTimingInfoDictionary;
     _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_DEFAULT, "[PHAssetExportRequest] Preparation timing for asset %{public}@: %{public}@", buf, 0x16u);
   }
 
-  v19 = [MEMORY[0x1E6991F28] isAllowed];
-  if ([(PHAssetExportRequest *)self shouldSendTimingIntervalsToAnalytics]&& v19)
+  isAllowed = [MEMORY[0x1E6991F28] isAllowed];
+  if ([(PHAssetExportRequest *)self shouldSendTimingIntervalsToAnalytics]&& isAllowed)
   {
-    v20 = [v13 code];
-    v21 = v20 == 1;
-    if (v20 == 1)
+    code = [errorCopy code];
+    v21 = code == 1;
+    if (code == 1)
     {
       v22 = 0;
     }
 
     else
     {
-      v22 = v13;
+      v22 = errorCopy;
     }
 
     v23 = v22;
-    v24 = [(PHAssetExportRequest *)self analyticsActivityType];
-    [(PHAssetExportRequest *)self sendPreparationCompletedEventWithPreparationTimingInfo:v15 forActivityType:v24 preparationOptions:v12 withError:v23 didCancel:v21];
+    analyticsActivityType = [(PHAssetExportRequest *)self analyticsActivityType];
+    [(PHAssetExportRequest *)self sendPreparationCompletedEventWithPreparationTimingInfo:finalizeTotalPreparationDurationTimingInfoDictionary forActivityType:analyticsActivityType preparationOptions:optionsCopy withError:v23 didCancel:v21];
   }
 
   [(PHAssetExportRequest *)self setPreparationStepTimingInfo:0];
-  v14[2](v14, v11, v13);
-  v25 = [v12 customOutputDirectory];
+  handlerCopy[2](handlerCopy, lsCopy, errorCopy);
+  customOutputDirectory = [optionsCopy customOutputDirectory];
 
-  v26 = [(PHAssetExportRequest *)self outputDirectoryFromOptions:v12];
+  v26 = [(PHAssetExportRequest *)self outputDirectoryFromOptions:optionsCopy];
   v27 = 0;
-  if (!v25)
+  if (!customOutputDirectory)
   {
-    v28 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v34 = 0;
-    v29 = [v28 removeItemAtURL:v26 error:&v34];
+    v29 = [defaultManager removeItemAtURL:v26 error:&v34];
     v30 = v34;
     v27 = v30;
     if ((v29 & 1) == 0)
     {
-      v31 = [v30 domain];
-      if ([v31 isEqualToString:*MEMORY[0x1E696A798]])
+      domain = [v30 domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A798]])
       {
       }
 
       else
       {
-        v32 = [v27 code];
+        code2 = [v27 code];
 
-        if (v32 == 2)
+        if (code2 == 2)
         {
           goto LABEL_17;
         }
 
-        v28 = PLPhotoKitGetLog();
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+        defaultManager = PLPhotoKitGetLog();
+        if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v36 = v27;
-          _os_log_impl(&dword_19C86F000, v28, OS_LOG_TYPE_ERROR, "[PHAssetExportRequest] Failed to remove output directory: %@", buf, 0xCu);
+          _os_log_impl(&dword_19C86F000, defaultManager, OS_LOG_TYPE_ERROR, "[PHAssetExportRequest] Failed to remove output directory: %@", buf, 0xCu);
         }
       }
     }
@@ -728,43 +728,43 @@ LABEL_4:
 LABEL_17:
 }
 
-- (id)copyFileURLsIfNeeded:(id)a3 toOutputDirectory:(id)a4 options:(id)a5 originalFilenameBase:(id)a6 error:(id *)a7
+- (id)copyFileURLsIfNeeded:(id)needed toOutputDirectory:(id)directory options:(id)options originalFilenameBase:(id)base error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  neededCopy = needed;
+  directoryCopy = directory;
+  optionsCopy = options;
+  baseCopy = base;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
   v51 = __Block_byref_object_copy__2350;
   v52 = __Block_byref_object_dispose__2351;
-  v53 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy__2350;
   v46 = __Block_byref_object_dispose__2351;
   v47 = 0;
-  if ([v14 disableUpdatingFileCreationDatesOnExportedFileURLs])
+  if ([optionsCopy disableUpdatingFileCreationDatesOnExportedFileURLs])
   {
     goto LABEL_2;
   }
 
-  if (![v14 shouldExportUnmodifiedOriginalResources])
+  if (![optionsCopy shouldExportUnmodifiedOriginalResources])
   {
-    if ([v14 disableMetadataCorrections])
+    if ([optionsCopy disableMetadataCorrections])
     {
 LABEL_2:
       v16 = 0;
       goto LABEL_14;
     }
 
-    v22 = [(PHAssetExportRequest *)self asset];
-    v23 = [v22 creationDate];
+    asset = [(PHAssetExportRequest *)self asset];
+    creationDate = [asset creationDate];
 LABEL_10:
-    v16 = v23;
+    v16 = creationDate;
 
     if (!v16)
     {
@@ -774,27 +774,27 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v17 = [(PHAssetExportRequest *)self asset];
-  v16 = [v17 originalCreationDateWithTimeZone:0];
+  asset2 = [(PHAssetExportRequest *)self asset];
+  v16 = [asset2 originalCreationDateWithTimeZone:0];
 
   if (!v16)
   {
     v18 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v34 = [(PHAssetExportRequest *)self asset];
-      v19 = [v34 uuid];
-      v20 = [(PHAssetExportRequest *)self asset];
-      v21 = [v20 creationDate];
+      asset3 = [(PHAssetExportRequest *)self asset];
+      uuid = [asset3 uuid];
+      asset4 = [(PHAssetExportRequest *)self asset];
+      creationDate2 = [asset4 creationDate];
       *buf = 138543619;
-      v55 = v19;
+      v55 = uuid;
       v56 = 2113;
-      *v57 = v21;
+      *v57 = creationDate2;
       _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_ERROR, "[PHAssetExportRequest] Unable to retrieve original creation date for asset: %{public}@. Falling back to creation date: %{private}@", buf, 0x16u);
     }
 
-    v22 = [(PHAssetExportRequest *)self asset];
-    v23 = [v22 creationDate];
+    asset = [(PHAssetExportRequest *)self asset];
+    creationDate = [asset creationDate];
     goto LABEL_10;
   }
 
@@ -802,15 +802,15 @@ LABEL_11:
   v24 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v14 shouldExportUnmodifiedOriginalResources];
-    v26 = [(PHAssetExportRequest *)self asset];
-    v27 = [v26 uuid];
+    shouldExportUnmodifiedOriginalResources = [optionsCopy shouldExportUnmodifiedOriginalResources];
+    asset5 = [(PHAssetExportRequest *)self asset];
+    uuid2 = [asset5 uuid];
     *buf = 138478339;
     v55 = v16;
     v56 = 1024;
-    *v57 = v25;
+    *v57 = shouldExportUnmodifiedOriginalResources;
     *&v57[4] = 2112;
-    *&v57[6] = v27;
+    *&v57[6] = uuid2;
     _os_log_impl(&dword_19C86F000, v24, OS_LOG_TYPE_DEFAULT, "[PHAssetExportRequest] Setting file creation date %{private}@ for exported files of asset (unmodified originals = %{BOOL}d): %@", buf, 0x1Cu);
   }
 
@@ -819,20 +819,20 @@ LABEL_14:
   v35[1] = 3221225472;
   v35[2] = __98__PHAssetExportRequest_copyFileURLsIfNeeded_toOutputDirectory_options_originalFilenameBase_error___block_invoke;
   v35[3] = &unk_1E75A3C78;
-  v28 = v15;
+  v28 = baseCopy;
   v36 = v28;
-  v29 = v14;
+  v29 = optionsCopy;
   v37 = v29;
-  v30 = v13;
+  v30 = directoryCopy;
   v38 = v30;
   v31 = v16;
   v39 = v31;
   v40 = &v48;
   v41 = &v42;
-  [v12 enumerateKeysAndObjectsUsingBlock:v35];
-  if (a7)
+  [neededCopy enumerateKeysAndObjectsUsingBlock:v35];
+  if (error)
   {
-    *a7 = v43[5];
+    *error = v43[5];
   }
 
   v32 = v49[5];
@@ -894,15 +894,15 @@ void __98__PHAssetExportRequest_copyFileURLsIfNeeded_toOutputDirectory_options_o
   }
 }
 
-- (void)bundleResourcesIfNeededForAsset:(id)a3 withFileURLs:(id)a4 options:(id)a5 completion:(id)a6
+- (void)bundleResourcesIfNeededForAsset:(id)asset withFileURLs:(id)ls options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  assetCopy = asset;
+  lsCopy = ls;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (assetCopy)
   {
-    if (v11)
+    if (lsCopy)
     {
       goto LABEL_3;
     }
@@ -910,24 +910,24 @@ void __98__PHAssetExportRequest_copyFileURLsIfNeeded_toOutputDirectory_options_o
 
   else
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PHAssetExportRequest bundleResourcesIfNeededForAsset:withFileURLs:options:completion:]"];
-    [v31 handleFailureInFunction:v32 file:@"PHAssetExportRequest.m" lineNumber:1498 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    [currentHandler handleFailureInFunction:v32 file:@"PHAssetExportRequest.m" lineNumber:1498 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
-    if (v11)
+    if (lsCopy)
     {
 LABEL_3:
-      if (v12)
+      if (optionsCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_27:
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PHAssetExportRequest bundleResourcesIfNeededForAsset:withFileURLs:options:completion:]"];
-      [v35 handleFailureInFunction:v36 file:@"PHAssetExportRequest.m" lineNumber:1500 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+      [currentHandler2 handleFailureInFunction:v36 file:@"PHAssetExportRequest.m" lineNumber:1500 description:{@"Invalid parameter not satisfying: %@", @"options"}];
 
-      if (v13)
+      if (completionCopy)
       {
         goto LABEL_5;
       }
@@ -936,37 +936,37 @@ LABEL_27:
     }
   }
 
-  v33 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
   v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PHAssetExportRequest bundleResourcesIfNeededForAsset:withFileURLs:options:completion:]"];
-  [v33 handleFailureInFunction:v34 file:@"PHAssetExportRequest.m" lineNumber:1499 description:{@"Invalid parameter not satisfying: %@", @"fileURLs"}];
+  [currentHandler3 handleFailureInFunction:v34 file:@"PHAssetExportRequest.m" lineNumber:1499 description:{@"Invalid parameter not satisfying: %@", @"fileURLs"}];
 
-  if (!v12)
+  if (!optionsCopy)
   {
     goto LABEL_27;
   }
 
 LABEL_4:
-  if (v13)
+  if (completionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_28:
-  v37 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
   v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PHAssetExportRequest bundleResourcesIfNeededForAsset:withFileURLs:options:completion:]"];
-  [v37 handleFailureInFunction:v38 file:@"PHAssetExportRequest.m" lineNumber:1501 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  [currentHandler4 handleFailureInFunction:v38 file:@"PHAssetExportRequest.m" lineNumber:1501 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_5:
-  if (![v12 shouldBundleComplexAssetResources])
+  if (![optionsCopy shouldBundleComplexAssetResources])
   {
     goto LABEL_23;
   }
 
-  v14 = [(PHAssetExportRequest *)self outputDirectoryFromOptions:v12];
-  v15 = PHAssetExportRequestFilenameForAsset(v10, v12);
-  if (![v12 includeAllAssetResources])
+  v14 = [(PHAssetExportRequest *)self outputDirectoryFromOptions:optionsCopy];
+  v15 = PHAssetExportRequestFilenameForAsset(assetCopy, optionsCopy);
+  if (![optionsCopy includeAllAssetResources])
   {
-    if (PHAssetExportRequestCanCreateLivePhotoBundleForAssetWithOptions(v10, v11, v12))
+    if (PHAssetExportRequestCanCreateLivePhotoBundleForAssetWithOptions(assetCopy, lsCopy, optionsCopy))
     {
       v19 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -976,19 +976,19 @@ LABEL_5:
       }
 
       v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-      v20 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestPhotoFileURLKey"];
+      v20 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestPhotoFileURLKey"];
 
       if (v20)
       {
-        v21 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestPhotoFileURLKey"];
+        v21 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestPhotoFileURLKey"];
         [(PHAssetBundleExportSession *)v17 addObject:v21];
       }
 
-      v22 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
+      v22 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
 
       if (v22)
       {
-        v23 = [v11 objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
+        v23 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
         [(PHAssetBundleExportSession *)v17 addObject:v23];
       }
 
@@ -998,14 +998,14 @@ LABEL_5:
       v24 = [v14 URLByAppendingPathComponent:v15];
       v25 = [v24 URLByAppendingPathExtension:*MEMORY[0x1E69C09D0]];
 
-      v26 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       buf[0] = 0;
-      v27 = [v25 path];
-      v28 = [v26 fileExistsAtPath:v27 isDirectory:buf];
+      path = [v25 path];
+      v28 = [defaultManager fileExistsAtPath:path isDirectory:buf];
 
       if ((v28 & 1) != 0 || buf[0] == 1)
       {
-        [v26 removeItemAtURL:v25 error:0];
+        [defaultManager removeItemAtURL:v25 error:0];
       }
 
       v41[0] = MEMORY[0x1E69E9820];
@@ -1013,7 +1013,7 @@ LABEL_5:
       v41[2] = __88__PHAssetExportRequest_bundleResourcesIfNeededForAsset_withFileURLs_options_completion___block_invoke_451;
       v41[3] = &unk_1E75A3C50;
       v42 = v25;
-      v43 = v13;
+      v43 = completionCopy;
       v29 = v25;
       v30 = [(PHLivePhotoExportSession *)v18 writeToFileURL:v29 options:0 completionHandler:v41];
 
@@ -1023,7 +1023,7 @@ LABEL_5:
     }
 
 LABEL_23:
-    (*(v13 + 2))(v13, MEMORY[0x1E695E0F8], 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F8], 0);
     goto LABEL_24;
   }
 
@@ -1034,14 +1034,14 @@ LABEL_23:
     _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_DEFAULT, "[PHAssetExportRequest] Creating asset bundle from asset resources", buf, 2u);
   }
 
-  v17 = [[PHAssetBundleExportSession alloc] initWithAsset:v10 withAssetExportRequestFileURLs:v11];
+  v17 = [[PHAssetBundleExportSession alloc] initWithAsset:assetCopy withAssetExportRequestFileURLs:lsCopy];
   [(PHAssetBundleExportSession *)v17 setCustomFilenameBase:v15];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __88__PHAssetExportRequest_bundleResourcesIfNeededForAsset_withFileURLs_options_completion___block_invoke;
   v44[3] = &unk_1E75A3C28;
   v45 = v14;
-  v46 = v13;
+  v46 = completionCopy;
   [(PHAssetBundleExportSession *)v17 writeToDirectoryURL:v45 completionHandler:v44];
 
   v18 = v45;
@@ -1120,36 +1120,36 @@ void __88__PHAssetExportRequest_bundleResourcesIfNeededForAsset_withFileURLs_opt
   }
 }
 
-- (BOOL)reassembleAdjustmentsPropertyListIfNeeded:(id)a3 toOutputDirectory:(id)a4 outputURL:(id *)a5 error:(id *)a6
+- (BOOL)reassembleAdjustmentsPropertyListIfNeeded:(id)needed toOutputDirectory:(id)directory outputURL:(id *)l error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (v9 && [MEMORY[0x1E69C0660] adjustmentsPropertyListFileRequiresOverflowDataReassemblyAtURL:v9 predictedSize:0])
+  neededCopy = needed;
+  directoryCopy = directory;
+  if (neededCopy && [MEMORY[0x1E69C0660] adjustmentsPropertyListFileRequiresOverflowDataReassemblyAtURL:neededCopy predictedSize:0])
   {
-    v11 = [v9 lastPathComponent];
-    v12 = [v10 URLByAppendingPathComponent:v11];
+    lastPathComponent = [neededCopy lastPathComponent];
+    v12 = [directoryCopy URLByAppendingPathComponent:lastPathComponent];
     v24 = 0;
-    v13 = PHAssetExportRequestCreateOutputDirectory(v10, &v24);
+    v13 = PHAssetExportRequestCreateOutputDirectory(directoryCopy, &v24);
     v14 = v24;
     if (v13)
     {
       v23 = v14;
-      v15 = [MEMORY[0x1E69C0660] writeReassembleAdjustmentsPropertyListAtURL:v9 toURL:v12 error:&v23];
+      v15 = [MEMORY[0x1E69C0660] writeReassembleAdjustmentsPropertyListAtURL:neededCopy toURL:v12 error:&v23];
       v16 = v23;
 
       if (v15)
       {
-        if (a5)
+        if (l)
         {
           v17 = v12;
-          *a5 = v12;
+          *l = v12;
         }
 
-        if (a6)
+        if (error)
         {
           v18 = v16;
-          *a6 = v16;
+          *error = v16;
         }
       }
 
@@ -1161,9 +1161,9 @@ void __88__PHAssetExportRequest_bundleResourcesIfNeededForAsset_withFileURLs_opt
       v20 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v10 path];
+        path = [directoryCopy path];
         *buf = 138412546;
-        v26 = v21;
+        v26 = path;
         v27 = 2112;
         v28 = v14;
         _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_ERROR, "[PHAssetExportRequest] Unable to create output directory %@: %@", buf, 0x16u);
@@ -1181,36 +1181,36 @@ void __88__PHAssetExportRequest_bundleResourcesIfNeededForAsset_withFileURLs_opt
   return v19;
 }
 
-- (void)processResourcesAtFileURLs:(id)a3 forAsset:(id)a4 withOptions:(id)a5 progress:(id)a6 processingUnitCount:(int64_t)a7 completion:(id)a8
+- (void)processResourcesAtFileURLs:(id)ls forAsset:(id)asset withOptions:(id)options progress:(id)progress processingUnitCount:(int64_t)count completion:(id)completion
 {
   v89 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v59 = a6;
-  v16 = a8;
+  lsCopy = ls;
+  assetCopy = asset;
+  optionsCopy = options;
+  progressCopy = progress;
+  completionCopy = completion;
   v17 = dispatch_group_create();
-  v62 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v61 = [MEMORY[0x1E695DFA8] set];
-  v44 = v16;
-  v50 = ([v14 isCloudSharedAsset] & 1) == 0 && objc_msgSend(v15, "variant") == 2;
-  v18 = [(PHAssetExportRequest *)self assetMetadata];
+  v44 = completionCopy;
+  v50 = ([assetCopy isCloudSharedAsset] & 1) == 0 && objc_msgSend(optionsCopy, "variant") == 2;
+  assetMetadata = [(PHAssetExportRequest *)self assetMetadata];
   v86 = 0;
-  v47 = PHAssetExportRequestLocationMetadataOperationForAssetWithOptions(v14, v15, v18, &v86);
+  v47 = PHAssetExportRequestLocationMetadataOperationForAssetWithOptions(assetCopy, optionsCopy, assetMetadata, &v86);
   v56 = v86;
   v85 = 0;
-  v46 = PHAssetExportRequestCaptionMetadataOperationForAssetWithOptions(v14, v15, v18, &v85);
+  v46 = PHAssetExportRequestCaptionMetadataOperationForAssetWithOptions(assetCopy, optionsCopy, assetMetadata, &v85);
   v55 = v85;
   v84 = 0;
-  v45 = PHAssetExportRequestAccessibilityDescriptionMetadataOperationForAssetWithOptions(v14, v15, v18, &v84);
+  v45 = PHAssetExportRequestAccessibilityDescriptionMetadataOperationForAssetWithOptions(assetCopy, optionsCopy, assetMetadata, &v84);
   v54 = v84;
   v83 = 0;
-  v53 = PHAssetExportRequestCustomDateForAssetWithOptions(v14, v15, &v83);
+  v53 = PHAssetExportRequestCustomDateForAssetWithOptions(assetCopy, optionsCopy, &v83);
   v52 = v83;
-  v48 = [v15 videoExportPreset];
-  v19 = [v13 objectForKeyedSubscript:@"PHAssetExportRequestPhotoFileURLKey"];
-  v20 = [v13 objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
-  v21 = [v13 objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentDataFileURLKey"];
+  videoExportPreset = [optionsCopy videoExportPreset];
+  v19 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestPhotoFileURLKey"];
+  v20 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestVideoFileURLKey"];
+  v21 = [lsCopy objectForKeyedSubscript:@"PHAssetExportRequestAdjustmentDataFileURLKey"];
   v60 = v19;
   v51 = v20;
   if (v19)
@@ -1224,61 +1224,61 @@ void __88__PHAssetExportRequest_bundleResourcesIfNeededForAsset_withFileURLs_opt
   }
 
   v23 = v22;
-  v58 = [(PHAssetExportRequest *)self outputDirectoryFromOptions:v15];
-  v24 = [v15 customOutputDirectory];
-  if (v24)
+  v58 = [(PHAssetExportRequest *)self outputDirectoryFromOptions:optionsCopy];
+  customOutputDirectory = [optionsCopy customOutputDirectory];
+  if (customOutputDirectory)
   {
-    v43 = [v15 overwriteExistingFilesInOutputDirectory];
+    overwriteExistingFilesInOutputDirectory = [optionsCopy overwriteExistingFilesInOutputDirectory];
   }
 
   else
   {
-    v43 = 0;
+    overwriteExistingFilesInOutputDirectory = 0;
   }
 
   v25 = v21;
-  if (([v14 playbackStyle] != 3) | v23 & 1)
+  if (([assetCopy playbackStyle] != 3) | v23 & 1)
   {
-    v26 = 0;
+    uUIDString = 0;
   }
 
   else
   {
-    v27 = [MEMORY[0x1E696AFB0] UUID];
-    v26 = [v27 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  [v14 fetchPropertySetsIfNeeded];
-  v57 = PHAssetExportRequestFilenameForAsset(v14, v15);
-  v28 = a7 / 2;
+  [assetCopy fetchPropertySetsIfNeeded];
+  v57 = PHAssetExportRequestFilenameForAsset(assetCopy, optionsCopy);
+  countCopy = count / 2;
   if (v23)
   {
-    v28 = a7;
+    countCopy = count;
   }
 
-  v49 = v28;
+  v49 = countCopy;
   if (v60)
   {
     dispatch_group_enter(v17);
     v29 = [MEMORY[0x1E69AE8A8] imageSourceForFileURL:v60];
     if (v50)
     {
-      v30 = [(NSDictionary *)self->_variants objectForKeyedSubscript:&unk_1F102C1A0];
-      if (!v30)
+      identifier = [(NSDictionary *)self->_variants objectForKeyedSubscript:&unk_1F102C1A0];
+      if (!identifier)
       {
         v31 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v32 = [v14 uuid];
+          uuid = [assetCopy uuid];
           *buf = 138543362;
-          v88 = v32;
+          v88 = uuid;
           _os_log_impl(&dword_19C86F000, v31, OS_LOG_TYPE_ERROR, "[PHAssetExportRequest] Compatible variant was not listed in variants for asset %{public}@, falling back to JPG", buf, 0xCu);
         }
 
-        v30 = [*MEMORY[0x1E6982E58] identifier];
+        identifier = [*MEMORY[0x1E6982E58] identifier];
       }
 
-      v33 = [MEMORY[0x1E6982C40] typeWithIdentifier:v30];
+      v33 = [MEMORY[0x1E6982C40] typeWithIdentifier:identifier];
     }
 
     else
@@ -1291,29 +1291,29 @@ void __88__PHAssetExportRequest_bundleResourcesIfNeededForAsset_withFileURLs_opt
     v79[2] = __112__PHAssetExportRequest_processResourcesAtFileURLs_forAsset_withOptions_progress_processingUnitCount_completion___block_invoke;
     v79[3] = &unk_1E75A3C00;
     v79[4] = self;
-    v80 = v62;
+    v80 = dictionary;
     v81 = v61;
     v82 = v17;
-    PHAssetExportRequestPerformMediaConversion(v29, 0, v50, v33, v47, v56, v53, v52, v46, v55, v45, v54, 0, v59, v49, v58, v43, v57, v26, v79);
+    PHAssetExportRequestPerformMediaConversion(v29, 0, v50, v33, v47, v56, v53, v52, v46, v55, v45, v54, 0, progressCopy, v49, v58, overwriteExistingFilesInOutputDirectory, v57, uUIDString, v79);
   }
 
   v34 = v51;
   if (v51)
   {
-    if (PHAssetExportRequestNeedsSloMoFlatteningForAssetWithOptions(v14, v15))
+    if (PHAssetExportRequestNeedsSloMoFlatteningForAssetWithOptions(assetCopy, optionsCopy))
     {
       dispatch_group_enter(v17);
-      v35 = [v15 videoExportPreset];
-      v36 = [v15 videoExportFileType];
+      videoExportPreset2 = [optionsCopy videoExportPreset];
+      videoExportFileType = [optionsCopy videoExportFileType];
       v75[0] = MEMORY[0x1E69E9820];
       v75[1] = 3221225472;
       v75[2] = __112__PHAssetExportRequest_processResourcesAtFileURLs_forAsset_withOptions_progress_processingUnitCount_completion___block_invoke_3;
       v75[3] = &unk_1E75A3C00;
       v75[4] = self;
-      v76 = v62;
+      v76 = dictionary;
       v77 = v61;
       v78 = v17;
-      PHAssetExportRequestPerformSlomoFlattening(v51, v25, v59, v49, v58, v57, v35, v36, v50, v47, v56, v46, v55, v45, v54, v75);
+      PHAssetExportRequestPerformSlomoFlattening(v51, v25, progressCopy, v49, v58, v57, videoExportPreset2, videoExportFileType, v50, v47, v56, v46, v55, v45, v54, v75);
 
       v34 = v51;
       v37 = v76;
@@ -1322,19 +1322,19 @@ LABEL_32:
       goto LABEL_34;
     }
 
-    v38 = [v15 variant];
+    variant = [optionsCopy variant];
     dispatch_group_enter(v17);
-    if (v38 == 3)
+    if (variant == 3)
     {
       v71[0] = MEMORY[0x1E69E9820];
       v71[1] = 3221225472;
       v71[2] = __112__PHAssetExportRequest_processResourcesAtFileURLs_forAsset_withOptions_progress_processingUnitCount_completion___block_invoke_5;
       v71[3] = &unk_1E75A3C00;
       v71[4] = self;
-      v72 = v62;
+      v72 = dictionary;
       v73 = v61;
       v74 = v17;
-      PHAssetExportRequestPerformGifConversion(v51, v59, v49, v58, v57, v71);
+      PHAssetExportRequestPerformGifConversion(v51, progressCopy, v49, v58, v57, v71);
 
       v37 = v72;
       goto LABEL_32;
@@ -1346,30 +1346,30 @@ LABEL_32:
     v67[2] = __112__PHAssetExportRequest_processResourcesAtFileURLs_forAsset_withOptions_progress_processingUnitCount_completion___block_invoke_7;
     v67[3] = &unk_1E75A3C00;
     v67[4] = self;
-    v68 = v62;
+    v68 = dictionary;
     v69 = v61;
     v70 = v17;
     v34 = v51;
-    PHAssetExportRequestPerformMediaConversion(v39, 0, v50, 0, v47, v56, v53, v52, v46, v55, v45, v54, v48, v59, v49, v58, v43, v57, v26, v67);
+    PHAssetExportRequestPerformMediaConversion(v39, 0, v50, 0, v47, v56, v53, v52, v46, v55, v45, v54, videoExportPreset, progressCopy, v49, v58, overwriteExistingFilesInOutputDirectory, v57, uUIDString, v67);
   }
 
 LABEL_34:
   dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
   if (v44)
   {
-    v40 = v26;
+    v40 = uUIDString;
     serialQueue = self->_serialQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __112__PHAssetExportRequest_processResourcesAtFileURLs_forAsset_withOptions_progress_processingUnitCount_completion___block_invoke_9;
     block[3] = &unk_1E75AAEB0;
-    v65 = v13;
-    v66 = v62;
+    v65 = lsCopy;
+    v66 = dictionary;
     dispatch_sync(serialQueue, block);
-    v42 = [v61 anyObject];
-    (v44)[2](v44, v42);
+    anyObject = [v61 anyObject];
+    (v44)[2](v44, anyObject);
 
-    v26 = v40;
+    uUIDString = v40;
   }
 }
 
@@ -1525,49 +1525,49 @@ uint64_t __112__PHAssetExportRequest_processResourcesAtFileURLs_forAsset_withOpt
   }
 }
 
-- (void)handleResultWithFileURLs:(id)a3 cancelled:(BOOL)a4 withError:(id)a5 forAsset:(id)a6 withOptions:(id)a7 progress:(id)a8 processingUnitCount:(int64_t)a9 completionHandler:(id)a10
+- (void)handleResultWithFileURLs:(id)ls cancelled:(BOOL)cancelled withError:(id)error forAsset:(id)asset withOptions:(id)options progress:(id)progress processingUnitCount:(int64_t)count completionHandler:(id)self0
 {
-  v14 = a4;
+  cancelledCopy = cancelled;
   v63 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
-  if (v14)
+  lsCopy = ls;
+  errorCopy = error;
+  assetCopy = asset;
+  optionsCopy = options;
+  progressCopy = progress;
+  handlerCopy = handler;
+  if (cancelledCopy)
   {
-    v22 = PHAssetExportRequestError(1, v17);
+    v22 = PHAssetExportRequestError(1, errorCopy);
 
     v23 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v60 = v18;
+      v60 = assetCopy;
       v61 = 2112;
       v62 = v22;
       _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_DEFAULT, "[PHAssetExportRequest] Cancelled download asset for export: %@, error: %@", buf, 0x16u);
     }
 
-    v24 = [v19 resultHandlerQueue];
+    resultHandlerQueue = [optionsCopy resultHandlerQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_forAsset_withOptions_progress_processingUnitCount_completionHandler___block_invoke;
     block[3] = &unk_1E75AA9D8;
     block[4] = self;
-    v56 = v19;
+    v56 = optionsCopy;
     v57 = v22;
-    v58 = v21;
+    v58 = handlerCopy;
     v25 = v22;
-    dispatch_async(v24, block);
+    dispatch_async(resultHandlerQueue, block);
 
     v26 = v56;
     goto LABEL_26;
   }
 
-  if (!v16 || v17)
+  if (!lsCopy || errorCopy)
   {
-    if (v17)
+    if (errorCopy)
     {
       goto LABEL_13;
     }
@@ -1575,36 +1575,36 @@ uint64_t __112__PHAssetExportRequest_processResourcesAtFileURLs_forAsset_withOpt
     goto LABEL_12;
   }
 
-  if (![v16 count])
+  if (![lsCopy count])
   {
 LABEL_12:
-    v17 = PHAssetExportRequestError(0, 0);
+    errorCopy = PHAssetExportRequestError(0, 0);
 LABEL_13:
     v29 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v60 = v18;
+      v60 = assetCopy;
       v61 = 2112;
-      v62 = v17;
+      v62 = errorCopy;
       _os_log_impl(&dword_19C86F000, v29, OS_LOG_TYPE_ERROR, "[PHAssetExportRequest] Failed to download asset for export: %@, error: %@", buf, 0x16u);
     }
 
-    v30 = [v17 domain];
-    v31 = [v30 isEqualToString:*MEMORY[0x1E6994990]];
+    domain = [errorCopy domain];
+    v31 = [domain isEqualToString:*MEMORY[0x1E6994990]];
 
     if (v31)
     {
-      if ([v17 code] != 81 && objc_msgSend(v17, "code") != 80 && objc_msgSend(v17, "code") != 82 && objc_msgSend(v17, "code") != 1000)
+      if ([errorCopy code] != 81 && objc_msgSend(errorCopy, "code") != 80 && objc_msgSend(errorCopy, "code") != 82 && objc_msgSend(errorCopy, "code") != 1000)
       {
-        if ([v17 code] == 1005)
+        if ([errorCopy code] == 1005)
         {
           v32 = 3;
         }
 
         else
         {
-          if ([v17 code] != 1006)
+          if ([errorCopy code] != 1006)
           {
             goto LABEL_25;
           }
@@ -1618,22 +1618,22 @@ LABEL_13:
 
     else
     {
-      v33 = [v17 domain];
-      v34 = [v33 isEqualToString:*MEMORY[0x1E696A978]];
+      domain2 = [errorCopy domain];
+      v34 = [domain2 isEqualToString:*MEMORY[0x1E696A978]];
 
       if ((v34 & 1) == 0)
       {
-        v37 = [v17 domain];
-        v38 = [v37 isEqualToString:@"PHAssetExportRequestErrorDomain"];
+        domain3 = [errorCopy domain];
+        v38 = [domain3 isEqualToString:@"PHAssetExportRequestErrorDomain"];
 
         if (v38)
         {
           goto LABEL_25;
         }
 
-        v39 = [(PHAssetExportRequest *)self asset];
-        v40 = [v39 photoLibrary];
-        if ([v40 wellKnownPhotoLibraryIdentifier] == 3)
+        asset = [(PHAssetExportRequest *)self asset];
+        photoLibrary = [asset photoLibrary];
+        if ([photoLibrary wellKnownPhotoLibraryIdentifier] == 3)
         {
 
           v32 = 5;
@@ -1641,10 +1641,10 @@ LABEL_13:
 
         else
         {
-          v41 = [(PHAssetExportRequest *)self asset];
-          v42 = [v41 isGuestAsset];
+          asset2 = [(PHAssetExportRequest *)self asset];
+          isGuestAsset = [asset2 isGuestAsset];
 
-          if (v42)
+          if (isGuestAsset)
           {
             v32 = 5;
           }
@@ -1656,21 +1656,21 @@ LABEL_13:
         }
 
 LABEL_24:
-        v35 = PHAssetExportRequestError(v32, v17);
+        v35 = PHAssetExportRequestError(v32, errorCopy);
 
-        v17 = v35;
+        errorCopy = v35;
 LABEL_25:
-        v36 = [v19 resultHandlerQueue];
+        resultHandlerQueue2 = [optionsCopy resultHandlerQueue];
         v51[0] = MEMORY[0x1E69E9820];
         v51[1] = 3221225472;
         v51[2] = __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_forAsset_withOptions_progress_processingUnitCount_completionHandler___block_invoke_426;
         v51[3] = &unk_1E75AA9D8;
         v51[4] = self;
-        v52 = v19;
-        v53 = v17;
-        v54 = v21;
-        v25 = v17;
-        dispatch_async(v36, v51);
+        v52 = optionsCopy;
+        v53 = errorCopy;
+        v54 = handlerCopy;
+        v25 = errorCopy;
+        dispatch_async(resultHandlerQueue2, v51);
 
         v26 = v52;
 LABEL_26:
@@ -1687,9 +1687,9 @@ LABEL_26:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v60 = v18;
+    v60 = assetCopy;
     v61 = 2112;
-    v62 = v16;
+    v62 = lsCopy;
     _os_log_impl(&dword_19C86F000, v27, OS_LOG_TYPE_DEBUG, "[PHAssetExportRequest] Did download asset for export: %@, urls: %@", buf, 0x16u);
   }
 
@@ -1699,13 +1699,13 @@ LABEL_26:
   v43[1] = 3221225472;
   v43[2] = __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_forAsset_withOptions_progress_processingUnitCount_completionHandler___block_invoke_427;
   v43[3] = &unk_1E75A3BD8;
-  v44 = v16;
-  v45 = v18;
-  v46 = v19;
-  v47 = self;
-  v48 = v20;
-  v50 = a9;
-  v49 = v21;
+  v44 = lsCopy;
+  v45 = assetCopy;
+  v46 = optionsCopy;
+  selfCopy = self;
+  v48 = progressCopy;
+  countCopy = count;
+  v49 = handlerCopy;
   dispatch_async(resourceProcessingQueue, v43);
 
   v25 = v44;
@@ -2087,15 +2087,15 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
     v3 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PHAssetExportRequest *)self asset];
-      v5 = [v4 uuid];
+      asset = [(PHAssetExportRequest *)self asset];
+      uuid = [asset uuid];
       v14 = 138543362;
-      v15 = v5;
+      v15 = uuid;
       _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEFAULT, "[PHAssetExportRequest] Retrieving metadata for asset %{public}@", &v14, 0xCu);
     }
 
-    v6 = [(PHAssetExportRequest *)self asset];
-    v7 = PHAssetOriginalMetadataOfAsset(v6);
+    asset2 = [(PHAssetExportRequest *)self asset];
+    v7 = PHAssetOriginalMetadataOfAsset(asset2);
     assetMetadata = self->_assetMetadata;
     self->_assetMetadata = v7;
 
@@ -2105,10 +2105,10 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
       v9 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(PHAssetExportRequest *)self asset];
-        v11 = [v10 uuid];
+        asset3 = [(PHAssetExportRequest *)self asset];
+        uuid2 = [asset3 uuid];
         v14 = 138543362;
-        v15 = v11;
+        v15 = uuid2;
         _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_ERROR, "[PHAssetExportRequest] Metadata retrieved was nil for asset %{public}@", &v14, 0xCu);
       }
     }
@@ -2119,16 +2119,16 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
   return v12;
 }
 
-- (id)outputDirectoryFromOptions:(id)a3
+- (id)outputDirectoryFromOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
+  optionsCopy = options;
+  v5 = optionsCopy;
   outputDirectory = self->_outputDirectory;
   if (!outputDirectory)
   {
-    v7 = [v4 customOutputDirectory];
+    customOutputDirectory = [optionsCopy customOutputDirectory];
 
-    if (v7)
+    if (customOutputDirectory)
     {
       [v5 customOutputDirectory];
     }
@@ -2166,16 +2166,16 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
   }
 
   v8 = v7;
-  v9 = [(NSProgress *)self->_progress localizedDescription];
-  v10 = [v3 stringWithFormat:@"<%@: %p, asset: %@, state: %@, progress: %@, variants: %@>", v4, self, asset, v8, v9, self->_variants];
+  localizedDescription = [(NSProgress *)self->_progress localizedDescription];
+  v10 = [v3 stringWithFormat:@"<%@: %p, asset: %@, state: %@, progress: %@, variants: %@>", v4, self, asset, v8, localizedDescription, self->_variants];
 
   return v10;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2192,14 +2192,14 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
       }
 
       v8 = v7;
-      if (a3 > 6)
+      if (state > 6)
       {
         v9 = @"unknown";
       }
 
       else
       {
-        v9 = off_1E75A3C98[a3];
+        v9 = off_1E75A3C98[state];
       }
 
       v10 = v9;
@@ -2211,33 +2211,33 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
     }
 
     v11 = self->_state;
-    self->_state = a3;
-    [(PHAssetExportRequest *)self updateSignpostIntervalsChangingFromState:v11 toState:a3];
-    v12 = [(PHAssetExportRequest *)self delegate];
+    self->_state = state;
+    [(PHAssetExportRequest *)self updateSignpostIntervalsChangingFromState:v11 toState:state];
+    delegate = [(PHAssetExportRequest *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(PHAssetExportRequest *)self delegate];
-      [v14 assetExportRequest:self didChangeToState:a3 fromState:v11];
+      delegate2 = [(PHAssetExportRequest *)self delegate];
+      [delegate2 assetExportRequest:self didChangeToState:state fromState:v11];
     }
   }
 }
 
-- (PHAssetExportRequest)initWithAsset:(id)a3 variants:(id)a4
+- (PHAssetExportRequest)initWithAsset:(id)asset variants:(id)variants
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  assetCopy = asset;
+  variantsCopy = variants;
+  if (!assetCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  if (![v9 count])
+  if (![variantsCopy count])
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"variants.count"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"variants.count"}];
   }
 
   v28.receiver = self;
@@ -2246,19 +2246,19 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_asset, a3);
+    objc_storeStrong(&v10->_asset, asset);
     v12 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:0];
     progress = v11->_progress;
     v11->_progress = v12;
 
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v14 UUIDString];
-    v16 = [v15 copy];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v16 = [uUIDString copy];
     exportUUID = v11->_exportUUID;
     v11->_exportUUID = v16;
 
     v11->_state = 0;
-    objc_storeStrong(&v11->_variants, a4);
+    objc_storeStrong(&v11->_variants, variants);
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_create("PHAssetExportRequest.ResourceProcessingQueue", v18);
     resourceProcessingQueue = v11->_resourceProcessingQueue;
@@ -2269,8 +2269,8 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
     serialQueue = v11->_serialQueue;
     v11->_serialQueue = v22;
 
-    v24 = [objc_opt_class() assetExportLog];
-    v11->_signpostId = os_signpost_id_make_with_pointer(v24, v11->_exportUUID);
+    assetExportLog = [objc_opt_class() assetExportLog];
+    v11->_signpostId = os_signpost_id_make_with_pointer(assetExportLog, v11->_exportUUID);
 
     v11->_prepareItemEventCPAnalyticsSignpostId = 0;
   }
@@ -2280,8 +2280,8 @@ void __137__PHAssetExportRequest_handleResultWithFileURLs_cancelled_withError_fo
 
 - (PHAssetExportRequest)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:278 description:{@"%s is not available as initializer", "-[PHAssetExportRequest init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:278 description:{@"%s is not available as initializer", "-[PHAssetExportRequest init]"}];
 
   abort();
 }
@@ -2305,15 +2305,15 @@ uint64_t __38__PHAssetExportRequest_assetExportLog__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)errorIsLowDiskSpaceRelated:(id)a3
++ (BOOL)errorIsLowDiskSpaceRelated:(id)related
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E696A798]])
+  relatedCopy = related;
+  domain = [relatedCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v6 = [v4 code];
+    code = [relatedCopy code];
 
-    if (v6 == 28)
+    if (code == 28)
     {
       v7 = 1;
       goto LABEL_11;
@@ -2324,19 +2324,19 @@ uint64_t __38__PHAssetExportRequest_assetExportLog__block_invoke()
   {
   }
 
-  v8 = [v4 userInfo];
+  userInfo = [relatedCopy userInfo];
   v9 = *MEMORY[0x1E696AA08];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   if (v10)
   {
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:v9];
+    userInfo2 = [relatedCopy userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:v9];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [a1 errorIsLowDiskSpaceRelated:v12];
+      v7 = [self errorIsLowDiskSpaceRelated:v12];
     }
 
     else
@@ -2355,29 +2355,29 @@ LABEL_11:
   return v7;
 }
 
-+ (id)exportRequestForAsset:(id)a3 variants:(id)a4 error:(id *)a5
++ (id)exportRequestForAsset:(id)asset variants:(id)variants error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  assetCopy = asset;
+  variantsCopy = variants;
+  if (!assetCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PHAssetExportRequest.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetExportRequest.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  if (([v9 isCloudSharedAsset] & 1) != 0 || objc_msgSend(v9, "isStreamedVideo"))
+  if (([assetCopy isCloudSharedAsset] & 1) != 0 || objc_msgSend(assetCopy, "isStreamedVideo"))
   {
     v11 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v9 uuid];
+      uuid = [assetCopy uuid];
       *buf = 138543362;
-      v20 = v12;
+      v20 = uuid;
       _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_DEFAULT, "[PHAssetExportRequest] Asset %{public}@ is a shared-album asset. Creating a cloud shared export request.", buf, 0xCu);
     }
 
-    v13 = [PHCloudSharedAssetExportRequest exportRequestForAsset:v9 error:a5];
+    v13 = [PHCloudSharedAssetExportRequest exportRequestForAsset:assetCopy error:error];
   }
 
   else
@@ -2385,13 +2385,13 @@ LABEL_11:
     v14 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 uuid];
+      uuid2 = [assetCopy uuid];
       *buf = 138543362;
-      v20 = v15;
+      v20 = uuid2;
       _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_DEFAULT, "[PHAssetExportRequest] Asset %{public}@ is a regular, non-shared-album asset. Creating an internal asset export request.", buf, 0xCu);
     }
 
-    v13 = [PHInternalAssetExportRequest exportRequestForAsset:v9 variants:v10 error:a5];
+    v13 = [PHInternalAssetExportRequest exportRequestForAsset:assetCopy variants:variantsCopy error:error];
   }
 
   v16 = v13;
@@ -2399,17 +2399,17 @@ LABEL_11:
   return v16;
 }
 
-+ (id)variantsForAsset:(id)a3 asUnmodifiedOriginal:(BOOL)a4 error:(id *)a5
++ (id)variantsForAsset:(id)asset asUnmodifiedOriginal:(BOOL)original error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  originalCopy = original;
+  assetCopy = asset;
   v8 = off_1E75A0FC0;
-  if (([v7 isCloudSharedAsset] & 1) == 0 && !objc_msgSend(v7, "isStreamedVideo"))
+  if (([assetCopy isCloudSharedAsset] & 1) == 0 && !objc_msgSend(assetCopy, "isStreamedVideo"))
   {
     v8 = off_1E75A12A0;
   }
 
-  v9 = [(__objc2_class *)*v8 variantsForAsset:v7 asUnmodifiedOriginal:v6 error:a5];
+  v9 = [(__objc2_class *)*v8 variantsForAsset:assetCopy asUnmodifiedOriginal:originalCopy error:error];
 
   return v9;
 }

@@ -2,7 +2,7 @@
 - (PKSpendingHighlightsViewController)init;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -23,21 +23,21 @@
   v6.receiver = self;
   v6.super_class = PKSpendingHighlightsViewController;
   [(PKSpendingHighlightsViewController *)&v6 viewDidLoad];
-  v3 = [(PKSpendingHighlightsViewController *)self navigationItem];
+  navigationItem = [(PKSpendingHighlightsViewController *)self navigationItem];
   v4 = PKLocalizedPaymentString(&cfstr_FinhealthInsig.isa);
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
-  v5 = [(PKSpendingHighlightsViewController *)self collectionView];
-  [v5 setShowsVerticalScrollIndicator:1];
-  [v5 setAlwaysBounceVertical:1];
-  [v5 setBounces:1];
+  collectionView = [(PKSpendingHighlightsViewController *)self collectionView];
+  [collectionView setShowsVerticalScrollIndicator:1];
+  [collectionView setAlwaysBounceVertical:1];
+  [collectionView setBounces:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PKSpendingHighlightsViewController;
-  [(PKSpendingHighlightsViewController *)&v3 viewWillAppear:a3];
+  [(PKSpendingHighlightsViewController *)&v3 viewWillAppear:appear];
 }
 
 - (void)viewWillLayoutSubviews

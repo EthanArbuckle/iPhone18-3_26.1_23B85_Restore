@@ -1,11 +1,11 @@
 @interface CDPDLockAssertion
-+ (id)lockWithError:(id *)a3;
++ (id)lockWithError:(id *)error;
 - (void)unlock;
 @end
 
 @implementation CDPDLockAssertion
 
-+ (id)lockWithError:(id *)a3
++ (id)lockWithError:(id *)error
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(CDPDLockAssertion);
@@ -47,9 +47,9 @@
       [(CDPDLockAssertion *)&v11 lockWithError:v8];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = v11;
+      *error = v11;
     }
 
     else
@@ -76,22 +76,22 @@
 
 - (void)unlock
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _CDPLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     [(CDPDLockAssertion *)v3 unlock];
   }
 
-  assertionRef = v2->_assertionRef;
+  assertionRef = selfCopy->_assertionRef;
   if (assertionRef)
   {
     CFRelease(assertionRef);
-    v2->_assertionRef = 0;
+    selfCopy->_assertionRef = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 + (void)lockWithError:(uint64_t *)a1 .cold.1(uint64_t *a1, NSObject *a2)

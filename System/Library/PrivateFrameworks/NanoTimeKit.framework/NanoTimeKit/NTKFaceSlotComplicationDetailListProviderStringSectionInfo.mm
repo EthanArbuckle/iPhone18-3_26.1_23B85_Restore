@@ -1,19 +1,19 @@
 @interface NTKFaceSlotComplicationDetailListProviderStringSectionInfo
-- (BOOL)isEqual:(id)a3;
-- (NTKFaceSlotComplicationDetailListProviderStringSectionInfo)initWithGroupName:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NTKFaceSlotComplicationDetailListProviderStringSectionInfo)initWithGroupName:(id)name;
 @end
 
 @implementation NTKFaceSlotComplicationDetailListProviderStringSectionInfo
 
-- (NTKFaceSlotComplicationDetailListProviderStringSectionInfo)initWithGroupName:(id)a3
+- (NTKFaceSlotComplicationDetailListProviderStringSectionInfo)initWithGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = NTKFaceSlotComplicationDetailListProviderStringSectionInfo;
   v5 = [(NTKFaceSlotComplicationDetailListProviderStringSectionInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -31,22 +31,22 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 groupName];
-    if (v5 == self->_groupName)
+    groupName = [equalCopy groupName];
+    if (groupName == self->_groupName)
     {
       v7 = 1;
     }
 
     else
     {
-      v6 = [v4 groupName];
-      v7 = [v6 isEqual:self->_groupName];
+      groupName2 = [equalCopy groupName];
+      v7 = [groupName2 isEqual:self->_groupName];
     }
   }
 

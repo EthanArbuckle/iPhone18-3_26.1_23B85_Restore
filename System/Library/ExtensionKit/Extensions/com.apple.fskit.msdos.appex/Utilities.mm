@@ -1,19 +1,19 @@
 @interface Utilities
-+ (BOOL)containsReadOnlyAttributes:(id)a3;
-+ (BOOL)isDotOrDotDot:(char *)a3 length:(unint64_t)a4;
-+ (BOOL)isLabelLegal:(char *)a3;
-+ (id)generateVolumeUuid:(bootsector *)a3 uuid:(char *)a4;
-+ (id)getMD5Digest:(unsigned int)a3 forData:(const char *)a4 length:(unsigned int)a5;
-+ (id)getVolumeLabelFromBootSector:(char *)a3;
-+ (id)getVolumeName:(id)a3 bps:(unsigned __int16)a4 spc:(unsigned __int8)a5 bootsector:(bootsector *)a6 flags:(unsigned __int8)a7;
-+ (id)metaWriteToDevice:(id)a3 from:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6 forceSyncWrite:(BOOL)a7;
++ (BOOL)containsReadOnlyAttributes:(id)attributes;
++ (BOOL)isDotOrDotDot:(char *)dot length:(unint64_t)length;
++ (BOOL)isLabelLegal:(char *)legal;
++ (id)generateVolumeUuid:(bootsector *)uuid uuid:(char *)a4;
++ (id)getMD5Digest:(unsigned int)digest forData:(const char *)data length:(unsigned int)length;
++ (id)getVolumeLabelFromBootSector:(char *)sector;
++ (id)getVolumeName:(id)name bps:(unsigned __int16)bps spc:(unsigned __int8)spc bootsector:(bootsector *)bootsector flags:(unsigned __int8)flags;
++ (id)metaWriteToDevice:(id)device from:(void *)from startingAt:(int64_t)at length:(unint64_t)length forceSyncWrite:(BOOL)write;
 + (id)sharedUtilities;
-+ (id)syncMetaClearToDevice:(id)a3 rangesToClear:(id)a4;
-+ (id)syncMetaPurgeToDevice:(id)a3 rangesToPurge:(id)a4;
-+ (id)syncMetaReadFromDevice:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6;
-+ (id)syncReadFromDevice:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6;
++ (id)syncMetaClearToDevice:(id)device rangesToClear:(id)clear;
++ (id)syncMetaPurgeToDevice:(id)device rangesToPurge:(id)purge;
++ (id)syncMetaReadFromDevice:(id)device into:(void *)into startingAt:(int64_t)at length:(unint64_t)length;
++ (id)syncReadFromDevice:(id)device into:(void *)into startingAt:(int64_t)at length:(unint64_t)length;
 + (unsigned)getDefaultDOSEncoding;
-+ (unsigned)parseCharacterOfLongNameEntry:(winentry *)a3 charIdxInEntry:(unsigned int)a4 charIdxInName:(unsigned int)a5 unistrName:(unistr255 *)a6 isFirstLongEntryInSet:(BOOL)a7;
++ (unsigned)parseCharacterOfLongNameEntry:(winentry *)entry charIdxInEntry:(unsigned int)inEntry charIdxInName:(unsigned int)name unistrName:(unistr255 *)unistrName isFirstLongEntryInSet:(BOOL)set;
 + (void)enableMetaRW;
 + (void)setGMTDiffOffset;
 @end
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002C190;
   block[3] = &unk_100051598;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10005A3E8 != -1)
   {
     dispatch_once(&qword_10005A3E8, block);
@@ -37,33 +37,33 @@
   return v2;
 }
 
-+ (id)getVolumeName:(id)a3 bps:(unsigned __int16)a4 spc:(unsigned __int8)a5 bootsector:(bootsector *)a6 flags:(unsigned __int8)a7
++ (id)getVolumeName:(id)name bps:(unsigned __int16)bps spc:(unsigned __int8)spc bootsector:(bootsector *)bootsector flags:(unsigned __int8)flags
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = [a1 sharedUtilities];
-  if (![v13 useMetaRW])
+  spcCopy = spc;
+  bpsCopy = bps;
+  nameCopy = name;
+  sharedUtilities = [self sharedUtilities];
+  if (![sharedUtilities useMetaRW])
   {
     memset(__dst, 0, 11);
-    if (a7)
+    if (flags)
     {
-      v15 = (32 * *&a6->var2.var2[6] + (v10 - 1)) / v10;
+      v15 = (32 * *&bootsector->var2.var2[6] + (bpsCopy - 1)) / bpsCopy;
       v16 = v15;
       if (v15)
       {
         v17 = 0;
-        v18 = *&a6->var2.var2[3] + *&a6->var2.var2[11] * a6->var0.var2[5];
+        v18 = *&bootsector->var2.var2[3] + *&bootsector->var2.var2[11] * bootsector->var0.var2[5];
         while (1)
         {
-          v19 = [a1 syncReadFromDevice:v12 into:__src startingAt:(v18 + v17) * v10 length:v10];
+          v19 = [self syncReadFromDevice:nameCopy into:__src startingAt:(v18 + v17) * bpsCopy length:bpsCopy];
           if (v19)
           {
 
             goto LABEL_4;
           }
 
-          if (v10)
+          if (bpsCopy)
           {
             break;
           }
@@ -95,7 +95,7 @@ LABEL_19:
 
           v20 += 32;
           v21 += 32;
-          if (v20 >= v10)
+          if (v20 >= bpsCopy)
           {
             goto LABEL_19;
           }
@@ -106,17 +106,17 @@ LABEL_19:
 
       else
       {
-        v41 = a7;
-        v24 = v9 * v10;
+        flagsCopy = flags;
+        v24 = spcCopy * bpsCopy;
         v42 = [[NSMutableData alloc] initWithLength:v24];
-        v25 = *&a6->var2.var2[33];
+        v25 = *&bootsector->var2.var2[33];
         if (v25 + 10 >= 0xC)
         {
-          v40 = v13;
+          v40 = sharedUtilities;
           while (1)
           {
             v26 = v42;
-            v27 = [a1 syncReadFromDevice:v12 into:objc_msgSend(v42 startingAt:"mutableBytes") length:{(*&a6->var2.var2[3] + *&a6->var2.var2[25] * a6->var0.var2[5] + (v25 - 2) * v9) * v10, v24}];
+            v27 = [self syncReadFromDevice:nameCopy into:objc_msgSend(v42 startingAt:"mutableBytes") length:{(*&bootsector->var2.var2[3] + *&bootsector->var2.var2[25] * bootsector->var0.var2[5] + (v25 - 2) * spcCopy) * bpsCopy, v24}];
             if (v27)
             {
               v39 = v27;
@@ -125,7 +125,7 @@ LABEL_65:
               goto LABEL_4;
             }
 
-            v28 = [v42 bytes];
+            bytes = [v42 bytes];
             if (v24)
             {
               break;
@@ -133,23 +133,23 @@ LABEL_65:
 
 LABEL_34:
             v33 = 4 * v25;
-            v34 = [a1 syncReadFromDevice:v12 into:objc_msgSend(v26 startingAt:"mutableBytes") length:{(v33 / v10 + *&a6->var2.var2[3]) * v10, v10}];
+            v34 = [self syncReadFromDevice:nameCopy into:objc_msgSend(v26 startingAt:"mutableBytes") length:{(v33 / bpsCopy + *&bootsector->var2.var2[3]) * bpsCopy, bpsCopy}];
             if (v34)
             {
               v39 = v34;
-              v13 = v40;
+              sharedUtilities = v40;
               goto LABEL_65;
             }
 
-            v25 = *([v26 bytes] + v33 % v10) & 0xFFFFFFF;
-            v13 = v40;
+            v25 = *([v26 bytes] + v33 % bpsCopy) & 0xFFFFFFF;
+            sharedUtilities = v40;
             if (v25 <= 1)
             {
               goto LABEL_38;
             }
           }
 
-          v29 = v28;
+          v29 = bytes;
           v30 = 0;
           while (1)
           {
@@ -182,33 +182,33 @@ LABEL_34:
 
 LABEL_38:
 
-        a7 = v41;
+        flags = flagsCopy;
       }
     }
 
 LABEL_39:
     v35 = __dst[0];
-    if ((a7 & 2) == 0 || __dst[0])
+    if ((flags & 2) == 0 || __dst[0])
     {
       goto LABEL_51;
     }
 
-    if (!a6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    if (!bootsector && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100035208();
     }
 
-    if (*&a6->var2.var2[6])
+    if (*&bootsector->var2.var2[6])
     {
-      if (a6->var0.var4[7] == 41)
+      if (bootsector->var0.var4[7] == 41)
       {
         v36 = 43;
 LABEL_49:
-        strncpy(__dst, &a6->var0.var0[v36], 0xBuLL);
+        strncpy(__dst, &bootsector->var0.var0[v36], 0xBuLL);
       }
     }
 
-    else if (a6->var0.var4[35] == 41)
+    else if (bootsector->var0.var4[35] == 41)
     {
       v36 = 71;
       goto LABEL_49;
@@ -221,7 +221,7 @@ LABEL_51:
       __dst[0] = -27;
     }
 
-    if (([a1 isLabelLegal:{__dst, v40}] & 1) == 0)
+    if (([self isLabelLegal:{__dst, v40}] & 1) == 0)
     {
       __dst[0] = 0;
     }
@@ -236,7 +236,7 @@ LABEL_51:
       __dst[i] = 0;
     }
 
-    v14 = [[NSString alloc] initWithBytes:__dst length:11 encoding:{CFStringConvertEncodingToNSStringEncoding(objc_msgSend(a1, "getDefaultDOSEncoding"))}];
+    v14 = [[NSString alloc] initWithBytes:__dst length:11 encoding:{CFStringConvertEncodingToNSStringEncoding(objc_msgSend(self, "getDefaultDOSEncoding"))}];
     goto LABEL_59;
   }
 
@@ -252,14 +252,14 @@ LABEL_59:
   return v14;
 }
 
-+ (BOOL)isLabelLegal:(char *)a3
++ (BOOL)isLabelLegal:(char *)legal
 {
   v4 = 0;
   while (1)
   {
-    v5 = a3[v4];
+    v5 = legal[v4];
     v6 = v4 ? 32 : 33;
-    if (v6 > v5 || memchr("*+,./:;<=>?[\\]|", a3[v4], 0x11uLL))
+    if (v6 > v5 || memchr("*+,./:;<=>?[\\]|", legal[v4], 0x11uLL))
     {
       break;
     }
@@ -311,24 +311,24 @@ LABEL_12:
   return v7;
 }
 
-+ (id)generateVolumeUuid:(bootsector *)a3 uuid:(char *)a4
++ (id)generateVolumeUuid:(bootsector *)uuid uuid:(char *)a4
 {
   v5 = 36;
-  if (!*&a3->var2.var2[6])
+  if (!*&uuid->var2.var2[6])
   {
     v5 = 64;
   }
 
-  v6 = &a3->var0.var0[v5];
+  v6 = &uuid->var0.var0[v5];
   if (v6[2] == 41)
   {
     v7 = v6 + 3;
     if (v6[3] || v6[4] || v6[5] || v6[6])
     {
-      v8 = *&a3->var2.var2[8];
-      if (!*&a3->var2.var2[8])
+      v8 = *&uuid->var2.var2[8];
+      if (!*&uuid->var2.var2[8])
       {
-        v8 = *&a3->var2.var2[21];
+        v8 = *&uuid->var2.var2[21];
       }
 
       memset(&c, 0, sizeof(c));
@@ -351,13 +351,13 @@ LABEL_12:
   return v11;
 }
 
-+ (id)getVolumeLabelFromBootSector:(char *)a3
++ (id)getVolumeLabelFromBootSector:(char *)sector
 {
   v3 = 0;
   memset(v9, 0, sizeof(v9));
   do
   {
-    v4 = a3[v3];
+    v4 = sector[v3];
     if (v4 == 5 && v3 == 0)
     {
       v4 = 229;
@@ -538,55 +538,55 @@ LABEL_12:
   return v2;
 }
 
-+ (unsigned)parseCharacterOfLongNameEntry:(winentry *)a3 charIdxInEntry:(unsigned int)a4 charIdxInName:(unsigned int)a5 unistrName:(unistr255 *)a6 isFirstLongEntryInSet:(BOOL)a7
++ (unsigned)parseCharacterOfLongNameEntry:(winentry *)entry charIdxInEntry:(unsigned int)inEntry charIdxInName:(unsigned int)name unistrName:(unistr255 *)unistrName isFirstLongEntryInSet:(BOOL)set
 {
-  if (a4 > 0xC)
+  if (inEntry > 0xC)
   {
     return 0;
   }
 
-  v8 = *(&a3->var0 + puLongNameOffset[a4]);
+  v8 = *(&entry->var0 + puLongNameOffset[inEntry]);
   if ((v8 + 1) <= 1u)
   {
-    if (a7)
+    if (set)
     {
-      a6->var0 = a5 + a4;
+      unistrName->var0 = name + inEntry;
       return 1;
     }
 
     return 0;
   }
 
-  if (a5 + a4 > 0xFF)
+  if (name + inEntry > 0xFF)
   {
     return 0;
   }
 
-  a6->var1[a5 + a4] = v8;
+  unistrName->var1[name + inEntry] = v8;
   return 2;
 }
 
-+ (BOOL)isDotOrDotDot:(char *)a3 length:(unint64_t)a4
++ (BOOL)isDotOrDotDot:(char *)dot length:(unint64_t)length
 {
-  if (!a3)
+  if (!dot)
   {
     return 0;
   }
 
-  v4 = *a3;
-  if (a4 == 1 && v4 == 46)
+  v4 = *dot;
+  if (length == 1 && v4 == 46)
   {
     return 1;
   }
 
-  v6 = v4 == 46 && a3[1] == 46;
-  return a4 == 2 && v6;
+  v6 = v4 == 46 && dot[1] == 46;
+  return length == 2 && v6;
 }
 
-+ (id)syncReadFromDevice:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6
++ (id)syncReadFromDevice:(id)device into:(void *)into startingAt:(int64_t)at length:(unint64_t)length
 {
   v11 = 0;
-  v7 = [a3 readInto:a4 startingAt:a5 length:a6 error:&v11];
+  v7 = [device readInto:into startingAt:at length:length error:&v11];
   v8 = v11;
   if (v8)
   {
@@ -597,7 +597,7 @@ LABEL_12:
     }
   }
 
-  else if (v7 == a6)
+  else if (v7 == length)
   {
     v9 = 0;
   }
@@ -615,14 +615,14 @@ LABEL_12:
   return v9;
 }
 
-+ (id)syncMetaReadFromDevice:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6
++ (id)syncMetaReadFromDevice:(id)device into:(void *)into startingAt:(int64_t)at length:(unint64_t)length
 {
-  v10 = a3;
-  v11 = [a1 sharedUtilities];
-  if ([v11 useMetaRW])
+  deviceCopy = device;
+  sharedUtilities = [self sharedUtilities];
+  if ([sharedUtilities useMetaRW])
   {
     v14 = 0;
-    [v10 metadataReadInto:a4 startingAt:a5 length:a6 error:&v14];
+    [deviceCopy metadataReadInto:into startingAt:at length:length error:&v14];
 
     v12 = v14;
     if (v12 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -633,7 +633,7 @@ LABEL_12:
 
   else
   {
-    v12 = [Utilities syncReadFromDevice:v10 into:a4 startingAt:a5 length:a6];
+    v12 = [Utilities syncReadFromDevice:deviceCopy into:into startingAt:at length:length];
 
     if (v12 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -644,17 +644,17 @@ LABEL_12:
   return v12;
 }
 
-+ (id)metaWriteToDevice:(id)a3 from:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6 forceSyncWrite:(BOOL)a7
++ (id)metaWriteToDevice:(id)device from:(void *)from startingAt:(int64_t)at length:(unint64_t)length forceSyncWrite:(BOOL)write
 {
-  v11 = a3;
+  deviceCopy = device;
   v19 = 0;
-  [v11 metadataWriteFrom:a4 startingAt:a5 length:a6 error:&v19];
+  [deviceCopy metadataWriteFrom:from startingAt:at length:length error:&v19];
   v12 = v19;
   if (v12)
   {
     v13 = v12;
-    v14 = [a1 sharedUtilities];
-    if ([v14 useMetaRW])
+    sharedUtilities = [self sharedUtilities];
+    if ([sharedUtilities useMetaRW])
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -667,7 +667,7 @@ LABEL_12:
     else
     {
       v18 = v13;
-      v16 = [v11 writeFrom:a4 startingAt:a5 length:a6 error:&v18];
+      v16 = [deviceCopy writeFrom:from startingAt:at length:length error:&v18];
       v15 = v18;
 
       if (v15)
@@ -678,7 +678,7 @@ LABEL_12:
         }
       }
 
-      else if (v16 == a6)
+      else if (v16 == length)
       {
         v15 = 0;
       }
@@ -703,10 +703,10 @@ LABEL_12:
   return v15;
 }
 
-+ (id)syncMetaClearToDevice:(id)a3 rangesToClear:(id)a4
++ (id)syncMetaClearToDevice:(id)device rangesToClear:(id)clear
 {
   v6 = 0;
-  [a3 metadataClear:a4 withDelayedWrites:0 error:&v6];
+  [device metadataClear:clear withDelayedWrites:0 error:&v6];
   v4 = v6;
   if (v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -716,10 +716,10 @@ LABEL_12:
   return v4;
 }
 
-+ (id)syncMetaPurgeToDevice:(id)a3 rangesToPurge:(id)a4
++ (id)syncMetaPurgeToDevice:(id)device rangesToPurge:(id)purge
 {
   v6 = 0;
-  [a3 metadataPurge:a4 error:&v6];
+  [device metadataPurge:purge error:&v6];
   v4 = v6;
   if (v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
@@ -729,24 +729,24 @@ LABEL_12:
   return v4;
 }
 
-+ (id)getMD5Digest:(unsigned int)a3 forData:(const char *)a4 length:(unsigned int)a5
++ (id)getMD5Digest:(unsigned int)digest forData:(const char *)data length:(unsigned int)length
 {
-  v8 = a3 >> 1;
-  v9 = &c - (((a3 >> 1) + 15) & 0xFFFFFFF0);
-  bzero(v9, a3 >> 1);
-  v10 = [NSMutableData dataWithLength:a3 + 1];
-  v11 = [v10 mutableBytes];
+  v8 = digest >> 1;
+  v9 = &c - (((digest >> 1) + 15) & 0xFFFFFFF0);
+  bzero(v9, digest >> 1);
+  v10 = [NSMutableData dataWithLength:digest + 1];
+  mutableBytes = [v10 mutableBytes];
   memset(&c, 0, sizeof(c));
   CC_MD5_Init(&c);
-  CC_MD5_Update(&c, a4, a5);
+  CC_MD5_Update(&c, data, length);
   CC_MD5_Final(v9, &c);
-  if (a3 >= 2)
+  if (digest >= 2)
   {
     v12 = 0;
     v13 = 0;
     do
     {
-      snprintf(&v11[2 * v12], 3uLL, "%02x", v9[v13++]);
+      snprintf(&mutableBytes[2 * v12], 3uLL, "%02x", v9[v13++]);
       v12 = v13;
     }
 
@@ -756,20 +756,20 @@ LABEL_12:
   return v10;
 }
 
-+ (BOOL)containsReadOnlyAttributes:(id)a3
++ (BOOL)containsReadOnlyAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = 1;
-  if (([v3 isValid:1] & 1) == 0)
+  if (([attributesCopy isValid:1] & 1) == 0)
   {
-    if ([v3 isValid:4] & 1) != 0 || (objc_msgSend(v3, "isValid:", 128) & 1) != 0 || (objc_msgSend(v3, "isValid:", 256) & 1) != 0 || (objc_msgSend(v3, "isValid:", 512))
+    if ([attributesCopy isValid:4] & 1) != 0 || (objc_msgSend(attributesCopy, "isValid:", 128) & 1) != 0 || (objc_msgSend(attributesCopy, "isValid:", 256) & 1) != 0 || (objc_msgSend(attributesCopy, "isValid:", 512))
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = [v3 isValid:4096];
+      v4 = [attributesCopy isValid:4096];
     }
   }
 

@@ -1,6 +1,6 @@
 @interface ADParameterFactory
 - (ADParameterFactory)init;
-- (id)campaignNamespaceParameterWithCampaignNamespace:(id)a3;
+- (id)campaignNamespaceParameterWithCampaignNamespace:(id)namespace;
 - (id)frequencyCapDataParameter;
 - (id)privacyDataKeyParameter;
 - (id)requestedAdDataParameter;
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (id)campaignNamespaceParameterWithCampaignNamespace:(id)a3
+- (id)campaignNamespaceParameterWithCampaignNamespace:(id)namespace
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3 && (objc_msgSend_isEqualToString_(v3, v4, &stru_2876A6DB8, v5, v6) & 1) == 0)
+  namespaceCopy = namespace;
+  v7 = namespaceCopy;
+  if (namespaceCopy && (objc_msgSend_isEqualToString_(namespaceCopy, v4, &stru_2876A6DB8, v5, v6) & 1) == 0)
   {
     v8 = objc_alloc_init(MEMORY[0x277CE9690]);
     objc_msgSend_setKey_(v8, v9, @"campaignNamespace", v10, v11);

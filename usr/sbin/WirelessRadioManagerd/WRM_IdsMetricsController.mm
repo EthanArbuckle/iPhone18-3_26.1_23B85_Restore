@@ -11,7 +11,7 @@
 - (double)getTxPerMovAvg;
 - (void)configureIDSMetricsReporting;
 - (void)dealloc;
-- (void)handlePeriodicIDSMetrics:(id)a3;
+- (void)handlePeriodicIDSMetrics:(id)metrics;
 - (void)resetIDSMetrics;
 @end
 
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_10006D380;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7E18 != -1)
   {
     dispatch_once(&qword_1002B7E18, block);
@@ -102,9 +102,9 @@
   }
 }
 
-- (void)handlePeriodicIDSMetrics:(id)a3
+- (void)handlePeriodicIDSMetrics:(id)metrics
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(metrics, "kMessageArgs");
   [WCM_Logging logLevel:18 message:@"Periodic IDS metrics received from IDS Controller "];
   if (value)
   {
@@ -198,25 +198,25 @@
 
 - (double)evaluateDLThroughput
 {
-  v3 = [(WRM_IdsMetricsController *)self mStreamingReportBytesReceived];
-  v4 = [(WRM_IdsMetricsController *)self mLocalDeliveryMessageReceived];
-  v5 = (v3 + [(WRM_IdsMetricsController *)self mLocalDeliveryMessageReceivedMessageSize]* v4) * 8.0;
+  mStreamingReportBytesReceived = [(WRM_IdsMetricsController *)self mStreamingReportBytesReceived];
+  mLocalDeliveryMessageReceived = [(WRM_IdsMetricsController *)self mLocalDeliveryMessageReceived];
+  v5 = (mStreamingReportBytesReceived + [(WRM_IdsMetricsController *)self mLocalDeliveryMessageReceivedMessageSize]* mLocalDeliveryMessageReceived) * 8.0;
   return v5 / ([(WRM_IdsMetricsController *)self mReportDuration]+ 0.000001);
 }
 
 - (double)evaluateULThroughput
 {
-  v3 = [(WRM_IdsMetricsController *)self mStreamingReportBytesSent];
-  v4 = [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDelivered];
-  v5 = (v3 + [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDeliveredMessageSize]* v4) * 8.0;
+  mStreamingReportBytesSent = [(WRM_IdsMetricsController *)self mStreamingReportBytesSent];
+  mLocalDeliveryMessageDelivered = [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDelivered];
+  v5 = (mStreamingReportBytesSent + [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDeliveredMessageSize]* mLocalDeliveryMessageDelivered) * 8.0;
   return v5 / ([(WRM_IdsMetricsController *)self mReportDuration]+ 0.000001);
 }
 
 - (double)getTxPer
 {
-  v3 = [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDeliveredDeliveryError];
-  v4 = [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDelivered];
-  return v3 / (v4 + [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDeliveredDeliveryError]+ 0.000001);
+  mLocalDeliveryMessageDeliveredDeliveryError = [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDeliveredDeliveryError];
+  mLocalDeliveryMessageDelivered = [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDelivered];
+  return mLocalDeliveryMessageDeliveredDeliveryError / (mLocalDeliveryMessageDelivered + [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDeliveredDeliveryError]+ 0.000001);
 }
 
 - (double)getTxPerMovAvg
@@ -231,8 +231,8 @@
 
 - (double)getAnticipiatedTxPer
 {
-  v3 = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageSent];
-  v4 = v3 - [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageDelivered];
+  mLocalDeliveryCumulativeMessageSent = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageSent];
+  v4 = mLocalDeliveryCumulativeMessageSent - [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageDelivered];
   [WCM_Logging logLevel:27 message:@"getAnticipiatedTxPer: Sent: %ld, Delivered: %ld, Pkt Loss: %.2f", [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageSent], [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageDelivered], *&v4];
   v5 = 0.0;
   if (v4 > 0.0)
@@ -255,8 +255,8 @@
 
 - (BOOL)getAnticipiatedTxPerValid
 {
-  v3 = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageSent];
-  v4 = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageDelivered]+ v3;
+  mLocalDeliveryCumulativeMessageSent = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageSent];
+  v4 = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageDelivered]+ mLocalDeliveryCumulativeMessageSent;
   return [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDeliveredDeliveryError]+ v4 > 0x45;
 }
 
@@ -290,8 +290,8 @@
 
 - (BOOL)getTxPerAnticipatedMovAvgValid
 {
-  v3 = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageSent];
-  v4 = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageDelivered]+ v3;
+  mLocalDeliveryCumulativeMessageSent = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageSent];
+  v4 = [(WRM_IdsMetricsController *)self mLocalDeliveryCumulativeMessageDelivered]+ mLocalDeliveryCumulativeMessageSent;
   return [(WRM_IdsMetricsController *)self mLocalDeliveryMessageDeliveredDeliveryError]+ v4 > 0x45;
 }
 

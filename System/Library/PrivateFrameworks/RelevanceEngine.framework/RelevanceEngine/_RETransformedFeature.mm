@@ -1,18 +1,18 @@
 @interface _RETransformedFeature
-- (BOOL)isEqual:(id)a3;
-- (_RETransformedFeature)initWithTransformer:(id)a3 features:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_RETransformedFeature)initWithTransformer:(id)transformer features:(id)features;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_computeHash;
-- (void)_replaceDependentFeature:(id)a3 withFeature:(id)a4;
+- (void)_replaceDependentFeature:(id)feature withFeature:(id)withFeature;
 @end
 
 @implementation _RETransformedFeature
 
-- (_RETransformedFeature)initWithTransformer:(id)a3 features:(id)a4
+- (_RETransformedFeature)initWithTransformer:(id)transformer features:(id)features
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  transformerCopy = transformer;
+  featuresCopy = features;
   v28.receiver = self;
   v28.super_class = _RETransformedFeature;
   v8 = [(_RETransformedFeature *)&v28 init];
@@ -20,22 +20,22 @@
   {
     if (([objc_opt_class() supportsInvalidation] & 1) != 0 || objc_msgSend(objc_opt_class(), "supportsPersistence"))
     {
-      v9 = [v6 copy];
+      v9 = [transformerCopy copy];
 
-      v6 = v9;
+      transformerCopy = v9;
     }
 
-    objc_storeStrong(&v8->_transformer, v6);
-    v10 = [REFeatureSet featureSetWithFeatures:v7];
+    objc_storeStrong(&v8->_transformer, transformerCopy);
+    v10 = [REFeatureSet featureSetWithFeatures:featuresCopy];
     features = v8->_features;
     v8->_features = v10;
 
-    v12 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = v7;
+    v13 = featuresCopy;
     v14 = [v13 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v14)
     {
@@ -51,8 +51,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * v17) name];
-          [v12 appendString:v18];
+          name = [*(*(&v24 + 1) + 8 * v17) name];
+          [string appendString:name];
 
           ++v17;
         }
@@ -64,10 +64,10 @@
       while (v15);
     }
 
-    v19 = [v6 name];
-    [v12 appendString:v19];
+    name2 = [transformerCopy name];
+    [string appendString:name2];
 
-    v20 = [v12 copy];
+    v20 = [string copy];
     name = v8->_name;
     v8->_name = v20;
 
@@ -78,10 +78,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -91,7 +91,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       transformer = v5->_transformer;
       v7 = self->_transformer;
       v8 = v7;
@@ -137,13 +137,13 @@ LABEL_14:
   return v10;
 }
 
-- (void)_replaceDependentFeature:(id)a3 withFeature:(id)a4
+- (void)_replaceDependentFeature:(id)feature withFeature:(id)withFeature
 {
-  v20 = a4;
-  v6 = a3;
-  v7 = [v6 name];
-  v8 = [v20 name];
-  v9 = [v7 isEqualToString:v8];
+  withFeatureCopy = withFeature;
+  featureCopy = feature;
+  name = [featureCopy name];
+  name2 = [withFeatureCopy name];
+  v9 = [name isEqualToString:name2];
 
   if ((v9 & 1) == 0)
   {
@@ -151,9 +151,9 @@ LABEL_14:
   }
 
   v16 = [(REFeatureSet *)self->_features mutableCopy];
-  [v16 removeFeature:v6];
+  [v16 removeFeature:featureCopy];
 
-  [v16 addFeature:v20];
+  [v16 addFeature:withFeatureCopy];
   v17 = [v16 copy];
   features = self->_features;
   self->_features = v17;
@@ -198,9 +198,9 @@ LABEL_14:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_name);
   objc_storeStrong(v4 + 4, self->_transformer);
   objc_storeStrong(v4 + 3, self->_features);

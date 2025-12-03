@@ -1,43 +1,43 @@
 @interface PDFView
-- (BOOL)_shouldHandleAnnotationAtLocation:(CGPoint)a3 forGestureType:(unint64_t)a4;
-- (BOOL)acceptSingleTouch:(id)a3;
+- (BOOL)_shouldHandleAnnotationAtLocation:(CGPoint)location forGestureType:(unint64_t)type;
+- (BOOL)acceptSingleTouch:(id)touch;
 - (BOOL)akAnnotationEditingEnabled;
 - (BOOL)allowsMarkupAnnotationEditing;
 - (BOOL)canGoBack;
 - (BOOL)canGoForward;
 - (BOOL)canGoToNextPage;
 - (BOOL)canGoToPreviousPage;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canZoomIn;
 - (BOOL)canZoomOut;
-- (BOOL)focusOnColumnAtPoint:(CGPoint)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)focusOnColumnAtPoint:(CGPoint)point;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isAnnotationEditingEnabled;
-- (BOOL)isOverLinkAnnotation:(CGPoint)a3;
-- (BOOL)isRectVisible:(CGRect)a3 onPage:(id)a4;
-- (BOOL)userDidEnterPassword:(id)a3 forPasswordViewController:(id)a4;
-- (CGAffineTransform)_transformFromPageToPageView:(SEL)a3;
-- (CGAffineTransform)_transformFromPageViewToPage:(SEL)a3;
+- (BOOL)isOverLinkAnnotation:(CGPoint)annotation;
+- (BOOL)isRectVisible:(CGRect)visible onPage:(id)page;
+- (BOOL)userDidEnterPassword:(id)password forPasswordViewController:(id)controller;
+- (CGAffineTransform)_transformFromPageToPageView:(SEL)view;
+- (CGAffineTransform)_transformFromPageViewToPage:(SEL)page;
 - (CGFloat)maxScaleFactor;
 - (CGFloat)minScaleFactor;
 - (CGFloat)scaleFactor;
 - (CGFloat)scaleFactorForSizeToFit;
-- (CGPoint)_scrollOriginForPageTopLeft:(id)a3;
-- (CGPoint)centerPointOfVisibleRectOfPage:(id)a3;
+- (CGPoint)_scrollOriginForPageTopLeft:(id)left;
+- (CGPoint)centerPointOfVisibleRectOfPage:(id)page;
 - (CGPoint)convertPoint:(CGPoint)point fromPage:(PDFPage *)page;
 - (CGPoint)convertPoint:(CGPoint)point toPage:(PDFPage *)page;
 - (CGRect)convertRect:(CGRect)rect fromPage:(PDFPage *)page;
 - (CGRect)convertRect:(CGRect)rect toPage:(PDFPage *)page;
-- (CGRect)convertRectToRootView:(CGRect)a3 fromPageLayer:(id)a4;
-- (CGRect)convertRootViewRect:(CGRect)a3 toPageLayer:(id)a4;
+- (CGRect)convertRectToRootView:(CGRect)view fromPageLayer:(id)layer;
+- (CGRect)convertRootViewRect:(CGRect)rect toPageLayer:(id)layer;
 - (CGRect)extendedRootViewBounds;
 - (CGRect)extensionViewBoundsInDocument;
 - (CGRect)mainScreenBounds;
-- (CGRect)normalizedPageBounds:(id)a3;
+- (CGRect)normalizedPageBounds:(id)bounds;
 - (CGRect)rootViewBounds;
-- (CGRect)visibleRectForPageView:(id)a3;
-- (CGSize)pageViewSizeForPage:(id)a3;
+- (CGRect)visibleRectForPageView:(id)view;
+- (CGSize)pageViewSizeForPage:(id)page;
 - (CGSize)pdfDocumentViewSize;
 - (CGSize)rowSizeForPage:(PDFPage *)page;
 - (NSArray)visiblePages;
@@ -45,20 +45,20 @@
 - (PDFDestination)currentDestination;
 - (PDFPage)currentPage;
 - (PDFPage)pageForPoint:(CGPoint)point nearest:(BOOL)nearest;
-- (PDFView)initWithCoder:(id)a3;
-- (PDFView)initWithFrame:(CGRect)a3;
+- (PDFView)initWithCoder:(id)coder;
+- (PDFView)initWithFrame:(CGRect)frame;
 - (UIColor)backgroundColor;
 - (UIEdgeInsets)documentMargins;
 - (UIEdgeInsets)pageBreakMargins;
-- (double)PDFViewWillChangeScaleFactor:(id)a3 toScale:(double)a4;
-- (double)_pageViewHeight:(id)a3;
-- (double)_unboundAutoScaleFactorForPage:(id)a3;
-- (double)_unboundAutoScaleFactorForPageWithSize:(CGSize)a3;
+- (double)PDFViewWillChangeScaleFactor:(id)factor toScale:(double)scale;
+- (double)_pageViewHeight:(id)height;
+- (double)_unboundAutoScaleFactorForPage:(id)page;
+- (double)_unboundAutoScaleFactorForPageWithSize:(CGSize)size;
 - (double)autoScaleFactor;
-- (double)autoScaleFactorForPage:(id)a3;
-- (double)autoScaleFactorForPageWithSize:(CGSize)a3;
+- (double)autoScaleFactorForPage:(id)page;
+- (double)autoScaleFactorForPageWithSize:(CGSize)size;
 - (double)mainScreenScale;
-- (id)_dragItemsAtLocationInView:(CGPoint)a3;
+- (id)_dragItemsAtLocationInView:(CGPoint)view;
 - (id)_getDocumentAKController;
 - (id)akRedoToolbarItem;
 - (id)akToolbarView;
@@ -67,192 +67,192 @@
 - (id)akUndoToolbarItem;
 - (id)delegate;
 - (id)determineCurrentPage;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)findInteraction:(id)a3 sessionForView:(id)a4;
-- (id)hitTestForSubviewsOfView:(id)a3 atLocation:(CGPoint)a4 withEvent:(id)a5;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)findInteraction:(id)interaction sessionForView:(id)view;
+- (id)hitTestForSubviewsOfView:(id)view atLocation:(CGPoint)location withEvent:(id)event;
 - (id)nextPage;
 - (id)pageOverlayViewProvider;
-- (id)pageViewForPageAtIndex:(unint64_t)a3;
+- (id)pageViewForPageAtIndex:(unint64_t)index;
 - (id)parentViewController;
-- (id)pointerRegionForLocation:(CGPoint)a3;
+- (id)pointerRegionForLocation:(CGPoint)location;
 - (id)previousPage;
-- (id)viewForPage:(id)a3;
+- (id)viewForPage:(id)page;
 - (id)visibleAnnotations;
 - (id)visiblePageViews;
 - (unint64_t)lastPageIndex;
 - (unint64_t)scrollViewMinimumNumberOfTouches;
-- (unint64_t)typeForGestureRecognizer:(id)a3;
-- (void)PDFViewWillClickOnLink:(id)a3 withURL:(id)a4;
+- (unint64_t)typeForGestureRecognizer:(id)recognizer;
+- (void)PDFViewWillClickOnLink:(id)link withURL:(id)l;
 - (void)_commonInit;
 - (void)_ensureOverlayViewController;
 - (void)_findVisiblePages;
-- (void)_goToPage:(id)a3 animated:(BOOL)a4 withBackgroundUpdate:(BOOL)a5;
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4;
+- (void)_goToPage:(id)page animated:(BOOL)animated withBackgroundUpdate:(BOOL)update;
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector;
 - (void)_internalSetAutoScaleFactor;
-- (void)_internalSetScaleFactor:(double)a3;
-- (void)_lookup:(id)a3;
+- (void)_internalSetScaleFactor:(double)factor;
+- (void)_lookup:(id)_lookup;
 - (void)_reflectNewPageOn;
 - (void)_releaseDocument;
 - (void)_releaseDocumentViewController;
 - (void)_releaseScrollView;
 - (void)_removePasswordView;
-- (void)_resizeDisplayView:(id)a3;
-- (void)_scrollByPage:(BOOL)a3;
-- (void)_scrollHorizontalBy:(double)a3;
-- (void)_scrollVerticalBy:(double)a3;
+- (void)_resizeDisplayView:(id)view;
+- (void)_scrollByPage:(BOOL)page;
+- (void)_scrollHorizontalBy:(double)by;
+- (void)_scrollVerticalBy:(double)by;
 - (void)_setupDocumentViewController;
 - (void)_setupPasswordView;
 - (void)_setupScrollView;
-- (void)_showFormFillingButton:(BOOL)a3;
+- (void)_showFormFillingButton:(BOOL)button;
 - (void)_syncPageIndexToScrollView;
 - (void)_tileRefresh;
 - (void)_updateAnnotations;
 - (void)_updateBookmarksForPages;
 - (void)_updateCurrentPageUsingViewCenter;
 - (void)_updatePasswordView;
-- (void)addGestureRecognizer:(id)a3;
+- (void)addGestureRecognizer:(id)recognizer;
 - (void)annotationsChangedOnPage:(PDFPage *)page;
 - (void)beginPDFViewRotation;
-- (void)callPageVisibilityDelegateMethod:(int)a3 forPageView:(id)a4 atPageIndex:(unint64_t)a5;
-- (void)callPageVisibilityDelegateMethodForOverlayAdaptorOnly:(int)a3 forPageView:(id)a4 atPageIndex:(unint64_t)a5;
+- (void)callPageVisibilityDelegateMethod:(int)method forPageView:(id)view atPageIndex:(unint64_t)index;
+- (void)callPageVisibilityDelegateMethodForOverlayAdaptorOnly:(int)only forPageView:(id)view atPageIndex:(unint64_t)index;
 - (void)clearSelection;
-- (void)colorWidgetBackgrounds:(BOOL)a3;
-- (void)constrainedScrollToPoint:(CGPoint)a3;
+- (void)colorWidgetBackgrounds:(BOOL)backgrounds;
+- (void)constrainedScrollToPoint:(CGPoint)point;
 - (void)copy:(id)sender;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)documentWasUnlocked;
-- (void)drawDetectedAnnotationBounds:(BOOL)a3;
+- (void)drawDetectedAnnotationBounds:(BOOL)bounds;
 - (void)drawPage:(PDFPage *)page toContext:(CGContextRef)context;
-- (void)enableBackgroundImages:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)enableBackgroundImages:(BOOL)images;
+- (void)encodeWithCoder:(id)coder;
 - (void)endPDFViewRotation;
 - (void)forceTileRefresh;
 - (void)gestureInit;
 - (void)goBack:(id)sender;
 - (void)goForward:(id)sender;
 - (void)goToDestination:(PDFDestination *)destination;
-- (void)goToDestinationNoPush:(id)a3;
+- (void)goToDestinationNoPush:(id)push;
 - (void)goToFirstPage:(id)sender;
 - (void)goToLastPage:(id)sender;
 - (void)goToNextPage:(id)sender;
-- (void)goToPageNoPush:(id)a3 animated:(BOOL)a4;
+- (void)goToPageNoPush:(id)push animated:(BOOL)animated;
 - (void)goToPreviousPage:(id)sender;
 - (void)goToRect:(CGRect)rect onPage:(PDFPage *)page;
 - (void)goToSelection:(PDFSelection *)selection;
-- (void)handleAnalysisCompletionOfPage:(id)a3 resultTypes:(unint64_t)a4;
-- (void)handleGesture:(unint64_t)a3 state:(int64_t)a4 location:(CGPoint)a5 locationOfFirstTouch:(CGPoint)a6 isIndirectTouch:(BOOL)a7;
-- (void)highlightDetectedFormFields:(BOOL)a3;
-- (void)highlightPDFRedactions:(BOOL)a3;
-- (void)insertFormFieldAtBestLocationNearPoint:(CGPoint)a3 onPage:(id)a4;
+- (void)handleAnalysisCompletionOfPage:(id)page resultTypes:(unint64_t)types;
+- (void)handleGesture:(unint64_t)gesture state:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch isIndirectTouch:(BOOL)indirectTouch;
+- (void)highlightDetectedFormFields:(BOOL)fields;
+- (void)highlightPDFRedactions:(BOOL)redactions;
+- (void)insertFormFieldAtBestLocationNearPoint:(CGPoint)point onPage:(id)page;
 - (void)insertFormFieldAtDefaultLocation;
-- (void)insertFormFieldWithBounds:(CGRect)a3 onPage:(id)a4;
+- (void)insertFormFieldWithBounds:(CGRect)bounds onPage:(id)page;
 - (void)internalForceAnnotationRefresh;
 - (void)internalForceTileRefresh;
 - (void)layoutDocumentView;
 - (void)layoutSubviews;
-- (void)pageViewControllerSaysPageChanged:(id)a3;
+- (void)pageViewControllerSaysPageChanged:(id)changed;
 - (void)performAction:(PDFAction *)action;
 - (void)performOverlayAdaptorPageVisibilityTrueUpAfterSettingDocument;
-- (void)positionInternalViews:(id)a3;
+- (void)positionInternalViews:(id)views;
 - (void)printActivePageText;
-- (void)pushDestination:(id)a3;
+- (void)pushDestination:(id)destination;
 - (void)removeFromSuperview;
 - (void)scrollSelectionToVisible:(id)sender;
-- (void)scrollViewSaysPageMayHaveChanged:(id)a3;
+- (void)scrollViewSaysPageMayHaveChanged:(id)changed;
 - (void)selectAll:(id)sender;
-- (void)setAkAnnotationEditingEnabled:(BOOL)a3;
-- (void)setAkToolbarViewItemTintColor:(id)a3;
-- (void)setAkToolbarViewTintColor:(id)a3;
+- (void)setAkAnnotationEditingEnabled:(BOOL)enabled;
+- (void)setAkToolbarViewItemTintColor:(id)color;
+- (void)setAkToolbarViewTintColor:(id)color;
 - (void)setAutoScales:(BOOL)autoScales;
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
-- (void)setBackgroundImage:(id)a3 forPage:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setCurrentPageIndex:(unint64_t)a3 withNotification:(BOOL)a4;
+- (void)setBackgroundImage:(id)image forPage:(id)page;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCurrentPageIndex:(unint64_t)index withNotification:(BOOL)notification;
 - (void)setCurrentSelection:(PDFSelection *)selection animate:(BOOL)animate;
-- (void)setCurrentSelection:(id)a3 updateTextInput:(BOOL)a4;
+- (void)setCurrentSelection:(id)selection updateTextInput:(BOOL)input;
 - (void)setDelegate:(id)delegate;
 - (void)setDisplayBox:(PDFDisplayBox)displayBox;
 - (void)setDisplayDirection:(PDFDisplayDirection)displayDirection;
 - (void)setDisplayMode:(PDFDisplayMode)displayMode;
 - (void)setDisplaysAsBook:(BOOL)displaysAsBook;
-- (void)setDisplaysBookmarksForPages:(BOOL)a3;
+- (void)setDisplaysBookmarksForPages:(BOOL)pages;
 - (void)setDisplaysPageBreaks:(BOOL)displaysPageBreaks;
 - (void)setDisplaysRTL:(BOOL)displaysRTL;
-- (void)setDocument:(id)a3 waitDuration:(double)a4;
-- (void)setDocument:(id)a3 withInitialPageIndex:(unint64_t)a4;
-- (void)setEnableTileUpdates:(BOOL)a3;
+- (void)setDocument:(id)document waitDuration:(double)duration;
+- (void)setDocument:(id)document withInitialPageIndex:(unint64_t)index;
+- (void)setEnableTileUpdates:(BOOL)updates;
 - (void)setFindInteractionEnabled:(BOOL)findInteractionEnabled;
-- (void)setForcesTopAlignment:(BOOL)a3;
-- (void)setFormDetectionEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGutterWidth:(double)a3;
+- (void)setForcesTopAlignment:(BOOL)alignment;
+- (void)setFormDetectionEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setGutterWidth:(double)width;
 - (void)setHighlightedSelections:(NSArray *)highlightedSelections;
-- (void)setInFormFillingMode:(BOOL)a3;
+- (void)setInFormFillingMode:(BOOL)mode;
 - (void)setMaxScaleFactor:(CGFloat)maxScaleFactor;
 - (void)setMinScaleFactor:(CGFloat)minScaleFactor;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setNewPageVisibilityDelegate:(id)a3 withOldDelegate:(id)a4;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setNewPageVisibilityDelegate:(id)delegate withOldDelegate:(id)oldDelegate;
 - (void)setPageBreakMargins:(UIEdgeInsets)pageBreakMargins;
 - (void)setPageOverlayViewProvider:(id)pageOverlayViewProvider;
 - (void)setScaleFactor:(CGFloat)scaleFactor;
-- (void)setScaleFactor:(double)a3 anchorPoint:(CGPoint)a4;
-- (void)setScrollViewScrollEnabled:(BOOL)a3;
-- (void)setShowsScrollIndicators:(BOOL)a3;
-- (void)signaturesController:(id)a3 didSelectSignatureWithAnnotation:(id)a4;
+- (void)setScaleFactor:(double)factor anchorPoint:(CGPoint)point;
+- (void)setScrollViewScrollEnabled:(BOOL)enabled;
+- (void)setShowsScrollIndicators:(BOOL)indicators;
+- (void)signaturesController:(id)controller didSelectSignatureWithAnnotation:(id)annotation;
 - (void)syncPageIndexToScrollView;
 - (void)takePasswordFrom:(id)sender;
-- (void)updatePDFViewLayout:(CGRect)a3 scrollViewFrame:(CGRect)a4 zoomScale:(double)a5;
+- (void)updatePDFViewLayout:(CGRect)layout scrollViewFrame:(CGRect)frame zoomScale:(double)scale;
 - (void)usePageViewController:(BOOL)enable withViewOptions:(NSDictionary *)viewOptions;
-- (void)visiblePagesChanged:(id)a3;
+- (void)visiblePagesChanged:(id)changed;
 - (void)zoomIn:(id)sender;
 - (void)zoomOut:(id)sender;
 @end
 
 @implementation PDFView
 
-- (void)setDocument:(id)a3 withInitialPageIndex:(unint64_t)a4
+- (void)setDocument:(id)document withInitialPageIndex:(unint64_t)index
 {
-  v9 = a3;
+  documentCopy = document;
   self->_private->wantsForceUpdate = 0;
   self->_private->blockingWaitDuration = 0.0;
   v6 = self->_private;
   if (v6->isUsingPageViewController)
   {
     [(PDFDocumentViewController *)v6->documentViewController willForceUpdate];
-    v7 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-    [v7 willForceUpdate];
+    pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+    [pdfDocumentView willForceUpdate];
   }
 
-  [(PDFView *)self setDocument:v9 waitDuration:0.0];
-  v8 = [v9 pageAtIndex:a4];
+  [(PDFView *)self setDocument:documentCopy waitDuration:0.0];
+  v8 = [documentCopy pageAtIndex:index];
   [(PDFView *)self goToPage:v8];
 }
 
-- (void)setDocument:(id)a3 waitDuration:(double)a4
+- (void)setDocument:(id)document waitDuration:(double)duration
 {
-  v7 = a3;
-  v8 = v7;
+  documentCopy = document;
+  v8 = documentCopy;
   v9 = self->_private;
-  if (v9->document == v7)
+  if (v9->document == documentCopy)
   {
     goto LABEL_30;
   }
 
-  v27 = v7;
+  v27 = documentCopy;
   [(PDFTimer *)v9->pageSyncTimer cancel];
   [(PDFOverlayViewsController *)self->_overlayViewController pdfView:self willSetDocument:v27];
-  v10 = [(PDFDocument *)self->_private->document akDocumentAdaptor];
-  [v10 setPdfView:0];
+  akDocumentAdaptor = [(PDFDocument *)self->_private->document akDocumentAdaptor];
+  [akDocumentAdaptor setPdfView:0];
 
-  objc_storeStrong(&self->_private->document, a3);
+  objc_storeStrong(&self->_private->document, document);
   [(PDFDocument *)self->_private->document setRenderingProperties:self->_private->renderingProperties];
   [(PDFViewLayout *)self->_private->viewLayout setDocument:v27];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"PDFViewChangedDocument" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFViewChangedDocument" object:self];
 
   if ([v27 isLinearized] && objc_msgSend(v27, "hasHighLatencyDataProvider"))
   {
@@ -274,7 +274,7 @@
   {
     [(PDFView *)self _releaseDocument];
     [(PDFView *)self layoutDocumentView];
-    v7 = [(PDFOverlayViewsController *)self->_overlayViewController pdfView:self didSetDocument:0];
+    documentCopy = [(PDFOverlayViewsController *)self->_overlayViewController pdfView:self didSetDocument:0];
 LABEL_29:
     v8 = v27;
     goto LABEL_30;
@@ -282,11 +282,11 @@ LABEL_29:
 
   if (GetDefaultsWriteAKEnabled())
   {
-    v17 = [(PDFView *)self undoManager];
-    v18 = [v17 isUndoRegistrationEnabled];
-    if (v18)
+    undoManager = [(PDFView *)self undoManager];
+    isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
+    if (isUndoRegistrationEnabled)
     {
-      [v17 disableUndoRegistration];
+      [undoManager disableUndoRegistration];
     }
 
     [(PDFView *)self _ensureOverlayViewController];
@@ -295,17 +295,17 @@ LABEL_29:
 
   else
   {
-    v17 = 0;
-    v18 = 0;
+    undoManager = 0;
+    isUndoRegistrationEnabled = 0;
   }
 
   if ([v27 isLocked])
   {
     if (![(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView])
     {
-      v19 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+      pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
 
-      if (v19)
+      if (pdfDocumentView)
       {
         [(PDFScrollView *)self->_private->scrollView setDocument:0];
       }
@@ -313,24 +313,24 @@ LABEL_29:
       [(PDFView *)self _setupPasswordView];
     }
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:self selector:sel_documentWasUnlocked name:@"PDFDocumentDidUnlock" object:self->_private->document];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_documentWasUnlocked name:@"PDFDocumentDidUnlock" object:self->_private->document];
     goto LABEL_24;
   }
 
   [(PDFView *)self _removePasswordView];
-  v21 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v21 removeObserver:self name:@"PDFDocumentDidUnlock" object:v27];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"PDFDocumentDidUnlock" object:v27];
 
   [(PDFScrollView *)self->_private->scrollView setDocument:v27];
-  v22 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-  v23 = [v22 pageBackgroundManager];
-  objc_storeWeak(&self->_pageBackgroundManager, v23);
+  pdfDocumentView2 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+  pageBackgroundManager = [pdfDocumentView2 pageBackgroundManager];
+  objc_storeWeak(&self->_pageBackgroundManager, pageBackgroundManager);
 
   WeakRetained = objc_loadWeakRetained(&self->_private->delegate);
   [(PDFView *)self setNewPageVisibilityDelegate:WeakRetained withOldDelegate:0];
 
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     [(PDFView *)self layoutDocumentView];
   }
@@ -338,9 +338,9 @@ LABEL_29:
   else
   {
     self->_private->wantsForceUpdate = 1;
-    self->_private->blockingWaitDuration = a4;
-    v25 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-    [v25 willForceUpdate];
+    self->_private->blockingWaitDuration = duration;
+    pdfDocumentView3 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+    [pdfDocumentView3 willForceUpdate];
 
     v26 = [v27 pageAtIndex:0];
     [(PDFView *)self goToPage:v26];
@@ -349,41 +349,41 @@ LABEL_29:
   [(PDFView *)self setAutoScales:[(PDFView *)self autoScales]];
   if ([(PDFDocument *)self->_private->document pageCount])
   {
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 postNotificationName:@"PDFViewChangedPage" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"PDFViewChangedPage" object:self];
 LABEL_24:
   }
 
-  if (v18)
+  if (isUndoRegistrationEnabled)
   {
-    [v17 enableUndoRegistration];
+    [undoManager enableUndoRegistration];
   }
 
   [v27 setRenderingProperties:self->_private->renderingProperties];
 
   [(PDFOverlayViewsController *)self->_overlayViewController pdfView:self didSetDocument:v27];
-  v7 = [v27 isLocked];
+  documentCopy = [v27 isLocked];
   v8 = v27;
-  if ((v7 & 1) == 0)
+  if ((documentCopy & 1) == 0)
   {
-    v7 = [(PDFView *)self performOverlayAdaptorPageVisibilityTrueUpAfterSettingDocument];
+    documentCopy = [(PDFView *)self performOverlayAdaptorPageVisibilityTrueUpAfterSettingDocument];
     goto LABEL_29;
   }
 
 LABEL_30:
 
-  MEMORY[0x1EEE66BB8](v7, v8);
+  MEMORY[0x1EEE66BB8](documentCopy, v8);
 }
 
 - (void)_releaseDocument
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"PDFDocumentDidUnlock" object:self->_private->document];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PDFDocumentDidUnlock" object:self->_private->document];
 
   [(PDFViewLayout *)self->_private->viewLayout setDocument:0];
   [(PDFScrollView *)self->_private->scrollView setDocument:0];
-  v4 = [(PDFDocument *)self->_private->document akDocumentAdaptor];
-  [v4 setPdfView:0];
+  akDocumentAdaptor = [(PDFDocument *)self->_private->document akDocumentAdaptor];
+  [akDocumentAdaptor setPdfView:0];
 
   v5 = self->_private;
   document = v5->document;
@@ -394,11 +394,11 @@ LABEL_30:
 {
   if ([(PDFView *)self canGoToFirstPage])
   {
-    v4 = [(PDFView *)self currentDestination];
-    [(PDFView *)self pushDestination:v4];
+    currentDestination = [(PDFView *)self currentDestination];
+    [(PDFView *)self pushDestination:currentDestination];
 
-    v6 = [(PDFView *)self document];
-    v5 = [v6 pageAtIndex:0];
+    document = [(PDFView *)self document];
+    v5 = [document pageAtIndex:0];
     [(PDFView *)self goToPageNoPush:v5];
   }
 }
@@ -407,11 +407,11 @@ LABEL_30:
 {
   if ([(PDFView *)self canGoToLastPage])
   {
-    v4 = [(PDFView *)self currentDestination];
-    [(PDFView *)self pushDestination:v4];
+    currentDestination = [(PDFView *)self currentDestination];
+    [(PDFView *)self pushDestination:currentDestination];
 
-    v5 = [(PDFView *)self document];
-    v7 = [v5 pageAtIndex:{-[PDFView lastPageIndex](self, "lastPageIndex")}];
+    document = [(PDFView *)self document];
+    v7 = [document pageAtIndex:{-[PDFView lastPageIndex](self, "lastPageIndex")}];
 
     v6 = v7;
     if (v7)
@@ -424,20 +424,20 @@ LABEL_30:
 
 - (BOOL)canGoToNextPage
 {
-  v3 = [(PDFView *)self document];
+  document = [(PDFView *)self document];
 
-  if (!v3)
+  if (!document)
   {
     return 0;
   }
 
-  v4 = [(PDFView *)self PDFLayout];
-  v5 = [v4 functionalDisplayMode];
+  pDFLayout = [(PDFView *)self PDFLayout];
+  functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((functionalDisplayMode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v6 = [(PDFView *)self lastPageIndex];
-    currentPageIndex = self->_currentPageIndex + (([(PDFView *)self displaysAsBook]^ v6) & 1);
+    lastPageIndex = [(PDFView *)self lastPageIndex];
+    currentPageIndex = self->_currentPageIndex + (([(PDFView *)self displaysAsBook]^ lastPageIndex) & 1);
   }
 
   else
@@ -450,35 +450,35 @@ LABEL_30:
 
 - (void)goToNextPage:(id)sender
 {
-  v4 = [(PDFView *)self nextPage];
-  if (v4)
+  nextPage = [(PDFView *)self nextPage];
+  if (nextPage)
   {
-    v6 = v4;
-    v5 = [(PDFView *)self currentDestination];
-    [(PDFView *)self pushDestination:v5];
+    v6 = nextPage;
+    currentDestination = [(PDFView *)self currentDestination];
+    [(PDFView *)self pushDestination:currentDestination];
 
     [(PDFView *)self goToPageNoPush:v6];
-    v4 = v6;
+    nextPage = v6;
   }
 }
 
 - (BOOL)canGoToPreviousPage
 {
-  v3 = [(PDFView *)self document];
+  document = [(PDFView *)self document];
 
-  if (!v3)
+  if (!document)
   {
     return 0;
   }
 
-  v4 = [(PDFView *)self PDFLayout];
-  v5 = [v4 functionalDisplayMode];
+  pDFLayout = [(PDFView *)self PDFLayout];
+  functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((functionalDisplayMode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v6 = [(PDFView *)self displaysAsBook];
+    displaysAsBook = [(PDFView *)self displaysAsBook];
     currentPageIndex = self->_currentPageIndex;
-    if (!v6)
+    if (!displaysAsBook)
     {
       return currentPageIndex > 1;
     }
@@ -494,23 +494,23 @@ LABEL_30:
 
 - (void)goToPreviousPage:(id)sender
 {
-  v4 = [(PDFView *)self previousPage];
-  if (v4)
+  previousPage = [(PDFView *)self previousPage];
+  if (previousPage)
   {
-    v6 = v4;
-    v5 = [(PDFView *)self currentDestination];
-    [(PDFView *)self pushDestination:v5];
+    v6 = previousPage;
+    currentDestination = [(PDFView *)self currentDestination];
+    [(PDFView *)self pushDestination:currentDestination];
 
     [(PDFView *)self goToPageNoPush:v6];
-    v4 = v6;
+    previousPage = v6;
   }
 }
 
 - (BOOL)canGoBack
 {
-  v3 = [(PDFView *)self document];
+  document = [(PDFView *)self document];
 
-  return v3 && self->_private->historyIndex > 0;
+  return document && self->_private->historyIndex > 0;
 }
 
 - (void)goBack:(id)sender
@@ -521,8 +521,8 @@ LABEL_30:
     historyIndex = v4->historyIndex;
     if (historyIndex >= [(NSMutableArray *)v4->destinationHistory count])
     {
-      v6 = [(PDFView *)self currentDestination];
-      [(PDFView *)self pushDestination:v6];
+      currentDestination = [(PDFView *)self currentDestination];
+      [(PDFView *)self pushDestination:currentDestination];
 
       self->_private->historyIndex = [(NSMutableArray *)self->_private->destinationHistory count]- 1;
     }
@@ -530,17 +530,17 @@ LABEL_30:
     v7 = [(NSMutableArray *)self->_private->destinationHistory objectAtIndex:--self->_private->historyIndex];
     [(PDFView *)self goToDestinationNoPush:v7];
 
-    v9 = [MEMORY[0x1E696AD90] defaultQueue];
+    defaultQueue = [MEMORY[0x1E696AD90] defaultQueue];
     v8 = [MEMORY[0x1E696AD80] notificationWithName:@"PDFViewChangedHistory" object:self];
-    [v9 enqueueNotification:v8 postingStyle:1];
+    [defaultQueue enqueueNotification:v8 postingStyle:1];
   }
 }
 
 - (BOOL)canGoForward
 {
-  v3 = [(PDFView *)self document];
+  document = [(PDFView *)self document];
 
-  if (!v3)
+  if (!document)
   {
     return 0;
   }
@@ -557,63 +557,63 @@ LABEL_30:
     v4 = [(NSMutableArray *)self->_private->destinationHistory objectAtIndex:++self->_private->historyIndex];
     [(PDFView *)self goToDestinationNoPush:v4];
 
-    v6 = [MEMORY[0x1E696AD90] defaultQueue];
+    defaultQueue = [MEMORY[0x1E696AD90] defaultQueue];
     v5 = [MEMORY[0x1E696AD80] notificationWithName:@"PDFViewChangedHistory" object:self];
-    [v6 enqueueNotification:v5 postingStyle:1];
+    [defaultQueue enqueueNotification:v5 postingStyle:1];
   }
 }
 
 - (PDFPage)currentPage
 {
-  v3 = [(PDFDocument *)self->_private->document pageCount];
-  if (v3)
+  pageCount = [(PDFDocument *)self->_private->document pageCount];
+  if (pageCount)
   {
-    v3 = [(PDFDocument *)self->_private->document pageAtIndex:self->_currentPageIndex];
+    pageCount = [(PDFDocument *)self->_private->document pageAtIndex:self->_currentPageIndex];
   }
 
-  return v3;
+  return pageCount;
 }
 
-- (void)setCurrentPageIndex:(unint64_t)a3 withNotification:(BOOL)a4
+- (void)setCurrentPageIndex:(unint64_t)index withNotification:(BOOL)notification
 {
-  if (self->_currentPageIndex != a3)
+  if (self->_currentPageIndex != index)
   {
-    v4 = a4;
-    self->_currentPageIndex = a3;
+    notificationCopy = notification;
+    self->_currentPageIndex = index;
     WeakRetained = objc_loadWeakRetained(&self->_pageBackgroundManager);
     [WeakRetained updateActivePageIndex:self->_currentPageIndex];
 
     if (self->_private->pagePreloadQueue)
     {
-      v7 = [(PDFView *)self document];
-      [v7 preloadDataOfPagesInRange:self->_currentPageIndex + 1 onQueue:3 completion:{self->_private->pagePreloadQueue, 0}];
+      document = [(PDFView *)self document];
+      [document preloadDataOfPagesInRange:self->_currentPageIndex + 1 onQueue:3 completion:{self->_private->pagePreloadQueue, 0}];
     }
 
-    v9 = [(PDFView *)self _getDocumentAKController];
-    [v9 setCurrentPageIndex:self->_currentPageIndex];
-    if (v4)
+    _getDocumentAKController = [(PDFView *)self _getDocumentAKController];
+    [_getDocumentAKController setCurrentPageIndex:self->_currentPageIndex];
+    if (notificationCopy)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:@"PDFViewChangedPage" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PDFViewChangedPage" object:self];
     }
   }
 }
 
-- (void)_goToPage:(id)a3 animated:(BOOL)a4 withBackgroundUpdate:(BOOL)a5
+- (void)_goToPage:(id)page animated:(BOOL)animated withBackgroundUpdate:(BOOL)update
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  if (v9)
+  updateCopy = update;
+  animatedCopy = animated;
+  pageCopy = page;
+  if (pageCopy)
   {
-    v22 = v9;
-    v10 = [(PDFView *)self PDFLayout];
-    v11 = [v10 functionalDisplayMode];
+    v22 = pageCopy;
+    pDFLayout = [(PDFView *)self PDFLayout];
+    functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-    if (v5 && ((v11 & 1) == 0 || self->_private->wantsForceUpdate))
+    if (updateCopy && ((functionalDisplayMode & 1) == 0 || self->_private->wantsForceUpdate))
     {
-      v12 = [v22 document];
-      v13 = [v12 indexForPage:v22];
+      document = [v22 document];
+      v13 = [document indexForPage:v22];
 
       v14 = self->_private;
       isUsingPageViewController = v14->isUsingPageViewController;
@@ -626,15 +626,15 @@ LABEL_30:
 
       else
       {
-        v17 = [(PDFScrollView *)v16->scrollView pdfDocumentView];
-        [v17 forceUpdateActivePageIndex:v13 withMaxDuration:self->_private->blockingWaitDuration];
+        pdfDocumentView = [(PDFScrollView *)v16->scrollView pdfDocumentView];
+        [pdfDocumentView forceUpdateActivePageIndex:v13 withMaxDuration:self->_private->blockingWaitDuration];
       }
     }
 
-    v18 = [(PDFView *)self currentPage];
+    currentPage = [(PDFView *)self currentPage];
 
-    v9 = v22;
-    if (v18 == v22)
+    pageCopy = v22;
+    if (currentPage == v22)
     {
       if (!self->_private->scrollView)
       {
@@ -646,17 +646,17 @@ LABEL_30:
 
     else
     {
-      v19 = [(PDFView *)self currentDestination];
-      [(PDFView *)self pushDestination:v19];
+      currentDestination = [(PDFView *)self currentDestination];
+      [(PDFView *)self pushDestination:currentDestination];
 
-      objc_storeStrong(&self->_private->toPage, a3);
-      [(PDFView *)self goToPageNoPush:v22 animated:v6];
+      objc_storeStrong(&self->_private->toPage, page);
+      [(PDFView *)self goToPageNoPush:v22 animated:animatedCopy];
       v20 = self->_private;
       toPage = v20->toPage;
       v20->toPage = 0;
     }
 
-    v9 = v22;
+    pageCopy = v22;
   }
 
 LABEL_13:
@@ -664,9 +664,9 @@ LABEL_13:
 
 - (PDFDestination)currentDestination
 {
-  v3 = [(PDFView *)self document];
+  document = [(PDFView *)self document];
 
-  if (v3)
+  if (document)
   {
     [(PDFView *)self bounds];
     v5 = v4;
@@ -697,13 +697,13 @@ LABEL_13:
   if (v4)
   {
     v7 = v4;
-    v5 = [(PDFDestination *)v4 page];
+    page = [(PDFDestination *)v4 page];
 
     v4 = v7;
-    if (v5)
+    if (page)
     {
-      v6 = [(PDFView *)self currentDestination];
-      [(PDFView *)self pushDestination:v6];
+      currentDestination = [(PDFView *)self currentDestination];
+      [(PDFView *)self pushDestination:currentDestination];
 
       [(PDFView *)self goToDestinationNoPush:v7];
       v4 = v7;
@@ -713,17 +713,17 @@ LABEL_13:
 
 - (void)goToSelection:(PDFSelection *)selection
 {
-  v4 = selection;
-  v5 = v4;
-  if (v4)
+  isEmpty = selection;
+  v5 = isEmpty;
+  if (isEmpty)
   {
-    v8 = v4;
-    v4 = [(PDFSelection *)v4 isEmpty];
+    v8 = isEmpty;
+    isEmpty = [(PDFSelection *)isEmpty isEmpty];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
-      v6 = [(PDFSelection *)v8 pages];
-      v7 = [v6 objectAtIndex:0];
+      pages = [(PDFSelection *)v8 pages];
+      v7 = [pages objectAtIndex:0];
 
       [(PDFSelection *)v8 boundsForPage:v7];
       [(PDFView *)self goToRect:v7 onPage:?];
@@ -732,7 +732,7 @@ LABEL_13:
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](isEmpty, v5);
 }
 
 - (void)goToRect:(CGRect)rect onPage:(PDFPage *)page
@@ -746,16 +746,16 @@ LABEL_13:
   {
     v9 = *MEMORY[0x1E695EFF8];
     v10 = *(MEMORY[0x1E695EFF8] + 8);
-    v11 = [(PDFPage *)v17 rotation];
-    if (v11 > 179)
+    rotation = [(PDFPage *)v17 rotation];
+    if (rotation > 179)
     {
-      if (v11 == 180)
+      if (rotation == 180)
       {
         MaxX = PDFRectGetMaxX(x, y, width);
         goto LABEL_11;
       }
 
-      if (v11 != 270)
+      if (rotation != 270)
       {
 LABEL_13:
         v16 = [[PDFDestination alloc] initWithPage:v17 atPoint:v9, v10];
@@ -771,9 +771,9 @@ LABEL_13:
 
     else
     {
-      if (v11)
+      if (rotation)
       {
-        if (v11 == 90)
+        if (rotation == 90)
         {
           MaxX = x;
 LABEL_11:
@@ -799,7 +799,7 @@ LABEL_14:
 
 - (void)setDisplayMode:(PDFDisplayMode)displayMode
 {
-  v5 = [(PDFView *)self currentPage];
+  currentPage = [(PDFView *)self currentPage];
   if (displayMode < 4)
   {
     v6 = self->_private;
@@ -808,7 +808,7 @@ LABEL_14:
       goto LABEL_8;
     }
 
-    v8 = v5;
+    v8 = currentPage;
     v6->displayMode = displayMode;
     [(PDFView *)self layoutDocumentView];
     [(PDFScrollView *)self->_private->scrollView updateLayout];
@@ -818,17 +818,17 @@ LABEL_14:
     }
 
     [(PDFScrollView *)self->_private->scrollView setBounces:1];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"PDFViewDisplayModeChanged" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PDFViewDisplayModeChanged" object:self];
   }
 
   else
   {
-    v8 = v5;
+    v8 = currentPage;
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"setDisplayMode: %ld out of bounds", displayMode}];
   }
 
-  v5 = v8;
+  currentPage = v8;
 LABEL_8:
 }
 
@@ -936,37 +936,37 @@ LABEL_8:
   return result;
 }
 
-- (void)setInFormFillingMode:(BOOL)a3
+- (void)setInFormFillingMode:(BOOL)mode
 {
   v3 = self->_private;
-  if (v3->inFormFillingMode != a3)
+  if (v3->inFormFillingMode != mode)
   {
-    v4 = a3;
-    v3->inFormFillingMode = a3;
+    modeCopy = mode;
+    v3->inFormFillingMode = mode;
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __32__PDFView_setInFormFillingMode___block_invoke;
     aBlock[3] = &unk_1E81525C8;
     objc_copyWeak(&v13, &location);
-    v14 = v4;
+    v14 = modeCopy;
     v6 = _Block_copy(aBlock);
-    [(PDFView *)self _showFormFillingButton:v4];
-    v7 = [(PDFView *)self document];
-    v8 = [v7 akController];
+    [(PDFView *)self _showFormFillingButton:modeCopy];
+    document = [(PDFView *)self document];
+    akController = [document akController];
 
     if (objc_opt_respondsToSelector())
     {
-      [v8 setFormFillingEnabled:v4];
+      [akController setFormFillingEnabled:modeCopy];
     }
 
     controller = self->_private->controller;
-    if (v4)
+    if (modeCopy)
     {
-      v10 = [(PDFViewController *)controller activeAnnotation];
-      v11 = [v10 isFormField];
+      activeAnnotation = [(PDFViewController *)controller activeAnnotation];
+      isFormField = [activeAnnotation isFormField];
 
-      if ((v11 & 1) == 0)
+      if ((isFormField & 1) == 0)
       {
         [(PDFViewController *)self->_private->controller activateNextAnnotation:0 withCompletion:v6];
 LABEL_9:
@@ -1013,8 +1013,8 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
   {
     [(PDFRenderingProperties *)self->_private->renderingProperties setDisplayBox:displayBox];
     [(PDFView *)self layoutDocumentView];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"PDFViewDisplayBoxChanged" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PDFViewDisplayBoxChanged" object:self];
   }
 }
 
@@ -1039,9 +1039,9 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = PDFView;
-  v2 = [(PDFView *)&v4 backgroundColor];
+  backgroundColor = [(PDFView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
 - (void)usePageViewController:(BOOL)enable withViewOptions:(NSDictionary *)viewOptions
@@ -1082,8 +1082,8 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
   [(PDFScrollView *)self->_private->scrollView setPDFView:self];
   [(PDFView *)self setMinScaleFactor:0.1];
   [(PDFView *)self setMaxScaleFactor:20.0];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel_scrollViewSaysPageMayHaveChanged_ name:@"PDFScrollViewPageMayHaveChangedNotification" object:self->_private->scrollView];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_scrollViewSaysPageMayHaveChanged_ name:@"PDFScrollViewPageMayHaveChangedNotification" object:self->_private->scrollView];
 
   [(PDFScrollView *)self->_private->scrollView setShowsVerticalScrollIndicator:1];
   [(PDFScrollView *)self->_private->scrollView setShowsHorizontalScrollIndicator:0];
@@ -1117,14 +1117,14 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
 
   [(PDFTimer *)self->_private->tilesSyncTimer update];
   self->_private->activeMarkupStyle = 0;
-  v20 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [(PDFView *)self setBackgroundColor:v20];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [(PDFView *)self setBackgroundColor:secondarySystemBackgroundColor];
 
   [(PDFScrollView *)self->_private->scrollView setDocument:self->_private->document];
   [(PDFView *)self addSubview:self->_private->scrollView];
-  v21 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-  v22 = [v21 pageBackgroundManager];
-  objc_storeWeak(&self->_pageBackgroundManager, v22);
+  pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+  pageBackgroundManager = [pdfDocumentView pageBackgroundManager];
+  objc_storeWeak(&self->_pageBackgroundManager, pageBackgroundManager);
 
   [(PDFView *)self _updatePasswordView];
 }
@@ -1137,8 +1137,8 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
   scrollView = v3->scrollView;
   v3->scrollView = 0;
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"PDFScrollViewPageMayHaveChangedNotification" object:self->_private->scrollView];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PDFScrollViewPageMayHaveChangedNotification" object:self->_private->scrollView];
 
   v6 = MEMORY[0x1E69E58C0];
 
@@ -1151,7 +1151,7 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
   v4 = v3;
   [(PDFScrollView *)self->_private->scrollView maximumZoomScale];
   v6 = v5;
-  v7 = [(PDFView *)self displayDirection];
+  displayDirection = [(PDFView *)self displayDirection];
   documentViewController = self->_private->documentViewController;
   if (!documentViewController)
   {
@@ -1165,21 +1165,21 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
       v4 = 0.25;
     }
 
-    v9 = [[PDFDocumentViewController alloc] initWithPDFView:self pageIndex:self->_currentPageIndex navigationOrientation:v7 == kPDFDisplayDirectionVertical withRenderingProperties:self->_private->renderingProperties andOptions:self->_private->pageViewControllerOptions];
+    v9 = [[PDFDocumentViewController alloc] initWithPDFView:self pageIndex:self->_currentPageIndex navigationOrientation:displayDirection == kPDFDisplayDirectionVertical withRenderingProperties:self->_private->renderingProperties andOptions:self->_private->pageViewControllerOptions];
     v10 = self->_private;
     v11 = v10->documentViewController;
     v10->documentViewController = v9;
 
-    v12 = [(PDFDocumentViewController *)self->_private->documentViewController view];
-    [(PDFView *)self addSubview:v12];
+    view = [(PDFDocumentViewController *)self->_private->documentViewController view];
+    [(PDFView *)self addSubview:view];
 
     [(PDFView *)self bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(PDFDocumentViewController *)self->_private->documentViewController view];
-    [v21 setFrame:{v14, v16, v18, v20}];
+    view2 = [(PDFDocumentViewController *)self->_private->documentViewController view];
+    [view2 setFrame:{v14, v16, v18, v20}];
 
     WeakRetained = objc_loadWeakRetained(&self->_private->delegate);
     [(PDFView *)self setNewPageVisibilityDelegate:WeakRetained withOldDelegate:0];
@@ -1190,14 +1190,14 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
     [(PDFView *)self setAutoScales:autoScale];
     [(PDFDocumentViewController *)self->_private->documentViewController setDisplaysRTL:self->_private->displaysRTL];
     [(PDFDocumentViewController *)self->_private->documentViewController updateScrollViews];
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:self selector:sel_pageViewControllerSaysPageChanged_ name:@"PDFDocumentViewControllerChangedPage" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_pageViewControllerSaysPageChanged_ name:@"PDFDocumentViewControllerChangedPage" object:self];
 
     documentViewController = self->_private->documentViewController;
   }
 
-  v26 = [(PDFDocumentViewController *)documentViewController pageBackgroundManager];
-  objc_storeWeak(&self->_pageBackgroundManager, v26);
+  pageBackgroundManager = [(PDFDocumentViewController *)documentViewController pageBackgroundManager];
+  objc_storeWeak(&self->_pageBackgroundManager, pageBackgroundManager);
 
   [(PDFView *)self _updatePasswordView];
 }
@@ -1205,8 +1205,8 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
 - (void)_releaseDocumentViewController
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"PDFDocumentViewControllerChangedPage" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PDFDocumentViewControllerChangedPage" object:self];
 
   documentViewController = self->_private->documentViewController;
   v5 = objc_alloc_init(PDFPageViewController);
@@ -1214,8 +1214,8 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   [(PDFDocumentViewController *)documentViewController setViewControllers:v6 direction:0 animated:0 completion:0];
 
-  v7 = [(PDFDocumentViewController *)self->_private->documentViewController view];
-  [v7 removeFromSuperview];
+  view = [(PDFDocumentViewController *)self->_private->documentViewController view];
+  [view removeFromSuperview];
 
   [(PDFDocumentViewController *)self->_private->documentViewController removeFromParentViewController];
   v8 = self->_private;
@@ -1316,9 +1316,9 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(PDFRenderingProperties *)v2->renderingProperties isUsingPDFExtensionView];
+    isUsingPDFExtensionView = [(PDFRenderingProperties *)v2->renderingProperties isUsingPDFExtensionView];
     v7 = self->_private;
-    if (v6)
+    if (isUsingPDFExtensionView)
     {
       return v7->extensionViewZoomScale;
     }
@@ -1336,10 +1336,10 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
 
 - (void)zoomIn:(id)sender
 {
-  v4 = [(PDFView *)self document];
-  v5 = [v4 isLocked];
+  document = [(PDFView *)self document];
+  isLocked = [document isLocked];
 
-  if ((v5 & 1) == 0)
+  if ((isLocked & 1) == 0)
   {
     [(PDFView *)self setAutoScales:0];
     [(PDFView *)self scaleFactor];
@@ -1360,10 +1360,10 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
 
 - (void)zoomOut:(id)sender
 {
-  v4 = [(PDFView *)self document];
-  v5 = [v4 isLocked];
+  document = [(PDFView *)self document];
+  isLocked = [document isLocked];
 
-  if ((v5 & 1) == 0)
+  if ((isLocked & 1) == 0)
   {
     [(PDFView *)self setAutoScales:0];
     [(PDFView *)self scaleFactor];
@@ -1412,8 +1412,8 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [(PDFView *)self currentPage];
-    [(PDFView *)self _unboundAutoScaleFactorForPage:v7];
+    currentPage = [(PDFView *)self currentPage];
+    [(PDFView *)self _unboundAutoScaleFactorForPage:currentPage];
     v9 = v8;
 
     return v9;
@@ -1426,7 +1426,7 @@ void __32__PDFView_setInFormFillingMode___block_invoke(uint64_t a1)
 {
   y = cursorLocation.y;
   x = cursorLocation.x;
-  v6 = [(PDFView *)self document];
+  document = [(PDFView *)self document];
   v7 = [(PDFView *)self pageForPoint:0 nearest:x, y];
   if (!v7)
   {
@@ -1531,22 +1531,22 @@ LABEL_32:
 LABEL_33:
   if ([v7 pageLayoutIfAvail])
   {
-    v26 = [(PDFView *)self controller];
-    if (v26 && (v27 = v26, -[PDFView controller](self, "controller"), v28 = objc_claimAutoreleasedReturnValue(), [v28 tableCellSelection], v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v27, v29))
+    controller = [(PDFView *)self controller];
+    if (controller && (v27 = controller, -[PDFView controller](self, "controller"), v28 = objc_claimAutoreleasedReturnValue(), [v28 tableCellSelection], v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v27, v29))
     {
-      v30 = [(PDFView *)self controller];
-      v31 = [v30 tableCellSelection];
+      controller2 = [(PDFView *)self controller];
+      tableCellSelection = [controller2 tableCellSelection];
 
-      [v31 table];
+      [tableCellSelection table];
       v32 = CGPDFPageLayoutTableCopyCellAtPoint();
-      if ([v31 isPointInHandle:0 whichHandle:{v9, v11}])
+      if ([tableCellSelection isPointInHandle:0 whichHandle:{v9, v11}])
       {
         v14 = v21 | 0x400;
 
         goto LABEL_47;
       }
 
-      if (v32 && (Index = CGPDFPageLayoutTableCellGetIndex(), Index == [v31 startCellIndex]))
+      if (v32 && (Index = CGPDFPageLayoutTableCellGetIndex(), Index == [tableCellSelection startCellIndex]))
       {
         v35 = 2;
       }
@@ -1588,49 +1588,49 @@ LABEL_47:
   v5 = v4;
   if (v4)
   {
-    v6 = [(PDFAction *)v4 type];
-    v7 = [(PDFView *)self delegate];
-    if ([v6 isEqualToString:@"GoTo"])
+    type = [(PDFAction *)v4 type];
+    delegate = [(PDFView *)self delegate];
+    if ([type isEqualToString:@"GoTo"])
     {
-      v8 = [(PDFAction *)v5 destination];
-      [(PDFView *)self goToDestination:v8];
+      destination = [(PDFAction *)v5 destination];
+      [(PDFView *)self goToDestination:destination];
       goto LABEL_4;
     }
 
-    if ([v6 isEqualToString:@"GoToR"])
+    if ([type isEqualToString:@"GoToR"])
     {
-      if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v7 PDFViewOpenPDF:self forRemoteGoToAction:v5];
+        [delegate PDFViewOpenPDF:self forRemoteGoToAction:v5];
         goto LABEL_47;
       }
     }
 
     else
     {
-      if (![v6 isEqualToString:@"Named"])
+      if (![type isEqualToString:@"Named"])
       {
-        if ([v6 isEqualToString:@"ResetForm"])
+        if ([type isEqualToString:@"ResetForm"])
         {
-          v10 = [(PDFView *)self document];
-          if (v10)
+          document = [(PDFView *)self document];
+          if (document)
           {
-            v11 = v10;
-            [v10 resetFormFields:v5];
+            v11 = document;
+            [document resetFormFields:v5];
           }
 
           goto LABEL_47;
         }
 
-        if (([v6 isEqualToString:@"URI"] & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"Launch"))
+        if (([type isEqualToString:@"URI"] & 1) == 0 && !objc_msgSend(type, "isEqualToString:", @"Launch"))
         {
 LABEL_47:
 
           goto LABEL_48;
         }
 
-        v8 = v5;
-        v12 = [(PDFAction *)v8 URL];
+        destination = v5;
+        v12 = [(PDFAction *)destination URL];
         v13 = v12;
         if (v12 && (PDFURLLooksSuspicious(v12) & 1) == 0)
         {
@@ -1640,15 +1640,15 @@ LABEL_47:
           aBlock[3] = &unk_1E8151480;
           v13 = v13;
           v32 = v13;
-          v33 = v7;
-          v34 = self;
+          v33 = delegate;
+          selfCopy = self;
           v14 = _Block_copy(aBlock);
-          if ([(PDFAction *)v8 isSuspiciousURL])
+          if ([(PDFAction *)destination isSuspiciousURL])
           {
             v15 = MEMORY[0x1E696AEC0];
             v16 = PDFKitLocalizedString(@"Opening the clicked link may send encrypted document content to the server \\U201C%@\\U201D.");
-            v17 = [v13 host];
-            v28 = [v15 stringWithFormat:v16, v17];
+            host = [v13 host];
+            v28 = [v15 stringWithFormat:v16, host];
 
             v18 = MEMORY[0x1E696AEC0];
             v19 = PDFKitLocalizedString(@"Link: %@");
@@ -1667,8 +1667,8 @@ LABEL_47:
             v30 = v14;
             v23 = [v22 actionWithTitle:v25 style:2 handler:v29];
             [v20 addAction:v23];
-            v24 = [(PDFView *)self parentViewController];
-            [v24 presentViewController:v20 animated:1 completion:0];
+            parentViewController = [(PDFView *)self parentViewController];
+            [parentViewController presentViewController:v20 animated:1 completion:0];
           }
 
           else
@@ -1681,28 +1681,28 @@ LABEL_4:
         goto LABEL_47;
       }
 
-      v9 = [(PDFAction *)v5 name];
-      if (v9 <= 5)
+      name = [(PDFAction *)v5 name];
+      if (name <= 5)
       {
-        if (v9 <= 2)
+        if (name <= 2)
         {
-          if (v9 == 1)
+          if (name == 1)
           {
             [(PDFView *)self goToNextPage:self];
           }
 
-          else if (v9 == 2)
+          else if (name == 2)
           {
             [(PDFView *)self goToPreviousPage:self];
           }
         }
 
-        else if (v9 == 3)
+        else if (name == 3)
         {
           [(PDFView *)self goToFirstPage:self];
         }
 
-        else if (v9 == 4)
+        else if (name == 4)
         {
           [(PDFView *)self goToLastPage:self];
         }
@@ -1715,29 +1715,29 @@ LABEL_4:
         goto LABEL_47;
       }
 
-      if (v9 <= 7)
+      if (name <= 7)
       {
-        if (v9 == 6)
+        if (name == 6)
         {
           [(PDFView *)self goForward:self];
           goto LABEL_47;
         }
 
-        if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v7 PDFViewPerformGoToPage:self];
+          [delegate PDFViewPerformGoToPage:self];
           goto LABEL_47;
         }
       }
 
       else
       {
-        switch(v9)
+        switch(name)
         {
           case 8:
-            if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+            if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
             {
-              [v7 PDFViewPerformFind:self];
+              [delegate PDFViewPerformFind:self];
               goto LABEL_47;
             }
 
@@ -1796,13 +1796,13 @@ uint64_t __25__PDFView_performAction___block_invoke(void *a1)
   return result;
 }
 
-- (void)setCurrentSelection:(id)a3 updateTextInput:(BOOL)a4
+- (void)setCurrentSelection:(id)selection updateTextInput:(BOOL)input
 {
-  v4 = a4;
+  inputCopy = input;
   v54[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7 && ![v7 isEmpty])
+  selectionCopy = selection;
+  v8 = selectionCopy;
+  if (selectionCopy && ![selectionCopy isEmpty])
   {
     goto LABEL_9;
   }
@@ -1813,7 +1813,7 @@ uint64_t __25__PDFView_performAction___block_invoke(void *a1)
   {
     v9->currentSelection = 0;
 
-    if (v4)
+    if (inputCopy)
     {
       v11 = self->_private;
       if (v11->isUsingPageViewController)
@@ -1822,8 +1822,8 @@ uint64_t __25__PDFView_performAction___block_invoke(void *a1)
         v11 = self->_private;
       }
 
-      v12 = [(PDFScrollView *)v11->scrollView pdfDocumentView];
-      [v12 setSelection:0];
+      pdfDocumentView = [(PDFScrollView *)v11->scrollView pdfDocumentView];
+      [pdfDocumentView setSelection:0];
     }
   }
 
@@ -1832,34 +1832,34 @@ uint64_t __25__PDFView_performAction___block_invoke(void *a1)
 LABEL_9:
     if (([v8 isEmpty] & 1) == 0)
     {
-      objc_storeStrong(&self->_private->currentSelection, a3);
+      objc_storeStrong(&self->_private->currentSelection, selection);
       if (self->_private->isUsingPageViewController)
       {
-        v13 = [(PDFView *)self currentPage];
-        v14 = [v8 pdfKitIndexOfFirstCharacterOnPage:v13];
-        v15 = [v8 pdfKitIndexOfLastCharacterOnPage:v13];
+        currentPage = [(PDFView *)self currentPage];
+        v14 = [v8 pdfKitIndexOfFirstCharacterOnPage:currentPage];
+        v15 = [v8 pdfKitIndexOfLastCharacterOnPage:currentPage];
         if (v14 != 0x7FFFFFFFFFFFFFFFLL && v15 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v16 = [v13 selectionForRange:{v14, v15 - v14 + 1}];
+          v16 = [currentPage selectionForRange:{v14, v15 - v14 + 1}];
           v17 = self->_private;
           v18 = v17->currentSelection;
           v17->currentSelection = v16;
 
           v19 = self->_private->currentSelection;
-          v20 = [v8 color];
-          [(PDFSelection *)v19 setColor:v20];
+          color = [v8 color];
+          [(PDFSelection *)v19 setColor:color];
 
-          if (v4)
+          if (inputCopy)
           {
             [(PDFDocumentViewController *)self->_private->documentViewController setSelection:self->_private->currentSelection];
           }
         }
       }
 
-      if (v4)
+      if (inputCopy)
       {
-        v21 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-        [v21 setSelection:self->_private->currentSelection];
+        pdfDocumentView2 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+        [pdfDocumentView2 setSelection:self->_private->currentSelection];
       }
     }
   }
@@ -1867,24 +1867,24 @@ LABEL_9:
   v22 = self->_private->currentSelection;
   if (v22)
   {
-    v23 = [(PDFSelection *)v22 pages];
-    v24 = [v23 count];
+    pages = [(PDFSelection *)v22 pages];
+    v24 = [pages count];
 
     if (v24)
     {
-      v25 = [(PDFSelection *)self->_private->currentSelection firstPage];
-      [(PDFSelection *)self->_private->currentSelection firstSpanBoundsForPage:v25];
-      [(PDFView *)self convertPoint:v25 fromPage:PDFPointMake(v28, v26 + v27)];
+      firstPage = [(PDFSelection *)self->_private->currentSelection firstPage];
+      [(PDFSelection *)self->_private->currentSelection firstSpanBoundsForPage:firstPage];
+      [(PDFView *)self convertPoint:firstPage fromPage:PDFPointMake(v28, v26 + v27)];
       v30 = v29;
       v32 = v31;
-      v33 = [(PDFSelection *)self->_private->currentSelection lastPage];
+      lastPage = [(PDFSelection *)self->_private->currentSelection lastPage];
 
-      v50 = v33;
-      [(PDFSelection *)self->_private->currentSelection lastSpanBoundsForPage:v33];
-      [(PDFView *)self convertPoint:v33 fromPage:PDFPointMake(v34 + v35, v36)];
+      v50 = lastPage;
+      [(PDFSelection *)self->_private->currentSelection lastSpanBoundsForPage:lastPage];
+      [(PDFView *)self convertPoint:lastPage fromPage:PDFPointMake(v34 + v35, v36)];
       v38 = v37;
       v40 = v39;
-      v41 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v53[0] = @"topLeftSelectionPoint";
       v42 = [MEMORY[0x1E696AD98] numberWithDouble:v30];
       v52[0] = v42;
@@ -1900,12 +1900,12 @@ LABEL_9:
       v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
       v54[1] = v47;
       v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:2];
-      [v41 postNotificationName:@"PDFTextSelectionDidChangeTextSelectionPoints" object:self userInfo:v48];
+      [defaultCenter postNotificationName:@"PDFTextSelectionDidChangeTextSelectionPoints" object:self userInfo:v48];
     }
   }
 
-  v49 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v49 postNotificationName:@"PDFViewSelectionChanged" object:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"PDFViewSelectionChanged" object:self];
 }
 
 - (void)setCurrentSelection:(PDFSelection *)selection animate:(BOOL)animate
@@ -1913,28 +1913,28 @@ LABEL_9:
   v4 = animate;
   v10 = [(PDFSelection *)selection copy];
   [v10 setIsTextSelection];
-  v6 = [(PDFView *)self setCurrentSelection:v10];
+  isEmpty = [(PDFView *)self setCurrentSelection:v10];
   v7 = v10;
   if (v10)
   {
     if (v4)
     {
-      v6 = [v10 isEmpty];
+      isEmpty = [v10 isEmpty];
       v7 = v10;
-      if ((v6 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
-        v8 = [v10 pages];
-        v9 = [v8 firstObject];
+        pages = [v10 pages];
+        firstObject = [pages firstObject];
 
-        [v10 boundsForPage:v9];
-        [(PDFCoachMarkManager *)self->_private->coachMarkManager createCoachMarkForPage:v9 atFrame:?];
+        [v10 boundsForPage:firstObject];
+        [(PDFCoachMarkManager *)self->_private->coachMarkManager createCoachMarkForPage:firstObject atFrame:?];
 
         v7 = v10;
       }
     }
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](isEmpty, v7);
 }
 
 - (void)clearSelection
@@ -1943,8 +1943,8 @@ LABEL_9:
   currentSelection = v3->currentSelection;
   v3->currentSelection = 0;
 
-  v5 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-  [v5 setSelection:self->_private->currentSelection];
+  pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+  [pdfDocumentView setSelection:self->_private->currentSelection];
 
   v6 = self->_private;
   if (v6->isUsingPageViewController)
@@ -1952,66 +1952,66 @@ LABEL_9:
     [(PDFDocumentViewController *)v6->documentViewController setSelection:v6->currentSelection];
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"PDFViewSelectionChanged" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFViewSelectionChanged" object:self];
 }
 
 - (void)selectAll:(id)sender
 {
   if (self->_private->isUsingPageViewController)
   {
-    v4 = [(PDFView *)self currentPage];
-    [v4 selectionForAll];
+    currentPage = [(PDFView *)self currentPage];
+    [currentPage selectionForAll];
   }
 
   else
   {
-    v4 = [(PDFView *)self document];
-    [v4 selectionForEntireDocument];
+    currentPage = [(PDFView *)self document];
+    [currentPage selectionForEntireDocument];
   }
   v5 = ;
 
   [(PDFView *)self setCurrentSelection:v5];
 }
 
-- (void)_lookup:(id)a3
+- (void)_lookup:(id)_lookup
 {
-  v4 = a3;
+  _lookupCopy = _lookup;
   currentSelection = self->_private->currentSelection;
   if (currentSelection)
   {
-    v30 = v4;
+    v30 = _lookupCopy;
     currentSelection = [(PDFSelection *)currentSelection isEmpty];
-    v4 = v30;
+    _lookupCopy = v30;
     if ((currentSelection & 1) == 0)
     {
-      v6 = [(PDFView *)self parentViewController];
-      if (v6)
+      parentViewController = [(PDFView *)self parentViewController];
+      if (parentViewController)
       {
-        v7 = [(PDFSelection *)self->_private->currentSelection string];
-        v8 = [objc_alloc(DDParsecCollectionViewControllerClass()) initWithString:v7 range:{0, objc_msgSend(v7, "length")}];
+        string = [(PDFSelection *)self->_private->currentSelection string];
+        v8 = [objc_alloc(DDParsecCollectionViewControllerClass()) initWithString:string range:{0, objc_msgSend(string, "length")}];
         v9 = self->_private->currentSelection;
-        v10 = [(PDFSelection *)v9 firstPage];
-        [(PDFSelection *)v9 boundsForPage:v10];
+        firstPage = [(PDFSelection *)v9 firstPage];
+        [(PDFSelection *)v9 boundsForPage:firstPage];
         v12 = v11;
         v14 = v13;
         v16 = v15;
         v18 = v17;
 
-        v19 = [(PDFSelection *)self->_private->currentSelection firstPage];
-        [(PDFView *)self convertRect:v19 fromPage:v12, v14, v16, v18];
+        firstPage2 = [(PDFSelection *)self->_private->currentSelection firstPage];
+        [(PDFView *)self convertRect:firstPage2 fromPage:v12, v14, v16, v18];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
 
-        v28 = [v8 popoverPresentationController];
-        [v28 setSourceView:self];
+        popoverPresentationController = [v8 popoverPresentationController];
+        [popoverPresentationController setSourceView:self];
 
-        v29 = [v8 popoverPresentationController];
-        [v29 setSourceRect:{v21, v23, v25, v27}];
+        popoverPresentationController2 = [v8 popoverPresentationController];
+        [popoverPresentationController2 setSourceRect:{v21, v23, v25, v27}];
 
-        [v6 presentViewController:v8 animated:1 completion:0];
+        [parentViewController presentViewController:v8 animated:1 completion:0];
       }
 
       else
@@ -2019,26 +2019,26 @@ LABEL_9:
         NSLog(&cfstr_SFailedToFindO.isa, "[PDFView _lookup:]");
       }
 
-      v4 = v30;
+      _lookupCopy = v30;
     }
   }
 
-  MEMORY[0x1EEE66BB8](currentSelection, v4);
+  MEMORY[0x1EEE66BB8](currentSelection, _lookupCopy);
 }
 
 - (void)scrollSelectionToVisible:(id)sender
 {
-  v4 = [(PDFView *)self currentSelection];
-  v5 = v4;
-  if (v4)
+  currentSelection = [(PDFView *)self currentSelection];
+  v5 = currentSelection;
+  if (currentSelection)
   {
-    v8 = v4;
-    v4 = [v4 isEmpty];
+    v8 = currentSelection;
+    currentSelection = [currentSelection isEmpty];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((currentSelection & 1) == 0)
     {
-      v6 = [v8 pages];
-      v7 = [v6 objectAtIndex:0];
+      pages = [v8 pages];
+      v7 = [pages objectAtIndex:0];
 
       [v8 boundsForPage:v7];
       v11 = PDFRectInset(v10, -4.0, -4.0);
@@ -2048,7 +2048,7 @@ LABEL_9:
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](currentSelection, v5);
 }
 
 - (void)setHighlightedSelections:(NSArray *)highlightedSelections
@@ -2057,12 +2057,12 @@ LABEL_9:
   v5 = highlightedSelections;
   if (self->_private->highlights != v5)
   {
-    v6 = [(PDFView *)self visiblePageViews];
+    visiblePageViews = [(PDFView *)self visiblePageViews];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    v7 = [visiblePageViews countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2073,13 +2073,13 @@ LABEL_9:
         {
           if (*v40 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(visiblePageViews);
           }
 
           [*(*(&v39 + 1) + 8 * i) setSearchSelections:0];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v39 objects:v45 count:16];
+        v8 = [visiblePageViews countByEnumeratingWithState:&v39 objects:v45 count:16];
       }
 
       while (v8);
@@ -2089,7 +2089,7 @@ LABEL_9:
     highlights = self->_private->highlights;
     if (highlights)
     {
-      v25 = v6;
+      v25 = visiblePageViews;
       v26 = v5;
       v37 = 0u;
       v38 = 0u;
@@ -2112,12 +2112,12 @@ LABEL_9:
 
             v30 = v12;
             v13 = *(*(&v35 + 1) + 8 * v12);
-            v14 = [v13 pages];
+            pages = [v13 pages];
             v31 = 0u;
             v32 = 0u;
             v33 = 0u;
             v34 = 0u;
-            v15 = [v14 countByEnumeratingWithState:&v31 objects:v43 count:16];
+            v15 = [pages countByEnumeratingWithState:&v31 objects:v43 count:16];
             if (v15)
             {
               v16 = v15;
@@ -2128,20 +2128,20 @@ LABEL_9:
                 {
                   if (*v32 != v17)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(pages);
                   }
 
                   v19 = [(PDFDocument *)self->_private->document indexForPage:*(*(&v31 + 1) + 8 * j)];
-                  v20 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-                  v21 = [v20 pageViewForPageAtIndex:v19];
+                  pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+                  v21 = [pdfDocumentView pageViewForPageAtIndex:v19];
 
                   v22 = self->_private;
                   if (v22->isUsingPageViewController)
                   {
                     v23 = [(PDFDocumentViewController *)v22->documentViewController findPageViewControllerForPageIndex:v19];
-                    v24 = [v23 pageView];
+                    pageView = [v23 pageView];
 
-                    v21 = v24;
+                    v21 = pageView;
                   }
 
                   if (v21)
@@ -2150,7 +2150,7 @@ LABEL_9:
                   }
                 }
 
-                v16 = [v14 countByEnumeratingWithState:&v31 objects:v43 count:16];
+                v16 = [pages countByEnumeratingWithState:&v31 objects:v43 count:16];
               }
 
               while (v16);
@@ -2166,7 +2166,7 @@ LABEL_9:
         while (v29);
       }
 
-      v6 = v25;
+      visiblePageViews = v25;
       v5 = v26;
     }
   }
@@ -2175,16 +2175,16 @@ LABEL_9:
 - (void)takePasswordFrom:(id)sender
 {
   v9 = sender;
-  v4 = [(PDFView *)self document];
+  document = [(PDFView *)self document];
   v5 = objc_opt_respondsToSelector();
-  if (v4)
+  if (document)
   {
     if (v5)
     {
-      if (![v4 allowsPrinting] || (-[PDFView document](self, "document"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "allowsCopying"), v6, (v7 & 1) == 0))
+      if (![document allowsPrinting] || (-[PDFView document](self, "document"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "allowsCopying"), v6, (v7 & 1) == 0))
       {
-        v8 = [v9 stringValue];
-        [v4 unlockWithPassword:v8];
+        stringValue = [v9 stringValue];
+        [document unlockWithPassword:stringValue];
       }
     }
   }
@@ -2199,32 +2199,32 @@ LABEL_9:
 - (void)copy:(id)sender
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = [(PDFView *)self currentSelection];
-  if (v4)
+  currentSelection = [(PDFView *)self currentSelection];
+  if (currentSelection)
   {
-    v5 = [(PDFView *)self document];
-    v6 = [v5 allowsCopying];
+    document = [(PDFView *)self document];
+    allowsCopying = [document allowsCopying];
 
-    if ((v6 & 1) == 0)
+    if ((allowsCopying & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:@"PDFViewCopyPermission" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PDFViewCopyPermission" object:self];
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v7 = [v4 string];
-    v8 = [v7 precomposedStringWithCanonicalMapping];
+    string = [currentSelection string];
+    defaultCenter = [string precomposedStringWithCanonicalMapping];
 
-    if (v8)
+    if (defaultCenter)
     {
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v9 = [v4 pages];
-      v10 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      pages = [currentSelection pages];
+      v10 = [pages countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v10)
       {
         v11 = v10;
@@ -2236,7 +2236,7 @@ LABEL_25:
           {
             if (*v27 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(pages);
             }
 
             if ([*(*(&v26 + 1) + 8 * v13) isTextFromOCR])
@@ -2249,7 +2249,7 @@ LABEL_25:
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          v11 = [pages countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v11)
           {
             continue;
@@ -2262,45 +2262,45 @@ LABEL_25:
       v14 = 0;
 LABEL_15:
 
-      v15 = [MEMORY[0x1E69DCD50] generalPasteboard];
-      v16 = [(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView];
-      v17 = [MEMORY[0x1E695DF90] dictionary];
+      generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+      isUsingPDFExtensionView = [(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       if ((v14 & 1) == 0)
       {
-        v18 = [v4 rtfData];
-        if (v18)
+        rtfData = [currentSelection rtfData];
+        if (rtfData)
         {
-          v19 = [*MEMORY[0x1E6982F90] identifier];
-          [v17 setObject:v18 forKeyedSubscript:v19];
+          identifier = [*MEMORY[0x1E6982F90] identifier];
+          [dictionary setObject:rtfData forKeyedSubscript:identifier];
         }
 
-        v20 = [v4 htmlData];
-        if (v20)
+        htmlData = [currentSelection htmlData];
+        if (htmlData)
         {
-          v21 = [*MEMORY[0x1E6982E18] identifier];
-          [v17 setObject:v20 forKeyedSubscript:v21];
+          identifier2 = [*MEMORY[0x1E6982E18] identifier];
+          [dictionary setObject:htmlData forKeyedSubscript:identifier2];
         }
       }
 
-      v22 = [*MEMORY[0x1E6983060] identifier];
-      [v17 setObject:v8 forKeyedSubscript:v22];
+      identifier3 = [*MEMORY[0x1E6983060] identifier];
+      [dictionary setObject:defaultCenter forKeyedSubscript:identifier3];
 
-      if (v16)
+      if (isUsingPDFExtensionView)
       {
-        v23 = [MEMORY[0x1E696AD88] defaultCenter];
-        v31 = v17;
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        v31 = dictionary;
         v32 = @"items";
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
         v33 = v24;
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-        [v23 postNotificationName:@"PDFTextSelectionDidCopy" object:self userInfo:v25];
+        [defaultCenter2 postNotificationName:@"PDFTextSelectionDidCopy" object:self userInfo:v25];
       }
 
       else
       {
-        v30 = v17;
-        v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-        [v15 setItems:v23];
+        v30 = dictionary;
+        defaultCenter2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
+        [generalPasteboard setItems:defaultCenter2];
       }
 
       goto LABEL_25;
@@ -2318,8 +2318,8 @@ LABEL_26:
   v8 = self->_private;
   if (v8->isUsingPageViewController)
   {
-    v9 = [(PDFDocumentViewController *)v8->documentViewController view];
-    [(PDFView *)self convertPoint:v9 toView:x, y];
+    view = [(PDFDocumentViewController *)v8->documentViewController view];
+    [(PDFView *)self convertPoint:view toView:x, y];
     v11 = v10;
     v13 = v12;
 
@@ -2327,22 +2327,22 @@ LABEL_26:
     goto LABEL_7;
   }
 
-  v15 = [(PDFView *)self document];
-  v16 = v15;
-  if (v15 && ([v15 isLocked] & 1) == 0)
+  document = [(PDFView *)self document];
+  v16 = document;
+  if (document && ([document isLocked] & 1) == 0)
   {
-    v18 = [(PDFView *)self documentView];
-    [(PDFView *)self convertPoint:v18 toView:x, y];
+    documentView = [(PDFView *)self documentView];
+    [(PDFView *)self convertPoint:documentView toView:x, y];
     v20 = v19;
     v22 = v21;
 
-    v23 = [(PDFView *)self documentView];
-    [v23 bounds];
+    documentView2 = [(PDFView *)self documentView];
+    [documentView2 bounds];
     v25 = v24 - v22;
 
-    v26 = [(PDFView *)self PDFLayout];
-    v27 = [(PDFView *)self currentPage];
-    v14 = [v26 pageNearestPoint:v27 currentPage:{v20, v25}];
+    pDFLayout = [(PDFView *)self PDFLayout];
+    currentPage = [(PDFView *)self currentPage];
+    v14 = [pDFLayout pageNearestPoint:currentPage currentPage:{v20, v25}];
 
     if (v4)
     {
@@ -2385,8 +2385,8 @@ LABEL_7:
   v9 = self->_private;
   if (v9->isUsingPageViewController)
   {
-    v10 = [(PDFDocumentViewController *)v9->documentViewController view];
-    [(PDFView *)self convertPoint:v10 toView:x, y];
+    view = [(PDFDocumentViewController *)v9->documentViewController view];
+    [(PDFView *)self convertPoint:view toView:x, y];
     v12 = v11;
     v14 = v13;
 
@@ -2397,17 +2397,17 @@ LABEL_7:
 
   else if (v7)
   {
-    v17 = [(PDFView *)self documentView];
-    [(PDFView *)self convertPoint:v17 toView:x, y];
+    documentView = [(PDFView *)self documentView];
+    [(PDFView *)self convertPoint:documentView toView:x, y];
     v19 = v18;
     v21 = v20;
 
-    v22 = [(PDFView *)self documentView];
-    [v22 bounds];
+    documentView2 = [(PDFView *)self documentView];
+    [documentView2 bounds];
     v24 = v23 - v21;
 
-    v25 = [(PDFView *)self PDFLayout];
-    [v25 convertPoint:v8 toPage:{v19, v24}];
+    pDFLayout = [(PDFView *)self PDFLayout];
+    [pDFLayout convertPoint:v8 toPage:{v19, v24}];
     x = v26;
     y = v27;
   }
@@ -2454,8 +2454,8 @@ LABEL_7:
     [(PDFDocumentViewController *)v9->documentViewController convertPoint:v7 fromPage:x, y];
     v11 = v10;
     v13 = v12;
-    v14 = [(PDFDocumentViewController *)self->_private->documentViewController view];
-    [v14 convertPoint:self toView:{v11, v13}];
+    view = [(PDFDocumentViewController *)self->_private->documentViewController view];
+    [view convertPoint:self toView:{v11, v13}];
 LABEL_5:
     x = v15;
     y = v16;
@@ -2465,17 +2465,17 @@ LABEL_5:
 
   if (v7)
   {
-    v17 = [(PDFView *)self PDFLayout];
-    [v17 convertPoint:v8 fromPage:{x, y}];
+    pDFLayout = [(PDFView *)self PDFLayout];
+    [pDFLayout convertPoint:v8 fromPage:{x, y}];
     v19 = v18;
     v21 = v20;
 
-    v22 = [(PDFView *)self documentView];
-    [v22 bounds];
+    documentView = [(PDFView *)self documentView];
+    [documentView bounds];
     v24 = v23 - v21;
 
-    v14 = [(PDFView *)self documentView];
-    [(PDFView *)self convertPoint:v14 fromView:v19, v24];
+    view = [(PDFView *)self documentView];
+    [(PDFView *)self convertPoint:view fromView:v19, v24];
     goto LABEL_5;
   }
 
@@ -2518,16 +2518,16 @@ LABEL_6:
   if (!self->_private->scaling)
   {
     currentPageIndex = self->_currentPageIndex;
-    v4 = [(PDFView *)self document];
-    v5 = [v4 pageCount];
+    document = [(PDFView *)self document];
+    pageCount = [document pageCount];
 
-    if (currentPageIndex >= v5)
+    if (currentPageIndex >= pageCount)
     {
-      v6 = [(PDFView *)self document];
-      if ([v6 pageCount])
+      document2 = [(PDFView *)self document];
+      if ([document2 pageCount])
       {
-        v7 = [(PDFView *)self document];
-        v8 = [v7 pageCount] - 1;
+        document3 = [(PDFView *)self document];
+        v8 = [document3 pageCount] - 1;
       }
 
       else
@@ -2539,33 +2539,33 @@ LABEL_6:
     }
   }
 
-  v9 = [(PDFView *)self PDFLayout];
-  [v9 invalidateInternalDocumentGeometry];
+  pDFLayout = [(PDFView *)self PDFLayout];
+  [pDFLayout invalidateInternalDocumentGeometry];
 
   [(PDFView *)self _findVisiblePages];
-  v10 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-  [v10 layoutDocumentView];
+  pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+  [pdfDocumentView layoutDocumentView];
 
   [(PDFView *)self _resizeDisplayView:self];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"PDFViewDidLayoutDocumentView" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFViewDidLayoutDocumentView" object:self];
 }
 
 - (void)annotationsChangedOnPage:(PDFPage *)page
 {
   v4 = MEMORY[0x1E696AD88];
   v5 = page;
-  v7 = [v4 defaultCenter];
+  defaultCenter = [v4 defaultCenter];
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v5, @"page", 0}];
 
-  [v7 postNotificationName:@"PDFViewAnnotationsDidChange" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"PDFViewAnnotationsDidChange" object:self userInfo:v6];
 }
 
 - (CGSize)rowSizeForPage:(PDFPage *)page
 {
   v4 = page;
-  v5 = [(PDFView *)self PDFLayout];
-  [v5 contentSizeWithCurrentPage:v4];
+  pDFLayout = [(PDFView *)self PDFLayout];
+  [pDFLayout contentSizeWithCurrentPage:v4];
   v7 = v6;
   v9 = v8;
 
@@ -2575,20 +2575,20 @@ LABEL_6:
   {
     [(PDFView *)self gutterWidth];
     v10 = v10 + v12;
-    v13 = [(PDFView *)self PDFLayout];
-    v14 = [v13 functionalDisplayMode];
+    pDFLayout2 = [(PDFView *)self PDFLayout];
+    functionalDisplayMode = [pDFLayout2 functionalDisplayMode];
 
-    if (v14 >= 2)
+    if (functionalDisplayMode >= 2)
     {
       [(PDFView *)self gutterWidth];
       v10 = v10 + v15;
     }
   }
 
-  v16 = [(PDFView *)self PDFLayout];
-  v17 = [v16 functionalDisplayMode];
+  pDFLayout3 = [(PDFView *)self PDFLayout];
+  functionalDisplayMode2 = [pDFLayout3 functionalDisplayMode];
 
-  if (v17)
+  if (functionalDisplayMode2)
   {
     [(PDFView *)self _pageViewHeight:v4];
     v18 = v19;
@@ -2618,12 +2618,12 @@ LABEL_6:
   v4 = self->_private;
   if (v4->isUsingPageViewController)
   {
-    v5 = [(PDFDocumentViewController *)v4->documentViewController pageViews];
+    pageViews = [(PDFDocumentViewController *)v4->documentViewController pageViews];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v6 = [pageViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2634,14 +2634,14 @@ LABEL_6:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(pageViews);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) page];
-          [v3 addObject:v10];
+          page = [*(*(&v16 + 1) + 8 * i) page];
+          [v3 addObject:page];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [pageViews countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
@@ -2655,8 +2655,8 @@ LABEL_6:
     v11 = 0;
     do
     {
-      v12 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-      v13 = [v12 pageViewForPageAtIndex:v11];
+      pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+      v13 = [pdfDocumentView pageViewForPageAtIndex:v11];
 
       if (v13 && [v13 isVisible])
       {
@@ -2681,28 +2681,28 @@ LABEL_6:
   v2 = self->_private;
   if (v2->isUsingPageViewController)
   {
-    v3 = [(PDFDocumentViewController *)v2->documentViewController pageViews];
+    pageViews = [(PDFDocumentViewController *)v2->documentViewController pageViews];
   }
 
   else
   {
-    v4 = [(PDFScrollView *)v2->scrollView pdfDocumentView];
-    v3 = [v4 pageViews];
+    pdfDocumentView = [(PDFScrollView *)v2->scrollView pdfDocumentView];
+    pageViews = [pdfDocumentView pageViews];
   }
 
-  return v3;
+  return pageViews;
 }
 
 - (id)visibleAnnotations
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(PDFView *)self visiblePages];
-  v4 = [MEMORY[0x1E695DF70] array];
+  visiblePages = [(PDFView *)self visiblePages];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = visiblePages;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
@@ -2718,12 +2718,12 @@ LABEL_6:
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
-        v9 = [v8 annotations];
+        annotations = [v8 annotations];
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v10 = [annotations countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v10)
         {
           v11 = v10;
@@ -2734,18 +2734,18 @@ LABEL_6:
             {
               if (*v19 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(annotations);
               }
 
               v14 = *(*(&v18 + 1) + 8 * j);
               [v14 bounds];
               if ([(PDFView *)self isRectVisible:v8 onPage:?])
               {
-                [v4 addObject:v14];
+                [array addObject:v14];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v11 = [annotations countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v11);
@@ -2758,41 +2758,41 @@ LABEL_6:
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
-- (void)enableBackgroundImages:(BOOL)a3
+- (void)enableBackgroundImages:(BOOL)images
 {
   [(PDFRenderingProperties *)self->_private->renderingProperties setEnableBackgroundImages:?];
-  if (!a3)
+  if (!images)
   {
-    v6 = [(PDFView *)self documentView];
-    v5 = [v6 pageBackgroundManager];
-    [v5 cancel];
+    documentView = [(PDFView *)self documentView];
+    pageBackgroundManager = [documentView pageBackgroundManager];
+    [pageBackgroundManager cancel];
   }
 }
 
-- (void)setBackgroundImage:(id)a3 forPage:(id)a4
+- (void)setBackgroundImage:(id)image forPage:(id)page
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [(PDFView *)self documentView];
-  v8 = [v6 document];
-  v9 = [v8 indexForPage:v6];
+  pageCopy = page;
+  imageCopy = image;
+  documentView = [(PDFView *)self documentView];
+  document = [pageCopy document];
+  v9 = [document indexForPage:pageCopy];
 
-  v10 = [v11 pageBackgroundManager];
-  [v10 forceSetBackgroundImage:v7 forPageIndex:v9];
+  pageBackgroundManager = [documentView pageBackgroundManager];
+  [pageBackgroundManager forceSetBackgroundImage:imageCopy forPageIndex:v9];
 }
 
-- (double)PDFViewWillChangeScaleFactor:(id)a3 toScale:(double)a4
+- (double)PDFViewWillChangeScaleFactor:(id)factor toScale:(double)scale
 {
   [(PDFView *)self minScaleFactor];
-  if (v6 <= a4)
+  if (v6 <= scale)
   {
     [(PDFView *)self maxScaleFactor];
-    if (v8 >= a4)
+    if (v8 >= scale)
     {
-      return a4;
+      return scale;
     }
 
     else
@@ -2811,41 +2811,41 @@ LABEL_6:
   return result;
 }
 
-- (void)PDFViewWillClickOnLink:(id)a3 withURL:(id)a4
+- (void)PDFViewWillClickOnLink:(id)link withURL:(id)l
 {
-  v6 = a4;
-  if (a3)
+  lCopy = l;
+  if (link)
   {
-    v16 = v6;
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
-    if ([v7 canOpenURL:v16])
+    v16 = lCopy;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    if ([mEMORY[0x1E69DC668] canOpenURL:v16])
     {
-      v8 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v8 openURL:v16 options:MEMORY[0x1E695E0F8] completionHandler:0];
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668]2 openURL:v16 options:MEMORY[0x1E695E0F8] completionHandler:0];
     }
 
     else
     {
-      v8 = PDFKitLocalizedString(@"ERROR: Cannot open URL");
+      mEMORY[0x1E69DC668]2 = PDFKitLocalizedString(@"ERROR: Cannot open URL");
       v9 = MEMORY[0x1E696AEC0];
       v10 = PDFKitLocalizedString(@"Link: %@");
       v11 = [v9 stringWithFormat:v10, v16];
 
       v12 = PDFKitLocalizedString(@"OK");
-      v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v8 message:v11 preferredStyle:1];
+      v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:mEMORY[0x1E69DC668]2 message:v11 preferredStyle:1];
       v14 = [MEMORY[0x1E69DC648] actionWithTitle:v12 style:0 handler:0];
       [v13 addAction:v14];
-      v15 = [(PDFView *)self parentViewController];
-      [v15 presentViewController:v13 animated:1 completion:0];
+      parentViewController = [(PDFView *)self parentViewController];
+      [parentViewController presentViewController:v13 animated:1 completion:0];
     }
 
-    v6 = v16;
+    lCopy = v16;
   }
 }
 
-- (id)viewForPage:(id)a3
+- (id)viewForPage:(id)page
 {
-  v4 = [(PDFDocument *)self->_private->document indexForPage:a3];
+  v4 = [(PDFDocument *)self->_private->document indexForPage:page];
   if (v4 >= [(PDFDocument *)self->_private->document pageCount])
   {
     v6 = 0;
@@ -2853,41 +2853,41 @@ LABEL_6:
 
   else
   {
-    v5 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-    v6 = [v5 pageViewForPageAtIndex:v4];
+    pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+    v6 = [pdfDocumentView pageViewForPageAtIndex:v4];
   }
 
   return v6;
 }
 
-- (void)colorWidgetBackgrounds:(BOOL)a3
+- (void)colorWidgetBackgrounds:(BOOL)backgrounds
 {
-  v3 = a3;
-  v5 = [(PDFDocument *)self->_private->document pageCount];
-  if (v5 >= 1)
+  backgroundsCopy = backgrounds;
+  pageCount = [(PDFDocument *)self->_private->document pageCount];
+  if (pageCount >= 1)
   {
-    v6 = v5;
+    v6 = pageCount;
     for (i = 0; i != v6; ++i)
     {
-      v8 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-      v9 = [v8 pageViewForPageAtIndex:i];
+      pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+      v9 = [pdfDocumentView pageViewForPageAtIndex:i];
       v10 = [(PDFDocument *)self->_private->document pageAtIndex:i];
-      [v9 colorWidgetBackgrounds:v3];
-      [v10 setColorWidgetBackgrounds:v3];
+      [v9 colorWidgetBackgrounds:backgroundsCopy];
+      [v10 setColorWidgetBackgrounds:backgroundsCopy];
     }
   }
 }
 
-- (void)drawDetectedAnnotationBounds:(BOOL)a3
+- (void)drawDetectedAnnotationBounds:(BOOL)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(PDFView *)self visiblePageViews];
+  visiblePageViews = [(PDFView *)self visiblePageViews];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [visiblePageViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2899,120 +2899,120 @@ LABEL_6:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visiblePageViews);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) enableHighlightDetectedFormFields:v3];
+        [*(*(&v9 + 1) + 8 * v8++) enableHighlightDetectedFormFields:boundsCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visiblePageViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (PDFView)initWithCoder:(id)a3
+- (PDFView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = PDFView;
-  v5 = [(PDFView *)&v37 initWithCoder:v4];
+  v5 = [(PDFView *)&v37 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(PDFView *)v5 _commonInit];
-    if (![v4 allowsKeyedCoding])
+    if (![coderCopy allowsKeyedCoding])
     {
       v36 = 0;
-      [v4 decodeValueOfObjCType:"i" at:&v36];
+      [coderCopy decodeValueOfObjCType:"i" at:&v36];
       v35 = 0;
-      [v4 decodeValueOfObjCType:"i" at:&v35];
+      [coderCopy decodeValueOfObjCType:"i" at:&v35];
       [(PDFView *)v6 setDisplayMode:v35];
       v34 = 1;
-      [v4 decodeValueOfObjCType:"B" at:&v34];
+      [coderCopy decodeValueOfObjCType:"B" at:&v34];
       [(PDFView *)v6 setDisplaysPageBreaks:v34];
       v33 = 1.0;
-      [v4 decodeValueOfObjCType:"f" at:&v33];
+      [coderCopy decodeValueOfObjCType:"f" at:&v33];
       [(PDFView *)v6 setScaleFactor:v33];
       v32 = 0;
-      [v4 decodeValueOfObjCType:"B" at:&v32];
+      [coderCopy decodeValueOfObjCType:"B" at:&v32];
       [(PDFView *)v6 setAutoScales:v32];
       v31 = 0;
-      [v4 decodeValueOfObjCType:"i" at:&v31];
+      [coderCopy decodeValueOfObjCType:"i" at:&v31];
       [(PDFView *)v6 setDisplayDirection:v31];
       v30 = 0;
-      [v4 decodeValueOfObjCType:"B" at:&v30];
+      [coderCopy decodeValueOfObjCType:"B" at:&v30];
       [(PDFView *)v6 setDisplaysRTL:v30];
       v29 = 1.0;
-      [v4 decodeValueOfObjCType:"f" at:&v29];
+      [coderCopy decodeValueOfObjCType:"f" at:&v29];
       [(PDFView *)v6 setMinScaleFactor:v29];
       v28 = 1.0;
-      [v4 decodeValueOfObjCType:"f" at:&v28];
+      [coderCopy decodeValueOfObjCType:"f" at:&v28];
       [(PDFView *)v6 setMinScaleFactor:v28];
       v27 = 1.0;
-      [v4 decodeValueOfObjCType:"f" at:&v27];
+      [coderCopy decodeValueOfObjCType:"f" at:&v27];
       v20 = v27;
-      [v4 decodeValueOfObjCType:"f" at:&v27];
+      [coderCopy decodeValueOfObjCType:"f" at:&v27];
       v21 = v27;
-      [v4 decodeValueOfObjCType:"f" at:&v27];
+      [coderCopy decodeValueOfObjCType:"f" at:&v27];
       v22 = v27;
-      [v4 decodeValueOfObjCType:"f" at:&v27];
+      [coderCopy decodeValueOfObjCType:"f" at:&v27];
       [(PDFView *)v6 setPageBreakMargins:v22, v20, v27, v21];
       v26 = 0;
-      [v4 decodeValueOfObjCType:"B" at:&v26];
+      [coderCopy decodeValueOfObjCType:"B" at:&v26];
       [(PDFView *)v6 setDisplaysAsBook:v26];
       v25 = 0;
-      [v4 decodeValueOfObjCType:"B" at:&v25];
+      [coderCopy decodeValueOfObjCType:"B" at:&v25];
       [(PDFView *)v6 setEnableDataDetectors:v25];
       v24 = 2;
-      [v4 decodeValueOfObjCType:"i" at:&v24];
+      [coderCopy decodeValueOfObjCType:"i" at:&v24];
       v19 = v24;
       goto LABEL_41;
     }
 
-    [v4 containsValueForKey:@"Version"];
-    if ([v4 containsValueForKey:@"DisplayMode"])
+    [coderCopy containsValueForKey:@"Version"];
+    if ([coderCopy containsValueForKey:@"DisplayMode"])
     {
-      -[PDFView setDisplayMode:](v6, "setDisplayMode:", [v4 decodeIntForKey:@"DisplayMode"]);
+      -[PDFView setDisplayMode:](v6, "setDisplayMode:", [coderCopy decodeIntForKey:@"DisplayMode"]);
     }
 
-    if ([v4 containsValueForKey:@"PageBreaks"])
+    if ([coderCopy containsValueForKey:@"PageBreaks"])
     {
-      -[PDFView setDisplaysPageBreaks:](v6, "setDisplaysPageBreaks:", [v4 decodeBoolForKey:@"PageBreaks"]);
+      -[PDFView setDisplaysPageBreaks:](v6, "setDisplaysPageBreaks:", [coderCopy decodeBoolForKey:@"PageBreaks"]);
     }
 
-    if ([v4 containsValueForKey:@"ScaleFactor"])
+    if ([coderCopy containsValueForKey:@"ScaleFactor"])
     {
-      [v4 decodeFloatForKey:@"ScaleFactor"];
+      [coderCopy decodeFloatForKey:@"ScaleFactor"];
       [(PDFView *)v6 setScaleFactor:v7];
     }
 
-    if ([v4 containsValueForKey:@"AutoScale"])
+    if ([coderCopy containsValueForKey:@"AutoScale"])
     {
-      -[PDFView setAutoScales:](v6, "setAutoScales:", [v4 decodeBoolForKey:@"AutoScale"]);
+      -[PDFView setAutoScales:](v6, "setAutoScales:", [coderCopy decodeBoolForKey:@"AutoScale"]);
     }
 
-    if ([v4 containsValueForKey:@"DisplayDirection"])
+    if ([coderCopy containsValueForKey:@"DisplayDirection"])
     {
-      -[PDFView setDisplayDirection:](v6, "setDisplayDirection:", [v4 decodeBoolForKey:@"DisplayDirection"]);
+      -[PDFView setDisplayDirection:](v6, "setDisplayDirection:", [coderCopy decodeBoolForKey:@"DisplayDirection"]);
     }
 
-    if ([v4 containsValueForKey:@"DisplaysRTL"])
+    if ([coderCopy containsValueForKey:@"DisplaysRTL"])
     {
-      -[PDFView setDisplaysRTL:](v6, "setDisplaysRTL:", [v4 decodeBoolForKey:@"DisplaysRTL"]);
+      -[PDFView setDisplaysRTL:](v6, "setDisplaysRTL:", [coderCopy decodeBoolForKey:@"DisplaysRTL"]);
     }
 
-    if ([v4 containsValueForKey:@"MinScaleFactor"])
+    if ([coderCopy containsValueForKey:@"MinScaleFactor"])
     {
-      [v4 decodeFloatForKey:@"MinScaleFactor"];
+      [coderCopy decodeFloatForKey:@"MinScaleFactor"];
       [(PDFView *)v6 setMinScaleFactor:v8];
     }
 
-    if ([v4 containsValueForKey:@"MaxScaleFactor"])
+    if ([coderCopy containsValueForKey:@"MaxScaleFactor"])
     {
-      [v4 decodeFloatForKey:@"MaxScaleFactor"];
+      [coderCopy decodeFloatForKey:@"MaxScaleFactor"];
       [(PDFView *)v6 setMaxScaleFactor:v9];
     }
 
@@ -3020,43 +3020,43 @@ LABEL_6:
     {
       v10 = 4.0;
       v11 = 4.0;
-      if ([v4 containsValueForKey:@"PageBreakMargins.left"])
+      if ([coderCopy containsValueForKey:@"PageBreakMargins.left"])
       {
-        [v4 decodeFloatForKey:@"PageBreakMargins.left"];
+        [coderCopy decodeFloatForKey:@"PageBreakMargins.left"];
         v11 = v12;
       }
 
-      if ([v4 containsValueForKey:@"PageBreakMargins.left"])
+      if ([coderCopy containsValueForKey:@"PageBreakMargins.left"])
       {
-        [v4 decodeFloatForKey:@"PageBreakMargins.right"];
+        [coderCopy decodeFloatForKey:@"PageBreakMargins.right"];
         v10 = v13;
       }
 
       v14 = 4.75;
       v15 = 4.75;
-      if ([v4 containsValueForKey:@"PageBreakMargins.top"])
+      if ([coderCopy containsValueForKey:@"PageBreakMargins.top"])
       {
-        [v4 decodeFloatForKey:@"PageBreakMargins.top"];
+        [coderCopy decodeFloatForKey:@"PageBreakMargins.top"];
         v15 = v16;
       }
 
-      if ([v4 containsValueForKey:@"PageBreakMargins.bottom"])
+      if ([coderCopy containsValueForKey:@"PageBreakMargins.bottom"])
       {
-        [v4 decodeFloatForKey:@"PageBreakMargins.bottom"];
+        [coderCopy decodeFloatForKey:@"PageBreakMargins.bottom"];
         v14 = v17;
       }
 
       [(PDFView *)v6 setPageBreakMargins:v15, v11, v14, v10];
     }
 
-    if ([v4 containsValueForKey:@"DisplaysAsBook"])
+    if ([coderCopy containsValueForKey:@"DisplaysAsBook"])
     {
-      -[PDFView setDisplaysAsBook:](v6, "setDisplaysAsBook:", [v4 decodeBoolForKey:@"DisplaysAsBook"]);
+      -[PDFView setDisplaysAsBook:](v6, "setDisplaysAsBook:", [coderCopy decodeBoolForKey:@"DisplaysAsBook"]);
     }
 
-    if ([v4 containsValueForKey:@"BackgroundColor"])
+    if ([coderCopy containsValueForKey:@"BackgroundColor"])
     {
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BackgroundColor"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BackgroundColor"];
       if (v18)
       {
         objc_opt_class();
@@ -3067,14 +3067,14 @@ LABEL_6:
       }
     }
 
-    if ([v4 containsValueForKey:@"EnableDataDetectors"])
+    if ([coderCopy containsValueForKey:@"EnableDataDetectors"])
     {
-      -[PDFView setEnableDataDetectors:](v6, "setEnableDataDetectors:", [v4 decodeBoolForKey:@"EnableDataDetectors"]);
+      -[PDFView setEnableDataDetectors:](v6, "setEnableDataDetectors:", [coderCopy decodeBoolForKey:@"EnableDataDetectors"]);
     }
 
-    if ([v4 containsValueForKey:@"InterpolationQuality"])
+    if ([coderCopy containsValueForKey:@"InterpolationQuality"])
     {
-      v19 = [v4 decodeIntegerForKey:@"InterpolationQuality"];
+      v19 = [coderCopy decodeIntegerForKey:@"InterpolationQuality"];
 LABEL_41:
       [(PDFView *)v6 setInterpolationQuality:v19];
     }
@@ -3083,18 +3083,18 @@ LABEL_41:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = PDFView;
-  [(PDFView *)&v3 encodeWithCoder:a3];
+  [(PDFView *)&v3 encodeWithCoder:coder];
 }
 
-- (PDFView)initWithFrame:(CGRect)a3
+- (PDFView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PDFView;
-  v3 = [(PDFView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PDFView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -3104,12 +3104,12 @@ LABEL_41:
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = PDFView;
-  [(PDFView *)&v14 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PDFView *)&v14 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = self->_private;
   if (v4)
   {
@@ -3119,12 +3119,12 @@ LABEL_41:
     }
 
     [(PDFView *)self _updateBookmarksForPages];
-    v5 = [(PDFView *)self visiblePageViews];
+    visiblePageViews = [(PDFView *)self visiblePageViews];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    v6 = [visiblePageViews countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3136,14 +3136,14 @@ LABEL_41:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(visiblePageViews);
           }
 
           [*(*(&v10 + 1) + 8 * v9++) setNeedsTilesUpdate];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v7 = [visiblePageViews countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v7);
@@ -3151,14 +3151,14 @@ LABEL_41:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   if (self->_private)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     v20.receiver = self;
@@ -3171,11 +3171,11 @@ LABEL_41:
       v8 = self->_private;
     }
 
-    v9 = [(PDFPasswordViewController *)v8->passwordViewController viewIfLoaded];
-    v10 = v9;
-    if (v9)
+    viewIfLoaded = [(PDFPasswordViewController *)v8->passwordViewController viewIfLoaded];
+    v10 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v9 setFrame:{x, y, width, height}];
+      [viewIfLoaded setFrame:{x, y, width, height}];
     }
 
     [(PDFView *)self _updateBookmarksForPages];
@@ -3311,8 +3311,8 @@ void __25__PDFView_layoutSubviews__block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = PDFView;
   [(PDFView *)&v4 didMoveToWindow];
-  v3 = [(PDFView *)self traitCollection];
-  [(PDFRenderingProperties *)self->_private->renderingProperties setTraitCollection:v3];
+  traitCollection = [(PDFView *)self traitCollection];
+  [(PDFRenderingProperties *)self->_private->renderingProperties setTraitCollection:traitCollection];
 }
 
 - (void)_commonInit
@@ -3360,8 +3360,8 @@ void __25__PDFView_layoutSubviews__block_invoke(uint64_t a1)
   v15->renderingProperties = v14;
 
   [(PDFRenderingProperties *)self->_private->renderingProperties setPDFView:self];
-  v17 = [(PDFView *)self traitCollection];
-  [(PDFRenderingProperties *)self->_private->renderingProperties setTraitCollection:v17];
+  traitCollection = [(PDFView *)self traitCollection];
+  [(PDFRenderingProperties *)self->_private->renderingProperties setTraitCollection:traitCollection];
 
   objc_initWeak(&location, self);
   v18 = objc_opt_self();
@@ -3424,10 +3424,10 @@ void __25__PDFView_layoutSubviews__block_invoke(uint64_t a1)
 
   [(PDFView *)self colorWidgetBackgrounds:GetDefaultsWriteColorWidgetBackgrounds()];
   [(PDFView *)self _setupScrollView];
-  v38 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v38 addObserver:self selector:sel_pdfViewDidChangeScale_ name:@"PDFViewScaleChanged" object:self];
-  [v38 addObserver:self selector:sel_pdfViewDidChangePage_ name:@"PDFViewChangedPage" object:self];
-  [v38 addObserver:self selector:sel_visiblePagesChanged_ name:@"PDFViewVisiblePagesChanged" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_pdfViewDidChangeScale_ name:@"PDFViewScaleChanged" object:self];
+  [defaultCenter addObserver:self selector:sel_pdfViewDidChangePage_ name:@"PDFViewChangedPage" object:self];
+  [defaultCenter addObserver:self selector:sel_visiblePagesChanged_ name:@"PDFViewVisiblePagesChanged" object:self];
   v39 = [[PDFViewDebugFlags alloc] initWithView:self];
   v40 = self->_private;
   debugFlags = v40->debugFlags;
@@ -3457,8 +3457,8 @@ void __22__PDFView__commonInit__block_invoke(uint64_t a1, void *a2)
   }
 
   [(PDFView *)self _releaseDocument];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6 = self->_private;
   debugFlags = v6->debugFlags;
@@ -3469,7 +3469,7 @@ void __22__PDFView__commonInit__block_invoke(uint64_t a1, void *a2)
   [(PDFView *)&v8 dealloc];
 }
 
-- (CGAffineTransform)_transformFromPageToPageView:(SEL)a3
+- (CGAffineTransform)_transformFromPageToPageView:(SEL)view
 {
   v6 = a4;
   v7 = PDFRectToCGRect([v6 boundsForBox:0]);
@@ -3481,7 +3481,7 @@ void __22__PDFView__commonInit__block_invoke(uint64_t a1, void *a2)
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v6 rotation];
+  rotation = [v6 rotation];
 
   v44.origin.x = v7;
   v44.origin.y = v9;
@@ -3516,9 +3516,9 @@ void __22__PDFView__commonInit__block_invoke(uint64_t a1, void *a2)
   *&t1.tx = v36;
   CGAffineTransformConcat(retstr, &t1, &t2);
   Width = 0.0;
-  if (v20 > 179)
+  if (rotation > 179)
   {
-    if (v20 == 180)
+    if (rotation == 180)
     {
       v28 = PDFDegToRad(180.0);
       v51.origin.x = v13;
@@ -3532,7 +3532,7 @@ void __22__PDFView__commonInit__block_invoke(uint64_t a1, void *a2)
     else
     {
       Height = 0.0;
-      if (v20 != 270)
+      if (rotation != 270)
       {
         goto LABEL_12;
       }
@@ -3553,7 +3553,7 @@ void __22__PDFView__commonInit__block_invoke(uint64_t a1, void *a2)
     goto LABEL_10;
   }
 
-  if (!v20)
+  if (!rotation)
   {
     v50.origin.x = v13;
     v50.origin.y = v15;
@@ -3564,7 +3564,7 @@ void __22__PDFView__commonInit__block_invoke(uint64_t a1, void *a2)
   }
 
   Height = 0.0;
-  if (v20 == 90)
+  if (rotation == 90)
   {
     v28 = PDFDegToRad(90.0);
 LABEL_10:
@@ -3611,7 +3611,7 @@ LABEL_12:
   return result;
 }
 
-- (CGAffineTransform)_transformFromPageViewToPage:(SEL)a3
+- (CGAffineTransform)_transformFromPageViewToPage:(SEL)page
 {
   memset(&v6[1], 0, sizeof(CGAffineTransform));
   [(PDFView *)self _transformFromPageToPageView:a4];
@@ -3632,83 +3632,83 @@ LABEL_12:
     passwordViewController = self->_private->passwordViewController;
   }
 
-  v9 = [(PDFPasswordViewController *)passwordViewController view];
-  v7 = [(PDFPasswordViewController *)self->_private->passwordViewController view];
-  v8 = [v7 superview];
+  view = [(PDFPasswordViewController *)passwordViewController view];
+  view2 = [(PDFPasswordViewController *)self->_private->passwordViewController view];
+  superview = [view2 superview];
 
-  if (!v8)
+  if (!superview)
   {
-    [(PDFView *)self addSubview:v9];
-    [v9 setAutoresizesSubviews:1];
-    [v9 setAutoresizingMask:18];
+    [(PDFView *)self addSubview:view];
+    [view setAutoresizesSubviews:1];
+    [view setAutoresizingMask:18];
     [(PDFView *)self bounds];
-    [v9 setFrame:?];
+    [view setFrame:?];
   }
 
-  [v9 setHidden:0];
+  [view setHidden:0];
 }
 
 - (void)_removePasswordView
 {
-  v2 = [(PDFPasswordViewController *)self->_private->passwordViewController viewIfLoaded];
-  if (v2)
+  viewIfLoaded = [(PDFPasswordViewController *)self->_private->passwordViewController viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v3 = v2;
-    [v2 setHidden:1];
+    v3 = viewIfLoaded;
+    [viewIfLoaded setHidden:1];
     [v3 removeFromSuperview];
-    v2 = v3;
+    viewIfLoaded = v3;
   }
 }
 
 - (void)_updatePasswordView
 {
-  v3 = [(PDFPasswordViewController *)self->_private->passwordViewController viewIfLoaded];
-  v4 = v3;
-  if (v3)
+  viewIfLoaded = [(PDFPasswordViewController *)self->_private->passwordViewController viewIfLoaded];
+  v4 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    v5 = v3;
-    v3 = [v3 isHidden];
+    v5 = viewIfLoaded;
+    viewIfLoaded = [viewIfLoaded isHidden];
     v4 = v5;
-    if ((v3 & 1) == 0)
+    if ((viewIfLoaded & 1) == 0)
     {
-      v3 = [(PDFView *)self bringSubviewToFront:v5];
+      viewIfLoaded = [(PDFView *)self bringSubviewToFront:v5];
       v4 = v5;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v3, v4);
+  MEMORY[0x1EEE66BB8](viewIfLoaded, v4);
 }
 
-- (BOOL)userDidEnterPassword:(id)a3 forPasswordViewController:(id)a4
+- (BOOL)userDidEnterPassword:(id)password forPasswordViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(PDFView *)self document];
-  v7 = [v6 isLocked];
+  passwordCopy = password;
+  document = [(PDFView *)self document];
+  isLocked = [document isLocked];
 
-  if (v7 && (-[PDFView document](self, "document"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 unlockWithPassword:v5], v8, (v9 & 1) == 0))
+  if (isLocked && (-[PDFView document](self, "document"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 unlockWithPassword:passwordCopy], v8, (v9 & 1) == 0))
   {
-    v11 = [(PDFView *)self window];
-    v12 = [v11 rootViewController];
+    window = [(PDFView *)self window];
+    rootViewController = [window rootViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v12 viewControllers];
-      v14 = [v13 objectAtIndex:0];
+      viewControllers = [rootViewController viewControllers];
+      v14 = [viewControllers objectAtIndex:0];
 
-      v12 = v14;
+      rootViewController = v14;
     }
 
-    v15 = [v12 presentedViewController];
+    presentedViewController = [rootViewController presentedViewController];
 
-    if (v15)
+    if (presentedViewController)
     {
-      v16 = [v12 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v12 = v16;
+      rootViewController = presentedViewController2;
     }
 
-    [(PDFPasswordViewController *)self->_private->passwordViewController presentInvalidPasswordAlertWithParentViewController:v12];
+    [(PDFPasswordViewController *)self->_private->passwordViewController presentInvalidPasswordAlertWithParentViewController:rootViewController];
 
     v10 = 0;
   }
@@ -3733,14 +3733,14 @@ LABEL_12:
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(PDFViewController *)self->_private->controller textSelectionMenu];
-  v8 = NSStringFromSelector(a3);
+  senderCopy = sender;
+  textSelectionMenu = [(PDFViewController *)self->_private->controller textSelectionMenu];
+  v8 = NSStringFromSelector(action);
   v9 = [v8 isEqualToString:@"delete:"];
 
-  if (v7 == 1 && [(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView]|| [(PDFView *)self akAnnotationEditingEnabled])
+  if (textSelectionMenu == 1 && [(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView]|| [(PDFView *)self akAnnotationEditingEnabled])
   {
     LOBYTE(v10) = 0;
   }
@@ -3749,17 +3749,17 @@ LABEL_12:
   {
     v17.receiver = self;
     v17.super_class = PDFView;
-    v11 = [(PDFView *)&v17 canPerformAction:a3 withSender:v6];
-    v12 = NSStringFromSelector(a3);
+    v11 = [(PDFView *)&v17 canPerformAction:action withSender:senderCopy];
+    v12 = NSStringFromSelector(action);
     v13 = [v12 isEqualToString:@"_lookup:"];
 
     if (v13)
     {
-      v14 = [(PDFView *)self currentSelection];
-      if (v14)
+      currentSelection = [(PDFView *)self currentSelection];
+      if (currentSelection)
       {
-        v15 = [(PDFView *)self currentSelection];
-        v10 = [v15 isEmpty] ^ 1;
+        currentSelection2 = [(PDFView *)self currentSelection];
+        v10 = [currentSelection2 isEmpty] ^ 1;
       }
 
       else
@@ -3821,42 +3821,42 @@ LABEL_12:
 
   [(UITapGestureRecognizer *)v3->tapGestureRecognizer requireGestureRecognizerToFail:v3->longPressGestureRecognizer];
   [(UITapGestureRecognizer *)self->_private->tapGestureRecognizer requireGestureRecognizerToFail:self->_private->doubleTapGestureRecognizer];
-  v13 = [(PDFScrollView *)self->_private->scrollView panGestureRecognizer];
-  [v13 requireGestureRecognizerToFail:self->_private->longPressGestureRecognizer];
+  panGestureRecognizer = [(PDFScrollView *)self->_private->scrollView panGestureRecognizer];
+  [panGestureRecognizer requireGestureRecognizerToFail:self->_private->longPressGestureRecognizer];
 }
 
-- (void)addGestureRecognizer:(id)a3
+- (void)addGestureRecognizer:(id)recognizer
 {
   v9.receiver = self;
   v9.super_class = PDFView;
-  [(PDFView *)&v9 addGestureRecognizer:a3];
-  v4 = [(PDFView *)self documentView];
+  [(PDFView *)&v9 addGestureRecognizer:recognizer];
+  documentView = [(PDFView *)self documentView];
   v5 = self->_private;
   if (v5->isUsingPageViewController)
   {
-    v6 = [(PDFDocumentViewController *)v5->documentViewController currentPage];
-    v7 = [(PDFDocumentViewController *)self->_private->documentViewController findPageViewControllerForPageIndex:[(PDFDocument *)self->_private->document indexForPage:v6]];
-    v8 = [v7 textInputView];
+    currentPage = [(PDFDocumentViewController *)v5->documentViewController currentPage];
+    v7 = [(PDFDocumentViewController *)self->_private->documentViewController findPageViewControllerForPageIndex:[(PDFDocument *)self->_private->document indexForPage:currentPage]];
+    textInputView = [v7 textInputView];
 
-    v4 = v8;
+    documentView = textInputView;
   }
 
-  [v4 updateGestureRecognizerDependencies];
+  [documentView updateGestureRecognizerDependencies];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = self->_private->doubleTapGestureRecognizer != v6 || ([v7 _isPointerTouch] & 1) == 0;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  v8 = touchCopy;
+  v9 = self->_private->doubleTapGestureRecognizer != recognizerCopy || ([touchCopy _isPointerTouch] & 1) == 0;
 
   return v9;
 }
 
-- (BOOL)acceptSingleTouch:(id)a3
+- (BOOL)acceptSingleTouch:(id)touch
 {
-  [a3 locationInView:self];
+  [touch locationInView:self];
   v5 = v4;
   v7 = v6;
   v8 = [(PDFView *)self pageForPoint:0 nearest:?];
@@ -3877,13 +3877,13 @@ LABEL_12:
       if (!v14)
       {
 LABEL_7:
-        v16 = [(PDFViewController *)self->_private->controller activeAnnotation];
+        activeAnnotation = [(PDFViewController *)self->_private->controller activeAnnotation];
 
-        if (!v16)
+        if (!activeAnnotation)
         {
-          v17 = [(PDFView *)self currentSelection];
-          v18 = v17;
-          v15 = v17 && ![v17 isEmpty];
+          currentSelection = [(PDFView *)self currentSelection];
+          v18 = currentSelection;
+          v15 = currentSelection && ![currentSelection isEmpty];
 
           goto LABEL_14;
         }
@@ -3910,15 +3910,15 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  [v4 locationInView:self];
+  beginCopy = begin;
+  [beginCopy locationInView:self];
   v6 = v5;
   v8 = v7;
-  v9 = [(PDFView *)self typeForGestureRecognizer:v4];
+  v9 = [(PDFView *)self typeForGestureRecognizer:beginCopy];
   v10 = self->_private;
-  if (v10->tapGestureRecognizer == v4)
+  if (v10->tapGestureRecognizer == beginCopy)
   {
     v12 = [(PDFView *)self pageForPoint:0 nearest:v6, v8];
     currentSelection = self->_private->currentSelection;
@@ -3931,14 +3931,14 @@ LABEL_15:
         goto LABEL_2;
       }
 
-      v15 = [(PDFViewController *)self->_private->controller activeAnnotation];
-      v16 = [v15 isMarkupAnnotationSubtype];
-      v17 = [v15 valueForAnnotationKey:@"/Subtype"];
+      activeAnnotation = [(PDFViewController *)self->_private->controller activeAnnotation];
+      isMarkupAnnotationSubtype = [activeAnnotation isMarkupAnnotationSubtype];
+      v17 = [activeAnnotation valueForAnnotationKey:@"/Subtype"];
       v18 = [v17 isEqualToString:@"/Text"];
 
-      if ((v16 & 1) != 0 || v18)
+      if ((isMarkupAnnotationSubtype & 1) != 0 || v18)
       {
-        [(PDFViewController *)self->_private->controller removeControlForAnnotation:v15];
+        [(PDFViewController *)self->_private->controller removeControlForAnnotation:activeAnnotation];
       }
 
       LOBYTE(v11) = 0;
@@ -3953,7 +3953,7 @@ LABEL_15:
   }
 
 LABEL_2:
-  if (v10->doubleTapGestureRecognizer == v4)
+  if (v10->doubleTapGestureRecognizer == beginCopy)
   {
     if (!PDFKitIsFormFillingEnabled() || ![(PDFView *)self isInFormFillingMode])
     {
@@ -3964,7 +3964,7 @@ LABEL_2:
     goto LABEL_12;
   }
 
-  if (v10->longPressGestureRecognizer != v4 || [(PDFView *)self _shouldHandleAnnotationAtLocation:v9 forGestureType:v6, v8])
+  if (v10->longPressGestureRecognizer != beginCopy || [(PDFView *)self _shouldHandleAnnotationAtLocation:v9 forGestureType:v6, v8])
   {
 LABEL_12:
     LOBYTE(v11) = 1;
@@ -3977,32 +3977,32 @@ LABEL_21:
   return v11;
 }
 
-- (void)handleGesture:(unint64_t)a3 state:(int64_t)a4 location:(CGPoint)a5 locationOfFirstTouch:(CGPoint)a6 isIndirectTouch:(BOOL)a7
+- (void)handleGesture:(unint64_t)gesture state:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch isIndirectTouch:(BOOL)indirectTouch
 {
-  v7 = a7;
-  y = a6.y;
-  x = a6.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  if (a3 != 1 || !a7)
+  indirectTouchCopy = indirectTouch;
+  y = touch.y;
+  x = touch.x;
+  v10 = location.y;
+  v11 = location.x;
+  if (gesture != 1 || !indirectTouch)
   {
-    [(PDFViewController *)self->_private->controller handleGesture:a3 state:a4 location:a5.x, a5.y];
+    [(PDFViewController *)self->_private->controller handleGesture:gesture state:state location:location.x, location.y];
   }
 
   if ([(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView])
   {
-    v15 = [(PDFView *)self documentView];
-    [v15 handleGesture:a3 state:a4 location:v7 locationOfFirstTouch:v11 isIndirectTouch:{v10, x, y}];
+    documentView = [(PDFView *)self documentView];
+    [documentView handleGesture:gesture state:state location:indirectTouchCopy locationOfFirstTouch:v11 isIndirectTouch:{v10, x, y}];
   }
 }
 
-- (unint64_t)typeForGestureRecognizer:(id)a3
+- (unint64_t)typeForGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 numberOfTapsRequired] == 2;
+    v4 = [recognizerCopy numberOfTapsRequired] == 2;
   }
 
   else
@@ -4037,10 +4037,10 @@ LABEL_21:
   return 2;
 }
 
-- (id)pointerRegionForLocation:(CGPoint)a3
+- (id)pointerRegionForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6 = [PDFPointerRegion alloc];
   v7 = [(PDFPointerRegion *)v6 initWithRect:@"PDFPointerRegionPage" identifier:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = [(PDFView *)self areaOfInterestForPoint:x, y];
@@ -4072,9 +4072,9 @@ LABEL_10:
       }
 
       v11 = [v10 selectionForLineAtPoint:?];
-      v12 = [v11 string];
-      v13 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v14 = [v12 stringByTrimmingCharactersInSet:v13];
+      string = [v11 string];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v14 = [string stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       if (!v14 || ![v14 length])
       {
@@ -4100,31 +4100,31 @@ LABEL_11:
   return v7;
 }
 
-- (id)hitTestForSubviewsOfView:(id)a3 atLocation:(CGPoint)a4 withEvent:(id)a5
+- (id)hitTestForSubviewsOfView:(id)view atLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  v9 = a5;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  eventCopy = event;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__6;
   v25 = __Block_byref_object_dispose__6;
   v26 = 0;
-  v10 = [v8 subviews];
+  subviews = [viewCopy subviews];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__PDFView_hitTestForSubviewsOfView_atLocation_withEvent___block_invoke;
   v15[3] = &unk_1E8152618;
   v19 = x;
   v20 = y;
-  v11 = v8;
+  v11 = viewCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = eventCopy;
   v17 = v12;
   v18 = &v21;
-  [v10 enumerateObjectsUsingBlock:v15];
+  [subviews enumerateObjectsUsingBlock:v15];
 
   v13 = v22[5];
   _Block_object_dispose(&v21, 8);
@@ -4150,10 +4150,10 @@ void __57__PDFView_hitTestForSubviewsOfView_atLocation_withEvent___block_invoke(
   }
 }
 
-- (BOOL)_shouldHandleAnnotationAtLocation:(CGPoint)a3 forGestureType:(unint64_t)a4
+- (BOOL)_shouldHandleAnnotationAtLocation:(CGPoint)location forGestureType:(unint64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v32[1] = *MEMORY[0x1E69E9840];
   v8 = [(PDFView *)self pageForPoint:0 nearest:?];
   if (v8)
@@ -4162,20 +4162,20 @@ void __57__PDFView_hitTestForSubviewsOfView_atLocation_withEvent___block_invoke(
     v10 = v9;
     v12 = v11;
     v13 = [v8 annotationAtPoint:?];
-    v14 = [(PDFViewController *)self->_private->controller activeAnnotation];
+    activeAnnotation = [(PDFViewController *)self->_private->controller activeAnnotation];
     if (!v13)
     {
       v15 = [v8 scannedAnnotationAtPoint:{v10, v12}];
       if (!v15)
       {
-        if (a4)
+        if (type)
         {
           v26 = 1;
         }
 
         else
         {
-          v26 = v14 == 0;
+          v26 = activeAnnotation == 0;
         }
 
         v22 = !v26;
@@ -4188,13 +4188,13 @@ void __57__PDFView_hitTestForSubviewsOfView_atLocation_withEvent___block_invoke(
     v16 = [v13 valueForAnnotationKey:@"/Subtype"];
     v17 = [v16 isEqualToString:@"/Link"];
     v18 = [v16 isEqualToString:@"/Text"];
-    v19 = [v13 isMarkupAnnotationSubtype];
+    isMarkupAnnotationSubtype = [v13 isMarkupAnnotationSubtype];
     v20 = [v16 isEqualToString:@"/Widget"];
-    if (a4)
+    if (type)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
-        if (v19)
+        if (isMarkupAnnotationSubtype)
         {
           v21 = [v13 noteContainsPoint:{v10, v12}];
         }
@@ -4209,7 +4209,7 @@ void __57__PDFView_hitTestForSubviewsOfView_atLocation_withEvent___block_invoke(
       }
     }
 
-    else if ((v17 | v18 | v19) & 1) != 0 || v20 && (([v13 valueForAnnotationKey:@"/FT"], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", @"/Btn"), (objc_msgSend(v23, "isEqualToString:", @"/Tx") & 1) == 0) ? (v25 = objc_msgSend(v23, "isEqualToString:", @"/Ch")) : (v25 = 1), v27 = v24 | v25 & (v13 != v14), v23, (v27))
+    else if ((v17 | v18 | isMarkupAnnotationSubtype) & 1) != 0 || v20 && (([v13 valueForAnnotationKey:@"/FT"], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", @"/Btn"), (objc_msgSend(v23, "isEqualToString:", @"/Tx") & 1) == 0) ? (v25 = objc_msgSend(v23, "isEqualToString:", @"/Ch")) : (v25 = 1), v27 = v24 | v25 & (v13 != activeAnnotation), v23, (v27))
     {
       v22 = 1;
 LABEL_26:
@@ -4218,11 +4218,11 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v31 = @"PDFAnnotationHit";
     v32[0] = v13;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    [v28 postNotificationName:@"PDFViewAnnotationHit" object:self userInfo:v29];
+    [defaultCenter postNotificationName:@"PDFViewAnnotationHit" object:self userInfo:v29];
 
     v22 = 0;
     goto LABEL_26;
@@ -4234,10 +4234,10 @@ LABEL_28:
   return v22 & 1;
 }
 
-- (id)_dragItemsAtLocationInView:(CGPoint)a3
+- (id)_dragItemsAtLocationInView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = view.y;
+  x = view.x;
   v24[1] = *MEMORY[0x1E69E9840];
   v6 = objc_opt_new();
   if (![(PDFDocument *)self->_private->document allowsCopying])
@@ -4256,7 +4256,7 @@ LABEL_28:
     v14 = v13;
     v15 = [v13 URL];
 
-    v16 = [(PDFView *)self currentSelection];
+    currentSelection = [(PDFView *)self currentSelection];
     if (v15)
     {
       v17 = [v14 URL];
@@ -4264,25 +4264,25 @@ LABEL_28:
 
       [v14 bounds];
       v27 = PDFRectInset(v26, -3.0, -3.0);
-      v18 = [v8 selectionForRect:{v27.origin.x, v27.origin.y, v27.size.width, v27.size.height}];
-      [(PDFView *)self setCurrentSelection:v18];
+      attributedString = [v8 selectionForRect:{v27.origin.x, v27.origin.y, v27.size.width, v27.size.height}];
+      [(PDFView *)self setCurrentSelection:attributedString];
       goto LABEL_12;
     }
   }
 
   else
   {
-    v16 = [(PDFView *)self currentSelection];
+    currentSelection = [(PDFView *)self currentSelection];
     v14 = 0;
   }
 
-  if (v16 && ([v16 isEmpty] & 1) == 0 && objc_msgSend(v16, "containsPoint:onPage:", v8, v11, v12))
+  if (currentSelection && ([currentSelection isEmpty] & 1) == 0 && objc_msgSend(currentSelection, "containsPoint:onPage:", v8, v11, v12))
   {
-    v20 = [v16 string];
-    [v7 registerObject:v20 visibility:0];
+    string = [currentSelection string];
+    [v7 registerObject:string visibility:0];
 
-    v18 = [v16 attributedString];
-    [v7 registerObject:v18 visibility:0];
+    attributedString = [currentSelection attributedString];
+    [v7 registerObject:attributedString visibility:0];
 LABEL_12:
     v21 = [objc_alloc(MEMORY[0x1E69DC990]) initWithItemProvider:v7];
 
@@ -4306,9 +4306,9 @@ LABEL_16:
   return v19;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   if ([(PDFView *)self isInMarkupMode])
   {
     v6 = 0;
@@ -4316,7 +4316,7 @@ LABEL_16:
 
   else
   {
-    [v5 locationInView:self];
+    [sessionCopy locationInView:self];
     v6 = [(PDFView *)self _dragItemsAtLocationInView:?];
     if ([v6 count])
     {
@@ -4328,11 +4328,11 @@ LABEL_16:
   return v6;
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  if ([(UITapGestureRecognizer *)self->_private->tapGestureRecognizer state:a3]== 5)
+  y = point.y;
+  x = point.x;
+  if ([(UITapGestureRecognizer *)self->_private->tapGestureRecognizer state:interaction]== 5)
   {
     v8 = MEMORY[0x1E695E0F0];
   }
@@ -4345,16 +4345,16 @@ LABEL_16:
   return v8;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = [(PDFView *)self currentSelection:a3];
+  v6 = [(PDFView *)self currentSelection:interaction];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v7 = [v6 pages];
-  v8 = [v7 countByEnumeratingWithState:&v51 objects:v55 count:16];
+  pages = [v6 pages];
+  v8 = [pages countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4365,7 +4365,7 @@ LABEL_3:
     {
       if (*v52 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(pages);
       }
 
       v12 = *(*(&v51 + 1) + 8 * v11);
@@ -4377,7 +4377,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v51 objects:v55 count:16];
+        v9 = [pages countByEnumeratingWithState:&v51 objects:v55 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -4419,14 +4419,14 @@ LABEL_3:
       v48 = width;
       v49 = height;
       v50 = v27;
-      v7 = v15;
+      pages = v15;
       v29 = [v28 imageWithActions:v40];
       v30 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v29];
-      v31 = [v30 layer];
-      [v31 setCornerRadius:16.0];
+      layer = [v30 layer];
+      [layer setCornerRadius:16.0];
 
-      v32 = [v30 layer];
-      [v32 setMasksToBounds:1];
+      layer2 = [v30 layer];
+      [layer2 setMasksToBounds:1];
 
       [v30 setFrame:{v39, v38, v24, v26}];
       [(PDFView *)self clearSelection];
@@ -4499,24 +4499,24 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
   }
 }
 
-- (id)findInteraction:(id)a3 sessionForView:(id)a4
+- (id)findInteraction:(id)interaction sessionForView:(id)view
 {
   v5 = objc_alloc(MEMORY[0x1E69DD140]);
-  v6 = [(PDFView *)self documentView];
-  v7 = [v5 initWithSearchableObject:v6];
+  documentView = [(PDFView *)self documentView];
+  v7 = [v5 initWithSearchableObject:documentView];
 
   return v7;
 }
 
-- (CGRect)normalizedPageBounds:(id)a3
+- (CGRect)normalizedPageBounds:(id)bounds
 {
-  v4 = a3;
-  [v4 boundsForBox:{-[PDFView displayBox](self, "displayBox")}];
+  boundsCopy = bounds;
+  [boundsCopy boundsForBox:{-[PDFView displayBox](self, "displayBox")}];
   v6 = v5;
   v8 = v7;
   v9 = PDFPointMake(0.0, 0.0);
   v11 = v10;
-  if (![v4 pageRef])
+  if (![boundsCopy pageRef])
   {
     v12.n128_u64[0] = 0;
     v13.n128_u64[0] = 0;
@@ -4526,8 +4526,8 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
     v8 = v16;
   }
 
-  v17 = [v4 rotation];
-  if (v17 == 270 || v17 == 90)
+  rotation = [boundsCopy rotation];
+  if (rotation == 270 || rotation == 90)
   {
     v18 = v6;
   }
@@ -4549,18 +4549,18 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
   return result;
 }
 
-- (double)_pageViewHeight:(id)a3
+- (double)_pageViewHeight:(id)height
 {
-  v4 = a3;
-  [(PDFView *)self normalizedPageBounds:v4];
+  heightCopy = height;
+  [(PDFView *)self normalizedPageBounds:heightCopy];
   v6 = v5;
-  v7 = [(PDFView *)self PDFLayout];
-  v8 = [v7 functionalDisplayMode];
+  pDFLayout = [(PDFView *)self PDFLayout];
+  functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-  if (v8 == 3)
+  if (functionalDisplayMode == 3)
   {
-    v9 = [(PDFView *)self PDFLayout];
-    v10 = [v9 facingPageForPage:v4];
+    pDFLayout2 = [(PDFView *)self PDFLayout];
+    v10 = [pDFLayout2 facingPageForPage:heightCopy];
 
     if (v10)
     {
@@ -4578,32 +4578,32 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
   return v14;
 }
 
-- (double)autoScaleFactorForPage:(id)a3
+- (double)autoScaleFactorForPage:(id)page
 {
-  [(PDFView *)self _unboundAutoScaleFactorForPage:a3];
+  [(PDFView *)self _unboundAutoScaleFactorForPage:page];
 
   [(PDFView *)self PDFViewWillChangeScaleFactor:self toScale:?];
   return result;
 }
 
-- (double)autoScaleFactorForPageWithSize:(CGSize)a3
+- (double)autoScaleFactorForPageWithSize:(CGSize)size
 {
-  [(PDFView *)self _unboundAutoScaleFactorForPageWithSize:a3.width, a3.height];
+  [(PDFView *)self _unboundAutoScaleFactorForPageWithSize:size.width, size.height];
 
   [(PDFView *)self PDFViewWillChangeScaleFactor:self toScale:?];
   return result;
 }
 
-- (double)_unboundAutoScaleFactorForPage:(id)a3
+- (double)_unboundAutoScaleFactorForPage:(id)page
 {
-  if (!a3)
+  if (!page)
   {
     return 1.0;
   }
 
-  v4 = a3;
-  v5 = [(PDFView *)self PDFLayout];
-  [v5 contentSizeWithCurrentPage:v4];
+  pageCopy = page;
+  pDFLayout = [(PDFView *)self PDFLayout];
+  [pDFLayout contentSizeWithCurrentPage:pageCopy];
   v7 = v6;
   v9 = v8;
 
@@ -4611,10 +4611,10 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
   return result;
 }
 
-- (double)_unboundAutoScaleFactorForPageWithSize:(CGSize)a3
+- (double)_unboundAutoScaleFactorForPageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PDFScrollView *)self->_private->scrollView bounds];
   v7 = v6;
   v9 = v8;
@@ -4633,22 +4633,22 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
     {
       [(PDFView *)self gutterWidth];
       v24 = v24 - v27;
-      v28 = [(PDFView *)self PDFLayout];
-      v29 = [v28 functionalDisplayMode];
+      pDFLayout = [(PDFView *)self PDFLayout];
+      functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-      if (v29 >= 2)
+      if (functionalDisplayMode >= 2)
       {
         [(PDFView *)self gutterWidth];
         v24 = v24 - v30;
       }
     }
 
-    v31 = [(PDFView *)self PDFLayout];
-    v32 = [v31 functionalDisplayMode];
+    pDFLayout2 = [(PDFView *)self PDFLayout];
+    functionalDisplayMode2 = [pDFLayout2 functionalDisplayMode];
 
-    if (v32)
+    if (functionalDisplayMode2)
     {
-      if ([(PDFView *)self displayDirection]== kPDFDisplayDirectionVertical || v32 == 3)
+      if ([(PDFView *)self displayDirection]== kPDFDisplayDirectionVertical || functionalDisplayMode2 == 3)
       {
         return v24 / width;
       }
@@ -4676,13 +4676,13 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
 {
   if (self->_private->document)
   {
-    v15 = [(PDFView *)self documentView];
-    [v15 bounds];
-    [(PDFView *)self convertRect:v15 fromView:?];
+    documentView = [(PDFView *)self documentView];
+    [documentView bounds];
+    [(PDFView *)self convertRect:documentView fromView:?];
     v4 = v3;
     [(PDFView *)self bounds];
     self->_private->horizontalScaleFactorBeforeRotation = v4 / (v5 - (self->_private->savedSafeAreaInsets.left + self->_private->savedSafeAreaInsets.right));
-    [(PDFView *)self convertRect:v15 toView:?];
+    [(PDFView *)self convertRect:documentView toView:?];
     v7 = v6;
     v8 = self->_private;
     v8->documentViewCenterBeforeRotation.x = PDFRectGetCenterPoint(v9, v6, v10);
@@ -4701,22 +4701,22 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
 {
   if (self->_private->document)
   {
-    v39 = [(PDFView *)self documentView];
+    documentView = [(PDFView *)self documentView];
     [(PDFView *)self bounds];
     v4 = v3;
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v11 = self->_private->horizontalScaleFactorBeforeRotation * (v7 - (self->_private->savedSafeAreaInsets.left + self->_private->savedSafeAreaInsets.right));
-    [v39 bounds];
+    [documentView bounds];
     v13 = v11 / v12;
     [(PDFView *)self autoScaleFactor];
     v15 = v14;
     [(PDFView *)self maxScaleFactor];
     [(PDFView *)self setMinScaleFactor:fmin(v15, v16)];
     [(PDFView *)self setScaleFactor:v13];
-    [(PDFView *)self convertRect:v39 toView:v4, v6, v8, v10];
-    [v39 convertPoint:self->_private->scrollView toView:{PDFPointMake(self->_private->documentViewCenterBeforeRotation.x - v17 * 0.5, self->_private->documentViewCenterBeforeRotation.y - v18 * 0.5)}];
+    [(PDFView *)self convertRect:documentView toView:v4, v6, v8, v10];
+    [documentView convertPoint:self->_private->scrollView toView:{PDFPointMake(self->_private->documentViewCenterBeforeRotation.x - v17 * 0.5, self->_private->documentViewCenterBeforeRotation.y - v18 * 0.5)}];
     v20 = v19;
     v22 = v21;
     v23 = self->_private->scrollView;
@@ -4796,9 +4796,9 @@ uint64_t __57__PDFView_dragInteraction_previewForLiftingItem_session___block_inv
   self->_private->autoScale = autoScale;
 }
 
-- (void)_internalSetScaleFactor:(double)a3
+- (void)_internalSetScaleFactor:(double)factor
 {
-  [(PDFView *)self PDFViewWillChangeScaleFactor:self toScale:a3];
+  [(PDFView *)self PDFViewWillChangeScaleFactor:self toScale:factor];
   v5 = v4;
   [(PDFView *)self minScaleFactor];
   if (v5 < v6)
@@ -4826,8 +4826,8 @@ LABEL_6:
       self->_private->scaling = 1;
       [(PDFView *)self layoutDocumentView];
       self->_private->scaling = 0;
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 postNotificationName:@"PDFViewScaleChanged" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PDFViewScaleChanged" object:self];
     }
   }
 }
@@ -4919,31 +4919,31 @@ LABEL_6:
 - (void)_reflectNewPageOn
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PDFView *)self PDFLayout];
-  v4 = [v3 functionalDisplayMode];
+  pDFLayout = [(PDFView *)self PDFLayout];
+  functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-  if (v4)
+  if (functionalDisplayMode)
   {
     viewLayout = self->_private->viewLayout;
-    v6 = [(PDFView *)self currentPage];
-    [(PDFViewLayout *)viewLayout boundsForPage:v6];
+    currentPage = [(PDFView *)self currentPage];
+    [(PDFViewLayout *)viewLayout boundsForPage:currentPage];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(PDFView *)self documentView];
-    [v15 bounds];
+    documentView = [(PDFView *)self documentView];
+    [documentView bounds];
     v17 = v16 - v10 - v14;
 
     if ([(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView])
     {
       document = self->_private->document;
-      v19 = [(PDFView *)self currentPage];
-      v20 = [(PDFDocument *)document indexForPage:v19];
+      currentPage2 = [(PDFView *)self currentPage];
+      v20 = [(PDFDocument *)document indexForPage:currentPage2];
 
       [(PDFView *)self setCurrentPageIndex:v20 withNotification:0];
-      v21 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v49[0] = @"pageIndex";
       v22 = [MEMORY[0x1E696AD98] numberWithInteger:v20];
       v49[1] = @"pageFrame";
@@ -4951,7 +4951,7 @@ LABEL_6:
       v23 = [MEMORY[0x1E696B098] PDFKitValueWithPDFRect:{v8, v17, v12, v14}];
       v50[1] = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:2];
-      [v21 postNotificationName:@"PDFExtensionViewGoToPage" object:self userInfo:v24];
+      [defaultCenter postNotificationName:@"PDFExtensionViewGoToPage" object:self userInfo:v24];
 
       return;
     }
@@ -4961,8 +4961,8 @@ LABEL_6:
       [(PDFView *)self _internalSetAutoScaleFactor];
     }
 
-    v25 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-    [v25 convertRect:self->_private->scrollView toView:{v8, v17, v12, v14}];
+    pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+    [pdfDocumentView convertRect:self->_private->scrollView toView:{v8, v17, v12, v14}];
     v27 = v26;
     v29 = v28;
     v31 = v30;
@@ -5010,10 +5010,10 @@ LABEL_6:
 
 - (id)determineCurrentPage
 {
-  v3 = [(PDFView *)self PDFLayout];
-  v4 = [v3 functionalDisplayMode];
+  pDFLayout = [(PDFView *)self PDFLayout];
+  functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-  if (v4)
+  if (functionalDisplayMode)
   {
     [(PDFView *)self bounds];
     v7 = v6;
@@ -5030,25 +5030,25 @@ LABEL_6:
   return v5;
 }
 
-- (void)scrollViewSaysPageMayHaveChanged:(id)a3
+- (void)scrollViewSaysPageMayHaveChanged:(id)changed
 {
-  v4 = [a3 object];
+  object = [changed object];
   scrollView = self->_private->scrollView;
 
-  if (v4 == scrollView)
+  if (object == scrollView)
   {
 
     [(PDFView *)self syncPageIndexToScrollView];
   }
 }
 
-- (void)pageViewControllerSaysPageChanged:(id)a3
+- (void)pageViewControllerSaysPageChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"pageIndex"];
-  v6 = [v5 integerValue];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"pageIndex"];
+  integerValue = [v5 integerValue];
 
-  [(PDFView *)self setCurrentPageIndex:v6 withNotification:1];
+  [(PDFView *)self setCurrentPageIndex:integerValue withNotification:1];
 }
 
 - (void)_syncPageIndexToScrollView
@@ -5110,8 +5110,8 @@ LABEL_6:
   }
 
   v20 = v17;
-  v18 = [(PDFView *)self document];
-  v19 = [v18 indexForPage:v20];
+  document = [(PDFView *)self document];
+  v19 = [document indexForPage:v20];
 
   if (self->_currentPageIndex != v19)
   {
@@ -5122,13 +5122,13 @@ LABEL_6:
 LABEL_9:
 }
 
-- (CGSize)pageViewSizeForPage:(id)a3
+- (CGSize)pageViewSizeForPage:(id)page
 {
-  v4 = a3;
-  if (v4)
+  pageCopy = page;
+  if (pageCopy)
   {
-    v5 = [(PDFView *)self PDFLayout];
-    [v5 contentSizeWithCurrentPage:v4];
+    pDFLayout = [(PDFView *)self PDFLayout];
+    [pDFLayout contentSizeWithCurrentPage:pageCopy];
     v7 = v6;
     v9 = v8;
 
@@ -5137,10 +5137,10 @@ LABEL_9:
     {
       [(PDFView *)self gutterWidth];
       v7 = v7 + v11;
-      v12 = [(PDFView *)self PDFLayout];
-      v13 = [v12 functionalDisplayMode];
+      pDFLayout2 = [(PDFView *)self PDFLayout];
+      functionalDisplayMode = [pDFLayout2 functionalDisplayMode];
 
-      if (v13 >= 2)
+      if (functionalDisplayMode >= 2)
       {
         [(PDFView *)self gutterWidth];
         v7 = v7 + v14;
@@ -5161,30 +5161,30 @@ LABEL_9:
   return result;
 }
 
-- (void)_resizeDisplayView:(id)a3
+- (void)_resizeDisplayView:(id)view
 {
-  v4 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-  [v4 frame];
+  pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+  [pdfDocumentView frame];
   v6 = v5;
   v8 = v7;
 
   [(PDFScrollView *)self->_private->scrollView setContentSize:v6, v8];
   [(PDFView *)self scaleFactor];
   v10 = v9;
-  v13 = [(PDFView *)self documentView];
-  [v13 updateVisibility];
+  documentView = [(PDFView *)self documentView];
+  [documentView updateVisibility];
   [(PDFView *)self scaleFactor];
   if (v11 != v10)
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"PDFViewScaleChanged" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PDFViewScaleChanged" object:self];
   }
 }
 
-- (void)positionInternalViews:(id)a3
+- (void)positionInternalViews:(id)views
 {
-  v4 = [(PDFView *)self documentView];
-  [v4 frame];
+  documentView = [(PDFView *)self documentView];
+  [documentView frame];
   v6 = v5;
   v8 = v7;
 
@@ -5205,11 +5205,11 @@ LABEL_9:
         [(PDFScrollView *)self->_private->scrollView setShowsHorizontalScrollIndicator:0];
       }
 
-      v18 = [(PDFScrollView *)self->_private->scrollView showsVerticalScrollIndicator];
+      showsVerticalScrollIndicator = [(PDFScrollView *)self->_private->scrollView showsVerticalScrollIndicator];
       if (v17 > v12)
       {
 LABEL_6:
-        if (v18)
+        if (showsVerticalScrollIndicator)
         {
           return;
         }
@@ -5223,7 +5223,7 @@ LABEL_42:
       }
 
 LABEL_40:
-      if (!v18)
+      if (!showsVerticalScrollIndicator)
       {
         return;
       }
@@ -5242,7 +5242,7 @@ LABEL_40:
         [(PDFScrollView *)self->_private->scrollView setShowsVerticalScrollIndicator:0];
       }
 
-      v25 = [(PDFScrollView *)self->_private->scrollView showsHorizontalScrollIndicator];
+      showsHorizontalScrollIndicator = [(PDFScrollView *)self->_private->scrollView showsHorizontalScrollIndicator];
       goto LABEL_27;
     }
 
@@ -5253,11 +5253,11 @@ LABEL_40:
         [(PDFScrollView *)self->_private->scrollView setShowsVerticalScrollIndicator:1];
       }
 
-      v25 = [(PDFScrollView *)self->_private->scrollView showsHorizontalScrollIndicator];
+      showsHorizontalScrollIndicator = [(PDFScrollView *)self->_private->scrollView showsHorizontalScrollIndicator];
       if (v6 <= v10)
       {
 LABEL_27:
-        if (!v25)
+        if (!showsHorizontalScrollIndicator)
         {
           return;
         }
@@ -5265,7 +5265,7 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      if (v25)
+      if (showsHorizontalScrollIndicator)
       {
         return;
       }
@@ -5280,7 +5280,7 @@ LABEL_27:
           [(PDFScrollView *)self->_private->scrollView setShowsHorizontalScrollIndicator:1];
         }
 
-        v18 = [(PDFScrollView *)self->_private->scrollView showsVerticalScrollIndicator];
+        showsVerticalScrollIndicator = [(PDFScrollView *)self->_private->scrollView showsVerticalScrollIndicator];
         if (v8 > v12)
         {
           goto LABEL_6;
@@ -5322,9 +5322,9 @@ LABEL_29:
   [(PDFDocumentViewController *)documentViewController updateScrollViews];
 }
 
-- (CGRect)visibleRectForPageView:(id)a3
+- (CGRect)visibleRectForPageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PDFView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -5350,7 +5350,7 @@ LABEL_29:
   v30 = v29;
   v32 = v31;
 
-  [(PDFView *)self convertRect:v4 toView:v26, v28, v30, v32];
+  [(PDFView *)self convertRect:viewCopy toView:v26, v28, v30, v32];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -5367,19 +5367,19 @@ LABEL_29:
   return result;
 }
 
-- (BOOL)focusOnColumnAtPoint:(CGPoint)a3
+- (BOOL)focusOnColumnAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v88[1] = *MEMORY[0x1E69E9840];
   [(PDFView *)self autoScaleFactor];
   v7 = v6;
   [(PDFView *)self scaleFactor];
   v9 = vabdd_f64(v8, v7);
-  v10 = [(PDFView *)self renderingProperties];
-  v11 = [v10 isUsingPDFExtensionView];
+  renderingProperties = [(PDFView *)self renderingProperties];
+  isUsingPDFExtensionView = [renderingProperties isUsingPDFExtensionView];
 
-  if (v9 <= 0.00000011920929 || (v11 & 1) != 0)
+  if (v9 <= 0.00000011920929 || (isUsingPDFExtensionView & 1) != 0)
   {
     v13 = [(PDFView *)self pageForPoint:0 nearest:x, y];
     v12 = v13 != 0;
@@ -5408,7 +5408,7 @@ LABEL_14:
     v89.size.height = v21;
     if (PDFRectEqualToRect(v89, *MEMORY[0x1E695F058]))
     {
-      if (v11)
+      if (isUsingPDFExtensionView)
       {
         v29 = self->_private;
         v30 = v29->extensionViewBoundsInDocument.origin.x;
@@ -5429,7 +5429,7 @@ LABEL_14:
       v36 = v62;
       v35 = v63;
       v34 = v64;
-      if (v11)
+      if (isUsingPDFExtensionView)
       {
         goto LABEL_12;
       }
@@ -5441,7 +5441,7 @@ LABEL_14:
       v35 = v26;
       v36 = v24;
       v37 = rect;
-      if (v11)
+      if (isUsingPDFExtensionView)
       {
 LABEL_12:
         [(PDFView *)self documentMargins];
@@ -5454,19 +5454,19 @@ LABEL_12:
         v76 = v36 - (v66 + v75);
         v78 = v35 + v68 + v72 + v73 + v77;
         v80 = v34 + v66 + v70 + v75 + v79;
-        v38 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v87 = @"rect";
         v81 = [MEMORY[0x1E696B098] PDFKitValueWithPDFRect:{v74, v76, v78, v80}];
         v88[0] = v81;
         v82 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:&v87 count:1];
-        [v38 postNotificationName:@"PDFExtensionViewZoomToRect" object:self userInfo:v82];
+        [defaultCenter postNotificationName:@"PDFExtensionViewZoomToRect" object:self userInfo:v82];
 
         goto LABEL_13;
       }
     }
 
-    v38 = [(PDFView *)self pageViewForPageAtIndex:[(PDFDocument *)self->_private->document indexForPage:v13]];
-    [(PDFView *)self convertRect:v38 toView:v37, v36, v35, v34];
+    defaultCenter = [(PDFView *)self pageViewForPageAtIndex:[(PDFDocument *)self->_private->document indexForPage:v13]];
+    [(PDFView *)self convertRect:defaultCenter toView:v37, v36, v35, v34];
     v40 = v39;
     v42 = v41;
     v44 = v43;
@@ -5501,53 +5501,53 @@ LABEL_13:
   return 1;
 }
 
-- (void)insertFormFieldWithBounds:(CGRect)a3 onPage:(id)a4
+- (void)insertFormFieldWithBounds:(CGRect)bounds onPage:(id)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9 = MEMORY[0x1E69DB878];
-  v10 = a4;
+  pageCopy = page;
   v11 = +[PDFAnnotation detectedFormFieldDefaultFontName];
   +[PDFAnnotation detectedFormFieldDefaultFontSize];
   v13 = [v9 fontWithName:v11 size:?];
 
-  v12 = [PDFAnnotation createDetectedTextFieldWithBounds:v13 font:0 textContentType:v10 page:x, y, width, height];
-  [(PDFViewController *)self->_private->controller addDetectedAnnotation:v12 toPage:v10];
+  height = [PDFAnnotation createDetectedTextFieldWithBounds:v13 font:0 textContentType:pageCopy page:x, y, width, height];
+  [(PDFViewController *)self->_private->controller addDetectedAnnotation:height toPage:pageCopy];
 
-  [(PDFViewController *)self->_private->controller activateAnnotation:v12];
+  [(PDFViewController *)self->_private->controller activateAnnotation:height];
 }
 
 - (void)insertFormFieldAtDefaultLocation
 {
-  v5 = [(PDFView *)self currentPage];
-  [(PDFView *)self centerPointOfVisibleRectOfPage:v5];
-  [(PDFView *)self insertFormFieldWithBounds:v5 onPage:PDFRectMakeFromCenter(v3, v4, 120.0)];
+  currentPage = [(PDFView *)self currentPage];
+  [(PDFView *)self centerPointOfVisibleRectOfPage:currentPage];
+  [(PDFView *)self insertFormFieldWithBounds:currentPage onPage:PDFRectMakeFromCenter(v3, v4, 120.0)];
 }
 
-- (void)insertFormFieldAtBestLocationNearPoint:(CGPoint)a3 onPage:(id)a4
+- (void)insertFormFieldAtBestLocationNearPoint:(CGPoint)point onPage:(id)page
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  [(PDFView *)self convertPoint:v9 toPage:x, y];
-  [(PDFView *)self insertFormFieldWithBounds:v9 onPage:PDFRectMakeFromCenter(v7, v8, 120.0)];
+  y = point.y;
+  x = point.x;
+  pageCopy = page;
+  [(PDFView *)self convertPoint:pageCopy toPage:x, y];
+  [(PDFView *)self insertFormFieldWithBounds:pageCopy onPage:PDFRectMakeFromCenter(v7, v8, 120.0)];
 }
 
-- (void)constrainedScrollToPoint:(CGPoint)a3
+- (void)constrainedScrollToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PDFView *)self documentView];
-  [v6 bounds];
+  y = point.y;
+  x = point.x;
+  documentView = [(PDFView *)self documentView];
+  [documentView bounds];
   v8 = v7 - y;
 
   [(PDFScrollView *)self->_private->scrollView bounds];
   v10 = v9;
   v12 = v11;
-  v13 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-  [v13 convertPoint:self->_private->scrollView toView:{PDFPointToCGPoint(x, v8)}];
+  pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+  [pdfDocumentView convertPoint:self->_private->scrollView toView:{PDFPointToCGPoint(x, v8)}];
   v15 = v14;
   v17 = v16;
 
@@ -5556,33 +5556,33 @@ LABEL_13:
   [(PDFScrollView *)scrollView scrollRectToVisible:0 animated:v15, v17, v10, v12];
 }
 
-- (void)_scrollVerticalBy:(double)a3
+- (void)_scrollVerticalBy:(double)by
 {
   [(PDFView *)self scaleFactor];
-  v6 = a3 / v5;
-  v18 = [(PDFView *)self determineCurrentPage];
+  v6 = by / v5;
+  determineCurrentPage = [(PDFView *)self determineCurrentPage];
   [(PDFScrollView *)self->_private->scrollView contentOffset];
   v8 = v7;
   v10 = v9;
   [(PDFView *)self constrainedScrollToPoint:PDFPointMake(v7, round(v6 + v9))];
-  v11 = [(PDFView *)self PDFLayout];
-  v12 = [v11 functionalDisplayMode];
+  pDFLayout = [(PDFView *)self PDFLayout];
+  functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-  if (v12)
+  if (functionalDisplayMode)
   {
-    v16 = [(PDFView *)self determineCurrentPage];
-    if (v16 != v18)
+    determineCurrentPage2 = [(PDFView *)self determineCurrentPage];
+    if (determineCurrentPage2 != determineCurrentPage)
     {
       self->_private->inhibitAutoScroll = 1;
-      [(PDFView *)self goToPage:v16];
+      [(PDFView *)self goToPage:determineCurrentPage2];
       self->_private->inhibitAutoScroll = 0;
     }
 
     goto LABEL_9;
   }
 
-  v13 = [(UIScrollView *)self->_private->scrollView PDFKitDocumentVisibleRectIncludingContentInsets];
-  v14 = v18;
+  pDFKitDocumentVisibleRectIncludingContentInsets = [(UIScrollView *)self->_private->scrollView PDFKitDocumentVisibleRectIncludingContentInsets];
+  v14 = determineCurrentPage;
   if (v15 != v10)
   {
     goto LABEL_10;
@@ -5590,64 +5590,64 @@ LABEL_13:
 
   if (v6 < 0.0)
   {
-    v13 = [(PDFView *)self canGoToNextPage];
-    v14 = v18;
-    if (v13)
+    pDFKitDocumentVisibleRectIncludingContentInsets = [(PDFView *)self canGoToNextPage];
+    v14 = determineCurrentPage;
+    if (pDFKitDocumentVisibleRectIncludingContentInsets)
     {
       [(PDFView *)self constrainedScrollToPoint:PDFPointMake(v8, 0.0)];
-      v13 = [(PDFView *)self goToNextPage:self];
+      pDFKitDocumentVisibleRectIncludingContentInsets = [(PDFView *)self goToNextPage:self];
 LABEL_9:
-      v14 = v18;
+      v14 = determineCurrentPage;
       goto LABEL_10;
     }
   }
 
   if (v6 > 0.0)
   {
-    v13 = [(PDFView *)self canGoToPreviousPage];
-    v14 = v18;
-    if (v13)
+    pDFKitDocumentVisibleRectIncludingContentInsets = [(PDFView *)self canGoToPreviousPage];
+    v14 = determineCurrentPage;
+    if (pDFKitDocumentVisibleRectIncludingContentInsets)
     {
       [(UIScrollView *)self->_private->scrollView PDFKitDocumentVisibleRectIncludingContentInsets];
       [(PDFView *)self constrainedScrollToPoint:PDFPointMake(v8, v17)];
-      v13 = [(PDFView *)self goToPreviousPage:self];
+      pDFKitDocumentVisibleRectIncludingContentInsets = [(PDFView *)self goToPreviousPage:self];
       goto LABEL_9;
     }
   }
 
 LABEL_10:
 
-  MEMORY[0x1EEE66BB8](v13, v14);
+  MEMORY[0x1EEE66BB8](pDFKitDocumentVisibleRectIncludingContentInsets, v14);
 }
 
-- (void)_scrollHorizontalBy:(double)a3
+- (void)_scrollHorizontalBy:(double)by
 {
   [(PDFView *)self scaleFactor];
-  v6 = a3 / v5;
+  v6 = by / v5;
   [(UIScrollView *)self->_private->scrollView PDFKitDocumentVisibleRectIncludingContentInsets];
   v9 = PDFPointMake(round(v6 + v7), v8);
 
   [(PDFView *)self constrainedScrollToPoint:v9];
 }
 
-- (void)_scrollByPage:(BOOL)a3
+- (void)_scrollByPage:(BOOL)page
 {
-  v3 = a3;
+  pageCopy = page;
   [(PDFView *)self frame];
   v6 = v5;
-  v14 = [(PDFView *)self currentPage];
+  currentPage = [(PDFView *)self currentPage];
   [(PDFView *)self _pageViewHeight:?];
   v8 = v7;
   if (vabdd_f64(v7, v6) <= 32.0)
   {
-    v10 = [(PDFView *)self currentPage];
-    [(PDFView *)self _scrollOriginForPageTopLeft:v10];
+    currentPage2 = [(PDFView *)self currentPage];
+    [(PDFView *)self _scrollOriginForPageTopLeft:currentPage2];
     v12 = v11;
 
     [(UIScrollView *)self->_private->scrollView PDFKitDocumentVisibleRectIncludingContentInsets];
     if (vabdd_f64(v12, v13) < 32.0)
     {
-      if (v3)
+      if (pageCopy)
       {
         [(PDFView *)self goToNextPage:self];
       }
@@ -5661,7 +5661,7 @@ LABEL_10:
     }
 
     v9 = -v8;
-    if (v3)
+    if (pageCopy)
     {
       v9 = v8;
     }
@@ -5670,7 +5670,7 @@ LABEL_10:
   else
   {
     v9 = 50.0 - v6;
-    if (v3)
+    if (pageCopy)
     {
       v9 = v6 + -50.0;
     }
@@ -5684,14 +5684,14 @@ LABEL_10:
 LABEL_13:
 }
 
-- (CGPoint)_scrollOriginForPageTopLeft:(id)a3
+- (CGPoint)_scrollOriginForPageTopLeft:(id)left
 {
-  v4 = a3;
+  leftCopy = left;
   v5 = PDFPointMake(0.0, 0.0);
   v7 = v6;
-  if (v4)
+  if (leftCopy)
   {
-    [v4 boundsForBox:{-[PDFView displayBox](self, "displayBox")}];
+    [leftCopy boundsForBox:{-[PDFView displayBox](self, "displayBox")}];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -5699,23 +5699,23 @@ LABEL_13:
     [(PDFView *)self pageBreakMargins];
     v17 = v16;
     v19 = v18;
-    v20 = [v4 rotation];
-    if (v20 > 179)
+    rotation = [leftCopy rotation];
+    if (rotation > 179)
     {
-      if (v20 == 180)
+      if (rotation == 180)
       {
         v5 = v17 + PDFPointMake(v13, 0.0);
         goto LABEL_12;
       }
 
-      if (v20 != 270)
+      if (rotation != 270)
       {
 LABEL_13:
-        [(PDFView *)self convertPoint:v4 fromPage:v9 + v5, v11 + v7];
+        [(PDFView *)self convertPoint:leftCopy fromPage:v9 + v5, v11 + v7];
         v24 = v23;
         v26 = v25;
-        v27 = [(PDFView *)self documentView];
-        [v27 convertPoint:self fromView:{v24, v26}];
+        documentView = [(PDFView *)self documentView];
+        [documentView convertPoint:self fromView:{v24, v26}];
         v5 = v28;
         v7 = v29;
 
@@ -5727,9 +5727,9 @@ LABEL_13:
 
     else
     {
-      if (v20)
+      if (rotation)
       {
-        if (v20 == 90)
+        if (rotation == 90)
         {
           v5 = PDFPointMake(0.0, 0.0) - v17;
 LABEL_12:
@@ -5762,7 +5762,7 @@ LABEL_14:
   v3 = self->_private;
   if (v3->isUsingPageViewController)
   {
-    v49 = [(PDFDocumentViewController *)v3->documentViewController currentPage];
+    currentPage = [(PDFDocumentViewController *)v3->documentViewController currentPage];
     v4 = [(PDFDocument *)self->_private->document indexForPage:?];
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -5785,16 +5785,16 @@ LABEL_14:
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(PDFView *)self documentView];
-    [(PDFView *)self convertRect:v14 toView:v7, v9, v11, v13];
+    documentView = [(PDFView *)self documentView];
+    [(PDFView *)self convertRect:documentView toView:v7, v9, v11, v13];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(PDFView *)self PDFLayout];
-    v24 = [(PDFView *)self currentPage];
-    v25 = [v23 visiblePagesInBounds:v24 currentPage:{v16, v18, v20, v22}];
+    pDFLayout = [(PDFView *)self PDFLayout];
+    currentPage2 = [(PDFView *)self currentPage];
+    v25 = [pDFLayout visiblePagesInBounds:currentPage2 currentPage:{v16, v18, v20, v22}];
 
     if (v25 && [v25 count])
     {
@@ -5826,13 +5826,13 @@ LABEL_14:
         while (v28);
       }
 
-      v31 = [(PDFView *)self document];
+      document = [(PDFView *)self document];
       v32 = [v26 objectAtIndex:0];
-      v33 = [v31 indexForPage:v32];
+      v33 = [document indexForPage:v32];
 
-      v34 = [(PDFView *)self document];
-      v35 = [v26 lastObject];
-      v36 = [v34 indexForPage:v35];
+      document2 = [(PDFView *)self document];
+      lastObject = [v26 lastObject];
+      v36 = [document2 indexForPage:lastObject];
       v37 = v36 + 1;
 
       v38 = self->_private;
@@ -5859,9 +5859,9 @@ LABEL_14:
           v46 = [v41 dictionaryWithObjectsAndKeys:{v42, @"PDFViewFirstVisiblePage", v43, @"PDFViewLastVisiblePage", 0}];
         }
 
-        v47 = [MEMORY[0x1E696AD90] defaultQueue];
+        defaultQueue = [MEMORY[0x1E696AD90] defaultQueue];
         v48 = [MEMORY[0x1E696AD80] notificationWithName:@"PDFViewVisiblePagesChanged" object:self userInfo:v46];
-        [v47 enqueueNotification:v48 postingStyle:2];
+        [defaultQueue enqueueNotification:v48 postingStyle:2];
       }
     }
   }
@@ -5898,8 +5898,8 @@ LABEL_14:
   [(PDFView *)self _reflectNewPageOn];
   if ([(PDFDocument *)self->_private->document pageCount])
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"PDFViewChangedPage" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PDFViewChangedPage" object:self];
   }
 }
 
@@ -5908,12 +5908,12 @@ LABEL_14:
   v16 = *MEMORY[0x1E69E9840];
   if (ShouldRenderAnnotationsInPDFKit())
   {
-    v3 = [(PDFView *)self visiblePages];
+    visiblePages = [(PDFView *)self visiblePages];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v4 = [visiblePages countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -5926,7 +5926,7 @@ LABEL_14:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(visiblePages);
           }
 
           v9 = *(*(&v11 + 1) + 8 * v8);
@@ -5941,7 +5941,7 @@ LABEL_14:
         }
 
         while (v5 != v8);
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [visiblePages countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -5991,10 +5991,10 @@ void __29__PDFView__updateAnnotations__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)visiblePagesChanged:(id)a3
+- (void)visiblePagesChanged:(id)changed
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   if ([(PDFView *)self isDocumentAnalysisEnabled])
   {
     [(PDFView *)self bounds];
@@ -6002,20 +6002,20 @@ void __29__PDFView__updateAnnotations__block_invoke(uint64_t a1, void *a2)
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(PDFView *)self documentView];
-    [(PDFView *)self convertRect:v13 toView:v6, v8, v10, v12];
+    documentView = [(PDFView *)self documentView];
+    [(PDFView *)self convertRect:documentView toView:v6, v8, v10, v12];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    v22 = [(PDFView *)self documentView];
-    [v22 bounds];
+    documentView2 = [(PDFView *)self documentView];
+    [documentView2 bounds];
     v24 = v23;
 
-    v25 = [(PDFView *)self PDFLayout];
-    v26 = [(PDFView *)self currentPage];
-    v27 = [v25 visiblePagesInBounds:v26 currentPage:{v15, v24 - v17 - v21, v19, v21}];
+    pDFLayout = [(PDFView *)self PDFLayout];
+    currentPage = [(PDFView *)self currentPage];
+    v27 = [pDFLayout visiblePagesInBounds:currentPage currentPage:{v15, v24 - v17 - v21, v19, v21}];
 
     v28 = GetDefaultsWriteUsePageAnalyzerV2();
     v42 = 0u;
@@ -6040,8 +6040,8 @@ void __29__PDFView__updateAnnotations__block_invoke(uint64_t a1, void *a2)
           if (v28)
           {
             objc_initWeak(location, self);
-            v33 = [(PDFView *)self document];
-            v34 = [v33 formFillingQueue];
+            document = [(PDFView *)self document];
+            formFillingQueue = [document formFillingQueue];
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __31__PDFView_visiblePagesChanged___block_invoke;
@@ -6049,7 +6049,7 @@ void __29__PDFView__updateAnnotations__block_invoke(uint64_t a1, void *a2)
             block[4] = v32;
             block[5] = self;
             objc_copyWeak(&v41, location);
-            dispatch_async(v34, block);
+            dispatch_async(formFillingQueue, block);
 
             objc_destroyWeak(&v41);
             objc_destroyWeak(location);
@@ -6152,16 +6152,16 @@ void __31__PDFView_visiblePagesChanged___block_invoke_4(uint64_t a1, uint64_t a2
   }
 }
 
-- (CGPoint)centerPointOfVisibleRectOfPage:(id)a3
+- (CGPoint)centerPointOfVisibleRectOfPage:(id)page
 {
-  v4 = a3;
-  v5 = [(PDFView *)self document];
-  v6 = [v5 indexForPage:v4];
+  pageCopy = page;
+  document = [(PDFView *)self document];
+  v6 = [document indexForPage:pageCopy];
 
   v7 = [(PDFView *)self pageViewForPageAtIndex:v6];
   [(PDFView *)self visibleRectForPageView:v7];
   [v7 convertRect:self toView:?];
-  [(PDFView *)self convertRect:v4 toPage:?];
+  [(PDFView *)self convertRect:pageCopy toPage:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -6176,24 +6176,24 @@ void __31__PDFView_visiblePagesChanged___block_invoke_4(uint64_t a1, uint64_t a2
   return result;
 }
 
-- (void)_showFormFillingButton:(BOOL)a3
+- (void)_showFormFillingButton:(BOOL)button
 {
   v56[2] = *MEMORY[0x1E69E9840];
   formFieldButton = self->_formFieldButton;
-  if (a3)
+  if (button)
   {
     if (!formFieldButton)
     {
-      v5 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-      [v5 setButtonSize:3];
-      [v5 setCornerStyle:4];
+      filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+      [filledButtonConfiguration setButtonSize:3];
+      [filledButtonConfiguration setCornerStyle:4];
       v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus"];
-      [v5 setImage:v6];
+      [filledButtonConfiguration setImage:v6];
 
       v7 = [MEMORY[0x1E69DCAD8] configurationWithScale:2];
-      [v5 setPreferredSymbolConfigurationForImage:v7];
+      [filledButtonConfiguration setPreferredSymbolConfigurationForImage:v7];
 
-      v8 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v5 primaryAction:0];
+      v8 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
       v9 = self->_formFieldButton;
       self->_formFieldButton = v8;
 
@@ -6231,31 +6231,31 @@ void __31__PDFView_visiblePagesChanged___block_invoke_4(uint64_t a1, uint64_t a2
       formFieldButton = self->_formFieldButton;
     }
 
-    v22 = [(PDFView *)self documentView];
-    [(PDFView *)self insertSubview:formFieldButton aboveSubview:v22];
+    documentView = [(PDFView *)self documentView];
+    [(PDFView *)self insertSubview:formFieldButton aboveSubview:documentView];
 
-    v23 = [(UIButton *)self->_formFieldButton bottomAnchor];
-    v24 = [(PDFView *)self bottomAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:-15.0];
+    bottomAnchor = [(UIButton *)self->_formFieldButton bottomAnchor];
+    bottomAnchor2 = [(PDFView *)self bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
 
     v26 = MEMORY[0x1E696ACD8];
     v55[0] = v25;
-    v27 = [(UIButton *)self->_formFieldButton trailingAnchor];
-    v28 = [(PDFView *)self trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:-15.0];
+    trailingAnchor = [(UIButton *)self->_formFieldButton trailingAnchor];
+    trailingAnchor2 = [(PDFView *)self trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
     v55[1] = v29;
-    v30 = [(UIButton *)self->_formFieldButton widthAnchor];
-    v31 = [(UIButton *)self->_formFieldButton heightAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    widthAnchor = [(UIButton *)self->_formFieldButton widthAnchor];
+    heightAnchor = [(UIButton *)self->_formFieldButton heightAnchor];
+    v32 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v55[2] = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:3];
     [v26 activateConstraints:v33];
 
     [(PDFView *)self setNeedsLayout];
     [(PDFView *)self layoutIfNeeded];
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v35 = *MEMORY[0x1E69DE080];
-    v36 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __34__PDFView__showFormFillingButton___block_invoke_3;
@@ -6263,20 +6263,20 @@ void __31__PDFView_visiblePagesChanged___block_invoke_4(uint64_t a1, uint64_t a2
     v51[4] = self;
     v37 = v25;
     v52 = v37;
-    v38 = [v34 addObserverForName:v35 object:0 queue:v36 usingBlock:v51];
+    v38 = [defaultCenter addObserverForName:v35 object:0 queue:mainQueue usingBlock:v51];
     formFieldButtonShowKeyboardNotification = self->_formFieldButtonShowKeyboardNotification;
     self->_formFieldButtonShowKeyboardNotification = v38;
 
     v40 = *MEMORY[0x1E69DE078];
-    v41 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __34__PDFView__showFormFillingButton___block_invoke_5;
     v48[3] = &unk_1E8152708;
     v49 = v37;
-    v50 = self;
+    selfCopy = self;
     v42 = v37;
-    v43 = [v34 addObserverForName:v40 object:0 queue:v41 usingBlock:v48];
+    v43 = [defaultCenter addObserverForName:v40 object:0 queue:mainQueue2 usingBlock:v48];
     formFieldButtonHideKeyboardNotification = self->_formFieldButtonHideKeyboardNotification;
     self->_formFieldButtonHideKeyboardNotification = v43;
   }
@@ -6288,12 +6288,12 @@ void __31__PDFView_visiblePagesChanged___block_invoke_4(uint64_t a1, uint64_t a2
       [(UIButton *)self->_formFieldButton removeFromSuperview];
     }
 
-    v47 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v47 removeObserver:self->_formFieldButtonShowKeyboardNotification];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self->_formFieldButtonShowKeyboardNotification];
     v45 = self->_formFieldButtonShowKeyboardNotification;
     self->_formFieldButtonShowKeyboardNotification = 0;
 
-    [v47 removeObserver:self->_formFieldButtonHideKeyboardNotification];
+    [defaultCenter2 removeObserver:self->_formFieldButtonHideKeyboardNotification];
     v46 = self->_formFieldButtonHideKeyboardNotification;
     self->_formFieldButtonHideKeyboardNotification = 0;
   }
@@ -6400,17 +6400,17 @@ uint64_t __34__PDFView__showFormFillingButton___block_invoke_6(uint64_t a1)
   return [v2 layoutIfNeeded];
 }
 
-- (void)signaturesController:(id)a3 didSelectSignatureWithAnnotation:(id)a4
+- (void)signaturesController:(id)controller didSelectSignatureWithAnnotation:(id)annotation
 {
-  v5 = a4;
-  v22 = [(PDFView *)self currentPage];
-  v6 = [(PDFView *)self document];
-  v7 = [v6 indexForPage:v22];
+  annotationCopy = annotation;
+  currentPage = [(PDFView *)self currentPage];
+  document = [(PDFView *)self document];
+  v7 = [document indexForPage:currentPage];
 
-  [(PDFView *)self centerPointOfVisibleRectOfPage:v22];
+  [(PDFView *)self centerPointOfVisibleRectOfPage:currentPage];
   v9 = v8;
   v11 = v10;
-  [v5 rectangle];
+  [annotationCopy rectangle];
   x = v24.origin.x;
   y = v24.origin.y;
   width = v24.size.width;
@@ -6420,58 +6420,58 @@ uint64_t __34__PDFView__showFormFillingButton___block_invoke_6(uint64_t a1)
   v25.origin.y = y;
   v25.size.width = width;
   v25.size.height = height;
-  [v5 setRectangle:{v9 - v16 * (216.0 / v16) * 0.5, v11 - CGRectGetHeight(v25) * (216.0 / v16) * 0.5}];
-  v17 = [(PDFView *)self document];
-  v18 = [v17 akController];
+  [annotationCopy setRectangle:{v9 - v16 * (216.0 / v16) * 0.5, v11 - CGRectGetHeight(v25) * (216.0 / v16) * 0.5}];
+  document2 = [(PDFView *)self document];
+  akController = [document2 akController];
 
-  [v5 setOriginalExifOrientation:{objc_msgSend(v18, "currentExifOrientationForPageAtIndex:", v7)}];
-  [v18 currentModelBaseScaleFactorForPageAtIndex:v7];
-  [v5 setOriginalModelBaseScaleFactor:?];
-  v19 = [v22 akPageAdaptor];
-  v20 = [v19 akPageModelController];
-  v21 = [v20 mutableArrayValueForKey:@"annotations"];
-  [v21 addObject:v5];
+  [annotationCopy setOriginalExifOrientation:{objc_msgSend(akController, "currentExifOrientationForPageAtIndex:", v7)}];
+  [akController currentModelBaseScaleFactorForPageAtIndex:v7];
+  [annotationCopy setOriginalModelBaseScaleFactor:?];
+  akPageAdaptor = [currentPage akPageAdaptor];
+  akPageModelController = [akPageAdaptor akPageModelController];
+  v21 = [akPageModelController mutableArrayValueForKey:@"annotations"];
+  [v21 addObject:annotationCopy];
 }
 
-- (void)handleAnalysisCompletionOfPage:(id)a3 resultTypes:(unint64_t)a4
+- (void)handleAnalysisCompletionOfPage:(id)page resultTypes:(unint64_t)types
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [v12 document];
-  v7 = -[PDFView pageViewForPageAtIndex:](self, "pageViewForPageAtIndex:", [v6 indexForPage:v12]);
-  if (([v12 containsFormFields] & 1) == 0 && !objc_msgSend(v12, "containsDetectedFormFields"))
+  typesCopy = types;
+  pageCopy = page;
+  document = [pageCopy document];
+  v7 = -[PDFView pageViewForPageAtIndex:](self, "pageViewForPageAtIndex:", [document indexForPage:pageCopy]);
+  if (([pageCopy containsFormFields] & 1) == 0 && !objc_msgSend(pageCopy, "containsDetectedFormFields"))
   {
     goto LABEL_15;
   }
 
-  v8 = [(PDFView *)self delegate];
-  v9 = v8;
+  delegate = [(PDFView *)self delegate];
+  v9 = delegate;
   v10 = self->_private;
   if (!v10->delegateRespondsToAllowFormFillingWithConfidence)
   {
     if (v10->delegateRespondsToAllowFormFillingWithAutoFill)
     {
-      [v8 PDFView:self allowsFormFillingMode:1 withAutofill:objc_msgSend(v12 forPage:{"containsFormFieldsWithContentType"), v12}];
+      [delegate PDFView:self allowsFormFillingMode:1 withAutofill:objc_msgSend(pageCopy forPage:{"containsFormFieldsWithContentType"), pageCopy}];
     }
 
     else if (v10->delegateRespondsToAllowFormFilling)
     {
-      [v8 PDFView:self allowsFormFillingMode:1 forPage:v12];
+      [delegate PDFView:self allowsFormFillingMode:1 forPage:pageCopy];
     }
 
     goto LABEL_12;
   }
 
-  if ([v12 containsFormFields])
+  if ([pageCopy containsFormFields])
   {
-    v11 = 3;
+    detectedFormFieldsRecognitionConfidence = 3;
 LABEL_9:
-    [v9 PDFView:self allowsFormFillingMode:1 withRecognitionConfidence:v11 forPage:v12];
+    [v9 PDFView:self allowsFormFillingMode:1 withRecognitionConfidence:detectedFormFieldsRecognitionConfidence forPage:pageCopy];
     goto LABEL_12;
   }
 
-  v11 = [v12 detectedFormFieldsRecognitionConfidence];
-  if (v11)
+  detectedFormFieldsRecognitionConfidence = [pageCopy detectedFormFieldsRecognitionConfidence];
+  if (detectedFormFieldsRecognitionConfidence)
   {
     goto LABEL_9;
   }
@@ -6479,22 +6479,22 @@ LABEL_9:
 LABEL_12:
   if ([(PDFView *)self isInFormFillingMode])
   {
-    [(PDFViewController *)self->_private->controller populateAnnotationsFromDetectedAnnotationsOnPage:v12];
+    [(PDFViewController *)self->_private->controller populateAnnotationsFromDetectedAnnotationsOnPage:pageCopy];
     [(PDFView *)self highlightDetectedFormFields:1];
   }
 
 LABEL_15:
-  if ((v4 & 1) != 0 && GetDefaultsWriteDrawInvisibleText())
+  if ((typesCopy & 1) != 0 && GetDefaultsWriteDrawInvisibleText())
   {
     [v7 forceTileUpdate];
   }
 
-  if ((v4 & 2) != 0 && GetDefaultsWriteHighlightDetectedAnnotations())
+  if ((typesCopy & 2) != 0 && GetDefaultsWriteHighlightDetectedAnnotations())
   {
     [v7 enableHighlightDetectedFormFields:1];
   }
 
-  if ((v4 & 4) != 0)
+  if ((typesCopy & 4) != 0)
   {
     [v7 resetAccessibilityTree];
   }
@@ -6504,30 +6504,30 @@ LABEL_15:
 {
   if ([(PDFView *)self canGoToNextPage])
   {
-    v3 = [(PDFView *)self PDFLayout];
-    v4 = [v3 functionalDisplayMode];
+    pDFLayout = [(PDFView *)self PDFLayout];
+    functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((functionalDisplayMode & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v5 = self->_currentPageIndex + 2;
-      if (v5 > [(PDFView *)self lastPageIndex])
+      lastPageIndex = self->_currentPageIndex + 2;
+      if (lastPageIndex > [(PDFView *)self lastPageIndex])
       {
-        v5 = [(PDFView *)self lastPageIndex];
+        lastPageIndex = [(PDFView *)self lastPageIndex];
       }
 
-      v6 = [(PDFView *)self document];
-      v7 = v6;
-      v8 = v5;
+      document = [(PDFView *)self document];
+      v7 = document;
+      v8 = lastPageIndex;
     }
 
     else
     {
-      v6 = [(PDFView *)self document];
-      v7 = v6;
+      document = [(PDFView *)self document];
+      v7 = document;
       v8 = self->_currentPageIndex + 1;
     }
 
-    v9 = [v6 pageAtIndex:v8];
+    v9 = [document pageAtIndex:v8];
   }
 
   else
@@ -6542,14 +6542,14 @@ LABEL_15:
 {
   if ([(PDFView *)self canGoToPreviousPage])
   {
-    v3 = [(PDFView *)self PDFLayout];
-    v4 = [v3 functionalDisplayMode];
+    pDFLayout = [(PDFView *)self PDFLayout];
+    functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((functionalDisplayMode & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       currentPageIndex = self->_currentPageIndex;
-      v6 = [(PDFView *)self document];
-      v7 = v6;
+      document = [(PDFView *)self document];
+      v7 = document;
       v8 = self->_currentPageIndex;
       if (currentPageIndex < 2)
       {
@@ -6564,12 +6564,12 @@ LABEL_15:
 
     else
     {
-      v6 = [(PDFView *)self document];
-      v7 = v6;
+      document = [(PDFView *)self document];
+      v7 = document;
       v9 = self->_currentPageIndex - 1;
     }
 
-    v10 = [v6 pageAtIndex:v9];
+    v10 = [document pageAtIndex:v9];
   }
 
   else
@@ -6580,12 +6580,12 @@ LABEL_15:
   return v10;
 }
 
-- (void)pushDestination:(id)a3
+- (void)pushDestination:(id)destination
 {
-  v4 = a3;
-  if (v4)
+  destinationCopy = destination;
+  if (destinationCopy)
   {
-    v9 = v4;
+    v9 = destinationCopy;
     v5 = self->_private;
     historyIndex = v5->historyIndex;
     if (historyIndex < [(NSMutableArray *)v5->destinationHistory count])
@@ -6595,33 +6595,33 @@ LABEL_15:
 
     ++self->_private->historyIndex;
     [(NSMutableArray *)self->_private->destinationHistory addObject:v9];
-    v7 = [MEMORY[0x1E696AD90] defaultQueue];
+    defaultQueue = [MEMORY[0x1E696AD90] defaultQueue];
     v8 = [MEMORY[0x1E696AD80] notificationWithName:@"PDFViewChangedHistory" object:self];
-    [v7 enqueueNotification:v8 postingStyle:1];
+    [defaultQueue enqueueNotification:v8 postingStyle:1];
 
-    v4 = v9;
+    destinationCopy = v9;
   }
 }
 
-- (void)goToDestinationNoPush:(id)a3
+- (void)goToDestinationNoPush:(id)push
 {
   v42[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  pushCopy = push;
+  v5 = pushCopy;
+  if (!pushCopy)
   {
-    v6 = 0;
+    page = 0;
     goto LABEL_23;
   }
 
-  v6 = [v4 page];
-  if (v6)
+  page = [pushCopy page];
+  if (page)
   {
     [v5 point];
     v8 = v7;
     v10 = v9;
-    v11 = [(PDFView *)self currentPage];
-    if (v6 == v11 && v8 == 3.40282347e38)
+    currentPage = [(PDFView *)self currentPage];
+    if (page == currentPage && v8 == 3.40282347e38)
     {
 
       if (v10 == 3.40282347e38)
@@ -6636,17 +6636,17 @@ LABEL_15:
 
     if (v8 == 3.40282347e38 || v10 == 3.40282347e38)
     {
-      [(PDFView *)self goToPageNoPush:v6];
+      [(PDFView *)self goToPageNoPush:page];
     }
 
     else
     {
-      v13 = [(PDFView *)self PDFLayout];
-      v14 = [v13 functionalDisplayMode];
+      pDFLayout = [(PDFView *)self PDFLayout];
+      functionalDisplayMode = [pDFLayout functionalDisplayMode];
 
-      if ((v14 & 1) == 0)
+      if ((functionalDisplayMode & 1) == 0)
       {
-        [(PDFView *)self goToPageNoPush:v6];
+        [(PDFView *)self goToPageNoPush:page];
       }
 
       if (![(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView])
@@ -6654,23 +6654,23 @@ LABEL_15:
         [(PDFScrollView *)self->_private->scrollView contentOffset];
       }
 
-      [v6 boundsForBox:0];
+      [page boundsForBox:0];
       v18 = PDFPointClampInPDFRect(v8, v10, v15, v16, v17);
       v20 = v19;
-      [v6 rotation];
-      [(PDFView *)self convertPoint:v6 fromPage:v18, v20];
+      [page rotation];
+      [(PDFView *)self convertPoint:page fromPage:v18, v20];
       v22 = v21;
       v24 = v23;
-      v25 = [(PDFView *)self documentView];
-      [v25 convertPoint:self fromView:{v22, v24}];
+      documentView = [(PDFView *)self documentView];
+      [documentView convertPoint:self fromView:{v22, v24}];
       v27 = v26;
       v29 = v28;
 
       if ([(PDFRenderingProperties *)self->_private->renderingProperties isUsingPDFExtensionView])
       {
-        v30 = [(PDFDocument *)self->_private->document indexForPage:v6];
+        v30 = [(PDFDocument *)self->_private->document indexForPage:page];
         [(PDFView *)self setCurrentPageIndex:v30 withNotification:0];
-        v31 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v41[0] = @"pageIndex";
         v32 = [MEMORY[0x1E696AD98] numberWithInteger:v30];
         v41[1] = @"point";
@@ -6678,24 +6678,24 @@ LABEL_15:
         v33 = [MEMORY[0x1E696B098] PDFKitValueWithPDFPoint:{v27, v29}];
         v42[1] = v33;
         v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
-        [v31 postNotificationName:@"PDFExtensionViewGoToDestination" object:self userInfo:v34];
+        [defaultCenter postNotificationName:@"PDFExtensionViewGoToDestination" object:self userInfo:v34];
       }
 
       else
       {
-        v35 = [(PDFView *)self documentView];
-        [v35 bounds];
+        documentView2 = [(PDFView *)self documentView];
+        [documentView2 bounds];
         v37 = v36 - v29;
 
         [(PDFView *)self constrainedScrollToPoint:PDFPointMake(v27, v37)];
-        v38 = [(PDFView *)self document];
-        v39 = [v38 indexForPage:v6];
+        document = [(PDFView *)self document];
+        v39 = [document indexForPage:page];
         currentPageIndex = self->_currentPageIndex;
 
         if (v39 != currentPageIndex)
         {
           self->_private->inhibitAutoScroll = 1;
-          [(PDFView *)self goToPageNoPush:v6];
+          [(PDFView *)self goToPageNoPush:page];
           self->_private->inhibitAutoScroll = 0;
         }
       }
@@ -6705,20 +6705,20 @@ LABEL_15:
 LABEL_23:
 }
 
-- (void)goToPageNoPush:(id)a3 animated:(BOOL)a4
+- (void)goToPageNoPush:(id)push animated:(BOOL)animated
 {
-  v4 = a4;
-  v17 = a3;
-  if (v17)
+  animatedCopy = animated;
+  pushCopy = push;
+  if (pushCopy)
   {
-    v6 = [(PDFView *)self currentPage];
+    currentPage = [(PDFView *)self currentPage];
     v7 = self->_private;
     fromPage = v7->fromPage;
-    v7->fromPage = v6;
+    v7->fromPage = currentPage;
 
     currentPageIndex = self->_currentPageIndex;
-    v10 = [(PDFView *)self document];
-    -[PDFView setCurrentPageIndex:withNotification:](self, "setCurrentPageIndex:withNotification:", [v10 indexForPage:v17], 0);
+    document = [(PDFView *)self document];
+    -[PDFView setCurrentPageIndex:withNotification:](self, "setCurrentPageIndex:withNotification:", [document indexForPage:pushCopy], 0);
 
     v11 = self->_currentPageIndex;
     if (!self->_private->inhibitAutoScroll)
@@ -6741,28 +6741,28 @@ LABEL_23:
       {
         v14 = self->_currentPageIndex;
         v15 = currentPageIndex > v14 && !v13->displaysRTL || currentPageIndex < v14 && v13->displaysRTL;
-        [(PDFDocumentViewController *)v13->documentViewController goToPage:v17 direction:v15 animated:v4];
+        [(PDFDocumentViewController *)v13->documentViewController goToPage:pushCopy direction:v15 animated:animatedCopy];
       }
 
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 postNotificationName:@"PDFViewChangedPage" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PDFViewChangedPage" object:self];
     }
   }
 
 LABEL_18:
 }
 
-- (BOOL)isRectVisible:(CGRect)a3 onPage:(id)a4
+- (BOOL)isRectVisible:(CGRect)visible onPage:(id)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PDFView *)self visiblePages];
-  if ([v10 containsObject:v9])
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  pageCopy = page;
+  visiblePages = [(PDFView *)self visiblePages];
+  if ([visiblePages containsObject:pageCopy])
   {
-    [(PDFView *)self convertRect:v9 fromPage:x, y, width, height];
+    [(PDFView *)self convertRect:pageCopy fromPage:x, y, width, height];
     v11 = PDFRectToCGRect([(PDFView *)self bounds]);
     v13 = v12;
     v15 = v14;
@@ -6818,8 +6818,8 @@ LABEL_18:
 
   else
   {
-    v7 = [(PDFView *)self currentPage];
-    [(PDFView *)self _unboundAutoScaleFactorForPage:v7];
+    currentPage = [(PDFView *)self currentPage];
+    [(PDFView *)self _unboundAutoScaleFactorForPage:currentPage];
     v9 = v8;
 
     return v9;
@@ -6828,18 +6828,18 @@ LABEL_18:
   return result;
 }
 
-- (void)setScaleFactor:(double)a3 anchorPoint:(CGPoint)a4
+- (void)setScaleFactor:(double)factor anchorPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   [(PDFView *)self setAutoScales:0];
   [(PDFView *)self bounds];
   v9 = v8;
-  v10 = [(PDFView *)self documentView];
-  [(PDFView *)self convertPoint:v10 toView:x, y];
-  v11 = v9 / a3;
-  v43 = a3;
-  v14 = PDFRectMakeFromCenter(v12, v13, v9 / a3);
+  documentView = [(PDFView *)self documentView];
+  [(PDFView *)self convertPoint:documentView toView:x, y];
+  v11 = v9 / factor;
+  factorCopy = factor;
+  v14 = PDFRectMakeFromCenter(v12, v13, v9 / factor);
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -6850,18 +6850,18 @@ LABEL_18:
     goto LABEL_10;
   }
 
-  v23 = [(PDFDocumentViewController *)v22->documentViewController currentPage];
-  v24 = [(PDFDocumentViewController *)self->_private->documentViewController findPageViewControllerForPageIndex:[(PDFDocument *)self->_private->document indexForPage:v23]];
+  currentPage = [(PDFDocumentViewController *)v22->documentViewController currentPage];
+  v24 = [(PDFDocumentViewController *)self->_private->documentViewController findPageViewControllerForPageIndex:[(PDFDocument *)self->_private->document indexForPage:currentPage]];
   v25 = v24;
   if (v24)
   {
-    v26 = [v24 scrollView];
+    scrollView = [v24 scrollView];
 
-    v27 = [v25 pageView];
+    pageView = [v25 pageView];
 
-    if (v26)
+    if (scrollView)
     {
-      v28 = v27 == 0;
+      v28 = pageView == 0;
     }
 
     else
@@ -6871,16 +6871,16 @@ LABEL_18:
 
     if (!v28)
     {
-      [(PDFView *)self convertPoint:v27 toView:x, y];
+      [(PDFView *)self convertPoint:pageView toView:x, y];
       v14 = PDFRectMakeFromCenter(v29, v30, v11);
       v16 = v31;
       v18 = v32;
       v20 = v33;
 
-      v21 = v26;
-      v10 = v27;
+      v21 = scrollView;
+      documentView = pageView;
 LABEL_10:
-      [v10 bounds];
+      [documentView bounds];
       v55.origin.x = v34;
       v55.origin.y = v35;
       v55.size.width = v36;
@@ -6902,8 +6902,8 @@ LABEL_10:
       v21 = v21;
       v46 = v21;
       v48 = v44;
-      v10 = v10;
-      v47 = v10;
+      documentView = documentView;
+      v47 = documentView;
       v49 = v38;
       v50 = v39;
       v51 = width;
@@ -6913,8 +6913,8 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v21 = v26;
-    v10 = v27;
+    v21 = scrollView;
+    documentView = pageView;
   }
 
 LABEL_11:
@@ -6982,25 +6982,25 @@ uint64_t __38__PDFView_setScaleFactor_anchorPoint___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDisplaysBookmarksForPages:(BOOL)a3
+- (void)setDisplaysBookmarksForPages:(BOOL)pages
 {
   v3 = self->_private;
-  if (v3->displaysBookmarksForPages != a3)
+  if (v3->displaysBookmarksForPages != pages)
   {
-    v3->displaysBookmarksForPages = a3;
+    v3->displaysBookmarksForPages = pages;
     [(PDFView *)self _updateBookmarksForPages];
   }
 }
 
 - (void)_updateBookmarksForPages
 {
-  v3 = [(PDFDocument *)self->_private->document bookmarkedPages];
+  bookmarkedPages = [(PDFDocument *)self->_private->document bookmarkedPages];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __35__PDFView__updateBookmarksForPages__block_invoke;
   v4[3] = &unk_1E8152758;
   v4[4] = self;
-  [v3 enumerateIndexesUsingBlock:v4];
+  [bookmarkedPages enumerateIndexesUsingBlock:v4];
 }
 
 void __35__PDFView__updateBookmarksForPages__block_invoke(uint64_t a1, uint64_t a2)
@@ -7023,7 +7023,7 @@ void __35__PDFView__updateBookmarksForPages__block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (id)pageViewForPageAtIndex:(unint64_t)a3
+- (id)pageViewForPageAtIndex:(unint64_t)index
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = self->_private;
@@ -7033,8 +7033,8 @@ void __35__PDFView__updateBookmarksForPages__block_invoke(uint64_t a1, uint64_t 
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v19 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    pdfDocumentView = v19 = 0u;
+    v6 = [pdfDocumentView countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -7045,15 +7045,15 @@ void __35__PDFView__updateBookmarksForPages__block_invoke(uint64_t a1, uint64_t 
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(pdfDocumentView);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 page];
-          v12 = [v11 document];
-          v13 = [v12 indexForPage:v11];
+          page = [v10 page];
+          document = [page document];
+          v13 = [document indexForPage:page];
 
-          if (v13 == a3)
+          if (v13 == index)
           {
             v14 = v10;
 
@@ -7061,7 +7061,7 @@ void __35__PDFView__updateBookmarksForPages__block_invoke(uint64_t a1, uint64_t 
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [pdfDocumentView countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           continue;
@@ -7077,8 +7077,8 @@ LABEL_13:
 
   else
   {
-    v5 = [(PDFScrollView *)v4->scrollView pdfDocumentView];
-    v14 = [v5 pageViewForPageAtIndex:a3];
+    pdfDocumentView = [(PDFScrollView *)v4->scrollView pdfDocumentView];
+    v14 = [pdfDocumentView pageViewForPageAtIndex:index];
   }
 
   return v14;
@@ -7101,19 +7101,19 @@ LABEL_13:
   return v4;
 }
 
-- (void)setEnableTileUpdates:(BOOL)a3
+- (void)setEnableTileUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   v15 = *MEMORY[0x1E69E9840];
   [(PDFRenderingProperties *)self->_private->renderingProperties setEnableTileUpdates:?];
-  if (v3)
+  if (updatesCopy)
   {
-    v5 = [(PDFView *)self visiblePageViews];
+    visiblePageViews = [(PDFView *)self visiblePageViews];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [visiblePageViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -7125,14 +7125,14 @@ LABEL_13:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(visiblePageViews);
           }
 
           [*(*(&v10 + 1) + 8 * v9++) setNeedsTilesUpdate];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [visiblePageViews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -7144,9 +7144,9 @@ LABEL_13:
 {
   if (self->_private)
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.Preview"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.Preview"];
 
     if ((v5 & 1) == 0)
     {
@@ -7159,12 +7159,12 @@ LABEL_13:
 - (void)internalForceTileRefresh
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(PDFView *)self visiblePageViews];
+  visiblePageViews = [(PDFView *)self visiblePageViews];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v3 = [visiblePageViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -7176,14 +7176,14 @@ LABEL_13:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visiblePageViews);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) forceTileUpdate];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [visiblePageViews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -7193,14 +7193,14 @@ LABEL_13:
 - (void)internalForceAnnotationRefresh
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PDFView *)self visiblePages];
+  visiblePages = [(PDFView *)self visiblePages];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = v2;
+  v3 = visiblePages;
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -7215,8 +7215,8 @@ LABEL_13:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * i) annotations];
-        [v8 makeObjectsPerformSelector:sel_updateAnnotationEffect];
+        annotations = [*(*(&v9 + 1) + 8 * i) annotations];
+        [annotations makeObjectsPerformSelector:sel_updateAnnotationEffect];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -7228,18 +7228,18 @@ LABEL_13:
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)highlightPDFRedactions:(BOOL)a3
+- (void)highlightPDFRedactions:(BOOL)redactions
 {
-  v3 = a3;
+  redactionsCopy = redactions;
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [(PDFView *)self visiblePages];
+  visiblePages = [(PDFView *)self visiblePages];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = visiblePages;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -7255,12 +7255,12 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v19 + 1) + 8 * v9) annotations];
+        annotations = [*(*(&v19 + 1) + 8 * v9) annotations];
         v15 = 0u;
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v11 = [annotations countByEnumeratingWithState:&v15 objects:v23 count:16];
         if (v11)
         {
           v12 = v11;
@@ -7272,14 +7272,14 @@ LABEL_13:
             {
               if (*v16 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(annotations);
               }
 
-              [*(*(&v15 + 1) + 8 * v14++) highlightRedaction:v3];
+              [*(*(&v15 + 1) + 8 * v14++) highlightRedaction:redactionsCopy];
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+            v12 = [annotations countByEnumeratingWithState:&v15 objects:v23 count:16];
           }
 
           while (v12);
@@ -7298,18 +7298,18 @@ LABEL_13:
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)highlightDetectedFormFields:(BOOL)a3
+- (void)highlightDetectedFormFields:(BOOL)fields
 {
-  v3 = a3;
+  fieldsCopy = fields;
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [(PDFView *)self visiblePages];
+  visiblePages = [(PDFView *)self visiblePages];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = visiblePages;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
@@ -7324,12 +7324,12 @@ LABEL_13:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v22 + 1) + 8 * i) annotations];
+        annotations = [*(*(&v22 + 1) + 8 * i) annotations];
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v9 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v9 = [annotations countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v9)
         {
           v10 = v9;
@@ -7340,7 +7340,7 @@ LABEL_13:
             {
               if (*v19 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(annotations);
               }
 
               v13 = *(*(&v18 + 1) + 8 * j);
@@ -7348,12 +7348,12 @@ LABEL_13:
 
               if (v14)
               {
-                v15 = [v13 akAnnotation];
-                [v15 setHighlighted:v3];
+                akAnnotation = [v13 akAnnotation];
+                [akAnnotation setHighlighted:fieldsCopy];
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v10 = [annotations countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v10);
@@ -7371,17 +7371,17 @@ LABEL_13:
 
 - (void)printActivePageText
 {
-  v3 = [(PDFView *)self currentPage];
-  if (v3)
+  currentPage = [(PDFView *)self currentPage];
+  if (currentPage)
   {
-    v7 = v3;
-    v4 = [(PDFView *)self document];
-    v5 = [v4 indexForPage:v7];
+    v7 = currentPage;
+    document = [(PDFView *)self document];
+    v5 = [document indexForPage:v7];
 
-    v6 = [v7 string];
-    NSLog(&cfstr_PageLuText.isa, v5, v6);
+    string = [v7 string];
+    NSLog(&cfstr_PageLuText.isa, v5, string);
 
-    v3 = v7;
+    currentPage = v7;
   }
 }
 
@@ -7393,11 +7393,11 @@ LABEL_13:
   [(PDFView *)self forceTileRefresh];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
   v4.receiver = self;
   v4.super_class = PDFView;
-  [(PDFView *)&v4 setNeedsDisplayInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PDFView *)&v4 setNeedsDisplayInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(PDFView *)self forceTileRefresh];
 }
 
@@ -7406,12 +7406,12 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
   if (self->_private)
   {
-    v3 = [(PDFView *)self visiblePageViews];
+    visiblePageViews = [(PDFView *)self visiblePageViews];
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    v4 = [visiblePageViews countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -7423,14 +7423,14 @@ LABEL_13:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(visiblePageViews);
           }
 
           [*(*(&v8 + 1) + 8 * v7++) setNeedsTilesUpdate];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [visiblePageViews countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -7440,10 +7440,10 @@ LABEL_13:
   }
 }
 
-- (BOOL)isOverLinkAnnotation:(CGPoint)a3
+- (BOOL)isOverLinkAnnotation:(CGPoint)annotation
 {
-  y = a3.y;
-  x = a3.x;
+  y = annotation.y;
+  x = annotation.x;
   v6 = [(PDFView *)self pageForPoint:0 nearest:?];
   if (!v6)
   {
@@ -7476,10 +7476,10 @@ LABEL_6:
   return v14;
 }
 
-- (void)setGutterWidth:(double)a3
+- (void)setGutterWidth:(double)width
 {
   [(PDFView *)self gutterWidth];
-  if (v5 != a3)
+  if (v5 != width)
   {
     [(PDFView *)self gutterWidth];
     if (v6 >= 0.0)
@@ -7488,7 +7488,7 @@ LABEL_6:
       [(PDFView *)self gutterWidth];
       *&v10 = v10;
       v11 = [v9 numberWithFloat:v10];
-      self->_private->gutterWide = a3;
+      self->_private->gutterWide = width;
       [(PDFView *)self layoutDocumentView];
     }
 
@@ -7502,9 +7502,9 @@ LABEL_6:
   }
 }
 
-- (void)setForcesTopAlignment:(BOOL)a3
+- (void)setForcesTopAlignment:(BOOL)alignment
 {
-  [(PDFScrollView *)self->_private->scrollView setForcesTopAlignment:a3];
+  [(PDFScrollView *)self->_private->scrollView setForcesTopAlignment:alignment];
 
   [(PDFView *)self layoutDocumentView];
 }
@@ -7514,119 +7514,119 @@ LABEL_6:
   document = self->_private->document;
   if (document)
   {
-    v3 = [(PDFDocument *)document akDocumentAdaptor];
-    v4 = v3;
-    if (v3)
+    akDocumentAdaptor = [(PDFDocument *)document akDocumentAdaptor];
+    v4 = akDocumentAdaptor;
+    if (akDocumentAdaptor)
     {
-      v5 = [v3 akMainController];
+      akMainController = [akDocumentAdaptor akMainController];
     }
 
     else
     {
-      v5 = 0;
+      akMainController = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    akMainController = 0;
   }
 
-  return v5;
+  return akMainController;
 }
 
 - (id)akToolbarView
 {
   if ([(PDFDocument *)self->_private->document isLocked])
   {
-    v3 = 0;
+    akToolbarView = 0;
   }
 
   else
   {
-    v4 = [(PDFView *)self _getDocumentAKController];
-    if (v4)
+    _getDocumentAKController = [(PDFView *)self _getDocumentAKController];
+    if (_getDocumentAKController)
     {
-      v5 = [(PDFDocument *)self->_private->document akDocumentAdaptor];
-      v3 = [v5 akToolbarView];
+      akDocumentAdaptor = [(PDFDocument *)self->_private->document akDocumentAdaptor];
+      akToolbarView = [akDocumentAdaptor akToolbarView];
     }
 
     else
     {
-      v3 = 0;
+      akToolbarView = 0;
     }
   }
 
-  return v3;
+  return akToolbarView;
 }
 
-- (void)setAkToolbarViewTintColor:(id)a3
+- (void)setAkToolbarViewTintColor:(id)color
 {
-  v5 = a3;
-  v4 = [(PDFView *)self akToolbarView];
-  if (v4)
+  colorCopy = color;
+  akToolbarView = [(PDFView *)self akToolbarView];
+  if (akToolbarView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 setBarTintColor:v5];
+      [akToolbarView setBarTintColor:colorCopy];
     }
   }
 }
 
 - (id)akToolbarViewTintColor
 {
-  v2 = [(PDFView *)self akToolbarView];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  akToolbarView = [(PDFView *)self akToolbarView];
+  if (akToolbarView && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 barTintColor];
+    barTintColor = [akToolbarView barTintColor];
   }
 
   else
   {
-    v3 = 0;
+    barTintColor = 0;
   }
 
-  return v3;
+  return barTintColor;
 }
 
-- (void)setAkToolbarViewItemTintColor:(id)a3
+- (void)setAkToolbarViewItemTintColor:(id)color
 {
-  v5 = a3;
-  v4 = [(PDFView *)self akToolbarView];
-  if (v4)
+  colorCopy = color;
+  akToolbarView = [(PDFView *)self akToolbarView];
+  if (akToolbarView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 setTintColor:v5];
+      [akToolbarView setTintColor:colorCopy];
     }
   }
 }
 
 - (id)akToolbarViewItemTintColor
 {
-  v2 = [(PDFView *)self akToolbarView];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  akToolbarView = [(PDFView *)self akToolbarView];
+  if (akToolbarView && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 tintColor];
+    tintColor = [akToolbarView tintColor];
   }
 
   else
   {
-    v3 = 0;
+    tintColor = 0;
   }
 
-  return v3;
+  return tintColor;
 }
 
 - (id)akUndoToolbarItem
 {
-  v2 = [(PDFView *)self _getDocumentAKController];
-  v3 = v2;
-  if (v2)
+  _getDocumentAKController = [(PDFView *)self _getDocumentAKController];
+  v3 = _getDocumentAKController;
+  if (_getDocumentAKController)
   {
-    v4 = [v2 toolbarButtonItemOfType:10];
+    v4 = [_getDocumentAKController toolbarButtonItemOfType:10];
   }
 
   else
@@ -7639,11 +7639,11 @@ LABEL_6:
 
 - (id)akRedoToolbarItem
 {
-  v2 = [(PDFView *)self _getDocumentAKController];
-  v3 = v2;
-  if (v2)
+  _getDocumentAKController = [(PDFView *)self _getDocumentAKController];
+  v3 = _getDocumentAKController;
+  if (_getDocumentAKController)
   {
-    v4 = [v2 toolbarButtonItemOfType:11];
+    v4 = [_getDocumentAKController toolbarButtonItemOfType:11];
   }
 
   else
@@ -7656,34 +7656,34 @@ LABEL_6:
 
 - (BOOL)akAnnotationEditingEnabled
 {
-  v2 = [(PDFView *)self _getDocumentAKController];
-  v3 = v2;
-  if (v2)
+  _getDocumentAKController = [(PDFView *)self _getDocumentAKController];
+  v3 = _getDocumentAKController;
+  if (_getDocumentAKController)
   {
-    v4 = [v2 annotationEditingEnabled];
+    annotationEditingEnabled = [_getDocumentAKController annotationEditingEnabled];
   }
 
   else
   {
-    v4 = 0;
+    annotationEditingEnabled = 0;
   }
 
-  return v4;
+  return annotationEditingEnabled;
 }
 
-- (void)setAkAnnotationEditingEnabled:(BOOL)a3
+- (void)setAkAnnotationEditingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PDFView *)self _getDocumentAKController];
-  if (v5)
+  enabledCopy = enabled;
+  _getDocumentAKController = [(PDFView *)self _getDocumentAKController];
+  if (_getDocumentAKController)
   {
-    v10 = v5;
-    v6 = [v5 annotationEditingEnabled] == v3;
-    v5 = v10;
+    v10 = _getDocumentAKController;
+    v6 = [_getDocumentAKController annotationEditingEnabled] == enabledCopy;
+    _getDocumentAKController = v10;
     if (!v6)
     {
-      [v10 setAnnotationEditingEnabled:v3];
-      if (v3)
+      [v10 setAnnotationEditingEnabled:enabledCopy];
+      if (enabledCopy)
       {
         v7 = objc_opt_new();
         [v7 setTag:763000];
@@ -7692,18 +7692,18 @@ LABEL_6:
 
       else
       {
-        v8 = [v10 modelController];
-        [v8 deselectAllAnnotations];
+        modelController = [v10 modelController];
+        [modelController deselectAllAnnotations];
 
         [v10 resetToDefaultToolMode];
       }
 
       v9 = self->_private;
-      v5 = v10;
+      _getDocumentAKController = v10;
       if (v9->isUsingPageViewController)
       {
-        [(PDFDocumentViewController *)v9->documentViewController setScrollViewScrollEnabled:v3 ^ 1];
-        v5 = v10;
+        [(PDFDocumentViewController *)v9->documentViewController setScrollViewScrollEnabled:enabledCopy ^ 1];
+        _getDocumentAKController = v10;
       }
     }
   }
@@ -7719,43 +7719,43 @@ LABEL_6:
   return [(PDFView *)self allowsMarkupAnnotationEditing];
 }
 
-- (void)setFormDetectionEnabled:(BOOL)a3
+- (void)setFormDetectionEnabled:(BOOL)enabled
 {
-  if (self->_formDetectionEnabled != a3)
+  if (self->_formDetectionEnabled != enabled)
   {
-    self->_formDetectionEnabled = a3;
-    if (a3)
+    self->_formDetectionEnabled = enabled;
+    if (enabled)
     {
       [(PDFView *)self visiblePagesChanged:0];
     }
   }
 }
 
-- (void)setNewPageVisibilityDelegate:(id)a3 withOldDelegate:(id)a4
+- (void)setNewPageVisibilityDelegate:(id)delegate withOldDelegate:(id)oldDelegate
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 != v7)
+  delegateCopy = delegate;
+  oldDelegateCopy = oldDelegate;
+  if (delegateCopy != oldDelegateCopy)
   {
     v8 = self->_private;
     if (v8->isUsingPageViewController)
     {
-      v9 = [(PDFDocumentViewController *)v8->documentViewController pageViews];
+      pageViews = [(PDFDocumentViewController *)v8->documentViewController pageViews];
     }
 
     else
     {
-      v10 = [(PDFScrollView *)v8->scrollView pdfDocumentView];
-      v9 = [v10 pageViews];
+      pdfDocumentView = [(PDFScrollView *)v8->scrollView pdfDocumentView];
+      pageViews = [pdfDocumentView pageViews];
     }
 
-    objc_storeWeak(&self->_private->delegate, v7);
+    objc_storeWeak(&self->_private->delegate, oldDelegateCopy);
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v11 = v9;
+    v11 = pageViews;
     v12 = [v11 countByEnumeratingWithState:&v36 objects:v41 count:16];
     v31 = v11;
     if (v12)
@@ -7774,11 +7774,11 @@ LABEL_6:
           v16 = *(*(&v36 + 1) + 8 * i);
           if ([v16 visibilityDelegateIndex] != 0x7FFFFFFFFFFFFFFFLL)
           {
-            if (v7)
+            if (oldDelegateCopy)
             {
-              v17 = [v16 visibilityDelegateIndex];
-              [(PDFView *)self callPageVisibilityDelegateMethod:2 forPageView:v16 atPageIndex:v17];
-              v18 = v17;
+              visibilityDelegateIndex = [v16 visibilityDelegateIndex];
+              [(PDFView *)self callPageVisibilityDelegateMethod:2 forPageView:v16 atPageIndex:visibilityDelegateIndex];
+              v18 = visibilityDelegateIndex;
               v11 = v31;
               [(PDFView *)self callPageVisibilityDelegateMethod:3 forPageView:v16 atPageIndex:v18];
             }
@@ -7796,11 +7796,11 @@ LABEL_6:
       while (v13);
     }
 
-    objc_storeWeak(&self->_private->delegate, v6);
-    if (v6)
+    objc_storeWeak(&self->_private->delegate, delegateCopy);
+    if (delegateCopy)
     {
-      v29 = v7;
-      v30 = v6;
+      v29 = oldDelegateCopy;
+      v30 = delegateCopy;
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
@@ -7821,10 +7821,10 @@ LABEL_6:
             }
 
             v24 = *(*(&v32 + 1) + 8 * j);
-            v25 = [v24 page];
-            v26 = [v25 document];
-            v27 = [v24 page];
-            v28 = [v26 indexForPage:v27];
+            page = [v24 page];
+            document = [page document];
+            page2 = [v24 page];
+            v28 = [document indexForPage:page2];
 
             [(PDFView *)self callPageVisibilityDelegateMethod:0 forPageView:v24 atPageIndex:v28];
             [(PDFView *)self callPageVisibilityDelegateMethod:1 forPageView:v24 atPageIndex:v28];
@@ -7836,54 +7836,54 @@ LABEL_6:
         while (v21);
       }
 
-      v7 = v29;
-      v6 = v30;
+      oldDelegateCopy = v29;
+      delegateCopy = v30;
       v11 = v31;
     }
   }
 }
 
-- (void)callPageVisibilityDelegateMethod:(int)a3 forPageView:(id)a4 atPageIndex:(unint64_t)a5
+- (void)callPageVisibilityDelegateMethod:(int)method forPageView:(id)view atPageIndex:(unint64_t)index
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+  viewCopy = view;
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     WeakRetained = objc_loadWeakRetained(&self->_private->delegate);
     v10 = self->_overlayViewController;
-    if (a3 > 1)
+    if (method > 1)
     {
-      if (a3 == 2)
+      if (method == 2)
       {
         if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v23 = [v8 page];
-          [WeakRetained pdfView:self willRemoveView:v8 forPage:v23 atIndex:a5];
+          page = [viewCopy page];
+          [WeakRetained pdfView:self willRemoveView:viewCopy forPage:page atIndex:index];
         }
 
-        v24 = [v8 page];
-        [(PDFOverlayViewsController *)v10 pdfView:self willRemoveView:v8 forPage:v24 atIndex:a5];
+        page2 = [viewCopy page];
+        [(PDFOverlayViewsController *)v10 pdfView:self willRemoveView:viewCopy forPage:page2 atIndex:index];
 
-        [(PDFCoachMarkManager *)self->_private->coachMarkManager pageLayerWillRemove:v8];
+        [(PDFCoachMarkManager *)self->_private->coachMarkManager pageLayerWillRemove:viewCopy];
         goto LABEL_34;
       }
 
-      if (a3 == 3)
+      if (method == 3)
       {
         if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v13 = [v8 page];
-          [WeakRetained pdfView:self didRemoveView:v8 forPage:v13 atIndex:a5];
+          page3 = [viewCopy page];
+          [WeakRetained pdfView:self didRemoveView:viewCopy forPage:page3 atIndex:index];
         }
 
-        [v8 setVisibilityDelegateIndex:0x7FFFFFFFFFFFFFFFLL];
-        v14 = [v8 page];
-        v15 = [(PDFView *)self visiblePageViews];
+        [viewCopy setVisibilityDelegateIndex:0x7FFFFFFFFFFFFFFFLL];
+        page4 = [viewCopy page];
+        visiblePageViews = [(PDFView *)self visiblePageViews];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v16 = [visiblePageViews countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v16)
         {
           v17 = v16;
@@ -7895,15 +7895,15 @@ LABEL_6:
             {
               if (*v26 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(visiblePageViews);
               }
 
               v20 = *(*(&v25 + 1) + 8 * v19);
-              if (v20 != v8)
+              if (v20 != viewCopy)
               {
-                v21 = [*(*(&v25 + 1) + 8 * v19) page];
+                page5 = [*(*(&v25 + 1) + 8 * v19) page];
 
-                if (v21 == v14)
+                if (page5 == page4)
                 {
                   [v20 setVisibilityDelegateIndex:0x7FFFFFFFFFFFFFFFLL];
                 }
@@ -7913,7 +7913,7 @@ LABEL_6:
             }
 
             while (v17 != v19);
-            v17 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+            v17 = [visiblePageViews countByEnumeratingWithState:&v25 objects:v29 count:16];
           }
 
           while (v17);
@@ -7925,30 +7925,30 @@ LABEL_6:
 
     else
     {
-      if (!a3)
+      if (!method)
       {
         if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v22 = [v8 page];
-          [WeakRetained pdfView:self willAddView:v8 forPage:v22 atIndex:a5];
+          page6 = [viewCopy page];
+          [WeakRetained pdfView:self willAddView:viewCopy forPage:page6 atIndex:index];
         }
 
-        [v8 setVisibilityDelegateIndex:a5];
+        [viewCopy setVisibilityDelegateIndex:index];
         goto LABEL_34;
       }
 
-      if (a3 == 1)
+      if (method == 1)
       {
         if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v11 = [v8 page];
-          [WeakRetained pdfView:self didAddView:v8 forPage:v11 atIndex:a5];
+          page7 = [viewCopy page];
+          [WeakRetained pdfView:self didAddView:viewCopy forPage:page7 atIndex:index];
         }
 
-        v12 = [v8 page];
-        [(PDFOverlayViewsController *)v10 pdfView:self didAddView:v8 forPage:v12 atIndex:a5];
+        page8 = [viewCopy page];
+        [(PDFOverlayViewsController *)v10 pdfView:self didAddView:viewCopy forPage:page8 atIndex:index];
 
-        [(PDFCoachMarkManager *)self->_private->coachMarkManager pageLayerDidAppear:v8];
+        [(PDFCoachMarkManager *)self->_private->coachMarkManager pageLayerDidAppear:viewCopy];
         goto LABEL_34;
       }
     }
@@ -7964,20 +7964,20 @@ LABEL_34:
   v3 = self->_private;
   if (v3->isUsingPageViewController)
   {
-    v4 = [(PDFDocumentViewController *)v3->documentViewController pageViews];
+    pageViews = [(PDFDocumentViewController *)v3->documentViewController pageViews];
   }
 
   else
   {
-    v5 = [(PDFScrollView *)v3->scrollView pdfDocumentView];
-    v4 = [v5 pageViews];
+    pdfDocumentView = [(PDFScrollView *)v3->scrollView pdfDocumentView];
+    pageViews = [pdfDocumentView pageViews];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = pageViews;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -7993,11 +7993,11 @@ LABEL_34:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 visibilityDelegateIndex];
-        if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+        visibilityDelegateIndex = [v11 visibilityDelegateIndex];
+        if (visibilityDelegateIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v13 = v12;
-          [(PDFView *)self callPageVisibilityDelegateMethodForOverlayAdaptorOnly:0 forPageView:v11 atPageIndex:v12];
+          v13 = visibilityDelegateIndex;
+          [(PDFView *)self callPageVisibilityDelegateMethodForOverlayAdaptorOnly:0 forPageView:v11 atPageIndex:visibilityDelegateIndex];
           [(PDFView *)self callPageVisibilityDelegateMethodForOverlayAdaptorOnly:1 forPageView:v11 atPageIndex:v13];
         }
       }
@@ -8009,20 +8009,20 @@ LABEL_34:
   }
 }
 
-- (void)callPageVisibilityDelegateMethodForOverlayAdaptorOnly:(int)a3 forPageView:(id)a4 atPageIndex:(unint64_t)a5
+- (void)callPageVisibilityDelegateMethodForOverlayAdaptorOnly:(int)only forPageView:(id)view atPageIndex:(unint64_t)index
 {
-  v10 = a4;
+  viewCopy = view;
   v8 = self->_overlayViewController;
-  if (a3 > 1)
+  if (only > 1)
   {
-    if (a3 == 2)
+    if (only == 2)
     {
-      v9 = [v10 page];
-      [(PDFOverlayViewsController *)v8 pdfView:self willRemoveView:v10 forPage:v9 atIndex:a5];
+      page = [viewCopy page];
+      [(PDFOverlayViewsController *)v8 pdfView:self willRemoveView:viewCopy forPage:page atIndex:index];
       goto LABEL_9;
     }
 
-    if (a3 == 3)
+    if (only == 3)
     {
       goto LABEL_10;
     }
@@ -8032,40 +8032,40 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!only)
   {
     goto LABEL_10;
   }
 
-  if (a3 != 1)
+  if (only != 1)
   {
     goto LABEL_7;
   }
 
-  v9 = [v10 page];
-  [(PDFOverlayViewsController *)v8 pdfView:self didAddView:v10 forPage:v9 atIndex:a5];
+  page = [viewCopy page];
+  [(PDFOverlayViewsController *)v8 pdfView:self didAddView:viewCopy forPage:page atIndex:index];
 LABEL_9:
 
 LABEL_10:
 }
 
-- (void)setShowsScrollIndicators:(BOOL)a3
+- (void)setShowsScrollIndicators:(BOOL)indicators
 {
   v3 = self->_private;
-  if (v3->showsScrollIndicators != a3)
+  if (v3->showsScrollIndicators != indicators)
   {
-    v3->showsScrollIndicators = a3;
+    v3->showsScrollIndicators = indicators;
     [(PDFView *)self positionInternalViews:0];
   }
 }
 
-- (void)setScrollViewScrollEnabled:(BOOL)a3
+- (void)setScrollViewScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(PDFScrollView *)self->_private->scrollView setScrollEnabled:?];
   scrollView = self->_private->scrollView;
 
-  [(PDFScrollView *)scrollView setUserInteractionEnabled:v3];
+  [(PDFScrollView *)scrollView setUserInteractionEnabled:enabledCopy];
 }
 
 - (CGRect)extensionViewBoundsInDocument
@@ -8084,8 +8084,8 @@ LABEL_10:
 
 - (CGSize)pdfDocumentViewSize
 {
-  v2 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-  [v2 documentViewSize];
+  pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+  [pdfDocumentView documentViewSize];
   v4 = v3;
   v6 = v5;
 
@@ -8096,13 +8096,13 @@ LABEL_10:
   return result;
 }
 
-- (void)updatePDFViewLayout:(CGRect)a3 scrollViewFrame:(CGRect)a4 zoomScale:(double)a5
+- (void)updatePDFViewLayout:(CGRect)layout scrollViewFrame:(CGRect)frame zoomScale:(double)scale
 {
-  self->_private->extensionViewBoundsInDocument = a3;
-  self->_private->extensionViewFrame = a4;
-  self->_private->extensionViewZoomScale = a5;
-  v5 = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
-  [v5 updateVisibility];
+  self->_private->extensionViewBoundsInDocument = layout;
+  self->_private->extensionViewFrame = frame;
+  self->_private->extensionViewZoomScale = scale;
+  pdfDocumentView = [(PDFScrollView *)self->_private->scrollView pdfDocumentView];
+  [pdfDocumentView updateVisibility];
 }
 
 - (CGRect)rootViewBounds
@@ -8136,15 +8136,15 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRectToRootView:(CGRect)a3 fromPageLayer:(id)a4
+- (CGRect)convertRectToRootView:(CGRect)view fromPageLayer:(id)layer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PDFView *)self layer];
-  [v9 convertRect:v10 toLayer:{x, y, width, height}];
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  layerCopy = layer;
+  layer = [(PDFView *)self layer];
+  [layerCopy convertRect:layer toLayer:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -8162,13 +8162,13 @@ LABEL_10:
 
   else
   {
-    v22 = [(PDFView *)self layer];
-    [v22 bounds];
+    layer2 = [(PDFView *)self layer];
+    [layer2 bounds];
     v21 = v23 - v18 - v14;
   }
 
-  v24 = [(PDFView *)self layer];
-  [v24 convertRect:0 toLayer:{v12, v21, v16, v18}];
+  layer3 = [(PDFView *)self layer];
+  [layer3 convertRect:0 toLayer:{v12, v21, v16, v18}];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -8186,31 +8186,31 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRootViewRect:(CGRect)a3 toPageLayer:(id)a4
+- (CGRect)convertRootViewRect:(CGRect)rect toPageLayer:(id)layer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layerCopy = layer;
   [(PDFView *)self mainScreenScale];
   v11 = x / v10;
   v12 = y / v10;
   v13 = width / v10;
   v14 = height / v10;
-  v15 = [(PDFView *)self layer];
-  [v15 convertRect:0 fromLayer:{v11, v12, v13, v14}];
+  layer = [(PDFView *)self layer];
+  [layer convertRect:0 fromLayer:{v11, v12, v13, v14}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(PDFView *)self layer];
-  [v24 bounds];
+  layer2 = [(PDFView *)self layer];
+  [layer2 bounds];
   v26 = v25 - v23 - v19;
 
-  v27 = [(PDFView *)self layer];
-  [v9 convertRect:v27 fromLayer:{v17, v26, v21, v23}];
+  layer3 = [(PDFView *)self layer];
+  [layerCopy convertRect:layer3 fromLayer:{v17, v26, v21, v23}];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -8243,8 +8243,8 @@ LABEL_10:
 
 - (CGRect)mainScreenBounds
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -8263,8 +8263,8 @@ LABEL_10:
 
 - (double)mainScreenScale
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;
@@ -8277,12 +8277,12 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
   sub_1C1D6C4BC();
   sub_1C1D6C4AC();
   sub_1C1D6C49C();
@@ -8291,9 +8291,9 @@ LABEL_10:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v10 = a4;
-  v11 = self;
-  PDFView._intelligenceCollectContent(in:collector:)(v10, x, y, width, height);
+  collectorCopy = collector;
+  selfCopy = self;
+  PDFView._intelligenceCollectContent(in:collector:)(collectorCopy, x, y, width, height);
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface PHASERootObject
 - (PHASERootObject)init;
-- (PHASERootObject)initWithEngine:(id)a3;
-- (PHASERootObject)initWithEngine:(id)a3 entityType:(unsigned int)a4 shapes:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PHASERootObject)initWithEngine:(id)engine;
+- (PHASERootObject)initWithEngine:(id)engine entityType:(unsigned int)type shapes:(id)shapes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setParent:(id)a3;
-- (void)setTransform:(Phase::Logger *)a1;
+- (void)setParent:(id)parent;
+- (void)setTransform:(Phase::Logger *)transform;
 @end
 
 @implementation PHASERootObject
@@ -17,25 +17,25 @@
   return 0;
 }
 
-- (PHASERootObject)initWithEngine:(id)a3 entityType:(unsigned int)a4 shapes:(id)a5
+- (PHASERootObject)initWithEngine:(id)engine entityType:(unsigned int)type shapes:(id)shapes
 {
-  [(PHASERootObject *)self doesNotRecognizeSelector:a2, *&a4, a5];
+  [(PHASERootObject *)self doesNotRecognizeSelector:a2, *&type, shapes];
 
   return 0;
 }
 
-- (PHASERootObject)initWithEngine:(id)a3
+- (PHASERootObject)initWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v10.receiver = self;
   v10.super_class = PHASERootObject;
-  v5 = [(PHASEObject *)&v10 initWithEngine:v4 entityType:0 shapes:0];
+  v5 = [(PHASEObject *)&v10 initWithEngine:engineCopy entityType:0 shapes:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PHASEObject *)v5 engine];
-    v8 = [v7 implementation];
-    [(PHASEObject *)v6 setGeoEntityHandle:(*(**(v8 + 368) + 72))(*(v8 + 368))];
+    engine = [(PHASEObject *)v5 engine];
+    implementation = [engine implementation];
+    [(PHASEObject *)v6 setGeoEntityHandle:(*(**(implementation + 368) + 72))(*(implementation + 368))];
   }
 
   return v6;
@@ -48,10 +48,10 @@
   [(PHASEObject *)&v2 dealloc];
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = **(Phase::Logger::GetInstance(a3) + 448);
+  v3 = **(Phase::Logger::GetInstance(parent) + 448);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     v5 = 136315394;
@@ -65,10 +65,10 @@
   std::runtime_error::runtime_error(exception, "Error: Do not set the parent of a Root Object.");
 }
 
-- (void)setTransform:(Phase::Logger *)a1
+- (void)setTransform:(Phase::Logger *)transform
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = **(Phase::Logger::GetInstance(a1) + 448);
+  v1 = **(Phase::Logger::GetInstance(transform) + 448);
   if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
   {
     v3 = 136315394;
@@ -82,7 +82,7 @@
   std::runtime_error::runtime_error(exception, "Error: Do not set the transform of a Root Object.");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = **(Phase::Logger::GetInstance(self) + 448);

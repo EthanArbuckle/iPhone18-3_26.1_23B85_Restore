@@ -20,14 +20,14 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC26RelevanceServicesCompanion35ConsiderateVolumeSettingsController_alwaysSynchronize);
-  v5 = self;
+  selfCopy = self;
   if ((v4 & 1) == 0)
   {
     v6 = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveEveryObserver(v6, v5);
+    CFNotificationCenterRemoveEveryObserver(v6, selfCopy);
   }
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(ConsiderateVolumeSettingsController *)&v7 dealloc];
 }

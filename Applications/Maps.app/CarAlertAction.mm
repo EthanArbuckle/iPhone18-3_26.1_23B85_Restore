@@ -1,17 +1,17 @@
 @interface CarAlertAction
-+ (id)actionWithTitle:(id)a3 image:(id)a4 handler:(id)a5;
++ (id)actionWithTitle:(id)title image:(id)image handler:(id)handler;
 @end
 
 @implementation CarAlertAction
 
-+ (id)actionWithTitle:(id)a3 image:(id)a4 handler:(id)a5
++ (id)actionWithTitle:(id)title image:(id)image handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[CarAlertButtonViewController alloc] initWithTitle:v8 image:v9];
-  v12 = [a1 _actionWithContentViewController:v11 style:0 handler:v10];
-  [v12 setActionHandler:v10];
+  titleCopy = title;
+  imageCopy = image;
+  handlerCopy = handler;
+  v11 = [[CarAlertButtonViewController alloc] initWithTitle:titleCopy image:imageCopy];
+  v12 = [self _actionWithContentViewController:v11 style:0 handler:handlerCopy];
+  [v12 setActionHandler:handlerCopy];
   objc_initWeak(&location, v12);
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;

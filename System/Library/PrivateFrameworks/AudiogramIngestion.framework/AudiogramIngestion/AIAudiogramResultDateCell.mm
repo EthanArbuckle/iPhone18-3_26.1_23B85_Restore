@@ -1,21 +1,21 @@
 @interface AIAudiogramResultDateCell
-- (AIAudiogramResultDateCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AIAudiogramResultDateCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (AIAudiogramResultDateCellDelegate)delegate;
 - (unint64_t)accessibilityTraits;
-- (void)_datePickerValueChanged:(id)a3;
+- (void)_datePickerValueChanged:(id)changed;
 - (void)configureLayout;
-- (void)setDate:(id)a3;
-- (void)showActive:(BOOL)a3;
+- (void)setDate:(id)date;
+- (void)showActive:(BOOL)active;
 @end
 
 @implementation AIAudiogramResultDateCell
 
-- (AIAudiogramResultDateCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AIAudiogramResultDateCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v88[2] = *MEMORY[0x277D85DE8];
   v85.receiver = self;
   v85.super_class = AIAudiogramResultDateCell;
-  v4 = [(AIAudiogramResultDateCell *)&v85 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AIAudiogramResultDateCell *)&v85 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -24,133 +24,133 @@
     [(AIAudiogramResultDateCell *)v5 setTitleLabel:v7];
 
     v8 = aiLocString(@"AudiogramIngestionResultsDate");
-    v9 = [(AIAudiogramResultDateCell *)v5 titleLabel];
-    [v9 setText:v8];
+    titleLabel = [(AIAudiogramResultDateCell *)v5 titleLabel];
+    [titleLabel setText:v8];
 
-    v10 = [MEMORY[0x277D75348] labelColor];
-    v11 = [(AIAudiogramResultDateCell *)v5 titleLabel];
-    [v11 setTextColor:v10];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    titleLabel2 = [(AIAudiogramResultDateCell *)v5 titleLabel];
+    [titleLabel2 setTextColor:labelColor];
 
     v12 = *MEMORY[0x277D76918];
     v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v14 = [(AIAudiogramResultDateCell *)v5 titleLabel];
-    [v14 setFont:v13];
+    titleLabel3 = [(AIAudiogramResultDateCell *)v5 titleLabel];
+    [titleLabel3 setFont:v13];
 
     v15 = objc_opt_new();
     [(AIAudiogramResultDateCell *)v5 setValueLabel:v15];
 
-    v16 = [(AIAudiogramResultDateCell *)v5 valueLabel];
-    [v16 setTextAlignment:2 * v6];
+    valueLabel = [(AIAudiogramResultDateCell *)v5 valueLabel];
+    [valueLabel setTextAlignment:2 * v6];
 
-    v17 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v18 = [(AIAudiogramResultDateCell *)v5 valueLabel];
-    [v18 setTextColor:v17];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    valueLabel2 = [(AIAudiogramResultDateCell *)v5 valueLabel];
+    [valueLabel2 setTextColor:secondaryLabelColor];
 
     v19 = [MEMORY[0x277D74300] preferredFontForTextStyle:v12];
-    v20 = [(AIAudiogramResultDateCell *)v5 valueLabel];
-    [v20 setFont:v19];
+    valueLabel3 = [(AIAudiogramResultDateCell *)v5 valueLabel];
+    [valueLabel3 setFont:v19];
 
     v21 = objc_alloc(MEMORY[0x277D75A68]);
-    v22 = [(AIAudiogramResultDateCell *)v5 titleLabel];
-    v88[0] = v22;
-    v23 = [(AIAudiogramResultDateCell *)v5 valueLabel];
-    v88[1] = v23;
+    titleLabel4 = [(AIAudiogramResultDateCell *)v5 titleLabel];
+    v88[0] = titleLabel4;
+    valueLabel4 = [(AIAudiogramResultDateCell *)v5 valueLabel];
+    v88[1] = valueLabel4;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:2];
     v25 = [v21 initWithArrangedSubviews:v24];
     [(AIAudiogramResultDateCell *)v5 setLabelStackView:v25];
 
-    v26 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    [v26 setAxis:0];
+    labelStackView = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    [labelStackView setAxis:0];
 
-    v27 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    [v27 setDistribution:0];
+    labelStackView2 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    [labelStackView2 setDistribution:0];
 
-    v28 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    [v28 setAlignment:0];
+    labelStackView3 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    [labelStackView3 setAlignment:0];
 
-    v29 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+    labelStackView4 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    [labelStackView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v30 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v31 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    [v30 addSubview:v31];
+    contentView = [(AIAudiogramResultDateCell *)v5 contentView];
+    labelStackView5 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    [contentView addSubview:labelStackView5];
 
     v32 = objc_opt_new();
     [(AIAudiogramResultDateCell *)v5 setDatePicker:v32];
 
-    v33 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    [v33 setDatePickerMode:1];
+    datePicker = [(AIAudiogramResultDateCell *)v5 datePicker];
+    [datePicker setDatePickerMode:1];
 
-    v34 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    [v34 setPreferredDatePickerStyle:3];
+    datePicker2 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    [datePicker2 setPreferredDatePickerStyle:3];
 
-    v35 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
+    datePicker3 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    [datePicker3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v36 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    [v36 setHidden:1];
+    datePicker4 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    [datePicker4 setHidden:1];
 
-    v37 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    [v37 addTarget:v5 action:sel__datePickerValueChanged_ forControlEvents:4096];
+    datePicker5 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    [datePicker5 addTarget:v5 action:sel__datePickerValueChanged_ forControlEvents:4096];
 
-    v38 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v39 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    [v38 addSubview:v39];
+    contentView2 = [(AIAudiogramResultDateCell *)v5 contentView];
+    datePicker6 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    [contentView2 addSubview:datePicker6];
 
-    v40 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    v41 = [v40 bottomAnchor];
-    v42 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v43 = [v42 bottomAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43 constant:-16.0];
+    labelStackView6 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    bottomAnchor = [labelStackView6 bottomAnchor];
+    contentView3 = [(AIAudiogramResultDateCell *)v5 contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     [(AIAudiogramResultDateCell *)v5 setCollapsedConstraint:v44];
 
-    v83 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    v81 = [v83 bottomAnchor];
-    v45 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    v46 = [v45 topAnchor];
-    v47 = [v81 constraintEqualToAnchor:v46 constant:-16.0];
+    labelStackView7 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    bottomAnchor3 = [labelStackView7 bottomAnchor];
+    datePicker7 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    topAnchor = [datePicker7 topAnchor];
+    v47 = [bottomAnchor3 constraintEqualToAnchor:topAnchor constant:-16.0];
     v87[0] = v47;
-    v48 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    v49 = [v48 bottomAnchor];
-    v50 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v51 = [v50 bottomAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51 constant:-16.0];
+    datePicker8 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    bottomAnchor4 = [datePicker8 bottomAnchor];
+    contentView4 = [(AIAudiogramResultDateCell *)v5 contentView];
+    bottomAnchor5 = [contentView4 bottomAnchor];
+    v52 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-16.0];
     v87[1] = v52;
     v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:2];
     [(AIAudiogramResultDateCell *)v5 setExpandedConstraints:v53];
 
     v71 = MEMORY[0x277CCAAD0];
-    v84 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    v80 = [v84 leadingAnchor];
-    v82 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v79 = [v82 leadingAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79 constant:16.0];
+    labelStackView8 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    leadingAnchor = [labelStackView8 leadingAnchor];
+    contentView5 = [(AIAudiogramResultDateCell *)v5 contentView];
+    leadingAnchor2 = [contentView5 leadingAnchor];
+    v78 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v86[0] = v78;
-    v77 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    v75 = [v77 trailingAnchor];
-    v76 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v74 = [v76 trailingAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74 constant:-16.0];
+    labelStackView9 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    trailingAnchor = [labelStackView9 trailingAnchor];
+    contentView6 = [(AIAudiogramResultDateCell *)v5 contentView];
+    trailingAnchor2 = [contentView6 trailingAnchor];
+    v73 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v86[1] = v73;
-    v72 = [(AIAudiogramResultDateCell *)v5 labelStackView];
-    v69 = [v72 topAnchor];
-    v70 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v68 = [v70 topAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68 constant:16.0];
+    labelStackView10 = [(AIAudiogramResultDateCell *)v5 labelStackView];
+    topAnchor2 = [labelStackView10 topAnchor];
+    contentView7 = [(AIAudiogramResultDateCell *)v5 contentView];
+    topAnchor3 = [contentView7 topAnchor];
+    v67 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:16.0];
     v86[2] = v67;
-    v66 = [(AIAudiogramResultDateCell *)v5 collapsedConstraint];
-    v86[3] = v66;
-    v65 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    v64 = [v65 leadingAnchor];
-    v54 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v55 = [v54 leadingAnchor];
-    v56 = [v64 constraintEqualToAnchor:v55 constant:16.0];
+    collapsedConstraint = [(AIAudiogramResultDateCell *)v5 collapsedConstraint];
+    v86[3] = collapsedConstraint;
+    datePicker9 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    leadingAnchor3 = [datePicker9 leadingAnchor];
+    contentView8 = [(AIAudiogramResultDateCell *)v5 contentView];
+    leadingAnchor4 = [contentView8 leadingAnchor];
+    v56 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
     v86[4] = v56;
-    v57 = [(AIAudiogramResultDateCell *)v5 datePicker];
-    v58 = [v57 trailingAnchor];
-    v59 = [(AIAudiogramResultDateCell *)v5 contentView];
-    v60 = [v59 trailingAnchor];
-    v61 = [v58 constraintEqualToAnchor:v60 constant:-16.0];
+    datePicker10 = [(AIAudiogramResultDateCell *)v5 datePicker];
+    trailingAnchor3 = [datePicker10 trailingAnchor];
+    contentView9 = [(AIAudiogramResultDateCell *)v5 contentView];
+    trailingAnchor4 = [contentView9 trailingAnchor];
+    v61 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
     v86[5] = v61;
     v62 = [MEMORY[0x277CBEA60] arrayWithObjects:v86 count:6];
     [v71 activateConstraints:v62];
@@ -162,90 +162,90 @@
 - (void)configureLayout
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v3 = [(AIAudiogramResultDateCell *)self titleLabel];
-  v4 = [v3 text];
+  titleLabel = [(AIAudiogramResultDateCell *)self titleLabel];
+  text = [titleLabel text];
   [(AIAudiogramResultDateCell *)self frame];
   v6 = v5;
   v8 = v7;
   v30 = *MEMORY[0x277D740A8];
   v9 = v30;
-  v10 = [(AIAudiogramResultDateCell *)self titleLabel];
-  v11 = [v10 font];
-  v31[0] = v11;
+  titleLabel2 = [(AIAudiogramResultDateCell *)self titleLabel];
+  font = [titleLabel2 font];
+  v31[0] = font;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-  [v4 boundingRectWithSize:32 options:v12 attributes:0 context:{v6, v8}];
+  [text boundingRectWithSize:32 options:v12 attributes:0 context:{v6, v8}];
   Width = CGRectGetWidth(v32);
 
-  v14 = [(AIAudiogramResultDateCell *)self valueLabel];
-  v15 = [v14 text];
+  valueLabel = [(AIAudiogramResultDateCell *)self valueLabel];
+  text2 = [valueLabel text];
   [(AIAudiogramResultDateCell *)self frame];
   v17 = v16;
   v19 = v18;
   v28 = v9;
-  v20 = [(AIAudiogramResultDateCell *)self valueLabel];
-  v21 = [v20 font];
-  v29 = v21;
+  valueLabel2 = [(AIAudiogramResultDateCell *)self valueLabel];
+  font2 = [valueLabel2 font];
+  v29 = font2;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-  [v15 boundingRectWithSize:32 options:v22 attributes:0 context:{v17, v19}];
+  [text2 boundingRectWithSize:32 options:v22 attributes:0 context:{v17, v19}];
   *&v17 = CGRectGetWidth(v33);
 
   [(AIAudiogramResultDateCell *)self frame];
   v23 = CGRectGetWidth(v34) * 0.9;
-  v24 = [(AIAudiogramResultDateCell *)self labelStackView];
-  v25 = v24;
+  labelStackView = [(AIAudiogramResultDateCell *)self labelStackView];
+  v25 = labelStackView;
   if (v23 >= (Width + *&v17))
   {
-    [v24 setAxis:0];
+    [labelStackView setAxis:0];
 
     v26 = 2 * ([MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[AIAudiogramResultDateCell semanticContentAttribute](self, "semanticContentAttribute")}] != 1);
   }
 
   else
   {
-    [v24 setAxis:1];
+    [labelStackView setAxis:1];
 
     v26 = 4;
   }
 
-  v27 = [(AIAudiogramResultDateCell *)self valueLabel];
-  [v27 setTextAlignment:v26];
+  valueLabel3 = [(AIAudiogramResultDateCell *)self valueLabel];
+  [valueLabel3 setTextAlignment:v26];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
-  v5 = [(AIAudiogramResultDateCell *)self datePicker];
-  [v5 setDate:v4];
+  dateCopy = date;
+  datePicker = [(AIAudiogramResultDateCell *)self datePicker];
+  [datePicker setDate:dateCopy];
 
   v6 = MEMORY[0x277CCA968];
-  v10 = [(AIAudiogramResultDateCell *)self datePicker];
-  v7 = [v10 date];
-  v8 = [v6 localizedStringFromDate:v7 dateStyle:3 timeStyle:0];
-  v9 = [(AIAudiogramResultDateCell *)self valueLabel];
-  [v9 setText:v8];
+  datePicker2 = [(AIAudiogramResultDateCell *)self datePicker];
+  date = [datePicker2 date];
+  v8 = [v6 localizedStringFromDate:date dateStyle:3 timeStyle:0];
+  valueLabel = [(AIAudiogramResultDateCell *)self valueLabel];
+  [valueLabel setText:v8];
 }
 
-- (void)showActive:(BOOL)a3
+- (void)showActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(AIAudiogramResultDateCell *)self datePicker];
-  v6 = [v5 isHidden];
+  datePicker = [(AIAudiogramResultDateCell *)self datePicker];
+  isHidden = [datePicker isHidden];
 
-  if (v6 == v3)
+  if (isHidden == activeCopy)
   {
-    v7 = [(AIAudiogramResultDateCell *)self datePicker];
-    [v7 setHidden:v3 ^ 1];
+    datePicker2 = [(AIAudiogramResultDateCell *)self datePicker];
+    [datePicker2 setHidden:activeCopy ^ 1];
 
-    v8 = [(AIAudiogramResultDateCell *)self collapsedConstraint];
-    [v8 setActive:v3 ^ 1];
+    collapsedConstraint = [(AIAudiogramResultDateCell *)self collapsedConstraint];
+    [collapsedConstraint setActive:activeCopy ^ 1];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(AIAudiogramResultDateCell *)self expandedConstraints];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    expandedConstraints = [(AIAudiogramResultDateCell *)self expandedConstraints];
+    v10 = [expandedConstraints countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -257,14 +257,14 @@
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(expandedConstraints);
           }
 
-          [*(*(&v14 + 1) + 8 * v13++) setActive:v3];
+          [*(*(&v14 + 1) + 8 * v13++) setActive:activeCopy];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [expandedConstraints countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -272,19 +272,19 @@
   }
 }
 
-- (void)_datePickerValueChanged:(id)a3
+- (void)_datePickerValueChanged:(id)changed
 {
   v4 = MEMORY[0x277CCA968];
-  v5 = a3;
-  v6 = [v5 date];
-  v7 = [v4 localizedStringFromDate:v6 dateStyle:3 timeStyle:0];
-  v8 = [(AIAudiogramResultDateCell *)self valueLabel];
-  [v8 setText:v7];
+  changedCopy = changed;
+  date = [changedCopy date];
+  v7 = [v4 localizedStringFromDate:date dateStyle:3 timeStyle:0];
+  valueLabel = [(AIAudiogramResultDateCell *)self valueLabel];
+  [valueLabel setText:v7];
 
-  v10 = [(AIAudiogramResultDateCell *)self delegate];
-  v9 = [v5 date];
+  delegate = [(AIAudiogramResultDateCell *)self delegate];
+  date2 = [changedCopy date];
 
-  [v10 dateCellDidPickDate:v9];
+  [delegate dateCellDidPickDate:date2];
 }
 
 - (unint64_t)accessibilityTraits

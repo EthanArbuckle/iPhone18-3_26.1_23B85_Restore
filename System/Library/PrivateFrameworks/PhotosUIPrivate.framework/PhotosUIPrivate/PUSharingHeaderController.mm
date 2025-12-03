@@ -1,11 +1,11 @@
 @interface PUSharingHeaderController
 + (PUSharingHeaderController)new;
 - (PUSharingHeaderController)init;
-- (PUSharingHeaderController)initWithDataProvider:(id)a3;
+- (PUSharingHeaderController)initWithDataProvider:(id)provider;
 - (PUSharingHeaderDataProvider)dataProvider;
-- (id)_linkPresentationImageForPerson:(id)a3;
+- (id)_linkPresentationImageForPerson:(id)person;
 - (id)_sharingHeaderStatus;
-- (id)createTextAttachmentForGlyphImageWithName:(id)a3;
+- (id)createTextAttachmentForGlyphImageWithName:(id)name;
 - (void)updateIfNeeded;
 @end
 
@@ -18,13 +18,13 @@
   return WeakRetained;
 }
 
-- (id)_linkPresentationImageForPerson:(id)a3
+- (id)_linkPresentationImageForPerson:(id)person
 {
-  v5 = a3;
-  if (!v5)
+  personCopy = person;
+  if (!personCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E696ACA0]);
@@ -33,8 +33,8 @@
   v12[1] = 3221225472;
   v12[2] = __61__PUSharingHeaderController__linkPresentationImageForPerson___block_invoke;
   v12[3] = &unk_1E7B77020;
-  v13 = v5;
-  v8 = v5;
+  v13 = personCopy;
+  v8 = personCopy;
   [v6 registerObjectOfClass:v7 visibility:0 loadHandler:v12];
   v9 = [objc_alloc(MEMORY[0x1E696EC68]) initWithItemProvider:v6 properties:0 placeholderImage:0];
 
@@ -88,14 +88,14 @@ void __61__PUSharingHeaderController__linkPresentationImageForPerson___block_inv
   }
 }
 
-- (id)createTextAttachmentForGlyphImageWithName:(id)a3
+- (id)createTextAttachmentForGlyphImageWithName:(id)name
 {
   v3 = MEMORY[0x1E69DB878];
   v4 = *MEMORY[0x1E69DDCF8];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v3 preferredFontForTextStyle:v4];
   v7 = [MEMORY[0x1E69DCAD8] configurationWithFont:v6 scale:1];
-  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:v5 withConfiguration:v7];
+  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:nameCopy withConfiguration:v7];
 
   v9 = [v8 imageWithRenderingMode:2];
 
@@ -109,19 +109,19 @@ void __61__PUSharingHeaderController__linkPresentationImageForPerson___block_inv
 {
   v128[2] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
-  v4 = [(PUSharingHeaderController *)self dataProvider];
-  v5 = [v4 orderedSelectedAssets];
+  dataProvider = [(PUSharingHeaderController *)self dataProvider];
+  orderedSelectedAssets = [dataProvider orderedSelectedAssets];
 
   v126 = 0;
   v124 = 0u;
   v125 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v6 = [(PUSharingHeaderController *)self dataProvider];
-  v7 = v6;
-  if (v6)
+  dataProvider2 = [(PUSharingHeaderController *)self dataProvider];
+  v7 = dataProvider2;
+  if (dataProvider2)
   {
-    [v6 assetTypeCount];
+    [dataProvider2 assetTypeCount];
   }
 
   else
@@ -134,22 +134,22 @@ void __61__PUSharingHeaderController__linkPresentationImageForPerson___block_inv
   }
 
   v114 = *(&v124 + 1);
-  v8 = [(PUSharingHeaderController *)self dataProvider];
-  v116 = [v8 preferredExportFormat];
+  dataProvider3 = [(PUSharingHeaderController *)self dataProvider];
+  preferredExportFormat = [dataProvider3 preferredExportFormat];
 
-  v9 = [(PUSharingHeaderController *)self dataProvider];
-  v10 = [v9 shareAsCMM];
+  dataProvider4 = [(PUSharingHeaderController *)self dataProvider];
+  shareAsCMM = [dataProvider4 shareAsCMM];
 
-  if (v10)
+  if (shareAsCMM)
   {
     v11 = PXLocalizedString();
     [v3 addObject:v11];
   }
 
-  v12 = [(PUSharingHeaderController *)self dataProvider];
-  v13 = [v12 sendAsAssetBundles];
+  dataProvider5 = [(PUSharingHeaderController *)self dataProvider];
+  sendAsAssetBundles = [dataProvider5 sendAsAssetBundles];
 
-  if (v13)
+  if (sendAsAssetBundles)
   {
     v14 = @"SHARING_HEADER_ALL_PHOTOS_DATA";
 LABEL_12:
@@ -159,12 +159,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v15 = [(PUSharingHeaderController *)self dataProvider];
-  v16 = [v15 sendAsUnmodifiedOriginals];
+  dataProvider6 = [(PUSharingHeaderController *)self dataProvider];
+  sendAsUnmodifiedOriginals = [dataProvider6 sendAsUnmodifiedOriginals];
 
-  if (v16)
+  if (sendAsUnmodifiedOriginals)
   {
-    if ([v5 count] == 1)
+    if ([orderedSelectedAssets count] == 1)
     {
       v14 = @"SHARING_HEADER_UNMODIFIED_ORIGINALS";
     }
@@ -180,15 +180,15 @@ LABEL_12:
 LABEL_13:
   if (![v3 count])
   {
-    v18 = [MEMORY[0x1E69C3A18] sharedInstance];
-    v19 = [v18 showSingleVideoDurationInShareSheetHeader];
+    mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+    showSingleVideoDurationInShareSheetHeader = [mEMORY[0x1E69C3A18] showSingleVideoDurationInShareSheetHeader];
 
-    if (v19)
+    if (showSingleVideoDurationInShareSheetHeader)
     {
-      if ([v5 count] == 1 && *(&v122 + 1) && !v123)
+      if ([orderedSelectedAssets count] == 1 && *(&v122 + 1) && !v123)
       {
-        v20 = [v5 firstObject];
-        [v20 duration];
+        firstObject = [orderedSelectedAssets firstObject];
+        [firstObject duration];
         v21 = PXLocalizedVideoDuration();
 
         [v3 addObject:v21];
@@ -196,11 +196,11 @@ LABEL_13:
     }
   }
 
-  v22 = [(PUSharingHeaderController *)self dataProvider];
-  v23 = [v22 excludeCaption];
+  dataProvider7 = [(PUSharingHeaderController *)self dataProvider];
+  excludeCaption = [dataProvider7 excludeCaption];
   if (*(&v125 + 1))
   {
-    v24 = v23;
+    v24 = excludeCaption;
   }
 
   else
@@ -208,8 +208,8 @@ LABEL_13:
     v24 = 1;
   }
 
-  v25 = [(PUSharingHeaderController *)self dataProvider];
-  [v25 excludeAccessibilityDescription];
+  dataProvider8 = [(PUSharingHeaderController *)self dataProvider];
+  [dataProvider8 excludeAccessibilityDescription];
 
   if (v24 == 1)
   {
@@ -220,37 +220,37 @@ LABEL_13:
   {
     [v3 addObject:@"{CaptionIcon}"];
     v27 = [(PUSharingHeaderController *)self createTextAttachmentForGlyphImageWithName:@"quote.bubble"];
-    v28 = [v27 image];
-    [v28 baselineOffsetFromBottom];
+    image = [v27 image];
+    [image baselineOffsetFromBottom];
     v30 = v29;
-    [v28 alignmentRectInsets];
+    [image alignmentRectInsets];
     v32 = v31 - v30 + 1.0;
     [v27 bounds];
-    [v28 size];
+    [image size];
     [v27 setBounds:{0.0, v32, v33, v34}];
     v26 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v27];
   }
 
-  v35 = v116;
+  v35 = preferredExportFormat;
   if (!*(&v124 + 1))
   {
     goto LABEL_47;
   }
 
-  v36 = [(PUSharingHeaderController *)self dataProvider];
-  v37 = [v36 excludeLocation];
+  dataProvider9 = [(PUSharingHeaderController *)self dataProvider];
+  excludeLocation = [dataProvider9 excludeLocation];
 
-  if (!v37)
+  if (!excludeLocation)
   {
-    v41 = [v5 firstObject];
+    firstObject2 = [orderedSelectedAssets firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v43 = [v5 firstObject];
-      v44 = [v43 photoLibrary];
-      v45 = [v44 librarySpecificFetchOptions];
+      firstObject3 = [orderedSelectedAssets firstObject];
+      photoLibrary = [firstObject3 photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
       v46 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:1];
       v128[0] = v46;
@@ -258,15 +258,15 @@ LABEL_13:
       v128[1] = v47;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v128 count:2];
 
-      [v45 setSortDescriptors:v48];
-      v109 = v45;
-      v110 = v5;
-      v49 = [MEMORY[0x1E6978650] fetchAssetCollectionsContainingAssets:v5 withType:3 options:v45];
-      v50 = [MEMORY[0x1E695DFA0] orderedSet];
-      v51 = [MEMORY[0x1E69C3A18] sharedInstance];
-      v52 = [v51 sharingHeaderLocationDisplayStyle];
+      [librarySpecificFetchOptions setSortDescriptors:v48];
+      v109 = librarySpecificFetchOptions;
+      v110 = orderedSelectedAssets;
+      v49 = [MEMORY[0x1E6978650] fetchAssetCollectionsContainingAssets:orderedSelectedAssets withType:3 options:librarySpecificFetchOptions];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+      mEMORY[0x1E69C3A18]2 = [MEMORY[0x1E69C3A18] sharedInstance];
+      sharingHeaderLocationDisplayStyle = [mEMORY[0x1E69C3A18]2 sharingHeaderLocationDisplayStyle];
 
-      if (!v52)
+      if (!sharingHeaderLocationDisplayStyle)
       {
 LABEL_49:
         if (v114 == 1)
@@ -280,12 +280,12 @@ LABEL_49:
         }
 
         v39 = PULocalizedString(v65);
-        v5 = v110;
+        orderedSelectedAssets = v110;
         goto LABEL_68;
       }
 
       v106 = v48;
-      v107 = v43;
+      v107 = firstObject3;
       v108 = v26;
       v120 = 0u;
       v121 = 0u;
@@ -307,25 +307,25 @@ LABEL_49:
               objc_enumerationMutation(obj);
             }
 
-            v58 = [*(*(&v118 + 1) + 8 * i) localizedLocationNames];
-            [v50 addObjectsFromArray:v58];
-            if ([v50 count] >= 2 && v52 == 1)
+            localizedLocationNames = [*(*(&v118 + 1) + 8 * i) localizedLocationNames];
+            [orderedSet addObjectsFromArray:localizedLocationNames];
+            if ([orderedSet count] >= 2 && sharingHeaderLocationDisplayStyle == 1)
             {
 
-              v35 = v116;
-              v43 = v107;
+              v35 = preferredExportFormat;
+              firstObject3 = v107;
               v48 = v106;
               v26 = v108;
               goto LABEL_49;
             }
 
             v59 = v49;
-            v60 = [v50 count];
+            v60 = [orderedSet count];
 
             v61 = v60 >= 2;
             v49 = v59;
             v3 = v57;
-            if (v61 && v52 == 2)
+            if (v61 && sharingHeaderLocationDisplayStyle == 2)
             {
               goto LABEL_45;
             }
@@ -343,10 +343,10 @@ LABEL_49:
 
 LABEL_45:
 
-      v62 = [v50 count];
-      if ([v50 count])
+      v62 = [orderedSet count];
+      if ([orderedSet count])
       {
-        v63 = [v50 objectAtIndexedSubscript:0];
+        v63 = [orderedSet objectAtIndexedSubscript:0];
       }
 
       else
@@ -354,16 +354,16 @@ LABEL_45:
         v63 = 0;
       }
 
-      v5 = v110;
-      v35 = v116;
-      if ([v50 count] < 2)
+      orderedSelectedAssets = v110;
+      v35 = preferredExportFormat;
+      if ([orderedSet count] < 2)
       {
         v66 = 0;
       }
 
       else
       {
-        v66 = [v50 objectAtIndexedSubscript:1];
+        v66 = [orderedSet objectAtIndexedSubscript:1];
       }
 
       v26 = v108;
@@ -381,7 +381,7 @@ LABEL_45:
           v49 = v68;
 LABEL_66:
           v48 = v106;
-          v43 = v107;
+          firstObject3 = v107;
           goto LABEL_67;
         }
       }
@@ -401,7 +401,7 @@ LABEL_66:
 
             v66 = v70;
             v49 = v117;
-            v43 = v107;
+            firstObject3 = v107;
 LABEL_67:
 
 LABEL_68:
@@ -433,8 +433,8 @@ LABEL_68:
           v98 = PULocalizedString(@"SHARING_HEADER_ONE_LOCATION_AND_MORE");
           v39 = PUStringWithValidatedFormat();
 
-          v35 = v116;
-          v43 = v107;
+          v35 = preferredExportFormat;
+          firstObject3 = v107;
           v26 = v108;
         }
 
@@ -447,7 +447,7 @@ LABEL_68:
             goto LABEL_66;
           }
 
-          v43 = v107;
+          firstObject3 = v107;
           if (v63 && v66)
           {
             v93 = v66;
@@ -483,9 +483,9 @@ LABEL_68:
           v39 = PUStringWithValidatedFormat();
           v26 = v108;
 
-          v35 = v116;
+          v35 = preferredExportFormat;
           v48 = v106;
-          v43 = v107;
+          firstObject3 = v107;
         }
 
         v66 = obja;
@@ -503,7 +503,7 @@ LABEL_47:
     goto LABEL_71;
   }
 
-  if ([v5 count] == 1)
+  if ([orderedSelectedAssets count] == 1)
   {
     v38 = @"SHARING_HEADER_LOCATION_OFF";
   }
@@ -520,11 +520,11 @@ LABEL_69:
   v74 = PUStringWithValidatedFormat();
 
   v75 = [(PUSharingHeaderController *)self createTextAttachmentForGlyphImageWithName:v40, @"{LocationIcon}", v39];
-  v76 = [v75 image];
-  [v76 alignmentRectInsets];
+  image2 = [v75 image];
+  [image2 alignmentRectInsets];
   v78 = v77;
   [v75 bounds];
-  [v76 size];
+  [image2 size];
   [v75 setBounds:{0.0, v78, v79, v80}];
   v64 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v75];
 
@@ -587,33 +587,33 @@ LABEL_76:
 - (void)updateIfNeeded
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PUSharingHeaderController *)self dataProvider];
-  v5 = [v4 orderedSelectedAssets];
+  dataProvider = [(PUSharingHeaderController *)self dataProvider];
+  orderedSelectedAssets = [dataProvider orderedSelectedAssets];
 
-  v6 = [(PUSharingHeaderController *)self linkMetadata];
-  if (!v6)
+  linkMetadata = [(PUSharingHeaderController *)self linkMetadata];
+  if (!linkMetadata)
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"linkMetadata"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"linkMetadata"}];
   }
 
-  v7 = [v6 specialization];
-  if (!v7)
+  specialization = [linkMetadata specialization];
+  if (!specialization)
   {
-    v50 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v50 handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"statusMetadata"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"statusMetadata"}];
   }
 
-  v8 = [(PUSharingHeaderController *)self _sharingHeaderStatus];
-  [v7 setStatus:v8];
-  v9 = [(PUSharingHeaderController *)self dataProvider];
-  v10 = [v9 headerTitle];
+  _sharingHeaderStatus = [(PUSharingHeaderController *)self _sharingHeaderStatus];
+  [specialization setStatus:_sharingHeaderStatus];
+  dataProvider2 = [(PUSharingHeaderController *)self dataProvider];
+  headerTitle = [dataProvider2 headerTitle];
 
-  MEMORY[0x1B8C6D660]([v6 setTitle:v10]);
-  v11 = [(PUSharingHeaderController *)self dataProvider];
-  v12 = [v11 shareAsCMM];
+  MEMORY[0x1B8C6D660]([linkMetadata setTitle:headerTitle]);
+  dataProvider3 = [(PUSharingHeaderController *)self dataProvider];
+  shareAsCMM = [dataProvider3 shareAsCMM];
 
-  if (v12)
+  if (shareAsCMM)
   {
     icloudLinkImage = self->_icloudLinkImage;
     if (!icloudLinkImage)
@@ -631,25 +631,25 @@ LABEL_76:
 
     v63[0] = icloudLinkImage;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:1];
-    [v6 setAlternateImages:v19];
+    [linkMetadata setAlternateImages:v19];
 
     goto LABEL_54;
   }
 
-  v20 = [(PUSharingHeaderController *)self dataProvider];
-  v21 = [v20 keyAsset];
+  dataProvider4 = [(PUSharingHeaderController *)self dataProvider];
+  keyAsset = [dataProvider4 keyAsset];
 
   v54 = a2;
-  if (v21)
+  if (keyAsset)
   {
-    v22 = [MEMORY[0x1E695DFB8] orderedSetWithObject:v21];
+    v22 = [MEMORY[0x1E695DFB8] orderedSetWithObject:keyAsset];
 
-    v5 = v22;
+    orderedSelectedAssets = v22;
   }
 
-  v23 = [v6 alternateImages];
-  v57 = v8;
-  if ([v23 containsObject:self->_icloudLinkImage])
+  alternateImages = [linkMetadata alternateImages];
+  v57 = _sharingHeaderStatus;
+  if ([alternateImages containsObject:self->_icloudLinkImage])
   {
 
     sharingHeaderFrontAsset = self->_sharingHeaderFrontAsset;
@@ -658,37 +658,37 @@ LABEL_76:
     sharingHeaderBackAsset = self->_sharingHeaderBackAsset;
     self->_sharingHeaderBackAsset = 0;
 
-    v23 = 0;
+    alternateImages = 0;
     self->_showingUnmodifiedOriginalThumbnail = 0;
   }
 
-  v26 = [(PUSharingHeaderController *)self dataProvider];
-  v59 = [v26 person];
+  dataProvider5 = [(PUSharingHeaderController *)self dataProvider];
+  person = [dataProvider5 person];
 
-  v27 = [v5 firstObject];
-  v56 = v21;
-  if ([v5 count] < 2)
+  firstObject = [orderedSelectedAssets firstObject];
+  v56 = keyAsset;
+  if ([orderedSelectedAssets count] < 2)
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = [v5 objectAtIndexedSubscript:1];
+    v28 = [orderedSelectedAssets objectAtIndexedSubscript:1];
   }
 
-  v58 = v5;
-  v29 = [(PUSharingHeaderController *)self dataProvider];
-  v62 = [v29 sendAsUnmodifiedOriginals];
+  v58 = orderedSelectedAssets;
+  dataProvider6 = [(PUSharingHeaderController *)self dataProvider];
+  sendAsUnmodifiedOriginals = [dataProvider6 sendAsUnmodifiedOriginals];
 
   v30 = self->_sharingHeaderFrontAsset;
   v31 = self->_sharingHeaderBackAsset;
   showingUnmodifiedOriginalThumbnail = self->_showingUnmodifiedOriginalThumbnail;
   v60 = v30;
   v61 = v31;
-  if (v27 | v30)
+  if (firstObject | v30)
   {
-    v33 = [v27 isEqual:v30];
+    v33 = [firstObject isEqual:v30];
     v34 = v61;
     v35 = v33 ^ 1;
   }
@@ -705,16 +705,16 @@ LABEL_76:
     v36 = [v28 isEqual:v34] ^ 1;
   }
 
-  if (showingUnmodifiedOriginalThumbnail != v62)
+  if (showingUnmodifiedOriginalThumbnail != sendAsUnmodifiedOriginals)
   {
-    v35 = v27 != 0;
+    v35 = firstObject != 0;
     v36 = v28 != 0;
   }
 
   v55 = v36;
-  if (v23)
+  if (alternateImages)
   {
-    v37 = [v23 mutableCopy];
+    v37 = [alternateImages mutableCopy];
   }
 
   else
@@ -725,18 +725,18 @@ LABEL_76:
   v38 = v37;
   if (v35)
   {
-    objc_storeStrong(&self->_sharingHeaderFrontAsset, v27);
-    if (v27)
+    objc_storeStrong(&self->_sharingHeaderFrontAsset, firstObject);
+    if (firstObject)
     {
-      if ([v27 isEqual:v61])
+      if ([firstObject isEqual:v61])
       {
-        if ([v23 count] <= 1)
+        if ([alternateImages count] <= 1)
         {
-          v52 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v52 handleFailureInMethod:v54 object:self file:@"PUSharingHeaderController.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"previousImagesStack.count > 1"}];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:v54 object:self file:@"PUSharingHeaderController.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"previousImagesStack.count > 1"}];
         }
 
-        v39 = [v23 objectAtIndexedSubscript:1];
+        v39 = [alternateImages objectAtIndexedSubscript:1];
       }
 
       else
@@ -747,12 +747,12 @@ LABEL_76:
 
     else
     {
-      if (!v59)
+      if (!person)
       {
         goto LABEL_36;
       }
 
-      v39 = [(PUSharingHeaderController *)self _linkPresentationImageForPerson:v59];
+      v39 = [(PUSharingHeaderController *)self _linkPresentationImageForPerson:person];
     }
 
     v40 = v39;
@@ -784,8 +784,8 @@ LABEL_36:
       v40 = self->_placeholderImage;
       if (!v40)
       {
-        v51 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v51 handleFailureInMethod:v54 object:self file:@"PUSharingHeaderController.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"frontImage"}];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:v54 object:self file:@"PUSharingHeaderController.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"frontImage"}];
 
         v40 = 0;
       }
@@ -795,7 +795,7 @@ LABEL_36:
   }
 
 LABEL_41:
-  v5 = v58;
+  orderedSelectedAssets = v58;
   if (v55)
   {
     objc_storeStrong(&self->_sharingHeaderBackAsset, v28);
@@ -806,13 +806,13 @@ LABEL_41:
 
     if ([v28 isEqual:v60])
     {
-      if (![v23 count])
+      if (![alternateImages count])
       {
-        v53 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v53 handleFailureInMethod:v54 object:self file:@"PUSharingHeaderController.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"previousImagesStack.count > 0"}];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler5 handleFailureInMethod:v54 object:self file:@"PUSharingHeaderController.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"previousImagesStack.count > 0"}];
       }
 
-      v47 = [v23 objectAtIndexedSubscript:0];
+      v47 = [alternateImages objectAtIndexedSubscript:0];
     }
 
     else
@@ -833,23 +833,23 @@ LABEL_50:
     }
   }
 
-  self->_showingUnmodifiedOriginalThumbnail = v62;
-  if (([v23 isEqualToArray:v38] & 1) == 0)
+  self->_showingUnmodifiedOriginalThumbnail = sendAsUnmodifiedOriginals;
+  if (([alternateImages isEqualToArray:v38] & 1) == 0)
   {
-    [v6 setAlternateImages:v38];
+    [linkMetadata setAlternateImages:v38];
   }
 
-  v8 = v57;
+  _sharingHeaderStatus = v57;
 LABEL_54:
 }
 
-- (PUSharingHeaderController)initWithDataProvider:(id)a3
+- (PUSharingHeaderController)initWithDataProvider:(id)provider
 {
-  v5 = a3;
-  if (!v5)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"dataProvider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"dataProvider"}];
   }
 
   v13.receiver = self;
@@ -858,7 +858,7 @@ LABEL_54:
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_dataProvider, v5);
+    objc_storeWeak(&v6->_dataProvider, providerCopy);
     v8 = objc_alloc_init(MEMORY[0x1E696EC28]);
     v9 = objc_alloc_init(MEMORY[0x1E696ECA0]);
     linkMetadata = v7->_linkMetadata;
@@ -872,16 +872,16 @@ LABEL_54:
 
 - (PUSharingHeaderController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PUSharingHeaderController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PUSharingHeaderController init]"}];
 
   abort();
 }
 
 + (PUSharingHeaderController)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PUSharingHeaderController.m" lineNumber:55 description:{@"%s is not available as initializer", "+[PUSharingHeaderController new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUSharingHeaderController.m" lineNumber:55 description:{@"%s is not available as initializer", "+[PUSharingHeaderController new]"}];
 
   abort();
 }

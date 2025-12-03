@@ -1,70 +1,70 @@
 @interface _SFContextualNamedEntitySource
-- (_SFContextualNamedEntitySource)initWithCoder:(id)a3;
-- (_SFContextualNamedEntitySource)initWithSourceApplications:(id)a3 fromDate:(id)a4 toDate:(id)a5 limit:(int64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (_SFContextualNamedEntitySource)initWithCoder:(id)coder;
+- (_SFContextualNamedEntitySource)initWithSourceApplications:(id)applications fromDate:(id)date toDate:(id)toDate limit:(int64_t)limit;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SFContextualNamedEntitySource
 
-- (_SFContextualNamedEntitySource)initWithCoder:(id)a3
+- (_SFContextualNamedEntitySource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _SFContextualNamedEntitySource;
   v5 = [(_SFContextualNamedEntitySource *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_sourceApplications"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_sourceApplications"];
     sourceApplications = v5->_sourceApplications;
     v5->_sourceApplications = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fromDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fromDate"];
     fromDate = v5->_fromDate;
     v5->_fromDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_toDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_toDate"];
     toDate = v5->_toDate;
     v5->_toDate = v10;
 
-    v5->_limit = [v4 decodeIntegerForKey:@"_limit"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"_limit"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceApplications = self->_sourceApplications;
-  v5 = a3;
-  [v5 encodeObject:sourceApplications forKey:@"_sourceApplications"];
-  [v5 encodeObject:self->_fromDate forKey:@"_fromDate"];
-  [v5 encodeObject:self->_toDate forKey:@"_toDate"];
-  [v5 encodeInteger:self->_limit forKey:@"_limit"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceApplications forKey:@"_sourceApplications"];
+  [coderCopy encodeObject:self->_fromDate forKey:@"_fromDate"];
+  [coderCopy encodeObject:self->_toDate forKey:@"_toDate"];
+  [coderCopy encodeInteger:self->_limit forKey:@"_limit"];
 }
 
-- (_SFContextualNamedEntitySource)initWithSourceApplications:(id)a3 fromDate:(id)a4 toDate:(id)a5 limit:(int64_t)a6
+- (_SFContextualNamedEntitySource)initWithSourceApplications:(id)applications fromDate:(id)date toDate:(id)toDate limit:(int64_t)limit
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  applicationsCopy = applications;
+  dateCopy = date;
+  toDateCopy = toDate;
   v21.receiver = self;
   v21.super_class = _SFContextualNamedEntitySource;
   v13 = [(_SFContextualNamedEntitySource *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [applicationsCopy copy];
     sourceApplications = v13->_sourceApplications;
     v13->_sourceApplications = v14;
 
-    v16 = [v11 copy];
+    v16 = [dateCopy copy];
     fromDate = v13->_fromDate;
     v13->_fromDate = v16;
 
-    v18 = [v12 copy];
+    v18 = [toDateCopy copy];
     toDate = v13->_toDate;
     v13->_toDate = v18;
 
-    v13->_limit = a6;
+    v13->_limit = limit;
   }
 
   return v13;

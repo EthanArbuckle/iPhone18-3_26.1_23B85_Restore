@@ -1,12 +1,12 @@
 @interface APPBStyle
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBStyle
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = APPBStyle;
   v3 = [(APPBStyle *)&v7 description];
-  v4 = [(APPBStyle *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBStyle *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -28,144 +28,144 @@
   backgroundColor = self->_backgroundColor;
   if (backgroundColor)
   {
-    v5 = [(APPBColor *)backgroundColor dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"backgroundColor"];
+    dictionaryRepresentation = [(APPBColor *)backgroundColor dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"backgroundColor"];
   }
 
   borderStyle = self->_borderStyle;
   if (borderStyle)
   {
-    v7 = [(APPBBorderStyle *)borderStyle dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"borderStyle"];
+    dictionaryRepresentation2 = [(APPBBorderStyle *)borderStyle dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"borderStyle"];
   }
 
   buttonStyle = self->_buttonStyle;
   if (buttonStyle)
   {
-    v9 = [(APPBButtonStyle *)buttonStyle dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"buttonStyle"];
+    dictionaryRepresentation3 = [(APPBButtonStyle *)buttonStyle dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"buttonStyle"];
   }
 
   shadowStyle = self->_shadowStyle;
   if (shadowStyle)
   {
-    v11 = [(APPBShadowStyle *)shadowStyle dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"shadowStyle"];
+    dictionaryRepresentation4 = [(APPBShadowStyle *)shadowStyle dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"shadowStyle"];
   }
 
   textColor = self->_textColor;
   if (textColor)
   {
-    v13 = [(APPBColor *)textColor dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"textColor"];
+    dictionaryRepresentation5 = [(APPBColor *)textColor dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"textColor"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_backgroundColor)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_borderStyle)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_buttonStyle)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shadowStyle)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_textColor)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_backgroundColor)
   {
-    [v4 setBackgroundColor:?];
-    v4 = v5;
+    [toCopy setBackgroundColor:?];
+    toCopy = v5;
   }
 
   if (self->_borderStyle)
   {
     [v5 setBorderStyle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_buttonStyle)
   {
     [v5 setButtonStyle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shadowStyle)
   {
     [v5 setShadowStyle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_textColor)
   {
     [v5 setTextColor:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBColor *)self->_backgroundColor copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBColor *)self->_backgroundColor copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(APPBBorderStyle *)self->_borderStyle copyWithZone:a3];
+  v8 = [(APPBBorderStyle *)self->_borderStyle copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(APPBButtonStyle *)self->_buttonStyle copyWithZone:a3];
+  v10 = [(APPBButtonStyle *)self->_buttonStyle copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(APPBShadowStyle *)self->_shadowStyle copyWithZone:a3];
+  v12 = [(APPBShadowStyle *)self->_shadowStyle copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(APPBColor *)self->_textColor copyWithZone:a3];
+  v14 = [(APPBColor *)self->_textColor copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((backgroundColor = self->_backgroundColor, !(backgroundColor | v4[1])) || -[APPBColor isEqual:](backgroundColor, "isEqual:")) && ((borderStyle = self->_borderStyle, !(borderStyle | v4[2])) || -[APPBBorderStyle isEqual:](borderStyle, "isEqual:")) && ((buttonStyle = self->_buttonStyle, !(buttonStyle | v4[3])) || -[APPBButtonStyle isEqual:](buttonStyle, "isEqual:")) && ((shadowStyle = self->_shadowStyle, !(shadowStyle | v4[4])) || -[APPBShadowStyle isEqual:](shadowStyle, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((backgroundColor = self->_backgroundColor, !(backgroundColor | equalCopy[1])) || -[APPBColor isEqual:](backgroundColor, "isEqual:")) && ((borderStyle = self->_borderStyle, !(borderStyle | equalCopy[2])) || -[APPBBorderStyle isEqual:](borderStyle, "isEqual:")) && ((buttonStyle = self->_buttonStyle, !(buttonStyle | equalCopy[3])) || -[APPBButtonStyle isEqual:](buttonStyle, "isEqual:")) && ((shadowStyle = self->_shadowStyle, !(shadowStyle | equalCopy[4])) || -[APPBShadowStyle isEqual:](shadowStyle, "isEqual:")))
   {
     textColor = self->_textColor;
-    if (textColor | v4[5])
+    if (textColor | equalCopy[5])
     {
       v10 = [(APPBColor *)textColor isEqual:?];
     }
@@ -193,12 +193,12 @@
   return v6 ^ [(APPBColor *)self->_textColor hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   backgroundColor = self->_backgroundColor;
-  v15 = v4;
-  v6 = v4[1];
+  v15 = fromCopy;
+  v6 = fromCopy[1];
   if (backgroundColor)
   {
     if (v6)

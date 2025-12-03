@@ -1,13 +1,13 @@
 @interface GKTurnBasedMultiplayerCanceledExchangeBulletin
-- (void)loadBulletinMessageWithHandler:(id)a3;
-- (void)loadDataWithHandler:(id)a3;
+- (void)loadBulletinMessageWithHandler:(id)handler;
+- (void)loadDataWithHandler:(id)handler;
 @end
 
 @implementation GKTurnBasedMultiplayerCanceledExchangeBulletin
 
-- (void)loadDataWithHandler:(id)a3
+- (void)loadDataWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -40,21 +40,21 @@
   v11 = v10;
   v19 = v11;
   [v11 perform:v18];
-  v12 = [v9 replyQueue];
+  replyQueue = [v9 replyQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10018D3B0;
   v15[3] = &unk_100360EB0;
   v16 = v11;
-  v17 = v4;
+  v17 = handlerCopy;
   v13 = v11;
-  v14 = v4;
-  [v13 notifyOnQueue:v12 block:v15];
+  v14 = handlerCopy;
+  [v13 notifyOnQueue:replyQueue block:v15];
 }
 
-- (void)loadBulletinMessageWithHandler:(id)a3
+- (void)loadBulletinMessageWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -75,13 +75,13 @@
   v7 = v11[4] = self;
   v12 = v7;
   [v7 perform:v11];
-  if (v4)
+  if (handlerCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10018DA78;
     v8[3] = &unk_100360EB0;
-    v10 = v4;
+    v10 = handlerCopy;
     v9 = v7;
     [v9 notifyOnMainQueueWithBlock:v8];
   }

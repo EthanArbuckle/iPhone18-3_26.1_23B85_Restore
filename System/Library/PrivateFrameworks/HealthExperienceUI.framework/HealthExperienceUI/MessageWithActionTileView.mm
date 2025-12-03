@@ -1,5 +1,5 @@
 @interface MessageWithActionTileView
-- (void)didTapAction:(id)a3;
+- (void)didTapAction:(id)action;
 - (void)updateConstraints;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA43073C();
 }
 
-- (void)didTapAction:(id)a3
+- (void)didTapAction:(id)action
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
   sub_1BA43131C();

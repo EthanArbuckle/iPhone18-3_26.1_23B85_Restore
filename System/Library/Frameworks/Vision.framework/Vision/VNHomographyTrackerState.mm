@@ -1,7 +1,7 @@
 @interface VNHomographyTrackerState
 - (VNHomographyTrackerState)init;
 - (id).cxx_construct;
-- (void)ICReportFrameAnalysis:(id)a3 forPresentationTime:(id *)a4 withStats:(id)a5;
+- (void)ICReportFrameAnalysis:(id)analysis forPresentationTime:(id *)time withStats:(id)stats;
 - (void)dealloc;
 @end
 
@@ -15,42 +15,42 @@
   return self;
 }
 
-- (void)ICReportFrameAnalysis:(id)a3 forPresentationTime:(id *)a4 withStats:(id)a5
+- (void)ICReportFrameAnalysis:(id)analysis forPresentationTime:(id *)time withStats:(id)stats
 {
   v53 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v7 = a5;
-  v8 = [v44 objectAtIndexedSubscript:0];
+  analysisCopy = analysis;
+  statsCopy = stats;
+  v8 = [analysisCopy objectAtIndexedSubscript:0];
   [v8 floatValue];
   v42 = v9;
-  v10 = [v44 objectAtIndexedSubscript:3];
+  v10 = [analysisCopy objectAtIndexedSubscript:3];
   [v10 floatValue];
   v37 = v11;
-  v12 = [v44 objectAtIndexedSubscript:6];
+  v12 = [analysisCopy objectAtIndexedSubscript:6];
   [v12 floatValue];
   v36 = v13;
 
-  v14 = [v44 objectAtIndexedSubscript:1];
+  v14 = [analysisCopy objectAtIndexedSubscript:1];
   [v14 floatValue];
   v40 = v15;
-  v16 = [v44 objectAtIndexedSubscript:4];
+  v16 = [analysisCopy objectAtIndexedSubscript:4];
   [v16 floatValue];
   v35 = v17;
-  v18 = [v44 objectAtIndexedSubscript:7];
+  v18 = [analysisCopy objectAtIndexedSubscript:7];
   [v18 floatValue];
   v34 = v19;
 
-  v20 = [v44 objectAtIndexedSubscript:2];
+  v20 = [analysisCopy objectAtIndexedSubscript:2];
   [v20 floatValue];
   v38 = v21;
-  v22 = [v44 objectAtIndexedSubscript:5];
+  v22 = [analysisCopy objectAtIndexedSubscript:5];
   [v22 floatValue];
   v33 = v23;
-  v24 = [v44 objectAtIndexedSubscript:8];
+  v24 = [analysisCopy objectAtIndexedSubscript:8];
   [v24 floatValue];
   v32 = v25;
 
-  v26 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A8BB8]];
+  v26 = [statsCopy objectForKeyedSubscript:*MEMORY[0x1E69A8BB8]];
   [v26 floatValue];
   v28 = v27;
   v29 = v42;

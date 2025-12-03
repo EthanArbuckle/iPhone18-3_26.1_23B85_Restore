@@ -1,44 +1,44 @@
 @interface FBAPowerLogIndexViewController
-+ (BOOL)canDisplayURL:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
-- (void)setPowerLogURL:(id)a3;
++ (BOOL)canDisplayURL:(id)l;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
+- (void)setPowerLogURL:(id)l;
 - (void)viewDidLoad;
 @end
 
 @implementation FBAPowerLogIndexViewController
 
-+ (BOOL)canDisplayURL:(id)a3
++ (BOOL)canDisplayURL:(id)l
 {
-  v3 = [a3 pathExtension];
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"plsql"];
+  pathExtension = [l pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"plsql"];
 
   return v5;
 }
 
-- (void)setPowerLogURL:(id)a3
+- (void)setPowerLogURL:(id)l
 {
-  [(FBAPowerLogIndexViewController *)self setLogURL:a3];
-  v4 = [(FBAPowerLogIndexViewController *)self logURL];
-  v5 = [v4 lastPathComponent];
-  v6 = [(FBAPowerLogIndexViewController *)self navigationItem];
-  [v6 setTitle:v5];
+  [(FBAPowerLogIndexViewController *)self setLogURL:l];
+  logURL = [(FBAPowerLogIndexViewController *)self logURL];
+  lastPathComponent = [logURL lastPathComponent];
+  navigationItem = [(FBAPowerLogIndexViewController *)self navigationItem];
+  [navigationItem setTitle:lastPathComponent];
 
   v7 = [PLDatabaseReader alloc];
-  v8 = [(FBAPowerLogIndexViewController *)self logURL];
-  v9 = [v8 path];
-  v10 = [v7 initWithDatabaseFile:v9];
+  logURL2 = [(FBAPowerLogIndexViewController *)self logURL];
+  path = [logURL2 path];
+  v10 = [v7 initWithDatabaseFile:path];
   [(FBAPowerLogIndexViewController *)self setDatabaseReader:v10];
 
-  v11 = [(FBAPowerLogIndexViewController *)self databaseReader];
-  v12 = [v11 tableNamesFromDatabase];
-  v13 = v12;
-  if (v12)
+  databaseReader = [(FBAPowerLogIndexViewController *)self databaseReader];
+  tableNamesFromDatabase = [databaseReader tableNamesFromDatabase];
+  v13 = tableNamesFromDatabase;
+  if (tableNamesFromDatabase)
   {
-    v14 = v12;
+    v14 = tableNamesFromDatabase;
   }
 
   else
@@ -48,8 +48,8 @@
 
   [(FBAPowerLogIndexViewController *)self setTableNames:v14];
 
-  v15 = [(FBAPowerLogIndexViewController *)self tableView];
-  [v15 reloadData];
+  tableView = [(FBAPowerLogIndexViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -57,26 +57,26 @@
   v6.receiver = self;
   v6.super_class = FBAPowerLogIndexViewController;
   [(FBAPowerLogIndexViewController *)&v6 viewDidLoad];
-  v3 = [(FBAPowerLogIndexViewController *)self navigationItem];
-  [v3 setLargeTitleDisplayMode:2];
+  navigationItem = [(FBAPowerLogIndexViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   [(FBAPowerLogIndexViewController *)self setClearsSelectionOnViewWillAppear:1];
-  v4 = [(FBAPowerLogIndexViewController *)self tableView];
-  [v4 setRowHeight:UITableViewAutomaticDimension];
+  tableView = [(FBAPowerLogIndexViewController *)self tableView];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
 
-  v5 = [(FBAPowerLogIndexViewController *)self tableView];
-  [v5 setEstimatedRowHeight:80.0];
+  tableView2 = [(FBAPowerLogIndexViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:80.0];
 
   [(FBAPowerLogIndexViewController *)self setEnteringDetail:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(FBAPowerLogIndexViewController *)self tableNames:a3];
+  v5 = [(FBAPowerLogIndexViewController *)self tableNames:view];
   if (v5)
   {
-    v6 = [(FBAPowerLogIndexViewController *)self tableNames];
-    v7 = [v6 count];
+    tableNames = [(FBAPowerLogIndexViewController *)self tableNames];
+    v7 = [tableNames count];
   }
 
   else
@@ -87,46 +87,46 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"TextCell" forIndexPath:v6];
-  v8 = [(FBAPowerLogIndexViewController *)self tableNames];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"TextCell" forIndexPath:pathCopy];
+  tableNames = [(FBAPowerLogIndexViewController *)self tableNames];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [tableNames objectAtIndex:v9];
 
   v11 = [v10 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v11];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [NSBundle mainBundle:a3];
+  v4 = [NSBundle mainBundle:view];
   v5 = [v4 localizedStringForKey:@"POWER_LOG_SECTION" value:&stru_1000E2210 table:0];
 
   return v5;
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v13 = [a3 destinationViewController];
-  v5 = [(FBAPowerLogIndexViewController *)self tableView];
-  v6 = [v5 indexPathForSelectedRow];
+  destinationViewController = [segue destinationViewController];
+  tableView = [(FBAPowerLogIndexViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  v7 = [(FBAPowerLogIndexViewController *)self tableNames];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v6, "row")}];
+  tableNames = [(FBAPowerLogIndexViewController *)self tableNames];
+  v8 = [tableNames objectAtIndex:{objc_msgSend(indexPathForSelectedRow, "row")}];
 
   v9 = [v8 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-  v10 = [v13 navigationItem];
-  [v10 setTitle:v9];
+  navigationItem = [destinationViewController navigationItem];
+  [navigationItem setTitle:v9];
 
-  v11 = [(FBAPowerLogIndexViewController *)self databaseReader];
-  v12 = [v11 stringValueOfTable:v8];
-  [v13 displayText:v12];
+  databaseReader = [(FBAPowerLogIndexViewController *)self databaseReader];
+  v12 = [databaseReader stringValueOfTable:v8];
+  [destinationViewController displayText:v12];
 
   [(FBAPowerLogIndexViewController *)self setEnteringDetail:1];
 }

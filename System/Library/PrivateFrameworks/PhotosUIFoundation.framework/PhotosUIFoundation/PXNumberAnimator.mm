@@ -1,24 +1,24 @@
 @interface PXNumberAnimator
 - (NSString)description;
-- (PXNumberAnimator)initWithValue:(double)a3 epsilon:(double)a4;
+- (PXNumberAnimator)initWithValue:(double)value epsilon:(double)epsilon;
 - (PXNumberAnimatorDisplayLinkTarget)displayLinkTarget;
 - (double)approximateVelocity;
-- (id)_createDisplayLinkDeferredStart:(BOOL)a3;
-- (void)_configureDisplayLink:(id)a3;
-- (void)_setAnimating:(BOOL)a3 deferredStart:(BOOL)a4;
-- (void)_setPresentationValue:(double)a3;
+- (id)_createDisplayLinkDeferredStart:(BOOL)start;
+- (void)_configureDisplayLink:(id)link;
+- (void)_setAnimating:(BOOL)animating deferredStart:(BOOL)start;
+- (void)_setPresentationValue:(double)value;
 - (void)_updateIfNeeded;
 - (void)_updatePresentationValueIfNeeded;
-- (void)advanceAnimationsToFractionComplete:(double)a3;
+- (void)advanceAnimationsToFractionComplete:(double)complete;
 - (void)didPerformChanges;
-- (void)handleDisplayLink:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)performChangesUsingBezierCurveWithDuration:(double)a3 controlPoints:(float)a4 :(float)a5 :(float)a6 :(float)a7 changes:(id)a8;
-- (void)performChangesUsingSpringAnimationWithStiffness:(double)a3 dampingRatio:(double)a4 initialVelocity:(double)a5 changes:(id)a6;
-- (void)performChangesWithDuration:(double)a3 curve:(int64_t)a4 changes:(id)a5;
-- (void)performChangesWithoutAnimation:(id)a3;
-- (void)setPrepareForAnimation:(BOOL)a3;
-- (void)setValue:(double)a3 animateImmediately:(BOOL)a4;
+- (void)handleDisplayLink:(id)link;
+- (void)performChanges:(id)changes;
+- (void)performChangesUsingBezierCurveWithDuration:(double)duration controlPoints:(float)points :(float)a5 :(float)a6 :(float)a7 changes:(id)changes;
+- (void)performChangesUsingSpringAnimationWithStiffness:(double)stiffness dampingRatio:(double)ratio initialVelocity:(double)velocity changes:(id)changes;
+- (void)performChangesWithDuration:(double)duration curve:(int64_t)curve changes:(id)changes;
+- (void)performChangesWithoutAnimation:(id)animation;
+- (void)setPrepareForAnimation:(BOOL)animation;
+- (void)setValue:(double)value animateImmediately:(BOOL)immediately;
 @end
 
 @implementation PXNumberAnimator
@@ -30,8 +30,8 @@
     [(PXNumberAnimator *)self _updatePresentationValueIfNeeded];
     if ([(PXNumberAnimator *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PXNumberAnimator.m" lineNumber:363 description:@"update still needed after update pass"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXNumberAnimator.m" lineNumber:363 description:@"update still needed after update pass"];
     }
   }
 }
@@ -102,9 +102,9 @@
           [v17 startTime];
           if (v6 > 0.0 && v18 == 0.0)
           {
-            v19 = [(PXNumberAnimator *)self prepareForAnimation];
+            prepareForAnimation = [(PXNumberAnimator *)self prepareForAnimation];
             v20 = v15;
-            if (v19)
+            if (prepareForAnimation)
             {
               [(PXDisplayLink *)self->_displayLink timestamp];
               if (v20 == 0.0)
@@ -138,15 +138,15 @@
     [(PXNumberAnimator *)self _setPresentationValue:v10];
     self->_currentTime = v6;
     [(PXNumberAnimator *)self _setAnimating:[(NSMutableArray *)self->_animations count]!= 0];
-    v22 = [(PXNumberAnimator *)self label];
+    label = [(PXNumberAnimator *)self label];
     [(PXNumberAnimator *)self value];
     [(PXNumberAnimator *)self presentationValue];
     [(NSMutableArray *)self->_animations count];
-    v23 = self;
-    v24 = v22;
+    selfCopy = self;
+    v24 = label;
     if (kdebug_is_enabled())
     {
-      v29 = v23;
+      v29 = selfCopy;
       if (v24)
       {
         [v24 cStringUsingEncoding:4];
@@ -207,12 +207,12 @@
   return WeakRetained;
 }
 
-- (void)setValue:(double)a3 animateImmediately:(BOOL)a4
+- (void)setValue:(double)value animateImmediately:(BOOL)immediately
 {
-  v4 = a4;
+  immediatelyCopy = immediately;
   value = self->_value;
-  self->_value = a3;
-  if (![(PXNumberAnimator *)self prepareForAnimation]|| !v4)
+  self->_value = value;
+  if (![(PXNumberAnimator *)self prepareForAnimation]|| !immediatelyCopy)
   {
     [(PXNumberAnimator *)self _invalidatePresentationValue];
   }
@@ -224,7 +224,7 @@
     goto LABEL_22;
   }
 
-  v10 = value - a3;
+  v10 = value - value;
   if (type > 2)
   {
     if (type == 3)
@@ -265,7 +265,7 @@ LABEL_15:
     v15 = [v12 initWithFromValue:v20 currentMediaTime:v10 spec:0.0];
     if (v15)
     {
-      if (v4)
+      if (immediatelyCopy)
       {
         [(PXNumberAnimator *)self _setAnimating:1 deferredStart:0];
       }
@@ -273,9 +273,9 @@ LABEL_15:
       animations = self->_animations;
       if (!animations)
       {
-        v17 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v18 = self->_animations;
-        self->_animations = v17;
+        self->_animations = array;
 
         animations = self->_animations;
       }
@@ -288,8 +288,8 @@ LABEL_15:
 
   if (!type)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXNumberAnimator.m" lineNumber:303 description:@"unexpected animation type"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXNumberAnimator.m" lineNumber:303 description:@"unexpected animation type"];
 
     abort();
   }
@@ -298,26 +298,26 @@ LABEL_22:
   [(PXObservable *)self signalChange:1];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   isBeingMutated = self->_isBeingMutated;
   self->_isBeingMutated = 1;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__PXNumberAnimator_performChanges___block_invoke;
   v8[3] = &unk_1E7BB72D8;
-  v9 = v4;
+  v9 = changesCopy;
   v7.receiver = self;
   v7.super_class = PXNumberAnimator;
-  v6 = v4;
+  v6 = changesCopy;
   [(PXObservable *)&v7 performChanges:v8];
   self->_isBeingMutated = isBeingMutated;
 }
 
-- (void)handleDisplayLink:(id)a3
+- (void)handleDisplayLink:(id)link
 {
-  if (self->_displayLink == a3)
+  if (self->_displayLink == link)
   {
     v6[5] = v3;
     v6[6] = v4;
@@ -332,13 +332,13 @@ LABEL_22:
   }
 }
 
-- (void)setPrepareForAnimation:(BOOL)a3
+- (void)setPrepareForAnimation:(BOOL)animation
 {
-  if (self->_prepareForAnimation != a3)
+  if (self->_prepareForAnimation != animation)
   {
-    self->_prepareForAnimation = a3;
+    self->_prepareForAnimation = animation;
     reusableDisplayLink = self->_reusableDisplayLink;
-    if (a3)
+    if (animation)
     {
       if (reusableDisplayLink || self->_displayLink)
       {
@@ -366,12 +366,12 @@ LABEL_22:
   }
 }
 
-- (void)_configureDisplayLink:(id)a3
+- (void)_configureDisplayLink:(id)link
 {
-  v6 = a3;
-  v4 = [(PXNumberAnimator *)self highFrameRateReason];
-  [v6 setHighFrameRateReason:v4];
-  if (v4)
+  linkCopy = link;
+  highFrameRateReason = [(PXNumberAnimator *)self highFrameRateReason];
+  [linkCopy setHighFrameRateReason:highFrameRateReason];
+  if (highFrameRateReason)
   {
     v5 = 3;
   }
@@ -381,35 +381,35 @@ LABEL_22:
     v5 = 2;
   }
 
-  [v6 setFrameRateRangeType:v5];
+  [linkCopy setFrameRateRangeType:v5];
 }
 
-- (id)_createDisplayLinkDeferredStart:(BOOL)a3
+- (id)_createDisplayLinkDeferredStart:(BOOL)start
 {
-  v3 = a3;
-  v5 = [(PXNumberAnimator *)self displayLinkTarget];
-  v6 = v5;
-  if (v5)
+  startCopy = start;
+  displayLinkTarget = [(PXNumberAnimator *)self displayLinkTarget];
+  v6 = displayLinkTarget;
+  if (displayLinkTarget)
   {
-    v7 = v5;
+    selfCopy = displayLinkTarget;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
-  v9 = [[PXDisplayLink alloc] initWithWeakTarget:v8 selector:sel_handleDisplayLink_ deferredStart:v3];
+  v9 = [[PXDisplayLink alloc] initWithWeakTarget:v8 selector:sel_handleDisplayLink_ deferredStart:startCopy];
 
   return v9;
 }
 
-- (void)_setAnimating:(BOOL)a3 deferredStart:(BOOL)a4
+- (void)_setAnimating:(BOOL)animating deferredStart:(BOOL)start
 {
   displayLink = self->_displayLink;
-  if ((displayLink != 0) == a3)
+  if ((displayLink != 0) == animating)
   {
     return;
   }
@@ -421,26 +421,26 @@ LABEL_22:
 
   else
   {
-    v6 = !a3;
+    v6 = !animating;
   }
 
   if (!v6)
   {
-    v7 = a4;
+    startCopy = start;
     v8 = self->_reusableDisplayLink;
     reusableDisplayLink = self->_reusableDisplayLink;
     self->_reusableDisplayLink = 0;
 
     if (!v8)
     {
-      v8 = [(PXNumberAnimator *)self _createDisplayLinkDeferredStart:v7];
+      v8 = [(PXNumberAnimator *)self _createDisplayLinkDeferredStart:startCopy];
     }
 
     [(PXNumberAnimator *)self _configureDisplayLink:v8];
     goto LABEL_17;
   }
 
-  if (displayLink && !a3)
+  if (displayLink && !animating)
   {
     if ([(PXNumberAnimator *)self prepareForAnimation])
     {
@@ -458,19 +458,19 @@ LABEL_17:
     self->_displayLink = v8;
   }
 
-  [(PXObservable *)self signalChange:4, a4];
+  [(PXObservable *)self signalChange:4, start];
 }
 
-- (void)_setPresentationValue:(double)a3
+- (void)_setPresentationValue:(double)value
 {
-  if (self->_presentationValue != a3)
+  if (self->_presentationValue != value)
   {
-    self->_presentationValue = a3;
+    self->_presentationValue = value;
     [(PXObservable *)self signalChange:2];
   }
 }
 
-- (void)advanceAnimationsToFractionComplete:(double)a3
+- (void)advanceAnimationsToFractionComplete:(double)complete
 {
   v26 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_animations count])
@@ -484,7 +484,7 @@ LABEL_17:
     if (v6)
     {
       v7 = v6;
-      v8 = fmax(fmin(a3, 1.0), 0.0);
+      v8 = fmax(fmin(complete, 1.0), 0.0);
       v9 = *v22;
       do
       {
@@ -525,21 +525,21 @@ LABEL_17:
   }
 }
 
-- (void)performChangesUsingBezierCurveWithDuration:(double)a3 controlPoints:(float)a4 :(float)a5 :(float)a6 :(float)a7 changes:(id)a8
+- (void)performChangesUsingBezierCurveWithDuration:(double)duration controlPoints:(float)points :(float)a5 :(float)a6 :(float)a7 changes:(id)changes
 {
-  v14 = a8;
+  changesCopy = changes;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __88__PXNumberAnimator_performChangesUsingBezierCurveWithDuration_controlPoints__::changes___block_invoke;
   v16[3] = &unk_1E7BB7288;
-  v18 = a3;
-  v19 = a4;
+  durationCopy = duration;
+  pointsCopy = points;
   v20 = a5;
   v21 = a6;
   v22 = a7;
   v16[4] = self;
-  v17 = v14;
-  v15 = v14;
+  v17 = changesCopy;
+  v15 = changesCopy;
   [(PXNumberAnimator *)self performChanges:v16];
 }
 
@@ -568,34 +568,34 @@ __n128 __88__PXNumberAnimator_performChangesUsingBezierCurveWithDuration_control
   return result;
 }
 
-- (void)performChangesUsingSpringAnimationWithStiffness:(double)a3 dampingRatio:(double)a4 initialVelocity:(double)a5 changes:(id)a6
+- (void)performChangesUsingSpringAnimationWithStiffness:(double)stiffness dampingRatio:(double)ratio initialVelocity:(double)velocity changes:(id)changes
 {
-  v6 = a5;
+  velocityCopy = velocity;
   v21 = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  if ((*&a5 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  changesCopy = changes;
+  if ((*&velocity & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
     v12 = PXAssertGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v20 = v6;
+      v20 = velocityCopy;
       _os_log_error_impl(&dword_1B3F73000, v12, OS_LOG_TYPE_ERROR, "Invalid initial velocity:%.3f correcting...", buf, 0xCu);
     }
 
-    v6 = 0.0;
+    velocityCopy = 0.0;
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __105__PXNumberAnimator_performChangesUsingSpringAnimationWithStiffness_dampingRatio_initialVelocity_changes___block_invoke;
   v14[3] = &unk_1E7BB7288;
-  v16 = a3;
-  v17 = a4;
-  v18 = v6;
+  stiffnessCopy = stiffness;
+  ratioCopy = ratio;
+  v18 = velocityCopy;
   v14[4] = self;
-  v15 = v11;
-  v13 = v11;
+  v15 = changesCopy;
+  v13 = changesCopy;
   [(PXNumberAnimator *)self performChanges:v14];
 }
 
@@ -627,18 +627,18 @@ __n128 __105__PXNumberAnimator_performChangesUsingSpringAnimationWithStiffness_d
   return result;
 }
 
-- (void)performChangesWithDuration:(double)a3 curve:(int64_t)a4 changes:(id)a5
+- (void)performChangesWithDuration:(double)duration curve:(int64_t)curve changes:(id)changes
 {
-  v8 = a5;
+  changesCopy = changes;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__PXNumberAnimator_performChangesWithDuration_curve_changes___block_invoke;
   v10[3] = &unk_1E7BB7CC0;
-  v12 = a3;
-  v13 = a4;
+  durationCopy = duration;
+  curveCopy = curve;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
+  v11 = changesCopy;
+  v9 = changesCopy;
   [(PXNumberAnimator *)self performChanges:v10];
 }
 
@@ -664,16 +664,16 @@ __n128 __61__PXNumberAnimator_performChangesWithDuration_curve_changes___block_i
   return result;
 }
 
-- (void)performChangesWithoutAnimation:(id)a3
+- (void)performChangesWithoutAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__PXNumberAnimator_performChangesWithoutAnimation___block_invoke;
   v6[3] = &unk_1E7BB7C70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = animationCopy;
+  v5 = animationCopy;
   [(PXNumberAnimator *)self performChanges:v6];
 }
 
@@ -702,11 +702,11 @@ __n128 __51__PXNumberAnimator_performChangesWithoutAnimation___block_invoke(uint
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXNumberAnimator *)self label];
-  v7 = v6;
-  if (v6)
+  label = [(PXNumberAnimator *)self label];
+  v7 = label;
+  if (label)
   {
-    v8 = v6;
+    v8 = label;
   }
 
   else
@@ -718,9 +718,9 @@ __n128 __51__PXNumberAnimator_performChangesWithoutAnimation___block_invoke(uint
   v10 = v9;
   [(PXNumberAnimator *)self presentationValue];
   v12 = v11;
-  v13 = [(PXNumberAnimator *)self isAnimating];
+  isAnimating = [(PXNumberAnimator *)self isAnimating];
   v14 = @"NO";
-  if (v13)
+  if (isAnimating)
   {
     v14 = @"YES";
   }
@@ -731,16 +731,16 @@ __n128 __51__PXNumberAnimator_performChangesWithoutAnimation___block_invoke(uint
   return v16;
 }
 
-- (PXNumberAnimator)initWithValue:(double)a3 epsilon:(double)a4
+- (PXNumberAnimator)initWithValue:(double)value epsilon:(double)epsilon
 {
   v7.receiver = self;
   v7.super_class = PXNumberAnimator;
   result = [(PXObservable *)&v7 init];
   if (result)
   {
-    result->_presentationValue = a3;
-    result->_value = a3;
-    result->_epsilon = a4;
+    result->_presentationValue = value;
+    result->_value = value;
+    result->_epsilon = epsilon;
   }
 
   return result;

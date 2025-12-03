@@ -1,7 +1,7 @@
 @interface VMBiomeClient
 - (VMBiomeClient)init;
 - (void)dealloc;
-- (void)donateToLanguageConsumptionBiomeStream:(id)a3 confidence:(id)a4 duration:(double)a5;
+- (void)donateToLanguageConsumptionBiomeStream:(id)stream confidence:(id)confidence duration:(double)duration;
 @end
 
 @implementation VMBiomeClient
@@ -18,7 +18,7 @@
     v20 = 2112;
     v21 = objc_opt_class();
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v4 = v21;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p Creating", buf, 0x2Au);
   }
@@ -29,10 +29,10 @@
   if (v5)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
-    v7 = [v6 bundleIdentifier];
+    bundleIdentifier = [v6 bundleIdentifier];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [NSString stringWithFormat:@"%@.%@", v7, v9];
+    v10 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v9];
     v11 = v10;
     v12 = dispatch_queue_create([v10 UTF8String], 0);
     queue = v5->queue;
@@ -54,7 +54,7 @@
     v10 = 2112;
     v11 = objc_opt_class();
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v4 = v11;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p Deleting", buf, 0x2Au);
   }
@@ -64,20 +64,20 @@
   [(VMBiomeClient *)&v5 dealloc];
 }
 
-- (void)donateToLanguageConsumptionBiomeStream:(id)a3 confidence:(id)a4 duration:(double)a5
+- (void)donateToLanguageConsumptionBiomeStream:(id)stream confidence:(id)confidence duration:(double)duration
 {
-  v8 = a3;
-  v9 = a4;
+  streamCopy = stream;
+  confidenceCopy = confidence;
   queue = self->queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003DFE4;
   block[3] = &unk_1000EE520;
-  v16 = a5;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  durationCopy = duration;
+  v14 = streamCopy;
+  v15 = confidenceCopy;
+  v11 = confidenceCopy;
+  v12 = streamCopy;
   dispatch_async(queue, block);
 }
 

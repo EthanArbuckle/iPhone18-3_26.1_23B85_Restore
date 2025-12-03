@@ -1,13 +1,13 @@
 @interface SBUISimpleFixedDigitPasscodeEntryField
 - (BOOL)_hasAnyCharacters;
-- (CGRect)_entryFieldBoundsWithXOffset:(double)a3;
+- (CGRect)_entryFieldBoundsWithXOffset:(double)offset;
 - (CGSize)_viewSize;
-- (SBUISimpleFixedDigitPasscodeEntryField)initWithDefaultSizeAndLightStyle:(BOOL)a3 numberOfDigits:(unint64_t)a4;
+- (SBUISimpleFixedDigitPasscodeEntryField)initWithDefaultSizeAndLightStyle:(BOOL)style numberOfDigits:(unint64_t)digits;
 - (UIEdgeInsets)_entryFieldPaddingOutsideRing;
-- (void)_appendString:(id)a3;
-- (void)_autofillForBiometricAuthenticationWithCompletion:(id)a3;
+- (void)_appendString:(id)string;
+- (void)_autofillForBiometricAuthenticationWithCompletion:(id)completion;
 - (void)_deleteLastCharacter;
-- (void)_resetForFailedPasscode:(BOOL)a3;
+- (void)_resetForFailedPasscode:(BOOL)passcode;
 - (void)reset;
 @end
 
@@ -15,8 +15,8 @@
 
 - (CGSize)_viewSize
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   [(SBUISimpleFixedDigitPasscodeEntryField *)self _entryFieldBoundsWithXOffset:0.0];
@@ -29,8 +29,8 @@
 
 - (UIEdgeInsets)_entryFieldPaddingOutsideRing
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -65,9 +65,9 @@
   [(SBUIPasscodeEntryField *)&v3 reset];
 }
 
-- (SBUISimpleFixedDigitPasscodeEntryField)initWithDefaultSizeAndLightStyle:(BOOL)a3 numberOfDigits:(unint64_t)a4
+- (SBUISimpleFixedDigitPasscodeEntryField)initWithDefaultSizeAndLightStyle:(BOOL)style numberOfDigits:(unint64_t)digits
 {
-  v5 = a3;
+  styleCopy = style;
   v59.receiver = self;
   v59.super_class = SBUISimpleFixedDigitPasscodeEntryField;
   v6 = [(SBUINumericPasscodeEntryFieldBase *)&v59 initWithDefaultSizeAndLightStyle:?];
@@ -75,22 +75,22 @@
   if (v6)
   {
     [(SBUISimpleFixedDigitPasscodeEntryField *)v6 setClipsToBounds:1];
-    [(SBUINumericPasscodeEntryFieldBase *)v7 setMaxNumbersAllowed:a4];
-    v8 = [(SBUIPasscodeEntryField *)v7 _textField];
+    [(SBUINumericPasscodeEntryFieldBase *)v7 setMaxNumbersAllowed:digits];
+    _textField = [(SBUIPasscodeEntryField *)v7 _textField];
     v9 = 0.0;
-    [v8 setFrame:{0.0, 0.0, 0.0, 0.0}];
-    [v8 setHidden:1];
+    [_textField setFrame:{0.0, 0.0, 0.0, 0.0}];
+    [_textField setHidden:1];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     characterIndicators = v7->_characterIndicators;
     v7->_characterIndicators = v10;
 
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v12 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v14 = v13;
 
     [(SBUISimpleFixedDigitPasscodeEntryField *)v7 _entryFieldBoundsWithXOffset:0.0];
     v16 = v15;
-    v18 = v17 * a4;
+    v18 = v17 * digits;
     v19 = SBUIFloatFloorForMainScreenScale((v14 - v18) * 0.5);
     v20 = objc_alloc(MEMORY[0x1E69DD250]);
     [(SBUISimpleFixedDigitPasscodeEntryField *)v7 bounds];
@@ -113,13 +113,13 @@
     v7->_characterIndicatorsContainerView = v26;
 
     v28 = v7->_characterIndicatorsContainerView;
-    v29 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v28 setBackgroundColor:v29];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v28 setBackgroundColor:clearColor];
 
     [(UIView *)v7->_characterIndicatorsContainerView setAutoresizingMask:5];
     [(UIView *)v7->_springView addSubview:v7->_characterIndicatorsContainerView];
     [(SBUISimpleFixedDigitPasscodeEntryField *)v7 _entryFieldPaddingOutsideRing];
-    if (a4)
+    if (digits)
     {
       v34 = v30;
       v35 = v31;
@@ -145,7 +145,7 @@
         v35 = v42;
         v36 = v41;
         v37 = v40;
-        v38 = [(SBSimplePasscodeEntryFieldButton *)v52 initWithFrame:v5 paddingOutsideRing:v53 useLightStyle:v47, v49, v51, v34, v35, v36, v40];
+        v38 = [(SBSimplePasscodeEntryFieldButton *)v52 initWithFrame:styleCopy paddingOutsideRing:v53 useLightStyle:v47, v49, v51, v34, v35, v36, v40];
 
         [(NSMutableArray *)v7->_characterIndicators addObject:v38];
         [(UIView *)v7->_characterIndicatorsContainerView addSubview:v38];
@@ -153,28 +153,28 @@
         v55 = v54;
         [(SBSimplePasscodeEntryFieldButton *)v38 setFrame:v58, 0.0, v54, v56];
         v9 = v58 + v55;
-        --a4;
+        --digits;
       }
 
-      while (a4);
+      while (digits);
     }
   }
 
   return v7;
 }
 
-- (void)_appendString:(id)a3
+- (void)_appendString:(id)string
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBUIPasscodeEntryField *)self stringValue];
-  v6 = [v5 length];
+  stringCopy = string;
+  stringValue = [(SBUIPasscodeEntryField *)self stringValue];
+  v6 = [stringValue length];
 
   if (v6 < [(SBUINumericPasscodeEntryFieldBase *)self maxNumbersAllowed])
   {
-    v7 = [(UIView *)self->_springView layer];
-    v8 = [v7 animationKeys];
-    v9 = [v8 containsObject:@"shake"];
+    layer = [(UIView *)self->_springView layer];
+    animationKeys = [layer animationKeys];
+    v9 = [animationKeys containsObject:@"shake"];
 
     if (v9)
     {
@@ -211,11 +211,11 @@
         while (v12);
       }
 
-      v16 = [(UIView *)self->_springView layer];
-      [v16 removeAnimationForKey:@"shake"];
+      layer2 = [(UIView *)self->_springView layer];
+      [layer2 removeAnimationForKey:@"shake"];
 
-      v17 = [(UIView *)self->_springViewParent layer];
-      [v17 removeAnimationForKey:@"force-off-center"];
+      layer3 = [(UIView *)self->_springViewParent layer];
+      [layer3 removeAnimationForKey:@"force-off-center"];
 
       v18 = v6 + 1;
       if (v6 == -1)
@@ -238,14 +238,14 @@
 LABEL_17:
     v20.receiver = self;
     v20.super_class = SBUISimpleFixedDigitPasscodeEntryField;
-    [(SBUINumericPasscodeEntryFieldBase *)&v20 _appendString:v4];
+    [(SBUINumericPasscodeEntryFieldBase *)&v20 _appendString:stringCopy];
   }
 }
 
 - (void)_deleteLastCharacter
 {
-  v3 = [(SBUIPasscodeEntryField *)self stringValue];
-  v4 = [v3 length];
+  stringValue = [(SBUIPasscodeEntryField *)self stringValue];
+  v4 = [stringValue length];
 
   if (v4)
   {
@@ -264,15 +264,15 @@ LABEL_17:
 
 - (BOOL)_hasAnyCharacters
 {
-  v2 = [(SBUIPasscodeEntryField *)self stringValue];
-  v3 = [v2 length] != 0;
+  stringValue = [(SBUIPasscodeEntryField *)self stringValue];
+  v3 = [stringValue length] != 0;
 
   return v3;
 }
 
-- (void)_resetForFailedPasscode:(BOOL)a3
+- (void)_resetForFailedPasscode:(BOOL)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position.x"];
   [v5 setMass:1.20000005];
   [v5 setStiffness:1200.0];
@@ -289,15 +289,15 @@ LABEL_17:
   v11 = *MEMORY[0x1E69797D8];
   [v5 setFillMode:*MEMORY[0x1E69797D8]];
   v12 = MEMORY[0x1E696AD98];
-  v13 = [(UIView *)self->_springView layer];
-  [v13 position];
+  layer = [(UIView *)self->_springView layer];
+  [layer position];
   v15 = v14 + 75.0;
   *&v15 = v15;
   v16 = [v12 numberWithFloat:v15];
   [v5 setFromValue:v16];
 
-  v17 = [(UIView *)self->_springView layer];
-  [v17 addAnimation:v5 forKey:@"shake"];
+  layer2 = [(UIView *)self->_springView layer];
+  [layer2 addAnimation:v5 forKey:@"shake"];
 
   v18 = [MEMORY[0x1E6979318] animationWithKeyPath:@"position.x"];
   LODWORD(v19) = 1054276898;
@@ -309,25 +309,25 @@ LABEL_17:
   [v18 setDuration:0.100000001];
   [v18 setFillMode:v11];
   v23 = MEMORY[0x1E696AD98];
-  v24 = [(UIView *)self->_springViewParent layer];
-  [v24 position];
+  layer3 = [(UIView *)self->_springViewParent layer];
+  [layer3 position];
   v26 = v25 + -75.0;
   *&v26 = v26;
   v27 = [v23 numberWithFloat:v26];
   [v18 setFromValue:v27];
 
-  v28 = [(UIView *)self->_springViewParent layer];
-  [v28 addAnimation:v18 forKey:@"force-off-center"];
+  layer4 = [(UIView *)self->_springViewParent layer];
+  [layer4 addAnimation:v18 forKey:@"force-off-center"];
 
   v29.receiver = self;
   v29.super_class = SBUISimpleFixedDigitPasscodeEntryField;
-  [(SBUIPasscodeEntryField *)&v29 _resetForFailedPasscode:v3];
+  [(SBUIPasscodeEntryField *)&v29 _resetForFailedPasscode:passcodeCopy];
 }
 
-- (void)_autofillForBiometricAuthenticationWithCompletion:(id)a3
+- (void)_autofillForBiometricAuthenticationWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -367,8 +367,8 @@ LABEL_17:
   v12[2] = __92__SBUISimpleFixedDigitPasscodeEntryField__autofillForBiometricAuthenticationWithCompletion___block_invoke;
   v12[3] = &unk_1E789E340;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = completionCopy;
+  v11 = completionCopy;
   dispatch_after(v10, MEMORY[0x1E69E96A0], v12);
 }
 
@@ -380,10 +380,10 @@ id __92__SBUISimpleFixedDigitPasscodeEntryField__autofillForBiometricAuthenticat
   return objc_msgSendSuper2(&v3, sel__autofillForBiometricAuthenticationWithCompletion_, v1);
 }
 
-- (CGRect)_entryFieldBoundsWithXOffset:(double)a3
+- (CGRect)_entryFieldBoundsWithXOffset:(double)offset
 {
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -404,12 +404,12 @@ id __92__SBUISimpleFixedDigitPasscodeEntryField__autofillForBiometricAuthenticat
   [MEMORY[0x1E69D3FE8] pinFixedDigitEntryFieldIndicatorPaddingWidth:v14];
   v18 = v16 + v17 * 2.0;
   v19 = 0.0;
-  v20 = a3;
+  offsetCopy = offset;
   v21 = v16;
   result.size.height = v21;
   result.size.width = v18;
   result.origin.y = v19;
-  result.origin.x = v20;
+  result.origin.x = offsetCopy;
   return result;
 }
 

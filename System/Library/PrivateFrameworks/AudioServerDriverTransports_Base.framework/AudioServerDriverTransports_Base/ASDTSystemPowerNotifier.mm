@@ -1,10 +1,10 @@
 @interface ASDTSystemPowerNotifier
 - (ASDTSystemPowerNotifierDelegate)delegate;
-- (BOOL)allowSleepStateNotification:(int)a3;
+- (BOOL)allowSleepStateNotification:(int)notification;
 - (BOOL)registerForSystemSleepNotificationsSystemPower;
 - (void)dealloc;
 - (void)deregisterForSystemSleepNotificationsSystemPower;
-- (void)handlePowerNotificationWithMessageType:(unsigned int)a3 andArgument:(void *)a4;
+- (void)handlePowerNotificationWithMessageType:(unsigned int)type andArgument:(void *)argument;
 - (void)registerForSystemSleepNotificationsSystemPower;
 @end
 
@@ -25,13 +25,13 @@
   [(ASDTSystemPowerNotifier *)&v3 dealloc];
 }
 
-- (BOOL)allowSleepStateNotification:(int)a3
+- (BOOL)allowSleepStateNotification:(int)notification
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = 1;
-  if (a3 > 1)
+  allowSystemSleep = 1;
+  if (notification > 1)
   {
-    if (a3 == 2)
+    if (notification == 2)
     {
       if (![(ASDTSystemPowerNotifier *)self wakeForEarlyWake])
       {
@@ -39,27 +39,27 @@
       }
     }
 
-    else if (a3 != 3)
+    else if (notification != 3)
     {
       goto LABEL_25;
     }
 
-    v11 = [(ASDTSystemPowerNotifier *)self systemIsSleeping];
+    systemIsSleeping = [(ASDTSystemPowerNotifier *)self systemIsSleeping];
     v12 = ASDTBaseLogType();
     v7 = v12;
-    if (v11)
+    if (systemIsSleeping)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(ASDTSystemPowerNotifier *)self bundleName];
+        bundleName = [(ASDTSystemPowerNotifier *)self bundleName];
         v19 = 138412290;
-        v20 = v13;
+        v20 = bundleName;
         _os_log_impl(&dword_241659000, v7, OS_LOG_TYPE_DEFAULT, "%@: Waking.", &v19, 0xCu);
       }
 
       [(ASDTSystemPowerNotifier *)self setSystemIsSleeping:0];
-      v14 = [(ASDTSystemPowerNotifier *)self delegate];
-      [v14 systemHasPoweredOn];
+      delegate = [(ASDTSystemPowerNotifier *)self delegate];
+      [delegate systemHasPoweredOn];
 
       goto LABEL_24;
     }
@@ -74,30 +74,30 @@
 LABEL_7:
 
 LABEL_24:
-    v4 = 1;
+    allowSystemSleep = 1;
     goto LABEL_25;
   }
 
-  if (a3)
+  if (notification)
   {
-    if (a3 == 1)
+    if (notification == 1)
     {
-      v5 = [(ASDTSystemPowerNotifier *)self systemIsSleeping];
+      systemIsSleeping2 = [(ASDTSystemPowerNotifier *)self systemIsSleeping];
       v6 = ASDTBaseLogType();
       v7 = v6;
-      if (!v5)
+      if (!systemIsSleeping2)
       {
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [(ASDTSystemPowerNotifier *)self bundleName];
+          bundleName2 = [(ASDTSystemPowerNotifier *)self bundleName];
           v19 = 138412290;
-          v20 = v15;
+          v20 = bundleName2;
           _os_log_impl(&dword_241659000, v7, OS_LOG_TYPE_DEFAULT, "%@: Sleeping.", &v19, 0xCu);
         }
 
         [(ASDTSystemPowerNotifier *)self setSystemIsSleeping:1];
-        v16 = [(ASDTSystemPowerNotifier *)self delegate];
-        [v16 systemWillSleep];
+        delegate2 = [(ASDTSystemPowerNotifier *)self delegate];
+        [delegate2 systemWillSleep];
 
         goto LABEL_24;
       }
@@ -115,7 +115,7 @@ LABEL_24:
 
   else
   {
-    v8 = [(ASDTSystemPowerNotifier *)self delegate];
+    delegate3 = [(ASDTSystemPowerNotifier *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -123,20 +123,20 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    v10 = [(ASDTSystemPowerNotifier *)self delegate];
-    v4 = [v10 allowSystemSleep];
+    delegate4 = [(ASDTSystemPowerNotifier *)self delegate];
+    allowSystemSleep = [delegate4 allowSystemSleep];
   }
 
 LABEL_25:
   v17 = *MEMORY[0x277D85DE8];
-  return v4;
+  return allowSystemSleep;
 }
 
-- (void)handlePowerNotificationWithMessageType:(unsigned int)a3 andArgument:(void *)a4
+- (void)handlePowerNotificationWithMessageType:(unsigned int)type andArgument:(void *)argument
 {
   v19 = *MEMORY[0x277D85DE8];
-  HIDWORD(v6) = a3 + 536870288;
-  LODWORD(v6) = a3 + 536870288;
+  HIDWORD(v6) = type + 536870288;
+  LODWORD(v6) = type + 536870288;
   v5 = v6 >> 4;
   if (v5 > 1)
   {
@@ -157,7 +157,7 @@ LABEL_20:
         v9 = 2;
 LABEL_10:
 
-        [(ASDTSystemPowerNotifier *)self allowSleepStateNotification:v9, a4];
+        [(ASDTSystemPowerNotifier *)self allowSleepStateNotification:v9, argument];
         return;
     }
 
@@ -192,13 +192,13 @@ LABEL_17:
 LABEL_14:
     v15 = *MEMORY[0x277D85DE8];
 
-    IOAllowPowerChange(powerConnection, a4);
+    IOAllowPowerChange(powerConnection, argument);
     return;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  IOCancelPowerChange(powerConnection, a4);
+  IOCancelPowerChange(powerConnection, argument);
 }
 
 - (BOOL)registerForSystemSleepNotificationsSystemPower
@@ -235,9 +235,9 @@ LABEL_14:
   v3 = ASDTBaseLogType();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASDTSystemPowerNotifier *)self bundleName];
+    bundleName = [(ASDTSystemPowerNotifier *)self bundleName];
     v8 = 138412290;
-    v9 = v4;
+    v9 = bundleName;
     _os_log_impl(&dword_241659000, v3, OS_LOG_TYPE_DEFAULT, "%@: Deregistered for system sleep notifications", &v8, 0xCu);
   }
 

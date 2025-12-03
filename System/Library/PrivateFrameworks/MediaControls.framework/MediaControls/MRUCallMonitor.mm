@@ -2,7 +2,7 @@
 + (MRUCallMonitor)sharedMonitor;
 - (BOOL)isCallActive;
 - (MRUCallMonitor)init;
-- (void)setOnCall:(BOOL)a3;
+- (void)setOnCall:(BOOL)call;
 - (void)updateOnCall;
 @end
 
@@ -34,8 +34,8 @@ uint64_t __30__MRUCallMonitor_updateOnCall__block_invoke(uint64_t a1)
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CXCallObserver *)self->_callObserver calls];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  calls = [(CXCallObserver *)self->_callObserver calls];
+  v3 = [calls countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -45,7 +45,7 @@ uint64_t __30__MRUCallMonitor_updateOnCall__block_invoke(uint64_t a1)
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(calls);
         }
 
         if (![*(*(&v7 + 1) + 8 * i) hasEnded])
@@ -55,7 +55,7 @@ uint64_t __30__MRUCallMonitor_updateOnCall__block_invoke(uint64_t a1)
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [calls countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -98,9 +98,9 @@ uint64_t __31__MRUCallMonitor_sharedMonitor__block_invoke()
   v2 = [(MRUCallMonitor *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.amp.MediaRemote.UI.MRUCallMonitor.shared", v5);
@@ -118,19 +118,19 @@ uint64_t __31__MRUCallMonitor_sharedMonitor__block_invoke()
   return v2;
 }
 
-- (void)setOnCall:(BOOL)a3
+- (void)setOnCall:(BOOL)call
 {
-  if (self->_onCall != a3)
+  if (self->_onCall != call)
   {
     v7 = v3;
     v8 = v4;
-    self->_onCall = a3;
+    self->_onCall = call;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __28__MRUCallMonitor_setOnCall___block_invoke;
     v5[3] = &unk_1E7663F38;
     v5[4] = self;
-    v6 = a3;
+    callCopy = call;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }

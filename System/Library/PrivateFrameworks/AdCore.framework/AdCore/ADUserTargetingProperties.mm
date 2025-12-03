@@ -1,38 +1,38 @@
 @interface ADUserTargetingProperties
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAccountStates:(id)a3;
-- (int)StringAsAccountTypes:(id)a3;
-- (int)StringAsConnectionType:(id)a3;
-- (int)StringAsDeviceModes:(id)a3;
-- (int)StringAsOverrideType:(id)a3;
-- (int)StringAsRunState:(id)a3;
-- (int)accountStateAtIndex:(unint64_t)a3;
-- (int)accountTypeAtIndex:(unint64_t)a3;
+- (int)StringAsAccountStates:(id)states;
+- (int)StringAsAccountTypes:(id)types;
+- (int)StringAsConnectionType:(id)type;
+- (int)StringAsDeviceModes:(id)modes;
+- (int)StringAsOverrideType:(id)type;
+- (int)StringAsRunState:(id)state;
+- (int)accountStateAtIndex:(unint64_t)index;
+- (int)accountTypeAtIndex:(unint64_t)index;
 - (int)connectionType;
-- (int)deviceModeAtIndex:(unint64_t)a3;
+- (int)deviceModeAtIndex:(unint64_t)index;
 - (int)overrideType;
 - (int)runState;
 - (unint64_t)hash;
-- (void)addTargeting:(id)a3;
-- (void)addUserKeyboard:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addTargeting:(id)targeting;
+- (void)addUserKeyboard:(id)keyboard;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdvertisingIdentifierMonthResetCount:(BOOL)a3;
-- (void)setHasAppsRank:(BOOL)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasHorizontalAccuracy:(BOOL)a3;
-- (void)setHasIsOnInternationalDataRoaming:(BOOL)a3;
-- (void)setHasLatitude:(BOOL)a3;
-- (void)setHasLimitAdTracking:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasOverrideType:(BOOL)a3;
-- (void)setHasRunState:(BOOL)a3;
-- (void)setHasTimezone:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdvertisingIdentifierMonthResetCount:(BOOL)count;
+- (void)setHasAppsRank:(BOOL)rank;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasHorizontalAccuracy:(BOOL)accuracy;
+- (void)setHasIsOnInternationalDataRoaming:(BOOL)roaming;
+- (void)setHasLatitude:(BOOL)latitude;
+- (void)setHasLimitAdTracking:(BOOL)tracking;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasOverrideType:(BOOL)type;
+- (void)setHasRunState:(BOOL)state;
+- (void)setHasTimezone:(BOOL)timezone;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADUserTargetingProperties
@@ -47,9 +47,9 @@
   [(ADUserTargetingProperties *)&v3 dealloc];
 }
 
-- (void)setHasTimezone:(BOOL)a3
+- (void)setHasTimezone:(BOOL)timezone
 {
-  if (a3)
+  if (timezone)
   {
     v3 = 512;
   }
@@ -75,9 +75,9 @@
   }
 }
 
-- (void)setHasRunState:(BOOL)a3
+- (void)setHasRunState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 256;
   }
@@ -90,20 +90,20 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsRunState:(id)a3
+- (int)StringAsRunState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Simulator"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Simulator"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DevelopmentDevice"])
+  else if ([stateCopy isEqualToString:@"DevelopmentDevice"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConsumerDevice"])
+  else if ([stateCopy isEqualToString:@"ConsumerDevice"])
   {
     v4 = 2;
   }
@@ -116,27 +116,27 @@
   return v4;
 }
 
-- (void)addUserKeyboard:(id)a3
+- (void)addUserKeyboard:(id)keyboard
 {
-  v4 = a3;
+  keyboardCopy = keyboard;
   userKeyboards = self->_userKeyboards;
-  v8 = v4;
+  v8 = keyboardCopy;
   if (!userKeyboards)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_userKeyboards;
     self->_userKeyboards = v6;
 
-    v4 = v8;
+    keyboardCopy = v8;
     userKeyboards = self->_userKeyboards;
   }
 
-  [(NSMutableArray *)userKeyboards addObject:v4];
+  [(NSMutableArray *)userKeyboards addObject:keyboardCopy];
 }
 
-- (void)setHasAppsRank:(BOOL)a3
+- (void)setHasAppsRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 4;
   }
@@ -149,36 +149,36 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)deviceModeAtIndex:(unint64_t)a3
+- (int)deviceModeAtIndex:(unint64_t)index
 {
   p_deviceModes = &self->_deviceModes;
   count = self->_deviceModes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_deviceModes->list[a3];
+  return p_deviceModes->list[index];
 }
 
-- (int)StringAsDeviceModes:(id)a3
+- (int)StringAsDeviceModes:(id)modes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  modesCopy = modes;
+  if ([modesCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EducationMode"])
+  else if ([modesCopy isEqualToString:@"EducationMode"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GuestMode"])
+  else if ([modesCopy isEqualToString:@"GuestMode"])
   {
     v4 = 2;
   }
@@ -191,61 +191,61 @@
   return v4;
 }
 
-- (int)accountTypeAtIndex:(unint64_t)a3
+- (int)accountTypeAtIndex:(unint64_t)index
 {
   p_accountTypes = &self->_accountTypes;
   count = self->_accountTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_accountTypes->list[a3];
+  return p_accountTypes->list[index];
 }
 
-- (int)StringAsAccountTypes:(id)a3
+- (int)StringAsAccountTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NoAccount"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"NoAccount"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Consumer"])
+  else if ([typesCopy isEqualToString:@"Consumer"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ManagedAccount"])
+  else if ([typesCopy isEqualToString:@"ManagedAccount"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"U13"])
+  else if ([typesCopy isEqualToString:@"U13"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"T13"])
+  else if ([typesCopy isEqualToString:@"T13"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"U18"])
+  else if ([typesCopy isEqualToString:@"U18"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Unknown_Age"])
+  else if ([typesCopy isEqualToString:@"Unknown_Age"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SensitiveContentEligible"])
+  else if ([typesCopy isEqualToString:@"SensitiveContentEligible"])
   {
     v4 = 7;
   }
@@ -258,9 +258,9 @@
   return v4;
 }
 
-- (void)setHasLatitude:(BOOL)a3
+- (void)setHasLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 32;
   }
@@ -273,9 +273,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 64;
   }
@@ -288,9 +288,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasHorizontalAccuracy:(BOOL)a3
+- (void)setHasHorizontalAccuracy:(BOOL)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
     v3 = 16;
   }
@@ -303,27 +303,27 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)addTargeting:(id)a3
+- (void)addTargeting:(id)targeting
 {
-  v4 = a3;
+  targetingCopy = targeting;
   targetings = self->_targetings;
-  v8 = v4;
+  v8 = targetingCopy;
   if (!targetings)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_targetings;
     self->_targetings = v6;
 
-    v4 = v8;
+    targetingCopy = v8;
     targetings = self->_targetings;
   }
 
-  [(NSMutableArray *)targetings addObject:v4];
+  [(NSMutableArray *)targetings addObject:targetingCopy];
 }
 
-- (void)setHasLimitAdTracking:(BOOL)a3
+- (void)setHasLimitAdTracking:(BOOL)tracking
 {
-  if (a3)
+  if (tracking)
   {
     v3 = 2048;
   }
@@ -336,9 +336,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasAdvertisingIdentifierMonthResetCount:(BOOL)a3
+- (void)setHasAdvertisingIdentifierMonthResetCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -351,9 +351,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasIsOnInternationalDataRoaming:(BOOL)a3
+- (void)setHasIsOnInternationalDataRoaming:(BOOL)roaming
 {
-  if (a3)
+  if (roaming)
   {
     v3 = 1024;
   }
@@ -379,9 +379,9 @@
   }
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -394,60 +394,60 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsConnectionType:(id)a3
+- (int)StringAsConnectionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownConnection"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UnknownConnection"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WiFi"])
+  else if ([typeCopy isEqualToString:@"WiFi"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_2_G"])
+  else if ([typeCopy isEqualToString:@"Cellular_2_G"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_2_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_2_5G"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_G"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_5G"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_75G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_75G"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_H_Plus"])
+  else if ([typeCopy isEqualToString:@"Cellular_H_Plus"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_4G"])
+  else if ([typeCopy isEqualToString:@"Cellular_4G"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_5G"])
   {
     v4 = 10;
   }
@@ -460,36 +460,36 @@
   return v4;
 }
 
-- (int)accountStateAtIndex:(unint64_t)a3
+- (int)accountStateAtIndex:(unint64_t)index
 {
   p_accountStates = &self->_accountStates;
   count = self->_accountStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_accountStates->list[a3];
+  return p_accountStates->list[index];
 }
 
-- (int)StringAsAccountStates:(id)a3
+- (int)StringAsAccountStates:(id)states
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"No_iCloud"])
+  statesCopy = states;
+  if ([statesCopy isEqualToString:@"No_iCloud"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Same_iCloud"])
+  else if ([statesCopy isEqualToString:@"Same_iCloud"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Diff_iCloud"])
+  else if ([statesCopy isEqualToString:@"Diff_iCloud"])
   {
     v4 = 2;
   }
@@ -515,9 +515,9 @@
   }
 }
 
-- (void)setHasOverrideType:(BOOL)a3
+- (void)setHasOverrideType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -530,13 +530,13 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsOverrideType:(id)a3
+- (int)StringAsOverrideType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 11000;
-  if (([v3 isEqualToString:@"NoOverride"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"NoOverride"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"ODMLData"])
+    if ([typeCopy isEqualToString:@"ODMLData"])
     {
       v4 = 11001;
     }
@@ -556,8 +556,8 @@
   v8.receiver = self;
   v8.super_class = ADUserTargetingProperties;
   v4 = [(ADUserTargetingProperties *)&v8 description];
-  v5 = [(ADUserTargetingProperties *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADUserTargetingProperties *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -565,23 +565,23 @@
 - (id)dictionaryRepresentation
 {
   v75 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_clientClockTime];
-    [v3 setObject:v5 forKey:@"clientClockTime"];
+    [dictionary setObject:v5 forKey:@"clientClockTime"];
   }
 
   appID = self->_appID;
   if (appID)
   {
-    [v3 setObject:appID forKey:@"appID"];
+    [dictionary setObject:appID forKey:@"appID"];
   }
 
   deviceModel = self->_deviceModel;
   if (deviceModel)
   {
-    [v3 setObject:deviceModel forKey:@"deviceModel"];
+    [dictionary setObject:deviceModel forKey:@"deviceModel"];
   }
 
   has = self->_has;
@@ -589,7 +589,7 @@
   {
     *&v4 = self->_timezone;
     v9 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v9 forKey:@"timezone"];
+    [dictionary setObject:v9 forKey:@"timezone"];
 
     has = self->_has;
   }
@@ -607,43 +607,43 @@
       v11 = off_278C554F8[runState];
     }
 
-    [v3 setObject:v11 forKey:@"runState"];
+    [dictionary setObject:v11 forKey:@"runState"];
   }
 
   appVersion = self->_appVersion;
   if (appVersion)
   {
-    [v3 setObject:appVersion forKey:@"appVersion"];
+    [dictionary setObject:appVersion forKey:@"appVersion"];
   }
 
   osVersionAndBuild = self->_osVersionAndBuild;
   if (osVersionAndBuild)
   {
-    [v3 setObject:osVersionAndBuild forKey:@"osVersionAndBuild"];
+    [dictionary setObject:osVersionAndBuild forKey:@"osVersionAndBuild"];
   }
 
   iTunesStore = self->_iTunesStore;
   if (iTunesStore)
   {
-    [v3 setObject:iTunesStore forKey:@"iTunesStore"];
+    [dictionary setObject:iTunesStore forKey:@"iTunesStore"];
   }
 
   localeIdentifier = self->_localeIdentifier;
   if (localeIdentifier)
   {
-    [v3 setObject:localeIdentifier forKey:@"localeIdentifier"];
+    [dictionary setObject:localeIdentifier forKey:@"localeIdentifier"];
   }
 
   userKeyboards = self->_userKeyboards;
   if (userKeyboards)
   {
-    [v3 setObject:userKeyboards forKey:@"userKeyboard"];
+    [dictionary setObject:userKeyboards forKey:@"userKeyboard"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithInt:self->_appsRank];
-    [v3 setObject:v17 forKey:@"appsRank"];
+    [dictionary setObject:v17 forKey:@"appsRank"];
   }
 
   p_deviceModes = &self->_deviceModes;
@@ -674,7 +674,7 @@
       while (v20 < self->_deviceModes.count);
     }
 
-    [v3 setObject:v19 forKey:@"deviceMode"];
+    [dictionary setObject:v19 forKey:@"deviceMode"];
   }
 
   p_accountTypes = &self->_accountTypes;
@@ -705,7 +705,7 @@
       while (v25 < self->_accountTypes.count);
     }
 
-    [v3 setObject:v24 forKey:@"accountType"];
+    [dictionary setObject:v24 forKey:@"accountType"];
   }
 
   v28 = self->_has;
@@ -713,7 +713,7 @@
   {
     *&v4 = self->_latitude;
     v57 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v57 forKey:@"latitude"];
+    [dictionary setObject:v57 forKey:@"latitude"];
 
     v28 = self->_has;
     if ((v28 & 0x40) == 0)
@@ -735,21 +735,21 @@ LABEL_44:
 
   *&v4 = self->_longitude;
   v58 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v58 forKey:@"longitude"];
+  [dictionary setObject:v58 forKey:@"longitude"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_45:
     *&v4 = self->_horizontalAccuracy;
     v29 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v29 forKey:@"horizontalAccuracy"];
+    [dictionary setObject:v29 forKey:@"horizontalAccuracy"];
   }
 
 LABEL_46:
   isoCountryCode = self->_isoCountryCode;
   if (isoCountryCode)
   {
-    [v3 setObject:isoCountryCode forKey:@"isoCountryCode"];
+    [dictionary setObject:isoCountryCode forKey:@"isoCountryCode"];
   }
 
   if ([(NSMutableArray *)self->_targetings count])
@@ -774,8 +774,8 @@ LABEL_46:
             objc_enumerationMutation(v32);
           }
 
-          v37 = [*(*(&v70 + 1) + 8 * i) dictionaryRepresentation];
-          [v31 addObject:v37];
+          dictionaryRepresentation = [*(*(&v70 + 1) + 8 * i) dictionaryRepresentation];
+          [v31 addObject:dictionaryRepresentation];
         }
 
         v34 = [(NSMutableArray *)v32 countByEnumeratingWithState:&v70 objects:v74 count:16];
@@ -784,104 +784,104 @@ LABEL_46:
       while (v34);
     }
 
-    [v3 setObject:v31 forKey:@"targeting"];
+    [dictionary setObject:v31 forKey:@"targeting"];
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
     v38 = [MEMORY[0x277CCABB0] numberWithBool:self->_limitAdTracking];
-    [v3 setObject:v38 forKey:@"limitAdTracking"];
+    [dictionary setObject:v38 forKey:@"limitAdTracking"];
   }
 
   toroIDString = self->_toroIDString;
   if (toroIDString)
   {
-    [v3 setObject:toroIDString forKey:@"toroIDString"];
+    [dictionary setObject:toroIDString forKey:@"toroIDString"];
   }
 
   iAdIDString = self->_iAdIDString;
   if (iAdIDString)
   {
-    [v3 setObject:iAdIDString forKey:@"iAdIDString"];
+    [dictionary setObject:iAdIDString forKey:@"iAdIDString"];
   }
 
   algoId = self->_algoId;
   if (algoId)
   {
-    [v3 setObject:algoId forKey:@"algoId"];
+    [dictionary setObject:algoId forKey:@"algoId"];
   }
 
   dPIDString = self->_dPIDString;
   if (dPIDString)
   {
-    [v3 setObject:dPIDString forKey:@"DPIDString"];
+    [dictionary setObject:dPIDString forKey:@"DPIDString"];
   }
 
   postalCode = self->_postalCode;
   if (postalCode)
   {
-    [v3 setObject:postalCode forKey:@"postalCode"];
+    [dictionary setObject:postalCode forKey:@"postalCode"];
   }
 
   administrativeArea = self->_administrativeArea;
   if (administrativeArea)
   {
-    [v3 setObject:administrativeArea forKey:@"administrativeArea"];
+    [dictionary setObject:administrativeArea forKey:@"administrativeArea"];
   }
 
   locality = self->_locality;
   if (locality)
   {
-    [v3 setObject:locality forKey:@"locality"];
+    [dictionary setObject:locality forKey:@"locality"];
   }
 
   subAdministrativeArea = self->_subAdministrativeArea;
   if (subAdministrativeArea)
   {
-    [v3 setObject:subAdministrativeArea forKey:@"subAdministrativeArea"];
+    [dictionary setObject:subAdministrativeArea forKey:@"subAdministrativeArea"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v47 = [MEMORY[0x277CCABB0] numberWithInt:self->_advertisingIdentifierMonthResetCount];
-    [v3 setObject:v47 forKey:@"advertisingIdentifierMonthResetCount"];
+    [dictionary setObject:v47 forKey:@"advertisingIdentifierMonthResetCount"];
   }
 
   deviceRequestID = self->_deviceRequestID;
   if (deviceRequestID)
   {
-    [v3 setObject:deviceRequestID forKey:@"deviceRequestID"];
+    [dictionary setObject:deviceRequestID forKey:@"deviceRequestID"];
   }
 
   carrierMNC = self->_carrierMNC;
   if (carrierMNC)
   {
-    [v3 setObject:carrierMNC forKey:@"carrierMNC"];
+    [dictionary setObject:carrierMNC forKey:@"carrierMNC"];
   }
 
   carrierMCC = self->_carrierMCC;
   if (carrierMCC)
   {
-    [v3 setObject:carrierMCC forKey:@"carrierMCC"];
+    [dictionary setObject:carrierMCC forKey:@"carrierMCC"];
   }
 
   currentCarrierMNC = self->_currentCarrierMNC;
   if (currentCarrierMNC)
   {
-    [v3 setObject:currentCarrierMNC forKey:@"currentCarrierMNC"];
+    [dictionary setObject:currentCarrierMNC forKey:@"currentCarrierMNC"];
   }
 
   currentCarrierMCC = self->_currentCarrierMCC;
   if (currentCarrierMCC)
   {
-    [v3 setObject:currentCarrierMCC forKey:@"currentCarrierMCC"];
+    [dictionary setObject:currentCarrierMCC forKey:@"currentCarrierMCC"];
   }
 
   v53 = self->_has;
   if ((v53 & 0x400) != 0)
   {
     v54 = [MEMORY[0x277CCABB0] numberWithBool:self->_isOnInternationalDataRoaming];
-    [v3 setObject:v54 forKey:@"isOnInternationalDataRoaming"];
+    [dictionary setObject:v54 forKey:@"isOnInternationalDataRoaming"];
 
     v53 = self->_has;
   }
@@ -899,13 +899,13 @@ LABEL_46:
       v56 = off_278C55568[connectionType];
     }
 
-    [v3 setObject:v56 forKey:@"connectionType"];
+    [dictionary setObject:v56 forKey:@"connectionType"];
   }
 
   storeFrontLanguageLocaleIdentifier = self->_storeFrontLanguageLocaleIdentifier;
   if (storeFrontLanguageLocaleIdentifier)
   {
-    [v3 setObject:storeFrontLanguageLocaleIdentifier forKey:@"storeFrontLanguageLocaleIdentifier"];
+    [dictionary setObject:storeFrontLanguageLocaleIdentifier forKey:@"storeFrontLanguageLocaleIdentifier"];
   }
 
   p_accountStates = &self->_accountStates;
@@ -936,7 +936,7 @@ LABEL_46:
       while (v62 < self->_accountStates.count);
     }
 
-    [v3 setObject:v61 forKey:@"accountState"];
+    [dictionary setObject:v61 forKey:@"accountState"];
   }
 
   if ((*&self->_has & 0x80) != 0)
@@ -957,19 +957,19 @@ LABEL_46:
       v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_overrideType];
     }
 
-    [v3 setObject:v66 forKey:@"overrideType"];
+    [dictionary setObject:v66 forKey:@"overrideType"];
   }
 
-  v67 = v3;
+  v67 = dictionary;
 
   v68 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     clientClockTime = self->_clientClockTime;
@@ -1266,40 +1266,40 @@ LABEL_38:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = *&self->_clientClockTime;
-    *(v4 + 174) |= 1u;
+    toCopy[10] = *&self->_clientClockTime;
+    *(toCopy + 174) |= 1u;
   }
 
-  v26 = v4;
+  v26 = toCopy;
   if (self->_appID)
   {
-    [v4 setAppID:?];
-    v4 = v26;
+    [toCopy setAppID:?];
+    toCopy = v26;
   }
 
   if (self->_deviceModel)
   {
     [v26 setDeviceModel:?];
-    v4 = v26;
+    toCopy = v26;
   }
 
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    *(v4 + 80) = LODWORD(self->_timezone);
-    *(v4 + 174) |= 0x200u;
+    *(toCopy + 80) = LODWORD(self->_timezone);
+    *(toCopy + 174) |= 0x200u;
     has = self->_has;
   }
 
   if ((has & 0x100) != 0)
   {
-    *(v4 + 72) = self->_runState;
-    *(v4 + 174) |= 0x100u;
+    *(toCopy + 72) = self->_runState;
+    *(toCopy + 174) |= 0x100u;
   }
 
   if (self->_appVersion)
@@ -1325,10 +1325,10 @@ LABEL_38:
   if ([(ADUserTargetingProperties *)self userKeyboardsCount])
   {
     [v26 clearUserKeyboards];
-    v6 = [(ADUserTargetingProperties *)self userKeyboardsCount];
-    if (v6)
+    userKeyboardsCount = [(ADUserTargetingProperties *)self userKeyboardsCount];
+    if (userKeyboardsCount)
     {
-      v7 = v6;
+      v7 = userKeyboardsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ADUserTargetingProperties *)self userKeyboardAtIndex:i];
@@ -1346,10 +1346,10 @@ LABEL_38:
   if ([(ADUserTargetingProperties *)self deviceModesCount])
   {
     [v26 clearDeviceModes];
-    v10 = [(ADUserTargetingProperties *)self deviceModesCount];
-    if (v10)
+    deviceModesCount = [(ADUserTargetingProperties *)self deviceModesCount];
+    if (deviceModesCount)
     {
-      v11 = v10;
+      v11 = deviceModesCount;
       for (j = 0; j != v11; ++j)
       {
         [v26 addDeviceMode:{-[ADUserTargetingProperties deviceModeAtIndex:](self, "deviceModeAtIndex:", j)}];
@@ -1360,10 +1360,10 @@ LABEL_38:
   if ([(ADUserTargetingProperties *)self accountTypesCount])
   {
     [v26 clearAccountTypes];
-    v13 = [(ADUserTargetingProperties *)self accountTypesCount];
-    if (v13)
+    accountTypesCount = [(ADUserTargetingProperties *)self accountTypesCount];
+    if (accountTypesCount)
     {
-      v14 = v13;
+      v14 = accountTypesCount;
       for (k = 0; k != v14; ++k)
       {
         [v26 addAccountType:{-[ADUserTargetingProperties accountTypeAtIndex:](self, "accountTypeAtIndex:", k)}];
@@ -1412,10 +1412,10 @@ LABEL_37:
   if ([(ADUserTargetingProperties *)self targetingsCount])
   {
     [v26 clearTargetings];
-    v17 = [(ADUserTargetingProperties *)self targetingsCount];
-    if (v17)
+    targetingsCount = [(ADUserTargetingProperties *)self targetingsCount];
+    if (targetingsCount)
     {
-      v18 = v17;
+      v18 = targetingsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(ADUserTargetingProperties *)self targetingAtIndex:m];
@@ -1537,10 +1537,10 @@ LABEL_37:
   if ([(ADUserTargetingProperties *)self accountStatesCount])
   {
     [v26 clearAccountStates];
-    v23 = [(ADUserTargetingProperties *)self accountStatesCount];
-    if (v23)
+    accountStatesCount = [(ADUserTargetingProperties *)self accountStatesCount];
+    if (accountStatesCount)
     {
-      v24 = v23;
+      v24 = accountStatesCount;
       for (n = 0; n != v24; ++n)
       {
         [v26 addAccountState:{-[ADUserTargetingProperties accountStateAtIndex:](self, "accountStateAtIndex:", n)}];
@@ -1555,10 +1555,10 @@ LABEL_37:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v76 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -1566,11 +1566,11 @@ LABEL_37:
     *(v5 + 348) |= 1u;
   }
 
-  v7 = [(NSString *)self->_appID copyWithZone:a3];
+  v7 = [(NSString *)self->_appID copyWithZone:zone];
   v8 = *(v6 + 112);
   *(v6 + 112) = v7;
 
-  v9 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v9 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v10 = *(v6 + 184);
   *(v6 + 184) = v9;
 
@@ -1588,19 +1588,19 @@ LABEL_37:
     *(v6 + 348) |= 0x100u;
   }
 
-  v12 = [(NSString *)self->_appVersion copyWithZone:a3];
+  v12 = [(NSString *)self->_appVersion copyWithZone:zone];
   v13 = *(v6 + 120);
   *(v6 + 120) = v12;
 
-  v14 = [(NSString *)self->_osVersionAndBuild copyWithZone:a3];
+  v14 = [(NSString *)self->_osVersionAndBuild copyWithZone:zone];
   v15 = *(v6 + 264);
   *(v6 + 264) = v14;
 
-  v16 = [(NSString *)self->_iTunesStore copyWithZone:a3];
+  v16 = [(NSString *)self->_iTunesStore copyWithZone:zone];
   v17 = *(v6 + 216);
   *(v6 + 216) = v16;
 
-  v18 = [(NSString *)self->_localeIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_localeIdentifier copyWithZone:zone];
   v19 = *(v6 + 240);
   *(v6 + 240) = v18;
 
@@ -1623,7 +1623,7 @@ LABEL_37:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v70 + 1) + 8 * i) copyWithZone:a3];
+        v25 = [*(*(&v70 + 1) + 8 * i) copyWithZone:zone];
         [v6 addUserKeyboard:v25];
       }
 
@@ -1674,7 +1674,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  v27 = [(NSString *)self->_isoCountryCode copyWithZone:a3];
+  v27 = [(NSString *)self->_isoCountryCode copyWithZone:zone];
   v28 = *(v6 + 224);
   *(v6 + 224) = v27;
 
@@ -1697,7 +1697,7 @@ LABEL_20:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v66 + 1) + 8 * j) copyWithZone:{a3, v66}];
+        v34 = [*(*(&v66 + 1) + 8 * j) copyWithZone:{zone, v66}];
         [v6 addTargeting:v34];
       }
 
@@ -1713,35 +1713,35 @@ LABEL_20:
     *(v6 + 348) |= 0x800u;
   }
 
-  v35 = [(NSString *)self->_toroIDString copyWithZone:a3, v66];
+  v35 = [(NSString *)self->_toroIDString copyWithZone:zone, v66];
   v36 = *(v6 + 328);
   *(v6 + 328) = v35;
 
-  v37 = [(NSString *)self->_iAdIDString copyWithZone:a3];
+  v37 = [(NSString *)self->_iAdIDString copyWithZone:zone];
   v38 = *(v6 + 208);
   *(v6 + 208) = v37;
 
-  v39 = [(NSString *)self->_algoId copyWithZone:a3];
+  v39 = [(NSString *)self->_algoId copyWithZone:zone];
   v40 = *(v6 + 104);
   *(v6 + 104) = v39;
 
-  v41 = [(NSString *)self->_dPIDString copyWithZone:a3];
+  v41 = [(NSString *)self->_dPIDString copyWithZone:zone];
   v42 = *(v6 + 176);
   *(v6 + 176) = v41;
 
-  v43 = [(NSString *)self->_postalCode copyWithZone:a3];
+  v43 = [(NSString *)self->_postalCode copyWithZone:zone];
   v44 = *(v6 + 280);
   *(v6 + 280) = v43;
 
-  v45 = [(NSString *)self->_administrativeArea copyWithZone:a3];
+  v45 = [(NSString *)self->_administrativeArea copyWithZone:zone];
   v46 = *(v6 + 88);
   *(v6 + 88) = v45;
 
-  v47 = [(NSString *)self->_locality copyWithZone:a3];
+  v47 = [(NSString *)self->_locality copyWithZone:zone];
   v48 = *(v6 + 248);
   *(v6 + 248) = v47;
 
-  v49 = [(NSString *)self->_subAdministrativeArea copyWithZone:a3];
+  v49 = [(NSString *)self->_subAdministrativeArea copyWithZone:zone];
   v50 = *(v6 + 304);
   *(v6 + 304) = v49;
 
@@ -1751,23 +1751,23 @@ LABEL_20:
     *(v6 + 348) |= 2u;
   }
 
-  v51 = [(NSString *)self->_deviceRequestID copyWithZone:a3];
+  v51 = [(NSString *)self->_deviceRequestID copyWithZone:zone];
   v52 = *(v6 + 192);
   *(v6 + 192) = v51;
 
-  v53 = [(NSString *)self->_carrierMNC copyWithZone:a3];
+  v53 = [(NSString *)self->_carrierMNC copyWithZone:zone];
   v54 = *(v6 + 144);
   *(v6 + 144) = v53;
 
-  v55 = [(NSString *)self->_carrierMCC copyWithZone:a3];
+  v55 = [(NSString *)self->_carrierMCC copyWithZone:zone];
   v56 = *(v6 + 136);
   *(v6 + 136) = v55;
 
-  v57 = [(NSString *)self->_currentCarrierMNC copyWithZone:a3];
+  v57 = [(NSString *)self->_currentCarrierMNC copyWithZone:zone];
   v58 = *(v6 + 168);
   *(v6 + 168) = v57;
 
-  v59 = [(NSString *)self->_currentCarrierMCC copyWithZone:a3];
+  v59 = [(NSString *)self->_currentCarrierMCC copyWithZone:zone];
   v60 = *(v6 + 160);
   *(v6 + 160) = v59;
 
@@ -1785,7 +1785,7 @@ LABEL_20:
     *(v6 + 348) |= 8u;
   }
 
-  v62 = [(NSString *)self->_storeFrontLanguageLocaleIdentifier copyWithZone:a3];
+  v62 = [(NSString *)self->_storeFrontLanguageLocaleIdentifier copyWithZone:zone];
   v63 = *(v6 + 296);
   *(v6 + 296) = v62;
 
@@ -1800,18 +1800,18 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_79;
   }
 
-  v5 = *(v4 + 174);
+  v5 = *(equalCopy + 174);
   if (*&self->_has)
   {
-    if ((v5 & 1) == 0 || self->_clientClockTime != *(v4 + 10))
+    if ((v5 & 1) == 0 || self->_clientClockTime != *(equalCopy + 10))
     {
       goto LABEL_79;
     }
@@ -1823,13 +1823,13 @@ LABEL_20:
   }
 
   appID = self->_appID;
-  if (appID | *(v4 + 14) && ![(NSString *)appID isEqual:?])
+  if (appID | *(equalCopy + 14) && ![(NSString *)appID isEqual:?])
   {
     goto LABEL_79;
   }
 
   deviceModel = self->_deviceModel;
-  if (deviceModel | *(v4 + 23))
+  if (deviceModel | *(equalCopy + 23))
   {
     if (![(NSString *)deviceModel isEqual:?])
     {
@@ -1837,41 +1837,41 @@ LABEL_20:
     }
   }
 
-  v8 = *(v4 + 174);
+  v8 = *(equalCopy + 174);
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 174) & 0x200) == 0 || self->_timezone != *(v4 + 80))
+    if ((*(equalCopy + 174) & 0x200) == 0 || self->_timezone != *(equalCopy + 80))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 174) & 0x200) != 0)
+  else if ((*(equalCopy + 174) & 0x200) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 174) & 0x100) == 0 || self->_runState != *(v4 + 72))
+    if ((*(equalCopy + 174) & 0x100) == 0 || self->_runState != *(equalCopy + 72))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 174) & 0x100) != 0)
+  else if ((*(equalCopy + 174) & 0x100) != 0)
   {
     goto LABEL_79;
   }
 
   appVersion = self->_appVersion;
-  if (appVersion | *(v4 + 15) && ![(NSString *)appVersion isEqual:?])
+  if (appVersion | *(equalCopy + 15) && ![(NSString *)appVersion isEqual:?])
   {
     goto LABEL_79;
   }
 
   osVersionAndBuild = self->_osVersionAndBuild;
-  if (osVersionAndBuild | *(v4 + 33))
+  if (osVersionAndBuild | *(equalCopy + 33))
   {
     if (![(NSString *)osVersionAndBuild isEqual:?])
     {
@@ -1880,7 +1880,7 @@ LABEL_20:
   }
 
   iTunesStore = self->_iTunesStore;
-  if (iTunesStore | *(v4 + 27))
+  if (iTunesStore | *(equalCopy + 27))
   {
     if (![(NSString *)iTunesStore isEqual:?])
     {
@@ -1889,7 +1889,7 @@ LABEL_20:
   }
 
   localeIdentifier = self->_localeIdentifier;
-  if (localeIdentifier | *(v4 + 30))
+  if (localeIdentifier | *(equalCopy + 30))
   {
     if (![(NSString *)localeIdentifier isEqual:?])
     {
@@ -1898,7 +1898,7 @@ LABEL_20:
   }
 
   userKeyboards = self->_userKeyboards;
-  if (userKeyboards | *(v4 + 42))
+  if (userKeyboards | *(equalCopy + 42))
   {
     if (![(NSMutableArray *)userKeyboards isEqual:?])
     {
@@ -1906,10 +1906,10 @@ LABEL_20:
     }
   }
 
-  v14 = *(v4 + 174);
+  v14 = *(equalCopy + 174);
   if ((*&self->_has & 4) != 0)
   {
-    if ((v14 & 4) == 0 || self->_appsRank != *(v4 + 32))
+    if ((v14 & 4) == 0 || self->_appsRank != *(equalCopy + 32))
     {
       goto LABEL_79;
     }
@@ -1926,10 +1926,10 @@ LABEL_20:
   }
 
   has = self->_has;
-  v16 = *(v4 + 174);
+  v16 = *(equalCopy + 174);
   if ((has & 0x20) != 0)
   {
-    if ((v16 & 0x20) == 0 || self->_latitude != *(v4 + 58))
+    if ((v16 & 0x20) == 0 || self->_latitude != *(equalCopy + 58))
     {
       goto LABEL_79;
     }
@@ -1942,7 +1942,7 @@ LABEL_20:
 
   if ((has & 0x40) != 0)
   {
-    if ((v16 & 0x40) == 0 || self->_longitude != *(v4 + 64))
+    if ((v16 & 0x40) == 0 || self->_longitude != *(equalCopy + 64))
     {
       goto LABEL_79;
     }
@@ -1955,7 +1955,7 @@ LABEL_20:
 
   if ((has & 0x10) != 0)
   {
-    if ((v16 & 0x10) == 0 || self->_horizontalAccuracy != *(v4 + 50))
+    if ((v16 & 0x10) == 0 || self->_horizontalAccuracy != *(equalCopy + 50))
     {
       goto LABEL_79;
     }
@@ -1967,13 +1967,13 @@ LABEL_20:
   }
 
   isoCountryCode = self->_isoCountryCode;
-  if (isoCountryCode | *(v4 + 28) && ![(NSString *)isoCountryCode isEqual:?])
+  if (isoCountryCode | *(equalCopy + 28) && ![(NSString *)isoCountryCode isEqual:?])
   {
     goto LABEL_79;
   }
 
   targetings = self->_targetings;
-  if (targetings | *(v4 + 39))
+  if (targetings | *(equalCopy + 39))
   {
     if (![(NSMutableArray *)targetings isEqual:?])
     {
@@ -1981,42 +1981,42 @@ LABEL_20:
     }
   }
 
-  v19 = *(v4 + 174);
+  v19 = *(equalCopy + 174);
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 174) & 0x800) == 0)
+    if ((*(equalCopy + 174) & 0x800) == 0)
     {
       goto LABEL_79;
     }
 
-    v31 = *(v4 + 345);
+    v31 = *(equalCopy + 345);
     if (self->_limitAdTracking)
     {
-      if ((*(v4 + 345) & 1) == 0)
+      if ((*(equalCopy + 345) & 1) == 0)
       {
         goto LABEL_79;
       }
     }
 
-    else if (*(v4 + 345))
+    else if (*(equalCopy + 345))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 174) & 0x800) != 0)
+  else if ((*(equalCopy + 174) & 0x800) != 0)
   {
     goto LABEL_79;
   }
 
   toroIDString = self->_toroIDString;
-  if (toroIDString | *(v4 + 41) && ![(NSString *)toroIDString isEqual:?])
+  if (toroIDString | *(equalCopy + 41) && ![(NSString *)toroIDString isEqual:?])
   {
     goto LABEL_79;
   }
 
   iAdIDString = self->_iAdIDString;
-  if (iAdIDString | *(v4 + 26))
+  if (iAdIDString | *(equalCopy + 26))
   {
     if (![(NSString *)iAdIDString isEqual:?])
     {
@@ -2025,7 +2025,7 @@ LABEL_20:
   }
 
   algoId = self->_algoId;
-  if (algoId | *(v4 + 13))
+  if (algoId | *(equalCopy + 13))
   {
     if (![(NSString *)algoId isEqual:?])
     {
@@ -2034,7 +2034,7 @@ LABEL_20:
   }
 
   dPIDString = self->_dPIDString;
-  if (dPIDString | *(v4 + 22))
+  if (dPIDString | *(equalCopy + 22))
   {
     if (![(NSString *)dPIDString isEqual:?])
     {
@@ -2043,7 +2043,7 @@ LABEL_20:
   }
 
   postalCode = self->_postalCode;
-  if (postalCode | *(v4 + 35))
+  if (postalCode | *(equalCopy + 35))
   {
     if (![(NSString *)postalCode isEqual:?])
     {
@@ -2052,7 +2052,7 @@ LABEL_20:
   }
 
   administrativeArea = self->_administrativeArea;
-  if (administrativeArea | *(v4 + 11))
+  if (administrativeArea | *(equalCopy + 11))
   {
     if (![(NSString *)administrativeArea isEqual:?])
     {
@@ -2061,7 +2061,7 @@ LABEL_20:
   }
 
   locality = self->_locality;
-  if (locality | *(v4 + 31))
+  if (locality | *(equalCopy + 31))
   {
     if (![(NSString *)locality isEqual:?])
     {
@@ -2070,7 +2070,7 @@ LABEL_20:
   }
 
   subAdministrativeArea = self->_subAdministrativeArea;
-  if (subAdministrativeArea | *(v4 + 38))
+  if (subAdministrativeArea | *(equalCopy + 38))
   {
     if (![(NSString *)subAdministrativeArea isEqual:?])
     {
@@ -2078,10 +2078,10 @@ LABEL_20:
     }
   }
 
-  v28 = *(v4 + 174);
+  v28 = *(equalCopy + 174);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v28 & 2) == 0 || self->_advertisingIdentifierMonthResetCount != *(v4 + 24))
+    if ((v28 & 2) == 0 || self->_advertisingIdentifierMonthResetCount != *(equalCopy + 24))
     {
       goto LABEL_79;
     }
@@ -2093,13 +2093,13 @@ LABEL_20:
   }
 
   deviceRequestID = self->_deviceRequestID;
-  if (deviceRequestID | *(v4 + 24) && ![(NSString *)deviceRequestID isEqual:?])
+  if (deviceRequestID | *(equalCopy + 24) && ![(NSString *)deviceRequestID isEqual:?])
   {
     goto LABEL_79;
   }
 
   carrierMNC = self->_carrierMNC;
-  if (carrierMNC | *(v4 + 18))
+  if (carrierMNC | *(equalCopy + 18))
   {
     if (![(NSString *)carrierMNC isEqual:?])
     {
@@ -2108,7 +2108,7 @@ LABEL_20:
   }
 
   carrierMCC = self->_carrierMCC;
-  if (carrierMCC | *(v4 + 17))
+  if (carrierMCC | *(equalCopy + 17))
   {
     if (![(NSString *)carrierMCC isEqual:?])
     {
@@ -2117,7 +2117,7 @@ LABEL_20:
   }
 
   currentCarrierMNC = self->_currentCarrierMNC;
-  if (currentCarrierMNC | *(v4 + 21))
+  if (currentCarrierMNC | *(equalCopy + 21))
   {
     if (![(NSString *)currentCarrierMNC isEqual:?])
     {
@@ -2126,7 +2126,7 @@ LABEL_20:
   }
 
   currentCarrierMCC = self->_currentCarrierMCC;
-  if (currentCarrierMCC | *(v4 + 20))
+  if (currentCarrierMCC | *(equalCopy + 20))
   {
     if (![(NSString *)currentCarrierMCC isEqual:?])
     {
@@ -2135,37 +2135,37 @@ LABEL_20:
   }
 
   v37 = self->_has;
-  v38 = *(v4 + 174);
+  v38 = *(equalCopy + 174);
   if ((v37 & 0x400) != 0)
   {
-    if ((*(v4 + 174) & 0x400) == 0)
+    if ((*(equalCopy + 174) & 0x400) == 0)
     {
       goto LABEL_79;
     }
 
-    v39 = *(v4 + 344);
+    v39 = *(equalCopy + 344);
     if (self->_isOnInternationalDataRoaming)
     {
-      if ((*(v4 + 344) & 1) == 0)
+      if ((*(equalCopy + 344) & 1) == 0)
       {
         goto LABEL_79;
       }
     }
 
-    else if (*(v4 + 344))
+    else if (*(equalCopy + 344))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 174) & 0x400) != 0)
+  else if ((*(equalCopy + 174) & 0x400) != 0)
   {
     goto LABEL_79;
   }
 
   if ((v37 & 8) != 0)
   {
-    if ((v38 & 8) == 0 || self->_connectionType != *(v4 + 38))
+    if ((v38 & 8) == 0 || self->_connectionType != *(equalCopy + 38))
     {
       goto LABEL_79;
     }
@@ -2177,16 +2177,16 @@ LABEL_20:
   }
 
   storeFrontLanguageLocaleIdentifier = self->_storeFrontLanguageLocaleIdentifier;
-  if ((!(storeFrontLanguageLocaleIdentifier | *(v4 + 37)) || [(NSString *)storeFrontLanguageLocaleIdentifier isEqual:?]) && PBRepeatedInt32IsEqual())
+  if ((!(storeFrontLanguageLocaleIdentifier | *(equalCopy + 37)) || [(NSString *)storeFrontLanguageLocaleIdentifier isEqual:?]) && PBRepeatedInt32IsEqual())
   {
-    v41 = *(v4 + 174);
+    v41 = *(equalCopy + 174);
     if ((*&self->_has & 0x80) == 0)
     {
       v29 = (v41 & 0x80) == 0;
       goto LABEL_80;
     }
 
-    if ((v41 & 0x80) != 0 && self->_overrideType == *(v4 + 68))
+    if ((v41 & 0x80) != 0 && self->_overrideType == *(equalCopy + 68))
     {
       v29 = 1;
       goto LABEL_80;
@@ -2482,18 +2482,18 @@ LABEL_60:
   return v72 ^ v73 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v34 ^ v35 ^ v36 ^ v37 ^ v39 ^ v40 ^ v41 ^ v42 ^ v43;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 174))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 174))
   {
-    self->_clientClockTime = v4[10];
+    self->_clientClockTime = fromCopy[10];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(ADUserTargetingProperties *)self setAppID:?];
   }
@@ -2571,20 +2571,20 @@ LABEL_60:
     *&self->_has |= 4u;
   }
 
-  v12 = [v5 deviceModesCount];
-  if (v12)
+  deviceModesCount = [v5 deviceModesCount];
+  if (deviceModesCount)
   {
-    v13 = v12;
+    v13 = deviceModesCount;
     for (j = 0; j != v13; ++j)
     {
       -[ADUserTargetingProperties addDeviceMode:](self, "addDeviceMode:", [v5 deviceModeAtIndex:j]);
     }
   }
 
-  v15 = [v5 accountTypesCount];
-  if (v15)
+  accountTypesCount = [v5 accountTypesCount];
+  if (accountTypesCount)
   {
-    v16 = v15;
+    v16 = accountTypesCount;
     for (k = 0; k != v16; ++k)
     {
       -[ADUserTargetingProperties addAccountType:](self, "addAccountType:", [v5 accountTypeAtIndex:k]);
@@ -2753,10 +2753,10 @@ LABEL_38:
     [(ADUserTargetingProperties *)self setStoreFrontLanguageLocaleIdentifier:?];
   }
 
-  v25 = [v5 accountStatesCount];
-  if (v25)
+  accountStatesCount = [v5 accountStatesCount];
+  if (accountStatesCount)
   {
-    v26 = v25;
+    v26 = accountStatesCount;
     for (n = 0; n != v26; ++n)
     {
       -[ADUserTargetingProperties addAccountState:](self, "addAccountState:", [v5 accountStateAtIndex:n]);

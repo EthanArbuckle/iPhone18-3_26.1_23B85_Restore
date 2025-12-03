@@ -1,20 +1,20 @@
 @interface WeekViewAllDayContents
 - (WeekViewAllDayContentsDelegate)delegate;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation WeekViewAllDayContents
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v14 = a3;
-  if ([v14 count] == 1)
+  endedCopy = ended;
+  if ([endedCopy count] == 1)
   {
-    v5 = [v14 anyObject];
-    v6 = v5;
-    if (v5)
+    anyObject = [endedCopy anyObject];
+    v6 = anyObject;
+    if (anyObject)
     {
-      v7 = [v5 view];
+      view = [anyObject view];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 

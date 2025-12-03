@@ -1,23 +1,23 @@
 @interface SDAState
-+ (id)loadFromFileAtPath:(id)a3;
-- (id)getElemForBundleId:(id)a3 volType:(int)a4 residency:(unsigned int)a5 urgency:(int)a6 state:(int)a7 create:(BOOL)a8;
-- (void)enumerateAllAverageElementsOfVolType:(int)a3 UsingBlock:(id)a4;
++ (id)loadFromFileAtPath:(id)path;
+- (id)getElemForBundleId:(id)id volType:(int)type residency:(unsigned int)residency urgency:(int)urgency state:(int)state create:(BOOL)create;
+- (void)enumerateAllAverageElementsOfVolType:(int)type UsingBlock:(id)block;
 - (void)fadeOldEntries;
 - (void)print;
 - (void)saveToFile;
-- (void)updateEventId:(unint64_t)a3 andDate:(id)a4 forVolPath:(id)a5;
+- (void)updateEventId:(unint64_t)id andDate:(id)date forVolPath:(id)path;
 @end
 
 @implementation SDAState
 
-+ (id)loadFromFileAtPath:(id)a3
++ (id)loadFromFileAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_new();
   v5 = @"/var/db/spaceattribution";
-  if (v3)
+  if (pathCopy)
   {
-    v5 = v3;
+    v5 = pathCopy;
   }
 
   v6 = [NSString stringWithFormat:@"%@/%@", v5, @"SpeculativeDownload.db"];
@@ -87,8 +87,8 @@ LABEL_13:
   v22 = [v17 objectForKey:@"SdaVersion"];
   [v4 setSdaVersion:v22];
 
-  v23 = [v4 sdaVersion];
-  if (v23 && (v24 = v23, [v4 sdaVersion], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToNumber:", &off_1000689B8), v25, v24, (v26 & 1) != 0))
+  sdaVersion = [v4 sdaVersion];
+  if (sdaVersion && (v24 = sdaVersion, [v4 sdaVersion], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToNumber:", &off_1000689B8), v25, v24, (v26 & 1) != 0))
   {
     v27 = v20;
   }
@@ -100,9 +100,9 @@ LABEL_13:
     v27 = v20;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v4 sdaVersion];
+      sdaVersion2 = [v4 sdaVersion];
       *buf = 138412290;
-      v82 = v29;
+      v82 = sdaVersion2;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "New SDA version %@", buf, 0xCu);
     }
 
@@ -112,8 +112,8 @@ LABEL_13:
   v30 = [v17 objectForKey:@"BuildVersion"];
   [v4 setBuildVersion:v30];
 
-  v31 = [v4 buildVersion];
-  if (!v31 || (v32 = v31, [v4 buildVersion], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "isEqual:", @"buildVersion unknown"), v33, v32, v34))
+  buildVersion = [v4 buildVersion];
+  if (!buildVersion || (v32 = buildVersion, [v4 buildVersion], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "isEqual:", @"buildVersion unknown"), v33, v32, v34))
   {
     v35 = SALog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -129,9 +129,9 @@ LABEL_13:
   v37 = [v17 objectForKey:@"LastUpdateDate"];
   [v4 setLastUpdateDate:v37];
 
-  v38 = [v4 lastUpdateDate];
+  lastUpdateDate = [v4 lastUpdateDate];
 
-  if (!v38)
+  if (!lastUpdateDate)
   {
     v39 = [v9[207] now];
     [v4 setLastUpdateDate:v39];
@@ -139,9 +139,9 @@ LABEL_13:
     v40 = SALog();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = [v4 lastUpdateDate];
+      lastUpdateDate2 = [v4 lastUpdateDate];
       *buf = 138412290;
-      v82 = v41;
+      v82 = lastUpdateDate2;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "updating lastUpdateDate to %@", buf, 0xCu);
     }
   }
@@ -149,9 +149,9 @@ LABEL_13:
   v42 = [v17 objectForKey:@"StartExecutionDate"];
   [v4 setStartExecutionDate:v42];
 
-  v43 = [v4 startExecutionDate];
+  startExecutionDate = [v4 startExecutionDate];
 
-  if (!v43)
+  if (!startExecutionDate)
   {
     v44 = [v9[207] now];
     [v4 setStartExecutionDate:v44];
@@ -159,9 +159,9 @@ LABEL_13:
     v45 = SALog();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
-      v46 = [v4 startExecutionDate];
+      startExecutionDate2 = [v4 startExecutionDate];
       *buf = 138412290;
-      v82 = v46;
+      v82 = startExecutionDate2;
       _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "updating startExecutionDate to %@", buf, 0xCu);
     }
   }
@@ -169,9 +169,9 @@ LABEL_13:
   v47 = [v17 objectForKey:@"NumOfTraversal"];
   [v4 setNumOfTraversal:v47];
 
-  v48 = [v4 numOfTraversal];
+  numOfTraversal = [v4 numOfTraversal];
 
-  if (!v48)
+  if (!numOfTraversal)
   {
     [v4 setNumOfTraversal:&off_1000689D0];
   }
@@ -179,9 +179,9 @@ LABEL_13:
   v49 = [v17 objectForKey:@"kExecutionOnGoing"];
   [v4 setExecutionOnGoing:v49];
 
-  v50 = [v4 executionOnGoing];
+  executionOnGoing = [v4 executionOnGoing];
 
-  if (!v50)
+  if (!executionOnGoing)
   {
     v51 = SALog();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -196,9 +196,9 @@ LABEL_13:
   v52 = [v17 objectForKey:@"FreeDiskSpaceAtStart"];
   [v4 setFreeDiskSpaceAtStart:v52];
 
-  v53 = [v4 freeDiskSpaceAtStart];
+  freeDiskSpaceAtStart = [v4 freeDiskSpaceAtStart];
 
-  if (!v53)
+  if (!freeDiskSpaceAtStart)
   {
     v54 = SALog();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
@@ -213,9 +213,9 @@ LABEL_13:
   v55 = [v17 objectForKey:@"DenominatorTable"];
   [v4 setAveElem:v55];
 
-  v56 = [v4 aveElem];
+  aveElem = [v4 aveElem];
 
-  if (!v56)
+  if (!aveElem)
   {
     v57 = SALog();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
@@ -260,8 +260,8 @@ LABEL_13:
 
   [v4 setLastEventTimePerVol:v63];
   v66 = [v9[207] now];
-  v67 = [v4 lastUpdateDate];
-  [v66 timeIntervalSinceDate:v67];
+  lastUpdateDate3 = [v4 lastUpdateDate];
+  [v66 timeIntervalSinceDate:lastUpdateDate3];
   v69 = v68;
 
   v70 = (v69 + 43200.0) / 86400.0;
@@ -285,16 +285,16 @@ LABEL_13:
   return v4;
 }
 
-- (void)updateEventId:(unint64_t)a3 andDate:(id)a4 forVolPath:(id)a5
+- (void)updateEventId:(unint64_t)id andDate:(id)date forVolPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = [NSNumber numberWithUnsignedLongLong:a3];
-  v10 = [(SDAState *)self lastEventIdPerVol];
-  [v10 setObject:v12 forKey:v8];
+  pathCopy = path;
+  dateCopy = date;
+  v12 = [NSNumber numberWithUnsignedLongLong:id];
+  lastEventIdPerVol = [(SDAState *)self lastEventIdPerVol];
+  [lastEventIdPerVol setObject:v12 forKey:pathCopy];
 
-  v11 = [(SDAState *)self lastEventTimePerVol];
-  [v11 setObject:v9 forKey:v8];
+  lastEventTimePerVol = [(SDAState *)self lastEventTimePerVol];
+  [lastEventTimePerVol setObject:dateCopy forKey:pathCopy];
 }
 
 - (void)saveToFile
@@ -319,8 +319,8 @@ LABEL_13:
       }
     }
 
-    v10 = [(SDAState *)self pathToDisk];
-    v11 = [v7 writeToFile:v10 atomically:1];
+    pathToDisk = [(SDAState *)self pathToDisk];
+    v11 = [v7 writeToFile:pathToDisk atomically:1];
 
     v12 = SALog();
     v13 = v12;
@@ -328,9 +328,9 @@ LABEL_13:
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(SDAState *)self pathToDisk];
+        pathToDisk2 = [(SDAState *)self pathToDisk];
         *buf = 138412290;
-        v25 = v14;
+        v25 = pathToDisk2;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "successful write to file %@", buf, 0xCu);
       }
     }
@@ -364,22 +364,22 @@ LABEL_13:
   [v3 enumerateKeysAndObjectsUsingBlock:v4];
 }
 
-- (id)getElemForBundleId:(id)a3 volType:(int)a4 residency:(unsigned int)a5 urgency:(int)a6 state:(int)a7 create:(BOOL)a8
+- (id)getElemForBundleId:(id)id volType:(int)type residency:(unsigned int)residency urgency:(int)urgency state:(int)state create:(BOOL)create
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = [NSNumber numberWithUnsignedLong:a4];
-  v16 = [NSNumber numberWithUnsignedLong:a5];
-  v17 = [NSNumber numberWithUnsignedLong:a6];
-  v18 = [NSNumber numberWithUnsignedLong:a7];
-  v19 = [(NSMutableDictionary *)self->_aveElem objectForKey:v14];
+  createCopy = create;
+  idCopy = id;
+  v15 = [NSNumber numberWithUnsignedLong:type];
+  v16 = [NSNumber numberWithUnsignedLong:residency];
+  v17 = [NSNumber numberWithUnsignedLong:urgency];
+  v18 = [NSNumber numberWithUnsignedLong:state];
+  v19 = [(NSMutableDictionary *)self->_aveElem objectForKey:idCopy];
   if (v19)
   {
 LABEL_4:
     v20 = [v19 objectForKey:v15];
     if (!v20)
     {
-      if (!v8)
+      if (!createCopy)
       {
         v23 = 0;
         goto LABEL_19;
@@ -393,7 +393,7 @@ LABEL_4:
     v21 = [v20 objectForKey:v16];
     if (!v21)
     {
-      if (!v8)
+      if (!createCopy)
       {
         v23 = 0;
         goto LABEL_18;
@@ -406,7 +406,7 @@ LABEL_4:
     v22 = [v21 objectForKey:v17];
     if (!v22)
     {
-      if (!v8)
+      if (!createCopy)
       {
         v23 = 0;
 LABEL_17:
@@ -423,7 +423,7 @@ LABEL_19:
     }
 
     v23 = [v22 objectForKey:v18];
-    if (!v23 && v8)
+    if (!v23 && createCopy)
     {
       v23 = objc_opt_new();
       [v22 setObject:v23 forKey:v18];
@@ -432,10 +432,10 @@ LABEL_19:
     goto LABEL_17;
   }
 
-  if (v8)
+  if (createCopy)
   {
     v19 = objc_opt_new();
-    [(NSMutableDictionary *)self->_aveElem setObject:v19 forKey:v14];
+    [(NSMutableDictionary *)self->_aveElem setObject:v19 forKey:idCopy];
     goto LABEL_4;
   }
 
@@ -445,17 +445,17 @@ LABEL_20:
   return v23;
 }
 
-- (void)enumerateAllAverageElementsOfVolType:(int)a3 UsingBlock:(id)a4
+- (void)enumerateAllAverageElementsOfVolType:(int)type UsingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   aveElem = self->_aveElem;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100024F74;
   v9[3] = &unk_100065410;
-  v11 = a3;
-  v10 = v6;
-  v8 = v6;
+  typeCopy = type;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [(NSMutableDictionary *)aveElem enumerateKeysAndObjectsUsingBlock:v9];
 }
 

@@ -1,29 +1,29 @@
 @interface BCCFISet
-+ (id)_intersectArray:(id)a3 withArray:(id)a4;
-+ (id)_negateArray:(id)a3;
-+ (id)_unionArray:(id)a3 withArray:(id)a4;
++ (id)_intersectArray:(id)array withArray:(id)withArray;
++ (id)_negateArray:(id)array;
++ (id)_unionArray:(id)array withArray:(id)withArray;
 + (id)cfiSet;
-+ (id)cfiSetWithCFIString:(id)a3;
-+ (id)cfiSetWithCFIStrings:(id)a3;
++ (id)cfiSetWithCFIString:(id)string;
++ (id)cfiSetWithCFIStrings:(id)strings;
 - (BCCFI)firstCFI;
 - (BCCFI)lastCFI;
 - (BCCFISet)init;
-- (BCCFISet)initWithCFI:(id)a3;
-- (BCCFISet)initWithCFIArray:(id)a3;
-- (BCCFISet)initWithCFIString:(id)a3;
-- (BCCFISet)initWithCFIStrings:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BCCFISet)initWithCFI:(id)i;
+- (BCCFISet)initWithCFIArray:(id)array;
+- (BCCFISet)initWithCFIString:(id)string;
+- (BCCFISet)initWithCFIStrings:(id)strings;
+- (BOOL)isEqual:(id)equal;
 - (NSString)firstCFIString;
 - (NSString)lastCFIString;
-- (id)_arrayCopyWithOnlyRangeCFIsFromCFIs:(id)a3;
-- (id)_mutableArrayCopyWithOnlyRangeCFIsFromCFIs:(id)a3;
+- (id)_arrayCopyWithOnlyRangeCFIsFromCFIs:(id)is;
+- (id)_mutableArrayCopyWithOnlyRangeCFIsFromCFIs:(id)is;
 - (id)allCFIStrings;
 - (id)allCFIs;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)intersectionWithCFISet:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)unionWithCFISet:(id)a3;
+- (id)intersectionWithCFISet:(id)set;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)unionWithCFISet:(id)set;
 - (int64_t)cfiCount;
 @end
 
@@ -31,37 +31,37 @@
 
 + (id)cfiSet
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)cfiSetWithCFIString:(id)a3
++ (id)cfiSetWithCFIString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCFIString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithCFIString:stringCopy];
 
   return v5;
 }
 
-+ (id)cfiSetWithCFIStrings:(id)a3
++ (id)cfiSetWithCFIStrings:(id)strings
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCFIStrings:v4];
+  stringsCopy = strings;
+  v5 = [[self alloc] initWithCFIStrings:stringsCopy];
 
   return v5;
 }
 
-- (BCCFISet)initWithCFIArray:(id)a3
+- (BCCFISet)initWithCFIArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v10.receiver = self;
   v10.super_class = BCCFISet;
   v5 = [(BCCFISet *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(BCCFISet *)v5 _arrayCopyWithOnlyRangeCFIsFromCFIs:v4];
+    v7 = [(BCCFISet *)v5 _arrayCopyWithOnlyRangeCFIsFromCFIs:arrayCopy];
     cfis = v6->_cfis;
     v6->_cfis = v7;
   }
@@ -77,19 +77,19 @@
   return v4;
 }
 
-- (BCCFISet)initWithCFI:(id)a3
+- (BCCFISet)initWithCFI:(id)i
 {
-  v4 = [NSArray arrayWithObject:a3];
+  v4 = [NSArray arrayWithObject:i];
   v5 = [(BCCFISet *)self initWithCFIArray:v4];
 
   return v5;
 }
 
-- (BCCFISet)initWithCFIString:(id)a3
+- (BCCFISet)initWithCFIString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v15 = 0;
-  v6 = [BCCFI cfiWithString:v5 error:&v15];
+  v6 = [BCCFI cfiWithString:stringCopy error:&v15];
   v7 = v15;
   if (v7)
   {
@@ -111,7 +111,7 @@
       *buf = 138412802;
       v17 = v10;
       v18 = 2112;
-      v19 = v5;
+      v19 = stringCopy;
       v20 = 2112;
       v21 = v11;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Cannot initialize %@ with string %@.  %@ will return nil", buf, 0x20u);
@@ -130,16 +130,16 @@
   return v13;
 }
 
-- (BCCFISet)initWithCFIStrings:(id)a3
+- (BCCFISet)initWithCFIStrings:(id)strings
 {
   aSelector = a2;
-  v4 = a3;
+  stringsCopy = strings;
   v5 = +[NSMutableArray array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v7)
   {
@@ -157,7 +157,7 @@
 
         v11 = *(*(&v22 + 1) + 8 * v10);
         v21 = 0;
-        v12 = [BCCFI cfiWithString:v11 error:&v21, aSelector];
+        aSelector = [BCCFI cfiWithString:v11 error:&v21, aSelector];
         v13 = v21;
         if (v13)
         {
@@ -179,9 +179,9 @@
           goto LABEL_16;
         }
 
-        if (v12)
+        if (aSelector)
         {
-          [v5 addObject:v12];
+          [v5 addObject:aSelector];
         }
 
         v10 = v10 + 1;
@@ -213,7 +213,7 @@ LABEL_16:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BCCFISet alloc];
   v5 = [(NSArray *)self->_cfis copy];
@@ -222,7 +222,7 @@ LABEL_16:
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BCMutableCFISet alloc];
   v5 = [(NSArray *)self->_cfis copy];
@@ -231,13 +231,13 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isSubclassOfClass:objc_opt_class()])
   {
-    v6 = [(NSArray *)self->_cfis isEqual:v4[1]];
+    v6 = [(NSArray *)self->_cfis isEqual:equalCopy[1]];
   }
 
   else
@@ -258,8 +258,8 @@ LABEL_16:
 - (id)description
 {
   v3 = [NSMutableString stringWithString:@"{\n"];
-  v4 = [(BCCFISet *)self allCFIs];
-  v5 = [v4 count];
+  allCFIs = [(BCCFISet *)self allCFIs];
+  v5 = [allCFIs count];
   if (v5)
   {
     v6 = v5;
@@ -275,9 +275,9 @@ LABEL_16:
         v8 = &stru_2D2930;
       }
 
-      v9 = [v4 objectAtIndexedSubscript:i];
-      v10 = [v9 string];
-      [v3 appendFormat:@"  %@%@\n", v8, v10];
+      v9 = [allCFIs objectAtIndexedSubscript:i];
+      string = [v9 string];
+      [v3 appendFormat:@"  %@%@\n", v8, string];
     }
   }
 
@@ -311,10 +311,10 @@ LABEL_16:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 string];
-        if ([v11 length])
+        string = [v10 string];
+        if ([string length])
         {
-          [v3 addObject:v11];
+          [v3 addObject:string];
         }
 
         else
@@ -345,18 +345,18 @@ LABEL_16:
 
 - (int64_t)cfiCount
 {
-  v2 = [(BCCFISet *)self cfis];
-  v3 = [v2 count];
+  cfis = [(BCCFISet *)self cfis];
+  v3 = [cfis count];
 
   return v3;
 }
 
 - (BCCFI)firstCFI
 {
-  v2 = [(BCCFISet *)self cfis];
-  if ([v2 count])
+  cfis = [(BCCFISet *)self cfis];
+  if ([cfis count])
   {
-    v3 = [v2 objectAtIndex:0];
+    v3 = [cfis objectAtIndex:0];
   }
 
   else
@@ -369,10 +369,10 @@ LABEL_16:
 
 - (BCCFI)lastCFI
 {
-  v2 = [(BCCFISet *)self cfis];
-  if ([v2 count])
+  cfis = [(BCCFISet *)self cfis];
+  if ([cfis count])
   {
-    v3 = [v2 objectAtIndex:{objc_msgSend(v2, "count") - 1}];
+    v3 = [cfis objectAtIndex:{objc_msgSend(cfis, "count") - 1}];
   }
 
   else
@@ -385,59 +385,59 @@ LABEL_16:
 
 - (NSString)firstCFIString
 {
-  v2 = [(BCCFISet *)self firstCFI];
-  v3 = [v2 string];
+  firstCFI = [(BCCFISet *)self firstCFI];
+  string = [firstCFI string];
 
-  return v3;
+  return string;
 }
 
 - (NSString)lastCFIString
 {
-  v2 = [(BCCFISet *)self lastCFI];
-  v3 = [v2 string];
+  lastCFI = [(BCCFISet *)self lastCFI];
+  string = [lastCFI string];
 
-  return v3;
+  return string;
 }
 
-- (id)unionWithCFISet:(id)a3
+- (id)unionWithCFISet:(id)set
 {
-  v4 = a3;
-  v5 = [(BCCFISet *)self cfis];
-  v6 = [v4 cfis];
+  setCopy = set;
+  cfis = [(BCCFISet *)self cfis];
+  cfis2 = [setCopy cfis];
 
-  v7 = [objc_opt_class() _unionArray:v5 withArray:v6];
+  v7 = [objc_opt_class() _unionArray:cfis withArray:cfis2];
   v8 = [[BCCFISet alloc] initWithCFIArray:v7];
 
   return v8;
 }
 
-- (id)intersectionWithCFISet:(id)a3
+- (id)intersectionWithCFISet:(id)set
 {
-  v4 = a3;
-  v5 = [(BCCFISet *)self cfis];
-  v6 = [v4 cfis];
+  setCopy = set;
+  cfis = [(BCCFISet *)self cfis];
+  cfis2 = [setCopy cfis];
 
-  v7 = [objc_opt_class() _intersectArray:v5 withArray:v6];
+  v7 = [objc_opt_class() _intersectArray:cfis withArray:cfis2];
   v8 = [[BCCFISet alloc] initWithCFIArray:v7];
 
   return v8;
 }
 
-+ (id)_intersectArray:(id)a3 withArray:(id)a4
++ (id)_intersectArray:(id)array withArray:(id)withArray
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  withArrayCopy = withArray;
   v7 = +[NSMutableArray array];
-  v8 = [v5 count];
-  v9 = [v6 count];
+  v8 = [arrayCopy count];
+  v9 = [withArrayCopy count];
   if (v8 && v9)
   {
     v10 = 0;
     v11 = 0;
     do
     {
-      v12 = [v5 objectAtIndex:v10];
-      v13 = [v6 objectAtIndex:v11];
+      v12 = [arrayCopy objectAtIndex:v10];
+      v13 = [withArrayCopy objectAtIndex:v11];
       v14 = [v12 intersectWithCFI:v13];
       if ([v14 isRange])
       {
@@ -454,8 +454,8 @@ LABEL_16:
         ++v11;
       }
 
-      v15 = [v5 count];
-      v16 = [v6 count];
+      v15 = [arrayCopy count];
+      v16 = [withArrayCopy count];
     }
 
     while (v10 != v15 && v11 != v16);
@@ -464,13 +464,13 @@ LABEL_16:
   return v7;
 }
 
-+ (id)_unionArray:(id)a3 withArray:(id)a4
++ (id)_unionArray:(id)array withArray:(id)withArray
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  withArrayCopy = withArray;
   v7 = +[NSMutableArray array];
-  v8 = [v5 count];
-  v9 = [v6 count];
+  v8 = [arrayCopy count];
+  v9 = [withArrayCopy count];
   v10 = v8 != 0;
   v11 = v9 != 0;
   if (v8 | v9)
@@ -479,23 +479,23 @@ LABEL_16:
     v13 = 0;
     do
     {
-      if (v10 && (!v11 || ([v5 objectAtIndex:v12], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectAtIndex:", v13), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "compare:", v15), v15, v14, v16 == -1)))
+      if (v10 && (!v11 || ([arrayCopy objectAtIndex:v12], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(withArrayCopy, "objectAtIndex:", v13), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "compare:", v15), v15, v14, v16 == -1)))
       {
-        v17 = [v5 objectAtIndex:v12];
+        v17 = [arrayCopy objectAtIndex:v12];
         ++v12;
       }
 
       else
       {
-        v17 = [v6 objectAtIndex:v13];
+        v17 = [withArrayCopy objectAtIndex:v13];
         ++v13;
       }
 
-      v18 = [v7 lastObject];
-      v19 = [v18 intersectWithCFI:v17];
+      lastObject = [v7 lastObject];
+      v19 = [lastObject intersectWithCFI:v17];
       if (v19)
       {
-        v20 = [v18 unionWithCFI:v17];
+        v20 = [lastObject unionWithCFI:v17];
         [v7 replaceObjectAtIndex:objc_msgSend(v7 withObject:{"count") - 1, v20}];
       }
 
@@ -504,8 +504,8 @@ LABEL_16:
         [v7 addObject:v17];
       }
 
-      v21 = [v5 count];
-      v22 = [v6 count];
+      v21 = [arrayCopy count];
+      v22 = [withArrayCopy count];
       v11 = v13 != v22;
       v10 = v12 != v21;
     }
@@ -516,17 +516,17 @@ LABEL_16:
   return v7;
 }
 
-+ (id)_negateArray:(id)a3
++ (id)_negateArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[NSMutableArray array];
-  v5 = [v3 count];
+  v5 = [arrayCopy count];
   if (v5)
   {
     v6 = v5;
-    v7 = [v3 firstObject];
+    firstObject = [arrayCopy firstObject];
     v8 = +[BCCFI minimumCFI];
-    v9 = [v8 rangeToCFI:v7];
+    v9 = [v8 rangeToCFI:firstObject];
 
     if ([v9 isRange])
     {
@@ -544,11 +544,11 @@ LABEL_16:
       for (i = 1; i != v6; ++i)
       {
         v15 = v9;
-        v10 = v7;
+        v10 = firstObject;
 
-        v7 = [v3 objectAtIndexedSubscript:i];
+        firstObject = [arrayCopy objectAtIndexedSubscript:i];
 
-        v9 = [v10 rangeToCFI:v7];
+        v9 = [v10 rangeToCFI:firstObject];
 
         if ([v9 isRange])
         {
@@ -560,7 +560,7 @@ LABEL_16:
     }
 
     v16 = +[BCCFI maximumCFI];
-    v11 = [v7 rangeToCFI:v16];
+    v11 = [firstObject rangeToCFI:v16];
 
     if ([v11 isRange])
     {
@@ -571,8 +571,8 @@ LABEL_16:
   else
   {
     v10 = +[BCCFI minimumCFI];
-    v7 = +[BCCFI maximumCFI];
-    v11 = [v10 rangeToCFI:v7];
+    firstObject = +[BCCFI maximumCFI];
+    v11 = [v10 rangeToCFI:firstObject];
     v12 = [NSMutableArray arrayWithObject:v11];
 
     v4 = v12;
@@ -581,15 +581,15 @@ LABEL_16:
   return v4;
 }
 
-- (id)_mutableArrayCopyWithOnlyRangeCFIsFromCFIs:(id)a3
+- (id)_mutableArrayCopyWithOnlyRangeCFIsFromCFIs:(id)is
 {
-  v3 = a3;
+  isCopy = is;
   v4 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = isCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -620,12 +620,12 @@ LABEL_16:
   return v4;
 }
 
-- (id)_arrayCopyWithOnlyRangeCFIsFromCFIs:(id)a3
+- (id)_arrayCopyWithOnlyRangeCFIsFromCFIs:(id)is
 {
-  v4 = a3;
-  if ([v4 count])
+  isCopy = is;
+  if ([isCopy count])
   {
-    v5 = [(BCCFISet *)self _mutableArrayCopyWithOnlyRangeCFIsFromCFIs:v4];
+    v5 = [(BCCFISet *)self _mutableArrayCopyWithOnlyRangeCFIsFromCFIs:isCopy];
     v6 = [v5 copy];
   }
 

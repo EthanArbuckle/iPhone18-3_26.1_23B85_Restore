@@ -5,26 +5,26 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setDropOffLocation:(id)a3;
-- (void)setPickupLocation:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setDropOffLocation:(id)location;
+- (void)setPickupLocation:(id)location;
 @end
 
 @implementation INListRideOptionsIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INListRideOptionsIntent *)self _typedBackingStore];
-  v13 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 pickupLocation];
-  v10 = INIntentSlotValueRedactedLocationFromLocation(v9, a3, v13);
+  idCopy = id;
+  _typedBackingStore = [(INListRideOptionsIntent *)self _typedBackingStore];
+  v13 = idCopy;
+  v8 = [_typedBackingStore copy];
+  pickupLocation = [_typedBackingStore pickupLocation];
+  v10 = INIntentSlotValueRedactedLocationFromLocation(pickupLocation, options, v13);
   [v8 setPickupLocation:v10];
 
-  v11 = [v7 dropOffLocation];
-  v12 = INIntentSlotValueRedactedLocationFromLocation(v11, a3, v13);
+  dropOffLocation = [_typedBackingStore dropOffLocation];
+  v12 = INIntentSlotValueRedactedLocationFromLocation(dropOffLocation, options, v13);
 
   [v8 setDropOffLocation:v12];
   [(INIntent *)self setBackingStore:v8];
@@ -34,29 +34,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"pickupLocation";
-  v3 = [(INListRideOptionsIntent *)self pickupLocation];
-  v4 = v3;
-  if (!v3)
+  pickupLocation = [(INListRideOptionsIntent *)self pickupLocation];
+  null = pickupLocation;
+  if (!pickupLocation)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"dropOffLocation";
-  v11[0] = v4;
-  v5 = [(INListRideOptionsIntent *)self dropOffLocation];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  dropOffLocation = [(INListRideOptionsIntent *)self dropOffLocation];
+  null2 = dropOffLocation;
+  if (!dropOffLocation)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!dropOffLocation)
   {
   }
 
-  if (!v3)
+  if (!pickupLocation)
   {
   }
 
@@ -65,38 +65,38 @@
   return v7;
 }
 
-- (void)setDropOffLocation:(id)a3
+- (void)setDropOffLocation:(id)location
 {
-  v4 = a3;
-  v6 = [(INListRideOptionsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _typedBackingStore = [(INListRideOptionsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v6 setDropOffLocation:v5];
+  [_typedBackingStore setDropOffLocation:v5];
 }
 
 - (CLPlacemark)dropOffLocation
 {
-  v2 = [(INListRideOptionsIntent *)self _typedBackingStore];
-  v3 = [v2 dropOffLocation];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _typedBackingStore = [(INListRideOptionsIntent *)self _typedBackingStore];
+  dropOffLocation = [_typedBackingStore dropOffLocation];
+  v4 = INIntentSlotValueTransformFromLocation(dropOffLocation);
 
   return v4;
 }
 
-- (void)setPickupLocation:(id)a3
+- (void)setPickupLocation:(id)location
 {
-  v4 = a3;
-  v6 = [(INListRideOptionsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _typedBackingStore = [(INListRideOptionsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v6 setPickupLocation:v5];
+  [_typedBackingStore setPickupLocation:v5];
 }
 
 - (CLPlacemark)pickupLocation
 {
-  v2 = [(INListRideOptionsIntent *)self _typedBackingStore];
-  v3 = [v2 pickupLocation];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _typedBackingStore = [(INListRideOptionsIntent *)self _typedBackingStore];
+  pickupLocation = [_typedBackingStore pickupLocation];
+  v4 = INIntentSlotValueTransformFromLocation(pickupLocation);
 
   return v4;
 }
@@ -118,28 +118,28 @@
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INListRideOptionsIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INListRideOptionsIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INListRideOptionsIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INListRideOptionsIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

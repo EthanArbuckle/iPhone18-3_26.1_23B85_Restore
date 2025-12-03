@@ -8,8 +8,8 @@
 {
   if ([(GKPurgeableCacheObject *)self purgeable])
   {
-    v4 = [(GKPurgeableCacheObject *)self managedObjectContext];
-    [v4 deleteObject:self];
+    managedObjectContext = [(GKPurgeableCacheObject *)self managedObjectContext];
+    [managedObjectContext deleteObject:self];
   }
 
   else

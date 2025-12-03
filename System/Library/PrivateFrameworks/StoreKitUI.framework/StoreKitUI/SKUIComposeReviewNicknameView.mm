@@ -1,24 +1,24 @@
 @interface SKUIComposeReviewNicknameView
-- (SKUIComposeReviewNicknameView)initWithFrame:(CGRect)a3;
+- (SKUIComposeReviewNicknameView)initWithFrame:(CGRect)frame;
 - (void)_setupInfo;
 - (void)_setupSampleCardView;
 - (void)_setupTextField;
 - (void)_setupTitle;
 - (void)_setupView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SKUIComposeReviewNicknameView
 
-- (SKUIComposeReviewNicknameView)initWithFrame:(CGRect)a3
+- (SKUIComposeReviewNicknameView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SKUIComposeReviewNicknameView;
-  v3 = [(SKUIComposeReviewNicknameView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SKUIComposeReviewNicknameView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SKUIComposeReviewNicknameView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SKUIComposeReviewNicknameView *)v3 setBackgroundColor:systemBackgroundColor];
 
     [(SKUIComposeReviewNicknameView *)v3 _setupView];
   }
@@ -26,52 +26,52 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIComposeReviewNicknameView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  traitCollection = [(SKUIComposeReviewNicknameView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [(SKUIComposeReviewNicknameView *)self titleView];
+    titleView = [(SKUIComposeReviewNicknameView *)self titleView];
     v9 = SKUIFontLimitedPreferredFontForTextStyle(15, 7);
-    [v8 setFont:v9];
+    [titleView setFont:v9];
 
-    v10 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+    nicknamePlaceholderLabel = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
     v11 = SKUIFontLimitedPreferredFontForTextStyle(3, 7);
-    [v10 setFont:v11];
+    [nicknamePlaceholderLabel setFont:v11];
 
-    v12 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+    nicknameTextfield = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
     v13 = SKUIFontLimitedPreferredFontForTextStyle(1, 7);
-    [v12 setFont:v13];
+    [nicknameTextfield setFont:v13];
 
-    v14 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+    nicknameInfoLabel = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
     v15 = SKUIFontLimitedPreferredFontForTextStyle(11, 7);
-    [v14 setFont:v15];
+    [nicknameInfoLabel setFont:v15];
   }
 
-  v16 = [(SKUIComposeReviewNicknameView *)self traitCollection];
-  v17 = [v16 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  traitCollection2 = [(SKUIComposeReviewNicknameView *)self traitCollection];
+  v17 = [traitCollection2 hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v17)
   {
-    v18 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-    v19 = [v18 layer];
-    v20 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v21 = [v20 colorWithAlphaComponent:0.0];
+    sampleCardGradientView = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+    layer = [sampleCardGradientView layer];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    v21 = [systemBackgroundColor colorWithAlphaComponent:0.0];
     v27[0] = [v21 CGColor];
-    v22 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v23 = [v22 colorWithAlphaComponent:0.0];
+    systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+    v23 = [systemBackgroundColor2 colorWithAlphaComponent:0.0];
     v27[1] = [v23 CGColor];
-    v24 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v27[2] = [v24 CGColor];
-    v25 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v27[3] = [v25 CGColor];
+    systemBackgroundColor3 = [MEMORY[0x277D75348] systemBackgroundColor];
+    v27[2] = [systemBackgroundColor3 CGColor];
+    systemBackgroundColor4 = [MEMORY[0x277D75348] systemBackgroundColor];
+    v27[3] = [systemBackgroundColor4 CGColor];
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:4];
-    [v19 setColors:v26];
+    [layer setColors:v26];
   }
 }
 
@@ -89,47 +89,47 @@
   v3 = objc_opt_new();
   [(SKUIComposeReviewNicknameView *)self setTitleView:v3];
 
-  v4 = [(SKUIComposeReviewNicknameView *)self titleView];
+  titleView = [(SKUIComposeReviewNicknameView *)self titleView];
   v5 = SKUIFontLimitedPreferredFontForTextStyle(15, 7);
-  [v4 setFont:v5];
+  [titleView setFont:v5];
 
-  v6 = [(SKUIComposeReviewNicknameView *)self titleView];
-  [v6 setNumberOfLines:2];
+  titleView2 = [(SKUIComposeReviewNicknameView *)self titleView];
+  [titleView2 setNumberOfLines:2];
 
-  v7 = [(SKUIComposeReviewNicknameView *)self titleView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleView3 = [(SKUIComposeReviewNicknameView *)self titleView];
+  [titleView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(SKUIComposeReviewNicknameView *)self titleView];
-  [(SKUIComposeReviewNicknameView *)self addSubview:v8];
+  titleView4 = [(SKUIComposeReviewNicknameView *)self titleView];
+  [(SKUIComposeReviewNicknameView *)self addSubview:titleView4];
 
-  v9 = [(SKUIComposeReviewNicknameView *)self titleView];
-  v10 = [v9 firstBaselineAnchor];
-  v11 = [(SKUIComposeReviewNicknameView *)self safeAreaLayoutGuide];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:61.0];
+  titleView5 = [(SKUIComposeReviewNicknameView *)self titleView];
+  firstBaselineAnchor = [titleView5 firstBaselineAnchor];
+  safeAreaLayoutGuide = [(SKUIComposeReviewNicknameView *)self safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  v13 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:61.0];
   [v13 setActive:1];
 
-  v14 = [(SKUIComposeReviewNicknameView *)self titleView];
-  v15 = [v14 leadingAnchor];
-  v16 = [(SKUIComposeReviewNicknameView *)self leadingAnchor];
+  titleView6 = [(SKUIComposeReviewNicknameView *)self titleView];
+  leadingAnchor = [titleView6 leadingAnchor];
+  leadingAnchor2 = [(SKUIComposeReviewNicknameView *)self leadingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:20.0];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:?];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   [v17 setActive:1];
 
-  v18 = [(SKUIComposeReviewNicknameView *)self titleView];
-  v19 = [v18 trailingAnchor];
-  v20 = [(SKUIComposeReviewNicknameView *)self trailingAnchor];
+  titleView7 = [(SKUIComposeReviewNicknameView *)self titleView];
+  trailingAnchor = [titleView7 trailingAnchor];
+  trailingAnchor2 = [(SKUIComposeReviewNicknameView *)self trailingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:20.0];
-  v22 = [v19 constraintEqualToAnchor:v20 constant:-v21];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v21];
   [v22 setActive:1];
 
   v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v24 = [v23 localizedStringForKey:@"NICKNAME_VIEW_TITLE" value:&stru_2827FFAC8 table:0];
-  v25 = [(SKUIComposeReviewNicknameView *)self titleView];
-  [v25 setText:v24];
+  titleView8 = [(SKUIComposeReviewNicknameView *)self titleView];
+  [titleView8 setText:v24];
 
-  v26 = [(SKUIComposeReviewNicknameView *)self titleView];
-  [v26 setTextAlignment:1];
+  titleView9 = [(SKUIComposeReviewNicknameView *)self titleView];
+  [titleView9 setTextAlignment:1];
 }
 
 - (void)_setupSampleCardView
@@ -138,83 +138,83 @@
   v3 = objc_opt_new();
   [(SKUIComposeReviewNicknameView *)self setSampleCardView:v3];
 
-  v4 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sampleCardView = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  [sampleCardView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  [(SKUIComposeReviewNicknameView *)self addSubview:v5];
+  sampleCardView2 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  [(SKUIComposeReviewNicknameView *)self addSubview:sampleCardView2];
 
-  v6 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  v7 = [v6 topAnchor];
-  v8 = [(SKUIComposeReviewNicknameView *)self titleView];
-  v9 = [v8 bottomAnchor];
+  sampleCardView3 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  topAnchor = [sampleCardView3 topAnchor];
+  titleView = [(SKUIComposeReviewNicknameView *)self titleView];
+  bottomAnchor = [titleView bottomAnchor];
   [MEMORY[0x277CDD370] PPMConfirmedValueWithValue:24.0 newValue:30.0];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:?];
+  v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [v10 setActive:1];
 
-  v11 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  v12 = [v11 centerXAnchor];
-  v13 = [(SKUIComposeReviewNicknameView *)self centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  sampleCardView4 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  centerXAnchor = [sampleCardView4 centerXAnchor];
+  centerXAnchor2 = [(SKUIComposeReviewNicknameView *)self centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v14 setActive:1];
 
   v15 = [SKUIGradientView alloc];
   v16 = [(SKUIGradientView *)v15 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(SKUIComposeReviewNicknameView *)self setSampleCardGradientView:v16];
 
-  v17 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sampleCardGradientView = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+  [sampleCardGradientView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  v19 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-  [v18 addSubview:v19];
+  sampleCardView5 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  sampleCardGradientView2 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+  [sampleCardView5 addSubview:sampleCardGradientView2];
 
-  v20 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v21 = [v20 topAnchor];
-  v22 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  sampleCardGradientView3 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+  topAnchor2 = [sampleCardGradientView3 topAnchor];
+  sampleCardView6 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  topAnchor3 = [sampleCardView6 topAnchor];
+  v24 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   [v24 setActive:1];
 
-  v25 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v26 = [v25 leadingAnchor];
-  v27 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  v28 = [v27 leadingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  sampleCardGradientView4 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+  leadingAnchor = [sampleCardGradientView4 leadingAnchor];
+  sampleCardView7 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  leadingAnchor2 = [sampleCardView7 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v29 setActive:1];
 
-  v30 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v31 = [v30 trailingAnchor];
-  v32 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  v33 = [v32 trailingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  sampleCardGradientView5 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+  trailingAnchor = [sampleCardGradientView5 trailingAnchor];
+  sampleCardView8 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  trailingAnchor2 = [sampleCardView8 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v34 setActive:1];
 
-  v35 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v36 = [v35 bottomAnchor];
-  v37 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  v38 = [v37 bottomAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  sampleCardGradientView6 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+  bottomAnchor2 = [sampleCardGradientView6 bottomAnchor];
+  sampleCardView9 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  bottomAnchor3 = [sampleCardView9 bottomAnchor];
+  v39 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v39 setActive:1];
 
-  v40 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v41 = [v40 layer];
-  v42 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v43 = [v42 colorWithAlphaComponent:0.0];
+  sampleCardGradientView7 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+  layer = [sampleCardGradientView7 layer];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  v43 = [systemBackgroundColor colorWithAlphaComponent:0.0];
   v51[0] = [v43 CGColor];
-  v44 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v45 = [v44 colorWithAlphaComponent:0.0];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  v45 = [systemBackgroundColor2 colorWithAlphaComponent:0.0];
   v51[1] = [v45 CGColor];
-  v46 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v51[2] = [v46 CGColor];
-  v47 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v51[3] = [v47 CGColor];
+  systemBackgroundColor3 = [MEMORY[0x277D75348] systemBackgroundColor];
+  v51[2] = [systemBackgroundColor3 CGColor];
+  systemBackgroundColor4 = [MEMORY[0x277D75348] systemBackgroundColor];
+  v51[3] = [systemBackgroundColor4 CGColor];
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:4];
-  [v41 setColors:v48];
+  [layer setColors:v48];
 
-  v49 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
-  v50 = [v49 layer];
-  [v50 setLocations:&unk_2828D2F78];
+  sampleCardGradientView8 = [(SKUIComposeReviewNicknameView *)self sampleCardGradientView];
+  layer2 = [sampleCardGradientView8 layer];
+  [layer2 setLocations:&unk_2828D2F78];
 }
 
 - (void)_setupTextField
@@ -222,148 +222,148 @@
   v3 = objc_opt_new();
   [(SKUIComposeReviewNicknameView *)self setNicknameBackgroundView:v3];
 
-  v4 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nicknameBackgroundView = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  [nicknameBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  v6 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  [v6 setBackgroundColor:v5];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  nicknameBackgroundView2 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  [nicknameBackgroundView2 setBackgroundColor:secondarySystemBackgroundColor];
 
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:8.0];
   v8 = v7;
-  v9 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v10 = [v9 layer];
-  [v10 setCornerRadius:v8];
+  nicknameBackgroundView3 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  layer = [nicknameBackgroundView3 layer];
+  [layer setCornerRadius:v8];
 
-  v11 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  [(SKUIComposeReviewNicknameView *)self addSubview:v11];
+  nicknameBackgroundView4 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  [(SKUIComposeReviewNicknameView *)self addSubview:nicknameBackgroundView4];
 
-  v12 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v13 = [v12 topAnchor];
-  v14 = [(SKUIComposeReviewNicknameView *)self sampleCardView];
-  v15 = [v14 bottomAnchor];
+  nicknameBackgroundView5 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  topAnchor = [nicknameBackgroundView5 topAnchor];
+  sampleCardView = [(SKUIComposeReviewNicknameView *)self sampleCardView];
+  bottomAnchor = [sampleCardView bottomAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:20.0];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:?];
+  v16 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [v16 setActive:1];
 
-  v17 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v18 = [v17 leadingAnchor];
-  v19 = [(SKUIComposeReviewNicknameView *)self leadingAnchor];
+  nicknameBackgroundView6 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  leadingAnchor = [nicknameBackgroundView6 leadingAnchor];
+  leadingAnchor2 = [(SKUIComposeReviewNicknameView *)self leadingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:20.0];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:?];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   [v20 setActive:1];
 
-  v21 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v22 = [v21 trailingAnchor];
-  v23 = [(SKUIComposeReviewNicknameView *)self trailingAnchor];
+  nicknameBackgroundView7 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  trailingAnchor = [nicknameBackgroundView7 trailingAnchor];
+  trailingAnchor2 = [(SKUIComposeReviewNicknameView *)self trailingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:20.0];
-  v25 = [v22 constraintEqualToAnchor:v23 constant:-v24];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v24];
   [v25 setActive:1];
 
   v26 = objc_opt_new();
   [(SKUIComposeReviewNicknameView *)self setNicknamePlaceholderLabel:v26];
 
-  v27 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nicknamePlaceholderLabel = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  [nicknamePlaceholderLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v28 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v29 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  [v28 addSubview:v29];
+  nicknameBackgroundView8 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  nicknamePlaceholderLabel2 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  [nicknameBackgroundView8 addSubview:nicknamePlaceholderLabel2];
 
-  v30 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  nicknamePlaceholderLabel3 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
   v31 = SKUIFontLimitedPreferredFontForTextStyle(3, 7);
-  [v30 setFont:v31];
+  [nicknamePlaceholderLabel3 setFont:v31];
 
-  v32 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v33 = [v32 leadingAnchor];
-  v34 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v35 = [v34 leadingAnchor];
+  nicknamePlaceholderLabel4 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  leadingAnchor3 = [nicknamePlaceholderLabel4 leadingAnchor];
+  nicknameBackgroundView9 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  leadingAnchor4 = [nicknameBackgroundView9 leadingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:20.0];
-  v36 = [v33 constraintEqualToAnchor:v35 constant:?];
+  v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
   [v36 setActive:1];
 
-  v37 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v38 = [v37 topAnchor];
-  v39 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v40 = [v39 topAnchor];
+  nicknamePlaceholderLabel5 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  topAnchor2 = [nicknamePlaceholderLabel5 topAnchor];
+  nicknameBackgroundView10 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  topAnchor3 = [nicknameBackgroundView10 topAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:18.0];
-  v41 = [v38 constraintEqualToAnchor:v40 constant:?];
+  v41 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:?];
   [v41 setActive:1];
 
-  v42 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v43 = [v42 bottomAnchor];
-  v44 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v45 = [v44 bottomAnchor];
+  nicknamePlaceholderLabel6 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  bottomAnchor2 = [nicknamePlaceholderLabel6 bottomAnchor];
+  nicknameBackgroundView11 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  bottomAnchor3 = [nicknameBackgroundView11 bottomAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:18.0];
-  v47 = [v43 constraintEqualToAnchor:v45 constant:-v46];
+  v47 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v46];
   [v47 setActive:1];
 
-  v48 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  nicknamePlaceholderLabel7 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
   LODWORD(v49) = 1148846080;
-  [v48 setContentHuggingPriority:0 forAxis:v49];
+  [nicknamePlaceholderLabel7 setContentHuggingPriority:0 forAxis:v49];
 
   v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v51 = [v50 localizedStringForKey:@"NICKNAME_VIEW_PLACEHOLDER" value:&stru_2827FFAC8 table:0];
-  v52 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  [v52 setText:v51];
+  nicknamePlaceholderLabel8 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  [nicknamePlaceholderLabel8 setText:v51];
 
   v53 = objc_opt_new();
   [(SKUIComposeReviewNicknameView *)self setNicknameTextfield:v53];
 
-  v54 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
-  [v54 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nicknameTextfield = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  [nicknameTextfield setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v55 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v56 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
-  [v55 addSubview:v56];
+  nicknameBackgroundView12 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  nicknameTextfield2 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  [nicknameBackgroundView12 addSubview:nicknameTextfield2];
 
-  v57 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
-  v58 = [v57 firstBaselineAnchor];
-  v59 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v60 = [v59 firstBaselineAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60];
+  nicknameTextfield3 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  firstBaselineAnchor = [nicknameTextfield3 firstBaselineAnchor];
+  nicknamePlaceholderLabel9 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  firstBaselineAnchor2 = [nicknamePlaceholderLabel9 firstBaselineAnchor];
+  v61 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   [v61 setActive:1];
 
-  v62 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
-  v63 = [v62 topAnchor];
-  v64 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v65 = [v64 topAnchor];
-  v66 = [v63 constraintEqualToAnchor:v65];
+  nicknameTextfield4 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  topAnchor4 = [nicknameTextfield4 topAnchor];
+  nicknameBackgroundView13 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  topAnchor5 = [nicknameBackgroundView13 topAnchor];
+  v66 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   [v66 setActive:1];
 
-  v67 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
-  v68 = [v67 leadingAnchor];
-  v69 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
-  v70 = [v69 trailingAnchor];
+  nicknameTextfield5 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  leadingAnchor5 = [nicknameTextfield5 leadingAnchor];
+  nicknamePlaceholderLabel10 = [(SKUIComposeReviewNicknameView *)self nicknamePlaceholderLabel];
+  trailingAnchor3 = [nicknamePlaceholderLabel10 trailingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:20.0];
-  v71 = [v68 constraintEqualToAnchor:v70 constant:?];
+  v71 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:?];
   [v71 setActive:1];
 
-  v72 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
-  v73 = [v72 trailingAnchor];
-  v74 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v75 = [v74 trailingAnchor];
+  nicknameTextfield6 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  trailingAnchor4 = [nicknameTextfield6 trailingAnchor];
+  nicknameBackgroundView14 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  trailingAnchor5 = [nicknameBackgroundView14 trailingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:16.0];
-  v77 = [v73 constraintEqualToAnchor:v75 constant:-v76];
+  v77 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-v76];
   [v77 setActive:1];
 
-  v78 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
-  v79 = [v78 bottomAnchor];
-  v80 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v81 = [v80 bottomAnchor];
-  v82 = [v79 constraintEqualToAnchor:v81];
+  nicknameTextfield7 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  bottomAnchor4 = [nicknameTextfield7 bottomAnchor];
+  nicknameBackgroundView15 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  bottomAnchor5 = [nicknameBackgroundView15 bottomAnchor];
+  v82 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [v82 setActive:1];
 
-  v83 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  nicknameTextfield8 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
   LODWORD(v84) = 1132068864;
-  [v83 setContentCompressionResistancePriority:0 forAxis:v84];
+  [nicknameTextfield8 setContentCompressionResistancePriority:0 forAxis:v84];
 
-  v85 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
-  [v85 setClearButtonMode:1];
+  nicknameTextfield9 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  [nicknameTextfield9 setClearButtonMode:1];
 
-  v87 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
+  nicknameTextfield10 = [(SKUIComposeReviewNicknameView *)self nicknameTextfield];
   v86 = SKUIFontLimitedPreferredFontForTextStyle(1, 7);
-  [v87 setFont:v86];
+  [nicknameTextfield10 setFont:v86];
 }
 
 - (void)_setupInfo
@@ -371,59 +371,59 @@
   v3 = objc_opt_new();
   [(SKUIComposeReviewNicknameView *)self setNicknameInfoLabel:v3];
 
-  v4 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nicknameInfoLabel = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [nicknameInfoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [(SKUIComposeReviewNicknameView *)self addSubview:v5];
+  nicknameInfoLabel2 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [(SKUIComposeReviewNicknameView *)self addSubview:nicknameInfoLabel2];
 
-  v6 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  nicknameInfoLabel3 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
   v7 = SKUIFontLimitedPreferredFontForTextStyle(11, 7);
-  [v6 setFont:v7];
+  [nicknameInfoLabel3 setFont:v7];
 
-  v8 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v8 setTextColor:v9];
+  nicknameInfoLabel4 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [nicknameInfoLabel4 setTextColor:secondaryLabelColor];
 
-  v10 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v11 = [v10 leadingAnchor];
-  v12 = [(SKUIComposeReviewNicknameView *)self leadingAnchor];
+  nicknameInfoLabel5 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  leadingAnchor = [nicknameInfoLabel5 leadingAnchor];
+  leadingAnchor2 = [(SKUIComposeReviewNicknameView *)self leadingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:40.0];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:?];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   [v13 setActive:1];
 
-  v14 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v15 = [v14 trailingAnchor];
-  v16 = [(SKUIComposeReviewNicknameView *)self trailingAnchor];
+  nicknameInfoLabel6 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  trailingAnchor = [nicknameInfoLabel6 trailingAnchor];
+  trailingAnchor2 = [(SKUIComposeReviewNicknameView *)self trailingAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:40.0];
-  v18 = [v15 constraintEqualToAnchor:v16 constant:-v17];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v17];
   [v18 setActive:1];
 
-  v19 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v20 = [v19 firstBaselineAnchor];
-  v21 = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
-  v22 = [v21 bottomAnchor];
+  nicknameInfoLabel7 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  firstBaselineAnchor = [nicknameInfoLabel7 firstBaselineAnchor];
+  nicknameBackgroundView = [(SKUIComposeReviewNicknameView *)self nicknameBackgroundView];
+  bottomAnchor = [nicknameBackgroundView bottomAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:24.0];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:?];
+  v23 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [v23 setActive:1];
 
-  v24 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  v25 = [v24 bottomAnchor];
-  v26 = [(SKUIComposeReviewNicknameView *)self bottomAnchor];
+  nicknameInfoLabel8 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  bottomAnchor2 = [nicknameInfoLabel8 bottomAnchor];
+  bottomAnchor3 = [(SKUIComposeReviewNicknameView *)self bottomAnchor];
   [MEMORY[0x277CDD370] PPMScaledValueUsingValue:20.0];
-  v28 = [v25 constraintEqualToAnchor:v26 constant:-v27];
+  v28 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v27];
   [v28 setActive:1];
 
-  v29 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [v29 setNumberOfLines:3];
+  nicknameInfoLabel9 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [nicknameInfoLabel9 setNumberOfLines:3];
 
-  v30 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [v30 setTextAlignment:1];
+  nicknameInfoLabel10 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [nicknameInfoLabel10 setTextAlignment:1];
 
   v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v31 = [v33 localizedStringForKey:@"NICKNAME_VIEW_MESSAGE" value:&stru_2827FFAC8 table:0];
-  v32 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
-  [v32 setText:v31];
+  nicknameInfoLabel11 = [(SKUIComposeReviewNicknameView *)self nicknameInfoLabel];
+  [nicknameInfoLabel11 setText:v31];
 }
 
 @end

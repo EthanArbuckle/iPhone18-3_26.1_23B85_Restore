@@ -4,9 +4,9 @@
 - (void)_notifyDelegate;
 - (void)_registerMotionAlarm;
 - (void)_unregisterMotionAlarm;
-- (void)alarmDidFire:(id)a3 error:(id)a4;
-- (void)alarmDidRegister:(id)a3 error:(id)a4;
-- (void)alarmDidUnregister:(id)a3 error:(id)a4;
+- (void)alarmDidFire:(id)fire error:(id)error;
+- (void)alarmDidRegister:(id)register error:(id)error;
+- (void)alarmDidUnregister:(id)unregister error:(id)error;
 - (void)dealloc;
 @end
 
@@ -85,10 +85,10 @@
   [(CMMotionAlarmManager *)self->_motionAlarmManager unregisterAlarmWithName:@"com.apple.SpringBoard.MotionAlarmTypeMoving" error:0];
 }
 
-- (void)alarmDidFire:(id)a3 error:(id)a4
+- (void)alarmDidFire:(id)fire error:(id)error
 {
-  v5 = [a3 type];
-  if (v5 == 8 || v5 == 1)
+  type = [fire type];
+  if (type == 8 || type == 1)
   {
     v6 = SBLogMotionAlarm();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -101,25 +101,25 @@
   }
 }
 
-- (void)alarmDidRegister:(id)a3 error:(id)a4
+- (void)alarmDidRegister:(id)register error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  registerCopy = register;
+  errorCopy = error;
   v7 = SBLogMotionAlarm();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [SBFMotionAlarmController alarmDidRegister:v5 error:v6];
+    [SBFMotionAlarmController alarmDidRegister:registerCopy error:errorCopy];
   }
 }
 
-- (void)alarmDidUnregister:(id)a3 error:(id)a4
+- (void)alarmDidUnregister:(id)unregister error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  unregisterCopy = unregister;
+  errorCopy = error;
   v7 = SBLogMotionAlarm();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [SBFMotionAlarmController alarmDidUnregister:v5 error:v6];
+    [SBFMotionAlarmController alarmDidUnregister:unregisterCopy error:errorCopy];
   }
 }
 

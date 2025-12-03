@@ -1,18 +1,18 @@
 @interface _UIDocumentLaunchViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UIDocumentLaunchViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = @"_UIDocumentLaunchViewController";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   v4 = @"UISheetPresentationController";
@@ -29,29 +29,29 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v20.receiver = self;
   v20.super_class = _UIDocumentLaunchViewControllerAccessibility;
   [(_UIDocumentLaunchViewControllerAccessibility *)&v20 _accessibilityLoadAccessibilityInformation];
-  v19 = [(_UIDocumentLaunchViewControllerAccessibility *)v22 safeValueForKey:@"_pageContainerView"];
+  v19 = [(_UIDocumentLaunchViewControllerAccessibility *)selfCopy safeValueForKey:@"_pageContainerView"];
   [v19 _accessibilitySetSortPriority:1000];
-  v4 = [(_UIDocumentLaunchViewControllerAccessibility *)v22 safeValueForKey:@"_browserPresentationController"];
+  v4 = [(_UIDocumentLaunchViewControllerAccessibility *)selfCopy safeValueForKey:@"_browserPresentationController"];
   v3 = [v4 safeUIViewForKey:@"containerView"];
   v18 = [v3 _accessibilityFindSubviewDescendant:&__block_literal_global_0];
   MEMORY[0x29EDC9740](v3);
   MEMORY[0x29EDC9740](v4);
   v16 = 0;
   objc_opt_class();
-  v6 = [v18 accessibilityElements];
-  v5 = [v6 firstObject];
+  accessibilityElements = [v18 accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
   v15 = __UIAccessibilityCastAsClass();
-  MEMORY[0x29EDC9740](v5);
-  MEMORY[0x29EDC9740](v6);
+  MEMORY[0x29EDC9740](firstObject);
+  MEMORY[0x29EDC9740](accessibilityElements);
   v14 = MEMORY[0x29EDC9748](v15);
   objc_storeStrong(&v15, 0);
   v17 = v14;
-  objc_initWeak(&v13, v22);
+  objc_initWeak(&v13, selfCopy);
   v2 = v17;
   v7 = MEMORY[0x29EDCA5F8];
   v8 = -1073741824;

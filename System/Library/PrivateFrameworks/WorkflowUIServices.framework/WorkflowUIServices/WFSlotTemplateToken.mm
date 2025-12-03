@@ -1,10 +1,10 @@
 @interface WFSlotTemplateToken
 - (NSHashTable)delegates;
-- (WFSlotTemplateToken)initWithDisplayName:(id)a3 icon:(id)a4 isAvailable:(BOOL)a5;
-- (void)addDelegate:(id)a3;
+- (WFSlotTemplateToken)initWithDisplayName:(id)name icon:(id)icon isAvailable:(BOOL)available;
+- (void)addDelegate:(id)delegate;
 - (void)propertiesUpdated;
-- (void)removeDelegate:(id)a3;
-- (void)updatePropertiesWithToken:(id)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)updatePropertiesWithToken:(id)token;
 @end
 
 @implementation WFSlotTemplateToken
@@ -17,8 +17,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(WFSlotTemplateToken *)self delegates];
-  v4 = [v3 copy];
+  delegates = [(WFSlotTemplateToken *)self delegates];
+  v4 = [delegates copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -52,18 +52,18 @@
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateToken *)self delegates];
-  [v5 removeObject:v4];
+  delegateCopy = delegate;
+  delegates = [(WFSlotTemplateToken *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateToken *)self delegates];
-  [v5 addObject:v4];
+  delegateCopy = delegate;
+  delegates = [(WFSlotTemplateToken *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
 - (NSHashTable)delegates
@@ -71,9 +71,9 @@
   delegates = self->_delegates;
   if (!delegates)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v5 = self->_delegates;
-    self->_delegates = v4;
+    self->_delegates = weakObjectsHashTable;
 
     delegates = self->_delegates;
   }
@@ -81,13 +81,13 @@
   return delegates;
 }
 
-- (void)updatePropertiesWithToken:(id)a3
+- (void)updatePropertiesWithToken:(id)token
 {
-  v21 = a3;
-  v4 = [(WFSlotTemplateToken *)self displayName];
-  v5 = [v21 displayName];
-  v6 = v4;
-  v7 = v5;
+  tokenCopy = token;
+  displayName = [(WFSlotTemplateToken *)self displayName];
+  displayName2 = [tokenCopy displayName];
+  v6 = displayName;
+  v7 = displayName2;
   v8 = v7;
   if (v6 == v7)
   {
@@ -117,10 +117,10 @@
     }
   }
 
-  v12 = [(WFSlotTemplateToken *)self icon];
-  v13 = [v21 icon];
-  v10 = v12;
-  v14 = v13;
+  icon = [(WFSlotTemplateToken *)self icon];
+  icon2 = [tokenCopy icon];
+  v10 = icon;
+  v14 = icon2;
   v9 = v14;
   if (v10 == v14)
   {
@@ -145,32 +145,32 @@ LABEL_17:
     }
   }
 
-  v16 = [(WFSlotTemplateToken *)self isAvailable];
-  v17 = [v21 isAvailable];
+  isAvailable = [(WFSlotTemplateToken *)self isAvailable];
+  isAvailable2 = [tokenCopy isAvailable];
 
-  if (v16 != v17)
+  if (isAvailable != isAvailable2)
   {
 LABEL_18:
-    v18 = [v21 displayName];
-    v19 = [v18 copy];
+    displayName3 = [tokenCopy displayName];
+    v19 = [displayName3 copy];
     [(WFSlotTemplateToken *)self setDisplayName:v19];
 
-    v20 = [v21 icon];
-    [(WFSlotTemplateToken *)self setIcon:v20];
+    icon3 = [tokenCopy icon];
+    [(WFSlotTemplateToken *)self setIcon:icon3];
 
-    -[WFSlotTemplateToken setIsAvailable:](self, "setIsAvailable:", [v21 isAvailable]);
+    -[WFSlotTemplateToken setIsAvailable:](self, "setIsAvailable:", [tokenCopy isAvailable]);
     [(WFSlotTemplateToken *)self propertiesUpdated];
   }
 }
 
-- (WFSlotTemplateToken)initWithDisplayName:(id)a3 icon:(id)a4 isAvailable:(BOOL)a5
+- (WFSlotTemplateToken)initWithDisplayName:(id)name icon:(id)icon isAvailable:(BOOL)available
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  nameCopy = name;
+  iconCopy = icon;
+  if (!nameCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateToken.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateToken.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   v17.receiver = self;
@@ -178,12 +178,12 @@ LABEL_18:
   v11 = [(WFSlotTemplateToken *)&v17 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [nameCopy copy];
     displayName = v11->_displayName;
     v11->_displayName = v12;
 
-    objc_storeStrong(&v11->_icon, a4);
-    v11->_isAvailable = a5;
+    objc_storeStrong(&v11->_icon, icon);
+    v11->_isAvailable = available;
     v14 = v11;
   }
 

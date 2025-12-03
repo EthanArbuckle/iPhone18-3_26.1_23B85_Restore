@@ -1,23 +1,23 @@
 @interface UIPrintOption
-- (UIPrintOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (UIPrintPanelViewController)printPanelViewController;
 - (void)updatePrintOptionSummary;
 @end
 
 @implementation UIPrintOption
 
-- (UIPrintOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = UIPrintOption;
   v9 = [(UIPrintOption *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_printInfo, a3);
-    objc_storeWeak(&v10->_printPanelViewController, v8);
+    objc_storeStrong(&v9->_printInfo, info);
+    objc_storeWeak(&v10->_printPanelViewController, controllerCopy);
     *&v10->_collapsed = 257;
   }
 
@@ -26,20 +26,20 @@
 
 - (void)updatePrintOptionSummary
 {
-  v3 = [(UIPrintOption *)self tableViewCell];
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
 
-  if (v3)
+  if (tableViewCell)
   {
-    v4 = [(UIPrintOption *)self printPanelViewController];
-    v8 = [v4 printOptionsTableView];
+    printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+    printOptionsTableView = [printPanelViewController printOptionsTableView];
 
-    v5 = [(UIPrintOption *)self tableViewCell];
-    v6 = [v8 indexPathForCell:v5];
+    tableViewCell2 = [(UIPrintOption *)self tableViewCell];
+    v6 = [printOptionsTableView indexPathForCell:tableViewCell2];
 
     if (v6)
     {
       v7 = [MEMORY[0x277CBEA60] arrayWithObject:v6];
-      [v8 reloadRowsAtIndexPaths:v7 withRowAnimation:100];
+      [printOptionsTableView reloadRowsAtIndexPaths:v7 withRowAnimation:100];
     }
   }
 }

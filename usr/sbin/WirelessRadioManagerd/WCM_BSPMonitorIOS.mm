@@ -1,26 +1,26 @@
 @interface WCM_BSPMonitorIOS
 - (WCM_BSPMonitorIOS)init;
-- (int)selectBand_preferred:(int)a3 prohibited:(int)a4;
+- (int)selectBand_preferred:(int)band_preferred prohibited:(int)prohibited;
 - (void)ULLAModeTransition;
 - (void)checkBTRegulatoryInfo;
 - (void)dealloc;
 - (void)didEnterBSPActiveState;
-- (void)handleBTBandSwitchRequestEvent:(int)a3 targetBand:(int)a4;
-- (void)handleBTRegulatoryInfoEvent:(id)a3 allowedBands:(int)a4;
-- (void)handleBandSwitchRejectEvent:(int)a3 btTargetBand:(int)a4;
-- (void)handleBandSwitchStatusEvent:(BOOL)a3 btSubband:(int)a4 successCount:(unint64_t)a5 failCount:(unint64_t)a6;
+- (void)handleBTBandSwitchRequestEvent:(int)event targetBand:(int)band;
+- (void)handleBTRegulatoryInfoEvent:(id)event allowedBands:(int)bands;
+- (void)handleBandSwitchRejectEvent:(int)event btTargetBand:(int)band;
+- (void)handleBandSwitchStatusEvent:(BOOL)event btSubband:(int)subband successCount:(unint64_t)count failCount:(unint64_t)failCount;
 - (void)handleBandSwitchStatusUpdatedEvent;
-- (void)handleChannelQualityInfoEvent:(__CFDictionary *)a3;
+- (void)handleChannelQualityInfoEvent:(__CFDictionary *)event;
 - (void)handleChannelQualityInfoUpdatedEvent;
-- (void)handleCoexModeFailEvent:(int)a3 btSubband:(int)a4;
+- (void)handleCoexModeFailEvent:(int)event btSubband:(int)subband;
 - (void)handleRDCountryCodeChangedEvent;
 - (void)handleShowUCMStatusEvent;
-- (void)handleWiFiChannelQualityEvent:(int)a3 quality:(unint64_t)a4;
+- (void)handleWiFiChannelQualityEvent:(int)event quality:(unint64_t)quality;
 - (void)handleWiFiCountryCodeChangedEvent;
-- (void)handleWiFiFrequencyBandForBTEvent:(int)a3;
-- (void)handleWiFiRegulatoryInfoEvent:(unint64_t)a3;
-- (void)handleWiFiStateEvent:(int)a3 wifiChannel:(unsigned int)a4 isNanPhs:(BOOL)a5;
-- (void)handleWiFiStatusUpdateEvent:(BOOL)a3 isFWReset:(BOOL)a4;
+- (void)handleWiFiFrequencyBandForBTEvent:(int)event;
+- (void)handleWiFiRegulatoryInfoEvent:(unint64_t)event;
+- (void)handleWiFiStateEvent:(int)event wifiChannel:(unsigned int)channel isNanPhs:(BOOL)phs;
+- (void)handleWiFiStatusUpdateEvent:(BOOL)event isFWReset:(BOOL)reset;
 - (void)initBTStatus;
 - (void)initWiFiStatus;
 - (void)readRDCountryCode;
@@ -32,7 +32,7 @@
 - (void)sendGetNanPhsStateToWiFi;
 - (void)sendGetRegulatoryInfoToWiFi;
 - (void)sendRegulatoryInfoRequestToBT;
-- (void)sendSetFrequencyBandToBT:(int)a3 forced:(BOOL)a4;
+- (void)sendSetFrequencyBandToBT:(int)t forced:(BOOL)forced;
 - (void)sendWiFiStatusToBT;
 - (void)updateBSPState;
 - (void)updateFrequencyBandForBT;
@@ -104,7 +104,7 @@
   [WCM_Logging logLevel:2 message:@"%s", "[WCM_BSPMonitorIOS initBTStatus]"];
 }
 
-- (int)selectBand_preferred:(int)a3 prohibited:(int)a4
+- (int)selectBand_preferred:(int)band_preferred prohibited:(int)prohibited
 {
   allowedBands = self->mBTStatus.allowedBands;
   if (!self->mWiFiStatus.powerState && (allowedBands & 0x40) == 0 && ((self->mBTStatus.allowedBands & 0x12) == 2 || (self->mBTStatus.allowedBands & 0x12) == 16))
@@ -112,28 +112,28 @@
     return 1;
   }
 
-  if (a3)
+  if (band_preferred)
   {
-    v7 = a3;
+    band_preferredCopy = band_preferred;
   }
 
   else
   {
-    v7 = -1;
+    band_preferredCopy = -1;
   }
 
-  v8 = allowedBands & v7;
-  if ((a4 & 0x40) == 0 && (v8 & 0x40) != 0)
+  v8 = allowedBands & band_preferredCopy;
+  if ((prohibited & 0x40) == 0 && (v8 & 0x40) != 0)
   {
     return 64;
   }
 
-  if ((a4 & 0x10) == 0 && (v8 & 0x10) != 0)
+  if ((prohibited & 0x10) == 0 && (v8 & 0x10) != 0)
   {
     return 16;
   }
 
-  if ((((a4 & 2) == 0) & ((v8 & 2) >> 1)) != 0)
+  if ((((prohibited & 2) == 0) & ((v8 & 2) >> 1)) != 0)
   {
     return 2;
   }
@@ -148,7 +148,7 @@
   if (v4 && (v5 = v4, [v4 count]) && (v43 = 0u, v44 = 0u, v41 = 0u, v42 = 0u, (v6 = objc_msgSend(v5, "countByEnumeratingWithState:objects:count:", &v41, v46, 16)) != 0))
   {
     v7 = v6;
-    v33 = self;
+    selfCopy = self;
     v35 = 0;
     v8 = 0;
     v9 = *v42;
@@ -162,11 +162,11 @@
         }
 
         v11 = *(*(&v41 + 1) + 8 * i);
-        v12 = [v11 countryCode];
-        if (v12)
+        countryCode = [v11 countryCode];
+        if (countryCode)
         {
-          v13 = v12;
-          if ([v12 length])
+          v13 = countryCode;
+          if ([countryCode length])
           {
             if (v8)
             {
@@ -188,7 +188,7 @@
     }
 
     while (v7);
-    self = v33;
+    self = selfCopy;
     v15 = v35;
     v3 = &xpc_release_ptr;
     if (v8)
@@ -202,14 +202,14 @@
     v15 = 0;
   }
 
-  v16 = [v3[265] lastKnownEstimates];
-  if (!v16)
+  lastKnownEstimates = [v3[265] lastKnownEstimates];
+  if (!lastKnownEstimates)
   {
     goto LABEL_33;
   }
 
-  v17 = v16;
-  if (![v16 count])
+  v17 = lastKnownEstimates;
+  if (![lastKnownEstimates count])
   {
     goto LABEL_33;
   }
@@ -225,7 +225,7 @@
   }
 
   v19 = v18;
-  v34 = self;
+  selfCopy2 = self;
   v36 = v15;
   v8 = 0;
   v20 = *v38;
@@ -239,11 +239,11 @@
       }
 
       v22 = *(*(&v37 + 1) + 8 * j);
-      v23 = [v22 countryCode];
-      if (v23)
+      countryCode2 = [v22 countryCode];
+      if (countryCode2)
       {
-        v24 = v23;
-        if ([v23 length])
+        v24 = countryCode2;
+        if ([countryCode2 length])
         {
           if (v8)
           {
@@ -265,7 +265,7 @@
   }
 
   while (v19);
-  self = v34;
+  self = selfCopy2;
   v15 = v36;
   if (!v8)
   {
@@ -323,12 +323,12 @@ LABEL_50:
   }
 }
 
-- (void)sendSetFrequencyBandToBT:(int)a3 forced:(BOOL)a4
+- (void)sendSetFrequencyBandToBT:(int)t forced:(BOOL)forced
 {
-  if (a3 == 1 || self->mBTStatus.powerState)
+  if (t == 1 || self->mBTStatus.powerState)
   {
-    self->mBTConfig.targetBand = a3;
-    if (a4 || (frequencyBand = self->mBTStatus.frequencyBand, frequencyBand != a3) && (frequencyBand != -1 ? (v7 = self->mBSPState == 4) : (v7 = 1), !v7 && self->mBTStatus.countryCode))
+    self->mBTConfig.targetBand = t;
+    if (forced || (frequencyBand = self->mBTStatus.frequencyBand, frequencyBand != t) && (frequencyBand != -1 ? (v7 = self->mBSPState == 4) : (v7 = 1), !v7 && self->mBTStatus.countryCode))
     {
       v5 = [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
       if (v5)
@@ -672,61 +672,61 @@ LABEL_13:
   }
 }
 
-- (void)handleWiFiStatusUpdateEvent:(BOOL)a3 isFWReset:(BOOL)a4
+- (void)handleWiFiStatusUpdateEvent:(BOOL)event isFWReset:(BOOL)reset
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004B640;
   v4[3] = &unk_10023E880;
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  resetCopy = reset;
   v4[4] = self;
   sub_10004B5B8(v4);
 }
 
-- (void)handleWiFiFrequencyBandForBTEvent:(int)a3
+- (void)handleWiFiFrequencyBandForBTEvent:(int)event
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004B8B4;
   v3[3] = &unk_10023DBA0;
-  v4 = a3;
+  eventCopy = event;
   v3[4] = self;
   sub_10004B5B8(v3);
 }
 
-- (void)handleWiFiChannelQualityEvent:(int)a3 quality:(unint64_t)a4
+- (void)handleWiFiChannelQualityEvent:(int)event quality:(unint64_t)quality
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004BA54;
   v4[3] = &unk_10023E0A8;
-  v5 = a3;
+  eventCopy = event;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = quality;
   sub_10004B5B8(v4);
 }
 
-- (void)handleWiFiRegulatoryInfoEvent:(unint64_t)a3
+- (void)handleWiFiRegulatoryInfoEvent:(unint64_t)event
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004BCA0;
   v3[3] = &unk_10023DD88;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = event;
   sub_10004B5B8(v3);
 }
 
-- (void)handleWiFiStateEvent:(int)a3 wifiChannel:(unsigned int)a4 isNanPhs:(BOOL)a5
+- (void)handleWiFiStateEvent:(int)event wifiChannel:(unsigned int)channel isNanPhs:(BOOL)phs
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10004BE08;
   v5[3] = &unk_10023DF40;
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  eventCopy = event;
+  channelCopy = channel;
+  phsCopy = phs;
   v5[4] = self;
   sub_10004B5B8(v5);
 }
@@ -785,23 +785,23 @@ LABEL_13:
   sub_10004C0E0(v5, v6);
 }
 
-- (void)handleBandSwitchStatusEvent:(BOOL)a3 btSubband:(int)a4 successCount:(unint64_t)a5 failCount:(unint64_t)a6
+- (void)handleBandSwitchStatusEvent:(BOOL)event btSubband:(int)subband successCount:(unint64_t)count failCount:(unint64_t)failCount
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10004C400;
   v6[3] = &unk_10023E8A8;
-  v8 = a3;
-  v7 = a4;
-  v6[5] = a5;
-  v6[6] = a6;
+  eventCopy = event;
+  subbandCopy = subband;
+  v6[5] = count;
+  v6[6] = failCount;
   v6[4] = self;
   sub_10004B5B8(v6);
 }
 
-- (void)handleChannelQualityInfoEvent:(__CFDictionary *)a3
+- (void)handleChannelQualityInfoEvent:(__CFDictionary *)event
 {
-  Copy = CFDictionaryCreateCopy(kCFAllocatorDefault, a3);
+  Copy = CFDictionaryCreateCopy(kCFAllocatorDefault, event);
   if (Copy)
   {
     v5[0] = _NSConcreteStackBlock;
@@ -814,26 +814,26 @@ LABEL_13:
   }
 }
 
-- (void)handleCoexModeFailEvent:(int)a3 btSubband:(int)a4
+- (void)handleCoexModeFailEvent:(int)event btSubband:(int)subband
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004C74C;
   v4[3] = &unk_10023DD88;
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  subbandCopy = subband;
   v4[4] = self;
   sub_10004B5B8(v4);
 }
 
-- (void)handleBandSwitchRejectEvent:(int)a3 btTargetBand:(int)a4
+- (void)handleBandSwitchRejectEvent:(int)event btTargetBand:(int)band
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004C91C;
   v4[3] = &unk_10023DD88;
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  bandCopy = band;
   v4[4] = self;
   sub_10004B5B8(v4);
 }
@@ -858,26 +858,26 @@ LABEL_13:
   sub_10004B5B8(v2);
 }
 
-- (void)handleBTBandSwitchRequestEvent:(int)a3 targetBand:(int)a4
+- (void)handleBTBandSwitchRequestEvent:(int)event targetBand:(int)band
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004CF34;
   v4[3] = &unk_10023DD88;
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  bandCopy = band;
   v4[4] = self;
   sub_10004B5B8(v4);
 }
 
-- (void)handleBTRegulatoryInfoEvent:(id)a3 allowedBands:(int)a4
+- (void)handleBTRegulatoryInfoEvent:(id)event allowedBands:(int)bands
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004D0E4;
   v4[3] = &unk_10023E218;
-  v5 = a4;
-  v4[4] = a3;
+  bandsCopy = bands;
+  v4[4] = event;
   v4[5] = self;
   sub_10004B5B8(v4);
 }

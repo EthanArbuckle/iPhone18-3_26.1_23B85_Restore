@@ -1,12 +1,12 @@
 @interface MFMessageInfoSectionBackgroundDecorationView
-- (MFMessageInfoSectionBackgroundDecorationView)initWithFrame:(CGRect)a3;
+- (MFMessageInfoSectionBackgroundDecorationView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MFMessageInfoSectionBackgroundDecorationView
 
-- (MFMessageInfoSectionBackgroundDecorationView)initWithFrame:(CGRect)a3
+- (MFMessageInfoSectionBackgroundDecorationView)initWithFrame:(CGRect)frame
 {
-  [(MFMessageInfoSectionBackgroundDecorationView *)self bounds:a3.origin.x];
+  [(MFMessageInfoSectionBackgroundDecorationView *)self bounds:frame.origin.x];
   v10 = CGRectInset(v9, 20.0, 20.0);
   v8.receiver = self;
   v8.super_class = MFMessageInfoSectionBackgroundDecorationView;
@@ -16,8 +16,8 @@
     v5 = +[UIColor tableCellGroupedBackgroundColor];
     [(MFMessageInfoSectionBackgroundDecorationView *)v4 setBackgroundColor:v5];
 
-    v6 = [(MFMessageInfoSectionBackgroundDecorationView *)v4 layer];
-    [v6 setCornerRadius:10.0];
+    layer = [(MFMessageInfoSectionBackgroundDecorationView *)v4 layer];
+    [layer setCornerRadius:10.0];
   }
 
   return v4;

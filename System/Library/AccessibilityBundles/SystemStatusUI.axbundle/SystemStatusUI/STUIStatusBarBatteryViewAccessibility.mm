@@ -1,5 +1,5 @@
 @interface STUIStatusBarBatteryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -9,20 +9,20 @@
 
 @implementation STUIStatusBarBatteryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBar"];
-  [v3 validateClass:@"STUIStatusBarBatteryView" isKindOfClass:@"_UIBatteryView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBar"];
+  [validationsCopy validateClass:@"STUIStatusBarBatteryView" isKindOfClass:@"_UIBatteryView"];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(STUIStatusBarBatteryViewAccessibility *)self accessibilityUserDefinedLabel];
-  v3 = v2;
-  if (v2)
+  accessibilityUserDefinedLabel = [(STUIStatusBarBatteryViewAccessibility *)self accessibilityUserDefinedLabel];
+  v3 = accessibilityUserDefinedLabel;
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = v2;
+    v4 = accessibilityUserDefinedLabel;
   }
 
   else
@@ -49,11 +49,11 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(STUIStatusBarBatteryViewAccessibility *)self accessibilityUserDefinedValue];
-  v4 = v3;
-  if (v3)
+  accessibilityUserDefinedValue = [(STUIStatusBarBatteryViewAccessibility *)self accessibilityUserDefinedValue];
+  v4 = accessibilityUserDefinedValue;
+  if (accessibilityUserDefinedValue)
   {
-    v5 = v3;
+    v5 = accessibilityUserDefinedValue;
     goto LABEL_13;
   }
 
@@ -62,14 +62,14 @@
   v6 = __UIAccessibilityCastAsClass();
   if ([v6 showsInlineChargingIndicator])
   {
-    v7 = [v6 chargingState];
-    if ((v7 - 1) >= 2)
+    chargingState = [v6 chargingState];
+    if ((chargingState - 1) >= 2)
     {
-      if (v7)
+      if (chargingState)
       {
         v11.receiver = self;
         v11.super_class = STUIStatusBarBatteryViewAccessibility;
-        v9 = [(STUIStatusBarBatteryViewAccessibility *)&v11 accessibilityValue];
+        accessibilityValue = [(STUIStatusBarBatteryViewAccessibility *)&v11 accessibilityValue];
         goto LABEL_11;
       }
 
@@ -81,9 +81,9 @@
       v8 = @"status.battery.charging";
     }
 
-    v9 = accessibilityLocalizedString(v8);
+    accessibilityValue = accessibilityLocalizedString(v8);
 LABEL_11:
-    v5 = v9;
+    v5 = accessibilityValue;
     goto LABEL_12;
   }
 

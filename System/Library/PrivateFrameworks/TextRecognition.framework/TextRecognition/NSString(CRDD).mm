@@ -8,13 +8,13 @@
 - (id)_crDDFriendlyTextWithIndexMapping:()CRDD
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a1;
+  selfCopy = self;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__NSString_CRDD___crDDFriendlyTextWithIndexMapping___block_invoke;
   block[3] = &unk_1E7BC25C0;
-  v39 = v4;
-  block[4] = v4;
+  v39 = selfCopy;
+  block[4] = selfCopy;
   if (qword_1ED95FE18 != -1)
   {
     dispatch_once(&qword_1ED95FE18, block);
@@ -76,11 +76,11 @@
         v22 = CROSLogForCategory(7);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v20 integerValue];
+          integerValue = [v20 integerValue];
           v24 = [v39 length];
           v25 = [v12 length];
           *buf = 134218752;
-          v50 = v23;
+          v50 = integerValue;
           v51 = 1024;
           v52 = v13;
           v53 = 2048;

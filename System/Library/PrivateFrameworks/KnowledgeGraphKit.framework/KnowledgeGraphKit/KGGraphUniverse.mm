@@ -1,53 +1,53 @@
 @interface KGGraphUniverse
-+ (BOOL)hasManagerForGraphStoreAtURL:(id)a3;
-+ (BOOL)swapDatabaseFromURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-+ (id)managerForGraphStoreAtURL:(id)a3 entityFactory:(id)a4;
-+ (void)closeDatabaseAtURL:(id)a3 completion:(id)a4;
++ (BOOL)hasManagerForGraphStoreAtURL:(id)l;
++ (BOOL)swapDatabaseFromURL:(id)l toURL:(id)rL error:(id *)error;
++ (id)managerForGraphStoreAtURL:(id)l entityFactory:(id)factory;
++ (void)closeDatabaseAtURL:(id)l completion:(id)completion;
 + (void)initialize;
-+ (void)releaseManagerForGraphStoreAtURL:(id)a3;
-- (BOOL)hasManagerForGraphStoreAtURL:(id)a3;
-- (BOOL)swapDatabaseFromURL:(id)a3 toURL:(id)a4 error:(id *)a5;
++ (void)releaseManagerForGraphStoreAtURL:(id)l;
+- (BOOL)hasManagerForGraphStoreAtURL:(id)l;
+- (BOOL)swapDatabaseFromURL:(id)l toURL:(id)rL error:(id *)error;
 - (KGGraphUniverse)init;
-- (id)managerForGraphStoreAtURL:(id)a3 entityFactory:(id)a4;
-- (void)closeDatabaseAtURL:(id)a3 completion:(id)a4;
-- (void)releaseManagerForGraphStoreAtURL:(id)a3;
-- (void)removeDatabaseByURL:(id)a3;
+- (id)managerForGraphStoreAtURL:(id)l entityFactory:(id)factory;
+- (void)closeDatabaseAtURL:(id)l completion:(id)completion;
+- (void)releaseManagerForGraphStoreAtURL:(id)l;
+- (void)removeDatabaseByURL:(id)l;
 @end
 
 @implementation KGGraphUniverse
 
-- (void)closeDatabaseAtURL:(id)a3 completion:(id)a4
+- (void)closeDatabaseAtURL:(id)l completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KGGraphUniverse *)self managerForGraphStoreAtURL:v7 entityFactory:0];
-  [v8 asyncClose:v6];
+  completionCopy = completion;
+  lCopy = l;
+  v8 = [(KGGraphUniverse *)self managerForGraphStoreAtURL:lCopy entityFactory:0];
+  [v8 asyncClose:completionCopy];
 
-  [(KGGraphUniverse *)self removeDatabaseByURL:v7];
+  [(KGGraphUniverse *)self removeDatabaseByURL:lCopy];
 }
 
-- (void)removeDatabaseByURL:(id)a3
+- (void)removeDatabaseByURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_graphManagerByURL removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_graphManagerByURL removeObjectForKey:lCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)swapDatabaseFromURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)swapDatabaseFromURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqual:v9])
+  lCopy = l;
+  rLCopy = rL;
+  if ([lCopy isEqual:rLCopy])
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(KGGraphUniverse *)self managerForGraphStoreAtURL:v8 entityFactory:0];
-    v12 = [(KGGraphUniverse *)self managerForGraphStoreAtURL:v9 entityFactory:0];
+    v11 = [(KGGraphUniverse *)self managerForGraphStoreAtURL:lCopy entityFactory:0];
+    v12 = [(KGGraphUniverse *)self managerForGraphStoreAtURL:rLCopy entityFactory:0];
     v25 = 0;
     v26 = &v25;
     v27 = 0x2020000000;
@@ -68,9 +68,9 @@
     v18 = &v19;
     [v11 performReadBlock:v15];
     v10 = *(v26 + 24);
-    if (a5 && (v26[3] & 1) == 0)
+    if (error && (v26[3] & 1) == 0)
     {
-      *a5 = v20[5];
+      *error = v20[5];
       v10 = *(v26 + 24);
     }
 
@@ -114,64 +114,64 @@ uint64_t __51__KGGraphUniverse_swapDatabaseFromURL_toURL_error___block_invoke(vo
   return v10 & 1;
 }
 
-- (BOOL)hasManagerForGraphStoreAtURL:(id)a3
+- (BOOL)hasManagerForGraphStoreAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_graphManagerByURL objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_graphManagerByURL objectForKeyedSubscript:lCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5 != 0;
 }
 
-- (void)releaseManagerForGraphStoreAtURL:(id)a3
+- (void)releaseManagerForGraphStoreAtURL:(id)l
 {
-  v7 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(NSMutableDictionary *)self->_graphManagerByURL objectForKeyedSubscript:v7];
+  v4 = [(NSMutableDictionary *)self->_graphManagerByURL objectForKeyedSubscript:lCopy];
   v5 = v4;
   if (v4 && [v4 decrementUseCount])
   {
-    v6 = [v5 graphManager];
-    [v6 close];
+    graphManager = [v5 graphManager];
+    [graphManager close];
 
-    [(NSMutableDictionary *)self->_graphManagerByURL removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_graphManagerByURL removeObjectForKey:lCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)managerForGraphStoreAtURL:(id)a3 entityFactory:(id)a4
+- (id)managerForGraphStoreAtURL:(id)l entityFactory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  factoryCopy = factory;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_graphManagerByURL objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_graphManagerByURL objectForKeyedSubscript:lCopy];
   if (v8)
   {
     v9 = v8;
     [(KGGraphManagerRecord *)v8 incrementUseCount];
-    if (!v7)
+    if (!factoryCopy)
     {
       goto LABEL_6;
     }
 
-    v10 = [(KGGraphManagerRecord *)v9 graphManager];
-    [(KGGraphManager *)v10 setEntityFactory:v7];
+    graphManager = [(KGGraphManagerRecord *)v9 graphManager];
+    [(KGGraphManager *)graphManager setEntityFactory:factoryCopy];
   }
 
   else
   {
-    v10 = [[KGGraphManager alloc] initWithURL:v6 entityFactory:v7];
-    v9 = [[KGGraphManagerRecord alloc] initWithGraphManager:v10];
-    [(NSMutableDictionary *)self->_graphManagerByURL setObject:v9 forKeyedSubscript:v6];
+    graphManager = [[KGGraphManager alloc] initWithURL:lCopy entityFactory:factoryCopy];
+    v9 = [[KGGraphManagerRecord alloc] initWithGraphManager:graphManager];
+    [(NSMutableDictionary *)self->_graphManagerByURL setObject:v9 forKeyedSubscript:lCopy];
   }
 
 LABEL_6:
   os_unfair_lock_unlock(&self->_lock);
-  v11 = [(KGGraphManagerRecord *)v9 graphManager];
+  graphManager2 = [(KGGraphManagerRecord *)v9 graphManager];
 
-  return v11;
+  return graphManager2;
 }
 
 - (KGGraphUniverse)init
@@ -191,46 +191,46 @@ LABEL_6:
   return v2;
 }
 
-+ (void)closeDatabaseAtURL:(id)a3 completion:(id)a4
++ (void)closeDatabaseAtURL:(id)l completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 instance];
-  [v8 closeDatabaseAtURL:v7 completion:v6];
+  completionCopy = completion;
+  lCopy = l;
+  instance = [self instance];
+  [instance closeDatabaseAtURL:lCopy completion:completionCopy];
 }
 
-+ (BOOL)swapDatabaseFromURL:(id)a3 toURL:(id)a4 error:(id *)a5
++ (BOOL)swapDatabaseFromURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 instance];
-  LOBYTE(a5) = [v10 swapDatabaseFromURL:v9 toURL:v8 error:a5];
+  rLCopy = rL;
+  lCopy = l;
+  instance = [self instance];
+  LOBYTE(error) = [instance swapDatabaseFromURL:lCopy toURL:rLCopy error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)hasManagerForGraphStoreAtURL:(id)a3
++ (BOOL)hasManagerForGraphStoreAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 instance];
-  v6 = [v5 hasManagerForGraphStoreAtURL:v4];
+  lCopy = l;
+  instance = [self instance];
+  v6 = [instance hasManagerForGraphStoreAtURL:lCopy];
 
   return v6;
 }
 
-+ (void)releaseManagerForGraphStoreAtURL:(id)a3
++ (void)releaseManagerForGraphStoreAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 instance];
-  [v5 releaseManagerForGraphStoreAtURL:v4];
+  lCopy = l;
+  instance = [self instance];
+  [instance releaseManagerForGraphStoreAtURL:lCopy];
 }
 
-+ (id)managerForGraphStoreAtURL:(id)a3 entityFactory:(id)a4
++ (id)managerForGraphStoreAtURL:(id)l entityFactory:(id)factory
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 instance];
-  v9 = [v8 managerForGraphStoreAtURL:v7 entityFactory:v6];
+  factoryCopy = factory;
+  lCopy = l;
+  instance = [self instance];
+  v9 = [instance managerForGraphStoreAtURL:lCopy entityFactory:factoryCopy];
 
   return v9;
 }

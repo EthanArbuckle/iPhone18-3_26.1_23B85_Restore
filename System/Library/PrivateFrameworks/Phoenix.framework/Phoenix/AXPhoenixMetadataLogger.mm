@@ -1,50 +1,50 @@
 @interface AXPhoenixMetadataLogger
-- (AXPhoenixMetadataLogger)initWithMetadata:(id)a3;
+- (AXPhoenixMetadataLogger)initWithMetadata:(id)metadata;
 - (NSDateFormatter)dateFormatter;
 - (id)_deviceModelName;
 - (id)_orientationString;
-- (void)setMetadataFilePathUnderDirectory:(id)a3;
-- (void)writeMetadataToFileWithSensors:(id)a3 withAnnotations:(id)a4 withFalsePositivesMetadata:(id)a5;
+- (void)setMetadataFilePathUnderDirectory:(id)directory;
+- (void)writeMetadataToFileWithSensors:(id)sensors withAnnotations:(id)annotations withFalsePositivesMetadata:(id)metadata;
 @end
 
 @implementation AXPhoenixMetadataLogger
 
-- (AXPhoenixMetadataLogger)initWithMetadata:(id)a3
+- (AXPhoenixMetadataLogger)initWithMetadata:(id)metadata
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, metadata);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AXPhoenixMetadataLogger;
-  v9 = [(AXPhoenixMetadataLogger *)&v7 init];
-  objc_storeStrong(&v9, v9);
-  if (v9)
+  selfCopy = [(AXPhoenixMetadataLogger *)&v7 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v6 = [location[0] objectForKeyedSubscript:@"start_timestamp"];
-    [(AXPhoenixMetadataLogger *)v9 setStartTimestamp:?];
+    [(AXPhoenixMetadataLogger *)selfCopy setStartTimestamp:?];
     MEMORY[0x277D82BD8](v6);
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)setMetadataFilePathUnderDirectory:(id)a3
+- (void)setMetadataFilePathUnderDirectory:(id)directory
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AXPhoenixMetadataLogger *)v6 startTimestamp];
+  objc_storeStrong(location, directory);
+  startTimestamp = [(AXPhoenixMetadataLogger *)selfCopy startTimestamp];
   v3 = [AXPhoenixDataCollectionUtils createFilename:"createFilename:usingTimestamp:withFileExtension:underDirectory:" usingTimestamp:@"metadata" withFileExtension:? underDirectory:?];
-  [(AXPhoenixMetadataLogger *)v6 setMetadataFilePath:?];
+  [(AXPhoenixMetadataLogger *)selfCopy setMetadataFilePath:?];
   MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](startTimestamp);
   objc_storeStrong(location, 0);
 }
 
@@ -62,51 +62,51 @@
   return dateFormatter;
 }
 
-- (void)writeMetadataToFileWithSensors:(id)a3 withAnnotations:(id)a4 withFalsePositivesMetadata:(id)a5
+- (void)writeMetadataToFileWithSensors:(id)sensors withAnnotations:(id)annotations withFalsePositivesMetadata:(id)metadata
 {
   v44[26] = *MEMORY[0x277D85DE8];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, sensors);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, annotations);
   v37 = 0;
-  objc_storeStrong(&v37, a5);
-  v9 = [(AXPhoenixMetadataLogger *)v40 dateFormatter];
-  [(NSDateFormatter *)v9 setDateFormat:@"YYYY-MM-dd"];
-  MEMORY[0x277D82BD8](v9);
-  v11 = [(AXPhoenixMetadataLogger *)v40 dateFormatter];
-  v10 = [(AXPhoenixMetadataLogger *)v40 startTimestamp];
-  v36 = [(NSDateFormatter *)v11 stringFromDate:?];
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  v12 = [(AXPhoenixMetadataLogger *)v40 dateFormatter];
-  [(NSDateFormatter *)v12 setDateFormat:@"HH-mm-ss-SSS"];
-  MEMORY[0x277D82BD8](v12);
-  v14 = [(AXPhoenixMetadataLogger *)v40 dateFormatter];
-  v13 = [(AXPhoenixMetadataLogger *)v40 startTimestamp];
-  v35 = [(NSDateFormatter *)v14 stringFromDate:?];
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  objc_storeStrong(&v37, metadata);
+  dateFormatter = [(AXPhoenixMetadataLogger *)selfCopy dateFormatter];
+  [(NSDateFormatter *)dateFormatter setDateFormat:@"YYYY-MM-dd"];
+  MEMORY[0x277D82BD8](dateFormatter);
+  dateFormatter2 = [(AXPhoenixMetadataLogger *)selfCopy dateFormatter];
+  startTimestamp = [(AXPhoenixMetadataLogger *)selfCopy startTimestamp];
+  v36 = [(NSDateFormatter *)dateFormatter2 stringFromDate:?];
+  MEMORY[0x277D82BD8](startTimestamp);
+  MEMORY[0x277D82BD8](dateFormatter2);
+  dateFormatter3 = [(AXPhoenixMetadataLogger *)selfCopy dateFormatter];
+  [(NSDateFormatter *)dateFormatter3 setDateFormat:@"HH-mm-ss-SSS"];
+  MEMORY[0x277D82BD8](dateFormatter3);
+  dateFormatter4 = [(AXPhoenixMetadataLogger *)selfCopy dateFormatter];
+  startTimestamp2 = [(AXPhoenixMetadataLogger *)selfCopy startTimestamp];
+  v35 = [(NSDateFormatter *)dateFormatter4 stringFromDate:?];
+  MEMORY[0x277D82BD8](startTimestamp2);
+  MEMORY[0x277D82BD8](dateFormatter4);
   v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 7];
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  v15 = [v16 identifierForVendor];
-  v33 = [v15 UUIDString];
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  v32 = [v33 substringToIndex:5];
-  v31 = [(AXPhoenixMetadataLogger *)v40 _deviceModelName];
-  v17 = [MEMORY[0x277CCAC38] processInfo];
-  v30 = [v17 operatingSystemVersionString];
-  MEMORY[0x277D82BD8](v17);
-  v19 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v18 = [MEMORY[0x277CBEAF8] currentLocale];
-  v29 = [v19 localizedName:0 locale:?];
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  v28 = [(AXPhoenixMetadataLogger *)v40 _orientationString];
-  v27 = [(AXPhoenixMetadataLogger *)v40 _fullHardwareConfigurationString];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  identifierForVendor = [currentDevice identifierForVendor];
+  uUIDString = [identifierForVendor UUIDString];
+  MEMORY[0x277D82BD8](identifierForVendor);
+  MEMORY[0x277D82BD8](currentDevice);
+  v32 = [uUIDString substringToIndex:5];
+  _deviceModelName = [(AXPhoenixMetadataLogger *)selfCopy _deviceModelName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
+  MEMORY[0x277D82BD8](processInfo);
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v29 = [localTimeZone localizedName:0 locale:?];
+  MEMORY[0x277D82BD8](currentLocale);
+  MEMORY[0x277D82BD8](localTimeZone);
+  _orientationString = [(AXPhoenixMetadataLogger *)selfCopy _orientationString];
+  _fullHardwareConfigurationString = [(AXPhoenixMetadataLogger *)selfCopy _fullHardwareConfigurationString];
   v43[0] = @"username";
   v44[0] = v32;
   v43[1] = @"first_name";
@@ -142,17 +142,17 @@
   v43[16] = @"false_positive_metadata";
   v44[16] = v37;
   v43[17] = @"device_model";
-  v44[17] = v31;
+  v44[17] = _deviceModelName;
   v43[18] = @"uuid";
-  v44[18] = v33;
+  v44[18] = uUIDString;
   v43[19] = @"os";
-  v44[19] = v30;
+  v44[19] = operatingSystemVersionString;
   v43[20] = @"time_zone";
   v44[20] = v29;
   v43[21] = @"device_orientation";
-  v44[21] = v28;
+  v44[21] = _orientationString;
   v43[22] = @"full_hardware_config";
-  v44[22] = v27;
+  v44[22] = _fullHardwareConfigurationString;
   v43[23] = @"accel_sample_rate_hz";
   v44[23] = @"100.00";
   v43[24] = @"gyro_sample_rate_hz";
@@ -161,9 +161,9 @@
   v44[25] = @"100.00";
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:26];
   v20 = objc_alloc(MEMORY[0x277CBEB78]);
-  v21 = [(AXPhoenixMetadataLogger *)v40 metadataFilePath];
+  metadataFilePath = [(AXPhoenixMetadataLogger *)selfCopy metadataFilePath];
   v25 = [v20 initToFileAtPath:? append:?];
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](metadataFilePath);
   [v25 open];
   oslog[1] = 3;
   if ([MEMORY[0x277CCAAA0] writeJSONObject:v26 toStream:v25 options:3 error:0])
@@ -172,10 +172,10 @@
     type = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_INFO))
     {
-      v6 = [(AXPhoenixMetadataLogger *)v40 metadataFilePath];
-      __os_log_helper_16_2_2_8_32_8_64(v42, "[AXPhoenixMetadataLogger writeMetadataToFileWithSensors:withAnnotations:withFalsePositivesMetadata:]", v6);
+      metadataFilePath2 = [(AXPhoenixMetadataLogger *)selfCopy metadataFilePath];
+      __os_log_helper_16_2_2_8_32_8_64(v42, "[AXPhoenixMetadataLogger writeMetadataToFileWithSensors:withAnnotations:withFalsePositivesMetadata:]", metadataFilePath2);
       _os_log_impl(&dword_25E4AC000, oslog[0], type, "[PHOENIX] %s Metadata written to: %@", v42, 0x16u);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](metadataFilePath2);
     }
 
     objc_storeStrong(oslog, 0);
@@ -186,10 +186,10 @@
     v22 = AXLogBackTap();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(AXPhoenixMetadataLogger *)v40 metadataFilePath];
-      __os_log_helper_16_2_2_8_32_8_64(v41, "[AXPhoenixMetadataLogger writeMetadataToFileWithSensors:withAnnotations:withFalsePositivesMetadata:]", v5);
+      metadataFilePath3 = [(AXPhoenixMetadataLogger *)selfCopy metadataFilePath];
+      __os_log_helper_16_2_2_8_32_8_64(v41, "[AXPhoenixMetadataLogger writeMetadataToFileWithSensors:withAnnotations:withFalsePositivesMetadata:]", metadataFilePath3);
       _os_log_error_impl(&dword_25E4AC000, v22, OS_LOG_TYPE_ERROR, "[PHOENIX] %s Error writing data collection metadata to: %@", v41, 0x16u);
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](metadataFilePath3);
     }
 
     objc_storeStrong(&v22, 0);
@@ -198,13 +198,13 @@
   [v25 close];
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
-  objc_storeStrong(&v27, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&_fullHardwareConfigurationString, 0);
+  objc_storeStrong(&_orientationString, 0);
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
-  objc_storeStrong(&v31, 0);
+  objc_storeStrong(&operatingSystemVersionString, 0);
+  objc_storeStrong(&_deviceModelName, 0);
   objc_storeStrong(&v32, 0);
-  objc_storeStrong(&v33, 0);
+  objc_storeStrong(&uUIDString, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&v36, 0);
@@ -231,12 +231,12 @@
 
 - (id)_orientationString
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 orientation];
-  MEMORY[0x277D82BD8](v3);
-  if (v4)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
+  MEMORY[0x277D82BD8](currentDevice);
+  if (orientation)
   {
-    switch(v4)
+    switch(orientation)
     {
       case 1:
         v5 = MEMORY[0x277D82BE0](@"UIDeviceOrientationPortrait");

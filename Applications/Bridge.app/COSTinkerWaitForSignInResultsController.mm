@@ -9,39 +9,39 @@
 
 - (void)didPushWaitScreen
 {
-  v3 = [UIApp setupController];
-  v4 = [v3 tinkerAuthenticationController];
+  setupController = [UIApp setupController];
+  tinkerAuthenticationController = [setupController tinkerAuthenticationController];
 
   self->_currentStatus = 0;
-  v5 = [UIApp setupController];
-  v6 = [v5 pairingReportManager];
+  setupController2 = [UIApp setupController];
+  pairingReportManager = [setupController2 pairingReportManager];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009AFB8;
   v8[3] = &unk_10026A738;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [v4 waitForSatelliteSigninWithProgressCompletion:v8];
+  v9 = pairingReportManager;
+  v7 = pairingReportManager;
+  [tinkerAuthenticationController waitForSatelliteSigninWithProgressCompletion:v8];
 }
 
 - (void)popToWaitForCDPCompletionController
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 navigationController];
+  setupController = [UIApp setupController];
+  navigationController = [setupController navigationController];
 
-  v26 = v3;
-  v4 = [v3 viewControllers];
-  v5 = [v4 mutableCopy];
+  v26 = navigationController;
+  viewControllers = [navigationController viewControllers];
+  v5 = [viewControllers mutableCopy];
 
-  v6 = [UIApp setupController];
+  setupController2 = [UIApp setupController];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [v6 buddyControllers];
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v38 count:16];
+  buddyControllers = [setupController2 buddyControllers];
+  v8 = [buddyControllers countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v8)
   {
     v9 = v8;
@@ -53,7 +53,7 @@
       {
         if (*v32 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(buddyControllers);
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
@@ -66,7 +66,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v31 objects:v38 count:16];
+      v9 = [buddyControllers countByEnumeratingWithState:&v31 objects:v38 count:16];
     }
 
     while (v9);
@@ -81,8 +81,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = [v5 reverseObjectEnumerator];
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v37 count:16];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v17)
   {
     v18 = v17;
@@ -93,14 +93,14 @@
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v21 = *(*(&v27 + 1) + 8 * j);
         v22 = objc_opt_class();
         if ([v22 isEqual:objc_opt_class()])
         {
-          [v10 setDelegate:v6];
+          [v10 setDelegate:setupController2];
           [v10 setAppearingFromBackNavigation:1];
           goto LABEL_22;
         }
@@ -108,7 +108,7 @@
         [v5 removeObject:v21];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v37 count:16];
+      v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v37 count:16];
       if (v18)
       {
         continue;
@@ -148,15 +148,15 @@ LABEL_22:
 
 - (id)localizedWaitScreenDescription
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 tinkerUserName];
-  v4 = [v3 localizedCapitalizedString];
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (localizedCapitalizedString)
   {
     v6 = [v5 localizedStringForKey:@"APPLEID_ACCOUNT_HOLD_DESCRIPTION_TINKER_USER_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-    v7 = [NSString stringWithFormat:v6, v4];
+    v7 = [NSString stringWithFormat:v6, localizedCapitalizedString];
   }
 
   else

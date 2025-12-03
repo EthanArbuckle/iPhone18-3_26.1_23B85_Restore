@@ -8,8 +8,8 @@
 - (id)_ad_settingsRequestRepresentation
 {
   v3 = objc_alloc_init(AFSetSettingsRequest);
-  v4 = [(SASettingSetBool *)self _ad_setting];
-  v7 = v4;
+  _ad_setting = [(SASettingSetBool *)self _ad_setting];
+  v7 = _ad_setting;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
   [v3 _setSettings:v5];
 

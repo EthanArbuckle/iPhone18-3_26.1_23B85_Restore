@@ -1,16 +1,16 @@
 @interface MapsSuggestionsRoutineShortcutSuggestor
-- (MapsSuggestionsRoutineShortcutSuggestor)initWithRoutine:(id)a3;
-- (char)suggestShortcutsOfType:(int64_t)a3 handler:(id)a4;
-- (id)initFromResourceDepot:(id)a3;
+- (MapsSuggestionsRoutineShortcutSuggestor)initWithRoutine:(id)routine;
+- (char)suggestShortcutsOfType:(int64_t)type handler:(id)handler;
+- (id)initFromResourceDepot:(id)depot;
 @end
 
 @implementation MapsSuggestionsRoutineShortcutSuggestor
 
-- (MapsSuggestionsRoutineShortcutSuggestor)initWithRoutine:(id)a3
+- (MapsSuggestionsRoutineShortcutSuggestor)initWithRoutine:(id)routine
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  routineCopy = routine;
+  if (routineCopy)
   {
     v11.receiver = self;
     v11.super_class = MapsSuggestionsRoutineShortcutSuggestor;
@@ -18,11 +18,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_routine, a3);
+      objc_storeStrong(&v6->_routine, routine);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -41,18 +41,18 @@
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an instance of MapsSuggestionsRoutine.", buf, 0x26u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -71,9 +71,9 @@
     goto LABEL_9;
   }
 
-  v6 = [v4 oneRoutine];
+  oneRoutine = [depotCopy oneRoutine];
 
-  if (!v6)
+  if (!oneRoutine)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -91,29 +91,29 @@
 
 LABEL_9:
 
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v7 = [v5 oneRoutine];
-  self = [(MapsSuggestionsRoutineShortcutSuggestor *)self initWithRoutine:v7];
+  oneRoutine2 = [v5 oneRoutine];
+  self = [(MapsSuggestionsRoutineShortcutSuggestor *)self initWithRoutine:oneRoutine2];
 
-  v8 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
-- (char)suggestShortcutsOfType:(int64_t)a3 handler:(id)a4
+- (char)suggestShortcutsOfType:(int64_t)type handler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = NSStringFromMapsSuggestionsShortcutType(a3);
+      v8 = NSStringFromMapsSuggestionsShortcutType(type);
       v15 = 138412290;
       v16 = v8;
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "suggestShortcutsOfType:%@", &v15, 0xCu);
@@ -133,7 +133,7 @@ LABEL_10:
         [MapsSuggestionsRoutineShortcutSuggestor suggestShortcutsOfType:handler:];
       }
 
-      v11 = [(MapsSuggestionsRoutine *)routine fetchSuggestedShortcutsForType:a3 minVisits:v10 maxAge:v6 handler:*&_maxAgeForProposedShortcuts(void)::s_value];
+      v11 = [(MapsSuggestionsRoutine *)routine fetchSuggestedShortcutsForType:type minVisits:v10 maxAge:handlerCopy handler:*&_maxAgeForProposedShortcuts(void)::s_value];
     }
 
     else
@@ -145,7 +145,7 @@ LABEL_10:
         _os_log_impl(&dword_1C5126000, v13, OS_LOG_TYPE_DEBUG, "Siri Suggestions for Maps disabled", &v15, 2u);
       }
 
-      (*(v6 + 2))(v6, MEMORY[0x1E695E0F0], 0);
+      (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0], 0);
       v11 = 1;
     }
   }

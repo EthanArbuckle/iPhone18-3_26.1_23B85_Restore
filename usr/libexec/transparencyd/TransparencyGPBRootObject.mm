@@ -1,6 +1,6 @@
 @interface TransparencyGPBRootObject
-+ (BOOL)resolveClassMethod:(SEL)a3;
-+ (void)globallyRegisterExtension:(id)a3;
++ (BOOL)resolveClassMethod:(SEL)method;
++ (void)globallyRegisterExtension:(id)extension;
 + (void)initialize;
 @end
 
@@ -15,32 +15,32 @@
     qword_10039C618 = objc_alloc_init(TransparencyGPBExtensionRegistry);
   }
 
-  v3 = [a1 superclass];
+  v3 = [self superclass];
   if (v3 == objc_opt_class())
   {
-    [a1 extensionRegistry];
+    [self extensionRegistry];
   }
 }
 
-+ (void)globallyRegisterExtension:(id)a3
++ (void)globallyRegisterExtension:(id)extension
 {
-  v4 = [a3 singletonNameC];
+  singletonNameC = [extension singletonNameC];
   os_unfair_lock_lock(&unk_10039C620);
-  CFDictionarySetValue(qword_10039C610, v4, a3);
+  CFDictionarySetValue(qword_10039C610, singletonNameC, extension);
 
   os_unfair_lock_unlock(&unk_10039C620);
 }
 
-+ (BOOL)resolveClassMethod:(SEL)a3
++ (BOOL)resolveClassMethod:(SEL)method
 {
-  if (sub_10019B094(a1, a3))
+  if (sub_10019B094(self, method))
   {
     return 1;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___TransparencyGPBRootObject;
-  return objc_msgSendSuper2(&v6, "resolveClassMethod:", a3);
+  return objc_msgSendSuper2(&v6, "resolveClassMethod:", method);
 }
 
 @end

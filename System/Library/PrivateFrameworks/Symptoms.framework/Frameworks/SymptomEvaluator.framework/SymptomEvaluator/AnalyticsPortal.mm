@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __33__AnalyticsPortal_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_2 != -1)
   {
     dispatch_once(&sharedInstance_pred_2, block);

@@ -13,49 +13,49 @@
     v4 = a3;
     v5 = objc_alloc_init(v3);
     v6 = MEMORY[0x277D058E8];
-    v7 = [v4 configuration];
-    v8 = [v4 secureConfiguration];
-    v9 = [v6 configurationForRecord:v7 secureRecord:v8];
+    configuration = [v4 configuration];
+    secureConfiguration = [v4 secureConfiguration];
+    v9 = [v6 configurationForRecord:configuration secureRecord:secureConfiguration];
     [v5 setConfiguration:v9];
 
     v10 = MEMORY[0x277D05930];
-    v11 = [v4 mode];
-    v12 = [v10 modeForRecord:v11];
+    mode = [v4 mode];
+    v12 = [v10 modeForRecord:mode];
     [v5 setMode:v12];
 
-    v13 = [v4 triggers];
-    v14 = [v13 triggers];
-    [v5 setTriggers:v14];
+    triggers = [v4 triggers];
+    v13Triggers = [triggers triggers];
+    [v5 setTriggers:v13Triggers];
 
     [v5 setImpactsAvailability:{objc_msgSend(v4, "impactsAvailability")}];
-    v15 = [v4 dimsLockScreen];
-    v16 = [v5 mode];
-    v17 = [v16 semanticType];
+    dimsLockScreen = [v4 dimsLockScreen];
+    mode2 = [v5 mode];
+    semanticType = [mode2 semanticType];
 
-    if (v17 == 1)
+    if (semanticType == 1)
     {
       v18 = 2;
     }
 
     else
     {
-      v18 = v15;
+      v18 = dimsLockScreen;
     }
 
     [v5 setDimsLockScreen:v18];
-    v19 = [v4 created];
-    [v5 setCreated:v19];
+    created = [v4 created];
+    [v5 setCreated:created];
 
-    v20 = [v4 lastModified];
-    [v5 setLastModified:v20];
+    lastModified = [v4 lastModified];
+    [v5 setLastModified:lastModified];
 
     [v5 setCompatibilityVersion:{objc_msgSend(v4, "compatibilityVersion")}];
     [v5 setAutomaticallyGenerated:{objc_msgSend(v4, "isAutomaticallyGenerated")}];
     [v4 lastModifiedByVersion];
     [v5 setLastModifiedByVersion:v23];
-    v21 = [v4 lastModifiedByDeviceID];
+    lastModifiedByDeviceID = [v4 lastModifiedByDeviceID];
 
-    [v5 setLastModifiedByDeviceID:v21];
+    [v5 setLastModifiedByDeviceID:lastModifiedByDeviceID];
   }
 
   else
@@ -69,54 +69,54 @@
 - (DNDSMutableModeConfigurationRecord)makeRecord
 {
   v2 = objc_alloc_init(DNDSMutableModeConfigurationRecord);
-  v3 = [a1 mode];
-  v4 = [v3 makeRecord];
-  [(DNDSMutableModeConfigurationRecord *)v2 setMode:v4];
+  mode = [self mode];
+  makeRecord = [mode makeRecord];
+  [(DNDSMutableModeConfigurationRecord *)v2 setMode:makeRecord];
 
-  v5 = [a1 configuration];
-  v6 = [v5 makeRecord];
-  [(DNDSMutableModeConfigurationRecord *)v2 setConfiguration:v6];
+  configuration = [self configuration];
+  makeRecord2 = [configuration makeRecord];
+  [(DNDSMutableModeConfigurationRecord *)v2 setConfiguration:makeRecord2];
 
-  v7 = [a1 configuration];
-  v8 = [v7 makeSecureRecord];
-  [(DNDSMutableModeConfigurationRecord *)v2 setSecureConfiguration:v8];
+  configuration2 = [self configuration];
+  makeSecureRecord = [configuration2 makeSecureRecord];
+  [(DNDSMutableModeConfigurationRecord *)v2 setSecureConfiguration:makeSecureRecord];
 
   v9 = [DNDSModeConfigurationTriggersRecord alloc];
-  v10 = [a1 triggers];
-  v11 = [(DNDSModeConfigurationTriggersRecord *)v9 initWithTriggers:v10];
+  triggers = [self triggers];
+  v11 = [(DNDSModeConfigurationTriggersRecord *)v9 initWithTriggers:triggers];
   [(DNDSMutableModeConfigurationRecord *)v2 setTriggers:v11];
 
-  -[DNDSMutableModeConfigurationRecord setImpactsAvailability:](v2, "setImpactsAvailability:", [a1 impactsAvailability]);
-  v12 = [a1 dimsLockScreen];
-  v13 = [a1 mode];
-  v14 = [v13 semanticType];
+  -[DNDSMutableModeConfigurationRecord setImpactsAvailability:](v2, "setImpactsAvailability:", [self impactsAvailability]);
+  dimsLockScreen = [self dimsLockScreen];
+  mode2 = [self mode];
+  semanticType = [mode2 semanticType];
 
-  if (v14 == 1)
+  if (semanticType == 1)
   {
     v15 = 2;
   }
 
   else
   {
-    v15 = v12;
+    v15 = dimsLockScreen;
   }
 
   [(DNDSMutableModeConfigurationRecord *)v2 setDimsLockScreen:v15];
-  v16 = [a1 created];
-  [(DNDSMutableModeConfigurationRecord *)v2 setCreated:v16];
+  created = [self created];
+  [(DNDSMutableModeConfigurationRecord *)v2 setCreated:created];
 
-  v17 = [a1 lastModified];
-  [(DNDSMutableModeConfigurationRecord *)v2 setLastModified:v17];
+  lastModified = [self lastModified];
+  [(DNDSMutableModeConfigurationRecord *)v2 setLastModified:lastModified];
 
-  [a1 lastModifiedByVersion];
+  [self lastModifiedByVersion];
   [(DNDSMutableModeConfigurationRecord *)v2 setLastModifiedByVersion:v20];
-  v18 = [a1 lastModifiedByDeviceID];
-  [(DNDSMutableModeConfigurationRecord *)v2 setLastModifiedByDeviceID:v18];
+  lastModifiedByDeviceID = [self lastModifiedByDeviceID];
+  [(DNDSMutableModeConfigurationRecord *)v2 setLastModifiedByDeviceID:lastModifiedByDeviceID];
 
-  -[DNDSMutableModeConfigurationRecord setHasSecureData:](v2, "setHasSecureData:", [a1 hasSecureData]);
-  -[DNDSMutableModeConfigurationRecord setCompatibilityVersion:](v2, "setCompatibilityVersion:", [a1 compatibilityVersion]);
-  -[DNDSMutableModeConfigurationRecord setEphemeralResolvedCompatibilityVersion:](v2, "setEphemeralResolvedCompatibilityVersion:", [a1 resolvedCompatibilityVersion]);
-  -[DNDSMutableModeConfigurationRecord setAutomaticallyGenerated:](v2, "setAutomaticallyGenerated:", [a1 isAutomaticallyGenerated]);
+  -[DNDSMutableModeConfigurationRecord setHasSecureData:](v2, "setHasSecureData:", [self hasSecureData]);
+  -[DNDSMutableModeConfigurationRecord setCompatibilityVersion:](v2, "setCompatibilityVersion:", [self compatibilityVersion]);
+  -[DNDSMutableModeConfigurationRecord setEphemeralResolvedCompatibilityVersion:](v2, "setEphemeralResolvedCompatibilityVersion:", [self resolvedCompatibilityVersion]);
+  -[DNDSMutableModeConfigurationRecord setAutomaticallyGenerated:](v2, "setAutomaticallyGenerated:", [self isAutomaticallyGenerated]);
 
   return v2;
 }

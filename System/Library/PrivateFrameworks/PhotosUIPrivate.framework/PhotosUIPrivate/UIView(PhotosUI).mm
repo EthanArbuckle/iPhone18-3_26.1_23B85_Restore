@@ -13,13 +13,13 @@
 - (void)pu_removeAllGeometryAnimationsRecursively:()PhotosUI
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [a1 layer];
+  layer = [self layer];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 animationKeys];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  animationKeys = [layer animationKeys];
+  v5 = [animationKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -30,17 +30,17 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animationKeys);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
         if (([v9 hasPrefix:@"position"] & 1) != 0 || (objc_msgSend(v9, "hasPrefix:", @"bounds") & 1) != 0 || (objc_msgSend(v9, "hasPrefix:", @"opacity") & 1) != 0 || objc_msgSend(v9, "hasPrefix:", @"transform"))
         {
-          [v3 removeAnimationForKey:v9];
+          [layer removeAnimationForKey:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [animationKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -52,8 +52,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [a1 subviews];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    subviews = [self subviews];
+    v11 = [subviews countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -64,13 +64,13 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v17 + 1) + 8 * j) pu_removeAllGeometryAnimationsRecursively:1];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v12 = [subviews countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v12);
@@ -85,17 +85,17 @@
   v15.origin.y = a3;
   v15.size.width = a4;
   v15.size.height = a5;
-  [a1 setCenter:{MidX, CGRectGetMidY(v15)}];
+  [self setCenter:{MidX, CGRectGetMidY(v15)}];
   v11 = *MEMORY[0x1E695EFF8];
   v12 = *(MEMORY[0x1E695EFF8] + 8);
 
-  return [a1 setBounds:{v11, v12, a4, a5}];
+  return [self setBounds:{v11, v12, a4, a5}];
 }
 
 - (uint64_t)pu_addTransform:()PhotosUI
 {
   memset(&v10, 0, sizeof(v10));
-  [a1 transform];
+  [self transform];
   t1 = v10;
   memset(&v9, 0, sizeof(v9));
   v5 = a3[1];
@@ -104,7 +104,7 @@
   *&v7.tx = a3[2];
   CGAffineTransformConcat(&v9, &t1, &v7);
   t1 = v9;
-  return [a1 setTransform:&t1];
+  return [self setTransform:&t1];
 }
 
 + (long)pu_springOscillationRootAtIndex:()PhotosUI forMass:stiffness:damping:initialVelocity:
@@ -113,8 +113,8 @@
   v12 = a6 / (v11 + v11);
   if (v12 >= 1.0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"UIView+PhotosUI.m" lineNumber:76 description:{@"The specified damped spring system is critically or over damped, and doesn't oscillate."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIView+PhotosUI.m" lineNumber:76 description:{@"The specified damped spring system is critically or over damped, and doesn't oscillate."}];
   }
 
   v13 = sqrt(a5 / a4);
@@ -124,7 +124,7 @@
 + (void)pu_transitionWithView:()PhotosUI duration:options:animations:completion:
 {
   v12 = a7;
-  if (a1 == 0.0)
+  if (self == 0.0)
   {
     (*(a6 + 16))(a6);
     v11 = v12;
@@ -138,7 +138,7 @@
 
   else
   {
-    [MEMORY[0x1E69DD250] transitionWithView:a4 duration:a5 options:a6 animations:v12 completion:a1];
+    [MEMORY[0x1E69DD250] transitionWithView:a4 duration:a5 options:a6 animations:v12 completion:self];
   }
 
   v11 = v12;
@@ -149,7 +149,7 @@ LABEL_6:
 {
   v9 = a5;
   v10 = a6;
-  if (a1 == 0.0)
+  if (self == 0.0)
   {
     v9[2](v9);
     if (v10)
@@ -160,10 +160,10 @@ LABEL_6:
 
   else if (a4)
   {
-    [MEMORY[0x1E69DD250] animateWithDuration:v9 animations:a1];
+    [MEMORY[0x1E69DD250] animateWithDuration:v9 animations:self];
     if (v10)
     {
-      v11 = dispatch_time(0, (a1 * 1000000000.0));
+      v11 = dispatch_time(0, (self * 1000000000.0));
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __75__UIView_PhotosUI___pu_animateWithDuration_enforced_animations_completion___block_invoke;
@@ -175,14 +175,14 @@ LABEL_6:
 
   else
   {
-    [MEMORY[0x1E69DD250] animateWithDuration:v9 animations:v10 completion:a1];
+    [MEMORY[0x1E69DD250] animateWithDuration:v9 animations:v10 completion:self];
   }
 }
 
 + (double)pu_layoutMarginWidthForCurrentScreenSize
 {
-  v0 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v0 bounds];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen bounds];
   v2 = v1;
   v4 = v3;
 
@@ -191,8 +191,8 @@ LABEL_6:
     v2 = v4;
   }
 
-  v5 = [MEMORY[0x1E69C4548] legacyLayoutMarginWidthInterpolator];
-  [v5 valueForMetric:v2];
+  legacyLayoutMarginWidthInterpolator = [MEMORY[0x1E69C4548] legacyLayoutMarginWidthInterpolator];
+  [legacyLayoutMarginWidthInterpolator valueForMetric:v2];
   v7 = v6;
 
   return v7;

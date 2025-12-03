@@ -1,34 +1,34 @@
 @interface EKUIRecurrenceAlertController
-+ (BOOL)_useSheetForViewController:(id)a3 options:(unint64_t)a4;
-+ (BOOL)shouldShowDeleteAlertForEvent:(id)a3 options:(unint64_t)a4;
++ (BOOL)_useSheetForViewController:(id)controller options:(unint64_t)options;
++ (BOOL)shouldShowDeleteAlertForEvent:(id)event options:(unint64_t)options;
 + (id)_cancelLocalizedString;
-+ (id)_defaultStringForDeleteButtonForEvent:(id)a3;
-+ (id)_defaultStringForDeleteTitleWhenNotRecurring:(id)a3;
++ (id)_defaultStringForDeleteButtonForEvent:(id)event;
++ (id)_defaultStringForDeleteTitleWhenNotRecurring:(id)recurring;
 + (id)_detachAllLocalizedString;
 + (id)_detachFutureLocalizedString;
-+ (id)deleteAlertWithOptions:(unint64_t)a3 forEvent:(id)a4 stringForDeleteButton:(id)a5 withCompletionHandler:(id)a6;
-+ (id)newAlertControllerWithCompletionHandler:(id)a3;
-+ (id)presentAttachmentAlertWithOptions:(unint64_t)a3 viewController:(id)a4 barButtonItem:(id)a5 forEvent:(id)a6 withCompletionHandler:(id)a7;
-+ (id)presentDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 barButtonItem:(id)a5 forEvent:(id)a6 stringForDeleteButton:(id)a7 withCompletionHandler:(id)a8;
-+ (id)presentDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 forEvents:(id)a5 withCompletionHandler:(id)a6;
-+ (id)presentDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 forEvent:(id)a7 stringForDeleteButton:(id)a8 withCompletionHandler:(id)a9;
-+ (id)presentDetachAlertWithOptions:(unint64_t)a3 viewController:(id)a4 barButtonItem:(id)a5 forEvent:(id)a6 withCompletionHandler:(id)a7;
-+ (id)presentDetachAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 forEvent:(id)a7 withCompletionHandler:(id)a8;
-+ (id)presentUnsubscribeAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 withCompletionHandler:(id)a7;
-+ (id)unsubscribeAlertWithOptions:(unint64_t)a3 withCompletionHandler:(id)a4;
-+ (int)_determineChoicesForEvent:(id)a3 options:(unint64_t)a4;
-- (BOOL)_setupDeleteAlertForEvents:(id)a3;
++ (id)deleteAlertWithOptions:(unint64_t)options forEvent:(id)event stringForDeleteButton:(id)button withCompletionHandler:(id)handler;
++ (id)newAlertControllerWithCompletionHandler:(id)handler;
++ (id)presentAttachmentAlertWithOptions:(unint64_t)options viewController:(id)controller barButtonItem:(id)item forEvent:(id)event withCompletionHandler:(id)handler;
++ (id)presentDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller barButtonItem:(id)item forEvent:(id)event stringForDeleteButton:(id)button withCompletionHandler:(id)handler;
++ (id)presentDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller forEvents:(id)events withCompletionHandler:(id)handler;
++ (id)presentDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect forEvent:(id)event stringForDeleteButton:(id)button withCompletionHandler:(id)handler;
++ (id)presentDetachAlertWithOptions:(unint64_t)options viewController:(id)controller barButtonItem:(id)item forEvent:(id)event withCompletionHandler:(id)handler;
++ (id)presentDetachAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect forEvent:(id)event withCompletionHandler:(id)handler;
++ (id)presentUnsubscribeAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect withCompletionHandler:(id)handler;
++ (id)unsubscribeAlertWithOptions:(unint64_t)options withCompletionHandler:(id)handler;
++ (int)_determineChoicesForEvent:(id)event options:(unint64_t)options;
+- (BOOL)_setupDeleteAlertForEvents:(id)events;
 - (BOOL)isCurrentlyShowingAlert;
 - (void)_cleanup;
-- (void)_completeWithSelection:(unint64_t)a3;
-- (void)_configureAlertControllerWithSourceView:(id)a3 sourceRect:(CGRect)a4 barButtonItem:(id)a5;
-- (void)_presentAttachmentsAlertWithOptions:(unint64_t)a3 viewController:(id)a4 barButtonItem:(id)a5 forEvent:(id)a6;
-- (void)_presentDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 barButtonItem:(id)a7 forEvent:(id)a8 stringForDeleteButton:(id)a9;
-- (void)_presentDetachAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 barButtonItem:(id)a7 forEvent:(id)a8;
-- (void)cancelAnimated:(BOOL)a3;
+- (void)_completeWithSelection:(unint64_t)selection;
+- (void)_configureAlertControllerWithSourceView:(id)view sourceRect:(CGRect)rect barButtonItem:(id)item;
+- (void)_presentAttachmentsAlertWithOptions:(unint64_t)options viewController:(id)controller barButtonItem:(id)item forEvent:(id)event;
+- (void)_presentDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect barButtonItem:(id)item forEvent:(id)event stringForDeleteButton:(id)button;
+- (void)_presentDetachAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect barButtonItem:(id)item forEvent:(id)event;
+- (void)cancelAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)setupDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 forEvent:(id)a5 stringForDeleteButton:(id)a6;
-- (void)setupUnsubscribeAlertWithOptions:(unint64_t)a3 viewController:(id)a4;
+- (void)setupDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller forEvent:(id)event stringForDeleteButton:(id)button;
+- (void)setupUnsubscribeAlertWithOptions:(unint64_t)options viewController:(id)controller;
 @end
 
 @implementation EKUIRecurrenceAlertController
@@ -41,23 +41,23 @@
   [(EKUIRecurrenceAlertController *)&v3 dealloc];
 }
 
-+ (id)newAlertControllerWithCompletionHandler:(id)a3
++ (id)newAlertControllerWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_opt_new();
-  [v4 setCompletionHandler:v3];
+  [v4 setCompletionHandler:handlerCopy];
 
   return v4;
 }
 
 - (BOOL)isCurrentlyShowingAlert
 {
-  v3 = [(UIAlertController *)self->_alertController view];
-  v4 = [v3 superview];
-  if (v4)
+  view = [(UIAlertController *)self->_alertController view];
+  superview = [view superview];
+  if (superview)
   {
-    v5 = [(UIAlertController *)self->_alertController presentingViewController];
-    if (v5)
+    presentingViewController = [(UIAlertController *)self->_alertController presentingViewController];
+    if (presentingViewController)
     {
       v6 = [(UIAlertController *)self->_alertController isBeingDismissed]^ 1;
     }
@@ -76,12 +76,12 @@
   return v6;
 }
 
-+ (id)_defaultStringForDeleteButtonForEvent:(id)a3
++ (id)_defaultStringForDeleteButtonForEvent:(id)event
 {
-  v3 = [a3 isReminderIntegrationEvent];
+  isReminderIntegrationEvent = [event isReminderIntegrationEvent];
   v4 = EventKitUIBundle();
   v5 = v4;
-  if (v3)
+  if (isReminderIntegrationEvent)
   {
     v6 = @"Delete Reminder";
   }
@@ -96,99 +96,99 @@
   return v7;
 }
 
-+ (id)presentDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 barButtonItem:(id)a5 forEvent:(id)a6 stringForDeleteButton:(id)a7 withCompletionHandler:(id)a8
++ (id)presentDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller barButtonItem:(id)item forEvent:(id)event stringForDeleteButton:(id)button withCompletionHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [a1 newAlertControllerWithCompletionHandler:a8];
-  v19 = v17;
-  if (!v17)
+  controllerCopy = controller;
+  itemCopy = item;
+  eventCopy = event;
+  buttonCopy = button;
+  v18 = [self newAlertControllerWithCompletionHandler:handler];
+  v19 = buttonCopy;
+  if (!buttonCopy)
   {
-    v19 = [a1 _defaultStringForDeleteButtonForEvent:v16];
+    v19 = [self _defaultStringForDeleteButtonForEvent:eventCopy];
   }
 
-  [v18 _presentDeleteAlertWithOptions:a3 viewController:v14 sourceView:0 sourceRect:v15 barButtonItem:v16 forEvent:v19 stringForDeleteButton:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
-  if (!v17)
+  [v18 _presentDeleteAlertWithOptions:options viewController:controllerCopy sourceView:0 sourceRect:itemCopy barButtonItem:eventCopy forEvent:v19 stringForDeleteButton:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
+  if (!buttonCopy)
   {
   }
 
   return v18;
 }
 
-+ (id)presentDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 forEvent:(id)a7 stringForDeleteButton:(id)a8 withCompletionHandler:(id)a9
++ (id)presentDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect forEvent:(id)event stringForDeleteButton:(id)button withCompletionHandler:(id)handler
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v19 = a4;
-  v20 = a5;
-  v21 = a7;
-  v22 = a8;
-  v23 = [a1 newAlertControllerWithCompletionHandler:a9];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  eventCopy = event;
+  buttonCopy = button;
+  v23 = [self newAlertControllerWithCompletionHandler:handler];
   v24 = v23;
-  if (v22)
+  if (buttonCopy)
   {
-    [v23 _presentDeleteAlertWithOptions:a3 viewController:v19 sourceView:v20 sourceRect:0 barButtonItem:v21 forEvent:v22 stringForDeleteButton:{x, y, width, height}];
+    [v23 _presentDeleteAlertWithOptions:options viewController:controllerCopy sourceView:viewCopy sourceRect:0 barButtonItem:eventCopy forEvent:buttonCopy stringForDeleteButton:{x, y, width, height}];
   }
 
   else
   {
-    v25 = [a1 _defaultStringForDeleteButtonForEvent:v21];
-    [v24 _presentDeleteAlertWithOptions:a3 viewController:v19 sourceView:v20 sourceRect:0 barButtonItem:v21 forEvent:v25 stringForDeleteButton:{x, y, width, height}];
+    v25 = [self _defaultStringForDeleteButtonForEvent:eventCopy];
+    [v24 _presentDeleteAlertWithOptions:options viewController:controllerCopy sourceView:viewCopy sourceRect:0 barButtonItem:eventCopy forEvent:v25 stringForDeleteButton:{x, y, width, height}];
   }
 
   return v24;
 }
 
-+ (id)presentDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 forEvents:(id)a5 withCompletionHandler:(id)a6
++ (id)presentDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller forEvents:(id)events withCompletionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [a1 newAlertControllerWithCompletionHandler:a6];
-  if ([v11 count] == 1)
+  controllerCopy = controller;
+  eventsCopy = events;
+  v12 = [self newAlertControllerWithCompletionHandler:handler];
+  if ([eventsCopy count] == 1)
   {
-    v13 = [v11 objectAtIndexedSubscript:0];
-    v14 = [v11 objectAtIndexedSubscript:0];
-    v15 = [a1 _defaultStringForDeleteButtonForEvent:v14];
-    [v12 _presentDeleteAlertWithOptions:a3 viewController:v10 sourceView:0 sourceRect:0 barButtonItem:v13 forEvent:v15 stringForDeleteButton:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    alertController = [eventsCopy objectAtIndexedSubscript:0];
+    v14 = [eventsCopy objectAtIndexedSubscript:0];
+    v15 = [self _defaultStringForDeleteButtonForEvent:v14];
+    [v12 _presentDeleteAlertWithOptions:options viewController:controllerCopy sourceView:0 sourceRect:0 barButtonItem:alertController forEvent:v15 stringForDeleteButton:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   }
 
-  else if ([v12 _setupDeleteAlertForEvents:v11])
+  else if ([v12 _setupDeleteAlertForEvents:eventsCopy])
   {
-    v13 = [v12 alertController];
-    [v10 presentViewController:v13 animated:1 completion:0];
+    alertController = [v12 alertController];
+    [controllerCopy presentViewController:alertController animated:1 completion:0];
   }
 
   else
   {
-    v13 = v12;
+    alertController = v12;
     v12 = 0;
   }
 
   return v12;
 }
 
-+ (id)deleteAlertWithOptions:(unint64_t)a3 forEvent:(id)a4 stringForDeleteButton:(id)a5 withCompletionHandler:(id)a6
++ (id)deleteAlertWithOptions:(unint64_t)options forEvent:(id)event stringForDeleteButton:(id)button withCompletionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([a1 shouldShowDeleteAlertForEvent:v10 options:a3])
+  eventCopy = event;
+  buttonCopy = button;
+  handlerCopy = handler;
+  if ([self shouldShowDeleteAlertForEvent:eventCopy options:options])
   {
-    v13 = [a1 newAlertControllerWithCompletionHandler:v12];
+    v13 = [self newAlertControllerWithCompletionHandler:handlerCopy];
     v14 = v13;
-    if (v11)
+    if (buttonCopy)
     {
-      [v13 setupDeleteAlertWithOptions:a3 viewController:0 forEvent:v10 stringForDeleteButton:v11];
+      [v13 setupDeleteAlertWithOptions:options viewController:0 forEvent:eventCopy stringForDeleteButton:buttonCopy];
     }
 
     else
     {
-      v15 = [a1 _defaultStringForDeleteButtonForEvent:v10];
-      [v14 setupDeleteAlertWithOptions:a3 viewController:0 forEvent:v10 stringForDeleteButton:v15];
+      v15 = [self _defaultStringForDeleteButtonForEvent:eventCopy];
+      [v14 setupDeleteAlertWithOptions:options viewController:0 forEvent:eventCopy stringForDeleteButton:v15];
     }
   }
 
@@ -200,23 +200,23 @@
   return v14;
 }
 
-+ (BOOL)shouldShowDeleteAlertForEvent:(id)a3 options:(unint64_t)a4
++ (BOOL)shouldShowDeleteAlertForEvent:(id)event options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 isReminderIntegrationEvent];
-  if ((v6 & 1) != 0 || (v4 & 0x10) != 0)
+  eventCopy = event;
+  isReminderIntegrationEvent = [eventCopy isReminderIntegrationEvent];
+  if ((isReminderIntegrationEvent & 1) != 0 || (optionsCopy & 0x10) != 0)
   {
-    v8 = (v4 & 0x10) == 0;
+    v8 = (optionsCopy & 0x10) == 0;
     v9 = MEMORY[0x1E6993488];
-    v13[0] = v5;
+    v13[0] = eventCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     v11 = [v9 spanDecisionInfoForEvents:v10];
 
     if ([v11 shouldRequestSpan])
     {
-      v7 = v6 ^ 1;
+      v7 = isReminderIntegrationEvent ^ 1;
     }
 
     else
@@ -233,21 +233,21 @@
   return v7;
 }
 
-+ (id)presentUnsubscribeAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 withCompletionHandler:(id)a7
++ (id)presentUnsubscribeAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect withCompletionHandler:(id)handler
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  if (v15)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  handlerCopy = handler;
+  if (controllerCopy)
   {
-    v18 = [a1 unsubscribeAlertWithOptions:a3 withCompletionHandler:v17];
-    [v18 _configureAlertControllerWithSourceView:v16 sourceRect:0 barButtonItem:{x, y, width, height}];
-    v19 = [v18 alertController];
-    [v15 presentViewController:v19 animated:1 completion:0];
+    v18 = [self unsubscribeAlertWithOptions:options withCompletionHandler:handlerCopy];
+    [v18 _configureAlertControllerWithSourceView:viewCopy sourceRect:0 barButtonItem:{x, y, width, height}];
+    alertController = [v18 alertController];
+    [controllerCopy presentViewController:alertController animated:1 completion:0];
   }
 
   else
@@ -265,76 +265,76 @@
   return v18;
 }
 
-+ (id)unsubscribeAlertWithOptions:(unint64_t)a3 withCompletionHandler:(id)a4
++ (id)unsubscribeAlertWithOptions:(unint64_t)options withCompletionHandler:(id)handler
 {
-  v5 = [a1 newAlertControllerWithCompletionHandler:a4];
-  [v5 setupUnsubscribeAlertWithOptions:a3 viewController:0];
+  v5 = [self newAlertControllerWithCompletionHandler:handler];
+  [v5 setupUnsubscribeAlertWithOptions:options viewController:0];
 
   return v5;
 }
 
-+ (id)presentDetachAlertWithOptions:(unint64_t)a3 viewController:(id)a4 barButtonItem:(id)a5 forEvent:(id)a6 withCompletionHandler:(id)a7
++ (id)presentDetachAlertWithOptions:(unint64_t)options viewController:(id)controller barButtonItem:(id)item forEvent:(id)event withCompletionHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [a1 newAlertControllerWithCompletionHandler:a7];
-  [v15 _presentDetachAlertWithOptions:a3 viewController:v14 sourceView:0 sourceRect:v13 barButtonItem:v12 forEvent:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
+  eventCopy = event;
+  itemCopy = item;
+  controllerCopy = controller;
+  v15 = [self newAlertControllerWithCompletionHandler:handler];
+  [v15 _presentDetachAlertWithOptions:options viewController:controllerCopy sourceView:0 sourceRect:itemCopy barButtonItem:eventCopy forEvent:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
 
   return v15;
 }
 
-+ (id)presentDetachAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 forEvent:(id)a7 withCompletionHandler:(id)a8
++ (id)presentDetachAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect forEvent:(id)event withCompletionHandler:(id)handler
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v17 = a7;
-  v18 = a5;
-  v19 = a4;
-  v20 = [a1 newAlertControllerWithCompletionHandler:a8];
-  [v20 _presentDetachAlertWithOptions:a3 viewController:v19 sourceView:v18 sourceRect:0 barButtonItem:v17 forEvent:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  eventCopy = event;
+  viewCopy = view;
+  controllerCopy = controller;
+  v20 = [self newAlertControllerWithCompletionHandler:handler];
+  [v20 _presentDetachAlertWithOptions:options viewController:controllerCopy sourceView:viewCopy sourceRect:0 barButtonItem:eventCopy forEvent:{x, y, width, height}];
 
   return v20;
 }
 
-+ (id)presentAttachmentAlertWithOptions:(unint64_t)a3 viewController:(id)a4 barButtonItem:(id)a5 forEvent:(id)a6 withCompletionHandler:(id)a7
++ (id)presentAttachmentAlertWithOptions:(unint64_t)options viewController:(id)controller barButtonItem:(id)item forEvent:(id)event withCompletionHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [a1 newAlertControllerWithCompletionHandler:a7];
-  [v15 _presentAttachmentsAlertWithOptions:a3 viewController:v14 barButtonItem:v13 forEvent:v12];
+  eventCopy = event;
+  itemCopy = item;
+  controllerCopy = controller;
+  v15 = [self newAlertControllerWithCompletionHandler:handler];
+  [v15 _presentAttachmentsAlertWithOptions:options viewController:controllerCopy barButtonItem:itemCopy forEvent:eventCopy];
 
   return v15;
 }
 
-+ (BOOL)_useSheetForViewController:(id)a3 options:(unint64_t)a4
++ (BOOL)_useSheetForViewController:(id)controller options:(unint64_t)options
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if ((v4 & 2) != 0)
+  optionsCopy = options;
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  if ((optionsCopy & 2) != 0)
   {
     v9 = 0;
     goto LABEL_12;
   }
 
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    if (!v5 || ([v5 popoverPresentationController], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    if (!controllerCopy || ([controllerCopy popoverPresentationController], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
       v9 = 1;
       goto LABEL_12;
     }
   }
 
-  v7 = [v6 view];
-  if (!EKUICurrentHeightSizeClassIsCompact(v7))
+  view = [v6 view];
+  if (!EKUICurrentHeightSizeClassIsCompact(view))
   {
-    v8 = [v6 view];
-    if (!EKUICurrentWidthSizeClassIsCompactInViewHierarchy(v8))
+    view2 = [v6 view];
+    if (!EKUICurrentWidthSizeClassIsCompactInViewHierarchy(view2))
     {
       v9 = 1;
       v12 = [v6 _isInContextOfPresentationControllerOfClass:objc_opt_class() effective:1];
@@ -344,8 +344,8 @@
         goto LABEL_12;
       }
 
-      v7 = [v6 _popoverController];
-      v9 = v7 != 0;
+      view = [v6 _popoverController];
+      v9 = view != 0;
       goto LABEL_7;
     }
   }
@@ -357,10 +357,10 @@ LABEL_12:
   return v9;
 }
 
-- (void)setupUnsubscribeAlertWithOptions:(unint64_t)a3 viewController:(id)a4
+- (void)setupUnsubscribeAlertWithOptions:(unint64_t)options viewController:(id)controller
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:{objc_msgSend(objc_opt_class(), "_useSheetForViewController:options:", v6, a3) ^ 1}];
+  controllerCopy = controller;
+  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:{objc_msgSend(objc_opt_class(), "_useSheetForViewController:options:", controllerCopy, options) ^ 1}];
   alertController = self->_alertController;
   self->_alertController = v7;
 
@@ -399,13 +399,13 @@ LABEL_12:
 
   v23 = self->_alertController;
   v24 = MEMORY[0x1E69DC648];
-  v25 = [objc_opt_class() _cancelLocalizedString];
+  _cancelLocalizedString = [objc_opt_class() _cancelLocalizedString];
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __81__EKUIRecurrenceAlertController_setupUnsubscribeAlertWithOptions_viewController___block_invoke_3;
   v30 = &unk_1E8440A70;
   objc_copyWeak(&v31, &location);
-  v26 = [v24 actionWithTitle:v25 style:1 handler:&v27];
+  v26 = [v24 actionWithTitle:_cancelLocalizedString style:1 handler:&v27];
   [(UIAlertController *)v23 addAction:v26, v27, v28, v29, v30];
 
   objc_destroyWeak(&v31);
@@ -432,18 +432,18 @@ void __81__EKUIRecurrenceAlertController_setupUnsubscribeAlertWithOptions_viewCo
   [WeakRetained _completeWithSelection:3];
 }
 
-- (BOOL)_setupDeleteAlertForEvents:(id)a3
+- (BOOL)_setupDeleteAlertForEvents:(id)events
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6993488] spanDecisionInfoForEvents:v4];
-  v6 = [v5 shouldRequestSpan];
-  v7 = v6;
-  if (v6)
+  eventsCopy = events;
+  v5 = [MEMORY[0x1E6993488] spanDecisionInfoForEvents:eventsCopy];
+  shouldRequestSpan = [v5 shouldRequestSpan];
+  v7 = shouldRequestSpan;
+  if (shouldRequestSpan)
   {
-    v33 = v6;
-    v8 = [v5 proposeFuture];
-    v9 = [v5 recurringEventCount];
-    v10 = [v4 count];
+    v33 = shouldRequestSpan;
+    proposeFuture = [v5 proposeFuture];
+    recurringEventCount = [v5 recurringEventCount];
+    v10 = [eventsCopy count];
     v11 = EventKitUIBundle();
     v12 = [v11 localizedStringForKey:@"You’re deleting events." value:&stru_1F4EF6790 table:0];
 
@@ -452,9 +452,9 @@ void __81__EKUIRecurrenceAlertController_setupUnsubscribeAlertWithOptions_viewCo
 
     v14 = EventKitUIBundle();
     v15 = v14;
-    if (v8)
+    if (proposeFuture)
     {
-      if (v9 == v10)
+      if (recurringEventCount == v10)
       {
         v16 = @"Do you want to delete this and all future occurrences of these events, or only the selected occurrences?";
       }
@@ -473,7 +473,7 @@ void __81__EKUIRecurrenceAlertController_setupUnsubscribeAlertWithOptions_viewCo
 
     else
     {
-      if (v9 == v10)
+      if (recurringEventCount == v10)
       {
         v20 = @"Do you want to delete all occurrences of these events, or only the selected occurrences?";
       }
@@ -525,13 +525,13 @@ LABEL_17:
         [v28 setAccessibilityIdentifier:@"delete-only-these-events-button"];
         [(UIAlertController *)self->_alertController addAction:v28];
         v29 = MEMORY[0x1E69DC648];
-        v30 = [objc_opt_class() _cancelLocalizedString];
+        _cancelLocalizedString = [objc_opt_class() _cancelLocalizedString];
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
         v37[2] = __60__EKUIRecurrenceAlertController__setupDeleteAlertForEvents___block_invoke_4;
         v37[3] = &unk_1E8440A70;
         objc_copyWeak(&v38, location);
-        v31 = [v29 actionWithTitle:v30 style:1 handler:v37];
+        v31 = [v29 actionWithTitle:_cancelLocalizedString style:1 handler:v37];
 
         [v31 setAccessibilityIdentifier:@"cancel-alert-button"];
         [(UIAlertController *)self->_alertController addAction:v31];
@@ -590,12 +590,12 @@ void __60__EKUIRecurrenceAlertController__setupDeleteAlertForEvents___block_invo
   [WeakRetained _completeWithSelection:3];
 }
 
-+ (id)_defaultStringForDeleteTitleWhenNotRecurring:(id)a3
++ (id)_defaultStringForDeleteTitleWhenNotRecurring:(id)recurring
 {
-  v3 = [a3 isReminderIntegrationEvent];
+  isReminderIntegrationEvent = [recurring isReminderIntegrationEvent];
   v4 = EventKitUIBundle();
   v5 = v4;
-  if (v3)
+  if (isReminderIntegrationEvent)
   {
     v6 = @"Are you sure you want to delete this reminder?";
   }
@@ -610,13 +610,13 @@ void __60__EKUIRecurrenceAlertController__setupDeleteAlertForEvents___block_invo
   return v7;
 }
 
-- (void)setupDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 forEvent:(id)a5 stringForDeleteButton:(id)a6
+- (void)setupDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller forEvent:(id)event stringForDeleteButton:(id)button
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [EKUIRecurrenceAlertController _determineChoicesForEvent:v11 options:a3];
-  v14 = +[EKUIDeleteAlertController alertControllerWithTitle:message:preferredStyle:](EKUIDeleteAlertController, "alertControllerWithTitle:message:preferredStyle:", 0, 0, [objc_opt_class() _useSheetForViewController:v10 options:a3] ^ 1);
+  controllerCopy = controller;
+  eventCopy = event;
+  buttonCopy = button;
+  v13 = [EKUIRecurrenceAlertController _determineChoicesForEvent:eventCopy options:options];
+  v14 = +[EKUIDeleteAlertController alertControllerWithTitle:message:preferredStyle:](EKUIDeleteAlertController, "alertControllerWithTitle:message:preferredStyle:", 0, 0, [objc_opt_class() _useSheetForViewController:controllerCopy options:options] ^ 1);
   alertController = self->_alertController;
   self->_alertController = v14;
 
@@ -631,7 +631,7 @@ void __60__EKUIRecurrenceAlertController__setupDeleteAlertForEvents___block_invo
     v17 = 0;
   }
 
-  v39 = v12;
+  v39 = buttonCopy;
   if ((v13 & 6) != 0)
   {
     v18 = EventKitUIBundle();
@@ -685,14 +685,14 @@ void __60__EKUIRecurrenceAlertController__setupDeleteAlertForEvents___block_invo
 
     objc_destroyWeak(v28);
     v37 = MEMORY[0x1E69DC648];
-    v38 = [objc_opt_class() _cancelLocalizedString];
+    _cancelLocalizedString = [objc_opt_class() _cancelLocalizedString];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __107__EKUIRecurrenceAlertController_setupDeleteAlertWithOptions_viewController_forEvent_stringForDeleteButton___block_invoke_4;
     v44[3] = &unk_1E8440A70;
     v34 = &v45;
     objc_copyWeak(&v45, location);
-    v35 = [v37 actionWithTitle:v38 style:1 handler:v44];
+    v35 = [v37 actionWithTitle:_cancelLocalizedString style:1 handler:v44];
 
     [v35 setAccessibilityIdentifier:@"cancel-alert-button"];
     [(UIAlertController *)self->_alertController addAction:v35];
@@ -700,7 +700,7 @@ void __60__EKUIRecurrenceAlertController__setupDeleteAlertForEvents___block_invo
 
   else
   {
-    v30 = [objc_opt_class() _defaultStringForDeleteTitleWhenNotRecurring:v11];
+    v30 = [objc_opt_class() _defaultStringForDeleteTitleWhenNotRecurring:eventCopy];
     [(UIAlertController *)self->_alertController setTitle:v30];
 
     v31 = MEMORY[0x1E69DC648];
@@ -710,18 +710,18 @@ void __60__EKUIRecurrenceAlertController__setupDeleteAlertForEvents___block_invo
     v42[3] = &unk_1E8440A70;
     v23 = &v43;
     objc_copyWeak(&v43, location);
-    v24 = [v31 actionWithTitle:v12 style:2 handler:v42];
+    v24 = [v31 actionWithTitle:buttonCopy style:2 handler:v42];
     [v24 setAccessibilityIdentifier:@"delete-alert-button"];
     [(UIAlertController *)self->_alertController addAction:v24];
     v32 = MEMORY[0x1E69DC648];
-    v33 = [objc_opt_class() _cancelLocalizedString];
+    _cancelLocalizedString2 = [objc_opt_class() _cancelLocalizedString];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __107__EKUIRecurrenceAlertController_setupDeleteAlertWithOptions_viewController_forEvent_stringForDeleteButton___block_invoke_6;
     v40[3] = &unk_1E8440A70;
     v34 = &v41;
     objc_copyWeak(&v41, location);
-    v35 = [v32 actionWithTitle:v33 style:1 handler:v40];
+    v35 = [v32 actionWithTitle:_cancelLocalizedString2 style:1 handler:v40];
 
     [v35 setAccessibilityIdentifier:@"cancel-alert-button"];
     [(UIAlertController *)self->_alertController addAction:v35];
@@ -768,24 +768,24 @@ void __107__EKUIRecurrenceAlertController_setupDeleteAlertWithOptions_viewContro
   [WeakRetained _completeWithSelection:3];
 }
 
-- (void)_presentDeleteAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 barButtonItem:(id)a7 forEvent:(id)a8 stringForDeleteButton:(id)a9
+- (void)_presentDeleteAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect barButtonItem:(id)item forEvent:(id)event stringForDeleteButton:(id)button
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v19 = a4;
-  v20 = a5;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  if (v19)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  itemCopy = item;
+  eventCopy = event;
+  buttonCopy = button;
+  if (controllerCopy)
   {
-    if ([objc_opt_class() shouldShowDeleteAlertForEvent:v22 options:a3])
+    if ([objc_opt_class() shouldShowDeleteAlertForEvent:eventCopy options:options])
     {
-      [(EKUIRecurrenceAlertController *)self setupDeleteAlertWithOptions:a3 viewController:v19 forEvent:v22 stringForDeleteButton:v23];
-      [(EKUIRecurrenceAlertController *)self _configureAlertControllerWithSourceView:v20 sourceRect:v21 barButtonItem:x, y, width, height];
-      [v19 presentViewController:self->_alertController animated:1 completion:0];
+      [(EKUIRecurrenceAlertController *)self setupDeleteAlertWithOptions:options viewController:controllerCopy forEvent:eventCopy stringForDeleteButton:buttonCopy];
+      [(EKUIRecurrenceAlertController *)self _configureAlertControllerWithSourceView:viewCopy sourceRect:itemCopy barButtonItem:x, y, width, height];
+      [controllerCopy presentViewController:self->_alertController animated:1 completion:0];
     }
 
     else
@@ -805,24 +805,24 @@ void __107__EKUIRecurrenceAlertController_setupDeleteAlertWithOptions_viewContro
   }
 }
 
-- (void)_presentDetachAlertWithOptions:(unint64_t)a3 viewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 barButtonItem:(id)a7 forEvent:(id)a8
+- (void)_presentDetachAlertWithOptions:(unint64_t)options viewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect barButtonItem:(id)item forEvent:(id)event
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  if (v17)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  itemCopy = item;
+  eventCopy = event;
+  if (controllerCopy)
   {
-    if ([objc_opt_class() shouldShowDetachAlertForEvent:v20 options:a3])
+    if ([objc_opt_class() shouldShowDetachAlertForEvent:eventCopy options:options])
     {
-      v45 = v19;
-      v21 = [EKUIRecurrenceAlertController _determineChoicesForEvent:v20 options:a3];
-      v22 = [objc_opt_class() _useSheetForViewController:v17 options:a3] ^ 1;
-      if ((a3 & 8) != 0)
+      v45 = itemCopy;
+      v21 = [EKUIRecurrenceAlertController _determineChoicesForEvent:eventCopy options:options];
+      v22 = [objc_opt_class() _useSheetForViewController:controllerCopy options:options] ^ 1;
+      if ((options & 8) != 0)
       {
         v25 = EventKitUIBundle();
         v23 = [v25 localizedStringForKey:@"Changes to attachments will apply to all occurrences." value:&stru_1F4EF6790 table:0];
@@ -879,13 +879,13 @@ void __107__EKUIRecurrenceAlertController_setupDeleteAlertWithOptions_viewContro
         [v40 setAccessibilityIdentifier:@"recurrence-save-for-all-future-events-button"];
         [(UIAlertController *)self->_alertController addAction:v40];
         v42 = MEMORY[0x1E69DC648];
-        v43 = [objc_opt_class() _cancelLocalizedString];
+        _cancelLocalizedString = [objc_opt_class() _cancelLocalizedString];
         v52[0] = MEMORY[0x1E69E9820];
         v52[1] = 3221225472;
         v52[2] = __124__EKUIRecurrenceAlertController__presentDetachAlertWithOptions_viewController_sourceView_sourceRect_barButtonItem_forEvent___block_invoke_3;
         v52[3] = &unk_1E8440A70;
         objc_copyWeak(&v53, buf);
-        v44 = [v42 actionWithTitle:v43 style:1 handler:v52];
+        v44 = [v42 actionWithTitle:_cancelLocalizedString style:1 handler:v52];
 
         [v44 setAccessibilityIdentifier:@"cancel-alert-button"];
         [(UIAlertController *)self->_alertController addAction:v44];
@@ -917,25 +917,25 @@ void __107__EKUIRecurrenceAlertController_setupDeleteAlertWithOptions_viewContro
         [v34 setAccessibilityIdentifier:@"recurrence-save-for-all-future-events-button"];
         [(UIAlertController *)self->_alertController addAction:v34];
         v37 = MEMORY[0x1E69DC648];
-        v38 = [objc_opt_class() _cancelLocalizedString];
+        _cancelLocalizedString2 = [objc_opt_class() _cancelLocalizedString];
         v47[0] = MEMORY[0x1E69E9820];
         v47[1] = 3221225472;
         v47[2] = __124__EKUIRecurrenceAlertController__presentDetachAlertWithOptions_viewController_sourceView_sourceRect_barButtonItem_forEvent___block_invoke_5;
         v47[3] = &unk_1E8440A70;
         v39 = &v48;
         objc_copyWeak(&v48, buf);
-        v40 = [v37 actionWithTitle:v38 style:1 handler:v47];
+        v40 = [v37 actionWithTitle:_cancelLocalizedString2 style:1 handler:v47];
 
         [v40 setAccessibilityIdentifier:@"cancel-alert-button"];
         [(UIAlertController *)self->_alertController addAction:v40];
       }
 
-      v19 = v45;
+      itemCopy = v45;
 
       objc_destroyWeak(v39);
       objc_destroyWeak(location);
-      [(EKUIRecurrenceAlertController *)self _configureAlertControllerWithSourceView:v18 sourceRect:v45 barButtonItem:x, y, width, height];
-      [v17 presentViewController:self->_alertController animated:1 completion:0];
+      [(EKUIRecurrenceAlertController *)self _configureAlertControllerWithSourceView:viewCopy sourceRect:v45 barButtonItem:x, y, width, height];
+      [controllerCopy presentViewController:self->_alertController animated:1 completion:0];
       objc_destroyWeak(buf);
     }
 
@@ -1008,14 +1008,14 @@ void __124__EKUIRecurrenceAlertController__presentDetachAlertWithOptions_viewCon
   [WeakRetained _completeWithSelection:3];
 }
 
-- (void)_presentAttachmentsAlertWithOptions:(unint64_t)a3 viewController:(id)a4 barButtonItem:(id)a5 forEvent:(id)a6
+- (void)_presentAttachmentsAlertWithOptions:(unint64_t)options viewController:(id)controller barButtonItem:(id)item forEvent:(id)event
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  controllerCopy = controller;
+  itemCopy = item;
+  eventCopy = event;
+  if (controllerCopy)
   {
-    v13 = [objc_opt_class() _useSheetForViewController:v10 options:a3] ^ 1;
+    v13 = [objc_opt_class() _useSheetForViewController:controllerCopy options:options] ^ 1;
     v14 = MEMORY[0x1E69DC650];
     v15 = EventKitUIBundle();
     v16 = [v15 localizedStringForKey:@"This is a repeating event." value:&stru_1F4EF6790 table:0];
@@ -1039,18 +1039,18 @@ void __124__EKUIRecurrenceAlertController__presentDetachAlertWithOptions_viewCon
     [v24 setAccessibilityIdentifier:@"recurrence-save-for-all-events-button"];
     [(UIAlertController *)self->_alertController addAction:v24];
     v25 = MEMORY[0x1E69DC648];
-    v26 = [objc_opt_class() _cancelLocalizedString];
+    _cancelLocalizedString = [objc_opt_class() _cancelLocalizedString];
     v29 = MEMORY[0x1E69E9820];
     v30 = 3221225472;
     v31 = __107__EKUIRecurrenceAlertController__presentAttachmentsAlertWithOptions_viewController_barButtonItem_forEvent___block_invoke_2;
     v32 = &unk_1E8440A70;
     objc_copyWeak(&v33, location);
-    v27 = [v25 actionWithTitle:v26 style:1 handler:&v29];
+    v27 = [v25 actionWithTitle:_cancelLocalizedString style:1 handler:&v29];
 
     [v27 setAccessibilityIdentifier:{@"cancel-alert-button", v29, v30, v31, v32}];
     [(UIAlertController *)self->_alertController addAction:v27];
-    [(EKUIRecurrenceAlertController *)self _configureAlertControllerWithSourceView:0 sourceRect:v11 barButtonItem:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
-    [v10 presentViewController:self->_alertController animated:1 completion:0];
+    [(EKUIRecurrenceAlertController *)self _configureAlertControllerWithSourceView:0 sourceRect:itemCopy barButtonItem:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+    [controllerCopy presentViewController:self->_alertController animated:1 completion:0];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&v35);
@@ -1080,32 +1080,32 @@ void __107__EKUIRecurrenceAlertController__presentAttachmentsAlertWithOptions_vi
   [WeakRetained _completeWithSelection:3];
 }
 
-- (void)_configureAlertControllerWithSourceView:(id)a3 sourceRect:(CGRect)a4 barButtonItem:(id)a5
+- (void)_configureAlertControllerWithSourceView:(id)view sourceRect:(CGRect)rect barButtonItem:(id)item
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v11 = a5;
-  if (v14)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  itemCopy = item;
+  if (viewCopy)
   {
-    v12 = [(UIAlertController *)self->_alertController popoverPresentationController];
-    [v12 setSourceView:v14];
+    popoverPresentationController = [(UIAlertController *)self->_alertController popoverPresentationController];
+    [popoverPresentationController setSourceView:viewCopy];
 
-    v13 = [(UIAlertController *)self->_alertController popoverPresentationController];
-    [v13 setSourceRect:{x, y, width, height}];
+    popoverPresentationController2 = [(UIAlertController *)self->_alertController popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{x, y, width, height}];
   }
 
   else
   {
-    if (!v11)
+    if (!itemCopy)
     {
       goto LABEL_6;
     }
 
-    v13 = [(UIAlertController *)self->_alertController popoverPresentationController];
-    [v13 setBarButtonItem:v11];
+    popoverPresentationController2 = [(UIAlertController *)self->_alertController popoverPresentationController];
+    [popoverPresentationController2 setBarButtonItem:itemCopy];
   }
 
 LABEL_6:
@@ -1127,23 +1127,23 @@ LABEL_6:
   return v3;
 }
 
-- (void)cancelAnimated:(BOOL)a3
+- (void)cancelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (([(UIAlertController *)self->_alertController isBeingDismissed]& 1) == 0)
   {
     alertController = self->_alertController;
 
-    [(UIAlertController *)alertController dismissViewControllerAnimated:v3 completion:0];
+    [(UIAlertController *)alertController dismissViewControllerAnimated:animatedCopy completion:0];
   }
 }
 
-- (void)_completeWithSelection:(unint64_t)a3
+- (void)_completeWithSelection:(unint64_t)selection
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3);
+    completionHandler[2](completionHandler, selection);
   }
 
   [(EKUIRecurrenceAlertController *)self _cleanup];
@@ -1166,30 +1166,30 @@ LABEL_6:
   return v3;
 }
 
-+ (int)_determineChoicesForEvent:(id)a3 options:(unint64_t)a4
++ (int)_determineChoicesForEvent:(id)event options:(unint64_t)options
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  eventCopy = event;
+  v6 = eventCopy;
+  if (!eventCopy)
   {
 LABEL_20:
     v9 = 1;
     goto LABEL_21;
   }
 
-  v7 = [v5 canDetachSingleOccurrence];
-  if ((a4 & 1) != 0 || ![v6 isOrWasPartOfRecurringSeries])
+  canDetachSingleOccurrence = [eventCopy canDetachSingleOccurrence];
+  if ((options & 1) != 0 || ![v6 isOrWasPartOfRecurringSeries])
   {
 LABEL_17:
-    if ((v7 & 1) == 0)
+    if ((canDetachSingleOccurrence & 1) == 0)
     {
       v17 = kEKUILogHandle;
       if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
       {
         v18 = MEMORY[0x1E696AD98];
         v19 = v17;
-        v20 = [v18 numberWithUnsignedInteger:a4];
+        v20 = [v18 numberWithUnsignedInteger:options];
         v26 = 138412546;
         v27 = v6;
         v28 = 2112;
@@ -1201,15 +1201,15 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  v8 = [v6 hasChanges];
-  if ((a4 & 8) != 0 && !v8)
+  hasChanges = [v6 hasChanges];
+  if ((options & 8) != 0 && !hasChanges)
   {
     goto LABEL_6;
   }
 
-  v10 = [v6 changeSet];
+  changeSet = [v6 changeSet];
   v11 = *MEMORY[0x1E6992570];
-  if ([v10 hasUnsavedChangeForKey:*MEMORY[0x1E6992570]])
+  if ([changeSet hasUnsavedChangeForKey:*MEMORY[0x1E6992570]])
   {
     v30[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
@@ -1232,18 +1232,18 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v14 = [v6 singleRecurrenceRule];
-  v15 = [v14 recurrenceEndHasChanges];
+  singleRecurrenceRule = [v6 singleRecurrenceRule];
+  recurrenceEndHasChanges = [singleRecurrenceRule recurrenceEndHasChanges];
 
-  if (v15)
+  if (recurrenceEndHasChanges)
   {
     goto LABEL_13;
   }
 
-  v22 = [v6 calendar];
-  v23 = [v22 source];
-  v24 = [v23 constraints];
-  if ([v24 prohibitsSlicingEventsWithAttendees])
+  calendar = [v6 calendar];
+  source = [calendar source];
+  constraints = [source constraints];
+  if ([constraints prohibitsSlicingEventsWithAttendees])
   {
     if ([v6 hasAttendees])
     {
@@ -1253,9 +1253,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v25 = [v6 _hadAttendees];
+    _hadAttendees = [v6 _hadAttendees];
 
-    if (v25)
+    if (_hadAttendees)
     {
       goto LABEL_13;
     }
@@ -1274,12 +1274,12 @@ LABEL_14:
 
   if (v16)
   {
-    v9 = v7 | 4;
+    v9 = canDetachSingleOccurrence | 4;
   }
 
   else
   {
-    v9 = v7 | 2;
+    v9 = canDetachSingleOccurrence | 2;
   }
 
 LABEL_21:

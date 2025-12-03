@@ -1,7 +1,7 @@
 @interface VUIShareURLActivityItem
-- (VUIShareURLActivityItem)initWithURL:(id)a3 title:(id)a4 subtitle:(id)a5 isMusicItem:(BOOL)a6;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VUIShareURLActivityItem)initWithURL:(id)l title:(id)title subtitle:(id)subtitle isMusicItem:(BOOL)item;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)cancel;
 - (void)fetch;
 - (void)setMetadataTitle;
@@ -9,21 +9,21 @@
 
 @implementation VUIShareURLActivityItem
 
-- (VUIShareURLActivityItem)initWithURL:(id)a3 title:(id)a4 subtitle:(id)a5 isMusicItem:(BOOL)a6
+- (VUIShareURLActivityItem)initWithURL:(id)l title:(id)title subtitle:(id)subtitle isMusicItem:(BOOL)item
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v19.receiver = self;
   v19.super_class = VUIShareURLActivityItem;
   v14 = [(VUIShareURLActivityItem *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_shareURL, a3);
-    objc_storeStrong(&v15->_title, a4);
-    objc_storeStrong(&v15->_subtitle, a5);
-    v15->_isMusicItem = a6;
+    objc_storeStrong(&v14->_shareURL, l);
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v15->_subtitle, subtitle);
+    v15->_isMusicItem = item;
     v16 = objc_alloc_init(MEMORY[0x1E696ECA0]);
     metadata = v15->_metadata;
     v15->_metadata = v16;
@@ -78,7 +78,7 @@ void __32__VUIShareURLActivityItem_fetch__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   shareURL = self->_shareURL;
@@ -98,7 +98,7 @@ void __32__VUIShareURLActivityItem_fetch__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
   if (!self->_metadata)
   {
@@ -120,7 +120,7 @@ void __32__VUIShareURLActivityItem_fetch__block_invoke(uint64_t a1, void *a2)
   [(LPLinkMetadata *)self->_metadata setTitle:self->_title];
   [(LPLinkMetadata *)self->_metadata setSummary:self->_subtitle];
   isMusicItem = self->_isMusicItem;
-  v4 = [(LPLinkMetadata *)self->_metadata specialization];
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
   if (isMusicItem)
   {
     objc_opt_class();
@@ -128,16 +128,16 @@ void __32__VUIShareURLActivityItem_fetch__block_invoke(uint64_t a1, void *a2)
 
     if (isKindOfClass)
     {
-      v6 = [(LPLinkMetadata *)self->_metadata specialization];
+      specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
     }
 
     else
     {
-      v6 = objc_alloc_init(MEMORY[0x1E696ED50]);
+      specialization2 = objc_alloc_init(MEMORY[0x1E696ED50]);
     }
 
-    v9 = v6;
-    [v6 setName:self->_title];
+    v9 = specialization2;
+    [specialization2 setName:self->_title];
   }
 
   else
@@ -147,16 +147,16 @@ void __32__VUIShareURLActivityItem_fetch__block_invoke(uint64_t a1, void *a2)
 
     if (v7)
     {
-      v8 = [(LPLinkMetadata *)self->_metadata specialization];
+      specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
     }
 
     else
     {
-      v8 = objc_alloc_init(MEMORY[0x1E696EC30]);
+      specialization3 = objc_alloc_init(MEMORY[0x1E696EC30]);
     }
 
-    v9 = v8;
-    [v8 setTitle:self->_title];
+    v9 = specialization3;
+    [specialization3 setTitle:self->_title];
   }
 
   [v9 setSubtitle:self->_subtitle];

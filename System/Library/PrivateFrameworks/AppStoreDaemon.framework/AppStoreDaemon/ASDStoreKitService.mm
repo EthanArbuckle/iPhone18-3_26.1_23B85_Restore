@@ -1,50 +1,50 @@
 @interface ASDStoreKitService
-+ (BOOL)shouldProcessStoreKitPurchase:(id)a3;
++ (BOOL)shouldProcessStoreKitPurchase:(id)purchase;
 + (id)_serviceConnection;
 + (id)_storeKitClientInterface;
-+ (id)storeKitServiceWithErrorHandler:(id)a3;
++ (id)storeKitServiceWithErrorHandler:(id)handler;
 + (void)_serviceConnectionInvalidated;
-+ (void)handleNewTokenFamily:(id)a3 bundleID:(id)a4 withReply:(id)a5;
-+ (void)processStoreKitPurchase:(id)a3 withResultHandler:(id)a4;
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4;
++ (void)handleNewTokenFamily:(id)family bundleID:(id)d withReply:(id)reply;
++ (void)processStoreKitPurchase:(id)purchase withResultHandler:(id)handler;
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler;
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler;
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler;
 @end
 
 @implementation ASDStoreKitService
 
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = ASDErrorWithUnderlyingErrorAndDescription(0, @"ASDErrorDomain", 1060, 0);
-  (*(a4 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = ASDErrorWithUnderlyingErrorAndDescription(0, @"ASDErrorDomain", 1060, 0);
-  (*(a4 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = ASDErrorWithUnderlyingErrorAndDescription(0, @"ASDErrorDomain", 1060, 0);
-  (*(a4 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-+ (BOOL)shouldProcessStoreKitPurchase:(id)a3
++ (BOOL)shouldProcessStoreKitPurchase:(id)purchase
 {
-  v3 = a3;
-  v4 = [v3 buyParameters];
-  v5 = [v4 length];
+  purchaseCopy = purchase;
+  buyParameters = [purchaseCopy buyParameters];
+  v5 = [buyParameters length];
 
   if (v5)
   {
     v6 = MEMORY[0x1E698C818];
-    v7 = [v3 buyParameters];
-    v8 = [v6 buyParamsWithString:v7];
+    buyParameters2 = [purchaseCopy buyParameters];
+    v8 = [v6 buyParamsWithString:buyParameters2];
 
     v9 = [v8 parameterForKey:@"productType"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -66,53 +66,53 @@
   return v10;
 }
 
-+ (void)processStoreKitPurchase:(id)a3 withResultHandler:(id)a4
++ (void)processStoreKitPurchase:(id)purchase withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  purchaseCopy = purchase;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __64__ASDStoreKitService_processStoreKitPurchase_withResultHandler___block_invoke;
   v25[3] = &unk_1E7CDC630;
-  v27 = a1;
-  v8 = v7;
+  selfCopy = self;
+  v8 = handlerCopy;
   v26 = v8;
   v9 = [ASDStoreKitService storeKitServiceWithErrorHandler:v25];
   v10 = MEMORY[0x1E698C818];
-  v11 = [v6 buyParameters];
-  v12 = [v10 buyParamsWithString:v11];
+  buyParameters = [purchaseCopy buyParameters];
+  v12 = [v10 buyParamsWithString:buyParameters];
 
-  v13 = [v6 vendorName];
-  v14 = [v13 length];
+  vendorName = [purchaseCopy vendorName];
+  v14 = [vendorName length];
 
   if (v14)
   {
-    v15 = [v6 vendorName];
-    [v12 setObject:v15 forKeyedSubscript:@"vendorName"];
+    vendorName2 = [purchaseCopy vendorName];
+    [v12 setObject:vendorName2 forKeyedSubscript:@"vendorName"];
   }
 
   v16 = [v12 parameterForKey:@"bid"];
   if (![v16 length])
   {
-    v17 = [v6 bundleID];
-    v18 = [v17 length];
+    bundleID = [purchaseCopy bundleID];
+    v18 = [bundleID length];
 
     if (v18)
     {
-      v19 = [v6 bundleID];
-      [v12 setParameter:v19 forKey:@"bid"];
+      bundleID2 = [purchaseCopy bundleID];
+      [v12 setParameter:bundleID2 forKey:@"bid"];
     }
   }
 
-  v20 = [v12 stringValue];
+  stringValue = [v12 stringValue];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __64__ASDStoreKitService_processStoreKitPurchase_withResultHandler___block_invoke_16;
   v22[3] = &unk_1E7CDC658;
   v23 = v8;
-  v24 = a1;
+  selfCopy2 = self;
   v21 = v8;
-  [v9 processPaymentWithBuyParamsString:v20 reply:v22];
+  [v9 processPaymentWithBuyParamsString:stringValue reply:v22];
 }
 
 void __64__ASDStoreKitService_processStoreKitPurchase_withResultHandler___block_invoke(uint64_t a1, void *a2)
@@ -181,27 +181,27 @@ void __64__ASDStoreKitService_processStoreKitPurchase_withResultHandler___block_
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)handleNewTokenFamily:(id)a3 bundleID:(id)a4 withReply:(id)a5
++ (void)handleNewTokenFamily:(id)family bundleID:(id)d withReply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __62__ASDStoreKitService_handleNewTokenFamily_bundleID_withReply___block_invoke;
   v17[3] = &unk_1E7CDC630;
-  v19 = a1;
-  v9 = v8;
+  selfCopy = self;
+  v9 = replyCopy;
   v18 = v9;
-  v10 = a4;
-  v11 = a3;
+  dCopy = d;
+  familyCopy = family;
   v12 = [ASDStoreKitService storeKitServiceWithErrorHandler:v17];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__ASDStoreKitService_handleNewTokenFamily_bundleID_withReply___block_invoke_19;
   v14[3] = &unk_1E7CDC630;
   v15 = v9;
-  v16 = a1;
+  selfCopy2 = self;
   v13 = v9;
-  [v12 saveNewTokenFamily:v11 bundleID:v10 reply:v14];
+  [v12 saveNewTokenFamily:familyCopy bundleID:dCopy reply:v14];
 }
 
 void __62__ASDStoreKitService_handleNewTokenFamily_bundleID_withReply___block_invoke(uint64_t a1, void *a2)
@@ -244,17 +244,17 @@ void __62__ASDStoreKitService_handleNewTokenFamily_bundleID_withReply___block_in
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)storeKitServiceWithErrorHandler:(id)a3
++ (id)storeKitServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__ASDStoreKitService_storeKitServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7CDB730;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }

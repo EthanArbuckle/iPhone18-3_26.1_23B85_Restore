@@ -1,15 +1,15 @@
 @interface SentencePieceWrapper
-- (BOOL)load:(id)a3;
-- (id)decode:(id)a3;
-- (id)encode:(id)a3;
-- (id)encodingAndUTF8Spans:(const char *)a3;
+- (BOOL)load:(id)load;
+- (id)decode:(id)decode;
+- (id)encode:(id)encode;
+- (id)encodingAndUTF8Spans:(const char *)spans;
 @end
 
 @implementation SentencePieceWrapper
 
-- (id)decode:(id)a3
+- (id)decode:(id)decode
 {
-  v28 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x277D85DE8];
   __src = 0;
   v37 = 0;
@@ -21,8 +21,8 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v3 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v30, v39, 16);
+  decodeCopy = decode;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(decodeCopy, v4, &v30, v39, 16);
   if (v9)
   {
     v10 = *v31;
@@ -32,10 +32,10 @@
       {
         if (*v31 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(decodeCopy);
         }
 
-        v12 = objc_msgSend_intValue(*(*(&v30 + 1) + 8 * i), v5, v6, v7, v8, v28);
+        v12 = objc_msgSend_intValue(*(*(&v30 + 1) + 8 * i), v5, v6, v7, v8, selfCopy);
         v13 = v37;
         if (v37 >= v38)
         {
@@ -91,22 +91,22 @@
         v37 = v14;
       }
 
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v5, &v30, v39, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(decodeCopy, v5, &v30, v39, 16);
     }
 
     while (v9);
   }
 
-  (*(*v28->sp + 168))(&v29);
+  (*(*selfCopy->sp + 168))(&v29);
   sub_232CB32BC(&v29);
   if (v35 >= 0)
   {
-    objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, __p, v23, v24, v28);
+    objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, __p, v23, v24, selfCopy);
   }
 
   else
   {
-    objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, __p[0], v23, v24, v28);
+    objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, __p[0], v23, v24, selfCopy);
   }
   v25 = ;
   if (SHIBYTE(v35) < 0)
@@ -125,16 +125,16 @@
   return v25;
 }
 
-- (id)encodingAndUTF8Spans:(const char *)a3
+- (id)encodingAndUTF8Spans:(const char *)spans
 {
-  if (a3)
+  if (spans)
   {
     memset(v42, 0, sizeof(v42));
     sub_232C8BF68(v42);
     sp = self->sp;
-    v6 = strlen(a3);
+    v6 = strlen(spans);
     v7 = sub_232C8C130(v42);
-    (*(*sp + 232))(__p, sp, a3, v6, v7);
+    (*(*sp + 232))(__p, sp, spans, v6, v7);
     nullsub_1(__p, v8);
     sub_232CB32BC(__p);
     v9 = sub_232C8C124(v42);
@@ -178,13 +178,13 @@
   return second;
 }
 
-- (id)encode:(id)a3
+- (id)encode:(id)encode
 {
-  v4 = a3;
+  encodeCopy = encode;
   v24 = 0;
   v25 = 0;
   v26 = 0;
-  v5 = v4;
+  v5 = encodeCopy;
   v9 = objc_msgSend_cStringUsingEncoding_(v5, v6, 4, v7, v8);
   v10 = v9;
   if (v9)
@@ -224,14 +224,14 @@
   return v15;
 }
 
-- (BOOL)load:(id)a3
+- (BOOL)load:(id)load
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loadCopy = load;
   __dst[0] = 0;
   __dst[1] = 0;
   v18 = 0;
-  v5 = v4;
+  v5 = loadCopy;
   v9 = objc_msgSend_cStringUsingEncoding_(v5, v6, 4, v7, v8);
   v10 = strlen(v9);
   if (v10 >= 0x7FFFFFFFFFFFFFF8)
@@ -258,7 +258,7 @@
   {
     v15 = sub_232CB35B4(&v16);
     *buf = 138412546;
-    v20 = v4;
+    v20 = loadCopy;
     v21 = 2080;
     v22 = v15;
     _os_log_error_impl(&dword_232B02000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "SentencePieceWrapper: error loading %@ file: %s", buf, 0x16u);

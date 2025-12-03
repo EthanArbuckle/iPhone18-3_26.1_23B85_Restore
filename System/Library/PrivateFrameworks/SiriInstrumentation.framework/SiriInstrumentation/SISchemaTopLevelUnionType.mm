@@ -8,53 +8,53 @@
 
 - (id)wrapAsAnyEvent
 {
-  v3 = [(SISchemaTopLevelUnionType *)self getAnyEventType];
-  if (v3)
+  getAnyEventType = [(SISchemaTopLevelUnionType *)self getAnyEventType];
+  if (getAnyEventType)
   {
-    v4 = v3;
+    v4 = getAnyEventType;
     v5 = [SISchemaAnyEvent alloc];
-    v6 = [(SISchemaTopLevelUnionType *)self data];
-    v7 = [(SISchemaAnyEvent *)v5 initWithAnyEventType:v4 payload:v6];
+    data = [(SISchemaTopLevelUnionType *)self data];
+    v7 = [(SISchemaAnyEvent *)v5 initWithAnyEventType:v4 payload:data];
 
     if ([(SISchemaTopLevelUnionType *)self isProvisional])
     {
       v8 = objc_alloc_init(SISchemaProvisionalEvent);
-      v9 = [(SISchemaTopLevelUnionType *)self getTypeId];
-      [(SISchemaProvisionalEvent *)v8 setTypeId:v9];
+      getTypeId = [(SISchemaTopLevelUnionType *)self getTypeId];
+      [(SISchemaProvisionalEvent *)v8 setTypeId:getTypeId];
 
-      v10 = [(SISchemaTopLevelUnionType *)self getVersion];
-      -[SISchemaProvisionalEvent setVersion:](v8, "setVersion:", [v10 integerValue]);
+      getVersion = [(SISchemaTopLevelUnionType *)self getVersion];
+      -[SISchemaProvisionalEvent setVersion:](v8, "setVersion:", [getVersion integerValue]);
 
       [(SISchemaProvisionalEvent *)v8 setAnyEvent:v7];
-      v11 = [(SISchemaTopLevelUnionType *)v8 wrapAsAnyEvent];
+      wrapAsAnyEvent = [(SISchemaTopLevelUnionType *)v8 wrapAsAnyEvent];
     }
 
     else
     {
-      v11 = v7;
+      wrapAsAnyEvent = v7;
     }
   }
 
   else
   {
-    v11 = 0;
+    wrapAsAnyEvent = 0;
   }
 
-  return v11;
+  return wrapAsAnyEvent;
 }
 
 - (id)getRequestLinkInfo
 {
-  v3 = [(SISchemaTopLevelUnionType *)self getComponentName];
-  if (v3)
+  getComponentName = [(SISchemaTopLevelUnionType *)self getComponentName];
+  if (getComponentName)
   {
-    v4 = v3;
-    v5 = [(SISchemaTopLevelUnionType *)self getComponentId];
-    if (v5)
+    v4 = getComponentName;
+    getComponentId = [(SISchemaTopLevelUnionType *)self getComponentId];
+    if (getComponentId)
     {
       v6 = objc_alloc_init(SISchemaRequestLinkInfo);
       [(SISchemaRequestLinkInfo *)v6 setComponent:v4];
-      [(SISchemaRequestLinkInfo *)v6 setUuid:v5];
+      [(SISchemaRequestLinkInfo *)v6 setUuid:getComponentId];
     }
 
     else
@@ -73,12 +73,12 @@
 
 - (SIComponentIdentifier)componentIdentifier
 {
-  v3 = [(SISchemaTopLevelUnionType *)self getComponentName];
-  v4 = [(SISchemaTopLevelUnionType *)self getComponentId];
+  getComponentName = [(SISchemaTopLevelUnionType *)self getComponentName];
+  getComponentId = [(SISchemaTopLevelUnionType *)self getComponentId];
   v5 = 0;
-  if (v4 && v3)
+  if (getComponentId && getComponentName)
   {
-    v5 = [[SIComponentIdentifier alloc] initWithName:v3 schemaUUID:v4];
+    v5 = [[SIComponentIdentifier alloc] initWithName:getComponentName schemaUUID:getComponentId];
   }
 
   return v5;

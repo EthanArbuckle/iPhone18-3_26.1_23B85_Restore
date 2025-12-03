@@ -1,36 +1,36 @@
 @interface ASPasskeyRegistrationCredentialExtensionInput
 - (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)largeBlob;
 - (ASPasskeyRegistrationCredentialExtensionInput)init;
-- (ASPasskeyRegistrationCredentialExtensionInput)initWithCoder:(id)a3;
-- (ASPasskeyRegistrationCredentialExtensionInput)initWithCoreExtensions:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASPasskeyRegistrationCredentialExtensionInput)initWithCoder:(id)coder;
+- (ASPasskeyRegistrationCredentialExtensionInput)initWithCoreExtensions:(id)extensions;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASPasskeyRegistrationCredentialExtensionInput
 
 - (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)largeBlob
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1D28CF8();
 
   return v3;
 }
 
-- (ASPasskeyRegistrationCredentialExtensionInput)initWithCoreExtensions:(id)a3
+- (ASPasskeyRegistrationCredentialExtensionInput)initWithCoreExtensions:(id)extensions
 {
-  v4 = a3;
+  extensionsCopy = extensions;
   v5 = [(ASPasskeyRegistrationCredentialExtensionInput *)self init];
   v6 = *(&v5->super.isa + OBJC_IVAR___ASPasskeyRegistrationCredentialExtensionInput_coreExtensions);
-  *(&v5->super.isa + OBJC_IVAR___ASPasskeyRegistrationCredentialExtensionInput_coreExtensions) = v4;
+  *(&v5->super.isa + OBJC_IVAR___ASPasskeyRegistrationCredentialExtensionInput_coreExtensions) = extensionsCopy;
 
   return v5;
 }
 
-- (ASPasskeyRegistrationCredentialExtensionInput)initWithCoder:(id)a3
+- (ASPasskeyRegistrationCredentialExtensionInput)initWithCoder:(id)coder
 {
   sub_1B1D7BC8C();
-  v5 = a3;
+  coderCopy = coder;
   v6 = sub_1B1D7C12C();
   if (v6)
   {
@@ -49,17 +49,17 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR___ASPasskeyRegistrationCredentialExtensionInput_coreExtensions);
-  v5 = a3;
-  v8 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = v4;
   v7 = sub_1B1D7BE1C();
-  [v5 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR___ASPasskeyRegistrationCredentialExtensionInput_coreExtensions);
   v4 = objc_allocWithZone(ASPasskeyRegistrationCredentialExtensionInput);

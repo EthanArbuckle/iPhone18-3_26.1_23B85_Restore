@@ -1,43 +1,43 @@
 @interface RCAssetWriter
-- (BOOL)_appendBufferOnQueue:(id)a3 error:(id *)a4;
-- (BOOL)finishWritingWithError:(id *)a3;
-- (BOOL)startWritingAudioFile:(id *)a3;
-- (BOOL)writeFromBuffer:(id)a3 error:(id *)a4;
+- (BOOL)_appendBufferOnQueue:(id)queue error:(id *)error;
+- (BOOL)finishWritingWithError:(id *)error;
+- (BOOL)startWritingAudioFile:(id *)file;
+- (BOOL)writeFromBuffer:(id)buffer error:(id *)error;
 - (RCAssetWriterDelegate)delegate;
-- (id)initForWriting:(id)a3 settings:(id)a4 error:(id *)a5;
-- (void)_updateDelegateCount:(unint64_t)a3;
-- (void)finishWritingAudioFile:(id)a3;
+- (id)initForWriting:(id)writing settings:(id)settings error:(id *)error;
+- (void)_updateDelegateCount:(unint64_t)count;
+- (void)finishWritingAudioFile:(id)file;
 @end
 
 @implementation RCAssetWriter
 
-- (id)initForWriting:(id)a3 settings:(id)a4 error:(id *)a5
+- (id)initForWriting:(id)writing settings:(id)settings error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  writingCopy = writing;
+  settingsCopy = settings;
   v11 = *MEMORY[0x277CE5D68];
   v37.receiver = self;
   v37.super_class = RCAssetWriter;
-  v12 = [(AVAssetWriter *)&v37 initWithURL:v9 fileType:v11 error:a5];
+  v12 = [(AVAssetWriter *)&v37 initWithURL:writingCopy fileType:v11 error:error];
   v13 = v12;
   if (!v12)
   {
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v12->_url, a3);
-  v14 = [objc_alloc(MEMORY[0x277CB83A8]) initWithSettings:v10];
+  objc_storeStrong(&v12->_url, writing);
+  v14 = [objc_alloc(MEMORY[0x277CB83A8]) initWithSettings:settingsCopy];
   fileFormat = v13->_fileFormat;
   v13->_fileFormat = v14;
 
-  if (!checkAudioFormat(v13->_fileFormat, v10, a5) || (v16 = objc_alloc(MEMORY[0x277CB83A8]), -[AVAudioFormat sampleRate](v13->_fileFormat, "sampleRate"), v18 = [v16 initWithCommonFormat:1 sampleRate:-[AVAudioFormat channelCount](v13->_fileFormat channels:"channelCount") interleaved:0, v17], processingFormat = v13->_processingFormat, v13->_processingFormat = v18, processingFormat, !checkAudioFormat(v13->_processingFormat, v10, a5)))
+  if (!checkAudioFormat(v13->_fileFormat, settingsCopy, error) || (v16 = objc_alloc(MEMORY[0x277CB83A8]), -[AVAudioFormat sampleRate](v13->_fileFormat, "sampleRate"), v18 = [v16 initWithCommonFormat:1 sampleRate:-[AVAudioFormat channelCount](v13->_fileFormat channels:"channelCount") interleaved:0, v17], processingFormat = v13->_processingFormat, v13->_processingFormat = v18, processingFormat, !checkAudioFormat(v13->_processingFormat, settingsCopy, error)))
   {
 LABEL_13:
     v31 = 0;
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v13->_settings, a4);
+  objc_storeStrong(&v13->_settings, settings);
   v20 = dispatch_queue_create(0, 0);
   bufferQueue = v13->_bufferQueue;
   v13->_bufferQueue = v20;
@@ -50,9 +50,9 @@ LABEL_13:
   buffers = v13->_buffers;
   v13->_buffers = v24;
 
-  v26 = [(AVAudioFormat *)v13->_processingFormat formatDescription];
+  formatDescription = [(AVAudioFormat *)v13->_processingFormat formatDescription];
   formatDescription = v13->_formatDescription;
-  v13->_formatDescription = v26;
+  v13->_formatDescription = formatDescription;
 
   if (!v13->_formatDescription)
   {
@@ -60,9 +60,9 @@ LABEL_13:
     v32 = CMAudioFormatDescriptionCreate(0, [(AVAudioFormat *)v13->_processingFormat streamDescription], 0, 0, 0, 0, 0, &v35);
     if (v32)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v32 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v32 userInfo:0];
       }
 
       goto LABEL_13;
@@ -81,10 +81,10 @@ LABEL_13:
   [(AVAssetWriterInput *)v13->_input setExpectsMediaDataInRealTime:1];
   if (![(AVAssetWriter *)v13 canAddInput:v13->_input])
   {
-    if (a5)
+    if (error)
     {
-      [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11861 userInfo:v10];
-      *a5 = v31 = 0;
+      [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11861 userInfo:settingsCopy];
+      *error = v31 = 0;
       goto LABEL_14;
     }
 
@@ -102,34 +102,34 @@ LABEL_14:
   return v31;
 }
 
-- (BOOL)startWritingAudioFile:(id *)a3
+- (BOOL)startWritingAudioFile:(id *)file
 {
-  v5 = [(AVAssetWriter *)self startWriting];
-  if (v5)
+  startWriting = [(AVAssetWriter *)self startWriting];
+  if (startWriting)
   {
     v7 = *MEMORY[0x277CC08F0];
     v8 = *(MEMORY[0x277CC08F0] + 16);
     [(AVAssetWriter *)self startSessionAtSourceTime:&v7];
   }
 
-  else if (a3)
+  else if (file)
   {
-    *a3 = [(AVAssetWriter *)self error];
+    *file = [(AVAssetWriter *)self error];
   }
 
-  return v5;
+  return startWriting;
 }
 
-- (BOOL)_appendBufferOnQueue:(id)a3 error:(id *)a4
+- (BOOL)_appendBufferOnQueue:(id)queue error:(id *)error
 {
-  v6 = a3;
+  queueCopy = queue;
   formatDescription = self->_formatDescription;
   CMTimeMake(&v15, self->_frameCount, self->_sampleRate);
-  v8 = v6;
+  v8 = queueCopy;
   v17 = 0;
-  v9 = [v8 frameLength];
+  frameLength = [v8 frameLength];
   presentationTimeStamp = v15;
-  v10 = CMAudioSampleBufferCreateWithPacketDescriptions(0, 0, 0, 0, 0, formatDescription, v9, &presentationTimeStamp, 0, &v17);
+  v10 = CMAudioSampleBufferCreateWithPacketDescriptions(0, 0, 0, 0, 0, formatDescription, frameLength, &presentationTimeStamp, 0, &v17);
   if (v10 || (v10 = CMSampleBufferSetDataBufferFromAudioBufferList(v17, *MEMORY[0x277CBECE8], *MEMORY[0x277CBECE8], 0, [v8 audioBufferList])) != 0 || (v10 = CMSampleBufferSetDataReady(v17)) != 0)
   {
     v11 = v10;
@@ -138,10 +138,10 @@ LABEL_14:
       CFRelease(v17);
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v11 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -163,9 +163,9 @@ LABEL_14:
   return v12;
 }
 
-- (void)finishWritingAudioFile:(id)a3
+- (void)finishWritingAudioFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   bufferGroup = self->_bufferGroup;
   bufferQueue = self->_bufferQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -173,8 +173,8 @@ LABEL_14:
   v8[2] = __40__RCAssetWriter_finishWritingAudioFile___block_invoke;
   v8[3] = &unk_279E44640;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = fileCopy;
+  v7 = fileCopy;
   dispatch_group_notify(bufferGroup, bufferQueue, v8);
 }
 
@@ -199,9 +199,9 @@ uint64_t __40__RCAssetWriter_finishWritingAudioFile___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)writeFromBuffer:(id)a3 error:(id *)a4
+- (BOOL)writeFromBuffer:(id)buffer error:(id *)error
 {
-  v6 = a3;
+  bufferCopy = buffer;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -227,7 +227,7 @@ uint64_t __40__RCAssetWriter_finishWritingAudioFile___block_invoke(uint64_t a1)
   v12 = v7;
   v20 = v12;
   v25 = &v32;
-  v13 = v6;
+  v13 = bufferCopy;
   v21 = v13;
   v14 = v8;
   v22 = v14;
@@ -235,9 +235,9 @@ uint64_t __40__RCAssetWriter_finishWritingAudioFile___block_invoke(uint64_t a1)
   v23 = v15;
   dispatch_sync(v15, v18);
   v16 = *(v33 + 24);
-  if (a4 && (v33[3] & 1) == 0)
+  if (error && (v33[3] & 1) == 0)
   {
-    *a4 = v27[5];
+    *error = v27[5];
     v16 = *(v33 + 24);
   }
 
@@ -344,18 +344,18 @@ uint64_t __39__RCAssetWriter_writeFromBuffer_error___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_updateDelegateCount:(unint64_t)a3
+- (void)_updateDelegateCount:(unint64_t)count
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 rcAssetWriterDidUpdateQueuedBufferCount:a3];
+    [v6 rcAssetWriterDidUpdateQueuedBufferCount:count];
   }
 }
 
-- (BOOL)finishWritingWithError:(id *)a3
+- (BOOL)finishWritingWithError:(id *)error
 {
   v5 = dispatch_semaphore_create(0);
   v10[0] = MEMORY[0x277D85DD0];
@@ -366,11 +366,11 @@ uint64_t __39__RCAssetWriter_writeFromBuffer_error___block_invoke_2(uint64_t a1)
   v11 = v6;
   [(RCAssetWriter *)self finishWritingAudioFile:v10];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  v7 = [(AVAssetWriter *)self status];
-  v8 = v7;
-  if (a3 && v7 != 2)
+  status = [(AVAssetWriter *)self status];
+  v8 = status;
+  if (error && status != 2)
   {
-    *a3 = [(AVAssetWriter *)self error];
+    *error = [(AVAssetWriter *)self error];
   }
 
   return v8 == 2;

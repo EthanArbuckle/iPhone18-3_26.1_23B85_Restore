@@ -1,12 +1,12 @@
 @interface PGKeywordBasedFeatureExtractor
 - (PGKeywordBasedFeatureExtractor)init;
-- (PGKeywordBasedFeatureExtractor)initWithWeightByKeyword:(id)a3;
-- (id)musicCurationFeaturesWithContext:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (PGKeywordBasedFeatureExtractor)initWithWeightByKeyword:(id)keyword;
+- (id)musicCurationFeaturesWithContext:(id)context progressReporter:(id)reporter error:(id *)error;
 @end
 
 @implementation PGKeywordBasedFeatureExtractor
 
-- (PGKeywordBasedFeatureExtractor)initWithWeightByKeyword:(id)a3
+- (PGKeywordBasedFeatureExtractor)initWithWeightByKeyword:(id)keyword
 {
   ObjectType = swift_getObjectType();
   v5 = sub_22F7401D0();
@@ -28,12 +28,12 @@
   return [(PGKeywordBasedFeatureExtractor *)&v13 init];
 }
 
-- (id)musicCurationFeaturesWithContext:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)musicCurationFeaturesWithContext:(id)context progressReporter:(id)reporter error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = KeywordBasedFeatureExtractor.musicCurationFeatures(context:progressReporter:)(v7);
+  contextCopy = context;
+  reporterCopy = reporter;
+  selfCopy = self;
+  v10 = KeywordBasedFeatureExtractor.musicCurationFeatures(context:progressReporter:)(contextCopy);
 
   return v10;
 }

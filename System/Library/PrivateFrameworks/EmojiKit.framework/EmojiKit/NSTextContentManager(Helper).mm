@@ -7,15 +7,15 @@
 - (uint64_t)_rangeFromTextRange_emk:()Helper
 {
   v4 = a3;
-  v5 = [a1 documentRange];
-  v6 = [v5 location];
-  v7 = [v4 location];
-  v8 = [a1 offsetFromLocation:v6 toLocation:v7];
+  documentRange = [self documentRange];
+  location = [documentRange location];
+  location2 = [v4 location];
+  v8 = [self offsetFromLocation:location toLocation:location2];
 
-  v9 = [v4 location];
-  v10 = [v4 endLocation];
+  location3 = [v4 location];
+  endLocation = [v4 endLocation];
 
-  [a1 offsetFromLocation:v9 toLocation:v10];
+  [self offsetFromLocation:location3 toLocation:endLocation];
   return v8;
 }
 

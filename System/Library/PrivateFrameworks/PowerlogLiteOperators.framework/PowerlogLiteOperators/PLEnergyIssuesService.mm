@@ -1,62 +1,62 @@
 @interface PLEnergyIssuesService
-+ (BOOL)isTestRackDevice:(id)a3 withExpGroup:(id)a4 internalKeyDetected:(BOOL)a5;
++ (BOOL)isTestRackDevice:(id)device withExpGroup:(id)group internalKeyDetected:(BOOL)detected;
 + (BOOL)shouldPopUpForPowerException;
-+ (BOOL)shouldPopUpForPowerExceptionForProcess:(id)a3;
-+ (BOOL)shouldPopUpForPowerExceptionWithFatalCount:(id)a3 withNonFatalCount:(id)a4 withMitigationsEnabled:(BOOL)a5;
++ (BOOL)shouldPopUpForPowerExceptionForProcess:(id)process;
++ (BOOL)shouldPopUpForPowerExceptionWithFatalCount:(id)count withNonFatalCount:(id)fatalCount withMitigationsEnabled:(BOOL)enabled;
 + (BOOL)supportsUrsa;
-+ (id)createIssueEntriesFrom:(id)a3 forKey:(id)a4 now:(id)a5 midnight:(id)a6;
++ (id)createIssueEntriesFrom:(id)from forKey:(id)key now:(id)now midnight:(id)midnight;
 + (id)entryEventIntervalDefinitions;
 + (id)entryEventIntervalDefinitionsUrsaIssues;
 + (id)entryEventPointDefinitionUrsaInteraction;
 + (id)entryEventPointDefinitionUrsaSummary;
 + (id)entryEventPointDefinitions;
-+ (id)parseBootArgs:(id)a3;
++ (id)parseBootArgs:(id)args;
 + (void)load;
 - (BOOL)buildVersionChanged;
-- (BOOL)isValidUrsaEntry:(id)a3;
-- (BOOL)postUrsaNotification:(id)a3;
-- (BOOL)requestUrsaNotificationAndLog:(id)a3;
-- (BOOL)shouldUpdateTableFrom:(id)a3 newPayload:(id)a4;
+- (BOOL)isValidUrsaEntry:(id)entry;
+- (BOOL)postUrsaNotification:(id)notification;
+- (BOOL)requestUrsaNotificationAndLog:(id)log;
+- (BOOL)shouldUpdateTableFrom:(id)from newPayload:(id)payload;
 - (PLEnergyIssuesService)init;
-- (__CFDictionary)createAssertionThreshold:(int)a3 withAggregateLimit:(int)a4;
+- (__CFDictionary)createAssertionThreshold:(int)threshold withAggregateLimit:(int)limit;
 - (double)defaultFetchWindow;
-- (id)extractActionfromEntry:(id)a3;
-- (id)extractProcessNameFromEntry:(id)a3;
-- (id)getRepeatingTaskWith:(id)a3 needsSubmit:(BOOL *)a4;
-- (id)insertSystemTime:(id)a3 fromPLEntry:(id)a4;
-- (id)queryExistingUrsaEntries:(id)a3;
+- (id)extractActionfromEntry:(id)entry;
+- (id)extractProcessNameFromEntry:(id)entry;
+- (id)getRepeatingTaskWith:(id)with needsSubmit:(BOOL *)submit;
+- (id)insertSystemTime:(id)time fromPLEntry:(id)entry;
+- (id)queryExistingUrsaEntries:(id)entries;
 - (void)addUrsaResponders;
 - (void)checkUrsaBootArgs;
-- (void)deregister:(id)a3;
+- (void)deregister:(id)deregister;
 - (void)deregisterUrsa;
-- (void)executeUrsaClientCallWithBlock:(id)a3;
+- (void)executeUrsaClientCallWithBlock:(id)block;
 - (void)handleAssertionNotifications;
-- (void)handlePeriodicTableUpdateCallback:(id)a3 withRequestUUID:(id)a4 withPayload:(id)a5 forEntry:(id)a6;
-- (void)handlePowerException:(id)a3;
-- (void)handleUrsaCallback:(id)a3 withRequestUUID:(id)a4 withPayload:(id)a5;
-- (void)handleUrsaTask:(id)a3;
+- (void)handlePeriodicTableUpdateCallback:(id)callback withRequestUUID:(id)d withPayload:(id)payload forEntry:(id)entry;
+- (void)handlePowerException:(id)exception;
+- (void)handleUrsaCallback:(id)callback withRequestUUID:(id)d withPayload:(id)payload;
+- (void)handleUrsaTask:(id)task;
 - (void)initOperatorDependancies;
 - (void)initializeSafeguardsSystem;
 - (void)initializeUrsa;
-- (void)logPowerExceptionTelemetry:(id)a3 withNotified:(BOOL)a4 withRequestUUID:(id)a5;
+- (void)logPowerExceptionTelemetry:(id)telemetry withNotified:(BOOL)notified withRequestUUID:(id)d;
 - (void)processExistingEntriesSequentially;
 - (void)registerPowerExceptionCallbacks;
-- (void)registerTaskWith:(id)a3 inQueue:(id)a4 launchHandler:(id)a5;
+- (void)registerTaskWith:(id)with inQueue:(id)queue launchHandler:(id)handler;
 - (void)registerUrsa;
-- (void)runPeriodic:(double)a3 withFlag:(id)a4;
+- (void)runPeriodic:(double)periodic withFlag:(id)flag;
 - (void)setAssertionThresholds;
-- (void)submitTask:(id)a3;
-- (void)updateExistingTableEntry:(id)a3 withResponsePayload:(id)a4;
-- (void)updateParamsForUrsaTask:(id)a3;
-- (void)updateTask:(id)a3;
-- (void)writeUrsaNotificationToTable:(id)a3;
+- (void)submitTask:(id)task;
+- (void)updateExistingTableEntry:(id)entry withResponsePayload:(id)payload;
+- (void)updateParamsForUrsaTask:(id)task;
+- (void)updateTask:(id)task;
+- (void)writeUrsaNotificationToTable:(id)table;
 @end
 
 @implementation PLEnergyIssuesService
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLEnergyIssuesService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -65,7 +65,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -73,10 +73,10 @@
     v5.receiver = self;
     v5.super_class = PLEnergyIssuesService;
     self = [(PLOperator *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -90,14 +90,14 @@
   }
 }
 
-- (__CFDictionary)createAssertionThreshold:(int)a3 withAggregateLimit:(int)a4
+- (__CFDictionary)createAssertionThreshold:(int)threshold withAggregateLimit:(int)limit
 {
   v6 = *MEMORY[0x277CBECE8];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  valuePtr = a3;
+  valuePtr = threshold;
   v8 = CFNumberCreate(v6, kCFNumberIntType, &valuePtr);
-  v11 = a4;
-  v9 = CFNumberCreate(v6, kCFNumberIntType, &v11);
+  limitCopy = limit;
+  v9 = CFNumberCreate(v6, kCFNumberIntType, &limitCopy);
   CFDictionarySetValue(Mutable, @"Asssertion Duration Limit", v8);
   CFDictionarySetValue(Mutable, @"Aggregate Assertion Limit", v9);
   CFRelease(v8);
@@ -142,10 +142,10 @@
   CFDictionarySetValue(v3, @"homed", [(PLEnergyIssuesService *)self createAssertionThreshold:3600 withAggregateLimit:999999]);
   CFDictionarySetValue(v3, @"dasd", [(PLEnergyIssuesService *)self createAssertionThreshold:3600 withAggregateLimit:999999]);
   v4 = IOPMSetAssertionExceptionLimits();
-  v5 = [MEMORY[0x277D3F180] debugEnabled];
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
   if (v4)
   {
-    if (v5)
+    if (debugEnabled)
     {
       v6 = objc_opt_class();
       v19 = MEMORY[0x277D85DD0];
@@ -163,9 +163,9 @@
         v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsuccessful initialization of thresholds", v19, v20, v21, v22, v23];
         v8 = MEMORY[0x277D3F178];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLEnergyIssuesService.m"];
-        v10 = [v9 lastPathComponent];
+        lastPathComponent = [v9 lastPathComponent];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLEnergyIssuesService setAssertionThresholds]"];
-        [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:802];
+        [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:802];
 
         v12 = PLLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -182,7 +182,7 @@ LABEL_18:
     }
   }
 
-  else if (v5)
+  else if (debugEnabled)
   {
     v13 = objc_opt_class();
     block[0] = MEMORY[0x277D85DD0];
@@ -200,9 +200,9 @@ LABEL_18:
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Succesful initialization of thresholds"];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLEnergyIssuesService.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent2 = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLEnergyIssuesService setAssertionThresholds]"];
-      [v14 logMessage:v7 fromFile:v16 fromFunction:v17 fromLineNumber:799];
+      [v14 logMessage:v7 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:799];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -251,8 +251,8 @@ uint64_t __47__PLEnergyIssuesService_setAssertionThresholds__block_invoke_120(ui
   if ([MEMORY[0x277D3F208] internalBuild])
   {
     v7 = @"UrsaDefinition";
-    v3 = [a1 entryEventIntervalDefinitionsUrsaIssues];
-    v8[0] = v3;
+    entryEventIntervalDefinitionsUrsaIssues = [self entryEventIntervalDefinitionsUrsaIssues];
+    v8[0] = entryEventIntervalDefinitionsUrsaIssues;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 
@@ -281,41 +281,41 @@ uint64_t __47__PLEnergyIssuesService_setAssertionThresholds__block_invoke_120(ui
   v31[0] = v25;
   v30[1] = *MEMORY[0x277D3F540];
   v26[0] = @"radar";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v27[0] = v23;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v27[0] = commonTypeDict_IntegerFormat;
   v26[1] = @"impact";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v27[1] = v21;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v27[1] = commonTypeDict_IntegerFormat2;
   v26[2] = @"timestampStart";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_DateFormat];
-  v27[2] = v19;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v27[2] = commonTypeDict_DateFormat;
   v26[3] = @"timestampEnd";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_DateFormat];
-  v27[3] = v17;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_DateFormat];
+  v27[3] = commonTypeDict_DateFormat2;
   v26[4] = @"hitIn";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_StringFormat];
-  v27[4] = v15;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+  v27[4] = commonTypeDict_StringFormat;
   v26[5] = @"fixedIn";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v27[5] = v4;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat];
+  v27[5] = commonTypeDict_StringFormat2;
   v26[6] = @"isCritical";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_BoolFormat];
-  v27[6] = v6;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]7 commonTypeDict_BoolFormat];
+  v27[6] = commonTypeDict_BoolFormat;
   v26[7] = @"timestampInvalid";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_DateFormat];
-  v27[7] = v8;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_DateFormat];
+  v27[7] = commonTypeDict_DateFormat3;
   v26[8] = @"driMessage";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat];
-  v27[8] = v10;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v27[8] = commonTypeDict_StringFormat3;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:9];
   v31[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
@@ -329,11 +329,11 @@ uint64_t __47__PLEnergyIssuesService_setAssertionThresholds__block_invoke_120(ui
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"UrsaSummary";
-  v3 = [a1 entryEventPointDefinitionUrsaSummary];
+  entryEventPointDefinitionUrsaSummary = [self entryEventPointDefinitionUrsaSummary];
   v8[1] = @"UrsaInteraction";
-  v9[0] = v3;
-  v4 = [a1 entryEventPointDefinitionUrsaInteraction];
-  v9[1] = v4;
+  v9[0] = entryEventPointDefinitionUrsaSummary;
+  entryEventPointDefinitionUrsaInteraction = [self entryEventPointDefinitionUrsaInteraction];
+  v9[1] = entryEventPointDefinitionUrsaInteraction;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -353,33 +353,33 @@ uint64_t __47__PLEnergyIssuesService_setAssertionThresholds__block_invoke_120(ui
     v26[0] = v20;
     v25[1] = *MEMORY[0x277D3F540];
     v21[0] = @"requestId";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_StringFormat];
-    v22[0] = v18;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+    v22[0] = commonTypeDict_StringFormat;
     v21[1] = @"countBui";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v22[1] = v16;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v22[1] = commonTypeDict_IntegerFormat;
     v21[2] = @"countNotification";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v22[2] = v14;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v22[2] = commonTypeDict_IntegerFormat2;
     v21[3] = @"error";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v22[3] = v3;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v22[3] = commonTypeDict_IntegerFormat3;
     v21[4] = @"peProcess";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_StringFormat];
-    v22[4] = v5;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+    v22[4] = commonTypeDict_StringFormat2;
     v21[5] = @"peReason";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_StringFormat];
-    v22[5] = v7;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat];
+    v22[5] = commonTypeDict_StringFormat3;
     v21[6] = @"peFK_ID";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v22[6] = v9;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v22[6] = commonTypeDict_IntegerFormat4;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:7];
     v26[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
@@ -407,17 +407,17 @@ uint64_t __47__PLEnergyIssuesService_setAssertionThresholds__block_invoke_120(ui
     v18[0] = v2;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"source";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_StringFormat];
-    v14[0] = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+    v14[0] = commonTypeDict_StringFormat;
     v13[1] = @"radar";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v14[1] = v6;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v14[1] = commonTypeDict_IntegerFormat;
     v13[2] = @"action";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_StringFormat];
-    v14[2] = v8;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+    v14[2] = commonTypeDict_StringFormat2;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
     v18[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -435,28 +435,28 @@ uint64_t __47__PLEnergyIssuesService_setAssertionThresholds__block_invoke_120(ui
 
 + (BOOL)supportsUrsa
 {
-  v2 = [MEMORY[0x277D3F208] internalBuild];
-  if (v2)
+  internalBuild = [MEMORY[0x277D3F208] internalBuild];
+  if (internalBuild)
   {
     if ([MEMORY[0x277D3F208] nonUIBuild])
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(internalBuild) = 0;
     }
 
     else
     {
-      LOBYTE(v2) = [MEMORY[0x277D3F1B8] isVirtualDevice] ^ 1;
+      LOBYTE(internalBuild) = [MEMORY[0x277D3F1B8] isVirtualDevice] ^ 1;
     }
   }
 
-  return v2;
+  return internalBuild;
 }
 
 - (void)initializeUrsa
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(PLOperator *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(PLOperator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(PLEnergyIssuesService *)self setUrsaStatus:-1];
   if (!+[PLEnergyIssuesService supportsUrsa])
@@ -470,22 +470,22 @@ uint64_t __47__PLEnergyIssuesService_setAssertionThresholds__block_invoke_120(ui
   v5 = objc_alloc_init(MEMORY[0x277CCABD8]);
   [(PLEnergyIssuesService *)self setUrsaClientQueue:v5];
 
-  v6 = [(PLEnergyIssuesService *)self ursaClientQueue];
-  [v6 setMaxConcurrentOperationCount:1];
+  ursaClientQueue = [(PLEnergyIssuesService *)self ursaClientQueue];
+  [ursaClientQueue setMaxConcurrentOperationCount:1];
 
-  v7 = [(PLEnergyIssuesService *)self ursaClientQueue];
-  [v7 setQualityOfService:17];
+  ursaClientQueue2 = [(PLEnergyIssuesService *)self ursaClientQueue];
+  [ursaClientQueue2 setQualityOfService:17];
 
-  v8 = [(PLEnergyIssuesService *)self ursaClientQueue];
-  [v8 setName:@"com.apple.powerlog.ursaClient"];
+  ursaClientQueue3 = [(PLEnergyIssuesService *)self ursaClientQueue];
+  [ursaClientQueue3 setName:@"com.apple.powerlog.ursaClient"];
 
   [MEMORY[0x277D3F180] setObject:0 forKey:@"kUrsaEnabledKey" saveToDisk:1];
   [MEMORY[0x277D3F180] setObject:0 forKey:@"kUrsaNotificationEnabledKey" saveToDisk:1];
   [(PLEnergyIssuesService *)self addUrsaResponders];
   v9 = [MEMORY[0x277D3F180] BOOLForKey:@"UrsaUserSetting" ifNotSet:0];
-  v10 = [MEMORY[0x277D3F258] mobileUserADG];
-  v11 = [MEMORY[0x277D3F258] experimentGroup];
-  v12 = +[PLEnergyIssuesService isTestRackDevice:withExpGroup:internalKeyDetected:](PLEnergyIssuesService, "isTestRackDevice:withExpGroup:internalKeyDetected:", v10, v11, [MEMORY[0x277D3F258] hasInternalKey]);
+  mobileUserADG = [MEMORY[0x277D3F258] mobileUserADG];
+  experimentGroup = [MEMORY[0x277D3F258] experimentGroup];
+  v12 = +[PLEnergyIssuesService isTestRackDevice:withExpGroup:internalKeyDetected:](PLEnergyIssuesService, "isTestRackDevice:withExpGroup:internalKeyDetected:", mobileUserADG, experimentGroup, [MEMORY[0x277D3F258] hasInternalKey]);
 
   v13 = PLLogUrsa();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -520,7 +520,7 @@ LABEL_9:
     }
 
     v17 = _os_feature_enabled_impl();
-    v18 = [MEMORY[0x277D3F258] buildVersion];
+    buildVersion = [MEMORY[0x277D3F258] buildVersion];
     v19 = [MEMORY[0x277D3F180] objectForKey:@"UrsaBuildOverride" ifNotSet:0];
     if (v19)
     {
@@ -528,21 +528,21 @@ LABEL_9:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v31 = 138412546;
-        *v32 = v18;
+        *v32 = buildVersion;
         *&v32[8] = 2112;
         v33 = v19;
         _os_log_impl(&dword_21A4C6000, v20, OS_LOG_TYPE_DEFAULT, "overriding build: %@ -> %@", &v31, 0x16u);
       }
 
       v21 = v19;
-      v18 = v21;
+      buildVersion = v21;
     }
 
     v22 = [_TtC21PowerlogLiteOperators10UrsaClient alloc];
-    v23 = [(PLEnergyIssuesService *)self isUrsaDevModeEnabled];
-    v24 = [MEMORY[0x277D3F258] crashReporterKey];
-    v25 = [MEMORY[0x277D3F1B8] getHardwareModel];
-    v26 = -[UrsaClient initClient:crKey:build:device:isiPad:isBeta:](v22, "initClient:crKey:build:device:isiPad:isBeta:", v23, v24, v18, v25, [MEMORY[0x277D3F208] isiPad], v17);
+    isUrsaDevModeEnabled = [(PLEnergyIssuesService *)self isUrsaDevModeEnabled];
+    crashReporterKey = [MEMORY[0x277D3F258] crashReporterKey];
+    getHardwareModel = [MEMORY[0x277D3F1B8] getHardwareModel];
+    v26 = -[UrsaClient initClient:crKey:build:device:isiPad:isBeta:](v22, "initClient:crKey:build:device:isiPad:isBeta:", isUrsaDevModeEnabled, crashReporterKey, buildVersion, getHardwareModel, [MEMORY[0x277D3F208] isiPad], v17);
     [(PLEnergyIssuesService *)self setUrsaClient:v26];
 
     [(PLEnergyIssuesService *)self registerPowerExceptionCallbacks];
@@ -573,9 +573,9 @@ LABEL_9:
   v28 = PLLogUrsa();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [MEMORY[0x277D3F208] internalBuild];
+    internalBuild = [MEMORY[0x277D3F208] internalBuild];
     v31 = 67109376;
-    *v32 = v29;
+    *v32 = internalBuild;
     *&v32[4] = 1024;
     *&v32[6] = v12;
     _os_log_impl(&dword_21A4C6000, v28, OS_LOG_TYPE_DEFAULT, "Feature disabled int=%d adg=%d", &v31, 0xEu);
@@ -1036,13 +1036,13 @@ void __42__PLEnergyIssuesService_addUrsaResponders__block_invoke_6(uint64_t a1, 
 - (void)registerUrsa
 {
   objc_initWeak(&location, self);
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __37__PLEnergyIssuesService_registerUrsa__block_invoke;
   v4[3] = &unk_27825DDC8;
   objc_copyWeak(&v5, &location);
-  [(PLEnergyIssuesService *)self registerTaskWith:@"com.apple.PerfPowerServices.ursaTask" inQueue:v3 launchHandler:v4];
+  [(PLEnergyIssuesService *)self registerTaskWith:@"com.apple.PerfPowerServices.ursaTask" inQueue:workQueue launchHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1055,56 +1055,56 @@ void __37__PLEnergyIssuesService_registerUrsa__block_invoke(uint64_t a1, void *a
   [WeakRetained handleUrsaTask:v3];
 }
 
-- (void)registerTaskWith:(id)a3 inQueue:(id)a4 launchHandler:(id)a5
+- (void)registerTaskWith:(id)with inQueue:(id)queue launchHandler:(id)handler
 {
   v7 = MEMORY[0x277CF0808];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedScheduler];
-  [v11 registerForTaskWithIdentifier:v10 usingQueue:v9 launchHandler:v8];
+  handlerCopy = handler;
+  queueCopy = queue;
+  withCopy = with;
+  sharedScheduler = [v7 sharedScheduler];
+  [sharedScheduler registerForTaskWithIdentifier:withCopy usingQueue:queueCopy launchHandler:handlerCopy];
 }
 
-- (id)getRepeatingTaskWith:(id)a3 needsSubmit:(BOOL *)a4
+- (id)getRepeatingTaskWith:(id)with needsSubmit:(BOOL *)submit
 {
-  v5 = [MEMORY[0x277CF0808] sharedScheduler];
-  v6 = [v5 taskRequestForIdentifier:@"com.apple.PerfPowerServices.ursaTask"];
+  mEMORY[0x277CF0808] = [MEMORY[0x277CF0808] sharedScheduler];
+  v6 = [mEMORY[0x277CF0808] taskRequestForIdentifier:@"com.apple.PerfPowerServices.ursaTask"];
 
-  *a4 = 0;
+  *submit = 0;
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x277CF07E0]) initWithIdentifier:@"com.apple.PerfPowerServices.ursaTask"];
-    *a4 = 1;
+    *submit = 1;
   }
 
   return v6;
 }
 
-- (void)updateParamsForUrsaTask:(id)a3
+- (void)updateParamsForUrsaTask:(id)task
 {
-  v3 = a3;
-  [v3 setPriority:1];
-  [v3 setRequiresNetworkConnectivity:1];
-  [v3 setRequiresExternalPower:0];
-  [v3 setInterval:21600.0];
+  taskCopy = task;
+  [taskCopy setPriority:1];
+  [taskCopy setRequiresNetworkConnectivity:1];
+  [taskCopy setRequiresExternalPower:0];
+  [taskCopy setInterval:21600.0];
 }
 
-- (void)submitTask:(id)a3
+- (void)submitTask:(id)task
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  taskCopy = task;
   v4 = PLLogUrsa();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 identifier];
+    identifier = [taskCopy identifier];
     *buf = 138412290;
-    v15 = v5;
+    v15 = identifier;
     _os_log_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEFAULT, "Submitting task with id, %@...", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CF0808] sharedScheduler];
+  mEMORY[0x277CF0808] = [MEMORY[0x277CF0808] sharedScheduler];
   v13 = 0;
-  v7 = [v6 submitTaskRequest:v3 error:&v13];
+  v7 = [mEMORY[0x277CF0808] submitTaskRequest:taskCopy error:&v13];
   v8 = v13;
 
   v9 = PLLogUrsa();
@@ -1116,9 +1116,9 @@ void __37__PLEnergyIssuesService_registerUrsa__block_invoke(uint64_t a1, void *a
       goto LABEL_8;
     }
 
-    v11 = [v3 identifier];
+    identifier2 = [taskCopy identifier];
     *buf = 138412546;
-    v15 = v11;
+    v15 = identifier2;
     v16 = 2112;
     v17 = v8;
     _os_log_error_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_ERROR, "Failed to submit task with id, %@, error: %@", buf, 0x16u);
@@ -1127,9 +1127,9 @@ void __37__PLEnergyIssuesService_registerUrsa__block_invoke(uint64_t a1, void *a
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v3 identifier];
+    identifier2 = [taskCopy identifier];
     *buf = 138412290;
-    v15 = v11;
+    v15 = identifier2;
     _os_log_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEFAULT, "Submitted task with id, %@", buf, 0xCu);
 LABEL_6:
   }
@@ -1139,22 +1139,22 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTask:(id)a3
+- (void)updateTask:(id)task
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  taskCopy = task;
   v4 = PLLogUrsa();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 identifier];
+    identifier = [taskCopy identifier];
     *buf = 138412290;
-    v15 = v5;
+    v15 = identifier;
     _os_log_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEFAULT, "Updating task with id, %@...", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CF0808] sharedScheduler];
+  mEMORY[0x277CF0808] = [MEMORY[0x277CF0808] sharedScheduler];
   v13 = 0;
-  v7 = [v6 updateTaskRequest:v3 error:&v13];
+  v7 = [mEMORY[0x277CF0808] updateTaskRequest:taskCopy error:&v13];
   v8 = v13;
 
   v9 = PLLogUrsa();
@@ -1166,9 +1166,9 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v11 = [v3 identifier];
+    identifier2 = [taskCopy identifier];
     *buf = 138412546;
-    v15 = v11;
+    v15 = identifier2;
     v16 = 2112;
     v17 = v8;
     _os_log_error_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_ERROR, "Failed to update task with id, %@, error: %@", buf, 0x16u);
@@ -1177,9 +1177,9 @@ LABEL_8:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v3 identifier];
+    identifier2 = [taskCopy identifier];
     *buf = 138412290;
-    v15 = v11;
+    v15 = identifier2;
     _os_log_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEFAULT, "Updated task with id, %@ successfully", buf, 0xCu);
 LABEL_6:
   }
@@ -1194,28 +1194,28 @@ LABEL_8:
   [(PLEnergyIssuesService *)self setUrsaClient:0];
   [(PLEnergyIssuesService *)self setUrsaResponder:0];
   [(PLEnergyIssuesService *)self setUrsaInteractionListener:0];
-  v3 = [(PLEnergyIssuesService *)self currentUrsaCloudKitTask];
+  currentUrsaCloudKitTask = [(PLEnergyIssuesService *)self currentUrsaCloudKitTask];
 
-  if (v3)
+  if (currentUrsaCloudKitTask)
   {
-    v4 = [(PLEnergyIssuesService *)self currentUrsaCloudKitTask];
-    dispatch_semaphore_signal(v4);
+    currentUrsaCloudKitTask2 = [(PLEnergyIssuesService *)self currentUrsaCloudKitTask];
+    dispatch_semaphore_signal(currentUrsaCloudKitTask2);
 
     [(PLEnergyIssuesService *)self setCurrentUrsaCloudKitTask:0];
   }
 
-  v5 = [(PLEnergyIssuesService *)self ursaClientQueue];
+  ursaClientQueue = [(PLEnergyIssuesService *)self ursaClientQueue];
 
-  if (v5)
+  if (ursaClientQueue)
   {
-    v6 = [(PLEnergyIssuesService *)self ursaClientQueue];
-    [v6 cancelAllOperations];
+    ursaClientQueue2 = [(PLEnergyIssuesService *)self ursaClientQueue];
+    [ursaClientQueue2 cancelAllOperations];
 
     [(PLEnergyIssuesService *)self setUrsaClientQueue:0];
   }
 
-  v7 = [MEMORY[0x277CF0808] sharedScheduler];
-  v9 = [v7 taskRequestForIdentifier:@"com.apple.PerfPowerServices.ursaTask"];
+  mEMORY[0x277CF0808] = [MEMORY[0x277CF0808] sharedScheduler];
+  v9 = [mEMORY[0x277CF0808] taskRequestForIdentifier:@"com.apple.PerfPowerServices.ursaTask"];
 
   v8 = v9;
   if (v9)
@@ -1225,22 +1225,22 @@ LABEL_8:
   }
 }
 
-- (void)deregister:(id)a3
+- (void)deregister:(id)deregister
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  deregisterCopy = deregister;
   v4 = PLLogUrsa();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 identifier];
+    identifier = [deregisterCopy identifier];
     v13 = 138412290;
-    v14 = v5;
+    v14 = identifier;
     _os_log_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEFAULT, "Deregistering task with id, %@...", &v13, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CF0808] sharedScheduler];
-  v7 = [v3 identifier];
-  v8 = [v6 deregisterTaskWithIdentifier:v7];
+  mEMORY[0x277CF0808] = [MEMORY[0x277CF0808] sharedScheduler];
+  identifier2 = [deregisterCopy identifier];
+  v8 = [mEMORY[0x277CF0808] deregisterTaskWithIdentifier:identifier2];
 
   v9 = PLLogUrsa();
   v10 = v9;
@@ -1251,18 +1251,18 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v11 = [v3 identifier];
+    identifier3 = [deregisterCopy identifier];
     v13 = 138412290;
-    v14 = v11;
+    v14 = identifier3;
     _os_log_error_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_ERROR, "Failed to deregister task with id, %@", &v13, 0xCu);
     goto LABEL_6;
   }
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v3 identifier];
+    identifier3 = [deregisterCopy identifier];
     v13 = 138412290;
-    v14 = v11;
+    v14 = identifier3;
     _os_log_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEFAULT, "Deregistered task with id, %@", &v13, 0xCu);
 LABEL_6:
   }
@@ -1272,17 +1272,17 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUrsaTask:(id)a3
+- (void)handleUrsaTask:(id)task
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__PLEnergyIssuesService_handleUrsaTask___block_invoke;
   v5[3] = &unk_2782591D0;
   v5[4] = self;
-  v4 = a3;
-  [v4 setExpirationHandler:v5];
+  taskCopy = task;
+  [taskCopy setExpirationHandler:v5];
   [(PLEnergyIssuesService *)self runPeriodic:0 withFlag:0.0];
-  [v4 setTaskCompleted];
+  [taskCopy setTaskCompleted];
 }
 
 void __40__PLEnergyIssuesService_handleUrsaTask___block_invoke(uint64_t a1)
@@ -1291,23 +1291,23 @@ void __40__PLEnergyIssuesService_handleUrsaTask___block_invoke(uint64_t a1)
   [v1 cancel];
 }
 
-- (void)runPeriodic:(double)a3 withFlag:(id)a4
+- (void)runPeriodic:(double)periodic withFlag:(id)flag
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 <= 0.0)
+  flagCopy = flag;
+  if (periodic <= 0.0)
   {
     [(PLEnergyIssuesService *)self defaultFetchWindow];
-    a3 = v7;
+    periodic = v7;
   }
 
   v8 = PLLogUrsa();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v15 = a3;
+    periodicCopy = periodic;
     v16 = 2112;
-    v17 = v6;
+    v17 = flagCopy;
     _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "Running periodic with table update since %.2f %@", buf, 0x16u);
   }
 
@@ -1316,10 +1316,10 @@ void __40__PLEnergyIssuesService_handleUrsaTask___block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __46__PLEnergyIssuesService_runPeriodic_withFlag___block_invoke;
   v11[3] = &unk_27825CFA0;
-  v13 = a3;
+  periodicCopy2 = periodic;
   v11[4] = self;
-  v12 = v6;
-  v9 = v6;
+  v12 = flagCopy;
+  v9 = flagCopy;
   [(PLEnergyIssuesService *)self executeUrsaClientCallWithBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1341,8 +1341,8 @@ void __46__PLEnergyIssuesService_runPeriodic_withFlag___block_invoke(uint64_t a1
 - (double)defaultFetchWindow
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [MEMORY[0x277CBEAA8] nearestMidnightBeforeDate:v2];
+  date = [MEMORY[0x277CBEAA8] date];
+  v3 = [MEMORY[0x277CBEAA8] nearestMidnightBeforeDate:date];
   v4 = PLLogUrsa();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -1361,8 +1361,8 @@ void __46__PLEnergyIssuesService_runPeriodic_withFlag___block_invoke(uint64_t a1
 - (void)processExistingEntriesSequentially
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v4 = [v3 dateByAddingTimeInterval:-1209600.0];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v4 = [monotonicDate dateByAddingTimeInterval:-1209600.0];
 
   v5 = [(PLEnergyIssuesService *)self queryExistingUrsaEntries:v4];
   v6 = PLLogUrsa();
@@ -1412,9 +1412,9 @@ void __46__PLEnergyIssuesService_runPeriodic_withFlag___block_invoke(uint64_t a1
           v14 = PLLogUrsa();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v12 dictionary];
+            dictionary = [v12 dictionary];
             *buf = 138412290;
-            v26 = v15;
+            v26 = dictionary;
             _os_log_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEFAULT, "Invalid PLEntry. Skipping update for %@", buf, 0xCu);
           }
         }
@@ -1506,14 +1506,14 @@ LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)queryExistingUrsaEntries:(id)a3
+- (id)queryExistingUrsaEntries:(id)entries
 {
   v3 = *MEMORY[0x277D3F5D8];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = [(PLOperator *)PLEnergyIssuesService entryKeyForType:v3 andName:@"UrsaDefinition"];
   v6 = MEMORY[0x277CCACA8];
   v7 = MEMORY[0x277CCABB0];
-  [v4 timeIntervalSince1970];
+  [entriesCopy timeIntervalSince1970];
   v9 = v8;
 
   v10 = [v7 numberWithDouble:v9];
@@ -1522,34 +1522,34 @@ LABEL_14:
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"SUBSTR(p1.%@, INSTR(p1.%@, ':') + 1) = SUBSTR(p2.%@, INSTR(p2.%@, ':') + 1)", @"driMessage", @"driMessage", @"driMessage", @"driMessage"];
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT MAX(%@) FROM %@ p2 WHERE %@ ", @"timestampEnd", v5, v12];
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT * FROM %@ p1 WHERE %@ AND %@ = (%@) ORDER BY %@ DESC", v5, v11, @"timestampEnd", v13, @"timestampEnd"];;
-  v15 = [MEMORY[0x277D3F2A0] sharedCore];
-  v16 = [v15 storage];
-  v17 = [v16 entriesForKey:v5 withQuery:v14];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v17 = [storage entriesForKey:v5 withQuery:v14];
 
   return v17;
 }
 
-- (void)handlePeriodicTableUpdateCallback:(id)a3 withRequestUUID:(id)a4 withPayload:(id)a5 forEntry:(id)a6
+- (void)handlePeriodicTableUpdateCallback:(id)callback withRequestUUID:(id)d withPayload:(id)payload forEntry:(id)entry
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PLOperator *)self workQueue];
+  callbackCopy = callback;
+  dCopy = d;
+  payloadCopy = payload;
+  entryCopy = entry;
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__PLEnergyIssuesService_handlePeriodicTableUpdateCallback_withRequestUUID_withPayload_forEntry___block_invoke;
   block[3] = &unk_27825DE40;
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
-  v23 = self;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
-  dispatch_async(v14, block);
+  v20 = dCopy;
+  v21 = callbackCopy;
+  v22 = payloadCopy;
+  selfCopy = self;
+  v24 = entryCopy;
+  v15 = entryCopy;
+  v16 = payloadCopy;
+  v17 = callbackCopy;
+  v18 = dCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __96__PLEnergyIssuesService_handlePeriodicTableUpdateCallback_withRequestUUID_withPayload_forEntry___block_invoke(uint64_t a1)
@@ -1584,83 +1584,83 @@ void __96__PLEnergyIssuesService_handlePeriodicTableUpdateCallback_withRequestUU
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateExistingTableEntry:(id)a3 withResponsePayload:(id)a4
+- (void)updateExistingTableEntry:(id)entry withResponsePayload:(id)payload
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  payloadCopy = payload;
   v8 = [(PLOperator *)PLEnergyIssuesService entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"UrsaDefinition"];
   v9 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v8];
-  v10 = [v7 objectForKeyedSubscript:@"action"];
+  v10 = [payloadCopy objectForKeyedSubscript:@"action"];
 
   v11 = MEMORY[0x277CCACA8];
   if (v10)
   {
-    v12 = [v7 objectForKeyedSubscript:@"action"];
-    v13 = [v7 objectForKeyedSubscript:@"process"];
+    v12 = [payloadCopy objectForKeyedSubscript:@"action"];
+    v13 = [payloadCopy objectForKeyedSubscript:@"process"];
     v14 = [v11 stringWithFormat:@"%@:%@", v12, v13];
   }
 
   else
   {
-    v12 = [v7 objectForKeyedSubscript:@"process"];
+    v12 = [payloadCopy objectForKeyedSubscript:@"process"];
     v14 = [v11 stringWithFormat:@"%@:%@", @"ttr", v12];
   }
 
   [v9 setObject:v14 forKeyedSubscript:@"driMessage"];
-  v15 = [v7 objectForKeyedSubscript:@"radar"];
+  v15 = [payloadCopy objectForKeyedSubscript:@"radar"];
   [v9 setObject:v15 forKeyedSubscript:@"radar"];
 
-  v16 = [v6 objectForKeyedSubscript:@"hitIn"];
+  v16 = [entryCopy objectForKeyedSubscript:@"hitIn"];
   [v9 setObject:v16 forKeyedSubscript:@"hitIn"];
 
-  v17 = [v6 objectForKeyedSubscript:@"timestampEnd"];
+  v17 = [entryCopy objectForKeyedSubscript:@"timestampEnd"];
   [v9 setObject:v17 forKeyedSubscript:@"timestampEnd"];
 
-  v18 = [v7 objectForKeyedSubscript:@"fixedIn"];
+  v18 = [payloadCopy objectForKeyedSubscript:@"fixedIn"];
   [v9 setObject:v18 forKeyedSubscript:@"fixedIn"];
 
-  v19 = [v7 objectForKeyedSubscript:@"impact"];
+  v19 = [payloadCopy objectForKeyedSubscript:@"impact"];
   [v9 setObject:v19 forKeyedSubscript:@"impact"];
 
   [(PLOperator *)self logEntry:v9];
-  v20 = [MEMORY[0x277D3F2A0] sharedCore];
-  v21 = [v20 storage];
-  [v21 deleteEntryForKey:v8 WithRowID:{objc_msgSend(v6, "entryID")}];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  [storage deleteEntryForKey:v8 WithRowID:{objc_msgSend(entryCopy, "entryID")}];
 
   v22 = PLLogUrsa();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v6 dictionary];
-    v24 = [v9 dictionary];
+    dictionary = [entryCopy dictionary];
+    dictionary2 = [v9 dictionary];
     *buf = 138412546;
-    v27 = v23;
+    v27 = dictionary;
     v28 = 2112;
-    v29 = v24;
+    v29 = dictionary2;
     _os_log_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEFAULT, "Updated table entry for %@ with new entry %@", buf, 0x16u);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUrsaCallback:(id)a3 withRequestUUID:(id)a4 withPayload:(id)a5
+- (void)handleUrsaCallback:(id)callback withRequestUUID:(id)d withPayload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLOperator *)self workQueue];
+  callbackCopy = callback;
+  dCopy = d;
+  payloadCopy = payload;
+  workQueue = [(PLOperator *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__PLEnergyIssuesService_handleUrsaCallback_withRequestUUID_withPayload___block_invoke;
   v15[3] = &unk_2782591A8;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = callbackCopy;
+  v18 = payloadCopy;
+  selfCopy = self;
+  v12 = payloadCopy;
+  v13 = callbackCopy;
+  v14 = dCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __72__PLEnergyIssuesService_handleUrsaCallback_withRequestUUID_withPayload___block_invoke(uint64_t a1)
@@ -1732,14 +1732,14 @@ LABEL_3:
   dispatch_semaphore_signal(v3);
 }
 
-- (void)logPowerExceptionTelemetry:(id)a3 withNotified:(BOOL)a4 withRequestUUID:(id)a5
+- (void)logPowerExceptionTelemetry:(id)telemetry withNotified:(BOOL)notified withRequestUUID:(id)d
 {
-  v6 = a4;
+  notifiedCopy = notified;
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  telemetryCopy = telemetry;
+  dCopy = d;
+  v10 = dCopy;
+  if (!telemetryCopy)
   {
     v29 = PLLogUrsa();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1751,14 +1751,14 @@ LABEL_3:
     goto LABEL_31;
   }
 
-  v32 = v6;
-  v33 = v9;
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  v32 = notifiedCopy;
+  v33 = dCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v12 = v8;
+  v12 = telemetryCopy;
   v13 = [v12 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (!v13)
   {
@@ -1781,14 +1781,14 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v11 setObject:v18 forKeyedSubscript:v17];
+        [dictionary setObject:v18 forKeyedSubscript:v17];
         goto LABEL_16;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [v18 stringValue];
+        stringValue = [v18 stringValue];
       }
 
       else
@@ -1798,7 +1798,7 @@ LABEL_3:
         {
           v20 = MEMORY[0x277CCACA8];
           [v18 timeIntervalSince1970];
-          v19 = [v20 stringWithFormat:@"%.0f", v21];
+          stringValue = [v20 stringWithFormat:@"%.0f", v21];
         }
 
         else
@@ -1808,12 +1808,12 @@ LABEL_3:
             goto LABEL_16;
           }
 
-          v19 = [v18 description];
+          stringValue = [v18 description];
         }
       }
 
-      v22 = v19;
-      [v11 setObject:v19 forKeyedSubscript:v17];
+      v22 = stringValue;
+      [dictionary setObject:stringValue forKeyedSubscript:v17];
 
 LABEL_16:
     }
@@ -1824,15 +1824,15 @@ LABEL_16:
   while (v14);
 LABEL_18:
 
-  v23 = [v11 objectForKeyedSubscript:@"admit"];
+  v23 = [dictionary objectForKeyedSubscript:@"admit"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = [v11 objectForKeyedSubscript:@"admit"];
+    v24 = [dictionary objectForKeyedSubscript:@"admit"];
     v25 = [v24 isEqualToString:@"1"];
 
     v10 = v33;
-    v26 = self;
+    selfCopy2 = self;
     v27 = v32;
     if (v25)
     {
@@ -1845,13 +1845,13 @@ LABEL_18:
   {
 
     v10 = v33;
-    v26 = self;
+    selfCopy2 = self;
     v27 = v32;
   }
 
   v28 = @"false";
 LABEL_25:
-  [v11 setObject:v28 forKeyedSubscript:@"admit"];
+  [dictionary setObject:v28 forKeyedSubscript:@"admit"];
   if (v27)
   {
     v30 = @"true";
@@ -1862,20 +1862,20 @@ LABEL_25:
     v30 = @"false";
   }
 
-  [v11 setObject:v30 forKeyedSubscript:@"notified"];
+  [dictionary setObject:v30 forKeyedSubscript:@"notified"];
   if (v10)
   {
-    [v11 setObject:v10 forKeyedSubscript:@"requestUUID"];
+    [dictionary setObject:v10 forKeyedSubscript:@"requestUUID"];
   }
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __81__PLEnergyIssuesService_logPowerExceptionTelemetry_withNotified_withRequestUUID___block_invoke;
   v34[3] = &unk_278259658;
-  v34[4] = v26;
-  v35 = v11;
-  v29 = v11;
-  [(PLEnergyIssuesService *)v26 executeUrsaClientCallWithBlock:v34];
+  v34[4] = selfCopy2;
+  v35 = dictionary;
+  v29 = dictionary;
+  [(PLEnergyIssuesService *)selfCopy2 executeUrsaClientCallWithBlock:v34];
 
 LABEL_31:
   v31 = *MEMORY[0x277D85DE8];
@@ -1925,11 +1925,11 @@ void __81__PLEnergyIssuesService_logPowerExceptionTelemetry_withNotified_withReq
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)requestUrsaNotificationAndLog:(id)a3
+- (BOOL)requestUrsaNotificationAndLog:(id)log
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  logCopy = log;
+  v5 = logCopy;
+  if (!logCopy)
   {
     v8 = PLLogUrsa();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1941,7 +1941,7 @@ void __81__PLEnergyIssuesService_logPowerExceptionTelemetry_withNotified_withReq
     goto LABEL_10;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"process"];
+  v6 = [logCopy objectForKeyedSubscript:@"process"];
 
   if (v6)
   {
@@ -1969,24 +1969,24 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)postUrsaNotification:(id)a3
+- (BOOL)postUrsaNotification:(id)notification
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PLLogUrsa();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v4;
+    v22 = notificationCopy;
     _os_log_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEFAULT, "posting %@", &v21, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"admit"];
+  v6 = [notificationCopy objectForKeyedSubscript:@"admit"];
 
   if (v6)
   {
-    v7 = [(PLOperator *)self storage];
-    [v7 blockingFlushCachesWithReason:@"ursa-ttr"];
+    storage = [(PLOperator *)self storage];
+    [storage blockingFlushCachesWithReason:@"ursa-ttr"];
   }
 
   v8 = PLQueryRegistered();
@@ -2010,16 +2010,16 @@ LABEL_16:
   }
 
   v11 = [v9 objectForKeyedSubscript:@"UrsaNotificationState"];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
   v13 = PLLogUrsa();
   v14 = v13;
-  if (!v12)
+  if (!bOOLValue)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v21 = 138412546;
-      v22 = v4;
+      v22 = notificationCopy;
       v23 = 2112;
       v24 = v9;
       v16 = "failed to post notification, %@ -> %@";
@@ -2034,7 +2034,7 @@ LABEL_16:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v4;
+    v22 = notificationCopy;
     v23 = 2112;
     v24 = v9;
     _os_log_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEFAULT, "posted notification %@ -> %@", &v21, 0x16u);
@@ -2047,17 +2047,17 @@ LABEL_17:
   return v15;
 }
 
-- (void)writeUrsaNotificationToTable:(id)a3
+- (void)writeUrsaNotificationToTable:(id)table
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tableCopy = table;
   v5 = [(PLOperator *)PLEnergyIssuesService entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"UrsaDefinition"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5];
-  v7 = [v4 objectForKeyedSubscript:@"action"];
+  v7 = [tableCopy objectForKeyedSubscript:@"action"];
 
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"action"];
+    v8 = [tableCopy objectForKeyedSubscript:@"action"];
   }
 
   else
@@ -2067,38 +2067,38 @@ LABEL_17:
 
   v9 = [v8 stringByAppendingString:@":"];
 
-  v10 = [v4 objectForKeyedSubscript:@"process"];
+  v10 = [tableCopy objectForKeyedSubscript:@"process"];
 
   if (v10)
   {
-    v11 = [v4 objectForKeyedSubscript:@"process"];
+    v11 = [tableCopy objectForKeyedSubscript:@"process"];
     v12 = [v9 stringByAppendingString:v11];
 
     v9 = v12;
   }
 
   [v6 setObject:v9 forKeyedSubscript:@"driMessage"];
-  v13 = [v4 objectForKeyedSubscript:@"radar"];
+  v13 = [tableCopy objectForKeyedSubscript:@"radar"];
 
   if (v13)
   {
-    v14 = [v4 objectForKeyedSubscript:@"radar"];
+    v14 = [tableCopy objectForKeyedSubscript:@"radar"];
     [v6 setObject:v14 forKeyedSubscript:@"radar"];
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"fixedIn"];
+  v15 = [tableCopy objectForKeyedSubscript:@"fixedIn"];
 
   if (v15)
   {
-    v16 = [v4 objectForKeyedSubscript:@"fixedIn"];
+    v16 = [tableCopy objectForKeyedSubscript:@"fixedIn"];
     [v6 setObject:v16 forKeyedSubscript:@"fixedIn"];
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"impact"];
+  v17 = [tableCopy objectForKeyedSubscript:@"impact"];
 
   if (v17)
   {
-    v18 = [v4 objectForKeyedSubscript:@"impact"];
+    v18 = [tableCopy objectForKeyedSubscript:@"impact"];
     [v6 setObject:v18 forKeyedSubscript:@"impact"];
   }
 
@@ -2107,43 +2107,43 @@ LABEL_17:
     [v6 setObject:&unk_282C118E0 forKeyedSubscript:@"impact"];
   }
 
-  v19 = [v4 objectForKeyedSubscript:@"timestamp"];
+  v19 = [tableCopy objectForKeyedSubscript:@"timestamp"];
 
   if (v19)
   {
-    v20 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v20 = [tableCopy objectForKeyedSubscript:@"timestamp"];
     [v6 setObject:v20 forKeyedSubscript:@"timestampEnd"];
   }
 
-  v21 = [MEMORY[0x277D3F258] buildVersion];
-  [v6 setObject:v21 forKeyedSubscript:@"hitIn"];
+  buildVersion = [MEMORY[0x277D3F258] buildVersion];
+  [v6 setObject:buildVersion forKeyedSubscript:@"hitIn"];
 
   [(PLOperator *)self logEntry:v6];
   v22 = PLLogUrsa();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v6 dictionary];
+    dictionary = [v6 dictionary];
     v25 = 138412546;
     v26 = @"UrsaDefinition";
     v27 = 2112;
-    v28 = v23;
+    v28 = dictionary;
     _os_log_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEFAULT, "wrote notification data to %@ table: %@", &v25, 0x16u);
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)executeUrsaClientCallWithBlock:(id)a3
+- (void)executeUrsaClientCallWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x277CCA8C8];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __56__PLEnergyIssuesService_executeUrsaClientCallWithBlock___block_invoke;
   v12 = &unk_27825DE68;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = blockCopy;
+  v6 = blockCopy;
   v7 = [v5 blockOperationWithBlock:&v9];
   v8 = [(PLEnergyIssuesService *)self ursaClientQueue:v9];
   [v8 addOperation:v7];
@@ -2177,8 +2177,8 @@ uint64_t __56__PLEnergyIssuesService_executeUrsaClientCallWithBlock___block_invo
         _os_log_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEFAULT, "checking for boot args", &buf, 2u);
       }
 
-      v7 = [MEMORY[0x277D3F258] deviceBootArgs];
-      v8 = [PLEnergyIssuesService parseBootArgs:v7];
+      deviceBootArgs = [MEMORY[0x277D3F258] deviceBootArgs];
+      v8 = [PLEnergyIssuesService parseBootArgs:deviceBootArgs];
 
       v9 = PLLogUrsa();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -2220,8 +2220,8 @@ uint64_t __56__PLEnergyIssuesService_executeUrsaClientCallWithBlock___block_invo
         [v15 setObject:@"bootarg" forKeyedSubscript:@"requestId"];
         [v15 setObject:&unk_282C118F8 forKeyedSubscript:@"countNotification"];
         [(PLOperator *)self logEntry:v15];
-        v16 = [(PLOperator *)self storage];
-        [v16 blockingFlushCachesWithReason:@"ursa"];
+        storage = [(PLOperator *)self storage];
+        [storage blockingFlushCachesWithReason:@"ursa"];
 
         v17 = *(*(&buf + 1) + 40);
         v26 = @"bootarg";
@@ -2368,19 +2368,19 @@ void __56__PLEnergyIssuesService_registerPowerExceptionCallbacks__block_invoke(u
   }
 }
 
-- (void)handlePowerException:(id)a3
+- (void)handlePowerException:(id)exception
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  exceptionCopy = exception;
   v5 = PLLogUrsa();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v53 = v4;
+    v53 = exceptionCopy;
     _os_log_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_INFO, "handling PE %@", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!exceptionCopy)
   {
     v9 = PLLogUrsa();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2392,10 +2392,10 @@ void __56__PLEnergyIssuesService_registerPowerExceptionCallbacks__block_invoke(u
     goto LABEL_56;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"IssueType"];
+  v6 = [exceptionCopy objectForKeyedSubscript:@"IssueType"];
   if ([v6 intValue])
   {
-    v7 = [v4 objectForKeyedSubscript:@"IssueType"];
+    v7 = [exceptionCopy objectForKeyedSubscript:@"IssueType"];
     v8 = [v7 intValue] == 1;
 
     if (!v8)
@@ -2422,21 +2422,21 @@ LABEL_20:
   {
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"MitigationType"];
-  v12 = [v11 intValue];
+  v11 = [exceptionCopy objectForKeyedSubscript:@"MitigationType"];
+  intValue = [v11 intValue];
 
-  if (!v12)
+  if (!intValue)
   {
-    v16 = [v4 objectForKeyedSubscript:@"MitigationReason"];
-    v17 = [v16 intValue];
+    v16 = [exceptionCopy objectForKeyedSubscript:@"MitigationReason"];
+    intValue2 = [v16 intValue];
 
-    if (v17 <= 0x1A && ((1 << v17) & 0x4760842) != 0)
+    if (intValue2 <= 0x1A && ((1 << intValue2) & 0x4760842) != 0)
     {
       v9 = PLLogUrsa();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v53) = v17;
+        LODWORD(v53) = intValue2;
         v10 = "skipping exempt PE due to %d";
         v13 = v9;
         v14 = OS_LOG_TYPE_DEFAULT;
@@ -2452,11 +2452,11 @@ LABEL_21:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v53 = v4;
+      v53 = exceptionCopy;
       _os_log_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_INFO, "handling PE entry:%@", buf, 0xCu);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"CoalitionName"];
+    v9 = [exceptionCopy objectForKeyedSubscript:@"CoalitionName"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ![v9 length])
     {
@@ -2467,7 +2467,7 @@ LABEL_21:
         _os_log_impl(&dword_21A4C6000, v19, OS_LOG_TYPE_DEFAULT, "falling back to process name", buf, 2u);
       }
 
-      v20 = [v4 objectForKeyedSubscript:@"ProcessName"];
+      v20 = [exceptionCopy objectForKeyedSubscript:@"ProcessName"];
 
       v9 = v20;
     }
@@ -2482,21 +2482,21 @@ LABEL_21:
         v9 = v21;
       }
 
-      v22 = [v4 objectForKeyedSubscript:@"EstimatedEnergy"];
-      v23 = [v22 unsignedIntValue];
+      v22 = [exceptionCopy objectForKeyedSubscript:@"EstimatedEnergy"];
+      unsignedIntValue = [v22 unsignedIntValue];
 
       v46 = [(PLOperator *)PLEnergyIssuesService entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"UrsaSummary"];
       v24 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v46];
       [v24 setObject:v9 forKeyedSubscript:@"peProcess"];
       [v24 setObject:&unk_282C118E0 forKeyedSubscript:@"countNotification"];
-      v25 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[NSObject entryID](v4, "entryID")}];
+      v25 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[NSObject entryID](exceptionCopy, "entryID")}];
       [v24 setObject:v25 forKeyedSubscript:@"peFK_ID"];
 
-      v26 = [(PLEnergyIssuesService *)self safeguardsManagingClient];
+      safeguardsManagingClient = [(PLEnergyIssuesService *)self safeguardsManagingClient];
       v51 = 0;
-      v27 = [v26 getMitigationPolicy:&v51];
+      v27 = [safeguardsManagingClient getMitigationPolicy:&v51];
       v28 = v51;
-      v29 = [v27 BOOLValue];
+      bOOLValue = [v27 BOOLValue];
 
       if (v28)
       {
@@ -2513,20 +2513,20 @@ LABEL_21:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v53) = v29;
+        LODWORD(v53) = bOOLValue;
         _os_log_impl(&dword_21A4C6000, v31, OS_LOG_TYPE_DEFAULT, "mitigations are %d", buf, 8u);
       }
 
-      v32 = [v4 objectForKeyedSubscript:@"FatalCount"];
-      v33 = [v4 objectForKeyedSubscript:@"NonFatalCount"];
-      if ([PLEnergyIssuesService shouldPopUpForPowerExceptionWithFatalCount:v32 withNonFatalCount:v33 withMitigationsEnabled:v29])
+      v32 = [exceptionCopy objectForKeyedSubscript:@"FatalCount"];
+      v33 = [exceptionCopy objectForKeyedSubscript:@"NonFatalCount"];
+      if ([PLEnergyIssuesService shouldPopUpForPowerExceptionWithFatalCount:v32 withNonFatalCount:v33 withMitigationsEnabled:bOOLValue])
       {
-        v34 = [v4 objectForKeyedSubscript:@"ThresholdCPUUsage"];
-        v35 = [v34 intValue];
+        v34 = [exceptionCopy objectForKeyedSubscript:@"ThresholdCPUUsage"];
+        intValue3 = [v34 intValue];
 
         v36 = PLLogUrsa();
         v37 = v36;
-        if (v35)
+        if (intValue3)
         {
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
@@ -2537,13 +2537,13 @@ LABEL_21:
 
           [MEMORY[0x277D3F058] defaultBatteryEnergyCapacity];
           v39 = v38;
-          v40 = v23 / 0x3E8;
+          v40 = unsignedIntValue / 0x3E8;
           if (v38 >= v40)
           {
-            v43 = [v4 objectForKeyedSubscript:@"TimeWindowSize"];
-            v44 = [v43 intValue];
+            v43 = [exceptionCopy objectForKeyedSubscript:@"TimeWindowSize"];
+            intValue4 = [v43 intValue];
 
-            v41 = ((360000 * v40) / v39 / v44);
+            v41 = ((360000 * v40) / v39 / intValue4);
           }
 
           else
@@ -2558,7 +2558,7 @@ LABEL_21:
           v47[4] = self;
           v48 = v9;
           v50 = v41;
-          v49 = v4;
+          v49 = exceptionCopy;
           [(PLEnergyIssuesService *)self executeUrsaClientCallWithBlock:v47];
           [v24 setObject:&unk_282C118F8 forKeyedSubscript:@"countNotification"];
         }
@@ -2601,7 +2601,7 @@ LABEL_21:
     goto LABEL_56;
   }
 
-  if (v12 != -1)
+  if (intValue != -1)
   {
     goto LABEL_21;
   }
@@ -2656,14 +2656,14 @@ void __46__PLEnergyIssuesService_handlePowerException___block_invoke_2(uint64_t 
   [*(a1 + 32) handleUrsaCallback:v11 withRequestUUID:v7 withPayload:v8];
 }
 
-- (id)insertSystemTime:(id)a3 fromPLEntry:(id)a4
+- (id)insertSystemTime:(id)time fromPLEntry:(id)entry
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  timeCopy = time;
+  entryCopy = entry;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (!v5 || (isKindOfClass & 1) != 0)
+  if (!timeCopy || (isKindOfClass & 1) != 0)
   {
     v9 = PLLogUrsa();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2675,7 +2675,7 @@ void __46__PLEnergyIssuesService_handlePowerException___block_invoke_2(uint64_t 
     goto LABEL_16;
   }
 
-  v8 = [v5 mutableCopy];
+  v8 = [timeCopy mutableCopy];
   if (!v8)
   {
     v15 = PLLogUrsa();
@@ -2692,13 +2692,13 @@ LABEL_16:
   }
 
   v9 = v8;
-  if (v6)
+  if (entryCopy)
   {
-    v10 = [v6 objectForKeyedSubscript:@"timestampEnd"];
+    v10 = [entryCopy objectForKeyedSubscript:@"timestampEnd"];
 
     if (v10)
     {
-      v11 = [v6 objectForKeyedSubscript:@"timestampEnd"];
+      v11 = [entryCopy objectForKeyedSubscript:@"timestampEnd"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -2728,10 +2728,10 @@ LABEL_16:
       }
 
       v19 = v12;
-      v20 = [v12 convertFromMonotonicToSystem];
-      if (v20)
+      convertFromMonotonicToSystem = [v12 convertFromMonotonicToSystem];
+      if (convertFromMonotonicToSystem)
       {
-        [v9 setObject:v20 forKeyedSubscript:@"timestamp"];
+        [v9 setObject:convertFromMonotonicToSystem forKeyedSubscript:@"timestamp"];
       }
 
       else
@@ -2768,14 +2768,14 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)isValidUrsaEntry:(id)a3
+- (BOOL)isValidUrsaEntry:(id)entry
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"driMessage"];
+    v5 = [entryCopy objectForKeyedSubscript:@"driMessage"];
     if (v5)
     {
       objc_opt_class();
@@ -2979,14 +2979,14 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)shouldUpdateTableFrom:(id)a3 newPayload:(id)a4
+- (BOOL)shouldUpdateTableFrom:(id)from newPayload:(id)payload
 {
   LOBYTE(v4) = 0;
-  if (a3 && a4)
+  if (from && payload)
   {
-    v7 = a4;
-    v8 = [(PLEnergyIssuesService *)self extractActionfromEntry:a3];
-    v9 = [v7 objectForKeyedSubscript:@"action"];
+    payloadCopy = payload;
+    v8 = [(PLEnergyIssuesService *)self extractActionfromEntry:from];
+    v9 = [payloadCopy objectForKeyedSubscript:@"action"];
 
     if (v9 && ([v8 isEqualToString:@"softwareUpdate"] & 1) == 0)
     {
@@ -3002,9 +3002,9 @@ LABEL_15:
   return v4;
 }
 
-- (id)extractActionfromEntry:(id)a3
+- (id)extractActionfromEntry:(id)entry
 {
-  v3 = [a3 objectForKeyedSubscript:@"driMessage"];
+  v3 = [entry objectForKeyedSubscript:@"driMessage"];
   v4 = [v3 componentsSeparatedByString:@":"];
   if ([v4 count] == 2)
   {
@@ -3019,9 +3019,9 @@ LABEL_15:
   return v5;
 }
 
-- (id)extractProcessNameFromEntry:(id)a3
+- (id)extractProcessNameFromEntry:(id)entry
 {
-  v3 = [a3 objectForKeyedSubscript:@"driMessage"];
+  v3 = [entry objectForKeyedSubscript:@"driMessage"];
   v4 = [v3 componentsSeparatedByString:@":"];
   if ([v4 count] == 2)
   {
@@ -3036,19 +3036,19 @@ LABEL_15:
   return v5;
 }
 
-+ (id)parseBootArgs:(id)a3
++ (id)parseBootArgs:(id)args
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  argsCopy = args;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [argsCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__PLEnergyIssuesService_parseBootArgs___block_invoke;
   v11[3] = &unk_278259C68;
-  v8 = v7;
+  v8 = dictionary;
   v12 = v8;
   [v6 enumerateObjectsUsingBlock:v11];
   if ([v8 count])
@@ -3116,22 +3116,22 @@ void __39__PLEnergyIssuesService_parseBootArgs___block_invoke(uint64_t a1, void 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createIssueEntriesFrom:(id)a3 forKey:(id)a4 now:(id)a5 midnight:(id)a6
++ (id)createIssueEntriesFrom:(id)from forKey:(id)key now:(id)now midnight:(id)midnight
 {
   v81 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v61 = a4;
-  v62 = a5;
-  v59 = a6;
-  if (v9)
+  fromCopy = from;
+  keyCopy = key;
+  nowCopy = now;
+  midnightCopy = midnight;
+  if (fromCopy)
   {
-    v60 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v58 = v9;
-    v10 = v9;
+    v58 = fromCopy;
+    v10 = fromCopy;
     v11 = [v10 countByEnumeratingWithState:&v74 objects:v80 count:16];
     if (!v11)
     {
@@ -3180,14 +3180,14 @@ void __39__PLEnergyIssuesService_parseBootArgs___block_invoke(uint64_t a1, void 
           goto LABEL_49;
         }
 
-        v20 = [MEMORY[0x277CBEB68] null];
-        if (v17 == v20)
+        null = [MEMORY[0x277CBEB68] null];
+        if (v17 == null)
         {
           goto LABEL_28;
         }
 
-        v21 = [MEMORY[0x277CBEB68] null];
-        if (v73 == v21)
+        null2 = [MEMORY[0x277CBEB68] null];
+        if (v73 == null2)
         {
           goto LABEL_27;
         }
@@ -3196,9 +3196,9 @@ void __39__PLEnergyIssuesService_parseBootArgs___block_invoke(uint64_t a1, void 
         v22 = v14;
         v23 = v13;
         v24 = v10;
-        v25 = [MEMORY[0x277CBEB68] null];
-        v26 = v25;
-        if (v72 == v25)
+        null3 = [MEMORY[0x277CBEB68] null];
+        v26 = null3;
+        if (v72 == null3)
         {
 
           v10 = v24;
@@ -3223,9 +3223,9 @@ LABEL_49:
           goto LABEL_30;
         }
 
-        v27 = [MEMORY[0x277CBEB68] null];
+        null4 = [MEMORY[0x277CBEB68] null];
 
-        v28 = v66 == v27;
+        v28 = v66 == null4;
         v10 = v24;
         v13 = v23;
         v14 = v22;
@@ -3235,7 +3235,7 @@ LABEL_49:
           goto LABEL_29;
         }
 
-        v29 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v61 withDate:v62];
+        v29 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy withDate:nowCopy];
         v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v63, "unsignedIntValue")}];
         [v29 setObject:v30 forKeyedSubscript:v13];
 
@@ -3244,13 +3244,13 @@ LABEL_49:
 
         [v29 setObject:v72 forKeyedSubscript:@"driMessage"];
         [v29 setObject:v66 forKeyedSubscript:@"notificationMessage"];
-        v32 = [MEMORY[0x277CBEB68] null];
+        null5 = [MEMORY[0x277CBEB68] null];
 
-        if (v67 == v32)
+        if (v67 == null5)
         {
           v34 = 0.0;
 LABEL_33:
-          [v29 setObject:v59 forKeyedSubscript:@"timestampInvalid"];
+          [v29 setObject:midnightCopy forKeyedSubscript:@"timestampInvalid"];
           v36 = 0;
           goto LABEL_34;
         }
@@ -3267,17 +3267,17 @@ LABEL_33:
 
         v36 = 1;
 LABEL_34:
-        v39 = [MEMORY[0x277CBEB68] null];
+        null6 = [MEMORY[0x277CBEB68] null];
 
-        if (v65 != v39)
+        if (v65 != null6)
         {
           v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v65, "unsignedIntValue")}];
           [v29 setObject:v40 forKeyedSubscript:v22];
         }
 
-        v41 = [MEMORY[0x277CBEB68] null];
+        null7 = [MEMORY[0x277CBEB68] null];
 
-        if (v71 != v41)
+        if (v71 != null7)
         {
           v42 = MEMORY[0x277CCABB0];
           [v71 doubleValue];
@@ -3285,9 +3285,9 @@ LABEL_34:
           [v29 setObject:v43 forKeyedSubscript:@"timestampStart"];
         }
 
-        v44 = [MEMORY[0x277CBEB68] null];
+        null8 = [MEMORY[0x277CBEB68] null];
 
-        if (v70 != v44)
+        if (v70 != null8)
         {
           v45 = MEMORY[0x277CCABB0];
           [v70 doubleValue];
@@ -3295,17 +3295,17 @@ LABEL_34:
           [v29 setObject:v46 forKeyedSubscript:@"timestampEnd"];
         }
 
-        v47 = [MEMORY[0x277CBEB68] null];
+        null9 = [MEMORY[0x277CBEB68] null];
 
-        if (v69 != v47)
+        if (v69 != null9)
         {
           v48 = [MEMORY[0x277CCACA8] stringWithString:?];
           [v29 setObject:v48 forKeyedSubscript:@"hitIn"];
         }
 
-        v49 = [MEMORY[0x277CBEB68] null];
+        null10 = [MEMORY[0x277CBEB68] null];
 
-        if (v68 != v49)
+        if (v68 != null10)
         {
           v50 = [MEMORY[0x277CCACA8] stringWithString:?];
           [v29 setObject:v50 forKeyedSubscript:@"fixedIn"];
@@ -3313,9 +3313,9 @@ LABEL_34:
 
         v51 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v34];
         v52 = v51;
-        if (!v36 || ([v51 laterDate:v62], v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "isEqualToDate:", v62), v53, (v54 & 1) == 0))
+        if (!v36 || ([v51 laterDate:nowCopy], v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "isEqualToDate:", nowCopy), v53, (v54 & 1) == 0))
         {
-          [v60 addObject:v29];
+          [array addObject:v29];
         }
 
         v17 = v63;
@@ -3331,40 +3331,40 @@ LABEL_30:
       {
 LABEL_51:
 
-        v9 = v58;
+        fromCopy = v58;
         goto LABEL_53;
       }
     }
   }
 
-  v60 = 0;
+  array = 0;
 LABEL_53:
 
   v56 = *MEMORY[0x277D85DE8];
 
-  return v60;
+  return array;
 }
 
-+ (BOOL)shouldPopUpForPowerExceptionWithFatalCount:(id)a3 withNonFatalCount:(id)a4 withMitigationsEnabled:(BOOL)a5
++ (BOOL)shouldPopUpForPowerExceptionWithFatalCount:(id)count withNonFatalCount:(id)fatalCount withMitigationsEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = !v5 || [a3 intValue] >= 1 && objc_msgSend(v7, "intValue") > 0;
+  enabledCopy = enabled;
+  fatalCountCopy = fatalCount;
+  v8 = !enabledCopy || [count intValue] >= 1 && objc_msgSend(fatalCountCopy, "intValue") > 0;
 
   return v8;
 }
 
-+ (BOOL)shouldPopUpForPowerExceptionForProcess:(id)a3
++ (BOOL)shouldPopUpForPowerExceptionForProcess:(id)process
 {
-  v3 = a3;
-  if (v3)
+  processCopy = process;
+  if (processCopy)
   {
     if (qword_2811F4C60 != -1)
     {
       dispatch_once(&qword_2811F4C60, &__block_literal_global_496);
     }
 
-    v4 = [qword_2811F4C58 containsObject:v3];
+    v4 = [qword_2811F4C58 containsObject:processCopy];
   }
 
   else
@@ -3391,11 +3391,11 @@ uint64_t __64__PLEnergyIssuesService_shouldPopUpForPowerExceptionForProcess___bl
 
 + (BOOL)shouldPopUpForPowerException
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [MEMORY[0x277D3F180] doubleForKey:@"UrsaNotifyAfter" ifNotSet:0.0];
-  if (v3 == 0.0 || (v4 = v3, [v2 timeIntervalSince1970], v5 >= v4))
+  if (v3 == 0.0 || (v4 = v3, [date timeIntervalSince1970], v5 >= v4))
   {
-    v6 = [MEMORY[0x277CBEAA8] nearestMidnightAfterDate:v2];
+    v6 = [MEMORY[0x277CBEAA8] nearestMidnightAfterDate:date];
     [v6 timeIntervalSince1970];
     v8 = v7;
 
@@ -3413,12 +3413,12 @@ uint64_t __64__PLEnergyIssuesService_shouldPopUpForPowerExceptionForProcess___bl
   return v11;
 }
 
-+ (BOOL)isTestRackDevice:(id)a3 withExpGroup:(id)a4 internalKeyDetected:(BOOL)a5
++ (BOOL)isTestRackDevice:(id)device withExpGroup:(id)group internalKeyDetected:(BOOL)detected
 {
-  v5 = a5;
+  detectedCopy = detected;
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([a4 isEqualToString:@"carry"])
+  deviceCopy = device;
+  if ([group isEqualToString:@"carry"])
   {
     v8 = PLLogUrsa();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -3433,7 +3433,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v5)
+  if (detectedCopy)
   {
     v8 = PLLogUrsa();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -3448,7 +3448,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [v7 length];
+  v13 = [deviceCopy length];
   v10 = v13 != 0;
   v8 = PLLogUrsa();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))

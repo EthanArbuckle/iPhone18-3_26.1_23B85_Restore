@@ -5,7 +5,7 @@
 - (void)_threadMain;
 - (void)_update;
 - (void)dealloc;
-- (void)simulateGestureWithDuration:(double)a3 begin:(id)a4 update:(id)a5 end:(id)a6;
+- (void)simulateGestureWithDuration:(double)duration begin:(id)begin update:(id)update end:(id)end;
 @end
 
 @implementation _UIScrollViewGestureSimulator
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __47___UIScrollViewGestureSimulator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2C10 != -1)
   {
     dispatch_once(&qword_1ED4A2C10, block);
@@ -60,12 +60,12 @@
   [(_UIScrollViewGestureSimulator *)&v3 dealloc];
 }
 
-- (void)simulateGestureWithDuration:(double)a3 begin:(id)a4 update:(id)a5 end:(id)a6
+- (void)simulateGestureWithDuration:(double)duration begin:(id)begin update:(id)update end:(id)end
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v15 = [[_UIScrollViewSimulatedGesture alloc] initWithDuration:v12 begin:v11 update:v10 end:a3];
+  endCopy = end;
+  updateCopy = update;
+  beginCopy = begin;
+  v15 = [[_UIScrollViewSimulatedGesture alloc] initWithDuration:beginCopy begin:updateCopy update:endCopy end:duration];
 
   [(NSMutableArray *)self->_simulatedGestures addObject:v15];
   if (self->_workThread)
@@ -91,7 +91,7 @@
 
 - (void)_threadMain
 {
-  v3 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
   if (qword_1ED4A2C28 != -1)
   {
     dispatch_once(&qword_1ED4A2C28, &__block_literal_global_188_3);
@@ -114,23 +114,23 @@
       }
     }
 
-    [(CADisplayLink *)self->_displayLink addToRunLoop:v3 forMode:*MEMORY[0x1E695DA28]];
+    [(CADisplayLink *)self->_displayLink addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   else
   {
     v9 = objc_alloc(MEMORY[0x1E695DFF0]);
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __44___UIScrollViewGestureSimulator__threadMain__block_invoke;
     v19[3] = &unk_1E7106478;
     v19[4] = self;
-    v11 = [v9 initWithFireDate:v10 interval:1 repeats:v19 block:0.0166666667];
+    v11 = [v9 initWithFireDate:date interval:1 repeats:v19 block:0.0166666667];
     timer = self->_timer;
     self->_timer = v11;
 
-    [v3 addTimer:self->_timer forMode:*MEMORY[0x1E695DA28]];
+    [currentRunLoop addTimer:self->_timer forMode:*MEMORY[0x1E695DA28]];
   }
 
   self->_lastWakeUpTime = CACurrentMediaTime();
@@ -139,7 +139,7 @@
     do
     {
       v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.5];
-      [v3 runUntilDate:v13];
+      [currentRunLoop runUntilDate:v13];
     }
 
     while (self->_hasSimulatedGestures);

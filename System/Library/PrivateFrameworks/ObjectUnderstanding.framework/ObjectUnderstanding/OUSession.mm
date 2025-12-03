@@ -1,29 +1,29 @@
 @interface OUSession
 - (OUSessionDelegate)delegate;
-- (id)init:(BOOL)a3;
-- (void)generateOfflineObjectAsset:(id)a3 onlineObjects:(id)a4 block:(id)a5;
-- (void)generateOfflineObjects:(id)a3 onlineObjects:(id)a4;
-- (void)generateOfflineObjects:(id)a3 onlineObjects:(id)a4 block:(id)a5;
-- (void)runWithConfiguration:(id)a3;
+- (id)init:(BOOL)init;
+- (void)generateOfflineObjectAsset:(id)asset onlineObjects:(id)objects block:(id)block;
+- (void)generateOfflineObjects:(id)objects onlineObjects:(id)onlineObjects;
+- (void)generateOfflineObjects:(id)objects onlineObjects:(id)onlineObjects block:(id)block;
+- (void)runWithConfiguration:(id)configuration;
 - (void)stop;
-- (void)updateWithFrame:(id)a3;
-- (void)updateWithKeyframes:(__n128)a3 currentCameraPose:(__n128)a4;
-- (void)updateWithKeyframes:(id)a3 ouframe:(id)a4;
+- (void)updateWithFrame:(id)frame;
+- (void)updateWithKeyframes:(__n128)keyframes currentCameraPose:(__n128)pose;
+- (void)updateWithKeyframes:(id)keyframes ouframe:(id)ouframe;
 @end
 
 @implementation OUSession
 
-- (id)init:(BOOL)a3
+- (id)init:(BOOL)init
 {
-  v3 = a3;
+  initCopy = init;
   v25.receiver = self;
   v25.super_class = OUSession;
   v4 = [(OUSession *)&v25 init];
   v5 = v4;
   if (v4)
   {
-    v4->isOnline_ = v3;
-    if (v3)
+    v4->isOnline_ = initCopy;
+    if (initCopy)
     {
       v6 = objc_alloc_init(OUPipelineOnline);
       v7 = 24;
@@ -42,13 +42,13 @@
     detSemaphore = v5->detSemaphore_;
     v5->detSemaphore_ = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     allKeyframes = v5->allKeyframes_;
-    v5->allKeyframes_ = v11;
+    v5->allKeyframes_ = dictionary;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     skipedKeyframes = v5->skipedKeyframes_;
-    v5->skipedKeyframes_ = v13;
+    v5->skipedKeyframes_ = dictionary2;
 
     v15 = CreateWorkGroup("OU_OnlineOD3d_TG");
     workgroupOD = v5->_workgroupOD;
@@ -72,10 +72,10 @@
   return v23;
 }
 
-- (void)runWithConfiguration:(id)a3
+- (void)runWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  configurationCopy = configuration;
+  v5 = [configurationCopy copy];
   configuration = self->configuration_;
   self->configuration_ = v5;
 
@@ -83,8 +83,8 @@
   {
     [(OUPipelineOnline *)self->ouPipeline_ clear];
     v7 = objc_alloc_init(OUPipelineOnlineConfig);
-    -[OUPipelineOnlineConfig setEnableRgbRefinement:](v7, "setEnableRgbRefinement:", [v4 enableRgbRefinement]);
-    -[OUPipelineOnlineConfig setEnable3DOROnline:](v7, "setEnable3DOROnline:", [v4 enable3DOR]);
+    -[OUPipelineOnlineConfig setEnableRgbRefinement:](v7, "setEnableRgbRefinement:", [configurationCopy enableRgbRefinement]);
+    -[OUPipelineOnlineConfig setEnable3DOROnline:](v7, "setEnable3DOROnline:", [configurationCopy enable3DOR]);
     v8 = [[OUPipelineOnline alloc] initWithConfig:v7];
     ouPipeline = self->ouPipeline_;
     self->ouPipeline_ = v8;
@@ -93,27 +93,27 @@
   else
   {
     [(OU3DObjectDetector *)self->det3d_ clear];
-    -[OU3DObjectDetector setRgbRefinementEnabled:](self->det3d_, "setRgbRefinementEnabled:", [v4 enableRgbRefinement]);
-    -[OU3DObjectDetector setObjectRepresentationEnabled:](self->det3d_, "setObjectRepresentationEnabled:", [v4 enable3DOR]);
+    -[OU3DObjectDetector setRgbRefinementEnabled:](self->det3d_, "setRgbRefinementEnabled:", [configurationCopy enableRgbRefinement]);
+    -[OU3DObjectDetector setObjectRepresentationEnabled:](self->det3d_, "setObjectRepresentationEnabled:", [configurationCopy enable3DOR]);
   }
 
   [(OUConfiguration *)self->configuration_ maxFramerate];
   self->_minFrameInterval = 1.0 / v10;
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   allKeyframes = self->allKeyframes_;
-  self->allKeyframes_ = v11;
+  self->allKeyframes_ = dictionary;
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   skipedKeyframes = self->skipedKeyframes_;
-  self->skipedKeyframes_ = v13;
+  self->skipedKeyframes_ = dictionary2;
 }
 
-- (void)updateWithKeyframes:(__n128)a3 currentCameraPose:(__n128)a4
+- (void)updateWithKeyframes:(__n128)keyframes currentCameraPose:(__n128)pose
 {
-  v26 = a4;
+  poseCopy = pose;
   v27 = a5;
   v24 = a2;
-  v25 = a3;
+  keyframesCopy = keyframes;
   v41 = *MEMORY[0x277D85DE8];
   v36 = 0u;
   v37 = 0u;
@@ -134,13 +134,13 @@
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
-        v13 = *(a1 + 96);
-        v14 = [v12 identifier];
-        [v13 setObject:v12 forKeyedSubscript:v14];
+        v13 = *(self + 96);
+        identifier = [v12 identifier];
+        [v13 setObject:v12 forKeyedSubscript:identifier];
 
-        v15 = *(a1 + 104);
-        v16 = [v12 identifier];
-        [v15 setObject:v12 forKeyedSubscript:v16];
+        v15 = *(self + 104);
+        identifier2 = [v12 identifier];
+        [v15 setObject:v12 forKeyedSubscript:identifier2];
       }
 
       v9 = [v8 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -149,34 +149,34 @@
     while (v9);
   }
 
-  if (!dispatch_semaphore_wait(*(a1 + 48), 0xFFFFFFFFFFFFFFFELL))
+  if (!dispatch_semaphore_wait(*(self + 48), 0xFFFFFFFFFFFFFFFELL))
   {
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [v17 timeIntervalSinceDate:*(a1 + 64)];
-    v19 = v18 < *(a1 + 60);
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:*(self + 64)];
+    v19 = v18 < *(self + 60);
 
     if (v19)
     {
-      dispatch_semaphore_signal(*(a1 + 48));
+      dispatch_semaphore_signal(*(self + 48));
     }
 
     else
     {
-      objc_initWeak(&location, a1);
-      v20 = [*(a1 + 104) allValues];
-      [*(a1 + 104) removeAllObjects];
-      v21 = *(a1 + 32);
+      objc_initWeak(&location, self);
+      allValues = [*(self + 104) allValues];
+      [*(self + 104) removeAllObjects];
+      v21 = *(self + 32);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __51__OUSession_updateWithKeyframes_currentCameraPose___block_invoke;
       block[3] = &unk_2799C4210;
       objc_copyWeak(v34, &location);
-      v33 = v20;
+      v33 = allValues;
       v29 = v24;
-      v30 = v25;
-      v31 = v26;
+      v30 = keyframesCopy;
+      v31 = poseCopy;
       v32 = v27;
-      v22 = v20;
+      v22 = allValues;
       dispatch_async(v21, block);
 
       objc_destroyWeak(v34);
@@ -229,15 +229,15 @@ void __51__OUSession_updateWithKeyframes_currentCameraPose___block_invoke(uint64
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithKeyframes:(id)a3 ouframe:(id)a4
+- (void)updateWithKeyframes:(id)keyframes ouframe:(id)ouframe
 {
   v53 = *MEMORY[0x277D85DE8];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v40 objects:v52 count:16];
+  keyframesCopy = keyframes;
+  v6 = [keyframesCopy countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v6)
   {
     v7 = *v41;
@@ -247,20 +247,20 @@ void __51__OUSession_updateWithKeyframes_currentCameraPose___block_invoke(uint64
       {
         if (*v41 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyframesCopy);
         }
 
         v9 = *(*(&v40 + 1) + 8 * i);
         allKeyframes = self->allKeyframes_;
-        v11 = [v9 identifier];
-        [(NSMutableDictionary *)allKeyframes setObject:v9 forKeyedSubscript:v11];
+        identifier = [v9 identifier];
+        [(NSMutableDictionary *)allKeyframes setObject:v9 forKeyedSubscript:identifier];
 
         skipedKeyframes = self->skipedKeyframes_;
-        v13 = [v9 identifier];
-        [(NSMutableDictionary *)skipedKeyframes setObject:v9 forKeyedSubscript:v13];
+        identifier2 = [v9 identifier];
+        [(NSMutableDictionary *)skipedKeyframes setObject:v9 forKeyedSubscript:identifier2];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v40 objects:v52 count:16];
+      v6 = [keyframesCopy countByEnumeratingWithState:&v40 objects:v52 count:16];
     }
 
     while (v6);
@@ -268,8 +268,8 @@ void __51__OUSession_updateWithKeyframes_currentCameraPose___block_invoke(uint64
 
   if (!dispatch_semaphore_wait(self->detSemaphore_, 0xFFFFFFFFFFFFFFFELL))
   {
-    v14 = [MEMORY[0x277CBEAA8] date];
-    [v14 timeIntervalSinceDate:self->_detStartDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_detStartDate];
     v16 = v15 < self->_minFrameInterval;
 
     if (v16)
@@ -295,7 +295,7 @@ void __51__OUSession_updateWithKeyframes_currentCameraPose___block_invoke(uint64
       block[4] = self;
       block[5] = v37;
       dispatch_sync(ouframeQueue, block);
-      v18 = [(NSMutableDictionary *)self->skipedKeyframes_ allValues];
+      allValues = [(NSMutableDictionary *)self->skipedKeyframes_ allValues];
       [(NSMutableDictionary *)self->skipedKeyframes_ removeAllObjects];
       detQueue = self->detQueue_;
       v27 = MEMORY[0x277D85DD0];
@@ -303,8 +303,8 @@ void __51__OUSession_updateWithKeyframes_currentCameraPose___block_invoke(uint64
       v29 = __41__OUSession_updateWithKeyframes_ouframe___block_invoke_2;
       v30 = &unk_2799C4260;
       objc_copyWeak(&v34, &location);
-      v20 = v18;
-      v32 = self;
+      v20 = allValues;
+      selfCopy = self;
       v33 = v37;
       v31 = v20;
       dispatch_async(detQueue, &v27);
@@ -313,7 +313,7 @@ void __51__OUSession_updateWithKeyframes_currentCameraPose___block_invoke(uint64
       {
         v22 = [(NSArray *)self->objects_ count:v27];
         v23 = [(NSMutableDictionary *)self->allKeyframes_ count];
-        v24 = [v5 count];
+        v24 = [keyframesCopy count];
         v25 = [v20 count];
         *buf = 134218752;
         v45 = v22;
@@ -387,12 +387,12 @@ void __41__OUSession_updateWithKeyframes_ouframe___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)updateWithFrame:(id)a3
+- (void)updateWithFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [v4 sceneCamera];
+  frameCopy = frame;
+  sceneCamera = [frameCopy sceneCamera];
 
-  if (v5)
+  if (sceneCamera)
   {
     objc_initWeak(&location, self);
     ouframeQueue = self->ouframeQueue_;
@@ -401,7 +401,7 @@ void __41__OUSession_updateWithKeyframes_ouframe___block_invoke_2(uint64_t a1)
     block[2] = __29__OUSession_updateWithFrame___block_invoke;
     block[3] = &unk_2799C4288;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = frameCopy;
     dispatch_async(ouframeQueue, block);
 
     objc_destroyWeak(&v9);
@@ -420,10 +420,10 @@ void __29__OUSession_updateWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)generateOfflineObjects:(id)a3 onlineObjects:(id)a4
+- (void)generateOfflineObjects:(id)objects onlineObjects:(id)onlineObjects
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  onlineObjectsCopy = onlineObjects;
   if (!dispatch_semaphore_wait(self->detSemaphore_, 0xFFFFFFFFFFFFFFFELL))
   {
     objc_initWeak(&location, self);
@@ -433,9 +433,9 @@ void __29__OUSession_updateWithFrame___block_invoke(uint64_t a1)
     block[2] = __50__OUSession_generateOfflineObjects_onlineObjects___block_invoke;
     block[3] = &unk_2799C42B0;
     objc_copyWeak(&v13, &location);
-    v10 = v6;
-    v11 = v7;
-    v12 = self;
+    v10 = objectsCopy;
+    v11 = onlineObjectsCopy;
+    selfCopy = self;
     dispatch_async(detQueue, block);
 
     objc_destroyWeak(&v13);
@@ -484,23 +484,23 @@ void __50__OUSession_generateOfflineObjects_onlineObjects___block_invoke(uint64_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateOfflineObjects:(id)a3 onlineObjects:(id)a4 block:(id)a5
+- (void)generateOfflineObjects:(id)objects onlineObjects:(id)onlineObjects block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  onlineObjectsCopy = onlineObjects;
+  blockCopy = block;
   detQueue = self->detQueue_;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __56__OUSession_generateOfflineObjects_onlineObjects_block___block_invoke;
   v15[3] = &unk_2799C42D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = objectsCopy;
+  v17 = onlineObjectsCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = onlineObjectsCopy;
+  v14 = objectsCopy;
   dispatch_async(detQueue, v15);
 }
 
@@ -537,23 +537,23 @@ uint64_t __56__OUSession_generateOfflineObjects_onlineObjects_block___block_invo
   return result;
 }
 
-- (void)generateOfflineObjectAsset:(id)a3 onlineObjects:(id)a4 block:(id)a5
+- (void)generateOfflineObjectAsset:(id)asset onlineObjects:(id)objects block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  objectsCopy = objects;
+  blockCopy = block;
   detQueue = self->detQueue_;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__OUSession_generateOfflineObjectAsset_onlineObjects_block___block_invoke;
   v15[3] = &unk_2799C42D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = assetCopy;
+  v17 = objectsCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = objectsCopy;
+  v14 = assetCopy;
   dispatch_async(detQueue, v15);
 }
 

@@ -6,7 +6,7 @@
 
 - (unint64_t)nextElement
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (!v1)
   {
     v5 = new_JavaUtilNoSuchElementException_init();
@@ -14,8 +14,8 @@
   }
 
   v3 = atomic_load(v1 + 3);
-  JreStrongAssign((a1 + 64), v1);
-  [JavaUtilConcurrentConcurrentHashMap_Traverser advance]_0(a1);
+  JreStrongAssign((self + 64), v1);
+  [JavaUtilConcurrentConcurrentHashMap_Traverser advance]_0(self);
   return v3;
 }
 

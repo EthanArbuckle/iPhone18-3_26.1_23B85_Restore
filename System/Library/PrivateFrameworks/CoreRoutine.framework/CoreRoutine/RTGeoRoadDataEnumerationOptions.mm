@@ -1,42 +1,42 @@
 @interface RTGeoRoadDataEnumerationOptions
-- (BOOL)isEqual:(id)a3;
-- (RTGeoRoadDataEnumerationOptions)initWithbatchSize:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTGeoRoadDataEnumerationOptions)initWithbatchSize:(unint64_t)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation RTGeoRoadDataEnumerationOptions
 
-- (RTGeoRoadDataEnumerationOptions)initWithbatchSize:(unint64_t)a3
+- (RTGeoRoadDataEnumerationOptions)initWithbatchSize:(unint64_t)size
 {
   v5.receiver = self;
   v5.super_class = RTGeoRoadDataEnumerationOptions;
   result = [(RTGeoRoadDataEnumerationOptions *)&v5 init];
   if (result)
   {
-    result->_batchSize = a3;
+    result->_batchSize = size;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 initWithbatchSize:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isKindOfClass = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();

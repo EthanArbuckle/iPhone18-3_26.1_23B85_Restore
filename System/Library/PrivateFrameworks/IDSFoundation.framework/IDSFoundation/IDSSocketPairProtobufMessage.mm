@@ -1,20 +1,20 @@
 @interface IDSSocketPairProtobufMessage
-- (IDSSocketPairProtobufMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4;
-- (IDSSocketPairProtobufMessage)initWithSequenceNumber:(unsigned int)a3 streamID:(unsigned __int16)a4 expectsPeerResponse:(BOOL)a5 wantsAppAck:(BOOL)a6 compressed:(BOOL)a7 didWakeHint:(BOOL)a8 peerResponseIdentifier:(id)a9 messageUUID:(id)a10 expiryDate:(id)a11 protobuf:(id)a12;
+- (IDSSocketPairProtobufMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data;
+- (IDSSocketPairProtobufMessage)initWithSequenceNumber:(unsigned int)number streamID:(unsigned __int16)d expectsPeerResponse:(BOOL)response wantsAppAck:(BOOL)ack compressed:(BOOL)compressed didWakeHint:(BOOL)hint peerResponseIdentifier:(id)identifier messageUUID:(id)self0 expiryDate:(id)self1 protobuf:(id)self2;
 - (NSData)data;
 - (id)_nonHeaderData;
 @end
 
 @implementation IDSSocketPairProtobufMessage
 
-- (IDSSocketPairProtobufMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4
+- (IDSSocketPairProtobufMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data
 {
-  v4 = a3;
+  commandCopy = command;
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dataCopy = data;
   v46.receiver = self;
   v46.super_class = IDSSocketPairProtobufMessage;
-  v7 = [(IDSSocketPairMessage *)&v46 initWithCommand:v4 underlyingData:v6];
+  v7 = [(IDSSocketPairMessage *)&v46 initWithCommand:commandCopy underlyingData:dataCopy];
   if (!v7)
   {
 LABEL_26:
@@ -24,15 +24,15 @@ LABEL_26:
 
   v8 = objc_autoreleasePoolPush();
   v45 = -1431655766;
-  [v6 getBytes:&v45 range:{0, 4}];
+  [dataCopy getBytes:&v45 range:{0, 4}];
   v45 = bswap32(v45);
   v44 = -21846;
-  [v6 getBytes:&v44 range:{4, 2}];
+  [dataCopy getBytes:&v44 range:{4, 2}];
   v44 = bswap32(v44) >> 16;
   v43 = -86;
-  [v6 getBytes:&v43 range:{6, 1}];
+  [dataCopy getBytes:&v43 range:{6, 1}];
   v42 = -1431655766;
-  [v6 getBytes:&v42 range:{7, 4}];
+  [dataCopy getBytes:&v42 range:{7, 4}];
   v9 = v42;
   v10 = bswap32(v42);
   v42 = v10;
@@ -41,13 +41,13 @@ LABEL_26:
     v15 = 11;
 LABEL_14:
     *buf = -1431655766;
-    [v6 getBytes:buf range:{v15, 4}];
+    [dataCopy getBytes:buf range:{v15, 4}];
     v20 = *buf;
     *buf = bswap32(*buf);
     v21 = v15 + 4;
     if (v20)
     {
-      v22 = [v6 subdataWithRange:v21];
+      v22 = [dataCopy subdataWithRange:v21];
       v23 = *buf;
       v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v22 encoding:4];
       messageUUID = v7->_messageUUID;
@@ -60,13 +60,13 @@ LABEL_14:
     if ((v43 & 0x10) != 0)
     {
       v41 = -1431655766;
-      [v6 getBytes:&v41 range:{v21, 4}];
+      [dataCopy getBytes:&v41 range:{v21, 4}];
       v27 = v41;
       v41 = bswap32(v41);
       v21 += 4;
       if (v27)
       {
-        v28 = [v6 subdataWithRange:v21];
+        v28 = [dataCopy subdataWithRange:v21];
         v29 = v41;
         v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v28 encoding:4];
         [(IDSSocketPairMessage *)v7 setTopic:v30];
@@ -83,12 +83,12 @@ LABEL_14:
     v7->_compressed = (v26 & 2) != 0;
     v7->_wantsAppAck = (v26 & 4) != 0;
     v7->_didWakeHint = (v26 & 0x20) != 0;
-    [v6 getBytes:&v7->_type range:{v21, 2}];
+    [dataCopy getBytes:&v7->_type range:{v21, 2}];
     v7->_type = bswap32(v7->_type) >> 16;
-    [v6 getBytes:&v7->_isResponse range:{v21 + 2, 2}];
+    [dataCopy getBytes:&v7->_isResponse range:{v21 + 2, 2}];
     v7->_isResponse = bswap32(v7->_isResponse) >> 16;
     v41 = 0;
-    [v6 getBytes:&v41 range:{v21 + 4, 4}];
+    [dataCopy getBytes:&v41 range:{v21 + 4, 4}];
     v31 = bswap32(v41);
     v32 = v21 + 8;
     v7->_payloadOffset = v32;
@@ -104,11 +104,11 @@ LABEL_14:
       v33 = 0;
     }
 
-    v34 = v33 + [v6 length] - v7->_payloadOffset;
+    v34 = v33 + [dataCopy length] - v7->_payloadOffset;
     v7->_payloadLength = v34;
     if ((v43 & 8) != 0)
     {
-      [v6 getBytes:&v40 range:{v34 + v32, 4}];
+      [dataCopy getBytes:&v40 range:{v34 + v32, 4}];
       v40 = bswap32(v40);
       v35 = objc_alloc(MEMORY[0x1E695DF00]);
       LODWORD(v36) = v40;
@@ -121,9 +121,9 @@ LABEL_14:
     goto LABEL_26;
   }
 
-  if (v10 + 11 <= [v6 length])
+  if (v10 + 11 <= [dataCopy length])
   {
-    v16 = [v6 subdataWithRange:{11, v42}];
+    v16 = [dataCopy subdataWithRange:{11, v42}];
     v17 = v42;
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v16 encoding:4];
     peerResponseIdentifier = v7->_peerResponseIdentifier;
@@ -137,7 +137,7 @@ LABEL_14:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v42;
-    v13 = [v6 length];
+    v13 = [dataCopy length];
     *buf = 67109632;
     v48 = 11;
     v49 = 1024;
@@ -151,13 +151,13 @@ LABEL_14:
   {
     if (MarcoShouldLog())
     {
-      [v6 length];
+      [dataCopy length];
       MarcoLog();
     }
 
     if (IMShouldLog())
     {
-      [v6 length];
+      [dataCopy length];
       IMLogString();
     }
   }
@@ -169,32 +169,32 @@ LABEL_27:
   return v14;
 }
 
-- (IDSSocketPairProtobufMessage)initWithSequenceNumber:(unsigned int)a3 streamID:(unsigned __int16)a4 expectsPeerResponse:(BOOL)a5 wantsAppAck:(BOOL)a6 compressed:(BOOL)a7 didWakeHint:(BOOL)a8 peerResponseIdentifier:(id)a9 messageUUID:(id)a10 expiryDate:(id)a11 protobuf:(id)a12
+- (IDSSocketPairProtobufMessage)initWithSequenceNumber:(unsigned int)number streamID:(unsigned __int16)d expectsPeerResponse:(BOOL)response wantsAppAck:(BOOL)ack compressed:(BOOL)compressed didWakeHint:(BOOL)hint peerResponseIdentifier:(id)identifier messageUUID:(id)self0 expiryDate:(id)self1 protobuf:(id)self2
 {
-  v26 = a9;
-  v16 = a10;
-  v17 = a11;
-  v18 = a12;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  dateCopy = date;
+  protobufCopy = protobuf;
   v27.receiver = self;
   v27.super_class = IDSSocketPairProtobufMessage;
   v19 = [(IDSSocketPairProtobufMessage *)&v27 init];
   if (v19)
   {
-    v19->_isResponse = [v18 isResponse];
-    v19->_type = [v18 type];
-    v20 = [v18 data];
+    v19->_isResponse = [protobufCopy isResponse];
+    v19->_type = [protobufCopy type];
+    data = [protobufCopy data];
     data = v19->_data;
-    v19->_data = v20;
+    v19->_data = data;
 
-    v19->_sequenceNumber = a3;
-    v19->_streamID = a4;
-    v19->_expectsPeerResponse = a5;
-    v19->_wantsAppAck = a6;
-    v19->_compressed = a7;
-    v19->_didWakeHint = a8;
-    objc_storeStrong(&v19->_peerResponseIdentifier, a9);
-    objc_storeStrong(&v19->_messageUUID, a10);
-    objc_storeStrong(&v19->_expiryDate, a11);
+    v19->_sequenceNumber = number;
+    v19->_streamID = d;
+    v19->_expectsPeerResponse = response;
+    v19->_wantsAppAck = ack;
+    v19->_compressed = compressed;
+    v19->_didWakeHint = hint;
+    objc_storeStrong(&v19->_peerResponseIdentifier, identifier);
+    objc_storeStrong(&v19->_messageUUID, iD);
+    objc_storeStrong(&v19->_expiryDate, date);
   }
 
   return v19;
@@ -210,8 +210,8 @@ LABEL_27:
 
   else
   {
-    v5 = [(IDSSocketPairMessage *)self _existingUnderlyingData];
-    v3 = [v5 subdataWithRangeNoCopy:{self->_payloadOffset, self->_payloadLength}];
+    _existingUnderlyingData = [(IDSSocketPairMessage *)self _existingUnderlyingData];
+    v3 = [_existingUnderlyingData subdataWithRangeNoCopy:{self->_payloadOffset, self->_payloadLength}];
   }
 
   return v3;
@@ -244,13 +244,13 @@ LABEL_27:
     v29 = expectsPeerResponse;
   }
 
-  v5 = [(IDSSocketPairMessage *)self topic];
-  if (v5)
+  topic = [(IDSSocketPairMessage *)self topic];
+  if (topic)
   {
-    v6 = v5;
-    v7 = [(IDSSocketPairMessage *)self useDynamicServiceName];
+    v6 = topic;
+    useDynamicServiceName = [(IDSSocketPairMessage *)self useDynamicServiceName];
 
-    if (v7)
+    if (useDynamicServiceName)
     {
       expectsPeerResponse |= 0x10u;
       v29 = expectsPeerResponse;
@@ -279,16 +279,16 @@ LABEL_27:
     [v3 appendData:v9];
   }
 
-  v10 = [(IDSSocketPairMessage *)self topic];
-  if (v10)
+  topic2 = [(IDSSocketPairMessage *)self topic];
+  if (topic2)
   {
-    v11 = v10;
-    v12 = [(IDSSocketPairMessage *)self useDynamicServiceName];
+    v11 = topic2;
+    useDynamicServiceName2 = [(IDSSocketPairMessage *)self useDynamicServiceName];
 
-    if (v12)
+    if (useDynamicServiceName2)
     {
-      v13 = [(IDSSocketPairMessage *)self topic];
-      v14 = [v13 dataUsingEncoding:4];
+      topic3 = [(IDSSocketPairMessage *)self topic];
+      v14 = [topic3 dataUsingEncoding:4];
 
       v26 = bswap32([v14 length]);
       [v3 appendBytes:&v26 length:4];
@@ -303,18 +303,18 @@ LABEL_27:
   [v3 appendBytes:&v25 length:2];
   v24 = __rev16([(IDSSocketPairProtobufMessage *)self isResponse]);
   [v3 appendBytes:&v24 length:2];
-  v15 = [(IDSSocketPairProtobufMessage *)self data];
-  v16 = bswap32([v15 length]);
+  data = [(IDSSocketPairProtobufMessage *)self data];
+  v16 = bswap32([data length]);
 
   v26 = v16;
   [v3 appendBytes:&v26 length:4];
-  v17 = [(IDSSocketPairProtobufMessage *)self data];
-  v18 = [v17 length];
+  data2 = [(IDSSocketPairProtobufMessage *)self data];
+  v18 = [data2 length];
 
   if (v18)
   {
-    v19 = [(IDSSocketPairProtobufMessage *)self data];
-    [v3 appendData:v19];
+    data3 = [(IDSSocketPairProtobufMessage *)self data];
+    [v3 appendData:data3];
   }
 
   expiryDate = self->_expiryDate;

@@ -1,25 +1,25 @@
 @interface BLOfflineKeyRequest
-- (BLOfflineKeyRequest)initWithMediaItem:(id)a3 identity:(id)a4;
+- (BLOfflineKeyRequest)initWithMediaItem:(id)item identity:(id)identity;
 - (void)_performOfflineKeyRequest;
 - (void)dealloc;
 - (void)execute;
-- (void)finishWithError:(id)a3;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation BLOfflineKeyRequest
 
-- (BLOfflineKeyRequest)initWithMediaItem:(id)a3 identity:(id)a4
+- (BLOfflineKeyRequest)initWithMediaItem:(id)item identity:(id)identity
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  identityCopy = identity;
   v12 = objc_msgSend_init(self, v9, v10, v11);
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong((v12 + 336), a3);
-    objc_storeStrong(&v13->_identity, a4);
+    objc_storeStrong((v12 + 336), item);
+    objc_storeStrong(&v13->_identity, identity);
     v14 = BLHLSKeyFetchingLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -55,25 +55,25 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = objc_msgSend_bl_sharedHLSKeyRequestOperationQueue(MEMORY[0x277CCABD8], v5, v6, v7);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_241D17228;
   v11[3] = &unk_278D158A0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   objc_msgSend_performRequestOnOperationQueue_withCompletionHandler_(self, v10, v8, v11);
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v3.receiver = self;
   v3.super_class = BLOfflineKeyRequest;
-  [(ICRequestOperation *)&v3 finishWithError:a3];
+  [(ICRequestOperation *)&v3 finishWithError:error];
 }
 
 - (void)execute

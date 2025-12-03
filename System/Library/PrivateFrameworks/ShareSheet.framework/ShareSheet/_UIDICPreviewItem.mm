@@ -2,7 +2,7 @@
 - (NSString)previewItemContentType;
 - (NSURL)previewItemURLForDisplay;
 - (void)dealloc;
-- (void)setPreviewItemContentType:(id)a3;
+- (void)setPreviewItemContentType:(id)type;
 @end
 
 @implementation _UIDICPreviewItem
@@ -19,8 +19,8 @@
 
     if ((v5 & 1) == 0 && v6)
     {
-      v7 = [v6 localizedDescription];
-      NSLog(&cfstr_UnableToRemove.isa, v7);
+      localizedDescription = [v6 localizedDescription];
+      NSLog(&cfstr_UnableToRemove.isa, localizedDescription);
     }
   }
 
@@ -29,11 +29,11 @@
   [(_UIDICPreviewItem *)&v8 dealloc];
 }
 
-- (void)setPreviewItemContentType:(id)a3
+- (void)setPreviewItemContentType:(id)type
 {
-  if (self->_previewItemContentType != a3)
+  if (self->_previewItemContentType != type)
   {
-    v5 = [a3 copy];
+    v5 = [type copy];
     previewItemContentType = self->_previewItemContentType;
     self->_previewItemContentType = v5;
   }
@@ -50,8 +50,8 @@
 
   else
   {
-    v6 = [(_UIDICPreviewItem *)self previewItemURL];
-    v5 = _UIQLPreviewUTIForURLAndMimeType(v6, 0);
+    previewItemURL = [(_UIDICPreviewItem *)self previewItemURL];
+    v5 = _UIQLPreviewUTIForURLAndMimeType(previewItemURL, 0);
   }
 
   return v5;
@@ -59,19 +59,19 @@
 
 - (NSURL)previewItemURLForDisplay
 {
-  v3 = [(_UIDICPreviewItem *)self previewItemURLOverride];
-  v4 = v3;
-  if (v3)
+  previewItemURLOverride = [(_UIDICPreviewItem *)self previewItemURLOverride];
+  v4 = previewItemURLOverride;
+  if (previewItemURLOverride)
   {
-    v5 = v3;
+    previewItemURL = previewItemURLOverride;
   }
 
   else
   {
-    v5 = [(_UIDICPreviewItem *)self previewItemURL];
+    previewItemURL = [(_UIDICPreviewItem *)self previewItemURL];
   }
 
-  v6 = v5;
+  v6 = previewItemURL;
 
   return v6;
 }

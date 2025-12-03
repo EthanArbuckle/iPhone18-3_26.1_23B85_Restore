@@ -1,39 +1,39 @@
 @interface NSSet
-- (BOOL)containsElementsNotIn:(id)a3;
+- (BOOL)containsElementsNotIn:(id)in;
 - (id)shortDescription;
-- (id)sortedElementsTruncated:(unint64_t)a3 JoinedByString:(id)a4;
+- (id)sortedElementsTruncated:(unint64_t)truncated JoinedByString:(id)string;
 @end
 
 @implementation NSSet
 
 - (id)shortDescription
 {
-  v2 = [(NSSet *)self allObjects];
-  v3 = [v2 sortedArrayUsingSelector:"compare:"];
+  allObjects = [(NSSet *)self allObjects];
+  v3 = [allObjects sortedArrayUsingSelector:"compare:"];
   v4 = [v3 concatenateWithSeparator:{@", "}];
   v5 = [NSString stringWithFormat:@"{[%@]}", v4];
 
   return v5;
 }
 
-- (id)sortedElementsTruncated:(unint64_t)a3 JoinedByString:(id)a4
+- (id)sortedElementsTruncated:(unint64_t)truncated JoinedByString:(id)string
 {
-  v6 = a4;
+  stringCopy = string;
   +[NSMutableArray array];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_10000CD20;
   v14 = v13 = &unk_100018FA0;
-  v15 = a3;
+  truncatedCopy = truncated;
   v7 = v14;
   [(NSSet *)self enumerateObjectsUsingBlock:&v10];
   [v7 sortUsingSelector:{"compare:", v10, v11, v12, v13}];
-  v8 = [v7 componentsJoinedByString:v6];
+  v8 = [v7 componentsJoinedByString:stringCopy];
 
   return v8;
 }
 
-- (BOOL)containsElementsNotIn:(id)a3
+- (BOOL)containsElementsNotIn:(id)in
 {
   v9 = 0;
   v10 = &v9;
@@ -43,8 +43,8 @@
   v6[1] = 3221225472;
   v6[2] = sub_10000CEDC;
   v6[3] = &unk_100018F78;
-  v4 = a3;
-  v7 = v4;
+  inCopy = in;
+  v7 = inCopy;
   v8 = &v9;
   [(NSSet *)self enumerateObjectsUsingBlock:v6];
   LOBYTE(self) = *(v10 + 24);

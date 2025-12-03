@@ -13,7 +13,7 @@
     *buf = 136315394;
     v9 = "[WebBookmarkProductionSafariCloudKitSyncTabCollection dealloc]";
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_272C20000, v3, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", buf, 0x16u);
   }
 

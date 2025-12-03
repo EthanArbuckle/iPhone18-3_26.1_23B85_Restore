@@ -3,71 +3,71 @@
 - (BOOL)_isFirstLaunchAfterBoot;
 - (BOOL)_isFirstLaunchAfterBootMacOS;
 - (BOOL)_isFirstLaunchAfterBootiOS;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (INDaemon)init;
 - (id)_currentBootSessionUUID;
-- (id)accountPushNotificationHandlerForEventType:(id)a3;
-- (id)familyPushNotificationHandlerForEventType:(id)a3;
-- (id)quotaPushNotificationHandlerForEventType:(id)a3;
-- (void)_cleanUpIfNoAccountsAreLeftOtherThanAccount:(id)a3;
+- (id)accountPushNotificationHandlerForEventType:(id)type;
+- (id)familyPushNotificationHandlerForEventType:(id)type;
+- (id)quotaPushNotificationHandlerForEventType:(id)type;
+- (void)_cleanUpIfNoAccountsAreLeftOtherThanAccount:(id)account;
 - (void)_enablePushTopics;
-- (void)_ensureDesiredAPSEnvironmentIsInUseWithCompletion:(id)a3;
+- (void)_ensureDesiredAPSEnvironmentIsInUseWithCompletion:(id)completion;
 - (void)_handleGMSAvailabilityChange;
 - (void)_handleOSEligibilityChange;
-- (void)_initiateAPSConnectionWithCompletion:(id)a3;
+- (void)_initiateAPSConnectionWithCompletion:(id)completion;
 - (void)_performHeartbeatRegistration;
 - (void)_performLoggedOutHeartbeatRegistrationIfNeeded;
-- (void)_planForRegistrationTTL:(unint64_t)a3 account:(id)a4;
-- (void)_registrationDigestCacheDidBecomeAvailable:(id)a3;
+- (void)_planForRegistrationTTL:(unint64_t)l account:(id)account;
+- (void)_registrationDigestCacheDidBecomeAvailable:(id)available;
 - (void)_setFirstLaunchAfterBootiOS;
 - (void)_stopHeartbeat;
-- (void)_unregisterAccount:(id)a3 fromiCloudNotificationsWithReason:(unint64_t)a4 completion:(id)a5;
+- (void)_unregisterAccount:(id)account fromiCloudNotificationsWithReason:(unint64_t)reason completion:(id)completion;
 - (void)_unsafe_ensureFreshmintActivityValidity;
-- (void)_unsafe_icqUpdateOfferForButtonId:(id)a3;
-- (void)_unsafe_performFreshmintRefreshWithReason:(id)a3;
+- (void)_unsafe_icqUpdateOfferForButtonId:(id)id;
+- (void)_unsafe_performFreshmintRefreshWithReason:(id)reason;
 - (void)_validateEnabledTopics;
 - (void)_validateRegistrationStateIfFirstLaunch;
-- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)a3;
-- (void)calculateExtraQuotaNeededToSyncForAccountWithID:(id)a3 isAccountFull:(BOOL)a4 completion:(id)a5;
-- (void)clearAllRegistrationDigestsWithCompletion:(id)a3;
-- (void)commonHeadersForRequest:(id)a3 withCompletion:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)identifier;
+- (void)calculateExtraQuotaNeededToSyncForAccountWithID:(id)d isAccountFull:(BOOL)full completion:(id)completion;
+- (void)clearAllRegistrationDigestsWithCompletion:(id)completion;
+- (void)commonHeadersForRequest:(id)request withCompletion:(id)completion;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)diagnosticReportWithCompletion:(id)a3;
-- (void)displayDelayedOfferWithContext:(id)a3 completion:(id)a4;
-- (void)fetchAppsSyncingToiCloudDriveForAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchBackupInfoForAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchCompletedAndDismissedRecommendationsForAltDSID:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)fetchRecommendationsForAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchRecommendationsRulesetForAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchStorageAppsForAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchStorageByApp:(id)a3 forAltDSID:(id)a4 completion:(id)a5;
-- (void)fetchStorageSummaryForAltDSID:(id)a3 completion:(id)a4;
-- (void)handleICloudQuotaPush:(id)a3;
-- (void)handlePushRegistrationWithAccount:(id)a3 reason:(unint64_t)a4;
-- (void)handlePushUnregistrationWithAccount:(id)a3 completion:(id)a4;
-- (void)iCloudServerOfferForAccountWithID:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)notifyDeviceStorageLevel:(int64_t)a3 completion:(id)a4;
-- (void)observeFPItem:(id)a3 notifyURL:(id)a4 completion:(id)a5;
-- (void)presentHiddenFreshmintWithContext:(id)a3 completion:(id)a4;
-- (void)registerAccountWithID:(id)a3 foriCloudNotificationsWithReason:(unint64_t)a4 completion:(id)a5;
-- (void)registerDeviceForLoggedOutiCloudNotificationsWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)registerForPushNotificationsWithAccount:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)remoteFreshmintFlowCompletedWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)renewCredentialsWithCompletion:(id)a3;
-- (void)sendStatusForRecommendationsWithAltDSID:(id)a3 configuration:(id)a4 params:(id)a5 completion:(id)a6;
-- (void)sendStatusForRecommendationsWithAltDSID:(id)a3 configuration:(id)a4 status:(id)a5 recommendationIdentifiers:(id)a6 storageRecovered:(id)a7 completion:(id)a8;
-- (void)sendTipDismissedNetworkRequestForAltDSID:(id)a3 tip:(id)a4 completion:(id)a5;
-- (void)sendTipDisplayedNetworkRequestForAltDSID:(id)a3 tip:(id)a4 completion:(id)a5;
+- (void)diagnosticReportWithCompletion:(id)completion;
+- (void)displayDelayedOfferWithContext:(id)context completion:(id)completion;
+- (void)fetchAppsSyncingToiCloudDriveForAltDSID:(id)d completion:(id)completion;
+- (void)fetchBackupInfoForAltDSID:(id)d completion:(id)completion;
+- (void)fetchCompletedAndDismissedRecommendationsForAltDSID:(id)d configuration:(id)configuration completion:(id)completion;
+- (void)fetchRecommendationsForAltDSID:(id)d completion:(id)completion;
+- (void)fetchRecommendationsRulesetForAltDSID:(id)d completion:(id)completion;
+- (void)fetchStorageAppsForAltDSID:(id)d completion:(id)completion;
+- (void)fetchStorageByApp:(id)app forAltDSID:(id)d completion:(id)completion;
+- (void)fetchStorageSummaryForAltDSID:(id)d completion:(id)completion;
+- (void)handleICloudQuotaPush:(id)push;
+- (void)handlePushRegistrationWithAccount:(id)account reason:(unint64_t)reason;
+- (void)handlePushUnregistrationWithAccount:(id)account completion:(id)completion;
+- (void)iCloudServerOfferForAccountWithID:(id)d options:(id)options completion:(id)completion;
+- (void)notifyDeviceStorageLevel:(int64_t)level completion:(id)completion;
+- (void)observeFPItem:(id)item notifyURL:(id)l completion:(id)completion;
+- (void)presentHiddenFreshmintWithContext:(id)context completion:(id)completion;
+- (void)registerAccountWithID:(id)d foriCloudNotificationsWithReason:(unint64_t)reason completion:(id)completion;
+- (void)registerDeviceForLoggedOutiCloudNotificationsWithReason:(unint64_t)reason completion:(id)completion;
+- (void)registerForPushNotificationsWithAccount:(id)account reason:(unint64_t)reason completion:(id)completion;
+- (void)remoteFreshmintFlowCompletedWithSuccess:(BOOL)success error:(id)error;
+- (void)renewCredentialsWithCompletion:(id)completion;
+- (void)sendStatusForRecommendationsWithAltDSID:(id)d configuration:(id)configuration params:(id)params completion:(id)completion;
+- (void)sendStatusForRecommendationsWithAltDSID:(id)d configuration:(id)configuration status:(id)status recommendationIdentifiers:(id)identifiers storageRecovered:(id)recovered completion:(id)completion;
+- (void)sendTipDismissedNetworkRequestForAltDSID:(id)d tip:(id)tip completion:(id)completion;
+- (void)sendTipDisplayedNetworkRequestForAltDSID:(id)d tip:(id)tip completion:(id)completion;
 - (void)start;
-- (void)startDelayedOfferFailsafeActivityWithDelaySecs:(int64_t)a3 completion:(id)a4;
-- (void)stopDelayedOfferFailsafeActivityWithCompletion:(id)a3;
-- (void)syncFPItem:(id)a3 observeItemIDs:(id)a4 notifyURL:(id)a5 completion:(id)a6;
-- (void)teardownOffersForAccount:(id)a3 withCompletion:(id)a4;
-- (void)unregisterAccountWithID:(id)a3 fromiCloudNotificationsWithCompletion:(id)a4;
-- (void)unregisterDeviceFromLoggedOutiCloudNotificationsWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)updateOfferForAccountWithID:(id)a3 offerId:(id)a4 buttonId:(id)a5 info:(id)a6 completion:(id)a7;
+- (void)startDelayedOfferFailsafeActivityWithDelaySecs:(int64_t)secs completion:(id)completion;
+- (void)stopDelayedOfferFailsafeActivityWithCompletion:(id)completion;
+- (void)syncFPItem:(id)item observeItemIDs:(id)ds notifyURL:(id)l completion:(id)completion;
+- (void)teardownOffersForAccount:(id)account withCompletion:(id)completion;
+- (void)unregisterAccountWithID:(id)d fromiCloudNotificationsWithCompletion:(id)completion;
+- (void)unregisterDeviceFromLoggedOutiCloudNotificationsWithReason:(unint64_t)reason completion:(id)completion;
+- (void)updateOfferForAccountWithID:(id)d offerId:(id)id buttonId:(id)buttonId info:(id)info completion:(id)completion;
 @end
 
 @implementation INDaemon
@@ -75,12 +75,12 @@
 - (void)_unsafe_ensureFreshmintActivityValidity
 {
   v3 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  v5 = [v3 soonestOfferOrStubExpirationDate];
+  soonestOfferOrStubExpirationDate = [v3 soonestOfferOrStubExpirationDate];
 
   freshmintActivity = self->_freshmintActivity;
-  if (v5)
+  if (soonestOfferOrStubExpirationDate)
   {
-    [(INActivity *)freshmintActivity ensureNextActivityWillOccurBeforeDate:v5];
+    [(INActivity *)freshmintActivity ensureNextActivityWillOccurBeforeDate:soonestOfferOrStubExpirationDate];
   }
 
   else
@@ -208,8 +208,8 @@
     v10[3] = &unk_100055318;
     v10[4] = self;
     [(INDaemon *)self _initiateAPSConnectionWithCompletion:v10];
-    v9 = [(INDaemon *)self freshmintActivity];
-    [v9 checkIn];
+    freshmintActivity = [(INDaemon *)self freshmintActivity];
+    [freshmintActivity checkIn];
   }
 }
 
@@ -244,31 +244,31 @@
   [(INDaemon *)&v7 dealloc];
 }
 
-- (void)registerForPushNotificationsWithAccount:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)registerForPushNotificationsWithAccount:(id)account reason:(unint64_t)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  accountCopy = account;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000F958;
   v12[3] = &unk_100055868;
   objc_copyWeak(v16, &location);
-  v10 = v9;
+  v10 = completionCopy;
   v15 = v10;
-  v11 = v8;
-  v16[1] = a4;
+  v11 = accountCopy;
+  v16[1] = reason;
   v13 = v11;
-  v14 = self;
+  selfCopy = self;
   [(INDaemon *)self _ensureDesiredAPSEnvironmentIsInUseWithCompletion:v12];
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
 }
 
-- (void)_planForRegistrationTTL:(unint64_t)a3 account:(id)a4
+- (void)_planForRegistrationTTL:(unint64_t)l account:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   v7 = _INLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -279,7 +279,7 @@
   if ([(INRegistrationTTLOverride *)v8 hasOverride])
   {
     [(INRegistrationTTLOverride *)v8 overrideTimeInterval];
-    a3 = v9;
+    l = v9;
     v10 = _INLogSystem();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -287,7 +287,7 @@
     }
 
     *buf = 134217984;
-    v27 = a3;
+    lCopy2 = l;
     v11 = "Device has registration TTL override, setting TTL to %lu";
   }
 
@@ -300,36 +300,36 @@
     }
 
     *buf = 134217984;
-    v27 = a3;
+    lCopy2 = l;
     v11 = "Device has no registration TTL override, setting TTL to %lu";
   }
 
   _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v11, buf, 0xCu);
 LABEL_9:
 
-  if (a3)
+  if (l)
   {
-    v12 = [NSDate dateWithTimeIntervalSinceNow:a3];
+    v12 = [NSDate dateWithTimeIntervalSinceNow:l];
     v13 = _INLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_alloc_init(NSISO8601DateFormatter);
       v15 = [v14 stringFromDate:v12];
       *buf = 138412290;
-      v27 = v15;
+      lCopy2 = v15;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Next registration expiration date is %@", buf, 0xCu);
     }
 
-    if (v6)
+    if (accountCopy)
     {
-      [v6 in_setRegistrationExpirationDate:v12];
+      [accountCopy in_setRegistrationExpirationDate:v12];
       v16 = dispatch_semaphore_create(0);
       accountStore = self->_accountStore;
       v20 = _NSConcreteStackBlock;
       v21 = 3221225472;
       v22 = sub_100010604;
       v23 = &unk_100055890;
-      v24 = v6;
+      v24 = accountCopy;
       v25 = v16;
       v18 = v16;
       [(ACAccountStore *)accountStore saveAccount:v24 withDataclassActions:0 doVerify:0 completion:&v20];
@@ -346,30 +346,30 @@ LABEL_9:
   }
 }
 
-- (void)_unregisterAccount:(id)a3 fromiCloudNotificationsWithReason:(unint64_t)a4 completion:(id)a5
+- (void)_unregisterAccount:(id)account fromiCloudNotificationsWithReason:(unint64_t)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  accountCopy = account;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000107B8;
   v12[3] = &unk_100055908;
   objc_copyWeak(v15, &location);
-  v10 = v9;
+  v10 = completionCopy;
   v14 = v10;
-  v11 = v8;
+  v11 = accountCopy;
   v13 = v11;
-  v15[1] = a4;
+  v15[1] = reason;
   [(INDaemon *)self _ensureDesiredAPSEnvironmentIsInUseWithCompletion:v12];
 
   objc_destroyWeak(v15);
   objc_destroyWeak(&location);
 }
 
-- (void)_cleanUpIfNoAccountsAreLeftOtherThanAccount:(id)a3
+- (void)_cleanUpIfNoAccountsAreLeftOtherThanAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -396,10 +396,10 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * v10) identifier];
-        v12 = [v4 identifier];
+        identifier = [*(*(&v21 + 1) + 8 * v10) identifier];
+        identifier2 = [accountCopy identifier];
 
-        if (v11 != v12)
+        if (identifier != identifier2)
         {
 
           v14 = _INLogSystem();
@@ -436,10 +436,10 @@ LABEL_9:
   [(INDaemon *)self _disablePushTopics];
   [(INActivity *)self->_hearbeatActivity stop];
 LABEL_17:
-  v15 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
-  v16 = [v15 aa_altDSID];
-  v17 = [v4 aa_altDSID];
-  if ([v16 isEqualToString:v17])
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+  aa_altDSID2 = [accountCopy aa_altDSID];
+  if ([aa_altDSID isEqualToString:aa_altDSID2])
   {
 
 LABEL_20:
@@ -452,9 +452,9 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v18 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  aa_primaryAppleAccount2 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
 
-  if (!v18)
+  if (!aa_primaryAppleAccount2)
   {
     goto LABEL_20;
   }
@@ -462,10 +462,10 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)handlePushUnregistrationWithAccount:(id)a3 completion:(id)a4
+- (void)handlePushUnregistrationWithAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v8 = _INLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -481,9 +481,9 @@ LABEL_21:
   if (byte_100063658 == 1)
   {
     v9 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-    [v9 teardownOffersForAccount:v6 completion:v7];
+    [v9 teardownOffersForAccount:accountCopy completion:completionCopy];
 
-    if (!v6)
+    if (!accountCopy)
     {
       goto LABEL_9;
     }
@@ -491,8 +491,8 @@ LABEL_21:
 
   else
   {
-    v7[2](v7);
-    if (!v6)
+    completionCopy[2](completionCopy);
+    if (!accountCopy)
     {
 LABEL_9:
       [(INDaemon *)self _stopHeartbeat];
@@ -501,7 +501,7 @@ LABEL_9:
   }
 }
 
-- (void)handlePushRegistrationWithAccount:(id)a3 reason:(unint64_t)a4
+- (void)handlePushRegistrationWithAccount:(id)account reason:(unint64_t)reason
 {
   v6 = _INLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -517,12 +517,12 @@ LABEL_9:
 
   if (byte_100063658 == 1)
   {
-    v7 = [INHelperFunctions fetchOfferReasonWithRegistrationReason:a4];
+    v7 = [INHelperFunctions fetchOfferReasonWithRegistrationReason:reason];
     [(INDaemon *)self _unsafe_performFreshmintRefreshWithReason:v7];
   }
 }
 
-- (void)_registrationDigestCacheDidBecomeAvailable:(id)a3
+- (void)_registrationDigestCacheDidBecomeAvailable:(id)available
 {
   v4 = _INLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -544,8 +544,8 @@ LABEL_9:
 
   if ([(INDaemon *)self _isFirstLaunchAfterBoot])
   {
-    v14 = [(ACAccountStore *)self->_accountStore aa_appleAccounts];
-    if (![v14 count])
+    aa_appleAccounts = [(ACAccountStore *)self->_accountStore aa_appleAccounts];
+    if (![aa_appleAccounts count])
     {
       if (+[_TtC3ind18LoggedOutPushCache wasDeviceRegistered])
       {
@@ -569,7 +569,7 @@ LABEL_9:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      obj = v14;
+      obj = aa_appleAccounts;
       v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v6)
       {
@@ -585,22 +585,22 @@ LABEL_9:
             }
 
             v9 = *(*(&v19 + 1) + 8 * v8);
-            v10 = self;
-            objc_sync_enter(v10);
-            v11 = [v9 aa_altDSID];
-            if (v11)
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
+            aa_altDSID = [v9 aa_altDSID];
+            if (aa_altDSID)
             {
-              v12 = [(INDaemon *)v10 accountsToReconsiderAfterReboot];
-              [v12 addObject:v11];
+              accountsToReconsiderAfterReboot = [(INDaemon *)selfCopy accountsToReconsiderAfterReboot];
+              [accountsToReconsiderAfterReboot addObject:aa_altDSID];
             }
 
-            objc_sync_exit(v10);
+            objc_sync_exit(selfCopy);
             v18[0] = _NSConcreteStackBlock;
             v18[1] = 3221225472;
             v18[2] = sub_100011584;
             v18[3] = &unk_100055998;
             v18[4] = v9;
-            [(INDaemon *)v10 registerForPushNotificationsWithAccount:v9 reason:5 completion:v18];
+            [(INDaemon *)selfCopy registerForPushNotificationsWithAccount:v9 reason:5 completion:v18];
             v8 = v8 + 1;
           }
 
@@ -624,7 +624,7 @@ LABEL_9:
       }
     }
 
-    v4 = v14;
+    v4 = aa_appleAccounts;
   }
 
   else
@@ -641,12 +641,12 @@ LABEL_9:
 
 - (BOOL)_isFirstLaunchAfterBoot
 {
-  v2 = [(INDaemon *)self _isFirstLaunchAfterBootiOS];
+  _isFirstLaunchAfterBootiOS = [(INDaemon *)self _isFirstLaunchAfterBootiOS];
   v3 = _INLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
-    if (v2)
+    if (_isFirstLaunchAfterBootiOS)
     {
       v4 = @"YES";
     }
@@ -658,14 +658,14 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s: %@", &v6, 0x16u);
   }
 
-  return v2;
+  return _isFirstLaunchAfterBootiOS;
 }
 
 - (BOOL)_isFirstLaunchAfterBootiOS
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_hasCheckedForFirstLaunch)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hasCheckedForFirstLaunch)
   {
     v3 = 0;
   }
@@ -701,7 +701,7 @@ LABEL_9:
       }
 
       sem_close(v5);
-      v2->_hasCheckedForFirstLaunch = 1;
+      selfCopy->_hasCheckedForFirstLaunch = 1;
     }
 
     v8 = _INLogSystem();
@@ -712,15 +712,15 @@ LABEL_9:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)_setFirstLaunchAfterBootiOS
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sem_open(off_1000630C8, 512, 256, 0);
   if (v3 == -1)
   {
@@ -750,7 +750,7 @@ LABEL_9:
     sem_close(v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)_isFirstLaunchAfterBootMacOS
@@ -758,28 +758,28 @@ LABEL_9:
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 stringForKey:@"com.apple.iCloudNotification.sessionUUID"];
 
-  v5 = [(INDaemon *)self _currentBootSessionUUID];
+  _currentBootSessionUUID = [(INDaemon *)self _currentBootSessionUUID];
   v6 = _INLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
     v12 = v4;
     v13 = 2112;
-    v14 = v5;
+    v14 = _currentBootSessionUUID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Saved session UUID: %@, current session UUID: %@", &v11, 0x16u);
   }
 
-  v7 = [v4 isEqualToString:v5];
+  v7 = [v4 isEqualToString:_currentBootSessionUUID];
   if ((v7 & 1) == 0)
   {
     v8 = +[NSUserDefaults standardUserDefaults];
-    [v8 setObject:v5 forKey:@"com.apple.iCloudNotification.sessionUUID"];
+    [v8 setObject:_currentBootSessionUUID forKey:@"com.apple.iCloudNotification.sessionUUID"];
 
     v9 = _INLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = _currentBootSessionUUID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Updated saved session UUID to: %@", &v11, 0xCu);
     }
   }
@@ -823,9 +823,9 @@ LABEL_9:
   +[CSFFeatureManager revalidateCFU];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = _INLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -833,18 +833,18 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "New connection request received.", buf, 2u);
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.private.ind.client"];
-  v8 = [v7 BOOLValue];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.private.ind.client"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v9 = +[INDaemonInterface XPCInterface];
-    [v5 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v5 setInterruptionHandler:&stru_1000559B8];
-    [v5 setInvalidationHandler:&stru_1000559B8];
-    [v5 resume];
+    [connectionCopy setInterruptionHandler:&stru_1000559B8];
+    [connectionCopy setInvalidationHandler:&stru_1000559B8];
+    [connectionCopy resume];
   }
 
   else
@@ -857,7 +857,7 @@ LABEL_9:
     }
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (void)_performHeartbeatRegistration
@@ -870,18 +870,18 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s Thump thump!", buf, 0xCu);
   }
 
-  v4 = [(ACAccountStore *)self->_accountStore aa_appleAccounts];
+  aa_appleAccounts = [(ACAccountStore *)self->_accountStore aa_appleAccounts];
   v39 = objc_alloc_init(NSMutableArray);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v5 = v4;
+  v5 = aa_appleAccounts;
   v6 = [v5 countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v6)
   {
     v7 = v6;
-    v38 = self;
+    selfCopy = self;
     v8 = 0;
     v9 = *v50;
     do
@@ -894,25 +894,25 @@ LABEL_9:
         }
 
         v11 = *(*(&v49 + 1) + 8 * i);
-        v12 = [v11 in_registrationExpirationDate];
-        if (v12)
+        in_registrationExpirationDate = [v11 in_registrationExpirationDate];
+        if (in_registrationExpirationDate)
         {
           v13 = +[NSDate date];
-          v14 = [v12 compare:v13];
+          v14 = [in_registrationExpirationDate compare:v13];
 
           if (v14 == 1)
           {
-            if (!v8 || [v8 compare:v12] == 1)
+            if (!v8 || [v8 compare:in_registrationExpirationDate] == 1)
             {
               v15 = _INLogSystem();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v56 = v12;
+                v56 = in_registrationExpirationDate;
                 _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Updating soonest expiration date to %{public}@", buf, 0xCu);
               }
 
-              v16 = v12;
+              v16 = in_registrationExpirationDate;
               v8 = v16;
             }
           }
@@ -951,13 +951,13 @@ LABEL_9:
     v19 = v8;
     if (v8)
     {
-      self = v38;
-      [(INActivity *)v38->_hearbeatActivity ensureNextActivityWillOccurBeforeDate:v19];
+      self = selfCopy;
+      [(INActivity *)selfCopy->_hearbeatActivity ensureNextActivityWillOccurBeforeDate:v19];
     }
 
     else
     {
-      self = v38;
+      self = selfCopy;
     }
   }
 
@@ -1036,9 +1036,9 @@ LABEL_9:
     }
   }
 
-  v36 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
 
-  if (!v36)
+  if (!aa_primaryAppleAccount)
   {
     [(INDaemon *)self _performLoggedOutHeartbeatRegistrationIfNeeded];
   }
@@ -1103,49 +1103,49 @@ LABEL_9:
   }
 }
 
-- (void)registerAccountWithID:(id)a3 foriCloudNotificationsWithReason:(unint64_t)a4 completion:(id)a5
+- (void)registerAccountWithID:(id)d foriCloudNotificationsWithReason:(unint64_t)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10 = _INLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v8;
+    v18 = dCopy;
     v19 = 2080;
     v20 = "[INDaemon registerAccountWithID:foriCloudNotificationsWithReason:completion:]";
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Received registration request for account %@ over XPC. %s", &v17, 0x16u);
   }
 
-  if (v8 && ([(ACAccountStore *)self->_accountStore accountWithIdentifier:v8], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (dCopy && ([(ACAccountStore *)self->_accountStore accountWithIdentifier:dCopy], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = v11;
-    v13 = [v11 accountType];
-    v14 = [v13 identifier];
-    v15 = [v14 isEqualToString:ACAccountTypeIdentifierAppleAccount];
+    accountType = [v11 accountType];
+    identifier = [accountType identifier];
+    v15 = [identifier isEqualToString:ACAccountTypeIdentifierAppleAccount];
 
     if (v15)
     {
-      [(INDaemon *)self registerForPushNotificationsWithAccount:v12 reason:a4 completion:v9];
+      [(INDaemon *)self registerForPushNotificationsWithAccount:v12 reason:reason completion:completionCopy];
     }
 
     else
     {
       v16 = INCreateError();
-      v9[2](v9, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
   }
 
   else
   {
     v12 = INCreateError();
-    v9[2](v9, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)registerDeviceForLoggedOutiCloudNotificationsWithReason:(unint64_t)a3 completion:(id)a4
+- (void)registerDeviceForLoggedOutiCloudNotificationsWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _INLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1154,29 +1154,29 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received logged-out push registration request over XPC. %s", &v8, 0xCu);
   }
 
-  [(INDaemon *)self registerForPushNotificationsWithAccount:0 reason:a3 completion:v6];
+  [(INDaemon *)self registerForPushNotificationsWithAccount:0 reason:reason completion:completionCopy];
 }
 
-- (void)unregisterAccountWithID:(id)a3 fromiCloudNotificationsWithCompletion:(id)a4
+- (void)unregisterAccountWithID:(id)d fromiCloudNotificationsWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _INLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v6;
+    v21 = dCopy;
     v22 = 2080;
     v23 = "[INDaemon unregisterAccountWithID:fromiCloudNotificationsWithCompletion:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received unregistration request for account %@ over XPC. %s", buf, 0x16u);
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     goto LABEL_9;
   }
 
-  v9 = [(ACAccountStore *)self->_accountStore accountWithIdentifier:v6];
+  v9 = [(ACAccountStore *)self->_accountStore accountWithIdentifier:dCopy];
   v10 = _INLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1185,9 +1185,9 @@ LABEL_9:
 
   if (v9)
   {
-    v11 = [v9 accountType];
-    v12 = [v11 identifier];
-    v13 = [v12 isEqualToString:ACAccountTypeIdentifierAppleAccount];
+    accountType = [v9 accountType];
+    identifier = [accountType identifier];
+    v13 = [identifier isEqualToString:ACAccountTypeIdentifierAppleAccount];
 
     if (v13)
     {
@@ -1197,7 +1197,7 @@ LABEL_9:
       v17[3] = &unk_1000558B8;
       v17[4] = self;
       v18 = v9;
-      v19 = v7;
+      v19 = completionCopy;
       v9 = v9;
       [(INDaemon *)self _unregisterAccount:v9 fromiCloudNotificationsWithCompletion:v17];
     }
@@ -1211,7 +1211,7 @@ LABEL_9:
       }
 
       v16 = INCreateError();
-      (*(v7 + 2))(v7, 0, v16);
+      (*(completionCopy + 2))(completionCopy, 0, v16);
     }
   }
 
@@ -1225,13 +1225,13 @@ LABEL_9:
     }
 
     v9 = INCreateError();
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 
-- (void)unregisterDeviceFromLoggedOutiCloudNotificationsWithReason:(unint64_t)a3 completion:(id)a4
+- (void)unregisterDeviceFromLoggedOutiCloudNotificationsWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _INLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1245,51 +1245,51 @@ LABEL_9:
   v9[2] = sub_1000130C8;
   v9[3] = &unk_100055A08;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(INDaemon *)self _unregisterAccount:0 fromiCloudNotificationsWithReason:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(INDaemon *)self _unregisterAccount:0 fromiCloudNotificationsWithReason:reason completion:v9];
 }
 
-- (void)teardownOffersForAccount:(id)a3 withCompletion:(id)a4
+- (void)teardownOffersForAccount:(id)account withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v7 = _INLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = accountCopy;
     v11 = 2080;
     v12 = "[INDaemon teardownOffersForAccount:withCompletion:]";
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received teardown offers request for account %@ over XPC. %s", &v9, 0x16u);
   }
 
   v8 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  [v8 teardownOffersForAccount:v5 completion:v6];
+  [v8 teardownOffersForAccount:accountCopy completion:completionCopy];
 }
 
-- (void)clearAllRegistrationDigestsWithCompletion:(id)a3
+- (void)clearAllRegistrationDigestsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1000379CC();
   }
 
-  v6 = [(ACAccountStore *)self->_accountStore aa_appleAccounts];
+  aa_appleAccounts = [(ACAccountStore *)self->_accountStore aa_appleAccounts];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v7 = [aa_appleAccounts countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (!v7)
   {
     goto LABEL_14;
   }
 
   v8 = v7;
-  v16 = v4;
+  v16 = completionCopy;
   v9 = 0;
   v10 = *v19;
   do
@@ -1300,7 +1300,7 @@ LABEL_9:
     {
       if (*v19 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(aa_appleAccounts);
       }
 
       v13 = *(*(&v18 + 1) + 8 * v11);
@@ -1322,11 +1322,11 @@ LABEL_9:
     }
 
     while (v8 != v11);
-    v8 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    v8 = [aa_appleAccounts countByEnumeratingWithState:&v18 objects:v24 count:16];
   }
 
   while (v8);
-  v4 = v16;
+  completionCopy = v16;
   if (v9)
   {
     (v16)[2](v16, 0, v9);
@@ -1335,22 +1335,22 @@ LABEL_9:
   else
   {
 LABEL_14:
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)diagnosticReportWithCompletion:(id)a3
+- (void)diagnosticReportWithCompletion:(id)completion
 {
-  v11 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(INDiagnosticReport);
   [v4 setDisabled:0];
   [v4 setPushEnvironment:self->_activeAPSEnvironment];
-  v5 = [(APSConnection *)self->_apsConnection publicToken];
-  v6 = [v5 description];
+  publicToken = [(APSConnection *)self->_apsConnection publicToken];
+  v6 = [publicToken description];
   [v4 setPushToken:v6];
 
-  v7 = [(APSConnection *)self->_apsConnection enabledTopics];
-  [v4 setPushTopics:v7];
+  enabledTopics = [(APSConnection *)self->_apsConnection enabledTopics];
+  [v4 setPushTopics:enabledTopics];
 
   v8 = +[INManagedDefaults sharedInstance];
   v9 = [v8 valueForManagedDefault:INNextHeartbeatDateKey];
@@ -1362,12 +1362,12 @@ LABEL_14:
     [v4 setNextHeartbeatDate:v10];
   }
 
-  v11[2](v11, v4, 0);
+  completionCopy[2](completionCopy, v4, 0);
 }
 
-- (void)iCloudServerOfferForAccountWithID:(id)a3 options:(id)a4 completion:(id)a5
+- (void)iCloudServerOfferForAccountWithID:(id)d options:(id)options completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = _INLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1376,51 +1376,51 @@ LABEL_14:
   }
 
   v7 = INCreateError();
-  v5[2](v5, 0, v7);
+  completionCopy[2](completionCopy, 0, v7);
 }
 
-- (void)updateOfferForAccountWithID:(id)a3 offerId:(id)a4 buttonId:(id)a5 info:(id)a6 completion:(id)a7
+- (void)updateOfferForAccountWithID:(id)d offerId:(id)id buttonId:(id)buttonId info:(id)info completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  idCopy = id;
+  buttonIdCopy = buttonId;
+  infoCopy = info;
+  completionCopy = completion;
   v17 = _INLogSystem();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     sub_100037A00();
   }
 
-  if (v12 && (-[INDaemon accountStore](self, "accountStore"), v18 = objc_claimAutoreleasedReturnValue(), [v18 accountWithIdentifier:v12], v19 = objc_claimAutoreleasedReturnValue(), v18, v19))
+  if (dCopy && (-[INDaemon accountStore](self, "accountStore"), v18 = objc_claimAutoreleasedReturnValue(), [v18 accountWithIdentifier:dCopy], v19 = objc_claimAutoreleasedReturnValue(), v18, v19))
   {
-    v20 = [v19 accountType];
-    v21 = [v20 identifier];
-    v22 = [v21 isEqualToString:ACAccountTypeIdentifierAppleAccount];
+    accountType = [v19 accountType];
+    identifier = [accountType identifier];
+    v22 = [identifier isEqualToString:ACAccountTypeIdentifierAppleAccount];
 
     if (v22)
     {
       v23 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-      [v23 updateOfferForAccount:v19 offerId:v13 buttonId:v14 info:v15 completion:v16];
+      [v23 updateOfferForAccount:v19 offerId:idCopy buttonId:buttonIdCopy info:infoCopy completion:completionCopy];
     }
 
     else
     {
       v23 = INCreateError();
-      v16[2](v16, 0, v23);
+      completionCopy[2](completionCopy, 0, v23);
     }
   }
 
   else
   {
     v19 = INCreateError();
-    v16[2](v16, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 }
 
-- (void)notifyDeviceStorageLevel:(int64_t)a3 completion:(id)a4
+- (void)notifyDeviceStorageLevel:(int64_t)level completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1429,12 +1429,12 @@ LABEL_14:
   }
 
   v6 = INCreateError();
-  v4[2](v4, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)presentHiddenFreshmintWithContext:(id)a3 completion:(id)a4
+- (void)presentHiddenFreshmintWithContext:(id)context completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1443,10 +1443,10 @@ LABEL_14:
   }
 
   v6 = INCreateError();
-  v4[2](v4, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)remoteFreshmintFlowCompletedWithSuccess:(BOOL)a3 error:(id)a4
+- (void)remoteFreshmintFlowCompletedWithSuccess:(BOOL)success error:(id)error
 {
   v4 = _INLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1456,7 +1456,7 @@ LABEL_14:
   }
 }
 
-- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)a3
+- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)identifier
 {
   v3 = _INLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1466,9 +1466,9 @@ LABEL_14:
   }
 }
 
-- (void)commonHeadersForRequest:(id)a3 withCompletion:(id)a4
+- (void)commonHeadersForRequest:(id)request withCompletion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1476,12 +1476,12 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Subclass must override if they support freshmint.", v6, 2u);
   }
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)renewCredentialsWithCompletion:(id)a3
+- (void)renewCredentialsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _INLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1489,14 +1489,14 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Subclass must override if they support freshmint.", v5, 2u);
   }
 
-  v3[2](v3, 2, 0);
+  completionCopy[2](completionCopy, 2, 0);
 }
 
-- (void)fetchStorageSummaryForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchStorageSummaryForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v8)
   {
     v15 = 0;
@@ -1510,7 +1510,7 @@ LABEL_14:
     v12[1] = 3221225472;
     v12[2] = sub_100013D1C;
     v12[3] = &unk_100055A30;
-    v13 = v7;
+    v13 = completionCopy;
     v14 = &v15;
     [v9 cloudStorageSummary:v12];
 
@@ -1526,15 +1526,15 @@ LABEL_14:
     }
 
     v11 = INCreateError();
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
-- (void)fetchStorageAppsForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchStorageAppsForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v8)
   {
     v15 = 0;
@@ -1548,7 +1548,7 @@ LABEL_14:
     v12[1] = 3221225472;
     v12[2] = sub_100013F94;
     v12[3] = &unk_100055A58;
-    v13 = v7;
+    v13 = completionCopy;
     v14 = &v15;
     [v9 cloudStorageApps:v12];
 
@@ -1564,16 +1564,16 @@ LABEL_14:
     }
 
     v11 = INCreateError();
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
-- (void)fetchStorageByApp:(id)a3 forAltDSID:(id)a4 completion:(id)a5
+- (void)fetchStorageByApp:(id)app forAltDSID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v9];
+  appCopy = app;
+  dCopy = d;
+  completionCopy = completion;
+  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v11)
   {
     v18 = 0;
@@ -1587,9 +1587,9 @@ LABEL_14:
     v15[1] = 3221225472;
     v15[2] = sub_100014220;
     v15[3] = &unk_100055A80;
-    v16 = v10;
+    v16 = completionCopy;
     v17 = &v18;
-    [v12 appCloudStorageForBundleId:v8 completion:v15];
+    [v12 appCloudStorageForBundleId:appCopy completion:v15];
 
     _Block_object_dispose(&v18, 8);
   }
@@ -1603,15 +1603,15 @@ LABEL_14:
     }
 
     v14 = INCreateError();
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
-- (void)fetchBackupInfoForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchBackupInfoForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v8)
   {
     v15 = 0;
@@ -1625,7 +1625,7 @@ LABEL_14:
     v12[1] = 3221225472;
     v12[2] = sub_100014498;
     v12[3] = &unk_100055AA8;
-    v13 = v7;
+    v13 = completionCopy;
     v14 = &v15;
     [v9 fetchBackupInfoWithCompletion:v12];
 
@@ -1641,16 +1641,16 @@ LABEL_14:
     }
 
     v11 = INCreateError();
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
-- (void)sendTipDisplayedNetworkRequestForAltDSID:(id)a3 tip:(id)a4 completion:(id)a5
+- (void)sendTipDisplayedNetworkRequestForAltDSID:(id)d tip:(id)tip completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v8];
+  dCopy = d;
+  tipCopy = tip;
+  completionCopy = completion;
+  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v11)
   {
     v18 = 0;
@@ -1664,9 +1664,9 @@ LABEL_14:
     v15[1] = 3221225472;
     v15[2] = sub_100014720;
     v15[3] = &unk_100055AD0;
-    v16 = v10;
+    v16 = completionCopy;
     v17 = &v18;
-    [v12 displayedNetworkRequestForTip:v9 completion:v15];
+    [v12 displayedNetworkRequestForTip:tipCopy completion:v15];
 
     _Block_object_dispose(&v18, 8);
   }
@@ -1680,16 +1680,16 @@ LABEL_14:
     }
 
     v14 = INCreateError();
-    (*(v10 + 2))(v10, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 }
 
-- (void)sendTipDismissedNetworkRequestForAltDSID:(id)a3 tip:(id)a4 completion:(id)a5
+- (void)sendTipDismissedNetworkRequestForAltDSID:(id)d tip:(id)tip completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v8];
+  dCopy = d;
+  tipCopy = tip;
+  completionCopy = completion;
+  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v11)
   {
     v18 = 0;
@@ -1703,9 +1703,9 @@ LABEL_14:
     v15[1] = 3221225472;
     v15[2] = sub_100014984;
     v15[3] = &unk_100055AD0;
-    v16 = v10;
+    v16 = completionCopy;
     v17 = &v18;
-    [v12 dismissedNetworkRequestForTip:v9 completion:v15];
+    [v12 dismissedNetworkRequestForTip:tipCopy completion:v15];
 
     _Block_object_dispose(&v18, 8);
   }
@@ -1719,15 +1719,15 @@ LABEL_14:
     }
 
     v14 = INCreateError();
-    (*(v10 + 2))(v10, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 }
 
-- (void)fetchAppsSyncingToiCloudDriveForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchAppsSyncingToiCloudDriveForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v8)
   {
     v15 = 0;
@@ -1741,7 +1741,7 @@ LABEL_14:
     v12[1] = 3221225472;
     v12[2] = sub_100014BD8;
     v12[3] = &unk_100055AF8;
-    v13 = v7;
+    v13 = completionCopy;
     v14 = &v15;
     [v9 fetchAppsSyncingToDrive:v12];
 
@@ -1757,11 +1757,11 @@ LABEL_14:
     }
 
     v11 = INCreateError();
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
-- (id)accountPushNotificationHandlerForEventType:(id)a3
+- (id)accountPushNotificationHandlerForEventType:(id)type
 {
   v3 = _INLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1772,7 +1772,7 @@ LABEL_14:
   return 0;
 }
 
-- (id)familyPushNotificationHandlerForEventType:(id)a3
+- (id)familyPushNotificationHandlerForEventType:(id)type
 {
   v3 = _INLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1783,17 +1783,17 @@ LABEL_14:
   return 0;
 }
 
-- (id)quotaPushNotificationHandlerForEventType:(id)a3
+- (id)quotaPushNotificationHandlerForEventType:(id)type
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_quotaPushNotificationHandlersByEventType objectForKeyedSubscript:v4];
+  typeCopy = type;
+  v5 = [(NSDictionary *)self->_quotaPushNotificationHandlersByEventType objectForKeyedSubscript:typeCopy];
   if (!v5)
   {
     v6 = _INLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = typeCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "No quota push handler found for event type: %@", &v8, 0xCu);
     }
   }
@@ -1801,11 +1801,11 @@ LABEL_14:
   return v5;
 }
 
-- (void)handleICloudQuotaPush:(id)a3
+- (void)handleICloudQuotaPush:(id)push
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"category"];
+  pushCopy = push;
+  userInfo = [pushCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"category"];
 
   v6 = [v5 isEqualToString:@"cloudsubscriptionfeatures"];
   v7 = _INLogSystem();
@@ -1814,61 +1814,61 @@ LABEL_14:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v3 userInfo];
+      userInfo2 = [pushCopy userInfo];
       *buf = 138412290;
-      v17 = v9;
+      v17 = userInfo2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling CloudSubscriptionFeatures plan change notification: %@", buf, 0xCu);
     }
 
-    v10 = [v3 userInfo];
-    [CSFFeatureManager processPushNotificationDictionary:v10];
+    userInfo3 = [pushCopy userInfo];
+    [CSFFeatureManager processPushNotificationDictionary:userInfo3];
   }
 
   else
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_100037EE8(v3);
+      sub_100037EE8(pushCopy);
     }
 
     v11 = os_transaction_create();
     v12 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-    v13 = [v3 userInfo];
+    userInfo4 = [pushCopy userInfo];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = nullsub_2;
     v14[3] = &unk_100055318;
     v15 = v11;
-    v10 = v11;
-    [v12 processPushNotificationDictionary:v13 completion:v14];
+    userInfo3 = v11;
+    [v12 processPushNotificationDictionary:userInfo4 completion:v14];
   }
 }
 
-- (void)_initiateAPSConnectionWithCompletion:(id)a3
+- (void)_initiateAPSConnectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aaSharedRemoteServer = self->_aaSharedRemoteServer;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000150BC;
   v7[3] = &unk_100055B20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(AARemoteServer *)aaSharedRemoteServer configurationWithCompletion:v7];
 }
 
-- (void)_ensureDesiredAPSEnvironmentIsInUseWithCompletion:(id)a3
+- (void)_ensureDesiredAPSEnvironmentIsInUseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aaSharedRemoteServer = self->_aaSharedRemoteServer;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000153C0;
   v7[3] = &unk_100055B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(AARemoteServer *)aaSharedRemoteServer configurationWithCompletion:v7];
 }
 
@@ -1880,18 +1880,18 @@ LABEL_14:
     sub_100038170();
   }
 
-  v4 = [(INDaemon *)self accountStore];
-  v5 = [v4 aa_appleAccounts];
+  accountStore = [(INDaemon *)self accountStore];
+  aa_appleAccounts = [accountStore aa_appleAccounts];
 
-  if ([v5 count])
+  if ([aa_appleAccounts count])
   {
     [(INDaemon *)self _enablePushTopics];
   }
 
   else
   {
-    v6 = [(APSConnection *)self->_apsConnection enabledTopics];
-    v7 = [v6 count];
+    enabledTopics = [(APSConnection *)self->_apsConnection enabledTopics];
+    v7 = [enabledTopics count];
 
     if (v7)
     {
@@ -1921,11 +1921,11 @@ LABEL_14:
     sub_1000381D8(self);
   }
 
-  v4 = [(INDaemon *)self pushTopics];
-  [(APSConnection *)self->_apsConnection _setEnabledTopics:v4];
+  pushTopics = [(INDaemon *)self pushTopics];
+  [(APSConnection *)self->_apsConnection _setEnabledTopics:pushTopics];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1934,8 +1934,8 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received new public token from APS.", buf, 2u);
   }
 
-  v6 = [(ACAccountStore *)self->_accountStore aa_appleAccounts];
-  if ([v6 count])
+  aa_appleAccounts = [(ACAccountStore *)self->_accountStore aa_appleAccounts];
+  if ([aa_appleAccounts count])
   {
     v7 = +[INRegistrationDigestCache isAvailable];
     v8 = _INLogSystem();
@@ -1951,7 +1951,7 @@ LABEL_14:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v9 = v6;
+      v9 = aa_appleAccounts;
       v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v10)
       {
@@ -2000,32 +2000,32 @@ LABEL_14:
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = _INLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 topic];
-    v8 = [v5 userInfo];
+    topic = [messageCopy topic];
+    userInfo = [messageCopy userInfo];
     v21 = 138412546;
-    v22 = v7;
+    v22 = topic;
     v23 = 2112;
-    v24 = v8;
+    v24 = userInfo;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received new incoming message from APS. %@ - %@", &v21, 0x16u);
   }
 
-  v9 = [(APSConnection *)self->_apsConnection enabledTopics];
-  v10 = [v5 topic];
-  v11 = [v9 containsObject:v10];
+  enabledTopics = [(APSConnection *)self->_apsConnection enabledTopics];
+  topic2 = [messageCopy topic];
+  v11 = [enabledTopics containsObject:topic2];
 
   if (v11)
   {
-    v12 = [v5 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"event"];
+    userInfo2 = [messageCopy userInfo];
+    v13 = [userInfo2 objectForKeyedSubscript:@"event"];
 
-    v14 = [v5 topic];
-    v15 = [v14 isEqualToString:@"com.me.setupservice"];
+    topic3 = [messageCopy topic];
+    v15 = [topic3 isEqualToString:@"com.me.setupservice"];
 
     if (v15)
     {
@@ -2035,15 +2035,15 @@ LABEL_14:
 
     else
     {
-      v19 = [v5 topic];
-      v20 = [v19 isEqualToString:@"com.icloud.quota"];
+      topic4 = [messageCopy topic];
+      v20 = [topic4 isEqualToString:@"com.icloud.quota"];
 
       if (!v20)
       {
         v17 = _INLogSystem();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          sub_10003829C(v5);
+          sub_10003829C(messageCopy);
         }
 
         goto LABEL_14;
@@ -2053,12 +2053,12 @@ LABEL_14:
       v17 = v16;
       if (!v16)
       {
-        [(INDaemon *)self handleICloudQuotaPush:v5];
+        [(INDaemon *)self handleICloudQuotaPush:messageCopy];
         goto LABEL_14;
       }
     }
 
-    [v16 handleIncomingPushNotification:v5];
+    [v16 handleIncomingPushNotification:messageCopy];
 LABEL_14:
 
     goto LABEL_15;
@@ -2067,9 +2067,9 @@ LABEL_14:
   v13 = _INLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v5 topic];
+    topic5 = [messageCopy topic];
     v21 = 138412290;
-    v22 = v18;
+    v22 = topic5;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Ignoring push because the topic %@ is not enabled.", &v21, 0xCu);
   }
 
@@ -2081,14 +2081,14 @@ LABEL_15:
   [(INDaemon *)self _disablePushTopics];
   [(INActivity *)self->_hearbeatActivity stop];
   v4 = +[INManagedDefaults sharedInstance];
-  v3 = [(INActivity *)self->_hearbeatActivity activityNextFireDateKey];
-  [v4 setValue:0 forManagedDefault:v3];
+  activityNextFireDateKey = [(INActivity *)self->_hearbeatActivity activityNextFireDateKey];
+  [v4 setValue:0 forManagedDefault:activityNextFireDateKey];
 }
 
-- (void)displayDelayedOfferWithContext:(id)a3 completion:(id)a4
+- (void)displayDelayedOfferWithContext:(id)context completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = _INLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -2096,7 +2096,7 @@ LABEL_15:
   }
 
   v8 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  [v8 displayDelayedOfferWithContext:v5 completion:v6];
+  [v8 displayDelayedOfferWithContext:contextCopy completion:completionCopy];
 
   v9 = _INLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2105,9 +2105,9 @@ LABEL_15:
   }
 }
 
-- (void)_unsafe_performFreshmintRefreshWithReason:(id)a3
+- (void)_unsafe_performFreshmintRefreshWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2115,14 +2115,14 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Thump thump - Fresh!", v6, 2u);
   }
 
-  [(INDaemon *)self _unsafe_icqReconsiderOffersWithReason:v4];
+  [(INDaemon *)self _unsafe_icqReconsiderOffersWithReason:reasonCopy];
 }
 
-- (void)_unsafe_icqUpdateOfferForButtonId:(id)a3
+- (void)_unsafe_icqUpdateOfferForButtonId:(id)id
 {
-  v4 = a3;
-  v5 = [(INDaemon *)self accountStore];
-  v6 = [v5 aa_primaryAppleAccount];
+  idCopy = id;
+  accountStore = [(INDaemon *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
   v7 = os_transaction_create();
   v8 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
@@ -2132,36 +2132,36 @@ LABEL_15:
   v10[3] = &unk_100055998;
   v11 = v7;
   v9 = v7;
-  [v8 updateOfferForAccount:v6 offerId:0 buttonId:v4 info:0 completion:v10];
+  [v8 updateOfferForAccount:aa_primaryAppleAccount offerId:0 buttonId:idCopy info:0 completion:v10];
 }
 
-- (void)startDelayedOfferFailsafeActivityWithDelaySecs:(int64_t)a3 completion:(id)a4
+- (void)startDelayedOfferFailsafeActivityWithDelaySecs:(int64_t)secs completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = INCreateErrorWithMessage();
-  v4[2](v4, v5);
+  completionCopy[2](completionCopy, v5);
 }
 
-- (void)stopDelayedOfferFailsafeActivityWithCompletion:(id)a3
+- (void)stopDelayedOfferFailsafeActivityWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = INCreateErrorWithMessage();
-  v3[2](v3, v4);
+  completionCopy[2](completionCopy, v4);
 }
 
-- (void)calculateExtraQuotaNeededToSyncForAccountWithID:(id)a3 isAccountFull:(BOOL)a4 completion:(id)a5
+- (void)calculateExtraQuotaNeededToSyncForAccountWithID:(id)d isAccountFull:(BOOL)full completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v7 = [NSString stringWithFormat:@"Method %s not supported in this platform.", "[INDaemon calculateExtraQuotaNeededToSyncForAccountWithID:isAccountFull:completion:]"];
   v6 = INCreateErrorWithMessage();
-  v5[2](v5, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)fetchRecommendationsForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchRecommendationsForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v8)
   {
     v15 = 0;
@@ -2175,7 +2175,7 @@ LABEL_15:
     v12[1] = 3221225472;
     v12[2] = sub_1000168CC;
     v12[3] = &unk_100055BB8;
-    v13 = v7;
+    v13 = completionCopy;
     v14 = &v15;
     [v9 fetchServerRecommendations:v12];
 
@@ -2191,15 +2191,15 @@ LABEL_15:
     }
 
     v11 = INCreateError();
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
-- (void)fetchRecommendationsRulesetForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchRecommendationsRulesetForAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v8)
   {
     v15 = 0;
@@ -2213,7 +2213,7 @@ LABEL_15:
     v12[1] = 3221225472;
     v12[2] = sub_100016B44;
     v12[3] = &unk_100055BE0;
-    v13 = v7;
+    v13 = completionCopy;
     v14 = &v15;
     [v9 fetchRecommendationRules:v12];
 
@@ -2229,16 +2229,16 @@ LABEL_15:
     }
 
     v11 = INCreateError();
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
-- (void)fetchCompletedAndDismissedRecommendationsForAltDSID:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)fetchCompletedAndDismissedRecommendationsForAltDSID:(id)d configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v8];
+  dCopy = d;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  v11 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
   if (v11)
   {
     v18 = 0;
@@ -2252,9 +2252,9 @@ LABEL_15:
     v15[1] = 3221225472;
     v15[2] = sub_100016DD0;
     v15[3] = &unk_100055BB8;
-    v16 = v10;
+    v16 = completionCopy;
     v17 = &v18;
-    [v12 fetchCompletedAndDismissedRecommendationsWithConfiguration:v9 completion:v15];
+    [v12 fetchCompletedAndDismissedRecommendationsWithConfiguration:configurationCopy completion:v15];
 
     _Block_object_dispose(&v18, 8);
   }
@@ -2268,36 +2268,36 @@ LABEL_15:
     }
 
     v14 = INCreateError();
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
-- (void)sendStatusForRecommendationsWithAltDSID:(id)a3 configuration:(id)a4 status:(id)a5 recommendationIdentifiers:(id)a6 storageRecovered:(id)a7 completion:(id)a8
+- (void)sendStatusForRecommendationsWithAltDSID:(id)d configuration:(id)configuration status:(id)status recommendationIdentifiers:(id)identifiers storageRecovered:(id)recovered completion:(id)completion
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  completionCopy = completion;
+  recoveredCopy = recovered;
+  identifiersCopy = identifiers;
+  statusCopy = status;
+  configurationCopy = configuration;
+  dCopy = d;
   v21 = objc_alloc_init(NSMutableDictionary);
-  [v21 setObject:v17 forKeyedSubscript:@"action"];
+  [v21 setObject:statusCopy forKeyedSubscript:@"action"];
 
-  [v21 setObject:v16 forKeyedSubscript:@"recommendationIdentifiers"];
-  [v21 setObject:v15 forKeyedSubscript:@"storageRecovered"];
+  [v21 setObject:identifiersCopy forKeyedSubscript:@"recommendationIdentifiers"];
+  [v21 setObject:recoveredCopy forKeyedSubscript:@"storageRecovered"];
 
   v20 = [v21 copy];
-  [(INDaemon *)self sendStatusForRecommendationsWithAltDSID:v19 configuration:v18 params:v20 completion:v14];
+  [(INDaemon *)self sendStatusForRecommendationsWithAltDSID:dCopy configuration:configurationCopy params:v20 completion:completionCopy];
 }
 
-- (void)sendStatusForRecommendationsWithAltDSID:(id)a3 configuration:(id)a4 params:(id)a5 completion:(id)a6
+- (void)sendStatusForRecommendationsWithAltDSID:(id)d configuration:(id)configuration params:(id)params completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:v10];
-  v15 = [v12 objectForKeyedSubscript:@"action"];
+  dCopy = d;
+  configurationCopy = configuration;
+  paramsCopy = params;
+  completionCopy = completion;
+  v14 = [(ACAccountStore *)self->_accountStore aa_appleAccountWithAltDSID:dCopy];
+  v15 = [paramsCopy objectForKeyedSubscript:@"action"];
   if (v14)
   {
     v23 = 0;
@@ -2312,9 +2312,9 @@ LABEL_15:
     v19[2] = sub_1000171D0;
     v19[3] = &unk_100055C08;
     v20 = v15;
-    v21 = v13;
+    v21 = completionCopy;
     v22 = &v23;
-    [v16 sendStatusForRecommendationWithConfiguration:v11 params:v12 completion:v19];
+    [v16 sendStatusForRecommendationWithConfiguration:configurationCopy params:paramsCopy completion:v19];
 
     _Block_object_dispose(&v23, 8);
   }
@@ -2328,22 +2328,22 @@ LABEL_15:
     }
 
     v18 = INCreateError();
-    (*(v13 + 2))(v13, v18);
+    (*(completionCopy + 2))(completionCopy, v18);
   }
 }
 
-- (void)observeFPItem:(id)a3 notifyURL:(id)a4 completion:(id)a5
+- (void)observeFPItem:(id)item notifyURL:(id)l completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = INCreateErrorWithMessage();
-  v5[2](v5, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)syncFPItem:(id)a3 observeItemIDs:(id)a4 notifyURL:(id)a5 completion:(id)a6
+- (void)syncFPItem:(id)item observeItemIDs:(id)ds notifyURL:(id)l completion:(id)completion
 {
-  v6 = a6;
+  completionCopy = completion;
   v7 = INCreateErrorWithMessage();
-  v6[2](v6, 0, v7);
+  completionCopy[2](completionCopy, 0, v7);
 }
 
 @end

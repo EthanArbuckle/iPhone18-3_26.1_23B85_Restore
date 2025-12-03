@@ -1,12 +1,12 @@
 @interface ShareCopyLinkActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIImage)activityImage;
 - (_TtC37com_apple_CloudSharingUI_CloudSharing21ShareCopyLinkActivity)init;
 - (id)_activitySettingsImage;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation ShareCopyLinkActivity
@@ -56,25 +56,25 @@
   return v4;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = sub_1000C6E94();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1000C5944(v4);
 
   return v6 & 1;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v4 = sub_1000C6E94();
-  v5 = self;
+  selfCopy = self;
   sub_1000C50BC(v4);
 }
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C5320();
 }
 

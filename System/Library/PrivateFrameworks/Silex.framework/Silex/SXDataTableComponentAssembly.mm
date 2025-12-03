@@ -1,32 +1,32 @@
 @interface SXDataTableComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXDataTableComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59];
+  publicContainer = [registryCopy publicContainer];
+  v9 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_59];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerClass:objc_opt_class() factory:&__block_literal_global_163];
+  publicContainer2 = [registryCopy publicContainer];
+  v11 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_163];
 
-  v12 = [v3 privateContainer];
-  v13 = [v12 registerProtocol:&unk_1F53F7AC8 factory:&__block_literal_global_173];
+  privateContainer = [registryCopy privateContainer];
+  v13 = [privateContainer registerProtocol:&unk_1F53F7AC8 factory:&__block_literal_global_173];
 
-  v15 = [v3 privateContainer];
+  privateContainer2 = [registryCopy privateContainer];
 
-  v14 = [v15 registerProtocol:&unk_1F53AEB40 factory:&__block_literal_global_192];
+  v14 = [privateContainer2 registerProtocol:&unk_1F53AEB40 factory:&__block_literal_global_192];
 }
 
 void __47__SXDataTableComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

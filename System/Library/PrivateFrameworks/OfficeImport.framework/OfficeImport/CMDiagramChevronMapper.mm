@@ -1,49 +1,49 @@
 @interface CMDiagramChevronMapper
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4;
-- (id)_suggestedBoundsForNodeAtIndex:(unint64_t)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapChildrenAt:(id)a3 withState:(id)a4;
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index;
+- (id)_suggestedBoundsForNodeAtIndex:(unint64_t)index;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapChildrenAt:(id)at withState:(id)state;
 @end
 
 @implementation CMDiagramChevronMapper
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v10 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   [(CMDiagramShapeMapper *)self setDefaultFonSize];
-  v7 = [MEMORY[0x277CCA878] transform];
+  transform = [MEMORY[0x277CCA878] transform];
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
   v9 = v8;
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
-  [v7 translateXBy:v9 yBy:?];
-  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:v7];
-  [(CMDiagramChevronMapper *)self mapChildrenAt:v10 withState:v6];
+  [transform translateXBy:v9 yBy:?];
+  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:transform];
+  [(CMDiagramChevronMapper *)self mapChildrenAt:atCopy withState:stateCopy];
   [(CMDrawingContext *)self->super.super.mDrawingContext restoreLastTransform];
 }
 
-- (void)mapChildrenAt:(id)a3 withState:(id)a4
+- (void)mapChildrenAt:(id)at withState:(id)state
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-  v8 = [v7 children];
+  atCopy = at;
+  stateCopy = state;
+  documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+  children = [documentPoint children];
 
-  v9 = [v8 count];
+  v9 = [children count];
   if (v9)
   {
     for (i = 0; i != v9; ++i)
     {
-      v11 = [v8 objectAtIndex:i];
+      v11 = [children objectAtIndex:i];
       v12 = [(CMDiagramChevronMapper *)self _suggestedBoundsForNodeAtIndex:i];
       v13 = [(CMDiagramPointMapper *)[CMDiagramPointChevronMapper alloc] initWithPoint:v11 drawingContext:self->super.super.mDrawingContext orientedBounds:v12 parent:self];
       [(CMDiagramPointChevronMapper *)v13 setIsHomePlate:(i == 0) & *(&self->super.mDefaultScale + 1)];
-      [(CMDiagramPointChevronMapper *)v13 mapAt:v14 withState:v6];
+      [(CMDiagramPointChevronMapper *)v13 mapAt:atCopy withState:stateCopy];
     }
   }
 }
 
-- (id)_suggestedBoundsForNodeAtIndex:(unint64_t)a3
+- (id)_suggestedBoundsForNodeAtIndex:(unint64_t)index
 {
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
   x = v23.origin.x;
@@ -70,9 +70,9 @@
     v15 = 1.0;
   }
 
-  v16 = v12 * 0.5 + a3 * v12 - v12 * 0.5;
+  v16 = v12 * 0.5 + index * v12 - v12 * 0.5;
   v17 = v13 / 3.0 + v12;
-  if (a3)
+  if (index)
   {
     v18 = v16 - v13 / 3.0;
   }
@@ -82,13 +82,13 @@
     v18 = v16;
   }
 
-  if (!a3)
+  if (!index)
   {
     v17 = v17 - v13 / 3.0;
   }
 
   v19 = v17 + v13 * 1.1;
-  if ((*(&self->super.mDefaultScale + 1) & (mChildCount - 1 > a3)) != 0)
+  if ((*(&self->super.mDefaultScale + 1) & (mChildCount - 1 > index)) != 0)
   {
     v17 = v19;
   }
@@ -98,10 +98,10 @@
   return [CMShapeUtils internalBoundsWithBounds:mOrientedBounds scaleBounds:v18, (1.0 - v15) * 0.5, v17];
 }
 
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index
 {
-  v4 = [(CMDiagramChevronMapper *)self _suggestedBoundsForNodeAtIndex:0, a4];
-  [v4 bounds];
+  index = [(CMDiagramChevronMapper *)self _suggestedBoundsForNodeAtIndex:0, index];
+  [index bounds];
   v6 = v5;
   v8 = v7 * 0.7;
 

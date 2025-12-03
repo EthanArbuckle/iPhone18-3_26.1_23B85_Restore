@@ -1,31 +1,31 @@
 @interface CHXPCClientHelper
-- (CHXPCClientHelper)initWithServiceName:(id)a3 whitelistedServerInterface:(id)a4 clientExportedObject:(id)a5 interruptionHandler:(id)a6 invalidationHandler:(id)a7;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (CHXPCClientHelper)initWithServiceName:(id)name whitelistedServerInterface:(id)interface clientExportedObject:(id)object interruptionHandler:(id)handler invalidationHandler:(id)invalidationHandler;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_locked_establishConnection;
 - (void)dealloc;
 @end
 
 @implementation CHXPCClientHelper
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&self->_connLock);
   [(CHXPCClientHelper *)self _locked_establishConnection];
-  v5 = [(NSXPCConnection *)self->_conn synchronousRemoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_conn synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   pthread_mutex_unlock(&self->_connLock);
 
   return v5;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&self->_connLock);
   [(CHXPCClientHelper *)self _locked_establishConnection];
-  v5 = [(NSXPCConnection *)self->_conn remoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_conn remoteObjectProxyWithErrorHandler:handlerCopy];
 
   pthread_mutex_unlock(&self->_connLock);
 
@@ -131,13 +131,13 @@ void __48__CHXPCClientHelper__locked_establishConnection__block_invoke_7(uint64_
   [(CHXPCClientHelper *)&v3 dealloc];
 }
 
-- (CHXPCClientHelper)initWithServiceName:(id)a3 whitelistedServerInterface:(id)a4 clientExportedObject:(id)a5 interruptionHandler:(id)a6 invalidationHandler:(id)a7
+- (CHXPCClientHelper)initWithServiceName:(id)name whitelistedServerInterface:(id)interface clientExportedObject:(id)object interruptionHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  interfaceCopy = interface;
+  objectCopy = object;
+  handlerCopy = handler;
+  invalidationHandlerCopy = invalidationHandler;
   v25.receiver = self;
   v25.super_class = CHXPCClientHelper;
   v18 = [(CHXPCClientHelper *)&v25 init];
@@ -145,14 +145,14 @@ void __48__CHXPCClientHelper__locked_establishConnection__block_invoke_7(uint64_
   if (v18)
   {
     pthread_mutex_init(&v18->_connLock, 0);
-    objc_storeStrong(&v19->_serviceName, a3);
-    objc_storeStrong(&v19->_whitelistedServerInterface, a4);
-    objc_storeWeak(&v19->_clientExportedObject, v15);
-    v20 = MEMORY[0x245D4AFF0](v16);
+    objc_storeStrong(&v19->_serviceName, name);
+    objc_storeStrong(&v19->_whitelistedServerInterface, interface);
+    objc_storeWeak(&v19->_clientExportedObject, objectCopy);
+    v20 = MEMORY[0x245D4AFF0](handlerCopy);
     interruptionHandler = v19->_interruptionHandler;
     v19->_interruptionHandler = v20;
 
-    v22 = MEMORY[0x245D4AFF0](v17);
+    v22 = MEMORY[0x245D4AFF0](invalidationHandlerCopy);
     invalidationHandler = v19->_invalidationHandler;
     v19->_invalidationHandler = v22;
   }

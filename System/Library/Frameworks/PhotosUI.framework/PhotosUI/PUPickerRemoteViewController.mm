@@ -1,24 +1,24 @@
 @interface PUPickerRemoteViewController
-+ (void)requestViewControllerForExtension:(id)a3 proposedSize:(CGSize)a4 completionHandler:(id)a5;
++ (void)requestViewControllerForExtension:(id)extension proposedSize:(CGSize)size completionHandler:(id)handler;
 @end
 
 @implementation PUPickerRemoteViewController
 
-+ (void)requestViewControllerForExtension:(id)a3 proposedSize:(CGSize)a4 completionHandler:(id)a5
++ (void)requestViewControllerForExtension:(id)extension proposedSize:(CGSize)size completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
-  if (v6)
+  extensionCopy = extension;
+  handlerCopy = handler;
+  if (extensionCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __97__PUPickerRemoteViewController_requestViewControllerForExtension_proposedSize_completionHandler___block_invoke;
       v10[3] = &unk_1E83F7318;
-      v11 = v7;
-      v8 = v7;
-      [v6 instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v10];
+      v11 = handlerCopy;
+      v8 = handlerCopy;
+      [extensionCopy instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v10];
 
       return;
     }

@@ -1,10 +1,10 @@
 @interface StoreKitServiceListener
 + (void)start;
 - (StoreKitServiceListener)init;
-- (void)_invalidateUnfinishedTransactionsForBundleID:(id)a3 logKey:(id)a4;
-- (void)_syncReceiptsForClient:(_TtC9storekitd6Client *)a3 completionHandler:(id)a4;
-- (void)eventMonitor:(id)a3 receivedEventWithName:(id)a4 userInfo:(id)a5;
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4;
+- (void)_invalidateUnfinishedTransactionsForBundleID:(id)d logKey:(id)key;
+- (void)_syncReceiptsForClient:(_TtC9storekitd6Client *)client completionHandler:(id)handler;
+- (void)eventMonitor:(id)monitor receivedEventWithName:(id)name userInfo:(id)info;
+- (void)pushService:(id)service didReceiveMessage:(id)message;
 @end
 
 @implementation StoreKitServiceListener
@@ -37,13 +37,13 @@
   return v2;
 }
 
-- (void)eventMonitor:(id)a3 receivedEventWithName:(id)a4 userInfo:(id)a5
+- (void)eventMonitor:(id)monitor receivedEventWithName:(id)name userInfo:(id)info
 {
-  v7 = a5;
-  if ([a4 isEqualToString:SSEventNamePurchaseSucceeded])
+  infoCopy = info;
+  if ([name isEqualToString:SSEventNamePurchaseSucceeded])
   {
     v8 = +[NSUUID UUID];
-    v9 = [v8 lib_logUUID];
+    lib_logUUID = [v8 lib_logUUID];
 
     if (qword_1003D44F8 != -1)
     {
@@ -54,11 +54,11 @@
     if (os_log_type_enabled(qword_1003CB910, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v60 = v9;
+      v60 = lib_logUUID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received purchase success event", buf, 0xCu);
     }
 
-    v11 = [v7 tcr_dataForKey:@"response"];
+    v11 = [infoCopy tcr_dataForKey:@"response"];
     if (!v11)
     {
       if (qword_1003D44F8 != -1)
@@ -69,21 +69,21 @@
       v17 = qword_1003CB910;
       if (os_log_type_enabled(qword_1003CB910, OS_LOG_TYPE_ERROR))
       {
-        sub_1002CFD88(v9, v17);
+        sub_1002CFD88(lib_logUUID, v17);
       }
 
       goto LABEL_18;
     }
 
-    v52 = self;
-    v12 = v9;
+    selfCopy = self;
+    v12 = lib_logUUID;
     v13 = objc_opt_class();
     v14 = [NSSet setWithObjects:v13, objc_opt_class(), 0];
     v58 = 0;
     v15 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v14 fromData:v11 error:&v58];
-    v16 = v58;
+    purchase = v58;
 
-    if (v16)
+    if (purchase)
     {
       if (qword_1003D44F8 != -1)
       {
@@ -113,7 +113,7 @@
         if (os_log_type_enabled(qword_1003CB910, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543619;
-          v60 = v9;
+          v60 = lib_logUUID;
           v61 = 2113;
           v62 = v15;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignoring purchase success event because the response is a dictionary. Likely from a gift card redemption. Response: %{private}@", buf, 0x16u);
@@ -130,15 +130,15 @@
         v24 = qword_1003CB910;
         if (os_log_type_enabled(qword_1003CB910, OS_LOG_TYPE_ERROR))
         {
-          sub_1002CFAF4(v9, v24);
+          sub_1002CFAF4(lib_logUUID, v24);
         }
       }
 
       goto LABEL_13;
     }
 
-    v16 = [v15 purchase];
-    if (!v16)
+    purchase = [v15 purchase];
+    if (!purchase)
     {
       if (qword_1003D44F8 != -1)
       {
@@ -148,22 +148,22 @@
       v25 = qword_1003CB910;
       if (os_log_type_enabled(qword_1003CB910, OS_LOG_TYPE_ERROR))
       {
-        sub_1002CFD10(v9, v25);
+        sub_1002CFD10(lib_logUUID, v25);
       }
 
       goto LABEL_12;
     }
 
-    v18 = [v15 URLResponse];
-    v19 = [v18 bodyData];
+    uRLResponse = [v15 URLResponse];
+    bodyData = [uRLResponse bodyData];
 
-    if (![v19 length])
+    if (![bodyData length])
     {
       v21 = sub_10005A7C8(4u);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v60 = v9;
+        v60 = lib_logUUID;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Purchase response has no data", buf, 0xCu);
       }
 
@@ -171,7 +171,7 @@
     }
 
     v57 = 0;
-    v20 = [NSPropertyListSerialization propertyListWithData:v19 options:0 format:0 error:&v57];
+    v20 = [NSPropertyListSerialization propertyListWithData:bodyData options:0 format:0 error:&v57];
     v21 = v57;
     if (v21)
     {
@@ -193,7 +193,7 @@
       if (v27)
       {
         *buf = 138543362;
-        v60 = v9;
+        v60 = lib_logUUID;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "[%{public}@] Purchase response is not for an in app buy", buf, 0xCu);
       }
 
@@ -205,15 +205,15 @@
     if (v27)
     {
       *buf = 138543362;
-      v60 = v9;
+      v60 = lib_logUUID;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "[%{public}@] Purchase response is for an in app buy", buf, 0xCu);
     }
 
-    v28 = [v16 buyParameters];
-    v29 = [AMSBuyParams buyParamsWithString:v28];
+    buyParameters = [purchase buyParameters];
+    v29 = [AMSBuyParams buyParamsWithString:buyParameters];
 
-    v30 = [v29 dictionary];
-    v31 = [v30 tcr_numberForKey:@"appAdamId"];
+    dictionary = [v29 dictionary];
+    v31 = [dictionary tcr_numberForKey:@"appAdamId"];
 
     log = v29;
     v32 = [v29 parameterForKey:@"bid"];
@@ -230,10 +230,10 @@
       if (![v32 length] || (v49 = objc_msgSend([LSApplicationRecord alloc], "initWithBundleIdentifier:allowPlaceholder:error:", v32, 0, 0)) == 0)
       {
         v49 = sub_10005A7C8(4u);
-        v9 = v12;
+        lib_logUUID = v12;
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
-          sub_1002CFC78(v12, v52, v49);
+          sub_1002CFC78(v12, selfCopy, v49);
         }
 
         v22 = v50;
@@ -241,18 +241,18 @@
       }
     }
 
-    v9 = v12;
+    lib_logUUID = v12;
     v45 = sub_1000284A4(v20, v12);
     if (v45)
     {
       v36 = sub_10005A7C8(4u);
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v49 bundleIdentifier];
+        bundleIdentifier = [v49 bundleIdentifier];
         *buf = 138543618;
         v60 = v12;
         v61 = 2114;
-        v62 = v37;
+        v62 = bundleIdentifier;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "[%{public}@] Writing receipt to app %{public}@", buf, 0x16u);
       }
 
@@ -267,7 +267,7 @@
       v32 = v48;
     }
 
-    [(StoreKitServiceListener *)v52 _invalidateUnfinishedTransactionsForBundleID:v32 logKey:v12];
+    [(StoreKitServiceListener *)selfCopy _invalidateUnfinishedTransactionsForBundleID:v32 logKey:v12];
     v39 = [_TtC9storekitd6Client alloc];
     v40 = [v49 URL];
     v41 = [(Client *)v39 initWithURL:v40 overridesDictionary:0];
@@ -279,7 +279,7 @@
       v53[2] = sub_10005B1E0;
       v53[3] = &unk_1003802F0;
       v54 = v12;
-      [(StoreKitServiceListener *)v52 _syncReceiptsForClient:v41 completionHandler:v53];
+      [(StoreKitServiceListener *)selfCopy _syncReceiptsForClient:v41 completionHandler:v53];
       v42 = v54;
       v20 = v47;
       v43 = v41;
@@ -319,14 +319,14 @@ LABEL_18:
   }
 }
 
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4
+- (void)pushService:(id)service didReceiveMessage:(id)message
 {
-  v4 = a4;
+  messageCopy = message;
   v5 = +[NSUUID UUID];
-  v31 = [v5 lib_logUUID];
+  lib_logUUID = [v5 lib_logUUID];
 
-  v30 = v4;
-  v6 = [v4 valueForUserInfoKey:@"2"];
+  v30 = messageCopy;
+  v6 = [messageCopy valueForUserInfoKey:@"2"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -364,9 +364,9 @@ LABEL_30:
   {
     v10 = v9;
     *buf = 138543874;
-    v45 = v31;
+    v45 = lib_logUUID;
     v46 = 2048;
-    v47 = [v4 actionType];
+    actionType = [messageCopy actionType];
     v48 = 2114;
     v49 = v8;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received push action %ld for %{public}@", buf, 0x20u);
@@ -406,15 +406,15 @@ LABEL_30:
           {
             syncHandler = self->_syncHandler;
             v33 = v18;
-            v22 = [v30 actionType];
+            actionType2 = [v30 actionType];
             v34[0] = _NSConcreteStackBlock;
             v34[1] = 3221225472;
             v34[2] = sub_10005B770;
             v34[3] = &unk_1003824E8;
             v35 = v30;
-            v36 = v31;
+            v36 = lib_logUUID;
             v37 = v16;
-            v23 = v22;
+            v23 = actionType2;
             v18 = v33;
             [(StoreKitPushSyncHandler *)syncHandler receivedPushAction:v23 client:v21 completionHandler:v34];
           }
@@ -432,9 +432,9 @@ LABEL_30:
               v26 = v25;
               v27 = [v17 URL];
               *buf = 138543618;
-              v45 = v31;
+              v45 = lib_logUUID;
               v46 = 2114;
-              v47 = v27;
+              actionType = v27;
               _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "[%{public}@] Could not initialize client with URL %{public}@", buf, 0x16u);
             }
           }
@@ -451,9 +451,9 @@ LABEL_30:
           if (os_log_type_enabled(qword_1003CB918, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543874;
-            v45 = v31;
+            v45 = lib_logUUID;
             v46 = 2114;
-            v47 = v16;
+            actionType = v16;
             v48 = 2114;
             v49 = v18;
             _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "[%{public}@] Could not find bundle record for %{public}@ - %{public}@", buf, 0x20u);
@@ -474,10 +474,10 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)_invalidateUnfinishedTransactionsForBundleID:(id)a3 logKey:(id)a4
+- (void)_invalidateUnfinishedTransactionsForBundleID:(id)d logKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  keyCopy = key;
   if (qword_1003D44F8 != -1)
   {
     sub_1002CFA44();
@@ -490,14 +490,14 @@ LABEL_31:
     *v16 = 138543874;
     *&v16[4] = objc_opt_class();
     *&v16[12] = 2114;
-    *&v16[14] = v6;
+    *&v16[14] = keyCopy;
     *&v16[22] = 2114;
-    v17 = v5;
+    v17 = dCopy;
     v9 = *&v16[4];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Marking cache stale in response to push for client: %{public}@", v16, 0x20u);
   }
 
-  if (![LoadUnfinishedInAppTransactionsTask invalidateCacheForBundleID:v5 withLogKey:v6, *v16, *&v16[16], v17])
+  if (![LoadUnfinishedInAppTransactionsTask invalidateCacheForBundleID:dCopy withLogKey:keyCopy, *v16, *&v16[16], v17])
   {
     if (qword_1003D44F8 != -1)
     {
@@ -524,24 +524,24 @@ LABEL_31:
     *v16 = 138543618;
     *&v16[4] = v13;
     *&v16[12] = 2114;
-    *&v16[14] = v6;
+    *&v16[14] = keyCopy;
     v14 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Sending unfinished transactions notification in response to push", v16, 0x16u);
   }
 
-  v15 = sub_100039F90(v5);
+  v15 = sub_100039F90(dCopy);
   notify_post([v15 UTF8String]);
 }
 
-- (void)_syncReceiptsForClient:(_TtC9storekitd6Client *)a3 completionHandler:(id)a4
+- (void)_syncReceiptsForClient:(_TtC9storekitd6Client *)client completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = client;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  clientCopy = client;
+  selfCopy = self;
 
   sub_100224DF8(&unk_1002EEED8, v7);
 }

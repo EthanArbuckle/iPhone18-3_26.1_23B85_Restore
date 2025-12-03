@@ -1,18 +1,18 @@
 @interface RoutePlanningVehicleSelectionTableViewCell
-- (void)setupWithVehicle:(id)a3;
+- (void)setupWithVehicle:(id)vehicle;
 @end
 
 @implementation RoutePlanningVehicleSelectionTableViewCell
 
-- (void)setupWithVehicle:(id)a3
+- (void)setupWithVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [v4 displayName];
-  [(UILabel *)self->_textLabel setText:v5];
+  vehicleCopy = vehicle;
+  displayName = [vehicleCopy displayName];
+  [(UILabel *)self->_textLabel setText:displayName];
 
-  v6 = [v4 licensePlate];
+  licensePlate = [vehicleCopy licensePlate];
 
-  [(UILabel *)self->_detailTextLabel setText:v6];
+  [(UILabel *)self->_detailTextLabel setText:licensePlate];
 }
 
 @end

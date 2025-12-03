@@ -1,16 +1,16 @@
 @interface CKDPResponseOperationResultErrorClient
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_typeCKLogValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPResponseOperationResultErrorClient
@@ -338,10 +338,10 @@
   }
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
   v4 = @"unknown";
-  switch(a3)
+  switch(string)
   {
     case 1:
       goto LABEL_276;
@@ -738,7 +738,7 @@
 
       break;
     default:
-      v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+      v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
 LABEL_276:
 
       break;
@@ -747,500 +747,500 @@ LABEL_276:
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"unknown"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"unknown"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"expiredAppConfig"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"expiredAppConfig"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"expiredGlobalConfig"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"expiredGlobalConfig"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"badSyntax"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"badSyntax"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"forbidden"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"forbidden"))
   {
     v6 = 5;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"throttled"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v10, @"throttled"))
   {
     v6 = 6;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"refused"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"refused"))
   {
     v6 = 7;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v12, @"notSupported"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v12, @"notSupported"))
   {
     v6 = 8;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v13, @"exists"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v13, @"exists"))
   {
     v6 = 9;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v14, @"requestAlreadyProcessed"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v14, @"requestAlreadyProcessed"))
   {
     v6 = 10;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v15, @"badAuthToken"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v15, @"badAuthToken"))
   {
     v6 = 11;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v16, @"needsAuthentication"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v16, @"needsAuthentication"))
   {
     v6 = 12;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v17, @"mescalSignatureMissing"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v17, @"mescalSignatureMissing"))
   {
     v6 = 13;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v18, @"invalidMescalSignature"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v18, @"invalidMescalSignature"))
   {
     v6 = 14;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v19, @"opLockFailure"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v19, @"opLockFailure"))
   {
     v6 = 15;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v20, @"atomicFailure"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v20, @"atomicFailure"))
   {
     v6 = 16;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v21, @"resetNeeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v21, @"resetNeeded"))
   {
     v6 = 17;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v22, @"fieldsPerTypeLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v22, @"fieldsPerTypeLimitExceeded"))
   {
     v6 = 18;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v23, @"typeBusy"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v23, @"typeBusy"))
   {
     v6 = 19;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v24, @"numRecordTypesLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v24, @"numRecordTypesLimitExceeded"))
   {
     v6 = 20;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v25, @"invalidContainer"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v25, @"invalidContainer"))
   {
     v6 = 21;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v26, @"invalidRecordTypeName"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v26, @"invalidRecordTypeName"))
   {
     v6 = 22;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v27, @"invalidFieldName"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v27, @"invalidFieldName"))
   {
     v6 = 23;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v28, @"invalidFieldValue"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v28, @"invalidFieldValue"))
   {
     v6 = 24;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v29, @"invalidIdentifier"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v29, @"invalidIdentifier"))
   {
     v6 = 25;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v30, @"fieldNotQueryable"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v30, @"fieldNotQueryable"))
   {
     v6 = 26;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v31, @"fieldNotSortable"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v31, @"fieldNotSortable"))
   {
     v6 = 27;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v32, @"queryFilterLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v32, @"queryFilterLimitExceeded"))
   {
     v6 = 28;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v33, @"queryFilterValuesLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v33, @"queryFilterValuesLimitExceeded"))
   {
     v6 = 29;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v34, @"membershipQueryLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v34, @"membershipQueryLimitExceeded"))
   {
     v6 = 30;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v35, @"notificationAdditionalFieldLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v35, @"notificationAdditionalFieldLimitExceeded"))
   {
     v6 = 31;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v36, @"notificationAdditionalFieldInvalidType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v36, @"notificationAdditionalFieldInvalidType"))
   {
     v6 = 32;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v37, @"subscriptionLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v37, @"subscriptionLimitExceeded"))
   {
     v6 = 33;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v38, @"uniqueTriggerLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v38, @"uniqueTriggerLimitExceeded"))
   {
     v6 = 34;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v39, @"triggerSubscriptionBindingTypeMismatch"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v39, @"triggerSubscriptionBindingTypeMismatch"))
   {
     v6 = 35;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v40, @"zoneSizeLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v40, @"zoneSizeLimitExceeded"))
   {
     v6 = 36;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v41, @"zoneCountLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v41, @"zoneCountLimitExceeded"))
   {
     v6 = 37;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v42, @"uniqueFieldFailure"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v42, @"uniqueFieldFailure"))
   {
     v6 = 38;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v43, @"validatingReferenceError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v43, @"validatingReferenceError"))
   {
     v6 = 39;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v44, @"fullResetNeeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v44, @"fullResetNeeded"))
   {
     v6 = 40;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v45, @"alreadyShared"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v45, @"alreadyShared"))
   {
     v6 = 41;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v46, @"emailOutOfNetwork"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v46, @"emailOutOfNetwork"))
   {
     v6 = 42;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v47, @"duplicateSubscription"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v47, @"duplicateSubscription"))
   {
     v6 = 43;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v48, @"expiredPutReceipt"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v48, @"expiredPutReceipt"))
   {
     v6 = 46;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v49, @"quotaExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v49, @"quotaExceeded"))
   {
     v6 = 47;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v50, @"zoneNotFound"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v50, @"zoneNotFound"))
   {
     v6 = 48;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v51, @"invalidBundleId"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v51, @"invalidBundleId"))
   {
     v6 = 49;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v52, @"unsupportedDevice"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v52, @"unsupportedDevice"))
   {
     v6 = 50;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v53, @"blocklisted"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v53, @"blocklisted"))
   {
     v6 = 51;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v54, @"recordProtectionInfoTagMismatch"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v54, @"recordProtectionInfoTagMismatch"))
   {
     v6 = 52;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v55, @"zoneProtectionInfoTagMismatch"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v55, @"zoneProtectionInfoTagMismatch"))
   {
     v6 = 53;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v56, @"assetSizeLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v56, @"assetSizeLimitExceeded"))
   {
     v6 = 54;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v57, @"batchOperationLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v57, @"batchOperationLimitExceeded"))
   {
     v6 = 55;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v58, @"requestSizeLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v58, @"requestSizeLimitExceeded"))
   {
     v6 = 56;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v59, @"recordSizeLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v59, @"recordSizeLimitExceeded"))
   {
     v6 = 57;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v60, @"databaseCommitSizeExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v60, @"databaseCommitSizeExceeded"))
   {
     v6 = 58;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v61, @"userDeletedDataForZone"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v61, @"userDeletedDataForZone"))
   {
     v6 = 59;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v62, @"staleRecordUpdate"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v62, @"staleRecordUpdate"))
   {
     v6 = 60;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v63, @"shareParticipantLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v63, @"shareParticipantLimitExceeded"))
   {
     v6 = 61;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v64, @"shareParticipantError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v64, @"shareParticipantError"))
   {
     v6 = 62;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v65, @"pcsChainingError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v65, @"pcsChainingError"))
   {
     v6 = 64;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v66, @"hierarchyAlreadyHasShare"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v66, @"hierarchyAlreadyHasShare"))
   {
     v6 = 65;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v67, @"u13Restricted"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v67, @"u13Restricted"))
   {
     v6 = 66;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v68, @"managedAppleIdRestricted"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v68, @"managedAppleIdRestricted"))
   {
     v6 = 67;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v69, @"shareParticipantContactError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v69, @"shareParticipantContactError"))
   {
     v6 = 68;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v70, @"recordArchived"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v70, @"recordArchived"))
   {
     v6 = 69;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v71, @"databaseAccessDenied"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v71, @"databaseAccessDenied"))
   {
     v6 = 70;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v72, @"parentHierarchyDepthLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v72, @"parentHierarchyDepthLimitExceeded"))
   {
     v6 = 71;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v73, @"zonePcsUserIdentityUnknown"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v73, @"zonePcsUserIdentityUnknown"))
   {
     v6 = 72;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v74, @"managedAppleIdBackupBlocked"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v74, @"managedAppleIdBackupBlocked"))
   {
     v6 = 73;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v75, @"outOfNetworkUsersUnsupported"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v75, @"outOfNetworkUsersUnsupported"))
   {
     v6 = 75;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v76, @"gameAssignmentNotFound"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v76, @"gameAssignmentNotFound"))
   {
     v6 = 76;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v77, @"queryBeginsWithValueLengthLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v77, @"queryBeginsWithValueLengthLimitExceeded"))
   {
     v6 = 77;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v78, @"userResetEncryptedData"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v78, @"userResetEncryptedData"))
   {
     v6 = 78;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v79, @"mergeableValueNotFound"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v79, @"mergeableValueNotFound"))
   {
     v6 = 79;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v80, @"invalidPublicKey"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v80, @"invalidPublicKey"))
   {
     v6 = 80;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v81, @"mergeableDeltaSizeLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v81, @"mergeableDeltaSizeLimitExceeded"))
   {
     v6 = 81;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v82, @"mergeableDeltaNotFound"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v82, @"mergeableDeltaNotFound"))
   {
     v6 = 82;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v83, @"mergeableDeltaInvalid"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v83, @"mergeableDeltaInvalid"))
   {
     v6 = 83;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v84, @"mergeableValueCompactionRequired"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v84, @"mergeableValueCompactionRequired"))
   {
     v6 = 84;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v85, @"unprovisionedICloudAccount"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v85, @"unprovisionedICloudAccount"))
   {
     v6 = 85;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v86, @"purgedICloudAccount"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v86, @"purgedICloudAccount"))
   {
     v6 = 86;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v87, @"invalidDsidForICloudAccount"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v87, @"invalidDsidForICloudAccount"))
   {
     v6 = 87;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v88, @"shareRegionUnsupported"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v88, @"shareRegionUnsupported"))
   {
     v6 = 88;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v89, @"a2aSignatureValidationError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v89, @"a2aSignatureValidationError"))
   {
     v6 = 89;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v90, @"participantIdMismatch"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v90, @"participantIdMismatch"))
   {
     v6 = 90;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v91, @"groupKitSignatureValidationError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v91, @"groupKitSignatureValidationError"))
   {
     v6 = 94;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v92, @"shareRequestAccessError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v92, @"shareRequestAccessError"))
   {
     v6 = 95;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v93, @"shareRequestAccessLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v93, @"shareRequestAccessLimitExceeded"))
   {
     v6 = 96;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v94, @"shareRequestAccessShareAcceptRequired"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v94, @"shareRequestAccessShareAcceptRequired"))
   {
     v6 = 97;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v95, @"shareBlockedUserCanNotBeParticipant"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v95, @"shareBlockedUserCanNotBeParticipant"))
   {
     v6 = 98;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v96, @"shareBlockedLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v96, @"shareBlockedLimitExceeded"))
   {
     v6 = 100;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v97, @"zoneAncestryOpLockFailure"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v97, @"zoneAncestryOpLockFailure"))
   {
     v6 = 101;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v98, @"invalidTimestamp"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v98, @"invalidTimestamp"))
   {
     v6 = 102;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v99, @"invalidSignature"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v99, @"invalidSignature"))
   {
     v6 = 103;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v100, @"unsupportedSigningIdentity"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v100, @"unsupportedSigningIdentity"))
   {
     v6 = 104;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v101, @"invalidSignedBlob"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v101, @"invalidSignedBlob"))
   {
     v6 = 105;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v102, @"unsupportedVersion"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v102, @"unsupportedVersion"))
   {
     v6 = 106;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v103, @"owningReferenceError"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v103, @"owningReferenceError"))
   {
     v6 = 107;
   }
@@ -1699,72 +1699,72 @@ LABEL_102:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_oplockFailure)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uniqueFieldFailure)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_moveOplockFailure)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_type;
-    *(v4 + 40) |= 1u;
+    toCopy[6] = self->_type;
+    *(toCopy + 40) |= 1u;
   }
 
   oplockFailure = self->_oplockFailure;
-  v9 = v4;
+  v9 = toCopy;
   if (oplockFailure)
   {
-    objc_msgSend_setOplockFailure_(v4, v5, oplockFailure);
-    v4 = v9;
+    objc_msgSend_setOplockFailure_(toCopy, v5, oplockFailure);
+    toCopy = v9;
   }
 
   uniqueFieldFailure = self->_uniqueFieldFailure;
   if (uniqueFieldFailure)
   {
     objc_msgSend_setUniqueFieldFailure_(v9, v5, uniqueFieldFailure);
-    v4 = v9;
+    toCopy = v9;
   }
 
   moveOplockFailure = self->_moveOplockFailure;
   if (moveOplockFailure)
   {
     objc_msgSend_setMoveOplockFailure_(v9, v5, moveOplockFailure);
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -1773,40 +1773,40 @@ LABEL_102:
     *(v10 + 40) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_oplockFailure, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_oplockFailure, v11, zone);
   v14 = v12[2];
   v12[2] = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_uniqueFieldFailure, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_uniqueFieldFailure, v15, zone);
   v17 = v12[4];
   v12[4] = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_moveOplockFailure, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_moveOplockFailure, v18, zone);
   v20 = v12[1];
   v12[1] = v19;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_13;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((v4[5] & 1) == 0 || self->_type != *(v4 + 6))
+    if ((equalCopy[5] & 1) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
   }
 
-  else if (v4[5])
+  else if (equalCopy[5])
   {
 LABEL_13:
     isEqual = 0;
@@ -1814,14 +1814,14 @@ LABEL_13:
   }
 
   oplockFailure = self->_oplockFailure;
-  v10 = v4[2];
+  v10 = equalCopy[2];
   if (oplockFailure | v10 && !objc_msgSend_isEqual_(oplockFailure, v7, v10))
   {
     goto LABEL_13;
   }
 
   uniqueFieldFailure = self->_uniqueFieldFailure;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (uniqueFieldFailure | v12)
   {
     if (!objc_msgSend_isEqual_(uniqueFieldFailure, v7, v12))
@@ -1831,7 +1831,7 @@ LABEL_13:
   }
 
   moveOplockFailure = self->_moveOplockFailure;
-  v14 = v4[1];
+  v14 = equalCopy[1];
   if (moveOplockFailure | v14)
   {
     isEqual = objc_msgSend_isEqual_(moveOplockFailure, v7, v14);
@@ -1864,13 +1864,13 @@ LABEL_14:
   return v5 ^ v8 ^ objc_msgSend_hash(self->_moveOplockFailure, v9, v10);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[10])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[10])
   {
-    self->_type = v4[6];
+    self->_type = fromCopy[6];
     *&self->_has |= 1u;
   }
 

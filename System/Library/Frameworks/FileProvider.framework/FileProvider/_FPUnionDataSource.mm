@@ -1,11 +1,11 @@
 @interface _FPUnionDataSource
 - (BOOL)hasMoreIncoming;
 - (FPCollectionDataSourceDelegate)delegate;
-- (_FPUnionDataSource)initWithCollections:(id)a3;
-- (void)collection:(id)a3 didEncounterError:(id)a4;
-- (void)collection:(id)a3 didUpdateItems:(id)a4 replaceItemsByFormerID:(id)a5 deleteItemsWithIDs:(id)a6;
-- (void)collection:(id)a3 didUpdateObservedItem:(id)a4;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
+- (_FPUnionDataSource)initWithCollections:(id)collections;
+- (void)collection:(id)collection didEncounterError:(id)error;
+- (void)collection:(id)collection didUpdateItems:(id)items replaceItemsByFormerID:(id)d deleteItemsWithIDs:(id)ds;
+- (void)collection:(id)collection didUpdateObservedItem:(id)item;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
 - (void)invalidate;
 - (void)start;
 @end
@@ -15,16 +15,16 @@
 - (void)start
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_isRunning)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_isRunning)
   {
-    v2->_isRunning = 1;
+    selfCopy->_isRunning = 1;
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = v2->_collections;
+    v3 = selfCopy->_collections;
     v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
@@ -39,14 +39,14 @@
           }
 
           v7 = *(*(&v11 + 1) + 8 * i);
-          [v7 setDelegate:v2];
-          v8 = [v7 workingQueue];
+          [v7 setDelegate:selfCopy];
+          workingQueue = [v7 workingQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __27___FPUnionDataSource_start__block_invoke;
           block[3] = &unk_1E79399B0;
           block[4] = v7;
-          dispatch_async(v8, block);
+          dispatch_async(workingQueue, block);
         }
 
         v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -56,7 +56,7 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -91,13 +91,13 @@
           }
 
           v7 = *(*(&v13 + 1) + 8 * i);
-          v8 = [v7 workingQueue];
+          workingQueue = [v7 workingQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __32___FPUnionDataSource_invalidate__block_invoke;
           block[3] = &unk_1E79399B0;
           block[4] = v7;
-          dispatch_async(v8, block);
+          dispatch_async(workingQueue, block);
         }
 
         v4 = [(NSArray *)v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -123,15 +123,15 @@
   return WeakRetained;
 }
 
-- (_FPUnionDataSource)initWithCollections:(id)a3
+- (_FPUnionDataSource)initWithCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   v9.receiver = self;
   v9.super_class = _FPUnionDataSource;
   v5 = [(_FPUnionDataSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [collectionsCopy copy];
     collections = v5->_collections;
     v5->_collections = v6;
   }
@@ -139,27 +139,27 @@
   return v5;
 }
 
-- (void)collection:(id)a3 didUpdateItems:(id)a4 replaceItemsByFormerID:(id)a5 deleteItemsWithIDs:(id)a6
+- (void)collection:(id)collection didUpdateItems:(id)items replaceItemsByFormerID:(id)d deleteItemsWithIDs:(id)ds
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = self;
-  objc_sync_enter(v12);
-  LODWORD(a4) = v12->_isRunning;
-  objc_sync_exit(v12);
+  collectionCopy = collection;
+  itemsCopy = items;
+  dsCopy = ds;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LODWORD(items) = selfCopy->_isRunning;
+  objc_sync_exit(selfCopy);
 
-  if (a4 == 1)
+  if (items == 1)
   {
-    v24 = v11;
-    v13 = [MEMORY[0x1E695DF70] array];
+    v24 = dsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v25 = v10;
-    v14 = v10;
+    v25 = itemsCopy;
+    v14 = itemsCopy;
     v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v15)
     {
@@ -175,18 +175,18 @@
           }
 
           v19 = *(*(&v26 + 1) + 8 * i);
-          if ([v9 isRootItem:v19])
+          if ([collectionCopy isRootItem:v19])
           {
-            [v9 updateRootItem:v19];
+            [collectionCopy updateRootItem:v19];
           }
 
           else
           {
-            v20 = [v9 itemFilteringPredicate];
-            v21 = [v9 additionalItemFilteringPredicate];
-            if ((!v20 || [v20 evaluateWithObject:v19]) && (!v21 || objc_msgSend(v21, "evaluateWithObject:", v19)))
+            itemFilteringPredicate = [collectionCopy itemFilteringPredicate];
+            additionalItemFilteringPredicate = [collectionCopy additionalItemFilteringPredicate];
+            if ((!itemFilteringPredicate || [itemFilteringPredicate evaluateWithObject:v19]) && (!additionalItemFilteringPredicate || objc_msgSend(additionalItemFilteringPredicate, "evaluateWithObject:", v19)))
             {
-              [v13 addObject:v19];
+              [array addObject:v19];
             }
           }
         }
@@ -197,79 +197,79 @@
       while (v16);
     }
 
-    v11 = v24;
-    if ([v24 count] || objc_msgSend(v13, "count"))
+    dsCopy = v24;
+    if ([v24 count] || objc_msgSend(array, "count"))
     {
-      v22 = [(_FPUnionDataSource *)v12 delegate];
-      [v22 dataSource:v12 receivedUpdatedItems:v13 deletedItems:v24 hasMoreChanges:0];
+      delegate = [(_FPUnionDataSource *)selfCopy delegate];
+      [delegate dataSource:selfCopy receivedUpdatedItems:array deletedItems:v24 hasMoreChanges:0];
     }
 
-    v10 = v25;
+    itemsCopy = v25;
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collection:(id)a3 didEncounterError:(id)a4
+- (void)collection:(id)collection didEncounterError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  isRunning = v6->_isRunning;
-  objc_sync_exit(v6);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRunning = selfCopy->_isRunning;
+  objc_sync_exit(selfCopy);
 
   if (isRunning)
   {
-    if ([v5 fp_isFileProviderError:-2001])
+    if ([errorCopy fp_isFileProviderError:-2001])
     {
       v8 = fp_current_or_default_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v5;
+        v12 = errorCopy;
         _os_log_impl(&dword_1AAAE1000, v8, OS_LOG_TYPE_INFO, "[INFO] error in union collection, skipping: %@", &v11, 0xCu);
       }
     }
 
     else
     {
-      [(_FPUnionDataSource *)v6 invalidate];
-      v9 = [(_FPUnionDataSource *)v6 delegate];
-      [v9 dataSource:v6 wasInvalidatedWithError:v5];
+      [(_FPUnionDataSource *)selfCopy invalidate];
+      delegate = [(_FPUnionDataSource *)selfCopy delegate];
+      [delegate dataSource:selfCopy wasInvalidatedWithError:errorCopy];
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collection:(id)a3 didUpdateObservedItem:(id)a4
+- (void)collection:(id)collection didUpdateObservedItem:(id)item
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  isRunning = v8->_isRunning;
-  objc_sync_exit(v8);
+  collectionCopy = collection;
+  itemCopy = item;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRunning = selfCopy->_isRunning;
+  objc_sync_exit(selfCopy);
 
   if (isRunning)
   {
-    if ([v6 isRootItem:v7])
+    if ([collectionCopy isRootItem:itemCopy])
     {
-      [v6 updateRootItem:v7];
+      [collectionCopy updateRootItem:itemCopy];
     }
 
     else
     {
-      v10 = [v6 itemFilteringPredicate];
-      v11 = [v6 additionalItemFilteringPredicate];
-      if ((!v10 || [v10 evaluateWithObject:v7]) && (!v11 || objc_msgSend(v11, "evaluateWithObject:", v7)))
+      itemFilteringPredicate = [collectionCopy itemFilteringPredicate];
+      additionalItemFilteringPredicate = [collectionCopy additionalItemFilteringPredicate];
+      if ((!itemFilteringPredicate || [itemFilteringPredicate evaluateWithObject:itemCopy]) && (!additionalItemFilteringPredicate || objc_msgSend(additionalItemFilteringPredicate, "evaluateWithObject:", itemCopy)))
       {
-        v12 = [(_FPUnionDataSource *)v8 delegate];
-        v15[0] = v7;
+        delegate = [(_FPUnionDataSource *)selfCopy delegate];
+        v15[0] = itemCopy;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-        [v12 dataSource:v8 receivedUpdatedItems:v13 deletedItems:MEMORY[0x1E695E0F0] hasMoreChanges:0];
+        [delegate dataSource:selfCopy receivedUpdatedItems:v13 deletedItems:MEMORY[0x1E695E0F0] hasMoreChanges:0];
       }
     }
   }
@@ -277,22 +277,22 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  isRunning = v3->_isRunning;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRunning = selfCopy->_isRunning;
+  objc_sync_exit(selfCopy);
 
   if (isRunning)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v3->_collections;
+    v6 = selfCopy->_collections;
     v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -308,8 +308,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * v10) items];
-          [v5 addObjectsFromArray:v11];
+          items = [*(*(&v14 + 1) + 8 * v10) items];
+          [array addObjectsFromArray:items];
 
           ++v10;
         }
@@ -321,8 +321,8 @@
       while (v8);
     }
 
-    v12 = [(_FPUnionDataSource *)v3 delegate];
-    [v12 dataSource:v3 replaceContentsWithItems:v5 hasMoreChanges:0];
+    delegate = [(_FPUnionDataSource *)selfCopy delegate];
+    [delegate dataSource:selfCopy replaceContentsWithItems:array hasMoreChanges:0];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -331,10 +331,10 @@
 - (BOOL)hasMoreIncoming
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  isRunning = v2->_isRunning;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRunning = selfCopy->_isRunning;
+  objc_sync_exit(selfCopy);
 
   if (isRunning)
   {
@@ -342,7 +342,7 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = v2->_collections;
+    v4 = selfCopy->_collections;
     v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {

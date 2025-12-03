@@ -1,15 +1,15 @@
 @interface NSMessagePort
-+ (BOOL)sendBeforeTime:(double)a3 streamData:(id)a4 components:(id)a5 to:(id)a6 from:(id)a7 msgid:(unsigned int)a8 reserved:(unint64_t)a9;
-- (BOOL)sendBeforeDate:(id)a3 components:(id)a4 from:(id)a5 reserved:(unint64_t)a6;
-- (BOOL)sendBeforeDate:(id)a3 msgid:(unint64_t)a4 components:(id)a5 from:(id)a6 reserved:(unint64_t)a7;
-- (BOOL)sendBeforeTime:(double)a3 streamData:(void *)a4 components:(id)a5 from:(id)a6 msgid:(unsigned int)a7;
-- (NSMessagePort)initWithName:(id)a3;
-- (NSMessagePort)initWithRemoteName:(id)a3;
++ (BOOL)sendBeforeTime:(double)time streamData:(id)data components:(id)components to:(id)to from:(id)from msgid:(unsigned int)msgid reserved:(unint64_t)reserved;
+- (BOOL)sendBeforeDate:(id)date components:(id)components from:(id)from reserved:(unint64_t)reserved;
+- (BOOL)sendBeforeDate:(id)date msgid:(unint64_t)msgid components:(id)components from:(id)from reserved:(unint64_t)reserved;
+- (BOOL)sendBeforeTime:(double)time streamData:(void *)data components:(id)components from:(id)from msgid:(unsigned int)msgid;
+- (NSMessagePort)initWithName:(id)name;
+- (NSMessagePort)initWithRemoteName:(id)name;
 - (void)dealloc;
 - (void)invalidate;
 - (void)release;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
 @end
 
 @implementation NSMessagePort
@@ -26,51 +26,51 @@
   }
 }
 
-+ (BOOL)sendBeforeTime:(double)a3 streamData:(id)a4 components:(id)a5 to:(id)a6 from:(id)a7 msgid:(unsigned int)a8 reserved:(unint64_t)a9
++ (BOOL)sendBeforeTime:(double)time streamData:(id)data components:(id)components to:(id)to from:(id)from msgid:(unsigned int)msgid reserved:(unint64_t)reserved
 {
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  if (a7)
+  if (from)
   {
-    CFDictionaryAddValue(Mutable, @"NSMessagePortReplyName", [a7 name]);
+    CFDictionaryAddValue(Mutable, @"NSMessagePortReplyName", [from name]);
   }
 
-  if (a4 && !a5)
+  if (data && !components)
   {
-    a5 = [MEMORY[0x1E695DF70] array];
-    [a5 addObject:a4];
+    components = [MEMORY[0x1E695DF70] array];
+    [components addObject:data];
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
-  v17 = [a5 count];
+  array = [MEMORY[0x1E695DF70] array];
+  v17 = [components count];
   if (v17)
   {
     v18 = v17;
     for (i = 0; v18 != i; ++i)
     {
-      v20 = [a5 objectAtIndex:i];
+      name = [components objectAtIndex:i];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           CFRelease(Mutable);
-          v26 = _NSMethodExceptionProem(a1, a2);
+          v26 = _NSMethodExceptionProem(self, a2);
           NSLog(@"%@: found port in components which is not an NSMessagePort", v26);
           return 0;
         }
 
-        v20 = [v20 name];
+        name = [name name];
       }
 
-      [v16 addObject:v20];
+      [array addObject:name];
     }
   }
 
-  CFDictionaryAddValue(Mutable, @"NSMessagePortComponents", v16);
+  CFDictionaryAddValue(Mutable, @"NSMessagePortComponents", array);
   Data = CFPropertyListCreateData(0, Mutable, kCFPropertyListXMLFormat_v1_0, 0, 0);
-  v22 = *(a6 + 3);
+  v22 = *(to + 3);
   Current = CFAbsoluteTimeGetCurrent();
-  v24 = CFMessagePortSendRequest(v22, a8, Data, a3 - Current, 0.0, 0, 0);
+  v24 = CFMessagePortSendRequest(v22, msgid, Data, time - Current, 0.0, 0, 0);
   CFRelease(Data);
   CFRelease(Mutable);
   if (v24 == -1)
@@ -87,94 +87,94 @@
   return 1;
 }
 
-- (BOOL)sendBeforeTime:(double)a3 streamData:(void *)a4 components:(id)a5 from:(id)a6 msgid:(unsigned int)a7
+- (BOOL)sendBeforeTime:(double)time streamData:(void *)data components:(id)components from:(id)from msgid:(unsigned int)msgid
 {
-  v7 = *&a7;
+  v7 = *&msgid;
   v13 = objc_opt_class();
-  v14 = [(NSPort *)self reservedSpaceLength];
+  reservedSpaceLength = [(NSPort *)self reservedSpaceLength];
 
-  return [v13 sendBeforeTime:a4 streamData:a5 components:self to:a6 from:v7 msgid:v14 reserved:a3];
+  return [v13 sendBeforeTime:data streamData:components components:self to:from from:v7 msgid:reservedSpaceLength reserved:time];
 }
 
-- (BOOL)sendBeforeDate:(id)a3 components:(id)a4 from:(id)a5 reserved:(unint64_t)a6
+- (BOOL)sendBeforeDate:(id)date components:(id)components from:(id)from reserved:(unint64_t)reserved
 {
   v11 = objc_opt_class();
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
-  return [v11 sendBeforeTime:0 streamData:a4 components:self to:a5 from:0 msgid:a6 reserved:?];
+  return [v11 sendBeforeTime:0 streamData:components components:self to:from from:0 msgid:reserved reserved:?];
 }
 
-- (BOOL)sendBeforeDate:(id)a3 msgid:(unint64_t)a4 components:(id)a5 from:(id)a6 reserved:(unint64_t)a7
+- (BOOL)sendBeforeDate:(id)date msgid:(unint64_t)msgid components:(id)components from:(id)from reserved:(unint64_t)reserved
 {
   v13 = objc_opt_class();
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
-  return [v13 sendBeforeTime:0 streamData:a5 components:self to:a6 from:a4 msgid:a7 reserved:?];
+  return [v13 sendBeforeTime:0 streamData:components components:self to:from from:msgid msgid:reserved reserved:?];
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  if (a3)
+  if (loop)
   {
     RunLoopSource = CFMessagePortCreateRunLoopSource(0, self->_port, 300);
     if (RunLoopSource)
     {
       v7 = RunLoopSource;
-      CFRunLoopAddSource([a3 getCFRunLoop], RunLoopSource, a4);
+      CFRunLoopAddSource([loop getCFRunLoop], RunLoopSource, mode);
 
       CFRelease(v7);
     }
   }
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  if (a3)
+  if (loop)
   {
     RunLoopSource = CFMessagePortCreateRunLoopSource(0, self->_port, 300);
     if (RunLoopSource)
     {
       v7 = RunLoopSource;
-      CFRunLoopRemoveSource([a3 getCFRunLoop], RunLoopSource, a4);
+      CFRunLoopRemoveSource([loop getCFRunLoop], RunLoopSource, mode);
 
       CFRelease(v7);
     }
   }
 }
 
-- (NSMessagePort)initWithName:(id)a3
+- (NSMessagePort)initWithName:(id)name
 {
-  v3 = self;
+  selfCopy = self;
   v9 = *MEMORY[0x1E69E9840];
   shouldFreeInfo = 0;
   context.version = 0;
   memset(&context.retain, 0, 24);
   context.info = self;
-  v4 = CFMessagePortCreateLocal(0, a3, __NSFireMessagePort, &context, &shouldFreeInfo);
-  v3->_port = v4;
+  v4 = CFMessagePortCreateLocal(0, name, __NSFireMessagePort, &context, &shouldFreeInfo);
+  selfCopy->_port = v4;
   if (v4)
   {
     if (!shouldFreeInfo)
     {
-      v3->_delegate = 0;
+      selfCopy->_delegate = 0;
     }
   }
 
   else
   {
-    v6.receiver = v3;
+    v6.receiver = selfCopy;
     v6.super_class = NSMessagePort;
     [(NSMessagePort *)&v6 dealloc];
     return 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (NSMessagePort)initWithRemoteName:(id)a3
+- (NSMessagePort)initWithRemoteName:(id)name
 {
   v7 = *MEMORY[0x1E69E9840];
-  Remote = CFMessagePortCreateRemote(0, a3);
+  Remote = CFMessagePortCreateRemote(0, name);
   self->_port = Remote;
   if (Remote)
   {

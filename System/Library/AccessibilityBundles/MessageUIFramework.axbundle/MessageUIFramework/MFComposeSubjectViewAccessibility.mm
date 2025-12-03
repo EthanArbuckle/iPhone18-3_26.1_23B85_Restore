@@ -1,20 +1,20 @@
 @interface MFComposeSubjectViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (MFComposeSubjectViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (MFComposeSubjectViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setNotifyOptionSelected:(BOOL)a3;
+- (void)setNotifyOptionSelected:(BOOL)selected;
 @end
 
 @implementation MFComposeSubjectViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFComposeSubjectView" hasInstanceMethod:@"setNotifyOptionSelected:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"MFComposeSubjectView" hasInstanceVariable:@"_notifyButton" withType:"MFConfirmationButton"];
-  [v3 validateClass:@"MFComposeSubjectView" hasInstanceVariable:@"_textView" withType:"UITextView"];
-  [v3 validateClass:@"MFComposeSubjectView" isKindOfClass:@"CNComposeHeaderView"];
-  [v3 validateClass:@"CNComposeHeaderView" hasInstanceMethod:@"labelView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFComposeSubjectView" hasInstanceMethod:@"setNotifyOptionSelected:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"MFComposeSubjectView" hasInstanceVariable:@"_notifyButton" withType:"MFConfirmationButton"];
+  [validationsCopy validateClass:@"MFComposeSubjectView" hasInstanceVariable:@"_textView" withType:"UITextView"];
+  [validationsCopy validateClass:@"MFComposeSubjectView" isKindOfClass:@"CNComposeHeaderView"];
+  [validationsCopy validateClass:@"CNComposeHeaderView" hasInstanceMethod:@"labelView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,25 +33,25 @@
   [v6 setIsAccessibilityElement:0];
 }
 
-- (MFComposeSubjectViewAccessibility)initWithFrame:(CGRect)a3
+- (MFComposeSubjectViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = MFComposeSubjectViewAccessibility;
-  v3 = [(MFComposeSubjectViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFComposeSubjectViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MFComposeSubjectViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
 }
 
-- (void)setNotifyOptionSelected:(BOOL)a3
+- (void)setNotifyOptionSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v9.receiver = self;
   v9.super_class = MFComposeSubjectViewAccessibility;
   [(MFComposeSubjectViewAccessibility *)&v9 setNotifyOptionSelected:?];
   v5 = *MEMORY[0x29EDC7F70];
   v6 = *MEMORY[0x29EDC7FC0];
-  if (v3)
+  if (selectedCopy)
   {
     v7 = *MEMORY[0x29EDC7FC0];
   }

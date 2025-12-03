@@ -1,34 +1,34 @@
 @interface MailStatusUndoView
-- (MailStatusUndoView)initWithFrame:(CGRect)a3;
+- (MailStatusUndoView)initWithFrame:(CGRect)frame;
 - (MailStatusUndoViewDelegate)delegate;
-- (void)_undoButtonTapped:(id)a3;
+- (void)_undoButtonTapped:(id)tapped;
 @end
 
 @implementation MailStatusUndoView
 
-- (MailStatusUndoView)initWithFrame:(CGRect)a3
+- (MailStatusUndoView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = MailStatusUndoView;
-  v3 = [(MailStatusUndoView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MailStatusUndoView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MailStatusUndoView *)v3 _buttonConfiguration];
+    _buttonConfiguration = [(MailStatusUndoView *)v3 _buttonConfiguration];
     v6 = [UIImage systemImageNamed:MFImageGlyphUndoSend];
-    [v5 setImage:v6];
+    [_buttonConfiguration setImage:v6];
 
-    [v5 setImagePadding:3.0];
+    [_buttonConfiguration setImagePadding:3.0];
     v7 = [UIImageSymbolConfiguration configurationWithScale:1];
-    [v5 setPreferredSymbolConfigurationForImage:v7];
+    [_buttonConfiguration setPreferredSymbolConfigurationForImage:v7];
 
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"UNDO_SEND_BUTTON_TITLE" value:&stru_100662A88 table:@"Main"];
-    [v5 setTitle:v9];
+    [_buttonConfiguration setTitle:v9];
 
-    [v5 setButtonSize:1];
-    [v5 setTitleLineBreakMode:4];
-    v10 = [UIButton buttonWithConfiguration:v5 primaryAction:0];
+    [_buttonConfiguration setButtonSize:1];
+    [_buttonConfiguration setTitleLineBreakMode:4];
+    v10 = [UIButton buttonWithConfiguration:_buttonConfiguration primaryAction:0];
     [(UIButton *)v10 setShowsLargeContentViewer:1];
     [(UIButton *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v10 addTarget:v4 action:"_undoButtonTapped:" forControlEvents:64];
@@ -40,21 +40,21 @@
 
     else
     {
-      v25 = [(UIButton *)v10 centerXAnchor];
-      v22 = [(MailStatusUndoView *)v4 centerXAnchor];
-      v21 = [v25 constraintEqualToAnchor:?];
+      centerXAnchor = [(UIButton *)v10 centerXAnchor];
+      centerXAnchor2 = [(MailStatusUndoView *)v4 centerXAnchor];
+      v21 = [centerXAnchor constraintEqualToAnchor:?];
       v27[0] = v21;
-      v24 = [(UIButton *)v10 centerYAnchor];
-      v20 = [(MailStatusUndoView *)v4 centerYAnchor];
-      v19 = [v24 constraintEqualToAnchor:?];
+      centerYAnchor = [(UIButton *)v10 centerYAnchor];
+      centerYAnchor2 = [(MailStatusUndoView *)v4 centerYAnchor];
+      v19 = [centerYAnchor constraintEqualToAnchor:?];
       v27[1] = v19;
-      v23 = [(UIButton *)v10 leadingAnchor];
-      v11 = [(MailStatusUndoView *)v4 leadingAnchor];
-      v12 = [v23 constraintEqualToAnchor:v11];
+      leadingAnchor = [(UIButton *)v10 leadingAnchor];
+      leadingAnchor2 = [(MailStatusUndoView *)v4 leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v27[2] = v12;
-      v13 = [(UIButton *)v10 trailingAnchor];
-      v14 = [(MailStatusUndoView *)v4 trailingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      trailingAnchor = [(UIButton *)v10 trailingAnchor];
+      trailingAnchor2 = [(MailStatusUndoView *)v4 trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v27[3] = v15;
       v16 = [NSArray arrayWithObjects:v27 count:4];
       [NSLayoutConstraint activateConstraints:v16];
@@ -67,10 +67,10 @@
   return v4;
 }
 
-- (void)_undoButtonTapped:(id)a3
+- (void)_undoButtonTapped:(id)tapped
 {
-  v4 = [(MailStatusUndoView *)self delegate];
-  [v4 mailStatusUndoViewUndoButtonTapped:self];
+  delegate = [(MailStatusUndoView *)self delegate];
+  [delegate mailStatusUndoViewUndoButtonTapped:self];
 }
 
 - (MailStatusUndoViewDelegate)delegate

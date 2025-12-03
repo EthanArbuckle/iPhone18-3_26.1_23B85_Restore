@@ -1,6 +1,6 @@
 @interface CKMaterialPlatterViewMaskShapeLayer
 - (_TtC7ChatKit35CKMaterialPlatterViewMaskShapeLayer)init;
-- (_TtC7ChatKit35CKMaterialPlatterViewMaskShapeLayer)initWithCoder:(id)a3;
+- (_TtC7ChatKit35CKMaterialPlatterViewMaskShapeLayer)initWithCoder:(id)coder;
 @end
 
 @implementation CKMaterialPlatterViewMaskShapeLayer
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (_TtC7ChatKit35CKMaterialPlatterViewMaskShapeLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit35CKMaterialPlatterViewMaskShapeLayer)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);

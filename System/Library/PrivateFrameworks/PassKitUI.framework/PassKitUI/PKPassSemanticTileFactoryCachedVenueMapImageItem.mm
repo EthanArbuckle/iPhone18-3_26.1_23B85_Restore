@@ -1,15 +1,15 @@
 @interface PKPassSemanticTileFactoryCachedVenueMapImageItem
 - (BOOL)beginContentAccess;
-- (PKPassSemanticTileFactoryCachedVenueMapImageItem)initWithVenueMapImage:(id)a3;
+- (PKPassSemanticTileFactoryCachedVenueMapImageItem)initWithVenueMapImage:(id)image;
 - (void)discardContentIfPossible;
 @end
 
 @implementation PKPassSemanticTileFactoryCachedVenueMapImageItem
 
-- (PKPassSemanticTileFactoryCachedVenueMapImageItem)initWithVenueMapImage:(id)a3
+- (PKPassSemanticTileFactoryCachedVenueMapImageItem)initWithVenueMapImage:(id)image
 {
-  v5 = a3;
-  if (v5)
+  imageCopy = image;
+  if (imageCopy)
   {
     v10.receiver = self;
     v10.super_class = PKPassSemanticTileFactoryCachedVenueMapImageItem;
@@ -17,19 +17,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_venueMapImage, a3);
+      objc_storeStrong(&v6->_venueMapImage, image);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)beginContentAccess

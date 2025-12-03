@@ -1,11 +1,11 @@
 @interface PAESimpleKeyer
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (BOOL)pullInitialKey:(id *)a3;
-- (HGRef<HGNode>)getKeyerNode:(HGRef<HGNode>)a3 omKeyer:(void *)a4 atTime:(id)a5;
-- (PAESimpleKeyer)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (BOOL)pullInitialKey:(id *)key;
+- (HGRef<HGNode>)getKeyerNode:(HGRef<HGNode>)node omKeyer:(void *)keyer atTime:(id)time;
+- (PAESimpleKeyer)initWithAPIManager:(id)manager;
 - (id)properties;
-- (void)createLutForNode:(void *)a3 input:(int)a4 rect:(const HGRect *)a5 omKeyer:(void *)a6;
+- (void)createLutForNode:(void *)node input:(int)input rect:(const HGRect *)rect omKeyer:(void *)keyer;
 - (void)dealloc;
 @end
 
@@ -20,23 +20,23 @@
   return v2;
 }
 
-- (PAESimpleKeyer)initWithAPIManager:(id)a3
+- (PAESimpleKeyer)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAESimpleKeyer;
-  return [(PAEKeyer *)&v4 initWithAPIManager:a3];
+  return [(PAEKeyer *)&v4 initWithAPIManager:manager];
 }
 
-- (void)createLutForNode:(void *)a3 input:(int)a4 rect:(const HGRect *)a5 omKeyer:(void *)a6
+- (void)createLutForNode:(void *)node input:(int)input rect:(const HGRect *)rect omKeyer:(void *)keyer
 {
   p_cacheMutex = &self->super._cacheMutex;
   PCMutex::lock(&self->super._cacheMutex);
   v12 = HGObject::operator new(0x80uLL);
-  HGBitmap::HGBitmap(v12, *&a5->var0, *&a5->var2, 28);
+  HGBitmap::HGBitmap(v12, *&rect->var0, *&rect->var2, 28);
   v13 = *(v12 + 10);
-  v14 = [(PAEKeyer *)self isLutExpandedForHDR];
+  isLutExpandedForHDR = [(PAEKeyer *)self isLutExpandedForHDR];
   v15 = 0;
-  if (v14)
+  if (isLutExpandedForHDR)
   {
     v16 = 11.0;
   }
@@ -46,7 +46,7 @@
     v16 = 1.0;
   }
 
-  if (v14)
+  if (isLutExpandedForHDR)
   {
     v17 = 2816;
   }
@@ -59,10 +59,10 @@
   do
   {
     v18 = v15 / (v17 - 1);
-    OMKeyer2D::getAlphaLuma(a6, v16 * v18);
+    OMKeyer2D::getAlphaLuma(keyer, v16 * v18);
     *v13 = v19;
-    v20 = *(a6 + 15);
-    v21 = ((*(a6 + 16) - v20) >> 2);
+    v20 = *(keyer + 15);
+    v21 = ((*(keyer + 16) - v20) >> 2);
     if ((v15 / 255.0) <= 1.0)
     {
       v22 = v15 / 255.0;
@@ -93,7 +93,7 @@
 
   while (v17 != v15);
   v25 = HGObject::operator new(0x80uLL);
-  HGTexture::HGTexture(v25, *a5, v12);
+  HGTexture::HGTexture(v25, *rect, v12);
   lutsBitmapLoaderCache = self->super._lutsBitmapLoaderCache;
   if (lutsBitmapLoaderCache)
   {
@@ -105,11 +105,11 @@
   self->super._lutsBitmapLoaderCache = v27;
   (*(*v25 + 24))(v25);
   (*(*v12 + 24))(v12);
-  (*(*a3 + 120))(a3, a4, self->super._lutsBitmapLoaderCache);
+  (*(*node + 120))(node, input, self->super._lutsBitmapLoaderCache);
   PCMutex::unlock(p_cacheMutex);
 }
 
-- (HGRef<HGNode>)getKeyerNode:(HGRef<HGNode>)a3 omKeyer:(void *)a4 atTime:(id)a5
+- (HGRef<HGNode>)getKeyerNode:(HGRef<HGNode>)node omKeyer:(void *)keyer atTime:(id)time
 {
   v10 = *MEMORY[0x277D85DE8];
   v6 = HGObject::operator new(0x1B0uLL);
@@ -121,7 +121,7 @@
     (*(*v6 + 16))(v6);
   }
 
-  PAEKeyerDrawAlpha::drawAlpha_in_HGGLNode(&v9, a4, &v8);
+  PAEKeyerDrawAlpha::drawAlpha_in_HGGLNode(&v9, keyer, &v8);
   if (v8)
   {
     (*(*v8 + 24))(v8);
@@ -131,15 +131,15 @@
   HGColorMatrix::HGColorMatrix(v7);
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
-  v5 = *&a5->var2;
-  v8[0] = *&a5->var0.var0;
+  v5 = *&info->var2;
+  v8[0] = *&info->var0.var0;
   v8[1] = v5;
-  v8[2] = *&a5->var4;
+  v8[2] = *&info->var4;
   v7.receiver = self;
   v7.super_class = PAESimpleKeyer;
-  return [(PAEKeyer *)&v7 canThrowRenderOutput:a3 withInput:a4 withInfo:v8];
+  return [(PAEKeyer *)&v7 canThrowRenderOutput:output withInput:input withInfo:v8];
 }
 
 - (void)dealloc
@@ -149,7 +149,7 @@
   [(PAEKeyer *)&v2 dealloc];
 }
 
-- (BOOL)pullInitialKey:(id *)a3
+- (BOOL)pullInitialKey:(id *)key
 {
   v5 = [(PROAPIAccessing *)self->super.super.super._apiManager apiForProtocol:&unk_28735E258];
   v6 = [(PROAPIAccessing *)self->super.super.super._apiManager apiForProtocol:&unk_28736D650];
@@ -173,9 +173,9 @@
     v44 = [v43 localizedStringForKey:@"Keyer::UnableToObtainAPIsDescription" value:0 table:0];
     v45 = [v43 localizedStringForKey:@"Keyer::UnableToObtainAPIsReason" value:0 table:0];
     v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v44, *MEMORY[0x277CCA450], v45, *MEMORY[0x277CCA470], 0}];
-    if (a3)
+    if (key)
     {
-      *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:FxPlugErrorDomain code:100001 userInfo:v46];
+      *key = [MEMORY[0x277CCA9B8] errorWithDomain:FxPlugErrorDomain code:100001 userInfo:v46];
     }
   }
 
@@ -243,7 +243,7 @@
           v56 = &v69;
           v58 = v49;
           v59 = 3;
-          v24 = [(PAEKeyer *)self getColorPrimaries];
+          getColorPrimaries = [(PAEKeyer *)self getColorPrimaries];
           v25 = *(&v60 + 1);
           v26 = *&v60;
           v27 = v61;
@@ -264,7 +264,7 @@
           *&v39 = v32;
           *&v22 = v22;
           LODWORD(v40) = LODWORD(v22);
-          [PAEKeyerInitialize findSampleRectsWithInfo:v23 screenColor:"findSampleRectsWithInfo:screenColor:colorPrimaries:width:height:minGreenHueAngle:maxGreenHueAngle:greenChroma:minBlueHueAngle:maxBlueHueAngle:blueChroma:histoPercentageIncluded:omSamples:viewingSetupMatte:use32x32Histogram:simpleKey:" colorPrimaries:&v56 width:&v50 height:v24 minGreenHueAngle:v25 maxGreenHueAngle:v26 greenChroma:omSamples minBlueHueAngle:v34 maxBlueHueAngle:v35 blueChroma:v36 histoPercentageIncluded:v37 omSamples:v38 viewingSetupMatte:v39 use32x32Histogram:v40 simpleKey:v48];
+          [PAEKeyerInitialize findSampleRectsWithInfo:v23 screenColor:"findSampleRectsWithInfo:screenColor:colorPrimaries:width:height:minGreenHueAngle:maxGreenHueAngle:greenChroma:minBlueHueAngle:maxBlueHueAngle:blueChroma:histoPercentageIncluded:omSamples:viewingSetupMatte:use32x32Histogram:simpleKey:" colorPrimaries:&v56 width:&v50 height:getColorPrimaries minGreenHueAngle:v25 maxGreenHueAngle:v26 greenChroma:omSamples minBlueHueAngle:v34 maxBlueHueAngle:v35 blueChroma:v36 histoPercentageIncluded:v37 omSamples:v38 viewingSetupMatte:v39 use32x32Histogram:v40 simpleKey:v48];
           if (v50)
           {
             if (v50 != 1)
@@ -298,11 +298,11 @@ LABEL_24:
   return v11;
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
   v4.receiver = self;
   v4.super_class = PAESimpleKeyer;
-  return [(PAESimpleKeyer *)&v4 parameterChanged:*&a3];
+  return [(PAESimpleKeyer *)&v4 parameterChanged:*&changed];
 }
 
 @end

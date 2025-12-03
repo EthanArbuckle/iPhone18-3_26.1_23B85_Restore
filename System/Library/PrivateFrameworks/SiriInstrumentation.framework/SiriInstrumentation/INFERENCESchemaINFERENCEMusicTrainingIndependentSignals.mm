@@ -1,81 +1,81 @@
 @interface INFERENCESchemaINFERENCEMusicTrainingIndependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEMusicTrainingIndependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEMusicTrainingIndependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEMusicTrainingIndependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEMusicTrainingIndependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppSelectionUses:(BOOL)a3;
-- (void)setHasCommonForegroundAppRecency:(BOOL)a3;
-- (void)setHasForegroundBundleRecencyS:(BOOL)a3;
-- (void)setHasIsClientDaylight:(BOOL)a3;
-- (void)setHasIsClientNavigating:(BOOL)a3;
-- (void)setHasIsClientWorkout:(BOOL)a3;
-- (void)setHasIsContentFree:(BOOL)a3;
-- (void)setHasIsMediaAlbumPresent:(BOOL)a3;
-- (void)setHasIsMediaArtistPresent:(BOOL)a3;
-- (void)setHasIsMediaGenrePresent:(BOOL)a3;
-- (void)setHasIsMediaMoodPresent:(BOOL)a3;
-- (void)setHasIsMediaNamePresent:(BOOL)a3;
-- (void)setHasIsMediaReleaseDatePresent:(BOOL)a3;
-- (void)setHasIsPireneRequest:(BOOL)a3;
-- (void)setHasIsUserRecognized:(BOOL)a3;
-- (void)setHasMediaParsecCategory:(BOOL)a3;
-- (void)setHasMediaType:(BOOL)a3;
-- (void)setHasModelVersion:(BOOL)a3;
-- (void)setHasNowPlayingLastBundleRecencyS:(BOOL)a3;
-- (void)setHasNowPlayingState:(BOOL)a3;
-- (void)setHasRawClientHourOfDay:(BOOL)a3;
-- (void)setHasRawLanguage:(BOOL)a3;
-- (void)setHasRawLocale:(BOOL)a3;
-- (void)setHasRawNowPlayingState:(BOOL)a3;
-- (void)setHasRawRegion:(BOOL)a3;
-- (void)setHasResolutionType:(BOOL)a3;
-- (void)setHasServerSearchResultsMediaType:(BOOL)a3;
-- (void)setHasSirikitResponseCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppSelectionUses:(BOOL)uses;
+- (void)setHasCommonForegroundAppRecency:(BOOL)recency;
+- (void)setHasForegroundBundleRecencyS:(BOOL)s;
+- (void)setHasIsClientDaylight:(BOOL)daylight;
+- (void)setHasIsClientNavigating:(BOOL)navigating;
+- (void)setHasIsClientWorkout:(BOOL)workout;
+- (void)setHasIsContentFree:(BOOL)free;
+- (void)setHasIsMediaAlbumPresent:(BOOL)present;
+- (void)setHasIsMediaArtistPresent:(BOOL)present;
+- (void)setHasIsMediaGenrePresent:(BOOL)present;
+- (void)setHasIsMediaMoodPresent:(BOOL)present;
+- (void)setHasIsMediaNamePresent:(BOOL)present;
+- (void)setHasIsMediaReleaseDatePresent:(BOOL)present;
+- (void)setHasIsPireneRequest:(BOOL)request;
+- (void)setHasIsUserRecognized:(BOOL)recognized;
+- (void)setHasMediaParsecCategory:(BOOL)category;
+- (void)setHasMediaType:(BOOL)type;
+- (void)setHasModelVersion:(BOOL)version;
+- (void)setHasNowPlayingLastBundleRecencyS:(BOOL)s;
+- (void)setHasNowPlayingState:(BOOL)state;
+- (void)setHasRawClientHourOfDay:(BOOL)day;
+- (void)setHasRawLanguage:(BOOL)language;
+- (void)setHasRawLocale:(BOOL)locale;
+- (void)setHasRawNowPlayingState:(BOOL)state;
+- (void)setHasRawRegion:(BOOL)region;
+- (void)setHasResolutionType:(BOOL)type;
+- (void)setHasServerSearchResultsMediaType:(BOOL)type;
+- (void)setHasSirikitResponseCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEMusicTrainingIndependentSignals
 
-- (INFERENCESchemaINFERENCEMusicTrainingIndependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEMusicTrainingIndependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v63.receiver = self;
   v63.super_class = INFERENCESchemaINFERENCEMusicTrainingIndependentSignals;
   v5 = [(INFERENCESchemaINFERENCEMusicTrainingIndependentSignals *)&v63 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clientDayOfWeek"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clientDayOfWeek"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setClientDayOfWeek:](v5, "setClientDayOfWeek:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"rawClientHourOfDay"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"rawClientHourOfDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setRawClientHourOfDay:](v5, "setRawClientHourOfDay:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isMediaAlbumPresent"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isMediaAlbumPresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setIsMediaAlbumPresent:](v5, "setIsMediaAlbumPresent:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isMediaArtistPresent"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isMediaArtistPresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setIsMediaArtistPresent:](v5, "setIsMediaArtistPresent:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isMediaGenrePresent"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isMediaGenrePresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
     }
 
     v50 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"isMediaMoodPresent"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isMediaMoodPresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
 
     v12 = v9;
     v54 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"isMediaNamePresent"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isMediaNamePresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
     }
 
     v14 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"isMediaReleaseDatePresent"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isMediaReleaseDatePresent"];
     objc_opt_class();
     v62 = v15;
     if (objc_opt_isKindOfClass())
@@ -109,14 +109,14 @@
     }
 
     v16 = v7;
-    v17 = [v4 objectForKeyedSubscript:@"nowPlayingLastBundleRecencyS"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingLastBundleRecencyS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setNowPlayingLastBundleRecencyS:](v5, "setNowPlayingLastBundleRecencyS:", [v17 intValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"rawLanguage"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"rawLanguage"];
     objc_opt_class();
     v61 = v18;
     if (objc_opt_isKindOfClass())
@@ -124,7 +124,7 @@
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setRawLanguage:](v5, "setRawLanguage:", [v18 longLongValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"rawLocale"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"rawLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
     }
 
     v46 = v19;
-    v20 = [v4 objectForKeyedSubscript:@"rawRegion"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"rawRegion"];
     objc_opt_class();
     v60 = v20;
     v53 = v16;
@@ -141,7 +141,7 @@
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setRawRegion:](v5, "setRawRegion:", [v20 longLongValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isClientDaylight"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isClientDaylight"];
     objc_opt_class();
     v59 = v21;
     v52 = v14;
@@ -150,7 +150,7 @@
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setIsClientDaylight:](v5, "setIsClientDaylight:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"isClientNavigating"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isClientNavigating"];
     objc_opt_class();
     v58 = v22;
     v51 = v12;
@@ -159,14 +159,14 @@
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setIsClientNavigating:](v5, "setIsClientNavigating:", [v22 BOOLValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"isClientWorkout"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isClientWorkout"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setIsClientWorkout:](v5, "setIsClientWorkout:", [v23 BOOLValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"mediaType"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"mediaType"];
     objc_opt_class();
     v57 = v24;
     if (objc_opt_isKindOfClass())
@@ -174,14 +174,14 @@
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setMediaType:](v5, "setMediaType:", [v24 intValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"nowPlayingState"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"nowPlayingState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setNowPlayingState:](v5, "setNowPlayingState:", [v25 intValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"isPireneRequest"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"isPireneRequest"];
     objc_opt_class();
     v56 = v26;
     if (objc_opt_isKindOfClass())
@@ -189,7 +189,7 @@
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setIsPireneRequest:](v5, "setIsPireneRequest:", [v26 BOOLValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"foregroundBundleRecencyS"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"foregroundBundleRecencyS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -197,7 +197,7 @@
       [(INFERENCESchemaINFERENCEMusicTrainingIndependentSignals *)v5 setForegroundBundleRecencyS:?];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"mediaParsecCategory"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"mediaParsecCategory"];
     objc_opt_class();
     v55 = v28;
     if (objc_opt_isKindOfClass())
@@ -205,7 +205,7 @@
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setMediaParsecCategory:](v5, "setMediaParsecCategory:", [v28 intValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"sirikitResponseCode"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"sirikitResponseCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -213,7 +213,7 @@
     }
 
     v49 = v11;
-    v30 = [v4 objectForKeyedSubscript:@"appSelectionUses"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"appSelectionUses"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -221,7 +221,7 @@
     }
 
     v48 = v13;
-    v31 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -230,7 +230,7 @@
 
     v41 = v31;
     v47 = v17;
-    v32 = [v4 objectForKeyedSubscript:@"resolutionType"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"resolutionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -238,7 +238,7 @@
     }
 
     v45 = v25;
-    v33 = [v4 objectForKeyedSubscript:@"rawNowPlayingState"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"rawNowPlayingState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -246,7 +246,7 @@
     }
 
     v44 = v27;
-    v34 = [v4 objectForKeyedSubscript:@"commonForegroundAppRecency"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"commonForegroundAppRecency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -255,7 +255,7 @@
 
     v42 = v30;
     v43 = v29;
-    v35 = [v4 objectForKeyedSubscript:@"isContentFree"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"isContentFree"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -263,14 +263,14 @@
     }
 
     v36 = v23;
-    v37 = [v4 objectForKeyedSubscript:@"isUserRecognized"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"isUserRecognized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals setIsUserRecognized:](v5, "setIsUserRecognized:", [v37 BOOLValue]);
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"serverSearchResultsMediaType"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"serverSearchResultsMediaType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -283,30 +283,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEMusicTrainingIndependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEMusicTrainingIndependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEMusicTrainingIndependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEMusicTrainingIndependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEMusicTrainingIndependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -319,12 +319,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((*&has & 0x200000) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals appSelectionUses](self, "appSelectionUses")}];
-    [v3 setObject:v7 forKeyedSubscript:@"appSelectionUses"];
+    [dictionary setObject:v7 forKeyedSubscript:@"appSelectionUses"];
 
     has = self->_has;
     if ((*&has & 1) == 0)
@@ -345,7 +345,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals clientDayOfWeek](self, "clientDayOfWeek")}];
-  [v3 setObject:v8 forKeyedSubscript:@"clientDayOfWeek"];
+  [dictionary setObject:v8 forKeyedSubscript:@"clientDayOfWeek"];
 
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
@@ -361,7 +361,7 @@ LABEL_4:
 
 LABEL_36:
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals commonForegroundAppRecency](self, "commonForegroundAppRecency")}];
-  [v3 setObject:v9 forKeyedSubscript:@"commonForegroundAppRecency"];
+  [dictionary setObject:v9 forKeyedSubscript:@"commonForegroundAppRecency"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -379,7 +379,7 @@ LABEL_37:
   v10 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEMusicTrainingIndependentSignals *)self foregroundBundleRecencyS];
   v11 = [v10 numberWithDouble:?];
-  [v3 setObject:v11 forKeyedSubscript:@"foregroundBundleRecencyS"];
+  [dictionary setObject:v11 forKeyedSubscript:@"foregroundBundleRecencyS"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -395,7 +395,7 @@ LABEL_6:
 
 LABEL_38:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isClientDaylight](self, "isClientDaylight")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isClientDaylight"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isClientDaylight"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -411,7 +411,7 @@ LABEL_7:
 
 LABEL_39:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isClientNavigating](self, "isClientNavigating")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isClientNavigating"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isClientNavigating"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -427,7 +427,7 @@ LABEL_8:
 
 LABEL_40:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isClientWorkout](self, "isClientWorkout")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isClientWorkout"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isClientWorkout"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -443,7 +443,7 @@ LABEL_9:
 
 LABEL_41:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isContentFree](self, "isContentFree")}];
-  [v3 setObject:v15 forKeyedSubscript:@"isContentFree"];
+  [dictionary setObject:v15 forKeyedSubscript:@"isContentFree"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -459,7 +459,7 @@ LABEL_10:
 
 LABEL_42:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isMediaAlbumPresent](self, "isMediaAlbumPresent")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isMediaAlbumPresent"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isMediaAlbumPresent"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -475,7 +475,7 @@ LABEL_11:
 
 LABEL_43:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isMediaArtistPresent](self, "isMediaArtistPresent")}];
-  [v3 setObject:v17 forKeyedSubscript:@"isMediaArtistPresent"];
+  [dictionary setObject:v17 forKeyedSubscript:@"isMediaArtistPresent"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -491,7 +491,7 @@ LABEL_12:
 
 LABEL_44:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isMediaGenrePresent](self, "isMediaGenrePresent")}];
-  [v3 setObject:v18 forKeyedSubscript:@"isMediaGenrePresent"];
+  [dictionary setObject:v18 forKeyedSubscript:@"isMediaGenrePresent"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -507,7 +507,7 @@ LABEL_13:
 
 LABEL_45:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isMediaMoodPresent](self, "isMediaMoodPresent")}];
-  [v3 setObject:v19 forKeyedSubscript:@"isMediaMoodPresent"];
+  [dictionary setObject:v19 forKeyedSubscript:@"isMediaMoodPresent"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -523,7 +523,7 @@ LABEL_14:
 
 LABEL_46:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isMediaNamePresent](self, "isMediaNamePresent")}];
-  [v3 setObject:v20 forKeyedSubscript:@"isMediaNamePresent"];
+  [dictionary setObject:v20 forKeyedSubscript:@"isMediaNamePresent"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -539,7 +539,7 @@ LABEL_15:
 
 LABEL_47:
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isMediaReleaseDatePresent](self, "isMediaReleaseDatePresent")}];
-  [v3 setObject:v21 forKeyedSubscript:@"isMediaReleaseDatePresent"];
+  [dictionary setObject:v21 forKeyedSubscript:@"isMediaReleaseDatePresent"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -555,7 +555,7 @@ LABEL_16:
 
 LABEL_48:
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isPireneRequest](self, "isPireneRequest")}];
-  [v3 setObject:v22 forKeyedSubscript:@"isPireneRequest"];
+  [dictionary setObject:v22 forKeyedSubscript:@"isPireneRequest"];
 
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
@@ -571,7 +571,7 @@ LABEL_17:
 
 LABEL_49:
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals isUserRecognized](self, "isUserRecognized")}];
-  [v3 setObject:v23 forKeyedSubscript:@"isUserRecognized"];
+  [dictionary setObject:v23 forKeyedSubscript:@"isUserRecognized"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -587,7 +587,7 @@ LABEL_18:
 
 LABEL_50:
   v24 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals mediaParsecCategory](self, "mediaParsecCategory")}];
-  [v3 setObject:v24 forKeyedSubscript:@"mediaParsecCategory"];
+  [dictionary setObject:v24 forKeyedSubscript:@"mediaParsecCategory"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -603,7 +603,7 @@ LABEL_19:
 
 LABEL_51:
   v25 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals mediaType](self, "mediaType")}];
-  [v3 setObject:v25 forKeyedSubscript:@"mediaType"];
+  [dictionary setObject:v25 forKeyedSubscript:@"mediaType"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -619,7 +619,7 @@ LABEL_20:
 
 LABEL_52:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals modelVersion](self, "modelVersion")}];
-  [v3 setObject:v26 forKeyedSubscript:@"modelVersion"];
+  [dictionary setObject:v26 forKeyedSubscript:@"modelVersion"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -635,7 +635,7 @@ LABEL_21:
 
 LABEL_53:
   v27 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals nowPlayingLastBundleRecencyS](self, "nowPlayingLastBundleRecencyS")}];
-  [v3 setObject:v27 forKeyedSubscript:@"nowPlayingLastBundleRecencyS"];
+  [dictionary setObject:v27 forKeyedSubscript:@"nowPlayingLastBundleRecencyS"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -651,7 +651,7 @@ LABEL_22:
 
 LABEL_54:
   v28 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals nowPlayingState](self, "nowPlayingState")}];
-  [v3 setObject:v28 forKeyedSubscript:@"nowPlayingState"];
+  [dictionary setObject:v28 forKeyedSubscript:@"nowPlayingState"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -667,7 +667,7 @@ LABEL_23:
 
 LABEL_55:
   v29 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals rawClientHourOfDay](self, "rawClientHourOfDay")}];
-  [v3 setObject:v29 forKeyedSubscript:@"rawClientHourOfDay"];
+  [dictionary setObject:v29 forKeyedSubscript:@"rawClientHourOfDay"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -683,7 +683,7 @@ LABEL_24:
 
 LABEL_56:
   v30 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals rawLanguage](self, "rawLanguage")}];
-  [v3 setObject:v30 forKeyedSubscript:@"rawLanguage"];
+  [dictionary setObject:v30 forKeyedSubscript:@"rawLanguage"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -699,7 +699,7 @@ LABEL_25:
 
 LABEL_57:
   v31 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals rawLocale](self, "rawLocale")}];
-  [v3 setObject:v31 forKeyedSubscript:@"rawLocale"];
+  [dictionary setObject:v31 forKeyedSubscript:@"rawLocale"];
 
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
@@ -715,7 +715,7 @@ LABEL_26:
 
 LABEL_58:
   v32 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals rawNowPlayingState](self, "rawNowPlayingState")}];
-  [v3 setObject:v32 forKeyedSubscript:@"rawNowPlayingState"];
+  [dictionary setObject:v32 forKeyedSubscript:@"rawNowPlayingState"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -731,7 +731,7 @@ LABEL_27:
 
 LABEL_59:
   v33 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals rawRegion](self, "rawRegion")}];
-  [v3 setObject:v33 forKeyedSubscript:@"rawRegion"];
+  [dictionary setObject:v33 forKeyedSubscript:@"rawRegion"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -757,7 +757,7 @@ LABEL_60:
     v35 = off_1E78D8A18[v34];
   }
 
-  [v3 setObject:v35 forKeyedSubscript:@"resolutionType"];
+  [dictionary setObject:v35 forKeyedSubscript:@"resolutionType"];
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -772,19 +772,19 @@ LABEL_29:
 
 LABEL_64:
   v36 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals serverSearchResultsMediaType](self, "serverSearchResultsMediaType")}];
-  [v3 setObject:v36 forKeyedSubscript:@"serverSearchResultsMediaType"];
+  [dictionary setObject:v36 forKeyedSubscript:@"serverSearchResultsMediaType"];
 
   if ((*&self->_has & 0x100000) != 0)
   {
 LABEL_30:
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEMusicTrainingIndependentSignals sirikitResponseCode](self, "sirikitResponseCode")}];
-    [v3 setObject:v5 forKeyedSubscript:@"sirikitResponseCode"];
+    [dictionary setObject:v5 forKeyedSubscript:@"sirikitResponseCode"];
   }
 
 LABEL_31:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1210,16 +1210,16 @@ LABEL_53:
   return v36 ^ v37 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30 ^ v31 ^ v32 ^ v33 ^ v34;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_118;
   }
 
   has = self->_has;
-  v6 = v4[29];
+  v6 = equalCopy[29];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_118;
@@ -1228,13 +1228,13 @@ LABEL_53:
   if (*&has)
   {
     clientDayOfWeek = self->_clientDayOfWeek;
-    if (clientDayOfWeek != [v4 clientDayOfWeek])
+    if (clientDayOfWeek != [equalCopy clientDayOfWeek])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -1246,13 +1246,13 @@ LABEL_53:
   if (v8)
   {
     rawClientHourOfDay = self->_rawClientHourOfDay;
-    if (rawClientHourOfDay != [v4 rawClientHourOfDay])
+    if (rawClientHourOfDay != [equalCopy rawClientHourOfDay])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -1264,13 +1264,13 @@ LABEL_53:
   if (v10)
   {
     isMediaAlbumPresent = self->_isMediaAlbumPresent;
-    if (isMediaAlbumPresent != [v4 isMediaAlbumPresent])
+    if (isMediaAlbumPresent != [equalCopy isMediaAlbumPresent])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -1282,13 +1282,13 @@ LABEL_53:
   if (v12)
   {
     isMediaArtistPresent = self->_isMediaArtistPresent;
-    if (isMediaArtistPresent != [v4 isMediaArtistPresent])
+    if (isMediaArtistPresent != [equalCopy isMediaArtistPresent])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -1300,13 +1300,13 @@ LABEL_53:
   if (v14)
   {
     isMediaGenrePresent = self->_isMediaGenrePresent;
-    if (isMediaGenrePresent != [v4 isMediaGenrePresent])
+    if (isMediaGenrePresent != [equalCopy isMediaGenrePresent])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -1318,13 +1318,13 @@ LABEL_53:
   if (v16)
   {
     isMediaMoodPresent = self->_isMediaMoodPresent;
-    if (isMediaMoodPresent != [v4 isMediaMoodPresent])
+    if (isMediaMoodPresent != [equalCopy isMediaMoodPresent])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -1336,13 +1336,13 @@ LABEL_53:
   if (v18)
   {
     isMediaNamePresent = self->_isMediaNamePresent;
-    if (isMediaNamePresent != [v4 isMediaNamePresent])
+    if (isMediaNamePresent != [equalCopy isMediaNamePresent])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -1354,13 +1354,13 @@ LABEL_53:
   if (v20)
   {
     isMediaReleaseDatePresent = self->_isMediaReleaseDatePresent;
-    if (isMediaReleaseDatePresent != [v4 isMediaReleaseDatePresent])
+    if (isMediaReleaseDatePresent != [equalCopy isMediaReleaseDatePresent])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -1372,13 +1372,13 @@ LABEL_53:
   if (v22)
   {
     nowPlayingLastBundleRecencyS = self->_nowPlayingLastBundleRecencyS;
-    if (nowPlayingLastBundleRecencyS != [v4 nowPlayingLastBundleRecencyS])
+    if (nowPlayingLastBundleRecencyS != [equalCopy nowPlayingLastBundleRecencyS])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v24 = (*&has >> 9) & 1;
@@ -1390,13 +1390,13 @@ LABEL_53:
   if (v24)
   {
     rawLanguage = self->_rawLanguage;
-    if (rawLanguage != [v4 rawLanguage])
+    if (rawLanguage != [equalCopy rawLanguage])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v26 = (*&has >> 10) & 1;
@@ -1408,13 +1408,13 @@ LABEL_53:
   if (v26)
   {
     rawLocale = self->_rawLocale;
-    if (rawLocale != [v4 rawLocale])
+    if (rawLocale != [equalCopy rawLocale])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v28 = (*&has >> 11) & 1;
@@ -1426,13 +1426,13 @@ LABEL_53:
   if (v28)
   {
     rawRegion = self->_rawRegion;
-    if (rawRegion != [v4 rawRegion])
+    if (rawRegion != [equalCopy rawRegion])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v30 = (*&has >> 12) & 1;
@@ -1444,13 +1444,13 @@ LABEL_53:
   if (v30)
   {
     isClientDaylight = self->_isClientDaylight;
-    if (isClientDaylight != [v4 isClientDaylight])
+    if (isClientDaylight != [equalCopy isClientDaylight])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v32 = (*&has >> 13) & 1;
@@ -1462,13 +1462,13 @@ LABEL_53:
   if (v32)
   {
     isClientNavigating = self->_isClientNavigating;
-    if (isClientNavigating != [v4 isClientNavigating])
+    if (isClientNavigating != [equalCopy isClientNavigating])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v34 = (*&has >> 14) & 1;
@@ -1480,13 +1480,13 @@ LABEL_53:
   if (v34)
   {
     isClientWorkout = self->_isClientWorkout;
-    if (isClientWorkout != [v4 isClientWorkout])
+    if (isClientWorkout != [equalCopy isClientWorkout])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v36 = (*&has >> 15) & 1;
@@ -1498,13 +1498,13 @@ LABEL_53:
   if (v36)
   {
     mediaType = self->_mediaType;
-    if (mediaType != [v4 mediaType])
+    if (mediaType != [equalCopy mediaType])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v38 = HIWORD(*&has) & 1;
@@ -1516,13 +1516,13 @@ LABEL_53:
   if (v38)
   {
     nowPlayingState = self->_nowPlayingState;
-    if (nowPlayingState != [v4 nowPlayingState])
+    if (nowPlayingState != [equalCopy nowPlayingState])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v40 = (*&has >> 17) & 1;
@@ -1534,13 +1534,13 @@ LABEL_53:
   if (v40)
   {
     isPireneRequest = self->_isPireneRequest;
-    if (isPireneRequest != [v4 isPireneRequest])
+    if (isPireneRequest != [equalCopy isPireneRequest])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v42 = (*&has >> 18) & 1;
@@ -1552,14 +1552,14 @@ LABEL_53:
   if (v42)
   {
     foregroundBundleRecencyS = self->_foregroundBundleRecencyS;
-    [v4 foregroundBundleRecencyS];
+    [equalCopy foregroundBundleRecencyS];
     if (foregroundBundleRecencyS != v44)
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v45 = (*&has >> 19) & 1;
@@ -1571,13 +1571,13 @@ LABEL_53:
   if (v45)
   {
     mediaParsecCategory = self->_mediaParsecCategory;
-    if (mediaParsecCategory != [v4 mediaParsecCategory])
+    if (mediaParsecCategory != [equalCopy mediaParsecCategory])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v47 = (*&has >> 20) & 1;
@@ -1589,13 +1589,13 @@ LABEL_53:
   if (v47)
   {
     sirikitResponseCode = self->_sirikitResponseCode;
-    if (sirikitResponseCode != [v4 sirikitResponseCode])
+    if (sirikitResponseCode != [equalCopy sirikitResponseCode])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v49 = (*&has >> 21) & 1;
@@ -1607,13 +1607,13 @@ LABEL_53:
   if (v49)
   {
     appSelectionUses = self->_appSelectionUses;
-    if (appSelectionUses != [v4 appSelectionUses])
+    if (appSelectionUses != [equalCopy appSelectionUses])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v51 = (*&has >> 22) & 1;
@@ -1625,13 +1625,13 @@ LABEL_53:
   if (v51)
   {
     modelVersion = self->_modelVersion;
-    if (modelVersion != [v4 modelVersion])
+    if (modelVersion != [equalCopy modelVersion])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v53 = (*&has >> 23) & 1;
@@ -1643,13 +1643,13 @@ LABEL_53:
   if (v53)
   {
     resolutionType = self->_resolutionType;
-    if (resolutionType != [v4 resolutionType])
+    if (resolutionType != [equalCopy resolutionType])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v55 = HIBYTE(*&has) & 1;
@@ -1661,13 +1661,13 @@ LABEL_53:
   if (v55)
   {
     rawNowPlayingState = self->_rawNowPlayingState;
-    if (rawNowPlayingState != [v4 rawNowPlayingState])
+    if (rawNowPlayingState != [equalCopy rawNowPlayingState])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v57 = (*&has >> 25) & 1;
@@ -1679,13 +1679,13 @@ LABEL_53:
   if (v57)
   {
     commonForegroundAppRecency = self->_commonForegroundAppRecency;
-    if (commonForegroundAppRecency != [v4 commonForegroundAppRecency])
+    if (commonForegroundAppRecency != [equalCopy commonForegroundAppRecency])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v59 = (*&has >> 26) & 1;
@@ -1697,13 +1697,13 @@ LABEL_53:
   if (v59)
   {
     isContentFree = self->_isContentFree;
-    if (isContentFree != [v4 isContentFree])
+    if (isContentFree != [equalCopy isContentFree])
     {
       goto LABEL_118;
     }
 
     has = self->_has;
-    v6 = v4[29];
+    v6 = equalCopy[29];
   }
 
   v61 = (*&has >> 27) & 1;
@@ -1715,10 +1715,10 @@ LABEL_53:
   if (v61)
   {
     isUserRecognized = self->_isUserRecognized;
-    if (isUserRecognized == [v4 isUserRecognized])
+    if (isUserRecognized == [equalCopy isUserRecognized])
     {
       has = self->_has;
-      v6 = v4[29];
+      v6 = equalCopy[29];
       goto LABEL_114;
     }
 
@@ -1737,7 +1737,7 @@ LABEL_114:
   if (v63)
   {
     serverSearchResultsMediaType = self->_serverSearchResultsMediaType;
-    if (serverSearchResultsMediaType != [v4 serverSearchResultsMediaType])
+    if (serverSearchResultsMediaType != [equalCopy serverSearchResultsMediaType])
     {
       goto LABEL_118;
     }
@@ -1749,9 +1749,9 @@ LABEL_119:
   return v65;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -2148,9 +2148,9 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)setHasServerSearchResultsMediaType:(BOOL)a3
+- (void)setHasServerSearchResultsMediaType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x10000000;
   }
@@ -2163,9 +2163,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xEFFFFFFF | v3);
 }
 
-- (void)setHasIsUserRecognized:(BOOL)a3
+- (void)setHasIsUserRecognized:(BOOL)recognized
 {
-  if (a3)
+  if (recognized)
   {
     v3 = 0x8000000;
   }
@@ -2178,9 +2178,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasIsContentFree:(BOOL)a3
+- (void)setHasIsContentFree:(BOOL)free
 {
-  if (a3)
+  if (free)
   {
     v3 = 0x4000000;
   }
@@ -2193,9 +2193,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasCommonForegroundAppRecency:(BOOL)a3
+- (void)setHasCommonForegroundAppRecency:(BOOL)recency
 {
-  if (a3)
+  if (recency)
   {
     v3 = 0x2000000;
   }
@@ -2208,9 +2208,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasRawNowPlayingState:(BOOL)a3
+- (void)setHasRawNowPlayingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0x1000000;
   }
@@ -2223,9 +2223,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasResolutionType:(BOOL)a3
+- (void)setHasResolutionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x800000;
   }
@@ -2238,9 +2238,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasModelVersion:(BOOL)a3
+- (void)setHasModelVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 0x400000;
   }
@@ -2253,9 +2253,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasAppSelectionUses:(BOOL)a3
+- (void)setHasAppSelectionUses:(BOOL)uses
 {
-  if (a3)
+  if (uses)
   {
     v3 = 0x200000;
   }
@@ -2268,9 +2268,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasSirikitResponseCode:(BOOL)a3
+- (void)setHasSirikitResponseCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 0x100000;
   }
@@ -2283,9 +2283,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasMediaParsecCategory:(BOOL)a3
+- (void)setHasMediaParsecCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 0x80000;
   }
@@ -2298,9 +2298,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasForegroundBundleRecencyS:(BOOL)a3
+- (void)setHasForegroundBundleRecencyS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 0x40000;
   }
@@ -2313,9 +2313,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasIsPireneRequest:(BOOL)a3
+- (void)setHasIsPireneRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 0x20000;
   }
@@ -2328,9 +2328,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasNowPlayingState:(BOOL)a3
+- (void)setHasNowPlayingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0x10000;
   }
@@ -2343,9 +2343,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasMediaType:(BOOL)a3
+- (void)setHasMediaType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x8000;
   }
@@ -2358,9 +2358,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasIsClientWorkout:(BOOL)a3
+- (void)setHasIsClientWorkout:(BOOL)workout
 {
-  if (a3)
+  if (workout)
   {
     v3 = 0x4000;
   }
@@ -2373,9 +2373,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasIsClientNavigating:(BOOL)a3
+- (void)setHasIsClientNavigating:(BOOL)navigating
 {
-  if (a3)
+  if (navigating)
   {
     v3 = 0x2000;
   }
@@ -2388,9 +2388,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasIsClientDaylight:(BOOL)a3
+- (void)setHasIsClientDaylight:(BOOL)daylight
 {
-  if (a3)
+  if (daylight)
   {
     v3 = 4096;
   }
@@ -2403,9 +2403,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasRawRegion:(BOOL)a3
+- (void)setHasRawRegion:(BOOL)region
 {
-  if (a3)
+  if (region)
   {
     v3 = 2048;
   }
@@ -2418,9 +2418,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasRawLocale:(BOOL)a3
+- (void)setHasRawLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 1024;
   }
@@ -2433,9 +2433,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasRawLanguage:(BOOL)a3
+- (void)setHasRawLanguage:(BOOL)language
 {
-  if (a3)
+  if (language)
   {
     v3 = 512;
   }
@@ -2448,9 +2448,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasNowPlayingLastBundleRecencyS:(BOOL)a3
+- (void)setHasNowPlayingLastBundleRecencyS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 256;
   }
@@ -2463,9 +2463,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasIsMediaReleaseDatePresent:(BOOL)a3
+- (void)setHasIsMediaReleaseDatePresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 128;
   }
@@ -2478,9 +2478,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasIsMediaNamePresent:(BOOL)a3
+- (void)setHasIsMediaNamePresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 64;
   }
@@ -2493,9 +2493,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasIsMediaMoodPresent:(BOOL)a3
+- (void)setHasIsMediaMoodPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 32;
   }
@@ -2508,9 +2508,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasIsMediaGenrePresent:(BOOL)a3
+- (void)setHasIsMediaGenrePresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 16;
   }
@@ -2523,9 +2523,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasIsMediaArtistPresent:(BOOL)a3
+- (void)setHasIsMediaArtistPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 8;
   }
@@ -2538,9 +2538,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasIsMediaAlbumPresent:(BOOL)a3
+- (void)setHasIsMediaAlbumPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 4;
   }
@@ -2553,9 +2553,9 @@ LABEL_31:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasRawClientHourOfDay:(BOOL)a3
+- (void)setHasRawClientHourOfDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 2;
   }

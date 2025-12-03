@@ -1,44 +1,44 @@
 @interface PhotosSeparationParticipant
 - (NSString)debugDescription;
-- (PhotosSeparationParticipant)initWithRole:(int64_t)a3 permission:(int64_t)a4 emailAddress:(id)a5 phoneNumber:(id)a6;
+- (PhotosSeparationParticipant)initWithRole:(int64_t)role permission:(int64_t)permission emailAddress:(id)address phoneNumber:(id)number;
 @end
 
 @implementation PhotosSeparationParticipant
 
 - (NSString)debugDescription
 {
-  v3 = [(PhotosSeparationParticipant *)self emailAddress];
-  v4 = [(PhotosSeparationParticipant *)self phoneNumber];
-  v5 = [(PhotosSeparationParticipant *)self isOwner];
+  emailAddress = [(PhotosSeparationParticipant *)self emailAddress];
+  phoneNumber = [(PhotosSeparationParticipant *)self phoneNumber];
+  isOwner = [(PhotosSeparationParticipant *)self isOwner];
   v6 = @"NO";
-  if (v5)
+  if (isOwner)
   {
     v6 = @"YES";
   }
 
-  v7 = [NSString stringWithFormat:@"email: %@, phone: %@, owner: %@", v3, v4, v6];
+  v7 = [NSString stringWithFormat:@"email: %@, phone: %@, owner: %@", emailAddress, phoneNumber, v6];
 
   return v7;
 }
 
-- (PhotosSeparationParticipant)initWithRole:(int64_t)a3 permission:(int64_t)a4 emailAddress:(id)a5 phoneNumber:(id)a6
+- (PhotosSeparationParticipant)initWithRole:(int64_t)role permission:(int64_t)permission emailAddress:(id)address phoneNumber:(id)number
 {
-  v11 = a5;
-  v12 = a6;
+  addressCopy = address;
+  numberCopy = number;
   v19.receiver = self;
   v19.super_class = PhotosSeparationParticipant;
   v13 = [(PhotosSeparationParticipant *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    v13->_role = a3;
-    v13->_permission = a4;
-    objc_storeStrong(&v13->_emailAddress, a5);
-    objc_storeStrong(&v14->_phoneNumber, a6);
+    v13->_role = role;
+    v13->_permission = permission;
+    objc_storeStrong(&v13->_emailAddress, address);
+    objc_storeStrong(&v14->_phoneNumber, number);
     v15 = +[NSUUID UUID];
-    v16 = [v15 UUIDString];
+    uUIDString = [v15 UUIDString];
     uuid = v14->_uuid;
-    v14->_uuid = v16;
+    v14->_uuid = uUIDString;
   }
 
   return v14;

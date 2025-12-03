@@ -1,8 +1,8 @@
 @interface VFXAnimationEvent
-+ (id)animationEventWithKeyTime:(float)a3 block:(id)a4;
++ (id)animationEventWithKeyTime:(float)time block:(id)block;
 - (VFXAnimationEvent)init;
 - (void)dealloc;
-- (void)setEventBlock:(id)a3;
+- (void)setEventBlock:(id)block;
 @end
 
 @implementation VFXAnimationEvent
@@ -27,7 +27,7 @@
   [(VFXAnimationEvent *)&v4 dealloc];
 }
 
-- (void)setEventBlock:(id)a3
+- (void)setEventBlock:(id)block
 {
   eventBlock = self->_eventBlock;
   if (eventBlock)
@@ -35,14 +35,14 @@
     _Block_release(eventBlock);
   }
 
-  self->_eventBlock = _Block_copy(a3);
+  self->_eventBlock = _Block_copy(block);
 }
 
-+ (id)animationEventWithKeyTime:(float)a3 block:(id)a4
++ (id)animationEventWithKeyTime:(float)time block:(id)block
 {
-  v6 = objc_alloc_init(a1);
-  objc_msgSend_setTime_(v6, v7, v8, v9, a3);
-  objc_msgSend_setEventBlock_(v6, v10, a4, v11);
+  v6 = objc_alloc_init(self);
+  objc_msgSend_setTime_(v6, v7, v8, v9, time);
+  objc_msgSend_setEventBlock_(v6, v10, block, v11);
   return v6;
 }
 

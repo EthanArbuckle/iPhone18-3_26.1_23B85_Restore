@@ -1,14 +1,14 @@
 @interface FIUIDateFormattingUtilities
-+ (BOOL)_dateStringFits:(id)a3 font:(id)a4 maxWidth:(double)a5;
++ (BOOL)_dateStringFits:(id)fits font:(id)font maxWidth:(double)width;
 + (id)_dateFormatter;
-+ (id)_localizedTodayFormatterWithTemplate:(id)a3;
-+ (id)stringWithDayNameAndShortMonthFromDate:(id)a3;
-+ (id)stringWithEitherTodayOrLongStyleDateFromDate:(id)a3;
-+ (id)stringWithLongestStyleDate:(id)a3 font:(id)a4 maxWidth:(double)a5;
-+ (id)stringWithShortStyleDate:(id)a3;
++ (id)_localizedTodayFormatterWithTemplate:(id)template;
++ (id)stringWithDayNameAndShortMonthFromDate:(id)date;
++ (id)stringWithEitherTodayOrLongStyleDateFromDate:(id)date;
++ (id)stringWithLongestStyleDate:(id)date font:(id)font maxWidth:(double)width;
++ (id)stringWithShortStyleDate:(id)date;
 + (id)timeFormatter;
-+ (id)timeRangeStringFromDateInterval:(id)a3;
-+ (id)timeStringWithSpaceRemoved:(id)a3 date:(id)a4;
++ (id)timeRangeStringFromDateInterval:(id)interval;
++ (id)timeStringWithSpaceRemoved:(id)removed date:(id)date;
 @end
 
 @implementation FIUIDateFormattingUtilities
@@ -76,27 +76,27 @@ uint64_t __45__FIUIDateFormattingUtilities__dateFormatter__block_invoke()
   return [v2 fu_observeTimeZoneAndLocaleChanges];
 }
 
-+ (id)stringWithLongestStyleDate:(id)a3 font:(id)a4 maxWidth:(double)a5
++ (id)stringWithLongestStyleDate:(id)date font:(id)font maxWidth:(double)width
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 _dateFormatter];
-  [v10 setDateStyle:3];
-  v11 = [v10 stringFromDate:v8];
-  if (([a1 _dateStringFits:v11 font:v9 maxWidth:a5] & 1) == 0)
+  dateCopy = date;
+  fontCopy = font;
+  _dateFormatter = [self _dateFormatter];
+  [_dateFormatter setDateStyle:3];
+  v11 = [_dateFormatter stringFromDate:dateCopy];
+  if (([self _dateStringFits:v11 font:fontCopy maxWidth:width] & 1) == 0)
   {
-    [v10 setDateStyle:2];
-    v12 = [v10 stringFromDate:v8];
+    [_dateFormatter setDateStyle:2];
+    v12 = [_dateFormatter stringFromDate:dateCopy];
 
-    if ([a1 _dateStringFits:v12 font:v9 maxWidth:a5])
+    if ([self _dateStringFits:v12 font:fontCopy maxWidth:width])
     {
       v11 = v12;
     }
 
     else
     {
-      [v10 setDateStyle:1];
-      v11 = [v10 stringFromDate:v8];
+      [_dateFormatter setDateStyle:1];
+      v11 = [_dateFormatter stringFromDate:dateCopy];
     }
   }
 
@@ -105,75 +105,75 @@ uint64_t __45__FIUIDateFormattingUtilities__dateFormatter__block_invoke()
   return v11;
 }
 
-+ (id)stringWithShortStyleDate:(id)a3
++ (id)stringWithShortStyleDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _dateFormatter];
-  [v5 setDateStyle:1];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  _dateFormatter = [self _dateFormatter];
+  [_dateFormatter setDateStyle:1];
+  v6 = [_dateFormatter stringFromDate:dateCopy];
 
   return v6;
 }
 
-+ (BOOL)_dateStringFits:(id)a3 font:(id)a4 maxWidth:(double)a5
++ (BOOL)_dateStringFits:(id)fits font:(id)font maxWidth:(double)width
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = *MEMORY[0x1E69DB648];
-  v15[0] = a4;
+  v15[0] = font;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a4;
-  v9 = a3;
+  fontCopy = font;
+  fitsCopy = fits;
   v10 = [v7 dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  [v9 sizeWithAttributes:v10];
+  [fitsCopy sizeWithAttributes:v10];
   v12 = v11;
 
-  return v12 <= a5;
+  return v12 <= width;
 }
 
-+ (id)timeStringWithSpaceRemoved:(id)a3 date:(id)a4
++ (id)timeStringWithSpaceRemoved:(id)removed date:(id)date
 {
-  v5 = a3;
-  v6 = [v5 stringFromDate:a4];
+  removedCopy = removed;
+  v6 = [removedCopy stringFromDate:date];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v5 AMSymbol];
-  v9 = [v7 stringWithFormat:@" %@", v8];
-  v10 = [v5 AMSymbol];
-  v11 = [v6 stringByReplacingOccurrencesOfString:v9 withString:v10];
+  aMSymbol = [removedCopy AMSymbol];
+  v9 = [v7 stringWithFormat:@" %@", aMSymbol];
+  aMSymbol2 = [removedCopy AMSymbol];
+  v11 = [v6 stringByReplacingOccurrencesOfString:v9 withString:aMSymbol2];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v5 PMSymbol];
-  v14 = [v12 stringWithFormat:@" %@", v13];
-  v15 = [v5 PMSymbol];
-  v16 = [v11 stringByReplacingOccurrencesOfString:v14 withString:v15];
+  pMSymbol = [removedCopy PMSymbol];
+  v14 = [v12 stringWithFormat:@" %@", pMSymbol];
+  pMSymbol2 = [removedCopy PMSymbol];
+  v16 = [v11 stringByReplacingOccurrencesOfString:v14 withString:pMSymbol2];
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [v5 AMSymbol];
-  v19 = [v17 stringWithFormat:@" %@", v18];
-  v20 = [v5 AMSymbol];
-  v21 = [v16 stringByReplacingOccurrencesOfString:v19 withString:v20];
+  aMSymbol3 = [removedCopy AMSymbol];
+  v19 = [v17 stringWithFormat:@" %@", aMSymbol3];
+  aMSymbol4 = [removedCopy AMSymbol];
+  v21 = [v16 stringByReplacingOccurrencesOfString:v19 withString:aMSymbol4];
 
   v22 = MEMORY[0x1E696AEC0];
-  v23 = [v5 PMSymbol];
-  v24 = [v22 stringWithFormat:@" %@", v23];
-  v25 = [v5 PMSymbol];
+  pMSymbol3 = [removedCopy PMSymbol];
+  v24 = [v22 stringWithFormat:@" %@", pMSymbol3];
+  pMSymbol4 = [removedCopy PMSymbol];
 
-  v26 = [v21 stringByReplacingOccurrencesOfString:v24 withString:v25];
+  v26 = [v21 stringByReplacingOccurrencesOfString:v24 withString:pMSymbol4];
 
   return v26;
 }
 
-+ (id)timeRangeStringFromDateInterval:(id)a3
++ (id)timeRangeStringFromDateInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [a1 timeFormatter];
-  v6 = [v4 startDate];
-  v7 = [a1 timeStringWithSpaceRemoved:v5 date:v6];
+  intervalCopy = interval;
+  timeFormatter = [self timeFormatter];
+  startDate = [intervalCopy startDate];
+  v7 = [self timeStringWithSpaceRemoved:timeFormatter date:startDate];
 
-  v8 = [a1 timeFormatter];
-  v9 = [v4 endDate];
+  timeFormatter2 = [self timeFormatter];
+  endDate = [intervalCopy endDate];
 
-  v10 = [a1 timeStringWithSpaceRemoved:v8 date:v9];
+  v10 = [self timeStringWithSpaceRemoved:timeFormatter2 date:endDate];
 
   v11 = MEMORY[0x1E696AEC0];
   v12 = FIUIBundle();
@@ -183,15 +183,15 @@ uint64_t __45__FIUIDateFormattingUtilities__dateFormatter__block_invoke()
   return v14;
 }
 
-+ (id)_localizedTodayFormatterWithTemplate:(id)a3
++ (id)_localizedTodayFormatterWithTemplate:(id)template
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  templateCopy = template;
   v5 = objc_alloc_init(v3);
   [v5 setDoesRelativeDateFormatting:1];
   [v5 setDateStyle:2];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 stringFromDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [v5 stringFromDate:date];
 
   v8 = MEMORY[0x1E696AEC0];
   v9 = [v7 stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
@@ -199,8 +199,8 @@ uint64_t __45__FIUIDateFormattingUtilities__dateFormatter__block_invoke()
 
   v11 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v12 = MEMORY[0x1E696AB78];
-  v13 = [MEMORY[0x1E695DF58] currentLocale];
-  v14 = [v12 dateFormatFromTemplate:v4 options:0 locale:v13];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v14 = [v12 dateFormatFromTemplate:templateCopy options:0 locale:currentLocale];
 
   v15 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"(EE+|cc+)" options:0 error:0];
   v16 = [v15 stringByReplacingMatchesInString:v14 options:0 range:0 withTemplate:{objc_msgSend(v14, "length"), v10}];
@@ -209,21 +209,21 @@ uint64_t __45__FIUIDateFormattingUtilities__dateFormatter__block_invoke()
   return v11;
 }
 
-+ (id)stringWithEitherTodayOrLongStyleDateFromDate:(id)a3
++ (id)stringWithEitherTodayOrLongStyleDateFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__FIUIDateFormattingUtilities_stringWithEitherTodayOrLongStyleDateFromDate___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (stringWithEitherTodayOrLongStyleDateFromDate__onceToken != -1)
   {
     dispatch_once(&stringWithEitherTodayOrLongStyleDateFromDate__onceToken, block);
   }
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 isDateInToday:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar isDateInToday:dateCopy];
 
   v7 = &stringWithEitherTodayOrLongStyleDateFromDate____todayFormatter;
   if (!v6)
@@ -231,7 +231,7 @@ uint64_t __45__FIUIDateFormattingUtilities__dateFormatter__block_invoke()
     v7 = &stringWithEitherTodayOrLongStyleDateFromDate____notTodayFormatter;
   }
 
-  v8 = [*v7 stringFromDate:v4];
+  v8 = [*v7 stringFromDate:dateCopy];
 
   return v8;
 }
@@ -255,21 +255,21 @@ uint64_t __76__FIUIDateFormattingUtilities_stringWithEitherTodayOrLongStyleDateF
   return [v5 fu_observeTimeZoneAndLocaleChanges];
 }
 
-+ (id)stringWithDayNameAndShortMonthFromDate:(id)a3
++ (id)stringWithDayNameAndShortMonthFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__FIUIDateFormattingUtilities_stringWithDayNameAndShortMonthFromDate___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (stringWithDayNameAndShortMonthFromDate__onceToken != -1)
   {
     dispatch_once(&stringWithDayNameAndShortMonthFromDate__onceToken, block);
   }
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 isDateInToday:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar isDateInToday:dateCopy];
 
   v7 = &stringWithDayNameAndShortMonthFromDate____todayFormatter;
   if (!v6)
@@ -277,7 +277,7 @@ uint64_t __76__FIUIDateFormattingUtilities_stringWithEitherTodayOrLongStyleDateF
     v7 = &stringWithDayNameAndShortMonthFromDate____notTodayFormatter;
   }
 
-  v8 = [*v7 stringFromDate:v4];
+  v8 = [*v7 stringFromDate:dateCopy];
 
   return v8;
 }

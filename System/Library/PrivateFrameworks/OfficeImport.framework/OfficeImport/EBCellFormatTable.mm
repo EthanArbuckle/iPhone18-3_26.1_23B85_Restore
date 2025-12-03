@@ -1,25 +1,25 @@
 @interface EBCellFormatTable
-+ (id)getStyleNameForCellFormatIndex:(unsigned int)a3 xlStyleTable:(const void *)a4 edResources:(id)a5;
-+ (void)readWithState:(id)a3;
++ (id)getStyleNameForCellFormatIndex:(unsigned int)index xlStyleTable:(const void *)table edResources:(id)resources;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBCellFormatTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v26 = a3;
-  v3 = [v26 resources];
-  v29 = [v3 styles];
+  stateCopy = state;
+  resources = [stateCopy resources];
+  styles = [resources styles];
   v36 = &unk_286EC9B40;
   v37 = 0;
   v38 = 0;
   v39 = 0;
-  v4 = [v26 xlReader];
-  (*(*v4 + 184))(v4, &v36);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 184))(xlReader, &v36);
   XlStyleTable::XlStyleTable(v35);
-  v5 = [v26 xlReader];
-  (*(*v5 + 240))(v5, v35);
-  [v29 setDefaultWorkbookStyleIndex:0];
+  xlReader2 = [stateCopy xlReader];
+  (*(*xlReader2 + 240))(xlReader2, v35);
+  [styles setDefaultWorkbookStyleIndex:0];
   if (((v38 - v37) & 0x7FFFFFFF8) != 0)
   {
     v6 = 0;
@@ -29,8 +29,8 @@
       isStyle = XlCellFormatTable::isStyle(&v36, v6);
       if (isStyle)
       {
-        v8 = [(EDStyle *)[EDNamedStyle alloc] initWithResources:v3];
-        v9 = [a1 getStyleNameForCellFormatIndex:v6 xlStyleTable:v35 edResources:v3];
+        v8 = [(EDStyle *)[EDNamedStyle alloc] initWithResources:resources];
+        v9 = [self getStyleNameForCellFormatIndex:v6 xlStyleTable:v35 edResources:resources];
         [(EDNamedStyle *)v8 setName:v9];
 
         v10 = v8;
@@ -40,7 +40,7 @@
       else
       {
         v11 = 0;
-        v10 = [[EDStyle alloc] initWithResources:v3];
+        v10 = [[EDStyle alloc] initWithResources:resources];
       }
 
       ParentCellFormat = XlCellFormatTable::getParentCellFormat(&v36, v6);
@@ -89,10 +89,10 @@
       v21 = [EBAlignmentInfo edAlignmentInfoFromXlXf:v30];
       [(EDStyle *)v10 setAlignmentInfo:v21];
 
-      v22 = [EBBorders edBordersFromXlXf:v30 edResources:v3];
+      v22 = [EBBorders edBordersFromXlXf:v30 edResources:resources];
       [(EDStyle *)v10 setBorders:v22];
 
-      v23 = [EBFill edFillFromXlXf:v30 edResources:v3];
+      v23 = [EBFill edFillFromXlXf:v30 edResources:resources];
       [(EDStyle *)v10 setFill:v23];
 
       v24 = [EBProtection edProtectionFromXlXf:v30];
@@ -120,7 +120,7 @@
       }
 
       [(EDStyle *)v10 setContentFormatOverridden:v25 & 1];
-      [v29 addObject:v10];
+      [styles addObject:v10];
 
       ++v6;
     }
@@ -133,11 +133,11 @@
   CsSimpleHeapVector<XlXf>::~CsSimpleHeapVector(&v37);
 }
 
-+ (id)getStyleNameForCellFormatIndex:(unsigned int)a3 xlStyleTable:(const void *)a4 edResources:(id)a5
++ (id)getStyleNameForCellFormatIndex:(unsigned int)index xlStyleTable:(const void *)table edResources:(id)resources
 {
-  v7 = a5;
-  v8 = *(a4 + 1);
-  v9 = *(a4 + 2) - v8;
+  resourcesCopy = resources;
+  v8 = *(table + 1);
+  v9 = *(table + 2) - v8;
   if ((v9 & 0x7FFFFFFF8) != 0)
   {
     v10 = 0;
@@ -150,7 +150,7 @@
       }
 
       v12 = *(v8 + 8 * v10);
-      if (*(v12 + 24) == a3)
+      if (*(v12 + 24) == index)
       {
         break;
       }
@@ -164,7 +164,7 @@
     v14 = MEMORY[0x277CCACA8];
     if (*(v12 + 33) == 1)
     {
-      Name = XlStyleTable::getName(a4, v10);
+      Name = XlStyleTable::getName(table, v10);
     }
 
     else

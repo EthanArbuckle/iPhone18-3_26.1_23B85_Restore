@@ -10,7 +10,7 @@
 - (IMDPersistenceService)synchronousRemoteProxy
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC14IMDPersistence24PersistenceServiceClient_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   sub_1B7AD85D0((v2 + 16), &v6);
   os_unfair_lock_unlock((v2 + 24));
@@ -22,7 +22,7 @@
 - (IMDPersistenceService)remoteProxy
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC14IMDPersistence24PersistenceServiceClient_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   sub_1B7AF5DD0((v2 + 16), &v6);
   os_unfair_lock_unlock((v2 + 24));
@@ -47,7 +47,7 @@
 - (void)reset
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC14IMDPersistence24PersistenceServiceClient_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   sub_1B7C4EF9C((v2 + 16));
   os_unfair_lock_unlock((v2 + 24));

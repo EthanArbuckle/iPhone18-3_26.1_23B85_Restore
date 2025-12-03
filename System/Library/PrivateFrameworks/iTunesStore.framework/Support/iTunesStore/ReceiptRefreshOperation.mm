@@ -1,33 +1,33 @@
 @interface ReceiptRefreshOperation
 - (BOOL)_isSandboxed;
-- (ReceiptRefreshOperation)initWithClient:(id)a3 requestingClientIdentifier:(id)a4 receiptFlags:(unint64_t)a5;
+- (ReceiptRefreshOperation)initWithClient:(id)client requestingClientIdentifier:(id)identifier receiptFlags:(unint64_t)flags;
 - (id)_postBodyData;
 - (id)resultBlock;
 - (void)run;
-- (void)setResultBlock:(id)a3;
+- (void)setResultBlock:(id)block;
 @end
 
 @implementation ReceiptRefreshOperation
 
-- (ReceiptRefreshOperation)initWithClient:(id)a3 requestingClientIdentifier:(id)a4 receiptFlags:(unint64_t)a5
+- (ReceiptRefreshOperation)initWithClient:(id)client requestingClientIdentifier:(id)identifier receiptFlags:(unint64_t)flags
 {
-  v9 = a3;
-  v10 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = ReceiptRefreshOperation;
   v11 = [(ReceiptRefreshOperation *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_client, a3);
-    v12->_flags = a5;
-    objc_storeStrong(&v12->_requestingClientIdentifier, a4);
-    v13 = [v9 receiptDirectoryPath];
-    if (v13)
+    objc_storeStrong(&v11->_client, client);
+    v12->_flags = flags;
+    objc_storeStrong(&v12->_requestingClientIdentifier, identifier);
+    receiptDirectoryPath = [clientCopy receiptDirectoryPath];
+    if (receiptDirectoryPath)
     {
-      v14 = [(ReceiptRefreshOperation *)v12 _isSandboxed];
+      _isSandboxed = [(ReceiptRefreshOperation *)v12 _isSandboxed];
       v15 = [SSPurchaseReceipt alloc];
-      if (v14)
+      if (_isSandboxed)
       {
         v16 = @"sandboxReceipt";
       }
@@ -37,7 +37,7 @@
         v16 = @"receipt";
       }
 
-      v17 = [v13 stringByAppendingPathComponent:v16];
+      v17 = [receiptDirectoryPath stringByAppendingPathComponent:v16];
       v18 = [v15 initWithContentsOfFile:v17];
       existingReceipt = v12->_existingReceipt;
       v12->_existingReceipt = v18;
@@ -57,13 +57,13 @@
   return v4;
 }
 
-- (void)setResultBlock:(id)a3
+- (void)setResultBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(ReceiptRefreshOperation *)self lock];
-  if (self->_resultBlock != v6)
+  if (self->_resultBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     resultBlock = self->_resultBlock;
     self->_resultBlock = v4;
   }
@@ -73,24 +73,24 @@
 
 - (void)run
 {
-  v3 = [(ReceiptRefreshOperation *)self _postBodyData];
-  if (v3)
+  _postBodyData = [(ReceiptRefreshOperation *)self _postBodyData];
+  if (_postBodyData)
   {
     v4 = objc_alloc_init(ISStoreURLOperation);
     v5 = +[DaemonProtocolDataProvider provider];
     [v4 setDataProvider:v5];
     v6 = objc_alloc_init(SSMutableURLRequestProperties);
     [v6 setAllowedRetryCount:0];
-    v36 = v3;
-    [v6 setHTTPBody:v3];
+    v36 = _postBodyData;
+    [v6 setHTTPBody:_postBodyData];
     [v6 setHTTPMethod:@"POST"];
     [v6 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
     v7 = ISClientIdentifierForBundleIdentifier();
     [v6 setClientIdentifier:v7];
 
     v8 = [[AppReceiptRefreshOperationOptions alloc] initWithReceiptFlags:self->_flags];
-    v9 = [(AppReceiptRefreshOperationOptions *)v8 URLBagKey];
-    [v6 setURLBagKey:v9];
+    uRLBagKey = [(AppReceiptRefreshOperationOptions *)v8 URLBagKey];
+    [v6 setURLBagKey:uRLBagKey];
 
     v10 = [[SSMutableAuthenticationContext alloc] initWithAccountIdentifier:0];
     [v10 setPromptStyle:{-[AppReceiptRefreshOperationOptions authenticationPromptStyle](v8, "authenticationPromptStyle")}];
@@ -109,19 +109,19 @@
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [v11 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v13;
     }
@@ -139,11 +139,11 @@
       v18 = v5;
       v19 = v4;
       v20 = v16;
-      v21 = [(SKPaymentQueueClient *)client bundleIdentifier];
+      bundleIdentifier = [(SKPaymentQueueClient *)client bundleIdentifier];
       v38 = 138543618;
       v39 = v16;
       v40 = 2114;
-      v41 = v21;
+      v41 = bundleIdentifier;
       LODWORD(v33) = 22;
       v32 = &v38;
       v22 = _os_log_send_and_compose_impl();
@@ -170,8 +170,8 @@
     v24 = v37;
     if (v26)
     {
-      v27 = [v5 output];
-      v28 = [v27 objectForKey:@"receipt"];
+      output = [v5 output];
+      v28 = [output objectForKey:@"receipt"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -185,13 +185,13 @@
         v25 = 0;
       }
 
-      v3 = v36;
+      _postBodyData = v36;
     }
 
     else
     {
       v25 = 0;
-      v3 = v36;
+      _postBodyData = v36;
     }
   }
 
@@ -203,22 +203,22 @@
 
   [(ReceiptRefreshOperation *)self setError:v24, v32];
   [(ReceiptRefreshOperation *)self setSuccess:v25];
-  v30 = [(ReceiptRefreshOperation *)self resultBlock];
-  v31 = v30;
-  if (v30)
+  resultBlock = [(ReceiptRefreshOperation *)self resultBlock];
+  v31 = resultBlock;
+  if (resultBlock)
   {
-    (*(v30 + 16))(v30, v25, v24);
+    (*(resultBlock + 16))(resultBlock, v25, v24);
     [(ReceiptRefreshOperation *)self setResultBlock:0];
   }
 }
 
 - (BOOL)_isSandboxed
 {
-  v3 = [(SKPaymentQueueClient *)self->_client storeExternalVersion];
-  if (v3)
+  storeExternalVersion = [(SKPaymentQueueClient *)self->_client storeExternalVersion];
+  if (storeExternalVersion)
   {
-    v4 = [(SKPaymentQueueClient *)self->_client storeItemIdentifier];
-    v5 = v4 == 0;
+    storeItemIdentifier = [(SKPaymentQueueClient *)self->_client storeItemIdentifier];
+    v5 = storeItemIdentifier == 0;
   }
 
   else
@@ -233,43 +233,43 @@
 {
   v3 = objc_alloc_init(NSMutableDictionary);
   v4 = +[SSAccountStore defaultStore];
-  v5 = [v4 activeAccount];
-  v6 = [v5 uniqueIdentifier];
+  activeAccount = [v4 activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-  if (v6)
+  if (uniqueIdentifier)
   {
-    v7 = [v6 stringValue];
-    [v3 setObject:v7 forKey:@"dsid"];
+    stringValue = [uniqueIdentifier stringValue];
+    [v3 setObject:stringValue forKey:@"dsid"];
   }
 
   v8 = +[ISDevice sharedInstance];
-  v9 = [v8 guid];
+  guid = [v8 guid];
 
-  if (v9)
+  if (guid)
   {
-    [v3 setObject:v9 forKey:@"guid"];
+    [v3 setObject:guid forKey:@"guid"];
   }
 
-  v10 = [(SKPaymentQueueClient *)self->_client bundleIdentifier];
+  bundleIdentifier = [(SKPaymentQueueClient *)self->_client bundleIdentifier];
 
-  if (v10)
+  if (bundleIdentifier)
   {
-    [v3 setObject:v10 forKey:@"bundle-id"];
+    [v3 setObject:bundleIdentifier forKey:@"bundle-id"];
   }
 
-  v11 = [(SKPaymentQueueClient *)self->_client bundleVersion];
+  bundleVersion = [(SKPaymentQueueClient *)self->_client bundleVersion];
 
-  if (v11)
+  if (bundleVersion)
   {
-    [v3 setObject:v11 forKey:@"version-id"];
+    [v3 setObject:bundleVersion forKey:@"version-id"];
   }
 
   v12 = +[ISDevice sharedInstance];
-  v13 = [v12 serialNumber];
+  serialNumber = [v12 serialNumber];
 
-  if (v13)
+  if (serialNumber)
   {
-    [v3 setObject:v13 forKey:@"serialNumber"];
+    [v3 setObject:serialNumber forKey:@"serialNumber"];
   }
 
   flags = self->_flags;
@@ -299,11 +299,11 @@ LABEL_18:
     [v3 setObject:&__kCFBooleanTrue forKey:@"revoked"];
   }
 
-  v17 = [(SKPaymentQueueClient *)self->_client storeItemIdentifier];
+  storeItemIdentifier = [(SKPaymentQueueClient *)self->_client storeItemIdentifier];
 
-  if (v17)
+  if (storeItemIdentifier)
   {
-    v18 = [v17 stringValue];
+    stringValue2 = [storeItemIdentifier stringValue];
     if (v16)
     {
       v19 = @"appAdamId";
@@ -314,14 +314,14 @@ LABEL_18:
       v19 = @"adam-id";
     }
 
-    [v3 setObject:v18 forKey:v19];
+    [v3 setObject:stringValue2 forKey:v19];
   }
 
-  v20 = [(SKPaymentQueueClient *)self->_client storeExternalVersion];
+  storeExternalVersion = [(SKPaymentQueueClient *)self->_client storeExternalVersion];
 
-  if (v20)
+  if (storeExternalVersion)
   {
-    v21 = [v20 stringValue];
+    stringValue3 = [storeExternalVersion stringValue];
     if (v16)
     {
       v22 = @"appExtVrsId";
@@ -332,14 +332,14 @@ LABEL_18:
       v22 = @"software-version-external-identifier";
     }
 
-    [v3 setObject:v21 forKey:v22];
+    [v3 setObject:stringValue3 forKey:v22];
   }
 
-  v23 = [(SKPaymentQueueClient *)self->_client vendorIdentifier];
+  vendorIdentifier = [(SKPaymentQueueClient *)self->_client vendorIdentifier];
 
-  if (v23)
+  if (vendorIdentifier)
   {
-    [v3 setObject:v23 forKey:@"vid"];
+    [v3 setObject:vendorIdentifier forKey:@"vid"];
   }
 
   v24 = [NSPropertyListSerialization dataWithPropertyList:v3 format:100 options:0 error:0];

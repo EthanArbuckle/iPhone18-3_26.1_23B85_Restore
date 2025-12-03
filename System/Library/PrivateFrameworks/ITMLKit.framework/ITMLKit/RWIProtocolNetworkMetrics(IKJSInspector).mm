@@ -61,13 +61,13 @@
     [v10 setRequestHeaderBytesSent:?];
   }
 
-  v23 = [v9 HTTPBody];
-  [v10 setRequestBodyBytesSent:{objc_msgSend(v23, "length")}];
+  hTTPBody = [v9 HTTPBody];
+  [v10 setRequestBodyBytesSent:{objc_msgSend(hTTPBody, "length")}];
 
   v24 = MEMORY[0x277D7B748];
-  v25 = [v9 allHTTPHeaderFields];
+  allHTTPHeaderFields = [v9 allHTTPHeaderFields];
 
-  v26 = [v24 ik_networkHeadersFromHTTPHeaderFields:v25];
+  v26 = [v24 ik_networkHeadersFromHTTPHeaderFields:allHTTPHeaderFields];
 
   [v10 setRequestHeaders:v26];
 

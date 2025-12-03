@@ -3,26 +3,26 @@
 - (UIStandardTextCursorView)cursorView;
 - (UIView)cursorShapeView;
 - (_UIStandardTextCursorViewAudioLevelProvider)audioLevelProvider;
-- (_UITextCursorDictationAnimation)initWithCursorShapeView:(id)a3;
-- (void)_displayLinkFired:(id)a3;
-- (void)_setCursorGlowEffectEnabled:(BOOL)a3;
-- (void)_setSoundReactiveCursorEnabled:(BOOL)a3;
+- (_UITextCursorDictationAnimation)initWithCursorShapeView:(id)view;
+- (void)_displayLinkFired:(id)fired;
+- (void)_setCursorGlowEffectEnabled:(BOOL)enabled;
+- (void)_setSoundReactiveCursorEnabled:(BOOL)enabled;
 - (void)cursorShapeDidChange;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation _UITextCursorDictationAnimation
 
-- (_UITextCursorDictationAnimation)initWithCursorShapeView:(id)a3
+- (_UITextCursorDictationAnimation)initWithCursorShapeView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = _UITextCursorDictationAnimation;
   v5 = [(_UITextCursorDictationAnimation *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cursorShapeView, v4);
+    objc_storeWeak(&v5->_cursorShapeView, viewCopy);
     v7 = [UIView alloc];
     v8 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 8);
@@ -47,10 +47,10 @@
 
     [(UIView *)v6->_glowContainerView setHidden:1];
     WeakRetained = objc_loadWeakRetained(&v6->_cursorShapeView);
-    v20 = [WeakRetained tintColor];
+    tintColor = [WeakRetained tintColor];
     v21 = +[_UIDictationSettingsDomain rootSettings];
     [v21 cursorGlowAlphaMin];
-    v22 = [v20 colorWithAlphaComponent:?];
+    v22 = [tintColor colorWithAlphaComponent:?];
     [(UIDictationGlowEffect *)v6->_glowEffect setTintColor:v22];
 
     [(_UITextCursorDictationAnimation *)v6 setAnimatedCursorShapeBounds:v8, v9, v10, v11];
@@ -79,15 +79,15 @@
   }
 
   v8 = objc_loadWeakRetained(&self->_cursorShapeView);
-  v9 = [v8 backgroundColor];
-  [(UIView *)self->_glowShapeView setBackgroundColor:v9];
+  backgroundColor = [v8 backgroundColor];
+  [(UIView *)self->_glowShapeView setBackgroundColor:backgroundColor];
 
   v10 = objc_loadWeakRetained(&self->_cursorShapeView);
-  v11 = [v10 layer];
-  v12 = v11;
-  if (v11)
+  layer = [v10 layer];
+  v12 = layer;
+  if (layer)
   {
-    [v11 cornerRadii];
+    [layer cornerRadii];
   }
 
   else
@@ -98,25 +98,25 @@
     v16 = 0u;
   }
 
-  v13 = [(UIView *)self->_glowShapeView layer];
+  layer2 = [(UIView *)self->_glowShapeView layer];
   v14[0] = v15;
   v14[1] = v16;
   v14[2] = v17;
   v14[3] = v18;
-  [v13 setCornerRadii:v14];
+  [layer2 setCornerRadii:v14];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[_UIDictationSettingsDomain rootSettings];
-  v6 = [v5 pulseAnimationEnabled];
+  pulseAnimationEnabled = [v5 pulseAnimationEnabled];
 
-  if (v6 && self->_enabled != v3)
+  if (pulseAnimationEnabled && self->_enabled != enabledCopy)
   {
-    self->_enabled = v3;
-    [(_UITextCursorDictationAnimation *)self _setCursorGlowEffectEnabled:v3];
-    if (v3)
+    self->_enabled = enabledCopy;
+    [(_UITextCursorDictationAnimation *)self _setCursorGlowEffectEnabled:enabledCopy];
+    if (enabledCopy)
     {
       if (self->_needsInitialDictationAnimation)
       {
@@ -151,40 +151,40 @@
         return;
       }
 
-      v16 = self;
+      selfCopy2 = self;
       v17 = 1;
     }
 
     else
     {
-      v16 = self;
+      selfCopy2 = self;
       v17 = 0;
     }
 
-    [(_UITextCursorDictationAnimation *)v16 _setSoundReactiveCursorEnabled:v17];
+    [(_UITextCursorDictationAnimation *)selfCopy2 _setSoundReactiveCursorEnabled:v17];
   }
 }
 
-- (void)_setCursorGlowEffectEnabled:(BOOL)a3
+- (void)_setCursorGlowEffectEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [(_UITextCursorDictationAnimation *)self cursorView];
-    [v4 addSubview:self->_glowContainerView];
+    cursorView = [(_UITextCursorDictationAnimation *)self cursorView];
+    [cursorView addSubview:self->_glowContainerView];
 
     [(UIView *)self->_glowContainerView setHidden:0];
     WeakRetained = objc_loadWeakRetained(&self->_cursorShapeView);
-    v6 = [WeakRetained tintColor];
+    tintColor = [WeakRetained tintColor];
     v7 = +[_UIDictationSettingsDomain rootSettings];
     [v7 cursorGlowAlphaMin];
-    v8 = [v6 colorWithAlphaComponent:?];
+    v8 = [tintColor colorWithAlphaComponent:?];
     [(UIDictationGlowEffect *)self->_glowEffect setTintColor:v8];
 
     v9 = objc_loadWeakRetained(&self->_cursorShapeView);
-    v10 = [v9 tintColor];
+    tintColor2 = [v9 tintColor];
     v11 = +[_UIDictationSettingsDomain rootSettings];
     [v11 cursorGlowAlphaMax];
-    v18 = [v10 colorWithAlphaComponent:?];
+    v18 = [tintColor2 colorWithAlphaComponent:?];
 
     glowEffect = self->_glowEffect;
     v13 = +[_UIDictationSettingsDomain rootSettings];
@@ -195,8 +195,8 @@
   else
   {
     v15 = objc_loadWeakRetained(&self->_cursorShapeView);
-    v16 = [v15 tintColor];
-    [(UIDictationGlowEffect *)self->_glowEffect setTintColor:v16];
+    tintColor3 = [v15 tintColor];
+    [(UIDictationGlowEffect *)self->_glowEffect setTintColor:tintColor3];
 
     glowContainerView = self->_glowContainerView;
 
@@ -204,25 +204,25 @@
   }
 }
 
-- (void)_setSoundReactiveCursorEnabled:(BOOL)a3
+- (void)_setSoundReactiveCursorEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v24 = *MEMORY[0x1E69E9840];
   v5 = +[_UIDictationSettingsDomain rootSettings];
-  v6 = [v5 soundReactiveCursorEnabled];
+  soundReactiveCursorEnabled = [v5 soundReactiveCursorEnabled];
 
-  if (v6 && self->_soundReactiveCursorEnabled != v3)
+  if (soundReactiveCursorEnabled && self->_soundReactiveCursorEnabled != enabledCopy)
   {
-    self->_soundReactiveCursorEnabled = v3;
+    self->_soundReactiveCursorEnabled = enabledCopy;
     v7 = _UIDictationControllerLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v23[0] = 67109120;
-      v23[1] = v3;
+      v23[1] = enabledCopy;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "Dictation sound reactive cursor is enabled(%d)", v23, 8u);
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       if (!self->_levelSmoother)
       {
@@ -236,8 +236,8 @@
         self->_levelSmoother = v13;
       }
 
-      v15 = [objc_opt_self() mainScreen];
-      v16 = [v15 displayLinkWithTarget:self selector:sel__displayLinkFired_];
+      mainScreen = [objc_opt_self() mainScreen];
+      v16 = [mainScreen displayLinkWithTarget:self selector:sel__displayLinkFired_];
       soundReactiveCursorDisplayLink = self->_soundReactiveCursorDisplayLink;
       self->_soundReactiveCursorDisplayLink = v16;
 
@@ -246,8 +246,8 @@
       [(CADisplayLink *)self->_soundReactiveCursorDisplayLink setPreferredFramesPerSecond:v19];
 
       v20 = self->_soundReactiveCursorDisplayLink;
-      v21 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(CADisplayLink *)v20 addToRunLoop:v21 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(CADisplayLink *)v20 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       self->_animationStartTime = CACurrentMediaTime();
     }
@@ -263,9 +263,9 @@
   }
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   if (self->_soundReactiveCursorDisplayLink)
   {
     WeakRetained = objc_loadWeakRetained(&self->_cursorShapeView);

@@ -1,30 +1,30 @@
 @interface WBSJSCallbackHandler
 - (JSValue)jsValue;
-- (WBSJSCallbackHandler)initWithCallbackFunction:(OpaqueJSValue *)a3 errorReporter:(id)a4 context:(OpaqueJSContext *)a5;
-- (WBSJSCallbackHandler)initWithErrorReporter:(id)a3 context:(OpaqueJSContext *)a4;
-- (WBSJSCallbackHandler)initWithPromiseResolveFunction:(OpaqueJSValue *)a3 rejectFunction:(OpaqueJSValue *)a4 context:(OpaqueJSContext *)a5;
+- (WBSJSCallbackHandler)initWithCallbackFunction:(OpaqueJSValue *)function errorReporter:(id)reporter context:(OpaqueJSContext *)context;
+- (WBSJSCallbackHandler)initWithErrorReporter:(id)reporter context:(OpaqueJSContext *)context;
+- (WBSJSCallbackHandler)initWithPromiseResolveFunction:(OpaqueJSValue *)function rejectFunction:(OpaqueJSValue *)rejectFunction context:(OpaqueJSContext *)context;
 - (id)call;
-- (id)callWithArgument:(id)a3;
-- (id)callWithArgument:(id)a3 argument:(id)a4;
-- (id)callWithArgument:(id)a3 argument:(id)a4 argument:(id)a5;
+- (id)callWithArgument:(id)argument;
+- (id)callWithArgument:(id)argument argument:(id)a4;
+- (id)callWithArgument:(id)argument argument:(id)a4 argument:(id)a5;
 - (void)dealloc;
-- (void)reportErrorWithMessage:(id)a3;
+- (void)reportErrorWithMessage:(id)message;
 @end
 
 @implementation WBSJSCallbackHandler
 
-- (WBSJSCallbackHandler)initWithCallbackFunction:(OpaqueJSValue *)a3 errorReporter:(id)a4 context:(OpaqueJSContext *)a5
+- (WBSJSCallbackHandler)initWithCallbackFunction:(OpaqueJSValue *)function errorReporter:(id)reporter context:(OpaqueJSContext *)context
 {
-  v8 = a4;
+  reporterCopy = reporter;
   v16.receiver = self;
   v16.super_class = WBSJSCallbackHandler;
   v9 = [(WBSJSCallbackHandler *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    v9->_callbackFunction = a3;
-    objc_storeWeak(&v9->_errorReporter, v8);
-    GlobalContext = JSContextGetGlobalContext(a5);
+    v9->_callbackFunction = function;
+    objc_storeWeak(&v9->_errorReporter, reporterCopy);
+    GlobalContext = JSContextGetGlobalContext(context);
     v12 = GlobalContext;
     if (GlobalContext)
     {
@@ -46,17 +46,17 @@
   return v10;
 }
 
-- (WBSJSCallbackHandler)initWithErrorReporter:(id)a3 context:(OpaqueJSContext *)a4
+- (WBSJSCallbackHandler)initWithErrorReporter:(id)reporter context:(OpaqueJSContext *)context
 {
-  v6 = a3;
+  reporterCopy = reporter;
   v14.receiver = self;
   v14.super_class = WBSJSCallbackHandler;
   v7 = [(WBSJSCallbackHandler *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_errorReporter, v6);
-    GlobalContext = JSContextGetGlobalContext(a4);
+    objc_storeWeak(&v7->_errorReporter, reporterCopy);
+    GlobalContext = JSContextGetGlobalContext(context);
     v10 = GlobalContext;
     if (GlobalContext)
     {
@@ -76,7 +76,7 @@
   return v8;
 }
 
-- (WBSJSCallbackHandler)initWithPromiseResolveFunction:(OpaqueJSValue *)a3 rejectFunction:(OpaqueJSValue *)a4 context:(OpaqueJSContext *)a5
+- (WBSJSCallbackHandler)initWithPromiseResolveFunction:(OpaqueJSValue *)function rejectFunction:(OpaqueJSValue *)rejectFunction context:(OpaqueJSContext *)context
 {
   v16.receiver = self;
   v16.super_class = WBSJSCallbackHandler;
@@ -84,9 +84,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_callbackFunction = a3;
-    v8->_rejectFunction = a4;
-    GlobalContext = JSContextGetGlobalContext(a5);
+    v8->_callbackFunction = function;
+    v8->_rejectFunction = rejectFunction;
+    GlobalContext = JSContextGetGlobalContext(context);
     v11 = GlobalContext;
     if (GlobalContext)
     {
@@ -143,14 +143,14 @@
   return v5;
 }
 
-- (void)reportErrorWithMessage:(id)a3
+- (void)reportErrorWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   WeakRetained = objc_loadWeakRetained(&self->_errorReporter);
   if (WeakRetained)
   {
     v6 = WeakRetained;
-    [(OpaqueJSContext *)WeakRetained reportErrorForCallbackHandler:self withMessage:v4 context:self->_globalContext.m_ptr];
+    [(OpaqueJSContext *)WeakRetained reportErrorForCallbackHandler:self withMessage:messageCopy context:self->_globalContext.m_ptr];
   }
 
   else
@@ -162,7 +162,7 @@
 
     v7 = MEMORY[0x1E696EB58];
     v8 = [MEMORY[0x1E696EB40] contextWithJSGlobalContextRef:self->_globalContext.m_ptr];
-    v6 = [v7 valueWithNewErrorFromMessage:v4 inContext:v8];
+    v6 = [v7 valueWithNewErrorFromMessage:messageCopy inContext:v8];
 
     rejectFunction = self->_rejectFunction;
     m_ptr = self->_globalContext.m_ptr;
@@ -206,9 +206,9 @@ LABEL_4:
   return callbackFunction;
 }
 
-- (id)callWithArgument:(id)a3
+- (id)callWithArgument:(id)argument
 {
-  v5 = a3;
+  argumentCopy = argument;
   callbackFunction = self->_callbackFunction;
   if (callbackFunction)
   {
@@ -220,7 +220,7 @@ LABEL_4:
       m_ptr = self->_globalContext.m_ptr;
     }
 
-    v8 = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(m_ptr, v5, v4);
+    v8 = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(m_ptr, argumentCopy, v4);
     callbackFunction = callWithArguments<1ul>(callbackFunction, &ctx, v8);
     if (ctx)
     {
@@ -231,9 +231,9 @@ LABEL_4:
   return callbackFunction;
 }
 
-- (id)callWithArgument:(id)a3 argument:(id)a4
+- (id)callWithArgument:(id)argument argument:(id)a4
 {
-  v6 = a3;
+  argumentCopy = argument;
   v8 = a4;
   callbackFunction = self->_callbackFunction;
   if (callbackFunction)
@@ -246,7 +246,7 @@ LABEL_4:
       m_ptr = self->_globalContext.m_ptr;
     }
 
-    v11 = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(m_ptr, v6, v7);
+    v11 = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(m_ptr, argumentCopy, v7);
     v13 = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(self->_globalContext.m_ptr, v8, v12);
     callbackFunction = callWithArguments<2ul>(callbackFunction, &ctx, v11, v13);
     if (ctx)
@@ -258,9 +258,9 @@ LABEL_4:
   return callbackFunction;
 }
 
-- (id)callWithArgument:(id)a3 argument:(id)a4 argument:(id)a5
+- (id)callWithArgument:(id)argument argument:(id)a4 argument:(id)a5
 {
-  v8 = a3;
+  argumentCopy = argument;
   v9 = a4;
   v11 = a5;
   callbackFunction = self->_callbackFunction;
@@ -274,7 +274,7 @@ LABEL_4:
       m_ptr = self->_globalContext.m_ptr;
     }
 
-    v17[0] = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(m_ptr, v8, v10);
+    v17[0] = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(m_ptr, argumentCopy, v10);
     v17[1] = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(self->_globalContext.m_ptr, v9, v14);
     v17[2] = SafariShared::JSUtilities::translateNSToJSValueForJSCallbackHandler(self->_globalContext.m_ptr, v11, v15);
     callbackFunction = callWithArguments<3ul>(callbackFunction, &ctx, v17);

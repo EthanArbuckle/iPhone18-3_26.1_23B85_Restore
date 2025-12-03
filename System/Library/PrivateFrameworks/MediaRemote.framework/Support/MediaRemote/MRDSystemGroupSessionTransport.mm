@@ -1,17 +1,17 @@
 @interface MRDSystemGroupSessionTransport
 - (MRDSystemGroupSessionTransport)init;
-- (MRDSystemGroupSessionTransport)initWithSessionIdentifier:(id)a3;
+- (MRDSystemGroupSessionTransport)initWithSessionIdentifier:(id)identifier;
 - (MRDeviceInfo)deviceInfo;
 - (NSArray)subscribedPlayerPaths;
 - (NSString)description;
 - (NSString)hostname;
 - (NSString)name;
-- (id)createConnectionWithUserInfo:(id)a3;
+- (id)createConnectionWithUserInfo:(id)info;
 @end
 
 @implementation MRDSystemGroupSessionTransport
 
-- (MRDSystemGroupSessionTransport)initWithSessionIdentifier:(id)a3
+- (MRDSystemGroupSessionTransport)initWithSessionIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = &self->MRExternalDeviceTransport_opaque[OBJC_IVAR___MRDSystemGroupSessionTransport_sessionIdentifier];
@@ -24,7 +24,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SystemGroupSessionTransport.description.getter();
 
   v3 = String._bridgeToObjectiveC()();
@@ -35,13 +35,13 @@
 - (MRDeviceInfo)deviceInfo
 {
   v3 = objc_allocWithZone(MRDeviceInfo);
-  v4 = self;
+  selfCopy = self;
   v5 = [v3 init];
-  v6 = [(MRDSystemGroupSessionTransport *)v4 name];
-  [v5 setName:v6];
+  name = [(MRDSystemGroupSessionTransport *)selfCopy name];
+  [v5 setName:name];
 
-  v7 = *&v4->MRExternalDeviceTransport_opaque[OBJC_IVAR___MRDSystemGroupSessionTransport_sessionIdentifier];
-  v8 = *&v4->sessionIdentifier[OBJC_IVAR___MRDSystemGroupSessionTransport_sessionIdentifier];
+  v7 = *&selfCopy->MRExternalDeviceTransport_opaque[OBJC_IVAR___MRDSystemGroupSessionTransport_sessionIdentifier];
+  v8 = *&selfCopy->sessionIdentifier[OBJC_IVAR___MRDSystemGroupSessionTransport_sessionIdentifier];
   v9 = String._bridgeToObjectiveC()();
   [v5 setDeviceUID:v9];
 
@@ -75,14 +75,14 @@
   return v2;
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = _s12mediaremoted27SystemGroupSessionTransportC16createConnection8userInfoSo016MRExternalDeviceeG0CSgSDys11AnyHashableVypGSg_tF_0();
 
   return v5;

@@ -1,15 +1,15 @@
 @interface ATXCategoricalFeatureMode
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
-- (id)featureNameForBMUserFocusInferredModeType:(int)a3;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
+- (id)featureNameForBMUserFocusInferredModeType:(int)type;
 @end
 
 @implementation ATXCategoricalFeatureMode
 
-- (id)featureNameForBMUserFocusInferredModeType:(int)a3
+- (id)featureNameForBMUserFocusInferredModeType:(int)type
 {
-  if ((a3 - 1) < 0x11)
+  if ((type - 1) < 0x11)
   {
-    return off_2785A1F58[a3 - 1];
+    return off_2785A1F58[type - 1];
   }
 
   v4 = __atxlog_handle_relevance_model();
@@ -21,17 +21,17 @@
   return @"<Unexpected Category Value>";
 }
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v5 = a3;
-  v6 = [v5 inferredModeEvent];
+  contextCopy = context;
+  inferredModeEvent = [contextCopy inferredModeEvent];
 
-  if (v6)
+  if (inferredModeEvent)
   {
-    v7 = [v5 inferredModeEvent];
-    v8 = [v7 modeType];
+    inferredModeEvent2 = [contextCopy inferredModeEvent];
+    modeType = [inferredModeEvent2 modeType];
 
-    v9 = [(ATXCategoricalFeatureMode *)self featureNameForBMUserFocusInferredModeType:v8];
+    v9 = [(ATXCategoricalFeatureMode *)self featureNameForBMUserFocusInferredModeType:modeType];
   }
 
   else

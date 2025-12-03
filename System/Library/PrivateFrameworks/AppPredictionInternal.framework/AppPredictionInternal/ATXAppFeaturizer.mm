@@ -1,97 +1,97 @@
 @interface ATXAppFeaturizer
-+ (double)time:(double)a3 toAccuracyInSeconds:(double)a4;
-+ (float)_computeL2DistanceFromBundleId:(id)a3 to:(const float *)a4 app2vecMapping:(id)a5;
-+ (void)_predictNextAppLaunchEmbedding:(id)a3 into:(float *)a4 launchSequence:(id)a5;
-- (ATXAppFeaturizer)initWithDayZeroParameters:(id)a3 dayZeroIntentParameters:(id)a4 feedback:(id)a5 appLaunchHistogramManager:(id)a6 appLaunchSequenceManager:(id)a7 appLaunchLocation:(id)a8 appInstallMontior:(id)a9 mediaApplications:(id)a10 appDailyDose:(id)a11 globalAppScorePredictor:(id)a12 globalSmartSuppression:(id)a13 appInfoManager:(id)a14 magicalMomentsUpdateMonitor:(id)a15 heroAppPredictions:(id)a16 appIconState:(id)a17 appLaunchMicroLocation:(id)a18 notificationManager:(id)a19;
-- (ATXAppFeaturizer)initWithDayZeroParameters:(id)a3 dayZeroIntentParameters:(id)a4 feedback:(id)a5 appLaunchHistogramManager:(id)a6 appLaunchSequenceManager:(id)a7 appLaunchLocation:(id)a8 appInstallMontior:(id)a9 mediaApplications:(id)a10 appDailyDose:(id)a11 globalAppScorePredictor:(id)a12 globalSmartSuppression:(id)a13 appInfoManager:(id)a14 magicalMomentsUpdateMonitor:(id)a15 heroAppPredictions:(id)a16 appIconState:(id)a17 appLaunchMicroLocation:(id)a18 notificationManager:(id)a19 heroPoiManager:(id)a20;
-- (vector<ATXPredictionItem,)evaluateFeaturesForApps:(ATXAppFeaturizer *)self clipBundleIdsToRank:(SEL)a3 consumerSubType:(id)a4 intent:(id)a5 scoreLogger:(unsigned __int8)a6 context:(id)a7 featureCache:(id)a8;
-- (void)setDistributionBasedScoreInputsForItem:(ATXPredictionItem *)a3 withGeoHashResolution:(unint64_t)a4 withGeoHashLaunchCounts:(id)a5;
-- (void)setDistributionBasedScoreInputsForTimeAndDay:(ATXPredictionItem *)a3 forBundleId:(id)a4 withTimeOfDayHistogram:(id)a5 withDayOfWeekHistogram:(id)a6;
-- (void)setModeAffinityScores:(ATXPredictionItem *)a3 appModeEntityScores:(id)a4;
-- (void)setZeroValuesForModeEntityFeatures:(ATXPredictionItem *)a3;
++ (double)time:(double)time toAccuracyInSeconds:(double)seconds;
++ (float)_computeL2DistanceFromBundleId:(id)id to:(const float *)to app2vecMapping:(id)mapping;
++ (void)_predictNextAppLaunchEmbedding:(id)embedding into:(float *)into launchSequence:(id)sequence;
+- (ATXAppFeaturizer)initWithDayZeroParameters:(id)parameters dayZeroIntentParameters:(id)intentParameters feedback:(id)feedback appLaunchHistogramManager:(id)manager appLaunchSequenceManager:(id)sequenceManager appLaunchLocation:(id)location appInstallMontior:(id)montior mediaApplications:(id)self0 appDailyDose:(id)self1 globalAppScorePredictor:(id)self2 globalSmartSuppression:(id)self3 appInfoManager:(id)self4 magicalMomentsUpdateMonitor:(id)self5 heroAppPredictions:(id)self6 appIconState:(id)self7 appLaunchMicroLocation:(id)self8 notificationManager:(id)self9;
+- (ATXAppFeaturizer)initWithDayZeroParameters:(id)parameters dayZeroIntentParameters:(id)intentParameters feedback:(id)feedback appLaunchHistogramManager:(id)manager appLaunchSequenceManager:(id)sequenceManager appLaunchLocation:(id)location appInstallMontior:(id)montior mediaApplications:(id)self0 appDailyDose:(id)self1 globalAppScorePredictor:(id)self2 globalSmartSuppression:(id)self3 appInfoManager:(id)self4 magicalMomentsUpdateMonitor:(id)self5 heroAppPredictions:(id)self6 appIconState:(id)self7 appLaunchMicroLocation:(id)self8 notificationManager:(id)self9 heroPoiManager:(id)poiManager;
+- (vector<ATXPredictionItem,)evaluateFeaturesForApps:(ATXAppFeaturizer *)self clipBundleIdsToRank:(SEL)rank consumerSubType:(id)type intent:(id)intent scoreLogger:(unsigned __int8)logger context:(id)context featureCache:(id)cache;
+- (void)setDistributionBasedScoreInputsForItem:(ATXPredictionItem *)item withGeoHashResolution:(unint64_t)resolution withGeoHashLaunchCounts:(id)counts;
+- (void)setDistributionBasedScoreInputsForTimeAndDay:(ATXPredictionItem *)day forBundleId:(id)id withTimeOfDayHistogram:(id)histogram withDayOfWeekHistogram:(id)weekHistogram;
+- (void)setModeAffinityScores:(ATXPredictionItem *)scores appModeEntityScores:(id)entityScores;
+- (void)setZeroValuesForModeEntityFeatures:(ATXPredictionItem *)features;
 @end
 
 @implementation ATXAppFeaturizer
 
-- (ATXAppFeaturizer)initWithDayZeroParameters:(id)a3 dayZeroIntentParameters:(id)a4 feedback:(id)a5 appLaunchHistogramManager:(id)a6 appLaunchSequenceManager:(id)a7 appLaunchLocation:(id)a8 appInstallMontior:(id)a9 mediaApplications:(id)a10 appDailyDose:(id)a11 globalAppScorePredictor:(id)a12 globalSmartSuppression:(id)a13 appInfoManager:(id)a14 magicalMomentsUpdateMonitor:(id)a15 heroAppPredictions:(id)a16 appIconState:(id)a17 appLaunchMicroLocation:(id)a18 notificationManager:(id)a19
+- (ATXAppFeaturizer)initWithDayZeroParameters:(id)parameters dayZeroIntentParameters:(id)intentParameters feedback:(id)feedback appLaunchHistogramManager:(id)manager appLaunchSequenceManager:(id)sequenceManager appLaunchLocation:(id)location appInstallMontior:(id)montior mediaApplications:(id)self0 appDailyDose:(id)self1 globalAppScorePredictor:(id)self2 globalSmartSuppression:(id)self3 appInfoManager:(id)self4 magicalMomentsUpdateMonitor:(id)self5 heroAppPredictions:(id)self6 appIconState:(id)self7 appLaunchMicroLocation:(id)self8 notificationManager:(id)self9
 {
-  v38 = a3;
-  v44 = a4;
-  v43 = a5;
-  v42 = a6;
-  v41 = a7;
-  v40 = a8;
-  v39 = a9;
-  v37 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
-  v29 = a16;
-  v30 = a17;
-  v31 = a18;
-  v32 = a19;
+  parametersCopy = parameters;
+  intentParametersCopy = intentParameters;
+  feedbackCopy = feedback;
+  managerCopy = manager;
+  sequenceManagerCopy = sequenceManager;
+  locationCopy = location;
+  montiorCopy = montior;
+  applicationsCopy = applications;
+  doseCopy = dose;
+  predictorCopy = predictor;
+  suppressionCopy = suppression;
+  infoManagerCopy = infoManager;
+  monitorCopy = monitor;
+  predictionsCopy = predictions;
+  stateCopy = state;
+  microLocationCopy = microLocation;
+  notificationManagerCopy = notificationManager;
   v33 = objc_opt_new();
-  v36 = [(ATXAppFeaturizer *)self initWithDayZeroParameters:v38 dayZeroIntentParameters:v44 feedback:v43 appLaunchHistogramManager:v42 appLaunchSequenceManager:v41 appLaunchLocation:v40 appInstallMontior:v39 mediaApplications:v37 appDailyDose:v24 globalAppScorePredictor:v25 globalSmartSuppression:v26 appInfoManager:v27 magicalMomentsUpdateMonitor:v28 heroAppPredictions:v29 appIconState:v30 appLaunchMicroLocation:v31 notificationManager:v32 heroPoiManager:v33];
+  v36 = [(ATXAppFeaturizer *)self initWithDayZeroParameters:parametersCopy dayZeroIntentParameters:intentParametersCopy feedback:feedbackCopy appLaunchHistogramManager:managerCopy appLaunchSequenceManager:sequenceManagerCopy appLaunchLocation:locationCopy appInstallMontior:montiorCopy mediaApplications:applicationsCopy appDailyDose:doseCopy globalAppScorePredictor:predictorCopy globalSmartSuppression:suppressionCopy appInfoManager:infoManagerCopy magicalMomentsUpdateMonitor:monitorCopy heroAppPredictions:predictionsCopy appIconState:stateCopy appLaunchMicroLocation:microLocationCopy notificationManager:notificationManagerCopy heroPoiManager:v33];
 
   return v36;
 }
 
-- (ATXAppFeaturizer)initWithDayZeroParameters:(id)a3 dayZeroIntentParameters:(id)a4 feedback:(id)a5 appLaunchHistogramManager:(id)a6 appLaunchSequenceManager:(id)a7 appLaunchLocation:(id)a8 appInstallMontior:(id)a9 mediaApplications:(id)a10 appDailyDose:(id)a11 globalAppScorePredictor:(id)a12 globalSmartSuppression:(id)a13 appInfoManager:(id)a14 magicalMomentsUpdateMonitor:(id)a15 heroAppPredictions:(id)a16 appIconState:(id)a17 appLaunchMicroLocation:(id)a18 notificationManager:(id)a19 heroPoiManager:(id)a20
+- (ATXAppFeaturizer)initWithDayZeroParameters:(id)parameters dayZeroIntentParameters:(id)intentParameters feedback:(id)feedback appLaunchHistogramManager:(id)manager appLaunchSequenceManager:(id)sequenceManager appLaunchLocation:(id)location appInstallMontior:(id)montior mediaApplications:(id)self0 appDailyDose:(id)self1 globalAppScorePredictor:(id)self2 globalSmartSuppression:(id)self3 appInfoManager:(id)self4 magicalMomentsUpdateMonitor:(id)self5 heroAppPredictions:(id)self6 appIconState:(id)self7 appLaunchMicroLocation:(id)self8 notificationManager:(id)self9 heroPoiManager:(id)poiManager
 {
-  v49 = a3;
-  v35 = a4;
-  v48 = a4;
-  v36 = a5;
-  v47 = a5;
-  v46 = a6;
-  v45 = a7;
-  v44 = a8;
-  v43 = a9;
-  v42 = a10;
-  v41 = a11;
-  v40 = a12;
-  v39 = a13;
-  v38 = a14;
-  v25 = a15;
-  v26 = a16;
-  v27 = a17;
-  v28 = a18;
-  v29 = a19;
-  v30 = a20;
+  parametersCopy = parameters;
+  intentParametersCopy = intentParameters;
+  intentParametersCopy2 = intentParameters;
+  feedbackCopy = feedback;
+  feedbackCopy2 = feedback;
+  managerCopy = manager;
+  sequenceManagerCopy = sequenceManager;
+  locationCopy = location;
+  montiorCopy = montior;
+  applicationsCopy = applications;
+  doseCopy = dose;
+  predictorCopy = predictor;
+  suppressionCopy = suppression;
+  infoManagerCopy = infoManager;
+  monitorCopy = monitor;
+  predictionsCopy = predictions;
+  stateCopy = state;
+  microLocationCopy = microLocation;
+  notificationManagerCopy = notificationManager;
+  poiManagerCopy = poiManager;
   v50.receiver = self;
   v50.super_class = ATXAppFeaturizer;
   v31 = [(ATXAppFeaturizer *)&v50 init];
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_dayZeroParameters, a3);
-    objc_storeStrong(&v32->_dayZeroIntentParameters, v35);
-    objc_storeStrong(&v32->_feedback, v36);
-    objc_storeStrong(&v32->_appLaunchHistogramManager, a6);
-    objc_storeStrong(&v32->_appLaunchSequenceManager, a7);
-    objc_storeStrong(&v32->_appLaunchLocation, a8);
-    objc_storeStrong(&v32->_appInstallMonitor, a9);
-    objc_storeStrong(&v32->_mediaApps, a10);
-    objc_storeStrong(&v32->_appDailyDose, a11);
-    objc_storeStrong(&v32->_globalAppScorePredictor, a12);
-    objc_storeStrong(&v32->_globalSmartSuppression, a13);
-    objc_storeStrong(&v32->_appInfoManager, a14);
-    objc_storeStrong(&v32->_mmPredictionMonitor, a15);
-    objc_storeStrong(&v32->_heroPredictionServer, a16);
-    objc_storeStrong(&v32->_appIconState, a17);
-    objc_storeStrong(&v32->_microLocation, a18);
-    objc_storeStrong(&v32->_notificationManager, a19);
-    objc_storeStrong(&v32->_heroPoiManager, a20);
+    objc_storeStrong(&v31->_dayZeroParameters, parameters);
+    objc_storeStrong(&v32->_dayZeroIntentParameters, intentParametersCopy);
+    objc_storeStrong(&v32->_feedback, feedbackCopy);
+    objc_storeStrong(&v32->_appLaunchHistogramManager, manager);
+    objc_storeStrong(&v32->_appLaunchSequenceManager, sequenceManager);
+    objc_storeStrong(&v32->_appLaunchLocation, location);
+    objc_storeStrong(&v32->_appInstallMonitor, montior);
+    objc_storeStrong(&v32->_mediaApps, applications);
+    objc_storeStrong(&v32->_appDailyDose, dose);
+    objc_storeStrong(&v32->_globalAppScorePredictor, predictor);
+    objc_storeStrong(&v32->_globalSmartSuppression, suppression);
+    objc_storeStrong(&v32->_appInfoManager, infoManager);
+    objc_storeStrong(&v32->_mmPredictionMonitor, monitor);
+    objc_storeStrong(&v32->_heroPredictionServer, predictions);
+    objc_storeStrong(&v32->_appIconState, state);
+    objc_storeStrong(&v32->_microLocation, microLocation);
+    objc_storeStrong(&v32->_notificationManager, notificationManager);
+    objc_storeStrong(&v32->_heroPoiManager, poiManager);
   }
 
   return v32;
 }
 
-- (vector<ATXPredictionItem,)evaluateFeaturesForApps:(ATXAppFeaturizer *)self clipBundleIdsToRank:(SEL)a3 consumerSubType:(id)a4 intent:(id)a5 scoreLogger:(unsigned __int8)a6 context:(id)a7 featureCache:(id)a8
+- (vector<ATXPredictionItem,)evaluateFeaturesForApps:(ATXAppFeaturizer *)self clipBundleIdsToRank:(SEL)rank consumerSubType:(id)type intent:(id)intent scoreLogger:(unsigned __int8)logger context:(id)context featureCache:(id)cache
 {
-  MEMORY[0x28223BE20](self, a3);
+  MEMORY[0x28223BE20](self, rank);
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -107,7 +107,7 @@
   v838 = v11;
   v751 = a10;
   v711 = v24;
-  v735 = [v21[1] recentNotifications];
+  recentNotifications = [v21[1] recentNotifications];
   if (v24)
   {
     v740 = [v713 arrayByAddingObjectsFromArray:v24];
@@ -171,11 +171,11 @@
   std::vector<double>::vector[abi:ne200100](&v860, v809);
   std::vector<double>::vector[abi:ne200100](&v858, v809);
   [v21[2] putFeedbackScoresForApps:v740 intoScores:v862 confirms:v860 rejects:v858];
-  v31 = [v838 timeContext];
-  v32 = [v31 date];
+  timeContext = [v838 timeContext];
+  date = [timeContext date];
 
-  v33 = [v838 userContext];
-  v734 = [v33 lastUnlockDate];
+  userContext = [v838 userContext];
+  lastUnlockDate = [userContext lastUnlockDate];
 
   v841 = [v21[3] histogramForLaunchType:0];
   v803 = [v21[3] histogramForLaunchType:1];
@@ -235,10 +235,10 @@
   v759 = [v21[3] categoricalHistogramForLaunchType:86];
   v795 = [v21[3] categoricalHistogramForLaunchType:89];
   v753 = [v21[3] categoricalHistogramForLaunchType:95];
-  v34 = [v838 userContext];
-  v707 = [v34 lastAppLaunch];
+  userContext2 = [v838 userContext];
+  lastAppLaunch = [userContext2 lastAppLaunch];
 
-  if (v707)
+  if (lastAppLaunch)
   {
     v836 = [v21[4] launchSequenceForBundle:?];
   }
@@ -249,32 +249,32 @@
   }
 
   v35 = MEMORY[0x277D41C30];
-  v36 = [v838 locationMotionContext];
-  v776 = [v35 getMotionStringFromMotionType:{objc_msgSend(v36, "motionType")}];
+  locationMotionContext = [v838 locationMotionContext];
+  v776 = [v35 getMotionStringFromMotionType:{objc_msgSend(locationMotionContext, "motionType")}];
 
-  v37 = [v838 deviceStateContext];
-  v807 = [v37 onWifi];
+  deviceStateContext = [v838 deviceStateContext];
+  onWifi = [deviceStateContext onWifi];
 
-  v38 = [v838 deviceStateContext];
-  v804 = [v38 wifiSSID];
+  deviceStateContext2 = [v838 deviceStateContext];
+  wifiSSID = [deviceStateContext2 wifiSSID];
 
-  v39 = [v838 deviceStateContext];
-  v736 = [v39 inAirplaneMode];
+  deviceStateContext3 = [v838 deviceStateContext];
+  inAirplaneMode = [deviceStateContext3 inAirplaneMode];
 
   [v841 entropy];
   v729 = v40;
   [v839 entropy];
   v728 = v41;
-  [v839 entropyForDate:v32];
+  [v839 entropyForDate:date];
   v727 = v42;
   [v779 entropy];
   v726 = v43;
   [v812 entropy];
   v725 = v44;
-  [v812 entropyForCategory:v804];
+  [v812 entropyForCategory:wifiSSID];
   v724 = v45;
-  v46 = [v838 locationMotionContext];
-  context = [v46 locationEnabled];
+  locationMotionContext2 = [v838 locationMotionContext];
+  context = [locationMotionContext2 locationEnabled];
 
   if (v809 < 1)
   {
@@ -297,11 +297,11 @@
       v53 = [v740 objectAtIndexedSubscript:v47];
       [v841 overallLaunchPopularityForBundleId:v53];
       v55 = v54;
-      [v51 relativeLaunchPopularityWithBundleId:v53 date:v32];
+      [v51 relativeLaunchPopularityWithBundleId:v53 date:date];
       v57 = v56;
-      [v779 relativeLaunchPopularityWithBundleId:v53 date:v32];
+      [v779 relativeLaunchPopularityWithBundleId:v53 date:date];
       v59 = v58;
-      [v812 relativeLaunchPopularityWithBundleId:v53 category:v804];
+      [v812 relativeLaunchPopularityWithBundleId:v53 category:wifiSSID];
       v61 = v60;
 
       v48 = v48 + vabdd_f64(v55, v57);
@@ -323,50 +323,50 @@
     std::vector<float>::resize(&__p, [(ATXApp2VecMapping *)v62 vectorLength]);
     v64 = objc_opt_class();
     v65 = __p;
-    v66 = [v52[4] launchSequence];
-    [v64 _predictNextAppLaunchEmbedding:v63 into:v65 launchSequence:v66];
+    launchSequence = [v52[4] launchSequence];
+    [v64 _predictNextAppLaunchEmbedding:v63 into:v65 launchSequence:launchSequence];
     v714 = v63;
     v723 = 0;
   }
 
   else
   {
-    v66 = __atxlog_handle_app_prediction();
-    if (os_log_type_enabled(v66, OS_LOG_TYPE_FAULT))
+    launchSequence = __atxlog_handle_app_prediction();
+    if (os_log_type_enabled(launchSequence, OS_LOG_TYPE_FAULT))
     {
-      [ATXAppFeaturizer evaluateFeaturesForApps:v66 clipBundleIdsToRank:? consumerSubType:? intent:? scoreLogger:? context:? featureCache:?];
+      [ATXAppFeaturizer evaluateFeaturesForApps:launchSequence clipBundleIdsToRank:? consumerSubType:? intent:? scoreLogger:? context:? featureCache:?];
     }
 
     v714 = 0;
     v723 = 1;
   }
 
-  v67 = [v838 timeContext];
-  v749 = [v67 dayOfWeek];
+  timeContext2 = [v838 timeContext];
+  dayOfWeek = [timeContext2 dayOfWeek];
 
-  v68 = [v838 timeContext];
-  v747 = [v68 timeOfDay];
+  timeContext3 = [v838 timeContext];
+  timeOfDay = [timeContext3 timeOfDay];
 
-  v69 = [v838 timeContext];
-  v745 = [v69 dateInWeekend];
+  timeContext4 = [v838 timeContext];
+  dateInWeekend = [timeContext4 dateInWeekend];
 
-  v806 = [_ATXActionUtils stringForTimeOfDayAndDayOfWeek:v32 timeZone:0];
-  v70 = [v838 locationMotionContext];
-  v820 = +[_ATXActionUtils stringForSpecificGeohash:](_ATXActionUtils, "stringForSpecificGeohash:", [v70 geohash]);
+  v806 = [_ATXActionUtils stringForTimeOfDayAndDayOfWeek:date timeZone:0];
+  locationMotionContext3 = [v838 locationMotionContext];
+  v820 = +[_ATXActionUtils stringForSpecificGeohash:](_ATXActionUtils, "stringForSpecificGeohash:", [locationMotionContext3 geohash]);
 
-  v71 = [v838 locationMotionContext];
-  v822 = +[_ATXActionUtils stringForCoarseGeohash:](_ATXActionUtils, "stringForCoarseGeohash:", [v71 coarseGeohash]);
+  locationMotionContext4 = [v838 locationMotionContext];
+  v822 = +[_ATXActionUtils stringForCoarseGeohash:](_ATXActionUtils, "stringForCoarseGeohash:", [locationMotionContext4 coarseGeohash]);
 
-  v72 = [v838 locationMotionContext];
-  v737 = +[_ATXActionUtils stringForZoom7Geohash:](_ATXActionUtils, "stringForZoom7Geohash:", [v72 largeGeohash]);
+  locationMotionContext5 = [v838 locationMotionContext];
+  v737 = +[_ATXActionUtils stringForZoom7Geohash:](_ATXActionUtils, "stringForZoom7Geohash:", [locationMotionContext5 largeGeohash]);
 
-  v818 = [_ATXActionUtils stringForTwoHourTimeWindow:v32 timeZone:0];
-  v816 = [_ATXActionUtils stringForDayOfWeek:v32 timeZone:0];
-  v73 = [v838 locationMotionContext];
-  v824 = +[_ATXActionUtils stringForCoarseTimePOWLocation:timeZone:coarseGeohash:](_ATXActionUtils, "stringForCoarseTimePOWLocation:timeZone:coarseGeohash:", v32, 0, [v73 coarseGeohash]);
+  v818 = [_ATXActionUtils stringForTwoHourTimeWindow:date timeZone:0];
+  v816 = [_ATXActionUtils stringForDayOfWeek:date timeZone:0];
+  locationMotionContext6 = [v838 locationMotionContext];
+  v824 = +[_ATXActionUtils stringForCoarseTimePOWLocation:timeZone:coarseGeohash:](_ATXActionUtils, "stringForCoarseTimePOWLocation:timeZone:coarseGeohash:", date, 0, [locationMotionContext6 coarseGeohash]);
 
-  v74 = [v838 locationMotionContext];
-  v817 = +[_ATXActionUtils stringForSpecificTimeDOWLocation:timeZone:geohash:](_ATXActionUtils, "stringForSpecificTimeDOWLocation:timeZone:geohash:", v32, 0, [v74 geohash]);
+  locationMotionContext7 = [v838 locationMotionContext];
+  v817 = +[_ATXActionUtils stringForSpecificTimeDOWLocation:timeZone:geohash:](_ATXActionUtils, "stringForSpecificTimeDOWLocation:timeZone:geohash:", date, 0, [locationMotionContext7 geohash]);
 
   v828 = objc_opt_new();
   v830 = objc_opt_new();
@@ -393,9 +393,9 @@
         v78 = *(*(&v851 + 1) + 8 * i);
         v79 = MEMORY[0x277CCABB0];
         v80 = v843[5];
-        v81 = [v838 locationMotionContext];
-        v82 = [v81 currentLOI];
-        v83 = [v79 numberWithInt:{objc_msgSend(v80, "launchCountAtLOI:bundleId:", v82, v78)}];
+        locationMotionContext8 = [v838 locationMotionContext];
+        currentLOI = [locationMotionContext8 currentLOI];
+        v83 = [v79 numberWithInt:{objc_msgSend(v80, "launchCountAtLOI:bundleId:", currentLOI, v78)}];
         [v834 setObject:v83 forKeyedSubscript:v78];
 
         v84 = MEMORY[0x277CCABB0];
@@ -407,7 +407,7 @@
         v874 = v78;
         v87 = [MEMORY[0x277CBEA60] arrayWithObjects:&v874 count:1];
         LODWORD(v88) = 1045220557;
-        [v841 totalLaunchesForBundleIds:v87 forDate:v32 distanceScale:v88];
+        [v841 totalLaunchesForBundleIds:v87 forDate:date distanceScale:v88];
         v89 = [v86 numberWithDouble:?];
         [v830 setObject:v89 forKeyedSubscript:v78];
 
@@ -415,7 +415,7 @@
         v873 = v78;
         v91 = [MEMORY[0x277CBEA60] arrayWithObjects:&v873 count:1];
         LODWORD(v92) = 1.0;
-        [v839 totalLaunchesForBundleIds:v91 forDate:v32 distanceScale:v92];
+        [v839 totalLaunchesForBundleIds:v91 forDate:date distanceScale:v92];
         v93 = [v90 numberWithDouble:?];
         [v828 setObject:v93 forKeyedSubscript:v78];
       }
@@ -428,15 +428,15 @@
 
   v731 = [v843[10] globalPopularityForBundleIdsGivenTimeDayAndLocation:obj context:v838];
   v94 = arc4random();
-  v722 = [v843[12] launchedAppCount];
-  v752 = [v843[16] currentPoiCategory];
+  launchedAppCount = [v843[12] launchedAppCount];
+  currentPoiCategory = [v843[16] currentPoiCategory];
   v95 = objc_opt_new();
-  v96 = [v95 efficientCurrentMode];
-  v97 = v96;
+  efficientCurrentMode = [v95 efficientCurrentMode];
+  v97 = efficientCurrentMode;
   v98 = @"Default";
-  if (v96)
+  if (efficientCurrentMode)
   {
-    v98 = v96;
+    v98 = efficientCurrentMode;
   }
 
   v708 = v98;
@@ -463,11 +463,11 @@
     v104 = 0;
     v733 = 0;
     v105.i32[1] = -1059153344;
-    v718 = v747;
-    v719 = v749;
+    v718 = timeOfDay;
+    v719 = dayOfWeek;
     *v105.i32 = -31337.0;
-    v716 = v807;
-    v717 = v745;
+    v716 = onWifi;
+    v717 = dateInWeekend;
     v715 = (context ^ 1u);
     v720 = v814;
     v721 = vdupq_lane_s32(v105, 0);
@@ -526,39 +526,39 @@ LABEL_45:
 
     v111 = ATXIsRemoteAppBundleId();
     *&v112 = ATXSetInput(&v849, 0x33BuLL, v111);
-    v113 = [v815 genreId];
-    v114 = v113 == 0;
+    genreId = [v815 genreId];
+    v114 = genreId == 0;
 
     if (!v114)
     {
-      v115 = [v815 genreId];
-      [v781 setValue:v115 forKey:v108];
+      genreId2 = [v815 genreId];
+      [v781 setValue:genreId2 forKey:v108];
     }
 
-    v116 = [v815 app2VecCluster];
-    v117 = v116 == 0;
+    app2VecCluster = [v815 app2VecCluster];
+    v117 = app2VecCluster == 0;
 
     if (!v117)
     {
-      v118 = [v815 app2VecCluster];
-      [v780 setValue:v118 forKey:v108];
+      app2VecCluster2 = [v815 app2VecCluster];
+      [v780 setValue:app2VecCluster2 forKey:v108];
     }
 
-    v119 = [v815 installDate];
-    if ((v119 != 0) | v733 & 1)
+    installDate = [v815 installDate];
+    if ((installDate != 0) | v733 & 1)
     {
-      if (v119)
+      if (installDate)
       {
-        v120 = v119;
-        v121 = [v838 timeContext];
-        v122 = [v121 date];
-        ATXSetInputAge(&v849, 0, v120, v122);
+        v120 = installDate;
+        timeContext5 = [v838 timeContext];
+        date2 = [timeContext5 date];
+        ATXSetInputAge(&v849, 0, v120, date2);
 
-        v123 = v120;
+        installDate2 = v120;
         v124 = v815;
 LABEL_65:
 
-        v125 = v123;
+        v125 = installDate2;
         v815 = v124;
         goto LABEL_66;
       }
@@ -573,24 +573,24 @@ LABEL_65:
         [v843[6] train];
         v124 = [v843[12] appInfoForBundleId:v108];
 
-        v123 = [v124 installDate];
-        if (v123)
+        installDate2 = [v124 installDate];
+        if (installDate2)
         {
-          v121 = [v838 timeContext];
-          v126 = [v121 date];
-          ATXSetInputAge(&v849, 0, v123, v126);
+          timeContext5 = [v838 timeContext];
+          date3 = [timeContext5 date];
+          ATXSetInputAge(&v849, 0, installDate2, date3);
         }
 
         else
         {
-          v121 = __atxlog_handle_app_prediction();
-          if (os_log_type_enabled(v121, OS_LOG_TYPE_DEFAULT))
+          timeContext5 = __atxlog_handle_app_prediction();
+          if (os_log_type_enabled(timeContext5, OS_LOG_TYPE_DEFAULT))
           {
             v870 = 138412290;
             v871 = v108;
           }
 
-          v123 = 0;
+          installDate2 = 0;
         }
 
         v733 = 1;
@@ -605,12 +605,12 @@ LABEL_66:
     v127 = 0.0;
     if (v104 >= v720)
     {
-      v128 = [v838 timeContext];
-      v129 = [v128 date];
-      v130 = [v129 dateByAddingTimeInterval:-43200.0];
-      v131 = [v838 timeContext];
-      v132 = [v131 date];
-      ATXSetInputAge(&v849, 0, v130, v132);
+      timeContext6 = [v838 timeContext];
+      date4 = [timeContext6 date];
+      v130 = [date4 dateByAddingTimeInterval:-43200.0];
+      timeContext7 = [v838 timeContext];
+      date5 = [timeContext7 date];
+      ATXSetInputAge(&v849, 0, v130, date5);
 
       v127 = 1.0;
     }
@@ -622,23 +622,23 @@ LABEL_66:
     ATXSetInput(&v849, 0x161uLL, v106);
     v133 = arc4random();
     *&v134 = ATXSetInput(&v849, 0x162uLL, v133 / 4294967300.0);
-    v135 = [v838 ambientLightContext];
-    v136 = [v135 ambientLightType];
+    ambientLightContext = [v838 ambientLightContext];
+    ambientLightType = [ambientLightContext ambientLightType];
 
-    if (v136 != 7)
+    if (ambientLightType != 7)
     {
-      v137 = [MEMORY[0x277CCABB0] numberWithInt:v136];
-      v138 = [v137 stringValue];
-      [v732 launchPopularityWithBundleId:v108 category:v138];
+      v137 = [MEMORY[0x277CCABB0] numberWithInt:ambientLightType];
+      stringValue = [v137 stringValue];
+      [v732 launchPopularityWithBundleId:v108 category:stringValue];
       ATXSetInput(&v849, 0x186uLL, v139);
 
-      v140 = [MEMORY[0x277CCABB0] numberWithInt:v136];
-      v141 = [v140 stringValue];
-      [v732 relativeLaunchPopularityWithBundleId:v108 category:v141];
+      v140 = [MEMORY[0x277CCABB0] numberWithInt:ambientLightType];
+      stringValue2 = [v140 stringValue];
+      [v732 relativeLaunchPopularityWithBundleId:v108 category:stringValue2];
       ATXSetInput(&v849, 0x185uLL, v142);
     }
 
-    v143 = ATXDayZeroScore(v108, v843[17], v722);
+    v143 = ATXDayZeroScore(v108, v843[17], launchedAppCount);
     *&v144 = ATXSetInput(&v849, 0x21uLL, v143);
     v145 = [v843[17] objectForKeyedSubscript:{@"staticPenalties", v144}];
     v750 = [v145 objectForKeyedSubscript:v108];
@@ -694,33 +694,33 @@ LABEL_66:
     [v173 doubleValue];
     ATXSetInput(&v849, 0x2A0uLL, v174);
 
-    v175 = [v815 lastLaunch];
-    v176 = [v838 timeContext];
-    v177 = [v176 date];
-    ATXSetInputAge(&v849, 2uLL, v175, v177);
+    lastLaunch = [v815 lastLaunch];
+    timeContext8 = [v838 timeContext];
+    date6 = [timeContext8 date];
+    ATXSetInputAge(&v849, 2uLL, lastLaunch, date6);
 
-    v178 = [v815 lastSpotlightLaunch];
-    v179 = [v838 timeContext];
-    v180 = [v179 date];
-    ATXSetInputAge(&v849, 1uLL, v178, v180);
+    lastSpotlightLaunch = [v815 lastSpotlightLaunch];
+    timeContext9 = [v838 timeContext];
+    date7 = [timeContext9 date];
+    ATXSetInputAge(&v849, 1uLL, lastSpotlightLaunch, date7);
 
-    v741 = [v815 averageSecondsBetweenLaunches];
-    if (v741)
+    averageSecondsBetweenLaunches = [v815 averageSecondsBetweenLaunches];
+    if (averageSecondsBetweenLaunches)
     {
-      [v741 doubleValue];
+      [averageSecondsBetweenLaunches doubleValue];
       *&v181 = ATXSetInput(&v849, 4uLL, v182);
     }
 
-    v742 = [v815 medianSecondsBetweenLaunches];
-    if (v742)
+    medianSecondsBetweenLaunches = [v815 medianSecondsBetweenLaunches];
+    if (medianSecondsBetweenLaunches)
     {
-      [v742 doubleValue];
+      [medianSecondsBetweenLaunches doubleValue];
       *&v183 = ATXSetInput(&v849, 3uLL, v184);
     }
 
-    if (v734)
+    if (lastUnlockDate)
     {
-      [v32 timeIntervalSinceDate:{v734, v183}];
+      [date timeIntervalSinceDate:{lastUnlockDate, v183}];
       if (v183 >= 0.0)
       {
         HIDWORD(v185) = 1085021696;
@@ -758,22 +758,22 @@ LABEL_66:
 
     *&v192 = ATXSetInput(&v849, 0xAuLL, [v843[13] appOnDockWithBundleId:{v108, v191}]);
     v193 = v843[5];
-    v194 = [v838 locationMotionContext];
-    v195 = [v194 currentLOI];
-    [v193 launchProbabilityAtLOI:v195 bundleId:v108];
+    locationMotionContext9 = [v838 locationMotionContext];
+    currentLOI2 = [locationMotionContext9 currentLOI];
+    [v193 launchProbabilityAtLOI:currentLOI2 bundleId:v108];
     ATXSetInput(&v849, 0x26uLL, v196);
 
     [v843[7] popularityAtCurrentMicroLocationForApp:v108];
     *&v198 = ATXSetInput(&v849, 0x27uLL, v197);
     [v743 overallLaunchPopularityForBundleId:{v108, v198}];
-    if (!v736)
+    if (!inAirplaneMode)
     {
       v199 = 0.0;
     }
 
     ATXSetInput(&v849, 0x3DuLL, v199);
     v200 = 0.0;
-    if (v736)
+    if (inAirplaneMode)
     {
       [v743 totalLaunches];
     }
@@ -788,11 +788,11 @@ LABEL_66:
     *&v205 = ATXSetInput(&v849, 0x3FuLL, v204);
     [v779 totalLaunches];
     *&v207 = ATXSetInput(&v849, 0x40uLL, v206);
-    [v812 overallLaunchPopularityForBundleId:v108 category:{v804, v207}];
+    [v812 overallLaunchPopularityForBundleId:v108 category:{wifiSSID, v207}];
     *&v209 = ATXSetInput(&v849, 0x41uLL, v208);
-    [v812 totalLaunchesForCategory:{v804, v209}];
+    [v812 totalLaunchesForCategory:{wifiSSID, v209}];
     *&v211 = ATXSetInput(&v849, 0x42uLL, v210);
-    [v812 totalLaunchesForBundleId:v108 category:{v804, v211}];
+    [v812 totalLaunchesForBundleId:v108 category:{wifiSSID, v211}];
     *&v213 = ATXSetInput(&v849, 0x2A1uLL, v212);
     [v812 totalLaunchesForBundleId:{v108, v213}];
     ATXSetInput(&v849, 0x2A2uLL, v214);
@@ -817,20 +817,20 @@ LABEL_66:
     *&v233 = ATXSetInput(&v849, 0x64uLL, v232);
     [v841 totalLaunches];
     *&v235 = ATXSetInput(&v849, 0x3BuLL, v234);
-    [v841 launchPopularityWithBundleId:v108 date:{v32, v235}];
+    [v841 launchPopularityWithBundleId:v108 date:{date, v235}];
     *&v237 = ATXSetInput(&v849, 0x1AuLL, v236);
-    [v841 relativeLaunchPopularityWithBundleId:v108 date:{v32, v237}];
+    [v841 relativeLaunchPopularityWithBundleId:v108 date:{date, v237}];
     ATXSetInput(&v849, 0x1BuLL, v238);
     LODWORD(v239) = 1045220557;
-    [v841 relativeLaunchPopularityWithBundleId:v108 date:v32 distanceScale:v239];
+    [v841 relativeLaunchPopularityWithBundleId:v108 date:date distanceScale:v239];
     *&v241 = ATXSetInput(&v849, 0x1CuLL, v240);
     [v841 overallLaunchPopularityForBundleId:{v108, v241}];
     *&v243 = ATXSetInput(&v849, 0x1DuLL, v242);
     [v803 totalLaunches];
     *&v245 = ATXSetInput(&v849, 0x3CuLL, v244);
-    [v803 launchPopularityWithBundleId:v108 date:{v32, v245}];
+    [v803 launchPopularityWithBundleId:v108 date:{date, v245}];
     *&v247 = ATXSetInput(&v849, 0x1EuLL, v246);
-    [v803 relativeLaunchPopularityWithBundleId:v108 date:{v32, v247}];
+    [v803 relativeLaunchPopularityWithBundleId:v108 date:{date, v247}];
     *&v249 = ATXSetInput(&v849, 0x1FuLL, v248);
     [v803 overallLaunchPopularityForBundleId:{v108, v249}];
     *&v251 = ATXSetInput(&v849, 0x20uLL, v250);
@@ -848,28 +848,28 @@ LABEL_66:
 
     [v738 totalLaunches];
     *&v259 = ATXSetInput(&v849, 0x2CFuLL, v258);
-    [v839 launchPopularityWithBundleId:v108 date:{v32, v259}];
+    [v839 launchPopularityWithBundleId:v108 date:{date, v259}];
     *&v261 = ATXSetInput(&v849, 0x23uLL, v260);
-    [v839 relativeLaunchPopularityWithBundleId:v108 date:{v32, v261}];
+    [v839 relativeLaunchPopularityWithBundleId:v108 date:{date, v261}];
     *&v263 = ATXSetInput(&v849, 0x24uLL, v262);
     v264 = [v811 launchCountsForEachCategoryForBundleId:{v108, v263}];
-    v265 = [v264 allValues];
+    allValues = [v264 allValues];
 
     v266 = [v810 launchCountsForEachCategoryForBundleId:v108];
-    v746 = [v266 allValues];
+    allValues2 = [v266 allValues];
 
     v267 = [v805 launchCountsForEachCategoryForBundleId:v108];
-    v748 = [v267 allValues];
+    allValues3 = [v267 allValues];
 
     [v843 setDistributionBasedScoreInputsForTimeAndDay:&v849 forBundleId:v108 withTimeOfDayHistogram:v841 withDayOfWeekHistogram:v839];
-    [v843 setDistributionBasedScoreInputsForItem:&v849 withGeoHashResolution:0 withGeoHashLaunchCounts:v265];
-    [v843 setDistributionBasedScoreInputsForItem:&v849 withGeoHashResolution:1 withGeoHashLaunchCounts:v746];
-    [v843 setDistributionBasedScoreInputsForItem:&v849 withGeoHashResolution:2 withGeoHashLaunchCounts:v748];
-    *&v268 = ATXSetInput(&v849, 0x228uLL, [_ATXActionUtils timeBucketFromZeroToTwentyFour:v32 timeZone:0]);
+    [v843 setDistributionBasedScoreInputsForItem:&v849 withGeoHashResolution:0 withGeoHashLaunchCounts:allValues];
+    [v843 setDistributionBasedScoreInputsForItem:&v849 withGeoHashResolution:1 withGeoHashLaunchCounts:allValues2];
+    [v843 setDistributionBasedScoreInputsForItem:&v849 withGeoHashResolution:2 withGeoHashLaunchCounts:allValues3];
+    *&v268 = ATXSetInput(&v849, 0x228uLL, [_ATXActionUtils timeBucketFromZeroToTwentyFour:date timeZone:0]);
     [v841 entropyForBundleId:{v108, v268}];
     ATXSetInput(&v849, 0x1F8uLL, v269);
     LODWORD(v270) = 1.0;
-    [v839 totalLaunchesForBundleIds:obj forDate:v32 distanceScale:v270];
+    [v839 totalLaunchesForBundleIds:obj forDate:date distanceScale:v270];
     *&v272 = ATXSetInput(&v849, 0x1FDuLL, v271);
     v866 = v108;
     v273 = [MEMORY[0x277CBEA60] arrayWithObjects:&v866 count:{1, v272}];
@@ -1112,20 +1112,20 @@ LABEL_66:
 
     *&v488 = ATXSetInput(&v849, 0x34uLL, v486);
     *&v489 = ATXSetInput(&v849, 0x60uLL, [v843[8] appSupportsMedia:{v108, v488}]);
-    v490 = [v735 objectForKeyedSubscript:{v108, v489}];
+    v490 = [recentNotifications objectForKeyedSubscript:{v108, v489}];
     v491 = v490 == 0;
 
     if (!v491)
     {
       v492 = objc_opt_class();
-      v493 = [v735 objectForKeyedSubscript:v108];
+      v493 = [recentNotifications objectForKeyedSubscript:v108];
       [v493 timeIntervalSinceNow];
       [v492 time:-v494 toAccuracyInSeconds:0.1];
       ATXSetInput(&v849, 0x4DuLL, v495);
     }
 
     v496 = [v843[14] predictionsForBundleId:v108];
-    v497 = 32767.0;
+    predictionIndex = 32767.0;
     v498 = v496;
     if (v496)
     {
@@ -1135,7 +1135,7 @@ LABEL_66:
         *&v500 = ATXSetInput(&v849, 0x46uLL, v499);
         *&v501 = ATXSetInput(&v849, 0x47uLL, [v498 pmmReason]);
         *&v502 = ATXSetInput(&v849, 0x48uLL, [v498 anchorType]);
-        v497 = [v498 predictionIndex];
+        predictionIndex = [v498 predictionIndex];
       }
 
       else
@@ -1146,11 +1146,11 @@ LABEL_66:
           [ATXAppFeaturizer evaluateFeaturesForApps:v848 clipBundleIdsToRank:v503 consumerSubType:? intent:? scoreLogger:? context:? featureCache:?];
         }
 
-        v497 = 32767.0;
+        predictionIndex = 32767.0;
       }
     }
 
-    *&v504 = ATXSetInput(&v849, 0x4BuLL, v497);
+    *&v504 = ATXSetInput(&v849, 0x4BuLL, predictionIndex);
     *&v505 = ATXSetInput(&v849, 0x4CuLL, [v843[14] mmPredictionCount]);
     [v843[9] getCurrentDoseForApp:{v108, v505}];
     v507 = v506;
@@ -1307,11 +1307,11 @@ LABEL_66:
     *&v635 = ATXSetInput(&v849, 0x226uLL, v634);
     [v782 totalLaunches];
     *&v637 = ATXSetInput(&v849, 0x227uLL, v636);
-    [v753 launchPopularityWithBundleId:v108 category:{v752, v637}];
+    [v753 launchPopularityWithBundleId:v108 category:{currentPoiCategory, v637}];
     *&v639 = ATXSetInput(&v849, 0x326uLL, v638);
-    [v753 relativeLaunchPopularityWithBundleId:v108 category:{v752, v639}];
+    [v753 relativeLaunchPopularityWithBundleId:v108 category:{currentPoiCategory, v639}];
     *&v641 = ATXSetInput(&v849, 0x327uLL, v640);
-    [v753 totalLaunchesForBundleId:v108 category:{v752, v641}];
+    [v753 totalLaunchesForBundleId:v108 category:{currentPoiCategory, v641}];
     *&v643 = ATXSetInput(&v849, 0x329uLL, v642);
     [v843 setModeAffinityScores:&v849 appModeEntityScores:{v730, v643}];
     v644 = v849;
@@ -1485,67 +1485,67 @@ LABEL_132:
   return result;
 }
 
-- (void)setModeAffinityScores:(ATXPredictionItem *)a3 appModeEntityScores:(id)a4
+- (void)setModeAffinityScores:(ATXPredictionItem *)scores appModeEntityScores:(id)entityScores
 {
-  v24 = [a4 objectForKeyedSubscript:a3->key];
+  v24 = [entityScores objectForKeyedSubscript:scores->key];
   if (v24)
   {
     v6 = [ATXModeEntityScoringFeatures alloc];
-    v7 = [v24 scoreMetadata];
-    v8 = [v7 featureVector];
-    v9 = [(ATXModeEntityScoringFeatures *)v6 initFromJSON:v8];
+    scoreMetadata = [v24 scoreMetadata];
+    featureVector = [scoreMetadata featureVector];
+    v9 = [(ATXModeEntityScoringFeatures *)v6 initFromJSON:featureVector];
 
-    v10 = [v9 entitySpecificFeatures];
-    v11 = [v10 appCategoryScore];
-    [v11 doubleValue];
+    entitySpecificFeatures = [v9 entitySpecificFeatures];
+    appCategoryScore = [entitySpecificFeatures appCategoryScore];
+    [appCategoryScore doubleValue];
     v13 = v12;
 
-    *&v14 = ATXSetInput(a3, 0x32AuLL, v13);
+    *&v14 = ATXSetInput(scores, 0x32AuLL, v13);
     [v9 posteriorProbability];
-    *&v16 = ATXSetInput(a3, 0x32BuLL, v15);
+    *&v16 = ATXSetInput(scores, 0x32BuLL, v15);
     [v9 classConditionalProbability];
-    *&v18 = ATXSetInput(a3, 0x32CuLL, v17);
-    *&v19 = ATXSetInput(a3, 0x32DuLL, [v9 uniqueOccurrencesInMode]);
-    *&v20 = ATXSetInput(a3, 0x32EuLL, [v9 localOccurrences]);
-    *&v21 = ATXSetInput(a3, 0x32FuLL, [v9 globalOccurrences]);
-    v22 = [v24 scoreMetadata];
-    [v22 score];
-    ATXSetInput(a3, 0x330uLL, v23);
+    *&v18 = ATXSetInput(scores, 0x32CuLL, v17);
+    *&v19 = ATXSetInput(scores, 0x32DuLL, [v9 uniqueOccurrencesInMode]);
+    *&v20 = ATXSetInput(scores, 0x32EuLL, [v9 localOccurrences]);
+    *&v21 = ATXSetInput(scores, 0x32FuLL, [v9 globalOccurrences]);
+    scoreMetadata2 = [v24 scoreMetadata];
+    [scoreMetadata2 score];
+    ATXSetInput(scores, 0x330uLL, v23);
   }
 
   else
   {
-    [(ATXAppFeaturizer *)self setZeroValuesForModeEntityFeatures:a3];
+    [(ATXAppFeaturizer *)self setZeroValuesForModeEntityFeatures:scores];
   }
 }
 
-- (void)setZeroValuesForModeEntityFeatures:(ATXPredictionItem *)a3
+- (void)setZeroValuesForModeEntityFeatures:(ATXPredictionItem *)features
 {
-  ATXSetInput(a3, 0x32AuLL, 0.0);
-  ATXSetInput(a3, 0x32BuLL, 0.0);
-  ATXSetInput(a3, 0x32CuLL, 0.0);
-  ATXSetInput(a3, 0x32DuLL, 0.0);
-  ATXSetInput(a3, 0x32EuLL, 0.0);
-  ATXSetInput(a3, 0x32FuLL, 0.0);
+  ATXSetInput(features, 0x32AuLL, 0.0);
+  ATXSetInput(features, 0x32BuLL, 0.0);
+  ATXSetInput(features, 0x32CuLL, 0.0);
+  ATXSetInput(features, 0x32DuLL, 0.0);
+  ATXSetInput(features, 0x32EuLL, 0.0);
+  ATXSetInput(features, 0x32FuLL, 0.0);
 
-  ATXSetInput(a3, 0x330uLL, 0.0);
+  ATXSetInput(features, 0x330uLL, 0.0);
 }
 
-- (void)setDistributionBasedScoreInputsForTimeAndDay:(ATXPredictionItem *)a3 forBundleId:(id)a4 withTimeOfDayHistogram:(id)a5 withDayOfWeekHistogram:(id)a6
+- (void)setDistributionBasedScoreInputsForTimeAndDay:(ATXPredictionItem *)day forBundleId:(id)id withTimeOfDayHistogram:(id)histogram withDayOfWeekHistogram:(id)weekHistogram
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v30 = a6;
-  v12 = [v11 bucketCount];
-  if (v12 <= 7)
+  idCopy = id;
+  histogramCopy = histogram;
+  weekHistogramCopy = weekHistogram;
+  bucketCount = [histogramCopy bucketCount];
+  if (bucketCount <= 7)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"ATXAppFeaturizer.mm" lineNumber:954 description:@"Number of aggregated time buckets should be greater than 0"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAppFeaturizer.mm" lineNumber:954 description:@"Number of aggregated time buckets should be greater than 0"];
   }
 
   v13 = 0;
-  v14 = v12 >> 3;
+  v14 = bucketCount >> 3;
   while (v13 != v14)
   {
     v15 = objc_autoreleasePoolPush();
@@ -1554,9 +1554,9 @@ LABEL_132:
     v18 = 8;
     do
     {
-      v33[0] = v10;
+      v33[0] = idCopy;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
-      [v11 unsmoothedLaunchesForBundleIds:v19 forLocalTime:v16];
+      [histogramCopy unsmoothedLaunchesForBundleIds:v19 forLocalTime:v16];
       v21 = v20;
 
       v17 = v17 + v21;
@@ -1565,7 +1565,7 @@ LABEL_132:
     }
 
     while (v18);
-    ATXSetInput(a3, [_ATXScoreTypes mappingForTimeOfDayDistributionSignals:v13 forScoreInputCategory:0], v17);
+    ATXSetInput(day, [_ATXScoreTypes mappingForTimeOfDayDistributionSignals:v13 forScoreInputCategory:0], v17);
     objc_autoreleasePoolPop(v15);
     ++v13;
   }
@@ -1574,53 +1574,53 @@ LABEL_132:
   {
     v23 = objc_autoreleasePoolPush();
     v24 = [_ATXScoreTypes mappingForDayOfWeekDistributionSignals:i forScoreInputCategory:0];
-    v32 = v10;
+    v32 = idCopy;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-    [v30 unsmoothedLaunchesForBundleIds:v25 forLocalTime:i];
+    [weekHistogramCopy unsmoothedLaunchesForBundleIds:v25 forLocalTime:i];
     v27 = v26;
 
-    ATXSetInput(a3, v24, v27);
+    ATXSetInput(day, v24, v27);
     objc_autoreleasePoolPop(v23);
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDistributionBasedScoreInputsForItem:(ATXPredictionItem *)a3 withGeoHashResolution:(unint64_t)a4 withGeoHashLaunchCounts:(id)a5
+- (void)setDistributionBasedScoreInputsForItem:(ATXPredictionItem *)item withGeoHashResolution:(unint64_t)resolution withGeoHashLaunchCounts:(id)counts
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  countsCopy = counts;
   v23 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:0];
   v24[0] = v23;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-  v9 = [v7 sortedArrayUsingDescriptors:v8];
+  v9 = [countsCopy sortedArrayUsingDescriptors:v8];
 
   v11 = 0;
-  if (a4 <= 1)
+  if (resolution <= 1)
   {
-    if (a4)
+    if (resolution)
     {
-      if (a4 != 1)
+      if (resolution != 1)
       {
         goto LABEL_14;
       }
 
-      *&v10 = ATXSetInput(a3, 0x1F7uLL, [v7 count]);
+      *&v10 = ATXSetInput(item, 0x1F7uLL, [countsCopy count]);
       v12 = &kATXAppNumberOfScoreInputsForCoarseGeoHash;
     }
 
     else
     {
-      *&v10 = ATXSetInput(a3, 0x1F6uLL, [v7 count]);
+      *&v10 = ATXSetInput(item, 0x1F6uLL, [countsCopy count]);
       v12 = &kATXAppNumberOfScoreInputsForSpecificGeoHash;
     }
 
     goto LABEL_13;
   }
 
-  if (a4 == 2)
+  if (resolution == 2)
   {
-    *&v10 = ATXSetInput(a3, 0x29AuLL, [v7 count]);
+    *&v10 = ATXSetInput(item, 0x29AuLL, [countsCopy count]);
     v12 = &kATXAppNumberOfScoreInputsForZoom7GeoHash;
 LABEL_13:
     v11 = *v12;
@@ -1637,10 +1637,10 @@ LABEL_14:
       }
 
       v19 = objc_autoreleasePoolPush();
-      v20 = [_ATXScoreTypes mappingForTopRankedGeoHashSignalsWithResolution:a4 withRank:v15 forScoreInputCategory:0];
+      v20 = [_ATXScoreTypes mappingForTopRankedGeoHashSignalsWithResolution:resolution withRank:v15 forScoreInputCategory:0];
       v21 = [v9 objectAtIndex:v15];
       [v21 doubleValue];
-      ATXSetInput(a3, v20, v22);
+      ATXSetInput(item, v20, v22);
 
       objc_autoreleasePoolPop(v19);
       ++v15;
@@ -1649,7 +1649,7 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  if (a4 != 0xFFFFFFFF)
+  if (resolution != 0xFFFFFFFF)
   {
     goto LABEL_14;
   }
@@ -1664,14 +1664,14 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (float)_computeL2DistanceFromBundleId:(id)a3 to:(const float *)a4 app2vecMapping:(id)a5
++ (float)_computeL2DistanceFromBundleId:(id)id to:(const float *)to app2vecMapping:(id)mapping
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
-  v8 = 4 * [v7 vectorLength];
+  idCopy = id;
+  mappingCopy = mapping;
+  v8 = 4 * [mappingCopy vectorLength];
   v9 = v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (([v7 getVectorForBundleIdWithGenreBackup:v6 into:v9] & 1) == 0)
+  if (([mappingCopy getVectorForBundleIdWithGenreBackup:idCopy into:v9] & 1) == 0)
   {
     bzero(v9, v8);
   }
@@ -1684,31 +1684,31 @@ LABEL_10:
   return v11;
 }
 
-+ (void)_predictNextAppLaunchEmbedding:(id)a3 into:(float *)a4 launchSequence:(id)a5
++ (void)_predictNextAppLaunchEmbedding:(id)embedding into:(float *)into launchSequence:(id)sequence
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 vectorLength];
-  std::vector<float>::vector[abi:ne200100](&__p, 4 * v9);
+  embeddingCopy = embedding;
+  sequenceCopy = sequence;
+  vectorLength = [embeddingCopy vectorLength];
+  std::vector<float>::vector[abi:ne200100](&__p, 4 * vectorLength);
   v10 = 0;
   *&v11 = 138412546;
   v18 = v11;
-  while ([v8 count] > v10)
+  while ([sequenceCopy count] > v10)
   {
-    v12 = [v8 objectAtIndexedSubscript:v10];
-    v13 = (v10 - [v8 count] + 4) * v9;
+    v12 = [sequenceCopy objectAtIndexedSubscript:v10];
+    v13 = (v10 - [sequenceCopy count] + 4) * vectorLength;
     if (v13 >= (v20 - __p) >> 2)
     {
       std::vector<ATXPredictionItem>::__throw_out_of_range[abi:ne200100]();
     }
 
-    v14 = [v7 getVectorForBundleIdWithGenreBackup:v12 into:__p + 4 * v13];
+    v14 = [embeddingCopy getVectorForBundleIdWithGenreBackup:v12 into:__p + 4 * v13];
 
     v15 = __atxlog_handle_app_prediction();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [v8 objectAtIndexedSubscript:v10];
+      v16 = [sequenceCopy objectAtIndexedSubscript:v10];
       *buf = v18;
       v22 = v16;
       v23 = 1024;
@@ -1724,7 +1724,7 @@ LABEL_10:
     +[ATXAppFeaturizer _predictNextAppLaunchEmbedding:into:launchSequence:];
   }
 
-  [+[ATXAppFeaturizer _predictNextAppLaunchEmbedding:into:launchSequence:]::nn forInputs:__p computeOutputLayer:a4];
+  [+[ATXAppFeaturizer _predictNextAppLaunchEmbedding:into:launchSequence:]::nn forInputs:__p computeOutputLayer:into];
   if (__p)
   {
     v20 = __p;
@@ -1760,15 +1760,15 @@ void __71__ATXAppFeaturizer__predictNextAppLaunchEmbedding_into_launchSequence__
   }
 }
 
-+ (double)time:(double)a3 toAccuracyInSeconds:(double)a4
++ (double)time:(double)time toAccuracyInSeconds:(double)seconds
 {
-  if (a4 <= 0.0)
+  if (seconds <= 0.0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"ATXAppFeaturizer.mm" lineNumber:1058 description:@"Accuracy must be greater than 0"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAppFeaturizer.mm" lineNumber:1058 description:@"Accuracy must be greater than 0"];
   }
 
-  return (a3 / a4) * a4;
+  return (time / seconds) * seconds;
 }
 
 - (void)evaluateFeaturesForApps:(os_log_t)log clipBundleIdsToRank:consumerSubType:intent:scoreLogger:context:featureCache:.cold.2(uint8_t *buf, _BYTE *a2, os_log_t log)

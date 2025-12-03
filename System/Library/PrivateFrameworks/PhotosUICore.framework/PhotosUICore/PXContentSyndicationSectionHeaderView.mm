@@ -1,14 +1,14 @@
 @interface PXContentSyndicationSectionHeaderView
-- (CGSize)_performLayoutInWidth:(double)a3 applyLayoutToSubviews:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXContentSyndicationSectionHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)_performLayoutInWidth:(double)width applyLayoutToSubviews:(BOOL)subviews;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXContentSyndicationSectionHeaderView)initWithFrame:(CGRect)frame;
 - (PXContentSyndicationSectionHeaderViewDelegate)delegate;
-- (id)contextMenuItemsForAttributionView:(id)a3;
-- (void)_updatePillAlignmentWithTraitCollection:(id)a3;
+- (id)contextMenuItemsForAttributionView:(id)view;
+- (void)_updatePillAlignmentWithTraitCollection:(id)collection;
 - (void)layoutSubviews;
-- (void)setSocialLayerHighlight:(id)a3;
-- (void)setSpec:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSocialLayerHighlight:(id)highlight;
+- (void)setSpec:(id)spec;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXContentSyndicationSectionHeaderView
@@ -20,17 +20,17 @@
   return WeakRetained;
 }
 
-- (id)contextMenuItemsForAttributionView:(id)a3
+- (id)contextMenuItemsForAttributionView:(id)view
 {
-  v4 = [(PXContentSyndicationSectionHeaderView *)self delegate];
+  delegate = [(PXContentSyndicationSectionHeaderView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   v6 = MEMORY[0x1E695E0F0];
   v7 = MEMORY[0x1E695E0F0];
   if (v5)
   {
-    v8 = [(PXContentSyndicationSectionHeaderView *)self delegate];
-    v7 = [v8 additionalContextMenuActionsForAttributionViewInContentSyndicationHeaderView:self];
+    delegate2 = [(PXContentSyndicationSectionHeaderView *)self delegate];
+    v7 = [delegate2 additionalContextMenuActionsForAttributionViewInContentSyndicationHeaderView:self];
   }
 
   if (v7)
@@ -48,20 +48,20 @@
   return v9;
 }
 
-- (CGSize)_performLayoutInWidth:(double)a3 applyLayoutToSubviews:(BOOL)a4
+- (CGSize)_performLayoutInWidth:(double)width applyLayoutToSubviews:(BOOL)subviews
 {
   socialLayerAttributionView = self->_socialLayerAttributionView;
-  if (a4)
+  if (subviews)
   {
-    [(SLAttributionView *)socialLayerAttributionView prepareLayoutWithMaxWidth:a3 + -32.0];
-    [(SLAttributionView *)self->_socialLayerAttributionView sizeThatFits:a3 + -32.0, 1.79769313e308];
+    [(SLAttributionView *)socialLayerAttributionView prepareLayoutWithMaxWidth:width + -32.0];
+    [(SLAttributionView *)self->_socialLayerAttributionView sizeThatFits:width + -32.0, 1.79769313e308];
     v8 = v7 + 16.0;
     [(SLAttributionView *)self->_socialLayerAttributionView setFrame:?];
   }
 
   else if (socialLayerAttributionView)
   {
-    [(SLAttributionView *)socialLayerAttributionView sizeThatFits:a3 + -32.0, 1.79769313e308];
+    [(SLAttributionView *)socialLayerAttributionView sizeThatFits:width + -32.0, 1.79769313e308];
     v8 = fmax(v9, 29.5) + 16.0;
   }
 
@@ -70,16 +70,16 @@
     v8 = 45.5;
   }
 
-  v10 = a3;
+  widthCopy = width;
   v11 = v8;
   result.height = v11;
-  result.width = v10;
+  result.width = widthCopy;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXContentSyndicationSectionHeaderView *)self _performLayoutInWidth:0 applyLayoutToSubviews:a3.width, a3.height];
+  [(PXContentSyndicationSectionHeaderView *)self _performLayoutInWidth:0 applyLayoutToSubviews:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -94,21 +94,21 @@
   [(PXContentSyndicationSectionHeaderView *)self _performLayoutInWidth:1 applyLayoutToSubviews:v3];
 }
 
-- (void)_updatePillAlignmentWithTraitCollection:(id)a3
+- (void)_updatePillAlignmentWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = +[PXContentSyndicationSettings sharedInstance];
-  v6 = [v5 shouldHorizontallyCenterAttributionViewInGrid];
+  shouldHorizontallyCenterAttributionViewInGrid = [v5 shouldHorizontallyCenterAttributionViewInGrid];
 
   v7 = +[PXContentSyndicationSettings sharedInstance];
-  v8 = [v7 alwaysLeadingAlignAttributionViewOnRegularWidthPads];
+  alwaysLeadingAlignAttributionViewOnRegularWidthPads = [v7 alwaysLeadingAlignAttributionViewOnRegularWidthPads];
 
-  v9 = [v4 userInterfaceIdiom];
-  v10 = [v4 horizontalSizeClass];
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
 
-  if (v6)
+  if (shouldHorizontallyCenterAttributionViewInGrid)
   {
-    v11 = v8 == 0;
+    v11 = alwaysLeadingAlignAttributionViewOnRegularWidthPads == 0;
   }
 
   else
@@ -116,15 +116,15 @@
     v11 = 1;
   }
 
-  if (!v11 && v9 == 1)
+  if (!v11 && userInterfaceIdiom == 1)
   {
-    if (v10 == 2)
+    if (horizontalSizeClass == 2)
     {
       goto LABEL_9;
     }
   }
 
-  else if ((v6 & 1) == 0)
+  else if ((shouldHorizontallyCenterAttributionViewInGrid & 1) == 0)
   {
 LABEL_9:
     v13 = 0;
@@ -138,21 +138,21 @@ LABEL_12:
   [(SLAttributionView *)socialLayerAttributionView updateAlignment:v13];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = PXContentSyndicationSectionHeaderView;
-  [(PXContentSyndicationSectionHeaderView *)&v5 traitCollectionDidChange:a3];
-  v4 = [(PXContentSyndicationSectionHeaderView *)self traitCollection];
-  [(PXContentSyndicationSectionHeaderView *)self _updatePillAlignmentWithTraitCollection:v4];
+  [(PXContentSyndicationSectionHeaderView *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(PXContentSyndicationSectionHeaderView *)self traitCollection];
+  [(PXContentSyndicationSectionHeaderView *)self _updatePillAlignmentWithTraitCollection:traitCollection];
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v8 = a3;
+  specCopy = spec;
   v5 = self->_spec;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == specCopy)
   {
   }
 
@@ -162,18 +162,18 @@ LABEL_12:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_spec, a3);
+      objc_storeStrong(&self->_spec, spec);
       [(PXContentSyndicationSectionHeaderView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setSocialLayerHighlight:(id)a3
+- (void)setSocialLayerHighlight:(id)highlight
 {
-  v12 = a3;
+  highlightCopy = highlight;
   v5 = self->_socialLayerHighlight;
   v6 = v5;
-  if (v5 == v12)
+  if (v5 == highlightCopy)
   {
   }
 
@@ -183,7 +183,7 @@ LABEL_12:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_socialLayerHighlight, a3);
+      objc_storeStrong(&self->_socialLayerHighlight, highlight);
       [(SLAttributionView *)self->_socialLayerAttributionView removeFromSuperview];
       socialLayerAttributionView = self->_socialLayerAttributionView;
       self->_socialLayerAttributionView = 0;
@@ -193,8 +193,8 @@ LABEL_12:
       self->_socialLayerAttributionView = v9;
 
       [(SLAttributionView *)self->_socialLayerAttributionView setDelegate:self];
-      v11 = [(PXContentSyndicationSectionHeaderView *)self traitCollection];
-      [(PXContentSyndicationSectionHeaderView *)self _updatePillAlignmentWithTraitCollection:v11];
+      traitCollection = [(PXContentSyndicationSectionHeaderView *)self traitCollection];
+      [(PXContentSyndicationSectionHeaderView *)self _updatePillAlignmentWithTraitCollection:traitCollection];
 
       [(PXContentSyndicationSectionHeaderView *)self addSubview:self->_socialLayerAttributionView];
       [(PXContentSyndicationSectionHeaderView *)self setNeedsLayout];
@@ -202,15 +202,15 @@ LABEL_12:
   }
 }
 
-- (PXContentSyndicationSectionHeaderView)initWithFrame:(CGRect)a3
+- (PXContentSyndicationSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXContentSyndicationSectionHeaderView;
-  v3 = [(PXContentSyndicationSectionHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXContentSyndicationSectionHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(PXContentSyndicationSectionHeaderView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PXContentSyndicationSectionHeaderView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;

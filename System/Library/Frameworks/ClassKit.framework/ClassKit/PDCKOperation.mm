@@ -2,25 +2,25 @@
 + (NSArray)syncableEntities;
 + (NSDictionary)recordTypeToEntityMap;
 - (BOOL)isBootstrapped;
-- (BOOL)isNetworkError:(id)a3;
-- (BOOL)isServerBusyError:(id)a3;
-- (BOOL)updateSyncMetadataForRecord:(id)a3;
+- (BOOL)isNetworkError:(id)error;
+- (BOOL)isServerBusyError:(id)error;
+- (BOOL)updateSyncMetadataForRecord:(id)record;
 - (CKRecordZone)assetZone;
 - (CKRecordZone)progressZone;
 - (CKRecordZone)surveyAnswerZone;
 - (CKRecordZone)teacherZone;
-- (PDCKOperation)initWithDatabase:(id)a3 container:(id)a4;
-- (double)retryDelayForServerBusyError:(id)a3;
-- (id)_zoneWithName:(id)a3;
-- (id)recordIDForSyncItem:(id)a3;
-- (id)syncMetadataForRecord:(id)a3;
-- (id)syncMetadataForRecordID:(id)a3;
-- (id)zoneIDForSyncItem:(id)a3;
+- (PDCKOperation)initWithDatabase:(id)database container:(id)container;
+- (double)retryDelayForServerBusyError:(id)error;
+- (id)_zoneWithName:(id)name;
+- (id)recordIDForSyncItem:(id)item;
+- (id)syncMetadataForRecord:(id)record;
+- (id)syncMetadataForRecordID:(id)d;
+- (id)zoneIDForSyncItem:(id)item;
 - (void)abort;
-- (void)deleteSyncMetadataAssociatedWithRecordID:(id)a3;
-- (void)performCKDatabaseOperation:(id)a3;
+- (void)deleteSyncMetadataAssociatedWithRecordID:(id)d;
+- (void)performCKDatabaseOperation:(id)operation;
 - (void)prepare;
-- (void)setBootstrapped:(BOOL)a3;
+- (void)setBootstrapped:(BOOL)bootstrapped;
 @end
 
 @implementation PDCKOperation
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001436F0;
   block[3] = &unk_100202CA8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10024DBE8 != -1)
   {
     dispatch_once(&qword_10024DBE8, block);
@@ -54,56 +54,56 @@
   return v2;
 }
 
-- (PDCKOperation)initWithDatabase:(id)a3 container:(id)a4
+- (PDCKOperation)initWithDatabase:(id)database container:(id)container
 {
-  v7 = a4;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = PDCKOperation;
-  v8 = [(PDOperation *)&v11 initWithDatabase:a3];
+  v8 = [(PDOperation *)&v11 initWithDatabase:database];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong((v8 + 74), a4);
+    objc_storeStrong((v8 + 74), container);
   }
 
   return v9;
 }
 
-- (void)performCKDatabaseOperation:(id)a3
+- (void)performCKDatabaseOperation:(id)operation
 {
-  v10 = a3;
+  operationCopy = operation;
   if (![(PDOperation *)self isAborted])
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [v10 configuration];
-    if (!v5)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    configuration = [operationCopy configuration];
+    if (!configuration)
     {
-      v5 = objc_opt_new();
-      [v5 setQualityOfService:17];
-      [v10 setConfiguration:v5];
+      configuration = objc_opt_new();
+      [configuration setQualityOfService:17];
+      [operationCopy setConfiguration:configuration];
     }
 
-    [v5 setQualityOfService:25];
-    [v5 setAllowsCellularAccess:{-[PDOperation mayUseCellularData](v4, "mayUseCellularData")}];
-    [(PDOperation *)v4 timeoutIntervalForRequests];
-    [v5 setTimeoutIntervalForRequest:?];
-    [v5 setLongLived:0];
-    v6 = *(&v4->_surveyAnswerZone + 2);
+    [configuration setQualityOfService:25];
+    [configuration setAllowsCellularAccess:{-[PDOperation mayUseCellularData](selfCopy, "mayUseCellularData")}];
+    [(PDOperation *)selfCopy timeoutIntervalForRequests];
+    [configuration setTimeoutIntervalForRequest:?];
+    [configuration setLongLived:0];
+    v6 = *(&selfCopy->_surveyAnswerZone + 2);
     if (!v6)
     {
       v7 = objc_opt_new();
-      v8 = *(&v4->_surveyAnswerZone + 2);
-      *(&v4->_surveyAnswerZone + 2) = v7;
+      v8 = *(&selfCopy->_surveyAnswerZone + 2);
+      *(&selfCopy->_surveyAnswerZone + 2) = v7;
 
-      v6 = *(&v4->_surveyAnswerZone + 2);
+      v6 = *(&selfCopy->_surveyAnswerZone + 2);
     }
 
-    [v6 addObject:v10];
+    [v6 addObject:operationCopy];
 
-    objc_sync_exit(v4);
-    v9 = [(PDCKOperation *)v4 cloudDatabase];
-    [v9 addOperation:v10];
+    objc_sync_exit(selfCopy);
+    cloudDatabase = [(PDCKOperation *)selfCopy cloudDatabase];
+    [cloudDatabase addOperation:operationCopy];
   }
 }
 
@@ -112,46 +112,46 @@
   v4.receiver = self;
   v4.super_class = PDCKOperation;
   [(PDOperation *)&v4 abort];
-  v3 = self;
-  objc_sync_enter(v3);
-  [*(&v3->_surveyAnswerZone + 2) makeObjectsPerformSelector:"cancel"];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [*(&selfCopy->_surveyAnswerZone + 2) makeObjectsPerformSelector:"cancel"];
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isBootstrapped
 {
-  v2 = [(PDOperation *)self database];
-  v3 = sub_100169FD0(v2, @"PDCK_Bootstrapped");
+  database = [(PDOperation *)self database];
+  v3 = sub_100169FD0(database, @"PDCK_Bootstrapped");
 
   return v3;
 }
 
-- (void)setBootstrapped:(BOOL)a3
+- (void)setBootstrapped:(BOOL)bootstrapped
 {
-  v4 = [(PDOperation *)self database];
-  sub_100169F38(v4, a3, @"PDCK_Bootstrapped");
+  database = [(PDOperation *)self database];
+  sub_100169F38(database, bootstrapped, @"PDCK_Bootstrapped");
 }
 
-- (BOOL)isNetworkError:(id)a3
+- (BOOL)isNetworkError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code] == 3 || objc_msgSend(v3, "code") == 4;
+  errorCopy = error;
+  v4 = [errorCopy code] == 3 || objc_msgSend(errorCopy, "code") == 4;
 
   return v4;
 }
 
-- (BOOL)isServerBusyError:(id)a3
+- (BOOL)isServerBusyError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code] == 6 || objc_msgSend(v3, "code") == 7 || objc_msgSend(v3, "code") == 23;
+  errorCopy = error;
+  v4 = [errorCopy code] == 6 || objc_msgSend(errorCopy, "code") == 7 || objc_msgSend(errorCopy, "code") == 23;
 
   return v4;
 }
 
-- (double)retryDelayForServerBusyError:(id)a3
+- (double)retryDelayForServerBusyError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:CKErrorRetryAfterKey];
+  userInfo = [error userInfo];
+  v4 = [userInfo objectForKeyedSubscript:CKErrorRetryAfterKey];
 
   [v4 doubleValue];
   if (v5 >= 10.0)
@@ -167,11 +167,11 @@
   return v6;
 }
 
-- (id)_zoneWithName:(id)a3
+- (id)_zoneWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
-  v6 = sub_10016A49C(v5, v4);
+  nameCopy = name;
+  database = [(PDOperation *)self database];
+  v6 = sub_10016A49C(database, nameCopy);
 
   if ([v6 length])
   {
@@ -256,86 +256,86 @@
   v4[1] = 3221225472;
   v4[2] = sub_100143F64;
   v5 = v4[3] = &unk_1002029E8;
-  v6 = self;
+  selfCopy = self;
   v3 = v5;
   sub_10010BE68(v3, v4);
 }
 
-- (id)zoneIDForSyncItem:(id)a3
+- (id)zoneIDForSyncItem:(id)item
 {
-  v5 = [a3 syncableItemType];
-  if (v5)
+  syncableItemType = [item syncableItemType];
+  if (syncableItemType)
   {
-    if (v5 == 2)
+    if (syncableItemType == 2)
     {
-      v6 = [(PDCKOperation *)self surveyAnswerZone];
+      surveyAnswerZone = [(PDCKOperation *)self surveyAnswerZone];
     }
 
     else
     {
-      if (v5 != 1)
+      if (syncableItemType != 1)
       {
         goto LABEL_8;
       }
 
-      v6 = [(PDCKOperation *)self progressZone];
+      surveyAnswerZone = [(PDCKOperation *)self progressZone];
     }
   }
 
   else
   {
-    v6 = [(PDCKOperation *)self teacherZone];
+    surveyAnswerZone = [(PDCKOperation *)self teacherZone];
   }
 
-  v7 = v6;
-  v3 = [v6 zoneID];
+  v7 = surveyAnswerZone;
+  zoneID = [surveyAnswerZone zoneID];
 
 LABEL_8:
 
-  return v3;
+  return zoneID;
 }
 
-- (id)recordIDForSyncItem:(id)a3
+- (id)recordIDForSyncItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PDCKOperation *)self zoneIDForSyncItem:v4];
-  v6 = [v4 entityIdentity];
+  itemCopy = item;
+  v5 = [(PDCKOperation *)self zoneIDForSyncItem:itemCopy];
+  entityIdentity = [itemCopy entityIdentity];
 
-  v7 = [v6 description];
+  v7 = [entityIdentity description];
 
   v8 = [[CKRecordID alloc] initWithRecordName:v7 zoneID:v5];
 
   return v8;
 }
 
-- (id)syncMetadataForRecordID:(id)a3
+- (id)syncMetadataForRecordID:(id)d
 {
-  v4 = [a3 recordName];
-  v5 = [(PDOperation *)self database];
+  recordName = [d recordName];
+  database = [(PDOperation *)self database];
   v6 = objc_opt_class();
-  v10 = v4;
+  v10 = recordName;
   v7 = [NSArray arrayWithObjects:&v10 count:1];
-  v8 = [v5 select:v6 where:@"entityIdentity = ?" bindings:v7];
+  v8 = [database select:v6 where:@"entityIdentity = ?" bindings:v7];
 
   return v8;
 }
 
-- (id)syncMetadataForRecord:(id)a3
+- (id)syncMetadataForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [(PDCKOperation *)self syncMetadataForRecordID:v5];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  v6 = [(PDCKOperation *)self syncMetadataForRecordID:recordID];
 
   if (!v6)
   {
     v6 = objc_opt_new();
-    v7 = [v4 recordID];
-    v8 = [v7 recordName];
-    sub_10008121C(v6, v8);
+    recordID2 = [recordCopy recordID];
+    recordName = [recordID2 recordName];
+    sub_10008121C(v6, recordName);
 
-    v9 = [objc_opt_class() recordTypeToEntityMap];
-    v10 = [v4 recordType];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    recordTypeToEntityMap = [objc_opt_class() recordTypeToEntityMap];
+    recordType = [recordCopy recordType];
+    v11 = [recordTypeToEntityMap objectForKeyedSubscript:recordType];
 
     sub_10008120C(v6, v11);
   }
@@ -343,18 +343,18 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)updateSyncMetadataForRecord:(id)a3
+- (BOOL)updateSyncMetadataForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  recordCopy = record;
+  database = [(PDOperation *)self database];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001444DC;
   v14[3] = &unk_1002038B0;
   v14[4] = self;
-  v6 = v4;
+  v6 = recordCopy;
   v15 = v6;
-  v7 = v5;
+  v7 = database;
   v8 = v7;
   v16 = v7;
   if (!v7 || (v9 = 1, ([v7 performTransaction:v14 forWriting:1] & 1) == 0))
@@ -364,11 +364,11 @@ LABEL_8:
     if (os_log_type_enabled(CLSLogSync, OS_LOG_TYPE_INFO))
     {
       v11 = v10;
-      v12 = [v6 recordID];
+      recordID = [v6 recordID];
       *buf = 138412546;
       v18 = v6;
       v19 = 2114;
-      v20 = v12;
+      v20 = recordID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Failed to update sync state for record: %@, recordID: %{public}@", buf, 0x16u);
     }
 
@@ -378,24 +378,24 @@ LABEL_8:
   return v9;
 }
 
-- (void)deleteSyncMetadataAssociatedWithRecordID:(id)a3
+- (void)deleteSyncMetadataAssociatedWithRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 recordName];
-  v11 = v5;
+  dCopy = d;
+  recordName = [dCopy recordName];
+  v11 = recordName;
   v6 = [NSArray arrayWithObjects:&v11 count:1];
 
-  v7 = [(PDOperation *)self database];
-  LOBYTE(v5) = [v7 deleteAll:objc_opt_class() where:@"entityIdentity = ?" bindings:v6];
+  database = [(PDOperation *)self database];
+  LOBYTE(recordName) = [database deleteAll:objc_opt_class() where:@"entityIdentity = ?" bindings:v6];
 
-  if ((v5 & 1) == 0)
+  if ((recordName & 1) == 0)
   {
     CLSInitLog();
     v8 = CLSLogSync;
     if (os_log_type_enabled(CLSLogSync, OS_LOG_TYPE_INFO))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Failed to delete sync state for deleted record with recordID: %{public}@", &v9, 0xCu);
     }
   }

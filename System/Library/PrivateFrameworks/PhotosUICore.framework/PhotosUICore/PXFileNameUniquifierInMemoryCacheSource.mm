@@ -1,8 +1,8 @@
 @interface PXFileNameUniquifierInMemoryCacheSource
-- (BOOL)fileExistsAtPath:(id)a3;
+- (BOOL)fileExistsAtPath:(id)path;
 - (NSString)debugDescription;
 - (PXFileNameUniquifierInMemoryCacheSource)init;
-- (void)rememberUniquifiedFilePath:(id)a3;
+- (void)rememberUniquifiedFilePath:(id)path;
 @end
 
 @implementation PXFileNameUniquifierInMemoryCacheSource
@@ -11,24 +11,24 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXFileNameUniquifierInMemoryCacheSource *)self knownFilePaths];
-  v6 = [v3 stringWithFormat:@"<%@:%p known file paths: %@  >", v4, self, v5];
+  knownFilePaths = [(PXFileNameUniquifierInMemoryCacheSource *)self knownFilePaths];
+  v6 = [v3 stringWithFormat:@"<%@:%p known file paths: %@  >", v4, self, knownFilePaths];
 
   return v6;
 }
 
-- (void)rememberUniquifiedFilePath:(id)a3
+- (void)rememberUniquifiedFilePath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXFileNameUniquifierInMemoryCacheSource *)self knownFilePaths];
-  [v5 addObject:v4];
+  pathCopy = path;
+  knownFilePaths = [(PXFileNameUniquifierInMemoryCacheSource *)self knownFilePaths];
+  [knownFilePaths addObject:pathCopy];
 }
 
-- (BOOL)fileExistsAtPath:(id)a3
+- (BOOL)fileExistsAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXFileNameUniquifierInMemoryCacheSource *)self knownFilePaths];
-  v6 = [v5 containsObject:v4];
+  pathCopy = path;
+  knownFilePaths = [(PXFileNameUniquifierInMemoryCacheSource *)self knownFilePaths];
+  v6 = [knownFilePaths containsObject:pathCopy];
 
   return v6;
 }

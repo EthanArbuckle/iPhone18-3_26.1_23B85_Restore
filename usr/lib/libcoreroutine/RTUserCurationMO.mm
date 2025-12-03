@@ -1,16 +1,16 @@
 @interface RTUserCurationMO
-+ (id)managedObjectWithUserCuration:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithUserCuration:(id)curation managedObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation RTUserCurationMO
 
-+ (id)managedObjectWithUserCuration:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithUserCuration:(id)curation managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  curationCopy = curation;
+  objectCopy = object;
+  contextCopy = context;
+  v12 = contextCopy;
+  if (!curationCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@ LABEL_18:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!contextCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v13 = [v10 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -58,10 +58,10 @@ LABEL_7:
     v20[2] = __87__RTUserCurationMO_managedObjectWithUserCuration_managedObject_inManagedObjectContext___block_invoke;
     v20[3] = &unk_2788CAC20;
     v24 = buf;
-    v21 = v10;
+    v21 = objectCopy;
     v22 = v12;
-    v23 = v9;
-    v25 = a1;
+    v23 = curationCopy;
+    selfCopy = self;
     v26 = a2;
     [v22 performBlockAndWait:v20];
     v16 = *(v28 + 5);
@@ -70,8 +70,8 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v15 = [v10 managedObjectContext];
-  if (([v15 allowTombstones] & 1) != 0 || (objc_msgSend(v10, "flags") & 1) == 0)
+  managedObjectContext2 = [objectCopy managedObjectContext];
+  if (([managedObjectContext2 allowTombstones] & 1) != 0 || (objc_msgSend(objectCopy, "flags") & 1) == 0)
   {
 
     goto LABEL_7;

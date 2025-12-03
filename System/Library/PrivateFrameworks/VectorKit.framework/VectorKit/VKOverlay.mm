@@ -1,9 +1,9 @@
 @interface VKOverlay
 - ($C9B3965AAA5284750DDDB08D9AABF973)replaceMapContentInRect;
 - (BOOL)areResourcesRequired;
-- (BOOL)canDrawKey:(id *)a3;
-- (BOOL)canDrawKey:(id *)a3 withData:(id)a4;
-- (BOOL)canPossiblyDrawKey:(id *)a3;
+- (BOOL)canDrawKey:(id *)key;
+- (BOOL)canDrawKey:(id *)key withData:(id)data;
+- (BOOL)canPossiblyDrawKey:(id *)key;
 - (BOOL)shouldUseMetalTexture;
 - (VKOverlay)init;
 - (VKOverlayDelegate)delegate;
@@ -13,33 +13,33 @@
 - (id)vectorData;
 - (shared_ptr<md::RasterTileOverlayStyle>)customStyle;
 - (shared_ptr<md::RasterTileOverlayStyle>)rasterStyle;
-- (unint64_t)estimatedCostForCustomTileData:(id)a3;
+- (unint64_t)estimatedCostForCustomTileData:(id)data;
 - (unsigned)anisotropy;
 - (void)_updateCustomTileProvider;
 - (void)_updateRasterTileProvider;
 - (void)_updateVectorData;
-- (void)customTileOverlayDidChangeAlpha:(id)a3;
-- (void)customTileOverlayDidChangeDisplayRate:(id)a3;
-- (void)customTileOverlayNeedsDisplay:(id)a3;
-- (void)customTileOverlayNeedsInvalidate:(id)a3;
+- (void)customTileOverlayDidChangeAlpha:(id)alpha;
+- (void)customTileOverlayDidChangeDisplayRate:(id)rate;
+- (void)customTileOverlayNeedsDisplay:(id)display;
+- (void)customTileOverlayNeedsInvalidate:(id)invalidate;
 - (void)dealloc;
-- (void)didEnterKey:(id *)a3 withFallback:(BOOL)a4;
-- (void)didExitKey:(id *)a3;
-- (void)drawKey:(id *)a3 inContext:(CGContext *)a4;
-- (void)drawKey:(id *)a3 withData:(id)a4 inIOSurface:(__IOSurface *)a5 withTimestamp:(double)a6;
-- (void)drawKey:(id *)a3 withData:(id)a4 inIOSurface:(__IOSurface *)a5 withTimestamp:(double)a6 withTileScale:(float)a7;
-- (void)drawKey:(id *)a3 withData:(id)a4 inTexture:(id)a5 withTimestamp:(double)a6 withTileScale:(float)a7;
-- (void)onVisibleTiles:(id)a3;
-- (void)rasterTileOverlayDidChangeAlpha:(id)a3;
-- (void)rasterTileOverlayNeedsDisplay:(id)a3;
-- (void)rasterTileOverlayNeedsInvalidate:(id)a3;
-- (void)setBlendMode:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setForceRasterizationForGlobe:(BOOL)a3;
-- (void)setNeedsDisplayForReason:(unint64_t)a3;
-- (void)setNeedsDisplayInRect:(id *)a3 level:(int64_t)a4 reason:(unint64_t)a5;
-- (void)setStandardContainer:(weak_ptr<md::OverlayContainer>)a3;
-- (void)vectorOverlayNeedsDisplay:(id)a3 needsFullInvalidate:(BOOL)a4;
+- (void)didEnterKey:(id *)key withFallback:(BOOL)fallback;
+- (void)didExitKey:(id *)key;
+- (void)drawKey:(id *)key inContext:(CGContext *)context;
+- (void)drawKey:(id *)key withData:(id)data inIOSurface:(__IOSurface *)surface withTimestamp:(double)timestamp;
+- (void)drawKey:(id *)key withData:(id)data inIOSurface:(__IOSurface *)surface withTimestamp:(double)timestamp withTileScale:(float)scale;
+- (void)drawKey:(id *)key withData:(id)data inTexture:(id)texture withTimestamp:(double)timestamp withTileScale:(float)scale;
+- (void)onVisibleTiles:(id)tiles;
+- (void)rasterTileOverlayDidChangeAlpha:(id)alpha;
+- (void)rasterTileOverlayNeedsDisplay:(id)display;
+- (void)rasterTileOverlayNeedsInvalidate:(id)invalidate;
+- (void)setBlendMode:(int64_t)mode;
+- (void)setDelegate:(id)delegate;
+- (void)setForceRasterizationForGlobe:(BOOL)globe;
+- (void)setNeedsDisplayForReason:(unint64_t)reason;
+- (void)setNeedsDisplayInRect:(id *)rect level:(int64_t)level reason:(unint64_t)reason;
+- (void)setStandardContainer:(weak_ptr<md::OverlayContainer>)container;
+- (void)vectorOverlayNeedsDisplay:(id)display needsFullInvalidate:(BOOL)invalidate;
 - (weak_ptr<md::OverlayContainer>)standardContainer;
 @end
 
@@ -102,23 +102,23 @@
   return result;
 }
 
-- (void)customTileOverlayDidChangeDisplayRate:(id)a3
+- (void)customTileOverlayDidChangeDisplayRate:(id)rate
 {
-  v22 = a3;
+  rateCopy = rate;
   os_unfair_lock_lock(&self->_customTileProviderLock._lock);
-  if (self->_customTileProvider == v22 && self->_runLoopController)
+  if (self->_customTileProvider == rateCopy && self->_runLoopController)
   {
-    v4 = [(VKCustomTileOverlayProviderData *)v22 desiredDisplayRate];
-    if (v4 || [(VKCustomTileOverlayProviderData *)v22 forceContinuousLayout]|| [(VKCustomTileOverlayProviderData *)v22 forceNativeDisplayRate])
+    desiredDisplayRate = [(VKCustomTileOverlayProviderData *)rateCopy desiredDisplayRate];
+    if (desiredDisplayRate || [(VKCustomTileOverlayProviderData *)rateCopy forceContinuousLayout]|| [(VKCustomTileOverlayProviderData *)rateCopy forceNativeDisplayRate])
     {
-      v5 = [(VKCustomTileOverlayProviderData *)v22 forceNativeDisplayRate];
+      forceNativeDisplayRate = [(VKCustomTileOverlayProviderData *)rateCopy forceNativeDisplayRate];
       v6 = 60;
-      if ((v4 - 20) < 0xA)
+      if ((desiredDisplayRate - 20) < 0xA)
       {
         v6 = 20;
       }
 
-      if ((v4 - 15) >= 5)
+      if ((desiredDisplayRate - 15) >= 5)
       {
         v7 = v6;
       }
@@ -128,7 +128,7 @@
         v7 = 15;
       }
 
-      if ((v4 - 5) >= 0xA)
+      if ((desiredDisplayRate - 5) >= 0xA)
       {
         v8 = v7;
       }
@@ -138,7 +138,7 @@
         v8 = 5;
       }
 
-      if ((v4 - 1) >= 4)
+      if ((desiredDisplayRate - 1) >= 4)
       {
         v9 = v8;
       }
@@ -148,7 +148,7 @@
         v9 = 1;
       }
 
-      if (v5)
+      if (forceNativeDisplayRate)
       {
         v10 = -1;
       }
@@ -160,7 +160,7 @@
 
       runLoopController = self->_runLoopController;
       var1 = runLoopController->var1;
-      v13 = [(VKCustomTileOverlayProviderData *)v22 forceNativeDisplayRate];
+      forceNativeDisplayRate2 = [(VKCustomTileOverlayProviderData *)rateCopy forceNativeDisplayRate];
       if (runLoopController->var0)
       {
         v17 = runLoopController->var0 + 40960;
@@ -180,7 +180,7 @@
         }
 
         *(runLoopController->var0 + 5249) = v18;
-        *(v17 + 1145) = v13;
+        *(v17 + 1145) = forceNativeDisplayRate2;
         runLoopController->var1 = v18;
         md::RunLoopController::_updateDisplayRate(runLoopController, v14, v15, v16);
       }
@@ -211,9 +211,9 @@
   os_unfair_lock_unlock(&self->_customTileProviderLock._lock);
 }
 
-- (void)customTileOverlayNeedsInvalidate:(id)a3
+- (void)customTileOverlayNeedsInvalidate:(id)invalidate
 {
-  v8 = a3;
+  invalidateCopy = invalidate;
   cntrl = self->_standardContainer.__cntrl_;
   if (cntrl)
   {
@@ -248,14 +248,14 @@
   }
 }
 
-- (void)customTileOverlayDidChangeAlpha:(id)a3
+- (void)customTileOverlayDidChangeAlpha:(id)alpha
 {
-  v8 = a3;
+  alphaCopy = alpha;
   os_unfair_lock_lock(&self->_customTileProviderLock._lock);
-  if (self->_customTileProvider == v8)
+  if (self->_customTileProvider == alphaCopy)
   {
     ptr = self->_customStyle.__ptr_;
-    [(VKCustomTileOverlayProviderData *)v8 alpha];
+    [(VKCustomTileOverlayProviderData *)alphaCopy alpha];
     *&v5 = v5;
     *ptr = LODWORD(v5);
     runLoopController = self->_runLoopController;
@@ -273,13 +273,13 @@
   os_unfair_lock_unlock(&self->_customTileProviderLock._lock);
 }
 
-- (void)customTileOverlayNeedsDisplay:(id)a3
+- (void)customTileOverlayNeedsDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   os_unfair_lock_lock(&self->_customTileProviderLock._lock);
   customTileProvider = self->_customTileProvider;
 
-  if (customTileProvider == v4)
+  if (customTileProvider == displayCopy)
   {
     runLoopController = self->_runLoopController;
     if (runLoopController)
@@ -296,9 +296,9 @@
   os_unfair_lock_unlock(&self->_customTileProviderLock._lock);
 }
 
-- (void)rasterTileOverlayNeedsInvalidate:(id)a3
+- (void)rasterTileOverlayNeedsInvalidate:(id)invalidate
 {
-  v8 = a3;
+  invalidateCopy = invalidate;
   cntrl = self->_standardContainer.__cntrl_;
   if (cntrl)
   {
@@ -333,14 +333,14 @@
   }
 }
 
-- (void)rasterTileOverlayDidChangeAlpha:(id)a3
+- (void)rasterTileOverlayDidChangeAlpha:(id)alpha
 {
-  v8 = a3;
+  alphaCopy = alpha;
   os_unfair_lock_lock(&self->_rasterTileProviderLock._lock);
-  if (self->_rasterTileProvider == v8)
+  if (self->_rasterTileProvider == alphaCopy)
   {
     ptr = self->_rasterStyle.__ptr_;
-    [(VKRasterTileOverlayProviderData *)v8 alpha];
+    [(VKRasterTileOverlayProviderData *)alphaCopy alpha];
     *&v5 = v5;
     *ptr = LODWORD(v5);
     runLoopController = self->_runLoopController;
@@ -358,13 +358,13 @@
   os_unfair_lock_unlock(&self->_rasterTileProviderLock._lock);
 }
 
-- (void)rasterTileOverlayNeedsDisplay:(id)a3
+- (void)rasterTileOverlayNeedsDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   os_unfair_lock_lock(&self->_rasterTileProviderLock._lock);
   rasterTileProvider = self->_rasterTileProvider;
 
-  if (rasterTileProvider == v4)
+  if (rasterTileProvider == displayCopy)
   {
     runLoopController = self->_runLoopController;
     if (runLoopController)
@@ -381,16 +381,16 @@
   os_unfair_lock_unlock(&self->_rasterTileProviderLock._lock);
 }
 
-- (void)vectorOverlayNeedsDisplay:(id)a3 needsFullInvalidate:(BOOL)a4
+- (void)vectorOverlayNeedsDisplay:(id)display needsFullInvalidate:(BOOL)invalidate
 {
-  v4 = a4;
-  v6 = a3;
+  invalidateCopy = invalidate;
+  displayCopy = display;
   os_unfair_lock_lock(&self->_vectorDataLock._lock);
   vectorData = self->_vectorData;
 
-  if (vectorData == v6)
+  if (vectorData == displayCopy)
   {
-    if (v4)
+    if (invalidateCopy)
     {
       cntrl = self->_standardContainer.__cntrl_;
       if (cntrl)
@@ -444,10 +444,10 @@
   os_unfair_lock_unlock(&self->_vectorDataLock._lock);
 }
 
-- (void)setStandardContainer:(weak_ptr<md::OverlayContainer>)a3
+- (void)setStandardContainer:(weak_ptr<md::OverlayContainer>)container
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *container.__ptr_;
+  v3 = *(container.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 16), 1uLL, memory_order_relaxed);
@@ -477,31 +477,31 @@
   return result;
 }
 
-- (void)setNeedsDisplayForReason:(unint64_t)a3
+- (void)setNeedsDisplayForReason:(unint64_t)reason
 {
-  v19 = [(VKOverlay *)self vectorData];
-  v5 = [(VKOverlay *)self rasterTileProvider];
-  v6 = [(VKOverlay *)self customTileProvider];
+  vectorData = [(VKOverlay *)self vectorData];
+  rasterTileProvider = [(VKOverlay *)self rasterTileProvider];
+  customTileProvider = [(VKOverlay *)self customTileProvider];
   [(VKOverlay *)self _updateVectorData];
   [(VKOverlay *)self _updateRasterTileProvider];
   [(VKOverlay *)self _updateCustomTileProvider];
-  v7 = [(VKOverlay *)self vectorData];
-  v18 = [(VKOverlay *)self rasterTileProvider];
-  v8 = [(VKOverlay *)self customTileProvider];
-  if (a3 == 2)
+  vectorData2 = [(VKOverlay *)self vectorData];
+  rasterTileProvider2 = [(VKOverlay *)self rasterTileProvider];
+  customTileProvider2 = [(VKOverlay *)self customTileProvider];
+  if (reason == 2)
   {
-    if (v7 && v7 == v19 || v18 && v18 == v5)
+    if (vectorData2 && vectorData2 == vectorData || rasterTileProvider2 && rasterTileProvider2 == rasterTileProvider)
     {
-      v9 = v6;
+      v9 = customTileProvider;
       v10 = 1;
     }
 
     else
     {
-      v9 = v6;
-      if (v8)
+      v9 = customTileProvider;
+      if (customTileProvider2)
       {
-        v17 = v8 == v6;
+        v17 = customTileProvider2 == customTileProvider;
       }
 
       else
@@ -515,7 +515,7 @@
 
   else
   {
-    v9 = v6;
+    v9 = customTileProvider;
     v10 = 0;
   }
 
@@ -664,8 +664,8 @@ LABEL_22:
 - (void)_updateVectorData
 {
   os_unfair_lock_lock(&self->_vectorDataLock._lock);
-  v3 = [(VKOverlay *)self delegate];
-  if ([v3 overlayCanProvideVectorData:self])
+  delegate = [(VKOverlay *)self delegate];
+  if ([delegate overlayCanProvideVectorData:self])
   {
     v4 = !self->_forceRasterizationForGlobe;
   }
@@ -682,7 +682,7 @@ LABEL_22:
 
   if (self->_canProvideVectorData)
   {
-    v6 = [v3 vectorDataForOverlay:self];
+    v6 = [delegate vectorDataForOverlay:self];
     v7 = self->_vectorData;
     self->_vectorData = v6;
 
@@ -702,78 +702,78 @@ LABEL_22:
   return v3;
 }
 
-- (void)drawKey:(id *)a3 withData:(id)a4 inTexture:(id)a5 withTimestamp:(double)a6 withTileScale:(float)a7
+- (void)drawKey:(id *)key withData:(id)data inTexture:(id)texture withTimestamp:(double)timestamp withTileScale:(float)scale
 {
-  v15 = a4;
-  v12 = a5;
-  v13 = [(VKOverlay *)self delegate];
-  *&v14 = a7;
-  [v13 overlay:self drawKey:a3 withData:v15 inTexture:v12 withTimestamp:a6 withTileScale:v14];
+  dataCopy = data;
+  textureCopy = texture;
+  delegate = [(VKOverlay *)self delegate];
+  *&v14 = scale;
+  [delegate overlay:self drawKey:key withData:dataCopy inTexture:textureCopy withTimestamp:timestamp withTileScale:v14];
 }
 
-- (void)drawKey:(id *)a3 withData:(id)a4 inIOSurface:(__IOSurface *)a5 withTimestamp:(double)a6 withTileScale:(float)a7
+- (void)drawKey:(id *)key withData:(id)data inIOSurface:(__IOSurface *)surface withTimestamp:(double)timestamp withTileScale:(float)scale
 {
-  v14 = a4;
-  v12 = [(VKOverlay *)self delegate];
-  *&v13 = a7;
-  [v12 overlay:self drawKey:a3 withData:v14 inIOSurface:a5 withTimestamp:a6 withTileScale:v13];
+  dataCopy = data;
+  delegate = [(VKOverlay *)self delegate];
+  *&v13 = scale;
+  [delegate overlay:self drawKey:key withData:dataCopy inIOSurface:surface withTimestamp:timestamp withTileScale:v13];
 }
 
-- (void)drawKey:(id *)a3 withData:(id)a4 inIOSurface:(__IOSurface *)a5 withTimestamp:(double)a6
+- (void)drawKey:(id *)key withData:(id)data inIOSurface:(__IOSurface *)surface withTimestamp:(double)timestamp
 {
-  v11 = a4;
-  v10 = [(VKOverlay *)self delegate];
-  [v10 overlay:self drawKey:a3 withData:v11 inIOSurface:a5 withTimestamp:a6];
+  dataCopy = data;
+  delegate = [(VKOverlay *)self delegate];
+  [delegate overlay:self drawKey:key withData:dataCopy inIOSurface:surface withTimestamp:timestamp];
 }
 
-- (void)drawKey:(id *)a3 inContext:(CGContext *)a4
+- (void)drawKey:(id *)key inContext:(CGContext *)context
 {
-  v7 = [(VKOverlay *)self delegate];
-  [v7 overlay:self drawKey:a3 inContext:a4];
+  delegate = [(VKOverlay *)self delegate];
+  [delegate overlay:self drawKey:key inContext:context];
 }
 
-- (void)onVisibleTiles:(id)a3
+- (void)onVisibleTiles:(id)tiles
 {
-  v5 = a3;
-  v4 = [(VKOverlay *)self delegate];
-  [v4 overlay:self onVisibleTiles:v5];
+  tilesCopy = tiles;
+  delegate = [(VKOverlay *)self delegate];
+  [delegate overlay:self onVisibleTiles:tilesCopy];
 }
 
-- (void)didEnterKey:(id *)a3 withFallback:(BOOL)a4
+- (void)didEnterKey:(id *)key withFallback:(BOOL)fallback
 {
-  v4 = a4;
-  v7 = [(VKOverlay *)self delegate];
-  [v7 overlay:self didEnterKey:a3 withFallback:v4];
+  fallbackCopy = fallback;
+  delegate = [(VKOverlay *)self delegate];
+  [delegate overlay:self didEnterKey:key withFallback:fallbackCopy];
 }
 
-- (void)didExitKey:(id *)a3
+- (void)didExitKey:(id *)key
 {
-  v5 = [(VKOverlay *)self delegate];
-  [v5 overlay:self didExitKey:a3];
+  delegate = [(VKOverlay *)self delegate];
+  [delegate overlay:self didExitKey:key];
 }
 
-- (BOOL)canDrawKey:(id *)a3 withData:(id)a4
+- (BOOL)canDrawKey:(id *)key withData:(id)data
 {
-  v6 = a4;
-  v7 = [(VKOverlay *)self delegate];
-  LOBYTE(a3) = [v7 overlay:self canDrawKey:a3 withData:v6];
+  dataCopy = data;
+  delegate = [(VKOverlay *)self delegate];
+  LOBYTE(key) = [delegate overlay:self canDrawKey:key withData:dataCopy];
 
-  return a3;
+  return key;
 }
 
-- (unint64_t)estimatedCostForCustomTileData:(id)a3
+- (unint64_t)estimatedCostForCustomTileData:(id)data
 {
-  v4 = a3;
-  v5 = [(VKOverlay *)self delegate];
-  v6 = [v5 overlay:self estimatedCostForCustomTileData:v4];
+  dataCopy = data;
+  delegate = [(VKOverlay *)self delegate];
+  v6 = [delegate overlay:self estimatedCostForCustomTileData:dataCopy];
 
   return v6;
 }
 
 - (unsigned)anisotropy
 {
-  v3 = [(VKOverlay *)self delegate];
-  v4 = [v3 anisotropy:self];
+  delegate = [(VKOverlay *)self delegate];
+  v4 = [delegate anisotropy:self];
 
   if (v4 <= 1)
   {
@@ -798,39 +798,39 @@ LABEL_22:
 
 - (BOOL)shouldUseMetalTexture
 {
-  v2 = self;
-  v3 = [(VKOverlay *)self delegate];
-  LOBYTE(v2) = [v3 shouldUseMetalTexture:v2];
+  selfCopy = self;
+  delegate = [(VKOverlay *)self delegate];
+  LOBYTE(selfCopy) = [delegate shouldUseMetalTexture:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)areResourcesRequired
 {
-  v2 = self;
-  v3 = [(VKOverlay *)self delegate];
-  LOBYTE(v2) = [v3 areOverlayResourcesRequired:v2];
+  selfCopy = self;
+  delegate = [(VKOverlay *)self delegate];
+  LOBYTE(selfCopy) = [delegate areOverlayResourcesRequired:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)canDrawKey:(id *)a3
+- (BOOL)canDrawKey:(id *)key
 {
-  v5 = [(VKOverlay *)self delegate];
-  LOBYTE(a3) = [v5 overlay:self canDrawKey:a3];
+  delegate = [(VKOverlay *)self delegate];
+  LOBYTE(key) = [delegate overlay:self canDrawKey:key];
 
-  return a3;
+  return key;
 }
 
-- (BOOL)canPossiblyDrawKey:(id *)a3
+- (BOOL)canPossiblyDrawKey:(id *)key
 {
-  v5 = [(VKOverlay *)self delegate];
-  LOBYTE(a3) = [v5 overlay:self canPossiblyDrawKey:a3];
+  delegate = [(VKOverlay *)self delegate];
+  LOBYTE(key) = [delegate overlay:self canPossiblyDrawKey:key];
 
-  return a3;
+  return key;
 }
 
-- (void)setNeedsDisplayInRect:(id *)a3 level:(int64_t)a4 reason:(unint64_t)a5
+- (void)setNeedsDisplayInRect:(id *)rect level:(int64_t)level reason:(unint64_t)reason
 {
   cntrl = self->_standardContainer.__cntrl_;
   if (cntrl)
@@ -838,7 +838,7 @@ LABEL_22:
     v7 = std::__shared_weak_count::lock(cntrl);
     if (v7 && self->_standardContainer.__ptr_)
     {
-      v8 = self;
+      selfCopy = self;
       operator new();
     }
 
@@ -863,36 +863,36 @@ LABEL_22:
   }
 }
 
-- (void)setForceRasterizationForGlobe:(BOOL)a3
+- (void)setForceRasterizationForGlobe:(BOOL)globe
 {
-  if (self->_forceRasterizationForGlobe != a3)
+  if (self->_forceRasterizationForGlobe != globe)
   {
-    self->_forceRasterizationForGlobe = a3;
-    if (a3 && self->_canProvideVectorData)
+    self->_forceRasterizationForGlobe = globe;
+    if (globe && self->_canProvideVectorData)
     {
       [(VKOverlay *)self _updateVectorData];
     }
   }
 }
 
-- (void)setBlendMode:(int64_t)a3
+- (void)setBlendMode:(int64_t)mode
 {
   blendMode = self->_blendMode;
-  if (blendMode != a3)
+  if (blendMode != mode)
   {
-    self->_blendMode = a3;
-    if ((a3 - 1) < 0x11)
+    self->_blendMode = mode;
+    if ((mode - 1) < 0x11)
     {
-      v5 = a3;
+      modeCopy = mode;
     }
 
     else
     {
-      v5 = 0;
+      modeCopy = 0;
     }
 
-    *(self->_rasterStyle.__ptr_ + 1) = v5;
-    *(self->_customStyle.__ptr_ + 1) = v5;
+    *(self->_rasterStyle.__ptr_ + 1) = modeCopy;
+    *(self->_customStyle.__ptr_ + 1) = modeCopy;
     [(VKVectorOverlayData *)self->_vectorData setBlendMode:?];
     if (blendMode)
     {
@@ -948,9 +948,9 @@ LABEL_22:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   [(VKOverlay *)self _updateVectorData];
   [(VKOverlay *)self _updateRasterTileProvider];
 

@@ -1,17 +1,17 @@
 @interface HUAccessoryFirmwareUpdateSetupViewController
-- (HUAccessoryFirmwareUpdateSetupViewController)initWithHome:(id)a3;
-- (HUAccessoryFirmwareUpdateSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentImage:(id)a6;
+- (HUAccessoryFirmwareUpdateSetupViewController)initWithHome:(id)home;
+- (HUAccessoryFirmwareUpdateSetupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentImage:(id)image;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (void)_doNotEnableAutomaticUpdates:(id)a3;
-- (void)_enableAutomaticUpdates:(id)a3;
+- (void)_doNotEnableAutomaticUpdates:(id)updates;
+- (void)_enableAutomaticUpdates:(id)updates;
 - (void)viewDidLoad;
 @end
 
 @implementation HUAccessoryFirmwareUpdateSetupViewController
 
-- (HUAccessoryFirmwareUpdateSetupViewController)initWithHome:(id)a3
+- (HUAccessoryFirmwareUpdateSetupViewController)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v6 = [MEMORY[0x277D755B8] _systemImageNamed:@"square.and.arrow.down"];
   v7 = [MEMORY[0x277D755D0] configurationWithPointSize:77.0];
   v8 = [v6 imageWithConfiguration:v7];
@@ -24,18 +24,18 @@
 
   if (v11)
   {
-    objc_storeStrong(&v11->_home, a3);
+    objc_storeStrong(&v11->_home, home);
     [(HUTopContentOBWelcomeController *)v11 setMaxSize:77.0, 77.0];
   }
 
   return v11;
 }
 
-- (HUAccessoryFirmwareUpdateSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentImage:(id)a6
+- (HUAccessoryFirmwareUpdateSetupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentImage:(id)image
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithHome_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUAccessoryFirmwareUpdateSetupViewController.m" lineNumber:51 description:{@"%s is unavailable; use %@ instead", "-[HUAccessoryFirmwareUpdateSetupViewController initWithTitle:detailText:icon:contentImage:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessoryFirmwareUpdateSetupViewController.m" lineNumber:51 description:{@"%s is unavailable; use %@ instead", "-[HUAccessoryFirmwareUpdateSetupViewController initWithTitle:detailText:icon:contentImage:]", v9}];
 
   return 0;
 }
@@ -46,13 +46,13 @@
   v18.receiver = self;
   v18.super_class = HUAccessoryFirmwareUpdateSetupViewController;
   [(HUImageOBWelcomeController *)&v18 viewDidLoad];
-  v4 = [(HUAccessoryFirmwareUpdateSetupViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_282492E00];
+  headerView = [(HUAccessoryFirmwareUpdateSetupViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282492E00];
 
-  v6 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   enableAutomaticUpdatesButton = self->_enableAutomaticUpdatesButton;
-  self->_enableAutomaticUpdatesButton = v6;
+  self->_enableAutomaticUpdatesButton = boldButton;
 
   [(OBTrayButton *)self->_enableAutomaticUpdatesButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = self->_enableAutomaticUpdatesButton;
@@ -61,12 +61,12 @@
 
   [(OBTrayButton *)self->_enableAutomaticUpdatesButton setAccessibilityIdentifier:@"Home.OnboardingView.AccessoryFirmwareUpdate.Enable"];
   [(OBTrayButton *)self->_enableAutomaticUpdatesButton addTarget:self action:sel__enableAutomaticUpdates_ forControlEvents:64];
-  v10 = [(HUAccessoryFirmwareUpdateSetupViewController *)self buttonTray];
-  [v10 addButton:self->_enableAutomaticUpdatesButton];
+  buttonTray = [(HUAccessoryFirmwareUpdateSetupViewController *)self buttonTray];
+  [buttonTray addButton:self->_enableAutomaticUpdatesButton];
 
-  v11 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   notNowButton = self->_notNowButton;
-  self->_notNowButton = v11;
+  self->_notNowButton = linkButton;
 
   [(OBLinkTrayButton *)self->_notNowButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v13 = self->_notNowButton;
@@ -75,8 +75,8 @@
 
   [(OBLinkTrayButton *)self->_notNowButton setAccessibilityIdentifier:@"Home.OnboardingView.AccessoryFirmwareUpdate.NotNow"];
   [(OBLinkTrayButton *)self->_notNowButton addTarget:self action:sel__doNotEnableAutomaticUpdates_ forControlEvents:64];
-  v15 = [(HUAccessoryFirmwareUpdateSetupViewController *)self buttonTray];
-  [v15 addButton:self->_notNowButton];
+  buttonTray2 = [(HUAccessoryFirmwareUpdateSetupViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_notNowButton];
 
   [(HUAccessoryFirmwareUpdateSetupViewController *)self setModalInPresentation:1];
   v16 = HFLogForCategory();
@@ -84,35 +84,35 @@
   {
     v17 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = v17;
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: NLSVC", buf, 0x16u);
   }
 }
 
-- (void)_enableAutomaticUpdates:(id)a3
+- (void)_enableAutomaticUpdates:(id)updates
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  updatesCopy = updates;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
-  v8 = [(HUAccessoryFirmwareUpdateSetupViewController *)self enableAutomaticUpdatesButton];
-  v9 = [v8 activityIndicator];
-  [v9 startAnimating];
+  enableAutomaticUpdatesButton = [(HUAccessoryFirmwareUpdateSetupViewController *)self enableAutomaticUpdatesButton];
+  activityIndicator = [enableAutomaticUpdatesButton activityIndicator];
+  [activityIndicator startAnimating];
 
-  [v5 setEnabled:0];
-  v10 = [(HUAccessoryFirmwareUpdateSetupViewController *)self home];
-  v11 = [v10 hf_updateAutomaticThirdPartyAccessorySoftwareUpdateEnabled:1];
+  [updatesCopy setEnabled:0];
+  home = [(HUAccessoryFirmwareUpdateSetupViewController *)self home];
+  v11 = [home hf_updateAutomaticThirdPartyAccessorySoftwareUpdateEnabled:1];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -124,9 +124,9 @@
   v15[1] = 3221225472;
   v15[2] = __72__HUAccessoryFirmwareUpdateSetupViewController__enableAutomaticUpdates___block_invoke_54;
   v15[3] = &unk_277DB7E90;
-  v16 = v5;
-  v17 = self;
-  v13 = v5;
+  v16 = updatesCopy;
+  selfCopy2 = self;
+  v13 = updatesCopy;
   v14 = [v12 addFailureBlock:v15];
 }
 
@@ -158,7 +158,7 @@ void __72__HUAccessoryFirmwareUpdateSetupViewController__enableAutomaticUpdates_
   [v7 handleError:v4];
 }
 
-- (void)_doNotEnableAutomaticUpdates:(id)a3
+- (void)_doNotEnableAutomaticUpdates:(id)updates
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -166,17 +166,17 @@ void __72__HUAccessoryFirmwareUpdateSetupViewController__enableAutomaticUpdates_
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
-  v7 = [(HUAccessoryFirmwareUpdateSetupViewController *)self delegate];
+  delegate = [(HUAccessoryFirmwareUpdateSetupViewController *)self delegate];
   v9 = @"HUAccessoryFirmwareUpdateOnboardingKey_UserInput";
   v10 = &unk_282491070;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  [v7 viewController:self didFinishWithConfigurationResults:v8];
+  [delegate viewController:self didFinishWithConfigurationResults:v8];
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

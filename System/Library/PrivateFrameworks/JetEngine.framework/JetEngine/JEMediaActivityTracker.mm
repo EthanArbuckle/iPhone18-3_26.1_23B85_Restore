@@ -1,37 +1,37 @@
 @interface JEMediaActivityTracker
-- (JEMediaActivityTracker)initWithPipeline:(id)a3 playlist:(id)a4 eventData:(id)a5 topic:(id)a6;
+- (JEMediaActivityTracker)initWithPipeline:(id)pipeline playlist:(id)playlist eventData:(id)data topic:(id)topic;
 - (NSMutableArray)eventData;
-- (id)combineEventData:(id)a3 withPlaylistDataForItem:(id)a4;
-- (id)startActivity:(int64_t)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7 transitioningEventData:(id)a8;
-- (void)generatePlaylistTransitionsIfNecessary:(unint64_t)a3;
-- (void)playStartedWithPlaybackRate:(float)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7;
-- (void)playStoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6;
-- (void)playTransitionedAtOverallPosition:(unint64_t)a3 eventData:(id)a4;
-- (void)resetEventData:(id)a3;
-- (void)stopActivity:(int64_t)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7 transitioningEventData:(id)a8;
-- (void)synchronizeAtOverallPosition:(unint64_t)a3;
-- (void)synchronizePlaybackRate:(float)a3 overallPosition:(unint64_t)a4;
-- (void)updateEventData:(id)a3;
+- (id)combineEventData:(id)data withPlaylistDataForItem:(id)item;
+- (id)startActivity:(int64_t)activity overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data transitioningEventData:(id)eventData;
+- (void)generatePlaylistTransitionsIfNecessary:(unint64_t)necessary;
+- (void)playStartedWithPlaybackRate:(float)rate overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
+- (void)playStoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
+- (void)playTransitionedAtOverallPosition:(unint64_t)position eventData:(id)data;
+- (void)resetEventData:(id)data;
+- (void)stopActivity:(int64_t)activity overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data transitioningEventData:(id)eventData;
+- (void)synchronizeAtOverallPosition:(unint64_t)position;
+- (void)synchronizePlaybackRate:(float)rate overallPosition:(unint64_t)position;
+- (void)updateEventData:(id)data;
 @end
 
 @implementation JEMediaActivityTracker
 
-- (JEMediaActivityTracker)initWithPipeline:(id)a3 playlist:(id)a4 eventData:(id)a5 topic:(id)a6
+- (JEMediaActivityTracker)initWithPipeline:(id)pipeline playlist:(id)playlist eventData:(id)data topic:(id)topic
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pipelineCopy = pipeline;
+  playlistCopy = playlist;
+  dataCopy = data;
+  topicCopy = topic;
   v18.receiver = self;
   v18.super_class = JEMediaActivityTracker;
   v14 = [(JEMediaActivityTracker *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    [(JEMediaActivityTracker *)v14 setTopic:v13];
-    [(JEMediaActivityTracker *)v15 setPipeline:v10];
-    [(JEMediaActivityTracker *)v15 setPlaylist:v11];
-    v16 = [v12 mutableCopy];
+    [(JEMediaActivityTracker *)v14 setTopic:topicCopy];
+    [(JEMediaActivityTracker *)v15 setPipeline:pipelineCopy];
+    [(JEMediaActivityTracker *)v15 setPlaylist:playlistCopy];
+    v16 = [dataCopy mutableCopy];
     [(JEMediaActivityTracker *)v15 setEventData:v16];
 
     [(JEMediaActivityTracker *)v15 setShouldGenerateTransitions:1];
@@ -40,62 +40,62 @@
   return v15;
 }
 
-- (void)playStartedWithPlaybackRate:(float)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7
+- (void)playStartedWithPlaybackRate:(float)rate overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v10 = [(JEMediaActivityTracker *)self startActivity:0 overallPosition:a4 type:a5 reason:a6 eventData:a7 transitioningEventData:0];
+  v10 = [(JEMediaActivityTracker *)self startActivity:0 overallPosition:position type:type reason:reason eventData:data transitioningEventData:0];
   if ([(JEMediaActivityTracker *)self shouldGenerateTransitions])
   {
     v11 = [JEMediaTimeTracker alloc];
-    *&v12 = a3;
-    v13 = [(JEMediaTimeTracker *)v11 initWithPosition:a4 playbackRate:v12];
+    *&v12 = rate;
+    v13 = [(JEMediaTimeTracker *)v11 initWithPosition:position playbackRate:v12];
     [(JEMediaActivityTracker *)self setTimeTracker:v13];
   }
 }
 
-- (void)playStoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6
+- (void)playStoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  [(JEMediaActivityTracker *)self generatePlaylistTransitionsIfNecessary:a3];
-  [(JEMediaActivityTracker *)self stopActivity:0 overallPosition:a3 type:v12 reason:v11 eventData:v10 transitioningEventData:0];
+  dataCopy = data;
+  reasonCopy = reason;
+  typeCopy = type;
+  [(JEMediaActivityTracker *)self generatePlaylistTransitionsIfNecessary:position];
+  [(JEMediaActivityTracker *)self stopActivity:0 overallPosition:position type:typeCopy reason:reasonCopy eventData:dataCopy transitioningEventData:0];
 
   [(JEMediaActivityTracker *)self setTimeTracker:0];
 }
 
-- (void)playTransitionedAtOverallPosition:(unint64_t)a3 eventData:(id)a4
+- (void)playTransitionedAtOverallPosition:(unint64_t)position eventData:(id)data
 {
-  v7 = a4;
-  [(JEMediaActivityTracker *)self stopActivity:0 overallPosition:a3 type:@"automatic" reason:@"transition" eventData:v7 transitioningEventData:0];
-  v6 = [(JEMediaActivityTracker *)self startActivity:0 overallPosition:a3 type:@"automatic" reason:@"transition" eventData:v7 transitioningEventData:0];
+  dataCopy = data;
+  [(JEMediaActivityTracker *)self stopActivity:0 overallPosition:position type:@"automatic" reason:@"transition" eventData:dataCopy transitioningEventData:0];
+  v6 = [(JEMediaActivityTracker *)self startActivity:0 overallPosition:position type:@"automatic" reason:@"transition" eventData:dataCopy transitioningEventData:0];
 }
 
-- (void)synchronizePlaybackRate:(float)a3 overallPosition:(unint64_t)a4
+- (void)synchronizePlaybackRate:(float)rate overallPosition:(unint64_t)position
 {
-  v7 = [(JEMediaActivityTracker *)self playActivity];
-  v8 = v7;
-  if (v7 && ![v7 type])
+  playActivity = [(JEMediaActivityTracker *)self playActivity];
+  v8 = playActivity;
+  if (playActivity && ![playActivity type])
   {
-    v9 = a3 <= 0.0;
-    v12 = [v8 isStopped];
-    if ((v12 & 1) == 0 && a3 > 0.0)
+    v9 = rate <= 0.0;
+    isStopped = [v8 isStopped];
+    if ((isStopped & 1) == 0 && rate > 0.0)
     {
-      [(JEMediaActivityTracker *)self generatePlaylistTransitionsIfNecessary:a4];
-      v13 = [(JEMediaActivityTracker *)self timeTracker];
-      *&v14 = a3;
-      [v13 updatePosition:a4 playbackRate:v14];
+      [(JEMediaActivityTracker *)self generatePlaylistTransitionsIfNecessary:position];
+      timeTracker = [(JEMediaActivityTracker *)self timeTracker];
+      *&v14 = rate;
+      [timeTracker updatePosition:position playbackRate:v14];
 
       goto LABEL_9;
     }
 
-    if (a3 > 0.0)
+    if (rate > 0.0)
     {
       v15 = 1;
     }
 
     else
     {
-      v15 = v12;
+      v15 = isStopped;
     }
 
     if ((v15 & 1) == 0)
@@ -111,7 +111,7 @@
       goto LABEL_7;
     }
 
-    if ((v12 ^ 1))
+    if ((isStopped ^ 1))
     {
       goto LABEL_9;
     }
@@ -119,7 +119,7 @@
 
   else
   {
-    v9 = a3 <= 0.0;
+    v9 = rate <= 0.0;
   }
 
   if (!v9)
@@ -142,33 +142,33 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)synchronizeAtOverallPosition:(unint64_t)a3
+- (void)synchronizeAtOverallPosition:(unint64_t)position
 {
-  v5 = [(JEMediaActivityTracker *)self timeTracker];
-  [v5 playbackRate];
-  [(JEMediaActivityTracker *)self synchronizePlaybackRate:a3 overallPosition:?];
+  timeTracker = [(JEMediaActivityTracker *)self timeTracker];
+  [timeTracker playbackRate];
+  [(JEMediaActivityTracker *)self synchronizePlaybackRate:position overallPosition:?];
 }
 
-- (void)updateEventData:(id)a3
+- (void)updateEventData:(id)data
 {
-  v4 = a3;
-  v5 = [(JEMediaActivityTracker *)self eventData];
-  [v5 addObjectsFromArray:v4];
+  dataCopy = data;
+  eventData = [(JEMediaActivityTracker *)self eventData];
+  [eventData addObjectsFromArray:dataCopy];
 }
 
-- (void)resetEventData:(id)a3
+- (void)resetEventData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [a3 mutableCopy];
+    array = [data mutableCopy];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  self->_eventData = v4;
+  self->_eventData = array;
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -178,9 +178,9 @@ LABEL_9:
   eventData = self->_eventData;
   if (!eventData)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_eventData;
-    self->_eventData = v4;
+    self->_eventData = array;
 
     eventData = self->_eventData;
   }
@@ -188,27 +188,27 @@ LABEL_9:
   return eventData;
 }
 
-- (id)combineEventData:(id)a3 withPlaylistDataForItem:(id)a4
+- (id)combineEventData:(id)data withPlaylistDataForItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(JEMediaActivityTracker *)self playlist];
+  dataCopy = data;
+  itemCopy = item;
+  array = [MEMORY[0x1E695DF70] array];
+  playlist = [(JEMediaActivityTracker *)self playlist];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(JEMediaActivityTracker *)self playlist];
-    v11 = [v10 eventData];
+    playlist2 = [(JEMediaActivityTracker *)self playlist];
+    eventData = [playlist2 eventData];
   }
 
   else
   {
-    v11 = 0;
+    eventData = 0;
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v12 = 0;
-    if (!v11)
+    eventData2 = 0;
+    if (!eventData)
     {
       goto LABEL_9;
     }
@@ -216,55 +216,55 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v12 = [v7 eventData];
-  if (v11)
+  eventData2 = [itemCopy eventData];
+  if (eventData)
   {
 LABEL_8:
-    [v8 addObjectsFromArray:v11];
+    [array addObjectsFromArray:eventData];
   }
 
 LABEL_9:
-  if (v12)
+  if (eventData2)
   {
-    [v8 addObjectsFromArray:v12];
+    [array addObjectsFromArray:eventData2];
   }
 
-  v13 = [(JEMediaActivityTracker *)self eventData];
-  [v8 addObjectsFromArray:v13];
+  eventData3 = [(JEMediaActivityTracker *)self eventData];
+  [array addObjectsFromArray:eventData3];
 
-  if (v6)
+  if (dataCopy)
   {
-    [v8 addObjectsFromArray:v6];
+    [array addObjectsFromArray:dataCopy];
   }
 
-  v14 = [v8 copy];
+  v14 = [array copy];
 
   return v14;
 }
 
-- (id)startActivity:(int64_t)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7 transitioningEventData:(id)a8
+- (id)startActivity:(int64_t)activity overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data transitioningEventData:(id)eventData
 {
-  v25 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = [(JEMediaActivityTracker *)self playlist];
-  v18 = [v17 itemAtOverallPosition:a4 rangeOptions:1];
+  eventDataCopy = eventData;
+  dataCopy = data;
+  reasonCopy = reason;
+  typeCopy = type;
+  playlist = [(JEMediaActivityTracker *)self playlist];
+  v18 = [playlist itemAtOverallPosition:position rangeOptions:1];
 
   v19 = [JEMediaActivity alloc];
-  v20 = [(JEMediaActivityTracker *)self pipeline];
-  v21 = [(JEMediaActivityTracker *)self topic];
-  v22 = [(JEMediaActivity *)v19 initWithType:a3 playlistItem:v18 pipeline:v20 topic:v21];
+  pipeline = [(JEMediaActivityTracker *)self pipeline];
+  topic = [(JEMediaActivityTracker *)self topic];
+  v22 = [(JEMediaActivity *)v19 initWithType:activity playlistItem:v18 pipeline:pipeline topic:topic];
 
-  v23 = [(JEMediaActivityTracker *)self combineEventData:v14 withPlaylistDataForItem:v18];
+  v23 = [(JEMediaActivityTracker *)self combineEventData:dataCopy withPlaylistDataForItem:v18];
 
-  [(JEMediaActivity *)v22 startedAtOverallPosition:a4 type:v16 reason:v15 eventData:v23 transitioningEventData:v25];
-  if (a3 == 1)
+  [(JEMediaActivity *)v22 startedAtOverallPosition:position type:typeCopy reason:reasonCopy eventData:v23 transitioningEventData:eventDataCopy];
+  if (activity == 1)
   {
     [(JEMediaActivityTracker *)self setSeekActivity:v22];
   }
 
-  else if (!a3)
+  else if (!activity)
   {
     [(JEMediaActivityTracker *)self setPlayActivity:v22];
   }
@@ -272,22 +272,22 @@ LABEL_9:
   return v22;
 }
 
-- (void)stopActivity:(int64_t)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7 transitioningEventData:(id)a8
+- (void)stopActivity:(int64_t)activity overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data transitioningEventData:(id)eventData
 {
   v26 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (a3 == 1)
+  typeCopy = type;
+  reasonCopy = reason;
+  dataCopy = data;
+  eventDataCopy = eventData;
+  if (activity == 1)
   {
-    v18 = [(JEMediaActivityTracker *)self seekActivity];
+    seekActivity = [(JEMediaActivityTracker *)self seekActivity];
     [(JEMediaActivityTracker *)self setSeekActivity:0];
-    v19 = [(JEMediaActivityTracker *)self playlist];
-    v20 = [v19 itemAtOverallPosition:a4 rangeOptions:2];
-    [v18 setPlaylistItem:v20];
+    playlist = [(JEMediaActivityTracker *)self playlist];
+    v20 = [playlist itemAtOverallPosition:position rangeOptions:2];
+    [seekActivity setPlaylistItem:v20];
 
-    if (!v18)
+    if (!seekActivity)
     {
       goto LABEL_9;
     }
@@ -295,25 +295,25 @@ LABEL_9:
 
   else
   {
-    if (a3)
+    if (activity)
     {
-      v18 = 0;
+      seekActivity = 0;
       goto LABEL_9;
     }
 
-    v18 = [(JEMediaActivityTracker *)self playActivity];
+    seekActivity = [(JEMediaActivityTracker *)self playActivity];
     [(JEMediaActivityTracker *)self setPlayActivity:0];
-    if (!v18)
+    if (!seekActivity)
     {
       goto LABEL_9;
     }
   }
 
-  if (![v18 isStopped])
+  if (![seekActivity isStopped])
   {
-    v21 = [v18 playlistItem];
-    v22 = [(JEMediaActivityTracker *)self combineEventData:v16 withPlaylistDataForItem:v21];
-    [v18 stoppedAtOverallPosition:a4 type:v14 reason:v15 eventData:v22 transitioningEventData:v17];
+    playlistItem = [seekActivity playlistItem];
+    v22 = [(JEMediaActivityTracker *)self combineEventData:dataCopy withPlaylistDataForItem:playlistItem];
+    [seekActivity stoppedAtOverallPosition:position type:typeCopy reason:reasonCopy eventData:v22 transitioningEventData:eventDataCopy];
 
     goto LABEL_12;
   }
@@ -323,32 +323,32 @@ LABEL_9:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     v24 = 134217984;
-    v25 = a3;
+    activityCopy = activity;
     _os_log_impl(&dword_1AB012000, v23, OS_LOG_TYPE_ERROR, "JetEngine: There is no %ld activity to stop.", &v24, 0xCu);
   }
 
 LABEL_12:
 }
 
-- (void)generatePlaylistTransitionsIfNecessary:(unint64_t)a3
+- (void)generatePlaylistTransitionsIfNecessary:(unint64_t)necessary
 {
   v31[1] = *MEMORY[0x1E69E9840];
   if ([(JEMediaActivityTracker *)self shouldGenerateTransitions])
   {
-    v5 = [(JEMediaActivityTracker *)self playActivity];
-    v6 = v5;
-    if (v5 && ![v5 type] && (objc_msgSend(v6, "isStopped") & 1) == 0)
+    playActivity = [(JEMediaActivityTracker *)self playActivity];
+    v6 = playActivity;
+    if (playActivity && ![playActivity type] && (objc_msgSend(v6, "isStopped") & 1) == 0)
     {
-      v27 = [v6 eventDataForTransitioningEvents];
-      v7 = [(JEMediaActivityTracker *)self playlist];
-      v8 = [v6 playlistItem];
-      v9 = [v7 itemsBetweenStartOverallPosition:objc_msgSend(v8 endOverallPosition:{"startOverallPosition"), a3}];
+      eventDataForTransitioningEvents = [v6 eventDataForTransitioningEvents];
+      playlist = [(JEMediaActivityTracker *)self playlist];
+      playlistItem = [v6 playlistItem];
+      v9 = [playlist itemsBetweenStartOverallPosition:objc_msgSend(playlistItem endOverallPosition:{"startOverallPosition"), necessary}];
 
-      v10 = [(JEMediaActivityTracker *)self playlist];
+      playlist2 = [(JEMediaActivityTracker *)self playlist];
       objc_opt_class();
-      LOBYTE(v8) = objc_opt_isKindOfClass();
+      LOBYTE(playlistItem) = objc_opt_isKindOfClass();
 
-      if ((v8 & 1) == 0)
+      if ((playlistItem & 1) == 0)
       {
         v11 = +[JEMediaActivityTracker playlistItemComparator];
         v12 = [v9 sortedArrayUsingComparator:v11];
@@ -363,20 +363,20 @@ LABEL_12:
         do
         {
           v14 = [v9 objectAtIndexedSubscript:v13];
-          v15 = [v14 startOverallPosition];
-          v16 = [v6 playlistItem];
-          v17 = [v16 startOverallPosition];
+          startOverallPosition = [v14 startOverallPosition];
+          playlistItem2 = [v6 playlistItem];
+          startOverallPosition2 = [playlistItem2 startOverallPosition];
 
-          if (v15 > v17)
+          if (startOverallPosition > startOverallPosition2)
           {
-            if (v15 >= a3)
+            if (startOverallPosition >= necessary)
             {
 
               break;
             }
 
-            v18 = [(JEMediaActivityTracker *)self timeTracker];
-            v28 = [v18 estimatedTimeAtPosition:v15];
+            timeTracker = [(JEMediaActivityTracker *)self timeTracker];
+            v28 = [timeTracker estimatedTimeAtPosition:startOverallPosition];
 
             v19 = MEMORY[0x1E696AD98];
             [v28 timeIntervalSince1970];
@@ -386,12 +386,12 @@ LABEL_12:
             v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
             v31[0] = v22;
             [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-            v24 = v23 = a3;
+            v24 = v23 = necessary;
 
-            [(JEMediaActivityTracker *)self stopActivity:0 overallPosition:v15 type:@"automatic" reason:@"transition" eventData:v24 transitioningEventData:v27];
-            v25 = [(JEMediaActivityTracker *)self startActivity:0 overallPosition:v15 type:@"automatic" reason:@"transition" eventData:v24 transitioningEventData:v27];
+            [(JEMediaActivityTracker *)self stopActivity:0 overallPosition:startOverallPosition type:@"automatic" reason:@"transition" eventData:v24 transitioningEventData:eventDataForTransitioningEvents];
+            v25 = [(JEMediaActivityTracker *)self startActivity:0 overallPosition:startOverallPosition type:@"automatic" reason:@"transition" eventData:v24 transitioningEventData:eventDataForTransitioningEvents];
 
-            a3 = v23;
+            necessary = v23;
             v9 = v26;
 
             v6 = v25;

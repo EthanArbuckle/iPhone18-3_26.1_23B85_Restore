@@ -1,31 +1,31 @@
 @interface UNCNotificationSystemServiceListener
-- (UNCNotificationSystemServiceListener)initWithDelegate:(id)a3;
+- (UNCNotificationSystemServiceListener)initWithDelegate:(id)delegate;
 - (void)activate;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)systemServiceConnectionDidInvalidate:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)systemServiceConnectionDidInvalidate:(id)invalidate;
 @end
 
 @implementation UNCNotificationSystemServiceListener
 
-- (UNCNotificationSystemServiceListener)initWithDelegate:(id)a3
+- (UNCNotificationSystemServiceListener)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = UNCNotificationSystemServiceListener;
   v5 = [(UNCNotificationSystemServiceListener *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.usernotifications.UNCNotificationSystemServiceListener", v7);
     queue = v6->_queue;
     v6->_queue = v8;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     queue_connections = v6->_queue_connections;
-    v6->_queue_connections = v10;
+    v6->_queue_connections = array;
   }
 
   return v6;
@@ -59,20 +59,20 @@
   v18 = v6;
   v7 = v4;
   v19 = v7;
-  v20 = self;
+  selfCopy = self;
   v8 = [v5 listenerWithConfigurator:v17];
   queue_listener = self->_queue_listener;
   self->_queue_listener = v8;
 
   [(BSServiceConnectionListener *)self->_queue_listener activate];
-  v10 = [MEMORY[0x1E698F508] bootstrapConfiguration];
-  v11 = [v10 domainForIdentifier:v6];
-  v12 = [v7 identifier];
-  v13 = [v11 serviceForIdentifier:v12];
+  bootstrapConfiguration = [MEMORY[0x1E698F508] bootstrapConfiguration];
+  v11 = [bootstrapConfiguration domainForIdentifier:v6];
+  identifier = [v7 identifier];
+  v13 = [v11 serviceForIdentifier:identifier];
   v14 = [v13 optionForKey:@"isAutomatic"];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
-  if ((v15 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v16 = [MEMORY[0x1E698F508] activateManualDomain:v6];
   }
@@ -89,17 +89,17 @@ void __48__UNCNotificationSystemServiceListener_activate__block_invoke(uint64_t 
   [v5 setDelegate:*(a1 + 48)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__UNCNotificationSystemServiceListener_listener_didReceiveConnection_withContext___block_invoke;
   v9[3] = &unk_1E85D6E70;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = connectionCopy;
+  selfCopy = self;
+  v8 = connectionCopy;
   dispatch_async(queue, v9);
 }
 
@@ -128,17 +128,17 @@ void __82__UNCNotificationSystemServiceListener_listener_didReceiveConnection_wi
   }
 }
 
-- (void)systemServiceConnectionDidInvalidate:(id)a3
+- (void)systemServiceConnectionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__UNCNotificationSystemServiceListener_systemServiceConnectionDidInvalidate___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidateCopy;
+  v6 = invalidateCopy;
   dispatch_async(queue, v7);
 }
 

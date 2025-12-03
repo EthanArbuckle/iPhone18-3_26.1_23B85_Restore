@@ -1,8 +1,8 @@
 @interface BannerContentVisibilityProxyView
 - (UIView)visibilityModel;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setVisibilityModel:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setVisibilityModel:(id)model;
 @end
 
 @implementation BannerContentVisibilityProxyView
@@ -14,15 +14,15 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  if (a6 == &off_101630228)
+  objectCopy = object;
+  if (context == &off_101630228)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[BannerContentVisibilityProxyView setHidden:](self, "setHidden:", [v10 isHidden]);
+      -[BannerContentVisibilityProxyView setHidden:](self, "setHidden:", [objectCopy isHidden]);
     }
   }
 
@@ -30,13 +30,13 @@
   {
     v11.receiver = self;
     v11.super_class = BannerContentVisibilityProxyView;
-    [(BannerContentVisibilityProxyView *)&v11 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    [(BannerContentVisibilityProxyView *)&v11 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 
-- (void)setVisibilityModel:(id)a3
+- (void)setVisibilityModel:(id)model
 {
-  obj = a3;
+  obj = model;
   WeakRetained = objc_loadWeakRetained(&self->_visibilityModel);
   if (WeakRetained != obj)
   {

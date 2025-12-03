@@ -46,8 +46,8 @@ void __39__CAMSmartStyleSettingsController_init__block_invoke(uint64_t a1)
 
 - (void)speedUpFadeInAnimations
 {
-  v2 = [(CAMSmartStyleSettingsController *)self _rootController];
-  [v2 speedUpFadeInAnimations];
+  _rootController = [(CAMSmartStyleSettingsController *)self _rootController];
+  [_rootController speedUpFadeInAnimations];
 }
 
 - (CAMSmartStyleSettingsControllerDelegate)controllerDelegate

@@ -1,40 +1,40 @@
 @interface AXKonaSpeechEngine
 + (id)allVoices;
 - (AXKonaParameters)parameters;
-- (AXKonaSpeechEngine)initWithVoice:(id)a3;
-- (BOOL)_initializeWrappedEngineForVoice:(id)a3;
-- (BOOL)_loadDictionaryAtPath:(id)a3 type:(int64_t)a4 handle:(void *)a5;
-- (id)_preprocessTextForIrregularities:(id)a3;
-- (id)_segmentsForText:(id)a3;
+- (AXKonaSpeechEngine)initWithVoice:(id)voice;
+- (BOOL)_initializeWrappedEngineForVoice:(id)voice;
+- (BOOL)_loadDictionaryAtPath:(id)path type:(int64_t)type handle:(void *)handle;
+- (id)_preprocessTextForIrregularities:(id)irregularities;
+- (id)_segmentsForText:(id)text;
 - (id)nextBuffer;
-- (int64_t)eciCallback:(int64_t)a3 iParam:(int64_t)a4 instanceData:(void *)a5;
+- (int64_t)eciCallback:(int64_t)callback iParam:(int64_t)param instanceData:(void *)data;
 - (void)_cancelSynthesis;
-- (void)_enqueueBuffer:(id)a3;
+- (void)_enqueueBuffer:(id)buffer;
 - (void)_initializeConfigurationMap;
-- (void)_loadDictionaryForVoice:(id)a3;
+- (void)_loadDictionaryForVoice:(id)voice;
 - (void)_resetEnginePreservingParams;
 - (void)cancelSynthesis;
 - (void)dealloc;
-- (void)klattConstantHook:(id *)a3;
-- (void)klattDynamicHook:(KlattFrame *)a3;
-- (void)setAbbreviationDictionary:(BOOL)a3;
-- (void)setHighQualityMode:(BOOL)a3;
-- (void)setOverrideAspirationGain:(id)a3;
-- (void)setOverrideFricationGain:(id)a3;
-- (void)setOverrideOverallGain:(id)a3;
-- (void)setOverrideVoicingGain:(id)a3;
-- (void)setParameters:(id)a3;
-- (void)setPhrasePrediction:(BOOL)a3;
-- (void)setPreferCommunityDictionary:(BOOL)a3;
-- (void)setVoice:(id)a3;
-- (void)synthesizeText:(id)a3;
+- (void)klattConstantHook:(id *)hook;
+- (void)klattDynamicHook:(KlattFrame *)hook;
+- (void)setAbbreviationDictionary:(BOOL)dictionary;
+- (void)setHighQualityMode:(BOOL)mode;
+- (void)setOverrideAspirationGain:(id)gain;
+- (void)setOverrideFricationGain:(id)gain;
+- (void)setOverrideOverallGain:(id)gain;
+- (void)setOverrideVoicingGain:(id)gain;
+- (void)setParameters:(id)parameters;
+- (void)setPhrasePrediction:(BOOL)prediction;
+- (void)setPreferCommunityDictionary:(BOOL)dictionary;
+- (void)setVoice:(id)voice;
+- (void)synthesizeText:(id)text;
 @end
 
 @implementation AXKonaSpeechEngine
 
-- (AXKonaSpeechEngine)initWithVoice:(id)a3
+- (AXKonaSpeechEngine)initWithVoice:(id)voice
 {
-  v5 = a3;
+  voiceCopy = voice;
   v32.receiver = self;
   v32.super_class = AXKonaSpeechEngine;
   v6 = [(AXKonaSpeechEngine *)&v32 init];
@@ -57,7 +57,7 @@
       synthesizerSyncQueue = v6->_synthesizerSyncQueue;
       v6->_synthesizerSyncQueue = v12;
 
-      objc_storeStrong(&v6->_currentVoice, a3);
+      objc_storeStrong(&v6->_currentVoice, voice);
       *&v6->_highQualityMode = 257;
       v6->_phrasePrediction = 0;
       v14 = [objc_alloc(MEMORY[0x277CB83A8]) initWithCommonFormat:3 sampleRate:1 channels:0 interleaved:16000.0];
@@ -74,9 +74,9 @@
 
       [(AVAudioConverter *)v6->_bufferConverter setPrimeMethod:2];
       v6->_synthState = 0;
-      v20 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       queuedBuffers = v6->_queuedBuffers;
-      v6->_queuedBuffers = v20;
+      v6->_queuedBuffers = array;
 
       v6->_bufferLock._os_unfair_lock_opaque = 0;
       v22 = objc_alloc_init(MEMORY[0x277CCA928]);
@@ -91,12 +91,12 @@
       ruleSetRunner = v6->_ruleSetRunner;
       v6->_ruleSetRunner = v26;
 
-      v28 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       currentMarkers = v6->_currentMarkers;
-      v6->_currentMarkers = v28;
+      v6->_currentMarkers = array2;
 
       [(AXKonaSpeechEngine *)v6 _initializeConfigurationMap];
-      if ([(AXKonaSpeechEngine *)v6 _initializeWrappedEngineForVoice:v5])
+      if ([(AXKonaSpeechEngine *)v6 _initializeWrappedEngineForVoice:voiceCopy])
       {
         v6 = v6;
       }
@@ -119,43 +119,43 @@
   return v10;
 }
 
-- (void)setPhrasePrediction:(BOOL)a3
+- (void)setPhrasePrediction:(BOOL)prediction
 {
-  if (self->_phrasePrediction != a3)
+  if (self->_phrasePrediction != prediction)
   {
-    self->_phrasePrediction = a3;
+    self->_phrasePrediction = prediction;
     [(AXKonaSpeechEngine *)self _resetEnginePreservingParams];
   }
 }
 
-- (void)setPreferCommunityDictionary:(BOOL)a3
+- (void)setPreferCommunityDictionary:(BOOL)dictionary
 {
-  if (self->_preferCommunityDictionary != a3)
+  if (self->_preferCommunityDictionary != dictionary)
   {
-    self->_preferCommunityDictionary = a3;
+    self->_preferCommunityDictionary = dictionary;
     [(AXKonaSpeechEngine *)self _resetEnginePreservingParams];
   }
 }
 
-- (void)setAbbreviationDictionary:(BOOL)a3
+- (void)setAbbreviationDictionary:(BOOL)dictionary
 {
-  if (self->_abbreviationDictionary != a3)
+  if (self->_abbreviationDictionary != dictionary)
   {
-    self->_abbreviationDictionary = a3;
+    self->_abbreviationDictionary = dictionary;
     [(AXKonaSpeechEngine *)self _resetEnginePreservingParams];
   }
 }
 
-- (void)setHighQualityMode:(BOOL)a3
+- (void)setHighQualityMode:(BOOL)mode
 {
-  if (self->_highQualityMode != a3)
+  if (self->_highQualityMode != mode)
   {
     v15 = v4;
     v16 = v3;
-    v7 = a3;
+    modeCopy = mode;
     v9 = objc_alloc(MEMORY[0x277CB83A8]);
     v10 = 11025.0;
-    if (v7)
+    if (modeCopy)
     {
       v10 = 16000.0;
     }
@@ -164,7 +164,7 @@
     engineFormat = self->_engineFormat;
     self->_engineFormat = v11;
 
-    self->_highQualityMode = v7;
+    self->_highQualityMode = modeCopy;
     v13 = [objc_alloc(MEMORY[0x277CB8380]) initFromFormat:self->_engineFormat toFormat:self->_outputFormat];
     bufferConverter = self->_bufferConverter;
     self->_bufferConverter = v13;
@@ -188,33 +188,33 @@
 
   [(AXKonaSpeechEngine *)self wrappedInstance];
   eciDelete2();
-  v4 = [(AXKonaSpeechEngine *)self currentParameters];
-  v3 = [(AXKonaSpeechEngine *)self currentVoice];
-  [(AXKonaSpeechEngine *)self _initializeWrappedEngineForVoice:v3];
+  currentParameters = [(AXKonaSpeechEngine *)self currentParameters];
+  currentVoice = [(AXKonaSpeechEngine *)self currentVoice];
+  [(AXKonaSpeechEngine *)self _initializeWrappedEngineForVoice:currentVoice];
 
-  [(AXKonaSpeechEngine *)self setParameters:v4];
+  [(AXKonaSpeechEngine *)self setParameters:currentParameters];
 }
 
 - (void)dealloc
 {
   if ([(AXKonaSpeechEngine *)self wrappedInstance])
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    v4 = [(AXKonaSpeechEngine *)v3 ruleSetRunner];
-    [v4 cancelProcessing];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    ruleSetRunner = [(AXKonaSpeechEngine *)selfCopy ruleSetRunner];
+    [ruleSetRunner cancelProcessing];
 
-    [(AXKonaSpeechEngine *)v3 _cancelSynthesis];
-    objc_sync_exit(v3);
+    [(AXKonaSpeechEngine *)selfCopy _cancelSynthesis];
+    objc_sync_exit(selfCopy);
 
-    if ([(AXKonaSpeechEngine *)v3 currentDictionary])
+    if ([(AXKonaSpeechEngine *)selfCopy currentDictionary])
     {
-      [(AXKonaSpeechEngine *)v3 wrappedInstance];
-      [(AXKonaSpeechEngine *)v3 currentDictionary];
+      [(AXKonaSpeechEngine *)selfCopy wrappedInstance];
+      [(AXKonaSpeechEngine *)selfCopy currentDictionary];
       eciDeleteDict2();
     }
 
-    [(AXKonaSpeechEngine *)v3 wrappedInstance];
+    [(AXKonaSpeechEngine *)selfCopy wrappedInstance];
     eciDelete2();
   }
 
@@ -275,16 +275,16 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_initializeWrappedEngineForVoice:(id)a3
+- (BOOL)_initializeWrappedEngineForVoice:(id)voice
 {
-  v4 = a3;
-  v5 = [(AXKonaSpeechEngine *)self configurationMap];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "konaLanguage")}];
-  v7 = [v5 objectForKey:v6];
+  voiceCopy = voice;
+  configurationMap = [(AXKonaSpeechEngine *)self configurationMap];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(voiceCopy, "konaLanguage")}];
+  v7 = [configurationMap objectForKey:v6];
 
-  v8 = [v7 iniString];
-  [v8 cStringUsingEncoding:4];
-  [v8 lengthOfBytesUsingEncoding:4];
+  iniString = [v7 iniString];
+  [iniString cStringUsingEncoding:4];
+  [iniString lengthOfBytesUsingEncoding:4];
   eciSetIniContent();
   [v7 eciDialect];
   v9 = eciNew2();
@@ -320,7 +320,7 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  [v4 eciVoiceNumber];
+  [voiceCopy eciVoiceNumber];
   eciSetStandardVoice2();
   [(AXKonaSpeechEngine *)self phrasePrediction];
   if (eciSetParam2())
@@ -342,10 +342,10 @@ LABEL_18:
   v10 = [objc_alloc(MEMORY[0x277CD89E0]) initWithUnit:0];
   [(AXKonaSpeechEngine *)self setTokenizer:v10];
 
-  v11 = [(AXKonaSpeechEngine *)self tokenizer];
+  tokenizer = [(AXKonaSpeechEngine *)self tokenizer];
   v12 = kKonaLangToNLLang;
-  v13 = [v4 languageCode];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  languageCode = [voiceCopy languageCode];
+  v14 = [v12 objectForKeyedSubscript:languageCode];
   v15 = v14;
   v16 = *MEMORY[0x277CD8708];
   if (v14)
@@ -358,32 +358,32 @@ LABEL_18:
     v17 = *MEMORY[0x277CD8708];
   }
 
-  [v11 setLanguage:v17];
+  [tokenizer setLanguage:v17];
 
-  [(AXKonaSpeechEngine *)self _loadDictionaryForVoice:v4];
+  [(AXKonaSpeechEngine *)self _loadDictionaryForVoice:voiceCopy];
   [(AXKonaSpeechEngine *)self setCurrentConfiguration:v7];
 LABEL_11:
 
   return v9 == 0;
 }
 
-- (id)_segmentsForText:(id)a3
+- (id)_segmentsForText:(id)text
 {
   v70 = *MEMORY[0x277D85DE8];
-  v37 = a3;
+  textCopy = text;
   v3 = AXTTSLogKona();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     [AXKonaSpeechEngine _segmentsForText:];
   }
 
-  v4 = [(AXKonaSpeechEngine *)self commandRegex];
-  v33 = [v4 matchesInString:v37 options:2 range:{0, objc_msgSend(v37, "length")}];
+  commandRegex = [(AXKonaSpeechEngine *)self commandRegex];
+  v33 = [commandRegex matchesInString:textCopy options:2 range:{0, objc_msgSend(textCopy, "length")}];
 
-  v5 = [(AXKonaSpeechEngine *)self tokenizer];
-  [v5 setString:v37];
+  tokenizer = [(AXKonaSpeechEngine *)self tokenizer];
+  [tokenizer setString:textCopy];
 
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
@@ -394,11 +394,11 @@ LABEL_11:
   v61 = __Block_byref_object_copy_;
   v62 = __Block_byref_object_dispose_;
   v63 = 0;
-  v6 = [MEMORY[0x277D70400] sharedInstance];
-  v35 = [v6 regexForString:@"(^|\\s+)[']\\s*$" atStart:0];
+  mEMORY[0x277D70400] = [MEMORY[0x277D70400] sharedInstance];
+  v35 = [mEMORY[0x277D70400] regexForString:@"(^|\\s+)[']\\s*$" atStart:0];
 
-  v7 = [(AXKonaSpeechEngine *)self tokenizer];
-  v8 = [v37 length];
+  tokenizer2 = [(AXKonaSpeechEngine *)self tokenizer];
+  v8 = [textCopy length];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __39__AXKonaSpeechEngine__segmentsForText___block_invoke;
@@ -407,26 +407,26 @@ LABEL_11:
   v51 = v31;
   v32 = v35;
   v52 = v32;
-  v36 = v37;
+  v36 = textCopy;
   v53 = v36;
-  v54 = self;
+  selfCopy = self;
   v56 = &v64;
   v57 = &v58;
-  v9 = v34;
+  v9 = array;
   v55 = v9;
-  [v7 enumerateTokensInRange:0 usingBlock:{v8, v50}];
+  [tokenizer2 enumerateTokensInRange:0 usingBlock:{v8, v50}];
 
   v38 = objc_alloc_init(AXKonaSpeechSegment);
   v10 = v65[3];
   v11 = [v36 length];
   [(AXKonaSpeechSegment *)v38 setRange:v10, v11 - v65[3]];
-  v12 = [(AXKonaSpeechSegment *)v38 range];
-  v14 = [v36 substringWithRange:{v12, v13}];
+  range = [(AXKonaSpeechSegment *)v38 range];
+  v14 = [v36 substringWithRange:{range, v13}];
   [(AXKonaSpeechSegment *)v38 setText:v14];
 
   [(AXKonaSpeechSegment *)v38 setMarker:v59[5]];
-  v15 = [(AXKonaSpeechEngine *)self currentConfiguration];
-  -[AXKonaSpeechSegment setTargetEncoding:](v38, "setTargetEncoding:", [v15 encoding]);
+  currentConfiguration = [(AXKonaSpeechEngine *)self currentConfiguration];
+  -[AXKonaSpeechSegment setTargetEncoding:](v38, "setTargetEncoding:", [currentConfiguration encoding]);
 
   [v9 addObject:v38];
   v16 = AXTTSLogKona();
@@ -458,8 +458,8 @@ LABEL_11:
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v20 = [(AXKonaSpeechEngine *)self _konaCrashPatterns];
-        v21 = [v20 countByEnumeratingWithState:&v42 objects:v68 count:16];
+        _konaCrashPatterns = [(AXKonaSpeechEngine *)self _konaCrashPatterns];
+        v21 = [_konaCrashPatterns countByEnumeratingWithState:&v42 objects:v68 count:16];
         if (v21)
         {
           v22 = *v43;
@@ -469,16 +469,16 @@ LABEL_11:
             {
               if (*v43 != v22)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(_konaCrashPatterns);
               }
 
               v24 = *(*(&v42 + 1) + 8 * j);
-              v25 = [v19 text];
-              v26 = [v25 stringByReplacingOccurrencesOfString:v24 withString:&stru_287EE3C58 options:1025 range:{0, objc_msgSend(v25, "length")}];
+              text = [v19 text];
+              v26 = [text stringByReplacingOccurrencesOfString:v24 withString:&stru_287EE3C58 options:1025 range:{0, objc_msgSend(text, "length")}];
               [v19 setText:v26];
             }
 
-            v21 = [v20 countByEnumeratingWithState:&v42 objects:v68 count:16];
+            v21 = [_konaCrashPatterns countByEnumeratingWithState:&v42 objects:v68 count:16];
           }
 
           while (v21);
@@ -594,10 +594,10 @@ LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_preprocessTextForIrregularities:(id)a3
+- (id)_preprocessTextForIrregularities:(id)irregularities
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  irregularitiesCopy = irregularities;
   v4 = [AXKonaSpeechEngine _preprocessTextForIrregularities:]::TimeDurationRegex;
   if (![AXKonaSpeechEngine _preprocessTextForIrregularities:]::TimeDurationRegex)
   {
@@ -608,16 +608,16 @@ LABEL_21:
     v4 = [AXKonaSpeechEngine _preprocessTextForIrregularities:]::TimeDurationRegex;
   }
 
-  v7 = [v4 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v7 = [v4 matchesInString:irregularitiesCopy options:0 range:{0, objc_msgSend(irregularitiesCopy, "length")}];
   if ([v7 count])
   {
-    v8 = [v3 mutableCopy];
+    v8 = [irregularitiesCopy mutableCopy];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v7 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    reverseObjectEnumerator = [v7 reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = *v18;
@@ -627,14 +627,14 @@ LABEL_21:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) range];
-          [v8 replaceOccurrencesOfString:@":" withString:@" " options:0 range:{v13, v14}];
+          range = [*(*(&v17 + 1) + 8 * i) range];
+          [v8 replaceOccurrencesOfString:@":" withString:@" " options:0 range:{range, v14}];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -643,7 +643,7 @@ LABEL_21:
 
   else
   {
-    v8 = v3;
+    v8 = irregularitiesCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -651,43 +651,43 @@ LABEL_21:
   return v8;
 }
 
-- (void)synthesizeText:(id)a3
+- (void)synthesizeText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(AXKonaSpeechEngine *)self cancelSynthesis];
-  v5 = [(AXKonaSpeechEngine *)self _preprocessTextForIrregularities:v4];
+  v5 = [(AXKonaSpeechEngine *)self _preprocessTextForIrregularities:textCopy];
 
-  v6 = [(AXKonaSpeechEngine *)self ruleSetRunner];
-  v7 = [v6 processText:v5];
+  ruleSetRunner = [(AXKonaSpeechEngine *)self ruleSetRunner];
+  v7 = [ruleSetRunner processText:v5];
   [(AXKonaSpeechEngine *)self setCurrentSpeechString:v7];
 
-  v8 = [(AXKonaSpeechEngine *)self currentSpeechString];
-  v9 = [v8 transformedString];
+  currentSpeechString = [(AXKonaSpeechEngine *)self currentSpeechString];
+  transformedString = [currentSpeechString transformedString];
 
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(AXKonaSpeechEngine *)v10 bufferConverter];
-  [v11 reset];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bufferConverter = [(AXKonaSpeechEngine *)selfCopy bufferConverter];
+  [bufferConverter reset];
 
-  [(AXKonaSpeechEngine *)v10 setLastSampVal:0.0];
-  [(AXKonaSpeechEngine *)v10 setCurrentFrameCount:0];
-  v12 = [MEMORY[0x277CBEB18] array];
-  [(AXKonaSpeechEngine *)v10 setCurrentMarkers:v12];
+  [(AXKonaSpeechEngine *)selfCopy setLastSampVal:0.0];
+  [(AXKonaSpeechEngine *)selfCopy setCurrentFrameCount:0];
+  array = [MEMORY[0x277CBEB18] array];
+  [(AXKonaSpeechEngine *)selfCopy setCurrentMarkers:array];
 
-  v13 = [(AXKonaSpeechEngine *)v10 _segmentsForText:v9];
-  [(AXKonaSpeechEngine *)v10 setCurrentSpeechSegments:v13];
+  v13 = [(AXKonaSpeechEngine *)selfCopy _segmentsForText:transformedString];
+  [(AXKonaSpeechEngine *)selfCopy setCurrentSpeechSegments:v13];
 
-  v14 = [(AXKonaSpeechEngine *)v10 synthesizerSyncQueue];
+  synthesizerSyncQueue = [(AXKonaSpeechEngine *)selfCopy synthesizerSyncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__AXKonaSpeechEngine_synthesizeText___block_invoke;
   block[3] = &unk_279DA8388;
-  block[4] = v10;
-  dispatch_async(v14, block);
+  block[4] = selfCopy;
+  dispatch_async(synthesizerSyncQueue, block);
 
-  objc_sync_exit(v10);
-  v15 = [(AXKonaSpeechEngine *)v10 producedBuffers];
-  [v15 wait];
+  objc_sync_exit(selfCopy);
+  producedBuffers = [(AXKonaSpeechEngine *)selfCopy producedBuffers];
+  [producedBuffers wait];
 }
 
 void __37__AXKonaSpeechEngine_synthesizeText___block_invoke(uint64_t a1)
@@ -776,30 +776,30 @@ void __37__AXKonaSpeechEngine_synthesizeText___block_invoke(uint64_t a1)
   v3 = v15[5];
   if (v3)
   {
-    v4 = v3;
+    nextBuffer = v3;
 LABEL_3:
-    v5 = v4;
+    v5 = nextBuffer;
     goto LABEL_7;
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(AXKonaSpeechEngine *)v6 synthState:v12];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(AXKonaSpeechEngine *)selfCopy synthState:v12];
+  objc_sync_exit(selfCopy);
 
   if (v7 == 1)
   {
-    v8 = [(AXKonaSpeechEngine *)v6 producedBuffers];
-    [v8 wait];
+    producedBuffers = [(AXKonaSpeechEngine *)selfCopy producedBuffers];
+    [producedBuffers wait];
 
-    v9 = v6;
+    v9 = selfCopy;
     objc_sync_enter(v9);
-    v10 = [(AXKonaSpeechEngine *)v9 synthState];
+    synthState = [(AXKonaSpeechEngine *)v9 synthState];
     objc_sync_exit(v9);
 
-    if (v10 != 2)
+    if (synthState != 2)
     {
-      v4 = [(AXKonaSpeechEngine *)v9 nextBuffer];
+      nextBuffer = [(AXKonaSpeechEngine *)v9 nextBuffer];
       goto LABEL_3;
     }
   }
@@ -832,27 +832,27 @@ void __32__AXKonaSpeechEngine_nextBuffer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_enqueueBuffer:(id)a3
+- (void)_enqueueBuffer:(id)buffer
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = a3;
+  bufferCopy = buffer;
   AX_PERFORM_WITH_LOCK();
   if ((v9[3] & 1) == 0)
   {
-    v5 = [(AXKonaSpeechEngine *)self consumedBuffers];
-    [v5 wait];
+    consumedBuffers = [(AXKonaSpeechEngine *)self consumedBuffers];
+    [consumedBuffers wait];
 
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(AXKonaSpeechEngine *)v6 synthState];
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    synthState = [(AXKonaSpeechEngine *)selfCopy synthState];
+    objc_sync_exit(selfCopy);
 
-    if (v7 != 2)
+    if (synthState != 2)
     {
-      [(AXKonaSpeechEngine *)v6 _enqueueBuffer:v4];
+      [(AXKonaSpeechEngine *)selfCopy _enqueueBuffer:bufferCopy];
     }
   }
 
@@ -878,27 +878,27 @@ void __37__AXKonaSpeechEngine__enqueueBuffer___block_invoke(uint64_t a1)
 
 - (void)cancelSynthesis
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(AXKonaSpeechEngine *)v2 ruleSetRunner];
-  [v3 cancelProcessing];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ruleSetRunner = [(AXKonaSpeechEngine *)selfCopy ruleSetRunner];
+  [ruleSetRunner cancelProcessing];
 
-  [(AXKonaSpeechEngine *)v2 _cancelSynthesis];
-  objc_sync_exit(v2);
+  [(AXKonaSpeechEngine *)selfCopy _cancelSynthesis];
+  objc_sync_exit(selfCopy);
 
-  v4 = [(AXKonaSpeechEngine *)v2 synthesizerSyncQueue];
-  dispatch_sync(v4, &__block_literal_global);
+  synthesizerSyncQueue = [(AXKonaSpeechEngine *)selfCopy synthesizerSyncQueue];
+  dispatch_sync(synthesizerSyncQueue, &__block_literal_global);
 }
 
 - (void)_cancelSynthesis
 {
   AX_PERFORM_WITH_LOCK();
   [(AXKonaSpeechEngine *)self setSynthState:2];
-  v3 = [(AXKonaSpeechEngine *)self producedBuffers];
-  [v3 broadcast];
+  producedBuffers = [(AXKonaSpeechEngine *)self producedBuffers];
+  [producedBuffers broadcast];
 
-  v4 = [(AXKonaSpeechEngine *)self consumedBuffers];
-  [v4 broadcast];
+  consumedBuffers = [(AXKonaSpeechEngine *)self consumedBuffers];
+  [consumedBuffers broadcast];
 
   [(AXKonaSpeechEngine *)self setCurrentSpeechString:0];
 }
@@ -909,47 +909,47 @@ void __38__AXKonaSpeechEngine__cancelSynthesis__block_invoke(uint64_t a1)
   [*(a1 + 32) setQueuedBuffers:?];
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
-  objc_storeStrong(&self->_currentParameters, a3);
+  objc_storeStrong(&self->_currentParameters, parameters);
   [(AXKonaSpeechEngine *)self wrappedInstance];
-  v4 = [(AXKonaSpeechEngine *)self currentParameters];
-  [v4 headSize];
+  currentParameters = [(AXKonaSpeechEngine *)self currentParameters];
+  [currentParameters headSize];
   eciSetParam2();
 
   [(AXKonaSpeechEngine *)self wrappedInstance];
-  v5 = [(AXKonaSpeechEngine *)self currentParameters];
-  [v5 vocalTract];
+  currentParameters2 = [(AXKonaSpeechEngine *)self currentParameters];
+  [currentParameters2 vocalTract];
   eciSetParam2();
 
   [(AXKonaSpeechEngine *)self wrappedInstance];
-  v6 = [(AXKonaSpeechEngine *)self currentParameters];
-  [v6 pitchBase];
+  currentParameters3 = [(AXKonaSpeechEngine *)self currentParameters];
+  [currentParameters3 pitchBase];
   eciSetParam2();
 
   [(AXKonaSpeechEngine *)self wrappedInstance];
-  v7 = [(AXKonaSpeechEngine *)self currentParameters];
-  [v7 pitchFluctuation];
+  currentParameters4 = [(AXKonaSpeechEngine *)self currentParameters];
+  [currentParameters4 pitchFluctuation];
   eciSetParam2();
 
   [(AXKonaSpeechEngine *)self wrappedInstance];
-  v8 = [(AXKonaSpeechEngine *)self currentParameters];
-  [v8 roughness];
+  currentParameters5 = [(AXKonaSpeechEngine *)self currentParameters];
+  [currentParameters5 roughness];
   eciSetParam2();
 
   [(AXKonaSpeechEngine *)self wrappedInstance];
-  v9 = [(AXKonaSpeechEngine *)self currentParameters];
-  [v9 breathiness];
+  currentParameters6 = [(AXKonaSpeechEngine *)self currentParameters];
+  [currentParameters6 breathiness];
   eciSetParam2();
 
   [(AXKonaSpeechEngine *)self wrappedInstance];
-  v10 = [(AXKonaSpeechEngine *)self currentParameters];
-  [v10 speed];
+  currentParameters7 = [(AXKonaSpeechEngine *)self currentParameters];
+  [currentParameters7 speed];
   eciSetParam2();
 
   [(AXKonaSpeechEngine *)self wrappedInstance];
-  v11 = [(AXKonaSpeechEngine *)self currentParameters];
-  [v11 volume];
+  currentParameters8 = [(AXKonaSpeechEngine *)self currentParameters];
+  [currentParameters8 volume];
   eciSetParam2();
 }
 
@@ -958,25 +958,25 @@ void __38__AXKonaSpeechEngine__cancelSynthesis__block_invoke(uint64_t a1)
   currentParameters = self->_currentParameters;
   if (currentParameters)
   {
-    v3 = currentParameters;
+    parameters = currentParameters;
   }
 
   else
   {
-    v4 = [(AXKonaSpeechEngine *)self currentVoice];
-    v3 = [v4 parameters];
+    currentVoice = [(AXKonaSpeechEngine *)self currentVoice];
+    parameters = [currentVoice parameters];
   }
 
-  return v3;
+  return parameters;
 }
 
-- (void)setVoice:(id)a3
+- (void)setVoice:(id)voice
 {
-  v8 = a3;
-  v4 = [(AXKonaSpeechEngine *)self currentVoice];
-  v5 = [v4 identifier];
-  v6 = [v8 identifier];
-  v7 = [v5 isEqualToString:v6];
+  voiceCopy = voice;
+  currentVoice = [(AXKonaSpeechEngine *)self currentVoice];
+  identifier = [currentVoice identifier];
+  identifier2 = [voiceCopy identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if ((v7 & 1) == 0)
   {
@@ -991,26 +991,26 @@ void __38__AXKonaSpeechEngine__cancelSynthesis__block_invoke(uint64_t a1)
 
     [(AXKonaSpeechEngine *)self wrappedInstance];
     eciDelete2();
-    [(AXKonaSpeechEngine *)self _initializeWrappedEngineForVoice:v8];
-    [(AXKonaSpeechEngine *)self setCurrentVoice:v8];
+    [(AXKonaSpeechEngine *)self _initializeWrappedEngineForVoice:voiceCopy];
+    [(AXKonaSpeechEngine *)self setCurrentVoice:voiceCopy];
     [(AXKonaSpeechEngine *)self setCurrentParameters:0];
   }
 }
 
-- (void)_loadDictionaryForVoice:(id)a3
+- (void)_loadDictionaryForVoice:(id)voice
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  voiceCopy = voice;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = [v4 languageCode];
-  v7 = [v5 pathForResource:v6 ofType:0 inDirectory:@"Dictionaries"];
+  languageCode = [voiceCopy languageCode];
+  v7 = [v5 pathForResource:languageCode ofType:0 inDirectory:@"Dictionaries"];
 
   if (v7)
   {
     v8 = [v7 stringByAppendingPathComponent:@"community"];
     v9 = [v7 stringByAppendingPathComponent:@"system"];
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [v10 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v11 = [defaultManager fileExistsAtPath:v8];
 
     if (!v11 || (v12 = [(AXKonaSpeechEngine *)self preferCommunityDictionary], v13 = v8, !v12))
     {
@@ -1019,8 +1019,8 @@ void __38__AXKonaSpeechEngine__cancelSynthesis__block_invoke(uint64_t a1)
 
     v14 = v13;
 
-    v15 = [v4 languageCode];
-    v16 = [&unk_287EE5970 objectForKeyedSubscript:v15];
+    languageCode2 = [voiceCopy languageCode];
+    v16 = [&unk_287EE5970 objectForKeyedSubscript:languageCode2];
     [v16 intValue];
 
     [(AXKonaSpeechEngine *)self wrappedInstance];
@@ -1029,8 +1029,8 @@ void __38__AXKonaSpeechEngine__cancelSynthesis__block_invoke(uint64_t a1)
       v17 = AXTTSLogKona();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v4 languageCode];
-        [(AXKonaSpeechEngine *)v18 _loadDictionaryForVoice:v27, v17];
+        languageCode3 = [voiceCopy languageCode];
+        [(AXKonaSpeechEngine *)languageCode3 _loadDictionaryForVoice:v27, v17];
       }
     }
 
@@ -1048,9 +1048,9 @@ void __38__AXKonaSpeechEngine__cancelSynthesis__block_invoke(uint64_t a1)
         v23 = AXTTSLogKona();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v24 = [(AXKonaSpeechEngine *)self currentVoice];
-          v25 = [v24 languageCode];
-          [(AXKonaSpeechEngine *)v25 _loadDictionaryForVoice:v27, v23, v24];
+          currentVoice = [(AXKonaSpeechEngine *)self currentVoice];
+          languageCode4 = [currentVoice languageCode];
+          [(AXKonaSpeechEngine *)languageCode4 _loadDictionaryForVoice:v27, v23, currentVoice];
         }
       }
 
@@ -1070,15 +1070,15 @@ void __38__AXKonaSpeechEngine__cancelSynthesis__block_invoke(uint64_t a1)
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_loadDictionaryAtPath:(id)a3 type:(int64_t)a4 handle:(void *)a5
+- (BOOL)_loadDictionaryAtPath:(id)path type:(int64_t)type handle:(void *)handle
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v8)
   {
-    [v6 cStringUsingEncoding:5];
+    [pathCopy cStringUsingEncoding:5];
     [(AXKonaSpeechEngine *)self wrappedInstance];
     if (!eciLoadDictVolume2())
     {
@@ -1099,437 +1099,437 @@ LABEL_7:
   return v10;
 }
 
-- (void)setOverrideVoicingGain:(id)a3
+- (void)setOverrideVoicingGain:(id)gain
 {
-  v8 = a3;
+  gainCopy = gain;
   [(NSNumber *)self->_overrideVoicingGain floatValue];
   v6 = v5;
-  [v8 floatValue];
+  [gainCopy floatValue];
   if (v6 != v7)
   {
-    objc_storeStrong(&self->_overrideVoicingGain, a3);
+    objc_storeStrong(&self->_overrideVoicingGain, gain);
     [(AXKonaSpeechEngine *)self _resetEnginePreservingParams];
   }
 }
 
-- (void)setOverrideFricationGain:(id)a3
+- (void)setOverrideFricationGain:(id)gain
 {
-  v8 = a3;
+  gainCopy = gain;
   [(NSNumber *)self->_overrideFricationGain floatValue];
   v6 = v5;
-  [v8 floatValue];
+  [gainCopy floatValue];
   if (v6 != v7)
   {
-    objc_storeStrong(&self->_overrideFricationGain, a3);
+    objc_storeStrong(&self->_overrideFricationGain, gain);
     [(AXKonaSpeechEngine *)self _resetEnginePreservingParams];
   }
 }
 
-- (void)setOverrideAspirationGain:(id)a3
+- (void)setOverrideAspirationGain:(id)gain
 {
-  v8 = a3;
+  gainCopy = gain;
   [(NSNumber *)self->_overrideAspirationGain floatValue];
   v6 = v5;
-  [v8 floatValue];
+  [gainCopy floatValue];
   if (v6 != v7)
   {
-    objc_storeStrong(&self->_overrideAspirationGain, a3);
+    objc_storeStrong(&self->_overrideAspirationGain, gain);
     [(AXKonaSpeechEngine *)self _resetEnginePreservingParams];
   }
 }
 
-- (void)setOverrideOverallGain:(id)a3
+- (void)setOverrideOverallGain:(id)gain
 {
-  v8 = a3;
+  gainCopy = gain;
   [(NSNumber *)self->_overrideOverallGain floatValue];
   v6 = v5;
-  [v8 floatValue];
+  [gainCopy floatValue];
   if (v6 != v7)
   {
-    objc_storeStrong(&self->_overrideOverallGain, a3);
+    objc_storeStrong(&self->_overrideOverallGain, gain);
     [(AXKonaSpeechEngine *)self _resetEnginePreservingParams];
   }
 }
 
-- (void)klattDynamicHook:(KlattFrame *)a3
+- (void)klattDynamicHook:(KlattFrame *)hook
 {
   v156[62] = *MEMORY[0x277D85DE8];
   v155[0] = @"ui";
-  *&v3 = a3->var0;
+  *&v3 = hook->var0;
   v153 = [MEMORY[0x277CCABB0] numberWithFloat:v3];
   v156[0] = v153;
   v155[1] = @"f0";
-  *&v5 = a3->var1;
+  *&v5 = hook->var1;
   v151 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
   v156[1] = v151;
   v155[2] = @"av";
-  *&v6 = a3->var2;
+  *&v6 = hook->var2;
   v150 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
   v156[2] = v150;
   v155[3] = @"oq";
-  *&v7 = a3->var3;
+  *&v7 = hook->var3;
   v149 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
   v156[3] = v149;
   v155[4] = @"tl";
-  *&v8 = a3->var4;
+  *&v8 = hook->var4;
   v148 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
   v156[4] = v148;
   v155[5] = @"fl";
-  *&v9 = a3->var5;
+  *&v9 = hook->var5;
   v147 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
   v156[5] = v147;
   v155[6] = @"di";
-  *&v10 = a3->var6;
+  *&v10 = hook->var6;
   v146 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
   v156[6] = v146;
   v155[7] = @"ah";
-  *&v11 = a3->var7;
+  *&v11 = hook->var7;
   v145 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
   v156[7] = v145;
   v155[8] = @"af";
-  *&v12 = a3->var8;
+  *&v12 = hook->var8;
   v144 = [MEMORY[0x277CCABB0] numberWithFloat:v12];
   v156[8] = v144;
   v155[9] = @"f1";
-  *&v13 = a3->var9;
+  *&v13 = hook->var9;
   v143 = [MEMORY[0x277CCABB0] numberWithFloat:v13];
   v156[9] = v143;
   v155[10] = @"b1";
-  *&v14 = a3->var10;
+  *&v14 = hook->var10;
   v142 = [MEMORY[0x277CCABB0] numberWithFloat:v14];
   v156[10] = v142;
   v155[11] = @"df1";
-  *&v15 = a3->var11;
+  *&v15 = hook->var11;
   v141 = [MEMORY[0x277CCABB0] numberWithFloat:v15];
   v156[11] = v141;
   v155[12] = @"db1";
-  *&v16 = a3->var12;
+  *&v16 = hook->var12;
   v140 = [MEMORY[0x277CCABB0] numberWithFloat:v16];
   v156[12] = v140;
   v155[13] = @"f2";
-  *&v17 = a3->var13;
+  *&v17 = hook->var13;
   v139 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
   v156[13] = v139;
   v155[14] = @"b2";
-  *&v18 = a3->var14;
+  *&v18 = hook->var14;
   v138 = [MEMORY[0x277CCABB0] numberWithFloat:v18];
   v156[14] = v138;
   v155[15] = @"f3";
-  *&v19 = a3->var15;
+  *&v19 = hook->var15;
   v137 = [MEMORY[0x277CCABB0] numberWithFloat:v19];
   v156[15] = v137;
   v155[16] = @"b3";
-  *&v20 = a3->var16;
+  *&v20 = hook->var16;
   v136 = [MEMORY[0x277CCABB0] numberWithFloat:v20];
   v156[16] = v136;
   v155[17] = @"f4";
-  *&v21 = a3->var17;
+  *&v21 = hook->var17;
   v135 = [MEMORY[0x277CCABB0] numberWithFloat:v21];
   v156[17] = v135;
   v155[18] = @"b4";
-  *&v22 = a3->var18;
+  *&v22 = hook->var18;
   v134 = [MEMORY[0x277CCABB0] numberWithFloat:v22];
   v156[18] = v134;
   v155[19] = @"f5";
-  *&v23 = a3->var19;
+  *&v23 = hook->var19;
   v133 = [MEMORY[0x277CCABB0] numberWithFloat:v23];
   v156[19] = v133;
   v155[20] = @"b5";
-  *&v24 = a3->var20;
+  *&v24 = hook->var20;
   v132 = [MEMORY[0x277CCABB0] numberWithFloat:v24];
   v156[20] = v132;
   v155[21] = @"f6";
-  *&v25 = a3->var21;
+  *&v25 = hook->var21;
   v131 = [MEMORY[0x277CCABB0] numberWithFloat:v25];
   v156[21] = v131;
   v155[22] = @"b6";
-  *&v26 = a3->var22;
+  *&v26 = hook->var22;
   v130 = [MEMORY[0x277CCABB0] numberWithFloat:v26];
   v156[22] = v130;
   v155[23] = @"f7";
-  *&v27 = a3->var23;
+  *&v27 = hook->var23;
   v129 = [MEMORY[0x277CCABB0] numberWithFloat:v27];
   v156[23] = v129;
   v155[24] = @"b7";
-  *&v28 = a3->var24;
+  *&v28 = hook->var24;
   v128 = [MEMORY[0x277CCABB0] numberWithFloat:v28];
   v156[24] = v128;
   v155[25] = @"f8";
-  *&v29 = a3->var25;
+  *&v29 = hook->var25;
   v127 = [MEMORY[0x277CCABB0] numberWithFloat:v29];
   v156[25] = v127;
   v155[26] = @"b8";
-  *&v30 = a3->var26;
+  *&v30 = hook->var26;
   v126 = [MEMORY[0x277CCABB0] numberWithFloat:v30];
   v156[26] = v126;
   v155[27] = @"fnp";
-  *&v31 = a3->var27;
+  *&v31 = hook->var27;
   v125 = [MEMORY[0x277CCABB0] numberWithFloat:v31];
   v156[27] = v125;
   v155[28] = @"bnp";
-  *&v32 = a3->var28;
+  *&v32 = hook->var28;
   v124 = [MEMORY[0x277CCABB0] numberWithFloat:v32];
   v156[28] = v124;
   v155[29] = @"fnz";
-  *&v33 = a3->var29;
+  *&v33 = hook->var29;
   v123 = [MEMORY[0x277CCABB0] numberWithFloat:v33];
   v156[29] = v123;
   v155[30] = @"bnz";
-  *&v34 = a3->var30;
+  *&v34 = hook->var30;
   v122 = [MEMORY[0x277CCABB0] numberWithFloat:v34];
   v156[30] = v122;
   v155[31] = @"ftp";
-  *&v35 = a3->var31;
+  *&v35 = hook->var31;
   v121 = [MEMORY[0x277CCABB0] numberWithFloat:v35];
   v156[31] = v121;
   v155[32] = @"btp";
-  *&v36 = a3->var32;
+  *&v36 = hook->var32;
   v120 = [MEMORY[0x277CCABB0] numberWithFloat:v36];
   v156[32] = v120;
   v155[33] = @"ftz";
-  *&v37 = a3->var33;
+  *&v37 = hook->var33;
   v119 = [MEMORY[0x277CCABB0] numberWithFloat:v37];
   v156[33] = v119;
   v155[34] = @"btz";
-  *&v38 = a3->var34;
+  *&v38 = hook->var34;
   v118 = [MEMORY[0x277CCABB0] numberWithFloat:v38];
   v156[34] = v118;
   v155[35] = @"a1f";
-  *&v39 = a3->var35;
+  *&v39 = hook->var35;
   v117 = [MEMORY[0x277CCABB0] numberWithFloat:v39];
   v156[35] = v117;
   v155[36] = @"a2f";
-  *&v40 = a3->var36;
+  *&v40 = hook->var36;
   v116 = [MEMORY[0x277CCABB0] numberWithFloat:v40];
   v156[36] = v116;
   v155[37] = @"a3f";
-  *&v41 = a3->var37;
+  *&v41 = hook->var37;
   v115 = [MEMORY[0x277CCABB0] numberWithFloat:v41];
   v156[37] = v115;
   v155[38] = @"a4f";
-  *&v42 = a3->var38;
+  *&v42 = hook->var38;
   v114 = [MEMORY[0x277CCABB0] numberWithFloat:v42];
   v156[38] = v114;
   v155[39] = @"a5f";
-  *&v43 = a3->var39;
+  *&v43 = hook->var39;
   v113 = [MEMORY[0x277CCABB0] numberWithFloat:v43];
   v156[39] = v113;
   v155[40] = @"a6f";
-  *&v44 = a3->var40;
+  *&v44 = hook->var40;
   v112 = [MEMORY[0x277CCABB0] numberWithFloat:v44];
   v156[40] = v112;
   v155[41] = @"a7f";
-  *&v45 = a3->var41;
+  *&v45 = hook->var41;
   v111 = [MEMORY[0x277CCABB0] numberWithFloat:v45];
   v156[41] = v111;
   v155[42] = @"a8f";
-  *&v46 = a3->var42;
+  *&v46 = hook->var42;
   v110 = [MEMORY[0x277CCABB0] numberWithFloat:v46];
   v156[42] = v110;
   v155[43] = @"ab";
-  *&v47 = a3->var43;
+  *&v47 = hook->var43;
   v109 = [MEMORY[0x277CCABB0] numberWithFloat:v47];
   v156[43] = v109;
   v155[44] = @"b1f";
-  *&v48 = a3->var44;
+  *&v48 = hook->var44;
   v108 = [MEMORY[0x277CCABB0] numberWithFloat:v48];
   v156[44] = v108;
   v155[45] = @"b2f";
-  *&v49 = a3->var45;
+  *&v49 = hook->var45;
   v107 = [MEMORY[0x277CCABB0] numberWithFloat:v49];
   v156[45] = v107;
   v155[46] = @"b3f";
-  *&v50 = a3->var46;
+  *&v50 = hook->var46;
   v106 = [MEMORY[0x277CCABB0] numberWithFloat:v50];
   v156[46] = v106;
   v155[47] = @"b4f";
-  *&v51 = a3->var47;
+  *&v51 = hook->var47;
   v105 = [MEMORY[0x277CCABB0] numberWithFloat:v51];
   v156[47] = v105;
   v155[48] = @"b5f";
-  *&v52 = a3->var48;
+  *&v52 = hook->var48;
   v104 = [MEMORY[0x277CCABB0] numberWithFloat:v52];
   v156[48] = v104;
   v155[49] = @"b6f";
-  *&v53 = a3->var49;
+  *&v53 = hook->var49;
   v103 = [MEMORY[0x277CCABB0] numberWithFloat:v53];
   v156[49] = v103;
   v155[50] = @"b7f";
-  *&v54 = a3->var50;
+  *&v54 = hook->var50;
   v102 = [MEMORY[0x277CCABB0] numberWithFloat:v54];
   v156[50] = v102;
   v155[51] = @"b8f";
-  *&v55 = a3->var51;
+  *&v55 = hook->var51;
   v101 = [MEMORY[0x277CCABB0] numberWithFloat:v55];
   v156[51] = v101;
   v155[52] = @"anv";
-  *&v56 = a3->var52;
+  *&v56 = hook->var52;
   v100 = [MEMORY[0x277CCABB0] numberWithFloat:v56];
   v156[52] = v100;
   v155[53] = @"a1v";
-  *&v57 = a3->var53;
+  *&v57 = hook->var53;
   v58 = [MEMORY[0x277CCABB0] numberWithFloat:v57];
   v156[53] = v58;
   v155[54] = @"a2v";
-  *&v59 = a3->var54;
+  *&v59 = hook->var54;
   v60 = [MEMORY[0x277CCABB0] numberWithFloat:v59];
   v156[54] = v60;
   v155[55] = @"a3v";
-  *&v61 = a3->var55;
+  *&v61 = hook->var55;
   v62 = [MEMORY[0x277CCABB0] numberWithFloat:v61];
   v156[55] = v62;
   v155[56] = @"a4v";
-  *&v63 = a3->var56;
+  *&v63 = hook->var56;
   v64 = [MEMORY[0x277CCABB0] numberWithFloat:v63];
   v156[56] = v64;
   v155[57] = @"a5v";
-  *&v65 = a3->var57;
+  *&v65 = hook->var57;
   v66 = [MEMORY[0x277CCABB0] numberWithFloat:v65];
   v156[57] = v66;
   v155[58] = @"a6v";
-  *&v67 = a3->var58;
+  *&v67 = hook->var58;
   v68 = [MEMORY[0x277CCABB0] numberWithFloat:v67];
   v156[58] = v68;
   v155[59] = @"a7v";
-  *&v69 = a3->var59;
+  *&v69 = hook->var59;
   v70 = [MEMORY[0x277CCABB0] numberWithFloat:v69];
   v156[59] = v70;
   v155[60] = @"a8v";
-  *&v71 = a3->var60;
+  *&v71 = hook->var60;
   v72 = [MEMORY[0x277CCABB0] numberWithFloat:v71];
   v156[60] = v72;
   v155[61] = @"atv";
-  *&v73 = a3->var61;
+  *&v73 = hook->var61;
   v74 = [MEMORY[0x277CCABB0] numberWithFloat:v73];
   v156[61] = v74;
   v152 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v156 forKeys:v155 count:62];
 
-  v75 = [(AXKonaSpeechEngine *)self highFormantBandwidthScalingFactor];
-  LOBYTE(v70) = v75 == 0;
+  highFormantBandwidthScalingFactor = [(AXKonaSpeechEngine *)self highFormantBandwidthScalingFactor];
+  LOBYTE(v70) = highFormantBandwidthScalingFactor == 0;
 
   if ((v70 & 1) == 0)
   {
-    var22 = a3->var22;
-    v77 = [(AXKonaSpeechEngine *)self highFormantBandwidthScalingFactor];
-    [v77 floatValue];
-    a3->var22 = var22 * v78;
+    var22 = hook->var22;
+    highFormantBandwidthScalingFactor2 = [(AXKonaSpeechEngine *)self highFormantBandwidthScalingFactor];
+    [highFormantBandwidthScalingFactor2 floatValue];
+    hook->var22 = var22 * v78;
 
-    var24 = a3->var24;
-    v80 = [(AXKonaSpeechEngine *)self highFormantBandwidthScalingFactor];
-    [v80 floatValue];
-    a3->var22 = var24 * v81;
+    var24 = hook->var24;
+    highFormantBandwidthScalingFactor3 = [(AXKonaSpeechEngine *)self highFormantBandwidthScalingFactor];
+    [highFormantBandwidthScalingFactor3 floatValue];
+    hook->var22 = var24 * v81;
 
-    var26 = a3->var26;
-    v83 = [(AXKonaSpeechEngine *)self highFormantBandwidthScalingFactor];
-    [v83 floatValue];
-    a3->var22 = var26 * v84;
+    var26 = hook->var26;
+    highFormantBandwidthScalingFactor4 = [(AXKonaSpeechEngine *)self highFormantBandwidthScalingFactor];
+    [highFormantBandwidthScalingFactor4 floatValue];
+    hook->var22 = var26 * v84;
   }
 
-  v85 = [(AXKonaSpeechEngine *)self highFormantFrequencyScalingFactor];
-  v86 = v85 == 0;
+  highFormantFrequencyScalingFactor = [(AXKonaSpeechEngine *)self highFormantFrequencyScalingFactor];
+  v86 = highFormantFrequencyScalingFactor == 0;
 
   if (!v86)
   {
-    var21 = a3->var21;
-    v88 = [(AXKonaSpeechEngine *)self highFormantFrequencyScalingFactor];
-    [v88 floatValue];
-    a3->var21 = var21 * v89;
+    var21 = hook->var21;
+    highFormantFrequencyScalingFactor2 = [(AXKonaSpeechEngine *)self highFormantFrequencyScalingFactor];
+    [highFormantFrequencyScalingFactor2 floatValue];
+    hook->var21 = var21 * v89;
 
-    var23 = a3->var23;
-    v91 = [(AXKonaSpeechEngine *)self highFormantFrequencyScalingFactor];
-    [v91 floatValue];
-    a3->var21 = var23 * v92;
+    var23 = hook->var23;
+    highFormantFrequencyScalingFactor3 = [(AXKonaSpeechEngine *)self highFormantFrequencyScalingFactor];
+    [highFormantFrequencyScalingFactor3 floatValue];
+    hook->var21 = var23 * v92;
 
-    var25 = a3->var25;
-    v94 = [(AXKonaSpeechEngine *)self highFormantFrequencyScalingFactor];
-    [v94 floatValue];
-    a3->var21 = var25 * v95;
+    var25 = hook->var25;
+    highFormantFrequencyScalingFactor4 = [(AXKonaSpeechEngine *)self highFormantFrequencyScalingFactor];
+    [highFormantFrequencyScalingFactor4 floatValue];
+    hook->var21 = var25 * v95;
   }
 
-  v96 = [(AXKonaSpeechEngine *)self dynamicLoggingBlock];
-  v97 = v96 == 0;
+  dynamicLoggingBlock = [(AXKonaSpeechEngine *)self dynamicLoggingBlock];
+  v97 = dynamicLoggingBlock == 0;
 
   if (!v97)
   {
-    v98 = [(AXKonaSpeechEngine *)self dynamicLoggingBlock];
-    (v98)[2](v98, v152);
+    dynamicLoggingBlock2 = [(AXKonaSpeechEngine *)self dynamicLoggingBlock];
+    (dynamicLoggingBlock2)[2](dynamicLoggingBlock2, v152);
   }
 
   v99 = *MEMORY[0x277D85DE8];
 }
 
-- (void)klattConstantHook:(id *)a3
+- (void)klattConstantHook:(id *)hook
 {
-  v5 = [(AXKonaSpeechEngine *)self overrideFricationGain];
+  overrideFricationGain = [(AXKonaSpeechEngine *)self overrideFricationGain];
 
-  if (v5)
+  if (overrideFricationGain)
   {
-    v13 = [(AXKonaSpeechEngine *)self overrideFricationGain];
-    [v13 floatValue];
-    a3->var10 = v6;
+    overrideFricationGain2 = [(AXKonaSpeechEngine *)self overrideFricationGain];
+    [overrideFricationGain2 floatValue];
+    hook->var10 = v6;
   }
 
-  v7 = [(AXKonaSpeechEngine *)self overrideAspirationGain];
+  overrideAspirationGain = [(AXKonaSpeechEngine *)self overrideAspirationGain];
 
-  if (v7)
+  if (overrideAspirationGain)
   {
-    v14 = [(AXKonaSpeechEngine *)self overrideAspirationGain];
-    [v14 floatValue];
-    a3->var9 = v8;
+    overrideAspirationGain2 = [(AXKonaSpeechEngine *)self overrideAspirationGain];
+    [overrideAspirationGain2 floatValue];
+    hook->var9 = v8;
   }
 
-  v9 = [(AXKonaSpeechEngine *)self overrideVoicingGain];
+  overrideVoicingGain = [(AXKonaSpeechEngine *)self overrideVoicingGain];
 
-  if (v9)
+  if (overrideVoicingGain)
   {
-    v15 = [(AXKonaSpeechEngine *)self overrideVoicingGain];
-    [v15 floatValue];
-    a3->var8 = v10;
+    overrideVoicingGain2 = [(AXKonaSpeechEngine *)self overrideVoicingGain];
+    [overrideVoicingGain2 floatValue];
+    hook->var8 = v10;
   }
 
-  v11 = [(AXKonaSpeechEngine *)self overrideOverallGain];
+  overrideOverallGain = [(AXKonaSpeechEngine *)self overrideOverallGain];
 
-  if (v11)
+  if (overrideOverallGain)
   {
-    v16 = [(AXKonaSpeechEngine *)self overrideOverallGain];
-    [v16 floatValue];
-    a3->var11 = v12;
+    overrideOverallGain2 = [(AXKonaSpeechEngine *)self overrideOverallGain];
+    [overrideOverallGain2 floatValue];
+    hook->var11 = v12;
   }
 }
 
-- (int64_t)eciCallback:(int64_t)a3 iParam:(int64_t)a4 instanceData:(void *)a5
+- (int64_t)eciCallback:(int64_t)callback iParam:(int64_t)param instanceData:(void *)data
 {
   v61 = *MEMORY[0x277D85DE8];
-  if ([(AXKonaSpeechEngine *)self synthState:a3]!= 2)
+  if ([(AXKonaSpeechEngine *)self synthState:callback]!= 2)
   {
-    if (a3 == 1)
+    if (callback == 1)
     {
-      v17 = [(AXKonaSpeechEngine *)self engineFormat];
-      [v17 sampleRate];
+      engineFormat = [(AXKonaSpeechEngine *)self engineFormat];
+      [engineFormat sampleRate];
       v19 = v18;
 
-      v20 = [(AXKonaSpeechEngine *)self outputFormat];
-      [v20 sampleRate];
+      outputFormat = [(AXKonaSpeechEngine *)self outputFormat];
+      [outputFormat sampleRate];
       v22 = v21;
 
       v58[0] = 1;
       v58[2] = 1;
-      v58[3] = a4;
+      v58[3] = param;
       pSampleBuffer = self->_pSampleBuffer;
       v23 = objc_alloc(MEMORY[0x277CB83C8]);
-      v24 = [(AXKonaSpeechEngine *)self engineFormat];
-      v47 = [v23 initWithPCMFormat:v24 bufferListNoCopy:v58 deallocator:0];
+      engineFormat2 = [(AXKonaSpeechEngine *)self engineFormat];
+      v47 = [v23 initWithPCMFormat:engineFormat2 bufferListNoCopy:v58 deallocator:0];
 
       v25 = objc_alloc(MEMORY[0x277CB83C8]);
-      v26 = [(AXKonaSpeechEngine *)self outputFormat];
-      LODWORD(v27) = vcvtpd_u64_f64((a4 >> 1) / (v19 / v22));
-      v28 = [v25 initWithPCMFormat:v26 frameCapacity:v27];
+      outputFormat2 = [(AXKonaSpeechEngine *)self outputFormat];
+      LODWORD(v27) = vcvtpd_u64_f64((param >> 1) / (v19 / v22));
+      v28 = [v25 initWithPCMFormat:outputFormat2 frameCapacity:v27];
 
       v56[0] = 0;
       v56[1] = v56;
       v56[2] = 0x2020000000;
       v57 = 0;
-      v29 = [(AXKonaSpeechEngine *)self bufferConverter];
+      bufferConverter = [(AXKonaSpeechEngine *)self bufferConverter];
       v54 = v56;
       v55 = 0;
       v52[0] = MEMORY[0x277D85DD0];
@@ -1538,7 +1538,7 @@ LABEL_7:
       v52[3] = &unk_279DA8420;
       v30 = v47;
       v53 = v30;
-      [v29 convertToBuffer:v28 error:&v55 withInputFromBlock:v52];
+      [bufferConverter convertToBuffer:v28 error:&v55 withInputFromBlock:v52];
       v46 = v55;
 
       -[AXKonaSpeechEngine setCurrentFrameCount:](self, "setCurrentFrameCount:", -[AXKonaSpeechEngine currentFrameCount](self, "currentFrameCount") + [v28 frameLength]);
@@ -1548,8 +1548,8 @@ LABEL_7:
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v32 = [(AXKonaSpeechEngine *)self currentMarkers];
-      v33 = [v32 countByEnumeratingWithState:&v48 objects:v60 count:16];
+      currentMarkers = [(AXKonaSpeechEngine *)self currentMarkers];
+      v33 = [currentMarkers countByEnumeratingWithState:&v48 objects:v60 count:16];
       if (v33)
       {
         v34 = *v49;
@@ -1560,56 +1560,56 @@ LABEL_7:
           {
             if (*v49 != v34)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(currentMarkers);
             }
 
             v36 = *(*(&v48 + 1) + 8 * v35);
-            v37 = [(AXKonaSpeechEngine *)self currentSpeechString];
-            v38 = [v36 originalStringRange];
-            v40 = [v37 translateRangeInTransformedString:{v38, v39}];
+            currentSpeechString = [(AXKonaSpeechEngine *)self currentSpeechString];
+            originalStringRange = [v36 originalStringRange];
+            v40 = [currentSpeechString translateRangeInTransformedString:{originalStringRange, v39}];
             [v36 setOriginalStringRange:{v40, v41}];
 
             ++v35;
           }
 
           while (v33 != v35);
-          v33 = [v32 countByEnumeratingWithState:&v48 objects:v60 count:16];
+          v33 = [currentMarkers countByEnumeratingWithState:&v48 objects:v60 count:16];
         }
 
         while (v33);
       }
 
-      v42 = [(AXKonaSpeechEngine *)self currentMarkers];
-      [(AXKonaBuffer *)v31 setMarkers:v42];
+      currentMarkers2 = [(AXKonaSpeechEngine *)self currentMarkers];
+      [(AXKonaBuffer *)v31 setMarkers:currentMarkers2];
 
       [(AXKonaSpeechEngine *)self _enqueueBuffer:v31];
-      v43 = [MEMORY[0x277CBEB18] array];
-      [(AXKonaSpeechEngine *)self setCurrentMarkers:v43];
+      array = [MEMORY[0x277CBEB18] array];
+      [(AXKonaSpeechEngine *)self setCurrentMarkers:array];
 
       _Block_object_dispose(v56, 8);
     }
 
-    else if (!a3)
+    else if (!callback)
     {
-      v8 = [(AXKonaSpeechEngine *)self currentSpeechSegments];
-      v9 = [v8 count];
+      currentSpeechSegments = [(AXKonaSpeechEngine *)self currentSpeechSegments];
+      v9 = [currentSpeechSegments count];
 
-      if (v9 > a4)
+      if (v9 > param)
       {
-        v10 = [(AXKonaSpeechEngine *)self currentSpeechSegments];
-        v11 = [v10 objectAtIndex:a4];
+        currentSpeechSegments2 = [(AXKonaSpeechEngine *)self currentSpeechSegments];
+        v11 = [currentSpeechSegments2 objectAtIndex:param];
 
-        v12 = [v11 marker];
+        marker = [v11 marker];
 
-        if (v12)
+        if (marker)
         {
-          v13 = [(AXKonaSpeechEngine *)self currentFrameCount];
-          v14 = [v11 marker];
-          [v14 setFramePosition:v13];
+          currentFrameCount = [(AXKonaSpeechEngine *)self currentFrameCount];
+          marker2 = [v11 marker];
+          [marker2 setFramePosition:currentFrameCount];
 
-          v15 = [(AXKonaSpeechEngine *)self currentMarkers];
-          v16 = [v11 marker];
-          [v15 addObject:v16];
+          currentMarkers3 = [(AXKonaSpeechEngine *)self currentMarkers];
+          marker3 = [v11 marker];
+          [currentMarkers3 addObject:marker3];
         }
       }
     }
@@ -1641,7 +1641,7 @@ id __54__AXKonaSpeechEngine_eciCallback_iParam_instanceData___block_invoke(uint6
 + (id)allVoices
 {
   v48 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 pathForResource:@"KonaVoicePresets" ofType:@"plist"];
 
@@ -1679,49 +1679,49 @@ id __54__AXKonaSpeechEngine_eciCallback_iParam_instanceData___block_invoke(uint6
         [(AXKonaVoice *)v9 setParameters:v13];
 
         v14 = [v8 objectForKey:@"vocalTract"];
-        v15 = [v14 intValue];
-        v16 = [(AXKonaVoice *)v9 parameters];
-        [v16 setVocalTract:v15];
+        intValue = [v14 intValue];
+        parameters = [(AXKonaVoice *)v9 parameters];
+        [parameters setVocalTract:intValue];
 
         v17 = [v8 objectForKey:@"headSize"];
-        v18 = [v17 intValue];
-        v19 = [(AXKonaVoice *)v9 parameters];
-        [v19 setHeadSize:v18];
+        intValue2 = [v17 intValue];
+        parameters2 = [(AXKonaVoice *)v9 parameters];
+        [parameters2 setHeadSize:intValue2];
 
         v20 = [v8 objectForKey:@"pitchBase"];
-        v21 = [v20 intValue];
-        v22 = [(AXKonaVoice *)v9 parameters];
-        [v22 setPitchBase:v21];
+        intValue3 = [v20 intValue];
+        parameters3 = [(AXKonaVoice *)v9 parameters];
+        [parameters3 setPitchBase:intValue3];
 
         v23 = [v8 objectForKey:@"pitchFluctuation"];
-        v24 = [v23 intValue];
-        v25 = [(AXKonaVoice *)v9 parameters];
-        [v25 setPitchFluctuation:v24];
+        intValue4 = [v23 intValue];
+        parameters4 = [(AXKonaVoice *)v9 parameters];
+        [parameters4 setPitchFluctuation:intValue4];
 
         v26 = [v8 objectForKey:@"breathiness"];
-        v27 = [v26 intValue];
-        v28 = [(AXKonaVoice *)v9 parameters];
-        [v28 setBreathiness:v27];
+        intValue5 = [v26 intValue];
+        parameters5 = [(AXKonaVoice *)v9 parameters];
+        [parameters5 setBreathiness:intValue5];
 
         v29 = [v8 objectForKey:@"roughness"];
-        v30 = [v29 intValue];
-        v31 = [(AXKonaVoice *)v9 parameters];
-        [v31 setRoughness:v30];
+        intValue6 = [v29 intValue];
+        parameters6 = [(AXKonaVoice *)v9 parameters];
+        [parameters6 setRoughness:intValue6];
 
         v32 = [v8 objectForKey:@"volume"];
-        v33 = [v32 intValue];
-        v34 = [(AXKonaVoice *)v9 parameters];
-        [v34 setVolume:v33];
+        intValue7 = [v32 intValue];
+        parameters7 = [(AXKonaVoice *)v9 parameters];
+        [parameters7 setVolume:intValue7];
 
         v35 = [v8 objectForKey:@"speed"];
-        v36 = [v35 intValue];
-        v37 = [(AXKonaVoice *)v9 parameters];
-        [v37 setSpeed:v36];
+        intValue8 = [v35 intValue];
+        parameters8 = [(AXKonaVoice *)v9 parameters];
+        [parameters8 setSpeed:intValue8];
 
         v38 = [v8 objectForKey:@"eciVoiceNumber"];
         -[AXKonaVoice setEciVoiceNumber:](v9, "setEciVoiceNumber:", [v38 intValue]);
 
-        [v2 addObject:v9];
+        [array addObject:v9];
       }
 
       v5 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
@@ -1732,7 +1732,7 @@ id __54__AXKonaSpeechEngine_eciCallback_iParam_instanceData___block_invoke(uint6
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return array;
 }
 
 - (void)_segmentsForText:.cold.1()

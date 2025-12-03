@@ -1,10 +1,10 @@
 @interface CKAssetStreamHandle
 + (C2RequestOptions)networkRequestOptions;
-+ (void)makeAssetStreamHandleFromURL:(NSURL *)a3 assetKey:(NSData *)a4 filenameExtension:(NSString *)a5 completionHandler:(id)a6;
-- (CKAssetStreamHandle)initWithSerializedData:(id)a3 error:(id *)a4;
-- (id)makeAVAssetExportSessionWith:(id)a3 options:(id)a4 presetName:(id)a5;
-- (id)makeAVPlayerItemWith:(id)a3 options:(id)a4;
-- (id)serializedData:(id *)a3;
++ (void)makeAssetStreamHandleFromURL:(NSURL *)l assetKey:(NSData *)key filenameExtension:(NSString *)extension completionHandler:(id)handler;
+- (CKAssetStreamHandle)initWithSerializedData:(id)data error:(id *)error;
+- (id)makeAVAssetExportSessionWith:(id)with options:(id)options presetName:(id)name;
+- (id)makeAVPlayerItemWith:(id)with options:(id)options;
+- (id)serializedData:(id *)data;
 - (int64_t)size;
 @end
 
@@ -17,33 +17,33 @@
   return v2;
 }
 
-+ (void)makeAssetStreamHandleFromURL:(NSURL *)a3 assetKey:(NSData *)a4 filenameExtension:(NSString *)a5 completionHandler:(id)a6
++ (void)makeAssetStreamHandleFromURL:(NSURL *)l assetKey:(NSData *)key filenameExtension:(NSString *)extension completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = l;
+  v11[3] = key;
+  v11[4] = extension;
   v11[5] = v10;
-  v11[6] = a1;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  v11[6] = self;
+  lCopy = l;
+  keyCopy = key;
+  extensionCopy = extension;
 
   sub_1884C2198(&unk_1886F70C8, v11);
 }
 
-- (CKAssetStreamHandle)initWithSerializedData:(id)a3 error:(id *)a4
+- (CKAssetStreamHandle)initWithSerializedData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   static Data._unconditionallyBridgeFromObjectiveC(_:)();
 
   return sub_1884502C0();
 }
 
-- (id)serializedData:(id *)a3
+- (id)serializedData:(id *)data
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1884504DC();
   v6 = v5;
 
@@ -53,13 +53,13 @@
   return v7.super.isa;
 }
 
-- (id)makeAVPlayerItemWith:(id)a3 options:(id)a4
+- (id)makeAVPlayerItemWith:(id)with options:(id)options
 {
   v7 = sub_18844E6FC(&qword_1EA90D240, &qword_1886F70B0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  if (a3)
+  if (with)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for URL();
@@ -73,12 +73,12 @@
   }
 
   sub_1883F90F4(v10, v12, 1, v11);
-  if (a4)
+  if (options)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v13 = self;
+  selfCopy = self;
   sub_188450654();
   v15 = v14;
 
@@ -87,13 +87,13 @@
   return v15;
 }
 
-- (id)makeAVAssetExportSessionWith:(id)a3 options:(id)a4 presetName:(id)a5
+- (id)makeAVAssetExportSessionWith:(id)with options:(id)options presetName:(id)name
 {
   v8 = sub_18844E6FC(&qword_1EA90D240, &qword_1886F70B0);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v11 = &v18 - v10;
-  if (a3)
+  if (with)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for URL();
@@ -107,13 +107,13 @@
   }
 
   sub_1883F90F4(v11, v13, 1, v12);
-  if (a4)
+  if (options)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = self;
+  selfCopy = self;
   sub_188450CD4();
   v16 = v15;
 
@@ -124,7 +124,7 @@
 
 - (int64_t)size
 {
-  v2 = self;
+  selfCopy = self;
   sub_188451B44();
   v4 = v3;
 

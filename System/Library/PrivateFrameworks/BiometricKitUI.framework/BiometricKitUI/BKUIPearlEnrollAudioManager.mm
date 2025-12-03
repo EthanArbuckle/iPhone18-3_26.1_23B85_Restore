@@ -1,17 +1,17 @@
 @interface BKUIPearlEnrollAudioManager
 - (BKUIPearlAudioStateDelegate)stateDelegate;
 - (id)createEngine;
-- (id)hapticEventWithEventType:(unint64_t)a3 withDelay:(double)a4;
+- (id)hapticEventWithEventType:(unint64_t)type withDelay:(double)delay;
 - (void)cleanupHaptics;
 - (void)cleanupHapticsAndSound;
 - (void)cleanupSound;
 - (void)dealloc;
-- (void)fadeCurrentSound:(double)a3 completion:(id)a4;
-- (void)playHaptic:(unint64_t)a3 withDelay:(double)a4;
-- (void)playHapticWithEvents:(id)a3;
+- (void)fadeCurrentSound:(double)sound completion:(id)completion;
+- (void)playHaptic:(unint64_t)haptic withDelay:(double)delay;
+- (void)playHapticWithEvents:(id)events;
 - (void)setUpHaptics;
 - (void)setupSound;
-- (void)triggerSoundHapticForTransitionToSubstate:(int)a3 fromSubstate:(int)a4;
+- (void)triggerSoundHapticForTransitionToSubstate:(int)substate fromSubstate:(int)fromSubstate;
 @end
 
 @implementation BKUIPearlEnrollAudioManager
@@ -25,9 +25,9 @@
 
 - (void)setupSound
 {
-  v3 = [(BKUIPearlEnrollControllerPreloadedState *)self->_preloadedState acquireCachedAudioSession];
+  acquireCachedAudioSession = [(BKUIPearlEnrollControllerPreloadedState *)self->_preloadedState acquireCachedAudioSession];
   audioSession = self->_audioSession;
-  self->_audioSession = v3;
+  self->_audioSession = acquireCachedAudioSession;
 
   v5 = self->_audioSession;
   if (!v5)
@@ -39,10 +39,10 @@
     v5 = self->_audioSession;
   }
 
-  v8 = [(BKUIPearlAudioSession *)v5 audioEngine];
-  v9 = [v8 isRunning];
+  audioEngine = [(BKUIPearlAudioSession *)v5 audioEngine];
+  isRunning = [audioEngine isRunning];
 
-  if (v9)
+  if (isRunning)
   {
     v10 = self->_audioSession;
 
@@ -97,17 +97,17 @@ void __43__BKUIPearlEnrollAudioManager_cleanupSound__block_invoke(uint64_t a1)
 
 - (void)setUpHaptics
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
-    v5 = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
+    hapticsEngine = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
 
-    if (!v5)
+    if (!hapticsEngine)
     {
-      v6 = [(BKUIPearlEnrollAudioManager *)self createEngine];
-      [(BKUIPearlEnrollAudioManager *)self setHapticsEngine:v6];
+      createEngine = [(BKUIPearlEnrollAudioManager *)self createEngine];
+      [(BKUIPearlEnrollAudioManager *)self setHapticsEngine:createEngine];
     }
   }
 }
@@ -121,8 +121,8 @@ void __43__BKUIPearlEnrollAudioManager_cleanupSound__block_invoke(uint64_t a1)
     _os_log_impl(&dword_241B0A000, v3, OS_LOG_TYPE_DEFAULT, "Cleaning up Haptics.", v5, 2u);
   }
 
-  v4 = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
-  [v4 stopWithCompletionHandler:&__block_literal_global_11];
+  hapticsEngine = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
+  [hapticsEngine stopWithCompletionHandler:&__block_literal_global_11];
 }
 
 void __45__BKUIPearlEnrollAudioManager_cleanupHaptics__block_invoke(uint64_t a1, void *a2)
@@ -207,37 +207,37 @@ uint64_t __80__BKUIPearlEnrollAudioManager_triggerSoundHapticForTransitionToStat
   return [v7 playHaptic:20310 withDelay:131.0];
 }
 
-- (void)triggerSoundHapticForTransitionToSubstate:(int)a3 fromSubstate:(int)a4
+- (void)triggerSoundHapticForTransitionToSubstate:(int)substate fromSubstate:(int)fromSubstate
 {
-  if (a4)
+  if (fromSubstate)
   {
-    if (a3 == 11 || !a3)
+    if (substate == 11 || !substate)
     {
-      v5 = [(BKUIPearlEnrollAudioManager *)self stateDelegate];
-      if ([v5 state] == 5)
+      stateDelegate = [(BKUIPearlEnrollAudioManager *)self stateDelegate];
+      if ([stateDelegate state] == 5)
       {
       }
 
       else
       {
-        v6 = [(BKUIPearlEnrollAudioManager *)self stateDelegate];
-        v7 = [v6 state];
+        stateDelegate2 = [(BKUIPearlEnrollAudioManager *)self stateDelegate];
+        state = [stateDelegate2 state];
 
-        if (v7 != 7)
+        if (state != 7)
         {
           return;
         }
       }
 
       audioSession = self->_audioSession;
-      v9 = [(BKUIPearlAudioSession *)audioSession scanSoundBuffer];
-      [(BKUIPearlAudioSession *)audioSession scheduleBuffer:v9 atTime:0 options:3 completionHandler:0];
+      scanSoundBuffer = [(BKUIPearlAudioSession *)audioSession scanSoundBuffer];
+      [(BKUIPearlAudioSession *)audioSession scheduleBuffer:scanSoundBuffer atTime:0 options:3 completionHandler:0];
 
       [(BKUIPearlEnrollAudioManager *)self playHaptic:20310 withDelay:0.0];
     }
   }
 
-  else if (a3 <= 9 && ((1 << a3) & 0x396) != 0)
+  else if (substate <= 9 && ((1 << substate) & 0x396) != 0)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -272,10 +272,10 @@ void __86__BKUIPearlEnrollAudioManager_triggerSoundHapticForTransitionToSubstate
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playHaptic:(unint64_t)a3 withDelay:(double)a4
+- (void)playHaptic:(unint64_t)haptic withDelay:(double)delay
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v5 = [(BKUIPearlEnrollAudioManager *)self hapticEventWithEventType:a3 withDelay:a4];
+  v5 = [(BKUIPearlEnrollAudioManager *)self hapticEventWithEventType:haptic withDelay:delay];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   [(BKUIPearlEnrollAudioManager *)self playHapticWithEvents:v6];
@@ -283,21 +283,21 @@ void __86__BKUIPearlEnrollAudioManager_triggerSoundHapticForTransitionToSubstate
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)hapticEventWithEventType:(unint64_t)a3 withDelay:(double)a4
+- (id)hapticEventWithEventType:(unint64_t)type withDelay:(double)delay
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
+  hapticsEngine = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
 
-  if (!v7)
+  if (!hapticsEngine)
   {
-    v8 = [(BKUIPearlEnrollAudioManager *)self createEngine];
-    [(BKUIPearlEnrollAudioManager *)self setHapticsEngine:v8];
+    createEngine = [(BKUIPearlEnrollAudioManager *)self createEngine];
+    [(BKUIPearlEnrollAudioManager *)self setHapticsEngine:createEngine];
   }
 
   v9 = 0.598999977;
-  if (a3 > 20310)
+  if (type > 20310)
   {
-    switch(a3)
+    switch(type)
     {
       case 0x4F57uLL:
         goto LABEL_12;
@@ -315,7 +315,7 @@ void __86__BKUIPearlEnrollAudioManager_triggerSoundHapticForTransitionToSubstate
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0x2B57uLL:
         v10 = 0.0500000007;
@@ -355,28 +355,28 @@ LABEL_11:
   v24[0] = v14;
   v24[1] = v17;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-  v21 = [v18 initWithEventType:v19 parameters:v20 relativeTime:a4 / 1000.0];
+  v21 = [v18 initWithEventType:v19 parameters:v20 relativeTime:delay / 1000.0];
 
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;
 }
 
-- (void)playHapticWithEvents:(id)a3
+- (void)playHapticWithEvents:(id)events
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBF6D0];
-  v5 = a3;
+  eventsCopy = events;
   v6 = [v4 alloc];
   v21 = 0;
-  v7 = [v6 initWithEvents:v5 parameters:MEMORY[0x277CBEBF8] error:&v21];
+  v7 = [v6 initWithEvents:eventsCopy parameters:MEMORY[0x277CBEBF8] error:&v21];
 
   v8 = v21;
   if (!v8)
   {
-    v10 = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
+    hapticsEngine = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
     v20 = 0;
-    [v10 startAndReturnError:&v20];
+    [hapticsEngine startAndReturnError:&v20];
     v9 = v20;
 
     if (v9)
@@ -392,9 +392,9 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    v12 = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
+    hapticsEngine2 = [(BKUIPearlEnrollAudioManager *)self hapticsEngine];
     v19 = 0;
-    v11 = [v12 createPlayerWithPattern:v7 error:&v19];
+    v11 = [hapticsEngine2 createPlayerWithPattern:v7 error:&v19];
     v13 = v19;
 
     if (v13)
@@ -452,8 +452,8 @@ LABEL_16:
 - (id)createEngine
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBF6B0] capabilitiesForHardware];
-  if ([v2 supportsHaptics] & 1) != 0 || (objc_msgSend(v2, "supportsAudio"))
+  capabilitiesForHardware = [MEMORY[0x277CBF6B0] capabilitiesForHardware];
+  if ([capabilitiesForHardware supportsHaptics] & 1) != 0 || (objc_msgSend(capabilitiesForHardware, "supportsAudio"))
   {
     v10 = 0;
     v3 = [objc_alloc(MEMORY[0x277CBF6B0]) initAndReturnError:&v10];
@@ -504,9 +504,9 @@ LABEL_16:
   return v7;
 }
 
-- (void)fadeCurrentSound:(double)a3 completion:(id)a4
+- (void)fadeCurrentSound:(double)sound completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7 = dispatch_get_global_queue(2, 0);
   v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v7);
@@ -519,10 +519,10 @@ LABEL_16:
   v12[3] = &unk_278D0AA48;
   *&v15[1] = v9 * 1000.0;
   objc_copyWeak(v15, &location);
-  v15[2] = *&a3;
+  v15[2] = *&sound;
   v13 = v8;
-  v14 = v6;
-  v10 = v6;
+  v14 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
   dispatch_source_set_event_handler(v11, v12);
   dispatch_resume(v11);
@@ -558,11 +558,11 @@ void __59__BKUIPearlEnrollAudioManager_fadeCurrentSound_completion___block_invok
 {
   [(BKUIPearlEnrollAudioManager *)self cleanupHaptics];
   [(BKUIPearlAudioSession *)self->_audioSession stop];
-  v3 = [(BKUIPearlAudioSession *)self->_audioSession audioEngine];
-  [v3 stop];
+  audioEngine = [(BKUIPearlAudioSession *)self->_audioSession audioEngine];
+  [audioEngine stop];
 
-  v4 = [(BKUIPearlAudioSession *)self->_audioSession audioEngine];
-  [v4 reset];
+  audioEngine2 = [(BKUIPearlAudioSession *)self->_audioSession audioEngine];
+  [audioEngine2 reset];
 
   v5.receiver = self;
   v5.super_class = BKUIPearlEnrollAudioManager;

@@ -1,25 +1,25 @@
 @interface SFStartPageSectionHeaderTitleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SFStartPageSectionHeaderTitleViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SFStartPageSectionHeaderTitleViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SFStartPageSectionHeaderTitleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFStartPageSectionHeaderTitleView" hasInstanceVariable:@"_button" withType:"UIButton"];
-  [v3 validateClass:@"SFStartPageSectionHeaderTitleView" hasInstanceVariable:@"_label" withType:"UILabel"];
-  [v3 validateClass:@"SFStartPageSectionHeaderTitleView" hasInstanceVariable:@"_title" withType:"NSString"];
-  [v3 validateClass:@"SFStartPageSectionHeaderTitleView" hasInstanceVariable:@"_image" withType:"UIImage"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFStartPageSectionHeaderTitleView" hasInstanceVariable:@"_button" withType:"UIButton"];
+  [validationsCopy validateClass:@"SFStartPageSectionHeaderTitleView" hasInstanceVariable:@"_label" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFStartPageSectionHeaderTitleView" hasInstanceVariable:@"_title" withType:"NSString"];
+  [validationsCopy validateClass:@"SFStartPageSectionHeaderTitleView" hasInstanceVariable:@"_image" withType:"UIImage"];
 }
 
-- (SFStartPageSectionHeaderTitleViewAccessibility)initWithFrame:(CGRect)a3
+- (SFStartPageSectionHeaderTitleViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SFStartPageSectionHeaderTitleViewAccessibility;
-  v3 = [(SFStartPageSectionHeaderTitleViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFStartPageSectionHeaderTitleViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SFStartPageSectionHeaderTitleViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
@@ -36,9 +36,9 @@
   v4 = __UIAccessibilityCastAsClass();
 
   [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
-  v5 = [v4 menu];
+  menu = [v4 menu];
 
-  if (v5)
+  if (menu)
   {
     [v4 setAccessibilityTraits:{*MEMORY[0x29EDC7F70] | *MEMORY[0x29EDC7550] | objc_msgSend(v4, "accessibilityTraits")}];
   }

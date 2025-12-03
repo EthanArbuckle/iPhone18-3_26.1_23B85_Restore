@@ -1,12 +1,12 @@
 @interface _LAKeyStoreKeyNull
 - (NSData)publicKeyHash;
 - (_LAKeyStoreKeyNull)init;
-- (void)decryptData:(id)a3 secKeyAlgorithm:(__CFString *)a4 context:(id)a5 completion:(id)a6;
-- (void)encryptData:(id)a3 secKeyAlgorithm:(__CFString *)a4 completion:(id)a5;
-- (void)exchangeKeysWithPublicKey:(id)a3 secKeyAlgorithm:(__CFString *)a4 secKeyParameters:(id)a5 context:(id)a6 completion:(id)a7;
-- (void)exportBytesWithCompletion:(id)a3;
-- (void)signData:(id)a3 secKeyAlgorithm:(__CFString *)a4 context:(id)a5 completion:(id)a6;
-- (void)verifyData:(id)a3 signature:(id)a4 secKeyAlgorithm:(__CFString *)a5 completion:(id)a6;
+- (void)decryptData:(id)data secKeyAlgorithm:(__CFString *)algorithm context:(id)context completion:(id)completion;
+- (void)encryptData:(id)data secKeyAlgorithm:(__CFString *)algorithm completion:(id)completion;
+- (void)exchangeKeysWithPublicKey:(id)key secKeyAlgorithm:(__CFString *)algorithm secKeyParameters:(id)parameters context:(id)context completion:(id)completion;
+- (void)exportBytesWithCompletion:(id)completion;
+- (void)signData:(id)data secKeyAlgorithm:(__CFString *)algorithm context:(id)context completion:(id)completion;
+- (void)verifyData:(id)data signature:(id)signature secKeyAlgorithm:(__CFString *)algorithm completion:(id)completion;
 @end
 
 @implementation _LAKeyStoreKeyNull
@@ -18,10 +18,10 @@
   v2 = [(_LAKeyStoreKeyNull *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
 
     v6 = [MEMORY[0x1E69AD210] serializeACL:{objc_msgSend(MEMORY[0x1E69AD210], "denyAllACL")}];
     acl = v2->_acl;
@@ -41,46 +41,46 @@
   return v2;
 }
 
-- (void)exportBytesWithCompletion:(id)a3
+- (void)exportBytesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[LAAuthorizationError resourceNotFound];
-  (*(a3 + 2))(v4, 0, v5);
+  (*(completion + 2))(completionCopy, 0, v5);
 }
 
-- (void)signData:(id)a3 secKeyAlgorithm:(__CFString *)a4 context:(id)a5 completion:(id)a6
+- (void)signData:(id)data secKeyAlgorithm:(__CFString *)algorithm context:(id)context completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   v8 = +[LAAuthorizationError resourceNotFound];
-  (*(a6 + 2))(v7, 0, v8);
+  (*(completion + 2))(completionCopy, 0, v8);
 }
 
-- (void)decryptData:(id)a3 secKeyAlgorithm:(__CFString *)a4 context:(id)a5 completion:(id)a6
+- (void)decryptData:(id)data secKeyAlgorithm:(__CFString *)algorithm context:(id)context completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   v8 = +[LAAuthorizationError resourceNotFound];
-  (*(a6 + 2))(v7, 0, v8);
+  (*(completion + 2))(completionCopy, 0, v8);
 }
 
-- (void)exchangeKeysWithPublicKey:(id)a3 secKeyAlgorithm:(__CFString *)a4 secKeyParameters:(id)a5 context:(id)a6 completion:(id)a7
+- (void)exchangeKeysWithPublicKey:(id)key secKeyAlgorithm:(__CFString *)algorithm secKeyParameters:(id)parameters context:(id)context completion:(id)completion
 {
-  v8 = a7;
+  completionCopy = completion;
   v9 = +[LAAuthorizationError resourceNotFound];
-  (*(a7 + 2))(v8, 0, v9);
+  (*(completion + 2))(completionCopy, 0, v9);
 }
 
-- (void)encryptData:(id)a3 secKeyAlgorithm:(__CFString *)a4 completion:(id)a5
+- (void)encryptData:(id)data secKeyAlgorithm:(__CFString *)algorithm completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v7 = +[LAAuthorizationError resourceNotFound];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(completion + 2))(completionCopy, 0, v7);
 }
 
-- (void)verifyData:(id)a3 signature:(id)a4 secKeyAlgorithm:(__CFString *)a5 completion:(id)a6
+- (void)verifyData:(id)data signature:(id)signature secKeyAlgorithm:(__CFString *)algorithm completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   v8 = +[LAAuthorizationError resourceNotFound];
-  (*(a6 + 2))(v7, v8);
+  (*(completion + 2))(completionCopy, v8);
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface HDFitnessMachineSimulatorSupport
-- (HDFitnessMachineSimulatorSupport)initWithFitnessMachineType:(unint64_t)a3;
+- (HDFitnessMachineSimulatorSupport)initWithFitnessMachineType:(unint64_t)type;
 - (NSData)btIdentifierData;
 - (NSString)btIdentifier;
-- (void)updateAdvertisementDataForSimulation:(id)a3;
+- (void)updateAdvertisementDataForSimulation:(id)simulation;
 @end
 
 @implementation HDFitnessMachineSimulatorSupport
 
-- (HDFitnessMachineSimulatorSupport)initWithFitnessMachineType:(unint64_t)a3
+- (HDFitnessMachineSimulatorSupport)initWithFitnessMachineType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = HDFitnessMachineSimulatorSupport;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_fitnessMachineType = a3;
+    v4->_fitnessMachineType = type;
     v6 = +[NSUUID UUID];
     uuid = v5->_uuid;
     v5->_uuid = v6;
@@ -34,15 +34,15 @@
 
 - (NSString)btIdentifier
 {
-  v2 = [(HDFitnessMachineSimulatorSupport *)self btIdentifierData];
-  v3 = [v2 base64EncodedStringWithOptions:0];
+  btIdentifierData = [(HDFitnessMachineSimulatorSupport *)self btIdentifierData];
+  v3 = [btIdentifierData base64EncodedStringWithOptions:0];
 
   return v3;
 }
 
-- (void)updateAdvertisementDataForSimulation:(id)a3
+- (void)updateAdvertisementDataForSimulation:(id)simulation
 {
-  v4 = a3;
+  simulationCopy = simulation;
   v5 = objc_alloc_init(NSMutableData);
   v6 = v5;
   v9 = 1;
@@ -81,7 +81,7 @@ LABEL_12:
 
   [v5 appendBytes:&v9 length:1];
   [v6 appendBytes:&v8 length:2];
-  [v4 setAdvertisementData:v6];
+  [simulationCopy setAdvertisementData:v6];
 }
 
 @end

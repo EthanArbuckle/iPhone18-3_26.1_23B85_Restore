@@ -1,60 +1,60 @@
 @interface MSDDataRefresh
-+ (void)cacheLastRefreshforHomes:(id)a3;
++ (void)cacheLastRefreshforHomes:(id)homes;
 + (void)clearLastRefreshTSForHomes;
-- (BOOL)_shouldPreformRefresh:(id)a3;
-- (BOOL)_shouldProceedWithExecution:(id)a3;
-- (MSDDataRefresh)initWithReason:(unint64_t)a3;
-- (MSDDataRefresh)initWithReason:(unint64_t)a3 withDelay:(double)a4;
-- (void)_checkDataSanity:(id)a3 publicDBInfo:(id)a4 home:(id)a5 completion:(id)a6;
-- (void)_checkZoneAndDefaultRecordInEachHome:(id)a3 completion:(id)a4;
-- (void)_createAndSaveAppleMusicRecord:(id)a3 publicDBInfo:(id)a4 home:(id)a5 completion:(id)a6;
-- (void)_deleteRecordZone:(id)a3 completion:(id)a4;
-- (void)_deleteZombieRecordZonesIfAnyInHomes:(id)a3 completion:(id)a4;
-- (void)_handleCKShareError:(id)a3 home:(id)a4;
-- (void)_initializeCKAndServiceInfoForHome:(id)a3 completion:(id)a4;
-- (void)_performDataRefresh:(id)a3;
-- (void)_refreshDatabases:(id)a3;
-- (void)_saveMediaServiceConfigInfo:(id)a3 record:(id)a4 completion:(id)a5;
-- (void)_setupShareForParticipant:(id)a3 home:(id)a4 completion:(id)a5;
-- (void)_shareThisRecordIfApplicable:(id)a3 home:(id)a4 completion:(id)a5;
-- (void)_updateDefaultService:(id)a3 record:(id)a4 completion:(id)a5;
-- (void)performRefreshWithCompletion:(id)a3;
+- (BOOL)_shouldPreformRefresh:(id)refresh;
+- (BOOL)_shouldProceedWithExecution:(id)execution;
+- (MSDDataRefresh)initWithReason:(unint64_t)reason;
+- (MSDDataRefresh)initWithReason:(unint64_t)reason withDelay:(double)delay;
+- (void)_checkDataSanity:(id)sanity publicDBInfo:(id)info home:(id)home completion:(id)completion;
+- (void)_checkZoneAndDefaultRecordInEachHome:(id)home completion:(id)completion;
+- (void)_createAndSaveAppleMusicRecord:(id)record publicDBInfo:(id)info home:(id)home completion:(id)completion;
+- (void)_deleteRecordZone:(id)zone completion:(id)completion;
+- (void)_deleteZombieRecordZonesIfAnyInHomes:(id)homes completion:(id)completion;
+- (void)_handleCKShareError:(id)error home:(id)home;
+- (void)_initializeCKAndServiceInfoForHome:(id)home completion:(id)completion;
+- (void)_performDataRefresh:(id)refresh;
+- (void)_refreshDatabases:(id)databases;
+- (void)_saveMediaServiceConfigInfo:(id)info record:(id)record completion:(id)completion;
+- (void)_setupShareForParticipant:(id)participant home:(id)home completion:(id)completion;
+- (void)_shareThisRecordIfApplicable:(id)applicable home:(id)home completion:(id)completion;
+- (void)_updateDefaultService:(id)service record:(id)record completion:(id)completion;
+- (void)performRefreshWithCompletion:(id)completion;
 - (void)refreshDataAfterDelay;
 @end
 
 @implementation MSDDataRefresh
 
-- (MSDDataRefresh)initWithReason:(unint64_t)a3
+- (MSDDataRefresh)initWithReason:(unint64_t)reason
 {
   v5.receiver = self;
   v5.super_class = MSDDataRefresh;
   result = [(MSDDataRefresh *)&v5 init];
   if (result)
   {
-    result->_refreshReason = a3;
+    result->_refreshReason = reason;
     result->_delay = 0.0;
   }
 
   return result;
 }
 
-- (MSDDataRefresh)initWithReason:(unint64_t)a3 withDelay:(double)a4
+- (MSDDataRefresh)initWithReason:(unint64_t)reason withDelay:(double)delay
 {
   v7.receiver = self;
   v7.super_class = MSDDataRefresh;
   result = [(MSDDataRefresh *)&v7 init];
   if (result)
   {
-    result->_refreshReason = a3;
-    result->_delay = a4;
+    result->_refreshReason = reason;
+    result->_delay = delay;
   }
 
   return result;
 }
 
-- (void)performRefreshWithCompletion:(id)a3
+- (void)performRefreshWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100030FE4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -75,7 +75,7 @@
   v10[1] = 3221225472;
   v10[2] = sub_10001AB10;
   v10[3] = &unk_1000518A0;
-  v9 = v4;
+  v9 = completionCopy;
   v10[4] = self;
   v11 = v9;
   objc_copyWeak(&v12, buf);
@@ -85,23 +85,23 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_performDataRefresh:(id)a3
+- (void)_performDataRefresh:(id)refresh
 {
-  v4 = a3;
+  refreshCopy = refresh;
   v5 = +[MSDHomeManager sharedManager];
-  v6 = [v5 allHomes];
+  allHomes = [v5 allHomes];
 
-  if (v6 && [v6 count])
+  if (allHomes && [allHomes count])
   {
     v7 = sub_100030FE4();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v22 = v6;
+      v22 = allHomes;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Homes user is part of %{private}@", buf, 0xCu);
     }
 
-    v8 = [v6 hmf_objectsPassingTest:&stru_1000518E0];
+    v8 = [allHomes hmf_objectsPassingTest:&stru_1000518E0];
     v9 = [v8 count];
     v10 = sub_100030FE4();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -118,7 +118,7 @@
       v16[1] = 3221225472;
       v16[2] = sub_10001B05C;
       v16[3] = &unk_100051958;
-      v18 = v4;
+      v18 = refreshCopy;
       v16[4] = self;
       v8 = v8;
       v17 = v8;
@@ -135,7 +135,7 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Skipping CloudKit refresh. Homes do not contain valid accessories for media setup.", buf, 2u);
       }
 
-      if (!v4)
+      if (!refreshCopy)
       {
         goto LABEL_12;
       }
@@ -145,7 +145,7 @@
       v20 = @"Failed to perform refresh. No valid accessories in home to setup.";
       v12 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
       v15 = [NSError errorWithDomain:v14 code:3 userInfo:v12];
-      (*(v4 + 2))(v4, 0, v15);
+      (*(refreshCopy + 2))(refreshCopy, 0, v15);
     }
 
 LABEL_11:
@@ -154,24 +154,24 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v4)
+  if (refreshCopy)
   {
     v13 = MSErrorDomain;
     v23 = MSUserInfoErrorStringKey;
     v24 = @"Failed to perform refresh. No homes available.";
     v8 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v12 = [NSError errorWithDomain:v13 code:3 userInfo:v8];
-    (*(v4 + 2))(v4, 0, v12);
+    (*(refreshCopy + 2))(refreshCopy, 0, v12);
     goto LABEL_11;
   }
 
 LABEL_13:
 }
 
-- (void)_checkZoneAndDefaultRecordInEachHome:(id)a3 completion:(id)a4
+- (void)_checkZoneAndDefaultRecordInEachHome:(id)home completion:(id)completion
 {
-  v6 = a3;
-  v18 = a4;
+  homeCopy = home;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v30[0] = 0;
   v30[1] = v30;
@@ -181,7 +181,7 @@ LABEL_13:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v6;
+  obj = homeCopy;
   v8 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v8)
   {
@@ -209,10 +209,10 @@ LABEL_13:
           v13 = sub_100030FE4();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v11 currentUser];
-            v15 = [v14 uniqueIdentifier];
+            currentUser = [v11 currentUser];
+            uniqueIdentifier = [currentUser uniqueIdentifier];
             *buf = 138477827;
-            v33 = v15;
+            v33 = uniqueIdentifier;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Determined user (%{private}@) to be a restricted guest. Skipping setting up media in the home", buf, 0xCu);
           }
         }
@@ -242,18 +242,18 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_10001B90C;
   block[3] = &unk_100051980;
-  v21 = v18;
+  v21 = completionCopy;
   v22 = v30;
-  v17 = v18;
+  v17 = completionCopy;
   dispatch_group_notify(v7, v16, block);
 
   _Block_object_dispose(v30, 8);
 }
 
-- (void)_deleteZombieRecordZonesIfAnyInHomes:(id)a3 completion:(id)a4
+- (void)_deleteZombieRecordZonesIfAnyInHomes:(id)homes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  homesCopy = homes;
+  completionCopy = completion;
   if ((+[MSDeviceInfo isDeviceAppleTV](MSDeviceInfo, "isDeviceAppleTV") & 1) != 0 || +[MSDeviceInfo isDeviceAudioAccessory])
   {
     v8 = sub_100030FE4();
@@ -263,59 +263,59 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "** Deletion of recordZones will be handled by the iOS device **", buf, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v9 = [v6 na_map:&stru_1000519C0];
+    v9 = [homesCopy na_map:&stru_1000519C0];
     v10 = +[CKContainer MSDCloudKitContainer];
-    v11 = [v10 privateCloudDatabase];
+    privateCloudDatabase = [v10 privateCloudDatabase];
 
     v12 = +[CKFetchRecordZonesOperation fetchAllRecordZonesOperation];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10001BB84;
     v16[3] = &unk_100051A60;
-    v21 = v7;
-    v17 = v11;
+    v21 = completionCopy;
+    v17 = privateCloudDatabase;
     v18 = v9;
-    v19 = v6;
-    v20 = self;
+    v19 = homesCopy;
+    selfCopy = self;
     v13 = v9;
-    v14 = v11;
+    v14 = privateCloudDatabase;
     [v12 setFetchRecordZonesCompletionBlock:v16];
     [v12 setQualityOfService:17];
-    v15 = [v14 operationConfiguration];
-    [v12 setConfiguration:v15];
+    operationConfiguration = [v14 operationConfiguration];
+    [v12 setConfiguration:operationConfiguration];
 
     [v14 addOperation:v12];
   }
 }
 
-- (void)_deleteRecordZone:(id)a3 completion:(id)a4
+- (void)_deleteRecordZone:(id)zone completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  zoneCopy = zone;
+  completionCopy = completion;
   v7 = +[CKContainer MSDCloudKitContainer];
-  v8 = [v7 privateCloudDatabase];
+  privateCloudDatabase = [v7 privateCloudDatabase];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001C6A8;
   v11[3] = &unk_100051A88;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
-  [v8 deleteRecordZone:v10 withOptions:0 completion:v11];
+  v12 = zoneCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = zoneCopy;
+  [privateCloudDatabase deleteRecordZone:v10 withOptions:0 completion:v11];
 }
 
-- (void)_refreshDatabases:(id)a3
+- (void)_refreshDatabases:(id)databases
 {
-  v3 = a3;
+  databasesCopy = databases;
   v4 = dispatch_group_create();
   v20[0] = 0;
   v20[1] = v20;
@@ -329,7 +329,7 @@ LABEL_13:
   v19 = 0;
   dispatch_group_enter(v4);
   v5 = +[CKContainer MSDCloudKitContainer];
-  v6 = [v5 privateCloudDatabase];
+  privateCloudDatabase = [v5 privateCloudDatabase];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001C9B8;
@@ -338,17 +338,17 @@ LABEL_13:
   v17 = v18;
   v7 = v4;
   v15 = v7;
-  [v6 refreshDatabase:0 completion:v14];
+  [privateCloudDatabase refreshDatabase:0 completion:v14];
 
   v8 = dispatch_get_global_queue(2, 0);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001CA54;
   v10[3] = &unk_100051AD8;
-  v11 = v3;
+  v11 = databasesCopy;
   v12 = v18;
   v13 = v20;
-  v9 = v3;
+  v9 = databasesCopy;
   dispatch_group_notify(v7, v8, v10);
 
   _Block_object_dispose(v18, 8);
@@ -367,16 +367,16 @@ LABEL_13:
   [v3 removeObjectForDefault:@"lastDataRefresh"];
 }
 
-+ (void)cacheLastRefreshforHomes:(id)a3
++ (void)cacheLastRefreshforHomes:(id)homes
 {
-  v3 = a3;
+  homesCopy = homes;
   v4 = +[MSDDefaultsManager sharedManager];
   v5 = +[NSDate date];
   [v5 timeIntervalSinceReferenceDate];
   v6 = [NSNumber numberWithDouble:?];
   [v4 setObject:v6 forDefault:@"lastDataRefresh"];
 
-  v8 = [v3 na_map:&stru_100051AF8];
+  v8 = [homesCopy na_map:&stru_100051AF8];
 
   v7 = +[MSDDefaultsManager sharedManager];
   [v7 setObject:v8 forDefault:@"homesRefreshed"];
@@ -408,57 +408,57 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)_initializeCKAndServiceInfoForHome:(id)a3 completion:(id)a4
+- (void)_initializeCKAndServiceInfoForHome:(id)home completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  completionCopy = completion;
   v8 = objc_alloc_init(MSDFetchCKDataOptions);
   [(MSDFetchCKDataOptions *)v8 setCreateNewZoneIfMissing:1];
   [(MSDFetchCKDataOptions *)v8 setUserInitiatedRequest:0];
   v9 = +[CKContainer MSDCloudKitContainer];
-  v10 = [v9 privateCloudDatabase];
+  privateCloudDatabase = [v9 privateCloudDatabase];
 
   objc_initWeak(&location, self);
-  v11 = [v6 uniqueIdentifier];
-  v12 = [v11 UUIDString];
-  v13 = [v6 currentUser];
-  v14 = [v13 uniqueIdentifier];
-  v15 = [v14 UUIDString];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  currentUser = [homeCopy currentUser];
+  uniqueIdentifier2 = [currentUser uniqueIdentifier];
+  uUIDString2 = [uniqueIdentifier2 UUIDString];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10001D37C;
   v18[3] = &unk_100051B70;
-  v16 = v7;
+  v16 = completionCopy;
   v20 = v16;
   objc_copyWeak(&v21, &location);
-  v17 = v6;
+  v17 = homeCopy;
   v19 = v17;
-  [v10 fetchRecordZoneFor:v12 user:v15 withOptions:v8 completion:v18];
+  [privateCloudDatabase fetchRecordZoneFor:uUIDString user:uUIDString2 withOptions:v8 completion:v18];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
 }
 
-- (void)_checkDataSanity:(id)a3 publicDBInfo:(id)a4 home:(id)a5 completion:(id)a6
+- (void)_checkDataSanity:(id)sanity publicDBInfo:(id)info home:(id)home completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sanityCopy = sanity;
+  infoCopy = info;
+  homeCopy = home;
+  completionCopy = completion;
   v14 = [CKRecordID alloc];
-  v15 = [v11 serviceID];
-  v16 = [v10 zoneID];
-  v17 = [v14 initWithRecordName:v15 zoneID:v16];
+  serviceID = [infoCopy serviceID];
+  zoneID = [sanityCopy zoneID];
+  v17 = [v14 initWithRecordName:serviceID zoneID:zoneID];
 
   v18 = [CKRecordID alloc];
-  v19 = [v10 zoneID];
-  v20 = [v18 initWithRecordName:MSDefaultServiceRecordName zoneID:v19];
+  zoneID2 = [sanityCopy zoneID];
+  v20 = [v18 initWithRecordName:MSDefaultServiceRecordName zoneID:zoneID2];
 
   if (v17 && v20)
   {
     objc_initWeak(&location, self);
     v21 = +[CKContainer MSDCloudKitContainer];
-    v22 = [v21 privateCloudDatabase];
+    privateCloudDatabase = [v21 privateCloudDatabase];
 
     v42[0] = v17;
     v42[1] = v20;
@@ -468,13 +468,13 @@ LABEL_13:
     v33[2] = sub_10001D8B8;
     v33[3] = &unk_100051BC0;
     objc_copyWeak(&v40, &location);
-    v39 = v13;
+    v39 = completionCopy;
     v34 = v17;
     v35 = v20;
-    v36 = v12;
-    v37 = v10;
-    v38 = v11;
-    [v22 fetchRecordWithIDS:v23 withOptions:0 completion:v33];
+    v36 = homeCopy;
+    v37 = sanityCopy;
+    v38 = infoCopy;
+    [privateCloudDatabase fetchRecordWithIDS:v23 withOptions:0 completion:v33];
 
     objc_destroyWeak(&v40);
     objc_destroyWeak(&location);
@@ -488,18 +488,18 @@ LABEL_13:
       sub_10001FC44(v24, v25, v26, v27, v28, v29, v30, v31);
     }
 
-    if (v13)
+    if (completionCopy)
     {
       v32 = [NSError errorWithDomain:CKErrorDomain code:12 userInfo:0];
-      (*(v13 + 2))(v13, v32);
+      (*(completionCopy + 2))(completionCopy, v32);
     }
   }
 }
 
-- (BOOL)_shouldProceedWithExecution:(id)a3
+- (BOOL)_shouldProceedWithExecution:(id)execution
 {
-  v3 = a3;
-  v4 = [v3 CKErrorHasErrorCode:11];
+  executionCopy = execution;
+  v4 = [executionCopy CKErrorHasErrorCode:11];
   v5 = sub_100030FE4();
   v6 = v5;
   if (v4)
@@ -519,88 +519,88 @@ LABEL_13:
   return v4;
 }
 
-- (void)_createAndSaveAppleMusicRecord:(id)a3 publicDBInfo:(id)a4 home:(id)a5 completion:(id)a6
+- (void)_createAndSaveAppleMusicRecord:(id)record publicDBInfo:(id)info home:(id)home completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recordCopy = record;
+  infoCopy = info;
+  homeCopy = home;
+  completionCopy = completion;
   v14 = sub_100030FE4();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v31 = v11;
+    v31 = infoCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Creating AppleMusic Service record with PublicDB Info : %{private}@", buf, 0xCu);
   }
 
-  v15 = [v11 serviceID];
-  v16 = [CKRecord createRecordWithName:v15 recordType:MSServiceAccountRecordType recordZone:v10];
+  serviceID = [infoCopy serviceID];
+  v16 = [CKRecord createRecordWithName:serviceID recordType:MSServiceAccountRecordType recordZone:recordCopy];
 
-  v17 = [v12 uniqueIdentifier];
-  v18 = [v17 UUIDString];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v19 = [v12 currentUser];
-  v20 = [v19 uniqueIdentifier];
-  v21 = [v20 UUIDString];
+  currentUser = [homeCopy currentUser];
+  uniqueIdentifier2 = [currentUser uniqueIdentifier];
+  uUIDString2 = [uniqueIdentifier2 UUIDString];
 
   v22 = sub_100030FE4();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v31 = v18;
+    v31 = uUIDString;
     v32 = 2113;
-    v33 = v21;
+    v33 = uUIDString2;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Adding Home Entries HomeID : %{private}@ HomeUserID : %{private}@", buf, 0x16u);
   }
 
-  [v16 setRecordFieldForKey:MSHomeParticipantHomeIdentifier value:v18];
-  [v16 setRecordFieldForKey:MSHomeParticipantHomeUserIdentifier value:v21];
+  [v16 setRecordFieldForKey:MSHomeParticipantHomeIdentifier value:uUIDString];
+  [v16 setRecordFieldForKey:MSHomeParticipantHomeUserIdentifier value:uUIDString2];
   objc_initWeak(buf, self);
-  v23 = [v11 serviceID];
+  serviceID2 = [infoCopy serviceID];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10001E080;
   v26[3] = &unk_100051BE8;
-  v24 = v13;
+  v24 = completionCopy;
   v28 = v24;
   objc_copyWeak(&v29, buf);
-  v25 = v12;
+  v25 = homeCopy;
   v27 = v25;
-  [(MSDDataRefresh *)self _saveMediaServiceConfigInfo:v23 record:v16 completion:v26];
+  [(MSDDataRefresh *)self _saveMediaServiceConfigInfo:serviceID2 record:v16 completion:v26];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(buf);
 }
 
-- (void)_shareThisRecordIfApplicable:(id)a3 home:(id)a4 completion:(id)a5
+- (void)_shareThisRecordIfApplicable:(id)applicable home:(id)home completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicableCopy = applicable;
+  homeCopy = home;
+  completionCopy = completion;
   v11 = sub_100030FE4();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 isCurrentUserHomeOwner];
+    isCurrentUserHomeOwner = [homeCopy isCurrentUserHomeOwner];
     v13 = @"NO";
     v20 = "[MSDDataRefresh _shareThisRecordIfApplicable:home:completion:]";
     *buf = 136315651;
-    if (v12)
+    if (isCurrentUserHomeOwner)
     {
       v13 = @"YES";
     }
 
     v21 = 2113;
-    v22 = v9;
+    v22 = homeCopy;
     v23 = 2112;
     v24 = v13;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s %{private}@ CurrentUserOwner: %@", buf, 0x20u);
   }
 
-  if ([v9 isCurrentUserHomeOwner] || objc_msgSend(v9, "isCurrentUserRestrictedGuest"))
+  if ([homeCopy isCurrentUserHomeOwner] || objc_msgSend(homeCopy, "isCurrentUserRestrictedGuest"))
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -609,9 +609,9 @@ LABEL_13:
     v14 = sub_100030FE4();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v8 recordID];
+      recordID = [applicableCopy recordID];
       *buf = 138477827;
-      v20 = v15;
+      v20 = recordID;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Setting up share for participant with recordID %{private}@", buf, 0xCu);
     }
 
@@ -619,30 +619,30 @@ LABEL_13:
     v16[1] = 3221225472;
     v16[2] = sub_10001E560;
     v16[3] = &unk_100051C10;
-    v17 = v9;
-    v18 = v10;
-    [(MSDDataRefresh *)self _setupShareForParticipant:v8 home:v17 completion:v16];
+    v17 = homeCopy;
+    v18 = completionCopy;
+    [(MSDDataRefresh *)self _setupShareForParticipant:applicableCopy home:v17 completion:v16];
   }
 }
 
-- (void)_updateDefaultService:(id)a3 record:(id)a4 completion:(id)a5
+- (void)_updateDefaultService:(id)service record:(id)record completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MSDefaultServiceRecordName;
   v9 = MSDefaultServiceRecordType;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v10 recordID];
-  v13 = [v12 zoneID];
-  v14 = [CKRecord createRecordWithName:v8 recordType:v9 recordZone:v13];
+  recordCopy = record;
+  serviceCopy = service;
+  recordID = [recordCopy recordID];
+  zoneID = [recordID zoneID];
+  v14 = [CKRecord createRecordWithName:v8 recordType:v9 recordZone:zoneID];
 
   v15 = MediaServiceIdentifier;
-  v16 = [v10 recordFieldForKey:MediaServiceIdentifier];
+  v16 = [recordCopy recordFieldForKey:MediaServiceIdentifier];
 
-  v17 = [v11 currentUser];
+  currentUser = [serviceCopy currentUser];
 
-  v18 = [v17 uniqueIdentifier];
-  v19 = [v18 UUIDString];
+  uniqueIdentifier = [currentUser uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
   v20 = sub_100030FE4();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -650,69 +650,69 @@ LABEL_13:
     *buf = 138478083;
     v27 = v16;
     v28 = 2113;
-    v29 = v19;
+    v29 = uUIDString;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Setting default service identifier %{private}@ and homeUserID %{private}@", buf, 0x16u);
   }
 
   [v14 setRecordFieldForKey:v15 value:v16];
-  [v14 setRecordFieldForKey:MSHomeParticipantHomeUserIdentifier value:v19];
+  [v14 setRecordFieldForKey:MSHomeParticipantHomeUserIdentifier value:uUIDString];
   v21 = +[CKContainer MSDCloudKitContainer];
-  v22 = [v21 privateCloudDatabase];
+  privateCloudDatabase = [v21 privateCloudDatabase];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10001E934;
   v24[3] = &unk_100051C38;
-  v25 = v7;
-  v23 = v7;
-  [v22 saveRecord:v14 completionHandler:v24];
+  v25 = completionCopy;
+  v23 = completionCopy;
+  [privateCloudDatabase saveRecord:v14 completionHandler:v24];
 }
 
-- (void)_saveMediaServiceConfigInfo:(id)a3 record:(id)a4 completion:(id)a5
+- (void)_saveMediaServiceConfigInfo:(id)info record:(id)record completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  infoCopy = info;
+  completionCopy = completion;
+  recordCopy = record;
   v10 = sub_100030FE4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v17 = v7;
+    v17 = infoCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Attempting to save record for Apple Music with service info : %{private}@", buf, 0xCu);
   }
 
-  [v9 setRecordFieldForKey:MediaServiceIdentifier value:v7];
+  [recordCopy setRecordFieldForKey:MediaServiceIdentifier value:infoCopy];
   v11 = +[CKContainer MSDCloudKitContainer];
-  v12 = [v11 privateCloudDatabase];
+  privateCloudDatabase = [v11 privateCloudDatabase];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001EB9C;
   v14[3] = &unk_100051C38;
-  v15 = v8;
-  v13 = v8;
-  [v12 saveRecord:v9 withOptions:0 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [privateCloudDatabase saveRecord:recordCopy withOptions:0 completion:v14];
 }
 
-- (void)_setupShareForParticipant:(id)a3 home:(id)a4 completion:(id)a5
+- (void)_setupShareForParticipant:(id)participant home:(id)home completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [MSDHomeCloudShareCreate cloudShareForHome:v8];
+  homeCopy = home;
+  completionCopy = completion;
+  participantCopy = participant;
+  v11 = [MSDHomeCloudShareCreate cloudShareForHome:homeCopy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001ED68;
   v14[3] = &unk_100051C60;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v11 setupShareForHomeParticipant:v10 completion:v14];
+  v15 = homeCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = homeCopy;
+  [v11 setupShareForHomeParticipant:participantCopy completion:v14];
 }
 
-- (BOOL)_shouldPreformRefresh:(id)a3
+- (BOOL)_shouldPreformRefresh:(id)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   v4 = +[MSDDefaultsManager sharedManager];
   v5 = [v4 objectForDefault:@"lastDataRefresh"];
   [v5 doubleValue];
@@ -728,7 +728,7 @@ LABEL_13:
     v13 = +[MSDDefaultsManager sharedManager];
     v14 = [v13 objectForDefault:@"homesRefreshed"];
 
-    v15 = [v3 na_map:&stru_100051C80];
+    v15 = [refreshCopy na_map:&stru_100051C80];
     v16 = v15;
     LOBYTE(v12) = 1;
     if (v14 && v15)
@@ -747,27 +747,27 @@ LABEL_13:
   return v12;
 }
 
-- (void)_handleCKShareError:(id)a3 home:(id)a4
+- (void)_handleCKShareError:(id)error home:(id)home
 {
-  v5 = a3;
-  v6 = a4;
+  errorCopy = error;
+  homeCopy = home;
   v7 = sub_100030FE4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v5;
+    v25 = errorCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Encountered error when trying to share recordZone with owner %@", buf, 0xCu);
   }
 
-  v8 = [v5 domain];
-  if (![v8 isEqualToString:HMErrorDomain])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:HMErrorDomain])
   {
     goto LABEL_15;
   }
 
-  v9 = [v5 code];
+  code = [errorCopy code];
 
-  if (v9 == 8)
+  if (code == 8)
   {
     v10 = sub_100030FE4();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -776,15 +776,15 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "HomeOwner device did not respond in time, hit HomeKit timeout error", buf, 2u);
     }
 
-    v11 = [v6 uniqueIdentifier];
-    v12 = [v11 UUIDString];
-    v8 = [NSString stringWithFormat:@"%@_%@", @"CKShareErrorRetryCount", v12];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    domain = [NSString stringWithFormat:@"%@_%@", @"CKShareErrorRetryCount", uUIDString];
 
     v13 = +[MSDDefaultsManager sharedManager];
-    v14 = [v13 objectForDefault:v8];
-    v15 = [v14 integerValue];
+    v14 = [v13 objectForDefault:domain];
+    integerValue = [v14 integerValue];
 
-    if (v15 == MSCKShareTimeoutErrorMaxRetryCount)
+    if (integerValue == MSCKShareTimeoutErrorMaxRetryCount)
     {
       v16 = sub_100030FE4();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -800,20 +800,20 @@ LABEL_13:
 
     else
     {
-      v19 = v15 + 1;
+      v19 = integerValue + 1;
       v20 = sub_100030FE4();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349315;
         v25 = v19;
         v26 = 2113;
-        v27 = v8;
+        v27 = domain;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Updating value of retry count %{public}lu for %{private}@", buf, 0x16u);
       }
 
       v21 = +[MSDDefaultsManager sharedManager];
       v22 = [NSNumber numberWithUnsignedInteger:v19];
-      [v21 setObject:v22 forDefault:v8];
+      [v21 setObject:v22 forDefault:domain];
 
       v23 = [MSDBackgroundActivityTask alloc];
       v18 = [(MSDBackgroundActivityTask *)v23 initWithIdentifier:kBackgroundActivityUserShareRetryTaskIdentifier];

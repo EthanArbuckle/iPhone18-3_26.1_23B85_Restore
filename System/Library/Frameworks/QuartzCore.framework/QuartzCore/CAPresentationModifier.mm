@@ -1,10 +1,10 @@
 @interface CAPresentationModifier
-- (CAPresentationModifier)initWithKeyPath:(id)a3 initialValue:(id)a4 initialVelocity:(id)a5 additive:(BOOL)a6 preferredFrameRateRangeMaximum:(int)a7 group:(id)a8;
+- (CAPresentationModifier)initWithKeyPath:(id)path initialValue:(id)value initialVelocity:(id)velocity additive:(BOOL)additive preferredFrameRateRangeMaximum:(int)maximum group:(id)group;
 - (Object)CA_copyRenderValue;
 - (id)debugDescription;
 - (id)value;
 - (void)dealloc;
-- (void)setValue:(id)a3 velocity:(id)a4;
+- (void)setValue:(id)value velocity:(id)velocity;
 - (void)write;
 @end
 
@@ -13,18 +13,18 @@
 - (void)write
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v3 = [self->_value CA_numericValueCount];
-  v4 = [self->_velocity CA_numericValueCount];
-  v5 = v4;
+  cA_numericValueCount = [self->_value CA_numericValueCount];
+  cA_numericValueCount2 = [self->_velocity CA_numericValueCount];
+  v5 = cA_numericValueCount2;
   value_count = self->_value_count;
-  if (v3 != value_count)
+  if (cA_numericValueCount != value_count)
   {
-    v4 = [MEMORY[0x1E695DF30] raise:@"CAPresentationModifier" format:{@"%@: value has more elements (%zu) than initial value (%zu)", self, v3, value_count}];
+    cA_numericValueCount2 = [MEMORY[0x1E695DF30] raise:@"CAPresentationModifier" format:{@"%@: value has more elements (%zu) than initial value (%zu)", self, cA_numericValueCount, value_count}];
   }
 
   if (v5)
   {
-    v7 = v5 == v3;
+    v7 = v5 == cA_numericValueCount;
   }
 
   else
@@ -34,24 +34,24 @@
 
   if (!v7)
   {
-    v4 = [MEMORY[0x1E695DF30] raise:@"CAPresentationModifier" format:{@"%@: velocity value has more elements (%zu) than value (%zu)", self, v5, v3}];
+    cA_numericValueCount2 = [MEMORY[0x1E695DF30] raise:@"CAPresentationModifier" format:{@"%@: velocity value has more elements (%zu) than value (%zu)", self, v5, cA_numericValueCount}];
   }
 
-  v8 = 16 * v3;
-  if ((16 * v3) > 0x1000)
+  v8 = 16 * cA_numericValueCount;
+  if ((16 * cA_numericValueCount) > 0x1000)
   {
-    v9 = malloc_type_malloc(16 * v3, 0xA023880EuLL);
+    v9 = malloc_type_malloc(16 * cA_numericValueCount, 0xA023880EuLL);
   }
 
   else
   {
-    MEMORY[0x1EEE9AC00](v4);
+    MEMORY[0x1EEE9AC00](cA_numericValueCount2);
     v9 = v37 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-    bzero(v9, 16 * v3);
+    bzero(v9, 16 * cA_numericValueCount);
   }
 
   v10 = [self->_value CA_copyNumericValue:v9];
-  v11 = [self->_velocity CA_copyNumericValue:&v9[8 * v3]];
+  v11 = [self->_velocity CA_copyNumericValue:&v9[8 * cA_numericValueCount]];
   v12 = v11;
   v13 = self->_value_count;
   if (v10 <= v13 && v11 <= v13)
@@ -78,16 +78,16 @@ LABEL_17:
   group = self->_group;
   if (group)
   {
-    v19 = [(CAPresentationModifierGroup *)group shmem];
+    shmem = [(CAPresentationModifierGroup *)group shmem];
   }
 
   else
   {
-    v19 = impl[2];
+    shmem = impl[2];
   }
 
-  v21 = *(v19 + 16);
-  v20 = *(v19 + 24);
+  v21 = *(shmem + 16);
+  v20 = *(shmem + 24);
   v22 = v21 - 40;
   if (v21 >= 0x28 && v17 < v22 >> 3)
   {
@@ -95,7 +95,7 @@ LABEL_17:
     v24 = *(v23 - 8);
     if (v24)
     {
-      v25 = 2 * v3;
+      v25 = 2 * cA_numericValueCount;
       v26 = (16 * v24) | 8;
       v27 = *(v23 - 4);
       v28 = 2 * v24;
@@ -167,26 +167,26 @@ LABEL_17:
     }
 
     impl = self->_impl;
-    v7 = [(CAPresentationModifierGroup *)group shmem];
+    shmem = [(CAPresentationModifierGroup *)group shmem];
     v8 = *(impl + 2);
-    if (v8 != v7)
+    if (v8 != shmem)
     {
       if (v8 && atomic_fetch_add(v8 + 2, 0xFFFFFFFF) == 1)
       {
         (*(*v8 + 16))(v8);
       }
 
-      if (v7)
+      if (shmem)
       {
-        v9 = (v7 + 8);
-        if (!atomic_fetch_add((v7 + 8), 1u))
+        v9 = (shmem + 8);
+        if (!atomic_fetch_add((shmem + 8), 1u))
         {
-          v7 = 0;
+          shmem = 0;
           atomic_fetch_add(v9, 0xFFFFFFFF);
         }
       }
 
-      *(impl + 2) = v7;
+      *(impl + 2) = shmem;
     }
   }
 
@@ -226,19 +226,19 @@ LABEL_17:
   [(CAPresentationModifier *)&v4 dealloc];
 }
 
-- (void)setValue:(id)a3 velocity:(id)a4
+- (void)setValue:(id)value velocity:(id)velocity
 {
-  if (!a3)
+  if (!value)
   {
     [MEMORY[0x1E695DF30] raise:@"CAPresentationModifier" format:{@"%@: value can't be nil", self}];
   }
 
-  if (self->_value != a3)
+  if (self->_value != value)
   {
     os_unfair_lock_lock(&self->_l);
 
-    self->_value = a3;
-    self->_velocity = a4;
+    self->_value = value;
+    self->_velocity = velocity;
     os_unfair_lock_unlock(&self->_l);
     [(CAPresentationModifier *)self write];
     if (BYTE11(xmmword_1ED4E980C) == 1)
@@ -256,9 +256,9 @@ LABEL_17:
   return [v3 stringWithFormat:@"<%@:%p; keyPath = %@; additive = %d>", NSStringFromClass(v4), self, -[CAPresentationModifier keyPath](self, "keyPath"), -[CAPresentationModifier additive](self, "additive")];
 }
 
-- (CAPresentationModifier)initWithKeyPath:(id)a3 initialValue:(id)a4 initialVelocity:(id)a5 additive:(BOOL)a6 preferredFrameRateRangeMaximum:(int)a7 group:(id)a8
+- (CAPresentationModifier)initWithKeyPath:(id)path initialValue:(id)value initialVelocity:(id)velocity additive:(BOOL)additive preferredFrameRateRangeMaximum:(int)maximum group:(id)group
 {
-  v10 = a6;
+  additiveCopy = additive;
   v47 = *MEMORY[0x1E69E9840];
   v46.receiver = self;
   v46.super_class = CAPresentationModifier;
@@ -268,9 +268,9 @@ LABEL_17:
     return v14;
   }
 
-  v15 = [a4 CA_numericValueCount];
-  v16 = (16 * v15) | 8;
-  if ((v15 - 0x1000000000000000) < 0xF000000000000001)
+  cA_numericValueCount = [value CA_numericValueCount];
+  v16 = (16 * cA_numericValueCount) | 8;
+  if ((cA_numericValueCount - 0x1000000000000000) < 0xF000000000000001)
   {
     v16 = 0;
   }
@@ -285,20 +285,20 @@ LABEL_17:
     v17 = 0;
   }
 
-  if ((v15 - 0x1000000000000000) < 0xF000000000000001 || !v17)
+  if ((cA_numericValueCount - 0x1000000000000000) < 0xF000000000000001 || !v17)
   {
-    [MEMORY[0x1E695DF30] raise:@"CAPresentationModifier" format:{@"%@: too large count (%zu) for value (%@)", v14, v15, a4}];
+    [MEMORY[0x1E695DF30] raise:@"CAPresentationModifier" format:{@"%@: too large count (%zu) for value (%@)", v14, cA_numericValueCount, value}];
     goto LABEL_49;
   }
 
-  if (a8)
+  if (group)
   {
-    v44 = a4;
-    v18 = [a8 nextSlotWithPayloadSize:?];
-    v19 = [a8 shmem];
-    atomic_fetch_add((v19 + 8), 1u);
-    v20 = (*(v19 + 24) + *(v19 + 16) - 8 * v18);
-    *(v20 - 2) = v15;
+    valueCopy2 = value;
+    v18 = [group nextSlotWithPayloadSize:?];
+    shmem = [group shmem];
+    atomic_fetch_add((shmem + 8), 1u);
+    v20 = (*(shmem + 24) + *(shmem + 16) - 8 * v18);
+    *(v20 - 2) = cA_numericValueCount;
     if (v18)
     {
       v21 = 48 * *v20 + 24;
@@ -340,19 +340,19 @@ LABEL_17:
       goto LABEL_49;
     }
 
-    v19 = v25;
-    v44 = a4;
+    shmem = v25;
+    valueCopy2 = value;
     v22 = 0;
     v18 = 0;
     v27 = *(v25 + 2);
     v26 = *(v25 + 3);
     *(v26 + 12) = 1;
     v20 = (v26 + v27);
-    *(v26 + v27 - 8) = v15;
+    *(v26 + v27 - 8) = cA_numericValueCount;
   }
 
   *(v20 - 1) = v22;
-  v43 = a7;
+  maximumCopy = maximum;
   if (x_malloc_get_zone::once != -1)
   {
     dispatch_once_f(&x_malloc_get_zone::once, 0, malloc_zone_init);
@@ -371,11 +371,11 @@ LABEL_49:
   *(v28 + 3) = 44;
   ++dword_1ED4EAAE8;
   *v28 = &unk_1EF203050;
-  v28[2] = v19;
+  v28[2] = shmem;
   v28[3] = v18;
   v28[4] = 0;
   v45 = 0;
-  CA::Render::key_path_set(&v45, a3, v29);
+  CA::Render::key_path_set(&v45, path, v29);
   v32 = v45;
   if (!v45)
   {
@@ -402,7 +402,7 @@ LABEL_29:
 LABEL_31:
   CA::Render::key_path_free(v30[4], v31);
   v30[4] = v32;
-  if (v10)
+  if (additiveCopy)
   {
     v34 = 256;
   }
@@ -413,10 +413,10 @@ LABEL_31:
   }
 
   v35 = *(v30 + 3) & 0xFFFFF8FF | v34;
-  if (a5)
+  if (velocity)
   {
     v36 = 0;
-    v37 = v44;
+    v37 = valueCopy2;
     while (v33 != [CAPresentationModifier initWithKeyPath:initialValue:initialVelocity:additive:preferredFrameRateRangeMaximum:group:]::velocity_atoms[v36])
     {
       if (++v36 == 7)
@@ -432,7 +432,7 @@ LABEL_31:
   else
   {
     v38 = 0;
-    v37 = v44;
+    v37 = valueCopy2;
   }
 
 LABEL_41:
@@ -449,13 +449,13 @@ LABEL_41:
   }
 
   *(v30 + 3) = v40 | v41;
-  *(v30 + 10) = v43;
+  *(v30 + 10) = maximumCopy;
   v14->_impl = v30;
-  v14->_keyPath = [a3 copy];
-  v14->_group = a8;
-  v14->_value_count = v15;
+  v14->_keyPath = [path copy];
+  v14->_group = group;
+  v14->_value_count = cA_numericValueCount;
   v14->_f = 1;
-  [(CAPresentationModifier *)v14 setValue:v37 velocity:a5];
+  [(CAPresentationModifier *)v14 setValue:v37 velocity:velocity];
   return v14;
 }
 

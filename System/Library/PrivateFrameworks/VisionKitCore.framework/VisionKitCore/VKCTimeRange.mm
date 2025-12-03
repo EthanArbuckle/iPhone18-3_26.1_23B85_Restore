@@ -2,7 +2,7 @@
 - (BOOL)contains:(_BOOL8)result;
 - (double)duration;
 - (double)end;
-- (double)initWithStart:(double)a3 duration:;
+- (double)initWithStart:(double)start duration:;
 - (double)start;
 - (uint64_t)setDuration:(uint64_t)result;
 - (uint64_t)setStart:(uint64_t)result;
@@ -10,7 +10,7 @@
 
 @implementation VKCTimeRange
 
-- (double)initWithStart:(double)a3 duration:
+- (double)initWithStart:(double)start duration:
 {
   if (result)
   {
@@ -20,7 +20,7 @@
     if (result)
     {
       result[1] = a2;
-      result[2] = a3;
+      result[2] = start;
     }
   }
 
@@ -29,9 +29,9 @@
 
 - (double)end
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8) + *(a1 + 16);
+    return *(self + 8) + *(self + 16);
   }
 
   else
@@ -42,9 +42,9 @@
 
 - (double)start
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -55,9 +55,9 @@
 
 - (double)duration
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else

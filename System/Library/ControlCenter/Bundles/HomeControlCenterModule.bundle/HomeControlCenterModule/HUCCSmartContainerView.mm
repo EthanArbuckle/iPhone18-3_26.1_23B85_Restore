@@ -1,24 +1,24 @@
 @interface HUCCSmartContainerView
 - (CGRect)compressedAnimationStartFrame;
-- (HUCCSmartContainerView)initWithFrame:(CGRect)a3;
+- (HUCCSmartContainerView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)hideLockSecurity;
 - (void)layoutSubviews;
 - (void)resetToInitialState;
-- (void)setCompressedView:(id)a3;
-- (void)setExpandedView:(id)a3;
-- (void)showLockSecurityWithFrameDelegate:(id)a3;
-- (void)willMoveToExpandedStateWithAnimationStartFrame:(CGRect)a3;
+- (void)setCompressedView:(id)view;
+- (void)setExpandedView:(id)view;
+- (void)showLockSecurityWithFrameDelegate:(id)delegate;
+- (void)willMoveToExpandedStateWithAnimationStartFrame:(CGRect)frame;
 @end
 
 @implementation HUCCSmartContainerView
 
-- (HUCCSmartContainerView)initWithFrame:(CGRect)a3
+- (HUCCSmartContainerView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = HUCCSmartContainerView;
-  v5 = [(HUCCSmartContainerView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(HUCCSmartContainerView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = objc_msgSend_clearColor(MEMORY[0x29EDC7A00], v3, v4);
@@ -99,10 +99,10 @@
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setCompressedView:(id)a3
+- (void)setCompressedView:(id)view
 {
   v48 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  viewCopy = view;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -116,7 +116,7 @@
     v44 = 2112;
     v45 = compressedView;
     v46 = 2112;
-    v47 = v4;
+    v47 = viewCopy;
     _os_log_impl(&dword_29C992000, v5, OS_LOG_TYPE_DEFAULT, "%@:%s, was %@ is %@", &v40, 0x2Au);
   }
 
@@ -129,8 +129,8 @@
   }
 
   v17 = self->_compressedView;
-  self->_compressedView = v4;
-  v18 = v4;
+  self->_compressedView = viewCopy;
+  v18 = viewCopy;
 
   objc_msgSend_addSubview_(self, v19, self->_compressedView);
   objc_msgSend_bounds(self, v20, v21);
@@ -147,10 +147,10 @@
   v39 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setExpandedView:(id)a3
+- (void)setExpandedView:(id)view
 {
   v31 = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  viewCopy = view;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -164,7 +164,7 @@
     v27 = 2112;
     v28 = expandedView;
     v29 = 2112;
-    v30 = v5;
+    v30 = viewCopy;
     _os_log_impl(&dword_29C992000, v6, OS_LOG_TYPE_DEFAULT, "%@:%s, was %@ is %@", &v23, 0x2Au);
   }
 
@@ -174,7 +174,7 @@
     objc_msgSend_removeFromSuperview(v12, v10, v11);
   }
 
-  objc_storeStrong(&self->_expandedView, a3);
+  objc_storeStrong(&self->_expandedView, view);
   if (self->_expandedView)
   {
     v13 = HFLogForCategory();
@@ -201,10 +201,10 @@
   v22 = *MEMORY[0x29EDCA608];
 }
 
-- (void)willMoveToExpandedStateWithAnimationStartFrame:(CGRect)a3
+- (void)willMoveToExpandedStateWithAnimationStartFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v7 = objc_msgSend_expandedView(self, a2, v3);
   objc_msgSend_setFrame_(v7, v8, v9, 0.0, 0.0, width, height);
 
@@ -276,10 +276,10 @@ LABEL_6:
   v37 = *MEMORY[0x29EDCA608];
 }
 
-- (void)showLockSecurityWithFrameDelegate:(id)a3
+- (void)showLockSecurityWithFrameDelegate:(id)delegate
 {
   v66 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  delegateCopy = delegate;
   if ((objc_msgSend_isShowingLockSecurity(self, v5, v6) & 1) == 0)
   {
     v7 = objc_alloc(MEMORY[0x29EDC5480]);
@@ -287,7 +287,7 @@ LABEL_6:
     objc_msgSend_setLockSecurityView_(self, v11, v10);
 
     v14 = objc_msgSend_lockSecurityView(self, v12, v13);
-    objc_msgSend_setFrameDelegate_(v14, v15, v4);
+    objc_msgSend_setFrameDelegate_(v14, v15, delegateCopy);
 
     v18 = objc_msgSend_lockSecurityView(self, v16, v17);
     objc_msgSend_setTranslatesAutoresizingMaskIntoConstraints_(v18, v19, 1);

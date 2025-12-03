@@ -1,8 +1,8 @@
 @interface BLPurchaseResponseItem
 - (BLPurchaseResponseItem)init;
-- (BLPurchaseResponseItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BLPurchaseResponseItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BLPurchaseResponseItem
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (BLPurchaseResponseItem)initWithCoder:(id)a3
+- (BLPurchaseResponseItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BLPurchaseResponseItem *)self init];
   if (v5)
   {
@@ -46,11 +46,11 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"item"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"item"];
     item = v5->_item;
     v5->_item = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadID"];
     downloadID = v5->_downloadID;
     v5->_downloadID = v14;
 
@@ -60,58 +60,58 @@
     v19 = objc_opt_class();
     v20 = objc_opt_class();
     v21 = [v16 setWithObjects:{v17, v18, v19, v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"metadata"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchaseParameters"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchaseParameters"];
     purchaseParameters = v5->_purchaseParameters;
     v5->_purchaseParameters = v24;
 
-    v5->_isPurchaseRedownload = [v4 decodeBoolForKey:@"isPurchaseRedownload"];
-    v5->_isAudiobook = [v4 decodeBoolForKey:@"isAudiobook"];
-    v5->_isPDF = [v4 decodeBoolForKey:@"isPDF"];
+    v5->_isPurchaseRedownload = [coderCopy decodeBoolForKey:@"isPurchaseRedownload"];
+    v5->_isAudiobook = [coderCopy decodeBoolForKey:@"isAudiobook"];
+    v5->_isPDF = [coderCopy decodeBoolForKey:@"isPDF"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(BLPurchaseResponseItem *)self item];
-  [v8 encodeObject:v4 forKey:@"item"];
+  coderCopy = coder;
+  item = [(BLPurchaseResponseItem *)self item];
+  [coderCopy encodeObject:item forKey:@"item"];
 
-  v5 = [(BLPurchaseResponseItem *)self downloadID];
-  [v8 encodeObject:v5 forKey:@"downloadID"];
+  downloadID = [(BLPurchaseResponseItem *)self downloadID];
+  [coderCopy encodeObject:downloadID forKey:@"downloadID"];
 
-  v6 = [(BLPurchaseResponseItem *)self metadata];
-  [v8 encodeObject:v6 forKey:@"metadata"];
+  metadata = [(BLPurchaseResponseItem *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 
-  v7 = [(BLPurchaseResponseItem *)self purchaseParameters];
-  [v8 encodeObject:v7 forKey:@"purchaseParameters"];
+  purchaseParameters = [(BLPurchaseResponseItem *)self purchaseParameters];
+  [coderCopy encodeObject:purchaseParameters forKey:@"purchaseParameters"];
 
-  [v8 encodeBool:-[BLPurchaseResponseItem isPurchaseRedownload](self forKey:{"isPurchaseRedownload"), @"isPurchaseRedownload"}];
-  [v8 encodeBool:-[BLPurchaseResponseItem isAudiobook](self forKey:{"isAudiobook"), @"isAudiobook"}];
-  [v8 encodeBool:-[BLPurchaseResponseItem isPDF](self forKey:{"isPDF"), @"isPDF"}];
+  [coderCopy encodeBool:-[BLPurchaseResponseItem isPurchaseRedownload](self forKey:{"isPurchaseRedownload"), @"isPurchaseRedownload"}];
+  [coderCopy encodeBool:-[BLPurchaseResponseItem isAudiobook](self forKey:{"isAudiobook"), @"isAudiobook"}];
+  [coderCopy encodeBool:-[BLPurchaseResponseItem isPDF](self forKey:{"isPDF"), @"isPDF"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   if (v4)
   {
-    v5 = [(BLPurchaseResponseItem *)self item];
-    [v4 setItem:v5];
+    item = [(BLPurchaseResponseItem *)self item];
+    [v4 setItem:item];
 
-    v6 = [(BLPurchaseResponseItem *)self downloadID];
-    [v4 setDownloadID:v6];
+    downloadID = [(BLPurchaseResponseItem *)self downloadID];
+    [v4 setDownloadID:downloadID];
 
-    v7 = [(BLPurchaseResponseItem *)self metadata];
-    [v4 setMetadata:v7];
+    metadata = [(BLPurchaseResponseItem *)self metadata];
+    [v4 setMetadata:metadata];
 
-    v8 = [(BLPurchaseResponseItem *)self purchaseParameters];
-    [v4 setPurchaseParameters:v8];
+    purchaseParameters = [(BLPurchaseResponseItem *)self purchaseParameters];
+    [v4 setPurchaseParameters:purchaseParameters];
 
     [v4 setIsPurchaseRedownload:{-[BLPurchaseResponseItem isPurchaseRedownload](self, "isPurchaseRedownload")}];
     [v4 setIsAudiobook:{-[BLPurchaseResponseItem isAudiobook](self, "isAudiobook")}];

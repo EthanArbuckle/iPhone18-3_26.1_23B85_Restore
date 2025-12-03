@@ -1,7 +1,7 @@
 @interface PPSWStringDonation
-- (PPSWStringDonation)initWithLabeledStrings:(id)a3 bundleId:(id)a4 groupId:(id)a5 documentId:(id)a6;
+- (PPSWStringDonation)initWithLabeledStrings:(id)strings bundleId:(id)id groupId:(id)groupId documentId:(id)documentId;
 - (PPSource)source;
-- (void)setSource:(id)a3;
+- (void)setSource:(id)source;
 @end
 
 @implementation PPSWStringDonation
@@ -13,14 +13,14 @@
   return v2;
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v5 = a3;
-  v6 = self;
-  sub_232271E58(a3);
+  sourceCopy = source;
+  selfCopy = self;
+  sub_232271E58(source);
 }
 
-- (PPSWStringDonation)initWithLabeledStrings:(id)a3 bundleId:(id)a4 groupId:(id)a5 documentId:(id)a6
+- (PPSWStringDonation)initWithLabeledStrings:(id)strings bundleId:(id)id groupId:(id)groupId documentId:(id)documentId
 {
   v6 = sub_232401148();
   v7 = sub_232401178();

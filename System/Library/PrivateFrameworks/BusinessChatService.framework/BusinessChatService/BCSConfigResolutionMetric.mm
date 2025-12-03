@@ -1,5 +1,5 @@
 @interface BCSConfigResolutionMetric
-+ (id)metricForConfigType:(int64_t)a3 postProcessingMetricHandlers:(id)a4;
++ (id)metricForConfigType:(int64_t)type postProcessingMetricHandlers:(id)handlers;
 - (NSDictionary)coreAnalyticsPayload;
 - (int64_t)type;
 @end
@@ -14,13 +14,13 @@
   v16[0] = v3;
   v15[1] = @"cacheHit";
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(BCSConfigResolutionMetric *)self cacheHitMeasurement];
-  v6 = [v4 numberWithBool:{objc_msgSend(v5, "flag")}];
+  cacheHitMeasurement = [(BCSConfigResolutionMetric *)self cacheHitMeasurement];
+  v6 = [v4 numberWithBool:{objc_msgSend(cacheHitMeasurement, "flag")}];
   v16[1] = v6;
   v15[2] = @"duration";
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(BCSConfigResolutionMetric *)self timingMeasurement];
-  [v8 duration];
+  timingMeasurement = [(BCSConfigResolutionMetric *)self timingMeasurement];
+  [timingMeasurement duration];
   v10 = [v7 numberWithInteger:(v9 * 1000.0)];
   v16[2] = v10;
   v15[3] = @"errorCode";
@@ -33,12 +33,12 @@
   return v12;
 }
 
-+ (id)metricForConfigType:(int64_t)a3 postProcessingMetricHandlers:(id)a4
++ (id)metricForConfigType:(int64_t)type postProcessingMetricHandlers:(id)handlers
 {
-  v5 = a4;
+  handlersCopy = handlers;
   v6 = [BCSConfigResolutionMetric alloc];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v8 = [(BCSMetric *)&v6->super.super.isa _initWithType:v7 context:v5 postProcessingMetricHandlers:?];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v8 = [(BCSMetric *)&v6->super.super.isa _initWithType:v7 context:handlersCopy postProcessingMetricHandlers:?];
 
   return v8;
 }

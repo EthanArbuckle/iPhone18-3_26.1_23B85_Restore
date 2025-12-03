@@ -3,24 +3,24 @@
 - (RTIInputSystemSourceSession)sourceSession;
 - (SFRemoteTextInputClient)init;
 - (void)_cleanup;
-- (void)_fireEventHandlerWithPayload:(id)a3;
-- (void)_handleSessionEvent:(int64_t)a3 forSession:(id)a4;
+- (void)_fireEventHandlerWithPayload:(id)payload;
+- (void)_handleSessionEvent:(int64_t)event forSession:(id)session;
 - (void)activate;
 - (void)currentPayload;
 - (void)dealloc;
-- (void)fireEventHandlerWithPayload:(id)a3;
-- (void)handleTextActionPayload:(id)a3;
-- (void)handleTextInputData:(id)a3;
-- (void)handleUsername:(id)a3 password:(id)a4;
-- (void)inputSystemService:(id)a3 didCreateInputSession:(id)a4;
-- (void)inputSystemService:(id)a3 inputSessionDidBegin:(id)a4;
-- (void)inputSystemService:(id)a3 inputSessionDidDie:(id)a4;
-- (void)inputSystemService:(id)a3 inputSessionDidEnd:(id)a4;
-- (void)inputSystemService:(id)a3 inputSessionDidPause:(id)a4 withReason:(id)a5;
-- (void)inputSystemService:(id)a3 inputSessionDidUnpause:(id)a4 withReason:(id)a5;
-- (void)inputSystemService:(id)a3 inputSessionDocumentDidChange:(id)a4;
+- (void)fireEventHandlerWithPayload:(id)payload;
+- (void)handleTextActionPayload:(id)payload;
+- (void)handleTextInputData:(id)data;
+- (void)handleUsername:(id)username password:(id)password;
+- (void)inputSystemService:(id)service didCreateInputSession:(id)session;
+- (void)inputSystemService:(id)service inputSessionDidBegin:(id)begin;
+- (void)inputSystemService:(id)service inputSessionDidDie:(id)die;
+- (void)inputSystemService:(id)service inputSessionDidEnd:(id)end;
+- (void)inputSystemService:(id)service inputSessionDidPause:(id)pause withReason:(id)reason;
+- (void)inputSystemService:(id)service inputSessionDidUnpause:(id)unpause withReason:(id)reason;
+- (void)inputSystemService:(id)service inputSessionDocumentDidChange:(id)change;
 - (void)invalidate;
-- (void)performTextOperations:(id)a3;
+- (void)performTextOperations:(id)operations;
 @end
 
 @implementation SFRemoteTextInputClient
@@ -147,8 +147,8 @@ uint64_t __37__SFRemoteTextInputClient_invalidate__block_invoke(uint64_t a1)
 - (NSDictionary)currentPayload
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(RTIInputSystemService *)self->_rtiService currentSession];
-  v4 = [v3 currentDataPayload];
+  currentSession = [(RTIInputSystemService *)self->_rtiService currentSession];
+  currentDataPayload = [currentSession currentDataPayload];
 
   if (!self->_activateCalled || self->_invalidateCalled)
   {
@@ -159,9 +159,9 @@ uint64_t __37__SFRemoteTextInputClient_invalidate__block_invoke(uint64_t a1)
 
   else
   {
-    if (self->_rtiService && v4)
+    if (self->_rtiService && currentDataPayload)
     {
-      v5 = SFTextInputDataForRTIDataPayload(v4);
+      v5 = SFTextInputDataForRTIDataPayload(currentDataPayload);
       if (v5)
       {
         v6 = v5;
@@ -204,25 +204,25 @@ LABEL_12:
   }
 }
 
-- (void)handleTextInputData:(id)a3
+- (void)handleTextInputData:(id)data
 {
-  v4 = a3;
-  v12 = v4;
+  dataCopy = data;
+  v12 = dataCopy;
   if (gLogCategory_SFRemoteTextInputClient <= 30)
   {
-    if (gLogCategory_SFRemoteTextInputClient != -1 || (v5 = _LogCategory_Initialize(), v4 = v12, v5))
+    if (gLogCategory_SFRemoteTextInputClient != -1 || (v5 = _LogCategory_Initialize(), dataCopy = v12, v5))
     {
-      [SFRemoteTextInputClient handleTextInputData:v4];
-      v4 = v12;
+      [SFRemoteTextInputClient handleTextInputData:dataCopy];
+      dataCopy = v12;
     }
   }
 
-  v6 = SFRTIDataPayloadForData(v4);
+  v6 = SFRTIDataPayloadForData(dataCopy);
   if (v6)
   {
     p_rtiService = &self->_rtiService;
-    v8 = [(RTIInputSystemService *)self->_rtiService currentSession];
-    if (v8)
+    currentSession = [(RTIInputSystemService *)self->_rtiService currentSession];
+    if (currentSession)
     {
     }
 
@@ -237,17 +237,17 @@ LABEL_12:
       goto LABEL_17;
     }
 
-    v9 = [(RTIInputSystemService *)*p_rtiService currentSession];
+    currentSession2 = [(RTIInputSystemService *)*p_rtiService currentSession];
 
-    if (v9)
+    if (currentSession2)
     {
       if (gLogCategory_SFRemoteTextInputClient <= 30 && (gLogCategory_SFRemoteTextInputClient != -1 || _LogCategory_Initialize()))
       {
         [SFRemoteTextInputClient handleTextInputData:?];
       }
 
-      v10 = [(RTIInputSystemService *)*p_rtiService currentSession];
-      [v10 handleTextActionPayload:v6];
+      currentSession3 = [(RTIInputSystemService *)*p_rtiService currentSession];
+      [currentSession3 handleTextActionPayload:v6];
 
 LABEL_17:
       v11 = 0;
@@ -269,20 +269,20 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)handleUsername:(id)a3 password:(id)a4
+- (void)handleUsername:(id)username password:(id)password
 {
-  v15 = a3;
-  v6 = a4;
+  usernameCopy = username;
+  passwordCopy = password;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(RTIInputSystemService *)self->_rtiService currentSession];
-  v9 = v15;
-  if (!v8)
+  currentSession = [(RTIInputSystemService *)self->_rtiService currentSession];
+  v9 = usernameCopy;
+  if (!currentSession)
   {
     [SFRemoteTextInputClient handleUsername:password:];
     goto LABEL_11;
   }
 
-  if (!(v15 | v6))
+  if (!(usernameCopy | passwordCopy))
   {
     [SFRemoteTextInputClient handleUsername:gLogCategory_SFRemoteTextInputClient password:?];
     goto LABEL_11;
@@ -290,10 +290,10 @@ LABEL_18:
 
   if (gLogCategory_SFRemoteTextInputClient <= 30)
   {
-    if (gLogCategory_SFRemoteTextInputClient != -1 || (v10 = _LogCategory_Initialize(), v9 = v15, v10))
+    if (gLogCategory_SFRemoteTextInputClient != -1 || (v10 = _LogCategory_Initialize(), v9 = usernameCopy, v10))
     {
       [SFRemoteTextInputClient handleUsername:password:];
-      if (!v15)
+      if (!usernameCopy)
       {
         goto LABEL_8;
       }
@@ -306,46 +306,46 @@ LABEL_18:
   {
 LABEL_7:
     v11 = getTIKeyboardOutputInfoTypeUsernameStr();
-    [v7 setObject:v15 forKeyedSubscript:v11];
+    [v7 setObject:usernameCopy forKeyedSubscript:v11];
   }
 
 LABEL_8:
-  if (v6)
+  if (passwordCopy)
   {
     v12 = getTIKeyboardOutputInfoTypePasswordStr();
-    [v7 setObject:v6 forKeyedSubscript:v12];
+    [v7 setObject:passwordCopy forKeyedSubscript:v12];
   }
 
-  v13 = [v8 textOperations];
-  v14 = [v13 keyboardOutput];
-  [v14 setCustomInfo:v7];
+  textOperations = [currentSession textOperations];
+  keyboardOutput = [textOperations keyboardOutput];
+  [keyboardOutput setCustomInfo:v7];
 
-  [v8 setSessionDelegate:self->_rtiService];
-  [v8 flushOperations];
+  [currentSession setSessionDelegate:self->_rtiService];
+  [currentSession flushOperations];
 LABEL_11:
 }
 
-- (void)fireEventHandlerWithPayload:(id)a3
+- (void)fireEventHandlerWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__SFRemoteTextInputClient_fireEventHandlerWithPayload___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = payloadCopy;
+  v6 = payloadCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_fireEventHandlerWithPayload:(id)a3
+- (void)_fireEventHandlerWithPayload:(id)payload
 {
   v12[1] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  payloadCopy = payload;
   dispatch_assert_queue_V2(dispatchQueue);
-  v6 = SFTextInputDataForRTIDataPayload(v5);
+  v6 = SFTextInputDataForRTIDataPayload(payloadCopy);
 
   if (v6)
   {
@@ -372,16 +372,16 @@ LABEL_11:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSessionEvent:(int64_t)a3 forSession:(id)a4
+- (void)_handleSessionEvent:(int64_t)event forSession:(id)session
 {
-  v20 = a4;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v6 = [v20 documentTraits];
-  v7 = [v6 autofillMode];
+  documentTraits = [sessionCopy documentTraits];
+  autofillMode = [documentTraits autofillMode];
 
   if (gLogCategory_SFRemoteTextInputClient >= 31)
   {
-    v8 = v7 == 1;
+    v8 = autofillMode == 1;
   }
 
   else
@@ -391,28 +391,28 @@ LABEL_11:
       [SFRemoteTextInputClient _handleSessionEvent:forSession:];
     }
 
-    v8 = v7 == 1;
+    v8 = autofillMode == 1;
     if (gLogCategory_SFRemoteTextInputClient <= 30 && (gLogCategory_SFRemoteTextInputClient != -1 || _LogCategory_Initialize()))
     {
-      [SFRemoteTextInputClient _handleSessionEvent:a3 forSession:?];
+      [SFRemoteTextInputClient _handleSessionEvent:event forSession:?];
     }
   }
 
-  v9 = [v20 documentTraits];
-  if (v9)
+  documentTraits2 = [sessionCopy documentTraits];
+  if (documentTraits2)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v11 = [v9 associatedDomains];
-    [v10 setObject:v11 forKeyedSubscript:@"remoteAssociatedDomains"];
+    associatedDomains = [documentTraits2 associatedDomains];
+    [v10 setObject:associatedDomains forKeyedSubscript:@"remoteAssociatedDomains"];
 
-    v12 = [v9 bundleId];
-    [v10 setObject:v12 forKeyedSubscript:@"remoteBundleID"];
+    bundleId = [documentTraits2 bundleId];
+    [v10 setObject:bundleId forKeyedSubscript:@"remoteBundleID"];
 
-    v13 = [v9 localizedAppName];
-    [v10 setObject:v13 forKeyedSubscript:@"remoteLocalizedAppName"];
+    localizedAppName = [documentTraits2 localizedAppName];
+    [v10 setObject:localizedAppName forKeyedSubscript:@"remoteLocalizedAppName"];
 
-    v14 = [v9 appName];
-    [v10 setObject:v14 forKeyedSubscript:@"remoteUnlocalizedAppName"];
+    appName = [documentTraits2 appName];
+    [v10 setObject:appName forKeyedSubscript:@"remoteUnlocalizedAppName"];
   }
 
   else
@@ -420,23 +420,23 @@ LABEL_11:
     v10 = 0;
   }
 
-  if (a3 > 3)
+  if (event > 3)
   {
-    if (a3 == 4)
+    if (event == 4)
     {
 LABEL_31:
       v15 = 0;
       goto LABEL_36;
     }
 
-    if (a3 == 5)
+    if (event == 5)
     {
       v15 = 0;
       self->_paused = 1;
       goto LABEL_36;
     }
 
-    if (a3 != 6)
+    if (event != 6)
     {
 LABEL_23:
       if (gLogCategory_SFRemoteTextInputClient <= 60 && (gLogCategory_SFRemoteTextInputClient != -1 || _LogCategory_Initialize()))
@@ -453,7 +453,7 @@ LABEL_23:
 
   else
   {
-    switch(a3)
+    switch(event)
     {
       case 1:
         self->_paused = 0;
@@ -492,9 +492,9 @@ LABEL_23:
   }
 
 LABEL_36:
-  v18 = [v20 currentDataPayload];
-  v19 = v18;
-  if ((v15 & 1) != 0 || !v18)
+  currentDataPayload = [sessionCopy currentDataPayload];
+  v19 = currentDataPayload;
+  if ((v15 & 1) != 0 || !currentDataPayload)
   {
     if (gLogCategory_SFRemoteTextInputClient <= 60 && (gLogCategory_SFRemoteTextInputClient != -1 || _LogCategory_Initialize()))
     {
@@ -504,17 +504,17 @@ LABEL_36:
 
   else
   {
-    [(SFRemoteTextInputClient *)self fireEventHandlerWithPayload:v18];
+    [(SFRemoteTextInputClient *)self fireEventHandlerWithPayload:currentDataPayload];
   }
 }
 
-- (void)performTextOperations:(id)a3
+- (void)performTextOperations:(id)operations
 {
-  v3 = a3;
-  v4 = v3;
+  operationsCopy = operations;
+  v4 = operationsCopy;
   if (gLogCategory_SFRemoteTextInputClient <= 30)
   {
-    v6 = v3;
+    v6 = operationsCopy;
     if (gLogCategory_SFRemoteTextInputClient != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       [SFRemoteTextInputClient performTextOperations:];
@@ -523,10 +523,10 @@ LABEL_36:
   }
 }
 
-- (void)inputSystemService:(id)a3 didCreateInputSession:(id)a4
+- (void)inputSystemService:(id)service didCreateInputSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  sessionCopy = session;
   v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFRemoteTextInputClient/didCreateInputSession", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -539,9 +539,9 @@ LABEL_36:
   os_activity_scope_leave(&state);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidBegin:(id)a4
+- (void)inputSystemService:(id)service inputSessionDidBegin:(id)begin
 {
-  v5 = a4;
+  beginCopy = begin;
   v6 = _os_activity_create(&dword_1A9662000, "Sharing/SFRemoteTextInputClient/inputSessionDidBegin", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -552,16 +552,16 @@ LABEL_36:
   v9[2] = __67__SFRemoteTextInputClient_inputSystemService_inputSessionDidBegin___block_invoke;
   v9[3] = &unk_1E788A658;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = beginCopy;
+  v8 = beginCopy;
   dispatch_async(dispatchQueue, v9);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidEnd:(id)a4
+- (void)inputSystemService:(id)service inputSessionDidEnd:(id)end
 {
-  v5 = a4;
+  endCopy = end;
   v6 = _os_activity_create(&dword_1A9662000, "Sharing/SFRemoteTextInputClient/inputSessionDidEnd", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -572,16 +572,16 @@ LABEL_36:
   v9[2] = __65__SFRemoteTextInputClient_inputSystemService_inputSessionDidEnd___block_invoke;
   v9[3] = &unk_1E788A658;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = endCopy;
+  v8 = endCopy;
   dispatch_async(dispatchQueue, v9);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidDie:(id)a4
+- (void)inputSystemService:(id)service inputSessionDidDie:(id)die
 {
-  v5 = a4;
+  dieCopy = die;
   v6 = _os_activity_create(&dword_1A9662000, "Sharing/SFRemoteTextInputClient/inputSessionDidDie", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -592,16 +592,16 @@ LABEL_36:
   v9[2] = __65__SFRemoteTextInputClient_inputSystemService_inputSessionDidDie___block_invoke;
   v9[3] = &unk_1E788A658;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = dieCopy;
+  v8 = dieCopy;
   dispatch_async(dispatchQueue, v9);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidPause:(id)a4 withReason:(id)a5
+- (void)inputSystemService:(id)service inputSessionDidPause:(id)pause withReason:(id)reason
 {
-  v6 = a4;
+  pauseCopy = pause;
   v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFRemoteTextInputClient/inputSessionDidPause", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -612,16 +612,16 @@ LABEL_36:
   v10[2] = __78__SFRemoteTextInputClient_inputSystemService_inputSessionDidPause_withReason___block_invoke;
   v10[3] = &unk_1E788A658;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = pauseCopy;
+  v9 = pauseCopy;
   dispatch_async(dispatchQueue, v10);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidUnpause:(id)a4 withReason:(id)a5
+- (void)inputSystemService:(id)service inputSessionDidUnpause:(id)unpause withReason:(id)reason
 {
-  v6 = a4;
+  unpauseCopy = unpause;
   v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFRemoteTextInputClient/inputSessionDidUnpause", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -632,48 +632,48 @@ LABEL_36:
   v10[2] = __80__SFRemoteTextInputClient_inputSystemService_inputSessionDidUnpause_withReason___block_invoke;
   v10[3] = &unk_1E788A658;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = unpauseCopy;
+  v9 = unpauseCopy;
   dispatch_async(dispatchQueue, v10);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDocumentDidChange:(id)a4
+- (void)inputSystemService:(id)service inputSessionDocumentDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__SFRemoteTextInputClient_inputSystemService_inputSessionDocumentDidChange___block_invoke;
   v8[3] = &unk_1E788A658;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = changeCopy;
+  v7 = changeCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
-- (void)handleTextActionPayload:(id)a3
+- (void)handleTextActionPayload:(id)payload
 {
-  v4 = a3;
-  v6 = v4;
+  payloadCopy = payload;
+  v6 = payloadCopy;
   if (gLogCategory_SFRemoteTextInputClient <= 30)
   {
-    if (gLogCategory_SFRemoteTextInputClient != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (gLogCategory_SFRemoteTextInputClient != -1 || (v5 = _LogCategory_Initialize(), payloadCopy = v6, v5))
     {
       [SFRemoteTextInputClient handleTextActionPayload:];
-      v4 = v6;
+      payloadCopy = v6;
     }
   }
 
-  [(SFRemoteTextInputClient *)self fireEventHandlerWithPayload:v4];
+  [(SFRemoteTextInputClient *)self fireEventHandlerWithPayload:payloadCopy];
 }
 
 - (void)currentPayload
 {
   v6 = MEMORY[0x1E696ABC0];
   v7 = *MEMORY[0x1E696A768];
-  *a1 = *MEMORY[0x1E696A578];
+  *self = *MEMORY[0x1E696A578];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:DebugGetErrorString()];
   v9 = v8;
   v10 = @"?";
@@ -683,7 +683,7 @@ LABEL_36:
   }
 
   *a2 = v10;
-  v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:a2 forKeys:a1 count:1];
+  v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:a2 forKeys:self count:1];
   *a3 = [v6 errorWithDomain:v7 code:-6709 userInfo:v11];
 }
 

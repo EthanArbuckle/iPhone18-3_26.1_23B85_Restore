@@ -2,20 +2,20 @@
 - (NSSet)backgroundActivitiesToSuppress;
 - (NSString)associatedAppBundleIdentifier;
 - (NSString)associatedScenePersistenceIdentifier;
-- (_TtC17SequoiaTranslator48PersonalTranslationApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setAssociatedScenePersistenceIdentifier:(id)a3;
+- (_TtC17SequoiaTranslator48PersonalTranslationApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setAssociatedScenePersistenceIdentifier:(id)identifier;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PersonalTranslationApertureElementViewController
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  *(self + OBJC_IVAR____TtC17SequoiaTranslator48PersonalTranslationApertureElementViewController_activeLayoutMode) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC17SequoiaTranslator48PersonalTranslationApertureElementViewController_activeLayoutMode) = mode;
+  selfCopy = self;
   sub_1001A4C00();
 }
 
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (void)setAssociatedScenePersistenceIdentifier:(id)a3
+- (void)setAssociatedScenePersistenceIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -53,9 +53,9 @@
   v6[1] = v5;
 }
 
-- (_TtC17SequoiaTranslator48PersonalTranslationApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator48PersonalTranslationApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -67,32 +67,32 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1001A5104(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1001A5104(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A5408();
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1001A6A74();
   swift_unknownObjectRelease();
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for PersonalTranslationApertureElementViewController();
   swift_unknownObjectRetain();
   v4 = v8.receiver;
-  [(PersonalTranslationApertureElementViewController *)&v8 preferredContentSizeDidChangeForChildContentContainer:a3];
-  v5 = [v4 systemApertureElementContext];
+  [(PersonalTranslationApertureElementViewController *)&v8 preferredContentSizeDidChangeForChildContentContainer:container];
+  systemApertureElementContext = [v4 systemApertureElementContext];
   v7[4] = nullsub_1;
   v7[5] = 0;
   v7[0] = _NSConcreteStackBlock;
@@ -100,7 +100,7 @@
   v7[2] = sub_100096948;
   v7[3] = &unk_100388070;
   v6 = _Block_copy(v7);
-  [v5 setElementNeedsUpdateWithCoordinatedAnimations:v6];
+  [systemApertureElementContext setElementNeedsUpdateWithCoordinatedAnimations:v6];
   swift_unknownObjectRelease();
 
   _Block_release(v6);

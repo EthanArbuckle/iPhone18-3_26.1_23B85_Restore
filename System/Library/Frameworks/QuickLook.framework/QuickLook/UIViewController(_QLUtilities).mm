@@ -7,67 +7,67 @@
 
 - (void)QL_disableChromelessBarsUI
 {
-  v2 = [a1 navigationController];
-  v3 = [v2 navigationBar];
-  v4 = [v3 standardAppearance];
-  v5 = v4;
-  if (!v4)
+  navigationController = [self navigationController];
+  navigationBar = [navigationController navigationBar];
+  standardAppearance = [navigationBar standardAppearance];
+  v5 = standardAppearance;
+  if (!standardAppearance)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75788]);
   }
 
-  v6 = [a1 navigationItem];
-  [v6 setScrollEdgeAppearance:v5];
+  navigationItem = [self navigationItem];
+  [navigationItem setScrollEdgeAppearance:v5];
 
-  if (!v4)
+  if (!standardAppearance)
   {
   }
 
-  v7 = [a1 tabBarController];
-  v8 = [v7 tabBar];
-  v9 = [v8 standardAppearance];
-  v10 = v9;
-  if (!v9)
+  tabBarController = [self tabBarController];
+  tabBar = [tabBarController tabBar];
+  standardAppearance2 = [tabBar standardAppearance];
+  v10 = standardAppearance2;
+  if (!standardAppearance2)
   {
     v10 = objc_alloc_init(MEMORY[0x277D75B18]);
   }
 
-  v11 = [a1 tabBarItem];
-  [v11 setScrollEdgeAppearance:v10];
+  tabBarItem = [self tabBarItem];
+  [tabBarItem setScrollEdgeAppearance:v10];
 
-  if (!v9)
+  if (!standardAppearance2)
   {
   }
 
-  v17 = [a1 navigationController];
-  v12 = [v17 toolbar];
-  v13 = [v12 standardAppearance];
-  v14 = v13;
-  if (!v13)
+  navigationController2 = [self navigationController];
+  toolbar = [navigationController2 toolbar];
+  standardAppearance3 = [toolbar standardAppearance];
+  v14 = standardAppearance3;
+  if (!standardAppearance3)
   {
     v14 = objc_alloc_init(MEMORY[0x277D75C60]);
   }
 
-  v15 = [a1 navigationController];
-  v16 = [v15 toolbar];
-  [v16 setScrollEdgeAppearance:v14];
+  navigationController3 = [self navigationController];
+  toolbar2 = [navigationController3 toolbar];
+  [toolbar2 setScrollEdgeAppearance:v14];
 
-  if (!v13)
+  if (!standardAppearance3)
   {
   }
 }
 
 - (void)QL_enableChromelessBarsUI
 {
-  v2 = [a1 navigationItem];
-  [v2 setScrollEdgeAppearance:0];
+  navigationItem = [self navigationItem];
+  [navigationItem setScrollEdgeAppearance:0];
 
-  v3 = [a1 tabBarItem];
-  [v3 setScrollEdgeAppearance:0];
+  tabBarItem = [self tabBarItem];
+  [tabBarItem setScrollEdgeAppearance:0];
 
-  v5 = [a1 navigationController];
-  v4 = [v5 toolbar];
-  [v4 setScrollEdgeAppearance:0];
+  navigationController = [self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setScrollEdgeAppearance:0];
 }
 
 @end

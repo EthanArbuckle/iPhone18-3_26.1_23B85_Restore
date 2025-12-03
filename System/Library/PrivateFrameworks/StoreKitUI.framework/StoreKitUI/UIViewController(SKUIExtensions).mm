@@ -18,9 +18,9 @@
     }
   }
 
-  v10 = [a1 view];
+  view = [self view];
 
-  return v10;
+  return view;
 }
 
 @end

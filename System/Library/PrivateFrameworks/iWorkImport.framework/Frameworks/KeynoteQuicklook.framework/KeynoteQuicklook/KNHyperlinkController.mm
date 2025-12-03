@@ -1,20 +1,20 @@
 @interface KNHyperlinkController
-+ (BOOL)URLContainsKeynoteSpecificHyperlink:(id)a3;
-+ (id)displayStringForSlideLink:(int64_t)a3 url:(id)a4 documentRoot:(id)a5;
-+ (id)uniqueIdentifierFromHyperlinkURL:(id)a3;
-+ (int64_t)hyperlinkTypeFromHyperlinkURL:(id)a3;
-+ (unint64_t)slideIndexForSlideLink:(id)a3 url:(id)a4;
++ (BOOL)URLContainsKeynoteSpecificHyperlink:(id)hyperlink;
++ (id)displayStringForSlideLink:(int64_t)link url:(id)url documentRoot:(id)root;
++ (id)uniqueIdentifierFromHyperlinkURL:(id)l;
++ (int64_t)hyperlinkTypeFromHyperlinkURL:(id)l;
++ (unint64_t)slideIndexForSlideLink:(id)link url:(id)url;
 @end
 
 @implementation KNHyperlinkController
 
-+ (id)uniqueIdentifierFromHyperlinkURL:(id)a3
++ (id)uniqueIdentifierFromHyperlinkURL:(id)l
 {
-  v3 = a3;
-  v6 = v3;
-  if (v3)
+  lCopy = l;
+  v6 = lCopy;
+  if (lCopy)
   {
-    v7 = objc_msgSend_absoluteString(v3, v4, v5);
+    v7 = objc_msgSend_absoluteString(lCopy, v4, v5);
     v10 = objc_msgSend_length(v7, v8, v9);
 
     if (v10)
@@ -40,17 +40,17 @@
   return v10;
 }
 
-+ (BOOL)URLContainsKeynoteSpecificHyperlink:(id)a3
++ (BOOL)URLContainsKeynoteSpecificHyperlink:(id)hyperlink
 {
-  v3 = objc_msgSend_absoluteString(a3, a2, a3);
+  v3 = objc_msgSend_absoluteString(hyperlink, a2, hyperlink);
   v7 = !objc_msgSend_rangeOfString_(v3, v4, @"?slide") || !objc_msgSend_rangeOfString_(v3, v5, @"?action") || !objc_msgSend_rangeOfString_(v3, v6, @"?id");
 
   return v7;
 }
 
-+ (int64_t)hyperlinkTypeFromHyperlinkURL:(id)a3
++ (int64_t)hyperlinkTypeFromHyperlinkURL:(id)l
 {
-  v3 = objc_msgSend_absoluteString(a3, a2, a3);
+  v3 = objc_msgSend_absoluteString(l, a2, l);
   v6 = objc_msgSend_lowercaseString(v3, v4, v5);
 
   if (objc_msgSend_length(v6, v7, v8))
@@ -120,16 +120,16 @@
   return v11;
 }
 
-+ (id)displayStringForSlideLink:(int64_t)a3 url:(id)a4 documentRoot:(id)a5
++ (id)displayStringForSlideLink:(int64_t)link url:(id)url documentRoot:(id)root
 {
-  v7 = a4;
-  v9 = a5;
+  urlCopy = url;
+  rootCopy = root;
   v10 = &stru_2884D8E20;
-  if (a3 > 3)
+  if (link > 3)
   {
-    if (a3 > 5)
+    if (link > 5)
     {
-      if (a3 == 6)
+      if (link == 6)
       {
         v12 = sub_275DC204C();
         objc_msgSend_localizedStringForKey_value_table_(v12, v20, @"Last Slide Viewed", &stru_2884D8E20, @"Keynote");
@@ -137,7 +137,7 @@
 
       else
       {
-        if (a3 != 7)
+        if (link != 7)
         {
           goto LABEL_21;
         }
@@ -150,7 +150,7 @@
     else
     {
       sub_275DC204C();
-      if (a3 == 4)
+      if (link == 4)
         v12 = {;
         objc_msgSend_localizedStringForKey_value_table_(v12, v18, @"First Slide", &stru_2884D8E20, @"Keynote");
       }
@@ -162,10 +162,10 @@
     }
   }
 
-  else if (a3 > 1)
+  else if (link > 1)
   {
     sub_275DC204C();
-    if (a3 == 2)
+    if (link == 2)
       v12 = {;
       objc_msgSend_localizedStringForKey_value_table_(v12, v19, @"Next Slide", &stru_2884D8E20, @"Keynote");
     }
@@ -176,14 +176,14 @@
     }
   }
 
-  else if (a3)
+  else if (link)
   {
-    if (a3 != 1)
+    if (link != 1)
     {
       goto LABEL_21;
     }
 
-    v11 = objc_msgSend_slideIndexForSlideLink_url_(KNHyperlinkController, v8, v9, v7);
+    v11 = objc_msgSend_slideIndexForSlideLink_url_(KNHyperlinkController, v8, rootCopy, urlCopy);
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v22 = v11;
@@ -212,16 +212,16 @@ LABEL_21:
   return v10;
 }
 
-+ (unint64_t)slideIndexForSlideLink:(id)a3 url:(id)a4
++ (unint64_t)slideIndexForSlideLink:(id)link url:(id)url
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v7 = a4;
-  if (v7)
+  linkCopy = link;
+  urlCopy = url;
+  if (urlCopy)
   {
-    v8 = objc_msgSend_uniqueIdentifierFromHyperlinkURL_(KNHyperlinkController, v6, v7);
+    v8 = objc_msgSend_uniqueIdentifierFromHyperlinkURL_(KNHyperlinkController, v6, urlCopy);
     objc_opt_class();
-    v11 = objc_msgSend_show(v5, v9, v10);
+    v11 = objc_msgSend_show(linkCopy, v9, v10);
     v12 = TSUDynamicCast();
 
     if (v8)
@@ -239,7 +239,7 @@ LABEL_21:
       {
         v24 = v21;
         v33 = v12;
-        v34 = v5;
+        v34 = linkCopy;
         v25 = 0;
         v26 = *v36;
 LABEL_5:
@@ -276,7 +276,7 @@ LABEL_5:
         }
 
         v12 = v33;
-        v5 = v34;
+        linkCopy = v34;
       }
 
       else

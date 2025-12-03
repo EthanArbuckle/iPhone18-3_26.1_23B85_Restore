@@ -1,70 +1,70 @@
 @interface CRLWPOpaqueFontID
-- (BOOL)isEqual:(id)a3;
-- (CRLWPOpaqueFontID)initWithFont:(id)a3;
-- (CRLWPOpaqueFontID)initWithPostScriptName:(id)a3 familyName:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CRLWPOpaqueFontID)initWithFont:(id)font;
+- (CRLWPOpaqueFontID)initWithPostScriptName:(id)name familyName:(id)familyName;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CRLWPOpaqueFontID
 
-- (CRLWPOpaqueFontID)initWithPostScriptName:(id)a3 familyName:(id)a4
+- (CRLWPOpaqueFontID)initWithPostScriptName:(id)name familyName:(id)familyName
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  familyNameCopy = familyName;
   v12.receiver = self;
   v12.super_class = CRLWPOpaqueFontID;
   v9 = [(CRLWPOpaqueFontID *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_desiredPostScriptName, a3);
-    objc_storeStrong(&v10->_familyName, a4);
+    objc_storeStrong(&v9->_desiredPostScriptName, name);
+    objc_storeStrong(&v10->_familyName, familyName);
   }
 
   return v10;
 }
 
-- (CRLWPOpaqueFontID)initWithFont:(id)a3
+- (CRLWPOpaqueFontID)initWithFont:(id)font
 {
-  v4 = a3;
-  if ([v4 isRequestedFont])
+  fontCopy = font;
+  if ([fontCopy isRequestedFont])
   {
-    v5 = [v4 familyName];
+    familyName = [fontCopy familyName];
   }
 
   else
   {
-    v5 = 0;
+    familyName = 0;
   }
 
-  v6 = [v4 desiredPostScriptName];
-  v7 = [(CRLWPOpaqueFontID *)self initWithPostScriptName:v6 familyName:v5];
+  desiredPostScriptName = [fontCopy desiredPostScriptName];
+  v7 = [(CRLWPOpaqueFontID *)self initWithPostScriptName:desiredPostScriptName familyName:familyName];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v4 = a3;
+    equalCopy = equal;
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v4);
+    v6 = sub_100014370(v5, equalCopy);
 
     if (v6)
     {
-      v7 = [(CRLWPOpaqueFontID *)self familyName];
-      if (v7)
+      familyName = [(CRLWPOpaqueFontID *)self familyName];
+      if (familyName)
       {
-        v8 = v7;
-        v9 = [v6 familyName];
-        if (v9)
+        v8 = familyName;
+        familyName2 = [v6 familyName];
+        if (familyName2)
         {
-          v10 = v9;
-          v11 = [(CRLWPOpaqueFontID *)self familyName];
-          v12 = [v6 familyName];
-          v13 = [v11 isEqual:v12];
+          v10 = familyName2;
+          familyName3 = [(CRLWPOpaqueFontID *)self familyName];
+          familyName4 = [v6 familyName];
+          v13 = [familyName3 isEqual:familyName4];
 
           if (v13)
           {
@@ -77,9 +77,9 @@
         }
       }
 
-      v15 = [(CRLWPOpaqueFontID *)self desiredPostScriptName];
-      v16 = [v6 desiredPostScriptName];
-      v17 = [v15 isEqual:v16];
+      desiredPostScriptName = [(CRLWPOpaqueFontID *)self desiredPostScriptName];
+      desiredPostScriptName2 = [v6 desiredPostScriptName];
+      v17 = [desiredPostScriptName isEqual:desiredPostScriptName2];
 
       if (v17)
       {
@@ -100,9 +100,9 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(CRLWPOpaqueFontID *)self desiredPostScriptName];
-  v4 = [(CRLWPOpaqueFontID *)self familyName];
-  v5 = [NSString stringWithFormat:@"%@%@", v3, v4];
+  desiredPostScriptName = [(CRLWPOpaqueFontID *)self desiredPostScriptName];
+  familyName = [(CRLWPOpaqueFontID *)self familyName];
+  v5 = [NSString stringWithFormat:@"%@%@", desiredPostScriptName, familyName];
 
   v6 = [v5 hash];
   return v6;
@@ -112,9 +112,9 @@ LABEL_12:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLWPOpaqueFontID *)self desiredPostScriptName];
-  v6 = [(CRLWPOpaqueFontID *)self familyName];
-  v7 = [NSString stringWithFormat:@"%@: <%p> Desired PostScript Name: %@ Family Name: %@", v4, self, v5, v6];;
+  desiredPostScriptName = [(CRLWPOpaqueFontID *)self desiredPostScriptName];
+  familyName = [(CRLWPOpaqueFontID *)self familyName];
+  v7 = [NSString stringWithFormat:@"%@: <%p> Desired PostScript Name: %@ Family Name: %@", v4, self, desiredPostScriptName, familyName];;
 
   return v7;
 }

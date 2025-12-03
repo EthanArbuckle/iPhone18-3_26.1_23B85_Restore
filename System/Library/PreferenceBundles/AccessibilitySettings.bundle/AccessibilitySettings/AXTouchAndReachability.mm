@@ -1,25 +1,25 @@
 @interface AXTouchAndReachability
 - (AXTouchAndReachability)init;
 - (BOOL)_vibrationVibratesForEmergencies;
-- (id)backTapEnabled:(id)a3;
-- (id)callAudioRouting:(id)a3;
-- (id)forceTouchEnabled:(id)a3;
-- (id)handEnabled:(id)a3;
-- (id)phoneLockButton:(id)a3;
-- (id)preferActionSliderAlternative:(id)a3;
-- (id)shakeToUndo:(id)a3;
+- (id)backTapEnabled:(id)enabled;
+- (id)callAudioRouting:(id)routing;
+- (id)forceTouchEnabled:(id)enabled;
+- (id)handEnabled:(id)enabled;
+- (id)phoneLockButton:(id)button;
+- (id)preferActionSliderAlternative:(id)alternative;
+- (id)shakeToUndo:(id)undo;
 - (id)specifiers;
-- (id)tapToWake:(id)a3;
-- (id)touchAccommodationsEnabled:(id)a3;
-- (id)vibrationEnabled:(id)a3;
-- (void)_easyReachChanged:(id)a3;
+- (id)tapToWake:(id)wake;
+- (id)touchAccommodationsEnabled:(id)enabled;
+- (id)vibrationEnabled:(id)enabled;
+- (void)_easyReachChanged:(id)changed;
 - (void)_vibrationVibratesForEmergencies;
-- (void)setPhoneLockButton:(id)a3 specifier:(id)a4;
-- (void)setPreferActionSliderAlternative:(id)a3 specifier:(id)a4;
-- (void)setReachabilityEnabled:(id)a3 specifier:(id)a4;
-- (void)setShakeToUndo:(id)a3 specifier:(id)a4;
-- (void)setTapToWake:(id)a3 specifier:(id)a4;
-- (void)setVibrationEnabled:(id)a3 specifier:(id)a4;
+- (void)setPhoneLockButton:(id)button specifier:(id)specifier;
+- (void)setPreferActionSliderAlternative:(id)alternative specifier:(id)specifier;
+- (void)setReachabilityEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShakeToUndo:(id)undo specifier:(id)specifier;
+- (void)setTapToWake:(id)wake specifier:(id)specifier;
+- (void)setVibrationEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AXTouchAndReachability
@@ -70,7 +70,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   [WeakRetained reloadSpecifiersFromNotification];
 }
 
-- (void)_easyReachChanged:(id)a3
+- (void)_easyReachChanged:(id)changed
 {
   self->_easyReachCache = SBSIsReachabilityEnabled() != 0;
   v4 = [(AXTouchAndReachability *)self specifierForID:@"REACHABILITY"];
@@ -79,7 +79,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->super.AXUISettingsListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
@@ -94,8 +94,8 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
     [v5 setProperty:v9 forKey:PSFooterCellClassGroupKey];
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
-    v11 = [v10 bundlePath];
-    [v5 setProperty:v11 forKey:@"bundlePath"];
+    bundlePath = [v10 bundlePath];
+    [v5 setProperty:bundlePath forKey:@"bundlePath"];
 
     [v5 setProperty:@"Accessibility" forKey:@"table"];
     v122[0] = @"contentLabel";
@@ -111,7 +111,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
     v15 = AXTeachableFeatureAssistiveTouch;
     v106 = [AXTeachableMomentsManager teachableItemsForFeature:AXTeachableFeatureAssistiveTouch];
     v107 = v14;
-    v108 = v2;
+    v108 = selfCopy;
     if ([v106 count])
     {
       v101 = v5;
@@ -159,12 +159,12 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
 
             v27 = *(*(&v111 + 1) + 8 * i);
             v115[0] = @"headerLabel";
-            v28 = [v27 itemTitle];
-            v116[0] = v28;
+            itemTitle = [v27 itemTitle];
+            v116[0] = itemTitle;
             v115[1] = @"contentLabel";
-            v29 = [v27 itemDescription];
+            itemDescription = [v27 itemDescription];
             v115[2] = @"alreadyLocalized";
-            v116[1] = v29;
+            v116[1] = itemDescription;
             v116[2] = &__kCFBooleanTrue;
             v30 = [NSDictionary dictionaryWithObjects:v116 forKeys:v115 count:3];
             [v19 addObject:v30];
@@ -180,7 +180,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
       v14 = v107;
       [v107 addObject:v100];
 
-      v2 = v108;
+      selfCopy = v108;
       v4 = v109;
       v5 = v101;
     }
@@ -188,11 +188,11 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
     [v5 setProperty:v14 forKey:@"content"];
     [v4 addObject:v5];
     v31 = settingsLocString(@"AIR_TOUCH_TITLE", @"Accessibility");
-    v32 = [PSSpecifier preferenceSpecifierNamed:v31 target:v2 set:0 get:"handEnabled:" detail:objc_opt_class() cell:2 edit:0];
+    v32 = [PSSpecifier preferenceSpecifierNamed:v31 target:selfCopy set:0 get:"handEnabled:" detail:objc_opt_class() cell:2 edit:0];
 
     v33 = AXInBuddySetupKey;
     [v32 setProperty:&__kCFBooleanTrue forKey:AXInBuddySetupKey];
-    v34 = v2;
+    v34 = selfCopy;
     v35 = PSIDKey;
     [v32 setProperty:@"AIR_TOUCH_TITLE" forKey:PSIDKey];
     [v4 addObject:v32];
@@ -341,8 +341,8 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
 
       v102 = settingsLocString(v71, @"Accessibility");
       v72 = +[UIDevice currentDevice];
-      v73 = [v72 localizedModel];
-      v74 = [NSString stringWithFormat:v102, v73];
+      localizedModel = [v72 localizedModel];
+      v74 = [NSString stringWithFormat:v102, localizedModel];
       [v69 setProperty:v74 forKey:v110];
 
       [v69 setProperty:&__kCFBooleanTrue forKey:v68];
@@ -363,10 +363,10 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
       v70 = v108;
     }
 
-    v77 = [v57[5] emptyGroupSpecifier];
+    emptyGroupSpecifier = [v57[5] emptyGroupSpecifier];
 
-    [v77 setProperty:&__kCFBooleanFalse forKey:v76];
-    [v55 addObject:v77];
+    [emptyGroupSpecifier setProperty:&__kCFBooleanFalse forKey:v76];
+    [v55 addObject:emptyGroupSpecifier];
     if (AXDeviceHasTopButton())
     {
       v78 = @"LOCK_BUTTON_IGNORE_FOOTER_TOP";
@@ -378,7 +378,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
     }
 
     v103 = settingsLocString(v78, @"Accessibility");
-    [v77 setProperty:? forKey:?];
+    [emptyGroupSpecifier setProperty:? forKey:?];
     v79 = v57[5];
     v80 = settingsLocString(@"LOCK_BUTTON_IGNORE_TITLE", @"Accessibility");
     v81 = [v79 preferenceSpecifierNamed:v80 target:v70 set:"setPhoneLockButton:specifier:" get:"phoneLockButton:" detail:0 cell:6 edit:0];
@@ -386,13 +386,13 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
     [v81 setProperty:@"LockButtonIgnore" forKey:v35];
     [v81 setProperty:&__kCFBooleanFalse forKey:v68];
     [v55 addObject:v81];
-    v82 = [v57[5] emptyGroupSpecifier];
+    emptyGroupSpecifier2 = [v57[5] emptyGroupSpecifier];
 
-    [v82 setProperty:&__kCFBooleanFalse forKey:v68];
-    [v55 addObject:v82];
+    [emptyGroupSpecifier2 setProperty:&__kCFBooleanFalse forKey:v68];
+    [v55 addObject:emptyGroupSpecifier2];
     v83 = settingsLocString(@"CALL_AUDIO_ROUTING_FOOTER", @"CallAudioRoutingSettings");
     v84 = v68;
-    [v82 setProperty:v83 forKey:v110];
+    [emptyGroupSpecifier2 setProperty:v83 forKey:v110];
 
     v85 = v57[5];
     v86 = settingsLocString(@"CALL_AUDIO_ROUTING_TITLE", @"Accessibility");
@@ -403,13 +403,13 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
     [v55 addObject:v87];
     if (AXHasCapability())
     {
-      v88 = [v57[5] emptyGroupSpecifier];
+      emptyGroupSpecifier3 = [v57[5] emptyGroupSpecifier];
 
-      [v88 setProperty:&__kCFBooleanFalse forKey:v84];
+      [emptyGroupSpecifier3 setProperty:&__kCFBooleanFalse forKey:v84];
       v89 = settingsLocString(@"BACK_TAP_FOOTER", @"Accessibility");
-      [v88 setProperty:v89 forKey:v110];
+      [emptyGroupSpecifier3 setProperty:v89 forKey:v110];
 
-      [v55 addObject:v88];
+      [v55 addObject:emptyGroupSpecifier3];
       v90 = v57[5];
       v91 = settingsLocString(@"BACK_TAP", @"Accessibility");
       v87 = [v90 preferenceSpecifierNamed:v91 target:v70 set:0 get:"backTapEnabled:" detail:objc_opt_class() cell:2 edit:0];
@@ -419,12 +419,12 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
       [v55 addObject:v87];
     }
 
-    v92 = [v57[5] emptyGroupSpecifier];
+    emptyGroupSpecifier4 = [v57[5] emptyGroupSpecifier];
 
     v93 = settingsLocString(@"PreferActionSliderAlternativeFooter", @"Accessibility");
-    [v92 setObject:v93 forKeyedSubscript:v110];
+    [emptyGroupSpecifier4 setObject:v93 forKeyedSubscript:v110];
 
-    [v55 addObject:v92];
+    [v55 addObject:emptyGroupSpecifier4];
     v94 = v57[5];
     v95 = settingsLocString(@"PreferActionSliderAlternative", @"Accessibility");
     v96 = [v94 preferenceSpecifierNamed:v95 target:v70 set:"setPreferActionSliderAlternative:specifier:" get:"preferActionSliderAlternative:" detail:0 cell:6 edit:0];
@@ -441,21 +441,21 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)phoneLockButton:(id)a3
+- (id)phoneLockButton:(id)button
 {
   v3 = _AXSPhoneLockToEndCallEnabled() == 0;
 
   return [NSNumber numberWithInt:v3];
 }
 
-- (void)setPhoneLockButton:(id)a3 specifier:(id)a4
+- (void)setPhoneLockButton:(id)button specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue] ^ 1;
+  v4 = [button BOOLValue] ^ 1;
 
   __AXSPhoneLockToEndCallSetEnabled(v4);
 }
 
-- (id)backTapEnabled:(id)a3
+- (id)backTapEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 backTapEnabled])
@@ -507,7 +507,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   return 1;
 }
 
-- (id)callAudioRouting:(id)a3
+- (id)callAudioRouting:(id)routing
 {
   v3 = _AXSDefaultRouteForCall();
   if (v3 > 2)
@@ -523,7 +523,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)handEnabled:(id)a3
+- (id)handEnabled:(id)enabled
 {
   if (_AXSAssistiveTouchEnabled())
   {
@@ -538,45 +538,45 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   return settingsLocString(v3, @"Accessibility");
 }
 
-- (void)setVibrationEnabled:(id)a3 specifier:(id)a4
+- (void)setVibrationEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue] ^ 1;
+  v4 = [enabled BOOLValue] ^ 1;
 
   __AXSSetVibrationDisabled(v4);
 }
 
-- (id)vibrationEnabled:(id)a3
+- (id)vibrationEnabled:(id)enabled
 {
   v3 = _AXSVibrationDisabled() == 0;
 
   return [NSNumber numberWithInt:v3];
 }
 
-- (id)shakeToUndo:(id)a3
+- (id)shakeToUndo:(id)undo
 {
   v3 = _AXSShakeToUndoDisabled() == 0;
 
   return [NSNumber numberWithInt:v3];
 }
 
-- (void)setShakeToUndo:(id)a3 specifier:(id)a4
+- (void)setShakeToUndo:(id)undo specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue] ^ 1;
+  v4 = [undo BOOLValue] ^ 1;
 
   __AXSSetShakeToUndoDisabled(v4);
 }
 
-- (void)setTapToWake:(id)a3 specifier:(id)a4
+- (void)setTapToWake:(id)wake specifier:(id)specifier
 {
-  v4 = a3;
+  wakeCopy = wake;
   v5 = [NSUserDefaults alloc];
   v7 = [v5 initWithSuiteName:AX_SpringBoardBundleName];
-  v6 = [v4 BOOLValue];
+  bOOLValue = [wakeCopy BOOLValue];
 
-  [v7 setBool:v6 forKey:@"SBSupportTapToWake"];
+  [v7 setBool:bOOLValue forKey:@"SBSupportTapToWake"];
 }
 
-- (id)tapToWake:(id)a3
+- (id)tapToWake:(id)wake
 {
   v3 = [NSUserDefaults alloc];
   v4 = [v3 initWithSuiteName:AX_SpringBoardBundleName];
@@ -597,7 +597,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)touchAccommodationsEnabled:(id)a3
+- (id)touchAccommodationsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 touchAccommodationsEnabled])
@@ -615,7 +615,7 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)forceTouchEnabled:(id)a3
+- (id)forceTouchEnabled:(id)enabled
 {
   if (AXDeviceHasForcePress3dTouch())
   {
@@ -640,15 +640,15 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setReachabilityEnabled:(id)a3 specifier:(id)a4
+- (void)setReachabilityEnabled:(id)enabled specifier:(id)specifier
 {
-  self->_easyReachCache = [a3 BOOLValue];
+  self->_easyReachCache = [enabled BOOLValue];
   SBSSetReachabilityEnabled();
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"AXEasyReachModeChanged" object:0];
 }
 
-- (id)preferActionSliderAlternative:(id)a3
+- (id)preferActionSliderAlternative:(id)alternative
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 preferActionSliderAlternative]);
@@ -656,17 +656,17 @@ void __30__AXTouchAndReachability_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setPreferActionSliderAlternative:(id)a3 specifier:(id)a4
+- (void)setPreferActionSliderAlternative:(id)alternative specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [alternative BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setPreferActionSliderAlternative:v4];
+  [v5 setPreferActionSliderAlternative:bOOLValue];
 }
 
 - (void)_vibrationVibratesForEmergencies
 {
   v3[0] = 67109376;
-  v3[1] = a1;
+  v3[1] = self;
   v4 = 1024;
   v5 = a2;
   _os_log_error_impl(&dword_0, log, OS_LOG_TYPE_ERROR, "error getting override accessibility setting: domain: %d error: %d", v3, 0xEu);

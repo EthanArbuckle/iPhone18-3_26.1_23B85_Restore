@@ -1,6 +1,6 @@
 @interface RoutePlanningElevationPopoverViewController
 - (void)_updateLabels;
-- (void)setRoute:(id)a3;
+- (void)setRoute:(id)route;
 - (void)viewDidLoad;
 @end
 
@@ -8,15 +8,15 @@
 
 - (void)_updateLabels
 {
-  v3 = [(GEOComposedRoute *)self->_route elevationProfile];
+  elevationProfile = [(GEOComposedRoute *)self->_route elevationProfile];
 
-  if (v3)
+  if (elevationProfile)
   {
-    v4 = [(GEOComposedRoute *)self->_route elevationProfile];
-    v5 = [v4 sumElevationGainCm] * 0.01;
+    elevationProfile2 = [(GEOComposedRoute *)self->_route elevationProfile];
+    v5 = [elevationProfile2 sumElevationGainCm] * 0.01;
 
-    v6 = [(GEOComposedRoute *)self->_route elevationProfile];
-    v7 = [v6 sumElevationLossCm] * 0.01;
+    elevationProfile3 = [(GEOComposedRoute *)self->_route elevationProfile];
+    v7 = [elevationProfile3 sumElevationLossCm] * 0.01;
   }
 
   else
@@ -28,26 +28,26 @@
   v8 = sub_1007993AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = self;
+    selfCopy = self;
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(RoutePlanningElevationPopoverViewController *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(RoutePlanningElevationPopoverViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_10;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_10:
 
     *buf = 138412290;
-    v24 = v14;
+    v24 = selfCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ | Will update labels for gain/loss", buf, 0xCu);
   }
 
@@ -64,20 +64,20 @@ LABEL_10:
   [(DirectionsElevationLabelView *)descentLabelView setElevation:v22];
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_route, a3);
+    v8 = routeCopy;
+    objc_storeStrong(&self->_route, route);
     [(RoutePlanningElevationPopoverViewController *)self _updateLabels];
     elevationGraphView = self->_elevationGraphView;
-    v7 = [(GEOComposedRoute *)v8 elevationProfile];
+    elevationProfile = [(GEOComposedRoute *)v8 elevationProfile];
     [(GEOComposedRoute *)v8 distance];
-    [(DirectionsElevationGraphView *)elevationGraphView setElevationProfile:v7 routeLength:?];
+    [(DirectionsElevationGraphView *)elevationGraphView setElevationProfile:elevationProfile routeLength:?];
 
-    v5 = v8;
+    routeCopy = v8;
   }
 }
 
@@ -92,12 +92,12 @@ LABEL_10:
   height = CGRectZero.size.height;
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(RoutePlanningElevationPopoverViewController *)self view];
-  [v8 addSubview:v7];
+  view = [(RoutePlanningElevationPopoverViewController *)self view];
+  [view addSubview:v7];
 
   v9 = [DirectionsElevationGraphConfiguration alloc];
-  v10 = [(RoutePlanningElevationPopoverViewController *)self traitCollection];
-  v91 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v9, "initWithUseType:userInterfaceIdiom:", 0, [v10 userInterfaceIdiom]);
+  traitCollection = [(RoutePlanningElevationPopoverViewController *)self traitCollection];
+  v91 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v9, "initWithUseType:userInterfaceIdiom:", 0, [traitCollection userInterfaceIdiom]);
 
   v11 = [[DirectionsElevationGraphView alloc] initWithConfiguration:v91];
   elevationGraphView = self->_elevationGraphView;
@@ -105,9 +105,9 @@ LABEL_10:
 
   [(DirectionsElevationGraphView *)self->_elevationGraphView setTranslatesAutoresizingMaskIntoConstraints:0];
   v13 = self->_elevationGraphView;
-  v14 = [(GEOComposedRoute *)self->_route elevationProfile];
+  elevationProfile = [(GEOComposedRoute *)self->_route elevationProfile];
   [(GEOComposedRoute *)self->_route distance];
-  [(DirectionsElevationGraphView *)v13 setElevationProfile:v14 routeLength:?];
+  [(DirectionsElevationGraphView *)v13 setElevationProfile:elevationProfile routeLength:?];
 
   [v7 addSubview:self->_elevationGraphView];
   v15 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleTitle2];
@@ -193,65 +193,65 @@ LABEL_10:
   [v7 addSubview:v42];
   [(RoutePlanningElevationPopoverViewController *)self _updateLabels];
   v93 = objc_alloc_init(NSMutableArray);
-  v46 = [(RoutePlanningElevationPopoverViewController *)self view];
+  view2 = [(RoutePlanningElevationPopoverViewController *)self view];
   LODWORD(v47) = 1148846080;
-  v48 = [v7 _maps_constraintsEqualToEdgesOfView:v46 insets:40.0 priority:{40.0, 40.0, 30.0, v47}];
-  v49 = [v48 allConstraints];
-  [v93 addObjectsFromArray:v49];
+  v48 = [v7 _maps_constraintsEqualToEdgesOfView:view2 insets:40.0 priority:{40.0, 40.0, 30.0, v47}];
+  allConstraints = [v48 allConstraints];
+  [v93 addObjectsFromArray:allConstraints];
 
-  v86 = [(DirectionsElevationGraphView *)self->_elevationGraphView topAnchor];
-  v85 = [v7 topAnchor];
-  v84 = [v86 constraintEqualToAnchor:v85];
+  topAnchor = [(DirectionsElevationGraphView *)self->_elevationGraphView topAnchor];
+  topAnchor2 = [v7 topAnchor];
+  v84 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v95[0] = v84;
-  v83 = [(DirectionsElevationGraphView *)self->_elevationGraphView leadingAnchor];
-  v82 = [v7 leadingAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  leadingAnchor = [(DirectionsElevationGraphView *)self->_elevationGraphView leadingAnchor];
+  leadingAnchor2 = [v7 leadingAnchor];
+  v81 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v95[1] = v81;
-  v80 = [v7 trailingAnchor];
-  v79 = [(DirectionsElevationGraphView *)self->_elevationGraphView trailingAnchor];
-  v78 = [v80 constraintEqualToAnchor:v79];
+  trailingAnchor = [v7 trailingAnchor];
+  trailingAnchor2 = [(DirectionsElevationGraphView *)self->_elevationGraphView trailingAnchor];
+  v78 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v95[2] = v78;
-  v77 = [(DirectionsElevationGraphView *)self->_elevationGraphView widthAnchor];
-  v76 = [v77 constraintEqualToConstant:320.0];
+  widthAnchor = [(DirectionsElevationGraphView *)self->_elevationGraphView widthAnchor];
+  v76 = [widthAnchor constraintEqualToConstant:320.0];
   v95[3] = v76;
-  v75 = [(DirectionsElevationGraphView *)self->_elevationGraphView heightAnchor];
-  v73 = [v75 constraintEqualToConstant:120.0];
+  heightAnchor = [(DirectionsElevationGraphView *)self->_elevationGraphView heightAnchor];
+  v73 = [heightAnchor constraintEqualToConstant:120.0];
   v95[4] = v73;
-  v72 = [v92 topAnchor];
-  v71 = [(DirectionsElevationGraphView *)self->_elevationGraphView bottomAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71 constant:20.0];
+  topAnchor3 = [v92 topAnchor];
+  bottomAnchor = [(DirectionsElevationGraphView *)self->_elevationGraphView bottomAnchor];
+  v70 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
   v95[5] = v70;
-  v69 = [v92 leadingAnchor];
-  v68 = [v7 leadingAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  leadingAnchor3 = [v92 leadingAnchor];
+  leadingAnchor4 = [v7 leadingAnchor];
+  v67 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v95[6] = v67;
-  v66 = [v42 leadingAnchor];
-  v65 = [v92 trailingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65 constant:35.0];
+  leadingAnchor5 = [v42 leadingAnchor];
+  trailingAnchor3 = [v92 trailingAnchor];
+  v64 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:35.0];
   v95[7] = v64;
-  v63 = [v7 trailingAnchor];
-  v62 = [v42 trailingAnchor];
-  v61 = [v63 constraintGreaterThanOrEqualToAnchor:v62];
+  trailingAnchor4 = [v7 trailingAnchor];
+  trailingAnchor5 = [v42 trailingAnchor];
+  v61 = [trailingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor5];
   v95[8] = v61;
   v74 = v7;
-  v60 = [v7 bottomAnchor];
-  v59 = [v92 bottomAnchor];
-  v50 = [v60 constraintGreaterThanOrEqualToAnchor:v59];
+  bottomAnchor2 = [v7 bottomAnchor];
+  bottomAnchor3 = [v92 bottomAnchor];
+  v50 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:bottomAnchor3];
   v95[9] = v50;
-  v51 = [v42 topAnchor];
-  v52 = [v92 topAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
+  topAnchor4 = [v42 topAnchor];
+  topAnchor5 = [v92 topAnchor];
+  v53 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v95[10] = v53;
-  v54 = [v7 bottomAnchor];
-  v55 = [v42 bottomAnchor];
-  v56 = [v54 constraintGreaterThanOrEqualToAnchor:v55];
+  bottomAnchor4 = [v7 bottomAnchor];
+  bottomAnchor5 = [v42 bottomAnchor];
+  v56 = [bottomAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor5];
   v95[11] = v56;
   v57 = [NSArray arrayWithObjects:v95 count:12];
   [v93 addObjectsFromArray:v57];
 
   [NSLayoutConstraint activateConstraints:v93];
-  v58 = [(RoutePlanningElevationPopoverViewController *)self view];
-  [v58 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  view3 = [(RoutePlanningElevationPopoverViewController *)self view];
+  [view3 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   [(RoutePlanningElevationPopoverViewController *)self setPreferredContentSize:?];
 }
 

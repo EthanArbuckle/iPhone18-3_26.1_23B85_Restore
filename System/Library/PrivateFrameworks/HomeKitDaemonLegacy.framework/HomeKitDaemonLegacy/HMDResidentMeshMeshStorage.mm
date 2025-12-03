@@ -1,6 +1,6 @@
 @interface HMDResidentMeshMeshStorage
 - (HMDResidentMesh)owner;
-- (HMDResidentMeshMeshStorage)initWithResidentDevice:(id)a3 owner:(id)a4;
+- (HMDResidentMeshMeshStorage)initWithResidentDevice:(id)device owner:(id)owner;
 - (void)_requestStatus;
 @end
 
@@ -16,57 +16,57 @@
 - (void)_requestStatus
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentMeshMeshStorage *)self owner];
-  if (!v3)
+  owner = [(HMDResidentMeshMeshStorage *)self owner];
+  if (!owner)
   {
     _HMFPreconditionFailure();
   }
 
-  v4 = v3;
-  v5 = [v3 workQueue];
-  dispatch_assert_queue_V2(v5);
+  v4 = owner;
+  workQueue = [owner workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDResidentMeshMeshStorage *)self nestedStatusRequests];
-  v7 = [(HMDResidentMeshMeshStorage *)self residentDevice];
-  v8 = [v7 isReachable];
+  nestedStatusRequests = [(HMDResidentMeshMeshStorage *)self nestedStatusRequests];
+  residentDevice = [(HMDResidentMeshMeshStorage *)self residentDevice];
+  isReachable = [residentDevice isReachable];
 
-  if (v8)
+  if (isReachable)
   {
     [(HMDResidentMeshMeshStorage *)self setNestedStatusRequests:[(HMDResidentMeshMeshStorage *)self nestedStatusRequests]+ 1];
-    if (!v6)
+    if (!nestedStatusRequests)
     {
       v23[0] = @"kMeshDevice";
-      v16 = [(HMDResidentMeshMeshStorage *)self residentDevice];
-      v17 = [v16 device];
-      v18 = [v17 identifier];
-      v19 = [v18 UUIDString];
+      residentDevice2 = [(HMDResidentMeshMeshStorage *)self residentDevice];
+      device = [residentDevice2 device];
+      identifier = [device identifier];
+      uUIDString = [identifier UUIDString];
       v23[1] = @"kMeshVersion";
-      v24[0] = v19;
+      v24[0] = uUIDString;
       v24[1] = &unk_286628C78;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
 
-      v21 = [(HMDResidentMeshMeshStorage *)self residentDevice];
+      residentDevice3 = [(HMDResidentMeshMeshStorage *)self residentDevice];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __44__HMDResidentMeshMeshStorage__requestStatus__block_invoke;
       v22[3] = &unk_279734E00;
       v22[4] = self;
-      [v4 _sendMessage:@"kDeviceMeshUpdateRequestKey" payload:v20 target:v21 force:0 responseHandler:v22];
+      [v4 _sendMessage:@"kDeviceMeshUpdateRequestKey" payload:v20 target:residentDevice3 force:0 responseHandler:v22];
 
       goto LABEL_10;
     }
 
     v9 = objc_autoreleasePoolPush();
-    v10 = [(HMDResidentMeshMeshStorage *)self owner];
+    owner2 = [(HMDResidentMeshMeshStorage *)self owner];
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMDResidentMeshMeshStorage *)self residentDevice];
+      residentDevice4 = [(HMDResidentMeshMeshStorage *)self residentDevice];
       *buf = 138543618;
       v26 = v12;
       v27 = 2112;
-      v28 = v13;
+      v28 = residentDevice4;
       v14 = "%{public}@Not sending status request because we already have an outstanding request for device: %@";
 LABEL_8:
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEBUG, v14, buf, 0x16u);
@@ -76,16 +76,16 @@ LABEL_8:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [(HMDResidentMeshMeshStorage *)self owner];
+    owner2 = [(HMDResidentMeshMeshStorage *)self owner];
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMDResidentMeshMeshStorage *)self residentDevice];
+      residentDevice4 = [(HMDResidentMeshMeshStorage *)self residentDevice];
       *buf = 138543618;
       v26 = v12;
       v27 = 2112;
-      v28 = v13;
+      v28 = residentDevice4;
       v14 = "%{public}@skipping update to unreachable resident %@";
       goto LABEL_8;
     }
@@ -183,21 +183,21 @@ void __44__HMDResidentMeshMeshStorage__requestStatus__block_invoke(uint64_t a1, 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDResidentMeshMeshStorage)initWithResidentDevice:(id)a3 owner:(id)a4
+- (HMDResidentMeshMeshStorage)initWithResidentDevice:(id)device owner:(id)owner
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  ownerCopy = owner;
   v18.receiver = self;
   v18.super_class = HMDResidentMeshMeshStorage;
   v9 = [(HMDResidentMeshMeshStorage *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_residentDevice, a3);
-    objc_storeWeak(&v10->_owner, v8);
-    v11 = [MEMORY[0x277CBEAC0] dictionary];
+    objc_storeStrong(&v9->_residentDevice, device);
+    objc_storeWeak(&v10->_owner, ownerCopy);
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     metrics = v10->_metrics;
-    v10->_metrics = v11;
+    v10->_metrics = dictionary;
 
     v10->_generationCount = 1;
     v10->_enabled = 1;
@@ -205,9 +205,9 @@ void __44__HMDResidentMeshMeshStorage__requestStatus__block_invoke(uint64_t a1, 
     accessoryUUIDs = v10->_accessoryUUIDs;
     v10->_accessoryUUIDs = v13;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     accessoryListWithLinkQuality = v10->_accessoryListWithLinkQuality;
-    v10->_accessoryListWithLinkQuality = v15;
+    v10->_accessoryListWithLinkQuality = dictionary2;
   }
 
   return v10;

@@ -1,6 +1,6 @@
 @interface _UITypedStorage
 - (_UITypedStorage)init;
-- (void)copyInto:(id)a3;
+- (void)copyInto:(id)into;
 @end
 
 @implementation _UITypedStorage
@@ -14,11 +14,11 @@
   return [(_UITypedStorage *)&v5 init];
 }
 
-- (void)copyInto:(id)a3
+- (void)copyInto:(id)into
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890444D4(v4);
+  intoCopy = into;
+  selfCopy = self;
+  sub_1890444D4(intoCopy);
 }
 
 @end

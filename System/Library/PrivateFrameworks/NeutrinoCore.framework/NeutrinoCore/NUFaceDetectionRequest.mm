@@ -1,6 +1,6 @@
 @interface NUFaceDetectionRequest
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
@@ -19,18 +19,18 @@
   v8.receiver = self;
   v8.super_class = NUFaceDetectionRequest;
   v3 = [(NURenderRequest *)&v8 description];
-  v4 = [(NUFaceDetectionRequest *)self maxFaceCount];
-  v5 = [(NUFaceDetectionRequest *)self scalePolicy];
-  v6 = [v3 stringByAppendingFormat:@" Max Face Count: %ld, Scale Policy: %@", v4, v5];
+  maxFaceCount = [(NUFaceDetectionRequest *)self maxFaceCount];
+  scalePolicy = [(NUFaceDetectionRequest *)self scalePolicy];
+  v6 = [v3 stringByAppendingFormat:@" Max Face Count: %ld, Scale Policy: %@", maxFaceCount, scalePolicy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NUFaceDetectionRequest;
-  v4 = [(NURenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

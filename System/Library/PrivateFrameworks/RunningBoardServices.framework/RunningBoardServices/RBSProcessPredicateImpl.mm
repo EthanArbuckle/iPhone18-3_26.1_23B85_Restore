@@ -1,5 +1,5 @@
 @interface RBSProcessPredicateImpl
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 - (NSString)description;
 - (id)processIdentifier;
 - (id)processIdentifiers;
@@ -17,11 +17,11 @@
 
 - (id)processIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -29,17 +29,17 @@
     v3 = 0;
   }
 
-  v4 = v3;
+  processIdentifier = v3;
 
-  v5 = [(RBSProcessPredicateImpl *)v4 processIdentifiers];
-  if (v5)
+  processIdentifiers = [(RBSProcessPredicateImpl *)processIdentifier processIdentifiers];
+  if (processIdentifiers)
   {
-    v6 = v5;
+    processIdentifiers4 = processIdentifiers;
   }
 
   else
   {
-    v7 = v2;
+    v7 = selfCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,11 +53,11 @@
 
     v9 = v8;
 
-    v10 = [(RBSProcessPredicateImpl *)v9 processIdentifiers];
-    v11 = v10;
-    if (v10)
+    processIdentifiers2 = [(RBSProcessPredicateImpl *)v9 processIdentifiers];
+    v11 = processIdentifiers2;
+    if (processIdentifiers2)
     {
-      v6 = v10;
+      processIdentifiers4 = processIdentifiers2;
     }
 
     else
@@ -76,11 +76,11 @@
 
       v14 = v13;
 
-      v15 = [(RBSProcessPredicateImpl *)v14 processIdentifiers];
-      v16 = v15;
-      if (v15)
+      processIdentifiers3 = [(RBSProcessPredicateImpl *)v14 processIdentifiers];
+      v16 = processIdentifiers3;
+      if (processIdentifiers3)
       {
-        v6 = v15;
+        processIdentifiers4 = processIdentifiers3;
       }
 
       else
@@ -99,41 +99,41 @@
 
         v19 = v18;
 
-        v6 = [(RBSProcessPredicateImpl *)v19 processIdentifiers];
+        processIdentifiers4 = [(RBSProcessPredicateImpl *)v19 processIdentifiers];
       }
     }
 
-    if (v6)
+    if (processIdentifiers4)
     {
       goto LABEL_23;
     }
 
-    v4 = [(RBSProcessPredicateImpl *)v7 processIdentifier];
-    if (v4)
+    processIdentifier = [(RBSProcessPredicateImpl *)v7 processIdentifier];
+    if (processIdentifier)
     {
       v21 = MEMORY[0x1E695DFD8];
-      v22 = [RBSProcessIdentifier identifierForIdentifier:v4];
-      v6 = [v21 setWithObject:v22];
+      v22 = [RBSProcessIdentifier identifierForIdentifier:processIdentifier];
+      processIdentifiers4 = [v21 setWithObject:v22];
     }
 
     else
     {
-      v6 = 0;
+      processIdentifiers4 = 0;
     }
   }
 
 LABEL_23:
 
-  return v6;
+  return processIdentifiers4;
 }
 
 - (id)processIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -143,16 +143,16 @@ LABEL_23:
 
   v4 = v3;
 
-  v5 = [(RBSProcessPredicateImpl *)v4 identifier];
-  v6 = v5;
-  if (v5)
+  identifier = [(RBSProcessPredicateImpl *)v4 identifier];
+  v6 = identifier;
+  if (identifier)
   {
-    v7 = v5;
+    processIdentifier4 = identifier;
   }
 
   else
   {
-    v8 = v2;
+    v8 = selfCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -166,11 +166,11 @@ LABEL_23:
 
     v10 = v9;
 
-    v11 = [(RBSProcessPredicateImpl *)v10 processIdentifier];
-    v12 = v11;
-    if (v11)
+    processIdentifier = [(RBSProcessPredicateImpl *)v10 processIdentifier];
+    v12 = processIdentifier;
+    if (processIdentifier)
     {
-      v7 = v11;
+      processIdentifier4 = processIdentifier;
     }
 
     else
@@ -189,11 +189,11 @@ LABEL_23:
 
       v15 = v14;
 
-      v16 = [(RBSProcessPredicateImpl *)v15 processIdentifier];
-      v17 = v16;
-      if (v16)
+      processIdentifier2 = [(RBSProcessPredicateImpl *)v15 processIdentifier];
+      v17 = processIdentifier2;
+      if (processIdentifier2)
       {
-        v7 = v16;
+        processIdentifier4 = processIdentifier2;
       }
 
       else
@@ -212,11 +212,11 @@ LABEL_23:
 
         v20 = v19;
 
-        v21 = [(RBSProcessPredicateImpl *)v20 processIdentifier];
-        v22 = v21;
-        if (v21)
+        processIdentifier3 = [(RBSProcessPredicateImpl *)v20 processIdentifier];
+        v22 = processIdentifier3;
+        if (processIdentifier3)
         {
-          v7 = v21;
+          processIdentifier4 = processIdentifier3;
         }
 
         else
@@ -235,13 +235,13 @@ LABEL_23:
 
           v25 = v24;
 
-          v7 = [(RBSProcessPredicateImpl *)v25 processIdentifier];
+          processIdentifier4 = [(RBSProcessPredicateImpl *)v25 processIdentifier];
         }
       }
     }
   }
 
-  return v7;
+  return processIdentifier4;
 }
 
 - (NSString)description
@@ -253,7 +253,7 @@ LABEL_23:
   return v4;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
   OUTLINED_FUNCTION_1();
   v3 = objc_opt_class();

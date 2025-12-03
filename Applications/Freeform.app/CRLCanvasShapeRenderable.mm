@@ -1,11 +1,11 @@
 @interface CRLCanvasShapeRenderable
 + (id)renderable;
-+ (id)renderableFromShapeLayer:(id)a3;
++ (id)renderableFromShapeLayer:(id)layer;
 - (CAShapeLayer)shapeLayer;
 - (CGColor)fillColor;
 - (CGColor)strokeColor;
 - (CGPath)path;
-- (CRLCanvasShapeRenderable)initWithShapeLayer:(id)a3;
+- (CRLCanvasShapeRenderable)initWithShapeLayer:(id)layer;
 - (NSArray)lineDashPattern;
 - (NSString)lineCap;
 - (NSString)lineJoin;
@@ -13,40 +13,40 @@
 - (double)lineWidth;
 - (double)miterLimit;
 - (double)strokeEnd;
-- (void)setCGLineCap:(int)a3;
-- (void)setCGLineJoin:(int)a3;
-- (void)setFillColor:(CGColor *)a3;
-- (void)setLineCap:(id)a3;
-- (void)setLineDashPattern:(id)a3;
-- (void)setLineDashPhase:(double)a3;
-- (void)setLineJoin:(id)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setMiterLimit:(double)a3;
-- (void)setPath:(CGPath *)a3;
-- (void)setStrokeColor:(CGColor *)a3;
-- (void)setStrokeEnd:(double)a3;
+- (void)setCGLineCap:(int)cap;
+- (void)setCGLineJoin:(int)join;
+- (void)setFillColor:(CGColor *)color;
+- (void)setLineCap:(id)cap;
+- (void)setLineDashPattern:(id)pattern;
+- (void)setLineDashPhase:(double)phase;
+- (void)setLineJoin:(id)join;
+- (void)setLineWidth:(double)width;
+- (void)setMiterLimit:(double)limit;
+- (void)setPath:(CGPath *)path;
+- (void)setStrokeColor:(CGColor *)color;
+- (void)setStrokeEnd:(double)end;
 @end
 
 @implementation CRLCanvasShapeRenderable
 
-- (CRLCanvasShapeRenderable)initWithShapeLayer:(id)a3
+- (CRLCanvasShapeRenderable)initWithShapeLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = CRLCanvasShapeRenderable;
-  return [(CRLCanvasRenderable *)&v4 initWithCALayer:a3];
+  return [(CRLCanvasRenderable *)&v4 initWithCALayer:layer];
 }
 
-+ (id)renderableFromShapeLayer:(id)a3
++ (id)renderableFromShapeLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithShapeLayer:v4];
+  layerCopy = layer;
+  v5 = [[self alloc] initWithShapeLayer:layerCopy];
 
   return v5;
 }
 
 + (id)renderable
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CAShapeLayer layer];
   v4 = [v2 initWithShapeLayer:v3];
 
@@ -57,167 +57,167 @@
 {
   v4.receiver = self;
   v4.super_class = CRLCanvasShapeRenderable;
-  v2 = [(CRLCanvasRenderable *)&v4 layer];
+  layer = [(CRLCanvasRenderable *)&v4 layer];
 
-  return v2;
+  return layer;
 }
 
 - (CGPath)path
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  v3 = [v2 path];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  path = [shapeLayer path];
 
-  return v3;
+  return path;
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
-  v4 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v4 setPath:a3];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setPath:path];
 }
 
 - (CGColor)strokeColor
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  v3 = [v2 strokeColor];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  strokeColor = [shapeLayer strokeColor];
 
-  return v3;
+  return strokeColor;
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
-  v4 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v4 setStrokeColor:a3];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setStrokeColor:color];
 }
 
 - (CGColor)fillColor
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  v3 = [v2 fillColor];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  fillColor = [shapeLayer fillColor];
 
-  return v3;
+  return fillColor;
 }
 
-- (void)setFillColor:(CGColor *)a3
+- (void)setFillColor:(CGColor *)color
 {
-  v4 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v4 setFillColor:a3];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setFillColor:color];
 }
 
 - (double)lineWidth
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v2 lineWidth];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer lineWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  v4 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v4 setLineWidth:a3];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setLineWidth:width];
 }
 
 - (NSArray)lineDashPattern
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  v3 = [v2 lineDashPattern];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  lineDashPattern = [shapeLayer lineDashPattern];
 
-  return v3;
+  return lineDashPattern;
 }
 
-- (void)setLineDashPattern:(id)a3
+- (void)setLineDashPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v5 setLineDashPattern:v4];
+  patternCopy = pattern;
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setLineDashPattern:patternCopy];
 }
 
 - (NSString)lineCap
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  v3 = [v2 lineCap];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  lineCap = [shapeLayer lineCap];
 
-  return v3;
+  return lineCap;
 }
 
-- (void)setLineCap:(id)a3
+- (void)setLineCap:(id)cap
 {
-  v4 = a3;
-  v5 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v5 setLineCap:v4];
+  capCopy = cap;
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setLineCap:capCopy];
 }
 
 - (double)lineDashPhase
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v2 lineDashPhase];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer lineDashPhase];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLineDashPhase:(double)a3
+- (void)setLineDashPhase:(double)phase
 {
-  v4 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v4 setLineDashPhase:a3];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setLineDashPhase:phase];
 }
 
 - (NSString)lineJoin
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  v3 = [v2 lineJoin];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  lineJoin = [shapeLayer lineJoin];
 
-  return v3;
+  return lineJoin;
 }
 
-- (void)setLineJoin:(id)a3
+- (void)setLineJoin:(id)join
 {
-  v4 = a3;
-  v5 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v5 setLineJoin:v4];
+  joinCopy = join;
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setLineJoin:joinCopy];
 }
 
 - (double)miterLimit
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v2 miterLimit];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer miterLimit];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMiterLimit:(double)a3
+- (void)setMiterLimit:(double)limit
 {
-  v4 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v4 setMiterLimit:a3];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setMiterLimit:limit];
 }
 
 - (double)strokeEnd
 {
-  v2 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v2 strokeEnd];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer strokeEnd];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setStrokeEnd:(double)a3
+- (void)setStrokeEnd:(double)end
 {
-  v4 = [(CRLCanvasShapeRenderable *)self shapeLayer];
-  [v4 setStrokeEnd:a3];
+  shapeLayer = [(CRLCanvasShapeRenderable *)self shapeLayer];
+  [shapeLayer setStrokeEnd:end];
 }
 
-- (void)setCGLineCap:(int)a3
+- (void)setCGLineCap:(int)cap
 {
   v3 = @"butt";
-  if (a3 == 1)
+  if (cap == 1)
   {
     v3 = @"round";
   }
 
-  if (a3 == 2)
+  if (cap == 2)
   {
     v4 = @"square";
   }
@@ -230,15 +230,15 @@
   [(CRLCanvasShapeRenderable *)self setLineCap:v4];
 }
 
-- (void)setCGLineJoin:(int)a3
+- (void)setCGLineJoin:(int)join
 {
   v3 = @"miter";
-  if (a3 == 1)
+  if (join == 1)
   {
     v3 = @"round";
   }
 
-  if (a3 == 2)
+  if (join == 2)
   {
     v4 = @"bevel";
   }

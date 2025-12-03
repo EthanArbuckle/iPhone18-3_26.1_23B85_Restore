@@ -1,6 +1,6 @@
 @interface WFFitnessWorkoutActivityTypeContentItem
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 - (id)activityType;
 - (id)activityTypeIdentifier;
@@ -10,36 +10,36 @@
 
 - (id)activityTypeIdentifier
 {
-  v2 = [(WFFitnessWorkoutActivityTypeContentItem *)self activityType];
-  v3 = [v2 uniqueIdentifier];
+  activityType = [(WFFitnessWorkoutActivityTypeContentItem *)self activityType];
+  uniqueIdentifier = [activityType uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (id)activityType
 {
   v3 = [WFObjectType typeWithClass:getFIUIWorkoutActivityTypeClass()];
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Workout Activity Types", @"Workout Activity Types");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Workout Activity Type", @"Workout Activity Type");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

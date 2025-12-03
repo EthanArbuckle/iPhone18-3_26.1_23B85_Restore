@@ -1,33 +1,33 @@
 @interface UNCSectionInfoSettings
 - (BOOL)allowsNotifications;
 - (BOOL)isAuthorizedTemporarily;
-- (BOOL)isBulletinMutedForThreadIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isBulletinMutedForThreadIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)stateCapture;
-- (UNCSectionInfoSettings)initWithCoder:(id)a3;
-- (UNCSectionInfoSettings)initWithDefaultsForSectionType:(int64_t)a3;
+- (UNCSectionInfoSettings)initWithCoder:(id)coder;
+- (UNCSectionInfoSettings)initWithDefaultsForSectionType:(int64_t)type;
 - (id)_alertTypeDescription;
 - (id)_announceSettingDescription;
 - (id)_authorizationStatusDescription;
 - (id)_bulletinGroupingSettingDescription;
 - (id)_contentPreviewSettingDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)spokenNotificationSetting;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)muteSectionUntilDate:(id)a3;
-- (void)muteThreadIdentifier:(id)a3 untilDate:(id)a4;
-- (void)setAllowsNotifications:(BOOL)a3;
-- (void)setShowsInLockScreen:(BOOL)a3;
-- (void)setShowsInNotificationCenter:(BOOL)a3;
-- (void)setSpokenNotificationSetting:(int64_t)a3;
-- (void)unmuteThreadIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)muteSectionUntilDate:(id)date;
+- (void)muteThreadIdentifier:(id)identifier untilDate:(id)date;
+- (void)setAllowsNotifications:(BOOL)notifications;
+- (void)setShowsInLockScreen:(BOOL)screen;
+- (void)setShowsInNotificationCenter:(BOOL)center;
+- (void)setSpokenNotificationSetting:(int64_t)setting;
+- (void)unmuteThreadIdentifier:(id)identifier;
 @end
 
 @implementation UNCSectionInfoSettings
 
-- (UNCSectionInfoSettings)initWithDefaultsForSectionType:(int64_t)a3
+- (UNCSectionInfoSettings)initWithDefaultsForSectionType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = UNCSectionInfoSettings;
@@ -37,7 +37,7 @@
   {
     [(UNCSectionInfoSettings *)v4 setAuthorizationStatus:2];
     [(UNCSectionInfoSettings *)v5 setNotificationCenterSetting:2];
-    if ((a3 | 2) == 2)
+    if ((type | 2) == 2)
     {
       [(UNCSectionInfoSettings *)v5 setLockScreenSetting:2];
       [(UNCSectionInfoSettings *)v5 setShowsOnExternalDevices:1];
@@ -59,18 +59,18 @@
   return v5;
 }
 
-- (void)muteSectionUntilDate:(id)a3
+- (void)muteSectionUntilDate:(id)date
 {
-  v4 = [UNCSectionMuteAssertion sectionMuteAssertionUntilDate:a3];
+  v4 = [UNCSectionMuteAssertion sectionMuteAssertionUntilDate:date];
   [(UNCSectionInfoSettings *)self setMuteAssertion:v4];
 }
 
-- (void)muteThreadIdentifier:(id)a3 untilDate:(id)a4
+- (void)muteThreadIdentifier:(id)identifier untilDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UNCSectionInfoSettings *)self muteAssertion];
-  if (v8 && (v9 = v8, [(UNCSectionInfoSettings *)self muteAssertion], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, v9, (isKindOfClass & 1) == 0))
+  identifierCopy = identifier;
+  dateCopy = date;
+  muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+  if (muteAssertion && (v9 = muteAssertion, [(UNCSectionInfoSettings *)self muteAssertion], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, v9, (isKindOfClass & 1) == 0))
   {
     if (os_log_type_enabled(*MEMORY[0x1E69833A0], OS_LOG_TYPE_ERROR))
     {
@@ -78,18 +78,18 @@
     }
   }
 
-  else if (v6 && [v6 length])
+  else if (identifierCopy && [identifierCopy length])
   {
-    v12 = [(UNCSectionInfoSettings *)self muteAssertion];
+    muteAssertion2 = [(UNCSectionInfoSettings *)self muteAssertion];
 
-    if (!v12)
+    if (!muteAssertion2)
     {
       v13 = +[UNCThreadsMuteAssertion threadsMuteAssertion];
       [(UNCSectionInfoSettings *)self setMuteAssertion:v13];
     }
 
-    v14 = [(UNCSectionInfoSettings *)self muteAssertion];
-    [v14 setMutedUntilDate:v7 forThreadIdentifier:v6];
+    muteAssertion3 = [(UNCSectionInfoSettings *)self muteAssertion];
+    [muteAssertion3 setMutedUntilDate:dateCopy forThreadIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833A0], OS_LOG_TYPE_ERROR))
@@ -98,11 +98,11 @@
   }
 }
 
-- (void)unmuteThreadIdentifier:(id)a3
+- (void)unmuteThreadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(UNCSectionInfoSettings *)self muteAssertion];
-  if (v5 && (v6 = v5, [(UNCSectionInfoSettings *)self muteAssertion], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) == 0))
+  identifierCopy = identifier;
+  muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+  if (muteAssertion && (v6 = muteAssertion, [(UNCSectionInfoSettings *)self muteAssertion], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) == 0))
   {
     if (os_log_type_enabled(*MEMORY[0x1E69833A0], OS_LOG_TYPE_ERROR))
     {
@@ -110,10 +110,10 @@
     }
   }
 
-  else if (v4 && [v4 length])
+  else if (identifierCopy && [identifierCopy length])
   {
-    v9 = [(UNCSectionInfoSettings *)self muteAssertion];
-    [v9 setUnmutedForThreadIdentifier:v4];
+    muteAssertion2 = [(UNCSectionInfoSettings *)self muteAssertion];
+    [muteAssertion2 setUnmutedForThreadIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833A0], OS_LOG_TYPE_ERROR))
@@ -122,11 +122,11 @@
   }
 }
 
-- (BOOL)isBulletinMutedForThreadIdentifier:(id)a3
+- (BOOL)isBulletinMutedForThreadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(UNCSectionInfoSettings *)self muteAssertion];
-  v6 = [v5 isActiveForThreadIdentifier:v4];
+  identifierCopy = identifier;
+  muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+  v6 = [muteAssertion isActiveForThreadIdentifier:identifierCopy];
 
   return v6;
 }
@@ -134,19 +134,19 @@
 - (NSDictionary)stateCapture
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(UNCSectionInfoSettings *)self _authorizationStatusDescription];
-  [v3 setValue:v4 forKey:@"Authorized"];
+  _authorizationStatusDescription = [(UNCSectionInfoSettings *)self _authorizationStatusDescription];
+  [v3 setValue:_authorizationStatusDescription forKey:@"Authorized"];
 
-  v5 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
-  v6 = [v5 description];
+  authorizationExpirationDate = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
+  v6 = [authorizationExpirationDate description];
   [v3 setValue:v6 forKey:@"Authorization Expiration Date"];
 
-  v7 = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
-  v8 = [v7 description];
+  lastUserGrantedAuthorizationDate = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
+  v8 = [lastUserGrantedAuthorizationDate description];
   [v3 setValue:v8 forKey:@"Last User Granted Authorizated"];
 
-  v9 = [(UNCSectionInfoSettings *)self muteAssertion];
-  v10 = [v9 description];
+  muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+  v10 = [muteAssertion description];
   [v3 setValue:v10 forKey:@"Mute Configuration"];
 
   if ([(UNCSectionInfoSettings *)self notificationCenterSetting])
@@ -190,8 +190,8 @@
 
   if ([(UNCSectionInfoSettings *)self announceSetting])
   {
-    v18 = [(UNCSectionInfoSettings *)self _announceSettingDescription];
-    [v3 setValue:v18 forKey:@"AnnounceNotifications"];
+    _announceSettingDescription = [(UNCSectionInfoSettings *)self _announceSettingDescription];
+    [v3 setValue:_announceSettingDescription forKey:@"AnnounceNotifications"];
   }
 
   if ([(UNCSectionInfoSettings *)self scheduledDeliverySetting])
@@ -215,11 +215,11 @@
   v23 = UNCStringFromBool([(UNCSectionInfoSettings *)self showsCustomSettingsLink]);
   [v3 setValue:v23 forKey:@"CustomSettingsLink"];
 
-  v24 = [(UNCSectionInfoSettings *)self _contentPreviewSettingDescription];
-  [v3 setValue:v24 forKey:@"ContentPreviewSetting"];
+  _contentPreviewSettingDescription = [(UNCSectionInfoSettings *)self _contentPreviewSettingDescription];
+  [v3 setValue:_contentPreviewSettingDescription forKey:@"ContentPreviewSetting"];
 
-  v25 = [(UNCSectionInfoSettings *)self _alertTypeDescription];
-  [v3 setValue:v25 forKey:@"AlertType"];
+  _alertTypeDescription = [(UNCSectionInfoSettings *)self _alertTypeDescription];
+  [v3 setValue:_alertTypeDescription forKey:@"AlertType"];
 
   v26 = UNCStringFromBool([(UNCSectionInfoSettings *)self pushSettings]& 1);
   [v3 setValue:v26 forKey:@"PushSettingsBadgeSupported"];
@@ -239,25 +239,25 @@
   v31 = UNCStringFromBool(([(UNCSectionInfoSettings *)self pushSettings]>> 5) & 1);
   [v3 setValue:v31 forKey:@"PushSettingsAlertEnabled"];
 
-  v32 = [(UNCSectionInfoSettings *)self _bulletinGroupingSettingDescription];
-  [v3 setValue:v32 forKey:@"GroupingSetting"];
+  _bulletinGroupingSettingDescription = [(UNCSectionInfoSettings *)self _bulletinGroupingSettingDescription];
+  [v3 setValue:_bulletinGroupingSettingDescription forKey:@"GroupingSetting"];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [(UNCSectionInfoSettings *)self _authorizationStatusDescription];
-  v4 = [@" Section settings" stringByAppendingFormat:@": authorized = %@", v3];
+  _authorizationStatusDescription = [(UNCSectionInfoSettings *)self _authorizationStatusDescription];
+  v4 = [@" Section settings" stringByAppendingFormat:@": authorized = %@", _authorizationStatusDescription];
 
-  v5 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
-  v6 = [v4 stringByAppendingFormat:@", authorization expiration date = %@", v5];
+  authorizationExpirationDate = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
+  v6 = [v4 stringByAppendingFormat:@", authorization expiration date = %@", authorizationExpirationDate];
 
-  v7 = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
-  v8 = [v6 stringByAppendingFormat:@", last user granted authorization date = %@", v7];
+  lastUserGrantedAuthorizationDate = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
+  v8 = [v6 stringByAppendingFormat:@", last user granted authorization date = %@", lastUserGrantedAuthorizationDate];
 
-  v9 = [(UNCSectionInfoSettings *)self muteAssertion];
-  v10 = [v8 stringByAppendingFormat:@", mute configuration = %@", v9];
+  muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+  v10 = [v8 stringByAppendingFormat:@", mute configuration = %@", muteAssertion];
 
   if ([(UNCSectionInfoSettings *)self notificationCenterSetting])
   {
@@ -390,8 +390,8 @@
 
   if ([(UNCSectionInfoSettings *)self announceSetting])
   {
-    v26 = [(UNCSectionInfoSettings *)self _announceSettingDescription];
-    v27 = [v10 stringByAppendingFormat:@", announce setting = %@", v26];
+    _announceSettingDescription = [(UNCSectionInfoSettings *)self _announceSettingDescription];
+    v27 = [v10 stringByAppendingFormat:@", announce setting = %@", _announceSettingDescription];
 
     v10 = v27;
   }
@@ -447,17 +447,17 @@
 
   v34 = [v32 stringByAppendingFormat:@", shows custom settings = %@", v33];
 
-  v35 = [(UNCSectionInfoSettings *)self _contentPreviewSettingDescription];
-  v36 = [v34 stringByAppendingFormat:@", content preview setting = %@", v35];
+  _contentPreviewSettingDescription = [(UNCSectionInfoSettings *)self _contentPreviewSettingDescription];
+  v36 = [v34 stringByAppendingFormat:@", content preview setting = %@", _contentPreviewSettingDescription];
 
-  v37 = [(UNCSectionInfoSettings *)self _alertTypeDescription];
-  v38 = [v36 stringByAppendingFormat:@", Alert style = %@", v37];
+  _alertTypeDescription = [(UNCSectionInfoSettings *)self _alertTypeDescription];
+  v38 = [v36 stringByAppendingFormat:@", Alert style = %@", _alertTypeDescription];
 
   v39 = UNCPushSettingsDescription([(UNCSectionInfoSettings *)self pushSettings]);
   v40 = [v38 stringByAppendingFormat:@", Push settings = %@", v39];
 
-  v41 = [(UNCSectionInfoSettings *)self _bulletinGroupingSettingDescription];
-  v42 = [v40 stringByAppendingFormat:@", grouping = %@", v41];
+  _bulletinGroupingSettingDescription = [(UNCSectionInfoSettings *)self _bulletinGroupingSettingDescription];
+  v42 = [v40 stringByAppendingFormat:@", grouping = %@", _bulletinGroupingSettingDescription];
 
   v46.receiver = self;
   v46.super_class = UNCSectionInfoSettings;
@@ -469,97 +469,97 @@
 
 - (id)_authorizationStatusDescription
 {
-  v2 = [(UNCSectionInfoSettings *)self authorizationStatus];
-  if (v2 > 4)
+  authorizationStatus = [(UNCSectionInfoSettings *)self authorizationStatus];
+  if (authorizationStatus > 4)
   {
     return @"<invalid>";
   }
 
   else
   {
-    return off_1E85D7468[v2];
+    return off_1E85D7468[authorizationStatus];
   }
 }
 
 - (id)_alertTypeDescription
 {
-  v2 = [(UNCSectionInfoSettings *)self alertType];
-  if (v2 > 2)
+  alertType = [(UNCSectionInfoSettings *)self alertType];
+  if (alertType > 2)
   {
     return @"<invalid>";
   }
 
   else
   {
-    return off_1E85D7490[v2];
+    return off_1E85D7490[alertType];
   }
 }
 
 - (id)_contentPreviewSettingDescription
 {
-  v2 = [(UNCSectionInfoSettings *)self contentPreviewSetting];
-  if (v2 > 3)
+  contentPreviewSetting = [(UNCSectionInfoSettings *)self contentPreviewSetting];
+  if (contentPreviewSetting > 3)
   {
     return @"<invalid>";
   }
 
   else
   {
-    return off_1E85D74A8[v2];
+    return off_1E85D74A8[contentPreviewSetting];
   }
 }
 
 - (id)_bulletinGroupingSettingDescription
 {
-  v2 = [(UNCSectionInfoSettings *)self bulletinGroupingSetting];
-  if (v2 > 2)
+  bulletinGroupingSetting = [(UNCSectionInfoSettings *)self bulletinGroupingSetting];
+  if (bulletinGroupingSetting > 2)
   {
     return @"<invalid>";
   }
 
   else
   {
-    return off_1E85D74C8[v2];
+    return off_1E85D74C8[bulletinGroupingSetting];
   }
 }
 
 - (id)_announceSettingDescription
 {
-  v2 = [(UNCSectionInfoSettings *)self announceSetting];
-  if (v2 > 3)
+  announceSetting = [(UNCSectionInfoSettings *)self announceSetting];
+  if (announceSetting > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E85D74E0[v2];
+    return off_1E85D74E0[announceSetting];
   }
 }
 
 - (unint64_t)hash
 {
-  v3 = [(UNCSectionInfoSettings *)self authorizationStatus];
-  v4 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
-  v7 = [v6 hash];
-  v8 = [(UNCSectionInfoSettings *)self muteAssertion];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(UNCSectionInfoSettings *)self notificationCenterSetting];
-  v11 = v10 ^ [(UNCSectionInfoSettings *)self lockScreenSetting];
+  authorizationStatus = [(UNCSectionInfoSettings *)self authorizationStatus];
+  authorizationExpirationDate = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
+  v5 = [authorizationExpirationDate hash] ^ authorizationStatus;
+  lastUserGrantedAuthorizationDate = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
+  v7 = [lastUserGrantedAuthorizationDate hash];
+  muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+  v9 = v5 ^ v7 ^ [muteAssertion hash];
+  notificationCenterSetting = [(UNCSectionInfoSettings *)self notificationCenterSetting];
+  v11 = notificationCenterSetting ^ [(UNCSectionInfoSettings *)self lockScreenSetting];
   v12 = v9 ^ v11 ^ [(UNCSectionInfoSettings *)self showsOnExternalDevices];
-  v13 = [(UNCSectionInfoSettings *)self showsCustomSettingsLink];
-  v14 = v13 ^ [(UNCSectionInfoSettings *)self contentPreviewSetting];
+  showsCustomSettingsLink = [(UNCSectionInfoSettings *)self showsCustomSettingsLink];
+  v14 = showsCustomSettingsLink ^ [(UNCSectionInfoSettings *)self contentPreviewSetting];
   v15 = v12 ^ v14 ^ [(UNCSectionInfoSettings *)self alertType];
-  v16 = [(UNCSectionInfoSettings *)self pushSettings];
-  v17 = v16 ^ [(UNCSectionInfoSettings *)self carPlaySetting];
+  pushSettings = [(UNCSectionInfoSettings *)self pushSettings];
+  v17 = pushSettings ^ [(UNCSectionInfoSettings *)self carPlaySetting];
   v18 = v17 ^ [(UNCSectionInfoSettings *)self remoteNotificationsSetting];
   v19 = v18 ^ [(UNCSectionInfoSettings *)self criticalAlertSetting];
   v20 = v19 ^ [(UNCSectionInfoSettings *)self timeSensitiveSetting];
   v21 = v15 ^ v20 ^ [(UNCSectionInfoSettings *)self hasUserConfiguredTimeSensitiveSetting];
-  v22 = [(UNCSectionInfoSettings *)self bulletinGroupingSetting];
-  v23 = v22 ^ [(UNCSectionInfoSettings *)self announceSetting];
+  bulletinGroupingSetting = [(UNCSectionInfoSettings *)self bulletinGroupingSetting];
+  v23 = bulletinGroupingSetting ^ [(UNCSectionInfoSettings *)self announceSetting];
   v24 = v23 ^ [(UNCSectionInfoSettings *)self scheduledDeliverySetting];
   v25 = v24 ^ [(UNCSectionInfoSettings *)self directMessagesSetting];
   v26 = v25 ^ [(UNCSectionInfoSettings *)self hasUserConfiguredDirectMessagesSetting];
@@ -567,10 +567,10 @@
   return v21 ^ v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -580,84 +580,84 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(UNCSectionInfoSettings *)self authorizationStatus];
-      if (v6 == [(UNCSectionInfoSettings *)v5 authorizationStatus])
+      v5 = equalCopy;
+      authorizationStatus = [(UNCSectionInfoSettings *)self authorizationStatus];
+      if (authorizationStatus == [(UNCSectionInfoSettings *)v5 authorizationStatus])
       {
-        v7 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
-        v8 = [(UNCSectionInfoSettings *)v5 authorizationExpirationDate];
-        if (v7 == v8)
+        authorizationExpirationDate = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
+        authorizationExpirationDate2 = [(UNCSectionInfoSettings *)v5 authorizationExpirationDate];
+        if (authorizationExpirationDate == authorizationExpirationDate2)
         {
-          v10 = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
-          v11 = [(UNCSectionInfoSettings *)v5 lastUserGrantedAuthorizationDate];
-          if (v10 == v11)
+          lastUserGrantedAuthorizationDate = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
+          lastUserGrantedAuthorizationDate2 = [(UNCSectionInfoSettings *)v5 lastUserGrantedAuthorizationDate];
+          if (lastUserGrantedAuthorizationDate == lastUserGrantedAuthorizationDate2)
           {
-            v12 = [(UNCSectionInfoSettings *)self muteAssertion];
-            v13 = [(UNCSectionInfoSettings *)v5 muteAssertion];
+            muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+            muteAssertion2 = [(UNCSectionInfoSettings *)v5 muteAssertion];
             if (!BSEqualObjects())
             {
               goto LABEL_30;
             }
 
-            v14 = [(UNCSectionInfoSettings *)self notificationCenterSetting];
-            if (v14 != [(UNCSectionInfoSettings *)v5 notificationCenterSetting])
+            notificationCenterSetting = [(UNCSectionInfoSettings *)self notificationCenterSetting];
+            if (notificationCenterSetting != [(UNCSectionInfoSettings *)v5 notificationCenterSetting])
             {
               goto LABEL_30;
             }
 
-            v15 = [(UNCSectionInfoSettings *)self lockScreenSetting];
-            if (v15 != [(UNCSectionInfoSettings *)v5 lockScreenSetting])
+            lockScreenSetting = [(UNCSectionInfoSettings *)self lockScreenSetting];
+            if (lockScreenSetting != [(UNCSectionInfoSettings *)v5 lockScreenSetting])
             {
               goto LABEL_30;
             }
 
-            v16 = [(UNCSectionInfoSettings *)self showsOnExternalDevices];
-            if (v16 != [(UNCSectionInfoSettings *)v5 showsOnExternalDevices])
+            showsOnExternalDevices = [(UNCSectionInfoSettings *)self showsOnExternalDevices];
+            if (showsOnExternalDevices != [(UNCSectionInfoSettings *)v5 showsOnExternalDevices])
             {
               goto LABEL_30;
             }
 
-            v17 = [(UNCSectionInfoSettings *)self showsCustomSettingsLink];
-            if (v17 != [(UNCSectionInfoSettings *)v5 showsCustomSettingsLink])
+            showsCustomSettingsLink = [(UNCSectionInfoSettings *)self showsCustomSettingsLink];
+            if (showsCustomSettingsLink != [(UNCSectionInfoSettings *)v5 showsCustomSettingsLink])
             {
               goto LABEL_30;
             }
 
-            v18 = [(UNCSectionInfoSettings *)self contentPreviewSetting];
-            if (v18 != [(UNCSectionInfoSettings *)v5 contentPreviewSetting])
+            contentPreviewSetting = [(UNCSectionInfoSettings *)self contentPreviewSetting];
+            if (contentPreviewSetting != [(UNCSectionInfoSettings *)v5 contentPreviewSetting])
             {
               goto LABEL_30;
             }
 
-            v19 = [(UNCSectionInfoSettings *)self alertType];
-            if (v19 != [(UNCSectionInfoSettings *)v5 alertType])
+            alertType = [(UNCSectionInfoSettings *)self alertType];
+            if (alertType != [(UNCSectionInfoSettings *)v5 alertType])
             {
               goto LABEL_30;
             }
 
-            v20 = [(UNCSectionInfoSettings *)self pushSettings];
-            if (v20 != [(UNCSectionInfoSettings *)v5 pushSettings])
+            pushSettings = [(UNCSectionInfoSettings *)self pushSettings];
+            if (pushSettings != [(UNCSectionInfoSettings *)v5 pushSettings])
             {
               goto LABEL_30;
             }
 
-            v21 = [(UNCSectionInfoSettings *)self carPlaySetting];
-            if (v21 != [(UNCSectionInfoSettings *)v5 carPlaySetting])
+            carPlaySetting = [(UNCSectionInfoSettings *)self carPlaySetting];
+            if (carPlaySetting != [(UNCSectionInfoSettings *)v5 carPlaySetting])
             {
               goto LABEL_30;
             }
 
-            v22 = [(UNCSectionInfoSettings *)self remoteNotificationsSetting];
-            if (v22 != [(UNCSectionInfoSettings *)v5 remoteNotificationsSetting])
+            remoteNotificationsSetting = [(UNCSectionInfoSettings *)self remoteNotificationsSetting];
+            if (remoteNotificationsSetting != [(UNCSectionInfoSettings *)v5 remoteNotificationsSetting])
             {
               goto LABEL_30;
             }
 
-            v23 = [(UNCSectionInfoSettings *)self criticalAlertSetting];
-            if (v23 == [(UNCSectionInfoSettings *)v5 criticalAlertSetting]&& (v24 = [(UNCSectionInfoSettings *)self timeSensitiveSetting], v24 == [(UNCSectionInfoSettings *)v5 timeSensitiveSetting]) && (v25 = [(UNCSectionInfoSettings *)self hasUserConfiguredTimeSensitiveSetting], v25 == [(UNCSectionInfoSettings *)v5 hasUserConfiguredTimeSensitiveSetting]) && (v26 = [(UNCSectionInfoSettings *)self bulletinGroupingSetting], v26 == [(UNCSectionInfoSettings *)v5 bulletinGroupingSetting]) && (v27 = [(UNCSectionInfoSettings *)self announceSetting], v27 == [(UNCSectionInfoSettings *)v5 announceSetting]) && (v28 = [(UNCSectionInfoSettings *)self scheduledDeliverySetting], v28 == [(UNCSectionInfoSettings *)v5 scheduledDeliverySetting]) && (v29 = [(UNCSectionInfoSettings *)self directMessagesSetting], v29 == [(UNCSectionInfoSettings *)v5 directMessagesSetting]))
+            criticalAlertSetting = [(UNCSectionInfoSettings *)self criticalAlertSetting];
+            if (criticalAlertSetting == [(UNCSectionInfoSettings *)v5 criticalAlertSetting]&& (v24 = [(UNCSectionInfoSettings *)self timeSensitiveSetting], v24 == [(UNCSectionInfoSettings *)v5 timeSensitiveSetting]) && (v25 = [(UNCSectionInfoSettings *)self hasUserConfiguredTimeSensitiveSetting], v25 == [(UNCSectionInfoSettings *)v5 hasUserConfiguredTimeSensitiveSetting]) && (v26 = [(UNCSectionInfoSettings *)self bulletinGroupingSetting], v26 == [(UNCSectionInfoSettings *)v5 bulletinGroupingSetting]) && (v27 = [(UNCSectionInfoSettings *)self announceSetting], v27 == [(UNCSectionInfoSettings *)v5 announceSetting]) && (v28 = [(UNCSectionInfoSettings *)self scheduledDeliverySetting], v28 == [(UNCSectionInfoSettings *)v5 scheduledDeliverySetting]) && (v29 = [(UNCSectionInfoSettings *)self directMessagesSetting], v29 == [(UNCSectionInfoSettings *)v5 directMessagesSetting]))
             {
-              v30 = [(UNCSectionInfoSettings *)self hasUserConfiguredDirectMessagesSetting];
-              v9 = v30 ^ [(UNCSectionInfoSettings *)v5 hasUserConfiguredDirectMessagesSetting]^ 1;
+              hasUserConfiguredDirectMessagesSetting = [(UNCSectionInfoSettings *)self hasUserConfiguredDirectMessagesSetting];
+              v9 = hasUserConfiguredDirectMessagesSetting ^ [(UNCSectionInfoSettings *)v5 hasUserConfiguredDirectMessagesSetting]^ 1;
             }
 
             else
@@ -694,18 +694,18 @@ LABEL_30:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setAuthorizationStatus:{-[UNCSectionInfoSettings authorizationStatus](self, "authorizationStatus")}];
-  v6 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
-  [v5 setAuthorizationExpirationDate:v6];
+  authorizationExpirationDate = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
+  [v5 setAuthorizationExpirationDate:authorizationExpirationDate];
 
-  v7 = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
-  [v5 setLastUserGrantedAuthorizationDate:v7];
+  lastUserGrantedAuthorizationDate = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
+  [v5 setLastUserGrantedAuthorizationDate:lastUserGrantedAuthorizationDate];
 
-  v8 = [(UNCSectionInfoSettings *)self muteAssertion];
-  v9 = [v8 copyWithZone:a3];
+  muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+  v9 = [muteAssertion copyWithZone:zone];
   [v5 setMuteAssertion:v9];
 
   [v5 setNotificationCenterSetting:{-[UNCSectionInfoSettings notificationCenterSetting](self, "notificationCenterSetting")}];
@@ -728,40 +728,40 @@ LABEL_30:
   return v5;
 }
 
-- (UNCSectionInfoSettings)initWithCoder:(id)a3
+- (UNCSectionInfoSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = UNCSectionInfoSettings;
   v5 = [(UNCSectionInfoSettings *)&v19 init];
   if (v5)
   {
-    -[UNCSectionInfoSettings setAuthorizationStatus:](v5, "setAuthorizationStatus:", [v4 decodeIntegerForKey:@"authorizationStatus"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizationExpirationDate"];
+    -[UNCSectionInfoSettings setAuthorizationStatus:](v5, "setAuthorizationStatus:", [coderCopy decodeIntegerForKey:@"authorizationStatus"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizationExpirationDate"];
     [(UNCSectionInfoSettings *)v5 setAuthorizationExpirationDate:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUserGrantedAuthorizationDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUserGrantedAuthorizationDate"];
     [(UNCSectionInfoSettings *)v5 setLastUserGrantedAuthorizationDate:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"muteAssertion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"muteAssertion"];
     [(UNCSectionInfoSettings *)v5 setMuteAssertion:v8];
 
-    -[UNCSectionInfoSettings setNotificationCenterSetting:](v5, "setNotificationCenterSetting:", [v4 decodeIntegerForKey:@"notificationCenterSetting"]);
-    -[UNCSectionInfoSettings setLockScreenSetting:](v5, "setLockScreenSetting:", [v4 decodeIntegerForKey:@"lockScreenSetting"]);
-    -[UNCSectionInfoSettings setShowsOnExternalDevices:](v5, "setShowsOnExternalDevices:", [v4 decodeBoolForKey:@"showsOnExternalDevices"]);
-    -[UNCSectionInfoSettings setShowsCustomSettingsLink:](v5, "setShowsCustomSettingsLink:", [v4 decodeBoolForKey:@"showsCustomSettingsLink"]);
-    -[UNCSectionInfoSettings setContentPreviewSetting:](v5, "setContentPreviewSetting:", [v4 decodeIntegerForKey:@"contentPreviewSetting"]);
-    -[UNCSectionInfoSettings setAlertType:](v5, "setAlertType:", [v4 decodeIntegerForKey:@"alertType"]);
-    -[UNCSectionInfoSettings setPushSettings:](v5, "setPushSettings:", [v4 decodeInt32ForKey:@"pushSettings"]);
-    -[UNCSectionInfoSettings setCarPlaySetting:](v5, "setCarPlaySetting:", [v4 decodeIntegerForKey:@"carPlaySetting"]);
-    -[UNCSectionInfoSettings setRemoteNotificationsSetting:](v5, "setRemoteNotificationsSetting:", [v4 decodeIntegerForKey:@"remoteNotificationsSetting"]);
-    -[UNCSectionInfoSettings setCriticalAlertSetting:](v5, "setCriticalAlertSetting:", [v4 decodeIntegerForKey:@"criticalAlertSetting"]);
-    -[UNCSectionInfoSettings setTimeSensitiveSetting:](v5, "setTimeSensitiveSetting:", [v4 decodeIntegerForKey:@"timeSensitiveSetting"]);
-    -[UNCSectionInfoSettings setUserConfiguredTimeSensitiveSetting:](v5, "setUserConfiguredTimeSensitiveSetting:", [v4 decodeBoolForKey:@"userConfiguredTimeSensitiveSetting"]);
-    -[UNCSectionInfoSettings setBulletinGroupingSetting:](v5, "setBulletinGroupingSetting:", [v4 decodeIntegerForKey:@"bulletinGroupingSetting"]);
-    if ([v4 containsValueForKey:@"announceSetting"])
+    -[UNCSectionInfoSettings setNotificationCenterSetting:](v5, "setNotificationCenterSetting:", [coderCopy decodeIntegerForKey:@"notificationCenterSetting"]);
+    -[UNCSectionInfoSettings setLockScreenSetting:](v5, "setLockScreenSetting:", [coderCopy decodeIntegerForKey:@"lockScreenSetting"]);
+    -[UNCSectionInfoSettings setShowsOnExternalDevices:](v5, "setShowsOnExternalDevices:", [coderCopy decodeBoolForKey:@"showsOnExternalDevices"]);
+    -[UNCSectionInfoSettings setShowsCustomSettingsLink:](v5, "setShowsCustomSettingsLink:", [coderCopy decodeBoolForKey:@"showsCustomSettingsLink"]);
+    -[UNCSectionInfoSettings setContentPreviewSetting:](v5, "setContentPreviewSetting:", [coderCopy decodeIntegerForKey:@"contentPreviewSetting"]);
+    -[UNCSectionInfoSettings setAlertType:](v5, "setAlertType:", [coderCopy decodeIntegerForKey:@"alertType"]);
+    -[UNCSectionInfoSettings setPushSettings:](v5, "setPushSettings:", [coderCopy decodeInt32ForKey:@"pushSettings"]);
+    -[UNCSectionInfoSettings setCarPlaySetting:](v5, "setCarPlaySetting:", [coderCopy decodeIntegerForKey:@"carPlaySetting"]);
+    -[UNCSectionInfoSettings setRemoteNotificationsSetting:](v5, "setRemoteNotificationsSetting:", [coderCopy decodeIntegerForKey:@"remoteNotificationsSetting"]);
+    -[UNCSectionInfoSettings setCriticalAlertSetting:](v5, "setCriticalAlertSetting:", [coderCopy decodeIntegerForKey:@"criticalAlertSetting"]);
+    -[UNCSectionInfoSettings setTimeSensitiveSetting:](v5, "setTimeSensitiveSetting:", [coderCopy decodeIntegerForKey:@"timeSensitiveSetting"]);
+    -[UNCSectionInfoSettings setUserConfiguredTimeSensitiveSetting:](v5, "setUserConfiguredTimeSensitiveSetting:", [coderCopy decodeBoolForKey:@"userConfiguredTimeSensitiveSetting"]);
+    -[UNCSectionInfoSettings setBulletinGroupingSetting:](v5, "setBulletinGroupingSetting:", [coderCopy decodeIntegerForKey:@"bulletinGroupingSetting"]);
+    if ([coderCopy containsValueForKey:@"announceSetting"])
     {
-      v9 = [v4 decodeIntegerForKey:@"announceSetting"];
+      v9 = [coderCopy decodeIntegerForKey:@"announceSetting"];
     }
 
     else
@@ -780,9 +780,9 @@ LABEL_30:
     }
 
     [(UNCSectionInfoSettings *)v5 setAnnounceSetting:v10];
-    if ([v4 containsValueForKey:@"scheduledDeliverySetting"])
+    if ([coderCopy containsValueForKey:@"scheduledDeliverySetting"])
     {
-      v11 = [v4 decodeIntegerForKey:@"scheduledDeliverySetting"];
+      v11 = [coderCopy decodeIntegerForKey:@"scheduledDeliverySetting"];
     }
 
     else
@@ -801,9 +801,9 @@ LABEL_30:
     }
 
     [(UNCSectionInfoSettings *)v5 setScheduledDeliverySetting:v12];
-    if ([v4 containsValueForKey:@"directMessagesSettingKey"])
+    if ([coderCopy containsValueForKey:@"directMessagesSettingKey"])
     {
-      v13 = [v4 decodeIntegerForKey:@"directMessagesSettingKey"];
+      v13 = [coderCopy decodeIntegerForKey:@"directMessagesSettingKey"];
     }
 
     else
@@ -812,30 +812,30 @@ LABEL_30:
     }
 
     [(UNCSectionInfoSettings *)v5 setDirectMessagesSetting:v13];
-    -[UNCSectionInfoSettings setUserConfiguredDirectMessagesSetting:](v5, "setUserConfiguredDirectMessagesSetting:", [v4 decodeBoolForKey:@"userConfiguredDirectMessagesSetting"]);
-    if ([v4 containsValueForKey:@"allowsNotifications"])
+    -[UNCSectionInfoSettings setUserConfiguredDirectMessagesSetting:](v5, "setUserConfiguredDirectMessagesSetting:", [coderCopy decodeBoolForKey:@"userConfiguredDirectMessagesSetting"]);
+    if ([coderCopy containsValueForKey:@"allowsNotifications"])
     {
-      -[UNCSectionInfoSettings setAllowsNotifications:](v5, "setAllowsNotifications:", [v4 decodeBoolForKey:@"allowsNotifications"]);
+      -[UNCSectionInfoSettings setAllowsNotifications:](v5, "setAllowsNotifications:", [coderCopy decodeBoolForKey:@"allowsNotifications"]);
     }
 
-    if ([v4 containsValueForKey:@"showsMessagePreview"])
+    if ([coderCopy containsValueForKey:@"showsMessagePreview"])
     {
-      -[UNCSectionInfoSettings setShowsMessagePreview:](v5, "setShowsMessagePreview:", [v4 decodeBoolForKey:@"showsMessagePreview"]);
+      -[UNCSectionInfoSettings setShowsMessagePreview:](v5, "setShowsMessagePreview:", [coderCopy decodeBoolForKey:@"showsMessagePreview"]);
     }
 
-    if (([v4 containsValueForKey:@"notificationCenterSetting"] & 1) == 0 && objc_msgSend(v4, "containsValueForKey:", @"showsInNotificationCenter"))
+    if (([coderCopy containsValueForKey:@"notificationCenterSetting"] & 1) == 0 && objc_msgSend(coderCopy, "containsValueForKey:", @"showsInNotificationCenter"))
     {
-      -[UNCSectionInfoSettings setShowsInNotificationCenter:](v5, "setShowsInNotificationCenter:", [v4 decodeBoolForKey:@"showsInNotificationCenter"]);
+      -[UNCSectionInfoSettings setShowsInNotificationCenter:](v5, "setShowsInNotificationCenter:", [coderCopy decodeBoolForKey:@"showsInNotificationCenter"]);
     }
 
-    if (([v4 containsValueForKey:@"lockScreenSetting"] & 1) == 0 && objc_msgSend(v4, "containsValueForKey:", @"showsInLockScreen"))
+    if (([coderCopy containsValueForKey:@"lockScreenSetting"] & 1) == 0 && objc_msgSend(coderCopy, "containsValueForKey:", @"showsInLockScreen"))
     {
-      -[UNCSectionInfoSettings setShowsInLockScreen:](v5, "setShowsInLockScreen:", [v4 decodeBoolForKey:@"showsInLockScreen"]);
+      -[UNCSectionInfoSettings setShowsInLockScreen:](v5, "setShowsInLockScreen:", [coderCopy decodeBoolForKey:@"showsInLockScreen"]);
     }
 
-    if (([v4 containsValueForKey:@"announceSetting"] & 1) == 0 && objc_msgSend(v4, "containsValueForKey:", @"spokenNotificationSetting"))
+    if (([coderCopy containsValueForKey:@"announceSetting"] & 1) == 0 && objc_msgSend(coderCopy, "containsValueForKey:", @"spokenNotificationSetting"))
     {
-      v14 = [v4 decodeIntegerForKey:@"spokenNotificationSetting"];
+      v14 = [coderCopy decodeIntegerForKey:@"spokenNotificationSetting"];
       if (v14)
       {
         if (v14 != 2)
@@ -875,47 +875,47 @@ LABEL_38:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:-[UNCSectionInfoSettings authorizationStatus](self forKey:{"authorizationStatus"), @"authorizationStatus"}];
-  v4 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
-  [v7 encodeObject:v4 forKey:@"authorizationExpirationDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings authorizationStatus](self forKey:{"authorizationStatus"), @"authorizationStatus"}];
+  authorizationExpirationDate = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
+  [coderCopy encodeObject:authorizationExpirationDate forKey:@"authorizationExpirationDate"];
 
-  v5 = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
-  [v7 encodeObject:v5 forKey:@"lastUserGrantedAuthorizationDate"];
+  lastUserGrantedAuthorizationDate = [(UNCSectionInfoSettings *)self lastUserGrantedAuthorizationDate];
+  [coderCopy encodeObject:lastUserGrantedAuthorizationDate forKey:@"lastUserGrantedAuthorizationDate"];
 
-  v6 = [(UNCSectionInfoSettings *)self muteAssertion];
-  [v7 encodeObject:v6 forKey:@"muteAssertion"];
+  muteAssertion = [(UNCSectionInfoSettings *)self muteAssertion];
+  [coderCopy encodeObject:muteAssertion forKey:@"muteAssertion"];
 
-  [v7 encodeInteger:-[UNCSectionInfoSettings notificationCenterSetting](self forKey:{"notificationCenterSetting"), @"notificationCenterSetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings lockScreenSetting](self forKey:{"lockScreenSetting"), @"lockScreenSetting"}];
-  [v7 encodeBool:-[UNCSectionInfoSettings showsOnExternalDevices](self forKey:{"showsOnExternalDevices"), @"showsOnExternalDevices"}];
-  [v7 encodeBool:-[UNCSectionInfoSettings showsCustomSettingsLink](self forKey:{"showsCustomSettingsLink"), @"showsCustomSettingsLink"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings contentPreviewSetting](self forKey:{"contentPreviewSetting"), @"contentPreviewSetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings alertType](self forKey:{"alertType"), @"alertType"}];
-  [v7 encodeInt32:-[UNCSectionInfoSettings pushSettings](self forKey:{"pushSettings"), @"pushSettings"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings carPlaySetting](self forKey:{"carPlaySetting"), @"carPlaySetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings remoteNotificationsSetting](self forKey:{"remoteNotificationsSetting"), @"remoteNotificationsSetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings criticalAlertSetting](self forKey:{"criticalAlertSetting"), @"criticalAlertSetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings timeSensitiveSetting](self forKey:{"timeSensitiveSetting"), @"timeSensitiveSetting"}];
-  [v7 encodeBool:-[UNCSectionInfoSettings hasUserConfiguredTimeSensitiveSetting](self forKey:{"hasUserConfiguredTimeSensitiveSetting"), @"userConfiguredTimeSensitiveSetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings bulletinGroupingSetting](self forKey:{"bulletinGroupingSetting"), @"bulletinGroupingSetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings announceSetting](self forKey:{"announceSetting"), @"announceSetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings scheduledDeliverySetting](self forKey:{"scheduledDeliverySetting"), @"scheduledDeliverySetting"}];
-  [v7 encodeInteger:-[UNCSectionInfoSettings directMessagesSetting](self forKey:{"directMessagesSetting"), @"directMessagesSettingKey"}];
-  [v7 encodeBool:-[UNCSectionInfoSettings hasUserConfiguredDirectMessagesSetting](self forKey:{"hasUserConfiguredDirectMessagesSetting"), @"userConfiguredDirectMessagesSetting"}];
-  [v7 encodeBool:-[UNCSectionInfoSettings showsInLockScreen](self forKey:{"showsInLockScreen"), @"showsInLockScreen"}];
-  [v7 encodeBool:-[UNCSectionInfoSettings showsInNotificationCenter](self forKey:{"showsInNotificationCenter"), @"showsInNotificationCenter"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings notificationCenterSetting](self forKey:{"notificationCenterSetting"), @"notificationCenterSetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings lockScreenSetting](self forKey:{"lockScreenSetting"), @"lockScreenSetting"}];
+  [coderCopy encodeBool:-[UNCSectionInfoSettings showsOnExternalDevices](self forKey:{"showsOnExternalDevices"), @"showsOnExternalDevices"}];
+  [coderCopy encodeBool:-[UNCSectionInfoSettings showsCustomSettingsLink](self forKey:{"showsCustomSettingsLink"), @"showsCustomSettingsLink"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings contentPreviewSetting](self forKey:{"contentPreviewSetting"), @"contentPreviewSetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings alertType](self forKey:{"alertType"), @"alertType"}];
+  [coderCopy encodeInt32:-[UNCSectionInfoSettings pushSettings](self forKey:{"pushSettings"), @"pushSettings"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings carPlaySetting](self forKey:{"carPlaySetting"), @"carPlaySetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings remoteNotificationsSetting](self forKey:{"remoteNotificationsSetting"), @"remoteNotificationsSetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings criticalAlertSetting](self forKey:{"criticalAlertSetting"), @"criticalAlertSetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings timeSensitiveSetting](self forKey:{"timeSensitiveSetting"), @"timeSensitiveSetting"}];
+  [coderCopy encodeBool:-[UNCSectionInfoSettings hasUserConfiguredTimeSensitiveSetting](self forKey:{"hasUserConfiguredTimeSensitiveSetting"), @"userConfiguredTimeSensitiveSetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings bulletinGroupingSetting](self forKey:{"bulletinGroupingSetting"), @"bulletinGroupingSetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings announceSetting](self forKey:{"announceSetting"), @"announceSetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings scheduledDeliverySetting](self forKey:{"scheduledDeliverySetting"), @"scheduledDeliverySetting"}];
+  [coderCopy encodeInteger:-[UNCSectionInfoSettings directMessagesSetting](self forKey:{"directMessagesSetting"), @"directMessagesSettingKey"}];
+  [coderCopy encodeBool:-[UNCSectionInfoSettings hasUserConfiguredDirectMessagesSetting](self forKey:{"hasUserConfiguredDirectMessagesSetting"), @"userConfiguredDirectMessagesSetting"}];
+  [coderCopy encodeBool:-[UNCSectionInfoSettings showsInLockScreen](self forKey:{"showsInLockScreen"), @"showsInLockScreen"}];
+  [coderCopy encodeBool:-[UNCSectionInfoSettings showsInNotificationCenter](self forKey:{"showsInNotificationCenter"), @"showsInNotificationCenter"}];
 }
 
 - (BOOL)isAuthorizedTemporarily
 {
-  v3 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
-  if (v3)
+  authorizationExpirationDate = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
+  if (authorizationExpirationDate)
   {
-    v4 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
-    [v4 timeIntervalSinceNow];
+    authorizationExpirationDate2 = [(UNCSectionInfoSettings *)self authorizationExpirationDate];
+    [authorizationExpirationDate2 timeIntervalSinceNow];
     v6 = v5 > 0.0;
   }
 
@@ -937,9 +937,9 @@ LABEL_38:
   return [(UNCSectionInfoSettings *)self isAuthorizedTemporarily];
 }
 
-- (void)setAllowsNotifications:(BOOL)a3
+- (void)setAllowsNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = 2;
   }
@@ -952,9 +952,9 @@ LABEL_38:
   [(UNCSectionInfoSettings *)self setAuthorizationStatus:v3];
 }
 
-- (void)setShowsInNotificationCenter:(BOOL)a3
+- (void)setShowsInNotificationCenter:(BOOL)center
 {
-  if (a3)
+  if (center)
   {
     v3 = 2;
   }
@@ -967,9 +967,9 @@ LABEL_38:
   [(UNCSectionInfoSettings *)self setNotificationCenterSetting:v3];
 }
 
-- (void)setShowsInLockScreen:(BOOL)a3
+- (void)setShowsInLockScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 2;
   }
@@ -984,21 +984,21 @@ LABEL_38:
 
 - (int64_t)spokenNotificationSetting
 {
-  v2 = [(UNCSectionInfoSettings *)self announceSetting];
-  if ((v2 - 1) > 2)
+  announceSetting = [(UNCSectionInfoSettings *)self announceSetting];
+  if ((announceSetting - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DA957D60[v2 - 1];
+    return qword_1DA957D60[announceSetting - 1];
   }
 }
 
-- (void)setSpokenNotificationSetting:(int64_t)a3
+- (void)setSpokenNotificationSetting:(int64_t)setting
 {
-  if (a3 == 2)
+  if (setting == 2)
   {
     if ([(UNCSectionInfoSettings *)self timeSensitiveSetting]== 2)
     {
@@ -1013,7 +1013,7 @@ LABEL_38:
 
   else
   {
-    v4 = a3 == 1;
+    v4 = setting == 1;
   }
 
   [(UNCSectionInfoSettings *)self setAnnounceSetting:v4];

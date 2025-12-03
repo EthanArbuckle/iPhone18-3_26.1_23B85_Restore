@@ -1,11 +1,11 @@
 @interface Plane
 - (_TtC16MagnifierSupport5Plane)init;
-- (_TtC16MagnifierSupport5Plane)initWithCoder:(id)a3;
+- (_TtC16MagnifierSupport5Plane)initWithCoder:(id)coder;
 @end
 
 @implementation Plane
 
-- (_TtC16MagnifierSupport5Plane)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport5Plane)initWithCoder:(id)coder
 {
   result = sub_257ED0410();
   __break(1u);

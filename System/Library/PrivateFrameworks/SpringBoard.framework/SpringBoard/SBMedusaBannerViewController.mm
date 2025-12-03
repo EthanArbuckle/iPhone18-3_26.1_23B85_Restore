@@ -1,12 +1,12 @@
 @interface SBMedusaBannerViewController
-- (SBMedusaBannerViewController)initWithType:(int64_t)a3 orientation:(int64_t)a4 peekConfiguration:(int64_t)a5;
+- (SBMedusaBannerViewController)initWithType:(int64_t)type orientation:(int64_t)orientation peekConfiguration:(int64_t)configuration;
 - (id)_bannerView;
 - (void)viewDidLoad;
 @end
 
 @implementation SBMedusaBannerViewController
 
-- (SBMedusaBannerViewController)initWithType:(int64_t)a3 orientation:(int64_t)a4 peekConfiguration:(int64_t)a5
+- (SBMedusaBannerViewController)initWithType:(int64_t)type orientation:(int64_t)orientation peekConfiguration:(int64_t)configuration
 {
   v11.receiver = self;
   v11.super_class = SBMedusaBannerViewController;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    v8->_orientation = a4;
-    v8->_peekConfiguration = a5;
+    v8->_type = type;
+    v8->_orientation = orientation;
+    v8->_peekConfiguration = configuration;
     [(SBMedusaBannerViewController *)v8 loadViewIfNeeded];
     [(PLPillView *)v9->_pillView intrinsicContentSize];
     [(SBMedusaBannerViewController *)v9 setPreferredContentSize:?];
@@ -30,12 +30,12 @@
   v5.receiver = self;
   v5.super_class = SBMedusaBannerViewController;
   [(SBMedusaBannerViewController *)&v5 viewDidLoad];
-  v3 = [(SBMedusaBannerViewController *)self view];
-  v4 = [(SBMedusaBannerViewController *)self _bannerView];
-  [v3 addSubview:v4];
-  [v3 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
+  view = [(SBMedusaBannerViewController *)self view];
+  _bannerView = [(SBMedusaBannerViewController *)self _bannerView];
+  [view addSubview:_bannerView];
+  [view bounds];
+  [_bannerView setFrame:?];
+  [_bannerView setAutoresizingMask:18];
 }
 
 - (id)_bannerView
@@ -61,11 +61,11 @@
     {
       if (type == 2)
       {
-        v21 = [MEMORY[0x277CCA8D8] mainBundle];
-        v8 = [v21 localizedStringForKey:@"MEDUSA_BANNER_ERROR_TITLE_SPLIT_VIEW" value:&stru_283094718 table:@"SpringBoard"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v8 = [mainBundle localizedStringForKey:@"MEDUSA_BANNER_ERROR_TITLE_SPLIT_VIEW" value:&stru_283094718 table:@"SpringBoard"];
 
-        v22 = [MEMORY[0x277CCA8D8] mainBundle];
-        v5 = [v22 localizedStringForKey:@"MEDUSA_BANNER_ERROR_SUBTITLE" value:&stru_283094718 table:@"SpringBoard"];
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+        v5 = [mainBundle2 localizedStringForKey:@"MEDUSA_BANNER_ERROR_SUBTITLE" value:&stru_283094718 table:@"SpringBoard"];
 
         v9 = @"rectangle.split.2x1.slash";
       }
@@ -76,11 +76,11 @@
         v9 = 0;
         if (type == 3)
         {
-          v15 = [MEMORY[0x277CCA8D8] mainBundle];
-          v8 = [v15 localizedStringForKey:@"MEDUSA_BANNER_ERROR_TITLE_MULTIPLE_WINDOWS" value:&stru_283094718 table:@"SpringBoard"];
+          mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+          v8 = [mainBundle3 localizedStringForKey:@"MEDUSA_BANNER_ERROR_TITLE_MULTIPLE_WINDOWS" value:&stru_283094718 table:@"SpringBoard"];
 
-          v16 = [MEMORY[0x277CCA8D8] mainBundle];
-          v5 = [v16 localizedStringForKey:@"MEDUSA_BANNER_ERROR_SUBTITLE" value:&stru_283094718 table:@"SpringBoard"];
+          mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+          v5 = [mainBundle4 localizedStringForKey:@"MEDUSA_BANNER_ERROR_SUBTITLE" value:&stru_283094718 table:@"SpringBoard"];
 
           v9 = @"rectangle.on.rectangle.slash";
         }
@@ -116,21 +116,21 @@
         }
 
         v9 = v12;
-        v13 = [MEMORY[0x277CCA8D8] mainBundle];
-        v8 = [v13 localizedStringForKey:@"MEDUSA_BANNER_EDUCATION_TITLE_SLIDE_OVER" value:&stru_283094718 table:@"SpringBoard"];
+        mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+        v8 = [mainBundle5 localizedStringForKey:@"MEDUSA_BANNER_EDUCATION_TITLE_SLIDE_OVER" value:&stru_283094718 table:@"SpringBoard"];
 
-        v14 = [MEMORY[0x277CCA8D8] mainBundle];
-        v5 = [v14 localizedStringForKey:@"MEDUSA_BANNER_EDUCATION_DESCRIPTION" value:&stru_283094718 table:@"SpringBoard"];
+        mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+        v5 = [mainBundle6 localizedStringForKey:@"MEDUSA_BANNER_EDUCATION_DESCRIPTION" value:&stru_283094718 table:@"SpringBoard"];
       }
     }
 
     else
     {
-      v17 = [MEMORY[0x277CCA8D8] mainBundle];
-      v8 = [v17 localizedStringForKey:@"MEDUSA_BANNER_EDUCATION_TITLE_SPLIT" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+      v8 = [mainBundle7 localizedStringForKey:@"MEDUSA_BANNER_EDUCATION_TITLE_SPLIT" value:&stru_283094718 table:@"SpringBoard"];
 
-      v18 = [MEMORY[0x277CCA8D8] mainBundle];
-      v5 = [v18 localizedStringForKey:@"MEDUSA_BANNER_EDUCATION_DESCRIPTION" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle8 = [MEMORY[0x277CCA8D8] mainBundle];
+      v5 = [mainBundle8 localizedStringForKey:@"MEDUSA_BANNER_EDUCATION_DESCRIPTION" value:&stru_283094718 table:@"SpringBoard"];
 
       if ((self->_orientation - 1) > 1)
       {
@@ -166,8 +166,8 @@
 
     v29 = v8;
     v30 = self->_pillView;
-    v31 = [MEMORY[0x277D75348] labelColor];
-    [(PLPillView *)v30 setTintColor:v31];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(PLPillView *)v30 setTintColor:labelColor];
 
     v32 = self->_pillView;
     v33 = [objc_alloc(MEMORY[0x277D3D308]) initWithText:v29 style:1];

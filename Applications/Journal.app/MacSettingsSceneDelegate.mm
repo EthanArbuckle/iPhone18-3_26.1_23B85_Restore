@@ -1,36 +1,36 @@
 @interface MacSettingsSceneDelegate
 - (_TtC7Journal24MacSettingsSceneDelegate)init;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeVisible:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeVisible:(id)visible;
+- (void)setWindow:(id)window;
 @end
 
 @implementation MacSettingsSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC7Journal24MacSettingsSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC7Journal24MacSettingsSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC7Journal24MacSettingsSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100455358(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100455358(sceneCopy, optionsCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_1000065A8(0, &qword_100AE9080);
   sub_10000A908(&qword_100AE4690, &qword_100AE9080);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_100455748(v6);
 }
 
@@ -44,7 +44,7 @@
   return [(MacSettingsSceneDelegate *)&v3 init];
 }
 
-- (void)sceneDidBecomeVisible:(id)a3
+- (void)sceneDidBecomeVisible:(id)visible
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

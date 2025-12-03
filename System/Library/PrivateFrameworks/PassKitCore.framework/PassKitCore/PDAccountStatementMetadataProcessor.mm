@@ -1,37 +1,37 @@
 @interface PDAccountStatementMetadataProcessor
-- (BOOL)_queue_isAccountEligible:(id)a3;
-- (PDAccountStatementMetadataProcessor)initWithDatabaseManager:(id)a3 accountManager:(id)a4 cloudStoreNotificationCoordinator:(id)a5;
+- (BOOL)_queue_isAccountEligible:(id)eligible;
+- (PDAccountStatementMetadataProcessor)initWithDatabaseManager:(id)manager accountManager:(id)accountManager cloudStoreNotificationCoordinator:(id)coordinator;
 - (id)_queue_eligibleAccounts;
-- (void)_addRequestToProcessQueue:(id)a3;
+- (void)_addRequestToProcessQueue:(id)queue;
 - (void)_executeNextRequestIfPossible;
-- (void)_executeNextStatementMetadataProcessingRequest:(id)a3 completion:(id)a4;
+- (void)_executeNextStatementMetadataProcessingRequest:(id)request completion:(id)completion;
 - (void)_queue_updateScheduledActivityIfNeccessary;
-- (void)accountManager:(id)a3 didAddAccount:(id)a4;
-- (void)accountManager:(id)a3 didRemoveAccount:(id)a4;
-- (void)accountManager:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5;
-- (void)accountManager:(id)a3 statementsChangedForAccountIdentifier:(id)a4;
-- (void)passAdded:(id)a3;
-- (void)passRemoved:(id)a3;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)triggerStatementMetadataProcessingForAccountIdentifier:(id)a3 statementIdentifier:(id)a4 completion:(id)a5;
+- (void)accountManager:(id)manager didAddAccount:(id)account;
+- (void)accountManager:(id)manager didRemoveAccount:(id)account;
+- (void)accountManager:(id)manager didUpdateAccount:(id)account oldAccount:(id)oldAccount;
+- (void)accountManager:(id)manager statementsChangedForAccountIdentifier:(id)identifier;
+- (void)passAdded:(id)added;
+- (void)passRemoved:(id)removed;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)triggerStatementMetadataProcessingForAccountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier completion:(id)completion;
 @end
 
 @implementation PDAccountStatementMetadataProcessor
 
-- (PDAccountStatementMetadataProcessor)initWithDatabaseManager:(id)a3 accountManager:(id)a4 cloudStoreNotificationCoordinator:(id)a5
+- (PDAccountStatementMetadataProcessor)initWithDatabaseManager:(id)manager accountManager:(id)accountManager cloudStoreNotificationCoordinator:(id)coordinator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  accountManagerCopy = accountManager;
+  coordinatorCopy = coordinator;
   v25.receiver = self;
   v25.super_class = PDAccountStatementMetadataProcessor;
   v12 = [(PDAccountStatementMetadataProcessor *)&v25 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_databaseManager, a3);
-    objc_storeStrong(&v13->_accountManager, a4);
-    objc_storeStrong(&v13->_cloudStoreNotificationCoordinator, a5);
+    objc_storeStrong(&v12->_databaseManager, manager);
+    objc_storeStrong(&v13->_accountManager, accountManager);
+    objc_storeStrong(&v13->_cloudStoreNotificationCoordinator, coordinator);
     [(PDAccountManager *)v13->_accountManager registerObserver:v13];
     v14 = objc_alloc_init(NSMutableOrderedSet);
     requestList = v13->_requestList;
@@ -59,28 +59,28 @@
   return v13;
 }
 
-- (void)triggerStatementMetadataProcessingForAccountIdentifier:(id)a3 statementIdentifier:(id)a4 completion:(id)a5
+- (void)triggerStatementMetadataProcessingForAccountIdentifier:(id)identifier statementIdentifier:(id)statementIdentifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PDAccountStatementMetadataProcessorRequest alloc] initWithAccountIdentifier:v10 statementIdentifier:v9 reason:1 completion:v8];
+  completionCopy = completion;
+  statementIdentifierCopy = statementIdentifier;
+  identifierCopy = identifier;
+  v11 = [[PDAccountStatementMetadataProcessorRequest alloc] initWithAccountIdentifier:identifierCopy statementIdentifier:statementIdentifierCopy reason:1 completion:completionCopy];
 
   [(PDAccountStatementMetadataProcessor *)self _addRequestToProcessQueue:v11];
 }
 
-- (void)accountManager:(id)a3 statementsChangedForAccountIdentifier:(id)a4
+- (void)accountManager:(id)manager statementsChangedForAccountIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    v5 = a4;
-    v6 = [[PDAccountStatementMetadataProcessorRequest alloc] initWithAccountIdentifier:v5 statementIdentifier:0 reason:0 completion:0];
+    identifierCopy = identifier;
+    v6 = [[PDAccountStatementMetadataProcessorRequest alloc] initWithAccountIdentifier:identifierCopy statementIdentifier:0 reason:0 completion:0];
 
     [(PDAccountStatementMetadataProcessor *)self _addRequestToProcessQueue:v6];
   }
 }
 
-- (void)accountManager:(id)a3 didAddAccount:(id)a4
+- (void)accountManager:(id)manager didAddAccount:(id)account
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -91,7 +91,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)accountManager:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5
+- (void)accountManager:(id)manager didUpdateAccount:(id)account oldAccount:(id)oldAccount
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -102,7 +102,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)accountManager:(id)a3 didRemoveAccount:(id)a4
+- (void)accountManager:(id)manager didRemoveAccount:(id)account
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -113,55 +113,55 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)passAdded:(id)a3
+- (void)passAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004828C;
   v7[3] = &unk_10083C420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = addedCopy;
+  selfCopy = self;
+  v6 = addedCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)passRemoved:(id)a3
+- (void)passRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000483B4;
   v7[3] = &unk_10083C420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = removedCopy;
+  selfCopy = self;
+  v6 = removedCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)_executeNextStatementMetadataProcessingRequest:(id)a3 completion:(id)a4
+- (void)_executeNextStatementMetadataProcessingRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100048508;
   block[3] = &unk_10083D320;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
   if (self->_runningScheduledActivity)
   {
     v8 = PKLogFacilityTypeGetObject();
@@ -176,12 +176,12 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v9 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = identifierCopy;
   if (v10 == @"AccountStatementMetadataActivity" || (v11 = v10) != 0 && (v12 = [(__CFString *)v10 isEqualToString:@"AccountStatementMetadataActivity"], v11, v12))
   {
-    v27 = v7;
-    v28 = v6;
+    v27 = criteriaCopy;
+    v28 = identifierCopy;
     v13 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -189,14 +189,14 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Running AccountStatementMetadataActivity task", buf, 2u);
     }
 
-    v9->_runningScheduledActivity = 1;
-    v14 = [(PDAccountStatementMetadataProcessor *)v9 _queue_eligibleAccounts];
+    selfCopy->_runningScheduledActivity = 1;
+    _queue_eligibleAccounts = [(PDAccountStatementMetadataProcessor *)selfCopy _queue_eligibleAccounts];
     v15 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = v14;
+    obj = _queue_eligibleAccounts;
     v16 = [obj countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v16)
     {
@@ -214,11 +214,11 @@ LABEL_19:
           v20 = *(*(&v34 + 1) + 8 * i);
           [v20 type];
           v21 = PKAccountTypeToString();
-          v22 = [v20 accountIdentifier];
+          accountIdentifier = [v20 accountIdentifier];
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v39 = v22;
+            v39 = accountIdentifier;
             v40 = 2112;
             v41 = v21;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Running AccountStatementMetadataActivity task for account identifier %@, type %@", buf, 0x16u);
@@ -229,11 +229,11 @@ LABEL_19:
           v31[2] = sub_10004A934;
           v31[3] = &unk_10083EB78;
           v31[4] = v20;
-          v31[5] = v9;
-          v32 = v22;
+          v31[5] = selfCopy;
+          v32 = accountIdentifier;
           v33 = v21;
           v23 = v21;
-          v24 = v22;
+          v24 = accountIdentifier;
           [v15 addOperation:v31];
         }
 
@@ -250,23 +250,23 @@ LABEL_19:
     v30[1] = 3221225472;
     v30[2] = sub_10004AC28;
     v30[3] = &unk_10083EBA0;
-    v30[4] = v9;
+    v30[4] = selfCopy;
     v26 = [v15 evaluateWithInput:v25 completion:v30];
 
-    v7 = v27;
-    v6 = v28;
+    criteriaCopy = v27;
+    identifierCopy = v28;
     goto LABEL_19;
   }
 
 LABEL_20:
 }
 
-- (void)_addRequestToProcessQueue:(id)a3
+- (void)_addRequestToProcessQueue:(id)queue
 {
-  v4 = a3;
-  if (v4)
+  queueCopy = queue;
+  if (queueCopy)
   {
-    v5 = v4;
+    v5 = queueCopy;
     p_super = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
@@ -365,39 +365,39 @@ LABEL_18:
 
 - (id)_queue_eligibleAccounts
 {
-  v3 = [(PDDatabaseManager *)self->_databaseManager accounts];
+  accounts = [(PDDatabaseManager *)self->_databaseManager accounts];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10004B160;
   v6[3] = &unk_10083EBF0;
   v6[4] = self;
-  v4 = [v3 objectsPassingTest:v6];
+  v4 = [accounts objectsPassingTest:v6];
 
   return v4;
 }
 
-- (BOOL)_queue_isAccountEligible:(id)a3
+- (BOOL)_queue_isAccountEligible:(id)eligible
 {
-  v4 = a3;
-  v5 = [v4 accountIdentifier];
-  v6 = [v4 type];
+  eligibleCopy = eligible;
+  accountIdentifier = [eligibleCopy accountIdentifier];
+  type = [eligibleCopy type];
   v7 = PKAccountTypeToString();
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v5;
+    v15 = accountIdentifier;
     v16 = 2112;
     v17 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Checking if accountID %@, type %@ is eligible for supportsStatementMetadata.", &v14, 0x16u);
   }
 
-  if (([v4 supportsStatementMetadata] & 1) == 0)
+  if (([eligibleCopy supportsStatementMetadata] & 1) == 0)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v5;
+      v15 = accountIdentifier;
       v16 = 2112;
       v17 = v7;
       v9 = "Account identifier: %@, type: %@, is not eligible for supportsStatementMetadata since its not a supported feature.";
@@ -409,13 +409,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [v4 state];
+  [eligibleCopy state];
   if (PKAccountStateIsTerminal())
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v5;
+      v15 = accountIdentifier;
       v16 = 2112;
       v17 = v7;
       v9 = "Account identifier: %@, type: %@, is not eligible for supportsStatementMetadata since state is terminal.";
@@ -427,7 +427,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6 || v6 == 3)
+  if (!type || type == 3)
   {
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -435,18 +435,18 @@ LABEL_9:
     }
 
     v14 = 138412546;
-    v15 = v5;
+    v15 = accountIdentifier;
     v16 = 2112;
     v17 = v7;
     v9 = "Account identifier: %@, type: %@, is not eligible for supportsStatementMetadata since the account type is not supported.";
     goto LABEL_9;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
     databaseManager = self->_databaseManager;
-    v13 = [v4 associatedPassUniqueID];
-    LOBYTE(databaseManager) = [(PDDatabaseManager *)databaseManager passExistsWithUniqueID:v13];
+    associatedPassUniqueID = [eligibleCopy associatedPassUniqueID];
+    LOBYTE(databaseManager) = [(PDDatabaseManager *)databaseManager passExistsWithUniqueID:associatedPassUniqueID];
 
     if ((databaseManager & 1) == 0)
     {
@@ -456,7 +456,7 @@ LABEL_9:
       }
 
       v14 = 138412546;
-      v15 = v5;
+      v15 = accountIdentifier;
       v16 = 2112;
       v17 = v7;
       v9 = "Account identifier: %@, type: %@, is not eligible for supportsStatementMetadata since there is no account on device.";
@@ -467,7 +467,7 @@ LABEL_9:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v5;
+    v15 = accountIdentifier;
     v16 = 2112;
     v17 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Account identifier: %@, type: %@, is eligible for supportsStatementMetadata.", &v14, 0x16u);
@@ -481,8 +481,8 @@ LABEL_11:
 
 - (void)_queue_updateScheduledActivityIfNeccessary
 {
-  v2 = [(PDAccountStatementMetadataProcessor *)self _queue_eligibleAccounts];
-  v3 = [v2 count];
+  _queue_eligibleAccounts = [(PDAccountStatementMetadataProcessor *)self _queue_eligibleAccounts];
+  v3 = [_queue_eligibleAccounts count];
 
   if (v3)
   {

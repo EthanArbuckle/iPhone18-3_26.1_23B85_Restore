@@ -1,17 +1,17 @@
 @interface VideosRelatedStoreItemsCollectionViewControllerAccessibility
 - (id)_createCollectionView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 @end
 
 @implementation VideosRelatedStoreItemsCollectionViewControllerAccessibility
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = VideosRelatedStoreItemsCollectionViewControllerAccessibility;
-  v6 = a4;
-  v7 = [(VideosRelatedStoreItemsCollectionViewControllerAccessibility *)&v14 collectionView:a3 cellForItemAtIndexPath:v6];
-  [v6 item];
+  pathCopy = path;
+  v7 = [(VideosRelatedStoreItemsCollectionViewControllerAccessibility *)&v14 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [pathCopy item];
 
   objc_opt_class();
   v8 = [(VideosRelatedStoreItemsCollectionViewControllerAccessibility *)self safeValueForKey:@"relatedItems"];
@@ -39,10 +39,10 @@ void __102__VideosRelatedStoreItemsCollectionViewControllerAccessibility_collect
 {
   v4.receiver = self;
   v4.super_class = VideosRelatedStoreItemsCollectionViewControllerAccessibility;
-  v2 = [(VideosRelatedStoreItemsCollectionViewControllerAccessibility *)&v4 _createCollectionView];
-  [v2 setAccessibilityIdentifier:@"AXRelatedStoreItems"];
+  _createCollectionView = [(VideosRelatedStoreItemsCollectionViewControllerAccessibility *)&v4 _createCollectionView];
+  [_createCollectionView setAccessibilityIdentifier:@"AXRelatedStoreItems"];
 
-  return v2;
+  return _createCollectionView;
 }
 
 @end

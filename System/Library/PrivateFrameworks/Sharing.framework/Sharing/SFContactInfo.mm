@@ -1,19 +1,19 @@
 @interface SFContactInfo
-- (SFContactInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFContactInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFContactInfo
 
-- (SFContactInfo)initWithCoder:(id)a3
+- (SFContactInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SFContactInfo;
   v5 = [(SFContactInfo *)&v11 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -31,29 +31,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   contactIdentifier = self->_contactIdentifier;
-  v8 = v4;
+  v8 = coderCopy;
   if (contactIdentifier)
   {
-    [v4 encodeObject:contactIdentifier forKey:@"cnID"];
-    v4 = v8;
+    [coderCopy encodeObject:contactIdentifier forKey:@"cnID"];
+    coderCopy = v8;
   }
 
   emailAddress = self->_emailAddress;
   if (emailAddress)
   {
     [v8 encodeObject:emailAddress forKey:@"email"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   phoneNumber = self->_phoneNumber;
   if (phoneNumber)
   {
     [v8 encodeObject:phoneNumber forKey:@"phone"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 

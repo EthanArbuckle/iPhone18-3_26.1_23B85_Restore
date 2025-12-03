@@ -1,15 +1,15 @@
 @interface MTSleepCoordinatorStateMachineAsleepState
-- (void)didEnterWithPreviousState:(id)a3;
+- (void)didEnterWithPreviousState:(id)state;
 @end
 
 @implementation MTSleepCoordinatorStateMachineAsleepState
 
-- (void)didEnterWithPreviousState:(id)a3
+- (void)didEnterWithPreviousState:(id)state
 {
-  v7 = a3;
-  v4 = [(MTStateMachineState *)self stateMachine];
-  v5 = [v4 disabledState];
-  if (v7 != self && v5 != v7)
+  stateCopy = state;
+  stateMachine = [(MTStateMachineState *)self stateMachine];
+  disabledState = [stateMachine disabledState];
+  if (stateCopy != self && disabledState != stateCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -19,9 +19,9 @@
       goto LABEL_6;
     }
 
-    v4 = [(MTStateMachineState *)self stateMachine];
-    v5 = [(MTStateMachineState *)self stateMachine];
-    [v4 stateMachineUserWentToBed:v5];
+    stateMachine = [(MTStateMachineState *)self stateMachine];
+    disabledState = [(MTStateMachineState *)self stateMachine];
+    [stateMachine stateMachineUserWentToBed:disabledState];
   }
 
 LABEL_6:

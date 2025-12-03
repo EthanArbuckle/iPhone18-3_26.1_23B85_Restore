@@ -11,18 +11,18 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
-  v4 = [(AXMiroPhotoScrubber *)self _axCurrentIndexPath];
-  v5 = [v3 cellForItemAtIndexPath:v4];
+  _axContainerCollectionView = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
+  _axCurrentIndexPath = [(AXMiroPhotoScrubber *)self _axCurrentIndexPath];
+  v5 = [_axContainerCollectionView cellForItemAtIndexPath:_axCurrentIndexPath];
   v6 = MEMORY[0x29EDBA0F8];
   v7 = accessibilityMemoriesLocalizedString(@"memory.content.scrubber.index");
-  [v4 row];
+  [_axCurrentIndexPath row];
   v8 = AXFormatInteger();
-  [v3 numberOfItemsInSection:0];
+  [_axContainerCollectionView numberOfItemsInSection:0];
   v9 = AXFormatInteger();
   v10 = [v6 stringWithFormat:v7, v8, v9];
-  v11 = [v5 accessibilityLabel];
-  v14 = [v5 accessibilityValue];
+  accessibilityLabel = [v5 accessibilityLabel];
+  accessibilityValue = [v5 accessibilityValue];
   v12 = __UIAXStringForVariables();
 
   return v12;
@@ -31,8 +31,8 @@
 - (id)_axContainerCollectionView
 {
   v2 = MEMORY[0x29EDC7DA8];
-  v3 = [(AXMiroPhotoScrubber *)self accessibilityContainer];
-  v4 = [v2 viewControllerForView:v3];
+  accessibilityContainer = [(AXMiroPhotoScrubber *)self accessibilityContainer];
+  v4 = [v2 viewControllerForView:accessibilityContainer];
 
   objc_opt_class();
   v5 = [v4 safeValueForKey:@"collectionView"];
@@ -43,13 +43,13 @@
 
 - (id)_axCurrentIndexPath
 {
-  v2 = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
-  v3 = [v2 collectionViewLayout];
+  _axContainerCollectionView = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
+  collectionViewLayout = [_axContainerCollectionView collectionViewLayout];
   MEMORY[0x29C2DE4B0](@"MiroEditorFlowLayout");
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v4 = [v3 safeValueForKey:@"snappedIndexPath"];
+    v4 = [collectionViewLayout safeValueForKey:@"snappedIndexPath"];
     v5 = __UIAccessibilityCastAsClass();
   }
 
@@ -63,13 +63,13 @@
 
 - (void)accessibilityIncrement
 {
-  v3 = [(AXMiroPhotoScrubber *)self _axCurrentIndexPath];
-  v4 = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
-  v5 = [v4 numberOfItemsInSection:0];
-  if ([v3 row] < v5 - 1)
+  _axCurrentIndexPath = [(AXMiroPhotoScrubber *)self _axCurrentIndexPath];
+  _axContainerCollectionView = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
+  v5 = [_axContainerCollectionView numberOfItemsInSection:0];
+  if ([_axCurrentIndexPath row] < v5 - 1)
   {
-    v6 = v4;
-    v7 = v3;
+    v6 = _axContainerCollectionView;
+    v7 = _axCurrentIndexPath;
     AXPerformSafeBlock();
   }
 }
@@ -90,12 +90,12 @@ void __45__AXMiroPhotoScrubber_accessibilityIncrement__block_invoke(uint64_t a1)
 
 - (void)accessibilityDecrement
 {
-  v3 = [(AXMiroPhotoScrubber *)self _axCurrentIndexPath];
-  if ([v3 row] >= 1)
+  _axCurrentIndexPath = [(AXMiroPhotoScrubber *)self _axCurrentIndexPath];
+  if ([_axCurrentIndexPath row] >= 1)
   {
-    v4 = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
-    v6 = v3;
-    v5 = v4;
+    _axContainerCollectionView = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
+    v6 = _axCurrentIndexPath;
+    v5 = _axContainerCollectionView;
     AXPerformSafeBlock();
   }
 }
@@ -116,9 +116,9 @@ void __45__AXMiroPhotoScrubber_accessibilityDecrement__block_invoke(uint64_t a1)
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
-  v4 = [(AXMiroPhotoScrubber *)self accessibilityContainer];
-  [v3 frame];
+  _axContainerCollectionView = [(AXMiroPhotoScrubber *)self _axContainerCollectionView];
+  accessibilityContainer = [(AXMiroPhotoScrubber *)self accessibilityContainer];
+  [_axContainerCollectionView frame];
   UIAccessibilityFrameForBounds();
   v6 = v5;
   v8 = v7;

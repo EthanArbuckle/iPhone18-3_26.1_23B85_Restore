@@ -1,6 +1,6 @@
 @interface OAXFillOverlayEffect
 + (id)blendModeEnumMap;
-+ (id)readFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5;
++ (id)readFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state;
 + (void)blendModeEnumMap;
 @end
 
@@ -25,19 +25,19 @@
   return v2;
 }
 
-+ (id)readFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5
++ (id)readFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  partCopy = part;
+  stateCopy = state;
   v10 = objc_alloc_init(OADFillOverlayEffect);
-  v11 = CXRequiredStringAttribute(a3, CXNoNamespace, "blend");
-  v12 = [a1 blendModeEnumMap];
-  v13 = [v12 valueForString:v11];
+  v11 = CXRequiredStringAttribute(node, CXNoNamespace, "blend");
+  blendModeEnumMap = [self blendModeEnumMap];
+  v13 = [blendModeEnumMap valueForString:v11];
 
   [(OADFillOverlayEffect *)v10 setBlendMode:v13];
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
-    v15 = [OAXFill readFillFromXmlNode:i packagePart:v8 drawingState:v9];
+    v15 = [OAXFill readFillFromXmlNode:i packagePart:partCopy drawingState:stateCopy];
     if (v15)
     {
       [(OADFillOverlayEffect *)v10 setFill:v15];

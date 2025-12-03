@@ -1,25 +1,25 @@
 @interface PGPublicEventCacher
-- (PGPublicEventCacher)initWithDisambiguator:(id)a3;
-- (id)executeFetchRequest:(id)a3 publicEventManager:(id)a4 progressReporter:(id)a5 error:(id *)a6;
+- (PGPublicEventCacher)initWithDisambiguator:(id)disambiguator;
+- (id)executeFetchRequest:(id)request publicEventManager:(id)manager progressReporter:(id)reporter error:(id *)error;
 @end
 
 @implementation PGPublicEventCacher
 
-- (id)executeFetchRequest:(id)a3 publicEventManager:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (id)executeFetchRequest:(id)request publicEventManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v96 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v71 = a4;
-  v11 = a5;
+  requestCopy = request;
+  managerCopy = manager;
+  reporterCopy = reporter;
   v87 = 0;
   v88 = &v87;
   v89 = 0x2020000000;
   v90 = 0;
-  v12 = [v11 isCancelledWithProgress:0.0];
+  v12 = [reporterCopy isCancelledWithProgress:0.0];
   *(v88 + 24) = v12;
   if (!v12)
   {
-    v63 = a6;
+    errorCopy = error;
     v14 = self->_log;
     v15 = os_signpost_id_generate(v14);
     v16 = v14;
@@ -54,10 +54,10 @@
     v85 = 0;
     mach_timebase_info(&v85);
     v22 = mach_absolute_time();
-    v23 = [v10 graph];
-    v70 = [v10 momentNodes];
-    v65 = v23;
-    v24 = [v23 largeFrequentLocationNodes];
+    graph = [requestCopy graph];
+    momentNodes = [requestCopy momentNodes];
+    v65 = graph;
+    largeFrequentLocationNodes = [graph largeFrequentLocationNodes];
     disambiguator = self->_disambiguator;
     v83 = 0;
     v84 = 0;
@@ -68,10 +68,10 @@
     v80 = buf;
     v81 = &v87;
     v82 = 0;
-    v26 = v11;
+    v26 = reporterCopy;
     v79 = v26;
-    [(PGPublicEventDisambiguator *)disambiguator collectConsolidatedAddressesForMomentNodes:v70 largeFrequentLocationNodes:v24 consolidatedAddresses:&v84 consolidatedAddressesByMomentIdentifier:&v83 momentNodesForConsolidatedAddresses:&v82 progressBlock:v78];
-    v64 = v24;
+    [(PGPublicEventDisambiguator *)disambiguator collectConsolidatedAddressesForMomentNodes:momentNodes largeFrequentLocationNodes:largeFrequentLocationNodes consolidatedAddresses:&v84 consolidatedAddressesByMomentIdentifier:&v83 momentNodesForConsolidatedAddresses:&v82 progressBlock:v78];
+    v64 = largeFrequentLocationNodes;
     v69 = v84;
     v67 = v83;
     v66 = v82;
@@ -79,7 +79,7 @@
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       v28 = [v69 count];
-      v29 = [v70 count];
+      v29 = [momentNodes count];
       *v91 = 134218240;
       *v92 = v28;
       *&v92[8] = 2048;
@@ -136,7 +136,7 @@
     mach_timebase_info(&v77);
     v39 = mach_absolute_time();
     *(v94 + 24) = 0x3FC999999999999ALL;
-    v40 = [v10 cachingOptions];
+    cachingOptions = [requestCopy cachingOptions];
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
     v72[2] = __85__PGPublicEventCacher_executeFetchRequest_publicEventManager_progressReporter_error___block_invoke_51;
@@ -145,9 +145,9 @@
     v74 = buf;
     v75 = &v87;
     v58 = v26;
-    v59 = v40;
+    v59 = cachingOptions;
     v73 = v58;
-    v41 = [v71 publicEventsByTimeLocationTupleIdentifierForTimeLocationTuples:v69 cachingOptions:v40 progressBlock:v72 error:v63];
+    v41 = [managerCopy publicEventsByTimeLocationTupleIdentifierForTimeLocationTuples:v69 cachingOptions:cachingOptions progressBlock:v72 error:errorCopy];
     v42 = self->_log;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
@@ -317,16 +317,16 @@ uint64_t __85__PGPublicEventCacher_executeFetchRequest_publicEventManager_progre
   return result;
 }
 
-- (PGPublicEventCacher)initWithDisambiguator:(id)a3
+- (PGPublicEventCacher)initWithDisambiguator:(id)disambiguator
 {
-  v5 = a3;
+  disambiguatorCopy = disambiguator;
   v11.receiver = self;
   v11.super_class = PGPublicEventCacher;
   v6 = [(PGPublicEventCacher *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_disambiguator, a3);
+    objc_storeStrong(&v6->_disambiguator, disambiguator);
     v8 = os_log_create("com.apple.PhotosGraph", "publicEventCaching");
     log = v7->_log;
     v7->_log = v8;

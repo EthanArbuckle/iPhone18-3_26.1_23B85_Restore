@@ -3,45 +3,45 @@
 - (IMMessage)message;
 - (NSString)messageGUID;
 - (NSString)threadIdentifier;
-- (id)_initWithItem:(id)a3 partIndex:(int64_t)a4 isFailedRetraction:(BOOL)a5 retractionUnsupportedByHandles:(id)a6 sender:(id)a7 isFromMe:(BOOL)a8;
+- (id)_initWithItem:(id)item partIndex:(int64_t)index isFailedRetraction:(BOOL)retraction retractionUnsupportedByHandles:(id)handles sender:(id)sender isFromMe:(BOOL)me;
 - (unint64_t)replyCount;
 @end
 
 @implementation IMMessageRetractionChatItem
 
-- (id)_initWithItem:(id)a3 partIndex:(int64_t)a4 isFailedRetraction:(BOOL)a5 retractionUnsupportedByHandles:(id)a6 sender:(id)a7 isFromMe:(BOOL)a8
+- (id)_initWithItem:(id)item partIndex:(int64_t)index isFailedRetraction:(BOOL)retraction retractionUnsupportedByHandles:(id)handles sender:(id)sender isFromMe:(BOOL)me
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  itemCopy = item;
+  handlesCopy = handles;
+  senderCopy = sender;
   v45.receiver = self;
   v45.super_class = IMMessageRetractionChatItem;
-  v17 = [(IMChatItem *)&v45 _initWithItem:v14];
+  v17 = [(IMChatItem *)&v45 _initWithItem:itemCopy];
   if (v17)
   {
     v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v21 = objc_msgSend_guid(v14, v19, v20);
-    obj = a7;
-    v23 = objc_msgSend_initWithFormat_(v18, v22, @"p:%ld/%@", a4, v21);
+    v21 = objc_msgSend_guid(itemCopy, v19, v20);
+    obj = sender;
+    v23 = objc_msgSend_initWithFormat_(v18, v22, @"p:%ld/%@", index, v21);
 
-    v43 = a8;
+    meCopy = me;
     v24 = MEMORY[0x1E696AD98];
     v27 = objc_msgSend_count(v17[10], v25, v26);
     v29 = objc_msgSend_numberWithUnsignedInteger_(v24, v28, v27);
     objc_msgSend_stringValue(v29, v30, v31);
-    v32 = a4;
-    v33 = v15;
-    v35 = v34 = v16;
+    indexCopy = index;
+    v33 = handlesCopy;
+    v35 = v34 = senderCopy;
     v36 = sub_1A83AC604();
 
-    v16 = v34;
-    v15 = v33;
+    senderCopy = v34;
+    handlesCopy = v33;
 
     objc_msgSend__setGUID_(v17, v37, v36);
-    v17[9] = v32;
+    v17[9] = indexCopy;
     objc_storeStrong(v17 + 8, obj);
-    *(v17 + 56) = v43;
-    *(v17 + 57) = a5;
+    *(v17 + 56) = meCopy;
+    *(v17 + 57) = retraction;
     v40 = objc_msgSend_copy(v33, v38, v39);
     v41 = v17[10];
     v17[10] = v40;

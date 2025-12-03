@@ -1,47 +1,47 @@
 @interface NIServerDLTDOASession
-- (BOOL)_anySessionWithState:(int)a3;
-- (BOOL)_assignAnchorCoordinates:(void *)a3;
-- (BOOL)_invalidateSessionWithClusterAddress:(unsigned __int16)a3 reason:(id)a4;
-- (BOOL)_prepareLocalizationSessionFromOOBConfig:(const void *)a3 outServiceRequest:(void *)a4 outStartOptions:(void *)a5;
-- (BOOL)_scheduleSessionToTrackAddress:(unsigned __int16)a3;
-- (BOOL)_startTrackClusterWithAddress:(unsigned __int16)a3;
-- (BOOL)_triggerRangingForSession:(shared_ptr<rose:(const void *)a4 :objects::LocalizationSession>)a3 startRangingOptions:;
-- (BOOL)_validMeasurement:(void *)a3;
-- (NIServerDLTDOASession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (BOOL)_anySessionWithState:(int)state;
+- (BOOL)_assignAnchorCoordinates:(void *)coordinates;
+- (BOOL)_invalidateSessionWithClusterAddress:(unsigned __int16)address reason:(id)reason;
+- (BOOL)_prepareLocalizationSessionFromOOBConfig:(const void *)config outServiceRequest:(void *)request outStartOptions:(void *)options;
+- (BOOL)_scheduleSessionToTrackAddress:(unsigned __int16)address;
+- (BOOL)_startTrackClusterWithAddress:(unsigned __int16)address;
+- (BOOL)_triggerRangingForSession:(shared_ptr<rose:(const void *)session :objects::LocalizationSession>)a3 startRangingOptions:;
+- (BOOL)_validMeasurement:(void *)measurement;
+- (NIServerDLTDOASession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
 - (id)configure;
-- (id)pauseWithSource:(int64_t)a3;
+- (id)pauseWithSource:(int64_t)source;
 - (id)run;
 - (id)sessionRecordPrintableState;
-- (optional<OOBConfig>)_buildOOBConfigFromOOBMessage:(SEL)a3;
-- (optional<OOBConfig>)_findOOBConfigWithAddress:(SEL)a3;
-- (optional<unsigned)_findAddressWithTicketId:(unsigned __int16)a3;
+- (optional<OOBConfig>)_buildOOBConfigFromOOBMessage:(SEL)message;
+- (optional<OOBConfig>)_findOOBConfigWithAddress:(SEL)address;
+- (optional<unsigned)_findAddressWithTicketId:(unsigned __int16)id;
 - (optional<unsigned)_nextPendingTriggerAnchor;
 - (vector<OOBConfig,)_parseOOBConfigFromDebugParameters:(NIServerDLTDOASession *)self;
-- (void)_didUpdateWifiEvent:(id)a3;
+- (void)_didUpdateWifiEvent:(id)event;
 - (void)_executeWiFiScanning;
 - (void)_getCachedWifiResult;
 - (void)_internalConfigWithDebugParams;
 - (void)_invalidateSessionWhenTimeout;
-- (void)_processUWBOOBRangingPayload:(const void *)a3;
+- (void)_processUWBOOBRangingPayload:(const void *)payload;
 - (void)_removeInactiveRangingAnchorIfAny;
 - (void)_startDevicePDRUpdates;
 - (void)_watchdogLoop;
 - (void)dealloc;
-- (void)didReceiveNewSolution:(const void *)a3;
+- (void)didReceiveNewSolution:(const void *)solution;
 - (void)invalidate;
-- (void)processVisionInput:(id)a3;
-- (void)roseSession:(shared_ptr<rose:(int)a4 :objects::RoseBaseSession>)a3 invalidatedWithReason:;
-- (void)updatesEngine:(id)a3 didUpdateDLTDOAMeasurements:(id)a4;
-- (void)updatesEngine:(id)a3 didUpdateNICoordinates:(id)a4;
+- (void)processVisionInput:(id)input;
+- (void)roseSession:(shared_ptr<rose:(int)session :objects::RoseBaseSession>)a3 invalidatedWithReason:;
+- (void)updatesEngine:(id)engine didUpdateDLTDOAMeasurements:(id)measurements;
+- (void)updatesEngine:(id)engine didUpdateNICoordinates:(id)coordinates;
 @end
 
 @implementation NIServerDLTDOASession
 
-- (NIServerDLTDOASession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerDLTDOASession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 != objc_opt_class())
   {
@@ -51,24 +51,24 @@
 
   v30.receiver = self;
   v30.super_class = NIServerDLTDOASession;
-  v12 = [(NIServerBaseSession *)&v30 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v12 = [(NIServerBaseSession *)&v30 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v12)
   {
-    v13 = [v9 serverSessionIdentifier];
-    v14 = [v13 UUIDString];
+    serverSessionIdentifier = [managerCopy serverSessionIdentifier];
+    uUIDString = [serverSessionIdentifier UUIDString];
     v15 = +[NSUUID UUID];
-    v16 = [v15 UUIDString];
-    v17 = [NSString stringWithFormat:@"%@---%@", v14, v16];
+    uUIDString2 = [v15 UUIDString];
+    v17 = [NSString stringWithFormat:@"%@---%@", uUIDString, uUIDString2];
     v18 = *(v12 + 6);
     *(v12 + 6) = v17;
 
-    v19 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     v20 = *(v12 + 7);
-    *(v12 + 7) = v19;
+    *(v12 + 7) = clientConnectionQueue;
 
-    if (v9)
+    if (managerCopy)
     {
-      [v9 protobufLogger];
+      [managerCopy protobufLogger];
       v21 = v29;
     }
 
@@ -84,7 +84,7 @@
       sub_10000AD84(v22);
     }
 
-    v23 = [v10 copy];
+    v23 = [configurationCopy copy];
     v24 = *(v12 + 10);
     *(v12 + 10) = v23;
 
@@ -134,7 +134,7 @@
 
   v18.receiver = self;
   v18.super_class = NIServerDLTDOASession;
-  v5 = [(NIServerBaseSession *)&v18 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v18 resourcesManager];
   if (self->_updatesEngine)
   {
     goto LABEL_11;
@@ -143,7 +143,7 @@
   v6 = [NINearbyUpdatesEngine alloc];
   v7 = self->_configuration;
   clientQueue = self->_clientQueue;
-  v9 = [v5 analytics];
+  analytics = [resourcesManager analytics];
   cntrl = self->_pbLogger.__cntrl_;
   ptr = self->_pbLogger.__ptr_;
   v17 = cntrl;
@@ -153,7 +153,7 @@
   }
 
   v15 = 0;
-  v11 = [(NINearbyUpdatesEngine *)v6 initWithConfiguration:v7 queue:clientQueue delegate:self dataSource:self analyticsManager:v9 protobufLogger:&ptr error:&v15];
+  v11 = [(NINearbyUpdatesEngine *)v6 initWithConfiguration:v7 queue:clientQueue delegate:self dataSource:self analyticsManager:analytics protobufLogger:&ptr error:&v15];
   v12 = v15;
   updatesEngine = self->_updatesEngine;
   self->_updatesEngine = v11;
@@ -223,8 +223,8 @@ LABEL_11:
 
     else
     {
-      v10 = [(NIDLTDOAConfiguration *)self->_configuration debugParameters];
-      if (v10)
+      debugParameters = [(NIDLTDOAConfiguration *)self->_configuration debugParameters];
+      if (debugParameters)
       {
         [(NIServerDLTDOASession *)self _internalConfigWithDebugParams];
       }
@@ -241,7 +241,7 @@ LABEL_11:
   return 0;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   self->_isRunning = 0;
@@ -512,14 +512,14 @@ LABEL_11:
   [(NIServerBaseSession *)&v22 invalidate];
 }
 
-- (void)processVisionInput:(id)a3
+- (void)processVisionInput:(id)input
 {
-  v9 = a3;
+  inputCopy = input;
   dispatch_assert_queue_V2(self->_clientQueue);
   updatesEngine = self->_updatesEngine;
   if (updatesEngine)
   {
-    [(NINearbyUpdatesEngine *)updatesEngine acceptVisionInput:v9];
+    [(NINearbyUpdatesEngine *)updatesEngine acceptVisionInput:inputCopy];
   }
 
   begin_node = self->_clusterToSessionRecord.__tree_.__begin_node_;
@@ -603,10 +603,10 @@ LABEL_11:
   [(NIServerDLTDOASession *)self _getCachedWifiResult];
 }
 
-- (BOOL)_scheduleSessionToTrackAddress:(unsigned __int16)a3
+- (BOOL)_scheduleSessionToTrackAddress:(unsigned __int16)address
 {
-  v3 = a3;
-  v21 = a3;
+  addressCopy = address;
+  addressCopy2 = address;
   v5 = [(NIServerDLTDOASession *)self _anySessionWithState:1];
   v6 = [(NIServerDLTDOASession *)self _anySessionWithState:2];
   v7 = v6;
@@ -636,8 +636,8 @@ LABEL_11:
     do
     {
       left_low = LOWORD(left[4].__left_);
-      v11 = left_low >= v3;
-      v12 = left_low < v3;
+      v11 = left_low >= addressCopy;
+      v12 = left_low < addressCopy;
       if (v11)
       {
         p_end_node = left;
@@ -647,13 +647,13 @@ LABEL_11:
     }
 
     while (left);
-    if (p_end_node != &self->_addressToTrackingAnchorState.__tree_.__end_node_ && LOWORD(p_end_node[4].__left_) <= v3)
+    if (p_end_node != &self->_addressToTrackingAnchorState.__tree_.__end_node_ && LOWORD(p_end_node[4].__left_) <= addressCopy)
     {
-      *buf = &v21;
-      if (*(sub_10027DA6C(&self->_addressToTrackingAnchorState, &v21) + 10))
+      *buf = &addressCopy2;
+      if (*(sub_10027DA6C(&self->_addressToTrackingAnchorState, &addressCopy2) + 10))
       {
-        *buf = &v21;
-        if (*(sub_10027DA6C(&self->_addressToTrackingAnchorState, &v21) + 10) != 3)
+        *buf = &addressCopy2;
+        if (*(sub_10027DA6C(&self->_addressToTrackingAnchorState, &addressCopy2) + 10) != 3)
         {
           goto LABEL_16;
         }
@@ -661,14 +661,14 @@ LABEL_11:
 
       if ([(NIServerDLTDOASession *)self _idleSessionsAvailable])
       {
-        v13 = [(NIServerDLTDOASession *)self _startTrackClusterWithAddress:v21];
+        v13 = [(NIServerDLTDOASession *)self _startTrackClusterWithAddress:addressCopy2];
         if (v13)
         {
           v18 = qword_1009F9820;
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109120;
-            *&buf[4] = v21;
+            *&buf[4] = addressCopy2;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#ses-loc,started tracking address %hu", buf, 8u);
           }
 
@@ -706,15 +706,15 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)_startTrackClusterWithAddress:(unsigned __int16)a3
+- (BOOL)_startTrackClusterWithAddress:(unsigned __int16)address
 {
-  v35 = a3;
+  addressCopy = address;
   [(NIServerDLTDOASession *)self _findOOBConfigWithAddress:?];
   if ((v34 & 1) == 0)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
-      sub_1004B56C4(&v35);
+      sub_1004B56C4(&addressCopy);
     }
 
     goto LABEL_27;
@@ -724,7 +724,7 @@ LABEL_16:
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
-      sub_1004B5734(&v35);
+      sub_1004B5734(&addressCopy);
     }
 
     goto LABEL_27;
@@ -737,8 +737,8 @@ LABEL_16:
     do
     {
       left_low = LOWORD(left[4].__left_);
-      v7 = left_low >= v35;
-      v8 = left_low < v35;
+      v7 = left_low >= addressCopy;
+      v8 = left_low < addressCopy;
       if (v7)
       {
         p_end_node = left;
@@ -748,11 +748,11 @@ LABEL_16:
     }
 
     while (left);
-    if (p_end_node != &self->_sessions.__tree_.__end_node_ && v35 >= LOWORD(p_end_node[4].__left_))
+    if (p_end_node != &self->_sessions.__tree_.__end_node_ && addressCopy >= LOWORD(p_end_node[4].__left_))
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
-        sub_1004B57A4(&v35);
+        sub_1004B57A4(&addressCopy);
       }
 
       goto LABEL_27;
@@ -790,29 +790,29 @@ LABEL_27:
   {
     v28.receiver = self;
     v28.super_class = NIServerDLTDOASession;
-    v11 = [(NIServerBaseSession *)&v28 resourcesManager];
+    resourcesManager = [(NIServerBaseSession *)&v28 resourcesManager];
     *buf = 0;
-    *&buf[4] = v35;
+    *&buf[4] = addressCopy;
     v12 = +[NSDate now];
     [v12 timeIntervalSince1970];
     v39 = v13;
     v40 = 0;
     v41 = 0;
     v42 = 0;
-    v14 = [v11 appStateMonitor];
-    v15 = [v14 monitoredProcessName];
-    v16 = v15;
-    sub_100004A08(&v43, [v15 UTF8String]);
-    v37 = &v35;
+    appStateMonitor = [resourcesManager appStateMonitor];
+    monitoredProcessName = [appStateMonitor monitoredProcessName];
+    v16 = monitoredProcessName;
+    sub_100004A08(&v43, [monitoredProcessName UTF8String]);
+    v37 = &addressCopy;
     v36 = buf;
-    sub_10027DB40(&self->_clusterToSessionRecord, &v35);
+    sub_10027DB40(&self->_clusterToSessionRecord, &addressCopy);
     if (v44 < 0)
     {
       operator delete(v43);
     }
 
-    *buf = &v35;
-    v17 = sub_10027DC44(&self->_sessions, &v35);
+    *buf = &addressCopy;
+    v17 = sub_10027DC44(&self->_sessions, &addressCopy);
     v19 = v29;
     v18 = v30;
     if (v30)
@@ -828,8 +828,8 @@ LABEL_27:
       sub_10000AD84(v20);
     }
 
-    *buf = &v35;
-    v21 = sub_10027DC44(&self->_sessions, &v35);
+    *buf = &addressCopy;
+    v21 = sub_10027DC44(&self->_sessions, &addressCopy);
     v22 = v21[6];
     v26 = v21[5];
     v27 = v22;
@@ -849,11 +849,11 @@ LABEL_27:
       sub_10000AD84(v27);
     }
 
-    *buf = &v35;
-    *(sub_10027DA6C(&self->_addressToTrackingAnchorState, &v35) + 10) = 1;
+    *buf = &addressCopy;
+    *(sub_10027DA6C(&self->_addressToTrackingAnchorState, &addressCopy) + 10) = 1;
     v23 = sub_100005288();
-    *buf = &v35;
-    *(sub_10027DA6C(&self->_addressToTrackingAnchorState, &v35) + 6) = v23;
+    *buf = &addressCopy;
+    *(sub_10027DA6C(&self->_addressToTrackingAnchorState, &addressCopy) + 6) = v23;
     v24 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
@@ -864,7 +864,7 @@ LABEL_27:
       }
 
       *buf = 67109378;
-      *&buf[4] = v35;
+      *&buf[4] = addressCopy;
       LOWORD(v39) = 2080;
       *(&v39 + 2) = v25;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "#ses-loc,ranging to address %hu is triggered %s", buf, 0x12u);
@@ -896,11 +896,11 @@ LABEL_28:
   return v9;
 }
 
-- (BOOL)_invalidateSessionWithClusterAddress:(unsigned __int16)a3 reason:(id)a4
+- (BOOL)_invalidateSessionWithClusterAddress:(unsigned __int16)address reason:(id)reason
 {
-  v4 = a3;
-  v19 = a3;
-  v6 = a4;
+  addressCopy = address;
+  addressCopy2 = address;
+  reasonCopy = reason;
   p_sessions = &self->_sessions;
   left = p_sessions->__tree_.__end_node_.__left_;
   if (!left)
@@ -912,8 +912,8 @@ LABEL_28:
   do
   {
     left_low = LOWORD(left[4].__left_);
-    v11 = left_low >= v4;
-    v12 = left_low < v4;
+    v11 = left_low >= addressCopy;
+    v12 = left_low < addressCopy;
     if (v11)
     {
       p_end_node = left;
@@ -923,10 +923,10 @@ LABEL_28:
   }
 
   while (left);
-  if (p_end_node != &p_sessions->__tree_.__end_node_ && LOWORD(p_end_node[4].__left_) <= v4)
+  if (p_end_node != &p_sessions->__tree_.__end_node_ && LOWORD(p_end_node[4].__left_) <= addressCopy)
   {
-    *buf = &v19;
-    v15 = sub_10027DC44(p_sessions, &v19);
+    *buf = &addressCopy2;
+    v15 = sub_10027DC44(p_sessions, &addressCopy2);
     v16 = v15[5];
     v17 = v15[6];
     if (v17)
@@ -940,14 +940,14 @@ LABEL_28:
       sub_10000AD84(v17);
     }
 
-    sub_10027DD18(p_sessions, &v19);
+    sub_10027DD18(p_sessions, &addressCopy2);
     v18 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      *&buf[4] = v19;
+      *&buf[4] = addressCopy2;
       v21 = 2112;
-      v22 = v6;
+      v22 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#ses-loc,cluster: %hu's ranging session will be invalidate due to %@", buf, 0x12u);
     }
 
@@ -984,11 +984,11 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (void)updatesEngine:(id)a3 didUpdateNICoordinates:(id)a4
+- (void)updatesEngine:(id)engine didUpdateNICoordinates:(id)coordinates
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_updatesEngine == a3)
+  coordinatesCopy = coordinates;
+  v7 = coordinatesCopy;
+  if (self->_updatesEngine == engine)
   {
     clientQueue = self->_clientQueue;
     v9[0] = _NSConcreteStackBlock;
@@ -996,16 +996,16 @@ LABEL_22:
     v9[2] = sub_100275FA4;
     v9[3] = &unk_10098A2E8;
     v9[4] = self;
-    v10 = v6;
+    v10 = coordinatesCopy;
     dispatch_async(clientQueue, v9);
   }
 }
 
-- (void)updatesEngine:(id)a3 didUpdateDLTDOAMeasurements:(id)a4
+- (void)updatesEngine:(id)engine didUpdateDLTDOAMeasurements:(id)measurements
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_updatesEngine == a3)
+  measurementsCopy = measurements;
+  v7 = measurementsCopy;
+  if (self->_updatesEngine == engine)
   {
     clientQueue = self->_clientQueue;
     v9[0] = _NSConcreteStackBlock;
@@ -1013,23 +1013,23 @@ LABEL_22:
     v9[2] = sub_1002760F8;
     v9[3] = &unk_10098A2E8;
     v9[4] = self;
-    v10 = v6;
+    v10 = measurementsCopy;
     dispatch_async(clientQueue, v9);
   }
 }
 
-- (void)didReceiveNewSolution:(const void *)a3
+- (void)didReceiveNewSolution:(const void *)solution
 {
   dispatch_assert_queue_V2(self->_clientQueue);
-  v5 = *(a3 + 1);
-  v59 = *a3;
+  v5 = *(solution + 1);
+  v59 = *solution;
   v60 = v5;
-  v61 = *(a3 + 2);
-  sub_100020458(v62, a3 + 48);
-  sub_1000206E0(v68, a3 + 608);
-  sub_1000207A0(v71, a3 + 95);
-  memcpy(v75, a3 + 880, sizeof(v75));
-  sub_10002096C(v76, a3 + 91);
+  v61 = *(solution + 2);
+  sub_100020458(v62, solution + 48);
+  sub_1000206E0(v68, solution + 608);
+  sub_1000207A0(v71, solution + 95);
+  memcpy(v75, solution + 880, sizeof(v75));
+  sub_10002096C(v76, solution + 91);
   if (v61 != 6)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
@@ -1234,7 +1234,7 @@ LABEL_29:
       self->_expectedAddresses.__tree_.__end_node_.__left_ = 0;
       sub_10027D108(&self->_cachedMeasurements, self->_cachedMeasurements.__begin_);
       begin_node = self->_addressToTrackingAnchorState.__tree_.__begin_node_;
-      v28 = self;
+      selfCopy = self;
       if (begin_node != &self->_addressToTrackingAnchorState.__tree_.__end_node_)
       {
         do
@@ -1363,7 +1363,7 @@ LABEL_84:
   }
 }
 
-- (void)roseSession:(shared_ptr<rose:(int)a4 :objects::RoseBaseSession>)a3 invalidatedWithReason:
+- (void)roseSession:(shared_ptr<rose:(int)session :objects::RoseBaseSession>)a3 invalidatedWithReason:
 {
   var1 = a3.var1;
   v6 = qword_1009F9820;
@@ -1376,16 +1376,16 @@ LABEL_84:
   [(NIServerDLTDOASession *)self invalidate];
   v9.receiver = self;
   v9.super_class = NIServerDLTDOASession;
-  v7 = [(NIServerBaseSession *)&v9 invalidationHandler];
+  invalidationHandler = [(NIServerBaseSession *)&v9 invalidationHandler];
   v8 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
-  (v7)[2](v7, v8);
+  (invalidationHandler)[2](invalidationHandler, v8);
 }
 
-- (void)_didUpdateWifiEvent:(id)a3
+- (void)_didUpdateWifiEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if ([v4 type] == 5)
+  if ([eventCopy type] == 5)
   {
     [(NIServerDLTDOASession *)self _getCachedWifiResult];
   }
@@ -1393,9 +1393,9 @@ LABEL_84:
 
 - (void)_getCachedWifiResult
 {
-  v2 = [(CWFInterface *)self->_wifiLeechIfc beaconCache];
+  beaconCache = [(CWFInterface *)self->_wifiLeechIfc beaconCache];
 
-  if (v2)
+  if (beaconCache)
   {
     v89[0] = 0;
     v89[1] = 0;
@@ -1404,15 +1404,15 @@ LABEL_84:
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v3 = [(CWFInterface *)self->_wifiLeechIfc beaconCache];
-    v4 = [v3 countByEnumeratingWithState:&v84 objects:v104 count:16];
+    beaconCache2 = [(CWFInterface *)self->_wifiLeechIfc beaconCache];
+    v4 = [beaconCache2 countByEnumeratingWithState:&v84 objects:v104 count:16];
     if (!v4)
     {
       goto LABEL_102;
     }
 
     v5 = *v85;
-    v76 = v3;
+    v76 = beaconCache2;
     v64 = *v85;
     while (1)
     {
@@ -1420,25 +1420,25 @@ LABEL_84:
       {
         if (*v85 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(beaconCache2);
         }
 
-        v7 = [*(*(&v84 + 1) + 8 * i) informationElementData];
-        v8 = v7;
-        if (v7)
+        informationElementData = [*(*(&v84 + 1) + 8 * i) informationElementData];
+        v8 = informationElementData;
+        if (informationElementData)
         {
-          v9 = v7;
-          v10 = [v8 bytes];
+          v9 = informationElementData;
+          bytes = [v8 bytes];
           v11 = [v8 length];
           if (v11)
           {
             v12 = 0;
-            v13 = v10 + 2;
-            v14 = v10;
+            v13 = bytes + 2;
+            v14 = bytes;
             while (1)
             {
-              v15 = &v12[v10];
-              if (v12[v10] == 221 && v12 + 5 < v11)
+              v15 = &v12[bytes];
+              if (v12[bytes] == 221 && v12 + 5 < v11)
               {
                 v17 = v15[1];
                 if (v17 >= 3 && v11 >= v17)
@@ -1546,7 +1546,7 @@ LABEL_97:
                       *v102 = *v105;
                       *&v102[9] = *&v105[9];
                       v103 = 1;
-                      v3 = v76;
+                      beaconCache2 = v76;
                       if (BYTE4(v79) == 1)
                       {
                         sub_10027D03C(&v88, &buf[2]);
@@ -1785,7 +1785,7 @@ LABEL_96:
 LABEL_100:
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v84 objects:v104 count:16];
+      v4 = [beaconCache2 countByEnumeratingWithState:&v84 objects:v104 count:16];
       if (!v4)
       {
 LABEL_102:
@@ -1798,8 +1798,8 @@ LABEL_102:
         v60 = qword_1009F9820;
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
         {
-          v61 = [(CWFInterface *)self->_wifiLeechIfc beaconCache];
-          v62 = [v61 count];
+          beaconCache3 = [(CWFInterface *)self->_wifiLeechIfc beaconCache];
+          v62 = [beaconCache3 count];
           size = self->_cachedWifiOOBAnchors.__tree_.__size_;
           *buf = 134218240;
           v93 = v62;
@@ -1820,11 +1820,11 @@ LABEL_102:
   }
 }
 
-- (void)_processUWBOOBRangingPayload:(const void *)a3
+- (void)_processUWBOOBRangingPayload:(const void *)payload
 {
-  if (*(a3 + 4))
+  if (*(payload + 4))
   {
-    v5 = *(a3 + 1);
+    v5 = *(payload + 1);
     v6 = +[NSUserDefaults standardUserDefaults];
     v7 = [v6 objectForKey:@"NIDLTDOADebugInitiatorMacAddress"];
 
@@ -1838,38 +1838,38 @@ LABEL_9:
 
         if (!v10 || ([v6 BOOLForKey:@"NIDLTDOADebugBypassNetworkIdentifierCheck"]& 1) == 0)
         {
-          if ((*(a3 + 52) & 1) == 0)
+          if ((*(payload + 52) & 1) == 0)
           {
             v16 = qword_1009F9820;
             if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
             {
-              sub_100277E4C(a3, buf);
+              sub_100277E4C(payload, buf);
               sub_1004B5D3C(buf);
             }
 
             goto LABEL_39;
           }
 
-          v11 = *(a3 + 12);
+          v11 = *(payload + 12);
           if ([(NIDLTDOAConfiguration *)self->_configuration networkIdentifier]!= v11)
           {
             v17 = qword_1009F9820;
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               v19 = __p;
-              sub_100277E4C(a3, __p);
+              sub_100277E4C(payload, __p);
               if (SBYTE7(v23) < 0)
               {
                 v19 = __p[0];
               }
 
-              if ((*(a3 + 52) & 1) == 0)
+              if ((*(payload + 52) & 1) == 0)
               {
                 sub_1000195BC();
               }
 
-              v20 = *(a3 + 12);
-              v21 = [(NIDLTDOAConfiguration *)self->_configuration networkIdentifier];
+              v20 = *(payload + 12);
+              networkIdentifier = [(NIDLTDOAConfiguration *)self->_configuration networkIdentifier];
               *buf = 136315906;
               *v29 = v19;
               *&v29[8] = 1024;
@@ -1877,7 +1877,7 @@ LABEL_9:
               v30 = 1024;
               *v31 = v20;
               *&v31[4] = 2048;
-              *&v31[6] = v21;
+              *&v31[6] = networkIdentifier;
               _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "#ses-loc,Scanned wifi result: %s. Mac addr: [0x%02hx], uwb session id: [0x%02x], not match client's network identifier: [0x%02lx]", buf, 0x22u);
               if (SBYTE7(v23) < 0)
               {
@@ -1892,13 +1892,13 @@ LABEL_9:
         v12 = qword_1009F9820;
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(NIDLTDOAConfiguration *)self->_configuration networkIdentifier];
-          sub_100277E4C(a3, __p);
+          networkIdentifier2 = [(NIDLTDOAConfiguration *)self->_configuration networkIdentifier];
+          sub_100277E4C(payload, __p);
           v14 = (SBYTE7(v23) & 0x80u) == 0 ? __p : __p[0];
           *buf = 67109634;
           *v29 = v5;
           *&v29[4] = 2048;
-          *&v29[6] = v13;
+          *&v29[6] = networkIdentifier2;
           v30 = 2080;
           *v31 = v14;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#ses-loc,Scanned Wifi OOB: Mac addr: [0x%02hx], uwb session id: [0x%02lx], details: %s.", buf, 0x1Cu);
@@ -1908,11 +1908,11 @@ LABEL_9:
           }
         }
 
-        v15 = *(a3 + 1);
-        *__p = *a3;
+        v15 = *(payload + 1);
+        *__p = *payload;
         v23 = v15;
-        v24[0] = *(a3 + 2);
-        *(v24 + 12) = *(a3 + 44);
+        v24[0] = *(payload + 2);
+        *(v24 + 12) = *(payload + 44);
         [(NIServerDLTDOASession *)self _buildOOBConfigFromOOBMessage:__p];
         if (v34)
         {
@@ -1988,7 +1988,7 @@ LABEL_9:
     v6 = qword_1009F9820;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_100277E4C(a3, buf);
+      sub_100277E4C(payload, buf);
       sub_1004B5BE0(buf);
     }
   }
@@ -1996,21 +1996,21 @@ LABEL_9:
 LABEL_39:
 }
 
-- (BOOL)_validMeasurement:(void *)a3
+- (BOOL)_validMeasurement:(void *)measurement
 {
-  v20 = *(a3 + 10);
-  v21 = *(a3 + 11);
-  v22 = *(a3 + 192);
-  v16 = *(a3 + 6);
-  v17 = *(a3 + 7);
-  v18 = *(a3 + 8);
-  v19 = *(a3 + 9);
-  v12 = *(a3 + 2);
-  v13 = *(a3 + 3);
-  v14 = *(a3 + 4);
-  v15 = *(a3 + 5);
-  v4 = *(a3 + 25);
-  v5 = *(a3 + 26);
+  v20 = *(measurement + 10);
+  v21 = *(measurement + 11);
+  v22 = *(measurement + 192);
+  v16 = *(measurement + 6);
+  v17 = *(measurement + 7);
+  v18 = *(measurement + 8);
+  v19 = *(measurement + 9);
+  v12 = *(measurement + 2);
+  v13 = *(measurement + 3);
+  v14 = *(measurement + 4);
+  v15 = *(measurement + 5);
+  v4 = *(measurement + 25);
+  v5 = *(measurement + 26);
   __p = 0;
   v24 = 0;
   v25 = 0;
@@ -2023,8 +2023,8 @@ LABEL_39:
   v6 = 1;
   if (WORD4(v14) && WORD2(v16))
   {
-    v9 = *(a3 + 25);
-    v8 = *(a3 + 26);
+    v9 = *(measurement + 25);
+    v8 = *(measurement + 26);
     if (v9 == v8)
     {
 LABEL_2:
@@ -2062,7 +2062,7 @@ LABEL_3:
   return v6;
 }
 
-- (optional<unsigned)_findAddressWithTicketId:(unsigned __int16)a3
+- (optional<unsigned)_findAddressWithTicketId:(unsigned __int16)id
 {
   p_end_node = &self->_sessions.__tree_.__end_node_;
   begin_node = self->_sessions.__tree_.__begin_node_;
@@ -2074,7 +2074,7 @@ LABEL_3:
       if (left)
       {
         v6 = left[188];
-        if ((v6 & 0x10000) != 0 && v6 == a3)
+        if ((v6 & 0x10000) != 0 && v6 == id)
         {
           break;
         }
@@ -2123,7 +2123,7 @@ LABEL_3:
   }
 }
 
-- (optional<OOBConfig>)_findOOBConfigWithAddress:(SEL)a3
+- (optional<OOBConfig>)_findOOBConfigWithAddress:(SEL)address
 {
   v6 = *&self->var0.var1.var3.var0.__null_state_;
   v5 = *&self->var1;
@@ -2172,12 +2172,12 @@ LABEL_7:
 {
   v93 = a4;
   v4 = [v93 objectForKey:@"UseConfigParametersOverrides"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v130 = 0;
   __src = 0;
   v131 = 0;
-  if (!v5)
+  if (!bOOLValue)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -2244,20 +2244,20 @@ LABEL_7:
       v97 = [v7 objectForKeyedSubscript:@"VendorID"];
       v101 = [v7 objectForKeyedSubscript:@"UWBSessionID"];
       v102 = [v7 objectForKeyedSubscript:@"Static_STS_IV"];
-      v8 = [v95 unsignedIntValue];
-      v9 = [v99 unsignedIntValue];
-      v10 = [v98 unsignedIntValue];
-      v11 = [v97 unsignedIntValue];
-      v12 = [v101 unsignedIntValue];
+      unsignedIntValue = [v95 unsignedIntValue];
+      unsignedIntValue2 = [v99 unsignedIntValue];
+      unsignedIntValue3 = [v98 unsignedIntValue];
+      unsignedIntValue4 = [v97 unsignedIntValue];
+      unsignedIntValue5 = [v101 unsignedIntValue];
       [v102 getBytes:&v122 length:6];
-      sub_100359A3C(v9, &v118);
+      sub_100359A3C(unsignedIntValue2, &v118);
       if ((v121 & 1) == 0)
       {
         v85 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          *&buf[4] = v9;
+          *&buf[4] = unsignedIntValue2;
           v82 = "#ses-loc,Unsupported config_id %hu";
           v83 = v85;
           v84 = 8;
@@ -2281,12 +2281,12 @@ LABEL_84:
       if (v13)
       {
         v20 = [v7 objectForKey:@"NumSlotsPerRound"];
-        v21 = [v20 unsignedIntValue];
+        unsignedIntValue6 = [v20 unsignedIntValue];
       }
 
       else
       {
-        v21 = 0;
+        unsignedIntValue6 = 0;
       }
 
       if ((v121 & 1) == 0)
@@ -2294,15 +2294,15 @@ LABEL_84:
         sub_1000195BC();
       }
 
-      LOBYTE(v118) = v8;
-      BYTE6(v118) = v10;
-      WORD2(v119) = v11;
-      v120 = v12;
+      LOBYTE(v118) = unsignedIntValue;
+      BYTE6(v118) = unsignedIntValue3;
+      WORD2(v119) = unsignedIntValue4;
+      v120 = unsignedIntValue5;
       *(&v119 + 6) = v122;
       WORD5(v119) = v123;
       if (v13)
       {
-        BYTE1(v119) = v21;
+        BYTE1(v119) = unsignedIntValue6;
       }
 
       v22 = WORD1(v118);
@@ -2488,12 +2488,12 @@ LABEL_31:
           v105 = [v48 objectForKeyedSubscript:@"ClusterID"];
           v50 = [v48 objectForKeyedSubscript:@"Address"];
           v51 = [v48 objectForKeyedSubscript:@"Role"];
-          v52 = [v105 unsignedIntValue];
-          v53 = [v50 unsignedIntValue];
-          v54 = [v51 unsignedIntValue];
-          *v106 = v53;
-          v106[2] = v54;
-          v106[3] = v52;
+          unsignedIntValue7 = [v105 unsignedIntValue];
+          unsignedIntValue8 = [v50 unsignedIntValue];
+          unsignedIntValue9 = [v51 unsignedIntValue];
+          *v106 = unsignedIntValue8;
+          v106[2] = unsignedIntValue9;
+          v106[3] = unsignedIntValue7;
           v106[4] = 1;
           v106[8] = 0;
           v107 = 0;
@@ -2524,13 +2524,13 @@ LABEL_31:
             v61 = [v48 objectForKeyedSubscript:@"Coordinates0"];
             v62 = [v48 objectForKeyedSubscript:@"Coordinates1"];
             v63 = [v48 objectForKeyedSubscript:@"Coordinates2"];
-            v64 = [v60 unsignedIntValue];
+            unsignedIntValue10 = [v60 unsignedIntValue];
             [v61 doubleValue];
             v66 = v65;
             [v62 doubleValue];
             v68 = v67;
             [v63 doubleValue];
-            *&v106[8] = v64;
+            *&v106[8] = unsignedIntValue10;
             *&v106[16] = v66;
             *&v106[24] = v68;
             *&v106[32] = v69;
@@ -2681,7 +2681,7 @@ LABEL_91:
   return result;
 }
 
-- (optional<OOBConfig>)_buildOOBConfigFromOOBMessage:(SEL)a3
+- (optional<OOBConfig>)_buildOOBConfigFromOOBMessage:(SEL)message
 {
   if (!a4->var1.__engaged_)
   {
@@ -2848,52 +2848,52 @@ LABEL_91:
   return result;
 }
 
-- (BOOL)_prepareLocalizationSessionFromOOBConfig:(const void *)a3 outServiceRequest:(void *)a4 outStartOptions:(void *)a5
+- (BOOL)_prepareLocalizationSessionFromOOBConfig:(const void *)config outServiceRequest:(void *)request outStartOptions:(void *)options
 {
   v26 = 0;
   v25 = 0;
   v27 = 0;
-  v8 = *(a3 + 16);
-  v13 = *(a3 + 14);
+  v8 = *(config + 16);
+  v13 = *(config + 14);
   v14 = 0;
-  v15 = *a3;
-  v16 = *(a3 + 1);
-  v17 = *(a3 + 9);
-  v18 = *(a3 + 8);
-  v19 = *(a3 + 10);
-  v20 = *(a3 + 12);
-  v22 = *(a3 + 13);
-  v21 = *(a3 + 22);
-  v23 = *(a3 + 10);
+  v15 = *config;
+  v16 = *(config + 1);
+  v17 = *(config + 9);
+  v18 = *(config + 8);
+  v19 = *(config + 10);
+  v20 = *(config + 12);
+  v22 = *(config + 13);
+  v21 = *(config + 22);
+  v23 = *(config + 10);
   v24 = v8;
   v28 = 11;
   sub_10019E89C(&v13, __src);
-  v9 = *(a4 + 576);
-  memcpy(a4, __src, 0x240uLL);
+  v9 = *(request + 576);
+  memcpy(request, __src, 0x240uLL);
   if ((v9 & 1) == 0)
   {
-    *(a4 + 576) = 1;
+    *(request + 576) = 1;
   }
 
-  v10 = 1000 * *(a3 + 9) + 5000;
-  v11 = *(a5 + 112);
-  *a5 = 0;
-  *(a5 + 40) = 0;
-  *(a5 + 6) = 150000;
-  *(a5 + 56) = 1;
-  *(a5 + 15) = v10;
-  *(a5 + 4) = 0u;
-  *(a5 + 5) = 0u;
-  *(a5 + 6) = 0u;
+  v10 = 1000 * *(config + 9) + 5000;
+  v11 = *(options + 112);
+  *options = 0;
+  *(options + 40) = 0;
+  *(options + 6) = 150000;
+  *(options + 56) = 1;
+  *(options + 15) = v10;
+  *(options + 4) = 0u;
+  *(options + 5) = 0u;
+  *(options + 6) = 0u;
   if ((v11 & 1) == 0)
   {
-    *(a5 + 112) = 1;
+    *(options + 112) = 1;
   }
 
   return 1;
 }
 
-- (BOOL)_triggerRangingForSession:(shared_ptr<rose:(const void *)a4 :objects::LocalizationSession>)a3 startRangingOptions:
+- (BOOL)_triggerRangingForSession:(shared_ptr<rose:(const void *)session :objects::LocalizationSession>)a3 startRangingOptions:
 {
   if (!*a3.var0)
   {
@@ -2903,15 +2903,15 @@ LABEL_91:
   return sub_10034024C(*a3.var0, a3.var1) == 0;
 }
 
-- (BOOL)_assignAnchorCoordinates:(void *)a3
+- (BOOL)_assignAnchorCoordinates:(void *)coordinates
 {
-  if (*(a3 + 8) != 6 || *(a3 + 1680) != 1)
+  if (*(coordinates + 8) != 6 || *(coordinates + 1680) != 1)
   {
     return 0;
   }
 
-  v4 = *(a3 + 763);
-  v40 = *(a3 + 763);
+  v4 = *(coordinates + 763);
+  v40 = *(coordinates + 763);
   p_addressToCoordinatesOOB = &self->_addressToCoordinatesOOB;
   p_end_node = &self->_addressToCoordinatesOOB.__tree_.__end_node_;
   left = self->_addressToCoordinatesOOB.__tree_.__end_node_.__left_;
@@ -2959,18 +2959,18 @@ LABEL_54:
       v20 = sub_10027DDC8(p_addressToCoordinatesOOB, &v40)[7];
       v41 = &v40;
       v21 = sub_10027DDC8(p_addressToCoordinatesOOB, &v40)[8];
-      if (*(a3 + 1616) == 1)
+      if (*(coordinates + 1616) == 1)
       {
-        *(a3 + 1616) = 0;
+        *(coordinates + 1616) = 0;
       }
 
-      v22 = *(a3 + 1648);
-      *(a3 + 203) = v19;
-      *(a3 + 204) = v20;
-      *(a3 + 205) = v21;
+      v22 = *(coordinates + 1648);
+      *(coordinates + 203) = v19;
+      *(coordinates + 204) = v20;
+      *(coordinates + 205) = v21;
       if ((v22 & 1) == 0)
       {
-        *(a3 + 1648) = 1;
+        *(coordinates + 1648) = 1;
       }
 
       break;
@@ -2981,25 +2981,25 @@ LABEL_54:
       v16 = sub_10027DDC8(p_addressToCoordinatesOOB, &v40)[7];
       v41 = &v40;
       v17 = sub_10027DDC8(p_addressToCoordinatesOOB, &v40)[8];
-      v18 = *(a3 + 1616);
-      *(a3 + 199) = v15;
-      *(a3 + 200) = v16;
-      *(a3 + 201) = v17;
+      v18 = *(coordinates + 1616);
+      *(coordinates + 199) = v15;
+      *(coordinates + 200) = v16;
+      *(coordinates + 201) = v17;
       if ((v18 & 1) == 0)
       {
-        *(a3 + 1616) = 1;
+        *(coordinates + 1616) = 1;
       }
 
-      if (*(a3 + 1648) == 1)
+      if (*(coordinates + 1648) == 1)
       {
-        *(a3 + 1648) = 0;
+        *(coordinates + 1648) = 0;
       }
 
       break;
   }
 
-  v23 = *(a3 + 207);
-  v24 = *(a3 + 208);
+  v23 = *(coordinates + 207);
+  v24 = *(coordinates + 208);
   v12 = 1;
   if (v23 != v24)
   {
@@ -3138,10 +3138,10 @@ LABEL_8:
     }
 
     [(NIServerDLTDOASession *)self _removeInactiveRangingAnchorIfAny];
-    v4 = [(NIServerDLTDOASession *)self _nextPendingTriggerAnchor];
-    if ((v4 & 0x10000) != 0)
+    _nextPendingTriggerAnchor = [(NIServerDLTDOASession *)self _nextPendingTriggerAnchor];
+    if ((_nextPendingTriggerAnchor & 0x10000) != 0)
     {
-      [(NIServerDLTDOASession *)self _scheduleSessionToTrackAddress:v4];
+      [(NIServerDLTDOASession *)self _scheduleSessionToTrackAddress:_nextPendingTriggerAnchor];
     }
 
     v5.__rep_ = [(NIServerDLTDOASession *)self nominalCycleRate];
@@ -3373,8 +3373,8 @@ LABEL_8:
 
   while (begin_node != &self->_addressToTrackingAnchorState.__tree_.__end_node_);
 LABEL_22:
-  v14 = [(NIServerDLTDOASession *)self _idleSessionsAvailable];
-  if ((v14 & (v6 != 0)) != 0)
+  _idleSessionsAvailable = [(NIServerDLTDOASession *)self _idleSessionsAvailable];
+  if ((_idleSessionsAvailable & (v6 != 0)) != 0)
   {
     v15 = 0x10000;
   }
@@ -3384,7 +3384,7 @@ LABEL_22:
     v15 = 0;
   }
 
-  if (v14)
+  if (_idleSessionsAvailable)
   {
     v16 = v6;
   }
@@ -3397,7 +3397,7 @@ LABEL_22:
   return (v15 | v16);
 }
 
-- (BOOL)_anySessionWithState:(int)a3
+- (BOOL)_anySessionWithState:(int)state
 {
   p_end_node = &self->_addressToTrackingAnchorState.__tree_.__end_node_;
   begin_node = self->_addressToTrackingAnchorState.__tree_.__begin_node_;
@@ -3409,8 +3409,8 @@ LABEL_22:
   do
   {
     left = begin_node[5].__left_;
-    result = left == a3;
-    if (left == a3)
+    result = left == state;
+    if (left == state)
     {
       break;
     }
@@ -3448,10 +3448,10 @@ LABEL_22:
 
 - (void)_internalConfigWithDebugParams
 {
-  v15 = [(NIDLTDOAConfiguration *)self->_configuration debugParameters];
-  if (v15)
+  debugParameters = [(NIDLTDOAConfiguration *)self->_configuration debugParameters];
+  if (debugParameters)
   {
-    [(NIServerDLTDOASession *)self _parseOOBConfigFromDebugParameters:v15];
+    [(NIServerDLTDOASession *)self _parseOOBConfigFromDebugParameters:debugParameters];
     sub_10027C558(&self->_oobConfigs);
     *&self->_oobConfigs.__begin_ = *buf;
     self->_oobConfigs.__cap_ = v18;
@@ -3533,8 +3533,8 @@ LABEL_12:
   [(NIServerDLTDOASession *)self invalidate];
   v5.receiver = self;
   v5.super_class = NIServerDLTDOASession;
-  v4 = [(NIServerBaseSession *)&v5 invalidationHandler];
-  (v4)[2](v4, v3);
+  invalidationHandler = [(NIServerBaseSession *)&v5 invalidationHandler];
+  (invalidationHandler)[2](invalidationHandler, v3);
 }
 
 - (id)sessionRecordPrintableState

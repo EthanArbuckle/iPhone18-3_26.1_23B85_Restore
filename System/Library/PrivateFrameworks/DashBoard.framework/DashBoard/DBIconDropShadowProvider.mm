@@ -5,8 +5,8 @@
 - (void)_shadow_drawing_queue_generateDarkStyleShadow;
 - (void)_shadow_drawing_queue_generateLightStyleShadow;
 - (void)dealloc;
-- (void)imageForTraitCollection:(id)a3 completion:(id)a4;
-- (void)setIconImage:(id)a3;
+- (void)imageForTraitCollection:(id)collection completion:(id)completion;
+- (void)setIconImage:(id)image;
 @end
 
 @implementation DBIconDropShadowProvider
@@ -63,12 +63,12 @@ void __32__DBIconDropShadowProvider_init__block_invoke()
   _shadowDrawingQueue = v2;
 }
 
-- (void)imageForTraitCollection:(id)a3 completion:(id)a4
+- (void)imageForTraitCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInterfaceStyle];
-  if (v8 && (v9 = v8, [v6 userInterfaceIdiom] == 3))
+  collectionCopy = collection;
+  completionCopy = completion;
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
+  if (userInterfaceStyle && (v9 = userInterfaceStyle, [collectionCopy userInterfaceIdiom] == 3))
   {
     if (v9 == 1)
     {
@@ -83,7 +83,7 @@ void __32__DBIconDropShadowProvider_init__block_invoke()
         block[2] = __63__DBIconDropShadowProvider_imageForTraitCollection_completion___block_invoke;
         block[3] = &unk_278F02AE0;
         objc_copyWeak(&v20, &location);
-        v19 = v7;
+        v19 = completionCopy;
         dispatch_async(v11, block);
         v13 = v19;
 LABEL_11:
@@ -107,19 +107,19 @@ LABEL_11:
         v15[2] = __63__DBIconDropShadowProvider_imageForTraitCollection_completion___block_invoke_2;
         v15[3] = &unk_278F02AE0;
         objc_copyWeak(&v17, &location);
-        v16 = v7;
+        v16 = completionCopy;
         dispatch_async(v14, v15);
         v13 = v16;
         goto LABEL_11;
       }
     }
 
-    (*(v7 + 2))(v7, lightStyleShadowImage);
+    (*(completionCopy + 2))(completionCopy, lightStyleShadowImage);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_9:
@@ -145,29 +145,29 @@ uint64_t __63__DBIconDropShadowProvider_imageForTraitCollection_completion___blo
   return v3();
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_iconImage = &self->_iconImage;
-  if (self->_iconImage != v5)
+  if (self->_iconImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_iconImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(p_iconImage, image);
     p_iconImage = [(DBIconDropShadowProvider *)self _cleanupImages];
-    v5 = v7;
+    imageCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_iconImage, v5);
+  MEMORY[0x2821F96F8](p_iconImage, imageCopy);
 }
 
 - (void)_shadow_drawing_queue_generateLightStyleShadow
 {
   dispatch_assert_queue_V2(_shadowDrawingQueue);
-  v3 = [(DBIconDropShadowProvider *)self iconImage];
-  if (v3 && !self->_lightStyleShadowImage)
+  iconImage = [(DBIconDropShadowProvider *)self iconImage];
+  if (iconImage && !self->_lightStyleShadowImage)
   {
-    v42 = v3;
-    [v3 size];
+    v42 = iconImage;
+    [iconImage size];
     v5 = v4;
     [v42 size];
     v7 = v6;
@@ -203,8 +203,8 @@ uint64_t __63__DBIconDropShadowProvider_imageForTraitCollection_completion___blo
     [v25 addClip];
 
     [v42 drawInRect:0 blendMode:0.0 alpha:{0.0, v5, v7, 0.25}];
-    v26 = [MEMORY[0x277D75348] blackColor];
-    v27 = [v26 colorWithAlphaComponent:0.100000001];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v27 = [blackColor colorWithAlphaComponent:0.100000001];
     [v27 set];
 
     v45.origin.x = 0.0;
@@ -214,11 +214,11 @@ uint64_t __63__DBIconDropShadowProvider_imageForTraitCollection_completion___blo
     CGContextFillRect(CurrentContext, v45);
     Data = CGBitmapContextGetData(CurrentContext);
     BytesPerRow = CGBitmapContextGetBytesPerRow(CurrentContext);
-    v30 = [MEMORY[0x277CBEA90] dataWithBytes:Data length:CGBitmapContextGetHeight(CurrentContext) * BytesPerRow];
+    bytesPerRow = [MEMORY[0x277CBEA90] dataWithBytes:Data length:CGBitmapContextGetHeight(CurrentContext) * BytesPerRow];
     ColorSpace = CGBitmapContextGetColorSpace(CurrentContext);
     v32 = objc_alloc(MEMORY[0x277CBF758]);
     v33 = *MEMORY[0x277CBF970];
-    v34 = [v32 initWithBitmapData:v30 bytesPerRow:BytesPerRow size:v33 format:ColorSpace colorSpace:{v11, v15}];
+    v34 = [v32 initWithBitmapData:bytesPerRow bytesPerRow:BytesPerRow size:v33 format:ColorSpace colorSpace:{v11, v15}];
     v35 = [MEMORY[0x277CBF750] filterWithName:@"CIGaussianBlur"];
     [v35 setDefaults];
     [v35 setValue:v34 forKey:*MEMORY[0x277CBFAF0]];
@@ -235,20 +235,20 @@ uint64_t __63__DBIconDropShadowProvider_imageForTraitCollection_completion___blo
     [v40 extent];
     self->_lightStyleShadowImage = [v41 createCGImage:v40 fromRect:v33 format:ColorSpace colorSpace:?];
 
-    v3 = v42;
+    iconImage = v42;
   }
 }
 
 - (void)_shadow_drawing_queue_generateDarkStyleShadow
 {
   dispatch_assert_queue_V2(_shadowDrawingQueue);
-  v20 = [MEMORY[0x277CD9ED0] layer];
-  v3 = [(DBIconDropShadowProvider *)self iconImage];
-  v4 = v3;
-  if (v3 && !_darkStyleShadowImage)
+  layer = [MEMORY[0x277CD9ED0] layer];
+  iconImage = [(DBIconDropShadowProvider *)self iconImage];
+  v4 = iconImage;
+  if (iconImage && !_darkStyleShadowImage)
   {
-    [v3 scale];
-    [v20 setContentsScale:?];
+    [iconImage scale];
+    [layer setContentsScale:?];
     [v4 size];
     v7 = v5 * 1.5;
     v8 = v6 * 1.5;
@@ -262,27 +262,27 @@ uint64_t __63__DBIconDropShadowProvider_imageForTraitCollection_completion___blo
     v11 = v10;
     [v4 size];
     v13 = v12;
-    [v20 setFrame:{0.0, 0.0, v7, v8}];
-    v14 = [MEMORY[0x277CD9ED0] layer];
+    [layer setFrame:{0.0, 0.0, v7, v8}];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
     v15 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2];
-    [v14 setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
-    [v14 setShadowColor:{objc_msgSend(v15, "CGColor")}];
-    [v14 setShadowRadius:4.0];
+    [layer2 setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
+    [layer2 setShadowColor:{objc_msgSend(v15, "CGColor")}];
+    [layer2 setShadowRadius:4.0];
     LODWORD(v16) = 1.0;
-    [v14 setShadowOpacity:v16];
-    [v14 setCornerRadius:v9];
-    [v14 setCornerCurve:*MEMORY[0x277CDA138]];
-    [v14 setShadowPathIsBounds:1];
-    [v14 setFrame:{1015.0, 0.0, v11, v13}];
-    [v14 setShadowOffset:{-1000.0, 12.0}];
-    [v20 addSublayer:v14];
+    [layer2 setShadowOpacity:v16];
+    [layer2 setCornerRadius:v9];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
+    [layer2 setShadowPathIsBounds:1];
+    [layer2 setFrame:{1015.0, 0.0, v11, v13}];
+    [layer2 setShadowOffset:{-1000.0, 12.0}];
+    [layer addSublayer:layer2];
     [v4 scale];
     v18 = v17;
     v22.width = v7;
     v22.height = v8;
     UIGraphicsBeginImageContextWithOptions(v22, 0, v18);
     CurrentContext = UIGraphicsGetCurrentContext();
-    [v20 renderInContext:CurrentContext];
+    [layer renderInContext:CurrentContext];
     _darkStyleShadowImage = CGBitmapContextCreateImage(CurrentContext);
   }
 }

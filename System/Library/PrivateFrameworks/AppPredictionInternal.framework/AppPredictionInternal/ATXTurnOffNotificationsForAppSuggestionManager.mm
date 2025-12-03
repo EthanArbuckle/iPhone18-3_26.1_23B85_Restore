@@ -1,6 +1,6 @@
 @interface ATXTurnOffNotificationsForAppSuggestionManager
 - (ATXTurnOffNotificationsForAppSuggestionManager)init;
-- (ATXTurnOffNotificationsForAppSuggestionManager)initWithDataStore:(id)a3;
+- (ATXTurnOffNotificationsForAppSuggestionManager)initWithDataStore:(id)store;
 - (id)activeSuggestions;
 - (void)activeSuggestions;
 @end
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (ATXTurnOffNotificationsForAppSuggestionManager)initWithDataStore:(id)a3
+- (ATXTurnOffNotificationsForAppSuggestionManager)initWithDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = ATXTurnOffNotificationsForAppSuggestionManager;
   v6 = [(ATXTurnOffNotificationsForAppSuggestionManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataStore, a3);
+    objc_storeStrong(&v6->_dataStore, store);
   }
 
   return v7;
@@ -42,8 +42,8 @@
   if ([v8 count] > 3)
   {
     v9 = [v8 objectAtIndexedSubscript:3];
-    v11 = [v9 second];
-    v12 = [v11 isEqual:&unk_283A55EB0];
+    second = [v9 second];
+    v12 = [second isEqual:&unk_283A55EB0];
 
     if (v12)
     {
@@ -62,16 +62,16 @@
 
     else
     {
-      v14 = [v9 second];
-      v15 = [v14 isEqual:&unk_283A55EC8];
+      second2 = [v9 second];
+      v15 = [second2 isEqual:&unk_283A55EC8];
 
       if (v15)
       {
         v16 = objc_alloc(MEMORY[0x277CEB6F0]);
         v17 = objc_opt_new();
         v18 = [MEMORY[0x277CBEAA8] now];
-        v19 = [v9 first];
-        v13 = [v16 initTurnOffNotificationsForAppSuggestionWithUUID:v17 bundleID:@"com.apple.tips" timestamp:v18 triggerNotificationUUID:v19];
+        first = [v9 first];
+        v13 = [v16 initTurnOffNotificationsForAppSuggestionWithUUID:v17 bundleID:@"com.apple.tips" timestamp:v18 triggerNotificationUUID:first];
 
         v22 = v13;
         v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
@@ -118,11 +118,11 @@ LABEL_14:
 - (void)activeSuggestions
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [a1 second];
+  second = [self second];
   v5 = 136315394;
   v6 = "[ATXTurnOffNotificationsForAppSuggestionManager activeSuggestions]";
   v7 = 2112;
-  v8 = v3;
+  v8 = second;
   _os_log_fault_impl(&dword_2263AA000, a2, OS_LOG_TYPE_FAULT, "%s: Unexpected value for isActive. Expecting either 0 (NO) or 1 (YES). Instead got %@", &v5, 0x16u);
 
   v4 = *MEMORY[0x277D85DE8];

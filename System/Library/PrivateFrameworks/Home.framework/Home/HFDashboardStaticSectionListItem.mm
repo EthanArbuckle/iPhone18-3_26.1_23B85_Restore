@@ -1,7 +1,7 @@
 @interface HFDashboardStaticSectionListItem
-- (HFDashboardStaticSectionListItem)initWithResults:(id)a3;
+- (HFDashboardStaticSectionListItem)initWithResults:(id)results;
 - (NSString)uuidString;
-- (void)setUuidString:(id)a3;
+- (void)setUuidString:(id)string;
 @end
 
 @implementation HFDashboardStaticSectionListItem
@@ -18,7 +18,7 @@
   return v5;
 }
 
-- (void)setUuidString:(id)a3
+- (void)setUuidString:(id)string
 {
   v4 = sub_20DD64EB4();
   v6 = v5;
@@ -29,7 +29,7 @@
   v7[1] = v6;
 }
 
-- (HFDashboardStaticSectionListItem)initWithResults:(id)a3
+- (HFDashboardStaticSectionListItem)initWithResults:(id)results
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

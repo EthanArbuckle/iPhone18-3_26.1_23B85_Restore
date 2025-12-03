@@ -1,48 +1,48 @@
 @interface AKDictionaryBackedModel
-- (AKDictionaryBackedModel)initWithCoder:(id)a3;
-- (AKDictionaryBackedModel)initWithValues:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 as:(Class)a4;
-- (id)parseValue:(id)a3 atKey:(id)a4;
-- (id)validObjectForKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AKDictionaryBackedModel)initWithCoder:(id)coder;
+- (AKDictionaryBackedModel)initWithValues:(id)values;
+- (BOOL)isEqual:(id)equal;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key as:(Class)as;
+- (id)parseValue:(id)value atKey:(id)key;
+- (id)validObjectForKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKDictionaryBackedModel
 
-- (AKDictionaryBackedModel)initWithValues:(id)a3
+- (AKDictionaryBackedModel)initWithValues:(id)values
 {
   v36 = *MEMORY[0x1E69E9840];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v33;
-  v33 = 0;
+  objc_storeStrong(location, values);
+  v3 = selfCopy;
+  selfCopy = 0;
   v31.receiver = v3;
   v31.super_class = AKDictionaryBackedModel;
   v14 = [(AKDictionaryBackedModel *)&v31 init];
-  v33 = v14;
-  objc_storeStrong(&v33, v14);
+  selfCopy = v14;
+  objc_storeStrong(&selfCopy, v14);
   if (!v14)
   {
     goto LABEL_8;
   }
 
-  v30 = [v33 validationRequirements];
+  validationRequirements = [selfCopy validationRequirements];
   v11 = MEMORY[0x1E695DF70];
-  v12 = [v30 allKeys];
+  allKeys = [validationRequirements allKeys];
   v29 = [v11 arrayWithArray:?];
-  MEMORY[0x1E69E5920](v12);
+  MEMORY[0x1E69E5920](allKeys);
   v13 = location[0];
   v20 = MEMORY[0x1E69E9820];
   v21 = -1073741824;
   v22 = 0;
   v23 = __42__AKDictionaryBackedModel_initWithValues___block_invoke;
   v24 = &unk_1E73D6E38;
-  v25 = MEMORY[0x1E69E5928](v33);
-  v26 = MEMORY[0x1E69E5928](v30);
+  v25 = MEMORY[0x1E69E5928](selfCopy);
+  v26 = MEMORY[0x1E69E5928](validationRequirements);
   v27 = MEMORY[0x1E69E5928](v29);
   v28 = [v13 aaf_map:&v20];
   if ([v29 count])
@@ -57,11 +57,11 @@
       v10 = NSStringFromClass(v4);
       v6 = MEMORY[0x1E69E5928](v10);
       v17 = v6;
-      v9 = [v29 aaf_arrayAsCommaSeperatedString];
-      v16 = MEMORY[0x1E69E5928](v9);
+      aaf_arrayAsCommaSeperatedString = [v29 aaf_arrayAsCommaSeperatedString];
+      v16 = MEMORY[0x1E69E5928](aaf_arrayAsCommaSeperatedString);
       __os_log_helper_16_2_2_8_64_8_64(v35, v6, v16);
       _os_log_error_impl(&dword_193225000, log, type, "AKDictionaryBackedModel %@ is missing or has invalid value(s) at key(s): %@", v35, 0x16u);
-      MEMORY[0x1E69E5920](v9);
+      MEMORY[0x1E69E5920](aaf_arrayAsCommaSeperatedString);
       MEMORY[0x1E69E5920](v10);
       objc_storeStrong(&v16, 0);
       objc_storeStrong(&v17, 0);
@@ -74,7 +74,7 @@
 
   else
   {
-    objc_storeStrong(v33 + 1, v28);
+    objc_storeStrong(selfCopy + 1, v28);
     v15 = 0;
   }
 
@@ -83,15 +83,15 @@
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&validationRequirements, 0);
   if (!v15)
   {
 LABEL_8:
-    v34 = MEMORY[0x1E69E5928](v33);
+    v34 = MEMORY[0x1E69E5928](selfCopy);
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v33, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x1E69E9840];
   return v34;
 }
@@ -146,14 +146,14 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
   return v3;
 }
 
-- (id)parseValue:(id)a3 atKey:(id)a4
+- (id)parseValue:(id)value atKey:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, key);
   v6 = MEMORY[0x1E69E5928](location[0]);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
@@ -161,18 +161,18 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
   return v6;
 }
 
-- (id)validObjectForKey:(id)a3
+- (id)validObjectForKey:(id)key
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKDictionaryBackedModel *)v8 validationRequirements];
-  v6 = [(NSDictionary *)v5 objectForKey:location[0]];
-  MEMORY[0x1E69E5920](v5);
+  objc_storeStrong(location, key);
+  validationRequirements = [(AKDictionaryBackedModel *)selfCopy validationRequirements];
+  v6 = [(NSDictionary *)validationRequirements objectForKey:location[0]];
+  MEMORY[0x1E69E5920](validationRequirements);
   if (v6)
   {
-    v9 = [(AKDictionaryBackedModel *)v8 objectForKey:location[0] as:v6];
+    v9 = [(AKDictionaryBackedModel *)selfCopy objectForKey:location[0] as:v6];
   }
 
   else
@@ -186,15 +186,15 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
   return v3;
 }
 
-- (id)objectForKey:(id)a3 as:(Class)a4
+- (id)objectForKey:(id)key as:(Class)as
 {
   v17 = *MEMORY[0x1E69E9840];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
-  v11 = [(AKDictionaryBackedModel *)v14 objectForKey:location[0]];
+  objc_storeStrong(location, key);
+  asCopy = as;
+  v11 = [(AKDictionaryBackedModel *)selfCopy objectForKey:location[0]];
   v4 = objc_opt_class();
   v10 = _AKSafeCast_9(v4, v11);
   if (v10)
@@ -208,7 +208,7 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_3_8_64_8_64_8_64(v16, location[0], v11, v12);
+      __os_log_helper_16_2_3_8_64_8_64_8_64(v16, location[0], v11, asCopy);
       _os_log_error_impl(&dword_193225000, oslog, OS_LOG_TYPE_ERROR, "AKDictionaryBackedModel objectForKey: %@ is %@ but expected a(n) %@", v16, 0x20u);
     }
 
@@ -226,16 +226,16 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v13 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKDictionaryBackedModel *)v10 values];
-  v8 = [(NSDictionary *)v5 objectForKeyedSubscript:location[0]];
-  MEMORY[0x1E69E5920](v5);
+  objc_storeStrong(location, key);
+  values = [(AKDictionaryBackedModel *)selfCopy values];
+  v8 = [(NSDictionary *)values objectForKeyedSubscript:location[0]];
+  MEMORY[0x1E69E5920](values);
   if (v8)
   {
     v11 = MEMORY[0x1E69E5928](v8);
@@ -264,21 +264,21 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = MEMORY[0x1E69E5928](location[0]);
-    v5 = [(AKDictionaryBackedModel *)v9 values];
-    v4 = [v6 values];
-    v10 = [(NSDictionary *)v5 isEqualToDictionary:?];
-    MEMORY[0x1E69E5920](v4);
-    MEMORY[0x1E69E5920](v5);
+    values = [(AKDictionaryBackedModel *)selfCopy values];
+    values2 = [v6 values];
+    v10 = [(NSDictionary *)values isEqualToDictionary:?];
+    MEMORY[0x1E69E5920](values2);
+    MEMORY[0x1E69E5920](values);
     v7 = 1;
     objc_storeStrong(&v6, 0);
   }
@@ -293,31 +293,31 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
   return v10 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = location[0];
-  v4 = [(AKDictionaryBackedModel *)v6 values];
+  values = [(AKDictionaryBackedModel *)selfCopy values];
   [v3 encodeObject:? forKey:?];
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](values);
   objc_storeStrong(location, 0);
 }
 
-- (AKDictionaryBackedModel)initWithCoder:(id)a3
+- (AKDictionaryBackedModel)initWithCoder:(id)coder
 {
-  v13 = &v19;
-  v19 = self;
+  v13 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v19;
-  v19 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v14 = [v3 init];
-  v19 = v14;
-  objc_storeStrong(&v19, v14);
+  selfCopy = v14;
+  objc_storeStrong(&selfCopy, v14);
   if (!v14)
   {
     goto LABEL_6;
@@ -333,7 +333,7 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
   v16 = [location[0] decodeObjectOfClasses:v17 forKey:@"_AKDictionaryBackedModelValues"];
   if (v16)
   {
-    objc_storeStrong(v19 + 1, v16);
+    objc_storeStrong(selfCopy + 1, v16);
     v15 = 0;
   }
 
@@ -349,13 +349,13 @@ id __42__AKDictionaryBackedModel_initWithValues___block_invoke(id *a1, void *a2,
   if (!v15)
   {
 LABEL_6:
-    v20 = MEMORY[0x1E69E5928](v19);
+    v20 = MEMORY[0x1E69E5928](selfCopy);
     v15 = 1;
   }
 
   v5 = 0;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, v5);
+  objc_storeStrong(&selfCopy, v5);
   return v20;
 }
 

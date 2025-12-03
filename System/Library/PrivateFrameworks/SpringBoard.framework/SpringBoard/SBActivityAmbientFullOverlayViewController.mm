@@ -1,11 +1,11 @@
 @interface SBActivityAmbientFullOverlayViewController
 - (BOOL)_hasBackgroundTintColor;
 - (BOOL)_isWidgetBasedActivity;
-- (BOOL)_itemIsFirstPartyActivity:(id)a3;
+- (BOOL)_itemIsFirstPartyActivity:(id)activity;
 - (CGRect)_grabberViewFrame;
 - (void)_layoutSubviews;
-- (void)_updateBackgroundTintViewWithBounds:(CGRect)a3 color:(id)a4;
-- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)a3;
+- (void)_updateBackgroundTintViewWithBounds:(CGRect)bounds color:(id)color;
+- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -17,25 +17,25 @@
   v22.receiver = self;
   v22.super_class = SBActivityAmbientFullOverlayViewController;
   [(SBActivityViewController *)&v22 viewDidLoad];
-  v3 = [(SBActivityViewController *)self activityItem];
-  v4 = [(SBActivityAmbientFullOverlayViewController *)self _itemIsFirstPartyActivity:v3];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  v4 = [(SBActivityAmbientFullOverlayViewController *)self _itemIsFirstPartyActivity:activityItem];
 
   if (!v4)
   {
-    v5 = [(SBActivityViewController *)self activityHostViewController];
-    v6 = [v5 backgroundTintColor];
-    v7 = v6;
-    if (v6)
+    activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
+    backgroundTintColor = [activityHostViewController backgroundTintColor];
+    v7 = backgroundTintColor;
+    if (backgroundTintColor)
     {
-      v8 = v6;
+      blackColor = backgroundTintColor;
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
     }
 
-    v9 = v8;
+    v9 = blackColor;
 
     if (v9)
     {
@@ -52,11 +52,11 @@
     self->_backgroundTintView = v11;
 
     [(UIView *)self->_backgroundTintView setBackgroundColor:v9];
-    v13 = [(SBActivityAmbientFullOverlayViewController *)self view];
-    [v13 addSubview:self->_backgroundTintView];
+    view = [(SBActivityAmbientFullOverlayViewController *)self view];
+    [view addSubview:self->_backgroundTintView];
 
-    v14 = [(SBActivityAmbientFullOverlayViewController *)self view];
-    [v14 sendSubviewToBack:self->_backgroundTintView];
+    view2 = [(SBActivityAmbientFullOverlayViewController *)self view];
+    [view2 sendSubviewToBack:self->_backgroundTintView];
 
     v15 = [objc_alloc(MEMORY[0x277D3D328]) initWithRecipe:v10];
     platterView = self->_platterView;
@@ -65,19 +65,19 @@
     [(PLPlatterView *)self->_platterView setUsesBackgroundView:1];
     [(PLPlatterView *)self->_platterView setOverrideUserInterfaceStyle:2];
     [(PLPlatterView *)self->_platterView setMaterialGroupNameBase:@"Activities"];
-    v17 = [(SBActivityAmbientFullOverlayViewController *)self view];
-    [v17 addSubview:self->_platterView];
+    view3 = [(SBActivityAmbientFullOverlayViewController *)self view];
+    [view3 addSubview:self->_platterView];
 
-    v18 = [(SBActivityAmbientFullOverlayViewController *)self view];
-    [v18 sendSubviewToBack:self->_platterView];
+    view4 = [(SBActivityAmbientFullOverlayViewController *)self view];
+    [view4 sendSubviewToBack:self->_platterView];
   }
 
   v19 = objc_alloc_init(MEMORY[0x277D3D300]);
   grabberView = self->_grabberView;
   self->_grabberView = v19;
 
-  v21 = [(SBActivityAmbientFullOverlayViewController *)self view];
-  [v21 addSubview:self->_grabberView];
+  view5 = [(SBActivityAmbientFullOverlayViewController *)self view];
+  [view5 addSubview:self->_grabberView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -90,8 +90,8 @@
 
 - (void)_layoutSubviews
 {
-  v3 = [(SBActivityAmbientFullOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBActivityAmbientFullOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -105,8 +105,8 @@
 
   if ([(SBActivityAmbientFullOverlayViewController *)self _hasBackgroundTintColor])
   {
-    v13 = [(SBActivityViewController *)self activityHostViewController];
-    v14 = [v13 backgroundTintColor];
+    activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
+    backgroundTintColor = [activityHostViewController backgroundTintColor];
   }
 
   else
@@ -116,39 +116,39 @@
       goto LABEL_8;
     }
 
-    v14 = [MEMORY[0x277D75348] blackColor];
+    backgroundTintColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  [(SBActivityAmbientFullOverlayViewController *)self _updateBackgroundTintViewWithBounds:v14 color:v5, v7, v9, v11];
+  [(SBActivityAmbientFullOverlayViewController *)self _updateBackgroundTintViewWithBounds:backgroundTintColor color:v5, v7, v9, v11];
 
 LABEL_8:
   grabberView = self->_grabberView;
   [(SBActivityAmbientFullOverlayViewController *)self _grabberViewFrame];
   [(PLGrabberView *)grabberView setFrame:?];
-  v16 = [(SBActivityAmbientFullOverlayViewController *)self view];
-  [v16 bringSubviewToFront:self->_grabberView];
+  view2 = [(SBActivityAmbientFullOverlayViewController *)self view];
+  [view2 bringSubviewToFront:self->_grabberView];
 }
 
-- (void)_updateBackgroundTintViewWithBounds:(CGRect)a3 color:(id)a4
+- (void)_updateBackgroundTintViewWithBounds:(CGRect)bounds color:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  colorCopy = color;
   backgroundTintView = self->_backgroundTintView;
-  v15 = v9;
+  v15 = colorCopy;
   if (!backgroundTintView)
   {
     v11 = objc_alloc_init(MEMORY[0x277D75D18]);
     v12 = self->_backgroundTintView;
     self->_backgroundTintView = v11;
 
-    v13 = [(SBActivityAmbientFullOverlayViewController *)self view];
-    [v13 addSubview:self->_backgroundTintView];
+    view = [(SBActivityAmbientFullOverlayViewController *)self view];
+    [view addSubview:self->_backgroundTintView];
 
-    v14 = [(SBActivityAmbientFullOverlayViewController *)self view];
-    [v14 sendSubviewToBack:self->_backgroundTintView];
+    view2 = [(SBActivityAmbientFullOverlayViewController *)self view];
+    [view2 sendSubviewToBack:self->_backgroundTintView];
 
     backgroundTintView = self->_backgroundTintView;
     if (self->_platterView)
@@ -157,48 +157,48 @@ LABEL_8:
       backgroundTintView = self->_backgroundTintView;
     }
 
-    v9 = v15;
+    colorCopy = v15;
   }
 
-  [(UIView *)backgroundTintView setBackgroundColor:v9];
+  [(UIView *)backgroundTintView setBackgroundColor:colorCopy];
   [(UIView *)self->_backgroundTintView setBounds:x, y, width, height];
   [(UIView *)self->_backgroundTintView setFrame:x, y, width, height];
 }
 
 - (BOOL)_hasBackgroundTintColor
 {
-  v2 = [(SBActivityViewController *)self activityHostViewController];
-  v3 = [v2 backgroundTintColor];
-  v4 = v3 != 0;
+  activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
+  backgroundTintColor = [activityHostViewController backgroundTintColor];
+  v4 = backgroundTintColor != 0;
 
   return v4;
 }
 
 - (BOOL)_isWidgetBasedActivity
 {
-  v2 = [(SBActivityViewController *)self activityItem];
-  v3 = [v2 descriptor];
-  v4 = [v3 contentType] == 0;
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
+  v4 = [descriptor contentType] == 0;
 
   return v4;
 }
 
-- (BOOL)_itemIsFirstPartyActivity:(id)a3
+- (BOOL)_itemIsFirstPartyActivity:(id)activity
 {
-  v3 = [a3 descriptor];
-  v4 = [v3 platterTargetBundleIdentifier];
+  descriptor = [activity descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
   v5 = +[SBActivityManager sharedInstance];
-  v6 = [v5 firstPartyActivityGroupingIdentifiers];
-  v7 = [v6 containsObject:v4];
+  firstPartyActivityGroupingIdentifiers = [v5 firstPartyActivityGroupingIdentifiers];
+  v7 = [firstPartyActivityGroupingIdentifiers containsObject:platterTargetBundleIdentifier];
 
   return v7;
 }
 
 - (CGRect)_grabberViewFrame
 {
-  v3 = [(SBActivityAmbientFullOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBActivityAmbientFullOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -214,8 +214,8 @@ LABEL_8:
   v26.size.width = v9;
   v26.size.height = v11;
   CGRectGetMaxY(v26);
-  v12 = [(SBActivityAmbientFullOverlayViewController *)self traitCollection];
-  [v12 displayScale];
+  traitCollection = [(SBActivityAmbientFullOverlayViewController *)self traitCollection];
+  [traitCollection displayScale];
   BSRectRoundForScale();
   v14 = v13;
   v16 = v15;
@@ -233,16 +233,16 @@ LABEL_8:
   return result;
 }
 
-- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)a3
+- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = SBActivityAmbientFullOverlayViewController;
-  [(SBActivityViewController *)&v6 activityHostViewControllerBackgroundTintColorDidChange:a3];
-  v4 = [(SBActivityAmbientFullOverlayViewController *)self view];
-  [v4 setNeedsLayout];
+  [(SBActivityViewController *)&v6 activityHostViewControllerBackgroundTintColorDidChange:change];
+  view = [(SBActivityAmbientFullOverlayViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [(SBActivityAmbientFullOverlayViewController *)self view];
-  [v5 layoutIfNeeded];
+  view2 = [(SBActivityAmbientFullOverlayViewController *)self view];
+  [view2 layoutIfNeeded];
 }
 
 @end

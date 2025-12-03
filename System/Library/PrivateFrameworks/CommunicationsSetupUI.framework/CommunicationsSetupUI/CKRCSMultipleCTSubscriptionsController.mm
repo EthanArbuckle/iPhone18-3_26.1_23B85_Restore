@@ -1,7 +1,7 @@
 @interface CKRCSMultipleCTSubscriptionsController
 - (CKRCSMultipleCTSubscriptionsController)init;
-- (id)isEnabledForSubscription:(id)a3;
-- (void)setEnabledForSubscription:(id)a3 specifier:(id)a4;
+- (id)isEnabledForSubscription:(id)subscription;
+- (void)setEnabledForSubscription:(id)subscription specifier:(id)specifier;
 @end
 
 @implementation CKRCSMultipleCTSubscriptionsController
@@ -21,23 +21,23 @@
   return v2;
 }
 
-- (id)isEnabledForSubscription:(id)a3
+- (id)isEnabledForSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(CKRCSMultipleCTSubscriptionsController *)self lazuliEnablementManager];
-  v6 = [v5 isRCSEnabled:v4];
+  subscriptionCopy = subscription;
+  lazuliEnablementManager = [(CKRCSMultipleCTSubscriptionsController *)self lazuliEnablementManager];
+  v6 = [lazuliEnablementManager isRCSEnabled:subscriptionCopy];
 
   return v6;
 }
 
-- (void)setEnabledForSubscription:(id)a3 specifier:(id)a4
+- (void)setEnabledForSubscription:(id)subscription specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  subscriptionCopy = subscription;
+  specifierCopy = specifier;
+  if (subscriptionCopy)
   {
-    v8 = [(CKRCSMultipleCTSubscriptionsController *)self lazuliEnablementManager];
-    [v8 setRCSEnabled:v6 specifier:v7];
+    lazuliEnablementManager = [(CKRCSMultipleCTSubscriptionsController *)self lazuliEnablementManager];
+    [lazuliEnablementManager setRCSEnabled:subscriptionCopy specifier:specifierCopy];
   }
 
   else
@@ -47,11 +47,11 @@
       goto LABEL_4;
     }
 
-    v8 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    lazuliEnablementManager = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(lazuliEnablementManager, OS_LOG_TYPE_INFO))
     {
       *v9 = 0;
-      _os_log_impl(&dword_243BE5000, v8, OS_LOG_TYPE_INFO, "Ignoring attempt to set RCS enablement to NULL", v9, 2u);
+      _os_log_impl(&dword_243BE5000, lazuliEnablementManager, OS_LOG_TYPE_INFO, "Ignoring attempt to set RCS enablement to NULL", v9, 2u);
     }
   }
 

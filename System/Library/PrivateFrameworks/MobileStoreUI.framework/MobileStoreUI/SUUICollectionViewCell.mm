@@ -3,31 +3,31 @@
 - (BOOL)_showsLeftBorder;
 - (BOOL)_showsRightBorder;
 - (BOOL)_showsTopBorder;
-- (SUUICollectionViewCell)initWithFrame:(CGRect)a3;
+- (SUUICollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)separatorInsets;
 - (UIEdgeInsets)separatorWidths;
-- (void)_setPosition:(int64_t)a3;
+- (void)_setPosition:(int64_t)position;
 - (void)_updateBorderVisibility;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSeparatorColor:(id)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
-- (void)setSeparatorWidths:(UIEdgeInsets)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setSeparatorColor:(id)color;
+- (void)setSeparatorStyle:(int64_t)style;
+- (void)setSeparatorWidths:(UIEdgeInsets)widths;
 @end
 
 @implementation SUUICollectionViewCell
 
-- (SUUICollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUICollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUUICollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v6 = 1.0 / v5;
 
     v3->_separatorWidths.top = v6;
@@ -41,18 +41,18 @@
   return v3;
 }
 
-- (void)setSeparatorColor:(id)a3
+- (void)setSeparatorColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   separatorColor = self->_separatorColor;
-  if (separatorColor != v5)
+  if (separatorColor != colorCopy)
   {
-    v15 = v5;
-    separatorColor = [separatorColor isEqual:v5];
-    v5 = v15;
+    v15 = colorCopy;
+    separatorColor = [separatorColor isEqual:colorCopy];
+    colorCopy = v15;
     if ((separatorColor & 1) == 0)
     {
-      objc_storeStrong(&self->_separatorColor, a3);
+      objc_storeStrong(&self->_separatorColor, color);
       bottomBorderView = self->_bottomBorderView;
       if (self->_separatorColor)
       {
@@ -61,8 +61,8 @@
 
       else
       {
-        v8 = [MEMORY[0x277D75348] clearColor];
-        [(UIView *)bottomBorderView setBackgroundColor:v8];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UIView *)bottomBorderView setBackgroundColor:clearColor];
       }
 
       leftBorderView = self->_leftBorderView;
@@ -73,8 +73,8 @@
 
       else
       {
-        v10 = [MEMORY[0x277D75348] clearColor];
-        [(UIView *)leftBorderView setBackgroundColor:v10];
+        clearColor2 = [MEMORY[0x277D75348] clearColor];
+        [(UIView *)leftBorderView setBackgroundColor:clearColor2];
       }
 
       rightBorderView = self->_rightBorderView;
@@ -85,8 +85,8 @@
 
       else
       {
-        v12 = [MEMORY[0x277D75348] clearColor];
-        [(UIView *)rightBorderView setBackgroundColor:v12];
+        clearColor3 = [MEMORY[0x277D75348] clearColor];
+        [(UIView *)rightBorderView setBackgroundColor:clearColor3];
       }
 
       topBorderView = self->_topBorderView;
@@ -97,24 +97,24 @@
 
       else
       {
-        v14 = [MEMORY[0x277D75348] clearColor];
-        [(UIView *)topBorderView setBackgroundColor:v14];
+        clearColor4 = [MEMORY[0x277D75348] clearColor];
+        [(UIView *)topBorderView setBackgroundColor:clearColor4];
       }
 
-      v5 = v15;
+      colorCopy = v15;
     }
   }
 
-  MEMORY[0x2821F96F8](separatorColor, v5);
+  MEMORY[0x2821F96F8](separatorColor, colorCopy);
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
-  if (self->_separatorStyle != a3)
+  if (self->_separatorStyle != style)
   {
-    self->_separatorStyle = a3;
+    self->_separatorStyle = style;
     bottomBorderView = self->_bottomBorderView;
-    if (a3)
+    if (style)
     {
       if (!bottomBorderView)
       {
@@ -130,8 +130,8 @@
 
         else
         {
-          v10 = [MEMORY[0x277D75348] clearColor];
-          [(UIView *)v7 setBackgroundColor:v10];
+          clearColor = [MEMORY[0x277D75348] clearColor];
+          [(UIView *)v7 setBackgroundColor:clearColor];
         }
 
         [(SUUICollectionViewCell *)self addSubview:self->_bottomBorderView];
@@ -154,8 +154,8 @@
 
         else
         {
-          v15 = [MEMORY[0x277D75348] clearColor];
-          [(UIView *)v14 setBackgroundColor:v15];
+          clearColor2 = [MEMORY[0x277D75348] clearColor];
+          [(UIView *)v14 setBackgroundColor:clearColor2];
         }
 
         [(SUUICollectionViewCell *)self addSubview:self->_leftBorderView];
@@ -178,8 +178,8 @@
 
         else
         {
-          v20 = [MEMORY[0x277D75348] clearColor];
-          [(UIView *)v19 setBackgroundColor:v20];
+          clearColor3 = [MEMORY[0x277D75348] clearColor];
+          [(UIView *)v19 setBackgroundColor:clearColor3];
         }
 
         [(SUUICollectionViewCell *)self addSubview:self->_rightBorderView];
@@ -202,8 +202,8 @@
 
         else
         {
-          v25 = [MEMORY[0x277D75348] clearColor];
-          [(UIView *)v24 setBackgroundColor:v25];
+          clearColor4 = [MEMORY[0x277D75348] clearColor];
+          [(UIView *)v24 setBackgroundColor:clearColor4];
         }
 
         [(SUUICollectionViewCell *)self addSubview:self->_topBorderView];
@@ -227,47 +227,47 @@
   }
 }
 
-- (void)setSeparatorWidths:(UIEdgeInsets)a3
+- (void)setSeparatorWidths:(UIEdgeInsets)widths
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = widths.top;
+  v3.f64[1] = widths.left;
+  v4.f64[0] = widths.bottom;
+  v4.f64[1] = widths.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_separatorWidths.top, v3), vceqq_f64(*&self->_separatorWidths.bottom, v4)))) & 1) == 0)
   {
-    self->_separatorWidths = a3;
+    self->_separatorWidths = widths;
     [(SUUICollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = SUUICollectionViewCell;
-  v4 = a3;
-  [(SUUICollectionViewCell *)&v8 applyLayoutAttributes:v4];
-  v5 = [v4 backgroundColor];
+  attributesCopy = attributes;
+  [(SUUICollectionViewCell *)&v8 applyLayoutAttributes:attributesCopy];
+  backgroundColor = [attributesCopy backgroundColor];
   v7.receiver = self;
   v7.super_class = SUUICollectionViewCell;
-  [(SUUICollectionViewCell *)&v7 setBackgroundColor:v5];
+  [(SUUICollectionViewCell *)&v7 setBackgroundColor:backgroundColor];
 
-  v6 = [v4 position];
-  [(SUUICollectionViewCell *)self _setPosition:v6];
+  position = [attributesCopy position];
+  [(SUUICollectionViewCell *)self _setPosition:position];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SUUICollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setHighlighted:a3];
+  [(SUUICollectionViewCell *)&v4 setHighlighted:highlighted];
   [(SUUICollectionViewCell *)self _updateBorderVisibility];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SUUICollectionViewCell;
-  [(SUUICollectionViewCell *)&v4 setSelected:a3];
+  [(SUUICollectionViewCell *)&v4 setSelected:selected];
   [(SUUICollectionViewCell *)self _updateBorderVisibility];
 }
 
@@ -298,7 +298,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SUUICollectionViewCell *)self contentView];
+  contentView = [(SUUICollectionViewCell *)self contentView];
   bottomBorderView = self->_bottomBorderView;
   v13 = v10;
   if (bottomBorderView)
@@ -341,8 +341,8 @@
       if (v20 > 0.00000011920929)
       {
         v22 = v20 * 0.5;
-        v23 = [MEMORY[0x277D759A0] mainScreen];
-        [v23 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v25 = 1.0 / v24;
 
         if (v22 >= v25)
@@ -390,8 +390,8 @@
     if (v31 > 0.00000011920929)
     {
       v33 = v31 * 0.5;
-      v34 = [MEMORY[0x277D759A0] mainScreen];
-      [v34 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       v36 = 1.0 / v35;
 
       if (v33 >= v36)
@@ -456,14 +456,14 @@
     v6 = v50;
   }
 
-  [v11 setFrame:{v19, v6, v18, v13, *&v47}];
+  [contentView setFrame:{v19, v6, v18, v13, *&v47}];
 }
 
-- (void)_setPosition:(int64_t)a3
+- (void)_setPosition:(int64_t)position
 {
-  if (self->_position != a3)
+  if (self->_position != position)
   {
-    self->_position = a3;
+    self->_position = position;
     [(SUUICollectionViewCell *)self _updateBorderVisibility];
   }
 }
@@ -571,19 +571,19 @@
 
 - (BOOL)_showsTopBorder
 {
-  v2 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  separatorStyle = v2->_separatorStyle;
+  separatorStyle = selfCopy->_separatorStyle;
   if (separatorStyle <= 7)
   {
     if (((1 << separatorStyle) & 0x9C) != 0)
     {
-      LODWORD(self) = (LOBYTE(v2->_position) >> 3) & 1;
+      LODWORD(self) = (LOBYTE(selfCopy->_position) >> 3) & 1;
     }
 
     else if (((1 << separatorStyle) & 0x22) != 0)
     {
-      LOBYTE(self) = (v2->_position & 8) == 0;
+      LOBYTE(self) = (selfCopy->_position & 8) == 0;
     }
   }
 
@@ -592,17 +592,17 @@
 
 - (void)_updateBorderVisibility
 {
-  v3 = [(SUUICollectionViewCell *)self _showsBottomBorder];
-  v4 = v3 ^ [(UIView *)self->_bottomBorderView isHidden];
+  _showsBottomBorder = [(SUUICollectionViewCell *)self _showsBottomBorder];
+  v4 = _showsBottomBorder ^ [(UIView *)self->_bottomBorderView isHidden];
   if ((v4 & 1) == 0)
   {
-    [(UIView *)self->_bottomBorderView setHidden:!v3];
+    [(UIView *)self->_bottomBorderView setHidden:!_showsBottomBorder];
   }
 
-  v5 = [(SUUICollectionViewCell *)self _showsLeftBorder];
-  if (v5 == [(UIView *)self->_leftBorderView isHidden])
+  _showsLeftBorder = [(SUUICollectionViewCell *)self _showsLeftBorder];
+  if (_showsLeftBorder == [(UIView *)self->_leftBorderView isHidden])
   {
-    [(UIView *)self->_leftBorderView setHidden:!v5];
+    [(UIView *)self->_leftBorderView setHidden:!_showsLeftBorder];
     v6 = 1;
   }
 
@@ -611,17 +611,17 @@
     v6 = v4 ^ 1;
   }
 
-  v7 = [(SUUICollectionViewCell *)self _showsRightBorder];
-  if (v7 == [(UIView *)self->_rightBorderView isHidden])
+  _showsRightBorder = [(SUUICollectionViewCell *)self _showsRightBorder];
+  if (_showsRightBorder == [(UIView *)self->_rightBorderView isHidden])
   {
-    [(UIView *)self->_rightBorderView setHidden:!v7];
+    [(UIView *)self->_rightBorderView setHidden:!_showsRightBorder];
     v6 = 1;
   }
 
-  v8 = [(SUUICollectionViewCell *)self _showsTopBorder];
-  if (v8 == [(UIView *)self->_topBorderView isHidden])
+  _showsTopBorder = [(SUUICollectionViewCell *)self _showsTopBorder];
+  if (_showsTopBorder == [(UIView *)self->_topBorderView isHidden])
   {
-    [(UIView *)self->_topBorderView setHidden:!v8];
+    [(UIView *)self->_topBorderView setHidden:!_showsTopBorder];
   }
 
   else if (!v6)

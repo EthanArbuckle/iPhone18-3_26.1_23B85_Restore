@@ -1,14 +1,14 @@
 @interface SettingsOnboardingOverlay
-- (void)didFinishOnboardingWithError:(id)a3;
+- (void)didFinishOnboardingWithError:(id)error;
 @end
 
 @implementation SettingsOnboardingOverlay
 
-- (void)didFinishOnboardingWithError:(id)a3
+- (void)didFinishOnboardingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
 
-  sub_24E214834(a3);
+  sub_24E214834(error);
 }
 
 @end

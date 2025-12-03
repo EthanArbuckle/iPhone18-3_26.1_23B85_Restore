@@ -1,14 +1,14 @@
 @interface DTOPolicyEvaluationIdentifierFactory
-- (id)_callerIDForClient:(id)a3;
-- (id)evaluationIdentifierForClient:(id)a3 ratchetIdentifier:(id)a4;
+- (id)_callerIDForClient:(id)client;
+- (id)evaluationIdentifierForClient:(id)client ratchetIdentifier:(id)identifier;
 @end
 
 @implementation DTOPolicyEvaluationIdentifierFactory
 
-- (id)evaluationIdentifierForClient:(id)a3 ratchetIdentifier:(id)a4
+- (id)evaluationIdentifierForClient:(id)client ratchetIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(DTOPolicyEvaluationIdentifierFactory *)self _callerIDForClient:a3];
+  identifierCopy = identifier;
+  v7 = [(DTOPolicyEvaluationIdentifierFactory *)self _callerIDForClient:client];
   v8 = v7;
   v9 = @"<UNKNOWN>";
   if (v7)
@@ -18,29 +18,29 @@
 
   v10 = v9;
 
-  if (v6)
+  if (identifierCopy)
   {
-    v11 = v6;
+    uUIDString = identifierCopy;
   }
 
   else
   {
     v12 = +[NSUUID UUID];
-    v11 = [v12 UUIDString];
+    uUIDString = [v12 UUIDString];
   }
 
-  v13 = [NSString stringWithFormat:@"%@:%@", v10, v11];
+  v13 = [NSString stringWithFormat:@"%@:%@", v10, uUIDString];
 
   return v13;
 }
 
-- (id)_callerIDForClient:(id)a3
+- (id)_callerIDForClient:(id)client
 {
-  v3 = a3;
-  v4 = [v3 processId];
-  if (v3)
+  clientCopy = client;
+  processId = [clientCopy processId];
+  if (clientCopy)
   {
-    [v3 auditToken];
+    [clientCopy auditToken];
   }
 
   else
@@ -48,7 +48,7 @@
     memset(v7, 0, sizeof(v7));
   }
 
-  v5 = [DaemonUtils callerIdWithPid:v4 auditToken:v7];
+  v5 = [DaemonUtils callerIdWithPid:processId auditToken:v7];
 
   return v5;
 }

@@ -1,22 +1,22 @@
 @interface SUMarkupCellConfiguration
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4;
++ (double)rowHeightForContext:(id)context representedObject:(id)object;
 @end
 
 @implementation SUMarkupCellConfiguration
 
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4
++ (double)rowHeightForContext:(id)context representedObject:(id)object
 {
-  if (a3 && a4)
+  if (context && object)
   {
-    [objc_msgSend(a3 webViewForMarkup:{objc_msgSend(a4, "humanReadableDescription")), "frame"}];
+    [objc_msgSend(context webViewForMarkup:{objc_msgSend(object, "humanReadableDescription")), "frame"}];
     return v4;
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUMarkupCellConfiguration;
-    objc_msgSendSuper2(&v6, sel_rowHeightForContext_representedObject_, a3, a4);
+    objc_msgSendSuper2(&v6, sel_rowHeightForContext_representedObject_, context, object);
   }
 
   return result;

@@ -1,28 +1,28 @@
 @interface NTKKaleidoscopePathfinder
-+ (NTKKaleidoscopePathfinder)pathfinderWithImage:(id)a3;
-+ (id)pathfinderFromDirectory:(id)a3;
-+ (id)pathfinderFromFile:(id)a3;
-- (BOOL)writeToDirectory:(id)a3;
-- (BOOL)writeToFile:(id)a3;
-- (NTKKaleidoscopePathfinder)initWithCoder:(id)a3;
-- (NTKKaleidoscopePathfinder)initWithImage:(id)a3;
-- (NTKKaleidoscopePathfinderPoint)pointForTime:(float)a3;
++ (NTKKaleidoscopePathfinder)pathfinderWithImage:(id)image;
++ (id)pathfinderFromDirectory:(id)directory;
++ (id)pathfinderFromFile:(id)file;
+- (BOOL)writeToDirectory:(id)directory;
+- (BOOL)writeToFile:(id)file;
+- (NTKKaleidoscopePathfinder)initWithCoder:(id)coder;
+- (NTKKaleidoscopePathfinder)initWithImage:(id)image;
+- (NTKKaleidoscopePathfinderPoint)pointForTime:(float)time;
 - (void)adjustPathStart:(NTKKaleidoscopePathfinder *)self;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKKaleidoscopePathfinder
 
-- (NTKKaleidoscopePathfinder)initWithImage:(id)a3
+- (NTKKaleidoscopePathfinder)initWithImage:(id)image
 {
-  v4 = a3;
-  if (v4 && (v44.receiver = self, v44.super_class = NTKKaleidoscopePathfinder, (self = [(NTKKaleidoscopePathfinder *)&v44 init]) != 0))
+  imageCopy = image;
+  if (imageCopy && (v44.receiver = self, v44.super_class = NTKKaleidoscopePathfinder, (self = [(NTKKaleidoscopePathfinder *)&v44 init]) != 0))
   {
-    [v4 size];
+    [imageCopy size];
     v39 = v6;
     v40 = v5;
-    [v4 scale];
+    [imageCopy scale];
     v7.f64[0] = v40;
     v7.f64[1] = v39;
     v9 = vmulq_n_f64(v7, v8);
@@ -34,7 +34,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v46 = v4;
+        v46 = imageCopy;
         v47 = 1024;
         v48 = v41;
         v49 = 1024;
@@ -42,7 +42,7 @@
         _os_log_error_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "[kaleidoscope pathfinder cache] nil pathfinder for image %@ (%d x %d), returning early", buf, 0x18u);
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -56,7 +56,7 @@
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v46 = v4;
+          v46 = imageCopy;
           v47 = 1024;
           v48 = v14;
           v49 = 1024;
@@ -96,7 +96,7 @@
 
       *&self->_sampleRadiusX = vcvt_f32_f64(vdivq_f64(vdupq_n_s64(0x4063800000000000uLL), v9));
       v26 = malloc_type_malloc(4 * v23 * v24, 0x100004052888210uLL);
-      v12 = [NTKKaleidoscopeRawImage rawImageWithImage:v4 width:(16 * v23) height:(16 * v24)];
+      v12 = [NTKKaleidoscopeRawImage rawImageWithImage:imageCopy width:(16 * v23) height:(16 * v24)];
       NTKKaleidoscopeAnalyzeInterestingness(v12, v26, v23, v24, v22);
       self->_cellGridWidth = v23;
       self->_cellGridHeight = v24;
@@ -131,7 +131,7 @@
         free(v38);
         *&self->_dominanceGrid[4] = malloc_type_malloc(16 * v23 * v24, 0x1000040451B5BE8uLL);
         NTKKaleidoscopeAnalyzeDominance();
-        v13 = self;
+        selfCopy = self;
       }
 
       else
@@ -142,37 +142,37 @@
           sub_1524C();
         }
 
-        v13 = 0;
+        selfCopy = 0;
       }
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (NTKKaleidoscopePathfinder)initWithCoder:(id)a3
+- (NTKKaleidoscopePathfinder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = NTKKaleidoscopePathfinder;
   v5 = [(NTKKaleidoscopePathfinder *)&v21 init];
-  if (v5 && [v4 decodeInt32ForKey:@"version"] == 4098)
+  if (v5 && [coderCopy decodeInt32ForKey:@"version"] == 4098)
   {
-    [v4 decodeFloatForKey:@"sampleRadiusX"];
+    [coderCopy decodeFloatForKey:@"sampleRadiusX"];
     v5->_sampleRadiusX = v6;
-    [v4 decodeFloatForKey:@"sampleRadiusY"];
+    [coderCopy decodeFloatForKey:@"sampleRadiusY"];
     v5->_sampleRadiusY = v7;
-    v5->_cellGridWidth = [v4 decodeIntForKey:@"cellGridWidth"];
-    v8 = [v4 decodeIntForKey:@"cellGridHeight"];
+    v5->_cellGridWidth = [coderCopy decodeIntForKey:@"cellGridWidth"];
+    v8 = [coderCopy decodeIntForKey:@"cellGridHeight"];
     v5->_cellGridHeight = v8;
     v9 = v5->_cellGridWidth * v8;
     v20 = 0;
-    v10 = [v4 decodeBytesForKey:@"dominanceGrid" returnedLength:&v20];
+    v10 = [coderCopy decodeBytesForKey:@"dominanceGrid" returnedLength:&v20];
     v11 = 0;
     if (v20 == 16 * v9)
     {
@@ -180,10 +180,10 @@
       v13 = malloc_type_malloc(16 * v9, 0x9726DC52uLL);
       *&v5->_dominanceGrid[4] = v13;
       memcpy(v13, v12, 16 * v9);
-      v14 = [v4 decodeIntForKey:@"pathLength"];
+      v14 = [coderCopy decodeIntForKey:@"pathLength"];
       v5->_pathLength = v14;
       v19 = 0;
-      v15 = [v4 decodeBytesForKey:@"path" returnedLength:&v19];
+      v15 = [coderCopy decodeBytesForKey:@"path" returnedLength:&v19];
       v11 = 0;
       if (v19 == 8 * v14)
       {
@@ -213,19 +213,19 @@
   [(NTKKaleidoscopePathfinder *)&v3 dealloc];
 }
 
-+ (NTKKaleidoscopePathfinder)pathfinderWithImage:(id)a3
++ (NTKKaleidoscopePathfinder)pathfinderWithImage:(id)image
 {
-  v3 = a3;
-  v4 = [[NTKKaleidoscopePathfinder alloc] initWithImage:v3];
+  imageCopy = image;
+  v4 = [[NTKKaleidoscopePathfinder alloc] initWithImage:imageCopy];
 
   return v4;
 }
 
-+ (id)pathfinderFromDirectory:(id)a3
++ (id)pathfinderFromDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"image-%X.pathfinder", 4098];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  directoryCopy = directory;
+  4098 = [NSString stringWithFormat:@"image-%X.pathfinder", 4098];
+  v6 = [directoryCopy stringByAppendingPathComponent:4098];
 
   v7 = +[NSFileManager defaultManager];
   v8 = [v7 attributesOfItemAtPath:v6 error:0];
@@ -234,7 +234,7 @@
 
   if (v10)
   {
-    v11 = [a1 pathfinderFromFile:v6];
+    v11 = [self pathfinderFromFile:v6];
   }
 
   else
@@ -256,11 +256,11 @@
   return v11;
 }
 
-+ (id)pathfinderFromFile:(id)a3
++ (id)pathfinderFromFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v11 = 0;
-  v4 = [[NSData alloc] initWithContentsOfFile:v3 options:1 error:&v11];
+  v4 = [[NSData alloc] initWithContentsOfFile:fileCopy options:1 error:&v11];
   v5 = v11;
   if (v4)
   {
@@ -273,7 +273,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v13 = v3;
+        v13 = fileCopy;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[kaleidoscope pathfinder cache] using %@", buf, 0xCu);
       }
     }
@@ -302,11 +302,11 @@
   return v7;
 }
 
-- (NTKKaleidoscopePathfinderPoint)pointForTime:(float)a3
+- (NTKKaleidoscopePathfinderPoint)pointForTime:(float)time
 {
   v4 = v3;
   pathLength = self->_pathLength;
-  v6 = pathLength * a3;
+  v6 = pathLength * time;
   v7 = vcvtms_s32_f32(v6);
   v8 = *&self->_dominanceGrid[4];
   v9 = *&self->_path[4];
@@ -354,44 +354,44 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = 16 * self->_cellGridHeight * self->_cellGridWidth;
   v5 = 8 * self->_pathLength;
-  v8 = a3;
-  [v8 encodeInt32:4098 forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:4098 forKey:@"version"];
   *&v6 = self->_sampleRadiusX;
-  [v8 encodeFloat:@"sampleRadiusX" forKey:v6];
+  [coderCopy encodeFloat:@"sampleRadiusX" forKey:v6];
   *&v7 = self->_sampleRadiusY;
-  [v8 encodeFloat:@"sampleRadiusY" forKey:v7];
-  [v8 encodeInt32:self->_cellGridWidth forKey:@"cellGridWidth"];
-  [v8 encodeInt32:self->_cellGridHeight forKey:@"cellGridHeight"];
-  [v8 encodeBytes:*&self->_dominanceGrid[4] length:v4 forKey:@"dominanceGrid"];
-  [v8 encodeInt32:self->_pathLength forKey:@"pathLength"];
-  [v8 encodeBytes:*&self->_path[4] length:v5 forKey:@"path"];
+  [coderCopy encodeFloat:@"sampleRadiusY" forKey:v7];
+  [coderCopy encodeInt32:self->_cellGridWidth forKey:@"cellGridWidth"];
+  [coderCopy encodeInt32:self->_cellGridHeight forKey:@"cellGridHeight"];
+  [coderCopy encodeBytes:*&self->_dominanceGrid[4] length:v4 forKey:@"dominanceGrid"];
+  [coderCopy encodeInt32:self->_pathLength forKey:@"pathLength"];
+  [coderCopy encodeBytes:*&self->_path[4] length:v5 forKey:@"path"];
 }
 
-- (BOOL)writeToDirectory:(id)a3
+- (BOOL)writeToDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"image-%X.pathfinder", 4098];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  directoryCopy = directory;
+  4098 = [NSString stringWithFormat:@"image-%X.pathfinder", 4098];
+  v6 = [directoryCopy stringByAppendingPathComponent:4098];
 
   LOBYTE(self) = [(NTKKaleidoscopePathfinder *)self writeToFile:v6];
   return self;
 }
 
-- (BOOL)writeToFile:(id)a3
+- (BOOL)writeToFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = +[CLKDevice currentDevice];
-  v6 = [v5 unlockedSinceBoot];
+  unlockedSinceBoot = [v5 unlockedSinceBoot];
 
-  if (v6)
+  if (unlockedSinceBoot)
   {
     v7 = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
     v17 = 0;
-    [v7 writeToFile:v4 options:1 error:&v17];
+    [v7 writeToFile:fileCopy options:1 error:&v17];
     v8 = v17;
     if (v8)
     {
@@ -410,7 +410,7 @@
       v19 = NSFileProtectionNone;
       v12 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       v16 = 0;
-      v13 = [v10 setAttributes:v12 ofItemAtPath:v4 error:&v16];
+      v13 = [v10 setAttributes:v12 ofItemAtPath:fileCopy error:&v16];
       v9 = v16;
 
       if ((v13 & 1) == 0)
@@ -421,7 +421,7 @@
           sub_154BC();
         }
 
-        [v10 removeItemAtPath:v4 error:0];
+        [v10 removeItemAtPath:fileCopy error:0];
       }
     }
 

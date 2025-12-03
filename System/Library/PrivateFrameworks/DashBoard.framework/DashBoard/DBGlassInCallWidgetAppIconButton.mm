@@ -1,7 +1,7 @@
 @interface DBGlassInCallWidgetAppIconButton
 - (NSString)applicationBundleIdentifier;
 - (void)layoutSubviews;
-- (void)setApplicationBundleIdentifier:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
 - (void)updateAppIcon;
 - (void)updateConfiguration;
 @end
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_248383960();
     v6 = v5;
@@ -40,27 +40,27 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   DBGlassInCallWidgetAppIconButton.applicationBundleIdentifier.setter(v4, v6);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DBGlassInCallWidgetAppIconButton.layoutSubviews()();
 }
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   DBGlassInCallWidgetAppIconButton.updateConfiguration()();
 }
 
 - (void)updateAppIcon
 {
-  v2 = self;
-  [(DBGlassInCallWidgetAppIconButton *)v2 setNeedsLayout];
-  [(DBGlassInCallWidgetAppIconButton *)v2 layoutIfNeeded];
+  selfCopy = self;
+  [(DBGlassInCallWidgetAppIconButton *)selfCopy setNeedsLayout];
+  [(DBGlassInCallWidgetAppIconButton *)selfCopy layoutIfNeeded];
 }
 
 @end

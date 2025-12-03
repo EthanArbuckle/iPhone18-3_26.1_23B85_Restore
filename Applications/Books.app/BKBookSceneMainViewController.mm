@@ -2,15 +2,15 @@
 - (BKAuxiliarySceneMainFlowController)mainFlowController;
 - (id)modalPresentingViewController;
 - (id)rootViewController;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKBookSceneMainViewController
 
 - (id)modalPresentingViewController
 {
-  v2 = [(BKBookSceneMainViewController *)self rootViewController];
-  v3 = [v2 presentedViewController];
+  rootViewController = [(BKBookSceneMainViewController *)self rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
   objc_opt_class();
   v4 = BUClassAndProtocolCast();
 
@@ -18,10 +18,10 @@
   {
     v5 = v4;
 
-    v2 = v5;
+    rootViewController = v5;
   }
 
-  return v2;
+  return rootViewController;
 }
 
 - (BKAuxiliarySceneMainFlowController)mainFlowController
@@ -42,45 +42,45 @@
 
 - (id)rootViewController
 {
-  v2 = self;
-  v3 = [(BKBookSceneMainViewController *)v2 parentViewController];
-  if (v3)
+  selfCopy = self;
+  parentViewController = [(BKBookSceneMainViewController *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v4 = v3;
+    parentViewController2 = parentViewController;
     do
     {
-      v5 = v4;
+      v5 = parentViewController2;
 
-      v4 = [(BKBookSceneMainViewController *)v5 parentViewController];
+      parentViewController2 = [(BKBookSceneMainViewController *)v5 parentViewController];
 
-      v2 = v5;
+      selfCopy = v5;
     }
 
-    while (v4);
+    while (parentViewController2);
   }
 
   else
   {
-    v5 = v2;
+    v5 = selfCopy;
   }
 
   return v5;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10011FA68;
   v9[3] = &unk_100A04410;
   v9[4] = self;
-  v7 = a4;
-  [v7 animateAlongsideTransition:0 completion:v9];
+  coordinatorCopy = coordinator;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v9];
   v8.receiver = self;
   v8.super_class = BKBookSceneMainViewController;
-  [(BKBookSceneMainViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(BKBookSceneMainViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 @end

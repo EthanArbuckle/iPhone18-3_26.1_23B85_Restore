@@ -1,72 +1,72 @@
 @interface TSTCellUIDRegion
-+ (id)cellUIDRegionFromRegion:(id)a3 inTable:(id)a4;
-+ (id)cellUIDRegionFromRegion:(id)a3 inTableModel:(id)a4;
-- (TSTCellUIDRegion)initWithCellUIDRange:(void *)a3;
-- (TSTCellUIDRegion)initWithCellUIDRangeVector:(const void *)a3;
++ (id)cellUIDRegionFromRegion:(id)region inTable:(id)table;
++ (id)cellUIDRegionFromRegion:(id)region inTableModel:(id)model;
+- (TSTCellUIDRegion)initWithCellUIDRange:(void *)range;
+- (TSTCellUIDRegion)initWithCellUIDRangeVector:(const void *)vector;
 - (id).cxx_construct;
-- (id)cellRegionFromTable:(id)a3;
-- (id)initFromMessage:(const void *)a3;
-- (id)pruneAgainstTable:(id)a3;
+- (id)cellRegionFromTable:(id)table;
+- (id)initFromMessage:(const void *)message;
+- (id)pruneAgainstTable:(id)table;
 - (unint64_t)cellCount;
 - (vector<TSKUIDStructTract,)rowBasedSubRangesOfCellCount:(TSTCellUIDRegion *)self;
-- (void)enumerateCellUIDRangesUsingBlock:(id)a3;
-- (void)enumerateCellUIDUsingBlock:(id)a3;
-- (void)enumerateColumnUIDUsingBlock:(id)a3;
-- (void)enumerateRowUIDUsingBlock:(id)a3;
-- (void)saveToMessage:(void *)a3;
+- (void)enumerateCellUIDRangesUsingBlock:(id)block;
+- (void)enumerateCellUIDUsingBlock:(id)block;
+- (void)enumerateColumnUIDUsingBlock:(id)block;
+- (void)enumerateRowUIDUsingBlock:(id)block;
+- (void)saveToMessage:(void *)message;
 @end
 
 @implementation TSTCellUIDRegion
 
-+ (id)cellUIDRegionFromRegion:(id)a3 inTable:(id)a4
++ (id)cellUIDRegionFromRegion:(id)region inTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  regionCopy = region;
+  tableCopy = table;
+  v8 = objc_alloc_init(self);
   if (v8)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_2212D6AB8;
     v13[3] = &unk_278462B70;
-    v14 = v7;
+    v14 = tableCopy;
     v15 = v8;
-    objc_msgSend_enumerateCellRangesUsingBlock_(v6, v9, v13, v10, v11);
+    objc_msgSend_enumerateCellRangesUsingBlock_(regionCopy, v9, v13, v10, v11);
   }
 
   return v8;
 }
 
-+ (id)cellUIDRegionFromRegion:(id)a3 inTableModel:(id)a4
++ (id)cellUIDRegionFromRegion:(id)region inTableModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  regionCopy = region;
+  modelCopy = model;
+  v8 = objc_alloc_init(self);
   if (v8)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_2212D6CA8;
     v13[3] = &unk_278462B70;
-    v14 = v7;
+    v14 = modelCopy;
     v15 = v8;
-    objc_msgSend_enumerateCellRangesUsingBlock_(v6, v9, v13, v10, v11);
+    objc_msgSend_enumerateCellRangesUsingBlock_(regionCopy, v9, v13, v10, v11);
   }
 
   return v8;
 }
 
-- (TSTCellUIDRegion)initWithCellUIDRange:(void *)a3
+- (TSTCellUIDRegion)initWithCellUIDRange:(void *)range
 {
   v17 = *MEMORY[0x277D85DE8];
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  sub_221086EBC(&v11, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+  sub_221086EBC(&v11, *range, *(range + 1), (*(range + 1) - *range) >> 4);
   __p = 0;
   v15 = 0;
   v16 = 0;
-  sub_221086EBC(&__p, *(a3 + 3), *(a3 + 4), (*(a3 + 4) - *(a3 + 3)) >> 4);
+  sub_221086EBC(&__p, *(range + 3), *(range + 4), (*(range + 4) - *(range + 3)) >> 4);
   memset(v10, 0, sizeof(v10));
   sub_2212D8368(v10, &v11, &v17, 1uLL);
   if (__p)
@@ -87,15 +87,15 @@
   return v8;
 }
 
-- (TSTCellUIDRegion)initWithCellUIDRangeVector:(const void *)a3
+- (TSTCellUIDRegion)initWithCellUIDRangeVector:(const void *)vector
 {
   v15.receiver = self;
   v15.super_class = TSTCellUIDRegion;
   v4 = [(TSTCellUIDRegion *)&v15 init];
   if (v4)
   {
-    v6 = *a3;
-    for (i = *(a3 + 1); v6 != i; v6 += 6)
+    v6 = *vector;
+    for (i = *(vector + 1); v6 != i; v6 += 6)
     {
       v9 = 0;
       v10 = 0;
@@ -129,9 +129,9 @@
   return v4;
 }
 
-- (id)cellRegionFromTable:(id)a3
+- (id)cellRegionFromTable:(id)table
 {
-  v7 = a3;
+  tableCopy = table;
   v8 = &v27;
   v27 = 0;
   v28 = &v27;
@@ -156,7 +156,7 @@
       v25 = 0;
       v26 = 0;
       sub_221086EBC(&__p, begin[3], begin[4], (begin[4] - begin[3]) >> 4);
-      v14 = objc_msgSend_cellRegionForUIDRange_(v7, v11, &v21, v12, v13);
+      v14 = objc_msgSend_cellRegionForUIDRange_(tableCopy, v11, &v21, v12, v13);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = sub_2212D72C8;
@@ -194,9 +194,9 @@
   return v18;
 }
 
-- (id)pruneAgainstTable:(id)a3
+- (id)pruneAgainstTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   memset(v37, 0, sizeof(v37));
   p_cellUIDRangeList = &self->_cellUIDRangeList;
   begin = self->_cellUIDRangeList.__begin_;
@@ -210,10 +210,10 @@
     v35 = 0;
     v36 = 0;
     sub_221086EBC(&v34, begin[3], begin[4], (begin[4] - begin[3]) >> 4);
-    if (v4)
+    if (tableCopy)
     {
-      objc_msgSend_prunedColumnUIDsFromColumnUIDs_(v4, v8, &v31, v9, v10);
-      objc_msgSend_prunedRowUIDsFromRowUIDs_(v4, v11, &v34, v12, v13);
+      objc_msgSend_prunedColumnUIDsFromColumnUIDs_(tableCopy, v8, &v31, v9, v10);
+      objc_msgSend_prunedRowUIDsFromRowUIDs_(tableCopy, v11, &v34, v12, v13);
     }
 
     else
@@ -337,9 +337,9 @@ LABEL_5:
   return 0;
 }
 
-- (void)enumerateCellUIDRangesUsingBlock:(id)a3
+- (void)enumerateCellUIDRangesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   p_cellUIDRangeList = &self->_cellUIDRangeList;
   begin = self->_cellUIDRangeList.__begin_;
@@ -353,7 +353,7 @@ LABEL_5:
     v13 = 0;
     v14 = 0;
     sub_221086EBC(&__p, begin[3], begin[4], (begin[4] - begin[3]) >> 4);
-    v4[2](v4, &v9, &v15);
+    blockCopy[2](blockCopy, &v9, &v15);
     v8 = v15;
     if (__p)
     {
@@ -374,9 +374,9 @@ LABEL_5:
   }
 }
 
-- (void)enumerateCellUIDUsingBlock:(id)a3
+- (void)enumerateCellUIDUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -405,7 +405,7 @@ LABEL_5:
     v9[1] = 3221225472;
     v9[2] = sub_2212D7A68;
     v9[3] = &unk_278462B98;
-    v10 = v4;
+    v10 = blockCopy;
     v11 = &v24;
     sub_2211A91F0(&v12, v9);
     if (__p)
@@ -443,9 +443,9 @@ LABEL_5:
   _Block_object_dispose(&v24, 8);
 }
 
-- (void)enumerateRowUIDUsingBlock:(id)a3
+- (void)enumerateRowUIDUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v19 = 0;
   memset(v17, 0, sizeof(v17));
   v18 = 1065353216;
@@ -496,7 +496,7 @@ LABEL_7:
       sub_2210C2B00(v17, &v10);
       if (v9)
       {
-        v4[2](v4, &v10, &v19);
+        blockCopy[2](blockCopy, &v10, &v19);
         if (v19)
         {
           break;
@@ -527,9 +527,9 @@ LABEL_17:
   sub_2210BDEC0(v17);
 }
 
-- (void)enumerateColumnUIDUsingBlock:(id)a3
+- (void)enumerateColumnUIDUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v20 = 0;
   memset(v18, 0, sizeof(v18));
   v19 = 1065353216;
@@ -553,7 +553,7 @@ LABEL_17:
       sub_2210C2B00(v18, &v11);
       if (v10)
       {
-        v4[2](v4, &v11, &v20);
+        blockCopy[2](blockCopy, &v11, &v20);
         if (v20)
         {
           if (__p)
@@ -698,16 +698,16 @@ LABEL_17:
   return result;
 }
 
-- (id)initFromMessage:(const void *)a3
+- (id)initFromMessage:(const void *)message
 {
   v18.receiver = self;
   v18.super_class = TSTCellUIDRegion;
   v4 = [(TSTCellUIDRegion *)&v18 init];
   if (v4)
   {
-    v5 = *(a3 + 4);
+    v5 = *(message + 4);
     v6 = v5 ? (v5 + 8) : 0;
-    v7 = *(a3 + 6);
+    v7 = *(message + 6);
     if (v7)
     {
       v8 = 8 * v7;
@@ -767,7 +767,7 @@ LABEL_17:
   return v4;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
   begin = self->_cellUIDRangeList.__begin_;
   end = self->_cellUIDRangeList.__end_;
@@ -775,20 +775,20 @@ LABEL_17:
   {
     while (1)
     {
-      v6 = *(a3 + 4);
+      v6 = *(message + 4);
       if (!v6)
       {
         goto LABEL_7;
       }
 
-      v7 = *(a3 + 6);
+      v7 = *(message + 6);
       v8 = *v6;
       if (v7 >= *v6)
       {
         break;
       }
 
-      *(a3 + 6) = v7 + 1;
+      *(message + 6) = v7 + 1;
       v9 = *&v6[2 * v7 + 2];
 LABEL_9:
       TSKUIDStructTract::saveToMessage(begin++, v9);
@@ -798,19 +798,19 @@ LABEL_9:
       }
     }
 
-    if (v8 == *(a3 + 7))
+    if (v8 == *(message + 7))
     {
 LABEL_7:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-      v6 = *(a3 + 4);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((message + 16));
+      v6 = *(message + 4);
       v8 = *v6;
     }
 
     *v6 = v8 + 1;
-    v9 = MEMORY[0x223DA0320](*(a3 + 2));
-    v10 = *(a3 + 6);
-    v11 = *(a3 + 4) + 8 * v10;
-    *(a3 + 6) = v10 + 1;
+    v9 = MEMORY[0x223DA0320](*(message + 2));
+    v10 = *(message + 6);
+    v11 = *(message + 4) + 8 * v10;
+    *(message + 6) = v10 + 1;
     *(v11 + 8) = v9;
     goto LABEL_9;
   }

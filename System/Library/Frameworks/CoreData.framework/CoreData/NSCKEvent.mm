@@ -1,7 +1,7 @@
 @interface NSCKEvent
 + (NSString)entityPath;
-+ (uint64_t)beginEventForRequest:(uint64_t)a3 withMonitor:(void *)a4 error:;
-+ (uint64_t)finishEventForResult:(uint64_t)a3 withMonitor:(void *)a4 error:;
++ (uint64_t)beginEventForRequest:(uint64_t)request withMonitor:(void *)monitor error:;
++ (uint64_t)finishEventForResult:(uint64_t)result withMonitor:(void *)monitor error:;
 @end
 
 @implementation NSCKEvent
@@ -14,7 +14,7 @@
   return [v2 stringWithFormat:@"%@/%@", v3, NSStringFromClass(v4)];
 }
 
-+ (uint64_t)beginEventForRequest:(uint64_t)a3 withMonitor:(void *)a4 error:
++ (uint64_t)beginEventForRequest:(uint64_t)request withMonitor:(void *)monitor error:
 {
   v30 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -34,19 +34,19 @@
   v13[1] = 3221225472;
   v13[2] = __52__NSCKEvent_beginEventForRequest_withMonitor_error___block_invoke;
   v13[3] = &unk_1E6EC1A00;
-  v13[4] = a3;
+  v13[4] = request;
   v13[5] = a2;
   v13[6] = &v20;
   v13[7] = &v14;
-  [(PFCloudKitStoreMonitor *)a3 performBlock:v13];
+  [(PFCloudKitStoreMonitor *)request performBlock:v13];
   if (!v21[5])
   {
     v10 = v15[5];
     if (v10)
     {
-      if (a4)
+      if (monitor)
       {
-        *a4 = v10;
+        *monitor = v10;
       }
     }
 
@@ -184,7 +184,7 @@ LABEL_7:
   return result;
 }
 
-+ (uint64_t)finishEventForResult:(uint64_t)a3 withMonitor:(void *)a4 error:
++ (uint64_t)finishEventForResult:(uint64_t)result withMonitor:(void *)monitor error:
 {
   v30 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -204,19 +204,19 @@ LABEL_7:
   v13[1] = 3221225472;
   v13[2] = __52__NSCKEvent_finishEventForResult_withMonitor_error___block_invoke;
   v13[3] = &unk_1E6EC1A00;
-  v13[4] = a3;
+  v13[4] = result;
   v13[5] = a2;
   v13[6] = &v20;
   v13[7] = &v14;
-  [(PFCloudKitStoreMonitor *)a3 performBlock:v13];
+  [(PFCloudKitStoreMonitor *)result performBlock:v13];
   if (!v21[5])
   {
     v10 = v15[5];
     if (v10)
     {
-      if (a4)
+      if (monitor)
       {
-        *a4 = v10;
+        *monitor = v10;
       }
     }
 

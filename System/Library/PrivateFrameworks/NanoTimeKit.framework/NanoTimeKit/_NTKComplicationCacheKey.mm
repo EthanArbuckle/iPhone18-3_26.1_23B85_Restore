@@ -1,54 +1,54 @@
 @interface _NTKComplicationCacheKey
-+ (id)keyWithVariant:(id)a3 complication:(id)a4 forDevice:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)keyWithVariant:(id)variant complication:(id)complication forDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation _NTKComplicationCacheKey
 
-+ (id)keyWithVariant:(id)a3 complication:(id)a4 forDevice:(id)a5
++ (id)keyWithVariant:(id)variant complication:(id)complication forDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = objc_alloc_init(a1);
+  variantCopy = variant;
+  complicationCopy = complication;
+  deviceCopy = device;
+  v11 = objc_alloc_init(self);
   v12 = v11[1];
-  v11[1] = v8;
-  v13 = v8;
+  v11[1] = variantCopy;
+  v13 = variantCopy;
 
   v14 = v11[2];
-  v11[2] = v9;
-  v15 = v9;
+  v11[2] = complicationCopy;
+  v15 = complicationCopy;
 
-  v16 = [v10 pairingID];
+  pairingID = [deviceCopy pairingID];
 
   v17 = v11[3];
-  v11[3] = v16;
+  v11[3] = pairingID;
 
   return v11;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_variant];
-  v5 = [v3 appendObject:self->_complication];
-  v6 = [v3 appendObject:self->_deviceUUID];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_variant];
+  v5 = [builder appendObject:self->_complication];
+  v6 = [builder appendObject:self->_deviceUUID];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   variant = self->_variant;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __36___NTKComplicationCacheKey_isEqual___block_invoke;
   v20[3] = &unk_278780340;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:variant counterpart:v20];
   complication = self->_complication;

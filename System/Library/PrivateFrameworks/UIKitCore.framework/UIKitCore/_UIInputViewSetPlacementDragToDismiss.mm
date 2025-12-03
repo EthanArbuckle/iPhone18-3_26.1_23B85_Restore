@@ -1,55 +1,55 @@
 @interface _UIInputViewSetPlacementDragToDismiss
-+ (id)placementWithOffset:(double)a3 dismissKeyboardOnly:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (_UIInputViewSetPlacementDragToDismiss)initWithCoder:(id)a3;
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
-- (void)encodeWithCoder:(id)a3;
++ (id)placementWithOffset:(double)offset dismissKeyboardOnly:(BOOL)only;
+- (BOOL)isEqual:(id)equal;
+- (_UIInputViewSetPlacementDragToDismiss)initWithCoder:(id)coder;
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIInputViewSetPlacementDragToDismiss
 
-+ (id)placementWithOffset:(double)a3 dismissKeyboardOnly:(BOOL)a4
++ (id)placementWithOffset:(double)offset dismissKeyboardOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = [a1 placement];
-  [v6 setOffset:a3];
-  [v6 setDismissKeyboardOnly:v4];
+  onlyCopy = only;
+  placement = [self placement];
+  [placement setOffset:offset];
+  [placement setDismissKeyboardOnly:onlyCopy];
 
-  return v6;
+  return placement;
 }
 
-- (_UIInputViewSetPlacementDragToDismiss)initWithCoder:(id)a3
+- (_UIInputViewSetPlacementDragToDismiss)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = _UIInputViewSetPlacementDragToDismiss;
-  v5 = [(UIInputViewSetPlacement *)&v8 initWithCoder:v4];
+  v5 = [(UIInputViewSetPlacement *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"Offset"];
+    [coderCopy decodeFloatForKey:@"Offset"];
     v5->_offset = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIInputViewSetPlacementDragToDismiss;
-  v4 = a3;
-  [(UIInputViewSetPlacement *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UIInputViewSetPlacement *)&v6 encodeWithCoder:coderCopy];
   offset = self->_offset;
   *&offset = offset;
-  [v4 encodeFloat:@"Offset" forKey:{offset, v6.receiver, v6.super_class}];
+  [coderCopy encodeFloat:@"Offset" forKey:{offset, v6.receiver, v6.super_class}];
 }
 
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  v8 = a3;
+  setCopy = set;
   v29.receiver = self;
   v29.super_class = _UIInputViewSetPlacementDragToDismiss;
-  v9 = [(UIInputViewSetPlacement *)&v29 verticalConstraintForInputViewSet:v8 hostView:a4 containerView:a5];
+  v9 = [(UIInputViewSetPlacement *)&v29 verticalConstraintForInputViewSet:setCopy hostView:view containerView:containerView];
   v10 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
   [v10 intersectionHeightForWindowScene:0];
   v12 = v11;
@@ -61,31 +61,31 @@
     v14 = v15;
   }
 
-  v16 = [v8 inputView];
-  if (v16)
+  inputView = [setCopy inputView];
+  if (inputView)
   {
-    v17 = [v8 inputView];
-    [v17 bounds];
+    inputView2 = [setCopy inputView];
+    [inputView2 bounds];
     v13 = v18;
   }
 
-  v19 = [v8 inputAssistantView];
+  inputAssistantView = [setCopy inputAssistantView];
   v20 = 0.0;
   v21 = 0.0;
-  if (v19)
+  if (inputAssistantView)
   {
-    v22 = [v8 inputAssistantView];
-    [v22 bounds];
+    inputAssistantView2 = [setCopy inputAssistantView];
+    [inputAssistantView2 bounds];
     v21 = v23;
   }
 
   if (![(_UIInputViewSetPlacementDragToDismiss *)self dismissKeyboardOnly])
   {
-    v24 = [v8 inputAccessoryView];
-    if (v24)
+    inputAccessoryView = [setCopy inputAccessoryView];
+    if (inputAccessoryView)
     {
-      v25 = [v8 inputAccessoryView];
-      [v25 bounds];
+      inputAccessoryView2 = [setCopy inputAccessoryView];
+      [inputAccessoryView2 bounds];
       v20 = v26;
     }
   }
@@ -96,14 +96,14 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIInputViewSetPlacementDragToDismiss;
-  if ([(UIInputViewSetPlacement *)&v7 isEqual:v4])
+  if ([(UIInputViewSetPlacement *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_offset == v4[6];
+    v5 = self->_offset == equalCopy[6];
   }
 
   else

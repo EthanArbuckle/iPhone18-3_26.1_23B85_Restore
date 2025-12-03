@@ -1,30 +1,30 @@
 @interface FCModifyShortcutCategoryListCommand
-- (BOOL)mergeLocalRecord:(id)a3 withRemoteRecord:(id)a4;
+- (BOOL)mergeLocalRecord:(id)record withRemoteRecord:(id)remoteRecord;
 @end
 
 @implementation FCModifyShortcutCategoryListCommand
 
-- (BOOL)mergeLocalRecord:(id)a3 withRemoteRecord:(id)a4
+- (BOOL)mergeLocalRecord:(id)record withRemoteRecord:(id)remoteRecord
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"dateAdded"];
-  v8 = [v6 objectForKeyedSubscript:@"dateAdded"];
+  recordCopy = record;
+  remoteRecordCopy = remoteRecord;
+  v7 = [recordCopy objectForKeyedSubscript:@"dateAdded"];
+  v8 = [remoteRecordCopy objectForKeyedSubscript:@"dateAdded"];
   v9 = [v7 compare:v8];
   if (v9 == 1)
   {
-    v10 = [v5 objectForKeyedSubscript:@"dateAdded"];
-    [v6 setObject:v10 forKeyedSubscript:@"dateAdded"];
+    v10 = [recordCopy objectForKeyedSubscript:@"dateAdded"];
+    [remoteRecordCopy setObject:v10 forKeyedSubscript:@"dateAdded"];
 
-    v11 = [v5 objectForKeyedSubscript:@"type"];
-    [v6 setObject:v11 forKeyedSubscript:@"type"];
+    v11 = [recordCopy objectForKeyedSubscript:@"type"];
+    [remoteRecordCopy setObject:v11 forKeyedSubscript:@"type"];
 
-    v12 = [v5 objectForKeyedSubscript:@"categoryID"];
-    [v6 setObject:v12 forKeyedSubscript:@"categoryID"];
+    v12 = [recordCopy objectForKeyedSubscript:@"categoryID"];
+    [remoteRecordCopy setObject:v12 forKeyedSubscript:@"categoryID"];
 
-    v13 = [v5 objectForKeyedSubscript:@"status"];
-    [v6 setObject:v13 forKeyedSubscript:@"status"];
+    v13 = [recordCopy objectForKeyedSubscript:@"status"];
+    [remoteRecordCopy setObject:v13 forKeyedSubscript:@"status"];
   }
 
   v14 = FCShortcutCategoryListLog;

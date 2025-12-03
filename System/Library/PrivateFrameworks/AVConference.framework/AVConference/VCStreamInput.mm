@@ -1,8 +1,8 @@
 @interface VCStreamInput
-- (BOOL)createRemoteReceiveQueue:(id)a3;
+- (BOOL)createRemoteReceiveQueue:(id)queue;
 - (BOOL)isStarted;
 - (NSDictionary)reportingStats;
-- (VCStreamInput)initWithStreamInputID:(id)a3 format:(opaqueCMFormatDescription *)a4 delegate:(id)a5 delegateQueue:(id)a6 remoteQueue:(id)a7;
+- (VCStreamInput)initWithStreamInputID:(id)d format:(opaqueCMFormatDescription *)format delegate:(id)delegate delegateQueue:(id)queue remoteQueue:(id)remoteQueue;
 - (void)dealloc;
 - (void)didResumeStreamInputCaptureSource;
 - (void)didStartStreamInputCaptureSource;
@@ -13,7 +13,7 @@
 
 @implementation VCStreamInput
 
-- (VCStreamInput)initWithStreamInputID:(id)a3 format:(opaqueCMFormatDescription *)a4 delegate:(id)a5 delegateQueue:(id)a6 remoteQueue:(id)a7
+- (VCStreamInput)initWithStreamInputID:(id)d format:(opaqueCMFormatDescription *)format delegate:(id)delegate delegateQueue:(id)queue remoteQueue:(id)remoteQueue
 {
   v22 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -24,7 +24,7 @@
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!d)
   {
     [VCStreamInput initWithStreamInputID:format:delegate:delegateQueue:remoteQueue:];
 LABEL_17:
@@ -33,20 +33,20 @@ LABEL_17:
     return 0;
   }
 
-  -[VCObject setLogPrefix:](v12, "setLogPrefix:", [MEMORY[0x1E696AEC0] stringWithFormat:@"streamInputID=%@", a3]);
-  if (!a4)
+  -[VCObject setLogPrefix:](v12, "setLogPrefix:", [MEMORY[0x1E696AEC0] stringWithFormat:@"streamInputID=%@", d]);
+  if (!format)
   {
     [VCStreamInput initWithStreamInputID:v12 format:? delegate:? delegateQueue:? remoteQueue:?];
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!delegate)
   {
     [VCStreamInput initWithStreamInputID:v12 format:? delegate:? delegateQueue:? remoteQueue:?];
     goto LABEL_17;
   }
 
-  if (!a6)
+  if (!queue)
   {
     [VCStreamInput initWithStreamInputID:v12 format:? delegate:? delegateQueue:? remoteQueue:?];
     goto LABEL_17;
@@ -55,9 +55,9 @@ LABEL_17:
   v13 = MEMORY[0x1E696AEC0];
   v14 = objc_opt_class();
   v15 = [v13 stringWithFormat:@"%@.%@.%p", @"com.apple.VideoConference", NSStringFromClass(v14), v12];
-  v16 = [(__CFString *)v15 UTF8String];
+  uTF8String = [(__CFString *)v15 UTF8String];
   CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(56);
-  v18 = dispatch_queue_create_with_target_V2(v16, 0, CustomRootQueue);
+  v18 = dispatch_queue_create_with_target_V2(uTF8String, 0, CustomRootQueue);
   v12->_streamInputQueue = v18;
   if (!v18)
   {
@@ -65,12 +65,12 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (a7)
+  if (remoteQueue)
   {
-    [(VCStreamInput *)v12 createRemoteReceiveQueue:a7];
+    [(VCStreamInput *)v12 createRemoteReceiveQueue:remoteQueue];
   }
 
-  v19 = [a3 copy];
+  v19 = [d copy];
   v12->_streamInputID = v19;
   if (!v19)
   {
@@ -79,10 +79,10 @@ LABEL_17:
   }
 
   HIDWORD(v12->_lastAveragedTime.epoch) = 0;
-  v12->_format = CFRetain(a4);
-  v12->_strongDelegate = a5;
-  v12->_delegateQueue = a6;
-  dispatch_retain(a6);
+  v12->_format = CFRetain(format);
+  v12->_strongDelegate = delegate;
+  v12->_delegateQueue = queue;
+  dispatch_retain(queue);
   return v12;
 }
 
@@ -90,7 +90,7 @@ LABEL_17:
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 92;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d Invalidate was not called!", &v2, 0x1Cu);
@@ -205,10 +205,10 @@ void __27__VCStreamInput_invalidate__block_invoke_3(uint64_t a1)
   return v3;
 }
 
-- (BOOL)createRemoteReceiveQueue:(id)a3
+- (BOOL)createRemoteReceiveQueue:(id)queue
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!queue)
   {
     [VCStreamInput createRemoteReceiveQueue:?];
     return v6;
@@ -219,7 +219,7 @@ void __27__VCStreamInput_invalidate__block_invoke_3(uint64_t a1)
   v5[2] = __42__VCStreamInput_createRemoteReceiveQueue___block_invoke;
   v5[3] = &unk_1E85F5340;
   v5[4] = self;
-  VCRemoteImageQueue_CreateReceiverQueue(a3, v5, self->_streamInputQueue, &self->_lastTransitTime);
+  VCRemoteImageQueue_CreateReceiverQueue(queue, v5, self->_streamInputQueue, &self->_lastTransitTime);
   if (!*&self->_lastTransitTime)
   {
     [VCStreamInput createRemoteReceiveQueue:?];

@@ -1,22 +1,22 @@
 @interface SIRINLUINTERNALOverrideValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALOverrideValue
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   ccqrOverrideTemplate = self->_ccqrOverrideTemplate;
-  v13 = v4;
-  v6 = v4[1];
+  v13 = fromCopy;
+  v6 = fromCopy[1];
   if (ccqrOverrideTemplate)
   {
     if (v6)
@@ -84,13 +84,13 @@
   return v4 ^ v5 ^ [(SIRINLUINTERNALPlanOverrideValue *)self->_planOverrideValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((ccqrOverrideTemplate = self->_ccqrOverrideTemplate, !(ccqrOverrideTemplate | v4[1])) || -[SIRINLUINTERNALCCQROverrideTemplate isEqual:](ccqrOverrideTemplate, "isEqual:")) && ((userParse = self->_userParse, !(userParse | v4[4])) || -[SIRINLUEXTERNALUserParse isEqual:](userParse, "isEqual:")) && ((lvcOverrideValue = self->_lvcOverrideValue, !(lvcOverrideValue | v4[2])) || -[SIRINLUINTERNALLVCOverrideValue isEqual:](lvcOverrideValue, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((ccqrOverrideTemplate = self->_ccqrOverrideTemplate, !(ccqrOverrideTemplate | equalCopy[1])) || -[SIRINLUINTERNALCCQROverrideTemplate isEqual:](ccqrOverrideTemplate, "isEqual:")) && ((userParse = self->_userParse, !(userParse | equalCopy[4])) || -[SIRINLUEXTERNALUserParse isEqual:](userParse, "isEqual:")) && ((lvcOverrideValue = self->_lvcOverrideValue, !(lvcOverrideValue | equalCopy[2])) || -[SIRINLUINTERNALLVCOverrideValue isEqual:](lvcOverrideValue, "isEqual:")))
   {
     planOverrideValue = self->_planOverrideValue;
-    if (planOverrideValue | v4[3])
+    if (planOverrideValue | equalCopy[3])
     {
       v9 = [(SIRINLUINTERNALPlanOverrideValue *)planOverrideValue isEqual:?];
     }
@@ -109,118 +109,118 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUINTERNALCCQROverrideTemplate *)self->_ccqrOverrideTemplate copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUINTERNALCCQROverrideTemplate *)self->_ccqrOverrideTemplate copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(SIRINLUEXTERNALUserParse *)self->_userParse copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALUserParse *)self->_userParse copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(SIRINLUINTERNALLVCOverrideValue *)self->_lvcOverrideValue copyWithZone:a3];
+  v10 = [(SIRINLUINTERNALLVCOverrideValue *)self->_lvcOverrideValue copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(SIRINLUINTERNALPlanOverrideValue *)self->_planOverrideValue copyWithZone:a3];
+  v12 = [(SIRINLUINTERNALPlanOverrideValue *)self->_planOverrideValue copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_ccqrOverrideTemplate)
   {
-    [v4 setCcqrOverrideTemplate:?];
-    v4 = v5;
+    [toCopy setCcqrOverrideTemplate:?];
+    toCopy = v5;
   }
 
   if (self->_userParse)
   {
     [v5 setUserParse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_lvcOverrideValue)
   {
     [v5 setLvcOverrideValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_planOverrideValue)
   {
     [v5 setPlanOverrideValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_ccqrOverrideTemplate)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userParse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_lvcOverrideValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_planOverrideValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   ccqrOverrideTemplate = self->_ccqrOverrideTemplate;
   if (ccqrOverrideTemplate)
   {
-    v5 = [(SIRINLUINTERNALCCQROverrideTemplate *)ccqrOverrideTemplate dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"ccqr_override_template"];
+    dictionaryRepresentation = [(SIRINLUINTERNALCCQROverrideTemplate *)ccqrOverrideTemplate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"ccqr_override_template"];
   }
 
   userParse = self->_userParse;
   if (userParse)
   {
-    v7 = [(SIRINLUEXTERNALUserParse *)userParse dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"user_parse"];
+    dictionaryRepresentation2 = [(SIRINLUEXTERNALUserParse *)userParse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"user_parse"];
   }
 
   lvcOverrideValue = self->_lvcOverrideValue;
   if (lvcOverrideValue)
   {
-    v9 = [(SIRINLUINTERNALLVCOverrideValue *)lvcOverrideValue dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"lvc_override_value"];
+    dictionaryRepresentation3 = [(SIRINLUINTERNALLVCOverrideValue *)lvcOverrideValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"lvc_override_value"];
   }
 
   planOverrideValue = self->_planOverrideValue;
   if (planOverrideValue)
   {
-    v11 = [(SIRINLUINTERNALPlanOverrideValue *)planOverrideValue dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"plan_override_value"];
+    dictionaryRepresentation4 = [(SIRINLUINTERNALPlanOverrideValue *)planOverrideValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"plan_override_value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -229,8 +229,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALOverrideValue;
   v4 = [(SIRINLUINTERNALOverrideValue *)&v8 description];
-  v5 = [(SIRINLUINTERNALOverrideValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALOverrideValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

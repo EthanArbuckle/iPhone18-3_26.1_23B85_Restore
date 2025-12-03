@@ -6,10 +6,10 @@
 
 - (id)codings
 {
-  v1 = [a1 allergyCodingCollection];
-  v2 = [v1 codings];
+  allergyCodingCollection = [self allergyCodingCollection];
+  codings = [allergyCodingCollection codings];
 
-  return v2;
+  return codings;
 }
 
 @end

@@ -5,8 +5,8 @@
 - (void)_prepareAnimatorIfNeeded;
 - (void)_stopAnimations;
 - (void)_updateAnimatorIfNeeded;
-- (void)_updateFromTransformer:(id)a3;
-- (void)setForceFactor:(double)a3;
+- (void)_updateFromTransformer:(id)transformer;
+- (void)setForceFactor:(double)factor;
 @end
 
 @implementation _UIInteractionEffect_deprecated
@@ -34,11 +34,11 @@
   return v3;
 }
 
-- (void)setForceFactor:(double)a3
+- (void)setForceFactor:(double)factor
 {
-  if (self->_forceFactor != a3)
+  if (self->_forceFactor != factor)
   {
-    self->_forceFactor = a3;
+    self->_forceFactor = factor;
     [(_UIInteractionEffect_deprecated *)self _updateAnimatorIfNeeded];
   }
 }
@@ -137,9 +137,9 @@
   [(_UISpringBehavior *)springBehavior setAnchorPoint:v5, v8];
 }
 
-- (void)_updateFromTransformer:(id)a3
+- (void)_updateFromTransformer:(id)transformer
 {
-  [a3 center];
+  [transformer center];
   v5 = v4;
   [(_UIInteractionEffect_deprecated *)self bounds];
   v8 = v5 - (v7 + v6 * 0.5);

@@ -1,19 +1,19 @@
 @interface WLLockScreenCardView
-- (WLLockScreenCardView)initWithFrame:(CGRect)a3;
+- (WLLockScreenCardView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setModallyPresented:(BOOL)a3;
-- (void)setPass:(id)a3;
+- (void)setModallyPresented:(BOOL)presented;
+- (void)setPass:(id)pass;
 @end
 
 @implementation WLLockScreenCardView
 
-- (WLLockScreenCardView)initWithFrame:(CGRect)a3
+- (WLLockScreenCardView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = WLLockScreenCardView;
-  v3 = [(WLLockScreenCardView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WLLockScreenCardView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,15 +38,15 @@
   [(WLLockScreenCardView *)self setModallyPresented:0];
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v10 = a3;
+  passCopy = pass;
   passView = self->_passView;
   if (passView)
   {
-    v6 = [(PKPassView *)passView pass];
+    pass = [(PKPassView *)passView pass];
 
-    if (v6 != v10)
+    if (pass != passCopy)
     {
       [(PKPassView *)self->_passView setModallyPresented:0];
       [(PKPassView *)self->_passView removeFromSuperview];
@@ -56,10 +56,10 @@
     }
   }
 
-  objc_storeStrong(&self->_pass, a3);
+  objc_storeStrong(&self->_pass, pass);
   if (!self->_passView && self->_pass)
   {
-    v8 = [[PKPassView alloc] initWithPass:v10 content:5 suppressedContent:275];
+    v8 = [[PKPassView alloc] initWithPass:passCopy content:5 suppressedContent:275];
     v9 = self->_passView;
     self->_passView = v8;
 
@@ -78,7 +78,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKPassView *)self->_passView pass];
+  pass = [(PKPassView *)self->_passView pass];
   v12 = PKValueAddedServicesEnabledForPass();
 
   passView = self->_passView;
@@ -95,11 +95,11 @@
   [(PKPassView *)passView setFrame:v4, v14, v8, v10];
 }
 
-- (void)setModallyPresented:(BOOL)a3
+- (void)setModallyPresented:(BOOL)presented
 {
-  if (self->_modallyPresented != a3)
+  if (self->_modallyPresented != presented)
   {
-    self->_modallyPresented = a3;
+    self->_modallyPresented = presented;
     [(PKPassView *)self->_passView setModallyPresented:?];
   }
 }

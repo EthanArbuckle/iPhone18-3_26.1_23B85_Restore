@@ -1,52 +1,52 @@
 @interface CircleAnnotationView
-- (CircleAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (void)_setMapPitchRadians:(double)a3;
-- (void)setColorRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (void)setRadius:(double)a3;
+- (CircleAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (void)_setMapPitchRadians:(double)radians;
+- (void)setColorRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (void)setRadius:(double)radius;
 @end
 
 @implementation CircleAnnotationView
 
-- (void)_setMapPitchRadians:(double)a3
+- (void)_setMapPitchRadians:(double)radians
 {
   v8.receiver = self;
   v8.super_class = CircleAnnotationView;
   [(CircleAnnotationView *)&v8 _setMapPitchRadians:?];
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  CATransform3DMakeRotation(&v7, a3, 1.0, 0.0, 0.0);
+  CATransform3DMakeRotation(&v7, radians, 1.0, 0.0, 0.0);
   circleLayer = self->_circleLayer;
   v6 = v7;
   [(CALayer *)circleLayer setTransform:&v6];
   +[CATransaction commit];
 }
 
-- (void)setColorRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (void)setColorRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v8 = [UIColor colorWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v8 = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
   v7 = v8;
   -[CALayer setBackgroundColor:](self->_circleLayer, "setBackgroundColor:", [v8 CGColor]);
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  self->_radius = a3;
+  self->_radius = radius;
   [(CircleAnnotationView *)self bounds];
   MidX = CGRectGetMidX(v9);
   [(CircleAnnotationView *)self bounds];
   [(CALayer *)self->_circleLayer setPosition:MidX, CGRectGetMidY(v10)];
-  [(CALayer *)self->_circleLayer setBounds:0.0, 0.0, a3 + a3, a3 + a3];
+  [(CALayer *)self->_circleLayer setBounds:0.0, 0.0, radius + radius, radius + radius];
   [(CALayer *)self->_circleLayer bounds];
   circleLayer = self->_circleLayer;
 
   [(CALayer *)circleLayer setCornerRadius:v6 * 0.5];
 }
 
-- (CircleAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (CircleAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = CircleAnnotationView;
-  v4 = [(CircleAnnotationView *)&v17 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(CircleAnnotationView *)&v17 initWithAnnotation:annotation reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[CALayer layer];
@@ -74,8 +74,8 @@
     v13 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:5];
     [(CALayer *)v4->_circleLayer setActions:v13];
 
-    v14 = [(CircleAnnotationView *)v4 layer];
-    [v14 addSublayer:v4->_circleLayer];
+    layer = [(CircleAnnotationView *)v4 layer];
+    [layer addSublayer:v4->_circleLayer];
 
     v15 = v4;
   }

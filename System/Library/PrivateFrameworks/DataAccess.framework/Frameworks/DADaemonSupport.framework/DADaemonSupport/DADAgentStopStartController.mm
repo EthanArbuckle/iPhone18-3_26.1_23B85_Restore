@@ -1,18 +1,18 @@
 @interface DADAgentStopStartController
-- (DADAgentStopStartController)initWithDelegate:(id)a3;
-- (int)enqueueDisableMonitoringAgents:(id)a3;
+- (DADAgentStopStartController)initWithDelegate:(id)delegate;
+- (int)enqueueDisableMonitoringAgents:(id)agents;
 - (void)_enqueueBlockIfNotEnqueuedAndPendingWork;
-- (void)callBlocks:(id)a3;
-- (void)enqueueEnableMonitoringAgentsWithGeneration:(int)a3 completion:(id)a4;
+- (void)callBlocks:(id)blocks;
+- (void)enqueueEnableMonitoringAgentsWithGeneration:(int)generation completion:(id)completion;
 - (void)reset;
 - (void)startOrStopAsNeeded;
 @end
 
 @implementation DADAgentStopStartController
 
-- (DADAgentStopStartController)initWithDelegate:(id)a3
+- (DADAgentStopStartController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = DADAgentStopStartController;
   v5 = [(DADAgentStopStartController *)&v8 init];
@@ -21,32 +21,32 @@
   {
     v5->_lock._os_unfair_lock_opaque = 0;
     v5->_generation = 1;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (int)enqueueDisableMonitoringAgents:(id)a3
+- (int)enqueueDisableMonitoringAgents:(id)agents
 {
-  v4 = a3;
+  agentsCopy = agents;
   os_unfair_lock_lock(&self->_lock);
   if (self->_agentsStopped)
   {
     ++self->_stopsLessStartsReceived;
     generation = self->_generation;
     os_unfair_lock_unlock(&self->_lock);
-    if (v4)
+    if (agentsCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained scheduleAgentStartOrStopBlock:v4];
+      [WeakRetained scheduleAgentStartOrStopBlock:agentsCopy];
     }
   }
 
   else
   {
     self->_unexecutedStopReceived = 1;
-    if (v4)
+    if (agentsCopy)
     {
       pendingStopCompletionBlocks = self->_pendingStopCompletionBlocks;
       if (!pendingStopCompletionBlocks)
@@ -58,7 +58,7 @@
         pendingStopCompletionBlocks = self->_pendingStopCompletionBlocks;
       }
 
-      v10 = MEMORY[0x24C1D1770](v4);
+      v10 = MEMORY[0x24C1D1770](agentsCopy);
       [(NSMutableArray *)pendingStopCompletionBlocks addObject:v10];
     }
 
@@ -71,12 +71,12 @@
   return generation;
 }
 
-- (void)enqueueEnableMonitoringAgentsWithGeneration:(int)a3 completion:(id)a4
+- (void)enqueueEnableMonitoringAgentsWithGeneration:(int)generation completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_generation != a3)
+  if (self->_generation != generation)
   {
     v12 = DALoggingwithCategory();
     v13 = *(MEMORY[0x277D03988] + 5);
@@ -89,7 +89,7 @@
     v22[0] = 67109376;
     v22[1] = generation;
     v23 = 1024;
-    v24 = a3;
+    generationCopy = generation;
     v15 = "Ignoring call to enable with non-current generation (current = %i, received = %i)";
     v16 = v12;
     v17 = v13;
@@ -101,7 +101,7 @@
   if (stopsLessStartsReceived)
   {
     self->_stopsLessStartsReceived = stopsLessStartsReceived - 1;
-    if (v6)
+    if (completionCopy)
     {
       pendingStartCompletionBlocks = self->_pendingStartCompletionBlocks;
       if (!pendingStartCompletionBlocks)
@@ -113,7 +113,7 @@
         pendingStartCompletionBlocks = self->_pendingStartCompletionBlocks;
       }
 
-      v11 = MEMORY[0x24C1D1770](v6);
+      v11 = MEMORY[0x24C1D1770](completionCopy);
       [(NSMutableArray *)pendingStartCompletionBlocks addObject:v11];
     }
 
@@ -138,10 +138,10 @@ LABEL_12:
 LABEL_13:
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v6)
+  if (completionCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained scheduleAgentStartOrStopBlock:v6];
+    [WeakRetained scheduleAgentStartOrStopBlock:completionCopy];
   }
 
 LABEL_15:
@@ -207,11 +207,11 @@ uint64_t __71__DADAgentStopStartController__enqueueBlockIfNotEnqueuedAndPendingW
       if (HIBYTE(v10) == 1)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v4 = [WeakRetained disableMonitoringAgents];
+        disableMonitoringAgents = [WeakRetained disableMonitoringAgents];
 
         os_unfair_lock_lock(&self->_lock);
         *&self->_agentsStopped = 1;
-        self->_serverToken = v4;
+        self->_serverToken = disableMonitoringAgents;
         pendingStopCompletionBlocks = self->_pendingStopCompletionBlocks;
         self->_pendingStopCompletionBlocks = 0;
         v6 = pendingStopCompletionBlocks;
@@ -254,15 +254,15 @@ uint64_t __71__DADAgentStopStartController__enqueueBlockIfNotEnqueuedAndPendingW
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)callBlocks:(id)a3
+- (void)callBlocks:(id)blocks
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  blocksCopy = blocks;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [blocksCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -274,14 +274,14 @@ uint64_t __71__DADAgentStopStartController__enqueueBlockIfNotEnqueuedAndPendingW
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(blocksCopy);
         }
 
         (*(*(*(&v9 + 1) + 8 * v7++) + 16))();
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [blocksCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

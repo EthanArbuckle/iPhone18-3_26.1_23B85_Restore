@@ -1,17 +1,17 @@
 @interface SBSABackgroundBlurPreferencesProvider
-+ (CGRect)frameForVariableBlurUnderContainerViewWithFrame:(CGRect)a3 offscreen:(BOOL)a4 context:(id)a5;
-- (id)preferencesFromContext:(id)a3;
++ (CGRect)frameForVariableBlurUnderContainerViewWithFrame:(CGRect)frame offscreen:(BOOL)offscreen context:(id)context;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSABackgroundBlurPreferencesProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -48,9 +48,9 @@
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__107;
   v37 = __Block_byref_object_dispose__107;
-  v10 = [v9 preferences];
+  preferences = [v9 preferences];
   v11 = objc_opt_class();
-  v12 = v10;
+  v12 = preferences;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -405,14 +405,14 @@ LABEL_60:
   [v50 setBackgroundBlurDescription:v74];
 }
 
-+ (CGRect)frameForVariableBlurUnderContainerViewWithFrame:(CGRect)a3 offscreen:(BOOL)a4 context:(id)a5
++ (CGRect)frameForVariableBlurUnderContainerViewWithFrame:(CGRect)frame offscreen:(BOOL)offscreen context:(id)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  if (a4)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contextCopy = context;
+  if (offscreen)
   {
     v11 = -360.0;
   }
@@ -432,7 +432,7 @@ LABEL_60:
     v11 = v12 + -180.0;
   }
 
-  [v10 systemContainerBounds];
+  [contextCopy systemContainerBounds];
   v13 = CGRectGetWidth(v19);
 
   v14 = 360.0;

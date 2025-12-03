@@ -1,130 +1,130 @@
 @interface _ATXSimpleWidgetSuggestion
-+ (BOOL)_isSuggestion:(id)a3 compatibleWithStack:(id)a4;
-- (BOOL)containsIdenticalContentOfSuggestion:(id)a3;
++ (BOOL)_isSuggestion:(id)suggestion compatibleWithStack:(id)stack;
+- (BOOL)containsIdenticalContentOfSuggestion:(id)suggestion;
 - (_ATXHomeScreenStackState)stack;
-- (_ATXSimpleWidgetSuggestion)initWithSuggestion:(id)a3 stack:(id)a4 suggestionDeduplicator:(id)a5;
-- (_ATXSimpleWidgetSuggestion)initWithWidget:(id)a3 suggestion:(id)a4 stack:(id)a5 suggestionDeduplicator:(id)a6;
-- (void)_setSuggestion:(id)a3;
+- (_ATXSimpleWidgetSuggestion)initWithSuggestion:(id)suggestion stack:(id)stack suggestionDeduplicator:(id)deduplicator;
+- (_ATXSimpleWidgetSuggestion)initWithWidget:(id)widget suggestion:(id)suggestion stack:(id)stack suggestionDeduplicator:(id)deduplicator;
+- (void)_setSuggestion:(id)suggestion;
 @end
 
 @implementation _ATXSimpleWidgetSuggestion
 
-- (_ATXSimpleWidgetSuggestion)initWithWidget:(id)a3 suggestion:(id)a4 stack:(id)a5 suggestionDeduplicator:(id)a6
+- (_ATXSimpleWidgetSuggestion)initWithWidget:(id)widget suggestion:(id)suggestion stack:(id)stack suggestionDeduplicator:(id)deduplicator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  widgetCopy = widget;
+  suggestionCopy = suggestion;
+  stackCopy = stack;
+  deduplicatorCopy = deduplicator;
   v18.receiver = self;
   v18.super_class = _ATXSimpleWidgetSuggestion;
   v15 = [(_ATXSimpleWidgetSuggestion *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_stack, v13);
-    objc_storeStrong(&v16->_widget, a3);
-    objc_storeStrong(&v16->_suggestionDeduplicator, a6);
-    if (v12)
+    objc_storeWeak(&v15->_stack, stackCopy);
+    objc_storeStrong(&v16->_widget, widget);
+    objc_storeStrong(&v16->_suggestionDeduplicator, deduplicator);
+    if (suggestionCopy)
     {
-      [(_ATXSimpleWidgetSuggestion *)v16 _setSuggestion:v12];
+      [(_ATXSimpleWidgetSuggestion *)v16 _setSuggestion:suggestionCopy];
     }
   }
 
   return v16;
 }
 
-- (_ATXSimpleWidgetSuggestion)initWithSuggestion:(id)a3 stack:(id)a4 suggestionDeduplicator:(id)a5
+- (_ATXSimpleWidgetSuggestion)initWithSuggestion:(id)suggestion stack:(id)stack suggestionDeduplicator:(id)deduplicator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![_ATXSimpleWidgetSuggestion _isSuggestion:v8 compatibleWithStack:v9])
+  suggestionCopy = suggestion;
+  stackCopy = stack;
+  deduplicatorCopy = deduplicator;
+  if (![_ATXSimpleWidgetSuggestion _isSuggestion:suggestionCopy compatibleWithStack:stackCopy])
   {
     goto LABEL_6;
   }
 
-  v11 = [v9 widgetForSuggestion:v8 considerSuggestedWidgets:1];
+  v11 = [stackCopy widgetForSuggestion:suggestionCopy considerSuggestedWidgets:1];
   if (!v11)
   {
-    v12 = [MEMORY[0x277D42040] infoSuggestionFromProactiveSuggestion:v8];
+    v12 = [MEMORY[0x277D42040] infoSuggestionFromProactiveSuggestion:suggestionCopy];
     if (v12)
     {
       v13 = v12;
       v11 = objc_opt_new();
-      v14 = [v13 appBundleIdentifier];
-      [v11 setAppBundleId:v14];
+      appBundleIdentifier = [v13 appBundleIdentifier];
+      [v11 setAppBundleId:appBundleIdentifier];
 
-      v15 = [v13 widgetBundleIdentifier];
-      [v11 setExtensionBundleId:v15];
+      widgetBundleIdentifier = [v13 widgetBundleIdentifier];
+      [v11 setExtensionBundleId:widgetBundleIdentifier];
 
-      v16 = [v13 widgetKind];
-      [v11 setWidgetKind:v16];
+      widgetKind = [v13 widgetKind];
+      [v11 setWidgetKind:widgetKind];
 
-      v17 = [v9 config];
-      [v11 setSize:{objc_msgSend(v17, "stackLayoutSize")}];
+      config = [stackCopy config];
+      [v11 setSize:{objc_msgSend(config, "stackLayoutSize")}];
 
-      v18 = [v13 intent];
-      [v11 setIntent:v18];
+      intent = [v13 intent];
+      [v11 setIntent:intent];
 
-      v19 = [MEMORY[0x277CCAD78] UUID];
-      v20 = [v19 UUIDString];
-      [v11 setWidgetUniqueId:v20];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [v11 setWidgetUniqueId:uUIDString];
 
       [v11 setSuggestedWidget:1];
       goto LABEL_5;
     }
 
 LABEL_6:
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
 LABEL_5:
-  self = [(_ATXSimpleWidgetSuggestion *)self initWithWidget:v11 suggestion:v8 stack:v9 suggestionDeduplicator:v10];
+  self = [(_ATXSimpleWidgetSuggestion *)self initWithWidget:v11 suggestion:suggestionCopy stack:stackCopy suggestionDeduplicator:deduplicatorCopy];
 
-  v21 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v21;
+  return selfCopy;
 }
 
-- (BOOL)containsIdenticalContentOfSuggestion:(id)a3
+- (BOOL)containsIdenticalContentOfSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 executableSpecification];
-  v6 = [v5 executableType];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v6 == 1)
+  if (executableType == 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(ATXSuggestionDeduplicatorProtocol *)self->_suggestionDeduplicator isWidget:self->_widget showingIdenticalContentOfSuggestion:v4];
+    v7 = [(ATXSuggestionDeduplicatorProtocol *)self->_suggestionDeduplicator isWidget:self->_widget showingIdenticalContentOfSuggestion:suggestionCopy];
   }
 
   return v7;
 }
 
-- (void)_setSuggestion:(id)a3
+- (void)_setSuggestion:(id)suggestion
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  suggestionCopy = suggestion;
   WeakRetained = objc_loadWeakRetained(&self->_stack);
-  v7 = [_ATXSimpleWidgetSuggestion _isSuggestion:v5 compatibleWithStack:WeakRetained];
+  v7 = [_ATXSimpleWidgetSuggestion _isSuggestion:suggestionCopy compatibleWithStack:WeakRetained];
 
   if (v7)
   {
-    objc_storeStrong(&self->_suggestion, a3);
-    objc_storeStrong(&self->_mainSuggestionInLayout, a3);
+    objc_storeStrong(&self->_suggestion, suggestion);
+    objc_storeStrong(&self->_mainSuggestionInLayout, suggestion);
     v8 = [(ATXHomeScreenWidgetIdentifiable *)self->_widget size];
     if (v8 <= 1)
     {
       if (!v8)
       {
         v25 = objc_alloc(MEMORY[0x277D420E8]);
-        v33[0] = v5;
+        v33[0] = suggestionCopy;
         v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
         v28 = 0;
         v29 = 0;
@@ -137,7 +137,7 @@ LABEL_7:
       if (v8 == 1)
       {
         v13 = objc_alloc(MEMORY[0x277D420E8]);
-        v32 = v5;
+        v32 = suggestionCopy;
         v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
         v14 = [v13 initWithLayoutType:3 oneByOneSuggestions:0 oneByTwoSuggestions:0 twoByTwoSuggestions:0 oneByFourSuggestions:0 twoByFourSuggestions:v10 fourByFourSuggestions:0 fourByEightSuggestions:0];
 LABEL_16:
@@ -152,7 +152,7 @@ LABEL_16:
       {
         case 2:
           v15 = objc_alloc(MEMORY[0x277D420E8]);
-          v31 = v5;
+          v31 = suggestionCopy;
           v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
           v28 = v10;
           v29 = 0;
@@ -160,16 +160,16 @@ LABEL_16:
           v12 = 10;
           goto LABEL_11;
         case 3:
-          v17 = __atxlog_handle_blending();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+          uuid = __atxlog_handle_blending();
+          if (os_log_type_enabled(uuid, OS_LOG_TYPE_FAULT))
           {
-            [(_ATXSimpleWidgetSuggestion *)v17 _setSuggestion:v18, v19, v20, v21, v22, v23, v24];
+            [(_ATXSimpleWidgetSuggestion *)uuid _setSuggestion:v18, v19, v20, v21, v22, v23, v24];
           }
 
           goto LABEL_18;
         case 4:
           v9 = objc_alloc(MEMORY[0x277D420E8]);
-          v30 = v5;
+          v30 = suggestionCopy;
           v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
           v28 = 0;
           v29 = v10;
@@ -183,22 +183,22 @@ LABEL_15:
       }
     }
 
-    v17 = [(ATXProactiveSuggestion *)self->_mainSuggestionInLayout uuid];
-    [(ATXSuggestionLayout *)self->_suggestionLayout setUuidOfHighestConfidenceSuggestion:v17];
+    uuid = [(ATXProactiveSuggestion *)self->_mainSuggestionInLayout uuid];
+    [(ATXSuggestionLayout *)self->_suggestionLayout setUuidOfHighestConfidenceSuggestion:uuid];
 LABEL_18:
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_isSuggestion:(id)a3 compatibleWithStack:(id)a4
++ (BOOL)_isSuggestion:(id)suggestion compatibleWithStack:(id)stack
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 executableSpecification];
-  v8 = [v7 executableType];
+  suggestionCopy = suggestion;
+  stackCopy = stack;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v8 != 3)
+  if (executableType != 3)
   {
     v10 = __atxlog_handle_blending();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -209,7 +209,7 @@ LABEL_18:
     goto LABEL_8;
   }
 
-  if (([v6 sizeIsCompatibleWithWidgetSuggestion:v5] & 1) == 0)
+  if (([stackCopy sizeIsCompatibleWithWidgetSuggestion:suggestionCopy] & 1) == 0)
   {
     v10 = __atxlog_handle_blending();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))

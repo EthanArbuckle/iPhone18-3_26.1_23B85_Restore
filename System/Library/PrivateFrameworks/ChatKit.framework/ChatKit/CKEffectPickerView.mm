@@ -2,126 +2,126 @@
 + (BOOL)shouldUseLargeScreenDimension;
 - (BOOL)_keyboardIsOnTopOfEffectPickerWindow;
 - (CGPoint)balloonViewOrigin;
-- (CGRect)_updateBalloonViewOrigin:(CGRect)a3 forButtonFrame:(CGRect)a4;
-- (CKEffectPickerView)initWithFrame:(CGRect)a3 sendButtonFrame:(CGRect)a4 balloonViewOrigin:(CGPoint)a5 composition:(id)a6 color:(char)a7 gradientReferenceView:(id)a8;
+- (CGRect)_updateBalloonViewOrigin:(CGRect)origin forButtonFrame:(CGRect)frame;
+- (CKEffectPickerView)initWithFrame:(CGRect)frame sendButtonFrame:(CGRect)buttonFrame balloonViewOrigin:(CGPoint)origin composition:(id)composition color:(char)color gradientReferenceView:(id)view;
 - (CKEffectPickerViewDelegate)delegate;
 - (UIFont)effectLabelFont;
 - (id)_blackTextReplica;
 - (id)_defaultSendAnimationContextForAnimationPreview;
-- (id)_glyphLayerForButtonAnimationWithGlyphName:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_glyphLayerForButtonAnimationWithGlyphName:(id)name;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)sendImage;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)selectedMomentIndex;
 - (void)_accessibilityContrastStatusDidChange;
 - (void)_adjustMainLabelAndTypeSegmentedControlIfNecessary;
 - (void)_animateIn;
-- (void)_animateInSendButton:(id)a3;
+- (void)_animateInSendButton:(id)button;
 - (void)_animateOut;
-- (void)_animateOutSendButton:(id)a3;
-- (void)_animateSelectedEffectLabelAtIndex:(unint64_t)a3 fromPreviousIndex:(unint64_t)a4;
+- (void)_animateOutSendButton:(id)button;
+- (void)_animateSelectedEffectLabelAtIndex:(unint64_t)index fromPreviousIndex:(unint64_t)previousIndex;
 - (void)_applicationDidEnterBackground;
 - (void)_applicationWillEnterForeground;
-- (void)_panGesture:(id)a3;
+- (void)_panGesture:(id)gesture;
 - (void)_resizeBalloon;
-- (void)_setBalloonText:(id)a3 withColor:(id)a4;
+- (void)_setBalloonText:(id)text withColor:(id)color;
 - (void)_setNeedsSwitcherAnimationIfNecessary;
 - (void)_startSwitcherAnimationIfNecessary;
 - (void)_stopBalloonAnimation;
-- (void)_touchUpInsideDotButton:(id)a3;
-- (void)_touchUpInsideSendButton:(id)a3;
-- (void)_touchUpInsideSendMomentButton:(id)a3;
-- (void)_updateBalloonViewPositionAnimated:(BOOL)a3;
+- (void)_touchUpInsideDotButton:(id)button;
+- (void)_touchUpInsideSendButton:(id)button;
+- (void)_touchUpInsideSendMomentButton:(id)button;
+- (void)_updateBalloonViewPositionAnimated:(BOOL)animated;
 - (void)_updateMomentsBackgroundColor;
-- (void)addAnimationTimerForCell:(id)a3;
-- (void)addEffect:(id)a3 withDescriptiveText:(id)a4 withIdentifier:(id)a5;
+- (void)addAnimationTimerForCell:(id)cell;
+- (void)addEffect:(id)effect withDescriptiveText:(id)text withIdentifier:(id)identifier;
 - (void)cancelImpactSelection;
-- (void)checkAndUpdateForSpotlightEffect:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)checkAndUpdateForSpotlightEffect:(id)effect;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)effectTypeDidChange:(id)a3;
-- (void)handleTouchMoved:(CGPoint)a3;
-- (void)handleTouchUp:(CGPoint)a3;
+- (void)effectTypeDidChange:(id)change;
+- (void)handleTouchMoved:(CGPoint)moved;
+- (void)handleTouchUp:(CGPoint)up;
 - (void)invalidateAllAnimationTimers;
 - (void)layoutSubviews;
-- (void)pageControlChanged:(id)a3;
-- (void)removeAnimationTimerForCell:(id)a3;
+- (void)pageControlChanged:(id)changed;
+- (void)removeAnimationTimerForCell:(id)cell;
 - (void)resetDotConstraintsToDefault;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)setBalloonText:(id)a3;
-- (void)startAnimationPreviewForIdentifier:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateColor:(char)a3;
-- (void)updateHintTransition:(double)a3;
-- (void)updateMomentTitle:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)setBalloonText:(id)text;
+- (void)startAnimationPreviewForIdentifier:(id)identifier;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateColor:(char)color;
+- (void)updateHintTransition:(double)transition;
+- (void)updateMomentTitle:(BOOL)title;
 - (void)updateViewColors;
-- (void)updateViewColors:(BOOL)a3;
+- (void)updateViewColors:(BOOL)colors;
 @end
 
 @implementation CKEffectPickerView
 
 + (BOOL)shouldUseLargeScreenDimension
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   Height = CGRectGetHeight(v7);
 
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   Width = CGRectGetWidth(v8);
 
   return Height <= Width || Height > 568.0;
 }
 
-- (CKEffectPickerView)initWithFrame:(CGRect)a3 sendButtonFrame:(CGRect)a4 balloonViewOrigin:(CGPoint)a5 composition:(id)a6 color:(char)a7 gradientReferenceView:(id)a8
+- (CKEffectPickerView)initWithFrame:(CGRect)frame sendButtonFrame:(CGRect)buttonFrame balloonViewOrigin:(CGPoint)origin composition:(id)composition color:(char)color gradientReferenceView:(id)view
 {
-  y = a5.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  v12 = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3.size.height;
-  v15 = a3.size.width;
-  v16 = a3.origin.y;
-  v17 = a3.origin.x;
+  y = origin.y;
+  height = buttonFrame.size.height;
+  width = buttonFrame.size.width;
+  v12 = buttonFrame.origin.y;
+  x = buttonFrame.origin.x;
+  v14 = frame.size.height;
+  v15 = frame.size.width;
+  v16 = frame.origin.y;
+  v17 = frame.origin.x;
   v229[1] = *MEMORY[0x1E69E9840];
-  v19 = *&a5.x;
-  v20 = a6;
+  v19 = *&origin.x;
+  compositionCopy = composition;
   v226.receiver = self;
   v226.super_class = CKEffectPickerView;
   v21 = [(CKEffectPickerView *)&v226 initWithFrame:v17, v16, v15, v14];
   if (v21)
   {
-    v224 = v20;
+    v224 = compositionCopy;
     v225 = v19;
     v22 = objc_alloc_init(_TtC7ChatKit28CKEffectPickerStylingMetrics);
     [(CKEffectPickerView *)v21 setStylingMetrics:v22];
 
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v21 selector:sel_contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel_contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
     v21->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
     [(CKEffectPickerView *)v21 setBalloonViewOrigin:v230, v231];
     [(CKEffectPickerView *)v21 setControlColor:*&y];
-    v24 = [(CKEffectPickerView *)v21 traitCollection];
-    -[CKEffectPickerView setIsInDarkMode:](v21, "setIsInDarkMode:", [v24 userInterfaceStyle] == 2);
+    traitCollection = [(CKEffectPickerView *)v21 traitCollection];
+    -[CKEffectPickerView setIsInDarkMode:](v21, "setIsInDarkMode:", [traitCollection userInterfaceStyle] == 2);
 
     v25 = objc_alloc_init(CKChatControllerDummyAnimator);
     [(CKEffectPickerView *)v21 setDummyAnimator:v25];
 
-    v26 = [(CKEffectPickerView *)v21 layer];
-    [v26 setAllowsGroupBlending:0];
+    layer = [(CKEffectPickerView *)v21 layer];
+    [layer setAllowsGroupBlending:0];
 
     v27 = objc_alloc_init(MEMORY[0x1E6979398]);
     v28 = +[CKUIBehavior sharedBehaviors];
-    v29 = [v28 theme];
-    v30 = [v29 fsmPickerBlueLayerBackgroundColor];
-    [v27 setBackgroundColor:{objc_msgSend(v30, "CGColor")}];
+    theme = [v28 theme];
+    fsmPickerBlueLayerBackgroundColor = [theme fsmPickerBlueLayerBackgroundColor];
+    [v27 setBackgroundColor:{objc_msgSend(fsmPickerBlueLayerBackgroundColor, "CGColor")}];
 
-    v31 = [(CKEffectPickerView *)v21 layer];
-    [v31 bounds];
+    layer2 = [(CKEffectPickerView *)v21 layer];
+    [layer2 bounds];
     [v27 setFrame:?];
 
     [v27 setAllowsGroupBlending:0];
@@ -130,9 +130,9 @@
     [v27 setCompositingFilter:?];
     [v27 setOpacity:0.0];
     [(CKEffectPickerView *)v21 setBlueContrastLayer:v27];
-    v32 = [(CKEffectPickerView *)v21 layer];
+    layer3 = [(CKEffectPickerView *)v21 layer];
     v222 = v27;
-    [v32 addSublayer:v27];
+    [layer3 addSublayer:v27];
 
     v212 = *MEMORY[0x1E6979928];
     v33 = [MEMORY[0x1E6979378] filterWithType:?];
@@ -142,8 +142,8 @@
     [v33 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6979B78]];
     v35 = objc_alloc_init(MEMORY[0x1E6979310]);
     [v35 setAllowsGroupBlending:0];
-    v36 = [(CKEffectPickerView *)v21 layer];
-    [v36 bounds];
+    layer4 = [(CKEffectPickerView *)v21 layer];
+    [layer4 bounds];
     [v35 setFrame:?];
 
     v220 = v33;
@@ -153,15 +153,15 @@
 
     [v35 setScale:0.5];
     [(CKEffectPickerView *)v21 setBackdrop:v35];
-    v38 = [(CKEffectPickerView *)v21 layer];
+    layer5 = [(CKEffectPickerView *)v21 layer];
     v219 = v35;
-    [v38 addSublayer:v35];
+    [layer5 addSublayer:v35];
 
     v39 = objc_alloc(MEMORY[0x1E69DD250]);
     [(CKEffectPickerView *)v21 bounds];
     v40 = [v39 initWithFrame:?];
-    v41 = [v40 layer];
-    [v41 setAllowsGroupBlending:0];
+    layer6 = [v40 layer];
+    [layer6 setAllowsGroupBlending:0];
 
     [v40 setAutoresizingMask:18];
     [(CKEffectPickerView *)v21 setHintContainer:v40];
@@ -170,8 +170,8 @@
     v42 = objc_alloc(MEMORY[0x1E69DD250]);
     [(CKEffectPickerView *)v21 bounds];
     v43 = [v42 initWithFrame:?];
-    v44 = [v43 layer];
-    [v44 setAllowsGroupBlending:0];
+    layer7 = [v43 layer];
+    [layer7 setAllowsGroupBlending:0];
 
     [v43 setAutoresizingMask:18];
     [v43 setSemanticContentAttribute:3];
@@ -179,43 +179,43 @@
     [(CKEffectPickerView *)v21 addSubview:v43];
     v217 = v43;
     [v43 setHidden:1];
-    v45 = [MEMORY[0x1E695DF90] dictionary];
-    [(CKEffectPickerView *)v21 setAnimationTimers:v45];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(CKEffectPickerView *)v21 setAnimationTimers:dictionary];
 
     v46 = objc_alloc_init(CKFullScreenEffectManager);
     [(CKEffectPickerView *)v21 setFsem:v46];
-    v47 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
     v216 = v46;
-    v48 = [(CKFullScreenEffectManager *)v46 effectIdentifiers];
-    v49 = v48;
+    effectIdentifiers = [(CKFullScreenEffectManager *)v46 effectIdentifiers];
+    v49 = effectIdentifiers;
     v50 = y;
     v51 = v12;
-    if (v47 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v52 = [v48 reverseObjectEnumerator];
-      v53 = [v52 allObjects];
+      reverseObjectEnumerator = [effectIdentifiers reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v49 = v53;
+      v49 = allObjects;
     }
 
     v54 = width;
     v215 = v49;
     [(CKEffectPickerView *)v21 setMomentIdentifiers:v49];
     v55 = objc_alloc(MEMORY[0x1E69DD250]);
-    v56 = [(CKEffectPickerView *)v21 peekContainer];
-    [v56 bounds];
+    peekContainer = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer bounds];
     v57 = [v55 initWithFrame:?];
 
-    v58 = [v57 layer];
-    [v58 setAllowsGroupOpacity:0];
+    layer8 = [v57 layer];
+    [layer8 setAllowsGroupOpacity:0];
 
-    v59 = [v57 layer];
-    [v59 setAllowsGroupBlending:0];
+    layer9 = [v57 layer];
+    [layer9 setAllowsGroupBlending:0];
 
     [v57 setOpaque:0];
     [v57 setAutoresizingMask:18];
-    v60 = [(CKEffectPickerView *)v21 peekContainer];
-    [v60 addSubview:v57];
+    peekContainer2 = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer2 addSubview:v57];
 
     v214 = v57;
     [(CKEffectPickerView *)v21 setBackgroundView:v57];
@@ -233,8 +233,8 @@
     v66 = [v65 initWithFrame:v61 collectionViewLayout:?];
     [v66 setPagingEnabled:1];
     [v66 setAutoresizingMask:18];
-    v67 = [MEMORY[0x1E69DC888] clearColor];
-    [v66 setBackgroundColor:v67];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v66 setBackgroundColor:clearColor];
 
     [v66 setShowsHorizontalScrollIndicator:0];
     [v66 setShowsVerticalScrollIndicator:0];
@@ -242,8 +242,8 @@
     v69 = +[CKMomentCollectionViewCell reuseIdentifier];
     [v66 registerClass:v68 forCellWithReuseIdentifier:v69];
 
-    v70 = [(CKEffectPickerView *)v21 peekContainer];
-    [v70 addSubview:v66];
+    peekContainer3 = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer3 addSubview:v66];
 
     v223 = v66;
     [(CKEffectPickerView *)v21 setMomentsCollectionView:v66];
@@ -270,15 +270,15 @@
 
     v79 = x;
     v80 = height;
-    v81 = [(CKEffectPickerView *)v21 peekContainer];
-    [v81 addSubview:v77];
+    peekContainer4 = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer4 addSubview:v77];
 
     [(CKEffectPickerView *)v21 setTypeSegmentedControl:v77];
-    v82 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v83 = [v82 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
     v84 = v50;
-    if ((v83 & 1) == 0)
+    if ((isEntryViewRefreshEnabled & 1) == 0)
     {
       v85 = [MEMORY[0x1E6979378] filterWithType:v212];
       [v85 setValue:&unk_1F04E8220 forKey:v210];
@@ -294,10 +294,10 @@
       [v86 setMasksToBounds:1];
       [v86 setScale:0.5];
       [(CKEffectPickerView *)v21 setSegmentedBackdrop:v86];
-      v88 = [(CKEffectPickerView *)v21 peekContainer];
-      v89 = [v88 layer];
-      v90 = [v223 layer];
-      [v89 insertSublayer:v86 above:v90];
+      peekContainer5 = [(CKEffectPickerView *)v21 peekContainer];
+      layer10 = [peekContainer5 layer];
+      layer11 = [v223 layer];
+      [layer10 insertSublayer:v86 above:layer11];
     }
 
     v91 = objc_alloc(MEMORY[0x1E69DCD10]);
@@ -308,13 +308,13 @@
     v96 = [v91 initWithFrame:{*MEMORY[0x1E695F058], v93, v94, v95}];
     [v96 addTarget:v21 action:sel_pageControlChanged_ forControlEvents:4096];
     [v96 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v97 = [(CKEffectPickerView *)v21 momentIdentifiers];
-    [v96 setNumberOfPages:{objc_msgSend(v97, "count")}];
+    momentIdentifiers = [(CKEffectPickerView *)v21 momentIdentifiers];
+    [v96 setNumberOfPages:{objc_msgSend(momentIdentifiers, "count")}];
 
     [v96 setCurrentPage:0];
     [v96 sizeToFit];
-    v98 = [(CKEffectPickerView *)v21 peekContainer];
-    [v98 addSubview:v96];
+    peekContainer6 = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer6 addSubview:v96];
 
     v211 = v96;
     [(CKEffectPickerView *)v21 setPageControl:v96];
@@ -329,13 +329,13 @@
 
     [v99 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v99 sizeToFit];
-    v103 = [(CKEffectPickerView *)v21 peekContainer];
-    [v103 addSubview:v99];
+    peekContainer7 = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer7 addSubview:v99];
 
     v209 = v99;
     [(CKEffectPickerView *)v21 setMainLabel:v99];
-    v104 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v101) = [v104 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(v101) = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
     if (v101)
     {
@@ -346,8 +346,8 @@
       [(CKGlassSendButton *)v105 addTarget:v21 action:sel__touchUpInsideSendMomentButton_ forControlEvents:64];
       [(CKGlassSendButton *)v105 accessibilitySetIdentification:@"sendButton"];
       [(CKGlassSendButton *)v105 setExclusiveTouch:1];
-      v106 = [(CKEffectPickerView *)v21 peekContainer];
-      [v106 addSubview:v105];
+      peekContainer8 = [(CKEffectPickerView *)v21 peekContainer];
+      [peekContainer8 addSubview:v105];
 
       [(CKEffectPickerView *)v21 setSendMomentButton:v105];
     }
@@ -356,21 +356,21 @@
     {
       v105 = [MEMORY[0x1E69DC738] buttonWithType:1];
       v107 = +[CKUIBehavior sharedBehaviors];
-      v108 = [v107 theme];
-      v109 = [v108 sendButtonColorForColorType:*&v84];
+      theme2 = [v107 theme];
+      v109 = [theme2 sendButtonColorForColorType:*&v84];
       [(CKGlassSendButton *)v105 setTintColor:v109];
 
       [(CKGlassSendButton *)v105 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(CKGlassSendButton *)v105 setOpaque:0];
-      v110 = [(CKEffectPickerView *)v21 sendImage];
-      [(CKGlassSendButton *)v105 setImage:v110 forState:0];
-      [(CKGlassSendButton *)v105 setImage:v110 forState:4];
+      sendImage = [(CKEffectPickerView *)v21 sendImage];
+      [(CKGlassSendButton *)v105 setImage:sendImage forState:0];
+      [(CKGlassSendButton *)v105 setImage:sendImage forState:4];
       [(CKGlassSendButton *)v105 setEnabled:1];
       [(CKGlassSendButton *)v105 addTarget:v21 action:sel__touchUpInsideSendMomentButton_ forControlEvents:64];
       [(CKGlassSendButton *)v105 accessibilitySetIdentification:@"sendButton"];
       [(CKGlassSendButton *)v105 setExclusiveTouch:1];
-      v111 = [(CKEffectPickerView *)v21 peekContainer];
-      [v111 addSubview:v105];
+      peekContainer9 = [(CKEffectPickerView *)v21 peekContainer];
+      [peekContainer9 addSubview:v105];
 
       [(CKEffectPickerView *)v21 setSendMomentButton:v105];
     }
@@ -379,13 +379,13 @@
     v113 = [CKUIBehavior fontWithStyle:*MEMORY[0x1E69DDD10] adjustedForMaxSizeCategory:*MEMORY[0x1E69DDC30]];
     [v112 setFont:v113];
 
-    v114 = [(CKEffectPickerView *)v21 peekContainer];
-    [v114 addSubview:v112];
+    peekContainer10 = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer10 addSubview:v112];
 
     v208 = v112;
     [(CKEffectPickerView *)v21 setMomentTitleLabel:v112];
-    v115 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v112) = [v115 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(v112) = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
     if (v112)
     {
@@ -394,8 +394,8 @@
       [(CKPillShapedXButton *)v116 setBounds:0.0, 0.0, v117, v118];
       [(CKPillShapedXButton *)v116 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(CKPillShapedXButton *)v116 addTarget:v21 action:sel__touchUpInsideCloseButton_ forControlEvents:64];
-      v119 = [(CKEffectPickerView *)v21 peekContainer];
-      [v119 addSubview:v116];
+      peekContainer11 = [(CKEffectPickerView *)v21 peekContainer];
+      [peekContainer11 addSubview:v116];
 
       [(CKEffectPickerView *)v21 setCloseButton:v116];
     }
@@ -416,8 +416,8 @@
       [(CKPillShapedXButton *)v116 setBounds:0.0, 0.0, v125, v126 + -4.0];
       [(CKPillShapedXButton *)v116 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(CKPillShapedXButton *)v116 addTarget:v21 action:sel__touchUpInsideCloseButton_ forControlEvents:64];
-      v127 = [(CKEffectPickerView *)v21 peekContainer];
-      [v127 addSubview:v116];
+      peekContainer12 = [(CKEffectPickerView *)v21 peekContainer];
+      [peekContainer12 addSubview:v116];
 
       [(CKEffectPickerView *)v21 setCloseButton:v116];
     }
@@ -445,9 +445,9 @@
     if (objc_opt_isKindOfClass())
     {
       v137 = +[CKUIBehavior sharedBehaviors];
-      v138 = [v137 isAccessibilityPreferredContentSizeCategory];
+      isAccessibilityPreferredContentSizeCategory = [v137 isAccessibilityPreferredContentSizeCategory];
 
-      if (v138)
+      if (isAccessibilityPreferredContentSizeCategory)
       {
         [v129 truncateForLargeText];
       }
@@ -456,36 +456,36 @@
     [v129 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v129 setCanUseOpaqueMask:0];
     [v129 setUserInteractionEnabled:0];
-    v139 = [(CKEffectPickerView *)v21 peekContainer];
-    [v139 addSubview:v129];
+    peekContainer13 = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer13 addSubview:v129];
 
     [(CKEffectPickerView *)v21 setBalloonView:v129];
     [(CKEffectPickerView *)v21 _resizeBalloon];
     v140 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v141 = [v140 layer];
-    [v141 setMasksToBounds:1];
+    layer12 = [v140 layer];
+    [layer12 setMasksToBounds:1];
 
-    v142 = [v140 layer];
-    v143 = [(CKEffectPickerView *)v21 stylingMetrics];
-    [v143 roundTrackContainerViewCornerRadius];
-    [v142 setCornerRadius:?];
+    layer13 = [v140 layer];
+    stylingMetrics = [(CKEffectPickerView *)v21 stylingMetrics];
+    [stylingMetrics roundTrackContainerViewCornerRadius];
+    [layer13 setCornerRadius:?];
 
-    v144 = [v140 layer];
-    [v144 setAllowsGroupOpacity:0];
+    layer14 = [v140 layer];
+    [layer14 setAllowsGroupOpacity:0];
 
-    v145 = [v140 layer];
-    [v145 setAllowsGroupBlending:0];
+    layer15 = [v140 layer];
+    [layer15 setAllowsGroupBlending:0];
 
     [v140 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v140 setUserInteractionEnabled:1];
-    v146 = [(CKEffectPickerView *)v21 peekContainer];
-    [v146 addSubview:v140];
+    peekContainer14 = [(CKEffectPickerView *)v21 peekContainer];
+    [peekContainer14 addSubview:v140];
 
     [(CKEffectPickerView *)v21 setRoundedContainerView:v140];
     v147 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v148 = [v147 layer];
+    layer16 = [v147 layer];
     v149 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-    [v148 setCompositingFilter:v149];
+    [layer16 setCompositingFilter:v149];
 
     [v140 addSubview:v147];
     [v140 bounds];
@@ -493,88 +493,88 @@
     [v147 setAutoresizingMask:18];
     [(CKEffectPickerView *)v21 setRoundedView:v147];
     v150 = MEMORY[0x1E696ACD8];
-    v151 = [(CKEffectPickerView *)v21 closeButton];
-    v152 = [v150 constraintWithItem:v151 attribute:5 relatedBy:0 toItem:v21 attribute:5 multiplier:1.0 constant:v128];
+    closeButton = [(CKEffectPickerView *)v21 closeButton];
+    v152 = [v150 constraintWithItem:closeButton attribute:5 relatedBy:0 toItem:v21 attribute:5 multiplier:1.0 constant:v128];
 
     [(CKEffectPickerView *)v21 addConstraint:v152];
     v153 = MEMORY[0x1E696ACD8];
-    v154 = [(CKEffectPickerView *)v21 sendMomentButton];
-    v155 = [(CKEffectPickerView *)v21 closeButton];
-    v156 = [v153 constraintWithItem:v154 attribute:9 relatedBy:0 toItem:v155 attribute:9 multiplier:1.0 constant:0.0];
+    sendMomentButton = [(CKEffectPickerView *)v21 sendMomentButton];
+    closeButton2 = [(CKEffectPickerView *)v21 closeButton];
+    v156 = [v153 constraintWithItem:sendMomentButton attribute:9 relatedBy:0 toItem:closeButton2 attribute:9 multiplier:1.0 constant:0.0];
 
     [(CKEffectPickerView *)v21 addConstraint:v156];
     v157 = MEMORY[0x1E696ACD8];
-    v158 = [(CKEffectPickerView *)v21 roundedContainerView];
-    v159 = [(CKEffectPickerView *)v21 closeButton];
-    v160 = [v157 constraintWithItem:v158 attribute:9 relatedBy:0 toItem:v159 attribute:9 multiplier:1.0 constant:0.0];
+    roundedContainerView = [(CKEffectPickerView *)v21 roundedContainerView];
+    closeButton3 = [(CKEffectPickerView *)v21 closeButton];
+    v160 = [v157 constraintWithItem:roundedContainerView attribute:9 relatedBy:0 toItem:closeButton3 attribute:9 multiplier:1.0 constant:0.0];
 
     [(CKEffectPickerView *)v21 addConstraint:v160];
     v161 = MEMORY[0x1E696ACD8];
-    v162 = [(CKEffectPickerView *)v21 roundedContainerView];
-    v163 = [(CKEffectPickerView *)v21 stylingMetrics];
-    [v163 roundTrackContainerViewWidth];
-    v165 = [v161 constraintWithItem:v162 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v164];
+    roundedContainerView2 = [(CKEffectPickerView *)v21 roundedContainerView];
+    stylingMetrics2 = [(CKEffectPickerView *)v21 stylingMetrics];
+    [stylingMetrics2 roundTrackContainerViewWidth];
+    v165 = [v161 constraintWithItem:roundedContainerView2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v164];
 
     [(CKEffectPickerView *)v21 addConstraint:v165];
     v166 = MEMORY[0x1E696ACD8];
-    v167 = [(CKEffectPickerView *)v21 typeSegmentedControl];
-    v168 = [v166 constraintWithItem:v167 attribute:3 relatedBy:0 toItem:v21 attribute:3 multiplier:1.0 constant:70.0];
+    typeSegmentedControl = [(CKEffectPickerView *)v21 typeSegmentedControl];
+    v168 = [v166 constraintWithItem:typeSegmentedControl attribute:3 relatedBy:0 toItem:v21 attribute:3 multiplier:1.0 constant:70.0];
 
     [v168 setIdentifier:@"typeSegmentedControlBottom"];
     [(CKEffectPickerView *)v21 setTypeSegmentedControlBottomConstraint:v168];
     [(CKEffectPickerView *)v21 addConstraint:v168];
     v169 = MEMORY[0x1E696ACD8];
-    v170 = [(CKEffectPickerView *)v21 typeSegmentedControl];
-    v171 = [v169 constraintWithItem:v170 attribute:9 relatedBy:0 toItem:v21 attribute:9 multiplier:1.0 constant:0.0];
+    typeSegmentedControl2 = [(CKEffectPickerView *)v21 typeSegmentedControl];
+    v171 = [v169 constraintWithItem:typeSegmentedControl2 attribute:9 relatedBy:0 toItem:v21 attribute:9 multiplier:1.0 constant:0.0];
 
     [(CKEffectPickerView *)v21 addConstraint:v171];
     v172 = MEMORY[0x1E696ACD8];
-    v173 = [(CKEffectPickerView *)v21 mainLabel];
-    v174 = [v172 constraintWithItem:v173 attribute:11 relatedBy:0 toItem:v21 attribute:3 multiplier:1.0 constant:50.0];
+    mainLabel = [(CKEffectPickerView *)v21 mainLabel];
+    v174 = [v172 constraintWithItem:mainLabel attribute:11 relatedBy:0 toItem:v21 attribute:3 multiplier:1.0 constant:50.0];
 
     [v174 setIdentifier:@"mainLabelBottom"];
     [(CKEffectPickerView *)v21 setMainLabelBottomConstraint:v174];
     [(CKEffectPickerView *)v21 addConstraint:v174];
     v175 = MEMORY[0x1E696ACD8];
-    v176 = [(CKEffectPickerView *)v21 mainLabel];
-    v177 = [v175 constraintWithItem:v176 attribute:9 relatedBy:0 toItem:v21 attribute:9 multiplier:1.0 constant:0.0];
+    mainLabel2 = [(CKEffectPickerView *)v21 mainLabel];
+    v177 = [v175 constraintWithItem:mainLabel2 attribute:9 relatedBy:0 toItem:v21 attribute:9 multiplier:1.0 constant:0.0];
 
     [(CKEffectPickerView *)v21 addConstraint:v177];
     v178 = MEMORY[0x1E696ACD8];
-    v179 = [(CKEffectPickerView *)v21 mainLabel];
-    v180 = [v178 constraintWithItem:v179 attribute:5 relatedBy:1 toItem:v21 attribute:5 multiplier:1.0 constant:20.0];
+    mainLabel3 = [(CKEffectPickerView *)v21 mainLabel];
+    v180 = [v178 constraintWithItem:mainLabel3 attribute:5 relatedBy:1 toItem:v21 attribute:5 multiplier:1.0 constant:20.0];
 
     [(CKEffectPickerView *)v21 addConstraint:v180];
     v181 = MEMORY[0x1E696ACD8];
-    v182 = [(CKEffectPickerView *)v21 mainLabel];
-    v183 = [v181 constraintWithItem:v182 attribute:6 relatedBy:1 toItem:v21 attribute:6 multiplier:1.0 constant:-20.0];
+    mainLabel4 = [(CKEffectPickerView *)v21 mainLabel];
+    v183 = [v181 constraintWithItem:mainLabel4 attribute:6 relatedBy:1 toItem:v21 attribute:6 multiplier:1.0 constant:-20.0];
 
     [(CKEffectPickerView *)v21 addConstraint:v183];
     if ([(CKEffectPickerView *)v21 _keyboardIsOnTopOfEffectPickerWindow]&& UIKeyboardAutomaticIsOnScreen())
     {
       v184 = MEMORY[0x1E696ACD8];
-      v185 = [(CKEffectPickerView *)v21 pageControl];
-      v186 = [(CKEffectPickerView *)v21 closeButton];
+      pageControl = [(CKEffectPickerView *)v21 pageControl];
+      closeButton4 = [(CKEffectPickerView *)v21 closeButton];
       v187 = 1.0;
       v188 = 0.0;
       v189 = v184;
-      v190 = v185;
+      v190 = pageControl;
       v191 = 10;
-      v192 = v186;
+      v192 = closeButton4;
       v193 = 10;
     }
 
     else
     {
       v194 = MEMORY[0x1E696ACD8];
-      v185 = [(CKEffectPickerView *)v21 pageControl];
-      v186 = [(CKEffectPickerView *)v21 peekContainer];
+      pageControl = [(CKEffectPickerView *)v21 pageControl];
+      closeButton4 = [(CKEffectPickerView *)v21 peekContainer];
       v187 = 1.0;
       v188 = -20.0;
       v189 = v194;
-      v190 = v185;
+      v190 = pageControl;
       v191 = 4;
-      v192 = v186;
+      v192 = closeButton4;
       v193 = 4;
     }
 
@@ -583,9 +583,9 @@
     [v195 setIdentifier:@"pageControlBottom"];
     [(CKEffectPickerView *)v21 addConstraint:v195];
     v196 = MEMORY[0x1E696ACD8];
-    v197 = [(CKEffectPickerView *)v21 pageControl];
-    v198 = [(CKEffectPickerView *)v21 peekContainer];
-    v199 = [v196 constraintWithItem:v197 attribute:7 relatedBy:0 toItem:v198 attribute:7 multiplier:1.0 constant:0.0];
+    pageControl2 = [(CKEffectPickerView *)v21 pageControl];
+    peekContainer15 = [(CKEffectPickerView *)v21 peekContainer];
+    v199 = [v196 constraintWithItem:pageControl2 attribute:7 relatedBy:0 toItem:peekContainer15 attribute:7 multiplier:1.0 constant:0.0];
 
     [(CKEffectPickerView *)v21 addConstraint:v199];
     [(CKEffectPickerView *)v21 activateTextSizeDependentConstraintsForSendButtonFrame:v128, v51, v54, v80];
@@ -595,28 +595,28 @@
     [(CKEffectPickerView *)v21 _updateBalloonViewPositionAnimated:0];
     [(CKEffectPickerView *)v21 updateMomentTitle:0];
     [(CKEffectPickerView *)v21 effectTypeDidChange:v77];
-    v201 = [MEMORY[0x1E695DF90] dictionary];
-    [(CKEffectPickerView *)v21 setAnimatedCells:v201];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(CKEffectPickerView *)v21 setAnimatedCells:dictionary2];
 
-    v202 = [MEMORY[0x1E695DF90] dictionary];
-    [(CKEffectPickerView *)v21 setPausedAnimatedCells:v202];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [(CKEffectPickerView *)v21 setPausedAnimatedCells:dictionary3];
 
-    v203 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v203 addObserver:v21 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v21 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 
-    v204 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v204 addObserver:v21 selector:sel__applicationWillEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v21 selector:sel__applicationWillEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v205 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v205 addObserver:v21 selector:sel__accessibilityContrastStatusDidChange name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v21 selector:sel__accessibilityContrastStatusDidChange name:*MEMORY[0x1E69DD920] object:0];
 
-    v206 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v206 addObserver:v21 selector:sel__accessibilityContrastStatusDidChange name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v21 selector:sel__accessibilityContrastStatusDidChange name:*MEMORY[0x1E69DD8B8] object:0];
 
     [(CKEffectPickerView *)v21 _accessibilityContrastStatusDidChange];
     [(CKEffectPickerView *)v21 updateViewColors];
 
-    v20 = v224;
+    compositionCopy = v224;
     v19 = v225;
   }
 
@@ -625,173 +625,173 @@
 
 - (void)updateViewColors
 {
-  v3 = [(CKEffectPickerView *)self momentIdentifiers];
-  v4 = [(CKEffectPickerView *)self pageControl];
-  v9 = [v3 objectAtIndex:{objc_msgSend(v4, "currentPage")}];
+  momentIdentifiers = [(CKEffectPickerView *)self momentIdentifiers];
+  pageControl = [(CKEffectPickerView *)self pageControl];
+  v9 = [momentIdentifiers objectAtIndex:{objc_msgSend(pageControl, "currentPage")}];
 
-  v5 = [(CKEffectPickerView *)self fsem];
-  v6 = [v5 effectForIdentifier:v9];
+  fsem = [(CKEffectPickerView *)self fsem];
+  v6 = [fsem effectForIdentifier:v9];
 
-  v7 = [(CKEffectPickerView *)self typeSegmentedControl];
-  if ([v7 selectedSegmentIndex] == 1)
+  typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+  if ([typeSegmentedControl selectedSegmentIndex] == 1)
   {
-    v8 = [v6 effectIsDark];
+    effectIsDark = [v6 effectIsDark];
   }
 
   else
   {
-    v8 = 0;
+    effectIsDark = 0;
   }
 
-  [(CKEffectPickerView *)self updateViewColors:v8];
+  [(CKEffectPickerView *)self updateViewColors:effectIsDark];
 }
 
-- (void)updateViewColors:(BOOL)a3
+- (void)updateViewColors:(BOOL)colors
 {
   v88 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
-    v7 = [(CKEffectPickerView *)self typeSegmentedControl];
+    typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 theme];
-    v10 = v9;
-    if (a3)
+    theme = [v8 theme];
+    v10 = theme;
+    if (colors)
     {
-      [v9 fsmPickerPrimaryTintColorDarkEffect];
+      [theme fsmPickerPrimaryTintColorDarkEffect];
     }
 
     else
     {
-      [v9 fsmPickerPrimaryTintColor];
+      [theme fsmPickerPrimaryTintColor];
     }
     v11 = ;
-    [v7 setTintColor:v11];
+    [typeSegmentedControl setTintColor:v11];
 
-    v12 = [(CKEffectPickerView *)self segmentedBackdrop];
+    segmentedBackdrop = [(CKEffectPickerView *)self segmentedBackdrop];
     v13 = +[CKUIBehavior sharedBehaviors];
-    v14 = [v13 theme];
-    v15 = v14;
-    if (a3)
+    theme2 = [v13 theme];
+    v15 = theme2;
+    if (colors)
     {
-      v16 = [v14 fsmPickerSecondaryColorDarkEffect];
-      v17 = [v16 cgColor];
+      fsmPickerSecondaryColorDarkEffect = [theme2 fsmPickerSecondaryColorDarkEffect];
+      cgColor = [fsmPickerSecondaryColorDarkEffect cgColor];
     }
 
     else
     {
-      v16 = [v14 fsmPickerSecondaryColor];
-      v17 = [v16 CGColor];
+      fsmPickerSecondaryColorDarkEffect = [theme2 fsmPickerSecondaryColor];
+      cgColor = [fsmPickerSecondaryColorDarkEffect CGColor];
     }
 
-    [v12 setBackgroundColor:v17];
+    [segmentedBackdrop setBackgroundColor:cgColor];
   }
 
-  v18 = [(CKEffectPickerView *)self pageControl];
+  pageControl = [(CKEffectPickerView *)self pageControl];
   v19 = +[CKUIBehavior sharedBehaviors];
-  v20 = [v19 theme];
-  v21 = v20;
-  if (a3)
+  theme3 = [v19 theme];
+  v21 = theme3;
+  if (colors)
   {
-    [v20 fsmPickerPageIndicatorColorDarkEffect];
+    [theme3 fsmPickerPageIndicatorColorDarkEffect];
   }
 
   else
   {
-    [v20 fsmPickerPageIndicatorColor];
+    [theme3 fsmPickerPageIndicatorColor];
   }
   v22 = ;
-  [v18 setPageIndicatorTintColor:v22];
+  [pageControl setPageIndicatorTintColor:v22];
 
-  v23 = [(CKEffectPickerView *)self pageControl];
+  pageControl2 = [(CKEffectPickerView *)self pageControl];
   v24 = +[CKUIBehavior sharedBehaviors];
-  v25 = [v24 theme];
-  v26 = v25;
-  if (a3)
+  theme4 = [v24 theme];
+  v26 = theme4;
+  if (colors)
   {
-    [v25 fsmPickerCurrentPageIndicatorColorDarkEffect];
+    [theme4 fsmPickerCurrentPageIndicatorColorDarkEffect];
   }
 
   else
   {
-    [v25 fsmPickerCurrentPageIndicatorColor];
+    [theme4 fsmPickerCurrentPageIndicatorColor];
   }
   v27 = ;
-  [v23 setCurrentPageIndicatorTintColor:v27];
+  [pageControl2 setCurrentPageIndicatorTintColor:v27];
 
-  v28 = [(CKEffectPickerView *)self mainLabel];
+  mainLabel = [(CKEffectPickerView *)self mainLabel];
   v29 = +[CKUIBehavior sharedBehaviors];
-  v30 = [v29 theme];
-  v31 = v30;
-  if (a3)
+  theme5 = [v29 theme];
+  v31 = theme5;
+  if (colors)
   {
-    [v30 fsmPickerPrimaryColorDarkEffect];
+    [theme5 fsmPickerPrimaryColorDarkEffect];
   }
 
   else
   {
-    [v30 fsmPickerPrimaryColor];
+    [theme5 fsmPickerPrimaryColor];
   }
   v32 = ;
-  [v28 setTextColor:v32];
+  [mainLabel setTextColor:v32];
 
-  v33 = [(CKEffectPickerView *)self momentTitleLabel];
+  momentTitleLabel = [(CKEffectPickerView *)self momentTitleLabel];
   v34 = +[CKUIBehavior sharedBehaviors];
-  v35 = [v34 theme];
-  v36 = v35;
-  if (a3)
+  theme6 = [v34 theme];
+  v36 = theme6;
+  if (colors)
   {
-    [v35 fsmPickerPrimaryColorDarkEffect];
+    [theme6 fsmPickerPrimaryColorDarkEffect];
   }
 
   else
   {
-    [v35 fsmPickerPrimaryColor];
+    [theme6 fsmPickerPrimaryColor];
   }
   v37 = ;
-  [v33 setTextColor:v37];
+  [momentTitleLabel setTextColor:v37];
 
-  v38 = [(CKEffectPickerView *)self closeButton];
+  closeButton = [(CKEffectPickerView *)self closeButton];
   v39 = +[CKUIBehavior sharedBehaviors];
-  v40 = [v39 theme];
-  v41 = v40;
-  if (a3)
+  theme7 = [v39 theme];
+  v41 = theme7;
+  if (colors)
   {
-    [v40 fsmPickerCloseButtonColorDarkEffect];
+    [theme7 fsmPickerCloseButtonColorDarkEffect];
   }
 
   else
   {
-    [v40 fsmPickerCloseButtonColor];
+    [theme7 fsmPickerCloseButtonColor];
   }
   v42 = ;
-  [v38 setTintColor:v42];
+  [closeButton setTintColor:v42];
 
-  v43 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
+  accessibilityCloseBackgroundView = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
   v44 = +[CKUIBehavior sharedBehaviors];
-  v45 = [v44 theme];
-  v46 = v45;
-  if (a3)
+  theme8 = [v44 theme];
+  v46 = theme8;
+  if (colors)
   {
-    [v45 fsmPickerSecondaryColorDarkEffect];
+    [theme8 fsmPickerSecondaryColorDarkEffect];
   }
 
   else
   {
-    [v45 fsmPickerSecondaryColor];
+    [theme8 fsmPickerSecondaryColor];
   }
   v47 = ;
-  [v43 setBackgroundColor:v47];
+  [accessibilityCloseBackgroundView setBackgroundColor:v47];
 
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v77 = self;
-  v48 = [(CKEffectPickerView *)self effectLabels];
-  v49 = [v48 countByEnumeratingWithState:&v82 objects:v87 count:16];
+  selfCopy = self;
+  effectLabels = [(CKEffectPickerView *)self effectLabels];
+  v49 = [effectLabels countByEnumeratingWithState:&v82 objects:v87 count:16];
   if (v49)
   {
     v50 = v49;
@@ -802,27 +802,27 @@
       {
         if (*v83 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(effectLabels);
         }
 
         v53 = *(*(&v82 + 1) + 8 * i);
         v54 = +[CKUIBehavior sharedBehaviors];
-        v55 = [v54 theme];
-        v56 = v55;
-        if (a3)
+        theme9 = [v54 theme];
+        v56 = theme9;
+        if (colors)
         {
-          [v55 fsmPickerPrimaryColorDarkEffect];
+          [theme9 fsmPickerPrimaryColorDarkEffect];
         }
 
         else
         {
-          [v55 fsmPickerPrimaryColor];
+          [theme9 fsmPickerPrimaryColor];
         }
         v57 = ;
         [v53 setTextColor:v57];
       }
 
-      v50 = [v48 countByEnumeratingWithState:&v82 objects:v87 count:16];
+      v50 = [effectLabels countByEnumeratingWithState:&v82 objects:v87 count:16];
     }
 
     while (v50);
@@ -832,8 +832,8 @@
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v58 = [(CKEffectPickerView *)v77 effectDescriptiveLabels];
-  v59 = [v58 countByEnumeratingWithState:&v78 objects:v86 count:16];
+  effectDescriptiveLabels = [(CKEffectPickerView *)selfCopy effectDescriptiveLabels];
+  v59 = [effectDescriptiveLabels countByEnumeratingWithState:&v78 objects:v86 count:16];
   if (v59)
   {
     v60 = v59;
@@ -844,59 +844,59 @@
       {
         if (*v79 != v61)
         {
-          objc_enumerationMutation(v58);
+          objc_enumerationMutation(effectDescriptiveLabels);
         }
 
         v63 = *(*(&v78 + 1) + 8 * j);
         v64 = +[CKUIBehavior sharedBehaviors];
-        v65 = [v64 theme];
-        v66 = v65;
-        if (a3)
+        theme10 = [v64 theme];
+        v66 = theme10;
+        if (colors)
         {
-          [v65 fsmPickerPrimaryColorDarkEffect];
+          [theme10 fsmPickerPrimaryColorDarkEffect];
         }
 
         else
         {
-          [v65 fsmPickerPrimaryColor];
+          [theme10 fsmPickerPrimaryColor];
         }
         v67 = ;
         [v63 setTextColor:v67];
       }
 
-      v60 = [v58 countByEnumeratingWithState:&v78 objects:v86 count:16];
+      v60 = [effectDescriptiveLabels countByEnumeratingWithState:&v78 objects:v86 count:16];
     }
 
     while (v60);
   }
 
-  v68 = [(CKEffectPickerView *)v77 roundedView];
+  roundedView = [(CKEffectPickerView *)selfCopy roundedView];
   v69 = +[CKUIBehavior sharedBehaviors];
-  v70 = [v69 theme];
-  v71 = [v70 fsmPickerRoundedViewColor];
-  [v68 setBackgroundColor:v71];
+  theme11 = [v69 theme];
+  fsmPickerRoundedViewColor = [theme11 fsmPickerRoundedViewColor];
+  [roundedView setBackgroundColor:fsmPickerRoundedViewColor];
 
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v72 = [(CKEffectPickerView *)v77 backgroundView];
+    backgroundView = [(CKEffectPickerView *)selfCopy backgroundView];
   }
 
   else
   {
     v73 = UIAccessibilityDarkerSystemColorsEnabled();
-    v72 = [(CKEffectPickerView *)v77 backgroundView];
+    backgroundView = [(CKEffectPickerView *)selfCopy backgroundView];
     if (!v73)
     {
       v74 = +[CKUIBehavior sharedBehaviors];
-      v75 = [v74 theme];
-      v76 = [v75 fsmPickerBackgroundViewColor];
-      [v72 setBackgroundColor:v76];
+      theme12 = [v74 theme];
+      fsmPickerBackgroundViewColor = [theme12 fsmPickerBackgroundViewColor];
+      [backgroundView setBackgroundColor:fsmPickerBackgroundViewColor];
 
       goto LABEL_52;
     }
   }
 
-  [v72 setBackgroundColor:0];
+  [backgroundView setBackgroundColor:0];
 LABEL_52:
 }
 
@@ -910,8 +910,8 @@ LABEL_52:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(CKEffectPickerView *)self constraints];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  constraints = [(CKEffectPickerView *)self constraints];
+  v8 = [constraints countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -925,24 +925,24 @@ LABEL_52:
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(constraints);
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        v17 = [v16 isEqualToString:@"pageControlBottom"];
+        identifier = [v15 identifier];
+        v17 = [identifier isEqualToString:@"pageControlBottom"];
 
         v18 = v13;
         if ((v17 & 1) == 0)
         {
-          v19 = [v15 identifier];
-          v20 = [v19 isEqualToString:@"mainLabelBottom"];
+          identifier2 = [v15 identifier];
+          v20 = [identifier2 isEqualToString:@"mainLabelBottom"];
 
           v18 = v12;
           if ((v20 & 1) == 0)
           {
-            v21 = [v15 identifier];
-            v22 = [v21 isEqualToString:@"typeSegmentedControlBottom"];
+            identifier3 = [v15 identifier];
+            v22 = [identifier3 isEqualToString:@"typeSegmentedControlBottom"];
 
             v18 = v11;
             if (!v22)
@@ -955,7 +955,7 @@ LABEL_52:
         [v15 setConstant:v18];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:{16, v18}];
+      v9 = [constraints countByEnumeratingWithState:&v23 objects:v27 count:{16, v18}];
     }
 
     while (v9);
@@ -964,28 +964,28 @@ LABEL_52:
 
 - (int64_t)selectedMomentIndex
 {
-  v3 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v3 frame];
+  momentsCollectionView = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView frame];
   v5 = v4;
 
-  v6 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v6 contentOffset];
+  momentsCollectionView2 = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView2 contentOffset];
   *&v7 = v7 / v5;
   v8 = llroundf(*&v7);
 
   return v8;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = [(CKEffectPickerView *)self selectedMomentIndex];
-  v5 = [(CKEffectPickerView *)self pageControl];
-  v6 = [v5 currentPage];
+  selectedMomentIndex = [(CKEffectPickerView *)self selectedMomentIndex];
+  pageControl = [(CKEffectPickerView *)self pageControl];
+  currentPage = [pageControl currentPage];
 
-  if (v6 != v4)
+  if (currentPage != selectedMomentIndex)
   {
-    v7 = [(CKEffectPickerView *)self pageControl];
-    [v7 setCurrentPage:v4];
+    pageControl2 = [(CKEffectPickerView *)self pageControl];
+    [pageControl2 setCurrentPage:selectedMomentIndex];
 
     [(CKEffectPickerView *)self updateMomentTitle:0];
   }
@@ -994,8 +994,8 @@ LABEL_52:
 - (void)dealloc
 {
   [(CKEffectPickerView *)self setDelegate:0];
-  v3 = [(CKEffectPickerView *)self balloonView];
-  v4 = [v3 layer];
+  balloonView = [(CKEffectPickerView *)self balloonView];
+  layer = [balloonView layer];
   v5 = *(MEMORY[0x1E69792E8] + 80);
   v18[4] = *(MEMORY[0x1E69792E8] + 64);
   v18[5] = v5;
@@ -1008,15 +1008,15 @@ LABEL_52:
   v8 = *(MEMORY[0x1E69792E8] + 48);
   v18[2] = *(MEMORY[0x1E69792E8] + 32);
   v18[3] = v8;
-  [v4 setTransform:v18];
+  [layer setTransform:v18];
 
-  v9 = [(CKEffectPickerView *)self balloonView];
-  [v9 _removeAllAnimations:1];
+  balloonView2 = [(CKEffectPickerView *)self balloonView];
+  [balloonView2 _removeAllAnimations:1];
 
-  v10 = [(CKEffectPickerView *)self balloonView];
-  [v10 setUserInteractionEnabled:1];
+  balloonView3 = [(CKEffectPickerView *)self balloonView];
+  [balloonView3 setUserInteractionEnabled:1];
 
-  v11 = [(CKEffectPickerView *)self balloonView];
+  balloonView4 = [(CKEffectPickerView *)self balloonView];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1024,23 +1024,23 @@ LABEL_52:
   }
 
   v12 = +[CKUIBehavior sharedBehaviors];
-  v13 = [v12 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v12 isAccessibilityPreferredContentSizeCategory];
 
-  if (v13)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
-    v11 = [(CKEffectPickerView *)self balloonView];
-    [v11 restoreFromLargeTextTruncation];
+    balloonView4 = [(CKEffectPickerView *)self balloonView];
+    [balloonView4 restoreFromLargeTextTruncation];
 LABEL_4:
   }
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
 
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
 
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
 
   v17.receiver = self;
   v17.super_class = CKEffectPickerView;
@@ -1053,128 +1053,128 @@ LABEL_4:
   v57.super_class = CKEffectPickerView;
   [(CKEffectPickerView *)&v57 layoutSubviews];
   [(CKEffectPickerView *)self _updateBalloonViewPositionAnimated:0];
-  v3 = [(CKEffectPickerView *)self backdrop];
-  v4 = [(CKEffectPickerView *)self layer];
-  [v4 bounds];
-  [v3 setFrame:?];
+  backdrop = [(CKEffectPickerView *)self backdrop];
+  layer = [(CKEffectPickerView *)self layer];
+  [layer bounds];
+  [backdrop setFrame:?];
 
   if (UIAccessibilityIsReduceTransparencyEnabled() || UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v5 = [(CKEffectPickerView *)self accessibilityBackdropView];
+    accessibilityBackdropView = [(CKEffectPickerView *)self accessibilityBackdropView];
     [(CKEffectPickerView *)self bounds];
-    [v5 setFrame:?];
+    [accessibilityBackdropView setFrame:?];
 
-    v6 = [(CKEffectPickerView *)self sendMomentButton];
-    [v6 frame];
+    sendMomentButton = [(CKEffectPickerView *)self sendMomentButton];
+    [sendMomentButton frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
-    [v15 setFrame:{v8 + 2.0, v10 + 2.0, v12 + -4.0, v14 + -4.0}];
+    accessibilitySendBackgroundView = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+    [accessibilitySendBackgroundView setFrame:{v8 + 2.0, v10 + 2.0, v12 + -4.0, v14 + -4.0}];
 
-    v16 = [(CKEffectPickerView *)self closeButton];
-    [v16 frame];
+    closeButton = [(CKEffectPickerView *)self closeButton];
+    [closeButton frame];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
 
-    v25 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
-    [v25 setFrame:{v18 + 2.0, v20 + 2.0, v22 + -4.0, v24 + -4.0}];
+    accessibilityCloseBackgroundView = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
+    [accessibilityCloseBackgroundView setFrame:{v18 + 2.0, v20 + 2.0, v22 + -4.0, v24 + -4.0}];
 
-    v26 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
-    v27 = [v26 layer];
-    v28 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
-    [v28 bounds];
-    [v27 setCornerRadius:v29 * 0.5];
+    accessibilitySendBackgroundView2 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+    layer2 = [accessibilitySendBackgroundView2 layer];
+    accessibilitySendBackgroundView3 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+    [accessibilitySendBackgroundView3 bounds];
+    [layer2 setCornerRadius:v29 * 0.5];
 
-    v30 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
-    v31 = [v30 layer];
-    v32 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
-    [v32 bounds];
-    [v31 setCornerRadius:v33 * 0.5];
+    accessibilityCloseBackgroundView2 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
+    layer3 = [accessibilityCloseBackgroundView2 layer];
+    accessibilityCloseBackgroundView3 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
+    [accessibilityCloseBackgroundView3 bounds];
+    [layer3 setCornerRadius:v33 * 0.5];
 
-    v34 = [(CKEffectPickerView *)self typeSegmentedControl];
-    v35 = [v34 selectedSegmentIndex];
+    typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+    selectedSegmentIndex = [typeSegmentedControl selectedSegmentIndex];
 
-    if (!v35)
+    if (!selectedSegmentIndex)
     {
-      v36 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
-      [v36 setHidden:1];
+      accessibilitySendBackgroundView4 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+      [accessibilitySendBackgroundView4 setHidden:1];
     }
   }
 
-  v37 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v38 = [v37 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v38 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
-    v39 = [(CKEffectPickerView *)self segmentedBackdrop];
+    segmentedBackdrop = [(CKEffectPickerView *)self segmentedBackdrop];
     [(CKEffectPickerView *)self bounds];
     v41 = v40 * 0.5;
-    v42 = [(CKEffectPickerView *)self segmentedBackdrop];
-    [v42 bounds];
+    segmentedBackdrop2 = [(CKEffectPickerView *)self segmentedBackdrop];
+    [segmentedBackdrop2 bounds];
     v44 = v41 - v43 * 0.5;
-    v45 = [(CKEffectPickerView *)self typeSegmentedControlBottomConstraint];
-    [v45 constant];
+    typeSegmentedControlBottomConstraint = [(CKEffectPickerView *)self typeSegmentedControlBottomConstraint];
+    [typeSegmentedControlBottomConstraint constant];
     v47 = v46;
-    v48 = [(CKEffectPickerView *)self segmentedBackdrop];
-    [v48 bounds];
+    segmentedBackdrop3 = [(CKEffectPickerView *)self segmentedBackdrop];
+    [segmentedBackdrop3 bounds];
     v50 = v49;
-    v51 = [(CKEffectPickerView *)self segmentedBackdrop];
-    [v51 bounds];
-    [v39 setFrame:{v44, v47, v50}];
+    segmentedBackdrop4 = [(CKEffectPickerView *)self segmentedBackdrop];
+    [segmentedBackdrop4 bounds];
+    [segmentedBackdrop setFrame:{v44, v47, v50}];
   }
 
-  v52 = [(CKEffectPickerView *)self momentsCollectionView];
-  v53 = [v52 collectionViewLayout];
-  [v52 bounds];
+  momentsCollectionView = [(CKEffectPickerView *)self momentsCollectionView];
+  collectionViewLayout = [momentsCollectionView collectionViewLayout];
+  [momentsCollectionView bounds];
   v55 = v54;
-  [v52 bounds];
-  [v53 setItemSize:{v55, v56}];
+  [momentsCollectionView bounds];
+  [collectionViewLayout setItemSize:{v55, v56}];
 }
 
-- (void)updateHintTransition:(double)a3
+- (void)updateHintTransition:(double)transition
 {
   if (![(CKEffectPickerView *)self isAnimating])
   {
-    v5 = [(CKEffectPickerView *)self hintBlackText];
+    hintBlackText = [(CKEffectPickerView *)self hintBlackText];
 
-    if (a3 < 1.0 && v5 == 0)
+    if (transition < 1.0 && hintBlackText == 0)
     {
       [(CKEffectPickerView *)self _resizeBalloon];
       [(CKEffectPickerView *)self _updateBalloonViewPositionAnimated:0];
-      v10 = [(CKEffectPickerView *)self balloonView];
+      balloonView = [(CKEffectPickerView *)self balloonView];
       [(CKEffectPickerView *)self balloonViewOrigin];
       v12 = v11 + 1.0;
-      v13 = [(CKEffectPickerView *)self balloonView];
-      [v13 origin];
-      [v10 setOrigin:{v12, v14 + 3.0}];
+      balloonView2 = [(CKEffectPickerView *)self balloonView];
+      [balloonView2 origin];
+      [balloonView setOrigin:{v12, v14 + 3.0}];
 
-      v15 = [(CKEffectPickerView *)self _blackTextReplica];
-      if (!v15)
+      _blackTextReplica = [(CKEffectPickerView *)self _blackTextReplica];
+      if (!_blackTextReplica)
       {
-        v15 = [(CKEffectPickerView *)self balloonView];
+        _blackTextReplica = [(CKEffectPickerView *)self balloonView];
       }
 
       [(CKEffectPickerView *)self balloonViewOrigin];
-      [v15 setOrigin:?];
-      v16 = [(CKEffectPickerView *)self hintContainer];
-      [v16 addSubview:v15];
+      [_blackTextReplica setOrigin:?];
+      hintContainer = [(CKEffectPickerView *)self hintContainer];
+      [hintContainer addSubview:_blackTextReplica];
 
-      [(CKEffectPickerView *)self setHintBlackText:v15];
-      v17 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v18 = [v17 isEntryViewRefreshEnabled];
+      [(CKEffectPickerView *)self setHintBlackText:_blackTextReplica];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-      if (v18)
+      if (isEntryViewRefreshEnabled)
       {
         v19 = objc_alloc_init(CKGlassSendButton);
         [(CKGlassSendButton *)v19 setCkTintColor:[(CKEffectPickerView *)self controlColor]];
         [(CKGlassSendButton *)v19 setOpaque:0];
-        v20 = [(CKEffectPickerView *)self closeButton];
-        [v20 frame];
+        closeButton = [(CKEffectPickerView *)self closeButton];
+        [closeButton frame];
         v22 = v21;
         v24 = v23;
 
@@ -1182,8 +1182,8 @@ LABEL_4:
         [(CKGlassSendButton *)v19 setBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v25, v26];
         [(CKGlassSendButton *)v19 setTranslatesAutoresizingMaskIntoConstraints:1];
         [(CKGlassSendButton *)v19 setOrigin:v22, v24];
-        v27 = [(CKEffectPickerView *)self hintContainer];
-        [v27 addSubview:v19];
+        hintContainer2 = [(CKEffectPickerView *)self hintContainer];
+        [hintContainer2 addSubview:v19];
 
         [(CKEffectPickerView *)self setHintSendButton:v19];
       }
@@ -1191,16 +1191,16 @@ LABEL_4:
       else
       {
         v28 = +[CKUIBehavior sharedBehaviors];
-        v29 = [v28 theme];
-        v19 = [v29 sendButtonColorForColorType:{-[CKEffectPickerView controlColor](self, "controlColor")}];
+        theme = [v28 theme];
+        v19 = [theme sendButtonColorForColorType:{-[CKEffectPickerView controlColor](self, "controlColor")}];
 
         v30 = [MEMORY[0x1E69DC738] buttonWithType:1];
-        v31 = [(CKEffectPickerView *)self sendImage];
-        [v30 setImage:v31 forState:0];
-        [v30 setImage:v31 forState:4];
+        sendImage = [(CKEffectPickerView *)self sendImage];
+        [v30 setImage:sendImage forState:0];
+        [v30 setImage:sendImage forState:4];
         [v30 setOpaque:0];
-        v32 = [(CKEffectPickerView *)self closeButton];
-        [v32 frame];
+        closeButton2 = [(CKEffectPickerView *)self closeButton];
+        [closeButton2 frame];
         v34 = v33;
         v36 = v35;
         v38 = v37;
@@ -1210,8 +1210,8 @@ LABEL_4:
         [v30 setTintColor:v19];
         [v30 setTranslatesAutoresizingMaskIntoConstraints:1];
         [v30 setOrigin:{v34, v36}];
-        v41 = [(CKEffectPickerView *)self hintContainer];
-        [v41 addSubview:v30];
+        hintContainer3 = [(CKEffectPickerView *)self hintContainer];
+        [hintContainer3 addSubview:v30];
 
         [(CKEffectPickerView *)self setHintSendButton:v30];
       }
@@ -1219,23 +1219,23 @@ LABEL_4:
 
     else
     {
-      v7 = [(CKEffectPickerView *)self hintBlackText];
+      hintBlackText2 = [(CKEffectPickerView *)self hintBlackText];
 
-      if (a3 == 1.0 && v7)
+      if (transition == 1.0 && hintBlackText2)
       {
-        v8 = [(CKEffectPickerView *)self hintBlackText];
-        [v8 removeFromSuperview];
+        hintBlackText3 = [(CKEffectPickerView *)self hintBlackText];
+        [hintBlackText3 removeFromSuperview];
 
         [(CKEffectPickerView *)self setHintBlackText:0];
-        v9 = [(CKEffectPickerView *)self hintSendButton];
-        [v9 removeFromSuperview];
+        hintSendButton = [(CKEffectPickerView *)self hintSendButton];
+        [hintSendButton removeFromSuperview];
 
         [(CKEffectPickerView *)self setHintSendButton:0];
       }
     }
 
-    v42 = [(CKEffectPickerView *)self backdrop];
-    v43 = fmin(a3, 0.6);
+    backdrop = [(CKEffectPickerView *)self backdrop];
+    v43 = fmin(transition, 0.6);
     v44 = v43 * 64.0;
     if (v43 * 64.0 < 3.0)
     {
@@ -1243,15 +1243,15 @@ LABEL_4:
     }
 
     v45 = [MEMORY[0x1E696AD98] numberWithDouble:v44];
-    [v42 setValue:v45 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [backdrop setValue:v45 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
-    v46 = [(CKEffectPickerView *)self blueContrastLayer];
+    blueContrastLayer = [(CKEffectPickerView *)self blueContrastLayer];
     v47 = [MEMORY[0x1E696AD98] numberWithDouble:v43];
-    [v46 setValue:v47 forKey:@"opacity"];
+    [blueContrastLayer setValue:v47 forKey:@"opacity"];
 
-    v48 = a3 * 0.15 + 1.0;
-    v49 = [(CKEffectPickerView *)self balloonView];
-    v50 = [v49 layer];
+    v48 = transition * 0.15 + 1.0;
+    balloonView3 = [(CKEffectPickerView *)self balloonView];
+    layer = [balloonView3 layer];
     v59 = *(MEMORY[0x1E69792E8] + 80);
     *&v61.m31 = *(MEMORY[0x1E69792E8] + 64);
     v60 = *&v61.m31;
@@ -1269,10 +1269,10 @@ LABEL_4:
     v54 = *&v61.m21;
     *&v61.m23 = v53;
     CATransform3DScale(&v62, &v61, v48, v48, 1.0);
-    [v50 setTransform:&v62];
+    [layer setTransform:&v62];
 
-    v51 = [(CKEffectPickerView *)self hintBlackText];
-    v52 = [v51 layer];
+    hintBlackText4 = [(CKEffectPickerView *)self hintBlackText];
+    layer2 = [hintBlackText4 layer];
     *&v61.m31 = v60;
     *&v61.m33 = v59;
     *&v61.m41 = v58;
@@ -1282,25 +1282,25 @@ LABEL_4:
     *&v61.m21 = v54;
     *&v61.m23 = v53;
     CATransform3DScale(&v62, &v61, v48, v48, 1.0);
-    [v52 setTransform:&v62];
+    [layer2 setTransform:&v62];
   }
 }
 
-- (void)updateColor:(char)a3
+- (void)updateColor:(char)color
 {
-  v3 = a3;
+  colorCopy = color;
   v28 = *MEMORY[0x1E69E9840];
   [(CKEffectPickerView *)self setControlColor:?];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 theme];
-  v7 = [v6 sendButtonColorForColorType:v3];
+  theme = [v5 theme];
+  v7 = [theme sendButtonColorForColorType:colorCopy];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(CKEffectPickerView *)self effectSendButtons];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  effectSendButtons = [(CKEffectPickerView *)self effectSendButtons];
+  v9 = [effectSendButtons countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1312,28 +1312,28 @@ LABEL_4:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(effectSendButtons);
         }
 
         [*(*(&v23 + 1) + 8 * v12++) setTintColor:v7];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [effectSendButtons countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(CKEffectPickerView *)self hintSendButton];
-  [v13 setTintColor:v7];
+  hintSendButton = [(CKEffectPickerView *)self hintSendButton];
+  [hintSendButton setTintColor:v7];
 
-  v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v15 = [v14 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  v16 = [(CKEffectPickerView *)self sendMomentButton];
-  v17 = v16;
-  if (v15)
+  sendMomentButton = [(CKEffectPickerView *)self sendMomentButton];
+  sendMomentButton2 = sendMomentButton;
+  if (isEntryViewRefreshEnabled)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1343,37 +1343,37 @@ LABEL_4:
       goto LABEL_13;
     }
 
-    v17 = [(CKEffectPickerView *)self sendMomentButton];
-    [v17 setCkTintColor:v3];
+    sendMomentButton2 = [(CKEffectPickerView *)self sendMomentButton];
+    [sendMomentButton2 setCkTintColor:colorCopy];
   }
 
   else
   {
-    [v16 setTintColor:v7];
+    [sendMomentButton setTintColor:v7];
   }
 
 LABEL_13:
-  v19 = [(CKEffectPickerView *)self balloonView];
+  balloonView = [(CKEffectPickerView *)self balloonView];
   objc_opt_class();
   v20 = objc_opt_isKindOfClass();
 
   if (v20)
   {
-    v21 = [(CKEffectPickerView *)self balloonView];
-    [v21 setColor:v3];
+    balloonView2 = [(CKEffectPickerView *)self balloonView];
+    [balloonView2 setColor:colorCopy];
 
-    v22 = [(CKEffectPickerView *)self balloonView];
-    [v22 prepareForDisplayIfNeeded];
+    balloonView3 = [(CKEffectPickerView *)self balloonView];
+    [balloonView3 prepareForDisplayIfNeeded];
   }
 }
 
-- (void)setBalloonText:(id)a3
+- (void)setBalloonText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v7 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v7 theme];
-  v6 = [v5 balloonTextColorForColorType:1];
-  [(CKEffectPickerView *)self _setBalloonText:v4 withColor:v6];
+  theme = [v7 theme];
+  v6 = [theme balloonTextColorForColorType:1];
+  [(CKEffectPickerView *)self _setBalloonText:textCopy withColor:v6];
 }
 
 - (UIFont)effectLabelFont
@@ -1387,23 +1387,23 @@ LABEL_13:
   else
   {
     v5 = [CKUIBehavior fontWithStyle:*MEMORY[0x1E69DDD10] adjustedForMaxSizeCategory:*MEMORY[0x1E69DDC28]];
-    v6 = [v5 fontDescriptor];
-    v7 = [v6 fontAttributes];
-    v8 = [v7 mutableCopy];
+    fontDescriptor = [v5 fontDescriptor];
+    fontAttributes = [fontDescriptor fontAttributes];
+    v8 = [fontAttributes mutableCopy];
 
     v9 = *MEMORY[0x1E69DB8F0];
     v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
-    v11 = [v10 mutableCopy];
+    dictionary = [v10 mutableCopy];
 
-    if (!v11)
+    if (!dictionary)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     v12 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB980]];
-    [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69DB990]];
+    [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x1E69DB990]];
 
-    [v8 setObject:v11 forKeyedSubscript:v9];
+    [v8 setObject:dictionary forKeyedSubscript:v9];
     v13 = [MEMORY[0x1E69DB880] fontDescriptorWithFontAttributes:v8];
     v14 = MEMORY[0x1E69DB878];
     [v5 pointSize];
@@ -1420,20 +1420,20 @@ LABEL_13:
 - (id)sendImage
 {
   v2 = [CKEntryViewButton entryViewButtonImageForType:0 color:[(CKEffectPickerView *)self controlColor]];
-  v3 = [v2 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v2 _imageThatSuppressesAccessibilityHairlineThickening];
 
-  return v3;
+  return _imageThatSuppressesAccessibilityHairlineThickening;
 }
 
-- (void)addEffect:(id)a3 withDescriptiveText:(id)a4 withIdentifier:(id)a5
+- (void)addEffect:(id)effect withDescriptiveText:(id)text withIdentifier:(id)identifier
 {
   v127[1] = *MEMORY[0x1E69E9840];
-  v126 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CKEffectPickerView *)self effectLabels];
+  identifierCopy = identifier;
+  textCopy = text;
+  effectCopy = effect;
+  effectLabels = [(CKEffectPickerView *)self effectLabels];
 
-  if (!v10)
+  if (!effectLabels)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(CKEffectPickerView *)self setEffectLabels:v11];
@@ -1460,75 +1460,75 @@ LABEL_13:
   v20 = *(MEMORY[0x1E695F058] + 16);
   v21 = *(MEMORY[0x1E695F058] + 24);
   v22 = [v17 initWithFrame:{*MEMORY[0x1E695F058], v19, v20, v21}];
-  [v22 setText:v9];
+  [v22 setText:effectCopy];
 
-  v23 = [(CKEffectPickerView *)self effectLabelFont];
-  [v22 setFont:v23];
+  effectLabelFont = [(CKEffectPickerView *)self effectLabelFont];
+  [v22 setFont:effectLabelFont];
 
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v22 sizeToFit];
-  v24 = [(CKEffectPickerView *)self peekContainer];
-  [v24 addSubview:v22];
+  peekContainer = [(CKEffectPickerView *)self peekContainer];
+  [peekContainer addSubview:v22];
 
   v25 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v18, v19, v20, v21}];
-  [v25 setText:v8];
+  [v25 setText:textCopy];
 
-  v26 = [(CKEffectPickerView *)self effectLabelFont];
-  [v25 setFont:v26];
+  effectLabelFont2 = [(CKEffectPickerView *)self effectLabelFont];
+  [v25 setFont:effectLabelFont2];
 
   [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v25 sizeToFit];
   [v25 setHidden:1];
-  v27 = [(CKEffectPickerView *)self peekContainer];
-  [v27 addSubview:v25];
+  peekContainer2 = [(CKEffectPickerView *)self peekContainer];
+  [peekContainer2 addSubview:v25];
 
-  LOBYTE(v27) = UIAccessibilityIsReduceTransparencyEnabled();
-  v28 = v27 | UIAccessibilityDarkerSystemColorsEnabled();
+  LOBYTE(peekContainer2) = UIAccessibilityIsReduceTransparencyEnabled();
+  v28 = peekContainer2 | UIAccessibilityDarkerSystemColorsEnabled();
   v29 = +[CKUIBehavior sharedBehaviors];
-  v30 = [v29 theme];
-  v31 = [v30 fsmPickerPrimaryColor];
-  [v22 setTextColor:v31];
+  theme = [v29 theme];
+  fsmPickerPrimaryColor = [theme fsmPickerPrimaryColor];
+  [v22 setTextColor:fsmPickerPrimaryColor];
 
   v32 = +[CKUIBehavior sharedBehaviors];
-  v33 = [v32 theme];
-  v34 = [v33 fsmPickerPrimaryColor];
-  [v25 setTextColor:v34];
+  theme2 = [v32 theme];
+  fsmPickerPrimaryColor2 = [theme2 fsmPickerPrimaryColor];
+  [v25 setTextColor:fsmPickerPrimaryColor2];
 
   if ((v28 & 1) == 0)
   {
-    v35 = [v22 layer];
-    setUpVibrancyForLayer(v35, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+    layer = [v22 layer];
+    setUpVibrancyForLayer(layer, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
 
-    v36 = [v25 layer];
-    setUpVibrancyForLayer(v36, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+    layer2 = [v25 layer];
+    setUpVibrancyForLayer(layer2, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
   }
 
   v125 = v22;
-  v37 = [(CKEffectPickerView *)self sendImage];
-  [v37 size];
+  sendImage = [(CKEffectPickerView *)self sendImage];
+  [sendImage size];
   UIGraphicsBeginImageContext(v128);
-  [v37 size];
+  [sendImage size];
   UIGraphicsBeginImageContextWithOptions(v129, 0, 0.0);
   v38 = +[CKUIBehavior sharedBehaviors];
-  v39 = [v38 theme];
-  v40 = v39;
+  theme3 = [v38 theme];
+  v40 = theme3;
   v124 = v25;
   if (v28)
   {
-    [v39 fsmPickerPrimaryColor];
+    [theme3 fsmPickerPrimaryColor];
   }
 
   else
   {
-    [v39 fsmPickerDotColor];
+    [theme3 fsmPickerDotColor];
   }
   v41 = ;
   [v41 set];
 
   v42 = MEMORY[0x1E69DC728];
-  [v37 size];
+  [sendImage size];
   v44 = v43 * 0.5 + -4.5;
-  [v37 size];
+  [sendImage size];
   v46 = [v42 bezierPathWithOvalInRect:{v44, v45 * 0.5 + -4.5, 9.0, 9.0}];
   [v46 fill];
 
@@ -1540,32 +1540,32 @@ LABEL_13:
   v122 = v47;
   [v48 setImage:v47 forState:4];
   [v48 sizeToFit];
-  v49 = [(CKEffectPickerView *)self roundedContainerView];
-  [v49 addSubview:v48];
+  roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+  [roundedContainerView addSubview:v48];
 
   [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v48 addTarget:self action:sel__touchUpInsideDotButton_ forControlEvents:64];
   if ((v28 & 1) == 0)
   {
     [v48 setOpaque:0];
-    v50 = [(CKEffectPickerView *)self isInDarkMode];
+    isInDarkMode = [(CKEffectPickerView *)self isInDarkMode];
     v51 = MEMORY[0x1E6979CF8];
-    if (!v50)
+    if (!isInDarkMode)
     {
       v51 = MEMORY[0x1E6979CE8];
     }
 
     v52 = *v51;
-    v53 = [v48 layer];
+    layer3 = [v48 layer];
     v54 = [MEMORY[0x1E6979378] filterWithType:v52];
 
-    [v53 setCompositingFilter:v54];
+    [layer3 setCompositingFilter:v54];
   }
 
-  v55 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v56 = [v55 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v56)
+  if (isEntryViewRefreshEnabled)
   {
     v57 = objc_alloc_init(CKGlassSendButton);
     [(CKGlassSendButton *)v57 setCkTintColor:[(CKEffectPickerView *)self controlColor]];
@@ -1573,8 +1573,8 @@ LABEL_13:
     [(CKGlassSendButton *)v58 setOpaque:0];
     +[CKGlassSendButton buttonSize];
     [(CKGlassSendButton *)v58 setBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v59, v60];
-    v61 = [(CKEffectPickerView *)self roundedContainerView];
-    [v61 addSubview:v58];
+    roundedContainerView2 = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView2 addSubview:v58];
 
     v62 = v58;
   }
@@ -1582,21 +1582,21 @@ LABEL_13:
   else
   {
     v63 = +[CKUIBehavior sharedBehaviors];
-    v64 = [v63 theme];
-    v62 = [v64 sendButtonColorForColorType:{-[CKEffectPickerView controlColor](self, "controlColor")}];
+    theme4 = [v63 theme];
+    v62 = [theme4 sendButtonColorForColorType:{-[CKEffectPickerView controlColor](self, "controlColor")}];
 
     v58 = [MEMORY[0x1E69DC738] buttonWithType:1];
-    [(CKGlassSendButton *)v58 setImage:v37 forState:0];
-    [(CKGlassSendButton *)v58 setImage:v37 forState:4];
+    [(CKGlassSendButton *)v58 setImage:sendImage forState:0];
+    [(CKGlassSendButton *)v58 setImage:sendImage forState:4];
     [(CKGlassSendButton *)v58 setOpaque:0];
     [(CKGlassSendButton *)v58 setBounds:0.0, 0.0, 52.0, 52.0];
-    v65 = [(CKEffectPickerView *)self roundedContainerView];
-    [v65 addSubview:v58];
+    roundedContainerView3 = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView3 addSubview:v58];
 
     [(CKGlassSendButton *)v58 setTintColor:v62];
   }
 
-  v123 = v37;
+  v123 = sendImage;
   [(CKGlassSendButton *)v58 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CKGlassSendButton *)v58 addTarget:self action:sel__touchUpInsideSendButton_ forControlEvents:64];
   [(CKGlassSendButton *)v58 setHidden:1];
@@ -1605,94 +1605,94 @@ LABEL_13:
   v67 = v66;
   [(CKGlassSendButton *)v58 bounds];
   v69 = v67 - v68;
-  v70 = [(CKEffectPickerView *)self stylingMetrics];
-  [v70 roundTrackPadding];
+  stylingMetrics = [(CKEffectPickerView *)self stylingMetrics];
+  [stylingMetrics roundTrackPadding];
   v72 = v71 + v69 * -0.5;
 
   [(CKEffectPickerView *)self marginBetweenPickerDotButtons];
   v74 = v73;
   v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v76 = [(CKEffectPickerView *)self effectLabels];
-  v77 = [v76 count];
+  effectLabels2 = [(CKEffectPickerView *)self effectLabels];
+  v77 = [effectLabels2 count];
 
   v78 = 0x1E696A000uLL;
   v79 = MEMORY[0x1E696ACD8];
   if (v77)
   {
-    v80 = [(CKEffectPickerView *)self effectDotButtons];
-    v81 = [v80 lastObject];
-    v82 = [v79 constraintWithItem:v48 attribute:10 relatedBy:0 toItem:v81 attribute:10 multiplier:1.0 constant:-(v74 + 9.0)];
+    effectDotButtons = [(CKEffectPickerView *)self effectDotButtons];
+    lastObject = [effectDotButtons lastObject];
+    v82 = [v79 constraintWithItem:v48 attribute:10 relatedBy:0 toItem:lastObject attribute:10 multiplier:1.0 constant:-(v74 + 9.0)];
 
-    v83 = [(CKEffectPickerView *)self roundedContainerView];
-    [v83 addConstraint:v82];
+    roundedContainerView4 = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView4 addConstraint:v82];
 
     [v75 addObject:v82];
-    v84 = [(CKEffectPickerView *)self effectDotConstraintsThatChange];
-    v85 = [(CKEffectPickerView *)self effectIdentifiers];
-    v86 = [(CKEffectPickerView *)self effectLabels];
-    [v85 objectAtIndex:{objc_msgSend(v86, "count") - 1}];
+    effectDotConstraintsThatChange = [(CKEffectPickerView *)self effectDotConstraintsThatChange];
+    effectIdentifiers = [(CKEffectPickerView *)self effectIdentifiers];
+    effectLabels3 = [(CKEffectPickerView *)self effectLabels];
+    [effectIdentifiers objectAtIndex:{objc_msgSend(effectLabels3, "count") - 1}];
     v88 = v87 = v75;
-    v89 = [v84 objectForKey:v88];
+    roundedContainerView6 = [effectDotConstraintsThatChange objectForKey:v88];
 
     v75 = v87;
     v78 = 0x1E696A000;
 
-    [v89 addObject:v82];
+    [roundedContainerView6 addObject:v82];
   }
 
   else
   {
-    v90 = [(CKEffectPickerView *)self roundedContainerView];
-    v82 = [v79 constraintWithItem:v48 attribute:4 relatedBy:0 toItem:v90 attribute:4 multiplier:1.0 constant:-v72];
+    roundedContainerView5 = [(CKEffectPickerView *)self roundedContainerView];
+    v82 = [v79 constraintWithItem:v48 attribute:4 relatedBy:0 toItem:roundedContainerView5 attribute:4 multiplier:1.0 constant:-v72];
 
-    v89 = [(CKEffectPickerView *)self roundedContainerView];
-    [v89 addConstraint:v82];
+    roundedContainerView6 = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView6 addConstraint:v82];
   }
 
-  v91 = [(CKEffectPickerView *)self effectDotConstraintsThatChange];
-  [v91 setObject:v75 forKey:v126];
+  effectDotConstraintsThatChange2 = [(CKEffectPickerView *)self effectDotConstraintsThatChange];
+  [effectDotConstraintsThatChange2 setObject:v75 forKey:identifierCopy];
 
   v92 = *(v78 + 3288);
-  v93 = [(CKEffectPickerView *)self roundedContainerView];
-  v94 = [v92 constraintWithItem:v48 attribute:9 relatedBy:0 toItem:v93 attribute:9 multiplier:1.0 constant:0.0];
+  roundedContainerView7 = [(CKEffectPickerView *)self roundedContainerView];
+  v94 = [v92 constraintWithItem:v48 attribute:9 relatedBy:0 toItem:roundedContainerView7 attribute:9 multiplier:1.0 constant:0.0];
 
-  v95 = [(CKEffectPickerView *)self roundedContainerView];
-  [v95 addConstraint:v94];
+  roundedContainerView8 = [(CKEffectPickerView *)self roundedContainerView];
+  [roundedContainerView8 addConstraint:v94];
 
-  v96 = [(CKEffectPickerView *)self lastEffectDotTopConstraint];
+  lastEffectDotTopConstraint = [(CKEffectPickerView *)self lastEffectDotTopConstraint];
 
-  if (v96)
+  if (lastEffectDotTopConstraint)
   {
     v97 = *(v78 + 3288);
-    v98 = [(CKEffectPickerView *)self lastEffectDotTopConstraint];
-    v127[0] = v98;
+    lastEffectDotTopConstraint2 = [(CKEffectPickerView *)self lastEffectDotTopConstraint];
+    v127[0] = lastEffectDotTopConstraint2;
     v99 = [MEMORY[0x1E695DEC8] arrayWithObjects:v127 count:1];
     [v97 deactivateConstraints:v99];
 
-    v100 = [(CKEffectPickerView *)self lastEffectDotTopConstraint];
-    [(CKEffectPickerView *)self removeConstraint:v100];
+    lastEffectDotTopConstraint3 = [(CKEffectPickerView *)self lastEffectDotTopConstraint];
+    [(CKEffectPickerView *)self removeConstraint:lastEffectDotTopConstraint3];
   }
 
   v101 = *(v78 + 3288);
-  v102 = [(CKEffectPickerView *)self roundedContainerView];
-  v103 = [v101 constraintWithItem:v48 attribute:3 relatedBy:0 toItem:v102 attribute:3 multiplier:1.0 constant:v72];
+  roundedContainerView9 = [(CKEffectPickerView *)self roundedContainerView];
+  v103 = [v101 constraintWithItem:v48 attribute:3 relatedBy:0 toItem:roundedContainerView9 attribute:3 multiplier:1.0 constant:v72];
 
-  v104 = [(CKEffectPickerView *)self roundedContainerView];
-  [v104 addConstraint:v103];
+  roundedContainerView10 = [(CKEffectPickerView *)self roundedContainerView];
+  [roundedContainerView10 addConstraint:v103];
 
   [(CKEffectPickerView *)self setLastEffectDotTopConstraint:v103];
   v105 = [*(v78 + 3288) constraintWithItem:v58 attribute:9 relatedBy:0 toItem:v48 attribute:9 multiplier:1.0 constant:0.0];
   v106 = [*(v78 + 3288) constraintWithItem:v58 attribute:10 relatedBy:0 toItem:v48 attribute:10 multiplier:1.0 constant:0.0];
-  v107 = [(CKEffectPickerView *)self roundedContainerView];
-  [v107 addConstraint:v105];
+  roundedContainerView11 = [(CKEffectPickerView *)self roundedContainerView];
+  [roundedContainerView11 addConstraint:v105];
 
-  v108 = [(CKEffectPickerView *)self roundedContainerView];
-  [v108 addConstraint:v106];
+  roundedContainerView12 = [(CKEffectPickerView *)self roundedContainerView];
+  [roundedContainerView12 addConstraint:v106];
 
   v109 = [*(v78 + 3288) constraintWithItem:v48 attribute:10 relatedBy:0 toItem:v125 attribute:10 multiplier:1.0 constant:0.0];
   v110 = *(v78 + 3288);
-  v111 = [(CKEffectPickerView *)self roundedContainerView];
-  v112 = [v110 constraintWithItem:v111 attribute:5 relatedBy:0 toItem:v125 attribute:6 multiplier:1.0 constant:22.0];
+  roundedContainerView13 = [(CKEffectPickerView *)self roundedContainerView];
+  v112 = [v110 constraintWithItem:roundedContainerView13 attribute:5 relatedBy:0 toItem:v125 attribute:6 multiplier:1.0 constant:22.0];
 
   [(CKEffectPickerView *)self addConstraint:v109];
   [(CKEffectPickerView *)self addConstraint:v112];
@@ -1702,24 +1702,24 @@ LABEL_13:
   [(CKEffectPickerView *)self addConstraint:v113];
   [(CKEffectPickerView *)self addConstraint:v114];
 
-  v115 = [(CKEffectPickerView *)self effectLabels];
-  [v115 addObject:v125];
+  effectLabels4 = [(CKEffectPickerView *)self effectLabels];
+  [effectLabels4 addObject:v125];
 
-  v116 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-  [v116 addObject:v124];
+  effectDescriptiveLabels = [(CKEffectPickerView *)self effectDescriptiveLabels];
+  [effectDescriptiveLabels addObject:v124];
 
-  v117 = [(CKEffectPickerView *)self effectSendButtons];
-  [v117 addObject:v58];
+  effectSendButtons = [(CKEffectPickerView *)self effectSendButtons];
+  [effectSendButtons addObject:v58];
 
-  v118 = [(CKEffectPickerView *)self effectDotButtons];
-  [v118 addObject:v48];
+  effectDotButtons2 = [(CKEffectPickerView *)self effectDotButtons];
+  [effectDotButtons2 addObject:v48];
 
-  v119 = [(CKEffectPickerView *)self effectIdentifiers];
-  [v119 addObject:v126];
+  effectIdentifiers2 = [(CKEffectPickerView *)self effectIdentifiers];
+  [effectIdentifiers2 addObject:identifierCopy];
 
-  v120 = [(CKEffectPickerView *)self peekContainer];
-  v121 = [(CKEffectPickerView *)self balloonView];
-  [v120 addSubview:v121];
+  peekContainer3 = [(CKEffectPickerView *)self peekContainer];
+  balloonView = [(CKEffectPickerView *)self balloonView];
+  [peekContainer3 addSubview:balloonView];
 }
 
 - (void)_resizeBalloon
@@ -1732,42 +1732,42 @@ LABEL_13:
   [v3 balloonMaxWidthForTranscriptWidth:1 marginInsets:0 shouldShowPluginButtons:0 shouldShowCharacterCount:0 shouldCoverSendButton:v5 isStewieMode:{v7, v8, v9, v10}];
   v12 = v11;
 
-  v13 = [(CKEffectPickerView *)self balloonView];
-  [v13 prepareForDisplay];
+  balloonView = [(CKEffectPickerView *)self balloonView];
+  [balloonView prepareForDisplay];
 
-  v14 = [(CKEffectPickerView *)self balloonView];
-  [v14 setNeedsLayout];
+  balloonView2 = [(CKEffectPickerView *)self balloonView];
+  [balloonView2 setNeedsLayout];
 
-  v15 = [(CKEffectPickerView *)self balloonView];
-  [v15 setNeedsDisplay];
+  balloonView3 = [(CKEffectPickerView *)self balloonView];
+  [balloonView3 setNeedsDisplay];
 
-  v16 = [(CKEffectPickerView *)self balloonView];
-  [v16 layoutIfNeeded];
+  balloonView4 = [(CKEffectPickerView *)self balloonView];
+  [balloonView4 layoutIfNeeded];
 
-  v17 = [(CKEffectPickerView *)self balloonView];
-  [v17 sizeThatFits:{v12, 1.79769313e308}];
+  balloonView5 = [(CKEffectPickerView *)self balloonView];
+  [balloonView5 sizeThatFits:{v12, 1.79769313e308}];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(CKEffectPickerView *)self balloonView];
-  [v22 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v19, v21}];
+  balloonView6 = [(CKEffectPickerView *)self balloonView];
+  [balloonView6 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v19, v21}];
 }
 
-- (void)_setBalloonText:(id)a3 withColor:(id)a4
+- (void)_setBalloonText:(id)text withColor:(id)color
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CKEffectPickerView *)self balloonView];
+  textCopy = text;
+  colorCopy = color;
+  balloonView = [(CKEffectPickerView *)self balloonView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v12];
+    v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:textCopy];
     v10 = [v9 length];
-    [v9 addAttribute:*MEMORY[0x1E69DB650] value:v6 range:{0, v10}];
-    v11 = [(CKEffectPickerView *)self balloonView];
-    [v11 setAttributedText:v9];
+    [v9 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{0, v10}];
+    balloonView2 = [(CKEffectPickerView *)self balloonView];
+    [balloonView2 setAttributedText:v9];
 
     [(CKEffectPickerView *)self _resizeBalloon];
   }
@@ -1778,33 +1778,33 @@ LABEL_13:
   [(CKEffectPickerView *)self _setNeedsSwitcherAnimationIfNecessary];
   if ([(CKEffectPickerView *)self needsSwitcherAnimation])
   {
-    v3 = [(CKEffectPickerView *)self mainLabelBottomConstraint];
-    [v3 setConstant:40.0];
+    mainLabelBottomConstraint = [(CKEffectPickerView *)self mainLabelBottomConstraint];
+    [mainLabelBottomConstraint setConstant:40.0];
 
-    v4 = [(CKEffectPickerView *)self typeSegmentedControlBottomConstraint];
-    v5 = [(CKEffectPickerView *)self mainLabel];
-    [v5 bounds];
-    [v4 setConstant:CGRectGetHeight(v10) + 40.0];
+    typeSegmentedControlBottomConstraint = [(CKEffectPickerView *)self typeSegmentedControlBottomConstraint];
+    mainLabel = [(CKEffectPickerView *)self mainLabel];
+    [mainLabel bounds];
+    [typeSegmentedControlBottomConstraint setConstant:CGRectGetHeight(v10) + 40.0];
 
-    v6 = [(CKEffectPickerView *)self typeSegmentedControl];
-    [v6 setAlpha:0.0];
+    typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+    [typeSegmentedControl setAlpha:0.0];
 
-    v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LOBYTE(v5) = [v7 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LOBYTE(mainLabel) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if ((v5 & 1) == 0)
+    if ((mainLabel & 1) == 0)
     {
-      v8 = [(CKEffectPickerView *)self segmentedBackdrop];
-      [v8 setHidden:1];
+      segmentedBackdrop = [(CKEffectPickerView *)self segmentedBackdrop];
+      [segmentedBackdrop setHidden:1];
     }
 
     [(CKEffectPickerView *)self layoutIfNeeded];
   }
 }
 
-- (void)_updateBalloonViewPositionAnimated:(BOOL)a3
+- (void)_updateBalloonViewPositionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CKEffectPickerView *)self isAnimating])
   {
     return;
@@ -1814,21 +1814,21 @@ LABEL_13:
   v6 = *(MEMORY[0x1E695F058] + 8);
   v7 = *(MEMORY[0x1E695F058] + 16);
   v8 = *(MEMORY[0x1E695F058] + 24);
-  v9 = [(CKEffectPickerView *)self typeSegmentedControl];
-  v10 = [v9 selectedSegmentIndex];
+  typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+  selectedSegmentIndex = [typeSegmentedControl selectedSegmentIndex];
 
-  if (v10 == 1)
+  if (selectedSegmentIndex == 1)
   {
-    v11 = [(CKEffectPickerView *)self effectSendButtons];
-    v12 = [v11 objectAtIndex:0];
+    effectSendButtons = [(CKEffectPickerView *)self effectSendButtons];
+    v12 = [effectSendButtons objectAtIndex:0];
     [v12 frame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    v21 = [(CKEffectPickerView *)self roundedContainerView];
-    [v21 convertRect:self toView:{v14, v16, v18, v20}];
+    roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView convertRect:self toView:{v14, v16, v18, v20}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -1844,16 +1844,16 @@ LABEL_6:
   v23 = v5;
   if ([(CKEffectPickerView *)self selectedIndex]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v30 = [(CKEffectPickerView *)self effectSendButtons];
-    v21 = [v30 objectAtIndex:{-[CKEffectPickerView selectedIndex](self, "selectedIndex")}];
+    effectSendButtons2 = [(CKEffectPickerView *)self effectSendButtons];
+    roundedContainerView = [effectSendButtons2 objectAtIndex:{-[CKEffectPickerView selectedIndex](self, "selectedIndex")}];
 
-    [v21 frame];
+    [roundedContainerView frame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [(CKEffectPickerView *)self roundedContainerView];
-    [v39 convertRect:self toView:{v32, v34, v36, v38}];
+    roundedContainerView2 = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView2 convertRect:self toView:{v32, v34, v36, v38}];
     v23 = v40;
     v25 = v41;
     v27 = v42;
@@ -1873,16 +1873,16 @@ LABEL_7:
   v70.size.height = v29;
   if (CGRectEqualToRect(v69, v70))
   {
-    v44 = [(CKEffectPickerView *)self closeButton];
-    [v44 frame];
+    closeButton = [(CKEffectPickerView *)self closeButton];
+    [closeButton frame];
     v23 = v45;
     v25 = v46;
     v27 = v47;
     v29 = v48;
   }
 
-  v49 = [(CKEffectPickerView *)self balloonView];
-  [v49 frame];
+  balloonView = [(CKEffectPickerView *)self balloonView];
+  [balloonView frame];
   v51 = v50;
   v53 = v52;
   v55 = v54;
@@ -1893,7 +1893,7 @@ LABEL_7:
   v63 = v59;
   v64 = v60;
   v65 = v61;
-  if (v3)
+  if (animatedCopy)
   {
     v67[0] = MEMORY[0x1E69E9820];
     v67[1] = 3221225472;
@@ -1909,8 +1909,8 @@ LABEL_7:
 
   else
   {
-    v66 = [(CKEffectPickerView *)self balloonView];
-    [v66 setFrame:{v62, v63, v64, v65}];
+    balloonView2 = [(CKEffectPickerView *)self balloonView];
+    [balloonView2 setFrame:{v62, v63, v64, v65}];
   }
 }
 
@@ -1920,7 +1920,7 @@ void __57__CKEffectPickerView__updateBalloonViewPositionAnimated___block_invoke(
   [v2 setFrame:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
 }
 
-- (CGRect)_updateBalloonViewOrigin:(CGRect)a3 forButtonFrame:(CGRect)a4
+- (CGRect)_updateBalloonViewOrigin:(CGRect)origin forButtonFrame:(CGRect)frame
 {
   v4 = *MEMORY[0x1E695F050];
   v5 = *(MEMORY[0x1E695F050] + 8);
@@ -1936,12 +1936,12 @@ void __57__CKEffectPickerView__updateBalloonViewPositionAnimated___block_invoke(
 - (void)_updateMomentsBackgroundColor
 {
   v77 = *MEMORY[0x1E69E9840];
-  v3 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v3 frame];
+  momentsCollectionView = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView frame];
   v5 = v4;
 
-  v6 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v6 contentOffset];
+  momentsCollectionView2 = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView2 contentOffset];
   v8 = v7 / v5;
 
   v9 = v8;
@@ -1950,56 +1950,56 @@ void __57__CKEffectPickerView__updateBalloonViewPositionAnimated___block_invoke(
   v12 = v10;
   if (v10 < 0)
   {
-    v16 = 0;
+    effect = 0;
   }
 
   else
   {
-    v13 = [(CKEffectPickerView *)self momentsCollectionView];
+    momentsCollectionView3 = [(CKEffectPickerView *)self momentsCollectionView];
     v14 = [MEMORY[0x1E696AC88] indexPathForItem:v10 inSection:0];
-    v15 = [v13 cellForItemAtIndexPath:v14];
+    v15 = [momentsCollectionView3 cellForItemAtIndexPath:v14];
 
-    v16 = [v15 effect];
+    effect = [v15 effect];
   }
 
   v17 = v8 - v12;
-  v18 = [(CKEffectPickerView *)self momentIdentifiers];
-  v19 = [v18 count];
+  momentIdentifiers = [(CKEffectPickerView *)self momentIdentifiers];
+  v19 = [momentIdentifiers count];
 
   if (v19 <= v11)
   {
-    v23 = 0;
+    effect2 = 0;
   }
 
   else
   {
-    v20 = [(CKEffectPickerView *)self momentsCollectionView];
+    momentsCollectionView4 = [(CKEffectPickerView *)self momentsCollectionView];
     v21 = [MEMORY[0x1E696AC88] indexPathForItem:v11 inSection:0];
-    v22 = [v20 cellForItemAtIndexPath:v21];
+    v22 = [momentsCollectionView4 cellForItemAtIndexPath:v21];
 
-    v23 = [v22 effect];
+    effect2 = [v22 effect];
   }
 
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v68 = v23;
+  v68 = effect2;
   if (v17 > 0.5)
   {
-    v24 = v23;
+    v24 = effect2;
   }
 
   else
   {
-    v24 = v16;
+    v24 = effect;
   }
 
-  v25 = [v24 messageFilters];
-  v26 = [v25 countByEnumeratingWithState:&v72 objects:v76 count:16];
+  messageFilters = [v24 messageFilters];
+  v26 = [messageFilters countByEnumeratingWithState:&v72 objects:v76 count:16];
   if (v26)
   {
-    v27 = v16;
+    v27 = effect;
     v28 = *v73;
     while (2)
     {
@@ -2007,13 +2007,13 @@ void __57__CKEffectPickerView__updateBalloonViewPositionAnimated___block_invoke(
       {
         if (*v73 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(messageFilters);
         }
 
         v30 = *(*(&v72 + 1) + 8 * i);
         if ([v30 type] == 6)
         {
-          v31 = [(CKEffectPickerView *)self balloonView];
+          balloonView = [(CKEffectPickerView *)self balloonView];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2025,7 +2025,7 @@ void __57__CKEffectPickerView__updateBalloonViewPositionAnimated___block_invoke(
         }
       }
 
-      v26 = [v25 countByEnumeratingWithState:&v72 objects:v76 count:16];
+      v26 = [messageFilters countByEnumeratingWithState:&v72 objects:v76 count:16];
       if (v26)
       {
         continue;
@@ -2035,49 +2035,49 @@ void __57__CKEffectPickerView__updateBalloonViewPositionAnimated___block_invoke(
     }
 
 LABEL_21:
-    v16 = v27;
+    effect = v27;
   }
 
-  v33 = [(CKEffectPickerView *)self balloonView];
-  v34 = [v33 filters];
-  if (![v34 count])
+  balloonView2 = [(CKEffectPickerView *)self balloonView];
+  filters = [balloonView2 filters];
+  if (![filters count])
   {
 
     v38 = v68;
     goto LABEL_26;
   }
 
-  v35 = [(CKEffectPickerView *)self balloonView];
-  v36 = [v35 filters];
-  v37 = [v36 containsObject:v26];
+  balloonView3 = [(CKEffectPickerView *)self balloonView];
+  filters2 = [balloonView3 filters];
+  v37 = [filters2 containsObject:v26];
 
   v38 = v68;
   if ((v37 & 1) == 0)
   {
-    v33 = [(CKEffectPickerView *)self balloonView];
-    [v33 clearFilters];
+    balloonView2 = [(CKEffectPickerView *)self balloonView];
+    [balloonView2 clearFilters];
 LABEL_26:
   }
 
   if (v26)
   {
-    v39 = [(CKEffectPickerView *)self balloonView];
-    v40 = [v39 filters];
-    v41 = [v40 containsObject:v26];
+    balloonView4 = [(CKEffectPickerView *)self balloonView];
+    filters3 = [balloonView4 filters];
+    v41 = [filters3 containsObject:v26];
 
     if ((v41 & 1) == 0)
     {
-      v42 = [(CKEffectPickerView *)self balloonView];
-      [v42 addFilter:v26];
+      balloonView5 = [(CKEffectPickerView *)self balloonView];
+      [balloonView5 addFilter:v26];
     }
   }
 
-  v43 = [v16 backgroundColor];
-  v44 = [v38 backgroundColor];
-  v45 = v44;
-  if (v43)
+  backgroundColor = [effect backgroundColor];
+  backgroundColor2 = [v38 backgroundColor];
+  clearColor = backgroundColor2;
+  if (backgroundColor)
   {
-    if (v44)
+    if (backgroundColor2)
     {
       goto LABEL_32;
     }
@@ -2085,16 +2085,16 @@ LABEL_26:
 
   else
   {
-    v43 = [MEMORY[0x1E69DC888] clearColor];
-    if (v45)
+    backgroundColor = [MEMORY[0x1E69DC888] clearColor];
+    if (clearColor)
     {
       goto LABEL_32;
     }
   }
 
-  v45 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
 LABEL_32:
-  v46 = [v43 colorByBlendingWithColor:v45 withFraction:v17];
+  v46 = [backgroundColor colorByBlendingWithColor:clearColor withFraction:v17];
   v70 = 0.0;
   v71 = 0.0;
   [v46 getHue:0 saturation:0 brightness:&v71 alpha:&v70];
@@ -2102,74 +2102,74 @@ LABEL_32:
   [(CKEffectPickerView *)self setUsesDarkVibrancyForLayers:v47, v70, 0.5, v71];
   if (!UIAccessibilityIsReduceTransparencyEnabled() && !UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v69 = v16;
-    v48 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v49 = [v48 isEntryViewRefreshEnabled];
+    v69 = effect;
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if ((v49 & 1) == 0)
+    if ((isEntryViewRefreshEnabled & 1) == 0)
     {
-      v50 = [(CKEffectPickerView *)self closeButton];
-      v51 = [v50 layer];
-      setUpVibrancyForLayer(v51, v47, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+      closeButton = [(CKEffectPickerView *)self closeButton];
+      layer = [closeButton layer];
+      setUpVibrancyForLayer(layer, v47, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
     }
 
-    v52 = [(CKEffectPickerView *)self momentTitleLabel];
-    v53 = [v52 layer];
-    setUpVibrancyForLayer(v53, v47, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+    momentTitleLabel = [(CKEffectPickerView *)self momentTitleLabel];
+    layer2 = [momentTitleLabel layer];
+    setUpVibrancyForLayer(layer2, v47, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
 
-    v54 = [(CKEffectPickerView *)self pageControl];
-    v55 = [v54 layer];
-    setUpVibrancyForLayer(v55, v47, 0, [(CKEffectPickerView *)self isInDarkMode]);
+    pageControl = [(CKEffectPickerView *)self pageControl];
+    layer3 = [pageControl layer];
+    setUpVibrancyForLayer(layer3, v47, 0, [(CKEffectPickerView *)self isInDarkMode]);
 
-    v56 = [(CKEffectPickerView *)self mainLabel];
-    v57 = [v56 layer];
-    setUpVibrancyForLayer(v57, v47, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+    mainLabel = [(CKEffectPickerView *)self mainLabel];
+    layer4 = [mainLabel layer];
+    setUpVibrancyForLayer(layer4, v47, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
 
-    v58 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LOBYTE(v57) = [v58 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LOBYTE(layer4) = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-    if ((v57 & 1) == 0)
+    if ((layer4 & 1) == 0)
     {
-      v59 = [(CKEffectPickerView *)self typeSegmentedControl];
-      v60 = [v59 layer];
-      setUpVibrancyForLayer(v60, v47, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+      typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+      layer5 = [typeSegmentedControl layer];
+      setUpVibrancyForLayer(layer5, v47, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
     }
 
-    v61 = [(CKEffectPickerView *)self pageControl];
+    pageControl2 = [(CKEffectPickerView *)self pageControl];
     if (v47)
     {
-      v62 = [MEMORY[0x1E69DC888] whiteColor];
-      [v61 setCurrentPageIndicatorTintColor:v62];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [pageControl2 setCurrentPageIndicatorTintColor:whiteColor];
     }
 
     else
     {
-      v62 = +[CKUIBehavior sharedBehaviors];
-      v63 = [v62 theme];
-      v64 = [v63 fsmPickerCurrentPageIndicatorColor];
-      [v61 setCurrentPageIndicatorTintColor:v64];
+      whiteColor = +[CKUIBehavior sharedBehaviors];
+      theme = [whiteColor theme];
+      fsmPickerCurrentPageIndicatorColor = [theme fsmPickerCurrentPageIndicatorColor];
+      [pageControl2 setCurrentPageIndicatorTintColor:fsmPickerCurrentPageIndicatorColor];
     }
 
-    v16 = v69;
+    effect = v69;
   }
 
-  v65 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v65 setBackgroundColor:v46];
+  momentsCollectionView5 = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView5 setBackgroundColor:v46];
 
-  v66 = [(CKEffectPickerView *)self backdrop];
-  [v66 setEnabled:0];
+  backdrop = [(CKEffectPickerView *)self backdrop];
+  [backdrop setEnabled:0];
 
-  v67 = [(CKEffectPickerView *)self backdrop];
-  [v67 setEnabled:1];
+  backdrop2 = [(CKEffectPickerView *)self backdrop];
+  [backdrop2 setEnabled:1];
 }
 
 - (id)_blackTextReplica
 {
   v24 = *MEMORY[0x1E69E9840];
   [(CKEffectPickerView *)self _resizeBalloon];
-  v3 = [(CKEffectPickerView *)self balloonView];
+  balloonView = [(CKEffectPickerView *)self balloonView];
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
-  [v3 frame];
+  [balloonView frame];
   v5 = [v4 initWithFrame:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2178,8 +2178,8 @@ LABEL_32:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [v3 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    subviews = [balloonView subviews];
+    v7 = [subviews countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = *v20;
@@ -2189,7 +2189,7 @@ LABEL_4:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v19 + 1) + 8 * v9);
@@ -2201,7 +2201,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v7 = [subviews countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -2220,15 +2220,15 @@ LABEL_4:
 
       v11 = +[CKBalloonTextView makeTextView];
       v13 = objc_alloc(MEMORY[0x1E696AD40]);
-      v14 = [v7 attributedText];
-      v6 = [v13 initWithAttributedString:v14];
+      attributedText = [v7 attributedText];
+      subviews = [v13 initWithAttributedString:attributedText];
 
-      v15 = [v6 length];
+      v15 = [subviews length];
       v16 = *MEMORY[0x1E69DB650];
-      v17 = [MEMORY[0x1E69DC888] blackColor];
-      [v6 addAttribute:v16 value:v17 range:{0, v15}];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [subviews addAttribute:v16 value:blackColor range:{0, v15}];
 
-      [v11 setAttributedText:v6];
+      [v11 setAttributedText:subviews];
       [v7 frame];
       [v11 setFrame:?];
       [v5 addSubview:v11];
@@ -2258,12 +2258,12 @@ LABEL_12:
 
 - (BOOL)_keyboardIsOnTopOfEffectPickerWindow
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v2 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
-    v3 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-    v4 = [v3 window];
-    v5 = v4 != 0;
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    window = [activeKeyboard window];
+    v5 = window != 0;
   }
 
   else
@@ -2277,8 +2277,8 @@ LABEL_12:
 - (void)_animateIn
 {
   v187 = *MEMORY[0x1E69E9840];
-  v3 = [(CKEffectPickerView *)self balloonView];
-  v4 = [v3 layer];
+  balloonView = [(CKEffectPickerView *)self balloonView];
+  layer = [balloonView layer];
   v169 = *(MEMORY[0x1E69792E8] + 80);
   *&v184.m31 = *(MEMORY[0x1E69792E8] + 64);
   v171 = *&v184.m31;
@@ -2295,10 +2295,10 @@ LABEL_12:
   *&v184.m21 = *(MEMORY[0x1E69792E8] + 32);
   v159 = *&v184.m21;
   *&v184.m23 = v157;
-  [v4 setTransform:&v184];
+  [layer setTransform:&v184];
 
-  v5 = [(CKEffectPickerView *)self hintBlackText];
-  v6 = [v5 layer];
+  hintBlackText = [(CKEffectPickerView *)self hintBlackText];
+  layer2 = [hintBlackText layer];
   *&v184.m31 = v171;
   *&v184.m33 = v169;
   *&v184.m41 = v167;
@@ -2307,88 +2307,88 @@ LABEL_12:
   *&v184.m13 = v161;
   *&v184.m21 = v159;
   *&v184.m23 = v157;
-  [v6 setTransform:&v184];
+  [layer2 setTransform:&v184];
 
-  v7 = [(CKEffectPickerView *)self hintBlackText];
-  [v7 removeFromSuperview];
+  hintBlackText2 = [(CKEffectPickerView *)self hintBlackText];
+  [hintBlackText2 removeFromSuperview];
 
   [(CKEffectPickerView *)self setHintBlackText:0];
-  v8 = [(CKEffectPickerView *)self hintSendButton];
-  [v8 removeFromSuperview];
+  hintSendButton = [(CKEffectPickerView *)self hintSendButton];
+  [hintSendButton removeFromSuperview];
 
   [(CKEffectPickerView *)self setHintSendButton:0];
   v9 = [CKTransientReplicaButtonContainer alloc];
-  v10 = [(CKEffectPickerView *)self closeButton];
-  [v10 frame];
+  closeButton = [(CKEffectPickerView *)self closeButton];
+  [closeButton frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CKEffectPickerView *)self isInDarkMode];
+  isInDarkMode = [(CKEffectPickerView *)self isInDarkMode];
   v20 = +[CKUIBehavior sharedBehaviors];
-  v21 = [v20 theme];
-  v22 = [v21 fsmPickerCloseButtonColor];
-  v23 = [(CKTransientReplicaButtonContainer *)v9 initWithFrame:0 hasDarkVibrancy:v19 isInDarkMode:v22 color:[(CKEffectPickerView *)self controlColor] sendColor:v12, v14, v16, v18];
+  theme = [v20 theme];
+  fsmPickerCloseButtonColor = [theme fsmPickerCloseButtonColor];
+  v23 = [(CKTransientReplicaButtonContainer *)v9 initWithFrame:0 hasDarkVibrancy:isInDarkMode isInDarkMode:fsmPickerCloseButtonColor color:[(CKEffectPickerView *)self controlColor] sendColor:v12, v14, v16, v18];
 
-  v24 = [(CKEffectPickerView *)self peekContainer];
-  [v24 addSubview:v23];
+  peekContainer = [(CKEffectPickerView *)self peekContainer];
+  [peekContainer addSubview:v23];
 
-  v25 = [(CKEffectPickerView *)self closeButton];
-  [v25 setHidden:1];
+  closeButton2 = [(CKEffectPickerView *)self closeButton];
+  [closeButton2 setHidden:1];
 
-  v26 = [(CKTransientReplicaButtonContainer *)v23 cancelButtonCircle];
-  v27 = [v26 layer];
-  [v27 setOpacity:0.0];
+  cancelButtonCircle = [(CKTransientReplicaButtonContainer *)v23 cancelButtonCircle];
+  layer3 = [cancelButtonCircle layer];
+  [layer3 setOpacity:0.0];
 
-  v28 = [(CKTransientReplicaButtonContainer *)v23 cancelButtonGlyphLayer];
+  cancelButtonGlyphLayer = [(CKTransientReplicaButtonContainer *)v23 cancelButtonGlyphLayer];
   CATransform3DMakeScale(&v184, 0.0, 0.0, 1.0);
-  [v28 setTransform:&v184];
+  [cancelButtonGlyphLayer setTransform:&v184];
 
-  v29 = [(CKEffectPickerView *)self peekContainer];
-  v30 = [(CKEffectPickerView *)self balloonView];
-  [v29 addSubview:v30];
+  peekContainer2 = [(CKEffectPickerView *)self peekContainer];
+  balloonView2 = [(CKEffectPickerView *)self balloonView];
+  [peekContainer2 addSubview:balloonView2];
 
   [(CKEffectPickerView *)self _resizeBalloon];
   [(CKEffectPickerView *)self _updateBalloonViewPositionAnimated:0];
-  v31 = [(CKEffectPickerView *)self balloonView];
-  [v31 frame];
+  balloonView3 = [(CKEffectPickerView *)self balloonView];
+  [balloonView3 frame];
   v33 = v32;
-  [v31 frame];
+  [balloonView3 frame];
   v35 = v34;
-  v36 = [v31 layer];
-  [v36 anchorPoint];
+  layer4 = [balloonView3 layer];
+  [layer4 anchorPoint];
   v38 = v33 + v35 * v37;
 
-  [v31 frame];
+  [balloonView3 frame];
   v40 = v39;
-  [v31 frame];
+  [balloonView3 frame];
   v42 = v41;
-  v43 = [v31 layer];
-  [v43 anchorPoint];
+  layer5 = [balloonView3 layer];
+  [layer5 anchorPoint];
   v45 = v40 + v42 * v44;
 
   [(CKEffectPickerView *)self balloonViewOrigin];
-  [v31 setOrigin:?];
-  v46 = [(CKEffectPickerView *)self _blackTextReplica];
+  [balloonView3 setOrigin:?];
+  _blackTextReplica = [(CKEffectPickerView *)self _blackTextReplica];
   [(CKEffectPickerView *)self balloonViewOrigin];
-  [v46 setOrigin:?];
-  v47 = [(CKEffectPickerView *)self peekContainer];
-  [v47 addSubview:v46];
+  [_blackTextReplica setOrigin:?];
+  peekContainer3 = [(CKEffectPickerView *)self peekContainer];
+  [peekContainer3 addSubview:_blackTextReplica];
 
-  v48 = [(CKEffectPickerView *)self balloonView];
-  v49 = [v48 layer];
-  [v49 setOpacity:0.0];
+  balloonView4 = [(CKEffectPickerView *)self balloonView];
+  layer6 = [balloonView4 layer];
+  [layer6 setOpacity:0.0];
 
-  v50 = [(CKEffectPickerView *)self roundedContainerView];
-  v51 = [v50 layer];
-  [v51 setOpacity:0.0];
+  roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+  layer7 = [roundedContainerView layer];
+  [layer7 setOpacity:0.0];
 
   v182 = 0u;
   v183 = 0u;
   v180 = 0u;
   v181 = 0u;
-  v52 = [(CKEffectPickerView *)self effectLabels];
-  v53 = [v52 countByEnumeratingWithState:&v180 objects:v186 count:16];
+  effectLabels = [(CKEffectPickerView *)self effectLabels];
+  v53 = [effectLabels countByEnumeratingWithState:&v180 objects:v186 count:16];
   if (v53)
   {
     v54 = v53;
@@ -2399,14 +2399,14 @@ LABEL_12:
       {
         if (*v181 != v55)
         {
-          objc_enumerationMutation(v52);
+          objc_enumerationMutation(effectLabels);
         }
 
-        v57 = [*(*(&v180 + 1) + 8 * i) layer];
-        [v57 setOpacity:0.0];
+        layer8 = [*(*(&v180 + 1) + 8 * i) layer];
+        [layer8 setOpacity:0.0];
       }
 
-      v54 = [v52 countByEnumeratingWithState:&v180 objects:v186 count:16];
+      v54 = [effectLabels countByEnumeratingWithState:&v180 objects:v186 count:16];
     }
 
     while (v54);
@@ -2423,7 +2423,7 @@ LABEL_12:
   v177[4] = self;
   v59 = v23;
   v178 = v59;
-  v164 = v46;
+  v164 = _blackTextReplica;
   v179 = v164;
   [v58 setCompletionBlock:v177];
   v60 = objc_alloc_init(MEMORY[0x1E6979318]);
@@ -2436,9 +2436,9 @@ LABEL_12:
   v63 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
   [v60 setTimingFunction:v63];
 
-  v64 = [(CKEffectPickerView *)self backdrop];
+  backdrop = [(CKEffectPickerView *)self backdrop];
   v156 = v60;
-  [v64 addAnimation:v60 forKey:@"filters.gaussianBlur.inputRadius"];
+  [backdrop addAnimation:v60 forKey:@"filters.gaussianBlur.inputRadius"];
 
   v65 = objc_alloc_init(MEMORY[0x1E6979318]);
   [v65 setToValue:&unk_1F04E8B08];
@@ -2476,20 +2476,20 @@ LABEL_12:
   }
 
   v162 = v70;
-  v73 = [(CKEffectPickerView *)self blueContrastLayer];
-  [v73 addAnimation:v65 forKey:@"opacity"];
+  blueContrastLayer = [(CKEffectPickerView *)self blueContrastLayer];
+  [blueContrastLayer addAnimation:v65 forKey:@"opacity"];
 
-  v74 = [(CKTransientReplicaButtonContainer *)v59 sendButtonCircle];
+  sendButtonCircle = [(CKTransientReplicaButtonContainer *)v59 sendButtonCircle];
   v155 = v71;
-  [v74 addAnimation:v71 forKey:@"opacity"];
+  [sendButtonCircle addAnimation:v71 forKey:@"opacity"];
 
-  v75 = [(CKTransientReplicaButtonContainer *)v59 cancelButtonCircle];
-  [v75 addAnimation:v65 forKey:@"opacity"];
+  cancelButtonCircle2 = [(CKTransientReplicaButtonContainer *)v59 cancelButtonCircle];
+  [cancelButtonCircle2 addAnimation:v65 forKey:@"opacity"];
 
   if (UIAccessibilityIsReduceTransparencyEnabled() || UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v76 = [(CKEffectPickerView *)self accessibilityBackdropView];
-    [v76 addAnimation:v65 forKey:@"opacity"];
+    accessibilityBackdropView = [(CKEffectPickerView *)self accessibilityBackdropView];
+    [accessibilityBackdropView addAnimation:v65 forKey:@"opacity"];
   }
 
   v77 = objc_alloc_init(MEMORY[0x1E6979390]);
@@ -2510,13 +2510,13 @@ LABEL_12:
   [v79 setFillMode:v172];
   [v79 setRemovedOnCompletion:0];
   [v79 setBeginTime:CACurrentMediaTime()];
-  v81 = [(CKTransientReplicaButtonContainer *)v59 sendButtonGlyphLayer];
+  sendButtonGlyphLayer = [(CKTransientReplicaButtonContainer *)v59 sendButtonGlyphLayer];
   v153 = v79;
-  [v81 addAnimation:v79 forKey:@"transform.scale"];
+  [sendButtonGlyphLayer addAnimation:v79 forKey:@"transform.scale"];
 
-  v82 = [(CKTransientReplicaButtonContainer *)v59 cancelButtonGlyphLayer];
+  cancelButtonGlyphLayer2 = [(CKTransientReplicaButtonContainer *)v59 cancelButtonGlyphLayer];
   v154 = v77;
-  [v82 addAnimation:v77 forKey:@"transform.scale"];
+  [cancelButtonGlyphLayer2 addAnimation:v77 forKey:@"transform.scale"];
 
   v83 = objc_alloc_init(MEMORY[0x1E6979318]);
   v84 = [MEMORY[0x1E696AD98] numberWithInteger:v38];
@@ -2538,11 +2538,11 @@ LABEL_12:
   v88 = [MEMORY[0x1E69793D0] functionWithName:v168];
   [v86 setTimingFunction:v88];
 
-  [v31 addAnimation:v83 forKey:@"position.x"];
-  [v31 addAnimation:v86 forKey:@"position.y"];
-  v158 = v31;
+  [balloonView3 addAnimation:v83 forKey:@"position.x"];
+  [balloonView3 addAnimation:v86 forKey:@"position.y"];
+  v158 = balloonView3;
   v170 = v65;
-  [v31 addAnimation:v65 forKey:@"opacity"];
+  [balloonView3 addAnimation:v65 forKey:@"opacity"];
   v89 = v70;
   if (v164)
   {
@@ -2553,8 +2553,8 @@ LABEL_12:
 
   v151 = v86;
   v152 = v83;
-  v90 = [(CKEffectPickerView *)self closeButton];
-  [v90 frame];
+  closeButton3 = [(CKEffectPickerView *)self closeButton];
+  [closeButton3 frame];
   x = v188.origin.x;
   y = v188.origin.y;
   width = v188.size.width;
@@ -2565,9 +2565,9 @@ LABEL_12:
   v189.size.width = width;
   v189.size.height = height;
   MidY = CGRectGetMidY(v189);
-  v96 = [(CKEffectPickerView *)self effectLabels];
-  v97 = [v96 lastObject];
-  [v97 frame];
+  effectLabels2 = [(CKEffectPickerView *)self effectLabels];
+  lastObject = [effectLabels2 lastObject];
+  [lastObject frame];
   v98 = v190.origin.x;
   v99 = v190.origin.y;
   v100 = v190.size.width;
@@ -2583,7 +2583,7 @@ LABEL_12:
   v176 = 0u;
   v173 = 0u;
   v174 = 0u;
-  v160 = self;
+  selfCopy = self;
   obj = [(CKEffectPickerView *)self effectLabels];
   v103 = [obj countByEnumeratingWithState:&v173 objects:v185 count:16];
   if (v103)
@@ -2606,16 +2606,16 @@ LABEL_12:
         v112 = v111;
         v113 = objc_alloc_init(MEMORY[0x1E6979318]);
         v114 = MEMORY[0x1E696AD98];
-        v115 = [v108 layer];
-        [v115 anchorPoint];
-        v117 = [v114 numberWithDouble:v105 + v110 + v112 * v116];
-        [v113 setFromValue:v117];
+        layer9 = [v108 layer];
+        [layer9 anchorPoint];
+        v116 = [v114 numberWithDouble:v105 + v110 + v112 * v116];
+        [v113 setFromValue:v116];
 
         v118 = MEMORY[0x1E696AD98];
-        v119 = [v108 layer];
-        [v119 anchorPoint];
-        v121 = [v118 numberWithDouble:v110 + v112 * v120];
-        [v113 setToValue:v121];
+        layer10 = [v108 layer];
+        [layer10 anchorPoint];
+        v120 = [v118 numberWithDouble:v110 + v112 * v120];
+        [v113 setToValue:v120];
 
         [v113 setRemovedOnCompletion:0];
         [v113 setFillMode:v172];
@@ -2637,25 +2637,25 @@ LABEL_12:
     while (v104);
   }
 
-  v126 = [(CKEffectPickerView *)v160 roundedContainerView];
-  [v126 frame];
+  roundedContainerView2 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  [roundedContainerView2 frame];
   v128 = v127;
   v130 = v129;
 
   v131 = objc_alloc_init(MEMORY[0x1E6979318]);
   v132 = MEMORY[0x1E696AD98];
-  v133 = [(CKEffectPickerView *)v160 roundedContainerView];
-  v134 = [v133 layer];
-  [v134 anchorPoint];
+  roundedContainerView3 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  layer11 = [roundedContainerView3 layer];
+  [layer11 anchorPoint];
   v136 = [v132 numberWithDouble:v128 + v130 * v135 + 150.0];
   [v131 setFromValue:v136];
 
   v137 = MEMORY[0x1E696AD98];
-  v138 = [(CKEffectPickerView *)v160 roundedContainerView];
-  v139 = [v138 layer];
-  [v139 anchorPoint];
-  v141 = [v137 numberWithDouble:v128 + v130 * v140];
-  [v131 setToValue:v141];
+  roundedContainerView4 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  layer12 = [roundedContainerView4 layer];
+  [layer12 anchorPoint];
+  v140 = [v137 numberWithDouble:v128 + v130 * v140];
+  [v131 setToValue:v140];
 
   [v131 setRemovedOnCompletion:0];
   [v131 setFillMode:v172];
@@ -2664,11 +2664,11 @@ LABEL_12:
   [v131 setTimingFunction:v143];
 
   [v131 setBeginTime:CACurrentMediaTime()];
-  v144 = [(CKEffectPickerView *)v160 roundedContainerView];
-  [v144 addAnimation:v131 forKey:@"position.y"];
+  roundedContainerView5 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  [roundedContainerView5 addAnimation:v131 forKey:@"position.y"];
 
-  v145 = [(CKEffectPickerView *)v160 roundedContainerView];
-  [v145 addAnimation:v170 forKey:@"opacity"];
+  roundedContainerView6 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  [roundedContainerView6 addAnimation:v170 forKey:@"opacity"];
 
   v146 = objc_alloc_init(MEMORY[0x1E6979318]);
   [v146 setFromValue:&unk_1F04E8B58];
@@ -2682,12 +2682,12 @@ LABEL_12:
   [v146 setTimingFunction:v148];
 
   [v146 setBeginTime:CACurrentMediaTime()];
-  v149 = [(CKEffectPickerView *)v160 roundedContainerView];
-  [v149 addAnimation:v146 forKey:@"bounds.size.height"];
+  roundedContainerView7 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  [roundedContainerView7 addAnimation:v146 forKey:@"bounds.size.height"];
 
   [MEMORY[0x1E6979518] commit];
-  v150 = [(CKEffectPickerView *)v160 peekContainer];
-  [v150 setHidden:0];
+  peekContainer4 = [(CKEffectPickerView *)selfCopy peekContainer];
+  [peekContainer4 setHidden:0];
 }
 
 void __32__CKEffectPickerView__animateIn__block_invoke(id *a1)
@@ -2844,13 +2844,13 @@ void __32__CKEffectPickerView__animateIn__block_invoke(id *a1)
 - (void)_stopBalloonAnimation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CKEffectPickerView *)self balloonView];
+  balloonView = [(CKEffectPickerView *)self balloonView];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 subviews];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  subviews = [balloonView subviews];
+  v5 = [subviews countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -2860,7 +2860,7 @@ void __32__CKEffectPickerView__animateIn__block_invoke(id *a1)
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -2872,7 +2872,7 @@ void __32__CKEffectPickerView__animateIn__block_invoke(id *a1)
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v14 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -2884,22 +2884,22 @@ void __32__CKEffectPickerView__animateIn__block_invoke(id *a1)
 
 LABEL_11:
 
-  if (v3)
+  if (balloonView)
   {
-    [v3 setInvisibleInkEffectEnabled:0];
-    [v3 prepareForDisplayIfNeeded];
+    [balloonView setInvisibleInkEffectEnabled:0];
+    [balloonView prepareForDisplayIfNeeded];
     v9 = objc_alloc_init(CKSendAnimationContext);
-    v19 = v3;
+    v19 = balloonView;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
     [(CKSendAnimationContext *)v9 setThrowBalloonViews:v10];
 
-    v11 = v5;
+    null = v5;
     if (!v5)
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v18 = v11;
+    v18 = null;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
     [(CKSendAnimationContext *)v9 setAnimatableTextViews:v12];
 
@@ -2909,8 +2909,8 @@ LABEL_11:
 
     [(CKSendAnimationContext *)v9 setIsSender:1];
     [(CKSendAnimationContext *)v9 setImpactIdentifier:@"nil"];
-    v13 = [(CKEffectPickerView *)self dummyAnimator];
-    [v13 stopAnimationWithSendAnimationContext:v9];
+    dummyAnimator = [(CKEffectPickerView *)self dummyAnimator];
+    [dummyAnimator stopAnimationWithSendAnimationContext:v9];
   }
 }
 
@@ -2925,66 +2925,66 @@ LABEL_11:
   v165[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:v165 animations:0.325];
   v3 = [CKTransientReplicaButtonContainer alloc];
-  v4 = [(CKEffectPickerView *)self closeButton];
-  [v4 frame];
+  closeButton = [(CKEffectPickerView *)self closeButton];
+  [closeButton frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CKEffectPickerView *)self usesDarkVibrancyForLayers];
-  v14 = [(CKEffectPickerView *)self isInDarkMode];
+  usesDarkVibrancyForLayers = [(CKEffectPickerView *)self usesDarkVibrancyForLayers];
+  isInDarkMode = [(CKEffectPickerView *)self isInDarkMode];
   v15 = +[CKUIBehavior sharedBehaviors];
-  v16 = [v15 theme];
-  v17 = [v16 fsmPickerCloseButtonColor];
-  v18 = [(CKTransientReplicaButtonContainer *)v3 initWithFrame:v13 hasDarkVibrancy:v14 isInDarkMode:v17 color:[(CKEffectPickerView *)self controlColor] sendColor:v6, v8, v10, v12];
+  theme = [v15 theme];
+  fsmPickerCloseButtonColor = [theme fsmPickerCloseButtonColor];
+  v18 = [(CKTransientReplicaButtonContainer *)v3 initWithFrame:usesDarkVibrancyForLayers hasDarkVibrancy:isInDarkMode isInDarkMode:fsmPickerCloseButtonColor color:[(CKEffectPickerView *)self controlColor] sendColor:v6, v8, v10, v12];
 
-  v19 = [(CKEffectPickerView *)self peekContainer];
-  [v19 addSubview:v18];
+  peekContainer = [(CKEffectPickerView *)self peekContainer];
+  [peekContainer addSubview:v18];
 
-  v20 = [(CKEffectPickerView *)self closeButton];
-  [v20 setHidden:1];
+  closeButton2 = [(CKEffectPickerView *)self closeButton];
+  [closeButton2 setHidden:1];
 
-  v21 = [(CKTransientReplicaButtonContainer *)v18 sendButtonCircle];
-  v22 = [v21 layer];
-  [v22 setOpacity:0.0];
+  sendButtonCircle = [(CKTransientReplicaButtonContainer *)v18 sendButtonCircle];
+  layer = [sendButtonCircle layer];
+  [layer setOpacity:0.0];
 
   v155 = v18;
-  v23 = [(CKTransientReplicaButtonContainer *)v18 sendButtonGlyphLayer];
-  [v23 setOpacity:0.0];
+  sendButtonGlyphLayer = [(CKTransientReplicaButtonContainer *)v18 sendButtonGlyphLayer];
+  [sendButtonGlyphLayer setOpacity:0.0];
 
   [(CKEffectPickerView *)self _resizeBalloon];
   [(CKEffectPickerView *)self _updateBalloonViewPositionAnimated:0];
-  v24 = [(CKEffectPickerView *)self balloonView];
+  balloonView = [(CKEffectPickerView *)self balloonView];
   [(CKEffectPickerView *)self balloonViewOrigin];
   v26 = v25;
-  [v24 frame];
+  [balloonView frame];
   v28 = v27;
-  v29 = [v24 layer];
-  [v29 anchorPoint];
+  layer2 = [balloonView layer];
+  [layer2 anchorPoint];
   v31 = v30;
 
   [(CKEffectPickerView *)self balloonViewOrigin];
   v33 = v32;
-  [v24 frame];
+  [balloonView frame];
   v35 = v34;
-  v154 = v24;
-  v36 = [v24 layer];
-  [v36 anchorPoint];
+  v154 = balloonView;
+  layer3 = [balloonView layer];
+  [layer3 anchorPoint];
   v38 = v37;
 
-  v39 = [(CKEffectPickerView *)self _blackTextReplica];
-  if (v39)
+  _blackTextReplica = [(CKEffectPickerView *)self _blackTextReplica];
+  if (_blackTextReplica)
   {
-    v40 = [(CKEffectPickerView *)self peekContainer];
-    [v40 addSubview:v39];
+    peekContainer2 = [(CKEffectPickerView *)self peekContainer];
+    [peekContainer2 addSubview:_blackTextReplica];
 
-    v41 = [v39 layer];
-    [v41 setOpacity:0.0];
+    layer4 = [_blackTextReplica layer];
+    [layer4 setOpacity:0.0];
   }
 
-  v153 = v39;
-  v42 = [(CKEffectPickerView *)self backdrop];
-  [v42 setShouldRasterize:0];
+  v153 = _blackTextReplica;
+  backdrop = [(CKEffectPickerView *)self backdrop];
+  [backdrop setShouldRasterize:0];
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.325];
@@ -3006,9 +3006,9 @@ LABEL_11:
   v46 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
   [v43 setTimingFunction:v46];
 
-  v47 = [(CKEffectPickerView *)self backdrop];
+  backdrop2 = [(CKEffectPickerView *)self backdrop];
   v151 = v43;
-  [v47 addAnimation:v43 forKey:@"filters.gaussianBlur.inputRadius"];
+  [backdrop2 addAnimation:v43 forKey:@"filters.gaussianBlur.inputRadius"];
 
   v48 = objc_alloc_init(MEMORY[0x1E6979318]);
   [v48 setFromValue:&unk_1F04E8B18];
@@ -3056,54 +3056,54 @@ LABEL_11:
     [v56 setTimingFunction:v57];
   }
 
-  v58 = [(CKTransientReplicaButtonContainer *)v155 sendButtonCircle];
-  [v58 addAnimation:v56 forKey:@"opacity"];
+  sendButtonCircle2 = [(CKTransientReplicaButtonContainer *)v155 sendButtonCircle];
+  [sendButtonCircle2 addAnimation:v56 forKey:@"opacity"];
 
-  v59 = [(CKTransientReplicaButtonContainer *)v155 sendButtonGlyphLayer];
-  [v59 addAnimation:v56 forKey:@"opacity"];
+  sendButtonGlyphLayer2 = [(CKTransientReplicaButtonContainer *)v155 sendButtonGlyphLayer];
+  [sendButtonGlyphLayer2 addAnimation:v56 forKey:@"opacity"];
 
-  v60 = [(CKTransientReplicaButtonContainer *)v155 cancelButtonCircle];
-  [v60 addAnimation:v159 forKey:@"opacity"];
+  cancelButtonCircle = [(CKTransientReplicaButtonContainer *)v155 cancelButtonCircle];
+  [cancelButtonCircle addAnimation:v159 forKey:@"opacity"];
 
-  v61 = [(CKEffectPickerView *)self momentTitleLabel];
-  [v61 addAnimation:v53 forKey:@"opacity"];
+  momentTitleLabel = [(CKEffectPickerView *)self momentTitleLabel];
+  [momentTitleLabel addAnimation:v53 forKey:@"opacity"];
 
-  v62 = [(CKEffectPickerView *)self sendMomentButton];
-  [v62 addAnimation:v53 forKey:@"opacity"];
+  sendMomentButton = [(CKEffectPickerView *)self sendMomentButton];
+  [sendMomentButton addAnimation:v53 forKey:@"opacity"];
 
-  v63 = [(CKEffectPickerView *)self pageControl];
-  [v63 addAnimation:v53 forKey:@"opacity"];
+  pageControl = [(CKEffectPickerView *)self pageControl];
+  [pageControl addAnimation:v53 forKey:@"opacity"];
 
-  v64 = [(CKEffectPickerView *)self backgroundView];
-  [v64 addAnimation:v53 forKey:@"opacity"];
+  backgroundView = [(CKEffectPickerView *)self backgroundView];
+  [backgroundView addAnimation:v53 forKey:@"opacity"];
 
-  v65 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v65 addAnimation:v53 forKey:@"opacity"];
+  momentsCollectionView = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView addAnimation:v53 forKey:@"opacity"];
 
-  v66 = [(CKEffectPickerView *)self mainLabel];
-  [v66 addAnimation:v53 forKey:@"opacity"];
+  mainLabel = [(CKEffectPickerView *)self mainLabel];
+  [mainLabel addAnimation:v53 forKey:@"opacity"];
 
-  v67 = [(CKEffectPickerView *)self typeSegmentedControl];
-  [v67 addAnimation:v53 forKey:@"opacity"];
+  typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+  [typeSegmentedControl addAnimation:v53 forKey:@"opacity"];
 
-  v68 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LOBYTE(v67) = [v68 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LOBYTE(typeSegmentedControl) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v67 & 1) == 0)
+  if ((typeSegmentedControl & 1) == 0)
   {
-    v69 = [(CKEffectPickerView *)self segmentedBackdrop];
-    [v69 addAnimation:v53 forKey:@"opacity"];
+    segmentedBackdrop = [(CKEffectPickerView *)self segmentedBackdrop];
+    [segmentedBackdrop addAnimation:v53 forKey:@"opacity"];
   }
 
   v148 = v56;
   v70 = v26 + v28 * v31;
-  v71 = [(CKEffectPickerView *)self blueContrastLayer];
-  [v71 addAnimation:v53 forKey:@"opacity"];
+  blueContrastLayer = [(CKEffectPickerView *)self blueContrastLayer];
+  [blueContrastLayer addAnimation:v53 forKey:@"opacity"];
 
   if (UIAccessibilityIsReduceTransparencyEnabled() || UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v72 = [(CKEffectPickerView *)self accessibilityBackdropView];
-    [v72 addAnimation:v53 forKey:@"opacity"];
+    accessibilityBackdropView = [(CKEffectPickerView *)self accessibilityBackdropView];
+    [accessibilityBackdropView addAnimation:v53 forKey:@"opacity"];
   }
 
   v150 = v53;
@@ -3125,13 +3125,13 @@ LABEL_11:
   [v75 setFillMode:v158];
   [v75 setRemovedOnCompletion:0];
   [v75 setBeginTime:CACurrentMediaTime()];
-  v77 = [(CKTransientReplicaButtonContainer *)v155 sendButtonGlyphLayer];
+  sendButtonGlyphLayer3 = [(CKTransientReplicaButtonContainer *)v155 sendButtonGlyphLayer];
   v147 = v73;
-  [v77 addAnimation:v73 forKey:@"transform.scale"];
+  [sendButtonGlyphLayer3 addAnimation:v73 forKey:@"transform.scale"];
 
-  v78 = [(CKTransientReplicaButtonContainer *)v155 cancelButtonGlyphLayer];
+  cancelButtonGlyphLayer = [(CKTransientReplicaButtonContainer *)v155 cancelButtonGlyphLayer];
   v146 = v75;
-  [v78 addAnimation:v75 forKey:@"transform.scale"];
+  [cancelButtonGlyphLayer addAnimation:v75 forKey:@"transform.scale"];
 
   v79 = objc_alloc_init(MEMORY[0x1E6979318]);
   v80 = [MEMORY[0x1E696AD98] numberWithDouble:v70];
@@ -3165,8 +3165,8 @@ LABEL_11:
 
   v145 = v79;
   v149 = v55;
-  v85 = [(CKEffectPickerView *)self closeButton];
-  [v85 frame];
+  closeButton3 = [(CKEffectPickerView *)self closeButton];
+  [closeButton3 frame];
   x = v168.origin.x;
   y = v168.origin.y;
   width = v168.size.width;
@@ -3177,9 +3177,9 @@ LABEL_11:
   v169.size.width = width;
   v169.size.height = height;
   MidY = CGRectGetMidY(v169);
-  v91 = [(CKEffectPickerView *)self effectLabels];
-  v92 = [v91 lastObject];
-  [v92 frame];
+  effectLabels = [(CKEffectPickerView *)self effectLabels];
+  lastObject = [effectLabels lastObject];
+  [lastObject frame];
   v93 = v170.origin.x;
   v94 = v170.origin.y;
   v95 = v170.size.width;
@@ -3195,7 +3195,7 @@ LABEL_11:
   v163 = 0u;
   v160 = 0u;
   v161 = 0u;
-  v152 = self;
+  selfCopy = self;
   obj = [(CKEffectPickerView *)self effectLabels];
   v98 = [obj countByEnumeratingWithState:&v160 objects:v166 count:16];
   if (v98)
@@ -3218,16 +3218,16 @@ LABEL_11:
         v107 = v106;
         v108 = objc_alloc_init(MEMORY[0x1E6979318]);
         v109 = MEMORY[0x1E696AD98];
-        v110 = [v103 layer];
-        [v110 anchorPoint];
-        v112 = [v109 numberWithDouble:v105 + v107 * v111];
-        [v108 setFromValue:v112];
+        layer5 = [v103 layer];
+        [layer5 anchorPoint];
+        v111 = [v109 numberWithDouble:v105 + v107 * v111];
+        [v108 setFromValue:v111];
 
         v113 = MEMORY[0x1E696AD98];
-        v114 = [v103 layer];
-        [v114 anchorPoint];
-        v116 = [v113 numberWithDouble:v100 + v105 + v107 * v115];
-        [v108 setToValue:v116];
+        layer6 = [v103 layer];
+        [layer6 anchorPoint];
+        v115 = [v113 numberWithDouble:v100 + v105 + v107 * v115];
+        [v108 setToValue:v115];
 
         [v108 setRemovedOnCompletion:0];
         [v108 setFillMode:v158];
@@ -3249,23 +3249,23 @@ LABEL_11:
     while (v99);
   }
 
-  v121 = [(CKEffectPickerView *)self roundedContainerView];
-  [v121 frame];
+  roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+  [roundedContainerView frame];
   v123 = v122;
   v125 = v124;
 
   v126 = objc_alloc_init(MEMORY[0x1E6979318]);
   v127 = MEMORY[0x1E696AD98];
-  v128 = [(CKEffectPickerView *)v152 roundedContainerView];
-  v129 = [v128 layer];
-  [v129 anchorPoint];
-  v131 = [v127 numberWithDouble:v123 + v125 * v130];
-  [v126 setFromValue:v131];
+  roundedContainerView2 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  layer7 = [roundedContainerView2 layer];
+  [layer7 anchorPoint];
+  v130 = [v127 numberWithDouble:v123 + v125 * v130];
+  [v126 setFromValue:v130];
 
   v132 = MEMORY[0x1E696AD98];
-  v133 = [(CKEffectPickerView *)v152 roundedContainerView];
-  v134 = [v133 layer];
-  [v134 anchorPoint];
+  roundedContainerView3 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  layer8 = [roundedContainerView3 layer];
+  [layer8 anchorPoint];
   v136 = [v132 numberWithDouble:v123 + v125 * v135 + 150.0];
   [v126 setToValue:v136];
 
@@ -3275,11 +3275,11 @@ LABEL_11:
   [v126 setTimingFunction:v137];
 
   [v126 setBeginTime:CACurrentMediaTime()];
-  v138 = [(CKEffectPickerView *)v152 roundedContainerView];
-  [v138 addAnimation:v126 forKey:@"position.y"];
+  roundedContainerView4 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  [roundedContainerView4 addAnimation:v126 forKey:@"position.y"];
 
-  v139 = [(CKEffectPickerView *)v152 roundedContainerView];
-  [v139 addAnimation:v159 forKey:@"opacity"];
+  roundedContainerView5 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  [roundedContainerView5 addAnimation:v159 forKey:@"opacity"];
 
   v140 = objc_alloc_init(MEMORY[0x1E6979318]);
   v141 = [MEMORY[0x1E696AD98] numberWithDouble:v125];
@@ -3293,8 +3293,8 @@ LABEL_11:
   [v140 setTimingFunction:v142];
 
   [v140 setBeginTime:CACurrentMediaTime()];
-  v143 = [(CKEffectPickerView *)v152 roundedContainerView];
-  [v143 addAnimation:v140 forKey:@"bounds.size.height"];
+  roundedContainerView6 = [(CKEffectPickerView *)selfCopy roundedContainerView];
+  [roundedContainerView6 addAnimation:v140 forKey:@"bounds.size.height"];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -3317,22 +3317,22 @@ void __33__CKEffectPickerView__animateOut__block_invoke_2(uint64_t a1)
   [v1 touchUpInsideCloseButton];
 }
 
-- (id)_glyphLayerForButtonAnimationWithGlyphName:(id)a3
+- (id)_glyphLayerForButtonAnimationWithGlyphName:(id)name
 {
-  v3 = [MEMORY[0x1E69DCAB8] ckImageNamed:a3];
+  v3 = [MEMORY[0x1E69DCAB8] ckImageNamed:name];
   [v3 size];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x1E6979398] layer];
-  [v8 setContents:{objc_msgSend(v3, "CGImage")}];
-  [v8 setBounds:{0.0, 0.0, v5, v7}];
+  layer = [MEMORY[0x1E6979398] layer];
+  [layer setContents:{objc_msgSend(v3, "CGImage")}];
+  [layer setBounds:{0.0, 0.0, v5, v7}];
   v9 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-  [v8 setCompositingFilter:v9];
+  [layer setCompositingFilter:v9];
 
-  return v8;
+  return layer;
 }
 
-- (void)_animateSelectedEffectLabelAtIndex:(unint64_t)a3 fromPreviousIndex:(unint64_t)a4
+- (void)_animateSelectedEffectLabelAtIndex:(unint64_t)index fromPreviousIndex:(unint64_t)previousIndex
 {
   v45 = 0;
   v46 = &v45;
@@ -3346,15 +3346,15 @@ void __33__CKEffectPickerView__animateOut__block_invoke_2(uint64_t a1)
   v42 = __Block_byref_object_copy__54;
   v43 = __Block_byref_object_dispose__54;
   v44 = 0;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(CKEffectPickerView *)self effectLabels];
-    v8 = [v7 objectAtIndex:a3];
+    effectLabels = [(CKEffectPickerView *)self effectLabels];
+    v8 = [effectLabels objectAtIndex:index];
     v9 = v46[5];
     v46[5] = v8;
 
-    v10 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-    v11 = [v10 objectAtIndex:a3];
+    effectDescriptiveLabels = [(CKEffectPickerView *)self effectDescriptiveLabels];
+    v11 = [effectDescriptiveLabels objectAtIndex:index];
     v12 = v40[5];
     v40[5] = v11;
   }
@@ -3367,15 +3367,15 @@ void __33__CKEffectPickerView__animateOut__block_invoke_2(uint64_t a1)
   v36 = __Block_byref_object_copy__54;
   v37 = __Block_byref_object_dispose__54;
   v38 = 0;
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (previousIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [(CKEffectPickerView *)self effectLabels];
-    v16 = [v15 objectAtIndex:a4];
+    effectLabels2 = [(CKEffectPickerView *)self effectLabels];
+    v16 = [effectLabels2 objectAtIndex:previousIndex];
     v17 = v34[5];
     v34[5] = v16;
 
-    v18 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-    v14 = [v18 objectAtIndex:a4];
+    effectDescriptiveLabels2 = [(CKEffectPickerView *)self effectDescriptiveLabels];
+    v14 = [effectDescriptiveLabels2 objectAtIndex:previousIndex];
 
     v13 = v34[5];
   }
@@ -3407,7 +3407,7 @@ void __33__CKEffectPickerView__animateOut__block_invoke_2(uint64_t a1)
   v27[4] = self;
   v27[5] = &v45;
   v27[6] = &v39;
-  v27[7] = a3;
+  v27[7] = index;
   v28 = xmmword_190DD1870;
   v21 = _Block_copy(v27);
   v25[0] = MEMORY[0x1E69E9820];
@@ -3416,19 +3416,19 @@ void __33__CKEffectPickerView__animateOut__block_invoke_2(uint64_t a1)
   v25[3] = &unk_1E72F5C98;
   v25[4] = self;
   v25[5] = &v33;
-  v25[6] = a4;
+  v25[6] = previousIndex;
   v26 = xmmword_190DD1860;
   v22 = _Block_copy(v25);
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.25];
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (previousIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19[2](v19);
     v23 = 0;
     v24 = v21;
   }
 
-  else if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  else if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v20[2](v20);
     if (![(CKEffectPickerView *)self shouldAnimatePreviousLabelForCancel:v34[5]])
@@ -3666,57 +3666,57 @@ void __75__CKEffectPickerView__animateSelectedEffectLabelAtIndex_fromPreviousInd
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(CKEffectPickerView *)self momentIdentifiers:a3];
+  v4 = [(CKEffectPickerView *)self momentIdentifiers:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CKEffectPickerView *)self momentsCollectionView];
+  pathCopy = path;
+  momentsCollectionView = [(CKEffectPickerView *)self momentsCollectionView];
   v7 = +[CKMomentCollectionViewCell reuseIdentifier];
-  v8 = [v6 dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v5];
+  v8 = [momentsCollectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
-  v9 = [v8 contentView];
-  v10 = [v9 subviews];
-  [v10 makeObjectsPerformSelector:sel_removeFromSuperview];
+  contentView = [v8 contentView];
+  subviews = [contentView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
-  v11 = [(CKEffectPickerView *)self fsem];
-  v12 = [(CKEffectPickerView *)self momentIdentifiers];
-  v13 = [v5 row];
+  fsem = [(CKEffectPickerView *)self fsem];
+  momentIdentifiers = [(CKEffectPickerView *)self momentIdentifiers];
+  v13 = [pathCopy row];
 
-  v14 = [v12 objectAtIndex:v13];
-  v15 = [v11 effectForIdentifier:v14];
+  v14 = [momentIdentifiers objectAtIndex:v13];
+  v15 = [fsem effectForIdentifier:v14];
 
   [v8 setEffect:v15];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 effect];
-  if (v7)
+  cellCopy = cell;
+  effect = [cellCopy effect];
+  if (effect)
   {
-    v30 = v7;
-    [v6 setupEffectIfNeeded];
-    v34 = [(CKEffectPickerView *)self balloonView];
+    v30 = effect;
+    [cellCopy setupEffectIfNeeded];
+    balloonView = [(CKEffectPickerView *)self balloonView];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = [v6 effectViews];
+    obj = [cellCopy effectViews];
     v35 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v35)
     {
       v32 = *v44;
-      v33 = v6;
+      v33 = cellCopy;
       do
       {
         v8 = 0;
@@ -3728,29 +3728,29 @@ void __75__CKEffectPickerView__animateSelectedEffectLabelAtIndex_fromPreviousInd
           }
 
           v9 = *(*(&v43 + 1) + 8 * v8);
-          v10 = [v34 superview];
-          [v34 center];
-          [v10 convertPoint:self toView:?];
+          superview = [balloonView superview];
+          [balloonView center];
+          [superview convertPoint:self toView:?];
           [v9 setFocusPoint:?];
 
-          v11 = [v34 superview];
-          [v34 frame];
-          [v11 convertRect:self toView:?];
+          superview2 = [balloonView superview];
+          [balloonView frame];
+          [superview2 convertRect:self toView:?];
           [v9 setMessageRect:?];
 
-          [v9 setMessageOrientation:{objc_msgSend(v34, "orientation")}];
-          v12 = [(CKEffectPickerView *)self balloonView];
-          [v12 center];
+          [v9 setMessageOrientation:{objc_msgSend(balloonView, "orientation")}];
+          balloonView2 = [(CKEffectPickerView *)self balloonView];
+          [balloonView2 center];
           v14 = v13;
           v16 = v15;
           v17 = objc_alloc(MEMORY[0x1E69DCA78]);
-          [v12 bounds];
+          [balloonView2 bounds];
           v20 = [v17 initWithSize:{v18, v19}];
           v41[0] = MEMORY[0x1E69E9820];
           v41[1] = 3221225472;
           v41[2] = __72__CKEffectPickerView_collectionView_willDisplayCell_forItemAtIndexPath___block_invoke;
           v41[3] = &unk_1E72EBBE8;
-          v21 = v12;
+          v21 = balloonView2;
           v42 = v21;
           v36 = v20;
           v22 = [v20 imageWithActions:v41];
@@ -3758,8 +3758,8 @@ void __75__CKEffectPickerView__animateSelectedEffectLabelAtIndex_fromPreviousInd
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v23 = [v6 effectViews];
-          v24 = [v23 countByEnumeratingWithState:&v37 objects:v47 count:16];
+          effectViews = [cellCopy effectViews];
+          v24 = [effectViews countByEnumeratingWithState:&v37 objects:v47 count:16];
           if (v24)
           {
             v25 = v24;
@@ -3771,12 +3771,12 @@ void __75__CKEffectPickerView__animateSelectedEffectLabelAtIndex_fromPreviousInd
               {
                 if (*v38 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(effectViews);
                 }
 
                 v28 = *(*(&v37 + 1) + 8 * v27);
-                v29 = [v21 superview];
-                [v29 convertPoint:self toView:{v14, v16}];
+                superview3 = [v21 superview];
+                [superview3 convertPoint:self toView:{v14, v16}];
                 [v28 setFocusPoint:?];
 
                 [v28 setMessageImage:v22];
@@ -3784,14 +3784,14 @@ void __75__CKEffectPickerView__animateSelectedEffectLabelAtIndex_fromPreviousInd
               }
 
               while (v25 != v27);
-              v25 = [v23 countByEnumeratingWithState:&v37 objects:v47 count:16];
+              v25 = [effectViews countByEnumeratingWithState:&v37 objects:v47 count:16];
             }
 
             while (v25);
           }
 
           ++v8;
-          v6 = v33;
+          cellCopy = v33;
         }
 
         while (v8 != v35);
@@ -3801,11 +3801,11 @@ void __75__CKEffectPickerView__animateSelectedEffectLabelAtIndex_fromPreviousInd
       while (v35);
     }
 
-    [v6 animate];
-    [(CKEffectPickerView *)self checkAndUpdateForSpotlightEffect:v6];
-    [(CKEffectPickerView *)self addAnimationTimerForCell:v6];
+    [cellCopy animate];
+    [(CKEffectPickerView *)self checkAndUpdateForSpotlightEffect:cellCopy];
+    [(CKEffectPickerView *)self addAnimationTimerForCell:cellCopy];
 
-    v7 = v30;
+    effect = v30;
   }
 }
 
@@ -3819,14 +3819,14 @@ uint64_t __72__CKEffectPickerView_collectionView_willDisplayCell_forItemAtIndexP
   return [v4 drawViewHierarchyInRect:{v2, v3}];
 }
 
-- (void)checkAndUpdateForSpotlightEffect:(id)a3
+- (void)checkAndUpdateForSpotlightEffect:(id)effect
 {
-  v8 = a3;
+  effectCopy = effect;
   if (UIAccessibilityIsReduceTransparencyEnabled() || UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v4 = [v8 effect];
-    v5 = [v4 identifier];
-    v6 = [v5 isEqualToString:@"com.apple.messages.effect.CKSpotlightEffect"];
+    effect = [effectCopy effect];
+    identifier = [effect identifier];
+    v6 = [identifier isEqualToString:@"com.apple.messages.effect.CKSpotlightEffect"];
 
     if (v6)
     {
@@ -3837,47 +3837,47 @@ uint64_t __72__CKEffectPickerView_collectionView_willDisplayCell_forItemAtIndexP
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v6 = [v7 effect];
+  cellCopy = cell;
+  effect = [cellCopy effect];
 
-  if (v6)
+  if (effect)
   {
-    [(CKEffectPickerView *)self removeAnimationTimerForCell:v7];
-    [v7 stopAnimation];
+    [(CKEffectPickerView *)self removeAnimationTimerForCell:cellCopy];
+    [cellCopy stopAnimation];
   }
 }
 
-- (void)addAnimationTimerForCell:(id)a3
+- (void)addAnimationTimerForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E695DFF0];
-  v6 = [v4 effect];
-  [v6 duration];
+  effect = [cellCopy effect];
+  [effect duration];
   v8 = v7;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __47__CKEffectPickerView_addAnimationTimerForCell___block_invoke;
   v18[3] = &unk_1E72F5CC0;
-  v9 = v4;
+  v9 = cellCopy;
   v19 = v9;
   objc_copyWeak(&v20, &location);
   v10 = [v5 timerWithTimeInterval:1 repeats:v18 block:v8];
 
-  v11 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v11 addTimer:v10 forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop addTimer:v10 forMode:*MEMORY[0x1E695DA28]];
 
-  v12 = [(CKEffectPickerView *)self animationTimers];
-  v13 = [v9 effect];
-  v14 = [v13 identifier];
-  [v12 setObject:v10 forKey:v14];
+  animationTimers = [(CKEffectPickerView *)self animationTimers];
+  effect2 = [v9 effect];
+  identifier = [effect2 identifier];
+  [animationTimers setObject:v10 forKey:identifier];
 
-  v15 = [(CKEffectPickerView *)self animatedCells];
-  v16 = [v9 effect];
-  v17 = [v16 identifier];
-  [v15 setObject:v9 forKey:v17];
+  animatedCells = [(CKEffectPickerView *)self animatedCells];
+  effect3 = [v9 effect];
+  identifier2 = [effect3 identifier];
+  [animatedCells setObject:v9 forKey:identifier2];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -3890,25 +3890,25 @@ void __47__CKEffectPickerView_addAnimationTimerForCell___block_invoke(uint64_t a
   [WeakRetained checkAndUpdateForSpotlightEffect:*(a1 + 32)];
 }
 
-- (void)removeAnimationTimerForCell:(id)a3
+- (void)removeAnimationTimerForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(CKEffectPickerView *)self animationTimers];
-  v6 = [v4 effect];
-  v7 = [v6 identifier];
-  v14 = [v5 objectForKey:v7];
+  cellCopy = cell;
+  animationTimers = [(CKEffectPickerView *)self animationTimers];
+  effect = [cellCopy effect];
+  identifier = [effect identifier];
+  v14 = [animationTimers objectForKey:identifier];
 
   [v14 invalidate];
-  v8 = [(CKEffectPickerView *)self animationTimers];
-  v9 = [v4 effect];
-  v10 = [v9 identifier];
-  [v8 removeObjectForKey:v10];
+  animationTimers2 = [(CKEffectPickerView *)self animationTimers];
+  effect2 = [cellCopy effect];
+  identifier2 = [effect2 identifier];
+  [animationTimers2 removeObjectForKey:identifier2];
 
-  v11 = [(CKEffectPickerView *)self animatedCells];
-  v12 = [v4 effect];
+  animatedCells = [(CKEffectPickerView *)self animatedCells];
+  effect3 = [cellCopy effect];
 
-  v13 = [v12 identifier];
-  [v11 removeObjectForKey:v13];
+  identifier3 = [effect3 identifier];
+  [animatedCells removeObjectForKey:identifier3];
 }
 
 - (void)invalidateAllAnimationTimers
@@ -3918,10 +3918,10 @@ void __47__CKEffectPickerView_addAnimationTimerForCell___block_invoke(uint64_t a
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(CKEffectPickerView *)self animationTimers];
-  v4 = [v3 allValues];
+  animationTimers = [(CKEffectPickerView *)self animationTimers];
+  allValues = [animationTimers allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3933,38 +3933,38 @@ void __47__CKEffectPickerView_addAnimationTimerForCell___block_invoke(uint64_t a
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v8++) invalidate];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(CKEffectPickerView *)self animationTimers];
-  [v9 removeAllObjects];
+  animationTimers2 = [(CKEffectPickerView *)self animationTimers];
+  [animationTimers2 removeAllObjects];
 
-  v10 = [(CKEffectPickerView *)self animatedCells];
-  [v10 removeAllObjects];
+  animatedCells = [(CKEffectPickerView *)self animatedCells];
+  [animatedCells removeAllObjects];
 }
 
 - (void)_setNeedsSwitcherAnimationIfNecessary
 {
   if ([objc_opt_class() shouldUseLargeScreenDimension])
   {
-    v21 = [(CKEffectPickerView *)self typeSegmentedControl];
-    [v21 frame];
+    typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+    [typeSegmentedControl frame];
     v4 = v3;
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(CKEffectPickerView *)self roundedContainerView];
-    [v11 frame];
+    roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -4042,22 +4042,22 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
   return [v5 setNeedsSwitcherAnimation:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = CKEffectPickerView;
-  [(CKEffectPickerView *)&v5 traitCollectionDidChange:a3];
-  v4 = [(CKEffectPickerView *)self traitCollection];
-  -[CKEffectPickerView setIsInDarkMode:](self, "setIsInDarkMode:", [v4 userInterfaceStyle] == 2);
+  [(CKEffectPickerView *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(CKEffectPickerView *)self traitCollection];
+  -[CKEffectPickerView setIsInDarkMode:](self, "setIsInDarkMode:", [traitCollection userInterfaceStyle] == 2);
 
   [(CKEffectPickerView *)self updateViewColors];
 }
 
-- (void)handleTouchUp:(CGPoint)a3
+- (void)handleTouchUp:(CGPoint)up
 {
-  v6 = [(CKEffectPickerView *)self hitTest:0 withEvent:a3.x, a3.y];
-  v4 = [(CKEffectPickerView *)self effectSendButtons];
-  v5 = [v4 containsObject:v6];
+  v6 = [(CKEffectPickerView *)self hitTest:0 withEvent:up.x, up.y];
+  effectSendButtons = [(CKEffectPickerView *)self effectSendButtons];
+  v5 = [effectSendButtons containsObject:v6];
 
   if (v5)
   {
@@ -4065,11 +4065,11 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
   }
 }
 
-- (void)handleTouchMoved:(CGPoint)a3
+- (void)handleTouchMoved:(CGPoint)moved
 {
-  v8 = [(CKEffectPickerView *)self hitTest:0 withEvent:a3.x, a3.y];
-  v4 = [(CKEffectPickerView *)self effectDotButtons];
-  v5 = [v4 containsObject:v8];
+  v8 = [(CKEffectPickerView *)self hitTest:0 withEvent:moved.x, moved.y];
+  effectDotButtons = [(CKEffectPickerView *)self effectDotButtons];
+  v5 = [effectDotButtons containsObject:v8];
 
   if (v5)
   {
@@ -4078,8 +4078,8 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
 
   else
   {
-    v6 = [(CKEffectPickerView *)self closeButton];
-    if (v8 == v6)
+    closeButton = [(CKEffectPickerView *)self closeButton];
+    if (v8 == closeButton)
     {
       selectedIndex = self->_selectedIndex;
 
@@ -4095,29 +4095,29 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
   }
 }
 
-- (void)pageControlChanged:(id)a3
+- (void)pageControlChanged:(id)changed
 {
-  v4 = [a3 currentPage];
-  v6 = [(CKEffectPickerView *)self momentsCollectionView];
-  v5 = [MEMORY[0x1E696AC88] indexPathForItem:v4 inSection:0];
-  [v6 scrollToItemAtIndexPath:v5 atScrollPosition:16 animated:1];
+  currentPage = [changed currentPage];
+  momentsCollectionView = [(CKEffectPickerView *)self momentsCollectionView];
+  v5 = [MEMORY[0x1E696AC88] indexPathForItem:currentPage inSection:0];
+  [momentsCollectionView scrollToItemAtIndexPath:v5 atScrollPosition:16 animated:1];
 }
 
-- (void)updateMomentTitle:(BOOL)a3
+- (void)updateMomentTitle:(BOOL)title
 {
-  v3 = a3;
-  v36 = [(CKEffectPickerView *)self momentTitleLabel];
-  v5 = [(CKEffectPickerView *)self momentIdentifiers];
-  v6 = [(CKEffectPickerView *)self pageControl];
-  v7 = [v5 objectAtIndex:{objc_msgSend(v6, "currentPage")}];
+  titleCopy = title;
+  momentTitleLabel = [(CKEffectPickerView *)self momentTitleLabel];
+  momentIdentifiers = [(CKEffectPickerView *)self momentIdentifiers];
+  pageControl = [(CKEffectPickerView *)self pageControl];
+  v7 = [momentIdentifiers objectAtIndex:{objc_msgSend(pageControl, "currentPage")}];
 
-  v8 = [(CKEffectPickerView *)self fsem];
-  v9 = [v8 localizedPickerTitleForEffectWithIdentifier:v7];
+  fsem = [(CKEffectPickerView *)self fsem];
+  v9 = [fsem localizedPickerTitleForEffectWithIdentifier:v7];
 
-  [v36 setText:v9];
-  [v36 sizeToFit];
-  v10 = [(CKEffectPickerView *)self balloonView];
-  [v10 frame];
+  [momentTitleLabel setText:v9];
+  [momentTitleLabel sizeToFit];
+  balloonView = [(CKEffectPickerView *)self balloonView];
+  [balloonView frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -4128,7 +4128,7 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
   v38.size.width = v16;
   v38.size.height = v18;
   MaxX = CGRectGetMaxX(v38);
-  [v36 frame];
+  [momentTitleLabel frame];
   v20 = MaxX - CGRectGetWidth(v39);
   v21 = +[CKUIBehavior sharedBehaviors];
   [v21 balloonMaskTailSizeForTailShape:2];
@@ -4138,18 +4138,18 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
   v40.size.width = v16;
   v40.size.height = v18;
   MinY = CGRectGetMinY(v40);
-  [v36 frame];
+  [momentTitleLabel frame];
   v25 = MinY - CGRectGetHeight(v41) + -4.0;
 
-  [v36 frame];
-  [v36 setFrame:{v23, v25}];
-  if (v3)
+  [momentTitleLabel frame];
+  [momentTitleLabel setFrame:{v23, v25}];
+  if (titleCopy)
   {
     v26 = objc_alloc_init(MEMORY[0x1E6979318]);
     [v26 setBeginTime:CACurrentMediaTime()];
-    v27 = [(CKEffectPickerView *)self momentTitleLabel];
-    v28 = [v27 layer];
-    [v28 position];
+    momentTitleLabel2 = [(CKEffectPickerView *)self momentTitleLabel];
+    layer = [momentTitleLabel2 layer];
+    [layer position];
     v30 = v29;
 
     v31 = [MEMORY[0x1E696AD98] numberWithDouble:v30 + 30.0];
@@ -4161,34 +4161,34 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
     v33 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
     [v26 setTimingFunction:v33];
 
-    v34 = [(CKEffectPickerView *)self momentTitleLabel];
-    v35 = [v34 layer];
-    [v35 addAnimation:v26 forKey:@"position.y"];
+    momentTitleLabel3 = [(CKEffectPickerView *)self momentTitleLabel];
+    layer2 = [momentTitleLabel3 layer];
+    [layer2 addAnimation:v26 forKey:@"position.y"];
   }
 
   [(CKEffectPickerView *)self updateViewColors];
 }
 
-- (void)effectTypeDidChange:(id)a3
+- (void)effectTypeDidChange:(id)change
 {
   v65 = *MEMORY[0x1E69E9840];
   [(CKEffectPickerView *)self _updateBalloonViewPositionAnimated:1];
   [(CKEffectPickerView *)self updateViewColors];
-  v4 = [(CKEffectPickerView *)self typeSegmentedControl];
-  v5 = [v4 selectedSegmentIndex];
+  typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+  selectedSegmentIndex = [typeSegmentedControl selectedSegmentIndex];
 
-  if (v5)
+  if (selectedSegmentIndex)
   {
     [(CKEffectPickerView *)self _stopBalloonAnimation];
-    v6 = [(CKEffectPickerView *)self roundedContainerView];
-    [v6 setHidden:1];
+    roundedContainerView = [(CKEffectPickerView *)self roundedContainerView];
+    [roundedContainerView setHidden:1];
 
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v7 = [(CKEffectPickerView *)self effectLabels];
-    v8 = [v7 countByEnumeratingWithState:&v54 objects:v63 count:16];
+    effectLabels = [(CKEffectPickerView *)self effectLabels];
+    v8 = [effectLabels countByEnumeratingWithState:&v54 objects:v63 count:16];
     if (v8)
     {
       v9 = v8;
@@ -4199,13 +4199,13 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
         {
           if (*v55 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(effectLabels);
           }
 
           [*(*(&v54 + 1) + 8 * i) setHidden:1];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v54 objects:v63 count:16];
+        v9 = [effectLabels countByEnumeratingWithState:&v54 objects:v63 count:16];
       }
 
       while (v9);
@@ -4215,8 +4215,8 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v12 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-    v13 = [v12 countByEnumeratingWithState:&v50 objects:v62 count:16];
+    effectDescriptiveLabels = [(CKEffectPickerView *)self effectDescriptiveLabels];
+    v13 = [effectDescriptiveLabels countByEnumeratingWithState:&v50 objects:v62 count:16];
     if (v13)
     {
       v14 = v13;
@@ -4227,70 +4227,70 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
         {
           if (*v51 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(effectDescriptiveLabels);
           }
 
           [*(*(&v50 + 1) + 8 * j) setHidden:1];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v50 objects:v62 count:16];
+        v14 = [effectDescriptiveLabels countByEnumeratingWithState:&v50 objects:v62 count:16];
       }
 
       while (v14);
     }
 
     [(CKEffectPickerView *)self invalidateAllAnimationTimers];
-    v17 = [(CKEffectPickerView *)self momentsCollectionView];
-    [v17 setDelegate:self];
+    momentsCollectionView = [(CKEffectPickerView *)self momentsCollectionView];
+    [momentsCollectionView setDelegate:self];
 
-    v18 = [(CKEffectPickerView *)self momentsCollectionView];
-    [v18 setDataSource:self];
+    momentsCollectionView2 = [(CKEffectPickerView *)self momentsCollectionView];
+    [momentsCollectionView2 setDataSource:self];
 
-    v19 = [(CKEffectPickerView *)self momentsCollectionView];
-    [v19 setHidden:0];
+    momentsCollectionView3 = [(CKEffectPickerView *)self momentsCollectionView];
+    [momentsCollectionView3 setHidden:0];
 
-    v20 = [(CKEffectPickerView *)self pageControl];
-    [v20 setHidden:0];
+    pageControl = [(CKEffectPickerView *)self pageControl];
+    [pageControl setHidden:0];
 
-    v21 = [(CKEffectPickerView *)self sendMomentButton];
-    [v21 setHidden:0];
+    sendMomentButton = [(CKEffectPickerView *)self sendMomentButton];
+    [sendMomentButton setHidden:0];
 
-    v22 = [(CKEffectPickerView *)self momentTitleLabel];
-    [v22 setHidden:0];
+    momentTitleLabel = [(CKEffectPickerView *)self momentTitleLabel];
+    [momentTitleLabel setHidden:0];
 
-    v23 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
-    [v23 setHidden:0];
+    accessibilitySendBackgroundView = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+    [accessibilitySendBackgroundView setHidden:0];
 
     if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
     {
       v24 = [(NSArray *)self->_momentIdentifiers count];
-      v25 = [(CKEffectPickerView *)self momentsCollectionView];
-      [v25 frame];
+      momentsCollectionView4 = [(CKEffectPickerView *)self momentsCollectionView];
+      [momentsCollectionView4 frame];
       v27 = v26;
 
       v28 = v27 * v24;
-      v29 = [(CKEffectPickerView *)self momentsCollectionView];
-      [v29 contentOffset];
+      momentsCollectionView5 = [(CKEffectPickerView *)self momentsCollectionView];
+      [momentsCollectionView5 contentOffset];
       v31 = v30;
 
-      v32 = [(CKEffectPickerView *)self momentsCollectionView];
-      [v32 setContentOffset:{v28, v31}];
+      momentsCollectionView6 = [(CKEffectPickerView *)self momentsCollectionView];
+      [momentsCollectionView6 setContentOffset:{v28, v31}];
     }
 
-    v33 = [(CKEffectPickerView *)self pageControl];
-    [v33 setCurrentPage:{-[CKEffectPickerView selectedMomentIndex](self, "selectedMomentIndex")}];
+    pageControl2 = [(CKEffectPickerView *)self pageControl];
+    [pageControl2 setCurrentPage:{-[CKEffectPickerView selectedMomentIndex](self, "selectedMomentIndex")}];
     goto LABEL_28;
   }
 
-  v34 = [(CKEffectPickerView *)self roundedContainerView];
-  [v34 setHidden:0];
+  roundedContainerView2 = [(CKEffectPickerView *)self roundedContainerView];
+  [roundedContainerView2 setHidden:0];
 
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v35 = [(CKEffectPickerView *)self effectLabels];
-  v36 = [v35 countByEnumeratingWithState:&v58 objects:v64 count:16];
+  effectLabels2 = [(CKEffectPickerView *)self effectLabels];
+  v36 = [effectLabels2 countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v36)
   {
     v37 = v36;
@@ -4301,61 +4301,61 @@ uint64_t __56__CKEffectPickerView__startSwitcherAnimationIfNecessary__block_invo
       {
         if (*v59 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(effectLabels2);
         }
 
         [*(*(&v58 + 1) + 8 * k) setHidden:0];
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v58 objects:v64 count:16];
+      v37 = [effectLabels2 countByEnumeratingWithState:&v58 objects:v64 count:16];
     }
 
     while (v37);
   }
 
-  v40 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v40 setDelegate:0];
+  momentsCollectionView7 = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView7 setDelegate:0];
 
-  v41 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v41 setDataSource:0];
+  momentsCollectionView8 = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView8 setDataSource:0];
 
   [(CKEffectPickerView *)self invalidateAllAnimationTimers];
-  v42 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v42 setHidden:1];
+  momentsCollectionView9 = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView9 setHidden:1];
 
-  v43 = [(CKEffectPickerView *)self pageControl];
-  [v43 setHidden:1];
+  pageControl3 = [(CKEffectPickerView *)self pageControl];
+  [pageControl3 setHidden:1];
 
-  v44 = [(CKEffectPickerView *)self sendMomentButton];
-  [v44 setHidden:1];
+  sendMomentButton2 = [(CKEffectPickerView *)self sendMomentButton];
+  [sendMomentButton2 setHidden:1];
 
-  v45 = [(CKEffectPickerView *)self momentTitleLabel];
-  [v45 setHidden:1];
+  momentTitleLabel2 = [(CKEffectPickerView *)self momentTitleLabel];
+  [momentTitleLabel2 setHidden:1];
 
-  v46 = [(CKEffectPickerView *)self selectedIndex];
-  if (v46 != 0x7FFFFFFFFFFFFFFFLL)
+  selectedIndex = [(CKEffectPickerView *)self selectedIndex];
+  if (selectedIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v47 = v46;
-    v33 = [(CKEffectPickerView *)self effectDotButtons];
-    v48 = [v33 objectAtIndex:v47];
+    v47 = selectedIndex;
+    pageControl2 = [(CKEffectPickerView *)self effectDotButtons];
+    v48 = [pageControl2 objectAtIndex:v47];
     [(CKEffectPickerView *)self _touchUpInsideDotButton:v48];
 
 LABEL_28:
   }
 
-  v49 = [(CKEffectPickerView *)self momentsCollectionView];
-  [v49 reloadData];
+  momentsCollectionView10 = [(CKEffectPickerView *)self momentsCollectionView];
+  [momentsCollectionView10 reloadData];
 
   [(CKEffectPickerView *)self _updateMomentsBackgroundColor];
   [(CKEffectPickerView *)self updateMomentTitle:1];
 }
 
-- (void)_panGesture:(id)a3
+- (void)_panGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] != 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] != 3)
   {
-    [v4 locationInView:self];
+    [gestureCopy locationInView:self];
     [(CKEffectPickerView *)self handleTouchMoved:?];
   }
 }
@@ -4363,13 +4363,13 @@ LABEL_28:
 - (void)cancelImpactSelection
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(CKEffectPickerView *)self selectedIndex];
+  selectedIndex = [(CKEffectPickerView *)self selectedIndex];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(CKEffectPickerView *)self effectSendButtons];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  effectSendButtons = [(CKEffectPickerView *)self effectSendButtons];
+  v5 = [effectSendButtons countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4381,14 +4381,14 @@ LABEL_28:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(effectSendButtons);
         }
 
         [*(*(&v18 + 1) + 8 * v8++) setHidden:1];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v6 = [effectSendButtons countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v6);
@@ -4398,8 +4398,8 @@ LABEL_28:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(CKEffectPickerView *)self effectDotButtons];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  effectDotButtons = [(CKEffectPickerView *)self effectDotButtons];
+  v10 = [effectDotButtons countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4411,57 +4411,57 @@ LABEL_28:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(effectDotButtons);
         }
 
         [*(*(&v14 + 1) + 8 * v13++) setHidden:0];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v11 = [effectDotButtons countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v11);
   }
 
-  [(CKEffectPickerView *)self _animateSelectedEffectLabelAtIndex:0x7FFFFFFFFFFFFFFFLL fromPreviousIndex:v3];
+  [(CKEffectPickerView *)self _animateSelectedEffectLabelAtIndex:0x7FFFFFFFFFFFFFFFLL fromPreviousIndex:selectedIndex];
   [(CKEffectPickerView *)self resetDotConstraintsToDefault];
   [(CKEffectPickerView *)self _stopBalloonAnimation];
 }
 
-- (void)_touchUpInsideSendButton:(id)a3
+- (void)_touchUpInsideSendButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CKEffectPickerView *)self effectSendButtons];
-  v6 = [v5 indexOfObject:v4];
+  buttonCopy = button;
+  effectSendButtons = [(CKEffectPickerView *)self effectSendButtons];
+  v6 = [effectSendButtons indexOfObject:buttonCopy];
 
-  v9 = [(CKEffectPickerView *)self delegate];
-  v7 = [(CKEffectPickerView *)self effectIdentifiers];
-  v8 = [v7 objectAtIndex:v6];
-  [v9 effectSelectedWithIdentifier:v8];
+  delegate = [(CKEffectPickerView *)self delegate];
+  effectIdentifiers = [(CKEffectPickerView *)self effectIdentifiers];
+  v8 = [effectIdentifiers objectAtIndex:v6];
+  [delegate effectSelectedWithIdentifier:v8];
 }
 
-- (void)_touchUpInsideSendMomentButton:(id)a3
+- (void)_touchUpInsideSendMomentButton:(id)button
 {
-  v7 = [(CKEffectPickerView *)self delegate];
-  v4 = [(CKEffectPickerView *)self momentIdentifiers];
-  v5 = [(CKEffectPickerView *)self pageControl];
-  v6 = [v4 objectAtIndex:{objc_msgSend(v5, "currentPage")}];
-  [v7 effectSelectedWithIdentifier:v6];
+  delegate = [(CKEffectPickerView *)self delegate];
+  momentIdentifiers = [(CKEffectPickerView *)self momentIdentifiers];
+  pageControl = [(CKEffectPickerView *)self pageControl];
+  v6 = [momentIdentifiers objectAtIndex:{objc_msgSend(pageControl, "currentPage")}];
+  [delegate effectSelectedWithIdentifier:v6];
 }
 
-- (void)_animateInSendButton:(id)a3
+- (void)_animateInSendButton:(id)button
 {
-  v3 = a3;
-  [v3 bounds];
+  buttonCopy = button;
+  [buttonCopy bounds];
   v4 = 9.0 / CGRectGetWidth(v21);
-  [v3 bounds];
+  [buttonCopy bounds];
   Height = CGRectGetHeight(v22);
   memset(&v20, 0, sizeof(v20));
   CATransform3DMakeScale(&v20, v4, 9.0 / Height, 1.0);
-  v6 = [v3 layer];
+  layer = [buttonCopy layer];
   v19 = v20;
-  [v6 setTransform:&v19];
+  [layer setTransform:&v19];
 
   [MEMORY[0x1E6979518] begin];
   v7 = MEMORY[0x1E6979518];
@@ -4469,8 +4469,8 @@ LABEL_28:
   v17[1] = 3221225472;
   v17[2] = __43__CKEffectPickerView__animateInSendButton___block_invoke;
   v17[3] = &unk_1E72EBA18;
-  v18 = v3;
-  v8 = v3;
+  v18 = buttonCopy;
+  v8 = buttonCopy;
   [v7 setCompletionBlock:v17];
   [MEMORY[0x1E6979518] setAnimationDuration:0.15];
   v9 = objc_alloc_init(MEMORY[0x1E6979318]);
@@ -4496,8 +4496,8 @@ LABEL_28:
   [v9 setRemovedOnCompletion:0];
   [v9 setFillMode:*MEMORY[0x1E69797E8]];
   [v9 setBeginTime:CACurrentMediaTime()];
-  v16 = [v8 layer];
-  [v16 addAnimation:v9 forKey:@"transform"];
+  layer2 = [v8 layer];
+  [layer2 addAnimation:v9 forKey:@"transform"];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -4522,12 +4522,12 @@ uint64_t __43__CKEffectPickerView__animateInSendButton___block_invoke(uint64_t a
   return [*(a1 + 32) setHidden:0];
 }
 
-- (void)_animateOutSendButton:(id)a3
+- (void)_animateOutSendButton:(id)button
 {
-  v3 = a3;
-  [v3 bounds];
+  buttonCopy = button;
+  [buttonCopy bounds];
   v4 = 9.0 / CGRectGetWidth(v21);
-  [v3 bounds];
+  [buttonCopy bounds];
   Height = CGRectGetHeight(v22);
   memset(&v20, 0, sizeof(v20));
   CATransform3DMakeScale(&v20, v4, 9.0 / Height, 1.0);
@@ -4539,8 +4539,8 @@ uint64_t __43__CKEffectPickerView__animateInSendButton___block_invoke(uint64_t a
   v19 = v20;
   v17[2] = __44__CKEffectPickerView__animateOutSendButton___block_invoke;
   v17[3] = &unk_1E72F5CE8;
-  v18 = v3;
-  v7 = v3;
+  v18 = buttonCopy;
+  v7 = buttonCopy;
   [v6 setCompletionBlock:v17];
   v8 = objc_alloc_init(MEMORY[0x1E6979318]);
   v9 = *(MEMORY[0x1E69792E8] + 80);
@@ -4565,8 +4565,8 @@ uint64_t __43__CKEffectPickerView__animateInSendButton___block_invoke(uint64_t a
   [v8 setRemovedOnCompletion:0];
   [v8 setFillMode:*MEMORY[0x1E69797E8]];
   [v8 setBeginTime:CACurrentMediaTime()];
-  v15 = [v7 layer];
-  [v15 addAnimation:v8 forKey:@"transform"];
+  layer = [v7 layer];
+  [layer addAnimation:v8 forKey:@"transform"];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -4598,10 +4598,10 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(CKEffectPickerView *)self effectDotConstraintsThatChange];
-  v4 = [v3 allValues];
+  effectDotConstraintsThatChange = [(CKEffectPickerView *)self effectDotConstraintsThatChange];
+  allValues = [effectDotConstraintsThatChange allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4613,7 +4613,7 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v21 + 1) + 8 * v8);
@@ -4654,24 +4654,24 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_touchUpInsideDotButton:(id)a3
+- (void)_touchUpInsideDotButton:(id)button
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKEffectPickerView *)self selectedIndex];
+  buttonCopy = button;
+  selectedIndex = [(CKEffectPickerView *)self selectedIndex];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = [(CKEffectPickerView *)self effectSendButtons];
-  v7 = [v6 countByEnumeratingWithState:&v46 objects:v53 count:16];
+  effectSendButtons = [(CKEffectPickerView *)self effectSendButtons];
+  v7 = [effectSendButtons countByEnumeratingWithState:&v46 objects:v53 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4682,13 +4682,13 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
       {
         if (*v47 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(effectSendButtons);
         }
 
         [*(*(&v46 + 1) + 8 * i) setHidden:1];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v46 objects:v53 count:16];
+      v8 = [effectSendButtons countByEnumeratingWithState:&v46 objects:v53 count:16];
     }
 
     while (v8);
@@ -4698,8 +4698,8 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v11 = [(CKEffectPickerView *)self effectDotButtons];
-  v12 = [v11 countByEnumeratingWithState:&v42 objects:v52 count:16];
+  effectDotButtons = [(CKEffectPickerView *)self effectDotButtons];
+  v12 = [effectDotButtons countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v12)
   {
     v13 = v12;
@@ -4710,13 +4710,13 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
       {
         if (*v43 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(effectDotButtons);
         }
 
         [*(*(&v42 + 1) + 8 * j) setHidden:0];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v42 objects:v52 count:16];
+      v13 = [effectDotButtons countByEnumeratingWithState:&v42 objects:v52 count:16];
     }
 
     while (v13);
@@ -4726,8 +4726,8 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v16 = [(CKEffectPickerView *)self effectLabels];
-  v17 = [v16 countByEnumeratingWithState:&v38 objects:v51 count:16];
+  effectLabels = [(CKEffectPickerView *)self effectLabels];
+  v17 = [effectLabels countByEnumeratingWithState:&v38 objects:v51 count:16];
   if (v17)
   {
     v18 = v17;
@@ -4738,13 +4738,13 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
       {
         if (*v39 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(effectLabels);
         }
 
         [*(*(&v38 + 1) + 8 * k) setHidden:0];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v38 objects:v51 count:16];
+      v18 = [effectLabels countByEnumeratingWithState:&v38 objects:v51 count:16];
     }
 
     while (v18);
@@ -4754,8 +4754,8 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v21 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-  v22 = [v21 countByEnumeratingWithState:&v34 objects:v50 count:16];
+  effectDescriptiveLabels = [(CKEffectPickerView *)self effectDescriptiveLabels];
+  v22 = [effectDescriptiveLabels countByEnumeratingWithState:&v34 objects:v50 count:16];
   if (v22)
   {
     v23 = v22;
@@ -4766,54 +4766,54 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
       {
         if (*v35 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(effectDescriptiveLabels);
         }
 
         [*(*(&v34 + 1) + 8 * m) setHidden:1];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v34 objects:v50 count:16];
+      v23 = [effectDescriptiveLabels countByEnumeratingWithState:&v34 objects:v50 count:16];
     }
 
     while (v23);
   }
 
-  v26 = [(CKEffectPickerView *)self effectDotButtons];
-  v27 = [v26 indexOfObject:v4];
+  effectDotButtons2 = [(CKEffectPickerView *)self effectDotButtons];
+  v27 = [effectDotButtons2 indexOfObject:buttonCopy];
 
-  v28 = [(CKEffectPickerView *)self effectSendButtons];
-  v29 = [v28 objectAtIndex:v27];
+  effectSendButtons2 = [(CKEffectPickerView *)self effectSendButtons];
+  v29 = [effectSendButtons2 objectAtIndex:v27];
 
   [(CKEffectPickerView *)self _animateInSendButton:v29];
-  [(CKEffectPickerView *)self _animateSelectedEffectLabelAtIndex:v27 fromPreviousIndex:v5];
+  [(CKEffectPickerView *)self _animateSelectedEffectLabelAtIndex:v27 fromPreviousIndex:selectedIndex];
   [(CKEffectPickerView *)self setSelectedIndex:v27];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL && v5 != v27)
+  if (selectedIndex != 0x7FFFFFFFFFFFFFFFLL && selectedIndex != v27)
   {
-    v30 = [(CKEffectPickerView *)self effectSendButtons];
-    v31 = [v30 objectAtIndex:v5];
+    effectSendButtons3 = [(CKEffectPickerView *)self effectSendButtons];
+    v31 = [effectSendButtons3 objectAtIndex:selectedIndex];
 
     [v31 setHidden:0];
     [(CKEffectPickerView *)self _animateOutSendButton:v31];
   }
 
-  [v4 setHidden:1];
+  [buttonCopy setHidden:1];
   [(CKEffectPickerView *)self _updateBalloonViewPositionAnimated:1];
-  v32 = [(CKEffectPickerView *)self effectIdentifiers];
-  v33 = [v32 objectAtIndex:v27];
+  effectIdentifiers = [(CKEffectPickerView *)self effectIdentifiers];
+  v33 = [effectIdentifiers objectAtIndex:v27];
   [(CKEffectPickerView *)self startAnimationPreviewForIdentifier:v33];
 }
 
-- (void)startAnimationPreviewForIdentifier:(id)a3
+- (void)startAnimationPreviewForIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKEffectPickerView *)self balloonView];
+  identifierCopy = identifier;
+  balloonView = [(CKEffectPickerView *)self balloonView];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  subviews = [balloonView subviews];
+  v7 = [subviews countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -4823,7 +4823,7 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -4835,7 +4835,7 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v16 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -4847,32 +4847,32 @@ uint64_t __44__CKEffectPickerView__animateOutSendButton___block_invoke(uint64_t 
 
 LABEL_11:
 
-  if (v5)
+  if (balloonView)
   {
-    [v5 setInvisibleInkEffectEnabled:{objc_msgSend(v4, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.invisibleink"}];
-    [v5 prepareForDisplayIfNeeded];
-    v11 = [(CKEffectPickerView *)self _defaultSendAnimationContextForAnimationPreview];
-    v21 = v5;
+    [balloonView setInvisibleInkEffectEnabled:{objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.invisibleink"}];
+    [balloonView prepareForDisplayIfNeeded];
+    _defaultSendAnimationContextForAnimationPreview = [(CKEffectPickerView *)self _defaultSendAnimationContextForAnimationPreview];
+    v21 = balloonView;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-    [v11 setThrowBalloonViews:v12];
+    [_defaultSendAnimationContextForAnimationPreview setThrowBalloonViews:v12];
 
-    v13 = v7;
+    null = v7;
     if (!v7)
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v20 = v13;
+    v20 = null;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-    [v11 setAnimatableTextViews:v14];
+    [_defaultSendAnimationContextForAnimationPreview setAnimatableTextViews:v14];
 
     if (!v7)
     {
     }
 
-    [v11 setImpactIdentifier:v4];
-    v15 = [(CKEffectPickerView *)self dummyAnimator];
-    [v15 beginAnimationWithSendAnimationContext:v11];
+    [_defaultSendAnimationContextForAnimationPreview setImpactIdentifier:identifierCopy];
+    dummyAnimator = [(CKEffectPickerView *)self dummyAnimator];
+    [dummyAnimator beginAnimationWithSendAnimationContext:_defaultSendAnimationContextForAnimationPreview];
   }
 }
 
@@ -4883,10 +4883,10 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(CKEffectPickerView *)self fsem];
-  v4 = [v3 effectIdentifiers];
+  fsem = [(CKEffectPickerView *)self fsem];
+  effectIdentifiers = [fsem effectIdentifiers];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [effectIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4898,28 +4898,28 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(effectIdentifiers);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [(CKEffectPickerView *)self animationTimers];
-        v11 = [v10 objectForKey:v9];
+        animationTimers = [(CKEffectPickerView *)self animationTimers];
+        v11 = [animationTimers objectForKey:v9];
 
         if (v11)
         {
-          v12 = [(CKEffectPickerView *)self animatedCells];
-          v13 = [v12 objectForKey:v9];
+          animatedCells = [(CKEffectPickerView *)self animatedCells];
+          v13 = [animatedCells objectForKey:v9];
 
           [(CKEffectPickerView *)self removeAnimationTimerForCell:v13];
-          v14 = [(CKEffectPickerView *)self pausedAnimatedCells];
-          [v14 setObject:v13 forKey:v9];
+          pausedAnimatedCells = [(CKEffectPickerView *)self pausedAnimatedCells];
+          [pausedAnimatedCells setObject:v13 forKey:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [effectIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -4933,8 +4933,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(CKEffectPickerView *)self pausedAnimatedCells];
-  v4 = [v3 copy];
+  pausedAnimatedCells = [(CKEffectPickerView *)self pausedAnimatedCells];
+  v4 = [pausedAnimatedCells copy];
 
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
@@ -4952,13 +4952,13 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(CKEffectPickerView *)self pausedAnimatedCells];
-        v11 = [v10 objectForKey:v9];
+        pausedAnimatedCells2 = [(CKEffectPickerView *)self pausedAnimatedCells];
+        v11 = [pausedAnimatedCells2 objectForKey:v9];
 
         [v11 animate];
         [(CKEffectPickerView *)self addAnimationTimerForCell:v11];
-        v12 = [(CKEffectPickerView *)self pausedAnimatedCells];
-        [v12 removeObjectForKey:v9];
+        pausedAnimatedCells3 = [(CKEffectPickerView *)self pausedAnimatedCells];
+        [pausedAnimatedCells3 removeObjectForKey:v9];
 
         ++v8;
       }
@@ -4985,42 +4985,42 @@ LABEL_11:
   v106 = *MEMORY[0x1E69E9840];
   if (UIAccessibilityIsReduceTransparencyEnabled() || UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v3 = [(CKEffectPickerView *)self pageControl];
-    v4 = [v3 layer];
-    [v4 setFilters:0];
+    pageControl = [(CKEffectPickerView *)self pageControl];
+    layer = [pageControl layer];
+    [layer setFilters:0];
 
-    v5 = [(CKEffectPickerView *)self mainLabel];
-    v6 = [v5 layer];
-    [v6 setFilters:0];
+    mainLabel = [(CKEffectPickerView *)self mainLabel];
+    layer2 = [mainLabel layer];
+    [layer2 setFilters:0];
 
-    v7 = [(CKEffectPickerView *)self momentTitleLabel];
-    v8 = [v7 layer];
-    [v8 setFilters:0];
+    momentTitleLabel = [(CKEffectPickerView *)self momentTitleLabel];
+    layer3 = [momentTitleLabel layer];
+    [layer3 setFilters:0];
 
-    v9 = [(CKEffectPickerView *)self closeButton];
-    v10 = [v9 layer];
-    [v10 setFilters:0];
+    closeButton = [(CKEffectPickerView *)self closeButton];
+    layer4 = [closeButton layer];
+    [layer4 setFilters:0];
 
-    v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LOBYTE(v10) = [v11 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LOBYTE(layer4) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if ((v10 & 1) == 0)
+    if ((layer4 & 1) == 0)
     {
-      v12 = [(CKEffectPickerView *)self typeSegmentedControl];
-      v13 = [v12 layer];
-      [v13 setFilters:0];
+      typeSegmentedControl = [(CKEffectPickerView *)self typeSegmentedControl];
+      layer5 = [typeSegmentedControl layer];
+      [layer5 setFilters:0];
     }
 
-    v14 = [(CKEffectPickerView *)self roundedView];
-    v15 = [v14 layer];
-    [v15 setCompositingFilter:0];
+    roundedView = [(CKEffectPickerView *)self roundedView];
+    layer6 = [roundedView layer];
+    [layer6 setCompositingFilter:0];
 
     v92 = 0u;
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v16 = [(CKEffectPickerView *)self effectLabels];
-    v17 = [v16 countByEnumeratingWithState:&v90 objects:v103 count:16];
+    effectLabels = [(CKEffectPickerView *)self effectLabels];
+    v17 = [effectLabels countByEnumeratingWithState:&v90 objects:v103 count:16];
     if (v17)
     {
       v18 = v17;
@@ -5031,14 +5031,14 @@ LABEL_11:
         {
           if (*v91 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(effectLabels);
           }
 
-          v21 = [*(*(&v90 + 1) + 8 * i) layer];
-          [v21 setFilters:0];
+          layer7 = [*(*(&v90 + 1) + 8 * i) layer];
+          [layer7 setFilters:0];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v90 objects:v103 count:16];
+        v18 = [effectLabels countByEnumeratingWithState:&v90 objects:v103 count:16];
       }
 
       while (v18);
@@ -5048,8 +5048,8 @@ LABEL_11:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v22 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-    v23 = [v22 countByEnumeratingWithState:&v86 objects:v102 count:16];
+    effectDescriptiveLabels = [(CKEffectPickerView *)self effectDescriptiveLabels];
+    v23 = [effectDescriptiveLabels countByEnumeratingWithState:&v86 objects:v102 count:16];
     if (v23)
     {
       v24 = v23;
@@ -5060,139 +5060,139 @@ LABEL_11:
         {
           if (*v87 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(effectDescriptiveLabels);
           }
 
-          v27 = [*(*(&v86 + 1) + 8 * j) layer];
-          [v27 setFilters:0];
+          layer8 = [*(*(&v86 + 1) + 8 * j) layer];
+          [layer8 setFilters:0];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v86 objects:v102 count:16];
+        v24 = [effectDescriptiveLabels countByEnumeratingWithState:&v86 objects:v102 count:16];
       }
 
       while (v24);
     }
 
-    v28 = [(CKEffectPickerView *)self accessibilityBackdropView];
+    accessibilityBackdropView = [(CKEffectPickerView *)self accessibilityBackdropView];
 
-    if (!v28)
+    if (!accessibilityBackdropView)
     {
       v29 = objc_alloc_init(MEMORY[0x1E69DD250]);
       v30 = +[CKUIBehavior sharedBehaviors];
-      v31 = [v30 theme];
-      v32 = [v31 fsmPickerBackgroundColor];
-      [v29 setBackgroundColor:v32];
+      theme = [v30 theme];
+      fsmPickerBackgroundColor = [theme fsmPickerBackgroundColor];
+      [v29 setBackgroundColor:fsmPickerBackgroundColor];
 
       [(CKEffectPickerView *)self setAccessibilityBackdropView:v29];
-      v33 = [(CKEffectPickerView *)self accessibilityBackdropView];
-      v34 = [(CKEffectPickerView *)self peekContainer];
-      [(CKEffectPickerView *)self insertSubview:v33 belowSubview:v34];
+      accessibilityBackdropView2 = [(CKEffectPickerView *)self accessibilityBackdropView];
+      peekContainer = [(CKEffectPickerView *)self peekContainer];
+      [(CKEffectPickerView *)self insertSubview:accessibilityBackdropView2 belowSubview:peekContainer];
     }
 
-    v35 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
+    accessibilityCloseBackgroundView = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
 
-    if (!v35)
+    if (!accessibilityCloseBackgroundView)
     {
       v36 = objc_alloc_init(MEMORY[0x1E69DD250]);
       v37 = +[CKUIBehavior sharedBehaviors];
-      v38 = [v37 theme];
-      v39 = [v38 fsmPickerSecondaryColor];
-      [v36 setBackgroundColor:v39];
+      theme2 = [v37 theme];
+      fsmPickerSecondaryColor = [theme2 fsmPickerSecondaryColor];
+      [v36 setBackgroundColor:fsmPickerSecondaryColor];
 
       [(CKEffectPickerView *)self setAccessibilityCloseBackgroundView:v36];
-      v40 = [(CKEffectPickerView *)self peekContainer];
-      v41 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
-      v42 = [(CKEffectPickerView *)self closeButton];
-      [v40 insertSubview:v41 belowSubview:v42];
+      peekContainer2 = [(CKEffectPickerView *)self peekContainer];
+      accessibilityCloseBackgroundView2 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
+      closeButton2 = [(CKEffectPickerView *)self closeButton];
+      [peekContainer2 insertSubview:accessibilityCloseBackgroundView2 belowSubview:closeButton2];
     }
 
-    v43 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+    accessibilitySendBackgroundView = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
 
-    if (!v43)
+    if (!accessibilitySendBackgroundView)
     {
       v44 = objc_alloc_init(MEMORY[0x1E69DD250]);
       v45 = +[CKUIBehavior sharedBehaviors];
-      v46 = [v45 theme];
-      v47 = [v46 fsmPickerBackgroundColor];
-      [v44 setBackgroundColor:v47];
+      theme3 = [v45 theme];
+      fsmPickerBackgroundColor2 = [theme3 fsmPickerBackgroundColor];
+      [v44 setBackgroundColor:fsmPickerBackgroundColor2];
 
       [(CKEffectPickerView *)self setAccessibilitySendBackgroundView:v44];
-      v48 = [(CKEffectPickerView *)self peekContainer];
-      v49 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
-      v50 = [(CKEffectPickerView *)self sendMomentButton];
-      [v48 insertSubview:v49 belowSubview:v50];
+      peekContainer3 = [(CKEffectPickerView *)self peekContainer];
+      accessibilitySendBackgroundView2 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+      sendMomentButton = [(CKEffectPickerView *)self sendMomentButton];
+      [peekContainer3 insertSubview:accessibilitySendBackgroundView2 belowSubview:sendMomentButton];
     }
 
-    v51 = [(CKEffectPickerView *)self accessibilityBackdropView];
-    [v51 setHidden:0];
+    accessibilityBackdropView3 = [(CKEffectPickerView *)self accessibilityBackdropView];
+    [accessibilityBackdropView3 setHidden:0];
 
-    v52 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
-    [v52 setHidden:0];
+    accessibilitySendBackgroundView3 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+    [accessibilitySendBackgroundView3 setHidden:0];
 
-    v53 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
-    [v53 setHidden:0];
+    accessibilityCloseBackgroundView3 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
+    [accessibilityCloseBackgroundView3 setHidden:0];
 
-    v54 = [(CKEffectPickerView *)self backdrop];
-    [v54 setHidden:1];
+    backdrop = [(CKEffectPickerView *)self backdrop];
+    [backdrop setHidden:1];
 
-    v55 = [(CKEffectPickerView *)self blueContrastLayer];
-    [v55 setHidden:1];
+    blueContrastLayer = [(CKEffectPickerView *)self blueContrastLayer];
+    [blueContrastLayer setHidden:1];
   }
 
   else
   {
-    v56 = [(CKEffectPickerView *)self blueContrastLayer];
-    [v56 setHidden:0];
+    blueContrastLayer2 = [(CKEffectPickerView *)self blueContrastLayer];
+    [blueContrastLayer2 setHidden:0];
 
-    v57 = [(CKEffectPickerView *)self backdrop];
-    [v57 setHidden:0];
+    backdrop2 = [(CKEffectPickerView *)self backdrop];
+    [backdrop2 setHidden:0];
 
-    v58 = [(CKEffectPickerView *)self accessibilityBackdropView];
-    [v58 setHidden:1];
+    accessibilityBackdropView4 = [(CKEffectPickerView *)self accessibilityBackdropView];
+    [accessibilityBackdropView4 setHidden:1];
 
-    v59 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
-    [v59 setHidden:1];
+    accessibilitySendBackgroundView4 = [(CKEffectPickerView *)self accessibilitySendBackgroundView];
+    [accessibilitySendBackgroundView4 setHidden:1];
 
-    v60 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
-    [v60 setHidden:1];
+    accessibilityCloseBackgroundView4 = [(CKEffectPickerView *)self accessibilityCloseBackgroundView];
+    [accessibilityCloseBackgroundView4 setHidden:1];
 
-    v61 = [(CKEffectPickerView *)self pageControl];
-    v62 = [v61 layer];
-    setUpVibrancyForLayer(v62, 0, 0, [(CKEffectPickerView *)self isInDarkMode]);
+    pageControl2 = [(CKEffectPickerView *)self pageControl];
+    layer9 = [pageControl2 layer];
+    setUpVibrancyForLayer(layer9, 0, 0, [(CKEffectPickerView *)self isInDarkMode]);
 
-    v63 = [(CKEffectPickerView *)self mainLabel];
-    v64 = [v63 layer];
-    setUpVibrancyForLayer(v64, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+    mainLabel2 = [(CKEffectPickerView *)self mainLabel];
+    layer10 = [mainLabel2 layer];
+    setUpVibrancyForLayer(layer10, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
 
-    v65 = [(CKEffectPickerView *)self momentTitleLabel];
-    v66 = [v65 layer];
-    setUpVibrancyForLayer(v66, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+    momentTitleLabel2 = [(CKEffectPickerView *)self momentTitleLabel];
+    layer11 = [momentTitleLabel2 layer];
+    setUpVibrancyForLayer(layer11, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
 
-    v67 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LOBYTE(v66) = [v67 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LOBYTE(layer11) = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-    if ((v66 & 1) == 0)
+    if ((layer11 & 1) == 0)
     {
-      v68 = [(CKEffectPickerView *)self closeButton];
-      v69 = [v68 layer];
-      setUpVibrancyForLayer(v69, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+      closeButton3 = [(CKEffectPickerView *)self closeButton];
+      layer12 = [closeButton3 layer];
+      setUpVibrancyForLayer(layer12, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
 
-      v70 = [(CKEffectPickerView *)self typeSegmentedControl];
-      v71 = [v70 layer];
-      setUpVibrancyForLayer(v71, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+      typeSegmentedControl2 = [(CKEffectPickerView *)self typeSegmentedControl];
+      layer13 = [typeSegmentedControl2 layer];
+      setUpVibrancyForLayer(layer13, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
     }
 
-    v72 = [(CKEffectPickerView *)self roundedView];
-    v73 = [v72 layer];
+    roundedView2 = [(CKEffectPickerView *)self roundedView];
+    layer14 = [roundedView2 layer];
     v74 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-    [v73 setCompositingFilter:v74];
+    [layer14 setCompositingFilter:v74];
 
     v100 = 0u;
     v101 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v75 = [(CKEffectPickerView *)self effectLabels];
-    v76 = [v75 countByEnumeratingWithState:&v98 objects:v105 count:16];
+    effectLabels2 = [(CKEffectPickerView *)self effectLabels];
+    v76 = [effectLabels2 countByEnumeratingWithState:&v98 objects:v105 count:16];
     if (v76)
     {
       v77 = v76;
@@ -5203,14 +5203,14 @@ LABEL_11:
         {
           if (*v99 != v78)
           {
-            objc_enumerationMutation(v75);
+            objc_enumerationMutation(effectLabels2);
           }
 
-          v80 = [*(*(&v98 + 1) + 8 * k) layer];
-          setUpVibrancyForLayer(v80, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+          layer15 = [*(*(&v98 + 1) + 8 * k) layer];
+          setUpVibrancyForLayer(layer15, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
         }
 
-        v77 = [v75 countByEnumeratingWithState:&v98 objects:v105 count:16];
+        v77 = [effectLabels2 countByEnumeratingWithState:&v98 objects:v105 count:16];
       }
 
       while (v77);
@@ -5220,8 +5220,8 @@ LABEL_11:
     v97 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v55 = [(CKEffectPickerView *)self effectDescriptiveLabels];
-    v81 = [v55 countByEnumeratingWithState:&v94 objects:v104 count:16];
+    blueContrastLayer = [(CKEffectPickerView *)self effectDescriptiveLabels];
+    v81 = [blueContrastLayer countByEnumeratingWithState:&v94 objects:v104 count:16];
     if (v81)
     {
       v82 = v81;
@@ -5232,14 +5232,14 @@ LABEL_11:
         {
           if (*v95 != v83)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(blueContrastLayer);
           }
 
-          v85 = [*(*(&v94 + 1) + 8 * m) layer];
-          setUpVibrancyForLayer(v85, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
+          layer16 = [*(*(&v94 + 1) + 8 * m) layer];
+          setUpVibrancyForLayer(layer16, 0, ![(CKEffectPickerView *)self isInDarkMode], [(CKEffectPickerView *)self isInDarkMode]);
         }
 
-        v82 = [v55 countByEnumeratingWithState:&v94 objects:v104 count:16];
+        v82 = [blueContrastLayer countByEnumeratingWithState:&v94 objects:v104 count:16];
       }
 
       while (v82);

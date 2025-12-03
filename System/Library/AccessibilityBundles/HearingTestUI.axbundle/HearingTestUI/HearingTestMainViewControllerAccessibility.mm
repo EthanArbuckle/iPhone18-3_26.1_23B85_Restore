@@ -11,12 +11,12 @@
   [(HearingTestMainViewControllerAccessibility *)&v7 _accessibilityLoadAccessibilityInformation];
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 navigationItem];
-  v4 = [v3 rightBarButtonItems];
+  navigationItem = [v2 navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
 
-  if ([v4 count] == 3)
+  if ([rightBarButtonItems count] == 3)
   {
-    v5 = [v4 objectAtIndexedSubscript:2];
+    v5 = [rightBarButtonItems objectAtIndexedSubscript:2];
     v6 = accessibilityLocalizedString(@"HEARING_TEST_DEBUG_BUTTON");
     [v5 setAccessibilityLabel:v6];
   }

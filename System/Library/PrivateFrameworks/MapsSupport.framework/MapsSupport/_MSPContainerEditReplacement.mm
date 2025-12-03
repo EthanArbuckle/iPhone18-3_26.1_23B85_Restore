@@ -1,30 +1,30 @@
 @interface _MSPContainerEditReplacement
 - (NSString)description;
-- (_MSPContainerEditReplacement)initWithOriginalObjects:(id)a3 replacementObjects:(id)a4 indexes:(id)a5;
-- (void)useImmutableObjectsFromMap:(id)a3 intermediateMutableObjectTransferBlock:(id)a4;
+- (_MSPContainerEditReplacement)initWithOriginalObjects:(id)objects replacementObjects:(id)replacementObjects indexes:(id)indexes;
+- (void)useImmutableObjectsFromMap:(id)map intermediateMutableObjectTransferBlock:(id)block;
 @end
 
 @implementation _MSPContainerEditReplacement
 
-- (_MSPContainerEditReplacement)initWithOriginalObjects:(id)a3 replacementObjects:(id)a4 indexes:(id)a5
+- (_MSPContainerEditReplacement)initWithOriginalObjects:(id)objects replacementObjects:(id)replacementObjects indexes:(id)indexes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  replacementObjectsCopy = replacementObjects;
+  indexesCopy = indexes;
   v19.receiver = self;
   v19.super_class = _MSPContainerEditReplacement;
   v11 = [(_MSPContainerEditReplacement *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [objectsCopy copy];
     originalObjects = v11->_originalObjects;
     v11->_originalObjects = v12;
 
-    v14 = [v9 copy];
+    v14 = [replacementObjectsCopy copy];
     replacementObjects = v11->_replacementObjects;
     v11->_replacementObjects = v14;
 
-    v16 = [v10 copy];
+    v16 = [indexesCopy copy];
     indexesOfReplacedObjects = v11->_indexesOfReplacedObjects;
     v11->_indexesOfReplacedObjects = v16;
   }
@@ -38,29 +38,29 @@
   v10.receiver = self;
   v10.super_class = _MSPContainerEditReplacement;
   v4 = [(_MSPContainerEditReplacement *)&v10 description];
-  v5 = [(_MSPContainerEditReplacement *)self originalImmutableObjects];
-  v6 = [(_MSPContainerEditReplacement *)self replacementImmutableObjects];
-  v7 = [(_MSPContainerEditReplacement *)self indexesOfReplacedObjects];
-  v8 = [v3 stringWithFormat:@"%@ { replaces original objects = %@ with objects = %@ at indexes = %@ }", v4, v5, v6, v7];
+  originalImmutableObjects = [(_MSPContainerEditReplacement *)self originalImmutableObjects];
+  replacementImmutableObjects = [(_MSPContainerEditReplacement *)self replacementImmutableObjects];
+  indexesOfReplacedObjects = [(_MSPContainerEditReplacement *)self indexesOfReplacedObjects];
+  v8 = [v3 stringWithFormat:@"%@ { replaces original objects = %@ with objects = %@ at indexes = %@ }", v4, originalImmutableObjects, replacementImmutableObjects, indexesOfReplacedObjects];
 
   return v8;
 }
 
-- (void)useImmutableObjectsFromMap:(id)a3 intermediateMutableObjectTransferBlock:(id)a4
+- (void)useImmutableObjectsFromMap:(id)map intermediateMutableObjectTransferBlock:(id)block
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_MSPContainerEditReplacement *)self originalObjects];
+  mapCopy = map;
+  blockCopy = block;
+  originalObjects = [(_MSPContainerEditReplacement *)self originalObjects];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v48 = __98___MSPContainerEditReplacement_useImmutableObjectsFromMap_intermediateMutableObjectTransferBlock___block_invoke;
   v49 = &unk_279868670;
-  v39 = v6;
+  v39 = mapCopy;
   v50 = v39;
-  v37 = v7;
+  v37 = blockCopy;
   v51 = v37;
-  v9 = v8;
+  v9 = originalObjects;
   v10 = v47;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v52 = 0u;
@@ -107,7 +107,7 @@
   originalImmutableObjects = self->_originalImmutableObjects;
   self->_originalImmutableObjects = v20;
 
-  v22 = [(_MSPContainerEditReplacement *)self replacementObjects];
+  replacementObjects = [(_MSPContainerEditReplacement *)self replacementObjects];
   v41 = MEMORY[0x277D85DD0];
   v42 = 3221225472;
   v43 = __98___MSPContainerEditReplacement_useImmutableObjectsFromMap_intermediateMutableObjectTransferBlock___block_invoke_2;
@@ -116,7 +116,7 @@
   v45 = v40;
   v38 = v37;
   v46 = v38;
-  v23 = v22;
+  v23 = replacementObjects;
   v24 = &v41;
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v52 = 0u;

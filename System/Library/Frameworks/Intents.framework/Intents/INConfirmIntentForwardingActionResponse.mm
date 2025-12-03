@@ -1,20 +1,20 @@
 @interface INConfirmIntentForwardingActionResponse
-- (INConfirmIntentForwardingActionResponse)initWithCoder:(id)a3;
-- (INConfirmIntentForwardingActionResponse)initWithIntentResponse:(id)a3 launchContextActivityData:(id)a4 cacheItems:(id)a5 error:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (INConfirmIntentForwardingActionResponse)initWithCoder:(id)coder;
+- (INConfirmIntentForwardingActionResponse)initWithIntentResponse:(id)response launchContextActivityData:(id)data cacheItems:(id)items error:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INConfirmIntentForwardingActionResponse
 
-- (INConfirmIntentForwardingActionResponse)initWithCoder:(id)a3
+- (INConfirmIntentForwardingActionResponse)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"intentResponse"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"launchContextActivityData"];
+  coderCopy = coder;
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentResponse"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launchContextActivityData"];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
-  v7 = [v3 decodeObjectOfClasses:v6 forKey:@"cacheItems"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"cacheItems"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
@@ -23,37 +23,37 @@
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v8 setWithObjects:{v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-  v16 = [v3 decodeObjectOfClasses:v15 forKey:@"error"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"error"];
 
   v17 = [(INConfirmIntentForwardingActionResponse *)self initWithIntentResponse:v20 launchContextActivityData:v19 cacheItems:v7 error:v16];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INConfirmIntentForwardingActionResponse;
-  v4 = a3;
-  [(INIntentForwardingActionResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_intentResponse forKey:{@"intentResponse", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_launchContextActivityData forKey:@"launchContextActivityData"];
-  [v4 encodeObject:self->_cacheItems forKey:@"cacheItems"];
+  coderCopy = coder;
+  [(INIntentForwardingActionResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_intentResponse forKey:{@"intentResponse", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_launchContextActivityData forKey:@"launchContextActivityData"];
+  [coderCopy encodeObject:self->_cacheItems forKey:@"cacheItems"];
 }
 
-- (INConfirmIntentForwardingActionResponse)initWithIntentResponse:(id)a3 launchContextActivityData:(id)a4 cacheItems:(id)a5 error:(id)a6
+- (INConfirmIntentForwardingActionResponse)initWithIntentResponse:(id)response launchContextActivityData:(id)data cacheItems:(id)items error:(id)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  responseCopy = response;
+  dataCopy = data;
+  itemsCopy = items;
   v17.receiver = self;
   v17.super_class = INConfirmIntentForwardingActionResponse;
-  v14 = [(INIntentForwardingActionResponse *)&v17 initWithError:a6];
+  v14 = [(INIntentForwardingActionResponse *)&v17 initWithError:error];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_intentResponse, a3);
-    objc_storeStrong(&v15->_launchContextActivityData, a4);
-    objc_storeStrong(&v15->_cacheItems, a5);
+    objc_storeStrong(&v14->_intentResponse, response);
+    objc_storeStrong(&v15->_launchContextActivityData, data);
+    objc_storeStrong(&v15->_cacheItems, items);
   }
 
   return v15;

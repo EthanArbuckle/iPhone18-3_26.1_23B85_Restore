@@ -1,7 +1,7 @@
 @interface HMITaskServiceClient
-- (BOOL)cancelTask:(int)a3;
+- (BOOL)cancelTask:(int)task;
 - (HMITaskServiceClient)init;
-- (int)submitTaskWithOptions:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
+- (int)submitTaskWithOptions:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation HMITaskServiceClient
@@ -10,8 +10,8 @@
 {
   v8.receiver = self;
   v8.super_class = HMITaskServiceClient;
-  v2 = [(HMITaskService *)&v8 initPrivate];
-  if (v2)
+  initPrivate = [(HMITaskService *)&v8 initPrivate];
+  if (initPrivate)
   {
     v10 = 0;
     v11 = &v10;
@@ -31,34 +31,34 @@
 
     v4 = v3;
     _Block_object_dispose(&v10, 8);
-    v5 = [v3 analysisService];
-    remote = v2->_remote;
-    v2->_remote = v5;
+    analysisService = [v3 analysisService];
+    remote = initPrivate->_remote;
+    initPrivate->_remote = analysisService;
   }
 
-  return v2;
+  return initPrivate;
 }
 
-- (int)submitTaskWithOptions:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (int)submitTaskWithOptions:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (handlerCopy)
   {
     v19 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"Progress handler is not available in the client task service." userInfo:0];
     objc_exception_throw(v19);
   }
 
-  v11 = v10;
-  v12 = [(HMITaskServiceClient *)self remote];
-  v13 = [v12 requestResidentMaintenanceWithOptions:v8 andCompletionHandler:v11];
+  v11 = completionHandlerCopy;
+  remote = [(HMITaskServiceClient *)self remote];
+  v13 = [remote requestResidentMaintenanceWithOptions:optionsCopy andCompletionHandler:v11];
 
   if (v13 == -1)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -74,11 +74,11 @@
   return v13;
 }
 
-- (BOOL)cancelTask:(int)a3
+- (BOOL)cancelTask:(int)task
 {
-  v3 = *&a3;
-  v4 = [(HMITaskServiceClient *)self remote];
-  [v4 cancelRequest:v3];
+  v3 = *&task;
+  remote = [(HMITaskServiceClient *)self remote];
+  [remote cancelRequest:v3];
 
   return 1;
 }

@@ -2,8 +2,8 @@
 - (BOOL)allocateInputBufferObjects;
 - (BOOL)getInputPortNames;
 - (BOOL)initializeInputPorts;
-- (BOOL)processSuperResolutionInputBuffer:(__CVBuffer *)a3 withPrevHighResolutionFrame:(__CVBuffer *)a4 outputBuffer:(__CVBuffer *)a5;
-- (VSRNet)initWithModelPath:(id)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5;
+- (BOOL)processSuperResolutionInputBuffer:(__CVBuffer *)buffer withPrevHighResolutionFrame:(__CVBuffer *)frame outputBuffer:(__CVBuffer *)outputBuffer;
+- (VSRNet)initWithModelPath:(id)path inputWidth:(unint64_t)width inputHeight:(unint64_t)height;
 - (void)allocateInputBufferObjects;
 - (void)dealloc;
 - (void)initializeInputPorts;
@@ -280,18 +280,18 @@ LABEL_15:
   [(SRNet *)&v8 dealloc];
 }
 
-- (BOOL)processSuperResolutionInputBuffer:(__CVBuffer *)a3 withPrevHighResolutionFrame:(__CVBuffer *)a4 outputBuffer:(__CVBuffer *)a5
+- (BOOL)processSuperResolutionInputBuffer:(__CVBuffer *)buffer withPrevHighResolutionFrame:(__CVBuffer *)frame outputBuffer:(__CVBuffer *)outputBuffer
 {
-  v9 = [(SRNet *)self normalization];
-  LODWORD(a3) = [v9 convertBuffer:a3 toFP16IOSurface:self->_inputSurface];
+  normalization = [(SRNet *)self normalization];
+  LODWORD(buffer) = [normalization convertBuffer:buffer toFP16IOSurface:self->_inputSurface];
 
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
 
-  v10 = [(SRNet *)self normalization];
-  v11 = [v10 convertBuffer:a4 toFP16ShuffledIOSurface:self->_prevHRSurface];
+  normalization2 = [(SRNet *)self normalization];
+  v11 = [normalization2 convertBuffer:frame toFP16ShuffledIOSurface:self->_prevHRSurface];
 
   if (!v11)
   {
@@ -334,8 +334,8 @@ LABEL_15:
   }
 
   v12 = [(SRNet *)self executeSynchronouslyOperation:[(SRNet *)self operation] onStream:[(SRNet *)self stream]];
-  v14 = [(SRNet *)self normalization];
-  v15 = [v14 convertFP16IOSurface:-[SRNet outputSurface](self toBuffer:{"outputSurface"), a5}];
+  normalization3 = [(SRNet *)self normalization];
+  v15 = [normalization3 convertFP16IOSurface:-[SRNet outputSurface](self toBuffer:{"outputSurface"), outputBuffer}];
 
   if (!v15 || ![(SRNet *)self resetStream:[(SRNet *)self stream]])
   {
@@ -345,11 +345,11 @@ LABEL_15:
   return v12;
 }
 
-- (VSRNet)initWithModelPath:(id)a3 inputWidth:(unint64_t)a4 inputHeight:(unint64_t)a5
+- (VSRNet)initWithModelPath:(id)path inputWidth:(unint64_t)width inputHeight:(unint64_t)height
 {
   v9.receiver = self;
   v9.super_class = VSRNet;
-  v5 = [(SRNet *)&v9 initWithModelPath:a3 inputWidth:a4 inputHeight:a5];
+  v5 = [(SRNet *)&v9 initWithModelPath:path inputWidth:width inputHeight:height];
   v6 = v5;
   if (!v5 || [(VSRNet *)v5 initializeInputPorts]&& [(VSRNet *)v6 allocateInputBufferObjects])
   {

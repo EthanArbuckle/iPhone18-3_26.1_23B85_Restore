@@ -1,5 +1,5 @@
 @interface EKDayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityScrollView;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,15 +8,15 @@
 
 @implementation EKDayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKDayView" hasInstanceVariable:@"_scroller" withType:"UIScrollView"];
-  [v3 validateClass:@"EKDayView" hasInstanceVariable:@"_allDayView" withType:"EKDayAllDayView"];
-  [v3 validateClass:@"EKDayView" hasInstanceVariable:@"_dayContent" withType:"EKDayViewContent"];
-  [v3 validateClass:@"EKDayView" hasInstanceMethod:@"initWithFrame:sizeClass:orientation:displayDate:backgroundColor:opaque:scrollbarShowsInside:isMiniPreviewInEventDetail:rightClickDelegate:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "q", "q", "@", "@", "B", "B", "B", "@", 0}];
-  [v3 validateClass:@"EKDayViewContent" hasInstanceMethod:@"occurrenceViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKDayAllDayView" hasInstanceMethod:@"occurrenceViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKDayView" hasInstanceVariable:@"_scroller" withType:"UIScrollView"];
+  [validationsCopy validateClass:@"EKDayView" hasInstanceVariable:@"_allDayView" withType:"EKDayAllDayView"];
+  [validationsCopy validateClass:@"EKDayView" hasInstanceVariable:@"_dayContent" withType:"EKDayViewContent"];
+  [validationsCopy validateClass:@"EKDayView" hasInstanceMethod:@"initWithFrame:sizeClass:orientation:displayDate:backgroundColor:opaque:scrollbarShowsInside:isMiniPreviewInEventDetail:rightClickDelegate:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "q", "q", "@", "@", "B", "B", "B", "@", 0}];
+  [validationsCopy validateClass:@"EKDayViewContent" hasInstanceMethod:@"occurrenceViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKDayAllDayView" hasInstanceMethod:@"occurrenceViews" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityScrollView
@@ -29,7 +29,7 @@
 - (void)_axAnnotateScroller
 {
   objc_opt_class();
-  v3 = [(EKDayViewAccessibility *)self accessibilityScrollView];
+  accessibilityScrollView = [(EKDayViewAccessibility *)self accessibilityScrollView];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
   [v4 setAccessibilityIsDayGridScroller:1];

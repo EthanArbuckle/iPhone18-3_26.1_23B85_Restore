@@ -1,12 +1,12 @@
 @interface WKWebView
 - (BOOL)be_hasCompletedLoad;
 - (BOOL)be_hasPendingOperations;
-- (BOOL)be_hasSelectablePositionAtPoint:(CGPoint)a3;
+- (BOOL)be_hasSelectablePositionAtPoint:(CGPoint)point;
 - (BOOL)be_hasSelection;
-- (BOOL)be_isFontRegistered:(id)a3;
+- (BOOL)be_isFontRegistered:(id)registered;
 - (BOOL)be_isHorizontalScroll;
 - (BOOL)be_requiresReload;
-- (CGPoint)be_convertPointFromContentsToView:(CGPoint)a3;
+- (CGPoint)be_convertPointFromContentsToView:(CGPoint)view;
 - (NSArray)be_fontFamiliesHavingFailedRegistration;
 - (NSArray)be_selectionRects;
 - (NSArray)be_webSelectionRects;
@@ -17,78 +17,78 @@
 - (double)be_scale;
 - (double)be_scrollingPageHeight;
 - (double)be_scrollingPageWidth;
-- (id)_be_contentViewStateDescriptionForState:(int)a3;
+- (id)_be_contentViewStateDescriptionForState:(int)state;
 - (id)_be_failedFontFamilies;
-- (id)be_updateAXValueForMessage:(id)a3;
+- (id)be_updateAXValueForMessage:(id)message;
 - (int)be_contentViewState;
 - (int64_t)be_paginationMode;
 - (unint64_t)be_appliedContentBlockingRule;
-- (void)_invalidStateTransition:(id)a3;
+- (void)_invalidStateTransition:(id)transition;
 - (void)be_applyRequestedContentOffset;
 - (void)be_clearRegisteredFonts;
 - (void)be_clearSelection;
 - (void)be_completedLoad;
-- (void)be_configureFontWithStyleManager:(id)a3 completion:(id)a4;
+- (void)be_configureFontWithStyleManager:(id)manager completion:(id)completion;
 - (void)be_discardingContentView;
-- (void)be_evaluateJavaScript:(id)a3 afterNextPresentationUpdate:(BOOL)a4 completion:(id)a5;
+- (void)be_evaluateJavaScript:(id)script afterNextPresentationUpdate:(BOOL)update completion:(id)completion;
 - (void)be_failedLoad;
-- (void)be_fontFamilyFailedToRegister:(id)a3;
-- (void)be_fontFamilySuccessfullyRegistered:(id)a3;
-- (void)be_fontRegistrationCompleted:(BOOL)a3;
+- (void)be_fontFamilyFailedToRegister:(id)register;
+- (void)be_fontFamilySuccessfullyRegistered:(id)registered;
+- (void)be_fontRegistrationCompleted:(BOOL)completed;
 - (void)be_paginationOperationCanceled;
 - (void)be_prepareForLoad;
 - (void)be_prepareForReload;
 - (void)be_preparingForReuse;
 - (void)be_processingContentViewForHost;
 - (void)be_returningContentViewToPool;
-- (void)be_selectForWebView:(id)a3;
-- (void)be_setContentOffset:(CGPoint)a3 bypassingJS:(BOOL)a4 completion:(id)a5;
-- (void)be_takeSnapshotWithDefaultConfigurationCompletion:(id)a3;
-- (void)be_updateAXCurrentReadingStateWithMessage:(id)a3 forValue:(id)a4;
+- (void)be_selectForWebView:(id)view;
+- (void)be_setContentOffset:(CGPoint)offset bypassingJS:(BOOL)s completion:(id)completion;
+- (void)be_takeSnapshotWithDefaultConfigurationCompletion:(id)completion;
+- (void)be_updateAXCurrentReadingStateWithMessage:(id)message forValue:(id)value;
 - (void)be_willAttemptFontRegistration;
-- (void)be_willAttemptLoad:(id)a3;
+- (void)be_willAttemptLoad:(id)load;
 - (void)be_willFullyConfigure;
 - (void)be_willLoadAboutBlank;
 - (void)be_willProcessDeferredFontRegistration;
 - (void)be_willSkipLoad;
-- (void)setBe_appliedContentBlockingRule:(unint64_t)a3;
-- (void)setBe_contentViewState:(int)a3;
-- (void)setBe_gutterLength:(double)a3;
-- (void)setBe_hasCompletedLoad:(BOOL)a3;
-- (void)setBe_hasPendingOperations:(BOOL)a3;
-- (void)setBe_isHorizontalScroll:(BOOL)a3;
-- (void)setBe_paginationMode:(int64_t)a3;
-- (void)setBe_requiresReload:(BOOL)a3;
+- (void)setBe_appliedContentBlockingRule:(unint64_t)rule;
+- (void)setBe_contentViewState:(int)state;
+- (void)setBe_gutterLength:(double)length;
+- (void)setBe_hasCompletedLoad:(BOOL)load;
+- (void)setBe_hasPendingOperations:(BOOL)operations;
+- (void)setBe_isHorizontalScroll:(BOOL)scroll;
+- (void)setBe_paginationMode:(int64_t)mode;
+- (void)setBe_requiresReload:(BOOL)reload;
 @end
 
 @implementation WKWebView
 
-- (id)_be_contentViewStateDescriptionForState:(int)a3
+- (id)_be_contentViewStateDescriptionForState:(int)state
 {
-  if (a3 > 0xE)
+  if (state > 0xE)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_328CC0[a3];
+    return off_328CC0[state];
   }
 }
 
-- (void)setBe_contentViewState:(int)a3
+- (void)setBe_contentViewState:(int)state
 {
-  v3 = *&a3;
-  v5 = [(WKWebView *)self be_contentViewState];
+  v3 = *&state;
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
   v6 = _BookEPUBLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(WKWebView *)self be_identifier];
-    v8 = [(WKWebView *)self _be_contentViewStateDescriptionForState:v5];
+    be_identifier = [(WKWebView *)self be_identifier];
+    v8 = [(WKWebView *)self _be_contentViewStateDescriptionForState:be_contentViewState];
     v9 = [(WKWebView *)self _be_contentViewStateDescriptionForState:v3];
     v10 = [(WKWebView *)self URL];
     v12 = 138544386;
-    v13 = v7;
+    v13 = be_identifier;
     v14 = 2114;
     v15 = v8;
     v16 = 2114;
@@ -110,40 +110,40 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)_invalidStateTransition:(id)a3
+- (void)_invalidStateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(WKWebView *)self be_contentViewState];
+  transitionCopy = transition;
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
   v6 = _BookEPUBLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [(WKWebView *)self be_identifier];
-    v8 = [(WKWebView *)self _be_contentViewStateDescriptionForState:v5];
+    be_identifier = [(WKWebView *)self be_identifier];
+    v8 = [(WKWebView *)self _be_contentViewStateDescriptionForState:be_contentViewState];
     v9 = 138543874;
-    v10 = v7;
+    v10 = be_identifier;
     v11 = 2114;
     v12 = v8;
     v13 = 2114;
-    v14 = v4;
+    v14 = transitionCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "Error Transitioning webView:%{public}@ #webViewState from:%{public}@ in Method:%{public}@", &v9, 0x20u);
   }
 }
 
 - (void)be_willAttemptFontRegistration
 {
-  v3 = [(WKWebView *)self be_contentViewState];
-  if (v3 > 0xB || ((1 << v3) & 0x991) == 0)
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
+  if (be_contentViewState > 0xB || ((1 << be_contentViewState) & 0x991) == 0)
   {
     [(WKWebView *)self _invalidStateTransition:@"be_willAttemptFontRegistration"];
   }
@@ -151,7 +151,7 @@
   [(WKWebView *)self setBe_contentViewState:5];
 }
 
-- (void)be_fontRegistrationCompleted:(BOOL)a3
+- (void)be_fontRegistrationCompleted:(BOOL)completed
 {
   if (([(WKWebView *)self be_contentViewState]& 0xFFFFFFFE) != 4)
   {
@@ -163,8 +163,8 @@
 
 - (void)be_willSkipLoad
 {
-  v3 = [(WKWebView *)self be_contentViewState];
-  if (v3 > 0xD || ((1 << v3) & 0x2840) == 0)
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
+  if (be_contentViewState > 0xD || ((1 << be_contentViewState) & 0x2840) == 0)
   {
     [(WKWebView *)self _invalidStateTransition:@"be_willSkipLoad"];
   }
@@ -172,19 +172,19 @@
   [(WKWebView *)self setBe_contentViewState:10];
 }
 
-- (void)be_willAttemptLoad:(id)a3
+- (void)be_willAttemptLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   if ([(WKWebView *)self be_contentViewState]== 8)
   {
     v5 = _BookEPUBLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(WKWebView *)self be_identifier];
+      be_identifier = [(WKWebView *)self be_identifier];
       v7 = 138543618;
-      v8 = v6;
+      v8 = be_identifier;
       v9 = 2114;
-      v10 = v4;
+      v10 = loadCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "#webViewState webView:%{public}@ attempting load of:%{public}@", &v7, 0x16u);
     }
   }
@@ -216,20 +216,20 @@
 
 - (void)be_paginationOperationCanceled
 {
-  v3 = [(WKWebView *)self be_contentViewState];
-  if (v3 > 0xE)
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
+  if (be_contentViewState > 0xE)
   {
     goto LABEL_9;
   }
 
-  if (((1 << v3) & 0x40EE) != 0)
+  if (((1 << be_contentViewState) & 0x40EE) != 0)
   {
     return;
   }
 
-  if (((1 << v3) & 0x3C00) == 0)
+  if (((1 << be_contentViewState) & 0x3C00) == 0)
   {
-    if (v3 == 9)
+    if (be_contentViewState == 9)
     {
       [(WKWebView *)self stopLoading];
       goto LABEL_4;
@@ -261,8 +261,8 @@ LABEL_4:
 
 - (void)be_preparingForReuse
 {
-  v3 = [(WKWebView *)self be_contentViewState];
-  if (v3 - 8 >= 6 && v3 != 6)
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
+  if (be_contentViewState - 8 >= 6 && be_contentViewState != 6)
   {
     [(WKWebView *)self _invalidStateTransition:@"be_preparingForReuse"];
   }
@@ -311,8 +311,8 @@ LABEL_4:
 
 - (void)be_prepareForLoad
 {
-  v3 = [(WKWebView *)self be_contentViewState];
-  if (v3 > 0xD || ((1 << v3) & 0x3940) == 0)
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
+  if (be_contentViewState > 0xD || ((1 << be_contentViewState) & 0x3940) == 0)
   {
     [(WKWebView *)self _invalidStateTransition:@"be_prepareForLoad"];
   }
@@ -322,8 +322,8 @@ LABEL_4:
 
 - (void)be_prepareForReload
 {
-  v3 = [(WKWebView *)self be_contentViewState];
-  if (v3 > 0xB || ((1 << v3) & 0xB40) == 0)
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
+  if (be_contentViewState > 0xB || ((1 << be_contentViewState) & 0xB40) == 0)
   {
     [(WKWebView *)self _invalidStateTransition:@"be_prepareForLoad"];
   }
@@ -333,15 +333,15 @@ LABEL_4:
 
 - (void)be_willFullyConfigure
 {
-  v3 = [(WKWebView *)self be_contentViewState];
-  if (v3 - 10 >= 4)
+  be_contentViewState = [(WKWebView *)self be_contentViewState];
+  if (be_contentViewState - 10 >= 4)
   {
-    if (v3 == 5)
+    if (be_contentViewState == 5)
     {
       return;
     }
 
-    if (v3 != 6)
+    if (be_contentViewState != 6)
     {
       [(WKWebView *)self _invalidStateTransition:@"be_willFullyConfigure"];
     }
@@ -360,14 +360,14 @@ LABEL_4:
   [(WKWebView *)self setBe_contentViewState:7];
 }
 
-- (void)setBe_paginationMode:(int64_t)a3
+- (void)setBe_paginationMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 4)
+  if ((mode - 1) >= 4)
   {
-    a3 = 0;
+    mode = 0;
   }
 
-  [(WKWebView *)self _setPaginationMode:a3];
+  [(WKWebView *)self _setPaginationMode:mode];
 }
 
 - (int64_t)be_paginationMode
@@ -381,17 +381,17 @@ LABEL_4:
   return result;
 }
 
-- (CGPoint)be_convertPointFromContentsToView:(CGPoint)a3
+- (CGPoint)be_convertPointFromContentsToView:(CGPoint)view
 {
-  [(WKWebView *)self _convertPointFromContentsToView:a3.x, a3.y];
+  [(WKWebView *)self _convertPointFromContentsToView:view.x, view.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)setBe_gutterLength:(double)a3
+- (void)setBe_gutterLength:(double)length
 {
-  v4 = [NSNumber numberWithDouble:a3];
+  v4 = [NSNumber numberWithDouble:length];
   objc_setAssociatedObject(self, "be_gutterLength", v4, &dword_0 + 1);
 }
 
@@ -404,43 +404,43 @@ LABEL_4:
   return v4;
 }
 
-- (void)setBe_isHorizontalScroll:(BOOL)a3
+- (void)setBe_isHorizontalScroll:(BOOL)scroll
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:scroll];
   objc_setAssociatedObject(self, "be_isHorizontalScroll", v4, &dword_0 + 1);
 }
 
 - (BOOL)be_isHorizontalScroll
 {
   v2 = objc_getAssociatedObject(self, "be_isHorizontalScroll");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setBe_appliedContentBlockingRule:(unint64_t)a3
+- (void)setBe_appliedContentBlockingRule:(unint64_t)rule
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:rule];
   objc_setAssociatedObject(self, "be_appliedContentBlockingRule", v4, &dword_0 + 1);
 }
 
 - (unint64_t)be_appliedContentBlockingRule
 {
   v2 = objc_getAssociatedObject(self, "be_appliedContentBlockingRule");
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)be_scrollingPageWidth
 {
-  v3 = [(WKWebView *)self _paginationMode];
-  if (v3 > 4)
+  _paginationMode = [(WKWebView *)self _paginationMode];
+  if (_paginationMode > 4)
   {
     return 0.0;
   }
 
-  if (((1 << v3) & 0x19) != 0)
+  if (((1 << _paginationMode) & 0x19) != 0)
   {
     [(WKWebView *)self bounds];
 
@@ -458,10 +458,10 @@ LABEL_4:
 
 - (double)be_scrollingPageHeight
 {
-  v3 = [(WKWebView *)self _paginationMode];
-  if (v3 >= 3)
+  _paginationMode = [(WKWebView *)self _paginationMode];
+  if (_paginationMode >= 3)
   {
-    if ((v3 - 3) > 1)
+    if ((_paginationMode - 3) > 1)
     {
       return 0.0;
     }
@@ -506,22 +506,22 @@ LABEL_4:
 {
   v3 = objc_opt_class();
   v18 = NSStringFromClass(v3);
-  v4 = [(WKWebView *)self be_identifier];
+  be_identifier = [(WKWebView *)self be_identifier];
   v19 = [(WKWebView *)self URL];
-  v5 = [v19 absoluteString];
-  v6 = [(WKWebView *)self scrollView];
-  [v6 contentOffset];
+  absoluteString = [v19 absoluteString];
+  scrollView = [(WKWebView *)self scrollView];
+  [scrollView contentOffset];
   v21[0] = v7;
   v21[1] = v8;
   v9 = [NSValue valueWithBytes:v21 objCType:"{CGPoint=dd}"];
-  v10 = [(WKWebView *)self be_requestedContentOffset];
-  v11 = [(WKWebView *)self scrollView];
-  [v11 contentSize];
+  be_requestedContentOffset = [(WKWebView *)self be_requestedContentOffset];
+  scrollView2 = [(WKWebView *)self scrollView];
+  [scrollView2 contentSize];
   v20[0] = v12;
   v20[1] = v13;
   v14 = [NSValue valueWithBytes:v20 objCType:"{CGSize=dd}"];
-  v15 = [(WKWebView *)self be_estimatedContentSizeValue];
-  v16 = [NSString stringWithFormat:@"<%@: %@> url: %@\n\tcontentOffset: %@ requestedOffset: %@\n\tcontentSize: %@ estimatedSize: %@", v18, v4, v5, v9, v10, v14, v15];
+  be_estimatedContentSizeValue = [(WKWebView *)self be_estimatedContentSizeValue];
+  v16 = [NSString stringWithFormat:@"<%@: %@> url: %@\n\tcontentOffset: %@ requestedOffset: %@\n\tcontentSize: %@ estimatedSize: %@", v18, be_identifier, absoluteString, v9, be_requestedContentOffset, v14, be_estimatedContentSizeValue];
 
   return v16;
 }
@@ -529,50 +529,50 @@ LABEL_4:
 - (BOOL)be_hasPendingOperations
 {
   v2 = objc_getAssociatedObject(self, "be_hasPendingOperations");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setBe_hasPendingOperations:(BOOL)a3
+- (void)setBe_hasPendingOperations:(BOOL)operations
 {
-  v3 = a3;
+  operationsCopy = operations;
   v5 = NSStringFromSelector("be_hasPendingOperations");
   [(WKWebView *)self willChangeValueForKey:v5];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:operationsCopy];
   objc_setAssociatedObject(self, "be_hasPendingOperations", v6, &dword_0 + 1);
 
   v7 = NSStringFromSelector("be_hasPendingOperations");
   [(WKWebView *)self didChangeValueForKey:v7];
 }
 
-- (void)be_setContentOffset:(CGPoint)a3 bypassingJS:(BOOL)a4 completion:(id)a5
+- (void)be_setContentOffset:(CGPoint)offset bypassingJS:(BOOL)s completion:(id)completion
 {
-  v5 = a4;
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
+  sCopy = s;
+  y = offset.y;
+  x = offset.x;
+  completionCopy = completion;
   *v26 = x;
   *&v26[1] = y;
   v10 = [NSValue valueWithBytes:v26 objCType:"{CGPoint=dd}"];
   [(WKWebView *)self setBe_requestedContentOffset:v10];
 
-  v11 = [NSNumber numberWithBool:v5];
+  v11 = [NSNumber numberWithBool:sCopy];
   [(WKWebView *)self setBe_requestedContentOffsetShouldBypassJS:v11];
 
-  v12 = [(WKWebView *)self scrollView];
-  [(WKWebView *)self convertPoint:v12 fromView:x, y];
+  scrollView = [(WKWebView *)self scrollView];
+  [(WKWebView *)self convertPoint:scrollView fromView:x, y];
   [(WKWebView *)self _convertPointFromViewToContents:?];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(WKWebView *)self scrollView];
-  [v17 setContentOffset:{x, y}];
+  scrollView2 = [(WKWebView *)self scrollView];
+  [scrollView2 setContentOffset:{x, y}];
 
-  if (v5)
+  if (sCopy)
   {
-    v18 = objc_retainBlock(v9);
+    v18 = objc_retainBlock(completionCopy);
     v19 = v18;
     if (v18)
     {
@@ -593,25 +593,25 @@ LABEL_4:
     v22[4] = self;
     v24 = x;
     v25 = y;
-    v23 = v9;
+    v23 = completionCopy;
     [(WKWebView *)self evaluateJavaScript:v19 completionHandler:v22];
   }
 }
 
 - (void)be_applyRequestedContentOffset
 {
-  v3 = [(WKWebView *)self be_requestedContentOffset];
-  v4 = [(WKWebView *)self be_requestedContentOffsetShouldBypassJS];
-  v5 = [v4 BOOLValue];
+  be_requestedContentOffset = [(WKWebView *)self be_requestedContentOffset];
+  be_requestedContentOffsetShouldBypassJS = [(WKWebView *)self be_requestedContentOffsetShouldBypassJS];
+  bOOLValue = [be_requestedContentOffsetShouldBypassJS BOOLValue];
 
-  if (v3)
+  if (be_requestedContentOffset)
   {
-    [v3 CGPointValue];
+    [be_requestedContentOffset CGPointValue];
     v7 = v6;
     v9 = v8;
     y = CGPointZero.y;
-    v11 = [(WKWebView *)self scrollView];
-    [v11 contentSize];
+    scrollView = [(WKWebView *)self scrollView];
+    [scrollView contentSize];
     v13 = v12;
     v15 = v14;
 
@@ -623,7 +623,7 @@ LABEL_4:
     v27.y = v9;
     if (CGRectContainsPoint(v28, v27))
     {
-      [(WKWebView *)self be_setContentOffset:v5 bypassingJS:v7, v9];
+      [(WKWebView *)self be_setContentOffset:bOOLValue bypassingJS:v7, v9];
       [(WKWebView *)self setBe_requestedContentOffset:0];
       [(WKWebView *)self setBe_requestedContentOffsetShouldBypassJS:0];
     }
@@ -633,7 +633,7 @@ LABEL_4:
       v16 = _BookEPUBLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(WKWebView *)self be_identifier];
+        be_identifier = [(WKWebView *)self be_identifier];
         v29.origin.x = CGPointZero.x;
         v29.origin.y = y;
         v29.size.width = v13;
@@ -643,7 +643,7 @@ LABEL_4:
         v26.y = v9;
         v19 = NSStringFromCGPoint(v26);
         v20 = 138543874;
-        v21 = v17;
+        v21 = be_identifier;
         v22 = 2114;
         v23 = v18;
         v24 = 2114;
@@ -657,18 +657,18 @@ LABEL_4:
 - (BOOL)be_hasCompletedLoad
 {
   v2 = objc_getAssociatedObject(self, "be_hasCompletedLoad");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setBe_hasCompletedLoad:(BOOL)a3
+- (void)setBe_hasCompletedLoad:(BOOL)load
 {
-  v3 = a3;
+  loadCopy = load;
   v5 = NSStringFromSelector("be_hasCompletedLoad");
   [(WKWebView *)self willChangeValueForKey:v5];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:loadCopy];
   objc_setAssociatedObject(self, "be_hasCompletedLoad", v6, &dword_0 + 1);
 
   v7 = NSStringFromSelector("be_hasCompletedLoad");
@@ -678,18 +678,18 @@ LABEL_4:
 - (BOOL)be_requiresReload
 {
   v2 = objc_getAssociatedObject(self, "be_requiresReload");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setBe_requiresReload:(BOOL)a3
+- (void)setBe_requiresReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   v5 = NSStringFromSelector("be_requiresReload");
   [(WKWebView *)self willChangeValueForKey:v5];
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:reloadCopy];
   objc_setAssociatedObject(self, "be_requiresReload", v6, &dword_0 + 1);
 
   v7 = NSStringFromSelector("be_requiresReload");
@@ -698,10 +698,10 @@ LABEL_4:
 
 - (NSArray)be_fontFamiliesHavingFailedRegistration
 {
-  v2 = [(WKWebView *)self _be_failedFontFamilies];
-  v3 = [v2 allObjects];
+  _be_failedFontFamilies = [(WKWebView *)self _be_failedFontFamilies];
+  allObjects = [_be_failedFontFamilies allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)_be_failedFontFamilies
@@ -716,10 +716,10 @@ LABEL_4:
   return v3;
 }
 
-- (void)be_fontFamilyFailedToRegister:(id)a3
+- (void)be_fontFamilyFailedToRegister:(id)register
 {
-  v4 = a3;
-  v5 = [v4 length];
+  registerCopy = register;
+  v5 = [registerCopy length];
   v6 = _BookEPUBLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
   if (v5)
@@ -727,15 +727,15 @@ LABEL_4:
     if (v7)
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = registerCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "be_fontFamilyFailedToRegister #staleCache failing '%@'", &v10, 0xCu);
     }
 
     v8 = NSStringFromSelector("be_fontFamiliesHavingFailedRegistration");
     [(WKWebView *)self willChangeValueForKey:v8];
 
-    v9 = [(WKWebView *)self _be_failedFontFamilies];
-    [v9 addObject:v4];
+    _be_failedFontFamilies = [(WKWebView *)self _be_failedFontFamilies];
+    [_be_failedFontFamilies addObject:registerCopy];
 
     v6 = NSStringFromSelector("be_fontFamiliesHavingFailedRegistration");
     [(WKWebView *)self didChangeValueForKey:v6];
@@ -744,26 +744,26 @@ LABEL_4:
   else if (v7)
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = registerCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "be_fontFamilyFailedToRegister: #staleCache Attempt to mark fontFamily '%@' as failed!", &v10, 0xCu);
   }
 }
 
-- (void)be_fontFamilySuccessfullyRegistered:(id)a3
+- (void)be_fontFamilySuccessfullyRegistered:(id)registered
 {
-  v4 = a3;
-  if ([v4 length])
+  registeredCopy = registered;
+  if ([registeredCopy length])
   {
-    v5 = [(WKWebView *)self _be_failedFontFamilies];
-    v6 = [v5 containsObject:v4];
+    _be_failedFontFamilies = [(WKWebView *)self _be_failedFontFamilies];
+    v6 = [_be_failedFontFamilies containsObject:registeredCopy];
 
     if (v6)
     {
       v7 = NSStringFromSelector("be_fontFamiliesHavingFailedRegistration");
       [(WKWebView *)self willChangeValueForKey:v7];
 
-      v8 = [(WKWebView *)self _be_failedFontFamilies];
-      [v8 removeObject:v4];
+      _be_failedFontFamilies2 = [(WKWebView *)self _be_failedFontFamilies];
+      [_be_failedFontFamilies2 removeObject:registeredCopy];
 
       v9 = NSStringFromSelector("be_fontFamiliesHavingFailedRegistration");
       [(WKWebView *)self didChangeValueForKey:v9];
@@ -776,18 +776,18 @@ LABEL_4:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = registeredCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "be_fontFamilyFailedToRegister: Attempt to mark fontFamily '%@' as failed!", &v11, 0xCu);
     }
   }
 }
 
-- (BOOL)be_isFontRegistered:(id)a3
+- (BOOL)be_isFontRegistered:(id)registered
 {
-  v3 = a3;
+  registeredCopy = registered;
   objc_opt_class();
   v4 = BUDynamicCast();
-  v5 = [v4 be_isFontRegistered:v3];
+  v5 = [v4 be_isFontRegistered:registeredCopy];
 
   return v5;
 }
@@ -799,51 +799,51 @@ LABEL_4:
   [v2 be_clearRegisteredFonts];
 }
 
-- (void)be_configureFontWithStyleManager:(id)a3 completion:(id)a4
+- (void)be_configureFontWithStyleManager:(id)manager completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  managerCopy = manager;
   objc_opt_class();
   v7 = BUDynamicCast();
-  [v7 be_configureFontWithStyleManager:v6 completion:v5];
+  [v7 be_configureFontWithStyleManager:managerCopy completion:completionCopy];
 }
 
 - (NSString)be_selectedText
 {
   if ([(WKWebView *)self be_hasSelection])
   {
-    v3 = [(WKWebView *)self be_textInputChild];
-    v4 = [v3 selectedText];
+    be_textInputChild = [(WKWebView *)self be_textInputChild];
+    selectedText = [be_textInputChild selectedText];
   }
 
   else
   {
-    v4 = 0;
+    selectedText = 0;
   }
 
-  return v4;
+  return selectedText;
 }
 
 - (void)be_clearSelection
 {
-  v2 = [(WKWebView *)self be_textInputChild];
-  [v2 clearSelection];
+  be_textInputChild = [(WKWebView *)self be_textInputChild];
+  [be_textInputChild clearSelection];
 }
 
 - (BOOL)be_hasSelection
 {
-  v2 = [(WKWebView *)self be_webSelectionRects];
-  v3 = [v2 count] != 0;
+  be_webSelectionRects = [(WKWebView *)self be_webSelectionRects];
+  v3 = [be_webSelectionRects count] != 0;
 
   return v3;
 }
 
 - (NSArray)be_webSelectionRects
 {
-  v2 = [(WKWebView *)self be_textInputChild];
-  v3 = [v2 webSelectionRects];
+  be_textInputChild = [(WKWebView *)self be_textInputChild];
+  webSelectionRects = [be_textInputChild webSelectionRects];
 
-  return v3;
+  return webSelectionRects;
 }
 
 - (NSArray)be_selectionRects
@@ -853,8 +853,8 @@ LABEL_4:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(WKWebView *)self be_webSelectionRects];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  be_webSelectionRects = [(WKWebView *)self be_webSelectionRects];
+  v5 = [be_webSelectionRects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -865,7 +865,7 @@ LABEL_4:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(be_webSelectionRects);
         }
 
         [*(*(&v11 + 1) + 8 * i) rect];
@@ -873,7 +873,7 @@ LABEL_4:
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [be_webSelectionRects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -888,60 +888,60 @@ LABEL_4:
   return v3;
 }
 
-- (void)be_selectForWebView:(id)a3
+- (void)be_selectForWebView:(id)view
 {
-  v4 = a3;
-  v5 = [(WKWebView *)self be_textInputChild];
-  [v5 selectForWebView:0];
-  v6 = [v5 interactionAssistant];
-  v7 = [v6 selectionView];
-  [v7 showSelectionCommandsAfterDelay:0.2];
+  viewCopy = view;
+  be_textInputChild = [(WKWebView *)self be_textInputChild];
+  [be_textInputChild selectForWebView:0];
+  interactionAssistant = [be_textInputChild interactionAssistant];
+  selectionView = [interactionAssistant selectionView];
+  [selectionView showSelectionCommandsAfterDelay:0.2];
 
-  if (v4)
+  if (viewCopy)
   {
     v8 = dispatch_time(0, 200000000);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_21660;
     block[3] = &unk_328C50;
-    v10 = v4;
+    v10 = viewCopy;
     dispatch_after(v8, &_dispatch_main_q, block);
   }
 }
 
-- (BOOL)be_hasSelectablePositionAtPoint:(CGPoint)a3
+- (BOOL)be_hasSelectablePositionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(WKWebView *)self be_textInputChild];
-  v6 = [v5 hasSelectablePositionAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  be_textInputChild = [(WKWebView *)self be_textInputChild];
+  v6 = [be_textInputChild hasSelectablePositionAtPoint:{x, y}];
 
   return v6;
 }
 
 - (UIWKInteractionViewProtocol)be_textInputChild
 {
-  v3 = objc_getAssociatedObject(self, "be_textInputChild");
-  if (!v3)
+  firstObject = objc_getAssociatedObject(self, "be_textInputChild");
+  if (!firstObject)
   {
-    v4 = self;
-    v5 = [[NSMutableArray alloc] initWithObjects:{v4, 0}];
+    selfCopy = self;
+    v5 = [[NSMutableArray alloc] initWithObjects:{selfCopy, 0}];
     if ([v5 count])
     {
       while (1)
       {
-        v3 = [v5 firstObject];
-        if ([v3 conformsToProtocol:&OBJC_PROTOCOL___UIWKInteractionViewProtocol])
+        firstObject = [v5 firstObject];
+        if ([firstObject conformsToProtocol:&OBJC_PROTOCOL___UIWKInteractionViewProtocol])
         {
-          if ([v3 conformsToProtocol:&OBJC_PROTOCOL___UITextInputPrivate])
+          if ([firstObject conformsToProtocol:&OBJC_PROTOCOL___UITextInputPrivate])
           {
             break;
           }
         }
 
         [v5 removeObjectAtIndex:0];
-        v6 = [v3 subviews];
-        [v5 addObjectsFromArray:v6];
+        subviews = [firstObject subviews];
+        [v5 addObjectsFromArray:subviews];
 
         if (![v5 count])
         {
@@ -953,39 +953,39 @@ LABEL_4:
     else
     {
 LABEL_6:
-      v3 = 0;
+      firstObject = 0;
     }
 
-    objc_setAssociatedObject(v4, "be_textInputChild", v3, &dword_0 + 1);
+    objc_setAssociatedObject(selfCopy, "be_textInputChild", firstObject, &dword_0 + 1);
   }
 
-  return v3;
+  return firstObject;
 }
 
-- (void)be_takeSnapshotWithDefaultConfigurationCompletion:(id)a3
+- (void)be_takeSnapshotWithDefaultConfigurationCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(WKSnapshotConfiguration);
-  [(WKWebView *)self takeSnapshotWithConfiguration:v5 completionHandler:v4];
+  [(WKWebView *)self takeSnapshotWithConfiguration:v5 completionHandler:completionCopy];
 }
 
-- (void)be_evaluateJavaScript:(id)a3 afterNextPresentationUpdate:(BOOL)a4 completion:(id)a5
+- (void)be_evaluateJavaScript:(id)script afterNextPresentationUpdate:(BOOL)update completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  updateCopy = update;
+  scriptCopy = script;
+  completionCopy = completion;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_219C0;
   v16[3] = &unk_328CA0;
-  v10 = v8;
+  v10 = scriptCopy;
   v17 = v10;
-  v11 = v9;
+  v11 = completionCopy;
   v18 = v11;
   v16[4] = self;
   v12 = objc_retainBlock(v16);
   v13 = v12;
-  if (v6)
+  if (updateCopy)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -1001,23 +1001,23 @@ LABEL_6:
   }
 }
 
-- (void)be_updateAXCurrentReadingStateWithMessage:(id)a3 forValue:(id)a4
+- (void)be_updateAXCurrentReadingStateWithMessage:(id)message forValue:(id)value
 {
-  v5 = a4;
-  v6 = a3;
+  valueCopy = value;
+  messageCopy = message;
   objc_opt_class();
   v7 = BUDynamicCast();
-  [v7 be_updateAXCurrentReadingStateWithMessage:v6 forValue:v5];
+  [v7 be_updateAXCurrentReadingStateWithMessage:messageCopy forValue:valueCopy];
 }
 
-- (id)be_updateAXValueForMessage:(id)a3
+- (id)be_updateAXValueForMessage:(id)message
 {
   v8[0] = @"BEWebProcessPluginIdentifierParameterKey";
-  v4 = a3;
-  v5 = [(WKWebView *)self be_identifier];
+  messageCopy = message;
+  be_identifier = [(WKWebView *)self be_identifier];
   v8[1] = @"BEWebProcessPluginMessageParameterKey";
-  v9[0] = v5;
-  v9[1] = v4;
+  v9[0] = be_identifier;
+  v9[1] = messageCopy;
   v6 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v6;

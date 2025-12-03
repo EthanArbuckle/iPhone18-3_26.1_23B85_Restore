@@ -1,30 +1,30 @@
 @interface EKAttendeeChange
-- (EKAttendeeChange)initWithChangeProperties:(id)a3;
+- (EKAttendeeChange)initWithChangeProperties:(id)properties;
 @end
 
 @implementation EKAttendeeChange
 
-- (EKAttendeeChange)initWithChangeProperties:(id)a3
+- (EKAttendeeChange)initWithChangeProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v15.receiver = self;
   v15.super_class = EKAttendeeChange;
-  v5 = [(EKObjectChange *)&v15 initWithChangeProperties:v4];
+  v5 = [(EKObjectChange *)&v15 initWithChangeProperties:propertiesCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"owner_id"];
-    v7 = [(EKObjectChange *)v5 changedObjectID];
-    v8 = +[EKObjectChangeOwnerIDHelper createOwnerIDWithRowID:objectType:databaseID:](EKObjectChangeOwnerIDHelper, "createOwnerIDWithRowID:objectType:databaseID:", v6, 2, [v7 databaseID]);
+    v6 = [propertiesCopy objectForKeyedSubscript:@"owner_id"];
+    changedObjectID = [(EKObjectChange *)v5 changedObjectID];
+    v8 = +[EKObjectChangeOwnerIDHelper createOwnerIDWithRowID:objectType:databaseID:](EKObjectChangeOwnerIDHelper, "createOwnerIDWithRowID:objectType:databaseID:", v6, 2, [changedObjectID databaseID]);
     ownerID = v5->_ownerID;
     v5->_ownerID = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"role"];
+    v10 = [propertiesCopy objectForKeyedSubscript:@"role"];
     v5->_attendeeRole = [v10 BOOLValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"status"];
+    v11 = [propertiesCopy objectForKeyedSubscript:@"status"];
     v5->_attendeeStatus = [v11 BOOLValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"email"];
+    v12 = [propertiesCopy objectForKeyedSubscript:@"email"];
     attendeeEmailAddress = v5->_attendeeEmailAddress;
     v5->_attendeeEmailAddress = v12;
   }

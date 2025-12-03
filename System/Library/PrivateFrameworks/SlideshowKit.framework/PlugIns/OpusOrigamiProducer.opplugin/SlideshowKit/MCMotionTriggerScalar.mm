@@ -1,28 +1,28 @@
 @interface MCMotionTriggerScalar
-+ (id)motionTriggerForTargetPlugObjectID:(id)a3 withKey:(id)a4 duration:(double)a5 andValue:(double)a6;
-- (MCMotionTriggerScalar)initWithImprint:(id)a3;
++ (id)motionTriggerForTargetPlugObjectID:(id)d withKey:(id)key duration:(double)duration andValue:(double)value;
+- (MCMotionTriggerScalar)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 @end
 
 @implementation MCMotionTriggerScalar
 
-+ (id)motionTriggerForTargetPlugObjectID:(id)a3 withKey:(id)a4 duration:(double)a5 andValue:(double)a6
++ (id)motionTriggerForTargetPlugObjectID:(id)d withKey:(id)key duration:(double)duration andValue:(double)value
 {
-  result = [MCMotionTriggerScalar motionTriggerForTargetPlugObjectID:a3 withKey:a4 andDuration:a5];
-  *(result + 7) = a6;
+  result = [MCMotionTriggerScalar motionTriggerForTargetPlugObjectID:d withKey:key andDuration:duration];
+  *(result + 7) = value;
   return result;
 }
 
-- (MCMotionTriggerScalar)initWithImprint:(id)a3
+- (MCMotionTriggerScalar)initWithImprint:(id)imprint
 {
   v9.receiver = self;
   v9.super_class = MCMotionTriggerScalar;
   v4 = [(MCMotionTrigger *)&v9 initWithImprint:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"value"];
+    v5 = [imprint objectForKey:@"value"];
     if (v5)
     {
       [v5 floatValue];
@@ -44,23 +44,23 @@
 {
   v6.receiver = self;
   v6.super_class = MCMotionTriggerScalar;
-  v3 = [(MCMotionTrigger *)&v6 imprint];
+  imprint = [(MCMotionTrigger *)&v6 imprint];
   value = self->_value;
   if (value != 0.0)
   {
     *&value = value;
-    [v3 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", value), @"value"}];
+    [imprint setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:", value), @"value"}];
   }
 
-  return v3;
+  return imprint;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v5.receiver = self;
   v5.super_class = MCMotionTriggerScalar;
   [(MCMotionTrigger *)&v5 _copySelfToSnapshot:?];
-  *(a3 + 7) = *&self->_value;
+  *(snapshot + 7) = *&self->_value;
 }
 
 - (id)description

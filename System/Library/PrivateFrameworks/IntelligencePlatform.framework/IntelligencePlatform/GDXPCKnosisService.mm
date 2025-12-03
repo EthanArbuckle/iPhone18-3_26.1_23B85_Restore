@@ -1,18 +1,18 @@
 @interface GDXPCKnosisService
-- (BOOL)iteratingExecuteKGQ:(id)a3 error:(id *)a4 block:(id)a5;
+- (BOOL)iteratingExecuteKGQ:(id)q error:(id *)error block:(id)block;
 - (GDXPCKnosisService)init;
-- (id)executeIntent:(id)a3 error:(id *)a4;
-- (id)executeKGQ:(id)a3 error:(id *)a4;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)executeIntent:(id)intent error:(id *)error;
+- (id)executeKGQ:(id)q error:(id *)error;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCKnosisService
 
-- (id)executeIntent:(id)a3 error:(id *)a4
+- (id)executeIntent:(id)intent error:(id *)error
 {
-  v6 = a3;
+  intentCopy = intent;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -44,12 +44,12 @@
   v12[3] = &unk_1E7962768;
   v12[4] = &v20;
   v12[5] = buf;
-  [v8 executeIntent:v6 withCompletion:v12];
+  [v8 executeIntent:intentCopy withCompletion:v12];
 
   v9 = v21[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = *(v15 + 5);
+    *error = *(v15 + 5);
     v9 = v21[5];
   }
 
@@ -61,11 +61,11 @@
   return v10;
 }
 
-- (BOOL)iteratingExecuteKGQ:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iteratingExecuteKGQ:(id)q error:(id *)error block:(id)block
 {
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v18 = a5;
+  qCopy = q;
+  blockCopy = block;
   v8 = GDXPCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -126,9 +126,9 @@
       }
 
       v10 = MEMORY[0x1E696AD98];
-      v11 = [v43[5] longValue];
-      v12 = [v10 numberWithLong:{objc_msgSend(v37[5], "longValue") + v11}];
-      [v7 setOffset:v12];
+      longValue = [v43[5] longValue];
+      v12 = [v10 numberWithLong:{objc_msgSend(v37[5], "longValue") + longValue}];
+      [qCopy setOffset:v12];
 
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
@@ -140,8 +140,8 @@
       v24 = &v48;
       v25 = &v42;
       v26 = &v36;
-      v20 = v18;
-      [v9 executeKGQ:v7 withCompletion:v19];
+      v20 = blockCopy;
+      [v9 executeKGQ:qCopy withCompletion:v19];
     }
 
     while ((v49[3] & 1) != 0);
@@ -150,9 +150,9 @@
   v13 = *(v29 + 24);
   if (v13 == 1)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = *(v53 + 5);
+      *error = *(v53 + 5);
     }
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -176,20 +176,20 @@
   return v13 ^ 1;
 }
 
-- (id)executeKGQ:(id)a3 error:(id *)a4
+- (id)executeKGQ:(id)q error:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = GDXPCLog();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  qCopy = q;
+  limit2 = GDXPCLog();
+  if (os_log_type_enabled(limit2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1ABA78000, v7, OS_LOG_TYPE_DEFAULT, "GDXPCKnosisService: executeKgqQuery called.", buf, 2u);
+    _os_log_impl(&dword_1ABA78000, limit2, OS_LOG_TYPE_DEFAULT, "GDXPCKnosisService: executeKgqQuery called.", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   *buf = 0;
@@ -217,17 +217,17 @@
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x2020000000;
-  v8 = [v6 limit];
-  v9 = [v8 integerValue];
+  limit = [qCopy limit];
+  integerValue = [limit integerValue];
 
-  v39[3] = v9;
+  v39[3] = integerValue;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = sub_1ABF1B8A8;
   v37 = sub_1ABF1B8B8;
   v38 = 0;
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = sub_1ABF1C4F4;
@@ -237,28 +237,28 @@
   v29 = &v40;
   v30 = &v33;
   v31 = &v44;
-  v11 = v10;
+  v11 = array;
   v26 = v11;
   v32 = v39;
-  if ([(GDXPCKnosisService *)self iteratingExecuteKGQ:v6 error:a4 block:&v22])
+  if ([(GDXPCKnosisService *)self iteratingExecuteKGQ:qCopy error:error block:&v22])
   {
     v12 = [GDKnosisResult alloc];
     v13 = *(v57 + 5);
     v14 = v51[5];
     v15 = v41[3];
     v16 = v45[5];
-    v7 = [v6 limit];
+    limit2 = [qCopy limit];
     LOBYTE(v21) = 0;
-    v17 = [(GDKnosisResult *)v12 initWithQuery:v13 kgq:v14 status:v15 answers:v11 errorMessage:v16 limit:v7 offset:&unk_1F20CF3B0 hasMoreAnswers:v21 debug:v34[5], v22, v23, v24, v25];
+    v17 = [(GDKnosisResult *)v12 initWithQuery:v13 kgq:v14 status:v15 answers:v11 errorMessage:v16 limit:limit2 offset:&unk_1F20CF3B0 hasMoreAnswers:v21 debug:v34[5], v22, v23, v24, v25];
   }
 
   else
   {
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(limit2, OS_LOG_TYPE_ERROR))
     {
-      if (a4)
+      if (error)
       {
-        v20 = *a4;
+        v20 = *error;
       }
 
       else
@@ -268,7 +268,7 @@
 
       *v62 = 138412290;
       v63 = v20;
-      _os_log_error_impl(&dword_1ABA78000, v7, OS_LOG_TYPE_ERROR, "GDXPCKnosisService: error during ExecuteKGQ call: %@", v62, 0xCu);
+      _os_log_error_impl(&dword_1ABA78000, limit2, OS_LOG_TYPE_ERROR, "GDXPCKnosisService: error during ExecuteKGQ call: %@", v62, 0xCu);
     }
 
     v17 = 0;
@@ -287,14 +287,14 @@
   return v17;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCKnosisService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCKnosisService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

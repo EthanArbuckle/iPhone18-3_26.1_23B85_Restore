@@ -1,26 +1,26 @@
 @interface NEPolicySession
-+ (uint64_t)copyTLVForBytes:(uint64_t)a1 messageLength:(uint64_t)a2 type:(unint64_t)a3 includeHeaderOffset:(int)a4 n:(int)a5 hasFlags:(int)a6;
-+ (void)addTLVToMessage:(char)a3 type:(uint64_t)a4 length:(uint64_t)a5 value:;
++ (uint64_t)copyTLVForBytes:(uint64_t)bytes messageLength:(uint64_t)length type:(unint64_t)type includeHeaderOffset:(int)offset n:(int)n hasFlags:(int)flags;
++ (void)addTLVToMessage:(char)message type:(uint64_t)type length:(uint64_t)length value:;
 - (BOOL)apply;
 - (BOOL)lockSessionToCurrentProcess;
 - (BOOL)removeAllDomainFilters;
 - (BOOL)removeAllDomainTries;
 - (BOOL)removeAllPolicies;
-- (BOOL)removeDomainFilterWithID:(unint64_t)a3;
-- (BOOL)removeDomainTrieWithID:(unint64_t)a3;
-- (BOOL)removePolicyWithID:(unint64_t)a3;
-- (NEPolicySession)initWithSessionName:(id)a3;
-- (NEPolicySession)initWithSocket:(int)a3;
+- (BOOL)removeDomainFilterWithID:(unint64_t)d;
+- (BOOL)removeDomainTrieWithID:(unint64_t)d;
+- (BOOL)removePolicyWithID:(unint64_t)d;
+- (NEPolicySession)initWithSessionName:(id)name;
+- (NEPolicySession)initWithSocket:(int)socket;
 - (id)dumpDomainTries;
 - (id)dumpKernelPolicies;
 - (id)initFromPrivilegedProcess;
-- (id)policyWithID:(unint64_t)a3;
+- (id)policyWithID:(unint64_t)d;
 - (int)dupSocket;
 - (int64_t)priority;
-- (unint64_t)addDomainFilterWithData:(id)a3;
-- (unint64_t)addDomainTrieWithData:(id)a3;
+- (unint64_t)addDomainFilterWithData:(id)data;
+- (unint64_t)addDomainTrieWithData:(id)data;
 - (void)dealloc;
-- (void)setPriority:(int64_t)a3;
+- (void)setPriority:(int64_t)priority;
 @end
 
 @implementation NEPolicySession
@@ -72,10 +72,10 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)removePolicyWithID:(unint64_t)a3
+- (BOOL)removePolicyWithID:(unint64_t)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  dCopy = d;
   if (!self)
   {
     if (necp_session_action())
@@ -87,7 +87,7 @@ LABEL_10:
 LABEL_9:
     v11 = MEMORY[0x1E696AD98];
     v12 = Property;
-    v13 = [v11 numberWithUnsignedInteger:a3];
+    v13 = [v11 numberWithUnsignedInteger:d];
     [v12 removeObjectForKey:v13];
 
     result = 1;
@@ -112,7 +112,7 @@ LABEL_3:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
   {
     *buf = 67109634;
-    v17 = v15;
+    v17 = dCopy;
     v18 = 1024;
     v19 = v7;
     v20 = 2080;
@@ -126,7 +126,7 @@ LABEL_10:
   return result;
 }
 
-- (id)policyWithID:(unint64_t)a3
+- (id)policyWithID:(unint64_t)d
 {
   if (self)
   {
@@ -134,9 +134,9 @@ LABEL_10:
   }
 
   v4 = MEMORY[0x1E696AD98];
-  v5 = self;
-  v6 = [v4 numberWithUnsignedInteger:a3];
-  v7 = [(NEPolicySession *)v5 objectForKey:v6];
+  selfCopy = self;
+  v6 = [v4 numberWithUnsignedInteger:d];
+  v7 = [(NEPolicySession *)selfCopy objectForKey:v6];
 
   return v7;
 }
@@ -489,15 +489,15 @@ LABEL_22:
   v24 = v21;
   v16 = v22;
   objc_opt_self();
-  v25 = [v24 bytes];
+  bytes = [v24 bytes];
   v136 = v24;
   v26 = 0;
   v142 = [v24 length];
-  v143 = v25;
-  v27 = v25 + v142;
-  v28 = v25;
+  v143 = bytes;
+  v27 = bytes + v142;
+  v28 = bytes;
   v140 = v16;
-  v141 = v25 + v142;
+  v141 = bytes + v142;
   while (1)
   {
     v29 = objc_autoreleasePoolPush();
@@ -549,15 +549,15 @@ LABEL_22:
       do
       {
         v38 = *(v23 + 3448);
-        v39 = [v34 bytes];
+        bytes2 = [v34 bytes];
         objc_opt_self();
-        if (!v39)
+        if (!bytes2)
         {
           break;
         }
 
-        v40 = v39 + v36;
-        v41 = *(v39 + v36);
+        v40 = bytes2 + v36;
+        v41 = *(bytes2 + v36);
         if (!v41)
         {
           break;
@@ -572,7 +572,7 @@ LABEL_22:
           {
             if (v41 == 100 || v41 == 102)
             {
-              [v43 appendFormat:@"%s", objc_msgSend(v42, "bytes"), v130];
+              [v43 appendFormat:@"%s", objc_msgSend(v42, "bytes"), bytes4];
             }
 
             else if (v41 == 103)
@@ -603,13 +603,13 @@ LABEL_22:
                   {
                     v49 = v23;
                     v50 = *(v23 + 3448);
-                    v51 = [v42 bytes];
+                    bytes3 = [v42 bytes];
                     objc_opt_self();
-                    if (v51)
+                    if (bytes3)
                     {
-                      v48 += *(v51 + v47 + 1) + 6;
-                      v52 = *(v51 + v47 + 5);
-                      v53 = *(v51 + v47);
+                      v48 += *(bytes3 + v47 + 1) + 6;
+                      v52 = *(bytes3 + v47 + 5);
+                      v53 = *(bytes3 + v47);
                     }
 
                     else
@@ -641,7 +641,7 @@ LABEL_22:
                           v78 = "";
                         }
 
-                        v130 = __strerrbuf;
+                        bytes4 = __strerrbuf;
                         [v55 appendFormat:@"%seffective-application:%s ", v78];
                         goto LABEL_131;
                       case 2:
@@ -653,7 +653,7 @@ LABEL_22:
                           v77 = "";
                         }
 
-                        v130 = __strerrbuf;
+                        bytes4 = __strerrbuf;
                         [v55 appendFormat:@"%sreal-application:%s ", v77];
                         goto LABEL_131;
                       case 3:
@@ -677,7 +677,7 @@ LABEL_22:
                           v70 = "domain";
                         }
 
-                        v130 = v70;
+                        bytes4 = v70;
                         [v54 bytes];
                         [v55 appendFormat:@"%s%s:%s ", v69];
                         goto LABEL_131;
@@ -692,7 +692,7 @@ LABEL_22:
                           v61 = "";
                         }
 
-                        v130 = [v54 bytes];
+                        bytes4 = [v54 bytes];
                         [v55 appendFormat:@"%saccount-identifier:%s ", v61];
                         goto LABEL_131;
                       case 5:
@@ -708,7 +708,7 @@ LABEL_22:
                             v67 = "";
                           }
 
-                          v130 = [v54 bytes];
+                          bytes4 = [v54 bytes];
                           [v55 appendFormat:@"%scustom-entitlement:%s ", v67];
                         }
 
@@ -744,7 +744,7 @@ LABEL_130:
                         v35 = v151;
                         if ([v54 length] >= 8)
                         {
-                          v130 = *([v54 bytes] + 4);
+                          bytes4 = *([v54 bytes] + 4);
                           [v55 appendFormat:@"%sversion:%d ", v79];
                         }
 
@@ -760,7 +760,7 @@ LABEL_130:
                           v80 = "";
                         }
 
-                        v130 = *[v54 bytes];
+                        bytes4 = *[v54 bytes];
                         [v55 appendFormat:@"%suid:%u ", v80];
                         goto LABEL_131;
                       case 8:
@@ -783,19 +783,19 @@ LABEL_130:
                           v81 = "";
                         }
 
-                        v130 = [v54 bytes];
+                        bytes4 = [v54 bytes];
                         [v55 appendFormat:@"%sscoped-interface:%s ", v81];
                         goto LABEL_131;
                       case 10:
-                        v59 = [v54 bytes];
+                        bytes5 = [v54 bytes];
                         v60 = "!";
                         if ((v52 & 1) == 0)
                         {
                           v60 = "";
                         }
 
-                        v130 = *v59;
-                        v131 = v59[1];
+                        bytes4 = *bytes5;
+                        v131 = bytes5[1];
                         [v55 appendFormat:@"%straffic-class-range:%u-%u ", v60];
                         goto LABEL_131;
                       case 11:
@@ -809,17 +809,17 @@ LABEL_130:
                           v68 = "";
                         }
 
-                        v130 = *[v54 bytes];
+                        bytes4 = *[v54 bytes];
                         [v55 appendFormat:@"%sip-protocol:%u ", v68];
                         goto LABEL_131;
                       case 16:
                         v155 = 0u;
                         memset(__strerrbuf, 0, sizeof(__strerrbuf));
-                        v62 = [v54 bytes];
-                        v63 = v62[3];
-                        v65 = *v62;
-                        v64 = v62[1];
-                        *&__strerrbuf[32] = v62[2];
+                        bytes6 = [v54 bytes];
+                        v63 = bytes6[3];
+                        v65 = *bytes6;
+                        v64 = bytes6[1];
+                        *&__strerrbuf[32] = bytes6[2];
                         v155 = v63;
                         *__strerrbuf = v65;
                         *&__strerrbuf[16] = v64;
@@ -829,15 +829,15 @@ LABEL_130:
                           v66 = "";
                         }
 
-                        v130 = __strerrbuf;
+                        bytes4 = __strerrbuf;
                         [v55 appendFormat:@"%sagent-domain:%s/agent-type:%s", v66];
                         goto LABEL_131;
                       default:
                         if ((v53 & 0xFE) == 0xE)
                         {
-                          v137 = [v54 bytes];
-                          v139 = NECreateAddressString(v137);
-                          v84 = NECreateAddressString((v137 + 28));
+                          bytes7 = [v54 bytes];
+                          v139 = NECreateAddressString(bytes7);
+                          v84 = NECreateAddressString((bytes7 + 28));
                           v85 = "!";
                           if ((v52 & 1) == 0)
                           {
@@ -865,7 +865,7 @@ LABEL_130:
                             v88 = @"%sremote-address-range:%@-%@";
                           }
 
-                          v130 = v86;
+                          bytes4 = v86;
                           [v55 appendFormat:v88, v85];
 
                           goto LABEL_131;
@@ -873,8 +873,8 @@ LABEL_130:
 
                         if ((v53 & 0xFE) == 0xC)
                         {
-                          v138 = [v54 bytes];
-                          v71 = NECreateAddressStringWithPort((v138 + 1));
+                          bytes8 = [v54 bytes];
+                          v71 = NECreateAddressStringWithPort((bytes8 + 1));
                           v72 = "!";
                           if ((v52 & 1) == 0)
                           {
@@ -888,7 +888,7 @@ LABEL_130:
                           }
 
                           v74 = v71;
-                          v75 = *v138;
+                          v75 = *bytes8;
                           if (v53 == 12)
                           {
                             v76 = @"%slocal-address:%@/%u";
@@ -899,7 +899,7 @@ LABEL_130:
                             v76 = @"%sremote-address:%@/%u";
                           }
 
-                          v130 = v73;
+                          bytes4 = v73;
                           [v55 appendFormat:v76, v72];
 
 LABEL_131:
@@ -933,7 +933,7 @@ LABEL_131:
                               v97 = "";
                             }
 
-                            v130 = *[v54 bytes];
+                            bytes4 = *[v54 bytes];
                             [v55 appendFormat:@"%slocal-networks:%u", v97];
                             break;
                           case 7:
@@ -947,7 +947,7 @@ LABEL_131:
                               v94 = "";
                             }
 
-                            v130 = *[v54 bytes];
+                            bytes4 = *[v54 bytes];
                             [v55 appendFormat:@"%sclient-flags:%u", v94];
                             break;
                           case 8:
@@ -978,16 +978,16 @@ LABEL_131:
                             [v55 appendFormat:@"%splatform-binary", v95];
                             break;
                           case 11:
-                            v98 = [v54 bytes];
+                            bytes9 = [v54 bytes];
                             v99 = "!";
                             if ((v52 & 1) == 0)
                             {
                               v99 = "";
                             }
 
-                            v132 = v98[2];
-                            v134 = v98[1];
-                            v130 = *v98;
+                            v132 = bytes9[2];
+                            v134 = bytes9[1];
+                            bytes4 = *bytes9;
                             [v55 appendFormat:@"%splatform:%u/sdk-version:%u/min-sdk-version:%u", v99];
                             break;
                           case 12:
@@ -1003,7 +1003,7 @@ LABEL_131:
                                 v100 = "";
                               }
 
-                              v130 = [v54 bytes];
+                              bytes4 = [v54 bytes];
                               [v55 appendFormat:@"%ssigning-identifier:%s ", v100];
                             }
 
@@ -1030,7 +1030,7 @@ LABEL_131:
                               v106 = "";
                             }
 
-                            v130 = *[v54 bytes];
+                            bytes4 = *[v54 bytes];
                             [v55 appendFormat:@"%spacket-filter-tags:%u", v106];
                             break;
                           case 14:
@@ -1062,7 +1062,7 @@ LABEL_131:
                               v96 = "";
                             }
 
-                            v130 = (bswap32(*[v54 bytes]) >> 16);
+                            bytes4 = (bswap32(*[v54 bytes]) >> 16);
                             [v55 appendFormat:@"%sscheme-port:%u", v96];
                             break;
                           case 21:
@@ -1076,7 +1076,7 @@ LABEL_131:
                               v93 = "";
                             }
 
-                            v130 = *[v54 bytes];
+                            bytes4 = *[v54 bytes];
                             [v55 appendFormat:@"%sdomain-filter:%u ", v93];
                             break;
                           case 22:
@@ -1091,16 +1091,16 @@ LABEL_131:
                           case 26:
                             if ([v54 length] >= 0xC)
                             {
-                              v101 = [v54 bytes];
+                              bytes10 = [v54 bytes];
                               v102 = "!";
                               if ((v52 & 1) == 0)
                               {
                                 v102 = "";
                               }
 
-                              v133 = v101[1];
-                              v135 = v101[2];
-                              v130 = *v101;
+                              v133 = bytes10[1];
+                              v135 = bytes10[2];
+                              bytes4 = *bytes10;
                               [v55 appendFormat:@"%sscoped-interface-flags: %X, eflags %X, xflags %X", v102];
                             }
 
@@ -1127,7 +1127,7 @@ LABEL_132:
                 goto LABEL_50;
               case 5:
 LABEL_47:
-                [v43 appendFormat:@"%u", *objc_msgSend(v42, "bytes"), v130];
+                [v43 appendFormat:@"%u", *objc_msgSend(v42, "bytes"), bytes4];
                 break;
             }
           }
@@ -1135,7 +1135,7 @@ LABEL_47:
 
         else
         {
-          [v43 appendFormat:@"N/A", v129, v130];
+          [v43 appendFormat:@"N/A", v129, bytes4];
         }
 
         v44 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v41];
@@ -1264,10 +1264,10 @@ LABEL_27:
   return v16;
 }
 
-+ (uint64_t)copyTLVForBytes:(uint64_t)a1 messageLength:(uint64_t)a2 type:(unint64_t)a3 includeHeaderOffset:(int)a4 n:(int)a5 hasFlags:(int)a6
++ (uint64_t)copyTLVForBytes:(uint64_t)bytes messageLength:(uint64_t)length type:(unint64_t)type includeHeaderOffset:(int)offset n:(int)n hasFlags:(int)flags
 {
   objc_opt_self();
-  if (!a2 || !a3)
+  if (!length || !type)
   {
     return 0;
   }
@@ -1276,27 +1276,27 @@ LABEL_27:
   v12 = 0;
   while (1)
   {
-    v13 = a2 + v12;
-    if (*(a2 + v12) == a4)
+    v13 = length + v12;
+    if (*(length + v12) == offset)
     {
       break;
     }
 
 LABEL_7:
     v12 += *(v13 + 1) + 5;
-    if (v12 >= a3)
+    if (v12 >= type)
     {
       return 0;
     }
   }
 
-  if (v11 != a5)
+  if (v11 != n)
   {
     ++v11;
     goto LABEL_7;
   }
 
-  if (a6)
+  if (flags)
   {
     v15 = 6;
   }
@@ -1312,15 +1312,15 @@ LABEL_7:
   return [v16 initWithBytes:v13 + v15 length:v17];
 }
 
-+ (void)addTLVToMessage:(char)a3 type:(uint64_t)a4 length:(uint64_t)a5 value:
++ (void)addTLVToMessage:(char)message type:(uint64_t)type length:(uint64_t)length value:
 {
-  v9 = a3;
+  messageCopy = message;
   v7 = a2;
   objc_opt_self();
-  [v7 appendBytes:&v9 length:1];
-  v8 = a4;
-  [v7 appendBytes:&v8 length:4];
-  [v7 appendBytes:a5 length:a4];
+  [v7 appendBytes:&messageCopy length:1];
+  typeCopy = type;
+  [v7 appendBytes:&typeCopy length:4];
+  [v7 appendBytes:length length:type];
 }
 
 - (BOOL)removeAllDomainTries
@@ -1366,10 +1366,10 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)removeDomainTrieWithID:(unint64_t)a3
+- (BOOL)removeDomainTrieWithID:(unint64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  dCopy = d;
   if (self)
   {
     sessionFD = self->_sessionFD;
@@ -1381,7 +1381,7 @@ LABEL_7:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *__strerrbuf = 67109120;
-      v17 = v9;
+      v17 = dCopy;
       _os_log_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_INFO, "Deleted domain trie - ID %u", __strerrbuf, 8u);
     }
 
@@ -1405,7 +1405,7 @@ LABEL_13:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
     *buf = 67109634;
-    v11 = v9;
+    v11 = dCopy;
     v12 = 1024;
     v13 = v4;
     v14 = 2080;
@@ -1419,12 +1419,12 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)addDomainTrieWithData:(id)a3
+- (unint64_t)addDomainTrieWithData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!a3)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (!data)
   {
     v9 = ne_log_obj();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -1445,7 +1445,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  [v5 bytes];
+  [dataCopy bytes];
   [v6 length];
   if (self)
   {
@@ -1523,10 +1523,10 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)removeDomainFilterWithID:(unint64_t)a3
+- (BOOL)removeDomainFilterWithID:(unint64_t)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  dCopy = d;
   if (self)
   {
     sessionFD = self->_sessionFD;
@@ -1545,7 +1545,7 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       *buf = 67109634;
-      v11 = v9;
+      v11 = dCopy;
       v12 = 1024;
       v13 = v5;
       v14 = 2080;
@@ -1559,14 +1559,14 @@ LABEL_12:
   return result;
 }
 
-- (unint64_t)addDomainFilterWithData:(id)a3
+- (unint64_t)addDomainFilterWithData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (a3)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (data)
   {
-    [v5 bytes];
+    [dataCopy bytes];
     v7 = [v6 length];
     if (self)
     {
@@ -1660,20 +1660,20 @@ LABEL_12:
   return result;
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3 - 1;
-  if ((a3 - 1) <= 9)
+  v5 = priority - 1;
+  if ((priority - 1) <= 9)
   {
-    if (a3 <= 5)
+    if (priority <= 5)
     {
-      if (a3 > 2)
+      if (priority > 2)
       {
-        if (a3 != 3)
+        if (priority != 3)
         {
-          if (a3 == 4)
+          if (priority == 4)
           {
             goto LABEL_38;
           }
@@ -1682,76 +1682,76 @@ LABEL_12:
         }
 
 LABEL_23:
-        v3 = 300;
+        priorityCopy = 300;
         goto LABEL_40;
       }
 
-      if (a3 != 1)
+      if (priority != 1)
       {
 LABEL_29:
-        v3 = 200;
+        priorityCopy = 200;
         goto LABEL_40;
       }
 
 LABEL_34:
-      v3 = 100;
+      priorityCopy = 100;
       goto LABEL_40;
     }
 
-    if (a3 > 7)
+    if (priority > 7)
     {
-      if (a3 != 8)
+      if (priority != 8)
       {
-        if (a3 != 9)
+        if (priority != 9)
         {
-          v3 = 0xFFFFLL;
+          priorityCopy = 0xFFFFLL;
           goto LABEL_16;
         }
 
 LABEL_27:
-        v3 = 500;
+        priorityCopy = 500;
         goto LABEL_40;
       }
 
       goto LABEL_36;
     }
 
-    if (a3 == 6)
+    if (priority == 6)
     {
 LABEL_31:
-      v3 = 303;
+      priorityCopy = 303;
       goto LABEL_40;
     }
 
     goto LABEL_39;
   }
 
-  if (a3 > 300)
+  if (priority > 300)
   {
-    if (a3 <= 303)
+    if (priority <= 303)
     {
-      if (a3 == 301)
+      if (priority == 301)
       {
 LABEL_38:
-        v3 = 301;
+        priorityCopy = 301;
         goto LABEL_40;
       }
 
-      if (a3 == 302)
+      if (priority == 302)
       {
 LABEL_37:
-        v3 = 302;
+        priorityCopy = 302;
         goto LABEL_40;
       }
 
       goto LABEL_31;
     }
 
-    if (a3 != 304)
+    if (priority != 304)
     {
-      if (a3 != 400)
+      if (priority != 400)
       {
-        if (a3 != 500)
+        if (priority != 500)
         {
           goto LABEL_16;
         }
@@ -1760,23 +1760,23 @@ LABEL_37:
       }
 
 LABEL_36:
-      v3 = 400;
+      priorityCopy = 400;
       goto LABEL_40;
     }
 
 LABEL_39:
-    v3 = 304;
+    priorityCopy = 304;
     goto LABEL_40;
   }
 
-  if (a3 <= 100)
+  if (priority <= 100)
   {
-    if (!a3)
+    if (!priority)
     {
       goto LABEL_40;
     }
 
-    if (a3 == 100)
+    if (priority == 100)
     {
       goto LABEL_34;
     }
@@ -1784,7 +1784,7 @@ LABEL_39:
 
   else
   {
-    switch(a3)
+    switch(priority)
     {
       case 101:
         goto LABEL_40;
@@ -1800,7 +1800,7 @@ LABEL_16:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
   {
     *__strerrbuf = 67109120;
-    v16 = v3;
+    v16 = priorityCopy;
     _os_log_fault_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_FAULT, "Unknown priority level %u", __strerrbuf, 8u);
   }
 
@@ -1810,7 +1810,7 @@ LABEL_40:
     sessionFD = self->_sessionFD;
     if (!necp_session_action())
     {
-      self->_internalPriority = v3;
+      self->_internalPriority = priorityCopy;
       self->_convertToLegacyPriority = v5 < 0xA;
       goto LABEL_48;
     }
@@ -1926,20 +1926,20 @@ LABEL_48:
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (!self || (LODWORD(self) = self->_sessionFD, (self & 0x80000000) == 0))
   {
     close(self);
   }
 
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = NEPolicySession;
   [(NEPolicySession *)&v3 dealloc];
 }
 
-- (NEPolicySession)initWithSessionName:(id)a3
+- (NEPolicySession)initWithSessionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1949,7 +1949,7 @@ LABEL_48:
   v16[1] = 3221225472;
   v16[2] = __39__NEPolicySession_initWithSessionName___block_invoke;
   v16[3] = &unk_1E7F0A370;
-  v6 = v4;
+  v6 = nameCopy;
   v17 = v6;
   v18 = &v19;
   [v5 iterateFileHandlesWithBlock:v16];
@@ -2056,20 +2056,20 @@ uint64_t __39__NEPolicySession_initWithSessionName___block_invoke_2(uint64_t a1,
       _os_log_fault_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_FAULT, "Failed to open NECP session fd: [%d] %s", v9, 0x12u);
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NEPolicySession *)self initWithSocket:v3];
-    v4 = self;
+    selfCopy = self;
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v4;
+  return selfCopy;
 }
 
-- (NEPolicySession)initWithSocket:(int)a3
+- (NEPolicySession)initWithSocket:(int)socket
 {
   v23 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -2088,9 +2088,9 @@ uint64_t __39__NEPolicySession_initWithSessionName___block_invoke_2(uint64_t a1,
     ioQueue = v5->_ioQueue;
     v5->_ioQueue = v9;
 
-    if ((a3 & 0x80000000) == 0)
+    if ((socket & 0x80000000) == 0)
     {
-      v5->_sessionFD = a3;
+      v5->_sessionFD = socket;
 LABEL_11:
       v12 = v5;
       goto LABEL_12;

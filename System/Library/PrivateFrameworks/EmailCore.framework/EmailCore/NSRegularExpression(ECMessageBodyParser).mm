@@ -12,7 +12,7 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "pathForResource:ofType:", @"AttributionPatterns", @"plist"}];
-  v22 = a1;
+  selfCopy = self;
   if (a3 > 3)
   {
     v20 = 0;
@@ -72,7 +72,7 @@
 
   v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v20, objc_msgSend(v8, "componentsJoinedByString:", @"|"];
   v23 = 0;
-  v17 = [[v22 alloc] initWithPattern:v16 options:1 error:&v23];
+  v17 = [[selfCopy alloc] initWithPattern:v16 options:1 error:&v23];
   if (!v17)
   {
     +[NSRegularExpression(ECMessageBodyParser) ec_copyAttributionRegularExpressionForType:];
@@ -88,7 +88,7 @@
   block[1] = 3221225472;
   block[2] = __68__NSRegularExpression_ECMessageBodyParser__ec_attributionExpression__block_invoke;
   block[3] = &unk_27874BC28;
-  block[4] = a1;
+  block[4] = self;
   if (ec_attributionExpression_onceToken != -1)
   {
     dispatch_once(&ec_attributionExpression_onceToken, block);
@@ -103,7 +103,7 @@
   block[1] = 3221225472;
   block[2] = __74__NSRegularExpression_ECMessageBodyParser__ec_attributionPrefixExpression__block_invoke;
   block[3] = &unk_27874BC28;
-  block[4] = a1;
+  block[4] = self;
   if (ec_attributionPrefixExpression_onceToken != -1)
   {
     dispatch_once(&ec_attributionPrefixExpression_onceToken, block);
@@ -118,7 +118,7 @@
   block[1] = 3221225472;
   block[2] = __73__NSRegularExpression_ECMessageBodyParser__ec_forwardSeparatorExpression__block_invoke;
   block[3] = &unk_27874BC28;
-  block[4] = a1;
+  block[4] = self;
   if (ec_forwardSeparatorExpression_onceToken != -1)
   {
     dispatch_once(&ec_forwardSeparatorExpression_onceToken, block);
@@ -133,7 +133,7 @@
   block[1] = 3221225472;
   block[2] = __66__NSRegularExpression_ECMessageBodyParser__ec_signatureExpression__block_invoke;
   block[3] = &unk_27874BC28;
-  block[4] = a1;
+  block[4] = self;
   if (ec_signatureExpression_onceToken != -1)
   {
     dispatch_once(&ec_signatureExpression_onceToken, block);

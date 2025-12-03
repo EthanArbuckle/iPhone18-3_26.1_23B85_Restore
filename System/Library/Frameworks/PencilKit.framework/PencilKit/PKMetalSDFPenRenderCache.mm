@@ -1,42 +1,42 @@
 @interface PKMetalSDFPenRenderCache
-- (BOOL)lockPurgeableResourcesAddToSet:(id)a3;
+- (BOOL)lockPurgeableResourcesAddToSet:(id)set;
 - (id)buffers;
-- (void)addBuffer:(uint64_t)a1;
-- (void)initWithPurgeableBuffers:(uint64_t)a3 renderZoomFactor:;
+- (void)addBuffer:(uint64_t)buffer;
+- (void)initWithPurgeableBuffers:(uint64_t)buffers renderZoomFactor:;
 @end
 
 @implementation PKMetalSDFPenRenderCache
 
-- (void)initWithPurgeableBuffers:(uint64_t)a3 renderZoomFactor:
+- (void)initWithPurgeableBuffers:(uint64_t)buffers renderZoomFactor:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = PKMetalSDFPenRenderCache;
   v5 = objc_msgSendSuper2(&v9, sel_init);
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = v5[1];
-    v5[1] = v6;
+    v5[1] = array;
 
     *(v5 + 32) = a2;
-    v5[3] = a3;
+    v5[3] = buffers;
   }
 
   return v5;
 }
 
-- (void)addBuffer:(uint64_t)a1
+- (void)addBuffer:(uint64_t)buffer
 {
   v3 = a2;
-  if (a1)
+  if (buffer)
   {
     v5 = v3;
-    [*(a1 + 8) addObject:v3];
+    [*(buffer + 8) addObject:v3];
     v3 = v5;
     if (v5)
     {
@@ -48,25 +48,25 @@
       v4 = 0;
     }
 
-    *(a1 + 16) += v4;
+    *(buffer + 16) += v4;
   }
 }
 
 - (id)buffers
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)lockPurgeableResourcesAddToSet:(id)a3
+- (BOOL)lockPurgeableResourcesAddToSet:(id)set
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   if (self->_purgeableBuffers)
   {
     v21 = 0u;
@@ -88,7 +88,7 @@
           }
 
           v9 = *(*(&v19 + 1) + 8 * i);
-          v10 = v4;
+          v10 = setCopy;
           v11 = v10;
           if (!v9)
           {
@@ -129,9 +129,9 @@ LABEL_21:
             goto LABEL_23;
           }
 
-          v16 = [*(v9 + 16) isPurged];
+          isPurged = [*(v9 + 16) isPurged];
 
-          if (v16)
+          if (isPurged)
           {
             goto LABEL_21;
           }

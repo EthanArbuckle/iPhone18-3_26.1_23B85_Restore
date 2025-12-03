@@ -1,23 +1,23 @@
 @interface PLReplaceAssetsWithCameraRollCopiesJob
-+ (void)replaceAssets:(id)a3 withCameraRollCopiesInAlbum:(id)a4;
++ (void)replaceAssets:(id)assets withCameraRollCopiesInAlbum:(id)album;
 - (NSPersistentStoreCoordinator)coordinator;
 - (PLManagedObjectContext)managedObjectContext;
-- (PLReplaceAssetsWithCameraRollCopiesJob)initWithPhotoLibrary:(id)a3;
-- (id)_cameraRollAssetDerivedFromAsset:(id)a3;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
+- (PLReplaceAssetsWithCameraRollCopiesJob)initWithPhotoLibrary:(id)library;
+- (id)_cameraRollAssetDerivedFromAsset:(id)asset;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
 - (void)dealloc;
-- (void)encodeToXPCObject:(id)a3;
+- (void)encodeToXPCObject:(id)object;
 - (void)run;
 - (void)runDaemonSide;
 @end
 
 @implementation PLReplaceAssetsWithCameraRollCopiesJob
 
-- (id)_cameraRollAssetDerivedFromAsset:(id)a3
+- (id)_cameraRollAssetDerivedFromAsset:(id)asset
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  assetCopy = asset;
+  managedObjectContext = [assetCopy managedObjectContext];
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLManagedAsset entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
@@ -27,44 +27,44 @@
   v9 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForCameraAsset"), 1}];
   v19[0] = v9;
   v10 = MEMORY[0x1E696AE18];
-  v11 = [v3 dateCreated];
+  dateCreated = [assetCopy dateCreated];
 
-  v12 = [v10 predicateWithFormat:@"%K == %@", @"dateCreated", v11];
+  v12 = [v10 predicateWithFormat:@"%K == %@", @"dateCreated", dateCreated];
   v19[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v14 = [v8 andPredicateWithSubpredicates:v13];
 
   [v7 setPredicate:v14];
   v18 = 0;
-  v15 = [v4 executeFetchRequest:v7 error:&v18];
+  v15 = [managedObjectContext executeFetchRequest:v7 error:&v18];
   if ([v15 count])
   {
-    v16 = [v15 lastObject];
+    lastObject = [v15 lastObject];
   }
 
   else
   {
-    v16 = 0;
+    lastObject = 0;
   }
 
-  return v16;
+  return lastObject;
 }
 
 - (void)runDaemonSide
 {
-  v3 = [(PLReplaceAssetsWithCameraRollCopiesJob *)self photoLibrary];
+  photoLibrary = [(PLReplaceAssetsWithCameraRollCopiesJob *)self photoLibrary];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__PLReplaceAssetsWithCameraRollCopiesJob_runDaemonSide__block_invoke;
   v6[3] = &unk_1E7578848;
-  v7 = v3;
-  v8 = self;
+  v7 = photoLibrary;
+  selfCopy = self;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__PLReplaceAssetsWithCameraRollCopiesJob_runDaemonSide__block_invoke_74;
   v5[3] = &unk_1E75781E8;
   v5[4] = self;
-  v4 = v3;
+  v4 = photoLibrary;
   [v4 performTransaction:v6 completionHandler:v5];
 }
 
@@ -348,27 +348,27 @@ void __55__PLReplaceAssetsWithCameraRollCopiesJob_runDaemonSide__block_invoke_70
   *(*(a1[7] + 8) + 24) = (*(a1[5] + 16))();
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v24.receiver = self;
   v24.super_class = PLReplaceAssetsWithCameraRollCopiesJob;
-  v7 = [(PLDaemonJob *)&v24 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLDaemonJob *)&v24 initFromXPCObject:objectCopy libraryServicesManager:manager];
   v8 = v7;
   if (!v7)
   {
     goto LABEL_5;
   }
 
-  v9 = [v7 libraryServicesManager];
-  v10 = [v9 databaseContext];
-  v11 = [v10 newShortLivedLibraryWithName:"-[PLReplaceAssetsWithCameraRollCopiesJob initFromXPCObject:libraryServicesManager:]"];
+  libraryServicesManager = [v7 libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v11 = [databaseContext newShortLivedLibraryWithName:"-[PLReplaceAssetsWithCameraRollCopiesJob initFromXPCObject:libraryServicesManager:]"];
   v12 = v8[10];
   v8[10] = v11;
 
-  v13 = xpc_dictionary_get_value(v6, "assetsIDs");
-  v14 = xpc_dictionary_get_value(v6, "albumID");
+  v13 = xpc_dictionary_get_value(objectCopy, "assetsIDs");
+  v14 = xpc_dictionary_get_value(objectCopy, "albumID");
   v15 = v14;
   if (v13 && v14)
   {
@@ -443,20 +443,20 @@ uint64_t __83__PLReplaceAssetsWithCameraRollCopiesJob_initFromXPCObject_libraryS
   return 1;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = PLReplaceAssetsWithCameraRollCopiesJob;
-  [(PLDaemonJob *)&v18 encodeToXPCObject:v4];
+  [(PLDaemonJob *)&v18 encodeToXPCObject:objectCopy];
   v5 = xpc_array_create(0, 0);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(PLReplaceAssetsWithCameraRollCopiesJob *)self assets];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  assets = [(PLReplaceAssetsWithCameraRollCopiesJob *)self assets];
+  v7 = [assets countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -468,35 +468,35 @@ uint64_t __83__PLReplaceAssetsWithCameraRollCopiesJob_initFromXPCObject_libraryS
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(assets);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) objectID];
+        objectID = [*(*(&v14 + 1) + 8 * v10) objectID];
         PLXPCArrayAppendManagedObjectID();
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [assets countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  xpc_dictionary_set_value(v4, "assetsIDs", v5);
-  v12 = [(PLReplaceAssetsWithCameraRollCopiesJob *)self album];
-  v13 = [v12 objectID];
+  xpc_dictionary_set_value(objectCopy, "assetsIDs", v5);
+  album = [(PLReplaceAssetsWithCameraRollCopiesJob *)self album];
+  objectID2 = [album objectID];
   PLXPCDictionarySetManagedObjectID();
 }
 
 - (void)run
 {
-  v7 = [(PLReplaceAssetsWithCameraRollCopiesJob *)self assets];
-  v4 = [(PLReplaceAssetsWithCameraRollCopiesJob *)self album];
-  if (v7)
+  assets = [(PLReplaceAssetsWithCameraRollCopiesJob *)self assets];
+  album = [(PLReplaceAssetsWithCameraRollCopiesJob *)self album];
+  if (assets)
   {
-    if (v4)
+    if (album)
     {
       goto LABEL_3;
     }
@@ -504,17 +504,17 @@ uint64_t __83__PLReplaceAssetsWithCameraRollCopiesJob_initFromXPCObject_libraryS
 
   else
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PLReplaceAssetsWithCameraRollCopiesJob.m" lineNumber:86 description:@"assets cannot be nil when starting the job"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLReplaceAssetsWithCameraRollCopiesJob.m" lineNumber:86 description:@"assets cannot be nil when starting the job"];
 
-    if (v4)
+    if (album)
     {
       goto LABEL_3;
     }
   }
 
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PLReplaceAssetsWithCameraRollCopiesJob.m" lineNumber:87 description:@"album cannot be nil when starting the job"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLReplaceAssetsWithCameraRollCopiesJob.m" lineNumber:87 description:@"album cannot be nil when starting the job"];
 
 LABEL_3:
   [(PLDaemonJob *)self sendToAssetsd];
@@ -522,18 +522,18 @@ LABEL_3:
 
 - (NSPersistentStoreCoordinator)coordinator
 {
-  v2 = [(PLReplaceAssetsWithCameraRollCopiesJob *)self managedObjectContext];
-  v3 = [v2 persistentStoreCoordinator];
+  managedObjectContext = [(PLReplaceAssetsWithCameraRollCopiesJob *)self managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 - (PLManagedObjectContext)managedObjectContext
 {
-  v2 = [(PLReplaceAssetsWithCameraRollCopiesJob *)self photoLibrary];
-  v3 = [v2 managedObjectContext];
+  photoLibrary = [(PLReplaceAssetsWithCameraRollCopiesJob *)self photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (void)dealloc
@@ -552,30 +552,30 @@ LABEL_3:
   [(PLReplaceAssetsWithCameraRollCopiesJob *)&v6 dealloc];
 }
 
-- (PLReplaceAssetsWithCameraRollCopiesJob)initWithPhotoLibrary:(id)a3
+- (PLReplaceAssetsWithCameraRollCopiesJob)initWithPhotoLibrary:(id)library
 {
-  v4 = [a3 libraryBundle];
-  v5 = [v4 assetsdClient];
+  libraryBundle = [library libraryBundle];
+  assetsdClient = [libraryBundle assetsdClient];
   v8.receiver = self;
   v8.super_class = PLReplaceAssetsWithCameraRollCopiesJob;
-  v6 = [(PLDaemonJob *)&v8 initWithAssetsdClient:v5];
+  v6 = [(PLDaemonJob *)&v8 initWithAssetsdClient:assetsdClient];
 
   return v6;
 }
 
-+ (void)replaceAssets:(id)a3 withCameraRollCopiesInAlbum:(id)a4
++ (void)replaceAssets:(id)assets withCameraRollCopiesInAlbum:(id)album
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 count];
-  if (v6 && v7)
+  assetsCopy = assets;
+  albumCopy = album;
+  v7 = [assetsCopy count];
+  if (albumCopy && v7)
   {
-    v8 = [a1 alloc];
-    v9 = [v6 photoLibrary];
-    v10 = [v8 initWithPhotoLibrary:v9];
+    v8 = [self alloc];
+    photoLibrary = [albumCopy photoLibrary];
+    v10 = [v8 initWithPhotoLibrary:photoLibrary];
 
-    [v10 setAlbum:v6];
-    [v10 setAssets:v11];
+    [v10 setAlbum:albumCopy];
+    [v10 setAssets:assetsCopy];
     [v10 run];
   }
 }

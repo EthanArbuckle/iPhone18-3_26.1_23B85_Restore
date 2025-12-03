@@ -7,7 +7,7 @@
 - (BOOL)atx_isFuzzyMatch:()FuzzyMatch
 {
   v4 = a3;
-  if ([a1 isEqual:v4])
+  if ([self isEqual:v4])
   {
     v5 = 1;
   }
@@ -17,7 +17,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 distanceFromLocation:v4];
+      [self distanceFromLocation:v4];
       v5 = v6 < 5.0;
     }
 

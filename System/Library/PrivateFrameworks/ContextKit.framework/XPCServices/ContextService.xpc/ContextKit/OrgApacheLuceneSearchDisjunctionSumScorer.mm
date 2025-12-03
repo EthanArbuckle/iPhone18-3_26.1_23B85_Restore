@@ -1,28 +1,28 @@
 @interface OrgApacheLuceneSearchDisjunctionSumScorer
-- (OrgApacheLuceneSearchDisjunctionSumScorer)initWithOrgApacheLuceneSearchWeight:(id)a3 withJavaUtilList:(id)a4 withFloatArray:(id)a5 withBoolean:(BOOL)a6;
-- (float)scoreWithOrgApacheLuceneSearchDisiWrapper:(id)a3;
+- (OrgApacheLuceneSearchDisjunctionSumScorer)initWithOrgApacheLuceneSearchWeight:(id)weight withJavaUtilList:(id)list withFloatArray:(id)array withBoolean:(BOOL)boolean;
+- (float)scoreWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchDisjunctionSumScorer
 
-- (OrgApacheLuceneSearchDisjunctionSumScorer)initWithOrgApacheLuceneSearchWeight:(id)a3 withJavaUtilList:(id)a4 withFloatArray:(id)a5 withBoolean:(BOOL)a6
+- (OrgApacheLuceneSearchDisjunctionSumScorer)initWithOrgApacheLuceneSearchWeight:(id)weight withJavaUtilList:(id)list withFloatArray:(id)array withBoolean:(BOOL)boolean
 {
-  OrgApacheLuceneSearchDisjunctionScorer_initWithOrgApacheLuceneSearchWeight_withJavaUtilList_withBoolean_(self, a3, a4, a6);
-  JreStrongAssign(&self->coord_, a5);
+  OrgApacheLuceneSearchDisjunctionScorer_initWithOrgApacheLuceneSearchWeight_withJavaUtilList_withBoolean_(self, weight, list, boolean);
+  JreStrongAssign(&self->coord_, array);
   return self;
 }
 
-- (float)scoreWithOrgApacheLuceneSearchDisiWrapper:(id)a3
+- (float)scoreWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper
 {
-  if (a3)
+  if (wrapper)
   {
-    v4 = a3;
+    wrapperCopy = wrapper;
     LODWORD(v5) = 0;
     v6 = 0.0;
     do
     {
-      v7 = v4[1];
+      v7 = wrapperCopy[1];
       if (!v7)
       {
         goto LABEL_11;
@@ -31,10 +31,10 @@
       [v7 score];
       v6 = v6 + v8;
       v5 = (v5 + 1);
-      v4 = v4[4];
+      wrapperCopy = wrapperCopy[4];
     }
 
-    while (v4);
+    while (wrapperCopy);
     v9 = v6;
   }
 

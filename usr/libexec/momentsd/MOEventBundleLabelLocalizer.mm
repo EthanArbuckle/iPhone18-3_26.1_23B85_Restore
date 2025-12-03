@@ -5,14 +5,14 @@
 + (BOOL)isPreferredLanguageTitlecaseCapable;
 + (id)_MomentsBundle;
 + (id)_MomentsDefaultLanguageBundle;
-+ (id)_Moments_AllCapitalizedStringForKey:(id)a3;
-+ (id)_Moments_CapitalizedStringForKey:(id)a3;
-+ (id)_Moments_LocalizedNounForKey:(id)a3;
-+ (id)_Moments_LocalizedStringForKey:(id)a3 withTable:(id)a4;
-+ (id)_Moments_LocalizedStringWithFormat:(id)a3 arguments:(id)a4;
-+ (id)_Moments_LowercaseNounForKey:(id)a3;
-+ (id)_Moments_TitleCapitalizedStringForKey:(id)a3;
-+ (id)__Moments_TitleCapitalizedStringForKey:(id)a3;
++ (id)_Moments_AllCapitalizedStringForKey:(id)key;
++ (id)_Moments_CapitalizedStringForKey:(id)key;
++ (id)_Moments_LocalizedNounForKey:(id)key;
++ (id)_Moments_LocalizedStringForKey:(id)key withTable:(id)table;
++ (id)_Moments_LocalizedStringWithFormat:(id)format arguments:(id)arguments;
++ (id)_Moments_LowercaseNounForKey:(id)key;
++ (id)_Moments_TitleCapitalizedStringForKey:(id)key;
++ (id)__Moments_TitleCapitalizedStringForKey:(id)key;
 + (id)preferredLocalization;
 @end
 
@@ -37,57 +37,57 @@
 + (id)preferredLocalization
 {
   v2 = +[MOEventBundleLabelLocalizer _MomentsBundle];
-  v3 = [v2 preferredLocalizations];
-  v4 = [v3 firstObject];
+  preferredLocalizations = [v2 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  if (!v4)
+  if (!firstObject)
   {
     v5 = +[MOEventBundleLabelLocalizer _MomentsDefaultLanguageBundle];
 
-    v6 = [v5 preferredLocalizations];
-    v4 = [v6 firstObject];
+    preferredLocalizations2 = [v5 preferredLocalizations];
+    firstObject = [preferredLocalizations2 firstObject];
 
     v2 = v5;
   }
 
-  return v4;
+  return firstObject;
 }
 
 + (BOOL)isPreferredLanguageNounCap
 {
   v2 = +[MOEventBundleLabelLocalizer _MomentsBundle];
-  v3 = [v2 preferredLocalizations];
-  v4 = [v3 firstObject];
+  preferredLocalizations = [v2 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  LOBYTE(v3) = [v4 isEqualToString:@"de"];
-  return v3;
+  LOBYTE(preferredLocalizations) = [firstObject isEqualToString:@"de"];
+  return preferredLocalizations;
 }
 
 + (BOOL)isPreferredLanguageTitlecaseCapable
 {
   v2 = [NSSet setWithArray:&off_10036DC08];
   v3 = +[MOEventBundleLabelLocalizer _MomentsBundle];
-  v4 = [v3 preferredLocalizations];
-  v5 = [v4 firstObject];
+  preferredLocalizations = [v3 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  LOBYTE(v4) = [v2 containsObject:v5];
-  return v4;
+  LOBYTE(preferredLocalizations) = [v2 containsObject:firstObject];
+  return preferredLocalizations;
 }
 
 + (BOOL)isPreferredLanguageMidSentenceCaseCapable
 {
   v2 = [NSSet setWithArray:&off_10036DC20];
   v3 = +[MOEventBundleLabelLocalizer _MomentsBundle];
-  v4 = [v3 preferredLocalizations];
-  v5 = [v4 firstObject];
+  preferredLocalizations = [v3 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  LOBYTE(v4) = [v2 containsObject:v5];
-  return v4 ^ 1;
+  LOBYTE(preferredLocalizations) = [v2 containsObject:firstObject];
+  return preferredLocalizations ^ 1;
 }
 
-+ (id)_Moments_LocalizedNounForKey:(id)a3
++ (id)_Moments_LocalizedNounForKey:(id)key
 {
-  v3 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:a3];
+  v3 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:key];
   if (+[MOEventBundleLabelLocalizer isPreferredLanguageNounCap])
   {
     v4 = [MOEventBundleLabelLocalizer __Moments_TitleCapitalizedStringForKey:v3];
@@ -98,25 +98,25 @@
   return v3;
 }
 
-+ (id)_Moments_LocalizedStringForKey:(id)a3 withTable:(id)a4
++ (id)_Moments_LocalizedStringForKey:(id)key withTable:(id)table
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  keyCopy = key;
+  tableCopy = table;
+  if (keyCopy)
   {
-    if ([v7 length])
+    if ([keyCopy length])
     {
       v9 = +[MOEventBundleLabelLocalizer _MomentsBundle];
-      v10 = [v9 localizedStringForKey:v7 value:@"_Key_Not_Found_" table:v8];
+      v10 = [v9 localizedStringForKey:keyCopy value:@"_Key_Not_Found_" table:tableCopy];
       if ([@"_Key_Not_Found_" isEqualToString:v10])
       {
         v11 = +[MOEventBundleLabelLocalizer _MomentsDefaultLanguageBundle];
-        v12 = [v11 localizedStringForKey:v7 value:@"_Key_Not_Found_" table:v8];
+        v12 = [v11 localizedStringForKey:keyCopy value:@"_Key_Not_Found_" table:tableCopy];
         v13 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           v20 = 138412802;
-          v21 = v7;
+          v21 = keyCopy;
           v22 = 2112;
           v23 = v11;
           v24 = 2112;
@@ -127,19 +127,19 @@
         v14 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          [(MOEventBundleLabelLocalizer *)v7 _Moments_LocalizedStringForKey:v9 withTable:v14];
+          [(MOEventBundleLabelLocalizer *)keyCopy _Moments_LocalizedStringForKey:v9 withTable:v14];
         }
 
         if ([@"_Key_Not_Found_" isEqualToString:v10])
         {
-          v15 = v7;
+          v15 = keyCopy;
 
           v12 = v15;
         }
 
         else if (!v12)
         {
-          v12 = v7;
+          v12 = keyCopy;
         }
       }
 
@@ -148,7 +148,7 @@
         v18 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v7 withTable:v10];
+          [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:keyCopy withTable:v10];
         }
 
         v12 = v10;
@@ -157,7 +157,7 @@
 
     else
     {
-      v12 = v7;
+      v12 = keyCopy;
     }
   }
 
@@ -170,7 +170,7 @@
     }
 
     v17 = +[NSAssertionHandler currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"MOEventBundleLabelLocalizer.m" lineNumber:93 description:@"Invalid parameter not satisfying: key"];
+    [v17 handleFailureInMethod:a2 object:self file:@"MOEventBundleLabelLocalizer.m" lineNumber:93 description:@"Invalid parameter not satisfying: key"];
 
     v12 = 0;
   }
@@ -178,11 +178,11 @@
   return v12;
 }
 
-+ (id)_Moments_LocalizedStringWithFormat:(id)a3 arguments:(id)a4
++ (id)_Moments_LocalizedStringWithFormat:(id)format arguments:(id)arguments
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  formatCopy = format;
+  argumentsCopy = arguments;
+  if (!formatCopy)
   {
     v23 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -191,21 +191,21 @@
     }
 
     v9 = +[NSAssertionHandler currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"MOEventBundleLabelLocalizer.m" lineNumber:138 description:@"Invalid parameter not satisfying: format"];
+    [v9 handleFailureInMethod:a2 object:self file:@"MOEventBundleLabelLocalizer.m" lineNumber:138 description:@"Invalid parameter not satisfying: format"];
     goto LABEL_26;
   }
 
-  v9 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:v7];
+  v9 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:formatCopy];
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [MOEventBundleLabelLocalizer _Moments_LocalizedStringWithFormat:v9 arguments:v8];
+    [MOEventBundleLabelLocalizer _Moments_LocalizedStringWithFormat:v9 arguments:argumentsCopy];
   }
 
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [MOEventBundleLabelLocalizer _Moments_LocalizedStringWithFormat:v9 arguments:v8];
+    [MOEventBundleLabelLocalizer _Moments_LocalizedStringWithFormat:v9 arguments:argumentsCopy];
   }
 
   if (!v9)
@@ -213,7 +213,7 @@
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityFramework);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [MOEventBundleLabelLocalizer _Moments_LocalizedStringWithFormat:v7 arguments:v24];
+      [MOEventBundleLabelLocalizer _Moments_LocalizedStringWithFormat:formatCopy arguments:v24];
     }
 
 LABEL_26:
@@ -225,8 +225,8 @@ LABEL_26:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v27 = v8;
-  v12 = v8;
+  v27 = argumentsCopy;
+  v12 = argumentsCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v13)
   {
@@ -284,50 +284,50 @@ LABEL_26:
     v21 = v9;
   }
 
-  v8 = v27;
+  argumentsCopy = v27;
 LABEL_31:
 
   return v21;
 }
 
-+ (id)_Moments_CapitalizedStringForKey:(id)a3
++ (id)_Moments_CapitalizedStringForKey:(id)key
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  keyCopy = key;
+  v4 = keyCopy;
+  if (keyCopy && [keyCopy length])
   {
     v5 = v4;
     if ([v5 length] > 1)
     {
       v7 = [v5 substringToIndex:1];
-      v8 = [v7 uppercaseString];
+      uppercaseString = [v7 uppercaseString];
       v9 = [v5 substringFromIndex:1];
-      v6 = [v8 stringByAppendingString:v9];
+      localizedCapitalizedString = [uppercaseString stringByAppendingString:v9];
 
       v5 = v7;
     }
 
     else
     {
-      v6 = [v5 localizedCapitalizedString];
+      localizedCapitalizedString = [v5 localizedCapitalizedString];
     }
   }
 
   else
   {
-    v6 = 0;
+    localizedCapitalizedString = 0;
   }
 
-  return v6;
+  return localizedCapitalizedString;
 }
 
-+ (id)_Moments_TitleCapitalizedStringForKey:(id)a3
++ (id)_Moments_TitleCapitalizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy && [keyCopy length])
   {
-    if ([a1 isPreferredLanguageTitlecaseCapable])
+    if ([self isPreferredLanguageTitlecaseCapable])
     {
       v6 = [MOEventBundleLabelLocalizer __Moments_TitleCapitalizedStringForKey:v5];
     }
@@ -348,11 +348,11 @@ LABEL_31:
   return v7;
 }
 
-+ (id)__Moments_TitleCapitalizedStringForKey:(id)a3
++ (id)__Moments_TitleCapitalizedStringForKey:(id)key
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  keyCopy = key;
+  v4 = keyCopy;
+  if (keyCopy && [keyCopy length])
   {
     v5 = +[NSLocale currentLocale];
     v6 = [v4 mutableCopy];
@@ -421,37 +421,37 @@ LABEL_7:
   return _objc_release_x1(v7, v8);
 }
 
-+ (id)_Moments_AllCapitalizedStringForKey:(id)a3
++ (id)_Moments_AllCapitalizedStringForKey:(id)key
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  keyCopy = key;
+  v4 = keyCopy;
+  if (keyCopy && [keyCopy length])
   {
-    v5 = [v4 localizedUppercaseString];
+    localizedUppercaseString = [v4 localizedUppercaseString];
   }
 
   else
   {
-    v5 = 0;
+    localizedUppercaseString = 0;
   }
 
-  return v5;
+  return localizedUppercaseString;
 }
 
-+ (id)_Moments_LowercaseNounForKey:(id)a3
++ (id)_Moments_LowercaseNounForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (+[MOEventBundleLabelLocalizer isPreferredLanguageNounCap])
   {
-    v4 = v3;
+    lowercaseString = keyCopy;
   }
 
   else
   {
-    v4 = [v3 lowercaseString];
+    lowercaseString = [keyCopy lowercaseString];
   }
 
-  v5 = v4;
+  v5 = lowercaseString;
 
   return v5;
 }

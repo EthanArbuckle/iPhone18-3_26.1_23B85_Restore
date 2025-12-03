@@ -26,13 +26,13 @@
   [(MobileCalWindow *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(MobileCalWindow *)self rootViewController];
-  v8 = [v7 conformsToProtocol:&OBJC_PROTOCOL___CalRootViewController];
+  rootViewController = [(MobileCalWindow *)self rootViewController];
+  v8 = [rootViewController conformsToProtocol:&OBJC_PROTOCOL___CalRootViewController];
 
   if (v8)
   {
-    v9 = [(MobileCalWindow *)self rootViewController];
-    [v9 mainContentSize];
+    rootViewController2 = [(MobileCalWindow *)self rootViewController];
+    [rootViewController2 mainContentSize];
     v11 = v10;
     v13 = v12;
 

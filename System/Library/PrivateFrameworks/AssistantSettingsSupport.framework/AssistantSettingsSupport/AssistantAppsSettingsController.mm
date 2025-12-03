@@ -27,15 +27,15 @@
   v5.receiver = self;
   v5.super_class = AssistantAppsSettingsController;
   [(AssistantAppsSettingsController *)&v5 viewDidLoad];
-  v3 = [objc_opt_class() bundle];
-  v4 = [v3 localizedStringForKey:@"APPS" value:&stru_285317CF0 table:@"AssistantSettings"];
+  bundle = [objc_opt_class() bundle];
+  v4 = [bundle localizedStringForKey:@"APPS" value:&stru_285317CF0 table:@"AssistantSettings"];
   [(AssistantAppsSettingsController *)self setTitle:v4];
 }
 
 - (id)specifiers
 {
   v53 = *MEMORY[0x277D85DE8];
-  v35 = self;
+  selfCopy = self;
   if (!self->_disabledSpotlightBundles)
   {
     v47 = 0;
@@ -63,10 +63,10 @@
     }
 
     v4 = v2(1);
-    disabledSpotlightBundles = v35->_disabledSpotlightBundles;
-    v35->_disabledSpotlightBundles = v4;
+    disabledSpotlightBundles = selfCopy->_disabledSpotlightBundles;
+    selfCopy->_disabledSpotlightBundles = v4;
 
-    self = v35;
+    self = selfCopy;
   }
 
   if (!self->_disabledSpotlightDomains)
@@ -96,28 +96,28 @@
     }
 
     v8 = v6(1);
-    disabledSpotlightDomains = v35->_disabledSpotlightDomains;
-    v35->_disabledSpotlightDomains = v8;
+    disabledSpotlightDomains = selfCopy->_disabledSpotlightDomains;
+    selfCopy->_disabledSpotlightDomains = v8;
 
-    self = v35;
+    self = selfCopy;
   }
 
   availableSuggestionAppsController = self->_availableSuggestionAppsController;
   if (!availableSuggestionAppsController)
   {
-    v11 = [MEMORY[0x277CEF600] sharedController];
-    v12 = v35->_availableSuggestionAppsController;
-    v35->_availableSuggestionAppsController = v11;
+    mEMORY[0x277CEF600] = [MEMORY[0x277CEF600] sharedController];
+    v12 = selfCopy->_availableSuggestionAppsController;
+    selfCopy->_availableSuggestionAppsController = mEMORY[0x277CEF600];
 
-    availableSuggestionAppsController = v35->_availableSuggestionAppsController;
+    availableSuggestionAppsController = selfCopy->_availableSuggestionAppsController;
   }
 
-  v34 = [(ASFAvailableSuggestionAppsController *)availableSuggestionAppsController visibleBundleIds];
-  if (![(NSSet *)v35->_appSettingsBundleIDs isEqual:v34])
+  visibleBundleIds = [(ASFAvailableSuggestionAppsController *)availableSuggestionAppsController visibleBundleIds];
+  if (![(NSSet *)selfCopy->_appSettingsBundleIDs isEqual:visibleBundleIds])
   {
-    objc_storeStrong(&v35->_appSettingsBundleIDs, v34);
-    v13 = [v34 mutableCopy];
-    v37 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&selfCopy->_appSettingsBundleIDs, visibleBundleIds);
+    v13 = [visibleBundleIds mutableCopy];
+    array = [MEMORY[0x277CBEB18] array];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -147,7 +147,7 @@
             [v21 setIdentifier:v19];
             [v21 setDetailControllerClass:objc_opt_class()];
             [v21 setProperty:MEMORY[0x277CBEC38] forKey:v17];
-            [v37 addObject:v21];
+            [array addObject:v21];
           }
         }
 
@@ -157,21 +157,21 @@
       while (v14);
     }
 
-    v22 = [MEMORY[0x277CBEA60] arrayWithArray:v37];
-    allAppsSpecifiers = v35->_allAppsSpecifiers;
-    v35->_allAppsSpecifiers = v22;
+    v22 = [MEMORY[0x277CBEA60] arrayWithArray:array];
+    allAppsSpecifiers = selfCopy->_allAppsSpecifiers;
+    selfCopy->_allAppsSpecifiers = v22;
   }
 
-  v24 = [(NSArray *)v35->_allAppsSpecifiers sortedArrayUsingComparator:&__block_literal_global_8];
+  v24 = [(NSArray *)selfCopy->_allAppsSpecifiers sortedArrayUsingComparator:&__block_literal_global_8];
   v25 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:0];
   v51 = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
   v27 = [v26 arrayByAddingObjectsFromArray:v24];
   v28 = *MEMORY[0x277D3FC48];
-  v29 = *(&v35->super.super.super.super.super.isa + v28);
-  *(&v35->super.super.super.super.super.isa + v28) = v27;
+  v29 = *(&selfCopy->super.super.super.super.super.isa + v28);
+  *(&selfCopy->super.super.super.super.super.isa + v28) = v27;
 
-  v30 = *(&v35->super.super.super.super.super.isa + v28);
+  v30 = *(&selfCopy->super.super.super.super.super.isa + v28);
   v31 = v30;
 
   v32 = *MEMORY[0x277D85DE8];
@@ -190,9 +190,9 @@ uint64_t __45__AssistantAppsSettingsController_specifiers__block_invoke(uint64_t
 
 - (void)specifiers
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSMutableSet *PSSPGetDisabledBundleSet(BOOL)"];
-  [v0 handleFailureInFunction:v1 file:@"AssistantAppsSettingsController.m" lineNumber:31 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AssistantAppsSettingsController.m" lineNumber:31 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

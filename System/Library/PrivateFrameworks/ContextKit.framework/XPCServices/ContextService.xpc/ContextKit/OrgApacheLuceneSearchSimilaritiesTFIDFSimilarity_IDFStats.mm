@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchSimilaritiesTFIDFSimilarity_IDFStats
 - (void)dealloc;
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4;
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat;
 @end
 
 @implementation OrgApacheLuceneSearchSimilaritiesTFIDFSimilarity_IDFStats
 
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat
 {
-  v5 = a3 * a4;
+  v5 = float * withFloat;
   self->queryNorm_ = v5;
   v6 = v5 * self->queryWeight_;
   self->queryWeight_ = v6;

@@ -1,14 +1,14 @@
 @interface FMFindingSymbolBasedPartPickerView
-- (_TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView)initWithCoder:(id)a3;
-- (_TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView)initWithFrame:(CGRect)a3;
+- (_TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView)initWithCoder:(id)coder;
+- (_TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)toggle;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMFindingSymbolBasedPartPickerView
 
-- (_TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView)initWithCoder:(id)a3
+- (_TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView_stackView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D75A68]) init];
@@ -23,7 +23,7 @@
 
 - (void)toggle
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5B3990();
 }
 
@@ -34,22 +34,22 @@
   v2 = v5.receiver;
   [(FMFindingSymbolBasedPartPickerView *)&v5 layoutSubviews];
   v3 = OBJC_IVAR____TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView_platterEffectView;
-  v4 = [*&v2[OBJC_IVAR____TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView_platterEffectView] layer];
+  layer = [*&v2[OBJC_IVAR____TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView_platterEffectView] layer];
   [*&v2[v3] bounds];
-  [v4 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMFindingSymbolBasedPartPickerView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(FMFindingSymbolBasedPartPickerView *)&v6 traitCollectionDidChange:v4];
+  [(FMFindingSymbolBasedPartPickerView *)&v6 traitCollectionDidChange:changeCopy];
   sub_24A5B47A8();
 }
 
-- (_TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUI34FMFindingSymbolBasedPartPickerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

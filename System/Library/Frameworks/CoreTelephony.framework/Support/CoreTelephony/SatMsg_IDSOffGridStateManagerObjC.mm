@@ -1,24 +1,24 @@
 @interface SatMsg_IDSOffGridStateManagerObjC
-- (SatMsg_IDSOffGridStateManagerObjC)initWithQueue:(const queue *)a3 delegate:(weak_ptr<SatMsg_IDSOffGridStateManagerDelegate>)a4;
+- (SatMsg_IDSOffGridStateManagerObjC)initWithQueue:(const queue *)queue delegate:(weak_ptr<SatMsg_IDSOffGridStateManagerDelegate>)delegate;
 - (id).cxx_construct;
 - (optional<BOOL>)getCachedOffGridMode;
-- (shared_ptr<std::vector<ctu::cf::CFSharedRef<const)addPrimaryContacts:(id)a3 dst:(void *)a4;
+- (shared_ptr<std::vector<ctu::cf::CFSharedRef<const)addPrimaryContacts:(id)contacts dst:(void *)dst;
 - (shared_ptr<std::vector<ctu::cf::CFSharedRef<const)getContacts;
 - (void)dealloc;
 - (void)doInitManagerAndFetch;
 - (void)doInitManagerIfRequired;
 - (void)fetchOffGridMode;
 - (void)initManagerAndFetch;
-- (void)manager:(id)a3 contactInfoUpdated:(id)a4;
-- (void)manager:(id)a3 offGridModeUpdated:(int64_t)a4 publishStatus:(int64_t)a5 context:(id)a6;
-- (void)setContacts:(const void *)a3;
-- (void)setOffGridMode:(BOOL)a3 entryPoint:(const void *)a4;
-- (void)updateOffGridMode:(int64_t)a3;
+- (void)manager:(id)manager contactInfoUpdated:(id)updated;
+- (void)manager:(id)manager offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status context:(id)context;
+- (void)setContacts:(const void *)contacts;
+- (void)setOffGridMode:(BOOL)mode entryPoint:(const void *)point;
+- (void)updateOffGridMode:(int64_t)mode;
 @end
 
 @implementation SatMsg_IDSOffGridStateManagerObjC
 
-- (SatMsg_IDSOffGridStateManagerObjC)initWithQueue:(const queue *)a3 delegate:(weak_ptr<SatMsg_IDSOffGridStateManagerDelegate>)a4
+- (SatMsg_IDSOffGridStateManagerObjC)initWithQueue:(const queue *)queue delegate:(weak_ptr<SatMsg_IDSOffGridStateManagerDelegate>)delegate
 {
   v5.receiver = self;
   v5.super_class = SatMsg_IDSOffGridStateManagerObjC;
@@ -46,7 +46,7 @@
 
 - (void)initManagerAndFetch
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_100032AC8(&self->fManagerQueue.fObj.fObj);
   operator new();
 }
@@ -56,9 +56,9 @@
   v3 = sub_100032AC8(&self->fManagerQueue.fObj.fObj);
   dispatch_assert_queue_V2(v3);
 
-  v4 = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
+  fManager = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
 
-  if (!v4)
+  if (!fManager)
   {
     v5 = [IDSOffGridStateManager alloc];
     v6 = sub_100032AC8(&self->fManagerQueue.fObj.fObj);
@@ -68,20 +68,20 @@
 
     if (v8)
     {
-      v9 = sub_100032AC8(self->logger.__ptr_);
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      fManager2 = sub_100032AC8(self->logger.__ptr_);
+      if (os_log_type_enabled(fManager2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v12 = v8;
-        _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "failed to create IDSOffGridStateManager, error: %@", buf, 0xCu);
+        _os_log_error_impl(&_mh_execute_header, fManager2, OS_LOG_TYPE_ERROR, "failed to create IDSOffGridStateManager, error: %@", buf, 0xCu);
       }
     }
 
     else
     {
       [(SatMsg_IDSOffGridStateManagerObjC *)self setFManager:v7];
-      v9 = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
-      [v9 setDelegate:self];
+      fManager2 = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
+      [fManager2 setDelegate:self];
     }
   }
 }
@@ -95,9 +95,9 @@
   {
     self->fInFetch = 1;
     [(SatMsg_IDSOffGridStateManagerObjC *)self doInitManagerIfRequired];
-    v4 = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
+    fManager = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
 
-    if (v4)
+    if (fManager)
     {
       v5 = sub_100032AC8(self->logger.__ptr_);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -107,13 +107,13 @@
       }
 
       objc_initWeak(buf, self);
-      v6 = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
+      fManager2 = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_1012E9F14;
       v7[3] = &unk_101F2A448;
       objc_copyWeak(&v8, buf);
-      [v6 fetchContactsOfType:1 completion:v7];
+      [fManager2 fetchContactsOfType:1 completion:v7];
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(buf);
@@ -126,10 +126,10 @@
   }
 }
 
-- (void)setContacts:(const void *)a3
+- (void)setContacts:(const void *)contacts
 {
-  v5 = self;
-  v6 = *(a3 + 1);
+  selfCopy = self;
+  v6 = *(contacts + 1);
   if (v6)
   {
     atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
@@ -148,7 +148,7 @@
   ptr = self->fContacts.__ptr_;
   if (!ptr)
   {
-    v6 = [(SatMsg_IDSOffGridStateManagerObjC *)self initManagerAndFetch];
+    initManagerAndFetch = [(SatMsg_IDSOffGridStateManagerObjC *)self initManagerAndFetch];
     ptr = self->fContacts.__ptr_;
   }
 
@@ -161,7 +161,7 @@
   }
 
   result.__cntrl_ = v7;
-  result.__ptr_ = v6;
+  result.__ptr_ = initManagerAndFetch;
   return result;
 }
 
@@ -174,12 +174,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I fetchOffGridMode", buf, 2u);
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_100032AC8(&self->fManagerQueue.fObj.fObj);
   operator new();
 }
 
-- (void)updateOffGridMode:(int64_t)a3
+- (void)updateOffGridMode:(int64_t)mode
 {
   v5 = sub_100032AC8(&self->fManagerQueue.fObj.fObj);
   dispatch_assert_queue_V2(v5);
@@ -194,7 +194,7 @@
     atomic_fetch_add_explicit(cntrl + 2, 1uLL, memory_order_relaxed);
   }
 
-  to[3] = a3;
+  to[3] = mode;
   v7 = sub_100032AC8(&self->fStewieQueue.fObj.fObj);
   operator new();
 }
@@ -207,47 +207,47 @@
   return self->fCachedOffGridMode;
 }
 
-- (void)setOffGridMode:(BOOL)a3 entryPoint:(const void *)a4
+- (void)setOffGridMode:(BOOL)mode entryPoint:(const void *)point
 {
-  v5 = self;
-  if (*(a4 + 23) < 0)
+  selfCopy = self;
+  if (*(point + 23) < 0)
   {
-    sub_100005F2C(__p, *a4, *(a4 + 1));
+    sub_100005F2C(__p, *point, *(point + 1));
   }
 
   else
   {
-    *__p = *a4;
-    __p[2] = *(a4 + 2);
+    *__p = *point;
+    __p[2] = *(point + 2);
   }
 
-  v6 = sub_100032AC8(&v5->fManagerQueue.fObj.fObj);
+  v6 = sub_100032AC8(&selfCopy->fManagerQueue.fObj.fObj);
   operator new();
 }
 
-- (void)manager:(id)a3 offGridModeUpdated:(int64_t)a4 publishStatus:(int64_t)a5 context:(id)a6
+- (void)manager:(id)manager offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status context:(id)context
 {
   v9 = sub_100032AC8(self->logger.__ptr_);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 > 2)
+    if (updated > 2)
     {
       v10 = "???";
     }
 
     else
     {
-      v10 = off_101F2A560[a4];
+      v10 = off_101F2A560[updated];
     }
 
-    if (a5 > 2)
+    if (status > 2)
     {
       v11 = "???";
     }
 
     else
     {
-      v11 = off_101F2A578[a5];
+      v11 = off_101F2A578[status];
     }
 
     v12 = 136315394;
@@ -257,13 +257,13 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I OffGridMode updated: mode = %s, publishStatus = %s", &v12, 0x16u);
   }
 
-  [(SatMsg_IDSOffGridStateManagerObjC *)self updateOffGridMode:a4];
+  [(SatMsg_IDSOffGridStateManagerObjC *)self updateOffGridMode:updated];
 }
 
-- (void)manager:(id)a3 contactInfoUpdated:(id)a4
+- (void)manager:(id)manager contactInfoUpdated:(id)updated
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  updatedCopy = updated;
   v8 = sub_100032AC8(&self->fManagerQueue.fObj.fObj);
   dispatch_assert_queue_V2(v8);
 
@@ -271,12 +271,12 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = [v7 count];
+    *&buf[4] = [updatedCopy count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I contacts updated with %d records", buf, 8u);
   }
 
-  v10 = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
-  v11 = [v6 isEqual:v10];
+  fManager = [(SatMsg_IDSOffGridStateManagerObjC *)self fManager];
+  v11 = [managerCopy isEqual:fManager];
 
   if (v11)
   {
@@ -291,14 +291,14 @@
   }
 }
 
-- (shared_ptr<std::vector<ctu::cf::CFSharedRef<const)addPrimaryContacts:(id)a3 dst:(void *)a4
+- (shared_ptr<std::vector<ctu::cf::CFSharedRef<const)addPrimaryContacts:(id)contacts dst:(void *)dst
 {
   v26 = v4;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a3;
+  obj = contacts;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v7)
   {
@@ -315,7 +315,7 @@
 
         v11 = *(*(&v29 + 1) + 8 * i);
         v12 = [v11 uri];
-        v13 = [v12 unprefixedURI];
+        unprefixedURI = [v12 unprefixedURI];
         IsPhoneNumber = IMStringIsPhoneNumber();
 
         ++v8;
@@ -323,16 +323,16 @@
         {
           theString2 = 0;
           v15 = [v11 uri];
-          v16 = [v15 unprefixedURI];
-          v17 = v16;
-          theString2 = v16;
-          if (v16)
+          unprefixedURI2 = [v15 unprefixedURI];
+          v17 = unprefixedURI2;
+          theString2 = unprefixedURI2;
+          if (unprefixedURI2)
           {
-            CFRetain(v16);
+            CFRetain(unprefixedURI2);
           }
 
-          v18 = **a4;
-          v19 = *(*a4 + 8);
+          v18 = **dst;
+          v19 = *(*dst + 8);
           while (v18 != v19)
           {
             if (CFStringCompare(*v18, theString2, 0) == kCFCompareEqualTo)
@@ -353,7 +353,7 @@
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#I %zu, adding contact: %@", buf, 0x16u);
           }
 
-          sub_10021B890(*a4, &theString2);
+          sub_10021B890(*dst, &theString2);
 LABEL_19:
           sub_100005978(&theString2);
         }
@@ -377,8 +377,8 @@ LABEL_19:
     while (v7);
   }
 
-  v23 = *(a4 + 1);
-  *v26 = *a4;
+  v23 = *(dst + 1);
+  *v26 = *dst;
   v26[1] = v23;
   if (v23)
   {

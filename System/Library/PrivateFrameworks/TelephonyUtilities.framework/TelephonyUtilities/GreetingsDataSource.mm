@@ -1,39 +1,39 @@
 @interface GreetingsDataSource
-- (void)assetsUpdated:(id)a3 availability:(int64_t)a4;
-- (void)client:(id)a3 capabilitiesDidChange:(id)a4;
-- (void)client:(id)a3 subscription:(id)a4 capabilitiesDidChange:(id)a5;
+- (void)assetsUpdated:(id)updated availability:(int64_t)availability;
+- (void)client:(id)client capabilitiesDidChange:(id)change;
+- (void)client:(id)client subscription:(id)subscription capabilitiesDidChange:(id)change;
 - (void)handleVMAccountsDidChange;
-- (void)localeUpdated:(id)a3;
-- (void)subscriptionsDidChangeForClient:(id)a3;
+- (void)localeUpdated:(id)updated;
+- (void)subscriptionsDidChangeForClient:(id)client;
 @end
 
 @implementation GreetingsDataSource
 
-- (void)subscriptionsDidChangeForClient:(id)a3
+- (void)subscriptionsDidChangeForClient:(id)client
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_100443100();
   swift_unknownObjectRelease();
 }
 
-- (void)client:(id)a3 capabilitiesDidChange:(id)a4
+- (void)client:(id)client capabilitiesDidChange:(id)change
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
-- (void)client:(id)a3 subscription:(id)a4 capabilitiesDidChange:(id)a5
+- (void)client:(id)client subscription:(id)subscription capabilitiesDidChange:(id)change
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
 - (void)handleVMAccountsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004432B8();
 }
 
-- (void)localeUpdated:(id)a3
+- (void)localeUpdated:(id)updated
 {
   v4 = type metadata accessor for Locale();
   v5 = *(v4 - 8);
@@ -41,16 +41,16 @@
   __chkstk_darwin(v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Locale._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   sub_1004446A8();
 
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)assetsUpdated:(id)a3 availability:(int64_t)a4
+- (void)assetsUpdated:(id)updated availability:(int64_t)availability
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_100444990();
 }
 

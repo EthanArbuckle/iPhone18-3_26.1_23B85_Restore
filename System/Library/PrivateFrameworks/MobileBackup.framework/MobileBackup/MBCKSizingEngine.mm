@@ -1,55 +1,55 @@
 @interface MBCKSizingEngine
-+ (id)domainsForApp:(id)a3 persona:(id)a4;
-- (BOOL)_findChangesForBundleIDs:(id)a3 error:(id *)a4;
-- (BOOL)_findChangesForDomains:(id)a3 error:(id *)a4;
-- (BOOL)_runWithError:(id *)a3;
++ (id)domainsForApp:(id)app persona:(id)persona;
+- (BOOL)_findChangesForBundleIDs:(id)ds error:(id *)error;
+- (BOOL)_findChangesForDomains:(id)domains error:(id *)error;
+- (BOOL)_runWithError:(id *)error;
 - (BOOL)cancel;
-- (BOOL)findChangesWithError:(id *)a3;
-- (BOOL)runWithError:(id *)a3;
-- (BOOL)setUpWithError:(id *)a3;
-- (MBCKSizingEngine)initWithSettingsContext:(id)a3 serviceManager:(id)a4;
-- (MBCKSizingEngine)initWithSettingsContext:(id)a3 serviceManager:(id)a4 domainManager:(id)a5;
-- (id)_bundleIDForDomainName:(id)a3;
-- (id)_findDomainsLimitedTo:(id)a3 error:(id *)a4;
-- (id)fileScanner:(id)a3 didFindFile:(id)a4;
+- (BOOL)findChangesWithError:(id *)error;
+- (BOOL)runWithError:(id *)error;
+- (BOOL)setUpWithError:(id *)error;
+- (MBCKSizingEngine)initWithSettingsContext:(id)context serviceManager:(id)manager;
+- (MBCKSizingEngine)initWithSettingsContext:(id)context serviceManager:(id)manager domainManager:(id)domainManager;
+- (id)_bundleIDForDomainName:(id)name;
+- (id)_findDomainsLimitedTo:(id)to error:(id *)error;
+- (id)fileScanner:(id)scanner didFindFile:(id)file;
 @end
 
 @implementation MBCKSizingEngine
 
-- (MBCKSizingEngine)initWithSettingsContext:(id)a3 serviceManager:(id)a4 domainManager:(id)a5
+- (MBCKSizingEngine)initWithSettingsContext:(id)context serviceManager:(id)manager domainManager:(id)domainManager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 account];
-  if (!v11)
+  contextCopy = context;
+  managerCopy = manager;
+  domainManagerCopy = domainManager;
+  account = [contextCopy account];
+  if (!account)
   {
     __assert_rtn("[MBCKSizingEngine initWithSettingsContext:serviceManager:domainManager:]", "MBCKSizingEngine.m", 59, "account");
   }
 
-  v12 = v11;
+  v12 = account;
   v27.receiver = self;
   v27.super_class = MBCKSizingEngine;
-  v13 = [(MBCKEngine *)&v27 initWithSettingsContext:v8 debugContext:0 domainManager:v10];
+  v13 = [(MBCKEngine *)&v27 initWithSettingsContext:contextCopy debugContext:0 domainManager:domainManagerCopy];
   v14 = v13;
   if (v13)
   {
-    [(MBCKEngine *)v13 setServiceManager:v9];
+    [(MBCKEngine *)v13 setServiceManager:managerCopy];
     v14->_engineState = 1;
     v15 = [[MBFileScanner alloc] initWithDelegate:v14 mode:2 enginePolicy:[(MBEngine *)v14 enginePolicy] debugContext:v14->super.super._debugContext];
     scanner = v14->_scanner;
     v14->_scanner = v15;
 
     v17 = [MBAppManager alloc];
-    v18 = [(MBEngine *)v14 settingsContext];
-    v19 = [v18 mobileInstallation];
-    v20 = [(MBAppManager *)v17 initWithMobileInstallation:v19];
+    settingsContext = [(MBEngine *)v14 settingsContext];
+    mobileInstallation = [settingsContext mobileInstallation];
+    v20 = [(MBAppManager *)v17 initWithMobileInstallation:mobileInstallation];
     appManager = v14->super.super._appManager;
     v14->super.super._appManager = v20;
 
-    v22 = [v8 bundleIDs];
+    bundleIDs = [contextCopy bundleIDs];
     bundleIDsToScan = v14->_bundleIDsToScan;
-    v14->_bundleIDsToScan = v22;
+    v14->_bundleIDsToScan = bundleIDs;
 
     v24 = objc_opt_new();
     pathsByDomainName = v14->_pathsByDomainName;
@@ -61,22 +61,22 @@
   return v14;
 }
 
-- (MBCKSizingEngine)initWithSettingsContext:(id)a3 serviceManager:(id)a4
+- (MBCKSizingEngine)initWithSettingsContext:(id)context serviceManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 account];
-  if (!v8)
+  contextCopy = context;
+  managerCopy = manager;
+  account = [contextCopy account];
+  if (!account)
   {
     __assert_rtn("[MBCKSizingEngine initWithSettingsContext:serviceManager:]", "MBCKSizingEngine.m", 74, "account");
   }
 
-  v9 = v8;
+  v9 = account;
   v10 = [MBDomainManager alloc];
-  v11 = [v9 persona];
-  v12 = [(MBDomainManager *)v10 initWithPersona:v11];
+  persona = [v9 persona];
+  v12 = [(MBDomainManager *)v10 initWithPersona:persona];
 
-  v13 = [(MBCKSizingEngine *)self initWithSettingsContext:v6 serviceManager:v7 domainManager:v12];
+  v13 = [(MBCKSizingEngine *)self initWithSettingsContext:contextCopy serviceManager:managerCopy domainManager:v12];
   return v13;
 }
 
@@ -84,19 +84,19 @@
 {
   v5.receiver = self;
   v5.super_class = MBCKSizingEngine;
-  v3 = [(MBEngine *)&v5 cancel];
-  if (!v3)
+  cancel = [(MBEngine *)&v5 cancel];
+  if (!cancel)
   {
     [(MBFileScanner *)self->_scanner cancel];
   }
 
-  return v3;
+  return cancel;
 }
 
-- (BOOL)runWithError:(id *)a3
+- (BOOL)runWithError:(id *)error
 {
-  v5 = [(MBCKEngine *)self serviceManager];
-  v6 = [v5 delegate];
+  serviceManager = [(MBCKEngine *)self serviceManager];
+  delegate = [serviceManager delegate];
   v52 = 0;
   v7 = [(MBCKSizingEngine *)self _runWithError:&v52];
   v8 = v52;
@@ -112,7 +112,7 @@
       _MBLog();
     }
 
-    [v6 manager:v5 didFailScanWithError:v8];
+    [delegate manager:serviceManager didFailScanWithError:v8];
     goto LABEL_18;
   }
 
@@ -130,8 +130,8 @@
     _MBLog();
   }
 
-  v13 = [(MBCKEngine *)self cache];
-  v14 = [v13 removeAllScannedDomains:a3];
+  cache = [(MBCKEngine *)self cache];
+  v14 = [cache removeAllScannedDomains:error];
 
   if (!v14)
   {
@@ -140,13 +140,13 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v38 = v6;
+  v38 = delegate;
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v15 = [(MBCKSizingEngine *)self modifiedBytesByDomainName];
-  v16 = [v15 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  modifiedBytesByDomainName = [(MBCKSizingEngine *)self modifiedBytesByDomainName];
+  v16 = [modifiedBytesByDomainName countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v16)
   {
     v17 = v16;
@@ -157,39 +157,39 @@ LABEL_18:
       {
         if (*v49 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(modifiedBytesByDomainName);
         }
 
         v20 = *(*(&v48 + 1) + 8 * i);
         v21 = [(MBCKSizingEngine *)self modifiedBytesByDomainName:v36];
         v22 = [v21 objectForKeyedSubscript:v20];
 
-        v23 = [(MBCKEngine *)self cache];
-        v24 = [v23 updateScannedDomain:v20 withSize:{objc_msgSend(v22, "unsignedLongLongValue")}];
+        cache2 = [(MBCKEngine *)self cache];
+        v24 = [cache2 updateScannedDomain:v20 withSize:{objc_msgSend(v22, "unsignedLongLongValue")}];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v17 = [modifiedBytesByDomainName countByEnumeratingWithState:&v48 objects:v53 count:16];
     }
 
     while (v17);
   }
 
-  v25 = [(MBCKSizingEngine *)self modifiedBytes];
-  v26 = [(MBCKSizingEngine *)self modifiedBytesByBundleID];
+  modifiedBytes = [(MBCKSizingEngine *)self modifiedBytes];
+  modifiedBytesByBundleID = [(MBCKSizingEngine *)self modifiedBytesByBundleID];
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_10012635C;
   v45[3] = &unk_1003BF560;
-  v6 = v38;
+  delegate = v38;
   v27 = v38;
   v46 = v27;
-  v28 = v5;
+  v28 = serviceManager;
   v47 = v28;
-  [v26 enumerateKeysAndObjectsUsingBlock:v45];
+  [modifiedBytesByBundleID enumerateKeysAndObjectsUsingBlock:v45];
 
   if (self->_bundleIDsToScan)
   {
-    v29 = [(MBCKSizingEngine *)self modifiedBytesByDomainName];
+    modifiedBytesByDomainName2 = [(MBCKSizingEngine *)self modifiedBytesByDomainName];
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_1001263C8;
@@ -199,22 +199,22 @@ LABEL_18:
     v43 = v30;
     v31 = v28;
     v44 = v31;
-    [v29 enumerateKeysAndObjectsUsingBlock:v42];
+    [modifiedBytesByDomainName2 enumerateKeysAndObjectsUsingBlock:v42];
 
-    v32 = [(MBCKSizingEngine *)self pathsByDomainName];
+    pathsByDomainName = [(MBCKSizingEngine *)self pathsByDomainName];
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_100126470;
     v39[3] = &unk_1003BF5B0;
     v39[4] = self;
     v33 = v30;
-    v6 = v38;
+    delegate = v38;
     v40 = v33;
     v41 = v31;
-    [v32 enumerateKeysAndObjectsUsingBlock:v39];
+    [pathsByDomainName enumerateKeysAndObjectsUsingBlock:v39];
   }
 
-  [v27 managerDidFinishScan:v28 bytesUsed:{v25, v36}];
+  [v27 managerDidFinishScan:v28 bytesUsed:{modifiedBytes, v36}];
 
   v34 = 1;
 LABEL_19:
@@ -222,24 +222,24 @@ LABEL_19:
   return v34;
 }
 
-- (BOOL)_runWithError:(id *)a3
+- (BOOL)_runWithError:(id *)error
 {
-  if (![(MBCKSizingEngine *)self setUpWithError:?]|| ![(MBCKSizingEngine *)self findChangesWithError:a3])
+  if (![(MBCKSizingEngine *)self setUpWithError:?]|| ![(MBCKSizingEngine *)self findChangesWithError:error])
   {
     return 0;
   }
 
   v5 = 1;
   [(MBCKEngine *)self setIsFinished:1];
-  v6 = [(MBCKEngine *)self progressModel];
-  [v6 ended];
+  progressModel = [(MBCKEngine *)self progressModel];
+  [progressModel ended];
 
   return v5;
 }
 
-- (id)_bundleIDForDomainName:(id)a3
+- (id)_bundleIDForDomainName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -261,7 +261,7 @@ LABEL_19:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_domainNamesByBundleID objectForKeyedSubscript:v10, v15];
-        v12 = [v11 containsObject:v4];
+        v12 = [v11 containsObject:nameCopy];
 
         if (v12)
         {
@@ -286,9 +286,9 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)setUpWithError:(id *)a3
+- (BOOL)setUpWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBCKSizingEngine setUpWithError:]", "MBCKSizingEngine.m", 158, "error");
   }
@@ -300,28 +300,28 @@ LABEL_11:
     return 0;
   }
 
-  v5 = [(MBCKEngine *)self serviceManager];
-  if (!v5)
+  serviceManager = [(MBCKEngine *)self serviceManager];
+  if (!serviceManager)
   {
     __assert_rtn("[MBCKSizingEngine setUpWithError:]", "MBCKSizingEngine.m", 162, "manager");
   }
 
-  v6 = v5;
-  v7 = [(MBCKEngine *)self serviceAccount];
-  if (!v7)
+  v6 = serviceManager;
+  serviceAccount = [(MBCKEngine *)self serviceAccount];
+  if (!serviceAccount)
   {
     __assert_rtn("[MBCKSizingEngine setUpWithError:]", "MBCKSizingEngine.m", 164, "account");
   }
 
-  v8 = v7;
-  v9 = [(MBEngine *)self domainManager];
+  v8 = serviceAccount;
+  domainManager = [(MBEngine *)self domainManager];
 
-  if (v9)
+  if (domainManager)
   {
     v10 = +[MBCKOperationPolicy expensiveCellularPolicy];
     [v10 setFetchAssets:0];
-    v11 = [v6 databaseManager];
-    v12 = [MBCKOperationTracker operationTrackerWithAccount:v8 databaseManager:v11 policy:v10 error:a3];
+    databaseManager = [v6 databaseManager];
+    v12 = [MBCKOperationTracker operationTrackerWithAccount:v8 databaseManager:databaseManager policy:v10 error:error];
 
     if (v12)
     {
@@ -336,18 +336,18 @@ LABEL_11:
       if (v15 || ([MBError isError:v16 withCode:204]& 1) != 0)
       {
         [(MBCKEngine *)self setDevice:v15];
-        v17 = [v15 snapshots];
-        v18 = [v17 count];
+        snapshots = [v15 snapshots];
+        v18 = [snapshots count];
 
         v35 = v16;
         v36 = v15;
         if (v18)
         {
-          v19 = [v15 snapshots];
-          v20 = [v19 lastObject];
-          v21 = [v20 snapshotFormat];
+          snapshots2 = [v15 snapshots];
+          lastObject = [snapshots2 lastObject];
+          snapshotFormat = [lastObject snapshotFormat];
 
-          self->_formatOfLastCommittedSnapshot = v21;
+          self->_formatOfLastCommittedSnapshot = snapshotFormat;
           v22 = MBGetDefaultLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
@@ -366,16 +366,16 @@ LABEL_11:
           self->_formatOfLastCommittedSnapshot = 0;
         }
 
-        v26 = [(MBCKEngine *)self context];
-        v27 = [v26 plugins];
-        v28 = [v27 objectEnumerator];
+        context = [(MBCKEngine *)self context];
+        plugins = [context plugins];
+        objectEnumerator = [plugins objectEnumerator];
         *&buf = _NSConcreteStackBlock;
         *(&buf + 1) = 3221225472;
         v40 = sub_100137B50;
         v41 = &unk_1003BF940;
-        v42 = self;
+        selfCopy = self;
         v43 = "startingBackupWithEngine:";
-        v29 = MBNotifyPluginsBlock(self, v28, "startingBackupWithEngine:", &buf);
+        v29 = MBNotifyPluginsBlock(self, objectEnumerator, "startingBackupWithEngine:", &buf);
 
         v24 = v29 == 0;
         v16 = v35;
@@ -392,7 +392,7 @@ LABEL_11:
           }
 
           v31 = v29;
-          *a3 = v29;
+          *error = v29;
         }
       }
 
@@ -400,7 +400,7 @@ LABEL_11:
       {
         v33 = v16;
         v24 = 0;
-        *a3 = v16;
+        *error = v16;
       }
     }
 
@@ -421,37 +421,37 @@ LABEL_11:
     }
 
     [MBError errorWithCode:1 format:@"nil domain manager"];
-    *a3 = v24 = 0;
+    *error = v24 = 0;
   }
 
   return v24;
 }
 
-- (BOOL)findChangesWithError:(id *)a3
+- (BOOL)findChangesWithError:(id *)error
 {
   appManager = self->super.super._appManager;
-  v6 = [(MBCKEngine *)self persona];
-  LODWORD(appManager) = [(MBAppManager *)appManager loadAppsWithPersona:v6 safeHarbors:0 error:a3];
+  persona = [(MBCKEngine *)self persona];
+  LODWORD(appManager) = [(MBAppManager *)appManager loadAppsWithPersona:persona safeHarbors:0 error:error];
 
   v7 = 0;
   if (appManager)
   {
     if (self->_bundleIDsToScan)
     {
-      v8 = [(MBCKSizingEngine *)self bundleIDsToScan];
-      v9 = [(MBCKSizingEngine *)self _findChangesForBundleIDs:v8 error:a3];
+      bundleIDsToScan = [(MBCKSizingEngine *)self bundleIDsToScan];
+      v9 = [(MBCKSizingEngine *)self _findChangesForBundleIDs:bundleIDsToScan error:error];
     }
 
     else
     {
-      v8 = [(MBCKSizingEngine *)self _findDomainsLimitedTo:0 error:a3];
-      if (!v8)
+      bundleIDsToScan = [(MBCKSizingEngine *)self _findDomainsLimitedTo:0 error:error];
+      if (!bundleIDsToScan)
       {
         v7 = 0;
         goto LABEL_7;
       }
 
-      v9 = [(MBCKSizingEngine *)self _findChangesForDomains:v8 error:a3];
+      v9 = [(MBCKSizingEngine *)self _findChangesForDomains:bundleIDsToScan error:error];
     }
 
     v7 = v9;
@@ -461,10 +461,10 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)_findChangesForBundleIDs:(id)a3 error:(id *)a4
+- (BOOL)_findChangesForBundleIDs:(id)ds error:(id *)error
 {
-  v38 = a4;
-  v5 = a3;
+  errorCopy = error;
+  dsCopy = ds;
   v6 = objc_opt_new();
   domainNamesByBundleID = self->_domainNamesByBundleID;
   self->_domainNamesByBundleID = v6;
@@ -474,11 +474,11 @@ LABEL_7:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v8 = [(MBEngine *)self appManager];
-  v9 = [v8 allApps];
+  appManager = [(MBEngine *)self appManager];
+  allApps = [appManager allApps];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  obj = allApps;
+  v10 = [allApps countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v10)
   {
     v11 = v10;
@@ -496,21 +496,21 @@ LABEL_7:
         }
 
         v14 = *(*(&v49 + 1) + 8 * v13);
-        v15 = [v14 bundleID];
-        v16 = [v5 containsObject:v15];
+        bundleID = [v14 bundleID];
+        v16 = [dsCopy containsObject:bundleID];
 
         if (v16)
         {
-          v17 = v5;
+          v17 = dsCopy;
           v18 = objc_opt_new();
           v45 = 0u;
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
           v19 = objc_opt_class();
-          v20 = self;
-          v21 = [(MBCKEngine *)self persona];
-          v22 = [v19 domainsForApp:v14 persona:v21];
+          selfCopy = self;
+          persona = [(MBCKEngine *)self persona];
+          v22 = [v19 domainsForApp:v14 persona:persona];
 
           v23 = [v22 countByEnumeratingWithState:&v45 objects:v53 count:16];
           if (v23)
@@ -526,8 +526,8 @@ LABEL_7:
                   objc_enumerationMutation(v22);
                 }
 
-                v27 = [*(*(&v45 + 1) + 8 * i) name];
-                [v18 addObject:v27];
+                name = [*(*(&v45 + 1) + 8 * i) name];
+                [v18 addObject:name];
               }
 
               v24 = [v22 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -537,12 +537,12 @@ LABEL_7:
           }
 
           [v40 unionSet:v18];
-          self = v20;
-          v28 = v20->_domainNamesByBundleID;
-          v29 = [v14 bundleID];
-          [(NSMutableDictionary *)v28 setObject:v18 forKeyedSubscript:v29];
+          self = selfCopy;
+          v28 = selfCopy->_domainNamesByBundleID;
+          bundleID2 = [v14 bundleID];
+          [(NSMutableDictionary *)v28 setObject:v18 forKeyedSubscript:bundleID2];
 
-          v5 = v17;
+          dsCopy = v17;
           v12 = v39;
           v11 = v41;
         }
@@ -557,8 +557,8 @@ LABEL_7:
     while (v11);
   }
 
-  v30 = [(MBCKSizingEngine *)self _findDomainsLimitedTo:v40 error:v38];
-  if (v30 && [(MBCKSizingEngine *)self _findChangesForDomains:v30 error:v38])
+  v30 = [(MBCKSizingEngine *)self _findDomainsLimitedTo:v40 error:errorCopy];
+  if (v30 && [(MBCKSizingEngine *)self _findChangesForDomains:v30 error:errorCopy])
   {
     v31 = objc_opt_new();
     v32 = self->_domainNamesByBundleID;
@@ -585,18 +585,18 @@ LABEL_7:
   return v36;
 }
 
-- (id)_findDomainsLimitedTo:(id)a3 error:(id *)a4
+- (id)_findDomainsLimitedTo:(id)to error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MBCKEngine *)self serviceManager];
-  v7 = [(MBEngine *)self domainManager];
-  v8 = [(MBEngine *)self appManager];
+  toCopy = to;
+  serviceManager = [(MBCKEngine *)self serviceManager];
+  domainManager = [(MBEngine *)self domainManager];
+  appManager = [(MBEngine *)self appManager];
   formatOfLastCommittedSnapshot = self->_formatOfLastCommittedSnapshot;
-  v10 = [(MBCKEngine *)self serviceAccount];
-  [v7 addDomainsToBackUpToiCloudWithAppManager:v8 manager:v6 format:formatOfLastCommittedSnapshot account:v10];
+  serviceAccount = [(MBCKEngine *)self serviceAccount];
+  [domainManager addDomainsToBackUpToiCloudWithAppManager:appManager manager:serviceManager format:formatOfLastCommittedSnapshot account:serviceAccount];
 
-  v11 = [(MBDomainManager *)self->super.super._domainManager allDomains];
-  v12 = [v11 sortedArrayUsingComparator:&stru_1003BF5F8];
+  allDomains = [(MBDomainManager *)self->super.super._domainManager allDomains];
+  v12 = [allDomains sortedArrayUsingComparator:&stru_1003BF5F8];
 
   v13 = objc_opt_new();
   v22 = 0u;
@@ -619,8 +619,8 @@ LABEL_7:
         }
 
         v19 = *(*(&v22 + 1) + 8 * i);
-        v20 = [v19 name];
-        if (!v5 || [v5 containsObject:v20])
+        name = [v19 name];
+        if (!toCopy || [toCopy containsObject:name])
         {
           [v13 addObject:v19];
         }
@@ -635,10 +635,10 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)_findChangesForDomains:(id)a3 error:(id *)a4
+- (BOOL)_findChangesForDomains:(id)domains error:(id *)error
 {
-  v6 = a3;
-  if (![(MBCKEngine *)self handleCancelation:a4])
+  domainsCopy = domains;
+  if (![(MBCKEngine *)self handleCancelation:error])
   {
     self->_modifiedBytes = 0;
     self->_totalBytesOnDisk = 0;
@@ -654,9 +654,9 @@ LABEL_7:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v60 = v6;
+      v60 = domainsCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "=sizing= Scanning domains: %@", buf, 0xCu);
-      v41 = v6;
+      v41 = domainsCopy;
       _MBLog();
     }
 
@@ -664,7 +664,7 @@ LABEL_7:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v13 = v6;
+    v13 = domainsCopy;
     v14 = [v13 countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v14)
     {
@@ -707,7 +707,7 @@ LABEL_7:
         _MBLog();
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_40;
       }
@@ -717,18 +717,18 @@ LABEL_7:
 
 LABEL_13:
 
-    v19 = [(MBCKEngine *)self device];
-    v13 = v19;
-    if (v19 && self->_formatOfLastCommittedSnapshot == 3)
+    device = [(MBCKEngine *)self device];
+    v13 = device;
+    if (device && self->_formatOfLastCommittedSnapshot == 3)
     {
-      v20 = [v19 snapshots];
+      snapshots = [device snapshots];
       v52 = 0;
-      v21 = MBGetAllDomainQuotasByDomainHMAC(v20, &v52);
+      v21 = MBGetAllDomainQuotasByDomainHMAC(snapshots, &v52);
       v22 = v52;
 
       if (!v21 && ([MBError isError:v22 withCode:4]& 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
 LABEL_40:
           v7 = 0;
@@ -738,7 +738,7 @@ LABEL_40:
 LABEL_30:
         v31 = v22;
         v7 = 0;
-        *a4 = v22;
+        *error = v22;
 LABEL_41:
 
         goto LABEL_42;
@@ -749,8 +749,8 @@ LABEL_41:
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v23 = [v13 snapshots];
-      v24 = [v23 countByEnumeratingWithState:&v48 objects:v57 count:16];
+      snapshots2 = [v13 snapshots];
+      v24 = [snapshots2 countByEnumeratingWithState:&v48 objects:v57 count:16];
       if (v24)
       {
         v25 = v24;
@@ -762,7 +762,7 @@ LABEL_41:
           {
             if (*v49 != v27)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(snapshots2);
             }
 
             v29 = *(*(&v48 + 1) + 8 * i);
@@ -772,7 +772,7 @@ LABEL_41:
             }
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v48 objects:v57 count:16];
+          v25 = [snapshots2 countByEnumeratingWithState:&v48 objects:v57 count:16];
         }
 
         while (v25);
@@ -792,29 +792,29 @@ LABEL_41:
       }
 
       self->_modifiedBytes = v34;
-      v35 = [v13 hmacKey];
+      hmacKey = [v13 hmacKey];
       v36 = self->_totalBytesOnDiskByDomainName;
       v44[0] = _NSConcreteStackBlock;
       v44[1] = 3221225472;
       v44[2] = sub_1001279CC;
       v44[3] = &unk_1003BF588;
-      v45 = v35;
+      v45 = hmacKey;
       v46 = v43;
-      v47 = self;
+      selfCopy = self;
       v37 = v43;
-      v38 = v35;
+      v38 = hmacKey;
       [(NSMutableDictionary *)v36 enumerateKeysAndObjectsUsingBlock:v44];
     }
 
     v22 = MBGetDefaultLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(MBFileScanner *)self->_scanner loggableStats];
+      loggableStats = [(MBFileScanner *)self->_scanner loggableStats];
       *buf = 138412290;
-      v60 = v39;
+      v60 = loggableStats;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "=sizing= Finished scanning for changes - %@", buf, 0xCu);
 
-      v42 = [(MBFileScanner *)self->_scanner loggableStats];
+      loggableStats2 = [(MBFileScanner *)self->_scanner loggableStats];
       _MBLog();
     }
 
@@ -828,17 +828,17 @@ LABEL_42:
   return v7;
 }
 
-+ (id)domainsForApp:(id)a3 persona:(id)a4
++ (id)domainsForApp:(id)app persona:(id)persona
 {
-  v5 = a3;
-  v6 = a4;
+  appCopy = app;
+  personaCopy = persona;
   v7 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v5 containers];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  containers = [appCopy containers];
+  v9 = [containers countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v9)
   {
     v10 = v9;
@@ -849,29 +849,29 @@ LABEL_42:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(containers);
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 domain];
-        [v7 addObject:v15];
+        domain = [v13 domain];
+        [v7 addObject:domain];
 
         objc_autoreleasePoolPop(v14);
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v10 = [containers countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v10);
   }
 
-  if (([v5 isSystemApp] & 1) == 0)
+  if (([appCopy isSystemApp] & 1) == 0)
   {
-    v16 = [v6 personaIdentifier];
-    v17 = [v6 appPlaceholderArchiveDirectory];
+    personaIdentifier = [personaCopy personaIdentifier];
+    appPlaceholderArchiveDirectory = [personaCopy appPlaceholderArchiveDirectory];
     v24 = 0;
-    v18 = [v5 archivePlaceholderDomainWithPersonaIdentifier:v16 intoDirectory:v17 error:&v24];
+    v18 = [appCopy archivePlaceholderDomainWithPersonaIdentifier:personaIdentifier intoDirectory:appPlaceholderArchiveDirectory error:&v24];
     v19 = v24;
 
     if (v18)
@@ -884,14 +884,14 @@ LABEL_42:
       v20 = MBGetDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v5 bundleID];
+        bundleID = [appCopy bundleID];
         *buf = 138412546;
-        v30 = v21;
+        v30 = bundleID;
         v31 = 2112;
         v32 = v19;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "=sizing= Failed to fetch placeholder for %@: %@", buf, 0x16u);
 
-        v23 = [v5 bundleID];
+        bundleID2 = [appCopy bundleID];
         _MBLog();
       }
     }
@@ -900,72 +900,72 @@ LABEL_42:
   return v7;
 }
 
-- (id)fileScanner:(id)a3 didFindFile:(id)a4
+- (id)fileScanner:(id)scanner didFindFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
+  scannerCopy = scanner;
+  fileCopy = file;
   v34 = 0;
   v8 = [(MBCKEngine *)self handleCancelation:&v34];
   v9 = v34;
   if ((v8 & 1) == 0)
   {
-    v10 = [v7 domain];
-    if (!v10)
+    domain = [fileCopy domain];
+    if (!domain)
     {
       __assert_rtn("[MBCKSizingEngine fileScanner:didFindFile:]", "MBCKSizingEngine.m", 369, "file.domain");
     }
 
-    v11 = [v7 domain];
-    v12 = [v11 name];
+    domain2 = [fileCopy domain];
+    name = [domain2 name];
 
-    v33 = [v7 size];
+    v33 = [fileCopy size];
     v13 = objc_autoreleasePoolPush();
     if (self->_formatOfLastCommittedSnapshot != 3)
     {
-      v14 = [(MBCKEngine *)self cache];
-      v15 = [MBCKFile fileWithMBFile:v7 cache:v14];
+      cache = [(MBCKEngine *)self cache];
+      v15 = [MBCKFile fileWithMBFile:fileCopy cache:cache];
 
       if ([v15 changeType] - 1 <= 1)
       {
         self->_modifiedBytes += v33;
         modifiedBytesByDomainName = self->_modifiedBytesByDomainName;
-        [v7 domain];
+        [fileCopy domain];
         v17 = v32 = v13;
-        v18 = [v17 name];
-        v19 = [(NSMutableDictionary *)modifiedBytesByDomainName objectForKeyedSubscript:v18];
-        v20 = [v19 unsignedLongLongValue];
+        name2 = [v17 name];
+        v19 = [(NSMutableDictionary *)modifiedBytesByDomainName objectForKeyedSubscript:name2];
+        unsignedLongLongValue = [v19 unsignedLongLongValue];
 
         v13 = v32;
-        v21 = [NSNumber numberWithLongLong:v33 + v20];
+        v21 = [NSNumber numberWithLongLong:v33 + unsignedLongLongValue];
         v22 = self->_modifiedBytesByDomainName;
-        v23 = [v15 domainName];
-        [(NSMutableDictionary *)v22 setObject:v21 forKeyedSubscript:v23];
+        domainName = [v15 domainName];
+        [(NSMutableDictionary *)v22 setObject:v21 forKeyedSubscript:domainName];
 
         if (self->_bundleIDsToScan)
         {
-          v24 = [(NSMutableDictionary *)self->_pathsByDomainName objectForKeyedSubscript:v12];
+          v24 = [(NSMutableDictionary *)self->_pathsByDomainName objectForKeyedSubscript:name];
           if (!v24)
           {
             v24 = objc_opt_new();
           }
 
-          v25 = [v15 absolutePath];
-          [v24 addObject:v25];
+          absolutePath = [v15 absolutePath];
+          [v24 addObject:absolutePath];
 
           pathsByDomainName = self->_pathsByDomainName;
-          v27 = [v15 domainName];
-          [(NSMutableDictionary *)pathsByDomainName setObject:v24 forKeyedSubscript:v27];
+          domainName2 = [v15 domainName];
+          [(NSMutableDictionary *)pathsByDomainName setObject:v24 forKeyedSubscript:domainName2];
         }
       }
     }
 
-    v28 = [(NSMutableDictionary *)self->_totalBytesOnDiskByDomainName objectForKeyedSubscript:v12];
-    v29 = [v28 unsignedLongLongValue];
+    v28 = [(NSMutableDictionary *)self->_totalBytesOnDiskByDomainName objectForKeyedSubscript:name];
+    unsignedLongLongValue2 = [v28 unsignedLongLongValue];
 
-    v30 = [NSNumber numberWithLongLong:v33 + v29];
-    [(NSMutableDictionary *)self->_totalBytesOnDiskByDomainName setObject:v30 forKeyedSubscript:v12];
+    v30 = [NSNumber numberWithLongLong:v33 + unsignedLongLongValue2];
+    [(NSMutableDictionary *)self->_totalBytesOnDiskByDomainName setObject:v30 forKeyedSubscript:name];
 
-    self->_totalBytesOnDisk += [v7 size];
+    self->_totalBytesOnDisk += [fileCopy size];
     objc_autoreleasePoolPop(v13);
   }
 

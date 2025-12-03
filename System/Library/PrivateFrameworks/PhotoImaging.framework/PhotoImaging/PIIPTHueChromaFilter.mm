@@ -1,47 +1,47 @@
 @interface PIIPTHueChromaFilter
-+ (id)convertHueChromaImageToIPT:(id)a3;
-+ (id)convertHueChromaImageToRGB:(id)a3;
-+ (id)convertIPTImageToHueChroma:(id)a3;
-+ (id)convertIPTImageToRGB:(id)a3;
-+ (id)convertRGBImageToHueChroma:(id)a3;
-+ (id)convertRGBImageToIPT:(id)a3;
-+ (id)denormalizeHueChromaImage:(id)a3;
++ (id)convertHueChromaImageToIPT:(id)t;
++ (id)convertHueChromaImageToRGB:(id)b;
++ (id)convertIPTImageToHueChroma:(id)chroma;
++ (id)convertIPTImageToRGB:(id)b;
++ (id)convertRGBImageToHueChroma:(id)chroma;
++ (id)convertRGBImageToIPT:(id)t;
++ (id)denormalizeHueChromaImage:(id)image;
 + (id)hueChromaKernels;
-+ (id)kernelNamed:(id)a3;
-+ (id)normalizeHueChromaImage:(id)a3;
++ (id)kernelNamed:(id)named;
++ (id)normalizeHueChromaImage:(id)image;
 @end
 
 @implementation PIIPTHueChromaFilter
 
-+ (id)convertHueChromaImageToRGB:(id)a3
++ (id)convertHueChromaImageToRGB:(id)b
 {
-  v4 = [a1 convertHueChromaImageToIPT:a3];
-  v5 = [a1 convertIPTImageToRGB:v4];
+  v4 = [self convertHueChromaImageToIPT:b];
+  v5 = [self convertIPTImageToRGB:v4];
 
   return v5;
 }
 
-+ (id)convertRGBImageToHueChroma:(id)a3
++ (id)convertRGBImageToHueChroma:(id)chroma
 {
-  v4 = [a1 convertRGBImageToIPT:a3];
-  v5 = [a1 convertIPTImageToHueChroma:v4];
+  v4 = [self convertRGBImageToIPT:chroma];
+  v5 = [self convertIPTImageToHueChroma:v4];
 
   return v5;
 }
 
-+ (id)convertHueChromaImageToIPT:(id)a3
++ (id)convertHueChromaImageToIPT:(id)t
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (t)
   {
-    v3 = a3;
+    tCopy = t;
     v4 = [objc_opt_class() kernelNamed:@"ipt_from_hue_chroma"];
-    [v3 extent];
+    [tCopy extent];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v16[0] = v3;
+    v16[0] = tCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
     v14 = [v4 applyWithExtent:v13 arguments:{v6, v8, v10, v12}];
@@ -55,19 +55,19 @@
   return v14;
 }
 
-+ (id)convertIPTImageToHueChroma:(id)a3
++ (id)convertIPTImageToHueChroma:(id)chroma
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (chroma)
   {
-    v3 = a3;
+    chromaCopy = chroma;
     v4 = [objc_opt_class() kernelNamed:@"ipt_to_hue_chroma"];
-    [v3 extent];
+    [chromaCopy extent];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v16[0] = v3;
+    v16[0] = chromaCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
     v14 = [v4 applyWithExtent:v13 arguments:{v6, v8, v10, v12}];
@@ -81,19 +81,19 @@
   return v14;
 }
 
-+ (id)convertIPTImageToRGB:(id)a3
++ (id)convertIPTImageToRGB:(id)b
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (b)
   {
-    v3 = a3;
+    bCopy = b;
     v4 = [objc_opt_class() kernelNamed:@"ipt_to_srgb"];
-    [v3 extent];
+    [bCopy extent];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v16[0] = v3;
+    v16[0] = bCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
     v14 = [v4 applyWithExtent:v13 arguments:{v6, v8, v10, v12}];
@@ -107,19 +107,19 @@
   return v14;
 }
 
-+ (id)convertRGBImageToIPT:(id)a3
++ (id)convertRGBImageToIPT:(id)t
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (t)
   {
-    v3 = a3;
+    tCopy = t;
     v4 = [objc_opt_class() kernelNamed:@"ipt_from_srgb"];
-    [v3 extent];
+    [tCopy extent];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v16[0] = v3;
+    v16[0] = tCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
     v14 = [v4 applyWithExtent:v13 arguments:{v6, v8, v10, v12}];
@@ -133,11 +133,11 @@
   return v14;
 }
 
-+ (id)denormalizeHueChromaImage:(id)a3
++ (id)denormalizeHueChromaImage:(id)image
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  imageCopy = image;
+  if (!imageCopy)
   {
     v18 = NUAssertLogger_3023();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -159,8 +159,8 @@
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v26;
         v34 = 2114;
@@ -171,8 +171,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -181,8 +181,8 @@
     _NUAssertFailHandler();
   }
 
-  v4 = v3;
-  v5 = [objc_opt_class() scaleHueKernel];
+  v4 = imageCopy;
+  scaleHueKernel = [objc_opt_class() scaleHueKernel];
   [v4 extent];
   v7 = v6;
   v9 = v8;
@@ -192,16 +192,16 @@
   v14 = [MEMORY[0x1E695F688] vectorWithX:6.28318531 Y:-3.14159265];
   v31[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
-  v16 = [v5 applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
+  v16 = [scaleHueKernel applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
 
   return v16;
 }
 
-+ (id)normalizeHueChromaImage:(id)a3
++ (id)normalizeHueChromaImage:(id)image
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  imageCopy = image;
+  if (!imageCopy)
   {
     v18 = NUAssertLogger_3023();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -223,8 +223,8 @@
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v26;
         v34 = 2114;
@@ -235,8 +235,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -245,8 +245,8 @@
     _NUAssertFailHandler();
   }
 
-  v4 = v3;
-  v5 = [objc_opt_class() scaleHueKernel];
+  v4 = imageCopy;
+  scaleHueKernel = [objc_opt_class() scaleHueKernel];
   [v4 extent];
   v7 = v6;
   v9 = v8;
@@ -256,16 +256,16 @@
   v14 = [MEMORY[0x1E695F688] vectorWithX:0.159154943 Y:0.5];
   v31[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
-  v16 = [v5 applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
+  v16 = [scaleHueKernel applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
 
   return v16;
 }
 
-+ (id)kernelNamed:(id)a3
++ (id)kernelNamed:(id)named
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  namedCopy = named;
+  if (!namedCopy)
   {
     v9 = NUAssertLogger_3023();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -287,8 +287,8 @@
         v17 = dispatch_get_specific(*v11);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v17;
         v24 = 2114;
@@ -299,8 +299,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v16;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -309,9 +309,9 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
-  v6 = [a1 hueChromaKernels];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v5 = namedCopy;
+  hueChromaKernels = [self hueChromaKernels];
+  v7 = [hueChromaKernels objectForKeyedSubscript:v5];
 
   return v7;
 }

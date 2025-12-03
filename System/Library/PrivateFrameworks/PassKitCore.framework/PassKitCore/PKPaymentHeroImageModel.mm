@@ -1,14 +1,14 @@
 @interface PKPaymentHeroImageModel
-- (PKPaymentHeroImageModel)initWithDictionary:(id)a3;
+- (PKPaymentHeroImageModel)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKPaymentHeroImageModel
 
-- (PKPaymentHeroImageModel)initWithDictionary:(id)a3
+- (PKPaymentHeroImageModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PKPaymentHeroImageModel *)self init];
-  if (!v5 || ([v4 PKURLForKey:@"url"], v6 = objc_claimAutoreleasedReturnValue(), url = v5->_url, v5->_url = v6, url, objc_msgSend(v4, "PKStringForKey:", @"sha1"), v8 = objc_claimAutoreleasedReturnValue(), imageSha = v5->_imageSha, v5->_imageSha = v8, imageSha, v5->_url) && v5->_imageSha)
+  if (!v5 || ([dictionaryCopy PKURLForKey:@"url"], v6 = objc_claimAutoreleasedReturnValue(), url = v5->_url, v5->_url = v6, url, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"sha1"), v8 = objc_claimAutoreleasedReturnValue(), imageSha = v5->_imageSha, v5->_imageSha = v8, imageSha, v5->_url) && v5->_imageSha)
   {
     v10 = v5;
   }

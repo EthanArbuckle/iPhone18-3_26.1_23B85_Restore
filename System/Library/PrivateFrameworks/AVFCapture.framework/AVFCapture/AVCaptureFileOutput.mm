@@ -12,12 +12,12 @@
 {
   v5.receiver = self;
   v5.super_class = AVCaptureFileOutput;
-  v2 = [(AVCaptureOutput *)&v5 initSubclass];
-  if (v2)
+  initSubclass = [(AVCaptureOutput *)&v5 initSubclass];
+  if (initSubclass)
   {
-    [v2 setDeferredStartEnabled:AVCaptureSessionIsDeferredStartSupported()];
+    [initSubclass setDeferredStartEnabled:AVCaptureSessionIsDeferredStartSupported()];
     v3 = objc_alloc_init(AVCaptureFileOutputInternal);
-    v2[2] = v3;
+    initSubclass[2] = v3;
     if (!v3)
     {
 
@@ -25,7 +25,7 @@
     }
   }
 
-  return v2;
+  return initSubclass;
 }
 
 - (void)dealloc

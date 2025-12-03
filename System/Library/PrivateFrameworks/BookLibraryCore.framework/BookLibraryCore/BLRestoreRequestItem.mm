@@ -1,20 +1,20 @@
 @interface BLRestoreRequestItem
-+ (id)_assetDictionaryWithDownloadMetadata:(id)a3;
-+ (id)_downloadDictionaryWithDownloadMetadata:(id)a3 additionalDownloadPropertiesDictionary:(id)a4;
-- (BLRestoreRequestItem)initWithCoder:(id)a3;
-- (BLRestoreRequestItem)initWithDownloadDictionary:(id)a3 assetDictionary:(id)a4;
-- (BLRestoreRequestItem)initWithDownloadMetadataDictionary:(id)a3 additionalDownloadPropertiesDictionary:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)_assetDictionaryWithDownloadMetadata:(id)metadata;
++ (id)_downloadDictionaryWithDownloadMetadata:(id)metadata additionalDownloadPropertiesDictionary:(id)dictionary;
+- (BLRestoreRequestItem)initWithCoder:(id)coder;
+- (BLRestoreRequestItem)initWithDownloadDictionary:(id)dictionary assetDictionary:(id)assetDictionary;
+- (BLRestoreRequestItem)initWithDownloadMetadataDictionary:(id)dictionary additionalDownloadPropertiesDictionary:(id)propertiesDictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BLRestoreRequestItem
 
-- (BLRestoreRequestItem)initWithDownloadDictionary:(id)a3 assetDictionary:(id)a4
+- (BLRestoreRequestItem)initWithDownloadDictionary:(id)dictionary assetDictionary:(id)assetDictionary
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dictionaryCopy = dictionary;
+  assetDictionaryCopy = assetDictionary;
+  if (!dictionaryCopy)
   {
     v9 = BLServiceLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -30,18 +30,18 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_downloadDictionary, a3);
-    objc_storeStrong(&v11->_assetDictionary, a4);
+    objc_storeStrong(&v10->_downloadDictionary, dictionary);
+    objc_storeStrong(&v11->_assetDictionary, assetDictionary);
   }
 
   return v11;
 }
 
-- (BLRestoreRequestItem)initWithDownloadMetadataDictionary:(id)a3 additionalDownloadPropertiesDictionary:(id)a4
+- (BLRestoreRequestItem)initWithDownloadMetadataDictionary:(id)dictionary additionalDownloadPropertiesDictionary:(id)propertiesDictionary
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dictionaryCopy = dictionary;
+  propertiesDictionaryCopy = propertiesDictionary;
+  if (!dictionaryCopy)
   {
     v8 = BLServiceLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -51,38 +51,38 @@
     }
   }
 
-  v9 = [[BLDownloadMetadata alloc] initWithDictionary:v6];
-  v10 = [objc_opt_class() _downloadDictionaryWithDownloadMetadata:v9 additionalDownloadPropertiesDictionary:v7];
+  v9 = [[BLDownloadMetadata alloc] initWithDictionary:dictionaryCopy];
+  v10 = [objc_opt_class() _downloadDictionaryWithDownloadMetadata:v9 additionalDownloadPropertiesDictionary:propertiesDictionaryCopy];
   v11 = [objc_opt_class() _assetDictionaryWithDownloadMetadata:v9];
   v12 = [(BLRestoreRequestItem *)self initWithDownloadDictionary:v10 assetDictionary:v11];
 
   return v12;
 }
 
-+ (id)_downloadDictionaryWithDownloadMetadata:(id)a3 additionalDownloadPropertiesDictionary:(id)a4
++ (id)_downloadDictionaryWithDownloadMetadata:(id)metadata additionalDownloadPropertiesDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  dictionaryCopy = dictionary;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [v5 kind];
-  [v7 setObject:v8 forKeyedSubscript:@"1"];
+  kind = [metadataCopy kind];
+  [v7 setObject:kind forKeyedSubscript:@"1"];
 
-  v9 = [MEMORY[0x277CCABB0] bl_numberWithItemIdentifier:{objc_msgSend(v5, "collectionIdentifier")}];
+  v9 = [MEMORY[0x277CCABB0] bl_numberWithItemIdentifier:{objc_msgSend(metadataCopy, "collectionIdentifier")}];
   [v7 setObject:v9 forKeyedSubscript:@"4"];
 
-  v10 = [MEMORY[0x277CCABB0] bl_numberWithItemIdentifier:{objc_msgSend(v5, "itemIdentifier")}];
+  v10 = [MEMORY[0x277CCABB0] bl_numberWithItemIdentifier:{objc_msgSend(metadataCopy, "itemIdentifier")}];
   [v7 setObject:v10 forKeyedSubscript:@"7"];
 
-  v11 = [v5 valueForMetadataKey:@"s"];
+  v11 = [metadataCopy valueForMetadataKey:@"s"];
   [v7 setObject:v11 forKeyedSubscript:@"T"];
 
-  v12 = [v5 valueForMetadataKey:@"softwareVersionExternalIdentifier"];
+  v12 = [metadataCopy valueForMetadataKey:@"softwareVersionExternalIdentifier"];
   [v7 setObject:v12 forKeyedSubscript:@"R"];
 
-  v13 = [v5 title];
-  [v7 setObject:v13 forKeyedSubscript:@"2"];
+  title = [metadataCopy title];
+  [v7 setObject:title forKeyedSubscript:@"2"];
 
-  v14 = [v5 valueForMetadataKey:@"com.apple.iTunesStore.downloadInfo"];
+  v14 = [metadataCopy valueForMetadataKey:@"com.apple.iTunesStore.downloadInfo"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -114,7 +114,7 @@ LABEL_7:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [v5 valueForMetadataKey:@"appleId"];
+    v19 = [metadataCopy valueForMetadataKey:@"appleId"];
 
     v18 = v19;
   }
@@ -125,20 +125,20 @@ LABEL_7:
     [v7 setObject:v18 forKeyedSubscript:@"Z"];
   }
 
-  if (v6)
+  if (dictionaryCopy)
   {
-    [v7 addEntriesFromDictionary:v6];
+    [v7 addEntriesFromDictionary:dictionaryCopy];
   }
 
   return v7;
 }
 
-+ (id)_assetDictionaryWithDownloadMetadata:(id)a3
++ (id)_assetDictionaryWithDownloadMetadata:(id)metadata
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 valueForMetadataKey:@"asset-info"];
+  v6 = [metadataCopy valueForMetadataKey:@"asset-info"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -153,9 +153,9 @@ LABEL_7:
   return v5;
 }
 
-- (BLRestoreRequestItem)initWithCoder:(id)a3
+- (BLRestoreRequestItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = BLRestoreRequestItem;
   v5 = [(BLRestoreRequestItem *)&v21 init];
@@ -166,7 +166,7 @@ LABEL_7:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"downloadDictionary"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"downloadDictionary"];
     downloadDictionary = v5->_downloadDictionary;
     v5->_downloadDictionary = v11;
 
@@ -175,7 +175,7 @@ LABEL_7:
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"assetDictionary"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"assetDictionary"];
     assetDictionary = v5->_assetDictionary;
     v5->_assetDictionary = v18;
   }
@@ -183,23 +183,23 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   downloadDictionary = self->_downloadDictionary;
-  v5 = a3;
-  [v5 encodeObject:downloadDictionary forKey:@"downloadDictionary"];
-  [v5 encodeObject:self->_assetDictionary forKey:@"assetDictionary"];
+  coderCopy = coder;
+  [coderCopy encodeObject:downloadDictionary forKey:@"downloadDictionary"];
+  [coderCopy encodeObject:self->_assetDictionary forKey:@"assetDictionary"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(BLRestoreRequestItem *)self downloadDictionary];
-  v6 = [v5 copy];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  downloadDictionary = [(BLRestoreRequestItem *)self downloadDictionary];
+  v6 = [downloadDictionary copy];
   [v4 setDownloadDictionary:v6];
 
-  v7 = [(BLRestoreRequestItem *)self assetDictionary];
-  v8 = [v7 copy];
+  assetDictionary = [(BLRestoreRequestItem *)self assetDictionary];
+  v8 = [assetDictionary copy];
   [v4 setAssetDictionary:v8];
 
   return v4;

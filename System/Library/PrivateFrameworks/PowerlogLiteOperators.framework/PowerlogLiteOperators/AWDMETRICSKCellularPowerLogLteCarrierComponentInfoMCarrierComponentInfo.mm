@@ -1,27 +1,27 @@
 @interface AWDMETRICSKCellularPowerLogLteCarrierComponentInfoMCarrierComponentInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDuplex:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsDuplex:(id)duplex;
+- (int)StringAsType:(id)type;
 - (int)duplex;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBandwidth:(BOOL)a3;
-- (void)setHasDuplex:(BOOL)a3;
-- (void)setHasEarfcn:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBandwidth:(BOOL)bandwidth;
+- (void)setHasDuplex:(BOOL)duplex;
+- (void)setHasEarfcn:(BOOL)earfcn;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogLteCarrierComponentInfoMCarrierComponentInfo
 
-- (void)setHasBandwidth:(BOOL)a3
+- (void)setHasBandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 2;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasEarfcn:(BOOL)a3
+- (void)setHasEarfcn:(BOOL)earfcn
 {
-  if (a3)
+  if (earfcn)
   {
     v3 = 8;
   }
@@ -62,9 +62,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -77,45 +77,45 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PCC"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PCC"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SCC_1"])
+  else if ([typeCopy isEqualToString:@"SCC_1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SCC_2"])
+  else if ([typeCopy isEqualToString:@"SCC_2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SCC_3"])
+  else if ([typeCopy isEqualToString:@"SCC_3"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SCC_4"])
+  else if ([typeCopy isEqualToString:@"SCC_4"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SCC_5"])
+  else if ([typeCopy isEqualToString:@"SCC_5"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SCC_6"])
+  else if ([typeCopy isEqualToString:@"SCC_6"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SCC_7"])
+  else if ([typeCopy isEqualToString:@"SCC_7"])
   {
     v4 = 7;
   }
@@ -141,9 +141,9 @@
   }
 }
 
-- (void)setHasDuplex:(BOOL)a3
+- (void)setHasDuplex:(BOOL)duplex
 {
-  if (a3)
+  if (duplex)
   {
     v3 = 4;
   }
@@ -156,17 +156,17 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsDuplex:(id)a3
+- (int)StringAsDuplex:(id)duplex
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FDD"])
+  duplexCopy = duplex;
+  if ([duplexCopy isEqualToString:@"FDD"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"TDD"];
+    v4 = [duplexCopy isEqualToString:@"TDD"];
   }
 
   return v4;
@@ -178,20 +178,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogLteCarrierComponentInfoMCarrierComponentInfo;
   v4 = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfoMCarrierComponentInfo *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfoMCarrierComponentInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfoMCarrierComponentInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_band];
-    [v3 setObject:v6 forKey:@"band"];
+    [dictionary setObject:v6 forKey:@"band"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -213,7 +213,7 @@ LABEL_3:
 
   *&v4 = self->_bandwidth;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v7 forKey:@"bandwidth"];
+  [dictionary setObject:v7 forKey:@"bandwidth"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -236,7 +236,7 @@ LABEL_10:
       v10 = off_27825C558[type];
     }
 
-    [v3 setObject:v10 forKey:@"type"];
+    [dictionary setObject:v10 forKey:@"type"];
 
     if ((*&self->_has & 4) == 0)
     {
@@ -248,7 +248,7 @@ LABEL_10:
 
 LABEL_9:
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_earfcn];
-  [v3 setObject:v8 forKey:@"earfcn"];
+  [dictionary setObject:v8 forKey:@"earfcn"];
 
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -279,17 +279,17 @@ LABEL_14:
       v12 = @"FDD";
     }
 
-    [v3 setObject:v12 forKey:@"duplex"];
+    [dictionary setObject:v12 forKey:@"duplex"];
   }
 
 LABEL_20:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -355,14 +355,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_band;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_band;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -381,8 +381,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = LODWORD(self->_bandwidth);
-  *(v4 + 28) |= 2u;
+  toCopy[3] = LODWORD(self->_bandwidth);
+  *(toCopy + 28) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -396,8 +396,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[5] = self->_earfcn;
-  *(v4 + 28) |= 8u;
+  toCopy[5] = self->_earfcn;
+  *(toCopy + 28) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -411,21 +411,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[6] = self->_type;
-  *(v4 + 28) |= 0x10u;
+  toCopy[6] = self->_type;
+  *(toCopy + 28) |= 0x10u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    v4[4] = self->_duplex;
-    *(v4 + 28) |= 4u;
+    toCopy[4] = self->_duplex;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -492,23 +492,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_band != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_band != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_26:
     v5 = 0;
@@ -517,47 +517,47 @@ LABEL_26:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_bandwidth != *(v4 + 3))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_bandwidth != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0 || self->_earfcn != *(v4 + 5))
+    if ((*(equalCopy + 28) & 8) == 0 || self->_earfcn != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 8) != 0)
+  else if ((*(equalCopy + 28) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 28) & 0x10) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 28) & 0x10) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 0x10) != 0)
+  else if ((*(equalCopy + 28) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 28) & 4) == 0;
+  v5 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_duplex != *(v4 + 4))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_duplex != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
@@ -656,15 +656,15 @@ LABEL_12:
   return v8 ^ v4 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_band = *(v4 + 2);
+    self->_band = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -677,14 +677,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_bandwidth = *(v4 + 3);
+  self->_bandwidth = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -697,9 +697,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_earfcn = *(v4 + 5);
+  self->_earfcn = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -712,12 +712,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_type = *(v4 + 6);
+  self->_type = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_6:
-    self->_duplex = *(v4 + 4);
+    self->_duplex = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

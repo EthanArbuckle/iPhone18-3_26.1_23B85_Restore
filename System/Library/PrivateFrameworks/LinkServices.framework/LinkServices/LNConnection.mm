@@ -1,18 +1,18 @@
 @interface LNConnection
 + (LNConnectionOptions)defaultOptions;
-+ (void)fetchEntitiesFromActiveApplicationsWithInteractionIDs:(id)a3 bundleIdentifiers:(id)a4 completionHandler:(id)a5;
-+ (void)fetchEntitiesFromActiveApplicationsWithInteractionIDs:(id)a3 completionHandler:(id)a4;
++ (void)fetchEntitiesFromActiveApplicationsWithInteractionIDs:(id)ds bundleIdentifiers:(id)identifiers completionHandler:(id)handler;
++ (void)fetchEntitiesFromActiveApplicationsWithInteractionIDs:(id)ds completionHandler:(id)handler;
 + (void)invalidateAllConnections;
-+ (void)resolveEntitiesForInteractionIDs:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5;
++ (void)resolveEntitiesForInteractionIDs:(id)ds bundleIdentifier:(id)identifier completionHandler:(id)handler;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (BOOL)allowsExtendingTimeoutOnProgressUpdates;
-- (BOOL)connectUsingProcessIdentifierWithOptions:(id)a3;
+- (BOOL)connectUsingProcessIdentifierWithOptions:(id)options;
 - (BOOL)isDaemon;
 - (BOOL)isPerformActionOperationPending;
-- (BOOL)refreshWithOptions:(id)a3;
-- (BOOL)shouldRefreshWithOptions:(id)a3;
+- (BOOL)refreshWithOptions:(id)options;
+- (BOOL)shouldRefreshWithOptions:(id)options;
 - (BOOL)targetIsBeingDebugged;
-- (LNConnection)initWithBundleIdentifier:(id)a3 metadataVersion:(int64_t)a4 error:(id *)a5;
+- (LNConnection)initWithBundleIdentifier:(id)identifier metadataVersion:(int64_t)version error:(id *)error;
 - (LNConnectionHostInterface)connectionInterface;
 - (LNWatchdogTimer)idleTimer;
 - (NSMapTable)executors;
@@ -21,91 +21,91 @@
 - (NSString)description;
 - (NSString)logPrefix;
 - (NSURL)bundleURL;
-- (id)executorForAction:(id)a3 interactionMode:(int64_t)a4 label:(id)a5 delegate:(id)a6;
-- (id)executorForAction:(id)a3 label:(id)a4 delegate:(id)a5;
-- (id)executorForAction:(id)a3 metadata:(id)a4 appBundleIdentifier:(id)a5 options:(id)a6 delegate:(id)a7;
-- (id)executorForAction:(id)a3 metadata:(id)a4 options:(id)a5 delegate:(id)a6;
-- (id)executorForAction:(id)a3 options:(id)a4 delegate:(id)a5;
-- (id)operationWithIdentifier:(id)a3;
-- (id)optionsForAction:(id)a3 interactionMode:(int64_t)a4 source:(unsigned __int16)a5 sourceOverride:(id)a6 assistantDismissalPolicy:(int64_t)a7;
+- (id)executorForAction:(id)action interactionMode:(int64_t)mode label:(id)label delegate:(id)delegate;
+- (id)executorForAction:(id)action label:(id)label delegate:(id)delegate;
+- (id)executorForAction:(id)action metadata:(id)metadata appBundleIdentifier:(id)identifier options:(id)options delegate:(id)delegate;
+- (id)executorForAction:(id)action metadata:(id)metadata options:(id)options delegate:(id)delegate;
+- (id)executorForAction:(id)action options:(id)options delegate:(id)delegate;
+- (id)operationWithIdentifier:(id)identifier;
+- (id)optionsForAction:(id)action interactionMode:(int64_t)mode source:(unsigned __int16)source sourceOverride:(id)override assistantDismissalPolicy:(int64_t)policy;
 - (void)_invalidateAllAssertions;
-- (void)acquireAssertionsForConnectionOperation:(id)a3;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
+- (void)acquireAssertionsForConnectionOperation:(id)operation;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
 - (void)cancelIdleTimeout;
-- (void)cancelTimeoutForOperationWithIdentifier:(id)a3;
-- (void)closeWithError:(id)a3;
-- (void)completeWithError:(id)a3;
-- (void)connectUsingListenerEndpoint:(id)a3 auditToken:(id *)a4;
-- (void)connectWithOptions:(id)a3;
-- (void)connectionOperation:(id)a3 didFinishWithError:(id)a4;
-- (void)connectionOperationWillStart:(id)a3;
-- (void)createAsyncIteratorForSequence:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (void)cancelTimeoutForOperationWithIdentifier:(id)identifier;
+- (void)closeWithError:(id)error;
+- (void)completeWithError:(id)error;
+- (void)connectUsingListenerEndpoint:(id)endpoint auditToken:(id *)token;
+- (void)connectWithOptions:(id)options;
+- (void)connectionOperation:(id)operation didFinishWithError:(id)error;
+- (void)connectionOperationWillStart:(id)start;
+- (void)createAsyncIteratorForSequence:(id)sequence options:(id)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)enqueueConnectionOperation:(id)a3;
-- (void)exportEntities:(id)a3 metadata:(id)a4 withConfiguration:(id)a5 completionHandler:(id)a6;
+- (void)enqueueConnectionOperation:(id)operation;
+- (void)exportEntities:(id)entities metadata:(id)metadata withConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)extendIdleTimeout;
-- (void)extendTimeoutForOperationWithIdentifier:(id)a3;
-- (void)fetchActionAppContextForAction:(id)a3 completionHandler:(id)a4;
-- (void)fetchActionForAppShortcutIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)fetchActionForAutoShortcutPhrase:(id)a3 completionHandler:(id)a4;
-- (void)fetchActionOutputValue:(id)a3 completionHandler:(id)a4;
-- (void)fetchAppShortcutParametersForMangledName:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchAppShortcutParametersWithCompletionHandler:(id)a3;
-- (void)fetchDefaultValueForAction:(id)a3 actionMetadata:(id)a4 parameterIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)fetchDestinationMDMAccountIdentifierForAction:(id)a3 completionHandler:(id)a4;
-- (void)fetchDisplayRepresentationForActions:(id)a3 completionHandler:(id)a4;
-- (void)fetchEntityURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchListenerEndpointFromApplicationServiceWithCompletionHandler:(id)a3;
-- (void)fetchOptionsDefaultValueForAction:(id)a3 completionHandler:(id)a4;
-- (void)fetchOptionsForAction:(id)a3 actionMetadata:(id)a4 parameterMetadata:(id)a5 optionsProviderReference:(id)a6 searchTerm:(id)a7 localeIdentifier:(id)a8 completionHandler:(id)a9;
-- (void)fetchStateForAppIntentIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)fetchStructuredDataWithTypeIdentifier:(int64_t)a3 forEntityIdentifiers:(id)a4 completionHandler:(id)a5;
-- (void)fetchSuggestedActionsForStartWorkoutAction:(id)a3 completionHandler:(id)a4;
-- (void)fetchSuggestedActionsFromViewWithCompletionHandler:(id)a3;
-- (void)fetchSuggestedActionsWithSiriLanguageCode:(id)a3 completionHandler:(id)a4;
-- (void)fetchSuggestedFocusActionsForActionMetadata:(id)a3 suggestionContext:(id)a4 completionHandler:(id)a5;
-- (void)fetchURLForEnumWithIdentifier:(id)a3 caseIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)fetchURLsForEnumWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)fetchValueForPropertyWithIdentifier:(id)a3 entity:(id)a4 completionHandler:(id)a5;
-- (void)fetchViewActionsWithCompletionHandler:(id)a3;
-- (void)fetchViewEntitiesWithInteractionIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchViewEntitiesWithOptions:(id)a3 interactionIDs:(id)a4 completionHandler:(id)a5;
-- (void)getConnectionInterfaceWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)getListenerEndpointForBundleIdentifier:(id)a3 action:(id)a4 completionHandler:(id)a5;
-- (void)invalidateAssertionsForConnectionOperation:(id)a3;
-- (void)linkUndoManager:(id)a3 completionHandler:(id)a4;
-- (void)nextAsyncIteratorResults:(id)a3 completionHandler:(id)a4;
-- (void)performAllEntitiesQueryWithEntityMangledTypeName:(id)a3 completionHandler:(id)a4;
-- (void)performConfigurableQuery:(id)a3 completionHandler:(id)a4;
-- (void)performGetConnectionInterfaceWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)performQuery:(id)a3 completionHandler:(id)a4;
-- (void)performSuggestedEntitiesQueryWithEntityMangledTypeName:(id)a3 completionHandler:(id)a4;
-- (void)performSuggestedResultsQueryWithEntityType:(id)a3 completionHandler:(id)a4;
-- (void)releaseAsyncSequence:(id)a3 completionHandler:(id)a4;
-- (void)removeConnectionOperation:(id)a3;
-- (void)setAuditToken:(id *)a3;
+- (void)extendTimeoutForOperationWithIdentifier:(id)identifier;
+- (void)fetchActionAppContextForAction:(id)action completionHandler:(id)handler;
+- (void)fetchActionForAppShortcutIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchActionForAutoShortcutPhrase:(id)phrase completionHandler:(id)handler;
+- (void)fetchActionOutputValue:(id)value completionHandler:(id)handler;
+- (void)fetchAppShortcutParametersForMangledName:(id)name withCompletionHandler:(id)handler;
+- (void)fetchAppShortcutParametersWithCompletionHandler:(id)handler;
+- (void)fetchDefaultValueForAction:(id)action actionMetadata:(id)metadata parameterIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchDestinationMDMAccountIdentifierForAction:(id)action completionHandler:(id)handler;
+- (void)fetchDisplayRepresentationForActions:(id)actions completionHandler:(id)handler;
+- (void)fetchEntityURL:(id)l completionHandler:(id)handler;
+- (void)fetchListenerEndpointFromApplicationServiceWithCompletionHandler:(id)handler;
+- (void)fetchOptionsDefaultValueForAction:(id)action completionHandler:(id)handler;
+- (void)fetchOptionsForAction:(id)action actionMetadata:(id)metadata parameterMetadata:(id)parameterMetadata optionsProviderReference:(id)reference searchTerm:(id)term localeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchStateForAppIntentIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)fetchStructuredDataWithTypeIdentifier:(int64_t)identifier forEntityIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)fetchSuggestedActionsForStartWorkoutAction:(id)action completionHandler:(id)handler;
+- (void)fetchSuggestedActionsFromViewWithCompletionHandler:(id)handler;
+- (void)fetchSuggestedActionsWithSiriLanguageCode:(id)code completionHandler:(id)handler;
+- (void)fetchSuggestedFocusActionsForActionMetadata:(id)metadata suggestionContext:(id)context completionHandler:(id)handler;
+- (void)fetchURLForEnumWithIdentifier:(id)identifier caseIdentifier:(id)caseIdentifier completionHandler:(id)handler;
+- (void)fetchURLsForEnumWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchValueForPropertyWithIdentifier:(id)identifier entity:(id)entity completionHandler:(id)handler;
+- (void)fetchViewActionsWithCompletionHandler:(id)handler;
+- (void)fetchViewEntitiesWithInteractionIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchViewEntitiesWithOptions:(id)options interactionIDs:(id)ds completionHandler:(id)handler;
+- (void)getConnectionInterfaceWithOptions:(id)options completionHandler:(id)handler;
+- (void)getListenerEndpointForBundleIdentifier:(id)identifier action:(id)action completionHandler:(id)handler;
+- (void)invalidateAssertionsForConnectionOperation:(id)operation;
+- (void)linkUndoManager:(id)manager completionHandler:(id)handler;
+- (void)nextAsyncIteratorResults:(id)results completionHandler:(id)handler;
+- (void)performAllEntitiesQueryWithEntityMangledTypeName:(id)name completionHandler:(id)handler;
+- (void)performConfigurableQuery:(id)query completionHandler:(id)handler;
+- (void)performGetConnectionInterfaceWithOptions:(id)options completionHandler:(id)handler;
+- (void)performQuery:(id)query completionHandler:(id)handler;
+- (void)performSuggestedEntitiesQueryWithEntityMangledTypeName:(id)name completionHandler:(id)handler;
+- (void)performSuggestedResultsQueryWithEntityType:(id)type completionHandler:(id)handler;
+- (void)releaseAsyncSequence:(id)sequence completionHandler:(id)handler;
+- (void)removeConnectionOperation:(id)operation;
+- (void)setAuditToken:(id *)token;
 - (void)setConnected;
-- (void)setDisconnectedWithError:(id)a3;
+- (void)setDisconnectedWithError:(id)error;
 - (void)setIdleTimer;
-- (void)setState:(int64_t)a3;
-- (void)setUpConnectionContextWithCompletionHandler:(id)a3;
-- (void)setXPCConnection:(id)a3;
-- (void)stageContextWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)updateAppShortcutParametersWithCompletionHandler:(id)a3;
-- (void)updateProperties:(id)a3 withQuery:(id)a4 completionHandler:(id)a5;
+- (void)setState:(int64_t)state;
+- (void)setUpConnectionContextWithCompletionHandler:(id)handler;
+- (void)setXPCConnection:(id)connection;
+- (void)stageContextWithRequest:(id)request completionHandler:(id)handler;
+- (void)updateAppShortcutParametersWithCompletionHandler:(id)handler;
+- (void)updateProperties:(id)properties withQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation LNConnection
 
 - (void)setIdleTimer
 {
-  v3 = [(LNConnection *)self queue];
+  queue = [(LNConnection *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__LNConnection_setIdleTimer__block_invoke;
   block[3] = &unk_1E74B2318;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)dealloc
@@ -116,9 +116,9 @@
     v3 = getLNLogCategoryConnection();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(LNConnection *)self logPrefix];
+      logPrefix = [(LNConnection *)self logPrefix];
       *buf = 138543362;
-      v15 = v4;
+      v15 = logPrefix;
       _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "%{public}@ Invalidating RunningBoard Assertions", buf, 0xCu);
     }
 
@@ -126,11 +126,11 @@
     v5 = getLNLogCategoryConnection();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(LNConnection *)self logPrefix];
+      logPrefix2 = [(LNConnection *)self logPrefix];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       *buf = 138543618;
-      v15 = v6;
+      v15 = logPrefix2;
       v16 = 2114;
       v17 = v8;
       _os_log_impl(&dword_19763D000, v5, OS_LOG_TYPE_INFO, "%{public}@ Invalidating XPC connection on %{public}@ dealloc", buf, 0x16u);
@@ -140,14 +140,14 @@
     v9 = getLNLogCategoryConnection();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(LNConnection *)self logPrefix];
+      logPrefix3 = [(LNConnection *)self logPrefix];
       *buf = 138543362;
-      v15 = v10;
+      v15 = logPrefix3;
       _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_INFO, "%{public}@ Invalidating process monitor on dealloc", buf, 0xCu);
     }
 
-    v11 = [(LNConnection *)self processMonitor];
-    [v11 invalidate];
+    processMonitor = [(LNConnection *)self processMonitor];
+    [processMonitor invalidate];
   }
 
   v13.receiver = self;
@@ -158,13 +158,13 @@
 
 - (void)setConnected
 {
-  v4 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(LNConnection *)self state]!= 1 && [(LNConnection *)self state]!= 2)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:505 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnecting || self.state == LNConnectionStateRefreshing"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:505 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnecting || self.state == LNConnectionStateRefreshing"}];
   }
 
   [(LNConnection *)self setState:3];
@@ -175,13 +175,13 @@
 - (LNConnectionHostInterface)connectionInterface
 {
   objc_initWeak(&location, self);
-  v3 = [(LNConnection *)self xpcConnection];
+  xpcConnection = [(LNConnection *)self xpcConnection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__LNConnection_connectionInterface__block_invoke;
   v6[3] = &unk_1E74B2778;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -192,15 +192,15 @@
 - (NSString)logPrefix
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(LNConnection *)self bundleIdentifier];
-  v4 = [v2 stringWithFormat:@"[%@]", v3];
+  bundleIdentifier = [(LNConnection *)self bundleIdentifier];
+  v4 = [v2 stringWithFormat:@"[%@]", bundleIdentifier];
 
   return v4;
 }
 
 + (LNConnectionOptions)defaultOptions
 {
-  [a1 connectionOptionsClass];
+  [self connectionOptionsClass];
   v2 = objc_opt_new();
 
   return v2;
@@ -231,8 +231,8 @@ void __28__LNConnection_setIdleTimer__block_invoke(uint64_t a1)
 
 - (LNWatchdogTimer)idleTimer
 {
-  v3 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   idleTimer = self->_idleTimer;
 
@@ -241,8 +241,8 @@ void __28__LNConnection_setIdleTimer__block_invoke(uint64_t a1)
 
 - (NSMutableSet)connectionOperations
 {
-  v3 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   connectionOperations = self->_connectionOperations;
 
@@ -259,15 +259,15 @@ void __28__LNConnection_setIdleTimer__block_invoke(uint64_t a1)
 
 - (void)extendIdleTimeout
 {
-  v3 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(LNConnection *)self idleTimer];
+  idleTimer = [(LNConnection *)self idleTimer];
 
-  if (v4)
+  if (idleTimer)
   {
-    v5 = [(LNConnection *)self idleTimer];
-    [v5 reset];
+    idleTimer2 = [(LNConnection *)self idleTimer];
+    [idleTimer2 reset];
   }
 }
 
@@ -277,117 +277,117 @@ void __28__LNConnection_setIdleTimer__block_invoke(uint64_t a1)
   [v2 invalidateAllConnections];
 }
 
-- (void)exportEntities:(id)a3 metadata:(id)a4 withConfiguration:(id)a5 completionHandler:(id)a6
+- (void)exportEntities:(id)entities metadata:(id)metadata withConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   sub_197648238(0, &qword_1EAF3ECB0, 0x1E69AC7C8);
   v10 = sub_19774F120();
   v11 = swift_allocObject();
   *(v11 + 16) = v9;
-  v12 = a4;
-  v13 = a5;
-  v14 = self;
-  sub_197668A30(v10, v12, v13, sub_197669AB0, v11);
+  metadataCopy = metadata;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_197668A30(v10, metadataCopy, configurationCopy, sub_197669AB0, v11);
 }
 
-- (void)stageContextWithRequest:(id)a3 completionHandler:(id)a4
+- (void)stageContextWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_19766A2AC(v8, sub_19766AD34, v7);
+  requestCopy = request;
+  selfCopy = self;
+  sub_19766A2AC(requestCopy, sub_19766AD34, v7);
 }
 
-- (void)linkUndoManager:(id)a3 completionHandler:(id)a4
+- (void)linkUndoManager:(id)manager completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_19767004C(v8, sub_197670A0C, v7);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_19767004C(managerCopy, sub_197670A0C, v7);
 }
 
-- (void)fetchURLForEnumWithIdentifier:(id)a3 caseIdentifier:(id)a4 completionHandler:(id)a5
+- (void)fetchURLForEnumWithIdentifier:(id)identifier caseIdentifier:(id)caseIdentifier completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_19774EF50();
   v9 = v8;
   v10 = sub_19774EF50();
   v12 = v11;
   v13 = swift_allocObject();
   *(v13 + 16) = v6;
-  v14 = self;
+  selfCopy = self;
   sub_197671174(v7, v9, v10, v12, sub_1976728F8, v13);
 }
 
-- (void)fetchURLsForEnumWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)fetchURLsForEnumWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_19774EF50();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_19767159C(v6, v8, sub_1976728E0, v9);
 }
 
-- (void)fetchValueForPropertyWithIdentifier:(id)a3 entity:(id)a4 completionHandler:(id)a5
+- (void)fetchValueForPropertyWithIdentifier:(id)identifier entity:(id)entity completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_19774EF50();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = a4;
-  v13 = self;
-  sub_197679200(v8, v10, v12, sub_197669AB0, v11);
+  entityCopy = entity;
+  selfCopy = self;
+  sub_197679200(v8, v10, entityCopy, sub_197669AB0, v11);
 }
 
-- (void)updateProperties:(id)a3 withQuery:(id)a4 completionHandler:(id)a5
+- (void)updateProperties:(id)properties withQuery:(id)query completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   sub_19767C65C();
   v8 = sub_19774F120();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = a4;
-  v11 = self;
-  sub_19767BBF0(v8, v10, sub_197670A0C, v9);
+  queryCopy = query;
+  selfCopy = self;
+  sub_19767BBF0(v8, queryCopy, sub_197670A0C, v9);
 }
 
-- (void)fetchEntityURL:(id)a3 completionHandler:(id)a4
+- (void)fetchEntityURL:(id)l completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1976A82FC(v8, sub_1976728F8, v7);
+  lCopy = l;
+  selfCopy = self;
+  sub_1976A82FC(lCopy, sub_1976728F8, v7);
 }
 
-- (void)fetchActionOutputValue:(id)a3 completionHandler:(id)a4
+- (void)fetchActionOutputValue:(id)value completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isDeferred])
+  valueCopy = value;
+  handlerCopy = handler;
+  if ([valueCopy isDeferred])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __81__LNConnection_FetchActionOutputValue__fetchActionOutputValue_completionHandler___block_invoke;
     v9[3] = &unk_1E74B1B10;
-    v12 = v7;
-    v10 = v6;
-    v11 = self;
+    v12 = handlerCopy;
+    v10 = valueCopy;
+    selfCopy = self;
     [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v9];
   }
 
   else
   {
-    v8 = [v6 value];
-    (*(v7 + 2))(v7, v8, 0);
+    value = [valueCopy value];
+    (*(handlerCopy + 2))(handlerCopy, value, 0);
   }
 }
 
@@ -410,19 +410,19 @@ void __81__LNConnection_FetchActionOutputValue__fetchActionOutputValue_completio
   }
 }
 
-- (void)fetchDestinationMDMAccountIdentifierForAction:(id)a3 completionHandler:(id)a4
+- (void)fetchDestinationMDMAccountIdentifierForAction:(id)action completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __100__LNConnection_FetchMDMProperties__fetchDestinationMDMAccountIdentifierForAction_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = actionCopy;
+  v8 = actionCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -445,19 +445,19 @@ void __100__LNConnection_FetchMDMProperties__fetchDestinationMDMAccountIdentifie
   }
 }
 
-- (void)fetchAppShortcutParametersForMangledName:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchAppShortcutParametersForMangledName:(id)name withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __107__LNConnection_FetchAppShortcutParameters__fetchAppShortcutParametersForMangledName_withCompletionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v11 = v6;
-  v12 = v7;
+  v11 = nameCopy;
+  v12 = handlerCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = nameCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -479,16 +479,16 @@ void __107__LNConnection_FetchAppShortcutParameters__fetchAppShortcutParametersF
   }
 }
 
-- (void)fetchAppShortcutParametersWithCompletionHandler:(id)a3
+- (void)fetchAppShortcutParametersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __92__LNConnection_FetchAppShortcutParameters__fetchAppShortcutParametersWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E74B1AC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v6];
 }
 
@@ -510,19 +510,19 @@ void __92__LNConnection_FetchAppShortcutParameters__fetchAppShortcutParametersWi
   }
 }
 
-- (void)fetchDisplayRepresentationForActions:(id)a3 completionHandler:(id)a4
+- (void)fetchDisplayRepresentationForActions:(id)actions completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __99__LNConnection_FetchDisplayRepresentation__fetchDisplayRepresentationForActions_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = actionsCopy;
+  v8 = actionsCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -545,22 +545,22 @@ void __99__LNConnection_FetchDisplayRepresentation__fetchDisplayRepresentationFo
   }
 }
 
-- (void)getListenerEndpointForBundleIdentifier:(id)a3 action:(id)a4 completionHandler:(id)a5
+- (void)getListenerEndpointForBundleIdentifier:(id)identifier action:(id)action completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  actionCopy = action;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __103__LNConnection_FetchListenerEndpoint__getListenerEndpointForBundleIdentifier_action_completionHandler___block_invoke;
   v14[3] = &unk_1E74B28E0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = identifierCopy;
+  v16 = actionCopy;
+  v17 = handlerCopy;
+  v11 = actionCopy;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v14];
 }
 
@@ -582,80 +582,80 @@ void __103__LNConnection_FetchListenerEndpoint__getListenerEndpointForBundleIden
   }
 }
 
-- (void)fetchOptionsForAction:(id)a3 actionMetadata:(id)a4 parameterMetadata:(id)a5 optionsProviderReference:(id)a6 searchTerm:(id)a7 localeIdentifier:(id)a8 completionHandler:(id)a9
+- (void)fetchOptionsForAction:(id)action actionMetadata:(id)metadata parameterMetadata:(id)parameterMetadata optionsProviderReference:(id)reference searchTerm:(id)term localeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [v16 effectiveBundleIdentifiers];
-  if ([v22 count] != 1)
+  actionCopy = action;
+  metadataCopy = metadata;
+  parameterMetadataCopy = parameterMetadata;
+  referenceCopy = reference;
+  termCopy = term;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  effectiveBundleIdentifiers = [metadataCopy effectiveBundleIdentifiers];
+  if ([effectiveBundleIdentifiers count] != 1)
   {
     goto LABEL_15;
   }
 
-  v45 = v20;
-  v46 = v15;
-  v23 = [v16 effectiveBundleIdentifiers];
-  v24 = [v23 firstObject];
-  if ([v24 type] != 3)
+  v45 = identifierCopy;
+  v46 = actionCopy;
+  effectiveBundleIdentifiers2 = [metadataCopy effectiveBundleIdentifiers];
+  firstObject = [effectiveBundleIdentifiers2 firstObject];
+  if ([firstObject type] != 3)
   {
 
-    v20 = v45;
-    v15 = v46;
+    identifierCopy = v45;
+    actionCopy = v46;
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  [v17 name];
-  v25 = v44 = v18;
+  [parameterMetadataCopy name];
+  v25 = v44 = referenceCopy;
   v26 = [v25 isEqualToString:@"app"];
 
-  v18 = v44;
-  v20 = v45;
-  v15 = v46;
+  referenceCopy = v44;
+  identifierCopy = v45;
+  actionCopy = v46;
   if (v26)
   {
-    v27 = [v16 effectiveBundleIdentifiers];
-    v28 = [v27 firstObject];
+    effectiveBundleIdentifiers3 = [metadataCopy effectiveBundleIdentifiers];
+    firstObject2 = [effectiveBundleIdentifiers3 firstObject];
 
-    v29 = [v28 bundleIdentifier];
-    v30 = v29;
-    if (v29 != @"com.apple.UIKitCore")
+    bundleIdentifier = [firstObject2 bundleIdentifier];
+    v30 = bundleIdentifier;
+    if (bundleIdentifier != @"com.apple.UIKitCore")
     {
-      if (!v29 || (v31 = [(__CFString *)v29 isEqualToString:@"com.apple.UIKitCore"], v30, (v31 & 1) == 0))
+      if (!bundleIdentifier || (v31 = [(__CFString *)bundleIdentifier isEqualToString:@"com.apple.UIKitCore"], v30, (v31 & 1) == 0))
       {
-        v32 = [v28 bundleIdentifier];
-        v33 = v32;
-        if (v32 != @"com.apple.UIKit")
+        bundleIdentifier2 = [firstObject2 bundleIdentifier];
+        v33 = bundleIdentifier2;
+        if (bundleIdentifier2 != @"com.apple.UIKit")
         {
-          if (!v32 || (v34 = [(__CFString *)v32 isEqualToString:@"com.apple.UIKit"], v33, (v34 & 1) == 0))
+          if (!bundleIdentifier2 || (v34 = [(__CFString *)bundleIdentifier2 isEqualToString:@"com.apple.UIKit"], v33, (v34 & 1) == 0))
           {
-            v35 = [v28 bundleIdentifier];
-            if (v35 != @"com.apple.AppKit")
+            bundleIdentifier3 = [firstObject2 bundleIdentifier];
+            if (bundleIdentifier3 != @"com.apple.AppKit")
             {
-              v36 = v35;
-              if (!v35)
+              v36 = bundleIdentifier3;
+              if (!bundleIdentifier3)
               {
 
 LABEL_23:
                 v40 = MEMORY[0x1E69635F8];
-                v41 = [(LNConnection *)self effectiveBundleIdentifier];
-                [v41 url];
-                v43 = v42 = v28;
+                effectiveBundleIdentifier = [(LNConnection *)self effectiveBundleIdentifier];
+                [effectiveBundleIdentifier url];
+                v43 = v42 = firstObject2;
                 v56 = 0;
-                v39 = [v40 ln_dynamicOptionsWithAppsImplementingFrameworkAtURL:v43 matchingSearchTerm:v19 options:0 error:&v56];
+                v39 = [v40 ln_dynamicOptionsWithAppsImplementingFrameworkAtURL:v43 matchingSearchTerm:termCopy options:0 error:&v56];
                 v38 = v56;
 
-                v28 = v42;
+                firstObject2 = v42;
                 goto LABEL_21;
               }
 
-              v37 = [(__CFString *)v35 isEqualToString:@"com.apple.AppKit"];
+              v37 = [(__CFString *)bundleIdentifier3 isEqualToString:@"com.apple.AppKit"];
 
               if ((v37 & 1) == 0)
               {
@@ -664,14 +664,14 @@ LABEL_23:
 
 LABEL_20:
               v57 = 0;
-              v39 = [MEMORY[0x1E69635F8] ln_dynamicOptionsWithAppsImplementingFrameworkAtURL:0 matchingSearchTerm:v19 options:0 error:&v57];
+              v39 = [MEMORY[0x1E69635F8] ln_dynamicOptionsWithAppsImplementingFrameworkAtURL:0 matchingSearchTerm:termCopy options:0 error:&v57];
               v38 = v57;
 LABEL_21:
-              v15 = v46;
-              v21[2](v21, v39, v38);
+              actionCopy = v46;
+              handlerCopy[2](handlerCopy, v39, v38);
 
-              v18 = v44;
-              v20 = v45;
+              referenceCopy = v44;
+              identifierCopy = v45;
               goto LABEL_17;
             }
           }
@@ -687,14 +687,14 @@ LABEL_16:
   v47[1] = 3221225472;
   v47[2] = __156__LNConnection_FetchOptions__fetchOptionsForAction_actionMetadata_parameterMetadata_optionsProviderReference_searchTerm_localeIdentifier_completionHandler___block_invoke;
   v47[3] = &unk_1E74B0980;
-  v55 = v21;
-  v48 = v15;
-  v49 = v16;
-  v50 = v17;
-  v51 = v18;
-  v52 = v19;
-  v53 = v20;
-  v54 = self;
+  v55 = handlerCopy;
+  v48 = actionCopy;
+  v49 = metadataCopy;
+  v50 = parameterMetadataCopy;
+  v51 = referenceCopy;
+  v52 = termCopy;
+  v53 = identifierCopy;
+  selfCopy = self;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v47];
 
   v38 = v55;
@@ -725,19 +725,19 @@ void __156__LNConnection_FetchOptions__fetchOptionsForAction_actionMetadata_para
   }
 }
 
-- (void)fetchActionForAppShortcutIdentifier:(id)a3 completionHandler:(id)a4
+- (void)fetchActionForAppShortcutIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __104__LNConnection_FetchActionForAutoShortcutPhrase__fetchActionForAppShortcutIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -760,19 +760,19 @@ void __104__LNConnection_FetchActionForAutoShortcutPhrase__fetchActionForAppShor
   }
 }
 
-- (void)fetchActionForAutoShortcutPhrase:(id)a3 completionHandler:(id)a4
+- (void)fetchActionForAutoShortcutPhrase:(id)phrase completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  phraseCopy = phrase;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __101__LNConnection_FetchActionForAutoShortcutPhrase__fetchActionForAutoShortcutPhrase_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = phraseCopy;
+  v8 = phraseCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -795,19 +795,19 @@ void __101__LNConnection_FetchActionForAutoShortcutPhrase__fetchActionForAutoSho
   }
 }
 
-- (void)releaseAsyncSequence:(id)a3 completionHandler:(id)a4
+- (void)releaseAsyncSequence:(id)sequence completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sequenceCopy = sequence;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__LNConnection_AsyncSequence__releaseAsyncSequence_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = sequenceCopy;
+  v8 = sequenceCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -830,19 +830,19 @@ void __70__LNConnection_AsyncSequence__releaseAsyncSequence_completionHandler___
   }
 }
 
-- (void)nextAsyncIteratorResults:(id)a3 completionHandler:(id)a4
+- (void)nextAsyncIteratorResults:(id)results completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__LNConnection_AsyncSequence__nextAsyncIteratorResults_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = resultsCopy;
+  v8 = resultsCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -865,22 +865,22 @@ void __74__LNConnection_AsyncSequence__nextAsyncIteratorResults_completionHandle
   }
 }
 
-- (void)createAsyncIteratorForSequence:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)createAsyncIteratorForSequence:(id)sequence options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sequenceCopy = sequence;
+  optionsCopy = options;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__LNConnection_AsyncSequence__createAsyncIteratorForSequence_options_completionHandler___block_invoke;
   v14[3] = &unk_1E74B28E0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = sequenceCopy;
+  v16 = optionsCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = optionsCopy;
+  v12 = sequenceCopy;
+  v13 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v14];
 }
 
@@ -926,19 +926,19 @@ void __88__LNConnection_AsyncSequence__createAsyncIteratorForSequence_options_co
   }
 }
 
-- (void)performAllEntitiesQueryWithEntityMangledTypeName:(id)a3 completionHandler:(id)a4
+- (void)performAllEntitiesQueryWithEntityMangledTypeName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __108__LNConnection_PerformQuery_Deprecated__performAllEntitiesQueryWithEntityMangledTypeName_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = nameCopy;
+  v8 = nameCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -967,19 +967,19 @@ void __108__LNConnection_PerformQuery_Deprecated__performAllEntitiesQueryWithEnt
   }
 }
 
-- (void)performSuggestedEntitiesQueryWithEntityMangledTypeName:(id)a3 completionHandler:(id)a4
+- (void)performSuggestedEntitiesQueryWithEntityMangledTypeName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __114__LNConnection_PerformQuery_Deprecated__performSuggestedEntitiesQueryWithEntityMangledTypeName_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = nameCopy;
+  v8 = nameCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1008,19 +1008,19 @@ void __114__LNConnection_PerformQuery_Deprecated__performSuggestedEntitiesQueryW
   }
 }
 
-- (void)performSuggestedResultsQueryWithEntityType:(id)a3 completionHandler:(id)a4
+- (void)performSuggestedResultsQueryWithEntityType:(id)type completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __102__LNConnection_PerformQuery_Deprecated__performSuggestedResultsQueryWithEntityType_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = typeCopy;
+  v8 = typeCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1049,19 +1049,19 @@ void __102__LNConnection_PerformQuery_Deprecated__performSuggestedResultsQueryWi
   }
 }
 
-- (void)performQuery:(id)a3 completionHandler:(id)a4
+- (void)performQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__LNConnection_PerformQuery__performQuery_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = queryCopy;
+  v8 = queryCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1090,19 +1090,19 @@ void __61__LNConnection_PerformQuery__performQuery_completionHandler___block_inv
   }
 }
 
-- (void)performConfigurableQuery:(id)a3 completionHandler:(id)a4
+- (void)performConfigurableQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__LNConnection_PerformQuery__performConfigurableQuery_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = queryCopy;
+  v8 = queryCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1131,19 +1131,19 @@ void __73__LNConnection_PerformQuery__performConfigurableQuery_completionHandler
   }
 }
 
-- (void)fetchActionAppContextForAction:(id)a3 completionHandler:(id)a4
+- (void)fetchActionAppContextForAction:(id)action completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__LNConnection_FetchActionAppContext__fetchActionAppContextForAction_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = actionCopy;
+  v8 = actionCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1166,19 +1166,19 @@ void __88__LNConnection_FetchActionAppContext__fetchActionAppContextForAction_co
   }
 }
 
-- (void)fetchStateForAppIntentIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)fetchStateForAppIntentIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__LNConnection_FetchAppIntentState__fetchStateForAppIntentIdentifiers_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = identifiersCopy;
+  v8 = identifiersCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1201,25 +1201,25 @@ void __89__LNConnection_FetchAppIntentState__fetchStateForAppIntentIdentifiers_c
   }
 }
 
-- (void)fetchDefaultValueForAction:(id)a3 actionMetadata:(id)a4 parameterIdentifier:(id)a5 completionHandler:(id)a6
+- (void)fetchDefaultValueForAction:(id)action actionMetadata:(id)metadata parameterIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  actionCopy = action;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __122__LNConnection_FetchOptionsDefaultValue__fetchDefaultValueForAction_actionMetadata_parameterIdentifier_completionHandler___block_invoke;
   v18[3] = &unk_1E74B1358;
-  v22 = self;
-  v23 = v13;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v19 = actionCopy;
+  v20 = metadataCopy;
+  v21 = identifierCopy;
+  v14 = identifierCopy;
+  v15 = metadataCopy;
+  v16 = actionCopy;
+  v17 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v18];
 }
 
@@ -1244,19 +1244,19 @@ void __122__LNConnection_FetchOptionsDefaultValue__fetchDefaultValueForAction_ac
   }
 }
 
-- (void)fetchOptionsDefaultValueForAction:(id)a3 completionHandler:(id)a4
+- (void)fetchOptionsDefaultValueForAction:(id)action completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __94__LNConnection_FetchOptionsDefaultValue__fetchOptionsDefaultValueForAction_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = actionCopy;
+  v8 = actionCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1279,19 +1279,19 @@ void __94__LNConnection_FetchOptionsDefaultValue__fetchOptionsDefaultValueForAct
   }
 }
 
-- (void)fetchSuggestedActionsForStartWorkoutAction:(id)a3 completionHandler:(id)a4
+- (void)fetchSuggestedActionsForStartWorkoutAction:(id)action completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __100__LNConnection_FetchSuggestedActions__fetchSuggestedActionsForStartWorkoutAction_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = actionCopy;
+  v8 = actionCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1314,19 +1314,19 @@ void __100__LNConnection_FetchSuggestedActions__fetchSuggestedActionsForStartWor
   }
 }
 
-- (void)fetchSuggestedActionsWithSiriLanguageCode:(id)a3 completionHandler:(id)a4
+- (void)fetchSuggestedActionsWithSiriLanguageCode:(id)code completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __99__LNConnection_FetchSuggestedActions__fetchSuggestedActionsWithSiriLanguageCode_completionHandler___block_invoke;
   v10[3] = &unk_1E74B1B10;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = codeCopy;
+  v8 = codeCopy;
+  v9 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v10];
 }
 
@@ -1349,16 +1349,16 @@ void __99__LNConnection_FetchSuggestedActions__fetchSuggestedActionsWithSiriLang
   }
 }
 
-- (void)fetchSuggestedActionsFromViewWithCompletionHandler:(id)a3
+- (void)fetchSuggestedActionsFromViewWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __90__LNConnection_FetchSuggestedActions__fetchSuggestedActionsFromViewWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E74B1AC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v6];
 }
 
@@ -1380,10 +1380,10 @@ void __90__LNConnection_FetchSuggestedActions__fetchSuggestedActionsFromViewWith
   }
 }
 
-- (void)updateAppShortcutParametersWithCompletionHandler:(id)a3
+- (void)updateAppShortcutParametersWithCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__LNConnection_AppShortcutParameters__updateAppShortcutParametersWithCompletionHandler___block_invoke;
@@ -1396,7 +1396,7 @@ void __90__LNConnection_FetchSuggestedActions__fetchSuggestedActionsFromViewWith
     v9[2] = __88__LNConnection_AppShortcutParameters__updateAppShortcutParametersWithCompletionHandler___block_invoke_9;
     v9[3] = &unk_1E74B1AC0;
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v9];
     v5 = v10;
   }
@@ -1406,14 +1406,14 @@ void __90__LNConnection_FetchSuggestedActions__fetchSuggestedActionsFromViewWith
     v6 = getLNLogCategoryMetadata();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(LNConnection *)self bundleIdentifier];
+      bundleIdentifier = [(LNConnection *)self bundleIdentifier];
       *buf = 138543362;
-      v13 = v7;
+      v13 = bundleIdentifier;
       _os_log_impl(&dword_19763D000, v6, OS_LOG_TYPE_ERROR, "Unable to update App Shortcuts for %{public}@ because the current process isn't entitled to do so.", buf, 0xCu);
     }
 
     v5 = LNConnectionErrorWithCode(1004);
-    (*(v4 + 2))(v4, v5);
+    (*(handlerCopy + 2))(handlerCopy, v5);
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1460,10 +1460,10 @@ void __88__LNConnection_AppShortcutParameters__updateAppShortcutParametersWithCo
   }
 }
 
-- (void)fetchStructuredDataWithTypeIdentifier:(int64_t)a3 forEntityIdentifiers:(id)a4 completionHandler:(id)a5
+- (void)fetchStructuredDataWithTypeIdentifier:(int64_t)identifier forEntityIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   if (+[LNFeatureFlags isViewActionAnnotationEnabled])
   {
     v10 = getLNLogCategoryView();
@@ -1474,13 +1474,13 @@ void __88__LNConnection_AppShortcutParameters__updateAppShortcutParametersWithCo
       _os_signpost_emit_with_name_impl(&dword_19763D000, v11, OS_SIGNPOST_INTERVAL_BEGIN, self, "LinkServices_fetchStructuredData", "", buf, 2u);
     }
 
-    v12 = [objc_opt_class() defaultOptions];
-    if (v12)
+    defaultOptions = [objc_opt_class() defaultOptions];
+    if (defaultOptions)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = v12;
+        v13 = defaultOptions;
       }
 
       else
@@ -1501,11 +1501,11 @@ void __88__LNConnection_AppShortcutParameters__updateAppShortcutParametersWithCo
     v16[1] = 3221225472;
     v16[2] = __111__LNConnection_FetchViewObjects__fetchStructuredDataWithTypeIdentifier_forEntityIdentifiers_completionHandler___block_invoke;
     v16[3] = &unk_1E74B21C0;
-    v19 = v9;
-    v20 = a3;
-    v17 = v8;
-    v18 = self;
-    v21 = self;
+    v19 = handlerCopy;
+    identifierCopy = identifier;
+    v17 = identifiersCopy;
+    selfCopy = self;
+    selfCopy2 = self;
     [(LNConnection *)self getConnectionInterfaceWithOptions:v15 completionHandler:v16];
   }
 
@@ -1518,7 +1518,7 @@ void __88__LNConnection_AppShortcutParameters__updateAppShortcutParametersWithCo
       _os_log_impl(&dword_19763D000, v14, OS_LOG_TYPE_INFO, "Link/viewActions flag disabled. Structured data fetching skipped", buf, 2u);
     }
 
-    (*(v9 + 2))(v9, MEMORY[0x1E695E0F8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], 0);
   }
 }
 
@@ -1563,9 +1563,9 @@ void __111__LNConnection_FetchViewObjects__fetchStructuredDataWithTypeIdentifier
   }
 }
 
-- (void)fetchViewActionsWithCompletionHandler:(id)a3
+- (void)fetchViewActionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (+[LNFeatureFlags isViewActionAnnotationEnabled])
   {
     v5 = getLNLogCategoryView();
@@ -1581,8 +1581,8 @@ void __111__LNConnection_FetchViewObjects__fetchStructuredDataWithTypeIdentifier
     v8[2] = __72__LNConnection_FetchViewObjects__fetchViewActionsWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E74B2090;
     v8[4] = self;
-    v9 = v4;
-    v10 = self;
+    v9 = handlerCopy;
+    selfCopy = self;
     [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v8];
   }
 
@@ -1595,7 +1595,7 @@ void __111__LNConnection_FetchViewObjects__fetchStructuredDataWithTypeIdentifier
       _os_log_impl(&dword_19763D000, v7, OS_LOG_TYPE_INFO, "Link/viewActions flag disabled. Action fetching skipped", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, MEMORY[0x1E695E0F0], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0], 0);
   }
 }
 
@@ -1638,13 +1638,13 @@ void __72__LNConnection_FetchViewObjects__fetchViewActionsWithCompletionHandler_
   }
 }
 
-- (void)fetchViewEntitiesWithInteractionIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchViewEntitiesWithInteractionIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   if (+[LNFeatureFlags isViewActionAnnotationEnabled])
   {
-    [(LNConnection *)self fetchViewEntitiesWithOptions:0 interactionIDs:v6 completionHandler:v7];
+    [(LNConnection *)self fetchViewEntitiesWithOptions:0 interactionIDs:dsCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1656,15 +1656,15 @@ void __72__LNConnection_FetchViewObjects__fetchViewActionsWithCompletionHandler_
       _os_log_impl(&dword_19763D000, v8, OS_LOG_TYPE_INFO, "Link/viewActions flag disabled. Entity fetching skipped", v9, 2u);
     }
 
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0], 0);
   }
 }
 
-- (void)fetchViewEntitiesWithOptions:(id)a3 interactionIDs:(id)a4 completionHandler:(id)a5
+- (void)fetchViewEntitiesWithOptions:(id)options interactionIDs:(id)ds completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  dsCopy = ds;
+  handlerCopy = handler;
   if (+[LNFeatureFlags isViewActionAnnotationEnabled])
   {
     v11 = getLNLogCategoryView();
@@ -1679,11 +1679,11 @@ void __72__LNConnection_FetchViewObjects__fetchViewActionsWithCompletionHandler_
     v14[1] = 3221225472;
     v14[2] = __96__LNConnection_FetchViewObjects__fetchViewEntitiesWithOptions_interactionIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E74B2068;
-    v17 = v10;
-    v15 = v9;
-    v16 = self;
-    v18 = self;
-    [(LNConnection *)self getConnectionInterfaceWithOptions:v8 completionHandler:v14];
+    v17 = handlerCopy;
+    v15 = dsCopy;
+    selfCopy = self;
+    selfCopy2 = self;
+    [(LNConnection *)self getConnectionInterfaceWithOptions:optionsCopy completionHandler:v14];
   }
 
   else
@@ -1695,7 +1695,7 @@ void __72__LNConnection_FetchViewObjects__fetchViewActionsWithCompletionHandler_
       _os_log_impl(&dword_19763D000, v13, OS_LOG_TYPE_INFO, "Link/viewActions flag disabled. Entity fetching skipped", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, MEMORY[0x1E695E0F0], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0], 0);
   }
 }
 
@@ -1741,12 +1741,12 @@ void __96__LNConnection_FetchViewObjects__fetchViewEntitiesWithOptions_interacti
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)resolveEntitiesForInteractionIDs:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5
++ (void)resolveEntitiesForInteractionIDs:(id)ds bundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10 = getLNLogCategoryView();
   v11 = os_signpost_id_generate(v10);
 
@@ -1763,13 +1763,13 @@ void __96__LNConnection_FetchViewObjects__fetchViewEntitiesWithOptions_interacti
   aBlock[2] = __102__LNConnection_FetchViewObjects__resolveEntitiesForInteractionIDs_bundleIdentifier_completionHandler___block_invoke;
   aBlock[3] = &unk_1E74B2040;
   v47 = v11;
-  v14 = v9;
+  v14 = handlerCopy;
   v46 = v14;
   v15 = _Block_copy(aBlock);
   if (+[LNFeatureFlags isViewActionAnnotationEnabled])
   {
-    v16 = [v7 copy];
-    v17 = [v8 copy];
+    v16 = [dsCopy copy];
+    v17 = [identifierCopy copy];
     v18 = [v16 count];
     v19 = getLNLogCategoryView();
     v20 = v19;
@@ -1939,39 +1939,39 @@ void __102__LNConnection_FetchViewObjects__resolveEntitiesForInteractionIDs_bund
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)fetchEntitiesFromActiveApplicationsWithInteractionIDs:(id)a3 bundleIdentifiers:(id)a4 completionHandler:(id)a5
++ (void)fetchEntitiesFromActiveApplicationsWithInteractionIDs:(id)ds bundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v87 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v11 = getLNLogCategoryView();
   v12 = v11;
-  if (a1 + 1 >= 2 && os_signpost_enabled(v11))
+  if (self + 1 >= 2 && os_signpost_enabled(v11))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_19763D000, v12, OS_SIGNPOST_INTERVAL_BEGIN, a1, "LinkServices_fetchEntitiesFromActiveApplications", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_19763D000, v12, OS_SIGNPOST_INTERVAL_BEGIN, self, "LinkServices_fetchEntitiesFromActiveApplications", "", buf, 2u);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWithInteractionIDs_bundleIdentifiers_completionHandler___block_invoke;
   aBlock[3] = &unk_1E74B20B8;
-  v82 = a1;
-  v13 = v10;
+  selfCopy = self;
+  v13 = handlerCopy;
   v81 = v13;
   v14 = _Block_copy(aBlock);
   if (+[LNFeatureFlags isViewActionAnnotationEnabled])
   {
-    if (v9 && [v9 count])
+    if (identifiersCopy && [identifiersCopy count])
     {
-      v15 = v9;
+      v15 = identifiersCopy;
 LABEL_18:
       v24 = getLNLogCategoryView();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *&buf[4] = v8;
+        *&buf[4] = dsCopy;
         *&buf[12] = 2112;
         *&buf[14] = v15;
         _os_log_impl(&dword_19763D000, v24, OS_LOG_TYPE_INFO, "Requesting entities for identifiers %@ for bundles %@", buf, 0x16u);
@@ -2007,8 +2007,8 @@ LABEL_18:
       v61[3] = &unk_1E74B26D0;
       v61[4] = &v68;
       v26 = _Block_copy(v61);
-      v27 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
-      [v27 setNeedsUserInteractivePriority:1];
+      configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+      [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
       v50[0] = MEMORY[0x1E69E9820];
       v50[1] = 3221225472;
       v50[2] = __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWithInteractionIDs_bundleIdentifiers_completionHandler___block_invoke_2;
@@ -2019,25 +2019,25 @@ LABEL_18:
       v28 = v26;
       v54 = v28;
       v59 = buf;
-      v9 = v15;
-      v51 = v9;
+      identifiersCopy = v15;
+      v51 = identifiersCopy;
       v29 = v25;
       v52 = v29;
-      v53 = v8;
-      v60 = a1;
+      v53 = dsCopy;
+      selfCopy2 = self;
       v30 = v14;
       v55 = v30;
-      [v27 setTransitionHandler:v50];
+      [configurationForDefaultMainDisplayMonitor setTransitionHandler:v50];
       v31 = getLNLogCategoryView();
       v32 = v31;
-      if (a1 + 1 >= 2 && os_signpost_enabled(v31))
+      if (self + 1 >= 2 && os_signpost_enabled(v31))
       {
         *v49 = 0;
-        _os_signpost_emit_with_name_impl(&dword_19763D000, v32, OS_SIGNPOST_INTERVAL_BEGIN, a1, "LinkServices_invokeFBSDisplayLayoutMonitor", "", v49, 2u);
+        _os_signpost_emit_with_name_impl(&dword_19763D000, v32, OS_SIGNPOST_INTERVAL_BEGIN, self, "LinkServices_invokeFBSDisplayLayoutMonitor", "", v49, 2u);
       }
 
       os_unfair_lock_lock(v75 + 8);
-      v33 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v27];
+      v33 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
       v34 = v69[5];
       v69[5] = v33;
 
@@ -2076,10 +2076,10 @@ LABEL_18:
 
     v18 = getLNLogCategoryView();
     v19 = v18;
-    if (a1 + 1 >= 2 && os_signpost_enabled(v18))
+    if (self + 1 >= 2 && os_signpost_enabled(v18))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_19763D000, v19, OS_SIGNPOST_INTERVAL_BEGIN, a1, "LinkServices_fetchMetadataBundles", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_19763D000, v19, OS_SIGNPOST_INTERVAL_BEGIN, self, "LinkServices_fetchMetadataBundles", "", buf, 2u);
     }
 
     v20 = objc_alloc_init(LNMetadataProvider);
@@ -2089,10 +2089,10 @@ LABEL_18:
 
     v22 = getLNLogCategoryView();
     v23 = v22;
-    if (a1 + 1 >= 2 && os_signpost_enabled(v22))
+    if (self + 1 >= 2 && os_signpost_enabled(v22))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_19763D000, v23, OS_SIGNPOST_INTERVAL_END, a1, "LinkServices_fetchMetadataBundles", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_19763D000, v23, OS_SIGNPOST_INTERVAL_END, self, "LinkServices_fetchMetadataBundles", "", buf, 2u);
     }
 
     if (v15 && [v15 count])
@@ -2109,7 +2109,7 @@ LABEL_18:
     }
 
     (*(v14 + 2))(v14, 0, v21);
-    v9 = v15;
+    identifiersCopy = v15;
   }
 
   else
@@ -2513,13 +2513,13 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
   return v4;
 }
 
-+ (void)fetchEntitiesFromActiveApplicationsWithInteractionIDs:(id)a3 completionHandler:(id)a4
++ (void)fetchEntitiesFromActiveApplicationsWithInteractionIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   if (+[LNFeatureFlags isViewActionAnnotationEnabled])
   {
-    [a1 fetchEntitiesFromActiveApplicationsWithInteractionIDs:v6 bundleIdentifiers:0 completionHandler:v7];
+    [self fetchEntitiesFromActiveApplicationsWithInteractionIDs:dsCopy bundleIdentifiers:0 completionHandler:handlerCopy];
   }
 
   else
@@ -2531,39 +2531,39 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
       _os_log_impl(&dword_19763D000, v8, OS_LOG_TYPE_INFO, "Link/viewActions flag disabled. Entity fetching skipped", v9, 2u);
     }
 
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], 0);
   }
 }
 
-- (void)setAuditToken:(id *)a3
+- (void)setAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_auditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_auditToken.val[4] = *&token->var0[4];
   *self->_auditToken.val = v3;
 }
 
-- (void)invalidateAssertionsForConnectionOperation:(id)a3
+- (void)invalidateAssertionsForConnectionOperation:(id)operation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  operationCopy = operation;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(LNConnection *)self logPrefix];
+    logPrefix = [(LNConnection *)self logPrefix];
     *buf = 138543618;
-    v19 = v7;
+    v19 = logPrefix;
     v20 = 2114;
-    v21 = v4;
+    v21 = operationCopy;
     _os_log_impl(&dword_19763D000, v6, OS_LOG_TYPE_INFO, "%{public}@ Invalidating assertions for %{public}@", buf, 0x16u);
   }
 
-  if ([v4 priority])
+  if ([operationCopy priority])
   {
-    v8 = [(LNConnection *)self assertionsMapTable];
-    v9 = [v8 objectForKey:v4];
+    assertionsMapTable = [(LNConnection *)self assertionsMapTable];
+    v9 = [assertionsMapTable objectForKey:operationCopy];
 
     [v9 removeObserver:self];
     if ([v9 isValid])
@@ -2576,11 +2576,11 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
         v12 = getLNLogCategoryConnection();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          v13 = [(LNConnection *)self logPrefix];
+          logPrefix2 = [(LNConnection *)self logPrefix];
           *buf = 138543874;
-          v19 = v13;
+          v19 = logPrefix2;
           v20 = 2114;
-          v21 = v4;
+          v21 = operationCopy;
           v22 = 2114;
           v23 = v11;
           _os_log_impl(&dword_19763D000, v12, OS_LOG_TYPE_ERROR, "%{public}@ Failed to invalidate process assertion for %{public}@: %{public}@", buf, 0x20u);
@@ -2593,8 +2593,8 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
       v11 = 0;
     }
 
-    v15 = [(LNConnection *)self assertionsMapTable];
-    [v15 removeObjectForKey:v4];
+    assertionsMapTable2 = [(LNConnection *)self assertionsMapTable];
+    [assertionsMapTable2 removeObjectForKey:operationCopy];
   }
 
   else
@@ -2602,11 +2602,11 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
     v11 = getLNLogCategoryConnection();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v14 = [(LNConnection *)self logPrefix];
+      logPrefix3 = [(LNConnection *)self logPrefix];
       *buf = 138543618;
-      v19 = v14;
+      v19 = logPrefix3;
       v20 = 2114;
-      v21 = v4;
+      v21 = operationCopy;
       _os_log_impl(&dword_19763D000, v11, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ has no priority and thus no associated assertion", buf, 0x16u);
     }
   }
@@ -2614,19 +2614,19 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)acquireAssertionsForConnectionOperation:(id)a3
+- (void)acquireAssertionsForConnectionOperation:(id)operation
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  operationCopy = operation;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 priority])
+  if ([operationCopy priority])
   {
     v6 = MEMORY[0x1E698E620];
     [(LNConnection *)self auditToken];
-    v7 = [v6 tokenFromAuditToken:buf];
-    v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v7, "pid")}];
+    logPrefix6 = [v6 tokenFromAuditToken:buf];
+    v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(logPrefix6, "pid")}];
     v41 = 0;
     v9 = [MEMORY[0x1E69C75D0] handleForIdentifier:v8 error:&v41];
     v10 = v41;
@@ -2635,9 +2635,9 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
       v13 = getLNLogCategoryConnection();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(LNConnection *)self logPrefix];
+        logPrefix = [(LNConnection *)self logPrefix];
         *buf = 138543874;
-        v44 = v14;
+        v44 = logPrefix;
         v45 = 2114;
         v46 = v8;
         v47 = 2114;
@@ -2645,7 +2645,7 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
         _os_log_impl(&dword_19763D000, v13, OS_LOG_TYPE_ERROR, "%{public}@ Unable to get process handle for pid %{public}@, %{public}@", buf, 0x20u);
       }
 
-      [v4 finishWithError:v10];
+      [operationCopy finishWithError:v10];
       goto LABEL_29;
     }
 
@@ -2654,9 +2654,9 @@ id __124__LNConnection_FetchViewObjects__fetchEntitiesFromActiveApplicationsWith
       v11 = getLNLogCategoryConnection();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(LNConnection *)self logPrefix];
+        logPrefix2 = [(LNConnection *)self logPrefix];
         *buf = 138543618;
-        v44 = v12;
+        v44 = logPrefix2;
         v45 = 2114;
         v46 = v8;
         _os_log_impl(&dword_19763D000, v11, OS_LOG_TYPE_INFO, "%{public}@ pid %{public}@ is a daemon; assertion is not required", buf, 0x16u);
@@ -2666,7 +2666,7 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v15 = [v4 priority];
+    priority = [operationCopy priority];
     v16 = @"Application connection";
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2676,9 +2676,9 @@ LABEL_29:
       v18 = getLNLogCategoryConnection();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [(LNConnection *)self logPrefix];
+        logPrefix3 = [(LNConnection *)self logPrefix];
         *buf = 138543362;
-        v44 = v19;
+        v44 = logPrefix3;
         _os_log_impl(&dword_19763D000, v18, OS_LOG_TYPE_INFO, "%{public}@ Will acquire extension assertion due to the connection type", buf, 0xCu);
       }
 
@@ -2691,15 +2691,15 @@ LABEL_29:
     else
     {
       v23 = @"com.apple.siri";
-      if (v15 == 3)
+      if (priority == 3)
       {
         v23 = @"com.apple.siri.pushtotalk";
       }
 
       v20 = v23;
-      v22 = v15 - 1;
+      v22 = priority - 1;
       v39 = @"Application connection";
-      if ((v15 - 1) > 3)
+      if ((priority - 1) > 3)
       {
         v24 = 0;
         goto LABEL_21;
@@ -2727,19 +2727,19 @@ LABEL_21:
     {
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        v32 = [(LNConnection *)self logPrefix];
+        logPrefix4 = [(LNConnection *)self logPrefix];
         *buf = 138543874;
-        v44 = v32;
+        v44 = logPrefix4;
         v45 = 2114;
         v46 = v8;
         v47 = 2114;
-        v48 = v4;
+        v48 = operationCopy;
         _os_log_impl(&dword_19763D000, v31, OS_LOG_TYPE_INFO, "%{public}@ Successfully acquired process assertion (pid: %{public}@) for %{public}@", buf, 0x20u);
       }
 
       [v29 addObserver:self];
-      v33 = [(LNConnection *)self assertionsMapTable];
-      [v33 setObject:v29 forKey:v4];
+      assertionsMapTable = [(LNConnection *)self assertionsMapTable];
+      [assertionsMapTable setObject:v29 forKey:operationCopy];
 
       v34 = v37;
     }
@@ -2749,9 +2749,9 @@ LABEL_21:
       v34 = v37;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v35 = [(LNConnection *)self logPrefix];
+        logPrefix5 = [(LNConnection *)self logPrefix];
         *buf = 138543874;
-        v44 = v35;
+        v44 = logPrefix5;
         v45 = 2114;
         v46 = v37;
         v47 = 2114;
@@ -2760,7 +2760,7 @@ LABEL_21:
       }
 
       [v29 invalidate];
-      [v4 finishWithError:v10];
+      [operationCopy finishWithError:v10];
     }
 
     goto LABEL_29;
@@ -2769,9 +2769,9 @@ LABEL_21:
   v10 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v7 = [(LNConnection *)self logPrefix];
+    logPrefix6 = [(LNConnection *)self logPrefix];
     *buf = 138543362;
-    v44 = v7;
+    v44 = logPrefix6;
     _os_log_impl(&dword_19763D000, v10, OS_LOG_TYPE_INFO, "%{public}@ Connection has no background or foreground priority; assertion not required", buf, 0xCu);
 LABEL_30:
   }
@@ -2779,26 +2779,26 @@ LABEL_30:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  errorCopy = error;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v8 = [(LNConnection *)self activity];
-  os_activity_scope_enter(v8, &state);
+  activity = [(LNConnection *)self activity];
+  os_activity_scope_enter(activity, &state);
 
-  v9 = [(LNConnection *)self queue];
+  queue = [(LNConnection *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__LNConnection_assertion_didInvalidateWithError___block_invoke;
   block[3] = &unk_1E74B2460;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = errorCopy;
+  v14 = assertionCopy;
+  v10 = assertionCopy;
+  v11 = errorCopy;
+  dispatch_async(queue, block);
 
   os_activity_scope_leave(&state);
 }
@@ -2916,11 +2916,11 @@ LABEL_21:
   return v4;
 }
 
-- (id)executorForAction:(id)a3 options:(id)a4 delegate:(id)a5
+- (id)executorForAction:(id)action options:(id)options delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  optionsCopy = options;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_executorsLock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -2931,11 +2931,11 @@ LABEL_21:
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &state);
-  v12 = [[LNActionExecutor alloc] initWithAction:v8 connection:self options:v9];
-  [(LNActionExecutor *)v12 setDelegate:v10];
+  v12 = [[LNActionExecutor alloc] initWithAction:actionCopy connection:self options:optionsCopy];
+  [(LNActionExecutor *)v12 setDelegate:delegateCopy];
   executors = self->_executors;
-  v14 = [(LNActionExecutor *)v12 identifier];
-  [(NSMapTable *)executors setObject:v12 forKey:v14];
+  identifier = [(LNActionExecutor *)v12 identifier];
+  [(NSMapTable *)executors setObject:v12 forKey:identifier];
 
   os_activity_scope_leave(&state);
   v11[2](v11);
@@ -2945,11 +2945,11 @@ LABEL_21:
 
 - (BOOL)allowsExtendingTimeoutOnProgressUpdates
 {
-  v2 = [(LNConnection *)self xpcConnection];
-  v3 = v2;
-  if (v2)
+  xpcConnection = [(LNConnection *)self xpcConnection];
+  v3 = xpcConnection;
+  if (xpcConnection)
   {
-    [v2 auditToken];
+    [xpcConnection auditToken];
   }
 
   else
@@ -2990,18 +2990,18 @@ uint64_t __55__LNConnection_allowsExtendingTimeoutOnProgressUpdates__block_invok
   return v5;
 }
 
-- (void)closeWithError:(id)a3
+- (void)closeWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNConnection *)self queue];
+  errorCopy = error;
+  queue = [(LNConnection *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__LNConnection_closeWithError___block_invoke;
   v7[3] = &unk_1E74B27A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  selfCopy = self;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 void __31__LNConnection_closeWithError___block_invoke(uint64_t a1)
@@ -3091,15 +3091,15 @@ LABEL_7:
 
 - (void)cancelIdleTimeout
 {
-  v3 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(LNConnection *)self idleTimer];
+  idleTimer = [(LNConnection *)self idleTimer];
 
-  if (v4)
+  if (idleTimer)
   {
-    v5 = [(LNConnection *)self idleTimer];
-    [v5 cancel];
+    idleTimer2 = [(LNConnection *)self idleTimer];
+    [idleTimer2 cancel];
   }
 }
 
@@ -3128,18 +3128,18 @@ void __28__LNConnection_setIdleTimer__block_invoke_2(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionOperation:(id)a3 didFinishWithError:(id)a4
+- (void)connectionOperation:(id)operation didFinishWithError:(id)error
 {
-  v5 = a3;
-  v6 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v6);
+  operationCopy = operation;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v5 invalidateAssertionsOnCompletion])
+  if ([operationCopy invalidateAssertionsOnCompletion])
   {
-    [(LNConnection *)self invalidateAssertionsForConnectionOperation:v5];
+    [(LNConnection *)self invalidateAssertionsForConnectionOperation:operationCopy];
   }
 
-  v8 = v5;
+  v8 = operationCopy;
   if (v8 && ([v8 conformsToProtocol:&unk_1F0BE0140] & 1) != 0)
   {
     [v8 invalidateRuntimeAssertions];
@@ -3155,13 +3155,13 @@ void __28__LNConnection_setIdleTimer__block_invoke_2(uint64_t a1)
   [(LNConnection *)self removeConnectionOperation:v8];
 }
 
-- (void)connectionOperationWillStart:(id)a3
+- (void)connectionOperationWillStart:(id)start
 {
-  v4 = a3;
-  v5 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  startCopy = start;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = v4;
+  v7 = startCopy;
   if (v7 && ([v7 conformsToProtocol:&unk_1F0BE0140] & 1) != 0)
   {
     [v7 acquireRuntimeAssertions];
@@ -3177,28 +3177,28 @@ void __28__LNConnection_setIdleTimer__block_invoke_2(uint64_t a1)
   [(LNConnection *)self acquireAssertionsForConnectionOperation:v7];
 }
 
-- (void)fetchListenerEndpointFromApplicationServiceWithCompletionHandler:(id)a3
+- (void)fetchListenerEndpointFromApplicationServiceWithCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(LNConnection *)self logPrefix];
-    v8 = [(LNConnection *)self processInstanceIdentifier];
+    logPrefix = [(LNConnection *)self logPrefix];
+    processInstanceIdentifier = [(LNConnection *)self processInstanceIdentifier];
     *buf = 138543618;
-    v23 = v7;
+    v23 = logPrefix;
     v24 = 2114;
-    v25 = v8;
+    v25 = processInstanceIdentifier;
     _os_log_impl(&dword_19763D000, v6, OS_LOG_TYPE_INFO, "%{public}@ Fetching XPC listener endpoint for processInstanceIdentifier: %{public}@ from ApplicationService", buf, 0x16u);
   }
 
-  v9 = [(LNConnection *)self processInstanceIdentifier];
+  processInstanceIdentifier2 = [(LNConnection *)self processInstanceIdentifier];
 
-  if (v9)
+  if (processInstanceIdentifier2)
   {
     v10 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.linkd.autoShortcut" options:0];
     v11 = LNDaemonApplicationXPCInterface();
@@ -3216,26 +3216,26 @@ void __28__LNConnection_setIdleTimer__block_invoke_2(uint64_t a1)
     v20[3] = &unk_1E74B2318;
     v20[4] = self;
     [v10 setInterruptionHandler:v20];
-    v12 = [(LNConnection *)self queue];
-    [v10 _setQueue:v12];
+    queue2 = [(LNConnection *)self queue];
+    [v10 _setQueue:queue2];
 
     [v10 resume];
-    v13 = [v10 remoteObjectProxy];
-    v14 = [(LNConnection *)self processInstanceIdentifier];
+    remoteObjectProxy = [v10 remoteObjectProxy];
+    processInstanceIdentifier3 = [(LNConnection *)self processInstanceIdentifier];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __81__LNConnection_fetchListenerEndpointFromApplicationServiceWithCompletionHandler___block_invoke_116;
     v17[3] = &unk_1E74B2410;
     v18 = v10;
-    v19 = v4;
+    v19 = handlerCopy;
     v15 = v10;
-    [v13 fetchListenerEndpointForProcessInstanceIdentifier:v14 reply:v17];
+    [remoteObjectProxy fetchListenerEndpointForProcessInstanceIdentifier:processInstanceIdentifier3 reply:v17];
   }
 
   else
   {
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LNConnectionErrorDomain" code:2302 userInfo:0];
-    (*(v4 + 2))(v4, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -3280,25 +3280,25 @@ void __81__LNConnection_fetchListenerEndpointFromApplicationServiceWithCompletio
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)connectUsingProcessIdentifierWithOptions:(id)a3
+- (BOOL)connectUsingProcessIdentifierWithOptions:(id)options
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(LNConnection *)self processInstanceIdentifier];
+  processInstanceIdentifier = [(LNConnection *)self processInstanceIdentifier];
 
-  if (v5)
+  if (processInstanceIdentifier)
   {
     v6 = getLNLogCategoryConnection();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(LNConnection *)self logPrefix];
-      v8 = [(LNConnection *)self processInstanceIdentifier];
+      logPrefix = [(LNConnection *)self logPrefix];
+      processInstanceIdentifier2 = [(LNConnection *)self processInstanceIdentifier];
       *buf = 138543618;
-      v13 = v7;
+      v13 = logPrefix;
       v14 = 2114;
-      v15 = v8;
+      v15 = processInstanceIdentifier2;
       _os_log_impl(&dword_19763D000, v6, OS_LOG_TYPE_INFO, "%{public}@ Connecting using processInstanceIdentifier: %{public}@ from ApplicationService", buf, 0x16u);
     }
 
@@ -3310,7 +3310,7 @@ void __81__LNConnection_fetchListenerEndpointFromApplicationServiceWithCompletio
     [(LNConnection *)self fetchListenerEndpointFromApplicationServiceWithCompletionHandler:v11];
   }
 
-  result = v5 != 0;
+  result = processInstanceIdentifier != 0;
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -3333,52 +3333,52 @@ void __57__LNConnection_connectUsingProcessIdentifierWithOptions___block_invoke(
   }
 }
 
-- (void)connectUsingListenerEndpoint:(id)a3 auditToken:(id *)a4
+- (void)connectUsingListenerEndpoint:(id)endpoint auditToken:(id *)token
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v8);
+  endpointCopy = endpoint;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(LNConnection *)self logPrefix];
+    logPrefix = [(LNConnection *)self logPrefix];
     *buf = 138543362;
-    *&buf[4] = v10;
+    *&buf[4] = logPrefix;
     _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_INFO, "%{public}@ Establishing a direct connection to the target process via a listener endpoint", buf, 0xCu);
   }
 
-  if (!v7)
+  if (!endpointCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:689 description:{@"Invalid parameter not satisfying: %@", @"listenerEndpoint"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:689 description:{@"Invalid parameter not satisfying: %@", @"listenerEndpoint"}];
   }
 
   if ([(LNConnection *)self state]!= 1)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:690 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnecting"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:690 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnecting"}];
   }
 
-  v11 = *&a4->var0[4];
-  *buf = *a4->var0;
+  v11 = *&token->var0[4];
+  *buf = *token->var0;
   v25 = v11;
   [(LNConnection *)self setAuditToken:buf];
-  v12 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v7];
+  v12 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
   [(LNConnection *)self setXPCConnection:v12];
 
-  v13 = [(LNConnection *)self xpcConnection];
-  v14 = [(LNConnection *)self bundleIdentifier];
+  xpcConnection = [(LNConnection *)self xpcConnection];
+  bundleIdentifier = [(LNConnection *)self bundleIdentifier];
   v15 = LNConnectionHostXPCInterface();
-  [v13 ln_configureWithBundleIdentifier:v14 interface:v15];
+  [xpcConnection ln_configureWithBundleIdentifier:bundleIdentifier interface:v15];
 
-  v16 = [(LNConnection *)self xpcConnection];
-  v17 = [MEMORY[0x1E696AFB0] UUID];
-  [v16 _setUUID:v17];
+  xpcConnection2 = [(LNConnection *)self xpcConnection];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [xpcConnection2 _setUUID:uUID];
 
-  v18 = [(LNConnection *)self xpcConnection];
-  [v18 resume];
+  xpcConnection3 = [(LNConnection *)self xpcConnection];
+  [xpcConnection3 resume];
 
   objc_initWeak(buf, self);
   v22[0] = MEMORY[0x1E69E9820];
@@ -3423,23 +3423,23 @@ void __56__LNConnection_connectUsingListenerEndpoint_auditToken___block_invoke(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUpConnectionContextWithCompletionHandler:(id)a3
+- (void)setUpConnectionContextWithCompletionHandler:(id)handler
 {
   v91[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = MEMORY[0x1E6963620];
-  v7 = [(LNConnection *)self bundleIdentifier];
-  v8 = [v6 bundleRecordWithBundleIdentifier:v7 allowPlaceholder:0 error:0];
+  bundleIdentifier = [(LNConnection *)self bundleIdentifier];
+  v8 = [v6 bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
 
-  v9 = [(LNConnection *)self effectiveBundleIdentifier];
-  v10 = [v9 url];
+  effectiveBundleIdentifier = [(LNConnection *)self effectiveBundleIdentifier];
+  v10 = [effectiveBundleIdentifier url];
   if (v10)
   {
-    v11 = [(LNConnection *)self effectiveBundleIdentifier];
-    v12 = [v11 type] == 3;
+    effectiveBundleIdentifier2 = [(LNConnection *)self effectiveBundleIdentifier];
+    v12 = [effectiveBundleIdentifier2 type] == 3;
   }
 
   else
@@ -3447,21 +3447,21 @@ void __56__LNConnection_connectUsingListenerEndpoint_auditToken___block_invoke(u
     v12 = 0;
   }
 
-  v71 = v4;
+  v71 = handlerCopy;
   if (v8)
   {
-    v13 = [(LNConnection *)self effectiveBundleIdentifier];
-    v14 = [v13 url];
+    effectiveBundleIdentifier3 = [(LNConnection *)self effectiveBundleIdentifier];
+    v14 = [effectiveBundleIdentifier3 url];
     if (v14)
     {
       v15 = v12;
       v16 = [v8 URL];
-      v17 = [v16 fileReferenceURL];
-      v18 = [(LNConnection *)self effectiveBundleIdentifier];
-      v19 = [v18 url];
-      v20 = [v19 fileReferenceURL];
-      v21 = v17;
-      v22 = v20;
+      fileReferenceURL = [v16 fileReferenceURL];
+      effectiveBundleIdentifier4 = [(LNConnection *)self effectiveBundleIdentifier];
+      v19 = [effectiveBundleIdentifier4 url];
+      fileReferenceURL2 = [v19 fileReferenceURL];
+      v21 = fileReferenceURL;
+      v22 = fileReferenceURL2;
       v23 = v22;
       if (v21 == v22)
       {
@@ -3497,9 +3497,9 @@ void __56__LNConnection_connectUsingListenerEndpoint_auditToken___block_invoke(u
   v26 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(LNConnection *)self logPrefix];
+    logPrefix = [(LNConnection *)self logPrefix];
     *buf = 138543362;
-    v84 = v27;
+    v84 = logPrefix;
     _os_log_impl(&dword_19763D000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ [Context Setup] Process assertions requested for context setup", buf, 0xCu);
   }
 
@@ -3534,16 +3534,16 @@ LABEL_27:
 LABEL_28:
 
     v50 = [LNConnectionContext alloc];
-    v51 = [(LNConnection *)self userIdentity];
+    userIdentity = [(LNConnection *)self userIdentity];
     if ((v12 | v69))
     {
-      v52 = [(LNConnection *)self effectiveBundleIdentifier];
-      v53 = [(LNConnectionContext *)v50 initWithUserIdentity:v51 effectiveBundleIdentifier:v52];
+      effectiveBundleIdentifier5 = [(LNConnection *)self effectiveBundleIdentifier];
+      v53 = [(LNConnectionContext *)v50 initWithUserIdentity:userIdentity effectiveBundleIdentifier:effectiveBundleIdentifier5];
     }
 
     else
     {
-      v53 = [(LNConnectionContext *)v50 initWithUserIdentity:v51 effectiveBundleIdentifier:0];
+      v53 = [(LNConnectionContext *)v50 initWithUserIdentity:userIdentity effectiveBundleIdentifier:0];
     }
 
     v54 = v8;
@@ -3551,32 +3551,32 @@ LABEL_28:
     v55 = getLNLogCategoryConnection();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
     {
-      v56 = [(LNConnection *)self logPrefix];
+      logPrefix2 = [(LNConnection *)self logPrefix];
       *buf = 138543618;
-      v84 = v56;
+      v84 = logPrefix2;
       v85 = 2112;
       v86 = v53;
       _os_log_impl(&dword_19763D000, v55, OS_LOG_TYPE_INFO, "%{public}@ [Context Setup] Updating connection connection context with: %@", buf, 0x16u);
     }
 
-    v57 = [(LNConnection *)self xpcConnection];
+    xpcConnection = [(LNConnection *)self xpcConnection];
     v77[0] = MEMORY[0x1E69E9820];
     v77[1] = 3221225472;
     v77[2] = __60__LNConnection_setUpConnectionContextWithCompletionHandler___block_invoke;
     v77[3] = &unk_1E74B2388;
     v58 = v44;
     v78 = v58;
-    v79 = self;
+    selfCopy = self;
     v59 = @"IntentStartupGrant";
     v80 = @"IntentStartupGrant";
-    v60 = [v57 remoteObjectProxyWithErrorHandler:v77];
+    v60 = [xpcConnection remoteObjectProxyWithErrorHandler:v77];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __60__LNConnection_setUpConnectionContextWithCompletionHandler___block_invoke_104;
     v72[3] = &unk_1E74B23B0;
     v61 = v58;
     v73 = v61;
-    v74 = self;
+    selfCopy2 = self;
     v62 = @"IntentStartupGrant";
     v75 = @"IntentStartupGrant";
     v63 = v71;
@@ -3593,9 +3593,9 @@ LABEL_28:
     v32 = getLNLogCategoryConnection();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v49 = [(LNConnection *)self logPrefix];
+      logPrefix3 = [(LNConnection *)self logPrefix];
       *buf = 138544130;
-      v84 = v49;
+      v84 = logPrefix3;
       v85 = 2114;
       v86 = v29;
       v87 = 2114;
@@ -3635,9 +3635,9 @@ LABEL_28:
     v8 = v67;
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
-      v48 = [(LNConnection *)self logPrefix];
+      logPrefix4 = [(LNConnection *)self logPrefix];
       *buf = 138543874;
-      v84 = v48;
+      v84 = logPrefix4;
       v85 = 2114;
       v86 = @"IntentStartupGrant";
       v87 = 2114;
@@ -3653,9 +3653,9 @@ LABEL_28:
   v54 = v67;
   if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
   {
-    v65 = [(LNConnection *)self logPrefix];
+    logPrefix5 = [(LNConnection *)self logPrefix];
     *buf = 138543874;
-    v84 = v65;
+    v84 = logPrefix5;
     v85 = 2114;
     v86 = @"IntentStartupGrant";
     v87 = 2114;
@@ -3783,7 +3783,7 @@ LABEL_10:
   v7 = v13;
   if (v6)
   {
-    v8 = [v6 isDaemon];
+    isDaemon = [v6 isDaemon];
   }
 
   else
@@ -3791,9 +3791,9 @@ LABEL_10:
     v9 = getLNLogCategoryConnection();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(LNConnection *)self logPrefix];
+      logPrefix = [(LNConnection *)self logPrefix];
       *buf = 138543874;
-      v15 = v10;
+      v15 = logPrefix;
       v16 = 2114;
       v17 = v5;
       v18 = 2114;
@@ -3801,20 +3801,20 @@ LABEL_10:
       _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Unable to get process handle for pid %{public}@, %{public}@", buf, 0x20u);
     }
 
-    v8 = 0;
+    isDaemon = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v8;
+  return isDaemon;
 }
 
 - (BOOL)isPerformActionOperationPending
 {
-  v3 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(LNConnection *)self connectionOperations];
-  v5 = [v4 objectsPassingTest:&__block_literal_global_13333];
+  connectionOperations = [(LNConnection *)self connectionOperations];
+  v5 = [connectionOperations objectsPassingTest:&__block_literal_global_13333];
   v6 = [v5 count] != 0;
 
   return v6;
@@ -3843,24 +3843,24 @@ uint64_t __47__LNConnection_isPerformActionOperationPending__block_invoke(uint64
   }
 }
 
-- (void)extendTimeoutForOperationWithIdentifier:(id)a3
+- (void)extendTimeoutForOperationWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:554 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:554 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v6 = [(LNConnection *)self queue];
+  queue = [(LNConnection *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__LNConnection_extendTimeoutForOperationWithIdentifier___block_invoke;
   block[3] = &unk_1E74B27A0;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v10 = identifierCopy;
+  v7 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __56__LNConnection_extendTimeoutForOperationWithIdentifier___block_invoke(uint64_t a1)
@@ -3894,24 +3894,24 @@ void __56__LNConnection_extendTimeoutForOperationWithIdentifier___block_invoke(u
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelTimeoutForOperationWithIdentifier:(id)a3
+- (void)cancelTimeoutForOperationWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:539 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:539 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v6 = [(LNConnection *)self queue];
+  queue = [(LNConnection *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__LNConnection_cancelTimeoutForOperationWithIdentifier___block_invoke;
   block[3] = &unk_1E74B27A0;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v10 = identifierCopy;
+  v7 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __56__LNConnection_cancelTimeoutForOperationWithIdentifier___block_invoke(uint64_t a1)
@@ -3945,34 +3945,34 @@ void __56__LNConnection_cancelTimeoutForOperationWithIdentifier___block_invoke(u
 
 - (NSSet)currentConnectionOperations
 {
-  v3 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(LNConnection *)self connectionOperations];
-  v5 = [v4 copy];
+  connectionOperations = [(LNConnection *)self connectionOperations];
+  v5 = [connectionOperations copy];
 
   return v5;
 }
 
-- (id)operationWithIdentifier:(id)a3
+- (id)operationWithIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v6);
+  identifierCopy = identifier;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v5)
+  if (!identifierCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:521 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:521 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(LNConnection *)self connectionOperations];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  connectionOperations = [(LNConnection *)self connectionOperations];
+  v8 = [connectionOperations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = *v18;
@@ -3982,12 +3982,12 @@ void __56__LNConnection_cancelTimeoutForOperationWithIdentifier___block_invoke(u
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(connectionOperations);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v12 isEqual:v5];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqual:identifierCopy];
 
         if (v13)
         {
@@ -3996,7 +3996,7 @@ void __56__LNConnection_cancelTimeoutForOperationWithIdentifier___block_invoke(u
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [connectionOperations countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -4013,35 +4013,35 @@ LABEL_13:
   return v8;
 }
 
-- (void)setDisconnectedWithError:(id)a3
+- (void)setDisconnectedWithError:(id)error
 {
-  v7 = a3;
-  v5 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(LNConnection *)self state]!= 3 && [(LNConnection *)self state]!= 1 && [(LNConnection *)self state]!= 2)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:513 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnected || self.state == LNConnectionStateConnecting || self.state == LNConnectionStateRefreshing"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:513 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnected || self.state == LNConnectionStateConnecting || self.state == LNConnectionStateRefreshing"}];
   }
 
   [(LNConnection *)self setState:0];
-  [(LNConnection *)self completeWithError:v7];
+  [(LNConnection *)self completeWithError:errorCopy];
 }
 
-- (BOOL)refreshWithOptions:(id)a3
+- (BOOL)refreshWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v6);
+  optionsCopy = options;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(LNConnection *)self state]!= 3)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnected"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnected"}];
   }
 
-  v7 = [(LNConnection *)self shouldRefreshWithOptions:v5];
+  v7 = [(LNConnection *)self shouldRefreshWithOptions:optionsCopy];
   if (v7)
   {
     [(LNConnection *)self setState:2];
@@ -4055,47 +4055,47 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)shouldRefreshWithOptions:(id)a3
+- (BOOL)shouldRefreshWithOptions:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v6);
+  optionsCopy = options;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(LNConnection *)self state]!= 3)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:469 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnected"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:469 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateConnected"}];
   }
 
-  v7 = [(LNConnection *)self userIdentity];
+  userIdentity = [(LNConnection *)self userIdentity];
 
-  if (v7)
+  if (userIdentity)
   {
     goto LABEL_4;
   }
 
-  v11 = [(LNConnection *)self effectiveBundleIdentifier];
-  if (v11)
+  effectiveBundleIdentifier = [(LNConnection *)self effectiveBundleIdentifier];
+  if (effectiveBundleIdentifier)
   {
-    v12 = v11;
-    v13 = [(LNConnection *)self effectiveBundleIdentifier];
-    v14 = [v13 type];
+    v12 = effectiveBundleIdentifier;
+    effectiveBundleIdentifier2 = [(LNConnection *)self effectiveBundleIdentifier];
+    type = [effectiveBundleIdentifier2 type];
 
-    if (v14 == 3)
+    if (type == 3)
     {
       goto LABEL_4;
     }
   }
 
-  v15 = [(LNConnection *)self currentOptions];
-  v16 = v5;
+  currentOptions = [(LNConnection *)self currentOptions];
+  v16 = optionsCopy;
   v17 = v16;
-  if (v15 != v16)
+  if (currentOptions != v16)
   {
-    if (v16 && v15)
+    if (v16 && currentOptions)
     {
-      v18 = [v15 isEqual:v16];
+      v18 = [currentOptions isEqual:v16];
 
       if (v18)
       {
@@ -4128,38 +4128,38 @@ LABEL_5:
   return v8;
 }
 
-- (void)connectWithOptions:(id)a3
+- (void)connectWithOptions:(id)options
 {
-  v5 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(LNConnection *)self state])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:462 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateDisconnected"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:462 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateDisconnected"}];
   }
 
   [(LNConnection *)self setState:1];
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &state);
   if ([(LNConnection *)self state]&& [(LNConnection *)self state]!= 3)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:440 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateDisconnected || self.state == LNConnectionStateConnected"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:440 description:{@"Invalid parameter not satisfying: %@", @"self.state == LNConnectionStateDisconnected || self.state == LNConnectionStateConnected"}];
   }
 
-  v7 = [(LNConnection *)self getConnectionInterfaceCompletionHandler];
-  v8 = v7 == 0;
+  getConnectionInterfaceCompletionHandler = [(LNConnection *)self getConnectionInterfaceCompletionHandler];
+  v8 = getConnectionInterfaceCompletionHandler == 0;
 
   if (!v8)
   {
@@ -4169,31 +4169,31 @@ LABEL_5:
     aBlock[3] = &unk_1E74B2318;
     aBlock[4] = self;
     v9 = _Block_copy(aBlock);
-    if (v5)
+    if (errorCopy)
     {
       v10 = getLNLogCategoryConnection();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [(LNConnection *)self logPrefix];
-        v12 = [v5 localizedDescription];
+        logPrefix = [(LNConnection *)self logPrefix];
+        localizedDescription = [errorCopy localizedDescription];
         *buf = 138543874;
-        v20 = v11;
+        v20 = logPrefix;
         v21 = 2114;
-        v22 = v5;
+        v22 = errorCopy;
         v23 = 2114;
-        v24 = v12;
+        v24 = localizedDescription;
         _os_log_impl(&dword_19763D000, v10, OS_LOG_TYPE_ERROR, "%{public}@ Unable to get connection interface: %{public}@ (%{public}@)", buf, 0x20u);
       }
 
-      v13 = [(LNConnection *)self getConnectionInterfaceCompletionHandler];
-      (v13)[2](v13, 0, v5);
+      getConnectionInterfaceCompletionHandler2 = [(LNConnection *)self getConnectionInterfaceCompletionHandler];
+      (getConnectionInterfaceCompletionHandler2)[2](getConnectionInterfaceCompletionHandler2, 0, errorCopy);
     }
 
     else
     {
-      v13 = [(LNConnection *)self getConnectionInterfaceCompletionHandler];
-      v14 = [(LNConnection *)self connectionInterface];
-      (v13)[2](v13, v14, 0);
+      getConnectionInterfaceCompletionHandler2 = [(LNConnection *)self getConnectionInterfaceCompletionHandler];
+      connectionInterface = [(LNConnection *)self connectionInterface];
+      (getConnectionInterfaceCompletionHandler2)[2](getConnectionInterfaceCompletionHandler2, connectionInterface, 0);
     }
 
     v9[2](v9);
@@ -4223,52 +4223,52 @@ void __34__LNConnection_completeWithError___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performGetConnectionInterfaceWithOptions:(id)a3 completionHandler:(id)a4
+- (void)performGetConnectionInterfaceWithOptions:(id)options completionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v8);
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(LNConnection *)self logPrefix];
+    logPrefix = [(LNConnection *)self logPrefix];
     *buf = 138543618;
-    v30 = v10;
+    v30 = logPrefix;
     v31 = 2114;
-    v32 = v6;
+    v32 = optionsCopy;
     _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_INFO, "%{public}@ Getting connection interface with options: %{public}@", buf, 0x16u);
   }
 
   v11 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [(LNConnection *)self logPrefix];
-    v13 = [(LNConnection *)self state];
-    if ((v13 - 1) > 2)
+    logPrefix2 = [(LNConnection *)self logPrefix];
+    state = [(LNConnection *)self state];
+    if ((state - 1) > 2)
     {
       v14 = @"Not Connected";
     }
 
     else
     {
-      v14 = off_1E74B24A0[v13 - 1];
+      v14 = off_1E74B24A0[state - 1];
     }
 
     *buf = 138543618;
-    v30 = v12;
+    v30 = logPrefix2;
     v31 = 2114;
     v32 = v14;
   }
 
-  v15 = [v7 copy];
+  v15 = [handlerCopy copy];
   [(LNConnection *)self setGetConnectionInterfaceCompletionHandler:v15];
 
-  if (!v6)
+  if (!optionsCopy)
   {
-    v6 = [objc_opt_class() defaultOptions];
+    optionsCopy = [objc_opt_class() defaultOptions];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -4276,21 +4276,21 @@ void __34__LNConnection_completeWithError___block_invoke(uint64_t a1)
   aBlock[2] = __75__LNConnection_performGetConnectionInterfaceWithOptions_completionHandler___block_invoke;
   aBlock[3] = &unk_1E74B27A0;
   aBlock[4] = self;
-  v16 = v6;
+  v16 = optionsCopy;
   v28 = v16;
   v17 = _Block_copy(aBlock);
   if ([(__CFString *)v16 authenticationPolicy]== 1)
   {
     v18 = [LNUnlockService alloc];
-    v19 = [(LNConnection *)self queue];
-    v20 = [(LNUnlockService *)v18 initWithQueue:v19];
+    queue2 = [(LNConnection *)self queue];
+    v20 = [(LNUnlockService *)v18 initWithQueue:queue2];
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __75__LNConnection_performGetConnectionInterfaceWithOptions_completionHandler___block_invoke_2;
     v23[3] = &unk_1E74B2340;
     v24 = v20;
-    v25 = self;
+    selfCopy = self;
     v26 = v17;
     v21 = v20;
     [(LNUnlockService *)v21 requestUnlockIfNeeded:v23];
@@ -4343,21 +4343,21 @@ void __75__LNConnection_performGetConnectionInterfaceWithOptions_completionHandl
   }
 }
 
-- (void)getConnectionInterfaceWithOptions:(id)a3 completionHandler:(id)a4
+- (void)getConnectionInterfaceWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LNConnection *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(LNConnection *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__LNConnection_getConnectionInterfaceWithOptions_completionHandler___block_invoke;
   block[3] = &unk_1E74B2580;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
 void __68__LNConnection_getConnectionInterfaceWithOptions_completionHandler___block_invoke(uint64_t a1)
@@ -4386,37 +4386,37 @@ uint64_t __68__LNConnection_getConnectionInterfaceWithOptions_completionHandler_
   return [v3 performGetConnectionInterfaceWithOptions:v4 completionHandler:v5];
 }
 
-- (void)removeConnectionOperation:(id)a3
+- (void)removeConnectionOperation:(id)operation
 {
-  v6 = a3;
-  v4 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v4);
+  operationCopy = operation;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(LNConnection *)self connectionOperations];
-  [v5 removeObject:v6];
+  connectionOperations = [(LNConnection *)self connectionOperations];
+  [connectionOperations removeObject:operationCopy];
 
-  [v6 setConnection:0];
+  [operationCopy setConnection:0];
 }
 
-- (void)enqueueConnectionOperation:(id)a3
+- (void)enqueueConnectionOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  operationCopy = operation;
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(LNConnection *)self connectionOperations];
-  [v6 addObject:v4];
+  connectionOperations = [(LNConnection *)self connectionOperations];
+  [connectionOperations addObject:operationCopy];
 
-  [v4 setConnection:self];
+  [operationCopy setConnection:self];
   [(LNConnection *)self extendIdleTimeout];
-  v7 = [v4 activity];
+  activity = [operationCopy activity];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__LNConnection_enqueueConnectionOperation___block_invoke;
   block[3] = &unk_1E74B2318;
-  v10 = v4;
-  v8 = v4;
-  os_activity_apply(v7, block);
+  v10 = operationCopy;
+  v8 = operationCopy;
+  os_activity_apply(activity, block);
 }
 
 void __35__LNConnection_connectionInterface__block_invoke(uint64_t a1, void *a2)
@@ -4472,34 +4472,34 @@ void __35__LNConnection_connectionInterface__block_invoke(uint64_t a1, void *a2)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setXPCConnection:(id)a3
+- (void)setXPCConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [(LNConnection *)self activity];
-  v7 = [(LNConnection *)self bundleIdentifier];
+  connectionCopy = connection;
+  activity = [(LNConnection *)self activity];
+  bundleIdentifier = [(LNConnection *)self bundleIdentifier];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  os_activity_scope_enter(v6, &state);
-  objc_storeStrong(&self->_xpcConnection, a3);
+  os_activity_scope_enter(activity, &state);
+  objc_storeStrong(&self->_xpcConnection, connection);
   objc_initWeak(&location, self);
-  v8 = [(LNConnection *)self queue];
-  [v5 _setQueue:v8];
+  queue = [(LNConnection *)self queue];
+  [connectionCopy _setQueue:queue];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __33__LNConnection_setXPCConnection___block_invoke;
   v11[3] = &unk_1E74B22C8;
-  v11[4] = v6;
+  v11[4] = activity;
   objc_copyWeak(&v12, &location);
-  [v5 setInterruptionHandler:v11];
+  [connectionCopy setInterruptionHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __33__LNConnection_setXPCConnection___block_invoke_69;
   v9[3] = &unk_1E74B22F0;
-  v9[4] = v6;
+  v9[4] = activity;
   objc_copyWeak(&v10, &location);
-  v9[5] = v7;
-  [v5 setInvalidationHandler:v9];
+  v9[5] = bundleIdentifier;
+  [connectionCopy setInvalidationHandler:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -4625,14 +4625,14 @@ void __33__LNConnection_setXPCConnection___block_invoke_69(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v6);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   state = self->_state;
-  if (state == a3)
+  if (state == state)
   {
     goto LABEL_27;
   }
@@ -4641,24 +4641,24 @@ void __33__LNConnection_setXPCConnection___block_invoke_69(uint64_t a1)
   {
     if (state == 2)
     {
-      if (!a3 || a3 == 3)
+      if (!state || state == 3)
       {
         goto LABEL_18;
       }
 
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:303 description:{@"Invalid parameter not satisfying: %@", @"state == LNConnectionStateConnected || state == LNConnectionStateDisconnected"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:303 description:{@"Invalid parameter not satisfying: %@", @"state == LNConnectionStateConnected || state == LNConnectionStateDisconnected"}];
     }
 
     else
     {
-      if (state != 3 || (a3 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+      if (state != 3 || (state & 0xFFFFFFFFFFFFFFFDLL) == 0)
       {
         goto LABEL_18;
       }
 
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"state == LNConnectionStateDisconnected || state == LNConnectionStateRefreshing"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"state == LNConnectionStateDisconnected || state == LNConnectionStateRefreshing"}];
     }
 
     goto LABEL_17;
@@ -4666,20 +4666,20 @@ void __33__LNConnection_setXPCConnection___block_invoke_69(uint64_t a1)
 
   if (state)
   {
-    if (state != 1 || !a3 || a3 == 3)
+    if (state != 1 || !state || state == 3)
     {
       goto LABEL_18;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:300 description:{@"Invalid parameter not satisfying: %@", @"state == LNConnectionStateConnected || state == LNConnectionStateDisconnected"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:300 description:{@"Invalid parameter not satisfying: %@", @"state == LNConnectionStateConnected || state == LNConnectionStateDisconnected"}];
     goto LABEL_17;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"state == LNConnectionStateConnecting"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConnection.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"state == LNConnectionStateConnecting"}];
 LABEL_17:
   }
 
@@ -4687,8 +4687,8 @@ LABEL_18:
   v9 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(LNConnection *)self logPrefix];
-    v11 = v10;
+    logPrefix = [(LNConnection *)self logPrefix];
+    v11 = logPrefix;
     v12 = self->_state - 1;
     if (v12 > 2)
     {
@@ -4700,44 +4700,44 @@ LABEL_18:
       v13 = off_1E74B24A0[v12];
     }
 
-    if ((a3 - 1) > 2)
+    if ((state - 1) > 2)
     {
       v14 = @"Not Connected";
     }
 
     else
     {
-      v14 = off_1E74B24A0[a3 - 1];
+      v14 = off_1E74B24A0[state - 1];
     }
 
     *buf = 138543874;
-    v17 = v10;
+    v17 = logPrefix;
     v18 = 2114;
     v19 = v13;
     v20 = 2114;
     v21 = v14;
   }
 
-  self->_state = a3;
+  self->_state = state;
 LABEL_27:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)optionsForAction:(id)a3 interactionMode:(int64_t)a4 source:(unsigned __int16)a5 sourceOverride:(id)a6 assistantDismissalPolicy:(int64_t)a7
+- (id)optionsForAction:(id)action interactionMode:(int64_t)mode source:(unsigned __int16)source sourceOverride:(id)override assistantDismissalPolicy:(int64_t)policy
 {
-  v7 = a3;
-  v8 = [objc_opt_class() defaultOptions];
-  v9 = [v7 systemProtocols];
-  v10 = [MEMORY[0x1E69ACA48] audioStartingProtocol];
-  if ([v9 containsObject:v10])
+  actionCopy = action;
+  defaultOptions = [objc_opt_class() defaultOptions];
+  systemProtocols = [actionCopy systemProtocols];
+  audioStartingProtocol = [MEMORY[0x1E69ACA48] audioStartingProtocol];
+  if ([systemProtocols containsObject:audioStartingProtocol])
   {
   }
 
   else
   {
-    v11 = [v7 systemProtocols];
-    v12 = [MEMORY[0x1E69ACA48] audioRecordingProtocol];
-    v13 = [v11 containsObject:v12];
+    systemProtocols2 = [actionCopy systemProtocols];
+    audioRecordingProtocol = [MEMORY[0x1E69ACA48] audioRecordingProtocol];
+    v13 = [systemProtocols2 containsObject:audioRecordingProtocol];
 
     if (!v13)
     {
@@ -4745,10 +4745,10 @@ LABEL_27:
     }
   }
 
-  [v8 setInitiatesAudioSession:1];
+  [defaultOptions setInitiatesAudioSession:1];
 LABEL_5:
 
-  return v8;
+  return defaultOptions;
 }
 
 - (NSString)description
@@ -4764,12 +4764,12 @@ LABEL_5:
 - (void)_invalidateAllAssertions
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMapTable *)self->_assertionsMapTable objectEnumerator];
+  objectEnumerator = [(NSMapTable *)self->_assertionsMapTable objectEnumerator];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4780,7 +4780,7 @@ LABEL_5:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -4788,7 +4788,7 @@ LABEL_5:
         [v8 invalidate];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -4817,105 +4817,105 @@ void __137__LNConnection_initWithEffectiveBundleIdentifier_appBundleIdentifier_p
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)executorForAction:(id)a3 interactionMode:(int64_t)a4 label:(id)a5 delegate:(id)a6
+- (id)executorForAction:(id)action interactionMode:(int64_t)mode label:(id)label delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  delegateCopy = delegate;
+  labelCopy = label;
+  actionCopy = action;
   v13 = objc_opt_new();
-  [v13 setClientLabel:v11];
+  [v13 setClientLabel:labelCopy];
 
-  [v13 setInteractionMode:a4];
+  [v13 setInteractionMode:mode];
   [v13 setSource:0];
-  v14 = [(LNConnection *)self executorForAction:v12 options:v13 delegate:v10];
+  v14 = [(LNConnection *)self executorForAction:actionCopy options:v13 delegate:delegateCopy];
 
   return v14;
 }
 
-- (id)executorForAction:(id)a3 label:(id)a4 delegate:(id)a5
+- (id)executorForAction:(id)action label:(id)label delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  delegateCopy = delegate;
+  labelCopy = label;
+  actionCopy = action;
   v11 = objc_opt_new();
-  [v11 setClientLabel:v9];
+  [v11 setClientLabel:labelCopy];
 
   [v11 setInteractionMode:0];
   [v11 setSource:0];
-  v12 = [(LNConnection *)self executorForAction:v10 options:v11 delegate:v8];
+  v12 = [(LNConnection *)self executorForAction:actionCopy options:v11 delegate:delegateCopy];
 
   return v12;
 }
 
-- (id)executorForAction:(id)a3 metadata:(id)a4 options:(id)a5 delegate:(id)a6
+- (id)executorForAction:(id)action metadata:(id)metadata options:(id)options delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a4 effectiveBundleIdentifiers];
-  v14 = [v13 array];
-  v15 = [v14 if_firstObjectPassingTest:&__block_literal_global_358];
-  v16 = [v15 bundleIdentifier];
+  delegateCopy = delegate;
+  optionsCopy = options;
+  actionCopy = action;
+  effectiveBundleIdentifiers = [metadata effectiveBundleIdentifiers];
+  array = [effectiveBundleIdentifiers array];
+  v15 = [array if_firstObjectPassingTest:&__block_literal_global_358];
+  bundleIdentifier = [v15 bundleIdentifier];
   appBundleIdentifier = self->_appBundleIdentifier;
-  self->_appBundleIdentifier = v16;
+  self->_appBundleIdentifier = bundleIdentifier;
 
-  v18 = [(LNConnection *)self executorForAction:v12 options:v11 delegate:v10];
+  v18 = [(LNConnection *)self executorForAction:actionCopy options:optionsCopy delegate:delegateCopy];
 
   return v18;
 }
 
-- (id)executorForAction:(id)a3 metadata:(id)a4 appBundleIdentifier:(id)a5 options:(id)a6 delegate:(id)a7
+- (id)executorForAction:(id)action metadata:(id)metadata appBundleIdentifier:(id)identifier options:(id)options delegate:(id)delegate
 {
-  objc_storeStrong(&self->_appBundleIdentifier, a5);
-  v11 = a7;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(LNConnection *)self executorForAction:v13 options:v12 delegate:v11];
+  objc_storeStrong(&self->_appBundleIdentifier, identifier);
+  delegateCopy = delegate;
+  optionsCopy = options;
+  actionCopy = action;
+  v14 = [(LNConnection *)self executorForAction:actionCopy options:optionsCopy delegate:delegateCopy];
 
   return v14;
 }
 
-- (LNConnection)initWithBundleIdentifier:(id)a3 metadataVersion:(int64_t)a4 error:(id *)a5
+- (LNConnection)initWithBundleIdentifier:(id)identifier metadataVersion:(int64_t)version error:(id *)error
 {
   v7 = MEMORY[0x1E6963620];
-  v8 = a3;
-  v9 = [v7 bundleRecordWithBundleIdentifier:v8 allowPlaceholder:0 error:0];
+  identifierCopy = identifier;
+  v9 = [v7 bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v11 = objc_alloc(MEMORY[0x1E69AC7B0]);
   v12 = [v9 URL];
-  v13 = [v11 initWithType:isKindOfClass & 1 bundleIdentifier:v8 url:v12];
+  v13 = [v11 initWithType:isKindOfClass & 1 bundleIdentifier:identifierCopy url:v12];
 
   v14 = +[LNConnectionManager sharedInstance];
-  v15 = [v14 connectionForEffectiveBundleIdentifier:v13 appBundleIdentifier:0 processInstanceIdentifier:0 mangledTypeName:0 userIdentity:0 error:a5];
+  v15 = [v14 connectionForEffectiveBundleIdentifier:v13 appBundleIdentifier:0 processInstanceIdentifier:0 mangledTypeName:0 userIdentity:0 error:error];
 
   return v15;
 }
 
 - (NSURL)bundleURL
 {
-  v2 = [(LNConnection *)self effectiveBundleIdentifier];
-  v3 = [v2 url];
+  effectiveBundleIdentifier = [(LNConnection *)self effectiveBundleIdentifier];
+  v3 = [effectiveBundleIdentifier url];
 
   return v3;
 }
 
-- (void)fetchSuggestedFocusActionsForActionMetadata:(id)a3 suggestionContext:(id)a4 completionHandler:(id)a5
+- (void)fetchSuggestedFocusActionsForActionMetadata:(id)metadata suggestionContext:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  contextCopy = context;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __124__LNConnection_FetchSuggestedFocusActions__fetchSuggestedFocusActionsForActionMetadata_suggestionContext_completionHandler___block_invoke;
   v14[3] = &unk_1E74B28E0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = metadataCopy;
+  v16 = contextCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = contextCopy;
+  v12 = metadataCopy;
+  v13 = handlerCopy;
   [(LNConnection *)self getConnectionInterfaceWithOptions:0 completionHandler:v14];
 }
 

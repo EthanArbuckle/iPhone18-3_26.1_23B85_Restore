@@ -1,18 +1,18 @@
 @interface HDClinicalGatewayUpdateCodableGatewaysJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
 @end
 
 @implementation HDClinicalGatewayUpdateCodableGatewaysJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v7 = [entriesCopy countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v7)
   {
     v9 = v7;
@@ -25,27 +25,27 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 codableResources];
-        v14 = [v12 syncProvenance];
+        codableResources = [v12 codableResources];
+        syncProvenance = [v12 syncProvenance];
         v21 = 0;
-        v15 = [HDClinicalGatewayEntity _updateCodableGateways:v13 syncProvenance:v14 profile:v6 error:&v21];
+        v15 = [HDClinicalGatewayEntity _updateCodableGateways:codableResources syncProvenance:syncProvenance profile:profileCopy error:&v21];
         v16 = v21;
 
         if ((v15 & 1) == 0)
         {
-          v17 = [v16 hk_isDatabaseAccessibilityError];
+          hk_isDatabaseAccessibilityError = [v16 hk_isDatabaseAccessibilityError];
           _HKInitializeLogging();
           v18 = HKLogHealthRecords;
-          if (v17)
+          if (hk_isDatabaseAccessibilityError)
           {
             if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v27 = a1;
+              selfCopy = self;
               v28 = 2114;
               v29 = v16;
               _os_log_error_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "%{public}@ failed to update journaled clinical gateways: %{public}@", buf, 0x16u);
@@ -55,13 +55,13 @@
           else if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_FAULT))
           {
             *buf = v19;
-            v27 = v16;
+            selfCopy = v16;
             _os_log_fault_impl(&dword_0, v18, OS_LOG_TYPE_FAULT, "HDClinicalGatewayUpdateCodableGatewaysJournalEntry failed to update journaled clinical gateways: %{public}@", buf, 0xCu);
           }
         }
       }
 
-      v9 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v9 = [entriesCopy countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v9);

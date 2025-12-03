@@ -1,12 +1,12 @@
 @interface FMFMapUtilities
-+ ($5934897077F541E2EA57917B1DCA15E9)regionForAnnotations:(SEL)a3;
-+ ($7A2C3A43EE5A76686BB0A44688CCB5FC)mapRectForCoordinateRegion:(id *)a3;
-+ (BOOL)doNotAnimateToNewLocation:(CLLocationCoordinate2D)a3 forMapView:(id)a4;
++ ($5934897077F541E2EA57917B1DCA15E9)regionForAnnotations:(SEL)annotations;
++ ($7A2C3A43EE5A76686BB0A44688CCB5FC)mapRectForCoordinateRegion:(id *)region;
++ (BOOL)doNotAnimateToNewLocation:(CLLocationCoordinate2D)location forMapView:(id)view;
 @end
 
 @implementation FMFMapUtilities
 
-+ ($5934897077F541E2EA57917B1DCA15E9)regionForAnnotations:(SEL)a3
++ ($5934897077F541E2EA57917B1DCA15E9)regionForAnnotations:(SEL)annotations
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = a4;
@@ -53,7 +53,7 @@
   return result;
 }
 
-+ ($7A2C3A43EE5A76686BB0A44688CCB5FC)mapRectForCoordinateRegion:(id *)a3
++ ($7A2C3A43EE5A76686BB0A44688CCB5FC)mapRectForCoordinateRegion:(id *)region
 {
   v7 = v4;
   v8 = v3;
@@ -74,17 +74,17 @@
   return result;
 }
 
-+ (BOOL)doNotAnimateToNewLocation:(CLLocationCoordinate2D)a3 forMapView:(id)a4
++ (BOOL)doNotAnimateToNewLocation:(CLLocationCoordinate2D)location forMapView:(id)view
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = location.longitude;
+  latitude = location.latitude;
   v6 = MEMORY[0x277CE41F8];
-  v7 = a4;
+  viewCopy = view;
   v8 = [[v6 alloc] initWithLatitude:latitude longitude:longitude];
   v9 = objc_alloc(MEMORY[0x277CE41F8]);
-  [v7 centerCoordinate];
+  [viewCopy centerCoordinate];
   v11 = v10;
-  [v7 centerCoordinate];
+  [viewCopy centerCoordinate];
   v13 = v12;
 
   v14 = [v9 initWithLatitude:v11 longitude:v13];

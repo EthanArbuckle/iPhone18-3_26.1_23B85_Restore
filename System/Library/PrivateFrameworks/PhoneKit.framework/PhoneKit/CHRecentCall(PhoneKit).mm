@@ -31,18 +31,18 @@
 
 - (id)handle
 {
-  v2 = [a1 callerId];
-  if (![v2 length])
+  callerId = [self callerId];
+  if (![callerId length])
   {
     v4 = 0;
     goto LABEL_16;
   }
 
-  v3 = [a1 handleType];
+  handleType = [self handleType];
   v4 = 0;
-  if (v3 > 1)
+  if (handleType > 1)
   {
-    if (v3 == 2)
+    if (handleType == 2)
     {
       v5 = objc_alloc(MEMORY[0x277D6EEE8]);
       v6 = 2;
@@ -50,7 +50,7 @@
 
     else
     {
-      if (v3 != 3)
+      if (handleType != 3)
       {
         goto LABEL_16;
       }
@@ -62,7 +62,7 @@
 
   else
   {
-    if (!v3)
+    if (!handleType)
     {
       v7 = PHDefaultLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -70,11 +70,11 @@
         [(CHRecentCall(PhoneKit) *)v7 handle];
       }
 
-      v8 = [MEMORY[0x277D6EEE8] handleWithDestinationID:v2];
+      v8 = [MEMORY[0x277D6EEE8] handleWithDestinationID:callerId];
       goto LABEL_15;
     }
 
-    if (v3 != 1)
+    if (handleType != 1)
     {
       goto LABEL_16;
     }
@@ -83,7 +83,7 @@
     v6 = 1;
   }
 
-  v8 = [v5 initWithType:v6 value:v2];
+  v8 = [v5 initWithType:v6 value:callerId];
 LABEL_15:
   v4 = v8;
 LABEL_16:
@@ -93,13 +93,13 @@ LABEL_16:
 
 - (uint64_t)ph_supportsLocalParticipantBadge
 {
-  v2 = [a1 localParticipantUUID];
-  v3 = [a1 outgoingLocalParticipantUUID];
-  v4 = v3;
+  localParticipantUUID = [self localParticipantUUID];
+  outgoingLocalParticipantUUID = [self outgoingLocalParticipantUUID];
+  v4 = outgoingLocalParticipantUUID;
   v5 = 0;
-  if (v2 && v3)
+  if (localParticipantUUID && outgoingLocalParticipantUUID)
   {
-    v5 = [v2 isEqual:v3];
+    v5 = [localParticipantUUID isEqual:outgoingLocalParticipantUUID];
   }
 
   return v5;
@@ -109,15 +109,15 @@ LABEL_16:
 {
   v19 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CBEB58] set];
-  v3 = [a1 uniqueId];
-  [v2 addObject:v3];
+  uniqueId = [self uniqueId];
+  [v2 addObject:uniqueId];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a1 callOccurrences];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  callOccurrences = [self callOccurrences];
+  v5 = [callOccurrences countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -129,7 +129,7 @@ LABEL_16:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(callOccurrences);
         }
 
         v10 = [*(*(&v14 + 1) + 8 * i) objectForKeyedSubscript:v8];
@@ -139,7 +139,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [callOccurrences countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -153,15 +153,15 @@ LABEL_16:
 
 - (id)fullName
 {
-  v2 = [a1 identityExtension];
+  identityExtension = [self identityExtension];
 
-  if (v2)
+  if (identityExtension)
   {
-    v3 = [a1 name];
+    name = [self name];
     v4 = MEMORY[0x277CCACA8];
-    v5 = [a1 identityExtension];
-    v6 = [v4 stringWithFormat:@"%@: ", v5];
-    v7 = [v3 stringByReplacingOccurrencesOfString:v6 withString:&stru_287038A20];
+    identityExtension2 = [self identityExtension];
+    v6 = [v4 stringWithFormat:@"%@: ", identityExtension2];
+    v7 = [name stringByReplacingOccurrencesOfString:v6 withString:&stru_287038A20];
   }
 
   else
@@ -174,38 +174,38 @@ LABEL_16:
 
 - (id)givenName
 {
-  v1 = [a1 fullName];
-  v2 = [v1 componentsSeparatedByString:@" "];
+  fullName = [self fullName];
+  v2 = [fullName componentsSeparatedByString:@" "];
 
   if (v2 && [v2 count])
   {
-    v3 = [v2 firstObject];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (id)familyName
 {
-  v1 = [a1 fullName];
-  v2 = [v1 componentsSeparatedByString:@" "];
+  fullName = [self fullName];
+  v2 = [fullName componentsSeparatedByString:@" "];
 
   if (v2 && [v2 count] >= 2)
   {
-    v3 = [v2 lastObject];
+    lastObject = [v2 lastObject];
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface AXCACCorrectionsServiceViewController
 - (AXCACCorrectionsServiceViewController)init;
 - (void)_dismiss;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)correctionsCollectionViewController:(id)a3 didSelectItemWithText:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)correctionsCollectionViewController:(id)controller didSelectItemWithText:(id)text;
 - (void)loadView;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AXCACCorrectionsServiceViewController
@@ -74,21 +74,21 @@
 {
   v3 = objc_opt_new();
   [(AXCACCorrectionsServiceViewController *)self setView:v3];
-  v4 = [(AXCACCorrectionsServiceViewController *)self popoverPresentingViewController];
-  v5 = [v4 view];
+  popoverPresentingViewController = [(AXCACCorrectionsServiceViewController *)self popoverPresentingViewController];
+  view = [popoverPresentingViewController view];
 
-  [v3 addSubview:v5];
+  [v3 addSubview:view];
   [v3 bounds];
-  [v5 setFrame:?];
-  [v5 setAutoresizingMask:18];
-  [v5 setAlpha:0.0];
+  [view setFrame:?];
+  [view setAutoresizingMask:18];
+  [view setAlpha:0.0];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000467C;
   v7[3] = &unk_1000287E0;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = view;
+  selfCopy = self;
+  v6 = view;
   [UIView animateWithDuration:v7 animations:0.3];
 }
 
@@ -107,56 +107,56 @@
   [UIView animateWithDuration:v3 animations:v2 completion:0.3];
 }
 
-- (void)correctionsCollectionViewController:(id)a3 didSelectItemWithText:(id)a4
+- (void)correctionsCollectionViewController:(id)controller didSelectItemWithText:(id)text
 {
-  UIAccessibilityPostNotification(0x7EDu, a4);
+  UIAccessibilityPostNotification(0x7EDu, text);
 
   [(AXCACCorrectionsServiceViewController *)self _dismiss];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v24 = a4;
-  v6 = a3;
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:AXCACCorrectionsTextKey];
-  v9 = [(AXCACCorrectionsServiceViewController *)self collectionViewController];
-  [v9 setText:v8];
+  completionCopy = completion;
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:AXCACCorrectionsTextKey];
+  collectionViewController = [(AXCACCorrectionsServiceViewController *)self collectionViewController];
+  [collectionViewController setText:v8];
 
-  v10 = [v6 userInfo];
-  v11 = [v10 objectForKeyedSubscript:AXCACCorrectionsAlternativesKey];
-  v12 = [(AXCACCorrectionsServiceViewController *)self collectionViewController];
-  [v12 setAlternatives:v11];
+  userInfo2 = [contextCopy userInfo];
+  v11 = [userInfo2 objectForKeyedSubscript:AXCACCorrectionsAlternativesKey];
+  collectionViewController2 = [(AXCACCorrectionsServiceViewController *)self collectionViewController];
+  [collectionViewController2 setAlternatives:v11];
 
-  v13 = [v6 userInfo];
-  v14 = [v13 objectForKeyedSubscript:AXCACCorrectionsEmojisKey];
-  v15 = [(AXCACCorrectionsServiceViewController *)self collectionViewController];
-  [v15 setEmojis:v14];
+  userInfo3 = [contextCopy userInfo];
+  v14 = [userInfo3 objectForKeyedSubscript:AXCACCorrectionsEmojisKey];
+  collectionViewController3 = [(AXCACCorrectionsServiceViewController *)self collectionViewController];
+  [collectionViewController3 setEmojis:v14];
 
-  v16 = [v6 userInfo];
+  userInfo4 = [contextCopy userInfo];
 
-  v17 = [v16 objectForKeyedSubscript:AXCACCorrectionsRectKey];
+  v17 = [userInfo4 objectForKeyedSubscript:AXCACCorrectionsRectKey];
   v26 = CGRectFromString(v17);
   x = v26.origin.x;
   y = v26.origin.y;
   width = v26.size.width;
   height = v26.size.height;
-  v22 = [(AXCACCorrectionsServiceViewController *)self popoverPresentingViewController];
-  [v22 setPortraitUpSourceRect:{x, y, width, height}];
+  popoverPresentingViewController = [(AXCACCorrectionsServiceViewController *)self popoverPresentingViewController];
+  [popoverPresentingViewController setPortraitUpSourceRect:{x, y, width, height}];
 
-  v23 = v24;
-  if (v24)
+  v23 = completionCopy;
+  if (completionCopy)
   {
-    (*(v24 + 2))(v24);
-    v23 = v24;
+    (*(completionCopy + 2))(completionCopy);
+    v23 = completionCopy;
   }
 }
 

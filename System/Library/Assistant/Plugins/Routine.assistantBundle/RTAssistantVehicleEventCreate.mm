@@ -1,6 +1,6 @@
 @interface RTAssistantVehicleEventCreate
 - (RTRoutineManager)routineManager;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation RTAssistantVehicleEventCreate
@@ -20,21 +20,21 @@
   return routineManager;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SALocalSearchVehicleEventCreate *)self location];
+  completionCopy = completion;
+  location = [(SALocalSearchVehicleEventCreate *)self location];
 
-  if (v5)
+  if (location)
   {
-    v6 = [(SALocalSearchVehicleEventCreate *)self location];
-    v7 = [v6 latitude];
-    [v7 doubleValue];
+    location2 = [(SALocalSearchVehicleEventCreate *)self location];
+    latitude = [location2 latitude];
+    [latitude doubleValue];
     v9 = v8;
     [(SALocalSearchVehicleEventCreate *)self location];
-    v10 = v33 = v4;
-    v11 = [v10 longitude];
-    [v11 doubleValue];
+    v10 = v33 = completionCopy;
+    longitude = [v10 longitude];
+    [longitude doubleValue];
     v13 = v12;
 
     if ([MEMORY[0x277D0EB88] isLocationShiftRequiredForCoordinate:{v9, v13}])
@@ -48,22 +48,22 @@
     }
 
     v15 = objc_alloc(MEMORY[0x277CE41F8]);
-    v16 = [(SALocalSearchVehicleEventCreate *)self location];
-    v17 = [v16 latitude];
-    [v17 doubleValue];
+    location3 = [(SALocalSearchVehicleEventCreate *)self location];
+    latitude2 = [location3 latitude];
+    [latitude2 doubleValue];
     v19 = v18;
-    v20 = [(SALocalSearchVehicleEventCreate *)self location];
-    v21 = [v20 longitude];
-    [v21 doubleValue];
+    location4 = [(SALocalSearchVehicleEventCreate *)self location];
+    longitude2 = [location4 longitude];
+    [longitude2 doubleValue];
     v23 = CLLocationCoordinate2DMake(v19, v22);
-    v24 = [(SALocalSearchVehicleEventCreate *)self location];
-    v25 = [v24 accuracy];
-    [v25 doubleValue];
+    location5 = [(SALocalSearchVehicleEventCreate *)self location];
+    accuracy = [location5 accuracy];
+    [accuracy doubleValue];
     v27 = v26;
-    v28 = [MEMORY[0x277CBEAA8] date];
-    v29 = [v15 initWithCoordinate:v28 altitude:v14 horizontalAccuracy:v23.latitude verticalAccuracy:v23.longitude timestamp:0.0 referenceFrame:{v27, -1.0}];
+    date = [MEMORY[0x277CBEAA8] date];
+    v29 = [v15 initWithCoordinate:date altitude:v14 horizontalAccuracy:v23.latitude verticalAccuracy:v23.longitude timestamp:0.0 referenceFrame:{v27, -1.0}];
 
-    v4 = v33;
+    completionCopy = v33;
   }
 
   else
@@ -71,15 +71,15 @@
     v29 = 0;
   }
 
-  v30 = [(RTAssistantVehicleEventCreate *)self routineManager];
-  v31 = [(SALocalSearchVehicleEventCreate *)self notes];
+  routineManager = [(RTAssistantVehicleEventCreate *)self routineManager];
+  notes = [(SALocalSearchVehicleEventCreate *)self notes];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = sub_233542114;
   v34[3] = &unk_2789DF2E8;
-  v35 = v4;
-  v32 = v4;
-  [v30 vehicleEventAtLocation:v29 notes:v31 handler:v34];
+  v35 = completionCopy;
+  v32 = completionCopy;
+  [routineManager vehicleEventAtLocation:v29 notes:notes handler:v34];
 }
 
 @end

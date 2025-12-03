@@ -1,8 +1,8 @@
 @interface CKMessagePartHighlightBalloonView
-- (CKMessagePartHighlightBalloonView)initWithFrame:(CGRect)a3;
+- (CKMessagePartHighlightBalloonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setGlyphImageColor:(id)a3;
+- (void)setGlyphImageColor:(id)color;
 @end
 
 @implementation CKMessagePartHighlightBalloonView
@@ -14,17 +14,17 @@
   [(CKBalloonView *)&v2 prepareForReuse];
 }
 
-- (CKMessagePartHighlightBalloonView)initWithFrame:(CGRect)a3
+- (CKMessagePartHighlightBalloonView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = CKMessagePartHighlightBalloonView;
-  v3 = [(CKBalloonView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBalloonView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 theme];
-    v6 = [v5 transcriptBackgroundColor];
-    [(CKMessagePartHighlightBalloonView *)v3 setBackgroundColor:v6];
+    theme = [v4 theme];
+    transcriptBackgroundColor = [theme transcriptBackgroundColor];
+    [(CKMessagePartHighlightBalloonView *)v3 setBackgroundColor:transcriptBackgroundColor];
 
     v7 = objc_alloc(MEMORY[0x1E69DD250]);
     v8 = *MEMORY[0x1E695F058];
@@ -40,17 +40,17 @@
     imageView = v3->_imageView;
     v3->_imageView = v14;
 
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)v3->_imageView setBackgroundColor:v16];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)v3->_imageView setBackgroundColor:clearColor];
 
     [(CKMessagePartHighlightBalloonView *)v3 addSubview:v3->_imageView];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 messageHighlightGoldColor];
-    [(CKMessagePartHighlightBalloonView *)v3 setBalloonColor:v18];
+    messageHighlightGoldColor = [v17 messageHighlightGoldColor];
+    [(CKMessagePartHighlightBalloonView *)v3 setBalloonColor:messageHighlightGoldColor];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 messageHighlightImage];
-    [(CKMessagePartHighlightBalloonView *)v3 setGlyphImage:v20];
+    messageHighlightImage = [v19 messageHighlightImage];
+    [(CKMessagePartHighlightBalloonView *)v3 setGlyphImage:messageHighlightImage];
   }
 
   return v3;
@@ -67,8 +67,8 @@
   v8 = v7;
   v10 = v9;
   v11 = v9 * 0.5;
-  v12 = [(CKMessagePartHighlightBalloonView *)self layer];
-  [v12 setCornerRadius:v11];
+  layer = [(CKMessagePartHighlightBalloonView *)self layer];
+  [layer setCornerRadius:v11];
 
   v13 = +[CKUIBehavior sharedBehaviors];
   [v13 messageHighlightTranscriptBalloonBorderWidth];
@@ -82,8 +82,8 @@
   [(UIView *)self->_colorView setFrame:v33.origin.x, v33.origin.y, v33.size.width, v33.size.height];
   [(UIView *)self->_colorView frame];
   v17 = v16 * 0.5;
-  v18 = [(UIView *)self->_colorView layer];
-  [v18 setCornerRadius:v17];
+  layer2 = [(UIView *)self->_colorView layer];
+  [layer2 setCornerRadius:v17];
 
   v19 = +[CKUIBehavior sharedBehaviors];
   [v19 messageHighlightGlyphSymbolPointSize];
@@ -109,8 +109,8 @@
   v37.size.width = v21;
   v37.size.height = v21;
   v25 = MidY - CGRectGetHeight(v37) * 0.5;
-  v26 = [(CKMessagePartHighlightBalloonView *)self traitCollection];
-  [v26 displayScale];
+  traitCollection = [(CKMessagePartHighlightBalloonView *)self traitCollection];
+  [traitCollection displayScale];
   v28 = round(v24 * v27) / v27;
   v29 = round(v25 * v27) / v27;
   v30 = round(v21 * v27) / v27;
@@ -118,11 +118,11 @@
   [(UIImageView *)self->_imageView setFrame:v28, v29, v30, v30];
 }
 
-- (void)setGlyphImageColor:(id)a3
+- (void)setGlyphImageColor:(id)color
 {
-  v4 = a3;
-  v6 = [(CKMessagePartHighlightBalloonView *)self glyphImage];
-  v5 = [v6 ckImageWithTintColor:v4];
+  colorCopy = color;
+  glyphImage = [(CKMessagePartHighlightBalloonView *)self glyphImage];
+  v5 = [glyphImage ckImageWithTintColor:colorCopy];
 
   [(CKMessagePartHighlightBalloonView *)self setGlyphImage:v5];
 }

@@ -1,9 +1,9 @@
 @interface HDPrioritySemaphore
-- (HDPrioritySemaphore)initWithCount:(unint64_t)a3 options:(unint64_t)a4 debugIdentifier:(id)a5;
+- (HDPrioritySemaphore)initWithCount:(unint64_t)count options:(unint64_t)options debugIdentifier:(id)identifier;
 - (unint64_t)pendingCount;
 - (void)signal;
-- (void)waitForPendingCount:(unint64_t)a3;
-- (void)waitWithPriority:(int64_t)a3;
+- (void)waitForPendingCount:(unint64_t)count;
+- (void)waitWithPriority:(int64_t)priority;
 @end
 
 @implementation HDPrioritySemaphore
@@ -11,26 +11,26 @@
 - (void)signal
 {
   v6 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v4 = 138543362;
   v5 = objc_opt_class();
   v2 = v5;
-  _os_log_fault_impl(&dword_25156C000, v1, OS_LOG_TYPE_FAULT, "HDPrioritySemaphore %{public}@ signaled with 0 count", &v4, 0xCu);
+  _os_log_fault_impl(&dword_25156C000, selfCopy, OS_LOG_TYPE_FAULT, "HDPrioritySemaphore %{public}@ signaled with 0 count", &v4, 0xCu);
 
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (HDPrioritySemaphore)initWithCount:(unint64_t)a3 options:(unint64_t)a4 debugIdentifier:(id)a5
+- (HDPrioritySemaphore)initWithCount:(unint64_t)count options:(unint64_t)options debugIdentifier:(id)identifier
 {
-  v9 = a5;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = HDPrioritySemaphore;
   v10 = [(HDPrioritySemaphore *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_options = a4;
-    objc_storeStrong(&v10->_debugIdentifier, a5);
+    v10->_options = options;
+    objc_storeStrong(&v10->_debugIdentifier, identifier);
     v11->_lock._os_unfair_lock_opaque = 0;
     v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
     emptyTabCache = v11->_emptyTabCache;
@@ -40,7 +40,7 @@
     pendingQueue = v11->_pendingQueue;
     v11->_pendingQueue = v14;
 
-    v11->_activeThreadLimit = a3;
+    v11->_activeThreadLimit = count;
     v11->_activeThreadCount = 0;
     v11->_requireInitialSignal = 0;
     v11->_signpost = 0;
@@ -89,7 +89,7 @@ uint64_t __61__HDPrioritySemaphore_initWithCount_options_debugIdentifier___block
   return v9;
 }
 
-- (void)waitWithPriority:(int64_t)a3
+- (void)waitWithPriority:(int64_t)priority
 {
   v29 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -118,11 +118,11 @@ uint64_t __61__HDPrioritySemaphore_initWithCount_options_debugIdentifier___block
 
   if (self->_requireInitialSignal || (activeThreadCount = self->_activeThreadCount, activeThreadCount >= self->_activeThreadLimit))
   {
-    v13 = [(NSMutableSet *)self->_emptyTabCache anyObject];
-    v14 = v13;
-    if (v13)
+    anyObject = [(NSMutableSet *)self->_emptyTabCache anyObject];
+    v14 = anyObject;
+    if (anyObject)
     {
-      v15 = v13;
+      v15 = anyObject;
     }
 
     else
@@ -134,28 +134,28 @@ uint64_t __61__HDPrioritySemaphore_initWithCount_options_debugIdentifier___block
 
     [(NSMutableSet *)self->_emptyTabCache removeObject:v16];
     [(_HDSemaphoreTab *)v16 setSignaled:0];
-    [(_HDSemaphoreTab *)v16 setPriority:a3];
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [(_HDSemaphoreTab *)v16 setRequestedDate:v17];
+    [(_HDSemaphoreTab *)v16 setPriority:priority];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(_HDSemaphoreTab *)v16 setRequestedDate:date];
 
     [(HDPriorityQueue *)self->_pendingQueue insert:v16];
     os_unfair_lock_unlock(&self->_lock);
-    v18 = [(_HDSemaphoreTab *)v16 condition];
-    [v18 lock];
+    condition = [(_HDSemaphoreTab *)v16 condition];
+    [condition lock];
 
     if (![(_HDSemaphoreTab *)v16 signaled])
     {
       do
       {
-        v19 = [(_HDSemaphoreTab *)v16 condition];
-        [v19 wait];
+        condition2 = [(_HDSemaphoreTab *)v16 condition];
+        [condition2 wait];
       }
 
       while (![(_HDSemaphoreTab *)v16 signaled]);
     }
 
-    v20 = [(_HDSemaphoreTab *)v16 condition];
-    [v20 unlock];
+    condition3 = [(_HDSemaphoreTab *)v16 condition];
+    [condition3 unlock];
 
     os_unfair_lock_lock(&self->_lock);
     ++self->_activeThreadCount;
@@ -200,9 +200,9 @@ uint64_t __61__HDPrioritySemaphore_initWithCount_options_debugIdentifier___block
   return v3;
 }
 
-- (void)waitForPendingCount:(unint64_t)a3
+- (void)waitForPendingCount:(unint64_t)count
 {
-  while ([(HDPrioritySemaphore *)self pendingCount]< a3)
+  while ([(HDPrioritySemaphore *)self pendingCount]< count)
   {
     [MEMORY[0x277CCACC8] sleepForTimeInterval:0.01];
   }

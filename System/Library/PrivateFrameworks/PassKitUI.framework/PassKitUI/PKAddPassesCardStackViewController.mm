@@ -1,42 +1,42 @@
 @interface PKAddPassesCardStackViewController
-- (PKAddPassesCardStackViewController)initWithPasses:(id)a3 orPassesContainer:(id)a4 fromPresentationSource:(unint64_t)a5;
+- (PKAddPassesCardStackViewController)initWithPasses:(id)passes orPassesContainer:(id)container fromPresentationSource:(unint64_t)source;
 - (PKAddPassesCardStackViewControllerDelegate)delegate;
-- (id)groupAtIndex:(unint64_t)a3;
+- (id)groupAtIndex:(unint64_t)index;
 - (unint64_t)suppressedContent;
 - (void)_aboutButtonPressed;
-- (void)_addButtonPressed:(id)a3;
-- (void)_addPassesWithCompletion:(id)a3;
+- (void)_addButtonPressed:(id)pressed;
+- (void)_addPassesWithCompletion:(id)completion;
 - (void)_beginReportingIfNecessary;
-- (void)_cancelButtonPressed:(id)a3;
-- (void)_configureAddOrNextButtonItemAsPending:(BOOL)a3;
+- (void)_cancelButtonPressed:(id)pressed;
+- (void)_configureAddOrNextButtonItemAsPending:(BOOL)pending;
 - (void)_configureNavigationItemTitle;
 - (void)_endReportingIfNecessary;
-- (void)_nextButtonPressedForPersonalization:(id)a3;
-- (void)_sendAnalyticsDidTapButton:(id)a3;
-- (void)_sendAnalyticsViewVisibilityUpdateWithType:(id)a3;
+- (void)_nextButtonPressedForPersonalization:(id)personalization;
+- (void)_sendAnalyticsDidTapButton:(id)button;
+- (void)_sendAnalyticsViewVisibilityUpdateWithType:(id)type;
 - (void)dealloc;
-- (void)groupStackView:(id)a3 deleteConfirmedForPass:(id)a4;
-- (void)groupStackView:(id)a3 didTransitionToState:(int64_t)a4 animated:(BOOL)a5;
-- (void)groupsController:(id)a3 didInsertGroup:(id)a4 atIndex:(unint64_t)a5;
-- (void)passPersonalizationViewController:(id)a3 didFinishPersonalizingPass:(id)a4 success:(BOOL)a5;
+- (void)groupStackView:(id)view deleteConfirmedForPass:(id)pass;
+- (void)groupStackView:(id)view didTransitionToState:(int64_t)state animated:(BOOL)animated;
+- (void)groupsController:(id)controller didInsertGroup:(id)group atIndex:(unint64_t)index;
+- (void)passPersonalizationViewController:(id)controller didFinishPersonalizingPass:(id)pass success:(BOOL)success;
 - (void)setUpAboutWalletButton;
 - (void)setUpInfoTextLabel;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAddPassesCardStackViewController
 
-- (PKAddPassesCardStackViewController)initWithPasses:(id)a3 orPassesContainer:(id)a4 fromPresentationSource:(unint64_t)a5
+- (PKAddPassesCardStackViewController)initWithPasses:(id)passes orPassesContainer:(id)container fromPresentationSource:(unint64_t)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && ![v9 unarchivePassesWithOptions:0 usingBlock:0])
+  passesCopy = passes;
+  containerCopy = container;
+  v10 = containerCopy;
+  if (containerCopy && ![containerCopy unarchivePassesWithOptions:0 usingBlock:0])
   {
     v12 = v11;
     if (v11)
@@ -45,11 +45,11 @@
     }
 
 LABEL_7:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  v12 = [v8 count];
+  v12 = [passesCopy count];
   if (!v12)
   {
     goto LABEL_7;
@@ -91,7 +91,7 @@ LABEL_4:
     v30[2] = __94__PKAddPassesCardStackViewController_initWithPasses_orPassesContainer_fromPresentationSource___block_invoke_3;
     v30[3] = &unk_1E801A170;
     v30[4] = v15;
-    [v8 enumerateObjectsUsingBlock:v30];
+    [passesCopy enumerateObjectsUsingBlock:v30];
   }
 
   if ([v14 count])
@@ -105,37 +105,37 @@ LABEL_4:
       passes = v19->_passes;
       v19->_passes = v20;
 
-      objc_storeStrong(&v19->_passesContainer, a4);
-      v22 = [v8 copy];
+      objc_storeStrong(&v19->_passesContainer, container);
+      v22 = [passesCopy copy];
       passDataArray = v19->_passDataArray;
       v19->_passDataArray = v22;
 
-      v19->_presentationSource = a5;
+      v19->_presentationSource = source;
       [(PKAddPassesCardStackViewController *)v19 _beginReportingIfNecessary];
-      v24 = [objc_alloc(MEMORY[0x1E69B88E0]) initLimited];
+      initLimited = [objc_alloc(MEMORY[0x1E69B88E0]) initLimited];
       groupsController = v19->_groupsController;
-      v19->_groupsController = v24;
+      v19->_groupsController = initLimited;
 
       [(PKGroupsController *)v19->_groupsController setDelegate:v19];
-      v26 = [(PKAddPassesCardStackViewController *)v19 navigationItem];
+      navigationItem = [(PKAddPassesCardStackViewController *)v19 navigationItem];
       v27 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
       [v27 configureWithTransparentBackground];
-      [v26 setStandardAppearance:v27];
+      [navigationItem setStandardAppearance:v27];
     }
 
     self = v19;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
   _Block_object_dispose(v35, 8);
 LABEL_15:
 
-  return v18;
+  return selfCopy;
 }
 
 void __94__PKAddPassesCardStackViewController_initWithPasses_orPassesContainer_fromPresentationSource___block_invoke(uint64_t a1, void *a2)
@@ -190,40 +190,40 @@ void __94__PKAddPassesCardStackViewController_initWithPasses_orPassesContainer_f
   v17.receiver = self;
   v17.super_class = PKAddPassesCardStackViewController;
   [(PKAddPassesCardStackViewController *)&v17 viewDidLoad];
-  v3 = [(PKAddPassesCardStackViewController *)self view];
+  view = [(PKAddPassesCardStackViewController *)self view];
   v4 = [PKPassGroupStackView alloc];
-  [v3 bounds];
+  [view bounds];
   v5 = [(PKPassGroupStackView *)v4 initWithFrame:?];
   passGroupStackView = self->_passGroupStackView;
   self->_passGroupStackView = v5;
 
   v7 = self->_passGroupStackView;
-  v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(PKPassGroupStackView *)v7 setBackgroundColor:v8];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(PKPassGroupStackView *)v7 setBackgroundColor:systemBackgroundColor];
 
   [(PKPassGroupStackView *)self->_passGroupStackView setShowsVerticalScrollIndicator:0];
   [(PKPassGroupStackView *)self->_passGroupStackView setFooterSuppressed:1];
   [(PKPassGroupStackView *)self->_passGroupStackView setDelegate:self];
   [(PKPassGroupStackView *)self->_passGroupStackView setDatasource:self];
-  v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v9];
+  systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor2];
 
-  [v3 setOpaque:1];
-  [v3 addSubview:self->_passGroupStackView];
+  [view setOpaque:1];
+  [view addSubview:self->_passGroupStackView];
   if (self->_passes)
   {
     [(PKGroupsController *)self->_groupsController addLocalPasses:?];
-    v10 = [(NSArray *)self->_passes firstObject];
+    firstObject = [(NSArray *)self->_passes firstObject];
     groupsController = self->_groupsController;
-    v12 = [v10 uniqueID];
-    v13 = [(PKGroupsController *)groupsController groupIndexForPassUniqueID:v12];
+    uniqueID = [firstObject uniqueID];
+    v13 = [(PKGroupsController *)groupsController groupIndexForPassUniqueID:uniqueID];
 
     [(PKPassGroupStackView *)self->_passGroupStackView setModalGroupIndex:v13];
     [(PKAddPassesCardStackViewController *)self _configureNavigationItemTitle];
-    if (-[NSArray count](self->_passes, "count") == 1 && [v10 isPersonalizable])
+    if (-[NSArray count](self->_passes, "count") == 1 && [firstObject isPersonalizable])
     {
       [(PKAddPassesCardStackViewController *)self _configureAddOrNextButtonItemAsPending:1];
-      v14 = [v10 passTypeIdentifier];
+      passTypeIdentifier = [firstObject passTypeIdentifier];
       PKPassPersonalizationRequestToken();
     }
 
@@ -245,8 +245,8 @@ void __94__PKAddPassesCardStackViewController_initWithPasses_orPassesContainer_f
     [(PKAddPassesCardStackViewController *)self setUpInfoTextLabel];
   }
 
-  v16 = [(PKAddPassesCardStackViewController *)self navigationItem];
-  [v16 setLeftBarButtonItem:v15 animated:0];
+  navigationItem = [(PKAddPassesCardStackViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v15 animated:0];
 }
 
 void __49__PKAddPassesCardStackViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
@@ -270,13 +270,13 @@ uint64_t __49__PKAddPassesCardStackViewController_viewDidLoad__block_invoke_2(ui
   return [v2 _configureAddOrNextButtonItemAsPending:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = PKAddPassesCardStackViewController;
-  [(PKAddPassesCardStackViewController *)&v14 viewWillAppear:a3];
-  v4 = [MEMORY[0x1E69B8A58] sharedInstance];
+  [(PKAddPassesCardStackViewController *)&v14 viewWillAppear:appear];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -296,7 +296,7 @@ uint64_t __49__PKAddPassesCardStackViewController_viewDidLoad__block_invoke_2(ui
           objc_enumerationMutation(v5);
         }
 
-        [v4 getContainmentStatusAndSettingsForPass:? withHandler:?];
+        [mEMORY[0x1E69B8A58] getContainmentStatusAndSettingsForPass:? withHandler:?];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
@@ -330,19 +330,19 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKAddPassesCardStackViewController;
-  [(PKAddPassesCardStackViewController *)&v4 viewDidAppear:a3];
+  [(PKAddPassesCardStackViewController *)&v4 viewDidAppear:appear];
   [(PKAddPassesCardStackViewController *)self _sendAnalyticsViewVisibilityUpdateWithType:*MEMORY[0x1E69BA818]];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKAddPassesCardStackViewController;
-  [(PKAddPassesCardStackViewController *)&v4 viewDidDisappear:a3];
+  [(PKAddPassesCardStackViewController *)&v4 viewDidDisappear:disappear];
   [(PKAddPassesCardStackViewController *)self _sendAnalyticsViewVisibilityUpdateWithType:*MEMORY[0x1E69BA820]];
 }
 
@@ -351,8 +351,8 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   v25.receiver = self;
   v25.super_class = PKAddPassesCardStackViewController;
   [(PKAddPassesCardStackViewController *)&v25 viewWillLayoutSubviews];
-  v3 = [(PKAddPassesCardStackViewController *)self view];
-  [v3 bounds];
+  view = [(PKAddPassesCardStackViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -362,7 +362,7 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   remainder.size.width = v8;
   remainder.size.height = v10;
   memset(&slice, 0, sizeof(slice));
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   v26.origin.x = v5;
   v26.origin.y = v7;
@@ -380,11 +380,11 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   CGRectDivide(*(&v14 - 8), &v21, &v22, 90.0, CGRectMaxYEdge);
   [(PKPassGroupStackView *)self->_passGroupStackView setFrame:v22.origin.x, v22.origin.y, v22.size.width, v22.size.height];
   [(PKPassGroupStackView *)self->_passGroupStackView layoutContentForCurrentPresentationState:0];
-  [v3 bounds];
+  [view bounds];
   [(UIButton *)self->_aboutWalletButton setFrame:(v18 + -274.0) * 0.5, v21.origin.y + 30.0 + 8.0, 274.0, 40.0];
   y = v21.origin.y;
   infoTextLabel = self->_infoTextLabel;
-  [v3 bounds];
+  [view bounds];
   [(UILabel *)infoTextLabel setFrame:0.0, y];
 }
 
@@ -395,8 +395,8 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   self->_infoTextLabel = v3;
 
   v5 = self->_infoTextLabel;
-  v6 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)v5 setTextColor:v6];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)v5 setTextColor:systemGrayColor];
 
   v7 = self->_infoTextLabel;
   v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
@@ -410,8 +410,8 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   v10 = PKLocalizedString(&cfstr_InfoTextAddToW.isa);
   [(UILabel *)v9 setText:v10];
 
-  v11 = [(PKAddPassesCardStackViewController *)self view];
-  [v11 addSubview:self->_infoTextLabel];
+  view = [(PKAddPassesCardStackViewController *)self view];
+  [view addSubview:self->_infoTextLabel];
 }
 
 - (void)setUpAboutWalletButton
@@ -424,43 +424,43 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   v6 = PKCoreLocalizedString(&cfstr_AboutWalletBut.isa);
   [(UIButton *)v5 setTitle:v6 forState:0];
 
-  v7 = [(UIButton *)self->_aboutWalletButton titleLabel];
+  titleLabel = [(UIButton *)self->_aboutWalletButton titleLabel];
   v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD40], *MEMORY[0x1E69DDC38]);
-  [v7 setFont:v8];
+  [titleLabel setFont:v8];
 
-  v9 = [(UIButton *)self->_aboutWalletButton titleLabel];
-  [v9 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [(UIButton *)self->_aboutWalletButton titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
   [(UIButton *)self->_aboutWalletButton _setCornerRadius:14.0];
   v10 = self->_aboutWalletButton;
-  v11 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(UIButton *)v10 setBackgroundColor:v11];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(UIButton *)v10 setBackgroundColor:systemBlueColor];
 
   [(UIButton *)self->_aboutWalletButton addTarget:self action:sel__aboutButtonPressed forControlEvents:64];
-  v12 = [(PKAddPassesCardStackViewController *)self view];
-  [v12 addSubview:self->_aboutWalletButton];
+  view = [(PKAddPassesCardStackViewController *)self view];
+  [view addSubview:self->_aboutWalletButton];
 }
 
-- (id)groupAtIndex:(unint64_t)a3
+- (id)groupAtIndex:(unint64_t)index
 {
-  if ([(PKAddPassesCardStackViewController *)self numberOfGroups]<= a3)
+  if ([(PKAddPassesCardStackViewController *)self numberOfGroups]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(PKGroupsController *)self->_groupsController groupAtIndex:a3];
+    v5 = [(PKGroupsController *)self->_groupsController groupAtIndex:index];
   }
 
   return v5;
 }
 
-- (void)groupStackView:(id)a3 deleteConfirmedForPass:(id)a4
+- (void)groupStackView:(id)view deleteConfirmedForPass:(id)pass
 {
   groupsController = self->_groupsController;
-  v5 = [a4 uniqueID];
-  [(PKGroupsController *)groupsController handleUserPassDelete:v5];
+  uniqueID = [pass uniqueID];
+  [(PKGroupsController *)groupsController handleUserPassDelete:uniqueID];
 }
 
 - (unint64_t)suppressedContent
@@ -476,44 +476,44 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   }
 }
 
-- (void)groupStackView:(id)a3 didTransitionToState:(int64_t)a4 animated:(BOOL)a5
+- (void)groupStackView:(id)view didTransitionToState:(int64_t)state animated:(BOOL)animated
 {
-  v7 = a3;
-  if (a4 == 6 && !self->_passes)
+  viewCopy = view;
+  if (state == 6 && !self->_passes)
   {
-    v9 = v7;
+    v9 = viewCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained addPassesCardStackViewController:self didCancelAddingPasses:self->_passes];
 
-    v7 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)groupsController:(id)a3 didInsertGroup:(id)a4 atIndex:(unint64_t)a5
+- (void)groupsController:(id)controller didInsertGroup:(id)group atIndex:(unint64_t)index
 {
-  [(PKPassGroupStackView *)self->_passGroupStackView reloadData:a3];
+  [(PKPassGroupStackView *)self->_passGroupStackView reloadData:controller];
   groupsController = self->_groupsController;
-  v8 = [(NSArray *)self->_passes firstObject];
-  v9 = [v8 uniqueID];
-  v10 = [(PKGroupsController *)groupsController groupIndexForPassUniqueID:v9];
+  firstObject = [(NSArray *)self->_passes firstObject];
+  uniqueID = [firstObject uniqueID];
+  v10 = [(PKGroupsController *)groupsController groupIndexForPassUniqueID:uniqueID];
 
-  if (v10 != a5)
+  if (v10 != index)
   {
     passGroupStackView = self->_passGroupStackView;
 
-    [(PKPassGroupStackView *)passGroupStackView stageGroupInPresentationState:2 atIndex:a5];
+    [(PKPassGroupStackView *)passGroupStackView stageGroupInPresentationState:2 atIndex:index];
   }
 }
 
-- (void)passPersonalizationViewController:(id)a3 didFinishPersonalizingPass:(id)a4 success:(BOOL)a5
+- (void)passPersonalizationViewController:(id)controller didFinishPersonalizingPass:(id)pass success:(BOOL)success
 {
-  v5 = a5;
+  successCopy = success;
   v11[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  passCopy = pass;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (v5)
+  if (successCopy)
   {
-    v11[0] = v7;
+    v11[0] = passCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
     [WeakRetained addPassesCardStackViewController:self didFinishAddingPasses:v9];
@@ -521,14 +521,14 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
 
   else
   {
-    v10 = v7;
+    v10 = passCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
 
     [WeakRetained addPassesCardStackViewController:self didCancelAddingPasses:v9];
   }
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained addPassesCardStackViewController:self didFinishAddingPasses:self->_passes];
@@ -536,10 +536,10 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
 
 - (void)_beginReportingIfNecessary
 {
-  v3 = [(NSArray *)self->_passes firstObject];
-  v4 = [v3 supportsIssuerBinding];
+  firstObject = [(NSArray *)self->_passes firstObject];
+  supportsIssuerBinding = [firstObject supportsIssuerBinding];
 
-  if (v4)
+  if (supportsIssuerBinding)
   {
     self->_shouldReportAnalytics = 1;
     v5 = *MEMORY[0x1E69BB710];
@@ -565,10 +565,10 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   }
 }
 
-- (void)_sendAnalyticsViewVisibilityUpdateWithType:(id)a3
+- (void)_sendAnalyticsViewVisibilityUpdateWithType:(id)type
 {
   v43 = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  typeCopy = type;
   if (self->_shouldReportAnalytics)
   {
     v38 = 0u;
@@ -605,14 +605,14 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
           v6 = MEMORY[0x1E69B8540];
           v40[0] = v31;
           v40[1] = v30;
-          v41[0] = v34;
+          v41[0] = typeCopy;
           v41[1] = v29;
           v40[2] = v28;
-          v7 = [v5 passTypeIdentifier];
-          v8 = v7;
-          if (v7)
+          passTypeIdentifier = [v5 passTypeIdentifier];
+          v8 = passTypeIdentifier;
+          if (passTypeIdentifier)
           {
-            v9 = v7;
+            v9 = passTypeIdentifier;
           }
 
           else
@@ -671,7 +671,7 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   }
 }
 
-- (void)_sendAnalyticsDidTapButton:(id)a3
+- (void)_sendAnalyticsDidTapButton:(id)button
 {
   v15[4] = *MEMORY[0x1E69E9840];
   if (self->_shouldReportAnalytics)
@@ -686,12 +686,12 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
     v15[0] = v5;
     v15[1] = v7;
     v8 = *MEMORY[0x1E69BA440];
-    v15[2] = a3;
+    v15[2] = button;
     v9 = *MEMORY[0x1E69BAB08];
     v14[2] = v8;
     v14[3] = v9;
     passes = self->_passes;
-    v11 = a3;
+    buttonCopy = button;
     [(NSArray *)passes count];
     v12 = PKAnalyticsReportSwitchToggleResultValue();
     v15[3] = v12;
@@ -700,34 +700,34 @@ uint64_t __53__PKAddPassesCardStackViewController_viewWillAppear___block_invoke_
   }
 }
 
-- (void)_addPassesWithCompletion:(id)a3
+- (void)_addPassesWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v5 = v4;
+  completionCopy = completion;
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  v5 = mEMORY[0x1E69B8A58];
   passesContainer = self->_passesContainer;
   if (passesContainer)
   {
-    [v4 addPassesContainer:passesContainer withCompletionHandler:v8];
+    [mEMORY[0x1E69B8A58] addPassesContainer:passesContainer withCompletionHandler:completionCopy];
   }
 
   else
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:self->_passDataArray];
-    [v5 addPassesWithData:v7 withCompletionHandler:v8];
+    [v5 addPassesWithData:v7 withCompletionHandler:completionCopy];
   }
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
   [(PKAddPassesCardStackViewController *)self _sendAnalyticsDidTapButton:*MEMORY[0x1E69BA468]];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained addPassesCardStackViewController:self didCancelAddingPasses:self->_passes];
 }
 
-- (void)_addButtonPressed:(id)a3
+- (void)_addButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   objc_initWeak(&location, self);
   [(PKAddPassesCardStackViewController *)self _sendAnalyticsDidTapButton:*MEMORY[0x1E69BB3D0]];
   v5[0] = MEMORY[0x1E69E9820];
@@ -792,19 +792,19 @@ void __56__PKAddPassesCardStackViewController__addButtonPressed___block_invoke_3
   [(PKAddPassesCardStackViewController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)_nextButtonPressedForPersonalization:(id)a3
+- (void)_nextButtonPressedForPersonalization:(id)personalization
 {
-  v6 = [(NSArray *)self->_passes firstObject];
-  v4 = [[PKPassPersonalizationViewController alloc] initWithPass:v6 personalizationToken:self->_personalizatonToken personalizationSource:self->_presentationSource == 1];
+  firstObject = [(NSArray *)self->_passes firstObject];
+  v4 = [[PKPassPersonalizationViewController alloc] initWithPass:firstObject personalizationToken:self->_personalizatonToken personalizationSource:self->_presentationSource == 1];
   [(PKPassPersonalizationViewController *)v4 setDelegate:self];
-  v5 = [(PKAddPassesCardStackViewController *)self navigationController];
-  [v5 pushViewController:v4 animated:1];
+  navigationController = [(PKAddPassesCardStackViewController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
 - (void)_configureNavigationItemTitle
 {
-  v3 = [(NSArray *)self->_passes firstObject];
-  v4 = [v3 style];
+  firstObject = [(NSArray *)self->_passes firstObject];
+  style = [firstObject style];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -815,7 +815,7 @@ void __56__PKAddPassesCardStackViewController__addButtonPressed___block_invoke_3
   v20[2] = __67__PKAddPassesCardStackViewController__configureNavigationItemTitle__block_invoke;
   v20[3] = &unk_1E801A210;
   v20[4] = &v21;
-  v20[5] = v4;
+  v20[5] = style;
   [(NSArray *)passes enumerateObjectsUsingBlock:v20];
   v6 = self->_passes;
   if (*(v22 + 24) != 1)
@@ -825,10 +825,10 @@ void __56__PKAddPassesCardStackViewController__addButtonPressed___block_invoke_3
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
     v8 = [v11 localizedStringFromNumber:v12 numberStyle:0];
 
-    v13 = PKCoreLocalizedString(&cfstr_TemplateNamePa.isa);
-    v14 = PKLocalizedString(&cfstr_IngestionTitle.isa, &stru_1F3BD6370.isa, v8, v13);
+    pluralLocalizedName = PKCoreLocalizedString(&cfstr_TemplateNamePa.isa);
+    v14 = PKLocalizedString(&cfstr_IngestionTitle.isa, &stru_1F3BD6370.isa, v8, pluralLocalizedName);
 LABEL_6:
-    v9 = v14;
+    localizedDescription = v14;
 
     goto LABEL_7;
   }
@@ -838,22 +838,22 @@ LABEL_6:
   {
     v15 = MEMORY[0x1E696ADA0];
     v16 = MEMORY[0x1E696AD98];
-    v17 = v3;
+    v17 = firstObject;
     v18 = [v16 numberWithUnsignedInteger:v7];
     v8 = [v15 localizedStringFromNumber:v18 numberStyle:0];
 
-    v13 = [v17 pluralLocalizedName];
+    pluralLocalizedName = [v17 pluralLocalizedName];
 
-    v14 = PKLocalizedString(&cfstr_IngestionTitle.isa, &stru_1F3BD6370.isa, v8, v13);
+    v14 = PKLocalizedString(&cfstr_IngestionTitle.isa, &stru_1F3BD6370.isa, v8, pluralLocalizedName);
     goto LABEL_6;
   }
 
-  v8 = v3;
-  v9 = [v8 localizedDescription];
+  v8 = firstObject;
+  localizedDescription = [v8 localizedDescription];
 LABEL_7:
 
-  v19 = [(PKAddPassesCardStackViewController *)self navigationItem];
-  [v19 setTitle:v9];
+  navigationItem = [(PKAddPassesCardStackViewController *)self navigationItem];
+  [navigationItem setTitle:localizedDescription];
 
   _Block_object_dispose(&v21, 8);
 }
@@ -866,12 +866,12 @@ uint64_t __67__PKAddPassesCardStackViewController__configureNavigationItemTitle_
   return result;
 }
 
-- (void)_configureAddOrNextButtonItemAsPending:(BOOL)a3
+- (void)_configureAddOrNextButtonItemAsPending:(BOOL)pending
 {
-  v5 = [(PKAddPassesCardStackViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
+  navigationItem = [(PKAddPassesCardStackViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  if (a3)
+  if (pending)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v7];
@@ -882,8 +882,8 @@ uint64_t __67__PKAddPassesCardStackViewController__configureNavigationItemTitle_
   {
     if ([(NSArray *)self->_passes count]< 2)
     {
-      v10 = [(NSArray *)self->_passes firstObject];
-      if ([v10 isPersonalizable] && self->_personalizatonToken)
+      firstObject = [(NSArray *)self->_passes firstObject];
+      if ([firstObject isPersonalizable] && self->_personalizatonToken)
       {
         v9 = 0;
         v11 = &selRef__nextButtonPressedForPersonalization_;
@@ -911,8 +911,8 @@ uint64_t __67__PKAddPassesCardStackViewController__configureNavigationItemTitle_
     v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v7 style:v9 target:self action:v8];
   }
 
-  v13 = [(PKAddPassesCardStackViewController *)self navigationItem];
-  [v13 setRightBarButtonItem:v14 animated:v6 != 0];
+  navigationItem2 = [(PKAddPassesCardStackViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v14 animated:rightBarButtonItem != 0];
 }
 
 - (PKAddPassesCardStackViewControllerDelegate)delegate

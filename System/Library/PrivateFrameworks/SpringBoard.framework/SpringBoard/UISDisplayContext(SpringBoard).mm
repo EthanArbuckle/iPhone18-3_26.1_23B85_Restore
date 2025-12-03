@@ -8,44 +8,44 @@
 
 + (id)sb_embeddedDisplayDefaultContext
 {
-  v0 = [MEMORY[0x277D0AA90] sharedInstance];
-  v1 = [v0 mainConfiguration];
+  mEMORY[0x277D0AA90] = [MEMORY[0x277D0AA90] sharedInstance];
+  mainConfiguration = [mEMORY[0x277D0AA90] mainConfiguration];
 
-  v2 = [MEMORY[0x277D777A0] defaultContext];
-  [v2 setDisplayConfiguration:v1];
-  v3 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
-  [v2 setDisplayEdgeInfo:v3];
+  defaultContext = [MEMORY[0x277D777A0] defaultContext];
+  [defaultContext setDisplayConfiguration:mainConfiguration];
+  sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+  [defaultContext setDisplayEdgeInfo:sb_thisDeviceDisplayEdgeInfo];
 
-  v4 = [MEMORY[0x277D77780] sb_thisDeviceDisplayShape];
-  [v2 setExclusionArea:v4];
+  sb_thisDeviceDisplayShape = [MEMORY[0x277D77780] sb_thisDeviceDisplayShape];
+  [defaultContext setExclusionArea:sb_thisDeviceDisplayShape];
 
-  [v2 setArtworkSubtype:SBFEffectiveArtworkSubtype()];
-  [v2 sb_configureForDeviceEmulation];
+  [defaultContext setArtworkSubtype:SBFEffectiveArtworkSubtype()];
+  [defaultContext sb_configureForDeviceEmulation];
   v5 = SBApp;
-  v6 = [v1 identity];
-  v7 = [v5 userInterfaceStyleProviderForDisplay:v6];
+  identity = [mainConfiguration identity];
+  v7 = [v5 userInterfaceStyleProviderForDisplay:identity];
 
-  [v2 setUserInterfaceStyle:{objc_msgSend(v7, "currentStyle")}];
+  [defaultContext setUserInterfaceStyle:{objc_msgSend(v7, "currentStyle")}];
 
-  return v2;
+  return defaultContext;
 }
 
 + (id)sb_mainThreadFree_embeddedDisplayDefaultContext
 {
-  v0 = [MEMORY[0x277D777A0] defaultContext];
-  v1 = [MEMORY[0x277D0AA90] sharedInstance];
-  v2 = [v1 mainConfiguration];
-  [v0 setDisplayConfiguration:v2];
+  defaultContext = [MEMORY[0x277D777A0] defaultContext];
+  mEMORY[0x277D0AA90] = [MEMORY[0x277D0AA90] sharedInstance];
+  mainConfiguration = [mEMORY[0x277D0AA90] mainConfiguration];
+  [defaultContext setDisplayConfiguration:mainConfiguration];
 
-  v3 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
-  [v0 setDisplayEdgeInfo:v3];
+  sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+  [defaultContext setDisplayEdgeInfo:sb_thisDeviceDisplayEdgeInfo];
 
-  v4 = [MEMORY[0x277D77780] sb_thisDeviceDisplayShape];
-  [v0 setExclusionArea:v4];
+  sb_thisDeviceDisplayShape = [MEMORY[0x277D77780] sb_thisDeviceDisplayShape];
+  [defaultContext setExclusionArea:sb_thisDeviceDisplayShape];
 
-  [v0 setArtworkSubtype:SBFEffectiveArtworkSubtype()];
+  [defaultContext setArtworkSubtype:SBFEffectiveArtworkSubtype()];
 
-  return v0;
+  return defaultContext;
 }
 
 + (id)sb_defaultContextForDisplayConfiguration:()SpringBoard
@@ -53,23 +53,23 @@
   v3 = a3;
   if ([v3 isMainRootDisplay])
   {
-    v4 = [objc_opt_class() sb_embeddedDisplayDefaultContext];
+    sb_embeddedDisplayDefaultContext = [objc_opt_class() sb_embeddedDisplayDefaultContext];
   }
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x277D777A0]) initWithDisplayConfiguration:v3];
-    [v4 setDisplayEdgeInfo:0];
-    [v4 setExclusionArea:0];
-    [v4 setArtworkSubtype:SBFEffectiveArtworkSubtype()];
+    sb_embeddedDisplayDefaultContext = [objc_alloc(MEMORY[0x277D777A0]) initWithDisplayConfiguration:v3];
+    [sb_embeddedDisplayDefaultContext setDisplayEdgeInfo:0];
+    [sb_embeddedDisplayDefaultContext setExclusionArea:0];
+    [sb_embeddedDisplayDefaultContext setArtworkSubtype:SBFEffectiveArtworkSubtype()];
     v5 = SBApp;
-    v6 = [v3 identity];
-    v7 = [v5 userInterfaceStyleProviderForDisplay:v6];
+    identity = [v3 identity];
+    v7 = [v5 userInterfaceStyleProviderForDisplay:identity];
 
-    [v4 setUserInterfaceStyle:{objc_msgSend(v7, "currentStyle")}];
+    [sb_embeddedDisplayDefaultContext setUserInterfaceStyle:{objc_msgSend(v7, "currentStyle")}];
   }
 
-  return v4;
+  return sb_embeddedDisplayDefaultContext;
 }
 
 @end

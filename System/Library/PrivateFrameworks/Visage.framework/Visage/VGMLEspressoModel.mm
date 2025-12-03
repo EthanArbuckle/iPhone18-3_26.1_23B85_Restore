@@ -1,25 +1,25 @@
 @interface VGMLEspressoModel
-+ (id)modelVersionWithModelPath:(id)a3;
-+ (id)modelVersionWithNetworkFilePath:(id)a3;
-- (VGMLEspressoModel)initWithModelInfo:(id)a3;
-- (VGMLEspressoModel)initWithModelPath:(id)a3;
-- (VGMLEspressoModel)initWithNetworkFile:(id)a3;
-- (const)getInputDimensions:(unint64_t)a3;
-- (const)getOutputDimensions:(unint64_t)a3;
-- (id)inferInputs:(id)a3;
++ (id)modelVersionWithModelPath:(id)path;
++ (id)modelVersionWithNetworkFilePath:(id)path;
+- (VGMLEspressoModel)initWithModelInfo:(id)info;
+- (VGMLEspressoModel)initWithModelPath:(id)path;
+- (VGMLEspressoModel)initWithNetworkFile:(id)file;
+- (const)getInputDimensions:(unint64_t)dimensions;
+- (const)getOutputDimensions:(unint64_t)dimensions;
+- (id)inferInputs:(id)inputs;
 - (unint64_t)getInputSize;
 - (unint64_t)getOutputSize;
-- (unint64_t)getOutputSize:(unint64_t)a3;
+- (unint64_t)getOutputSize:(unint64_t)size;
 - (void)dealloc;
-- (void)inferInputs:(id)a3 toOutputs:(id)a4;
+- (void)inferInputs:(id)inputs toOutputs:(id)outputs;
 - (void)inferModel;
 @end
 
 @implementation VGMLEspressoModel
 
-+ (id)modelVersionWithNetworkFilePath:(id)a3
++ (id)modelVersionWithNetworkFilePath:(id)path
 {
-  v3 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:a3];
+  v3 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
   if (v3)
   {
     v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v3 options:0 error:0];
@@ -47,25 +47,25 @@
   return v7;
 }
 
-+ (id)modelVersionWithModelPath:(id)a3
++ (id)modelVersionWithModelPath:(id)path
 {
-  v3 = [a3 stringByAppendingPathComponent:@"model.espresso.net"];
+  v3 = [path stringByAppendingPathComponent:@"model.espresso.net"];
   v4 = [objc_opt_class() modelVersionWithNetworkFilePath:v3];
 
   return v4;
 }
 
-- (VGMLEspressoModel)initWithModelInfo:(id)a3
+- (VGMLEspressoModel)initWithModelInfo:(id)info
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v62.receiver = self;
   v62.super_class = VGMLEspressoModel;
   v5 = [(VGMLEspressoModel *)&v62 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"config"];
-    v7 = [v4 objectForKeyedSubscript:@"model_path"];
+    v6 = [infoCopy objectForKeyedSubscript:@"config"];
+    v7 = [infoCopy objectForKeyedSubscript:@"model_path"];
     networkFilePath = v5->_networkFilePath;
     v5->_networkFilePath = v7;
 
@@ -246,7 +246,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v66 = v4;
+        v66 = infoCopy;
         _os_log_impl(&dword_270F06000, v13, OS_LOG_TYPE_ERROR, " No modelpath with info %@ ", buf, 0xCu);
       }
     }
@@ -264,17 +264,17 @@ LABEL_40:
   return v16;
 }
 
-- (VGMLEspressoModel)initWithModelPath:(id)a3
+- (VGMLEspressoModel)initWithModelPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = VGMLEspressoModel;
   v5 = [(VGMLEspressoModel *)&v11 init];
   if (v5)
   {
-    v6 = [v4 stringByAppendingPathComponent:@"config.plist"];
+    v6 = [pathCopy stringByAppendingPathComponent:@"config.plist"];
     v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithContentsOfFile:v6];
-    v8 = [v4 stringByAppendingPathComponent:@"model.espresso.net"];
+    v8 = [pathCopy stringByAppendingPathComponent:@"model.espresso.net"];
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v9 setObject:v7 forKeyedSubscript:@"config"];
     [v9 setObject:v8 forKeyedSubscript:@"model_path"];
@@ -284,17 +284,17 @@ LABEL_40:
   return v5;
 }
 
-- (VGMLEspressoModel)initWithNetworkFile:(id)a3
+- (VGMLEspressoModel)initWithNetworkFile:(id)file
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v35.receiver = self;
   v35.super_class = VGMLEspressoModel;
   v5 = [(VGMLEspressoModel *)&v35 init];
   if (v5)
   {
     v34 = 0;
-    v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v4 options:0 error:&v34];
+    v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileCopy options:0 error:&v34];
     v7 = v34;
     if (v7)
     {
@@ -375,7 +375,7 @@ LABEL_40:
 
             if (!v21)
             {
-              v42[0] = v4;
+              v42[0] = fileCopy;
               v41[0] = @"model_path";
               v41[1] = @"config";
               v36[0] = @"version";
@@ -473,89 +473,89 @@ LABEL_28:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (const)getInputDimensions:(unint64_t)a3
+- (const)getInputDimensions:(unint64_t)dimensions
 {
-  v3 = [(NSMutableArray *)self->_inputBuffers objectAtIndexedSubscript:a3];
-  v4 = [v3 getDimensions];
+  v3 = [(NSMutableArray *)self->_inputBuffers objectAtIndexedSubscript:dimensions];
+  getDimensions = [v3 getDimensions];
 
-  return v4;
+  return getDimensions;
 }
 
-- (const)getOutputDimensions:(unint64_t)a3
+- (const)getOutputDimensions:(unint64_t)dimensions
 {
-  v3 = [(NSMutableArray *)self->_outputBuffers objectAtIndexedSubscript:a3];
-  v4 = [v3 getDimensions];
+  v3 = [(NSMutableArray *)self->_outputBuffers objectAtIndexedSubscript:dimensions];
+  getDimensions = [v3 getDimensions];
 
-  return v4;
+  return getDimensions;
 }
 
 - (unint64_t)getInputSize
 {
   v2 = [(NSMutableArray *)self->_inputBuffers objectAtIndexedSubscript:0];
-  v3 = [v2 getSize];
+  getSize = [v2 getSize];
 
-  return v3;
+  return getSize;
 }
 
 - (unint64_t)getOutputSize
 {
   v2 = [(NSMutableArray *)self->_outputBuffers objectAtIndexedSubscript:0];
-  v3 = [v2 getSize];
+  getSize = [v2 getSize];
 
-  return v3;
+  return getSize;
 }
 
-- (unint64_t)getOutputSize:(unint64_t)a3
+- (unint64_t)getOutputSize:(unint64_t)size
 {
-  v3 = [(NSMutableArray *)self->_outputBuffers objectAtIndexedSubscript:a3];
-  v4 = [v3 getSize];
+  v3 = [(NSMutableArray *)self->_outputBuffers objectAtIndexedSubscript:size];
+  getSize = [v3 getSize];
 
-  return v4;
+  return getSize;
 }
 
-- (void)inferInputs:(id)a3 toOutputs:(id)a4
+- (void)inferInputs:(id)inputs toOutputs:(id)outputs
 {
-  v13 = a3;
-  v6 = a4;
+  inputsCopy = inputs;
+  outputsCopy = outputs;
   for (i = 0; i < [(NSMutableArray *)self->_inputBuffers count]; ++i)
   {
     v8 = [(NSMutableArray *)self->_inputBuffers objectAtIndexedSubscript:i];
-    v9 = [v13 objectAtIndexedSubscript:i];
+    v9 = [inputsCopy objectAtIndexedSubscript:i];
     [v8 bindTensor:v9];
   }
 
   for (j = 0; j < [(NSMutableArray *)self->_outputBuffers count]; ++j)
   {
     v11 = [(NSMutableArray *)self->_outputBuffers objectAtIndexedSubscript:j];
-    v12 = [v6 objectAtIndexedSubscript:j];
+    v12 = [outputsCopy objectAtIndexedSubscript:j];
     [v11 bindTensor:v12];
   }
 
   [(VGMLEspressoModel *)self inferModel];
 }
 
-- (id)inferInputs:(id)a3
+- (id)inferInputs:(id)inputs
 {
-  v4 = a3;
-  v5 = [(VGMLEspressoModel *)self numOutputs];
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v5];
-  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v5];
-  if (v5)
+  inputsCopy = inputs;
+  numOutputs = [(VGMLEspressoModel *)self numOutputs];
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:numOutputs];
+  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:numOutputs];
+  if (numOutputs)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != numOutputs; ++i)
     {
       v9 = [(NSMutableArray *)self->_outputBuffers objectAtIndexedSubscript:i];
-      v10 = [v9 getSize];
+      getSize = [v9 getSize];
 
-      v11 = [MEMORY[0x277CBEB28] dataWithLength:4 * v10];
-      v12 = -[VGMLFloatIOData initWithSize:withData:]([VGMLFloatIOData alloc], "initWithSize:withData:", v10, [v11 mutableBytes]);
+      v11 = [MEMORY[0x277CBEB28] dataWithLength:4 * getSize];
+      v12 = -[VGMLFloatIOData initWithSize:withData:]([VGMLFloatIOData alloc], "initWithSize:withData:", getSize, [v11 mutableBytes]);
       [v6 setObject:v12 atIndexedSubscript:i];
       v13 = [(NSMutableArray *)self->_outputLayerNames objectAtIndexedSubscript:i];
       [v7 setObject:v12 forKey:v13];
     }
   }
 
-  [(VGMLEspressoModel *)self inferInputs:v4 toOutputs:v6];
+  [(VGMLEspressoModel *)self inferInputs:inputsCopy toOutputs:v6];
 
   return v7;
 }

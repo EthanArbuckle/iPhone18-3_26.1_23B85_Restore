@@ -1,30 +1,30 @@
 @interface TouchIdPrearmContext
-+ (void)prearmForUser:(id)a3 request:(id)a4 reply:(id)a5;
-- (TouchIdPrearmContext)initWithUserId:(id)a3;
++ (void)prearmForUser:(id)user request:(id)request reply:(id)reply;
+- (TouchIdPrearmContext)initWithUserId:(id)id;
 @end
 
 @implementation TouchIdPrearmContext
 
-- (TouchIdPrearmContext)initWithUserId:(id)a3
+- (TouchIdPrearmContext)initWithUserId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v18.receiver = self;
   v18.super_class = TouchIdPrearmContext;
   v5 = [(TouchIdPrearmContext *)&v18 init];
   if (v5)
   {
     v6 = +[BiometryHelper touchIdInstance];
-    v7 = [v6 device];
+    device = [v6 device];
 
     v17 = 0;
-    v8 = [v7 createMatchOperationWithError:&v17];
+    v8 = [device createMatchOperationWithError:&v17];
     v9 = v17;
     matchOperation = v5->_matchOperation;
     v5->_matchOperation = v8;
 
     [(BKMatchOperation *)v5->_matchOperation setPriority:50];
     [(BKMatchOperation *)v5->_matchOperation setPurpose:5];
-    [(BKMatchOperation *)v5->_matchOperation setUserID:v4];
+    [(BKMatchOperation *)v5->_matchOperation setUserID:idCopy];
     v11 = v5->_matchOperation;
     v16 = v9;
     v12 = [(BKMatchOperation *)v11 startWithError:&v16];
@@ -40,11 +40,11 @@
   return v5;
 }
 
-+ (void)prearmForUser:(id)a3 request:(id)a4 reply:(id)a5
++ (void)prearmForUser:(id)user request:(id)request reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  userCopy = user;
+  requestCopy = request;
+  replyCopy = reply;
   v10 = +[ContextManager sharedInstance];
   v23 = 0;
   v11 = [v10 loadModule:1 error:&v23];
@@ -52,12 +52,12 @@
 
   if (v11)
   {
-    v13 = [v11 mechanismManager];
+    mechanismManager = [v11 mechanismManager];
     v24 = @"UserId";
-    v25 = v7;
+    v25 = userCopy;
     v14 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v22 = v12;
-    v15 = [v13 loadMechanism:1 initParams:v14 request:v8 error:&v22];
+    v15 = [mechanismManager loadMechanism:1 initParams:v14 request:requestCopy error:&v22];
     v16 = v22;
 
     v21 = v16;
@@ -66,13 +66,13 @@
 
     if (v14)
     {
-      v17 = [[TouchIdPrearmContext alloc] initWithUserId:v7];
-      v18 = [(TouchIdPrearmContext *)v17 failure];
+      v17 = [[TouchIdPrearmContext alloc] initWithUserId:userCopy];
+      failure = [(TouchIdPrearmContext *)v17 failure];
 
-      if (v18)
+      if (failure)
       {
-        v19 = [(TouchIdPrearmContext *)v17 failure];
-        v20 = [LAErrorHelper errorWithCode:-1 message:@"Failed to prearm" suberror:v19];
+        failure2 = [(TouchIdPrearmContext *)v17 failure];
+        v20 = [LAErrorHelper errorWithCode:-1 message:@"Failed to prearm" suberror:failure2];
 
         v17 = 0;
         v12 = v20;
@@ -84,12 +84,12 @@
       v17 = 0;
     }
 
-    v9[2](v9, v17, v12);
+    replyCopy[2](replyCopy, v17, v12);
   }
 
   else
   {
-    v9[2](v9, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 }
 

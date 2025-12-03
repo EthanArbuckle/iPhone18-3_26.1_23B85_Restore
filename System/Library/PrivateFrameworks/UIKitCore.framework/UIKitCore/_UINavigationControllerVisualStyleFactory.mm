@@ -1,7 +1,7 @@
 @interface _UINavigationControllerVisualStyleFactory
 + (id)sharedInstance;
 - (_UINavigationControllerVisualStyleFactory)init;
-- (id)styleForNavigationController:(id)a3;
+- (id)styleForNavigationController:(id)controller;
 @end
 
 @implementation _UINavigationControllerVisualStyleFactory
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (id)styleForNavigationController:(id)a3
+- (id)styleForNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UINavigationControllerVisualStyleFactory *)self visualStyleProvider];
-  v6 = [v5 styleForNavigationController:v4];
+  controllerCopy = controller;
+  visualStyleProvider = [(_UINavigationControllerVisualStyleFactory *)self visualStyleProvider];
+  v6 = [visualStyleProvider styleForNavigationController:controllerCopy];
 
   return v6;
 }

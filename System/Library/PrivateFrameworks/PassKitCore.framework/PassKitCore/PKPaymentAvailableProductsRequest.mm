@@ -1,72 +1,72 @@
 @interface PKPaymentAvailableProductsRequest
-- (PKPaymentAvailableProductsRequest)initWithCoder:(id)a3;
-- (PKPaymentAvailableProductsRequest)initWithPreferredLanguage:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (PKPaymentAvailableProductsRequest)initWithCoder:(id)coder;
+- (PKPaymentAvailableProductsRequest)initWithPreferredLanguage:(id)language;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentAvailableProductsRequest
 
-- (PKPaymentAvailableProductsRequest)initWithPreferredLanguage:(id)a3
+- (PKPaymentAvailableProductsRequest)initWithPreferredLanguage:(id)language
 {
-  v5 = a3;
+  languageCopy = language;
   v9.receiver = self;
   v9.super_class = PKPaymentAvailableProductsRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferredLanguage, a3);
+    objc_storeStrong(&v6->_preferredLanguage, language);
   }
 
   return v7;
 }
 
-- (PKPaymentAvailableProductsRequest)initWithCoder:(id)a3
+- (PKPaymentAvailableProductsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPaymentAvailableProductsRequest;
-  v5 = [(PKOverlayableWebServiceRequest *)&v9 initWithCoder:v4];
+  v5 = [(PKOverlayableWebServiceRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredLanguage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredLanguage"];
     preferredLanguage = v5->_preferredLanguage;
     v5->_preferredLanguage = v6;
 
-    v5->_context = [v4 decodeIntegerForKey:@"context"];
+    v5->_context = [coderCopy decodeIntegerForKey:@"context"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentAvailableProductsRequest;
-  v4 = a3;
-  [(PKOverlayableWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_preferredLanguage forKey:{@"preferredLanguage", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_context forKey:@"context"];
+  coderCopy = coder;
+  [(PKOverlayableWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_preferredLanguage forKey:{@"preferredLanguage", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_context forKey:@"context"];
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PKWebServiceRequest *)self cachePolicyOverride];
-  if (v11 == 4 || v11 == 1)
+  identifierCopy = identifier;
+  informationCopy = information;
+  lCopy = l;
+  cachePolicyOverride = [(PKWebServiceRequest *)self cachePolicyOverride];
+  if (cachePolicyOverride == 4 || cachePolicyOverride == 1)
   {
     [(PKWebServiceRequest *)self addDiagnosticReason:@"Ignoring cache"];
   }
 
   v26[0] = @"devices";
-  v26[1] = v8;
+  v26[1] = identifierCopy;
   v26[2] = @"products";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
-  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v10 version:@"4" endpointComponents:v12 queryParameters:0 appleAccountInformation:v9];
+  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy version:@"4" endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy];
 
   if (self->_preferredLanguage)
   {

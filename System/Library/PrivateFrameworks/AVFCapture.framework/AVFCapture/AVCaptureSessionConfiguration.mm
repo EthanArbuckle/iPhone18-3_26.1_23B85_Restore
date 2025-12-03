@@ -1,10 +1,10 @@
 @interface AVCaptureSessionConfiguration
-- (AVCaptureSessionConfiguration)initWithConfigurationID:(int64_t)a3 inputs:(id)a4 outputs:(id)a5 videoPreviewLayers:(id)a6 connections:(id)a7;
-- (BOOL)_videoPreviewLayersContains:(id)a3;
-- (id)uniqueConnections:(id)a3;
-- (id)uniqueInputs:(id)a3;
-- (id)uniqueOutputs:(id)a3;
-- (id)uniqueVideoPreviewLayers:(id)a3;
+- (AVCaptureSessionConfiguration)initWithConfigurationID:(int64_t)d inputs:(id)inputs outputs:(id)outputs videoPreviewLayers:(id)layers connections:(id)connections;
+- (BOOL)_videoPreviewLayersContains:(id)contains;
+- (id)uniqueConnections:(id)connections;
+- (id)uniqueInputs:(id)inputs;
+- (id)uniqueOutputs:(id)outputs;
+- (id)uniqueVideoPreviewLayers:(id)layers;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   [(AVCaptureSessionConfiguration *)&v3 dealloc];
 }
 
-- (AVCaptureSessionConfiguration)initWithConfigurationID:(int64_t)a3 inputs:(id)a4 outputs:(id)a5 videoPreviewLayers:(id)a6 connections:(id)a7
+- (AVCaptureSessionConfiguration)initWithConfigurationID:(int64_t)d inputs:(id)inputs outputs:(id)outputs videoPreviewLayers:(id)layers connections:(id)connections
 {
   v15.receiver = self;
   v15.super_class = AVCaptureSessionConfiguration;
@@ -25,40 +25,40 @@
   v13 = v12;
   if (v12)
   {
-    v12->_configurationID = a3;
-    v12->_inputs = [a4 copy];
-    v13->_outputs = [a5 copy];
-    v13->_videoPreviewLayers = [a6 copy];
-    v13->_connections = [a7 copy];
+    v12->_configurationID = d;
+    v12->_inputs = [inputs copy];
+    v13->_outputs = [outputs copy];
+    v13->_videoPreviewLayers = [layers copy];
+    v13->_connections = [connections copy];
   }
 
   return v13;
 }
 
-- (id)uniqueInputs:(id)a3
+- (id)uniqueInputs:(id)inputs
 {
   v4 = [MEMORY[0x1E695DFA8] setWithArray:self->_inputs];
-  [v4 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(a3, "inputs"))}];
+  [v4 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(inputs, "inputs"))}];
   return v4;
 }
 
-- (id)uniqueOutputs:(id)a3
+- (id)uniqueOutputs:(id)outputs
 {
   v4 = [MEMORY[0x1E695DFA8] setWithArray:self->_outputs];
-  [v4 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(a3, "outputs"))}];
+  [v4 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(outputs, "outputs"))}];
   return v4;
 }
 
-- (id)uniqueConnections:(id)a3
+- (id)uniqueConnections:(id)connections
 {
   v4 = [MEMORY[0x1E695DFA8] setWithArray:self->_connections];
-  [v4 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(a3, "connections"))}];
+  [v4 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(connections, "connections"))}];
   return v4;
 }
 
-- (id)uniqueVideoPreviewLayers:(id)a3
+- (id)uniqueVideoPreviewLayers:(id)layers
 {
-  v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -79,9 +79,9 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (([a3 _videoPreviewLayersContains:v11] & 1) == 0)
+        if (([layers _videoPreviewLayersContains:v11] & 1) == 0)
         {
-          [v5 addPointer:v11];
+          [weakObjectsPointerArray addPointer:v11];
         }
       }
 
@@ -91,10 +91,10 @@
     while (v8);
   }
 
-  return v5;
+  return weakObjectsPointerArray;
 }
 
-- (BOOL)_videoPreviewLayersContains:(id)a3
+- (BOOL)_videoPreviewLayersContains:(id)contains
 {
   if (![(NSPointerArray *)self->_videoPreviewLayers count])
   {
@@ -105,8 +105,8 @@
   do
   {
     v6 = [(NSPointerArray *)self->_videoPreviewLayers pointerAtIndex:v5];
-    v7 = v6 == a3;
-    if (v6 == a3)
+    v7 = v6 == contains;
+    if (v6 == contains)
     {
       break;
     }

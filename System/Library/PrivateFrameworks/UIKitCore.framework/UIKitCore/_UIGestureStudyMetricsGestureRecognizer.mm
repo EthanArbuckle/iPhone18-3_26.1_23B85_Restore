@@ -1,23 +1,23 @@
 @interface _UIGestureStudyMetricsGestureRecognizer
-- (CGPoint)locationInCoordinateSpace:(id)a3;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)originalPosition;
-- (_UIGestureStudyMetricsGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UIGestureStudyMetricsGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)duration;
 - (double)movement;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIGestureStudyMetricsGestureRecognizer
 
-- (_UIGestureStudyMetricsGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIGestureStudyMetricsGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIGestureStudyMetricsGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -30,11 +30,11 @@
   return v5;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIGestureStudyMetricsGestureRecognizer *)self primaryTouch];
-  [v5 locationInView:v4];
+  viewCopy = view;
+  primaryTouch = [(_UIGestureStudyMetricsGestureRecognizer *)self primaryTouch];
+  [primaryTouch locationInView:viewCopy];
   v7 = v6;
   v9 = v8;
 
@@ -45,30 +45,30 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = a3;
-  self->_observedTouchCount += [v7 count];
+  beganCopy = began;
+  self->_observedTouchCount += [beganCopy count];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    v5 = [v7 anyObject];
-    [(_UIGestureStudyMetricsGestureRecognizer *)self setPrimaryTouch:v5];
+    anyObject = [beganCopy anyObject];
+    [(_UIGestureStudyMetricsGestureRecognizer *)self setPrimaryTouch:anyObject];
 
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     [(_UIGestureStudyMetricsGestureRecognizer *)self setStartTimestamp:?];
-    v6 = [(UIGestureRecognizer *)self view];
-    [(_UIGestureStudyMetricsGestureRecognizer *)self locationInView:v6];
+    view = [(UIGestureRecognizer *)self view];
+    [(_UIGestureStudyMetricsGestureRecognizer *)self locationInView:view];
     [(_UIGestureStudyMetricsGestureRecognizer *)self setOriginalPosition:?];
 
     [(UIGestureRecognizer *)self setState:1];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(_UIGestureStudyMetricsGestureRecognizer *)self primaryTouch];
-  v7 = [v5 containsObject:v6];
+  endedCopy = ended;
+  primaryTouch = [(_UIGestureStudyMetricsGestureRecognizer *)self primaryTouch];
+  v7 = [endedCopy containsObject:primaryTouch];
 
   if (v7)
   {
@@ -77,11 +77,11 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(_UIGestureStudyMetricsGestureRecognizer *)self primaryTouch];
-  v7 = [v5 containsObject:v6];
+  cancelledCopy = cancelled;
+  primaryTouch = [(_UIGestureStudyMetricsGestureRecognizer *)self primaryTouch];
+  v7 = [cancelledCopy containsObject:primaryTouch];
 
   if (v7)
   {
@@ -98,16 +98,16 @@
   self->_observedTouchCount = 0;
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(UIGestureRecognizer *)self view];
-  [(_UIGestureStudyMetricsGestureRecognizer *)self locationInView:v5];
+  spaceCopy = space;
+  view = [(UIGestureRecognizer *)self view];
+  [(_UIGestureStudyMetricsGestureRecognizer *)self locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(UIGestureRecognizer *)self view];
-  [v10 convertPoint:v4 toCoordinateSpace:{v7, v9}];
+  view2 = [(UIGestureRecognizer *)self view];
+  [view2 convertPoint:spaceCopy toCoordinateSpace:{v7, v9}];
   v12 = v11;
   v14 = v13;
 
@@ -136,8 +136,8 @@
 
 - (double)movement
 {
-  v3 = [(UIGestureRecognizer *)self view];
-  [(_UIGestureStudyMetricsGestureRecognizer *)self locationInView:v3];
+  view = [(UIGestureRecognizer *)self view];
+  [(_UIGestureStudyMetricsGestureRecognizer *)self locationInView:view];
   v5 = v4;
   v7 = v6;
 

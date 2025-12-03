@@ -1,11 +1,11 @@
 @interface BTAudioSmartRouteDevice
 - (BOOL)isFormatChangeMapEmpty;
 - (BTAudioSmartRouteDevice)init;
-- (BTAudioSmartRouteDevice)initWithBluetoothInfo:(unsigned int)a3 deviceAddr:(id)a4;
+- (BTAudioSmartRouteDevice)initWithBluetoothInfo:(unsigned int)info deviceAddr:(id)addr;
 - (void)clearFormatChangeMap;
 - (void)dealloc;
-- (void)setOwnership:(int)a3;
-- (void)updateSession:(id)a3 isStart:(BOOL)a4 isInput:(BOOL)a5;
+- (void)setOwnership:(int)ownership;
+- (void)updateSession:(id)session isStart:(BOOL)start isInput:(BOOL)input;
 @end
 
 @implementation BTAudioSmartRouteDevice
@@ -29,20 +29,20 @@
   return [(BTAudioSmartRouteDevice *)&v3 init];
 }
 
-- (BTAudioSmartRouteDevice)initWithBluetoothInfo:(unsigned int)a3 deviceAddr:(id)a4
+- (BTAudioSmartRouteDevice)initWithBluetoothInfo:(unsigned int)info deviceAddr:(id)addr
 {
   v9.receiver = self;
   v9.super_class = BTAudioSmartRouteDevice;
   v6 = [(BTAudioSmartRouteDevice *)&v9 init];
-  v6->_deviceID = a3;
-  v6->_bdAddr = [[NSString alloc] initWithString:a4];
+  v6->_deviceID = info;
+  v6->_bdAddr = [[NSString alloc] initWithString:addr];
   v6->_session = 0;
   v6->_mFormatDict = objc_alloc_init(NSMutableDictionary);
   v7 = qword_D8520;
   if (os_log_type_enabled(qword_D8520, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = a4;
+    addrCopy = addr;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Initialize Bluetooth Audio device in Route Manager %@ ", buf, 0xCu);
   }
 
@@ -88,19 +88,19 @@
   return [(NSMutableDictionary *)self->_mFormatDict count]== 0;
 }
 
-- (void)setOwnership:(int)a3
+- (void)setOwnership:(int)ownership
 {
-  if (self->_ownership == a3)
+  if (self->_ownership == ownership)
   {
     goto LABEL_9;
   }
 
-  if ((a3 & 0xFFFFFFFD) == 0)
+  if ((ownership & 0xFFFFFFFD) == 0)
   {
     goto LABEL_7;
   }
 
-  if (a3 != 1)
+  if (ownership != 1)
   {
     v6 = qword_D8520;
     if (os_log_type_enabled(qword_D8520, OS_LOG_TYPE_ERROR))
@@ -115,7 +115,7 @@ LABEL_7:
 
   v5 = 1;
 LABEL_8:
-  self->_ownership = a3;
+  self->_ownership = ownership;
   deviceID = self->_deviceID;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -133,16 +133,16 @@ LABEL_9:
     *buf = 138412546;
     v21 = bdAddr;
     v22 = 1024;
-    v23 = ownership;
+    ownershipCopy = ownership;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Update Ownership on  %@ -> %d", buf, 0x12u);
   }
 }
 
-- (void)updateSession:(id)a3 isStart:(BOOL)a4 isInput:(BOOL)a5
+- (void)updateSession:(id)session isStart:(BOOL)start isInput:(BOOL)input
 {
-  v5 = a5;
+  inputCopy = input;
   session = self->_session;
-  if (a4)
+  if (start)
   {
     if (!session)
     {
@@ -153,14 +153,14 @@ LABEL_9:
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "updateSession Create Session", v23, 2u);
       }
 
-      v10 = [[BTAudioSmartRouteSession alloc] initWithbundleID:a3];
+      v10 = [[BTAudioSmartRouteSession alloc] initWithbundleID:session];
       self->_session = v10;
       [(BTAudioSmartRouteSession *)v10 setIsOutput:0];
       [(BTAudioSmartRouteSession *)self->_session setIsInput:0];
     }
 
     v11 = self->_session;
-    if (v5)
+    if (inputCopy)
     {
       [(BTAudioSmartRouteSession *)v11 setIsInput:1];
     }
@@ -173,7 +173,7 @@ LABEL_9:
     v12 = qword_D8520;
     if (os_log_type_enabled(qword_D8520, OS_LOG_TYPE_DEFAULT))
     {
-      if (v5)
+      if (inputCopy)
       {
         v13 = @"Input";
       }
@@ -193,9 +193,9 @@ LABEL_9:
         v14 = @"false";
       }
 
-      v15 = [(BTAudioSmartRouteSession *)self->_session isOutput];
+      isOutput = [(BTAudioSmartRouteSession *)self->_session isOutput];
       *v23 = 138413314;
-      if (v15)
+      if (isOutput)
       {
         v16 = @"true";
       }
@@ -205,7 +205,7 @@ LABEL_9:
         v16 = @"false";
       }
 
-      *&v23[4] = a3;
+      *&v23[4] = session;
       v24 = 1024;
       v25 = 1;
       v26 = 2112;
@@ -220,7 +220,7 @@ LABEL_9:
 
   else
   {
-    if (a5)
+    if (input)
     {
       [(BTAudioSmartRouteSession *)session setIsInput:0];
     }
@@ -233,7 +233,7 @@ LABEL_9:
     v17 = qword_D8520;
     if (os_log_type_enabled(qword_D8520, OS_LOG_TYPE_DEFAULT))
     {
-      if (v5)
+      if (inputCopy)
       {
         v18 = @"Input";
       }
@@ -253,9 +253,9 @@ LABEL_9:
         v19 = @"false";
       }
 
-      v20 = [(BTAudioSmartRouteSession *)self->_session isOutput];
+      isOutput2 = [(BTAudioSmartRouteSession *)self->_session isOutput];
       *v23 = 138413314;
-      if (v20)
+      if (isOutput2)
       {
         v21 = @"true";
       }
@@ -265,7 +265,7 @@ LABEL_9:
         v21 = @"false";
       }
 
-      *&v23[4] = a3;
+      *&v23[4] = session;
       v24 = 1024;
       v25 = 0;
       v26 = 2112;

@@ -1,18 +1,18 @@
 @interface SFB389NFCPromptSession
-- (SFB389NFCPromptSession)initWithInitialConfiguration:(id)a3;
+- (SFB389NFCPromptSession)initWithInitialConfiguration:(id)configuration;
 - (id)_getRemoteObjectProxy;
 - (void)_ensureXPCStarted;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)updateCardConfiguration:(id)a3;
+- (void)updateCardConfiguration:(id)configuration;
 @end
 
 @implementation SFB389NFCPromptSession
 
-- (SFB389NFCPromptSession)initWithInitialConfiguration:(id)a3
+- (SFB389NFCPromptSession)initWithInitialConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SFB389NFCPromptSession;
   v5 = [(SFB389NFCPromptSession *)&v11 init];
@@ -22,7 +22,7 @@
     dispatchQueue = v5->_dispatchQueue;
     v5->_dispatchQueue = v6;
 
-    v8 = [v4 copy];
+    v8 = [configurationCopy copy];
     config = v5->_config;
     v5->_config = v8;
   }
@@ -167,7 +167,7 @@ void __47__SFB389NFCPromptSession__getRemoteObjectProxy__block_invoke(uint64_t a
   if (!self->_xpcCnx)
   {
     v3 = MEMORY[0x1E696B0B8];
-    v4 = self;
+    selfCopy = self;
     v5 = [[v3 alloc] initWithMachServiceName:@"com.apple.SharingServices" options:0];
     xpcCnx = self->_xpcCnx;
     self->_xpcCnx = v5;
@@ -177,13 +177,13 @@ void __47__SFB389NFCPromptSession__getRemoteObjectProxy__block_invoke(uint64_t a
     v9[1] = 3221225472;
     v9[2] = __43__SFB389NFCPromptSession__ensureXPCStarted__block_invoke;
     v9[3] = &unk_1E788B198;
-    v9[4] = v4;
+    v9[4] = selfCopy;
     [(NSXPCConnection *)self->_xpcCnx setInterruptionHandler:v9];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __43__SFB389NFCPromptSession__ensureXPCStarted__block_invoke_2;
     v8[3] = &unk_1E788B198;
-    v8[4] = v4;
+    v8[4] = selfCopy;
     [(NSXPCConnection *)self->_xpcCnx setInvalidationHandler:v8];
     v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F1DAE9C0];
     [(NSXPCConnection *)self->_xpcCnx setRemoteObjectInterface:v7];
@@ -216,9 +216,9 @@ uint64_t __43__SFB389NFCPromptSession__ensureXPCStarted__block_invoke_2(uint64_t
   return [v2 invalidate];
 }
 
-- (void)updateCardConfiguration:(id)a3
+- (void)updateCardConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;

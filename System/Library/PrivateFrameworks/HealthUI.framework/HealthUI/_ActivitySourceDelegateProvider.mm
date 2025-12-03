@@ -1,22 +1,22 @@
 @interface _ActivitySourceDelegateProvider
 - (HKDateRangeDataUpdateDelegate)dateRangeDataUpdateDelegate;
-- (_ActivitySourceDelegateProvider)initWithDataProvider:(id)a3 activityValue:(int64_t)a4 displayTypeController:(id)a5 unitPreferenceController:(id)a6;
-- (id)activitySummariesForDateRange:(id)a3 timeScope:(int64_t)a4;
-- (void)activitySummaryDataProviderDidUpdateActivitySummaries:(id)a3;
+- (_ActivitySourceDelegateProvider)initWithDataProvider:(id)provider activityValue:(int64_t)value displayTypeController:(id)controller unitPreferenceController:(id)preferenceController;
+- (id)activitySummariesForDateRange:(id)range timeScope:(int64_t)scope;
+- (void)activitySummaryDataProviderDidUpdateActivitySummaries:(id)summaries;
 @end
 
 @implementation _ActivitySourceDelegateProvider
 
-- (_ActivitySourceDelegateProvider)initWithDataProvider:(id)a3 activityValue:(int64_t)a4 displayTypeController:(id)a5 unitPreferenceController:(id)a6
+- (_ActivitySourceDelegateProvider)initWithDataProvider:(id)provider activityValue:(int64_t)value displayTypeController:(id)controller unitPreferenceController:(id)preferenceController
 {
-  v11 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = _ActivitySourceDelegateProvider;
-  v12 = [(_ActivitySourceDelegate *)&v15 initWithActivityValue:a4 displayTypeController:a5 unitPreferenceController:a6];
+  v12 = [(_ActivitySourceDelegate *)&v15 initWithActivityValue:value displayTypeController:controller unitPreferenceController:preferenceController];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataProvider, a3);
+    objc_storeStrong(&v12->_dataProvider, provider);
     objc_storeWeak(&v13->_dateRangeDataUpdateDelegate, 0);
     [(HKActivitySummaryDataProvider *)v13->_dataProvider addObserver:v13];
   }
@@ -24,19 +24,19 @@
   return v13;
 }
 
-- (id)activitySummariesForDateRange:(id)a3 timeScope:(int64_t)a4
+- (id)activitySummariesForDateRange:(id)range timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = [(_ActivitySourceDelegateProvider *)self dataProvider];
-  v8 = [v7 activitySummariesForDateRange:v6 timeScope:a4];
+  rangeCopy = range;
+  dataProvider = [(_ActivitySourceDelegateProvider *)self dataProvider];
+  v8 = [dataProvider activitySummariesForDateRange:rangeCopy timeScope:scope];
 
   return v8;
 }
 
-- (void)activitySummaryDataProviderDidUpdateActivitySummaries:(id)a3
+- (void)activitySummaryDataProviderDidUpdateActivitySummaries:(id)summaries
 {
-  v3 = [(_ActivitySourceDelegateProvider *)self dateRangeDataUpdateDelegate];
-  [v3 dateRangeDataUpdated];
+  dateRangeDataUpdateDelegate = [(_ActivitySourceDelegateProvider *)self dateRangeDataUpdateDelegate];
+  [dateRangeDataUpdateDelegate dateRangeDataUpdated];
 }
 
 - (HKDateRangeDataUpdateDelegate)dateRangeDataUpdateDelegate

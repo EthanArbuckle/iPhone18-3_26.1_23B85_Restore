@@ -19,55 +19,55 @@
 - (BOOL)isSensorService;
 - (BOOL)isService;
 - (BOOL)isVisibleAsBridge;
-- (HUServiceDetailsAbstractItem)initWithSourceServiceItem:(id)a3 home:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUServiceDetailsAbstractItem)initWithSourceServiceItem:(id)item home:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sourceAccessory;
 @end
 
 @implementation HUServiceDetailsAbstractItem
 
-- (HUServiceDetailsAbstractItem)initWithSourceServiceItem:(id)a3 home:(id)a4
+- (HUServiceDetailsAbstractItem)initWithSourceServiceItem:(id)item home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUServiceDetailsAbstractItem;
   v8 = [(HUServiceDetailsAbstractItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(HUServiceDetailsAbstractItem *)v8 setSourceServiceItem:v6];
-    [(HUServiceDetailsAbstractItem *)v9 setHome:v7];
+    [(HUServiceDetailsAbstractItem *)v8 setSourceServiceItem:itemCopy];
+    [(HUServiceDetailsAbstractItem *)v9 setHome:homeCopy];
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-  v6 = [(HUServiceDetailsAbstractItem *)self home];
-  v7 = [v4 initWithSourceServiceItem:v5 home:v6];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  home = [(HUServiceDetailsAbstractItem *)self home];
+  v7 = [v4 initWithSourceServiceItem:sourceServiceItem home:home];
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsAbstractItem.m" lineNumber:40 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUServiceDetailsAbstractItem _subclass_updateWithOptions:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsAbstractItem.m" lineNumber:40 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUServiceDetailsAbstractItem _subclass_updateWithOptions:]", objc_opt_class()}];
 
   return 0;
 }
 
 - (BOOL)isItemGroup
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-  if ([v2 conformsToProtocol:&unk_28251B268])
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  if ([sourceServiceItem conformsToProtocol:&unk_28251B268])
   {
-    v3 = v2;
+    v3 = sourceServiceItem;
   }
 
   else
@@ -77,16 +77,16 @@
 
   v4 = v3;
 
-  v5 = [v4 isItemGroup];
-  return v5;
+  isItemGroup = [v4 isItemGroup];
+  return isItemGroup;
 }
 
 - (BOOL)isContainedWithinItemGroup
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-  if ([v2 conformsToProtocol:&unk_28251B268])
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  if ([sourceServiceItem conformsToProtocol:&unk_28251B268])
   {
-    v3 = v2;
+    v3 = sourceServiceItem;
   }
 
   else
@@ -96,20 +96,20 @@
 
   v4 = v3;
 
-  v5 = [v4 isContainedWithinItemGroup];
-  return v5;
+  isContainedWithinItemGroup = [v4 isContainedWithinItemGroup];
+  return isContainedWithinItemGroup;
 }
 
 - (BOOL)isAccessory
 {
-  v3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_4;
   }
 
-  v4 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -118,7 +118,7 @@ LABEL_4:
     return 1;
   }
 
-  v6 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -127,33 +127,33 @@ LABEL_4:
 
 - (id)sourceAccessory
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-  v3 = [v2 accessories];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  accessories = [sourceServiceItem accessories];
 
-  if ([v3 count] == 1)
+  if ([accessories count] == 1)
   {
-    v4 = [v3 anyObject];
+    anyObject = [accessories anyObject];
   }
 
   else
   {
-    v4 = 0;
+    anyObject = 0;
   }
 
-  return v4;
+  return anyObject;
 }
 
 - (BOOL)isMultiServiceAccessory
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
-  v3 = [v2 hf_isMultiServiceAccessory];
+  sourceAccessory = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
+  hf_isMultiServiceAccessory = [sourceAccessory hf_isMultiServiceAccessory];
 
-  return v3;
+  return hf_isMultiServiceAccessory;
 }
 
 - (BOOL)isService
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -162,7 +162,7 @@ LABEL_4:
 
 - (BOOL)isMediaAccessory
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -171,19 +171,19 @@ LABEL_4:
 
 - (BOOL)isMediaAccessoryGroup
 {
-  v3 = [(HUServiceDetailsAbstractItem *)self isMediaAccessory];
-  if (v3)
+  isMediaAccessory = [(HUServiceDetailsAbstractItem *)self isMediaAccessory];
+  if (isMediaAccessory)
   {
 
-    LOBYTE(v3) = [(HUServiceDetailsAbstractItem *)self isItemGroup];
+    LOBYTE(isMediaAccessory) = [(HUServiceDetailsAbstractItem *)self isItemGroup];
   }
 
-  return v3;
+  return isMediaAccessory;
 }
 
 - (BOOL)isCamera
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -193,10 +193,10 @@ LABEL_4:
 - (BOOL)isNotificationSupportedCamera
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceServiceItem;
   }
 
   else
@@ -206,44 +206,44 @@ LABEL_4:
 
   v5 = v4;
 
-  v6 = [v5 profile];
+  profile = [v5 profile];
 
-  v7 = [v6 accessory];
-  v8 = [v7 hf_isNotificationSupportedCamera];
+  accessory = [profile accessory];
+  hf_isNotificationSupportedCamera = [accessory hf_isNotificationSupportedCamera];
 
-  return v8;
+  return hf_isNotificationSupportedCamera;
 }
 
 - (BOOL)isBridge
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
-  v3 = [v2 hf_isBridge];
+  sourceAccessory = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
+  hf_isBridge = [sourceAccessory hf_isBridge];
 
-  return v3;
+  return hf_isBridge;
 }
 
 - (BOOL)isBridged
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
-  v3 = [v2 isBridged];
+  sourceAccessory = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
+  isBridged = [sourceAccessory isBridged];
 
-  return v3;
+  return isBridged;
 }
 
 - (BOOL)isVisibleAsBridge
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
-  v3 = [v2 hf_isVisibleAsBridge];
+  sourceAccessory = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
+  hf_isVisibleAsBridge = [sourceAccessory hf_isVisibleAsBridge];
 
-  return v3;
+  return hf_isVisibleAsBridge;
 }
 
 - (BOOL)isAccessoryDisplayedAsIndividualTiles
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
-  v3 = [v2 hf_showAsIndividualServices];
+  sourceAccessory = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
+  hf_showAsIndividualServices = [sourceAccessory hf_showAsIndividualServices];
 
-  return v3;
+  return hf_showAsIndividualServices;
 }
 
 - (BOOL)isContainedInAParent
@@ -251,46 +251,46 @@ LABEL_4:
   if ([(HUServiceDetailsAbstractItem *)self isMediaAccessory])
   {
 
-    LOBYTE(v3) = [(HUServiceDetailsAbstractItem *)self isContainedWithinItemGroup];
+    LOBYTE(isService) = [(HUServiceDetailsAbstractItem *)self isContainedWithinItemGroup];
   }
 
   else
   {
-    v3 = [(HUServiceDetailsAbstractItem *)self isService];
-    if (v3)
+    isService = [(HUServiceDetailsAbstractItem *)self isService];
+    if (isService)
     {
-      v3 = [(HUServiceDetailsAbstractItem *)self isMultiServiceAccessory];
-      if (v3)
+      isService = [(HUServiceDetailsAbstractItem *)self isMultiServiceAccessory];
+      if (isService)
       {
-        LOBYTE(v3) = ![(HUServiceDetailsAbstractItem *)self isAccessoryDisplayedAsIndividualTiles];
+        LOBYTE(isService) = ![(HUServiceDetailsAbstractItem *)self isAccessoryDisplayedAsIndividualTiles];
       }
     }
   }
 
-  return v3;
+  return isService;
 }
 
 - (BOOL)isNetworkRouter
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-  v3 = [v2 services];
-  v4 = [v3 na_any:&__block_literal_global_205];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  services = [sourceServiceItem services];
+  v4 = [services na_any:&__block_literal_global_205];
 
   return v4;
 }
 
 - (BOOL)isNetworkRouterSatellite
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-  v3 = [v2 services];
-  v4 = [v3 na_any:&__block_literal_global_66_4];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  services = [sourceServiceItem services];
+  v4 = [services na_any:&__block_literal_global_66_4];
 
   return v4;
 }
 
 - (BOOL)isSensorService
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -300,10 +300,10 @@ LABEL_4:
 - (BOOL)canShowAsIndividualTiles
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceServiceItem;
   }
 
   else
@@ -315,17 +315,17 @@ LABEL_4:
 
   if (v5)
   {
-    v6 = [v5 accessory];
-    LOBYTE(v7) = [v6 hf_canShowAsIndividualServices];
+    accessory = [v5 accessory];
+    LOBYTE(v7) = [accessory hf_canShowAsIndividualServices];
   }
 
   else
   {
     objc_opt_class();
-    v6 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+    accessory = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = accessory;
     }
 
     else
@@ -337,14 +337,14 @@ LABEL_4:
 
     if (v7)
     {
-      v9 = [v7 service];
-      v10 = [v9 accessory];
-      LOBYTE(v7) = [v10 hf_canShowAsIndividualServices];
+      service = [v7 service];
+      accessory2 = [service accessory];
+      LOBYTE(v7) = [accessory2 hf_canShowAsIndividualServices];
     }
 
     else
     {
-      v6 = 0;
+      accessory = 0;
     }
   }
 
@@ -354,10 +354,10 @@ LABEL_4:
 - (BOOL)isAudioAnalysisSupportedDevice
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceServiceItem;
   }
 
   else
@@ -370,8 +370,8 @@ LABEL_4:
   if (v5)
   {
     v6 = MEMORY[0x277D14810];
-    v7 = [v5 mediaProfileContainer];
-    v8 = [v6 isAudioAnalysisSupportedDevice:v7];
+    mediaProfileContainer = [v5 mediaProfileContainer];
+    v8 = [v6 isAudioAnalysisSupportedDevice:mediaProfileContainer];
   }
 
   else
@@ -384,10 +384,10 @@ LABEL_4:
 
 - (BOOL)isCHIPAccessory
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
-  v3 = [v2 supportsCHIP];
+  sourceAccessory = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
+  supportsCHIP = [sourceAccessory supportsCHIP];
 
-  return v3;
+  return supportsCHIP;
 }
 
 @end

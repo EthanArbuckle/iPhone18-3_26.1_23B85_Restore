@@ -64,23 +64,23 @@
 - (int64_t)_moreMenuTypeValue;
 - (unint64_t)_feature;
 - (unint64_t)_possibleCalendarEventsCount;
-- (void)_addPassAndUpcomingInformationEventsToCalendarWithEventStore:(id)a3;
-- (void)_addPassEventsToCalendarWithEventStore:(id)a3;
-- (void)_peerPaymentAccountChanged:(id)a3;
-- (void)_performAddToCalendarRequestNeedingPermission:(BOOL)a3 eventStore:(id)a4 requestBlock:(id)a5;
+- (void)_addPassAndUpcomingInformationEventsToCalendarWithEventStore:(id)store;
+- (void)_addPassEventsToCalendarWithEventStore:(id)store;
+- (void)_peerPaymentAccountChanged:(id)changed;
+- (void)_performAddToCalendarRequestNeedingPermission:(BOOL)permission eventStore:(id)store requestBlock:(id)block;
 - (void)_presentNeedsCalendarPermissionsAlert;
 - (void)_recalculateTransitPassDetails;
 - (void)_reloadMoreMenuItems;
-- (void)accountChanged:(id)a3;
+- (void)accountChanged:(id)changed;
 - (void)dealloc;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceivePlanUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
-- (void)setAccount:(id)a3;
-- (void)setBankConnectAccount:(id)a3;
-- (void)setDashboardVC:(id)a3;
-- (void)setPass:(id)a3;
-- (void)setViewController:(id)a3;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceivePlanUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
+- (void)setAccount:(id)account;
+- (void)setBankConnectAccount:(id)account;
+- (void)setDashboardVC:(id)c;
+- (void)setPass:(id)pass;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation PKDashboardMoreMenuFactory
@@ -92,26 +92,26 @@
   v2 = [(PKDashboardMoreMenuFactory *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     paymentServiceDataProvider = v2->_paymentServiceDataProvider;
-    v2->_paymentServiceDataProvider = v3;
+    v2->_paymentServiceDataProvider = defaultDataProvider;
 
     [(PKPaymentDefaultDataProvider *)v2->_paymentServiceDataProvider addDelegate:v2];
     v5 = objc_alloc_init(MEMORY[0x1E69B8A60]);
     passLibraryDataProvider = v2->_passLibraryDataProvider;
     v2->_passLibraryDataProvider = v5;
 
-    v7 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
     webService = v2->_webService;
-    v2->_webService = v7;
+    v2->_webService = mEMORY[0x1E69B8EF8];
 
     v9 = [objc_alloc(MEMORY[0x1E69B8850]) initWithPaymentDataProvider:v2->_paymentServiceDataProvider passLibraryDataProvider:v2->_passLibraryDataProvider isForWatch:0];
     expressPassController = v2->_expressPassController;
     v2->_expressPassController = v9;
 
-    v11 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v2->_accountService;
-    v2->_accountService = v11;
+    v2->_accountService = mEMORY[0x1E69B8400];
 
     [(PKAccountService *)v2->_accountService registerObserver:v2];
   }
@@ -128,96 +128,96 @@
   [(PKDashboardMoreMenuFactory *)&v3 dealloc];
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_storeWeak(&self->_dashboardVC, 0);
-  [(PKDashboardMoreMenuFactory *)self _setViewController:v4];
+  [(PKDashboardMoreMenuFactory *)self _setViewController:controllerCopy];
 }
 
-- (void)setDashboardVC:(id)a3
+- (void)setDashboardVC:(id)c
 {
-  v4 = a3;
-  objc_storeWeak(&self->_dashboardVC, v4);
-  [(PKDashboardMoreMenuFactory *)self _setViewController:v4];
+  cCopy = c;
+  objc_storeWeak(&self->_dashboardVC, cCopy);
+  [(PKDashboardMoreMenuFactory *)self _setViewController:cCopy];
 }
 
 - (id)moreMenu
 {
   if ((PKPreferenceBOOLforKey() & 1) == 0)
   {
-    v4 = [(PKDashboardMoreMenuFactory *)self moreMenuType];
+    moreMenuType = [(PKDashboardMoreMenuFactory *)self moreMenuType];
     v5 = 0;
     self->_forceShowMoreMenuIcon = 0;
-    if (v4 <= 5)
+    if (moreMenuType <= 5)
     {
-      if (v4 > 3)
+      if (moreMenuType > 3)
       {
-        if (v4 == 4)
+        if (moreMenuType == 4)
         {
           if ([(PKDashboardMoreMenuFactory *)self _isPassActivating])
           {
             self->_forceShowMoreMenuIcon = 1;
           }
 
-          v6 = [(PKDashboardMoreMenuFactory *)self _transitPassMenuItems];
+          _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _transitPassMenuItems];
         }
 
         else
         {
-          v6 = [(PKDashboardMoreMenuFactory *)self _accessPassMenuItems];
+          _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _accessPassMenuItems];
         }
 
         goto LABEL_26;
       }
 
-      if (v4 == 1)
+      if (moreMenuType == 1)
       {
-        v6 = [(PKDashboardMoreMenuFactory *)self _barcodePassMenuItems];
+        _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _barcodePassMenuItems];
         goto LABEL_26;
       }
 
-      if (v4 == 2)
+      if (moreMenuType == 2)
       {
-        v6 = [(PKDashboardMoreMenuFactory *)self _paymentPassMenuItems];
+        _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _paymentPassMenuItems];
         goto LABEL_26;
       }
     }
 
     else
     {
-      if (v4 <= 7)
+      if (moreMenuType <= 7)
       {
-        if (v4 == 6)
+        if (moreMenuType == 6)
         {
           if ([(PKDashboardMoreMenuFactory *)self _isPassActivating])
           {
             self->_forceShowMoreMenuIcon = 1;
           }
 
-          v6 = [(PKDashboardMoreMenuFactory *)self _eMoneyPassMenuItems];
+          _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _eMoneyPassMenuItems];
         }
 
         else
         {
-          v6 = [(PKDashboardMoreMenuFactory *)self _savingsMenuItems];
+          _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _savingsMenuItems];
         }
 
         goto LABEL_26;
       }
 
-      switch(v4)
+      switch(moreMenuType)
       {
         case 8:
-          v6 = [(PKDashboardMoreMenuFactory *)self _appleCardMenuItems];
+          _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _appleCardMenuItems];
           goto LABEL_26;
         case 9:
-          v6 = [(PKDashboardMoreMenuFactory *)self _appleCashMenuItems];
+          _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _appleCashMenuItems];
           goto LABEL_26;
         case 10:
-          v6 = [(PKDashboardMoreMenuFactory *)self _appleBalanceMenuItems];
+          _transitPassMenuItems = [(PKDashboardMoreMenuFactory *)self _appleBalanceMenuItems];
 LABEL_26:
-          v5 = v6;
+          v5 = _transitPassMenuItems;
           break;
       }
     }
@@ -245,104 +245,104 @@ LABEL_31:
 - (id)_barcodePassMenuItems
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
-  v4 = [(PKDashboardMoreMenuFactory *)self _canShowManualArchiveButton];
-  v5 = [MEMORY[0x1E695DF70] array];
+  _canShowNotificationsInfo = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
+  _canShowManualArchiveButton = [(PKDashboardMoreMenuFactory *)self _canShowManualArchiveButton];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(PKDashboardMoreMenuFactory *)self _addToCalendarAction];
-  [v6 safelyAddObject:v7];
+  _addToCalendarAction = [(PKDashboardMoreMenuFactory *)self _addToCalendarAction];
+  [v6 safelyAddObject:_addToCalendarAction];
 
-  v8 = [(PKDashboardMoreMenuFactory *)self _addAllToCalendarAction];
-  [v6 safelyAddObject:v8];
+  _addAllToCalendarAction = [(PKDashboardMoreMenuFactory *)self _addAllToCalendarAction];
+  [v6 safelyAddObject:_addAllToCalendarAction];
 
-  v9 = [(PKDashboardMoreMenuFactory *)self _showTransferAction];
-  [v6 safelyAddObject:v9];
+  _showTransferAction = [(PKDashboardMoreMenuFactory *)self _showTransferAction];
+  [v6 safelyAddObject:_showTransferAction];
 
-  v10 = [(PKDashboardMoreMenuFactory *)self _showSellAction];
-  [v6 safelyAddObject:v10];
+  _showSellAction = [(PKDashboardMoreMenuFactory *)self _showSellAction];
+  [v6 safelyAddObject:_showSellAction];
 
   if ([v6 count])
   {
     v11 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v6];
-    [v5 safelyAddObject:v11];
+    [array safelyAddObject:v11];
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v13 = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
-  [v12 safelyAddObject:v13];
+  _showPassInfoAction = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
+  [v12 safelyAddObject:_showPassInfoAction];
 
-  if (v3)
+  if (_canShowNotificationsInfo)
   {
-    v14 = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
-    [v12 safelyAddObject:v14];
+    _showPassManageNotifications = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
+    [v12 safelyAddObject:_showPassManageNotifications];
   }
 
   if ([v12 count])
   {
     v15 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v12];
-    [v5 safelyAddObject:v15];
+    [array safelyAddObject:v15];
   }
 
-  if (v4)
+  if (_canShowManualArchiveButton)
   {
     v16 = MEMORY[0x1E69DCC60];
-    v17 = [(PKDashboardMoreMenuFactory *)self _archivePassAction];
-    v27[0] = v17;
+    _archivePassAction = [(PKDashboardMoreMenuFactory *)self _archivePassAction];
+    v27[0] = _archivePassAction;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
     v19 = [v16 menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v18];
-    [v5 safelyAddObject:v19];
+    [array safelyAddObject:v19];
   }
 
   if ((PKRunningInViewService() & 1) == 0)
   {
     v20 = MEMORY[0x1E69DCC60];
-    v21 = [(PKDashboardMoreMenuFactory *)self _removePassAction];
-    v26 = v21;
+    _removePassAction = [(PKDashboardMoreMenuFactory *)self _removePassAction];
+    v26 = _removePassAction;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
     v23 = [v20 menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v22];
-    [v5 safelyAddObject:v23];
+    [array safelyAddObject:v23];
   }
 
-  v24 = [v5 copy];
+  v24 = [array copy];
 
   return v24;
 }
 
 - (id)_paymentPassMenuItems
 {
-  v3 = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
-  v4 = [(PKDashboardMoreMenuFactory *)self _canShowPaymentCardNumberAction];
-  v5 = [(PKDashboardMoreMenuFactory *)self _canShowPredictedTransactionsAction];
-  v6 = v5;
-  if (v3 || v4 || v5)
+  _canShowNotificationsInfo = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
+  _canShowPaymentCardNumberAction = [(PKDashboardMoreMenuFactory *)self _canShowPaymentCardNumberAction];
+  _canShowPredictedTransactionsAction = [(PKDashboardMoreMenuFactory *)self _canShowPredictedTransactionsAction];
+  v6 = _canShowPredictedTransactionsAction;
+  if (_canShowNotificationsInfo || _canShowPaymentCardNumberAction || _canShowPredictedTransactionsAction)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    if (v4)
+    array = [MEMORY[0x1E695DF70] array];
+    if (_canShowPaymentCardNumberAction)
     {
-      v9 = [(PKDashboardMoreMenuFactory *)self _showPaymentCardNumberAction];
-      [v8 safelyAddObject:v9];
+      _showPaymentCardNumberAction = [(PKDashboardMoreMenuFactory *)self _showPaymentCardNumberAction];
+      [array safelyAddObject:_showPaymentCardNumberAction];
     }
 
     if (v6)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v11 = [(PKDashboardMoreMenuFactory *)self _showPredictedTransactionsAction];
-      [v10 safelyAddObject:v11];
+      _showPredictedTransactionsAction = [(PKDashboardMoreMenuFactory *)self _showPredictedTransactionsAction];
+      [v10 safelyAddObject:_showPredictedTransactionsAction];
 
       v12 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v10];
-      [v8 safelyAddObject:v12];
+      [array safelyAddObject:v12];
     }
 
-    v13 = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
-    [v8 safelyAddObject:v13];
+    _showPassInfoAction = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
+    [array safelyAddObject:_showPassInfoAction];
 
-    if (v3)
+    if (_canShowNotificationsInfo)
     {
-      v14 = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
-      [v8 safelyAddObject:v14];
+      _showPassManageNotifications = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
+      [array safelyAddObject:_showPassManageNotifications];
     }
 
-    v7 = [v8 copy];
+    v7 = [array copy];
   }
 
   else
@@ -355,80 +355,80 @@ LABEL_31:
 
 - (id)_transitPassMenuItems
 {
-  v3 = [(PKDashboardMoreMenuFactory *)self _hasValidEnteredValueActions];
-  v4 = [(PKDashboardMoreMenuFactory *)self _hasTransitCardNumber];
-  v5 = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
-  v6 = [(PKDashboardMoreMenuFactory *)self _hasValidSelectedItemActions];
-  v7 = [(PKDashboardMoreMenuFactory *)self _hasGroupActions];
-  v8 = [(PKDashboardMoreMenuFactory *)self _hasCombinedActions];
-  v9 = [(PKDashboardMoreMenuFactory *)self _hasExternalActions];
-  if (!v3 && !v4 && !v5 && !v6 && !v7)
+  _hasValidEnteredValueActions = [(PKDashboardMoreMenuFactory *)self _hasValidEnteredValueActions];
+  _hasTransitCardNumber = [(PKDashboardMoreMenuFactory *)self _hasTransitCardNumber];
+  _canShowNotificationsInfo = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
+  _hasValidSelectedItemActions = [(PKDashboardMoreMenuFactory *)self _hasValidSelectedItemActions];
+  _hasGroupActions = [(PKDashboardMoreMenuFactory *)self _hasGroupActions];
+  _hasCombinedActions = [(PKDashboardMoreMenuFactory *)self _hasCombinedActions];
+  _hasExternalActions = [(PKDashboardMoreMenuFactory *)self _hasExternalActions];
+  if (!_hasValidEnteredValueActions && !_hasTransitCardNumber && !_canShowNotificationsInfo && !_hasValidSelectedItemActions && !_hasGroupActions)
   {
     v10 = 0;
     goto LABEL_24;
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!v9)
+  if (!_hasExternalActions)
   {
-    if (v3)
+    if (_hasValidEnteredValueActions)
     {
-      v13 = [(PKDashboardMoreMenuFactory *)self _showEnteredValuePassActions];
-      [v12 safelyAddObject:v13];
+      _showEnteredValuePassActions = [(PKDashboardMoreMenuFactory *)self _showEnteredValuePassActions];
+      [v12 safelyAddObject:_showEnteredValuePassActions];
     }
 
-    if (v8)
+    if (_hasCombinedActions)
     {
-      v14 = [(PKDashboardMoreMenuFactory *)self _showCombinedPassActionsBuy];
-      [v12 safelyAddObject:v14];
+      _showCombinedPassActionsBuy = [(PKDashboardMoreMenuFactory *)self _showCombinedPassActionsBuy];
+      [v12 safelyAddObject:_showCombinedPassActionsBuy];
 
-      v15 = [(PKDashboardMoreMenuFactory *)self _showCombinedPassActionsRenew];
+      _showCombinedPassActionsRenew = [(PKDashboardMoreMenuFactory *)self _showCombinedPassActionsRenew];
     }
 
     else
     {
-      if (v6)
+      if (_hasValidSelectedItemActions)
       {
-        v16 = [(PKDashboardMoreMenuFactory *)self _showSelectedItemPassActions];
-        [v12 safelyAddObject:v16];
+        _showSelectedItemPassActions = [(PKDashboardMoreMenuFactory *)self _showSelectedItemPassActions];
+        [v12 safelyAddObject:_showSelectedItemPassActions];
       }
 
-      if (!v7)
+      if (!_hasGroupActions)
       {
         goto LABEL_17;
       }
 
-      v15 = [(PKDashboardMoreMenuFactory *)self _showPassActionGroups];
+      _showCombinedPassActionsRenew = [(PKDashboardMoreMenuFactory *)self _showPassActionGroups];
     }
 
-    v17 = v15;
-    [v12 safelyAddObject:v15];
+    v17 = _showCombinedPassActionsRenew;
+    [v12 safelyAddObject:_showCombinedPassActionsRenew];
   }
 
 LABEL_17:
   if ([v12 count])
   {
     v18 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v12];
-    [v11 safelyAddObject:v18];
+    [array safelyAddObject:v18];
   }
 
-  if (v4)
+  if (_hasTransitCardNumber)
   {
-    v19 = [(PKDashboardMoreMenuFactory *)self _showTransitCardNumberAction];
-    [v11 safelyAddObject:v19];
+    _showTransitCardNumberAction = [(PKDashboardMoreMenuFactory *)self _showTransitCardNumberAction];
+    [array safelyAddObject:_showTransitCardNumberAction];
   }
 
-  v20 = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
-  [v11 safelyAddObject:v20];
+  _showPassInfoAction = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
+  [array safelyAddObject:_showPassInfoAction];
 
-  if (v5)
+  if (_canShowNotificationsInfo)
   {
-    v21 = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
-    [v11 safelyAddObject:v21];
+    _showPassManageNotifications = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
+    [array safelyAddObject:_showPassManageNotifications];
   }
 
-  v10 = [v11 copy];
+  v10 = [array copy];
 
 LABEL_24:
 
@@ -437,42 +437,42 @@ LABEL_24:
 
 - (id)_eMoneyPassMenuItems
 {
-  v3 = [(PKDashboardMoreMenuFactory *)self _hasValidEnteredValueActions];
-  v4 = [(PKDashboardMoreMenuFactory *)self _hasTransitCardNumber];
-  v5 = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
-  v6 = v5;
-  if (v3 || v4 || v5)
+  _hasValidEnteredValueActions = [(PKDashboardMoreMenuFactory *)self _hasValidEnteredValueActions];
+  _hasTransitCardNumber = [(PKDashboardMoreMenuFactory *)self _hasTransitCardNumber];
+  _canShowNotificationsInfo = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
+  v6 = _canShowNotificationsInfo;
+  if (_hasValidEnteredValueActions || _hasTransitCardNumber || _canShowNotificationsInfo)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v3)
+    if (_hasValidEnteredValueActions)
     {
-      v10 = [(PKDashboardMoreMenuFactory *)self _showEnteredValuePassActions];
-      [v9 safelyAddObject:v10];
+      _showEnteredValuePassActions = [(PKDashboardMoreMenuFactory *)self _showEnteredValuePassActions];
+      [v9 safelyAddObject:_showEnteredValuePassActions];
     }
 
     if ([v9 count])
     {
       v11 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v9];
-      [v8 safelyAddObject:v11];
+      [array safelyAddObject:v11];
     }
 
-    if (v4)
+    if (_hasTransitCardNumber)
     {
-      v12 = [(PKDashboardMoreMenuFactory *)self _showTransitCardNumberAction];
-      [v8 safelyAddObject:v12];
+      _showTransitCardNumberAction = [(PKDashboardMoreMenuFactory *)self _showTransitCardNumberAction];
+      [array safelyAddObject:_showTransitCardNumberAction];
     }
 
-    v13 = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
-    [v8 safelyAddObject:v13];
+    _showPassInfoAction = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
+    [array safelyAddObject:_showPassInfoAction];
 
     if (v6)
     {
-      v14 = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
-      [v8 safelyAddObject:v14];
+      _showPassManageNotifications = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
+      [array safelyAddObject:_showPassManageNotifications];
     }
 
-    v7 = [v8 copy];
+    v7 = [array copy];
   }
 
   else
@@ -485,27 +485,27 @@ LABEL_24:
 
 - (id)_accessPassMenuItems
 {
-  v3 = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
+  _canShowNotificationsInfo = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
   homeKitHasHomeGuestAccessSchedule = self->_homeKitHasHomeGuestAccessSchedule;
-  if (v3 || self->_homeKitHasHomeGuestAccessSchedule)
+  if (_canShowNotificationsInfo || self->_homeKitHasHomeGuestAccessSchedule)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (homeKitHasHomeGuestAccessSchedule)
     {
-      v7 = [(PKDashboardMoreMenuFactory *)self _showHasHomeGuestAccessScheduleAction];
-      [v6 safelyAddObject:v7];
+      _showHasHomeGuestAccessScheduleAction = [(PKDashboardMoreMenuFactory *)self _showHasHomeGuestAccessScheduleAction];
+      [array safelyAddObject:_showHasHomeGuestAccessScheduleAction];
     }
 
-    v8 = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
-    [v6 safelyAddObject:v8];
+    _showPassInfoAction = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
+    [array safelyAddObject:_showPassInfoAction];
 
-    if (v3)
+    if (_canShowNotificationsInfo)
     {
-      v9 = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
-      [v6 safelyAddObject:v9];
+      _showPassManageNotifications = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
+      [array safelyAddObject:_showPassManageNotifications];
     }
 
-    v5 = [v6 copy];
+    v5 = [array copy];
   }
 
   else
@@ -518,20 +518,20 @@ LABEL_24:
 
 - (id)_savingsMenuItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PKDashboardMoreMenuFactory *)self _savingsDetailsAction];
-  [v3 safelyAddObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  _savingsDetailsAction = [(PKDashboardMoreMenuFactory *)self _savingsDetailsAction];
+  [array safelyAddObject:_savingsDetailsAction];
 
-  v5 = [(PKDashboardMoreMenuFactory *)self _showSavingsDocumentsAction];
-  [v3 safelyAddObject:v5];
+  _showSavingsDocumentsAction = [(PKDashboardMoreMenuFactory *)self _showSavingsDocumentsAction];
+  [array safelyAddObject:_showSavingsDocumentsAction];
 
-  v6 = [(PKDashboardMoreMenuFactory *)self _showAccountManageNotifications];
-  [v3 safelyAddObject:v6];
+  _showAccountManageNotifications = [(PKDashboardMoreMenuFactory *)self _showAccountManageNotifications];
+  [array safelyAddObject:_showAccountManageNotifications];
 
-  v7 = [(PKDashboardMoreMenuFactory *)self _showSavingsDebugAction];
-  [v3 safelyAddObject:v7];
+  _showSavingsDebugAction = [(PKDashboardMoreMenuFactory *)self _showSavingsDebugAction];
+  [array safelyAddObject:_showSavingsDebugAction];
 
-  v8 = [v3 copy];
+  v8 = [array copy];
 
   return v8;
 }
@@ -539,40 +539,40 @@ LABEL_24:
 - (id)_appleCardMenuItems
 {
   v3 = ([(PKAccount *)self->_account blockAllAccountAccess]& 1) != 0 || [(PKAccount *)self->_account state]== 3;
-  v4 = [(PKAccount *)self->_account creditDetails];
-  if (v4)
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  if (creditDetails)
   {
-    v5 = [(PKAccount *)self->_account creditDetails];
-    v6 = [v5 accountSummary];
-    v7 = [v6 requiresDebtCollectionNotices];
+    creditDetails2 = [(PKAccount *)self->_account creditDetails];
+    accountSummary = [creditDetails2 accountSummary];
+    requiresDebtCollectionNotices = [accountSummary requiresDebtCollectionNotices];
   }
 
   else
   {
-    v7 = 0;
+    requiresDebtCollectionNotices = 0;
   }
 
-  v8 = ((v3 | v7) & 1) == 0 && [(PKAccount *)self->_account state]!= 4;
-  v9 = [(PKAccount *)self->_account creditDetails];
-  v10 = [v9 installmentPlans];
+  v8 = ((v3 | requiresDebtCollectionNotices) & 1) == 0 && [(PKAccount *)self->_account state]!= 4;
+  creditDetails3 = [(PKAccount *)self->_account creditDetails];
+  installmentPlans = [creditDetails3 installmentPlans];
 
-  v11 = !v3 && [v10 count] != 0;
-  v12 = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
-  v13 = [(PKDashboardMoreMenuFactory *)self _canShowPredictedTransactionsAction];
-  if (!v8 && !v11 && !v12)
+  v11 = !v3 && [installmentPlans count] != 0;
+  _canShowNotificationsInfo = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
+  _canShowPredictedTransactionsAction = [(PKDashboardMoreMenuFactory *)self _canShowPredictedTransactionsAction];
+  if (!v8 && !v11 && !_canShowNotificationsInfo)
   {
     v14 = 0;
     goto LABEL_27;
   }
 
-  v15 = [MEMORY[0x1E695DF70] array];
-  v16 = [(PKPass *)self->_pass paymentPass];
-  if ([MEMORY[0x1E69B8770] shouldDisplayScheduledPaymentsWithAccount:self->_account andPass:v16])
+  array = [MEMORY[0x1E695DF70] array];
+  paymentPass = [(PKPass *)self->_pass paymentPass];
+  if ([MEMORY[0x1E69B8770] shouldDisplayScheduledPaymentsWithAccount:self->_account andPass:paymentPass])
   {
-    v26 = [(PKDashboardMoreMenuFactory *)self _showScheduledPaymentsAction];
-    [v15 safelyAddObject:v26];
+    _showScheduledPaymentsAction = [(PKDashboardMoreMenuFactory *)self _showScheduledPaymentsAction];
+    [array safelyAddObject:_showScheduledPaymentsAction];
 
-    if (!v13)
+    if (!_canShowPredictedTransactionsAction)
     {
 LABEL_18:
       if (!v11)
@@ -581,8 +581,8 @@ LABEL_18:
       }
 
 LABEL_32:
-      v28 = [(PKDashboardMoreMenuFactory *)self _showInstallmentPlansAction];
-      [v15 safelyAddObject:v28];
+      _showInstallmentPlansAction = [(PKDashboardMoreMenuFactory *)self _showInstallmentPlansAction];
+      [array safelyAddObject:_showInstallmentPlansAction];
 
       if (!v8)
       {
@@ -593,13 +593,13 @@ LABEL_32:
     }
   }
 
-  else if (!v13)
+  else if (!_canShowPredictedTransactionsAction)
   {
     goto LABEL_18;
   }
 
-  v27 = [(PKDashboardMoreMenuFactory *)self _showPredictedTransactionsAction];
-  [v15 safelyAddObject:v27];
+  _showPredictedTransactionsAction = [(PKDashboardMoreMenuFactory *)self _showPredictedTransactionsAction];
+  [array safelyAddObject:_showPredictedTransactionsAction];
 
   if (v11)
   {
@@ -610,33 +610,33 @@ LABEL_19:
   if (v8)
   {
 LABEL_20:
-    v17 = [(PKDashboardMoreMenuFactory *)self _openRewardsHubAction];
-    [v15 safelyAddObject:v17];
+    _openRewardsHubAction = [(PKDashboardMoreMenuFactory *)self _openRewardsHubAction];
+    [array safelyAddObject:_openRewardsHubAction];
   }
 
 LABEL_21:
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
-  [v18 safelyAddObject:v19];
+  array2 = [MEMORY[0x1E695DF70] array];
+  _showPassInfoAction = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
+  [array2 safelyAddObject:_showPassInfoAction];
 
-  if (v12)
+  if (_canShowNotificationsInfo)
   {
-    v20 = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
-    [v18 safelyAddObject:v20];
+    _showPassManageNotifications = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
+    [array2 safelyAddObject:_showPassManageNotifications];
   }
 
-  v21 = [v15 count];
-  v22 = v18;
+  v21 = [array count];
+  v22 = array2;
   if (v21)
   {
-    v23 = [v18 count];
-    v22 = v15;
+    v23 = [array2 count];
+    v22 = array;
     if (v23)
     {
-      v24 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v18];
-      [v15 safelyAddObject:v24];
+      v24 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:array2];
+      [array safelyAddObject:v24];
 
-      v22 = v15;
+      v22 = array;
     }
   }
 
@@ -650,40 +650,40 @@ LABEL_27:
 - (id)_appleCashMenuItems
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
-  if ([(PKPeerPaymentAccount *)self->_peerPaymentAccount isEligibleToAddMoneyForUser:v4])
+  currentUser = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
+  if ([(PKPeerPaymentAccount *)self->_peerPaymentAccount isEligibleToAddMoneyForUser:currentUser])
   {
-    v5 = [(PKDashboardMoreMenuFactory *)self _addMoneyPeerPaymentAction];
-    [v3 safelyAddObject:v5];
+    _addMoneyPeerPaymentAction = [(PKDashboardMoreMenuFactory *)self _addMoneyPeerPaymentAction];
+    [v3 safelyAddObject:_addMoneyPeerPaymentAction];
   }
 
-  if ([(PKPeerPaymentAccount *)self->_peerPaymentAccount isEligibleToWithdrawForUser:v4])
+  if ([(PKPeerPaymentAccount *)self->_peerPaymentAccount isEligibleToWithdrawForUser:currentUser])
   {
-    v6 = [(PKDashboardMoreMenuFactory *)self _transferToBankAction];
-    [v3 safelyAddObject:v6];
+    _transferToBankAction = [(PKDashboardMoreMenuFactory *)self _transferToBankAction];
+    [v3 safelyAddObject:_transferToBankAction];
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(PKDashboardMoreMenuFactory *)self _recurringPeerPaymentsPaymentsAction];
-  [v7 safelyAddObject:v8];
+  _recurringPeerPaymentsPaymentsAction = [(PKDashboardMoreMenuFactory *)self _recurringPeerPaymentsPaymentsAction];
+  [v7 safelyAddObject:_recurringPeerPaymentsPaymentsAction];
 
-  v9 = [(PKDashboardMoreMenuFactory *)self _peerPaymentFamilyAction];
-  [v7 safelyAddObject:v9];
+  _peerPaymentFamilyAction = [(PKDashboardMoreMenuFactory *)self _peerPaymentFamilyAction];
+  [v7 safelyAddObject:_peerPaymentFamilyAction];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(PKDashboardMoreMenuFactory *)self _canShowPaymentCardNumberAction])
   {
-    v11 = [(PKDashboardMoreMenuFactory *)self _showPaymentCardNumberAction];
-    [v10 safelyAddObject:v11];
+    _showPaymentCardNumberAction = [(PKDashboardMoreMenuFactory *)self _showPaymentCardNumberAction];
+    [v10 safelyAddObject:_showPaymentCardNumberAction];
   }
 
-  v12 = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
-  [v10 safelyAddObject:v12];
+  _showPassInfoAction = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
+  [v10 safelyAddObject:_showPassInfoAction];
 
   if ([(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo])
   {
-    v13 = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
-    [v10 safelyAddObject:v13];
+    _showPassManageNotifications = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
+    [v10 safelyAddObject:_showPassManageNotifications];
   }
 
   if ([v7 count])
@@ -705,56 +705,56 @@ LABEL_27:
 
 - (id)_appleBalanceMenuItems
 {
-  v3 = [(PKPass *)self->_pass paymentPass];
+  paymentPass = [(PKPass *)self->_pass paymentPass];
   v4 = PKCanShowAppleBalanceTopUpOptions();
 
   if (([(PKAccount *)self->_account supportsTopUp]& 1) != 0)
   {
-    v5 = 1;
+    supportsAMPTopUp = 1;
   }
 
   else
   {
-    v5 = [(PKAccount *)self->_account supportsAMPTopUp];
+    supportsAMPTopUp = [(PKAccount *)self->_account supportsAMPTopUp];
   }
 
-  v6 = [(PKAccount *)self->_account supportsAMPRedeemGiftcard];
-  v7 = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
-  v8 = [MEMORY[0x1E695DF70] array];
+  supportsAMPRedeemGiftcard = [(PKAccount *)self->_account supportsAMPRedeemGiftcard];
+  _canShowNotificationsInfo = [(PKDashboardMoreMenuFactory *)self _canShowNotificationsInfo];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
-  [v9 safelyAddObject:v10];
+  _showPassInfoAction = [(PKDashboardMoreMenuFactory *)self _showPassInfoAction];
+  [v9 safelyAddObject:_showPassInfoAction];
 
-  if (v7)
+  if (_canShowNotificationsInfo)
   {
-    v11 = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
-    [v9 safelyAddObject:v11];
+    _showPassManageNotifications = [(PKDashboardMoreMenuFactory *)self _showPassManageNotifications];
+    [v9 safelyAddObject:_showPassManageNotifications];
   }
 
-  if ((v4 & v5) == 1)
+  if ((v4 & supportsAMPTopUp) == 1)
   {
-    v12 = [(PKDashboardMoreMenuFactory *)self _addMoneyAppleBalanceAction];
-    [v8 safelyAddObject:v12];
+    _addMoneyAppleBalanceAction = [(PKDashboardMoreMenuFactory *)self _addMoneyAppleBalanceAction];
+    [array safelyAddObject:_addMoneyAppleBalanceAction];
   }
 
-  if ((v4 & v6) == 1)
+  if ((v4 & supportsAMPRedeemGiftcard) == 1)
   {
-    v13 = [(PKDashboardMoreMenuFactory *)self _redeemAction];
-    [v8 safelyAddObject:v13];
+    _redeemAction = [(PKDashboardMoreMenuFactory *)self _redeemAction];
+    [array safelyAddObject:_redeemAction];
   }
 
-  if ([v8 count])
+  if ([array count])
   {
     v14 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3BD7330 image:0 identifier:0 options:1 children:v9];
-    [v8 safelyAddObject:v14];
+    [array safelyAddObject:v14];
   }
 
   else
   {
-    [v8 addObjectsFromArray:v9];
+    [array addObjectsFromArray:v9];
   }
 
-  v15 = [v8 copy];
+  v15 = [array copy];
 
   return v15;
 }
@@ -972,14 +972,14 @@ void __51__PKDashboardMoreMenuFactory__showPassActionGroups__block_invoke(uint64
 {
   objc_initWeak(&location, self);
   v3 = MEMORY[0x1E69DC628];
-  v4 = [(PKDashboardMoreMenuFactory *)self _showPassInfoLocalizedTitle];
+  _showPassInfoLocalizedTitle = [(PKDashboardMoreMenuFactory *)self _showPassInfoLocalizedTitle];
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"info.circle"];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __49__PKDashboardMoreMenuFactory__showPassInfoAction__block_invoke;
   v11 = &unk_1E8010A60;
   objc_copyWeak(&v12, &location);
-  v6 = [v3 actionWithTitle:v4 image:v5 identifier:0 handler:&v8];
+  v6 = [v3 actionWithTitle:_showPassInfoLocalizedTitle image:v5 identifier:0 handler:&v8];
 
   [v6 setAccessibilityIdentifier:{*MEMORY[0x1E69B95B8], v8, v9, v10, v11}];
   objc_destroyWeak(&v12);
@@ -1036,15 +1036,15 @@ void __49__PKDashboardMoreMenuFactory__showPassInfoAction__block_invoke(uint64_t
 
   else
   {
-    v14 = [(PKDashboardMoreMenuFactory *)self _possibleCalendarEventsCount];
-    if (!v14)
+    _possibleCalendarEventsCount = [(PKDashboardMoreMenuFactory *)self _possibleCalendarEventsCount];
+    if (!_possibleCalendarEventsCount)
     {
       v13 = 0;
       goto LABEL_17;
     }
 
     v15 = @"calendar.badge.plus";
-    if (v14 == 1)
+    if (_possibleCalendarEventsCount == 1)
     {
       v15 = @"calendar";
     }
@@ -1125,11 +1125,11 @@ void __50__PKDashboardMoreMenuFactory__addToCalendarAction__block_invoke_2(uint6
 
   else
   {
-    v5 = [(PKPass *)self->_pass upcomingPassInformation];
-    if (v5)
+    upcomingPassInformation = [(PKPass *)self->_pass upcomingPassInformation];
+    if (upcomingPassInformation)
     {
       v6 = PKEventStore();
-      v7 = MEMORY[0x1BFB42370](self->_pass, v5, v6);
+      v7 = MEMORY[0x1BFB42370](self->_pass, upcomingPassInformation, v6);
       v8 = v7;
       v9 = v4 == 1;
       if (v4 == 1 && [v7 count] || !-[PKDashboardMoreMenuFactory _possibleCalendarEventsCount](self, "_possibleCalendarEventsCount") || !-[PKDashboardMoreMenuFactory _upcomingInformationCanCreateCalendarEvents](self, "_upcomingInformationCanCreateCalendarEvents"))
@@ -1187,8 +1187,8 @@ void __53__PKDashboardMoreMenuFactory__addAllToCalendarAction__block_invoke(uint
 - (id)_showTransferAction
 {
   objc_initWeak(&location, self);
-  v3 = [(PKPass *)self->_pass transferURL];
-  if (v3)
+  transferURL = [(PKPass *)self->_pass transferURL];
+  if (transferURL)
   {
     v4 = MEMORY[0x1E69DC628];
     v5 = PKLocalizedString(&cfstr_DashboardMoreM_9.isa);
@@ -1198,7 +1198,7 @@ void __53__PKDashboardMoreMenuFactory__addAllToCalendarAction__block_invoke(uint
     v9[2] = __49__PKDashboardMoreMenuFactory__showTransferAction__block_invoke;
     v9[3] = &unk_1E8012328;
     objc_copyWeak(&v11, &location);
-    v10 = v3;
+    v10 = transferURL;
     v7 = [v4 actionWithTitle:v5 image:v6 identifier:0 handler:v9];
 
     [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9D68]];
@@ -1229,8 +1229,8 @@ void __49__PKDashboardMoreMenuFactory__showTransferAction__block_invoke(uint64_t
 - (id)_showSellAction
 {
   objc_initWeak(&location, self);
-  v3 = [(PKPass *)self->_pass sellURL];
-  if (v3)
+  sellURL = [(PKPass *)self->_pass sellURL];
+  if (sellURL)
   {
     v4 = MEMORY[0x1E69DC628];
     v5 = PKLocalizedString(&cfstr_DashboardMoreM_10.isa);
@@ -1240,7 +1240,7 @@ void __49__PKDashboardMoreMenuFactory__showTransferAction__block_invoke(uint64_t
     v9[2] = __45__PKDashboardMoreMenuFactory__showSellAction__block_invoke;
     v9[3] = &unk_1E8012328;
     objc_copyWeak(&v11, &location);
-    v10 = v3;
+    v10 = sellURL;
     v7 = [v4 actionWithTitle:v5 image:v6 identifier:0 handler:v9];
 
     [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9C08]];
@@ -1272,8 +1272,8 @@ void __45__PKDashboardMoreMenuFactory__showSellAction__block_invoke(uint64_t a1)
 {
   if ([(PKPass *)self->_pass passType]== PKPassTypeSecureElement)
   {
-    v3 = [(PKPass *)self->_pass paymentPass];
-    if ([v3 isStoredValuePass])
+    paymentPass = [(PKPass *)self->_pass paymentPass];
+    if ([paymentPass isStoredValuePass])
     {
       objc_initWeak(&location, self);
       v4 = MEMORY[0x1E69DC628];
@@ -1334,15 +1334,15 @@ void __58__PKDashboardMoreMenuFactory__showTransitCardNumberAction__block_invoke
     return 0;
   }
 
-  v3 = [(PKDashboardMoreMenuFactory *)self pass];
-  v4 = [v3 secureElementPass];
+  pass = [(PKDashboardMoreMenuFactory *)self pass];
+  secureElementPass = [pass secureElementPass];
 
-  if ([v4 isAppleCardPass])
+  if ([secureElementPass isAppleCardPass])
   {
     v5 = MEMORY[0x1E69B8770];
-    v6 = [(PKAccount *)self->_account cardAvailabilityInfo];
-    v7 = [v4 deviceAccountNumberSuffix];
-    v8 = [v5 shouldShowCardNumbersWithAccountAvailabilityInfo:v6 dpanSuffixForPaymentApplication:v7];
+    cardAvailabilityInfo = [(PKAccount *)self->_account cardAvailabilityInfo];
+    deviceAccountNumberSuffix = [secureElementPass deviceAccountNumberSuffix];
+    v8 = [v5 shouldShowCardNumbersWithAccountAvailabilityInfo:cardAvailabilityInfo dpanSuffixForPaymentApplication:deviceAccountNumberSuffix];
   }
 
   else
@@ -1402,14 +1402,14 @@ void __58__PKDashboardMoreMenuFactory__showPaymentCardNumberAction__block_invoke
     return 0;
   }
 
-  v3 = [(PKDashboardMoreMenuFactory *)self pass];
-  v4 = [v3 secureElementPass];
+  pass = [(PKDashboardMoreMenuFactory *)self pass];
+  secureElementPass = [pass secureElementPass];
 
   v8 = 1;
-  if (![v4 isAppleCardPass] || (PKAppleCardUpcomingPaymentsEnabled() & 1) == 0)
+  if (![secureElementPass isAppleCardPass] || (PKAppleCardUpcomingPaymentsEnabled() & 1) == 0)
   {
-    v5 = [(PKDashboardMoreMenuFactory *)self bankConnectAccount];
-    if (!v5 || (v6 = v5, v7 = PKBankConnectUpcomingPaymentsEnabled(), v6, (v7 & 1) == 0))
+    bankConnectAccount = [(PKDashboardMoreMenuFactory *)self bankConnectAccount];
+    if (!bankConnectAccount || (v6 = bankConnectAccount, v7 = PKBankConnectUpcomingPaymentsEnabled(), v6, (v7 & 1) == 0))
     {
       v8 = 0;
     }
@@ -1461,14 +1461,14 @@ void __62__PKDashboardMoreMenuFactory__showPredictedTransactionsAction__block_in
 {
   objc_initWeak(&location, self);
   v3 = MEMORY[0x1E69DC628];
-  v4 = [(PKDashboardMoreMenuFactory *)self _removePassLocalizedTitle];
+  _removePassLocalizedTitle = [(PKDashboardMoreMenuFactory *)self _removePassLocalizedTitle];
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"minus.circle"];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __47__PKDashboardMoreMenuFactory__removePassAction__block_invoke;
   v11 = &unk_1E8010A60;
   objc_copyWeak(&v12, &location);
-  v6 = [v3 actionWithTitle:v4 image:v5 identifier:0 handler:&v8];
+  v6 = [v3 actionWithTitle:_removePassLocalizedTitle image:v5 identifier:0 handler:&v8];
 
   [v6 setAttributes:{2, v8, v9, v10, v11}];
   [v6 setAccessibilityIdentifier:*MEMORY[0x1E69B9B58]];
@@ -1621,9 +1621,9 @@ void __51__PKDashboardMoreMenuFactory__transferToBankAction__block_invoke(uint64
 
 - (id)_peerPaymentFamilyAction
 {
-  v3 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-  v4 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount altDSID];
-  v5 = [v3 objectForKey:v4];
+  familyMembersByAltDSID = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+  altDSID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount altDSID];
+  v5 = [familyMembersByAltDSID objectForKey:altDSID];
 
   if ([v5 isOrganizer])
   {
@@ -1635,13 +1635,13 @@ void __51__PKDashboardMoreMenuFactory__transferToBankAction__block_invoke(uint64
     v6 = [v5 isParent] ^ 1;
   }
 
-  v7 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount role];
-  v8 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount supportsFamilySharing];
+  role = [(PKPeerPaymentAccount *)self->_peerPaymentAccount role];
+  supportsFamilySharing = [(PKPeerPaymentAccount *)self->_peerPaymentAccount supportsFamilySharing];
   v9 = 0;
-  if (!v7 && v8 && (v6 & 1) == 0)
+  if (!role && supportsFamilySharing && (v6 & 1) == 0)
   {
-    v10 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembers];
-    v11 = [PKPeerPaymentFamilyMemberRowModel sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:v10 peerPaymentAccount:self->_peerPaymentAccount];
+    familyMembers = [(PKFamilyMemberCollection *)self->_familyCollection familyMembers];
+    v11 = [PKPeerPaymentFamilyMemberRowModel sortedPeerPaymentFamilyMemberRowModelsForFamilyMembers:familyMembers peerPaymentAccount:self->_peerPaymentAccount];
 
     if ([v11 count])
     {
@@ -1692,10 +1692,10 @@ void __54__PKDashboardMoreMenuFactory__peerPaymentFamilyAction__block_invoke(uin
 
 - (id)_recurringPeerPaymentsPaymentsAction
 {
-  v3 = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
-  v4 = [(PKPass *)self->_pass secureElementPass];
-  v5 = [v4 devicePrimaryPaymentApplication];
-  v6 = [v5 state];
+  currentUser = [(PKFamilyMemberCollection *)self->_familyCollection currentUser];
+  secureElementPass = [(PKPass *)self->_pass secureElementPass];
+  devicePrimaryPaymentApplication = [secureElementPass devicePrimaryPaymentApplication];
+  state = [devicePrimaryPaymentApplication state];
 
   if (![(PKPeerPaymentAccount *)self->_peerPaymentAccount supportsRecurringPayments])
   {
@@ -1703,7 +1703,7 @@ void __54__PKDashboardMoreMenuFactory__peerPaymentFamilyAction__block_invoke(uin
   }
 
   v7 = 0;
-  if ([(PKPeerPaymentAccount *)self->_peerPaymentAccount isEligibleForRecurringPaymentsForUser:v3]&& v6 != 7)
+  if ([(PKPeerPaymentAccount *)self->_peerPaymentAccount isEligibleForRecurringPaymentsForUser:currentUser]&& state != 7)
   {
     if (PKIsVision())
     {
@@ -2118,63 +2118,63 @@ void __67__PKDashboardMoreMenuFactory__showHasHomeGuestAccessScheduleAction__blo
   }
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v14 = a3;
-  if (self->_pass != v14)
+  passCopy = pass;
+  if (self->_pass != passCopy)
   {
-    objc_storeStrong(&self->_pass, a3);
+    objc_storeStrong(&self->_pass, pass);
     [(PKDashboardMoreMenuFactory *)self _reevaluateMoreMenuType];
     if (self->_moreMenuType == 3)
     {
       v5 = [PKIdentityReplaceFingerprintHelper alloc];
-      v6 = [(PKPass *)v14 secureElementPass];
-      v7 = [(PKIdentityReplaceFingerprintHelper *)v5 initWithPass:v6 isRemote:0];
+      secureElementPass = [(PKPass *)passCopy secureElementPass];
+      v7 = [(PKIdentityReplaceFingerprintHelper *)v5 initWithPass:secureElementPass isRemote:0];
       fingerprintHelper = self->_fingerprintHelper;
       self->_fingerprintHelper = v7;
     }
 
     else
     {
-      v6 = self->_fingerprintHelper;
+      secureElementPass = self->_fingerprintHelper;
       self->_fingerprintHelper = 0;
     }
 
     [(PKDashboardMoreMenuFactory *)self _recalculateTransitPassDetails];
     if ([(PKDashboardMoreMenuFactory *)self _isPeerPaymentPass])
     {
-      v9 = [MEMORY[0x1E69B9020] sharedService];
-      v10 = [v9 targetDevice];
+      mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+      targetDevice = [mEMORY[0x1E69B9020] targetDevice];
 
       if (!self->_peerPaymentAccount)
       {
-        v11 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v11 addObserver:self selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC378] object:v10];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel__peerPaymentAccountChanged_ name:*MEMORY[0x1E69BC378] object:targetDevice];
       }
 
-      v12 = [v10 account];
+      account = [targetDevice account];
       peerPaymentAccount = self->_peerPaymentAccount;
-      self->_peerPaymentAccount = v12;
+      self->_peerPaymentAccount = account;
     }
   }
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_account, a3);
+    objc_storeStrong(&self->_account, account);
     [(PKDashboardMoreMenuFactory *)self _reevaluateMoreMenuType];
   }
 }
 
-- (void)setBankConnectAccount:(id)a3
+- (void)setBankConnectAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_bankConnectAccount, a3);
+    objc_storeStrong(&self->_bankConnectAccount, account);
     [(PKDashboardMoreMenuFactory *)self _reloadMoreMenuItems];
   }
 }
@@ -2198,15 +2198,15 @@ void __67__PKDashboardMoreMenuFactory__showHasHomeGuestAccessScheduleAction__blo
         return 1;
       }
 
-      v7 = [(PKPass *)self->_pass secureElementPass];
-      v8 = v7;
-      if (!v7)
+      secureElementPass = [(PKPass *)self->_pass secureElementPass];
+      v8 = secureElementPass;
+      if (!secureElementPass)
       {
         v5 = 0;
         goto LABEL_29;
       }
 
-      if ([v7 isTransitPass])
+      if ([secureElementPass isTransitPass])
       {
         v5 = 4;
 LABEL_29:
@@ -2244,8 +2244,8 @@ LABEL_29:
         goto LABEL_29;
       }
 
-      v9 = [v8 associatedAccountServiceAccountIdentifier];
-      v10 = [v9 length];
+      associatedAccountServiceAccountIdentifier = [v8 associatedAccountServiceAccountIdentifier];
+      v10 = [associatedAccountServiceAccountIdentifier length];
 
       if ([v8 cardType] == 1)
       {
@@ -2281,18 +2281,18 @@ LABEL_24:
 
 - (id)_showPassInfoLocalizedTitle
 {
-  v3 = [(PKDashboardMoreMenuFactory *)self moreMenuType];
-  if (v3 > 5)
+  moreMenuType = [(PKDashboardMoreMenuFactory *)self moreMenuType];
+  if (moreMenuType > 5)
   {
-    if (v3 > 8)
+    if (moreMenuType > 8)
     {
-      if (v3 == 9)
+      if (moreMenuType == 9)
       {
         v4 = @"DASHBOARD_MORE_MENU_SHOW_APPLE_CASH_PASS_INFO";
         goto LABEL_24;
       }
 
-      if (v3 == 10)
+      if (moreMenuType == 10)
       {
         v7 = PKLocalizedAppleBalanceString(&cfstr_DashboardMoreM_23.isa);
         goto LABEL_25;
@@ -2301,13 +2301,13 @@ LABEL_24:
 
     else
     {
-      if (v3 == 6)
+      if (moreMenuType == 6)
       {
         v4 = @"DASHBOARD_MORE_MENU_SHOW_EMONEY_PASS_INFO";
         goto LABEL_24;
       }
 
-      if (v3 == 8)
+      if (moreMenuType == 8)
       {
         v4 = @"DASHBOARD_MORE_MENU_SHOW_APPLE_CARD_PASS_INFO";
         goto LABEL_24;
@@ -2319,20 +2319,20 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v3 > 3)
+  if (moreMenuType > 3)
   {
-    if (v3 == 4)
+    if (moreMenuType == 4)
     {
       v4 = @"DASHBOARD_MORE_MENU_SHOW_TRANSIT_PASS_INFO";
       goto LABEL_24;
     }
 
-    v5 = [(PKPass *)self->_pass secureElementPass];
-    v6 = [v5 accessType];
+    secureElementPass = [(PKPass *)self->_pass secureElementPass];
+    accessType = [secureElementPass accessType];
 
-    if (v6 > 3)
+    if (accessType > 3)
     {
-      switch(v6)
+      switch(accessType)
       {
         case 4:
           v4 = @"DASHBOARD_MORE_MENU_SHOW_ACCESS_PASS_CAR_INFO";
@@ -2348,7 +2348,7 @@ LABEL_23:
 
     else
     {
-      switch(v6)
+      switch(accessType)
       {
         case 1:
           v4 = @"DASHBOARD_MORE_MENU_SHOW_ACCESS_PASS_HOSPITALITY_INFO";
@@ -2366,13 +2366,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v3 == 2)
+  if (moreMenuType == 2)
   {
     v4 = @"DASHBOARD_MORE_MENU_SHOW_PAYMENT_PASS_INFO";
     goto LABEL_24;
   }
 
-  if (v3 != 3)
+  if (moreMenuType != 3)
   {
     goto LABEL_23;
   }
@@ -2387,18 +2387,18 @@ LABEL_25:
 
 - (id)_removePassLocalizedTitle
 {
-  v3 = [(PKDashboardMoreMenuFactory *)self moreMenuType];
-  if (v3 > 5)
+  moreMenuType = [(PKDashboardMoreMenuFactory *)self moreMenuType];
+  if (moreMenuType > 5)
   {
-    if (v3 > 8)
+    if (moreMenuType > 8)
     {
-      if (v3 == 9)
+      if (moreMenuType == 9)
       {
         v4 = @"DASHBOARD_MORE_MENU_REMOVE_APPLE_CASH_PASS";
         goto LABEL_24;
       }
 
-      if (v3 == 10)
+      if (moreMenuType == 10)
       {
         v7 = PKLocalizedAppleBalanceString(&cfstr_DashboardMoreM_38.isa);
         goto LABEL_25;
@@ -2407,13 +2407,13 @@ LABEL_25:
 
     else
     {
-      if (v3 == 6)
+      if (moreMenuType == 6)
       {
         v4 = @"DASHBOARD_MORE_MENU_REMOVE_EMONEY_PASS";
         goto LABEL_24;
       }
 
-      if (v3 == 8)
+      if (moreMenuType == 8)
       {
         v4 = @"DASHBOARD_MORE_MENU_REMOVE_APPLE_CARD_PASS";
         goto LABEL_24;
@@ -2425,20 +2425,20 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v3 > 3)
+  if (moreMenuType > 3)
   {
-    if (v3 == 4)
+    if (moreMenuType == 4)
     {
       v4 = @"DASHBOARD_MORE_MENU_REMOVE_TRANSIT_PASS";
       goto LABEL_24;
     }
 
-    v5 = [(PKPass *)self->_pass secureElementPass];
-    v6 = [v5 accessType];
+    secureElementPass = [(PKPass *)self->_pass secureElementPass];
+    accessType = [secureElementPass accessType];
 
-    if (v6 > 3)
+    if (accessType > 3)
     {
-      switch(v6)
+      switch(accessType)
       {
         case 4:
           v4 = @"DASHBOARD_MORE_MENU_REMOVE_ACCESS_PASS_CAR";
@@ -2454,7 +2454,7 @@ LABEL_23:
 
     else
     {
-      switch(v6)
+      switch(accessType)
       {
         case 1:
           v4 = @"DASHBOARD_MORE_MENU_REMOVE_ACCESS_PASS_HOSPITALITY";
@@ -2472,13 +2472,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v3 == 2)
+  if (moreMenuType == 2)
   {
     v4 = @"DASHBOARD_MORE_MENU_REMOVE_PAYMENT_PASS";
     goto LABEL_24;
   }
 
-  if (v3 != 3)
+  if (moreMenuType != 3)
   {
     goto LABEL_23;
   }
@@ -2493,20 +2493,20 @@ LABEL_25:
 
 - (BOOL)_canShowNotificationsInfo
 {
-  v3 = [(PKPass *)self->_pass passType];
-  if (v3 == PKPassTypeSecureElement)
+  passType = [(PKPass *)self->_pass passType];
+  if (passType == PKPassTypeSecureElement)
   {
-    v6 = [(PKPass *)self->_pass paymentPass];
+    paymentPass = [(PKPass *)self->_pass paymentPass];
     paymentServiceDataProvider = self->_paymentServiceDataProvider;
     peerPaymentAccount = self->_peerPaymentAccount;
     bankConnectAccount = self->_bankConnectAccount;
-    v10 = [(PKDashboardMoreMenuFactory *)self account];
-    v11 = [PKManagePaymentPassNotificationsViewController canShowForPass:v6 dataProvider:paymentServiceDataProvider peerPaymentAccount:peerPaymentAccount bankConnectAccount:bankConnectAccount account:v10];
+    account = [(PKDashboardMoreMenuFactory *)self account];
+    v11 = [PKManagePaymentPassNotificationsViewController canShowForPass:paymentPass dataProvider:paymentServiceDataProvider peerPaymentAccount:peerPaymentAccount bankConnectAccount:bankConnectAccount account:account];
 
     return v11;
   }
 
-  else if (v3)
+  else if (passType)
   {
     return 0;
   }
@@ -2527,17 +2527,17 @@ LABEL_25:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dashboardVC);
-  v4 = [(PKPass *)self->_pass uniqueID];
-  v5 = [(PKDashboardPassGroupViewController *)WeakRetained shouldOfferManualArchivalForPassWithUniqueID:v4];
+  uniqueID = [(PKPass *)self->_pass uniqueID];
+  v5 = [(PKDashboardPassGroupViewController *)WeakRetained shouldOfferManualArchivalForPassWithUniqueID:uniqueID];
 
   return v5;
 }
 
 - (void)_recalculateTransitPassDetails
 {
-  v3 = [(PKPass *)self->_pass paymentPass];
-  v4 = v3;
-  if (!v3 || ([v3 isStoredValuePass] & 1) == 0)
+  paymentPass = [(PKPass *)self->_pass paymentPass];
+  v4 = paymentPass;
+  if (!paymentPass || ([paymentPass isStoredValuePass] & 1) == 0)
   {
     transitPassProperties = self->_transitPassProperties;
     self->_transitPassProperties = 0;
@@ -2557,8 +2557,8 @@ LABEL_25:
   self->_transitBalanceModel = v7;
 
   [(PKTransitBalanceModel *)self->_transitBalanceModel setTransitProperties:self->_transitPassProperties andApplyStoredValueBalances:1];
-  v9 = [v4 uniqueID];
-  v10 = [v4 devicePrimaryPaymentApplication];
+  uniqueID = [v4 uniqueID];
+  devicePrimaryPaymentApplication = [v4 devicePrimaryPaymentApplication];
   v11 = dispatch_group_create();
   v42[0] = 0;
   v42[1] = v42;
@@ -2587,14 +2587,14 @@ LABEL_25:
     v33[2] = __60__PKDashboardMoreMenuFactory__recalculateTransitPassDetails__block_invoke;
     v33[3] = &unk_1E8016A48;
     v37 = v42;
-    v34 = v10;
+    v34 = devicePrimaryPaymentApplication;
     v35 = v4;
     v36 = v11;
-    [(PKPaymentDefaultDataProvider *)paymentServiceDataProvider transitStateWithPassUniqueIdentifier:v9 paymentApplication:v34 completion:v33];
+    [(PKPaymentDefaultDataProvider *)paymentServiceDataProvider transitStateWithPassUniqueIdentifier:uniqueID paymentApplication:v34 completion:v33];
   }
 
-  v13 = [v4 balanceFields];
-  if (![v13 count])
+  balanceFields = [v4 balanceFields];
+  if (![balanceFields count])
   {
     goto LABEL_8;
   }
@@ -2611,8 +2611,8 @@ LABEL_25:
     v30[3] = &unk_1E8016A70;
     v32 = v40;
     v31 = v11;
-    [(PKPaymentDefaultDataProvider *)v15 balancesForPaymentPassWithUniqueIdentifier:v9 completion:v30];
-    v13 = v31;
+    [(PKPaymentDefaultDataProvider *)v15 balancesForPaymentPassWithUniqueIdentifier:uniqueID completion:v30];
+    balanceFields = v31;
 LABEL_8:
   }
 
@@ -2626,7 +2626,7 @@ LABEL_8:
     v27[3] = &unk_1E8012BB0;
     v29 = v38;
     v28 = v11;
-    [(PKPaymentDefaultDataProvider *)v16 plansForPaymentPassWithUniqueIdentifier:v9 completion:v27];
+    [(PKPaymentDefaultDataProvider *)v16 plansForPaymentPassWithUniqueIdentifier:uniqueID completion:v27];
   }
 
   objc_initWeak(&location, self);
@@ -2635,11 +2635,11 @@ LABEL_8:
   v20[2] = __60__PKDashboardMoreMenuFactory__recalculateTransitPassDetails__block_invoke_4;
   v20[3] = &unk_1E8018FA8;
   objc_copyWeak(&v25, &location);
-  v21 = v9;
+  v21 = uniqueID;
   v22 = v42;
   v23 = v40;
   v24 = v38;
-  v17 = v9;
+  v17 = uniqueID;
   dispatch_group_notify(v11, MEMORY[0x1E69E96A0], v20);
 
   objc_destroyWeak(&v25);
@@ -2700,12 +2700,12 @@ void __60__PKDashboardMoreMenuFactory__recalculateTransitPassDetails__block_invo
   }
 }
 
-- (void)_performAddToCalendarRequestNeedingPermission:(BOOL)a3 eventStore:(id)a4 requestBlock:(id)a5
+- (void)_performAddToCalendarRequestNeedingPermission:(BOOL)permission eventStore:(id)store requestBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  storeCopy = store;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (permission)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v12, &location);
@@ -2718,7 +2718,7 @@ void __60__PKDashboardMoreMenuFactory__recalculateTransitPassDetails__block_invo
 
   else
   {
-    (*(v9 + 2))(v9);
+    (*(blockCopy + 2))(blockCopy);
   }
 }
 
@@ -2759,9 +2759,9 @@ void __100__PKDashboardMoreMenuFactory__performAddToCalendarRequestNeedingPermis
   }
 }
 
-- (void)_addPassEventsToCalendarWithEventStore:(id)a3
+- (void)_addPassEventsToCalendarWithEventStore:(id)store
 {
-  v8 = a3;
+  storeCopy = store;
   v4 = PKGenerateCalendarEventsFromPass();
   v5 = [v4 count];
   if (v5)
@@ -2769,8 +2769,8 @@ void __100__PKDashboardMoreMenuFactory__performAddToCalendarRequestNeedingPermis
     if (v5 == 1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_dashboardVC);
-      v7 = [v4 firstObject];
-      [(PKDashboardPassGroupViewController *)WeakRetained presentEditCalendarEvent:v7 eventStore:v8];
+      firstObject = [v4 firstObject];
+      [(PKDashboardPassGroupViewController *)WeakRetained presentEditCalendarEvent:firstObject eventStore:storeCopy];
     }
 
     else
@@ -2780,10 +2780,10 @@ void __100__PKDashboardMoreMenuFactory__performAddToCalendarRequestNeedingPermis
   }
 }
 
-- (void)_addPassAndUpcomingInformationEventsToCalendarWithEventStore:(id)a3
+- (void)_addPassAndUpcomingInformationEventsToCalendarWithEventStore:(id)store
 {
-  v9 = a3;
-  v4 = [(PKPass *)self->_pass upcomingPassInformation];
+  storeCopy = store;
+  upcomingPassInformation = [(PKPass *)self->_pass upcomingPassInformation];
   v5 = PKGenerateCalendarEventsFromPassAndUpcomingInformation();
   v6 = [v5 count];
   if (v6)
@@ -2791,8 +2791,8 @@ void __100__PKDashboardMoreMenuFactory__performAddToCalendarRequestNeedingPermis
     if (v6 == 1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_dashboardVC);
-      v8 = [v5 firstObject];
-      [(PKDashboardPassGroupViewController *)WeakRetained presentEditCalendarEvent:v8 eventStore:v9];
+      firstObject = [v5 firstObject];
+      [(PKDashboardPassGroupViewController *)WeakRetained presentEditCalendarEvent:firstObject eventStore:storeCopy];
     }
 
     else
@@ -2831,58 +2831,58 @@ void __67__PKDashboardMoreMenuFactory__presentNeedsCalendarPermissionsAlert__blo
 
 - (unint64_t)_feature
 {
-  v3 = [(PKDashboardMoreMenuFactory *)self pass];
-  v4 = [v3 paymentPass];
+  pass = [(PKDashboardMoreMenuFactory *)self pass];
+  paymentPass = [pass paymentPass];
 
-  v5 = [(PKAccount *)self->_account feature];
-  if (v5 || (v5 = [v4 associatedAccountFeatureIdentifier]) != 0)
+  feature = [(PKAccount *)self->_account feature];
+  if (feature || (feature = [paymentPass associatedAccountFeatureIdentifier]) != 0)
   {
-    v6 = v5;
+    hasAssociatedPeerPaymentAccount = feature;
   }
 
   else
   {
-    v6 = [v4 hasAssociatedPeerPaymentAccount];
+    hasAssociatedPeerPaymentAccount = [paymentPass hasAssociatedPeerPaymentAccount];
   }
 
-  return v6;
+  return hasAssociatedPeerPaymentAccount;
 }
 
 - (id)_passActions
 {
-  v2 = [(PKDashboardMoreMenuFactory *)self pass];
-  v3 = [v2 paymentPass];
+  pass = [(PKDashboardMoreMenuFactory *)self pass];
+  paymentPass = [pass paymentPass];
 
-  v4 = [v3 availableActions];
+  availableActions = [paymentPass availableActions];
 
-  return v4;
+  return availableActions;
 }
 
 - (BOOL)_isPassActivating
 {
-  v2 = [(PKDashboardMoreMenuFactory *)self pass];
-  v3 = [v2 paymentPass];
+  pass = [(PKDashboardMoreMenuFactory *)self pass];
+  paymentPass = [pass paymentPass];
 
-  LOBYTE(v2) = [v3 activationState] == 2;
-  return v2;
+  LOBYTE(pass) = [paymentPass activationState] == 2;
+  return pass;
 }
 
 - (BOOL)_isPassActivated
 {
-  v2 = [(PKDashboardMoreMenuFactory *)self pass];
-  v3 = [v2 paymentPass];
+  pass = [(PKDashboardMoreMenuFactory *)self pass];
+  paymentPass = [pass paymentPass];
 
-  LOBYTE(v2) = [v3 activationState] == 0;
-  return v2;
+  LOBYTE(pass) = [paymentPass activationState] == 0;
+  return pass;
 }
 
 - (BOOL)_isPassRequiresActivation
 {
-  v2 = [(PKDashboardMoreMenuFactory *)self pass];
-  v3 = [v2 paymentPass];
+  pass = [(PKDashboardMoreMenuFactory *)self pass];
+  paymentPass = [pass paymentPass];
 
-  LOBYTE(v2) = [v3 activationState] == 1;
-  return v2;
+  LOBYTE(pass) = [paymentPass activationState] == 1;
+  return pass;
 }
 
 - (BOOL)_hasValidEnteredValueActions
@@ -2893,8 +2893,8 @@ void __67__PKDashboardMoreMenuFactory__presentNeedsCalendarPermissionsAlert__blo
     return 0;
   }
 
-  v3 = [(PKDashboardMoreMenuFactory *)self _passActions];
-  v4 = [v3 pk_objectsPassingTest:&__block_literal_global_364];
+  _passActions = [(PKDashboardMoreMenuFactory *)self _passActions];
+  v4 = [_passActions pk_objectsPassingTest:&__block_literal_global_364];
 
   v14 = 0u;
   v15 = 0u;
@@ -2941,14 +2941,14 @@ LABEL_13:
 
 - (BOOL)_hasCombinedActions
 {
-  v3 = [(PKDashboardMoreMenuFactory *)self _hasValidSelectedItemActions];
-  if (v3)
+  _hasValidSelectedItemActions = [(PKDashboardMoreMenuFactory *)self _hasValidSelectedItemActions];
+  if (_hasValidSelectedItemActions)
   {
 
-    LOBYTE(v3) = [(PKDashboardMoreMenuFactory *)self _hasGroupActions];
+    LOBYTE(_hasValidSelectedItemActions) = [(PKDashboardMoreMenuFactory *)self _hasGroupActions];
   }
 
-  return v3;
+  return _hasValidSelectedItemActions;
 }
 
 - (BOOL)_hasValidSelectedItemActions
@@ -2958,8 +2958,8 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableCommutePlanActions];
-  v4 = [v3 pk_objectsPassingTest:&__block_literal_global_366];
+  displayableCommutePlanActions = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableCommutePlanActions];
+  v4 = [displayableCommutePlanActions pk_objectsPassingTest:&__block_literal_global_366];
 
   v5 = [v4 count] != 0;
   return v5;
@@ -2980,11 +2980,11 @@ BOOL __58__PKDashboardMoreMenuFactory__hasValidSelectedItemActions__block_invoke
     return 0;
   }
 
-  v3 = [(PKDashboardMoreMenuFactory *)self pass];
-  v4 = [v3 paymentPass];
+  pass = [(PKDashboardMoreMenuFactory *)self pass];
+  paymentPass = [pass paymentPass];
 
-  v5 = [v4 actionGroups];
-  v6 = [v5 count] != 0;
+  actionGroups = [paymentPass actionGroups];
+  v6 = [actionGroups count] != 0;
 
   return v6;
 }
@@ -2994,15 +2994,15 @@ BOOL __58__PKDashboardMoreMenuFactory__hasValidSelectedItemActions__block_invoke
   v24 = *MEMORY[0x1E69E9840];
   if ([(PKDashboardMoreMenuFactory *)self _isPassActivated])
   {
-    v3 = [(PKDashboardMoreMenuFactory *)self pass];
-    v4 = [v3 paymentPass];
+    pass = [(PKDashboardMoreMenuFactory *)self pass];
+    paymentPass = [pass paymentPass];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [v4 actionGroups];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    actionGroups = [paymentPass actionGroups];
+    v6 = [actionGroups countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3013,7 +3013,7 @@ LABEL_4:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actionGroups);
         }
 
         if ([*(*(&v18 + 1) + 8 * v9) hasExternalActionContent])
@@ -3023,7 +3023,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v18 objects:v23 count:16];
+          v7 = [actionGroups countByEnumeratingWithState:&v18 objects:v23 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -3042,8 +3042,8 @@ LABEL_10:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [v4 availableActions];
-      v10 = [v5 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      actionGroups = [paymentPass availableActions];
+      v10 = [actionGroups countByEnumeratingWithState:&v14 objects:v22 count:16];
       if (!v10)
       {
 LABEL_21:
@@ -3058,7 +3058,7 @@ LABEL_12:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actionGroups);
         }
 
         if ([*(*(&v14 + 1) + 8 * v12) hasExternalActionContent])
@@ -3068,7 +3068,7 @@ LABEL_12:
 
         if (v10 == ++v12)
         {
-          v10 = [v5 countByEnumeratingWithState:&v14 objects:v22 count:16];
+          v10 = [actionGroups countByEnumeratingWithState:&v14 objects:v22 count:16];
           if (v10)
           {
             goto LABEL_12;
@@ -3094,16 +3094,16 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(PKPass *)self->_pass paymentPass];
-  v5 = [PKTransitCardNumberViewController canShowForPass:v4];
+  paymentPass = [(PKPass *)self->_pass paymentPass];
+  v5 = [PKTransitCardNumberViewController canShowForPass:paymentPass];
 
   return v5;
 }
 
 - (unint64_t)_possibleCalendarEventsCount
 {
-  v3 = [(PKPass *)self->_pass relevantDates];
-  v4 = [v3 count];
+  relevantDates = [(PKPass *)self->_pass relevantDates];
+  v4 = [relevantDates count];
 
   if (!v4)
   {
@@ -3133,16 +3133,16 @@ LABEL_12:
 - (BOOL)_upcomingInformationCanCreateCalendarEvents
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(PKPass *)self->_pass upcomingPassInformation];
-  v3 = v2;
-  if (v2)
+  upcomingPassInformation = [(PKPass *)self->_pass upcomingPassInformation];
+  v3 = upcomingPassInformation;
+  if (upcomingPassInformation)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v2 allEntries];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allEntries = [upcomingPassInformation allEntries];
+    v5 = [allEntries countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = 0;
@@ -3153,24 +3153,24 @@ LABEL_12:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allEntries);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) metadata];
-          v10 = [v9 date];
-          if (v10)
+          metadata = [*(*(&v14 + 1) + 8 * i) metadata];
+          date = [metadata date];
+          if (date)
           {
-            v11 = v10;
-            v12 = [v9 name];
+            v11 = date;
+            name = [metadata name];
 
-            if (v12)
+            if (name)
             {
               ++v6;
             }
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [allEntries countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v5);
@@ -3186,13 +3186,13 @@ LABEL_12:
   return v5;
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v6 = a4;
+  propertiesCopy = properties;
   pass = self->_pass;
-  v8 = a3;
-  v9 = [(PKPass *)pass uniqueID];
-  v10 = [v8 isEqualToString:v9];
+  identifierCopy = identifier;
+  uniqueID = [(PKPass *)pass uniqueID];
+  v10 = [identifierCopy isEqualToString:uniqueID];
 
   if (v10)
   {
@@ -3201,7 +3201,7 @@ LABEL_12:
     v11[2] = __97__PKDashboardMoreMenuFactory_paymentPassWithUniqueIdentifier_didUpdateWithTransitPassProperties___block_invoke;
     v11[3] = &unk_1E8010A10;
     v11[4] = self;
-    v12 = v6;
+    v12 = propertiesCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
   }
 }
@@ -3215,13 +3215,13 @@ uint64_t __97__PKDashboardMoreMenuFactory_paymentPassWithUniqueIdentifier_didUpd
   return [v3 setTransitProperties:v2];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceivePlanUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceivePlanUpdate:(id)update
 {
-  v6 = a4;
+  updateCopy = update;
   pass = self->_pass;
-  v8 = a3;
-  v9 = [(PKPass *)pass uniqueID];
-  v10 = [v8 isEqualToString:v9];
+  identifierCopy = identifier;
+  uniqueID = [(PKPass *)pass uniqueID];
+  v10 = [identifierCopy isEqualToString:uniqueID];
 
   if (v10)
   {
@@ -3230,18 +3230,18 @@ uint64_t __97__PKDashboardMoreMenuFactory_paymentPassWithUniqueIdentifier_didUpd
     v11[2] = __83__PKDashboardMoreMenuFactory_paymentPassWithUniqueIdentifier_didReceivePlanUpdate___block_invoke;
     v11[3] = &unk_1E8010A10;
     v11[4] = self;
-    v12 = v6;
+    v12 = updateCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
-  v6 = a4;
+  updateCopy = update;
   pass = self->_pass;
-  v8 = a3;
-  v9 = [(PKPass *)pass uniqueID];
-  v10 = [v8 isEqualToString:v9];
+  identifierCopy = identifier;
+  uniqueID = [(PKPass *)pass uniqueID];
+  v10 = [identifierCopy isEqualToString:uniqueID];
 
   if (v10)
   {
@@ -3250,7 +3250,7 @@ uint64_t __97__PKDashboardMoreMenuFactory_paymentPassWithUniqueIdentifier_didUpd
     v11[2] = __86__PKDashboardMoreMenuFactory_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdate___block_invoke;
     v11[3] = &unk_1E8010A10;
     v11[4] = self;
-    v12 = v6;
+    v12 = updateCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
   }
 }
@@ -3264,7 +3264,7 @@ uint64_t __97__PKDashboardMoreMenuFactory_paymentPassWithUniqueIdentifier_didUpd
   }
 }
 
-- (void)_peerPaymentAccountChanged:(id)a3
+- (void)_peerPaymentAccountChanged:(id)changed
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
@@ -3300,17 +3300,17 @@ void __57__PKDashboardMoreMenuFactory__peerPaymentAccountChanged___block_invoke(
   }
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__PKDashboardMoreMenuFactory_accountChanged___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);

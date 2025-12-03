@@ -1,6 +1,6 @@
 @interface HDNSOperatingSystemVersion
 + (HDNSOperatingSystemVersion)unknownVersion;
-+ (HDNSOperatingSystemVersion)versionWithMajor:(uint64_t)a3 minor:(uint64_t)a4 patch:;
++ (HDNSOperatingSystemVersion)versionWithMajor:(uint64_t)major minor:(uint64_t)minor patch:;
 @end
 
 @implementation HDNSOperatingSystemVersion
@@ -20,7 +20,7 @@
   return v1;
 }
 
-+ (HDNSOperatingSystemVersion)versionWithMajor:(uint64_t)a3 minor:(uint64_t)a4 patch:
++ (HDNSOperatingSystemVersion)versionWithMajor:(uint64_t)major minor:(uint64_t)minor patch:
 {
   objc_opt_self();
   v7 = objc_alloc_init(HDNSOperatingSystemVersion);
@@ -28,8 +28,8 @@
   if (v7)
   {
     src[0] = a2;
-    src[1] = a3;
-    src[2] = a4;
+    src[1] = major;
+    src[2] = minor;
     objc_copyStruct(&v7->_versionStruct, src, 24, 1, 0);
   }
 

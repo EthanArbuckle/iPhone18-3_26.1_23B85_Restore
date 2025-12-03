@@ -1,24 +1,24 @@
 @interface RBProcess
 + (id)processStateApplicationQueue;
-+ (void)_runOnDiagnosticQueue:(uint64_t)a1;
-- (BOOL)_sendSignal:(int)a3;
++ (void)_runOnDiagnosticQueue:(uint64_t)queue;
+- (BOOL)_sendSignal:(int)signal;
 - (BOOL)isContainerized;
 - (BOOL)isTestApp;
-- (BOOL)terminateWithContext:(id)a3;
+- (BOOL)terminateWithContext:(id)context;
 - (RBJetsamProperties)memoryLimits;
 - (RBProcess)init;
 - (RBSProcessExitContext)lastExitContext;
 - (double)processStartTime;
 - (id)_allowedLockedFilePaths;
-- (id)_initWithInstance:(void *)a3 auditToken:(void *)a4 bundleProperties:(void *)a5 jetsamProperties:(void *)a6 initialState:(void *)a7 hostProcess:(void *)a8 properties:(char)a9 systemPreventsIdleSleep:(char)a10 cache:;
-- (id)_lock_lockedFilePathsIgnoring:(uint64_t)a1;
+- (id)_initWithInstance:(void *)instance auditToken:(void *)token bundleProperties:(void *)properties jetsamProperties:(void *)jetsamProperties initialState:(void *)state hostProcess:(void *)process properties:(char)a9 systemPreventsIdleSleep:(char)self0 cache:;
+- (id)_lock_lockedFilePathsIgnoring:(uint64_t)ignoring;
 - (id)createRBSTarget;
-- (uint64_t)_generateStackshotWithDescription:(int)a3 domain:(uint64_t)a4 code:(void *)a5 additionalPayload:;
+- (uint64_t)_generateStackshotWithDescription:(int)description domain:(uint64_t)domain code:(void *)code additionalPayload:;
 - (uint64_t)_generateTailspin;
-- (uint64_t)_lock_terminateWithContext:(uint64_t)a1;
-- (uint64_t)_memoryStatusControl:(uint64_t)a1 flags:;
-- (void)_applyJetsamLenientModeState:(uint64_t)a1;
-- (void)_applyState:(id)a3;
+- (uint64_t)_lock_terminateWithContext:(uint64_t)context;
+- (uint64_t)_memoryStatusControl:(uint64_t)control flags:;
+- (void)_applyJetsamLenientModeState:(uint64_t)state;
+- (void)_applyState:(id)state;
 - (void)_generateTailspin;
 - (void)_lock_applyCPULimits;
 - (void)_lock_applyCarPlayMode;
@@ -34,20 +34,20 @@
 - (void)_lock_restoreCPULimitDefaults;
 - (void)_lock_resume;
 - (void)_lock_resumeCPUMonitoring;
-- (void)_lock_setCPULimits:(uint64_t)a1 violationPolicy:(unsigned int *)a2;
-- (void)_lock_shutdownSocketsAndLog:(uint64_t)a1;
+- (void)_lock_setCPULimits:(uint64_t)limits violationPolicy:(unsigned int *)policy;
+- (void)_lock_shutdownSocketsAndLog:(uint64_t)log;
 - (void)_lock_suspend;
-- (void)_setMemoryStatusFlags:(uint64_t)a1;
-- (void)_systemPreventIdleSleepStateDidChange:(BOOL)a3;
-- (void)collectDiagnostic:(unint64_t)a3 description:(id)a4 domain:(unsigned int)a5 code:(unint64_t)a6 additionalPayload:(id)a7 completion:(id)a8;
+- (void)_setMemoryStatusFlags:(uint64_t)flags;
+- (void)_systemPreventIdleSleepStateDidChange:(BOOL)change;
+- (void)collectDiagnostic:(unint64_t)diagnostic description:(id)description domain:(unsigned int)domain code:(unint64_t)code additionalPayload:(id)payload completion:(id)completion;
 - (void)invalidate;
-- (void)invokeHandlerOnProcessDeath:(id)a3 onQueue:(id)a4;
+- (void)invokeHandlerOnProcessDeath:(id)death onQueue:(id)queue;
 - (void)memoryLimits;
 - (void)processStartTime;
-- (void)setAuditToken:(id)a3;
-- (void)setLastExitContext:(id)a3;
-- (void)setLaunchAssertionIdentifier:(id)a3;
-- (void)setTerminating:(BOOL)a3;
+- (void)setAuditToken:(id)token;
+- (void)setLastExitContext:(id)context;
+- (void)setLaunchAssertionIdentifier:(id)identifier;
+- (void)setTerminating:(BOOL)terminating;
 @end
 
 @implementation RBProcess
@@ -89,12 +89,12 @@
 - (void)_lock_applyRole
 {
   v49 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_25;
   }
 
-  OUTLINED_FUNCTION_20(a1);
+  OUTLINED_FUNCTION_20(self);
   if ((v3 & 2) == 0 && ([*(v1 + 64) forceRoleManage] & 1) == 0)
   {
     v30 = rbs_process_log();
@@ -116,17 +116,17 @@ LABEL_19:
   v4 = *(v1 + 56);
   if (v4)
   {
-    v2 = [v4 role];
+    role = [v4 role];
   }
 
   else
   {
-    v2 = 1;
+    role = 1;
   }
 
-  v5 = [*(v1 + 64) role];
-  v6 = v5;
-  if (*(v1 + 56) && v2 == v5)
+  role2 = [*(v1 + 64) role];
+  v6 = role2;
+  if (*(v1 + 56) && role == role2)
   {
     goto LABEL_25;
   }
@@ -209,12 +209,12 @@ LABEL_25:
 - (void)_lock_applyGPU
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  OUTLINED_FUNCTION_20(a1);
+  OUTLINED_FUNCTION_20(self);
   if ((v3 & 4) == 0)
   {
     v4 = rbs_process_log();
@@ -229,11 +229,11 @@ LABEL_25:
     goto LABEL_8;
   }
 
-  v12 = [*(v1 + 64) gpuRole];
+  gpuRole = [*(v1 + 64) gpuRole];
   v13 = *(v1 + 56);
   if (v13)
   {
-    if ([v13 gpuRole] == v12)
+    if ([v13 gpuRole] == gpuRole)
     {
 LABEL_8:
       v14 = *MEMORY[0x277D85DE8];
@@ -242,22 +242,22 @@ LABEL_8:
   }
 
   v16 = +[RBXNUWrapper sharedWrapper];
-  [v16 setGPURole:v12 forPid:*(v1 + 8)];
+  [v16 setGPURole:gpuRole forPid:*(v1 + 8)];
   v15 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_lock_applyCurrentStateIfPossible
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 48));
-    if (*(a1 + 136) == 1)
+    os_unfair_lock_assert_owner((self + 48));
+    if (*(self + 136) == 1)
     {
       v2 = rbs_process_log();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
       {
-        v5 = *(a1 + 32);
+        v5 = *(self + 32);
         OUTLINED_FUNCTION_6();
         _os_log_debug_impl(&dword_262485000, v2, OS_LOG_TYPE_DEBUG, "%{public}@ ignoring process state change because process is terminating", v20, 0xCu);
       }
@@ -265,8 +265,8 @@ LABEL_8:
 
     else
     {
-      v3 = *(a1 + 56);
-      if (v3 == *(a1 + 64))
+      v3 = *(self + 56);
+      if (v3 == *(self + 64))
       {
         goto LABEL_7;
       }
@@ -280,20 +280,20 @@ LABEL_8:
         v9 = v8;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
         {
-          v10 = *(a1 + 32);
+          v10 = *(self + 32);
           OUTLINED_FUNCTION_6();
           OUTLINED_FUNCTION_18();
           _os_signpost_emit_with_name_impl(v11, v12, v13, v7, v14, v15, v16, 0xCu);
         }
 
-        [(RBProcess *)a1 _lock_applyJetsamPriority];
-        [(RBProcess *)a1 _lock_applySuspendState];
-        [(RBProcess *)a1 _lock_applyRole];
-        [(RBProcess *)a1 _lock_applyJetsamLenientMode];
-        [(RBProcess *)a1 _lock_applyGPU];
-        [(RBProcess *)a1 _lock_applyCPULimits];
-        [(RBProcess *)a1 _lock_applyMemoryLimits];
-        [(RBProcess *)a1 _lock_applyCarPlayMode];
+        [(RBProcess *)self _lock_applyJetsamPriority];
+        [(RBProcess *)self _lock_applySuspendState];
+        [(RBProcess *)self _lock_applyRole];
+        [(RBProcess *)self _lock_applyJetsamLenientMode];
+        [(RBProcess *)self _lock_applyGPU];
+        [(RBProcess *)self _lock_applyCPULimits];
+        [(RBProcess *)self _lock_applyMemoryLimits];
+        [(RBProcess *)self _lock_applyCarPlayMode];
         v17 = rbs_sp_assertion_log();
         v18 = v17;
         if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
@@ -303,10 +303,10 @@ LABEL_8:
         }
       }
 
-      [(RBProcess *)a1 _lock_logVisibility];
-      v19 = *(a1 + 64);
-      v2 = *(a1 + 56);
-      *(a1 + 56) = v19;
+      [(RBProcess *)self _lock_logVisibility];
+      v19 = *(self + 64);
+      v2 = *(self + 56);
+      *(self + 56) = v19;
     }
   }
 
@@ -329,9 +329,9 @@ LABEL_7:
 - (void)_lock_resume
 {
   v45 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_20(a1);
+    OUTLINED_FUNCTION_20(self);
     if ((v3 & 1) == 0)
     {
       v4 = rbs_process_log();
@@ -439,14 +439,14 @@ LABEL_21:
 - (void)_lock_applyJetsamPriority
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 109) & 8) == 0)
+    if ((*(self + 109) & 8) == 0)
     {
       v3 = rbs_process_log();
       if (OUTLINED_FUNCTION_23(v3))
       {
-        v4 = *(a1 + 32);
+        v4 = *(self + 32);
         OUTLINED_FUNCTION_33();
         OUTLINED_FUNCTION_8();
 LABEL_13:
@@ -457,18 +457,18 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v11 = [*(a1 + 64) explicitJetsamBand];
-    if (!*(a1 + 56) || *(a1 + 72) != v11)
+    explicitJetsamBand = [*(self + 64) explicitJetsamBand];
+    if (!*(self + 56) || *(self + 72) != explicitJetsamBand)
     {
-      *(a1 + 72) = v11;
-      v24 = v11;
-      v12 = *(a1 + 8);
+      *(self + 72) = explicitJetsamBand;
+      v24 = explicitJetsamBand;
+      v12 = *(self + 8);
       if (!memorystatus_control())
       {
         v19 = rbs_process_log();
         if (OUTLINED_FUNCTION_23(v19))
         {
-          v20 = *(a1 + 32);
+          v20 = *(self + 32);
           OUTLINED_FUNCTION_33();
           v27 = 1024;
           v28 = v21;
@@ -497,7 +497,7 @@ LABEL_14:
         v15 = rbs_process_log();
         if (OUTLINED_FUNCTION_27(v15))
         {
-          v16 = *(a1 + 32);
+          v16 = *(self + 32);
           v17 = __error();
           v18 = strerror(*v17);
           *buf = 138544130;
@@ -523,14 +523,14 @@ LABEL_15:
 - (void)_lock_applySuspendState
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
 LABEL_11:
     v15 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  OUTLINED_FUNCTION_20(a1);
+  OUTLINED_FUNCTION_20(self);
   if ((v3 & 1) == 0)
   {
     v4 = rbs_process_log();
@@ -548,21 +548,21 @@ LABEL_11:
   v12 = *(v1 + 56);
   if (v12)
   {
-    v13 = [v12 preventSuspend];
+    preventSuspend = [v12 preventSuspend];
   }
 
   else
   {
-    v13 = 0;
+    preventSuspend = 0;
   }
 
-  v14 = [*(v1 + 64) preventSuspend];
-  if (*(v1 + 56) && v13 == v14)
+  preventSuspend2 = [*(v1 + 64) preventSuspend];
+  if (*(v1 + 56) && preventSuspend == preventSuspend2)
   {
     goto LABEL_11;
   }
 
-  if (v14)
+  if (preventSuspend2)
   {
     v16 = *MEMORY[0x277D85DE8];
 
@@ -607,14 +607,14 @@ LABEL_11:
 
 - (void)_lock_applyJetsamLenientMode
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 56) effectiveJetsamLenientMode];
-    v3 = [*(a1 + 64) effectiveJetsamLenientMode];
-    if (v2 != v3)
+    effectiveJetsamLenientMode = [*(self + 56) effectiveJetsamLenientMode];
+    effectiveJetsamLenientMode2 = [*(self + 64) effectiveJetsamLenientMode];
+    if (effectiveJetsamLenientMode != effectiveJetsamLenientMode2)
     {
 
-      [(RBProcess *)a1 _applyJetsamLenientModeState:v3];
+      [(RBProcess *)self _applyJetsamLenientModeState:effectiveJetsamLenientMode2];
     }
   }
 }
@@ -622,52 +622,52 @@ LABEL_11:
 - (void)_lock_applyCPULimits
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_20(a1);
+    OUTLINED_FUNCTION_20(self);
     if ((v2 & 0x10) != 0)
     {
-      v5 = [*(v1 + 56) effectiveMaxCPUPercentage];
-      v6 = [*(v1 + 56) effectiveMaxCPUDuration];
-      v7 = [*(v1 + 56) effectiveMinCPUPercentage];
-      v8 = [*(v1 + 56) effectiveMinCPUDuration];
-      if (v8 <= v6)
+      effectiveMaxCPUPercentage = [*(v1 + 56) effectiveMaxCPUPercentage];
+      effectiveMaxCPUDuration = [*(v1 + 56) effectiveMaxCPUDuration];
+      effectiveMinCPUPercentage = [*(v1 + 56) effectiveMinCPUPercentage];
+      effectiveMinCPUDuration = [*(v1 + 56) effectiveMinCPUDuration];
+      if (effectiveMinCPUDuration <= effectiveMaxCPUDuration)
       {
-        v9 = v6;
+        v9 = effectiveMaxCPUDuration;
       }
 
       else
       {
-        v9 = v8;
+        v9 = effectiveMinCPUDuration;
       }
 
-      if (v7 <= v5)
+      if (effectiveMinCPUPercentage <= effectiveMaxCPUPercentage)
       {
-        v10 = v5;
+        v10 = effectiveMaxCPUPercentage;
       }
 
       else
       {
-        v10 = v7;
+        v10 = effectiveMinCPUPercentage;
       }
 
-      v11 = [*(v1 + 64) effectiveMaxCPUPercentage];
-      v12 = [*(v1 + 64) effectiveMaxCPUDuration];
+      effectiveMaxCPUPercentage2 = [*(v1 + 64) effectiveMaxCPUPercentage];
+      effectiveMaxCPUDuration2 = [*(v1 + 64) effectiveMaxCPUDuration];
       LODWORD(v13) = [*(v1 + 64) effectiveMinCPUPercentage];
-      v14 = [*(v1 + 64) effectiveMinCPUDuration];
-      if (v14 <= v12)
+      effectiveMinCPUDuration2 = [*(v1 + 64) effectiveMinCPUDuration];
+      if (effectiveMinCPUDuration2 <= effectiveMaxCPUDuration2)
       {
-        v15 = v12;
+        v15 = effectiveMaxCPUDuration2;
       }
 
       else
       {
-        v15 = v14;
+        v15 = effectiveMinCPUDuration2;
       }
 
-      if (v13 <= v11)
+      if (v13 <= effectiveMaxCPUPercentage2)
       {
-        v13 = v11;
+        v13 = effectiveMaxCPUPercentage2;
       }
 
       else
@@ -675,8 +675,8 @@ LABEL_11:
         v13 = v13;
       }
 
-      v16 = [*(v1 + 56) effectiveMaxCPUUsageViolationPolicy];
-      v17 = [*(v1 + 64) effectiveMaxCPUUsageViolationPolicy];
+      effectiveMaxCPUUsageViolationPolicy = [*(v1 + 56) effectiveMaxCPUUsageViolationPolicy];
+      effectiveMaxCPUUsageViolationPolicy2 = [*(v1 + 64) effectiveMaxCPUUsageViolationPolicy];
       v19 = v10 < 1 || v9 < 1;
       v20 = v13 < 1 || v15 < 1;
       v21 = v20;
@@ -685,7 +685,7 @@ LABEL_11:
         v19 = 0;
       }
 
-      if (v10 == v13 && v9 == v15 && v16 == v17)
+      if (v10 == v13 && v9 == v15 && effectiveMaxCPUUsageViolationPolicy == effectiveMaxCPUUsageViolationPolicy2)
       {
         v19 = 1;
       }
@@ -725,10 +725,10 @@ LABEL_11:
 - (void)_lock_disableCPULimits
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     *__error() = 0;
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     v3 = proc_disable_cpumon();
     v4 = rbs_process_log();
     v5 = v4;
@@ -736,7 +736,7 @@ LABEL_11:
     {
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
-        v6 = *(a1 + 32);
+        v6 = *(self + 32);
         v7 = *__error();
         OUTLINED_FUNCTION_3_0();
         OUTLINED_FUNCTION_5();
@@ -746,7 +746,7 @@ LABEL_11:
 
     else if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v13 = *(a1 + 32);
+      v13 = *(self + 32);
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_7_0();
       _os_log_impl(v14, v15, v16, v17, v18, 0xCu);
@@ -759,16 +759,16 @@ LABEL_11:
 - (void)_lock_restoreCPULimitDefaults
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     *__error() = 0;
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
     if (!proc_set_cpumon_defaults())
     {
       v14 = rbs_process_log();
       if (OUTLINED_FUNCTION_29(v14))
       {
-        v15 = *(a1 + 32);
+        v15 = *(self + 32);
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_7_0();
         _os_log_impl(v16, v17, v18, v19, v20, 0xCu);
@@ -784,7 +784,7 @@ LABEL_11:
       v6 = rbs_process_log();
       if (OUTLINED_FUNCTION_27(v6))
       {
-        v7 = *(a1 + 32);
+        v7 = *(self + 32);
         v8 = *__error();
         OUTLINED_FUNCTION_3_0();
         OUTLINED_FUNCTION_5();
@@ -801,16 +801,16 @@ LABEL_8:
 - (void)_lock_resumeCPUMonitoring
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     *__error() = 0;
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
     if (!proc_resume_cpumon())
     {
       v14 = rbs_process_log();
       if (OUTLINED_FUNCTION_29(v14))
       {
-        v15 = *(a1 + 32);
+        v15 = *(self + 32);
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_7_0();
         _os_log_impl(v16, v17, v18, v19, v20, 0xCu);
@@ -826,7 +826,7 @@ LABEL_8:
       v6 = rbs_process_log();
       if (OUTLINED_FUNCTION_27(v6))
       {
-        v7 = *(a1 + 32);
+        v7 = *(self + 32);
         v8 = *__error();
         OUTLINED_FUNCTION_3_0();
         OUTLINED_FUNCTION_5();
@@ -843,17 +843,17 @@ LABEL_8:
 - (void)_lock_applyMemoryLimits
 {
   v88 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 109) & 8) != 0)
+    if ((*(self + 109) & 8) != 0)
     {
-      if ([*(a1 + 88) isValid])
+      if ([*(self + 88) isValid])
       {
         v77 = 0;
         v78 = 0;
-        [a1 rbs_pid];
-        v1 = [*(a1 + 64) memoryLimitCategory];
-        v76 = [*(a1 + 64) memoryLimitStrength];
+        [self rbs_pid];
+        memoryLimitCategory = [*(self + 64) memoryLimitCategory];
+        memoryLimitStrength = [*(self + 64) memoryLimitStrength];
         if (memorystatus_control())
         {
           v5 = __error();
@@ -863,12 +863,12 @@ LABEL_8:
             v7 = rbs_process_log();
             if (OUTLINED_FUNCTION_39(v7))
             {
-              v41 = [a1 shortDescription];
+              shortDescription = [self shortDescription];
               v42 = __error();
               v43 = strerror(*v42);
               v44 = *__error();
               v79 = 138543874;
-              v80 = v41;
+              v80 = shortDescription;
               v81 = 2080;
               *v82 = v43;
               OUTLINED_FUNCTION_25();
@@ -878,28 +878,28 @@ LABEL_8:
           }
         }
 
-        v8 = [*(a1 + 64) memoryLimit];
-        if (![*(a1 + 64) memoryLimit])
+        memoryLimit = [*(self + 64) memoryLimit];
+        if (![*(self + 64) memoryLimit])
         {
-          v8 = [*(a1 + 88) memoryLimitForCategory:v1 strength:&v76];
+          memoryLimit = [*(self + 88) memoryLimitForCategory:memoryLimitCategory strength:&memoryLimitStrength];
         }
 
-        if (![*(a1 + 64) preventBaseMemoryLimitReduction] || (objc_msgSend(*(a1 + 64), "memoryLimit") ? (v8 = v8) : (v8 = v78), v8 >= *(a1 + 104)))
+        if (![*(self + 64) preventBaseMemoryLimitReduction] || (objc_msgSend(*(self + 64), "memoryLimit") ? (memoryLimit = memoryLimit) : (memoryLimit = v78), memoryLimit >= *(self + 104)))
         {
           v26 = HIDWORD(v78) & 0xFFFFFFFE;
-          if (v76 == 1)
+          if (memoryLimitStrength == 1)
           {
             ++v26;
           }
 
-          v78 = __PAIR64__(v26, v8);
+          v78 = __PAIR64__(v26, memoryLimit);
           v27 = HIDWORD(v77) & 0xFFFFFFFE;
-          if (v76 == 1)
+          if (memoryLimitStrength == 1)
           {
             ++v27;
           }
 
-          v77 = __PAIR64__(v27, v8);
+          v77 = __PAIR64__(v27, memoryLimit);
           v28 = _os_feature_enabled_impl();
           if (v28)
           {
@@ -912,12 +912,12 @@ LABEL_8:
                 v30 = rbs_process_log();
                 if (OUTLINED_FUNCTION_39(v30))
                 {
-                  v66 = [a1 shortDescription];
+                  shortDescription2 = [self shortDescription];
                   v67 = __error();
                   v68 = strerror(*v67);
                   v69 = *__error();
                   v79 = 138543874;
-                  v80 = v66;
+                  v80 = shortDescription2;
                   v81 = 2080;
                   *v82 = v68;
                   OUTLINED_FUNCTION_25();
@@ -937,12 +937,12 @@ LABEL_8:
               v31 = rbs_process_log();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
               {
-                v51 = [a1 shortDescription];
+                shortDescription3 = [self shortDescription];
                 v52 = __error();
                 v53 = strerror(*v52);
                 v54 = *__error();
                 v79 = 138543874;
-                v80 = v51;
+                v80 = shortDescription3;
                 v81 = 2080;
                 *v82 = v53;
                 OUTLINED_FUNCTION_25();
@@ -952,16 +952,16 @@ LABEL_8:
               }
             }
 
-            if (v8)
+            if (memoryLimit)
             {
               v32 = rbs_process_log();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
               {
-                v61 = [a1 shortDescription];
+                shortDescription4 = [self shortDescription];
                 v79 = 138543874;
-                v80 = v61;
+                v80 = shortDescription4;
                 v81 = 1024;
-                *v82 = v8;
+                *v82 = memoryLimit;
                 *&v82[4] = 1024;
                 *&v82[6] = 0;
                 OUTLINED_FUNCTION_37();
@@ -970,12 +970,12 @@ LABEL_8:
             }
           }
 
-          if (*(a1 + 104) != v8)
+          if (*(self + 104) != memoryLimit)
           {
             v33 = rbs_process_log();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
-              v34 = *(a1 + 32);
+              v34 = *(self + 32);
               if (v28)
               {
                 v35 = &stru_287507640;
@@ -994,14 +994,14 @@ LABEL_8:
               *&v82[8] = 2114;
               v83 = v36;
               v84 = 2114;
-              v85 = v1;
+              v85 = memoryLimitCategory;
               v86 = 1024;
-              v87 = v8;
+              v87 = memoryLimit;
               OUTLINED_FUNCTION_37();
               _os_log_impl(v37, v38, OS_LOG_TYPE_DEFAULT, v39, v40, 0x30u);
             }
 
-            *(a1 + 104) = v8;
+            *(self + 104) = memoryLimit;
           }
 
           goto LABEL_23;
@@ -1010,13 +1010,13 @@ LABEL_8:
         v9 = rbs_process_log();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = *(a1 + 32);
-          v11 = *(a1 + 104);
+          v10 = *(self + 32);
+          v11 = *(self + 104);
           OUTLINED_FUNCTION_19();
           v81 = 1024;
           *v82 = v12;
           *&v82[4] = 1024;
-          *&v82[6] = v8;
+          *&v82[6] = memoryLimit;
           OUTLINED_FUNCTION_37();
           _os_log_impl(v13, v14, OS_LOG_TYPE_DEFAULT, v15, v16, 0x18u);
         }
@@ -1028,7 +1028,7 @@ LABEL_8:
         if (OUTLINED_FUNCTION_23(v17))
         {
 LABEL_22:
-          v18 = *(a1 + 32);
+          v18 = *(self + 32);
           OUTLINED_FUNCTION_19();
           OUTLINED_FUNCTION_8();
           _os_log_impl(v19, v20, v21, v22, v23, v24);
@@ -1054,14 +1054,14 @@ LABEL_23:
 - (void)_lock_applyCarPlayMode
 {
   v34 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 109) & 1) == 0)
+    if ((*(self + 109) & 1) == 0)
     {
       v3 = rbs_process_log();
       if (OUTLINED_FUNCTION_29(v3))
       {
-        v4 = *(a1 + 32);
+        v4 = *(self + 32);
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_7_0();
         v10 = 12;
@@ -1073,16 +1073,16 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v11 = [*(a1 + 64) carPlayMode];
-    v12 = *(a1 + 56);
-    if (!v12 || v11 != [v12 carPlayMode])
+    carPlayMode = [*(self + 64) carPlayMode];
+    v12 = *(self + 56);
+    if (!v12 || carPlayMode != [v12 carPlayMode])
     {
-      if (setpriority(8, *(a1 + 8), v11))
+      if (setpriority(8, *(self + 8), carPlayMode))
       {
         v13 = rbs_process_log();
         if (OUTLINED_FUNCTION_27(v13))
         {
-          v14 = *(a1 + 32);
+          v14 = *(self + 32);
           v15 = *__error();
           v16 = __error();
           strerror(*v16);
@@ -1091,7 +1091,7 @@ LABEL_12:
           OUTLINED_FUNCTION_14();
           v29 = v15;
           v30 = 1026;
-          v31 = v11;
+          v31 = carPlayMode;
           v32 = 2080;
           v33 = v17;
           OUTLINED_FUNCTION_5();
@@ -1104,10 +1104,10 @@ LABEL_12:
       v23 = rbs_ttl_log();
       if (OUTLINED_FUNCTION_23(v23))
       {
-        v24 = *(a1 + 32);
+        v24 = *(self + 32);
         OUTLINED_FUNCTION_6();
         v28 = 1026;
-        v29 = v11;
+        v29 = carPlayMode;
         v5 = &dword_262485000;
         v8 = "%{public}@ Set Carplay mode to: %{public}d";
         v9 = &v26;
@@ -1127,13 +1127,13 @@ LABEL_13:
 - (void)_lock_logVisibility
 {
   v1 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v3 = [*(a1 + 64) inheritances];
-    v4 = [v3 allNamespaces];
-    v5 = [v4 containsObject:*MEMORY[0x277D470D0]];
+    inheritances = [*(self + 64) inheritances];
+    allNamespaces = [inheritances allNamespaces];
+    v5 = [allNamespaces containsObject:*MEMORY[0x277D470D0]];
 
-    if (*(a1 + 108) != v5)
+    if (*(self + 108) != v5)
     {
       v6 = rbs_ttl_log();
       v7 = OUTLINED_FUNCTION_32(v6);
@@ -1148,13 +1148,13 @@ LABEL_13:
       else if (v7)
       {
 LABEL_7:
-        v8 = *(a1 + 32);
+        v8 = *(self + 32);
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_8();
         _os_log_impl(v9, v10, v11, v12, v13, v14);
       }
 
-      *(a1 + 108) = v5;
+      *(self + 108) = v5;
     }
   }
 
@@ -1171,8 +1171,8 @@ LABEL_7:
 
   os_unfair_lock_lock(&self->_dataLock);
   lastExitContext = self->_lastExitContext;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(RBSProcessExitContext *)lastExitContext copyWithTimestamp:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [(RBSProcessExitContext *)lastExitContext copyWithTimestamp:date];
   v6 = self->_lastExitContext;
   self->_lastExitContext = v5;
 
@@ -1180,13 +1180,13 @@ LABEL_7:
   self->_appliedJetsamPriority = -1;
   self->_terminating = 1;
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [MEMORY[0x277D47028] sharedBackgroundWorkloop];
+  mEMORY[0x277D47028] = [MEMORY[0x277D47028] sharedBackgroundWorkloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __23__RBProcess_invalidate__block_invoke;
   block[3] = &unk_279B32CB0;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(mEMORY[0x277D47028], block);
 }
 
 void __23__RBProcess_invalidate__block_invoke(uint64_t a1)
@@ -1216,10 +1216,10 @@ void __23__RBProcess_invalidate__block_invoke(uint64_t a1)
 
   if (![(RBSProcessExitContext *)self->_lastExitContext type])
   {
-    v5 = [(RBSProcessIdentity *)self->_identity consistentLaunchdJobLabel];
-    if (v5)
+    consistentLaunchdJobLabel = [(RBSProcessIdentity *)self->_identity consistentLaunchdJobLabel];
+    if (consistentLaunchdJobLabel)
     {
-      v6 = [RBLaunchdJobManager lastExitStatusForLabel:v5 error:0];
+      v6 = [RBLaunchdJobManager lastExitStatusForLabel:consistentLaunchdJobLabel error:0];
       v7 = [(RBSProcessExitContext *)self->_lastExitContext copyWithStatus:v6];
       v8 = self->_lastExitContext;
       self->_lastExitContext = v7;
@@ -1349,16 +1349,16 @@ void __26__RBProcess__lock_suspend__block_invoke(uint64_t a1)
 - (id)_allowedLockedFilePaths
 {
   v85 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 48));
-    v2 = *(a1 + 16);
-    v3 = *(a1 + 208);
-    v4 = *(a1 + 216);
-    v5 = *(a1 + 176);
-    v6 = *(a1 + 32);
-    v7 = *(a1 + 8);
-    os_unfair_lock_unlock((a1 + 48));
+    os_unfair_lock_lock((self + 48));
+    v2 = *(self + 16);
+    v3 = *(self + 208);
+    v4 = *(self + 216);
+    v5 = *(self + 176);
+    v6 = *(self + 32);
+    v7 = *(self + 8);
+    os_unfair_lock_unlock((self + 48));
     if ([v2 isXPCService])
     {
       v8 = 0;
@@ -1367,7 +1367,7 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v3)
     {
       v10 = rbs_process_log();
@@ -1378,7 +1378,7 @@ LABEL_63:
         OUTLINED_FUNCTION_30(&dword_262485000, v59, v60, "%{public}@: home directory '%{public}@' allowed", &buffer);
       }
 
-      [v9 addObject:v3];
+      [array addObject:v3];
     }
 
     if (v4)
@@ -1391,17 +1391,17 @@ LABEL_63:
         OUTLINED_FUNCTION_30(&dword_262485000, v61, v62, "%{public}@: tmp directory '%{public}@' allowed", &buffer);
       }
 
-      [v9 addObject:v4];
+      [array addObject:v4];
     }
 
-    v12 = [v5 environmentVariables];
+    environmentVariables = [v5 environmentVariables];
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __36__RBProcess__allowedLockedFilePaths__block_invoke;
     v73[3] = &unk_279B332D0;
-    v13 = v9;
+    v13 = array;
     v74 = v13;
-    [v12 enumerateKeysAndObjectsUsingBlock:v73];
+    [environmentVariables enumerateKeysAndObjectsUsingBlock:v73];
 
     if (([v2 isEmbeddedApplication] & 1) == 0 && !objc_msgSend(v2, "isAngel"))
     {
@@ -1431,8 +1431,8 @@ LABEL_55:
               objc_enumerationMutation(v51);
             }
 
-            v56 = [*(*(&v69 + 1) + 8 * i) stringByStandardizingPath];
-            [v8 addObject:v56];
+            stringByStandardizingPath = [*(*(&v69 + 1) + 8 * i) stringByStandardizingPath];
+            [v8 addObject:stringByStandardizingPath];
           }
 
           v53 = [v51 countByEnumeratingWithState:&v69 objects:v75 count:16];
@@ -1449,19 +1449,19 @@ LABEL_55:
       goto LABEL_63;
     }
 
-    v14 = [v5 dataContainerURL];
-    v15 = [v14 path];
+    dataContainerURL = [v5 dataContainerURL];
+    path = [dataContainerURL path];
 
-    if (v15 && [v15 length])
+    if (path && [path length])
     {
-      [v13 addObject:v15];
+      [v13 addObject:path];
       v16 = rbs_process_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         buffer = 138543618;
         v81 = v6;
         v82 = 2114;
-        *v83 = v15;
+        *v83 = path;
         _os_log_debug_impl(&dword_262485000, v16, OS_LOG_TYPE_DEBUG, "%{public}@: adding allowed path from bundle %{public}@", &buffer, 0x16u);
       }
 
@@ -1469,7 +1469,7 @@ LABEL_55:
     }
 
     bzero(&buffer, 0x88uLL);
-    if (proc_pidinfo(*(a1 + 8), 3, 0, &buffer, 136) != 136)
+    if (proc_pidinfo(*(self + 8), 3, 0, &buffer, 136) != 136)
     {
       v28 = rbs_process_log();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -1501,14 +1501,14 @@ LABEL_55:
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_35() embeddedApplicationIdentifier];
       objc_claimAutoreleasedReturnValue();
-      v15 = [OUTLINED_FUNCTION_22() stringByAppendingPathComponent:?];
+      path = [OUTLINED_FUNCTION_22() stringByAppendingPathComponent:?];
 
-      if (!v15 || ![v15 length])
+      if (!path || ![path length])
       {
         goto LABEL_54;
       }
 
-      [v13 addObject:v15];
+      [v13 addObject:path];
       v31 = rbs_process_log();
       if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
@@ -1516,7 +1516,7 @@ LABEL_55:
       }
 
       OUTLINED_FUNCTION_9();
-      *(v32 + 14) = v15;
+      *(v32 + 14) = path;
       v33 = "%{public}@: adding fallback allowed path %{public}@";
       goto LABEL_49;
     }
@@ -1533,8 +1533,8 @@ LABEL_55:
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:v18->pw_dir];
       [v21 stringByAppendingPathComponent:@"/Library/Caches/"];
       objc_claimAutoreleasedReturnValue();
-      v22 = [OUTLINED_FUNCTION_35() embeddedApplicationIdentifier];
-      v23 = [0x277CCA000 stringByAppendingPathComponent:v22];
+      embeddedApplicationIdentifier = [OUTLINED_FUNCTION_35() embeddedApplicationIdentifier];
+      v23 = [0x277CCA000 stringByAppendingPathComponent:embeddedApplicationIdentifier];
 
       v24 = v23;
       if (!v23)
@@ -1581,7 +1581,7 @@ LABEL_55:
         _os_log_impl(&dword_262485000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: no passwd data for ruid %d (errno %d)", buf, 0x18u);
       }
 
-      v26 = v15;
+      v26 = path;
     }
 
     v24 = v26;
@@ -1591,7 +1591,7 @@ LABEL_42:
     v38 = *&v83[6];
     if (*&v83[6] == v66)
     {
-      v15 = v24;
+      path = v24;
       goto LABEL_54;
     }
 
@@ -1611,7 +1611,7 @@ LABEL_42:
         _os_log_impl(&dword_262485000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@: no passwd data for euid %d (errno %d)", buf, 0x18u);
       }
 
-      v15 = v24;
+      path = v24;
       goto LABEL_53;
     }
 
@@ -1620,23 +1620,23 @@ LABEL_42:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_35() embeddedApplicationIdentifier];
     objc_claimAutoreleasedReturnValue();
-    v15 = [OUTLINED_FUNCTION_22() stringByAppendingPathComponent:?];
+    path = [OUTLINED_FUNCTION_22() stringByAppendingPathComponent:?];
 
-    if (!v15)
+    if (!path)
     {
       v13 = v67;
       goto LABEL_54;
     }
 
     v13 = v67;
-    if (![v15 length])
+    if (![path length])
     {
 LABEL_54:
 
       goto LABEL_55;
     }
 
-    [v67 addObject:v15];
+    [v67 addObject:path];
     v31 = rbs_process_log();
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
@@ -1646,7 +1646,7 @@ LABEL_53:
     }
 
     OUTLINED_FUNCTION_9();
-    *(v41 + 14) = v15;
+    *(v41 + 14) = path;
     v33 = "%{public}@: adding allowed path from effective uid %{public}@";
 LABEL_49:
     _os_log_debug_impl(&dword_262485000, v31, OS_LOG_TYPE_DEBUG, v33, buf, 0x16u);
@@ -1663,9 +1663,9 @@ LABEL_64:
 - (void)_lock_suspend
 {
   v50 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_20(a1);
+    OUTLINED_FUNCTION_20(self);
     if ((v3 & 1) == 0)
     {
       v4 = rbs_process_log();
@@ -1750,13 +1750,13 @@ LABEL_17:
         }
       }
 
-      v31 = [MEMORY[0x277D47028] sharedBackgroundWorkloop];
+      mEMORY[0x277D47028] = [MEMORY[0x277D47028] sharedBackgroundWorkloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __26__RBProcess__lock_suspend__block_invoke;
       block[3] = &unk_279B32CB0;
       block[4] = v1;
-      dispatch_async(v31, block);
+      dispatch_async(mEMORY[0x277D47028], block);
 
       [(RBProcess *)v1 _lock_shutdownSocketsAndLog:?];
     }
@@ -1788,7 +1788,7 @@ void __41__RBProcess_processStateApplicationQueue__block_invoke()
   processStateApplicationQueue_queue = v0;
 }
 
-+ (void)_runOnDiagnosticQueue:(uint64_t)a1
++ (void)_runOnDiagnosticQueue:(uint64_t)queue
 {
   block = a2;
   objc_opt_self();
@@ -1797,11 +1797,11 @@ void __41__RBProcess_processStateApplicationQueue__block_invoke()
     +[RBProcess _runOnDiagnosticQueue:];
   }
 
-  v2 = [MEMORY[0x277D47038] currentContext];
-  v3 = v2;
-  if (v2)
+  currentContext = [MEMORY[0x277D47038] currentContext];
+  v3 = currentContext;
+  if (currentContext)
   {
-    [v2 handoffToQueue:_runOnDiagnosticQueue__diagnosticQ block:block];
+    [currentContext handoffToQueue:_runOnDiagnosticQueue__diagnosticQ block:block];
   }
 
   else
@@ -1820,34 +1820,34 @@ void __35__RBProcess__runOnDiagnosticQueue___block_invoke()
 
 - (RBProcess)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBProcess.m" lineNumber:208 description:@"-init is not allowed on RBProcess"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBProcess.m" lineNumber:208 description:@"-init is not allowed on RBProcess"];
 
   return 0;
 }
 
-- (id)_initWithInstance:(void *)a3 auditToken:(void *)a4 bundleProperties:(void *)a5 jetsamProperties:(void *)a6 initialState:(void *)a7 hostProcess:(void *)a8 properties:(char)a9 systemPreventsIdleSleep:(char)a10 cache:
+- (id)_initWithInstance:(void *)instance auditToken:(void *)token bundleProperties:(void *)properties jetsamProperties:(void *)jetsamProperties initialState:(void *)state hostProcess:(void *)process properties:(char)a9 systemPreventsIdleSleep:(char)self0 cache:
 {
   v88 = *MEMORY[0x277D85DE8];
   v18 = a2;
-  v19 = a3;
-  v77 = a4;
-  v76 = a5;
-  v75 = a6;
-  v74 = a7;
-  v20 = a8;
-  if (!a1)
+  instanceCopy = instance;
+  tokenCopy = token;
+  propertiesCopy = properties;
+  jetsamPropertiesCopy = jetsamProperties;
+  stateCopy = state;
+  processCopy = process;
+  if (!self)
   {
 LABEL_6:
-    v23 = v75;
-    v22 = v76;
-    v24 = v74;
+    v23 = jetsamPropertiesCopy;
+    v22 = propertiesCopy;
+    v24 = stateCopy;
     goto LABEL_7;
   }
 
   if (v18)
   {
-    if (v19)
+    if (instanceCopy)
     {
       goto LABEL_4;
     }
@@ -1855,70 +1855,70 @@ LABEL_6:
 
   else
   {
-    [RBProcess _initWithInstance:a1 auditToken:? bundleProperties:? jetsamProperties:? initialState:? hostProcess:? properties:? systemPreventsIdleSleep:? cache:?];
-    if (v19)
+    [RBProcess _initWithInstance:self auditToken:? bundleProperties:? jetsamProperties:? initialState:? hostProcess:? properties:? systemPreventsIdleSleep:? cache:?];
+    if (instanceCopy)
     {
       goto LABEL_4;
     }
   }
 
-  [RBProcess _initWithInstance:a1 auditToken:? bundleProperties:? jetsamProperties:? initialState:? hostProcess:? properties:? systemPreventsIdleSleep:? cache:?];
+  [RBProcess _initWithInstance:self auditToken:? bundleProperties:? jetsamProperties:? initialState:? hostProcess:? properties:? systemPreventsIdleSleep:? cache:?];
 LABEL_4:
-  v21 = [v18 identity];
-  if ([v21 osServiceType] == 1)
+  identity = [v18 identity];
+  if ([identity osServiceType] == 1)
   {
     [RBProcess _initWithInstance:auditToken:bundleProperties:jetsamProperties:initialState:hostProcess:properties:systemPreventsIdleSleep:cache:];
   }
 
-  v79.receiver = a1;
+  v79.receiver = self;
   v79.super_class = RBProcess;
-  a1 = objc_msgSendSuper2(&v79, sel_init);
-  if (!a1)
+  self = objc_msgSendSuper2(&v79, sel_init);
+  if (!self)
   {
     goto LABEL_6;
   }
 
-  *(a1 + 2) = [v18 rbs_pid];
-  objc_storeStrong(a1 + 19, a2);
-  v27 = [v18 identifier];
-  v28 = a1[18];
-  a1[18] = v27;
+  *(self + 2) = [v18 rbs_pid];
+  objc_storeStrong(self + 19, a2);
+  identifier = [v18 identifier];
+  v28 = self[18];
+  self[18] = identifier;
 
-  v29 = [v18 identity];
-  v30 = a1[2];
-  a1[2] = v29;
+  identity2 = [v18 identity];
+  v30 = self[2];
+  self[2] = identity2;
 
-  a1[16] = 0;
-  v31 = [v20 homeDirectory];
-  v32 = a1[26];
-  a1[26] = v31;
+  self[16] = 0;
+  homeDirectory = [processCopy homeDirectory];
+  v32 = self[26];
+  self[26] = homeDirectory;
 
-  v33 = [v20 tmpDirectory];
-  v34 = a1[27];
-  a1[27] = v33;
+  tmpDirectory = [processCopy tmpDirectory];
+  v34 = self[27];
+  self[27] = tmpDirectory;
 
-  *(a1 + 21) = [v19 pidversion];
-  objc_storeStrong(a1 + 11, a5);
-  if ([v20 doesOverrideManagement])
+  *(self + 21) = [instanceCopy pidversion];
+  objc_storeStrong(self + 11, properties);
+  if ([processCopy doesOverrideManagement])
   {
-    v35 = [v20 overrideManageFlags];
+    overrideManageFlags = [processCopy overrideManageFlags];
 LABEL_16:
-    *(a1 + 109) = v35;
+    *(self + 109) = overrideManageFlags;
     goto LABEL_20;
   }
 
-  if (![a1[2] isExtension])
+  if (![self[2] isExtension])
   {
-    v35 = [a1[2] defaultManageFlags];
+    overrideManageFlags = [self[2] defaultManageFlags];
     goto LABEL_16;
   }
 
-  v36 = [v77 extensionPointIdentifier];
-  if (v36)
+  extensionPointIdentifier = [tokenCopy extensionPointIdentifier];
+  if (extensionPointIdentifier)
   {
-    if ([MEMORY[0x277D46F60] shouldManageExtensionWithExtensionPoint:v36])
+    if ([MEMORY[0x277D46F60] shouldManageExtensionWithExtensionPoint:extensionPointIdentifier])
     {
-      *(a1 + 109) = -1;
+      *(self + 109) = -1;
     }
   }
 
@@ -1931,72 +1931,72 @@ LABEL_16:
     }
   }
 
-  v35 = *(a1 + 109);
+  overrideManageFlags = *(self + 109);
 LABEL_20:
-  if ((v35 & 8) == 0)
+  if ((overrideManageFlags & 8) == 0)
   {
     v38 = objc_opt_new();
-    v39 = a1[11];
-    a1[11] = v38;
+    v39 = self[11];
+    self[11] = v38;
   }
 
-  v40 = [v20 managedEndpointByLaunchIdentifier];
-  v41 = [v40 copy];
-  v42 = a1[28];
-  a1[28] = v41;
+  managedEndpointByLaunchIdentifier = [processCopy managedEndpointByLaunchIdentifier];
+  v41 = [managedEndpointByLaunchIdentifier copy];
+  v42 = self[28];
+  self[28] = v41;
 
-  v73 = [v20 clientRestriction];
+  clientRestriction = [processCopy clientRestriction];
   v43 = [RBDomainRestriction domainRestrictionForDictionary:"domainRestrictionForDictionary:withError:" withError:?];
-  v44 = a1[29];
-  a1[29] = v43;
+  v44 = self[29];
+  self[29] = v43;
 
-  objc_storeStrong(a1 + 22, a4);
-  *(a1 + 77) = [v77 usesSocketMonitoring];
+  objc_storeStrong(self + 22, token);
+  *(self + 77) = [tokenCopy usesSocketMonitoring];
   v45 = objc_alloc_init(MEMORY[0x277D46F28]);
-  v46 = a1[20];
-  a1[20] = v45;
+  v46 = self[20];
+  self[20] = v45;
 
-  a1[6] = 0;
-  *(a1 + 78) = a9;
-  objc_storeStrong(a1 + 5, a7);
+  self[6] = 0;
+  *(self + 78) = a9;
+  objc_storeStrong(self + 5, state);
   v47 = objc_alloc(MEMORY[0x277D46F48]);
-  v48 = a1[19];
-  v49 = *(a1 + 109);
-  v50 = [v20 beforeTranslocationBundlePath];
-  v51 = [v20 executablePath];
-  LOBYTE(v72) = a10;
-  v52 = [v47 initWithInstance:v48 auditToken:v19 bundleData:v77 manageFlags:v49 beforeTranslocationBundlePath:v50 executablePath:v51 cache:v72];
-  v53 = a1[3];
-  a1[3] = v52;
+  v48 = self[19];
+  v49 = *(self + 109);
+  beforeTranslocationBundlePath = [processCopy beforeTranslocationBundlePath];
+  executablePath = [processCopy executablePath];
+  LOBYTE(v72) = sleep;
+  v52 = [v47 initWithInstance:v48 auditToken:instanceCopy bundleData:tokenCopy manageFlags:v49 beforeTranslocationBundlePath:beforeTranslocationBundlePath executablePath:executablePath cache:v72];
+  v53 = self[3];
+  self[3] = v52;
 
-  objc_storeStrong(a1 + 23, a3);
+  objc_storeStrong(self + 23, instance);
   v54 = objc_alloc(MEMORY[0x277CCACA8]);
-  v55 = [a1[2] shortDescription];
-  v56 = [v54 initWithFormat:@"[%@:%d]", v55, objc_msgSend(a1[18], "rbs_pid")];
-  v57 = a1[4];
-  a1[4] = v56;
+  shortDescription = [self[2] shortDescription];
+  v56 = [v54 initWithFormat:@"[%@:%d]", shortDescription, objc_msgSend(self[18], "rbs_pid")];
+  v57 = self[4];
+  self[4] = v56;
 
-  v58 = [v20 underlyingAssertion];
-  v59 = a1[24];
-  a1[24] = v58;
+  underlyingAssertion = [processCopy underlyingAssertion];
+  v59 = self[24];
+  self[24] = underlyingAssertion;
 
   v78 = 2;
-  v60 = [a1[11] memoryLimitForCategory:*MEMORY[0x277D47070] strength:&v78];
+  v60 = [self[11] memoryLimitForCategory:*MEMORY[0x277D47070] strength:&v78];
   v78 = 2;
-  v61 = [a1[11] memoryLimitForCategory:*MEMORY[0x277D47078] strength:&v78];
-  v62 = a1[11];
+  v61 = [self[11] memoryLimitForCategory:*MEMORY[0x277D47078] strength:&v78];
+  v62 = self[11];
   objc_opt_class();
   LOBYTE(v62) = objc_opt_isKindOfClass();
   v63 = rbs_process_log();
   v64 = os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT);
   if (v62)
   {
-    v23 = v75;
-    v22 = v76;
-    v24 = v74;
+    v23 = jetsamPropertiesCopy;
+    v22 = propertiesCopy;
+    v24 = stateCopy;
     if (v64)
     {
-      v65 = a1[4];
+      v65 = self[4];
       *buf = 138543362;
       v81 = v65;
       v66 = "%{public}@ is not RunningBoard jetsam managed.";
@@ -2009,13 +2009,13 @@ LABEL_27:
 
   else
   {
-    v23 = v75;
-    v22 = v76;
-    v24 = v74;
+    v23 = jetsamPropertiesCopy;
+    v22 = propertiesCopy;
+    v24 = stateCopy;
     if (v64)
     {
-      v69 = a1[4];
-      v70 = a1[11];
+      v69 = self[4];
+      v70 = self[11];
       *buf = 138544130;
       v81 = v69;
       v82 = 1024;
@@ -2031,31 +2031,31 @@ LABEL_27:
     }
   }
 
-  v71 = a1[23];
+  v71 = self[23];
   if (v71)
   {
     [v71 realToken];
-    *(a1 + 76) = RBSAuditTokenRepresentsPlatformBinary();
+    *(self + 76) = RBSAuditTokenRepresentsPlatformBinary();
   }
 
-  [(RBProcess *)a1 _setMemoryStatusFlags:v20];
-  if (v23 && a1[24] && ![a1[8] memoryLimit])
+  [(RBProcess *)self _setMemoryStatusFlags:processCopy];
+  if (v23 && self[24] && ![self[8] memoryLimit])
   {
-    [a1 _applyState:v23];
+    [self _applyState:v23];
   }
 
 LABEL_7:
   v25 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (void)setAuditToken:(id)a3
+- (void)setAuditToken:(id)token
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  tokenCopy = token;
+  v5 = tokenCopy;
+  if (tokenCopy)
   {
-    [(RBSAuditToken *)v4 realToken];
+    [(RBSAuditToken *)tokenCopy realToken];
   }
 
   v6 = RBSAuditTokenRepresentsPlatformBinary();
@@ -2079,8 +2079,8 @@ LABEL_7:
     p_pid = &self->_pid;
     if (proc_pidinfo(self->_pid, 3, 0, buffer, 136) == 136)
     {
-      v5 = [MEMORY[0x277CCAC38] processInfo];
-      [v5 systemUptime];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      [processInfo systemUptime];
       v7 = v6;
 
       self->_cachedProcessStartTime = v7 - (CFAbsoluteTimeGetCurrent() + *MEMORY[0x277CBECD0]) + *(&v21 + 1) + v22 / 1000000.0;
@@ -2144,11 +2144,11 @@ LABEL_7:
   return v4;
 }
 
-- (void)_systemPreventIdleSleepStateDidChange:(BOOL)a3
+- (void)_systemPreventIdleSleepStateDidChange:(BOOL)change
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_systemPreventsIdleSleep = a3;
-  if (!self->_terminating && !a3 && self->_suspended && [(RBProcess *)self isLifecycleManaged])
+  self->_systemPreventsIdleSleep = change;
+  if (!self->_terminating && !change && self->_suspended && [(RBProcess *)self isLifecycleManaged])
   {
     [(RBProcess *)self _lock_shutdownSocketsAndLog:?];
   }
@@ -2156,26 +2156,26 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setLastExitContext:(id)a3
+- (void)setLastExitContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_dataLock);
   lastExitContext = self->_lastExitContext;
-  self->_lastExitContext = v4;
+  self->_lastExitContext = contextCopy;
 
   os_unfair_lock_unlock(&self->_dataLock);
 }
 
-- (void)setLaunchAssertionIdentifier:(id)a3
+- (void)setLaunchAssertionIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_dataLock);
-  v5 = [(RBProcess *)self launchAssertionIdentifier];
+  launchAssertionIdentifier = [(RBProcess *)self launchAssertionIdentifier];
 
-  if (!v5)
+  if (!launchAssertionIdentifier)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     launchAssertionIdentifier = self->_launchAssertionIdentifier;
     self->_launchAssertionIdentifier = v6;
 
@@ -2183,12 +2183,12 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = [(RBProcess *)self description];
-      v10 = [(RBProcess *)self rbs_pid];
+      rbs_pid = [(RBProcess *)self rbs_pid];
       v11 = self->_launchAssertionIdentifier;
       v13 = 138412802;
       v14 = v9;
       v15 = 1024;
-      v16 = v10;
+      v16 = rbs_pid;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_262485000, v8, OS_LOG_TYPE_INFO, "Process: %@ with pid: %d; launch assertion: %@", &v13, 0x1Cu);
@@ -2200,9 +2200,9 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTerminating:(BOOL)a3
+- (void)setTerminating:(BOOL)terminating
 {
-  if (!a3)
+  if (!terminating)
   {
     [(RBProcess *)a2 setTerminating:?];
   }
@@ -2210,17 +2210,17 @@ LABEL_7:
   self->_terminating = 1;
 }
 
-- (void)_applyState:(id)a3
+- (void)_applyState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[RBProcess processStateApplicationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __25__RBProcess__applyState___block_invoke;
   v8[3] = &unk_279B32B80;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = stateCopy;
+  v6 = stateCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v8);
   dispatch_async(v5, v7);
 }
@@ -2235,11 +2235,11 @@ void __25__RBProcess__applyState___block_invoke(uint64_t a1)
   os_unfair_lock_unlock(v2);
 }
 
-- (void)collectDiagnostic:(unint64_t)a3 description:(id)a4 domain:(unsigned int)a5 code:(unint64_t)a6 additionalPayload:(id)a7 completion:(id)a8
+- (void)collectDiagnostic:(unint64_t)diagnostic description:(id)description domain:(unsigned int)domain code:(unint64_t)code additionalPayload:(id)payload completion:(id)completion
 {
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
+  descriptionCopy = description;
+  payloadCopy = payload;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   self->_terminating = 1;
   diagnosticsStarted = self->_diagnosticsStarted;
@@ -2247,7 +2247,7 @@ void __25__RBProcess__applyState___block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
   if (diagnosticsStarted)
   {
-    (*(v16 + 2))(v16, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -2257,22 +2257,22 @@ void __25__RBProcess__applyState___block_invoke(uint64_t a1)
     v33[2] = __84__RBProcess_collectDiagnostic_description_domain_code_additionalPayload_completion___block_invoke;
     v33[3] = &unk_279B33280;
     v33[4] = self;
-    v34 = v16;
+    v34 = completionCopy;
     v18 = MEMORY[0x266729AD0](v33);
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __84__RBProcess_collectDiagnostic_description_domain_code_additionalPayload_completion___block_invoke_2;
     v26[3] = &unk_279B332A8;
-    v30 = a3;
+    diagnosticCopy = diagnostic;
     v26[4] = self;
-    v32 = a5;
-    v27 = v14;
-    v31 = a6;
-    v28 = v15;
+    domainCopy = domain;
+    v27 = descriptionCopy;
+    codeCopy = code;
+    v28 = payloadCopy;
     v19 = v18;
     v29 = v19;
     [RBProcess _runOnDiagnosticQueue:v26];
-    if (a3 == 3)
+    if (diagnostic == 3)
     {
       v20 = 20000000000;
     }
@@ -2360,11 +2360,11 @@ uint64_t __84__RBProcess_collectDiagnostic_description_domain_code_additionalPay
 - (uint64_t)_generateTailspin
 {
   v1 = 0;
-  if (a1 && MEMORY[0x2822399C8])
+  if (self && MEMORY[0x2822399C8])
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"/tmp/com.apple.runningboardd/"];
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v4 fileExistsAtPath:v3])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:v3])
     {
       v5 = 0;
     }
@@ -2378,11 +2378,11 @@ uint64_t __84__RBProcess_collectDiagnostic_description_domain_code_additionalPay
       }
 
       v35 = 0;
-      [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v35];
+      [defaultManager createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v35];
       v5 = v35;
     }
 
-    if (([v4 fileExistsAtPath:v3] & 1) == 0)
+    if (([defaultManager fileExistsAtPath:v3] & 1) == 0)
     {
       v13 = rbs_general_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2397,10 +2397,10 @@ uint64_t __84__RBProcess_collectDiagnostic_description_domain_code_additionalPay
     v13 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v13 setDateFormat:@"yyyy-MM-dd-HHmmss"];
     v14 = MEMORY[0x277CCACA8];
-    v16 = *(a1 + 32);
-    v15 = (a1 + 32);
-    v17 = [MEMORY[0x277CBEAA8] date];
-    v18 = [v13 stringFromDate:v17];
+    v16 = *(self + 32);
+    v15 = (self + 32);
+    date = [MEMORY[0x277CBEAA8] date];
+    v18 = [v13 stringFromDate:date];
     v19 = [v14 stringWithFormat:@"ts-%@-%@.tailspin", v16, v18];
 
     v20 = [v3 stringByAppendingPathComponent:v19];
@@ -2450,26 +2450,26 @@ LABEL_23:
   return v1;
 }
 
-- (BOOL)terminateWithContext:(id)a3
+- (BOOL)terminateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(RBProcess *)self _lock_terminateWithContext:v4];
+  v5 = [(RBProcess *)self _lock_terminateWithContext:contextCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (uint64_t)_lock_terminateWithContext:(uint64_t)a1
+- (uint64_t)_lock_terminateWithContext:(uint64_t)context
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (context)
   {
     v4 = rbs_process_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = *(a1 + 32);
+      v5 = *(context + 32);
       *buf = 138543618;
       v19 = v5;
       v20 = 2114;
@@ -2477,7 +2477,7 @@ LABEL_23:
       _os_log_impl(&dword_262485000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Terminating with context: %{public}@", buf, 0x16u);
     }
 
-    *(a1 + 136) = 1;
+    *(context + 136) = 1;
     if (!v3)
     {
       v3 = objc_alloc_init(MEMORY[0x277D47010]);
@@ -2485,15 +2485,15 @@ LABEL_23:
       [v3 setMaximumTerminationResistance:40];
     }
 
-    os_unfair_lock_lock((a1 + 52));
-    v6 = [*(a1 + 160) copyWithTerminationContext:v3];
-    v7 = *(a1 + 160);
-    *(a1 + 160) = v6;
+    os_unfair_lock_lock((context + 52));
+    v6 = [*(context + 160) copyWithTerminationContext:v3];
+    v7 = *(context + 160);
+    *(context + 160) = v6;
 
-    os_unfair_lock_unlock((a1 + 52));
+    os_unfair_lock_unlock((context + 52));
     [v3 reportType];
     [v3 exceptionDomain];
-    v8 = *(a1 + 8);
+    v8 = *(context + 8);
     [v3 exceptionCode];
     v9 = [v3 description];
     [v9 UTF8String];
@@ -2505,17 +2505,17 @@ LABEL_23:
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [RBProcess _lock_terminateWithContext:a1];
+        [RBProcess _lock_terminateWithContext:context];
       }
 
-      v13 = [a1 _sendSignal:9];
+      v13 = [context _sendSignal:9];
     }
 
     else
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = *(a1 + 32);
+        v14 = *(context + 32);
         *buf = 138543362;
         v19 = v14;
         _os_log_impl(&dword_262485000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ terminate_with_reason() success", buf, 0xCu);
@@ -2537,7 +2537,7 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)_sendSignal:(int)a3
+- (BOOL)_sendSignal:(int)signal
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = rbs_process_log();
@@ -2547,11 +2547,11 @@ LABEL_23:
     v10 = 138543618;
     v11 = shortDescription;
     v12 = 1024;
-    v13 = a3;
+    signalCopy = signal;
     _os_log_impl(&dword_262485000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending kill(%d)", &v10, 0x12u);
   }
 
-  if (kill(self->_pid, a3) && *__error() != 3)
+  if (kill(self->_pid, signal) && *__error() != 3)
   {
     v8 = rbs_process_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2571,19 +2571,19 @@ LABEL_23:
   return result;
 }
 
-- (void)invokeHandlerOnProcessDeath:(id)a3 onQueue:(id)a4
+- (void)invokeHandlerOnProcessDeath:(id)death onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  deathCopy = death;
+  queueCopy = queue;
   if (self->_procSource)
   {
     [RBProcess invokeHandlerOnProcessDeath:onQueue:];
   }
 
-  v8 = v7;
+  v8 = queueCopy;
   pid = self->_pid;
-  v10 = [MEMORY[0x277D47028] sharedBackgroundWorkloop];
-  v11 = dispatch_source_create(MEMORY[0x277D85D20], pid, 0xA0000000uLL, v10);
+  mEMORY[0x277D47028] = [MEMORY[0x277D47028] sharedBackgroundWorkloop];
+  v11 = dispatch_source_create(MEMORY[0x277D85D20], pid, 0xA0000000uLL, mEMORY[0x277D47028]);
   procSource = self->_procSource;
   self->_procSource = v11;
 
@@ -2596,8 +2596,8 @@ LABEL_23:
   handler[3] = &unk_279B32F78;
   handler[4] = self;
   v18 = v8;
-  v19 = v6;
-  v15 = v6;
+  v19 = deathCopy;
+  v15 = deathCopy;
   v16 = v8;
   dispatch_source_set_event_handler(v14, handler);
   dispatch_activate(self->_procSource);
@@ -2664,17 +2664,17 @@ void __49__RBProcess_invokeHandlerOnProcessDeath_onQueue___block_invoke_2(uint64
 - (id)createRBSTarget
 {
   v2 = MEMORY[0x277D47008];
-  v3 = [(RBProcess *)self rbs_pid];
+  rbs_pid = [(RBProcess *)self rbs_pid];
 
-  return [v2 targetWithPid:v3];
+  return [v2 targetWithPid:rbs_pid];
 }
 
-- (uint64_t)_memoryStatusControl:(uint64_t)a1 flags:
+- (uint64_t)_memoryStatusControl:(uint64_t)control flags:
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (control)
   {
-    v3 = *(a1 + 8);
+    v3 = *(control + 8);
     v4 = memorystatus_control();
     if (v4)
     {
@@ -2685,7 +2685,7 @@ void __49__RBProcess_invokeHandlerOnProcessDeath_onQueue___block_invoke_2(uint64
         v7 = rbs_process_log();
         if (OUTLINED_FUNCTION_26(v7))
         {
-          v10 = *(a1 + 32);
+          v10 = *(control + 32);
           v11 = __error();
           strerror(*v11);
           v17 = *__error();
@@ -2705,27 +2705,27 @@ void __49__RBProcess_invokeHandlerOnProcessDeath_onQueue___block_invoke_2(uint64
   return v4;
 }
 
-- (void)_setMemoryStatusFlags:(uint64_t)a1
+- (void)_setMemoryStatusFlags:(uint64_t)flags
 {
   v38 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (flags)
   {
-    v5 = *(a1 + 109);
+    v5 = *(flags + 109);
     v6 = rbs_process_log();
     v7 = OUTLINED_FUNCTION_32(v6);
     if ((v5 & 8) != 0)
     {
       if (v7)
       {
-        v16 = *(a1 + 32);
+        v16 = *(flags + 32);
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_8();
         _os_log_impl(v17, v18, v19, v20, v21, v22);
       }
 
-      [RBProcess _memoryStatusControl:a1 flags:?];
-      if (([*(a1 + 88) isFreezerEligible] & 1) == 0)
+      [RBProcess _memoryStatusControl:flags flags:?];
+      if (([*(flags + 88) isFreezerEligible] & 1) == 0)
       {
         v31 = rbs_process_log();
         if (OUTLINED_FUNCTION_32(v31))
@@ -2735,15 +2735,15 @@ void __49__RBProcess_invokeHandlerOnProcessDeath_onQueue___block_invoke_2(uint64
           _os_log_impl(v32, v33, v34, v35, v36, v37);
         }
 
-        [RBProcess _memoryStatusControl:a1 flags:?];
+        [RBProcess _memoryStatusControl:flags flags:?];
       }
 
-      if ((_deviceSupportsAppSwapping & 1) == 0 && [*(a1 + 16) isApplication] && -[RBProcess _memoryStatusControl:flags:](a1) == 45)
+      if ((_deviceSupportsAppSwapping & 1) == 0 && [*(flags + 16) isApplication] && -[RBProcess _memoryStatusControl:flags:](flags) == 45)
       {
         v23 = rbs_process_log();
         if (OUTLINED_FUNCTION_32(v23))
         {
-          v24 = *(a1 + 32);
+          v24 = *(flags + 32);
           OUTLINED_FUNCTION_6();
           OUTLINED_FUNCTION_8();
           _os_log_impl(v25, v26, v27, v28, v29, v30);
@@ -2757,7 +2757,7 @@ void __49__RBProcess_invokeHandlerOnProcessDeath_onQueue___block_invoke_2(uint64
     {
       if (v7)
       {
-        v8 = *(a1 + 32);
+        v8 = *(flags + 32);
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_8();
         _os_log_impl(v9, v10, v11, v12, v13, v14);
@@ -2768,13 +2768,13 @@ void __49__RBProcess_invokeHandlerOnProcessDeath_onQueue___block_invoke_2(uint64
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_shutdownSocketsAndLog:(uint64_t)a1
+- (void)_lock_shutdownSocketsAndLog:(uint64_t)log
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (log)
   {
-    v4 = *(a1 + 8);
-    *(a1 + 78);
+    v4 = *(log + 8);
+    *(log + 78);
     if (pid_shutdown_sockets())
     {
       v5 = __error();
@@ -2784,7 +2784,7 @@ void __49__RBProcess_invokeHandlerOnProcessDeath_onQueue___block_invoke_2(uint64
         v7 = rbs_process_log();
         if (OUTLINED_FUNCTION_27(v7))
         {
-          v8 = *(a1 + 32);
+          v8 = *(log + 32);
           v9 = __error();
           strerror(*v9);
           OUTLINED_FUNCTION_17();
@@ -2803,8 +2803,8 @@ LABEL_9:
       v16 = rbs_process_log();
       if (OUTLINED_FUNCTION_23(v16))
       {
-        v17 = *(a1 + 32);
-        *(a1 + 78);
+        v17 = *(log + 32);
+        *(log + 78);
         OUTLINED_FUNCTION_6();
         v21 = 2080;
         v22 = v18;
@@ -2818,18 +2818,18 @@ LABEL_9:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applyJetsamLenientModeState:(uint64_t)a1
+- (void)_applyJetsamLenientModeState:(uint64_t)state
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (state)
   {
-    if ((*(a1 + 109) & 8) == 0)
+    if ((*(state + 109) & 8) == 0)
     {
       v4 = rbs_process_log();
       if (OUTLINED_FUNCTION_23(v4))
       {
 LABEL_4:
-        v5 = *(a1 + 32);
+        v5 = *(state + 32);
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_8();
 LABEL_16:
@@ -2857,7 +2857,7 @@ LABEL_17:
         }
 
 LABEL_15:
-        v18 = *(a1 + 32);
+        v18 = *(state + 32);
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_7_0();
         v11 = 22;
@@ -2889,7 +2889,7 @@ LABEL_15:
       }
 
 LABEL_22:
-      v22 = *(a1 + 32);
+      v22 = *(state + 32);
       v23 = *__error();
       v24 = __error();
       strerror(*v24);
@@ -2942,12 +2942,12 @@ LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_generateStackshotWithDescription:(int)a3 domain:(uint64_t)a4 code:(void *)a5 additionalPayload:
+- (uint64_t)_generateStackshotWithDescription:(int)description domain:(uint64_t)domain code:(void *)code additionalPayload:
 {
   v29 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a5;
-  if (!a1)
+  codeCopy = code;
+  if (!self)
   {
     v14 = 0;
     goto LABEL_15;
@@ -2956,21 +2956,21 @@ LABEL_18:
   v11 = rbs_process_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = *(a1 + 32);
+    v12 = *(self + 32);
     OUTLINED_FUNCTION_33();
     _os_log_impl(&dword_262485000, v11, OS_LOG_TYPE_INFO, "%{public}@ Taking stackshot...", buf, 0xCu);
   }
 
   v28 = 0;
-  *buf = a3;
-  v27 = a4;
-  if (a4 != 2343432205)
+  *buf = description;
+  domainCopy = domain;
+  if (domain != 2343432205)
   {
-    [a1 _sendSignal:17];
+    [self _sendSignal:17];
   }
 
-  *(a1 + 8);
-  if (v10)
+  *(self + 8);
+  if (codeCopy)
   {
     if (WriteCrashReportWithStackshotWithPayload())
     {
@@ -2981,7 +2981,7 @@ LABEL_11:
     v13 = rbs_process_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = *(a1 + 32);
+      v16 = *(self + 32);
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_8();
       _os_log_impl(v17, v18, v19, v20, v21, v22);
@@ -3001,7 +3001,7 @@ LABEL_8:
   v14 = 1;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v15 = *(a1 + 32);
+    v15 = *(self + 32);
     OUTLINED_FUNCTION_6();
     _os_log_impl(&dword_262485000, v13, OS_LOG_TYPE_INFO, "%{public}@ Stackshot complete", v25, 0xCu);
   }
@@ -3013,23 +3013,23 @@ LABEL_15:
   return v14;
 }
 
-- (id)_lock_lockedFilePathsIgnoring:(uint64_t)a1
+- (id)_lock_lockedFilePathsIgnoring:(uint64_t)ignoring
 {
   v198 = *MEMORY[0x277D85DE8];
   v178 = a2;
-  if (a1)
+  if (ignoring)
   {
-    v4 = *(a1 + 8);
+    v4 = *(ignoring + 8);
     v5 = proc_pidinfo(v4, 1, 0, 0, 0);
     if ((v5 & 0x80000000) == 0)
     {
       v6 = v5;
-      v177 = a1;
+      ignoringCopy = ignoring;
       HIDWORD(v170) = v4;
       v166 = malloc_type_malloc(v5, 0x339F2B4BuLL);
       v7 = (proc_pidinfo(v4, 1, 0, v166, v6) >> 3);
       v8 = [MEMORY[0x277CBEB58] set];
-      v167 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       if (v7 >= 1)
       {
         *&v9 = 138544130;
@@ -3057,12 +3057,12 @@ LABEL_19:
             v30 = strlen(v197);
             if (v30)
             {
-              v31 = [v167 stringWithFileSystemRepresentation:v197 length:v30];
+              v31 = [defaultManager stringWithFileSystemRepresentation:v197 length:v30];
               v13 = v31;
               if (v31)
               {
-                v32 = [v31 stringByStandardizingPath];
-                [v8 addObject:v32];
+                stringByStandardizingPath = [v31 stringByStandardizingPath];
+                [v8 addObject:stringByStandardizingPath];
               }
 
               goto LABEL_18;
@@ -3072,7 +3072,7 @@ LABEL_19:
             v33 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
             if (v33)
             {
-              OUTLINED_FUNCTION_13(v33, v34, v35, v36, v37, v38, v39, v40, v164, v165, v166, v167, v168, v170, v171, v173, v174, *(&v174 + 1), obj[0], obj[1], v177);
+              OUTLINED_FUNCTION_13(v33, v34, v35, v36, v37, v38, v39, v40, v164, v165, v166, defaultManager, v168, v170, v171, v173, v174, *(&v174 + 1), obj[0], obj[1], ignoringCopy);
               *buf = v174;
               *&buf[4] = v41;
               v24 = v13;
@@ -3088,7 +3088,7 @@ LABEL_19:
             v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
             if (v14)
             {
-              OUTLINED_FUNCTION_13(v14, v15, v16, v17, v18, v19, v20, v21, v164, v165, v166, v167, v168, v170, v171, v173, v174, *(&v174 + 1), obj[0], obj[1], v177);
+              OUTLINED_FUNCTION_13(v14, v15, v16, v17, v18, v19, v20, v21, v164, v165, v166, defaultManager, v168, v170, v171, v173, v174, *(&v174 + 1), obj[0], obj[1], ignoringCopy);
               v22 = *v10;
               *buf = obj[0];
               *&buf[4] = v23;
@@ -3112,7 +3112,7 @@ LABEL_17:
           v13 = rbs_process_log();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
-            v27 = *(v177 + 32);
+            v27 = *(ignoringCopy + 32);
             v28 = *v10;
             v29 = *__error();
             *buf = 138543874;
@@ -3163,9 +3163,9 @@ LABEL_22:
         }
 
         v46 = *(*(&v185 + 1) + 8 * v45);
-        v47 = [v46 UTF8String];
+        uTF8String = [v46 UTF8String];
         bzero(&buffer, 0x90uLL);
-        if (stat(v47, &buffer))
+        if (stat(uTF8String, &buffer))
         {
           break;
         }
@@ -3179,7 +3179,7 @@ LABEL_22:
         v90 = OUTLINED_FUNCTION_31(v89);
         if (v90)
         {
-          OUTLINED_FUNCTION_0_5(v90, v91, v92, v93, v94, v95, v96, v97, v164, v165, v166, v167, v169, v170, v172, *(&v172 + 1), v98, v175, *(&v175 + 1), obj[0]);
+          OUTLINED_FUNCTION_0_5(v90, v91, v92, v93, v94, v95, v96, v97, v164, v165, v166, defaultManager, v169, v170, v172, *(&v172 + 1), v98, v175, *(&v175 + 1), obj[0]);
           OUTLINED_FUNCTION_18();
           v68 = "%{public}@ Not checking lock on special file: %{public}@";
           goto LABEL_49;
@@ -3208,7 +3208,7 @@ LABEL_72:
       v48 = rbs_process_log();
       if (OUTLINED_FUNCTION_39(v48))
       {
-        v109 = *(v177 + 32);
+        v109 = *(ignoringCopy + 32);
         v110 = __error();
         v111 = strerror(*v110);
         *buf = v172;
@@ -3262,7 +3262,7 @@ LABEL_32:
         v70 = os_log_type_enabled(v69, OS_LOG_TYPE_INFO);
         if (v70)
         {
-          OUTLINED_FUNCTION_13(v70, v71, v72, v73, v74, v75, v76, v77, v164, v165, v166, v167, v169, v170, v172, *(&v172 + 1), v175, *(&v175 + 1), obj[0], obj[1], v177);
+          OUTLINED_FUNCTION_13(v70, v71, v72, v73, v74, v75, v76, v77, v164, v165, v166, defaultManager, v169, v170, v172, *(&v172 + 1), v175, *(&v175 + 1), obj[0], obj[1], ignoringCopy);
           *buf = v172;
           *&buf[4] = v78;
           *&buf[12] = 2114;
@@ -3276,7 +3276,7 @@ LABEL_32:
         v80 = OUTLINED_FUNCTION_31(v79);
         if (v80)
         {
-          OUTLINED_FUNCTION_0_5(v80, v81, v82, v83, v84, v85, v86, v87, v164, v165, v166, v167, v169, v170, v172, *(&v172 + 1), v88, v175, *(&v175 + 1), obj[0]);
+          OUTLINED_FUNCTION_0_5(v80, v81, v82, v83, v84, v85, v86, v87, v164, v165, v166, defaultManager, v169, v170, v172, *(&v172 + 1), v88, v175, *(&v175 + 1), obj[0]);
           OUTLINED_FUNCTION_18();
           v68 = "%{public}@: Ignoring file because it is in an allowed path: %{public}@";
           goto LABEL_49;
@@ -3293,7 +3293,7 @@ LABEL_38:
         v55 = OUTLINED_FUNCTION_31(v54);
         if (v55)
         {
-          OUTLINED_FUNCTION_0_5(v55, v56, v57, v58, v59, v60, v61, v62, v164, v165, v166, v167, v169, v170, v172, *(&v172 + 1), v63, v175, *(&v175 + 1), obj[0]);
+          OUTLINED_FUNCTION_0_5(v55, v56, v57, v58, v59, v60, v61, v62, v164, v165, v166, defaultManager, v169, v170, v172, *(&v172 + 1), v63, v175, *(&v175 + 1), obj[0]);
           OUTLINED_FUNCTION_18();
           v68 = "%{public}@ Ignoring SQLite journal file: %{public}@";
 LABEL_49:
@@ -3305,9 +3305,9 @@ LABEL_49:
       else
       {
         value = 0;
-        if (getxattr(v47, "com.apple.runningboard.can-suspend-locked", 0, 0, 0, 0) == 1)
+        if (getxattr(uTF8String, "com.apple.runningboard.can-suspend-locked", 0, 0, 0, 0) == 1)
         {
-          getxattr(v47, "com.apple.runningboard.can-suspend-locked", &value, 1uLL, 0, 0);
+          getxattr(uTF8String, "com.apple.runningboard.can-suspend-locked", &value, 1uLL, 0, 0);
         }
 
         if (value)
@@ -3319,7 +3319,7 @@ LABEL_49:
             goto LABEL_50;
           }
 
-          OUTLINED_FUNCTION_0_5(v100, v101, v102, v103, v104, v105, v106, v107, v164, v165, v166, v167, v169, v170, v172, *(&v172 + 1), v108, v175, *(&v175 + 1), obj[0]);
+          OUTLINED_FUNCTION_0_5(v100, v101, v102, v103, v104, v105, v106, v107, v164, v165, v166, defaultManager, v169, v170, v172, *(&v172 + 1), v108, v175, *(&v175 + 1), obj[0]);
           OUTLINED_FUNCTION_18();
           v68 = "%{public}@ Ignoring file with can-suspend-locked: %{public}@";
           goto LABEL_49;
@@ -3334,7 +3334,7 @@ LABEL_49:
             v114 = OUTLINED_FUNCTION_31(v113);
             if (v114)
             {
-              OUTLINED_FUNCTION_0_5(v114, v115, v116, v117, v118, v119, v120, v121, v164, v165, v166, v167, v169, v170, v172, *(&v172 + 1), v122, v175, *(&v175 + 1), obj[0]);
+              OUTLINED_FUNCTION_0_5(v114, v115, v116, v117, v118, v119, v120, v121, v164, v165, v166, defaultManager, v169, v170, v172, *(&v172 + 1), v122, v175, *(&v175 + 1), obj[0]);
               OUTLINED_FUNCTION_18();
               v127 = "%{public}@ Found locked SQLite database: %{public}@";
               goto LABEL_62;
@@ -3347,7 +3347,7 @@ LABEL_49:
             *&buf[20] = 3;
             *buf = 0;
             *&buf[16] = HIDWORD(v170);
-            v138 = open(v47, 0x20000);
+            v138 = open(uTF8String, 0x20000);
             if (v138 < 1)
             {
               goto LABEL_51;
@@ -3366,7 +3366,7 @@ LABEL_49:
             v141 = OUTLINED_FUNCTION_32(v140);
             if (v141)
             {
-              OUTLINED_FUNCTION_13(v141, v142, v143, v144, v145, v146, v147, v148, buf, v165, v166, v167, v169, v170, v172, *(&v172 + 1), v175, *(&v175 + 1), obj[0], obj[1], v177);
+              OUTLINED_FUNCTION_13(v141, v142, v143, v144, v145, v146, v147, v148, buf, v165, v166, defaultManager, v169, v170, v172, *(&v172 + 1), v175, *(&v175 + 1), obj[0], obj[1], ignoringCopy);
               v189 = v175;
               v190 = v149;
               v191 = 2114;
@@ -3389,7 +3389,7 @@ LABEL_62:
         v129 = OUTLINED_FUNCTION_31(v128);
         if (v129)
         {
-          OUTLINED_FUNCTION_0_5(v129, v130, v131, v132, v133, v134, v135, v136, v164, v165, v166, v167, v169, v170, v172, *(&v172 + 1), v137, v175, *(&v175 + 1), obj[0]);
+          OUTLINED_FUNCTION_0_5(v129, v130, v131, v132, v133, v134, v135, v136, v164, v165, v166, defaultManager, v169, v170, v172, *(&v172 + 1), v137, v175, *(&v175 + 1), obj[0]);
           OUTLINED_FUNCTION_18();
           v68 = "%{public}@ Ignoring unlocked SQLite database: %{public}@";
           goto LABEL_49;
@@ -3402,7 +3402,7 @@ LABEL_62:
     v151 = rbs_process_log();
     if (OUTLINED_FUNCTION_39(v151))
     {
-      v154 = *(a1 + 32);
+      v154 = *(ignoring + 32);
       v155 = *__error();
       v156 = __error();
       v157 = strerror(*v156);
@@ -3430,20 +3430,20 @@ LABEL_76:
   return v169;
 }
 
-- (void)_lock_setCPULimits:(uint64_t)a1 violationPolicy:(unsigned int *)a2
+- (void)_lock_setCPULimits:(uint64_t)limits violationPolicy:(unsigned int *)policy
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!limits)
   {
     goto LABEL_11;
   }
 
   *__error() = 0;
-  v5 = [*(a1 + 64) effectiveMaxCPUUsageViolationPolicy];
-  v6 = *(a1 + 8);
-  v7 = *a2;
-  v8 = a2[1];
-  if (v5 == 2)
+  effectiveMaxCPUUsageViolationPolicy = [*(limits + 64) effectiveMaxCPUUsageViolationPolicy];
+  v6 = *(limits + 8);
+  v7 = *policy;
+  v8 = policy[1];
+  if (effectiveMaxCPUUsageViolationPolicy == 2)
   {
     if (proc_set_cpumon_params_fatal())
     {
@@ -3454,9 +3454,9 @@ LABEL_8:
     v19 = rbs_process_log();
     if (OUTLINED_FUNCTION_29(v19))
     {
-      v20 = *(a1 + 32);
-      v21 = *a2;
-      v22 = a2[1];
+      v20 = *(limits + 32);
+      v21 = *policy;
+      v22 = policy[1];
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_14();
       OUTLINED_FUNCTION_7_0();
@@ -3479,7 +3479,7 @@ LABEL_4:
     v11 = rbs_process_log();
     if (OUTLINED_FUNCTION_27(v11))
     {
-      v12 = *(a1 + 32);
+      v12 = *(limits + 32);
       v13 = *__error();
       OUTLINED_FUNCTION_3_0();
       OUTLINED_FUNCTION_5();
@@ -3518,7 +3518,7 @@ LABEL_11:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_262485000, a2, OS_LOG_TYPE_FAULT, "Memory Limits for process:%{public}@ unknown", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -3526,7 +3526,7 @@ LABEL_11:
 - (void)processStartTime
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4[0] = 67109120;
   v4[1] = v2;
   _os_log_error_impl(&dword_262485000, a2, OS_LOG_TYPE_ERROR, "Could not get proc_pidinfo for pid %d, using defaults", v4, 8u);
@@ -3558,7 +3558,7 @@ void __84__RBProcess_collectDiagnostic_description_domain_code_additionalPayload
 - (void)_generateTailspin
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_2_2(&dword_262485000, v2, v3, "%{public}@ Failed to create tailspin file descriptor.", v4, v5, v6, v7, v9);
   v8 = *MEMORY[0x277D85DE8];

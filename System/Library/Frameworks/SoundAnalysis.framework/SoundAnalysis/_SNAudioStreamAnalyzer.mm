@@ -1,19 +1,19 @@
 @interface _SNAudioStreamAnalyzer
-- (BOOL)addRequest:(id)a3 completionHandler:(id)a4 resultsHandler:(id)a5 error:(id *)a6;
-- (BOOL)addRequest:(id)a3 withObserver:(id)a4 error:(id *)a5;
+- (BOOL)addRequest:(id)request completionHandler:(id)handler resultsHandler:(id)resultsHandler error:(id *)error;
+- (BOOL)addRequest:(id)request withObserver:(id)observer error:(id *)error;
 - (NSString)detailedDescription;
-- (_SNAudioStreamAnalyzer)initWithFormat:(id)a3 error:(id *)a4;
-- (void)analyzeAudioBuffer:(id)a3 atAudioFramePosition:(int64_t)a4;
+- (_SNAudioStreamAnalyzer)initWithFormat:(id)format error:(id *)error;
+- (void)analyzeAudioBuffer:(id)buffer atAudioFramePosition:(int64_t)position;
 - (void)completeAnalysis;
 - (void)removeAllRequests;
-- (void)removeRequest:(id)a3;
+- (void)removeRequest:(id)request;
 @end
 
 @implementation _SNAudioStreamAnalyzer
 
-- (_SNAudioStreamAnalyzer)initWithFormat:(id)a3 error:(id *)a4
+- (_SNAudioStreamAnalyzer)initWithFormat:(id)format error:(id *)error
 {
-  if (a3)
+  if (format)
   {
     swift_unknownObjectRetain();
     sub_1C9A93318();
@@ -29,14 +29,14 @@
   return sub_1C97E9C24(v6);
 }
 
-- (BOOL)addRequest:(id)a3 withObserver:(id)a4 error:(id *)a5
+- (BOOL)addRequest:(id)request withObserver:(id)observer error:(id *)error
 {
-  if (!a3)
+  if (!request)
   {
     memset(v12, 0, sizeof(v12));
     swift_unknownObjectRetain();
-    v8 = self;
-    if (a4)
+    selfCopy = self;
+    if (observer)
     {
       goto LABEL_3;
     }
@@ -47,12 +47,12 @@ LABEL_5:
   }
 
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   sub_1C9A93318();
   swift_unknownObjectRelease();
   sub_1C97A2D34(v11, v12);
-  if (!a4)
+  if (!observer)
   {
     goto LABEL_5;
   }
@@ -69,25 +69,25 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)addRequest:(id)a3 completionHandler:(id)a4 resultsHandler:(id)a5 error:(id *)a6
+- (BOOL)addRequest:(id)request completionHandler:(id)handler resultsHandler:(id)resultsHandler error:(id *)error
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
+  v9 = _Block_copy(resultsHandler);
   *(swift_allocObject() + 16) = v8;
   *(swift_allocObject() + 16) = v9;
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
   sub_1C97EB888();
 
   swift_unknownObjectRelease();
   return 1;
 }
 
-- (void)removeRequest:(id)a3
+- (void)removeRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -96,7 +96,7 @@ LABEL_6:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1C97EC9E0(v6);
@@ -106,26 +106,26 @@ LABEL_6:
 
 - (void)removeAllRequests
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C97ED174();
 }
 
-- (void)analyzeAudioBuffer:(id)a3 atAudioFramePosition:(int64_t)a4
+- (void)analyzeAudioBuffer:(id)buffer atAudioFramePosition:(int64_t)position
 {
-  v6 = a3;
-  v7 = self;
-  sub_1C97ED4E0(a3);
+  bufferCopy = buffer;
+  selfCopy = self;
+  sub_1C97ED4E0(buffer);
 }
 
 - (void)completeAnalysis
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C97EDB64();
 }
 
 - (NSString)detailedDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C97EDD94();
 
   v3 = sub_1C9A92478();

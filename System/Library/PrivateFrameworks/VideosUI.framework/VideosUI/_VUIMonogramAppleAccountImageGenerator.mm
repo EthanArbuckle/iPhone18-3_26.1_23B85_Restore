@@ -1,25 +1,25 @@
 @interface _VUIMonogramAppleAccountImageGenerator
-+ (BOOL)isAppleAccountsURL:(id)a3;
-- (void)cancelLoad:(id)a3;
++ (BOOL)isAppleAccountsURL:(id)l;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _VUIMonogramAppleAccountImageGenerator
 
-+ (BOOL)isAppleAccountsURL:(id)a3
++ (BOOL)isAppleAccountsURL:(id)l
 {
-  v3 = [a3 scheme];
-  v4 = [v3 isEqualToString:@"x-apple-identity-image"];
+  scheme = [l scheme];
+  v4 = [scheme isEqualToString:@"x-apple-identity-image"];
 
   return v4;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v3 = a3;
+  loadCopy = load;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 cancel];
+    [loadCopy cancel];
   }
 }
 

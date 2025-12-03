@@ -1,21 +1,21 @@
 @interface WFDisplaySleepAction
-- (WFDisplaySleepAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
+- (WFDisplaySleepAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
 @end
 
 @implementation WFDisplaySleepAction
 
-- (WFDisplaySleepAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFDisplaySleepAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
   v7 = sub_23E1FDC1C();
   v9 = v8;
-  if (a5)
+  if (parameters)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E32CB70, &qword_23E2236E0);
-    a5 = sub_23E1FDAAC();
+    parameters = sub_23E1FDAAC();
   }
 
-  v10 = a4;
-  return sub_23DF17888(v7, v9, a4, a5);
+  definitionCopy = definition;
+  return sub_23DF17888(v7, v9, definition, parameters);
 }
 
 @end

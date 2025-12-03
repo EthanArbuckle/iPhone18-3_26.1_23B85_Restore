@@ -1,15 +1,15 @@
 @interface _NUIFlowRowContainer
 - (BOOL)isLayoutSizeDependentOnPerpendicularAxis;
-- (CGRect)layoutFrameForArrangedSubview:(id)a3 withProposedContentFrame:(CGRect)a4;
-- (CGSize)contentLayoutSizeFittingSize:(CGSize)a3 forArrangedSubview:(id)a4;
+- (CGRect)layoutFrameForArrangedSubview:(id)subview withProposedContentFrame:(CGRect)frame;
+- (CGSize)contentLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
 - (double)effectiveBaselineOffsetFromContentBottom;
 - (double)effectiveFirstBaselineOffsetFromContentTop;
-- (float)contentCompressionResistancePriorityForAxis:(int64_t)a3;
-- (float)contentHuggingPriorityForAxis:(int64_t)a3;
+- (float)contentCompressionResistancePriorityForAxis:(int64_t)axis;
+- (float)contentHuggingPriorityForAxis:(int64_t)axis;
 - (void)dealloc;
-- (void)initWithFlowArrangement:(uint64_t)a3 cellRange:(uint64_t)a4;
-- (void)populateGridArrangementCells:(void *)a3;
-- (void)populateGridArrangementDimension:(void *)a3 withCells:(const void *)a4 axis:(int64_t)a5;
+- (void)initWithFlowArrangement:(uint64_t)arrangement cellRange:(uint64_t)range;
+- (void)populateGridArrangementCells:(void *)cells;
+- (void)populateGridArrangementDimension:(void *)dimension withCells:(const void *)cells axis:(int64_t)axis;
 @end
 
 @implementation _NUIFlowRowContainer
@@ -22,11 +22,11 @@
   [(_NUIFlowRowContainer *)&v3 dealloc];
 }
 
-- (CGSize)contentLayoutSizeFittingSize:(CGSize)a3 forArrangedSubview:(id)a4
+- (CGSize)contentLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a3.height;
-  width = a3.width;
-  if (+[_NUIFlowArrangementDummyItem sharedDummyItem]== a4)
+  height = size.height;
+  width = size.width;
+  if (+[_NUIFlowArrangementDummyItem sharedDummyItem]== subview)
   {
     v8 = 1.0;
     v9 = 1.0;
@@ -34,7 +34,7 @@
 
   else
   {
-    [*self->_flowArrangement contentLayoutSizeFittingSize:a4 forArrangedSubview:{width, height}];
+    [*self->_flowArrangement contentLayoutSizeFittingSize:subview forArrangedSubview:{width, height}];
   }
 
   result.height = v9;
@@ -42,15 +42,15 @@
   return result;
 }
 
-- (CGRect)layoutFrameForArrangedSubview:(id)a3 withProposedContentFrame:(CGRect)a4
+- (CGRect)layoutFrameForArrangedSubview:(id)subview withProposedContentFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (+[_NUIFlowArrangementDummyItem sharedDummyItem]!= a3)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (+[_NUIFlowArrangementDummyItem sharedDummyItem]!= subview)
   {
-    [*self->_flowArrangement layoutFrameForArrangedSubview:a3 withProposedContentFrame:{x, y, width, height}];
+    [*self->_flowArrangement layoutFrameForArrangedSubview:subview withProposedContentFrame:{x, y, width, height}];
     x = v10;
     y = v11;
     width = v12;
@@ -68,13 +68,13 @@
   return result;
 }
 
-- (void)populateGridArrangementCells:(void *)a3
+- (void)populateGridArrangementCells:(void *)cells
 {
   location = self->_range.location;
   length = self->_range.length;
   if (location < length + location)
   {
-    v7 = *(a3 + 1);
+    v7 = *(cells + 1);
     v8 = location << 6;
     v9 = self->_range.location;
     do
@@ -89,19 +89,19 @@
       v20 = v12;
       v13 = *(v10 + 57);
       v19 = *(v10 + 57);
-      if (v7 >= *(a3 + 2))
+      if (v7 >= *(cells + 2))
       {
-        v7 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<objc_object  {objcproto18NUIArrangementItem}*,_NSRange,objc_object  {objcproto18NUIArrangementItem}*,NUIContainerAlignment,_NSRange>(a3, &v24, &v22, &v21, &v20, &v19);
+        v7 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<objc_object  {objcproto18NUIArrangementItem}*,_NSRange,objc_object  {objcproto18NUIArrangementItem}*,NUIContainerAlignment,_NSRange>(cells, &v24, &v22, &v21, &v20, &v19);
       }
 
       else
       {
         _NUIGridArrangementCell::_NUIGridArrangementCell(v7, v11, v9 - location, 1, 0, 1, v12, v13);
         v7 += 112;
-        *(a3 + 1) = v7;
+        *(cells + 1) = v7;
       }
 
-      *(a3 + 1) = v7;
+      *(cells + 1) = v7;
       ++v9;
       location = self->_range.location;
       length = self->_range.length;
@@ -122,36 +122,36 @@
     v21 = xmmword_21D0BFB40;
     v19 = 3;
     v20 = 3;
-    v17 = *(a3 + 1);
-    if (v17 >= *(a3 + 2))
+    v17 = *(cells + 1);
+    if (v17 >= *(cells + 2))
     {
-      v18 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<_NUIFlowArrangementDummyItem *,_NSRange,_NSRange,NUIContainerAlignment,NUIContainerAlignment>(a3, &v24, &v22, &v21, &v20, &v19);
+      v18 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<_NUIFlowArrangementDummyItem *,_NSRange,_NSRange,NUIContainerAlignment,NUIContainerAlignment>(cells, &v24, &v22, &v21, &v20, &v19);
     }
 
     else
     {
-      _NUIGridArrangementCell::_NUIGridArrangementCell(*(a3 + 1), v14, v15, v16, 0, 1, 3u, 3);
+      _NUIGridArrangementCell::_NUIGridArrangementCell(*(cells + 1), v14, v15, v16, 0, 1, 3u, 3);
       v18 = v17 + 112;
-      *(a3 + 1) = v17 + 112;
+      *(cells + 1) = v17 + 112;
     }
 
-    *(a3 + 1) = v18;
+    *(cells + 1) = v18;
   }
 }
 
-- (void)populateGridArrangementDimension:(void *)a3 withCells:(const void *)a4 axis:(int64_t)a5
+- (void)populateGridArrangementDimension:(void *)dimension withCells:(const void *)cells axis:(int64_t)axis
 {
-  if (a5)
+  if (axis)
   {
     v17 = 0;
-    std::vector<_NUIGridArrangementDimension>::emplace_back<int,double const&>(a3, &v17, &NUIContainerViewLengthUseDefault);
+    std::vector<_NUIGridArrangementDimension>::emplace_back<int,double const&>(dimension, &v17, &NUIContainerViewLengthUseDefault);
   }
 
   else
   {
     v18 = 0;
-    v7 = *a4;
-    v8 = *(a4 + 1);
+    v7 = *cells;
+    v8 = *(cells + 1);
     while (v7 != v8)
     {
       if (*(v7 + 64))
@@ -159,7 +159,7 @@
         v9 = 0;
         do
         {
-          std::vector<_NUIGridArrangementDimension>::emplace_back<unsigned long &,double const&>(a3, &v18, self->_flowArrangement + 6);
+          std::vector<_NUIGridArrangementDimension>::emplace_back<unsigned long &,double const&>(dimension, &v18, self->_flowArrangement + 6);
           ++v18;
           ++v9;
         }
@@ -170,9 +170,9 @@
       v7 += 112;
     }
 
-    v11 = *a3;
-    v10 = *(a3 + 1);
-    if (*a3 != v10)
+    v11 = *dimension;
+    v10 = *(dimension + 1);
+    if (*dimension != v10)
     {
       v12 = 0;
       v13 = *(self->_flowArrangement + 4);
@@ -202,7 +202,7 @@
   }
 }
 
-- (float)contentCompressionResistancePriorityForAxis:(int64_t)a3
+- (float)contentCompressionResistancePriorityForAxis:(int64_t)axis
 {
   location = self->_range.location;
   v4 = 0.0;
@@ -212,11 +212,11 @@
     v8 = 0.0;
     do
     {
-      [*(*(self->_flowArrangement + 7) + v7) contentCompressionResistancePriorityForAxis:{a3, v4}];
+      [*(*(self->_flowArrangement + 7) + v7) contentCompressionResistancePriorityForAxis:{axis, v4}];
       v4 = v9;
       if (v8 <= v4)
       {
-        [*(*(self->_flowArrangement + 7) + v7) contentCompressionResistancePriorityForAxis:a3];
+        [*(*(self->_flowArrangement + 7) + v7) contentCompressionResistancePriorityForAxis:axis];
         v8 = *&v4;
       }
 
@@ -231,7 +231,7 @@
   return *&v4;
 }
 
-- (float)contentHuggingPriorityForAxis:(int64_t)a3
+- (float)contentHuggingPriorityForAxis:(int64_t)axis
 {
   location = self->_range.location;
   v4 = 0.0;
@@ -241,11 +241,11 @@
     v8 = 0.0;
     do
     {
-      [*(*(self->_flowArrangement + 7) + v7) contentHuggingPriorityForAxis:{a3, v4}];
+      [*(*(self->_flowArrangement + 7) + v7) contentHuggingPriorityForAxis:{axis, v4}];
       v4 = v9;
       if (v8 <= v4)
       {
-        [*(*(self->_flowArrangement + 7) + v7) contentHuggingPriorityForAxis:a3];
+        [*(*(self->_flowArrangement + 7) + v7) contentHuggingPriorityForAxis:axis];
         v8 = *&v4;
       }
 
@@ -317,7 +317,7 @@
   location = self->_range.location;
   if (location >= self->_range.length + location)
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(isLayoutSizeDependentOnPerpendicularAxis) = 0;
   }
 
   else
@@ -325,8 +325,8 @@
     v4 = location << 6;
     do
     {
-      v5 = [*(*(self->_flowArrangement + 7) + v4) isLayoutSizeDependentOnPerpendicularAxis];
-      if (v5)
+      isLayoutSizeDependentOnPerpendicularAxis = [*(*(self->_flowArrangement + 7) + v4) isLayoutSizeDependentOnPerpendicularAxis];
+      if (isLayoutSizeDependentOnPerpendicularAxis)
       {
         break;
       }
@@ -338,19 +338,19 @@
     while (location < self->_range.length + self->_range.location);
   }
 
-  return v5;
+  return isLayoutSizeDependentOnPerpendicularAxis;
 }
 
-- (void)initWithFlowArrangement:(uint64_t)a3 cellRange:(uint64_t)a4
+- (void)initWithFlowArrangement:(uint64_t)arrangement cellRange:(uint64_t)range
 {
   if (result)
   {
     result = [result init];
     if (result)
     {
-      result[16] = a4;
+      result[16] = range;
       result[17] = a2;
-      result[15] = a3;
+      result[15] = arrangement;
       result[1] = result;
     }
   }

@@ -1,11 +1,11 @@
 @interface CKRecordingElapsedTimeView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKRecordingElapsedTimeView)initWithCoder:(id)a3;
-- (CKRecordingElapsedTimeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKRecordingElapsedTimeView)initWithCoder:(id)coder;
+- (CKRecordingElapsedTimeView)initWithFrame:(CGRect)frame;
 - (void)_beginRecordingAnimation;
 - (void)_commonCAMElapsedTimeViewInitialization;
 - (void)_endRecordingAnimation;
-- (void)_update:(id)a3;
+- (void)_update:(id)_update;
 - (void)dealloc;
 - (void)endTimer;
 - (void)layoutSubviews;
@@ -34,13 +34,13 @@
   [(UILabel *)v8 setFont:v9];
 
   v10 = self->__timeLabel;
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)v10 setTextColor:v11];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)v10 setTextColor:whiteColor];
 
   [(UILabel *)self->__timeLabel setTextAlignment:1];
   v12 = self->__timeLabel;
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v12 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v12 setBackgroundColor:clearColor];
 
   v14 = objc_alloc_init(MEMORY[0x1E69DD250]);
   recordingDotView = self->__recordingDotView;
@@ -49,9 +49,9 @@
   [(UIView *)self->__recordingDotView setAlpha:0.0];
   v16 = self->__recordingDotView;
   v17 = +[CKUIBehavior sharedBehaviors];
-  v18 = [v17 theme];
-  v19 = [v18 activeRecordingDotColor];
-  [(UIView *)v16 setBackgroundColor:v19];
+  theme = [v17 theme];
+  activeRecordingDotColor = [theme activeRecordingDotColor];
+  [(UIView *)v16 setBackgroundColor:activeRecordingDotColor];
 
   [(CKRecordingElapsedTimeView *)self addSubview:self->__timeLabel];
   [(CKRecordingElapsedTimeView *)self addSubview:self->__recordingDotView];
@@ -59,11 +59,11 @@
   [(CKRecordingElapsedTimeView *)self _update:0];
 }
 
-- (CKRecordingElapsedTimeView)initWithFrame:(CGRect)a3
+- (CKRecordingElapsedTimeView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKRecordingElapsedTimeView;
-  v3 = [(CKRecordingElapsedTimeView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKRecordingElapsedTimeView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -74,11 +74,11 @@
   return v4;
 }
 
-- (CKRecordingElapsedTimeView)initWithCoder:(id)a3
+- (CKRecordingElapsedTimeView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CKRecordingElapsedTimeView;
-  v3 = [(CKRecordingElapsedTimeView *)&v7 initWithCoder:a3];
+  v3 = [(CKRecordingElapsedTimeView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -102,9 +102,9 @@
   [(CKRecordingElapsedTimeView *)&v5 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->__timeLabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->__timeLabel sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -135,18 +135,18 @@
   v21.size.width = width;
   v21.size.height = height;
   MinX = CGRectGetMinX(v21);
-  v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v16 = MinX - (1.0 / v15 + 12.0);
 
   [(UIView *)self->__recordingDotView setFrame:v16, v8, v10, v12];
-  v17 = [(UIView *)self->__recordingDotView layer];
-  [v17 setCornerRadius:v12 * 0.5];
+  layer = [(UIView *)self->__recordingDotView layer];
+  [layer setCornerRadius:v12 * 0.5];
 
   [(UILabel *)self->__timeLabel setFrame:x, y, width, height];
 }
 
-- (void)_update:(id)a3
+- (void)_update:(id)_update
 {
   [(NSDate *)self->__startTime timeIntervalSinceNow];
   v5 = [(NSDateComponentsFormatter *)self->__durationFormatter stringFromTimeInterval:0.0 - v4];
@@ -164,11 +164,11 @@
   updateTimer = self->__updateTimer;
   self->__updateTimer = v5;
 
-  v7 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v7 addTimer:self->__updateTimer forMode:*MEMORY[0x1E695D918]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop addTimer:self->__updateTimer forMode:*MEMORY[0x1E695D918]];
 
-  v8 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v8 addTimer:self->__updateTimer forMode:*MEMORY[0x1E69DE760]];
+  currentRunLoop2 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop2 addTimer:self->__updateTimer forMode:*MEMORY[0x1E69DE760]];
 
   [(CKRecordingElapsedTimeView *)self _beginRecordingAnimation];
 }
@@ -220,14 +220,14 @@
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   [v3 setTimingFunctions:v16];
 
-  v17 = [(UIView *)self->__recordingDotView layer];
-  [v17 addAnimation:v3 forKey:@"recordingAnimation"];
+  layer = [(UIView *)self->__recordingDotView layer];
+  [layer addAnimation:v3 forKey:@"recordingAnimation"];
 }
 
 - (void)_endRecordingAnimation
 {
-  v3 = [(UIView *)self->__recordingDotView layer];
-  [v3 removeAllAnimations];
+  layer = [(UIView *)self->__recordingDotView layer];
+  [layer removeAllAnimations];
   [(UIView *)self->__recordingDotView setAlpha:0.0];
 }
 

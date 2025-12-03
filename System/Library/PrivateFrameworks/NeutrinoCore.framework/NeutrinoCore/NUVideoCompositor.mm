@@ -1,31 +1,31 @@
 @interface NUVideoCompositor
-+ (id)metadataSamplesInWindowForTrackID:(int)a3 fromRequest:(id)a4;
-+ (id)videoFramesInWindowForTrackID:(int)a3 fromRequest:(id)a4;
-- (BOOL)testAndSetVideoCompositionRequestFinished:(id)a3;
++ (id)metadataSamplesInWindowForTrackID:(int)d fromRequest:(id)request;
++ (id)videoFramesInWindowForTrackID:(int)d fromRequest:(id)request;
+- (BOOL)testAndSetVideoCompositionRequestFinished:(id)finished;
 - (NSDictionary)requiredPixelBufferAttributesForRenderContext;
 - (NSDictionary)sourcePixelBufferAttributes;
 - (NUVideoCompositor)init;
-- (id)videoFramesFromRequest:(id)a3;
-- (id)videoMetadataSamplesFromRequest:(id)a3;
-- (id)videoSampleSlicesFromRequest:(id)a3;
-- (void)anticipateRenderingUsingHint:(id)a3;
+- (id)videoFramesFromRequest:(id)request;
+- (id)videoMetadataSamplesFromRequest:(id)request;
+- (id)videoSampleSlicesFromRequest:(id)request;
+- (void)anticipateRenderingUsingHint:(id)hint;
 - (void)cancelAllPendingVideoCompositionRequests;
-- (void)failVideoCompositionRequest:(id)a3 error:(id)a4;
-- (void)finishCompositionRequest:(id)a3 withComposedVideoFrame:(__CVBuffer *)a4;
-- (void)fulfillVideoCompositionRequest:(id)a3;
-- (void)setColorSpaceOfDestinationBuffer:(__CVBuffer *)a3 fromPrimarySourceBufferOfRequest:(id)a4;
-- (void)startVideoCompositionRequest:(id)a3;
+- (void)failVideoCompositionRequest:(id)request error:(id)error;
+- (void)finishCompositionRequest:(id)request withComposedVideoFrame:(__CVBuffer *)frame;
+- (void)fulfillVideoCompositionRequest:(id)request;
+- (void)setColorSpaceOfDestinationBuffer:(__CVBuffer *)buffer fromPrimarySourceBufferOfRequest:(id)request;
+- (void)startVideoCompositionRequest:(id)request;
 @end
 
 @implementation NUVideoCompositor
 
-- (void)anticipateRenderingUsingHint:(id)a3
+- (void)anticipateRenderingUsingHint:(id)hint
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  hintCopy = hint;
+  v5 = hintCopy;
+  if (hintCopy)
   {
-    [v4 startCompositionTime];
+    [hintCopy startCompositionTime];
     [v5 endCompositionTime];
     if ((CMTimeCompare(&time1, &v7) & 0x80000000) == 0)
     {
@@ -63,14 +63,14 @@ LABEL_10:
   self->_playbackDirection = v6;
 }
 
-- (void)failVideoCompositionRequest:(id)a3 error:(id)a4
+- (void)failVideoCompositionRequest:(id)request error:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  requestCopy = request;
+  errorCopy = error;
+  if (requestCopy)
   {
-    [v5 compositionTime];
+    [requestCopy compositionTime];
   }
 
   else
@@ -96,19 +96,19 @@ LABEL_10:
     LOWORD(time.flags) = 2114;
     *(&time.flags + 2) = v8;
     HIWORD(time.epoch) = 2114;
-    v14 = v6;
+    v14 = errorCopy;
     _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "%{public}@ failed to generate video frame at %{public}@: %{public}@", &time, 0x20u);
   }
 
-  [v5 finishWithError:v6];
+  [requestCopy finishWithError:errorCopy];
 }
 
-- (void)setColorSpaceOfDestinationBuffer:(__CVBuffer *)a3 fromPrimarySourceBufferOfRequest:(id)a4
+- (void)setColorSpaceOfDestinationBuffer:(__CVBuffer *)buffer fromPrimarySourceBufferOfRequest:(id)request
 {
   v53 = *MEMORY[0x1E69E9840];
-  v48 = a4;
-  v5 = [v48 sourceTrackIDs];
-  v6 = [v5 count];
+  requestCopy = request;
+  sourceTrackIDs = [requestCopy sourceTrackIDs];
+  v6 = [sourceTrackIDs count];
 
   if (!v6)
   {
@@ -131,8 +131,8 @@ LABEL_10:
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v29;
         v51 = 2114;
@@ -143,8 +143,8 @@ LABEL_10:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -153,7 +153,7 @@ LABEL_10:
     _NUAssertFailHandler("[NUVideoCompositor setColorSpaceOfDestinationBuffer:fromPrimarySourceBufferOfRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoCompositor.m", 423, @"Track IDs are missing on instruction", v34, v35, v36, v37, v47);
   }
 
-  v7 = [v48 videoCompositionInstruction];
+  videoCompositionInstruction = [requestCopy videoCompositionInstruction];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -176,8 +176,8 @@ LABEL_10:
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v39 callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v38;
         v51 = 2114;
@@ -188,8 +188,8 @@ LABEL_10:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -198,45 +198,45 @@ LABEL_10:
     _NUAssertFailHandler("[NUVideoCompositor setColorSpaceOfDestinationBuffer:fromPrimarySourceBufferOfRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoCompositor.m", 426, @"Unexpected videoComposition request", v43, v44, v45, v46, v47);
   }
 
-  v8 = [v7 trackIDForSourceIdentifier:@"video"];
-  if (!v8)
+  firstObject = [videoCompositionInstruction trackIDForSourceIdentifier:@"video"];
+  if (!firstObject)
   {
-    v9 = [v48 sourceTrackIDs];
-    v8 = [v9 firstObject];
+    sourceTrackIDs2 = [requestCopy sourceTrackIDs];
+    firstObject = [sourceTrackIDs2 firstObject];
   }
 
-  v10 = [v48 sourceFrameByTrackID:{objc_msgSend(v8, "intValue")}];
+  v10 = [requestCopy sourceFrameByTrackID:{objc_msgSend(firstObject, "intValue")}];
   v11 = *MEMORY[0x1E6965CE8];
-  NUCopyCVBufferAttachment(v10, a3, *MEMORY[0x1E6965CE8]);
-  NUCopyCVBufferAttachment(v10, a3, *MEMORY[0x1E6965F98]);
+  NUCopyCVBufferAttachment(v10, buffer, *MEMORY[0x1E6965CE8]);
+  NUCopyCVBufferAttachment(v10, buffer, *MEMORY[0x1E6965F98]);
   v12 = *MEMORY[0x1E6965F30];
-  NUCopyCVBufferAttachment(v10, a3, *MEMORY[0x1E6965F30]);
-  NUCopyCVBufferAttachment(v10, a3, *MEMORY[0x1E6965D88]);
+  NUCopyCVBufferAttachment(v10, buffer, *MEMORY[0x1E6965F30]);
+  NUCopyCVBufferAttachment(v10, buffer, *MEMORY[0x1E6965D88]);
   v13 = *MEMORY[0x1E6965E80];
-  NUCopyCVBufferAttachment(v10, a3, *MEMORY[0x1E6965E80]);
-  v14 = CVBufferCopyAttachment(a3, v12, 0);
+  NUCopyCVBufferAttachment(v10, buffer, *MEMORY[0x1E6965E80]);
+  v14 = CVBufferCopyAttachment(buffer, v12, 0);
   if ([v14 isEqualToString:*MEMORY[0x1E6965F80]])
   {
-    CVBufferSetAttachment(a3, v12, *MEMORY[0x1E6965F50], kCVAttachmentMode_ShouldPropagate);
-    CVBufferRemoveAttachment(a3, v13);
-    CVBufferRemoveAttachment(a3, v11);
+    CVBufferSetAttachment(buffer, v12, *MEMORY[0x1E6965F50], kCVAttachmentMode_ShouldPropagate);
+    CVBufferRemoveAttachment(buffer, v13);
+    CVBufferRemoveAttachment(buffer, v11);
   }
 
-  NUCopyCVBufferAttachment(v10, a3, *MEMORY[0x1E6965CD8]);
-  NUCopyCVBufferAttachment(v10, a3, *MEMORY[0x1E6965F18]);
+  NUCopyCVBufferAttachment(v10, buffer, *MEMORY[0x1E6965CD8]);
+  NUCopyCVBufferAttachment(v10, buffer, *MEMORY[0x1E6965F18]);
 }
 
-- (id)videoMetadataSamplesFromRequest:(id)a3
+- (id)videoMetadataSamplesFromRequest:(id)request
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [v3 videoCompositionInstruction];
+  videoCompositionInstruction = [requestCopy videoCompositionInstruction];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = [v3 sourceSampleDataTrackIDs];
+  obj = [requestCopy sourceSampleDataTrackIDs];
   v5 = [obj countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v5)
   {
@@ -256,15 +256,15 @@ LABEL_10:
         }
 
         v9 = *(*(&v32 + 1) + 8 * v8);
-        v10 = [v4 sourceIdentifierForMetadataTrackID:v9];
-        v11 = [v9 intValue];
-        v12 = [v3 sourceTimedMetadataByTrackID:v11];
+        v10 = [videoCompositionInstruction sourceIdentifierForMetadataTrackID:v9];
+        intValue = [v9 intValue];
+        v12 = [requestCopy sourceTimedMetadataByTrackID:intValue];
         if (v12)
         {
           v13 = [NURenderPipelineVideoMetadataSample alloc];
-          if (v3)
+          if (requestCopy)
           {
-            [v3 compositionTime];
+            [requestCopy compositionTime];
           }
 
           else
@@ -278,14 +278,14 @@ LABEL_10:
 
         else
         {
-          v14 = v4;
+          v14 = videoCompositionInstruction;
           v15 = MEMORY[0x1E696AEC0];
-          v16 = [v3 videoCompositionInstruction];
-          v17 = [v16 requiredSourceSampleDataTrackIDs];
-          v18 = [v15 stringWithFormat:@"requiredSourceSampleDataTrackIDs: %@", v17];
+          videoCompositionInstruction2 = [requestCopy videoCompositionInstruction];
+          requiredSourceSampleDataTrackIDs = [videoCompositionInstruction2 requiredSourceSampleDataTrackIDs];
+          v18 = [v15 stringWithFormat:@"requiredSourceSampleDataTrackIDs: %@", requiredSourceSampleDataTrackIDs];
 
-          v19 = [v3 sourceSampleDataTrackIDs];
-          v20 = [v18 stringByAppendingFormat:@" sourceSampleDataTrackIDs: %@", v19];
+          sourceSampleDataTrackIDs = [requestCopy sourceSampleDataTrackIDs];
+          v20 = [v18 stringByAppendingFormat:@" sourceSampleDataTrackIDs: %@", sourceSampleDataTrackIDs];
 
           if (_NULogOnceToken != -1)
           {
@@ -293,13 +293,13 @@ LABEL_10:
           }
 
           v21 = _NULogger;
-          v4 = v14;
+          videoCompositionInstruction = v14;
           v7 = v26;
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            if (v3)
+            if (requestCopy)
             {
-              [v3 compositionTime];
+              [requestCopy compositionTime];
             }
 
             else
@@ -314,7 +314,7 @@ LABEL_10:
             *time = 138544130;
             *&time[4] = v22;
             *&time[12] = 1024;
-            *&time[14] = v11;
+            *&time[14] = intValue;
             *&time[18] = 2114;
             *&time[20] = v10;
             v37 = 2114;
@@ -339,12 +339,12 @@ LABEL_10:
   return v29;
 }
 
-- (id)videoFramesFromRequest:(id)a3
+- (id)videoFramesFromRequest:(id)request
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 sourceTrackIDs];
-  v5 = [v4 count];
+  requestCopy = request;
+  sourceTrackIDs = [requestCopy sourceTrackIDs];
+  v5 = [sourceTrackIDs count];
 
   if (!v5)
   {
@@ -367,8 +367,8 @@ LABEL_10:
         v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v36 = [v34 callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v33;
         *&buf[12] = 2114;
@@ -379,8 +379,8 @@ LABEL_10:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -390,13 +390,13 @@ LABEL_10:
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [v3 videoCompositionInstruction];
+  videoCompositionInstruction = [requestCopy videoCompositionInstruction];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v8 = [v3 sourceTrackIDs];
-  v9 = [v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  sourceTrackIDs2 = [requestCopy sourceTrackIDs];
+  v9 = [sourceTrackIDs2 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v9)
   {
     v10 = v9;
@@ -409,22 +409,22 @@ LABEL_10:
       {
         if (*v45 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sourceTrackIDs2);
         }
 
         v13 = *(*(&v44 + 1) + 8 * v12);
-        v14 = [v13 intValue];
-        v15 = [v7 sourceIdentifierForTrackID:v13];
+        intValue = [v13 intValue];
+        v15 = [videoCompositionInstruction sourceIdentifierForTrackID:v13];
         if (v15)
         {
-          v16 = [v3 sourceFrameByTrackID:v14];
+          v16 = [requestCopy sourceFrameByTrackID:intValue];
           if (v16)
           {
             v17 = v16;
             v18 = [NURenderPipelineVideoFrame alloc];
-            if (v3)
+            if (requestCopy)
             {
-              [v3 compositionTime];
+              [requestCopy compositionTime];
             }
 
             else
@@ -447,7 +447,7 @@ LABEL_10:
             if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
             {
               *buf = v43;
-              *&buf[4] = v14;
+              *&buf[4] = intValue;
               *&buf[8] = 2114;
               *&buf[10] = v15;
               v20 = v23;
@@ -469,7 +469,7 @@ LABEL_10:
           if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
           {
             *buf = 67109120;
-            *&buf[4] = v14;
+            *&buf[4] = intValue;
             v20 = v19;
             v21 = "[NUVideoCompositor videoFramesFromRequest] skipping frame. sourceIdentifier is nil for trackID %d";
             v22 = 8;
@@ -482,7 +482,7 @@ LABEL_19:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v10 = [sourceTrackIDs2 countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v10);
@@ -491,12 +491,12 @@ LABEL_19:
   return v6;
 }
 
-- (id)videoSampleSlicesFromRequest:(id)a3
+- (id)videoSampleSlicesFromRequest:(id)request
 {
   v100 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v3 = [v65 sourceTrackIDs];
-  v4 = [v3 count];
+  requestCopy = request;
+  sourceTrackIDs = [requestCopy sourceTrackIDs];
+  v4 = [sourceTrackIDs count];
 
   if (!v4)
   {
@@ -519,8 +519,8 @@ LABEL_19:
         v51 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v52 = MEMORY[0x1E696AF00];
         v53 = v51;
-        v54 = [v52 callStackSymbols];
-        v55 = [v54 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v52 callStackSymbols];
+        v55 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v51;
         *&buf[12] = 2114;
@@ -531,8 +531,8 @@ LABEL_19:
 
     else if (v48)
     {
-      v49 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v50 = [v49 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v50 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v50;
       _os_log_error_impl(&dword_1C0184000, v47, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -547,20 +547,20 @@ LABEL_19:
   v93 = __Block_byref_object_copy__19744;
   v94 = __Block_byref_object_dispose__19745;
   v95 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v65 videoCompositionInstruction];
-  if (([v5 requestedWindowOfSamples] & 1) == 0)
+  videoCompositionInstruction = [requestCopy videoCompositionInstruction];
+  if (([videoCompositionInstruction requestedWindowOfSamples] & 1) == 0)
   {
     v29 = v91[5];
     goto LABEL_30;
   }
 
-  v6 = [v5 mainTrackSourceIdentifier];
-  v7 = [v5 trackIDForSourceIdentifier:v6];
-  v8 = [v7 intValue];
-  v64 = v5;
+  mainTrackSourceIdentifier = [videoCompositionInstruction mainTrackSourceIdentifier];
+  v7 = [videoCompositionInstruction trackIDForSourceIdentifier:mainTrackSourceIdentifier];
+  intValue = [v7 intValue];
+  v64 = videoCompositionInstruction;
 
-  v61 = [v5 mainTrackSourceIdentifier];
-  v9 = [NUVideoCompositor videoFramesInWindowForTrackID:v8 fromRequest:v65];
+  mainTrackSourceIdentifier2 = [videoCompositionInstruction mainTrackSourceIdentifier];
+  v9 = [NUVideoCompositor videoFramesInWindowForTrackID:intValue fromRequest:requestCopy];
   v63 = [v9 mutableCopy];
 
   if ([v63 count])
@@ -570,8 +570,8 @@ LABEL_19:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v11 = [v5 requiredSourceTrackIDs];
-    v12 = [v11 countByEnumeratingWithState:&v86 objects:v99 count:16];
+    requiredSourceTrackIDs = [videoCompositionInstruction requiredSourceTrackIDs];
+    v12 = [requiredSourceTrackIDs countByEnumeratingWithState:&v86 objects:v99 count:16];
     if (v12)
     {
       v13 = *v87;
@@ -581,34 +581,34 @@ LABEL_19:
         {
           if (*v87 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(requiredSourceTrackIDs);
           }
 
           v15 = *(*(&v86 + 1) + 8 * i);
-          v16 = [v15 intValue];
-          if (v16 != v8)
+          intValue2 = [v15 intValue];
+          if (intValue2 != intValue)
           {
             v17 = [v64 sourceIdentifierForTrackID:v15];
-            v18 = [NUVideoCompositor videoFramesInWindowForTrackID:v16 fromRequest:v65];
+            v18 = [NUVideoCompositor videoFramesInWindowForTrackID:intValue2 fromRequest:requestCopy];
             v19 = [v18 mutableCopy];
             [v10 setObject:v19 forKeyedSubscript:v17];
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v86 objects:v99 count:16];
+        v12 = [requiredSourceTrackIDs countByEnumeratingWithState:&v86 objects:v99 count:16];
       }
 
       while (v12);
     }
 
-    v20 = [v64 requiredSourceSampleDataTrackIDs];
-    v21 = [v20 firstObject];
-    v22 = [v21 intValue];
+    requiredSourceSampleDataTrackIDs = [v64 requiredSourceSampleDataTrackIDs];
+    firstObject = [requiredSourceSampleDataTrackIDs firstObject];
+    intValue3 = [firstObject intValue];
 
-    v23 = [MEMORY[0x1E696AD98] numberWithInt:v22];
+    v23 = [MEMORY[0x1E696AD98] numberWithInt:intValue3];
     v24 = [v64 sourceIdentifierForMetadataTrackID:v23];
 
-    v25 = [NUVideoCompositor metadataSamplesInWindowForTrackID:v22 fromRequest:v65];
+    v25 = [NUVideoCompositor metadataSamplesInWindowForTrackID:intValue3 fromRequest:requestCopy];
     v26 = [v25 mutableCopy];
 
     v81 = 0;
@@ -622,11 +622,11 @@ LABEL_19:
     *&buf[16] = 0x5010000000;
     v97 = &unk_1C03FE0EF;
     memset(&v98, 0, sizeof(v98));
-    v27 = [v63 lastObject];
-    v28 = v27;
-    if (v27)
+    lastObject = [v63 lastObject];
+    v28 = lastObject;
+    if (lastObject)
     {
-      [v27 frameTime];
+      [lastObject frameTime];
     }
 
     else
@@ -643,17 +643,17 @@ LABEL_19:
       goto LABEL_28;
     }
 
-    v31 = [v63 firstObject];
-    v32 = [v63 lastObject];
-    v33 = v32;
+    firstObject2 = [v63 firstObject];
+    lastObject2 = [v63 lastObject];
+    v33 = lastObject2;
     memset(&start, 0, sizeof(start));
-    if (v32)
+    if (lastObject2)
     {
-      [v32 frameTime];
-      if (v31)
+      [lastObject2 frameTime];
+      if (firstObject2)
       {
 LABEL_21:
-        [v31 frameTime];
+        [firstObject2 frameTime];
 LABEL_24:
         CMTimeSubtract(&start, &duration, &rhs);
         v34 = [v63 count];
@@ -683,16 +683,16 @@ LABEL_24:
 
         v30 = v63;
 LABEL_28:
-        v39 = [(NUVideoCompositor *)self playbackDirection];
+        playbackDirection = [(NUVideoCompositor *)self playbackDirection];
         v66[0] = MEMORY[0x1E69E9820];
         v66[1] = 3221225472;
         v66[2] = __50__NUVideoCompositor_videoSampleSlicesFromRequest___block_invoke;
         v66[3] = &unk_1E810ABA8;
-        v67 = v61;
+        v67 = mainTrackSourceIdentifier2;
         v68 = v30;
         v72 = &v81;
         v73 = buf;
-        v75 = v39;
+        v75 = playbackDirection;
         v40 = v10;
         v69 = v40;
         v41 = v26;
@@ -713,7 +713,7 @@ LABEL_28:
     else
     {
       memset(&duration, 0, sizeof(duration));
-      if (v31)
+      if (firstObject2)
       {
         goto LABEL_21;
       }
@@ -726,7 +726,7 @@ LABEL_28:
   v29 = v91[5];
 LABEL_29:
 
-  v5 = v64;
+  videoCompositionInstruction = v64;
 LABEL_30:
 
   _Block_object_dispose(&v90, 8);
@@ -884,11 +884,11 @@ void __50__NUVideoCompositor_videoSampleSlicesFromRequest___block_invoke_3(uint6
   }
 }
 
-- (void)finishCompositionRequest:(id)a3 withComposedVideoFrame:(__CVBuffer *)a4
+- (void)finishCompositionRequest:(id)request withComposedVideoFrame:(__CVBuffer *)frame
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (+[NUGlobalSettings videoCompositorDebugMode]== 2 && NUIsPixelBufferProbablyAllZeros(a4))
+  requestCopy = request;
+  if (+[NUGlobalSettings videoCompositorDebugMode]== 2 && NUIsPixelBufferProbablyAllZeros(frame))
   {
     if (_NULogOnceToken != -1)
     {
@@ -899,22 +899,22 @@ void __50__NUVideoCompositor_videoSampleSlicesFromRequest___block_invoke_3(uint6
     if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412546;
-      v8 = a4;
+      frameCopy = frame;
       v9 = 2112;
-      v10 = v5;
+      v10 = requestCopy;
       _os_log_error_impl(&dword_1C0184000, v6, OS_LOG_TYPE_ERROR, "green output frame detected. frame:%@ avRequest:%@", &v7, 0x16u);
     }
 
-    NUDebugWatermarkCVPixelBuffer(a4, 3);
+    NUDebugWatermarkCVPixelBuffer(frame, 3);
   }
 
-  [v5 finishWithComposedVideoFrame:a4];
+  [requestCopy finishWithComposedVideoFrame:frame];
 }
 
-- (void)fulfillVideoCompositionRequest:(id)a3
+- (void)fulfillVideoCompositionRequest:(id)request
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_149_19722);
@@ -957,8 +957,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -974,8 +974,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -1027,21 +1027,21 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_pendingRequestsLock);
 }
 
-- (void)startVideoCompositionRequest:(id)a3
+- (void)startVideoCompositionRequest:(id)request
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   add = atomic_fetch_add(&self->_requestCounter, 1uLL);
-  v6 = [v4 sourceTrackIDs];
-  v7 = [v6 count];
+  sourceTrackIDs = [requestCopy sourceTrackIDs];
+  v7 = [sourceTrackIDs count];
 
   if (v7)
   {
-    v8 = [v4 sourceSampleDataTrackIDs];
-    v9 = [v8 count];
-    v10 = [v4 videoCompositionInstruction];
-    v11 = [v10 requiredSourceSampleDataTrackIDs];
-    v12 = [v11 count];
+    sourceSampleDataTrackIDs = [requestCopy sourceSampleDataTrackIDs];
+    v9 = [sourceSampleDataTrackIDs count];
+    videoCompositionInstruction = [requestCopy videoCompositionInstruction];
+    requiredSourceSampleDataTrackIDs = [videoCompositionInstruction requiredSourceSampleDataTrackIDs];
+    v12 = [requiredSourceSampleDataTrackIDs count];
 
     if (v9 < v12)
     {
@@ -1060,14 +1060,14 @@ LABEL_14:
 
     if (+[NUGlobalSettings videoCompositorDebugMode]== 1)
     {
-      v14 = [v4 sourceTrackIDs];
-      v15 = [v14 firstObject];
-      v16 = [v4 sourceFrameByTrackID:{objc_msgSend(v15, "intValue")}];
+      sourceTrackIDs2 = [requestCopy sourceTrackIDs];
+      firstObject = [sourceTrackIDs2 firstObject];
+      v16 = [requestCopy sourceFrameByTrackID:{objc_msgSend(firstObject, "intValue")}];
 
-      [v4 finishWithComposedVideoFrame:v16];
+      [requestCopy finishWithComposedVideoFrame:v16];
     }
 
-    else if (+[NUGlobalSettings videoCompositorDebugMode](NUGlobalSettings, "videoCompositorDebugMode") == 2 && ([v4 sourceTrackIDs], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "firstObject"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v4, "sourceFrameByTrackID:", objc_msgSend(v19, "intValue")), v19, v18, NUIsPixelBufferProbablyAllZeros(v20)))
+    else if (+[NUGlobalSettings videoCompositorDebugMode](NUGlobalSettings, "videoCompositorDebugMode") == 2 && ([requestCopy sourceTrackIDs], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "firstObject"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(requestCopy, "sourceFrameByTrackID:", objc_msgSend(v19, "intValue")), v19, v18, NUIsPixelBufferProbablyAllZeros(v20)))
     {
       if (_NULogOnceToken != -1)
       {
@@ -1080,16 +1080,16 @@ LABEL_14:
         *buf = 138412546;
         v55 = v20;
         v56 = 2112;
-        v57 = v4;
+        v57 = requestCopy;
         _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "green input frame detected frame: %@ avRequest: %@", buf, 0x16u);
       }
 
-      v22 = [v4 renderContext];
-      v23 = [v22 newPixelBuffer];
+      renderContext = [requestCopy renderContext];
+      newPixelBuffer = [renderContext newPixelBuffer];
 
-      NUDebugWatermarkCVPixelBuffer(v23, 1);
-      [v4 finishWithComposedVideoFrame:v23];
-      CFRelease(v23);
+      NUDebugWatermarkCVPixelBuffer(newPixelBuffer, 1);
+      [requestCopy finishWithComposedVideoFrame:newPixelBuffer];
+      CFRelease(newPixelBuffer);
     }
 
     else
@@ -1100,7 +1100,7 @@ LABEL_14:
       }
 
       v24 = _NUScheduleLogger;
-      v25 = os_signpost_id_make_with_pointer(v24, v4);
+      v25 = os_signpost_id_make_with_pointer(v24, requestCopy);
       v26 = v24;
       v27 = v26;
       if (v25 - 1 > 0xFFFFFFFFFFFFFFFDLL)
@@ -1128,26 +1128,26 @@ LABEL_14:
       }
 
       os_unfair_lock_lock(&self->_pendingRequestsLock);
-      [(NSMutableSet *)self->_pendingRequests addObject:v4];
+      [(NSMutableSet *)self->_pendingRequests addObject:requestCopy];
       os_unfair_lock_unlock(&self->_pendingRequestsLock);
       os_unfair_lock_lock(&self->_renderingQueueInitializeLock);
       if (!self->_renderingQueue)
       {
-        v30 = [v4 videoCompositionInstruction];
-        v31 = [v30 renderJob];
-        v32 = [v31 priority];
-        v33 = [v32 level];
+        videoCompositionInstruction2 = [requestCopy videoCompositionInstruction];
+        renderJob = [videoCompositionInstruction2 renderJob];
+        priority = [renderJob priority];
+        level = [priority level];
 
         v34 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
         v35 = v34;
-        if (v33 > 3)
+        if (level > 3)
         {
           v36 = QOS_CLASS_UNSPECIFIED;
         }
 
         else
         {
-          v36 = dword_1C03C2A60[v33];
+          v36 = dword_1C03C2A60[level];
         }
 
         v37 = dispatch_queue_attr_make_with_qos_class(v34, v36, 0);
@@ -1155,14 +1155,14 @@ LABEL_14:
         v38 = MEMORY[0x1E696AEC0];
         v39 = objc_opt_class();
         v40 = NSStringFromClass(v39);
-        if (v33 > 3)
+        if (level > 3)
         {
           v41 = 0;
         }
 
         else
         {
-          v41 = off_1E8109988[v33];
+          v41 = off_1E8109988[level];
         }
 
         v42 = v41;
@@ -1182,8 +1182,8 @@ LABEL_14:
       v52 = v25;
       v53 = add;
       v49 = v27;
-      v50 = self;
-      v51 = v4;
+      selfCopy = self;
+      v51 = requestCopy;
       v47 = v27;
       dispatch_async(v46, block);
     }
@@ -1191,7 +1191,7 @@ LABEL_14:
 
   else
   {
-    [v4 finishCancelledRequest];
+    [requestCopy finishCancelledRequest];
     if (_NULogOnceToken != -1)
     {
       dispatch_once(&_NULogOnceToken, &__block_literal_global_19694);
@@ -1272,11 +1272,11 @@ void __50__NUVideoCompositor_startVideoCompositionRequest___block_invoke(uint64_
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)testAndSetVideoCompositionRequestFinished:(id)a3
+- (BOOL)testAndSetVideoCompositionRequestFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   os_unfair_lock_lock(&self->_pendingRequestsLock);
-  [(NSMutableSet *)self->_pendingRequests removeObject:v4];
+  [(NSMutableSet *)self->_pendingRequests removeObject:finishedCopy];
 
   os_unfair_lock_unlock(&self->_pendingRequestsLock);
   return 1;
@@ -1333,12 +1333,12 @@ void __50__NUVideoCompositor_startVideoCompositionRequest___block_invoke(uint64_
   return v4;
 }
 
-+ (id)metadataSamplesInWindowForTrackID:(int)a3 fromRequest:(id)a4
++ (id)metadataSamplesInWindowForTrackID:(int)d fromRequest:(id)request
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&d;
+  requestCopy = request;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v5 numberOfSourceSampleBuffersInWindowForTrackID:v4];
+  v7 = [requestCopy numberOfSourceSampleBuffersInWindowForTrackID:v4];
   if (v7 >= 1)
   {
     v8 = v7;
@@ -1346,7 +1346,7 @@ void __50__NUVideoCompositor_startVideoCompositionRequest___block_invoke(uint64_
     {
       v16 = 0uLL;
       v17 = 0;
-      v10 = [v5 sourceTimedMetadataByTrackID:v4 atIndexInWindow:i presentationTimeStamp:&v16];
+      v10 = [requestCopy sourceTimedMetadataByTrackID:v4 atIndexInWindow:i presentationTimeStamp:&v16];
       if (v10)
       {
         v11 = [NURenderPipelineVideoMetadataSample alloc];
@@ -1361,12 +1361,12 @@ void __50__NUVideoCompositor_startVideoCompositionRequest___block_invoke(uint64_
   return v6;
 }
 
-+ (id)videoFramesInWindowForTrackID:(int)a3 fromRequest:(id)a4
++ (id)videoFramesInWindowForTrackID:(int)d fromRequest:(id)request
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&d;
+  requestCopy = request;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v5 numberOfSourceFramesInWindowForTrackID:v4];
+  v7 = [requestCopy numberOfSourceFramesInWindowForTrackID:v4];
   if (v7 >= 1)
   {
     v8 = v7;
@@ -1374,7 +1374,7 @@ void __50__NUVideoCompositor_startVideoCompositionRequest___block_invoke(uint64_
     {
       v17 = 0uLL;
       v18 = 0;
-      v10 = [v5 sourceFrameByTrackID:v4 atIndexInWindow:i presentationTimeStamp:&v17];
+      v10 = [requestCopy sourceFrameByTrackID:v4 atIndexInWindow:i presentationTimeStamp:&v17];
       if (v10)
       {
         v11 = v10;

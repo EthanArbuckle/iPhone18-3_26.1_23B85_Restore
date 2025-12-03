@@ -1,25 +1,25 @@
 @interface SGFlightData
 + (id)airportNameNoiseKeywords;
 + (id)iataCodeToCityDatabaseDict;
-+ (id)sanitizeAirportName:(id)a3;
++ (id)sanitizeAirportName:(id)name;
 + (id)sharedInstance;
 - (SGFlightData)init;
 - (id)airportIataCodes;
-- (id)airportIataCodesForDataOffset:(id)a3;
-- (id)airportsServicedByCarrier:(id)a3 flightNumber:(unsigned __int16)a4 withDataOffset:(id)a5 andFileHandle:(id)a6;
-- (id)bestLocalizedNameForAirport:(id)a3;
-- (id)carrierIataCodeForCarrierName:(id)a3;
+- (id)airportIataCodesForDataOffset:(id)offset;
+- (id)airportsServicedByCarrier:(id)carrier flightNumber:(unsigned __int16)number withDataOffset:(id)offset andFileHandle:(id)handle;
+- (id)bestLocalizedNameForAirport:(id)airport;
+- (id)carrierIataCodeForCarrierName:(id)name;
 - (id)carrierIataCodes;
-- (id)cityForIataCode:(id)a3;
-- (id)fieldForIataCode:(id)a3 field:(id)a4;
-- (id)latitudeAndLongitudeForAirport:(id)a3;
-- (id)latitudeAndLongitudeForAirport:(id)a3 withDataOffset:(id)a4 andFileHandle:(id)a5;
-- (id)nameForCarrier:(id)a3;
-- (id)namesForAirport:(id)a3;
-- (id)namesForAirport:(id)a3 withDataOffset:(id)a4 andFileHandle:(id)a5;
-- (id)synonymAirportNamesForAirportCode:(id)a3;
-- (id)timezoneOlsonCodeForAirport:(id)a3;
-- (id)timezoneOlsonCodeForAirport:(id)a3 withDataOffset:(id)a4 andFileHandle:(id)a5;
+- (id)cityForIataCode:(id)code;
+- (id)fieldForIataCode:(id)code field:(id)field;
+- (id)latitudeAndLongitudeForAirport:(id)airport;
+- (id)latitudeAndLongitudeForAirport:(id)airport withDataOffset:(id)offset andFileHandle:(id)handle;
+- (id)nameForCarrier:(id)carrier;
+- (id)namesForAirport:(id)airport;
+- (id)namesForAirport:(id)airport withDataOffset:(id)offset andFileHandle:(id)handle;
+- (id)synonymAirportNamesForAirportCode:(id)code;
+- (id)timezoneOlsonCodeForAirport:(id)airport;
+- (id)timezoneOlsonCodeForAirport:(id)airport withDataOffset:(id)offset andFileHandle:(id)handle;
 - (void)dealloc;
 - (void)updateAirports;
 - (void)updateCarriers;
@@ -28,10 +28,10 @@
 
 @implementation SGFlightData
 
-- (id)synonymAirportNamesForAirportCode:(id)a3
+- (id)synonymAirportNamesForAirportCode:(id)code
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SGFlightData *)self namesForAirport:a3];
+  v3 = [(SGFlightData *)self namesForAirport:code];
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
@@ -52,8 +52,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) second];
-        [v4 addObject:v10];
+        second = [*(*(&v14 + 1) + 8 * i) second];
+        [v4 addObject:second];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -77,37 +77,37 @@
   return v11;
 }
 
-- (id)airportsServicedByCarrier:(id)a3 flightNumber:(unsigned __int16)a4 withDataOffset:(id)a5 andFileHandle:(id)a6
+- (id)airportsServicedByCarrier:(id)carrier flightNumber:(unsigned __int16)number withDataOffset:(id)offset andFileHandle:(id)handle
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 seekLocationForKey:{objc_msgSend(v9, "UTF8String")}];
-  if (v12 && ([v11 seekToFileOffset:v12], v13 = objc_msgSend(v10, "payloadCountForKey:", objc_msgSend(v9, "UTF8String")), v14 = v13 - 1, v13 >= 1))
+  numberCopy = number;
+  carrierCopy = carrier;
+  offsetCopy = offset;
+  handleCopy = handle;
+  v12 = [offsetCopy seekLocationForKey:{objc_msgSend(carrierCopy, "UTF8String")}];
+  if (v12 && ([handleCopy seekToFileOffset:v12], v13 = objc_msgSend(offsetCopy, "payloadCountForKey:", objc_msgSend(carrierCopy, "UTF8String")), v14 = v13 - 1, v13 >= 1))
   {
     v15 = 0;
     while (1)
     {
-      v16 = bswap32(*[v11 dataOfLength:2]);
-      v17 = v11;
-      v18 = v11;
+      v16 = bswap32(*[handleCopy dataOfLength:2]);
+      v17 = handleCopy;
+      v18 = handleCopy;
       v19 = *[v18 dataOfLength:2];
       v20 = [v18 dataOfLength:1];
 
       v15 += HIWORD(v16);
-      if (v15 == v8)
+      if (v15 == numberCopy)
       {
         break;
       }
 
-      if (v15 > v8 || v14-- == 0)
+      if (v15 > numberCopy || v14-- == 0)
       {
         goto LABEL_10;
       }
     }
 
-    [v18 seekToFileOffset:(*v20 | (__rev16(v19) << 8)) + v10[4] + v10[5]];
+    [v18 seekToFileOffset:(*v20 | (__rev16(v19) << 8)) + offsetCopy[4] + offsetCopy[5]];
     v24 = *[v18 dataOfLength:1];
     v22 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:v24];
     if (v24)
@@ -134,11 +134,11 @@ LABEL_10:
   return v22;
 }
 
-- (id)nameForCarrier:(id)a3
+- (id)nameForCarrier:(id)carrier
 {
-  v4 = a3;
-  v5 = [(_PASLazyPurgeableResult *)self->_carrierUpdateNames result];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  carrierCopy = carrier;
+  result = [(_PASLazyPurgeableResult *)self->_carrierUpdateNames result];
+  v6 = [result objectForKeyedSubscript:carrierCopy];
   v7 = v6;
   if (v6)
   {
@@ -147,21 +147,21 @@ LABEL_10:
 
   else
   {
-    v9 = [(_PASLazyPurgeableResult *)self->_carrierNames result];
-    v8 = [v9 objectForKeyedSubscript:v4];
+    result2 = [(_PASLazyPurgeableResult *)self->_carrierNames result];
+    v8 = [result2 objectForKeyedSubscript:carrierCopy];
   }
 
   return v8;
 }
 
-- (id)carrierIataCodeForCarrierName:(id)a3
+- (id)carrierIataCodeForCarrierName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 lowercaseString];
+  lowercaseString = [nameCopy lowercaseString];
   objc_autoreleasePoolPop(v5);
-  v7 = [(_PASLazyPurgeableResult *)self->_carrierUpdateCodesByName result];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  result = [(_PASLazyPurgeableResult *)self->_carrierUpdateCodesByName result];
+  v8 = [result objectForKeyedSubscript:lowercaseString];
   v9 = v8;
   if (v8)
   {
@@ -170,8 +170,8 @@ LABEL_10:
 
   else
   {
-    v11 = [(_PASLazyPurgeableResult *)self->_carrierCodesByName result];
-    v10 = [v11 objectForKeyedSubscript:v6];
+    result2 = [(_PASLazyPurgeableResult *)self->_carrierCodesByName result];
+    v10 = [result2 objectForKeyedSubscript:lowercaseString];
   }
 
   return v10;
@@ -180,37 +180,37 @@ LABEL_10:
 - (id)carrierIataCodes
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_PASLazyPurgeableResult *)self->_carrierUpdateNames result];
-  v5 = [v4 allKeys];
-  v6 = [(_PASLazyPurgeableResult *)self->_carrierNames result];
-  v7 = [v6 allKeys];
-  v8 = [v5 arrayByAddingObjectsFromArray:v7];
+  result = [(_PASLazyPurgeableResult *)self->_carrierUpdateNames result];
+  allKeys = [result allKeys];
+  result2 = [(_PASLazyPurgeableResult *)self->_carrierNames result];
+  allKeys2 = [result2 allKeys];
+  v8 = [allKeys arrayByAddingObjectsFromArray:allKeys2];
 
   objc_autoreleasePoolPop(v3);
 
   return v8;
 }
 
-- (id)fieldForIataCode:(id)a3 field:(id)a4
+- (id)fieldForIataCode:(id)code field:(id)field
 {
-  v5 = a3;
-  v6 = a4;
+  codeCopy = code;
+  fieldCopy = field;
   v7 = objc_autoreleasePoolPush();
-  v8 = [objc_opt_class() iataCodeToCityDatabaseDict];
-  v9 = [v8 objectForKeyedSubscript:v5];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  iataCodeToCityDatabaseDict = [objc_opt_class() iataCodeToCityDatabaseDict];
+  v9 = [iataCodeToCityDatabaseDict objectForKeyedSubscript:codeCopy];
+  v10 = [v9 objectForKeyedSubscript:fieldCopy];
 
   objc_autoreleasePoolPop(v7);
 
   return v10;
 }
 
-- (id)cityForIataCode:(id)a3
+- (id)cityForIataCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_opt_class() iataCodeToCityDatabaseDict];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  iataCodeToCityDatabaseDict = [objc_opt_class() iataCodeToCityDatabaseDict];
+  v6 = [iataCodeToCityDatabaseDict objectForKeyedSubscript:codeCopy];
   v7 = [v6 objectForKeyedSubscript:@"City"];
 
   if (v7)
@@ -228,11 +228,11 @@ LABEL_10:
   return v8;
 }
 
-- (id)latitudeAndLongitudeForAirport:(id)a3
+- (id)latitudeAndLongitudeForAirport:(id)airport
 {
-  v4 = a3;
-  v5 = [(_PASLazyPurgeableResult *)self->_airportUpdateDataOffsets result];
-  v6 = [(SGFlightData *)self latitudeAndLongitudeForAirport:v4 withDataOffset:v5 andFileHandle:self->_airportsUpdateFh];
+  airportCopy = airport;
+  result = [(_PASLazyPurgeableResult *)self->_airportUpdateDataOffsets result];
+  v6 = [(SGFlightData *)self latitudeAndLongitudeForAirport:airportCopy withDataOffset:result andFileHandle:self->_airportsUpdateFh];
 
   if (v6)
   {
@@ -241,27 +241,27 @@ LABEL_10:
 
   else
   {
-    v8 = [(_PASLazyPurgeableResult *)self->_airportDataOffsets result];
-    v7 = [(SGFlightData *)self latitudeAndLongitudeForAirport:v4 withDataOffset:v8 andFileHandle:self->_airportsFh];
+    result2 = [(_PASLazyPurgeableResult *)self->_airportDataOffsets result];
+    v7 = [(SGFlightData *)self latitudeAndLongitudeForAirport:airportCopy withDataOffset:result2 andFileHandle:self->_airportsFh];
   }
 
   return v7;
 }
 
-- (id)latitudeAndLongitudeForAirport:(id)a3 withDataOffset:(id)a4 andFileHandle:(id)a5
+- (id)latitudeAndLongitudeForAirport:(id)airport withDataOffset:(id)offset andFileHandle:(id)handle
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 seekLocationForKey:{objc_msgSend(a3, "UTF8String")}];
+  handleCopy = handle;
+  airportCopy = airport;
+  offsetCopy = offset;
+  v10 = [offsetCopy seekLocationForKey:{objc_msgSend(airport, "UTF8String")}];
 
   if (v10)
   {
-    [v7 seekToFileOffset:v10];
-    v11 = readLengthPrefixedString(v7);
-    v12 = readLengthPrefixedString(v7);
-    v13 = bswap32(*[v7 dataOfLength:4]) / 10000000.0;
-    v14 = bswap32(*[v7 dataOfLength:4]) / 10000000.0;
+    [handleCopy seekToFileOffset:v10];
+    v11 = readLengthPrefixedString(handleCopy);
+    v12 = readLengthPrefixedString(handleCopy);
+    v13 = bswap32(*[handleCopy dataOfLength:4]) / 10000000.0;
+    v14 = bswap32(*[handleCopy dataOfLength:4]) / 10000000.0;
     if (v13 == 0.0 && v14 == 0.0)
     {
       v10 = 0;
@@ -279,11 +279,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)timezoneOlsonCodeForAirport:(id)a3
+- (id)timezoneOlsonCodeForAirport:(id)airport
 {
-  v4 = a3;
-  v5 = [(_PASLazyPurgeableResult *)self->_airportUpdateDataOffsets result];
-  v6 = [(SGFlightData *)self timezoneOlsonCodeForAirport:v4 withDataOffset:v5 andFileHandle:self->_airportsUpdateFh];
+  airportCopy = airport;
+  result = [(_PASLazyPurgeableResult *)self->_airportUpdateDataOffsets result];
+  v6 = [(SGFlightData *)self timezoneOlsonCodeForAirport:airportCopy withDataOffset:result andFileHandle:self->_airportsUpdateFh];
 
   if (v6)
   {
@@ -292,34 +292,34 @@ LABEL_10:
 
   else
   {
-    v8 = [(_PASLazyPurgeableResult *)self->_airportDataOffsets result];
-    v7 = [(SGFlightData *)self timezoneOlsonCodeForAirport:v4 withDataOffset:v8 andFileHandle:self->_airportsFh];
+    result2 = [(_PASLazyPurgeableResult *)self->_airportDataOffsets result];
+    v7 = [(SGFlightData *)self timezoneOlsonCodeForAirport:airportCopy withDataOffset:result2 andFileHandle:self->_airportsFh];
   }
 
   return v7;
 }
 
-- (id)timezoneOlsonCodeForAirport:(id)a3 withDataOffset:(id)a4 andFileHandle:(id)a5
+- (id)timezoneOlsonCodeForAirport:(id)airport withDataOffset:(id)offset andFileHandle:(id)handle
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 seekLocationForKey:{objc_msgSend(a3, "UTF8String")}];
+  handleCopy = handle;
+  airportCopy = airport;
+  offsetCopy = offset;
+  v10 = [offsetCopy seekLocationForKey:{objc_msgSend(airport, "UTF8String")}];
 
   if (v10)
   {
-    [v7 seekToFileOffset:v10];
-    v11 = readLengthPrefixedString(v7);
-    v10 = readLengthPrefixedString(v7);
+    [handleCopy seekToFileOffset:v10];
+    v11 = readLengthPrefixedString(handleCopy);
+    v10 = readLengthPrefixedString(handleCopy);
   }
 
   return v10;
 }
 
-- (id)bestLocalizedNameForAirport:(id)a3
+- (id)bestLocalizedNameForAirport:(id)airport
 {
   v45 = *MEMORY[0x277D85DE8];
-  v26 = a3;
+  airportCopy = airport;
   v4 = [(SGFlightData *)self namesForAirport:?];
   v39 = 0u;
   v40 = 0u;
@@ -383,14 +383,14 @@ LABEL_10:
           }
 
           v13 = *(*(&v35 + 1) + 8 * v12);
-          v14 = [v13 second];
-          v15 = [v13 first];
-          if (![v8 hasPrefix:v15])
+          second = [v13 second];
+          first = [v13 first];
+          if (![v8 hasPrefix:first])
           {
             goto LABEL_15;
           }
 
-          v16 = [v14 length];
+          v16 = [second length];
           [v5 second];
           v18 = v17 = v5;
           v19 = [v18 length];
@@ -398,7 +398,7 @@ LABEL_10:
           if (v16 > v19)
           {
             v5 = v13;
-            v15 = v17;
+            first = v17;
             v10 = v33;
 LABEL_15:
 
@@ -430,32 +430,32 @@ LABEL_21:
   while (v31);
 LABEL_25:
 
-  v20 = [v5 second];
-  v21 = v20;
-  if (v20)
+  second2 = [v5 second];
+  v21 = second2;
+  if (second2)
   {
-    v22 = v20;
+    second3 = second2;
   }
 
   else
   {
-    v23 = [v4 firstObject];
-    v22 = [v23 second];
+    firstObject = [v4 firstObject];
+    second3 = [firstObject second];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return second3;
 }
 
-- (id)namesForAirport:(id)a3
+- (id)namesForAirport:(id)airport
 {
-  v4 = a3;
+  airportCopy = airport;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(_PASLazyPurgeableResult *)self->_airportUpdateDataOffsets result];
-  v7 = [(SGFlightData *)self namesForAirport:v4 withDataOffset:v6 andFileHandle:self->_airportsUpdateFh];
-  v8 = [(_PASLazyPurgeableResult *)self->_airportDataOffsets result];
-  v9 = [(SGFlightData *)self namesForAirport:v4 withDataOffset:v8 andFileHandle:self->_airportsFh];
+  result = [(_PASLazyPurgeableResult *)self->_airportUpdateDataOffsets result];
+  v7 = [(SGFlightData *)self namesForAirport:airportCopy withDataOffset:result andFileHandle:self->_airportsUpdateFh];
+  result2 = [(_PASLazyPurgeableResult *)self->_airportDataOffsets result];
+  v9 = [(SGFlightData *)self namesForAirport:airportCopy withDataOffset:result2 andFileHandle:self->_airportsFh];
   v10 = [v7 arrayByAddingObjectsFromArray:v9];
 
   objc_autoreleasePoolPop(v5);
@@ -463,19 +463,19 @@ LABEL_25:
   return v10;
 }
 
-- (id)namesForAirport:(id)a3 withDataOffset:(id)a4 andFileHandle:(id)a5
+- (id)namesForAirport:(id)airport withDataOffset:(id)offset andFileHandle:(id)handle
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 seekLocationForKey:{objc_msgSend(v7, "UTF8String")}];
+  airportCopy = airport;
+  offsetCopy = offset;
+  handleCopy = handle;
+  v10 = [offsetCopy seekLocationForKey:{objc_msgSend(airportCopy, "UTF8String")}];
   if (v10)
   {
-    [v9 seekToFileOffset:v10];
+    [handleCopy seekToFileOffset:v10];
     v11 = objc_autoreleasePoolPush();
-    v28 = v9;
-    v12 = readLengthPrefixedString(v9);
+    v28 = handleCopy;
+    v12 = readLengthPrefixedString(handleCopy);
     v13 = [v12 componentsSeparatedByString:@"|"];
 
     objc_autoreleasePoolPop(v11);
@@ -517,7 +517,7 @@ LABEL_25:
     }
 
     v25 = [v14 copy];
-    v9 = v28;
+    handleCopy = v28;
   }
 
   else
@@ -532,36 +532,36 @@ LABEL_25:
 
 - (id)airportIataCodes
 {
-  v3 = [(_PASLazyPurgeableResult *)self->_airportDataOffsets result];
-  v4 = [(_PASLazyPurgeableResult *)self->_airportUpdateDataOffsets result];
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v4[4] + v3[4]];
-  v6 = [(SGFlightData *)self airportIataCodesForDataOffset:v4];
+  result = [(_PASLazyPurgeableResult *)self->_airportDataOffsets result];
+  result2 = [(_PASLazyPurgeableResult *)self->_airportUpdateDataOffsets result];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:result2[4] + result[4]];
+  v6 = [(SGFlightData *)self airportIataCodesForDataOffset:result2];
   [v5 addObjectsFromArray:v6];
 
-  v7 = [(SGFlightData *)self airportIataCodesForDataOffset:v3];
+  v7 = [(SGFlightData *)self airportIataCodesForDataOffset:result];
   [v5 addObjectsFromArray:v7];
 
   return v5;
 }
 
-- (id)airportIataCodesForDataOffset:(id)a3
+- (id)airportIataCodesForDataOffset:(id)offset
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:*(v3 + 4)];
-  if (*(v3 + 4))
+  offsetCopy = offset;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:*(offsetCopy + 4)];
+  if (*(offsetCopy + 4))
   {
     v5 = 0;
     v6 = 10;
     do
     {
-      v7 = objCStringForCarrierKey(v3[2] + v6);
+      v7 = objCStringForCarrierKey(offsetCopy[2] + v6);
       [v4 setObject:v7 atIndexedSubscript:v5];
 
       ++v5;
       v6 += 16;
     }
 
-    while (v5 < *(v3 + 4));
+    while (v5 < *(offsetCopy + 4));
   }
 
   return v4;
@@ -852,7 +852,7 @@ void __20__SGFlightData_init__block_invoke_5(uint64_t a1, void *a2, void *a3)
   block[2] = __42__SGFlightData_iataCodeToCityDatabaseDict__block_invoke;
   block[3] = &__block_descriptor_48_e5_v8__0l;
   block[4] = a2;
-  block[5] = a1;
+  block[5] = self;
   if (iataCodeToCityDatabaseDict_onceToken != -1)
   {
     dispatch_once(&iataCodeToCityDatabaseDict_onceToken, block);
@@ -867,8 +867,8 @@ void __20__SGFlightData_init__block_invoke_5(uint64_t a1, void *a2, void *a3)
 
     if (!v6)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:a1 file:@"SGFlightData.m" lineNumber:257 description:@"failed to get asset path for IATA_CITY_DB_IDENT."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGFlightData.m" lineNumber:257 description:@"failed to get asset path for IATA_CITY_DB_IDENT."];
     }
 
     v13 = 0;
@@ -925,7 +925,7 @@ void __42__SGFlightData_iataCodeToCityDatabaseDict__block_invoke_2(uint64_t a1, 
   v14 = __40__SGFlightData_airportNameNoiseKeywords__block_invoke;
   v15 = &__block_descriptor_48_e5_v8__0l;
   v16 = a2;
-  v17 = a1;
+  selfCopy = self;
   if (airportNameNoiseKeywords_onceToken != -1)
   {
     dispatch_once(&airportNameNoiseKeywords_onceToken, &v12);
@@ -940,8 +940,8 @@ void __42__SGFlightData_iataCodeToCityDatabaseDict__block_invoke_2(uint64_t a1, 
 
     if (!v6)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"SGFlightData.m" lineNumber:220 description:@"failed to get asset path for AIRPORT_NAME_IDENT."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGFlightData.m" lineNumber:220 description:@"failed to get asset path for AIRPORT_NAME_IDENT."];
     }
 
     v7 = [MEMORY[0x277CBEA60] arrayWithContentsOfFile:v6];
@@ -1012,20 +1012,20 @@ void __30__SGFlightData_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)sanitizeAirportName:(id)a3
++ (id)sanitizeAirportName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_opt_class() airportNameNoiseKeywords];
-  v6 = [v3 lowercaseString];
-  v7 = [v6 mutableCopy];
+  airportNameNoiseKeywords = [objc_opt_class() airportNameNoiseKeywords];
+  lowercaseString = [nameCopy lowercaseString];
+  v7 = [lowercaseString mutableCopy];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v5;
+  v8 = airportNameNoiseKeywords;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {

@@ -1,42 +1,42 @@
 @interface WFNetworkListDataSource
-- (void)setAssociationHandler:(id)a3;
-- (void)setInfoButtonHandler:(id)a3;
-- (void)setOtherNetworkTapHandler:(id)a3;
-- (void)setPendingDeletingNetworksChangedCallback:(id)a3;
-- (void)setScanning:(BOOL)a3;
-- (void)setUnconfiguredNetworksSectionTitleDelegate:(id)a3;
+- (void)setAssociationHandler:(id)handler;
+- (void)setInfoButtonHandler:(id)handler;
+- (void)setOtherNetworkTapHandler:(id)handler;
+- (void)setPendingDeletingNetworksChangedCallback:(id)callback;
+- (void)setScanning:(BOOL)scanning;
+- (void)setUnconfiguredNetworksSectionTitleDelegate:(id)delegate;
 - (void)startEditingPreferredNetworks;
 - (void)switchToScanList;
-- (void)updateCurrentNetwork:(id)a3;
-- (void)updateCurrentNetworkConfig:(id)a3;
+- (void)updateCurrentNetwork:(id)network;
+- (void)updateCurrentNetworkConfig:(id)config;
 @end
 
 @implementation WFNetworkListDataSource
 
-- (void)updateCurrentNetworkConfig:(id)a3
+- (void)updateCurrentNetworkConfig:(id)config
 {
-  v5 = a3;
-  v6 = self;
-  sub_2740291AC(a3);
+  configCopy = config;
+  selfCopy = self;
+  sub_2740291AC(config);
 }
 
-- (void)updateCurrentNetwork:(id)a3
+- (void)updateCurrentNetwork:(id)network
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_27402A254(a3);
+  selfCopy = self;
+  sub_27402A254(network);
   swift_unknownObjectRelease();
 }
 
-- (void)setScanning:(BOOL)a3
+- (void)setScanning:(BOOL)scanning
 {
-  v4 = self;
-  sub_27402B120(a3);
+  selfCopy = self;
+  sub_27402B120(scanning);
 }
 
-- (void)setOtherNetworkTapHandler:(id)a3
+- (void)setOtherNetworkTapHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -55,13 +55,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
-- (void)setInfoButtonHandler:(id)a3
+- (void)setInfoButtonHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -80,13 +80,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
-- (void)setAssociationHandler:(id)a3
+- (void)setAssociationHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -105,13 +105,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
-- (void)setPendingDeletingNetworksChangedCallback:(id)a3
+- (void)setPendingDeletingNetworksChangedCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -130,13 +130,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
-- (void)setUnconfiguredNetworksSectionTitleDelegate:(id)a3
+- (void)setUnconfiguredNetworksSectionTitleDelegate:(id)delegate
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(delegate);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -155,19 +155,19 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
 - (void)startEditingPreferredNetworks
 {
-  v2 = self;
+  selfCopy = self;
   sub_27402C46C();
 }
 
 - (void)switchToScanList
 {
-  v2 = self;
+  selfCopy = self;
   sub_27402C910();
 }
 

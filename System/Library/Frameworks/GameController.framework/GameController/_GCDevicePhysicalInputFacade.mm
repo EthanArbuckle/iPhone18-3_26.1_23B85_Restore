@@ -1,75 +1,75 @@
 @interface _GCDevicePhysicalInputFacade
 - (GCDevice)device;
 - (OS_dispatch_queue)queue;
-- (_GCDevicePhysicalInputFacade)initWithParameters:(id)a3;
-- (_GCDevicePhysicalInputFacade)initWithTemplate:(id)a3 context:(id)a4;
+- (_GCDevicePhysicalInputFacade)initWithParameters:(id)parameters;
+- (_GCDevicePhysicalInputFacade)initWithTemplate:(id)template context:(id)context;
 - (double)lastEventLatency;
 - (double)lastEventTimestamp;
 - (id)_elementsForProtocol:(id *)result;
-- (id)alternatePhysicalInputWithAttribute:(id)a3;
+- (id)alternatePhysicalInputWithAttribute:(id)attribute;
 - (id)capture;
 - (id)changedElements;
 - (id)elementValueDidChangeHandler;
 - (id)inputStateAvailableHandler;
 - (id)nextInputState;
-- (id)nextInputStateNotExceedingTimestamp:(double)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (int64_t)changeForElement:(id)a3;
+- (id)nextInputStateNotExceedingTimestamp:(double)timestamp;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (int64_t)changeForElement:(id)element;
 - (int64_t)inputStateQueueDepth;
-- (void)setElementValueDidChangeHandler:(id)a3;
-- (void)setInputStateAvailableHandler:(id)a3;
-- (void)setInputStateQueueDepth:(int64_t)a3;
-- (void)setQueue:(id)a3;
+- (void)setElementValueDidChangeHandler:(id)handler;
+- (void)setInputStateAvailableHandler:(id)handler;
+- (void)setInputStateQueueDepth:(int64_t)depth;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation _GCDevicePhysicalInputFacade
 
-- (_GCDevicePhysicalInputFacade)initWithParameters:(id)a3
+- (_GCDevicePhysicalInputFacade)initWithParameters:(id)parameters
 {
   v4.receiver = self;
   v4.super_class = _GCDevicePhysicalInputFacade;
-  return [(_GCDevicePhysicalInputView *)&v4 initWithParameters:a3];
+  return [(_GCDevicePhysicalInputView *)&v4 initWithParameters:parameters];
 }
 
-- (_GCDevicePhysicalInputFacade)initWithTemplate:(id)a3 context:(id)a4
+- (_GCDevicePhysicalInputFacade)initWithTemplate:(id)template context:(id)context
 {
   v5.receiver = self;
   v5.super_class = _GCDevicePhysicalInputFacade;
-  return [(_GCDevicePhysicalInputView *)&v5 initWithTemplate:a3 context:a4];
+  return [(_GCDevicePhysicalInputView *)&v5 initWithTemplate:template context:context];
 }
 
 - (GCDevice)device
 {
-  v2 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-  return [v2 device];
+  return [physicalInput device];
 }
 
 - (double)lastEventTimestamp
 {
-  v2 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-  [v2 lastEventTimestamp];
+  [physicalInput lastEventTimestamp];
   return result;
 }
 
 - (double)lastEventLatency
 {
-  v2 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-  [v2 lastEventLatency];
+  [physicalInput lastEventLatency];
   return result;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = [(_GCDevicePhysicalInputView *)self physicalInput];
-  v5 = [_GCDevicePhysicalInputBase elementsForProtocol:v4];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
+  v5 = [_GCDevicePhysicalInputBase elementsForProtocol:physicalInput];
 
-  return [v5 elementForAlias:a3];
+  return [v5 elementForAlias:subscript];
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   if ([-[_GCDevicePhysicalInputView physicalInput](self) isSnapshot])
   {
@@ -78,13 +78,13 @@
 
   else
   {
-    v5 = [(_GCDevicePhysicalInputView *)self physicalInput];
+    physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-    [(_GCDevicePhysicalInput *)v5 setQueue:a3];
+    [(_GCDevicePhysicalInput *)physicalInput setQueue:queue];
   }
 }
 
-- (void)setElementValueDidChangeHandler:(id)a3
+- (void)setElementValueDidChangeHandler:(id)handler
 {
   if ([-[_GCDevicePhysicalInputView physicalInput](self) isSnapshot])
   {
@@ -93,9 +93,9 @@
 
   else
   {
-    v5 = [(_GCDevicePhysicalInputView *)self physicalInput];
+    physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-    [(_GCDevicePhysicalInput *)v5 setElementValueDidChangeHandler:a3, v6];
+    [(_GCDevicePhysicalInput *)physicalInput setElementValueDidChangeHandler:handler, v6];
   }
 }
 
@@ -106,13 +106,13 @@
     return self;
   }
 
-  v4 = [(_GCDevicePhysicalInputView *)self physicalInput];
-  v5 = [(_GCDevicePhysicalInput *)v4 currentTransaction];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
+  currentTransaction = [(_GCDevicePhysicalInput *)physicalInput currentTransaction];
 
-  return [(_GCDevicePhysicalInputBase *)v5 facade];
+  return [(_GCDevicePhysicalInputBase *)currentTransaction facade];
 }
 
-- (void)setInputStateAvailableHandler:(id)a3
+- (void)setInputStateAvailableHandler:(id)handler
 {
   if ([-[_GCDevicePhysicalInputView physicalInput](self) isSnapshot])
   {
@@ -121,13 +121,13 @@
 
   else
   {
-    v5 = [(_GCDevicePhysicalInputView *)self physicalInput];
+    physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-    [(_GCDevicePhysicalInput *)v5 setInputStateAvailableHandler:a3, v6];
+    [(_GCDevicePhysicalInput *)physicalInput setInputStateAvailableHandler:handler, v6];
   }
 }
 
-- (void)setInputStateQueueDepth:(int64_t)a3
+- (void)setInputStateQueueDepth:(int64_t)depth
 {
   if ([-[_GCDevicePhysicalInputView physicalInput](self) isSnapshot])
   {
@@ -136,20 +136,20 @@
 
   else
   {
-    if (a3 <= 0)
+    if (depth <= 0)
     {
-      [(_GCDevicePhysicalInputFacade *)a2 setInputStateQueueDepth:a3];
+      [(_GCDevicePhysicalInputFacade *)a2 setInputStateQueueDepth:depth];
     }
 
-    v6 = [(_GCDevicePhysicalInputView *)self physicalInput];
+    physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-    [(_GCDevicePhysicalInput *)v6 setTransactionQueueDepth:a3];
+    [(_GCDevicePhysicalInput *)physicalInput setTransactionQueueDepth:depth];
   }
 }
 
-- (id)alternatePhysicalInputWithAttribute:(id)a3
+- (id)alternatePhysicalInputWithAttribute:(id)attribute
 {
-  if (!a3)
+  if (!attribute)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -158,12 +158,12 @@
   if (result)
   {
     v6 = result;
-    v7 = [-[_GCDevicePhysicalInputBase attributes](result) setByAddingObject:a3];
-    v8 = [v6 dataSource];
-    v9 = [v8 physicalInputWithAttributes:v7];
-    v10 = [(_GCDevicePhysicalInputBase *)v9 facade];
+    v7 = [-[_GCDevicePhysicalInputBase attributes](result) setByAddingObject:attribute];
+    dataSource = [v6 dataSource];
+    v9 = [dataSource physicalInputWithAttributes:v7];
+    facade = [(_GCDevicePhysicalInputBase *)v9 facade];
 
-    return v10;
+    return facade;
   }
 
   return result;
@@ -173,11 +173,11 @@
 {
   if (result)
   {
-    v1 = [(_GCDevicePhysicalInputView *)result physicalInput];
-    if (v1)
+    physicalInput = [(_GCDevicePhysicalInputView *)result physicalInput];
+    if (physicalInput)
     {
 
-      return [_GCDevicePhysicalInputBase elementsForProtocol:v1];
+      return [_GCDevicePhysicalInputBase elementsForProtocol:physicalInput];
     }
 
     else
@@ -197,9 +197,9 @@
     return 0;
   }
 
-  v3 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-  return [(_GCDevicePhysicalInput *)v3 queue];
+  return [(_GCDevicePhysicalInput *)physicalInput queue];
 }
 
 - (id)elementValueDidChangeHandler
@@ -209,9 +209,9 @@
     return 0;
   }
 
-  v3 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-  return [(_GCDevicePhysicalInput *)v3 elementValueDidChangeHandler];
+  return [(_GCDevicePhysicalInput *)physicalInput elementValueDidChangeHandler];
 }
 
 - (id)inputStateAvailableHandler
@@ -221,9 +221,9 @@
     return 0;
   }
 
-  v3 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-  return [(_GCDevicePhysicalInput *)v3 inputStateAvailableHandler];
+  return [(_GCDevicePhysicalInput *)physicalInput inputStateAvailableHandler];
 }
 
 - (int64_t)inputStateQueueDepth
@@ -233,9 +233,9 @@
     return 0;
   }
 
-  v3 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-  return [(_GCDevicePhysicalInput *)v3 transactionQueueDepth];
+  return [(_GCDevicePhysicalInput *)physicalInput transactionQueueDepth];
 }
 
 - (id)nextInputState
@@ -245,26 +245,26 @@
     return 0;
   }
 
-  v3 = [-[_GCDevicePhysicalInputView physicalInput](self) popTransaction];
-  v4 = [(_GCDevicePhysicalInputBase *)v3 facade];
+  popTransaction = [-[_GCDevicePhysicalInputView physicalInput](self) popTransaction];
+  facade = [(_GCDevicePhysicalInputBase *)popTransaction facade];
 
-  return v4;
+  return facade;
 }
 
-- (id)nextInputStateNotExceedingTimestamp:(double)a3
+- (id)nextInputStateNotExceedingTimestamp:(double)timestamp
 {
   if ([-[_GCDevicePhysicalInputView physicalInput](self) isSnapshot])
   {
     return 0;
   }
 
-  v5 = [-[_GCDevicePhysicalInputView physicalInput](self) popTransactionNotExceedingTimestamp:a3];
-  v6 = [(_GCDevicePhysicalInputBase *)v5 facade];
+  v5 = [-[_GCDevicePhysicalInputView physicalInput](self) popTransactionNotExceedingTimestamp:timestamp];
+  facade = [(_GCDevicePhysicalInputBase *)v5 facade];
 
-  return v6;
+  return facade;
 }
 
-- (int64_t)changeForElement:(id)a3
+- (int64_t)changeForElement:(id)element
 {
   if (![(_GCDevicePhysicalInputView *)self physicalInput])
   {
@@ -276,22 +276,22 @@
     [(_GCDevicePhysicalInputFacade *)self doesNotRecognizeSelector:a2];
   }
 
-  v6 = [(_GCDevicePhysicalInputView *)self physicalInput];
-  v7 = [-[_GCDevicePhysicalInputBase elements](v6) indexOfObject:a3];
+  physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
+  v7 = [-[_GCDevicePhysicalInputBase elements](physicalInput) indexOfObject:element];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return -1;
   }
 
   v8 = v7;
-  v9 = [(_GCDevicePhysicalInputView *)self physicalInput];
-  if (![_GCDevicePhysicalInputTransaction updateContextIsValidForElementAtIndex:v9])
+  physicalInput2 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  if (![_GCDevicePhysicalInputTransaction updateContextIsValidForElementAtIndex:physicalInput2])
   {
     return -1;
   }
 
-  v10 = [(_GCDevicePhysicalInputView *)self physicalInput];
-  return [(_GCDevicePhysicalInputTransaction *)v10 updateContextForElementAtIndex:v8 size:0 onlyIfChanged:1]!= 0;
+  physicalInput3 = [(_GCDevicePhysicalInputView *)self physicalInput];
+  return [(_GCDevicePhysicalInputTransaction *)physicalInput3 updateContextForElementAtIndex:v8 size:0 onlyIfChanged:1]!= 0;
 }
 
 - (id)changedElements
@@ -304,9 +304,9 @@
       [(_GCDevicePhysicalInputFacade *)self doesNotRecognizeSelector:a2];
     }
 
-    v5 = [(_GCDevicePhysicalInputView *)self physicalInput];
+    physicalInput = [(_GCDevicePhysicalInputView *)self physicalInput];
 
-    return [(_GCDevicePhysicalInputTransaction *)v5 changedElements];
+    return [(_GCDevicePhysicalInputTransaction *)physicalInput changedElements];
   }
 
   return result;

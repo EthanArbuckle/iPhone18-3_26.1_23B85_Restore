@@ -2,33 +2,33 @@
 + (id)cborFalse;
 + (id)cborNil;
 + (id)cborTrue;
-+ (id)cborWithArray:(id)a3;
-+ (id)cborWithData:(id)a3;
-+ (id)cborWithDateTime:(id)a3;
-+ (id)cborWithDictionary:(id)a3;
-+ (id)cborWithDictionary:(id)a3 keyOrderList:(id)a4;
-+ (id)cborWithDouble:(double)a3;
-+ (id)cborWithEmbeddedCBORData:(id)a3;
-+ (id)cborWithEncodedTag24Data:(id)a3;
-+ (id)cborWithFloat:(float)a3;
-+ (id)cborWithFullDate:(id)a3;
-+ (id)cborWithHalfFloat:(float)a3;
-+ (id)cborWithInteger:(int64_t)a3;
-+ (id)cborWithUTF8String:(id)a3;
-+ (id)cborWithUnsignedInteger:(unint64_t)a3;
-+ (id)decodeMajorType0And1FromBuffer:(const char *)a3 length:(unint64_t *)a4 tag:(id)a5;
-+ (id)decodeMajorType2And3FromBuffer:(const char *)a3 length:(unint64_t *)a4 tag:(id)a5 indefiniteLenContainerType:(unint64_t)a6 noCopy:(BOOL)a7;
-+ (id)decodeMajorType6FromBuffer:(const char *)a3 length:(unint64_t *)a4 tag:(id)a5;
-+ (id)decodeMajorType7FromBuffer:(const char *)a3 length:(unint64_t *)a4 tag:(id)a5;
-+ (id)encodeMajorType2or3:(uint64_t)a1;
-+ (id)encodeMajorType7Bool:(uint64_t)a1;
++ (id)cborWithArray:(id)array;
++ (id)cborWithData:(id)data;
++ (id)cborWithDateTime:(id)time;
++ (id)cborWithDictionary:(id)dictionary;
++ (id)cborWithDictionary:(id)dictionary keyOrderList:(id)list;
++ (id)cborWithDouble:(double)double;
++ (id)cborWithEmbeddedCBORData:(id)data;
++ (id)cborWithEncodedTag24Data:(id)data;
++ (id)cborWithFloat:(float)float;
++ (id)cborWithFullDate:(id)date;
++ (id)cborWithHalfFloat:(float)float;
++ (id)cborWithInteger:(int64_t)integer;
++ (id)cborWithUTF8String:(id)string;
++ (id)cborWithUnsignedInteger:(unint64_t)integer;
++ (id)decodeMajorType0And1FromBuffer:(const char *)buffer length:(unint64_t *)length tag:(id)tag;
++ (id)decodeMajorType2And3FromBuffer:(const char *)buffer length:(unint64_t *)length tag:(id)tag indefiniteLenContainerType:(unint64_t)type noCopy:(BOOL)copy;
++ (id)decodeMajorType6FromBuffer:(const char *)buffer length:(unint64_t *)length tag:(id)tag;
++ (id)decodeMajorType7FromBuffer:(const char *)buffer length:(unint64_t *)length tag:(id)tag;
++ (id)encodeMajorType2or3:(uint64_t)type2or3;
++ (id)encodeMajorType7Bool:(uint64_t)bool;
 + (id)encodeMajorType7Undefined;
 - (BOOL)BOOLValue;
 - (BOOL)isDate;
 - (BOOL)isEmbeddedCBORData;
-- (BOOL)isEqual:(id)a3;
-- (CBOR)initWithCbor:(id)a3 tag:(id)a4;
-- (CBOR)initWithType:(unint64_t)a3 value:(id)a4 valueSize:(int64_t)a5 tag:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (CBOR)initWithCbor:(id)cbor tag:(id)tag;
+- (CBOR)initWithType:(unint64_t)type value:(id)value valueSize:(int64_t)size tag:(id)tag;
 - (NSArray)array;
 - (NSData)data;
 - (NSDate)date;
@@ -37,7 +37,7 @@
 - (NSString)string;
 - (double)doubleValue;
 - (id)asJSON;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeToEmbeddedCBORData;
 - (int64_t)longLongValue;
@@ -46,7 +46,7 @@
 
 @implementation CBOR
 
-+ (id)encodeMajorType2or3:(uint64_t)a1
++ (id)encodeMajorType2or3:(uint64_t)type2or3
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -272,7 +272,7 @@ LABEL_17:
   return v0;
 }
 
-+ (id)encodeMajorType7Bool:(uint64_t)a1
++ (id)encodeMajorType7Bool:(uint64_t)bool
 {
   objc_opt_self();
   if (a2)
@@ -297,15 +297,15 @@ LABEL_17:
   if ([(CBOR *)self type]== 4)
   {
     v3 = objc_alloc(MEMORY[0x277CBEB18]);
-    v4 = [(CBOR *)self array];
-    v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+    array = [(CBOR *)self array];
+    value = [v3 initWithCapacity:{objc_msgSend(array, "count")}];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v6 = [(CBOR *)self array];
-    v7 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    array2 = [(CBOR *)self array];
+    v7 = [array2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v7)
     {
       v8 = v7;
@@ -316,12 +316,12 @@ LABEL_17:
         {
           if (*v35 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(array2);
           }
 
           v11 = *(*(&v34 + 1) + 8 * i);
-          v12 = [v11 asJSON];
-          if (v12)
+          asJSON = [v11 asJSON];
+          if (asJSON)
           {
             [v11 asJSON];
           }
@@ -331,10 +331,10 @@ LABEL_17:
             [MEMORY[0x277CBEB68] null];
           }
           v13 = ;
-          [v5 addObject:v13];
+          [value addObject:v13];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v8 = [array2 countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v8);
@@ -344,15 +344,15 @@ LABEL_17:
   else if ([(CBOR *)self type]== 5)
   {
     v14 = objc_alloc(MEMORY[0x277CBEB38]);
-    v15 = [(CBOR *)self dictionary];
-    v5 = [v14 initWithCapacity:{objc_msgSend(v15, "count")}];
+    dictionary = [(CBOR *)self dictionary];
+    value = [v14 initWithCapacity:{objc_msgSend(dictionary, "count")}];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v16 = [(CBOR *)self dictionary];
-    v17 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    dictionary2 = [(CBOR *)self dictionary];
+    v17 = [dictionary2 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v17)
     {
       v18 = v17;
@@ -363,32 +363,32 @@ LABEL_17:
         {
           if (*v31 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(dictionary2);
           }
 
           v21 = *(*(&v30 + 1) + 8 * j);
-          v22 = [(CBOR *)self dictionary];
-          v23 = [v22 objectForKeyedSubscript:v21];
+          dictionary3 = [(CBOR *)self dictionary];
+          v23 = [dictionary3 objectForKeyedSubscript:v21];
 
-          v24 = [v21 asJSON];
-          v25 = [v23 asJSON];
-          v26 = v25;
-          if (v24)
+          asJSON2 = [v21 asJSON];
+          asJSON3 = [v23 asJSON];
+          v26 = asJSON3;
+          if (asJSON2)
           {
-            if (v25)
+            if (asJSON3)
             {
-              [v5 setObject:v25 forKey:v24];
+              [value setObject:asJSON3 forKey:asJSON2];
             }
 
             else
             {
-              v27 = [MEMORY[0x277CBEB68] null];
-              [v5 setObject:v27 forKey:v24];
+              null = [MEMORY[0x277CBEB68] null];
+              [value setObject:null forKey:asJSON2];
             }
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v18 = [dictionary2 countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v18);
@@ -397,30 +397,30 @@ LABEL_17:
 
   else
   {
-    v5 = [(CBOR *)self value];
-    if (!v5)
+    value = [(CBOR *)self value];
+    if (!value)
     {
-      v5 = [MEMORY[0x277CBEB68] null];
+      value = [MEMORY[0x277CBEB68] null];
     }
   }
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return value;
 }
 
-+ (id)decodeMajorType0And1FromBuffer:(const char *)a3 length:(unint64_t *)a4 tag:(id)a5
++ (id)decodeMajorType0And1FromBuffer:(const char *)buffer length:(unint64_t *)length tag:(id)tag
 {
-  v7 = a5;
-  v8 = *a4;
-  if (!*a4)
+  tagCopy = tag;
+  v8 = *length;
+  if (!*length)
   {
     v16 = 0;
     goto LABEL_33;
   }
 
-  v9 = *a3;
-  v10 = **a3;
+  v9 = *buffer;
+  v10 = **buffer;
   v11 = v10 & 0xFFFFFFDF;
   v12 = (v10 >> 5) & 1;
   if ((v10 & 0xFFFFFFDF) <= 0x17)
@@ -437,7 +437,7 @@ LABEL_17:
 
     v14 = [CBOR alloc];
     v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v13];
-    v16 = [(CBOR *)v14 initWithType:v12 value:v15 valueSize:0 tag:v7];
+    v16 = [(CBOR *)v14 initWithType:v12 value:v15 valueSize:0 tag:tagCopy];
 
     v17 = v8 - 1;
     v18 = 1;
@@ -467,7 +467,7 @@ LABEL_17:
       }
 
       v32 = v27;
-      v16 = [[CBOR alloc] initWithType:v12 value:v27 valueSize:4 tag:v7];
+      v16 = [[CBOR alloc] initWithType:v12 value:v27 valueSize:4 tag:tagCopy];
 
       v18 = 5;
     }
@@ -497,7 +497,7 @@ LABEL_17:
       }
 
       v30 = v23;
-      v16 = [[CBOR alloc] initWithType:v12 value:v23 valueSize:8 tag:v7];
+      v16 = [[CBOR alloc] initWithType:v12 value:v23 valueSize:8 tag:tagCopy];
 
       v18 = 9;
     }
@@ -512,12 +512,12 @@ LABEL_23:
         __assert_rtn("+[CBOR(Decoder_Private) decodeMajorType0And1FromBuffer:length:tag:]", "CBOR+decoder.m", 277, "buffer + bufferSize <= endOfBuffer");
       }
 
-      *a3 = v19;
+      *buffer = v19;
       goto LABEL_32;
     }
 
 LABEL_22:
-    v16 = [[CBOR alloc] initWithType:16 value:0 valueSize:0 tag:v7];
+    v16 = [[CBOR alloc] initWithType:16 value:0 valueSize:0 tag:tagCopy];
     goto LABEL_23;
   }
 
@@ -540,7 +540,7 @@ LABEL_22:
     }
 
     v31 = v25;
-    v16 = [[CBOR alloc] initWithType:v12 value:v25 valueSize:1 tag:v7];
+    v16 = [[CBOR alloc] initWithType:v12 value:v25 valueSize:1 tag:tagCopy];
 
     v17 = v8 - 2;
     v18 = 2;
@@ -550,7 +550,7 @@ LABEL_22:
   if (v11 != 25)
   {
 LABEL_21:
-    v19 = *a3;
+    v19 = *buffer;
     goto LABEL_22;
   }
 
@@ -569,7 +569,7 @@ LABEL_21:
     }
 
     v29 = v21;
-    v16 = [[CBOR alloc] initWithType:v12 value:v21 valueSize:2 tag:v7];
+    v16 = [[CBOR alloc] initWithType:v12 value:v21 valueSize:2 tag:tagCopy];
 
     v18 = 3;
     goto LABEL_7;
@@ -579,18 +579,18 @@ LABEL_31:
   v17 = 0;
   v16 = 0;
 LABEL_32:
-  *a4 = v17;
+  *length = v17;
 LABEL_33:
 
   return v16;
 }
 
-+ (id)decodeMajorType2And3FromBuffer:(const char *)a3 length:(unint64_t *)a4 tag:(id)a5 indefiniteLenContainerType:(unint64_t)a6 noCopy:(BOOL)a7
++ (id)decodeMajorType2And3FromBuffer:(const char *)buffer length:(unint64_t *)length tag:(id)tag indefiniteLenContainerType:(unint64_t)type noCopy:(BOOL)copy
 {
-  v7 = a7;
-  v11 = a5;
-  v12 = *a3;
-  v13 = *a4;
+  copyCopy = copy;
+  tagCopy = tag;
+  v12 = *buffer;
+  v13 = *length;
   v66 = v13;
   v67 = v12;
   if (!v13)
@@ -610,13 +610,13 @@ LABEL_33:
     v15 = 2;
   }
 
-  if (a6 != 16 && v15 != a6)
+  if (type != 16 && v15 != type)
   {
     goto LABEL_7;
   }
 
   v17 = v14 & 0xFFFFFFDF;
-  v62 = v7;
+  v62 = copyCopy;
   if ((v14 & 0xFFFFFFDF) <= 0x57)
   {
     v18 = v14 & 0x1F;
@@ -791,15 +791,15 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if (a6 != 16)
+  if (type != 16)
   {
 LABEL_7:
     v16 = 0;
-    *a4 = 0;
+    *length = 0;
     goto LABEL_86;
   }
 
-  v24 = v11;
+  v24 = tagCopy;
   v25 = v13 - 1;
   v66 = v13 - 1;
   v67 = v12 + 1;
@@ -807,7 +807,7 @@ LABEL_7:
   if (v13 != 1)
   {
     v63 = 0;
-    v11 = v24;
+    tagCopy = v24;
     while (1)
     {
       v26 = *v67;
@@ -841,8 +841,8 @@ LABEL_92:
       v29 = v28;
       if (v28 && [v28 type] == v15)
       {
-        v30 = [v29 data];
-        [v19 appendData:v30];
+        data = [v29 data];
+        [v19 appendData:data];
       }
 
       else
@@ -859,7 +859,7 @@ LABEL_92:
       v21 = 0;
       v25 = v66;
       v22 = 1;
-      v11 = v24;
+      tagCopy = v24;
       if (!v66)
       {
         goto LABEL_56;
@@ -892,17 +892,17 @@ LABEL_33:
   v18 = 0;
   v21 = 0;
   v22 = 1;
-  v11 = v24;
+  tagCopy = v24;
 LABEL_56:
   v36 = v20;
   v61 = v21;
   v37 = v18 > v23 || v22;
-  v65 = v11;
-  v38 = [v11 numeric];
-  v64 = v38;
-  if (v38)
+  v65 = tagCopy;
+  numeric = [tagCopy numeric];
+  v64 = numeric;
+  if (numeric)
   {
-    if ([v38 unsignedIntValue] == 24)
+    if ([numeric unsignedIntValue] == 24)
     {
       v39 = (v14 >> 5) & 1;
     }
@@ -931,16 +931,16 @@ LABEL_56:
       if ([v19 length])
       {
         v40 = objc_alloc(MEMORY[0x277CCACA8]);
-        v41 = [v19 bytes];
+        bytes = [v19 bytes];
         v42 = [v19 length];
         if (v62)
         {
-          v43 = [v40 initWithBytesNoCopy:v41 length:v42 encoding:4 freeWhenDone:0];
+          v43 = [v40 initWithBytesNoCopy:bytes length:v42 encoding:4 freeWhenDone:0];
         }
 
         else
         {
-          v43 = [v40 initWithBytes:v41 length:v42 encoding:4];
+          v43 = [v40 initWithBytes:bytes length:v42 encoding:4];
         }
 
         goto LABEL_81;
@@ -970,8 +970,8 @@ LABEL_83:
       __assert_rtn("+[CBOR(Decoder_Private) decodeMajorType2And3FromBuffer:length:tag:indefiniteLenContainerType:noCopy:]", "CBOR+decoder.m", 541, "buffer + bufferSize <= endOfBuffer");
     }
 
-    *a3 = v67;
-    *a4 = v53;
+    *buffer = v67;
+    *length = v53;
     v16 = v47;
     v19 = v60;
     goto LABEL_85;
@@ -1045,31 +1045,31 @@ LABEL_83:
 
 LABEL_63:
   v16 = 0;
-  *a4 = 0;
+  *length = 0;
 LABEL_85:
 
-  v11 = v65;
+  tagCopy = v65;
 LABEL_86:
 
   return v16;
 }
 
-+ (id)decodeMajorType6FromBuffer:(const char *)a3 length:(unint64_t *)a4 tag:(id)a5
++ (id)decodeMajorType6FromBuffer:(const char *)buffer length:(unint64_t *)length tag:(id)tag
 {
-  v7 = a5;
-  v8 = *a4;
-  if (!*a4)
+  tagCopy = tag;
+  v8 = *length;
+  if (!*length)
   {
     v12 = 0;
     goto LABEL_24;
   }
 
-  v9 = *a3;
-  v10 = **a3 & 0x3F;
+  v9 = *buffer;
+  v10 = **buffer & 0x3F;
   if (v10 <= 0x17)
   {
     v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v10];
-    v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:0 tag:v7];
+    v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:0 tag:tagCopy];
     v13 = v8 - 1;
     v14 = 1;
 LABEL_4:
@@ -1081,12 +1081,12 @@ LABEL_5:
       __assert_rtn("+[CBOR(Decoder_Private) decodeMajorType6FromBuffer:length:tag:]", "CBOR+decoder.m", 1003, "buffer + bufferSize <= endOfBuffer");
     }
 
-    *a3 = v15;
+    *buffer = v15;
     goto LABEL_23;
   }
 
   v12 = 0;
-  if ((**a3 & 0x3Fu) > 0x19)
+  if ((**buffer & 0x3Fu) > 0x19)
   {
     if (v10 == 26)
     {
@@ -1094,7 +1094,7 @@ LABEL_5:
       if (v8 - 5 <= 0xFFFFFFFFFFFFFFFBLL)
       {
         v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:bswap32(*(v9 + 1))];
-        v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:4 tag:v7];
+        v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:4 tag:tagCopy];
         v14 = 5;
         goto LABEL_4;
       }
@@ -1108,7 +1108,7 @@ LABEL_5:
       if (v8 - 9 <= 0xFFFFFFFFFFFFFFF7)
       {
         v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:bswap64(*(v9 + 1))];
-        v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:8 tag:v7];
+        v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:8 tag:tagCopy];
         v14 = 9;
         goto LABEL_4;
       }
@@ -1118,7 +1118,7 @@ LABEL_5:
 
 LABEL_17:
     v13 = 0;
-    v15 = *a3;
+    v15 = *buffer;
     goto LABEL_5;
   }
 
@@ -1127,7 +1127,7 @@ LABEL_17:
     if (v8 != 1)
     {
       v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v9[1]];
-      v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:1 tag:v7];
+      v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:1 tag:tagCopy];
       v13 = v8 - 2;
       v14 = 2;
       goto LABEL_4;
@@ -1145,7 +1145,7 @@ LABEL_17:
   if (v8 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithShort:(bswap32(*(v9 + 1)) >> 16)];
-    v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:2 tag:v7];
+    v12 = [[CBOR alloc] initWithType:14 value:v11 valueSize:2 tag:tagCopy];
     v14 = 3;
     goto LABEL_4;
   }
@@ -1154,24 +1154,24 @@ LABEL_22:
   v13 = 0;
   v12 = 0;
 LABEL_23:
-  *a4 = v13;
+  *length = v13;
 LABEL_24:
 
   return v12;
 }
 
-+ (id)decodeMajorType7FromBuffer:(const char *)a3 length:(unint64_t *)a4 tag:(id)a5
++ (id)decodeMajorType7FromBuffer:(const char *)buffer length:(unint64_t *)length tag:(id)tag
 {
-  v7 = a5;
-  v8 = *a4;
-  if (!*a4)
+  tagCopy = tag;
+  v8 = *length;
+  if (!*length)
   {
     v15 = 0;
     goto LABEL_46;
   }
 
-  v9 = *a3;
-  v10 = **a3;
+  v9 = *buffer;
+  v10 = **buffer;
   v11 = v10 & 0x1F;
   if ((v10 & 0x1Fu) <= 0x17)
   {
@@ -1180,7 +1180,7 @@ LABEL_24:
       if (v11 == 22)
       {
         v25 = [CBOR alloc];
-        v12 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
         v13 = v25;
         v14 = 11;
         goto LABEL_25;
@@ -1189,7 +1189,7 @@ LABEL_24:
       if (v11 == 23)
       {
         v18 = [CBOR alloc];
-        v12 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
         v13 = v18;
         v14 = 12;
         goto LABEL_25;
@@ -1200,7 +1200,7 @@ LABEL_24:
     {
       if (v11 == 20)
       {
-        v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:0];
+        null = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:0];
         v13 = [CBOR alloc];
         v14 = 9;
         goto LABEL_25;
@@ -1208,11 +1208,11 @@ LABEL_24:
 
       if (v11 == 21)
       {
-        v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:1];
+        null = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:1];
         v13 = [CBOR alloc];
         v14 = 10;
 LABEL_25:
-        v15 = [(CBOR *)v13 initWithType:v14 value:v12 valueSize:0 tag:v7];
+        v15 = [(CBOR *)v13 initWithType:v14 value:null valueSize:0 tag:tagCopy];
 
         v16 = v8 - 1;
         v17 = v9 + 1;
@@ -1222,12 +1222,12 @@ LABEL_43:
           __assert_rtn("+[CBOR(Decoder_Private) decodeMajorType7FromBuffer:length:tag:]", "CBOR+decoder.m", 1137, "buffer + bufferSize <= endOfBuffer");
         }
 
-        *a3 = v17;
+        *buffer = v17;
         goto LABEL_45;
       }
     }
 
-    v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v11];
+    null = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v11];
     v13 = [CBOR alloc];
     v14 = 13;
     goto LABEL_25;
@@ -1241,7 +1241,7 @@ LABEL_43:
       if (v8 != 1)
       {
         v29 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:*(v9 + 1)];
-        v15 = [[CBOR alloc] initWithType:13 value:v29 valueSize:1 tag:v7];
+        v15 = [[CBOR alloc] initWithType:13 value:v29 valueSize:1 tag:tagCopy];
         v16 = v8 - 2;
         v17 = v9 + 2;
         goto LABEL_42;
@@ -1252,8 +1252,8 @@ LABEL_43:
     {
       if (v11 != 25)
       {
-        v16 = *a4;
-        v17 = *a3;
+        v16 = *length;
+        v17 = *buffer;
         goto LABEL_43;
       }
 
@@ -1302,7 +1302,7 @@ LABEL_43:
         }
 
         v29 = [v31 initWithDouble:v32];
-        v15 = [[CBOR alloc] initWithType:6 value:v29 valueSize:2 tag:v7];
+        v15 = [[CBOR alloc] initWithType:6 value:v29 valueSize:2 tag:tagCopy];
         v17 = v9 + 3;
         goto LABEL_42;
       }
@@ -1318,7 +1318,7 @@ LABEL_43:
       v27 = objc_alloc(MEMORY[0x277CCABB0]);
       LODWORD(v28) = v26;
       v29 = [v27 initWithFloat:v28];
-      v15 = [[CBOR alloc] initWithType:7 value:v29 valueSize:4 tag:v7];
+      v15 = [[CBOR alloc] initWithType:7 value:v29 valueSize:4 tag:tagCopy];
       v17 = v9 + 5;
 LABEL_42:
 
@@ -1330,13 +1330,13 @@ LABEL_42:
   {
     if (v11 != 27)
     {
-      v16 = *a4;
-      v17 = *a3;
+      v16 = *length;
+      v17 = *buffer;
       if (v11 == 31)
       {
         v16 = v8 - 1;
         v17 = v9 + 1;
-        v15 = [[CBOR alloc] initWithType:15 value:0 valueSize:0 tag:v7];
+        v15 = [[CBOR alloc] initWithType:15 value:0 valueSize:0 tag:tagCopy];
       }
 
       goto LABEL_43;
@@ -1346,7 +1346,7 @@ LABEL_42:
     if (v8 - 9 <= 0xFFFFFFFFFFFFFFF7)
     {
       v29 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:COERCE_DOUBLE(bswap64(*(v9 + 1)))];
-      v15 = [[CBOR alloc] initWithType:8 value:v29 valueSize:8 tag:v7];
+      v15 = [[CBOR alloc] initWithType:8 value:v29 valueSize:8 tag:tagCopy];
       v17 = v9 + 9;
       goto LABEL_42;
     }
@@ -1355,13 +1355,13 @@ LABEL_42:
   v16 = 0;
   v15 = 0;
 LABEL_45:
-  *a4 = v16;
+  *length = v16;
 LABEL_46:
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CBOR alloc];
   value = self->_value;
@@ -1372,11 +1372,11 @@ LABEL_46:
   return [(CBOR *)v4 initWithType:type value:value valueSize:valueSize tag:tag];
 }
 
-- (CBOR)initWithType:(unint64_t)a3 value:(id)a4 valueSize:(int64_t)a5 tag:(id)a6
+- (CBOR)initWithType:(unint64_t)type value:(id)value valueSize:(int64_t)size tag:(id)tag
 {
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a6;
+  valueCopy = value;
+  tagCopy = tag;
   v33.receiver = self;
   v33.super_class = CBOR;
   v13 = [(CBOR *)&v33 init];
@@ -1386,10 +1386,10 @@ LABEL_46:
     goto LABEL_23;
   }
 
-  v13->_type = a3;
-  objc_storeStrong(&v13->_value, a4);
-  v14->_valueSize = a5;
-  objc_storeStrong(&v14->_tag, a6);
+  v13->_type = type;
+  objc_storeStrong(&v13->_value, value);
+  v14->_valueSize = size;
+  objc_storeStrong(&v14->_tag, tag);
   value = v14->_value;
   v16 = v14->_valueSize ^ v14->_type;
   objc_opt_class();
@@ -1484,28 +1484,28 @@ LABEL_23:
   return v14;
 }
 
-- (CBOR)initWithCbor:(id)a3 tag:(id)a4
+- (CBOR)initWithCbor:(id)cbor tag:(id)tag
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 type];
-  v9 = [v7 value];
-  v10 = [v7 valueSize];
+  tagCopy = tag;
+  cborCopy = cbor;
+  type = [cborCopy type];
+  value = [cborCopy value];
+  valueSize = [cborCopy valueSize];
 
-  v11 = [(CBOR *)self initWithType:v8 value:v9 valueSize:v10 tag:v6];
+  v11 = [(CBOR *)self initWithType:type value:value valueSize:valueSize tag:tagCopy];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if ([(CBOR *)v6 type]== self->_type)
@@ -1655,10 +1655,10 @@ LABEL_5:
       v8 = MEMORY[0x277CCACA8];
       v9 = value;
       v10 = [v8 alloc];
-      v11 = [v9 bytes];
+      bytes = [v9 bytes];
       v12 = [v9 length];
 
-      v5 = [v10 initWithBytes:v11 length:v12 encoding:4];
+      v5 = [v10 initWithBytes:bytes length:v12 encoding:4];
     }
 
     else
@@ -1781,10 +1781,10 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  v4 = [(CBOR *)self->_tag numeric];
-  v5 = [v4 intValue];
+  numeric = [(CBOR *)self->_tag numeric];
+  intValue = [numeric intValue];
 
-  if (v5 == 1004)
+  if (intValue == 1004)
   {
     v25 = _getRFC3339DateFormatter(0);
     v10 = [v25 dateFromString:self->_value];
@@ -1792,7 +1792,7 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  if (v5)
+  if (intValue)
   {
 LABEL_17:
     v10 = 0;
@@ -1973,11 +1973,11 @@ LABEL_18:
     return 0;
   }
 
-  v4 = [(CBOR *)tag numeric];
-  if ([v4 intValue])
+  numeric = [(CBOR *)tag numeric];
+  if ([numeric intValue])
   {
-    v5 = [(CBOR *)self->_tag numeric];
-    v6 = [v5 intValue] == 1004;
+    numeric2 = [(CBOR *)self->_tag numeric];
+    v6 = [numeric2 intValue] == 1004;
   }
 
   else
@@ -2001,8 +2001,8 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [(CBOR *)tag numeric];
-  v4 = [v3 intValue] == 24;
+  numeric = [(CBOR *)tag numeric];
+  v4 = [numeric intValue] == 24;
 
   return v4;
 }
@@ -2198,9 +2198,9 @@ LABEL_48:
   return v3;
 }
 
-+ (id)cborWithInteger:(int64_t)a3
++ (id)cborWithInteger:(int64_t)integer
 {
-  v3 = a3 ^ (a3 >> 63);
+  v3 = integer ^ (integer >> 63);
   v4 = 1;
   v5 = 2;
   v6 = 8;
@@ -2229,34 +2229,34 @@ LABEL_48:
     v7 = 0;
   }
 
-  v8 = a3 >> 63;
-  v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:a3];
+  v8 = integer >> 63;
+  v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:integer];
   v10 = [[CBOR alloc] initWithType:v8 value:v9 valueSize:v7 tag:0];
 
   return v10;
 }
 
-+ (id)cborWithUnsignedInteger:(unint64_t)a3
++ (id)cborWithUnsignedInteger:(unint64_t)integer
 {
   v3 = 1;
   v4 = 2;
   v5 = 8;
-  if (!HIDWORD(a3))
+  if (!HIDWORD(integer))
   {
     v5 = 4;
   }
 
-  if (a3 >= 0x10000)
+  if (integer >= 0x10000)
   {
     v4 = v5;
   }
 
-  if (a3 >= 0x100)
+  if (integer >= 0x100)
   {
     v3 = v4;
   }
 
-  if (a3 >= 24)
+  if (integer >= 24)
   {
     v6 = v3;
   }
@@ -2266,44 +2266,44 @@ LABEL_48:
     v6 = 0;
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLongLong:a3];
+  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLongLong:integer];
   v8 = [[CBOR alloc] initWithType:0 value:v7 valueSize:v6 tag:0];
 
   return v8;
 }
 
-+ (id)cborWithHalfFloat:(float)a3
++ (id)cborWithHalfFloat:(float)float
 {
   v4 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v5 = a3;
+  *&v5 = float;
   v6 = [v4 initWithFloat:v5];
   v7 = [[CBOR alloc] initWithType:6 value:v6 valueSize:2 tag:0];
 
   return v7;
 }
 
-+ (id)cborWithFloat:(float)a3
++ (id)cborWithFloat:(float)float
 {
   v4 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v5 = a3;
+  *&v5 = float;
   v6 = [v4 initWithFloat:v5];
   v7 = [[CBOR alloc] initWithType:7 value:v6 valueSize:4 tag:0];
 
   return v7;
 }
 
-+ (id)cborWithDouble:(double)a3
++ (id)cborWithDouble:(double)double
 {
-  v3 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:a3];
+  v3 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:double];
   v4 = [[CBOR alloc] initWithType:8 value:v3 valueSize:8 tag:0];
 
   return v4;
 }
 
-+ (id)cborWithArray:(id)a3
++ (id)cborWithArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   v5 = 1;
   v6 = 2;
   v7 = 8;
@@ -2332,15 +2332,15 @@ LABEL_48:
     v8 = 0;
   }
 
-  v9 = [[CBOR alloc] initWithType:4 value:v3 valueSize:v8 tag:0];
+  v9 = [[CBOR alloc] initWithType:4 value:arrayCopy valueSize:v8 tag:0];
 
   return v9;
 }
 
-+ (id)cborWithDictionary:(id)a3
++ (id)cborWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 count];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy count];
   v5 = 1;
   v6 = 2;
   v7 = 8;
@@ -2369,25 +2369,25 @@ LABEL_48:
     v8 = 0;
   }
 
-  v9 = [[CBOR alloc] initWithType:5 value:v3 valueSize:v8 tag:0];
+  v9 = [[CBOR alloc] initWithType:5 value:dictionaryCopy valueSize:v8 tag:0];
 
   return v9;
 }
 
-+ (id)cborWithDictionary:(id)a3 keyOrderList:(id)a4
++ (id)cborWithDictionary:(id)dictionary keyOrderList:(id)list
 {
-  v5 = a4;
-  v6 = [CBOR cborWithDictionary:a3];
+  listCopy = list;
+  v6 = [CBOR cborWithDictionary:dictionary];
   v7 = v6[6];
-  v6[6] = v5;
+  v6[6] = listCopy;
 
   return v6;
 }
 
-+ (id)cborWithData:(id)a3
++ (id)cborWithData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   v5 = 1;
   v6 = 2;
   v7 = 8;
@@ -2416,25 +2416,25 @@ LABEL_48:
     v8 = 0;
   }
 
-  v9 = [[CBOR alloc] initWithType:2 value:v3 valueSize:v8 tag:0];
+  v9 = [[CBOR alloc] initWithType:2 value:dataCopy valueSize:v8 tag:0];
 
   return v9;
 }
 
-+ (id)cborWithEncodedTag24Data:(id)a3
++ (id)cborWithEncodedTag24Data:(id)data
 {
-  v3 = a3;
-  v9 = [v3 bytes];
-  v8 = [v3 length];
-  v4 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
+  v4 = [dataCopy length];
 
   if (v4 >= 2)
   {
-    v6 = [CBOR decodeMajorType6FromBuffer:&v9 length:&v8 tag:0];
+    v6 = [CBOR decodeMajorType6FromBuffer:&bytes length:&v8 tag:0];
     v5 = 0;
     if (v6 && v8)
     {
-      v5 = [CBOR decodeMajorType2And3FromBuffer:&v9 length:&v8 tag:v6 indefiniteLenContainerType:16 noCopy:0];
+      v5 = [CBOR decodeMajorType2And3FromBuffer:&bytes length:&v8 tag:v6 indefiniteLenContainerType:16 noCopy:0];
     }
   }
 
@@ -2446,10 +2446,10 @@ LABEL_48:
   return v5;
 }
 
-+ (id)cborWithUTF8String:(id)a3
++ (id)cborWithUTF8String:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   v5 = 1;
   v6 = 2;
   v7 = 8;
@@ -2478,17 +2478,17 @@ LABEL_48:
     v8 = 0;
   }
 
-  v9 = [[CBOR alloc] initWithType:3 value:v3 valueSize:v8 tag:0];
+  v9 = [[CBOR alloc] initWithType:3 value:stringCopy valueSize:v8 tag:0];
 
   return v9;
 }
 
-+ (id)cborWithFullDate:(id)a3
++ (id)cborWithFullDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = [[CBOR alloc] initWithType:14 value:&unk_2835DCF18 valueSize:2 tag:0];
   v5 = _getRFC3339DateFormatter(0);
-  v6 = [v5 stringFromDate:v3];
+  v6 = [v5 stringFromDate:dateCopy];
 
   v7 = [CBOR alloc];
   v8 = [v6 length];
@@ -2525,12 +2525,12 @@ LABEL_48:
   return v13;
 }
 
-+ (id)cborWithDateTime:(id)a3
++ (id)cborWithDateTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = [[CBOR alloc] initWithType:14 value:&unk_2835DCF30 valueSize:0 tag:0];
   v5 = _getRFC3339DateFormatter(1);
-  v6 = [v5 stringFromDate:v3];
+  v6 = [v5 stringFromDate:timeCopy];
 
   v7 = [CBOR alloc];
   v8 = [v6 length];
@@ -2588,10 +2588,10 @@ LABEL_48:
   return v2;
 }
 
-+ (id)cborWithEmbeddedCBORData:(id)a3
++ (id)cborWithEmbeddedCBORData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   v5 = 1;
   v6 = 2;
   v7 = 8;
@@ -2621,7 +2621,7 @@ LABEL_48:
   }
 
   v9 = [CBOR cborWithInteger:24];
-  v10 = [[CBOR alloc] initWithType:2 value:v3 valueSize:v8 tag:v9];
+  v10 = [[CBOR alloc] initWithType:2 value:dataCopy valueSize:v8 tag:v9];
 
   return v10;
 }

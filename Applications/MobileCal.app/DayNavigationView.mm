@@ -1,30 +1,30 @@
 @interface DayNavigationView
 + (id)_weekNumberFont;
 - (BOOL)dayNavigationWeekScrollViewAllowedToChangeSelectedDate;
-- (BOOL)dayNavigationWeekScrollViewIsLoadingSpecialDayData:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DayNavigationView)initWithCalendar:(id)a3 selectedDate:(id)a4 cellFactory:(id)a5 eventSpringLoadingEnabled:(BOOL)a6;
+- (BOOL)dayNavigationWeekScrollViewIsLoadingSpecialDayData:(id)data;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DayNavigationView)initWithCalendar:(id)calendar selectedDate:(id)date cellFactory:(id)factory eventSpringLoadingEnabled:(BOOL)enabled;
 - (DayNavigationViewDelegate)delegate;
 - (UIEdgeInsets)paletteSafeAreaInsets;
-- (id)dayNavigationWeekScrollView:(id)a3 dayDataForDate:(id)a4;
+- (id)dayNavigationWeekScrollView:(id)view dayDataForDate:(id)date;
 - (void)_updateFontSizes;
 - (void)_updateWeekNumberLabel;
 - (void)contentSizeCategoryChanged;
-- (void)dayNavigationWeekScrollView:(id)a3 didChangeCellWidth:(double)a4;
-- (void)dayNavigationWeekScrollView:(id)a3 selectedDateChanged:(id)a4;
-- (void)dayNavigationWeekScrollViewFailedToSelectDate:(id)a3;
+- (void)dayNavigationWeekScrollView:(id)view didChangeCellWidth:(double)width;
+- (void)dayNavigationWeekScrollView:(id)view selectedDateChanged:(id)changed;
+- (void)dayNavigationWeekScrollViewFailedToSelectDate:(id)date;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCalendar:(id)a3;
-- (void)setOverlayMonthText:(id)a3;
-- (void)setSelectedDate:(id)a3 animated:(BOOL)a4;
-- (void)setShowWeekNumber:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setBackgroundColor:(id)color;
+- (void)setCalendar:(id)calendar;
+- (void)setOverlayMonthText:(id)text;
+- (void)setSelectedDate:(id)date animated:(BOOL)animated;
+- (void)setShowWeekNumber:(BOOL)number;
 @end
 
 @implementation DayNavigationView
@@ -34,8 +34,8 @@
   if (self->_showWeekNumber)
   {
     calendar = self->_calendar;
-    v4 = [(DayNavigationWeekScrollView *)self->_weekScrollView startDateOfSelectedWeek];
-    [(NSCalendar *)calendar component:0x2000 fromDate:v4];
+    startDateOfSelectedWeek = [(DayNavigationWeekScrollView *)self->_weekScrollView startDateOfSelectedWeek];
+    [(NSCalendar *)calendar component:0x2000 fromDate:startDateOfSelectedWeek];
 
     v5 = WeekendTextColor();
     [(UILabel *)self->_weekNumberLabel setTextColor:v5];
@@ -98,13 +98,13 @@
   v49[4] = self;
   v49[5] = &v51;
   v18 = objc_retainBlock(v49);
-  v19 = [(DayNavigationView *)self showWeekNumber];
+  showWeekNumber = [(DayNavigationView *)self showWeekNumber];
   width = CGSizeZero.width;
   height = CGSizeZero.height;
   v22 = 0.0;
   v23 = height;
   v24 = CGSizeZero.width;
-  if (v19)
+  if (showWeekNumber)
   {
     [(UILabel *)self->_weekNumberLabel sizeThatFits:10.0, 10.0];
     v24 = v25;
@@ -112,8 +112,8 @@
     v22 = 36.0;
   }
 
-  v27 = [(UILabel *)self->_overlayMonthLabel text];
-  v28 = [v27 length];
+  text = [(UILabel *)self->_overlayMonthLabel text];
+  v28 = [text length];
 
   if (v28 && ([(UILabel *)self->_overlayMonthLabel sizeThatFits:1.79769313e308, 10.0], width = v29.n128_f64[0], height = v30.n128_f64[0], v22 < 20.0) || v22 > 0.0)
   {
@@ -217,29 +217,29 @@
   _Block_object_dispose(&v51, 8);
 }
 
-- (DayNavigationView)initWithCalendar:(id)a3 selectedDate:(id)a4 cellFactory:(id)a5 eventSpringLoadingEnabled:(BOOL)a6
+- (DayNavigationView)initWithCalendar:(id)calendar selectedDate:(id)date cellFactory:(id)factory eventSpringLoadingEnabled:(BOOL)enabled
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  enabledCopy = enabled;
+  calendarCopy = calendar;
+  dateCopy = date;
+  factoryCopy = factory;
   v28.receiver = self;
   v28.super_class = DayNavigationView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v17 = [(DayNavigationView *)&v28 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(DayNavigationView *)&v28 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    objc_storeStrong(&v17->_calendar, a3);
-    v19 = [v11 timeZone];
+    objc_storeStrong(&height->_calendar, calendar);
+    timeZone = [calendarCopy timeZone];
     timeZone = v18->_timeZone;
-    v18->_timeZone = v19;
+    v18->_timeZone = timeZone;
 
-    v21 = [[DayNavigationWeekScrollView alloc] initWithFrame:v11 calendar:v12 selectedDate:v13 cellFactory:v6 eventSpringLoadingEnabled:CGRectZero.origin.x, y, width, height];
+    height2 = [[DayNavigationWeekScrollView alloc] initWithFrame:calendarCopy calendar:dateCopy selectedDate:factoryCopy cellFactory:enabledCopy eventSpringLoadingEnabled:CGRectZero.origin.x, y, width, height];
     weekScrollView = v18->_weekScrollView;
-    v18->_weekScrollView = v21;
+    v18->_weekScrollView = height2;
 
     [(DayNavigationWeekScrollView *)v18->_weekScrollView setDelegate:v18];
     [(DayNavigationWeekScrollView *)v18->_weekScrollView setNavDelegate:v18];
@@ -256,7 +256,7 @@
     v25 = +[UIColor clearColor];
     [(DayNavigationView *)v18 setBackgroundColor:v25];
 
-    [(DayNavigationView *)v18 setSelectedDate:v12 animated:0];
+    [(DayNavigationView *)v18 setSelectedDate:dateCopy animated:0];
     v26 = +[NSNotificationCenter defaultCenter];
     [v26 addObserver:v18 selector:"_dayTimeViewHourWidthChanged" name:EKDayTimeViewHourWidthChangedNotification object:0];
   }
@@ -264,12 +264,12 @@
   return v18;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy();
-  v7 = [(DayNavigationView *)self traitCollection];
+  traitCollection = [(DayNavigationView *)self traitCollection];
   v8 = EKUIUsesRoundedRectsInsteadOfCircles();
 
   if (IsCompactInViewHierarchy)
@@ -296,8 +296,8 @@
 
     else
     {
-      v12 = [(DayNavigationWeekScrollView *)weekScrollView cellFactory];
-      [objc_msgSend(v12 "cellClass")];
+      cellFactory = [(DayNavigationWeekScrollView *)weekScrollView cellFactory];
+      [objc_msgSend(cellFactory "cellClass")];
       v14 = v13 + 4.0;
 
       v15 = fmax(v14, 41.0);
@@ -329,22 +329,22 @@
   [(DayNavigationView *)self setNeedsLayout];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5.receiver = self;
   v5.super_class = DayNavigationView;
-  [(DayNavigationView *)&v5 setBackgroundColor:v4];
-  [(DayNavigationWeekScrollView *)self->_weekScrollView setBackgroundColor:v4];
+  [(DayNavigationView *)&v5 setBackgroundColor:colorCopy];
+  [(DayNavigationWeekScrollView *)self->_weekScrollView setBackgroundColor:colorCopy];
   if ([(DayNavigationView *)self showWeekNumber])
   {
-    [(UILabel *)self->_weekNumberLabel setBackgroundColor:v4];
+    [(UILabel *)self->_weekNumberLabel setBackgroundColor:colorCopy];
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v4 = a3;
+  deceleratingCopy = decelerating;
   [(DayNavigationWeekScrollView *)self->_weekScrollView _pageDecelerationTarget];
   v6 = v5;
   v8 = v7;
@@ -352,19 +352,19 @@
   objc_storeStrong(&self->_selectedDate, v9);
   [(DayNavigationWeekScrollView *)self->_weekScrollView setSelectedDateWithoutScrolling:v9];
   [(DayNavigationView *)self _updateWeekNumberLabel];
-  v10 = [(DayNavigationView *)self delegate];
+  delegate = [(DayNavigationView *)self delegate];
 
-  if (v10)
+  if (delegate)
   {
     CalAnalyticsSendEventLazy();
-    v11 = [(DayNavigationView *)self delegate];
-    [v11 dayNavigationView:self selectedDateChanged:v9];
+    delegate2 = [(DayNavigationView *)self delegate];
+    [delegate2 dayNavigationView:self selectedDateChanged:v9];
   }
 
-  [v4 contentOffset];
+  [deceleratingCopy contentOffset];
   v13 = v12;
   v15 = v14;
-  [v4 _horizontalVelocity];
+  [deceleratingCopy _horizontalVelocity];
   if (v16 < 0.0)
   {
     v16 = -v16;
@@ -379,8 +379,8 @@
   v18 = v16 / v17;
   EKUIScaleFactor();
   [(ScrollSpringFactory *)self->_springFactory setInitialVelocity:v19 * v18 * 1000.0];
-  [v4 stopScrollingAndZooming];
-  [v4 setContentOffset:0 animated:{v13, v15}];
+  [deceleratingCopy stopScrollingAndZooming];
+  [deceleratingCopy setContentOffset:0 animated:{v13, v15}];
   springAnimationDuration();
   v21 = v20;
   springFactory = self->_springFactory;
@@ -396,12 +396,12 @@
   v24[2] = sub_10010EFE4;
   v24[3] = &unk_10020F7A8;
   v24[4] = self;
-  v25 = v4;
-  v23 = v4;
+  v25 = deceleratingCopy;
+  v23 = deceleratingCopy;
   [UIView _animateWithDuration:393222 delay:springFactory options:v26 factory:v24 animations:v21 completion:0.0];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(DayNavigationWeekScrollView *)self->_weekScrollView setNeedsLayout];
   [(DayNavigationWeekScrollView *)self->_weekScrollView didFinishScrolling];
@@ -410,7 +410,7 @@
   [(DayNavigationWeekScrollView *)weekScrollView updateHighlightIfNeeded];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   [(DayNavigationWeekScrollView *)self->_weekScrollView setNeedsLayout];
   [(DayNavigationWeekScrollView *)self->_weekScrollView didFinishScrolling];
@@ -419,7 +419,7 @@
   [(DayNavigationWeekScrollView *)weekScrollView updateHighlightIfNeeded];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(DayNavigationView *)self _stopPulsingToday];
   weekScrollView = self->_weekScrollView;
@@ -427,7 +427,7 @@
   [(DayNavigationWeekScrollView *)weekScrollView didScroll];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(DayNavigationWeekScrollView *)self->_weekScrollView cancelScrollingAnimation];
   weekScrollView = self->_weekScrollView;
@@ -437,77 +437,77 @@
 
 - (BOOL)dayNavigationWeekScrollViewAllowedToChangeSelectedDate
 {
-  v3 = [(DayNavigationView *)self delegate];
+  delegate = [(DayNavigationView *)self delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     return 1;
   }
 
-  v4 = [(DayNavigationView *)self delegate];
-  v5 = [v4 dayNavigationViewAllowedToChangeSelectedDate];
+  delegate2 = [(DayNavigationView *)self delegate];
+  dayNavigationViewAllowedToChangeSelectedDate = [delegate2 dayNavigationViewAllowedToChangeSelectedDate];
 
-  return v5;
+  return dayNavigationViewAllowedToChangeSelectedDate;
 }
 
-- (void)dayNavigationWeekScrollViewFailedToSelectDate:(id)a3
+- (void)dayNavigationWeekScrollViewFailedToSelectDate:(id)date
 {
-  v6 = a3;
-  v4 = [(DayNavigationView *)self delegate];
+  dateCopy = date;
+  delegate = [(DayNavigationView *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(DayNavigationView *)self delegate];
-    [v5 dayNavigationViewFailedToSelectDate:v6];
+    delegate2 = [(DayNavigationView *)self delegate];
+    [delegate2 dayNavigationViewFailedToSelectDate:dateCopy];
   }
 }
 
-- (void)dayNavigationWeekScrollView:(id)a3 selectedDateChanged:(id)a4
+- (void)dayNavigationWeekScrollView:(id)view selectedDateChanged:(id)changed
 {
-  v7 = a4;
+  changedCopy = changed;
   [DayNavigationView setSelectedDate:"setSelectedDate:animated:" animated:?];
-  v5 = [(DayNavigationView *)self delegate];
+  delegate = [(DayNavigationView *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(DayNavigationView *)self delegate];
-    [v6 dayNavigationView:self selectedDateChanged:v7];
+    delegate2 = [(DayNavigationView *)self delegate];
+    [delegate2 dayNavigationView:self selectedDateChanged:changedCopy];
   }
 }
 
-- (void)dayNavigationWeekScrollView:(id)a3 didChangeCellWidth:(double)a4
+- (void)dayNavigationWeekScrollView:(id)view didChangeCellWidth:(double)width
 {
-  v6 = [(DayNavigationView *)self delegate];
+  delegate = [(DayNavigationView *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(DayNavigationView *)self delegate];
-    [v7 dayNavigationView:self didChangeCellWidth:a4];
+    delegate2 = [(DayNavigationView *)self delegate];
+    [delegate2 dayNavigationView:self didChangeCellWidth:width];
   }
 }
 
-- (BOOL)dayNavigationWeekScrollViewIsLoadingSpecialDayData:(id)a3
+- (BOOL)dayNavigationWeekScrollViewIsLoadingSpecialDayData:(id)data
 {
-  v4 = [(DayNavigationView *)self delegate];
+  delegate = [(DayNavigationView *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(DayNavigationView *)self delegate];
-    [v5 dayNavigationViewIsLoadingSpecialDayData:self];
+    delegate2 = [(DayNavigationView *)self delegate];
+    [delegate2 dayNavigationViewIsLoadingSpecialDayData:self];
   }
 
   return 0;
 }
 
-- (id)dayNavigationWeekScrollView:(id)a3 dayDataForDate:(id)a4
+- (id)dayNavigationWeekScrollView:(id)view dayDataForDate:(id)date
 {
-  v5 = a4;
-  v6 = [(DayNavigationView *)self delegate];
+  dateCopy = date;
+  delegate = [(DayNavigationView *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(DayNavigationView *)self delegate];
-    v8 = [v7 dayNavigationView:self dayDataForDate:v5];
+    delegate2 = [(DayNavigationView *)self delegate];
+    v8 = [delegate2 dayNavigationView:self dayDataForDate:dateCopy];
   }
 
   else
@@ -518,24 +518,24 @@
   return v8;
 }
 
-- (void)setShowWeekNumber:(BOOL)a3
+- (void)setShowWeekNumber:(BOOL)number
 {
-  if (self->_showWeekNumber != a3)
+  if (self->_showWeekNumber != number)
   {
     v15 = v4;
     v16 = v3;
-    self->_showWeekNumber = a3;
-    if (a3)
+    self->_showWeekNumber = number;
+    if (number)
     {
       v10 = objc_opt_new();
       weekNumberLabel = self->_weekNumberLabel;
       self->_weekNumberLabel = v10;
 
-      v12 = [objc_opt_class() _weekNumberFont];
-      [(UILabel *)self->_weekNumberLabel setFont:v12];
+      _weekNumberFont = [objc_opt_class() _weekNumberFont];
+      [(UILabel *)self->_weekNumberLabel setFont:_weekNumberFont];
 
-      v13 = [(DayNavigationView *)self backgroundColor];
-      [(UILabel *)self->_weekNumberLabel setBackgroundColor:v13];
+      backgroundColor = [(DayNavigationView *)self backgroundColor];
+      [(UILabel *)self->_weekNumberLabel setBackgroundColor:backgroundColor];
 
       [(DayNavigationView *)self addSubview:self->_weekNumberLabel];
       [(DayNavigationView *)self _updateWeekNumberLabel];
@@ -554,12 +554,12 @@
   }
 }
 
-- (void)setOverlayMonthText:(id)a3
+- (void)setOverlayMonthText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   overlayMonthLabel = self->_overlayMonthLabel;
-  v11 = v4;
-  if (v4)
+  v11 = textCopy;
+  if (textCopy)
   {
     if (!overlayMonthLabel)
     {
@@ -574,11 +574,11 @@
       [(UILabel *)self->_overlayMonthLabel setTextColor:v9];
 
       [(DayNavigationView *)self addSubview:self->_overlayMonthLabel];
-      v4 = v11;
+      textCopy = v11;
       overlayMonthLabel = self->_overlayMonthLabel;
     }
 
-    [(UILabel *)overlayMonthLabel setText:v4];
+    [(UILabel *)overlayMonthLabel setText:textCopy];
     [(DayNavigationView *)self setNeedsLayout];
   }
 
@@ -594,24 +594,24 @@
 
 - (void)_updateFontSizes
 {
-  v3 = [objc_opt_class() _weekNumberFont];
-  [(UILabel *)self->_weekNumberLabel setFont:v3];
+  _weekNumberFont = [objc_opt_class() _weekNumberFont];
+  [(UILabel *)self->_weekNumberLabel setFont:_weekNumberFont];
 
   [(DayNavigationView *)self setNeedsLayout];
 }
 
-- (void)setSelectedDate:(id)a3 animated:(BOOL)a4
+- (void)setSelectedDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (v7)
+  animatedCopy = animated;
+  dateCopy = date;
+  if (dateCopy)
   {
     selectedDate = self->_selectedDate;
-    if (!selectedDate || ![(NSDate *)selectedDate isEqualToDate:v7])
+    if (!selectedDate || ![(NSDate *)selectedDate isEqualToDate:dateCopy])
     {
-      objc_storeStrong(&self->_selectedDate, a3);
+      objc_storeStrong(&self->_selectedDate, date);
       [(DayNavigationWeekScrollView *)self->_weekScrollView cancelScrollingAnimation];
-      [(DayNavigationWeekScrollView *)self->_weekScrollView setSelectedDate:v7 animated:v4];
+      [(DayNavigationWeekScrollView *)self->_weekScrollView setSelectedDate:dateCopy animated:animatedCopy];
       [(DayNavigationView *)self _updateWeekNumberLabel];
     }
   }
@@ -631,15 +631,15 @@
   }
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  objc_storeStrong(&self->_calendar, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_calendar, calendar);
+  calendarCopy = calendar;
   [(DayNavigationWeekScrollView *)self->_weekScrollView setSelectedDate:self->_selectedDate animated:0];
-  [(DayNavigationWeekScrollView *)self->_weekScrollView setCalendar:v7];
-  v5 = [v7 timeZone];
+  [(DayNavigationWeekScrollView *)self->_weekScrollView setCalendar:calendarCopy];
+  timeZone = [calendarCopy timeZone];
   timeZone = self->_timeZone;
-  self->_timeZone = v5;
+  self->_timeZone = timeZone;
 }
 
 - (void)contentSizeCategoryChanged

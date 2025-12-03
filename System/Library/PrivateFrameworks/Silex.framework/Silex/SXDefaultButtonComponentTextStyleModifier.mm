@@ -1,14 +1,14 @@
 @interface SXDefaultButtonComponentTextStyleModifier
-- (void)modifyDOM:(id)a3 context:(id)a4;
+- (void)modifyDOM:(id)m context:(id)context;
 @end
 
 @implementation SXDefaultButtonComponentTextStyleModifier
 
-- (void)modifyDOM:(id)a3 context:(id)a4
+- (void)modifyDOM:(id)m context:(id)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  mCopy = m;
+  contextCopy = context;
   if (!self->_shouldReturnUnmodifiedDOM)
   {
     v8 = +[SXButtonComponentClassification typeString];
@@ -18,8 +18,8 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [v9 defaultTextStyleIdentifiers];
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    defaultTextStyleIdentifiers = [v9 defaultTextStyleIdentifiers];
+    v11 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
       v12 = v11;
@@ -30,12 +30,12 @@
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(defaultTextStyleIdentifiers);
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = [v6 componentTextStyles];
-          v17 = [v16 objectForKey:v15];
+          componentTextStyles = [mCopy componentTextStyles];
+          v17 = [componentTextStyles objectForKey:v15];
 
           if (v17 && [(SXComponentTextStyle *)v17 textAlignment])
           {
@@ -44,7 +44,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v12 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v12)
         {
           continue;
@@ -55,34 +55,34 @@
     }
 
     v18 = +[SXButtonComponentClassification typeString];
-    v10 = SXDefaultTextStyleIdentifierForRole(v18);
+    defaultTextStyleIdentifiers = SXDefaultTextStyleIdentifierForRole(v18);
 
-    v19 = [v6 componentTextStyles];
-    v20 = [v19 objectForKey:v10];
+    componentTextStyles2 = [mCopy componentTextStyles];
+    v20 = [componentTextStyles2 objectForKey:defaultTextStyleIdentifiers];
 
-    v21 = [v20 JSONRepresentation];
-    v22 = v21;
-    if (!v21)
+    jSONRepresentation = [v20 JSONRepresentation];
+    v22 = jSONRepresentation;
+    if (!jSONRepresentation)
     {
-      v21 = MEMORY[0x1E695E0F8];
+      jSONRepresentation = MEMORY[0x1E695E0F8];
     }
 
-    v23 = [v21 mutableCopy];
+    v23 = [jSONRepresentation mutableCopy];
 
     [v23 setObject:@"center" forKey:@"textAlignment"];
-    v24 = [v20 identifier];
+    identifier = [v20 identifier];
 
-    if (!v24)
+    if (!identifier)
     {
-      [v23 setObject:v10 forKey:@"identifier"];
+      [v23 setObject:defaultTextStyleIdentifiers forKey:@"identifier"];
     }
 
     v25 = [SXComponentTextStyle alloc];
-    v26 = [v7 specVersion];
-    v17 = [(SXJSONObject *)v25 initWithJSONObject:v23 andVersion:v26];
+    specVersion = [contextCopy specVersion];
+    v17 = [(SXJSONObject *)v25 initWithJSONObject:v23 andVersion:specVersion];
 
-    v27 = [v6 componentTextStyles];
-    [v27 setObject:v17 forKey:v10];
+    componentTextStyles3 = [mCopy componentTextStyles];
+    [componentTextStyles3 setObject:v17 forKey:defaultTextStyleIdentifiers];
 
 LABEL_17:
   }

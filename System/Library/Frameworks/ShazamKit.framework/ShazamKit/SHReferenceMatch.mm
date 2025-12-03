@@ -1,21 +1,21 @@
 @interface SHReferenceMatch
-- (SHReferenceMatch)initWithSignature:(id)a3 mediaItems:(id)a4;
+- (SHReferenceMatch)initWithSignature:(id)signature mediaItems:(id)items;
 @end
 
 @implementation SHReferenceMatch
 
-- (SHReferenceMatch)initWithSignature:(id)a3 mediaItems:(id)a4
+- (SHReferenceMatch)initWithSignature:(id)signature mediaItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
+  signatureCopy = signature;
+  itemsCopy = items;
   v12.receiver = self;
   v12.super_class = SHReferenceMatch;
   v9 = [(SHReferenceMatch *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_signature, a3);
-    objc_storeStrong(&v10->_mediaItems, a4);
+    objc_storeStrong(&v9->_signature, signature);
+    objc_storeStrong(&v10->_mediaItems, items);
   }
 
   return v10;

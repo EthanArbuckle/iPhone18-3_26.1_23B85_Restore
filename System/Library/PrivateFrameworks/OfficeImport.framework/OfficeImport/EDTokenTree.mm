@@ -1,20 +1,20 @@
 @interface EDTokenTree
-+ (BOOL)isTokenNoOp:(unsigned int)a3 formula:(id)a4;
-+ (id)buildSubtree:(unsigned int)a3 formula:(id)a4;
-+ (id)buildSubtreeAtIndex:(unsigned int *)a3 formula:(id)a4;
-+ (unsigned)childCountForToken:(unsigned int)a3 formula:(id)a4;
++ (BOOL)isTokenNoOp:(unsigned int)op formula:(id)formula;
++ (id)buildSubtree:(unsigned int)subtree formula:(id)formula;
++ (id)buildSubtreeAtIndex:(unsigned int *)index formula:(id)formula;
++ (unsigned)childCountForToken:(unsigned int)token formula:(id)formula;
 @end
 
 @implementation EDTokenTree
 
-+ (id)buildSubtree:(unsigned int)a3 formula:(id)a4
++ (id)buildSubtree:(unsigned int)subtree formula:(id)formula
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 tokenCount] > a3)
+  subtreeCopy = subtree;
+  formulaCopy = formula;
+  v7 = formulaCopy;
+  if (formulaCopy && [formulaCopy tokenCount] > subtree)
   {
-    v8 = [a1 buildSubtreeAtIndex:&v10 formula:v7];
+    v8 = [self buildSubtreeAtIndex:&subtreeCopy formula:v7];
   }
 
   else
@@ -25,28 +25,28 @@
   return v8;
 }
 
-+ (id)buildSubtreeAtIndex:(unsigned int *)a3 formula:(id)a4
++ (id)buildSubtreeAtIndex:(unsigned int *)index formula:(id)formula
 {
-  v6 = a4;
-  v7 = [v6 tokenTypeAtIndex:*a3];
+  formulaCopy = formula;
+  v7 = [formulaCopy tokenTypeAtIndex:*index];
   if (v7)
   {
-    v8 = [EDTokenTreeNode tokenTreeNodeWithIndexAndType:*a3 type:v7];
-    v9 = [a1 childCountForToken:*a3 formula:v6];
+    v8 = [EDTokenTreeNode tokenTreeNodeWithIndexAndType:*index type:v7];
+    v9 = [self childCountForToken:*index formula:formulaCopy];
     if (v9)
     {
       v10 = 0;
       v11 = 0;
       do
       {
-        if (!*a3)
+        if (!*index)
         {
           break;
         }
 
-        --*a3;
-        v12 = [a1 buildSubtreeAtIndex:a3 formula:v6];
-        if (([a1 isTokenNoOp:objc_msgSend(v12 formula:{"tokenIndex"), v6}] & 1) == 0)
+        --*index;
+        v12 = [self buildSubtreeAtIndex:index formula:formulaCopy];
+        if (([self isTokenNoOp:objc_msgSend(v12 formula:{"tokenIndex"), formulaCopy}] & 1) == 0)
         {
           [v8 setFirstChild:v12];
           [v12 setSibling:v11];
@@ -74,12 +74,12 @@
   return v8;
 }
 
-+ (unsigned)childCountForToken:(unsigned int)a3 formula:(id)a4
++ (unsigned)childCountForToken:(unsigned int)token formula:(id)formula
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || [v6 tokenCount] <= v4)
+  v4 = *&token;
+  formulaCopy = formula;
+  v7 = formulaCopy;
+  if (!formulaCopy || [formulaCopy tokenCount] <= v4)
   {
     goto LABEL_18;
   }
@@ -113,7 +113,7 @@ LABEL_18:
 
       if (v10 == 25)
       {
-        v12 = [a1 isTokenAttrASum:{*objc_msgSend(v7, "lastExtendedDataForTokenAtIndex:length:", v4, &v13)}];
+        v12 = [self isTokenAttrASum:{*objc_msgSend(v7, "lastExtendedDataForTokenAtIndex:length:", v4, &v13)}];
         goto LABEL_25;
       }
 
@@ -163,12 +163,12 @@ LABEL_19:
   return v9;
 }
 
-+ (BOOL)isTokenNoOp:(unsigned int)a3 formula:(id)a4
++ (BOOL)isTokenNoOp:(unsigned int)op formula:(id)formula
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || [v6 tokenCount] <= v4)
+  v4 = *&op;
+  formulaCopy = formula;
+  v7 = formulaCopy;
+  if (!formulaCopy || [formulaCopy tokenCount] <= v4)
   {
     LOBYTE(v9) = 1;
     goto LABEL_10;
@@ -188,7 +188,7 @@ LABEL_19:
       if (v8 == 25)
       {
         v11 = 0;
-        v9 = [a1 isTokenAttrASum:{*objc_msgSend(v7, "lastExtendedDataForTokenAtIndex:length:", v4, &v11)}] ^ 1;
+        v9 = [self isTokenAttrASum:{*objc_msgSend(v7, "lastExtendedDataForTokenAtIndex:length:", v4, &v11)}] ^ 1;
         goto LABEL_10;
       }
 

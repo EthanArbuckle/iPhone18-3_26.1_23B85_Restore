@@ -1,124 +1,124 @@
 @interface NLSmartGoalStore
-+ (id)_activityTypeKeyForActivityType:(id)a3;
-+ (id)_activityTypeKeyForActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 swimmingLocationType:(int64_t)a5 metadata:(id)a6;
++ (id)_activityTypeKeyForActivityType:(id)type;
++ (id)_activityTypeKeyForActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor swimmingLocationType:(int64_t)type metadata:(id)metadata;
 + (id)unsupportedWorkouts;
-+ (void)_migratePropertiesFromOccurrenceRegistry:(id)a3 toOccurrenceRegistry:(id)a4;
-- (BOOL)containsActivityType:(id)a3;
-- (BOOL)isHiddenActivityType:(id)a3;
-- (NLSmartGoalStore)initWithHealthStore:(id)a3;
-- (NLSmartGoalStore)initWithHealthStore:(id)a3 userDefaults:(id)a4 activityMoveMode:(int64_t)a5;
-- (id)_activityTypeForWorkoutOccurrenceKey:(id)a3;
-- (id)_createRegistryForActivityType:(id)a3;
-- (id)_readOccurrenceRegistryForKey:(id)a3;
-- (id)_replaceDeprecatedActivityTypeWithNewActivityType:(id)a3;
++ (void)_migratePropertiesFromOccurrenceRegistry:(id)registry toOccurrenceRegistry:(id)occurrenceRegistry;
+- (BOOL)containsActivityType:(id)type;
+- (BOOL)isHiddenActivityType:(id)type;
+- (NLSmartGoalStore)initWithHealthStore:(id)store;
+- (NLSmartGoalStore)initWithHealthStore:(id)store userDefaults:(id)defaults activityMoveMode:(int64_t)mode;
+- (id)_activityTypeForWorkoutOccurrenceKey:(id)key;
+- (id)_createRegistryForActivityType:(id)type;
+- (id)_readOccurrenceRegistryForKey:(id)key;
+- (id)_replaceDeprecatedActivityTypeWithNewActivityType:(id)type;
 - (id)_sortedRegistryList;
-- (id)_visibleActivityTypesWithDefaultActivityTypes:(id)a3 unsupportedActivityTypes:(id)a4;
+- (id)_visibleActivityTypesWithDefaultActivityTypes:(id)types unsupportedActivityTypes:(id)activityTypes;
 - (id)_visibleRegistries;
-- (id)activityTypeKeyForActivityType:(id)a3;
-- (id)lastGoalForActivityType:(id)a3;
-- (id)mostRecentOccurrenceDateForActivityType:(id)a3;
-- (id)removeDuplicateActivityTypes:(id)a3;
-- (id)workoutActivityTypesInFrequencyOrderDescendingWithDefaultActivities:(id)a3 unsupportedActivities:(id)a4;
-- (int64_t)inferLocationTypeForActivityTypeIdentifier:(unint64_t)a3;
-- (int64_t)numberOfCompletedActivitiesForType:(id)a3;
+- (id)activityTypeKeyForActivityType:(id)type;
+- (id)lastGoalForActivityType:(id)type;
+- (id)mostRecentOccurrenceDateForActivityType:(id)type;
+- (id)removeDuplicateActivityTypes:(id)types;
+- (id)workoutActivityTypesInFrequencyOrderDescendingWithDefaultActivities:(id)activities unsupportedActivities:(id)unsupportedActivities;
+- (int64_t)inferLocationTypeForActivityTypeIdentifier:(unint64_t)identifier;
+- (int64_t)numberOfCompletedActivitiesForType:(id)type;
 - (void)_activityMoveModeDidUpdate;
-- (void)_addRegistryEntryForActivityType:(id)a3 goal:(id)a4 endDate:(id)a5;
-- (void)_buildWorkoutOccurrenceDataWithWorkouts:(id)a3 priorVersionOccurrenceRegistry:(id)a4;
+- (void)_addRegistryEntryForActivityType:(id)type goal:(id)goal endDate:(id)date;
+- (void)_buildWorkoutOccurrenceDataWithWorkouts:(id)workouts priorVersionOccurrenceRegistry:(id)registry;
 - (void)_cleanupDuplicateActivityTypes;
 - (void)_cleanupUnsupportedGoalTypes;
-- (void)_handleDidSaveCopiedManagedConfigurationForActivityType:(id)a3;
+- (void)_handleDidSaveCopiedManagedConfigurationForActivityType:(id)type;
 - (void)_listenForNotifications;
 - (void)_populateOccurrenceRegistryFromHealthDatabaseIfNeeded;
-- (void)_updateMainRegistryWithIndividualRegistry:(id)a3;
+- (void)_updateMainRegistryWithIndividualRegistry:(id)registry;
 - (void)_willEnterForeground;
 - (void)dealloc;
-- (void)hideActivityType:(id)a3;
-- (void)lastPoolLengthWithActivityType:(id)a3 completion:(id)a4;
-- (void)lastPoolLengthWithCompletion:(id)a3;
-- (void)lastWorkoutWithActivityType:(id)a3 handler:(id)a4;
-- (void)lastWorkoutWithHandler:(id)a3;
-- (void)registerWorkoutOccurrenceWithActivityType:(id)a3 goal:(id)a4 date:(id)a5;
+- (void)hideActivityType:(id)type;
+- (void)lastPoolLengthWithActivityType:(id)type completion:(id)completion;
+- (void)lastPoolLengthWithCompletion:(id)completion;
+- (void)lastWorkoutWithActivityType:(id)type handler:(id)handler;
+- (void)lastWorkoutWithHandler:(id)handler;
+- (void)registerWorkoutOccurrenceWithActivityType:(id)type goal:(id)goal date:(id)date;
 - (void)resetOccurrences;
-- (void)setActivityMoveMode:(int64_t)a3;
-- (void)setActivityPickerActivityMoveMode:(int64_t)a3 defaultActivityTypes:(id)a4;
-- (void)setCurrentDate:(id)a3;
-- (void)setIsWheelchairUser:(BOOL)a3;
-- (void)setOccurrenceRegistry:(id)a3;
-- (void)showActivityType:(id)a3;
+- (void)setActivityMoveMode:(int64_t)mode;
+- (void)setActivityPickerActivityMoveMode:(int64_t)mode defaultActivityTypes:(id)types;
+- (void)setCurrentDate:(id)date;
+- (void)setIsWheelchairUser:(BOOL)user;
+- (void)setOccurrenceRegistry:(id)registry;
+- (void)showActivityType:(id)type;
 @end
 
 @implementation NLSmartGoalStore
 
-- (NLSmartGoalStore)initWithHealthStore:(id)a3
+- (NLSmartGoalStore)initWithHealthStore:(id)store
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = v10;
+  objc_storeStrong(location, store);
+  v6 = selfCopy;
   v5 = location[0];
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v3 = FIActivityMoveModeUserDefault();
-  v10 = 0;
-  v10 = [(NLSmartGoalStore *)v6 initWithHealthStore:v5 userDefaults:v7 activityMoveMode:v3];
-  v8 = MEMORY[0x277D82BE0](v10);
-  MEMORY[0x277D82BD8](v7);
+  selfCopy = 0;
+  selfCopy = [(NLSmartGoalStore *)v6 initWithHealthStore:v5 userDefaults:standardUserDefaults activityMoveMode:v3];
+  v8 = MEMORY[0x277D82BE0](selfCopy);
+  MEMORY[0x277D82BD8](standardUserDefaults);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (NLSmartGoalStore)initWithHealthStore:(id)a3 userDefaults:(id)a4 activityMoveMode:(int64_t)a5
+- (NLSmartGoalStore)initWithHealthStore:(id)store userDefaults:(id)defaults activityMoveMode:(int64_t)mode
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, store);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21 = a5;
-  v5 = v24;
-  v24 = 0;
+  objc_storeStrong(&v22, defaults);
+  modeCopy = mode;
+  v5 = selfCopy;
+  selfCopy = 0;
   v20.receiver = v5;
   v20.super_class = NLSmartGoalStore;
   v11 = [(NLSmartGoalStore *)&v20 init];
-  v24 = v11;
-  objc_storeStrong(&v24, v11);
+  selfCopy = v11;
+  objc_storeStrong(&selfCopy, v11);
   if (v11)
   {
-    objc_storeStrong(&v24->_healthStore, location[0]);
-    objc_storeStrong(&v24->_userDefaults, v22);
-    v6 = [(NLSmartGoalStore *)v24 _readOccurrenceRegistryForKey:@"NLOccurenceDictionaryVersion5"];
-    occurrenceRegistry = v24->_occurrenceRegistry;
-    v24->_occurrenceRegistry = v6;
+    objc_storeStrong(&selfCopy->_healthStore, location[0]);
+    objc_storeStrong(&selfCopy->_userDefaults, v22);
+    v6 = [(NLSmartGoalStore *)selfCopy _readOccurrenceRegistryForKey:@"NLOccurenceDictionaryVersion5"];
+    occurrenceRegistry = selfCopy->_occurrenceRegistry;
+    selfCopy->_occurrenceRegistry = v6;
     *&v8 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
-    v24->_activityMoveMode = v21;
-    [(NLSmartGoalStore *)v24 _listenForNotifications];
-    if (v24->_occurrenceRegistry)
+    selfCopy->_activityMoveMode = modeCopy;
+    [(NLSmartGoalStore *)selfCopy _listenForNotifications];
+    if (selfCopy->_occurrenceRegistry)
     {
-      [(NLSmartGoalStore *)v24 _cleanupUnsupportedGoalTypes];
-      [(NLSmartGoalStore *)v24 _cleanupDuplicateActivityTypes];
+      [(NLSmartGoalStore *)selfCopy _cleanupUnsupportedGoalTypes];
+      [(NLSmartGoalStore *)selfCopy _cleanupDuplicateActivityTypes];
       v14 = MEMORY[0x277D85DD0];
       v15 = -1073741824;
       v16 = 0;
       v17 = __70__NLSmartGoalStore_initWithHealthStore_userDefaults_activityMoveMode___block_invoke;
       v18 = &unk_277D89120;
-      v19 = MEMORY[0x277D82BE0](v24);
+      v19 = MEMORY[0x277D82BE0](selfCopy);
       [NLGuidedActivityTypesMigrator migrateGuidedActivityTypesIfNeededWith:&v14];
       objc_storeStrong(&v19, 0);
     }
 
     else
     {
-      v24->_shouldPopulateOccurrenceRegistryFromHealthDatabase = 1;
-      [(NLSmartGoalStore *)v24 _populateOccurrenceRegistryFromHealthDatabaseIfNeeded];
+      selfCopy->_shouldPopulateOccurrenceRegistryFromHealthDatabase = 1;
+      [(NLSmartGoalStore *)selfCopy _populateOccurrenceRegistryFromHealthDatabaseIfNeeded];
     }
   }
 
-  v10 = MEMORY[0x277D82BE0](v24);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
@@ -131,19 +131,19 @@ void __70__NLSmartGoalStore_initWithHealthStore_userDefaults_activityMoveMode___
   objc_storeStrong(location, 0);
 }
 
-- (void)setIsWheelchairUser:(BOOL)a3
+- (void)setIsWheelchairUser:(BOOL)user
 {
-  if (a3 != self->_isWheelchairUser)
+  if (user != self->_isWheelchairUser)
   {
-    self->_isWheelchairUser = a3;
+    self->_isWheelchairUser = user;
   }
 }
 
-- (void)setActivityMoveMode:(int64_t)a3
+- (void)setActivityMoveMode:(int64_t)mode
 {
-  if (a3 != self->_activityMoveMode)
+  if (mode != self->_activityMoveMode)
   {
-    self->_activityMoveMode = a3;
+    self->_activityMoveMode = mode;
     [(NLSmartGoalStore *)self _cleanupUnsupportedGoalTypes];
   }
 }
@@ -151,12 +151,12 @@ void __70__NLSmartGoalStore_initWithHealthStore_userDefaults_activityMoveMode___
 - (void)_cleanupUnsupportedGoalTypes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   memset(__b, 0, sizeof(__b));
-  v9 = [(NLSmartGoalStore *)v15 occurrenceRegistry];
-  obj = [(NSDictionary *)v9 allValues];
-  v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v16 count:16, MEMORY[0x277D82BD8](v9).n128_f64[0]];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  obj = [(NSDictionary *)occurrenceRegistry allValues];
+  v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v16 count:16, MEMORY[0x277D82BD8](occurrenceRegistry).n128_f64[0]];
   if (v11)
   {
     v6 = *__b[2];
@@ -171,11 +171,11 @@ void __70__NLSmartGoalStore_initWithHealthStore_userDefaults_activityMoveMode___
       }
 
       v13 = *(__b[1] + 8 * v7);
-      v4 = [v13 lastActivityGoal];
-      v3 = [v4 compatibleWithActivityMoveMode:{-[NLSmartGoalStore activityMoveMode](v15, "activityMoveMode")}];
+      lastActivityGoal = [v13 lastActivityGoal];
+      v3 = [lastActivityGoal compatibleWithActivityMoveMode:{-[NLSmartGoalStore activityMoveMode](selfCopy, "activityMoveMode")}];
       [v13 setLastActivityGoal:?];
       MEMORY[0x277D82BD8](v3);
-      *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
+      *&v2 = MEMORY[0x277D82BD8](lastActivityGoal).n128_u64[0];
       ++v7;
       if (v5 + 1 >= v8)
       {
@@ -201,14 +201,14 @@ void __70__NLSmartGoalStore_initWithHealthStore_userDefaults_activityMoveMode___
   MEMORY[0x277D82BD8](v2);
 }
 
-- (id)removeDuplicateActivityTypes:(id)a3
+- (id)removeDuplicateActivityTypes:(id)types
 {
   v37 = *MEMORY[0x277D85DE8];
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = [MEMORY[0x277CBEB38] dictionary];
+  objc_storeStrong(location, types);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   memset(__b, 0, sizeof(__b));
   obj = [location[0] allValues];
   v29 = [obj countByEnumeratingWithState:__b objects:v36 count:16];
@@ -226,46 +226,46 @@ void __70__NLSmartGoalStore_initWithHealthStore_userDefaults_activityMoveMode___
       }
 
       v32 = *(__b[1] + 8 * v26);
-      v19 = v35;
-      v21 = [v32 activityType];
+      v19 = selfCopy;
+      activityType = [v32 activityType];
       v20 = [(NLSmartGoalStore *)v19 _replaceDeprecatedActivityTypeWithNewActivityType:?];
       [v32 setActivityType:?];
       MEMORY[0x277D82BD8](v20);
-      *&v3 = MEMORY[0x277D82BD8](v21).n128_u64[0];
-      v22 = [v32 activityType];
+      *&v3 = MEMORY[0x277D82BD8](activityType).n128_u64[0];
+      activityType2 = [v32 activityType];
       v30 = [NLSmartGoalStore _activityTypeKeyForActivityType:?];
-      *&v4 = MEMORY[0x277D82BD8](v22).n128_u64[0];
-      v23 = [v33 objectForKey:{v30, v4}];
+      *&v4 = MEMORY[0x277D82BD8](activityType2).n128_u64[0];
+      v23 = [dictionary objectForKey:{v30, v4}];
       *&v5 = MEMORY[0x277D82BD8](v23).n128_u64[0];
       if (v23)
       {
-        v16 = [v33 objectForKeyedSubscript:{v30, v5}];
-        v15 = [v16 endDates];
-        v14 = [v32 endDates];
-        v13 = [v15 arrayByAddingObjectsFromArray:?];
-        v12 = [v33 objectForKeyedSubscript:v30];
+        v16 = [dictionary objectForKeyedSubscript:{v30, v5}];
+        endDates = [v16 endDates];
+        endDates2 = [v32 endDates];
+        v13 = [endDates arrayByAddingObjectsFromArray:?];
+        v12 = [dictionary objectForKeyedSubscript:v30];
         [v12 setEndDates:v13];
         MEMORY[0x277D82BD8](v12);
         MEMORY[0x277D82BD8](v13);
-        MEMORY[0x277D82BD8](v14);
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](endDates2);
+        MEMORY[0x277D82BD8](endDates);
         *&v6 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-        v17 = [v32 lastActivityGoal];
-        v18 = [v17 goalTypeIdentifier];
-        *&v7 = MEMORY[0x277D82BD8](v17).n128_u64[0];
-        if (v18)
+        lastActivityGoal = [v32 lastActivityGoal];
+        goalTypeIdentifier = [lastActivityGoal goalTypeIdentifier];
+        *&v7 = MEMORY[0x277D82BD8](lastActivityGoal).n128_u64[0];
+        if (goalTypeIdentifier)
         {
-          v11 = [v32 lastActivityGoal];
-          v10 = [v33 objectForKeyedSubscript:v30];
-          [v10 setLastActivityGoal:v11];
+          lastActivityGoal2 = [v32 lastActivityGoal];
+          v10 = [dictionary objectForKeyedSubscript:v30];
+          [v10 setLastActivityGoal:lastActivityGoal2];
           MEMORY[0x277D82BD8](v10);
-          MEMORY[0x277D82BD8](v11);
+          MEMORY[0x277D82BD8](lastActivityGoal2);
         }
       }
 
       else
       {
-        [v33 setObject:v32 forKeyedSubscript:{v30, v5}];
+        [dictionary setObject:v32 forKeyedSubscript:{v30, v5}];
       }
 
       objc_storeStrong(&v30, 0);
@@ -283,27 +283,27 @@ void __70__NLSmartGoalStore_initWithHealthStore_userDefaults_activityMoveMode___
   }
 
   MEMORY[0x277D82BD8](obj);
-  v9 = MEMORY[0x277D82BE0](v33);
-  objc_storeStrong(&v33, 0);
+  v9 = MEMORY[0x277D82BE0](dictionary);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)_replaceDeprecatedActivityTypeWithNewActivityType:(id)a3
+- (id)_replaceDeprecatedActivityTypeWithNewActivityType:(id)type
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   if ([location[0] effectiveTypeIdentifier] == 14)
   {
     v6 = MEMORY[0x277D0A810];
-    v5 = [location[0] isIndoor];
-    v7 = [location[0] metadata];
-    v9 = [v6 activityTypeWithHKWorkoutActivityTypeIdentifier:77 isIndoor:v5 metadata:?];
-    MEMORY[0x277D82BD8](v7);
+    isIndoor = [location[0] isIndoor];
+    metadata = [location[0] metadata];
+    v9 = [v6 activityTypeWithHKWorkoutActivityTypeIdentifier:77 isIndoor:isIndoor metadata:?];
+    MEMORY[0x277D82BD8](metadata);
   }
 
   else
@@ -317,34 +317,34 @@ void __70__NLSmartGoalStore_initWithHealthStore_userDefaults_activityMoveMode___
   return v3;
 }
 
-- (void)lastPoolLengthWithCompletion:(id)a3
+- (void)lastPoolLengthWithCompletion:(id)completion
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D0A810];
   v9 = *MEMORY[0x277CCC510];
   v10[0] = &unk_282279C70;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v6 = [v4 activityTypeWithHKWorkoutActivityTypeIdentifier:46 isIndoor:0 metadata:?];
   *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  [(NLSmartGoalStore *)v8 lastPoolLengthWithActivityType:v6 completion:location[0], v3];
+  [(NLSmartGoalStore *)selfCopy lastPoolLengthWithActivityType:v6 completion:location[0], v3];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)lastPoolLengthWithActivityType:(id)a3 completion:(id)a4
+- (void)lastPoolLengthWithActivityType:(id)type completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v6 = v15;
+  objc_storeStrong(&v13, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
@@ -375,13 +375,13 @@ void __62__NLSmartGoalStore_lastPoolLengthWithActivityType_completion___block_in
   objc_storeStrong(location, 0);
 }
 
-- (void)lastWorkoutWithHandler:(id)a3
+- (void)lastWorkoutWithHandler:(id)handler
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
+  objc_storeStrong(location, handler);
+  v3 = selfCopy;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -405,18 +405,18 @@ void __43__NLSmartGoalStore_lastWorkoutWithHandler___block_invoke(void *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (void)lastWorkoutWithActivityType:(id)a3 handler:(id)a4
+- (void)lastWorkoutWithActivityType:(id)type handler:(id)handler
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, handler);
   v5 = [MEMORY[0x277CCD838] lastWorkoutQueryWithActivityType:location[0] completion:v6];
   if (v5)
   {
-    [(HKHealthStore *)v8->_healthStore executeQuery:v5];
+    [(HKHealthStore *)selfCopy->_healthStore executeQuery:v5];
   }
 
   objc_storeStrong(&v5, 0);
@@ -424,24 +424,24 @@ void __43__NLSmartGoalStore_lastWorkoutWithHandler___block_invoke(void *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (id)lastGoalForActivityType:(id)a3
+- (id)lastGoalForActivityType:(id)type
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v8 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
-  v5 = [(NLSmartGoalStore *)v10 occurrenceRegistry];
-  v7 = [(NSDictionary *)v5 objectForKeyedSubscript:v8];
-  v6 = [v7 lastActivityGoal];
-  if (!v6)
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v7 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v8];
+  lastActivityGoal = [v7 lastActivityGoal];
+  if (!lastActivityGoal)
   {
-    v6 = [MEMORY[0x277D0A838] goalWithGoalTypeIdentifier:0 value:0];
+    lastActivityGoal = [MEMORY[0x277D0A838] goalWithGoalTypeIdentifier:0 value:0];
     MEMORY[0x277D82BD8](0);
   }
 
-  v4 = MEMORY[0x277D82BE0](v6);
-  objc_storeStrong(&v6, 0);
+  v4 = MEMORY[0x277D82BE0](lastActivityGoal);
+  objc_storeStrong(&lastActivityGoal, 0);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
@@ -449,16 +449,16 @@ void __43__NLSmartGoalStore_lastWorkoutWithHandler___block_invoke(void *a1, void
   return v4;
 }
 
-- (int64_t)numberOfCompletedActivitiesForType:(id)a3
+- (int64_t)numberOfCompletedActivitiesForType:(id)type
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v8 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
-  v5 = [(NLSmartGoalStore *)v10 occurrenceRegistry];
-  v7 = [(NSDictionary *)v5 objectForKeyedSubscript:v8];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v7 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v8];
+  *&v3 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
   v6 = [v7 count];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
@@ -466,23 +466,23 @@ void __43__NLSmartGoalStore_lastWorkoutWithHandler___block_invoke(void *a1, void
   return v6;
 }
 
-- (int64_t)inferLocationTypeForActivityTypeIdentifier:(unint64_t)a3
+- (int64_t)inferLocationTypeForActivityTypeIdentifier:(unint64_t)identifier
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = [NLSmartGoalStore _activityTypeKeyForActivityTypeIdentifier:"_activityTypeKeyForActivityTypeIdentifier:isIndoor:swimmingLocationType:metadata:" isIndoor:a3 swimmingLocationType:1 metadata:?];
-  location = [NLSmartGoalStore _activityTypeKeyForActivityTypeIdentifier:v12 isIndoor:0 swimmingLocationType:0 metadata:0];
-  v5 = [(NLSmartGoalStore *)v14 occurrenceRegistry];
-  v4 = [(NSDictionary *)v5 objectForKeyedSubscript:v11];
+  identifierCopy = identifier;
+  v11 = [NLSmartGoalStore _activityTypeKeyForActivityTypeIdentifier:"_activityTypeKeyForActivityTypeIdentifier:isIndoor:swimmingLocationType:metadata:" isIndoor:identifier swimmingLocationType:1 metadata:?];
+  location = [NLSmartGoalStore _activityTypeKeyForActivityTypeIdentifier:identifierCopy isIndoor:0 swimmingLocationType:0 metadata:0];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v4 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v11];
   v6 = [v4 count];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
-  v8 = [(NLSmartGoalStore *)v14 occurrenceRegistry];
-  v7 = [(NSDictionary *)v8 objectForKeyedSubscript:location];
+  MEMORY[0x277D82BD8](occurrenceRegistry);
+  occurrenceRegistry2 = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v7 = [(NSDictionary *)occurrenceRegistry2 objectForKeyedSubscript:location];
   v9 = [v7 count];
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](occurrenceRegistry2);
   if ((v6 + v9) <= 0.0 || v6 < (3.0 * v9))
   {
     if ((v6 + v9) <= 0.0 || v9 < (3.0 * v6))
@@ -524,7 +524,7 @@ void __43__NLSmartGoalStore_lastWorkoutWithHandler___block_invoke(void *a1, void
 
 - (void)_populateOccurrenceRegistryFromHealthDatabaseIfNeeded
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   if ([(NLSmartGoalStore *)self shouldPopulateOccurrenceRegistryFromHealthDatabase])
   {
@@ -540,15 +540,15 @@ void __43__NLSmartGoalStore_lastWorkoutWithHandler___block_invoke(void *a1, void
     }
 
     objc_storeStrong(location, 0);
-    [(NLSmartGoalStore *)v16 setShouldPopulateOccurrenceRegistryFromHealthDatabase:0];
-    objc_initWeak(&v12, v16);
+    [(NLSmartGoalStore *)selfCopy setShouldPopulateOccurrenceRegistryFromHealthDatabase:0];
+    objc_initWeak(&v12, selfCopy);
     queue = dispatch_get_global_queue(21, 0);
     v5 = MEMORY[0x277D85DD0];
     v6 = -1073741824;
     v7 = 0;
     v8 = __73__NLSmartGoalStore__populateOccurrenceRegistryFromHealthDatabaseIfNeeded__block_invoke;
     v9 = &unk_277D89198;
-    v10 = MEMORY[0x277D82BE0](v16);
+    v10 = MEMORY[0x277D82BE0](selfCopy);
     objc_copyWeak(&v11, &v12);
     dispatch_async(queue, &v5);
     MEMORY[0x277D82BD8](queue);
@@ -726,20 +726,20 @@ void __73__NLSmartGoalStore__populateOccurrenceRegistryFromHealthDatabaseIfNeede
 - (void)_willEnterForeground
 {
   [(NLSmartGoalStore *)self _populateOccurrenceRegistryFromHealthDatabaseIfNeeded];
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  MEMORY[0x277D82BD8](v2);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  MEMORY[0x277D82BD8](defaultCenter);
 }
 
-- (void)_buildWorkoutOccurrenceDataWithWorkouts:(id)a3 priorVersionOccurrenceRegistry:(id)a4
+- (void)_buildWorkoutOccurrenceDataWithWorkouts:(id)workouts priorVersionOccurrenceRegistry:(id)registry
 {
   v49 = *MEMORY[0x277D85DE8];
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, workouts);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
+  objc_storeStrong(&v44, registry);
   v43 = objc_alloc_init(MEMORY[0x277CBEB38]);
   memset(__b, 0, sizeof(__b));
   v24 = MEMORY[0x277D82BE0](location[0]);
@@ -758,39 +758,39 @@ void __73__NLSmartGoalStore__populateOccurrenceRegistryFromHealthDatabaseIfNeede
       }
 
       v42 = *(__b[1] + 8 * v21);
-      v40 = [v42 fiui_activityType];
-      v4 = [(NLSmartGoalStore *)v46 _replaceDeprecatedActivityTypeWithNewActivityType:v40];
-      v5 = v40;
-      v40 = v4;
+      fiui_activityType = [v42 fiui_activityType];
+      v4 = [(NLSmartGoalStore *)selfCopy _replaceDeprecatedActivityTypeWithNewActivityType:fiui_activityType];
+      v5 = fiui_activityType;
+      fiui_activityType = v4;
       *&v6 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-      v39 = [NLSmartGoalStore _activityTypeKeyForActivityType:v40, v6];
+      v39 = [NLSmartGoalStore _activityTypeKeyForActivityType:fiui_activityType, v6];
       v38 = [v43 objectForKeyedSubscript:v39];
       if (!v38)
       {
-        v7 = [NLActivityTypeOcurrenceRegistry registryWithActivityType:v40 dates:MEMORY[0x277CBEBF8]];
+        v7 = [NLActivityTypeOcurrenceRegistry registryWithActivityType:fiui_activityType dates:MEMORY[0x277CBEBF8]];
         v8 = v38;
         v38 = v7;
         MEMORY[0x277D82BD8](v8);
       }
 
       v17 = v38;
-      v18 = [v42 endDate];
+      endDate = [v42 endDate];
       [(NLActivityTypeOcurrenceRegistry *)v17 addOccurrenceWithEndDate:?];
-      *&v9 = MEMORY[0x277D82BD8](v18).n128_u64[0];
-      v37 = [v42 _goalType];
-      v36 = [v42 _goal];
-      v35 = [MEMORY[0x277D0A838] goalWithGoalTypeIdentifier:v37 value:v36];
-      v10 = [v35 compatibleWithActivityMoveMode:{-[NLSmartGoalStore activityMoveMode](v46, "activityMoveMode")}];
+      *&v9 = MEMORY[0x277D82BD8](endDate).n128_u64[0];
+      _goalType = [v42 _goalType];
+      _goal = [v42 _goal];
+      v35 = [MEMORY[0x277D0A838] goalWithGoalTypeIdentifier:_goalType value:_goal];
+      v10 = [v35 compatibleWithActivityMoveMode:{-[NLSmartGoalStore activityMoveMode](selfCopy, "activityMoveMode")}];
       v11 = v35;
       v35 = v10;
       *&v12 = MEMORY[0x277D82BD8](v11).n128_u64[0];
       [(NLActivityTypeOcurrenceRegistry *)v38 setLastActivityGoal:v35, v12];
       [v43 setObject:v38 forKeyedSubscript:v39];
       objc_storeStrong(&v35, 0);
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&_goal, 0);
       objc_storeStrong(&v38, 0);
       objc_storeStrong(&v39, 0);
-      objc_storeStrong(&v40, 0);
+      objc_storeStrong(&fiui_activityType, 0);
       ++v21;
       if (v19 + 1 >= v22)
       {
@@ -824,7 +824,7 @@ void __73__NLSmartGoalStore__populateOccurrenceRegistryFromHealthDatabaseIfNeede
   v28 = 0;
   v29 = __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersionOccurrenceRegistry___block_invoke;
   v30 = &unk_277D88998;
-  v31 = MEMORY[0x277D82BE0](v46);
+  v31 = MEMORY[0x277D82BE0](selfCopy);
   v32 = MEMORY[0x277D82BE0](v43);
   dispatch_async(queue, &v26);
   MEMORY[0x277D82BD8](queue);
@@ -894,20 +894,20 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
   objc_storeStrong(location, 0);
 }
 
-+ (void)_migratePropertiesFromOccurrenceRegistry:(id)a3 toOccurrenceRegistry:(id)a4
++ (void)_migratePropertiesFromOccurrenceRegistry:(id)registry toOccurrenceRegistry:(id)occurrenceRegistry
 {
   v26 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, registry);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, occurrenceRegistry);
   if (location[0])
   {
     memset(__b, 0, sizeof(__b));
-    v14 = [location[0] allKeys];
-    v15 = [v14 countByEnumeratingWithState:__b objects:v25 count:16];
+    allKeys = [location[0] allKeys];
+    v15 = [allKeys countByEnumeratingWithState:__b objects:v25 count:16];
     if (v15)
     {
       v11 = *__b[2];
@@ -918,28 +918,28 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
         v10 = v12;
         if (*__b[2] != v11)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v22 = *(__b[1] + 8 * v12);
         v20 = [location[0] objectForKeyedSubscript:v22];
-        v9 = [v20 activityType];
+        activityType = [v20 activityType];
         v19 = [NLSmartGoalStore _activityTypeKeyForActivityType:?];
-        *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+        *&v4 = MEMORY[0x277D82BD8](activityType).n128_u64[0];
         v18 = [v23 objectForKeyedSubscript:{v19, v4}];
         if (v18)
         {
-          v5 = [v20 hidden];
-          [v18 setHidden:v5];
+          hidden = [v20 hidden];
+          [v18 setHidden:hidden];
         }
 
         else
         {
-          v8 = [v20 activityType];
+          activityType2 = [v20 activityType];
           v17 = [NLActivityTypeOcurrenceRegistry registryWithActivityType:"registryWithActivityType:dates:" dates:?];
-          *&v6 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-          v7 = [v20 hidden];
-          [(NLActivityTypeOcurrenceRegistry *)v17 setHidden:v7];
+          *&v6 = MEMORY[0x277D82BD8](activityType2).n128_u64[0];
+          hidden2 = [v20 hidden];
+          [(NLActivityTypeOcurrenceRegistry *)v17 setHidden:hidden2];
           [v23 setObject:v17 forKeyedSubscript:v19];
           objc_storeStrong(&v17, 0);
         }
@@ -951,7 +951,7 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
         if (v10 + 1 >= v13)
         {
           v12 = 0;
-          v13 = [v14 countByEnumeratingWithState:__b objects:v25 count:16];
+          v13 = [allKeys countByEnumeratingWithState:__b objects:v25 count:16];
           if (!v13)
           {
             break;
@@ -960,7 +960,7 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
       }
     }
 
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](allKeys);
   }
 
   objc_storeStrong(&v23, 0);
@@ -968,12 +968,12 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_readOccurrenceRegistryForKey:(id)a3
+- (id)_readOccurrenceRegistryForKey:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v5 = 0;
   v4 = MEMORY[0x277D82BE0](0);
   objc_storeStrong(&v5, 0);
@@ -982,18 +982,18 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
   return v4;
 }
 
-- (void)setOccurrenceRegistry:(id)a3
+- (void)setOccurrenceRegistry:(id)registry
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, registry);
   if (location[0])
   {
-    objc_storeStrong(&v11->_occurrenceRegistry, location[0]);
+    objc_storeStrong(&selfCopy->_occurrenceRegistry, location[0]);
     v8 = 0;
-    occurrenceRegistry = v11->_occurrenceRegistry;
+    occurrenceRegistry = selfCopy->_occurrenceRegistry;
     obj = 0;
     v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:occurrenceRegistry requiringSecureCoding:1 error:&obj];
     objc_storeStrong(&v8, obj);
@@ -1014,7 +1014,7 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
 
     else
     {
-      [(NSUserDefaults *)v11->_userDefaults setObject:v7 forKey:?];
+      [(NSUserDefaults *)selfCopy->_userDefaults setObject:v7 forKey:?];
       [MEMORY[0x277CBEBD0] fu_backupStandardUserDefaultsKey:@"NLOccurenceDictionaryVersion5"];
       v9 = 0;
     }
@@ -1025,8 +1025,8 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
 
   else
   {
-    objc_storeStrong(&v11->_occurrenceRegistry, 0);
-    [(NSUserDefaults *)v11->_userDefaults removeObjectForKey:?];
+    objc_storeStrong(&selfCopy->_occurrenceRegistry, 0);
+    [(NSUserDefaults *)selfCopy->_userDefaults removeObjectForKey:?];
     [MEMORY[0x277CBEBD0] fu_backupStandardUserDefaultsKey:@"NLOccurenceDictionaryVersion5"];
     v9 = 1;
   }
@@ -1035,15 +1035,15 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_visibleActivityTypesWithDefaultActivityTypes:(id)a3 unsupportedActivityTypes:(id)a4
+- (id)_visibleActivityTypesWithDefaultActivityTypes:(id)types unsupportedActivityTypes:(id)activityTypes
 {
   v40 = *MEMORY[0x277D85DE8];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, types);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, activityTypes);
   v34 = objc_opt_new();
   memset(__b, 0, sizeof(__b));
   v25 = MEMORY[0x277D82BE0](location[0]);
@@ -1063,9 +1063,9 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
 
       v33 = *(__b[1] + 8 * v22);
       v31 = [NLSmartGoalStore _activityTypeKeyForActivityType:v33];
-      v19 = [(NLSmartGoalStore *)v37 occurrenceRegistry];
-      v30 = [(NSDictionary *)v19 objectForKeyedSubscript:v31];
-      *&v4 = MEMORY[0x277D82BD8](v19).n128_u64[0];
+      occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+      v30 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v31];
+      *&v4 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
       v29 = 0;
       if (v30)
       {
@@ -1099,8 +1099,8 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
 
   MEMORY[0x277D82BD8](v25);
   memset(v27, 0, sizeof(v27));
-  v17 = [(NLSmartGoalStore *)v37 _visibleRegistries];
-  v18 = [v17 countByEnumeratingWithState:v27 objects:v38 count:16];
+  _visibleRegistries = [(NLSmartGoalStore *)selfCopy _visibleRegistries];
+  v18 = [_visibleRegistries countByEnumeratingWithState:v27 objects:v38 count:16];
   if (v18)
   {
     v14 = *v27[2];
@@ -1111,27 +1111,27 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
       v13 = v15;
       if (*v27[2] != v14)
       {
-        objc_enumerationMutation(v17);
+        objc_enumerationMutation(_visibleRegistries);
       }
 
       v28 = *(v27[1] + 8 * v15);
       v10 = v35;
-      v11 = [v28 activityType];
+      activityType = [v28 activityType];
       v12 = [v10 containsObject:?];
-      v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+      v5 = MEMORY[0x277D82BD8](activityType).n128_u64[0];
       if ((v12 & 1) == 0)
       {
         v8 = v34;
-        v9 = [v28 activityType];
+        activityType2 = [v28 activityType];
         [v8 addObject:?];
-        v5 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+        v5 = MEMORY[0x277D82BD8](activityType2).n128_u64[0];
       }
 
       ++v15;
       if (v13 + 1 >= v16)
       {
         v15 = 0;
-        v16 = [v17 countByEnumeratingWithState:v27 objects:v38 count:{16, *&v5}];
+        v16 = [_visibleRegistries countByEnumeratingWithState:v27 objects:v38 count:{16, *&v5}];
         if (!v16)
         {
           break;
@@ -1140,7 +1140,7 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
     }
   }
 
-  MEMORY[0x277D82BD8](v17);
+  MEMORY[0x277D82BD8](_visibleRegistries);
   v7 = MEMORY[0x277D82BE0](v34);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
@@ -1150,42 +1150,42 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
   return v7;
 }
 
-- (BOOL)containsActivityType:(id)a3
+- (BOOL)containsActivityType:(id)type
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(NLSmartGoalStore *)v9 occurrenceRegistry];
+  objc_storeStrong(location, type);
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
   v5 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
-  v3 = [(NSDictionary *)v6 objectForKeyedSubscript:?];
+  v3 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:?];
   v7 = v3 != 0;
   MEMORY[0x277D82BD8](v3);
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](occurrenceRegistry);
   objc_storeStrong(location, 0);
   return v7;
 }
 
-- (id)mostRecentOccurrenceDateForActivityType:(id)a3
+- (id)mostRecentOccurrenceDateForActivityType:(id)type
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v13 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
-  v7 = [(NLSmartGoalStore *)v15 occurrenceRegistry];
-  v12 = [(NSDictionary *)v7 objectForKeyedSubscript:v13];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v12 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v13];
+  *&v3 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
   v10 = 0;
   v8 = 0;
   if (v12)
   {
-    v11 = [v12 endDatesWithinSpecifiedDateRange];
+    endDatesWithinSpecifiedDateRange = [v12 endDatesWithinSpecifiedDateRange];
     v10 = 1;
-    v9 = [v11 lastObject];
+    lastObject = [endDatesWithinSpecifiedDateRange lastObject];
     v8 = 1;
-    v4 = MEMORY[0x277D82BE0](v9);
+    v4 = MEMORY[0x277D82BE0](lastObject);
   }
 
   else
@@ -1196,12 +1196,12 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
   v16 = v4;
   if (v8)
   {
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](lastObject);
   }
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](endDatesWithinSpecifiedDateRange);
   }
 
   objc_storeStrong(&v12, 0);
@@ -1212,34 +1212,34 @@ void __91__NLSmartGoalStore__buildWorkoutOccurrenceDataWithWorkouts_priorVersion
   return v5;
 }
 
-- (BOOL)isHiddenActivityType:(id)a3
+- (BOOL)isHiddenActivityType:(id)type
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v8 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
-  v5 = [(NLSmartGoalStore *)v10 occurrenceRegistry];
-  v7 = [(NSDictionary *)v5 objectForKeyedSubscript:v8];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  v6 = [v7 hidden];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v7 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v8];
+  *&v3 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
+  hidden = [v7 hidden];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  return v6 & 1;
+  return hidden & 1;
 }
 
 - (id)_visibleRegistries
 {
   v7[2] = self;
   v7[1] = a2;
-  v5 = [(NLSmartGoalStore *)self occurrenceRegistry];
-  v4 = [(NSDictionary *)v5 allValues];
+  occurrenceRegistry = [(NLSmartGoalStore *)self occurrenceRegistry];
+  allValues = [(NSDictionary *)occurrenceRegistry allValues];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_444];
-  v7[0] = [(NSArray *)v4 filteredArrayUsingPredicate:?];
+  v7[0] = [(NSArray *)allValues filteredArrayUsingPredicate:?];
   MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](allValues);
+  MEMORY[0x277D82BD8](occurrenceRegistry);
   v6 = MEMORY[0x277D82BE0](v7[0]);
   objc_storeStrong(v7, 0);
 
@@ -1299,8 +1299,8 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
       }
 
       v35 = *(__b[1] + 8 * v18);
-      v33 = [v35 activityType];
-      v32 = [NLSmartGoalStore _activityTypeKeyForActivityType:v33];
+      activityType = [v35 activityType];
+      v32 = [NLSmartGoalStore _activityTypeKeyForActivityType:activityType];
       _HKInitializeLogging();
       v31 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
       v30 = OS_LOG_TYPE_DEFAULT;
@@ -1308,16 +1308,16 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
       {
         v11 = v31;
         v12 = v30;
-        v15 = [v35 _mostRecentOccurrence];
-        v7 = MEMORY[0x277D82BE0](v15);
+        _mostRecentOccurrence = [v35 _mostRecentOccurrence];
+        v7 = MEMORY[0x277D82BE0](_mostRecentOccurrence);
         v29 = v7;
         v8 = v32;
-        v14 = [v33 localizedName];
-        v9 = MEMORY[0x277D82BE0](v14);
+        localizedName = [activityType localizedName];
+        v9 = MEMORY[0x277D82BE0](localizedName);
         v28 = v9;
-        v13 = [v35 endDates];
-        v10 = [v13 count];
-        if ([v33 isGuided])
+        endDates = [v35 endDates];
+        v10 = [endDates count];
+        if ([activityType isGuided])
         {
           v2 = @"YES";
         }
@@ -1329,16 +1329,16 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
 
         __os_log_helper_16_2_5_8_64_8_64_8_64_8_0_8_64(v42, v7, v8, v9, v10, v2);
         _os_log_impl(&dword_20AEA4000, v11, v12, "[SmartGoalStore] sortedRegistryList item, mostRecent: %@, key: %@ (%@), endDates: %lu, isGuided: %@", v42, 0x34u);
-        MEMORY[0x277D82BD8](v13);
-        MEMORY[0x277D82BD8](v14);
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](endDates);
+        MEMORY[0x277D82BD8](localizedName);
+        MEMORY[0x277D82BD8](_mostRecentOccurrence);
         objc_storeStrong(&v28, 0);
         objc_storeStrong(&v29, 0);
       }
 
       objc_storeStrong(&v31, 0);
       objc_storeStrong(&v32, 0);
-      objc_storeStrong(&v33, 0);
+      objc_storeStrong(&activityType, 0);
       ++v18;
       if (v16 + 1 >= v19)
       {
@@ -1374,34 +1374,34 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
   return v4;
 }
 
-- (void)_addRegistryEntryForActivityType:(id)a3 goal:(id)a4 endDate:(id)a5
+- (void)_addRegistryEntryForActivityType:(id)type goal:(id)goal endDate:(id)date
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, goal);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, date);
   v13 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
-  v11 = [(NLSmartGoalStore *)v17 occurrenceRegistry];
-  v12 = [(NSDictionary *)v11 objectForKeyedSubscript:v13];
-  v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v12 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v13];
+  v5 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
   if (!v12)
   {
-    v12 = [(NLSmartGoalStore *)v17 _createRegistryForActivityType:location[0], *&v5];
+    v12 = [(NLSmartGoalStore *)selfCopy _createRegistryForActivityType:location[0], *&v5];
     v5 = MEMORY[0x277D82BD8](0).n128_u64[0];
   }
 
   [v12 addOccurrenceWithEndDate:{v14, *&v5}];
-  v6 = [v15 compatibleWithActivityMoveMode:{-[NLSmartGoalStore activityMoveMode](v17, "activityMoveMode")}];
+  v6 = [v15 compatibleWithActivityMoveMode:{-[NLSmartGoalStore activityMoveMode](selfCopy, "activityMoveMode")}];
   v7 = v15;
   v15 = v6;
   *&v8 = MEMORY[0x277D82BD8](v7).n128_u64[0];
   [v12 setLastActivityGoal:{v15, v8}];
   [v12 setHidden:0];
-  [(NLSmartGoalStore *)v17 _updateMainRegistryWithIndividualRegistry:v12];
+  [(NLSmartGoalStore *)selfCopy _updateMainRegistryWithIndividualRegistry:v12];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
@@ -1409,14 +1409,14 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
   objc_storeStrong(location, 0);
 }
 
-- (id)_createRegistryForActivityType:(id)a3
+- (id)_createRegistryForActivityType:(id)type
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v5 = [NLActivityTypeOcurrenceRegistry registryWithActivityType:location[0] dates:MEMORY[0x277CBEBF8]];
-  [(NLActivityTypeOcurrenceRegistry *)v5 setCurrentDate:v7->_currentDate];
+  [(NLActivityTypeOcurrenceRegistry *)v5 setCurrentDate:selfCopy->_currentDate];
   v4 = MEMORY[0x277D82BE0](v5);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
@@ -1424,17 +1424,17 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
   return v4;
 }
 
-- (void)registerWorkoutOccurrenceWithActivityType:(id)a3 goal:(id)a4 date:(id)a5
+- (void)registerWorkoutOccurrenceWithActivityType:(id)type goal:(id)goal date:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, goal);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, date);
   if (+[WOStoreDemoModeProvider isRunningInStoreDemoMode])
   {
     v10 = 1;
@@ -1453,14 +1453,14 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
     objc_storeStrong(&oslog, 0);
     if (location[0])
     {
-      [(NLSmartGoalStore *)v14 _addRegistryEntryForActivityType:location[0] goal:v12 endDate:v11];
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
+      [(NLSmartGoalStore *)selfCopy _addRegistryEntryForActivityType:location[0] goal:v12 endDate:v11];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v15 = @"activityType";
       v16 = location[0];
       v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      [v6 postNotificationName:@"NLSmartGoalStoreDidUpdateOccurrenceData" object:0 userInfo:?];
+      [defaultCenter postNotificationName:@"NLSmartGoalStoreDidUpdateOccurrenceData" object:0 userInfo:?];
       MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](defaultCenter);
       v10 = 0;
     }
 
@@ -1476,34 +1476,34 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateMainRegistryWithIndividualRegistry:(id)a3
+- (void)_updateMainRegistryWithIndividualRegistry:(id)registry
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] activityType];
-  v7 = [NLSmartGoalStore _activityTypeKeyForActivityType:v8];
-  v4 = [(NLSmartGoalStore *)v10 occurrenceRegistry];
-  v6 = [(NSDictionary *)v4 mutableCopy];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
+  objc_storeStrong(location, registry);
+  activityType = [location[0] activityType];
+  v7 = [NLSmartGoalStore _activityTypeKeyForActivityType:activityType];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v6 = [(NSDictionary *)occurrenceRegistry mutableCopy];
+  *&v3 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
   [v6 setObject:location[0] forKeyedSubscript:{v7, v3}];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v6];
-  [(NLSmartGoalStore *)v10 setOccurrenceRegistry:?];
+  [(NLSmartGoalStore *)selfCopy setOccurrenceRegistry:?];
   MEMORY[0x277D82BD8](v5);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&activityType, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)showActivityType:(id)a3
+- (void)showActivityType:(id)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   _HKInitializeLogging();
   v10 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -1515,37 +1515,37 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
 
   objc_storeStrong(&v10, 0);
   v8 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
-  v6 = [(NLSmartGoalStore *)v12 occurrenceRegistry];
-  v7 = [(NSDictionary *)v6 objectForKeyedSubscript:v8];
-  v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v7 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v8];
+  v3 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
   if (!v7)
   {
-    v7 = [(NLSmartGoalStore *)v12 _createRegistryForActivityType:location[0], *&v3];
+    v7 = [(NLSmartGoalStore *)selfCopy _createRegistryForActivityType:location[0], *&v3];
     v3 = MEMORY[0x277D82BD8](0).n128_u64[0];
   }
 
   [v7 setHidden:{0, *&v3}];
-  [(NLSmartGoalStore *)v12 _updateMainRegistryWithIndividualRegistry:v7];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [(NLSmartGoalStore *)selfCopy _updateMainRegistryWithIndividualRegistry:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13 = @"activityType";
   v14 = location[0];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  [v5 postNotificationName:@"NLSmartGoalStoreDidShowActivityType" object:? userInfo:?];
+  [defaultCenter postNotificationName:@"NLSmartGoalStoreDidShowActivityType" object:? userInfo:?];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](defaultCenter);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)hideActivityType:(id)a3
+- (void)hideActivityType:(id)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   _HKInitializeLogging();
   v10 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -1557,39 +1557,39 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
 
   objc_storeStrong(&v10, 0);
   v8 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
-  v6 = [(NLSmartGoalStore *)v12 occurrenceRegistry];
-  v7 = [(NSDictionary *)v6 objectForKeyedSubscript:v8];
-  v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  v7 = [(NSDictionary *)occurrenceRegistry objectForKeyedSubscript:v8];
+  v3 = MEMORY[0x277D82BD8](occurrenceRegistry).n128_u64[0];
   if (!v7)
   {
-    v7 = [(NLSmartGoalStore *)v12 _createRegistryForActivityType:location[0], *&v3];
+    v7 = [(NLSmartGoalStore *)selfCopy _createRegistryForActivityType:location[0], *&v3];
     v3 = MEMORY[0x277D82BD8](0).n128_u64[0];
   }
 
   [v7 setHidden:{1, *&v3}];
-  [(NLSmartGoalStore *)v12 _updateMainRegistryWithIndividualRegistry:v7];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [(NLSmartGoalStore *)selfCopy _updateMainRegistryWithIndividualRegistry:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13 = @"activityType";
   v14 = location[0];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  [v5 postNotificationName:@"NLSmartGoalStoreDidHideActivityType" object:? userInfo:?];
+  [defaultCenter postNotificationName:@"NLSmartGoalStoreDidHideActivityType" object:? userInfo:?];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](defaultCenter);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (id)workoutActivityTypesInFrequencyOrderDescendingWithDefaultActivities:(id)a3 unsupportedActivities:(id)a4
+- (id)workoutActivityTypesInFrequencyOrderDescendingWithDefaultActivities:(id)activities unsupportedActivities:(id)unsupportedActivities
 {
   v43 = *MEMORY[0x277D85DE8];
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, activities);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, unsupportedActivities);
   if (+[WOStoreDemoModeProvider isRunningInStoreDemoMode])
   {
     v39 = MEMORY[0x277D82BE0](location[0]);
@@ -1598,10 +1598,10 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
 
   else
   {
-    v34 = [MEMORY[0x277CBEB18] array];
-    v33 = [(NLSmartGoalStore *)v38 _sortedRegistryList];
+    array = [MEMORY[0x277CBEB18] array];
+    _sortedRegistryList = [(NLSmartGoalStore *)selfCopy _sortedRegistryList];
     memset(__b, 0, sizeof(__b));
-    v21 = MEMORY[0x277D82BE0](v33);
+    v21 = MEMORY[0x277D82BE0](_sortedRegistryList);
     v22 = [v21 countByEnumeratingWithState:__b objects:v42 count:16];
     if (v22)
     {
@@ -1617,10 +1617,10 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
         }
 
         v32 = *(__b[1] + 8 * v19);
-        v15 = v34;
-        v16 = [v32 activityType];
+        v15 = array;
+        activityType = [v32 activityType];
         [v15 addObject:?];
-        *&v4 = MEMORY[0x277D82BD8](v16).n128_u64[0];
+        *&v4 = MEMORY[0x277D82BD8](activityType).n128_u64[0];
         ++v19;
         if (v17 + 1 >= v20)
         {
@@ -1634,12 +1634,12 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
       }
     }
 
-    v30 = [(NLSmartGoalStore *)v38 _visibleActivityTypesWithDefaultActivityTypes:location[0] unsupportedActivityTypes:v36, MEMORY[0x277D82BD8](v21).n128_f64[0]];
+    v30 = [(NLSmartGoalStore *)selfCopy _visibleActivityTypesWithDefaultActivityTypes:location[0] unsupportedActivityTypes:v36, MEMORY[0x277D82BD8](v21).n128_f64[0]];
     v29 = [v30 mutableCopy];
     v28 = objc_opt_new();
     v27 = [MEMORY[0x277CBEB98] setWithArray:v36];
     memset(v25, 0, sizeof(v25));
-    v13 = MEMORY[0x277D82BE0](v34);
+    v13 = MEMORY[0x277D82BE0](array);
     v14 = [v13 countByEnumeratingWithState:v25 objects:v41 count:16];
     if (v14)
     {
@@ -1699,8 +1699,8 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
     objc_storeStrong(&v28, 0);
     objc_storeStrong(&v29, 0);
     objc_storeStrong(&v30, 0);
-    objc_storeStrong(&v33, 0);
-    objc_storeStrong(&v34, 0);
+    objc_storeStrong(&_sortedRegistryList, 0);
+    objc_storeStrong(&array, 0);
   }
 
   objc_storeStrong(&v36, 0);
@@ -1711,71 +1711,71 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
   return v6;
 }
 
-- (id)activityTypeKeyForActivityType:(id)a3
+- (id)activityTypeKeyForActivityType:(id)type
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v4 = [NLSmartGoalStore _activityTypeKeyForActivityType:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (void)setActivityPickerActivityMoveMode:(int64_t)a3 defaultActivityTypes:(id)a4
+- (void)setActivityPickerActivityMoveMode:(int64_t)mode defaultActivityTypes:(id)types
 {
   location[3] = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = mode;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, types);
   objc_storeStrong(location, 0);
 }
 
-+ (id)_activityTypeKeyForActivityType:(id)a3
++ (id)_activityTypeKeyForActivityType:(id)type
 {
-  v11 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = v11;
-  v4 = [location[0] effectiveTypeIdentifier];
-  v5 = [location[0] isIndoor];
-  v6 = [location[0] swimmingLocationType];
-  v8 = [location[0] metadata];
-  v9 = [v7 _activityTypeKeyForActivityTypeIdentifier:v4 isIndoor:v5 swimmingLocationType:v6 metadata:?];
-  MEMORY[0x277D82BD8](v8);
+  objc_storeStrong(location, type);
+  v7 = selfCopy;
+  effectiveTypeIdentifier = [location[0] effectiveTypeIdentifier];
+  isIndoor = [location[0] isIndoor];
+  swimmingLocationType = [location[0] swimmingLocationType];
+  metadata = [location[0] metadata];
+  v9 = [v7 _activityTypeKeyForActivityTypeIdentifier:effectiveTypeIdentifier isIndoor:isIndoor swimmingLocationType:swimmingLocationType metadata:?];
+  MEMORY[0x277D82BD8](metadata);
   objc_storeStrong(location, 0);
 
   return v9;
 }
 
-+ (id)_activityTypeKeyForActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 swimmingLocationType:(int64_t)a5 metadata:(id)a6
++ (id)_activityTypeKeyForActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor swimmingLocationType:(int64_t)type metadata:(id)metadata
 {
-  v22 = a1;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v19 = a4;
-  v18 = a5;
+  identifierCopy = identifier;
+  indoorCopy = indoor;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a6);
+  objc_storeStrong(&location, metadata);
   v16 = 0;
-  if (v20 == 46)
+  if (identifierCopy == 46)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu.%lu", 46, v18];
+    typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu.%lu", 46, typeCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v20];
+    typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", identifierCopy];
   }
 
   v7 = v16;
-  v16 = v6;
+  v16 = typeCopy;
   *&v8 = MEMORY[0x277D82BD8](v7).n128_u64[0];
   v15 = [SeymourCatalogMediaTypeHelper guidedTypeStringFrom:location, v8];
-  if (!v15 && v19 && ([MEMORY[0x277D0A810] shouldDisambiguateOnLocationType:v20] & 1) != 0)
+  if (!v15 && indoorCopy && ([MEMORY[0x277D0A810] shouldDisambiguateOnLocationType:identifierCopy] & 1) != 0)
   {
     v9 = [v16 stringByAppendingString:@".indoor"];
     v10 = v16;
@@ -1799,15 +1799,15 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
   return v14;
 }
 
-- (id)_activityTypeForWorkoutOccurrenceKey:(id)a3
+- (id)_activityTypeForWorkoutOccurrenceKey:(id)key
 {
   v24 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = [location[0] integerValue];
-  if (!v19)
+  objc_storeStrong(location, key);
+  integerValue = [location[0] integerValue];
+  if (!integerValue)
   {
     _HKInitializeLogging();
     v18 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -1822,17 +1822,17 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
   }
 
   v16 = 0;
-  if (v19 == 46)
+  if (integerValue == 46)
   {
     v15 = [location[0] componentsSeparatedByString:@"."];
     if ([v15 count] > 1)
     {
       v11 = [v15 objectAtIndexedSubscript:?];
-      v12 = [v11 integerValue];
+      integerValue2 = [v11 integerValue];
       *&v3 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-      v14[1] = v12;
+      v14[1] = integerValue2;
       v21 = *MEMORY[0x277CCC510];
-      v13 = [MEMORY[0x277CCABB0] numberWithInteger:{v12, v3}];
+      v13 = [MEMORY[0x277CCABB0] numberWithInteger:{integerValue2, v3}];
       v22 = v13;
       v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v5 = v16;
@@ -1844,7 +1844,7 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
     objc_storeStrong(&v15, 0);
   }
 
-  v6 = [location[0] hasSuffix:{@"indoor", v19, MEMORY[0x277D0A810]}];
+  v6 = [location[0] hasSuffix:{@"indoor", integerValue, MEMORY[0x277D0A810]}];
   v14[0] = [v9 activityTypeWithHKWorkoutActivityTypeIdentifier:v8 isIndoor:v6 metadata:v16];
   v10 = MEMORY[0x277D82BE0](v14[0]);
   objc_storeStrong(v14, 0);
@@ -1857,7 +1857,7 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
 
 - (void)_listenForNotifications
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   name = *MEMORY[0x277CCB790];
   v6 = MEMORY[0x277D85CD0];
@@ -1867,21 +1867,21 @@ BOOL __38__NLSmartGoalStore__visibleRegistries__block_invoke(void *a1, void *a2,
   v17[1] = 3221225472;
   v17[2] = __43__NLSmartGoalStore__listenForNotifications__block_invoke;
   v17[3] = &unk_277D891E0;
-  v18[0] = MEMORY[0x277D82BE0](v19);
+  v18[0] = MEMORY[0x277D82BE0](selfCopy);
   notify_register_dispatch(name, &self->_activityMoveModeDidUpdateNotificationToken, queue, v17);
   MEMORY[0x277D82BD8](queue);
-  objc_initWeak(&location, v19);
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
+  objc_initWeak(&location, selfCopy);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __43__NLSmartGoalStore__listenForNotifications__block_invoke_2;
   v14 = &unk_277D89208;
   objc_copyWeak(v15, &location);
-  v3 = [v5 addObserverForName:@"NLSmartGoalStoreDidSaveCopiedManagedConfiguration" object:0 queue:v4 usingBlock:&v10];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  v3 = [defaultCenter addObserverForName:@"NLSmartGoalStoreDidSaveCopiedManagedConfiguration" object:0 queue:mainQueue usingBlock:&v10];
+  MEMORY[0x277D82BD8](mainQueue);
+  MEMORY[0x277D82BD8](defaultCenter);
   objc_destroyWeak(v15);
   objc_destroyWeak(&location);
   objc_storeStrong(v18, 0);
@@ -1914,20 +1914,20 @@ void __43__NLSmartGoalStore__listenForNotifications__block_invoke_2(id *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleDidSaveCopiedManagedConfigurationForActivityType:(id)a3
+- (void)_handleDidSaveCopiedManagedConfigurationForActivityType:(id)type
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NLSmartGoalStore *)v4 showActivityType:location[0]];
+  objc_storeStrong(location, type);
+  [(NLSmartGoalStore *)selfCopy showActivityType:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (void)_activityMoveModeDidUpdate
 {
   v10 = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   [(NLSmartGoalStore *)self setActivityMoveMode:FIActivityMoveModeUserDefault()];
   _HKInitializeLogging();
@@ -1937,7 +1937,7 @@ void __43__NLSmartGoalStore__listenForNotifications__block_invoke_2(id *a1, void
   {
     log = v7[0];
     type = v6;
-    [(NLSmartGoalStore *)v8 activityMoveMode];
+    [(NLSmartGoalStore *)selfCopy activityMoveMode];
     v4 = NLHKActivityMoveModeString();
     v5 = MEMORY[0x277D82BE0](v4);
     __os_log_helper_16_2_1_8_64(v9, v5);
@@ -1952,37 +1952,37 @@ void __43__NLSmartGoalStore__listenForNotifications__block_invoke_2(id *a1, void
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (notify_is_valid_token(self->_activityMoveModeDidUpdateNotificationToken))
   {
-    notify_cancel(v4->_activityMoveModeDidUpdateNotificationToken);
+    notify_cancel(selfCopy->_activityMoveModeDidUpdateNotificationToken);
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = NLSmartGoalStore;
   [(NLSmartGoalStore *)&v2 dealloc];
 }
 
 - (void)resetOccurrences
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionary];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
   [(NLSmartGoalStore *)self setOccurrenceRegistry:?];
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](dictionary);
 }
 
-- (void)setCurrentDate:(id)a3
+- (void)setCurrentDate:(id)date
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v14->_currentDate, location[0]);
-  v12 = [(NLSmartGoalStore *)v14 occurrenceRegistry];
-  v11 = [v12 allValues];
+  objc_storeStrong(location, date);
+  objc_storeStrong(&selfCopy->_currentDate, location[0]);
+  occurrenceRegistry = [(NLSmartGoalStore *)selfCopy occurrenceRegistry];
+  allValues = [occurrenceRegistry allValues];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v11);
+  obj = MEMORY[0x277D82BE0](allValues);
   v8 = [obj countByEnumeratingWithState:__b objects:v15 count:16];
   if (v8)
   {
@@ -2013,8 +2013,8 @@ void __43__NLSmartGoalStore__listenForNotifications__block_invoke_2(id *a1, void
   }
 
   MEMORY[0x277D82BD8](obj);
-  objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&allValues, 0);
+  objc_storeStrong(&occurrenceRegistry, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }

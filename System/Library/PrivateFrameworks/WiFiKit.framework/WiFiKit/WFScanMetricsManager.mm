@@ -1,7 +1,7 @@
 @interface WFScanMetricsManager
 - (WFScanMetricsManager)init;
-- (id)sectionNameForRecord:(id)a3;
-- (void)ingestScanResults:(id)a3;
+- (id)sectionNameForRecord:(id)record;
+- (void)ingestScanResults:(id)results;
 - (void)reset;
 - (void)submit;
 @end
@@ -13,9 +13,9 @@
   v6.receiver = self;
   v6.super_class = WFScanMetricsManager;
   v2 = [(WFScanMetricsManager *)&v6 init];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sectionCounts = v2->_sectionCounts;
-  v2->_sectionCounts = v3;
+  v2->_sectionCounts = dictionary;
 
   [(WFScanMetricsManager *)v2 reset];
   return v2;
@@ -34,30 +34,30 @@
   }
 
   [(WFScanMetricsManager *)self setSubmited:0];
-  v5 = [(WFScanMetricsManager *)self sectionCounts];
-  [v5 removeAllObjects];
+  sectionCounts = [(WFScanMetricsManager *)self sectionCounts];
+  [sectionCounts removeAllObjects];
 
-  v6 = [(WFScanMetricsManager *)self sectionCounts];
-  [v6 setObject:&unk_288304D38 forKey:@"known"];
+  sectionCounts2 = [(WFScanMetricsManager *)self sectionCounts];
+  [sectionCounts2 setObject:&unk_288304D38 forKey:@"known"];
 
-  v7 = [(WFScanMetricsManager *)self sectionCounts];
-  [v7 setObject:&unk_288304D38 forKey:@"hotspot"];
+  sectionCounts3 = [(WFScanMetricsManager *)self sectionCounts];
+  [sectionCounts3 setObject:&unk_288304D38 forKey:@"hotspot"];
 
-  v8 = [(WFScanMetricsManager *)self sectionCounts];
-  [v8 setObject:&unk_288304D38 forKey:@"public"];
+  sectionCounts4 = [(WFScanMetricsManager *)self sectionCounts];
+  [sectionCounts4 setObject:&unk_288304D38 forKey:@"public"];
 
-  v9 = [(WFScanMetricsManager *)self sectionCounts];
-  [v9 setObject:&unk_288304D38 forKey:@"infra"];
+  sectionCounts5 = [(WFScanMetricsManager *)self sectionCounts];
+  [sectionCounts5 setObject:&unk_288304D38 forKey:@"infra"];
 
-  v10 = [(WFScanMetricsManager *)self sectionCounts];
-  [v10 setObject:&unk_288304D38 forKey:@"adhoc"];
+  sectionCounts6 = [(WFScanMetricsManager *)self sectionCounts];
+  [sectionCounts6 setObject:&unk_288304D38 forKey:@"adhoc"];
 
-  v11 = [(WFScanMetricsManager *)self sectionCounts];
-  [v11 setObject:&unk_288304D38 forKey:@"accessory"];
+  sectionCounts7 = [(WFScanMetricsManager *)self sectionCounts];
+  [sectionCounts7 setObject:&unk_288304D38 forKey:@"accessory"];
 
-  v12 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   timestamp = self->_timestamp;
-  self->_timestamp = v12;
+  self->_timestamp = date;
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -67,8 +67,8 @@
   v22 = *MEMORY[0x277D85DE8];
   if (![(WFScanMetricsManager *)self submited])
   {
-    v3 = [(WFScanMetricsManager *)self timestamp];
-    [v3 timeIntervalSinceNow];
+    timestamp = [(WFScanMetricsManager *)self timestamp];
+    [timestamp timeIntervalSinceNow];
     v5 = v4;
 
     v6 = WFLogForCategory(0);
@@ -78,8 +78,8 @@
       v8 = v6;
       if (os_log_type_enabled(v8, v7))
       {
-        v9 = [(WFScanMetricsManager *)self timestamp];
-        [v9 timeIntervalSinceNow];
+        timestamp2 = [(WFScanMetricsManager *)self timestamp];
+        [timestamp2 timeIntervalSinceNow];
         v20 = 134217984;
         v21 = -v10;
         _os_log_impl(&dword_273ECD000, v8, v7, "scan metrics session duration %f", &v20, 0xCu);
@@ -104,8 +104,8 @@
     }
 
     v16 = +[WFMetricsManager sharedManager];
-    v17 = [(WFScanMetricsManager *)self sectionCounts];
-    v18 = [WFScanSessionEvent scanSessionEventWithSectionCounts:v17 duration:v11];
+    sectionCounts = [(WFScanMetricsManager *)self sectionCounts];
+    v18 = [WFScanSessionEvent scanSessionEventWithSectionCounts:sectionCounts duration:v11];
     [v16 processEvent:v18];
 
     [(WFScanMetricsManager *)self setSubmited:1];
@@ -114,118 +114,118 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ingestScanResults:(id)a3
+- (void)ingestScanResults:(id)results
 {
-  v46 = a3;
-  v4 = [v46 knownNetworks];
-  v5 = [v4 count];
+  resultsCopy = results;
+  knownNetworks = [resultsCopy knownNetworks];
+  v5 = [knownNetworks count];
 
-  v6 = [(WFScanMetricsManager *)self sectionCounts];
-  v7 = [v6 objectForKeyedSubscript:@"known"];
-  v8 = [v7 unsignedIntegerValue];
+  sectionCounts = [(WFScanMetricsManager *)self sectionCounts];
+  v7 = [sectionCounts objectForKeyedSubscript:@"known"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if (v5 > v8)
+  if (v5 > unsignedIntegerValue)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
-    v10 = [(WFScanMetricsManager *)self sectionCounts];
-    [v10 setObject:v9 forKeyedSubscript:@"known"];
+    sectionCounts2 = [(WFScanMetricsManager *)self sectionCounts];
+    [sectionCounts2 setObject:v9 forKeyedSubscript:@"known"];
   }
 
-  v11 = [v46 infrastructureNetworks];
-  v12 = [v11 count];
+  infrastructureNetworks = [resultsCopy infrastructureNetworks];
+  v12 = [infrastructureNetworks count];
 
-  v13 = [(WFScanMetricsManager *)self sectionCounts];
-  v14 = [v13 objectForKeyedSubscript:@"infra"];
-  v15 = [v14 unsignedIntegerValue];
+  sectionCounts3 = [(WFScanMetricsManager *)self sectionCounts];
+  v14 = [sectionCounts3 objectForKeyedSubscript:@"infra"];
+  unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
-  if (v12 > v15)
+  if (v12 > unsignedIntegerValue2)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
-    v17 = [(WFScanMetricsManager *)self sectionCounts];
-    [v17 setObject:v16 forKeyedSubscript:@"infra"];
+    sectionCounts4 = [(WFScanMetricsManager *)self sectionCounts];
+    [sectionCounts4 setObject:v16 forKeyedSubscript:@"infra"];
   }
 
-  v18 = [v46 instantHotspotNetworks];
-  v19 = [v18 count];
+  instantHotspotNetworks = [resultsCopy instantHotspotNetworks];
+  v19 = [instantHotspotNetworks count];
 
-  v20 = [(WFScanMetricsManager *)self sectionCounts];
-  v21 = [v20 objectForKeyedSubscript:@"hotspot"];
-  v22 = [v21 unsignedIntegerValue];
+  sectionCounts5 = [(WFScanMetricsManager *)self sectionCounts];
+  v21 = [sectionCounts5 objectForKeyedSubscript:@"hotspot"];
+  unsignedIntegerValue3 = [v21 unsignedIntegerValue];
 
-  if (v19 > v22)
+  if (v19 > unsignedIntegerValue3)
   {
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
-    v24 = [(WFScanMetricsManager *)self sectionCounts];
-    [v24 setObject:v23 forKeyedSubscript:@"hotspot"];
+    sectionCounts6 = [(WFScanMetricsManager *)self sectionCounts];
+    [sectionCounts6 setObject:v23 forKeyedSubscript:@"hotspot"];
   }
 
-  v25 = [v46 popularNetworks];
-  v26 = [v25 count];
+  popularNetworks = [resultsCopy popularNetworks];
+  v26 = [popularNetworks count];
 
-  v27 = [(WFScanMetricsManager *)self sectionCounts];
-  v28 = [v27 objectForKeyedSubscript:@"public"];
-  v29 = [v28 unsignedIntegerValue];
+  sectionCounts7 = [(WFScanMetricsManager *)self sectionCounts];
+  v28 = [sectionCounts7 objectForKeyedSubscript:@"public"];
+  unsignedIntegerValue4 = [v28 unsignedIntegerValue];
 
-  if (v26 > v29)
+  if (v26 > unsignedIntegerValue4)
   {
     v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v26];
-    v31 = [(WFScanMetricsManager *)self sectionCounts];
-    [v31 setObject:v30 forKeyedSubscript:@"public"];
+    sectionCounts8 = [(WFScanMetricsManager *)self sectionCounts];
+    [sectionCounts8 setObject:v30 forKeyedSubscript:@"public"];
   }
 
-  v32 = [v46 adhocNetworks];
-  v33 = [v32 count];
+  adhocNetworks = [resultsCopy adhocNetworks];
+  v33 = [adhocNetworks count];
 
-  v34 = [(WFScanMetricsManager *)self sectionCounts];
-  v35 = [v34 objectForKeyedSubscript:@"adhoc"];
-  v36 = [v35 unsignedIntegerValue];
+  sectionCounts9 = [(WFScanMetricsManager *)self sectionCounts];
+  v35 = [sectionCounts9 objectForKeyedSubscript:@"adhoc"];
+  unsignedIntegerValue5 = [v35 unsignedIntegerValue];
 
-  if (v33 > v36)
+  if (v33 > unsignedIntegerValue5)
   {
     v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v33];
-    v38 = [(WFScanMetricsManager *)self sectionCounts];
-    [v38 setObject:v37 forKeyedSubscript:@"adhoc"];
+    sectionCounts10 = [(WFScanMetricsManager *)self sectionCounts];
+    [sectionCounts10 setObject:v37 forKeyedSubscript:@"adhoc"];
   }
 
-  v39 = [v46 unconfiguredNetworks];
-  v40 = [v39 count];
+  unconfiguredNetworks = [resultsCopy unconfiguredNetworks];
+  v40 = [unconfiguredNetworks count];
 
-  v41 = [(WFScanMetricsManager *)self sectionCounts];
-  v42 = [v41 objectForKeyedSubscript:@"accessory"];
-  v43 = [v42 unsignedIntegerValue];
+  sectionCounts11 = [(WFScanMetricsManager *)self sectionCounts];
+  v42 = [sectionCounts11 objectForKeyedSubscript:@"accessory"];
+  unsignedIntegerValue6 = [v42 unsignedIntegerValue];
 
-  if (v40 > v43)
+  if (v40 > unsignedIntegerValue6)
   {
     v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v40];
-    v45 = [(WFScanMetricsManager *)self sectionCounts];
-    [v45 setObject:v44 forKeyedSubscript:@"accessory"];
+    sectionCounts12 = [(WFScanMetricsManager *)self sectionCounts];
+    [sectionCounts12 setObject:v44 forKeyedSubscript:@"accessory"];
   }
 }
 
-- (id)sectionNameForRecord:(id)a3
+- (id)sectionNameForRecord:(id)record
 {
-  v3 = a3;
-  if ([v3 isKnown])
+  recordCopy = record;
+  if ([recordCopy isKnown])
   {
     v4 = @"known";
   }
 
-  else if ([v3 isInstantHotspot])
+  else if ([recordCopy isInstantHotspot])
   {
     v4 = @"hotspot";
   }
 
-  else if ([v3 isPopular])
+  else if ([recordCopy isPopular])
   {
     v4 = @"public";
   }
 
-  else if ([v3 isAdhoc])
+  else if ([recordCopy isAdhoc])
   {
     v4 = @"adhoc";
   }
 
-  else if ([v3 isUnconfiguredAccessory])
+  else if ([recordCopy isUnconfiguredAccessory])
   {
     v4 = @"accessory";
   }

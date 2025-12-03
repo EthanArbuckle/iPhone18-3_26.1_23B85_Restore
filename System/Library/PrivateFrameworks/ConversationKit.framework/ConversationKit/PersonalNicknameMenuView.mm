@@ -1,14 +1,14 @@
 @interface PersonalNicknameMenuView
-- (void)didTapWithSender:(id)a3;
+- (void)didTapWithSender:(id)sender;
 @end
 
 @implementation PersonalNicknameMenuView
 
-- (void)didTapWithSender:(id)a3
+- (void)didTapWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  PersonalNicknameMenuView.didTap(sender:)(v5);
+  senderCopy = sender;
+  selfCopy = self;
+  PersonalNicknameMenuView.didTap(sender:)(selfCopy);
 }
 
 @end

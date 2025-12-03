@@ -3,13 +3,13 @@
 + (BOOL)shouldAllowAddingNewPasswords;
 - (ASFeatureManager)init;
 - (BOOL)_shouldApplyPasskeyQuirks;
-- (BOOL)arePasskeysDisallowedForRelyingParty:(id)a3;
-- (BOOL)canRequestEnterpriseAttestationForRelyingParty:(id)a3;
-- (BOOL)isClientEntitledForInternalTestingWithAuditToken:(id *)a3;
+- (BOOL)arePasskeysDisallowedForRelyingParty:(id)party;
+- (BOOL)canRequestEnterpriseAttestationForRelyingParty:(id)party;
+- (BOOL)isClientEntitledForInternalTestingWithAuditToken:(id *)token;
 - (BOOL)isDeviceConfiguredToAllowPasskeys;
-- (BOOL)shouldUseFallbackUIForRelyingParty:(id)a3;
+- (BOOL)shouldUseFallbackUIForRelyingParty:(id)party;
 - (id)_fetchCurrentManagedConfiguration;
-- (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)a3;
+- (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)party;
 - (void)_fetchCurrentManagedConfiguration;
 @end
 
@@ -71,11 +71,11 @@ uint64_t __33__ASFeatureManager_sharedManager__block_invoke()
 
     WBSSetUpAccessToAppDataContainerWithIdentifier();
     v6 = objc_alloc(MEMORY[0x1E69C8820]);
-    v7 = [MEMORY[0x1E696AAE8] safari_safariCoreBundle];
-    v8 = [v7 URLForResource:@"WBSAutoFillQuirks" withExtension:@"plist"];
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 safari_autoFillQuirksDownloadDirectoryURL];
-    v11 = [v6 initWithBuiltInQuirksURL:v8 downloadsDirectoryURL:v10 resourceName:@"AutoFillQuirks" resourceVersion:@"1" updateDateDefaultsKey:*MEMORY[0x1E69C8CF8] updateInterval:86400.0];
+    safari_safariCoreBundle = [MEMORY[0x1E696AAE8] safari_safariCoreBundle];
+    v8 = [safari_safariCoreBundle URLForResource:@"WBSAutoFillQuirks" withExtension:@"plist"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    safari_autoFillQuirksDownloadDirectoryURL = [defaultManager safari_autoFillQuirksDownloadDirectoryURL];
+    v11 = [v6 initWithBuiltInQuirksURL:v8 downloadsDirectoryURL:safari_autoFillQuirksDownloadDirectoryURL resourceName:@"AutoFillQuirks" resourceVersion:@"1" updateDateDefaultsKey:*MEMORY[0x1E69C8CF8] updateInterval:86400.0];
     quirksManager = v2->_quirksManager;
     v2->_quirksManager = v11;
 
@@ -95,12 +95,12 @@ uint64_t __33__ASFeatureManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (BOOL)arePasskeysDisallowedForRelyingParty:(id)a3
+- (BOOL)arePasskeysDisallowedForRelyingParty:(id)party
 {
-  v4 = a3;
-  if ([(ASFeatureManager *)self _shouldApplyPasskeyQuirks]&& ![(ASFeatureManager *)self shouldUseFallbackUIForRelyingParty:v4])
+  partyCopy = party;
+  if ([(ASFeatureManager *)self _shouldApplyPasskeyQuirks]&& ![(ASFeatureManager *)self shouldUseFallbackUIForRelyingParty:partyCopy])
   {
-    v5 = [(WBSAutoFillQuirksManager *)self->_quirksManager arePasskeysDisallowedForRelyingParty:v4];
+    v5 = [(WBSAutoFillQuirksManager *)self->_quirksManager arePasskeysDisallowedForRelyingParty:partyCopy];
   }
 
   else
@@ -111,12 +111,12 @@ uint64_t __33__ASFeatureManager_sharedManager__block_invoke()
   return v5;
 }
 
-- (BOOL)shouldUseFallbackUIForRelyingParty:(id)a3
+- (BOOL)shouldUseFallbackUIForRelyingParty:(id)party
 {
-  v4 = a3;
+  partyCopy = party;
   if ([(ASFeatureManager *)self _shouldApplyPasskeyQuirks])
   {
-    v5 = [(WBSAutoFillQuirksManager *)self->_quirksManager shouldUseFallbackUIForRelyingParty:v4];
+    v5 = [(WBSAutoFillQuirksManager *)self->_quirksManager shouldUseFallbackUIForRelyingParty:partyCopy];
   }
 
   else
@@ -127,51 +127,51 @@ uint64_t __33__ASFeatureManager_sharedManager__block_invoke()
   return v5;
 }
 
-- (BOOL)isClientEntitledForInternalTestingWithAuditToken:(id *)a3
+- (BOOL)isClientEntitledForInternalTestingWithAuditToken:(id *)token
 {
-  v4 = [MEMORY[0x1E69C8880] isInternalInstall];
-  if (v4)
+  isInternalInstall = [MEMORY[0x1E69C8880] isInternalInstall];
+  if (isInternalInstall)
   {
-    v6 = *a3->var0;
-    v7 = *&a3->var0[4];
-    LOBYTE(v4) = WBSAuditTokenHasEntitlement();
+    v6 = *token->var0;
+    v7 = *&token->var0[4];
+    LOBYTE(isInternalInstall) = WBSAuditTokenHasEntitlement();
   }
 
-  return v4;
+  return isInternalInstall;
 }
 
-- (BOOL)canRequestEnterpriseAttestationForRelyingParty:(id)a3
+- (BOOL)canRequestEnterpriseAttestationForRelyingParty:(id)party
 {
-  v4 = a3;
-  v5 = [(ASFeatureManager *)self _fetchCurrentManagedConfiguration];
-  v6 = [v5 isConfiguredForEnterpriseAttestationForRelyingParty:v4];
+  partyCopy = party;
+  _fetchCurrentManagedConfiguration = [(ASFeatureManager *)self _fetchCurrentManagedConfiguration];
+  v6 = [_fetchCurrentManagedConfiguration isConfiguredForEnterpriseAttestationForRelyingParty:partyCopy];
 
   return v6;
 }
 
-- (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)a3
+- (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)party
 {
-  v4 = a3;
-  v5 = [(ASFeatureManager *)self _fetchCurrentManagedConfiguration];
-  v6 = [v5 entepriseAttestationIdentityPersistentReferenceForRelyingParty:v4];
+  partyCopy = party;
+  _fetchCurrentManagedConfiguration = [(ASFeatureManager *)self _fetchCurrentManagedConfiguration];
+  v6 = [_fetchCurrentManagedConfiguration entepriseAttestationIdentityPersistentReferenceForRelyingParty:partyCopy];
 
   return v6;
 }
 
 - (BOOL)_shouldApplyPasskeyQuirks
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 BOOLForKey:@"DisablePasskeysSiteSpecificHacks"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults BOOLForKey:@"DisablePasskeysSiteSpecificHacks"];
 
   return v3 ^ 1;
 }
 
 - (id)_fetchCurrentManagedConfiguration
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 as_authenticationServicesManagedConfigurationURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  as_authenticationServicesManagedConfigurationURL = [defaultManager as_authenticationServicesManagedConfigurationURL];
   v9 = 0;
-  v4 = [_TtC26AuthenticationServicesCore22ASManagedConfiguration loadFromDiskWithPlistURL:v3 error:&v9];
+  v4 = [_TtC26AuthenticationServicesCore22ASManagedConfiguration loadFromDiskWithPlistURL:as_authenticationServicesManagedConfigurationURL error:&v9];
   v5 = v9;
 
   if (v4)
@@ -194,11 +194,11 @@ uint64_t __33__ASFeatureManager_sharedManager__block_invoke()
 - (void)_fetchCurrentManagedConfiguration
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   v6 = 138543362;
-  v7 = v4;
-  _os_log_fault_impl(&dword_1C20AD000, v3, OS_LOG_TYPE_FAULT, "Could not not load managed configuration: %{public}@.", &v6, 0xCu);
+  v7 = safari_privacyPreservingDescription;
+  _os_log_fault_impl(&dword_1C20AD000, selfCopy, OS_LOG_TYPE_FAULT, "Could not not load managed configuration: %{public}@.", &v6, 0xCu);
 
   v5 = *MEMORY[0x1E69E9840];
 }

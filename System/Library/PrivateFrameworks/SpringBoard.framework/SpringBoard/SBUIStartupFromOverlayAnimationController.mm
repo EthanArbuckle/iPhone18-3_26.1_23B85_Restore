@@ -1,5 +1,5 @@
 @interface SBUIStartupFromOverlayAnimationController
-- (SBUIStartupFromOverlayAnimationController)initWithTransitionContextProvider:(id)a3 overlay:(id)a4;
+- (SBUIStartupFromOverlayAnimationController)initWithTransitionContextProvider:(id)provider overlay:(id)overlay;
 - (void)_cleanupAnimation;
 - (void)_prepareAnimation;
 - (void)_startAnimation;
@@ -7,22 +7,22 @@
 
 @implementation SBUIStartupFromOverlayAnimationController
 
-- (SBUIStartupFromOverlayAnimationController)initWithTransitionContextProvider:(id)a3 overlay:(id)a4
+- (SBUIStartupFromOverlayAnimationController)initWithTransitionContextProvider:(id)provider overlay:(id)overlay
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  providerCopy = provider;
+  overlayCopy = overlay;
+  if (!providerCopy)
   {
     [SBUIStartupFromOverlayAnimationController initWithTransitionContextProvider:a2 overlay:self];
   }
 
   v12.receiver = self;
   v12.super_class = SBUIStartupFromOverlayAnimationController;
-  v9 = [(SBUIMainScreenAnimationController *)&v12 initWithTransitionContextProvider:v7];
+  v9 = [(SBUIMainScreenAnimationController *)&v12 initWithTransitionContextProvider:providerCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_overlay, a4);
+    objc_storeStrong(&v9->_overlay, overlay);
   }
 
   return v10;
@@ -30,53 +30,53 @@
 
 - (void)_prepareAnimation
 {
-  v3 = [(SBUIAnimationController *)self toApplicationSceneEntities];
-  v4 = [v3 count];
+  toApplicationSceneEntities = [(SBUIAnimationController *)self toApplicationSceneEntities];
+  v4 = [toApplicationSceneEntities count];
 
   if (v4)
   {
-    v30 = [(SBUIMainScreenAnimationController *)self transitionRequest];
-    v5 = [v30 applicationContext];
-    v6 = [v5 layoutState];
+    transitionRequest = [(SBUIMainScreenAnimationController *)self transitionRequest];
+    applicationContext = [transitionRequest applicationContext];
+    layoutState = [applicationContext layoutState];
 
-    v7 = [v6 elementWithRole:1];
-    v8 = [v7 workspaceEntity];
+    v7 = [layoutState elementWithRole:1];
+    workspaceEntity = [v7 workspaceEntity];
 
-    v9 = [v8 deviceApplicationSceneEntity];
+    deviceApplicationSceneEntity = [workspaceEntity deviceApplicationSceneEntity];
     v10 = objc_opt_class();
-    v11 = [v9 sceneHandle];
-    v12 = SBSafeCast(v10, v11);
+    sceneHandle = [deviceApplicationSceneEntity sceneHandle];
+    v12 = SBSafeCast(v10, sceneHandle);
 
-    v13 = [v12 _windowScene];
-    v14 = [v13 switcherController];
-    v15 = [v14 windowManagementContext];
-    v16 = [v15 isChamoisOrFlexibleWindowing];
+    _windowScene = [v12 _windowScene];
+    switcherController = [_windowScene switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    if (v12 && (v16 & 1) == 0)
+    if (v12 && (isChamoisOrFlexibleWindowing & 1) == 0)
     {
-      v17 = [(SBUIMainScreenAnimationController *)self _getTransitionWindow];
-      v18 = [v17 _windowInterfaceOrientation];
+      _getTransitionWindow = [(SBUIMainScreenAnimationController *)self _getTransitionWindow];
+      _windowInterfaceOrientation = [_getTransitionWindow _windowInterfaceOrientation];
 
-      v19 = [v12 currentInterfaceOrientation];
-      v20 = [(SBUIAnimationController *)self containerView];
+      currentInterfaceOrientation = [v12 currentInterfaceOrientation];
+      containerView = [(SBUIAnimationController *)self containerView];
       v21 = [SBDeviceApplicationSceneView alloc];
-      v22 = [v30 displayConfiguration];
-      [v22 bounds];
-      v25 = [(SBDeviceApplicationSceneView *)v21 initWithSceneHandle:v12 referenceSize:v19 contentOrientation:v18 containerOrientation:self hostRequester:v23, v24];
+      displayConfiguration = [transitionRequest displayConfiguration];
+      [displayConfiguration bounds];
+      v25 = [(SBDeviceApplicationSceneView *)v21 initWithSceneHandle:v12 referenceSize:currentInterfaceOrientation contentOrientation:_windowInterfaceOrientation containerOrientation:self hostRequester:v23, v24];
       sceneView = self->_sceneView;
       self->_sceneView = v25;
 
       v27 = objc_alloc(MEMORY[0x277CF0D78]);
-      [v20 bounds];
+      [containerView bounds];
       v28 = [v27 initWithFrame:?];
       orientationWrapperView = self->_orientationWrapperView;
       self->_orientationWrapperView = v28;
 
-      [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContainerOrientation:v18];
-      [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContentOrientation:v19];
+      [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContainerOrientation:_windowInterfaceOrientation];
+      [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContentOrientation:currentInterfaceOrientation];
       [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView addContentView:self->_sceneView];
       [(SBSceneView *)self->_sceneView setDisplayMode:4 animationFactory:0 completion:0];
-      [v20 addSubview:self->_orientationWrapperView];
+      [containerView addSubview:self->_orientationWrapperView];
     }
   }
 }
@@ -103,13 +103,13 @@
   else
   {
     [(BKSDisplayRenderOverlay *)overlay dismiss];
-    v9 = [(SBTransaction *)self queue];
+    queue = [(SBTransaction *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __60__SBUIStartupFromOverlayAnimationController__startAnimation__block_invoke_2;
     v10[3] = &unk_2783A8C18;
     v10[4] = self;
-    dispatch_async(v9, v10);
+    dispatch_async(queue, v10);
   }
 }
 

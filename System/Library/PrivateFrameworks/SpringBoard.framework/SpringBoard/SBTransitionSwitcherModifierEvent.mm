@@ -41,12 +41,12 @@
 - (CGSize)toSizeOfMovingDisplayItem;
 - (SBSwitcherShelf)fromShelf;
 - (SBSwitcherShelf)toShelf;
-- (SBTransitionSwitcherModifierEvent)initWithTransitionID:(id)a3 phase:(unint64_t)a4 animated:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBTransitionSwitcherModifierEvent)initWithTransitionID:(id)d phase:(unint64_t)phase animated:(BOOL)animated;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugPredicateSummary;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (void)dealloc;
-- (void)setRemovalContext:(id)a3 forAppLayout:(id)a4;
+- (void)setRemovalContext:(id)context forAppLayout:(id)layout;
 @end
 
 @implementation SBTransitionSwitcherModifierEvent
@@ -58,8 +58,8 @@
     return 0;
   }
 
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-  v4 = [v3 itemForLayoutRole:1];
+  fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+  v4 = [fromFloatingAppLayout itemForLayoutRole:1];
   v5 = v4 != 0;
 
   return v5;
@@ -78,14 +78,14 @@
 
 - (BOOL)isExitingSlideOverPeekToAppEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toFloatingConfiguration];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self isExitingSlideOverPeekEvent];
+  toFloatingConfiguration = [(SBTransitionSwitcherModifierEvent *)self toFloatingConfiguration];
+  isExitingSlideOverPeekEvent = [(SBTransitionSwitcherModifierEvent *)self isExitingSlideOverPeekEvent];
   result = 0;
-  if (v4)
+  if (isExitingSlideOverPeekEvent)
   {
-    if (v3)
+    if (toFloatingConfiguration)
     {
-      return !SBFloatingConfigurationIsStashed(v3);
+      return !SBFloatingConfigurationIsStashed(toFloatingConfiguration);
     }
   }
 
@@ -94,23 +94,23 @@
 
 - (BOOL)isExitingSlideOverPeekToHomeScreenEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toFloatingConfiguration];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self isExitingSlideOverPeekEvent];
-  if (v4)
+  toFloatingConfiguration = [(SBTransitionSwitcherModifierEvent *)self toFloatingConfiguration];
+  isExitingSlideOverPeekEvent = [(SBTransitionSwitcherModifierEvent *)self isExitingSlideOverPeekEvent];
+  if (isExitingSlideOverPeekEvent)
   {
-    if (v3)
+    if (toFloatingConfiguration)
     {
 
-      LOBYTE(v4) = SBFloatingConfigurationIsStashed(v3);
+      LOBYTE(isExitingSlideOverPeekEvent) = SBFloatingConfigurationIsStashed(toFloatingConfiguration);
     }
 
     else
     {
-      LOBYTE(v4) = 1;
+      LOBYTE(isExitingSlideOverPeekEvent) = 1;
     }
   }
 
-  return v4;
+  return isExitingSlideOverPeekEvent;
 }
 
 - (BOOL)isEnteringAnyPeekEvent
@@ -120,23 +120,23 @@
     return 0;
   }
 
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toPeekConfiguration];
+  toPeekConfiguration = [(SBTransitionSwitcherModifierEvent *)self toPeekConfiguration];
 
-  return SBPeekConfigurationIsValid(v4);
+  return SBPeekConfigurationIsValid(toPeekConfiguration);
 }
 
 - (BOOL)isAnySplitViewToOrFromSlideOverEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v5 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-  v6 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
-  v19 = [v3 itemForLayoutRole:1];
-  v7 = [v4 itemForLayoutRole:1];
-  v8 = [v3 itemForLayoutRole:2];
-  v9 = [v4 itemForLayoutRole:2];
-  v10 = [v5 itemForLayoutRole:1];
-  v11 = [v6 itemForLayoutRole:1];
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+  toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+  v19 = [fromAppLayout itemForLayoutRole:1];
+  v7 = [toAppLayout itemForLayoutRole:1];
+  v8 = [fromAppLayout itemForLayoutRole:2];
+  v9 = [toAppLayout itemForLayoutRole:2];
+  v10 = [fromFloatingAppLayout itemForLayoutRole:1];
+  v11 = [toFloatingAppLayout itemForLayoutRole:1];
   v12 = v11;
   if (v8)
   {
@@ -163,39 +163,39 @@
 
 - (void)dealloc
 {
-  v3 = [(SBConsumableTokenWrapper *)self->_zoomFromHardwareButtonPreludeTokenWrapper consumeToken];
-  [v3 cancel];
+  consumeToken = [(SBConsumableTokenWrapper *)self->_zoomFromHardwareButtonPreludeTokenWrapper consumeToken];
+  [consumeToken cancel];
 
   v4.receiver = self;
   v4.super_class = SBTransitionSwitcherModifierEvent;
   [(SBTransitionSwitcherModifierEvent *)&v4 dealloc];
 }
 
-- (SBTransitionSwitcherModifierEvent)initWithTransitionID:(id)a3 phase:(unint64_t)a4 animated:(BOOL)a5
+- (SBTransitionSwitcherModifierEvent)initWithTransitionID:(id)d phase:(unint64_t)phase animated:(BOOL)animated
 {
-  v9 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = SBTransitionSwitcherModifierEvent;
   v10 = [(SBWindowingModifierActivity *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_transitionID, a3);
-    v11->_phase = a4;
-    v11->_animated = a5;
+    objc_storeStrong(&v10->_transitionID, d);
+    v11->_phase = phase;
+    v11->_animated = animated;
   }
 
   return v11;
 }
 
-- (void)setRemovalContext:(id)a3 forAppLayout:(id)a4
+- (void)setRemovalContext:(id)context forAppLayout:(id)layout
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v13;
-  v8 = v6;
+  contextCopy = context;
+  layoutCopy = layout;
+  v7 = contextCopy;
+  v8 = layoutCopy;
   appLayoutToRemovalContext = self->_appLayoutToRemovalContext;
-  if (v13)
+  if (contextCopy)
   {
     if (!appLayoutToRemovalContext)
     {
@@ -203,7 +203,7 @@
       v11 = self->_appLayoutToRemovalContext;
       self->_appLayoutToRemovalContext = v10;
 
-      v7 = v13;
+      v7 = contextCopy;
       appLayoutToRemovalContext = self->_appLayoutToRemovalContext;
     }
 
@@ -223,9 +223,9 @@
 
 - (SBSwitcherShelf)fromShelf
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromEnvironmentMode];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self fromWindowPickerRole];
-  if (v3 != 3)
+  fromEnvironmentMode = [(SBTransitionSwitcherModifierEvent *)self fromEnvironmentMode];
+  fromWindowPickerRole = [(SBTransitionSwitcherModifierEvent *)self fromWindowPickerRole];
+  if (fromEnvironmentMode != 3)
   {
     goto LABEL_10;
   }
@@ -236,32 +236,32 @@
     goto LABEL_11;
   }
 
-  v6 = v4;
-  if (v4 == 3)
+  v6 = fromWindowPickerRole;
+  if (fromWindowPickerRole == 3)
   {
-    v7 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-    v8 = v7;
+    fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+    v8 = fromFloatingAppLayout;
     v9 = 1;
   }
 
   else
   {
-    if (!v4)
+    if (!fromWindowPickerRole)
     {
       goto LABEL_10;
     }
 
-    v7 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-    v8 = v7;
+    fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+    v8 = fromFloatingAppLayout;
     v9 = v6;
   }
 
-  v10 = [v7 itemForLayoutRole:v9];
-  v11 = [v10 bundleIdentifier];
+  v10 = [fromFloatingAppLayout itemForLayoutRole:v9];
+  bundleIdentifier = [v10 bundleIdentifier];
 
-  if (v11)
+  if (bundleIdentifier)
   {
-    v5 = [[SBSwitcherShelf alloc] initWithBundleIdentifier:v11 layoutRole:v6 displayMode:1];
+    v5 = [[SBSwitcherShelf alloc] initWithBundleIdentifier:bundleIdentifier layoutRole:v6 displayMode:1];
 
     goto LABEL_11;
   }
@@ -275,9 +275,9 @@ LABEL_11:
 
 - (SBSwitcherShelf)toShelf
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toEnvironmentMode];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toWindowPickerRole];
-  if (v3 != 3)
+  toEnvironmentMode = [(SBTransitionSwitcherModifierEvent *)self toEnvironmentMode];
+  toWindowPickerRole = [(SBTransitionSwitcherModifierEvent *)self toWindowPickerRole];
+  if (toEnvironmentMode != 3)
   {
     goto LABEL_5;
   }
@@ -288,14 +288,14 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  v6 = v4;
-  if (v4)
+  v6 = toWindowPickerRole;
+  if (toWindowPickerRole)
   {
-    v8 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-    v9 = [v8 itemForLayoutRole:v6];
-    v10 = [v9 bundleIdentifier];
+    toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    v9 = [toAppLayout itemForLayoutRole:v6];
+    bundleIdentifier = [v9 bundleIdentifier];
 
-    v5 = [[SBSwitcherShelf alloc] initWithBundleIdentifier:v10 layoutRole:v6 displayMode:1];
+    v5 = [[SBSwitcherShelf alloc] initWithBundleIdentifier:bundleIdentifier layoutRole:v6 displayMode:1];
   }
 
   else
@@ -316,8 +316,8 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v4 = [v3 itemForLayoutRole:1];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v4 = [toAppLayout itemForLayoutRole:1];
   v5 = v4 != 0;
 
   return v5;
@@ -330,8 +330,8 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = v3 != 0;
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  v4 = fromAppLayout != 0;
 
   return v4;
 }
@@ -343,8 +343,8 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v4 = [v3 itemForLayoutRole:1];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v4 = [toAppLayout itemForLayoutRole:1];
   v5 = v4 != 0;
 
   return v5;
@@ -357,8 +357,8 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v4 = v3 == 0;
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v4 = toAppLayout == 0;
 
   return v4;
 }
@@ -370,8 +370,8 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v4 = [v3 itemForLayoutRole:1];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v4 = [toAppLayout itemForLayoutRole:1];
   if (v4)
   {
     v5 = 0;
@@ -379,8 +379,8 @@ LABEL_6:
 
   else
   {
-    v6 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
-    v5 = v6 != 0;
+    toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+    v5 = toFloatingAppLayout != 0;
   }
 
   return v5;
@@ -388,11 +388,11 @@ LABEL_6:
 
 - (BOOL)isExitingCenterWindowEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  if ([v3 centerConfiguration])
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  if ([fromAppLayout centerConfiguration])
   {
-    v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-    v5 = [v4 centerConfiguration] == 0;
+    toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    v5 = [toAppLayout centerConfiguration] == 0;
   }
 
   else
@@ -405,22 +405,22 @@ LABEL_6:
 
 - (BOOL)isExitingCenterWindowToOtherRoleEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [v3 itemForLayoutRole:4];
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  v4 = [fromAppLayout itemForLayoutRole:4];
 
   v5 = 0;
   if ([(SBTransitionSwitcherModifierEvent *)self isExitingCenterWindowEvent]&& v4)
   {
-    v6 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-    if ([v6 containsItem:v4])
+    toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    if ([toAppLayout containsItem:v4])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
-      v5 = [v7 containsItem:v4];
+      toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+      v5 = [toFloatingAppLayout containsItem:v4];
     }
   }
 
@@ -434,31 +434,31 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
   v5 = SBLayoutRoleSetForRole2(1, 2);
-  v6 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v7 = [v4 hasSameItemsInLayoutRoles:v5 asAppLayout:v6];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v7 = [fromAppLayout hasSameItemsInLayoutRoles:v5 asAppLayout:toAppLayout];
 
   return v7;
 }
 
 - (BOOL)isCenterWindowToFullScreenEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+  fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+  toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
   if ([(SBTransitionSwitcherModifierEvent *)self isExitingCenterWindowToOtherRoleEvent])
   {
-    v5 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-    if ([v5 configuration] == 1)
+    toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    if ([toAppLayout configuration] == 1)
     {
-      if (v3 == v4)
+      if (fromFloatingAppLayout == toFloatingAppLayout)
       {
         v6 = 1;
       }
 
       else
       {
-        v6 = [v3 isEqual:v4];
+        v6 = [fromFloatingAppLayout isEqual:toFloatingAppLayout];
       }
     }
 
@@ -478,12 +478,12 @@ LABEL_6:
 
 - (BOOL)isCenterWindowToSlideOverEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+  toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
   LOBYTE(v4) = 0;
-  if ([(SBTransitionSwitcherModifierEvent *)self isExitingCenterWindowToOtherRoleEvent]&& v3)
+  if ([(SBTransitionSwitcherModifierEvent *)self isExitingCenterWindowToOtherRoleEvent]&& toFloatingAppLayout)
   {
-    v5 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-    v4 = [v3 isEqual:v5] ^ 1;
+    fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+    v4 = [toFloatingAppLayout isEqual:fromFloatingAppLayout] ^ 1;
   }
 
   return v4;
@@ -496,34 +496,34 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  if ([v3 configuration] == 1)
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  if ([fromAppLayout configuration] == 1)
   {
-    v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-    v5 = [v4 isSplitConfiguration];
+    toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    isSplitConfiguration = [toAppLayout isSplitConfiguration];
   }
 
   else
   {
-    v5 = 0;
+    isSplitConfiguration = 0;
   }
 
-  return v5;
+  return isSplitConfiguration;
 }
 
 - (BOOL)isCenterWindowToExistingSplitViewEvent
 {
   if ([(SBTransitionSwitcherModifierEvent *)self isExitingCenterWindowToOtherRoleEvent])
   {
-    v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-    if ([v3 isSplitConfiguration])
+    fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+    if ([fromAppLayout isSplitConfiguration])
     {
-      v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-      if ([v4 isSplitConfiguration])
+      toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+      if ([toAppLayout isSplitConfiguration])
       {
-        v5 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-        v6 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-        v7 = [v5 isEqual:v6] ^ 1;
+        toAppLayout2 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+        fromAppLayout2 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+        v7 = [toAppLayout2 isEqual:fromAppLayout2] ^ 1;
       }
 
       else
@@ -548,20 +548,20 @@ LABEL_6:
 
 - (BOOL)_isEnteringPageCenterWindowEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [v3 centerConfiguration];
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  centerConfiguration = [fromAppLayout centerConfiguration];
 
-  v5 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v6 = [v5 centerConfiguration];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  centerConfiguration2 = [toAppLayout centerConfiguration];
 
-  if (v4)
+  if (centerConfiguration)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = (v6 - 1) >= 2;
+    v7 = (centerConfiguration2 - 1) >= 2;
   }
 
   return !v7;
@@ -569,28 +569,28 @@ LABEL_6:
 
 - (BOOL)isPresentingPageCenterWindowEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self _isEnteringPageCenterWindowEvent];
-  if (v3)
+  _isEnteringPageCenterWindowEvent = [(SBTransitionSwitcherModifierEvent *)self _isEnteringPageCenterWindowEvent];
+  if (_isEnteringPageCenterWindowEvent)
   {
-    v4 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+    fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
     v5 = SBLayoutRoleSetForRole2(1, 2);
-    v6 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-    v7 = [v4 hasSameItemsInLayoutRoles:v5 asAppLayout:v6];
+    toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    v7 = [fromAppLayout hasSameItemsInLayoutRoles:v5 asAppLayout:toAppLayout];
 
-    LOBYTE(v3) = v7;
+    LOBYTE(_isEnteringPageCenterWindowEvent) = v7;
   }
 
-  return v3;
+  return _isEnteringPageCenterWindowEvent;
 }
 
 - (BOOL)isReplaceCenterWindowWithNewCenterWindowEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  if ([v3 centerConfiguration] == 1 && objc_msgSend(v4, "centerConfiguration") == 1)
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  if ([fromAppLayout centerConfiguration] == 1 && objc_msgSend(toAppLayout, "centerConfiguration") == 1)
   {
     v5 = SBLayoutRoleSetForRole(4);
-    if ([v3 hasSameItemsInLayoutRoles:v5 asAppLayout:v4])
+    if ([fromAppLayout hasSameItemsInLayoutRoles:v5 asAppLayout:toAppLayout])
     {
       v6 = 0;
     }
@@ -598,7 +598,7 @@ LABEL_6:
     else
     {
       v7 = SBLayoutRoleSetForRole2(1, 2);
-      v6 = [v3 hasSameItemsInLayoutRoles:v7 asAppLayout:v4];
+      v6 = [fromAppLayout hasSameItemsInLayoutRoles:v7 asAppLayout:toAppLayout];
     }
   }
 
@@ -612,12 +612,12 @@ LABEL_6:
 
 - (BOOL)isSplitViewToCenterWindowEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v5 = [v4 itemForLayoutRole:4];
-  if (-[SBTransitionSwitcherModifierEvent _isEnteringPageCenterWindowEvent](self, "_isEnteringPageCenterWindowEvent") && (v6 = SBMainDisplayLayoutStateSpaceConfigurationFromAppLayoutConfiguration([v3 configuration]), SBSpaceConfigurationIsSplitView(v6)) && objc_msgSend(v4, "configuration") == 1)
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v5 = [toAppLayout itemForLayoutRole:4];
+  if (-[SBTransitionSwitcherModifierEvent _isEnteringPageCenterWindowEvent](self, "_isEnteringPageCenterWindowEvent") && (v6 = SBMainDisplayLayoutStateSpaceConfigurationFromAppLayoutConfiguration([fromAppLayout configuration]), SBSpaceConfigurationIsSplitView(v6)) && objc_msgSend(toAppLayout, "configuration") == 1)
   {
-    v7 = [v3 itemForLayoutRole:1];
+    v7 = [fromAppLayout itemForLayoutRole:1];
     if (([(SBDisplayItem *)v7 isEqualToItem:v5]& 1) != 0)
     {
       v8 = 1;
@@ -625,7 +625,7 @@ LABEL_6:
 
     else
     {
-      v10 = [v3 itemForLayoutRole:2];
+      v10 = [fromAppLayout itemForLayoutRole:2];
       v8 = [(SBDisplayItem *)v10 isEqualToItem:v5];
     }
   }
@@ -640,23 +640,23 @@ LABEL_6:
 
 - (BOOL)isSlideOverToCenterWindowEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  if ([v3 centerConfiguration])
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  if ([toAppLayout centerConfiguration])
   {
-    v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    toAppLayout2 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
     v5 = SBLayoutRoleSetForRole(4);
-    v6 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-    if ([v4 hasSameItemsInLayoutRoles:v5 asAppLayout:v6])
+    fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+    if ([toAppLayout2 hasSameItemsInLayoutRoles:v5 asAppLayout:fromAppLayout])
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-      v9 = [v8 itemForLayoutRole:4];
-      v10 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-      v11 = [v10 itemForLayoutRole:1];
+      toAppLayout3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+      v9 = [toAppLayout3 itemForLayoutRole:4];
+      fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+      v11 = [fromFloatingAppLayout itemForLayoutRole:1];
       v7 = [(SBDisplayItem *)v9 isEqualToItem:v11];
     }
   }
@@ -671,11 +671,11 @@ LABEL_6:
 
 - (BOOL)isFullScreenToCenterWindowEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [v3 itemForLayoutRole:1];
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  v4 = [fromAppLayout itemForLayoutRole:1];
 
-  v5 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v6 = [v5 itemForLayoutRole:4];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v6 = [toAppLayout itemForLayoutRole:4];
 
   v7 = 0;
   if ([(SBTransitionSwitcherModifierEvent *)self _isEnteringPageCenterWindowEvent])
@@ -694,8 +694,8 @@ LABEL_6:
     {
       if ([(SBDisplayItem *)v4 isEqualToItem:v6])
       {
-        v9 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-        v7 = [v9 configuration] == 1;
+        fromAppLayout2 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+        v7 = [fromAppLayout2 configuration] == 1;
       }
 
       else
@@ -710,12 +710,12 @@ LABEL_6:
 
 - (BOOL)isSwappingFullScreenAppSidesEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v5 = [v3 itemForLayoutRole:1];
-  v6 = [v3 itemForLayoutRole:2];
-  v7 = [v4 itemForLayoutRole:1];
-  v8 = [v4 itemForLayoutRole:2];
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v5 = [fromAppLayout itemForLayoutRole:1];
+  v6 = [fromAppLayout itemForLayoutRole:2];
+  v7 = [toAppLayout itemForLayoutRole:1];
+  v8 = [toAppLayout itemForLayoutRole:2];
   v9 = v8;
   if (v5)
   {
@@ -748,24 +748,24 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v4 = [v3 itemForLayoutRole:4];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  v4 = [toAppLayout itemForLayoutRole:4];
   if (v4)
   {
-    v5 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+    fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
     v6 = SBLayoutRoleSetForRole(4);
-    v7 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-    if ([v5 hasSameItemsInLayoutRoles:v6 asAppLayout:v7])
+    toAppLayout2 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    if ([fromAppLayout hasSameItemsInLayoutRoles:v6 asAppLayout:toAppLayout2])
     {
       v8 = 0;
     }
 
     else
     {
-      v9 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+      fromAppLayout2 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
       v10 = SBLayoutRoleSetForRole2(1, 2);
-      v11 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-      v8 = [v9 hasSameItemsInLayoutRoles:v10 asAppLayout:v11];
+      toAppLayout3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+      v8 = [fromAppLayout2 hasSameItemsInLayoutRoles:v10 asAppLayout:toAppLayout3];
     }
   }
 
@@ -789,11 +789,11 @@ LABEL_6:
 
 - (BOOL)isMainPulseEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self activatingAppLayout];
-  if (v3)
+  activatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self activatingAppLayout];
+  if (activatingAppLayout)
   {
-    v4 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-    v5 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+    toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
     if ((BSEqualObjects() & 1) == 0)
     {
 
@@ -801,14 +801,14 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v6 = [(SBTransitionSwitcherModifierEvent *)self fromAppExposeBundleID];
-    v7 = [(SBTransitionSwitcherModifierEvent *)self toAppExposeBundleID];
+    fromAppExposeBundleID = [(SBTransitionSwitcherModifierEvent *)self fromAppExposeBundleID];
+    toAppExposeBundleID = [(SBTransitionSwitcherModifierEvent *)self toAppExposeBundleID];
     v8 = BSEqualObjects();
 
     if (v8)
     {
-      v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-      v9 = [v4 isOrContainsAppLayout:v3];
+      fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+      v9 = [fromAppLayout isOrContainsAppLayout:activatingAppLayout];
 LABEL_7:
 
       goto LABEL_8;
@@ -823,11 +823,11 @@ LABEL_8:
 
 - (BOOL)isFloatingPulseEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self activatingAppLayout];
-  if (v3)
+  activatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self activatingAppLayout];
+  if (activatingAppLayout)
   {
-    v4 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-    v5 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+    fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+    toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
     if ((BSEqualObjects() & 1) == 0)
     {
 
@@ -835,14 +835,14 @@ LABEL_8:
       goto LABEL_7;
     }
 
-    v6 = [(SBTransitionSwitcherModifierEvent *)self fromAppExposeBundleID];
-    v7 = [(SBTransitionSwitcherModifierEvent *)self toAppExposeBundleID];
+    fromAppExposeBundleID = [(SBTransitionSwitcherModifierEvent *)self fromAppExposeBundleID];
+    toAppExposeBundleID = [(SBTransitionSwitcherModifierEvent *)self toAppExposeBundleID];
     v8 = BSEqualObjects();
 
     if (v8)
     {
-      v4 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
-      v9 = [v4 isOrContainsAppLayout:v3];
+      fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+      v9 = [fromFloatingAppLayout isOrContainsAppLayout:activatingAppLayout];
 LABEL_7:
 
       goto LABEL_8;
@@ -857,15 +857,15 @@ LABEL_8:
 
 - (BOOL)isFullScreenToSplitViewEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  if ([v3 configuration] == 1 && objc_msgSend(v4, "configuration") >= 2)
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  if ([fromAppLayout configuration] == 1 && objc_msgSend(toAppLayout, "configuration") >= 2)
   {
-    v5 = [v3 itemForLayoutRole:1];
-    v6 = [v4 itemForLayoutRole:1];
+    v5 = [fromAppLayout itemForLayoutRole:1];
+    v6 = [toAppLayout itemForLayoutRole:1];
     if ([(SBDisplayItem *)v5 isEqualToItem:v6])
     {
-      v7 = [v3 itemForLayoutRole:2];
+      v7 = [fromAppLayout itemForLayoutRole:2];
       if (v7)
       {
         v8 = 0;
@@ -873,7 +873,7 @@ LABEL_8:
 
       else
       {
-        v9 = [v4 itemForLayoutRole:2];
+        v9 = [toAppLayout itemForLayoutRole:2];
         v8 = v9 != 0;
       }
     }
@@ -894,35 +894,35 @@ LABEL_8:
 
 - (BOOL)isSplitViewCrossfadeEvent
 {
-  v35 = [(SBTransitionSwitcherModifierEvent *)self fromInterfaceOrientation];
-  v34 = [(SBTransitionSwitcherModifierEvent *)self toInterfaceOrientation];
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+  fromInterfaceOrientation = [(SBTransitionSwitcherModifierEvent *)self fromInterfaceOrientation];
+  toInterfaceOrientation = [(SBTransitionSwitcherModifierEvent *)self toInterfaceOrientation];
+  fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+  toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
 
-  v33 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingConfiguration];
-  v5 = [(SBTransitionSwitcherModifierEvent *)self toFloatingConfiguration];
-  v6 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingSwitcherVisible];
-  v7 = [(SBTransitionSwitcherModifierEvent *)self toFloatingSwitcherVisible];
-  v8 = [(SBTransitionSwitcherModifierEvent *)self fromEnvironmentMode];
-  v9 = [(SBTransitionSwitcherModifierEvent *)self toEnvironmentMode];
-  v10 = [(SBTransitionSwitcherModifierEvent *)self fromPeekConfiguration];
-  v11 = [(SBTransitionSwitcherModifierEvent *)self toPeekConfiguration];
-  v12 = [(SBTransitionSwitcherModifierEvent *)self isGestureInitiated];
+  fromFloatingConfiguration = [(SBTransitionSwitcherModifierEvent *)self fromFloatingConfiguration];
+  toFloatingConfiguration = [(SBTransitionSwitcherModifierEvent *)self toFloatingConfiguration];
+  fromFloatingSwitcherVisible = [(SBTransitionSwitcherModifierEvent *)self fromFloatingSwitcherVisible];
+  toFloatingSwitcherVisible = [(SBTransitionSwitcherModifierEvent *)self toFloatingSwitcherVisible];
+  fromEnvironmentMode = [(SBTransitionSwitcherModifierEvent *)self fromEnvironmentMode];
+  toEnvironmentMode = [(SBTransitionSwitcherModifierEvent *)self toEnvironmentMode];
+  fromPeekConfiguration = [(SBTransitionSwitcherModifierEvent *)self fromPeekConfiguration];
+  toPeekConfiguration = [(SBTransitionSwitcherModifierEvent *)self toPeekConfiguration];
+  isGestureInitiated = [(SBTransitionSwitcherModifierEvent *)self isGestureInitiated];
   v13 = 0;
-  if (!v12 && v35 == v34 && v3 == v4 && v33 == v5 && ((v6 ^ v7) & 1) == 0 && v8 == v9 && v10 == v11)
+  if (!isGestureInitiated && fromInterfaceOrientation == toInterfaceOrientation && fromFloatingAppLayout == toFloatingAppLayout && fromFloatingConfiguration == toFloatingConfiguration && ((fromFloatingSwitcherVisible ^ toFloatingSwitcherVisible) & 1) == 0 && fromEnvironmentMode == toEnvironmentMode && fromPeekConfiguration == toPeekConfiguration)
   {
-    v14 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-    v15 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-    v16 = v15;
+    fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+    toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+    v16 = toAppLayout;
     LOBYTE(v17) = 0;
-    if (v14 && v15)
+    if (fromAppLayout && toAppLayout)
     {
-      v18 = [v14 itemForLayoutRole:2];
+      v18 = [fromAppLayout itemForLayoutRole:2];
       if (v18 && (v19 = v18, [v16 itemForLayoutRole:2], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
       {
         v21 = MEMORY[0x277CBEB98];
-        v22 = [v14 itemForLayoutRole:1];
-        v23 = [v14 itemForLayoutRole:2];
+        v22 = [fromAppLayout itemForLayoutRole:1];
+        v23 = [fromAppLayout itemForLayoutRole:2];
         v24 = [v21 setWithObjects:{v22, v23, 0}];
 
         v25 = MEMORY[0x277CBEB98];
@@ -931,8 +931,8 @@ LABEL_8:
         v28 = [v25 setWithObjects:{v26, v27, 0}];
 
         v29 = MEMORY[0x277CBEB98];
-        v30 = [v14 allItems];
-        v31 = [v29 setWithArray:v30];
+        allItems = [fromAppLayout allItems];
+        v31 = [v29 setWithArray:allItems];
         if ([v16 containsAnyItemFromSet:v31])
         {
           v17 = [v24 isEqual:v28] ^ 1;
@@ -958,11 +958,11 @@ LABEL_8:
 
 - (BOOL)isPrimaryToSlideOverEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
-  v5 = [v3 itemForLayoutRole:1];
-  v6 = [v3 itemForLayoutRole:2];
-  v7 = [v4 itemForLayoutRole:1];
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+  v5 = [fromAppLayout itemForLayoutRole:1];
+  v6 = [fromAppLayout itemForLayoutRole:2];
+  v7 = [toFloatingAppLayout itemForLayoutRole:1];
   v8 = v7;
   if (v6)
   {
@@ -981,10 +981,10 @@ LABEL_8:
 
 - (BOOL)isSideToSlideOverEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
-  v5 = [v3 itemForLayoutRole:2];
-  v6 = [v4 itemForLayoutRole:1];
+  fromAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromAppLayout];
+  toFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self toFloatingAppLayout];
+  v5 = [fromAppLayout itemForLayoutRole:2];
+  v6 = [toFloatingAppLayout itemForLayoutRole:1];
   v7 = v6;
   if (v5)
   {
@@ -1003,11 +1003,11 @@ LABEL_8:
 
 - (BOOL)isSlideOverToPrimaryEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-  v5 = [v3 itemForLayoutRole:1];
-  v6 = [v3 itemForLayoutRole:2];
-  v7 = [v4 itemForLayoutRole:1];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+  v5 = [toAppLayout itemForLayoutRole:1];
+  v6 = [toAppLayout itemForLayoutRole:2];
+  v7 = [fromFloatingAppLayout itemForLayoutRole:1];
   v8 = v7;
   if (v6)
   {
@@ -1026,10 +1026,10 @@ LABEL_8:
 
 - (BOOL)isSlideOverToSideEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-  v5 = [v3 itemForLayoutRole:2];
-  v6 = [v4 itemForLayoutRole:1];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+  v5 = [toAppLayout itemForLayoutRole:2];
+  v6 = [fromFloatingAppLayout itemForLayoutRole:1];
   v7 = v6;
   if (v5)
   {
@@ -1048,11 +1048,11 @@ LABEL_8:
 
 - (BOOL)isSlideOverToFullScreenEvent
 {
-  v3 = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
-  v4 = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
-  v5 = [v3 itemForLayoutRole:1];
-  v6 = [v3 itemForLayoutRole:2];
-  v7 = [v4 itemForLayoutRole:1];
+  toAppLayout = [(SBTransitionSwitcherModifierEvent *)self toAppLayout];
+  fromFloatingAppLayout = [(SBTransitionSwitcherModifierEvent *)self fromFloatingAppLayout];
+  v5 = [toAppLayout itemForLayoutRole:1];
+  v6 = [toAppLayout itemForLayoutRole:2];
+  v7 = [fromFloatingAppLayout itemForLayoutRole:1];
   v8 = v7;
   if (v6)
   {
@@ -1069,11 +1069,11 @@ LABEL_8:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34.receiver = self;
   v34.super_class = SBTransitionSwitcherModifierEvent;
-  v4 = [(SBChainableModifierEvent *)&v34 copyWithZone:a3];
+  v4 = [(SBChainableModifierEvent *)&v34 copyWithZone:zone];
   v5 = [(NSUUID *)self->_transitionID copy];
   v6 = *(v4 + 10);
   *(v4 + 10) = v5;
@@ -1184,13 +1184,13 @@ LABEL_8:
   return v4;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v86.receiver = self;
   v86.super_class = SBTransitionSwitcherModifierEvent;
-  v4 = [(SBSwitcherModifierEvent *)&v86 descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(NSUUID *)self->_transitionID UUIDString];
-  [v4 appendString:v5 withName:@"transitionID"];
+  v4 = [(SBSwitcherModifierEvent *)&v86 descriptionBuilderWithMultilinePrefix:prefix];
+  uUIDString = [(NSUUID *)self->_transitionID UUIDString];
+  [v4 appendString:uUIDString withName:@"transitionID"];
 
   v6 = self->_phase - 1;
   if (v6 > 2)
@@ -1209,11 +1209,11 @@ LABEL_8:
 
   if ((BSEqualObjects() & 1) == 0)
   {
-    v9 = [(SBAppLayout *)self->_fromAppLayout succinctDescription];
-    v10 = [v4 appendObject:v9 withName:@"fromAppLayout"];
+    succinctDescription = [(SBAppLayout *)self->_fromAppLayout succinctDescription];
+    v10 = [v4 appendObject:succinctDescription withName:@"fromAppLayout"];
 
-    v11 = [(SBAppLayout *)self->_toAppLayout succinctDescription];
-    v12 = [v4 appendObject:v11 withName:@"toAppLayout"];
+    succinctDescription2 = [(SBAppLayout *)self->_toAppLayout succinctDescription];
+    v12 = [v4 appendObject:succinctDescription2 withName:@"toAppLayout"];
   }
 
   fromEnvironmentMode = self->_fromEnvironmentMode;
@@ -1317,11 +1317,11 @@ LABEL_8:
   fromFloatingAppLayout = self->_fromFloatingAppLayout;
   if (fromFloatingAppLayout != self->_toFloatingAppLayout)
   {
-    v30 = [(SBAppLayout *)fromFloatingAppLayout succinctDescription];
-    v31 = [v4 appendObject:v30 withName:@"fromFloatingAppLayout"];
+    succinctDescription3 = [(SBAppLayout *)fromFloatingAppLayout succinctDescription];
+    v31 = [v4 appendObject:succinctDescription3 withName:@"fromFloatingAppLayout"];
 
-    v32 = [(SBAppLayout *)self->_toFloatingAppLayout succinctDescription];
-    v33 = [v4 appendObject:v32 withName:@"toFloatingAppLayout"];
+    succinctDescription4 = [(SBAppLayout *)self->_toFloatingAppLayout succinctDescription];
+    v33 = [v4 appendObject:succinctDescription4 withName:@"toFloatingAppLayout"];
   }
 
   fromFloatingConfiguration = self->_fromFloatingConfiguration;
@@ -1381,8 +1381,8 @@ LABEL_8:
   activatingAppLayout = self->_activatingAppLayout;
   if (activatingAppLayout)
   {
-    v49 = [(SBAppLayout *)activatingAppLayout succinctDescription];
-    v50 = [v4 appendObject:v49 withName:@"activating"];
+    succinctDescription5 = [(SBAppLayout *)activatingAppLayout succinctDescription];
+    v50 = [v4 appendObject:succinctDescription5 withName:@"activating"];
   }
 
   if ((BSEqualObjects() & 1) == 0)
@@ -1601,9 +1601,9 @@ LABEL_8:
 
         v16 = *(*(&v69 + 1) + 8 * i);
         v17 = [(SBTransitionSwitcherModifierEvent *)self valueForKeyPath:v16];
-        v18 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
 
-        if (v18)
+        if (bOOLValue)
         {
           v19 = @"YES";
         }

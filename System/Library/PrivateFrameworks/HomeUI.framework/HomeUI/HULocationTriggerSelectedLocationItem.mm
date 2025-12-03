@@ -2,47 +2,47 @@
 - (BOOL)_locationIsHome;
 - (BOOL)locationCanBeEdited;
 - (HULocationTriggerSelectedLocationItem)init;
-- (HULocationTriggerSelectedLocationItem)initWithTriggerBuilder:(id)a3;
+- (HULocationTriggerSelectedLocationItem)initWithTriggerBuilder:(id)builder;
 - (id)_locationTitle;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HULocationTriggerSelectedLocationItem
 
 - (HULocationTriggerSelectedLocationItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithTriggerBuilder_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HULocationTriggerSelectedLocationItem.m" lineNumber:16 description:{@"%s is unavailable; use %@ instead", "-[HULocationTriggerSelectedLocationItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULocationTriggerSelectedLocationItem.m" lineNumber:16 description:{@"%s is unavailable; use %@ instead", "-[HULocationTriggerSelectedLocationItem init]", v5}];
 
   return 0;
 }
 
-- (HULocationTriggerSelectedLocationItem)initWithTriggerBuilder:(id)a3
+- (HULocationTriggerSelectedLocationItem)initWithTriggerBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = HULocationTriggerSelectedLocationItem;
   v6 = [(HULocationTriggerSelectedLocationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_triggerBuilder, a3);
+    objc_storeStrong(&v6->_triggerBuilder, builder);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_opt_new();
-  v5 = [(HULocationTriggerSelectedLocationItem *)self _locationTitle];
-  if (v5)
+  _locationTitle = [(HULocationTriggerSelectedLocationItem *)self _locationTitle];
+  if (_locationTitle)
   {
     v6 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationTitle", @"HULocationTriggerSelectedLocationTitle", 1);
     [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-    [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D13E20]];
+    [v4 setObject:_locationTitle forKeyedSubscript:*MEMORY[0x277D13E20]];
     v7 = [MEMORY[0x277CCABB0] numberWithInt:{-[HULocationTriggerSelectedLocationItem locationCanBeEdited](self, "locationCanBeEdited") ^ 1}];
     [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x277D13EA8]];
   }
@@ -61,35 +61,35 @@
 
 - (BOOL)locationCanBeEdited
 {
-  v2 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
-  v3 = [v2 locationInterface];
-  v4 = [v3 locationCanBeEdited];
+  triggerBuilder = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
+  locationInterface = [triggerBuilder locationInterface];
+  locationCanBeEdited = [locationInterface locationCanBeEdited];
 
-  return v4;
+  return locationCanBeEdited;
 }
 
 - (id)_locationTitle
 {
   if ([(HULocationTriggerSelectedLocationItem *)self _locationIsHome])
   {
-    v3 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationHome", @"HULocationTriggerSelectedLocationHome", 1);
+    identifier = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationHome", @"HULocationTriggerSelectedLocationHome", 1);
   }
 
   else
   {
-    v4 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
-    v5 = [v4 locationInterface];
-    v6 = [v5 locationEventBuilder];
+    triggerBuilder = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
+    locationInterface = [triggerBuilder locationInterface];
+    locationEventBuilder = [locationInterface locationEventBuilder];
 
-    if (v6)
+    if (locationEventBuilder)
     {
       objc_opt_class();
-      v7 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
-      v8 = [v7 locationInterface];
-      v9 = [v8 locationEventBuilder];
+      triggerBuilder2 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
+      locationInterface2 = [triggerBuilder2 locationInterface];
+      locationEventBuilder2 = [locationInterface2 locationEventBuilder];
       if (objc_opt_isKindOfClass())
       {
-        v10 = v9;
+        v10 = locationEventBuilder2;
       }
 
       else
@@ -101,35 +101,35 @@
 
       if (v11)
       {
-        v12 = [v11 region];
-        v3 = [v12 identifier];
+        region = [v11 region];
+        identifier = [region identifier];
       }
 
       else
       {
-        v13 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
-        v14 = [v13 locationInterface];
-        v15 = [v14 locationEventBuilder];
-        NSLog(&cfstr_ExpectedARegio.isa, v15);
+        triggerBuilder3 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
+        locationInterface3 = [triggerBuilder3 locationInterface];
+        locationEventBuilder3 = [locationInterface3 locationEventBuilder];
+        NSLog(&cfstr_ExpectedARegio.isa, locationEventBuilder3);
 
-        v3 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationCustom", @"HULocationTriggerSelectedLocationCustom", 1);
+        identifier = _HULocalizedStringWithDefaultValue(@"HULocationTriggerSelectedLocationCustom", @"HULocationTriggerSelectedLocationCustom", 1);
       }
     }
 
     else
     {
-      v3 = 0;
+      identifier = 0;
     }
   }
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)_locationIsHome
 {
-  v3 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
-  v4 = [v3 locationInterface];
-  v5 = [v4 locationEventBuilder];
+  triggerBuilder = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
+  locationInterface = [triggerBuilder locationInterface];
+  locationEventBuilder = [locationInterface locationEventBuilder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -139,12 +139,12 @@
   }
 
   objc_opt_class();
-  v8 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
-  v9 = [v8 locationInterface];
-  v10 = [v9 locationEventBuilder];
+  triggerBuilder2 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
+  locationInterface2 = [triggerBuilder2 locationInterface];
+  locationEventBuilder2 = [locationInterface2 locationEventBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = locationEventBuilder2;
   }
 
   else
@@ -156,9 +156,9 @@
 
   if (v12)
   {
-    v13 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
-    v14 = [v13 home];
-    v7 = [v12 isRegionAtHome:v14];
+    triggerBuilder3 = [(HULocationTriggerSelectedLocationItem *)self triggerBuilder];
+    home = [triggerBuilder3 home];
+    v7 = [v12 isRegionAtHome:home];
   }
 
   else

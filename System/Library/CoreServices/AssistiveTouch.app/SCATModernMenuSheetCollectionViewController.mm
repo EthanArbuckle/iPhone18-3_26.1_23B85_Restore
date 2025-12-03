@@ -1,27 +1,27 @@
 @interface SCATModernMenuSheetCollectionViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (NSString)description;
 - (SCATModernMenuSheet)menuSheet;
-- (SCATModernMenuSheetCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 menuItemForItemAtIndex:(unint64_t)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (SCATModernMenuSheetCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view menuItemForItemAtIndex:(unint64_t)index;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)adjustVisibleItemOffsetForPageBoundary;
 - (void)reloadCollectionView;
 - (void)showMoreItemsButtonWasActivated;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SCATModernMenuSheetCollectionViewController
 
-- (SCATModernMenuSheetCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (SCATModernMenuSheetCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   v5.receiver = self;
   v5.super_class = SCATModernMenuSheetCollectionViewController;
-  v3 = [(SCATModernMenuSheetCollectionViewController *)&v5 initWithCollectionViewLayout:a3];
+  v3 = [(SCATModernMenuSheetCollectionViewController *)&v5 initWithCollectionViewLayout:layout];
   if (v3)
   {
     v3->_collectionViewCellClass = objc_opt_class();
@@ -34,29 +34,29 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v6 = [NSString stringWithFormat:@"%@<%p>. sheet:%@", v4, self, v5];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  v6 = [NSString stringWithFormat:@"%@<%p>. sheet:%@", v4, self, menuSheet];
 
   return v6;
 }
 
 - (void)showMoreItemsButtonWasActivated
 {
-  v3 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
-  v14 = [v3 collectionViewLayout];
+  collectionView = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  v4 = [v14 maxVisibleItems];
-  v5 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v6 = [v5 menuItems];
-  v7 = [v6 count];
+  maxVisibleItems = [collectionViewLayout maxVisibleItems];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  menuItems = [menuSheet menuItems];
+  v7 = [menuItems count];
 
-  v8 = [(SCATModernMenuSheetCollectionViewController *)self visibleItemOffset];
-  v9 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v10 = [v9 numberOfItemsInFirstPage];
+  visibleItemOffset = [(SCATModernMenuSheetCollectionViewController *)self visibleItemOffset];
+  menuSheet2 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  numberOfItemsInFirstPage = [menuSheet2 numberOfItemsInFirstPage];
 
-  if (v10)
+  if (numberOfItemsInFirstPage)
   {
-    v11 = v8 == 0;
+    v11 = visibleItemOffset == 0;
   }
 
   else
@@ -64,10 +64,10 @@
     v11 = 0;
   }
 
-  v12 = &v4[v8];
+  v12 = &maxVisibleItems[visibleItemOffset];
   if (v11)
   {
-    v12 = v10;
+    v12 = numberOfItemsInFirstPage;
   }
 
   if (v12 >= v7)
@@ -86,23 +86,23 @@
 
 - (void)adjustVisibleItemOffsetForPageBoundary
 {
-  v3 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
-  v17 = [v3 collectionViewLayout];
+  collectionView = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  v4 = [v17 maxVisibleItems];
-  v5 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v6 = [v5 menuItems];
-  v7 = [v6 count];
+  maxVisibleItems = [collectionViewLayout maxVisibleItems];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  menuItems = [menuSheet menuItems];
+  v7 = [menuItems count];
 
-  v8 = [(SCATModernMenuSheetCollectionViewController *)self visibleItemOffset];
-  v9 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v10 = [v9 numberOfItemsInFirstPage];
+  visibleItemOffset = [(SCATModernMenuSheetCollectionViewController *)self visibleItemOffset];
+  menuSheet2 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  numberOfItemsInFirstPage = [menuSheet2 numberOfItemsInFirstPage];
 
   v11 = 0;
   while (v11 < v7)
   {
     v12 = v11;
-    if (v10)
+    if (numberOfItemsInFirstPage)
     {
       v13 = v11 == 0;
     }
@@ -112,22 +112,22 @@
       v13 = 0;
     }
 
-    v11 = &v4[v11];
+    v11 = &maxVisibleItems[v11];
     if (v13)
     {
-      v11 = v10;
+      v11 = numberOfItemsInFirstPage;
     }
 
-    v14 = v8 - v12;
-    if (v8 - v12 < 0)
+    v14 = visibleItemOffset - v12;
+    if (visibleItemOffset - v12 < 0)
     {
-      v14 = v12 - v8;
+      v14 = v12 - visibleItemOffset;
     }
 
-    v15 = v8 - v11;
-    if (v8 - v11 < 0)
+    v15 = visibleItemOffset - v11;
+    if (visibleItemOffset - v11 < 0)
     {
-      v15 = v11 - v8;
+      v15 = v11 - visibleItemOffset;
     }
 
     if (v14 < v15 || v11 >= v7)
@@ -136,15 +136,15 @@
     }
   }
 
-  v12 = v8;
+  v12 = visibleItemOffset;
 LABEL_20:
   [(SCATModernMenuSheetCollectionViewController *)self setVisibleItemOffset:v12];
 }
 
 - (void)reloadCollectionView
 {
-  v2 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
-  [v2 reloadData];
+  collectionView = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)viewDidLoad
@@ -153,14 +153,14 @@ LABEL_20:
   v18.super_class = SCATModernMenuSheetCollectionViewController;
   [(SCATModernMenuSheetCollectionViewController *)&v18 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v4 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  collectionView = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
+  [collectionView setBackgroundColor:v3];
 
-  v5 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
-  [v5 setClipsToBounds:0];
+  collectionView2 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
+  [collectionView2 setClipsToBounds:0];
 
-  v6 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
-  [v6 registerClass:-[SCATModernMenuSheetCollectionViewController collectionViewCellClass](self forCellWithReuseIdentifier:{"collectionViewCellClass"), @"SCATMenuItemCellID"}];
+  collectionView3 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
+  [collectionView3 registerClass:-[SCATModernMenuSheetCollectionViewController collectionViewCellClass](self forCellWithReuseIdentifier:{"collectionViewCellClass"), @"SCATMenuItemCellID"}];
 
   v7 = [UIImage imageNamed:@"SCATIcon_border_selected"];
   left = UIEdgeInsetsZero.left;
@@ -173,16 +173,16 @@ LABEL_20:
   v13 = [v12 resizableImageWithCapInsets:1 resizingMode:{UIEdgeInsetsZero.top, left, bottom, right}];
   [(SCATModernMenuSheetCollectionViewController *)self setDefaultBackgroundImage:v13];
 
-  v14 = [(SCATModernMenuSheetCollectionViewController *)self defaultBackgroundImage];
+  defaultBackgroundImage = [(SCATModernMenuSheetCollectionViewController *)self defaultBackgroundImage];
   v15 = +[SCATStyleProvider sharedStyleProvider];
-  v16 = [v15 menuKnockoutColor];
-  v17 = [v14 imageWithTintColor:v16 renderingMode:1];
+  menuKnockoutColor = [v15 menuKnockoutColor];
+  v17 = [defaultBackgroundImage imageWithTintColor:menuKnockoutColor renderingMode:1];
   [(SCATModernMenuSheetCollectionViewController *)self setDimmedBackgroundImage:v17];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v20.receiver = self;
   v20.super_class = SCATModernMenuSheetCollectionViewController;
   [(SCATModernMenuSheetCollectionViewController *)&v20 viewWillAppear:?];
@@ -190,10 +190,10 @@ LABEL_20:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
-  v6 = [v5 visibleCells];
+  collectionView = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -205,7 +205,7 @@ LABEL_20:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
@@ -213,11 +213,11 @@ LABEL_20:
         if (objc_opt_isKindOfClass())
         {
           v12 = v11;
-          v13 = [v12 menuItem];
-          [v13 resetActivation];
+          menuItem = [v12 menuItem];
+          [menuItem resetActivation];
 
-          v14 = [v12 menuItem];
-          [v14 updateItem];
+          menuItem2 = [v12 menuItem];
+          [menuItem2 updateItem];
 
           [v12 update];
         }
@@ -226,24 +226,24 @@ LABEL_20:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  [v15 sheetWillAppear:v3];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  [menuSheet sheetWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SCATModernMenuSheetCollectionViewController;
   [(SCATModernMenuSheetCollectionViewController *)&v6 viewWillDisappear:?];
-  v5 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  [v5 sheetWillDisappear:v3];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  [menuSheet sheetWillDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -251,36 +251,36 @@ LABEL_20:
   v7.receiver = self;
   v7.super_class = SCATModernMenuSheetCollectionViewController;
   [(SCATModernMenuSheetCollectionViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v4 = [v3 menu];
-  [v4 reloadFromCurrentSheet];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  menu = [menuSheet menu];
+  [menu reloadFromCurrentSheet];
 
   y = CGPointZero.y;
-  v6 = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
-  [v6 setContentOffset:{CGPointZero.x, y}];
+  collectionView = [(SCATModernMenuSheetCollectionViewController *)self collectionView];
+  [collectionView setContentOffset:{CGPointZero.x, y}];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(SCATModernMenuSheetCollectionViewController *)self collectionView:a3];
-  v6 = [v5 collectionViewLayout];
-  v7 = [v6 maxVisibleItems];
+  v5 = [(SCATModernMenuSheetCollectionViewController *)self collectionView:view];
+  collectionViewLayout = [v5 collectionViewLayout];
+  maxVisibleItems = [collectionViewLayout maxVisibleItems];
 
-  v8 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v9 = [v8 menuItems];
-  v10 = [v9 count];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  menuItems = [menuSheet menuItems];
+  v10 = [menuItems count];
 
-  v11 = [(SCATModernMenuSheetCollectionViewController *)self visibleItemOffset];
-  v12 = v11;
-  if (&v10[-v11] < v7)
+  visibleItemOffset = [(SCATModernMenuSheetCollectionViewController *)self visibleItemOffset];
+  v12 = visibleItemOffset;
+  if (&v10[-visibleItemOffset] < maxVisibleItems)
   {
-    v7 = &v10[-v11];
+    maxVisibleItems = &v10[-visibleItemOffset];
   }
 
-  v13 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v14 = [v13 numberOfItemsInFirstPage];
+  menuSheet2 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  numberOfItemsInFirstPage = [menuSheet2 numberOfItemsInFirstPage];
 
-  if (v14)
+  if (numberOfItemsInFirstPage)
   {
     v15 = v12 == 0;
   }
@@ -292,46 +292,46 @@ LABEL_20:
 
   if (v15)
   {
-    return v14;
+    return numberOfItemsInFirstPage;
   }
 
   else
   {
-    return v7;
+    return maxVisibleItems;
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithReuseIdentifier:@"SCATMenuItemCellID" forIndexPath:v6];
-  v9 = [v6 item];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"SCATMenuItemCellID" forIndexPath:pathCopy];
+  item = [pathCopy item];
 
-  v10 = [(SCATModernMenuSheetCollectionViewController *)self collectionView:v7 menuItemForItemAtIndex:v9];
+  v10 = [(SCATModernMenuSheetCollectionViewController *)self collectionView:viewCopy menuItemForItemAtIndex:item];
 
   [v10 resetActivation];
   [v8 setMenuItem:v10];
-  v11 = [(SCATModernMenuSheetCollectionViewController *)self pressedBackgroundImage];
-  [v8 setPressedBackgroundImage:v11];
+  pressedBackgroundImage = [(SCATModernMenuSheetCollectionViewController *)self pressedBackgroundImage];
+  [v8 setPressedBackgroundImage:pressedBackgroundImage];
 
-  v12 = [(SCATModernMenuSheetCollectionViewController *)self defaultBackgroundImage];
-  [v8 setDefaultBackgroundImage:v12];
+  defaultBackgroundImage = [(SCATModernMenuSheetCollectionViewController *)self defaultBackgroundImage];
+  [v8 setDefaultBackgroundImage:defaultBackgroundImage];
 
-  v13 = [(SCATModernMenuSheetCollectionViewController *)self dimmedBackgroundImage];
-  [v8 setDimmedBackgroundImage:v13];
+  dimmedBackgroundImage = [(SCATModernMenuSheetCollectionViewController *)self dimmedBackgroundImage];
+  [v8 setDimmedBackgroundImage:dimmedBackgroundImage];
 
-  v14 = [v10 title];
-  v15 = [v8 titleLabel];
-  [v15 setText:v14];
+  title = [v10 title];
+  titleLabel = [v8 titleLabel];
+  [titleLabel setText:title];
 
-  v16 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  [v8 setShouldIncludeTextLabels:{objc_msgSend(v16, "shouldIncludeTextLabels")}];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  [v8 setShouldIncludeTextLabels:{objc_msgSend(menuSheet, "shouldIncludeTextLabels")}];
 
   [v8 setShouldUseActivityIndicator:{objc_msgSend(v10, "shouldUseActivityIndicator")}];
-  v17 = [v10 image];
+  image = [v10 image];
 
-  if (v17)
+  if (image)
   {
     [v10 image];
   }
@@ -349,13 +349,13 @@ LABEL_20:
   return v8;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = -[SCATModernMenuSheetCollectionViewController collectionView:menuItemForItemAtIndex:](self, "collectionView:menuItemForItemAtIndex:", v7, [a5 item]);
+  viewCopy = view;
+  v8 = -[SCATModernMenuSheetCollectionViewController collectionView:menuItemForItemAtIndex:](self, "collectionView:menuItemForItemAtIndex:", viewCopy, [path item]);
 
-  v9 = [v8 title];
-  [SCATMenuItemCell cellSizeForTitle:v9];
+  title = [v8 title];
+  [SCATMenuItemCell cellSizeForTitle:title];
   v11 = v10;
   v13 = v12;
 
@@ -366,18 +366,18 @@ LABEL_20:
   return result;
 }
 
-- (id)collectionView:(id)a3 menuItemForItemAtIndex:(unint64_t)a4
+- (id)collectionView:(id)view menuItemForItemAtIndex:(unint64_t)index
 {
-  v6 = [(SCATModernMenuSheetCollectionViewController *)self visibleItemOffset];
-  v7 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v8 = [(SCATModernMenuSheetCollectionViewController *)self collectionViewLayout];
-  [v7 sortMenuItemsForNumberOfItemsPerRow:{objc_msgSend(v8, "maxItemsPerRow")}];
+  visibleItemOffset = [(SCATModernMenuSheetCollectionViewController *)self visibleItemOffset];
+  menuSheet = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  collectionViewLayout = [(SCATModernMenuSheetCollectionViewController *)self collectionViewLayout];
+  [menuSheet sortMenuItemsForNumberOfItemsPerRow:{objc_msgSend(collectionViewLayout, "maxItemsPerRow")}];
 
-  v9 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
-  v10 = [v9 menuItems];
-  v11 = [v10 objectAtIndex:v6 + a4];
+  menuSheet2 = [(SCATModernMenuSheetCollectionViewController *)self menuSheet];
+  menuItems = [menuSheet2 menuItems];
+  index = [menuItems objectAtIndex:visibleItemOffset + index];
 
-  return v11;
+  return index;
 }
 
 - (SCATModernMenuSheet)menuSheet

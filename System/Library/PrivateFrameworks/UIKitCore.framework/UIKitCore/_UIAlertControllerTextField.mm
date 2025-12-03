@@ -1,16 +1,16 @@
 @interface _UIAlertControllerTextField
-- (void)setSecureTextEntry:(BOOL)a3;
+- (void)setSecureTextEntry:(BOOL)entry;
 @end
 
 @implementation _UIAlertControllerTextField
 
-- (void)setSecureTextEntry:(BOOL)a3
+- (void)setSecureTextEntry:(BOOL)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v5.receiver = self;
   v5.super_class = _UIAlertControllerTextField;
   [(UITextField *)&v5 setSecureTextEntry:?];
-  if (v3)
+  if (entryCopy)
   {
     [(_UIAlertControllerTextField *)self setShortcutConversionType:1];
   }

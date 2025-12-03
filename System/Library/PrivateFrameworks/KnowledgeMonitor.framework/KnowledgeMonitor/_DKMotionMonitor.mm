@@ -1,11 +1,11 @@
 @interface _DKMotionMonitor
-+ (id)_eventWithState:(id)a3 startDate:(id)a4 endDate:(id)a5;
++ (id)_eventWithState:(id)state startDate:(id)date endDate:(id)endDate;
 + (id)log;
-+ (unint64_t)_activityTypeToMotionState:(id)a3;
++ (unint64_t)_activityTypeToMotionState:(id)state;
 - (id)classesForSecureStateDecoding;
-- (id)initForUnitTest:(BOOL)a3;
-- (void)addMotionActivity:(id)a3;
-- (void)addState:(id)a3;
+- (id)initForUnitTest:(BOOL)test;
+- (void)addMotionActivity:(id)activity;
+- (void)addState:(id)state;
 - (void)computeDominantMotionState;
 - (void)deactivate;
 - (void)dealloc;
@@ -29,57 +29,57 @@
   return v3;
 }
 
-+ (id)_eventWithState:(id)a3 startDate:(id)a4 endDate:(id)a5
++ (id)_eventWithState:(id)state startDate:(id)date endDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CFE238] unknown];
-  if ([v7 unsignedIntValue] == 2)
+  stateCopy = state;
+  dateCopy = date;
+  endDateCopy = endDate;
+  unknown = [MEMORY[0x277CFE238] unknown];
+  if ([stateCopy unsignedIntValue] == 2)
   {
-    v11 = [MEMORY[0x277CFE238] walking];
+    walking = [MEMORY[0x277CFE238] walking];
   }
 
-  else if ([v7 unsignedIntValue] == 1)
+  else if ([stateCopy unsignedIntValue] == 1)
   {
-    v11 = [MEMORY[0x277CFE238] stationary];
+    walking = [MEMORY[0x277CFE238] stationary];
   }
 
-  else if ([v7 unsignedIntValue] == 3)
+  else if ([stateCopy unsignedIntValue] == 3)
   {
-    v11 = [MEMORY[0x277CFE238] running];
+    walking = [MEMORY[0x277CFE238] running];
   }
 
-  else if ([v7 unsignedIntValue] == 4)
+  else if ([stateCopy unsignedIntValue] == 4)
   {
-    v11 = [MEMORY[0x277CFE238] cycling];
+    walking = [MEMORY[0x277CFE238] cycling];
   }
 
-  else if ([v7 unsignedIntValue] == 5)
+  else if ([stateCopy unsignedIntValue] == 5)
   {
-    v11 = [MEMORY[0x277CFE238] automotive];
+    walking = [MEMORY[0x277CFE238] automotive];
   }
 
   else
   {
-    if ([v7 unsignedIntValue] != 6)
+    if ([stateCopy unsignedIntValue] != 6)
     {
       goto LABEL_14;
     }
 
-    v11 = [MEMORY[0x277CFE238] stationaryAutomotive];
+    walking = [MEMORY[0x277CFE238] stationaryAutomotive];
   }
 
-  v12 = v11;
+  v12 = walking;
 
-  v10 = v12;
+  unknown = v12;
 LABEL_14:
   v13 = MEMORY[0x277CFE1D8];
-  v14 = [MEMORY[0x277CFE298] motionStream];
-  v15 = v8;
-  if (v8)
+  motionStream = [MEMORY[0x277CFE298] motionStream];
+  date = dateCopy;
+  if (dateCopy)
   {
-    if (v9)
+    if (endDateCopy)
     {
       goto LABEL_16;
     }
@@ -87,12 +87,12 @@ LABEL_14:
 
   else
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
-    if (v9)
+    date = [MEMORY[0x277CBEAA8] date];
+    if (endDateCopy)
     {
 LABEL_16:
-      v16 = [v13 eventWithStream:v14 startDate:v15 endDate:v9 value:v10];
-      if (v8)
+      v16 = [v13 eventWithStream:motionStream startDate:date endDate:endDateCopy value:unknown];
+      if (dateCopy)
       {
         goto LABEL_18;
       }
@@ -101,10 +101,10 @@ LABEL_16:
     }
   }
 
-  v18 = [MEMORY[0x277CBEAA8] distantFuture];
-  v16 = [v13 eventWithStream:v14 startDate:v15 endDate:v18 value:v10];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v16 = [v13 eventWithStream:motionStream startDate:date endDate:distantFuture value:unknown];
 
-  if (!v8)
+  if (!dateCopy)
   {
 LABEL_17:
   }
@@ -122,7 +122,7 @@ LABEL_18:
   return [v2 setWithObject:v3];
 }
 
-- (id)initForUnitTest:(BOOL)a3
+- (id)initForUnitTest:(BOOL)test
 {
   v34.receiver = self;
   v34.super_class = _DKMotionMonitor;
@@ -130,14 +130,14 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    v6 = [(_DKMonitor *)v4 instantState];
-    v7 = [v6 objectForKeyedSubscript:@"kMotionStateBuffer"];
+    instantState = [(_DKMonitor *)v4 instantState];
+    v7 = [instantState objectForKeyedSubscript:@"kMotionStateBuffer"];
 
     if (!v7)
     {
-      v8 = [MEMORY[0x277CBEB18] array];
-      v9 = [(_DKMonitor *)v5 instantState];
-      [v9 setObject:v8 forKeyedSubscript:@"kMotionStateBuffer"];
+      array = [MEMORY[0x277CBEB18] array];
+      instantState2 = [(_DKMonitor *)v5 instantState];
+      [instantState2 setObject:array forKeyedSubscript:@"kMotionStateBuffer"];
     }
 
     if ([MEMORY[0x277CC1CD0] isActivityAvailable])
@@ -146,13 +146,13 @@ LABEL_18:
       v5->_activateTimer = 1;
       v5->_currentDominantMotionState = 0;
       v10 = BiomeLibrary();
-      v11 = [v10 Motion];
-      v12 = [v11 Activity];
-      v13 = [v12 source];
+      motion = [v10 Motion];
+      activity = [motion Activity];
+      source = [activity source];
       source = v5->_source;
-      v5->_source = v13;
+      v5->_source = source;
 
-      if (a3)
+      if (test)
       {
         v5->_dominantActivityInterval = 2.0;
       }
@@ -171,15 +171,15 @@ LABEL_18:
 
         else
         {
-          v18 = [MEMORY[0x277CC1E80] defaultWorkspace];
-          v17 = [v18 applicationIsInstalled:@"com.appleuserstudies.flubber"];
+          defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+          v17 = [defaultWorkspace applicationIsInstalled:@"com.appleuserstudies.flubber"];
         }
 
-        v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v20 = v19;
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v20 = standardUserDefaults;
         if (v17)
         {
-          v21 = [v19 objectForKey:@"_DKCDisableMotionMonitor"];
+          v21 = [standardUserDefaults objectForKey:@"_DKCDisableMotionMonitor"];
           if (v21)
           {
             v22 = [v20 BOOLForKey:@"_DKCDisableMotionMonitor"] ^ 1;
@@ -204,11 +204,11 @@ LABEL_18:
       v5->_operationQueue = v23;
 
       v25 = v5->_operationQueue;
-      v26 = [(_DKMonitor *)v5 queue];
-      [(NSOperationQueue *)v25 setUnderlyingQueue:v26];
+      queue = [(_DKMonitor *)v5 queue];
+      [(NSOperationQueue *)v25 setUnderlyingQueue:queue];
 
-      v27 = [(_DKMonitor *)v5 queue];
-      v28 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v27);
+      queue2 = [(_DKMonitor *)v5 queue];
+      v28 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue2);
       motionStateProcessingTimer = v5->_motionStateProcessingTimer;
       v5->_motionStateProcessingTimer = v28;
 
@@ -245,7 +245,7 @@ LABEL_18:
     if (self->_monitoringActivity)
     {
       objc_initWeak(&location, self);
-      v4 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       activityManager = self->_activityManager;
       operationQueue = self->_operationQueue;
       v11[0] = MEMORY[0x277D85DD0];
@@ -253,7 +253,7 @@ LABEL_18:
       v11[2] = __25___DKMotionMonitor_start__block_invoke;
       v11[3] = &unk_27856F088;
       objc_copyWeak(&v12, &location);
-      [(CMMotionActivityManager *)activityManager queryActivityStartingFromDate:v4 toDate:v4 toQueue:operationQueue withHandler:v11];
+      [(CMMotionActivityManager *)activityManager queryActivityStartingFromDate:date toDate:date toQueue:operationQueue withHandler:v11];
       v7 = self->_activityManager;
       v8 = self->_operationQueue;
       v9[0] = MEMORY[0x277D85DD0];
@@ -301,42 +301,42 @@ LABEL_18:
   if ([MEMORY[0x277CC1CD0] isActivityAvailable])
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentDominantMotionState];
-    v3 = [MEMORY[0x277CFE318] userContext];
-    v4 = [MEMORY[0x277CFE338] keyPathForMotionState];
-    [v3 setObject:v5 forKeyedSubscript:v4];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    keyPathForMotionState = [MEMORY[0x277CFE338] keyPathForMotionState];
+    [userContext setObject:v5 forKeyedSubscript:keyPathForMotionState];
   }
 }
 
-- (void)addMotionActivity:(id)a3
+- (void)addMotionActivity:(id)activity
 {
-  v4 = a3;
-  if (v4)
+  activityCopy = activity;
+  if (activityCopy)
   {
-    v11 = v4;
-    v5 = [v4 startDate];
+    v11 = activityCopy;
+    startDate = [activityCopy startDate];
 
-    v4 = v11;
-    if (v5)
+    activityCopy = v11;
+    if (startDate)
     {
       v6 = [_DKMotionMonitor _activityTypeToMotionState:v11];
       v7 = [_DKTemporalNumericState alloc];
       v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v6];
-      v9 = [v11 startDate];
-      v10 = [(_DKTemporalNumericState *)v7 initWithState:v8 timestamp:v9];
+      startDate2 = [v11 startDate];
+      v10 = [(_DKTemporalNumericState *)v7 initWithState:v8 timestamp:startDate2];
 
       [(_DKMotionMonitor *)self addState:v10];
-      v4 = v11;
+      activityCopy = v11;
     }
   }
 }
 
-- (void)addState:(id)a3
+- (void)addState:(id)state
 {
-  v10 = a3;
+  stateCopy = state;
   v4 = os_transaction_create();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(_DKMonitor *)self instantState];
-  v7 = [v6 objectForKeyedSubscript:@"kMotionStateBuffer"];
+  instantState = [(_DKMonitor *)self instantState];
+  v7 = [instantState objectForKeyedSubscript:@"kMotionStateBuffer"];
 
   if (self->_activateTimer)
   {
@@ -346,7 +346,7 @@ LABEL_18:
     dispatch_source_set_timer(motionStateProcessingTimer, v9, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   }
 
-  [v7 addObject:v10];
+  [v7 addObject:stateCopy];
 
   objc_autoreleasePoolPop(v5);
 }
@@ -355,22 +355,22 @@ LABEL_18:
 {
   v3 = os_transaction_create();
   v4 = objc_autoreleasePoolPush();
-  v5 = [(_DKMonitor *)self instantState];
-  v6 = [v5 objectForKeyedSubscript:@"kMotionStateBuffer"];
+  instantState = [(_DKMonitor *)self instantState];
+  v6 = [instantState objectForKeyedSubscript:@"kMotionStateBuffer"];
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x3032000000;
   v27[3] = __Block_byref_object_copy_;
   v27[4] = __Block_byref_object_dispose_;
-  v28 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __46___DKMotionMonitor_computeDominantMotionState__block_invoke;
   v24[3] = &unk_27856F100;
   v26 = v27;
-  v8 = v7;
+  v8 = dictionary;
   v25 = v8;
   [v6 enumerateObjectsWithOptions:2 usingBlock:v24];
   v23[0] = 0;
@@ -389,13 +389,13 @@ LABEL_18:
   v18[5] = &v19;
   [v8 enumerateKeysAndObjectsUsingBlock:v18];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20[3]];
-  v10 = [MEMORY[0x277CFE318] userContext];
-  v11 = [MEMORY[0x277CFE338] keyPathForMotionState];
-  [v10 setObject:v9 forKeyedSubscript:v11];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForMotionState = [MEMORY[0x277CFE338] keyPathForMotionState];
+  [userContext setObject:v9 forKeyedSubscript:keyPathForMotionState];
 
   self->_currentDominantMotionState = v20[3];
   self->_activateTimer = 1;
-  v12 = [v6 lastObject];
+  lastObject = [v6 lastObject];
   if ([v6 count] < 2)
   {
     v15 = 0;
@@ -404,14 +404,14 @@ LABEL_18:
   else
   {
     currentDominantMotionState = self->_currentDominantMotionState;
-    v14 = [v12 state];
-    v15 = currentDominantMotionState != [v14 unsignedLongLongValue];
+    state = [lastObject state];
+    v15 = currentDominantMotionState != [state unsignedLongLongValue];
   }
 
   [v6 removeAllObjects];
   if (v15)
   {
-    [(_DKMotionMonitor *)self addState:v12];
+    [(_DKMotionMonitor *)self addState:lastObject];
   }
 
   [(_DKMonitor *)self saveState];
@@ -439,7 +439,7 @@ LABEL_18:
   }
 
   v4 = os_transaction_create();
-  v5 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26___DKMotionMonitor_update__block_invoke;
@@ -447,45 +447,45 @@ LABEL_18:
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(queue, v7);
 }
 
-+ (unint64_t)_activityTypeToMotionState:(id)a3
++ (unint64_t)_activityTypeToMotionState:(id)state
 {
-  v3 = a3;
-  if ([v3 walking])
+  stateCopy = state;
+  if ([stateCopy walking])
   {
     v4 = 2;
   }
 
-  else if ([v3 cycling])
+  else if ([stateCopy cycling])
   {
     v4 = 4;
   }
 
-  else if ([v3 running])
+  else if ([stateCopy running])
   {
     v4 = 3;
   }
 
   else
   {
-    v5 = [v3 automotive];
-    v6 = [v3 stationary];
+    automotive = [stateCopy automotive];
+    stationary = [stateCopy stationary];
     v7 = 5;
-    if (v6)
+    if (stationary)
     {
       v7 = 6;
     }
 
-    if (v5)
+    if (automotive)
     {
       v4 = v7;
     }
 
     else
     {
-      v4 = v6;
+      v4 = stationary;
     }
   }
 

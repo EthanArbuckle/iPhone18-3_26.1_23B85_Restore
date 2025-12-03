@@ -1,33 +1,33 @@
 @interface HREActionSetDerivingRecommendationGenerator
-- (void)setupProcess:(id)a3;
+- (void)setupProcess:(id)process;
 @end
 
 @implementation HREActionSetDerivingRecommendationGenerator
 
-- (void)setupProcess:(id)a3
+- (void)setupProcess:(id)process
 {
-  v4 = a3;
-  v5 = [v4 sourceItems];
-  if ([v5 count])
+  processCopy = process;
+  sourceItems = [processCopy sourceItems];
+  if ([sourceItems count])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 typeGroup];
-    v6 = v7 == 0;
+    typeGroup = [processCopy typeGroup];
+    v6 = typeGroup == 0;
   }
 
-  v8 = [v4 sourceItems];
-  v9 = [v8 na_filter:&__block_literal_global_0];
-  [v4 setSourceItems:v9];
+  sourceItems2 = [processCopy sourceItems];
+  v9 = [sourceItems2 na_filter:&__block_literal_global_0];
+  [processCopy setSourceItems:v9];
 
   v21.receiver = self;
   v21.super_class = HREActionSetDerivingRecommendationGenerator;
-  [(HREStandardAsyncRecommendationSource *)&v21 setupProcess:v4];
+  [(HREStandardAsyncRecommendationSource *)&v21 setupProcess:processCopy];
   objc_opt_class();
-  v10 = v4;
+  v10 = processCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -42,23 +42,23 @@
 
   if (v6)
   {
-    v13 = [v10 homeRecommendableObjects];
-    [v10 setSourceRecommendableObjects:v13];
+    homeRecommendableObjects = [v10 homeRecommendableObjects];
+    [v10 setSourceRecommendableObjects:homeRecommendableObjects];
   }
 
-  v14 = [v10 sourceRecommendableObjects];
-  v15 = [v14 na_filter:&__block_literal_global_49];
+  sourceRecommendableObjects = [v10 sourceRecommendableObjects];
+  v15 = [sourceRecommendableObjects na_filter:&__block_literal_global_49];
   [v10 setSourceRecommendableObjects:v15];
 
   v16 = objc_opt_new();
-  v17 = [v10 sourceRecommendableObjects];
+  sourceRecommendableObjects2 = [v10 sourceRecommendableObjects];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __60__HREActionSetDerivingRecommendationGenerator_setupProcess___block_invoke_5;
   v19[3] = &unk_2797765B8;
   v20 = v16;
   v18 = v16;
-  [v17 na_each:v19];
+  [sourceRecommendableObjects2 na_each:v19];
 
   [v12 setSourceCharacteristics:v18];
 }

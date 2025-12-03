@@ -1,42 +1,42 @@
 @interface UIInterfaceActionGroupView
 - (BOOL)_hasLoadedStackViewContents;
-- (BOOL)_shouldAllowPassthroughToLayersBehindUsForTouches:(id)a3;
+- (BOOL)_shouldAllowPassthroughToLayersBehindUsForTouches:(id)touches;
 - (BOOL)_shouldShowSeparatorAboveActionsSequenceView;
-- (CGRect)_actionSequenceVisibleRectForMakingCenteredAction:(id)a3;
+- (CGRect)_actionSequenceVisibleRectForMakingCenteredAction:(id)action;
 - (CGRect)_contentEdgeFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)arrangedHeaderViews;
 - (UIEdgeInsets)_buttonEdgeInsetsFromGroupViewEdge;
-- (UIInterfaceActionGroupView)initWithActionGroup:(id)a3 actionHandlerInvocationDelegate:(id)a4;
+- (UIInterfaceActionGroupView)initWithActionGroup:(id)group actionHandlerInvocationDelegate:(id)delegate;
 - (UIInterfaceActionHandlerInvocationDelegate)actionHandlerInvocationDelegate;
 - (UIInterfaceActionRepresentationView)preferredActionRepresentation;
 - (UIInterfaceActionSelectionTrackingController)actionSelectionController;
 - (UIInterfaceActionVisualStyleProviding)visualStyleProvider;
-- (id)_actionRepresentationViewForAction:(id)a3;
-- (id)_constraintsToPinView:(id)a3 toObject:(id)a4 identifier:(id)a5;
+- (id)_actionRepresentationViewForAction:(id)action;
+- (id)_constraintsToPinView:(id)view toObject:(id)object identifier:(id)identifier;
 - (id)_currentlyFocusedActionView;
-- (id)_defaultOrderingForActionRepresentationViews:(id)a3;
-- (id)_initWithActionGroup:(id)a3 visualStyleProvider:(id)a4 actionHandlerInvocationDelegate:(id)a5;
+- (id)_defaultOrderingForActionRepresentationViews:(id)views;
+- (id)_initWithActionGroup:(id)group visualStyleProvider:(id)provider actionHandlerInvocationDelegate:(id)delegate;
 - (id)_interfaceActionGroupViewState;
 - (id)_interfaceActionOfFocusedRepresentationView;
-- (id)_loadVisualStyleForTraitCollection:(id)a3;
+- (id)_loadVisualStyleForTraitCollection:(id)collection;
 - (id)_newActionGroupBackgroundView;
 - (id)_newSeparatorViewForSeparatingTitleAndButtons;
 - (id)_orderedTopLevelViews;
 - (id)_systemDefaultFocusGroupIdentifier;
-- (id)_visualStyleByApplyingOurTraitsToVisualStyle:(id)a3 traitCollection:(id)a4;
-- (id)_widthAnchoredToContentGuideConstraintForTopLevelView:(id)a3;
+- (id)_visualStyleByApplyingOurTraitsToVisualStyle:(id)style traitCollection:(id)collection;
+- (id)_widthAnchoredToContentGuideConstraintForTopLevelView:(id)view;
 - (int64_t)_actionLayoutAxisUnknowDisallowed;
-- (void)_addBackgroudViewToViewHierarchy:(id)a3;
-- (void)_addConstraintToActiveTopLevelViewArrangementConstraints:(id)a3;
+- (void)_addBackgroudViewToViewHierarchy:(id)hierarchy;
+- (void)_addConstraintToActiveTopLevelViewArrangementConstraints:(id)constraints;
 - (void)_applyVisualStyle;
 - (void)_applyVisualStyleCornerRadius;
 - (void)_applyVisualStyleToActionsViewScrollView;
 - (void)_applyVisualStyleToBackgroundViewDisplay;
 - (void)_arrangeActionViewsInActionSequenceView;
 - (void)_arrangeTopLevelViews;
-- (void)_associateWeakSimultaneouslyPresentedGroupViews:(id)a3 bidirectional:(BOOL)a4;
-- (void)_commonInitWithActionGroup:(id)a3 visualStyleProvider:(id)a4 actionHandlerInvocationDelegate:(id)a5;
+- (void)_associateWeakSimultaneouslyPresentedGroupViews:(id)views bidirectional:(BOOL)bidirectional;
+- (void)_commonInitWithActionGroup:(id)group visualStyleProvider:(id)provider actionHandlerInvocationDelegate:(id)delegate;
 - (void)_determineActualLayoutAxis;
 - (void)_installContentGuideConstraints;
 - (void)_loadActionSequenceView;
@@ -45,66 +45,66 @@
 - (void)_reloadStackViewContentsIfNeeded;
 - (void)_reloadTopSeparatorView;
 - (void)_reloadVisualStyleTrackingTraitUsage;
-- (void)_removeConstraintToActiveTopLevelViewArrangementConstraints:(id)a3;
+- (void)_removeConstraintToActiveTopLevelViewArrangementConstraints:(id)constraints;
 - (void)_removeUsAsThePresentingViewControllerForAllActions;
-- (void)_scrollActionRepresentationViewToVisibleForAction:(id)a3 animated:(BOOL)a4;
-- (void)_scrollPreferredActionRepresentationViewToVisibleAnimated:(BOOL)a3;
-- (void)_setAlignActionSeparatorLeadingEdgeWithContent:(BOOL)a3;
-- (void)_setAndApplyVisualStyle:(id)a3;
-- (void)_setDrawsBackground:(BOOL)a3;
-- (void)_setLayoutDebuggingIdentifier:(id)a3;
-- (void)_setSelectionHighlightContinuousCornerRadius:(double)a3;
+- (void)_scrollActionRepresentationViewToVisibleForAction:(id)action animated:(BOOL)animated;
+- (void)_scrollPreferredActionRepresentationViewToVisibleAnimated:(BOOL)animated;
+- (void)_setAlignActionSeparatorLeadingEdgeWithContent:(BOOL)content;
+- (void)_setAndApplyVisualStyle:(id)style;
+- (void)_setDrawsBackground:(BOOL)background;
+- (void)_setLayoutDebuggingIdentifier:(id)identifier;
+- (void)_setSelectionHighlightContinuousCornerRadius:(double)radius;
 - (void)_setUsAsThePresentingViewControllerForAllActions;
-- (void)_setVisualStyleOverrideActionHighlightAttributes:(id)a3;
-- (void)_setVisualStyleOverrideSeparatorAttributes:(id)a3;
-- (void)_setVisualStyleOverrideTitleLabelFont:(id)a3;
+- (void)_setVisualStyleOverrideActionHighlightAttributes:(id)attributes;
+- (void)_setVisualStyleOverrideSeparatorAttributes:(id)attributes;
+- (void)_setVisualStyleOverrideTitleLabelFont:(id)font;
 - (void)_updateActionSequenceScrollability;
 - (void)_updateActionSequenceViewActionLayoutAxis;
 - (void)_updateActionSequenceViewDebugLayoutIdentifier;
 - (void)_updateRequiredActionRepresentationSizeConstraints;
 - (void)_updateRoundedCornerPositionForSubviews;
-- (void)configureForDismissAlongsideTransitionCoordinator:(id)a3;
-- (void)configureForPresentAlongsideTransitionCoordinator:(id)a3;
+- (void)configureForDismissAlongsideTransitionCoordinator:(id)coordinator;
+- (void)configureForPresentAlongsideTransitionCoordinator:(id)coordinator;
 - (void)dealloc;
-- (void)insertArrangedHeaderView:(id)a3 atIndex:(unint64_t)a4 scrollable:(BOOL)a5;
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5;
-- (void)interfaceActionGroup:(id)a3 reloadDisplayedContentActionGroupProperties:(id)a4;
-- (void)interfaceActionGroup:(id)a3 reloadDisplayedContentVisualStyle:(id)a4;
+- (void)insertArrangedHeaderView:(id)view atIndex:(unint64_t)index scrollable:(BOOL)scrollable;
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion;
+- (void)interfaceActionGroup:(id)group reloadDisplayedContentActionGroupProperties:(id)properties;
+- (void)interfaceActionGroup:(id)group reloadDisplayedContentVisualStyle:(id)style;
 - (void)layoutSubviews;
-- (void)removeArrangedHeaderView:(id)a3;
-- (void)scrollToCenterForInterfaceAction:(id)a3;
-- (void)setActionGroup:(id)a3;
-- (void)setActionLayoutAxis:(int64_t)a3;
-- (void)setActiveTestingVisualStyle:(id)a3;
-- (void)setAllowedActionLayoutAxisByPriority:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPresentationStyle:(int64_t)a3;
-- (void)setRequiredActionRepresentationWidth:(double)a3;
-- (void)setScrubbingEnabled:(BOOL)a3;
-- (void)setSimultaneouslyPresentedGroupViews:(id)a3;
-- (void)setSpringLoaded:(BOOL)a3;
-- (void)setVisualStyleProvider:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)removeArrangedHeaderView:(id)view;
+- (void)scrollToCenterForInterfaceAction:(id)action;
+- (void)setActionGroup:(id)group;
+- (void)setActionLayoutAxis:(int64_t)axis;
+- (void)setActiveTestingVisualStyle:(id)style;
+- (void)setAllowedActionLayoutAxisByPriority:(id)priority;
+- (void)setFrame:(CGRect)frame;
+- (void)setPresentationStyle:(int64_t)style;
+- (void)setRequiredActionRepresentationWidth:(double)width;
+- (void)setScrubbingEnabled:(BOOL)enabled;
+- (void)setSimultaneouslyPresentedGroupViews:(id)views;
+- (void)setSpringLoaded:(BOOL)loaded;
+- (void)setVisualStyleProvider:(id)provider;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateConstraints;
 @end
 
 @implementation UIInterfaceActionGroupView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = UIInterfaceActionGroupView;
-  [(UIView *)&v30 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(UIView *)self superview];
-  if (v4 && dyld_program_sdk_at_least() && [(UIView *)self _usesAutoresizingConstraints])
+  [(UIView *)&v30 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  superview = [(UIView *)self superview];
+  if (superview && dyld_program_sdk_at_least() && [(UIView *)self _usesAutoresizingConstraints])
   {
-    v5 = [(UIView *)self _autoresizingConstraints];
-    if ([v5 count] == 4)
+    _autoresizingConstraints = [(UIView *)self _autoresizingConstraints];
+    if ([_autoresizingConstraints count] == 4)
     {
-      [v4 bounds];
+      [superview bounds];
       [(UIView *)self _alignmentRectForBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
       v7 = v6;
       v9 = v8;
@@ -117,7 +117,7 @@
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      v22 = [v5 objectAtIndexedSubscript:0];
+      v22 = [_autoresizingConstraints objectAtIndexedSubscript:0];
       v31.origin.x = v15;
       v31.origin.y = v17;
       v31.size.width = v19;
@@ -129,14 +129,14 @@
       v32.size.height = v13;
       [v22 setConstant:MinX - CGRectGetMinX(v32)];
 
-      v24 = [v5 objectAtIndexedSubscript:1];
+      v24 = [_autoresizingConstraints objectAtIndexedSubscript:1];
       v33.origin.x = v28;
       v33.origin.y = v17;
       v33.size.width = v19;
       v33.size.height = v21;
       [v24 setConstant:CGRectGetWidth(v33)];
 
-      v25 = [v5 objectAtIndexedSubscript:2];
+      v25 = [_autoresizingConstraints objectAtIndexedSubscript:2];
       v34.origin.x = v28;
       v34.origin.y = v17;
       v34.size.width = v19;
@@ -148,7 +148,7 @@
       v35.size.height = rect;
       [v25 setConstant:MinY - CGRectGetMinY(v35)];
 
-      v27 = [v5 objectAtIndexedSubscript:3];
+      v27 = [_autoresizingConstraints objectAtIndexedSubscript:3];
       v36.origin.x = v28;
       v36.origin.y = v17;
       v36.size.width = v19;
@@ -163,19 +163,19 @@
   }
 }
 
-- (void)_commonInitWithActionGroup:(id)a3 visualStyleProvider:(id)a4 actionHandlerInvocationDelegate:(id)a5
+- (void)_commonInitWithActionGroup:(id)group visualStyleProvider:(id)provider actionHandlerInvocationDelegate:(id)delegate
 {
-  v17 = a3;
-  v9 = a4;
-  objc_storeStrong(&self->_actionGroup, a3);
-  v10 = a5;
+  groupCopy = group;
+  providerCopy = provider;
+  objc_storeStrong(&self->_actionGroup, group);
+  delegateCopy = delegate;
   [(UIInterfaceActionGroup *)self->_actionGroup _addActionGroupDisplayPropertyObserver:self];
   [(UIInterfaceActionGroupView *)self _setUsAsThePresentingViewControllerForAllActions];
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   arrangedScrollableHeaderViews = self->_arrangedScrollableHeaderViews;
-  self->_arrangedScrollableHeaderViews = v11;
+  self->_arrangedScrollableHeaderViews = array;
 
-  objc_storeWeak(&self->_actionHandlerInvocationDelegate, v10);
+  objc_storeWeak(&self->_actionHandlerInvocationDelegate, delegateCopy);
   self->_presentationStyle = 0;
   self->_actionLayoutAxis = -1;
   allowedActionLayoutAxisByPriority = self->_allowedActionLayoutAxisByPriority;
@@ -201,9 +201,9 @@
   [(UIView *)self setNeedsUpdateConstraints];
   [(UIInterfaceActionGroupView *)self _loadTopLevelItemsView];
   [(UIInterfaceActionGroupView *)self _loadActionSequenceView];
-  if (v9)
+  if (providerCopy)
   {
-    [(UIInterfaceActionGroupView *)self setVisualStyleProvider:v9];
+    [(UIInterfaceActionGroupView *)self setVisualStyleProvider:providerCopy];
   }
 
   else
@@ -212,34 +212,34 @@
   }
 }
 
-- (UIInterfaceActionGroupView)initWithActionGroup:(id)a3 actionHandlerInvocationDelegate:(id)a4
+- (UIInterfaceActionGroupView)initWithActionGroup:(id)group actionHandlerInvocationDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = UIInterfaceActionGroupView;
   v8 = [(UIView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v9 = v8;
   if (v8)
   {
-    [(UIInterfaceActionGroupView *)v8 _commonInitWithActionGroup:v6 visualStyleProvider:0 actionHandlerInvocationDelegate:v7];
+    [(UIInterfaceActionGroupView *)v8 _commonInitWithActionGroup:groupCopy visualStyleProvider:0 actionHandlerInvocationDelegate:delegateCopy];
   }
 
   return v9;
 }
 
-- (id)_initWithActionGroup:(id)a3 visualStyleProvider:(id)a4 actionHandlerInvocationDelegate:(id)a5
+- (id)_initWithActionGroup:(id)group visualStyleProvider:(id)provider actionHandlerInvocationDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = UIInterfaceActionGroupView;
   v11 = [(UIView *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v12 = v11;
   if (v11)
   {
-    [(UIInterfaceActionGroupView *)v11 _commonInitWithActionGroup:v8 visualStyleProvider:v9 actionHandlerInvocationDelegate:v10];
+    [(UIInterfaceActionGroupView *)v11 _commonInitWithActionGroup:groupCopy visualStyleProvider:providerCopy actionHandlerInvocationDelegate:delegateCopy];
   }
 
   return v12;
@@ -253,22 +253,22 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)setActionGroup:(id)a3
+- (void)setActionGroup:(id)group
 {
-  v7 = a3;
-  if (([v7 isEqual:self->_actionGroup] & 1) == 0)
+  groupCopy = group;
+  if (([groupCopy isEqual:self->_actionGroup] & 1) == 0)
   {
     [(UIInterfaceActionGroupView *)self _removeUsAsThePresentingViewControllerForAllActions];
-    v5 = [v7 _visualStyle];
+    _visualStyle = [groupCopy _visualStyle];
 
-    if (!v5)
+    if (!_visualStyle)
     {
-      v6 = [(UIInterfaceActionGroup *)self->_actionGroup _visualStyle];
-      [v7 _setVisualStyle:v6];
+      _visualStyle2 = [(UIInterfaceActionGroup *)self->_actionGroup _visualStyle];
+      [groupCopy _setVisualStyle:_visualStyle2];
     }
 
     [(UIInterfaceActionGroup *)self->_actionGroup _removeActionGroupDisplayPropertyObserver:self];
-    objc_storeStrong(&self->_actionGroup, a3);
+    objc_storeStrong(&self->_actionGroup, group);
     [(UIInterfaceActionGroup *)self->_actionGroup _addActionGroupDisplayPropertyObserver:self];
     [(UIInterfaceActionGroupView *)self _setUsAsThePresentingViewControllerForAllActions];
     [(UIInterfaceActionGroupView *)self _setNeedsUpdateTopLevelViewsArrangement];
@@ -276,16 +276,16 @@
   }
 }
 
-- (void)setActionLayoutAxis:(int64_t)a3
+- (void)setActionLayoutAxis:(int64_t)axis
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (self->_actionLayoutAxis != a3)
+  if (self->_actionLayoutAxis != axis)
   {
-    self->_actionLayoutAxis = a3;
+    self->_actionLayoutAxis = axis;
     [(UIInterfaceActionGroupView *)self _updateActionSequenceViewActionLayoutAxis];
     actionLayoutAxis = self->_actionLayoutAxis;
-    v5 = [(UIInterfaceActionGroupView *)self _allActionViews];
-    v6 = [v5 count];
+    _allActionViews = [(UIInterfaceActionGroupView *)self _allActionViews];
+    v6 = [_allActionViews count];
 
     if (v6 == 1)
     {
@@ -301,8 +301,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(UIInterfaceActionGroupView *)self _allActionViews];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    _allActionViews2 = [(UIInterfaceActionGroupView *)self _allActionViews];
+    v9 = [_allActionViews2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -313,21 +313,21 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_allActionViews2);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 actionViewStateContext];
+          actionViewStateContext = [v13 actionViewStateContext];
           v15 = objc_opt_respondsToSelector();
 
           if (v15)
           {
-            v16 = [v13 actionViewStateContext];
-            [v16 setActionLayoutAxis:v7];
+            actionViewStateContext2 = [v13 actionViewStateContext];
+            [actionViewStateContext2 setActionLayoutAxis:v7];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [_allActionViews2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -335,34 +335,34 @@
   }
 }
 
-- (void)setAllowedActionLayoutAxisByPriority:(id)a3
+- (void)setAllowedActionLayoutAxisByPriority:(id)priority
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_allowedActionLayoutAxisByPriority] & 1) == 0)
+  priorityCopy = priority;
+  if (([priorityCopy isEqual:self->_allowedActionLayoutAxisByPriority] & 1) == 0)
   {
-    objc_storeStrong(&self->_allowedActionLayoutAxisByPriority, a3);
+    objc_storeStrong(&self->_allowedActionLayoutAxisByPriority, priority);
     [(UIInterfaceActionGroupView *)self setActionLayoutAxis:-1];
     [(UIView *)self setNeedsLayout];
     [(UIView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)insertArrangedHeaderView:(id)a3 atIndex:(unint64_t)a4 scrollable:(BOOL)a5
+- (void)insertArrangedHeaderView:(id)view atIndex:(unint64_t)index scrollable:(BOOL)scrollable
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [[_UIInterfaceActionGroupHeaderScrollView alloc] initWithContentView:v7];
+  scrollableCopy = scrollable;
+  viewCopy = view;
+  v8 = [[_UIInterfaceActionGroupHeaderScrollView alloc] initWithContentView:viewCopy];
 
-  [(UIScrollView *)v8 setScrollEnabled:v5];
+  [(UIScrollView *)v8 setScrollEnabled:scrollableCopy];
   [(NSMutableArray *)self->_arrangedScrollableHeaderViews addObject:v8];
   [(UIInterfaceActionGroupView *)self _arrangeTopLevelViews];
 }
 
-- (void)removeArrangedHeaderView:(id)a3
+- (void)removeArrangedHeaderView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionGroupView *)self arrangedHeaderViews];
-  v6 = [v5 indexOfObjectIdenticalTo:v4];
+  viewCopy = view;
+  arrangedHeaderViews = [(UIInterfaceActionGroupView *)self arrangedHeaderViews];
+  v6 = [arrangedHeaderViews indexOfObjectIdenticalTo:viewCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -374,13 +374,13 @@
 
 - (NSArray)arrangedHeaderViews
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   arrangedScrollableHeaderViews = self->_arrangedScrollableHeaderViews;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__UIInterfaceActionGroupView_arrangedHeaderViews__block_invoke;
   v7[3] = &unk_1E70F3A38;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
   [(NSMutableArray *)arrangedScrollableHeaderViews enumerateObjectsUsingBlock:v7];
 
@@ -400,35 +400,35 @@ void __49__UIInterfaceActionGroupView_arrangedHeaderViews__block_invoke(uint64_t
   }
 }
 
-- (void)setPresentationStyle:(int64_t)a3
+- (void)setPresentationStyle:(int64_t)style
 {
-  if (self->_presentationStyle != a3)
+  if (self->_presentationStyle != style)
   {
-    self->_presentationStyle = a3;
+    self->_presentationStyle = style;
     [(UIInterfaceActionGroupView *)self reloadVisualStyle];
   }
 }
 
-- (void)setScrubbingEnabled:(BOOL)a3
+- (void)setScrubbingEnabled:(BOOL)enabled
 {
-  if (self->_scrubbingEnabled != a3)
+  if (self->_scrubbingEnabled != enabled)
   {
-    self->_scrubbingEnabled = a3;
+    self->_scrubbingEnabled = enabled;
     [(UIInterfaceActionSelectionTrackingController *)self->_actionSelectionController setScrubbingEnabled:?];
   }
 }
 
-- (void)scrollToCenterForInterfaceAction:(id)a3
+- (void)scrollToCenterForInterfaceAction:(id)action
 {
-  v4 = a3;
-  [(UIInterfaceActionGroupView *)self _scrollActionRepresentationViewToVisibleForAction:v4 animated:+[UIView areAnimationsEnabled]];
+  actionCopy = action;
+  [(UIInterfaceActionGroupView *)self _scrollActionRepresentationViewToVisibleForAction:actionCopy animated:+[UIView areAnimationsEnabled]];
 }
 
-- (void)configureForPresentAlongsideTransitionCoordinator:(id)a3
+- (void)configureForPresentAlongsideTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionGroupView *)self visualStyle];
-  [v5 configureForPresentingGroupView:self alongsideTransitionCoordinator:v4];
+  coordinatorCopy = coordinator;
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  [visualStyle configureForPresentingGroupView:self alongsideTransitionCoordinator:coordinatorCopy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -437,14 +437,14 @@ void __49__UIInterfaceActionGroupView_arrangedHeaderViews__block_invoke(uint64_t
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
   v7 = v6;
-  if (v4)
+  if (coordinatorCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __80__UIInterfaceActionGroupView_configureForPresentAlongsideTransitionCoordinator___block_invoke_2;
     v8[3] = &unk_1E70F3770;
     v9 = v6;
-    [v4 animateAlongsideTransition:v8 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   }
 
   else
@@ -453,33 +453,33 @@ void __49__UIInterfaceActionGroupView_arrangedHeaderViews__block_invoke(uint64_t
   }
 }
 
-- (void)configureForDismissAlongsideTransitionCoordinator:(id)a3
+- (void)configureForDismissAlongsideTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionGroupView *)self visualStyle];
-  [v5 configureForDismissingGroupView:self alongsideTransitionCoordinator:v4];
+  coordinatorCopy = coordinator;
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  [visualStyle configureForDismissingGroupView:self alongsideTransitionCoordinator:coordinatorCopy];
 }
 
-- (void)setRequiredActionRepresentationWidth:(double)a3
+- (void)setRequiredActionRepresentationWidth:(double)width
 {
-  if (self->_requiredActionRepresentationWidth != a3)
+  if (self->_requiredActionRepresentationWidth != width)
   {
-    self->_requiredActionRepresentationWidth = a3;
+    self->_requiredActionRepresentationWidth = width;
     [(UIInterfaceActionGroupView *)self _updateRequiredActionRepresentationSizeConstraints];
   }
 }
 
 - (UIEdgeInsets)_buttonEdgeInsetsFromGroupViewEdge
 {
-  v3 = [(UIInterfaceActionGroupView *)self visualStyle];
-  [v3 actionSequenceEdgeInsets];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  [visualStyle actionSequenceEdgeInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UIInterfaceActionGroupView *)self actionSequenceView];
-  [v12 layoutMargins];
+  actionSequenceView = [(UIInterfaceActionGroupView *)self actionSequenceView];
+  [actionSequenceView layoutMargins];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -517,24 +517,24 @@ void __49__UIInterfaceActionGroupView_arrangedHeaderViews__block_invoke(uint64_t
   }
 }
 
-- (void)_addConstraintToActiveTopLevelViewArrangementConstraints:(id)a3
+- (void)_addConstraintToActiveTopLevelViewArrangementConstraints:(id)constraints
 {
-  v4 = a3;
-  [v4 setActive:1];
+  constraintsCopy = constraints;
+  [constraintsCopy setActive:1];
   v8 = [(NSArray *)self->_topLevelViewArrangementConstraints mutableCopy];
-  [v8 addObject:v4];
+  [v8 addObject:constraintsCopy];
 
   v6 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v8, v5);
   topLevelViewArrangementConstraints = self->_topLevelViewArrangementConstraints;
   self->_topLevelViewArrangementConstraints = v6;
 }
 
-- (void)_removeConstraintToActiveTopLevelViewArrangementConstraints:(id)a3
+- (void)_removeConstraintToActiveTopLevelViewArrangementConstraints:(id)constraints
 {
-  v4 = a3;
-  [v4 setActive:0];
+  constraintsCopy = constraints;
+  [constraintsCopy setActive:0];
   v5 = [(NSArray *)self->_topLevelViewArrangementConstraints mutableCopy];
-  [(NSArray *)v5 removeObject:v4];
+  [(NSArray *)v5 removeObject:constraintsCopy];
 
   topLevelViewArrangementConstraints = self->_topLevelViewArrangementConstraints;
   self->_topLevelViewArrangementConstraints = v5;
@@ -547,8 +547,8 @@ void __49__UIInterfaceActionGroupView_arrangedHeaderViews__block_invoke(uint64_t
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  arrangedActionRepresentationViews = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
+  v3 = [arrangedActionRepresentationViews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -558,7 +558,7 @@ void __49__UIInterfaceActionGroupView_arrangedHeaderViews__block_invoke(uint64_t
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(arrangedActionRepresentationViews);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -569,7 +569,7 @@ void __49__UIInterfaceActionGroupView_arrangedHeaderViews__block_invoke(uint64_t
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [arrangedActionRepresentationViews countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -587,11 +587,11 @@ LABEL_11:
 - (UIInterfaceActionRepresentationView)preferredActionRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(UIInterfaceActionGroupView *)self _currentlyFocusedActionView];
-  v4 = v3;
-  if (v3)
+  _currentlyFocusedActionView = [(UIInterfaceActionGroupView *)self _currentlyFocusedActionView];
+  v4 = _currentlyFocusedActionView;
+  if (_currentlyFocusedActionView)
   {
-    v5 = v3;
+    v5 = _currentlyFocusedActionView;
   }
 
   else
@@ -602,14 +602,14 @@ LABEL_11:
     v29 = __Block_byref_object_copy__4;
     v30 = __Block_byref_object_dispose__4;
     v31 = 0;
-    v6 = [(UIInterfaceActionGroupView *)self actionGroup];
-    v7 = [v6 preferredAction];
+    actionGroup = [(UIInterfaceActionGroupView *)self actionGroup];
+    preferredAction = [actionGroup preferredAction];
 
-    if ([v7 isEnabled])
+    if ([preferredAction isEnabled])
     {
       v8 = v27;
-      v9 = v7;
-      v10 = v8[5];
+      v9 = preferredAction;
+      actionGroup3 = v8[5];
       v8[5] = v9;
     }
 
@@ -619,21 +619,21 @@ LABEL_11:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v11 = [(UIInterfaceActionGroupView *)self actionGroup];
-      v12 = [v11 actions];
+      actionGroup2 = [(UIInterfaceActionGroupView *)self actionGroup];
+      actions = [actionGroup2 actions];
 
-      v13 = [v12 countByEnumeratingWithState:&v22 objects:v32 count:16];
-      if (v13)
+      v12Actions = [actions countByEnumeratingWithState:&v22 objects:v32 count:16];
+      if (v12Actions)
       {
-        v10 = 0;
+        actionGroup3 = 0;
         v14 = *v23;
         while (2)
         {
-          for (i = 0; i != v13; i = i + 1)
+          for (i = 0; i != v12Actions; i = i + 1)
           {
             if (*v23 != v14)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(actions);
             }
 
             v16 = *(*(&v22 + 1) + 8 * i);
@@ -646,23 +646,23 @@ LABEL_11:
                 goto LABEL_24;
               }
 
-              if (!v10)
+              if (!actionGroup3)
               {
                 if ([v16 type] == 1)
                 {
-                  v10 = v16;
+                  actionGroup3 = v16;
                 }
 
                 else
                 {
-                  v10 = 0;
+                  actionGroup3 = 0;
                 }
               }
             }
           }
 
-          v13 = [v12 countByEnumeratingWithState:&v22 objects:v32 count:16];
-          if (v13)
+          v12Actions = [actions countByEnumeratingWithState:&v22 objects:v32 count:16];
+          if (v12Actions)
           {
             continue;
           }
@@ -670,10 +670,10 @@ LABEL_11:
           break;
         }
 
-        if (v10)
+        if (actionGroup3)
         {
           v17 = 0;
-          v18 = v10;
+          firstObject = actionGroup3;
           goto LABEL_31;
         }
       }
@@ -682,13 +682,13 @@ LABEL_11:
       {
       }
 
-      v12 = [(UIInterfaceActionGroupView *)self actionGroup];
-      v13 = [v12 actions];
-      v18 = [v13 firstObject];
-      v10 = 0;
+      actions = [(UIInterfaceActionGroupView *)self actionGroup];
+      v12Actions = [actions actions];
+      firstObject = [v12Actions firstObject];
+      actionGroup3 = 0;
       v17 = 1;
 LABEL_31:
-      objc_storeStrong(v27 + 5, v18);
+      objc_storeStrong(v27 + 5, firstObject);
       if (v17)
       {
       }
@@ -696,14 +696,14 @@ LABEL_31:
 
     else
     {
-      v10 = [(UIInterfaceActionGroupView *)self actionGroup];
-      v19 = [v10 actions];
+      actionGroup3 = [(UIInterfaceActionGroupView *)self actionGroup];
+      actions2 = [actionGroup3 actions];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invoke;
       v21[3] = &unk_1E70F3A60;
       v21[4] = &v26;
-      [v19 enumerateObjectsUsingBlock:v21];
+      [actions2 enumerateObjectsUsingBlock:v21];
     }
 
     v5 = [(UIInterfaceActionGroupView *)self _actionRepresentationViewForAction:v27[5]];
@@ -727,40 +727,40 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x10) != 0)
+  if ((focusGroupContainmentBehavior & 0x10) != 0)
   {
-    v5 = _UIFocusGroupIdentifierForInstance(self);
+    _systemDefaultFocusGroupIdentifier = _UIFocusGroupIdentifierForInstance(self);
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIInterfaceActionGroupView;
-    v5 = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
-- (void)interfaceActionGroup:(id)a3 reloadDisplayedContentActionGroupProperties:(id)a4
+- (void)interfaceActionGroup:(id)group reloadDisplayedContentActionGroupProperties:(id)properties
 {
-  v8 = a4;
+  propertiesCopy = properties;
   if ([UIInterfaceAction changedProperties:"changedProperties:containsAny:" containsAny:?])
   {
     [(UIView *)self setNeedsFocusUpdate];
   }
 
-  if ([UIInterfaceAction changedProperties:v8 containsAny:&unk_1EFE2B2F0])
+  if ([UIInterfaceAction changedProperties:propertiesCopy containsAny:&unk_1EFE2B2F0])
   {
     [(UIInterfaceActionGroupView *)self _setNeedsUpdateActionSequenceViewArrangement];
   }
 
-  v5 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v6 = [v5 actionGroupPropertiesAffectingActionsScrollViewStyling];
-  v7 = [UIInterfaceActionGroup changedProperties:v8 containsAny:v6];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  actionGroupPropertiesAffectingActionsScrollViewStyling = [visualStyle actionGroupPropertiesAffectingActionsScrollViewStyling];
+  v7 = [UIInterfaceActionGroup changedProperties:propertiesCopy containsAny:actionGroupPropertiesAffectingActionsScrollViewStyling];
 
   if (v7)
   {
@@ -768,25 +768,25 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
   }
 }
 
-- (void)interfaceActionGroup:(id)a3 reloadDisplayedContentVisualStyle:(id)a4
+- (void)interfaceActionGroup:(id)group reloadDisplayedContentVisualStyle:(id)style
 {
-  v5 = a4;
-  v7 = [(UIView *)self traitCollection];
-  v6 = [(UIInterfaceActionGroupView *)self _visualStyleByApplyingOurTraitsToVisualStyle:v5 traitCollection:v7];
+  styleCopy = style;
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = [(UIInterfaceActionGroupView *)self _visualStyleByApplyingOurTraitsToVisualStyle:styleCopy traitCollection:traitCollection];
 
   [(UIInterfaceActionGroupView *)self _setAndApplyVisualStyle:v6];
 }
 
-- (void)setActiveTestingVisualStyle:(id)a3
+- (void)setActiveTestingVisualStyle:(id)style
 {
-  objc_storeStrong(&self->_activeTestingVisualStyle, a3);
+  objc_storeStrong(&self->_activeTestingVisualStyle, style);
 
   [(UIInterfaceActionGroupView *)self reloadVisualStyle];
 }
 
-- (void)setVisualStyleProvider:(id)a3
+- (void)setVisualStyleProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_visualStyleProvider);
 
   v5 = obj;
@@ -798,15 +798,15 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
   }
 }
 
-- (void)_setAndApplyVisualStyle:(id)a3
+- (void)_setAndApplyVisualStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   if (!self->_isSettingVisualStyle)
   {
     self->_isSettingVisualStyle = 1;
-    v7 = v4;
-    v5 = [(UIInterfaceActionGroup *)self->_actionGroup _visualStyle];
-    v6 = [v5 isEqual:v7];
+    v7 = styleCopy;
+    _visualStyle = [(UIInterfaceActionGroup *)self->_actionGroup _visualStyle];
+    v6 = [_visualStyle isEqual:v7];
 
     if ((v6 & 1) == 0)
     {
@@ -815,17 +815,17 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
     }
 
     self->_isSettingVisualStyle = 0;
-    v4 = v7;
+    styleCopy = v7;
   }
 }
 
 - (void)_reloadVisualStyleTrackingTraitUsage
 {
-  v3 = [(UIView *)self traitCollection];
-  v6 = [(UIInterfaceActionGroupView *)self _loadVisualStyleForTraitCollection:v3];
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = [(UIInterfaceActionGroupView *)self _loadVisualStyleForTraitCollection:traitCollection];
 
-  v4 = [(UIInterfaceActionGroup *)self->_actionGroup _visualStyle];
-  v5 = [v4 isEqual:v6];
+  _visualStyle = [(UIInterfaceActionGroup *)self->_actionGroup _visualStyle];
+  v5 = [_visualStyle isEqual:v6];
 
   if ((v5 & 1) == 0)
   {
@@ -833,19 +833,19 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v23 = *MEMORY[0x1E69E9840];
   if (self->_presentationStyle == 2)
   {
-    [(UIView *)self updateConstraintsIfNeeded:a3.width];
+    [(UIView *)self updateConstraintsIfNeeded:fits.width];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(UIView *)self->_topLevelItemsView subviews];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    subviews = [(UIView *)self->_topLevelItemsView subviews];
+    v6 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -857,14 +857,14 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v18 + 1) + 8 * i) systemLayoutSizeFittingSize:{width, v9}];
           v9 = v9 + v11;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
@@ -875,8 +875,8 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
       v9 = 0.0;
     }
 
-    v14 = [(UIInterfaceActionGroupView *)self visualStyle];
-    [v14 maximumActionGroupContentSize];
+    visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+    [visualStyle maximumActionGroupContentSize];
     v16 = v15;
 
     if (v9 >= v16)
@@ -892,7 +892,7 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
 
   else
   {
-    [(UIView *)self systemLayoutSizeFittingSize:a3.width, a3.height];
+    [(UIView *)self systemLayoutSizeFittingSize:fits.width, fits.height];
     width = v13;
   }
 
@@ -923,14 +923,14 @@ void __59__UIInterfaceActionGroupView_preferredActionRepresentation__block_invok
   [(UIView *)backgroundView setFrame:?];
 }
 
-- (BOOL)_shouldAllowPassthroughToLayersBehindUsForTouches:(id)a3
+- (BOOL)_shouldAllowPassthroughToLayersBehindUsForTouches:(id)touches
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80__UIInterfaceActionGroupView__shouldAllowPassthroughToLayersBehindUsForTouches___block_invoke;
   v6[3] = &unk_1E70F3A88;
   v6[4] = self;
-  v3 = [a3 objectsPassingTest:v6];
+  v3 = [touches objectsPassingTest:v6];
   v4 = [v3 count] == 0;
 
   return v4;
@@ -944,65 +944,65 @@ uint64_t __80__UIInterfaceActionGroupView__shouldAllowPassthroughToLayersBehindU
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIInterfaceActionGroupView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:v6])
+  beganCopy = began;
+  eventCopy = event;
+  if ([(UIInterfaceActionGroupView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:beganCopy])
   {
     v8.receiver = self;
     v8.super_class = UIInterfaceActionGroupView;
-    [(UIResponder *)&v8 touchesBegan:v6 withEvent:v7];
+    [(UIResponder *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIInterfaceActionGroupView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:v6])
+  movedCopy = moved;
+  eventCopy = event;
+  if ([(UIInterfaceActionGroupView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:movedCopy])
   {
     v8.receiver = self;
     v8.super_class = UIInterfaceActionGroupView;
-    [(UIResponder *)&v8 touchesMoved:v6 withEvent:v7];
+    [(UIResponder *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIInterfaceActionGroupView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:v6])
+  endedCopy = ended;
+  eventCopy = event;
+  if ([(UIInterfaceActionGroupView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:endedCopy])
   {
     v8.receiver = self;
     v8.super_class = UIInterfaceActionGroupView;
-    [(UIResponder *)&v8 touchesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v8 touchesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIInterfaceActionGroupView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:v6])
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if ([(UIInterfaceActionGroupView *)self _shouldAllowPassthroughToLayersBehindUsForTouches:cancelledCopy])
   {
     v8.receiver = self;
     v8.super_class = UIInterfaceActionGroupView;
-    [(UIResponder *)&v8 touchesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v8 touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)setSpringLoaded:(BOOL)a3
+- (void)setSpringLoaded:(BOOL)loaded
 {
-  v3 = a3;
+  loadedCopy = loaded;
   v14 = *MEMORY[0x1E69E9840];
-  self->_springLoaded = a3;
+  self->_springLoaded = loaded;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  arrangedActionRepresentationViews = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
+  v5 = [arrangedActionRepresentationViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1014,57 +1014,57 @@ uint64_t __80__UIInterfaceActionGroupView__shouldAllowPassthroughToLayersBehindU
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrangedActionRepresentationViews);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setSpringLoaded:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setSpringLoaded:loadedCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [arrangedActionRepresentationViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  handlerCopy = handler;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_actionHandlerInvocationDelegate);
   v12 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained interfaceAction:v8 invokeActionHandler:v9 completion:v10];
+    [WeakRetained interfaceAction:actionCopy invokeActionHandler:handlerCopy completion:completionCopy];
   }
 
   else
   {
-    if (v8)
+    if (actionCopy)
     {
       v13 = 0;
-      v9[2](v9, v8, &v13);
+      handlerCopy[2](handlerCopy, actionCopy, &v13);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)setSimultaneouslyPresentedGroupViews:(id)a3
+- (void)setSimultaneouslyPresentedGroupViews:(id)views
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  viewsCopy = views;
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = viewsCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -1080,7 +1080,7 @@ uint64_t __80__UIInterfaceActionGroupView__shouldAllowPassthroughToLayersBehindU
           objc_enumerationMutation(v6);
         }
 
-        [v5 addPointer:{*(*(&v11 + 1) + 8 * v10++), v11}];
+        [weakObjectsPointerArray addPointer:{*(*(&v11 + 1) + 8 * v10++), v11}];
       }
 
       while (v8 != v10);
@@ -1090,20 +1090,20 @@ uint64_t __80__UIInterfaceActionGroupView__shouldAllowPassthroughToLayersBehindU
     while (v8);
   }
 
-  [(UIInterfaceActionGroupView *)self _associateWeakSimultaneouslyPresentedGroupViews:v5 bidirectional:1];
+  [(UIInterfaceActionGroupView *)self _associateWeakSimultaneouslyPresentedGroupViews:weakObjectsPointerArray bidirectional:1];
 }
 
-- (void)_associateWeakSimultaneouslyPresentedGroupViews:(id)a3 bidirectional:(BOOL)a4
+- (void)_associateWeakSimultaneouslyPresentedGroupViews:(id)views bidirectional:(BOOL)bidirectional
 {
-  v4 = a4;
-  v7 = a3;
-  [v7 compact];
-  if (([(NSPointerArray *)self->_weakSimultaneouslyPresentedGroupViews isEqual:v7]& 1) == 0)
+  bidirectionalCopy = bidirectional;
+  viewsCopy = views;
+  [viewsCopy compact];
+  if (([(NSPointerArray *)self->_weakSimultaneouslyPresentedGroupViews isEqual:viewsCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_weakSimultaneouslyPresentedGroupViews, a3);
-    v8 = v7;
+    objc_storeStrong(&self->_weakSimultaneouslyPresentedGroupViews, views);
+    v8 = viewsCopy;
     [v8 compact];
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([v8 count])
     {
       v10 = 0;
@@ -1112,7 +1112,7 @@ uint64_t __80__UIInterfaceActionGroupView__shouldAllowPassthroughToLayersBehindU
         v11 = [objc_msgSend(v8 pointerAtIndex:{v10), "actionSelectionController"}];
         if (v11)
         {
-          [v9 addObject:v11];
+          [array addObject:v11];
         }
 
         ++v10;
@@ -1121,17 +1121,17 @@ uint64_t __80__UIInterfaceActionGroupView__shouldAllowPassthroughToLayersBehindU
       while (v10 < [v8 count]);
     }
 
-    [(UIInterfaceActionSelectionTrackingController *)self->_actionSelectionController setCooperatingSelectionTrackingControllers:v9];
-    if (v4)
+    [(UIInterfaceActionSelectionTrackingController *)self->_actionSelectionController setCooperatingSelectionTrackingControllers:array];
+    if (bidirectionalCopy)
     {
-      v12 = [(NSPointerArray *)self->_weakSimultaneouslyPresentedGroupViews allObjects];
+      allObjects = [(NSPointerArray *)self->_weakSimultaneouslyPresentedGroupViews allObjects];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __92__UIInterfaceActionGroupView__associateWeakSimultaneouslyPresentedGroupViews_bidirectional___block_invoke;
       v13[3] = &unk_1E70F3AB0;
       v14 = v8;
-      v15 = self;
-      [v12 enumerateObjectsUsingBlock:v13];
+      selfCopy = self;
+      [allObjects enumerateObjectsUsingBlock:v13];
     }
   }
 }
@@ -1172,10 +1172,10 @@ void __92__UIInterfaceActionGroupView__associateWeakSimultaneouslyPresentedGroup
 
 - (id)_newActionGroupBackgroundView
 {
-  v3 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v4 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v5 = [v4 groupViewState];
-  v6 = [v3 newGroupBackgroundViewWithGroupViewState:v5];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  visualStyle2 = [(UIInterfaceActionGroupView *)self visualStyle];
+  groupViewState = [visualStyle2 groupViewState];
+  v6 = [visualStyle newGroupBackgroundViewWithGroupViewState:groupViewState];
 
   return v6;
 }
@@ -1187,30 +1187,30 @@ void __92__UIInterfaceActionGroupView__associateWeakSimultaneouslyPresentedGroup
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UIInterfaceActionGroupView *)self _allActionViews];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
-  if (v3)
+  _allActionViews = [(UIInterfaceActionGroupView *)self _allActionViews];
+  action = [_allActionViews countByEnumeratingWithState:&v8 objects:v12 count:16];
+  if (action)
   {
     v4 = *v9;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != action; i = i + 1)
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_allActionViews);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
         if ([v6 isFocused])
         {
-          v3 = [v6 action];
+          action = [v6 action];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
-      if (v3)
+      action = [_allActionViews countByEnumeratingWithState:&v8 objects:v12 count:16];
+      if (action)
       {
         continue;
       }
@@ -1221,7 +1221,7 @@ void __92__UIInterfaceActionGroupView__associateWeakSimultaneouslyPresentedGroup
 
 LABEL_11:
 
-  return v3;
+  return action;
 }
 
 - (void)_installContentGuideConstraints
@@ -1231,21 +1231,21 @@ LABEL_11:
   v4 = v3;
   if ([(UIInterfaceActionGroupView *)self _shouldInstallContentGuideConstraints])
   {
-    v18 = [(UIView *)self topAnchor];
-    v17 = [(UILayoutGuide *)self->_contentGuide topAnchor];
-    v16 = [v18 constraintEqualToAnchor:v17 constant:-v4];
+    topAnchor = [(UIView *)self topAnchor];
+    topAnchor2 = [(UILayoutGuide *)self->_contentGuide topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-v4];
     v19[0] = v16;
-    v5 = [(UIView *)self bottomAnchor];
-    v6 = [(UILayoutGuide *)self->_contentGuide bottomAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6 constant:v4];
+    bottomAnchor = [(UIView *)self bottomAnchor];
+    bottomAnchor2 = [(UILayoutGuide *)self->_contentGuide bottomAnchor];
+    v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v4];
     v19[1] = v7;
-    v8 = [(UIView *)self leadingAnchor];
-    v9 = [(UILayoutGuide *)self->_contentGuide leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:-v4];
+    leadingAnchor = [(UIView *)self leadingAnchor];
+    leadingAnchor2 = [(UILayoutGuide *)self->_contentGuide leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-v4];
     v19[2] = v10;
-    v11 = [(UIView *)self trailingAnchor];
-    v12 = [(UILayoutGuide *)self->_contentGuide trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:v4];
+    trailingAnchor = [(UIView *)self trailingAnchor];
+    trailingAnchor2 = [(UILayoutGuide *)self->_contentGuide trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v4];
     v19[3] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
 
@@ -1262,9 +1262,9 @@ LABEL_11:
 
 - (void)_reloadStackViewContentsIfNeeded
 {
-  v3 = [(UIInterfaceActionGroupView *)self visualStyle];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
 
-  if (v3)
+  if (visualStyle)
   {
     [(UIInterfaceActionGroupView *)self _loadViewsIfNeeded];
     [(UIInterfaceActionGroupView *)self _reloadTopSeparatorView];
@@ -1316,8 +1316,8 @@ LABEL_11:
 - (void)_loadActionSequenceView
 {
   v3 = [_UIInterfaceActionRepresentationsSequenceView alloc];
-  v4 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v5 = [(_UIInterfaceActionRepresentationsSequenceView *)v3 initWithVisualStyle:v4];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  v5 = [(_UIInterfaceActionRepresentationsSequenceView *)v3 initWithVisualStyle:visualStyle];
   actionSequenceView = self->_actionSequenceView;
   self->_actionSequenceView = v5;
 
@@ -1327,23 +1327,23 @@ LABEL_11:
   [(UIView *)self->_actionSequenceView setContentCompressionResistancePriority:1 forAxis:v7];
   LODWORD(v8) = 1148846080;
   [(UIView *)self->_actionSequenceView setContentHuggingPriority:1 forAxis:v8];
-  v9 = [(UIView *)self->_actionSequenceView widthAnchor];
-  v10 = [v9 constraintEqualToConstant:0.0];
+  widthAnchor = [(UIView *)self->_actionSequenceView widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:0.0];
   actionSequenceViewWidthAnchoredToConstantConstraint = self->_actionSequenceViewWidthAnchoredToConstantConstraint;
   self->_actionSequenceViewWidthAnchoredToConstantConstraint = v10;
 
-  v15 = [(UIView *)self->_actionSequenceView widthAnchor];
-  v12 = [(UILayoutGuide *)self->_contentGuide widthAnchor];
-  v13 = [v15 constraintEqualToAnchor:v12];
+  widthAnchor2 = [(UIView *)self->_actionSequenceView widthAnchor];
+  widthAnchor3 = [(UILayoutGuide *)self->_contentGuide widthAnchor];
+  v13 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   actionSequenceViewWidthAnchoredToContentGuideConstraint = self->_actionSequenceViewWidthAnchoredToContentGuideConstraint;
   self->_actionSequenceViewWidthAnchoredToContentGuideConstraint = v13;
 }
 
-- (void)_setLayoutDebuggingIdentifier:(id)a3
+- (void)_setLayoutDebuggingIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = UIInterfaceActionGroupView;
-  [(UIView *)&v4 _setLayoutDebuggingIdentifier:a3];
+  [(UIView *)&v4 _setLayoutDebuggingIdentifier:identifier];
   [(UIInterfaceActionGroupView *)self _updateActionSequenceViewDebugLayoutIdentifier];
 }
 
@@ -1351,14 +1351,14 @@ LABEL_11:
 {
   actionSequenceView = self->_actionSequenceView;
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(UIView *)self _layoutDebuggingIdentifier];
+  _layoutDebuggingIdentifier = [(UIView *)self _layoutDebuggingIdentifier];
   v5 = @"groupView";
-  if (v4)
+  if (_layoutDebuggingIdentifier)
   {
-    v5 = v4;
+    v5 = _layoutDebuggingIdentifier;
   }
 
-  v7 = v4;
+  v7 = _layoutDebuggingIdentifier;
   v6 = [v3 stringWithFormat:@"%@.actionsSequenceView", v5];
   [(UIView *)actionSequenceView _setLayoutDebuggingIdentifier:v6];
 }
@@ -1392,19 +1392,19 @@ LABEL_11:
   v73 = *MEMORY[0x1E69E9840];
   self->_needsUpdateTopLevelViewsArrangement = 0;
   [(UIInterfaceActionGroupView *)self _loadViewsIfNeeded];
-  v57 = [(UIInterfaceActionGroupView *)self _viewContainingTopLevelItems];
-  v3 = [v57 subviews];
-  v4 = [v3 mutableCopy];
+  _viewContainingTopLevelItems = [(UIInterfaceActionGroupView *)self _viewContainingTopLevelItems];
+  subviews = [_viewContainingTopLevelItems subviews];
+  v4 = [subviews mutableCopy];
 
-  v5 = [(UIInterfaceActionGroupView *)self _orderedTopLevelViews];
-  v6 = [v5 mutableCopy];
+  _orderedTopLevelViews = [(UIInterfaceActionGroupView *)self _orderedTopLevelViews];
+  v6 = [_orderedTopLevelViews mutableCopy];
 
-  v7 = [(UIView *)self traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (![v4 isEqual:v6] || v8 != self->_cachedSizeCategory)
+  if (![v4 isEqual:v6] || preferredContentSizeCategory != self->_cachedSizeCategory)
   {
-    objc_storeStrong(&self->_cachedSizeCategory, v8);
+    objc_storeStrong(&self->_cachedSizeCategory, preferredContentSizeCategory);
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
@@ -1439,9 +1439,9 @@ LABEL_11:
 
     if ([v6 count])
     {
-      v53 = v8;
+      v53 = preferredContentSizeCategory;
       v55 = v4;
-      v15 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
@@ -1466,22 +1466,22 @@ LABEL_11:
             }
 
             v22 = *(*(&v62 + 1) + 8 * v20);
-            [v57 addSubview:v22];
+            [_viewContainingTopLevelItems addSubview:v22];
             if (v21)
             {
-              v23 = [v22 topAnchor];
-              v24 = [v21 bottomAnchor];
-              v25 = [v23 constraintEqualToAnchor:v24];
-              [v15 addObject:v25];
+              topAnchor = [v22 topAnchor];
+              bottomAnchor = [v21 bottomAnchor];
+              v25 = [topAnchor constraintEqualToAnchor:bottomAnchor];
+              [array addObject:v25];
             }
 
-            v26 = [v22 centerXAnchor];
-            v27 = [(UILayoutGuide *)self->_contentGuide centerXAnchor];
-            v28 = [v26 constraintEqualToAnchor:v27];
-            [v15 addObject:v28];
+            centerXAnchor = [v22 centerXAnchor];
+            centerXAnchor2 = [(UILayoutGuide *)self->_contentGuide centerXAnchor];
+            v28 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+            [array addObject:v28];
 
             v29 = [(UIInterfaceActionGroupView *)self _widthAnchoredToContentGuideConstraintForTopLevelView:v22];
-            [v15 addObject:v29];
+            [array addObject:v29];
 
             v18 = v22;
             ++v20;
@@ -1500,27 +1500,27 @@ LABEL_11:
         v18 = 0;
       }
 
-      v30 = [obj firstObject];
-      v31 = [v30 topAnchor];
-      v32 = [(UILayoutGuide *)self->_contentGuide topAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
-      [v15 addObject:v33];
+      firstObject = [obj firstObject];
+      topAnchor2 = [firstObject topAnchor];
+      topAnchor3 = [(UILayoutGuide *)self->_contentGuide topAnchor];
+      v33 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
+      [array addObject:v33];
 
-      v34 = [obj lastObject];
-      v35 = [v34 bottomAnchor];
-      v36 = [(UILayoutGuide *)self->_contentGuide bottomAnchor];
-      v37 = [v35 constraintEqualToAnchor:v36];
-      [v15 addObject:v37];
+      lastObject = [obj lastObject];
+      bottomAnchor2 = [lastObject bottomAnchor];
+      bottomAnchor3 = [(UILayoutGuide *)self->_contentGuide bottomAnchor];
+      v37 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
+      [array addObject:v37];
 
       if (UIContentSizeCategoryIsAccessibilityCategory(self->_cachedSizeCategory))
       {
-        v38 = [(UIView *)self->_actionSequenceView heightAnchor];
-        v39 = [(UILayoutGuide *)self->_contentGuide heightAnchor];
-        v40 = [v38 constraintEqualToAnchor:v39 multiplier:0.5];
+        heightAnchor = [(UIView *)self->_actionSequenceView heightAnchor];
+        heightAnchor2 = [(UILayoutGuide *)self->_contentGuide heightAnchor];
+        v40 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.5];
 
         LODWORD(v41) = 1132003328;
         [(NSMutableArray *)v40 setPriority:v41];
-        [v15 addObject:v40];
+        [array addObject:v40];
       }
 
       else
@@ -1544,13 +1544,13 @@ LABEL_11:
                 objc_enumerationMutation(v40);
               }
 
-              v46 = [*(*(&v58 + 1) + 8 * j) heightAnchor];
-              v47 = [(UIView *)self->_actionSequenceView heightAnchor];
-              v48 = [v46 constraintGreaterThanOrEqualToAnchor:v47 multiplier:1.5];
+              heightAnchor3 = [*(*(&v58 + 1) + 8 * j) heightAnchor];
+              heightAnchor4 = [(UIView *)self->_actionSequenceView heightAnchor];
+              v48 = [heightAnchor3 constraintGreaterThanOrEqualToAnchor:heightAnchor4 multiplier:1.5];
 
               LODWORD(v49) = 1132003328;
               [v48 setPriority:v49];
-              [v15 addObject:v48];
+              [array addObject:v48];
             }
 
             v43 = [(NSMutableArray *)v40 countByEnumeratingWithState:&v58 objects:v70 count:16];
@@ -1561,32 +1561,32 @@ LABEL_11:
       }
 
       [MEMORY[0x1E69977A0] deactivateConstraints:self->_topLevelViewArrangementConstraints];
-      v51 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v15, v50);
+      v51 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array, v50);
       topLevelViewArrangementConstraints = self->_topLevelViewArrangementConstraints;
       self->_topLevelViewArrangementConstraints = v51;
 
-      [MEMORY[0x1E69977A0] activateConstraints:v15];
+      [MEMORY[0x1E69977A0] activateConstraints:array];
       [(UIView *)self setNeedsLayout];
 
       v6 = v54;
       v4 = v55;
-      v8 = v53;
+      preferredContentSizeCategory = v53;
     }
   }
 }
 
-- (id)_widthAnchoredToContentGuideConstraintForTopLevelView:(id)a3
+- (id)_widthAnchoredToContentGuideConstraintForTopLevelView:(id)view
 {
-  if (self->_actionSequenceView == a3)
+  if (self->_actionSequenceView == view)
   {
     v6 = self->_actionSequenceViewWidthAnchoredToContentGuideConstraint;
   }
 
   else
   {
-    v4 = [a3 widthAnchor];
-    v5 = [(UILayoutGuide *)self->_contentGuide widthAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5];
+    widthAnchor = [view widthAnchor];
+    widthAnchor2 = [(UILayoutGuide *)self->_contentGuide widthAnchor];
+    v6 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   }
 
   return v6;
@@ -1594,21 +1594,21 @@ LABEL_11:
 
 - (id)_orderedTopLevelViews
 {
-  v3 = [(UIInterfaceActionGroupView *)self arrangedScrollableHeaderViews];
-  v4 = v3;
-  if (!v3)
+  arrangedScrollableHeaderViews = [(UIInterfaceActionGroupView *)self arrangedScrollableHeaderViews];
+  v4 = arrangedScrollableHeaderViews;
+  if (!arrangedScrollableHeaderViews)
   {
-    v3 = MEMORY[0x1E695E0F0];
+    arrangedScrollableHeaderViews = MEMORY[0x1E695E0F0];
   }
 
-  v5 = [v3 mutableCopy];
+  v5 = [arrangedScrollableHeaderViews mutableCopy];
 
   if (self->_actionSequenceView)
   {
     if (self->_actionSequenceTopSeparatorView)
     {
-      v6 = [(UIInterfaceActionGroup *)self->_actionGroup actions];
-      v7 = [v6 count];
+      actions = [(UIInterfaceActionGroup *)self->_actionGroup actions];
+      v7 = [actions count];
 
       if (v7)
       {
@@ -1624,8 +1624,8 @@ LABEL_11:
 
 - (BOOL)_hasLoadedStackViewContents
 {
-  v2 = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
-  v3 = [v2 count] != 0;
+  arrangedActionRepresentationViews = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
+  v3 = [arrangedActionRepresentationViews count] != 0;
 
   return v3;
 }
@@ -1634,16 +1634,16 @@ LABEL_11:
 {
   v55 = *MEMORY[0x1E69E9840];
   self->_needsUpdateActionSequenceViewArrangement = 0;
-  v34 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v3 = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
-  v36 = [v3 mutableCopy];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  arrangedActionRepresentationViews = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
+  v36 = [arrangedActionRepresentationViews mutableCopy];
 
-  v37 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v4 = self;
+  selfCopy = self;
   obj = [(UIInterfaceActionGroup *)self->_actionGroup actionsBySection];
   v32 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v32)
@@ -1665,8 +1665,8 @@ LABEL_11:
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v35 = [v6 actions];
-        v7 = [v35 countByEnumeratingWithState:&v42 objects:v53 count:16];
+        actions = [v6 actions];
+        v7 = [actions countByEnumeratingWithState:&v42 objects:v53 count:16];
         if (v7)
         {
           v8 = v7;
@@ -1677,7 +1677,7 @@ LABEL_11:
             {
               if (*v43 != v9)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(actions);
               }
 
               v11 = *(*(&v42 + 1) + 8 * i);
@@ -1704,18 +1704,18 @@ LABEL_11:
 
               if (!v16)
               {
-                v18 = [v34 concreteVisualStyle];
-                v16 = [v18 newRepresentationViewForAction:v14];
+                concreteVisualStyle = [visualStyle concreteVisualStyle];
+                v16 = [concreteVisualStyle newRepresentationViewForAction:v14];
               }
 
               [v16 setOwnsActionContent:1];
-              [v16 setSpringLoaded:{-[UIInterfaceActionGroupView isSpringLoaded](v4, "isSpringLoaded")}];
-              [v37 addObject:v16];
-              v19 = [v6 sectionID];
-              [v16 setSectionID:v19];
+              [v16 setSpringLoaded:{-[UIInterfaceActionGroupView isSpringLoaded](selfCopy, "isSpringLoaded")}];
+              [array addObject:v16];
+              sectionID = [v6 sectionID];
+              [v16 setSectionID:sectionID];
             }
 
-            v8 = [v35 countByEnumeratingWithState:&v42 objects:v53 count:16];
+            v8 = [actions countByEnumeratingWithState:&v42 objects:v53 count:16];
           }
 
           while (v8);
@@ -1759,28 +1759,28 @@ LABEL_11:
     while (v22);
   }
 
-  v25 = [(UIInterfaceActionGroupView *)v4 _defaultOrderingForActionRepresentationViews:v37];
-  v26 = [(_UIInterfaceActionRepresentationsSequenceView *)v4->_actionSequenceView arrangedActionRepresentationViews];
-  v27 = [v26 isEqual:v25];
+  v25 = [(UIInterfaceActionGroupView *)selfCopy _defaultOrderingForActionRepresentationViews:array];
+  arrangedActionRepresentationViews2 = [(_UIInterfaceActionRepresentationsSequenceView *)selfCopy->_actionSequenceView arrangedActionRepresentationViews];
+  v27 = [arrangedActionRepresentationViews2 isEqual:v25];
 
   if ((v27 & 1) == 0)
   {
-    [(_UIInterfaceActionRepresentationsSequenceView *)v4->_actionSequenceView setArrangedActionRepresentationViews:v25];
-    actionSelectionController = v4->_actionSelectionController;
-    v29 = [(_UIInterfaceActionRepresentationsSequenceView *)v4->_actionSequenceView arrangedActionRepresentationViews];
-    [(UIInterfaceActionSelectionTrackingController *)actionSelectionController setRepresentationViews:v29];
+    [(_UIInterfaceActionRepresentationsSequenceView *)selfCopy->_actionSequenceView setArrangedActionRepresentationViews:v25];
+    actionSelectionController = selfCopy->_actionSelectionController;
+    arrangedActionRepresentationViews3 = [(_UIInterfaceActionRepresentationsSequenceView *)selfCopy->_actionSequenceView arrangedActionRepresentationViews];
+    [(UIInterfaceActionSelectionTrackingController *)actionSelectionController setRepresentationViews:arrangedActionRepresentationViews3];
 
-    [(UIInterfaceActionGroupView *)v4 _actionSequenceViewContentSizeDidChange];
+    [(UIInterfaceActionGroupView *)selfCopy _actionSequenceViewContentSizeDidChange];
   }
 
-  [(UIInterfaceActionGroupView *)v4 _updateActionSequenceScrollability];
+  [(UIInterfaceActionGroupView *)selfCopy _updateActionSequenceScrollability];
 }
 
 - (void)_updateActionSequenceScrollability
 {
-  v3 = [(UIInterfaceActionGroupView *)self actionGroup];
-  v4 = [v3 actions];
-  v5 = [v4 count] >= 2 && -[UIInterfaceActionGroupView _actionLayoutAxisUnknownDisallowedIsVertical](self, "_actionLayoutAxisUnknownDisallowedIsVertical");
+  actionGroup = [(UIInterfaceActionGroupView *)self actionGroup];
+  actions = [actionGroup actions];
+  v5 = [actions count] >= 2 && -[UIInterfaceActionGroupView _actionLayoutAxisUnknownDisallowedIsVertical](self, "_actionLayoutAxisUnknownDisallowedIsVertical");
 
   actionSequenceView = self->_actionSequenceView;
 
@@ -1792,29 +1792,29 @@ LABEL_11:
   v29 = *MEMORY[0x1E69E9840];
   [(UIInterfaceActionGroupView *)self _loadViewsIfNeeded];
   [(UIInterfaceActionGroupView *)self _reloadStackViewContentsIfNeeded];
-  v3 = [(UIInterfaceActionGroupView *)self actionLayoutAxis];
-  v4 = [(UIInterfaceActionGroupView *)self allowedActionLayoutAxisByPriority];
-  v5 = [v4 count];
+  actionLayoutAxis = [(UIInterfaceActionGroupView *)self actionLayoutAxis];
+  allowedActionLayoutAxisByPriority = [(UIInterfaceActionGroupView *)self allowedActionLayoutAxisByPriority];
+  v5 = [allowedActionLayoutAxisByPriority count];
 
   if (v5 == 1)
   {
-    v6 = [(UIInterfaceActionGroupView *)self allowedActionLayoutAxisByPriority];
-    v7 = [(NSArray *)v6 firstObject];
-    v3 = [v7 integerValue];
+    allowedActionLayoutAxisByPriority2 = [(UIInterfaceActionGroupView *)self allowedActionLayoutAxisByPriority];
+    firstObject = [(NSArray *)allowedActionLayoutAxisByPriority2 firstObject];
+    actionLayoutAxis = [firstObject integerValue];
   }
 
   else
   {
-    v8 = [(UIInterfaceActionGroupView *)self visualStyle];
-    [v8 maximumActionGroupContentSize];
+    visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+    [visualStyle maximumActionGroupContentSize];
     v10 = v9;
 
-    v11 = [(UIView *)self window];
+    window = [(UIView *)self window];
 
-    if (v11)
+    if (window)
     {
-      v12 = [(UIView *)self window];
-      [v12 frame];
+      window2 = [(UIView *)self window];
+      [window2 frame];
       v14 = v13;
 
       if (v10 >= v14)
@@ -1827,8 +1827,8 @@ LABEL_11:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = self->_allowedActionLayoutAxisByPriority;
-    v15 = [(NSArray *)v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    allowedActionLayoutAxisByPriority2 = self->_allowedActionLayoutAxisByPriority;
+    v15 = [(NSArray *)allowedActionLayoutAxisByPriority2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1839,19 +1839,19 @@ LABEL_11:
         {
           if (*v25 != v17)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allowedActionLayoutAxisByPriority2);
           }
 
-          v19 = [*(*(&v24 + 1) + 8 * i) integerValue];
-          [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView fittingWidthForLayoutAxis:v19];
+          integerValue = [*(*(&v24 + 1) + 8 * i) integerValue];
+          [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView fittingWidthForLayoutAxis:integerValue];
           if (v20 < v10)
           {
-            v3 = v19;
+            actionLayoutAxis = integerValue;
             goto LABEL_16;
           }
         }
 
-        v16 = [(NSArray *)v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v16 = [(NSArray *)allowedActionLayoutAxisByPriority2 countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v16)
         {
           continue;
@@ -1864,12 +1864,12 @@ LABEL_11:
 
 LABEL_16:
 
-  v21 = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
+  arrangedActionRepresentationViews = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
   actionSequenceView = self->_actionSequenceView;
-  v23 = [(UIInterfaceActionGroupView *)self _defaultOrderingForActionRepresentationViews:v21];
+  v23 = [(UIInterfaceActionGroupView *)self _defaultOrderingForActionRepresentationViews:arrangedActionRepresentationViews];
   [(_UIInterfaceActionRepresentationsSequenceView *)actionSequenceView setArrangedActionRepresentationViews:v23];
 
-  [(UIInterfaceActionGroupView *)self setActionLayoutAxis:v3];
+  [(UIInterfaceActionGroupView *)self setActionLayoutAxis:actionLayoutAxis];
 }
 
 - (void)_reloadTopSeparatorView
@@ -1891,24 +1891,24 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v4 = [(UIInterfaceActionGroupView *)self _interfaceActionGroupViewState];
-  v5 = [v3 newActionSeparatorViewForGroupViewState:v4];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  _interfaceActionGroupViewState = [(UIInterfaceActionGroupView *)self _interfaceActionGroupViewState];
+  v5 = [visualStyle newActionSeparatorViewForGroupViewState:_interfaceActionGroupViewState];
 
   return v5;
 }
 
 - (id)_interfaceActionGroupViewState
 {
-  v2 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v3 = [v2 groupViewState];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  groupViewState = [visualStyle groupViewState];
 
-  return v3;
+  return groupViewState;
 }
 
-- (id)_loadVisualStyleForTraitCollection:(id)a3
+- (id)_loadVisualStyleForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   activeTestingVisualStyle = self->_activeTestingVisualStyle;
   if (activeTestingVisualStyle)
   {
@@ -1919,28 +1919,28 @@ LABEL_16:
   {
     WeakRetained = objc_loadWeakRetained(&self->_visualStyleProvider);
 
-    if (!WeakRetained || (v8 = objc_loadWeakRetained(&self->_visualStyleProvider), [v8 visualStyleForTraitCollection:v4], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+    if (!WeakRetained || (v8 = objc_loadWeakRetained(&self->_visualStyleProvider), [v8 visualStyleForTraitCollection:collectionCopy], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
     {
-      v9 = [(UIInterfaceActionGroupView *)self defaultVisualStyleForTraitCollection:v4 presentationStyle:self->_presentationStyle];
+      v9 = [(UIInterfaceActionGroupView *)self defaultVisualStyleForTraitCollection:collectionCopy presentationStyle:self->_presentationStyle];
     }
 
-    v6 = [(UIInterfaceActionGroupView *)self _visualStyleByApplyingOurTraitsToVisualStyle:v9 traitCollection:v4];
+    v6 = [(UIInterfaceActionGroupView *)self _visualStyleByApplyingOurTraitsToVisualStyle:v9 traitCollection:collectionCopy];
   }
 
   return v6;
 }
 
-- (id)_visualStyleByApplyingOurTraitsToVisualStyle:(id)a3 traitCollection:(id)a4
+- (id)_visualStyleByApplyingOurTraitsToVisualStyle:(id)style traitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  collectionCopy = collection;
   objc_initWeak(&location, self);
   v8 = +[UIInterfaceActionOverrideVisualStyle styleOverride];
-  v9 = [(UIInterfaceActionGroupView *)self _visualStyleOverrideSeparatorAttributes];
-  [v8 setCustomSeparatorAttributes:v9];
+  _visualStyleOverrideSeparatorAttributes = [(UIInterfaceActionGroupView *)self _visualStyleOverrideSeparatorAttributes];
+  [v8 setCustomSeparatorAttributes:_visualStyleOverrideSeparatorAttributes];
 
-  v10 = [(UIInterfaceActionGroupView *)self visualStyleOverrideActionHighlightAttributes];
-  [v8 setCustomActionHighlightAttributes:v10];
+  visualStyleOverrideActionHighlightAttributes = [(UIInterfaceActionGroupView *)self visualStyleOverrideActionHighlightAttributes];
+  [v8 setCustomActionHighlightAttributes:visualStyleOverrideActionHighlightAttributes];
 
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
@@ -1951,17 +1951,17 @@ LABEL_16:
   [(UIInterfaceActionGroupView *)self _selectionHighlightContinuousCornerRadius:v20];
   [v8 setCustomSelectionHighlightContinuousCornerRadius:?];
   [v8 setAlignActionSeparatorLeadingEdgeWithContent:{-[UIInterfaceActionGroupView _alignActionSeparatorLeadingEdgeWithContent](self, "_alignActionSeparatorLeadingEdgeWithContent")}];
-  v11 = [v6 groupViewState];
-  v12 = [v11 copyWithTraitCollection:v7];
+  groupViewState = [styleCopy groupViewState];
+  v12 = [groupViewState copyWithTraitCollection:collectionCopy];
 
-  v13 = [(UIView *)self window];
-  v14 = [v13 screen];
-  v15 = [v12 copyWithScreen:v14];
+  window = [(UIView *)self window];
+  screen = [window screen];
+  v15 = [v12 copyWithScreen:screen];
 
   v16 = [v15 copyWithVerticalLayoutAxis:{-[UIInterfaceActionGroupView _actionLayoutAxisUnknownDisallowedIsVertical](self, "_actionLayoutAxisUnknownDisallowedIsVertical")}];
   v17 = [v16 copyWithResolvedPresentationStyle:self->_presentationStyle];
 
-  v18 = [v6 copyWithGroupViewState:v17];
+  v18 = [styleCopy copyWithGroupViewState:v17];
   [v18 setVisualStyleOverride:v8];
 
   objc_destroyWeak(&v24);
@@ -1998,18 +1998,18 @@ id __91__UIInterfaceActionGroupView__visualStyleByApplyingOurTraitsToVisualStyle
 
 - (void)_applyVisualStyleToActionsViewScrollView
 {
-  v5 = [(UIInterfaceActionGroupView *)self visualStyle];
-  [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView setVisualStyle:v5];
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView setVisualStyle:visualStyle];
   actionSequenceView = self->_actionSequenceView;
-  v4 = [(UIInterfaceActionGroupView *)self _interfaceActionGroupViewState];
-  [v5 configureAttributesForActionScrollView:actionSequenceView groupViewState:v4];
+  _interfaceActionGroupViewState = [(UIInterfaceActionGroupView *)self _interfaceActionGroupViewState];
+  [visualStyle configureAttributesForActionScrollView:actionSequenceView groupViewState:_interfaceActionGroupViewState];
 }
 
 - (void)_applyVisualStyleToBackgroundViewDisplay
 {
-  v3 = [(UIInterfaceActionGroupView *)self visualStyle];
-  v4 = [(UIInterfaceActionGroupView *)self _interfaceActionGroupViewState];
-  if (!-[UIInterfaceActionGroupView _drawsBackground](self, "_drawsBackground") || (v5 = [v3 newGroupBackgroundViewWithGroupViewState:v4]) == 0)
+  visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+  _interfaceActionGroupViewState = [(UIInterfaceActionGroupView *)self _interfaceActionGroupViewState];
+  if (!-[UIInterfaceActionGroupView _drawsBackground](self, "_drawsBackground") || (v5 = [visualStyle newGroupBackgroundViewWithGroupViewState:_interfaceActionGroupViewState]) == 0)
   {
     v5 = objc_opt_new();
   }
@@ -2031,16 +2031,16 @@ id __91__UIInterfaceActionGroupView__visualStyleByApplyingOurTraitsToVisualStyle
   v3 = 0.0;
   if ([(UIInterfaceActionGroupView *)self _isCornerRadiusDisplayEnabled])
   {
-    v4 = [(UIInterfaceActionGroupView *)self visualStyle];
-    [v4 contentCornerRadius];
+    visualStyle = [(UIInterfaceActionGroupView *)self visualStyle];
+    [visualStyle contentCornerRadius];
     v3 = v5;
   }
 
   [(UIInterfaceActionGroupView *)self _topLevelItemsMargin];
   if (v6 == 0.0)
   {
-    v7 = [(UIInterfaceActionGroupView *)self _viewContainingTopLevelItems];
-    [v7 _setContinuousCornerRadius:v3];
+    _viewContainingTopLevelItems = [(UIInterfaceActionGroupView *)self _viewContainingTopLevelItems];
+    [_viewContainingTopLevelItems _setContinuousCornerRadius:v3];
   }
 
   v8 = objc_opt_respondsToSelector();
@@ -2058,13 +2058,13 @@ id __91__UIInterfaceActionGroupView__visualStyleByApplyingOurTraitsToVisualStyle
   }
 }
 
-- (void)_addBackgroudViewToViewHierarchy:(id)a3
+- (void)_addBackgroudViewToViewHierarchy:(id)hierarchy
 {
-  v4 = a3;
+  hierarchyCopy = hierarchy;
   [(UIView *)self->_backgroundView removeFromSuperview];
   backgroundView = self->_backgroundView;
-  self->_backgroundView = v4;
-  v6 = v4;
+  self->_backgroundView = hierarchyCopy;
+  v6 = hierarchyCopy;
 
   [(UIView *)self addSubview:self->_backgroundView];
   [(UIView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2080,52 +2080,52 @@ id __91__UIInterfaceActionGroupView__visualStyleByApplyingOurTraitsToVisualStyle
     return self->_actionLayoutAxis;
   }
 
-  v3 = [(NSArray *)self->_allowedActionLayoutAxisByPriority firstObject];
-  v4 = [v3 integerValue];
+  firstObject = [(NSArray *)self->_allowedActionLayoutAxisByPriority firstObject];
+  integerValue = [firstObject integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)_constraintsToPinView:(id)a3 toObject:(id)a4 identifier:(id)a5
+- (id)_constraintsToPinView:(id)view toObject:(id)object identifier:(id)identifier
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [v7 leadingAnchor];
-  v12 = [v8 leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
-  [v10 addObject:v13];
+  viewCopy = view;
+  objectCopy = object;
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [objectCopy leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v13];
 
-  v14 = [v7 trailingAnchor];
-  v15 = [v8 trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
-  [v10 addObject:v16];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [objectCopy trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v16];
 
-  v17 = [v7 topAnchor];
-  v18 = [v8 topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
-  [v10 addObject:v19];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [objectCopy topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v19];
 
-  v20 = [v10 lastObject];
+  lastObject = [array lastObject];
   LODWORD(v21) = 1144750080;
-  [v20 setPriority:v21];
+  [lastObject setPriority:v21];
 
-  v22 = [v7 bottomAnchor];
-  v23 = [v8 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
-  [v10 addObject:v24];
+  bottomAnchor = [viewCopy bottomAnchor];
+  bottomAnchor2 = [objectCopy bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v24];
 
-  v25 = [v10 lastObject];
+  lastObject2 = [array lastObject];
   LODWORD(v26) = 1144750080;
-  [v25 setPriority:v26];
+  [lastObject2 setPriority:v26];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v27 = v10;
+  v27 = array;
   v28 = [v27 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v28)
   {
@@ -2140,7 +2140,7 @@ id __91__UIInterfaceActionGroupView__visualStyleByApplyingOurTraitsToVisualStyle
           objc_enumerationMutation(v27);
         }
 
-        [*(*(&v35 + 1) + 8 * i) setIdentifier:{v9, v35}];
+        [*(*(&v35 + 1) + 8 * i) setIdentifier:{identifierCopy, v35}];
       }
 
       v29 = [v27 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -2172,13 +2172,13 @@ id __91__UIInterfaceActionGroupView__visualStyleByApplyingOurTraitsToVisualStyle
   }
 }
 
-- (id)_defaultOrderingForActionRepresentationViews:(id)a3
+- (id)_defaultOrderingForActionRepresentationViews:(id)views
 {
-  v4 = a3;
-  v5 = [v4 indexesOfObjectsPassingTest:&__block_literal_global_10];
-  v6 = [v4 objectsAtIndexes:v5];
+  viewsCopy = views;
+  v5 = [viewsCopy indexesOfObjectsPassingTest:&__block_literal_global_10];
+  v6 = [viewsCopy objectsAtIndexes:v5];
 
-  v7 = [v4 mutableCopy];
+  v7 = [viewsCopy mutableCopy];
   [v7 removeObjectsInArray:v6];
   if (self->_actionLayoutAxis)
   {
@@ -2205,16 +2205,16 @@ BOOL __75__UIInterfaceActionGroupView__defaultOrderingForActionRepresentationVie
   return v3;
 }
 
-- (id)_actionRepresentationViewForAction:(id)a3
+- (id)_actionRepresentationViewForAction:(id)action
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  arrangedActionRepresentationViews = [(_UIInterfaceActionRepresentationsSequenceView *)self->_actionSequenceView arrangedActionRepresentationViews];
+  v6 = [arrangedActionRepresentationViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -2224,12 +2224,12 @@ BOOL __75__UIInterfaceActionGroupView__defaultOrderingForActionRepresentationVie
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedActionRepresentationViews);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 action];
-        v11 = [v10 isEqual:v4];
+        action = [v9 action];
+        v11 = [action isEqual:actionCopy];
 
         if (v11)
         {
@@ -2238,7 +2238,7 @@ BOOL __75__UIInterfaceActionGroupView__defaultOrderingForActionRepresentationVie
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [arrangedActionRepresentationViews countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -2253,27 +2253,27 @@ LABEL_11:
   return v6;
 }
 
-- (void)_scrollPreferredActionRepresentationViewToVisibleAnimated:(BOOL)a3
+- (void)_scrollPreferredActionRepresentationViewToVisibleAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [(UIInterfaceActionGroupView *)self actionGroup];
-  v5 = [v6 preferredAction];
-  [(UIInterfaceActionGroupView *)self _scrollActionRepresentationViewToVisibleForAction:v5 animated:v3];
+  animatedCopy = animated;
+  actionGroup = [(UIInterfaceActionGroupView *)self actionGroup];
+  preferredAction = [actionGroup preferredAction];
+  [(UIInterfaceActionGroupView *)self _scrollActionRepresentationViewToVisibleForAction:preferredAction animated:animatedCopy];
 }
 
-- (void)_scrollActionRepresentationViewToVisibleForAction:(id)a3 animated:(BOOL)a4
+- (void)_scrollActionRepresentationViewToVisibleForAction:(id)action animated:(BOOL)animated
 {
-  v6 = a3;
-  if (v6)
+  actionCopy = action;
+  if (actionCopy)
   {
-    [(UIInterfaceActionGroupView *)self _actionSequenceVisibleRectForMakingCenteredAction:v6];
+    [(UIInterfaceActionGroupView *)self _actionSequenceVisibleRectForMakingCenteredAction:actionCopy];
     x = v12.origin.x;
     y = v12.origin.y;
     width = v12.size.width;
     height = v12.size.height;
     if (!CGRectIsEmpty(v12))
     {
-      if (a4)
+      if (animated)
       {
         [(UIScrollView *)self->_actionSequenceView scrollRectToVisible:1 animated:x, y, width, height];
       }
@@ -2295,9 +2295,9 @@ LABEL_11:
   }
 }
 
-- (CGRect)_actionSequenceVisibleRectForMakingCenteredAction:(id)a3
+- (CGRect)_actionSequenceVisibleRectForMakingCenteredAction:(id)action
 {
-  v4 = [(UIInterfaceActionGroupView *)self _actionRepresentationViewForAction:a3];
+  v4 = [(UIInterfaceActionGroupView *)self _actionRepresentationViewForAction:action];
   v5 = v4;
   if (v4)
   {
@@ -2311,9 +2311,9 @@ LABEL_11:
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(UIInterfaceActionGroupView *)self _actionLayoutAxisUnknownDisallowedIsVertical];
+    _actionLayoutAxisUnknownDisallowedIsVertical = [(UIInterfaceActionGroupView *)self _actionLayoutAxisUnknownDisallowedIsVertical];
     [(UIScrollView *)self->_actionSequenceView contentSize];
-    if (v22)
+    if (_actionLayoutAxisUnknownDisallowedIsVertical)
     {
       v25 = v9 - fmax((v21 - v13) * 0.5, 0.0);
       v26 = v24 - v21;
@@ -2380,8 +2380,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(UIInterfaceActionGroup *)self->_actionGroup actions];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  actions = [(UIInterfaceActionGroup *)self->_actionGroup actions];
+  v4 = [actions countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2393,14 +2393,14 @@ LABEL_11:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) _setPresentingController:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [actions countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -2414,8 +2414,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(UIInterfaceActionGroup *)self->_actionGroup actions];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  actions = [(UIInterfaceActionGroup *)self->_actionGroup actions];
+  v4 = [actions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2426,19 +2426,19 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        v9 = [v8 _presentingController];
+        _presentingController = [v8 _presentingController];
 
-        if (v9 == self)
+        if (_presentingController == self)
         {
           [v8 _setPresentingController:0];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [actions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -2447,8 +2447,8 @@ LABEL_11:
 
 - (BOOL)_shouldShowSeparatorAboveActionsSequenceView
 {
-  v3 = [(UIInterfaceActionGroup *)self->_actionGroup actions];
-  if ([v3 count])
+  actions = [(UIInterfaceActionGroup *)self->_actionGroup actions];
+  if ([actions count])
   {
     v4 = [(NSMutableArray *)self->_arrangedScrollableHeaderViews count]!= 0;
   }
@@ -2471,59 +2471,59 @@ LABEL_11:
   return result;
 }
 
-- (void)_setDrawsBackground:(BOOL)a3
+- (void)_setDrawsBackground:(BOOL)background
 {
-  if (self->_drawsBackground != a3)
+  if (self->_drawsBackground != background)
   {
-    self->_drawsBackground = a3;
+    self->_drawsBackground = background;
     [(UIInterfaceActionGroupView *)self _applyVisualStyleToBackgroundViewDisplay];
   }
 }
 
-- (void)_setSelectionHighlightContinuousCornerRadius:(double)a3
+- (void)_setSelectionHighlightContinuousCornerRadius:(double)radius
 {
-  if (self->_selectionHighlightContinuousCornerRadius != a3)
+  if (self->_selectionHighlightContinuousCornerRadius != radius)
   {
-    self->_selectionHighlightContinuousCornerRadius = a3;
+    self->_selectionHighlightContinuousCornerRadius = radius;
     [(UIInterfaceActionGroupView *)self reloadVisualStyle];
   }
 }
 
-- (void)_setAlignActionSeparatorLeadingEdgeWithContent:(BOOL)a3
+- (void)_setAlignActionSeparatorLeadingEdgeWithContent:(BOOL)content
 {
-  if (self->_alignActionSeparatorLeadingEdgeWithContent != a3)
+  if (self->_alignActionSeparatorLeadingEdgeWithContent != content)
   {
-    self->_alignActionSeparatorLeadingEdgeWithContent = a3;
+    self->_alignActionSeparatorLeadingEdgeWithContent = content;
     [(UIInterfaceActionGroupView *)self reloadVisualStyle];
   }
 }
 
-- (void)_setVisualStyleOverrideSeparatorAttributes:(id)a3
+- (void)_setVisualStyleOverrideSeparatorAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   if (![(UIInterfaceActionSeparatorAttributes *)self->_visualStyleOverrideSeparatorAttributes isEqual:?])
   {
-    objc_storeStrong(&self->_visualStyleOverrideSeparatorAttributes, a3);
+    objc_storeStrong(&self->_visualStyleOverrideSeparatorAttributes, attributes);
     [(UIInterfaceActionGroupView *)self reloadVisualStyle];
   }
 }
 
-- (void)_setVisualStyleOverrideActionHighlightAttributes:(id)a3
+- (void)_setVisualStyleOverrideActionHighlightAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   if (![(UIInterfaceActionHighlightAttributes *)self->_visualStyleOverrideActionHighlightAttributes isEqual:?])
   {
-    objc_storeStrong(&self->_visualStyleOverrideActionHighlightAttributes, a3);
+    objc_storeStrong(&self->_visualStyleOverrideActionHighlightAttributes, attributes);
     [(UIInterfaceActionGroupView *)self reloadVisualStyle];
   }
 }
 
-- (void)_setVisualStyleOverrideTitleLabelFont:(id)a3
+- (void)_setVisualStyleOverrideTitleLabelFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_visualStyleOverrideTitleLabelFont isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_visualStyleOverrideTitleLabelFont, a3);
+    objc_storeStrong(&self->_visualStyleOverrideTitleLabelFont, font);
     [(UIInterfaceActionGroupView *)self reloadVisualStyle];
   }
 }

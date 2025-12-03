@@ -1,30 +1,30 @@
 @interface LNIntentEnablement
-+ (id)disabledWithReason:(id)a3;
++ (id)disabledWithReason:(id)reason;
 + (id)enabled;
-- (BOOL)isEqual:(id)a3;
-- (LNIntentEnablement)initWithCoder:(id)a3;
-- (LNIntentEnablement)initWithValue:(int64_t)a3 disabledReason:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNIntentEnablement)initWithCoder:(id)coder;
+- (LNIntentEnablement)initWithValue:(int64_t)value disabledReason:(id)reason;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNIntentEnablement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNIntentEnablement *)self value];
-        if (v7 != [(LNIntentEnablement *)v6 value])
+        value = [(LNIntentEnablement *)self value];
+        if (value != [(LNIntentEnablement *)v6 value])
         {
           v13 = 0;
 LABEL_16:
@@ -32,10 +32,10 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v8 = [(LNIntentEnablement *)self disabledReason];
-        v9 = [(LNIntentEnablement *)v6 disabledReason];
-        v10 = v8;
-        v11 = v9;
+        disabledReason = [(LNIntentEnablement *)self disabledReason];
+        disabledReason2 = [(LNIntentEnablement *)v6 disabledReason];
+        v10 = disabledReason;
+        v11 = disabledReason2;
         v12 = v11;
         if (v10 == v11)
         {
@@ -77,11 +77,11 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(LNIntentEnablement *)self value];
-  v4 = [(LNIntentEnablement *)self disabledReason];
-  v5 = [v4 hash];
+  value = [(LNIntentEnablement *)self value];
+  disabledReason = [(LNIntentEnablement *)self disabledReason];
+  v5 = [disabledReason hash];
 
-  return v5 ^ v3;
+  return v5 ^ value;
 }
 
 - (id)description
@@ -89,42 +89,42 @@ LABEL_17:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNIntentEnablement *)self value];
-  v7 = [(LNIntentEnablement *)self disabledReason];
-  v8 = [v3 stringWithFormat:@"<%@: %p, value: %ld, disabledReason: %@>", v5, self, v6, v7];
+  value = [(LNIntentEnablement *)self value];
+  disabledReason = [(LNIntentEnablement *)self disabledReason];
+  v8 = [v3 stringWithFormat:@"<%@: %p, value: %ld, disabledReason: %@>", v5, self, value, disabledReason];
 
   return v8;
 }
 
-- (LNIntentEnablement)initWithCoder:(id)a3
+- (LNIntentEnablement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"value"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disabledReason"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"value"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disabledReason"];
 
   v7 = [(LNIntentEnablement *)self initWithValue:v5 disabledReason:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNIntentEnablement value](self forKey:{"value"), @"value"}];
-  v5 = [(LNIntentEnablement *)self disabledReason];
-  [v4 encodeObject:v5 forKey:@"disabledReason"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNIntentEnablement value](self forKey:{"value"), @"value"}];
+  disabledReason = [(LNIntentEnablement *)self disabledReason];
+  [coderCopy encodeObject:disabledReason forKey:@"disabledReason"];
 }
 
-- (LNIntentEnablement)initWithValue:(int64_t)a3 disabledReason:(id)a4
+- (LNIntentEnablement)initWithValue:(int64_t)value disabledReason:(id)reason
 {
-  v7 = a4;
+  reasonCopy = reason;
   v12.receiver = self;
   v12.super_class = LNIntentEnablement;
   v8 = [(LNIntentEnablement *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_value = a3;
-    objc_storeStrong(&v8->_disabledReason, a4);
+    v8->_value = value;
+    objc_storeStrong(&v8->_disabledReason, reason);
     v10 = v9;
   }
 
@@ -138,10 +138,10 @@ LABEL_17:
   return v2;
 }
 
-+ (id)disabledWithReason:(id)a3
++ (id)disabledWithReason:(id)reason
 {
-  v3 = a3;
-  v4 = [[LNIntentEnablement alloc] initWithValue:0 disabledReason:v3];
+  reasonCopy = reason;
+  v4 = [[LNIntentEnablement alloc] initWithValue:0 disabledReason:reasonCopy];
 
   return v4;
 }

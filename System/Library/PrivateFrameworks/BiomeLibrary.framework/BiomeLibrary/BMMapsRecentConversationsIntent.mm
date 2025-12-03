@@ -1,17 +1,17 @@
 @interface BMMapsRecentConversationsIntent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMapsRecentConversationsIntent)initWithContactInformation:(id)a3 actionType:(int)a4 predictionTimestamp:(id)a5 predictionExpiration:(id)a6 bundleID:(id)a7;
-- (BMMapsRecentConversationsIntent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMapsRecentConversationsIntent)initWithContactInformation:(id)information actionType:(int)type predictionTimestamp:(id)timestamp predictionExpiration:(id)expiration bundleID:(id)d;
+- (BMMapsRecentConversationsIntent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)predictionExpiration;
 - (NSDate)predictionTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMapsRecentConversationsIntent
@@ -36,25 +36,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMapsRecentConversationsIntent *)self contactInformation];
-    v7 = [v5 contactInformation];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    contactInformation = [(BMMapsRecentConversationsIntent *)self contactInformation];
+    contactInformation2 = [v5 contactInformation];
+    v8 = contactInformation2;
+    if (contactInformation == contactInformation2)
     {
     }
 
     else
     {
-      v9 = [(BMMapsRecentConversationsIntent *)self contactInformation];
-      v10 = [v5 contactInformation];
-      v11 = [v9 isEqual:v10];
+      contactInformation3 = [(BMMapsRecentConversationsIntent *)self contactInformation];
+      contactInformation4 = [v5 contactInformation];
+      v11 = [contactInformation3 isEqual:contactInformation4];
 
       if (!v11)
       {
@@ -62,21 +62,21 @@
       }
     }
 
-    v13 = [(BMMapsRecentConversationsIntent *)self actionType];
-    if (v13 == [v5 actionType])
+    actionType = [(BMMapsRecentConversationsIntent *)self actionType];
+    if (actionType == [v5 actionType])
     {
-      v14 = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
-      v15 = [v5 predictionTimestamp];
-      v16 = v15;
-      if (v14 == v15)
+      predictionTimestamp = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
+      predictionTimestamp2 = [v5 predictionTimestamp];
+      v16 = predictionTimestamp2;
+      if (predictionTimestamp == predictionTimestamp2)
       {
       }
 
       else
       {
-        v17 = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
-        v18 = [v5 predictionTimestamp];
-        v19 = [v17 isEqual:v18];
+        predictionTimestamp3 = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
+        predictionTimestamp4 = [v5 predictionTimestamp];
+        v19 = [predictionTimestamp3 isEqual:predictionTimestamp4];
 
         if (!v19)
         {
@@ -84,18 +84,18 @@
         }
       }
 
-      v20 = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
-      v21 = [v5 predictionExpiration];
-      v22 = v21;
-      if (v20 == v21)
+      predictionExpiration = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
+      predictionExpiration2 = [v5 predictionExpiration];
+      v22 = predictionExpiration2;
+      if (predictionExpiration == predictionExpiration2)
       {
       }
 
       else
       {
-        v23 = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
-        v24 = [v5 predictionExpiration];
-        v25 = [v23 isEqual:v24];
+        predictionExpiration3 = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
+        predictionExpiration4 = [v5 predictionExpiration];
+        v25 = [predictionExpiration3 isEqual:predictionExpiration4];
 
         if (!v25)
         {
@@ -103,18 +103,18 @@
         }
       }
 
-      v27 = [(BMMapsRecentConversationsIntent *)self bundleID];
-      v28 = [v5 bundleID];
-      if (v27 == v28)
+      bundleID = [(BMMapsRecentConversationsIntent *)self bundleID];
+      bundleID2 = [v5 bundleID];
+      if (bundleID == bundleID2)
       {
         v12 = 1;
       }
 
       else
       {
-        v29 = [(BMMapsRecentConversationsIntent *)self bundleID];
-        v30 = [v5 bundleID];
-        v12 = [v29 isEqual:v30];
+        bundleID3 = [(BMMapsRecentConversationsIntent *)self bundleID];
+        bundleID4 = [v5 bundleID];
+        v12 = [bundleID3 isEqual:bundleID4];
       }
 
       goto LABEL_15;
@@ -170,16 +170,16 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v30[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMapsRecentConversationsIntent *)self contactInformation];
-  v4 = [v3 jsonDictionary];
+  contactInformation = [(BMMapsRecentConversationsIntent *)self contactInformation];
+  jsonDictionary = [contactInformation jsonDictionary];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMapsRecentConversationsIntent actionType](self, "actionType")}];
-  v6 = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
-  if (v6)
+  predictionTimestamp = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
+  if (predictionTimestamp)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
-    [v8 timeIntervalSince1970];
+    predictionTimestamp2 = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
+    [predictionTimestamp2 timeIntervalSince1970];
     v9 = [v7 numberWithDouble:?];
   }
 
@@ -188,12 +188,12 @@ LABEL_16:
     v9 = 0;
   }
 
-  v10 = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
-  if (v10)
+  predictionExpiration = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
+  if (predictionExpiration)
   {
     v11 = MEMORY[0x1E696AD98];
-    v12 = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
-    [v12 timeIntervalSince1970];
+    predictionExpiration2 = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
+    [predictionExpiration2 timeIntervalSince1970];
     v13 = [v11 numberWithDouble:?];
   }
 
@@ -202,50 +202,50 @@ LABEL_16:
     v13 = 0;
   }
 
-  v14 = [(BMMapsRecentConversationsIntent *)self bundleID];
+  bundleID = [(BMMapsRecentConversationsIntent *)self bundleID];
   v25 = @"contactInformation";
-  v15 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v15;
-  v30[0] = v15;
+  v23 = null;
+  v30[0] = null;
   v26 = @"actionType";
-  v16 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[1] = v16;
+  v30[1] = null2;
   v27 = @"predictionTimestamp";
-  v17 = v9;
+  null3 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[2] = v17;
+  v30[2] = null3;
   v28 = @"predictionExpiration";
-  v18 = v13;
+  null4 = v13;
   if (!v13)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[3] = v18;
+  v30[3] = null4;
   v29 = @"bundleID";
-  v19 = v14;
-  if (!v14)
+  null5 = bundleID;
+  if (!bundleID)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[4] = v19;
+  v30[4] = null5;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v25 count:{5, v23}];
-  if (v14)
+  if (bundleID)
   {
     if (v13)
     {
@@ -278,7 +278,7 @@ LABEL_20:
 
 LABEL_28:
 
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_22;
     }
@@ -294,7 +294,7 @@ LABEL_27:
   }
 
 LABEL_21:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_22;
   }
@@ -307,11 +307,11 @@ LABEL_22:
   return v20;
 }
 
-- (BMMapsRecentConversationsIntent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMapsRecentConversationsIntent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"contactInformation"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"contactInformation"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v51 = 0;
@@ -327,10 +327,10 @@ LABEL_22:
     v10 = v52;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v10 = v10;
-        *a4 = v10;
+        *error = v10;
       }
 
       v11 = 0;
@@ -338,7 +338,7 @@ LABEL_22:
     }
 
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"actionType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"actionType"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -352,7 +352,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v9 = 0;
             v11 = 0;
@@ -367,7 +367,7 @@ LABEL_4:
           v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
           v50 = 0;
           v11 = 0;
-          *a4 = [v38 initWithDomain:v39 code:2 userInfo:v15];
+          *error = [v38 initWithDomain:v39 code:2 userInfo:v15];
 LABEL_41:
 
           v9 = v50;
@@ -387,8 +387,8 @@ LABEL_42:
       v50 = 0;
     }
 
-    v47 = a4;
-    v15 = [v6 objectForKeyedSubscript:@"predictionTimestamp"];
+    errorCopy = error;
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"predictionTimestamp"];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -417,7 +417,7 @@ LABEL_42:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v48 = 0;
             v11 = 0;
@@ -433,7 +433,7 @@ LABEL_42:
           v41 = [v49 initWithDomain:v40 code:2 userInfo:v23];
           v48 = 0;
           v11 = 0;
-          *v47 = v41;
+          *errorCopy = v41;
           goto LABEL_40;
         }
 
@@ -449,7 +449,7 @@ LABEL_42:
     }
 
 LABEL_27:
-    v23 = [v6 objectForKeyedSubscript:@"predictionExpiration"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"predictionExpiration"];
     if (!v23 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v24 = 0;
@@ -477,13 +477,13 @@ LABEL_27:
         v24 = [v31 dateFromString:v23];
 
 LABEL_35:
-        v32 = [v6 objectForKeyedSubscript:@"bundleID"];
+        v32 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
         if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v47)
+            if (errorCopy)
             {
               v45 = objc_alloc(MEMORY[0x1E696ABC0]);
               v44 = *MEMORY[0x1E698F240];
@@ -491,7 +491,7 @@ LABEL_35:
               v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"bundleID"];
               v54 = v36;
               v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-              *v47 = [v45 initWithDomain:v44 code:2 userInfo:v37];
+              *errorCopy = [v45 initWithDomain:v44 code:2 userInfo:v37];
             }
 
             v33 = 0;
@@ -518,7 +518,7 @@ LABEL_40:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v47)
+        if (!errorCopy)
         {
           v24 = 0;
           v11 = 0;
@@ -534,7 +534,7 @@ LABEL_40:
         v43 = [v46 initWithDomain:v42 code:2 userInfo:v32];
         v24 = 0;
         v11 = 0;
-        *v47 = v43;
+        *errorCopy = v43;
         goto LABEL_39;
       }
 
@@ -545,7 +545,7 @@ LABEL_40:
     goto LABEL_35;
   }
 
-  if (!a4)
+  if (!error)
   {
     v11 = 0;
     goto LABEL_44;
@@ -558,7 +558,7 @@ LABEL_40:
   v62[0] = v51;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:&v61 count:1];
   v11 = 0;
-  *a4 = [v13 initWithDomain:v14 code:2 userInfo:v9];
+  *error = [v13 initWithDomain:v14 code:2 userInfo:v9];
 LABEL_43:
 
 LABEL_44:
@@ -570,18 +570,18 @@ LABEL_44:
 {
   v3 = objc_opt_new();
   [(BMMapsRecentConversationsIntent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_contactInformation)
   {
     PBDataWriterPlaceMark();
-    [(BMMapsRecentConversationsIntentContactInformation *)self->_contactInformation writeTo:v4];
+    [(BMMapsRecentConversationsIntentContactInformation *)self->_contactInformation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -605,9 +605,9 @@ LABEL_44:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v38.receiver = self;
   v38.super_class = BMMapsRecentConversationsIntent;
   v5 = [(BMEventBase *)&v38 init];
@@ -616,12 +616,12 @@ LABEL_44:
     goto LABEL_57;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -632,18 +632,18 @@ LABEL_44:
       while (1)
       {
         LOBYTE(v39[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v39 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v39[0] & 0x7F) << v7;
@@ -660,9 +660,9 @@ LABEL_44:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -679,7 +679,7 @@ LABEL_16:
             goto LABEL_56;
           }
 
-          v29 = [[BMMapsRecentConversationsIntentContactInformation alloc] initByReadFrom:v4];
+          v29 = [[BMMapsRecentConversationsIntentContactInformation alloc] initByReadFrom:fromCopy];
           if (!v29)
           {
             goto LABEL_56;
@@ -710,18 +710,18 @@ LABEL_43:
           while (1)
           {
             LOBYTE(v39[0]) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:v39 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v39[0] & 0x7F) << v18;
@@ -737,7 +737,7 @@ LABEL_43:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 0x12)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 0x12)
           {
 LABEL_47:
             LODWORD(v20) = 0;
@@ -753,18 +753,18 @@ LABEL_47:
         {
           v5->_hasRaw_predictionTimestamp = 1;
           v39[0] = 0;
-          v25 = [v4 position] + 8;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 8;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v31 = [v4 data];
-            [v31 getBytes:v39 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:v39 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v32 = v39[0];
@@ -776,18 +776,18 @@ LABEL_47:
         {
           v5->_hasRaw_predictionExpiration = 1;
           v39[0] = 0;
-          v27 = [v4 position] + 8;
-          if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 8, v28 <= objc_msgSend(v4, "length")))
+          v27 = [fromCopy position] + 8;
+          if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 8, v28 <= objc_msgSend(fromCopy, "length")))
           {
-            v34 = [v4 data];
-            [v34 getBytes:v39 range:{objc_msgSend(v4, "position"), 8}];
+            data4 = [fromCopy data];
+            [data4 getBytes:v39 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v32 = v39[0];
@@ -808,13 +808,13 @@ LABEL_53:
       }
 
 LABEL_54:
-      v35 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v35 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_56:
     v36 = 0;
@@ -832,34 +832,34 @@ LABEL_57:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMapsRecentConversationsIntent *)self contactInformation];
+  contactInformation = [(BMMapsRecentConversationsIntent *)self contactInformation];
   v5 = BMMapsRecentConversationsIntentActionTypeAsString([(BMMapsRecentConversationsIntent *)self actionType]);
-  v6 = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
-  v7 = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
-  v8 = [(BMMapsRecentConversationsIntent *)self bundleID];
-  v9 = [v3 initWithFormat:@"BMMapsRecentConversationsIntent with contactInformation: %@, actionType: %@, predictionTimestamp: %@, predictionExpiration: %@, bundleID: %@", v4, v5, v6, v7, v8];
+  predictionTimestamp = [(BMMapsRecentConversationsIntent *)self predictionTimestamp];
+  predictionExpiration = [(BMMapsRecentConversationsIntent *)self predictionExpiration];
+  bundleID = [(BMMapsRecentConversationsIntent *)self bundleID];
+  v9 = [v3 initWithFormat:@"BMMapsRecentConversationsIntent with contactInformation: %@, actionType: %@, predictionTimestamp: %@, predictionExpiration: %@, bundleID: %@", contactInformation, v5, predictionTimestamp, predictionExpiration, bundleID];
 
   return v9;
 }
 
-- (BMMapsRecentConversationsIntent)initWithContactInformation:(id)a3 actionType:(int)a4 predictionTimestamp:(id)a5 predictionExpiration:(id)a6 bundleID:(id)a7
+- (BMMapsRecentConversationsIntent)initWithContactInformation:(id)information actionType:(int)type predictionTimestamp:(id)timestamp predictionExpiration:(id)expiration bundleID:(id)d
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  informationCopy = information;
+  timestampCopy = timestamp;
+  expirationCopy = expiration;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = BMMapsRecentConversationsIntent;
   v17 = [(BMEventBase *)&v21 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_contactInformation, a3);
-    v17->_actionType = a4;
-    if (v14)
+    objc_storeStrong(&v17->_contactInformation, information);
+    v17->_actionType = type;
+    if (timestampCopy)
     {
       v17->_hasRaw_predictionTimestamp = 1;
-      [v14 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -869,10 +869,10 @@ LABEL_57:
     }
 
     v17->_raw_predictionTimestamp = v18;
-    if (v15)
+    if (expirationCopy)
     {
       v17->_hasRaw_predictionExpiration = 1;
-      [v15 timeIntervalSince1970];
+      [expirationCopy timeIntervalSince1970];
     }
 
     else
@@ -882,7 +882,7 @@ LABEL_57:
     }
 
     v17->_raw_predictionExpiration = v19;
-    objc_storeStrong(&v17->_bundleID, a7);
+    objc_storeStrong(&v17->_bundleID, d);
   }
 
   return v17;
@@ -917,9 +917,9 @@ id __42__BMMapsRecentConversationsIntent_columns__block_invoke(uint64_t a1, void
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -927,8 +927,8 @@ id __42__BMMapsRecentConversationsIntent_columns__block_invoke(uint64_t a1, void
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMapsRecentConversationsIntent alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,5 +1,5 @@
 @interface AKBasicLoginAlertControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySetAlertIdentifier;
 - (void)jiggleAView;
@@ -7,11 +7,11 @@
 
 @implementation AKBasicLoginAlertControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKBasicLoginAlertController" isKindOfClass:@"UIAlertController"];
-  [v3 validateClass:@"AKBasicLoginAlertController" hasInstanceMethod:@"jiggleAView" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKBasicLoginAlertController" isKindOfClass:@"UIAlertController"];
+  [validationsCopy validateClass:@"AKBasicLoginAlertController" hasInstanceMethod:@"jiggleAView" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilitySetAlertIdentifier
@@ -19,8 +19,8 @@
   v2 = MEMORY[0x29C2CA5E0](@"_UIAlertControllerView", a2);
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
-  v5 = [v4 _accessibilityViewAncestorIsKindOf:v2];
+  view = [v3 view];
+  v5 = [view _accessibilityViewAncestorIsKindOf:v2];
 
   [v5 setAccessibilityIdentifier:@"AuthKit Login"];
 }

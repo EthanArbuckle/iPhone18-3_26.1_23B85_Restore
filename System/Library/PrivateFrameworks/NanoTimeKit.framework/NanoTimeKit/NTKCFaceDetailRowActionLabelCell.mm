@@ -1,6 +1,6 @@
 @interface NTKCFaceDetailRowActionLabelCell
 + (id)reuseIdentifier;
-- (NTKCFaceDetailRowActionLabelCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NTKCFaceDetailRowActionLabelCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)rowHeight;
 @end
 
@@ -22,17 +22,17 @@
   return v4;
 }
 
-- (NTKCFaceDetailRowActionLabelCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NTKCFaceDetailRowActionLabelCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = NTKCFaceDetailRowActionLabelCell;
-  v4 = [(NTKCFaceDetailRowActionCell *)&v9 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(NTKCFaceDetailRowActionCell *)&v9 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(NTKCFaceDetailRowActionLabelCell *)v4 textLabel];
+    textLabel = [(NTKCFaceDetailRowActionLabelCell *)v4 textLabel];
     v7 = NTKCActionColor();
-    [v6 setTextColor:v7];
+    [textLabel setTextColor:v7];
   }
 
   return v5;

@@ -1,24 +1,24 @@
 @interface FPNonEvictableItemsQueryDescriptor
-- (id)queryStringForMountPoint:(id)a3;
+- (id)queryStringForMountPoint:(id)point;
 - (unint64_t)desiredCount;
-- (void)augmentQueryContext:(id)a3;
+- (void)augmentQueryContext:(id)context;
 @end
 
 @implementation FPNonEvictableItemsQueryDescriptor
 
-- (id)queryStringForMountPoint:(id)a3
+- (id)queryStringForMountPoint:(id)point
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = [(FPSpotlightQueryDescriptor *)self settings];
-  v5 = [v4 allowedFileTypes];
+  settings = [(FPSpotlightQueryDescriptor *)self settings];
+  allowedFileTypes = [settings allowedFileTypes];
 
-  v6 = [(FPSpotlightQueryDescriptor *)self settings];
-  v7 = [v6 excludedFileTypes];
-  v8 = v7;
+  settings2 = [(FPSpotlightQueryDescriptor *)self settings];
+  excludedFileTypes = [settings2 excludedFileTypes];
+  v8 = excludedFileTypes;
   v9 = MEMORY[0x1E695E0F0];
-  if (v7)
+  if (excludedFileTypes)
   {
-    v10 = v7;
+    v10 = excludedFileTypes;
   }
 
   else
@@ -29,10 +29,10 @@
   v11 = v10;
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = FPContentTypeQueryStringForFileTypes(v5, v11);
+  v13 = FPContentTypeQueryStringForFileTypes(allowedFileTypes, v11);
 
-  v14 = [*MEMORY[0x1E6982DC8] identifier];
-  v20[0] = v14;
+  identifier = [*MEMORY[0x1E6982DC8] identifier];
+  v20[0] = identifier;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v16 = FPContentTypeQueryStringForFileTypes(v9, v15);
   v17 = [v12 stringWithFormat:@"(%@) && ((%@) || ((%@) && (%@)))", v13, @"FPItemIsPinned == 1", v16, @"FPItemIsInPinnedFolder == 0 && FPEvictable == 0 && FPDownloaded == 1"];
@@ -44,30 +44,30 @@
 
 - (unint64_t)desiredCount
 {
-  v2 = [(FPSpotlightQueryDescriptor *)self settings];
-  v3 = [v2 desiredNumberOfItems];
-  v4 = v3;
+  settings = [(FPSpotlightQueryDescriptor *)self settings];
+  desiredNumberOfItems = [settings desiredNumberOfItems];
+  v4 = desiredNumberOfItems;
   v5 = &unk_1F1FC9A70;
-  if (v3)
+  if (desiredNumberOfItems)
   {
-    v5 = v3;
+    v5 = desiredNumberOfItems;
   }
 
   v6 = v5;
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)augmentQueryContext:(id)a3
+- (void)augmentQueryContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = FPNonEvictableItemsQueryDescriptor;
-  v14 = a3;
+  contextCopy = context;
   [(FPSpotlightQueryDescriptor *)&v20 augmentQueryContext:?];
   v3 = FPFileSizeAttributes();
-  v15 = [v3 allValues];
+  allValues = [v3 allValues];
 
   v4 = objc_opt_new();
   v5 = 10000000000;
@@ -77,7 +77,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v15;
+    v6 = allValues;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v7)
     {
@@ -107,7 +107,7 @@
   }
 
   while (v12);
-  [v14 setRankingQueries:v4];
+  [contextCopy setRankingQueries:v4];
 
   v13 = *MEMORY[0x1E69E9840];
 }

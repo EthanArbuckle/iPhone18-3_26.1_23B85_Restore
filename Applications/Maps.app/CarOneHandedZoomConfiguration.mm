@@ -1,14 +1,14 @@
 @interface CarOneHandedZoomConfiguration
-- (CarOneHandedZoomConfiguration)initWithGestureRecongizer:(id)a3;
-- (double)valueWithKey:(id)a3 defaultValue:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CarOneHandedZoomConfiguration)initWithGestureRecongizer:(id)recongizer;
+- (double)valueWithKey:(id)key defaultValue:(double)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_refreshSetting;
 - (void)dealloc;
 @end
 
 @implementation CarOneHandedZoomConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->_gestureRecognizer);
@@ -17,20 +17,20 @@
   return v6;
 }
 
-- (double)valueWithKey:(id)a3 defaultValue:(double)a4
+- (double)valueWithKey:(id)key defaultValue:(double)value
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = +[NSUserDefaults standardUserDefaults];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
 
   if (v7)
   {
     v8 = +[NSUserDefaults standardUserDefaults];
-    [v8 floatForKey:v5];
-    a4 = v9;
+    [v8 floatForKey:keyCopy];
+    value = v9;
   }
 
-  return a4;
+  return value;
 }
 
 - (void)_refreshSetting
@@ -47,8 +47,8 @@
   self->_decelerationThreshold = v7;
   zoomDraggingResistance = self->_zoomDraggingResistance;
   WeakRetained = objc_loadWeakRetained(&self->_gestureRecognizer);
-  v9 = [WeakRetained panGestureRecognizer];
-  [v9 setZoomDraggingResistance:zoomDraggingResistance];
+  panGestureRecognizer = [WeakRetained panGestureRecognizer];
+  [panGestureRecognizer setZoomDraggingResistance:zoomDraggingResistance];
 }
 
 - (void)dealloc
@@ -61,16 +61,16 @@
   [(CarOneHandedZoomConfiguration *)&v4 dealloc];
 }
 
-- (CarOneHandedZoomConfiguration)initWithGestureRecongizer:(id)a3
+- (CarOneHandedZoomConfiguration)initWithGestureRecongizer:(id)recongizer
 {
-  v4 = a3;
+  recongizerCopy = recongizer;
   v9.receiver = self;
   v9.super_class = CarOneHandedZoomConfiguration;
   v5 = [(CarOneHandedZoomConfiguration *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_gestureRecognizer, v4);
+    objc_storeWeak(&v5->_gestureRecognizer, recongizerCopy);
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"_refreshSetting" name:@"CarPlayOneHandedZoomingSettingDidChangeNotification" object:0];
 

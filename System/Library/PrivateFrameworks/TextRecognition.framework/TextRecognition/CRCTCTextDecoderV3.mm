@@ -2,7 +2,7 @@
 + (id)lmSupportedLanguages;
 - (CVNLPTextDecodingPruningPolicy)pruningPolicy;
 - (_TtC15TextRecognition18CRCTCTextDecoderV3)init;
-- (_TtC15TextRecognition18CRCTCTextDecoderV3)initWithConfiguration:(id)a3 model:(id)a4 error:(id *)a5;
+- (_TtC15TextRecognition18CRCTCTextDecoderV3)initWithConfiguration:(id)configuration model:(id)model error:(id *)error;
 @end
 
 @implementation CRCTCTextDecoderV3
@@ -30,11 +30,11 @@
   return [(CRCTCTextDecoderV3 *)&v3 init];
 }
 
-- (_TtC15TextRecognition18CRCTCTextDecoderV3)initWithConfiguration:(id)a3 model:(id)a4 error:(id *)a5
+- (_TtC15TextRecognition18CRCTCTextDecoderV3)initWithConfiguration:(id)configuration model:(id)model error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v7 = sub_1B415D8E4(v6, a4);
+  v7 = sub_1B415D8E4(configurationCopy, model);
 
   swift_unknownObjectRelease();
   return v7;

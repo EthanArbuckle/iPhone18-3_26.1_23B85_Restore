@@ -2,9 +2,9 @@
 + (id)sharedSearchVirtualGarageManager;
 - (SearchVirtualGarageManager)init;
 - (VGVirtualGarage)virtualGarage;
-- (id)updatedTraitsForCurrentGarageState:(id)a3;
+- (id)updatedTraitsForCurrentGarageState:(id)state;
 - (void)dealloc;
-- (void)setVirtualGarage:(id)a3;
+- (void)setVirtualGarage:(id)garage;
 - (void)virtualGarageDidBecomeAvailable;
 @end
 
@@ -46,8 +46,8 @@
 
 - (void)virtualGarageDidBecomeAvailable
 {
-  v3 = [(SearchVirtualGarageManager *)self virtualGarage];
-  if (v3)
+  virtualGarage = [(SearchVirtualGarageManager *)self virtualGarage];
+  if (virtualGarage)
   {
   }
 
@@ -106,38 +106,38 @@
   return v4;
 }
 
-- (id)updatedTraitsForCurrentGarageState:(id)a3
+- (id)updatedTraitsForCurrentGarageState:(id)state
 {
-  v3 = a3;
-  [v3 clearEvChargingPorts];
-  [v3 clearPreferredBrands];
+  stateCopy = state;
+  [stateCopy clearEvChargingPorts];
+  [stateCopy clearPreferredBrands];
   v4 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v5 = [v4 virtualGarage];
+  virtualGarage = [v4 virtualGarage];
 
-  v6 = [v5 selectedVehicle];
-  v7 = ([v3 navigating] & 1) != 0 || objc_msgSend(v3, "searchOriginationType") == 1 || objc_msgSend(v3, "searchOriginationType") == 2;
+  selectedVehicle = [virtualGarage selectedVehicle];
+  v7 = ([stateCopy navigating] & 1) != 0 || objc_msgSend(stateCopy, "searchOriginationType") == 1 || objc_msgSend(stateCopy, "searchOriginationType") == 2;
   v8 = +[MapsExternalDevice sharedInstance];
-  v9 = [v8 isConnected];
+  isConnected = [v8 isConnected];
 
-  if (v6 && ((v7 | v9) & 1) != 0)
+  if (selectedVehicle && ((v7 | isConnected) & 1) != 0)
   {
-    v10 = [v6 updatedTraitsFrom:v3];
+    v10 = [selectedVehicle updatedTraitsFrom:stateCopy];
 
-    v3 = v10;
+    stateCopy = v10;
   }
 
   else
   {
-    v11 = [v5 vehicles];
+    vehicles = [virtualGarage vehicles];
 
-    if (v11)
+    if (vehicles)
     {
       v24 = +[NSMutableSet set];
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
-      obj = [v5 vehicles];
+      obj = [virtualGarage vehicles];
       v12 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v12)
       {
@@ -154,23 +154,23 @@
             }
 
             v17 = *(*(&v31 + 1) + 8 * i);
-            v18 = [v17 evChargingPorts];
+            evChargingPorts = [v17 evChargingPorts];
             v29[0] = _NSConcreteStackBlock;
             v29[1] = 3221225472;
             v29[2] = sub_10088CBF4;
             v29[3] = &unk_10162CAC8;
-            v19 = v3;
-            v20 = v3;
+            v19 = stateCopy;
+            v20 = stateCopy;
             v30 = v20;
-            [v18 enumerateObjectsUsingBlock:v29];
+            [evChargingPorts enumerateObjectsUsingBlock:v29];
 
-            v21 = [v17 preferredChargingNetworks];
+            preferredChargingNetworks = [v17 preferredChargingNetworks];
             v27[0] = _NSConcreteStackBlock;
             v27[1] = 3221225472;
             v27[2] = sub_10088CC00;
             v27[3] = &unk_10162CAF0;
             v28 = v24;
-            [v21 enumerateObjectsUsingBlock:v27];
+            [preferredChargingNetworks enumerateObjectsUsingBlock:v27];
 
             if (!(v14 & 1 | (([v17 isLPRWithElectricEngine] & 1) == 0)))
             {
@@ -178,7 +178,7 @@
               v14 = 1;
             }
 
-            v3 = v19;
+            stateCopy = v19;
           }
 
           v13 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -191,13 +191,13 @@
       v25[1] = 3221225472;
       v25[2] = sub_10088CC6C;
       v25[3] = &unk_10162CB18;
-      v3 = v3;
-      v26 = v3;
+      stateCopy = stateCopy;
+      v26 = stateCopy;
       [v24 enumerateObjectsUsingBlock:v25];
     }
   }
 
-  return v3;
+  return stateCopy;
 }
 
 - (void)dealloc
@@ -210,17 +210,17 @@
   [(SearchVirtualGarageManager *)&v4 dealloc];
 }
 
-- (void)setVirtualGarage:(id)a3
+- (void)setVirtualGarage:(id)garage
 {
-  v4 = a3;
+  garageCopy = garage;
   isolationQueue = self->_isolationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100B9D6F8;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = garageCopy;
+  v6 = garageCopy;
   dispatch_async(isolationQueue, v7);
 }
 

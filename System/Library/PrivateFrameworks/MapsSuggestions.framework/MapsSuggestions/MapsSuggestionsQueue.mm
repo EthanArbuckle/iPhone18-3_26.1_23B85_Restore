@@ -1,15 +1,15 @@
 @interface MapsSuggestionsQueue
-+ (id)serialQueueWithName:(id)a3;
-- (id)initSerialQueueWithName:(id)a3;
++ (id)serialQueueWithName:(id)name;
+- (id)initSerialQueueWithName:(id)name;
 @end
 
 @implementation MapsSuggestionsQueue
 
-- (id)initSerialQueueWithName:(id)a3
+- (id)initSerialQueueWithName:(id)name
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v9.receiver = self;
     v9.super_class = MapsSuggestionsQueue;
@@ -23,7 +23,7 @@
     }
 
     self = 0;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -42,16 +42,16 @@
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a name", buf, 0x26u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)serialQueueWithName:(id)a3
++ (id)serialQueueWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initSerialQueueWithName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initSerialQueueWithName:nameCopy];
 
   return v5;
 }

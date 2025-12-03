@@ -1,13 +1,13 @@
 @interface QLBarButtonItem
-- (BOOL)_qlIsEqual:(id)a3;
+- (BOOL)_qlIsEqual:(id)equal;
 @end
 
 @implementation QLBarButtonItem
 
-- (BOOL)_qlIsEqual:(id)a3
+- (BOOL)_qlIsEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -17,39 +17,39 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(QLBarButtonItem *)self QLType];
-      if (v6 != [(QLBarButtonItem *)v5 QLType])
+      v5 = equalCopy;
+      qLType = [(QLBarButtonItem *)self QLType];
+      if (qLType != [(QLBarButtonItem *)v5 QLType])
       {
         goto LABEL_12;
       }
 
       if ([(QLBarButtonItem *)self QLType]== 3)
       {
-        v7 = [(QLBarButtonItem *)self action];
-        if (v7 != [(QLBarButtonItem *)v5 action])
+        action = [(QLBarButtonItem *)self action];
+        if (action != [(QLBarButtonItem *)v5 action])
         {
           goto LABEL_12;
         }
       }
 
-      v8 = [(QLBarButtonItem *)self target];
-      v9 = [(QLBarButtonItem *)v5 target];
+      target = [(QLBarButtonItem *)self target];
+      target2 = [(QLBarButtonItem *)v5 target];
 
-      if (v8 == v9 && (v10 = [(QLBarButtonItem *)self systemItem], v10 == [(QLBarButtonItem *)v5 systemItem]))
+      if (target == target2 && (v10 = [(QLBarButtonItem *)self systemItem], v10 == [(QLBarButtonItem *)v5 systemItem]))
       {
-        v11 = [(QLBarButtonItem *)self title];
-        v12 = [(QLBarButtonItem *)v5 title];
-        if (v11 == v12)
+        title = [(QLBarButtonItem *)self title];
+        title2 = [(QLBarButtonItem *)v5 title];
+        if (title == title2)
         {
           v15 = 1;
         }
 
         else
         {
-          v13 = [(QLBarButtonItem *)self title];
-          v14 = [(QLBarButtonItem *)v5 title];
-          v15 = [v13 isEqualToString:v14];
+          title3 = [(QLBarButtonItem *)self title];
+          title4 = [(QLBarButtonItem *)v5 title];
+          v15 = [title3 isEqualToString:title4];
         }
       }
 

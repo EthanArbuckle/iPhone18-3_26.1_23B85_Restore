@@ -1,23 +1,23 @@
 @interface MRDNowPlayingPlayerClientPlaybackState
-- (MRDNowPlayingPlayerClientPlaybackState)initWithPlaybackState:(unsigned int)a3 date:(id)a4;
+- (MRDNowPlayingPlayerClientPlaybackState)initWithPlaybackState:(unsigned int)state date:(id)date;
 - (id)description;
 @end
 
 @implementation MRDNowPlayingPlayerClientPlaybackState
 
-- (MRDNowPlayingPlayerClientPlaybackState)initWithPlaybackState:(unsigned int)a3 date:(id)a4
+- (MRDNowPlayingPlayerClientPlaybackState)initWithPlaybackState:(unsigned int)state date:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = MRDNowPlayingPlayerClientPlaybackState;
   v7 = [(MRDNowPlayingPlayerClientPlaybackState *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_playbackState = a3;
-    if (v6)
+    v7->_playbackState = state;
+    if (dateCopy)
     {
-      v9 = v6;
+      v9 = dateCopy;
     }
 
     else

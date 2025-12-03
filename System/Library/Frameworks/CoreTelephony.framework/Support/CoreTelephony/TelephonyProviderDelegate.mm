@@ -1,54 +1,54 @@
 @interface TelephonyProviderDelegate
-- (BOOL)doesHeldUnHeldcallAlreadyExist:(id)a3;
-- (BOOL)evaluateAndSendCallUpdateWithCallInfo:(dict)a3 previousCallInfo:(dict)a4;
-- (BOOL)possiblyFulfillUnexpectedHoldCallWithProvider:(id)a3 transactions:(id)a4;
-- (BOOL)possiblyFulfillUnexpectedMOStartCallWithProvider:(id)a3 transactions:(id)a4;
-- (BOOL)provider:(id)a3 executeTransaction:(id)a4;
-- (BOOL)shouldIncludeInCallHistory:(int)a3 phoneNumber:()basic_string<char;
-- (BOOL)supportDownlinkDtmf:(int)a3 usingBaseband:(BOOL)a4 isCS:(BOOL)a5;
+- (BOOL)doesHeldUnHeldcallAlreadyExist:(id)exist;
+- (BOOL)evaluateAndSendCallUpdateWithCallInfo:(dict)info previousCallInfo:(dict)callInfo;
+- (BOOL)possiblyFulfillUnexpectedHoldCallWithProvider:(id)provider transactions:(id)transactions;
+- (BOOL)possiblyFulfillUnexpectedMOStartCallWithProvider:(id)provider transactions:(id)transactions;
+- (BOOL)provider:(id)provider executeTransaction:(id)transaction;
+- (BOOL)shouldIncludeInCallHistory:(int)history phoneNumber:()basic_string<char;
+- (BOOL)supportDownlinkDtmf:(int)dtmf usingBaseband:(BOOL)baseband isCS:(BOOL)s;
 - (TelephonyProvider)provider;
-- (TelephonyProviderDelegate)initWithProvider:(id)a3 registry:(const void *)a4 queue:(queue)a5;
+- (TelephonyProviderDelegate)initWithProvider:(id)provider registry:(const void *)registry queue:(queue)queue;
 - (basic_string<char,)getiSOCountryCodeForCurrentLocation:(std::allocator<char>> *__return_ptr)retstr;
 - (id).cxx_construct;
-- (id)evaluateAndCreateCallUpdateWithCallInfo:(dict)a3 previousCallInfo:(dict)a4;
-- (id)getCallCapabilitiesUpdateForCall:(id)a3 simSlot:(int)a4 isEmergency:(BOOL)a5 supportsTextWithVoiceForCall:(BOOL)a6;
-- (id)registerForAVCBBTap_sync:(BOOL)a3;
+- (id)evaluateAndCreateCallUpdateWithCallInfo:(dict)info previousCallInfo:(dict)callInfo;
+- (id)getCallCapabilitiesUpdateForCall:(id)call simSlot:(int)slot isEmergency:(BOOL)emergency supportsTextWithVoiceForCall:(BOOL)forCall;
+- (id)registerForAVCBBTap_sync:(BOOL)tap_sync;
 - (vector<CurrentCallInfo,)getCurrentCalls;
-- (void)checkAVCBBTapAndSendCallUpdate_sync:()vector<std:()xpc:()std:(xpc::dict>>> *)a3 :allocator<std::pair<xpc::dict :dict> :pair<xpc::dict;
+- (void)checkAVCBBTapAndSendCallUpdate_sync:()vector<std:()xpc:()std:(xpc::dict>>> *)std :allocator<std::pair<xpc::dict :dict> :pair<xpc::dict;
 - (void)checkBasebandAssertions;
 - (void)handleCallCapabilitiesChanged;
-- (void)handleCallControlFailure:(const void *)a3;
+- (void)handleCallControlFailure:(const void *)failure;
 - (void)handleCallFrequencyDataChanged;
-- (void)handleCallStatusChangedWithOldCalls:(const void *)a3;
-- (void)handleCallToneComplete:(const void *)a3;
+- (void)handleCallStatusChangedWithOldCalls:(const void *)calls;
+- (void)handleCallToneComplete:(const void *)complete;
 - (void)handleDisambiguationEmergencyNumbersChanged;
-- (void)handleDownlinkDtmfEvent:(const void *)a3 dtmf:(char)a4;
+- (void)handleDownlinkDtmfEvent:(const void *)event dtmf:(char)dtmf;
 - (void)handleEmergencyNumbersChanged;
-- (void)handleLastKnownHomePlmnChanged:(const void *)a3;
-- (void)handleSimSubscriptionInfoChanged:(id)a3;
+- (void)handleLastKnownHomePlmnChanged:(const void *)changed;
+- (void)handleSimSubscriptionInfoChanged:(id)changed;
 - (void)handleSubscriptionInfoChanged;
 - (void)handleThumperAccountIdChanged;
 - (void)handleThumperHandoffAvailabilityChanged;
-- (void)handleThumperSubscriptionInfoChanged:(id)a3;
+- (void)handleThumperSubscriptionInfoChanged:(id)changed;
 - (void)initialize;
-- (void)provider:(id)a3 didActivateAudioSession:(id)a4;
-- (void)provider:(id)a3 didDeactivateAudioSession:(id)a4;
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4;
-- (void)provider:(id)a3 performEndCallAction:(id)a4;
-- (void)provider:(id)a3 performPlayDTMFCallAction:(id)a4;
-- (void)provider:(id)a3 performPullCallAction:(id)a4;
-- (void)provider:(id)a3 performSendMMIOrUSSDCodeAction:(id)a4;
-- (void)provider:(id)a3 performSetGroupCallAction:(id)a4;
-- (void)provider:(id)a3 performSetHeldCallAction:(id)a4;
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4;
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4;
-- (void)provider:(id)a3 performSetScreeningCallAction:(id)a4;
-- (void)provider:(id)a3 performSetTTYTypeCallAction:(id)a4;
-- (void)provider:(id)a3 performStartCallAction:(id)a4;
-- (void)provider:(id)a3 timedOutPerformingAction:(id)a4;
-- (void)providerDidReset:(id)a3;
+- (void)provider:(id)provider didActivateAudioSession:(id)session;
+- (void)provider:(id)provider didDeactivateAudioSession:(id)session;
+- (void)provider:(id)provider performAnswerCallAction:(id)action;
+- (void)provider:(id)provider performEndCallAction:(id)action;
+- (void)provider:(id)provider performPlayDTMFCallAction:(id)action;
+- (void)provider:(id)provider performPullCallAction:(id)action;
+- (void)provider:(id)provider performSendMMIOrUSSDCodeAction:(id)action;
+- (void)provider:(id)provider performSetGroupCallAction:(id)action;
+- (void)provider:(id)provider performSetHeldCallAction:(id)action;
+- (void)provider:(id)provider performSetMutedCallAction:(id)action;
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action;
+- (void)provider:(id)provider performSetScreeningCallAction:(id)action;
+- (void)provider:(id)provider performSetTTYTypeCallAction:(id)action;
+- (void)provider:(id)provider performStartCallAction:(id)action;
+- (void)provider:(id)provider timedOutPerformingAction:(id)action;
+- (void)providerDidReset:(id)reset;
 - (void)registerForRestProperties_sync;
-- (void)updateAudioCategory:(unsigned __int8)a3 updateToUpdate:(id)a4 apOnlyMode:(BOOL)a5 usingBaseband:(BOOL)a6;
+- (void)updateAudioCategory:(unsigned __int8)category updateToUpdate:(id)update apOnlyMode:(BOOL)mode usingBaseband:(BOOL)baseband;
 @end
 
 @implementation TelephonyProviderDelegate
@@ -79,18 +79,18 @@
   operator new();
 }
 
-- (TelephonyProviderDelegate)initWithProvider:(id)a3 registry:(const void *)a4 queue:(queue)a5
+- (TelephonyProviderDelegate)initWithProvider:(id)provider registry:(const void *)registry queue:(queue)queue
 {
-  v8 = a3;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = TelephonyProviderDelegate;
   v9 = [(TelephonyProviderDelegate *)&v16 init];
   if (v9)
   {
-    v10 = *a5.fObj.fObj;
-    if (*a5.fObj.fObj)
+    v10 = *queue.fObj.fObj;
+    if (*queue.fObj.fObj)
     {
-      dispatch_retain(*a5.fObj.fObj);
+      dispatch_retain(*queue.fObj.fObj);
     }
 
     fObj = v9->fQueue.fObj.fObj;
@@ -100,8 +100,8 @@
       dispatch_release(fObj);
     }
 
-    v13 = *a4;
-    v12 = *(a4 + 1);
+    v13 = *registry;
+    v12 = *(registry + 1);
     if (v12)
     {
       atomic_fetch_add_explicit((v12 + 8), 1uLL, memory_order_relaxed);
@@ -123,11 +123,11 @@
 
 - (void)registerForRestProperties_sync
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000501C(__p, "/cc/props/current_calls");
-  v3 = v2;
+  v3 = selfCopy;
   v40 = off_101E2E2E0;
-  p_fCurrentCalls = &v2->fCurrentCalls;
+  p_fCurrentCalls = &selfCopy->fCurrentCalls;
   v42 = v3;
   v43 = &v40;
   ctu::RestModule::observeProperty();
@@ -318,7 +318,7 @@
   sub_100192D74(&v33[8].fValue.__end_);
 }
 
-- (BOOL)shouldIncludeInCallHistory:(int)a3 phoneNumber:()basic_string<char
+- (BOOL)shouldIncludeInCallHistory:(int)history phoneNumber:()basic_string<char
 {
   __p = 0u;
   v28 = 0u;
@@ -345,16 +345,16 @@
   v9 = p_end_node;
   do
   {
-    if (SLODWORD(v6[4].__left_) >= a3)
+    if (SLODWORD(v6[4].__left_) >= history)
     {
       v9 = v6;
     }
 
-    v6 = v6[SLODWORD(v6[4].__left_) < a3].__left_;
+    v6 = v6[SLODWORD(v6[4].__left_) < history].__left_;
   }
 
   while (v6);
-  if (v9 == p_end_node || SLODWORD(v9[4].__left_) > a3 || &v16 == &v9[5] || (sub_1001A7D40(&v16, v9[5].__left_, v9[6].__left_, 0xCCCCCCCCCCCCCCCDLL * ((v9[6].__left_ - v9[5].__left_) >> 5)), v10 = v16, v11 = v17, v16 == v17))
+  if (v9 == p_end_node || SLODWORD(v9[4].__left_) > history || &v16 == &v9[5] || (sub_1001A7D40(&v16, v9[5].__left_, v9[6].__left_, 0xCCCCCCCCCCCCCCCDLL * ((v9[6].__left_ - v9[5].__left_) >> 5)), v10 = v16, v11 = v17, v16 == v17))
   {
 LABEL_15:
     v14 = 1;
@@ -411,12 +411,12 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)supportDownlinkDtmf:(int)a3 usingBaseband:(BOOL)a4 isCS:(BOOL)a5
+- (BOOL)supportDownlinkDtmf:(int)dtmf usingBaseband:(BOOL)baseband isCS:(BOOL)s
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = *&a3;
-  if (a5)
+  sCopy = s;
+  basebandCopy = baseband;
+  v7 = *&dtmf;
+  if (s)
   {
     if ((capabilities::ct::supportsCSDownlinkDTMFDetection(self) & 1) == 0)
     {
@@ -502,13 +502,13 @@ LABEL_21:
 
     if (buf[0])
     {
-      if (!v6 || v5)
+      if (!basebandCopy || sCopy)
       {
         v35 = *self->logger.__ptr_;
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
           v36 = "VoiceOverAP PS";
-          if (v5)
+          if (sCopy)
           {
             v36 = "CS";
           }
@@ -1090,17 +1090,17 @@ LABEL_19:
   }
 }
 
-- (void)checkAVCBBTapAndSendCallUpdate_sync:()vector<std:()xpc:()std:(xpc::dict>>> *)a3 :allocator<std::pair<xpc::dict :dict> :pair<xpc::dict
+- (void)checkAVCBBTapAndSendCallUpdate_sync:()vector<std:()xpc:()std:(xpc::dict>>> *)std :allocator<std::pair<xpc::dict :dict> :pair<xpc::dict
 {
   if (!_os_feature_enabled_impl())
   {
     return;
   }
 
-  var0 = a3->var0;
-  v60 = a3;
-  var1 = a3->var1;
-  if (a3->var0 == var1)
+  var0 = std->var0;
+  stdCopy = std;
+  var1 = std->var1;
+  if (std->var0 == var1)
   {
 LABEL_47:
     [(TelephonyProviderDelegate *)self isAVCBBTapRegistered];
@@ -1333,11 +1333,11 @@ LABEL_25:
     {
       v51 = objc_opt_new();
       [v51 setCallTokens:v69];
-      v52 = v60->var0;
-      v53 = v60->var1;
-      if (v60->var0 != v53)
+      v52 = stdCopy->var0;
+      v53 = stdCopy->var1;
+      if (stdCopy->var0 != v53)
       {
-        v54 = v60->var0;
+        v54 = stdCopy->var0;
         do
         {
           object = 0;
@@ -1376,8 +1376,8 @@ LABEL_25:
             _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Report call %@ audio stream tokens from AVCBBTap: %@", buf, 0x16u);
           }
 
-          v59 = [(TelephonyProviderDelegate *)self provider];
-          [v59 reportCallWithUUID:v57 updated:v51];
+          provider = [(TelephonyProviderDelegate *)self provider];
+          [provider reportCallWithUUID:v57 updated:v51];
 
           if (SHIBYTE(v77) < 0)
           {
@@ -1394,9 +1394,9 @@ LABEL_25:
   }
 }
 
-- (id)registerForAVCBBTap_sync:(BOOL)a3
+- (id)registerForAVCBBTap_sync:(BOOL)tap_sync
 {
-  v3 = a3;
+  tap_syncCopy = tap_sync;
   if (!_os_feature_enabled_impl())
   {
 LABEL_26:
@@ -1422,7 +1422,7 @@ LABEL_26:
 
   v6 = *self->logger.__ptr_;
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (!v3)
+  if (!tap_syncCopy)
   {
     if (v7)
     {
@@ -1461,7 +1461,7 @@ LABEL_26:
   v18 = 0;
   v8 = [v5 registerForTapWithError:&v18];
   v9 = v18;
-  v10 = [v8 didSucceed];
+  didSucceed = [v8 didSucceed];
   if (v9)
   {
     v11 = 0;
@@ -1469,7 +1469,7 @@ LABEL_26:
 
   else
   {
-    v11 = v10;
+    v11 = didSucceed;
   }
 
   if (v11 == 1)
@@ -1496,20 +1496,20 @@ LABEL_27:
   return v12;
 }
 
-- (BOOL)provider:(id)a3 executeTransaction:(id)a4
+- (BOOL)provider:(id)provider executeTransaction:(id)transaction
 {
-  v81 = a3;
-  v6 = a4;
-  v84 = self;
+  providerCopy = provider;
+  transactionCopy = transaction;
+  selfCopy = self;
   v7 = *self->logger.__ptr_;
-  v83 = v6;
+  v83 = transactionCopy;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 actions];
+    actions = [transactionCopy actions];
     *buf = 134218242;
-    *&buf[4] = [v8 count];
+    *&buf[4] = [actions count];
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = transactionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> executeTransaction (size %lu): %@", buf, 0x16u);
   }
 
@@ -1517,8 +1517,8 @@ LABEL_27:
   v116 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v9 = [v6 actions];
-  v10 = [v9 countByEnumeratingWithState:&v113 objects:v125 count:16];
+  actions2 = [transactionCopy actions];
+  v10 = [actions2 countByEnumeratingWithState:&v113 objects:v125 count:16];
   if (!v10)
   {
 
@@ -1533,7 +1533,7 @@ LABEL_5:
   {
     if (*v114 != v12)
     {
-      objc_enumerationMutation(v9);
+      objc_enumerationMutation(actions2);
     }
 
     v14 = *(*(&v113 + 1) + 8 * v13);
@@ -1552,7 +1552,7 @@ LABEL_5:
 LABEL_11:
     if (v10 == ++v13)
     {
-      v10 = [v9 countByEnumeratingWithState:&v113 objects:v125 count:16];
+      v10 = [actions2 countByEnumeratingWithState:&v113 objects:v125 count:16];
       if (!v10)
       {
 
@@ -1565,7 +1565,7 @@ LABEL_11:
         }
 
 LABEL_56:
-        v42 = *v84->logger.__ptr_;
+        v42 = *selfCopy->logger.__ptr_;
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
@@ -1580,8 +1580,8 @@ LABEL_56:
     }
   }
 
-  v15 = [v14 callUUIDToGroupWith];
-  v16 = v15 == 0;
+  callUUIDToGroupWith = [v14 callUUIDToGroupWith];
+  v16 = callUUIDToGroupWith == 0;
 
   v110 = 0;
   v111 = 0;
@@ -1589,13 +1589,13 @@ LABEL_56:
   if (!v16)
   {
     memset(buf, 0, sizeof(buf));
-    [(TelephonyProviderDelegate *)v84 getCurrentCalls];
+    [(TelephonyProviderDelegate *)selfCopy getCurrentCalls];
     v98 = 0u;
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v17 = [v83 actions];
-    v18 = [v17 countByEnumeratingWithState:&v96 objects:v122 count:16];
+    actions3 = [v83 actions];
+    v18 = [actions3 countByEnumeratingWithState:&v96 objects:v122 count:16];
     if (!v18)
     {
       goto LABEL_53;
@@ -1608,7 +1608,7 @@ LABEL_56:
       {
         if (*v97 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(actions3);
         }
 
         v21 = *(*(&v96 + 1) + 8 * i);
@@ -1619,12 +1619,12 @@ LABEL_56:
           __p[1] = 0;
           __p[0] = 0;
           v119[0] = 0;
-          v23 = [v22 callUUID];
-          sub_1000B2CAC(v23, __p);
+          callUUID = [v22 callUUID];
+          sub_1000B2CAC(callUUID, __p);
 
           memset(v127, 0, sizeof(v127));
-          v24 = [v22 callUUIDToGroupWith];
-          sub_1000B2CAC(v24, v127);
+          callUUIDToGroupWith2 = [v22 callUUIDToGroupWith];
+          sub_1000B2CAC(callUUIDToGroupWith2, v127);
 
           memset(v95, 0, sizeof(v95));
           sub_1000B2D2C(v95, *buf, *&buf[8], (*&buf[8] - *buf) >> 3);
@@ -1639,18 +1639,18 @@ LABEL_56:
             sub_1000B2DB4(v121);
             if (v25)
             {
-              v26 = *v84->logger.__ptr_;
+              v26 = *selfCopy->logger.__ptr_;
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
                 v27 = objc_opt_class();
                 v28 = NSStringFromClass(v27);
                 v29 = v28;
-                v30 = [v28 UTF8String];
-                v31 = [v22 UUID];
+                uTF8String = [v28 UTF8String];
+                uUID = [v22 UUID];
                 *v121 = 136315394;
-                *&v121[4] = v30;
+                *&v121[4] = uTF8String;
                 *&v121[12] = 2112;
-                *&v121[14] = v31;
+                *&v121[14] = uUID;
                 _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Fulfilling the %s %@: call already merged", v121, 0x16u);
               }
 
@@ -1733,28 +1733,28 @@ LABEL_42:
           __p[1] = 0;
           __p[0] = 0;
           v119[0] = 0;
-          v32 = [v21 callUUID];
-          sub_1000B2CAC(v32, __p);
+          callUUID2 = [v21 callUUID];
+          sub_1000B2CAC(callUUID2, __p);
 
           memset(v91, 0, sizeof(v91));
           sub_1000B2D2C(v91, *buf, *&buf[8], (*&buf[8] - *buf) >> 3);
-          LODWORD(v32) = sub_100B2EDF0(v91, __p);
+          LODWORD(callUUID2) = sub_100B2EDF0(v91, __p);
           *v127 = v91;
           sub_1000B2DB4(v127);
-          if (v32)
+          if (callUUID2)
           {
-            v33 = *v84->logger.__ptr_;
+            v33 = *selfCopy->logger.__ptr_;
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
               v34 = objc_opt_class();
               v35 = NSStringFromClass(v34);
               v36 = v35;
-              v37 = [v35 UTF8String];
-              v38 = [v21 UUID];
+              uTF8String2 = [v35 UTF8String];
+              uUID2 = [v21 UUID];
               *v127 = 136315394;
-              *&v127[4] = v37;
+              *&v127[4] = uTF8String2;
               *&v127[12] = 2112;
-              *&v127[14] = v38;
+              *&v127[14] = uUID2;
               _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Fulfilling the %s %@: call already merged", v127, 0x16u);
             }
 
@@ -1768,14 +1768,14 @@ LABEL_42:
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v96 objects:v122 count:16];
+      v18 = [actions3 countByEnumeratingWithState:&v96 objects:v122 count:16];
       if (!v18)
       {
 LABEL_53:
 
         if (v110 == v111)
         {
-          v64 = *v84->logger.__ptr_;
+          v64 = *selfCopy->logger.__ptr_;
           if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
           {
             LOWORD(__p[0]) = 0;
@@ -1801,8 +1801,8 @@ LABEL_53:
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v44 = [v83 actions];
-  v45 = [v44 countByEnumeratingWithState:&v106 objects:v124 count:16];
+  actions4 = [v83 actions];
+  v45 = [actions4 countByEnumeratingWithState:&v106 objects:v124 count:16];
   if (v45)
   {
     v46 = *v107;
@@ -1812,15 +1812,15 @@ LABEL_53:
       {
         if (*v107 != v46)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(actions4);
         }
 
         v48 = *(*(&v106 + 1) + 8 * j);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v49 = [v48 callUUID];
-          sub_1000B2CAC(v49, __p);
+          callUUID3 = [v48 callUUID];
+          sub_1000B2CAC(callUUID3, __p);
           sub_10017695C(buf, __p);
           if (SHIBYTE(v119[0]) < 0)
           {
@@ -1829,7 +1829,7 @@ LABEL_53:
         }
       }
 
-      v45 = [v44 countByEnumeratingWithState:&v106 objects:v124 count:16];
+      v45 = [actions4 countByEnumeratingWithState:&v106 objects:v124 count:16];
     }
 
     while (v45);
@@ -1839,8 +1839,8 @@ LABEL_53:
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v50 = [v83 actions];
-  v51 = [v50 countByEnumeratingWithState:&v102 objects:v123 count:16];
+  actions5 = [v83 actions];
+  v51 = [actions5 countByEnumeratingWithState:&v102 objects:v123 count:16];
   if (!v51)
   {
     goto LABEL_93;
@@ -1853,7 +1853,7 @@ LABEL_53:
     {
       if (*v103 != v52)
       {
-        objc_enumerationMutation(v50);
+        objc_enumerationMutation(actions5);
       }
 
       v54 = *(*(&v102 + 1) + 8 * k);
@@ -1861,8 +1861,8 @@ LABEL_53:
       if (objc_opt_isKindOfClass())
       {
         v55 = v54;
-        v56 = [v55 callUUID];
-        sub_1000B2CAC(v56, __p);
+        callUUID4 = [v55 callUUID];
+        sub_1000B2CAC(callUUID4, __p);
         v57 = sub_10016FA58(buf, __p);
         if (SHIBYTE(v119[0]) < 0)
         {
@@ -1925,7 +1925,7 @@ LABEL_86:
       }
     }
 
-    v51 = [v50 countByEnumeratingWithState:&v102 objects:v123 count:16];
+    v51 = [actions5 countByEnumeratingWithState:&v102 objects:v123 count:16];
   }
 
   while (v51);
@@ -1934,7 +1934,7 @@ LABEL_93:
   v61 = v111 - v110;
   if (v111 - v110 != 8)
   {
-    v65 = *v84->logger.__ptr_;
+    v65 = *selfCopy->logger.__ptr_;
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(__p[0]) = 134217984;
@@ -1949,9 +1949,9 @@ LABEL_93:
 
   sub_100009970(buf, *&buf[8]);
 LABEL_95:
-  if ([(TelephonyProviderDelegate *)v84 possiblyFulfillUnexpectedMOStartCallWithProvider:v82 transactions:v83])
+  if ([(TelephonyProviderDelegate *)selfCopy possiblyFulfillUnexpectedMOStartCallWithProvider:v82 transactions:v83])
   {
-    v62 = *v84->logger.__ptr_;
+    v62 = *selfCopy->logger.__ptr_;
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -1962,9 +1962,9 @@ LABEL_95:
     goto LABEL_105;
   }
 
-  if ([(TelephonyProviderDelegate *)v84 possiblyFulfillUnexpectedHoldCallWithProvider:v82 transactions:v83])
+  if ([(TelephonyProviderDelegate *)selfCopy possiblyFulfillUnexpectedHoldCallWithProvider:v82 transactions:v83])
   {
-    v62 = *v84->logger.__ptr_;
+    v62 = *selfCopy->logger.__ptr_;
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -1986,8 +1986,8 @@ LABEL_95:
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v68 = [v83 actions];
-  v69 = [v68 countByEnumeratingWithState:&v87 objects:v120 count:16];
+  actions6 = [v83 actions];
+  v69 = [actions6 countByEnumeratingWithState:&v87 objects:v120 count:16];
   if (!v69)
   {
     goto LABEL_129;
@@ -2001,7 +2001,7 @@ LABEL_95:
     {
       if (*v88 != v70)
       {
-        objc_enumerationMutation(v68);
+        objc_enumerationMutation(actions6);
       }
 
       v72 = *(*(&v87 + 1) + 8 * v71);
@@ -2066,7 +2066,7 @@ LABEL_123:
       break;
     }
 
-    v69 = [v68 countByEnumeratingWithState:&v87 objects:v120 count:16];
+    v69 = [actions6 countByEnumeratingWithState:&v87 objects:v120 count:16];
     if (v69)
     {
       continue;
@@ -2082,7 +2082,7 @@ LABEL_129:
   if (v110 != v111)
   {
 LABEL_130:
-    v77 = *v84->logger.__ptr_;
+    v77 = *selfCopy->logger.__ptr_;
     if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
@@ -2106,7 +2106,7 @@ LABEL_130:
         *v127 = xpc_null_create();
       }
 
-      v78 = *v84->logger.__ptr_;
+      v78 = *selfCopy->logger.__ptr_;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
       {
         xpc::object::to_string(buf, v127);
@@ -2134,11 +2134,11 @@ LABEL_130:
 
     *&v121[8] = 0;
     *v121 = 0;
-    [(TelephonyProviderDelegate *)v84 getCurrentCalls];
+    [(TelephonyProviderDelegate *)selfCopy getCurrentCalls];
     sub_1000B339C(buf);
   }
 
-  v62 = *v84->logger.__ptr_;
+  v62 = *selfCopy->logger.__ptr_;
   if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -2157,21 +2157,21 @@ LABEL_145:
   return v43;
 }
 
-- (void)provider:(id)a3 performStartCallAction:(id)a4
+- (void)provider:(id)provider performStartCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 callUUID];
-    v10 = [v7 isEmergency];
-    v11 = [v7 localSenderIdentityUUID];
-    sub_1000B2E50(v11);
+    callUUID = [actionCopy callUUID];
+    isEmergency = [actionCopy isEmergency];
+    localSenderIdentityUUID = [actionCopy localSenderIdentityUUID];
+    sub_1000B2E50(localSenderIdentityUUID);
     *buf = 138412802;
-    *&buf[4] = v9;
+    *&buf[4] = callUUID;
     *&buf[12] = 1024;
-    *&buf[14] = v10;
+    *&buf[14] = isEmergency;
     *&buf[18] = 2080;
     *&buf[20] = subscriber::asString();
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performStartCallAction for call %@. emergency: %{BOOL}d. slot: %s", buf, 0x1Cu);
@@ -2208,7 +2208,7 @@ LABEL_10:
   v26 = v14;
 LABEL_11:
   xpc_release(v13);
-  [v7 asDictionary:&v26];
+  [actionCopy asDictionary:&v26];
   v32 = 0u;
   v33 = 0;
   *v31 = 0u;
@@ -2280,14 +2280,14 @@ LABEL_11:
   sub_100006354(&v36, v28);
   BYTE4(v34) = xpc::dyn_cast_or_default(v28, 0, v20);
   xpc_release(v28[0]);
-  v21 = v7;
-  v22 = self;
+  v21 = actionCopy;
+  selfCopy = self;
   v24 = 0;
   write_rest_value();
   sub_10000501C(v28, "/cc/requests/dial");
   object = v24;
   v24 = xpc_null_create();
-  v23 = v22;
+  v23 = selfCopy;
   v36 = off_101E2EAE0;
   v37 = v21;
   v38 = v23;
@@ -2321,16 +2321,16 @@ LABEL_11:
   xpc_release(v26);
 }
 
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4
+- (void)provider:(id)provider performAnswerCallAction:(id)action
 {
-  v12 = a3;
-  v13 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v6 = *self->logger.__ptr_;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v13 callUUID];
+    callUUID = [actionCopy callUUID];
     *buf = 138412290;
-    *&buf[4] = v7;
+    *&buf[4] = callUUID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performAnswerCallAction for call %@", buf, 0xCu);
   }
 
@@ -2339,8 +2339,8 @@ LABEL_11:
   *v20 = 0u;
   v21 = 0u;
   *buf = 0u;
-  v8 = [v13 callUUID];
-  sub_1000B2CAC(v8, &v22);
+  callUUID2 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID2, &v22);
   if (SHIBYTE(v20[0]) < 0)
   {
     operator delete(*buf);
@@ -2351,14 +2351,14 @@ LABEL_11:
   HIBYTE(v23) = 0;
   LOBYTE(v22) = 0;
 
-  v9 = v13;
-  v10 = self;
+  v9 = actionCopy;
+  selfCopy = self;
   v18 = 0;
   write_rest_value();
   sub_10000501C(&__p, "/cc/requests/answer");
   object = v18;
   v18 = xpc_null_create();
-  v11 = v10;
+  v11 = selfCopy;
   *&v22 = off_101E2EB60;
   *(&v22 + 1) = v9;
   v23 = v11;
@@ -2388,34 +2388,34 @@ LABEL_11:
   sub_1000B2DB4(buf);
 }
 
-- (void)provider:(id)a3 performEndCallAction:(id)a4
+- (void)provider:(id)provider performEndCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 callUUID];
+    callUUID = [actionCopy callUUID];
     *buf = 138412290;
-    *&buf[4] = v9;
+    *&buf[4] = callUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performEndCallAction for call %@", buf, 0xCu);
   }
 
-  v10 = [v7 callUUID];
-  sub_1000B2CAC(v10, buf);
+  callUUID2 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID2, buf);
   v14 = *buf;
   v15 = HIBYTE(v21);
   HIBYTE(v21) = 0;
   buf[0] = 0;
 
-  v11 = v7;
-  v12 = self;
+  v11 = actionCopy;
+  selfCopy = self;
   v19 = 0;
   write_rest_value();
   sub_10000501C(&__p, "/cc/requests/end_this_call");
   object = v19;
   v19 = xpc_null_create();
-  v13 = v12;
+  v13 = selfCopy;
   *buf = off_101E2EBE0;
   *&buf[8] = v11;
   v21 = v13;
@@ -2436,18 +2436,18 @@ LABEL_11:
   }
 }
 
-- (void)provider:(id)a3 performSetHeldCallAction:(id)a4
+- (void)provider:(id)provider performSetHeldCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 isOnHold];
-    v10 = [v7 callUUID];
-    v11 = v10;
+    isOnHold = [actionCopy isOnHold];
+    callUUID = [actionCopy callUUID];
+    v11 = callUUID;
     v12 = "unhold";
-    if (v9)
+    if (isOnHold)
     {
       v12 = "hold";
     }
@@ -2455,26 +2455,26 @@ LABEL_11:
     *buf = 136315394;
     *&buf[4] = v12;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = callUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performSetHeldCallAction %s call %@", buf, 0x16u);
   }
 
-  v13 = [v7 callUUID];
-  sub_1000B2CAC(v13, buf);
+  callUUID2 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID2, buf);
   v17 = *buf;
   v18 = buf[23];
   buf[23] = 0;
   buf[0] = 0;
 
-  [v7 isOnHold];
-  v14 = v7;
-  v15 = self;
+  [actionCopy isOnHold];
+  v14 = actionCopy;
+  selfCopy = self;
   v22 = 0;
   write_rest_value();
   sub_10000501C(&__p, "/cc/requests/hold_call");
   object = v22;
   v22 = xpc_null_create();
-  v16 = v15;
+  v16 = selfCopy;
   *buf = off_101E2EC60;
   *&buf[8] = v14;
   *&buf[16] = v16;
@@ -2495,39 +2495,39 @@ LABEL_11:
   }
 }
 
-- (void)provider:(id)a3 performSetGroupCallAction:(id)a4
+- (void)provider:(id)provider performSetGroupCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 callUUIDToGroupWith];
+  providerCopy = provider;
+  actionCopy = action;
+  callUUIDToGroupWith = [actionCopy callUUIDToGroupWith];
 
   v9 = *self->logger.__ptr_;
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (callUUIDToGroupWith)
   {
     if (v10)
     {
-      v11 = [v7 callUUID];
-      v12 = [v7 callUUIDToGroupWith];
+      callUUID = [actionCopy callUUID];
+      callUUIDToGroupWith2 = [actionCopy callUUIDToGroupWith];
       *buf = 138412546;
-      *&buf[4] = v11;
+      *&buf[4] = callUUID;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = callUUIDToGroupWith2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performSetGroupCallAction merge call %@ and %@", buf, 0x16u);
     }
   }
 
   else if (v10)
   {
-    v13 = [v7 callUUID];
+    callUUID2 = [actionCopy callUUID];
     *buf = 138412290;
-    *&buf[4] = v13;
+    *&buf[4] = callUUID2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performSetGroupCallAction unmerge call %@", buf, 0xCu);
   }
 
   memset(buf, 0, 48);
-  v14 = [v7 callUUID];
-  sub_1000B2CAC(v14, &v24);
+  callUUID3 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID3, &v24);
   if (buf[23] < 0)
   {
     operator delete(*buf);
@@ -2538,8 +2538,8 @@ LABEL_11:
   HIBYTE(v25) = 0;
   LOBYTE(v24) = 0;
 
-  v15 = [v7 callUUIDToGroupWith];
-  sub_1000B2CAC(v15, &v24);
+  callUUIDToGroupWith3 = [actionCopy callUUIDToGroupWith];
+  sub_1000B2CAC(callUUIDToGroupWith3, &v24);
   if (buf[47] < 0)
   {
     operator delete(*&buf[24]);
@@ -2550,14 +2550,14 @@ LABEL_11:
   HIBYTE(v25) = 0;
   LOBYTE(v24) = 0;
 
-  v16 = v7;
-  v17 = self;
+  v16 = actionCopy;
+  selfCopy = self;
   v22 = 0;
   write_rest_value();
   sub_10000501C(&v20, "/cc/requests/merge");
   object = v22;
   v22 = xpc_null_create();
-  v18 = v17;
+  v18 = selfCopy;
   *&v24 = off_101E2ECE0;
   *(&v24 + 1) = v16;
   v25 = v18;
@@ -2583,16 +2583,16 @@ LABEL_11:
   }
 }
 
-- (void)provider:(id)a3 performPlayDTMFCallAction:(id)a4
+- (void)provider:(id)provider performPlayDTMFCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 callUUID];
+    callUUID = [actionCopy callUUID];
     *buf = 138412290;
-    *&buf[4] = v9;
+    *&buf[4] = callUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performPlayDTMFCallAction for call %@", buf, 0xCu);
   }
 
@@ -2600,8 +2600,8 @@ LABEL_11:
   *v21 = 0u;
   v22 = 0u;
   *buf = 0u;
-  v10 = [v7 callUUID];
-  sub_1000B2CAC(v10, &v24);
+  callUUID2 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID2, &v24);
   if (SHIBYTE(v21[0]) < 0)
   {
     operator delete(*buf);
@@ -2612,20 +2612,20 @@ LABEL_11:
   HIBYTE(v25) = 0;
   LOBYTE(v24) = 0;
 
-  v11 = [v7 digits];
+  digits = [actionCopy digits];
   ctu::cf::assign();
 
-  v12 = [v7 type];
-  LOBYTE(v23) = v12 == 2;
-  BYTE1(v23) = v12 == 3;
-  v13 = v7;
-  v14 = self;
+  type = [actionCopy type];
+  LOBYTE(v23) = type == 2;
+  BYTE1(v23) = type == 3;
+  v13 = actionCopy;
+  selfCopy = self;
   v19 = 0;
   write_rest_value();
   sub_10000501C(&__p, "/cc/requests/SendDTMF");
   object = v19;
   v19 = xpc_null_create();
-  v15 = v14;
+  v15 = selfCopy;
   *&v24 = off_101E2ED60;
   *(&v24 + 1) = v13;
   v25 = v15;
@@ -2651,18 +2651,18 @@ LABEL_11:
   }
 }
 
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 isRelaying];
-    v10 = [v7 callUUID];
-    v11 = v10;
+    isRelaying = [actionCopy isRelaying];
+    callUUID = [actionCopy callUUID];
+    v11 = callUUID;
     v12 = "unset";
-    if (v9)
+    if (isRelaying)
     {
       v12 = "set";
     }
@@ -2670,26 +2670,26 @@ LABEL_11:
     *buf = 136315394;
     *&buf[4] = v12;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = callUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performSetRelayingCallAction %s relay for call %@", buf, 0x16u);
   }
 
-  v13 = [v7 callUUID];
-  sub_1000B2CAC(v13, buf);
+  callUUID2 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID2, buf);
   v17 = *buf;
   v18 = buf[23];
   buf[23] = 0;
   buf[0] = 0;
 
-  [v7 isRelaying];
-  v14 = v7;
-  v15 = self;
+  [actionCopy isRelaying];
+  v14 = actionCopy;
+  selfCopy = self;
   v22 = 0;
   write_rest_value();
   sub_10000501C(&__p, "/cc/requests/SetRelaying");
   object = v22;
   v22 = xpc_null_create();
-  v16 = v15;
+  v16 = selfCopy;
   *buf = off_101E2EDE0;
   *&buf[8] = v14;
   *&buf[16] = v16;
@@ -2710,14 +2710,14 @@ LABEL_11:
   }
 }
 
-- (void)provider:(id)a3 performSetScreeningCallAction:(id)a4
+- (void)provider:(id)provider performSetScreeningCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v7 isScreening])
+    if ([actionCopy isScreening])
     {
       v9 = "set";
     }
@@ -2727,21 +2727,21 @@ LABEL_11:
       v9 = "unset";
     }
 
-    v10 = [v7 screeningMode];
-    if (v10 > 3)
+    screeningMode = [actionCopy screeningMode];
+    if (screeningMode > 3)
     {
-      std::to_string(&__p, v10);
+      std::to_string(&__p, screeningMode);
     }
 
     else
     {
-      sub_10000501C(&__p, off_101E2F2D0[v10]);
+      sub_10000501C(&__p, off_101E2F2D0[screeningMode]);
     }
 
     v11 = SHIBYTE(__p.__r_.__value_.__r.__words[2]);
     v12 = __p.__r_.__value_.__r.__words[0];
-    v13 = [v7 callUUID];
-    v14 = v13;
+    callUUID = [actionCopy callUUID];
+    v14 = callUUID;
     p_p = &__p;
     LODWORD(buf.__r_.__value_.__l.__data_) = 136315650;
     if (v11 < 0)
@@ -2753,7 +2753,7 @@ LABEL_11:
     WORD2(buf.__r_.__value_.__r.__words[1]) = 2080;
     *(&buf.__r_.__value_.__r.__words[1] + 6) = p_p;
     HIWORD(buf.__r_.__value_.__r.__words[2]) = 2112;
-    p_buf = v13;
+    p_buf = callUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performSetScreeningCallAction %s screening (mode: %s) for call %@", &buf, 0x20u);
 
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
@@ -2762,22 +2762,22 @@ LABEL_11:
     }
   }
 
-  v16 = [v7 callUUID];
-  sub_1000B2CAC(v16, &buf);
+  callUUID2 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID2, &buf);
   __p = buf;
   *(&buf.__r_.__value_.__s + 23) = 0;
   buf.__r_.__value_.__s.__data_[0] = 0;
 
-  v21 = [v7 isScreening];
-  v22 = [v7 screeningMode] == 3;
-  v17 = v7;
-  v18 = self;
+  isScreening = [actionCopy isScreening];
+  v22 = [actionCopy screeningMode] == 3;
+  v17 = actionCopy;
+  selfCopy = self;
   v26 = 0;
   write_rest_value();
   sub_10000501C(&v24, "/cc/requests/SetScreening");
   object = v26;
   v26 = xpc_null_create();
-  v19 = v18;
+  v19 = selfCopy;
   buf.__r_.__value_.__r.__words[0] = off_101E2EE60;
   buf.__r_.__value_.__l.__size_ = v17;
   buf.__r_.__value_.__r.__words[2] = v19;
@@ -2799,55 +2799,55 @@ LABEL_11:
   }
 }
 
-- (void)provider:(id)a3 performPullCallAction:(id)a4
+- (void)provider:(id)provider performPullCallAction:(id)action
 {
-  v40 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v7 = *self->logger.__ptr_;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 callUUID];
+    callUUID = [actionCopy callUUID];
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = callUUID;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performPullCallAction for call %@", buf, 0xCu);
   }
 
-  v9 = [v6 handoffContext];
-  v10 = [v6 handoffContext];
-  v11 = [v10 context];
+  handoffContext = [actionCopy handoffContext];
+  handoffContext2 = [actionCopy handoffContext];
+  context = [handoffContext2 context];
 
-  v12 = [v9 remoteHandle];
-  v43 = [v12 value];
+  remoteHandle = [handoffContext remoteHandle];
+  value = [remoteHandle value];
 
   v63[0] = 0;
   v63[1] = 0;
   v64 = 0;
   ctu::cf::assign();
   v13 = [NSString stringWithUTF8String:"kCTCallCallerName"];
-  [v11 objectForKeyedSubscript:v13];
+  [context objectForKeyedSubscript:v13];
   v61[0] = 0;
   v61[1] = 0;
   v42 = v62 = 0;
   ctu::cf::assign();
-  v14 = [v9 isOutgoing];
+  isOutgoing = [handoffContext isOutgoing];
   v59[0] = 0;
   v59[1] = 0;
   v60 = 0;
-  v15 = [v6 callUUID];
-  sub_1000B2CAC(v15, v59);
+  callUUID2 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID2, v59);
 
   v16 = [NSString stringWithUTF8String:"kCTCallStartTime"];
 
-  v17 = [v11 objectForKeyedSubscript:v16];
+  v17 = [context objectForKeyedSubscript:v16];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 integerValue];
+    integerValue = [v17 integerValue];
     Current = CFAbsoluteTimeGetCurrent();
     __p[0] = 0;
     __p[1] = 0;
     v58 = 0;
-    v21 = [v9 handoffIdentifier];
+    handoffIdentifier = [handoffContext handoffIdentifier];
     ctu::cf::assign();
 
     if (os_log_type_enabled(*self->logger.__ptr_, OS_LOG_TYPE_ERROR))
@@ -2949,7 +2949,7 @@ LABEL_17:
       v51 = 0;
       xpc_release(v50);
       v50 = 0;
-      v48 = xpc_int64_create(llround(Current - v19));
+      v48 = xpc_int64_create(llround(Current - integerValue));
       if (!v48)
       {
         v48 = xpc_null_create();
@@ -2962,7 +2962,7 @@ LABEL_17:
       v49 = 0;
       xpc_release(v48);
       v48 = 0;
-      v46 = xpc_BOOL_create(v14);
+      v46 = xpc_BOOL_create(isOutgoing);
       if (!v46)
       {
         v46 = xpc_null_create();
@@ -2998,8 +2998,8 @@ LABEL_17:
       v45 = 0;
       xpc_release(v44);
       v44 = 0;
-      v30 = v6;
-      v31 = self;
+      v30 = actionCopy;
+      selfCopy = self;
       v32 = v56;
       if (v56)
       {
@@ -3014,7 +3014,7 @@ LABEL_17:
       sub_10000501C(&v66, "/cc/requests/PullCall");
       v65 = v32;
       v33 = xpc_null_create();
-      v34 = v31;
+      v34 = selfCopy;
       *buf = off_101E2EEE0;
       *&buf[8] = v30;
       *&buf[16] = v34;
@@ -3051,16 +3051,16 @@ LABEL_16:
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
     v37 = v36;
-    v38 = [v36 UTF8String];
-    v39 = [v6 UUID];
+    uTF8String = [v36 UTF8String];
+    uUID = [actionCopy UUID];
     *buf = 136315394;
-    *&buf[4] = v38;
+    *&buf[4] = uTF8String;
     *&buf[12] = 2112;
-    *&buf[14] = v39;
+    *&buf[14] = uUID;
     _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "<---To-CSD--- Failing the %s %@: no start time", buf, 0x16u);
   }
 
-  [v6 fail];
+  [actionCopy fail];
 LABEL_48:
 
   if (SHIBYTE(v60) < 0)
@@ -3079,18 +3079,18 @@ LABEL_48:
   }
 }
 
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4
+- (void)provider:(id)provider performSetMutedCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 isMuted];
-    v10 = [v7 callUUID];
-    v11 = v10;
+    isMuted = [actionCopy isMuted];
+    callUUID = [actionCopy callUUID];
+    v11 = callUUID;
     v12 = "un";
-    if (v9)
+    if (isMuted)
     {
       v12 = "";
     }
@@ -3098,7 +3098,7 @@ LABEL_48:
     *v31 = 136315394;
     *&v31[4] = v12;
     v32 = 2112;
-    v33 = v10;
+    v33 = callUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performSetMutedCallAction %smute call %@", v31, 0x16u);
   }
 
@@ -3158,13 +3158,13 @@ LABEL_14:
   v23 = *self->logger.__ptr_;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v7 isMuted];
+    isMuted2 = [actionCopy isMuted];
     *v31 = 67109120;
-    *&v31[4] = v24;
+    *&v31[4] = isMuted2;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "#I Setting muted to %d", v31, 8u);
   }
 
-  (*(*v21 + 40))(v21, [v7 isMuted]);
+  (*(*v21 + 40))(v21, [actionCopy isMuted]);
 LABEL_17:
   v25 = *self->logger.__ptr_;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -3172,31 +3172,31 @@ LABEL_17:
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
     v28 = v27;
-    v29 = [v27 UTF8String];
-    v30 = [v7 UUID];
+    uTF8String = [v27 UTF8String];
+    uUID = [actionCopy UUID];
     *v31 = 136315394;
-    *&v31[4] = v29;
+    *&v31[4] = uTF8String;
     v32 = 2112;
-    v33 = v30;
+    v33 = uUID;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Fulfilling the %s %@", v31, 0x16u);
   }
 
-  [v7 fulfill];
+  [actionCopy fulfill];
   if ((v22 & 1) == 0)
   {
     sub_100004A34(v20);
   }
 }
 
-- (void)provider:(id)a3 performSendMMIOrUSSDCodeAction:(id)a4
+- (void)provider:(id)provider performSendMMIOrUSSDCodeAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v7;
+    *&buf[4] = actionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performSendMMIOrUSSDCodeAction %@", buf, 0xCu);
   }
 
@@ -3231,7 +3231,7 @@ LABEL_10:
   v18 = v11;
 LABEL_11:
   xpc_release(v10);
-  [v7 asDictionary:&v18];
+  [actionCopy asDictionary:&v18];
   v25 = 0u;
   v26 = 0;
   *v24 = 0u;
@@ -3267,16 +3267,16 @@ LABEL_11:
   sub_100006354(&v29, v20);
   LODWORD(v26) = xpc::dyn_cast_or_default(v20, 0, v12);
   xpc_release(v20[0]);
-  v13 = [v7 senderIdentityUUID];
-  LODWORD(v27) = sub_1000B2E50(v13);
-  v14 = v7;
-  v15 = self;
+  senderIdentityUUID = [actionCopy senderIdentityUUID];
+  LODWORD(v27) = sub_1000B2E50(senderIdentityUUID);
+  v14 = actionCopy;
+  selfCopy = self;
   v17[0] = 0;
   write_rest_value();
   sub_10000501C(v20, "/cc/requests/dial");
   object = v17[0];
   v17[0] = xpc_null_create();
-  v16 = v15;
+  v16 = selfCopy;
   v29 = off_101E2EF60;
   v30 = v14;
   v31 = v16;
@@ -3310,36 +3310,36 @@ LABEL_11:
   xpc_release(v18);
 }
 
-- (void)provider:(id)a3 performSetTTYTypeCallAction:(id)a4
+- (void)provider:(id)provider performSetTTYTypeCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_1000B2E38([v7 ttyType]);
+  providerCopy = provider;
+  actionCopy = action;
+  v8 = sub_1000B2E38([actionCopy ttyType]);
   v9 = *self->logger.__ptr_;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 callUUID];
+    callUUID = [actionCopy callUUID];
     *buf = 138412546;
-    *&buf[4] = v10;
+    *&buf[4] = callUUID;
     *&buf[12] = 2080;
     *&buf[14] = asString(v8 != 0);
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> performSetTTYTypeCallAction for call %@: %s", buf, 0x16u);
   }
 
-  v11 = [v7 callUUID];
-  sub_1000B2CAC(v11, buf);
+  callUUID2 = [actionCopy callUUID];
+  sub_1000B2CAC(callUUID2, buf);
   v14 = *buf;
   v15 = v21;
   v21 = 0;
   buf[0] = 0;
 
-  v12 = self;
+  selfCopy = self;
   v19 = 0;
   write_rest_value();
   sub_10000501C(&__p, "/cc/requests/update_call_to_tty");
   object = v19;
   v19 = xpc_null_create();
-  v13 = v12;
+  v13 = selfCopy;
   *buf = off_101E2EFE0;
   *&buf[8] = v13;
   v22 = buf;
@@ -3359,10 +3359,10 @@ LABEL_11:
   }
 }
 
-- (void)provider:(id)a3 didActivateAudioSession:(id)a4
+- (void)provider:(id)provider didActivateAudioSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  sessionCopy = session;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3370,7 +3370,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> didActivateAudioSession. Sending media ready", buf, 2u);
   }
 
-  v9 = self;
+  selfCopy = self;
   v10 = xpc_BOOL_create(1);
   if (!v10)
   {
@@ -3380,7 +3380,7 @@ LABEL_11:
   sub_10000501C(&__p, "/cc/requests/start_media");
   object = v10;
   v11 = xpc_null_create();
-  v12 = v9;
+  v12 = selfCopy;
   *buf = off_101E2F060;
   v17 = v12;
   v18 = buf;
@@ -3395,10 +3395,10 @@ LABEL_11:
   xpc_release(v11);
 }
 
-- (void)provider:(id)a3 didDeactivateAudioSession:(id)a4
+- (void)provider:(id)provider didDeactivateAudioSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  sessionCopy = session;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3406,7 +3406,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> didDeactivateAudioSession. Sending media unready", buf, 2u);
   }
 
-  v9 = self;
+  selfCopy = self;
   v10 = xpc_BOOL_create(1);
   if (!v10)
   {
@@ -3416,7 +3416,7 @@ LABEL_11:
   sub_10000501C(&__p, "/cc/requests/stop_media");
   object = v10;
   v11 = xpc_null_create();
-  v12 = v9;
+  v12 = selfCopy;
   *buf = off_101E2F0E0;
   v17 = v12;
   v18 = buf;
@@ -3431,10 +3431,10 @@ LABEL_11:
   xpc_release(v11);
 }
 
-- (void)provider:(id)a3 timedOutPerformingAction:(id)a4
+- (void)provider:(id)provider timedOutPerformingAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   if (os_log_type_enabled(*self->logger.__ptr_, OS_LOG_TYPE_ERROR))
   {
     sub_10176356C();
@@ -3443,39 +3443,39 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v8 = v7;
+    v8 = actionCopy;
     v9 = *self->logger.__ptr_;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = v11;
-      v13 = [v11 UTF8String];
-      v14 = [v8 UUID];
-      v15 = [v8 callUUID];
+      uTF8String = [v11 UTF8String];
+      uUID = [v8 UUID];
+      callUUID = [v8 callUUID];
       *buf = 136315650;
-      *&buf[4] = v13;
+      *&buf[4] = uTF8String;
       *&buf[12] = 2112;
-      *&buf[14] = v14;
+      *&buf[14] = uUID;
       v27 = 2112;
-      v28 = v15;
+      v28 = callUUID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s %@ timed out. ForceEnd call %@", buf, 0x20u);
     }
 
-    v16 = [v8 callUUID];
-    sub_1000B2CAC(v16, buf);
+    callUUID2 = [v8 callUUID];
+    sub_1000B2CAC(callUUID2, buf);
     v20 = *buf;
     v21 = HIBYTE(v27);
     HIBYTE(v27) = 0;
     buf[0] = 0;
 
-    v17 = self;
+    selfCopy = self;
     v25 = 0;
     write_rest_value();
     sub_10000501C(&__p, "/cc/requests/force_end_call");
     object = v25;
     v25 = xpc_null_create();
-    v18 = v17;
+    v18 = selfCopy;
     *buf = off_101E2F160;
     *&buf[8] = v18;
     v28 = buf;
@@ -3506,9 +3506,9 @@ LABEL_11:
   }
 }
 
-- (void)providerDidReset:(id)a3
+- (void)providerDidReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   v5 = *self->logger.__ptr_;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3516,13 +3516,13 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#N --From-CSD--> providerDidReset likely due to CSD crash. Force ending all calls", buf, 2u);
   }
 
-  v6 = self;
+  selfCopy = self;
   v11 = 0;
   write_rest_value();
   sub_10000501C(&__p, "/cc/requests/force_end_call");
   object = v11;
   v11 = xpc_null_create();
-  v7 = v6;
+  v7 = selfCopy;
   *buf = off_101E2F1E0;
   v13 = v7;
   v14 = buf;
@@ -3537,9 +3537,9 @@ LABEL_11:
   xpc_release(v11);
 }
 
-- (void)handleSimSubscriptionInfoChanged:(id)a3
+- (void)handleSimSubscriptionInfoChanged:(id)changed
 {
-  v103 = a3;
+  changedCopy = changed;
   v146[0] = 0;
   v145 = 0;
   v146[1] = 0;
@@ -3562,7 +3562,7 @@ LABEL_11:
   std::mutex::lock(ServiceMap);
   v133[0] = v6;
   v10 = sub_100009510(&v5[1].__m_.__sig, v133);
-  v112 = self;
+  selfCopy = self;
   if (v10)
   {
     v12 = v10[3];
@@ -3708,7 +3708,7 @@ LABEL_9:
         v162 = 2080;
         v163 = v32;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#I SUBSCRIPTION INFO: SIM Slot %s; SIM Label ID: %s; SIM Label: %s; SIM Phone Number: %s; Is User Pref For Voice: %s; Sim Present: %d; SimHidden: %d; PersonalityID: %s", buf, 0x4Au);
-        self = v112;
+        self = selfCopy;
       }
 
       v33 = HIBYTE(v135[3]);
@@ -3934,7 +3934,7 @@ LABEL_84:
           atomic_fetch_add_explicit(&v53->__shared_owners_, 1uLL, memory_order_relaxed);
           std::mutex::unlock(v47);
           atomic_fetch_add_explicit(&v53->__shared_owners_, 1uLL, memory_order_relaxed);
-          self = v112;
+          self = selfCopy;
           sub_100004A34(v53);
           v55 = 0;
           if (!v54)
@@ -4172,7 +4172,7 @@ LABEL_124:
           atomic_fetch_add_explicit(&v74->__shared_owners_, 1uLL, memory_order_relaxed);
           std::mutex::unlock(v68);
           atomic_fetch_add_explicit(&v74->__shared_owners_, 1uLL, memory_order_relaxed);
-          self = v112;
+          self = selfCopy;
           sub_100004A34(v74);
           v76 = 0;
           goto LABEL_142;
@@ -4205,21 +4205,21 @@ LABEL_144:
       if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
       {
         v82 = v111;
-        v83 = [(__CFString *)v111 UTF8String];
+        uTF8String = [(__CFString *)v111 UTF8String];
         v84 = v37;
-        v85 = [(__CFString *)v37 UTF8String];
+        uTF8String2 = [(__CFString *)v37 UTF8String];
         v86 = v110;
-        v87 = [v110 UTF8String];
+        uTF8String3 = [v110 UTF8String];
         v88 = v80;
-        v89 = [v80 UTF8String];
+        uTF8String4 = [v80 UTF8String];
         *buf = 136315906;
-        *&buf[4] = v83;
+        *&buf[4] = uTF8String;
         *&buf[12] = 2080;
-        *&buf[14] = v85;
+        *&buf[14] = uTF8String2;
         *&buf[22] = 2080;
-        v153 = v87;
+        v153 = uTF8String3;
         v154 = 2080;
-        v155 = v89;
+        v155 = uTF8String4;
         _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "#I SUBSCRIPTION INFO: short label: %s; long label: %s; ISO country code: %s; Carrier name: %s", buf, 0x2Au);
       }
 
@@ -4355,12 +4355,12 @@ LABEL_144:
       v97 = [[CXSenderIdentity alloc] initWithUUID:v96 account:v93];
       if (v114 == 2)
       {
-        [v103 insertObject:v97 atIndex:0];
+        [changedCopy insertObject:v97 atIndex:0];
       }
 
       else
       {
-        [v103 addObject:v97];
+        [changedCopy addObject:v97];
       }
 
       sub_100005978(&v120);
@@ -4457,11 +4457,11 @@ LABEL_190:
   sub_1001B1588(&v145, v146[0]);
 }
 
-- (void)handleThumperSubscriptionInfoChanged:(id)a3
+- (void)handleThumperSubscriptionInfoChanged:(id)changed
 {
-  v53 = a3;
+  changedCopy = changed;
   begin = self->fActiveSubscriptions.fValue.fSubscriptions.__begin_;
-  v56 = self;
+  selfCopy = self;
   end = self->fActiveSubscriptions.fValue.fSubscriptions.__end_;
   if (begin != end)
   {
@@ -4475,7 +4475,7 @@ LABEL_190:
         v7 = (begin + 56);
         v8 = (begin + 88);
         v55 = *(begin + 47);
-        v9 = *v56->logger.__ptr_;
+        v9 = *selfCopy->logger.__ptr_;
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v10 = subscriber::asString();
@@ -4629,7 +4629,7 @@ LABEL_23:
             v25 = v24;
             memset(&v64, 0, sizeof(v64));
             *&__p.__r_.__value_.__l.__data_ = 0uLL;
-            ServiceMap = Registry::getServiceMap(v56->fRegistry.__ptr_);
+            ServiceMap = Registry::getServiceMap(selfCopy->fRegistry.__ptr_);
             v27 = ServiceMap;
             if (v28 < 0)
             {
@@ -4752,20 +4752,20 @@ LABEL_55:
                 }
 
                 v37 = v63;
-                v38 = *v56->logger.__ptr_;
+                v38 = *selfCopy->logger.__ptr_;
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                 {
-                  v39 = [&stru_101F6AFB8 UTF8String];
+                  uTF8String = [&stru_101F6AFB8 UTF8String];
                   v40 = v23;
-                  v41 = [(__CFString *)v23 UTF8String];
+                  uTF8String2 = [(__CFString *)v23 UTF8String];
                   v42 = v37;
-                  v43 = [v37 UTF8String];
+                  uTF8String3 = [v37 UTF8String];
                   *buf = v52;
-                  *&buf[4] = v39;
+                  *&buf[4] = uTF8String;
                   *&buf[12] = 2080;
-                  *&buf[14] = v41;
+                  *&buf[14] = uTF8String2;
                   *&buf[22] = 2080;
-                  *&buf[24] = v43;
+                  *&buf[24] = uTF8String3;
                   _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "#I ACTIVE SUBSCRIPTION INFO: short label: %s; long label: %s; ISO country code: %s", buf, 0x20u);
                 }
 
@@ -4896,12 +4896,12 @@ LABEL_55:
                 v51 = [[CXSenderIdentity alloc] initWithUUID:v50 account:v47];
                 if (v55 == 2)
                 {
-                  [v53 insertObject:v51 atIndex:0];
+                  [changedCopy insertObject:v51 atIndex:0];
                 }
 
                 else
                 {
-                  [v53 addObject:v51];
+                  [changedCopy addObject:v51];
                 }
 
                 sub_100005978(&v61);
@@ -4943,9 +4943,9 @@ LABEL_122:
 
 - (void)handleSubscriptionInfoChanged
 {
-  v3 = [(TelephonyProviderDelegate *)self provider];
-  v4 = [v3 configuration];
-  if (v4)
+  provider = [(TelephonyProviderDelegate *)self provider];
+  configuration = [provider configuration];
+  if (configuration)
   {
     v5 = objc_opt_new();
     v6 = objc_autoreleasePoolPush();
@@ -4955,12 +4955,12 @@ LABEL_122:
     }
 
     objc_autoreleasePoolPop(v6);
-    v7 = [v4 prioritizedSenderIdentities];
-    v8 = [v7 isEqualToOrderedSet:v5];
+    prioritizedSenderIdentities = [configuration prioritizedSenderIdentities];
+    v8 = [prioritizedSenderIdentities isEqualToOrderedSet:v5];
 
     if ((v8 & 1) == 0)
     {
-      [v4 setPrioritizedSenderIdentities:v5];
+      [configuration setPrioritizedSenderIdentities:v5];
       v9 = *self->logger.__ptr_;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -4969,7 +4969,7 @@ LABEL_122:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Updating config prioritizedSenderIdentities: %@", &v10, 0xCu);
       }
 
-      [v3 setConfiguration:v4];
+      [provider setConfiguration:configuration];
     }
   }
 
@@ -4979,7 +4979,7 @@ LABEL_122:
   }
 }
 
-- (void)handleLastKnownHomePlmnChanged:(const void *)a3
+- (void)handleLastKnownHomePlmnChanged:(const void *)changed
 {
   if (self->fLastKnownHomePlmn.fValue.__tree_.__size_)
   {
@@ -4989,7 +4989,7 @@ LABEL_122:
       p_end_node = &self->fLastKnownHomePlmn.fValue.__tree_.__end_node_;
       if (begin_node != &self->fLastKnownHomePlmn.fValue.__tree_.__end_node_)
       {
-        v6 = a3 + 8;
+        v6 = changed + 8;
         while (1)
         {
           v7 = *v6;
@@ -5063,11 +5063,11 @@ LABEL_15:
   }
 }
 
-- (void)handleCallStatusChangedWithOldCalls:(const void *)a3
+- (void)handleCallStatusChangedWithOldCalls:(const void *)calls
 {
-  v3 = [(TelephonyProviderDelegate *)self provider];
-  v4 = [v3 pendingTransactions];
-  v5 = [v4 count];
+  provider = [(TelephonyProviderDelegate *)self provider];
+  pendingTransactions = [provider pendingTransactions];
+  v5 = [pendingTransactions count];
 
   v16 = 0;
   v15 = 0;
@@ -5088,10 +5088,10 @@ LABEL_15:
     v7 = *self->logger.__ptr_;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(TelephonyProviderDelegate *)self provider];
-      v9 = [v8 pendingTransactions];
+      provider2 = [(TelephonyProviderDelegate *)self provider];
+      pendingTransactions2 = [provider2 pendingTransactions];
       *buf = 138412290;
-      *&buf[4] = v9;
+      *&buf[4] = pendingTransactions2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#I Pending Transactions: %@", buf, 0xCu);
     }
   }
@@ -5116,15 +5116,15 @@ LABEL_15:
 
 - (void)handleCallCapabilitiesChanged
 {
-  v30 = [(TelephonyProviderDelegate *)self provider];
-  v3 = [v30 configuration];
-  v4 = v3;
-  v31 = v3;
-  if (v3)
+  provider = [(TelephonyProviderDelegate *)self provider];
+  configuration = [provider configuration];
+  v4 = configuration;
+  v31 = configuration;
+  if (configuration)
   {
-    v29 = [v3 maximumCallGroups];
-    v27 = [v4 maximumCallsPerCallGroup];
-    v28 = [v4 includesCallsInRecents];
+    maximumCallGroups = [configuration maximumCallGroups];
+    maximumCallsPerCallGroup = [v4 maximumCallsPerCallGroup];
+    includesCallsInRecents = [v4 includesCallsInRecents];
     v40 = 0;
     sub_1011D4EA0(&v40, &self->fSubscriptionInfo.fValue.fSubscriptions.__tree_.__begin_node_);
     v37 = 0;
@@ -5180,12 +5180,12 @@ LABEL_15:
       *buf = v50;
       *&buf[8] = kMaxSupportedCallCountKey;
       sub_100006354(buf, &v34);
-      v13 = xpc::dyn_cast_or_default(&v34, v29, v12);
+      v13 = xpc::dyn_cast_or_default(&v34, maximumCallGroups, v12);
       xpc_release(v34);
       *buf = v50;
       *&buf[8] = kMaxMultiPartyCallCountKey;
       sub_100006354(buf, &v34);
-      v15 = xpc::dyn_cast_or_default(&v34, v27, v14);
+      v15 = xpc::dyn_cast_or_default(&v34, maximumCallsPerCallGroup, v14);
       xpc_release(v34);
       xpc_release(*v50);
       v16 = 2;
@@ -5194,7 +5194,7 @@ LABEL_15:
         v16 = v15;
       }
 
-      v27 = v16;
+      maximumCallsPerCallGroup = v16;
       if (v13 <= 1)
       {
         v17 = 1;
@@ -5205,7 +5205,7 @@ LABEL_15:
         v17 = v13;
       }
 
-      v29 = v17;
+      maximumCallGroups = v17;
     }
 
     else
@@ -5227,7 +5227,7 @@ LABEL_11:
         v19 = v40;
         sub_100005F2C(__dst, __p[0], __p[1]);
 LABEL_29:
-        v28 = [(TelephonyProviderDelegate *)self shouldIncludeInCallHistory:v19 phoneNumber:__dst];
+        includesCallsInRecents = [(TelephonyProviderDelegate *)self shouldIncludeInCallHistory:v19 phoneNumber:__dst];
         if (SHIBYTE(v33) < 0)
         {
           operator delete(__dst[0]);
@@ -5243,18 +5243,18 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    if ([v31 maximumCallGroups] != v29 || ((objc_msgSend(v31, "maximumCallsPerCallGroup") == v27) & v28) != 1 || (objc_msgSend(v31, "includesCallsInRecents") & 1) == 0)
+    if ([v31 maximumCallGroups] != maximumCallGroups || ((objc_msgSend(v31, "maximumCallsPerCallGroup") == maximumCallsPerCallGroup) & includesCallsInRecents) != 1 || (objc_msgSend(v31, "includesCallsInRecents") & 1) == 0)
     {
-      [v31 setMaximumCallGroups:v29];
-      [v31 setMaximumCallsPerCallGroup:v27];
-      [v31 setIncludesCallsInRecents:v28];
+      [v31 setMaximumCallGroups:maximumCallGroups];
+      [v31 setMaximumCallsPerCallGroup:maximumCallsPerCallGroup];
+      [v31 setIncludesCallsInRecents:includesCallsInRecents];
       v20 = *self->logger.__ptr_;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = subscriber::asString();
-        v22 = [v31 maximumCallGroups];
-        v23 = [v31 maximumCallsPerCallGroup];
-        v24 = [v31 includesCallsInRecents];
+        maximumCallGroups2 = [v31 maximumCallGroups];
+        maximumCallsPerCallGroup2 = [v31 maximumCallsPerCallGroup];
+        includesCallsInRecents2 = [v31 includesCallsInRecents];
         if ((v18 & 0x80) != 0)
         {
           v25 = " for phoneNum: ";
@@ -5279,11 +5279,11 @@ LABEL_29:
         *buf = 136316418;
         *&buf[4] = v21;
         *&buf[12] = 2048;
-        *&buf[14] = v22;
+        *&buf[14] = maximumCallGroups2;
         v42 = 2048;
-        v43 = v23;
+        v43 = maximumCallsPerCallGroup2;
         v44 = 1024;
-        v45 = v24;
+        v45 = includesCallsInRecents2;
         v46 = 2080;
         v47 = v25;
         v48 = 2080;
@@ -5291,7 +5291,7 @@ LABEL_29:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Updating config for call capabilities based on slot %s: maxCallGroups: %lu, maxCallsPerCallGroup: %lu, includesInRecents: %d%s%s", buf, 0x3Au);
       }
 
-      [v30 setConfiguration:v31];
+      [provider setConfiguration:v31];
       LOBYTE(v18) = HIBYTE(v36);
     }
 
@@ -5322,9 +5322,9 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I ----> Emergency (or allow) numbers changed", buf, 2u);
   }
 
-  v20 = [(TelephonyProviderDelegate *)self provider];
-  v4 = [v20 configuration];
-  if (v4)
+  provider = [(TelephonyProviderDelegate *)self provider];
+  configuration = [provider configuration];
+  if (configuration)
   {
     left = self->fEmergencyNumbers.fValue.__tree_.__end_node_.__left_;
     *buf = 0;
@@ -5391,12 +5391,12 @@ LABEL_46:
 
     if ([v8 count])
     {
-      v15 = [v4 emergencyHandles];
-      v16 = [v15 isEqualToArray:v8];
+      emergencyHandles = [configuration emergencyHandles];
+      v16 = [emergencyHandles isEqualToArray:v8];
 
       if (!v16)
       {
-        [v4 setEmergencyHandles:v8];
+        [configuration setEmergencyHandles:v8];
         v19 = *self->logger.__ptr_;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
@@ -5405,7 +5405,7 @@ LABEL_46:
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Updating config emergencyHandles: %@", __p, 0xCu);
         }
 
-        [v20 setConfiguration:v4];
+        [provider setConfiguration:configuration];
         goto LABEL_37;
       }
 
@@ -5454,9 +5454,9 @@ LABEL_38:
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "#I ----> Disambiguation emergency numbers changed", buf, 2u);
   }
 
-  v41 = [(TelephonyProviderDelegate *)self provider];
-  v40 = [v41 configuration];
-  if (v40)
+  provider = [(TelephonyProviderDelegate *)self provider];
+  configuration = [provider configuration];
+  if (configuration)
   {
     v46 = 0;
     v47 = 0;
@@ -5671,8 +5671,8 @@ LABEL_40:
       }
     }
 
-    v35 = [v40 emergencyLabeledHandles];
-    v36 = [v35 isEqualToArray:v24];
+    emergencyLabeledHandles = [configuration emergencyLabeledHandles];
+    v36 = [emergencyLabeledHandles isEqualToArray:v24];
 
     if (v36)
     {
@@ -5686,7 +5686,7 @@ LABEL_40:
 
     else
     {
-      [v40 setEmergencyLabeledHandles:v24];
+      [configuration setEmergencyLabeledHandles:v24];
       v38 = *self->logger.__ptr_;
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
@@ -5695,7 +5695,7 @@ LABEL_40:
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Updating config emergencyLabeledHandles: %@", buf, 0xCu);
       }
 
-      [v41 setConfiguration:v40];
+      [provider setConfiguration:configuration];
     }
 
     *buf = &v46;
@@ -5806,8 +5806,8 @@ LABEL_40:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Report call %@ freq data changed", buf, 0xCu);
         }
 
-        v13 = [(TelephonyProviderDelegate *)self provider];
-        [v13 reportCallWithUUID:v9 changedFrequencyData:v11 forDirection:v10];
+        provider = [(TelephonyProviderDelegate *)self provider];
+        [provider reportCallWithUUID:v9 changedFrequencyData:v11 forDirection:v10];
       }
 
       sub_10002D760(&v14);
@@ -5837,9 +5837,9 @@ LABEL_40:
 
 - (void)handleThumperAccountIdChanged
 {
-  v3 = [(TelephonyProviderDelegate *)self provider];
-  v4 = [v3 configuration];
-  if (v4)
+  provider = [(TelephonyProviderDelegate *)self provider];
+  configuration = [provider configuration];
+  if (configuration)
   {
     v5 = objc_alloc_init(NSMutableArray);
     begin_node = self->fVoWiFiProv.fValue.__tree_.__begin_node_;
@@ -5921,8 +5921,8 @@ LABEL_13:
       while (v12 != &self->fVoWiFiProv.fValue.__tree_.__end_node_);
     }
 
-    v14 = [v4 handoffIdentifiers];
-    v15 = [v14 isEqualToArray:v5];
+    handoffIdentifiers = [configuration handoffIdentifiers];
+    v15 = [handoffIdentifiers isEqualToArray:v5];
 
     if (v15)
     {
@@ -5936,7 +5936,7 @@ LABEL_13:
 
     else
     {
-      [v4 setHandoffIdentifiers:v5];
+      [configuration setHandoffIdentifiers:v5];
       v17 = *self->logger.__ptr_;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -5945,7 +5945,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Updating config handoffIdentifiers: %@ ", __p, 0xCu);
       }
 
-      [v3 setConfiguration:v4];
+      [provider setConfiguration:configuration];
     }
   }
 
@@ -5955,38 +5955,38 @@ LABEL_13:
   }
 }
 
-- (void)handleCallControlFailure:(const void *)a3
+- (void)handleCallControlFailure:(const void *)failure
 {
   p_logger = &self->logger;
   v5 = *self->logger.__ptr_;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = asString(*(a3 + 6));
-    if (*(a3 + 23) >= 0)
+    v6 = asString(*(failure + 6));
+    if (*(failure + 23) >= 0)
     {
-      v7 = a3;
+      failureCopy = failure;
     }
 
     else
     {
-      v7 = *a3;
+      failureCopy = *failure;
     }
 
     *buf = 136315394;
     *&buf[4] = v6;
     *&buf[12] = 2080;
-    *&buf[14] = v7;
+    *&buf[14] = failureCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#N ----> Call control failure for action type %s for call %s", buf, 0x16u);
   }
 
-  v8 = [(TelephonyProviderDelegate *)self provider];
-  v9 = [v8 pendingTransactions];
+  provider = [(TelephonyProviderDelegate *)self provider];
+  pendingTransactions = [provider pendingTransactions];
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v9;
+  obj = pendingTransactions;
   v10 = [obj countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (v10)
   {
@@ -6009,18 +6009,18 @@ LABEL_13:
           v53 = 0;
           v54 = 0;
           v55 = 0;
-          v13 = [v12 UUID];
-          sub_1000B2CAC(v13, &v53);
+          uUID = [v12 UUID];
+          sub_1000B2CAC(uUID, &v53);
 
-          v14 = *(a3 + 79);
+          v14 = *(failure + 79);
           if (v14 >= 0)
           {
-            v15 = *(a3 + 79);
+            v15 = *(failure + 79);
           }
 
           else
           {
-            v15 = *(a3 + 8);
+            v15 = *(failure + 8);
           }
 
           if (!v15)
@@ -6034,16 +6034,16 @@ LABEL_13:
             v16 = v54;
           }
 
-          if (v15 == v16 && (v14 >= 0 ? (v17 = a3 + 56) : (v17 = *(a3 + 7)), v55 >= 0 ? (v18 = &v53) : (v18 = v53), !memcmp(v17, v18, v15)))
+          if (v15 == v16 && (v14 >= 0 ? (v17 = failure + 56) : (v17 = *(failure + 7)), v55 >= 0 ? (v18 = &v53) : (v18 = v53), !memcmp(v17, v18, v15)))
           {
             v35 = sub_100B2E9DC(p_logger, v12);
             v36 = **p_logger;
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
             {
-              v37 = a3 + 56;
-              if (*(a3 + 79) < 0)
+              v37 = failure + 56;
+              if (*(failure + 79) < 0)
               {
-                v37 = *(a3 + 7);
+                v37 = *(failure + 7);
               }
 
               *buf = v38;
@@ -6057,16 +6057,16 @@ LABEL_13:
           else
           {
 LABEL_26:
-            v44 = [v12 actions];
-            v20 = *(a3 + 4);
-            v19 = *(a3 + 5);
+            actions = [v12 actions];
+            v20 = *(failure + 4);
+            v19 = *(failure + 5);
             if (v19 == v20)
             {
               v47 = 0u;
               v48 = 0u;
               v45 = 0u;
               v46 = 0u;
-              v22 = v44;
+              v22 = actions;
               v23 = [v22 countByEnumeratingWithState:&v45 objects:v62 count:16];
               if (v23)
               {
@@ -6083,7 +6083,7 @@ LABEL_26:
                     v26 = *(*(&v45 + 1) + 8 * j);
                     if (([v26 isComplete] & 1) == 0)
                     {
-                      if ([v26 fail:a3])
+                      if ([v26 fail:failure])
                       {
                         v27 = **p_logger;
                         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -6091,25 +6091,25 @@ LABEL_26:
                           v28 = objc_opt_class();
                           v29 = NSStringFromClass(v28);
                           v30 = v29;
-                          v31 = [v29 UTF8String];
-                          v32 = [v26 UUID];
-                          v33 = v32;
-                          if (*(a3 + 23) >= 0)
+                          uTF8String = [v29 UTF8String];
+                          uUID2 = [v26 UUID];
+                          v33 = uUID2;
+                          if (*(failure + 23) >= 0)
                           {
-                            v34 = a3;
+                            failureCopy2 = failure;
                           }
 
                           else
                           {
-                            v34 = *a3;
+                            failureCopy2 = *failure;
                           }
 
                           *buf = 136315650;
-                          *&buf[4] = v31;
+                          *&buf[4] = uTF8String;
                           *&buf[12] = 2112;
-                          *&buf[14] = v32;
+                          *&buf[14] = uUID2;
                           *&buf[22] = 2080;
-                          v61 = v34;
+                          v61 = failureCopy2;
                           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Failed %s %@ with call %s due to control failure", buf, 0x20u);
                         }
                       }
@@ -6156,8 +6156,8 @@ LABEL_26:
                 }
 
                 v49[4] = self;
-                v52 = a3;
-                [v44 enumerateObjectsUsingBlock:v49];
+                failureCopy3 = failure;
+                [actions enumerateObjectsUsingBlock:v49];
                 if (SHIBYTE(v51) < 0)
                 {
                   operator delete(__p);
@@ -6189,24 +6189,24 @@ LABEL_26:
   }
 }
 
-- (void)handleCallToneComplete:(const void *)a3
+- (void)handleCallToneComplete:(const void *)complete
 {
-  if (*(a3 + 23) < 0)
+  if (*(complete + 23) < 0)
   {
-    if (!*(a3 + 1))
+    if (!*(complete + 1))
     {
       return;
     }
 
-    a3 = *a3;
+    complete = *complete;
   }
 
-  else if (!*(a3 + 23))
+  else if (!*(complete + 23))
   {
     return;
   }
 
-  v4 = [NSString stringWithUTF8String:a3];
+  v4 = [NSString stringWithUTF8String:complete];
   v5 = [[NSUUID alloc] initWithUUIDString:v4];
   v6 = *self->logger.__ptr_;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6216,21 +6216,21 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Report call %@ AudioFinished", &v8, 0xCu);
   }
 
-  v7 = [(TelephonyProviderDelegate *)self provider];
-  [v7 reportAudioFinishedForCallWithUUID:v5];
+  provider = [(TelephonyProviderDelegate *)self provider];
+  [provider reportAudioFinishedForCallWithUUID:v5];
 }
 
-- (void)handleDownlinkDtmfEvent:(const void *)a3 dtmf:(char)a4
+- (void)handleDownlinkDtmfEvent:(const void *)event dtmf:(char)dtmf
 {
-  v4 = a4;
-  if (*(a3 + 23) < 0)
+  dtmfCopy = dtmf;
+  if (*(event + 23) < 0)
   {
-    a3 = *a3;
+    event = *event;
   }
 
-  v6 = [NSString stringWithUTF8String:a3];
+  v6 = [NSString stringWithUTF8String:event];
   v7 = [[NSUUID alloc] initWithUUIDString:v6];
-  v13 = v4;
+  v13 = dtmfCopy;
   v8 = [CXCallDTMFUpdate alloc];
   v9 = [NSString stringWithCharacters:&v13 length:1];
   v10 = [v8 initWithDigits:v9];
@@ -6241,17 +6241,17 @@ LABEL_26:
     *buf = 138412546;
     v15 = v7;
     v16 = 1024;
-    v17 = v4;
+    v17 = dtmfCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Report call %@ received downlink DTMF: %c", buf, 0x12u);
   }
 
-  v12 = [(TelephonyProviderDelegate *)self provider];
-  [v12 reportCallWithUUID:v7 receivedDTMFUpdate:v10];
+  provider = [(TelephonyProviderDelegate *)self provider];
+  [provider reportCallWithUUID:v7 receivedDTMFUpdate:v10];
 }
 
-- (BOOL)evaluateAndSendCallUpdateWithCallInfo:(dict)a3 previousCallInfo:(dict)a4
+- (BOOL)evaluateAndSendCallUpdateWithCallInfo:(dict)info previousCallInfo:(dict)callInfo
 {
-  v7 = *a3.fObj.fObj;
+  v7 = *info.fObj.fObj;
   v23 = v7;
   if (v7)
   {
@@ -6263,7 +6263,7 @@ LABEL_26:
     v23 = xpc_null_create();
   }
 
-  v8 = *a4.fObj.fObj;
+  v8 = *callInfo.fObj.fObj;
   object = v8;
   if (v8)
   {
@@ -6283,7 +6283,7 @@ LABEL_26:
   v20[0] = 0;
   v20[1] = 0;
   v21 = 0;
-  v18[0] = a3.fObj.fObj;
+  v18[0] = info.fObj.fObj;
   v18[1] = "kUuid";
   sub_100006354(v18, &v19);
   memset(__p, 0, sizeof(__p));
@@ -6318,8 +6318,8 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Report call %@ %@", __p, 0x16u);
     }
 
-    v14 = [(TelephonyProviderDelegate *)self provider];
-    [v14 reportCallWithUUID:v12 updated:v9];
+    provider = [(TelephonyProviderDelegate *)self provider];
+    [provider reportCallWithUUID:v12 updated:v9];
   }
 
   else
@@ -6347,62 +6347,62 @@ LABEL_26:
   return v9 != 0;
 }
 
-- (id)evaluateAndCreateCallUpdateWithCallInfo:(dict)a3 previousCallInfo:(dict)a4
+- (id)evaluateAndCreateCallUpdateWithCallInfo:(dict)info previousCallInfo:(dict)callInfo
 {
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kCallStatus";
   sub_100006354(buf, __dst);
   v7 = xpc::dyn_cast_or_default(__dst, 0, v6);
   xpc_release(*__dst);
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kCallSubType";
   sub_100006354(buf, __dst);
   v9 = xpc::dyn_cast_or_default(__dst, 1, v8);
   xpc_release(*__dst);
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kCallType";
   sub_100006354(buf, __dst);
   xpc::dyn_cast_or_default(__dst, 1, v10);
   xpc_release(*__dst);
   v265 = isEmergencyCall();
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kCallSimSlot";
   sub_100006354(buf, __dst);
   v266 = xpc::dyn_cast_or_default(__dst, 1, v11);
   xpc_release(*__dst);
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kSupportsEmergencyFallback";
   sub_100006354(buf, __dst);
   v263 = xpc::dyn_cast_or_default(__dst, 0, v12);
   xpc_release(*__dst);
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kCallDirectionMobileOriginated";
   sub_100006354(buf, __dst);
   v258 = xpc::dyn_cast_or_default(__dst, 0, v13);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kCallStatus";
   sub_100006354(buf, __dst);
   v15 = xpc::dyn_cast_or_default(__dst, 0, v14);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kCallSubType";
   sub_100006354(buf, __dst);
   v259 = xpc::dyn_cast_or_default(__dst, 0, v16);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kCallType";
   sub_100006354(buf, __dst);
   xpc::dyn_cast_or_default(__dst, 1, v17);
   xpc_release(*__dst);
   HIDWORD(v251) = isEmergencyCall();
   LODWORD(v251) = isEmergencyCallNormalSetup();
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kCallSimSlot";
   sub_100006354(buf, __dst);
   v264 = xpc::dyn_cast_or_default(__dst, v266, v18);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kSupportsEmergencyFallback";
   sub_100006354(buf, __dst);
   v20 = xpc::dyn_cast_or_default(__dst, 0, v19);
@@ -6410,7 +6410,7 @@ LABEL_26:
   v295 = 0;
   v296 = 0;
   v297 = 0;
-  *__dst = a3;
+  *__dst = info;
   *&__dst[8] = "kUuid";
   sub_100006354(__dst, &v292);
   memset(buf, 0, sizeof(buf));
@@ -6424,7 +6424,7 @@ LABEL_26:
   v292 = 0;
   v293 = 0;
   v294 = 0;
-  *__dst = a4;
+  *__dst = callInfo;
   *&__dst[8] = "kUuid";
   sub_100006354(__dst, &fObj);
   memset(buf, 0, sizeof(buf));
@@ -6435,12 +6435,12 @@ LABEL_26:
   }
 
   xpc_release(fObj);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kPendingInfoInitialization";
   sub_100006354(buf, __dst);
   v22 = xpc::dyn_cast_or_default(__dst, 0, v21);
   xpc_release(*__dst);
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kPendingInfoInitialization";
   sub_100006354(buf, __dst);
   v24 = xpc::dyn_cast_or_default(__dst, 0, v23);
@@ -6501,12 +6501,12 @@ LABEL_21:
   v32 = objc_opt_new();
   v256 = v32;
   v267 = objc_opt_new();
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kAudioToneRelayFlag";
   sub_100006354(buf, __dst);
   v34 = xpc::dyn_cast_or_default(__dst, 0, v33);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kAudioToneRelayFlag";
   sub_100006354(buf, __dst);
   v36 = xpc::dyn_cast_or_default(__dst, v34, v35);
@@ -6540,12 +6540,12 @@ LABEL_21:
     [v32 setRequiresInCallSounds:{v34, v251}];
   }
 
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kAudioToneStandard";
   sub_100006354(buf, __dst);
   v41 = xpc::dyn_cast_or_default(__dst, 0, v40);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kAudioToneStandard";
   sub_100006354(buf, __dst);
   v43 = xpc::dyn_cast_or_default(__dst, v41, v42);
@@ -6574,12 +6574,12 @@ LABEL_21:
     v38 = 1;
   }
 
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kCallerIdAvailability";
   sub_100006354(buf, __dst);
   v47 = xpc::dyn_cast_or_default(__dst, 0, v46);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kCallerIdAvailability";
   sub_100006354(buf, __dst);
   v49 = xpc::dyn_cast_or_default(__dst, 0, v48);
@@ -6608,12 +6608,12 @@ LABEL_21:
     v38 = 1;
   }
 
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "CallLikelyToFail";
   sub_100006354(buf, __dst);
   v55 = xpc::dyn_cast_or_default(__dst, 0, v54);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "CallLikelyToFail";
   sub_100006354(buf, __dst);
   v57 = xpc::dyn_cast_or_default(__dst, 0, v56);
@@ -6646,7 +6646,7 @@ LABEL_21:
     v38 = 1;
   }
 
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kEmSubSwitchAudioOverride";
   sub_100006354(buf, __dst);
   v62 = xpc::dyn_cast_or_default(__dst, 0, v61);
@@ -6809,13 +6809,13 @@ LABEL_107:
               v98 = 2;
               _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "#I Force updating audio category to Wifi for emergency call with sub switch", buf, 2u);
               v75 = 0;
-              v99 = 0;
+              isUsingBaseband = 0;
             }
 
             else
             {
               v75 = 0;
-              v99 = 0;
+              isUsingBaseband = 0;
               v98 = 2;
             }
           }
@@ -6845,11 +6845,11 @@ LABEL_107:
               goto LABEL_107;
             }
 
-            v99 = [v32 isUsingBaseband];
+            isUsingBaseband = [v32 isUsingBaseband];
             v98 = v9;
           }
 
-          [(TelephonyProviderDelegate *)self updateAudioCategory:v98 updateToUpdate:v32 apOnlyMode:v75 usingBaseband:v99];
+          [(TelephonyProviderDelegate *)self updateAudioCategory:v98 updateToUpdate:v32 apOnlyMode:v75 usingBaseband:isUsingBaseband];
           goto LABEL_120;
         }
 
@@ -6876,20 +6876,20 @@ LABEL_89:
   }
 
 LABEL_121:
-  v262 = [NSString stringWithUTF8String:"kCallSubType", v251];
+  v251 = [NSString stringWithUTF8String:"kCallSubType", v251];
   v254 = [NSString stringWithUTF8String:convertPhoneCallSubTypeToPublicString()];
   [v267 setValue:? forKey:?];
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kIsTTY";
   sub_100006354(buf, __dst);
   v102 = xpc::dyn_cast_or_default(__dst, 0, v101);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kIsTTY";
   sub_100006354(buf, __dst);
   v104 = xpc::dyn_cast_or_default(__dst, 0, v103);
   xpc_release(*__dst);
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kIsTTYWithVoiceSupported";
   sub_100006354(buf, __dst);
   v260 = xpc::dyn_cast_or_default(__dst, 1, v105);
@@ -6926,7 +6926,7 @@ LABEL_121:
       _os_log_impl(&_mh_execute_header, v110, OS_LOG_TYPE_DEFAULT, "#I Updating call update context: disconnect cause code used for testing purpose only", buf, 2u);
     }
 
-    *buf = a3;
+    *buf = info;
     *&buf[8] = "kDisconnectCauseCode";
     sub_100006354(buf, __dst);
     v112 = xpc::dyn_cast_or_default(__dst, 0, v111);
@@ -6936,7 +6936,7 @@ LABEL_121:
     [v267 setValue:v114 forKey:v113];
     memset(__dst, 0, sizeof(__dst));
     v304 = 0;
-    fObj = a3.fObj.fObj;
+    fObj = info.fObj.fObj;
     v290 = "kDisconnectCauseCodeString";
     sub_100006354(&fObj, &object);
     memset(buf, 0, sizeof(buf));
@@ -6961,7 +6961,7 @@ LABEL_121:
 
     v117 = [NSString stringWithUTF8String:v116];
     [v267 setValue:v117 forKey:v115];
-    *buf = a3;
+    *buf = info;
     *&buf[8] = "kBBCallDisconnectCause";
     sub_100006354(buf, &fObj);
     v119 = xpc::dyn_cast_or_default(&fObj, 0, v118);
@@ -6982,7 +6982,7 @@ LABEL_121:
   fObj = 0;
   v290 = 0;
   v291 = 0;
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kCallName";
   sub_100006354(buf, __dst);
   xpc::dyn_cast_or_default(&fObj, __dst, "", v122);
@@ -6990,7 +6990,7 @@ LABEL_121:
   object = 0;
   v287 = 0;
   v288 = 0;
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kCallName";
   sub_100006354(buf, __dst);
   xpc::dyn_cast_or_default(&object, __dst, "", v123);
@@ -7069,7 +7069,7 @@ LABEL_162:
   v283 = 0;
   v284 = 0;
   v285 = 0;
-  *__dst = a3;
+  *__dst = info;
   *&__dst[8] = "kPhoneNumber";
   sub_100006354(__dst, &v280);
   memset(buf, 0, sizeof(buf));
@@ -7083,7 +7083,7 @@ LABEL_162:
   v280 = 0;
   v281 = 0;
   v282 = 0;
-  *__dst = a4;
+  *__dst = callInfo;
   *&__dst[8] = "kPhoneNumber";
   sub_100006354(__dst, &v276);
   memset(buf, 0, sizeof(buf));
@@ -7224,7 +7224,7 @@ LABEL_182:
 LABEL_206:
   if ((v268 | v265 ^ v253))
   {
-    *buf = a3;
+    *buf = info;
     *&buf[8] = "kSuspicious380Redirect";
     sub_100006354(buf, __dst);
     v151 = xpc::dyn_cast_or_default(__dst, 0, v150);
@@ -7250,9 +7250,9 @@ LABEL_206:
 
   if (_os_feature_enabled_impl())
   {
-    *__dst = a3;
+    *__dst = info;
     *&__dst[8] = "kAudioStreamTokens";
-    if (xpc_dictionary_get_value(*a3.fObj.fObj, "kAudioStreamTokens"))
+    if (xpc_dictionary_get_value(*info.fObj.fObj, "kAudioStreamTokens"))
     {
       sub_100006354(__dst, buf);
       v155 = xpc_null_create();
@@ -7290,7 +7290,7 @@ LABEL_206:
 
       xpc_release(v155);
       xpc_release(*buf);
-      v276 = a4.fObj.fObj;
+      v276 = callInfo.fObj.fObj;
       v277 = "kAudioStreamTokens";
       sub_100006354(&v276, buf);
       v160 = xpc_null_create();
@@ -7356,14 +7356,14 @@ LABEL_206:
         v170 = objc_opt_new();
         [v32 setCallTokens:v170];
 
-        v171 = [v32 callTokens];
-        [v171 setCombinedAudioStreamToken:v164];
+        callTokens = [v32 callTokens];
+        [callTokens setCombinedAudioStreamToken:v164];
 
-        v172 = [v32 callTokens];
-        [v172 setUplinkStreamToken:v166];
+        callTokens2 = [v32 callTokens];
+        [callTokens2 setUplinkStreamToken:v166];
 
-        v173 = [v32 callTokens];
-        [v173 setDownlinkStreamToken:v168];
+        callTokens3 = [v32 callTokens];
+        [callTokens3 setDownlinkStreamToken:v168];
 
         v38 = 1;
       }
@@ -7373,14 +7373,14 @@ LABEL_206:
     }
   }
 
-  v279[0] = a3.fObj.fObj;
+  v279[0] = info.fObj.fObj;
   v279[1] = "kTextStreamToken";
-  if (xpc_dictionary_get_value(*a3.fObj.fObj, "kTextStreamToken"))
+  if (xpc_dictionary_get_value(*info.fObj.fObj, "kTextStreamToken"))
   {
     sub_100006354(v279, buf);
     v175 = xpc::dyn_cast_or_default(buf, 0, v174);
     xpc_release(*buf);
-    *buf = a4;
+    *buf = callInfo;
     *&buf[8] = "kTextStreamToken";
     sub_100006354(buf, __dst);
     v177 = xpc::dyn_cast_or_default(__dst, 0, v176);
@@ -7401,7 +7401,7 @@ LABEL_206:
       v38 = 1;
     }
 
-    *__dst = a3;
+    *__dst = info;
     *&__dst[8] = "kIsTextHeldForRTTCall";
     sub_100006354(__dst, &v276);
     v182 = xpc::dyn_cast_or_default(&v276, 0, v181);
@@ -7409,11 +7409,11 @@ LABEL_206:
     v183 = [NSString stringWithUTF8String:"kIsTextHeldForRTTCall"];
     v184 = [NSNumber numberWithBool:v182];
     [v267 setValue:v184 forKey:v183];
-    *__dst = a4;
+    *__dst = callInfo;
     *&__dst[8] = "kIsTextHeldForRTTCall";
     v276 = 0;
     v185 = sub_1001B1AB8(__dst);
-    *__dst = a4;
+    *__dst = callInfo;
     *&__dst[8] = "kIsTextHeldForRTTCall";
     sub_100006354(__dst, &v276);
     v187 = xpc::dyn_cast_or_default(&v276, 0, v186);
@@ -7434,7 +7434,7 @@ LABEL_206:
     v32 = v256;
   }
 
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kVerstatEnabled";
   sub_100006354(buf, __dst);
   v190 = xpc::dyn_cast_or_default(__dst, 0, v189);
@@ -7445,7 +7445,7 @@ LABEL_206:
     goto LABEL_279;
   }
 
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kVerstatLevel";
   sub_100006354(buf, __dst);
   v192 = xpc::dyn_cast_or_default(__dst, 0, v191);
@@ -7468,7 +7468,7 @@ LABEL_206:
 
   [v32 setVerificationStatus:1];
   memset(buf, 0, sizeof(buf));
-  *__dst = a3;
+  *__dst = info;
   *&__dst[8] = "kImagePath";
   sub_100006354(__dst, &v276);
   xpc::dyn_cast_or_default(buf, &v276, "", v194);
@@ -7548,22 +7548,22 @@ LABEL_277:
   }
 
 LABEL_279:
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kSpamRisk";
   sub_100006354(buf, __dst);
   v206 = xpc::dyn_cast_or_default(__dst, 0, v205);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kSpamRisk";
   sub_100006354(buf, __dst);
   v208 = xpc::dyn_cast_or_default(__dst, 0, v207);
   xpc_release(*__dst);
-  *buf = a3;
+  *buf = info;
   *&buf[8] = "kSpamCategory";
   sub_100006354(buf, __dst);
   v210 = xpc::dyn_cast_or_default(__dst, 0, v209);
   xpc_release(*__dst);
-  *buf = a4;
+  *buf = callInfo;
   *&buf[8] = "kSpamCategory";
   sub_100006354(buf, __dst);
   v212 = xpc::dyn_cast_or_default(__dst, 0, v211);
@@ -7585,12 +7585,12 @@ LABEL_279:
     v214 = *self->logger.__ptr_;
     if (os_log_type_enabled(v214, OS_LOG_TYPE_DEFAULT))
     {
-      v215 = [v32 junkConfidence];
-      v216 = [v32 identificationCategory];
+      junkConfidence = [v32 junkConfidence];
+      identificationCategory = [v32 identificationCategory];
       *buf = 134218240;
-      *&buf[4] = v215;
+      *&buf[4] = junkConfidence;
       *&buf[12] = 2048;
-      *&buf[14] = v216;
+      *&buf[14] = identificationCategory;
       _os_log_impl(&_mh_execute_header, v214, OS_LOG_TYPE_DEFAULT, "#I Updating junk confidence to %ld and category to %ld", buf, 0x16u);
     }
 
@@ -7599,7 +7599,7 @@ LABEL_279:
 
   if (((v257 | v258) & 1) == 0)
   {
-    *buf = a3;
+    *buf = info;
     *&buf[8] = "kMarkMTCallWithHighPriority";
     sub_100006354(buf, __dst);
     v218 = xpc::dyn_cast_or_default(__dst, 0, v217);
@@ -7636,17 +7636,17 @@ LABEL_279:
   v223 = v222;
   if ([v222 supportsUngrouping])
   {
-    *buf = a4;
+    *buf = callInfo;
     *&buf[8] = "kIsSplitAllowed";
     sub_100006354(buf, __dst);
-    v224 = [v222 supportsUngrouping];
-    v226 = xpc::dyn_cast_or_default(__dst, v224, v225);
+    supportsUngrouping = [v222 supportsUngrouping];
+    v226 = xpc::dyn_cast_or_default(__dst, supportsUngrouping, v225);
     xpc_release(*__dst);
-    *buf = a3;
+    *buf = info;
     *&buf[8] = "kIsSplitAllowed";
     sub_100006354(buf, __dst);
-    v227 = [v222 supportsUngrouping];
-    v229 = xpc::dyn_cast_or_default(__dst, v227, v228);
+    supportsUngrouping2 = [v222 supportsUngrouping];
+    v229 = xpc::dyn_cast_or_default(__dst, supportsUngrouping2, v228);
     xpc_release(*__dst);
     if (v226 != v229)
     {
@@ -7680,7 +7680,7 @@ LABEL_309:
       v276 = 0;
       v277 = 0;
       v278 = 0;
-      v235 = self;
+      selfCopy2 = self;
       PersonalityIdFromSlotIdEx();
       v236 = [[NSUUID alloc] initWithUUIDString:&stru_101F6AFB8];
       uuid = 0;
@@ -7713,7 +7713,7 @@ LABEL_309:
         if (!os_log_type_enabled(*self->logger.__ptr_, OS_LOG_TYPE_ERROR))
         {
 LABEL_320:
-          v241 = *v235->logger.__ptr_;
+          v241 = *selfCopy2->logger.__ptr_;
           if (os_log_type_enabled(v241, OS_LOG_TYPE_DEFAULT))
           {
             v242 = subscriber::asString();
@@ -7752,8 +7752,8 @@ LABEL_320:
           object1[0] = 0;
           object1[1] = 0;
           v274 = 0;
-          [(TelephonyProviderDelegate *)v235 getiSOCountryCodeForCurrentLocation:v232];
-          v246 = *v235->logger.__ptr_;
+          [(TelephonyProviderDelegate *)selfCopy2 getiSOCountryCodeForCurrentLocation:v232];
+          v246 = *selfCopy2->logger.__ptr_;
           if (os_log_type_enabled(v246, OS_LOG_TYPE_DEFAULT))
           {
             v247 = object1;
@@ -7851,7 +7851,7 @@ LABEL_320:
         sub_101763784();
       }
 
-      v235 = self;
+      selfCopy2 = self;
       v232 = v266;
       goto LABEL_320;
     }
@@ -7916,11 +7916,11 @@ LABEL_355:
   return v240;
 }
 
-- (void)updateAudioCategory:(unsigned __int8)a3 updateToUpdate:(id)a4 apOnlyMode:(BOOL)a5 usingBaseband:(BOOL)a6
+- (void)updateAudioCategory:(unsigned __int8)category updateToUpdate:(id)update apOnlyMode:(BOOL)mode usingBaseband:(BOOL)baseband
 {
-  v7 = a5;
-  v8 = a3;
-  v10 = a4;
+  modeCopy = mode;
+  categoryCopy = category;
+  updateCopy = update;
   if (!qword_101FBA060)
   {
     v11 = sub_1002CACA0();
@@ -7935,7 +7935,7 @@ LABEL_355:
     qword_101FBA068 = v13;
   }
 
-  if (v8 == 2 || v7 && (v8 == 8 || v8 == 4))
+  if (categoryCopy == 2 || modeCopy && (categoryCopy == 8 || categoryCopy == 4))
   {
     v15 = *self->logger.__ptr_;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -7951,8 +7951,8 @@ LABEL_355:
       qword_101FBA070 = v16;
     }
 
-    [v10 setAudioCategory:?];
-    if ((v8 == 8 || v8 == 4) && v7 && sub_10007AEAC(self->fStoredSwitchUseIbisMode.__ptr_, 0) == 1)
+    [updateCopy setAudioCategory:?];
+    if ((categoryCopy == 8 || categoryCopy == 4) && modeCopy && sub_10007AEAC(self->fStoredSwitchUseIbisMode.__ptr_, 0) == 1)
     {
       v18 = &qword_101FBA068;
     }
@@ -7962,9 +7962,9 @@ LABEL_355:
       v18 = &qword_101FBA060;
     }
 
-    [v10 setAudioMode:*v18];
-    [v10 setAudioInterruptionProvider:1];
-    [v10 setAudioInterruptionOperationMode:1];
+    [updateCopy setAudioMode:*v18];
+    [updateCopy setAudioInterruptionProvider:1];
+    [updateCopy setAudioInterruptionOperationMode:1];
   }
 
   else
@@ -7983,12 +7983,12 @@ LABEL_355:
       qword_101FBA078 = v20;
     }
 
-    [v10 setAudioCategory:?];
-    [v10 setAudioMode:0];
-    [v10 setAudioInterruptionProvider:0];
+    [updateCopy setAudioCategory:?];
+    [updateCopy setAudioMode:0];
+    [updateCopy setAudioInterruptionProvider:0];
   }
 
-  if (!a6 && _os_feature_enabled_impl())
+  if (!baseband && _os_feature_enabled_impl())
   {
     v22 = *self->logger.__ptr_;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -7997,14 +7997,14 @@ LABEL_355:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#I Force updating audio mode to VoiceChat", v23, 2u);
     }
 
-    [v10 setAudioMode:qword_101FBA060];
+    [updateCopy setAudioMode:qword_101FBA060];
   }
 }
 
-- (id)getCallCapabilitiesUpdateForCall:(id)a3 simSlot:(int)a4 isEmergency:(BOOL)a5 supportsTextWithVoiceForCall:(BOOL)a6
+- (id)getCallCapabilitiesUpdateForCall:(id)call simSlot:(int)slot isEmergency:(BOOL)emergency supportsTextWithVoiceForCall:(BOOL)forCall
 {
-  v6 = a6;
-  v10 = a3;
+  forCallCopy = forCall;
+  callCopy = call;
   left = self->fCallCapabilities.fValue.__tree_.__end_node_.__left_;
   if (!left)
   {
@@ -8014,16 +8014,16 @@ LABEL_355:
   p_end_node = &self->fCallCapabilities.fValue.__tree_.__end_node_;
   do
   {
-    if (SLODWORD(left[4].__left_) >= a4)
+    if (SLODWORD(left[4].__left_) >= slot)
     {
       p_end_node = left;
     }
 
-    left = left[SLODWORD(left[4].__left_) < a4].__left_;
+    left = left[SLODWORD(left[4].__left_) < slot].__left_;
   }
 
   while (left);
-  if (p_end_node == &self->fCallCapabilities.fValue.__tree_.__end_node_ || SLODWORD(p_end_node[4].__left_) > a4)
+  if (p_end_node == &self->fCallCapabilities.fValue.__tree_.__end_node_ || SLODWORD(p_end_node[4].__left_) > slot)
   {
 LABEL_8:
     v13 = *self->logger.__ptr_;
@@ -8033,7 +8033,7 @@ LABEL_8:
       sub_101763808(v14, buf, v13);
     }
 
-    v15 = v10;
+    v15 = callCopy;
     goto LABEL_11;
   }
 
@@ -8042,14 +8042,14 @@ LABEL_8:
   if (v17)
   {
     xpc_retain(v17);
-    if (v10)
+    if (callCopy)
     {
       goto LABEL_16;
     }
 
 LABEL_19:
-    v10 = objc_opt_new();
-    if (a5)
+    callCopy = objc_opt_new();
+    if (emergency)
     {
       goto LABEL_17;
     }
@@ -8063,13 +8063,13 @@ LABEL_20:
   }
 
   v36 = xpc_null_create();
-  if (!v10)
+  if (!callCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_16:
-  if (!a5)
+  if (!emergency)
   {
     goto LABEL_20;
   }
@@ -8077,8 +8077,8 @@ LABEL_16:
 LABEL_17:
   v18 = 0;
 LABEL_21:
-  [v10 setSupportsHolding:v18];
-  if (!a5)
+  [callCopy setSupportsHolding:v18];
+  if (!emergency)
   {
     xpc_release(object);
   }
@@ -8086,24 +8086,24 @@ LABEL_21:
   *buf = &v36;
   *&buf[8] = kMergeableKey;
   sub_100006354(buf, &v34);
-  [v10 setSupportsGrouping:{xpc::dyn_cast_or_default(&v34, 0, v20)}];
+  [callCopy setSupportsGrouping:{xpc::dyn_cast_or_default(&v34, 0, v20)}];
   xpc_release(v34);
   *buf = &v36;
   *&buf[8] = kIsConferenceSideBarBlockedKey;
   sub_100006354(buf, &v34);
-  [v10 setSupportsUngrouping:{xpc::dyn_cast_or_default(&v34, 0, v21) ^ 1}];
+  [callCopy setSupportsUngrouping:{xpc::dyn_cast_or_default(&v34, 0, v21) ^ 1}];
   xpc_release(v34);
   *buf = &v36;
   *&buf[8] = kDTMFSupportedKey;
   sub_100006354(buf, &v34);
-  [v10 setSupportsDTMF:{xpc::dyn_cast_or_default(&v34, 0, v22)}];
+  [callCopy setSupportsDTMF:{xpc::dyn_cast_or_default(&v34, 0, v22)}];
   xpc_release(v34);
   *buf = &v36;
   *&buf[8] = kAddCallAllowedKey;
   sub_100006354(buf, &v34);
-  [v10 setSupportsAddCall:{xpc::dyn_cast_or_default(&v34, 0, v23)}];
+  [callCopy setSupportsAddCall:{xpc::dyn_cast_or_default(&v34, 0, v23)}];
   xpc_release(v34);
-  [v10 setSupportsSendingToVoicemail:sub_100B2EC00(&self->fRegistry.__ptr_)];
+  [callCopy setSupportsSendingToVoicemail:sub_100B2EC00(&self->fRegistry.__ptr_)];
   *buf = &v36;
   *&buf[8] = "kSupportsRTT";
   sub_100006354(buf, &v34);
@@ -8111,7 +8111,7 @@ LABEL_21:
   xpc_release(v34);
   if (v25)
   {
-    if (!v6)
+    if (!forCallCopy)
     {
       v26 = *self->logger.__ptr_;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -8127,20 +8127,20 @@ LABEL_21:
     }
   }
 
-  [v10 setSupportsTTYWithVoice:v6 & v25];
+  [callCopy setSupportsTTYWithVoice:forCallCopy & v25];
   *buf = &v36;
   *&buf[8] = kAmbiguousMultiPartyKey;
   sub_100006354(buf, &v34);
-  [v10 setSupportsUnambiguousMultiPartyState:{xpc::dyn_cast_or_default(&v34, 0, v29) ^ 1}];
+  [callCopy setSupportsUnambiguousMultiPartyState:{xpc::dyn_cast_or_default(&v34, 0, v29) ^ 1}];
   xpc_release(v34);
-  v30 = [v10 supportsUnambiguousMultiPartyState];
-  if (v30)
+  supportsUnambiguousMultiPartyState = [callCopy supportsUnambiguousMultiPartyState];
+  if (supportsUnambiguousMultiPartyState)
   {
     *buf = &v36;
     *&buf[8] = kEndAndAnswerAllowedKey;
     sub_100006354(buf, &v34);
-    v31 = [v10 supportsUnambiguousMultiPartyState];
-    v33 = xpc::dyn_cast_or_default(&v34, v31, v32);
+    supportsUnambiguousMultiPartyState2 = [callCopy supportsUnambiguousMultiPartyState];
+    v33 = xpc::dyn_cast_or_default(&v34, supportsUnambiguousMultiPartyState2, v32);
   }
 
   else
@@ -8148,28 +8148,28 @@ LABEL_21:
     v33 = 0;
   }
 
-  [v10 setSupportsUnambiguousMultiPartyState:v33];
-  if (v30)
+  [callCopy setSupportsUnambiguousMultiPartyState:v33];
+  if (supportsUnambiguousMultiPartyState)
   {
     xpc_release(v34);
   }
 
-  v15 = v10;
+  v15 = callCopy;
   xpc_release(v36);
 LABEL_11:
 
   return v15;
 }
 
-- (BOOL)possiblyFulfillUnexpectedMOStartCallWithProvider:(id)a3 transactions:(id)a4
+- (BOOL)possiblyFulfillUnexpectedMOStartCallWithProvider:(id)provider transactions:(id)transactions
 {
-  v47 = a3;
+  providerCopy = provider;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v46 = a4;
-  obj = [v46 actions];
+  transactionsCopy = transactions;
+  obj = [transactionsCopy actions];
   v5 = [obj countByEnumeratingWithState:&v66 objects:v71 count:16];
   if (!v5)
   {
@@ -8252,9 +8252,9 @@ LABEL_13:
           }
 
           v13 = [NSString stringWithUTF8String:v12];
-          v14 = [v8 callUUID];
-          v15 = [v14 UUIDString];
-          v16 = [v13 isEqualToString:v15];
+          callUUID = [v8 callUUID];
+          uUIDString = [callUUID UUIDString];
+          v16 = [v13 isEqualToString:uUIDString];
 
           if (v16 && (*buf = &v62, *&buf[8] = "kCallStatus", sub_100006354(buf, v58), v6 = xpc::dyn_cast_or_default(v58, 0, v17), xpc_release(v58[0]), *buf = &v62, *&buf[8] = "kCallDirectionMobileOriginated", sub_100006354(buf, v58), v19 = xpc::dyn_cast_or_default(v58, 0, v18), xpc_release(v58[0]), v19) && v6 <= 7 && ((1 << v6) & 0x9C) != 0)
           {
@@ -8319,7 +8319,7 @@ LABEL_33:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = [v46 actions];
+  obj = [transactionsCopy actions];
   v22 = [obj countByEnumeratingWithState:&v54 objects:v70 count:16];
   if (v22)
   {
@@ -8351,14 +8351,14 @@ LABEL_33:
             v29 = *self->logger.__ptr_;
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
             {
-              v30 = [v27 callUUID];
+              callUUID2 = [v27 callUUID];
               *buf = 138412290;
-              *&buf[4] = v30;
+              *&buf[4] = callUUID2;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Report call %@ Outgoing: Unexpected MO dialed call is not in Dialing or WaitingToDial state", buf, 0xCu);
             }
 
-            v31 = [v27 callUUID];
-            [v47 reportOutgoingCallWithUUID:v31 sentInvitationAtDate:v28];
+            callUUID3 = [v27 callUUID];
+            [providerCopy reportOutgoingCallWithUUID:callUUID3 sentInvitationAtDate:v28];
           }
 
           v32 = *self->logger.__ptr_;
@@ -8367,12 +8367,12 @@ LABEL_33:
             v33 = objc_opt_class();
             v34 = NSStringFromClass(v33);
             v35 = v34;
-            v36 = [v34 UTF8String];
-            v37 = [v27 UUID];
+            uTF8String = [v34 UTF8String];
+            uUID = [v27 UUID];
             *buf = 136315394;
-            *&buf[4] = v36;
+            *&buf[4] = uTF8String;
             *&buf[12] = 2112;
-            *&buf[14] = v37;
+            *&buf[14] = uUID;
             _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Fulfilling %s %@: call already exists (likely Unexpected MO call)", buf, 0x16u);
           }
 
@@ -8387,12 +8387,12 @@ LABEL_33:
             v39 = objc_opt_class();
             v40 = NSStringFromClass(v39);
             v41 = v40;
-            v42 = [v40 UTF8String];
-            v43 = [v26 UUID];
+            uTF8String2 = [v40 UTF8String];
+            uUID2 = [v26 UUID];
             *buf = 136315394;
-            *&buf[4] = v42;
+            *&buf[4] = uTF8String2;
             *&buf[12] = 2112;
-            *&buf[14] = v43;
+            *&buf[14] = uUID2;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Auto fulfilling %s %@: one action in this transaction is a StartCallAction for Unexpected MO", buf, 0x16u);
           }
 
@@ -8416,9 +8416,9 @@ LABEL_59:
   return v44;
 }
 
-- (BOOL)doesHeldUnHeldcallAlreadyExist:(id)a3
+- (BOOL)doesHeldUnHeldcallAlreadyExist:(id)exist
 {
-  v4 = a3;
+  existCopy = exist;
   memset(v6, 0, sizeof(v6));
   [(TelephonyProviderDelegate *)self getCurrentCalls];
   __p = v6;
@@ -8427,16 +8427,16 @@ LABEL_59:
   return 0;
 }
 
-- (BOOL)possiblyFulfillUnexpectedHoldCallWithProvider:(id)a3 transactions:(id)a4
+- (BOOL)possiblyFulfillUnexpectedHoldCallWithProvider:(id)provider transactions:(id)transactions
 {
-  v5 = a4;
-  v6 = [v5 actions];
-  v7 = [v6 count];
+  transactionsCopy = transactions;
+  actions = [transactionsCopy actions];
+  v7 = [actions count];
 
   if (v7 == 1)
   {
-    v8 = [v5 actions];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    actions2 = [transactionsCopy actions];
+    v9 = [actions2 objectAtIndexedSubscript:0];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -8450,15 +8450,15 @@ LABEL_59:
         {
           v13 = objc_opt_class();
           v14 = NSStringFromClass(v13);
-          v15 = [v14 UTF8String];
+          uTF8String = [v14 UTF8String];
           v16 = CSIBOOLAsString([v10 isOnHold]);
-          v17 = [v10 UUID];
+          uUID = [v10 UUID];
           v19 = 136315650;
-          v20 = v15;
+          v20 = uTF8String;
           v21 = 2080;
           v22 = v16;
           v23 = 2112;
-          v24 = v17;
+          v24 = uUID;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#N <---To-CSD--- Fulfilling %s(%s) %@: existing Active/Held call (likely unexpected hold call)", &v19, 0x20u);
         }
 

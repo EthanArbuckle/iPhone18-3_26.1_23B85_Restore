@@ -1,12 +1,12 @@
 @interface PSSearchResultsController
 - (PSSearchResultsController)init;
 - (PSSearchResultsControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_removeIconViewForSection:(id)a3;
-- (void)_updateIconViews:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_removeIconViewForSection:(id)section;
+- (void)_updateIconViews:(BOOL)views;
 - (void)loadView;
-- (void)setSearchResults:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSearchResults:(id)results;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -66,63 +66,63 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(PSSearchResultsController *)self presentingViewController];
-  v13 = [v3 tabBarController];
+  presentingViewController = [(PSSearchResultsController *)self presentingViewController];
+  tabBarController = [presentingViewController tabBarController];
 
-  if (v13)
+  if (tabBarController)
   {
-    v4 = [(PSSearchResultsController *)self presentingViewController];
-    v5 = [(PSSearchResultsController *)self presentingViewController];
-    v6 = [v5 view];
-    v7 = [v6 safeAreaLayoutGuide];
-    [v7 layoutFrame];
+    presentingViewController2 = [(PSSearchResultsController *)self presentingViewController];
+    presentingViewController3 = [(PSSearchResultsController *)self presentingViewController];
+    view = [presentingViewController3 view];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v9 = v8;
 
-    v10 = [v4 navigationBar];
-    [v10 frame];
+    navigationBar = [presentingViewController2 navigationBar];
+    [navigationBar frame];
     v11 = v9 + CGRectGetHeight(v15);
 
     [(UITableView *)self->_tableView setContentInset:v11, 0.0, v11, 0.0];
-    v12 = [v13 tabBar];
-    [v12 frame];
+    tabBar = [tabBarController tabBar];
+    [tabBar frame];
     [(UITableView *)self->_tableView setScrollIndicatorInsets:v11, 0.0, CGRectGetHeight(v16), 0.0];
   }
 }
 
-- (void)setSearchResults:(id)a3
+- (void)setSearchResults:(id)results
 {
-  v5 = a3;
-  if (self->_searchResults != v5)
+  resultsCopy = results;
+  if (self->_searchResults != resultsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_searchResults, a3);
+    v6 = resultsCopy;
+    objc_storeStrong(&self->_searchResults, results);
     [(PSSearchResultsController *)self reloadData];
-    v5 = v6;
+    resultsCopy = v6;
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   searchResults = self->_searchResults;
-  v6 = a3;
-  v7 = [(PSSearchResults *)searchResults entryAtIndexPath:a4];
+  viewCopy = view;
+  v7 = [(PSSearchResults *)searchResults entryAtIndexPath:path];
   v8 = objc_opt_class();
-  v9 = [v8 reuseIdentifier];
-  v10 = [v6 dequeueReusableCellWithIdentifier:v9];
+  reuseIdentifier = [v8 reuseIdentifier];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier];
 
   if (!v10)
   {
-    v10 = [[v8 alloc] initWithStyle:3 reuseIdentifier:v9];
+    v10 = [[v8 alloc] initWithStyle:3 reuseIdentifier:reuseIdentifier];
   }
 
   v16 = 0;
   v11 = [v7 detailTextWithEffectiveTitle:&v16];
   v12 = v16;
-  v13 = [v10 textLabel];
-  [v13 setText:v12];
+  textLabel = [v10 textLabel];
+  [textLabel setText:v12];
 
-  v14 = [v10 detailTextLabel];
-  [v14 setText:v11];
+  detailTextLabel = [v10 detailTextLabel];
+  [detailTextLabel setText:v11];
 
   [v10 setShouldIndentSeparator:1];
   [v10 setShouldIndentContent:0];
@@ -130,41 +130,41 @@
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   searchResults = self->_searchResults;
-  v7 = a4;
-  v8 = a3;
-  v10 = [(PSSearchResults *)searchResults entryAtIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  v10 = [(PSSearchResults *)searchResults entryAtIndexPath:pathCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained searchResultsController:self didSelectSearchEntry:v10];
 
-  [v8 deselectRowAtIndexPath:v7 animated:0];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
 }
 
-- (void)_removeIconViewForSection:(id)a3
+- (void)_removeIconViewForSection:(id)section
 {
-  v5 = a3;
+  sectionCopy = section;
   v4 = [(NSMutableDictionary *)self->_iconViewMap objectForKeyedSubscript:?];
   if (v4)
   {
     [(NSMutableArray *)self->_reusableIconViews addObject:v4];
     [v4 removeFromSuperview];
-    [(NSMutableDictionary *)self->_iconViewMap removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_iconViewMap removeObjectForKey:sectionCopy];
   }
 }
 
-- (void)_updateIconViews:(BOOL)a3
+- (void)_updateIconViews:(BOOL)views
 {
   v95 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (views)
   {
-    v4 = [(NSMutableDictionary *)self->_iconViewMap allKeys];
+    allKeys = [(NSMutableDictionary *)self->_iconViewMap allKeys];
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
     v90 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v87 objects:v94 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v87 objects:v94 count:16];
     if (v5)
     {
       v6 = v5;
@@ -175,13 +175,13 @@
         {
           if (*v88 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           [(PSSearchResultsController *)self _removeIconViewForSection:*(*(&v87 + 1) + 8 * i)];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v87 objects:v94 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v87 objects:v94 count:16];
       }
 
       while (v6);
@@ -192,13 +192,13 @@
   v10 = v9;
   [(UITableView *)self->_tableView contentInset];
   v12 = v11;
-  v13 = [(UITableView *)self->_tableView indexPathsForVisibleRows];
-  v14 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v13, "count")}];
+  indexPathsForVisibleRows = [(UITableView *)self->_tableView indexPathsForVisibleRows];
+  v14 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(indexPathsForVisibleRows, "count")}];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v15 = v13;
+  v15 = indexPathsForVisibleRows;
   v16 = [v15 countByEnumeratingWithState:&v83 objects:v93 count:16];
   if (v16)
   {
@@ -248,11 +248,11 @@
         }
 
         v24 = *(*(&v79 + 1) + 8 * v23);
-        v25 = [v24 unsignedIntegerValue];
+        unsignedIntegerValue = [v24 unsignedIntegerValue];
         v26 = *(v22 + 2032);
         v27 = [*(&self->super.super.super.isa + v26) objectForKeyedSubscript:v24];
         tableView = self->_tableView;
-        v29 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v25];
+        v29 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:unsignedIntegerValue];
         [(UITableView *)tableView rectForRowAtIndexPath:v29];
         v31 = v30;
         v33 = v32;
@@ -263,7 +263,7 @@
           goto LABEL_23;
         }
 
-        v27 = [(PSSearchResults *)self->_searchResults sectionEntryAtIndex:v25];
+        v27 = [(PSSearchResults *)self->_searchResults sectionEntryAtIndex:unsignedIntegerValue];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v58 = [WeakRetained searchResultsController:self iconForSearchEntry:v27];
 
@@ -293,7 +293,7 @@
         if (v59)
         {
 LABEL_23:
-          [(UITableView *)self->_tableView rectForSection:v25];
+          [(UITableView *)self->_tableView rectForSection:unsignedIntegerValue];
           v37 = v36;
           v39 = v38;
           v41 = v40;
@@ -328,10 +328,10 @@ LABEL_23:
             v53 = v51;
           }
 
-          v54 = [MEMORY[0x1E69DC668] sharedApplication];
-          v55 = [v54 userInterfaceLayoutDirection];
+          mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+          userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-          if (v55 == 1)
+          if (userInterfaceLayoutDirection == 1)
           {
             [(UITableView *)self->_tableView frame];
             v45 = v56 - v49;
@@ -354,11 +354,11 @@ LABEL_31:
   }
 
   v61 = v69;
-  if (!a3)
+  if (!views)
   {
     v62 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:*(&self->super.super.super.isa + *(v22 + 2032))];
-    v63 = [v21 allObjects];
-    [v62 removeObjectsForKeys:v63];
+    allObjects = [v21 allObjects];
+    [v62 removeObjectsForKeys:allObjects];
 
     v77 = 0u;
     v78 = 0u;

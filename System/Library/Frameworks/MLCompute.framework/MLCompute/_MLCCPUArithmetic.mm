@@ -1,14 +1,14 @@
 @interface _MLCCPUArithmetic
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-+ (int)arithmeticOperatorTypeFor:(int)a3;
-+ (unsigned)bnnsArithmeticFunctionFor:(int)a3;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
++ (int)arithmeticOperatorTypeFor:(int)for;
++ (unsigned)bnnsArithmeticFunctionFor:(int)for;
 @end
 
 @implementation _MLCCPUArithmetic
 
-+ (int)arithmeticOperatorTypeFor:(int)a3
++ (int)arithmeticOperatorTypeFor:(int)for
 {
-  if (a3 <= 0x1D && ((1 << a3) & 0x3C20000F) != 0)
+  if (for <= 0x1D && ((1 << for) & 0x3C20000F) != 0)
   {
     return 2;
   }
@@ -19,58 +19,58 @@
   }
 }
 
-+ (unsigned)bnnsArithmeticFunctionFor:(int)a3
++ (unsigned)bnnsArithmeticFunctionFor:(int)for
 {
-  if (a3 < 0x1E)
+  if (for < 0x1E)
   {
-    return dword_238D45FD0[a3];
+    return dword_238D45FD0[for];
   }
 
   v6 = +[MLCLog framework];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [(_MLCCPUArithmetic *)a2 bnnsArithmeticFunctionFor:a3, v6];
+    [(_MLCCPUArithmetic *)a2 bnnsArithmeticFunctionFor:for, v6];
   }
 
   return 0;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v172 = a2;
-  v8 = a5;
-  v9 = a6;
-  v10 = [a4 objectAtIndexedSubscript:0];
-  v11 = [v10 params];
-  v12 = [v11 bytes];
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v10 = [ops objectAtIndexedSubscript:0];
+  params = [v10 params];
+  bytes = [params bytes];
 
   bzero(v186, 0x228uLL);
   v13 = [MEMORY[0x277CBEA90] dataWithBytes:v186 length:552];
-  *(v12 + 8) = [v13 bytes];
+  *(bytes + 8) = [v13 bytes];
   v176 = v13;
   [v10 setArithmeticParamsData:v13];
   v14 = MEMORY[0x277CBEBF8];
   v15 = [MEMORY[0x277CBEBF8] mutableCopy];
   v181 = [v14 mutableCopy];
-  v177 = v9;
+  v177 = tensorCopy;
   v178 = v10;
-  v175 = v12;
+  v175 = bytes;
   if ([v10 binaryOperation])
   {
-    if (*v12 <= 1u)
+    if (*bytes <= 1u)
     {
-      v16 = [v8 objectAtIndexedSubscript:{0, v172}];
-      v17 = [v9 doesShapeMatchWithTensor:v16];
+      v16 = [tensorsCopy objectAtIndexedSubscript:{0, v172}];
+      v17 = [tensorCopy doesShapeMatchWithTensor:v16];
 
       if (v17)
       {
         [v10 setUseSourceGradientDeviceMemoryForResultGradientTensor:1];
       }
 
-      if (!*v12)
+      if (!*bytes)
       {
-        v18 = [v8 objectAtIndexedSubscript:1];
-        v19 = [v9 doesShapeMatchWithTensor:v18];
+        v18 = [tensorsCopy objectAtIndexedSubscript:1];
+        v19 = [tensorCopy doesShapeMatchWithTensor:v18];
 
         if (v19)
         {
@@ -80,46 +80,46 @@
     }
 
     v179 = v15;
-    v20 = *(v12 + 8);
-    v21 = [v8 objectAtIndexedSubscript:{0, v172}];
-    v22 = [v21 descriptor];
-    v23 = [v22 shape];
-    v182 = [v23 count];
+    v20 = *(bytes + 8);
+    v21 = [tensorsCopy objectAtIndexedSubscript:{0, v172}];
+    descriptor = [v21 descriptor];
+    shape = [descriptor shape];
+    v182 = [shape count];
 
-    v24 = [v8 objectAtIndexedSubscript:1];
-    v25 = [v24 descriptor];
-    v26 = [v25 shape];
-    v27 = [v26 count];
-    v28 = [v8 objectAtIndexedSubscript:0];
-    v29 = [v28 descriptor];
-    v30 = [v29 shape];
-    v31 = v8;
-    v32 = [v30 count];
+    v24 = [tensorsCopy objectAtIndexedSubscript:1];
+    descriptor2 = [v24 descriptor];
+    shape2 = [descriptor2 shape];
+    v27 = [shape2 count];
+    v28 = [tensorsCopy objectAtIndexedSubscript:0];
+    descriptor3 = [v28 descriptor];
+    shape3 = [descriptor3 shape];
+    v31 = tensorsCopy;
+    v32 = [shape3 count];
 
     v33 = [v31 objectAtIndexedSubscript:1];
-    v34 = [v33 descriptor];
-    v35 = [v34 shape];
-    v36 = [v35 count];
+    descriptor4 = [v33 descriptor];
+    shape4 = [descriptor4 shape];
+    v36 = [shape4 count];
     v174 = v20;
     if (v27 <= v32)
     {
       v66 = [v31 objectAtIndexedSubscript:0];
-      v67 = [v66 descriptor];
-      v68 = [v67 shape];
-      v69 = [v68 count];
+      descriptor5 = [v66 descriptor];
+      shape5 = [descriptor5 shape];
+      v69 = [shape5 count];
 
       if (v36 >= v69)
       {
         v74 = [v31 objectAtIndexedSubscript:0];
-        v75 = [v74 descriptor];
-        v76 = [v75 shape];
-        v77 = [v76 objectAtIndexedSubscript:0];
-        v78 = [v77 unsignedIntValue];
+        descriptor6 = [v74 descriptor];
+        shape6 = [descriptor6 shape];
+        v77 = [shape6 objectAtIndexedSubscript:0];
+        unsignedIntValue = [v77 unsignedIntValue];
 
         v39 = v31;
         v40 = v178;
         v38 = v182;
-        if (v78 == 1)
+        if (unsignedIntValue == 1)
         {
           v79 = [v31 objectAtIndexedSubscript:0];
           *(v20 + 176) = ~[v79 computeFlags] & 2;
@@ -131,12 +131,12 @@
         }
 
         v80 = [v31 objectAtIndexedSubscript:1];
-        v81 = [v80 descriptor];
-        v82 = [v81 shape];
-        v83 = [v82 objectAtIndexedSubscript:0];
-        v84 = [v83 unsignedIntValue];
+        descriptor7 = [v80 descriptor];
+        shape7 = [descriptor7 shape];
+        v83 = [shape7 objectAtIndexedSubscript:0];
+        unsignedIntValue2 = [v83 unsignedIntValue];
 
-        if (v84 == 1)
+        if (unsignedIntValue2 == 1)
         {
           v85 = [v31 objectAtIndexedSubscript:1];
           v41 = v20;
@@ -178,18 +178,18 @@
 
     *(v41 + 544) = 1;
     v86 = [v39 objectAtIndexedSubscript:0];
-    v87 = [v86 descriptor];
-    v88 = [v87 shape];
-    v89 = [v88 count];
+    descriptor8 = [v86 descriptor];
+    shape8 = [descriptor8 shape];
+    v89 = [shape8 count];
 
     v90 = [v39 objectAtIndexedSubscript:0];
-    v91 = [v90 descriptor];
-    v92 = [v91 shape];
-    v93 = v92;
+    descriptor9 = [v90 descriptor];
+    shape9 = [descriptor9 shape];
+    v93 = shape9;
     v184 = v38;
     if (v38 == v89)
     {
-      v94 = [v92 copy];
+      v94 = [shape9 copy];
 
       v95 = [v39 objectAtIndexedSubscript:0];
       [v40 setSourceStride:CPU_SetBatchStride(v95)];
@@ -200,7 +200,7 @@
     else
     {
       v96 = v38;
-      v97 = [v92 count];
+      v97 = [shape9 count];
 
       v98 = v179;
       if (v96)
@@ -215,10 +215,10 @@
           if (v100 >= v101)
           {
             v104 = [v99 objectAtIndexedSubscript:0];
-            v105 = [v104 descriptor];
-            v106 = [v105 shape];
-            v107 = [v106 objectAtIndexedSubscript:v102 + v100];
-            v103 = [v107 unsignedIntegerValue];
+            descriptor10 = [v104 descriptor];
+            shape10 = [descriptor10 shape];
+            v100 = [shape10 objectAtIndexedSubscript:v102 + v100];
+            unsignedIntegerValue = [v100 unsignedIntegerValue];
 
             v38 = v184;
             v98 = v179;
@@ -226,10 +226,10 @@
 
           else
           {
-            v103 = 1;
+            unsignedIntegerValue = 1;
           }
 
-          v108 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v103];
+          v108 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
           [v98 setObject:v108 atIndexedSubscript:v100];
 
           ++v100;
@@ -272,17 +272,17 @@
     }
 
     v112 = [v39 objectAtIndexedSubscript:1];
-    v113 = [v112 descriptor];
-    v114 = [v113 shape];
-    v115 = [v114 count];
+    descriptor11 = [v112 descriptor];
+    shape11 = [descriptor11 shape];
+    v115 = [shape11 count];
 
     v116 = [v39 objectAtIndexedSubscript:1];
-    v117 = [v116 descriptor];
-    v118 = [v117 shape];
-    v119 = v118;
+    descriptor12 = [v116 descriptor];
+    shape12 = [descriptor12 shape];
+    v119 = shape12;
     if (v38 == v115)
     {
-      v72 = [v118 copy];
+      v72 = [shape12 copy];
 
       v120 = [v39 objectAtIndexedSubscript:1];
       [v40 setSourceStrideSecondary:CPU_SetBatchStride(v120)];
@@ -291,7 +291,7 @@
     else
     {
       v121 = v38;
-      v122 = [v118 count];
+      v122 = [shape12 count];
 
       v72 = v181;
       if (v121)
@@ -306,10 +306,10 @@
           if (v124 >= v125)
           {
             v129 = [v123 objectAtIndexedSubscript:1];
-            v130 = [v129 descriptor];
-            v131 = [v130 shape];
-            v132 = [v131 objectAtIndexedSubscript:v126 + v124];
-            v128 = [v132 unsignedIntegerValue];
+            descriptor13 = [v129 descriptor];
+            shape13 = [descriptor13 shape];
+            v124 = [shape13 objectAtIndexedSubscript:v126 + v124];
+            unsignedIntegerValue2 = [v124 unsignedIntegerValue];
 
             v127 = v184;
             v72 = v181;
@@ -317,10 +317,10 @@
 
           else
           {
-            v128 = 1;
+            unsignedIntegerValue2 = 1;
           }
 
-          v133 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v128];
+          v133 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2];
           [v72 setObject:v133 atIndexedSubscript:v124];
 
           ++v124;
@@ -362,8 +362,8 @@
     }
 
     v137 = [v39 objectAtIndexedSubscript:0];
-    v138 = [v137 descriptor];
-    v139 = CPU_BuildBNNSNDArrayDescriptor(v41, v179, 0, 0, [v138 dataType], 1, 0);
+    descriptor14 = [v137 descriptor];
+    v139 = CPU_BuildBNNSNDArrayDescriptor(v41, v179, 0, 0, [descriptor14 dataType], 1, 0);
 
     if (!v139 || ([v39 objectAtIndexedSubscript:1], v140 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v140, "descriptor"), v141 = objc_claimAutoreleasedReturnValue(), v142 = CPU_BuildBNNSNDArrayDescriptor(v41 + 184, v72, 0, 0, objc_msgSend(v141, "dataType"), 1, 0), v141, v140, !v142))
     {
@@ -375,12 +375,12 @@
 
     v181 = v72;
     v56 = v177;
-    v143 = [v177 descriptor];
-    v144 = [v143 shape];
-    v145 = [v177 descriptor];
-    v146 = [v145 stride];
-    v147 = [v177 descriptor];
-    v148 = CPU_BuildBNNSNDArrayDescriptor(v41 + 368, v144, v146, 0, [v147 dataType], 1, 0);
+    descriptor15 = [v177 descriptor];
+    shape14 = [descriptor15 shape];
+    descriptor16 = [v177 descriptor];
+    stride = [descriptor16 stride];
+    descriptor17 = [v177 descriptor];
+    v148 = CPU_BuildBNNSNDArrayDescriptor(v41 + 368, shape14, stride, 0, [descriptor17 dataType], 1, 0);
 
     if ((v148 & 1) == 0)
     {
@@ -397,23 +397,23 @@
     goto LABEL_56;
   }
 
-  v42 = [v8 objectAtIndexedSubscript:{0, v172}];
-  v43 = [v42 descriptor];
-  v44 = [v43 shape];
-  v180 = [v44 copy];
+  v42 = [tensorsCopy objectAtIndexedSubscript:{0, v172}];
+  descriptor18 = [v42 descriptor];
+  shape15 = [descriptor18 shape];
+  v180 = [shape15 copy];
 
-  v45 = v8;
-  v46 = *(v12 + 8);
+  v45 = tensorsCopy;
+  v46 = *(bytes + 8);
   v47 = [v45 objectAtIndexedSubscript:0];
-  v48 = [v47 descriptor];
-  v49 = [v48 shape];
+  descriptor19 = [v47 descriptor];
+  shape16 = [descriptor19 shape];
   v50 = [v45 objectAtIndexedSubscript:0];
-  v51 = [v50 descriptor];
-  v52 = [v51 stride];
+  descriptor20 = [v50 descriptor];
+  stride2 = [descriptor20 stride];
   v183 = v45;
   v53 = [v45 objectAtIndexedSubscript:0];
-  v54 = [v53 descriptor];
-  LODWORD(v45) = CPU_BuildBNNSNDArrayDescriptor(v46, v49, v52, 0, [v54 dataType], 1, 0);
+  descriptor21 = [v53 descriptor];
+  LODWORD(v45) = CPU_BuildBNNSNDArrayDescriptor(v46, shape16, stride2, 0, [descriptor21 dataType], 1, 0);
 
   if (!v45)
   {
@@ -430,12 +430,12 @@ LABEL_17:
   v55 = v180;
   *(v46 + 176) = 1;
   v56 = v177;
-  v57 = [v177 descriptor];
-  v58 = [v57 shape];
-  v59 = [v177 descriptor];
-  v60 = [v59 stride];
-  v61 = [v177 descriptor];
-  v62 = CPU_BuildBNNSNDArrayDescriptor(v46 + 184, v58, v60, 0, [v61 dataType], 1, 0);
+  descriptor22 = [v177 descriptor];
+  shape17 = [descriptor22 shape];
+  descriptor23 = [v177 descriptor];
+  stride3 = [descriptor23 stride];
+  descriptor24 = [v177 descriptor];
+  v62 = CPU_BuildBNNSNDArrayDescriptor(v46 + 184, shape17, stride3, 0, [descriptor24 dataType], 1, 0);
 
   if (!v62)
   {
@@ -452,36 +452,36 @@ LABEL_17:
   v65 = v180;
 LABEL_56:
   [v64 setResultStride:CPU_SetBatchStride(v56)];
-  v149 = [v64 inDeltaData];
-  v150 = [v149 objectAtIndexedSubscript:0];
-  v151 = [v150 bytes];
+  inDeltaData = [v64 inDeltaData];
+  v150 = [inDeltaData objectAtIndexedSubscript:0];
+  bytes2 = [v150 bytes];
 
-  v152 = [v64 outDeltaData];
-  v153 = [v152 objectAtIndexedSubscript:0];
-  v154 = [v153 bytes];
+  outDeltaData = [v64 outDeltaData];
+  v153 = [outDeltaData objectAtIndexedSubscript:0];
+  bytes3 = [v153 bytes];
 
   v155 = [v39 objectAtIndexedSubscript:0];
-  v156 = [v155 descriptor];
+  descriptor25 = [v155 descriptor];
   v55 = v65;
-  CPU_BuildBNNSNDArrayDescriptor(v151, v65, 0, 0, [v156 dataType], 1, 0);
+  CPU_BuildBNNSNDArrayDescriptor(bytes2, v65, 0, 0, [descriptor25 dataType], 1, 0);
 
   if ([v64 binaryOperation])
   {
-    v157 = [v178 inDeltaData];
-    v158 = [v157 objectAtIndexedSubscript:1];
-    v159 = [v158 bytes];
+    inDeltaData2 = [v178 inDeltaData];
+    v158 = [inDeltaData2 objectAtIndexedSubscript:1];
+    bytes4 = [v158 bytes];
 
     v160 = [v39 objectAtIndexedSubscript:1];
-    v161 = [v160 descriptor];
-    CPU_BuildBNNSNDArrayDescriptor(v159, v181, 0, 0, [v161 dataType], 1, 0);
+    descriptor26 = [v160 descriptor];
+    CPU_BuildBNNSNDArrayDescriptor(bytes4, v181, 0, 0, [descriptor26 dataType], 1, 0);
   }
 
-  v162 = [v56 descriptor];
-  v163 = [v162 shape];
-  v164 = [v56 descriptor];
-  v165 = [v164 stride];
-  v166 = [v56 descriptor];
-  CPU_BuildBNNSNDArrayDescriptor(v154, v163, v165, 0, [v166 dataType], 1, 0);
+  descriptor27 = [v56 descriptor];
+  shape18 = [descriptor27 shape];
+  descriptor28 = [v56 descriptor];
+  stride4 = [descriptor28 stride];
+  descriptor29 = [v56 descriptor];
+  CPU_BuildBNNSNDArrayDescriptor(bytes3, shape18, stride4, 0, [descriptor29 dataType], 1, 0);
 
   memset(v185, 0, sizeof(v185));
   LODWORD(v185[0]) = 1;
@@ -502,8 +502,8 @@ LABEL_56:
   v169 = objc_opt_new();
   [v178 setLayer:v169];
 
-  v170 = [v178 layer];
-  [v170 setFilter:v167];
+  layer = [v178 layer];
+  [layer setFilter:v167];
 
   v71 = 1;
 LABEL_64:

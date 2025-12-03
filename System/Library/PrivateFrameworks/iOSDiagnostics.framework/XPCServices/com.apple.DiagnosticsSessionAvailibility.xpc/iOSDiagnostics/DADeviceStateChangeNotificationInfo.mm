@@ -1,29 +1,29 @@
 @interface DADeviceStateChangeNotificationInfo
-+ (id)infoWithChangedProperties:(unint64_t)a3 snapshot:(id)a4;
-- (DADeviceStateChangeNotificationInfo)initWithChangedProperties:(unint64_t)a3 snapshot:(id)a4;
++ (id)infoWithChangedProperties:(unint64_t)properties snapshot:(id)snapshot;
+- (DADeviceStateChangeNotificationInfo)initWithChangedProperties:(unint64_t)properties snapshot:(id)snapshot;
 @end
 
 @implementation DADeviceStateChangeNotificationInfo
 
-+ (id)infoWithChangedProperties:(unint64_t)a3 snapshot:(id)a4
++ (id)infoWithChangedProperties:(unint64_t)properties snapshot:(id)snapshot
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithChangedProperties:a3 snapshot:v6];
+  snapshotCopy = snapshot;
+  v7 = [[self alloc] initWithChangedProperties:properties snapshot:snapshotCopy];
 
   return v7;
 }
 
-- (DADeviceStateChangeNotificationInfo)initWithChangedProperties:(unint64_t)a3 snapshot:(id)a4
+- (DADeviceStateChangeNotificationInfo)initWithChangedProperties:(unint64_t)properties snapshot:(id)snapshot
 {
-  v7 = a4;
+  snapshotCopy = snapshot;
   v11.receiver = self;
   v11.super_class = DADeviceStateChangeNotificationInfo;
   v8 = [(DADeviceStateChangeNotificationInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_changedProperties = a3;
-    objc_storeStrong(&v8->_snapshot, a4);
+    v8->_changedProperties = properties;
+    objc_storeStrong(&v8->_snapshot, snapshot);
   }
 
   return v9;

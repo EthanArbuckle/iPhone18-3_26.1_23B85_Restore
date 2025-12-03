@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInSSN
-- (PKPaymentSetupFieldBuiltInSSN)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInSSN)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInSSN
 
-- (PKPaymentSetupFieldBuiltInSSN)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInSSN)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = PKPaymentSetupFieldBuiltInSSN;
-  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"ssnFull" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"ssnFull" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_Ssn.isa, 0);

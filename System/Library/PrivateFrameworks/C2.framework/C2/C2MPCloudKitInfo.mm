@@ -1,18 +1,18 @@
 @interface C2MPCloudKitInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addClientOperation:(id)a3;
-- (void)addOperationGroup:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAnonymous:(BOOL)a3;
-- (void)setHasReportClientOperationFrequencyBase:(BOOL)a3;
-- (void)setHasReportOperationGroupFrequency:(BOOL)a3;
-- (void)setHasReportOperationGroupFrequencyBase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addClientOperation:(id)operation;
+- (void)addOperationGroup:(id)group;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAnonymous:(BOOL)anonymous;
+- (void)setHasReportClientOperationFrequencyBase:(BOOL)base;
+- (void)setHasReportOperationGroupFrequency:(BOOL)frequency;
+- (void)setHasReportOperationGroupFrequencyBase:(BOOL)base;
+- (void)writeTo:(id)to;
 @end
 
 @implementation C2MPCloudKitInfo
@@ -20,12 +20,12 @@
 - (id)dictionaryRepresentation
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   clientProcessVersion = self->_clientProcessVersion;
   if (clientProcessVersion)
   {
-    [v3 setObject:clientProcessVersion forKey:@"client_process_version"];
+    [dictionary setObject:clientProcessVersion forKey:@"client_process_version"];
   }
 
   clientBundleId = self->_clientBundleId;
@@ -104,8 +104,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -154,8 +154,8 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation2 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation2];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -187,9 +187,9 @@
   return v4;
 }
 
-- (void)setHasAnonymous:(BOOL)a3
+- (void)setHasAnonymous:(BOOL)anonymous
 {
-  if (a3)
+  if (anonymous)
   {
     v3 = 16;
   }
@@ -202,27 +202,27 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addOperationGroup:(id)a3
+- (void)addOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   operationGroups = self->_operationGroups;
-  v8 = v4;
+  v8 = groupCopy;
   if (!operationGroups)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_operationGroups;
     self->_operationGroups = v6;
 
-    v4 = v8;
+    groupCopy = v8;
     operationGroups = self->_operationGroups;
   }
 
-  [(NSMutableArray *)operationGroups addObject:v4];
+  [(NSMutableArray *)operationGroups addObject:groupCopy];
 }
 
-- (void)setHasReportOperationGroupFrequency:(BOOL)a3
+- (void)setHasReportOperationGroupFrequency:(BOOL)frequency
 {
-  if (a3)
+  if (frequency)
   {
     v3 = 4;
   }
@@ -235,9 +235,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasReportOperationGroupFrequencyBase:(BOOL)a3
+- (void)setHasReportOperationGroupFrequencyBase:(BOOL)base
 {
-  if (a3)
+  if (base)
   {
     v3 = 8;
   }
@@ -250,27 +250,27 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addClientOperation:(id)a3
+- (void)addClientOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   clientOperations = self->_clientOperations;
-  v8 = v4;
+  v8 = operationCopy;
   if (!clientOperations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_clientOperations;
     self->_clientOperations = v6;
 
-    v4 = v8;
+    operationCopy = v8;
     clientOperations = self->_clientOperations;
   }
 
-  [(NSMutableArray *)clientOperations addObject:v4];
+  [(NSMutableArray *)clientOperations addObject:operationCopy];
 }
 
-- (void)setHasReportClientOperationFrequencyBase:(BOOL)a3
+- (void)setHasReportClientOperationFrequencyBase:(BOOL)base
 {
-  if (a3)
+  if (base)
   {
     v3 = 2;
   }
@@ -289,16 +289,16 @@
   v8.receiver = self;
   v8.super_class = C2MPCloudKitInfo;
   v4 = [(C2MPCloudKitInfo *)&v8 description];
-  v5 = [(C2MPCloudKitInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(C2MPCloudKitInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_clientProcessVersion)
   {
     PBDataWriterWriteStringField();
@@ -439,38 +439,38 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_clientProcessVersion)
   {
-    [v4 setClientProcessVersion:?];
-    v4 = v15;
+    [toCopy setClientProcessVersion:?];
+    toCopy = v15;
   }
 
   if (self->_clientBundleId)
   {
     [v15 setClientBundleId:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_container)
   {
     [v15 setContainer:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_environment)
   {
     [v15 setEnvironment:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[128] = self->_anonymous;
-    v4[132] |= 0x10u;
+    toCopy[128] = self->_anonymous;
+    toCopy[132] |= 0x10u;
   }
 
   if (self->_containerScopedUserIdentifier)
@@ -501,10 +501,10 @@
   if ([(C2MPCloudKitInfo *)self operationGroupsCount])
   {
     [v15 clearOperationGroups];
-    v5 = [(C2MPCloudKitInfo *)self operationGroupsCount];
-    if (v5)
+    operationGroupsCount = [(C2MPCloudKitInfo *)self operationGroupsCount];
+    if (operationGroupsCount)
     {
-      v6 = v5;
+      v6 = operationGroupsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(C2MPCloudKitInfo *)self operationGroupAtIndex:i];
@@ -530,10 +530,10 @@
   if ([(C2MPCloudKitInfo *)self clientOperationsCount])
   {
     [v15 clearClientOperations];
-    v10 = [(C2MPCloudKitInfo *)self clientOperationsCount];
-    if (v10)
+    clientOperationsCount = [(C2MPCloudKitInfo *)self clientOperationsCount];
+    if (clientOperationsCount)
     {
-      v11 = v10;
+      v11 = clientOperationsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(C2MPCloudKitInfo *)self clientOperationAtIndex:j];
@@ -557,23 +557,23 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientProcessVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientProcessVersion copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
-  v8 = [(NSString *)self->_clientBundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_clientBundleId copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_container copyWithZone:a3];
+  v10 = [(NSString *)self->_container copyWithZone:zone];
   v11 = *(v5 + 80);
   *(v5 + 80) = v10;
 
-  v12 = [(NSString *)self->_environment copyWithZone:a3];
+  v12 = [(NSString *)self->_environment copyWithZone:zone];
   v13 = *(v5 + 112);
   *(v5 + 112) = v12;
 
@@ -583,23 +583,23 @@
     *(v5 + 132) |= 0x10u;
   }
 
-  v14 = [(NSString *)self->_containerScopedUserIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_containerScopedUserIdentifier copyWithZone:zone];
   v15 = *(v5 + 96);
   *(v5 + 96) = v14;
 
-  v16 = [(NSString *)self->_containerScopedDeviceIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_containerScopedDeviceIdentifier copyWithZone:zone];
   v17 = *(v5 + 88);
   *(v5 + 88) = v16;
 
-  v18 = [(NSString *)self->_applicationBundleIdentifierOverrideForContainerAccess copyWithZone:a3];
+  v18 = [(NSString *)self->_applicationBundleIdentifierOverrideForContainerAccess copyWithZone:zone];
   v19 = *(v5 + 40);
   *(v5 + 40) = v18;
 
-  v20 = [(NSString *)self->_applicationBundleIdentifierOverrideForNetworkAttribution copyWithZone:a3];
+  v20 = [(NSString *)self->_applicationBundleIdentifierOverrideForNetworkAttribution copyWithZone:zone];
   v21 = *(v5 + 48);
   *(v5 + 48) = v20;
 
-  v22 = [(NSString *)self->_databaseScope copyWithZone:a3];
+  v22 = [(NSString *)self->_databaseScope copyWithZone:zone];
   v23 = *(v5 + 104);
   *(v5 + 104) = v22;
 
@@ -622,7 +622,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v44 + 1) + 8 * i) copyWithZone:a3];
+        v29 = [*(*(&v44 + 1) + 8 * i) copyWithZone:zone];
         [v5 addOperationGroup:v29];
       }
 
@@ -665,7 +665,7 @@
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v40 + 1) + 8 * j) copyWithZone:{a3, v40}];
+        v36 = [*(*(&v40 + 1) + 8 * j) copyWithZone:{zone, v40}];
         [v5 addClientOperation:v36];
       }
 
@@ -693,16 +693,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   clientProcessVersion = self->_clientProcessVersion;
-  if (clientProcessVersion | *(v4 + 9))
+  if (clientProcessVersion | *(equalCopy + 9))
   {
     if (![(NSString *)clientProcessVersion isEqual:?])
     {
@@ -711,7 +711,7 @@
   }
 
   clientBundleId = self->_clientBundleId;
-  if (clientBundleId | *(v4 + 7))
+  if (clientBundleId | *(equalCopy + 7))
   {
     if (![(NSString *)clientBundleId isEqual:?])
     {
@@ -720,7 +720,7 @@
   }
 
   container = self->_container;
-  if (container | *(v4 + 10))
+  if (container | *(equalCopy + 10))
   {
     if (![(NSString *)container isEqual:?])
     {
@@ -729,7 +729,7 @@
   }
 
   environment = self->_environment;
-  if (environment | *(v4 + 14))
+  if (environment | *(equalCopy + 14))
   {
     if (![(NSString *)environment isEqual:?])
     {
@@ -737,42 +737,42 @@
     }
   }
 
-  v9 = *(v4 + 132);
+  v9 = *(equalCopy + 132);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 132) & 0x10) == 0)
+    if ((*(equalCopy + 132) & 0x10) == 0)
     {
       goto LABEL_28;
     }
 
-    v20 = *(v4 + 128);
+    v20 = *(equalCopy + 128);
     if (self->_anonymous)
     {
-      if ((*(v4 + 128) & 1) == 0)
+      if ((*(equalCopy + 128) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(v4 + 128))
+    else if (*(equalCopy + 128))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 132) & 0x10) != 0)
+  else if ((*(equalCopy + 132) & 0x10) != 0)
   {
     goto LABEL_28;
   }
 
   containerScopedUserIdentifier = self->_containerScopedUserIdentifier;
-  if (containerScopedUserIdentifier | *(v4 + 12) && ![(NSString *)containerScopedUserIdentifier isEqual:?])
+  if (containerScopedUserIdentifier | *(equalCopy + 12) && ![(NSString *)containerScopedUserIdentifier isEqual:?])
   {
     goto LABEL_28;
   }
 
   containerScopedDeviceIdentifier = self->_containerScopedDeviceIdentifier;
-  if (containerScopedDeviceIdentifier | *(v4 + 11))
+  if (containerScopedDeviceIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)containerScopedDeviceIdentifier isEqual:?])
     {
@@ -781,7 +781,7 @@
   }
 
   applicationBundleIdentifierOverrideForContainerAccess = self->_applicationBundleIdentifierOverrideForContainerAccess;
-  if (applicationBundleIdentifierOverrideForContainerAccess | *(v4 + 5))
+  if (applicationBundleIdentifierOverrideForContainerAccess | *(equalCopy + 5))
   {
     if (![(NSString *)applicationBundleIdentifierOverrideForContainerAccess isEqual:?])
     {
@@ -790,7 +790,7 @@
   }
 
   applicationBundleIdentifierOverrideForNetworkAttribution = self->_applicationBundleIdentifierOverrideForNetworkAttribution;
-  if (applicationBundleIdentifierOverrideForNetworkAttribution | *(v4 + 6))
+  if (applicationBundleIdentifierOverrideForNetworkAttribution | *(equalCopy + 6))
   {
     if (![(NSString *)applicationBundleIdentifierOverrideForNetworkAttribution isEqual:?])
     {
@@ -799,7 +799,7 @@
   }
 
   databaseScope = self->_databaseScope;
-  if (databaseScope | *(v4 + 13))
+  if (databaseScope | *(equalCopy + 13))
   {
     if (![(NSString *)databaseScope isEqual:?])
     {
@@ -808,7 +808,7 @@
   }
 
   operationGroups = self->_operationGroups;
-  if (operationGroups | *(v4 + 15))
+  if (operationGroups | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)operationGroups isEqual:?])
     {
@@ -817,35 +817,35 @@
   }
 
   has = self->_has;
-  v17 = *(v4 + 132);
+  v17 = *(equalCopy + 132);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 132) & 4) == 0 || self->_reportOperationGroupFrequency != *(v4 + 3))
+    if ((*(equalCopy + 132) & 4) == 0 || self->_reportOperationGroupFrequency != *(equalCopy + 3))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 132) & 4) != 0)
+  else if ((*(equalCopy + 132) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 132) & 8) == 0 || self->_reportOperationGroupFrequencyBase != *(v4 + 4))
+    if ((*(equalCopy + 132) & 8) == 0 || self->_reportOperationGroupFrequencyBase != *(equalCopy + 4))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 132) & 8) != 0)
+  else if ((*(equalCopy + 132) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   clientOperations = self->_clientOperations;
-  if (clientOperations | *(v4 + 8))
+  if (clientOperations | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)clientOperations isEqual:?])
     {
@@ -857,24 +857,24 @@
 
   if (has)
   {
-    if ((*(v4 + 132) & 1) == 0 || self->_reportClientOperationFrequency != *(v4 + 1))
+    if ((*(equalCopy + 132) & 1) == 0 || self->_reportClientOperationFrequency != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 132))
+  else if (*(equalCopy + 132))
   {
     goto LABEL_28;
   }
 
-  v18 = (*(v4 + 132) & 2) == 0;
+  v18 = (*(equalCopy + 132) & 2) == 0;
   if ((has & 2) == 0)
   {
     goto LABEL_29;
   }
 
-  if ((*(v4 + 132) & 2) != 0 && self->_reportClientOperationFrequencyBase == *(v4 + 2))
+  if ((*(equalCopy + 132) & 2) != 0 && self->_reportClientOperationFrequencyBase == *(equalCopy + 2))
   {
     v18 = 1;
     goto LABEL_29;
@@ -956,57 +956,57 @@ LABEL_11:
   return v18 ^ v19 ^ v17 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 9))
+  fromCopy = from;
+  if (*(fromCopy + 9))
   {
     [(C2MPCloudKitInfo *)self setClientProcessVersion:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(C2MPCloudKitInfo *)self setClientBundleId:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(C2MPCloudKitInfo *)self setContainer:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(C2MPCloudKitInfo *)self setEnvironment:?];
   }
 
-  if ((*(v4 + 132) & 0x10) != 0)
+  if ((*(fromCopy + 132) & 0x10) != 0)
   {
-    self->_anonymous = *(v4 + 128);
+    self->_anonymous = *(fromCopy + 128);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(C2MPCloudKitInfo *)self setContainerScopedUserIdentifier:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(C2MPCloudKitInfo *)self setContainerScopedDeviceIdentifier:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(C2MPCloudKitInfo *)self setApplicationBundleIdentifierOverrideForContainerAccess:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(C2MPCloudKitInfo *)self setApplicationBundleIdentifierOverrideForNetworkAttribution:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(C2MPCloudKitInfo *)self setDatabaseScope:?];
   }
@@ -1015,7 +1015,7 @@ LABEL_11:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 15);
+  v5 = *(fromCopy + 15);
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
@@ -1039,17 +1039,17 @@ LABEL_11:
     while (v7);
   }
 
-  v10 = *(v4 + 132);
+  v10 = *(fromCopy + 132);
   if ((v10 & 4) != 0)
   {
-    self->_reportOperationGroupFrequency = *(v4 + 3);
+    self->_reportOperationGroupFrequency = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v10 = *(v4 + 132);
+    v10 = *(fromCopy + 132);
   }
 
   if ((v10 & 8) != 0)
   {
-    self->_reportOperationGroupFrequencyBase = *(v4 + 4);
+    self->_reportOperationGroupFrequencyBase = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
@@ -1057,7 +1057,7 @@ LABEL_11:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = *(v4 + 8);
+  v11 = *(fromCopy + 8);
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v12)
   {
@@ -1081,17 +1081,17 @@ LABEL_11:
     while (v13);
   }
 
-  v16 = *(v4 + 132);
+  v16 = *(fromCopy + 132);
   if (v16)
   {
-    self->_reportClientOperationFrequency = *(v4 + 1);
+    self->_reportClientOperationFrequency = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v16 = *(v4 + 132);
+    v16 = *(fromCopy + 132);
   }
 
   if ((v16 & 2) != 0)
   {
-    self->_reportClientOperationFrequencyBase = *(v4 + 2);
+    self->_reportClientOperationFrequencyBase = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 

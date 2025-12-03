@@ -1,22 +1,22 @@
 @interface SKUIProfileImagePicker
-+ (id)_fixCropRect:(id)a3 forOriginalImage:(id)a4;
-- (SKUIProfileImagePicker)initWithClientContext:(id)a3;
++ (id)_fixCropRect:(id)rect forOriginalImage:(id)image;
+- (SKUIProfileImagePicker)initWithClientContext:(id)context;
 - (SKUIProfileImagePickerDelegate)delegate;
 - (void)_didCancel;
-- (void)_presentImagePickerWithSourceType:(int64_t)a3;
+- (void)_presentImagePickerWithSourceType:(int64_t)type;
 - (void)_showImagePicker;
 - (void)_showImageSourcePicker;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SKUIProfileImagePicker
 
-- (SKUIProfileImagePicker)initWithClientContext:(id)a3
+- (SKUIProfileImagePicker)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProfileImagePicker initWithClientContext:];
@@ -29,26 +29,26 @@
   if (v6)
   {
     [(SKUIProfileImagePicker *)v6 setModalPresentationStyle:4];
-    objc_storeStrong(&v7->_clientContext, a3);
+    objc_storeStrong(&v7->_clientContext, context);
     v7->_firstApperance = 0;
   }
 
   return v7;
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
   [(SKUIProfileImagePicker *)self dismissViewControllerAnimated:1 completion:0];
 
   [(SKUIProfileImagePicker *)self _didCancel];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   [(SKUIProfileImagePicker *)self dismissViewControllerAnimated:1 completion:0];
-  v12 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76A80]];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76A48]];
+  v12 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D76A80]];
+  v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D76A48]];
 
   if (v6)
   {
@@ -80,17 +80,17 @@
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [(SKUIProfileImagePicker *)self setView:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SKUIProfileImagePicker;
-  [(SKUIProfileImagePicker *)&v4 viewDidAppear:a3];
+  [(SKUIProfileImagePicker *)&v4 viewDidAppear:appear];
   if (!self->_firstApperance)
   {
     self->_firstApperance = 1;
@@ -98,11 +98,11 @@
   }
 }
 
-+ (id)_fixCropRect:(id)a3 forOriginalImage:(id)a4
++ (id)_fixCropRect:(id)rect forOriginalImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 CGRectValue];
+  rectCopy = rect;
+  imageCopy = image;
+  [rectCopy CGRectValue];
   v10 = v9;
   v12 = v11;
   if (v7 >= 0.0)
@@ -125,10 +125,10 @@
     v14 = 0.0;
   }
 
-  [v6 size];
+  [imageCopy size];
   if (v14 + v13 > v15)
   {
-    [v6 size];
+    [imageCopy size];
     v13 = v16 - v14;
   }
 
@@ -138,14 +138,14 @@
     v10 = 0.0;
   }
 
-  [v6 size];
+  [imageCopy size];
   if (v10 + v12 > v17)
   {
-    [v6 size];
+    [imageCopy size];
     v12 = v18 - v10;
   }
 
-  [v5 CGRectValue];
+  [rectCopy CGRectValue];
   v27.origin.x = v19;
   v27.origin.y = v20;
   v27.size.width = v21;
@@ -158,10 +158,10 @@
   {
     v23 = [MEMORY[0x277CCAE60] valueWithCGRect:{v14, v10, v13, v12}];
 
-    v5 = v23;
+    rectCopy = v23;
   }
 
-  return v5;
+  return rectCopy;
 }
 
 - (void)_didCancel
@@ -176,14 +176,14 @@
   }
 }
 
-- (void)_presentImagePickerWithSourceType:(int64_t)a3
+- (void)_presentImagePickerWithSourceType:(int64_t)type
 {
   v19[5] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277D755C8]);
   imagePicker = self->_imagePicker;
   self->_imagePicker = v5;
 
-  [(UIImagePickerController *)self->_imagePicker setSourceType:a3];
+  [(UIImagePickerController *)self->_imagePicker setSourceType:type];
   v7 = SKUIMobileCoreServicesFramework();
   v8 = SKUIWeakLinkedSymbolForString("kUTTypeImage", v7);
   v9 = MEMORY[0x277CBEA60];
@@ -193,8 +193,8 @@
   [(UIImagePickerController *)self->_imagePicker setDelegate:self];
   [(UIImagePickerController *)self->_imagePicker _setImagePickerSavingOptions:3];
   v12 = MEMORY[0x277CBEB38];
-  v13 = [(UIImagePickerController *)self->_imagePicker _properties];
-  v14 = [v12 dictionaryWithDictionary:v13];
+  _properties = [(UIImagePickerController *)self->_imagePicker _properties];
+  v14 = [v12 dictionaryWithDictionary:_properties];
 
   v15 = *MEMORY[0x277D77490];
   v18[0] = *MEMORY[0x277D76A40];
@@ -296,10 +296,10 @@
   v15[3] = &unk_2781FBCE8;
   v15[4] = self;
   v11 = [MEMORY[0x277D750F8] actionWithTitle:v10 style:0 handler:v15];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v14 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:(v13 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v14 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   [v14 addAction:v5];
   [v14 addAction:v8];
   [v14 addAction:v11];

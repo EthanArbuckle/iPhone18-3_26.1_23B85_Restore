@@ -1,24 +1,24 @@
 @interface AAContactsManager
 - (AAContactsIDSStatusDelegate)delegate;
-- (id)_predicateForHandle:(id)a3;
-- (id)contactForHandle:(id)a3;
-- (id)contactForIdentifiers:(id)a3;
+- (id)_predicateForHandle:(id)handle;
+- (id)contactForHandle:(id)handle;
+- (id)contactForIdentifiers:(id)identifiers;
 - (id)contactForMe;
-- (id)contactIDForHandle:(id)a3;
+- (id)contactIDForHandle:(id)handle;
 - (void)contactForMe;
-- (void)fetchIDSStatusForHandle:(id)a3;
-- (void)idsStatusForHandle:(id)a3 completion:(id)a4;
+- (void)fetchIDSStatusForHandle:(id)handle;
+- (void)idsStatusForHandle:(id)handle completion:(id)completion;
 @end
 
 @implementation AAContactsManager
 
-- (id)contactIDForHandle:(id)a3
+- (id)contactIDForHandle:(id)handle
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   getCNContactStoreClass();
   v5 = objc_opt_new();
-  v6 = [(AAContactsManager *)self _predicateForHandle:v4];
+  v6 = [(AAContactsManager *)self _predicateForHandle:handleCopy];
 
   v7 = getCNContactIdentifierKey();
   v16[0] = v7;
@@ -29,40 +29,40 @@
   v10 = v15;
   if (v10)
   {
-    v11 = _AALogSystem();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    firstObject = _AALogSystem();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       [AAContactsManager contactIDForHandle:];
     }
 
-    v12 = 0;
+    identifier = 0;
     goto LABEL_7;
   }
 
   if ([v9 count])
   {
-    v11 = [v9 firstObject];
-    v12 = [v11 identifier];
+    firstObject = [v9 firstObject];
+    identifier = [firstObject identifier];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v12 = 0;
+  identifier = 0;
 LABEL_8:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return identifier;
 }
 
-- (id)contactForHandle:(id)a3
+- (id)contactForHandle:(id)handle
 {
   v22[7] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   getCNContactStoreClass();
   v5 = objc_opt_new();
-  v6 = [(AAContactsManager *)self _predicateForHandle:v4];
+  v6 = [(AAContactsManager *)self _predicateForHandle:handleCopy];
 
   v7 = getCNContactIdentifierKey();
   v22[0] = v7;
@@ -92,23 +92,23 @@ LABEL_8:
     }
   }
 
-  v18 = [v15 firstObject];
+  firstObject = [v15 firstObject];
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return firstObject;
 }
 
-- (id)contactForIdentifiers:(id)a3
+- (id)contactForIdentifiers:(id)identifiers
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 firstObject];
-  if (v3)
+  firstObject = [identifiers firstObject];
+  if (firstObject)
   {
     getCNContactStoreClass();
     v21 = objc_opt_new();
     CNContactClass = getCNContactClass();
-    v24[0] = v3;
+    v24[0] = firstObject;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     v6 = [CNContactClass predicateForContactsWithIdentifiers:v5];
 
@@ -140,7 +140,7 @@ LABEL_8:
       }
     }
 
-    v18 = [v15 firstObject];
+    firstObject2 = [v15 firstObject];
   }
 
   else
@@ -151,12 +151,12 @@ LABEL_8:
       [AAContactsManager contactForIdentifiers:v16];
     }
 
-    v18 = 0;
+    firstObject2 = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return firstObject2;
 }
 
 - (id)contactForMe
@@ -209,25 +209,25 @@ LABEL_8:
   return v12;
 }
 
-- (id)_predicateForHandle:(id)a3
+- (id)_predicateForHandle:(id)handle
 {
-  v3 = a3;
-  if ([v3 aa_appearsToBeEmail])
+  handleCopy = handle;
+  if ([handleCopy aa_appearsToBeEmail])
   {
-    v4 = [getCNContactClass() predicateForContactsMatchingEmailAddress:v3];
+    v4 = [getCNContactClass() predicateForContactsMatchingEmailAddress:handleCopy];
   }
 
   else
   {
-    if ([v3 aa_appearsToBePhoneNumber])
+    if ([handleCopy aa_appearsToBePhoneNumber])
     {
-      v5 = [getCNPhoneNumberClass() phoneNumberWithStringValue:v3];
+      v5 = [getCNPhoneNumberClass() phoneNumberWithStringValue:handleCopy];
       v6 = [getCNContactClass() predicateForContactsMatchingPhoneNumber:v5];
 
       goto LABEL_7;
     }
 
-    v4 = [getCNContactClass() predicateForContactsMatchingName:v3];
+    v4 = [getCNContactClass() predicateForContactsMatchingName:handleCopy];
   }
 
   v6 = v4;
@@ -236,17 +236,17 @@ LABEL_7:
   return v6;
 }
 
-- (void)fetchIDSStatusForHandle:(id)a3
+- (void)fetchIDSStatusForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [[AAMessagingDestination alloc] initWithHandle:v4];
+  handleCopy = handle;
+  v5 = [[AAMessagingDestination alloc] initWithHandle:handleCopy];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__AAContactsManager_fetchIDSStatusForHandle___block_invoke;
   v7[3] = &unk_1E7C9A758;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = handleCopy;
   v8 = v6;
   [(AAMessagingDestination *)v5 isRegisteredToiMessageWithCompletion:v7];
 
@@ -261,18 +261,18 @@ void __45__AAContactsManager_fetchIDSStatusForHandle___block_invoke(uint64_t a1,
   [v4 reachabilityForHandle:*(a1 + 32) isReachable:a2];
 }
 
-- (void)idsStatusForHandle:(id)a3 completion:(id)a4
+- (void)idsStatusForHandle:(id)handle completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AAMessagingDestination alloc] initWithHandle:v6];
+  completionCopy = completion;
+  handleCopy = handle;
+  v7 = [[AAMessagingDestination alloc] initWithHandle:handleCopy];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__AAContactsManager_idsStatusForHandle_completion___block_invoke;
   v9[3] = &unk_1E7C9A780;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(AAMessagingDestination *)v7 isRegisteredToiMessageWithCompletion:v9];
 }
 

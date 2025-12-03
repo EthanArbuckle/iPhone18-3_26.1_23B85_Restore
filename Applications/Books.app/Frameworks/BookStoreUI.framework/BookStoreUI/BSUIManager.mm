@@ -1,63 +1,63 @@
 @interface BSUIManager
 - (id)filterRegistry;
 - (id)imageResourceCache;
-- (void)registerTemplateBundlesFromPackage:(id)a3;
+- (void)registerTemplateBundlesFromPackage:(id)package;
 @end
 
 @implementation BSUIManager
 
 - (id)imageResourceCache
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_imageResourceCache)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_imageResourceCache)
   {
     v3 = [TUIImageResourceCache alloc];
-    v4 = [(BSUIManager *)v2 resourceLoader];
-    v5 = [(BSUIManager *)v2 filterRegistry];
+    resourceLoader = [(BSUIManager *)selfCopy resourceLoader];
+    filterRegistry = [(BSUIManager *)selfCopy filterRegistry];
     v6 = BSUIBundle();
-    v7 = [v3 initWithLoader:v4 filters:v5 customImageBundle:v6];
-    imageResourceCache = v2->_imageResourceCache;
-    v2->_imageResourceCache = v7;
+    v7 = [v3 initWithLoader:resourceLoader filters:filterRegistry customImageBundle:v6];
+    imageResourceCache = selfCopy->_imageResourceCache;
+    selfCopy->_imageResourceCache = v7;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v9 = v2->_imageResourceCache;
+  v9 = selfCopy->_imageResourceCache;
 
   return v9;
 }
 
 - (id)filterRegistry
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_filterRegistry)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_filterRegistry)
   {
     v3 = objc_alloc_init(TUIFilterRegistry);
-    filterRegistry = v2->_filterRegistry;
-    v2->_filterRegistry = v3;
+    filterRegistry = selfCopy->_filterRegistry;
+    selfCopy->_filterRegistry = v3;
 
     v5 = +[BCCoverEffects sharedInstance];
-    v6 = v2->_filterRegistry;
-    v7 = [v5 templateImageFilters];
-    [(TUIFilterRegistry *)v6 registerImageFilters:v7];
+    v6 = selfCopy->_filterRegistry;
+    templateImageFilters = [v5 templateImageFilters];
+    [(TUIFilterRegistry *)v6 registerImageFilters:templateImageFilters];
 
-    v8 = v2->_filterRegistry;
-    v9 = [v5 templateImageSetFilters];
-    [(TUIFilterRegistry *)v8 registerImageSetFilters:v9];
+    v8 = selfCopy->_filterRegistry;
+    templateImageSetFilters = [v5 templateImageSetFilters];
+    [(TUIFilterRegistry *)v8 registerImageSetFilters:templateImageSetFilters];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_filterRegistry;
+  v10 = selfCopy->_filterRegistry;
 
   return v10;
 }
 
-- (void)registerTemplateBundlesFromPackage:(id)a3
+- (void)registerTemplateBundlesFromPackage:(id)package
 {
-  v39 = a3;
+  packageCopy = package;
   v4 = BCSignpostLaunch();
   spid = os_signpost_id_generate(v4);
 
@@ -69,14 +69,14 @@
     _os_signpost_emit_with_name_impl(&dword_0, v6, OS_SIGNPOST_INTERVAL_BEGIN, spid, "Register Template Bundles", "", buf, 2u);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   oslog = os_log_create("com.apple.iBooks", "BSUIManager");
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v8 = v7->_registeredPackages;
+  v8 = selfCopy->_registeredPackages;
   v9 = [(NSArray *)v8 countByEnumeratingWithState:&v44 objects:v57 count:16];
   if (v9)
   {
@@ -140,7 +140,7 @@
   v19 = [NSURL fileURLWithPath:v18];
 
   [TUIBinaryPackage removeCacheForURL:v19];
-  v20 = [v39 dataAtPath:@"templates.tpkg"];
+  v20 = [packageCopy dataAtPath:@"templates.tpkg"];
   v42 = 0;
   LOBYTE(v18) = [v20 writeToURL:v19 options:1 error:&v42];
   v37 = v42;
@@ -182,23 +182,23 @@
 
   v48 = v24;
   v27 = [NSArray arrayWithObjects:&v48 count:1];
-  registeredPackages = v7->_registeredPackages;
-  v7->_registeredPackages = v27;
+  registeredPackages = selfCopy->_registeredPackages;
+  selfCopy->_registeredPackages = v27;
 
   v29 = BSUITemplateLog();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v39 version];
+    version = [packageCopy version];
     *buf = 138543874;
     v50 = @"templates.tpkg";
     v51 = 2114;
-    v52 = v30;
+    v52 = version;
     v53 = 2114;
     v54 = v23;
     _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "Registered %{public}@ from JetPack %{public}@ to TUITemplateFactory with baseURL=%{public}@", buf, 0x20u);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v31 = BCSignpostLaunch();
   v32 = v31;
   if (spid - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v31))

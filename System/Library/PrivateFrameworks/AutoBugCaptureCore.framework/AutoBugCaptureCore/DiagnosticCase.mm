@@ -1,24 +1,24 @@
 @interface DiagnosticCase
-+ (id)_arrayObjectRepresentationOfJSONString:(id)a3;
-+ (id)_caseDampeningTypeString:(signed __int16)a3;
-+ (id)_closureTypeString:(signed __int16)a3;
-+ (id)_stringRepresentationOfJSONObject:(id)a3 prettyPrint:(BOOL)a4;
-+ (id)attachmentsFromStringRepresentation:(id)a3;
-+ (id)descriptionForClosureType:(signed __int16)a3;
-+ (id)descriptionForDampeningType:(signed __int16)a3;
-+ (id)generateCaseSummaryDictionaryFromCaseStorage:(id)a3;
-+ (id)generateCaseSummaryFromCaseStorageDictionary:(id)a3;
-+ (id)signatureForCaseStorage:(id)a3;
-+ (id)signatureForCaseStorageDictionary:(id)a3;
-+ (id)stringRepresentationOfAttachments:(id)a3;
-- (BOOL)_parseCaseStorageIntoSignature:(id)a3;
-- (BOOL)_parseSignatureIntoCaseStorage:(id)a3;
++ (id)_arrayObjectRepresentationOfJSONString:(id)string;
++ (id)_caseDampeningTypeString:(signed __int16)string;
++ (id)_closureTypeString:(signed __int16)string;
++ (id)_stringRepresentationOfJSONObject:(id)object prettyPrint:(BOOL)print;
++ (id)attachmentsFromStringRepresentation:(id)representation;
++ (id)descriptionForClosureType:(signed __int16)type;
++ (id)descriptionForDampeningType:(signed __int16)type;
++ (id)generateCaseSummaryDictionaryFromCaseStorage:(id)storage;
++ (id)generateCaseSummaryFromCaseStorageDictionary:(id)dictionary;
++ (id)signatureForCaseStorage:(id)storage;
++ (id)signatureForCaseStorageDictionary:(id)dictionary;
++ (id)stringRepresentationOfAttachments:(id)attachments;
+- (BOOL)_parseCaseStorageIntoSignature:(id)signature;
+- (BOOL)_parseSignatureIntoCaseStorage:(id)storage;
 - (BOOL)isRemoteTrigger;
 - (BOOL)sendReports;
-- (DiagnosticCase)initWithCaseId:(id)a3 manager:(id)a4;
-- (DiagnosticCase)initWithCaseStorage:(id)a3 manager:(id)a4;
-- (DiagnosticCase)initWithCoder:(id)a3;
-- (DiagnosticCase)initWithSignature:(id)a3 flags:(unint64_t)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 manager:(id)a8;
+- (DiagnosticCase)initWithCaseId:(id)id manager:(id)manager;
+- (DiagnosticCase)initWithCaseStorage:(id)storage manager:(id)manager;
+- (DiagnosticCase)initWithCoder:(id)coder;
+- (DiagnosticCase)initWithSignature:(id)signature flags:(unint64_t)flags events:(id)events payload:(id)payload actions:(id)actions manager:(id)manager;
 - (NSString)basebandChipset;
 - (NSString)basebandFirmwareVersion;
 - (NSString)buildVariant;
@@ -29,11 +29,11 @@
 - (double)caseOpenedTime;
 - (id)_caseSummaryFileName;
 - (id)_generateCaseSummaryDictionary;
-- (id)_updatedPayloadPathForOriginalPath:(id)a3 sandboxExtensionToken:(id)a4;
-- (id)addSizeInfoForAttachment:(id)a3;
+- (id)_updatedPayloadPathForOriginalPath:(id)path sandboxExtensionToken:(id)token;
+- (id)addSizeInfoForAttachment:(id)attachment;
 - (id)caseClosureTypeString;
 - (id)caseDampeningTypeString;
-- (id)caseStateString:(signed __int16)a3;
+- (id)caseStateString:(signed __int16)string;
 - (id)deParametersFromPayloads;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -43,18 +43,18 @@
 - (id)stringRepresentationOfEvents;
 - (id)stringRepresentationOfPayloads;
 - (signed)caseState;
-- (signed)caseStateFromString:(id)a3;
+- (signed)caseStateFromString:(id)string;
 - (signed)closureType;
 - (signed)dampeningType;
 - (signed)dpSubmissionState;
-- (void)_addToAttachments:(id)a3;
-- (void)_updatePayloadDictionaryArray:(BOOL)a3;
-- (void)addEvent:(id)a3 forced:(BOOL)a4;
-- (void)addEvents:(id)a3 forced:(BOOL)a4;
+- (void)_addToAttachments:(id)attachments;
+- (void)_updatePayloadDictionaryArray:(BOOL)array;
+- (void)addEvent:(id)event forced:(BOOL)forced;
+- (void)addEvents:(id)events forced:(BOOL)forced;
 - (void)addGroupIdentifierToSignature;
-- (void)addPayload:(id)a3;
-- (void)addRequiredAction:(id)a3 option:(id)a4 attachmentType:(id)a5 pattern:(id)a6;
-- (void)addRequiredAttachmentType:(id)a3 pattern:(id)a4;
+- (void)addPayload:(id)payload;
+- (void)addRequiredAction:(id)action option:(id)option attachmentType:(id)type pattern:(id)pattern;
+- (void)addRequiredAttachmentType:(id)type pattern:(id)pattern;
 - (void)collectLogs;
 - (void)dealloc;
 - (void)deserializeDiagnosticCaseStorageAttachments;
@@ -62,21 +62,21 @@
 - (void)deserializeDiagnosticCaseStoragePayloads;
 - (void)finishCase;
 - (void)finishedCollectingLogs;
-- (void)fixupCaseSummaryFile:(id)a3;
-- (void)markAttachmentsAsPurgeable:(BOOL)a3 urgency:(unint64_t)a4;
+- (void)fixupCaseSummaryFile:(id)file;
+- (void)markAttachmentsAsPurgeable:(BOOL)purgeable urgency:(unint64_t)urgency;
 - (void)noteCaseClosedTime;
-- (void)noteCaseClosedTime:(double)a3;
-- (void)noteCaseOpenedTime:(double)a3;
+- (void)noteCaseClosedTime:(double)time;
+- (void)noteCaseOpenedTime:(double)time;
 - (void)prepareAttachmentsForReporting;
 - (void)prepareForSaving;
 - (void)recordDiagnosticCaseSummary;
-- (void)removeRequiredAttachmentType:(id)a3 pattern:(id)a4;
-- (void)reportGeneratorEnded:(id)a3 reportInfo:(id)a4 error:(id)a5 isFinalReportGenerator:(BOOL)a6;
+- (void)removeRequiredAttachmentType:(id)type pattern:(id)pattern;
+- (void)reportGeneratorEnded:(id)ended reportInfo:(id)info error:(id)error isFinalReportGenerator:(BOOL)generator;
 - (void)serializeAttachmentsToDiagnosticCaseStorage;
 - (void)serializeEventsToDiagnosticCaseStorage;
 - (void)serializePayloadsToDiagnosticCaseStorage;
 - (void)startCollectingAllReports;
-- (void)startCollectingDiagnosticExtensions:(id)a3;
+- (void)startCollectingDiagnosticExtensions:(id)extensions;
 - (void)summarizeCaseReport;
 - (void)validateAttachments;
 @end
@@ -85,11 +85,11 @@
 
 - (void)prepareForSaving
 {
-  v3 = [(DiagnosticCase *)self manager];
-  v4 = [v3 configManager];
-  v5 = [v4 autoBugCaptureRegularPayloads];
+  manager = [(DiagnosticCase *)self manager];
+  configManager = [manager configManager];
+  autoBugCaptureRegularPayloads = [configManager autoBugCaptureRegularPayloads];
 
-  if (v5)
+  if (autoBugCaptureRegularPayloads)
   {
     [(DiagnosticCase *)self serializePayloadsToDiagnosticCaseStorage];
   }
@@ -103,9 +103,9 @@
 {
   if (self->payloadsDirty)
   {
-    v3 = [(DiagnosticCase *)self stringRepresentationOfPayloads];
-    v4 = [(DiagnosticCase *)self caseStorage];
-    [v4 setCasePayloads:v3];
+    stringRepresentationOfPayloads = [(DiagnosticCase *)self stringRepresentationOfPayloads];
+    caseStorage = [(DiagnosticCase *)self caseStorage];
+    [caseStorage setCasePayloads:stringRepresentationOfPayloads];
 
     self->payloadsDirty = 0;
   }
@@ -115,10 +115,10 @@
 {
   if (self->attachmentsDirty)
   {
-    v3 = [(DiagnosticCase *)self attachments];
-    v4 = [DiagnosticCase stringRepresentationOfAttachments:v3];
-    v5 = [(DiagnosticCase *)self caseStorage];
-    [v5 setCaseAttachments:v4];
+    attachments = [(DiagnosticCase *)self attachments];
+    v4 = [DiagnosticCase stringRepresentationOfAttachments:attachments];
+    caseStorage = [(DiagnosticCase *)self caseStorage];
+    [caseStorage setCaseAttachments:v4];
 
     [(DiagnosticCase *)self markAttachmentsAsPurgeable:1 urgency:1024];
     self->attachmentsDirty = 0;
@@ -129,9 +129,9 @@
 {
   if (self->eventsDirty)
   {
-    v3 = [(DiagnosticCase *)self stringRepresentationOfEvents];
-    v4 = [(DiagnosticCase *)self caseStorage];
-    [v4 setCaseEvents:v3];
+    stringRepresentationOfEvents = [(DiagnosticCase *)self stringRepresentationOfEvents];
+    caseStorage = [(DiagnosticCase *)self caseStorage];
+    [caseStorage setCaseEvents:stringRepresentationOfEvents];
 
     self->eventsDirty = 0;
   }
@@ -139,40 +139,40 @@
 
 - (signed)caseState
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 caseState];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseState = [caseStorage caseState];
 
-  if ((v3 - 1) >= 6)
+  if ((caseState - 1) >= 6)
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return caseState;
   }
 }
 
-- (DiagnosticCase)initWithSignature:(id)a3 flags:(unint64_t)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 manager:(id)a8
+- (DiagnosticCase)initWithSignature:(id)signature flags:(unint64_t)flags events:(id)events payload:(id)payload actions:(id)actions manager:(id)manager
 {
   v60 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  signatureCopy = signature;
+  eventsCopy = events;
+  payloadCopy = payload;
+  actionsCopy = actions;
+  managerCopy = manager;
   v55.receiver = self;
   v55.super_class = DiagnosticCase;
   v20 = [(DiagnosticCase *)&v55 init];
   if (v20)
   {
-    if (v15)
+    if (signatureCopy)
     {
-      v21 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       caseId = v20->_caseId;
-      v20->_caseId = v21;
+      v20->_caseId = uUID;
 
-      v23 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v15];
+      v23 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:signatureCopy];
       signature = v20->_signature;
       v20->_signature = v23;
 
@@ -184,10 +184,10 @@
       caseOutlets = v20->_caseOutlets;
       v20->_caseOutlets = v27;
 
-      v20->_caseFlags = a4;
+      v20->_caseFlags = flags;
       v20->_allowIPSFileOutput = 1;
-      [(DiagnosticCase *)v20 setManager:v19];
-      v29 = [v19 caseStorageForCaseID:v20->_caseId];
+      [(DiagnosticCase *)v20 setManager:managerCopy];
+      v29 = [managerCopy caseStorageForCaseID:v20->_caseId];
       caseStorage = v20->_caseStorage;
       v20->_caseStorage = v29;
 
@@ -195,94 +195,94 @@
       if (v31)
       {
         [(DiagnosticCaseStorage *)v31 setCaseObjectVersion:@"1"];
-        [(DiagnosticCase *)v20 _parseSignatureIntoCaseStorage:v15];
-        v32 = [MEMORY[0x277CBEAA8] date];
-        [(DiagnosticCaseStorage *)v20->_caseStorage setTimeStamp:v32];
+        [(DiagnosticCase *)v20 _parseSignatureIntoCaseStorage:signatureCopy];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(DiagnosticCaseStorage *)v20->_caseStorage setTimeStamp:date];
 
         [(DiagnosticCaseStorage *)v20->_caseStorage setCaseClosedTime:0];
         [(DiagnosticCaseStorage *)v20->_caseStorage setCaseState:0];
         v33 = +[SystemProperties sharedInstance];
-        v34 = [v33 buildVariant];
-        [(DiagnosticCaseStorage *)v20->_caseStorage setBuildVariant:v34];
+        buildVariant = [v33 buildVariant];
+        [(DiagnosticCaseStorage *)v20->_caseStorage setBuildVariant:buildVariant];
 
-        v35 = [v33 buildVersion];
-        [(DiagnosticCaseStorage *)v20->_caseStorage setBuildVersion:v35];
+        buildVersion = [v33 buildVersion];
+        [(DiagnosticCaseStorage *)v20->_caseStorage setBuildVersion:buildVersion];
 
-        v36 = [v33 basebandChipset];
-        [(DiagnosticCaseStorage *)v20->_caseStorage setBasebandChipset:v36];
+        basebandChipset = [v33 basebandChipset];
+        [(DiagnosticCaseStorage *)v20->_caseStorage setBasebandChipset:basebandChipset];
 
-        v37 = [v33 basebandFirmwareVersion];
-        [(DiagnosticCaseStorage *)v20->_caseStorage setBasebandFirmwareVersion:v37];
+        basebandFirmwareVersion = [v33 basebandFirmwareVersion];
+        [(DiagnosticCaseStorage *)v20->_caseStorage setBasebandFirmwareVersion:basebandFirmwareVersion];
 
-        v38 = +[WirelessTechnologyProfile sharedInstance];
-        v39 = [v38 regulatoryDomainCountry];
-        [(DiagnosticCaseStorage *)v20->_caseStorage setRegulatoryDomainCountry:v39];
+        currentHandler = +[WirelessTechnologyProfile sharedInstance];
+        regulatoryDomainCountry = [currentHandler regulatoryDomainCountry];
+        [(DiagnosticCaseStorage *)v20->_caseStorage setRegulatoryDomainCountry:regulatoryDomainCountry];
 
-        v40 = [v38 homeCarrier];
-        [(DiagnosticCaseStorage *)v20->_caseStorage setHomeCarrier:v40];
+        homeCarrier = [currentHandler homeCarrier];
+        [(DiagnosticCaseStorage *)v20->_caseStorage setHomeCarrier:homeCarrier];
 
-        if ((a4 & 4) != 0)
+        if ((flags & 4) != 0)
         {
           [(DiagnosticCase *)v20 addGroupIdentifierToSignature];
         }
 
-        [(DiagnosticCaseStorage *)v20->_caseStorage setRemoteTrigger:(a4 >> 1) & 1];
+        [(DiagnosticCaseStorage *)v20->_caseStorage setRemoteTrigger:(flags >> 1) & 1];
         *&v20->eventsDirty = 0;
         v20->attachmentsDirty = 0;
-        if ([v16 count])
+        if ([eventsCopy count])
         {
           v41 = diagcaseLogHandle();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
           {
-            v42 = [(NSUUID *)v20->_caseId UUIDString];
+            uUIDString = [(NSUUID *)v20->_caseId UUIDString];
             *buf = 138543618;
-            v57 = v42;
+            v57 = uUIDString;
             v58 = 2112;
-            v59 = v16;
+            v59 = eventsCopy;
             _os_log_impl(&dword_241804000, v41, OS_LOG_TYPE_DEBUG, "Initializing session: %{public}@ with events:%@", buf, 0x16u);
           }
 
-          v43 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v16];
+          v43 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:eventsCopy];
           events = v20->_events;
           v20->_events = v43;
 
           v20->eventsDirty = 1;
         }
 
-        if ([v17 count])
+        if ([payloadCopy count])
         {
           v45 = diagcaseLogHandle();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
           {
-            v46 = [(NSUUID *)v20->_caseId UUIDString];
+            uUIDString2 = [(NSUUID *)v20->_caseId UUIDString];
             *buf = 138543618;
-            v57 = v46;
+            v57 = uUIDString2;
             v58 = 2112;
-            v59 = v17;
+            v59 = payloadCopy;
             _os_log_impl(&dword_241804000, v45, OS_LOG_TYPE_DEBUG, "Initializing session: %{public}@ with payload:%@", buf, 0x16u);
           }
 
-          v47 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v17, 0}];
+          v47 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{payloadCopy, 0}];
           payloads = v20->_payloads;
           v20->_payloads = v47;
 
           v20->payloadsDirty = 1;
         }
 
-        if ([v18 count])
+        if ([actionsCopy count])
         {
           v49 = diagcaseLogHandle();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
           {
-            v50 = [(NSUUID *)v20->_caseId UUIDString];
+            uUIDString3 = [(NSUUID *)v20->_caseId UUIDString];
             *buf = 138543618;
-            v57 = v50;
+            v57 = uUIDString3;
             v58 = 2112;
-            v59 = v17;
+            v59 = payloadCopy;
             _os_log_impl(&dword_241804000, v49, OS_LOG_TYPE_DEBUG, "Initializing session: %{public}@ with actions:%@", buf, 0x16u);
           }
 
-          v51 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v18];
+          v51 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:actionsCopy];
           actions = v20->_actions;
           v20->_actions = v51;
         }
@@ -290,18 +290,18 @@
         goto LABEL_22;
       }
 
-      v38 = diagcaseLogHandle();
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+      currentHandler = diagcaseLogHandle();
+      if (os_log_type_enabled(currentHandler, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&dword_241804000, v38, OS_LOG_TYPE_ERROR, "failed to retrieve caseStorage", buf, 2u);
+        _os_log_impl(&dword_241804000, currentHandler, OS_LOG_TYPE_ERROR, "failed to retrieve caseStorage", buf, 2u);
       }
     }
 
     else
     {
-      v38 = [MEMORY[0x277CCA890] currentHandler];
-      [v38 handleFailureInMethod:a2 object:v20 file:@"DiagnosticCase.m" lineNumber:167 description:@"DiagnosticCase must be initialized with a signature."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v20 file:@"DiagnosticCase.m" lineNumber:167 description:@"DiagnosticCase must be initialized with a signature."];
     }
 
     v33 = v20;
@@ -313,33 +313,33 @@ LABEL_22:
   return v20;
 }
 
-- (DiagnosticCase)initWithCaseStorage:(id)a3 manager:(id)a4
+- (DiagnosticCase)initWithCaseStorage:(id)storage manager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  storageCopy = storage;
+  managerCopy = manager;
+  v10 = managerCopy;
+  if (!storageCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    v30 = v29;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v30 = currentHandler;
     v31 = @"initWithCaseStorage requires a caseStorage.";
     v32 = a2;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 178;
 LABEL_12:
-    [v29 handleFailureInMethod:v32 object:v33 file:@"DiagnosticCase.m" lineNumber:v34 description:v31];
+    [currentHandler handleFailureInMethod:v32 object:selfCopy2 file:@"DiagnosticCase.m" lineNumber:v34 description:v31];
 
     v12 = 0;
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!managerCopy)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    v30 = v29;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v30 = currentHandler;
     v31 = @"initWithCaseStorage requires a manager.";
     v32 = a2;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 181;
     goto LABEL_12;
   }
@@ -351,10 +351,10 @@ LABEL_12:
   if (v11)
   {
     [(DiagnosticCase *)v11 setManager:v10];
-    objc_storeStrong(&v12->_caseStorage, a3);
+    objc_storeStrong(&v12->_caseStorage, storage);
     v13 = objc_alloc(MEMORY[0x277CCAD78]);
-    v14 = [v8 caseID];
-    v15 = [v13 initWithUUIDString:v14];
+    caseID = [storageCopy caseID];
+    v15 = [v13 initWithUUIDString:caseID];
     caseId = v12->_caseId;
     v12->_caseId = v15;
 
@@ -373,26 +373,26 @@ LABEL_12:
     [(DiagnosticCase *)v12 _parseCaseStorageIntoSignature:v12->_signature];
     *&v12->eventsDirty = 0;
     v12->attachmentsDirty = 0;
-    v23 = [(DiagnosticCase *)v12 caseStorage];
-    v24 = [v23 caseEvents];
+    caseStorage = [(DiagnosticCase *)v12 caseStorage];
+    caseEvents = [caseStorage caseEvents];
 
-    if (v24)
+    if (caseEvents)
     {
       [(DiagnosticCase *)v12 deserializeDiagnosticCaseStorageEvents];
     }
 
-    v25 = [(DiagnosticCase *)v12 caseStorage];
-    v26 = [v25 casePayloads];
+    caseStorage2 = [(DiagnosticCase *)v12 caseStorage];
+    casePayloads = [caseStorage2 casePayloads];
 
-    if (v26)
+    if (casePayloads)
     {
       [(DiagnosticCase *)v12 deserializeDiagnosticCaseStoragePayloads];
     }
 
-    v27 = [(DiagnosticCase *)v12 caseStorage];
-    v28 = [v27 caseAttachments];
+    caseStorage3 = [(DiagnosticCase *)v12 caseStorage];
+    caseAttachments = [caseStorage3 caseAttachments];
 
-    if (v28)
+    if (caseAttachments)
     {
       [(DiagnosticCase *)v12 deserializeDiagnosticCaseStorageAttachments];
     }
@@ -403,35 +403,35 @@ LABEL_13:
   return v12;
 }
 
-- (DiagnosticCase)initWithCaseId:(id)a3 manager:(id)a4
+- (DiagnosticCase)initWithCaseId:(id)id manager:(id)manager
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  idCopy = id;
+  managerCopy = manager;
+  v10 = managerCopy;
+  if (!idCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    v28 = v27;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v28 = currentHandler;
     v29 = @"initWithCaseId requires a case identifier.";
     v30 = a2;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 219;
 LABEL_13:
-    [v27 handleFailureInMethod:v30 object:v31 file:@"DiagnosticCase.m" lineNumber:v32 description:v29];
+    [currentHandler handleFailureInMethod:v30 object:selfCopy2 file:@"DiagnosticCase.m" lineNumber:v32 description:v29];
 
 LABEL_14:
     self = 0;
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!managerCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    v28 = v27;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v28 = currentHandler;
     v29 = @"initWithCaseId requires a manager.";
     v30 = a2;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 222;
     goto LABEL_13;
   }
@@ -446,7 +446,7 @@ LABEL_14:
   }
 
   [(DiagnosticCase *)v11 setManager:v10];
-  objc_storeStrong(&self->_caseId, a3);
+  objc_storeStrong(&self->_caseId, id);
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   signature = self->_signature;
   self->_signature = v12;
@@ -459,8 +459,8 @@ LABEL_14:
   caseOutlets = self->_caseOutlets;
   self->_caseOutlets = v16;
 
-  v18 = [(DiagnosticCase *)self manager];
-  v19 = [v18 lookUpDiagnosticCaseStorageForUUID:self->_caseId];
+  manager = [(DiagnosticCase *)self manager];
+  v19 = [manager lookUpDiagnosticCaseStorageForUUID:self->_caseId];
   caseStorage = self->_caseStorage;
   self->_caseStorage = v19;
 
@@ -469,9 +469,9 @@ LABEL_14:
     v35 = diagcaseLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v36 = [(NSUUID *)self->_caseId UUIDString];
+      uUIDString = [(NSUUID *)self->_caseId UUIDString];
       *buf = 138543362;
-      v39 = v36;
+      v39 = uUIDString;
       _os_log_impl(&dword_241804000, v35, OS_LOG_TYPE_ERROR, "Failed to retrieve caseStorage for case %{public}@", buf, 0xCu);
     }
 
@@ -481,26 +481,26 @@ LABEL_14:
   [(DiagnosticCase *)self _parseCaseStorageIntoSignature:self->_signature];
   *&self->eventsDirty = 0;
   self->attachmentsDirty = 0;
-  v21 = [(DiagnosticCase *)self caseStorage];
-  v22 = [v21 caseEvents];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseEvents = [caseStorage caseEvents];
 
-  if (v22)
+  if (caseEvents)
   {
     [(DiagnosticCase *)self deserializeDiagnosticCaseStorageEvents];
   }
 
-  v23 = [(DiagnosticCase *)self caseStorage];
-  v24 = [v23 casePayloads];
+  caseStorage2 = [(DiagnosticCase *)self caseStorage];
+  casePayloads = [caseStorage2 casePayloads];
 
-  if (v24)
+  if (casePayloads)
   {
     [(DiagnosticCase *)self deserializeDiagnosticCaseStoragePayloads];
   }
 
-  v25 = [(DiagnosticCase *)self caseStorage];
-  v26 = [v25 caseAttachments];
+  caseStorage3 = [(DiagnosticCase *)self caseStorage];
+  caseAttachments = [caseStorage3 caseAttachments];
 
-  if (v26)
+  if (caseAttachments)
   {
     [(DiagnosticCase *)self deserializeDiagnosticCaseStorageAttachments];
   }
@@ -511,7 +511,7 @@ LABEL_15:
   return self;
 }
 
-- (DiagnosticCase)initWithCoder:(id)a3
+- (DiagnosticCase)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = DiagnosticCase;
@@ -532,19 +532,19 @@ LABEL_15:
 - (id)description
 {
   v14 = objc_alloc(MEMORY[0x277CCACA8]);
-  v16 = [(DiagnosticCase *)self caseId];
-  v17 = [v16 UUIDString];
+  caseId = [(DiagnosticCase *)self caseId];
+  uUIDString = [caseId UUIDString];
   v3 = [(NSMutableDictionary *)self->_signature objectForKeyedSubscript:@"domain"];
   v4 = [(NSMutableDictionary *)self->_signature objectForKeyedSubscript:@"type"];
   v5 = [(NSMutableDictionary *)self->_signature objectForKeyedSubscript:@"subtype"];
   v6 = [(NSMutableDictionary *)self->_signature objectForKeyedSubscript:@"additional"];
-  v7 = [(DiagnosticCase *)self caseStorage];
-  v8 = -[DiagnosticCase caseStateString:](self, "caseStateString:", [v7 caseState]);
-  v9 = [(DiagnosticCase *)self caseStorage];
-  v10 = [v9 timeStamp];
-  v11 = [(DiagnosticCase *)self caseStorage];
-  v12 = +[DiagnosticCase _closureTypeString:](DiagnosticCase, "_closureTypeString:", [v11 caseClosureType]);
-  v15 = [v14 initWithFormat:@"Diagnostic case - ID:%@ Domain:%@ Type:%@, SubType:%@, STContext:%@, state:%@ opened time:%@ (closure:%@)", v17, v3, v4, v5, v6, v8, v10, v12];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  v8 = -[DiagnosticCase caseStateString:](self, "caseStateString:", [caseStorage caseState]);
+  caseStorage2 = [(DiagnosticCase *)self caseStorage];
+  timeStamp = [caseStorage2 timeStamp];
+  caseStorage3 = [(DiagnosticCase *)self caseStorage];
+  v12 = +[DiagnosticCase _closureTypeString:](DiagnosticCase, "_closureTypeString:", [caseStorage3 caseClosureType]);
+  v15 = [v14 initWithFormat:@"Diagnostic case - ID:%@ Domain:%@ Type:%@, SubType:%@, STContext:%@, state:%@ opened time:%@ (closure:%@)", uUIDString, v3, v4, v5, v6, v8, timeStamp, v12];
 
   return v15;
 }
@@ -552,8 +552,8 @@ LABEL_15:
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
-  v4 = [(DiagnosticCase *)self _generateCaseSummaryDictionary];
-  v5 = [v3 initWithDictionary:v4 copyItems:1];
+  _generateCaseSummaryDictionary = [(DiagnosticCase *)self _generateCaseSummaryDictionary];
+  v5 = [v3 initWithDictionary:_generateCaseSummaryDictionary copyItems:1];
 
   return v5;
 }
@@ -561,18 +561,18 @@ LABEL_15:
 - (void)noteCaseClosedTime
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(DiagnosticCase *)self caseStorage];
-  v4 = [v3 caseClosedTime];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseClosedTime = [caseStorage caseClosedTime];
 
-  if (v4)
+  if (caseClosedTime)
   {
     v5 = diagcaseLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(DiagnosticCase *)self caseStorage];
-      v7 = [v6 caseClosedTime];
+      caseStorage2 = [(DiagnosticCase *)self caseStorage];
+      caseClosedTime2 = [caseStorage2 caseClosedTime];
       v10 = 138412290;
-      v11 = v7;
+      v11 = caseClosedTime2;
       _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_INFO, "Already noted caseClosedTime at: %@", &v10, 0xCu);
     }
 
@@ -587,9 +587,9 @@ LABEL_15:
   }
 }
 
-- (void)noteCaseClosedTime:(double)a3
+- (void)noteCaseClosedTime:(double)time
 {
-  if (a3 <= 0.0)
+  if (time <= 0.0)
   {
     [MEMORY[0x277CBEAA8] date];
   }
@@ -599,13 +599,13 @@ LABEL_15:
     [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
   }
   v5 = ;
-  v4 = [(DiagnosticCase *)self caseStorage];
-  [v4 setCaseClosedTime:v5];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  [caseStorage setCaseClosedTime:v5];
 }
 
-- (void)noteCaseOpenedTime:(double)a3
+- (void)noteCaseOpenedTime:(double)time
 {
-  if (a3 <= 0.0)
+  if (time <= 0.0)
   {
     [MEMORY[0x277CBEAA8] date];
   }
@@ -615,15 +615,15 @@ LABEL_15:
     [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
   }
   v5 = ;
-  v4 = [(DiagnosticCase *)self caseStorage];
-  [v4 setTimeStamp:v5];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  [caseStorage setTimeStamp:v5];
 }
 
 - (double)caseOpenedTime
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 timeStamp];
-  [v3 timeIntervalSince1970];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  timeStamp = [caseStorage timeStamp];
+  [timeStamp timeIntervalSince1970];
   v5 = v4;
 
   return v5;
@@ -631,9 +631,9 @@ LABEL_15:
 
 - (double)caseClosedTime
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 caseClosedTime];
-  [v3 timeIntervalSince1970];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseClosedTime = [caseStorage caseClosedTime];
+  [caseClosedTime timeIntervalSince1970];
   v5 = v4;
 
   return v5;
@@ -642,83 +642,83 @@ LABEL_15:
 - (signed)closureType
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 caseClosureType];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseClosureType = [caseStorage caseClosureType];
 
-  if (v3 >= 6)
+  if (caseClosureType >= 6)
   {
     v4 = diagcaseLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = caseClosureType;
       _os_log_impl(&dword_241804000, v4, OS_LOG_TYPE_DEBUG, "Unknown closure type %d", v7, 8u);
     }
 
-    LOWORD(v3) = 0;
+    LOWORD(caseClosureType) = 0;
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3;
+  return caseClosureType;
 }
 
 - (signed)dampeningType
 {
-  v4 = [(DiagnosticCase *)self caseStorage];
-  v5 = [v4 caseDampeningType];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseDampeningType = [caseStorage caseDampeningType];
 
-  if ((v5 + 2) < 0xB)
+  if ((caseDampeningType + 2) < 0xB)
   {
-    return v5;
+    return caseDampeningType;
   }
 
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"DiagnosticCase.m" lineNumber:511 description:@"Unhandled DiagnosticCaseDampeningType!"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DiagnosticCase.m" lineNumber:511 description:@"Unhandled DiagnosticCaseDampeningType!"];
 
-  v8 = [(DiagnosticCase *)self caseStorage];
-  v9 = [v8 caseDampeningType];
+  caseStorage2 = [(DiagnosticCase *)self caseStorage];
+  caseDampeningType2 = [caseStorage2 caseDampeningType];
 
-  return v9;
+  return caseDampeningType2;
 }
 
 - (id)caseDampeningTypeString
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = +[DiagnosticCase _caseDampeningTypeString:](DiagnosticCase, "_caseDampeningTypeString:", [v2 caseDampeningType]);
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  v3 = +[DiagnosticCase _caseDampeningTypeString:](DiagnosticCase, "_caseDampeningTypeString:", [caseStorage caseDampeningType]);
 
   return v3;
 }
 
-+ (id)_caseDampeningTypeString:(signed __int16)a3
++ (id)_caseDampeningTypeString:(signed __int16)string
 {
-  if ((a3 + 2) > 0xA)
+  if ((string + 2) > 0xA)
   {
     return @"Unknown Case Dampening Type";
   }
 
   else
   {
-    return off_278CF2080[(a3 + 2)];
+    return off_278CF2080[(string + 2)];
   }
 }
 
 - (signed)dpSubmissionState
 {
-  v4 = [(DiagnosticCase *)self caseStorage];
-  v5 = [v4 dpSubmissionState];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  dpSubmissionState = [caseStorage dpSubmissionState];
 
-  if (v5 < 5)
+  if (dpSubmissionState < 5)
   {
-    return v5;
+    return dpSubmissionState;
   }
 
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"DiagnosticCase.m" lineNumber:586 description:@"Unhandled DiagnosticCaseDPSubmissionState!"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DiagnosticCase.m" lineNumber:586 description:@"Unhandled DiagnosticCaseDPSubmissionState!"];
 
-  v8 = [(DiagnosticCase *)self caseStorage];
-  v9 = [v8 dpSubmissionState];
+  caseStorage2 = [(DiagnosticCase *)self caseStorage];
+  dpSubmissionState2 = [caseStorage2 dpSubmissionState];
 
-  return v9;
+  return dpSubmissionState2;
 }
 
 - (BOOL)isRemoteTrigger
@@ -728,107 +728,107 @@ LABEL_15:
     return 1;
   }
 
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 remoteTrigger];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  remoteTrigger = [caseStorage remoteTrigger];
 
-  return v3;
+  return remoteTrigger;
 }
 
 - (NSString)buildVariant
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 buildVariant];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  buildVariant = [caseStorage buildVariant];
 
-  return v3;
+  return buildVariant;
 }
 
 - (NSString)buildVersion
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 buildVersion];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  buildVersion = [caseStorage buildVersion];
 
-  return v3;
+  return buildVersion;
 }
 
 - (NSString)basebandChipset
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 basebandChipset];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  basebandChipset = [caseStorage basebandChipset];
 
-  return v3;
+  return basebandChipset;
 }
 
 - (NSString)basebandFirmwareVersion
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 basebandFirmwareVersion];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  basebandFirmwareVersion = [caseStorage basebandFirmwareVersion];
 
-  return v3;
+  return basebandFirmwareVersion;
 }
 
 - (NSString)regulatoryDomainCountry
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 regulatoryDomainCountry];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  regulatoryDomainCountry = [caseStorage regulatoryDomainCountry];
 
-  return v3;
+  return regulatoryDomainCountry;
 }
 
 - (NSString)homeCarrier
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 homeCarrier];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  homeCarrier = [caseStorage homeCarrier];
 
-  return v3;
+  return homeCarrier;
 }
 
-- (id)caseStateString:(signed __int16)a3
+- (id)caseStateString:(signed __int16)string
 {
-  if (a3 > 6)
+  if (string > 6)
   {
     return @"UnsupportedState";
   }
 
   else
   {
-    return off_278CF20D8[a3];
+    return off_278CF20D8[string];
   }
 }
 
-- (signed)caseStateFromString:(id)a3
+- (signed)caseStateFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Uninitialized"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Uninitialized"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Preparing"])
+  else if ([stringCopy isEqualToString:@"Preparing"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Logging"])
+  else if ([stringCopy isEqualToString:@"Logging"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Finalizing"])
+  else if ([stringCopy isEqualToString:@"Finalizing"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Collecting"])
+  else if ([stringCopy isEqualToString:@"Collecting"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Reporting"])
+  else if ([stringCopy isEqualToString:@"Reporting"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Closed"])
+  else if ([stringCopy isEqualToString:@"Closed"])
   {
     v4 = 6;
   }
@@ -843,38 +843,38 @@ LABEL_15:
 
 - (id)caseClosureTypeString
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = +[DiagnosticCase _closureTypeString:](DiagnosticCase, "_closureTypeString:", [v2 caseClosureType]);
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  v3 = +[DiagnosticCase _closureTypeString:](DiagnosticCase, "_closureTypeString:", [caseStorage caseClosureType]);
 
   return v3;
 }
 
-+ (id)_closureTypeString:(signed __int16)a3
++ (id)_closureTypeString:(signed __int16)string
 {
-  if (a3 >= 6)
+  if (string >= 6)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown Closure State: %d", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown Closure State: %d", string];
   }
 
   else
   {
-    v4 = off_278CF2110[a3];
+    string = off_278CF2110[string];
   }
 
-  return v4;
+  return string;
 }
 
-+ (id)_stringRepresentationOfJSONObject:(id)a3 prettyPrint:(BOOL)a4
++ (id)_stringRepresentationOfJSONObject:(id)object prettyPrint:(BOOL)print
 {
-  v4 = a4;
+  printCopy = print;
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectCopy = object;
   v6 = objc_autoreleasePoolPush();
-  v7 = sanitizedJSONCollectionObject(v5, 1);
+  v7 = sanitizedJSONCollectionObject(objectCopy, 1);
   if ([MEMORY[0x277CCAAA0] isValidJSONObject:v7])
   {
     v16 = 0;
-    v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v7 options:v4 error:&v16];
+    v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v7 options:printCopy error:&v16];
     v9 = v16;
     v10 = v9;
     if (v8)
@@ -921,15 +921,15 @@ LABEL_8:
   return v12;
 }
 
-+ (id)_arrayObjectRepresentationOfJSONString:(id)a3
++ (id)_arrayObjectRepresentationOfJSONString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5 = objc_autoreleasePoolPush();
-    v6 = [v3 dataUsingEncoding:4];
+    v6 = [stringCopy dataUsingEncoding:4];
     if (v6)
     {
       v13 = 0;
@@ -947,7 +947,7 @@ LABEL_8:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v15 = v3;
+          v15 = stringCopy;
           v16 = 2112;
           v17 = v9;
           _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_DEBUG, "JSON deserialization for string:%@ failed with error: %@", buf, 0x16u);
@@ -961,7 +961,7 @@ LABEL_8:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v15 = v3;
+        v15 = stringCopy;
         _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_DEBUG, "Encoding jsonString (%@) into NSData failed", buf, 0xCu);
       }
     }
@@ -979,21 +979,21 @@ LABEL_8:
   return v4;
 }
 
-- (void)addRequiredAction:(id)a3 option:(id)a4 attachmentType:(id)a5 pattern:(id)a6
+- (void)addRequiredAction:(id)action option:(id)option attachmentType:(id)type pattern:(id)pattern
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  actionCopy = action;
+  optionCopy = option;
+  typeCopy = type;
+  patternCopy = pattern;
   if (!self->_requiredActions)
   {
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     requiredActions = self->_requiredActions;
-    self->_requiredActions = v14;
+    self->_requiredActions = dictionary;
   }
 
-  if (![v10 length] || !objc_msgSend(v12, "length"))
+  if (![actionCopy length] || !objc_msgSend(typeCopy, "length"))
   {
     v17 = diagcaseLogHandle();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1004,11 +1004,11 @@ LABEL_12:
     }
 
     v23 = 138543874;
-    v24 = v10;
+    v24 = actionCopy;
     v25 = 2114;
-    v26 = v12;
+    v26 = typeCopy;
     v27 = 2112;
-    v28 = v13;
+    v28 = patternCopy;
     v18 = "Invalid parameters adding required action %{public}@ with attachment type %{public}@ and pattern %@";
     v19 = v17;
     v20 = 32;
@@ -1021,28 +1021,28 @@ LABEL_11:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v23 = 138543618;
-    v24 = v10;
+    v24 = actionCopy;
     v25 = 2114;
-    v26 = v12;
+    v26 = typeCopy;
     _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_INFO, "This case is requesting action '%{public}@' of type '%{public}@'", &v23, 0x16u);
   }
 
-  if (v11)
+  if (optionCopy)
   {
-    [(NSMutableDictionary *)self->_requiredActions setObject:v11 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_requiredActions setObject:optionCopy forKeyedSubscript:actionCopy];
   }
 
   else
   {
-    v21 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableDictionary *)self->_requiredActions setObject:v21 forKeyedSubscript:v10];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableDictionary *)self->_requiredActions setObject:null forKeyedSubscript:actionCopy];
   }
 
-  if (([v12 isEqualToString:@"diagext"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"diagext"] & 1) == 0)
   {
-    if ([v13 length])
+    if ([patternCopy length])
     {
-      [(DiagnosticCase *)self addRequiredAttachmentType:v12 pattern:v13];
+      [(DiagnosticCase *)self addRequiredAttachmentType:typeCopy pattern:patternCopy];
       goto LABEL_17;
     }
 
@@ -1064,36 +1064,36 @@ LABEL_17:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRequiredAttachmentType:(id)a3 pattern:(id)a4
+- (void)addRequiredAttachmentType:(id)type pattern:(id)pattern
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  patternCopy = pattern;
   if (!self->_requiredAttachments)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     requiredAttachments = self->_requiredAttachments;
-    self->_requiredAttachments = v8;
+    self->_requiredAttachments = dictionary;
   }
 
-  if (-[NSObject length](v6, "length") && [v7 length])
+  if (-[NSObject length](typeCopy, "length") && [patternCopy length])
   {
     v10 = diagcaseLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v18 = v6;
+      v18 = typeCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = patternCopy;
       _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_INFO, "This case requires attachment type '%{public}@' - matching with filename pattern '%@'", buf, 0x16u);
     }
 
-    v11 = [(NSMutableDictionary *)self->_requiredAttachments objectForKeyedSubscript:v6];
+    v11 = [(NSMutableDictionary *)self->_requiredAttachments objectForKeyedSubscript:typeCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [MEMORY[0x277CBEB18] arrayWithObjects:{v11, v7, 0}];
-      [(NSMutableDictionary *)self->_requiredAttachments setObject:v12 forKeyedSubscript:v6];
+      v12 = [MEMORY[0x277CBEB18] arrayWithObjects:{v11, patternCopy, 0}];
+      [(NSMutableDictionary *)self->_requiredAttachments setObject:v12 forKeyedSubscript:typeCopy];
     }
 
     else
@@ -1101,7 +1101,7 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
       {
-        [v11 addObject:v7];
+        [v11 addObject:patternCopy];
       }
 
       else if (v11)
@@ -1116,14 +1116,14 @@ LABEL_17:
           v19 = 2112;
           v20 = v15;
           v21 = 2114;
-          v22 = v6;
+          v22 = typeCopy;
           _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_ERROR, "Found unexpected object %@ (class %@) when adding required attachments for type '%{public}@'", buf, 0x20u);
         }
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_requiredAttachments setObject:v7 forKeyedSubscript:v6];
+        [(NSMutableDictionary *)self->_requiredAttachments setObject:patternCopy forKeyedSubscript:typeCopy];
       }
     }
   }
@@ -1134,9 +1134,9 @@ LABEL_17:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = v6;
+      v18 = typeCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = patternCopy;
       _os_log_impl(&dword_241804000, v11, OS_LOG_TYPE_ERROR, "Invalid parameters for adding required attachment type %{public}@ and pattern %@.", buf, 0x16u);
     }
   }
@@ -1144,31 +1144,31 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeRequiredAttachmentType:(id)a3 pattern:(id)a4
+- (void)removeRequiredAttachmentType:(id)type pattern:(id)pattern
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableDictionary *)self->_requiredAttachments count]&& [v6 length]&& [v7 length])
+  typeCopy = type;
+  patternCopy = pattern;
+  if ([(NSMutableDictionary *)self->_requiredAttachments count]&& [typeCopy length]&& [patternCopy length])
   {
     v8 = diagcaseLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v17 = 138543618;
-      v18 = v6;
+      v18 = typeCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = patternCopy;
       _os_log_impl(&dword_241804000, v8, OS_LOG_TYPE_INFO, "Removing case requirement for attachment type '%{public}@' - matching with filename pattern '%@'", &v17, 0x16u);
     }
 
-    v9 = [(NSMutableDictionary *)self->_requiredAttachments objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_requiredAttachments objectForKeyedSubscript:typeCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
-      if ([v10 isEqualToString:v7])
+      if ([v10 isEqualToString:patternCopy])
       {
-        [(NSMutableDictionary *)self->_requiredAttachments setObject:0 forKeyedSubscript:v6];
+        [(NSMutableDictionary *)self->_requiredAttachments setObject:0 forKeyedSubscript:typeCopy];
         goto LABEL_19;
       }
 
@@ -1183,9 +1183,9 @@ LABEL_18:
       v17 = 138412802;
       v18 = v10;
       v19 = 2114;
-      v20 = v6;
+      v20 = typeCopy;
       v21 = 2112;
-      v22 = v7;
+      v22 = patternCopy;
       v13 = "Did not remove existing pattern %@ for type %{public}@ because the requested removal pattern did not match: %@";
       v14 = v12;
       v15 = OS_LOG_TYPE_INFO;
@@ -1198,7 +1198,7 @@ LABEL_18:
       {
         v10 = v9;
         [v10 count];
-        [v10 removeObject:v7];
+        [v10 removeObject:patternCopy];
         goto LABEL_19;
       }
 
@@ -1224,7 +1224,7 @@ LABEL_19:
       v19 = 2112;
       v20 = v12;
       v21 = 2114;
-      v22 = v6;
+      v22 = typeCopy;
       v13 = "Found unexpected object %@ (class %@) when adding required attachments for type '%{public}@'";
       v14 = v10;
       v15 = OS_LOG_TYPE_ERROR;
@@ -1239,11 +1239,11 @@ LABEL_21:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEvent:(id)a3 forced:(BOOL)a4
+- (void)addEvent:(id)event forced:(BOOL)forced
 {
-  v4 = a4;
+  forcedCopy = forced;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventCopy = event;
   if (!self->_events)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1251,48 +1251,48 @@ LABEL_21:
     self->_events = v7;
   }
 
-  v9 = [(DiagnosticCase *)self caseStorage];
-  if ([v9 caseState] != 2)
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  if ([caseStorage caseState] != 2)
   {
 
-    if (!v4)
+    if (!forcedCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_7:
-    if ([v6 count])
+    if ([eventCopy count])
     {
-      [(NSMutableArray *)self->_events addObject:v6];
+      [(NSMutableArray *)self->_events addObject:eventCopy];
       self->eventsDirty = 1;
     }
 
     goto LABEL_16;
   }
 
-  v10 = [(DiagnosticCase *)self caseId];
-  if (v10)
+  caseId = [(DiagnosticCase *)self caseId];
+  if (caseId)
   {
 
     goto LABEL_7;
   }
 
-  if (v4)
+  if (forcedCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_10:
-  v11 = [(DiagnosticCase *)self caseId];
+  caseId2 = [(DiagnosticCase *)self caseId];
 
   v12 = diagcaseLogHandle();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
-  if (v11)
+  if (caseId2)
   {
     if (v13)
     {
-      v14 = [(DiagnosticCase *)self caseStorage];
-      v15 = -[DiagnosticCase caseStateString:](self, "caseStateString:", [v14 caseState]);
+      caseStorage2 = [(DiagnosticCase *)self caseStorage];
+      v15 = -[DiagnosticCase caseStateString:](self, "caseStateString:", [caseStorage2 caseState]);
       v17 = 138412290;
       v18 = v15;
       _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_DEBUG, "caseState is %@, expecting DiagnosticCaseStateLogging", &v17, 0xCu);
@@ -1309,11 +1309,11 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEvents:(id)a3 forced:(BOOL)a4
+- (void)addEvents:(id)events forced:(BOOL)forced
 {
-  v4 = a4;
+  forcedCopy = forced;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventsCopy = events;
   if (!self->_events)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1321,48 +1321,48 @@ LABEL_16:
     self->_events = v7;
   }
 
-  v9 = [(DiagnosticCase *)self caseStorage];
-  if ([v9 caseState] != 2)
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  if ([caseStorage caseState] != 2)
   {
 
-    if (!v4)
+    if (!forcedCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_7:
-    if ([v6 count])
+    if ([eventsCopy count])
     {
-      [(NSMutableArray *)self->_events addObjectsFromArray:v6];
+      [(NSMutableArray *)self->_events addObjectsFromArray:eventsCopy];
       self->eventsDirty = 1;
     }
 
     goto LABEL_16;
   }
 
-  v10 = [(DiagnosticCase *)self caseId];
-  if (v10)
+  caseId = [(DiagnosticCase *)self caseId];
+  if (caseId)
   {
 
     goto LABEL_7;
   }
 
-  if (v4)
+  if (forcedCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_10:
-  v11 = [(DiagnosticCase *)self caseId];
+  caseId2 = [(DiagnosticCase *)self caseId];
 
   v12 = diagcaseLogHandle();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
-  if (v11)
+  if (caseId2)
   {
     if (v13)
     {
-      v14 = [(DiagnosticCase *)self caseStorage];
-      v15 = -[DiagnosticCase caseStateString:](self, "caseStateString:", [v14 caseState]);
+      caseStorage2 = [(DiagnosticCase *)self caseStorage];
+      v15 = -[DiagnosticCase caseStateString:](self, "caseStateString:", [caseStorage2 caseState]);
       v17 = 138412290;
       v18 = v15;
       _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_DEBUG, "caseState is %@, expecting DiagnosticCaseStateLogging", &v17, 0xCu);
@@ -1403,12 +1403,12 @@ LABEL_16:
 
 - (id)eventsFromStringRepresentation
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 caseEvents];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseEvents = [caseStorage caseEvents];
 
-  if ([v3 length])
+  if ([caseEvents length])
   {
-    v4 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:v3];
+    v4 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:caseEvents];
   }
 
   else
@@ -1428,17 +1428,17 @@ LABEL_16:
 
 - (void)deserializeDiagnosticCaseStorageEvents
 {
-  v3 = [(DiagnosticCase *)self eventsFromStringRepresentation];
+  eventsFromStringRepresentation = [(DiagnosticCase *)self eventsFromStringRepresentation];
   events = self->_events;
-  self->_events = v3;
+  self->_events = eventsFromStringRepresentation;
 
   self->eventsDirty = 0;
 }
 
-- (void)addPayload:(id)a3
+- (void)addPayload:(id)payload
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   if (!self->_payloads)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1446,16 +1446,16 @@ LABEL_16:
     self->_payloads = v5;
   }
 
-  v7 = [(DiagnosticCase *)self caseStorage];
-  if ([v7 caseState] == 2)
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  if ([caseStorage caseState] == 2)
   {
-    v8 = [(DiagnosticCase *)self caseId];
+    caseId = [(DiagnosticCase *)self caseId];
 
-    if (v8)
+    if (caseId)
     {
-      if ([v4 count])
+      if ([payloadCopy count])
       {
-        [(NSMutableArray *)self->_payloads addObject:v4];
+        [(NSMutableArray *)self->_payloads addObject:payloadCopy];
         self->payloadsDirty = 1;
       }
 
@@ -1470,13 +1470,13 @@ LABEL_16:
   v9 = diagcaseLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(DiagnosticCase *)self caseStorage];
-    v11 = -[DiagnosticCase caseStateString:](self, "caseStateString:", [v10 caseState]);
-    v12 = [(DiagnosticCase *)self caseId];
+    caseStorage2 = [(DiagnosticCase *)self caseStorage];
+    v11 = -[DiagnosticCase caseStateString:](self, "caseStateString:", [caseStorage2 caseState]);
+    caseId2 = [(DiagnosticCase *)self caseId];
     v14 = 138412546;
     v15 = v11;
     v16 = 2114;
-    v17 = v12;
+    v17 = caseId2;
     _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_INFO, "Not in logging state (%@) or no caseId (%{public}@)", &v14, 0x16u);
   }
 
@@ -1521,12 +1521,12 @@ LABEL_11:
 
 - (id)payloadsFromStringRepresentation
 {
-  v2 = [(DiagnosticCase *)self caseStorage];
-  v3 = [v2 casePayloads];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  casePayloads = [caseStorage casePayloads];
 
-  if ([v3 length])
+  if ([casePayloads length])
   {
-    v4 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:v3];
+    v4 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:casePayloads];
   }
 
   else
@@ -1546,18 +1546,18 @@ LABEL_11:
 
 - (void)deserializeDiagnosticCaseStoragePayloads
 {
-  v3 = [(DiagnosticCase *)self payloadsFromStringRepresentation];
+  payloadsFromStringRepresentation = [(DiagnosticCase *)self payloadsFromStringRepresentation];
   payloads = self->_payloads;
-  self->_payloads = v3;
+  self->_payloads = payloadsFromStringRepresentation;
 
   self->payloadsDirty = 0;
 }
 
-+ (id)stringRepresentationOfAttachments:(id)a3
++ (id)stringRepresentationOfAttachments:(id)attachments
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  attachmentsCopy = attachments;
+  v4 = [attachmentsCopy count];
   v5 = diagcaseLogHandle();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
   if (v4)
@@ -1565,11 +1565,11 @@ LABEL_11:
     if (v6)
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = attachmentsCopy;
       _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEBUG, "attachments is %@", &v10, 0xCu);
     }
 
-    v7 = [DiagnosticCase _stringRepresentationOfJSONObject:v3 prettyPrint:0];
+    v7 = [DiagnosticCase _stringRepresentationOfJSONObject:attachmentsCopy prettyPrint:0];
   }
 
   else
@@ -1588,15 +1588,15 @@ LABEL_11:
   return v7;
 }
 
-+ (id)attachmentsFromStringRepresentation:(id)a3
++ (id)attachmentsFromStringRepresentation:(id)representation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v4 length])
+  if ([representationCopy length])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 dataUsingEncoding:4];
+    v7 = [representationCopy dataUsingEncoding:4];
     if (v7)
     {
       v15 = 0;
@@ -1614,7 +1614,7 @@ LABEL_11:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v17 = a1;
+          selfCopy = self;
           v18 = 2112;
           v19 = v10;
           _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_DEBUG, "attachment deserialization for case:%@ failed with error: %@", buf, 0x16u);
@@ -1650,36 +1650,36 @@ LABEL_11:
   return v5;
 }
 
-- (void)_addToAttachments:(id)a3
+- (void)_addToAttachments:(id)attachments
 {
-  v4 = a3;
-  v12 = v4;
+  attachmentsCopy = attachments;
+  v12 = attachmentsCopy;
   if (!self->_attachments)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     attachments = self->_attachments;
     self->_attachments = v5;
 
-    v4 = v12;
+    attachmentsCopy = v12;
   }
 
-  v7 = [v4 length];
+  v7 = [attachmentsCopy length];
   v8 = v12;
   if (v7)
   {
     if ([v12 hasPrefix:@"file://"])
     {
-      v9 = v12;
+      absoluteString = v12;
     }
 
     else
     {
       v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
-      v9 = [v10 absoluteString];
+      absoluteString = [v10 absoluteString];
     }
 
-    [(NSMutableArray *)self->_attachments addObject:v9];
-    v11 = [(DiagnosticCase *)self addSizeInfoForAttachment:v9];
+    [(NSMutableArray *)self->_attachments addObject:absoluteString];
+    v11 = [(DiagnosticCase *)self addSizeInfoForAttachment:absoluteString];
 
     v8 = v12;
   }
@@ -1691,9 +1691,9 @@ LABEL_11:
 
 - (void)deserializeDiagnosticCaseStorageAttachments
 {
-  v3 = [(DiagnosticCase *)self caseStorage];
-  v4 = [v3 caseAttachments];
-  v5 = [DiagnosticCase attachmentsFromStringRepresentation:v4];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseAttachments = [caseStorage caseAttachments];
+  v5 = [DiagnosticCase attachmentsFromStringRepresentation:caseAttachments];
 
   attachments = self->_attachments;
   self->_attachments = v5;
@@ -1704,10 +1704,10 @@ LABEL_11:
 - (void)addGroupIdentifierToSignature
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(NSUUID *)self->_caseId UUIDString];
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 stringByAppendingFormat:@"_%@", v5];
+  uUIDString = [(NSUUID *)self->_caseId UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString2 = [uUID UUIDString];
+  v6 = [uUIDString stringByAppendingFormat:@"_%@", uUIDString2];
 
   v7 = diagcaseLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1720,8 +1720,8 @@ LABEL_11:
   if ([v6 length])
   {
     [(NSMutableDictionary *)self->_signature setObject:v6 forKeyedSubscript:@"groupID"];
-    v8 = [(DiagnosticCase *)self caseStorage];
-    [v8 setCaseGroupID:v6];
+    caseStorage = [(DiagnosticCase *)self caseStorage];
+    [caseStorage setCaseGroupID:v6];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1739,11 +1739,11 @@ LABEL_11:
 - (void)collectLogs
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(DiagnosticCase *)self caseStorage];
-  v4 = [v3 caseState];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseState = [caseStorage caseState];
 
-  v5 = [(DiagnosticCase *)self caseStorage];
-  v6 = [v5 caseDampeningType];
+  caseStorage2 = [(DiagnosticCase *)self caseStorage];
+  caseDampeningType = [caseStorage2 caseDampeningType];
 
   if (*&self->completedDiagnosticActions != 0)
   {
@@ -1762,18 +1762,18 @@ LABEL_11:
 
   self->completedDiagnosticActions = 0;
   self->expectedDiagnosticActions = 0;
-  v10 = [(DiagnosticCase *)self manager];
-  v11 = [v10 configManager];
-  v12 = [v11 autoBugCaptureRegularPayloads];
+  manager = [(DiagnosticCase *)self manager];
+  configManager = [manager configManager];
+  autoBugCaptureRegularPayloads = [configManager autoBugCaptureRegularPayloads];
 
-  if (v12 && v4 == 4 && v6 <= 0)
+  if (autoBugCaptureRegularPayloads && caseState == 4 && caseDampeningType <= 0)
   {
     v13 = diagcaseLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(DiagnosticCase *)self caseId];
+      caseId = [(DiagnosticCase *)self caseId];
       v28 = 138543362;
-      v29 = v14;
+      v29 = caseId;
       _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_DEFAULT, "Starting collectLogs for case ID: %{public}@", &v28, 0xCu);
     }
 
@@ -1848,7 +1848,7 @@ LABEL_11:
 
       v28 = 138413058;
       v29 = v22;
-      if (v4 == 4)
+      if (caseState == 4)
       {
         v24 = @"YES";
       }
@@ -1859,7 +1859,7 @@ LABEL_11:
       }
 
       v30 = 2112;
-      if (v6 >= 1)
+      if (caseDampeningType >= 1)
       {
         v25 = @"NO";
       }
@@ -1883,23 +1883,23 @@ LABEL_11:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startCollectingDiagnosticExtensions:(id)a3
+- (void)startCollectingDiagnosticExtensions:(id)extensions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(DiagnosticCase *)self deParametersFromPayloads];
+  extensionsCopy = extensions;
+  date = [MEMORY[0x277CBEAA8] date];
+  deParametersFromPayloads = [(DiagnosticCase *)self deParametersFromPayloads];
   objc_initWeak(&location, self);
-  v7 = [(DiagnosticCase *)self manager];
+  manager = [(DiagnosticCase *)self manager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__DiagnosticCase_startCollectingDiagnosticExtensions___block_invoke;
   v12[3] = &unk_278CF1FE8;
   v12[4] = self;
   objc_copyWeak(&v14, &location);
-  v8 = v5;
+  v8 = date;
   v13 = v8;
-  v9 = [v7 collectDiagnosticExtensionLogsWithParameters:v6 options:v4 diagCase:self reply:v12];
+  v9 = [manager collectDiagnosticExtensionLogsWithParameters:deParametersFromPayloads options:extensionsCopy diagCase:self reply:v12];
 
   ++self->expectedDiagnosticActions;
   v10 = diagcaseLogHandle();
@@ -2165,8 +2165,8 @@ LABEL_39:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v2 = [(DiagnosticCase *)self payloads];
-  v3 = [v2 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  payloads = [(DiagnosticCase *)self payloads];
+  v3 = [payloads countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (!v3)
   {
     v21 = 0;
@@ -2183,7 +2183,7 @@ LABEL_39:
     {
       if (*v23 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(payloads);
       }
 
       v7 = *(*(&v22 + 1) + 8 * v6);
@@ -2263,7 +2263,7 @@ LABEL_21:
     }
 
     while (v4 != v6);
-    v16 = [v2 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    v16 = [payloads countByEnumeratingWithState:&v22 objects:v30 count:16];
     v4 = v16;
   }
 
@@ -2319,16 +2319,16 @@ LABEL_27:
       }
 
       *buf = 134218498;
-      v17 = v6;
+      selfCopy2 = v6;
       v18 = 2080;
       v19 = v7;
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEFAULT, "Collecting %lu report%s for case: %@", buf, 0x20u);
     }
 
-    v8 = [(DiagnosticCase *)self manager];
-    [v8 startCollectingNextReportForDiagnosticCase:self];
+    manager = [(DiagnosticCase *)self manager];
+    [manager startCollectingNextReportForDiagnosticCase:self];
   }
 
   else
@@ -2337,7 +2337,7 @@ LABEL_27:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_DEFAULT, "There are no reports to collect for %@", buf, 0xCu);
     }
 
@@ -2405,13 +2405,13 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportGeneratorEnded:(id)a3 reportInfo:(id)a4 error:(id)a5 isFinalReportGenerator:(BOOL)a6
+- (void)reportGeneratorEnded:(id)ended reportInfo:(id)info error:(id)error isFinalReportGenerator:(BOOL)generator
 {
-  v6 = a6;
+  generatorCopy = generator;
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  endedCopy = ended;
+  infoCopy = info;
+  errorCopy = error;
   ++self->completedDiagnosticActions;
   v13 = diagcaseLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2425,34 +2425,34 @@ LABEL_12:
     _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_DEFAULT, "Finished collecting a diagnostic report. (%lu of %lu completed)", &v20, 0x16u);
   }
 
-  if (v11)
+  if (infoCopy)
   {
     v16 = diagcaseLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v20 = 138412290;
-      v21 = v11;
+      v21 = infoCopy;
       _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_INFO, "Adding case report:%@", &v20, 0xCu);
     }
 
-    v17 = [(DiagnosticCase *)self caseReports];
-    [v17 addObject:v11];
+    caseReports = [(DiagnosticCase *)self caseReports];
+    [caseReports addObject:infoCopy];
   }
 
-  if (v12)
+  if (errorCopy)
   {
     v18 = diagcaseLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v20 = 138412546;
-      v21 = v12;
+      v21 = errorCopy;
       v22 = 2112;
-      v23 = v10;
+      v23 = endedCopy;
       _os_log_impl(&dword_241804000, v18, OS_LOG_TYPE_ERROR, "Error %@ from %@", &v20, 0x16u);
     }
   }
 
-  if (v6)
+  if (generatorCopy)
   {
     [(DiagnosticCase *)self finishedCollectingLogs];
   }
@@ -2460,33 +2460,33 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_updatedPayloadPathForOriginalPath:(id)a3 sandboxExtensionToken:(id)a4
+- (id)_updatedPayloadPathForOriginalPath:(id)path sandboxExtensionToken:(id)token
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  pathCopy = path;
+  tokenCopy = token;
+  v8 = tokenCopy;
+  if (tokenCopy)
   {
-    [v7 UTF8String];
+    [tokenCopy UTF8String];
     if (sandbox_extension_consume() == -1)
     {
       v24 = diagcaseLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [(DiagnosticCase *)self caseId];
+        caseId = [(DiagnosticCase *)self caseId];
         v26 = __error();
         v27 = strerror(*v26);
         v28 = "Unknown";
         *buf = 138543874;
-        v45 = v25;
+        v45 = caseId;
         if (v27)
         {
           v28 = v27;
         }
 
         v46 = 2112;
-        v47 = v6;
+        v47 = pathCopy;
         v48 = 2080;
         v49 = v28;
         _os_log_impl(&dword_241804000, v24, OS_LOG_TYPE_ERROR, "Case: %{public}@: Failed to consume extension token for '%@' due to error: %s", buf, 0x20u);
@@ -2497,24 +2497,24 @@ LABEL_12:
 
     else
     {
-      v9 = v6;
-      v10 = [v9 lastPathComponent];
+      v9 = pathCopy;
+      lastPathComponent = [v9 lastPathComponent];
       v11 = MEMORY[0x277CCACA8];
-      v12 = [(DiagnosticCase *)self caseId];
-      v42 = v10;
-      v13 = [v11 stringWithFormat:@"Case%@_%@", v12, v10];
+      caseId2 = [(DiagnosticCase *)self caseId];
+      v42 = lastPathComponent;
+      v13 = [v11 stringWithFormat:@"Case%@_%@", caseId2, lastPathComponent];
 
       v14 = +[ABCAdministrator sharedInstance];
-      v15 = [v14 configurationManager];
-      v16 = [v15 logArchivePath];
-      v17 = [v16 stringByAppendingPathComponent:v13];
+      configurationManager = [v14 configurationManager];
+      logArchivePath = [configurationManager logArchivePath];
+      v17 = [logArchivePath stringByAppendingPathComponent:v13];
 
       v18 = diagcaseLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [(DiagnosticCase *)self caseId];
+        caseId3 = [(DiagnosticCase *)self caseId];
         *buf = 138543874;
-        v45 = v19;
+        v45 = caseId3;
         v46 = 2112;
         v47 = v9;
         v48 = 2112;
@@ -2522,9 +2522,9 @@ LABEL_12:
         _os_log_impl(&dword_241804000, v18, OS_LOG_TYPE_INFO, "Case: %{public}@: Attempting to copy %@ to %@", buf, 0x20u);
       }
 
-      v20 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v43 = 0;
-      v21 = [v20 copyItemAtPath:v9 toPath:v17 error:&v43];
+      v21 = [defaultManager copyItemAtPath:v9 toPath:v17 error:&v43];
       v22 = v43;
 
       if (v21)
@@ -2539,14 +2539,14 @@ LABEL_12:
         {
           [(DiagnosticCase *)self caseId];
           v30 = v41 = v13;
-          v31 = [v22 localizedDescription];
-          v32 = v31;
+          localizedDescription = [v22 localizedDescription];
+          v32 = localizedDescription;
           *buf = 138544130;
           v33 = @"Unknown";
           v45 = v30;
-          if (v31)
+          if (localizedDescription)
           {
-            v33 = v31;
+            v33 = localizedDescription;
           }
 
           v46 = 2112;
@@ -2568,12 +2568,12 @@ LABEL_12:
         v34 = diagcaseLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
-          v35 = [(DiagnosticCase *)self caseId];
+          caseId4 = [(DiagnosticCase *)self caseId];
           v36 = __error();
           v37 = strerror(*v36);
           v38 = "Unknown";
           *buf = 138543874;
-          v45 = v35;
+          v45 = caseId4;
           if (v37)
           {
             v38 = v37;
@@ -2591,7 +2591,7 @@ LABEL_12:
 
   else
   {
-    v23 = v6;
+    v23 = pathCopy;
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -2599,24 +2599,24 @@ LABEL_12:
   return v23;
 }
 
-- (void)_updatePayloadDictionaryArray:(BOOL)a3
+- (void)_updatePayloadDictionaryArray:(BOOL)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v62 = *MEMORY[0x277D85DE8];
-  v43 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v5 = [(DiagnosticCase *)self payloads];
-  v6 = [v5 countByEnumeratingWithState:&v52 objects:v61 count:16];
+  payloads = [(DiagnosticCase *)self payloads];
+  v6 = [payloads countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v53;
     v9 = @"path";
-    v40 = v3;
-    v42 = v5;
+    v40 = arrayCopy;
+    v42 = payloads;
     v39 = *v53;
     v38 = @"path";
     do
@@ -2627,11 +2627,11 @@ LABEL_12:
       {
         if (*v53 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(payloads);
         }
 
         v11 = *(*(&v52 + 1) + 8 * v10);
-        if (v3)
+        if (arrayCopy)
         {
           v45 = [*(*(&v52 + 1) + 8 * v10) objectForKeyedSubscript:v9];
           if (v45)
@@ -2641,14 +2641,14 @@ LABEL_12:
             if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
             {
               [(DiagnosticCase *)self caseId];
-              v14 = v13 = v5;
+              v14 = v13 = payloads;
               *buf = 138543618;
               v58 = v14;
               v59 = 2112;
               v60 = v45;
               _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_INFO, "Case: %{public}@: Moving files from payload path array into working dir: %@", buf, 0x16u);
 
-              v5 = v13;
+              payloads = v13;
             }
 
             v15 = [v11 objectForKeyedSubscript:@"sandbox_ext_token_dict"];
@@ -2720,11 +2720,11 @@ LABEL_12:
 
               v9 = v38;
               [v16 setObject:v17 forKeyedSubscript:v38];
-              [(NSMutableArray *)v43 addObject:v16];
+              [(NSMutableArray *)array addObject:v16];
 
-              v3 = v40;
+              arrayCopy = v40;
               v7 = v41;
-              v5 = v42;
+              payloads = v42;
               v8 = v39;
             }
 
@@ -2733,14 +2733,14 @@ LABEL_12:
               v16 = diagcaseLogHandle();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
               {
-                v32 = [(DiagnosticCase *)self caseId];
+                caseId = [(DiagnosticCase *)self caseId];
                 *buf = 138543618;
-                v58 = v32;
+                v58 = caseId;
                 v59 = 2112;
                 v60 = v11;
                 _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_ERROR, "Case: %{public}@: No sandbox extension token dictionary found. Dropping payload %@", buf, 0x16u);
 
-                v5 = v42;
+                payloads = v42;
               }
             }
 
@@ -2751,7 +2751,7 @@ LABEL_12:
 
           else
           {
-            [(NSMutableArray *)v43 addObject:v11];
+            [(NSMutableArray *)array addObject:v11];
             v31 = 0;
           }
         }
@@ -2767,24 +2767,24 @@ LABEL_12:
       }
 
       while (v10 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v52 objects:v61 count:16];
+      v7 = [payloads countByEnumeratingWithState:&v52 objects:v61 count:16];
     }
 
     while (v7);
   }
 
   payloads = self->_payloads;
-  self->_payloads = v43;
+  self->_payloads = array;
 
   v34 = diagcaseLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
-    v35 = [(DiagnosticCase *)self caseId];
-    v36 = [(DiagnosticCase *)self payloads];
+    caseId2 = [(DiagnosticCase *)self caseId];
+    payloads2 = [(DiagnosticCase *)self payloads];
     *buf = 138543618;
-    v58 = v35;
+    v58 = caseId2;
     v59 = 2112;
-    v60 = v36;
+    v60 = payloads2;
     _os_log_impl(&dword_241804000, v34, OS_LOG_TYPE_DEBUG, "Case: %{public}@: Updated payloads array: %@", buf, 0x16u);
   }
 
@@ -2797,9 +2797,9 @@ LABEL_12:
   v3 = diagcaseLogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(DiagnosticCase *)self caseId];
+    caseId = [(DiagnosticCase *)self caseId];
     v12 = 138412290;
-    v13 = v4;
+    v13 = caseId;
     _os_log_impl(&dword_241804000, v3, OS_LOG_TYPE_DEBUG, "Finished collecting all diagnostic reports for case %@.", &v12, 0xCu);
   }
 
@@ -2838,22 +2838,22 @@ LABEL_12:
 - (void)prepareAttachmentsForReporting
 {
   v95 = *MEMORY[0x277D85DE8];
-  v3 = [(DiagnosticCase *)self caseStorage];
-  v4 = [v3 caseState];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseState = [caseStorage caseState];
 
-  if (v4 == 5)
+  if (caseState == 5)
   {
-    v5 = [(DiagnosticCase *)self payloads];
-    v6 = [v5 count];
+    payloads = [(DiagnosticCase *)self payloads];
+    v6 = [payloads count];
 
     if (v6)
     {
       v7 = diagcaseLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v8 = [(DiagnosticCase *)self payloads];
+        payloads2 = [(DiagnosticCase *)self payloads];
         *buf = 138412290;
-        v82 = v8;
+        v82 = payloads2;
         _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_DEBUG, "Extracting payloads %@ to attachments.", buf, 0xCu);
       }
 
@@ -2938,17 +2938,17 @@ LABEL_25:
       }
     }
 
-    v20 = [(DiagnosticCase *)self caseReports];
-    v21 = [v20 count];
+    caseReports = [(DiagnosticCase *)self caseReports];
+    v21 = [caseReports count];
 
     if (v21)
     {
-      v54 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v22 = diagcaseLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v23 = [(DiagnosticCase *)self caseReports];
-        v24 = [v23 count];
+        caseReports2 = [(DiagnosticCase *)self caseReports];
+        v24 = [caseReports2 count];
         *buf = 134217984;
         v82 = v24;
         _os_log_impl(&dword_241804000, v22, OS_LOG_TYPE_DEBUG, "Extracting %ld reports to attachments.", buf, 0xCu);
@@ -2958,8 +2958,8 @@ LABEL_25:
       v70 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v55 = [(DiagnosticCase *)self caseReports];
-      v58 = [v55 countByEnumeratingWithState:&v67 objects:v92 count:16];
+      caseReports3 = [(DiagnosticCase *)self caseReports];
+      v58 = [caseReports3 countByEnumeratingWithState:&v67 objects:v92 count:16];
       if (v58)
       {
         v57 = *v68;
@@ -2969,7 +2969,7 @@ LABEL_25:
           {
             if (*v68 != v57)
             {
-              objc_enumerationMutation(v55);
+              objc_enumerationMutation(caseReports3);
             }
 
             v26 = *(*(&v67 + 1) + 8 * k);
@@ -3094,7 +3094,7 @@ LABEL_58:
               v56 = v35;
               v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:v79 count:4];
 
-              [v54 addObject:v43];
+              [array addObject:v43];
               v48 = MEMORY[0x277CBEAC0];
               v49 = MEMORY[0x277CCABB0];
               [v36 timeIntervalSince1970];
@@ -3104,7 +3104,7 @@ LABEL_58:
 
               v35 = v56;
               v39 = v62;
-              [v54 addObject:v52];
+              [array addObject:v52];
             }
 
             else
@@ -3126,15 +3126,15 @@ LABEL_58:
             }
           }
 
-          v58 = [v55 countByEnumeratingWithState:&v67 objects:v92 count:16];
+          v58 = [caseReports3 countByEnumeratingWithState:&v67 objects:v92 count:16];
         }
 
         while (v58);
       }
 
-      if ([v54 count])
+      if ([array count])
       {
-        [(DiagnosticCase *)self addEvents:v54 forced:1];
+        [(DiagnosticCase *)self addEvents:array forced:1];
       }
     }
   }
@@ -3154,7 +3154,7 @@ LABEL_58:
   {
     requiredAttachments = self->_requiredAttachments;
     *buf = 138412290;
-    v18 = requiredAttachments;
+    selfCopy = requiredAttachments;
     _os_log_impl(&dword_241804000, v3, OS_LOG_TYPE_DEBUG, "Ready to validate attachments with requirements: %@", buf, 0xCu);
   }
 
@@ -3202,7 +3202,7 @@ LABEL_12:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_ERROR, "This case has one or more missing required attachments. Marking as ineligible. (%@)", buf, 0xCu);
   }
 
@@ -3386,29 +3386,29 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addSizeInfoForAttachment:(id)a3
+- (id)addSizeInfoForAttachment:(id)attachment
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v4];
-  v6 = [v5 path];
+  attachmentCopy = attachment;
+  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:attachmentCopy];
+  path = [v5 path];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v21 = 0;
-  v8 = [v7 attributesOfItemAtPath:v6 error:&v21];
+  v8 = [defaultManager attributesOfItemAtPath:path error:&v21];
   v9 = v21;
 
   if (v9)
   {
-    v10 = diagcaseLogHandle();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    lastPathComponent = diagcaseLogHandle();
+    if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 138412546;
-      v23 = v4;
+      v23 = attachmentCopy;
       v24 = 2112;
-      v25 = v11;
-      _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_ERROR, "DiagnosticCaseSummaryLog: Error getting fileSize for '%@': %@", buf, 0x16u);
+      v25 = localizedDescription;
+      _os_log_impl(&dword_241804000, lastPathComponent, OS_LOG_TYPE_ERROR, "DiagnosticCaseSummaryLog: Error getting fileSize for '%@': %@", buf, 0x16u);
     }
 
     v12 = &stru_285368168;
@@ -3416,32 +3416,32 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
 
   else
   {
-    v13 = [v8 fileSize];
-    v10 = [v4 lastPathComponent];
-    v14 = [(DiagnosticCase *)self attachmentsWithSize];
+    fileSize = [v8 fileSize];
+    lastPathComponent = [attachmentCopy lastPathComponent];
+    attachmentsWithSize = [(DiagnosticCase *)self attachmentsWithSize];
 
-    if (!v14)
+    if (!attachmentsWithSize)
     {
       v15 = objc_opt_new();
       [(DiagnosticCase *)self setAttachmentsWithSize:v15];
     }
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];
-    v17 = [(DiagnosticCase *)self attachmentsWithSize];
-    [v17 setObject:v16 forKeyedSubscript:v10];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:fileSize];
+    attachmentsWithSize2 = [(DiagnosticCase *)self attachmentsWithSize];
+    [attachmentsWithSize2 setObject:v16 forKeyedSubscript:lastPathComponent];
 
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%llu", v13];
+    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%llu", fileSize];
     v18 = summaryLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v23 = v4;
+      v23 = attachmentCopy;
       v24 = 2048;
-      v25 = v13;
+      v25 = fileSize;
       _os_log_impl(&dword_241804000, v18, OS_LOG_TYPE_INFO, "DiagnosticCaseSummaryLog: Adding attachment %@, size: %llu bytes", buf, 0x16u);
     }
 
-    self->_attachmentsFileSize += v13;
+    self->_attachmentsFileSize += fileSize;
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3451,36 +3451,36 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
 
 - (id)stringRepresentationOfAttachmentsWithSize
 {
-  v2 = [(DiagnosticCase *)self attachmentsWithSize];
-  v3 = [DiagnosticCaseSummaryAnalytics stringRepresentationOfAttachmentsWithSize:v2];
+  attachmentsWithSize = [(DiagnosticCase *)self attachmentsWithSize];
+  v3 = [DiagnosticCaseSummaryAnalytics stringRepresentationOfAttachmentsWithSize:attachmentsWithSize];
 
   return v3;
 }
 
-+ (id)generateCaseSummaryDictionaryFromCaseStorage:(id)a3
++ (id)generateCaseSummaryDictionaryFromCaseStorage:(id)storage
 {
   v39[7] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  storageCopy = storage;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   context = objc_autoreleasePoolPush();
-  v5 = [v3 timeStamp];
-  v6 = [v5 copy];
+  timeStamp = [storageCopy timeStamp];
+  v6 = [timeStamp copy];
 
-  v7 = [v3 caseClosedTime];
-  v8 = [v7 copy];
+  caseClosedTime = [storageCopy caseClosedTime];
+  v8 = [caseClosedTime copy];
 
   v34 = v6;
   v33 = iso8601date_string_from_NSDate(v6);
   v32 = iso8601date_string_from_NSDate(v8);
-  v9 = [v3 caseID];
-  v10 = [v9 copy];
+  caseID = [storageCopy caseID];
+  v10 = [caseID copy];
   [v4 setObject:v10 forKeyedSubscript:@"case_identifier"];
 
-  v11 = [DiagnosticCase signatureForCaseStorage:v3];
+  v11 = [DiagnosticCase signatureForCaseStorage:storageCopy];
   [v4 setObject:v11 forKeyedSubscript:@"signature"];
 
-  v12 = [v3 caseEvents];
-  v13 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:v12];
+  caseEvents = [storageCopy caseEvents];
+  v13 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:caseEvents];
   [v4 setObject:v13 forKeyedSubscript:@"events"];
 
   v38[0] = @"case_opened_timestamp";
@@ -3498,34 +3498,34 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
   v39[3] = v32;
   v38[3] = @"case_closed_time";
   v38[4] = @"dampening_type";
-  v18 = +[DiagnosticCase _caseDampeningTypeString:](DiagnosticCase, "_caseDampeningTypeString:", [v3 caseDampeningType]);
+  v18 = +[DiagnosticCase _caseDampeningTypeString:](DiagnosticCase, "_caseDampeningTypeString:", [storageCopy caseDampeningType]);
   v39[4] = v18;
   v38[5] = @"closure_type";
-  v19 = +[DiagnosticCase _closureTypeString:](DiagnosticCase, "_closureTypeString:", [v3 caseClosureType]);
+  v19 = +[DiagnosticCase _closureTypeString:](DiagnosticCase, "_closureTypeString:", [storageCopy caseClosureType]);
   v39[5] = v19;
   v38[6] = @"remote_trigger";
-  v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "remoteTrigger")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(storageCopy, "remoteTrigger")}];
   v39[6] = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:7];
   [v4 setObject:v21 forKeyedSubscript:@"case_status"];
 
-  v22 = [v3 caseAttachments];
-  v23 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:v22];
+  caseAttachments = [storageCopy caseAttachments];
+  v23 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:caseAttachments];
   [v4 setObject:v23 forKeyedSubscript:@"attachments"];
 
   v24 = +[SystemProperties sharedInstance];
   v36[0] = @"product_type";
-  v25 = [v24 productType];
-  v37[0] = v25;
+  productType = [v24 productType];
+  v37[0] = productType;
   v36[1] = @"product_name";
-  v26 = [v24 productName];
-  v37[1] = v26;
+  productName = [v24 productName];
+  v37[1] = productName;
   v36[2] = @"product_version";
-  v27 = [v24 productVersion];
-  v37[2] = v27;
+  productVersion = [v24 productVersion];
+  v37[2] = productVersion;
   v36[3] = @"build_version";
-  v28 = [v24 buildVersion];
-  v37[3] = v28;
+  buildVersion = [v24 buildVersion];
+  v37[3] = buildVersion;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:4];
   [v4 setObject:v29 forKeyedSubscript:@"system_properties"];
 
@@ -3535,16 +3535,16 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
   return v4;
 }
 
-+ (id)generateCaseSummaryFromCaseStorageDictionary:(id)a3
++ (id)generateCaseSummaryFromCaseStorageDictionary:(id)dictionary
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = objc_autoreleasePoolPush();
-  v6 = [v3 objectForKeyedSubscript:@"timeStamp"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"timeStamp"];
   v7 = [v6 copy];
 
-  v8 = [v3 objectForKeyedSubscript:@"caseClosedTime"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"caseClosedTime"];
   v9 = [v8 copy];
 
   if (v7)
@@ -3555,7 +3555,7 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v58 = v3;
+        v58 = dictionaryCopy;
         _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_ERROR, "Fixing up case dictionary with missing key caseClosedTime: %@", buf, 0xCu);
       }
 
@@ -3565,14 +3565,14 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
     context = v5;
     v11 = iso8601date_string_from_NSDate(v7);
     v12 = iso8601date_string_from_NSDate(v9);
-    v13 = [v3 objectForKeyedSubscript:@"caseID"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"caseID"];
     v14 = [v13 copy];
     [v4 setObject:v14 forKeyedSubscript:@"case_identifier"];
 
-    v15 = [DiagnosticCase signatureForCaseStorageDictionary:v3];
+    v15 = [DiagnosticCase signatureForCaseStorageDictionary:dictionaryCopy];
     [v4 setObject:v15 forKeyedSubscript:@"signature"];
 
-    v16 = [v3 objectForKeyedSubscript:@"caseEvents"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"caseEvents"];
     v17 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:v16];
     [v4 setObject:v17 forKeyedSubscript:@"events"];
 
@@ -3595,64 +3595,64 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
     v48 = v12;
     v55[3] = @"case_closed_time";
     v55[4] = @"dampening_type";
-    v22 = [v3 objectForKeyedSubscript:@"caseDampeningType"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"caseDampeningType"];
     v23 = +[DiagnosticCase _caseDampeningTypeString:](DiagnosticCase, "_caseDampeningTypeString:", [v22 intValue]);
     v56[4] = v23;
     v55[5] = @"closure_type";
-    v24 = [v3 objectForKeyedSubscript:@"caseClosureType"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"caseClosureType"];
     v25 = +[DiagnosticCase _closureTypeString:](DiagnosticCase, "_closureTypeString:", [v24 intValue]);
     v56[5] = v25;
     v55[6] = @"remote_trigger";
-    v26 = [v3 objectForKeyedSubscript:@"remoteTrigger"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"remoteTrigger"];
     v56[6] = v26;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:7];
     [v4 setObject:v27 forKeyedSubscript:@"case_status"];
 
-    v28 = [v3 objectForKeyedSubscript:@"caseAttachments"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"caseAttachments"];
     v29 = [DiagnosticCase _arrayObjectRepresentationOfJSONString:v28];
     [v4 setObject:v29 forKeyedSubscript:@"attachments"];
 
-    v30 = [v3 objectForKeyedSubscript:@"dpSubmissionState"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"dpSubmissionState"];
     [v4 setObject:v30 forKeyedSubscript:@"dp_submission"];
 
     v31 = +[SystemProperties sharedInstance];
-    v32 = [v3 objectForKeyedSubscript:@"buildVariant"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"buildVariant"];
     v33 = v32;
     if (v32)
     {
-      v34 = v32;
+      buildVariant = v32;
     }
 
     else
     {
-      v34 = [v31 buildVariant];
+      buildVariant = [v31 buildVariant];
     }
 
-    v37 = v34;
+    v37 = buildVariant;
 
-    v38 = [v3 objectForKeyedSubscript:@"buildVersion"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"buildVersion"];
     v39 = v38;
     if (v38)
     {
-      v40 = v38;
+      buildVersion = v38;
     }
 
     else
     {
-      v40 = [v31 buildVersion];
+      buildVersion = [v31 buildVersion];
     }
 
-    v41 = v40;
+    v41 = buildVersion;
 
     v53[0] = @"product_type";
-    v42 = [v31 productType];
-    v54[0] = v42;
+    productType = [v31 productType];
+    v54[0] = productType;
     v53[1] = @"product_name";
-    v43 = [v31 productName];
-    v54[1] = v43;
+    productName = [v31 productName];
+    v54[1] = productName;
     v53[2] = @"product_version";
-    v44 = [v31 productVersion];
-    v54[2] = v44;
+    productVersion = [v31 productVersion];
+    v54[2] = productVersion;
     v54[3] = v41;
     v53[3] = @"build_version";
     v53[4] = @"build_variant";
@@ -3670,7 +3670,7 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v58 = v3;
+      v58 = dictionaryCopy;
       _os_log_impl(&dword_241804000, v35, OS_LOG_TYPE_ERROR, "Missing required key timeStamp (case open time) from case dictionary: %@", buf, 0xCu);
     }
 
@@ -3698,15 +3698,15 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
   v7 = [v6 dateWithTimeIntervalSince1970:?];
   v57 = iso8601date_string_from_NSDate(v7);
 
-  v8 = [(DiagnosticCase *)self caseId];
-  v9 = [v8 UUIDString];
-  [v3 setObject:v9 forKeyedSubscript:@"case_identifier"];
+  caseId = [(DiagnosticCase *)self caseId];
+  uUIDString = [caseId UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"case_identifier"];
 
-  v10 = [(DiagnosticCase *)self signature];
-  [v3 setObject:v10 forKeyedSubscript:@"signature"];
+  signature = [(DiagnosticCase *)self signature];
+  [v3 setObject:signature forKeyedSubscript:@"signature"];
 
-  v11 = [(DiagnosticCase *)self events];
-  [v3 setObject:v11 forKeyedSubscript:@"events"];
+  events = [(DiagnosticCase *)self events];
+  [v3 setObject:events forKeyedSubscript:@"events"];
 
   v54 = MEMORY[0x277CBEAC0];
   v12 = MEMORY[0x277CCABB0];
@@ -3715,35 +3715,35 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
   v14 = MEMORY[0x277CCABB0];
   [(DiagnosticCase *)self caseClosedTime];
   v15 = [v14 numberWithDouble:?];
-  v16 = [(DiagnosticCase *)self caseDampeningTypeString];
-  v17 = [(DiagnosticCase *)self caseClosureTypeString];
+  caseDampeningTypeString = [(DiagnosticCase *)self caseDampeningTypeString];
+  caseClosureTypeString = [(DiagnosticCase *)self caseClosureTypeString];
   v18 = [MEMORY[0x277CCABB0] numberWithBool:{-[DiagnosticCase isRemoteTrigger](self, "isRemoteTrigger")}];
-  v19 = [v54 dictionaryWithObjectsAndKeys:{v13, @"case_opened_timestamp", v58, @"case_opened_time", v15, @"case_closed_timestamp", v57, @"case_closed_time", v16, @"dampening_type", v17, @"closure_type", v18, @"remote_trigger", 0}];
+  v19 = [v54 dictionaryWithObjectsAndKeys:{v13, @"case_opened_timestamp", v58, @"case_opened_time", v15, @"case_closed_timestamp", v57, @"case_closed_time", caseDampeningTypeString, @"dampening_type", caseClosureTypeString, @"closure_type", v18, @"remote_trigger", 0}];
   [v3 setObject:v19 forKeyedSubscript:@"case_status"];
 
-  v20 = [(DiagnosticCase *)self attachments];
-  [v3 setObject:v20 forKeyedSubscript:@"attachments"];
+  attachments = [(DiagnosticCase *)self attachments];
+  [v3 setObject:attachments forKeyedSubscript:@"attachments"];
 
   v21 = +[SystemProperties sharedInstance];
   v22 = +[WirelessTechnologyProfile sharedInstance];
   v52 = MEMORY[0x277CBEB38];
-  v51 = [v21 productType];
-  v50 = [v21 productName];
-  v23 = [v21 productVersion];
-  v24 = [v21 buildVersion];
-  v25 = [v21 buildVariant];
-  v26 = [v22 regulatoryDomainCountry];
+  productType = [v21 productType];
+  productName = [v21 productName];
+  productVersion = [v21 productVersion];
+  buildVersion = [v21 buildVersion];
+  buildVariant = [v21 buildVariant];
+  regulatoryDomainCountry = [v22 regulatoryDomainCountry];
   v55 = v22;
-  v27 = [v22 homeCarrier];
-  v28 = [v52 dictionaryWithObjectsAndKeys:{v51, @"product_type", v50, @"product_name", v23, @"product_version", v24, @"build_version", v25, @"build_variant", v26, @"regulatory_domain_country", v27, @"home_carrier", 0}];
+  homeCarrier = [v22 homeCarrier];
+  v28 = [v52 dictionaryWithObjectsAndKeys:{productType, @"product_type", productName, @"product_name", productVersion, @"product_version", buildVersion, @"build_version", buildVariant, @"build_variant", regulatoryDomainCountry, @"regulatory_domain_country", homeCarrier, @"home_carrier", 0}];
 
-  v29 = [v21 serialNumber];
-  v30 = [v29 length];
+  serialNumber = [v21 serialNumber];
+  v30 = [serialNumber length];
 
   if (v30)
   {
-    v31 = [v21 serialNumber];
-    [v28 setObject:v31 forKeyedSubscript:@"serial_number"];
+    serialNumber2 = [v21 serialNumber];
+    [v28 setObject:serialNumber2 forKeyedSubscript:@"serial_number"];
   }
 
   [v3 setObject:v28 forKeyedSubscript:@"system_properties"];
@@ -3751,19 +3751,19 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
   v33 = diagcaseLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
   {
-    v34 = [v32 primaryInterfaceType];
-    v35 = [v32 interfaceBecamePrimaryDate];
-    v36 = [v32 hasPrimaryInterface];
+    primaryInterfaceType = [v32 primaryInterfaceType];
+    interfaceBecamePrimaryDate = [v32 interfaceBecamePrimaryDate];
+    hasPrimaryInterface = [v32 hasPrimaryInterface];
     v37 = "NO";
     *buf = 134218498;
-    v60 = v34;
-    if (v36)
+    v60 = primaryInterfaceType;
+    if (hasPrimaryInterface)
     {
       v37 = "YES";
     }
 
     v61 = 2112;
-    v62 = v35;
+    v62 = interfaceBecamePrimaryDate;
     v63 = 2080;
     v64 = v37;
     _os_log_impl(&dword_241804000, v33, OS_LOG_TYPE_DEBUG, "InterfaceUtils reports type:%ld date:%@ hasPrimary:%s", buf, 0x20u);
@@ -3773,14 +3773,14 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
 
   if ([v32 hasPrimaryInterface])
   {
-    v38 = [v32 primaryInterfaceTypeString];
-    v39 = [v32 interfaceBecamePrimaryDate];
+    primaryInterfaceTypeString = [v32 primaryInterfaceTypeString];
+    interfaceBecamePrimaryDate2 = [v32 interfaceBecamePrimaryDate];
     v40 = MEMORY[0x277CCABB0];
-    [v39 timeIntervalSince1970];
+    [interfaceBecamePrimaryDate2 timeIntervalSince1970];
     v41 = [v40 numberWithDouble:?];
-    if (v39)
+    if (interfaceBecamePrimaryDate2)
     {
-      v42 = iso8601date_string_from_NSDate(v39);
+      v42 = iso8601date_string_from_NSDate(interfaceBecamePrimaryDate2);
     }
 
     else
@@ -3788,13 +3788,13 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
       v42 = 0;
     }
 
-    v45 = [v32 estimatedInterfaceBecamePrimaryDate];
+    estimatedInterfaceBecamePrimaryDate = [v32 estimatedInterfaceBecamePrimaryDate];
     v46 = MEMORY[0x277CCABB0];
-    [v45 timeIntervalSince1970];
+    [estimatedInterfaceBecamePrimaryDate timeIntervalSince1970];
     v43 = [v46 numberWithDouble:?];
-    if (v45)
+    if (estimatedInterfaceBecamePrimaryDate)
     {
-      v44 = iso8601date_string_from_NSDate(v45);
+      v44 = iso8601date_string_from_NSDate(estimatedInterfaceBecamePrimaryDate);
     }
 
     else
@@ -3809,10 +3809,10 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
     v42 = 0;
     v44 = 0;
     v41 = 0;
-    v38 = @"None";
+    primaryInterfaceTypeString = @"None";
   }
 
-  v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v38, @"primary_interface_type", v41, @"primary_interface_timestamp", v42, @"primary_interface_time", v43, @"primary_interface_timestamp_estimated", v44, @"primary_interface_time_estimated", 0}];
+  v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{primaryInterfaceTypeString, @"primary_interface_type", v41, @"primary_interface_timestamp", v42, @"primary_interface_time", v43, @"primary_interface_timestamp_estimated", v44, @"primary_interface_time_estimated", 0}];
   [v3 setObject:v47 forKeyedSubscript:@"network_properties"];
 
   objc_autoreleasePoolPop(context);
@@ -3849,11 +3849,11 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
     v6 = v11;
   }
 
-  v12 = [(DiagnosticCase *)self manager];
-  v13 = [v12 configManager];
-  v14 = [v13 logArchivePath];
+  manager = [(DiagnosticCase *)self manager];
+  configManager = [manager configManager];
+  logArchivePath = [configManager logArchivePath];
   v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"case_summary_%@.json", v6];
-  v16 = [v14 stringByAppendingPathComponent:v15];
+  v16 = [logArchivePath stringByAppendingPathComponent:v15];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -3863,46 +3863,46 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
 - (void)summarizeCaseReport
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(DiagnosticCase *)self caseStorage];
-  v4 = [v3 caseDampeningType];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseDampeningType = [caseStorage caseDampeningType];
 
-  if (v4 < 1)
+  if (caseDampeningType < 1)
   {
-    v5 = [(DiagnosticCase *)self _generateCaseSummaryDictionary];
-    if (!v5)
+    _generateCaseSummaryDictionary = [(DiagnosticCase *)self _generateCaseSummaryDictionary];
+    if (!_generateCaseSummaryDictionary)
     {
-      v6 = diagcaseLogHandle();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      caseId = diagcaseLogHandle();
+      if (os_log_type_enabled(caseId, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_ERROR, "Case summary dictionary is nil", buf, 2u);
+        _os_log_impl(&dword_241804000, caseId, OS_LOG_TYPE_ERROR, "Case summary dictionary is nil", buf, 2u);
       }
 
       goto LABEL_23;
     }
 
-    v6 = [DiagnosticCase _stringRepresentationOfJSONObject:v5 prettyPrint:1];
-    if ([v6 length])
+    caseId = [DiagnosticCase _stringRepresentationOfJSONObject:_generateCaseSummaryDictionary prettyPrint:1];
+    if ([caseId length])
     {
-      v7 = [(DiagnosticCase *)self _caseSummaryFileName];
-      if (v7)
+      _caseSummaryFileName = [(DiagnosticCase *)self _caseSummaryFileName];
+      if (_caseSummaryFileName)
       {
         v17 = 0;
-        v12 = [v6 writeToFile:v7 atomically:0 encoding:4 error:&v17];
+        v12 = [caseId writeToFile:_caseSummaryFileName atomically:0 encoding:4 error:&v17];
         v13 = v17;
         if (v12)
         {
-          [(DiagnosticCase *)self fixupCaseSummaryFile:v7];
+          [(DiagnosticCase *)self fixupCaseSummaryFile:_caseSummaryFileName];
           v14 = diagcaseLogHandle();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v19 = v7;
+            v19 = _caseSummaryFileName;
             _os_log_impl(&dword_241804000, v14, OS_LOG_TYPE_DEBUG, "Case summary wrote to %@, adding to attachment", buf, 0xCu);
           }
 
-          [(DiagnosticCase *)self _addToAttachments:v7];
-          [(DiagnosticCase *)self setCaseSummaryFilepath:v7];
+          [(DiagnosticCase *)self _addToAttachments:_caseSummaryFileName];
+          [(DiagnosticCase *)self setCaseSummaryFilepath:_caseSummaryFileName];
         }
 
         else
@@ -3930,8 +3930,8 @@ void __37__DiagnosticCase_validateAttachments__block_invoke_187(void *a1, void *
       goto LABEL_22;
     }
 
-    v7 = diagcaseLogHandle();
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    _caseSummaryFileName = diagcaseLogHandle();
+    if (!os_log_type_enabled(_caseSummaryFileName, OS_LOG_TYPE_ERROR))
     {
 LABEL_22:
 
@@ -3940,9 +3940,9 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v19 = v5;
+    v19 = _generateCaseSummaryDictionary;
     v8 = "Pretty case summary is empty (case summary dict = %@)";
-    v9 = v7;
+    v9 = _caseSummaryFileName;
     v10 = OS_LOG_TYPE_ERROR;
     v11 = 12;
 LABEL_4:
@@ -3950,17 +3950,17 @@ LABEL_4:
     goto LABEL_22;
   }
 
-  v5 = diagcaseLogHandle();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  _generateCaseSummaryDictionary = diagcaseLogHandle();
+  if (os_log_type_enabled(_generateCaseSummaryDictionary, OS_LOG_TYPE_INFO))
   {
-    v6 = [(DiagnosticCase *)self caseId];
-    v7 = [(DiagnosticCase *)self caseDampeningTypeString];
+    caseId = [(DiagnosticCase *)self caseId];
+    _caseSummaryFileName = [(DiagnosticCase *)self caseDampeningTypeString];
     *buf = 138543618;
-    v19 = v6;
+    v19 = caseId;
     v20 = 2112;
-    v21 = v7;
+    v21 = _caseSummaryFileName;
     v8 = "Skip creating a case summary for %{public}@ (dampening = %@)";
-    v9 = v5;
+    v9 = _generateCaseSummaryDictionary;
     v10 = OS_LOG_TYPE_INFO;
     v11 = 22;
     goto LABEL_4;
@@ -3971,18 +3971,18 @@ LABEL_24:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fixupCaseSummaryFile:(id)a3
+- (void)fixupCaseSummaryFile:(id)file
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 UTF8String];
-  if (v4)
+  fileCopy = file;
+  uTF8String = [fileCopy UTF8String];
+  if (uTF8String)
   {
-    v5 = v4;
+    v5 = uTF8String;
     v6 = +[ABCAdministrator sharedInstance];
-    v7 = [v6 configurationManager];
+    configurationManager = [v6 configurationManager];
 
-    if (chown(v5, [v7 logArchiveUID], [v7 logArchiveGID]))
+    if (chown(v5, [configurationManager logArchiveUID], [configurationManager logArchiveGID]))
     {
       v8 = diagcaseLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -4008,8 +4008,8 @@ LABEL_24:
     {
       v14 = v13;
       v15 = listxattr(v5, v13, v12, 1);
-      v28 = v7;
-      v29 = v3;
+      v28 = configurationManager;
+      v29 = fileCopy;
       if (v15)
       {
         v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v14 length:v15 encoding:4];
@@ -4039,11 +4039,11 @@ LABEL_24:
             v22 = *(*(&v30 + 1) + 8 * i);
             if ([v22 length])
             {
-              v23 = [v22 UTF8String];
-              if (v23)
+              uTF8String2 = [v22 UTF8String];
+              if (uTF8String2)
               {
-                v24 = v23;
-                if (removexattr(v5, v23, 1))
+                v24 = uTF8String2;
+                if (removexattr(v5, uTF8String2, 1))
                 {
                   v25 = diagcaseLogHandle();
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -4068,19 +4068,19 @@ LABEL_24:
         while (v19);
       }
 
-      v7 = v28;
-      v3 = v29;
+      configurationManager = v28;
+      fileCopy = v29;
     }
   }
 
   else
   {
-    v7 = diagcaseLogHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    configurationManager = diagcaseLogHandle();
+    if (os_log_type_enabled(configurationManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v36 = v3;
-      _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_ERROR, "failed to get UTF8 string for %@", buf, 0xCu);
+      v36 = fileCopy;
+      _os_log_impl(&dword_241804000, configurationManager, OS_LOG_TYPE_ERROR, "failed to get UTF8 string for %@", buf, 0xCu);
     }
   }
 
@@ -4089,26 +4089,26 @@ LABEL_24:
 
 - (void)recordDiagnosticCaseSummary
 {
-  v3 = [(DiagnosticCase *)self manager];
-  v4 = [v3 configManager];
-  v5 = [v4 caseSummaryEnabled];
+  manager = [(DiagnosticCase *)self manager];
+  configManager = [manager configManager];
+  caseSummaryEnabled = [configManager caseSummaryEnabled];
 
-  if (v5)
+  if (caseSummaryEnabled)
   {
-    v6 = [(DiagnosticCase *)self manager];
-    [v6 recordDiagnosticCaseSummaryForCase:self];
+    manager2 = [(DiagnosticCase *)self manager];
+    [manager2 recordDiagnosticCaseSummaryForCase:self];
   }
 }
 
 - (BOOL)sendReports
 {
-  v3 = [(DiagnosticCase *)self caseStorage];
-  v4 = [v3 caseState];
+  caseStorage = [(DiagnosticCase *)self caseStorage];
+  caseState = [caseStorage caseState];
 
-  if (v4 == 5)
+  if (caseState == 5)
   {
-    v5 = [(DiagnosticCase *)self manager];
-    v6 = [v5 sendReportsForCase:self];
+    manager = [(DiagnosticCase *)self manager];
+    v6 = [manager sendReportsForCase:self];
   }
 
   else
@@ -4120,127 +4120,127 @@ LABEL_24:
   return v6;
 }
 
-- (BOOL)_parseSignatureIntoCaseStorage:(id)a3
+- (BOOL)_parseSignatureIntoCaseStorage:(id)storage
 {
-  v4 = a3;
-  if (v4 && ([(DiagnosticCase *)self caseStorage], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  storageCopy = storage;
+  if (storageCopy && ([(DiagnosticCase *)self caseStorage], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 objectForKeyedSubscript:@"domain"];
+    v6 = [storageCopy objectForKeyedSubscript:@"domain"];
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(DiagnosticCase *)self caseStorage];
-        [v7 setCaseDomain:v6];
+        caseStorage = [(DiagnosticCase *)self caseStorage];
+        [caseStorage setCaseDomain:v6];
       }
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"type"];
+    v8 = [storageCopy objectForKeyedSubscript:@"type"];
 
     if (v8)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [(DiagnosticCase *)self caseStorage];
-        [v9 setCaseType:v8];
+        caseStorage2 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage2 setCaseType:v8];
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"subtype"];
+    v10 = [storageCopy objectForKeyedSubscript:@"subtype"];
 
     if (v10)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [(DiagnosticCase *)self caseStorage];
-        [v11 setCaseSubtype:v10];
+        caseStorage3 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage3 setCaseSubtype:v10];
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"additional"];
+    v12 = [storageCopy objectForKeyedSubscript:@"additional"];
 
     if (v12)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [(DiagnosticCase *)self caseStorage];
-        [v13 setCaseSubtypeContext:v12];
+        caseStorage4 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage4 setCaseSubtypeContext:v12];
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"detected"];
+    v14 = [storageCopy objectForKeyedSubscript:@"detected"];
 
     if (v14)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [(DiagnosticCase *)self caseStorage];
-        [v15 setCaseDetectedProcess:v14];
+        caseStorage5 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage5 setCaseDetectedProcess:v14];
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"effective"];
+    v16 = [storageCopy objectForKeyedSubscript:@"effective"];
 
     if (v16)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [(DiagnosticCase *)self caseStorage];
-        [v17 setCaseEffectiveProcess:v16];
+        caseStorage6 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage6 setCaseEffectiveProcess:v16];
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"related"];
+    v18 = [storageCopy objectForKeyedSubscript:@"related"];
 
     if (v18)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [(DiagnosticCase *)self caseStorage];
-        [v19 setCaseRelatedProcesses:v18];
+        caseStorage7 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage7 setCaseRelatedProcesses:v18];
       }
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"threshval"];
+    v20 = [storageCopy objectForKeyedSubscript:@"threshval"];
 
     if (v20)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = [(DiagnosticCase *)self caseStorage];
-        [v21 setCaseThresholdValues:v20];
+        caseStorage8 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage8 setCaseThresholdValues:v20];
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"context"];
+    v22 = [storageCopy objectForKeyedSubscript:@"context"];
 
     if (v22)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [(DiagnosticCase *)self caseStorage];
-        [v23 setCaseContext:v22];
+        caseStorage9 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage9 setCaseContext:v22];
       }
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"groupID"];
+    v24 = [storageCopy objectForKeyedSubscript:@"groupID"];
 
     if (v24)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [(DiagnosticCase *)self caseStorage];
-        [v25 setCaseGroupID:v24];
+        caseStorage10 = [(DiagnosticCase *)self caseStorage];
+        [caseStorage10 setCaseGroupID:v24];
       }
     }
 
@@ -4255,109 +4255,109 @@ LABEL_24:
   return v26;
 }
 
-- (BOOL)_parseCaseStorageIntoSignature:(id)a3
+- (BOOL)_parseCaseStorageIntoSignature:(id)signature
 {
-  v4 = a3;
-  if (v4 && ([(DiagnosticCase *)self caseStorage], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  signatureCopy = signature;
+  if (signatureCopy && ([(DiagnosticCase *)self caseStorage], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(DiagnosticCase *)self caseStorage];
-    v7 = [v6 caseDomain];
+    caseStorage = [(DiagnosticCase *)self caseStorage];
+    caseDomain = [caseStorage caseDomain];
 
-    if (v7)
+    if (caseDomain)
     {
-      v8 = [(DiagnosticCase *)self caseStorage];
-      v9 = [v8 caseDomain];
-      [v4 setObject:v9 forKeyedSubscript:@"domain"];
+      caseStorage2 = [(DiagnosticCase *)self caseStorage];
+      caseDomain2 = [caseStorage2 caseDomain];
+      [signatureCopy setObject:caseDomain2 forKeyedSubscript:@"domain"];
     }
 
-    v10 = [(DiagnosticCase *)self caseStorage];
-    v11 = [v10 caseType];
+    caseStorage3 = [(DiagnosticCase *)self caseStorage];
+    caseType = [caseStorage3 caseType];
 
-    if (v11)
+    if (caseType)
     {
-      v12 = [(DiagnosticCase *)self caseStorage];
-      v13 = [v12 caseType];
-      [v4 setObject:v13 forKeyedSubscript:@"type"];
+      caseStorage4 = [(DiagnosticCase *)self caseStorage];
+      caseType2 = [caseStorage4 caseType];
+      [signatureCopy setObject:caseType2 forKeyedSubscript:@"type"];
     }
 
-    v14 = [(DiagnosticCase *)self caseStorage];
-    v15 = [v14 caseSubtype];
+    caseStorage5 = [(DiagnosticCase *)self caseStorage];
+    caseSubtype = [caseStorage5 caseSubtype];
 
-    if (v15)
+    if (caseSubtype)
     {
-      v16 = [(DiagnosticCase *)self caseStorage];
-      v17 = [v16 caseSubtype];
-      [v4 setObject:v17 forKeyedSubscript:@"subtype"];
+      caseStorage6 = [(DiagnosticCase *)self caseStorage];
+      caseSubtype2 = [caseStorage6 caseSubtype];
+      [signatureCopy setObject:caseSubtype2 forKeyedSubscript:@"subtype"];
     }
 
-    v18 = [(DiagnosticCase *)self caseStorage];
-    v19 = [v18 caseSubtypeContext];
+    caseStorage7 = [(DiagnosticCase *)self caseStorage];
+    caseSubtypeContext = [caseStorage7 caseSubtypeContext];
 
-    if (v19)
+    if (caseSubtypeContext)
     {
-      v20 = [(DiagnosticCase *)self caseStorage];
-      v21 = [v20 caseSubtypeContext];
-      [v4 setObject:v21 forKeyedSubscript:@"additional"];
+      caseStorage8 = [(DiagnosticCase *)self caseStorage];
+      caseSubtypeContext2 = [caseStorage8 caseSubtypeContext];
+      [signatureCopy setObject:caseSubtypeContext2 forKeyedSubscript:@"additional"];
     }
 
-    v22 = [(DiagnosticCase *)self caseStorage];
-    v23 = [v22 caseDetectedProcess];
+    caseStorage9 = [(DiagnosticCase *)self caseStorage];
+    caseDetectedProcess = [caseStorage9 caseDetectedProcess];
 
-    if (v23)
+    if (caseDetectedProcess)
     {
-      v24 = [(DiagnosticCase *)self caseStorage];
-      v25 = [v24 caseDetectedProcess];
-      [v4 setObject:v25 forKeyedSubscript:@"detected"];
+      caseStorage10 = [(DiagnosticCase *)self caseStorage];
+      caseDetectedProcess2 = [caseStorage10 caseDetectedProcess];
+      [signatureCopy setObject:caseDetectedProcess2 forKeyedSubscript:@"detected"];
     }
 
-    v26 = [(DiagnosticCase *)self caseStorage];
-    v27 = [v26 caseEffectiveProcess];
+    caseStorage11 = [(DiagnosticCase *)self caseStorage];
+    caseEffectiveProcess = [caseStorage11 caseEffectiveProcess];
 
-    if (v27)
+    if (caseEffectiveProcess)
     {
-      v28 = [(DiagnosticCase *)self caseStorage];
-      v29 = [v28 caseEffectiveProcess];
-      [v4 setObject:v29 forKeyedSubscript:@"effective"];
+      caseStorage12 = [(DiagnosticCase *)self caseStorage];
+      caseEffectiveProcess2 = [caseStorage12 caseEffectiveProcess];
+      [signatureCopy setObject:caseEffectiveProcess2 forKeyedSubscript:@"effective"];
     }
 
-    v30 = [(DiagnosticCase *)self caseStorage];
-    v31 = [v30 caseRelatedProcesses];
+    caseStorage13 = [(DiagnosticCase *)self caseStorage];
+    caseRelatedProcesses = [caseStorage13 caseRelatedProcesses];
 
-    if (v31)
+    if (caseRelatedProcesses)
     {
-      v32 = [(DiagnosticCase *)self caseStorage];
-      v33 = [v32 caseRelatedProcesses];
-      [v4 setObject:v33 forKeyedSubscript:@"related"];
+      caseStorage14 = [(DiagnosticCase *)self caseStorage];
+      caseRelatedProcesses2 = [caseStorage14 caseRelatedProcesses];
+      [signatureCopy setObject:caseRelatedProcesses2 forKeyedSubscript:@"related"];
     }
 
-    v34 = [(DiagnosticCase *)self caseStorage];
-    v35 = [v34 caseThresholdValues];
+    caseStorage15 = [(DiagnosticCase *)self caseStorage];
+    caseThresholdValues = [caseStorage15 caseThresholdValues];
 
-    if (v35)
+    if (caseThresholdValues)
     {
-      v36 = [(DiagnosticCase *)self caseStorage];
-      v37 = [v36 caseThresholdValues];
-      [v4 setObject:v37 forKeyedSubscript:@"threshval"];
+      caseStorage16 = [(DiagnosticCase *)self caseStorage];
+      caseThresholdValues2 = [caseStorage16 caseThresholdValues];
+      [signatureCopy setObject:caseThresholdValues2 forKeyedSubscript:@"threshval"];
     }
 
-    v38 = [(DiagnosticCase *)self caseStorage];
-    v39 = [v38 caseContext];
+    caseStorage17 = [(DiagnosticCase *)self caseStorage];
+    caseContext = [caseStorage17 caseContext];
 
-    if (v39)
+    if (caseContext)
     {
-      v40 = [(DiagnosticCase *)self caseStorage];
-      v41 = [v40 caseContext];
-      [v4 setObject:v41 forKeyedSubscript:@"context"];
+      caseStorage18 = [(DiagnosticCase *)self caseStorage];
+      caseContext2 = [caseStorage18 caseContext];
+      [signatureCopy setObject:caseContext2 forKeyedSubscript:@"context"];
     }
 
-    v42 = [(DiagnosticCase *)self caseStorage];
-    v43 = [v42 caseGroupID];
+    caseStorage19 = [(DiagnosticCase *)self caseStorage];
+    caseGroupID = [caseStorage19 caseGroupID];
 
-    if (v43)
+    if (caseGroupID)
     {
-      v44 = [(DiagnosticCase *)self caseStorage];
-      v45 = [v44 caseGroupID];
-      [v4 setObject:v45 forKeyedSubscript:@"groupID"];
+      caseStorage20 = [(DiagnosticCase *)self caseStorage];
+      caseGroupID2 = [caseStorage20 caseGroupID];
+      [signatureCopy setObject:caseGroupID2 forKeyedSubscript:@"groupID"];
     }
 
     v46 = 1;
@@ -4371,100 +4371,204 @@ LABEL_24:
   return v46;
 }
 
-+ (id)signatureForCaseStorage:(id)a3
++ (id)signatureForCaseStorage:(id)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = v4;
   v6 = 0;
-  if (v3 && v4)
+  if (storageCopy && v4)
   {
-    v7 = [v3 caseDomain];
+    caseDomain = [storageCopy caseDomain];
+
+    if (caseDomain)
+    {
+      caseDomain2 = [storageCopy caseDomain];
+      v9 = [caseDomain2 copy];
+      [v5 setObject:v9 forKeyedSubscript:@"domain"];
+    }
+
+    caseType = [storageCopy caseType];
+
+    if (caseType)
+    {
+      caseType2 = [storageCopy caseType];
+      v12 = [caseType2 copy];
+      [v5 setObject:v12 forKeyedSubscript:@"type"];
+    }
+
+    caseSubtype = [storageCopy caseSubtype];
+
+    if (caseSubtype)
+    {
+      caseSubtype2 = [storageCopy caseSubtype];
+      v15 = [caseSubtype2 copy];
+      [v5 setObject:v15 forKeyedSubscript:@"subtype"];
+    }
+
+    caseSubtypeContext = [storageCopy caseSubtypeContext];
+
+    if (caseSubtypeContext)
+    {
+      caseSubtypeContext2 = [storageCopy caseSubtypeContext];
+      v18 = [caseSubtypeContext2 copy];
+      [v5 setObject:v18 forKeyedSubscript:@"additional"];
+    }
+
+    caseDetectedProcess = [storageCopy caseDetectedProcess];
+
+    if (caseDetectedProcess)
+    {
+      caseDetectedProcess2 = [storageCopy caseDetectedProcess];
+      v21 = [caseDetectedProcess2 copy];
+      [v5 setObject:v21 forKeyedSubscript:@"detected"];
+    }
+
+    caseEffectiveProcess = [storageCopy caseEffectiveProcess];
+
+    if (caseEffectiveProcess)
+    {
+      caseEffectiveProcess2 = [storageCopy caseEffectiveProcess];
+      v24 = [caseEffectiveProcess2 copy];
+      [v5 setObject:v24 forKeyedSubscript:@"effective"];
+    }
+
+    caseRelatedProcesses = [storageCopy caseRelatedProcesses];
+
+    if (caseRelatedProcesses)
+    {
+      caseRelatedProcesses2 = [storageCopy caseRelatedProcesses];
+      v27 = [caseRelatedProcesses2 copy];
+      [v5 setObject:v27 forKeyedSubscript:@"related"];
+    }
+
+    caseThresholdValues = [storageCopy caseThresholdValues];
+
+    if (caseThresholdValues)
+    {
+      caseThresholdValues2 = [storageCopy caseThresholdValues];
+      v30 = [caseThresholdValues2 copy];
+      [v5 setObject:v30 forKeyedSubscript:@"threshval"];
+    }
+
+    caseContext = [storageCopy caseContext];
+
+    if (caseContext)
+    {
+      caseContext2 = [storageCopy caseContext];
+      v33 = [caseContext2 copy];
+      [v5 setObject:v33 forKeyedSubscript:@"context"];
+    }
+
+    caseGroupID = [storageCopy caseGroupID];
+
+    if (caseGroupID)
+    {
+      caseGroupID2 = [storageCopy caseGroupID];
+      v36 = [caseGroupID2 copy];
+      [v5 setObject:v36 forKeyedSubscript:@"groupID"];
+    }
+
+    v6 = v5;
+  }
+
+  return v6;
+}
+
++ (id)signatureForCaseStorageDictionary:(id)dictionary
+{
+  dictionaryCopy = dictionary;
+  v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
+  v5 = v4;
+  v6 = 0;
+  if (dictionaryCopy && v4)
+  {
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"caseDomain"];
 
     if (v7)
     {
-      v8 = [v3 caseDomain];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"caseDomain"];
       v9 = [v8 copy];
       [v5 setObject:v9 forKeyedSubscript:@"domain"];
     }
 
-    v10 = [v3 caseType];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"caseType"];
 
     if (v10)
     {
-      v11 = [v3 caseType];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"caseType"];
       v12 = [v11 copy];
       [v5 setObject:v12 forKeyedSubscript:@"type"];
     }
 
-    v13 = [v3 caseSubtype];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"caseSubtype"];
 
     if (v13)
     {
-      v14 = [v3 caseSubtype];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"caseSubtype"];
       v15 = [v14 copy];
       [v5 setObject:v15 forKeyedSubscript:@"subtype"];
     }
 
-    v16 = [v3 caseSubtypeContext];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"caseSubtypeContext"];
 
     if (v16)
     {
-      v17 = [v3 caseSubtypeContext];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"caseSubtypeContext"];
       v18 = [v17 copy];
       [v5 setObject:v18 forKeyedSubscript:@"additional"];
     }
 
-    v19 = [v3 caseDetectedProcess];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"caseDetectedProcess"];
 
     if (v19)
     {
-      v20 = [v3 caseDetectedProcess];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"caseDetectedProcess"];
       v21 = [v20 copy];
       [v5 setObject:v21 forKeyedSubscript:@"detected"];
     }
 
-    v22 = [v3 caseEffectiveProcess];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"caseEffectiveProcess"];
 
     if (v22)
     {
-      v23 = [v3 caseEffectiveProcess];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"caseEffectiveProcess"];
       v24 = [v23 copy];
       [v5 setObject:v24 forKeyedSubscript:@"effective"];
     }
 
-    v25 = [v3 caseRelatedProcesses];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"caseRelatedProcesses"];
 
     if (v25)
     {
-      v26 = [v3 caseRelatedProcesses];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"caseRelatedProcesses"];
       v27 = [v26 copy];
       [v5 setObject:v27 forKeyedSubscript:@"related"];
     }
 
-    v28 = [v3 caseThresholdValues];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"caseThresholdValues"];
 
     if (v28)
     {
-      v29 = [v3 caseThresholdValues];
+      v29 = [dictionaryCopy objectForKeyedSubscript:@"caseThresholdValues"];
       v30 = [v29 copy];
       [v5 setObject:v30 forKeyedSubscript:@"threshval"];
     }
 
-    v31 = [v3 caseContext];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"caseContext"];
 
     if (v31)
     {
-      v32 = [v3 caseContext];
+      v32 = [dictionaryCopy objectForKeyedSubscript:@"caseContext"];
       v33 = [v32 copy];
       [v5 setObject:v33 forKeyedSubscript:@"context"];
     }
 
-    v34 = [v3 caseGroupID];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"caseGroupID"];
 
     if (v34)
     {
-      v35 = [v3 caseGroupID];
+      v35 = [dictionaryCopy objectForKeyedSubscript:@"caseGroupID"];
       v36 = [v35 copy];
       [v5 setObject:v36 forKeyedSubscript:@"groupID"];
     }
@@ -4475,157 +4579,53 @@ LABEL_24:
   return v6;
 }
 
-+ (id)signatureForCaseStorageDictionary:(id)a3
++ (id)descriptionForClosureType:(signed __int16)type
 {
-  v3 = a3;
-  v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = v4;
-  v6 = 0;
-  if (v3 && v4)
+  if (type >= 6)
   {
-    v7 = [v3 objectForKeyedSubscript:@"caseDomain"];
-
-    if (v7)
-    {
-      v8 = [v3 objectForKeyedSubscript:@"caseDomain"];
-      v9 = [v8 copy];
-      [v5 setObject:v9 forKeyedSubscript:@"domain"];
-    }
-
-    v10 = [v3 objectForKeyedSubscript:@"caseType"];
-
-    if (v10)
-    {
-      v11 = [v3 objectForKeyedSubscript:@"caseType"];
-      v12 = [v11 copy];
-      [v5 setObject:v12 forKeyedSubscript:@"type"];
-    }
-
-    v13 = [v3 objectForKeyedSubscript:@"caseSubtype"];
-
-    if (v13)
-    {
-      v14 = [v3 objectForKeyedSubscript:@"caseSubtype"];
-      v15 = [v14 copy];
-      [v5 setObject:v15 forKeyedSubscript:@"subtype"];
-    }
-
-    v16 = [v3 objectForKeyedSubscript:@"caseSubtypeContext"];
-
-    if (v16)
-    {
-      v17 = [v3 objectForKeyedSubscript:@"caseSubtypeContext"];
-      v18 = [v17 copy];
-      [v5 setObject:v18 forKeyedSubscript:@"additional"];
-    }
-
-    v19 = [v3 objectForKeyedSubscript:@"caseDetectedProcess"];
-
-    if (v19)
-    {
-      v20 = [v3 objectForKeyedSubscript:@"caseDetectedProcess"];
-      v21 = [v20 copy];
-      [v5 setObject:v21 forKeyedSubscript:@"detected"];
-    }
-
-    v22 = [v3 objectForKeyedSubscript:@"caseEffectiveProcess"];
-
-    if (v22)
-    {
-      v23 = [v3 objectForKeyedSubscript:@"caseEffectiveProcess"];
-      v24 = [v23 copy];
-      [v5 setObject:v24 forKeyedSubscript:@"effective"];
-    }
-
-    v25 = [v3 objectForKeyedSubscript:@"caseRelatedProcesses"];
-
-    if (v25)
-    {
-      v26 = [v3 objectForKeyedSubscript:@"caseRelatedProcesses"];
-      v27 = [v26 copy];
-      [v5 setObject:v27 forKeyedSubscript:@"related"];
-    }
-
-    v28 = [v3 objectForKeyedSubscript:@"caseThresholdValues"];
-
-    if (v28)
-    {
-      v29 = [v3 objectForKeyedSubscript:@"caseThresholdValues"];
-      v30 = [v29 copy];
-      [v5 setObject:v30 forKeyedSubscript:@"threshval"];
-    }
-
-    v31 = [v3 objectForKeyedSubscript:@"caseContext"];
-
-    if (v31)
-    {
-      v32 = [v3 objectForKeyedSubscript:@"caseContext"];
-      v33 = [v32 copy];
-      [v5 setObject:v33 forKeyedSubscript:@"context"];
-    }
-
-    v34 = [v3 objectForKeyedSubscript:@"caseGroupID"];
-
-    if (v34)
-    {
-      v35 = [v3 objectForKeyedSubscript:@"caseGroupID"];
-      v36 = [v35 copy];
-      [v5 setObject:v36 forKeyedSubscript:@"groupID"];
-    }
-
-    v6 = v5;
-  }
-
-  return v6;
-}
-
-+ (id)descriptionForClosureType:(signed __int16)a3
-{
-  if (a3 >= 6)
-  {
-    v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"ClosureTypeUnknown: %d", a3];
+    type = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"ClosureTypeUnknown: %d", type];
   }
 
   else
   {
-    v3 = off_278CF2110[a3];
+    type = off_278CF2110[type];
   }
 
-  return v3;
+  return type;
 }
 
-+ (id)descriptionForDampeningType:(signed __int16)a3
++ (id)descriptionForDampeningType:(signed __int16)type
 {
-  if ((a3 + 2) >= 0xB)
+  if ((type + 2) >= 0xB)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DampeningTypeUnknown: %d", a3];
+    type = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DampeningTypeUnknown: %d", type];
   }
 
   else
   {
-    v4 = off_278CF2140[(a3 + 2)];
+    type = off_278CF2140[(type + 2)];
   }
 
-  return v4;
+  return type;
 }
 
-- (void)markAttachmentsAsPurgeable:(BOOL)a3 urgency:(unint64_t)a4
+- (void)markAttachmentsAsPurgeable:(BOOL)purgeable urgency:(unint64_t)urgency
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = 0x10000;
-  if (!a3)
+  if (!purgeable)
   {
     v5 = 0;
   }
 
-  v23 = v5 | a4 | 5;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  v23 = v5 | urgency | 5;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(DiagnosticCase *)self attachments];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v28 count:16];
+  attachments = [(DiagnosticCase *)self attachments];
+  v8 = [attachments countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4636,12 +4636,12 @@ LABEL_24:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(attachments);
         }
 
         v12 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:*(*(&v19 + 1) + 8 * i)];
-        v13 = [v12 path];
-        v14 = [v6 fileExistsAtPath:v13];
+        path = [v12 path];
+        v14 = [defaultManager fileExistsAtPath:path];
 
         if (v14)
         {
@@ -4662,7 +4662,7 @@ LABEL_24:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v28 count:16];
+      v9 = [attachments countByEnumeratingWithState:&v19 objects:v28 count:16];
     }
 
     while (v9);

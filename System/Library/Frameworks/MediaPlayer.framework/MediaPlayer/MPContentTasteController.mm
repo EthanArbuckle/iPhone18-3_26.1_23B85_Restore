@@ -2,31 +2,31 @@
 + (MPContentTasteController)sharedController;
 + (NSMutableDictionary)controllers;
 + (OS_dispatch_queue)globalSerialQueue;
-+ (id)_tasteControllerWithUserIdentity:(id)a3 isSingleton:(BOOL)a4 createIfRequired:(BOOL)a5;
-+ (void)_postNotificationName:(id)a3 controller:(id)a4 userInfo:(id)a5;
++ (id)_tasteControllerWithUserIdentity:(id)identity isSingleton:(BOOL)singleton createIfRequired:(BOOL)required;
++ (void)_postNotificationName:(id)name controller:(id)controller userInfo:(id)info;
 - (MPContentTasteController)init;
-- (id)_ML3QueryWithEntityClass:(Class)a3 predicate:(id)a4 options:(int64_t)a5;
-- (id)_addPendingUpdateRecord:(id)a3 withKey:(id)a4 inDictionary:(id)a5;
-- (id)_addPendingUpdateRecordForPlaylistGlobalID:(id)a3 contentTasteType:(int64_t)a4;
-- (id)_addPendingUpdateRecordForStoreAdamID:(int64_t)a3 contentTasteType:(int64_t)a4;
-- (id)_initWithUserIdentity:(id)a3;
-- (id)_libraryEntityForModel:(id)a3;
-- (id)_libraryEntityWithStoreID:(int64_t)a3 contentType:(int64_t)a4;
-- (id)_libraryPlaylistWithGlobalID:(id)a3;
-- (id)_pendingUpdateRecordForKey:(id)a3 inDictionary:(id)a4;
-- (id)_pendingUpdateRecordForStoreAdamID:(int64_t)a3;
-- (int64_t)tasteTypeForMediaEntity:(id)a3;
-- (int64_t)tasteTypeForModel:(id)a3;
-- (int64_t)tasteTypeForPlaylistGlobalID:(id)a3;
-- (int64_t)tasteTypeForStoreAdamID:(int64_t)a3;
-- (void)_deviceMediaLibraryDidChangeNotification:(id)a3;
-- (void)_libraryPathDidChangeForTasteController:(id)a3;
-- (void)_removePendingUpdateRecordForPlaylistGlobalID:(id)a3 token:(id)a4;
-- (void)_removePendingUpdateRecordForStoreAdamID:(int64_t)a3 token:(id)a4;
-- (void)setTasteType:(int64_t)a3 forMediaEntity:(id)a4 withCompletionHandler:(id)a5;
-- (void)setTasteType:(int64_t)a3 forModel:(id)a4 withCompletionHandler:(id)a5;
-- (void)setTasteType:(int64_t)a3 forPlaylistGlobalID:(id)a4 withCompletionHandler:(id)a5;
-- (void)setTasteType:(int64_t)a3 forStoreAdamID:(int64_t)a4 withContentType:(int64_t)a5 completionHandler:(id)a6;
+- (id)_ML3QueryWithEntityClass:(Class)class predicate:(id)predicate options:(int64_t)options;
+- (id)_addPendingUpdateRecord:(id)record withKey:(id)key inDictionary:(id)dictionary;
+- (id)_addPendingUpdateRecordForPlaylistGlobalID:(id)d contentTasteType:(int64_t)type;
+- (id)_addPendingUpdateRecordForStoreAdamID:(int64_t)d contentTasteType:(int64_t)type;
+- (id)_initWithUserIdentity:(id)identity;
+- (id)_libraryEntityForModel:(id)model;
+- (id)_libraryEntityWithStoreID:(int64_t)d contentType:(int64_t)type;
+- (id)_libraryPlaylistWithGlobalID:(id)d;
+- (id)_pendingUpdateRecordForKey:(id)key inDictionary:(id)dictionary;
+- (id)_pendingUpdateRecordForStoreAdamID:(int64_t)d;
+- (int64_t)tasteTypeForMediaEntity:(id)entity;
+- (int64_t)tasteTypeForModel:(id)model;
+- (int64_t)tasteTypeForPlaylistGlobalID:(id)d;
+- (int64_t)tasteTypeForStoreAdamID:(int64_t)d;
+- (void)_deviceMediaLibraryDidChangeNotification:(id)notification;
+- (void)_libraryPathDidChangeForTasteController:(id)controller;
+- (void)_removePendingUpdateRecordForPlaylistGlobalID:(id)d token:(id)token;
+- (void)_removePendingUpdateRecordForStoreAdamID:(int64_t)d token:(id)token;
+- (void)setTasteType:(int64_t)type forMediaEntity:(id)entity withCompletionHandler:(id)handler;
+- (void)setTasteType:(int64_t)type forModel:(id)model withCompletionHandler:(id)handler;
+- (void)setTasteType:(int64_t)type forPlaylistGlobalID:(id)d withCompletionHandler:(id)handler;
+- (void)setTasteType:(int64_t)type forStoreAdamID:(int64_t)d withContentType:(int64_t)contentType completionHandler:(id)handler;
 @end
 
 @implementation MPContentTasteController
@@ -93,18 +93,18 @@ void __39__MPContentTasteController_controllers__block_invoke()
   return v3;
 }
 
-- (id)_pendingUpdateRecordForStoreAdamID:(int64_t)a3
+- (id)_pendingUpdateRecordForStoreAdamID:(int64_t)d
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v5 = [(MPContentTasteController *)self _pendingUpdateRecordForKey:v4 inDictionary:self->_pendingUpdateRecordByStoreAdamID];
 
   return v5;
 }
 
-- (id)_pendingUpdateRecordForKey:(id)a3 inDictionary:(id)a4
+- (id)_pendingUpdateRecordForKey:(id)key inDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -116,11 +116,11 @@ void __39__MPContentTasteController_controllers__block_invoke()
   block[1] = 3221225472;
   block[2] = __68__MPContentTasteController__pendingUpdateRecordForKey_inDictionary___block_invoke;
   block[3] = &unk_1E7681330;
-  v15 = v6;
+  v15 = keyCopy;
   v16 = &v17;
-  v14 = v7;
-  v9 = v6;
-  v10 = v7;
+  v14 = dictionaryCopy;
+  v9 = keyCopy;
+  v10 = dictionaryCopy;
   dispatch_sync(accessQueue, block);
   v11 = v18[5];
 
@@ -137,18 +137,18 @@ void __68__MPContentTasteController__pendingUpdateRecordForKey_inDictionary___bl
   *(v3 + 40) = v2;
 }
 
-- (void)_removePendingUpdateRecordForStoreAdamID:(int64_t)a3 token:(id)a4
+- (void)_removePendingUpdateRecordForStoreAdamID:(int64_t)d token:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__MPContentTasteController__removePendingUpdateRecordForStoreAdamID_token___block_invoke;
   block[3] = &unk_1E767D490;
-  v10 = v6;
-  v11 = a3;
+  v10 = tokenCopy;
+  dCopy = d;
   block[4] = self;
-  v8 = v6;
+  v8 = tokenCopy;
   dispatch_barrier_sync(accessQueue, block);
 }
 
@@ -177,20 +177,20 @@ void __75__MPContentTasteController__removePendingUpdateRecordForStoreAdamID_tok
   }
 }
 
-- (void)_removePendingUpdateRecordForPlaylistGlobalID:(id)a3 token:(id)a4
+- (void)_removePendingUpdateRecordForPlaylistGlobalID:(id)d token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  tokenCopy = token;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__MPContentTasteController__removePendingUpdateRecordForPlaylistGlobalID_token___block_invoke;
   block[3] = &unk_1E76800A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
+  v10 = dCopy;
   dispatch_barrier_sync(accessQueue, block);
 }
 
@@ -213,45 +213,45 @@ void __80__MPContentTasteController__removePendingUpdateRecordForPlaylistGlobalI
   }
 }
 
-- (id)_addPendingUpdateRecordForStoreAdamID:(int64_t)a3 contentTasteType:(int64_t)a4
+- (id)_addPendingUpdateRecordForStoreAdamID:(int64_t)d contentTasteType:(int64_t)type
 {
-  v6 = [[MPContentTastePendingUpdateRecord alloc] initWithStoreAdamID:a3 tasteType:a4];
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v6 = [[MPContentTastePendingUpdateRecord alloc] initWithStoreAdamID:d tasteType:type];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v8 = [(MPContentTasteController *)self _addPendingUpdateRecord:v6 withKey:v7 inDictionary:self->_pendingUpdateRecordByStoreAdamID];
 
   return v8;
 }
 
-- (id)_addPendingUpdateRecordForPlaylistGlobalID:(id)a3 contentTasteType:(int64_t)a4
+- (id)_addPendingUpdateRecordForPlaylistGlobalID:(id)d contentTasteType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[MPContentTastePendingUpdateRecord alloc] initWithPlaylistGlobalID:v6 tasteType:a4];
-  v8 = [(MPContentTasteController *)self _addPendingUpdateRecord:v7 withKey:v6 inDictionary:self->_pendingUpdateRecordByPlaylistGlobalID];
+  dCopy = d;
+  v7 = [[MPContentTastePendingUpdateRecord alloc] initWithPlaylistGlobalID:dCopy tasteType:type];
+  v8 = [(MPContentTasteController *)self _addPendingUpdateRecord:v7 withKey:dCopy inDictionary:self->_pendingUpdateRecordByPlaylistGlobalID];
 
   return v8;
 }
 
-- (id)_addPendingUpdateRecord:(id)a3 withKey:(id)a4 inDictionary:(id)a5
+- (id)_addPendingUpdateRecord:(id)record withKey:(id)key inDictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
   accessQueue = self->_accessQueue;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __73__MPContentTasteController__addPendingUpdateRecord_withKey_inDictionary___block_invoke;
   v20 = &unk_1E767C7D0;
-  v21 = v10;
-  v22 = self;
-  v23 = v8;
-  v24 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v21 = dictionaryCopy;
+  selfCopy = self;
+  v23 = recordCopy;
+  v24 = keyCopy;
+  v12 = keyCopy;
+  v13 = recordCopy;
+  v14 = dictionaryCopy;
   dispatch_barrier_sync(accessQueue, &v17);
-  v15 = [v13 UUID];
+  uUID = [v13 UUID];
 
-  return v15;
+  return uUID;
 }
 
 void __73__MPContentTasteController__addPendingUpdateRecord_withKey_inDictionary___block_invoke(void *a1)
@@ -288,21 +288,21 @@ LABEL_6:
   dispatch_async(v8, block);
 }
 
-- (id)_ML3QueryWithEntityClass:(Class)a3 predicate:(id)a4 options:(int64_t)a5
+- (id)_ML3QueryWithEntityClass:(Class)class predicate:(id)predicate options:(int64_t)options
 {
-  v8 = a4;
-  v9 = [(MPContentTasteController *)self _mediaLibrary];
-  v10 = [v9 libraryDataProvider];
-  v11 = [v10 library];
-  v12 = [(objc_class *)a3 queryWithLibrary:v11 predicate:v8 orderingTerms:MEMORY[0x1E695E0F0] usingSections:0 options:a5];
+  predicateCopy = predicate;
+  _mediaLibrary = [(MPContentTasteController *)self _mediaLibrary];
+  libraryDataProvider = [_mediaLibrary libraryDataProvider];
+  library = [libraryDataProvider library];
+  v12 = [(objc_class *)class queryWithLibrary:library predicate:predicateCopy orderingTerms:MEMORY[0x1E695E0F0] usingSections:0 options:options];
 
   return v12;
 }
 
-- (id)_libraryEntityWithStoreID:(int64_t)a3 contentType:(int64_t)a4
+- (id)_libraryEntityWithStoreID:(int64_t)d contentType:(int64_t)type
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!d)
   {
     v11 = 0;
     goto LABEL_26;
@@ -313,7 +313,7 @@ LABEL_6:
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  if (a4 > 7)
+  if (type > 7)
   {
     v10 = 0;
     v7 = 0;
@@ -322,7 +322,7 @@ LABEL_6:
 
   else
   {
-    if (((1 << a4) & 0xC6) != 0)
+    if (((1 << type) & 0xC6) != 0)
     {
       v7 = *MEMORY[0x1E69B3308];
       v26 = 0;
@@ -336,7 +336,7 @@ LABEL_6:
     v10 = 0;
     v7 = 0;
     v11 = 0;
-    if (((1 << a4) & 0x28) != 0)
+    if (((1 << type) & 0x28) != 0)
     {
       v7 = *MEMORY[0x1E69B3330];
       v10 = 0;
@@ -349,7 +349,7 @@ LABEL_8:
       if (v7)
       {
         v13 = objc_opt_class();
-        v14 = [MEMORY[0x1E69B3488] predicateWithProperty:v7 equalToInt64:a3];
+        v14 = [MEMORY[0x1E69B3488] predicateWithProperty:v7 equalToInt64:d];
         v15 = [(MPContentTasteController *)self _ML3QueryWithEntityClass:v13 predicate:v14 options:5];
 
         if (v4)
@@ -366,8 +366,8 @@ LABEL_8:
 
         else
         {
-          v18 = [v15 anyEntityPersistentID];
-          v30[3] = v18;
+          anyEntityPersistentID = [v15 anyEntityPersistentID];
+          v30[3] = anyEntityPersistentID;
         }
 
         v17 = v30[3];
@@ -376,15 +376,15 @@ LABEL_8:
 LABEL_19:
           if (v17)
           {
-            v24 = [(MPContentTasteController *)self _mediaLibrary];
+            _mediaLibrary = [(MPContentTasteController *)self _mediaLibrary];
             if (v8)
             {
-              [v24 collectionWithPersistentID:v30[3] groupingType:v26 verifyExistence:0];
+              [_mediaLibrary collectionWithPersistentID:v30[3] groupingType:v26 verifyExistence:0];
             }
 
             else
             {
-              [v24 itemWithPersistentID:v30[3] verifyExistence:0];
+              [_mediaLibrary itemWithPersistentID:v30[3] verifyExistence:0];
             }
             v11 = ;
           }
@@ -406,7 +406,7 @@ LABEL_19:
       if (v10)
       {
         v19 = objc_opt_class();
-        v20 = [MEMORY[0x1E69B3488] predicateWithProperty:v10 equalToInt64:a3];
+        v20 = [MEMORY[0x1E69B3488] predicateWithProperty:v10 equalToInt64:d];
         v21 = [(MPContentTasteController *)self _ML3QueryWithEntityClass:v19 predicate:v20 options:5];
 
         if (v4)
@@ -423,8 +423,8 @@ LABEL_19:
 
         else
         {
-          v23 = [v21 anyEntityPersistentID];
-          v30[3] = v23;
+          anyEntityPersistentID2 = [v21 anyEntityPersistentID];
+          v30[3] = anyEntityPersistentID2;
         }
 
         v17 = v30[3];
@@ -474,21 +474,21 @@ uint64_t __66__MPContentTasteController__libraryEntityWithStoreID_contentType___
   return result;
 }
 
-- (id)_libraryPlaylistWithGlobalID:(id)a3
+- (id)_libraryPlaylistWithGlobalID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v5 = objc_opt_class();
-    v6 = [MEMORY[0x1E69B3488] predicateWithProperty:*MEMORY[0x1E69B2AD0] equalToValue:v4];
+    v6 = [MEMORY[0x1E69B3488] predicateWithProperty:*MEMORY[0x1E69B2AD0] equalToValue:dCopy];
     v7 = [(MPContentTasteController *)self _ML3QueryWithEntityClass:v5 predicate:v6 options:4];
 
-    v8 = [v7 anyEntityPersistentID];
-    if (v8)
+    anyEntityPersistentID = [v7 anyEntityPersistentID];
+    if (anyEntityPersistentID)
     {
-      v9 = v8;
-      v10 = [(MPContentTasteController *)self _mediaLibrary];
-      v11 = [v10 playlistWithPersistentID:v9];
+      v9 = anyEntityPersistentID;
+      _mediaLibrary = [(MPContentTasteController *)self _mediaLibrary];
+      v11 = [_mediaLibrary playlistWithPersistentID:v9];
     }
 
     else
@@ -505,22 +505,22 @@ uint64_t __66__MPContentTasteController__libraryEntityWithStoreID_contentType___
   return v11;
 }
 
-- (id)_libraryEntityForModel:(id)a3
+- (id)_libraryEntityForModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 identifiers];
-  v6 = [v5 library];
-  v7 = [v6 persistentID];
+  modelCopy = model;
+  identifiers = [modelCopy identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  if (v7)
+  if (persistentID)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v8 = [(MPContentTasteController *)self _mediaLibrary];
-      v9 = [v8 itemWithPersistentID:v7 verifyExistence:0];
+      _mediaLibrary = [(MPContentTasteController *)self _mediaLibrary];
+      v9 = [_mediaLibrary itemWithPersistentID:persistentID verifyExistence:0];
 LABEL_6:
-      v7 = v9;
+      persistentID = v9;
 
       goto LABEL_7;
     }
@@ -528,21 +528,21 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v11 = [(MPContentTasteController *)self _mediaLibrary];
-      v8 = v11;
-      v12 = v7;
+      _mediaLibrary2 = [(MPContentTasteController *)self _mediaLibrary];
+      _mediaLibrary = _mediaLibrary2;
+      v12 = persistentID;
       v13 = 1;
 LABEL_13:
-      v9 = [v11 collectionWithPersistentID:v12 groupingType:v13];
+      v9 = [_mediaLibrary2 collectionWithPersistentID:v12 groupingType:v13];
       goto LABEL_6;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(MPContentTasteController *)self _mediaLibrary];
-      v8 = v11;
-      v12 = v7;
+      _mediaLibrary2 = [(MPContentTasteController *)self _mediaLibrary];
+      _mediaLibrary = _mediaLibrary2;
+      v12 = persistentID;
       v13 = 2;
       goto LABEL_13;
     }
@@ -550,20 +550,20 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(MPContentTasteController *)self _mediaLibrary];
-      v9 = [v8 playlistWithPersistentID:v7];
+      _mediaLibrary = [(MPContentTasteController *)self _mediaLibrary];
+      v9 = [_mediaLibrary playlistWithPersistentID:persistentID];
       goto LABEL_6;
     }
 
-    v7 = 0;
+    persistentID = 0;
   }
 
 LABEL_7:
 
-  return v7;
+  return persistentID;
 }
 
-- (void)_deviceMediaLibraryDidChangeNotification:(id)a3
+- (void)_deviceMediaLibraryDidChangeNotification:(id)notification
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -574,97 +574,97 @@ LABEL_7:
   dispatch_async(v4, block);
 }
 
-- (void)_libraryPathDidChangeForTasteController:(id)a3
+- (void)_libraryPathDidChangeForTasteController:(id)controller
 {
   v4 = +[MPContentTasteController sharedController];
 
   if (v4 == self)
   {
-    v5 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
     userIdentity = self->_userIdentity;
-    self->_userIdentity = v5;
+    self->_userIdentity = activeAccount;
   }
 }
 
-- (int64_t)tasteTypeForStoreAdamID:(int64_t)a3
+- (int64_t)tasteTypeForStoreAdamID:(int64_t)d
 {
   v5 = [(MPContentTasteController *)self _pendingUpdateRecordForStoreAdamID:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 tasteType];
+    tasteType = [v5 tasteType];
   }
 
   else
   {
-    v8 = [(MPContentTasteController *)self _libraryEntityWithStoreID:a3 contentType:1];
-    if (v8 || ([(MPContentTasteController *)self _libraryEntityWithStoreID:a3 contentType:3], (v8 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MPContentTasteController *)self _libraryEntityWithStoreID:a3 contentType:2], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    v8 = [(MPContentTasteController *)self _libraryEntityWithStoreID:d contentType:1];
+    if (v8 || ([(MPContentTasteController *)self _libraryEntityWithStoreID:d contentType:3], (v8 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MPContentTasteController *)self _libraryEntityWithStoreID:d contentType:2], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v9 = v8;
-      v7 = [(MPContentTasteController *)self tasteTypeForMediaEntity:v8];
+      tasteType = [(MPContentTasteController *)self tasteTypeForMediaEntity:v8];
     }
 
     else
     {
-      v7 = 0;
+      tasteType = 0;
     }
   }
 
-  return v7;
+  return tasteType;
 }
 
-- (int64_t)tasteTypeForPlaylistGlobalID:(id)a3
+- (int64_t)tasteTypeForPlaylistGlobalID:(id)d
 {
-  v4 = a3;
-  v5 = [(MPContentTasteController *)self _pendingUpdateRecordForPlaylistGlobalID:v4];
+  dCopy = d;
+  v5 = [(MPContentTasteController *)self _pendingUpdateRecordForPlaylistGlobalID:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 tasteType];
+    tasteType = [v5 tasteType];
   }
 
   else
   {
-    v8 = [(MPContentTasteController *)self _libraryPlaylistWithGlobalID:v4];
+    v8 = [(MPContentTasteController *)self _libraryPlaylistWithGlobalID:dCopy];
     v9 = v8;
     if (v8)
     {
       v10 = [v8 valueForProperty:@"likedState"];
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
 
-      if (v11 == 3)
+      if (integerValue == 3)
       {
-        v7 = 2;
+        tasteType = 2;
       }
 
       else
       {
-        v7 = v11 == 2;
+        tasteType = integerValue == 2;
       }
     }
 
     else
     {
-      v7 = 0;
+      tasteType = 0;
     }
   }
 
-  return v7;
+  return tasteType;
 }
 
-- (int64_t)tasteTypeForMediaEntity:(id)a3
+- (int64_t)tasteTypeForMediaEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v4 valueForProperty:@"storeItemAdamID"];
-      v11 = [v10 longLongValue];
+      v10 = [entityCopy valueForProperty:@"storeItemAdamID"];
+      longLongValue = [v10 longLongValue];
 
-      if (v11)
+      if (longLongValue)
       {
         v5 = @"likedState";
         v12 = @"likedState";
@@ -687,38 +687,38 @@ LABEL_7:
       v14 = &MPMediaAlbumPropertyStoreID;
     }
 
-    v15 = [v4 valueForProperty:*v14];
-    v11 = [v15 longLongValue];
+    v15 = [entityCopy valueForProperty:*v14];
+    longLongValue = [v15 longLongValue];
 
     v5 = *v13;
-    if (!v11)
+    if (!longLongValue)
     {
 LABEL_19:
       if (v5)
       {
-        v18 = [v4 valueForProperty:v5];
-        v19 = [v18 integerValue];
+        v18 = [entityCopy valueForProperty:v5];
+        integerValue = [v18 integerValue];
 
-        if (v19 == 3)
+        if (integerValue == 3)
         {
-          v9 = 2;
+          tasteType = 2;
         }
 
         else
         {
-          v9 = v19 == 2;
+          tasteType = integerValue == 2;
         }
 
         goto LABEL_17;
       }
 
 LABEL_23:
-      v9 = 0;
+      tasteType = 0;
       goto LABEL_18;
     }
 
 LABEL_13:
-    v16 = [(MPContentTasteController *)self _pendingUpdateRecordForStoreAdamID:v11];
+    v16 = [(MPContentTasteController *)self _pendingUpdateRecordForStoreAdamID:longLongValue];
     if (v16)
     {
       v6 = v16;
@@ -728,106 +728,106 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v5 = [v4 valueForProperty:@"cloudGlobalID"];
+  v5 = [entityCopy valueForProperty:@"cloudGlobalID"];
   v6 = [(MPContentTasteController *)self _pendingUpdateRecordForPlaylistGlobalID:v5];
   if (!v6)
   {
-    v7 = [v4 valueForProperty:@"likedState"];
-    v8 = [v7 integerValue];
+    v7 = [entityCopy valueForProperty:@"likedState"];
+    integerValue2 = [v7 integerValue];
 
-    if (v8 == 3)
+    if (integerValue2 == 3)
     {
-      v9 = 2;
+      tasteType = 2;
     }
 
     else
     {
-      v9 = v8 == 2;
+      tasteType = integerValue2 == 2;
     }
 
     goto LABEL_16;
   }
 
 LABEL_15:
-  v9 = [v6 tasteType];
+  tasteType = [v6 tasteType];
 LABEL_16:
 
 LABEL_17:
 LABEL_18:
 
-  return v9;
+  return tasteType;
 }
 
-- (int64_t)tasteTypeForModel:(id)a3
+- (int64_t)tasteTypeForModel:(id)model
 {
-  v4 = a3;
-  v5 = [(MPContentTasteController *)self _libraryEntityForModel:v4];
+  modelCopy = model;
+  v5 = [(MPContentTasteController *)self _libraryEntityForModel:modelCopy];
   if (v5)
   {
-    v6 = [(MPContentTasteController *)self tasteTypeForMediaEntity:v5];
+    tasteType = [(MPContentTasteController *)self tasteTypeForMediaEntity:v5];
   }
 
   else
   {
-    v7 = [v4 identifiers];
-    v8 = [v7 universalStore];
-    v9 = [v8 globalPlaylistID];
+    identifiers = [modelCopy identifiers];
+    universalStore = [identifiers universalStore];
+    globalPlaylistID = [universalStore globalPlaylistID];
 
-    if ([v9 length] && (-[MPContentTasteController _pendingUpdateRecordForPlaylistGlobalID:](self, "_pendingUpdateRecordForPlaylistGlobalID:", v9), (v10 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v4, "identifiers"), v11 = objc_claimAutoreleasedReturnValue(), v12 = _MPContentTasteBestIDFromIdentifiers(v11), v11, v12) && (-[MPContentTasteController _pendingUpdateRecordForStoreAdamID:](self, "_pendingUpdateRecordForStoreAdamID:", v12), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([globalPlaylistID length] && (-[MPContentTasteController _pendingUpdateRecordForPlaylistGlobalID:](self, "_pendingUpdateRecordForPlaylistGlobalID:", globalPlaylistID), (v10 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(modelCopy, "identifiers"), v11 = objc_claimAutoreleasedReturnValue(), v12 = _MPContentTasteBestIDFromIdentifiers(v11), v11, v12) && (-[MPContentTasteController _pendingUpdateRecordForStoreAdamID:](self, "_pendingUpdateRecordForStoreAdamID:", v12), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v13 = v10;
-      v6 = [v10 tasteType];
+      tasteType = [v10 tasteType];
     }
 
     else
     {
-      v6 = 0;
+      tasteType = 0;
     }
   }
 
-  return v6;
+  return tasteType;
 }
 
-- (void)setTasteType:(int64_t)a3 forStoreAdamID:(int64_t)a4 withContentType:(int64_t)a5 completionHandler:(id)a6
+- (void)setTasteType:(int64_t)type forStoreAdamID:(int64_t)d withContentType:(int64_t)contentType completionHandler:(id)handler
 {
   v49[3] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = [(MPContentTasteController *)self _libraryEntityWithStoreID:a4 contentType:a5];
+  handlerCopy = handler;
+  v11 = [(MPContentTasteController *)self _libraryEntityWithStoreID:d contentType:contentType];
   if (!v11)
   {
-    if (a4)
+    if (d)
     {
       v48[0] = @"MPContentTasteControllerNotificationUserInfoKeyStoreAdamID";
-      v12 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+      v12 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
       v49[0] = v12;
       v48[1] = @"MPContentTasteControllerNotificationUserInfoKeyTasteType";
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:type];
       v49[1] = v13;
       v48[2] = @"MPContentTasteControllerNotificationUserInfoKeyContentType";
-      v14 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+      v14 = [MEMORY[0x1E696AD98] numberWithInteger:contentType];
       v49[2] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:3];
       [MPContentTasteController _postNotificationName:@"MPContentTasteControllerWillSetTasteTypeNotification" controller:self userInfo:v15];
     }
 
-    v16 = [(MPContentTasteController *)self _addPendingUpdateRecordForStoreAdamID:a4 contentTasteType:a3];
+    v16 = [(MPContentTasteController *)self _addPendingUpdateRecordForStoreAdamID:d contentTasteType:type];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __90__MPContentTasteController_setTasteType_forStoreAdamID_withContentType_completionHandler___block_invoke;
     aBlock[3] = &unk_1E76760B8;
     aBlock[4] = self;
-    v42 = a4;
+    dCopy = d;
     v33 = v16;
     v40 = v33;
-    v41 = v10;
+    v41 = handlerCopy;
     v17 = _Block_copy(aBlock);
     v18 = 3;
-    if (a3 != 2)
+    if (type != 2)
     {
       v18 = 1;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v19 = 2;
     }
@@ -839,7 +839,7 @@ LABEL_18:
 
     v31 = v19;
     v32 = v17;
-    if (a5 == 3)
+    if (contentType == 3)
     {
       v46 = @"MPStoreItemLibraryImportMetadataKeyAlbumLikedState";
       v20 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -851,7 +851,7 @@ LABEL_18:
 
     else
     {
-      if ((a5 - 1) > 1)
+      if ((contentType - 1) > 1)
       {
         v24 = 0;
         goto LABEL_16;
@@ -869,7 +869,7 @@ LABEL_18:
 
 LABEL_16:
     v25 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:self->_userIdentity];
-    v26 = [[MPStoreItemLibraryImportElement alloc] initWithStoreItemID:a4 additionalTrackMetadata:v24];
+    v26 = [[MPStoreItemLibraryImportElement alloc] initWithStoreItemID:d additionalTrackMetadata:v24];
     v27 = [MPStoreItemLibraryImport alloc];
     v43 = v26;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
@@ -879,9 +879,9 @@ LABEL_16:
     v34[1] = 3221225472;
     v34[2] = __90__MPContentTasteController_setTasteType_forStoreAdamID_withContentType_completionHandler___block_invoke_2;
     v34[3] = &unk_1E76760E0;
-    v36 = a5;
+    contentTypeCopy = contentType;
     v37 = v31;
-    v38 = a4;
+    dCopy2 = d;
     v34[4] = self;
     v35 = v32;
     v30 = v32;
@@ -890,7 +890,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  [(MPContentTasteController *)self setTasteType:a3 forMediaEntity:v11 withCompletionHandler:v10];
+  [(MPContentTasteController *)self setTasteType:type forMediaEntity:v11 withCompletionHandler:handlerCopy];
 LABEL_17:
 }
 
@@ -994,39 +994,39 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)setTasteType:(int64_t)a3 forPlaylistGlobalID:(id)a4 withCompletionHandler:(id)a5
+- (void)setTasteType:(int64_t)type forPlaylistGlobalID:(id)d withCompletionHandler:(id)handler
 {
   v32[3] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MPContentTasteController *)self _libraryPlaylistWithGlobalID:v8];
+  dCopy = d;
+  handlerCopy = handler;
+  v10 = [(MPContentTasteController *)self _libraryPlaylistWithGlobalID:dCopy];
   if (v10)
   {
-    [(MPContentTasteController *)self setTasteType:a3 forMediaEntity:v10 withCompletionHandler:v9];
+    [(MPContentTasteController *)self setTasteType:type forMediaEntity:v10 withCompletionHandler:handlerCopy];
   }
 
-  else if (v8)
+  else if (dCopy)
   {
-    v32[0] = v8;
+    v32[0] = dCopy;
     v31[0] = @"MPContentTasteControllerNotificationUserInfoKeyPlaylistGlobalID";
     v31[1] = @"MPContentTasteControllerNotificationUserInfoKeyTasteType";
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v31[2] = @"MPContentTasteControllerNotificationUserInfoKeyContentType";
     v32[1] = v11;
     v32[2] = &unk_1F1509640;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:3];
     [MPContentTasteController _postNotificationName:@"MPContentTasteControllerWillSetTasteTypeNotification" controller:self userInfo:v12];
 
-    v13 = [(MPContentTasteController *)self _addPendingUpdateRecordForPlaylistGlobalID:v8 contentTasteType:a3];
+    v13 = [(MPContentTasteController *)self _addPendingUpdateRecordForPlaylistGlobalID:dCopy contentTasteType:type];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __83__MPContentTasteController_setTasteType_forPlaylistGlobalID_withCompletionHandler___block_invoke;
     aBlock[3] = &unk_1E767BBA8;
     aBlock[4] = self;
-    v14 = v8;
+    v14 = dCopy;
     v26 = v14;
     v27 = v13;
-    v28 = v9;
+    v28 = handlerCopy;
     v15 = v13;
     v16 = _Block_copy(aBlock);
     v17 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:self->_userIdentity];
@@ -1035,7 +1035,7 @@ LABEL_21:
     v22[2] = __83__MPContentTasteController_setTasteType_forPlaylistGlobalID_withCompletionHandler___block_invoke_2;
     v22[3] = &unk_1E7676090;
     v23 = v16;
-    v24 = a3;
+    typeCopy = type;
     v18 = v16;
     [v17 addNonLibraryOwnedPlaylistWithGlobalID:v14 completion:v22];
   }
@@ -1047,7 +1047,7 @@ LABEL_21:
     v30 = @"invalid playlist global ID";
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v21 = [v19 errorWithDomain:@"MediaPlayer" code:123321 userInfo:v20];
-    (*(v9 + 2))(v9, v21);
+    (*(handlerCopy + 2))(handlerCopy, v21);
   }
 }
 
@@ -1104,18 +1104,18 @@ void __83__MPContentTasteController_setTasteType_forPlaylistGlobalID_withComplet
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setTasteType:(int64_t)a3 forMediaEntity:(id)a4 withCompletionHandler:(id)a5
+- (void)setTasteType:(int64_t)type forMediaEntity:(id)entity withCompletionHandler:(id)handler
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  entityCopy = entity;
+  handlerCopy = handler;
   v10 = 3;
-  if (a3 != 2)
+  if (type != 2)
   {
     v10 = 1;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v10 = 2;
   }
@@ -1145,19 +1145,19 @@ void __83__MPContentTasteController_setTasteType_forPlaylistGlobalID_withComplet
   v44 = &v46;
   aBlock[4] = self;
   v45 = &v52;
-  v40 = v9;
+  v40 = handlerCopy;
   v42 = v40;
   v11 = _Block_copy(aBlock);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v8 valueForProperty:@"cloudGlobalID"];
+    v12 = [entityCopy valueForProperty:@"cloudGlobalID"];
     v13 = v57[5];
     v57[5] = v12;
 
     v14 = objc_alloc(MEMORY[0x1E695DF90]);
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v16 = [v14 initWithObjectsAndKeys:{v8, @"MPContentTasteControllerNotificationUserInfoKeyMediaEntity", v15, @"MPContentTasteControllerNotificationUserInfoKeyTasteType", &unk_1F1509640, @"MPContentTasteControllerNotificationUserInfoKeyContentType", 0}];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    v16 = [v14 initWithObjectsAndKeys:{entityCopy, @"MPContentTasteControllerNotificationUserInfoKeyMediaEntity", v15, @"MPContentTasteControllerNotificationUserInfoKeyTasteType", &unk_1F1509640, @"MPContentTasteControllerNotificationUserInfoKeyContentType", 0}];
 
     v17 = v57[5];
     if (v17)
@@ -1169,12 +1169,12 @@ void __83__MPContentTasteController_setTasteType_forPlaylistGlobalID_withComplet
     v18 = v57[5];
     if (v18)
     {
-      v19 = [(MPContentTasteController *)self _addPendingUpdateRecordForPlaylistGlobalID:v18 contentTasteType:a3];
+      v19 = [(MPContentTasteController *)self _addPendingUpdateRecordForPlaylistGlobalID:v18 contentTasteType:type];
       v20 = v47[5];
       v47[5] = v19;
     }
 
-    v21 = v8;
+    v21 = entityCopy;
     v22 = [MEMORY[0x1E696AD98] numberWithInteger:v39];
     [v21 setValue:v22 forProperty:@"likedState" withCompletionBlock:v11];
     goto LABEL_11;
@@ -1192,25 +1192,25 @@ void __83__MPContentTasteController_setTasteType_forPlaylistGlobalID_withComplet
     }
 
     v27 = @"albumLikedState";
-    v28 = [v8 valueForProperty:@"albumStoreID"];
-    v29 = [v28 longLongValue];
+    v28 = [entityCopy valueForProperty:@"albumStoreID"];
+    longLongValue = [v28 longLongValue];
     v16 = @"albumLikedState";
     v26 = 3;
 LABEL_19:
-    v53[3] = v29;
+    v53[3] = longLongValue;
 
     goto LABEL_20;
   }
 
   v23 = @"likedState";
-  v24 = [v8 valueForProperty:@"storeItemAdamID"];
-  v25 = [v24 longLongValue];
-  v53[3] = v25;
+  v24 = [entityCopy valueForProperty:@"storeItemAdamID"];
+  longLongValue2 = [v24 longLongValue];
+  v53[3] = longLongValue2;
 
   if (!v53[3])
   {
-    v28 = [v8 valueForProperty:@"subscriptionStoreItemAdamID"];
-    v29 = [v28 longLongValue];
+    v28 = [entityCopy valueForProperty:@"subscriptionStoreItemAdamID"];
+    longLongValue = [v28 longLongValue];
     v16 = @"likedState";
     v26 = 1;
     goto LABEL_19;
@@ -1219,12 +1219,12 @@ LABEL_19:
   v16 = @"likedState";
   v26 = 1;
 LABEL_20:
-  if (v8)
+  if (entityCopy)
   {
     v30 = objc_alloc(MEMORY[0x1E695DF90]);
-    v31 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v31 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v32 = [MEMORY[0x1E696AD98] numberWithInteger:v26];
-    v33 = [v30 initWithObjectsAndKeys:{v8, @"MPContentTasteControllerNotificationUserInfoKeyMediaEntity", v31, @"MPContentTasteControllerNotificationUserInfoKeyTasteType", v32, @"MPContentTasteControllerNotificationUserInfoKeyContentType", 0}];
+    v33 = [v30 initWithObjectsAndKeys:{entityCopy, @"MPContentTasteControllerNotificationUserInfoKeyMediaEntity", v31, @"MPContentTasteControllerNotificationUserInfoKeyTasteType", v32, @"MPContentTasteControllerNotificationUserInfoKeyContentType", 0}];
 
     if (v53[3])
     {
@@ -1238,7 +1238,7 @@ LABEL_20:
   v35 = v53[3];
   if (v35)
   {
-    v36 = [(MPContentTasteController *)self _addPendingUpdateRecordForStoreAdamID:v35 contentTasteType:a3];
+    v36 = [(MPContentTasteController *)self _addPendingUpdateRecordForStoreAdamID:v35 contentTasteType:type];
     v37 = v47[5];
     v47[5] = v36;
   }
@@ -1246,7 +1246,7 @@ LABEL_20:
   if (v16)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithInteger:v39];
-    [v8 setValue:v21 forProperty:v16 withCompletionBlock:v11];
+    [entityCopy setValue:v21 forProperty:v16 withCompletionBlock:v11];
     goto LABEL_28;
   }
 
@@ -1299,61 +1299,61 @@ void __78__MPContentTasteController_setTasteType_forMediaEntity_withCompletionHa
   }
 }
 
-- (void)setTasteType:(int64_t)a3 forModel:(id)a4 withCompletionHandler:(id)a5
+- (void)setTasteType:(int64_t)type forModel:(id)model withCompletionHandler:(id)handler
 {
-  v18 = a4;
-  v8 = a5;
+  modelCopy = model;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v18 flattenedGenericObject];
-    v10 = [v9 anyObject];
+    flattenedGenericObject = [modelCopy flattenedGenericObject];
+    anyObject = [flattenedGenericObject anyObject];
 
-    v11 = v10;
+    v11 = anyObject;
   }
 
   else
   {
-    v11 = v18;
+    v11 = modelCopy;
   }
 
   v19 = v11;
-  v12 = [v11 identifiers];
-  v13 = [v12 universalStore];
-  v14 = [v13 globalPlaylistID];
+  identifiers = [v11 identifiers];
+  universalStore = [identifiers universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
 
-  if ([v14 length])
+  if ([globalPlaylistID length])
   {
-    [(MPContentTasteController *)self setTasteType:a3 forPlaylistGlobalID:v14 withCompletionHandler:v8];
+    [(MPContentTasteController *)self setTasteType:type forPlaylistGlobalID:globalPlaylistID withCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v15 = [v19 identifiers];
-    v16 = _MPContentTasteBestIDFromIdentifiers(v15);
+    identifiers2 = [v19 identifiers];
+    v16 = _MPContentTasteBestIDFromIdentifiers(identifiers2);
 
     if (v16)
     {
-      [(MPContentTasteController *)self setTasteType:a3 forStoreAdamID:v16 withContentType:MPContentTasteContentTypeFromMPModelObject(v19) completionHandler:v8];
+      [(MPContentTasteController *)self setTasteType:type forStoreAdamID:v16 withContentType:MPContentTasteContentTypeFromMPModelObject(v19) completionHandler:handlerCopy];
     }
 
     else
     {
       v17 = [(MPContentTasteController *)self _libraryEntityForModel:v19];
-      [(MPContentTasteController *)self setTasteType:a3 forMediaEntity:v17 withCompletionHandler:v8];
+      [(MPContentTasteController *)self setTasteType:type forMediaEntity:v17 withCompletionHandler:handlerCopy];
     }
   }
 }
 
-- (id)_initWithUserIdentity:(id)a3
+- (id)_initWithUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v13.receiver = self;
   v13.super_class = MPContentTasteController;
   v5 = [(MPContentTasteController *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identityCopy copy];
     userIdentity = v5->_userIdentity;
     v5->_userIdentity = v6;
 
@@ -1361,9 +1361,9 @@ void __78__MPContentTasteController_setTasteType_forMediaEntity_withCompletionHa
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v8;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    v11 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v4];
-    [v10 addObserver:v5 selector:sel__deviceMediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDidChangeNotification" object:v11];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v11 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:identityCopy];
+    [defaultCenter addObserver:v5 selector:sel__deviceMediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDidChangeNotification" object:v11];
   }
 
   return v5;
@@ -1371,40 +1371,40 @@ void __78__MPContentTasteController_setTasteType_forMediaEntity_withCompletionHa
 
 - (MPContentTasteController)init
 {
-  v3 = [MEMORY[0x1E69E4680] activeAccount];
-  v4 = [(MPContentTasteController *)self _initWithUserIdentity:v3];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v4 = [(MPContentTasteController *)self _initWithUserIdentity:activeAccount];
 
   return v4;
 }
 
-+ (void)_postNotificationName:(id)a3 controller:(id)a4 userInfo:(id)a5
++ (void)_postNotificationName:(id)name controller:(id)controller userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  nameCopy = name;
+  controllerCopy = controller;
+  infoCopy = info;
+  if (controllerCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-    [v10 addObject:v8];
+    defaultCenter = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
+    [defaultCenter addObject:controllerCopy];
     v11 = +[MPContentTasteController sharedController];
     v12 = v11;
-    if (v11 == v8)
+    if (v11 == controllerCopy)
     {
     }
 
     else
     {
-      v13 = [v8 userIdentity];
-      [v13 accountDSID];
-      v23 = v9;
-      v15 = v14 = v7;
+      userIdentity = [controllerCopy userIdentity];
+      [userIdentity accountDSID];
+      v23 = infoCopy;
+      v15 = v14 = nameCopy;
       v16 = +[MPContentTasteController sharedController];
-      v17 = [v16 userIdentity];
-      v18 = [v17 accountDSID];
-      v19 = [v15 isEqualToString:v18];
+      userIdentity2 = [v16 userIdentity];
+      accountDSID = [userIdentity2 accountDSID];
+      v19 = [v15 isEqualToString:accountDSID];
 
-      v7 = v14;
-      v9 = v23;
+      nameCopy = v14;
+      infoCopy = v23;
 
       if (v19)
       {
@@ -1415,22 +1415,22 @@ void __78__MPContentTasteController_setTasteType_forMediaEntity_withCompletionHa
 
     v21 = +[MPContentTasteController sharedController];
 
-    if (v21 != v8)
+    if (v21 != controllerCopy)
     {
 LABEL_11:
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __70__MPContentTasteController__postNotificationName_controller_userInfo___block_invoke;
       v24[3] = &unk_1E7676108;
-      v25 = v7;
-      v26 = v9;
-      [v10 enumerateObjectsUsingBlock:v24];
+      v25 = nameCopy;
+      v26 = infoCopy;
+      [defaultCenter enumerateObjectsUsingBlock:v24];
 
       goto LABEL_12;
     }
 
-    v22 = [v8 userIdentity];
-    v20 = [MPContentTasteController _tasteControllerWithUserIdentity:v22 isSingleton:0 createIfRequired:0];
+    userIdentity3 = [controllerCopy userIdentity];
+    v20 = [MPContentTasteController _tasteControllerWithUserIdentity:userIdentity3 isSingleton:0 createIfRequired:0];
 
     if (!v20)
     {
@@ -1440,12 +1440,12 @@ LABEL_10:
     }
 
 LABEL_9:
-    [v10 addObject:v20];
+    [defaultCenter addObject:v20];
     goto LABEL_10;
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:v7 object:0 userInfo:v9];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:0 userInfo:infoCopy];
 LABEL_12:
 }
 
@@ -1457,21 +1457,21 @@ void __70__MPContentTasteController__postNotificationName_controller_userInfo___
   [v5 postNotificationName:*(a1 + 32) object:v4 userInfo:*(a1 + 40)];
 }
 
-+ (id)_tasteControllerWithUserIdentity:(id)a3 isSingleton:(BOOL)a4 createIfRequired:(BOOL)a5
++ (id)_tasteControllerWithUserIdentity:(id)identity isSingleton:(BOOL)singleton createIfRequired:(BOOL)required
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4)
+  identityCopy = identity;
+  v9 = identityCopy;
+  if (singleton)
   {
     v10 = @"SingletonTasteController";
   }
 
   else
   {
-    v11 = [v8 accountDSID];
-    if (v11)
+    accountDSID = [identityCopy accountDSID];
+    if (accountDSID)
     {
-      v10 = v11;
+      v10 = accountDSID;
     }
 
     else
@@ -1486,19 +1486,19 @@ void __70__MPContentTasteController__postNotificationName_controller_userInfo___
   v26 = __Block_byref_object_copy__3309;
   v27 = __Block_byref_object_dispose__3310;
   v28 = 0;
-  v12 = [a1 globalSerialQueue];
+  globalSerialQueue = [self globalSerialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__MPContentTasteController__tasteControllerWithUserIdentity_isSingleton_createIfRequired___block_invoke;
   block[3] = &unk_1E7679228;
-  v22 = a5;
+  requiredCopy = required;
   v18 = v10;
   v19 = v9;
   v20 = &v23;
-  v21 = a1;
+  selfCopy = self;
   v13 = v9;
   v14 = v10;
-  dispatch_sync(v12, block);
+  dispatch_sync(globalSerialQueue, block);
 
   v15 = v24[5];
   _Block_object_dispose(&v23, 8);

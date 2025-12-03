@@ -4,7 +4,7 @@
 - (BOOL)stopChangeListener;
 - (GKInterfaceListener)init;
 - (void)dealloc;
-- (void)hasConnectionWithWifi:(BOOL *)a3 cell:(BOOL *)a4;
+- (void)hasConnectionWithWifi:(BOOL *)wifi cell:(BOOL *)cell;
 - (void)startChangeListener;
 - (void)startRoutingChangeListener;
 - (void)stopRoutingChangeListener;
@@ -38,10 +38,10 @@
   [(GKInterfaceListener *)&v3 dealloc];
 }
 
-- (void)hasConnectionWithWifi:(BOOL *)a3 cell:(BOOL *)a4
+- (void)hasConnectionWithWifi:(BOOL *)wifi cell:(BOOL *)cell
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3 | a4)
+  if (wifi | cell)
   {
     LocalInterfaceListWithOptions = GetLocalInterfaceListWithOptions();
     if (LocalInterfaceListWithOptions >= 1)
@@ -95,20 +95,20 @@
         {
           if ((*(v9 - 4) & 4) != 0)
           {
-            if (a4)
+            if (cell)
             {
-              *a4 = 1;
-              if (!a3 || *a3)
+              *cell = 1;
+              if (!wifi || *wifi)
               {
                 goto LABEL_27;
               }
             }
           }
 
-          else if (a3)
+          else if (wifi)
           {
-            *a3 = 1;
-            if (!a4 || *a4)
+            *wifi = 1;
+            if (!cell || *cell)
             {
               goto LABEL_27;
             }
@@ -122,7 +122,7 @@
       while (v8 != v7);
     }
 
-    if ((!a3 || !*a3) && (!a4 || !*a4) && VRTraceGetErrorLogLevelForModule() >= 5)
+    if ((!wifi || !*wifi) && (!cell || !*cell) && VRTraceGetErrorLogLevelForModule() >= 5)
     {
       v14 = VRTraceErrorLogLevelToCSTR();
       v15 = *MEMORY[0x1E6986650];

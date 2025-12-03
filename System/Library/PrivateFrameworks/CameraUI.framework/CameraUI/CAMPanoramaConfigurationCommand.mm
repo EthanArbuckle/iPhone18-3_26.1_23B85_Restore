@@ -1,38 +1,38 @@
 @interface CAMPanoramaConfigurationCommand
-- (CAMPanoramaConfigurationCommand)initWithCoder:(id)a3;
-- (CAMPanoramaConfigurationCommand)initWithConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPanoramaConfigurationCommand)initWithCoder:(id)coder;
+- (CAMPanoramaConfigurationCommand)initWithConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPanoramaConfigurationCommand
 
-- (CAMPanoramaConfigurationCommand)initWithConfiguration:(id)a3
+- (CAMPanoramaConfigurationCommand)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CAMPanoramaConfigurationCommand;
   v6 = [(CAMCaptureCommand *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__configuration, a3);
+    objc_storeStrong(&v6->__configuration, configuration);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (CAMPanoramaConfigurationCommand)initWithCoder:(id)a3
+- (CAMPanoramaConfigurationCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CAMPanoramaConfigurationCommand;
-  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMPanoramaConfigurationCommandConfiguration"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMPanoramaConfigurationCommandConfiguration"];
     configuration = v5->__configuration;
     v5->__configuration = v6;
 
@@ -42,56 +42,56 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CAMPanoramaConfigurationCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CAMPanoramaConfigurationCommand *)self _configuration:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"CAMPanoramaConfigurationCommandConfiguration"];
+  [coderCopy encodeObject:v5 forKey:@"CAMPanoramaConfigurationCommandConfiguration"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMPanoramaConfigurationCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
-  v5 = [(CAMPanoramaConfigurationCommand *)self _configuration];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
+  _configuration = [(CAMPanoramaConfigurationCommand *)self _configuration];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = _configuration;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
-  v6 = [v4 currentVideoDeviceFormat];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
 
-  v7 = [(CAMPanoramaConfigurationCommand *)self _configuration];
-  v8 = v7;
-  if (v7)
+  _configuration = [(CAMPanoramaConfigurationCommand *)self _configuration];
+  v8 = _configuration;
+  if (_configuration)
   {
-    [v7 minimumFramerate];
+    [_configuration minimumFramerate];
     [v8 maximumFramerate];
-    if ([v6 cam_supportsPanoramaConfiguration:v8])
+    if ([currentVideoDeviceFormat cam_supportsPanoramaConfiguration:v8])
     {
       [v8 minimumFramerate];
-      [v5 setActiveVideoMinFrameDuration:buf];
+      [currentVideoDevice setActiveVideoMinFrameDuration:buf];
       [v8 maximumFramerate];
 LABEL_6:
-      [v5 setActiveVideoMaxFrameDuration:buf];
+      [currentVideoDevice setActiveVideoMaxFrameDuration:buf];
       goto LABEL_10;
     }
   }
 
-  else if ([v6 cam_supportsPanoramaConfiguration:0])
+  else if ([currentVideoDeviceFormat cam_supportsPanoramaConfiguration:0])
   {
     memset(buf, 0, 24);
-    [v5 setActiveVideoMinFrameDuration:buf];
+    [currentVideoDevice setActiveVideoMinFrameDuration:buf];
     memset(buf, 0, 24);
     goto LABEL_6;
   }
@@ -108,7 +108,7 @@ LABEL_6:
     v11 = 1024;
     v12 = 0;
     v13 = 2114;
-    v14 = v6;
+    v14 = currentVideoDeviceFormat;
     _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring attempt to set invalid panorama framerates (%lld/%d and %lld/%d) for the current format %{public}@", buf, 0x2Cu);
   }
 

@@ -27,29 +27,29 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
     v5 = NSStringFromSelector(sel_conversationDetailsEnabled);
-    [v4 setObject:@"ConversationDetailsEnabled" forKeyedSubscript:v5];
+    [preferenceKeysBySelectorName setObject:@"ConversationDetailsEnabled" forKeyedSubscript:v5];
 
-    v6 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName2 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v7 = NSStringFromSelector(sel_emojiKeyboardEnabled);
-    [v6 setObject:@"EmojiKeyboardEnabled" forKeyedSubscript:v7];
+    [preferenceKeysBySelectorName2 setObject:@"EmojiKeyboardEnabled" forKeyedSubscript:v7];
 
-    v8 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName3 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v9 = NSStringFromSelector(sel_photoKeyboardEnabled);
-    [v8 setObject:@"PhotoKeyboardEnabled" forKeyedSubscript:v9];
+    [preferenceKeysBySelectorName3 setObject:@"PhotoKeyboardEnabled" forKeyedSubscript:v9];
 
-    v10 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName4 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v11 = NSStringFromSelector(sel_softwareKeyboardEnabled);
-    [v10 setObject:@"SoftwareKeyboardEnabled" forKeyedSubscript:v11];
+    [preferenceKeysBySelectorName4 setObject:@"SoftwareKeyboardEnabled" forKeyedSubscript:v11];
 
-    v12 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName5 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v13 = NSStringFromSelector(sel_tapToSpeakEnabled);
-    [v12 setObject:@"TapToSpeakEnabled" forKeyedSubscript:v13];
+    [preferenceKeysBySelectorName5 setObject:@"TapToSpeakEnabled" forKeyedSubscript:v13];
 
-    v14 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName6 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v15 = NSStringFromSelector(sel_videoRecordingEnabled);
-    [v14 setObject:@"VideoRecordingEnabled" forKeyedSubscript:v15];
+    [preferenceKeysBySelectorName6 setObject:@"VideoRecordingEnabled" forKeyedSubscript:v15];
   }
 
   return v3;
@@ -58,7 +58,7 @@
 + (id)allPreferenceSelectorsAsStrings
 {
   v14[6] = *MEMORY[0x1E69E9840];
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___CLFMessagesSettings_GeneratedCode;
   v2 = objc_msgSendSuper2(&v13, sel_allPreferenceSelectorsAsStrings);
   v3 = NSStringFromSelector(sel_conversationDetailsEnabled);
@@ -83,8 +83,8 @@
 
 - (BOOL)photoKeyboardEnabled
 {
-  v3 = [(CLFMessagesSettings_GeneratedCode *)self softwareKeyboardEnabled];
-  v4 = [(CLFMessagesSettings_GeneratedCode *)self emojiKeyboardEnabled]+ v3;
+  softwareKeyboardEnabled = [(CLFMessagesSettings_GeneratedCode *)self softwareKeyboardEnabled];
+  v4 = [(CLFMessagesSettings_GeneratedCode *)self emojiKeyboardEnabled]+ softwareKeyboardEnabled;
   v5 = v4 + [(CLFMessagesSettings_GeneratedCode *)self videoRecordingEnabled]> 1;
 
   return [(AXBaseSettings *)self BOOLValueForPreferenceKey:@"PhotoKeyboardEnabled" defaultValue:v5];

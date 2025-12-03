@@ -1,7 +1,7 @@
 @interface CBORArray
 - (CBORArray)init;
-- (CBORArray)initWith:(id)a3;
-- (void)write:(id)a3;
+- (CBORArray)initWith:(id)with;
+- (void)write:(id)write;
 @end
 
 @implementation CBORArray
@@ -21,15 +21,15 @@
   return v2;
 }
 
-- (CBORArray)initWith:(id)a3
+- (CBORArray)initWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v9.receiver = self;
   v9.super_class = CBORArray;
   v5 = [(CBORArray *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:withCopy];
     m_data = v5->m_data;
     v5->m_data = v6;
   }
@@ -37,17 +37,17 @@
   return v5;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v6 = a3;
-  [(CBORValue *)self encodeStartItems:[(NSMutableArray *)self->m_data count] output:v6];
+  writeCopy = write;
+  [(CBORValue *)self encodeStartItems:[(NSMutableArray *)self->m_data count] output:writeCopy];
   if ([(NSMutableArray *)self->m_data count])
   {
     v4 = 0;
     do
     {
       v5 = [(NSMutableArray *)self->m_data objectAtIndexedSubscript:v4];
-      [v5 write:v6];
+      [v5 write:writeCopy];
 
       ++v4;
     }

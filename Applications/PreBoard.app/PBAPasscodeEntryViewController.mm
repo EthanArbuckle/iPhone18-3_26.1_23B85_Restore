@@ -1,39 +1,39 @@
 @interface PBAPasscodeEntryViewController
-- (PBAPasscodeEntryViewController)initWithLightBackground:(BOOL)a3;
+- (PBAPasscodeEntryViewController)initWithLightBackground:(BOOL)background;
 - (PBAPasscodeEntryViewControllerDelegate)delegate;
 - (void)_userCancelledEntry;
 - (void)_userRequestedDismissal;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)passcodeLockViewPasscodeDidChange:(id)a3;
-- (void)passcodeLockViewPasscodeEntered:(id)a3;
-- (void)resetPasscodeEntryFieldForFailure:(BOOL)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)passcodeLockViewPasscodeDidChange:(id)change;
+- (void)passcodeLockViewPasscodeEntered:(id)entered;
+- (void)resetPasscodeEntryFieldForFailure:(BOOL)failure;
+- (void)setSubtitleText:(id)text;
+- (void)setTitleText:(id)text;
 - (void)viewDidLoad;
 @end
 
 @implementation PBAPasscodeEntryViewController
 
-- (PBAPasscodeEntryViewController)initWithLightBackground:(BOOL)a3
+- (PBAPasscodeEntryViewController)initWithLightBackground:(BOOL)background
 {
   v5.receiver = self;
   v5.super_class = PBAPasscodeEntryViewController;
   result = [(PBAPasscodeEntryViewController *)&v5 initWithNibName:0 bundle:0];
   if (result)
   {
-    result->_useLightBackground = a3;
+    result->_useLightBackground = background;
   }
 
   return result;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_titleText isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     titleText = self->_titleText;
     self->_titleText = v4;
 
@@ -41,12 +41,12 @@
   }
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_subtitleText isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     subtitleText = self->_subtitleText;
     self->_subtitleText = v4;
 
@@ -54,19 +54,19 @@
   }
 }
 
-- (void)resetPasscodeEntryFieldForFailure:(BOOL)a3
+- (void)resetPasscodeEntryFieldForFailure:(BOOL)failure
 {
-  v3 = a3;
-  v4 = [(PBAPasscodeEntryViewController *)self passcodeLockView];
-  v5 = v4;
-  if (v3)
+  failureCopy = failure;
+  passcodeLockView = [(PBAPasscodeEntryViewController *)self passcodeLockView];
+  v5 = passcodeLockView;
+  if (failureCopy)
   {
-    [v4 resetForFailedPasscode];
+    [passcodeLockView resetForFailedPasscode];
   }
 
   else
   {
-    [v4 resetForSuccess];
+    [passcodeLockView resetForSuccess];
   }
 }
 
@@ -105,16 +105,16 @@
 
     v17 = v10;
 
-    v12 = [(SBUIPasscodeLockView *)v17 _numberPad];
+    _numberPad = [(SBUIPasscodeLockView *)v17 _numberPad];
 
     v18 = +[UIColor whiteColor];
-    [v12 setReduceTransparencyButtonColor:v18];
+    [_numberPad setReduceTransparencyButtonColor:v18];
   }
 
   else if (self->_useLightBackground)
   {
     v11 = +[SBUIPasscodeLockViewFactory lightPasscodeLockViewForUsersCurrentStyle];
-    v12 = self->_passcodeLockView;
+    _numberPad = self->_passcodeLockView;
     self->_passcodeLockView = v11;
   }
 
@@ -125,9 +125,9 @@
     self->_passcodeLockView = v13;
 
     v15 = self->_passcodeLockView;
-    v12 = [_UIBackdropViewSettings settingsForPrivateStyle:2030];
-    v16 = [v12 combinedTintColor];
-    [(SBUIPasscodeLockView *)v15 setCustomBackgroundColor:v16];
+    _numberPad = [_UIBackdropViewSettings settingsForPrivateStyle:2030];
+    combinedTintColor = [_numberPad combinedTintColor];
+    [(SBUIPasscodeLockView *)v15 setCustomBackgroundColor:combinedTintColor];
   }
 
   [(SBUIPasscodeLockView *)self->_passcodeLockView setDelegate:self];
@@ -148,8 +148,8 @@
   [v3 setAllowedPressTypes:&off_10001D578];
   [v3 setNumberOfTapsRequired:1];
   [v3 setCancelsTouchesInView:0];
-  v4 = [(PBAPasscodeEntryViewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(PBAPasscodeEntryViewController *)self view];
+  [view addGestureRecognizer:v3];
 }
 
 - (void)didReceiveMemoryWarning
@@ -171,8 +171,8 @@
 - (void)_userRequestedDismissal
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [(SBUIPasscodeLockView *)self->_passcodeLockView passcode];
-  v4 = [v3 length];
+  passcode = [(SBUIPasscodeLockView *)self->_passcodeLockView passcode];
+  v4 = [passcode length];
 
   if (v4)
   {
@@ -185,13 +185,13 @@
   }
 }
 
-- (void)passcodeLockViewPasscodeDidChange:(id)a3
+- (void)passcodeLockViewPasscodeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v4 passcode];
+  passcode = [changeCopy passcode];
 
-  v6 = [v5 length];
+  v6 = [passcode length];
   if (v6)
   {
     if (objc_opt_respondsToSelector())
@@ -206,14 +206,14 @@
   }
 }
 
-- (void)passcodeLockViewPasscodeEntered:(id)a3
+- (void)passcodeLockViewPasscodeEntered:(id)entered
 {
-  v7 = a3;
+  enteredCopy = entered;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v7 passcode];
-    v6 = [v5 dataUsingEncoding:4];
+    passcode = [enteredCopy passcode];
+    v6 = [passcode dataUsingEncoding:4];
     [WeakRetained passcodeEntryViewControllerEntryCompleted:self passcode:v6];
   }
 }

@@ -1,67 +1,67 @@
 @interface STExceptionApp
-- (STExceptionApp)initWithCoder:(id)a3;
-- (STExceptionApp)initWithRequesterDSID:(id)a3 bundleIdentifier:(id)a4 adamID:(unint64_t)a5 distributorID:(id)a6 ratingValue:(unint64_t)a7;
+- (STExceptionApp)initWithCoder:(id)coder;
+- (STExceptionApp)initWithRequesterDSID:(id)d bundleIdentifier:(id)identifier adamID:(unint64_t)iD distributorID:(id)distributorID ratingValue:(unint64_t)value;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STExceptionApp
 
-- (STExceptionApp)initWithRequesterDSID:(id)a3 bundleIdentifier:(id)a4 adamID:(unint64_t)a5 distributorID:(id)a6 ratingValue:(unint64_t)a7
+- (STExceptionApp)initWithRequesterDSID:(id)d bundleIdentifier:(id)identifier adamID:(unint64_t)iD distributorID:(id)distributorID ratingValue:(unint64_t)value
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  distributorIDCopy = distributorID;
   v23.receiver = self;
   v23.super_class = STExceptionApp;
   v15 = [(STExceptionApp *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [dCopy copy];
     requesterDSID = v15->_requesterDSID;
     v15->_requesterDSID = v16;
 
-    v18 = [v13 copy];
+    v18 = [identifierCopy copy];
     bundleIdentifier = v15->_bundleIdentifier;
     v15->_bundleIdentifier = v18;
 
-    v15->_adamID = a5;
-    v20 = [v14 copy];
+    v15->_adamID = iD;
+    v20 = [distributorIDCopy copy];
     distributorID = v15->_distributorID;
     v15->_distributorID = v20;
 
-    v15->_ratingValue = a7;
+    v15->_ratingValue = value;
   }
 
   return v15;
 }
 
-- (STExceptionApp)initWithCoder:(id)a3
+- (STExceptionApp)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requesterDSID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distributorID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adamID"];
-  v9 = [v8 unsignedLongLongValue];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ratingValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requesterDSID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distributorID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adamID"];
+  unsignedLongLongValue = [v8 unsignedLongLongValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ratingValue"];
 
-  v11 = -[STExceptionApp initWithRequesterDSID:bundleIdentifier:adamID:distributorID:ratingValue:](self, "initWithRequesterDSID:bundleIdentifier:adamID:distributorID:ratingValue:", v5, v6, v9, v7, [v10 unsignedLongLongValue]);
+  v11 = -[STExceptionApp initWithRequesterDSID:bundleIdentifier:adamID:distributorID:ratingValue:](self, "initWithRequesterDSID:bundleIdentifier:adamID:distributorID:ratingValue:", v5, v6, unsignedLongLongValue, v7, [v10 unsignedLongLongValue]);
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requesterDSID = self->_requesterDSID;
-  v5 = a3;
-  [v5 encodeObject:requesterDSID forKey:@"requesterDSID"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_distributorID forKey:@"distributorID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requesterDSID forKey:@"requesterDSID"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_distributorID forKey:@"distributorID"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_adamID];
-  [v5 encodeObject:v6 forKey:@"adamID"];
+  [coderCopy encodeObject:v6 forKey:@"adamID"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_ratingValue];
-  [v5 encodeObject:v7 forKey:@"ratingValue"];
+  [coderCopy encodeObject:v7 forKey:@"ratingValue"];
 }
 
 - (id)description

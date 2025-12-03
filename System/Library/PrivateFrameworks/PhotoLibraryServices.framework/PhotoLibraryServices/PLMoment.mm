@@ -1,27 +1,27 @@
 @interface PLMoment
 + (NSArray)sortByTimeSortDescriptors;
-+ (id)allAssetsInManagedObjectContext:(id)a3 predicate:(id)a4 IDsOnly:(BOOL)a5 error:(id *)a6;
-+ (id)allAssetsIncludedInMomentsInLibrary:(id)a3;
-+ (id)allAssetsIncludedInMomentsInManagedObjectContext:(id)a3 IDsOnly:(BOOL)a4 error:(id *)a5;
-+ (id)allInvalidAssetsInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (id)allInvalidMomentsInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (id)allMomentsInManagedObjectContext:(id)a3 predicate:(id)a4 idsOnly:(BOOL)a5 error:(id *)a6;
-+ (id)allMomentsRequiringAnalysisInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (id)batchFetchMomentObjectIDsByAssetObjectIDsWithAssetObjectIDs:(id)a3 andAssetPredicate:(id)a4 inManagedObjectContext:(id)a5 error:(id *)a6;
-+ (id)batchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:(id)a3 library:(id)a4 error:(id *)a5;
-+ (id)fetchMomentIDsNotAnalyzedForThemesInContext:(id)a3 adapterVersion:(int64_t)a4 uemVersion:(int64_t)a5;
-+ (id)insertNewMomentInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (id)momentIDsWithPersonIDs:(id)a3 inContext:(id)a4;
-+ (id)momentsRequiringLocationProcessingWhenCoreRoutineIsAvailableInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (id)momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailableInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (id)momentsRequiringLocationProcessingWhenFrequentLocationsChangedInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (id)momentsWithLocationOfInterestInManagedObjectContext:(id)a3 error:(id *)a4;
++ (id)allAssetsInManagedObjectContext:(id)context predicate:(id)predicate IDsOnly:(BOOL)only error:(id *)error;
++ (id)allAssetsIncludedInMomentsInLibrary:(id)library;
++ (id)allAssetsIncludedInMomentsInManagedObjectContext:(id)context IDsOnly:(BOOL)only error:(id *)error;
++ (id)allInvalidAssetsInManagedObjectContext:(id)context error:(id *)error;
++ (id)allInvalidMomentsInManagedObjectContext:(id)context error:(id *)error;
++ (id)allMomentsInManagedObjectContext:(id)context predicate:(id)predicate idsOnly:(BOOL)only error:(id *)error;
++ (id)allMomentsRequiringAnalysisInManagedObjectContext:(id)context error:(id *)error;
++ (id)batchFetchMomentObjectIDsByAssetObjectIDsWithAssetObjectIDs:(id)ds andAssetPredicate:(id)predicate inManagedObjectContext:(id)context error:(id *)error;
++ (id)batchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:(id)ds library:(id)library error:(id *)error;
++ (id)fetchMomentIDsNotAnalyzedForThemesInContext:(id)context adapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion;
++ (id)insertNewMomentInManagedObjectContext:(id)context error:(id *)error;
++ (id)momentIDsWithPersonIDs:(id)ds inContext:(id)context;
++ (id)momentsRequiringLocationProcessingWhenCoreRoutineIsAvailableInManagedObjectContext:(id)context error:(id *)error;
++ (id)momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailableInManagedObjectContext:(id)context error:(id *)error;
++ (id)momentsRequiringLocationProcessingWhenFrequentLocationsChangedInManagedObjectContext:(id)context error:(id *)error;
++ (id)momentsWithLocationOfInterestInManagedObjectContext:(id)context error:(id *)error;
 + (id)predicateForAssetsIncludedInMoments;
 + (id)predicateForInvalidAssets;
 + (id)predicateForInvalidMoments;
-+ (void)_recalculateAssetCountsForMoment:(id)a3;
-+ (void)batchFetchMomentUUIDsByAssetUUIDsWithAssetUUIDs:(id)a3 library:(id)a4 completion:(id)a5;
-+ (void)enumerateAssetUUIDsForSearchIndexingWithMomentUUID:(id)a3 managedObjectContext:(id)a4 libraryIdentifier:(int64_t)a5 assetUUIDHandler:(id)a6;
++ (void)_recalculateAssetCountsForMoment:(id)moment;
++ (void)batchFetchMomentUUIDsByAssetUUIDsWithAssetUUIDs:(id)ds library:(id)library completion:(id)completion;
++ (void)enumerateAssetUUIDsForSearchIndexingWithMomentUUID:(id)d managedObjectContext:(id)context libraryIdentifier:(int64_t)identifier assetUUIDHandler:(id)handler;
 - (BOOL)hasEmptyThemePlaceholder;
 - (CLLocation)approximateLocation;
 - (CLLocationCoordinate2D)pl_coordinate;
@@ -30,37 +30,37 @@
 - (NSDate)localEndDate;
 - (NSDate)localStartDate;
 - (id)_edgesToEmptyThemePlaceholder;
-- (id)_fetchEdgeToTheme:(id)a3;
+- (id)_fetchEdgeToTheme:(id)theme;
 - (id)_fetchEmptyThemePlaceholderNode;
 - (id)_fetchOrCreateEmptyThemePlaceholderNode;
-- (id)_fetchOrInsertEdgeToTheme:(id)a3;
+- (id)_fetchOrInsertEdgeToTheme:(id)theme;
 - (id)_fetchThemeAssignmentEdges;
 - (id)bestAsset;
 - (id)edgesIn;
 - (id)edgesOut;
 - (id)groupURL;
-- (int)_cachedSharedAssetContainerValueWithRecalcIfNeededForKey:(id)a3;
-- (unint64_t)countForAssetsOfKind:(signed __int16)a3;
+- (int)_cachedSharedAssetContainerValueWithRecalcIfNeededForKey:(id)key;
+- (unint64_t)countForAssetsOfKind:(signed __int16)kind;
 - (unint64_t)fetchedAssetsCount;
-- (void)_ensureEmptyThemePlaceholderIsSet:(BOOL)a3 adapterVersion:(int64_t)a4 uemVersion:(int64_t)a5;
-- (void)assignEmptyThemesWithAdapterVersion:(int64_t)a3 uemVersion:(int64_t)a4;
-- (void)assignThemeNamed:(id)a3 adapterVersion:(int64_t)a4 uemVersion:(int64_t)a5 withConfidence:(id)a6;
+- (void)_ensureEmptyThemePlaceholderIsSet:(BOOL)set adapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion;
+- (void)assignEmptyThemesWithAdapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion;
+- (void)assignThemeNamed:(id)named adapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion withConfidence:(id)confidence;
 - (void)awakeFromFetch;
 - (void)awakeFromInsert;
 - (void)clearThemeAssignments;
 - (void)dealloc;
 - (void)delete;
 - (void)didTurnIntoFault;
-- (void)insertAssetData:(id)a3;
+- (void)insertAssetData:(id)data;
 - (void)prepareForDeletion;
 - (void)recalculateSharedAssetContainerCachedValues;
 - (void)registerForChanges;
-- (void)removeAssetData:(id)a3;
-- (void)removeAssetsObject:(id)a3;
-- (void)replaceObjectInAssets:(id)a3 withObject:(id)a4;
-- (void)reportSharedAssetContainerIncrementalChange:(id)a3 forAllAssetsCountKey:(id)a4;
-- (void)setApproximateLocation:(id)a3;
-- (void)setThemeAssignmentsToAdapterVersion:(int64_t)a3 uemVersion:(int64_t)a4;
+- (void)removeAssetData:(id)data;
+- (void)removeAssetsObject:(id)object;
+- (void)replaceObjectInAssets:(id)assets withObject:(id)object;
+- (void)reportSharedAssetContainerIncrementalChange:(id)change forAllAssetsCountKey:(id)key;
+- (void)setApproximateLocation:(id)location;
+- (void)setThemeAssignmentsToAdapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion;
 - (void)unregisterForChanges;
 - (void)willSave;
 - (void)willTurnIntoFault;
@@ -70,11 +70,11 @@
 
 - (BOOL)hasEmptyThemePlaceholder
 {
-  v3 = [(PLMoment *)self _fetchEmptyThemePlaceholderNode];
-  if (v3)
+  _fetchEmptyThemePlaceholderNode = [(PLMoment *)self _fetchEmptyThemePlaceholderNode];
+  if (_fetchEmptyThemePlaceholderNode)
   {
-    v4 = [(PLMoment *)self _edgesToEmptyThemePlaceholder];
-    v5 = [v4 count] != 0;
+    _edgesToEmptyThemePlaceholder = [(PLMoment *)self _edgesToEmptyThemePlaceholder];
+    v5 = [_edgesToEmptyThemePlaceholder count] != 0;
   }
 
   else
@@ -88,11 +88,11 @@
 - (NSArray)themeAssignments
 {
   v30 = *MEMORY[0x1E69E9840];
-  v2 = [(PLMoment *)self _fetchThemeAssignmentEdges];
-  v3 = v2;
-  if (v2)
+  _fetchThemeAssignmentEdges = [(PLMoment *)self _fetchThemeAssignmentEdges];
+  v3 = _fetchThemeAssignmentEdges;
+  if (_fetchThemeAssignmentEdges)
   {
-    v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+    v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(_fetchThemeAssignmentEdges, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -113,12 +113,12 @@
           }
 
           v5 = *(*(&v25 + 1) + 8 * i);
-          v24 = [v5 targetNode];
-          v6 = [[PLMomentTheme alloc] initWithNode:v24];
+          targetNode = [v5 targetNode];
+          v6 = [[PLMomentTheme alloc] initWithNode:targetNode];
           v7 = [v5 valueWithCode:4002];
-          v8 = [v7 integerValue];
+          integerValue = [v7 integerValue];
           v9 = [v5 valueWithCode:4003];
-          v10 = [v9 integerValue];
+          integerValue2 = [v9 integerValue];
           v11 = [v5 valueWithCode:4001];
           v12 = v11;
           if (v11)
@@ -134,8 +134,8 @@
           }
 
           v15 = [PLMomentThemeAssignment alloc];
-          v16 = [(PLMomentTheme *)v6 themeName];
-          v17 = [(PLMomentThemeAssignment *)v15 initWithThemeName:v16 adapterVersion:v8 uemVersion:v10 confidence:v14];
+          themeName = [(PLMomentTheme *)v6 themeName];
+          v17 = [(PLMomentThemeAssignment *)v15 initWithThemeName:themeName adapterVersion:integerValue uemVersion:integerValue2 confidence:v14];
 
           [v22 addObject:v17];
         }
@@ -160,13 +160,13 @@
 - (void)clearThemeAssignments
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(PLMoment *)self managedObjectContext];
-  v4 = [(PLMoment *)self _fetchThemeAssignmentEdges];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
+  _fetchThemeAssignmentEdges = [(PLMoment *)self _fetchThemeAssignmentEdges];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v5 = [_fetchThemeAssignmentEdges countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -177,28 +177,28 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_fetchThemeAssignmentEdges);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
         if (([v9 isDeleted] & 1) == 0)
         {
-          [v3 deleteObject:v9];
+          [managedObjectContext deleteObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v6 = [_fetchThemeAssignmentEdges countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(PLMoment *)self _edgesToEmptyThemePlaceholder];
+  _edgesToEmptyThemePlaceholder = [(PLMoment *)self _edgesToEmptyThemePlaceholder];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  v11 = [_edgesToEmptyThemePlaceholder countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -209,38 +209,38 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(_edgesToEmptyThemePlaceholder);
         }
 
         v15 = *(*(&v16 + 1) + 8 * j);
         if (([v15 isDeleted] & 1) == 0)
         {
-          [v3 deleteObject:v15];
+          [managedObjectContext deleteObject:v15];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v12 = [_edgesToEmptyThemePlaceholder countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)setThemeAssignmentsToAdapterVersion:(int64_t)a3 uemVersion:(int64_t)a4
+- (void)setThemeAssignmentsToAdapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(PLMoment *)self _fetchThemeAssignmentEdges];
-  [v7 addObjectsFromArray:v8];
+  array = [MEMORY[0x1E695DF70] array];
+  _fetchThemeAssignmentEdges = [(PLMoment *)self _fetchThemeAssignmentEdges];
+  [array addObjectsFromArray:_fetchThemeAssignmentEdges];
 
-  v9 = [(PLMoment *)self _edgesToEmptyThemePlaceholder];
-  [v7 addObjectsFromArray:v9];
+  _edgesToEmptyThemePlaceholder = [(PLMoment *)self _edgesToEmptyThemePlaceholder];
+  [array addObjectsFromArray:_edgesToEmptyThemePlaceholder];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v7;
+  v10 = array;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -257,9 +257,9 @@
 
         v15 = *(*(&v18 + 1) + 8 * i);
         v16 = [v15 valueWithCode:4002 createIfMissing:{0, v18}];
-        [v16 setIntegerValue:a3];
+        [v16 setIntegerValue:version];
         v17 = [v15 valueWithCode:4003 createIfMissing:0];
-        [v17 setIntegerValue:a4];
+        [v17 setIntegerValue:uemVersion];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -269,42 +269,42 @@
   }
 }
 
-- (void)assignEmptyThemesWithAdapterVersion:(int64_t)a3 uemVersion:(int64_t)a4
+- (void)assignEmptyThemesWithAdapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion
 {
   [(PLMoment *)self clearThemeAssignments];
 
-  [(PLMoment *)self _ensureEmptyThemePlaceholderIsSet:1 adapterVersion:a3 uemVersion:a4];
+  [(PLMoment *)self _ensureEmptyThemePlaceholderIsSet:1 adapterVersion:version uemVersion:uemVersion];
 }
 
-- (void)assignThemeNamed:(id)a3 adapterVersion:(int64_t)a4 uemVersion:(int64_t)a5 withConfidence:(id)a6
+- (void)assignThemeNamed:(id)named adapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion withConfidence:(id)confidence
 {
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  if (!v11)
+  namedCopy = named;
+  confidenceCopy = confidence;
+  if (!namedCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"themeName"}];
   }
 
-  v13 = [(PLMoment *)self managedObjectContext];
-  v14 = [PLMomentTheme fetchExistingOrInsertThemeWithName:v11 inContext:v13];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
+  v14 = [PLMomentTheme fetchExistingOrInsertThemeWithName:namedCopy inContext:managedObjectContext];
 
   if (v14)
   {
     v15 = [(PLMoment *)self _fetchOrInsertEdgeToTheme:v14];
     v16 = [v15 valueWithCode:4002 createIfMissing:1];
-    [v16 setIntegerValue:a4];
+    [v16 setIntegerValue:version];
     v17 = [v15 valueWithCode:4003 createIfMissing:1];
-    [v17 setIntegerValue:a5];
-    if (v12)
+    [v17 setIntegerValue:uemVersion];
+    if (confidenceCopy)
     {
       v18 = [v15 valueWithCode:4001 createIfMissing:1];
-      [v12 doubleValue];
+      [confidenceCopy doubleValue];
       [v18 setDoubleValue:?];
     }
 
-    [(PLMoment *)self _ensureEmptyThemePlaceholderIsSet:0 adapterVersion:a4 uemVersion:a5];
+    [(PLMoment *)self _ensureEmptyThemePlaceholderIsSet:0 adapterVersion:version uemVersion:uemVersion];
   }
 
   else
@@ -312,51 +312,51 @@
     v19 = PLBackendGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(PLMoment *)self objectID];
+      objectID = [(PLMoment *)self objectID];
       *buf = 138412546;
-      v23 = v11;
+      v23 = namedCopy;
       v24 = 2112;
-      v25 = v20;
+      v25 = objectID;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Unable to assign moment theme due to failure to lookup theme with name: %@, moment objectID: %@", buf, 0x16u);
     }
   }
 }
 
-- (id)_fetchOrInsertEdgeToTheme:(id)a3
+- (id)_fetchOrInsertEdgeToTheme:(id)theme
 {
-  v5 = a3;
-  if (!v5)
+  themeCopy = theme;
+  if (!themeCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"theme"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentTheme.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"theme"}];
   }
 
-  v6 = [(PLMoment *)self _fetchEdgeToTheme:v5];
+  v6 = [(PLMoment *)self _fetchEdgeToTheme:themeCopy];
   if (!v6)
   {
-    v7 = [(PLMoment *)self managedObjectContext];
-    v6 = [(PLManagedObject *)PLGraphEdge insertInManagedObjectContext:v7];
+    managedObjectContext = [(PLMoment *)self managedObjectContext];
+    v6 = [(PLManagedObject *)PLGraphEdge insertInManagedObjectContext:managedObjectContext];
 
     [v6 setSourceMoment:self];
-    v8 = [v5 sourceNode];
-    [v6 setTargetNode:v8];
+    sourceNode = [themeCopy sourceNode];
+    [v6 setTargetNode:sourceNode];
   }
 
   return v6;
 }
 
-- (id)_fetchEdgeToTheme:(id)a3
+- (id)_fetchEdgeToTheme:(id)theme
 {
-  v4 = a3;
-  v5 = [(PLMoment *)self edgesOut];
+  themeCopy = theme;
+  edgesOut = [(PLMoment *)self edgesOut];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__PLMoment_PLMomentThemeAdditions___fetchEdgeToTheme___block_invoke;
   v9[3] = &unk_1E756B3D0;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 _pl_firstObjectPassingTest:v9];
+  v10 = themeCopy;
+  v6 = themeCopy;
+  v7 = [edgesOut _pl_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -382,21 +382,21 @@ uint64_t __54__PLMoment_PLMomentThemeAdditions___fetchEdgeToTheme___block_invoke
 
 - (id)_fetchThemeAssignmentEdges
 {
-  v3 = [(PLMoment *)self managedObjectContext];
-  v4 = [PLMomentTheme momentThemeLabelInContext:v3];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
+  v4 = [PLMomentTheme momentThemeLabelInContext:managedObjectContext];
 
-  v5 = [(PLMoment *)self edgesOut];
+  edgesOut = [(PLMoment *)self edgesOut];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__PLMoment_PLMomentThemeAdditions___fetchThemeAssignmentEdges__block_invoke;
   v10[3] = &unk_1E756B3A8;
   v11 = v4;
   v6 = v4;
-  v7 = [v5 _pl_filter:v10];
+  v7 = [edgesOut _pl_filter:v10];
 
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 uint64_t __62__PLMoment_PLMomentThemeAdditions___fetchThemeAssignmentEdges__block_invoke(uint64_t a1, void *a2)
@@ -417,35 +417,35 @@ uint64_t __62__PLMoment_PLMomentThemeAdditions___fetchThemeAssignmentEdges__bloc
   return v4;
 }
 
-- (void)_ensureEmptyThemePlaceholderIsSet:(BOOL)a3 adapterVersion:(int64_t)a4 uemVersion:(int64_t)a5
+- (void)_ensureEmptyThemePlaceholderIsSet:(BOOL)set adapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion
 {
-  v7 = a3;
+  setCopy = set;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = [(PLMoment *)self managedObjectContext];
-  v10 = [(PLMoment *)self _edgesToEmptyThemePlaceholder];
-  v11 = v10;
-  if (v7)
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
+  _edgesToEmptyThemePlaceholder = [(PLMoment *)self _edgesToEmptyThemePlaceholder];
+  v11 = _edgesToEmptyThemePlaceholder;
+  if (setCopy)
   {
-    v12 = [(PLMoment *)self _fetchOrCreateEmptyThemePlaceholderNode];
+    _fetchOrCreateEmptyThemePlaceholderNode = [(PLMoment *)self _fetchOrCreateEmptyThemePlaceholderNode];
     if ([v11 count])
     {
-      v13 = [v11 firstObject];
+      firstObject = [v11 firstObject];
     }
 
     else
     {
-      v13 = [(PLManagedObject *)PLGraphEdge insertInManagedObjectContext:v9];
-      [v13 setSourceMoment:self];
-      [v13 setTargetNode:v12];
+      firstObject = [(PLManagedObject *)PLGraphEdge insertInManagedObjectContext:managedObjectContext];
+      [firstObject setSourceMoment:self];
+      [firstObject setTargetNode:_fetchOrCreateEmptyThemePlaceholderNode];
     }
 
-    v19 = [v13 valueWithCode:4002 createIfMissing:1];
-    [v19 setIntegerValue:a4];
-    v20 = [v13 valueWithCode:4003 createIfMissing:1];
-    [v20 setIntegerValue:a5];
+    v19 = [firstObject valueWithCode:4002 createIfMissing:1];
+    [v19 setIntegerValue:version];
+    v20 = [firstObject valueWithCode:4003 createIfMissing:1];
+    [v20 setIntegerValue:uemVersion];
   }
 
-  else if ([v10 count])
+  else if ([_edgesToEmptyThemePlaceholder count])
   {
     v23 = 0u;
     v24 = 0u;
@@ -467,7 +467,7 @@ uint64_t __62__PLMoment_PLMomentThemeAdditions___fetchThemeAssignmentEdges__bloc
             objc_enumerationMutation(v14);
           }
 
-          [v9 deleteObject:{*(*(&v21 + 1) + 8 * v18++), v21}];
+          [managedObjectContext deleteObject:{*(*(&v21 + 1) + 8 * v18++), v21}];
         }
 
         while (v16 != v18);
@@ -481,21 +481,21 @@ uint64_t __62__PLMoment_PLMomentThemeAdditions___fetchThemeAssignmentEdges__bloc
 
 - (id)_edgesToEmptyThemePlaceholder
 {
-  v3 = [(PLMoment *)self managedObjectContext];
-  v4 = [PLMomentTheme noThemesLabelInContext:v3];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
+  v4 = [PLMomentTheme noThemesLabelInContext:managedObjectContext];
 
-  v5 = [(PLMoment *)self edgesOut];
+  edgesOut = [(PLMoment *)self edgesOut];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__PLMoment_PLMomentThemeAdditions___edgesToEmptyThemePlaceholder__block_invoke;
   v10[3] = &unk_1E756B3A8;
   v11 = v4;
   v6 = v4;
-  v7 = [v5 _pl_filter:v10];
+  v7 = [edgesOut _pl_filter:v10];
 
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 uint64_t __65__PLMoment_PLMomentThemeAdditions___edgesToEmptyThemePlaceholder__block_invoke(uint64_t a1, void *a2)
@@ -509,34 +509,34 @@ uint64_t __65__PLMoment_PLMomentThemeAdditions___edgesToEmptyThemePlaceholder__b
 
 - (id)_fetchOrCreateEmptyThemePlaceholderNode
 {
-  v3 = [(PLMoment *)self managedObjectContext];
-  v4 = [PLMomentTheme noThemesLabelInContext:v3];
-  v5 = [(PLMoment *)self _fetchEmptyThemePlaceholderNode];
-  if (!v5)
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
+  v4 = [PLMomentTheme noThemesLabelInContext:managedObjectContext];
+  _fetchEmptyThemePlaceholderNode = [(PLMoment *)self _fetchEmptyThemePlaceholderNode];
+  if (!_fetchEmptyThemePlaceholderNode)
   {
-    v5 = [PLGraphNode insertGraphNodeInContext:v3 withPrimaryLabel:v4];
+    _fetchEmptyThemePlaceholderNode = [PLGraphNode insertGraphNodeInContext:managedObjectContext withPrimaryLabel:v4];
   }
 
-  return v5;
+  return _fetchEmptyThemePlaceholderNode;
 }
 
 - (id)_fetchEmptyThemePlaceholderNode
 {
-  v3 = [(PLMoment *)self managedObjectContext];
-  v4 = [PLMomentTheme noThemesLabelInContext:v3];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
+  v4 = [PLMomentTheme noThemesLabelInContext:managedObjectContext];
 
-  v5 = [(PLMoment *)self edgesOut];
+  edgesOut = [(PLMoment *)self edgesOut];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__PLMoment_PLMomentThemeAdditions___fetchEmptyThemePlaceholderNode__block_invoke;
   v10[3] = &unk_1E756B3A8;
   v11 = v4;
   v6 = v4;
-  v7 = [v5 _pl_firstObjectPassingTest:v10];
+  v7 = [edgesOut _pl_firstObjectPassingTest:v10];
 
-  v8 = [v7 targetNode];
+  targetNode = [v7 targetNode];
 
-  return v8;
+  return targetNode;
 }
 
 uint64_t __67__PLMoment_PLMomentThemeAdditions___fetchEmptyThemePlaceholderNode__block_invoke(uint64_t a1, void *a2)
@@ -548,24 +548,24 @@ uint64_t __67__PLMoment_PLMomentThemeAdditions___fetchEmptyThemePlaceholderNode_
   return v5;
 }
 
-+ (id)fetchMomentIDsNotAnalyzedForThemesInContext:(id)a3 adapterVersion:(int64_t)a4 uemVersion:(int64_t)a5
++ (id)fetchMomentIDsNotAnalyzedForThemesInContext:(id)context adapterVersion:(int64_t)version uemVersion:(int64_t)uemVersion
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  contextCopy = context;
   v8 = [MEMORY[0x1E695DFA8] set];
   v9 = +[PLMoment fetchRequest];
   [v9 setResultType:1];
   v50 = 0;
-  v10 = [v7 executeFetchRequest:v9 error:&v50];
+  v10 = [contextCopy executeFetchRequest:v9 error:&v50];
   v11 = v50;
   [v8 addObjectsFromArray:v10];
 
   if (v8)
   {
-    v38 = a4;
-    v39 = a5;
-    v12 = [PLMomentTheme momentThemeLabelInContext:v7];
-    v13 = [PLMomentTheme noThemesLabelInContext:v7];
+    versionCopy = version;
+    uemVersionCopy = uemVersion;
+    v12 = [PLMomentTheme momentThemeLabelInContext:contextCopy];
+    v13 = [PLMomentTheme noThemesLabelInContext:contextCopy];
     v14 = +[PLGraphEdge fetchRequest];
     v37 = v13;
     v40 = v12;
@@ -581,10 +581,10 @@ uint64_t __67__PLMoment_PLMomentThemeAdditions___fetchEmptyThemePlaceholderNode_
     [v14 setRelationshipKeyPathsForPrefetching:v17];
 
     v49 = v11;
-    v18 = [v7 executeFetchRequest:v14 error:&v49];
+    v18 = [contextCopy executeFetchRequest:v14 error:&v49];
     v19 = v49;
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v35 = v18;
     v36 = v19;
     if (v18)
@@ -599,7 +599,7 @@ uint64_t __67__PLMoment_PLMomentThemeAdditions___fetchEmptyThemePlaceholderNode_
       if (v22)
       {
         v23 = v22;
-        v32 = v7;
+        v32 = contextCopy;
         v33 = v8;
         v24 = *v46;
         do
@@ -612,14 +612,14 @@ uint64_t __67__PLMoment_PLMomentThemeAdditions___fetchEmptyThemePlaceholderNode_
             }
 
             v26 = *(*(&v45 + 1) + 8 * i);
-            v27 = [v26 sourceMoment];
-            v28 = [v27 objectID];
+            sourceMoment = [v26 sourceMoment];
+            objectID = [sourceMoment objectID];
 
-            v29 = [v20 objectForKeyedSubscript:v28];
+            v29 = [dictionary objectForKeyedSubscript:objectID];
             if (!v29)
             {
               v29 = [MEMORY[0x1E695DFA8] set];
-              [v20 setObject:v29 forKeyedSubscript:v28];
+              [dictionary setObject:v29 forKeyedSubscript:objectID];
             }
 
             [v29 addObject:v26];
@@ -629,7 +629,7 @@ uint64_t __67__PLMoment_PLMomentThemeAdditions___fetchEmptyThemePlaceholderNode_
         }
 
         while (v23);
-        v7 = v32;
+        contextCopy = v32;
         v8 = v33;
       }
 
@@ -653,10 +653,10 @@ uint64_t __67__PLMoment_PLMomentThemeAdditions___fetchEmptyThemePlaceholderNode_
     v41[1] = 3221225472;
     v41[2] = __106__PLMoment_PLMomentThemeAdditions__fetchMomentIDsNotAnalyzedForThemesInContext_adapterVersion_uemVersion___block_invoke;
     v41[3] = &unk_1E756B3F8;
-    v43 = v38;
-    v44 = v39;
+    v43 = versionCopy;
+    v44 = uemVersionCopy;
     v42 = v8;
-    [v20 enumerateKeysAndObjectsUsingBlock:v41];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v41];
 
     v11 = v36;
   }
@@ -742,41 +742,41 @@ LABEL_16:
 LABEL_17:
 }
 
-+ (void)enumerateAssetUUIDsForSearchIndexingWithMomentUUID:(id)a3 managedObjectContext:(id)a4 libraryIdentifier:(int64_t)a5 assetUUIDHandler:(id)a6
++ (void)enumerateAssetUUIDsForSearchIndexingWithMomentUUID:(id)d managedObjectContext:(id)context libraryIdentifier:(int64_t)identifier assetUUIDHandler:(id)handler
 {
   v64 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 length];
-  if (v11 && v10 && v12)
+  dCopy = d;
+  contextCopy = context;
+  handlerCopy = handler;
+  v12 = [dCopy length];
+  if (handlerCopy && contextCopy && v12)
   {
     v13 = +[PLMoment fetchRequest];
     [v13 setResultType:1];
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"uuid", v9];
-    [v13 setPredicate:v14];
+    dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"uuid", dCopy];
+    [v13 setPredicate:dCopy];
 
     v58 = 0;
-    v15 = [v10 executeFetchRequest:v13 error:&v58];
+    v15 = [contextCopy executeFetchRequest:v13 error:&v58];
     v16 = v58;
-    v17 = [v15 firstObject];
-    v18 = v17;
-    if (v17)
+    firstObject = [v15 firstObject];
+    v18 = firstObject;
+    if (firstObject)
     {
-      v43 = a5;
-      v44 = v17;
+      identifierCopy = identifier;
+      v44 = firstObject;
       v45 = v16;
       v46 = v15;
       v47 = v13;
-      v48 = v11;
-      v49 = v10;
-      v19 = [v10 deletedObjects];
+      v48 = handlerCopy;
+      v49 = contextCopy;
+      deletedObjects = [contextCopy deletedObjects];
       v50 = [MEMORY[0x1E695DFA8] set];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v20 = v19;
+      v20 = deletedObjects;
       v21 = [v20 countByEnumeratingWithState:&v54 objects:v61 count:16];
       if (v21)
       {
@@ -792,18 +792,18 @@ LABEL_17:
             }
 
             v25 = *(*(&v54 + 1) + 8 * i);
-            v26 = [v25 entity];
-            v27 = [v26 name];
+            entity = [v25 entity];
+            name = [entity name];
             v28 = +[PLManagedAsset entityName];
-            v29 = [v27 isEqualToString:v28];
+            v29 = [name isEqualToString:v28];
 
             if (v29)
             {
               v30 = v25;
-              v31 = [v30 uuid];
-              if (v31)
+              uuid = [v30 uuid];
+              if (uuid)
               {
-                [v50 addObject:v31];
+                [v50 addObject:uuid];
               }
             }
           }
@@ -816,7 +816,7 @@ LABEL_17:
 
       v18 = v44;
       v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K == %@", @"moment", v44];
-      v33 = [PLManagedAsset isEligibleForSearchIndexingPredicateForLibraryIdentifier:v43];
+      v33 = [PLManagedAsset isEligibleForSearchIndexingPredicateForLibraryIdentifier:identifierCopy];
       v34 = MEMORY[0x1E695D5E0];
       v35 = +[PLManagedAsset entityName];
       v36 = [v34 fetchRequestWithEntityName:v35];
@@ -839,10 +839,10 @@ LABEL_17:
       v51[2] = __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMomentUUID_managedObjectContext_libraryIdentifier_assetUUIDHandler___block_invoke;
       v51[3] = &unk_1E756BF90;
       v52 = v50;
-      v11 = v48;
+      handlerCopy = v48;
       v53 = v48;
       v41 = v50;
-      v10 = v49;
+      contextCopy = v49;
       v42 = [v49 enumerateObjectsFromFetchRequest:v36 count:0 usingDefaultBatchSizeWithBlock:v51];
 
       v15 = v46;
@@ -856,7 +856,7 @@ LABEL_17:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v63 = v9;
+        v63 = dCopy;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Cannot find moment with uuid: %{public}@", buf, 0xCu);
       }
     }
@@ -875,17 +875,17 @@ void __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMom
 - (id)edgesIn
 {
   v2 = [PLGraphNode nodeForActingObject:self createIfMissing:0];
-  v3 = [v2 edgesIn];
+  edgesIn = [v2 edgesIn];
 
-  return v3;
+  return edgesIn;
 }
 
 - (id)edgesOut
 {
   v2 = [PLGraphNode nodeForActingObject:self createIfMissing:0];
-  v3 = [v2 edgesOut];
+  edgesOut = [v2 edgesOut];
 
-  return v3;
+  return edgesOut;
 }
 
 - (CLLocationCoordinate2D)pl_coordinate
@@ -920,16 +920,16 @@ void __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMom
 
 - (NSDate)localEndDate
 {
-  v3 = [(PLMoment *)self endDate];
-  v4 = [v3 dateByAddingTimeInterval:{-[PLMoment timeZoneOffset](self, "timeZoneOffset")}];
+  endDate = [(PLMoment *)self endDate];
+  v4 = [endDate dateByAddingTimeInterval:{-[PLMoment timeZoneOffset](self, "timeZoneOffset")}];
 
   return v4;
 }
 
 - (NSDate)localStartDate
 {
-  v3 = [(PLMoment *)self startDate];
-  v4 = [v3 dateByAddingTimeInterval:{-[PLMoment timeZoneOffset](self, "timeZoneOffset")}];
+  startDate = [(PLMoment *)self startDate];
+  v4 = [startDate dateByAddingTimeInterval:{-[PLMoment timeZoneOffset](self, "timeZoneOffset")}];
 
   return v4;
 }
@@ -944,9 +944,9 @@ void __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMom
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"moment", self];
   [v5 setPredicate:v6];
 
-  v7 = [(PLMoment *)self managedObjectContext];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
   v12 = 0;
-  v8 = [v7 countForFetchRequest:v5 error:&v12];
+  v8 = [managedObjectContext countForFetchRequest:v5 error:&v12];
   v9 = v12;
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -980,9 +980,9 @@ void __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMom
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   [v5 setRelationshipKeyPathsForPrefetching:v7];
 
-  v8 = [(PLMoment *)self managedObjectContext];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
   v16 = 0;
-  v9 = [v8 executeFetchRequest:v5 error:&v16];
+  v9 = [managedObjectContext executeFetchRequest:v5 error:&v16];
   v10 = v16;
   if (!v9)
   {
@@ -999,23 +999,23 @@ void __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMom
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v13 = [v9 count];
-    v14 = [(PLManagedObject *)self shortObjectIDURI];
+    shortObjectIDURI = [(PLManagedObject *)self shortObjectIDURI];
     *buf = 134218242;
     v18 = v13;
     v19 = 2112;
-    v20 = v14;
+    v20 = shortObjectIDURI;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "Batch fetched %lu assets from moment %@", buf, 0x16u);
   }
 
   return v9;
 }
 
-- (void)removeAssetsObject:(id)a3
+- (void)removeAssetsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(PLMoment *)self willChangeValueForKey:@"assets"];
-  v5 = [(PLMoment *)self primitiveAssets];
-  [v5 removeObject:v4];
+  primitiveAssets = [(PLMoment *)self primitiveAssets];
+  [primitiveAssets removeObject:objectCopy];
 
   [(PLMoment *)self didChangeValueForKey:@"assets"];
   [(PLMoment *)self willChangeValueForKey:@"sharingComposition"];
@@ -1024,16 +1024,16 @@ void __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMom
   [(PLMoment *)self didChangeValueForKey:@"sharingComposition"];
 }
 
-- (void)replaceObjectInAssets:(id)a3 withObject:(id)a4
+- (void)replaceObjectInAssets:(id)assets withObject:(id)object
 {
-  v6 = a4;
-  v7 = a3;
+  objectCopy = object;
+  assetsCopy = assets;
   [(PLMoment *)self willChangeValueForKey:@"assets"];
-  v8 = [(PLMoment *)self primitiveAssets];
-  [v8 removeObject:v7];
+  primitiveAssets = [(PLMoment *)self primitiveAssets];
+  [primitiveAssets removeObject:assetsCopy];
 
-  v9 = [(PLMoment *)self primitiveAssets];
-  [v9 addObject:v6];
+  primitiveAssets2 = [(PLMoment *)self primitiveAssets];
+  [primitiveAssets2 addObject:objectCopy];
 
   [(PLMoment *)self didChangeValueForKey:@"assets"];
 }
@@ -1054,27 +1054,27 @@ void __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMom
   v12.receiver = self;
   v12.super_class = PLMoment;
   [(PLManagedObject *)&v12 willSave];
-  v3 = [(PLMoment *)self managedObjectContext];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
   if ([(PLMoment *)self isDeleted]&& ((PLIsAssetsd() & 1) != 0 || MEMORY[0x19EAEE520]()))
   {
-    v4 = [(PLMoment *)self managedObjectContext];
-    [PLGraphNode cleanupDanglingNodeReferencesToDeletedActorsInContext:v4];
+    managedObjectContext2 = [(PLMoment *)self managedObjectContext];
+    [PLGraphNode cleanupDanglingNodeReferencesToDeletedActorsInContext:managedObjectContext2];
   }
 
-  v5 = [(PLMoment *)self changedValues];
+  changedValues = [(PLMoment *)self changedValues];
   v6 = PLPlatformMomentsSupported();
   if (v6)
   {
     if (([(PLMoment *)self isDeleted]& 1) == 0)
     {
-      if ([PLMomentGenerationDataManager isManagedObjectContextMomentarilyBlessed:v3])
+      if ([PLMomentGenerationDataManager isManagedObjectContextMomentarilyBlessed:managedObjectContext])
       {
-        v7 = [v5 objectForKeyedSubscript:@"modificationDate"];
+        v7 = [changedValues objectForKeyedSubscript:@"modificationDate"];
 
         if (!v7)
         {
-          v8 = [MEMORY[0x1E695DF00] date];
-          [(PLMoment *)self setModificationDate:v8];
+          date = [MEMORY[0x1E695DF00] date];
+          [(PLMoment *)self setModificationDate:date];
         }
       }
     }
@@ -1090,20 +1090,20 @@ void __135__PLMoment_SearchIndexing__enumerateAssetUUIDsForSearchIndexingWithMom
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v5 objectForKeyedSubscript:@"processedLocation"];
+      v9 = [changedValues objectForKeyedSubscript:@"processedLocation"];
       if (v9)
       {
 
 LABEL_17:
-        v10 = [v3 delayedSaveActions];
-        [v10 recordMomentForHighlightUpdate:self];
+        delayedSaveActions = [managedObjectContext delayedSaveActions];
+        [delayedSaveActions recordMomentForHighlightUpdate:self];
 
         goto LABEL_20;
       }
 
       if (+[PLAggregationProcessor isEnabled])
       {
-        v11 = [v5 objectForKeyedSubscript:@"aggregationScore"];
+        v11 = [changedValues objectForKeyedSubscript:@"aggregationScore"];
 
         if (v11)
         {
@@ -1116,36 +1116,36 @@ LABEL_17:
 LABEL_20:
 }
 
-- (void)insertAssetData:(id)a3
+- (void)insertAssetData:(id)data
 {
-  v5 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v5 = [MEMORY[0x1E695DFD8] setWithObject:data];
   [(PLMoment *)self willChangeValueForKey:@"assets" withSetMutation:1 usingObjects:v5];
-  v4 = [(PLMoment *)self primitiveAssets];
-  [v4 minusSet:v5];
+  primitiveAssets = [(PLMoment *)self primitiveAssets];
+  [primitiveAssets minusSet:v5];
 
   [(PLMoment *)self didChangeValueForKey:@"assets" withSetMutation:2 usingObjects:v5];
 }
 
-- (void)removeAssetData:(id)a3
+- (void)removeAssetData:(id)data
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [v4 setWithObject:v5];
+  dataCopy = data;
+  v6 = [v4 setWithObject:dataCopy];
   [(PLMoment *)self willChangeValueForKey:@"assets" withSetMutation:2 usingObjects:v6];
 
-  v7 = [(PLMoment *)self primitiveAssets];
-  v8 = [MEMORY[0x1E695DFD8] setWithObject:v5];
-  [v7 minusSet:v8];
+  primitiveAssets = [(PLMoment *)self primitiveAssets];
+  v8 = [MEMORY[0x1E695DFD8] setWithObject:dataCopy];
+  [primitiveAssets minusSet:v8];
 
-  v9 = [MEMORY[0x1E695DFD8] setWithObject:v5];
+  v9 = [MEMORY[0x1E695DFD8] setWithObject:dataCopy];
 
   [(PLMoment *)self didChangeValueForKey:@"assets" withSetMutation:2 usingObjects:v9];
 }
 
 - (void)delete
 {
-  v3 = [(PLMoment *)self managedObjectContext];
-  [v3 deleteObject:self];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
+  [managedObjectContext deleteObject:self];
 }
 
 - (void)prepareForDeletion
@@ -1166,8 +1166,8 @@ LABEL_20:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(PLMoment *)self assets];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  assets = [(PLMoment *)self assets];
+  v3 = [assets countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1180,7 +1180,7 @@ LABEL_3:
     {
       if (*v15 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(assets);
       }
 
       v9 = *(*(&v14 + 1) + 8 * v8);
@@ -1200,7 +1200,7 @@ LABEL_3:
 
       if (v4 == ++v8)
       {
-        v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v4 = [assets countByEnumeratingWithState:&v14 objects:v18 count:16];
         v12 = v5;
         if (v4)
         {
@@ -1251,14 +1251,14 @@ LABEL_3:
   }
 }
 
-- (void)setApproximateLocation:(id)a3
+- (void)setApproximateLocation:(id)location
 {
-  v8 = a3;
-  objc_storeStrong(&self->_cachedApproximateLocation, a3);
+  locationCopy = location;
+  objc_storeStrong(&self->_cachedApproximateLocation, location);
   self->_didCacheApproximateLocation = 1;
-  if (v8)
+  if (locationCopy)
   {
-    [v8 coordinate];
+    [locationCopy coordinate];
     v7 = v6;
   }
 
@@ -1305,9 +1305,9 @@ LABEL_3:
 {
   self->_waitingForSharedAssetContainerRecalc = 0;
   [objc_opt_class() _recalculateAssetCountsForMoment:self];
-  v3 = [(PLMoment *)self assetsCount];
-  v4 = [(PLMoment *)self assetsCountShared];
-  if (v3 == v4)
+  assetsCount = [(PLMoment *)self assetsCount];
+  assetsCountShared = [(PLMoment *)self assetsCountShared];
+  if (assetsCount == assetsCountShared)
   {
     v5 = 1;
   }
@@ -1317,7 +1317,7 @@ LABEL_3:
     v5 = 2;
   }
 
-  if (v4)
+  if (assetsCountShared)
   {
     v6 = v5;
   }
@@ -1331,17 +1331,17 @@ LABEL_3:
   [(PLManagedObject *)self pl_safeSetValue:v7 forKey:@"sharingComposition" valueDidChangeHandler:0];
 }
 
-- (void)reportSharedAssetContainerIncrementalChange:(id)a3 forAllAssetsCountKey:(id)a4
+- (void)reportSharedAssetContainerIncrementalChange:(id)change forAllAssetsCountKey:(id)key
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 highlightContainerChanges];
-  v8 = [v7 count];
+  changeCopy = change;
+  highlightContainerChanges = [changeCopy highlightContainerChanges];
+  v8 = [highlightContainerChanges count];
 
   if (v8)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLMoment.m" lineNumber:271 description:@"unexpected change type."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMoment.m" lineNumber:271 description:@"unexpected change type."];
   }
 
   if (!self->_waitingForSharedAssetContainerRecalc)
@@ -1351,9 +1351,9 @@ LABEL_3:
       v9 = PLMomentsGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [(PLMoment *)self objectID];
+        objectID = [(PLMoment *)self objectID];
         v25 = 138412290;
-        v26 = v10;
+        v26 = objectID;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEBUG, "Marking moment: %@ as waiting for recalc...", &v25, 0xCu);
       }
 
@@ -1369,19 +1369,19 @@ LABEL_3:
     v11 = PLMomentsGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v6 debugDescription];
-      v13 = [(PLMoment *)self objectID];
+      v12 = [changeCopy debugDescription];
+      objectID2 = [(PLMoment *)self objectID];
       v25 = 138412546;
       v26 = v12;
       v27 = 2112;
-      v28 = v13;
+      v28 = objectID2;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "Processing incremental change: %@ for moment: %@...", &v25, 0x16u);
     }
 
-    v14 = [v6 collectionChangeType];
-    if ((v14 - 1) < 2)
+    collectionChangeType = [changeCopy collectionChangeType];
+    if ((collectionChangeType - 1) < 2)
     {
-      if ([v6 collectionChangeType] == 1)
+      if ([changeCopy collectionChangeType] == 1)
       {
         v15 = 1;
       }
@@ -1394,7 +1394,7 @@ LABEL_3:
       v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[PLMoment cachedCount](self, "cachedCount") + v15}];
       [(PLManagedObject *)self pl_safeSetValue:v16 forKey:@"cachedCount" valueDidChangeHandler:0];
 
-      if ([v6 sharingChange] != 1)
+      if ([changeCopy sharingChange] != 1)
       {
         goto LABEL_23;
       }
@@ -1402,16 +1402,16 @@ LABEL_3:
       goto LABEL_22;
     }
 
-    if (!v14)
+    if (!collectionChangeType)
     {
-      v17 = [v6 sharingChange];
-      if (v17 == 1)
+      sharingChange = [changeCopy sharingChange];
+      if (sharingChange == 1)
       {
         v15 = 1;
         goto LABEL_22;
       }
 
-      if (v17 == 2)
+      if (sharingChange == 2)
       {
         v15 = -1;
 LABEL_22:
@@ -1421,9 +1421,9 @@ LABEL_22:
     }
 
 LABEL_23:
-    v19 = [(PLMoment *)self assetsCount];
-    v20 = [(PLMoment *)self assetsCountShared];
-    if (v19 == v20)
+    assetsCount = [(PLMoment *)self assetsCount];
+    assetsCountShared = [(PLMoment *)self assetsCountShared];
+    if (assetsCount == assetsCountShared)
     {
       v21 = 1;
     }
@@ -1433,7 +1433,7 @@ LABEL_23:
       v21 = 2;
     }
 
-    if (v20)
+    if (assetsCountShared)
     {
       v22 = v21;
     }
@@ -1450,13 +1450,13 @@ LABEL_23:
 LABEL_30:
 }
 
-- (int)_cachedSharedAssetContainerValueWithRecalcIfNeededForKey:(id)a3
+- (int)_cachedSharedAssetContainerValueWithRecalcIfNeededForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLMoment.m" lineNumber:241 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMoment.m" lineNumber:241 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
   if (self->_waitingForSharedAssetContainerRecalc)
@@ -1464,12 +1464,12 @@ LABEL_30:
     [(PLMoment *)self recalculateSharedAssetContainerCachedValues];
   }
 
-  [(PLMoment *)self willAccessValueForKey:v5];
-  v6 = [(PLMoment *)self primitiveValueForKey:v5];
-  v7 = [v6 intValue];
+  [(PLMoment *)self willAccessValueForKey:keyCopy];
+  v6 = [(PLMoment *)self primitiveValueForKey:keyCopy];
+  intValue = [v6 intValue];
 
-  [(PLMoment *)self didAccessValueForKey:v5];
-  return v7;
+  [(PLMoment *)self didAccessValueForKey:keyCopy];
+  return intValue;
 }
 
 - (void)dealloc
@@ -1504,29 +1504,29 @@ LABEL_30:
   v4.receiver = self;
   v4.super_class = PLMoment;
   [(PLMoment *)&v4 awakeFromInsert];
-  v3 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLMoment *)self setUuid:v3];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLMoment *)self setUuid:uUIDString];
 
   [(PLMoment *)self registerForChanges];
 }
 
-- (unint64_t)countForAssetsOfKind:(signed __int16)a3
+- (unint64_t)countForAssetsOfKind:(signed __int16)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(PLMoment *)self managedObjectContext];
+  managedObjectContext = [(PLMoment *)self managedObjectContext];
   v6 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-  v7 = [(PLManagedObject *)PLManagedAsset entityInManagedObjectContext:v5];
+  v7 = [(PLManagedObject *)PLManagedAsset entityInManagedObjectContext:managedObjectContext];
   if (v7)
   {
     [v6 setEntity:v7];
     v8 = MEMORY[0x1E696AE18];
-    v9 = [(PLMoment *)self objectID];
-    v10 = [v8 predicateWithFormat:@"kind = %d AND moment = %@", v3, v9];
+    objectID = [(PLMoment *)self objectID];
+    v10 = [v8 predicateWithFormat:@"kind = %d AND moment = %@", kindCopy, objectID];
     [v6 setPredicate:v10];
 
     v15 = 0;
-    v11 = [v5 countForFetchRequest:v6 error:&v15];
+    v11 = [managedObjectContext countForFetchRequest:v6 error:&v15];
     v12 = v15;
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1534,7 +1534,7 @@ LABEL_30:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109378;
-        v17 = v3;
+        v17 = kindCopy;
         v18 = 2112;
         v19 = v12;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "_countForAssetsOfKind:%d fetch request failed: %@", buf, 0x12u);
@@ -1565,16 +1565,16 @@ LABEL_30:
   return v5;
 }
 
-+ (id)momentIDsWithPersonIDs:(id)a3 inContext:(id)a4
++ (id)momentIDsWithPersonIDs:(id)ds inContext:(id)context
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  contextCopy = context;
+  if ([dsCopy count])
   {
     v7 = +[PLGraphEdge fetchRequest];
-    v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil AND %K IN %@", @"sourceAsset", @"targetPerson", v5];
-    [v7 setPredicate:v8];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != nil AND %K IN %@", @"sourceAsset", @"targetPerson", dsCopy];
+    [v7 setPredicate:dsCopy];
 
     v18[0] = @"sourceAsset.moment";
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -1583,7 +1583,7 @@ LABEL_30:
     [v7 setReturnsDistinctResults:1];
     [v7 setResultType:2];
     v15 = 0;
-    v10 = [v6 executeFetchRequest:v7 error:&v15];
+    v10 = [contextCopy executeFetchRequest:v7 error:&v15];
     v11 = v15;
     if (v10)
     {
@@ -1613,11 +1613,11 @@ LABEL_30:
   return v13;
 }
 
-+ (void)_recalculateAssetCountsForMoment:(id)a3
++ (void)_recalculateAssetCountsForMoment:(id)moment
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasFaultForRelationshipNamed:@"assets"])
+  momentCopy = moment;
+  if ([momentCopy hasFaultForRelationshipNamed:@"assets"])
   {
     v5 = MEMORY[0x1E695D5E0];
     v6 = +[PLManagedAsset entityName];
@@ -1629,8 +1629,8 @@ LABEL_30:
 
     [v7 setIncludesPendingChanges:1];
     v9 = MEMORY[0x1E696ABC8];
-    v10 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-    v63 = v10;
+    expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+    v63 = expressionForEvaluatedObject;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
     v12 = [v9 expressionForFunction:@"count:" arguments:v11];
 
@@ -1644,12 +1644,12 @@ LABEL_30:
     [v7 setPropertiesToFetch:v14];
 
     [v7 setResultType:2];
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"moment", v4];
-    [v7 setPredicate:v15];
+    momentCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"moment", momentCopy];
+    [v7 setPredicate:momentCopy];
 
-    v16 = [v4 managedObjectContext];
+    managedObjectContext = [momentCopy managedObjectContext];
     v53 = 0;
-    v17 = [v16 executeFetchRequest:v7 error:&v53];
+    v17 = [managedObjectContext executeFetchRequest:v7 error:&v53];
     v18 = v53;
 
     if (v17)
@@ -1663,7 +1663,7 @@ LABEL_30:
       if (v20)
       {
         v21 = v20;
-        v44 = v4;
+        v44 = momentCopy;
         v40 = v18;
         v41 = v17;
         v42 = v13;
@@ -1682,13 +1682,13 @@ LABEL_30:
 
             v26 = *(*(&v49 + 1) + 8 * i);
             v27 = [v26 objectForKeyedSubscript:@"count"];
-            v28 = [v27 intValue];
+            intValue = [v27 intValue];
 
             v29 = [v26 objectForKeyedSubscript:@"libraryScope"];
 
             if (v29)
             {
-              v30 = v28;
+              v30 = intValue;
             }
 
             else
@@ -1699,7 +1699,7 @@ LABEL_30:
             v22 += v30;
             if (!v29)
             {
-              v23 = v28;
+              v23 = intValue;
             }
           }
 
@@ -1708,7 +1708,7 @@ LABEL_30:
 
         while (v21);
         v7 = v43;
-        v4 = v44;
+        momentCopy = v44;
         v13 = v42;
         v18 = v40;
         v17 = v41;
@@ -1731,7 +1731,7 @@ LABEL_20:
         *buf = 138412802;
         v56 = v7;
         v57 = 2112;
-        v58 = a1;
+        selfCopy = self;
         v59 = 2112;
         v60 = v18;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Error executing count of collections fetch %@ for %@: %@", buf, 0x20u);
@@ -1749,8 +1749,8 @@ LABEL_21:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v31 = [v4 assets];
-  v32 = [v31 countByEnumeratingWithState:&v45 objects:v54 count:16];
+  assets = [momentCopy assets];
+  v32 = [assets countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (v32)
   {
     v33 = v32;
@@ -1762,7 +1762,7 @@ LABEL_21:
       {
         if (*v46 != v35)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(assets);
         }
 
         v37 = *(*(&v45 + 1) + 8 * j);
@@ -1773,7 +1773,7 @@ LABEL_21:
         }
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v45 objects:v54 count:16];
+      v33 = [assets countByEnumeratingWithState:&v45 objects:v54 count:16];
     }
 
     while (v33);
@@ -1787,17 +1787,17 @@ LABEL_21:
   v23 = v34 - v22;
 LABEL_33:
   v38 = [MEMORY[0x1E696AD98] numberWithInt:v23 + v22];
-  [v4 pl_safeSetValue:v38 forKey:@"cachedCount" valueDidChangeHandler:0];
+  [momentCopy pl_safeSetValue:v38 forKey:@"cachedCount" valueDidChangeHandler:0];
 
   v39 = [MEMORY[0x1E696AD98] numberWithInt:v22];
-  [v4 pl_safeSetValue:v39 forKey:@"cachedCountShared" valueDidChangeHandler:0];
+  [momentCopy pl_safeSetValue:v39 forKey:@"cachedCountShared" valueDidChangeHandler:0];
 }
 
-+ (id)allAssetsIncludedInMomentsInLibrary:(id)a3
++ (id)allAssetsIncludedInMomentsInLibrary:(id)library
 {
-  v4 = [a3 managedObjectContext];
+  managedObjectContext = [library managedObjectContext];
   v7 = 0;
-  v5 = [a1 allAssetsIncludedInMomentsInManagedObjectContext:v4 IDsOnly:0 error:&v7];
+  v5 = [self allAssetsIncludedInMomentsInManagedObjectContext:managedObjectContext IDsOnly:0 error:&v7];
 
   return v5;
 }
@@ -1806,26 +1806,26 @@ LABEL_33:
 {
   v2 = MEMORY[0x1E695DFF8];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLMoment *)self uuid];
-  v5 = [v3 stringWithFormat:@"%@://%@/?%@=%@", @"assets-library", @"group", @"id", v4];
+  uuid = [(PLMoment *)self uuid];
+  v5 = [v3 stringWithFormat:@"%@://%@/?%@=%@", @"assets-library", @"group", @"id", uuid];
   v6 = [v2 URLWithString:v5];
 
   return v6;
 }
 
-+ (id)allAssetsInManagedObjectContext:(id)a3 predicate:(id)a4 IDsOnly:(BOOL)a5 error:(id *)a6
++ (id)allAssetsInManagedObjectContext:(id)context predicate:(id)predicate IDsOnly:(BOOL)only error:(id *)error
 {
-  v7 = a5;
+  onlyCopy = only;
   v20[3] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E695D5E0];
-  v10 = a4;
-  v11 = a3;
+  predicateCopy = predicate;
+  contextCopy = context;
   v12 = +[PLManagedAsset entityName];
   v13 = [v9 fetchRequestWithEntityName:v12];
 
-  [v13 setPredicate:v10];
+  [v13 setPredicate:predicateCopy];
   [v13 setFetchBatchSize:100];
-  if (v7)
+  if (onlyCopy)
   {
     [v13 setResultType:1];
     [v13 setIncludesPropertyValues:0];
@@ -1841,53 +1841,53 @@ LABEL_33:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
   [v13 setSortDescriptors:v17];
 
-  v18 = [v11 executeFetchRequest:v13 error:a6];
+  v18 = [contextCopy executeFetchRequest:v13 error:error];
 
   return v18;
 }
 
-+ (id)allInvalidAssetsInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)allInvalidAssetsInManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 predicateForInvalidAssets];
-  v8 = [a1 allAssetsInManagedObjectContext:v6 predicate:v7 IDsOnly:0 error:a4];
+  contextCopy = context;
+  predicateForInvalidAssets = [self predicateForInvalidAssets];
+  v8 = [self allAssetsInManagedObjectContext:contextCopy predicate:predicateForInvalidAssets IDsOnly:0 error:error];
 
   return v8;
 }
 
-+ (id)allAssetsIncludedInMomentsInManagedObjectContext:(id)a3 IDsOnly:(BOOL)a4 error:(id *)a5
++ (id)allAssetsIncludedInMomentsInManagedObjectContext:(id)context IDsOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [a1 predicateForAssetsIncludedInMoments];
-  v10 = [a1 allAssetsInManagedObjectContext:v8 predicate:v9 IDsOnly:v6 error:a5];
+  onlyCopy = only;
+  contextCopy = context;
+  predicateForAssetsIncludedInMoments = [self predicateForAssetsIncludedInMoments];
+  v10 = [self allAssetsInManagedObjectContext:contextCopy predicate:predicateForAssetsIncludedInMoments IDsOnly:onlyCopy error:error];
 
   return v10;
 }
 
-+ (id)batchFetchMomentObjectIDsByAssetObjectIDsWithAssetObjectIDs:(id)a3 andAssetPredicate:(id)a4 inManagedObjectContext:(id)a5 error:(id *)a6
++ (id)batchFetchMomentObjectIDsByAssetObjectIDsWithAssetObjectIDs:(id)ds andAssetPredicate:(id)predicate inManagedObjectContext:(id)context error:(id *)error
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v13)
+  dsCopy = ds;
+  predicateCopy = predicate;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"PLMoment.m" lineNumber:881 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMoment.m" lineNumber:881 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v14 = MEMORY[0x1E695D5E0];
   v15 = +[PLManagedAsset entityName];
   v16 = [v14 fetchRequestWithEntityName:v15];
 
-  v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v11];
-  v18 = v17;
-  if (v12)
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
+  v18 = dsCopy;
+  if (predicateCopy)
   {
     v19 = MEMORY[0x1E696AB28];
-    v36[0] = v17;
-    v36[1] = v12;
+    v36[0] = dsCopy;
+    v36[1] = predicateCopy;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
     v21 = [v19 andPredicateWithSubpredicates:v20];
 
@@ -1896,7 +1896,7 @@ LABEL_33:
 
   else
   {
-    [v16 setPredicate:v17];
+    [v16 setPredicate:dsCopy];
   }
 
   v35 = @"moment";
@@ -1905,26 +1905,26 @@ LABEL_33:
 
   [v16 setIncludesPropertyValues:0];
   v34 = 0;
-  v23 = [v13 executeFetchRequest:v16 error:&v34];
+  v23 = [contextCopy executeFetchRequest:v16 error:&v34];
   v24 = v34;
   v25 = v24;
   if (v23)
   {
-    v26 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __137__PLMoment_PLMoment_Private__batchFetchMomentObjectIDsByAssetObjectIDsWithAssetObjectIDs_andAssetPredicate_inManagedObjectContext_error___block_invoke;
     v32[3] = &unk_1E7575368;
-    v27 = v26;
+    v27 = dictionary;
     v33 = v27;
-    v28 = [v13 enumerateObjectsFromFetchRequest:v16 count:0 usingDefaultBatchSizeWithBlock:v32];
+    v28 = [contextCopy enumerateObjectsFromFetchRequest:v16 count:0 usingDefaultBatchSizeWithBlock:v32];
   }
 
-  else if (a6)
+  else if (error)
   {
     v29 = v24;
     v27 = 0;
-    *a6 = v25;
+    *error = v25;
   }
 
   else
@@ -1963,40 +1963,40 @@ void __137__PLMoment_PLMoment_Private__batchFetchMomentObjectIDsByAssetObjectIDs
   }
 }
 
-+ (id)batchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:(id)a3 library:(id)a4 error:(id *)a5
++ (id)batchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:(id)ds library:(id)library error:(id *)error
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  dsCopy = ds;
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"PLMoment.m" lineNumber:837 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMoment.m" lineNumber:837 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
-  v11 = [v10 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v12 = MEMORY[0x1E695D5E0];
   v13 = +[PLMoment entityName];
   v14 = [v12 fetchRequestWithEntityName:v13];
 
-  v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"highlight.uuid", v9];
-  [v14 setPredicate:v15];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"highlight.uuid", dsCopy];
+  [v14 setPredicate:dsCopy];
   [v14 setResultType:2];
   v49[0] = @"uuid";
   v49[1] = @"highlight.uuid";
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
   [v14 setPropertiesToFetch:v16];
 
-  if (!a5)
+  if (!error)
   {
     v43 = 0;
-    a5 = &v43;
+    error = &v43;
   }
 
-  v17 = [v11 executeFetchRequest:v14 error:a5];
+  v17 = [managedObjectContext executeFetchRequest:v14 error:error];
   if (v17)
   {
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -2006,11 +2006,11 @@ void __137__PLMoment_PLMoment_Private__batchFetchMomentObjectIDsByAssetObjectIDs
     if (v20)
     {
       v21 = v20;
-      v34 = v15;
+      v34 = dsCopy;
       v35 = v14;
-      v36 = v11;
-      v37 = v10;
-      v38 = v9;
+      v36 = managedObjectContext;
+      v37 = libraryCopy;
+      v38 = dsCopy;
       v22 = *v40;
       do
       {
@@ -2050,12 +2050,12 @@ void __137__PLMoment_PLMoment_Private__batchFetchMomentObjectIDsByAssetObjectIDs
 
           else
           {
-            v30 = [v18 objectForKeyedSubscript:v25];
+            v30 = [dictionary objectForKeyedSubscript:v25];
             v29 = v30;
             if (!v30)
             {
               v29 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-              [v18 setObject:v29 forKeyedSubscript:v25];
+              [dictionary setObject:v29 forKeyedSubscript:v25];
             }
 
             [v29 addObject:v27];
@@ -2066,11 +2066,11 @@ void __137__PLMoment_PLMoment_Private__batchFetchMomentObjectIDsByAssetObjectIDs
       }
 
       while (v21);
-      v10 = v37;
-      v9 = v38;
+      libraryCopy = v37;
+      dsCopy = v38;
       v14 = v35;
-      v11 = v36;
-      v15 = v34;
+      managedObjectContext = v36;
+      dsCopy = v34;
     }
   }
 
@@ -2079,27 +2079,27 @@ void __137__PLMoment_PLMoment_Private__batchFetchMomentObjectIDsByAssetObjectIDs
     v19 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v31 = *a5;
+      v31 = *error;
       *buf = 138412290;
       v45 = v31;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Error fetching momentUUID by highlightUUID: %@", buf, 0xCu);
     }
 
-    v18 = 0;
+    dictionary = 0;
   }
 
-  return v18;
+  return dictionary;
 }
 
-+ (void)batchFetchMomentUUIDsByAssetUUIDsWithAssetUUIDs:(id)a3 library:(id)a4 completion:(id)a5
++ (void)batchFetchMomentUUIDsByAssetUUIDsWithAssetUUIDs:(id)ds library:(id)library completion:(id)completion
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dsCopy = ds;
+  libraryCopy = library;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -2107,26 +2107,26 @@ void __137__PLMoment_PLMoment_Private__batchFetchMomentObjectIDsByAssetObjectIDs
 
   else
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"PLMoment.m" lineNumber:803 description:@"Completion handler is mandatory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMoment.m" lineNumber:803 description:@"Completion handler is mandatory"];
 
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v33 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v33 handleFailureInMethod:a2 object:a1 file:@"PLMoment.m" lineNumber:804 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLMoment.m" lineNumber:804 description:{@"Invalid parameter not satisfying: %@", @"library"}];
 
 LABEL_3:
-  v12 = [v10 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v13 = MEMORY[0x1E695D5E0];
   v14 = +[PLManagedAsset entityName];
   v15 = [v13 fetchRequestWithEntityName:v14];
 
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid IN %@", v9];
-  [v15 setPredicate:v16];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid IN %@", dsCopy];
+  [v15 setPredicate:dsCopy];
   [v15 setResultType:2];
   v49[0] = @"uuid";
   v49[1] = @"moment.uuid";
@@ -2134,21 +2134,21 @@ LABEL_3:
   [v15 setPropertiesToFetch:v17];
 
   v43 = 0;
-  v18 = [v12 executeFetchRequest:v15 error:&v43];
+  v18 = [managedObjectContext executeFetchRequest:v15 error:&v43];
   v19 = v43;
   if (v19)
   {
-    v11[2](v11, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 
   else
   {
-    v34 = v16;
+    v34 = dsCopy;
     v35 = v15;
-    v36 = v12;
-    v37 = v11;
-    v38 = v9;
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    v36 = managedObjectContext;
+    v37 = completionCopy;
+    v38 = dsCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -2197,7 +2197,7 @@ LABEL_3:
 
           else
           {
-            [v20 setObject:v27 forKey:v28];
+            [dictionary setObject:v27 forKey:v28];
           }
         }
 
@@ -2207,13 +2207,13 @@ LABEL_3:
       while (v23);
     }
 
-    v11 = v37;
-    (v37)[2](v37, v20, 0);
+    completionCopy = v37;
+    (v37)[2](v37, dictionary, 0);
 
-    v9 = v38;
+    dsCopy = v38;
     v15 = v35;
-    v12 = v36;
-    v16 = v34;
+    managedObjectContext = v36;
+    dsCopy = v34;
     v19 = 0;
   }
 }
@@ -2229,8 +2229,8 @@ LABEL_3:
   v6 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v5];
   v7 = MEMORY[0x1E696AB28];
   v12[0] = v6;
-  v8 = [a1 predicateForAssetsIncludedInMoments];
-  v12[1] = v8;
+  predicateForAssetsIncludedInMoments = [self predicateForAssetsIncludedInMoments];
+  v12[1] = predicateForAssetsIncludedInMoments;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v10 = [v7 andPredicateWithSubpredicates:v9];
 
@@ -2263,118 +2263,118 @@ LABEL_3:
   return v6;
 }
 
-+ (id)momentsWithLocationOfInterestInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)momentsWithLocationOfInterestInManagedObjectContext:(id)context error:(id *)error
 {
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
-  v8 = [a1 entityName];
-  v9 = [v6 fetchRequestWithEntityName:v8];
+  contextCopy = context;
+  entityName = [self entityName];
+  v9 = [v6 fetchRequestWithEntityName:entityName];
 
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d OR %K == %d", @"processedLocation", 3, @"processedLocation", 4];
   [v9 setPredicate:v10];
-  v11 = [v7 executeFetchRequest:v9 error:a4];
+  v11 = [contextCopy executeFetchRequest:v9 error:error];
 
   return v11;
 }
 
-+ (id)momentsRequiringLocationProcessingWhenFrequentLocationsChangedInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)momentsRequiringLocationProcessingWhenFrequentLocationsChangedInManagedObjectContext:(id)context error:(id *)error
 {
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
-  v8 = [a1 entityName];
-  v9 = [v6 fetchRequestWithEntityName:v8];
+  contextCopy = context;
+  entityName = [self entityName];
+  v9 = [v6 fetchRequestWithEntityName:entityName];
 
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d OR %K == %d OR %K == %d OR %K == %d OR %K == %d OR %K == %d", @"processedLocation", 0, @"processedLocation", 8, @"processedLocation", 9, @"processedLocation", 5, @"processedLocation", 1, @"processedLocation", 6];
   [v9 setPredicate:v10];
-  v11 = [v7 executeFetchRequest:v9 error:a4];
+  v11 = [contextCopy executeFetchRequest:v9 error:error];
 
   return v11;
 }
 
-+ (id)momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailableInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailableInManagedObjectContext:(id)context error:(id *)error
 {
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
-  v8 = [a1 entityName];
-  v9 = [v6 fetchRequestWithEntityName:v8];
+  contextCopy = context;
+  entityName = [self entityName];
+  v9 = [v6 fetchRequestWithEntityName:entityName];
 
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d OR %K == %d", @"processedLocation", 0, @"processedLocation", 9];
   [v9 setPredicate:v10];
-  v11 = [v7 executeFetchRequest:v9 error:a4];
+  v11 = [contextCopy executeFetchRequest:v9 error:error];
 
   return v11;
 }
 
-+ (id)momentsRequiringLocationProcessingWhenCoreRoutineIsAvailableInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)momentsRequiringLocationProcessingWhenCoreRoutineIsAvailableInManagedObjectContext:(id)context error:(id *)error
 {
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
-  v8 = [a1 entityName];
-  v9 = [v6 fetchRequestWithEntityName:v8];
+  contextCopy = context;
+  entityName = [self entityName];
+  v9 = [v6 fetchRequestWithEntityName:entityName];
 
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d OR %K == %d OR %K == %d", @"processedLocation", 0, @"processedLocation", 8, @"processedLocation", 1];
   [v9 setPredicate:v10];
-  v11 = [v7 executeFetchRequest:v9 error:a4];
+  v11 = [contextCopy executeFetchRequest:v9 error:error];
 
   return v11;
 }
 
-+ (id)allMomentsRequiringAnalysisInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)allMomentsRequiringAnalysisInManagedObjectContext:(id)context error:(id *)error
 {
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
-  v8 = [a1 entityName];
-  v9 = [v6 fetchRequestWithEntityName:v8];
+  contextCopy = context;
+  entityName = [self entityName];
+  v9 = [v6 fetchRequestWithEntityName:entityName];
 
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY assets.additionalAttributes.reverseLocationDataIsValid == NO"];
   [v9 setPredicate:v10];
-  v11 = [v7 executeFetchRequest:v9 error:a4];
+  v11 = [contextCopy executeFetchRequest:v9 error:error];
 
   return v11;
 }
 
-+ (id)allMomentsInManagedObjectContext:(id)a3 predicate:(id)a4 idsOnly:(BOOL)a5 error:(id *)a6
++ (id)allMomentsInManagedObjectContext:(id)context predicate:(id)predicate idsOnly:(BOOL)only error:(id *)error
 {
-  v7 = a5;
+  onlyCopy = only;
   v19[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  contextCopy = context;
   v11 = MEMORY[0x1E695D5E0];
-  v12 = a4;
-  v13 = [a1 entityName];
-  v14 = [v11 fetchRequestWithEntityName:v13];
+  predicateCopy = predicate;
+  entityName = [self entityName];
+  v14 = [v11 fetchRequestWithEntityName:entityName];
 
-  [v14 setPredicate:v12];
+  [v14 setPredicate:predicateCopy];
   v15 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"representativeDate" ascending:1];
   v19[0] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   [v14 setSortDescriptors:v16];
 
   [v14 setFetchBatchSize:100];
-  if (v7)
+  if (onlyCopy)
   {
     [v14 setResultType:1];
     [v14 setIncludesPropertyValues:0];
   }
 
-  v17 = [v10 executeFetchRequest:v14 error:a6];
+  v17 = [contextCopy executeFetchRequest:v14 error:error];
 
   return v17;
 }
 
-+ (id)allInvalidMomentsInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)allInvalidMomentsInManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLMoment predicateForInvalidMoments];
-  v8 = [a1 allMomentsInManagedObjectContext:v6 predicate:v7 idsOnly:0 error:a4];
+  v8 = [self allMomentsInManagedObjectContext:contextCopy predicate:v7 idsOnly:0 error:error];
 
   return v8;
 }
 
-+ (id)insertNewMomentInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)insertNewMomentInManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 entityName];
-  v8 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v7, v6, a4);
+  contextCopy = context;
+  entityName = [self entityName];
+  v8 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, contextCopy, error);
 
   return v8;
 }

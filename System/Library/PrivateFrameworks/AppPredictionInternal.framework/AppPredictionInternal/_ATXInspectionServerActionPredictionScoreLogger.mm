@@ -1,7 +1,7 @@
 @interface _ATXInspectionServerActionPredictionScoreLogger
 - (_ATXInspectionServerActionPredictionScoreLogger)init;
 - (id)actionMetaDataItems;
-- (void)storeMetaDataFromActionContainerForKey:(id)a3 actionContainer:(id)a4;
+- (void)storeMetaDataFromActionContainerForKey:(id)key actionContainer:(id)container;
 @end
 
 @implementation _ATXInspectionServerActionPredictionScoreLogger
@@ -43,44 +43,44 @@
   return v3;
 }
 
-- (void)storeMetaDataFromActionContainerForKey:(id)a3 actionContainer:(id)a4
+- (void)storeMetaDataFromActionContainerForKey:(id)key actionContainer:(id)container
 {
-  v31 = a3;
-  v5 = a4;
-  v6 = [v5 scoredAction];
-  [v6 score];
+  keyCopy = key;
+  containerCopy = container;
+  scoredAction = [containerCopy scoredAction];
+  [scoredAction score];
   v8 = v7;
   v9 = +[_ATXGlobals sharedInstance];
   [v9 actionExperienceMediumConfidenceThreshold];
   v29 = v10 < v8;
 
-  v11 = [v5 scoredAction];
-  [v11 score];
+  scoredAction2 = [containerCopy scoredAction];
+  [scoredAction2 score];
   v13 = v12;
   v14 = +[_ATXGlobals sharedInstance];
   [v14 actionExperienceHighConfidenceThreshold];
   v16 = v15 < v13;
 
   v17 = [_ATXActionMetaData alloc];
-  v18 = [v5 scoredAction];
-  v19 = [v18 predictedItem];
-  v20 = [v19 actionTitle];
-  v21 = [v5 scoredAction];
-  v22 = [v21 predictedItem];
-  v23 = [v22 actionSubtitle];
-  v24 = [v5 actionKey];
+  scoredAction3 = [containerCopy scoredAction];
+  predictedItem = [scoredAction3 predictedItem];
+  actionTitle = [predictedItem actionTitle];
+  scoredAction4 = [containerCopy scoredAction];
+  predictedItem2 = [scoredAction4 predictedItem];
+  actionSubtitle = [predictedItem2 actionSubtitle];
+  actionKey = [containerCopy actionKey];
 
-  v25 = [(_ATXActionMetaData *)v17 initWithTitle:v20 subtitle:v23 shouldPredict:v29 shouldPredictLockScreen:v16 actionKey:v24];
+  v25 = [(_ATXActionMetaData *)v17 initWithTitle:actionTitle subtitle:actionSubtitle shouldPredict:v29 shouldPredictLockScreen:v16 actionKey:actionKey];
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __106___ATXInspectionServerActionPredictionScoreLogger_storeMetaDataFromActionContainerForKey_actionContainer___block_invoke;
   block[3] = &unk_278597828;
   block[4] = self;
-  v33 = v31;
+  v33 = keyCopy;
   v34 = v25;
   v27 = v25;
-  v28 = v31;
+  v28 = keyCopy;
   dispatch_sync(queue, block);
 }
 

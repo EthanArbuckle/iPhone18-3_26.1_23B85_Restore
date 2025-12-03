@@ -1,10 +1,10 @@
 @interface WiFiSystemHealth
-- (unint64_t)getComponentStatusWithError:(id *)a3;
+- (unint64_t)getComponentStatusWithError:(id *)error;
 @end
 
 @implementation WiFiSystemHealth
 
-- (unint64_t)getComponentStatusWithError:(id *)a3
+- (unint64_t)getComponentStatusWithError:(id *)error
 {
   v3 = *MEMORY[0x277CBECE8];
   v4 = WiFiManagerClientCreate();

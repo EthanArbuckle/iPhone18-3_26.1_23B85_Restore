@@ -2,17 +2,17 @@
 - (NSError)error;
 - (PLRoutineServiceResult)init;
 - (id)result;
-- (void)receivedReplyWithResult:(id)a3 error:(id)a4;
+- (void)receivedReplyWithResult:(id)result error:(id)error;
 @end
 
 @implementation PLRoutineServiceResult
 
-- (void)receivedReplyWithResult:(id)a3 error:(id)a4
+- (void)receivedReplyWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v6 = v9;
-  v7 = v8;
+  resultCopy = result;
+  errorCopy = error;
+  v6 = errorCopy;
+  v7 = resultCopy;
   PLRunWithUnfairLock();
   dispatch_semaphore_signal(self->_semaphore);
 }

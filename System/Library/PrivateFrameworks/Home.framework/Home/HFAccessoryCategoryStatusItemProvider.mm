@@ -1,12 +1,12 @@
 @interface HFAccessoryCategoryStatusItemProvider
 + (id)_categoryStatusItemClasses;
-- (HFAccessoryCategoryStatusItemProvider)initWithHome:(id)a3 room:(id)a4 overrideValueSource:(id)a5;
-- (HFAccessoryCategoryStatusItemProvider)initWithItems:(id)a3;
-- (id)_buildStatusItemWithClass:(Class)a3 home:(id)a4 room:(id)a5 valueSource:(id)a6;
-- (id)_createStatusItemsForHome:(id)a3 room:(id)a4 valueSource:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFAccessoryCategoryStatusItemProvider)initWithHome:(id)home room:(id)room overrideValueSource:(id)source;
+- (HFAccessoryCategoryStatusItemProvider)initWithItems:(id)items;
+- (id)_buildStatusItemWithClass:(Class)class home:(id)home room:(id)room valueSource:(id)source;
+- (id)_createStatusItemsForHome:(id)home room:(id)room valueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
-- (void)_buildStatusItemsForGroupedStatusItem:(id)a3;
+- (void)_buildStatusItemsForGroupedStatusItem:(id)item;
 @end
 
 @implementation HFAccessoryCategoryStatusItemProvider
@@ -39,33 +39,33 @@ void __67__HFAccessoryCategoryStatusItemProvider__categoryStatusItemClasses__blo
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (HFAccessoryCategoryStatusItemProvider)initWithItems:(id)a3
+- (HFAccessoryCategoryStatusItemProvider)initWithItems:(id)items
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_room_overrideValueSource_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HFAccessoryCategoryStatusItemProvider.m" lineNumber:57 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryCategoryStatusItemProvider initWithItems:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryCategoryStatusItemProvider.m" lineNumber:57 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryCategoryStatusItemProvider initWithItems:]", v6}];
 
   return 0;
 }
 
-- (HFAccessoryCategoryStatusItemProvider)initWithHome:(id)a3 room:(id)a4 overrideValueSource:(id)a5
+- (HFAccessoryCategoryStatusItemProvider)initWithHome:(id)home room:(id)room overrideValueSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v11)
+  homeCopy = home;
+  roomCopy = room;
+  sourceCopy = source;
+  v12 = sourceCopy;
+  if (sourceCopy)
   {
-    v13 = v11;
+    hf_characteristicValueManager = sourceCopy;
   }
 
   else
   {
-    v13 = [v9 hf_characteristicValueManager];
+    hf_characteristicValueManager = [homeCopy hf_characteristicValueManager];
   }
 
-  v14 = v13;
-  v15 = [(HFAccessoryCategoryStatusItemProvider *)self _createStatusItemsForHome:v9 room:v10 valueSource:v13];
+  v14 = hf_characteristicValueManager;
+  v15 = [(HFAccessoryCategoryStatusItemProvider *)self _createStatusItemsForHome:homeCopy room:roomCopy valueSource:hf_characteristicValueManager];
   v16 = [MEMORY[0x277CBEB98] setWithArray:v15];
   v19.receiver = self;
   v19.super_class = HFAccessoryCategoryStatusItemProvider;
@@ -73,53 +73,53 @@ void __67__HFAccessoryCategoryStatusItemProvider__categoryStatusItemClasses__blo
 
   if (v17)
   {
-    objc_storeStrong(&v17->_home, a3);
-    objc_storeStrong(&v17->_room, a4);
+    objc_storeStrong(&v17->_home, home);
+    objc_storeStrong(&v17->_room, room);
     objc_storeStrong(&v17->_valueSource, v14);
   }
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFAccessoryCategoryStatusItemProvider *)self home];
-  v6 = [(HFAccessoryCategoryStatusItemProvider *)self room];
-  v7 = [(HFAccessoryCategoryStatusItemProvider *)self valueSource];
-  v8 = [v4 initWithHome:v5 room:v6 valueSource:v7];
+  home = [(HFAccessoryCategoryStatusItemProvider *)self home];
+  room = [(HFAccessoryCategoryStatusItemProvider *)self room];
+  valueSource = [(HFAccessoryCategoryStatusItemProvider *)self valueSource];
+  v8 = [v4 initWithHome:home room:room valueSource:valueSource];
 
   return v8;
 }
 
-- (id)_createStatusItemsForHome:(id)a3 room:(id)a4 valueSource:(id)a5
+- (id)_createStatusItemsForHome:(id)home room:(id)room valueSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() _categoryStatusItemClasses];
+  homeCopy = home;
+  roomCopy = room;
+  sourceCopy = source;
+  _categoryStatusItemClasses = [objc_opt_class() _categoryStatusItemClasses];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __84__HFAccessoryCategoryStatusItemProvider__createStatusItemsForHome_room_valueSource___block_invoke;
   v17[3] = &unk_277E004F0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = [v11 na_map:v17];
+  v18 = homeCopy;
+  v19 = roomCopy;
+  v20 = sourceCopy;
+  v12 = sourceCopy;
+  v13 = roomCopy;
+  v14 = homeCopy;
+  v15 = [_categoryStatusItemClasses na_map:v17];
 
   return v15;
 }
 
-- (id)_buildStatusItemWithClass:(Class)a3 home:(id)a4 room:(id)a5 valueSource:(id)a6
+- (id)_buildStatusItemWithClass:(Class)class home:(id)home room:(id)room valueSource:(id)source
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[a3 alloc] initWithHome:v12 room:v11 valueSource:v10];
+  sourceCopy = source;
+  roomCopy = room;
+  homeCopy = home;
+  v13 = [[class alloc] initWithHome:homeCopy room:roomCopy valueSource:sourceCopy];
 
   objc_opt_class();
   v14 = v13;
@@ -143,18 +143,18 @@ void __67__HFAccessoryCategoryStatusItemProvider__categoryStatusItemClasses__blo
   return v14;
 }
 
-- (void)_buildStatusItemsForGroupedStatusItem:(id)a3
+- (void)_buildStatusItemsForGroupedStatusItem:(id)item
 {
-  v4 = a3;
-  v5 = [objc_opt_class() statusItemClasses];
+  itemCopy = item;
+  statusItemClasses = [objc_opt_class() statusItemClasses];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__HFAccessoryCategoryStatusItemProvider__buildStatusItemsForGroupedStatusItem___block_invoke;
   v7[3] = &unk_277DFA060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 na_each:v7];
+  v8 = itemCopy;
+  v6 = itemCopy;
+  [statusItemClasses na_each:v7];
 }
 
 void __79__HFAccessoryCategoryStatusItemProvider__buildStatusItemsForGroupedStatusItem___block_invoke(uint64_t a1, uint64_t a2)
@@ -172,8 +172,8 @@ void __79__HFAccessoryCategoryStatusItemProvider__buildStatusItemsForGroupedStat
 {
   v5.receiver = self;
   v5.super_class = HFAccessoryCategoryStatusItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"user"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"user"];
 
   return v3;
 }

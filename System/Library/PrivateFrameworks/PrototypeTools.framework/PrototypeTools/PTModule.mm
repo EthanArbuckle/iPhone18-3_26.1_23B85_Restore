@@ -1,108 +1,108 @@
 @interface PTModule
-+ (PTModule)moduleWithSettings:(id)a3;
-+ (PTModule)moduleWithTitle:(id)a3 contents:(id)a4;
-+ (id)sectionWithRows:(id)a3 title:(id)a4 condition:(id)a5;
-+ (id)sectionWithRows:(id)a3 title:(id)a4 conditionFormat:(id)a5;
-+ (id)submoduleWithModule:(id)a3 childSettingsKeyPath:(id)a4 condition:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (PTModule)moduleWithSettings:(id)settings;
++ (PTModule)moduleWithTitle:(id)title contents:(id)contents;
++ (id)sectionWithRows:(id)rows title:(id)title condition:(id)condition;
++ (id)sectionWithRows:(id)rows title:(id)title conditionFormat:(id)format;
++ (id)submoduleWithModule:(id)module childSettingsKeyPath:(id)path condition:(id)condition;
+- (BOOL)isEqual:(id)equal;
 - (PTComponentObserver)componentObserver;
-- (PTModule)initWithCoder:(id)a3;
-- (PTModule)initWithContents:(id)a3;
+- (PTModule)initWithCoder:(id)coder;
+- (PTModule)initWithContents:(id)contents;
 - (id)_computeEnabledSections;
 - (id)_remoteEditingWhitelistedModule;
-- (id)_settingsForComponent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexPathForRow:(id)a3;
-- (id)rowAtIndexPath:(id)a3;
+- (id)_settingsForComponent:(id)component;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexPathForRow:(id)row;
+- (id)rowAtIndexPath:(id)path;
 - (unint64_t)hash;
-- (void)_reportSectionInsertsAndDeletesRelativeTo:(id)a3;
+- (void)_reportSectionInsertsAndDeletesRelativeTo:(id)to;
 - (void)_updateEnabledSections;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)section:(id)a3 didInsertRows:(id)a4 deleteRows:(id)a5;
-- (void)sectionDidReload:(id)a3;
-- (void)setSettings:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)section:(id)section didInsertRows:(id)rows deleteRows:(id)deleteRows;
+- (void)sectionDidReload:(id)reload;
+- (void)setSettings:(id)settings;
 @end
 
 @implementation PTModule
 
-+ (PTModule)moduleWithTitle:(id)a3 contents:(id)a4
++ (PTModule)moduleWithTitle:(id)title contents:(id)contents
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PTModule alloc] initWithContents:v5];
+  contentsCopy = contents;
+  titleCopy = title;
+  v7 = [[PTModule alloc] initWithContents:contentsCopy];
 
-  [(PTModule *)v7 setTitle:v6];
+  [(PTModule *)v7 setTitle:titleCopy];
 
   return v7;
 }
 
-+ (id)sectionWithRows:(id)a3 title:(id)a4 conditionFormat:(id)a5
++ (id)sectionWithRows:(id)rows title:(id)title conditionFormat:(id)format
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  rowsCopy = rows;
+  titleCopy = title;
+  if (format)
   {
-    a5 = [MEMORY[0x277CCAC30] predicateWithFormat:a5 arguments:&v13];
+    format = [MEMORY[0x277CCAC30] predicateWithFormat:format arguments:&v13];
   }
 
-  v10 = [a1 sectionWithRows:v8 title:v9 condition:a5];
+  v10 = [self sectionWithRows:rowsCopy title:titleCopy condition:format];
 
   return v10;
 }
 
-+ (id)sectionWithRows:(id)a3 title:(id)a4 condition:(id)a5
++ (id)sectionWithRows:(id)rows title:(id)title condition:(id)condition
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PTSection alloc] initWithRows:v9];
+  conditionCopy = condition;
+  titleCopy = title;
+  rowsCopy = rows;
+  v10 = [[PTSection alloc] initWithRows:rowsCopy];
 
-  [(PTSection *)v10 setTitle:v8];
-  [(PTSection *)v10 setAppearancePredicate:v7];
+  [(PTSection *)v10 setTitle:titleCopy];
+  [(PTSection *)v10 setAppearancePredicate:conditionCopy];
 
   return v10;
 }
 
-+ (id)submoduleWithModule:(id)a3 childSettingsKeyPath:(id)a4 condition:(id)a5
++ (id)submoduleWithModule:(id)module childSettingsKeyPath:(id)path condition:(id)condition
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 setChildSettingsKeyPath:a4];
-  [v7 setAppearancePredicate:v8];
+  moduleCopy = module;
+  conditionCopy = condition;
+  [moduleCopy setChildSettingsKeyPath:path];
+  [moduleCopy setAppearancePredicate:conditionCopy];
 
-  return v7;
+  return moduleCopy;
 }
 
-+ (PTModule)moduleWithSettings:(id)a3
++ (PTModule)moduleWithSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [v3 module];
-  [v4 setSettings:v3];
+  settingsCopy = settings;
+  module = [settingsCopy module];
+  [module setSettings:settingsCopy];
 
-  return v4;
+  return module;
 }
 
-- (PTModule)initWithContents:(id)a3
+- (PTModule)initWithContents:(id)contents
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contentsCopy = contents;
   v26.receiver = self;
   v26.super_class = PTModule;
   v5 = [(PTModule *)&v26 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v6;
+    v5->_observers = weakObjectsHashTable;
 
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = v4;
+    v10 = contentsCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v11)
     {
@@ -121,9 +121,9 @@
           if ([v15 conformsToProtocol:{&unk_282FB1DB8, v22}])
           {
             [v15 setComponentObserver:v5];
-            [v8 addObject:v15];
-            v16 = [v15 allSections];
-            [v9 addObjectsFromArray:v16];
+            [array addObject:v15];
+            allSections = [v15 allSections];
+            [array2 addObjectsFromArray:allSections];
           }
         }
 
@@ -133,11 +133,11 @@
       while (v12);
     }
 
-    v17 = [v8 copy];
+    v17 = [array copy];
     components = v5->_components;
     v5->_components = v17;
 
-    v19 = [v9 copy];
+    v19 = [array2 copy];
     allSections = v5->_allSections;
     v5->_allSections = v19;
 
@@ -186,10 +186,10 @@
   [(PTModule *)&v8 dealloc];
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  settingsCopy = settings;
   if (self->_settings)
   {
     v6 = PTLogObjectForTopic(0);
@@ -202,7 +202,7 @@
 
   else
   {
-    objc_storeStrong(&self->_settings, a3);
+    objc_storeStrong(&self->_settings, settings);
     [(PTSettings *)self->_settings addKeyPathObserver:self];
     v17 = 0u;
     v18 = 0u;
@@ -224,9 +224,9 @@
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 settings];
+          settings = [v12 settings];
 
-          if (!v13)
+          if (!settings)
           {
             v14 = [(PTModule *)self _settingsForComponent:v12];
             [v12 setSettings:v14];
@@ -243,23 +243,23 @@
   }
 }
 
-- (id)rowAtIndexPath:(id)a3
+- (id)rowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[PTModule sectionAtIndex:](self, "sectionAtIndex:", [v4 pt_section]);
-  v6 = [v4 pt_row];
+  pathCopy = path;
+  v5 = -[PTModule sectionAtIndex:](self, "sectionAtIndex:", [pathCopy pt_section]);
+  pt_row = [pathCopy pt_row];
 
-  v7 = [v5 rowAtIndex:v6];
+  v7 = [v5 rowAtIndex:pt_row];
 
   return v7;
 }
 
-- (id)indexPathForRow:(id)a3
+- (id)indexPathForRow:(id)row
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(NSArray *)self->_enabledSections indexOfObject:v5];
-  v7 = [v5 indexOfRow:v4];
+  rowCopy = row;
+  section = [rowCopy section];
+  v6 = [(NSArray *)self->_enabledSections indexOfObject:section];
+  v7 = [section indexOfRow:rowCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL || v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -274,39 +274,39 @@
   return v9;
 }
 
-- (void)section:(id)a3 didInsertRows:(id)a4 deleteRows:(id)a5
+- (void)section:(id)section didInsertRows:(id)rows deleteRows:(id)deleteRows
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sectionCopy = section;
+  rowsCopy = rows;
+  deleteRowsCopy = deleteRows;
   WeakRetained = objc_loadWeakRetained(&self->_componentObserver);
-  [WeakRetained section:v8 didInsertRows:v9 deleteRows:v10];
+  [WeakRetained section:sectionCopy didInsertRows:rowsCopy deleteRows:deleteRowsCopy];
 
   if ([(NSHashTable *)self->_observers count])
   {
-    v12 = [(NSArray *)self->_enabledSections indexOfObject:v8];
+    v12 = [(NSArray *)self->_enabledSections indexOfObject:sectionCopy];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = v12;
-      v14 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __45__PTModule_section_didInsertRows_deleteRows___block_invoke;
       v30[3] = &unk_27835EF68;
-      v15 = v14;
+      v15 = array;
       v31 = v15;
       v32 = v13;
-      [v9 enumerateIndexesUsingBlock:v30];
-      v16 = [MEMORY[0x277CBEB18] array];
+      [rowsCopy enumerateIndexesUsingBlock:v30];
+      array2 = [MEMORY[0x277CBEB18] array];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2;
       v27[3] = &unk_27835EF68;
-      v17 = v16;
+      v17 = array2;
       v28 = v17;
       v29 = v13;
-      [v10 enumerateIndexesUsingBlock:v27];
+      [deleteRowsCopy enumerateIndexesUsingBlock:v27];
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
@@ -352,14 +352,14 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
   [v2 addObject:v3];
 }
 
-- (void)sectionDidReload:(id)a3
+- (void)sectionDidReload:(id)reload
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reloadCopy = reload;
   WeakRetained = objc_loadWeakRetained(&self->_componentObserver);
-  [WeakRetained sectionDidReload:v4];
+  [WeakRetained sectionDidReload:reloadCopy];
 
-  if ([(NSHashTable *)self->_observers count]&& [(NSArray *)self->_enabledSections indexOfObject:v4]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSHashTable *)self->_observers count]&& [(NSArray *)self->_enabledSections indexOfObject:reloadCopy]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = 0u;
     v14 = 0u;
@@ -396,9 +396,9 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
 - (void)_updateEnabledSections
 {
   v6 = self->_enabledSections;
-  v3 = [(PTModule *)self _computeEnabledSections];
+  _computeEnabledSections = [(PTModule *)self _computeEnabledSections];
   enabledSections = self->_enabledSections;
-  self->_enabledSections = v3;
+  self->_enabledSections = _computeEnabledSections;
 
   if (![(NSArray *)self->_enabledSections isEqualToArray:v6])
   {
@@ -415,12 +415,12 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
   appearancePredicate = self->_appearancePredicate;
   if (appearancePredicate && ![(NSPredicate *)appearancePredicate evaluateWithObject:self->_settings])
   {
-    v4 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -440,8 +440,8 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) enabledSections];
-          [v4 addObjectsFromArray:v10];
+          enabledSections = [*(*(&v12 + 1) + 8 * i) enabledSections];
+          [array addObjectsFromArray:enabledSections];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -451,17 +451,17 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
     }
   }
 
-  return v4;
+  return array;
 }
 
-- (void)_reportSectionInsertsAndDeletesRelativeTo:(id)a3
+- (void)_reportSectionInsertsAndDeletesRelativeTo:(id)to
 {
   v32 = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  toCopy = to;
   if ([(NSHashTable *)self->_observers count])
   {
-    v4 = [MEMORY[0x277CCAB58] indexSet];
-    v5 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -485,15 +485,15 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
 
           v12 = *(*(&v26 + 1) + 8 * i);
           v13 = [(NSArray *)self->_enabledSections containsObject:v12];
-          v14 = [v21 containsObject:v12];
+          v14 = [toCopy containsObject:v12];
           if (v14 && !v13)
           {
-            [v5 addIndex:v9];
+            [indexSet2 addIndex:v9];
           }
 
           if (((v14 | !v13) & 1) == 0)
           {
-            [v4 addIndex:v8];
+            [indexSet addIndex:v8];
           }
 
           v9 += v14;
@@ -506,7 +506,7 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
       while (v7);
     }
 
-    if ([v4 count] || objc_msgSend(v5, "count"))
+    if ([indexSet count] || objc_msgSend(indexSet2, "count"))
     {
       v24 = 0u;
       v25 = 0u;
@@ -527,7 +527,7 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
               objc_enumerationMutation(v15);
             }
 
-            [*(*(&v22 + 1) + 8 * j) module:self didInsertSections:v4 deleteSections:v5];
+            [*(*(&v22 + 1) + 8 * j) module:self didInsertSections:indexSet deleteSections:indexSet2];
           }
 
           v17 = [(NSHashTable *)v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -539,13 +539,13 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
   }
 }
 
-- (id)_settingsForComponent:(id)a3
+- (id)_settingsForComponent:(id)component
 {
-  v4 = [a3 childSettingsKeyPath];
+  childSettingsKeyPath = [component childSettingsKeyPath];
   settings = self->_settings;
-  if (v4)
+  if (childSettingsKeyPath)
   {
-    v6 = [(PTSettings *)settings valueForKeyPath:v4];
+    v6 = [(PTSettings *)settings valueForKeyPath:childSettingsKeyPath];
   }
 
   else
@@ -561,7 +561,7 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
 - (id)_remoteEditingWhitelistedModule
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -581,8 +581,8 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) _remoteEditingWhitelistedComponent];
-        [v3 addObject:v9];
+        _remoteEditingWhitelistedComponent = [*(*(&v15 + 1) + 8 * i) _remoteEditingWhitelistedComponent];
+        [array addObject:_remoteEditingWhitelistedComponent];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -591,27 +591,27 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
     while (v6);
   }
 
-  v10 = [(PTModule *)self title];
-  v11 = [PTModule moduleWithTitle:v10 contents:v3];
+  title = [(PTModule *)self title];
+  v11 = [PTModule moduleWithTitle:title contents:array];
 
-  v12 = [(PTModule *)self appearancePredicate];
-  [v11 setAppearancePredicate:v12];
+  appearancePredicate = [(PTModule *)self appearancePredicate];
+  [v11 setAppearancePredicate:appearancePredicate];
 
-  v13 = [(PTModule *)self childSettingsKeyPath];
-  [v11 setChildSettingsKeyPath:v13];
+  childSettingsKeyPath = [(PTModule *)self childSettingsKeyPath];
+  [v11 setChildSettingsKeyPath:childSettingsKeyPath];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(PTModule *)v4 isMemberOfClass:objc_opt_class()]&& BSEqualObjects() && BSEqualStrings() && BSEqualObjects())
+  else if ([(PTModule *)equalCopy isMemberOfClass:objc_opt_class()]&& BSEqualObjects() && BSEqualStrings() && BSEqualObjects())
   {
     v5 = BSEqualObjects();
   }
@@ -626,50 +626,50 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_components];
-  v5 = [v3 appendString:self->_title];
-  v6 = [v3 appendObject:self->_appearancePredicate];
-  v7 = [v3 appendString:self->_childSettingsKeyPath];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_components];
+  v5 = [builder appendString:self->_title];
+  v6 = [builder appendObject:self->_appearancePredicate];
+  v7 = [builder appendString:self->_childSettingsKeyPath];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_components forKey:@"components"];
-  [v4 encodeObject:self->_title forKey:@"title"];
-  [v4 encodeObject:self->_childSettingsKeyPath forKey:@"childKeyPath"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_components forKey:@"components"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_childSettingsKeyPath forKey:@"childKeyPath"];
   if (os_variant_allows_internal_security_policies())
   {
-    [v4 encodeObject:self->_appearancePredicate forKey:@"predicate"];
+    [coderCopy encodeObject:self->_appearancePredicate forKey:@"predicate"];
   }
 }
 
-- (PTModule)initWithCoder:(id)a3
+- (PTModule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"components"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"components"];
   v10 = [(PTModule *)self initWithContents:v9];
   if (v10)
   {
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v10->_title;
     v10->_title = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"childKeyPath"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"childKeyPath"];
     childSettingsKeyPath = v10->_childSettingsKeyPath;
     v10->_childSettingsKeyPath = v13;
 
     if (os_variant_allows_internal_security_policies())
     {
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
       appearancePredicate = v10->_appearancePredicate;
       v10->_appearancePredicate = v15;
 
@@ -690,17 +690,17 @@ void __45__PTModule_section_didInsertRows_deleteRows___block_invoke_2(uint64_t a
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:self->_components copyItems:1];
-  v5 = [(PTModule *)self title];
-  v6 = [PTModule moduleWithTitle:v5 contents:v4];
+  title = [(PTModule *)self title];
+  v6 = [PTModule moduleWithTitle:title contents:v4];
 
-  v7 = [(PTModule *)self childSettingsKeyPath];
-  [v6 setChildSettingsKeyPath:v7];
+  childSettingsKeyPath = [(PTModule *)self childSettingsKeyPath];
+  [v6 setChildSettingsKeyPath:childSettingsKeyPath];
 
-  v8 = [(PTModule *)self appearancePredicate];
-  [v6 setAppearancePredicate:v8];
+  appearancePredicate = [(PTModule *)self appearancePredicate];
+  [v6 setAppearancePredicate:appearancePredicate];
 
   return v6;
 }

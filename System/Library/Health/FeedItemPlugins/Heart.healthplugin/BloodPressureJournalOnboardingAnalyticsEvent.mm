@@ -1,7 +1,7 @@
 @interface BloodPressureJournalOnboardingAnalyticsEvent
 - (NSString)eventName;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation BloodPressureJournalOnboardingAnalyticsEvent
@@ -13,7 +13,7 @@
   return v2;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   sub_29D73F010(MEMORY[0x29EDCA190]);
   v4 = sub_29D939C58();
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
-  sub_29D82D804(v4);
+  sub_29D82D804(sourceCopy);
 
   v5 = sub_29D939C58();
 

@@ -1,5 +1,5 @@
 @interface MobileSafariUIViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsFrameOutOfBounds;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)isAccessibilityElement;
@@ -8,30 +8,30 @@
 
 @implementation MobileSafariUIViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"setShowingReader:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"goBack" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceVariable:@"_tabController" withType:"TabController"];
-  [v3 validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TabDocument" hasInstanceMethod:@"canGoBack" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Application" hasInstanceVariable:@"_browserWindowController" withType:"BrowserWindowController"];
-  [v3 validateClass:@"BrowserWindowController" hasInstanceMethod:@"browserControllers" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"setShowingReader:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"goBack" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceVariable:@"_tabController" withType:"TabController"];
+  [validationsCopy validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TabDocument" hasInstanceMethod:@"canGoBack" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Application" hasInstanceVariable:@"_browserWindowController" withType:"BrowserWindowController"];
+  [validationsCopy validateClass:@"BrowserWindowController" hasInstanceMethod:@"browserControllers" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
 {
   v46 = *MEMORY[0x29EDCA608];
-  v3 = [(MobileSafariUIViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"PageView"];
+  accessibilityIdentification = [(MobileSafariUIViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"PageView"];
 
   if (!v4)
   {
     v28.receiver = self;
     v28.super_class = MobileSafariUIViewAccessibility;
-    v6 = [(MobileSafariUIViewAccessibility *)&v28 accessibilityPerformEscape];
+    accessibilityPerformEscape = [(MobileSafariUIViewAccessibility *)&v28 accessibilityPerformEscape];
     goto LABEL_25;
   }
 
@@ -74,11 +74,11 @@
             abort();
           }
 
-          v17 = [v16 view];
-          v18 = [v17 window];
-          v19 = [(MobileSafariUIViewAccessibility *)self window];
+          view = [v16 view];
+          window = [view window];
+          window2 = [(MobileSafariUIViewAccessibility *)self window];
 
-          if (v18 == v19)
+          if (window == window2)
           {
             v20 = v14;
             goto LABEL_17;
@@ -105,9 +105,9 @@ LABEL_17:
     }
 
     v21 = [v20 safeValueForKey:@"isShowingReader"];
-    v22 = [v21 BOOLValue];
+    bOOLValue = [v21 BOOLValue];
 
-    if (v22)
+    if (bOOLValue)
     {
       v35 = MEMORY[0x29EDCA5F8];
       v36 = 3221225472;
@@ -115,7 +115,7 @@ LABEL_17:
       v38 = &unk_29F2D7A98;
       v39 = v20;
       AXPerformSafeBlock();
-      v6 = 1;
+      accessibilityPerformEscape = 1;
       v23 = v39;
     }
 
@@ -125,7 +125,7 @@ LABEL_17:
       v34.super_class = MobileSafariUIViewAccessibility;
       if ([(MobileSafariUIViewAccessibility *)&v34 accessibilityPerformEscape])
       {
-        v6 = 1;
+        accessibilityPerformEscape = 1;
         goto LABEL_24;
       }
 
@@ -141,12 +141,12 @@ LABEL_17:
         v33 = v20;
         AXPerformSafeBlock();
 
-        v6 = 1;
+        accessibilityPerformEscape = 1;
       }
 
       else
       {
-        v6 = 0;
+        accessibilityPerformEscape = 0;
       }
     }
 
@@ -154,10 +154,10 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v6 = 0;
+  accessibilityPerformEscape = 0;
 LABEL_25:
   v24 = *MEMORY[0x29EDCA608];
-  return v6;
+  return accessibilityPerformEscape;
 }
 
 void __61__MobileSafariUIViewAccessibility_accessibilityPerformEscape__block_invoke_2(uint64_t a1)
@@ -170,8 +170,8 @@ void __61__MobileSafariUIViewAccessibility_accessibilityPerformEscape__block_inv
 
 - (BOOL)_accessibilityIsFrameOutOfBounds
 {
-  v3 = [(MobileSafariUIViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"titleTextViewContainer"];
+  accessibilityIdentification = [(MobileSafariUIViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"titleTextViewContainer"];
 
   if (v4)
   {
@@ -185,8 +185,8 @@ void __61__MobileSafariUIViewAccessibility_accessibilityPerformEscape__block_inv
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(MobileSafariUIViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"titleTextViewContainer"];
+  accessibilityIdentification = [(MobileSafariUIViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"titleTextViewContainer"];
 
   if (v4)
   {
@@ -201,14 +201,14 @@ void __61__MobileSafariUIViewAccessibility_accessibilityPerformEscape__block_inv
 - (id)accessibilityLabel
 {
   v29 = *MEMORY[0x29EDCA608];
-  v3 = [(MobileSafariUIViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"titleTextViewContainer"];
+  accessibilityIdentification = [(MobileSafariUIViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"titleTextViewContainer"];
 
   if (!v4)
   {
     v23.receiver = self;
     v23.super_class = MobileSafariUIViewAccessibility;
-    v16 = [(MobileSafariUIViewAccessibility *)&v23 accessibilityLabel];
+    accessibilityLabel = [(MobileSafariUIViewAccessibility *)&v23 accessibilityLabel];
     goto LABEL_30;
   }
 
@@ -216,8 +216,8 @@ void __61__MobileSafariUIViewAccessibility_accessibilityPerformEscape__block_inv
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(MobileSafariUIViewAccessibility *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  subviews = [(MobileSafariUIViewAccessibility *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v6)
   {
     v8 = 0;
@@ -235,13 +235,13 @@ void __61__MobileSafariUIViewAccessibility_accessibilityPerformEscape__block_inv
     {
       if (*v25 != v10)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(subviews);
       }
 
       v12 = *(*(&v24 + 1) + 8 * i);
-      v13 = [v12 accessibilityIdentification];
-      v14 = v13;
-      if (!v9 && ([v13 isEqualToString:@"titleTextView"] & 1) != 0)
+      accessibilityIdentification2 = [v12 accessibilityIdentification];
+      v14 = accessibilityIdentification2;
+      if (!v9 && ([accessibilityIdentification2 isEqualToString:@"titleTextView"] & 1) != 0)
       {
         v9 = v12;
 LABEL_13:
@@ -264,34 +264,34 @@ LABEL_13:
 LABEL_15:
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v7 = [subviews countByEnumeratingWithState:&v24 objects:v28 count:16];
   }
 
   while (v7);
 LABEL_20:
 
-  v17 = [MEMORY[0x29EDBA050] string];
-  v18 = [v9 accessibilityLabel];
-  if ([v18 length])
+  string = [MEMORY[0x29EDBA050] string];
+  accessibilityLabel2 = [v9 accessibilityLabel];
+  if ([accessibilityLabel2 length])
   {
-    [v17 appendString:v18];
+    [string appendString:accessibilityLabel2];
   }
 
-  v19 = [v8 accessibilityLabel];
+  accessibilityLabel3 = [v8 accessibilityLabel];
 
-  if ([v19 length])
+  if ([accessibilityLabel3 length])
   {
-    if ([v17 length])
+    if ([string length])
     {
-      [v17 appendString:@" "];
+      [string appendString:@" "];
     }
 
-    [v17 appendString:v19];
+    [string appendString:accessibilityLabel3];
   }
 
-  if ([v17 length])
+  if ([string length])
   {
-    v20 = v17;
+    v20 = string;
   }
 
   else
@@ -299,12 +299,12 @@ LABEL_20:
     v20 = 0;
   }
 
-  v16 = v20;
+  accessibilityLabel = v20;
 
 LABEL_30:
   v21 = *MEMORY[0x29EDCA608];
 
-  return v16;
+  return accessibilityLabel;
 }
 
 @end

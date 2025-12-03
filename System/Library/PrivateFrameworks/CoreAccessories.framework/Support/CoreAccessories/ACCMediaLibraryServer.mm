@@ -1,39 +1,39 @@
 @interface ACCMediaLibraryServer
 + (id)sharedServer;
-- (ACCMediaLibraryServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)_isDifferentLibraryList:(id)a3 otherList:(id)a4;
-- (BOOL)findMediaLibraryInfoSync:(id)a3 block:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)nexUpdateStartFull:(id)a3 accessory:(id)a4;
-- (void)accessoryMediaLibraryDetached:(id)a3;
-- (void)accessoryMediaLibraryUpdate:(id)a3 windowPerLibrary:(unsigned int)a4;
-- (void)confirmPlaylistContentUpdate:(id)a3 library:(id)a4 lastRevision:(id)a5;
-- (void)confirmUpdate:(id)a3 library:(id)a4 lastRevision:(id)a5 updateCount:(unsigned int)a6;
+- (ACCMediaLibraryServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)_isDifferentLibraryList:(id)list otherList:(id)otherList;
+- (BOOL)findMediaLibraryInfoSync:(id)sync block:(id)block;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)nexUpdateStartFull:(id)full accessory:(id)accessory;
+- (void)accessoryMediaLibraryDetached:(id)detached;
+- (void)accessoryMediaLibraryUpdate:(id)update windowPerLibrary:(unsigned int)library;
+- (void)confirmPlaylistContentUpdate:(id)update library:(id)library lastRevision:(id)revision;
+- (void)confirmUpdate:(id)update library:(id)library lastRevision:(id)revision updateCount:(unsigned int)count;
 - (void)dealloc;
-- (void)handleMediaLibraryList:(id)a3 provider:(id)a4 xpcConn:(id)a5;
-- (void)iterateAttachedConnectionsSync:(id)a3;
-- (void)iterateMediaLibraryProviderListSync:(id)a3;
-- (void)playAllSongs:(id)a3 library:(id)a4 startItem:(unint64_t)a5;
-- (void)playCollection:(id)a3 library:(id)a4 collection:(unint64_t)a5 type:(int)a6 startIndex:(unsigned int)a7;
-- (void)playCollection:(id)a3 library:(id)a4 collection:(unint64_t)a5 type:(int)a6 startItem:(unint64_t)a7;
-- (void)playCurrentSelection:(id)a3 library:(id)a4;
-- (void)playItems:(id)a3 library:(id)a4 itemList:(id)a5 startIndex:(unsigned int)a6;
-- (void)requestMediaLibraryUpdate:(id)a3;
-- (void)resetUpdate:(id)a3 accessory:(id)a4;
-- (void)sendAvailableLibrariesToAccessory:(id)a3;
-- (void)startMediaLibraryUpdate:(id)a3 library:(id)a4 lastRevision:(id)a5 mediaItemProperties:(unint64_t)a6 playlistProperties:(unint64_t)a7 playlistContentStyle:(int)a8 playlistContentProperties:(unint64_t)a9 reqOptions:(unint64_t)a10;
-- (void)stopAllMediaLibraryUpdate:(id)a3;
-- (void)stopMediaLibraryUpdate:(id)a3 library:(id)a4;
+- (void)handleMediaLibraryList:(id)list provider:(id)provider xpcConn:(id)conn;
+- (void)iterateAttachedConnectionsSync:(id)sync;
+- (void)iterateMediaLibraryProviderListSync:(id)sync;
+- (void)playAllSongs:(id)songs library:(id)library startItem:(unint64_t)item;
+- (void)playCollection:(id)collection library:(id)library collection:(unint64_t)a5 type:(int)type startIndex:(unsigned int)index;
+- (void)playCollection:(id)collection library:(id)library collection:(unint64_t)a5 type:(int)type startItem:(unint64_t)item;
+- (void)playCurrentSelection:(id)selection library:(id)library;
+- (void)playItems:(id)items library:(id)library itemList:(id)list startIndex:(unsigned int)index;
+- (void)requestMediaLibraryUpdate:(id)update;
+- (void)resetUpdate:(id)update accessory:(id)accessory;
+- (void)sendAvailableLibrariesToAccessory:(id)accessory;
+- (void)startMediaLibraryUpdate:(id)update library:(id)library lastRevision:(id)revision mediaItemProperties:(unint64_t)properties playlistProperties:(unint64_t)playlistProperties playlistContentStyle:(int)style playlistContentProperties:(unint64_t)contentProperties reqOptions:(unint64_t)self0;
+- (void)stopAllMediaLibraryUpdate:(id)update;
+- (void)stopMediaLibraryUpdate:(id)update library:(id)library;
 @end
 
 @implementation ACCMediaLibraryServer
 
-- (ACCMediaLibraryServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCMediaLibraryServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
-  v6 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = ACCMediaLibraryServer;
-  v7 = [(ACCFeatureServer *)&v18 initWithXPCServiceName:v6 andFeatureNotification:a4];
+  v7 = [(ACCFeatureServer *)&v18 initWithXPCServiceName:nameCopy andFeatureNotification:notification];
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -63,9 +63,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v20 = v6;
+    v20 = nameCopy;
     v21 = 2080;
-    v22 = a4;
+    notificationCopy = notification;
     v23 = 2112;
     v24 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "initWithXPCServiceName: serviceName='%@' notification='%s' self=%@", buf, 0x20u);
@@ -120,7 +120,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dealloc: self=%@", buf, 0xCu);
   }
 
@@ -138,15 +138,15 @@
   [(ACCFeatureServer *)&v9 dealloc];
 }
 
-- (void)iterateAttachedConnectionsSync:(id)a3
+- (void)iterateAttachedConnectionsSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -157,13 +157,13 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 1;
-      v11 = [v10 accessoryUID];
-      v4[2](v4, v11, &v12);
+      accessoryUID = [v10 accessoryUID];
+      syncCopy[2](syncCopy, accessoryUID, &v12);
 
       if (v12 != 1)
       {
@@ -172,7 +172,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -184,15 +184,15 @@ LABEL_3:
   }
 }
 
-- (void)iterateMediaLibraryProviderListSync:(id)a3
+- (void)iterateMediaLibraryProviderListSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_mediaLibraryProviderInfoList allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_mediaLibraryProviderInfoList allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -203,12 +203,12 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = 1;
-      v4[2](v4, v10, &v11);
+      syncCopy[2](syncCopy, v10, &v11);
       if (v11 != 1)
       {
         break;
@@ -216,7 +216,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -228,10 +228,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)findMediaLibraryInfoSync:(id)a3 block:(id)a4
+- (BOOL)findMediaLibraryInfoSync:(id)sync block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -240,9 +240,9 @@ LABEL_3:
   v11[1] = 3221225472;
   v11[2] = __56__ACCMediaLibraryServer_findMediaLibraryInfoSync_block___block_invoke;
   v11[3] = &unk_100229C68;
-  v8 = v6;
+  v8 = syncCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = blockCopy;
   v13 = v9;
   v14 = &v15;
   [(ACCMediaLibraryServer *)self iterateMediaLibraryProviderListSync:v11];
@@ -268,9 +268,9 @@ void __56__ACCMediaLibraryServer_findMediaLibraryInfoSync_block___block_invoke(v
   }
 }
 
-- (void)sendAvailableLibrariesToAccessory:(id)a3
+- (void)sendAvailableLibrariesToAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -300,7 +300,7 @@ void __56__ACCMediaLibraryServer_findMediaLibraryInfoSync_block___block_invoke(v
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "sendAvailableLibrariesToAccessory: %@", &buf, 0xCu);
   }
 
@@ -313,7 +313,7 @@ void __56__ACCMediaLibraryServer_findMediaLibraryInfoSync_block___block_invoke(v
   v31[2] = __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_invoke;
   v31[3] = &unk_100229C90;
   p_buf = &buf;
-  v8 = v4;
+  v8 = accessoryCopy;
   v32 = v8;
   [(ACCMediaLibraryServer *)self iterateMediaLibraryProviderListSync:v31];
   if (gLogObjects && gNumLogObjects >= 5)
@@ -636,11 +636,11 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
   return _objc_release_x3();
 }
 
-- (void)handleMediaLibraryList:(id)a3 provider:(id)a4 xpcConn:(id)a5
+- (void)handleMediaLibraryList:(id)list provider:(id)provider xpcConn:(id)conn
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listCopy = list;
+  providerCopy = provider;
+  connCopy = conn;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 5;
@@ -670,17 +670,17 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v43 = v8;
+    v43 = listCopy;
     v44 = 2112;
-    v45 = v9;
+    v45 = providerCopy;
     v46 = 2048;
-    v47 = [v10 hash];
+    v47 = [connCopy hash];
     v48 = 2048;
-    v49 = [v10 hash];
+    v49 = [connCopy hash];
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "handleMediaLibraryList: libraryList=%@ providerUID=%@ xpcConn.hash=%lu(%lxh)", buf, 0x2Au);
   }
 
-  v14 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v10 hash]);
+  v14 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [connCopy hash]);
   v15 = [(NSMutableDictionary *)self->_mediaLibraryProviderInfoList objectForKey:v14];
   if (gLogObjects && gNumLogObjects >= 5)
   {
@@ -700,10 +700,10 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v18 = [v10 hash];
-    v19 = [v10 hash];
+    v18 = [connCopy hash];
+    v19 = [connCopy hash];
     *buf = 138413058;
-    v43 = v9;
+    v43 = providerCopy;
     v44 = 2048;
     v45 = v18;
     v46 = 2048;
@@ -715,23 +715,23 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
 
   if (v15)
   {
-    [v15 setProviderUID:v9];
-    v20 = [v15 mediaLibraryList];
-    v21 = [v20 allValues];
-    v22 = [(ACCMediaLibraryServer *)self _isDifferentLibraryList:v21 otherList:v8];
+    [v15 setProviderUID:providerCopy];
+    mediaLibraryList = [v15 mediaLibraryList];
+    allValues = [mediaLibraryList allValues];
+    v22 = [(ACCMediaLibraryServer *)self _isDifferentLibraryList:allValues otherList:listCopy];
 
     if (v22)
     {
       v34 = v14;
-      v35 = self;
-      v23 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+      selfCopy = self;
+      v23 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(listCopy, "count")}];
       [v15 setMediaLibraryList:0];
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v36 = v8;
-      v24 = v8;
+      v36 = listCopy;
+      v24 = listCopy;
       v25 = [v24 countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v25)
       {
@@ -747,8 +747,8 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
             }
 
             v29 = *(*(&v37 + 1) + 8 * i);
-            v30 = [v29 mediaLibraryUID];
-            [v23 setObject:v29 forKey:v30];
+            mediaLibraryUID = [v29 mediaLibraryUID];
+            [v23 setObject:v29 forKey:mediaLibraryUID];
           }
 
           v26 = [v24 countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -761,12 +761,12 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
       if (gLogObjects && gNumLogObjects >= 5)
       {
         v31 = *(gLogObjects + 32);
-        p_isa = &v35->super.super.isa;
+        p_isa = &selfCopy->super.super.isa;
       }
 
       else
       {
-        p_isa = &v35->super.super.isa;
+        p_isa = &selfCopy->super.super.isa;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
           platform_connectionInfo_configStreamGetCategories_cold_2();
@@ -776,17 +776,17 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
         v33 = &_os_log_default;
       }
 
-      v8 = v36;
+      listCopy = v36;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v43 = v9;
+        v43 = providerCopy;
         v44 = 2112;
         v45 = v15;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "handleMediaLibraryList: providerUID=%@ mlInfo=%@", buf, 0x16u);
       }
 
-      [p_isa[8] setObject:v15 forKey:v9];
+      [p_isa[8] setObject:v15 forKey:providerCopy];
       [p_isa sendAvailableLibrariesToAccessory:0];
 
       v14 = v34;
@@ -794,9 +794,9 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
   }
 }
 
-- (void)requestMediaLibraryUpdate:(id)a3
+- (void)requestMediaLibraryUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -826,7 +826,7 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = updateCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "requestMediaLibraryUpdate: accessoryUID=%@", buf, 0xCu);
   }
 
@@ -836,41 +836,41 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
   v10[2] = __51__ACCMediaLibraryServer_requestMediaLibraryUpdate___block_invoke;
   v10[3] = &unk_100225A08;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = updateCopy;
+  v9 = updateCopy;
   dispatch_async(v8, v10);
 }
 
-- (void)resetUpdate:(id)a3 accessory:(id)a4
+- (void)resetUpdate:(id)update accessory:(id)accessory
 {
-  v11 = a3;
-  v6 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:a4];
+  updateCopy = update;
+  v6 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:accessory];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 nextUpdateStartFull];
-    v9 = [v8 containsObject:v11];
+    nextUpdateStartFull = [v6 nextUpdateStartFull];
+    v9 = [nextUpdateStartFull containsObject:updateCopy];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [v7 nextUpdateStartFull];
-      [v10 addObject:v11];
+      nextUpdateStartFull2 = [v7 nextUpdateStartFull];
+      [nextUpdateStartFull2 addObject:updateCopy];
     }
   }
 }
 
-- (BOOL)nexUpdateStartFull:(id)a3 accessory:(id)a4
+- (BOOL)nexUpdateStartFull:(id)full accessory:(id)accessory
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:a4];
+  fullCopy = full;
+  v7 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:accessory];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 nextUpdateStartFull];
-    v10 = [v9 containsObject:v6];
+    nextUpdateStartFull = [v7 nextUpdateStartFull];
+    v10 = [nextUpdateStartFull containsObject:fullCopy];
 
-    v11 = [v8 nextUpdateStartFull];
-    [v11 removeObject:v6];
+    nextUpdateStartFull2 = [v8 nextUpdateStartFull];
+    [nextUpdateStartFull2 removeObject:fullCopy];
   }
 
   else
@@ -881,10 +881,10 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -920,29 +920,29 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
   }
 
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCMediaLibraryXPCServerProtocol];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [[ACCMediaLibraryServerRemote alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v13];
+  v13 = [[ACCMediaLibraryServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v13];
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCMediaLibraryXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __60__ACCMediaLibraryServer_listener_shouldAcceptNewConnection___block_invoke;
   v24[3] = &unk_100227718;
   objc_copyWeak(&v25, &from);
   objc_copyWeak(&v26, &location);
-  [v7 setInvalidationHandler:v24];
+  [connectionCopy setInvalidationHandler:v24];
   v15 = objc_alloc_init(_ACCMediaLibraryProviderInfo);
-  [(_ACCMediaLibraryProviderInfo *)v15 setConnection:v7];
+  [(_ACCMediaLibraryProviderInfo *)v15 setConnection:connectionCopy];
   [(_ACCMediaLibraryProviderInfo *)v15 setServerRemote:v13];
-  v16 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_34];
+  v16 = [connectionCopy remoteObjectProxyWithErrorHandler:&__block_literal_global_34];
   [(_ACCMediaLibraryProviderInfo *)v15 setRemoteObject:v16];
 
-  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 hash]);
+  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [connectionCopy hash]);
   [(NSMutableDictionary *)self->_mediaLibraryProviderInfoList setObject:v15 forKey:v17];
   if (gLogObjects && gNumLogObjects >= 5)
   {
@@ -968,7 +968,7 @@ uint64_t __59__ACCMediaLibraryServer_sendAvailableLibrariesToAccessory___block_i
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "There are now %lu MediaLibraryProvider(s).", buf, 0xCu);
   }
 
-  [v7 resume];
+  [connectionCopy resume];
   v21 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1175,9 +1175,9 @@ void __72__ACCMediaLibraryServer_accessoryMediaLibraryAttached_windowPerLibrary_
   *a3 = 1;
 }
 
-- (void)accessoryMediaLibraryDetached:(id)a3
+- (void)accessoryMediaLibraryDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -1207,23 +1207,23 @@ void __72__ACCMediaLibraryServer_accessoryMediaLibraryAttached_windowPerLibrary_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = detachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "MediaLibrary server, accessoryMediaLibraryDetached: connection %@", buf, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:detachedCopy];
 
   if (v8)
   {
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:detachedCopy];
   }
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __55__ACCMediaLibraryServer_accessoryMediaLibraryDetached___block_invoke;
   v10[3] = &unk_100229D28;
-  v11 = v4;
-  v9 = v4;
+  v11 = detachedCopy;
+  v9 = detachedCopy;
   [(ACCMediaLibraryServer *)self iterateMediaLibraryProviderListSync:v10];
 }
 
@@ -1235,9 +1235,9 @@ void __55__ACCMediaLibraryServer_accessoryMediaLibraryDetached___block_invoke(ui
   *a3 = 1;
 }
 
-- (void)accessoryMediaLibraryUpdate:(id)a3 windowPerLibrary:(unsigned int)a4
+- (void)accessoryMediaLibraryUpdate:(id)update windowPerLibrary:(unsigned int)library
 {
-  v6 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -1267,9 +1267,9 @@ void __55__ACCMediaLibraryServer_accessoryMediaLibraryDetached___block_invoke(ui
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = updateCopy;
     v16 = 1024;
-    v17 = a4;
+    libraryCopy = library;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "MediaLibrary server, accessoryMediaLibraryUpdate: connection %@, windowPerLibrary %d", buf, 0x12u);
   }
 
@@ -1277,9 +1277,9 @@ void __55__ACCMediaLibraryServer_accessoryMediaLibraryDetached___block_invoke(ui
   v11[1] = 3221225472;
   v11[2] = __70__ACCMediaLibraryServer_accessoryMediaLibraryUpdate_windowPerLibrary___block_invoke;
   v11[3] = &unk_100229D50;
-  v12 = v6;
-  v13 = a4;
-  v10 = v6;
+  v12 = updateCopy;
+  libraryCopy2 = library;
+  v10 = updateCopy;
   [(ACCMediaLibraryServer *)self iterateMediaLibraryProviderListSync:v11];
 }
 
@@ -1291,11 +1291,11 @@ void __70__ACCMediaLibraryServer_accessoryMediaLibraryUpdate_windowPerLibrary___
   *a3 = 1;
 }
 
-- (void)startMediaLibraryUpdate:(id)a3 library:(id)a4 lastRevision:(id)a5 mediaItemProperties:(unint64_t)a6 playlistProperties:(unint64_t)a7 playlistContentStyle:(int)a8 playlistContentProperties:(unint64_t)a9 reqOptions:(unint64_t)a10
+- (void)startMediaLibraryUpdate:(id)update library:(id)library lastRevision:(id)revision mediaItemProperties:(unint64_t)properties playlistProperties:(unint64_t)playlistProperties playlistContentStyle:(int)style playlistContentProperties:(unint64_t)contentProperties reqOptions:(unint64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  updateCopy = update;
+  libraryCopy = library;
+  revisionCopy = revision;
   if (gLogObjects)
   {
     v19 = gNumLogObjects < 5;
@@ -1325,21 +1325,21 @@ void __70__ACCMediaLibraryServer_accessoryMediaLibraryUpdate_windowPerLibrary___
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     *buf = 138413570;
-    v38 = v16;
+    v38 = updateCopy;
     v39 = 2112;
-    v40 = v17;
+    v40 = libraryCopy;
     v41 = 2048;
-    v42 = a6;
+    propertiesCopy = properties;
     v43 = 2048;
-    v44 = a7;
+    playlistPropertiesCopy = playlistProperties;
     v45 = 2048;
-    v46 = a9;
+    contentPropertiesCopy = contentProperties;
     v47 = 2112;
-    v48 = v18;
+    v48 = revisionCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "MediaLibrary server, startMediaLibraryUpdate: connection %@, library %@, mediaItemProperties=%llxh playlistProperties=%llxh playlistContentProperties=%llxh, lastRevision %@", buf, 0x3Eu);
   }
 
-  v22 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v16];
+  v22 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:updateCopy];
 
   if (v22)
   {
@@ -1347,15 +1347,15 @@ void __70__ACCMediaLibraryServer_accessoryMediaLibraryUpdate_windowPerLibrary___
     v28[1] = 3221225472;
     v28[2] = __167__ACCMediaLibraryServer_startMediaLibraryUpdate_library_lastRevision_mediaItemProperties_playlistProperties_playlistContentStyle_playlistContentProperties_reqOptions___block_invoke;
     v28[3] = &unk_100229D78;
-    v29 = v16;
-    v23 = v17;
+    v29 = updateCopy;
+    v23 = libraryCopy;
     v30 = v23;
-    v31 = v18;
-    v32 = a6;
-    v36 = a8;
-    v33 = a7;
-    v34 = a9;
-    v35 = a10;
+    v31 = revisionCopy;
+    propertiesCopy2 = properties;
+    styleCopy = style;
+    playlistPropertiesCopy2 = playlistProperties;
+    contentPropertiesCopy2 = contentProperties;
+    optionsCopy = options;
     if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v23 block:v28])
     {
       if (gLogObjects && gNumLogObjects >= 5)
@@ -1406,7 +1406,7 @@ void __70__ACCMediaLibraryServer_accessoryMediaLibraryUpdate_windowPerLibrary___
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v16;
+      v38 = updateCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "accessory %@ not registered", buf, 0xCu);
     }
   }
@@ -1419,10 +1419,10 @@ void __167__ACCMediaLibraryServer_startMediaLibraryUpdate_library_lastRevision_m
   [v4 startMediaLibraryUpdate:*(a1 + 32) library:*(a1 + 40) lastRevision:*(a1 + 48) mediaItemProperties:*(a1 + 56) playlistProperties:*(a1 + 64) playlistContentStyle:*(a1 + 88) playlistContentProperties:v3 reqOptions:*(a1 + 80)];
 }
 
-- (void)stopMediaLibraryUpdate:(id)a3 library:(id)a4
+- (void)stopMediaLibraryUpdate:(id)update library:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  libraryCopy = library;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -1452,9 +1452,9 @@ void __167__ACCMediaLibraryServer_startMediaLibraryUpdate_library_lastRevision_m
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v19 = v6;
+    v19 = updateCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = libraryCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "MediaLibrary server, stopMediaLibraryUpdate: connection %@, library %@", buf, 0x16u);
   }
 
@@ -1462,9 +1462,9 @@ void __167__ACCMediaLibraryServer_startMediaLibraryUpdate_library_lastRevision_m
   v15[1] = 3221225472;
   v15[2] = __56__ACCMediaLibraryServer_stopMediaLibraryUpdate_library___block_invoke;
   v15[3] = &unk_100229DA0;
-  v11 = v6;
+  v11 = updateCopy;
   v16 = v11;
-  v12 = v7;
+  v12 = libraryCopy;
   v17 = v12;
   if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v12 block:v15])
   {
@@ -1499,9 +1499,9 @@ void __56__ACCMediaLibraryServer_stopMediaLibraryUpdate_library___block_invoke(u
   [v3 stopMediaLibraryUpdate:*(a1 + 32) library:*(a1 + 40)];
 }
 
-- (void)stopAllMediaLibraryUpdate:(id)a3
+- (void)stopAllMediaLibraryUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -1530,15 +1530,15 @@ void __56__ACCMediaLibraryServer_stopMediaLibraryUpdate_library___block_invoke(u
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCMediaLibraryServer *)v4 stopAllMediaLibraryUpdate:v7];
+    [(ACCMediaLibraryServer *)updateCopy stopAllMediaLibraryUpdate:v7];
   }
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __51__ACCMediaLibraryServer_stopAllMediaLibraryUpdate___block_invoke;
   v9[3] = &unk_100229D28;
-  v10 = v4;
-  v8 = v4;
+  v10 = updateCopy;
+  v8 = updateCopy;
   [(ACCMediaLibraryServer *)self iterateMediaLibraryProviderListSync:v9];
 }
 
@@ -1550,11 +1550,11 @@ void __51__ACCMediaLibraryServer_stopAllMediaLibraryUpdate___block_invoke(uint64
   *a3 = 1;
 }
 
-- (void)confirmUpdate:(id)a3 library:(id)a4 lastRevision:(id)a5 updateCount:(unsigned int)a6
+- (void)confirmUpdate:(id)update library:(id)library lastRevision:(id)revision updateCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  updateCopy = update;
+  libraryCopy = library;
+  revisionCopy = revision;
   if (gLogObjects)
   {
     v13 = gNumLogObjects < 5;
@@ -1584,13 +1584,13 @@ void __51__ACCMediaLibraryServer_stopAllMediaLibraryUpdate___block_invoke(uint64
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v27 = v10;
+    v27 = updateCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = libraryCopy;
     v30 = 2112;
-    v31 = v12;
+    v31 = revisionCopy;
     v32 = 1024;
-    v33 = a6;
+    countCopy = count;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "MediaLibrary server, confirmUpdate: accessoryUID %@, library %@, lastRevision %@, count %d", buf, 0x26u);
   }
 
@@ -1598,13 +1598,13 @@ void __51__ACCMediaLibraryServer_stopAllMediaLibraryUpdate___block_invoke(uint64
   v21[1] = 3221225472;
   v21[2] = __72__ACCMediaLibraryServer_confirmUpdate_library_lastRevision_updateCount___block_invoke;
   v21[3] = &unk_100229DC8;
-  v16 = v10;
+  v16 = updateCopy;
   v22 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v23 = v17;
-  v18 = v12;
+  v18 = revisionCopy;
   v24 = v18;
-  v25 = a6;
+  countCopy2 = count;
   if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v17 block:v21])
   {
     if (gLogObjects && gNumLogObjects >= 5)
@@ -1682,11 +1682,11 @@ void __72__ACCMediaLibraryServer_confirmUpdate_library_lastRevision_updateCount_
   [v11 confirmUpdate:*(a1 + 32) library:*(a1 + 40) lastRevision:*(a1 + 48) updateCount:*(a1 + 56)];
 }
 
-- (void)confirmPlaylistContentUpdate:(id)a3 library:(id)a4 lastRevision:(id)a5
+- (void)confirmPlaylistContentUpdate:(id)update library:(id)library lastRevision:(id)revision
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  libraryCopy = library;
+  revisionCopy = revision;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 5;
@@ -1716,11 +1716,11 @@ void __72__ACCMediaLibraryServer_confirmUpdate_library_lastRevision_updateCount_
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v24 = v8;
+    v24 = updateCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = libraryCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = revisionCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "MediaLibrary server, confirmPlaylistContentUpdate: accessoryUID %@, library %@, lastRevision %@", buf, 0x20u);
   }
 
@@ -1728,11 +1728,11 @@ void __72__ACCMediaLibraryServer_confirmUpdate_library_lastRevision_updateCount_
   v19[1] = 3221225472;
   v19[2] = __75__ACCMediaLibraryServer_confirmPlaylistContentUpdate_library_lastRevision___block_invoke;
   v19[3] = &unk_100229DF0;
-  v14 = v8;
+  v14 = updateCopy;
   v20 = v14;
-  v15 = v9;
+  v15 = libraryCopy;
   v21 = v15;
-  v16 = v10;
+  v16 = revisionCopy;
   v22 = v16;
   if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v15 block:v19])
   {
@@ -1808,10 +1808,10 @@ void __75__ACCMediaLibraryServer_confirmPlaylistContentUpdate_library_lastRevisi
   [v10 confirmPlaylistContentUpdate:a1[4] library:a1[5] lastRevision:a1[6]];
 }
 
-- (void)playCurrentSelection:(id)a3 library:(id)a4
+- (void)playCurrentSelection:(id)selection library:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  libraryCopy = library;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -1847,9 +1847,9 @@ void __75__ACCMediaLibraryServer_confirmPlaylistContentUpdate_library_lastRevisi
   v15[1] = 3221225472;
   v15[2] = __54__ACCMediaLibraryServer_playCurrentSelection_library___block_invoke;
   v15[3] = &unk_100229DA0;
-  v11 = v6;
+  v11 = selectionCopy;
   v16 = v11;
-  v12 = v7;
+  v12 = libraryCopy;
   v17 = v12;
   if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v12 block:v15])
   {
@@ -1884,11 +1884,11 @@ void __54__ACCMediaLibraryServer_playCurrentSelection_library___block_invoke(uin
   [v3 playCurrentSelection:*(a1 + 32) library:*(a1 + 40)];
 }
 
-- (void)playItems:(id)a3 library:(id)a4 itemList:(id)a5 startIndex:(unsigned int)a6
+- (void)playItems:(id)items library:(id)library itemList:(id)list startIndex:(unsigned int)index
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  itemsCopy = items;
+  libraryCopy = library;
+  listCopy = list;
   if (gLogObjects)
   {
     v13 = gNumLogObjects < 5;
@@ -1918,13 +1918,13 @@ void __54__ACCMediaLibraryServer_playCurrentSelection_library___block_invoke(uin
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v27 = v10;
+    v27 = itemsCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = libraryCopy;
     v30 = 2048;
-    v31 = [v12 count];
+    v31 = [listCopy count];
     v32 = 1024;
-    v33 = a6;
+    indexCopy = index;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "MediaLibrary server, playItems: accessoryUID %@, library %@, count %lu, startIndex %d", buf, 0x26u);
   }
 
@@ -1932,13 +1932,13 @@ void __54__ACCMediaLibraryServer_playCurrentSelection_library___block_invoke(uin
   v21[1] = 3221225472;
   v21[2] = __63__ACCMediaLibraryServer_playItems_library_itemList_startIndex___block_invoke;
   v21[3] = &unk_100229DC8;
-  v16 = v10;
+  v16 = itemsCopy;
   v22 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v23 = v17;
-  v18 = v12;
+  v18 = listCopy;
   v24 = v18;
-  v25 = a6;
+  indexCopy2 = index;
   if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v17 block:v21])
   {
     if (gLogObjects && gNumLogObjects >= 5)
@@ -1972,10 +1972,10 @@ void __63__ACCMediaLibraryServer_playItems_library_itemList_startIndex___block_i
   [v3 playItems:*(a1 + 32) library:*(a1 + 40) itemList:*(a1 + 48) startIndex:*(a1 + 56)];
 }
 
-- (void)playCollection:(id)a3 library:(id)a4 collection:(unint64_t)a5 type:(int)a6 startItem:(unint64_t)a7
+- (void)playCollection:(id)collection library:(id)library collection:(unint64_t)a5 type:(int)type startItem:(unint64_t)item
 {
-  v12 = a3;
-  v13 = a4;
+  collectionCopy = collection;
+  libraryCopy = library;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 5;
@@ -2005,15 +2005,15 @@ void __63__ACCMediaLibraryServer_playItems_library_itemList_startIndex___block_i
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    v28 = v12;
+    v28 = collectionCopy;
     v29 = 2112;
-    v30 = v13;
+    v30 = libraryCopy;
     v31 = 2048;
     v32 = a5;
     v33 = 2048;
-    v34 = a6;
+    typeCopy = type;
     v35 = 2048;
-    v36 = a7;
+    itemCopy = item;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "MediaLibrary server, playCollection with startItem: accessoryUID %@, library %@, collection %llu, type %ld, startItem %llu", buf, 0x34u);
   }
 
@@ -2021,13 +2021,13 @@ void __63__ACCMediaLibraryServer_playItems_library_itemList_startIndex___block_i
   v21[1] = 3221225472;
   v21[2] = __74__ACCMediaLibraryServer_playCollection_library_collection_type_startItem___block_invoke;
   v21[3] = &unk_100229E18;
-  v17 = v12;
+  v17 = collectionCopy;
   v22 = v17;
-  v18 = v13;
+  v18 = libraryCopy;
   v23 = v18;
   v24 = a5;
-  v26 = a6;
-  v25 = a7;
+  typeCopy2 = type;
+  itemCopy2 = item;
   if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v18 block:v21])
   {
     if (gLogObjects && gNumLogObjects >= 5)
@@ -2061,10 +2061,10 @@ void __74__ACCMediaLibraryServer_playCollection_library_collection_type_startIte
   [v3 playCollection:*(a1 + 32) library:*(a1 + 40) collection:*(a1 + 48) type:*(a1 + 64) startItem:*(a1 + 56)];
 }
 
-- (void)playCollection:(id)a3 library:(id)a4 collection:(unint64_t)a5 type:(int)a6 startIndex:(unsigned int)a7
+- (void)playCollection:(id)collection library:(id)library collection:(unint64_t)a5 type:(int)type startIndex:(unsigned int)index
 {
-  v12 = a3;
-  v13 = a4;
+  collectionCopy = collection;
+  libraryCopy = library;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 5;
@@ -2094,15 +2094,15 @@ void __74__ACCMediaLibraryServer_playCollection_library_collection_type_startIte
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    v28 = v12;
+    v28 = collectionCopy;
     v29 = 2112;
-    v30 = v13;
+    v30 = libraryCopy;
     v31 = 2048;
     v32 = a5;
     v33 = 2048;
-    v34 = a6;
+    typeCopy = type;
     v35 = 1024;
-    v36 = a7;
+    indexCopy = index;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "MediaLibrary server, playCollection with startIndex: accessoryUID %@, library %@, collection %llu, type %ld, startIndex %u", buf, 0x30u);
   }
 
@@ -2110,13 +2110,13 @@ void __74__ACCMediaLibraryServer_playCollection_library_collection_type_startIte
   v21[1] = 3221225472;
   v21[2] = __75__ACCMediaLibraryServer_playCollection_library_collection_type_startIndex___block_invoke;
   v21[3] = &unk_100229E40;
-  v17 = v12;
+  v17 = collectionCopy;
   v22 = v17;
-  v18 = v13;
+  v18 = libraryCopy;
   v23 = v18;
   v24 = a5;
-  v25 = a6;
-  v26 = a7;
+  typeCopy2 = type;
+  indexCopy2 = index;
   if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v18 block:v21])
   {
     if (gLogObjects && gNumLogObjects >= 5)
@@ -2150,10 +2150,10 @@ void __75__ACCMediaLibraryServer_playCollection_library_collection_type_startInd
   [v3 playCollection:*(a1 + 32) library:*(a1 + 40) collection:*(a1 + 48) type:*(a1 + 56) startIndex:*(a1 + 60)];
 }
 
-- (void)playAllSongs:(id)a3 library:(id)a4 startItem:(unint64_t)a5
+- (void)playAllSongs:(id)songs library:(id)library startItem:(unint64_t)item
 {
-  v8 = a3;
-  v9 = a4;
+  songsCopy = songs;
+  libraryCopy = library;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 5;
@@ -2189,11 +2189,11 @@ void __75__ACCMediaLibraryServer_playCollection_library_collection_type_startInd
   v17[1] = 3221225472;
   v17[2] = __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke;
   v17[3] = &unk_100229E68;
-  v13 = v8;
+  v13 = songsCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = libraryCopy;
   v19 = v14;
-  v20 = a5;
+  itemCopy = item;
   if (![(ACCMediaLibraryServer *)self findMediaLibraryInfoSync:v14 block:v17])
   {
     if (gLogObjects && gNumLogObjects >= 5)
@@ -2227,10 +2227,10 @@ void __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke(v
   [v3 playAllSongs:a1[4] library:a1[5] startItem:a1[6]];
 }
 
-- (BOOL)_isDifferentLibraryList:(id)a3 otherList:(id)a4
+- (BOOL)_isDifferentLibraryList:(id)list otherList:(id)otherList
 {
-  v5 = a3;
-  v6 = a4;
+  listCopy = list;
+  otherListCopy = otherList;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -2260,13 +2260,13 @@ void __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke(v
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v42 = v5;
+    v42 = listCopy;
     v43 = 2112;
-    v44 = v6;
+    v44 = otherListCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "_isDifferentLibraryList: list1=%@ list2=%@", buf, 0x16u);
   }
 
-  if (v5 && v6)
+  if (listCopy && otherListCopy)
   {
     v10 = objc_alloc_init(NSMutableSet);
     v11 = objc_alloc_init(NSMutableSet);
@@ -2274,7 +2274,7 @@ void __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke(v
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v12 = v5;
+    v12 = listCopy;
     v13 = [v12 countByEnumeratingWithState:&v37 objects:v48 count:16];
     if (v13)
     {
@@ -2289,10 +2289,10 @@ void __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke(v
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v37 + 1) + 8 * i) mediaLibraryUID];
-          if (v17)
+          mediaLibraryUID = [*(*(&v37 + 1) + 8 * i) mediaLibraryUID];
+          if (mediaLibraryUID)
           {
-            [v10 addObject:v17];
+            [v10 addObject:mediaLibraryUID];
           }
         }
 
@@ -2306,7 +2306,7 @@ void __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke(v
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v18 = v6;
+    v18 = otherListCopy;
     v19 = [v18 countByEnumeratingWithState:&v33 objects:v47 count:16];
     if (v19)
     {
@@ -2321,10 +2321,10 @@ void __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke(v
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v33 + 1) + 8 * j) mediaLibraryUID];
-          if (v23)
+          mediaLibraryUID2 = [*(*(&v33 + 1) + 8 * j) mediaLibraryUID];
+          if (mediaLibraryUID2)
           {
-            [v11 addObject:v23];
+            [v11 addObject:mediaLibraryUID2];
           }
         }
 
@@ -2378,7 +2378,7 @@ void __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke(v
     }
 
     v26 = !v25;
-    if ((v5 != 0) == (v6 != 0))
+    if ((listCopy != 0) == (otherListCopy != 0))
     {
       if (v26)
       {
@@ -2441,7 +2441,7 @@ void __56__ACCMediaLibraryServer_playAllSongs_library_startItem___block_invoke(v
   block[1] = 3221225472;
   block[2] = __37__ACCMediaLibraryServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_9 != -1)
   {
     dispatch_once(&sharedServer_once_9, block);

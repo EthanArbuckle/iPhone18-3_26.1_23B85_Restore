@@ -1,12 +1,12 @@
 @interface SKUIPlayButtonControl
-+ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)a3 withSize:(CGImage *)a4;
-+ (id)blurColorForColor:(id)a3;
-+ (id)blurColorForImage:(id)a3 forButtonSize:(CGSize)a4 withOffsetRight:(float)a5 withOffsetBottom:(float)a6;
++ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)statistics withSize:(CGImage *)size;
++ (id)blurColorForColor:(id)color;
++ (id)blurColorForImage:(id)image forButtonSize:(CGSize)size withOffsetRight:(float)right withOffsetBottom:(float)bottom;
 - (BOOL)_renderAsEnabled;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
 - (CGSize)buttonSize;
-- (SKUIPlayButtonControl)initWithFrame:(CGRect)a3;
+- (SKUIPlayButtonControl)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)bigHitInsets;
 - (UIImage)backgroundImageForBlurring;
 - (float)playButtonDefaultAlpha;
@@ -18,55 +18,55 @@
 - (id)_gradientBackgroundView;
 - (id)_imageView;
 - (id)_innerProgressLayer;
-- (id)_newShapeViewWithBounds:(CGRect)a3 lineWidth:(double)a4;
+- (id)_newShapeViewWithBounds:(CGRect)bounds lineWidth:(double)width;
 - (id)_outerProgressLayer;
 - (id)_playImage;
 - (id)_selectedLayer;
 - (void)_beginIndeterminateAnimation;
-- (void)_createGradient:(id)a3 withGradientType:(int64_t)a4;
+- (void)_createGradient:(id)gradient withGradientType:(int64_t)type;
 - (void)_prepareForReuse;
-- (void)_showPlayIndicator:(BOOL)a3;
+- (void)_showPlayIndicator:(BOOL)indicator;
 - (void)_toggleToPlayState;
 - (void)_updateBackdropView;
-- (void)_updateBackgroundBlur:(id)a3 withOffsetRight:(float)a4 withOffsetBottom:(float)a5;
+- (void)_updateBackgroundBlur:(id)blur withOffsetRight:(float)right withOffsetBottom:(float)bottom;
 - (void)_updateEnabledState;
 - (void)_updateInnerProgressLayerStroke;
-- (void)_useBlurredBackground:(BOOL)a3;
+- (void)_useBlurredBackground:(BOOL)background;
 - (void)beginIndeterminateAnimation;
 - (void)endIndeterminateAnimation;
-- (void)hideProgressAnimated:(BOOL)a3;
+- (void)hideProgressAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setBackgroundGradientColors:(id)a3 withGradientType:(int64_t)a4;
-- (void)setBackgroundImageForBlurring:(id)a3 withOffsetRight:(float)a4 withOffsetBottom:(float)a5;
-- (void)setBackgroundType:(int64_t)a3;
-- (void)setBufferProgressIndicatorColor:(id)a3 withCompositingFilter:(id)a4;
-- (void)setControlColor:(id)a3;
-- (void)setControlForegroundColor:(id)a3;
-- (void)setCustomPlayImage:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setProgress:(float)a3 animated:(BOOL)a4;
-- (void)setProgressIndicatorColor:(id)a3 withCompositingFilter:(id)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectionColor:(id)a3 withCompositingFilter:(id)a4;
-- (void)setShowBorder:(BOOL)a3;
-- (void)setShowOuterBorder:(BOOL)a3;
-- (void)showPlayIndicator:(BOOL)a3 force:(BOOL)a4;
+- (void)setBackdropGroupName:(id)name;
+- (void)setBackgroundGradientColors:(id)colors withGradientType:(int64_t)type;
+- (void)setBackgroundImageForBlurring:(id)blurring withOffsetRight:(float)right withOffsetBottom:(float)bottom;
+- (void)setBackgroundType:(int64_t)type;
+- (void)setBufferProgressIndicatorColor:(id)color withCompositingFilter:(id)filter;
+- (void)setControlColor:(id)color;
+- (void)setControlForegroundColor:(id)color;
+- (void)setCustomPlayImage:(id)image;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setProgress:(float)progress animated:(BOOL)animated;
+- (void)setProgressIndicatorColor:(id)color withCompositingFilter:(id)filter;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectionColor:(id)color withCompositingFilter:(id)filter;
+- (void)setShowBorder:(BOOL)border;
+- (void)setShowOuterBorder:(BOOL)border;
+- (void)showPlayIndicator:(BOOL)indicator force:(BOOL)force;
 - (void)tintColorDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateOuterProgressLayerStroke;
 @end
 
 @implementation SKUIPlayButtonControl
 
-- (SKUIPlayButtonControl)initWithFrame:(CGRect)a3
+- (SKUIPlayButtonControl)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIPlayButtonControl initWithFrame:];
@@ -74,20 +74,20 @@
 
   v14.receiver = self;
   v14.super_class = SKUIPlayButtonControl;
-  v8 = [(SKUIPlayButtonControl *)&v14 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIPlayButtonControl *)&v14 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(SKUIPlayButtonControl *)v8 setBackgroundColor:0];
+    [(SKUIPlayButtonControl *)height setBackgroundColor:0];
     [(SKUIPlayButtonControl *)v9 setOpaque:0];
-    v10 = [(SKUIPlayButtonControl *)v9 layer];
-    [v10 setAllowsGroupBlending:0];
+    layer = [(SKUIPlayButtonControl *)v9 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v11 = [(SKUIPlayButtonControl *)v9 layer];
-    [v11 setAllowsGroupOpacity:0];
+    layer2 = [(SKUIPlayButtonControl *)v9 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    v12 = [(SKUIPlayButtonControl *)v9 _imageView];
-    [(SKUIPlayButtonControl *)v9 addSubview:v12];
+    _imageView = [(SKUIPlayButtonControl *)v9 _imageView];
+    [(SKUIPlayButtonControl *)v9 addSubview:_imageView];
 
     v9->_showingPlayIndicator = 1;
   }
@@ -95,41 +95,41 @@
   return v9;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_didInitialHighlightForTouch = 0;
   v8.receiver = self;
   v8.super_class = SKUIPlayButtonControl;
-  [(SKUIPlayButtonControl *)&v8 touchesBegan:a3 withEvent:a4];
+  [(SKUIPlayButtonControl *)&v8 touchesBegan:began withEvent:event];
   selectedLayer = self->_selectedLayer;
   if (selectedLayer)
   {
-    v6 = [(SKUIPlayButtonShapeView *)selectedLayer layer];
-    [v6 removeAllAnimations];
+    layer = [(SKUIPlayButtonShapeView *)selectedLayer layer];
+    [layer removeAllAnimations];
 
-    v7 = [(SKUIPlayButtonControl *)self _selectedLayer];
-    [v7 setAlpha:1.0];
+    _selectedLayer = [(SKUIPlayButtonControl *)self _selectedLayer];
+    [_selectedLayer setAlpha:1.0];
   }
 
   else
   {
-    v7 = [(SKUIPlayButtonControl *)self _selectedLayer];
-    [(SKUIPlayButtonControl *)self addSubview:v7];
+    _selectedLayer = [(SKUIPlayButtonControl *)self _selectedLayer];
+    [(SKUIPlayButtonControl *)self addSubview:_selectedLayer];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if ([(SKUIPlayButtonControl *)self isDisabledButSelectable])
   {
-    v8 = [(SKUIPlayButtonControl *)self element];
+    element = [(SKUIPlayButtonControl *)self element];
 
-    if (v8)
+    if (element)
     {
-      v9 = [(SKUIPlayButtonControl *)self element];
-      [v9 dispatchEvent:0x28280CC48 eventAttribute:0x28280CC68 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
+      element2 = [(SKUIPlayButtonControl *)self element];
+      [element2 dispatchEvent:0x28280CC48 eventAttribute:0x28280CC68 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
     }
 
     [(SKUIPlayButtonControl *)self sendActionsForControlEvents:256];
@@ -139,7 +139,7 @@
   {
     v10.receiver = self;
     v10.super_class = SKUIPlayButtonControl;
-    [(SKUIPlayButtonControl *)&v10 touchesEnded:v6 withEvent:v7];
+    [(SKUIPlayButtonControl *)&v10 touchesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
@@ -179,17 +179,17 @@
     v7 = 0.0;
   }
 
-  v8 = [(SKUIPlayButtonControl *)self _imageView];
-  [v8 setFrame:{v7, 0.0, v4, v6}];
+  _imageView = [(SKUIPlayButtonControl *)self _imageView];
+  [_imageView setFrame:{v7, 0.0, v4, v6}];
 
-  v9 = [(SKUIPlayButtonControl *)self _backgroundView];
-  [v9 setFrame:{0.0, 0.0, v4, v6}];
+  _backgroundView = [(SKUIPlayButtonControl *)self _backgroundView];
+  [_backgroundView setFrame:{0.0, 0.0, v4, v6}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SKUIPlayButtonControl *)self hitRect];
   v10 = x;
   v11 = y;
@@ -197,17 +197,17 @@
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = SKUIPlayButtonControl;
-  [(SKUIPlayButtonControl *)&v4 setEnabled:a3];
+  [(SKUIPlayButtonControl *)&v4 setEnabled:enabled];
   [(SKUIPlayButtonControl *)self _updateEnabledState];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = SKUIPlayButtonControl;
   [(SKUIPlayButtonControl *)&v9 setHighlighted:?];
@@ -215,20 +215,20 @@
   {
     if (self->_backgroundType == 3)
     {
-      v5 = [(SKUIPlayButtonControl *)self _classicBackdropView];
-      v6 = [v5 inputSettings];
+      _classicBackdropView = [(SKUIPlayButtonControl *)self _classicBackdropView];
+      inputSettings = [_classicBackdropView inputSettings];
 
       v7 = 0.7;
-      if (v3)
+      if (highlightedCopy)
       {
         v7 = 0.35;
       }
 
-      [v6 setColorTintAlpha:v7];
+      [inputSettings setColorTintAlpha:v7];
       [(SKUIPlayButtonControl *)self _updateBackdropView];
     }
 
-    else if (!v3)
+    else if (!highlightedCopy)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
@@ -250,41 +250,41 @@ void __40__SKUIPlayButtonControl_setHighlighted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v6.receiver = self;
   v6.super_class = SKUIPlayButtonControl;
-  [(SKUIPlayButtonControl *)&v6 setSelected:a3];
+  [(SKUIPlayButtonControl *)&v6 setSelected:selected];
   if (self->_backgroundType == 3)
   {
-    v4 = [(SKUIPlayButtonControl *)self _classicBackdropView];
-    v5 = [v4 inputSettings];
-    [v5 setSelected:{-[SKUIPlayButtonControl isSelected](self, "isSelected")}];
+    _classicBackdropView = [(SKUIPlayButtonControl *)self _classicBackdropView];
+    inputSettings = [_classicBackdropView inputSettings];
+    [inputSettings setSelected:{-[SKUIPlayButtonControl isSelected](self, "isSelected")}];
 
     [(SKUIPlayButtonControl *)self _updateBackdropView];
   }
 }
 
-- (void)setProgressIndicatorColor:(id)a3 withCompositingFilter:(id)a4
+- (void)setProgressIndicatorColor:(id)color withCompositingFilter:(id)filter
 {
-  v11 = a3;
-  v7 = a4;
+  colorCopy = color;
+  filterCopy = filter;
   progressIndicatorColor = self->_progressIndicatorColor;
-  if (progressIndicatorColor == v11 || ([(UIColor *)progressIndicatorColor isEqual:?]& 1) != 0)
+  if (progressIndicatorColor == colorCopy || ([(UIColor *)progressIndicatorColor isEqual:?]& 1) != 0)
   {
     v9 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_progressIndicatorColor, a3);
+    objc_storeStrong(&self->_progressIndicatorColor, color);
     v9 = 1;
   }
 
   progressIndicatorCompositingFilter = self->_progressIndicatorCompositingFilter;
-  if (progressIndicatorCompositingFilter != v7 && ([progressIndicatorCompositingFilter isEqual:v7] & 1) == 0)
+  if (progressIndicatorCompositingFilter != filterCopy && ([progressIndicatorCompositingFilter isEqual:filterCopy] & 1) == 0)
   {
-    objc_storeStrong(&self->_progressIndicatorCompositingFilter, a4);
+    objc_storeStrong(&self->_progressIndicatorCompositingFilter, filter);
     goto LABEL_10;
   }
 
@@ -308,12 +308,12 @@ LABEL_10:
 {
   [(SKUIPlayButtonControl *)self setProgress:0 animated:0.0];
   indeterminate = self->_indeterminate;
-  v4 = [(SKUIPlayButtonShapeView *)self->_outerProgressLayer layer];
-  v5 = v4;
+  layer = [(SKUIPlayButtonShapeView *)self->_outerProgressLayer layer];
+  v5 = layer;
   if (indeterminate)
   {
-    v6 = [v4 animationKeys];
-    v7 = [v6 count];
+    animationKeys = [layer animationKeys];
+    v7 = [animationKeys count];
 
     if (v7)
     {
@@ -323,27 +323,27 @@ LABEL_10:
 
   else
   {
-    [v4 setStrokeStart:0.119999997];
+    [layer setStrokeStart:0.119999997];
     self->_indeterminate = 1;
   }
 
-  v8 = [(SKUIPlayButtonControl *)self window];
+  window = [(SKUIPlayButtonControl *)self window];
 
-  if (v8)
+  if (window)
   {
 
     [(SKUIPlayButtonControl *)self _beginIndeterminateAnimation];
   }
 }
 
-+ (id)blurColorForColor:(id)a3
++ (id)blurColorForColor:(id)color
 {
   v9 = 0.0;
   v10 = 0.0;
   v7 = 0;
   v8 = 0;
   v3 = 0;
-  if ([a3 getHue:&v10 saturation:&v9 brightness:&v8 alpha:&v7])
+  if ([color getHue:&v10 saturation:&v9 brightness:&v8 alpha:&v7])
   {
     v9 = v9 * 1.8;
     v4 = [MEMORY[0x277D75348] colorWithHue:v10 saturation:? brightness:? alpha:?];
@@ -354,25 +354,25 @@ LABEL_10:
   return v3;
 }
 
-+ (id)blurColorForImage:(id)a3 forButtonSize:(CGSize)a4 withOffsetRight:(float)a5 withOffsetBottom:(float)a6
++ (id)blurColorForImage:(id)image forButtonSize:(CGSize)size withOffsetRight:(float)right withOffsetBottom:(float)bottom
 {
-  width = a4.width;
-  v9 = a3;
-  [v9 scale];
+  width = size.width;
+  imageCopy = image;
+  [imageCopy scale];
   v11 = v10;
-  [v9 size];
+  [imageCopy size];
   v13 = v11 * v12;
-  [v9 size];
+  [imageCopy size];
   v15 = width * v11;
-  v16 = v11 * v14 - a6 * v11 - v15;
-  v17 = [v9 CGImage];
+  v16 = v11 * v14 - bottom * v11 - v15;
+  cGImage = [imageCopy CGImage];
 
-  v21.origin.x = v13 - a5 * v11 - v15;
+  v21.origin.x = v13 - right * v11 - v15;
   v21.origin.y = v16;
   v21.size.width = v15;
   v21.size.height = v15;
   v22 = CGRectIntegral(v21);
-  v18 = CGImageCreateWithImageInRect(v17, v22);
+  v18 = CGImageCreateWithImageInRect(cGImage, v22);
   [SKUIPlayButtonControl _calculateStatistics:v18 withSize:v15, v15];
   CGImageRelease(v18);
 
@@ -392,27 +392,27 @@ LABEL_10:
 {
   if (self->_indeterminate)
   {
-    v3 = [(SKUIPlayButtonControl *)self _outerProgressLayer];
-    v4 = [v3 layer];
+    _outerProgressLayer = [(SKUIPlayButtonControl *)self _outerProgressLayer];
+    layer = [_outerProgressLayer layer];
 
-    [v4 setStrokeStart:0.0];
-    [v4 removeAllAnimations];
-    v5 = [(SKUIPlayButtonControl *)self _outerProgressLayer];
+    [layer setStrokeStart:0.0];
+    [layer removeAllAnimations];
+    _outerProgressLayer2 = [(SKUIPlayButtonControl *)self _outerProgressLayer];
     CGAffineTransformMakeRotation(&v6, -1.57079633);
-    [v5 setTransform:&v6];
+    [_outerProgressLayer2 setTransform:&v6];
 
     self->_indeterminate = 0;
     [(SKUIPlayButtonControl *)self updateOuterProgressLayerStroke];
   }
 }
 
-- (void)hideProgressAnimated:(BOOL)a3
+- (void)hideProgressAnimated:(BOOL)animated
 {
   if (self->_showingProgress || self->_indeterminate)
   {
     [(SKUIPlayButtonControl *)self endIndeterminateAnimation];
-    v4 = [(SKUIPlayButtonControl *)self _innerProgressLayer];
-    [v4 setHidden:1];
+    _innerProgressLayer = [(SKUIPlayButtonControl *)self _innerProgressLayer];
+    [_innerProgressLayer setHidden:1];
 
     if (self->_backgroundType == 3)
     {
@@ -421,15 +421,15 @@ LABEL_10:
 
     else
     {
-      v5 = [(SKUIPlayButtonControl *)self _backgroundView];
-      v6 = v5;
-      if (v5)
+      _backgroundView = [(SKUIPlayButtonControl *)self _backgroundView];
+      v6 = _backgroundView;
+      if (_backgroundView)
       {
-        [v5 setHidden:0];
+        [_backgroundView setHidden:0];
         [v6 setAlpha:1.0];
-        v7 = [(SKUIPlayButtonControl *)self _imageView];
+        _imageView = [(SKUIPlayButtonControl *)self _imageView];
         [(SKUIPlayButtonControl *)self playButtonDefaultAlpha];
-        [v7 setAlpha:v8];
+        [_imageView setAlpha:v8];
       }
     }
 
@@ -451,29 +451,29 @@ LABEL_10:
   return result;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   backdropGroupName = self->_backdropGroupName;
-  if (backdropGroupName != v5)
+  if (backdropGroupName != nameCopy)
   {
-    v7 = v5;
-    backdropGroupName = [backdropGroupName isEqualToString:v5];
-    v5 = v7;
+    v7 = nameCopy;
+    backdropGroupName = [backdropGroupName isEqualToString:nameCopy];
+    nameCopy = v7;
     if ((backdropGroupName & 1) == 0)
     {
-      objc_storeStrong(&self->_backdropGroupName, a3);
+      objc_storeStrong(&self->_backdropGroupName, name);
       backdropGroupName = [(_UIBackdropView *)self->_backdropView setGroupName:self->_backdropGroupName];
-      v5 = v7;
+      nameCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](backdropGroupName, v5);
+  MEMORY[0x2821F96F8](backdropGroupName, nameCopy);
 }
 
-- (void)setBackgroundImageForBlurring:(id)a3 withOffsetRight:(float)a4 withOffsetBottom:(float)a5
+- (void)setBackgroundImageForBlurring:(id)blurring withOffsetRight:(float)right withOffsetBottom:(float)bottom
 {
-  obj = a3;
+  obj = blurring;
   WeakRetained = objc_loadWeakRetained(&self->_backgroundImageForBlurring);
 
   v9 = obj;
@@ -485,8 +485,8 @@ LABEL_10:
     if (obj)
     {
       v11 = objc_loadWeakRetained(&self->_backgroundImageForBlurring);
-      *&v12 = a4;
-      *&v13 = a5;
+      *&v12 = right;
+      *&v13 = bottom;
       [(SKUIPlayButtonControl *)self _updateBackgroundBlur:v11 withOffsetRight:v12 withOffsetBottom:v13];
 
       v9 = obj;
@@ -494,9 +494,9 @@ LABEL_10:
   }
 }
 
-- (void)setBackgroundType:(int64_t)a3
+- (void)setBackgroundType:(int64_t)type
 {
-  if (self->_backgroundType == a3)
+  if (self->_backgroundType == type)
   {
     return;
   }
@@ -505,8 +505,8 @@ LABEL_10:
   v27 = v5;
   v28 = v4;
   v29 = v3;
-  self->_backgroundType = a3;
-  if (a3 == 3)
+  self->_backgroundType = type;
+  if (type == 3)
   {
     v11 = 0;
     v10 = 1;
@@ -514,13 +514,13 @@ LABEL_10:
 
   else
   {
-    if (a3 != 4)
+    if (type != 4)
     {
       if (!self->_backgroundView)
       {
-        v15 = [(SKUIPlayButtonControl *)self _defaultBackgroundView];
+        _defaultBackgroundView = [(SKUIPlayButtonControl *)self _defaultBackgroundView];
         backgroundView = self->_backgroundView;
-        self->_backgroundView = v15;
+        self->_backgroundView = _defaultBackgroundView;
 
         [(SKUIPlayButtonControl *)self insertSubview:self->_backgroundView atIndex:0];
       }
@@ -541,9 +541,9 @@ LABEL_10:
   {
     if (!self->_gradientBackgroundView)
     {
-      v13 = [(SKUIPlayButtonControl *)self _gradientBackgroundView];
+      _gradientBackgroundView = [(SKUIPlayButtonControl *)self _gradientBackgroundView];
       gradientBackgroundView = self->_gradientBackgroundView;
-      self->_gradientBackgroundView = v13;
+      self->_gradientBackgroundView = _gradientBackgroundView;
 
       [(SKUIPlayButtonControl *)self _createGradient:self->_gradientColors withGradientType:self->_gradientType];
       [(SKUIPlayButtonControl *)self insertSubview:self->_gradientBackgroundView atIndex:0];
@@ -569,7 +569,7 @@ LABEL_17:
     {
       [(_UIBackdropView *)backdropView removeFromSuperview];
       [(_UIBackdropView *)self->_backdropView removeMaskViews];
-      v19 = self->_backdropView;
+      _classicBackdropView = self->_backdropView;
       self->_backdropView = 0;
       goto LABEL_19;
     }
@@ -579,17 +579,17 @@ LABEL_17:
 
   if (!self->_backdropView)
   {
-    v19 = [(SKUIPlayButtonControl *)self _classicBackdropView];
-    v20 = [v19 effectView];
-    v21 = [v20 layer];
+    _classicBackdropView = [(SKUIPlayButtonControl *)self _classicBackdropView];
+    effectView = [_classicBackdropView effectView];
+    layer = [effectView layer];
     [(SKUIPlayButtonControl *)self buttonCornerRadius];
-    [v21 setCornerRadius:v22];
+    [layer setCornerRadius:v22];
 
-    v23 = [v19 layer];
+    layer2 = [_classicBackdropView layer];
     [(SKUIPlayButtonControl *)self buttonCornerRadius];
-    [v23 setCornerRadius:v24];
+    [layer2 setCornerRadius:v24];
 
-    [(SKUIPlayButtonControl *)self insertSubview:v19 atIndex:0];
+    [(SKUIPlayButtonControl *)self insertSubview:_classicBackdropView atIndex:0];
 LABEL_19:
   }
 
@@ -599,38 +599,38 @@ LABEL_20:
   [(SKUIPlayButtonControl *)self _prepareForReuse];
 }
 
-- (void)setBackgroundGradientColors:(id)a3 withGradientType:(int64_t)a4
+- (void)setBackgroundGradientColors:(id)colors withGradientType:(int64_t)type
 {
-  v7 = a3;
-  if (*&self->_gradientColors != __PAIR128__(a4, v7))
+  colorsCopy = colors;
+  if (*&self->_gradientColors != __PAIR128__(type, colorsCopy))
   {
-    self->_gradientType = a4;
-    v8 = v7;
-    objc_storeStrong(&self->_gradientColors, a3);
-    v7 = v8;
+    self->_gradientType = type;
+    v8 = colorsCopy;
+    objc_storeStrong(&self->_gradientColors, colors);
+    colorsCopy = v8;
   }
 }
 
-- (void)setBufferProgressIndicatorColor:(id)a3 withCompositingFilter:(id)a4
+- (void)setBufferProgressIndicatorColor:(id)color withCompositingFilter:(id)filter
 {
-  v11 = a3;
-  v7 = a4;
+  colorCopy = color;
+  filterCopy = filter;
   bufferProgressIndicatorColor = self->_bufferProgressIndicatorColor;
-  if (bufferProgressIndicatorColor == v11 || ([(UIColor *)bufferProgressIndicatorColor isEqual:?]& 1) != 0)
+  if (bufferProgressIndicatorColor == colorCopy || ([(UIColor *)bufferProgressIndicatorColor isEqual:?]& 1) != 0)
   {
     v9 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_bufferProgressIndicatorColor, a3);
+    objc_storeStrong(&self->_bufferProgressIndicatorColor, color);
     v9 = 1;
   }
 
   bufferProgressIndicatorCompositingFilter = self->_bufferProgressIndicatorCompositingFilter;
-  if (bufferProgressIndicatorCompositingFilter != v7 && ([bufferProgressIndicatorCompositingFilter isEqual:v7] & 1) == 0)
+  if (bufferProgressIndicatorCompositingFilter != filterCopy && ([bufferProgressIndicatorCompositingFilter isEqual:filterCopy] & 1) == 0)
   {
-    objc_storeStrong(&self->_bufferProgressIndicatorCompositingFilter, a4);
+    objc_storeStrong(&self->_bufferProgressIndicatorCompositingFilter, filter);
     goto LABEL_10;
   }
 
@@ -641,117 +641,117 @@ LABEL_10:
   }
 }
 
-- (void)setControlColor:(id)a3
+- (void)setControlColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   backgroundColor = self->_backgroundColor;
-  if (backgroundColor != v5)
+  if (backgroundColor != colorCopy)
   {
-    v12 = v5;
-    backgroundColor = [(UIColor *)backgroundColor isEqual:v5];
-    v5 = v12;
+    v12 = colorCopy;
+    backgroundColor = [(UIColor *)backgroundColor isEqual:colorCopy];
+    colorCopy = v12;
     if ((backgroundColor & 1) == 0)
     {
-      objc_storeStrong(&self->_backgroundColor, a3);
-      v5 = v12;
+      objc_storeStrong(&self->_backgroundColor, color);
+      colorCopy = v12;
       backgroundType = self->_backgroundType;
       v8 = backgroundType > 4;
       v9 = (1 << backgroundType) & 0x16;
       if (!v8 && v9 != 0)
       {
-        v11 = [(SKUIPlayButtonControl *)self _backgroundView];
-        [v11 setBackgroundColor:self->_backgroundColor];
+        _backgroundView = [(SKUIPlayButtonControl *)self _backgroundView];
+        [_backgroundView setBackgroundColor:self->_backgroundColor];
 
-        v5 = v12;
+        colorCopy = v12;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](backgroundColor, v5);
+  MEMORY[0x2821F96F8](backgroundColor, colorCopy);
 }
 
-- (void)setSelectionColor:(id)a3 withCompositingFilter:(id)a4
+- (void)setSelectionColor:(id)color withCompositingFilter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  filterCopy = filter;
   selectionColor = self->_selectionColor;
-  self->_selectionColor = v6;
-  v9 = v6;
+  self->_selectionColor = colorCopy;
+  v9 = colorCopy;
 
   selectionCompositingFilter = self->_selectionCompositingFilter;
-  self->_selectionCompositingFilter = v7;
-  v11 = v7;
+  self->_selectionCompositingFilter = filterCopy;
+  v11 = filterCopy;
 
-  v12 = [(SKUIPlayButtonShapeView *)self->_selectedLayer layer];
-  [v12 setFillColor:{-[UIColor CGColor](v9, "CGColor")}];
+  layer = [(SKUIPlayButtonShapeView *)self->_selectedLayer layer];
+  [layer setFillColor:{-[UIColor CGColor](v9, "CGColor")}];
 
-  v13 = [(SKUIPlayButtonShapeView *)self->_selectedLayer layer];
+  layer2 = [(SKUIPlayButtonShapeView *)self->_selectedLayer layer];
 
-  [v13 setCompositingFilter:v11];
+  [layer2 setCompositingFilter:v11];
 }
 
-- (void)setControlForegroundColor:(id)a3
+- (void)setControlForegroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   controlForeGroundColor = self->_controlForeGroundColor;
-  if (controlForeGroundColor != v5)
+  if (controlForeGroundColor != colorCopy)
   {
-    v8 = v5;
-    controlForeGroundColor = [(UIColor *)controlForeGroundColor isEqual:v5];
-    v5 = v8;
+    v8 = colorCopy;
+    controlForeGroundColor = [(UIColor *)controlForeGroundColor isEqual:colorCopy];
+    colorCopy = v8;
     if ((controlForeGroundColor & 1) == 0)
     {
-      objc_storeStrong(&self->_controlForeGroundColor, a3);
-      v7 = [(SKUIPlayButtonControl *)self _imageView];
-      [v7 setTintColor:v8];
+      objc_storeStrong(&self->_controlForeGroundColor, color);
+      _imageView = [(SKUIPlayButtonControl *)self _imageView];
+      [_imageView setTintColor:v8];
 
-      v5 = v8;
+      colorCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](controlForeGroundColor, v5);
+  MEMORY[0x2821F96F8](controlForeGroundColor, colorCopy);
 }
 
-- (void)setCustomPlayImage:(id)a3
+- (void)setCustomPlayImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   customPlayImage = self->_customPlayImage;
-  if (customPlayImage != v5)
+  if (customPlayImage != imageCopy)
   {
-    v7 = v5;
-    customPlayImage = [customPlayImage isEqual:v5];
-    v5 = v7;
+    v7 = imageCopy;
+    customPlayImage = [customPlayImage isEqual:imageCopy];
+    imageCopy = v7;
     if ((customPlayImage & 1) == 0)
     {
-      objc_storeStrong(&self->_customPlayImage, a3);
+      objc_storeStrong(&self->_customPlayImage, image);
       customPlayImage = [(SKUIPlayButtonControl *)self _showPlayIndicator:self->_showingPlayIndicator];
-      v5 = v7;
+      imageCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](customPlayImage, v5);
+  MEMORY[0x2821F96F8](customPlayImage, imageCopy);
 }
 
-- (void)setProgress:(float)a3 animated:(BOOL)a4
+- (void)setProgress:(float)progress animated:(BOOL)animated
 {
   if (!self->_showingProgress)
   {
     [(SKUIPlayButtonControl *)self _toggleToPlayState];
   }
 
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    if (a3 > 0.00000011921 && self->_indeterminate)
+    if (progress > 0.00000011921 && self->_indeterminate)
     {
       [(SKUIPlayButtonControl *)self endIndeterminateAnimation];
     }
 
-    v7 = fmax(fmin(a3, 1.0), 0.0);
+    v7 = fmax(fmin(progress, 1.0), 0.0);
     self->_progress = v7;
-    v8 = [(SKUIPlayButtonControl *)self _innerProgressLayer];
-    v12 = [v8 layer];
+    _innerProgressLayer = [(SKUIPlayButtonControl *)self _innerProgressLayer];
+    layer = [_innerProgressLayer layer];
 
-    if (a4)
+    if (animated)
     {
       v9 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
       [v9 setDuration:0.2];
@@ -761,26 +761,26 @@ LABEL_10:
       v11 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
       [v9 setToValue:v11];
 
-      [v12 addAnimation:v9 forKey:0];
+      [layer addAnimation:v9 forKey:0];
     }
 
     else
     {
-      [v12 removeAllAnimations];
-      [v12 setStrokeEnd:self->_progress];
+      [layer removeAllAnimations];
+      [layer setStrokeEnd:self->_progress];
     }
   }
 }
 
-- (void)setShowBorder:(BOOL)a3
+- (void)setShowBorder:(BOOL)border
 {
-  if (self->_showBorder != a3)
+  if (self->_showBorder != border)
   {
-    self->_showBorder = a3;
-    if (a3)
+    self->_showBorder = border;
+    if (border)
     {
-      v5 = [(SKUIPlayButtonControl *)self _borderLayer];
-      [v5 setHidden:0];
+      _borderLayer = [(SKUIPlayButtonControl *)self _borderLayer];
+      [_borderLayer setHidden:0];
     }
 
     else
@@ -795,24 +795,24 @@ LABEL_10:
   }
 }
 
-- (void)setShowOuterBorder:(BOOL)a3
+- (void)setShowOuterBorder:(BOOL)border
 {
-  if (self->_showOuterBorder != a3)
+  if (self->_showOuterBorder != border)
   {
-    v4 = a3;
-    self->_showOuterBorder = a3;
-    v6 = [(SKUIPlayButtonControl *)self _outerProgressLayer];
-    [v6 setHidden:!v4];
+    borderCopy = border;
+    self->_showOuterBorder = border;
+    _outerProgressLayer = [(SKUIPlayButtonControl *)self _outerProgressLayer];
+    [_outerProgressLayer setHidden:!borderCopy];
 
     [(SKUIPlayButtonControl *)self updateOuterProgressLayerStroke];
   }
 }
 
-- (void)showPlayIndicator:(BOOL)a3 force:(BOOL)a4
+- (void)showPlayIndicator:(BOOL)indicator force:(BOOL)force
 {
-  if (self->_showingPlayIndicator != a3 || a4)
+  if (self->_showingPlayIndicator != indicator || force)
   {
-    self->_showingPlayIndicator = a3;
+    self->_showingPlayIndicator = indicator;
     [(SKUIPlayButtonControl *)self _showPlayIndicator:?];
   }
 }
@@ -822,7 +822,7 @@ LABEL_10:
   bufferProgressIndicatorColor = self->_bufferProgressIndicatorColor;
   if (bufferProgressIndicatorColor)
   {
-    v9 = bufferProgressIndicatorColor;
+    outerBorderColor = bufferProgressIndicatorColor;
     v4 = &OBJC_IVAR___SKUIPlayButtonControl__bufferProgressIndicatorCompositingFilter;
 LABEL_7:
     v5 = *(&self->super.super.super.super.isa + *v4);
@@ -831,20 +831,20 @@ LABEL_7:
 
   if (!self->_usesBlurredBackground || self->_indeterminate || [(SKUIPlayButtonControl *)self showOuterBorder])
   {
-    v9 = [(SKUIPlayButtonControl *)self outerBorderColor];
+    outerBorderColor = [(SKUIPlayButtonControl *)self outerBorderColor];
     v4 = &OBJC_IVAR___SKUIPlayButtonControl__progressIndicatorCompositingFilter;
     goto LABEL_7;
   }
 
-  v9 = 0;
+  outerBorderColor = 0;
   v5 = 0;
 LABEL_8:
-  v6 = [(SKUIPlayButtonShapeView *)self->_outerProgressLayer layer];
-  v7 = v9;
-  [v6 setStrokeColor:{-[UIColor CGColor](v9, "CGColor")}];
+  layer = [(SKUIPlayButtonShapeView *)self->_outerProgressLayer layer];
+  v7 = outerBorderColor;
+  [layer setStrokeColor:{-[UIColor CGColor](outerBorderColor, "CGColor")}];
 
-  v8 = [(SKUIPlayButtonShapeView *)self->_outerProgressLayer layer];
-  [v8 setCompositingFilter:v5];
+  layer2 = [(SKUIPlayButtonShapeView *)self->_outerProgressLayer layer];
+  [layer2 setCompositingFilter:v5];
 }
 
 - (id)_backgroundView
@@ -878,13 +878,13 @@ LABEL_5:
 - (void)_beginIndeterminateAnimation
 {
   [(SKUIPlayButtonControl *)self updateOuterProgressLayerStroke];
-  v3 = [(SKUIPlayButtonControl *)self _outerProgressLayer];
-  v4 = [v3 layer];
-  [v4 removeAllAnimations];
+  _outerProgressLayer = [(SKUIPlayButtonControl *)self _outerProgressLayer];
+  layer = [_outerProgressLayer layer];
+  [layer removeAllAnimations];
 
-  v5 = [(SKUIPlayButtonControl *)self _outerProgressLayer];
+  _outerProgressLayer2 = [(SKUIPlayButtonControl *)self _outerProgressLayer];
   CGAffineTransformMakeRotation(&v7, -1.57079633);
-  [v5 setTransform:&v7];
+  [_outerProgressLayer2 setTransform:&v7];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -928,32 +928,32 @@ uint64_t __53__SKUIPlayButtonControl__beginIndeterminateAnimation__block_invoke_
     [(SKUIPlayButtonControl *)self buttonSize];
     v5 = v4;
     v7 = v6;
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = -1.0 / v9;
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v13 = -1.0 / v12;
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 scale];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 scale];
     v16 = v5 + 1.0 / v15 * 2.0;
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    [v17 scale];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 scale];
     v19 = v7 + 1.0 / v18 * 2.0;
 
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 scale];
+    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen5 scale];
     v22 = [(SKUIPlayButtonControl *)self _newShapeViewWithBounds:v10 lineWidth:v13, v16, v19, 1.0 / v21];
     v23 = self->_borderLayer;
     self->_borderLayer = v22;
 
     v24 = self->_borderLayer;
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIPlayButtonShapeView *)v24 setBackgroundColor:v25];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIPlayButtonShapeView *)v24 setBackgroundColor:clearColor];
 
-    v26 = [(SKUIPlayButtonShapeView *)self->_borderLayer layer];
-    v27 = [MEMORY[0x277D75348] clearColor];
-    [v26 setFillColor:{objc_msgSend(v27, "CGColor")}];
+    layer = [(SKUIPlayButtonShapeView *)self->_borderLayer layer];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [layer setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
     v28 = self->_borderLayer;
     if (self->_innerProgressLayer)
@@ -966,9 +966,9 @@ uint64_t __53__SKUIPlayButtonControl__beginIndeterminateAnimation__block_invoke_
       [(SKUIPlayButtonControl *)self addSubview:v28];
     }
 
-    v29 = [(SKUIPlayButtonShapeView *)self->_borderLayer layer];
+    layer2 = [(SKUIPlayButtonShapeView *)self->_borderLayer layer];
     v30 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.1];
-    [v29 setStrokeColor:{objc_msgSend(v30, "CGColor")}];
+    [layer2 setStrokeColor:{objc_msgSend(v30, "CGColor")}];
 
     borderLayer = self->_borderLayer;
   }
@@ -978,22 +978,22 @@ uint64_t __53__SKUIPlayButtonControl__beginIndeterminateAnimation__block_invoke_
 
 - (id)_cancelImage
 {
-  v2 = [(SKUIPlayButtonControl *)self cancelImage];
-  v3 = [v2 imageWithRenderingMode:2];
+  cancelImage = [(SKUIPlayButtonControl *)self cancelImage];
+  v3 = [cancelImage imageWithRenderingMode:2];
 
   return v3;
 }
 
-- (void)_createGradient:(id)a3 withGradientType:(int64_t)a4
+- (void)_createGradient:(id)gradient withGradientType:(int64_t)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SKUIPlayButtonControl *)self _gradientBackgroundView];
-  v8 = [v7 layer];
+  gradientCopy = gradient;
+  _gradientBackgroundView = [(SKUIPlayButtonControl *)self _gradientBackgroundView];
+  layer = [_gradientBackgroundView layer];
 
-  if (a4)
+  if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -1012,15 +1012,15 @@ uint64_t __53__SKUIPlayButtonControl__beginIndeterminateAnimation__block_invoke_
     v10 = 0.5;
   }
 
-  [v8 setStartPoint:{v11, v9}];
-  [v8 setEndPoint:{v10, v12}];
+  [layer setStartPoint:{v11, v9}];
+  [layer setEndPoint:{v10, v12}];
 LABEL_6:
-  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(gradientCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = v6;
+  v14 = gradientCopy;
   v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v15)
   {
@@ -1048,7 +1048,7 @@ LABEL_6:
     while (v16);
   }
 
-  [v8 setColors:v13];
+  [layer setColors:v13];
 }
 
 - (id)_classicBackdropView
@@ -1062,9 +1062,9 @@ LABEL_6:
     v5 = [MEMORY[0x277D75348] colorWithWhite:0.862745098 alpha:1.0];
     [v4 setColorTint:v5];
 
-    v6 = [(SKUIPlayButtonControl *)self isHighlighted];
+    isHighlighted = [(SKUIPlayButtonControl *)self isHighlighted];
     v7 = 0.7;
-    if (v6)
+    if (isHighlighted)
     {
       v7 = 0.35;
     }
@@ -1102,13 +1102,13 @@ LABEL_6:
     self->_backgroundView = v5;
 
     [(UIView *)self->_backgroundView setUserInteractionEnabled:0];
-    v7 = [(UIView *)self->_backgroundView layer];
+    layer = [(UIView *)self->_backgroundView layer];
     [(SKUIPlayButtonControl *)self buttonCornerRadius];
-    [v7 setCornerRadius:v8];
+    [layer setCornerRadius:v8];
 
     v9 = self->_backgroundView;
-    v10 = [(SKUIPlayButtonControl *)self defaultBackgroundColor];
-    [(UIView *)v9 setBackgroundColor:v10];
+    defaultBackgroundColor = [(SKUIPlayButtonControl *)self defaultBackgroundColor];
+    [(UIView *)v9 setBackgroundColor:defaultBackgroundColor];
 
     [(UIView *)self->_backgroundView setClipsToBounds:1];
     backgroundView = self->_backgroundView;
@@ -1119,13 +1119,13 @@ LABEL_6:
 
 - (BOOL)_renderAsEnabled
 {
-  v3 = [(SKUIPlayButtonControl *)self isEnabled];
-  if (v3)
+  isEnabled = [(SKUIPlayButtonControl *)self isEnabled];
+  if (isEnabled)
   {
-    LOBYTE(v3) = ![(SKUIPlayButtonControl *)self isDisabledButSelectable];
+    LOBYTE(isEnabled) = ![(SKUIPlayButtonControl *)self isDisabledButSelectable];
   }
 
-  return v3;
+  return isEnabled;
 }
 
 - (id)_gradientBackgroundView
@@ -1139,9 +1139,9 @@ LABEL_6:
     self->_gradientBackgroundView = v5;
 
     [(SKUIPlayButtonGradientView *)self->_gradientBackgroundView setUserInteractionEnabled:0];
-    v7 = [(SKUIPlayButtonGradientView *)self->_gradientBackgroundView layer];
+    layer = [(SKUIPlayButtonGradientView *)self->_gradientBackgroundView layer];
     [(SKUIPlayButtonControl *)self buttonCornerRadius];
-    [v7 setCornerRadius:v8];
+    [layer setCornerRadius:v8];
 
     v9 = self->_gradientBackgroundView;
     v10 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:1.0];
@@ -1174,27 +1174,27 @@ LABEL_6:
   return imageView;
 }
 
-- (id)_newShapeViewWithBounds:(CGRect)a3 lineWidth:(double)a4
+- (id)_newShapeViewWithBounds:(CGRect)bounds lineWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9 = [SKUIPlayButtonShapeView alloc];
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
   v15.size.height = height;
-  v16 = CGRectInset(v15, a4 * 0.5, a4 * 0.5);
+  v16 = CGRectInset(v15, width * 0.5, width * 0.5);
   v10 = [(SKUIPlayButtonShapeView *)v9 initWithFrame:v16.origin.x, v16.origin.y, v16.size.width, v16.size.height];
   CGAffineTransformMakeRotation(&v14, -1.57079633);
   [(SKUIPlayButtonShapeView *)v10 setTransform:&v14];
-  v11 = [(SKUIPlayButtonShapeView *)v10 layer];
-  [v11 setLineWidth:a4];
+  layer = [(SKUIPlayButtonShapeView *)v10 layer];
+  [layer setLineWidth:width];
   [(SKUIPlayButtonShapeView *)v10 bounds];
   v12 = CGPathCreateWithEllipseInRect(v17, 0);
-  [v11 setPath:v12];
-  [v11 setLineCap:@"round"];
+  [layer setPath:v12];
+  [layer setLineCap:@"round"];
   CGPathRelease(v12);
   [(SKUIPlayButtonShapeView *)v10 setUserInteractionEnabled:0];
 
@@ -1239,22 +1239,22 @@ LABEL_6:
     v9 = 0.4;
   }
 
-  v10 = [(SKUIPlayButtonControl *)self _imageView];
-  [v10 setAlpha:v9];
+  _imageView = [(SKUIPlayButtonControl *)self _imageView];
+  [_imageView setAlpha:v9];
 
-  v11 = [(SKUIPlayButtonControl *)self _imageView];
-  [v11 setAlpha:v9];
+  _imageView2 = [(SKUIPlayButtonControl *)self _imageView];
+  [_imageView2 setAlpha:v9];
 
   if ((self->_backgroundType & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     [(SKUIPlayButtonControl *)self _useBlurredBackground:1];
-    v12 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     controlForeGroundColor = self->_controlForeGroundColor;
-    self->_controlForeGroundColor = v12;
+    self->_controlForeGroundColor = blackColor;
 
-    v14 = [(SKUIPlayButtonControl *)self _imageView];
-    v15 = [v14 layer];
-    v16 = v15;
+    _imageView3 = [(SKUIPlayButtonControl *)self _imageView];
+    layer = [_imageView3 layer];
+    v16 = layer;
     v17 = *MEMORY[0x277CDA5D8];
   }
 
@@ -1264,28 +1264,28 @@ LABEL_6:
     v18 = self->_controlForeGroundColor;
     self->_controlForeGroundColor = 0;
 
-    v14 = [(SKUIPlayButtonControl *)self _imageView];
-    v15 = [v14 layer];
-    v16 = v15;
+    _imageView3 = [(SKUIPlayButtonControl *)self _imageView];
+    layer = [_imageView3 layer];
+    v16 = layer;
     v17 = 0;
   }
 
-  [v15 setCompositingFilter:v17];
+  [layer setCompositingFilter:v17];
 
-  v19 = [(SKUIPlayButtonControl *)self _imageView];
-  [v19 setTintColor:self->_controlForeGroundColor];
+  _imageView4 = [(SKUIPlayButtonControl *)self _imageView];
+  [_imageView4 setTintColor:self->_controlForeGroundColor];
 
   backgroundView = self->_backgroundView;
   if (backgroundView)
   {
-    v21 = [(UIView *)backgroundView layer];
+    layer2 = [(UIView *)backgroundView layer];
     [(SKUIPlayButtonControl *)self buttonCornerRadius];
-    [v21 setCornerRadius:v22];
+    [layer2 setCornerRadius:v22];
   }
 
   [(SKUIPlayButtonControl *)self setControlForegroundColor:self->_controlForeGroundColor];
-  v23 = [(SKUIPlayButtonControl *)self defaultBackgroundColor];
-  [(SKUIPlayButtonControl *)self setControlColor:v23];
+  defaultBackgroundColor = [(SKUIPlayButtonControl *)self defaultBackgroundColor];
+  [(SKUIPlayButtonControl *)self setControlColor:defaultBackgroundColor];
 
   [(SKUIPlayButtonControl *)self _showPlayIndicator:1];
 
@@ -1303,14 +1303,14 @@ LABEL_6:
     self->_innerProgressLayer = v6;
 
     v8 = self->_innerProgressLayer;
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIPlayButtonShapeView *)v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIPlayButtonShapeView *)v8 setBackgroundColor:clearColor];
 
-    v10 = [(SKUIPlayButtonShapeView *)self->_innerProgressLayer layer];
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [v10 setFillColor:{objc_msgSend(v11, "CGColor")}];
+    layer = [(SKUIPlayButtonShapeView *)self->_innerProgressLayer layer];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [layer setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
-    [v10 setStrokeEnd:0.0];
+    [layer setStrokeEnd:0.0];
     [(SKUIPlayButtonControl *)self addSubview:self->_innerProgressLayer];
     [(SKUIPlayButtonControl *)self _updateInnerProgressLayerStroke];
 
@@ -1331,12 +1331,12 @@ LABEL_6:
     self->_outerProgressLayer = v6;
 
     v8 = self->_outerProgressLayer;
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIPlayButtonShapeView *)v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIPlayButtonShapeView *)v8 setBackgroundColor:clearColor];
 
-    v10 = [(SKUIPlayButtonShapeView *)self->_outerProgressLayer layer];
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [v10 setFillColor:{objc_msgSend(v11, "CGColor")}];
+    layer = [(SKUIPlayButtonShapeView *)self->_outerProgressLayer layer];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [layer setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
     v12 = self->_outerProgressLayer;
     if (self->_innerProgressLayer)
@@ -1359,8 +1359,8 @@ LABEL_6:
 
 - (id)_playImage
 {
-  v2 = [(SKUIPlayButtonControl *)self playImage];
-  v3 = [v2 imageWithRenderingMode:2];
+  playImage = [(SKUIPlayButtonControl *)self playImage];
+  v3 = [playImage imageWithRenderingMode:2];
 
   return v3;
 }
@@ -1375,7 +1375,7 @@ LABEL_6:
     v7 = self->_selectedLayer;
     self->_selectedLayer = v6;
 
-    v8 = [(SKUIPlayButtonShapeView *)self->_selectedLayer layer];
+    layer = [(SKUIPlayButtonShapeView *)self->_selectedLayer layer];
     selectionColor = self->_selectionColor;
     if (selectionColor)
     {
@@ -1390,7 +1390,7 @@ LABEL_6:
 
     [(SKUIPlayButtonShapeView *)self->_selectedLayer bounds];
     v11 = CGPathCreateWithEllipseInRect(v14, 0);
-    [v8 setPath:v11];
+    [layer setPath:v11];
     CGPathRelease(v11);
     [(SKUIPlayButtonControl *)self addSubview:self->_selectedLayer];
     [(SKUIPlayButtonShapeView *)self->_selectedLayer setUserInteractionEnabled:0];
@@ -1401,11 +1401,11 @@ LABEL_6:
   return selectedLayer;
 }
 
-- (void)_showPlayIndicator:(BOOL)a3
+- (void)_showPlayIndicator:(BOOL)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   imageView = self->_imageView;
-  if (a3)
+  if (indicator)
   {
     [(SKUIPlayButtonControl *)self _playImage];
   }
@@ -1417,7 +1417,7 @@ LABEL_6:
   v6 = ;
   [(UIImageView *)imageView setImage:v6];
 
-  [(SKUIPlayButtonControl *)self playIndicatorDidChange:v3];
+  [(SKUIPlayButtonControl *)self playIndicatorDidChange:indicatorCopy];
 
   [(SKUIPlayButtonControl *)self setNeedsLayout];
 }
@@ -1427,35 +1427,35 @@ LABEL_6:
   self->_showingProgress = 1;
   self->_showingPlayIndicator = 0;
   [(SKUIPlayButtonControl *)self _showPlayIndicator:0];
-  v3 = [(SKUIPlayButtonControl *)self _outerProgressLayer];
-  [v3 setHidden:0];
+  _outerProgressLayer = [(SKUIPlayButtonControl *)self _outerProgressLayer];
+  [_outerProgressLayer setHidden:0];
 
-  v4 = [(SKUIPlayButtonControl *)self _innerProgressLayer];
-  [v4 setHidden:0];
+  _innerProgressLayer = [(SKUIPlayButtonControl *)self _innerProgressLayer];
+  [_innerProgressLayer setHidden:0];
 }
 
 - (void)_updateBackdropView
 {
-  v3 = [(_UIBackdropView *)self->_backdropView outputSettings];
-  v4 = [(_UIBackdropView *)self->_backdropView inputSettings];
-  [v3 computeOutputSettingsUsingModel:v4];
+  outputSettings = [(_UIBackdropView *)self->_backdropView outputSettings];
+  inputSettings = [(_UIBackdropView *)self->_backdropView inputSettings];
+  [outputSettings computeOutputSettingsUsingModel:inputSettings];
 
   backdropView = self->_backdropView;
-  v6 = [(_UIBackdropView *)backdropView outputSettings];
-  [(_UIBackdropView *)backdropView applySettings:v6];
+  outputSettings2 = [(_UIBackdropView *)backdropView outputSettings];
+  [(_UIBackdropView *)backdropView applySettings:outputSettings2];
 }
 
-- (void)_updateBackgroundBlur:(id)a3 withOffsetRight:(float)a4 withOffsetBottom:(float)a5
+- (void)_updateBackgroundBlur:(id)blur withOffsetRight:(float)right withOffsetBottom:(float)bottom
 {
-  v8 = a3;
+  blurCopy = blur;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__42;
   v32 = __Block_byref_object_dispose__42;
-  v33 = objc_getAssociatedObject(v8, _SKUIPlayButtonControlBackgroundImageAssociatedObjectKeyColorCache);
+  v33 = objc_getAssociatedObject(blurCopy, _SKUIPlayButtonControlBackgroundImageAssociatedObjectKeyColorCache);
   [(SKUIPlayButtonControl *)self buttonSize];
-  v11 = [MEMORY[0x277CCAE60] valueWithCGRect:{a4, a5, v9, v10}];
+  v11 = [MEMORY[0x277CCAE60] valueWithCGRect:{right, bottom, v9, v10}];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __80__SKUIPlayButtonControl__updateBackgroundBlur_withOffsetRight_withOffsetBottom___block_invoke;
@@ -1465,8 +1465,8 @@ LABEL_6:
   v13 = [v29[5] objectForKey:v11];
   if (v13)
   {
-    v14 = [MEMORY[0x277CBEB68] null];
-    v15 = [v13 isEqual:v14];
+    null = [MEMORY[0x277CBEB68] null];
+    v15 = [v13 isEqual:null];
 
     if (v15)
     {
@@ -1486,9 +1486,9 @@ LABEL_6:
     v18[2] = __80__SKUIPlayButtonControl__updateBackgroundBlur_withOffsetRight_withOffsetBottom___block_invoke_2;
     v18[3] = &unk_2781FD1E8;
     objc_copyWeak(&v23, &location);
-    v17 = v8;
-    v24 = a4;
-    v25 = a5;
+    v17 = blurCopy;
+    rightCopy = right;
+    bottomCopy = bottom;
     v19 = v17;
     v22 = &v28;
     v20 = v11;
@@ -1575,11 +1575,11 @@ uint64_t __80__SKUIPlayButtonControl__updateBackgroundBlur_withOffsetRight_withO
   return v11();
 }
 
-- (void)_useBlurredBackground:(BOOL)a3
+- (void)_useBlurredBackground:(BOOL)background
 {
-  if (self->_usesBlurredBackground != a3)
+  if (self->_usesBlurredBackground != background)
   {
-    self->_usesBlurredBackground = a3;
+    self->_usesBlurredBackground = background;
   }
 }
 
@@ -1588,34 +1588,34 @@ uint64_t __80__SKUIPlayButtonControl__updateBackgroundBlur_withOffsetRight_withO
   progressIndicatorColor = self->_progressIndicatorColor;
   if (progressIndicatorColor)
   {
-    v8 = progressIndicatorColor;
+    tintColor = progressIndicatorColor;
     v4 = self->_progressIndicatorCompositingFilter;
   }
 
   else
   {
-    v8 = [(SKUIPlayButtonControl *)self tintColor];
+    tintColor = [(SKUIPlayButtonControl *)self tintColor];
     v4 = 0;
   }
 
-  v5 = [(SKUIPlayButtonShapeView *)self->_innerProgressLayer layer];
-  v6 = v8;
-  [v5 setStrokeColor:{-[UIColor CGColor](v8, "CGColor")}];
+  layer = [(SKUIPlayButtonShapeView *)self->_innerProgressLayer layer];
+  v6 = tintColor;
+  [layer setStrokeColor:{-[UIColor CGColor](tintColor, "CGColor")}];
 
-  v7 = [(SKUIPlayButtonShapeView *)self->_innerProgressLayer layer];
-  [v7 setCompositingFilter:v4];
+  layer2 = [(SKUIPlayButtonShapeView *)self->_innerProgressLayer layer];
+  [layer2 setCompositingFilter:v4];
 }
 
 - (void)_updateEnabledState
 {
   if (self->_backgroundType == 3)
   {
-    v3 = [(SKUIPlayButtonControl *)self _classicBackdropView];
-    v4 = [v3 inputSettings];
-    [v4 setEnabled:{-[SKUIPlayButtonControl _renderAsEnabled](self, "_renderAsEnabled")}];
+    _classicBackdropView = [(SKUIPlayButtonControl *)self _classicBackdropView];
+    inputSettings = [_classicBackdropView inputSettings];
+    [inputSettings setEnabled:{-[SKUIPlayButtonControl _renderAsEnabled](self, "_renderAsEnabled")}];
 
-    v5 = [v3 inputSettings];
-    [v5 setHighlighted:0];
+    inputSettings2 = [_classicBackdropView inputSettings];
+    [inputSettings2 setHighlighted:0];
   }
 
   else
@@ -1637,7 +1637,7 @@ uint64_t __80__SKUIPlayButtonControl__updateBackgroundBlur_withOffsetRight_withO
   [(SKUIPlayButtonControl *)self setNeedsLayout];
 }
 
-+ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)a3 withSize:(CGImage *)a4
++ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)statistics withSize:(CGImage *)size
 {
   height = a5.height;
   width = a5.width;
@@ -1656,7 +1656,7 @@ uint64_t __80__SKUIPlayButtonControl__updateBackgroundBlur_withOffsetRight_withO
   v56.size.height = height;
   v56.origin.x = 0.0;
   v56.origin.y = 0.0;
-  CGContextDrawImage(v14, v56, a4);
+  CGContextDrawImage(v14, v56, size);
   CGContextRelease(v14);
   CGColorSpaceRelease(DeviceRGB);
   v15 = 0;
@@ -1728,7 +1728,7 @@ uint64_t __80__SKUIPlayButtonControl__updateBackgroundBlur_withOffsetRight_withO
   v46 = v37 * 0.00392156863;
   __SK_RGBtoHSV(&v55, &v54, &v53, v44, v45, v46);
   result = __SK_RGBtoHSV(&v52, &v51, &v50, v39 * 0.00392156863, v41 * 0.00392156863, v43 * 0.00392156863);
-  if (a4)
+  if (size)
   {
     free(v12);
   }

@@ -1,244 +1,244 @@
 @interface REMReminderPredicateDescriptor
-+ (id)andPredicateDescriptorWithDescriptors:(id)a3;
-+ (id)orPredicateDescriptorWithDescriptors:(id)a3;
-+ (id)predicateDescriptorForRemindersWithDisplayDateBetween:(id)a3 and:(id)a4;
-+ (id)predicateDescriptorForRemindersWithDisplayDateOnOrAfter:(id)a3;
-+ (id)predicateDescriptorForRemindersWithDisplayDateOnOrBefore:(id)a3;
-+ (id)predicateDescriptorForRemindersWithDueDateBetween:(id)a3 and:(id)a4;
-+ (id)predicateDescriptorForRemindersWithDueDateOnOrAfter:(id)a3;
-+ (id)predicateDescriptorForRemindersWithDueDateOnOrBefore:(id)a3;
-+ (id)predicateDescriptorForRemindersWithListID:(id)a3;
-+ (id)predicateDescriptorForRemindersWithObjectIDs:(id)a3;
-+ (id)predicateDescriptorForRemindersWithParentReminderID:(id)a3;
-+ (id)predicateDescriptorForRemindersWithTitleBeginsWith:(id)a3;
-+ (id)predicateDescriptorForRemindersWithTitleContains:(id)a3;
-+ (id)predicateDescriptorForRemindersWithTitleEndsWith:(id)a3;
-+ (id)predicateDescriptorForRemindersWithTitleEquals:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (REMReminderPredicateDescriptor)initWithCoder:(id)a3;
-- (REMReminderPredicateDescriptor)initWithReminderPredicateDescriptor:(id)a3;
-- (REMReminderPredicateDescriptor)initWithType:(int64_t)a3;
++ (id)andPredicateDescriptorWithDescriptors:(id)descriptors;
++ (id)orPredicateDescriptorWithDescriptors:(id)descriptors;
++ (id)predicateDescriptorForRemindersWithDisplayDateBetween:(id)between and:(id)and;
++ (id)predicateDescriptorForRemindersWithDisplayDateOnOrAfter:(id)after;
++ (id)predicateDescriptorForRemindersWithDisplayDateOnOrBefore:(id)before;
++ (id)predicateDescriptorForRemindersWithDueDateBetween:(id)between and:(id)and;
++ (id)predicateDescriptorForRemindersWithDueDateOnOrAfter:(id)after;
++ (id)predicateDescriptorForRemindersWithDueDateOnOrBefore:(id)before;
++ (id)predicateDescriptorForRemindersWithListID:(id)d;
++ (id)predicateDescriptorForRemindersWithObjectIDs:(id)ds;
++ (id)predicateDescriptorForRemindersWithParentReminderID:(id)d;
++ (id)predicateDescriptorForRemindersWithTitleBeginsWith:(id)with;
++ (id)predicateDescriptorForRemindersWithTitleContains:(id)contains;
++ (id)predicateDescriptorForRemindersWithTitleEndsWith:(id)with;
++ (id)predicateDescriptorForRemindersWithTitleEquals:(id)equals;
+- (BOOL)isEqual:(id)equal;
+- (REMReminderPredicateDescriptor)initWithCoder:(id)coder;
+- (REMReminderPredicateDescriptor)initWithReminderPredicateDescriptor:(id)descriptor;
+- (REMReminderPredicateDescriptor)initWithType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMReminderPredicateDescriptor
 
-+ (id)andPredicateDescriptorWithDescriptors:(id)a3
++ (id)andPredicateDescriptorWithDescriptors:(id)descriptors
 {
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:8];
-  [(REMReminderPredicateDescriptor *)v4 setDescriptors:v3];
+  [(REMReminderPredicateDescriptor *)v4 setDescriptors:descriptorsCopy];
 
   return v4;
 }
 
-+ (id)orPredicateDescriptorWithDescriptors:(id)a3
++ (id)orPredicateDescriptorWithDescriptors:(id)descriptors
 {
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:9];
-  [(REMReminderPredicateDescriptor *)v4 setDescriptors:v3];
+  [(REMReminderPredicateDescriptor *)v4 setDescriptors:descriptorsCopy];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithListID:(id)a3
++ (id)predicateDescriptorForRemindersWithListID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:0];
-  [(REMReminderPredicateDescriptor *)v4 setListID:v3];
+  [(REMReminderPredicateDescriptor *)v4 setListID:dCopy];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithParentReminderID:(id)a3
++ (id)predicateDescriptorForRemindersWithParentReminderID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:1];
-  [(REMReminderPredicateDescriptor *)v4 setParentReminderID:v3];
+  [(REMReminderPredicateDescriptor *)v4 setParentReminderID:dCopy];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithObjectIDs:(id)a3
++ (id)predicateDescriptorForRemindersWithObjectIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:2];
-  [(REMReminderPredicateDescriptor *)v4 setObjectIDs:v3];
+  [(REMReminderPredicateDescriptor *)v4 setObjectIDs:dsCopy];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithDueDateOnOrBefore:(id)a3
++ (id)predicateDescriptorForRemindersWithDueDateOnOrBefore:(id)before
 {
-  v3 = a3;
+  beforeCopy = before;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:3];
-  [(REMReminderPredicateDescriptor *)v4 setStartingDueDate:v3];
+  [(REMReminderPredicateDescriptor *)v4 setStartingDueDate:beforeCopy];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithDueDateOnOrAfter:(id)a3
++ (id)predicateDescriptorForRemindersWithDueDateOnOrAfter:(id)after
 {
-  v3 = a3;
+  afterCopy = after;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:4];
-  [(REMReminderPredicateDescriptor *)v4 setEndingDueDate:v3];
+  [(REMReminderPredicateDescriptor *)v4 setEndingDueDate:afterCopy];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithDueDateBetween:(id)a3 and:(id)a4
++ (id)predicateDescriptorForRemindersWithDueDateBetween:(id)between and:(id)and
 {
-  v5 = a4;
-  v6 = a3;
+  andCopy = and;
+  betweenCopy = between;
   v7 = [[REMReminderPredicateDescriptor alloc] initWithType:5];
-  [(REMReminderPredicateDescriptor *)v7 setStartingDueDate:v6];
+  [(REMReminderPredicateDescriptor *)v7 setStartingDueDate:betweenCopy];
 
-  [(REMReminderPredicateDescriptor *)v7 setEndingDueDate:v5];
+  [(REMReminderPredicateDescriptor *)v7 setEndingDueDate:andCopy];
 
   return v7;
 }
 
-+ (id)predicateDescriptorForRemindersWithDisplayDateOnOrBefore:(id)a3
++ (id)predicateDescriptorForRemindersWithDisplayDateOnOrBefore:(id)before
 {
-  v3 = a3;
+  beforeCopy = before;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:10];
-  [(REMReminderPredicateDescriptor *)v4 setStartingDueDate:v3];
+  [(REMReminderPredicateDescriptor *)v4 setStartingDueDate:beforeCopy];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithDisplayDateOnOrAfter:(id)a3
++ (id)predicateDescriptorForRemindersWithDisplayDateOnOrAfter:(id)after
 {
-  v3 = a3;
+  afterCopy = after;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:11];
-  [(REMReminderPredicateDescriptor *)v4 setEndingDueDate:v3];
+  [(REMReminderPredicateDescriptor *)v4 setEndingDueDate:afterCopy];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithDisplayDateBetween:(id)a3 and:(id)a4
++ (id)predicateDescriptorForRemindersWithDisplayDateBetween:(id)between and:(id)and
 {
-  v5 = a4;
-  v6 = a3;
+  andCopy = and;
+  betweenCopy = between;
   v7 = [[REMReminderPredicateDescriptor alloc] initWithType:12];
-  [(REMReminderPredicateDescriptor *)v7 setStartingDueDate:v6];
+  [(REMReminderPredicateDescriptor *)v7 setStartingDueDate:betweenCopy];
 
-  [(REMReminderPredicateDescriptor *)v7 setEndingDueDate:v5];
+  [(REMReminderPredicateDescriptor *)v7 setEndingDueDate:andCopy];
 
   return v7;
 }
 
-+ (id)predicateDescriptorForRemindersWithTitleEquals:(id)a3
++ (id)predicateDescriptorForRemindersWithTitleEquals:(id)equals
 {
-  v3 = a3;
+  equalsCopy = equals;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:7];
-  [(REMReminderPredicateDescriptor *)v4 setText:v3];
+  [(REMReminderPredicateDescriptor *)v4 setText:equalsCopy];
 
   [(REMReminderPredicateDescriptor *)v4 setTextMatching:0];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithTitleContains:(id)a3
++ (id)predicateDescriptorForRemindersWithTitleContains:(id)contains
 {
-  v3 = a3;
+  containsCopy = contains;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:7];
-  [(REMReminderPredicateDescriptor *)v4 setText:v3];
+  [(REMReminderPredicateDescriptor *)v4 setText:containsCopy];
 
   [(REMReminderPredicateDescriptor *)v4 setTextMatching:1];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithTitleBeginsWith:(id)a3
++ (id)predicateDescriptorForRemindersWithTitleBeginsWith:(id)with
 {
-  v3 = a3;
+  withCopy = with;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:7];
-  [(REMReminderPredicateDescriptor *)v4 setText:v3];
+  [(REMReminderPredicateDescriptor *)v4 setText:withCopy];
 
   [(REMReminderPredicateDescriptor *)v4 setTextMatching:2];
 
   return v4;
 }
 
-+ (id)predicateDescriptorForRemindersWithTitleEndsWith:(id)a3
++ (id)predicateDescriptorForRemindersWithTitleEndsWith:(id)with
 {
-  v3 = a3;
+  withCopy = with;
   v4 = [[REMReminderPredicateDescriptor alloc] initWithType:7];
-  [(REMReminderPredicateDescriptor *)v4 setText:v3];
+  [(REMReminderPredicateDescriptor *)v4 setText:withCopy];
 
   [(REMReminderPredicateDescriptor *)v4 setTextMatching:3];
 
   return v4;
 }
 
-- (REMReminderPredicateDescriptor)initWithType:(int64_t)a3
+- (REMReminderPredicateDescriptor)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = REMReminderPredicateDescriptor;
   result = [(REMReminderPredicateDescriptor *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (REMReminderPredicateDescriptor)initWithReminderPredicateDescriptor:(id)a3
+- (REMReminderPredicateDescriptor)initWithReminderPredicateDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v21.receiver = self;
   v21.super_class = REMReminderPredicateDescriptor;
   v5 = [(REMReminderPredicateDescriptor *)&v21 init];
   if (v5)
   {
-    v5->_type = [v4 type];
-    v6 = [v4 objectIDs];
+    v5->_type = [descriptorCopy type];
+    objectIDs = [descriptorCopy objectIDs];
     objectIDs = v5->_objectIDs;
-    v5->_objectIDs = v6;
+    v5->_objectIDs = objectIDs;
 
-    v8 = [v4 listID];
+    listID = [descriptorCopy listID];
     listID = v5->_listID;
-    v5->_listID = v8;
+    v5->_listID = listID;
 
-    v10 = [v4 parentReminderID];
+    parentReminderID = [descriptorCopy parentReminderID];
     parentReminderID = v5->_parentReminderID;
-    v5->_parentReminderID = v10;
+    v5->_parentReminderID = parentReminderID;
 
-    v12 = [v4 startingDueDate];
+    startingDueDate = [descriptorCopy startingDueDate];
     startingDueDate = v5->_startingDueDate;
-    v5->_startingDueDate = v12;
+    v5->_startingDueDate = startingDueDate;
 
-    v14 = [v4 endingDueDate];
+    endingDueDate = [descriptorCopy endingDueDate];
     endingDueDate = v5->_endingDueDate;
-    v5->_endingDueDate = v14;
+    v5->_endingDueDate = endingDueDate;
 
-    v5->_completed = [v4 completed];
-    v16 = [v4 descriptors];
+    v5->_completed = [descriptorCopy completed];
+    descriptors = [descriptorCopy descriptors];
     descriptors = v5->_descriptors;
-    v5->_descriptors = v16;
+    v5->_descriptors = descriptors;
 
-    v18 = [v4 text];
+    text = [descriptorCopy text];
     text = v5->_text;
-    v5->_text = v18;
+    v5->_text = text;
 
-    v5->_textMatching = [v4 textMatching];
+    v5->_textMatching = [descriptorCopy textMatching];
   }
 
   return v5;
 }
 
-- (REMReminderPredicateDescriptor)initWithCoder:(id)a3
+- (REMReminderPredicateDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = REMReminderPredicateDescriptor;
   v5 = [(REMReminderPredicateDescriptor *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeIntegerForKey:@"type"];
     if (v6 >= 0xD)
     {
       v7 = os_log_create("com.apple.reminderkit", "default");
@@ -254,39 +254,39 @@
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"objectIDs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"objectIDs"];
     objectIDs = v5->_objectIDs;
     v5->_objectIDs = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"listID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listID"];
     listID = v5->_listID;
     v5->_listID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentReminderID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentReminderID"];
     parentReminderID = v5->_parentReminderID;
     v5->_parentReminderID = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startingDueDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startingDueDate"];
     startingDueDate = v5->_startingDueDate;
     v5->_startingDueDate = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endingDueDate"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endingDueDate"];
     endingDueDate = v5->_endingDueDate;
     v5->_endingDueDate = v19;
 
-    v5->_completed = [v4 decodeBoolForKey:@"completed"];
+    v5->_completed = [coderCopy decodeBoolForKey:@"completed"];
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"descriptors"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"descriptors"];
     descriptors = v5->_descriptors;
     v5->_descriptors = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v26;
 
-    v28 = [v4 decodeIntegerForKey:@"textMatching"];
+    v28 = [coderCopy decodeIntegerForKey:@"textMatching"];
     if (v28 >= 4)
     {
       v29 = os_log_create("com.apple.reminderkit", "default");
@@ -304,66 +304,66 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  [v11 encodeInteger:-[REMReminderPredicateDescriptor type](self forKey:{"type"), @"type"}];
-  v4 = [(REMReminderPredicateDescriptor *)self objectIDs];
-  [v11 encodeObject:v4 forKey:@"objectIDs"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMReminderPredicateDescriptor type](self forKey:{"type"), @"type"}];
+  objectIDs = [(REMReminderPredicateDescriptor *)self objectIDs];
+  [coderCopy encodeObject:objectIDs forKey:@"objectIDs"];
 
-  v5 = [(REMReminderPredicateDescriptor *)self listID];
-  [v11 encodeObject:v5 forKey:@"listID"];
+  listID = [(REMReminderPredicateDescriptor *)self listID];
+  [coderCopy encodeObject:listID forKey:@"listID"];
 
-  v6 = [(REMReminderPredicateDescriptor *)self parentReminderID];
-  [v11 encodeObject:v6 forKey:@"parentReminderID"];
+  parentReminderID = [(REMReminderPredicateDescriptor *)self parentReminderID];
+  [coderCopy encodeObject:parentReminderID forKey:@"parentReminderID"];
 
-  v7 = [(REMReminderPredicateDescriptor *)self startingDueDate];
-  [v11 encodeObject:v7 forKey:@"startingDueDate"];
+  startingDueDate = [(REMReminderPredicateDescriptor *)self startingDueDate];
+  [coderCopy encodeObject:startingDueDate forKey:@"startingDueDate"];
 
-  v8 = [(REMReminderPredicateDescriptor *)self endingDueDate];
-  [v11 encodeObject:v8 forKey:@"endingDueDate"];
+  endingDueDate = [(REMReminderPredicateDescriptor *)self endingDueDate];
+  [coderCopy encodeObject:endingDueDate forKey:@"endingDueDate"];
 
-  [v11 encodeBool:-[REMReminderPredicateDescriptor completed](self forKey:{"completed"), @"completed"}];
-  v9 = [(REMReminderPredicateDescriptor *)self descriptors];
-  [v11 encodeObject:v9 forKey:@"descriptors"];
+  [coderCopy encodeBool:-[REMReminderPredicateDescriptor completed](self forKey:{"completed"), @"completed"}];
+  descriptors = [(REMReminderPredicateDescriptor *)self descriptors];
+  [coderCopy encodeObject:descriptors forKey:@"descriptors"];
 
-  v10 = [(REMReminderPredicateDescriptor *)self text];
-  [v11 encodeObject:v10 forKey:@"text"];
+  text = [(REMReminderPredicateDescriptor *)self text];
+  [coderCopy encodeObject:text forKey:@"text"];
 
-  [v11 encodeInteger:-[REMReminderPredicateDescriptor textMatching](self forKey:{"textMatching"), @"textMatching"}];
+  [coderCopy encodeInteger:-[REMReminderPredicateDescriptor textMatching](self forKey:{"textMatching"), @"textMatching"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_33;
     }
 
-    v7 = [(REMReminderPredicateDescriptor *)self type];
-    if (v7 != [(REMReminderPredicateDescriptor *)v6 type])
+    type = [(REMReminderPredicateDescriptor *)self type];
+    if (type != [(REMReminderPredicateDescriptor *)v6 type])
     {
       goto LABEL_33;
     }
 
-    v8 = [(REMReminderPredicateDescriptor *)self objectIDs];
-    v9 = [(REMReminderPredicateDescriptor *)v6 objectIDs];
-    v10 = v9;
-    if (v8 == v9)
+    objectIDs = [(REMReminderPredicateDescriptor *)self objectIDs];
+    objectIDs2 = [(REMReminderPredicateDescriptor *)v6 objectIDs];
+    v10 = objectIDs2;
+    if (objectIDs == objectIDs2)
     {
     }
 
     else
     {
-      v11 = [(REMReminderPredicateDescriptor *)self objectIDs];
-      v12 = [(REMReminderPredicateDescriptor *)v6 objectIDs];
-      v13 = [v11 isEqual:v12];
+      objectIDs3 = [(REMReminderPredicateDescriptor *)self objectIDs];
+      objectIDs4 = [(REMReminderPredicateDescriptor *)v6 objectIDs];
+      v13 = [objectIDs3 isEqual:objectIDs4];
 
       if (!v13)
       {
@@ -371,18 +371,18 @@
       }
     }
 
-    v15 = [(REMReminderPredicateDescriptor *)self listID];
-    v16 = [(REMReminderPredicateDescriptor *)v6 listID];
-    v17 = v16;
-    if (v15 == v16)
+    listID = [(REMReminderPredicateDescriptor *)self listID];
+    listID2 = [(REMReminderPredicateDescriptor *)v6 listID];
+    v17 = listID2;
+    if (listID == listID2)
     {
     }
 
     else
     {
-      v18 = [(REMReminderPredicateDescriptor *)self listID];
-      v19 = [(REMReminderPredicateDescriptor *)v6 listID];
-      v20 = [v18 isEqual:v19];
+      listID3 = [(REMReminderPredicateDescriptor *)self listID];
+      listID4 = [(REMReminderPredicateDescriptor *)v6 listID];
+      v20 = [listID3 isEqual:listID4];
 
       if (!v20)
       {
@@ -390,18 +390,18 @@
       }
     }
 
-    v21 = [(REMReminderPredicateDescriptor *)self parentReminderID];
-    v22 = [(REMReminderPredicateDescriptor *)v6 parentReminderID];
-    v23 = v22;
-    if (v21 == v22)
+    parentReminderID = [(REMReminderPredicateDescriptor *)self parentReminderID];
+    parentReminderID2 = [(REMReminderPredicateDescriptor *)v6 parentReminderID];
+    v23 = parentReminderID2;
+    if (parentReminderID == parentReminderID2)
     {
     }
 
     else
     {
-      v24 = [(REMReminderPredicateDescriptor *)self parentReminderID];
-      v25 = [(REMReminderPredicateDescriptor *)v6 parentReminderID];
-      v26 = [v24 isEqual:v25];
+      parentReminderID3 = [(REMReminderPredicateDescriptor *)self parentReminderID];
+      parentReminderID4 = [(REMReminderPredicateDescriptor *)v6 parentReminderID];
+      v26 = [parentReminderID3 isEqual:parentReminderID4];
 
       if (!v26)
       {
@@ -409,18 +409,18 @@
       }
     }
 
-    v27 = [(REMReminderPredicateDescriptor *)self startingDueDate];
-    v28 = [(REMReminderPredicateDescriptor *)v6 startingDueDate];
-    v29 = v28;
-    if (v27 == v28)
+    startingDueDate = [(REMReminderPredicateDescriptor *)self startingDueDate];
+    startingDueDate2 = [(REMReminderPredicateDescriptor *)v6 startingDueDate];
+    v29 = startingDueDate2;
+    if (startingDueDate == startingDueDate2)
     {
     }
 
     else
     {
-      v30 = [(REMReminderPredicateDescriptor *)self startingDueDate];
-      v31 = [(REMReminderPredicateDescriptor *)v6 startingDueDate];
-      v32 = [v30 isEqual:v31];
+      startingDueDate3 = [(REMReminderPredicateDescriptor *)self startingDueDate];
+      startingDueDate4 = [(REMReminderPredicateDescriptor *)v6 startingDueDate];
+      v32 = [startingDueDate3 isEqual:startingDueDate4];
 
       if (!v32)
       {
@@ -428,18 +428,18 @@
       }
     }
 
-    v33 = [(REMReminderPredicateDescriptor *)self endingDueDate];
-    v34 = [(REMReminderPredicateDescriptor *)v6 endingDueDate];
-    v35 = v34;
-    if (v33 == v34)
+    endingDueDate = [(REMReminderPredicateDescriptor *)self endingDueDate];
+    endingDueDate2 = [(REMReminderPredicateDescriptor *)v6 endingDueDate];
+    v35 = endingDueDate2;
+    if (endingDueDate == endingDueDate2)
     {
     }
 
     else
     {
-      v36 = [(REMReminderPredicateDescriptor *)self endingDueDate];
-      v37 = [(REMReminderPredicateDescriptor *)v6 endingDueDate];
-      v38 = [v36 isEqual:v37];
+      endingDueDate3 = [(REMReminderPredicateDescriptor *)self endingDueDate];
+      endingDueDate4 = [(REMReminderPredicateDescriptor *)v6 endingDueDate];
+      v38 = [endingDueDate3 isEqual:endingDueDate4];
 
       if (!v38)
       {
@@ -447,21 +447,21 @@
       }
     }
 
-    v39 = [(REMReminderPredicateDescriptor *)self completed];
-    if (v39 == [(REMReminderPredicateDescriptor *)v6 completed])
+    completed = [(REMReminderPredicateDescriptor *)self completed];
+    if (completed == [(REMReminderPredicateDescriptor *)v6 completed])
     {
-      v40 = [(REMReminderPredicateDescriptor *)self descriptors];
-      v41 = [(REMReminderPredicateDescriptor *)v6 descriptors];
-      v42 = v41;
-      if (v40 == v41)
+      descriptors = [(REMReminderPredicateDescriptor *)self descriptors];
+      descriptors2 = [(REMReminderPredicateDescriptor *)v6 descriptors];
+      v42 = descriptors2;
+      if (descriptors == descriptors2)
       {
       }
 
       else
       {
-        v43 = [(REMReminderPredicateDescriptor *)self descriptors];
-        v44 = [(REMReminderPredicateDescriptor *)v6 descriptors];
-        v45 = [v43 isEqual:v44];
+        descriptors3 = [(REMReminderPredicateDescriptor *)self descriptors];
+        descriptors4 = [(REMReminderPredicateDescriptor *)v6 descriptors];
+        v45 = [descriptors3 isEqual:descriptors4];
 
         if (!v45)
         {
@@ -469,21 +469,21 @@
         }
       }
 
-      v46 = [(REMReminderPredicateDescriptor *)self textMatching];
-      if (v46 == [(REMReminderPredicateDescriptor *)v6 textMatching])
+      textMatching = [(REMReminderPredicateDescriptor *)self textMatching];
+      if (textMatching == [(REMReminderPredicateDescriptor *)v6 textMatching])
       {
-        v47 = [(REMReminderPredicateDescriptor *)self text];
-        v48 = [(REMReminderPredicateDescriptor *)v6 text];
-        if (v47 == v48)
+        text = [(REMReminderPredicateDescriptor *)self text];
+        text2 = [(REMReminderPredicateDescriptor *)v6 text];
+        if (text == text2)
         {
           v14 = 1;
         }
 
         else
         {
-          v49 = [(REMReminderPredicateDescriptor *)self text];
-          v50 = [(REMReminderPredicateDescriptor *)v6 text];
-          v14 = [v49 isEqual:v50];
+          text3 = [(REMReminderPredicateDescriptor *)self text];
+          text4 = [(REMReminderPredicateDescriptor *)v6 text];
+          v14 = [text3 isEqual:text4];
         }
 
         goto LABEL_34;
@@ -505,85 +505,85 @@ LABEL_35:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(REMReminderPredicateDescriptor *)self objectIDs];
+  array = [MEMORY[0x1E695DF70] array];
+  objectIDs = [(REMReminderPredicateDescriptor *)self objectIDs];
 
-  if (v4)
+  if (objectIDs)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(REMReminderPredicateDescriptor *)self objectIDs];
-    v7 = [v5 stringWithFormat:@"objectIDs: %@", v6];
-    [v3 addObject:v7];
+    objectIDs2 = [(REMReminderPredicateDescriptor *)self objectIDs];
+    v7 = [v5 stringWithFormat:@"objectIDs: %@", objectIDs2];
+    [array addObject:v7];
   }
 
-  v8 = [(REMReminderPredicateDescriptor *)self listID];
+  listID = [(REMReminderPredicateDescriptor *)self listID];
 
-  if (v8)
+  if (listID)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(REMReminderPredicateDescriptor *)self listID];
-    v11 = [v9 stringWithFormat:@"listID: %@", v10];
-    [v3 addObject:v11];
+    listID2 = [(REMReminderPredicateDescriptor *)self listID];
+    v11 = [v9 stringWithFormat:@"listID: %@", listID2];
+    [array addObject:v11];
   }
 
-  v12 = [(REMReminderPredicateDescriptor *)self parentReminderID];
+  parentReminderID = [(REMReminderPredicateDescriptor *)self parentReminderID];
 
-  if (v12)
+  if (parentReminderID)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [(REMReminderPredicateDescriptor *)self parentReminderID];
-    v15 = [v13 stringWithFormat:@"parentReminderID: %@", v14];
-    [v3 addObject:v15];
+    parentReminderID2 = [(REMReminderPredicateDescriptor *)self parentReminderID];
+    v15 = [v13 stringWithFormat:@"parentReminderID: %@", parentReminderID2];
+    [array addObject:v15];
   }
 
-  v16 = [(REMReminderPredicateDescriptor *)self startingDueDate];
+  startingDueDate = [(REMReminderPredicateDescriptor *)self startingDueDate];
 
-  if (v16)
+  if (startingDueDate)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(REMReminderPredicateDescriptor *)self startingDueDate];
-    v19 = [v17 stringWithFormat:@"startingDueDate: %@", v18];
-    [v3 addObject:v19];
+    startingDueDate2 = [(REMReminderPredicateDescriptor *)self startingDueDate];
+    v19 = [v17 stringWithFormat:@"startingDueDate: %@", startingDueDate2];
+    [array addObject:v19];
   }
 
-  v20 = [(REMReminderPredicateDescriptor *)self endingDueDate];
+  endingDueDate = [(REMReminderPredicateDescriptor *)self endingDueDate];
 
-  if (v20)
+  if (endingDueDate)
   {
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [(REMReminderPredicateDescriptor *)self endingDueDate];
-    v23 = [v21 stringWithFormat:@"endingDueDate: %@", v22];
-    [v3 addObject:v23];
+    endingDueDate2 = [(REMReminderPredicateDescriptor *)self endingDueDate];
+    v23 = [v21 stringWithFormat:@"endingDueDate: %@", endingDueDate2];
+    [array addObject:v23];
   }
 
   if ([(REMReminderPredicateDescriptor *)self type]== 6)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"completed: %d", -[REMReminderPredicateDescriptor completed](self, "completed")];
-    [v3 addObject:v24];
+    [array addObject:v24];
   }
 
-  v25 = [(REMReminderPredicateDescriptor *)self descriptors];
+  descriptors = [(REMReminderPredicateDescriptor *)self descriptors];
 
-  if (v25)
+  if (descriptors)
   {
     v26 = MEMORY[0x1E696AEC0];
-    v27 = [(REMReminderPredicateDescriptor *)self descriptors];
-    v28 = [v26 stringWithFormat:@"descriptors: %@", v27];
-    [v3 addObject:v28];
+    descriptors2 = [(REMReminderPredicateDescriptor *)self descriptors];
+    v28 = [v26 stringWithFormat:@"descriptors: %@", descriptors2];
+    [array addObject:v28];
   }
 
-  v29 = [(REMReminderPredicateDescriptor *)self text];
+  text = [(REMReminderPredicateDescriptor *)self text];
 
-  if (v29)
+  if (text)
   {
     v30 = MEMORY[0x1E696AEC0];
-    v31 = [(REMReminderPredicateDescriptor *)self textMatching];
-    v32 = [(REMReminderPredicateDescriptor *)self text];
-    v33 = [v30 stringWithFormat:@"textMatching: %ld text: %@", v31, v32];
-    [v3 addObject:v33];
+    textMatching = [(REMReminderPredicateDescriptor *)self textMatching];
+    text2 = [(REMReminderPredicateDescriptor *)self text];
+    v33 = [v30 stringWithFormat:@"textMatching: %ld text: %@", textMatching, text2];
+    [array addObject:v33];
   }
 
-  v34 = [v3 componentsJoinedByString:@" "];
+  v34 = [array componentsJoinedByString:@" "];
   v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p type: %ld %@>", objc_opt_class(), self, -[REMReminderPredicateDescriptor type](self, "type"), v34];
 
   return v35;

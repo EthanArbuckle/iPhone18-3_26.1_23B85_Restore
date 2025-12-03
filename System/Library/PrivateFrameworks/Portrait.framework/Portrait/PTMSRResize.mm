@@ -1,12 +1,12 @@
 @interface PTMSRResize
 - (PTMSRResize)init;
-- (PTMSRResize)initWithMetalContext:(id)a3 inputSize:(id *)a4 targetSize:(id *)a5 rotateTargetPixelBuffer:(BOOL)a6 compressedIntermediates:(BOOL)a7 sRGB:(BOOL)a8 sharedResources:(id)a9;
-- (id)addAdditionalOutput:(id *)a3 allowCompressed:(BOOL)a4;
-- (id)addAdditionalOutput:(id *)a3 allowCompressed:(BOOL)a4 pixelFormat:(unsigned int)a5 highQuality:(BOOL)a6;
-- (id)computeDownsamplingStepsWithInputSize:(id *)a3 targetSize:(id *)a4;
-- (int)downsampleToLayer:(int)a3 source:(__CVBuffer *)a4 dest:(__CVBuffer *)a5;
-- (unsigned)downsample:(__CVBuffer *)a3;
-- (unsigned)transform:(__CVBuffer *)a3 crop:(int)a4 rotationDegree:(__CVBuffer *)a5 toDest:(BOOL)a6 synchronous:;
+- (PTMSRResize)initWithMetalContext:(id)context inputSize:(id *)size targetSize:(id *)targetSize rotateTargetPixelBuffer:(BOOL)buffer compressedIntermediates:(BOOL)intermediates sRGB:(BOOL)b sharedResources:(id)resources;
+- (id)addAdditionalOutput:(id *)output allowCompressed:(BOOL)compressed;
+- (id)addAdditionalOutput:(id *)output allowCompressed:(BOOL)compressed pixelFormat:(unsigned int)format highQuality:(BOOL)quality;
+- (id)computeDownsamplingStepsWithInputSize:(id *)size targetSize:(id *)targetSize;
+- (int)downsampleToLayer:(int)layer source:(__CVBuffer *)source dest:(__CVBuffer *)dest;
+- (unsigned)downsample:(__CVBuffer *)downsample;
+- (unsigned)transform:(__CVBuffer *)transform crop:(int)crop rotationDegree:(__CVBuffer *)degree toDest:(BOOL)dest synchronous:;
 - (void)dealloc;
 @end
 
@@ -37,37 +37,37 @@
   return v2;
 }
 
-- (PTMSRResize)initWithMetalContext:(id)a3 inputSize:(id *)a4 targetSize:(id *)a5 rotateTargetPixelBuffer:(BOOL)a6 compressedIntermediates:(BOOL)a7 sRGB:(BOOL)a8 sharedResources:(id)a9
+- (PTMSRResize)initWithMetalContext:(id)context inputSize:(id *)size targetSize:(id *)targetSize rotateTargetPixelBuffer:(BOOL)buffer compressedIntermediates:(BOOL)intermediates sRGB:(BOOL)b sharedResources:(id)resources
 {
-  v9 = a8;
-  v69 = a7;
-  v10 = a6;
+  bCopy = b;
+  intermediatesCopy = intermediates;
+  bufferCopy = buffer;
   v77[2] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a9;
+  contextCopy = context;
+  resourcesCopy = resources;
   v17 = [(PTMSRResize *)self init];
   if (v17)
   {
-    v61 = v10;
-    v63 = v16;
-    v64 = v15;
+    v61 = bufferCopy;
+    v63 = resourcesCopy;
+    v64 = contextCopy;
     PTKTraceInit();
-    objc_storeStrong(&v17->_metalContext, a3);
-    v62 = v9;
-    v17->_sRGB = v9;
-    v18 = *&a4->var0;
-    v17->_inputSize.depth = a4->var2;
+    objc_storeStrong(&v17->_metalContext, context);
+    v62 = bCopy;
+    v17->_sRGB = bCopy;
+    v18 = *&size->var0;
+    v17->_inputSize.depth = size->var2;
     *&v17->_inputSize.width = v18;
     v19 = objc_opt_new();
     additionalSteps = v17->_additionalSteps;
     v17->_additionalSteps = v19;
 
     v17->_enablePyramidDownsampling = 1;
-    v72 = *&a4->var0;
-    var2 = a4->var2;
-    v70 = *&a5->var0;
-    v60 = a5;
-    v71 = a5->var2;
+    v72 = *&size->var0;
+    var2 = size->var2;
+    v70 = *&targetSize->var0;
+    targetSizeCopy = targetSize;
+    v71 = targetSize->var2;
     v21 = [(PTMSRResize *)v17 computeDownsamplingStepsWithInputSize:&v72 targetSize:&v70];
     v68 = v21;
     if ([v21 count])
@@ -77,7 +77,7 @@
       v66 = *MEMORY[0x277CC4DE8];
       v23 = *MEMORY[0x277CC4D60];
       outputPixelbuffer = v17->_outputPixelbuffer;
-      if (v9)
+      if (bCopy)
       {
         v25 = 208;
       }
@@ -97,15 +97,15 @@
           [PTMSRResize initWithMetalContext:inputSize:targetSize:rotateTargetPixelBuffer:compressedIntermediates:sRGB:sharedResources:];
         }
 
-        v28 = v22 != v27 - 1 && v69;
+        v28 = v22 != v27 - 1 && intermediatesCopy;
         v29 = [PTPixelBufferUtil compressedPixelFormat:1111970369 compression:v28];
-        v30 = [v26 width];
-        v31 = [v26 height];
+        width = [v26 width];
+        height = [v26 height];
         v76[0] = v66;
         v76[1] = v23;
         v77[0] = MEMORY[0x277CBEC10];
         v77[1] = &unk_2837F3100;
-        v32 = CVPixelBufferCreate(allocator, v30, v31, v29, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:v76 count:2], &outputPixelbuffer[v17->_allocatedIOSurfaces]);
+        v32 = CVPixelBufferCreate(allocator, width, height, v29, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:v76 count:2], &outputPixelbuffer[v17->_allocatedIOSurfaces]);
         if (v32)
         {
           break;
@@ -155,8 +155,8 @@
       }
 
 LABEL_32:
-      v16 = v63;
-      v15 = v64;
+      resourcesCopy = v63;
+      contextCopy = v64;
       v52 = v68;
       goto LABEL_36;
     }
@@ -173,8 +173,8 @@ LABEL_17:
         Width = CVPixelBufferGetWidth(v39[v38]);
         v42 = [v40 texture2DDescriptorWithPixelFormat:81 width:Width height:CVPixelBufferGetHeight(v39[v38]) mipmapped:0];
         [v42 setUsage:[PTPixelBufferUtil getNoConcurrentAccessHint:v39[v38]]| 3];
-        v43 = [(PTMetalContext *)v17->_metalContext device];
-        v44 = [v43 newTextureWithDescriptor:v42 iosurface:CVPixelBufferGetIOSurface(v39[v38]) plane:0];
+        device = [(PTMetalContext *)v17->_metalContext device];
+        v44 = [device newTextureWithDescriptor:v42 iosurface:CVPixelBufferGetIOSurface(v39[v38]) plane:0];
 
         if (!v44)
         {
@@ -190,8 +190,8 @@ LABEL_17:
       }
 
       v55 = _PTLogSystem();
-      v16 = v63;
-      v15 = v64;
+      resourcesCopy = v63;
+      contextCopy = v64;
       v52 = v68;
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
@@ -212,12 +212,12 @@ LABEL_21:
     v17->_pyramidRGBA = v45;
 
     v17->_rotateTargetPixelBuffer = v61;
-    v15 = v64;
+    contextCopy = v64;
     if (v61 && v17->_hasMSR)
     {
       v47 = *MEMORY[0x277CBECE8];
-      var0 = v60->var0;
-      var1 = v60->var1;
+      var0 = targetSizeCopy->var0;
+      var1 = targetSizeCopy->var1;
       v50 = *MEMORY[0x277CC4D60];
       v74[0] = *MEMORY[0x277CC4DE8];
       v74[1] = v50;
@@ -226,7 +226,7 @@ LABEL_21:
       if (CVPixelBufferCreate(v47, var1, var0, 0x42475241u, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:2], &v17->_outputPixelbuffer[v17->_allocatedIOSurfaces]))
       {
         v51 = _PTLogSystem();
-        v16 = v63;
+        resourcesCopy = v63;
         v52 = v68;
         if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
         {
@@ -262,7 +262,7 @@ LABEL_21:
 
     v53 = v17;
 LABEL_43:
-    v16 = v63;
+    resourcesCopy = v63;
     v52 = v68;
     goto LABEL_44;
   }
@@ -273,11 +273,11 @@ LABEL_45:
   return v53;
 }
 
-- (id)computeDownsamplingStepsWithInputSize:(id *)a3 targetSize:(id *)a4
+- (id)computeDownsamplingStepsWithInputSize:(id *)size targetSize:(id *)targetSize
 {
   v6 = objc_opt_new();
-  v7 = vmovn_s64(*&a4->var0);
-  *&v8 = vmovn_s64(*&a3->var0);
+  v7 = vmovn_s64(*&targetSize->var0);
+  *&v8 = vmovn_s64(*&size->var0);
   while (1)
   {
     v9 = vmvn_s8(vceq_s32(*&v8, v7));
@@ -332,22 +332,22 @@ LABEL_45:
   return v6;
 }
 
-- (id)addAdditionalOutput:(id *)a3 allowCompressed:(BOOL)a4
+- (id)addAdditionalOutput:(id *)output allowCompressed:(BOOL)compressed
 {
-  v6 = *a3;
-  v4 = [(PTMSRResize *)self addAdditionalOutput:&v6 allowCompressed:a4 pixelFormat:1111970369 highQuality:0];
+  v6 = *output;
+  v4 = [(PTMSRResize *)self addAdditionalOutput:&v6 allowCompressed:compressed pixelFormat:1111970369 highQuality:0];
 
   return v4;
 }
 
-- (id)addAdditionalOutput:(id *)a3 allowCompressed:(BOOL)a4 pixelFormat:(unsigned int)a5 highQuality:(BOOL)a6
+- (id)addAdditionalOutput:(id *)output allowCompressed:(BOOL)compressed pixelFormat:(unsigned int)format highQuality:(BOOL)quality
 {
-  v7 = *&a5;
-  v8 = a4;
+  v7 = *&format;
+  compressedCopy = compressed;
   v11 = [(NSArray *)self->_pyramidRGBA count]- 1;
-  if (a6)
+  if (quality)
   {
-    if ((self->_inputSize.width / a3->var0) <= 4.0 && (self->_inputSize.height / a3->var1) <= 4.0)
+    if ((self->_inputSize.width / output->var0) <= 4.0 && (self->_inputSize.height / output->var1) <= 4.0)
     {
       v11 = 0xFFFFFFFFLL;
     }
@@ -358,12 +358,12 @@ LABEL_45:
       while (1)
       {
         v13 = [(NSArray *)self->_pyramidRGBA objectAtIndexedSubscript:v12];
-        v14 = [v13 width];
+        width = [v13 width];
 
         v15 = [(NSArray *)self->_pyramidRGBA objectAtIndexedSubscript:v12];
-        v16 = [v15 height];
+        height = [v15 height];
 
-        if ((v14 / a3->var0) <= 4.0 && (v16 / a3->var1) <= 4.0)
+        if ((width / output->var0) <= 4.0 && (height / output->var1) <= 4.0)
         {
           break;
         }
@@ -385,18 +385,18 @@ LABEL_45:
     v18 = 0;
     while (1)
     {
-      var0 = a3->var0;
+      var0 = output->var0;
       v20 = [(NSArray *)self->_pyramidRGBA objectAtIndexedSubscript:v18];
       if (var0 > [v20 width])
       {
         break;
       }
 
-      var1 = a3->var1;
+      var1 = output->var1;
       v22 = [(NSArray *)self->_pyramidRGBA objectAtIndexedSubscript:v18];
-      v23 = [v22 height];
+      height2 = [v22 height];
 
-      if (var1 > v23)
+      if (var1 > height2)
       {
         goto LABEL_21;
       }
@@ -422,15 +422,15 @@ LABEL_21:
   }
 
 LABEL_25:
-  v25 = a3->var0;
+  v25 = output->var0;
   v26 = [(NSArray *)self->_pyramidRGBA objectAtIndexedSubscript:v11];
   if ([v26 width] <= 4 * v25)
   {
-    v27 = a3->var1;
+    v27 = output->var1;
     v28 = [(NSArray *)self->_pyramidRGBA objectAtIndexedSubscript:v11];
-    v29 = [v28 height];
+    height3 = [v28 height];
 
-    if (v29 <= 4 * v27)
+    if (height3 <= 4 * v27)
     {
 LABEL_31:
       v32 = [PTMSRResizeAdditionalOutput alloc];
@@ -441,10 +441,10 @@ LABEL_31:
       }
 
       v34 = *(&self->super.isa + v33);
-      v35 = [(PTMetalContext *)self->_metalContext device];
-      v37 = *&a3->var0;
-      var2 = a3->var2;
-      v31 = [(PTMSRResizeAdditionalOutput *)v32 initWithSize:&v37 colorSpace:v34 pixelFormat:v7 allowCompressed:v8 metalDevice:v35];
+      device = [(PTMetalContext *)self->_metalContext device];
+      v37 = *&output->var0;
+      var2 = output->var2;
+      v31 = [(PTMSRResizeAdditionalOutput *)v32 initWithSize:&v37 colorSpace:v34 pixelFormat:v7 allowCompressed:compressedCopy metalDevice:device];
 
       [(PTMSRResizeAdditionalOutput *)v31 setSourcePyramidIndex:v11];
       [(NSMutableArray *)self->_additionalSteps addObject:v31];
@@ -499,7 +499,7 @@ LABEL_34:
   [(PTMSRResize *)&v7 dealloc];
 }
 
-- (unsigned)downsample:(__CVBuffer *)a3
+- (unsigned)downsample:(__CVBuffer *)downsample
 {
   v44 = *MEMORY[0x277D85DE8];
   if (!self->_allocatedIOSurfaces)
@@ -596,18 +596,18 @@ LABEL_29:
           v24 = *(*(&v34 + 1) + 8 * j);
           if ([v24 enabled])
           {
-            v25 = a3;
+            downsampleCopy = downsample;
             if ([v24 sourcePyramidIndex] != -1)
             {
-              v25 = self->_outputPixelbuffer[[v24 sourcePyramidIndex]];
+              downsampleCopy = self->_outputPixelbuffer[[v24 sourcePyramidIndex]];
             }
 
             msrController = self->_msrController;
-            v27 = [v24 pixelbuffer];
+            pixelbuffer = [v24 pixelbuffer];
             LODWORD(v28) = 1.0;
             LODWORD(v29) = 1.0;
-            [(FigM2MController *)msrController setCustomFilter:3 alignment:2 src:v25 dst:v27 luma_param:v28 chroma_param:v29];
-            v30 = -[FigM2MController downsample:dst:sync_m2m:](self->_msrController, "downsample:dst:sync_m2m:", v25, [v24 pixelbuffer], 0);
+            [(FigM2MController *)msrController setCustomFilter:3 alignment:2 src:downsampleCopy dst:pixelbuffer luma_param:v28 chroma_param:v29];
+            v30 = -[FigM2MController downsample:dst:sync_m2m:](self->_msrController, "downsample:dst:sync_m2m:", downsampleCopy, [v24 pixelbuffer], 0);
             if (v30)
             {
               v7 = v30;
@@ -640,13 +640,13 @@ LABEL_29:
   while (1)
   {
     v16 = &self->super.isa + v15;
-    v17 = a3;
+    downsampleCopy2 = downsample;
     if (v15)
     {
-      v17 = v16[1];
+      downsampleCopy2 = v16[1];
     }
 
-    v18 = [(PTMSRResize *)self downsampleToLayer:v15 source:v17 dest:v16[2]];
+    v18 = [(PTMSRResize *)self downsampleToLayer:v15 source:downsampleCopy2 dest:v16[2]];
     if (v18)
     {
       break;
@@ -668,27 +668,27 @@ LABEL_29:
   return v7;
 }
 
-- (int)downsampleToLayer:(int)a3 source:(__CVBuffer *)a4 dest:(__CVBuffer *)a5
+- (int)downsampleToLayer:(int)layer source:(__CVBuffer *)source dest:(__CVBuffer *)dest
 {
-  if (self->_allocatedIOSurfaces - 1 == a3 && self->_rotateTargetPixelBuffer)
+  if (self->_allocatedIOSurfaces - 1 == layer && self->_rotateTargetPixelBuffer)
   {
 
-    return [(PTMSRResize *)self transform:a4 crop:90 rotationDegree:a5 toDest:0 synchronous:0.0];
+    return [(PTMSRResize *)self transform:source crop:90 rotationDegree:dest toDest:0 synchronous:0.0];
   }
 
   else
   {
     LODWORD(v5) = 1.0;
     LODWORD(v6) = 1.0;
-    [(FigM2MController *)self->_msrController setCustomFilter:3 alignment:2 src:a4 dst:a5 luma_param:v5 chroma_param:v6];
+    [(FigM2MController *)self->_msrController setCustomFilter:3 alignment:2 src:source dst:dest luma_param:v5 chroma_param:v6];
     msrController = self->_msrController;
-    v12 = self->_outputPixelbuffer[a3];
+    v12 = self->_outputPixelbuffer[layer];
 
-    return [(FigM2MController *)msrController downsample:a4 dst:v12 sync_m2m:0];
+    return [(FigM2MController *)msrController downsample:source dst:v12 sync_m2m:0];
   }
 }
 
-- (unsigned)transform:(__CVBuffer *)a3 crop:(int)a4 rotationDegree:(__CVBuffer *)a5 toDest:(BOOL)a6 synchronous:
+- (unsigned)transform:(__CVBuffer *)transform crop:(int)crop rotationDegree:(__CVBuffer *)degree toDest:(BOOL)dest synchronous:
 {
   if (*&v6 >= 0.0)
   {
@@ -698,25 +698,25 @@ LABEL_29:
     v10 = *(&v6 + 1) + *(&v6 + 3);
     if (v9 && v10 <= 1.0)
     {
-      v14 = a6;
+      destCopy = dest;
       v31 = v6;
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
+      Width = CVPixelBufferGetWidth(transform);
+      Height = CVPixelBufferGetHeight(transform);
       v21 = (*&v31 * Width);
       v22 = (v8 * Height);
       v23 = (v7 * Width);
       v24 = (v10 * Height);
-      v25 = CVPixelBufferGetWidth(a5);
-      v28 = CVPixelBufferGetHeight(a5);
-      if (a4 > 179)
+      v25 = CVPixelBufferGetWidth(degree);
+      v28 = CVPixelBufferGetHeight(degree);
+      if (crop > 179)
       {
-        if (a4 == 180)
+        if (crop == 180)
         {
           v29 = 3;
           goto LABEL_24;
         }
 
-        if (a4 == 270)
+        if (crop == 270)
         {
           v29 = 8;
           goto LABEL_24;
@@ -725,21 +725,21 @@ LABEL_29:
 
       else
       {
-        if (!a4)
+        if (!crop)
         {
 LABEL_22:
           v29 = 1;
           goto LABEL_24;
         }
 
-        if (a4 == 90)
+        if (crop == 90)
         {
           v29 = 6;
 LABEL_24:
           LODWORD(v26) = 1.0;
           LODWORD(v27) = 1.0;
-          [(FigM2MController *)self->_msrController setCustomFilter:3 alignment:2 src:a3 dst:a5 luma_param:v26 chroma_param:v27, v31];
-          return [(FigM2MController *)self->_msrController transform:a3 srcRect:a5 dst:v29 dstRect:v14 rotate:v21 sync_m2m:v22, v23, v24, 0.0, 0.0, v25, v28];
+          [(FigM2MController *)self->_msrController setCustomFilter:3 alignment:2 src:transform dst:degree luma_param:v26 chroma_param:v27, v31];
+          return [(FigM2MController *)self->_msrController transform:transform srcRect:degree dst:v29 dstRect:destCopy rotate:v21 sync_m2m:v22, v23, v24, 0.0, 0.0, v25, v28];
         }
       }
 

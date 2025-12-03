@@ -19,14 +19,14 @@
     voicemailManager = v2->_voicemailManager;
     v2->_voicemailManager = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_handleVoicemailsChangedNotification_ name:@"VMVoicemailVoicemailsChangedNotification" object:v2->_voicemailManager];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_handleVoicemailsChangedNotification_ name:@"VMVoicemailVoicemailsChangedNotification" object:v2->_voicemailManager];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_handleSubscriptionStatusChangedNotification_ name:@"VMVoicemailSubscriptionStateStatusChangedNotification" object:v2->_voicemailManager];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_handleSubscriptionStatusChangedNotification_ name:@"VMVoicemailSubscriptionStateStatusChangedNotification" object:v2->_voicemailManager];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_handleOnlineStatusChangedNotification_ name:@"VMVoicemailOnlineStatusChangedNotification" object:v2->_voicemailManager];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_handleOnlineStatusChangedNotification_ name:@"VMVoicemailOnlineStatusChangedNotification" object:v2->_voicemailManager];
   }
 
   return v2;
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VMServiceClient;
@@ -82,10 +82,10 @@ uint64_t __32__VMServiceClient_sharedAccount__block_invoke()
 
 - (BOOL)sharedServiceIsSubscribed
 {
-  v2 = [(VMServiceClient *)self voicemailManager];
-  v3 = [v2 isSubscribed];
+  voicemailManager = [(VMServiceClient *)self voicemailManager];
+  isSubscribed = [voicemailManager isSubscribed];
 
-  return v3;
+  return isSubscribed;
 }
 
 @end

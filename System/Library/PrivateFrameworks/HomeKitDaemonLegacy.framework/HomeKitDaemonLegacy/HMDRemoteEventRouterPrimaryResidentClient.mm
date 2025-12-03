@@ -1,8 +1,8 @@
 @interface HMDRemoteEventRouterPrimaryResidentClient
-- (BOOL)_clientIsEnabled:(id)a3;
+- (BOOL)_clientIsEnabled:(id)enabled;
 - (id)dumpStateDescription;
 - (unint64_t)messageTransportRestriction;
-- (void)handlePrimaryResidentConfirmedDeviceIdentifierChangeNotification:(id)a3;
+- (void)handlePrimaryResidentConfirmedDeviceIdentifierChangeNotification:(id)notification;
 @end
 
 @implementation HMDRemoteEventRouterPrimaryResidentClient
@@ -12,22 +12,22 @@
   v2 = MEMORY[0x277CCACA8];
   v6.receiver = self;
   v6.super_class = HMDRemoteEventRouterPrimaryResidentClient;
-  v3 = [(HMDRemoteEventRouterClient *)&v6 dumpStateDescription];
-  v4 = [v2 stringWithFormat:@"[HMDRemoteEventRouterPrimaryResidentClient: %@]", v3];
+  dumpStateDescription = [(HMDRemoteEventRouterClient *)&v6 dumpStateDescription];
+  v4 = [v2 stringWithFormat:@"[HMDRemoteEventRouterPrimaryResidentClient: %@]", dumpStateDescription];
 
   return v4;
 }
 
-- (BOOL)_clientIsEnabled:(id)a3
+- (BOOL)_clientIsEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(HMDRemoteEventRouterClient *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  enabledCopy = enabled;
+  workQueue = [(HMDRemoteEventRouterClient *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDRemoteEventRouterClient *)self dataSource];
-  v7 = [v6 clientIsEnabled:self];
+  dataSource = [(HMDRemoteEventRouterClient *)self dataSource];
+  v7 = [dataSource clientIsEnabled:self];
 
-  if (v7 && ([(HMDRemoteEventRouterClient *)self eventRouterClient], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v4))
+  if (v7 && ([(HMDRemoteEventRouterClient *)self eventRouterClient], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == enabledCopy))
   {
     v9 = ![(HMDRemoteEventRouterClient *)self isPrimaryResident];
   }
@@ -40,18 +40,18 @@
   return v9;
 }
 
-- (void)handlePrimaryResidentConfirmedDeviceIdentifierChangeNotification:(id)a3
+- (void)handlePrimaryResidentConfirmedDeviceIdentifierChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDRemoteEventRouterClient *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDRemoteEventRouterClient *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __110__HMDRemoteEventRouterPrimaryResidentClient_handlePrimaryResidentConfirmedDeviceIdentifierChangeNotification___block_invoke;
   v7[3] = &unk_2797359B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __110__HMDRemoteEventRouterPrimaryResidentClient_handlePrimaryResidentConfirmedDeviceIdentifierChangeNotification___block_invoke(uint64_t a1)
@@ -102,11 +102,11 @@ void __110__HMDRemoteEventRouterPrimaryResidentClient_handlePrimaryResidentConfi
 
 - (unint64_t)messageTransportRestriction
 {
-  v2 = self;
-  v3 = [(HMDRemoteEventRouterClient *)self dataSource];
-  LODWORD(v2) = [v3 routerClientShouldRestrictMessagingToLocalOnly:v2];
+  selfCopy = self;
+  dataSource = [(HMDRemoteEventRouterClient *)self dataSource];
+  LODWORD(selfCopy) = [dataSource routerClientShouldRestrictMessagingToLocalOnly:selfCopy];
 
-  if (v2)
+  if (selfCopy)
   {
     return 8;
   }

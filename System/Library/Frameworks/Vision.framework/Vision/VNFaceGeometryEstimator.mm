@@ -1,17 +1,17 @@
 @interface VNFaceGeometryEstimator
 + (const)allLandmarksPointsIndexes;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)_buildCalibrationMatrix:(id)a3 calibrationMatrix:(float *)a4 error:(id *)a5;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)_buildCalibrationMatrix:(id)matrix calibrationMatrix:(float *)calibrationMatrix error:(id *)error;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNFaceGeometryEstimator
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -28,15 +28,15 @@
   return +[VNFaceGeometryEstimator allLandmarksPointsIndexes]::allLandmarksPointsIndexes;
 }
 
-- (BOOL)_buildCalibrationMatrix:(id)a3 calibrationMatrix:(float *)a4 error:(id *)a5
+- (BOOL)_buildCalibrationMatrix:(id)matrix calibrationMatrix:(float *)calibrationMatrix error:(id *)error
 {
-  v7 = a3;
+  matrixCopy = matrix;
   v18 = 0;
   LODWORD(v8) = 1161527296;
-  if ([VNValidationUtilities getFloatValue:&v18 forKey:@"VNFaceGeometryEstimatorInitOption_CameraFocalLength" inOptions:v7 withDefaultValue:a5 error:v8])
+  if ([VNValidationUtilities getFloatValue:&v18 forKey:@"VNFaceGeometryEstimatorInitOption_CameraFocalLength" inOptions:matrixCopy withDefaultValue:error error:v8])
   {
     v17 = 0;
-    v9 = [VNValidationUtilities getOptionalObject:&v17 ofClass:objc_opt_class() forKey:@"VNFaceGeometryEstimatorInitOption_ImageSize" inOptions:v7 error:a5];
+    v9 = [VNValidationUtilities getOptionalObject:&v17 ofClass:objc_opt_class() forKey:@"VNFaceGeometryEstimatorInitOption_ImageSize" inOptions:matrixCopy error:error];
     v10 = v17;
     v11 = v10;
     if (v9)
@@ -44,7 +44,7 @@
       if (!v10)
       {
         v12 = 0x4400000044000000;
-        if (!a4)
+        if (!calibrationMatrix)
         {
 LABEL_10:
           v13 = 1;
@@ -55,13 +55,13 @@ LABEL_14:
 
 LABEL_9:
         v14 = v18;
-        *a4 = v18;
-        *(a4 + 1) = 0;
-        a4[1] = 0.0;
-        *(a4 + 4) = v14;
-        a4[5] = 0.0;
-        *(a4 + 3) = vrev64_s32(v12);
-        a4[8] = 1.0;
+        *calibrationMatrix = v18;
+        *(calibrationMatrix + 1) = 0;
+        calibrationMatrix[1] = 0.0;
+        *(calibrationMatrix + 4) = v14;
+        calibrationMatrix[5] = 0.0;
+        *(calibrationMatrix + 3) = vrev64_s32(v12);
+        calibrationMatrix[8] = 1.0;
         goto LABEL_10;
       }
 
@@ -69,7 +69,7 @@ LABEL_9:
       if (CGSizeMakeWithDictionaryRepresentation(v10, &v16))
       {
         v12 = vrev64_s32(vmul_f32(vcvt_f32_f64(v16), 0x3F0000003F000000));
-        if (!a4)
+        if (!calibrationMatrix)
         {
           goto LABEL_10;
         }
@@ -77,9 +77,9 @@ LABEL_9:
         goto LABEL_9;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [VNError errorForInvalidOption:v11 named:@"VNFaceGeometryEstimatorInitOption_ImageSize"];
+        *error = [VNError errorForInvalidOption:v11 named:@"VNFaceGeometryEstimatorInitOption_ImageSize"];
       }
     }
 
@@ -93,33 +93,33 @@ LABEL_15:
   return v13;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v72[1] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = [(VNDetector *)self validatedImageBufferFromOptions:v11 error:a8];
+  optionsCopy = options;
+  v12 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v12)
   {
-    v13 = VNCloneFaceObservationFromOptions(v11, a8);
+    v13 = VNCloneFaceObservationFromOptions(optionsCopy, error);
     if (v13)
     {
-      v48 = [VNValidationUtilities originatingRequestSpecifierInOptions:v11 error:a8];
+      v48 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
       if (v48)
       {
-        v14 = [v11 objectForKey:@"VNFaceGeometryEstimatorProcessOption_EstimatePoseOnly"];
+        v14 = [optionsCopy objectForKey:@"VNFaceGeometryEstimatorProcessOption_EstimatePoseOnly"];
         v47 = v14;
         if (v14)
         {
-          v15 = [v14 BOOLValue];
+          bOOLValue = [v14 BOOLValue];
         }
 
         else
         {
-          v15 = 0;
+          bOOLValue = 0;
         }
 
-        v17 = [v12 width];
-        v18 = [v12 height];
+        width = [v12 width];
+        height = [v12 height];
         v65 = 0;
         v66 = &v65;
         v67 = 0x4812000000;
@@ -127,7 +127,7 @@ LABEL_15:
         v69 = __Block_byref_object_dispose__14666;
         v70 = "";
         std::vector<_Geometry2D_point2D_>::vector[abi:ne200100](__p, 0x3FuLL);
-        v19 = [v13 landmarkPoints];
+        landmarkPoints = [v13 landmarkPoints];
         [v13 alignedBoundingBox];
         v21 = v20;
         v23 = v22;
@@ -143,24 +143,24 @@ LABEL_15:
         v63 = 0u;
         v64 = 0u;
         v28 = v66[6];
-        v29 = v19;
-        memcpy(v28, [v19 bytes], 0x1F8uLL);
+        v29 = landmarkPoints;
+        memcpy(v28, [landmarkPoints bytes], 0x1F8uLL);
         for (i = 0; i != 504; i += 8)
         {
           v31 = v66[6];
-          v32 = v17 * v27 * *(v31 + i);
+          v32 = width * v27 * *(v31 + i);
           *(v31 + i) = v32;
           v33 = v66[6] + i;
-          v34 = v18 * v25 * *(v33 + 4);
+          v34 = height * v25 * *(v33 + 4);
           *(v33 + 4) = v34;
           v35 = v66[6];
-          v36 = v17 * v21 + *(v35 + i);
+          v36 = width * v21 + *(v35 + i);
           *(v35 + i) = v36;
           v37 = v66[6] + i;
-          v38 = v18 * v23 + *(v37 + 4);
+          v38 = height * v23 + *(v37 + 4);
           *(v37 + 4) = v38;
           v39 = v66[6] + i;
-          v40 = v18 - *(v39 + 4);
+          v40 = height - *(v39 + 4);
           *(v39 + 4) = v40;
         }
 
@@ -169,8 +169,8 @@ LABEL_15:
         aBlock[2] = __125__VNFaceGeometryEstimator_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke;
         aBlock[3] = &unk_1E77B3CA0;
         aBlock[4] = self;
-        v55 = v15;
-        v50 = v11;
+        v55 = bOOLValue;
+        v50 = optionsCopy;
         v53 = &v65;
         v54 = &v56;
         v41 = v13;
@@ -178,7 +178,7 @@ LABEL_15:
         v42 = v48;
         v52 = v42;
         v43 = _Block_copy(aBlock);
-        if (VNExecuteBlock(v43, a8))
+        if (VNExecuteBlock(v43, error))
         {
           v44 = objc_alloc(MEMORY[0x1E695DEF0]);
           v45 = [v44 initWithBytes:v57 + 6 length:48];

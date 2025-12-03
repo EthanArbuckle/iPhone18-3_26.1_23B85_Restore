@@ -1,21 +1,21 @@
 @interface _CNObservableFailureEvent
-- (BOOL)isEqual:(id)a3;
-- (_CNObservableFailureEvent)initWithError:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CNObservableFailureEvent)initWithError:(id)error;
 - (unint64_t)hash;
-- (void)dematerializeWithObserver:(id)a3;
+- (void)dematerializeWithObserver:(id)observer;
 @end
 
 @implementation _CNObservableFailureEvent
 
-- (_CNObservableFailureEvent)initWithError:(id)a3
+- (_CNObservableFailureEvent)initWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = _CNObservableFailureEvent;
   v5 = [(_CNObservableFailureEvent *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [errorCopy copy];
     error = v5->_error;
     v5->_error = v6;
 
@@ -25,16 +25,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37___CNObservableFailureEvent_isEqual___block_invoke;
   v7[3] = &unk_1E6ED60C8;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = equalCopy;
+  v5 = equalCopy;
   LOBYTE(self) = [CNEqualsBuilder isObject:v5 memberOfSameClassAndEqualTo:self withBlocks:v7, 0];
 
   return self;
@@ -50,11 +50,11 @@
   return [CNHashBuilder hashWithBlocks:v3, 0];
 }
 
-- (void)dematerializeWithObserver:(id)a3
+- (void)dematerializeWithObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(_CNObservableFailureEvent *)self error];
-  [v4 observerDidFailWithError:v5];
+  observerCopy = observer;
+  error = [(_CNObservableFailureEvent *)self error];
+  [observerCopy observerDidFailWithError:error];
 }
 
 @end

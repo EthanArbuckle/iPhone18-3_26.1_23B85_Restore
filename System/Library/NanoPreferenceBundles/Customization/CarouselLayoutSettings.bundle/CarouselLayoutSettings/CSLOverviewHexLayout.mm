@@ -1,22 +1,22 @@
 @interface CSLOverviewHexLayout
-- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForItemAtHex:(Hex)a3;
-- (CSLOverviewHexLayout)initWithConfiguration:(HexLayoutConfiguration *)a3;
-- (Hex)hexAtPoint:(CGPoint)a3;
+- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForItemAtHex:(Hex)hex;
+- (CSLOverviewHexLayout)initWithConfiguration:(HexLayoutConfiguration *)configuration;
+- (Hex)hexAtPoint:(CGPoint)point;
 - (void)updateConstants;
-- (void)updateWithBounds:(CGRect)a3;
-- (void)updateWithNormalizedGraphQuadrantSize:(CGSize)a3;
+- (void)updateWithBounds:(CGRect)bounds;
+- (void)updateWithNormalizedGraphQuadrantSize:(CGSize)size;
 @end
 
 @implementation CSLOverviewHexLayout
 
-- (CSLOverviewHexLayout)initWithConfiguration:(HexLayoutConfiguration *)a3
+- (CSLOverviewHexLayout)initWithConfiguration:(HexLayoutConfiguration *)configuration
 {
-  v4 = *&a3[2].var2;
-  v16 = *&a3[1].var3;
+  v4 = *&configuration[2].var2;
+  v16 = *&configuration[1].var3;
   v17 = v4;
-  v18 = *&a3[3].var1;
-  v5 = *&a3->var4;
-  v14 = *&a3->var0;
+  v18 = *&configuration[3].var1;
+  v5 = *&configuration->var4;
+  v14 = *&configuration->var0;
   v15 = v5;
   v13.receiver = self;
   v13.super_class = CSLOverviewHexLayout;
@@ -24,12 +24,12 @@
   if (v6)
   {
     v7 = [CSLUniformHexLayout alloc];
-    v8 = *&a3[2].var2;
-    v16 = *&a3[1].var3;
+    v8 = *&configuration[2].var2;
+    v16 = *&configuration[1].var3;
     v17 = v8;
-    v18 = *&a3[3].var1;
-    v9 = *&a3->var4;
-    v14 = *&a3->var0;
+    v18 = *&configuration[3].var1;
+    v9 = *&configuration->var4;
+    v14 = *&configuration->var0;
     v15 = v9;
     v10 = [(CSLUniformHexLayout *)v7 initWithConfiguration:&v14];
     uniformLayout = v6->_uniformLayout;
@@ -45,22 +45,22 @@
   return v6;
 }
 
-- (void)updateWithBounds:(CGRect)a3
+- (void)updateWithBounds:(CGRect)bounds
 {
-  v3 = a3.size.height * 0.5;
-  if (a3.size.width * 0.5 != self->_quadrantSize.width || v3 != self->_quadrantSize.height)
+  v3 = bounds.size.height * 0.5;
+  if (bounds.size.width * 0.5 != self->_quadrantSize.width || v3 != self->_quadrantSize.height)
   {
-    self->_quadrantSize.width = a3.size.width * 0.5;
+    self->_quadrantSize.width = bounds.size.width * 0.5;
     self->_quadrantSize.height = v3;
     self->_constantsDirty = 1;
   }
 }
 
-- (void)updateWithNormalizedGraphQuadrantSize:(CGSize)a3
+- (void)updateWithNormalizedGraphQuadrantSize:(CGSize)size
 {
-  if (a3.width != self->_normalizedGraphQuadrantSize.width || a3.height != self->_normalizedGraphQuadrantSize.height)
+  if (size.width != self->_normalizedGraphQuadrantSize.width || size.height != self->_normalizedGraphQuadrantSize.height)
   {
-    self->_normalizedGraphQuadrantSize = a3;
+    self->_normalizedGraphQuadrantSize = size;
     self->_constantsDirty = 1;
   }
 }
@@ -120,7 +120,7 @@ LABEL_10:
   self->_constantsDirty = 0;
 }
 
-- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForItemAtHex:(Hex)a3
+- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForItemAtHex:(Hex)hex
 {
   v6 = v3;
   [(CSLOverviewHexLayout *)self updateConstants];
@@ -130,7 +130,7 @@ LABEL_10:
   uniformLayout = self->_uniformLayout;
   if (uniformLayout)
   {
-    [(CSLUniformHexLayout *)uniformLayout layoutAttributesForItemAtHex:a3];
+    [(CSLUniformHexLayout *)uniformLayout layoutAttributesForItemAtHex:hex];
     v7 = *v6;
   }
 
@@ -180,10 +180,10 @@ LABEL_10:
   return v16;
 }
 
-- (Hex)hexAtPoint:(CGPoint)a3
+- (Hex)hexAtPoint:(CGPoint)point
 {
   uniformLayout = self->_uniformLayout;
-  [(CSLHexLayout *)self contentPointFromScrolledPoint:a3.x / self->_scale, a3.y / self->_scale];
+  [(CSLHexLayout *)self contentPointFromScrolledPoint:point.x / self->_scale, point.y / self->_scale];
 
   return [(CSLUniformHexLayout *)uniformLayout hexAtPoint:?];
 }

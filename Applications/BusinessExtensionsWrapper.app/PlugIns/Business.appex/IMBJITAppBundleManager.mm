@@ -1,23 +1,23 @@
 @interface IMBJITAppBundleManager
-+ (void)setSharedBundleManager:(id)a3;
++ (void)setSharedBundleManager:(id)manager;
 - (int64_t)bundleState;
-- (void)setBundleState:(int64_t)a3;
+- (void)setBundleState:(int64_t)state;
 @end
 
 @implementation IMBJITAppBundleManager
 
-+ (void)setSharedBundleManager:(id)a3
++ (void)setSharedBundleManager:(id)manager
 {
   v3 = qword_1000EEEA8;
-  v4 = a3;
+  managerCopy = manager;
   if (v3 != -1)
   {
-    v5 = v4;
+    v5 = managerCopy;
     swift_once();
-    v4 = v5;
+    managerCopy = v5;
   }
 
-  qword_1000F3AE0 = v4;
+  qword_1000F3AE0 = managerCopy;
 
   _objc_release_x1();
 }
@@ -29,14 +29,14 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setBundleState:(int64_t)a3
+- (void)setBundleState:(int64_t)state
 {
   v5 = OBJC_IVAR____TtC8Business22IMBJITAppBundleManager_bundleState;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = state;
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v6 = self;
+    selfCopy = self;
     sub_10006A938();
     swift_unknownObjectRelease();
   }

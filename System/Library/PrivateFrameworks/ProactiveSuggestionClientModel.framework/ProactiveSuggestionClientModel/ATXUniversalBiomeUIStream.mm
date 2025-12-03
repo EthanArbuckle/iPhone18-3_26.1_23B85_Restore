@@ -1,10 +1,10 @@
 @interface ATXUniversalBiomeUIStream
-- (ATXUniversalBiomeUIStream)initWithStoreConfig:(id)a3;
-- (id)_innerStreamForStreamId:(id)a3;
-- (id)deprecatedGenericEventPublisherFromStartTime:(double)a3;
-- (id)genericEventPublisherFromStartTime:(double)a3;
+- (ATXUniversalBiomeUIStream)initWithStoreConfig:(id)config;
+- (id)_innerStreamForStreamId:(id)id;
+- (id)deprecatedGenericEventPublisherFromStartTime:(double)time;
+- (id)genericEventPublisherFromStartTime:(double)time;
 - (id)streamIdentifiers;
-- (void)donateGenericUIEvent:(id)a3;
+- (void)donateGenericUIEvent:(id)event;
 @end
 
 @implementation ATXUniversalBiomeUIStream
@@ -17,8 +17,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ATXUniversalBiomeUIStream *)self _validUIStreamConsumerSubTypes];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _validUIStreamConsumerSubTypes = [(ATXUniversalBiomeUIStream *)self _validUIStreamConsumerSubTypes];
+  v5 = [_validUIStreamConsumerSubTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -29,7 +29,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_validUIStreamConsumerSubTypes);
         }
 
         v9 = -[ATXUniversalBiomeUIStream _streamIdForConsumerSubType:](self, "_streamIdForConsumerSubType:", [*(*(&v13 + 1) + 8 * i) unsignedIntValue]);
@@ -39,7 +39,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_validUIStreamConsumerSubTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -51,26 +51,26 @@
   return v10;
 }
 
-- (ATXUniversalBiomeUIStream)initWithStoreConfig:(id)a3
+- (ATXUniversalBiomeUIStream)initWithStoreConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v13.receiver = self;
   v13.super_class = ATXUniversalBiomeUIStream;
   v5 = [(ATXUniversalBiomeUIStream *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (configCopy)
     {
-      v6 = v4;
+      atx_storeConfig = configCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E698F130] atx_storeConfig];
+      atx_storeConfig = [MEMORY[0x1E698F130] atx_storeConfig];
     }
 
     storeConfig = v5->_storeConfig;
-    v5->_storeConfig = v6;
+    v5->_storeConfig = atx_storeConfig;
 
     v8 = objc_alloc(MEMORY[0x1E69C5D60]);
     v9 = objc_opt_new();
@@ -82,19 +82,19 @@
   return v5;
 }
 
-- (id)genericEventPublisherFromStartTime:(double)a3
+- (id)genericEventPublisherFromStartTime:(double)time
 {
   v5 = [objc_alloc(MEMORY[0x1E698F318]) initWithPrivateStreamIdentifier:@"homeScreen" storeConfig:self->_storeConfig];
-  v6 = [v5 publisherFromStartTime:a3];
+  v6 = [v5 publisherFromStartTime:time];
 
-  v7 = [(ATXUniversalBiomeUIStream *)self streamIdentifiers];
+  streamIdentifiers = [(ATXUniversalBiomeUIStream *)self streamIdentifiers];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__ATXUniversalBiomeUIStream_genericEventPublisherFromStartTime___block_invoke;
   v11[3] = &unk_1E86A4468;
   v11[4] = self;
-  *&v11[5] = a3;
-  v8 = [v7 _pas_mappedArrayWithTransform:v11];
+  *&v11[5] = time;
+  v8 = [streamIdentifiers _pas_mappedArrayWithTransform:v11];
 
   v9 = [v6 orderedMergeWithOthers:v8 comparator:&__block_literal_global_11];
 
@@ -125,27 +125,27 @@ uint64_t __64__ATXUniversalBiomeUIStream_genericEventPublisherFromStartTime___bl
   return v11;
 }
 
-- (id)deprecatedGenericEventPublisherFromStartTime:(double)a3
+- (id)deprecatedGenericEventPublisherFromStartTime:(double)time
 {
   v4 = [objc_alloc(MEMORY[0x1E698F318]) initWithPrivateStreamIdentifier:@"homeScreen" storeConfig:self->_storeConfig];
-  v5 = [v4 publisherFromStartTime:a3];
+  v5 = [v4 publisherFromStartTime:time];
 
   return v5;
 }
 
-- (void)donateGenericUIEvent:(id)a3
+- (void)donateGenericUIEvent:(id)event
 {
-  v4 = a3;
-  v6 = -[ATXUniversalBiomeUIStream _innerStreamForConsumerSubType:](self, "_innerStreamForConsumerSubType:", [v4 consumerSubTypeForUIStream]);
-  v5 = [v6 source];
-  [v5 sendEvent:v4];
+  eventCopy = event;
+  v6 = -[ATXUniversalBiomeUIStream _innerStreamForConsumerSubType:](self, "_innerStreamForConsumerSubType:", [eventCopy consumerSubTypeForUIStream]);
+  source = [v6 source];
+  [source sendEvent:eventCopy];
 }
 
-- (id)_innerStreamForStreamId:(id)a3
+- (id)_innerStreamForStreamId:(id)id
 {
-  v4 = a3;
-  v5 = [(ATXUniversalBiomeUIStream *)self streamIdentifiers];
-  v6 = [v5 containsObject:v4];
+  idCopy = id;
+  streamIdentifiers = [(ATXUniversalBiomeUIStream *)self streamIdentifiers];
+  v6 = [streamIdentifiers containsObject:idCopy];
 
   if (v6)
   {
@@ -161,8 +161,8 @@ uint64_t __64__ATXUniversalBiomeUIStream_genericEventPublisherFromStartTime___bl
     v11[2] = __53__ATXUniversalBiomeUIStream__innerStreamForStreamId___block_invoke;
     v11[3] = &unk_1E86A4578;
     v14 = &v15;
-    v12 = v4;
-    v13 = self;
+    v12 = idCopy;
+    selfCopy = self;
     [(_PASLock *)lock runWithLockAcquired:v11];
     v8 = v16[5];
 
@@ -174,7 +174,7 @@ uint64_t __64__ATXUniversalBiomeUIStream_genericEventPublisherFromStartTime___bl
     v9 = __atxlog_handle_blending();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(ATXUniversalBiomeUIStream *)self _innerStreamForStreamId:v4, v9];
+      [(ATXUniversalBiomeUIStream *)self _innerStreamForStreamId:idCopy, v9];
     }
 
     v8 = 0;

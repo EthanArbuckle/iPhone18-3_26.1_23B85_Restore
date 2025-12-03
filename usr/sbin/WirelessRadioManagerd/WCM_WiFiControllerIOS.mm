@@ -14,37 +14,37 @@
 - (void)downloadWiFiBTCoexProfiles;
 - (void)downloadWiFiBTExtCoexProfiles;
 - (void)enableWifiLaaCoexMode;
-- (void)setAntennaSelectionWiFiEnh:(id)a3;
-- (void)setCoexParams:(const char *)a3 withValue:(id)a4;
-- (void)setWifiAgcCoexMode:(id)a3;
-- (void)updateAntennaPreference:(id)a3 withCellPolicy:(id)a4;
-- (void)updateAntennaSelection:(id)a3;
-- (void)updateAntennaSelectionV2:(id)a3;
-- (void)updateAntennaSelectionWiFiEnh2G:(id)a3;
-- (void)updateAntennaSelectionWiFiEnh5G:(id)a3;
-- (void)updateAntennaSelectionWiFiEnh6G:(id)a3;
-- (void)updateChannelsForTimeSharingMode:(id)a3;
-- (void)updateChannelsToBlocklist:(id)a3;
-- (void)updateChannelsToDisableOCL:(id)a3;
-- (void)updateChannelsToDisableOCLWiFiEnh:(id)a3 WiFiEnhChannels:(id)a4;
-- (void)updateChannelsToEnableType7MSG2GWiFi:(id)a3;
-- (void)updateChannelsToEnableType7MSG:(id)a3;
-- (void)updateChannelsToEnableType7MSGWiFiEnh:(id)a3 WiFiEnhChannels:(id)a4;
-- (void)updateChannelsToEnableWCI2:(id)a3;
-- (void)updateChannelsToEnableWCI2V2:(id)a3;
-- (void)updateChannelsToEnableWCI2WiFiEnh:(id)a3 WiFiEnhChannels:(id)a4;
+- (void)setAntennaSelectionWiFiEnh:(id)enh;
+- (void)setCoexParams:(const char *)params withValue:(id)value;
+- (void)setWifiAgcCoexMode:(id)mode;
+- (void)updateAntennaPreference:(id)preference withCellPolicy:(id)policy;
+- (void)updateAntennaSelection:(id)selection;
+- (void)updateAntennaSelectionV2:(id)v2;
+- (void)updateAntennaSelectionWiFiEnh2G:(id)g;
+- (void)updateAntennaSelectionWiFiEnh5G:(id)g;
+- (void)updateAntennaSelectionWiFiEnh6G:(id)g;
+- (void)updateChannelsForTimeSharingMode:(id)mode;
+- (void)updateChannelsToBlocklist:(id)blocklist;
+- (void)updateChannelsToDisableOCL:(id)l;
+- (void)updateChannelsToDisableOCLWiFiEnh:(id)enh WiFiEnhChannels:(id)channels;
+- (void)updateChannelsToEnableType7MSG2GWiFi:(id)fi;
+- (void)updateChannelsToEnableType7MSG:(id)g;
+- (void)updateChannelsToEnableType7MSGWiFiEnh:(id)enh WiFiEnhChannels:(id)channels;
+- (void)updateChannelsToEnableWCI2:(id)i2;
+- (void)updateChannelsToEnableWCI2V2:(id)v2;
+- (void)updateChannelsToEnableWCI2WiFiEnh:(id)enh WiFiEnhChannels:(id)channels;
 - (void)updateGen9rFemConfiguration;
-- (void)updateMWSFrameConfig:(id)a3;
+- (void)updateMWSFrameConfig:(id)config;
 - (void)updateMWSSignalingConfig;
 - (void)updatePowerOnGen9rFemConfiguration;
-- (void)updateRCU2CoexParams:(id)a3;
-- (void)updateRxPriorityThreshold:(id)a3;
-- (void)updateWiFiBTCoexActiveProfileFor2G:(int64_t)a3 and5G:(int64_t)a4;
-- (void)updateWiFiBTCoexProfile:(id)a3 atIndex:(int64_t)a4;
-- (void)updateWiFiBTConnectionReport:(id)a3;
-- (void)updateWiFiRCU2CoexMode:(id)a3;
-- (void)updateWiFiRCU2PMProtectionMode:(id)a3;
-- (void)updateWiFiRCU2TimingArray:(id)a3;
+- (void)updateRCU2CoexParams:(id)params;
+- (void)updateRxPriorityThreshold:(id)threshold;
+- (void)updateWiFiBTCoexActiveProfileFor2G:(int64_t)g and5G:(int64_t)and5G;
+- (void)updateWiFiBTCoexProfile:(id)profile atIndex:(int64_t)index;
+- (void)updateWiFiBTConnectionReport:(id)report;
+- (void)updateWiFiRCU2CoexMode:(id)mode;
+- (void)updateWiFiRCU2PMProtectionMode:(id)mode;
+- (void)updateWiFiRCU2TimingArray:(id)array;
 - (void)updateWifiEnvelopeParams;
 @end
 
@@ -54,12 +54,12 @@
 {
   v3 = +[WCM_PolicyManager singleton];
   [WCM_Logging logLevel:2 message:@"Wifi Controller: updateGen9rFemConfiguration"];
-  v4 = [v3 wcmGen9rFemLpmMode2g];
+  wcmGen9rFemLpmMode2g = [v3 wcmGen9rFemLpmMode2g];
   v5 = byte_1002B81F8;
-  if (byte_1002B81F8 == v4)
+  if (byte_1002B81F8 == wcmGen9rFemLpmMode2g)
   {
-    v6 = [v3 wcmGen9rFemLpmMode5g];
-    if (byte_1002B81F9 == v6)
+    wcmGen9rFemLpmMode5g = [v3 wcmGen9rFemLpmMode5g];
+    if (byte_1002B81F9 == wcmGen9rFemLpmMode5g)
     {
 
       [WCM_Logging logLevel:2 message:@"Wifi Controller: updateGen9rFemConfiguration, skipped due to duplicated command"];
@@ -73,12 +73,12 @@
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 2, @"Wifi Controller: updateGen9rFemConfiguration, 5g(%d->%d)", byte_1002B81F9, [v3 wcmGen9rFemLpmMode5g]);
   byte_1002B81F8 = [v3 wcmGen9rFemLpmMode2g];
   byte_1002B81F9 = [v3 wcmGen9rFemLpmMode5g];
-  v7 = [(WCM_WiFiController *)self wifiService];
-  v8 = [v3 wcmGen9rFemLpmMode2g];
-  v9 = [v3 wcmGen9rFemLpmMode5g];
-  v10 = [v3 wcmGen9rFemLpmMode5g];
+  wifiService = [(WCM_WiFiController *)self wifiService];
+  wcmGen9rFemLpmMode2g2 = [v3 wcmGen9rFemLpmMode2g];
+  wcmGen9rFemLpmMode5g2 = [v3 wcmGen9rFemLpmMode5g];
+  wcmGen9rFemLpmMode5g3 = [v3 wcmGen9rFemLpmMode5g];
 
-  [(WCM_WiFiService *)v7 setChannelsToEnablerFemModeWiFiEnh:v8 enable5G:v9 enable6G:v10];
+  [(WCM_WiFiService *)wifiService setChannelsToEnablerFemModeWiFiEnh:wcmGen9rFemLpmMode2g2 enable5G:wcmGen9rFemLpmMode5g2 enable6G:wcmGen9rFemLpmMode5g3];
 }
 
 - (WCM_WiFiControllerIOS)init
@@ -229,18 +229,18 @@
   return qword_1002B81E8;
 }
 
-- (void)updateWiFiBTCoexProfile:(id)a3 atIndex:(int64_t)a4
+- (void)updateWiFiBTCoexProfile:(id)profile atIndex:(int64_t)index
 {
-  v6 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v6 setWiFiBTCoexProfile:a3 atIndex:a4];
+  [(WCM_WiFiService *)wifiService setWiFiBTCoexProfile:profile atIndex:index];
 }
 
-- (void)updateWiFiBTCoexActiveProfileFor2G:(int64_t)a3 and5G:(int64_t)a4
+- (void)updateWiFiBTCoexActiveProfileFor2G:(int64_t)g and5G:(int64_t)and5G
 {
-  if ([(WCM_WiFiControllerIOS *)self activeProfileFor2G]== a3 && [(WCM_WiFiControllerIOS *)self activeProfileFor5G]== a4)
+  if ([(WCM_WiFiControllerIOS *)self activeProfileFor2G]== g && [(WCM_WiFiControllerIOS *)self activeProfileFor5G]== and5G)
   {
-    [WCM_Logging logLevel:2 message:@"Already set index2G(%d) index5G(%d)", a3, a4];
+    [WCM_Logging logLevel:2 message:@"Already set index2G(%d) index5G(%d)", g, and5G];
     return;
   }
 
@@ -265,11 +265,11 @@
   {
     [WCM_Logging logLevel:2 message:@"All Coex Profiles Downloaded Successfully on 2nd Attempt, Updating"];
 LABEL_10:
-    [(WCM_WiFiControllerIOS *)self setActiveProfileFor2G:a3];
-    [(WCM_WiFiControllerIOS *)self setActiveProfileFor5G:a4];
-    v7 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setActiveProfileFor2G:g];
+    [(WCM_WiFiControllerIOS *)self setActiveProfileFor5G:and5G];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v7 setWiFiBTCoexActiveProfileFor2G:a3 and5G:a4];
+    [(WCM_WiFiService *)wifiService setWiFiBTCoexActiveProfileFor2G:g and5G:and5G];
     return;
   }
 
@@ -279,57 +279,57 @@ LABEL_10:
   [(WCM_WiFiControllerIOS *)self setActiveProfileFor5G:-1];
 }
 
-- (void)updateChannelsToBlocklist:(id)a3
+- (void)updateChannelsToBlocklist:(id)blocklist
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsBlocklisted](self, "channelsBlocklisted")}])
+  if ([blocklist isEqualToArray:{-[WCM_WiFiControllerIOS channelsBlocklisted](self, "channelsBlocklisted")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already blocklisted channels %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already blocklisted channels %@", blocklist];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setChannelsBlocklisted:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setChannelsBlocklisted:blocklist];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v5 setChannelsToBlocklist:a3];
+    [(WCM_WiFiService *)wifiService setChannelsToBlocklist:blocklist];
   }
 }
 
-- (void)updateChannelsToEnableWCI2:(id)a3
+- (void)updateChannelsToEnableWCI2:(id)i2
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsWCI2Enabled](self, "channelsWCI2Enabled")}])
+  if ([i2 isEqualToArray:{-[WCM_WiFiControllerIOS channelsWCI2Enabled](self, "channelsWCI2Enabled")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already WCI2 enabled on channels %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already WCI2 enabled on channels %@", i2];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setChannelsWCI2Enabled:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setChannelsWCI2Enabled:i2];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v5 setChannelsToEnableWCI2:a3];
+    [(WCM_WiFiService *)wifiService setChannelsToEnableWCI2:i2];
   }
 }
 
-- (void)updateChannelsToEnableWCI2V2:(id)a3
+- (void)updateChannelsToEnableWCI2V2:(id)v2
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsWCI2EnabledV2](self, "channelsWCI2EnabledV2")}])
+  if ([v2 isEqualToArray:{-[WCM_WiFiControllerIOS channelsWCI2EnabledV2](self, "channelsWCI2EnabledV2")}])
   {
-    [WCM_Logging logLevel:4 message:@"WCI2_V2: WCI2 is already enabled on channels %@", a3];
+    [WCM_Logging logLevel:4 message:@"WCI2_V2: WCI2 is already enabled on channels %@", v2];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setChannelsWCI2EnabledV2:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setChannelsWCI2EnabledV2:v2];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v5 setChannelsToEnableWCI2V2:a3];
+    [(WCM_WiFiService *)wifiService setChannelsToEnableWCI2V2:v2];
   }
 }
 
-- (void)updateChannelsToEnableWCI2WiFiEnh:(id)a3 WiFiEnhChannels:(id)a4
+- (void)updateChannelsToEnableWCI2WiFiEnh:(id)enh WiFiEnhChannels:(id)channels
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsWCI2Enabled2Gand5G](self, "channelsWCI2Enabled2Gand5G")}] && objc_msgSend(a4, "isEqualToArray:", -[WCM_WiFiControllerIOS channelsWCI2EnabledWiFiEnh](self, "channelsWCI2EnabledWiFiEnh")))
+  if ([enh isEqualToArray:{-[WCM_WiFiControllerIOS channelsWCI2Enabled2Gand5G](self, "channelsWCI2Enabled2Gand5G")}] && objc_msgSend(channels, "isEqualToArray:", -[WCM_WiFiControllerIOS channelsWCI2EnabledWiFiEnh](self, "channelsWCI2EnabledWiFiEnh")))
   {
 
     [WCM_Logging logLevel:4 message:@"WCI2_WiFiEnh:  Channel lists are the same as channelsWCI2Enabled2Gand5G and channelsWCI2EnabledWiFiEnh, no need to update."];
@@ -337,52 +337,52 @@ LABEL_10:
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setChannelsWCI2Enabled2Gand5G:a3];
-    [(WCM_WiFiControllerIOS *)self setChannelsWCI2EnabledWiFiEnh:a4];
-    v7 = [(WCM_WiFiController *)self wifiService];
-    v8 = [(WCM_WiFiControllerIOS *)self channelsWCI2Enabled2Gand5G];
-    v9 = [(WCM_WiFiControllerIOS *)self channelsWCI2EnabledWiFiEnh];
+    [(WCM_WiFiControllerIOS *)self setChannelsWCI2Enabled2Gand5G:enh];
+    [(WCM_WiFiControllerIOS *)self setChannelsWCI2EnabledWiFiEnh:channels];
+    wifiService = [(WCM_WiFiController *)self wifiService];
+    channelsWCI2Enabled2Gand5G = [(WCM_WiFiControllerIOS *)self channelsWCI2Enabled2Gand5G];
+    channelsWCI2EnabledWiFiEnh = [(WCM_WiFiControllerIOS *)self channelsWCI2EnabledWiFiEnh];
 
-    [(WCM_WiFiService *)v7 setChannelsToEnableWCI2WiFiEnh:v8 WiFiEnhChannels:v9];
+    [(WCM_WiFiService *)wifiService setChannelsToEnableWCI2WiFiEnh:channelsWCI2Enabled2Gand5G WiFiEnhChannels:channelsWCI2EnabledWiFiEnh];
   }
 }
 
-- (void)updateChannelsToEnableType7MSG:(id)a3
+- (void)updateChannelsToEnableType7MSG:(id)g
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsToEnableType7MSG](self, "channelsToEnableType7MSG")}])
+  if ([g isEqualToArray:{-[WCM_WiFiControllerIOS channelsToEnableType7MSG](self, "channelsToEnableType7MSG")}])
   {
-    [WCM_Logging logLevel:4 message:@"DLDebug_: WiFi_Type7 MSG is already enabled on 5G WiFi channels %@", a3];
+    [WCM_Logging logLevel:4 message:@"DLDebug_: WiFi_Type7 MSG is already enabled on 5G WiFi channels %@", g];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setChannelsToEnableType7MSG:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setChannelsToEnableType7MSG:g];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v5 setChannelsToEnableType7MSG:a3];
+    [(WCM_WiFiService *)wifiService setChannelsToEnableType7MSG:g];
   }
 }
 
-- (void)updateChannelsToEnableType7MSG2GWiFi:(id)a3
+- (void)updateChannelsToEnableType7MSG2GWiFi:(id)fi
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsToEnableType7MSG2GWiFi](self, "channelsToEnableType7MSG2GWiFi")}])
+  if ([fi isEqualToArray:{-[WCM_WiFiControllerIOS channelsToEnableType7MSG2GWiFi](self, "channelsToEnableType7MSG2GWiFi")}])
   {
-    [WCM_Logging logLevel:4 message:@"DLDebug_: 2GWiFi_Type7 MSG is already enabled on 2G WiFi channels %@", a3];
+    [WCM_Logging logLevel:4 message:@"DLDebug_: 2GWiFi_Type7 MSG is already enabled on 2G WiFi channels %@", fi];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setChannelsToEnableType7MSG2GWiFi:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
-    v6 = [(WCM_WiFiControllerIOS *)self channelsToEnableType7MSG2GWiFi];
+    [(WCM_WiFiControllerIOS *)self setChannelsToEnableType7MSG2GWiFi:fi];
+    wifiService = [(WCM_WiFiController *)self wifiService];
+    channelsToEnableType7MSG2GWiFi = [(WCM_WiFiControllerIOS *)self channelsToEnableType7MSG2GWiFi];
 
-    [(WCM_WiFiService *)v5 setChannelsToEnableType7MSG2GWiFi:v6];
+    [(WCM_WiFiService *)wifiService setChannelsToEnableType7MSG2GWiFi:channelsToEnableType7MSG2GWiFi];
   }
 }
 
-- (void)updateChannelsToEnableType7MSGWiFiEnh:(id)a3 WiFiEnhChannels:(id)a4
+- (void)updateChannelsToEnableType7MSGWiFiEnh:(id)enh WiFiEnhChannels:(id)channels
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsWiFiType7MSG2Gand5G](self, "channelsWiFiType7MSG2Gand5G")}] && objc_msgSend(a4, "isEqualToArray:", -[WCM_WiFiControllerIOS channelsWiFiType7MSGWiFiEnh](self, "channelsWiFiType7MSGWiFiEnh")))
+  if ([enh isEqualToArray:{-[WCM_WiFiControllerIOS channelsWiFiType7MSG2Gand5G](self, "channelsWiFiType7MSG2Gand5G")}] && objc_msgSend(channels, "isEqualToArray:", -[WCM_WiFiControllerIOS channelsWiFiType7MSGWiFiEnh](self, "channelsWiFiType7MSGWiFiEnh")))
   {
 
     [WCM_Logging logLevel:4 message:@"WiFiType7_WiFiEnh:  Channel lists are the same as channelsWiFiType7MSG2Gand5G and channelsWiFiType7MSGWiFiEnh, no need to update."];
@@ -390,31 +390,31 @@ LABEL_10:
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setChannelsWiFiType7MSG2Gand5G:a3];
-    [(WCM_WiFiControllerIOS *)self setChannelsWiFiType7MSGWiFiEnh:a4];
-    v7 = [(WCM_WiFiController *)self wifiService];
-    v8 = [(WCM_WiFiControllerIOS *)self channelsWiFiType7MSG2Gand5G];
-    v9 = [(WCM_WiFiControllerIOS *)self channelsWiFiType7MSGWiFiEnh];
+    [(WCM_WiFiControllerIOS *)self setChannelsWiFiType7MSG2Gand5G:enh];
+    [(WCM_WiFiControllerIOS *)self setChannelsWiFiType7MSGWiFiEnh:channels];
+    wifiService = [(WCM_WiFiController *)self wifiService];
+    channelsWiFiType7MSG2Gand5G = [(WCM_WiFiControllerIOS *)self channelsWiFiType7MSG2Gand5G];
+    channelsWiFiType7MSGWiFiEnh = [(WCM_WiFiControllerIOS *)self channelsWiFiType7MSGWiFiEnh];
 
-    [(WCM_WiFiService *)v7 setChannelsToEnableType7MSGWiFiEnh:v8 WiFiEnhChannels:v9];
+    [(WCM_WiFiService *)wifiService setChannelsToEnableType7MSGWiFiEnh:channelsWiFiType7MSG2Gand5G WiFiEnhChannels:channelsWiFiType7MSGWiFiEnh];
   }
 }
 
-- (void)updateChannelsToDisableOCL:(id)a3
+- (void)updateChannelsToDisableOCL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsOCLDisabled](self, "channelsOCLDisabled")}])
+    if ([l isEqualToArray:{-[WCM_WiFiControllerIOS channelsOCLDisabled](self, "channelsOCLDisabled")}])
     {
-      [WCM_Logging logLevel:4 message:@"Already OCL disabled on channels %@", a3];
+      [WCM_Logging logLevel:4 message:@"Already OCL disabled on channels %@", l];
     }
 
     else
     {
-      [(WCM_WiFiControllerIOS *)self setChannelsOCLDisabled:a3];
-      v5 = [(WCM_WiFiController *)self wifiService];
+      [(WCM_WiFiControllerIOS *)self setChannelsOCLDisabled:l];
+      wifiService = [(WCM_WiFiController *)self wifiService];
 
-      [(WCM_WiFiService *)v5 setChannelsToDisableOCL:a3];
+      [(WCM_WiFiService *)wifiService setChannelsToDisableOCL:l];
     }
   }
 
@@ -425,9 +425,9 @@ LABEL_10:
   }
 }
 
-- (void)updateChannelsToDisableOCLWiFiEnh:(id)a3 WiFiEnhChannels:(id)a4
+- (void)updateChannelsToDisableOCLWiFiEnh:(id)enh WiFiEnhChannels:(id)channels
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS channelsDisableOCL2Gand5G](self, "channelsDisableOCL2Gand5G")}] && objc_msgSend(a4, "isEqualToArray:", -[WCM_WiFiControllerIOS channelsDisableOCLWiFiEnh](self, "channelsDisableOCLWiFiEnh")))
+  if ([enh isEqualToArray:{-[WCM_WiFiControllerIOS channelsDisableOCL2Gand5G](self, "channelsDisableOCL2Gand5G")}] && objc_msgSend(channels, "isEqualToArray:", -[WCM_WiFiControllerIOS channelsDisableOCLWiFiEnh](self, "channelsDisableOCLWiFiEnh")))
   {
 
     [WCM_Logging logLevel:4 message:@"DisableOCL_WiFiEnh: Channel lists are the same as channelsDisableOCL2Gand5G and channelsDisableOCLWiFiEnh, no need to update."];
@@ -435,53 +435,53 @@ LABEL_10:
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setChannelsDisableOCL2Gand5G:a3];
-    [(WCM_WiFiControllerIOS *)self setChannelsDisableOCLWiFiEnh:a4];
-    v7 = [(WCM_WiFiController *)self wifiService];
-    v8 = [(WCM_WiFiControllerIOS *)self channelsDisableOCL2Gand5G];
-    v9 = [(WCM_WiFiControllerIOS *)self channelsDisableOCLWiFiEnh];
+    [(WCM_WiFiControllerIOS *)self setChannelsDisableOCL2Gand5G:enh];
+    [(WCM_WiFiControllerIOS *)self setChannelsDisableOCLWiFiEnh:channels];
+    wifiService = [(WCM_WiFiController *)self wifiService];
+    channelsDisableOCL2Gand5G = [(WCM_WiFiControllerIOS *)self channelsDisableOCL2Gand5G];
+    channelsDisableOCLWiFiEnh = [(WCM_WiFiControllerIOS *)self channelsDisableOCLWiFiEnh];
 
-    [(WCM_WiFiService *)v7 setChannelsToDisableOCLWiFiEnh:v8 WiFiEnhChannels:v9];
+    [(WCM_WiFiService *)wifiService setChannelsToDisableOCLWiFiEnh:channelsDisableOCL2Gand5G WiFiEnhChannels:channelsDisableOCLWiFiEnh];
   }
 }
 
-- (void)updateRxPriorityThreshold:(id)a3
+- (void)updateRxPriorityThreshold:(id)threshold
 {
-  if ([(NSNumber *)[(WCM_WiFiControllerIOS *)self rxPriThreshold] isEqualToNumber:a3])
+  if ([(NSNumber *)[(WCM_WiFiControllerIOS *)self rxPriThreshold] isEqualToNumber:threshold])
   {
-    [WCM_Logging logLevel:4 message:@"Already set rxPriThreshold %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already set rxPriThreshold %@", threshold];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setRxPriThreshold:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setRxPriThreshold:threshold];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v5 setRxPriorityThreshold:a3];
+    [(WCM_WiFiService *)wifiService setRxPriorityThreshold:threshold];
   }
 }
 
-- (void)updateAntennaPreference:(id)a3 withCellPolicy:(id)a4
+- (void)updateAntennaPreference:(id)preference withCellPolicy:(id)policy
 {
-  v6 = self;
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS antennaConfig](self, "antennaConfig")}])
+  selfCopy = self;
+  if ([preference isEqualToArray:{-[WCM_WiFiControllerIOS antennaConfig](self, "antennaConfig")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already set antennaPreference %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already set antennaPreference %@", preference];
   }
 
   else
   {
-    v18 = v6;
-    [(WCM_WiFiControllerIOS *)v6 setAntennaConfig:a3];
-    v7 = [a3 firstObject];
-    v8 = [a3 lastObject];
+    v18 = selfCopy;
+    [(WCM_WiFiControllerIOS *)selfCopy setAntennaConfig:preference];
+    firstObject = [preference firstObject];
+    lastObject = [preference lastObject];
     v9 = 0;
-    LODWORD(v6) = 858980352;
+    LODWORD(selfCopy) = 858980352;
     v10 = 1;
     do
     {
       v11 = v10;
-      v12 = [v7 objectAtIndex:v9];
+      v12 = [firstObject objectAtIndex:v9];
       if ([v12 isEqual:&off_1002717D8])
       {
         v13 = &off_100271820;
@@ -492,9 +492,9 @@ LABEL_10:
         v13 = v12;
       }
 
-      v14 = ([v13 intValue] << (8 * v9)) | v6;
+      v14 = ([v13 intValue] << (8 * v9)) | selfCopy;
       [WCM_Logging logLevel:3 message:@"2G Core %d config Command = 0x%x Antenna Config = %@", v9, v14, v12];
-      v15 = [v8 objectAtIndex:v9];
+      v15 = [lastObject objectAtIndex:v9];
       if ([v15 isEqual:&off_1002717D8])
       {
         v16 = &off_100271820;
@@ -505,8 +505,8 @@ LABEL_10:
         v16 = v15;
       }
 
-      v6 = (([v16 intValue] << ((8 * v9) | 4)) | v14);
-      [WCM_Logging logLevel:3 message:@"5G Core %d config Command = 0x%x Antenna Config = %@", v9, v6, v15];
+      selfCopy = (([v16 intValue] << ((8 * v9) | 4)) | v14);
+      [WCM_Logging logLevel:3 message:@"5G Core %d config Command = 0x%x Antenna Config = %@", v9, selfCopy, v15];
       v10 = 0;
       v9 = 1;
     }
@@ -514,118 +514,118 @@ LABEL_10:
     while ((v11 & 1) != 0);
     [objc_msgSend(v18 "wifiService")];
     [objc_msgSend(v18 "wifiService")];
-    if (v6 != 858993459)
+    if (selfCopy != 858993459)
     {
       [objc_msgSend(v18 "wifiService")];
       [objc_msgSend(v18 "wifiService")];
-      v17 = [v18 wifiService];
+      wifiService = [v18 wifiService];
 
-      [v17 setAntennaCellPolicy:a4];
+      [wifiService setAntennaCellPolicy:policy];
     }
   }
 }
 
-- (void)updateAntennaSelection:(id)a3
+- (void)updateAntennaSelection:(id)selection
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelection](self, "antennaSelection")}])
+  if ([selection isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelection](self, "antennaSelection")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already set antennaSelection %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already set antennaSelection %@", selection];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setAntennaSelection:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setAntennaSelection:selection];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v5 setAntennaSelection:a3];
+    [(WCM_WiFiService *)wifiService setAntennaSelection:selection];
   }
 }
 
-- (void)updateAntennaSelectionV2:(id)a3
+- (void)updateAntennaSelectionV2:(id)v2
 {
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelection](self, "antennaSelection")}])
+  if ([v2 isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelection](self, "antennaSelection")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already set antennaSelection %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already set antennaSelection %@", v2];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setAntennaSelection:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setAntennaSelection:v2];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v5 setAntennaSelectionV2:a3];
+    [(WCM_WiFiService *)wifiService setAntennaSelectionV2:v2];
   }
 }
 
-- (void)updateAntennaSelectionWiFiEnh2G:(id)a3
+- (void)updateAntennaSelectionWiFiEnh2G:(id)g
 {
-  [WCM_Logging logLevel:4 message:@"Try to set 2G antennaSelection %@", a3];
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelectionEnh2G](self, "antennaSelectionEnh2G")}])
+  [WCM_Logging logLevel:4 message:@"Try to set 2G antennaSelection %@", g];
+  if ([g isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelectionEnh2G](self, "antennaSelectionEnh2G")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already set 2G antennaSelection %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already set 2G antennaSelection %@", g];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setAntennaSelectionEnh2G:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
-    v6 = [(WCM_WiFiControllerIOS *)self antennaSelectionEnh2G];
+    [(WCM_WiFiControllerIOS *)self setAntennaSelectionEnh2G:g];
+    wifiService = [(WCM_WiFiController *)self wifiService];
+    antennaSelectionEnh2G = [(WCM_WiFiControllerIOS *)self antennaSelectionEnh2G];
 
-    [(WCM_WiFiService *)v5 setAntennaSelectionWiFiEnh:v6];
+    [(WCM_WiFiService *)wifiService setAntennaSelectionWiFiEnh:antennaSelectionEnh2G];
   }
 }
 
-- (void)updateAntennaSelectionWiFiEnh5G:(id)a3
+- (void)updateAntennaSelectionWiFiEnh5G:(id)g
 {
-  [WCM_Logging logLevel:4 message:@"Try to set 5G antennaSelection %@", a3];
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelectionEnh5G](self, "antennaSelectionEnh5G")}])
+  [WCM_Logging logLevel:4 message:@"Try to set 5G antennaSelection %@", g];
+  if ([g isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelectionEnh5G](self, "antennaSelectionEnh5G")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already set 5G antennaSelection %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already set 5G antennaSelection %@", g];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setAntennaSelectionEnh5G:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
-    v6 = [(WCM_WiFiControllerIOS *)self antennaSelectionEnh5G];
+    [(WCM_WiFiControllerIOS *)self setAntennaSelectionEnh5G:g];
+    wifiService = [(WCM_WiFiController *)self wifiService];
+    antennaSelectionEnh5G = [(WCM_WiFiControllerIOS *)self antennaSelectionEnh5G];
 
-    [(WCM_WiFiService *)v5 setAntennaSelectionWiFiEnh:v6];
+    [(WCM_WiFiService *)wifiService setAntennaSelectionWiFiEnh:antennaSelectionEnh5G];
   }
 }
 
-- (void)updateAntennaSelectionWiFiEnh6G:(id)a3
+- (void)updateAntennaSelectionWiFiEnh6G:(id)g
 {
-  [WCM_Logging logLevel:4 message:@"Try to set 6G antennaSelection %@", a3];
-  if ([a3 isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelectionEnh6G](self, "antennaSelectionEnh6G")}])
+  [WCM_Logging logLevel:4 message:@"Try to set 6G antennaSelection %@", g];
+  if ([g isEqualToArray:{-[WCM_WiFiControllerIOS antennaSelectionEnh6G](self, "antennaSelectionEnh6G")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already set 6G antennaSelection %@", a3];
+    [WCM_Logging logLevel:4 message:@"Already set 6G antennaSelection %@", g];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setAntennaSelectionEnh6G:a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
-    v6 = [(WCM_WiFiControllerIOS *)self antennaSelectionEnh6G];
+    [(WCM_WiFiControllerIOS *)self setAntennaSelectionEnh6G:g];
+    wifiService = [(WCM_WiFiController *)self wifiService];
+    antennaSelectionEnh6G = [(WCM_WiFiControllerIOS *)self antennaSelectionEnh6G];
 
-    [(WCM_WiFiService *)v5 setAntennaSelectionWiFiEnh:v6];
+    [(WCM_WiFiService *)wifiService setAntennaSelectionWiFiEnh:antennaSelectionEnh6G];
   }
 }
 
-- (void)updateChannelsForTimeSharingMode:(id)a3
+- (void)updateChannelsForTimeSharingMode:(id)mode
 {
-  v5 = [a3 isEqualToArray:&off_100286168] ^ 1;
-  if (v5 == -[WCM_WiFiControllerIOS lteCDRXTDDMode](self, "lteCDRXTDDMode") && [a3 isEqualToArray:{-[WCM_WiFiControllerIOS cdrxTDDEnabledChannels](self, "cdrxTDDEnabledChannels")}])
+  v5 = [mode isEqualToArray:&off_100286168] ^ 1;
+  if (v5 == -[WCM_WiFiControllerIOS lteCDRXTDDMode](self, "lteCDRXTDDMode") && [mode isEqualToArray:{-[WCM_WiFiControllerIOS cdrxTDDEnabledChannels](self, "cdrxTDDEnabledChannels")}])
   {
-    [WCM_Logging logLevel:4 message:@"Already set lteCDRXTDDMode(%d) cdrxTDDEnabledChannels %@", v5, a3];
+    [WCM_Logging logLevel:4 message:@"Already set lteCDRXTDDMode(%d) cdrxTDDEnabledChannels %@", v5, mode];
   }
 
   else
   {
     [(WCM_WiFiControllerIOS *)self setLteCDRXTDDMode:v5];
-    [(WCM_WiFiControllerIOS *)self setCdrxTDDEnabledChannels:a3];
-    v6 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setCdrxTDDEnabledChannels:mode];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v6 setChannelsForTimeSharingMode:a3];
+    [(WCM_WiFiService *)wifiService setChannelsForTimeSharingMode:mode];
   }
 }
 
@@ -688,16 +688,16 @@ LABEL_10:
   return v3;
 }
 
-- (void)updateMWSFrameConfig:(id)a3
+- (void)updateMWSFrameConfig:(id)config
 {
-  if (!a3)
+  if (!config)
   {
     return;
   }
 
   v5 = +[NSMutableArray array];
   v6 = +[NSMutableArray array];
-  if (([a3 tddBand] & 1) == 0)
+  if (([config tddBand] & 1) == 0)
   {
     v22 = [NSNumber numberWithShort:1];
     [v5 addObject:{+[NSNumber numberWithShort:](NSNumber, "numberWithShort:", 10000)}];
@@ -705,31 +705,31 @@ LABEL_10:
     goto LABEL_25;
   }
 
-  v7 = [a3 tddULDLConfig];
-  v8 = [a3 subframeFormat];
-  v9 = [a3 dlCPConfig];
-  v10 = [a3 ulCPConfig];
-  if (v7 > 6 || v8 > 9)
+  tddULDLConfig = [config tddULDLConfig];
+  subframeFormat = [config subframeFormat];
+  dlCPConfig = [config dlCPConfig];
+  ulCPConfig = [config ulCPConfig];
+  if (tddULDLConfig > 6 || subframeFormat > 9)
   {
-    [WCM_Logging logLevel:0 message:@"Invalid tddULDLConfig(%d) subframeFormat(%d)", v7, v8];
+    [WCM_Logging logLevel:0 message:@"Invalid tddULDLConfig(%d) subframeFormat(%d)", tddULDLConfig, subframeFormat];
     return;
   }
 
-  v26 = self;
+  selfCopy = self;
   LOWORD(v11) = 0;
   v12 = 0;
   v13 = 120;
-  if (!v10)
+  if (!ulCPConfig)
   {
     v13 = 80;
   }
 
-  v27 = (&unk_100199358 + 4 * v8 + v13);
-  v28 = (&unk_100199358 + 40 * (v9 != 0) + 4 * v8);
+  v27 = (&unk_100199358 + 4 * subframeFormat + v13);
+  v28 = (&unk_100199358 + 40 * (dlCPConfig != 0) + 4 * subframeFormat);
   do
   {
     v14 = v12;
-    v15 = aDsuuudsuuudsuu_0[10 * v7 + v12];
+    v15 = aDsuuudsuuudsuu_0[10 * tddULDLConfig + v12];
     [v6 addObject:{+[NSNumber numberWithChar:](NSNumber, "numberWithChar:", v15 != 68)}];
     v16 = v12;
     do
@@ -744,7 +744,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v17 = aDsuuudsuuudsuu_0[10 * v7 + 1 + v14++];
+      v17 = aDsuuudsuuudsuu_0[10 * tddULDLConfig + 1 + v14++];
       ++v16;
     }
 
@@ -787,7 +787,7 @@ LABEL_22:
 
   while (v16 < 9);
   v22 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v6 count]);
-  self = v26;
+  self = selfCopy;
 LABEL_25:
   v23 = [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
   v29[0] = @"MWS_Aggressor_Frame_SyncAssertOffset";
@@ -822,27 +822,27 @@ LABEL_25:
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
     -[WCM_WiFiService setEnableEnvelopeIndicationFor2G:](-[WCM_WiFiController wifiService](self, "wifiService"), "setEnableEnvelopeIndicationFor2G:", [v3 wcmWiFiEnvelopeOnIndication]);
-    v4 = [(WCM_WiFiController *)self wifiService];
-    v5 = [v3 wcmWiFiEnvelopeIndicationTimer];
+    wifiService = [(WCM_WiFiController *)self wifiService];
+    wcmWiFiEnvelopeIndicationTimer = [v3 wcmWiFiEnvelopeIndicationTimer];
 
-    [(WCM_WiFiService *)v4 setEnvelopeIndicationTimerFor2G:v5];
+    [(WCM_WiFiService *)wifiService setEnvelopeIndicationTimerFor2G:wcmWiFiEnvelopeIndicationTimer];
   }
 }
 
-- (void)setWifiAgcCoexMode:(id)a3
+- (void)setWifiAgcCoexMode:(id)mode
 {
-  if ([(NSNumber *)[(WCM_WiFiControllerIOS *)self wifiAgcModeEnable] isEqualToNumber:a3])
+  if ([(NSNumber *)[(WCM_WiFiControllerIOS *)self wifiAgcModeEnable] isEqualToNumber:mode])
   {
-    [WCM_Logging logLevel:4 message:@"Wifi Coex Agc Rx Gain Mode already set to %@", a3];
+    [WCM_Logging logLevel:4 message:@"Wifi Coex Agc Rx Gain Mode already set to %@", mode];
   }
 
   else
   {
-    [(WCM_WiFiControllerIOS *)self setWifiAgcModeEnable:a3];
-    [WCM_Logging logLevel:3 message:@"Wifi Controller setting Agc Rx Coex Gain Mode %@", a3];
-    v5 = [(WCM_WiFiController *)self wifiService];
+    [(WCM_WiFiControllerIOS *)self setWifiAgcModeEnable:mode];
+    [WCM_Logging logLevel:3 message:@"Wifi Controller setting Agc Rx Coex Gain Mode %@", mode];
+    wifiService = [(WCM_WiFiController *)self wifiService];
 
-    [(WCM_WiFiService *)v5 setEnableAgcCoexMode:a3];
+    [(WCM_WiFiService *)wifiService setEnableAgcCoexMode:mode];
   }
 }
 
@@ -853,118 +853,118 @@ LABEL_25:
   [(WCM_WiFiService *)[(WCM_WiFiController *)self wifiService] setLAACoexConfigEnableTxInd];
   -[WCM_WiFiService setLAACoexConfigWci2TxDurationThreshold:](-[WCM_WiFiController wifiService](self, "wifiService"), "setLAACoexConfigWci2TxDurationThreshold:", [v3 wcmWiFiWCI2TxDurationThresh]);
   -[WCM_WiFiService setLAACoexConfigScanThrottleMask:](-[WCM_WiFiController wifiService](self, "wifiService"), "setLAACoexConfigScanThrottleMask:", [v3 wcmWiFiActiveScanThrottleMask]);
-  v4 = [(WCM_WiFiController *)self wifiService];
-  v5 = [v3 wcmWiFiActiveDwellTime];
+  wifiService = [(WCM_WiFiController *)self wifiService];
+  wcmWiFiActiveDwellTime = [v3 wcmWiFiActiveDwellTime];
 
-  [(WCM_WiFiService *)v4 setLAACoexConfigWifiDwellTime:v5];
+  [(WCM_WiFiService *)wifiService setLAACoexConfigWifiDwellTime:wcmWiFiActiveDwellTime];
 }
 
 - (void)updatePowerOnGen9rFemConfiguration
 {
   v3 = +[WCM_PolicyManager singleton];
   [WCM_Logging logLevel:2 message:@"Wifi Controller: updatePowerOnGen9rFemConfiguration"];
-  v4 = [(WCM_WiFiController *)self wifiService];
-  v5 = [v3 wcmGen9rFemLpmMode2g];
-  v6 = [v3 wcmGen9rFemLpmMode5g];
-  v7 = [v3 wcmGen9rFemLpmMode5g];
+  wifiService = [(WCM_WiFiController *)self wifiService];
+  wcmGen9rFemLpmMode2g = [v3 wcmGen9rFemLpmMode2g];
+  wcmGen9rFemLpmMode5g = [v3 wcmGen9rFemLpmMode5g];
+  wcmGen9rFemLpmMode5g2 = [v3 wcmGen9rFemLpmMode5g];
 
-  [(WCM_WiFiService *)v4 setChannelsToEnablerFemModeWiFiEnh:v5 enable5G:v6 enable6G:v7];
+  [(WCM_WiFiService *)wifiService setChannelsToEnablerFemModeWiFiEnh:wcmGen9rFemLpmMode2g enable5G:wcmGen9rFemLpmMode5g enable6G:wcmGen9rFemLpmMode5g2];
 }
 
-- (void)updateWiFiRCU2CoexMode:(id)a3
+- (void)updateWiFiRCU2CoexMode:(id)mode
 {
-  [WCM_Logging logLevel:2 message:@"Wifi Controller setting RCU2 Coex Mode (%@)", a3];
-  v5 = [(WCM_WiFiController *)self wifiService];
+  [WCM_Logging logLevel:2 message:@"Wifi Controller setting RCU2 Coex Mode (%@)", mode];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v5 setWiFiRCU2CoexMode:a3];
+  [(WCM_WiFiService *)wifiService setWiFiRCU2CoexMode:mode];
 }
 
-- (void)updateWiFiRCU2PMProtectionMode:(id)a3
+- (void)updateWiFiRCU2PMProtectionMode:(id)mode
 {
-  [WCM_Logging logLevel:2 message:@"Wifi Controller setting RCU2 PM Protection Mode (%@)", a3];
-  v5 = [(WCM_WiFiController *)self wifiService];
+  [WCM_Logging logLevel:2 message:@"Wifi Controller setting RCU2 PM Protection Mode (%@)", mode];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v5 setWiFiRCU2PMProtectionMode:a3];
+  [(WCM_WiFiService *)wifiService setWiFiRCU2PMProtectionMode:mode];
 }
 
-- (void)updateWiFiRCU2TimingArray:(id)a3
+- (void)updateWiFiRCU2TimingArray:(id)array
 {
-  [WCM_Logging logLevel:2 message:@"Wifi Controller setting RCU2 Timing Array (%@)", a3];
-  v5 = [(WCM_WiFiController *)self wifiService];
+  [WCM_Logging logLevel:2 message:@"Wifi Controller setting RCU2 Timing Array (%@)", array];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v5 setWiFiRCU2TimingArray:a3];
+  [(WCM_WiFiService *)wifiService setWiFiRCU2TimingArray:array];
 }
 
-- (void)updateRCU2CoexParams:(id)a3
+- (void)updateRCU2CoexParams:(id)params
 {
-  [WCM_Logging logLevel:2 message:@"Wifi Controller setting RCU2 coex param (%@)", a3];
-  v5 = [(WCM_WiFiController *)self wifiService];
+  [WCM_Logging logLevel:2 message:@"Wifi Controller setting RCU2 coex param (%@)", params];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v5 setRCU2CoexParams:a3];
+  [(WCM_WiFiService *)wifiService setRCU2CoexParams:params];
 }
 
-- (void)updateWiFiBTConnectionReport:(id)a3
+- (void)updateWiFiBTConnectionReport:(id)report
 {
   [WCM_Logging logLevel:2 message:@"Wifi Controller sending BT Connection Report to Wifi"];
-  v5 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v5 setBTConnectionReport:a3];
+  [(WCM_WiFiService *)wifiService setBTConnectionReport:report];
 }
 
 - (void)bspStatusRequest
 {
   [WCM_Logging logLevel:2 message:@"Wifi Controller sending bspStatusRequest to Wifi"];
-  v3 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v3 bspStatusRequest];
+  [(WCM_WiFiService *)wifiService bspStatusRequest];
 }
 
 - (void)bspRegulatoryInfoRequest
 {
   [WCM_Logging logLevel:2 message:@"Wifi Controller sending bspRegulatoryInfoRequest to Wifi"];
-  v3 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v3 bspRegulatoryInfoRequest];
+  [(WCM_WiFiService *)wifiService bspRegulatoryInfoRequest];
 }
 
 - (void)bspNanPhsStateRequest
 {
   [WCM_Logging logLevel:2 message:@"Wifi Controller sending bspNanPhsStateRequest to Wifi"];
-  v3 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v3 bspNanPhsStateRequest];
+  [(WCM_WiFiService *)wifiService bspNanPhsStateRequest];
 }
 
 - (void)bspGetBandSwitchStatus
 {
   [WCM_Logging logLevel:2 message:@"Wifi Controller sending bspGetBandSwitchStatus to Wifi"];
-  v3 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v3 bspGetBandSwitchStatus];
+  [(WCM_WiFiService *)wifiService bspGetBandSwitchStatus];
 }
 
 - (void)bspGetChannelQualityInfo
 {
   [WCM_Logging logLevel:2 message:@"Wifi Controller sending bspGetChannelQualityInfo to Wifi"];
-  v3 = [(WCM_WiFiController *)self wifiService];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v3 bspGetChannelQualityInfo];
+  [(WCM_WiFiService *)wifiService bspGetChannelQualityInfo];
 }
 
-- (void)setCoexParams:(const char *)a3 withValue:(id)a4
+- (void)setCoexParams:(const char *)params withValue:(id)value
 {
-  [WCM_Logging logLevel:2 message:@"Wifi Controller setting params for %s", a3];
-  v7 = [(WCM_WiFiController *)self wifiService];
+  [WCM_Logging logLevel:2 message:@"Wifi Controller setting params for %s", params];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v7 setCoexParams:a3 withValue:a4];
+  [(WCM_WiFiService *)wifiService setCoexParams:params withValue:value];
 }
 
-- (void)setAntennaSelectionWiFiEnh:(id)a3
+- (void)setAntennaSelectionWiFiEnh:(id)enh
 {
-  [WCM_Logging logLevel:2 message:@"Wifi Controller setting antennaSelection %@", a3];
-  v5 = [(WCM_WiFiController *)self wifiService];
+  [WCM_Logging logLevel:2 message:@"Wifi Controller setting antennaSelection %@", enh];
+  wifiService = [(WCM_WiFiController *)self wifiService];
 
-  [(WCM_WiFiService *)v5 setAntennaSelectionWiFiEnh:a3];
+  [(WCM_WiFiService *)wifiService setAntennaSelectionWiFiEnh:enh];
 }
 
 @end

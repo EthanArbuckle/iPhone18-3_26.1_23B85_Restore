@@ -1,5 +1,5 @@
 @interface ErrorProximityCardViewController
-- (_TtC22GuestUserHandoverSetup32ErrorProximityCardViewController)initWithContentView:(id)a3;
+- (_TtC22GuestUserHandoverSetup32ErrorProximityCardViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000D33C();
 }
 
-- (_TtC22GuestUserHandoverSetup32ErrorProximityCardViewController)initWithContentView:(id)a3
+- (_TtC22GuestUserHandoverSetup32ErrorProximityCardViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

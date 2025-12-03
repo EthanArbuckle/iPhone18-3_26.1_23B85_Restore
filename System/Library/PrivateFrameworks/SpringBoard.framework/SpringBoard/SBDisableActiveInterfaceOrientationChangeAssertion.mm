@@ -1,5 +1,5 @@
 @interface SBDisableActiveInterfaceOrientationChangeAssertion
-- (SBDisableActiveInterfaceOrientationChangeAssertion)initWithReason:(id)a3 nudgeOrientationOnInvalidate:(BOOL)a4;
+- (SBDisableActiveInterfaceOrientationChangeAssertion)initWithReason:(id)reason nudgeOrientationOnInvalidate:(BOOL)invalidate;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -25,28 +25,28 @@
   }
 }
 
-- (SBDisableActiveInterfaceOrientationChangeAssertion)initWithReason:(id)a3 nudgeOrientationOnInvalidate:(BOOL)a4
+- (SBDisableActiveInterfaceOrientationChangeAssertion)initWithReason:(id)reason nudgeOrientationOnInvalidate:(BOOL)invalidate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  reasonCopy = reason;
   v13.receiver = self;
   v13.super_class = SBDisableActiveInterfaceOrientationChangeAssertion;
   v9 = [(SBDisableActiveInterfaceOrientationChangeAssertion *)&v13 init];
   if (v9)
   {
-    if (!v8)
+    if (!reasonCopy)
     {
       [SBDisableActiveInterfaceOrientationChangeAssertion initWithReason:a2 nudgeOrientationOnInvalidate:v9];
     }
 
-    objc_storeStrong(&v9->_reason, a3);
-    v9->_nudge = a4;
+    objc_storeStrong(&v9->_reason, reason);
+    v9->_nudge = invalidate;
     v10 = BKLogOrientationGlobal();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       reason = v9->_reason;
       *buf = 138543362;
-      v15 = reason;
+      reasonCopy2 = reason;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_INFO, "Created disableActiveInterfaceOrientationChangeAssertion with reason: %{public}@", buf, 0xCu);
     }
 
@@ -59,7 +59,7 @@
 - (void)dealloc
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = 138543362;
   v4 = v2;
   _os_log_error_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_ERROR, "Dealloc'd a disableActiveInterfaceOrientationChangeAssertion that wasn't invalidated, reason was: %{public}@", &v3, 0xCu);

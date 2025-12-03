@@ -1,22 +1,22 @@
 @interface PFCloudKitImporterZoneChangedWorkItem
-- (BOOL)commitMetadataChangesWithContext:(id)a3 forStore:(id)a4 error:(id *)a5;
-- (BOOL)updateMetadataForAccumulatedChangesInContext:(id)a3 inStore:(id)a4 error:(id *)a5;
-- (PFCloudKitImporterZoneChangedWorkItem)initWithChangedRecordZoneIDs:(id)a3 options:(id)a4 request:(id)a5;
+- (BOOL)commitMetadataChangesWithContext:(id)context forStore:(id)store error:(id *)error;
+- (BOOL)updateMetadataForAccumulatedChangesInContext:(id)context inStore:(id)store error:(id *)error;
+- (PFCloudKitImporterZoneChangedWorkItem)initWithChangedRecordZoneIDs:(id)ds options:(id)options request:(id)request;
 - (id)description;
 - (void)dealloc;
-- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)a3 completion:(id)a4;
+- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)context completion:(id)completion;
 @end
 
 @implementation PFCloudKitImporterZoneChangedWorkItem
 
-- (PFCloudKitImporterZoneChangedWorkItem)initWithChangedRecordZoneIDs:(id)a3 options:(id)a4 request:(id)a5
+- (PFCloudKitImporterZoneChangedWorkItem)initWithChangedRecordZoneIDs:(id)ds options:(id)options request:(id)request
 {
   v8.receiver = self;
   v8.super_class = PFCloudKitImporterZoneChangedWorkItem;
-  v6 = [(PFCloudKitImportRecordsWorkItem *)&v8 initWithOptions:a4 request:a5];
+  v6 = [(PFCloudKitImportRecordsWorkItem *)&v8 initWithOptions:options request:request];
   if (v6)
   {
-    v6->_changedRecordZoneIDs = a3;
+    v6->_changedRecordZoneIDs = ds;
     v6->_fetchedZoneIDToChangeToken = objc_alloc_init(MEMORY[0x1E695DF90]);
     v6->_fetchedZoneIDToMoreComing = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
@@ -51,14 +51,14 @@
     request = 0;
   }
 
-  v8 = [v4 initWithFormat:@"<%@: %p - %@>", v6, self, request];
-  [v8 appendFormat:@" {\n%@\n}", self->_changedRecordZoneIDs];
+  request = [v4 initWithFormat:@"<%@: %p - %@>", v6, self, request];
+  [request appendFormat:@" {\n%@\n}", self->_changedRecordZoneIDs];
   objc_autoreleasePoolPop(v3);
 
-  return v8;
+  return request;
 }
 
-- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)a3 completion:(id)a4
+- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)context completion:(id)completion
 {
   v90 = *MEMORY[0x1E69E9840];
   if (self)
@@ -94,10 +94,10 @@
   v11 = 0;
 LABEL_6:
   v46 = v9;
-  v50 = [(PFCloudKitStoreMonitor *)v11 retainedMonitoredStore];
-  if (v50)
+  retainedMonitoredStore = [(PFCloudKitStoreMonitor *)v11 retainedMonitoredStore];
+  if (retainedMonitoredStore)
   {
-    v43 = a4;
+    completionCopy = completion;
     v48 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v82 = 0;
     v83 = &v82;
@@ -113,7 +113,7 @@ LABEL_6:
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v42 = self;
+    selfCopy = self;
     obj = self->_changedRecordZoneIDs;
     v12 = [(NSArray *)obj countByEnumeratingWithState:&v72 objects:v89 count:16];
     if (v12)
@@ -142,12 +142,12 @@ LABEL_6:
           v65[3] = &unk_1E6EC4908;
           v65[4] = v14;
           v65[5] = v49;
-          v65[6] = v50;
-          v65[7] = a3;
+          v65[6] = retainedMonitoredStore;
+          v65[7] = context;
           v65[8] = &location;
           v65[9] = &v82;
           v65[10] = &v76;
-          [a3 performBlockAndWait:v65];
+          [context performBlockAndWait:v65];
           if (*(v83 + 24) != 1)
           {
             _Block_object_dispose(&location, 8);
@@ -158,8 +158,8 @@ LABEL_6:
           [v15 setPreviousServerChangeToken:p_location[5]];
 
           p_location[5] = 0;
-          v16 = [v50 configurationName];
-          v17 = [WeakRetained managedObjectModel];
+          configurationName = [retainedMonitoredStore configurationName];
+          managedObjectModel = [WeakRetained managedObjectModel];
           if (v9)
           {
             v18 = v9[3];
@@ -170,7 +170,7 @@ LABEL_6:
             v18 = 0;
           }
 
-          v19 = +[PFCloudKitSerializer newSetOfRecordKeysForEntitiesInConfiguration:inManagedObjectModel:includeCKAssetsForFileBackedFutures:](PFCloudKitSerializer, v16, v17, [v18 automaticallyDownloadFileBackedFutures]);
+          v19 = +[PFCloudKitSerializer newSetOfRecordKeysForEntitiesInConfiguration:inManagedObjectModel:includeCKAssetsForFileBackedFutures:](PFCloudKitSerializer, configurationName, managedObjectModel, [v18 automaticallyDownloadFileBackedFutures]);
           v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v19, "count")}];
           v63 = 0u;
           v64 = 0u;
@@ -217,13 +217,13 @@ LABEL_6:
 LABEL_37:
     if (*(v83 + 24) == 1)
     {
-      v35 = [objc_alloc(getCloudKitCKFetchRecordZoneChangesOperationClass()) initWithRecordZoneIDs:v42->_changedRecordZoneIDs configurationsByRecordZoneID:v48];
-      if ([(NSCloudKitMirroringRequest *)v42->super.super._request options])
+      v35 = [objc_alloc(getCloudKitCKFetchRecordZoneChangesOperationClass()) initWithRecordZoneIDs:selfCopy->_changedRecordZoneIDs configurationsByRecordZoneID:v48];
+      if ([(NSCloudKitMirroringRequest *)selfCopy->super.super._request options])
       {
-        [(NSCloudKitMirroringRequestOptions *)[(NSCloudKitMirroringRequest *)v42->super.super._request options] applyToOperation:v35];
+        [(NSCloudKitMirroringRequestOptions *)[(NSCloudKitMirroringRequest *)selfCopy->super.super._request options] applyToOperation:v35];
       }
 
-      objc_initWeak(&location, v42);
+      objc_initWeak(&location, selfCopy);
       v59[0] = MEMORY[0x1E69E9820];
       v59[1] = 3221225472;
       v59[2] = __120__PFCloudKitImporterZoneChangedWorkItem_executeImportOperationsAndAccumulateRecordsWithManagedObjectContext_completion___block_invoke_2;
@@ -253,7 +253,7 @@ LABEL_37:
       v51[2] = __120__PFCloudKitImporterZoneChangedWorkItem_executeImportOperationsAndAccumulateRecordsWithManagedObjectContext_completion___block_invoke_6;
       v51[3] = &unk_1E6EC49A8;
       objc_copyWeak(&v52, &location);
-      v51[4] = v43;
+      v51[4] = completionCopy;
       [v35 setFetchRecordZoneChangesCompletionBlock:v51];
       [(CKDatabase *)v49 addOperation:v35];
       objc_destroyWeak(&v52);
@@ -266,7 +266,7 @@ LABEL_37:
       goto LABEL_48;
     }
 
-    if (!v43)
+    if (!completionCopy)
     {
 LABEL_47:
       v34 = 0;
@@ -279,9 +279,9 @@ LABEL_48:
     }
 
     v36 = [NSCloudKitMirroringResult alloc];
-    if (v42)
+    if (selfCopy)
     {
-      request = v42->super.super._request;
+      request = selfCopy->super.super._request;
       if (!v9)
       {
         goto LABEL_57;
@@ -303,7 +303,7 @@ LABEL_48:
       v39 = *(v38 + 48);
 LABEL_46:
       v40 = [(NSCloudKitMirroringResult *)v36 initWithRequest:request storeIdentifier:v39 success:0 madeChanges:0 error:v77[5]];
-      v43[2](v43, v40);
+      completionCopy[2](completionCopy, v40);
 
       goto LABEL_47;
     }
@@ -313,7 +313,7 @@ LABEL_57:
     goto LABEL_46;
   }
 
-  if (a4)
+  if (completion)
   {
     v25 = MEMORY[0x1E696ABC0];
     v86 = *MEMORY[0x1E696A588];
@@ -355,7 +355,7 @@ LABEL_57:
       v32 = *(v31 + 48);
 LABEL_34:
       v33 = [(NSCloudKitMirroringResult *)v29 initWithRequest:v30 storeIdentifier:v32 success:0 madeChanges:0 error:v28];
-      (*(a4 + 2))(a4, v33);
+      (*(completion + 2))(completion, v33);
 
       goto LABEL_35;
     }
@@ -480,7 +480,7 @@ void __120__PFCloudKitImporterZoneChangedWorkItem_executeImportOperationsAndAccu
   }
 }
 
-- (BOOL)updateMetadataForAccumulatedChangesInContext:(id)a3 inStore:(id)a4 error:(id *)a5
+- (BOOL)updateMetadataForAccumulatedChangesInContext:(id)context inStore:(id)store error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
   v33 = 0;
@@ -516,7 +516,7 @@ void __120__PFCloudKitImporterZoneChangedWorkItem_executeImportOperationsAndAccu
           database = 0;
         }
 
-        v16 = [NSCKRecordZoneMetadata zoneMetadataForZoneID:v13 inDatabaseWithScope:[(CKDatabase *)database databaseScope] forStore:a4 inContext:a3 error:&v33];
+        v16 = [NSCKRecordZoneMetadata zoneMetadataForZoneID:v13 inDatabaseWithScope:[(CKDatabase *)database databaseScope] forStore:store inContext:context error:&v33];
         if (v33)
         {
           v19 = objc_autoreleasePoolPush();
@@ -567,7 +567,7 @@ void __120__PFCloudKitImporterZoneChangedWorkItem_executeImportOperationsAndAccu
 
   v28.receiver = self;
   v28.super_class = PFCloudKitImporterZoneChangedWorkItem;
-  if ([(PFCloudKitImportRecordsWorkItem *)&v28 updateMetadataForAccumulatedChangesInContext:a3 inStore:a4 error:&v33])
+  if ([(PFCloudKitImportRecordsWorkItem *)&v28 updateMetadataForAccumulatedChangesInContext:context inStore:store error:&v33])
   {
     LOBYTE(v18) = 1;
     goto LABEL_29;
@@ -576,10 +576,10 @@ void __120__PFCloudKitImporterZoneChangedWorkItem_executeImportOperationsAndAccu
 LABEL_21:
   if (v33)
   {
-    if (a5)
+    if (error)
     {
       LOBYTE(v18) = 0;
-      *a5 = v33;
+      *error = v33;
       goto LABEL_29;
     }
 
@@ -615,9 +615,9 @@ LABEL_29:
   return v18;
 }
 
-- (BOOL)commitMetadataChangesWithContext:(id)a3 forStore:(id)a4 error:(id *)a5
+- (BOOL)commitMetadataChangesWithContext:(id)context forStore:(id)store error:(id *)error
 {
-  v27 = a5;
+  errorCopy = error;
   v44 = *MEMORY[0x1E69E9840];
   v34 = 0;
   v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:{-[NSMutableDictionary allKeys](self->_fetchedZoneIDToChangeToken, "allKeys")}];
@@ -653,7 +653,7 @@ LABEL_29:
         }
 
         v14 = *(*(&v30 + 1) + 8 * v11);
-        v15 = [NSCKRecordZoneMetadata zoneMetadataForZoneID:v14 inDatabaseWithScope:[(CKDatabase *)database databaseScope] forStore:a4 inContext:a3 error:&v34];
+        v15 = [NSCKRecordZoneMetadata zoneMetadataForZoneID:v14 inDatabaseWithScope:[(CKDatabase *)database databaseScope] forStore:store inContext:context error:&v34];
         if (v34)
         {
           v19 = objc_autoreleasePoolPush();
@@ -684,7 +684,7 @@ LABEL_29:
           }
 
           objc_autoreleasePoolPop(v19);
-          v18 = 0;
+          errorCopy = 0;
           goto LABEL_20;
         }
 
@@ -710,16 +710,16 @@ LABEL_29:
 
   v29.receiver = self;
   v29.super_class = PFCloudKitImporterZoneChangedWorkItem;
-  v18 = [(PFCloudKitImportRecordsWorkItem *)&v29 commitMetadataChangesWithContext:a3 forStore:a4 error:&v34, v27];
+  errorCopy = [(PFCloudKitImportRecordsWorkItem *)&v29 commitMetadataChangesWithContext:context forStore:store error:&v34, errorCopy];
 LABEL_20:
 
-  if (!v18)
+  if (!errorCopy)
   {
     if (v34)
     {
-      if (v27)
+      if (errorCopy)
       {
-        *v27 = v34;
+        *errorCopy = v34;
       }
     }
 
@@ -748,7 +748,7 @@ LABEL_20:
   }
 
   v25 = *MEMORY[0x1E69E9840];
-  return v18;
+  return errorCopy;
 }
 
 @end

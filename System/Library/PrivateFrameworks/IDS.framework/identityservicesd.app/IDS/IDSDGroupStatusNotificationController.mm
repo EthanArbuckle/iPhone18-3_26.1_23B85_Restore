@@ -1,27 +1,27 @@
 @interface IDSDGroupStatusNotificationController
 + (IDSDGroupStatusNotificationController)sharedInstance;
 - (IDSDGroupStatusNotificationController)init;
-- (IDSDGroupStatusNotificationController)initWithSessionController:(id)a3 realTimeEncryptionController:(id)a4 broadcaster:(id)a5;
+- (IDSDGroupStatusNotificationController)initWithSessionController:(id)controller realTimeEncryptionController:(id)encryptionController broadcaster:(id)broadcaster;
 - (double)_multiwayFTMessageSendTimeout;
 - (id)_currentDateString;
-- (id)_groupMembersSupportingURILessUpdates:(id)a3 groupID:(id)a4;
-- (id)_specificOriginatorfromURI:(id)a3 senderToken:(id)a4 accountUniqueID:(id)a5;
-- (id)getURIFromPushToken:(id)a3 forGroup:(id)a4;
-- (id)participantsForGroupID:(id)a3;
-- (id)pushTokensForGroupID:(id)a3 capability:(id)a4;
-- (void)_sendFanoutMessage:(id)a3 account:(id)a4 toGroupMembers:(id)a5 fromURI:(id)a6 command:(int64_t)a7 commandContext:(id)a8 toGroup:(id)a9 sessionID:(id)a10 reason:(unsigned __int8)a11 waitForMadridAcks:(BOOL)a12 isUPlusOne:(BOOL)a13 isInitiator:(id)a14 quickRelayUserType:(id)a15 requiredCapabilites:(id)a16 requiredLackOfCapabilities:(id)a17 completionBlock:(id)a18;
-- (void)_sendFanoutMessage:(id)a3 account:(id)a4 toGroupMembers:(id)a5 fromURI:(id)a6 command:(int64_t)a7 toGroup:(id)a8 sessionID:(id)a9 reason:(unsigned __int8)a10 isUPlusOne:(BOOL)a11 isInitiator:(id)a12 quickRelayUserType:(id)a13;
-- (void)_sendFanoutMessage:(id)a3 account:(id)a4 toGroupMembers:(id)a5 fromURI:(id)a6 command:(int64_t)a7 toGroup:(id)a8 sessionID:(id)a9 reason:(unsigned __int8)a10 isUPlusOne:(BOOL)a11 isInitiator:(id)a12 quickRelayUserType:(id)a13 requiredCapabilites:(id)a14 requiredLackOfCapabilities:(id)a15;
+- (id)_groupMembersSupportingURILessUpdates:(id)updates groupID:(id)d;
+- (id)_specificOriginatorfromURI:(id)i senderToken:(id)token accountUniqueID:(id)d;
+- (id)getURIFromPushToken:(id)token forGroup:(id)group;
+- (id)participantsForGroupID:(id)d;
+- (id)pushTokensForGroupID:(id)d capability:(id)capability;
+- (void)_sendFanoutMessage:(id)message account:(id)account toGroupMembers:(id)members fromURI:(id)i command:(int64_t)command commandContext:(id)context toGroup:(id)group sessionID:(id)self0 reason:(unsigned __int8)self1 waitForMadridAcks:(BOOL)self2 isUPlusOne:(BOOL)self3 isInitiator:(id)self4 quickRelayUserType:(id)self5 requiredCapabilites:(id)self6 requiredLackOfCapabilities:(id)self7 completionBlock:(id)self8;
+- (void)_sendFanoutMessage:(id)message account:(id)account toGroupMembers:(id)members fromURI:(id)i command:(int64_t)command toGroup:(id)group sessionID:(id)d reason:(unsigned __int8)self0 isUPlusOne:(BOOL)self1 isInitiator:(id)self2 quickRelayUserType:(id)self3;
+- (void)_sendFanoutMessage:(id)message account:(id)account toGroupMembers:(id)members fromURI:(id)i command:(int64_t)command toGroup:(id)group sessionID:(id)d reason:(unsigned __int8)self0 isUPlusOne:(BOOL)self1 isInitiator:(id)self2 quickRelayUserType:(id)self3 requiredCapabilites:(id)self4 requiredLackOfCapabilities:(id)self5;
 - (void)dealloc;
-- (void)notifyJoinToGroup:(id)a3 members:(id)a4 params:(id)a5 fromAccount:(id)a6 fromURI:(id)a7 sessionID:(id)a8 isUPlusOne:(BOOL)a9 completionBlock:(id)a10;
-- (void)notifyJoinToSpecificMembersOfGroup:(id)a3 members:(id)a4 params:(id)a5 fromAccount:(id)a6 fromURI:(id)a7 sessionID:(id)a8 isUPlusOne:(BOOL)a9 requiredCapabilites:(id)a10 requiredLackOfCapabilities:(id)a11;
-- (void)notifyLeaveToGroup:(id)a3 members:(id)a4 params:(id)a5 fromAccount:(id)a6 fromURI:(id)a7 sessionID:(id)a8 isUPlusOne:(BOOL)a9;
-- (void)notifyLeaveToSpecificMembersOfGroup:(id)a3 members:(id)a4 params:(id)a5 fromAccount:(id)a6 fromURI:(id)a7 sessionID:(id)a8 isUPlusOne:(BOOL)a9 requiredCapabilites:(id)a10 requiredLackOfCapabilities:(id)a11;
-- (void)processIncomingParticipantDataUpdateMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 toURI:(id)a6 topic:(id)a7 idsMessageContext:(id)a8;
-- (void)processIncomingParticipantUpdateMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 toURI:(id)a6 topic:(id)a7 idsMessageContext:(id)a8;
-- (void)pushTokenLookup:(id)a3 forGroup:(id)a4 sessionID:(id)a5 fromURI:(id)a6 account:(id)a7 completionBlock:(id)a8;
-- (void)updateMembers:(id)a3 toGroup:(id)a4 withContext:(id)a5 params:(id)a6 fromAccount:(id)a7 fromURI:(id)a8 sessionID:(id)a9 messagingCapabilities:(id)a10 reason:(unsigned __int8)a11 isUPlusOne:(BOOL)a12 completionBlock:(id)a13;
-- (void)updateParticipantDataToMembers:(id)a3 toGroup:(id)a4 withContext:(id)a5 params:(id)a6 fromAccount:(id)a7 fromURI:(id)a8 sessionID:(id)a9 isUPlusOne:(BOOL)a10;
+- (void)notifyJoinToGroup:(id)group members:(id)members params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)one completionBlock:(id)self0;
+- (void)notifyJoinToSpecificMembersOfGroup:(id)group members:(id)members params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)one requiredCapabilites:(id)self0 requiredLackOfCapabilities:(id)self1;
+- (void)notifyLeaveToGroup:(id)group members:(id)members params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)one;
+- (void)notifyLeaveToSpecificMembersOfGroup:(id)group members:(id)members params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)one requiredCapabilites:(id)self0 requiredLackOfCapabilities:(id)self1;
+- (void)processIncomingParticipantDataUpdateMessage:(id)message fromToken:(id)token fromURI:(id)i toURI:(id)rI topic:(id)topic idsMessageContext:(id)context;
+- (void)processIncomingParticipantUpdateMessage:(id)message fromToken:(id)token fromURI:(id)i toURI:(id)rI topic:(id)topic idsMessageContext:(id)context;
+- (void)pushTokenLookup:(id)lookup forGroup:(id)group sessionID:(id)d fromURI:(id)i account:(id)account completionBlock:(id)block;
+- (void)updateMembers:(id)members toGroup:(id)group withContext:(id)context params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d messagingCapabilities:(id)self0 reason:(unsigned __int8)self1 isUPlusOne:(BOOL)self2 completionBlock:(id)self3;
+- (void)updateParticipantDataToMembers:(id)members toGroup:(id)group withContext:(id)context params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)self0;
 @end
 
 @implementation IDSDGroupStatusNotificationController
@@ -48,11 +48,11 @@
   return v6;
 }
 
-- (IDSDGroupStatusNotificationController)initWithSessionController:(id)a3 realTimeEncryptionController:(id)a4 broadcaster:(id)a5
+- (IDSDGroupStatusNotificationController)initWithSessionController:(id)controller realTimeEncryptionController:(id)encryptionController broadcaster:(id)broadcaster
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  encryptionControllerCopy = encryptionController;
+  broadcasterCopy = broadcaster;
   v26.receiver = self;
   v26.super_class = IDSDGroupStatusNotificationController;
   v12 = [(IDSDGroupStatusNotificationController *)&v26 init];
@@ -74,9 +74,9 @@
     groupIDToCapabilityToParticipantPushTokens = v12->_groupIDToCapabilityToParticipantPushTokens;
     v12->_groupIDToCapabilityToParticipantPushTokens = v19;
 
-    objc_storeStrong(&v12->_sessionController, a3);
-    objc_storeStrong(&v12->_realTimeEncryptionController, a4);
-    objc_storeStrong(&v12->_broadcaster, a5);
+    objc_storeStrong(&v12->_sessionController, controller);
+    objc_storeStrong(&v12->_realTimeEncryptionController, encryptionController);
+    objc_storeStrong(&v12->_broadcaster, broadcaster);
     v21 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v22 = [[NSString alloc] initWithFormat:@"com.apple.ids.IDSDGroupStatusNotificationController"];
     v23 = dispatch_queue_create([v22 UTF8String], v21);
@@ -112,14 +112,14 @@
   [(IDSDGroupStatusNotificationController *)&v9 dealloc];
 }
 
-- (id)pushTokensForGroupID:(id)a3 capability:(id)a4
+- (id)pushTokensForGroupID:(id)d capability:(id)capability
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_groupIDToCapabilityToParticipantPushTokens objectForKeyedSubscript:a3];
+  capabilityCopy = capability;
+  v7 = [(NSMutableDictionary *)self->_groupIDToCapabilityToParticipantPushTokens objectForKeyedSubscript:d];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKeyedSubscript:v6];
+    v9 = [v7 objectForKeyedSubscript:capabilityCopy];
     if (v9)
     {
       v10 = +[NSMutableArray array];
@@ -167,10 +167,10 @@
   return v10;
 }
 
-- (id)participantsForGroupID:(id)a3
+- (id)participantsForGroupID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v24 = 0u;
     v25 = 0u;
@@ -193,7 +193,7 @@ LABEL_4:
 
         v10 = *(*(&v22 + 1) + 8 * v9);
         v11 = [v10 objectForKey:v8];
-        if ([v11 isEqualToString:v4])
+        if ([v11 isEqualToString:dCopy])
         {
           break;
         }
@@ -252,11 +252,11 @@ LABEL_21:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v4;
+    v27 = dCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Found participants for group %@", buf, 0xCu);
   }
 
-  v15 = [v4 copy];
+  v15 = [dCopy copy];
   [v12 description];
   v21 = v20 = v15;
   v16 = v21;
@@ -280,15 +280,15 @@ LABEL_21:
   return v5;
 }
 
-- (void)notifyJoinToGroup:(id)a3 members:(id)a4 params:(id)a5 fromAccount:(id)a6 fromURI:(id)a7 sessionID:(id)a8 isUPlusOne:(BOOL)a9 completionBlock:(id)a10
+- (void)notifyJoinToGroup:(id)group members:(id)members params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)one completionBlock:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v61 = a7;
-  v19 = a8;
-  v59 = a10;
+  groupCopy = group;
+  membersCopy = members;
+  paramsCopy = params;
+  accountCopy = account;
+  iCopy = i;
+  dCopy = d;
+  blockCopy = block;
   v20 = im_primary_base_queue();
   dispatch_assert_queue_V2(v20);
 
@@ -304,7 +304,7 @@ LABEL_21:
     sub_10091B4F0();
   }
 
-  v23 = v15;
+  v23 = groupCopy;
   if (v23)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupIDKey, v23);
@@ -317,7 +317,7 @@ LABEL_21:
 
   v58 = v23;
 
-  v24 = [v16 __imArrayByApplyingBlock:&stru_100BDA8B8];
+  v24 = [membersCopy __imArrayByApplyingBlock:&stru_100BDA8B8];
   if (v24)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupMembersKey, v24);
@@ -328,7 +328,7 @@ LABEL_21:
     sub_10091B600();
   }
 
-  v25 = v19;
+  v25 = dCopy;
   if (v25)
   {
     CFDictionarySetValue(Mutable, IDSDSessionMessageSessionID, v25);
@@ -339,10 +339,10 @@ LABEL_21:
     sub_10091B688();
   }
 
-  v26 = [v17 isInitiator];
-  if (v26)
+  isInitiator = [paramsCopy isInitiator];
+  if (isInitiator)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, v26);
+    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, isInitiator);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -350,7 +350,7 @@ LABEL_21:
     sub_10091B710();
   }
 
-  v27 = [NSNumber numberWithBool:a9];
+  v27 = [NSNumber numberWithBool:one];
   if (v27)
   {
     CFDictionarySetValue(Mutable, IDSGroupSessionIsUPlusOneKey, v27);
@@ -361,8 +361,8 @@ LABEL_21:
     sub_10091B798();
   }
 
-  v28 = [(IDSDGroupStatusNotificationController *)self sessionController];
-  v29 = [v28 sessionWithUniqueID:v25];
+  sessionController = [(IDSDGroupStatusNotificationController *)self sessionController];
+  v29 = [sessionController sessionWithUniqueID:v25];
 
   if (v29 && [v29 handOffOverQREnabled])
   {
@@ -379,10 +379,10 @@ LABEL_21:
     }
   }
 
-  v31 = [v17 participantID];
-  if (v31)
+  participantID = [paramsCopy participantID];
+  if (participantID)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, v31);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, participantID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -390,10 +390,10 @@ LABEL_21:
     sub_10091B8A8();
   }
 
-  v32 = [v17 participantData];
-  if (v32)
+  participantData = [paramsCopy participantData];
+  if (participantData)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantDataKey, v32);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantDataKey, participantData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -401,48 +401,48 @@ LABEL_21:
     sub_10091B930();
   }
 
-  v33 = [v17 urisToParticipantIDs];
-  if (v33)
+  urisToParticipantIDs = [paramsCopy urisToParticipantIDs];
+  if (urisToParticipantIDs)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionURIToParticipantID, v33);
+    CFDictionarySetValue(Mutable, IDSGroupSessionURIToParticipantID, urisToParticipantIDs);
   }
 
   v57 = v29;
-  v34 = v16;
+  v34 = membersCopy;
 
-  v35 = [v17 clientJoinContextData];
-  if (v35)
+  clientJoinContextData = [paramsCopy clientJoinContextData];
+  if (clientJoinContextData)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, v35);
+    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, clientJoinContextData);
   }
 
-  v36 = [v18 primaryRegistration];
-  v37 = [v36 pushToken];
-  v38 = v18;
-  v39 = [v18 service];
-  v40 = [v39 identifier];
-  v56 = [IDSPushToken pushTokenWithData:v37 withServiceLoggingHint:v40];
+  primaryRegistration = [accountCopy primaryRegistration];
+  pushToken = [primaryRegistration pushToken];
+  v38 = accountCopy;
+  service = [accountCopy service];
+  identifier = [service identifier];
+  v56 = [IDSPushToken pushTokenWithData:pushToken withServiceLoggingHint:identifier];
 
-  if (a9)
+  if (one)
   {
-    v41 = [v17 commandContext];
+    commandContext = [paramsCopy commandContext];
   }
 
   else
   {
-    v42 = [v17 joinType];
-    v43 = [v42 integerValue];
+    joinType = [paramsCopy joinType];
+    integerValue = [joinType integerValue];
 
-    if (v43 != 1)
+    if (integerValue != 1)
     {
       v44 = 0;
       goto LABEL_50;
     }
 
-    v41 = [NSNumber numberWithUnsignedInteger:1];
+    commandContext = [NSNumber numberWithUnsignedInteger:1];
   }
 
-  v44 = v41;
+  v44 = commandContext;
 LABEL_50:
   v64[0] = _NSConcreteStackBlock;
   v64[1] = 3221225472;
@@ -453,40 +453,40 @@ LABEL_50:
   v66 = v34;
   v67 = v58;
   v68 = v38;
-  v69 = v61;
+  v69 = iCopy;
   v74 = 207;
   v70 = v44;
   v71 = v25;
-  v75 = a9;
-  v72 = v17;
-  v73 = v59;
-  v63 = v59;
-  v60 = v17;
+  oneCopy = one;
+  v72 = paramsCopy;
+  v73 = blockCopy;
+  v63 = blockCopy;
+  v60 = paramsCopy;
   v55 = v25;
   v45 = v44;
-  v46 = v61;
+  v46 = iCopy;
   v47 = v38;
   v48 = v58;
   v49 = v34;
   v50 = Mutable;
   v51 = objc_retainBlock(v64);
-  v52 = [(IDSDGroupStatusNotificationController *)self realTimeEncryptionController];
-  v53 = [v52 createRealTimeEncryptionFullIdentityForDevice:v56 completionBlock:v51];
+  realTimeEncryptionController = [(IDSDGroupStatusNotificationController *)self realTimeEncryptionController];
+  v53 = [realTimeEncryptionController createRealTimeEncryptionFullIdentityForDevice:v56 completionBlock:v51];
 
-  v54 = [(IDSDGroupStatusNotificationController *)self sessionController];
-  [v54 updateCriticalReliabilityState];
+  sessionController2 = [(IDSDGroupStatusNotificationController *)self sessionController];
+  [sessionController2 updateCriticalReliabilityState];
 }
 
-- (void)notifyJoinToSpecificMembersOfGroup:(id)a3 members:(id)a4 params:(id)a5 fromAccount:(id)a6 fromURI:(id)a7 sessionID:(id)a8 isUPlusOne:(BOOL)a9 requiredCapabilites:(id)a10 requiredLackOfCapabilities:(id)a11
+- (void)notifyJoinToSpecificMembersOfGroup:(id)group members:(id)members params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)one requiredCapabilites:(id)self0 requiredLackOfCapabilities:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v64 = a7;
-  v20 = a8;
-  v62 = a10;
-  v60 = a11;
+  groupCopy = group;
+  membersCopy = members;
+  paramsCopy = params;
+  accountCopy = account;
+  iCopy = i;
+  dCopy = d;
+  capabilitesCopy = capabilites;
+  capabilitiesCopy = capabilities;
   v21 = im_primary_base_queue();
   dispatch_assert_queue_V2(v21);
 
@@ -502,7 +502,7 @@ LABEL_50:
     sub_10091B9B8();
   }
 
-  v24 = v16;
+  v24 = groupCopy;
   if (v24)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupIDKey, v24);
@@ -515,7 +515,7 @@ LABEL_50:
 
   v59 = v24;
 
-  v25 = [v17 __imArrayByApplyingBlock:&stru_100BDA8B8];
+  v25 = [membersCopy __imArrayByApplyingBlock:&stru_100BDA8B8];
   if (v25)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupMembersKey, v25);
@@ -526,7 +526,7 @@ LABEL_50:
     sub_10091B600();
   }
 
-  v26 = v20;
+  v26 = dCopy;
   if (v26)
   {
     CFDictionarySetValue(Mutable, IDSDSessionMessageSessionID, v26);
@@ -537,10 +537,10 @@ LABEL_50:
     sub_10091B688();
   }
 
-  v27 = [v18 isInitiator];
-  if (v27)
+  isInitiator = [paramsCopy isInitiator];
+  if (isInitiator)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, v27);
+    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, isInitiator);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -548,7 +548,7 @@ LABEL_50:
     sub_10091B710();
   }
 
-  v28 = [NSNumber numberWithBool:a9];
+  v28 = [NSNumber numberWithBool:one];
   if (v28)
   {
     CFDictionarySetValue(Mutable, IDSGroupSessionIsUPlusOneKey, v28);
@@ -559,8 +559,8 @@ LABEL_50:
     sub_10091B798();
   }
 
-  v29 = [(IDSDGroupStatusNotificationController *)self sessionController];
-  v30 = [v29 sessionWithUniqueID:v26];
+  sessionController = [(IDSDGroupStatusNotificationController *)self sessionController];
+  v30 = [sessionController sessionWithUniqueID:v26];
 
   if (v30 && [v30 handOffOverQREnabled])
   {
@@ -577,10 +577,10 @@ LABEL_50:
     }
   }
 
-  v32 = [v18 participantID];
-  if (v32)
+  participantID = [paramsCopy participantID];
+  if (participantID)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, v32);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, participantID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -588,10 +588,10 @@ LABEL_50:
     sub_10091B8A8();
   }
 
-  v33 = [v18 participantData];
-  if (v33)
+  participantData = [paramsCopy participantData];
+  if (participantData)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantDataKey, v33);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantDataKey, participantData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -599,48 +599,48 @@ LABEL_50:
     sub_10091B930();
   }
 
-  v34 = [v18 urisToParticipantIDs];
-  if (v34)
+  urisToParticipantIDs = [paramsCopy urisToParticipantIDs];
+  if (urisToParticipantIDs)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionURIToParticipantID, v34);
+    CFDictionarySetValue(Mutable, IDSGroupSessionURIToParticipantID, urisToParticipantIDs);
   }
 
   v58 = v30;
-  v35 = v17;
+  v35 = membersCopy;
 
-  v36 = [v18 clientJoinContextData];
-  if (v36)
+  clientJoinContextData = [paramsCopy clientJoinContextData];
+  if (clientJoinContextData)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, v36);
+    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, clientJoinContextData);
   }
 
-  v37 = [v19 primaryRegistration];
-  v38 = [v37 pushToken];
-  v39 = v19;
-  v40 = [v19 service];
-  v41 = [v40 identifier];
-  v57 = [IDSPushToken pushTokenWithData:v38 withServiceLoggingHint:v41];
+  primaryRegistration = [accountCopy primaryRegistration];
+  pushToken = [primaryRegistration pushToken];
+  v39 = accountCopy;
+  service = [accountCopy service];
+  identifier = [service identifier];
+  v57 = [IDSPushToken pushTokenWithData:pushToken withServiceLoggingHint:identifier];
 
-  if (a9)
+  if (one)
   {
-    v42 = [v18 commandContext];
+    commandContext = [paramsCopy commandContext];
   }
 
   else
   {
-    v43 = [v18 joinType];
-    v44 = [v43 integerValue];
+    joinType = [paramsCopy joinType];
+    integerValue = [joinType integerValue];
 
-    if (v44 != 1)
+    if (integerValue != 1)
     {
       v45 = 0;
       goto LABEL_50;
     }
 
-    v42 = [NSNumber numberWithUnsignedInteger:1];
+    commandContext = [NSNumber numberWithUnsignedInteger:1];
   }
 
-  v45 = v42;
+  v45 = commandContext;
 LABEL_50:
   v67[0] = _NSConcreteStackBlock;
   v67[1] = 3221225472;
@@ -651,36 +651,36 @@ LABEL_50:
   v69 = v35;
   v70 = v59;
   v71 = v39;
-  v72 = v64;
+  v72 = iCopy;
   v73 = v45;
   v74 = v26;
-  v79 = a9;
-  v75 = v18;
-  v76 = v62;
+  oneCopy = one;
+  v75 = paramsCopy;
+  v76 = capabilitesCopy;
   v78 = 207;
-  v77 = v60;
-  v66 = v60;
-  v63 = v62;
-  v61 = v18;
+  v77 = capabilitiesCopy;
+  v66 = capabilitiesCopy;
+  v63 = capabilitesCopy;
+  v61 = paramsCopy;
   v56 = v26;
   v46 = v45;
-  v47 = v64;
+  v47 = iCopy;
   v48 = v39;
   v49 = v59;
   v50 = v35;
   v51 = Mutable;
   v52 = objc_retainBlock(v67);
-  v53 = [(IDSDGroupStatusNotificationController *)self realTimeEncryptionController];
-  v54 = [v53 createRealTimeEncryptionFullIdentityForDevice:v57 completionBlock:v52];
+  realTimeEncryptionController = [(IDSDGroupStatusNotificationController *)self realTimeEncryptionController];
+  v54 = [realTimeEncryptionController createRealTimeEncryptionFullIdentityForDevice:v57 completionBlock:v52];
 
-  v55 = [(IDSDGroupStatusNotificationController *)self sessionController];
-  [v55 updateCriticalReliabilityState];
+  sessionController2 = [(IDSDGroupStatusNotificationController *)self sessionController];
+  [sessionController2 updateCriticalReliabilityState];
 }
 
-- (id)_groupMembersSupportingURILessUpdates:(id)a3 groupID:(id)a4
+- (id)_groupMembersSupportingURILessUpdates:(id)updates groupID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  dCopy = d;
   v8 = +[IDSServerBag sharedInstance];
   v9 = [v8 objectForKey:@"qr-session-particiapntID-URI-mapping-included"];
 
@@ -688,15 +688,15 @@ LABEL_50:
   if (_os_feature_enabled_impl() && !v9)
   {
     v10 = +[NSMutableArray array];
-    v23 = v7;
-    v22 = [(NSMutableDictionary *)self->_groupIDToCapabilityToParticipantPushTokens objectForKeyedSubscript:v7];
+    v23 = dCopy;
+    v22 = [(NSMutableDictionary *)self->_groupIDToCapabilityToParticipantPushTokens objectForKeyedSubscript:dCopy];
     v11 = [v22 objectForKeyedSubscript:IDSRegistrationPropertySupportsURIlessMembershipUpdates];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = v6;
-    v12 = v6;
+    v24 = updatesCopy;
+    v12 = updatesCopy;
     v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
@@ -712,9 +712,9 @@ LABEL_50:
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
-          v18 = [v17 pushToken];
-          v19 = [v18 rawToken];
-          v20 = [v11 containsObject:v19];
+          pushToken = [v17 pushToken];
+          rawToken = [pushToken rawToken];
+          v20 = [v11 containsObject:rawToken];
 
           if (v20)
           {
@@ -728,21 +728,21 @@ LABEL_50:
       while (v14);
     }
 
-    v7 = v23;
-    v6 = v24;
+    dCopy = v23;
+    updatesCopy = v24;
   }
 
   return v10;
 }
 
-- (void)notifyLeaveToGroup:(id)a3 members:(id)a4 params:(id)a5 fromAccount:(id)a6 fromURI:(id)a7 sessionID:(id)a8 isUPlusOne:(BOOL)a9
+- (void)notifyLeaveToGroup:(id)group members:(id)members params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)one
 {
-  v15 = a3;
-  v39 = a4;
-  v16 = a5;
-  v38 = a6;
-  v37 = a7;
-  v17 = a8;
+  groupCopy = group;
+  membersCopy = members;
+  paramsCopy = params;
+  accountCopy = account;
+  iCopy = i;
+  dCopy = d;
   v18 = im_primary_base_queue();
   dispatch_assert_queue_V2(v18);
 
@@ -765,14 +765,14 @@ LABEL_50:
     }
   }
 
-  if (a9)
+  if (one)
   {
-    v36 = [v16 commandContext];
+    commandContext = [paramsCopy commandContext];
   }
 
   else
   {
-    v36 = 0;
+    commandContext = 0;
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -787,13 +787,13 @@ LABEL_50:
     sub_10091B9B8();
   }
 
-  v22 = [v16 clientLeaveContextData];
-  if (v22)
+  clientLeaveContextData = [paramsCopy clientLeaveContextData];
+  if (clientLeaveContextData)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, v22);
+    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, clientLeaveContextData);
   }
 
-  v23 = v17;
+  v23 = dCopy;
   if (v23)
   {
     CFDictionarySetValue(Mutable, IDSDSessionMessageSessionID, v23);
@@ -804,7 +804,7 @@ LABEL_50:
     sub_10091B688();
   }
 
-  v24 = v15;
+  v24 = groupCopy;
   if (v24)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupIDKey, v24);
@@ -815,7 +815,7 @@ LABEL_50:
     sub_10091B578();
   }
 
-  v25 = [v39 __imArrayByApplyingBlock:&stru_100BDA8B8];
+  v25 = [membersCopy __imArrayByApplyingBlock:&stru_100BDA8B8];
   if (v25)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupMembersKey, v25);
@@ -826,10 +826,10 @@ LABEL_50:
     sub_10091B600();
   }
 
-  v26 = [v16 participantID];
-  if (v26)
+  participantID = [paramsCopy participantID];
+  if (participantID)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, v26);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, participantID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -837,10 +837,10 @@ LABEL_50:
     sub_10091B8A8();
   }
 
-  v27 = [v16 isInitiator];
-  if (v27)
+  isInitiator = [paramsCopy isInitiator];
+  if (isInitiator)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, v27);
+    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, isInitiator);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -848,7 +848,7 @@ LABEL_50:
     sub_10091B710();
   }
 
-  v28 = [NSNumber numberWithBool:a9];
+  v28 = [NSNumber numberWithBool:one];
   if (v28)
   {
     CFDictionarySetValue(Mutable, IDSGroupSessionIsUPlusOneKey, v28);
@@ -859,8 +859,8 @@ LABEL_50:
     sub_10091B798();
   }
 
-  v29 = [(IDSDGroupStatusNotificationController *)self sessionController];
-  v30 = [v29 sessionWithUniqueID:v23];
+  sessionController = [(IDSDGroupStatusNotificationController *)self sessionController];
+  v30 = [sessionController sessionWithUniqueID:v23];
 
   if (v30 && [v30 handOffOverQREnabled])
   {
@@ -877,26 +877,26 @@ LABEL_50:
     }
   }
 
-  v32 = [v16 isInitiator];
-  v33 = [v16 quickRelayUserType];
-  BYTE2(v35) = a9;
+  isInitiator2 = [paramsCopy isInitiator];
+  quickRelayUserType = [paramsCopy quickRelayUserType];
+  BYTE2(v35) = one;
   LOWORD(v35) = 0;
-  [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:Mutable toGroupMembers:v38 fromURI:v39 command:v37 commandContext:208 toGroup:v36 sessionID:v24 reason:v23 waitForMadridAcks:v35 isUPlusOne:v32 isInitiator:v33 quickRelayUserType:0 requiredCapabilites:0 requiredLackOfCapabilities:0 completionBlock:?];
+  [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:Mutable toGroupMembers:accountCopy fromURI:membersCopy command:iCopy commandContext:208 toGroup:commandContext sessionID:v24 reason:v23 waitForMadridAcks:v35 isUPlusOne:isInitiator2 isInitiator:quickRelayUserType quickRelayUserType:0 requiredCapabilites:0 requiredLackOfCapabilities:0 completionBlock:?];
 
-  v34 = [(IDSDGroupStatusNotificationController *)self sessionController];
-  [v34 updateCriticalReliabilityState];
+  sessionController2 = [(IDSDGroupStatusNotificationController *)self sessionController];
+  [sessionController2 updateCriticalReliabilityState];
 }
 
-- (void)notifyLeaveToSpecificMembersOfGroup:(id)a3 members:(id)a4 params:(id)a5 fromAccount:(id)a6 fromURI:(id)a7 sessionID:(id)a8 isUPlusOne:(BOOL)a9 requiredCapabilites:(id)a10 requiredLackOfCapabilities:(id)a11
+- (void)notifyLeaveToSpecificMembersOfGroup:(id)group members:(id)members params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)one requiredCapabilites:(id)self0 requiredLackOfCapabilities:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v41 = a6;
-  v40 = a7;
-  v19 = a8;
-  v39 = a10;
-  v38 = a11;
+  groupCopy = group;
+  membersCopy = members;
+  paramsCopy = params;
+  accountCopy = account;
+  iCopy = i;
+  dCopy = d;
+  capabilitesCopy = capabilites;
+  capabilitiesCopy = capabilities;
   v20 = im_primary_base_queue();
   dispatch_assert_queue_V2(v20);
 
@@ -931,7 +931,7 @@ LABEL_50:
     sub_10091B9B8();
   }
 
-  v24 = v19;
+  v24 = dCopy;
   if (v24)
   {
     CFDictionarySetValue(Mutable, IDSDSessionMessageSessionID, v24);
@@ -942,7 +942,7 @@ LABEL_50:
     sub_10091B688();
   }
 
-  v25 = v16;
+  v25 = groupCopy;
   if (v25)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupIDKey, v25);
@@ -955,7 +955,7 @@ LABEL_50:
 
   v37 = v25;
 
-  v26 = [v17 __imArrayByApplyingBlock:&stru_100BDA8B8];
+  v26 = [membersCopy __imArrayByApplyingBlock:&stru_100BDA8B8];
   if (v26)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupMembersKey, v26);
@@ -966,10 +966,10 @@ LABEL_50:
     sub_10091B600();
   }
 
-  v27 = [v18 participantID];
-  if (v27)
+  participantID = [paramsCopy participantID];
+  if (participantID)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, v27);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, participantID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -977,10 +977,10 @@ LABEL_50:
     sub_10091B8A8();
   }
 
-  v28 = [v18 isInitiator];
-  if (v28)
+  isInitiator = [paramsCopy isInitiator];
+  if (isInitiator)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, v28);
+    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, isInitiator);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -988,7 +988,7 @@ LABEL_50:
     sub_10091B710();
   }
 
-  v29 = [NSNumber numberWithBool:a9];
+  v29 = [NSNumber numberWithBool:one];
   if (v29)
   {
     CFDictionarySetValue(Mutable, IDSGroupSessionIsUPlusOneKey, v29);
@@ -999,8 +999,8 @@ LABEL_50:
     sub_10091B798();
   }
 
-  v30 = [(IDSDGroupStatusNotificationController *)self sessionController];
-  v31 = [v30 sessionWithUniqueID:v24];
+  sessionController = [(IDSDGroupStatusNotificationController *)self sessionController];
+  v31 = [sessionController sessionWithUniqueID:v24];
 
   if (v31 && [v31 handOffOverQREnabled])
   {
@@ -1017,33 +1017,33 @@ LABEL_50:
     }
   }
 
-  v33 = [v18 isInitiator];
-  v34 = [v18 quickRelayUserType];
-  BYTE1(v36) = a9;
+  isInitiator2 = [paramsCopy isInitiator];
+  quickRelayUserType = [paramsCopy quickRelayUserType];
+  BYTE1(v36) = one;
   LOBYTE(v36) = 0;
-  [(IDSDGroupStatusNotificationController *)self _sendFanoutMessage:Mutable account:v41 toGroupMembers:v17 fromURI:v40 command:208 toGroup:v37 sessionID:v24 reason:v36 isUPlusOne:v33 isInitiator:v34 quickRelayUserType:v39 requiredCapabilites:v38 requiredLackOfCapabilities:?];
+  [(IDSDGroupStatusNotificationController *)self _sendFanoutMessage:Mutable account:accountCopy toGroupMembers:membersCopy fromURI:iCopy command:208 toGroup:v37 sessionID:v24 reason:v36 isUPlusOne:isInitiator2 isInitiator:quickRelayUserType quickRelayUserType:capabilitesCopy requiredCapabilites:capabilitiesCopy requiredLackOfCapabilities:?];
 
-  v35 = [(IDSDGroupStatusNotificationController *)self sessionController];
-  [v35 updateCriticalReliabilityState];
+  sessionController2 = [(IDSDGroupStatusNotificationController *)self sessionController];
+  [sessionController2 updateCriticalReliabilityState];
 }
 
-- (void)updateMembers:(id)a3 toGroup:(id)a4 withContext:(id)a5 params:(id)a6 fromAccount:(id)a7 fromURI:(id)a8 sessionID:(id)a9 messagingCapabilities:(id)a10 reason:(unsigned __int8)a11 isUPlusOne:(BOOL)a12 completionBlock:(id)a13
+- (void)updateMembers:(id)members toGroup:(id)group withContext:(id)context params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d messagingCapabilities:(id)self0 reason:(unsigned __int8)self1 isUPlusOne:(BOOL)self2 completionBlock:(id)self3
 {
-  v58 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v57 = a7;
-  v52 = a8;
-  v21 = a9;
-  v51 = a10;
-  v22 = a13;
+  membersCopy = members;
+  groupCopy = group;
+  contextCopy = context;
+  paramsCopy = params;
+  accountCopy = account;
+  iCopy = i;
+  dCopy = d;
+  capabilitiesCopy = capabilities;
+  blockCopy = block;
   v23 = im_primary_base_queue();
   dispatch_assert_queue_V2(v23);
 
   v24 = [NSNumber numberWithUnsignedChar:3];
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  v26 = v18;
+  v26 = groupCopy;
   if (v26)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupIDKey, v26);
@@ -1054,7 +1054,7 @@ LABEL_50:
     sub_10091B578();
   }
 
-  v27 = v21;
+  v27 = dCopy;
   if (v27)
   {
     CFDictionarySetValue(Mutable, IDSDSessionMessageSessionID, v27);
@@ -1067,7 +1067,7 @@ LABEL_50:
 
   v56 = v27;
 
-  v28 = [v58 __imArrayByApplyingBlock:&stru_100BDA8B8];
+  v28 = [membersCopy __imArrayByApplyingBlock:&stru_100BDA8B8];
   if (v28)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupMembersKey, v28);
@@ -1091,10 +1091,10 @@ LABEL_50:
 
   v50 = v29;
 
-  v30 = [v20 isInitiator];
-  if (v30)
+  isInitiator = [paramsCopy isInitiator];
+  if (isInitiator)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, v30);
+    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, isInitiator);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1102,10 +1102,10 @@ LABEL_50:
     sub_10091B710();
   }
 
-  v31 = [v20 participantID];
-  if (v31)
+  participantID = [paramsCopy participantID];
+  if (participantID)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, v31);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, participantID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1113,10 +1113,10 @@ LABEL_50:
     sub_10091B8A8();
   }
 
-  v32 = [v20 participantData];
-  if (v32)
+  participantData = [paramsCopy participantData];
+  if (participantData)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantDataKey, v32);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantDataKey, participantData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1124,65 +1124,65 @@ LABEL_50:
     sub_10091B930();
   }
 
-  v33 = [v20 urisToParticipantIDs];
-  if (v33)
+  urisToParticipantIDs = [paramsCopy urisToParticipantIDs];
+  if (urisToParticipantIDs)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionURIToParticipantID, v33);
+    CFDictionarySetValue(Mutable, IDSGroupSessionURIToParticipantID, urisToParticipantIDs);
   }
 
-  v55 = v22;
+  v55 = blockCopy;
 
-  if (v19)
+  if (contextCopy)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, v19);
+    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, contextCopy);
   }
 
-  v47 = [(IDSDGroupStatusNotificationController *)self _groupMembersSupportingURILessUpdates:v58 groupID:v26];
+  v47 = [(IDSDGroupStatusNotificationController *)self _groupMembersSupportingURILessUpdates:membersCopy groupID:v26];
   v48 = v26;
-  v49 = [v58 mutableCopy];
+  v49 = [membersCopy mutableCopy];
   [v49 removeObjectsInArray:v47];
   v54 = [(__CFDictionary *)Mutable mutableCopy];
   [v54 setObject:0 forKeyedSubscript:IDSGroupSessionURIToParticipantID];
-  v34 = [v20 isInitiator];
-  v35 = [v51 requiredCapabilities];
-  v36 = [v35 allObjects];
-  [v51 requiredMissingCapabilities];
-  v38 = v37 = v20;
-  v39 = [v38 allObjects];
-  BYTE2(v45) = a12;
+  isInitiator2 = [paramsCopy isInitiator];
+  requiredCapabilities = [capabilitiesCopy requiredCapabilities];
+  allObjects = [requiredCapabilities allObjects];
+  [capabilitiesCopy requiredMissingCapabilities];
+  v38 = v37 = paramsCopy;
+  allObjects2 = [v38 allObjects];
+  BYTE2(v45) = one;
   BYTE1(v45) = 1;
-  LOBYTE(v45) = a11;
-  [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:Mutable toGroupMembers:v57 fromURI:v58 command:v52 commandContext:209 toGroup:0 sessionID:v48 reason:v56 waitForMadridAcks:v45 isUPlusOne:v34 isInitiator:0 quickRelayUserType:v36 requiredCapabilites:v39 requiredLackOfCapabilities:v55 completionBlock:?];
+  LOBYTE(v45) = reason;
+  [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:Mutable toGroupMembers:accountCopy fromURI:membersCopy command:iCopy commandContext:209 toGroup:0 sessionID:v48 reason:v56 waitForMadridAcks:v45 isUPlusOne:isInitiator2 isInitiator:0 quickRelayUserType:allObjects requiredCapabilites:allObjects2 requiredLackOfCapabilities:v55 completionBlock:?];
 
   if ([v47 count])
   {
-    v40 = [v37 isInitiator];
-    v41 = [v51 requiredCapabilities];
-    v42 = [v41 allObjects];
-    v43 = [v51 requiredMissingCapabilities];
-    v44 = [v43 allObjects];
-    BYTE2(v46) = a12;
+    isInitiator3 = [v37 isInitiator];
+    requiredCapabilities2 = [capabilitiesCopy requiredCapabilities];
+    allObjects3 = [requiredCapabilities2 allObjects];
+    requiredMissingCapabilities = [capabilitiesCopy requiredMissingCapabilities];
+    allObjects4 = [requiredMissingCapabilities allObjects];
+    BYTE2(v46) = one;
     BYTE1(v46) = 1;
-    LOBYTE(v46) = a11;
-    [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:v54 toGroupMembers:v57 fromURI:v47 command:v52 commandContext:209 toGroup:0 sessionID:v48 reason:v56 waitForMadridAcks:v46 isUPlusOne:v40 isInitiator:0 quickRelayUserType:v42 requiredCapabilites:v44 requiredLackOfCapabilities:v55 completionBlock:?];
+    LOBYTE(v46) = reason;
+    [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:v54 toGroupMembers:accountCopy fromURI:v47 command:iCopy commandContext:209 toGroup:0 sessionID:v48 reason:v56 waitForMadridAcks:v46 isUPlusOne:isInitiator3 isInitiator:0 quickRelayUserType:allObjects3 requiredCapabilites:allObjects4 requiredLackOfCapabilities:v55 completionBlock:?];
   }
 }
 
-- (void)updateParticipantDataToMembers:(id)a3 toGroup:(id)a4 withContext:(id)a5 params:(id)a6 fromAccount:(id)a7 fromURI:(id)a8 sessionID:(id)a9 isUPlusOne:(BOOL)a10
+- (void)updateParticipantDataToMembers:(id)members toGroup:(id)group withContext:(id)context params:(id)params fromAccount:(id)account fromURI:(id)i sessionID:(id)d isUPlusOne:(BOOL)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v44 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a3;
+  groupCopy = group;
+  contextCopy = context;
+  paramsCopy = params;
+  accountCopy = account;
+  iCopy = i;
+  dCopy = d;
+  membersCopy = members;
   v22 = im_primary_base_queue();
   dispatch_assert_queue_V2(v22);
 
   v23 = [NSNumber numberWithUnsignedChar:4];
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  v25 = v16;
+  v25 = groupCopy;
   if (v25)
   {
     CFDictionarySetValue(Mutable, IDSFanoutMessageGroupIDKey, v25);
@@ -1193,16 +1193,16 @@ LABEL_50:
     sub_10091B578();
   }
 
-  v26 = v20;
+  v26 = dCopy;
   if (v26)
   {
     CFDictionarySetValue(Mutable, IDSDSessionMessageSessionID, v26);
-    v27 = v44;
+    v27 = paramsCopy;
   }
 
   else
   {
-    v27 = v44;
+    v27 = paramsCopy;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_10091B688();
@@ -1222,10 +1222,10 @@ LABEL_50:
 
   v42 = v28;
 
-  v29 = [v27 isInitiator];
-  if (v29)
+  isInitiator = [v27 isInitiator];
+  if (isInitiator)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, v29);
+    CFDictionarySetValue(Mutable, IDSGroupSessionIsInitiatorKey, isInitiator);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1233,10 +1233,10 @@ LABEL_50:
     sub_10091B710();
   }
 
-  v30 = [v27 participantID];
-  if (v30)
+  participantID = [v27 participantID];
+  if (participantID)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, v30);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantIDKey, participantID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1244,10 +1244,10 @@ LABEL_50:
     sub_10091B8A8();
   }
 
-  v31 = [v27 participantData];
-  if (v31)
+  participantData = [v27 participantData];
+  if (participantData)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantDataKey, v31);
+    CFDictionarySetValue(Mutable, IDSGroupSessionParticipantDataKey, participantData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1255,37 +1255,37 @@ LABEL_50:
     sub_10091B930();
   }
 
-  v40 = v18;
+  v40 = accountCopy;
 
-  if (v17)
+  if (contextCopy)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, v17);
+    CFDictionarySetValue(Mutable, IDSGroupSessionClientContextDataKey, contextCopy);
   }
 
-  v43 = v17;
-  v32 = [v27 urisToParticipantIDs];
+  v43 = contextCopy;
+  urisToParticipantIDs = [v27 urisToParticipantIDs];
   v33 = IDSGroupSessionURIToParticipantID;
-  if (v32)
+  if (urisToParticipantIDs)
   {
-    CFDictionarySetValue(Mutable, IDSGroupSessionURIToParticipantID, v32);
+    CFDictionarySetValue(Mutable, IDSGroupSessionURIToParticipantID, urisToParticipantIDs);
   }
 
-  v34 = [(IDSDGroupStatusNotificationController *)self _groupMembersSupportingURILessUpdates:v21 groupID:v25];
-  v41 = [v21 mutableCopy];
+  v34 = [(IDSDGroupStatusNotificationController *)self _groupMembersSupportingURILessUpdates:membersCopy groupID:v25];
+  v41 = [membersCopy mutableCopy];
   [v41 removeObjectsInArray:v34];
   v35 = [(__CFDictionary *)Mutable mutableCopy];
   [v35 setObject:0 forKeyedSubscript:v33];
-  v36 = [v44 isInitiator];
-  BYTE1(v38) = a10;
+  isInitiator2 = [paramsCopy isInitiator];
+  BYTE1(v38) = one;
   LOBYTE(v38) = 0;
-  [(IDSDGroupStatusNotificationController *)self _sendFanoutMessage:Mutable account:v40 toGroupMembers:v21 fromURI:v19 command:239 toGroup:v25 sessionID:v26 reason:v38 isUPlusOne:v36 isInitiator:0 quickRelayUserType:?];
+  [(IDSDGroupStatusNotificationController *)self _sendFanoutMessage:Mutable account:v40 toGroupMembers:membersCopy fromURI:iCopy command:239 toGroup:v25 sessionID:v26 reason:v38 isUPlusOne:isInitiator2 isInitiator:0 quickRelayUserType:?];
 
   if ([v34 count])
   {
-    v37 = [v44 isInitiator];
-    BYTE1(v39) = a10;
+    isInitiator3 = [paramsCopy isInitiator];
+    BYTE1(v39) = one;
     LOBYTE(v39) = 0;
-    [(IDSDGroupStatusNotificationController *)self _sendFanoutMessage:v35 account:v40 toGroupMembers:v34 fromURI:v19 command:239 toGroup:v25 sessionID:v26 reason:v39 isUPlusOne:v37 isInitiator:0 quickRelayUserType:?];
+    [(IDSDGroupStatusNotificationController *)self _sendFanoutMessage:v35 account:v40 toGroupMembers:v34 fromURI:iCopy command:239 toGroup:v25 sessionID:v26 reason:v39 isUPlusOne:isInitiator3 isInitiator:0 quickRelayUserType:?];
   }
 }
 
@@ -1332,146 +1332,146 @@ LABEL_50:
   return v4;
 }
 
-- (void)_sendFanoutMessage:(id)a3 account:(id)a4 toGroupMembers:(id)a5 fromURI:(id)a6 command:(int64_t)a7 toGroup:(id)a8 sessionID:(id)a9 reason:(unsigned __int8)a10 isUPlusOne:(BOOL)a11 isInitiator:(id)a12 quickRelayUserType:(id)a13
+- (void)_sendFanoutMessage:(id)message account:(id)account toGroupMembers:(id)members fromURI:(id)i command:(int64_t)command toGroup:(id)group sessionID:(id)d reason:(unsigned __int8)self0 isUPlusOne:(BOOL)self1 isInitiator:(id)self2 quickRelayUserType:(id)self3
 {
-  BYTE2(v13) = a11;
-  LOWORD(v13) = a10;
-  [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:a3 toGroupMembers:a4 fromURI:a5 command:a6 commandContext:a7 toGroup:0 sessionID:a8 reason:a9 waitForMadridAcks:v13 isUPlusOne:a12 isInitiator:a13 quickRelayUserType:0 requiredCapabilites:0 requiredLackOfCapabilities:0 completionBlock:?];
+  BYTE2(v13) = one;
+  LOWORD(v13) = reason;
+  [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:message toGroupMembers:account fromURI:members command:i commandContext:command toGroup:0 sessionID:group reason:d waitForMadridAcks:v13 isUPlusOne:initiator isInitiator:type quickRelayUserType:0 requiredCapabilites:0 requiredLackOfCapabilities:0 completionBlock:?];
 }
 
-- (void)_sendFanoutMessage:(id)a3 account:(id)a4 toGroupMembers:(id)a5 fromURI:(id)a6 command:(int64_t)a7 toGroup:(id)a8 sessionID:(id)a9 reason:(unsigned __int8)a10 isUPlusOne:(BOOL)a11 isInitiator:(id)a12 quickRelayUserType:(id)a13 requiredCapabilites:(id)a14 requiredLackOfCapabilities:(id)a15
+- (void)_sendFanoutMessage:(id)message account:(id)account toGroupMembers:(id)members fromURI:(id)i command:(int64_t)command toGroup:(id)group sessionID:(id)d reason:(unsigned __int8)self0 isUPlusOne:(BOOL)self1 isInitiator:(id)self2 quickRelayUserType:(id)self3 requiredCapabilites:(id)self4 requiredLackOfCapabilities:(id)self5
 {
-  BYTE2(v15) = a11;
-  LOWORD(v15) = a10;
-  [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:a3 toGroupMembers:a4 fromURI:a5 command:a6 commandContext:a7 toGroup:0 sessionID:a8 reason:a9 waitForMadridAcks:v15 isUPlusOne:a12 isInitiator:a13 quickRelayUserType:a14 requiredCapabilites:a15 requiredLackOfCapabilities:0 completionBlock:?];
+  BYTE2(v15) = one;
+  LOWORD(v15) = reason;
+  [IDSDGroupStatusNotificationController _sendFanoutMessage:"_sendFanoutMessage:account:toGroupMembers:fromURI:command:commandContext:toGroup:sessionID:reason:waitForMadridAcks:isUPlusOne:isInitiator:quickRelayUserType:requiredCapabilites:requiredLackOfCapabilities:completionBlock:" account:message toGroupMembers:account fromURI:members command:i commandContext:command toGroup:0 sessionID:group reason:d waitForMadridAcks:v15 isUPlusOne:initiator isInitiator:type quickRelayUserType:capabilites requiredCapabilites:capabilities requiredLackOfCapabilities:0 completionBlock:?];
 }
 
-- (void)_sendFanoutMessage:(id)a3 account:(id)a4 toGroupMembers:(id)a5 fromURI:(id)a6 command:(int64_t)a7 commandContext:(id)a8 toGroup:(id)a9 sessionID:(id)a10 reason:(unsigned __int8)a11 waitForMadridAcks:(BOOL)a12 isUPlusOne:(BOOL)a13 isInitiator:(id)a14 quickRelayUserType:(id)a15 requiredCapabilites:(id)a16 requiredLackOfCapabilities:(id)a17 completionBlock:(id)a18
+- (void)_sendFanoutMessage:(id)message account:(id)account toGroupMembers:(id)members fromURI:(id)i command:(int64_t)command commandContext:(id)context toGroup:(id)group sessionID:(id)self0 reason:(unsigned __int8)self1 waitForMadridAcks:(BOOL)self2 isUPlusOne:(BOOL)self3 isInitiator:(id)self4 quickRelayUserType:(id)self5 requiredCapabilites:(id)self6 requiredLackOfCapabilities:(id)self7 completionBlock:(id)self8
 {
-  v59 = a3;
-  v62 = a4;
-  v22 = a5;
-  v63 = a6;
-  v65 = a8;
-  v58 = a9;
-  v66 = a10;
-  v60 = a14;
-  v61 = a15;
-  v23 = a16;
-  v24 = a17;
-  v64 = a18;
-  if (v22)
+  messageCopy = message;
+  accountCopy = account;
+  membersCopy = members;
+  iCopy = i;
+  contextCopy = context;
+  groupCopy = group;
+  dCopy = d;
+  initiatorCopy = initiator;
+  typeCopy = type;
+  capabilitesCopy = capabilites;
+  capabilitiesCopy = capabilities;
+  blockCopy = block;
+  if (membersCopy)
   {
-    v55 = [NSSet setWithArray:v22];
+    v55 = [NSSet setWithArray:membersCopy];
     v56 = [IDSDestination destinationWithDestinations:v55];
     v25 = +[NSString stringGUID];
     v26 = objc_alloc_init(IDSSendParameters);
-    [v26 setQuickRelayUserType:v61];
-    [v26 setMessage:v59];
+    [v26 setQuickRelayUserType:typeCopy];
+    [v26 setMessage:messageCopy];
     [v26 setEncryptPayload:1];
     [v26 setPriority:300];
     [v26 setDestinations:v56];
-    v27 = [NSNumber numberWithInteger:a7];
+    v27 = [NSNumber numberWithInteger:command];
     [v26 setCommand:v27];
 
-    [v26 setCommandContext:v65];
+    [v26 setCommandContext:contextCopy];
     [v26 setIdentifier:v25];
     [v26 setAlwaysSkipSelf:1];
     v28 = IDSGetUUIDData();
     [v26 setMessageUUID:v28];
 
-    v29 = [v63 unprefixedURI];
-    [v26 setFromID:v29];
+    unprefixedURI = [iCopy unprefixedURI];
+    [v26 setFromID:unprefixedURI];
 
     [(IDSDGroupStatusNotificationController *)self _multiwayFTMessageSendTimeout];
     [v26 setTimeout:?];
     [v26 setIgnoreMaxRetryCount:1];
     [v26 setWantsResponse:1];
-    [v26 setIsUPlusOne:a13];
-    [v26 setIsInitiator:v60];
+    [v26 setIsUPlusOne:one];
+    [v26 setIsInitiator:initiatorCopy];
     if (_os_feature_enabled_impl())
     {
       v30 = +[IDSDSessionActiveParticipantsCache sharedInstance];
-      v31 = [v30 vendTokenListForSessionID:v66];
+      v31 = [v30 vendTokenListForSessionID:dCopy];
       [v26 setPrioritizedTokenList:v31];
     }
 
-    if (v23 | v24)
+    if (capabilitesCopy | capabilitiesCopy)
     {
-      if ([v23 count])
+      if ([capabilitesCopy count])
       {
         v32 = +[IDSFoundationLog SessionController];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v78 = v23;
+          v78 = capabilitesCopy;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Group status notification requires properties -- manual {requiredCapabilites: %@}", buf, 0xCu);
         }
 
-        [v26 setRequireAllRegistrationProperties:v23];
+        [v26 setRequireAllRegistrationProperties:capabilitesCopy];
       }
 
-      if ([v24 count])
+      if ([capabilitiesCopy count])
       {
         v33 = +[IDSFoundationLog SessionController];
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v78 = v24;
+          v78 = capabilitiesCopy;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Group status notification requires lack of properties -- manual {requiredLackOfCapabilities: %@}", buf, 0xCu);
         }
 
-        [v26 setRequireLackOfRegistrationProperties:v24];
+        [v26 setRequireLackOfRegistrationProperties:capabilitiesCopy];
       }
     }
 
     else
     {
-      v35 = [(IDSDGroupStatusNotificationController *)self sessionController];
-      v36 = [v35 sessionWithUniqueID:v66];
+      sessionController = [(IDSDGroupStatusNotificationController *)self sessionController];
+      v36 = [sessionController sessionWithUniqueID:dCopy];
 
-      v37 = [v36 requiredLackOfCapabilities];
-      v38 = [v37 count];
+      requiredLackOfCapabilities = [v36 requiredLackOfCapabilities];
+      v38 = [requiredLackOfCapabilities count];
 
       if (v38)
       {
         v39 = +[IDSFoundationLog SessionController];
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [v36 requiredLackOfCapabilities];
+          requiredLackOfCapabilities2 = [v36 requiredLackOfCapabilities];
           *buf = 138412290;
-          v78 = v40;
+          v78 = requiredLackOfCapabilities2;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Group status notification requires lack of properties {requiredLackOfCapabilities: %@}", buf, 0xCu);
         }
 
-        v41 = [v36 requiredLackOfCapabilities];
-        [v26 setRequireLackOfRegistrationProperties:v41];
+        requiredLackOfCapabilities3 = [v36 requiredLackOfCapabilities];
+        [v26 setRequireLackOfRegistrationProperties:requiredLackOfCapabilities3];
       }
 
-      v42 = [v36 requiredCapabilities];
-      v43 = [v42 count];
+      requiredCapabilities = [v36 requiredCapabilities];
+      v43 = [requiredCapabilities count];
 
       if (v43)
       {
         v44 = +[IDSFoundationLog SessionController];
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v36 requiredCapabilities];
+          requiredCapabilities2 = [v36 requiredCapabilities];
           *buf = 138412290;
-          v78 = v45;
+          v78 = requiredCapabilities2;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Group status notification requires properties {requiredCapabilities: %@}", buf, 0xCu);
         }
 
-        v46 = [v36 requiredCapabilities];
-        [v26 setRequireAllRegistrationProperties:v46];
+        requiredCapabilities3 = [v36 requiredCapabilities];
+        [v26 setRequireAllRegistrationProperties:requiredCapabilities3];
       }
     }
 
     v47 = +[IDSFoundationLog SessionController];
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = [NSNumber numberWithInteger:a7];
-      if (a12)
+      v48 = [NSNumber numberWithInteger:command];
+      if (acks)
       {
         v49 = @"YES";
       }
@@ -1481,13 +1481,13 @@ LABEL_50:
         v49 = @"NO";
       }
 
-      v50 = objc_retainBlock(v64);
+      v50 = objc_retainBlock(blockCopy);
       *buf = 138413314;
       v78 = v25;
       v79 = 2112;
       v80 = v48;
       v81 = 2112;
-      v82 = v65;
+      v82 = contextCopy;
       v83 = 2112;
       v84 = v49;
       v85 = 2112;
@@ -1500,24 +1500,24 @@ LABEL_50:
     v75[2] = 0x3032000000;
     v75[3] = sub_10000A918;
     v75[4] = sub_10000BC0C;
-    v76 = objc_retainBlock(v64);
+    v76 = objc_retainBlock(blockCopy);
     v67[0] = _NSConcreteStackBlock;
     v67[1] = 3221225472;
     v67[2] = sub_1003DFE50;
     v67[3] = &unk_100BDA7B8;
     v51 = v25;
-    v73 = a12;
+    acksCopy = acks;
     v68 = v51;
     v72 = v75;
-    v69 = v22;
-    v70 = v58;
-    v71 = v66;
-    v74 = a11;
-    [(__CFString *)v62 sendMessageWithSendParameters:v26 willSendBlock:0 completionBlock:v67];
+    v69 = membersCopy;
+    v70 = groupCopy;
+    v71 = dCopy;
+    reasonCopy = reason;
+    [(__CFString *)accountCopy sendMessageWithSendParameters:v26 willSendBlock:0 completionBlock:v67];
     v52 = +[IDSFoundationLog SessionController];
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = [NSNumber numberWithInteger:a7];
+      v53 = [NSNumber numberWithInteger:command];
       *buf = 138413314;
       v78 = v51;
       v79 = 2112;
@@ -1525,9 +1525,9 @@ LABEL_50:
       v81 = 2112;
       v82 = v53;
       v83 = 2112;
-      v84 = v62;
+      v84 = accountCopy;
       v85 = 2112;
-      v86 = v63;
+      v86 = iCopy;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Sent messageID %@ to the destination %@ command %@ (account %@, fromURI %@)", buf, 0x34u);
     }
 
@@ -1557,60 +1557,60 @@ LABEL_50:
   }
 }
 
-- (void)processIncomingParticipantUpdateMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 toURI:(id)a6 topic:(id)a7 idsMessageContext:(id)a8
+- (void)processIncomingParticipantUpdateMessage:(id)message fromToken:(id)token fromURI:(id)i toURI:(id)rI topic:(id)topic idsMessageContext:(id)context
 {
-  v14 = a3;
-  v123 = a4;
-  v124 = a5;
-  v116 = a6;
-  v121 = a7;
-  v125 = a8;
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  rICopy = rI;
+  topicCopy = topic;
+  contextCopy = context;
   v15 = objc_alloc_init(IDSGroupStatusNotificationParameters);
-  v118 = self;
-  v16 = [(IDSDAccount *)self->_account uniqueID];
-  v117 = [(IDSDGroupStatusNotificationController *)self _specificOriginatorfromURI:v124 senderToken:v123 accountUniqueID:v16];
+  selfCopy = self;
+  uniqueID = [(IDSDAccount *)self->_account uniqueID];
+  v117 = [(IDSDGroupStatusNotificationController *)self _specificOriginatorfromURI:iCopy senderToken:tokenCopy accountUniqueID:uniqueID];
 
   v17 = objc_opt_class();
-  v122 = sub_10001B45C(v17, v14, IDSFanoutMessageGroupIDKey);
+  v122 = sub_10001B45C(v17, messageCopy, IDSFanoutMessageGroupIDKey);
   v18 = objc_opt_class();
-  v19 = sub_10001B45C(v18, v14, IDSDSessionMessageJoinNotificationKey);
-  v120 = [v19 unsignedIntegerValue];
+  v19 = sub_10001B45C(v18, messageCopy, IDSDSessionMessageJoinNotificationKey);
+  unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-  v20 = [v125 objectForKey:IDSMessageContextCommandContextKey];
-  v21 = [v20 integerValue];
-  if (v21 >= 2)
+  v20 = [contextCopy objectForKey:IDSMessageContextCommandContextKey];
+  integerValue = [v20 integerValue];
+  if (integerValue >= 2)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = v21;
+    v22 = integerValue;
   }
 
   v109 = v22;
 
   v23 = objc_opt_class();
   v24 = IDSMessageContextFromServerStorageKey;
-  v25 = sub_10001B45C(v23, v125, IDSMessageContextFromServerStorageKey);
+  v25 = sub_10001B45C(v23, contextCopy, IDSMessageContextFromServerStorageKey);
   v26 = objc_opt_class();
-  v27 = sub_10001B45C(v26, v125, v24);
-  v110 = [v27 BOOLValue];
+  v27 = sub_10001B45C(v26, contextCopy, v24);
+  bOOLValue = [v27 BOOLValue];
 
-  v28 = [v125 objectForKey:IDSMessageContextServerTimestampKey];
+  v28 = [contextCopy objectForKey:IDSMessageContextServerTimestampKey];
   [v28 doubleValue];
   v115 = [NSDate dateWithTimeIntervalSince1970:?];
 
   v29 = objc_opt_class();
-  v30 = sub_10001B45C(v29, v14, IDSSessionParticipantIDKey);
+  v30 = sub_10001B45C(v29, messageCopy, IDSSessionParticipantIDKey);
   [(IDSGroupStatusNotificationParameters *)v15 setParticipantID:v30];
 
   v31 = IDSSessionParticipantDataKey;
-  v32 = [v14 objectForKey:IDSSessionParticipantDataKey];
+  v32 = [messageCopy objectForKey:IDSSessionParticipantDataKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v33 = [v14 objectForKey:v31];
+    v33 = [messageCopy objectForKey:v31];
     v34 = [NSData _IDSDataFromBase64String:v33];
 LABEL_8:
     v35 = v34;
@@ -1619,11 +1619,11 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v33 = [v14 objectForKey:v31];
+  v33 = [messageCopy objectForKey:v31];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = [v14 objectForKey:v31];
+    v34 = [messageCopy objectForKey:v31];
     goto LABEL_8;
   }
 
@@ -1631,11 +1631,11 @@ LABEL_8:
 LABEL_10:
 
   v36 = IDSGroupSessionClientContextDataKey;
-  v37 = [v14 objectForKey:IDSGroupSessionClientContextDataKey];
+  v37 = [messageCopy objectForKey:IDSGroupSessionClientContextDataKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = [v14 objectForKey:v36];
+    v38 = [messageCopy objectForKey:v36];
     v39 = [NSData _IDSDataFromBase64String:v38];
 LABEL_14:
     v40 = v39;
@@ -1644,11 +1644,11 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v38 = [v14 objectForKey:v36];
+  v38 = [messageCopy objectForKey:v36];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v39 = [v14 objectForKey:v36];
+    v39 = [messageCopy objectForKey:v36];
     goto LABEL_14;
   }
 
@@ -1656,21 +1656,21 @@ LABEL_14:
 LABEL_16:
 
   v41 = objc_opt_class();
-  v42 = sub_10001B45C(v41, v14, IDSGroupSessionURIToParticipantID);
+  v42 = sub_10001B45C(v41, messageCopy, IDSGroupSessionURIToParticipantID);
   [(IDSGroupStatusNotificationParameters *)v15 setUrisToParticipantIDs:v42];
 
   v43 = objc_opt_class();
-  v44 = sub_10001B45C(v43, v14, IDSGroupSessionIsInitiatorKey);
+  v44 = sub_10001B45C(v43, messageCopy, IDSGroupSessionIsInitiatorKey);
   [(IDSGroupStatusNotificationParameters *)v15 setIsInitiator:v44];
 
   v45 = objc_opt_class();
-  v111 = sub_10001B45C(v45, v14, IDSContextTimeStamp);
+  v111 = sub_10001B45C(v45, messageCopy, IDSContextTimeStamp);
   v46 = objc_opt_class();
   v47 = IDSGroupSessionIsUPlusOneKey;
-  v48 = sub_10001B45C(v46, v14, IDSGroupSessionIsUPlusOneKey);
+  v48 = sub_10001B45C(v46, messageCopy, IDSGroupSessionIsUPlusOneKey);
   v49 = objc_opt_class();
-  v50 = sub_10001B45C(v49, v14, v47);
-  v51 = [v50 BOOLValue];
+  v50 = sub_10001B45C(v49, messageCopy, v47);
+  bOOLValue2 = [v50 BOOLValue];
 
   v52 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -1679,7 +1679,7 @@ LABEL_16:
     v54 = @"NO";
     *buf = 138413570;
     v127 = v53;
-    if (v110)
+    if (bOOLValue)
     {
       v55 = @"YES";
     }
@@ -1689,15 +1689,15 @@ LABEL_16:
       v55 = @"NO";
     }
 
-    if (v51)
+    if (bOOLValue2)
     {
       v54 = @"YES";
     }
 
     v128 = 2112;
-    v129 = v123;
+    v129 = tokenCopy;
     v130 = 2112;
-    v131 = v124;
+    v131 = iCopy;
     v132 = 2112;
     v133 = v117;
     v134 = 2112;
@@ -1710,13 +1710,13 @@ LABEL_16:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
     v56 = IDSLoggableDescriptionForObjectOnService();
-    v57 = v110 ? @"YES" : @"NO";
-    v58 = v51 ? @"YES" : @"NO";
+    v57 = bOOLValue ? @"YES" : @"NO";
+    v58 = bOOLValue2 ? @"YES" : @"NO";
     v106 = v57;
     v107 = v58;
     v105 = v117;
-    v100 = v123;
-    v104 = v124;
+    v100 = tokenCopy;
+    v104 = iCopy;
     v98 = v56;
     _IDSLogTransport();
 
@@ -1726,36 +1726,36 @@ LABEL_16:
       v106 = v57;
       v107 = v58;
       v105 = v117;
-      v100 = v123;
-      v98 = v104 = v124;
+      v100 = tokenCopy;
+      v98 = v104 = iCopy;
       _IDSLogV();
     }
   }
 
   v59 = objc_opt_class();
-  v119 = sub_10001B45C(v59, v14, IDSFanoutMessageGroupMembersKey);
+  v119 = sub_10001B45C(v59, messageCopy, IDSFanoutMessageGroupMembersKey);
   v114 = [v119 __imArrayByApplyingBlock:&stru_100BDA7D8];
   v60 = [[NSUUID alloc] initWithUUIDString:v122];
-  if (v120 == 1)
+  if (unsignedIntegerValue == 1)
   {
-    v112 = [(IDSGroupStatusNotificationParameters *)v15 participantData];
+    participantData = [(IDSGroupStatusNotificationParameters *)v15 participantData];
   }
 
   else
   {
-    v112 = 0;
+    participantData = 0;
   }
 
   v113 = [(IDSGroupStatusNotificationParameters *)v15 clientJoinContextData:v98];
-  v61 = [v60 UUIDString];
-  v62 = [v61 isEqualToString:v122];
+  uUIDString = [v60 UUIDString];
+  v62 = [uUIDString isEqualToString:v122];
 
   if (v62)
   {
-    v63 = [(IDSDGroupStatusNotificationController *)v118 sessionController];
-    v64 = [v63 sessionWithGroupUUID:v60];
+    sessionController = [(IDSDGroupStatusNotificationController *)selfCopy sessionController];
+    v64 = [sessionController sessionWithGroupUUID:v60];
 
-    if (v64 && ([(__CFString *)v124 URIByAddingOptionalPushToken:v123], v65 = objc_claimAutoreleasedReturnValue(), v66 = [v64 destinationsContainFromURI:v65], v65, (v66 & 1) == 0))
+    if (v64 && ([(__CFString *)iCopy URIByAddingOptionalPushToken:tokenCopy], v65 = objc_claimAutoreleasedReturnValue(), v66 = [v64 destinationsContainFromURI:v65], v65, (v66 & 1) == 0))
     {
       v75 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
@@ -1763,7 +1763,7 @@ LABEL_16:
         *buf = 138412546;
         v127 = v122;
         v128 = 2112;
-        v129 = v124;
+        v129 = iCopy;
         _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "processIncomingParticipantUpdateMessage: We'll drop this participant update message for group %@ since %@ is not in this group!", buf, 0x16u);
       }
 
@@ -1772,12 +1772,12 @@ LABEL_16:
         if (_IDSShouldLogTransport())
         {
           v99 = v122;
-          v101 = v124;
+          v101 = iCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
             v99 = v122;
-            v101 = v124;
+            v101 = iCopy;
             _IDSLogV();
           }
         }
@@ -1786,31 +1786,31 @@ LABEL_16:
       v76 = [IDSFoundationLog SessionController:v99];
       if (os_log_type_enabled(v76, OS_LOG_TYPE_FAULT))
       {
-        v97 = [v64 destinations];
+        destinations = [v64 destinations];
         *buf = 134218498;
-        v127 = v120;
+        v127 = unsignedIntegerValue;
         v128 = 2112;
-        v129 = v124;
+        v129 = iCopy;
         v130 = 2112;
-        v131 = v97;
+        v131 = destinations;
         _os_log_fault_impl(&_mh_execute_header, v76, OS_LOG_TYPE_FAULT, "Dropping group session participant update due to membership mismatch { type: %lu, fromURI: %@, destinations: %@ }", buf, 0x20u);
       }
     }
 
     else
     {
-      v67 = [(IDSGroupStatusNotificationParameters *)v15 isInitiator];
-      v108 = [v67 BOOLValue];
+      isInitiator = [(IDSGroupStatusNotificationParameters *)v15 isInitiator];
+      bOOLValue3 = [isInitiator BOOLValue];
 
-      if (v120 == 2)
+      if (unsignedIntegerValue == 2)
       {
-        v68 = [(IDSDGroupStatusNotificationController *)v118 realTimeEncryptionController];
-        [v68 removeActiveParticipant:v123 forGroup:v122];
+        realTimeEncryptionController = [(IDSDGroupStatusNotificationController *)selfCopy realTimeEncryptionController];
+        [realTimeEncryptionController removeActiveParticipant:tokenCopy forGroup:v122];
 
         goto LABEL_59;
       }
 
-      if (v120 != 1)
+      if (unsignedIntegerValue != 1)
       {
 LABEL_59:
         if (!v64)
@@ -1827,7 +1827,7 @@ LABEL_59:
         if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
         {
           v70 = @"NO";
-          if (v108)
+          if (bOOLValue3)
           {
             v70 = @"YES";
           }
@@ -1839,7 +1839,7 @@ LABEL_59:
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
         {
-          v71 = v108 ? @"YES" : @"NO";
+          v71 = bOOLValue3 ? @"YES" : @"NO";
           v99 = v71;
           _IDSLogTransport();
           if (_IDSShouldLog())
@@ -1849,22 +1849,22 @@ LABEL_59:
           }
         }
 
-        if ((v108 & 1) == 0)
+        if ((bOOLValue3 & 1) == 0)
         {
           [v64 receiveJoinNotificationFromAParticipant];
         }
 
-        v72 = [(__CFString *)v123 rawToken];
-        [v64 reportJoinReceivedOverPushFromToken:v72];
+        rawToken = [(__CFString *)tokenCopy rawToken];
+        [v64 reportJoinReceivedOverPushFromToken:rawToken];
 
 LABEL_60:
         if ([v64 handOffOverQREnabled])
         {
-          if ((v120 - 1) <= 1 && v111)
+          if ((unsignedIntegerValue - 1) <= 1 && v111)
           {
-            v73 = [(IDSGroupStatusNotificationParameters *)v15 participantID];
+            participantID = [(IDSGroupStatusNotificationParameters *)v15 participantID];
             [v111 doubleValue];
-            v74 = [v64 shouldReportToClient:v73 timeStamp:v120 type:1 overPush:?];
+            v74 = [v64 shouldReportToClient:participantID timeStamp:unsignedIntegerValue type:1 overPush:?];
 
             if ((v74 & 1) == 0)
             {
@@ -1879,7 +1879,7 @@ LABEL_60:
             {
               [v111 doubleValue];
               *buf = 134218240;
-              v127 = v120;
+              v127 = unsignedIntegerValue;
               v128 = 2048;
               v129 = v78;
               _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "Should not dedup, updateType: %lu, timeStamp: %f", buf, 0x16u);
@@ -1891,12 +1891,12 @@ LABEL_60:
               {
                 [v111 doubleValue];
                 v102 = v79;
-                v99 = v120;
+                v99 = unsignedIntegerValue;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
                   [v111 doubleValue];
-                  v99 = v120;
+                  v99 = unsignedIntegerValue;
                   _IDSLogV();
                 }
               }
@@ -1910,7 +1910,7 @@ LABEL_92:
         v83 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
         {
-          v84 = [v64 handOffOverQREnabled];
+          handOffOverQREnabled = [v64 handOffOverQREnabled];
           v85 = @"NO";
           if (v64)
           {
@@ -1922,7 +1922,7 @@ LABEL_92:
             v86 = @"YES";
           }
 
-          if (v84)
+          if (handOffOverQREnabled)
           {
             v85 = @"YES";
           }
@@ -1951,26 +1951,26 @@ LABEL_92:
 
 LABEL_109:
         v89 = [IDSGroupSessionParticipantUpdate alloc];
-        v90 = [(IDSGroupStatusNotificationParameters *)v15 participantID];
-        v91 = [v90 unsignedLongLongValue];
-        v92 = [(__CFString *)v124 URIByAddingPushToken:v123];
-        v93 = [(IDSGroupStatusNotificationParameters *)v15 urisToParticipantIDs];
-        LOBYTE(v99) = v110;
-        v94 = [v89 initWithGroupUUID:v60 isInitiator:v108 participantIdentifier:v91 participantDestinationURI:v92 participantUpdateType:v120 participantUpdateSubtype:v109 fromServer:v99 serverDate:v115 participantData:v112 clientContextData:v113 members:v114 participantIDs:v93 relaySessionID:0];
+        participantID2 = [(IDSGroupStatusNotificationParameters *)v15 participantID];
+        unsignedLongLongValue = [participantID2 unsignedLongLongValue];
+        v92 = [(__CFString *)iCopy URIByAddingPushToken:tokenCopy];
+        urisToParticipantIDs = [(IDSGroupStatusNotificationParameters *)v15 urisToParticipantIDs];
+        LOBYTE(v99) = bOOLValue;
+        v94 = [v89 initWithGroupUUID:v60 isInitiator:bOOLValue3 participantIdentifier:unsignedLongLongValue participantDestinationURI:v92 participantUpdateType:unsignedIntegerValue participantUpdateSubtype:v109 fromServer:v99 serverDate:v115 participantData:participantData clientContextData:v113 members:v114 participantIDs:urisToParticipantIDs relaySessionID:0];
 
-        v95 = [(IDSDGroupStatusNotificationController *)v118 broadcaster];
-        [v95 broadcastGroupSessionParticipantUpdate:v94 onTopic:v121 toURI:v116 fromURI:v124 context:v125];
+        broadcaster = [(IDSDGroupStatusNotificationController *)selfCopy broadcaster];
+        [broadcaster broadcastGroupSessionParticipantUpdate:v94 onTopic:topicCopy toURI:rICopy fromURI:iCopy context:contextCopy];
 
         goto LABEL_110;
       }
 
-      if (v108 & 1 | ((v51 & 1) == 0))
+      if (bOOLValue3 & 1 | ((bOOLValue2 & 1) == 0))
       {
         v80 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
         {
           v81 = @"NO";
-          if (v51)
+          if (bOOLValue2)
           {
             v81 = @"YES";
           }
@@ -1984,7 +1984,7 @@ LABEL_109:
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
         {
-          v82 = v51 ? @"YES" : @"NO";
+          v82 = bOOLValue2 ? @"YES" : @"NO";
           v99 = v122;
           v101 = v82;
           _IDSLogTransport();
@@ -2033,50 +2033,50 @@ LABEL_109:
 LABEL_110:
 }
 
-- (void)processIncomingParticipantDataUpdateMessage:(id)a3 fromToken:(id)a4 fromURI:(id)a5 toURI:(id)a6 topic:(id)a7 idsMessageContext:(id)a8
+- (void)processIncomingParticipantDataUpdateMessage:(id)message fromToken:(id)token fromURI:(id)i toURI:(id)rI topic:(id)topic idsMessageContext:(id)context
 {
-  v14 = a3;
-  v80 = a4;
-  v82 = a5;
-  v73 = a6;
-  v78 = a7;
-  v81 = a8;
+  messageCopy = message;
+  tokenCopy = token;
+  iCopy = i;
+  rICopy = rI;
+  topicCopy = topic;
+  contextCopy = context;
   v83 = objc_alloc_init(IDSGroupStatusNotificationParameters);
-  v75 = self;
-  v15 = [(IDSDAccount *)self->_account uniqueID];
-  v76 = [(IDSDGroupStatusNotificationController *)self _specificOriginatorfromURI:v82 senderToken:v80 accountUniqueID:v15];
+  selfCopy = self;
+  uniqueID = [(IDSDAccount *)self->_account uniqueID];
+  v76 = [(IDSDGroupStatusNotificationController *)self _specificOriginatorfromURI:iCopy senderToken:tokenCopy accountUniqueID:uniqueID];
 
   v16 = objc_opt_class();
-  v79 = sub_10001B45C(v16, v14, IDSFanoutMessageGroupIDKey);
+  v79 = sub_10001B45C(v16, messageCopy, IDSFanoutMessageGroupIDKey);
   v17 = objc_opt_class();
-  v18 = sub_10001B45C(v17, v14, IDSDSessionMessageJoinNotificationKey);
-  v68 = [v18 unsignedIntegerValue];
+  v18 = sub_10001B45C(v17, messageCopy, IDSDSessionMessageJoinNotificationKey);
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
 
   v19 = objc_opt_class();
   v20 = IDSMessageContextFromServerStorageKey;
-  v21 = sub_10001B45C(v19, v81, IDSMessageContextFromServerStorageKey);
+  v21 = sub_10001B45C(v19, contextCopy, IDSMessageContextFromServerStorageKey);
   v22 = objc_opt_class();
-  v23 = sub_10001B45C(v22, v81, v20);
-  v69 = [v23 BOOLValue];
+  v23 = sub_10001B45C(v22, contextCopy, v20);
+  bOOLValue = [v23 BOOLValue];
 
-  v24 = [v81 objectForKey:IDSMessageContextServerTimestampKey];
+  v24 = [contextCopy objectForKey:IDSMessageContextServerTimestampKey];
   [v24 doubleValue];
   v74 = [NSDate dateWithTimeIntervalSince1970:?];
 
   v25 = objc_opt_class();
-  v26 = sub_10001B45C(v25, v14, IDSGroupSessionIsInitiatorKey);
+  v26 = sub_10001B45C(v25, messageCopy, IDSGroupSessionIsInitiatorKey);
   [(IDSGroupStatusNotificationParameters *)v83 setIsInitiator:v26];
 
   v27 = objc_opt_class();
-  v28 = sub_10001B45C(v27, v14, IDSSessionParticipantIDKey);
+  v28 = sub_10001B45C(v27, messageCopy, IDSSessionParticipantIDKey);
   [(IDSGroupStatusNotificationParameters *)v83 setParticipantID:v28];
 
   v29 = IDSSessionParticipantDataKey;
-  v30 = [v14 objectForKey:IDSSessionParticipantDataKey];
+  v30 = [messageCopy objectForKey:IDSSessionParticipantDataKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v31 = [v14 objectForKey:v29];
+    v31 = [messageCopy objectForKey:v29];
     v32 = [NSData _IDSDataFromBase64String:v31];
 LABEL_5:
     v33 = v32;
@@ -2085,11 +2085,11 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v31 = [v14 objectForKey:v29];
+  v31 = [messageCopy objectForKey:v29];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v32 = [v14 objectForKey:v29];
+    v32 = [messageCopy objectForKey:v29];
     goto LABEL_5;
   }
 
@@ -2097,11 +2097,11 @@ LABEL_5:
 LABEL_7:
 
   v34 = IDSGroupSessionClientContextDataKey;
-  v35 = [v14 objectForKey:IDSGroupSessionClientContextDataKey];
+  v35 = [messageCopy objectForKey:IDSGroupSessionClientContextDataKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v36 = [v14 objectForKey:v34];
+    v36 = [messageCopy objectForKey:v34];
     v37 = [NSData _IDSDataFromBase64String:v36];
 LABEL_11:
     v38 = v37;
@@ -2110,11 +2110,11 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v36 = [v14 objectForKey:v34];
+  v36 = [messageCopy objectForKey:v34];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v37 = [v14 objectForKey:v34];
+    v37 = [messageCopy objectForKey:v34];
     goto LABEL_11;
   }
 
@@ -2128,15 +2128,15 @@ LABEL_13:
     v41 = @"NO";
     *buf = 138413314;
     v85 = v40;
-    if (v69)
+    if (bOOLValue)
     {
       v41 = @"YES";
     }
 
     v86 = 2112;
-    v87 = v80;
+    v87 = tokenCopy;
     v88 = 2112;
-    v89 = v82;
+    v89 = iCopy;
     v90 = 2112;
     v91 = v76;
     v92 = 2112;
@@ -2147,11 +2147,11 @@ LABEL_13:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
     v42 = IDSLoggableDescriptionForObjectOnService();
-    v43 = v69 ? @"YES" : @"NO";
+    v43 = bOOLValue ? @"YES" : @"NO";
     v66 = v76;
     v67 = v43;
-    v64 = v80;
-    v65 = v82;
+    v64 = tokenCopy;
+    v65 = iCopy;
     v63 = v42;
     _IDSLogTransport();
 
@@ -2160,27 +2160,27 @@ LABEL_13:
       IDSLoggableDescriptionForObjectOnService();
       v66 = v76;
       v67 = v43;
-      v64 = v80;
-      v63 = v65 = v82;
+      v64 = tokenCopy;
+      v63 = v65 = iCopy;
       _IDSLogV();
     }
   }
 
   v44 = objc_opt_class();
-  v77 = sub_10001B45C(v44, v14, IDSFanoutMessageGroupMembersKey);
+  v77 = sub_10001B45C(v44, messageCopy, IDSFanoutMessageGroupMembersKey);
   v72 = [v77 __imArrayByApplyingBlock:&stru_100BDA7F8];
   v45 = [[NSUUID alloc] initWithUUIDString:v79];
-  v71 = [(IDSGroupStatusNotificationParameters *)v83 participantData];
-  v70 = [(IDSGroupStatusNotificationParameters *)v83 clientJoinContextData];
-  v46 = [v45 UUIDString];
-  v47 = [v46 isEqualToString:v79];
+  participantData = [(IDSGroupStatusNotificationParameters *)v83 participantData];
+  clientJoinContextData = [(IDSGroupStatusNotificationParameters *)v83 clientJoinContextData];
+  uUIDString = [v45 UUIDString];
+  v47 = [uUIDString isEqualToString:v79];
 
   if (v47)
   {
-    v48 = [(IDSDGroupStatusNotificationController *)self sessionController];
-    v49 = [v48 sessionWithGroupUUID:v45];
+    sessionController = [(IDSDGroupStatusNotificationController *)self sessionController];
+    v49 = [sessionController sessionWithGroupUUID:v45];
 
-    if (v49 && ([v82 URIByAddingOptionalPushToken:v80], v50 = objc_claimAutoreleasedReturnValue(), v51 = -[NSObject destinationsContainFromURI:](v49, "destinationsContainFromURI:", v50), v50, (v51 & 1) == 0))
+    if (v49 && ([iCopy URIByAddingOptionalPushToken:tokenCopy], v50 = objc_claimAutoreleasedReturnValue(), v51 = -[NSObject destinationsContainFromURI:](v49, "destinationsContainFromURI:", v50), v50, (v51 & 1) == 0))
     {
       v61 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
@@ -2188,7 +2188,7 @@ LABEL_13:
         *buf = 138412546;
         v85 = v79;
         v86 = 2112;
-        v87 = v82;
+        v87 = iCopy;
         _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "processIncomingParticipantDataUpdateMessage: We'll drop this participant update message for group %@ since %@ is not in this group!", buf, 0x16u);
       }
 
@@ -2197,12 +2197,12 @@ LABEL_13:
         if (_IDSShouldLogTransport())
         {
           v63 = v79;
-          v64 = v82;
+          v64 = iCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
             v63 = v79;
-            v64 = v82;
+            v64 = iCopy;
             _IDSLogV();
           }
         }
@@ -2211,13 +2211,13 @@ LABEL_13:
       v59 = [IDSFoundationLog SessionController:v63];
       if (os_log_type_enabled(v59, OS_LOG_TYPE_FAULT))
       {
-        v62 = [v49 destinations];
+        destinations = [v49 destinations];
         *buf = 134218498;
-        v85 = v68;
+        v85 = unsignedIntegerValue;
         v86 = 2112;
-        v87 = v82;
+        v87 = iCopy;
         v88 = 2112;
-        v89 = v62;
+        v89 = destinations;
         _os_log_fault_impl(&_mh_execute_header, v59, OS_LOG_TYPE_FAULT, "Dropping group session participant data update due to membership mismatch { type: %lu, fromURI: %@, destinations: %@ }", buf, 0x20u);
       }
     }
@@ -2225,17 +2225,17 @@ LABEL_13:
     else
     {
       v52 = [IDSGroupSessionParticipantUpdate alloc];
-      v53 = [(IDSGroupStatusNotificationParameters *)v83 isInitiator];
-      v54 = [v53 BOOLValue];
-      v55 = [(IDSGroupStatusNotificationParameters *)v83 participantID];
-      v56 = [v55 unsignedLongLongValue];
-      v57 = [v82 URIByAddingPushToken:v80];
-      v58 = [(IDSGroupStatusNotificationParameters *)v83 urisToParticipantIDs];
-      LOBYTE(v63) = v69;
-      v59 = [v52 initWithGroupUUID:v45 isInitiator:v54 participantIdentifier:v56 participantDestinationURI:v57 participantUpdateType:v68 participantUpdateSubtype:0 fromServer:v63 serverDate:v74 participantData:v71 clientContextData:v70 members:v72 participantIDs:v58 relaySessionID:0];
+      isInitiator = [(IDSGroupStatusNotificationParameters *)v83 isInitiator];
+      bOOLValue2 = [isInitiator BOOLValue];
+      participantID = [(IDSGroupStatusNotificationParameters *)v83 participantID];
+      unsignedLongLongValue = [participantID unsignedLongLongValue];
+      v57 = [iCopy URIByAddingPushToken:tokenCopy];
+      urisToParticipantIDs = [(IDSGroupStatusNotificationParameters *)v83 urisToParticipantIDs];
+      LOBYTE(v63) = bOOLValue;
+      v59 = [v52 initWithGroupUUID:v45 isInitiator:bOOLValue2 participantIdentifier:unsignedLongLongValue participantDestinationURI:v57 participantUpdateType:unsignedIntegerValue participantUpdateSubtype:0 fromServer:v63 serverDate:v74 participantData:participantData clientContextData:clientJoinContextData members:v72 participantIDs:urisToParticipantIDs relaySessionID:0];
 
-      v60 = [(IDSDGroupStatusNotificationController *)v75 broadcaster];
-      [v60 broadcastGroupSessionParticipantDataUpdate:v59 onTopic:v78 toURI:v73 fromURI:v82];
+      broadcaster = [(IDSDGroupStatusNotificationController *)selfCopy broadcaster];
+      [broadcaster broadcastGroupSessionParticipantDataUpdate:v59 onTopic:topicCopy toURI:rICopy fromURI:iCopy];
     }
   }
 
@@ -2249,18 +2249,18 @@ LABEL_13:
   }
 }
 
-- (void)pushTokenLookup:(id)a3 forGroup:(id)a4 sessionID:(id)a5 fromURI:(id)a6 account:(id)a7 completionBlock:(id)a8
+- (void)pushTokenLookup:(id)lookup forGroup:(id)group sessionID:(id)d fromURI:(id)i account:(id)account completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v32 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = v14;
-  v20 = [v17 _registrationCert];
-  v21 = [v17 service];
-  v22 = [v21 identifier];
+  lookupCopy = lookup;
+  groupCopy = group;
+  dCopy = d;
+  iCopy = i;
+  accountCopy = account;
+  blockCopy = block;
+  v19 = lookupCopy;
+  _registrationCert = [accountCopy _registrationCert];
+  service = [accountCopy service];
+  identifier = [service identifier];
 
   if (!self->_groupMemberPushTokens)
   {
@@ -2275,14 +2275,14 @@ LABEL_13:
   v40[2] = sub_1003E231C;
   v40[3] = &unk_100BDA820;
   objc_copyWeak(&v46, location);
-  v25 = v16;
+  v25 = dCopy;
   v41 = v25;
-  v26 = v15;
+  v26 = groupCopy;
   v42 = v26;
   v27 = v19;
   v43 = v27;
-  v44 = self;
-  v28 = v18;
+  selfCopy = self;
+  v28 = blockCopy;
   v45 = v28;
   v29 = objc_retainBlock(v40);
   if ([v27 count])
@@ -2293,9 +2293,9 @@ LABEL_13:
     block[2] = sub_1003E2E70;
     block[3] = &unk_100BDA848;
     v35 = v27;
-    v36 = v20;
-    v37 = v32;
-    v38 = v22;
+    v36 = _registrationCert;
+    v37 = iCopy;
+    v38 = identifier;
     v39 = v29;
     dispatch_async(v30, block);
   }
@@ -2326,40 +2326,40 @@ LABEL_13:
   objc_destroyWeak(location);
 }
 
-- (id)_specificOriginatorfromURI:(id)a3 senderToken:(id)a4 accountUniqueID:(id)a5
+- (id)_specificOriginatorfromURI:(id)i senderToken:(id)token accountUniqueID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 prefixedURI];
-  v11 = [v10 hasPrefix:@"device:"];
+  iCopy = i;
+  tokenCopy = token;
+  dCopy = d;
+  prefixedURI = [iCopy prefixedURI];
+  v11 = [prefixedURI hasPrefix:@"device:"];
 
   if (v11)
   {
-    v12 = [v7 unprefixedURI];
+    unprefixedURI = [iCopy unprefixedURI];
   }
 
   else
   {
-    v12 = 0;
+    unprefixedURI = 0;
   }
 
   v13 = +[IDSPairingManager sharedInstance];
-  v14 = [v13 pairedDeviceUniqueID];
-  v15 = [v12 isEqualToIgnoringCase:v14];
+  pairedDeviceUniqueID = [v13 pairedDeviceUniqueID];
+  v15 = [unprefixedURI isEqualToIgnoringCase:pairedDeviceUniqueID];
 
-  v16 = [v7 prefixedURI];
-  v17 = [v16 isEqualToIgnoringCase:IDSDefaultPairedDevice];
+  prefixedURI2 = [iCopy prefixedURI];
+  v17 = [prefixedURI2 isEqualToIgnoringCase:IDSDefaultPairedDevice];
 
-  if (v8)
+  if (tokenCopy)
   {
-    if (!v7)
+    if (!iCopy)
     {
       v19 = 0;
       goto LABEL_11;
     }
 
-    v18 = [v7 URIByAddingPushToken:v8];
+    v18 = [iCopy URIByAddingPushToken:tokenCopy];
 LABEL_9:
     v19 = v18;
 LABEL_11:
@@ -2370,12 +2370,12 @@ LABEL_11:
 
   if ((v17 | v15))
   {
-    v18 = v7;
+    v18 = iCopy;
     goto LABEL_9;
   }
 
   v22 = +[IDSDAccountController sharedInstance];
-  v23 = [v22 accountWithUniqueID:v9];
+  v23 = [v22 accountWithUniqueID:dCopy];
 
   if (!v23)
   {
@@ -2397,7 +2397,7 @@ LABEL_11:
     goto LABEL_39;
   }
 
-  v24 = [v23 dependentRegistrationMatchingUUID:v12];
+  v24 = [v23 dependentRegistrationMatchingUUID:unprefixedURI];
   v25 = v24;
   if (!v24)
   {
@@ -2446,8 +2446,8 @@ LABEL_39:
   v35 = [v36 count];
   if (v35)
   {
-    v27 = [v36 firstObject];
-    v28 = [v27 _stringForKey:@"uri"];
+    firstObject = [v36 firstObject];
+    v28 = [firstObject _stringForKey:@"uri"];
 
     v29 = _IDSCopyIDForTokenWithURI();
     v19 = [IDSURI URIWithPrefixedURI:v29];
@@ -2456,7 +2456,7 @@ LABEL_39:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v38 = v7;
+      v38 = iCopy;
       v39 = 2112;
       v40 = v19;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "original fromID %@ -> resulting specificOriginator %@", buf, 0x16u);
@@ -2500,10 +2500,10 @@ LABEL_12:
   return v20;
 }
 
-- (id)getURIFromPushToken:(id)a3 forGroup:(id)a4
+- (id)getURIFromPushToken:(id)token forGroup:(id)group
 {
-  v25 = a3;
-  v23 = a4;
+  tokenCopy = token;
+  groupCopy = group;
   v24 = [(NSMutableDictionary *)self->_groupMemberPushTokens objectForKeyedSubscript:?];
   if (!v24)
   {
@@ -2511,7 +2511,7 @@ LABEL_12:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v23;
+      v31 = groupCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Couldn't find the tokens for group %@", buf, 0xCu);
     }
 
@@ -2525,7 +2525,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v6 = [v25 rawToken];
+  rawToken = [tokenCopy rawToken];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2535,7 +2535,7 @@ LABEL_25:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v23;
+      v31 = groupCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Coudln't find the URI for the given token for group %@. the pushToken is not NSData.", buf, 0xCu);
     }
 
@@ -2570,8 +2570,8 @@ LABEL_25:
         v14 = *(*(&v26 + 1) + 8 * i);
         v15 = [v14 objectForKeyedSubscript:v11];
         v16 = [v14 objectForKeyedSubscript:v12];
-        v17 = [v25 rawToken];
-        v18 = [v17 isEqualToData:v15];
+        rawToken2 = [tokenCopy rawToken];
+        v18 = [rawToken2 isEqualToData:v15];
 
         if (v18)
         {
@@ -2594,9 +2594,9 @@ LABEL_25:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v25;
+    v31 = tokenCopy;
     v32 = 2112;
-    v33 = v23;
+    v33 = groupCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Coudln't find the URI for the given token %@ for group %@.", buf, 0x16u);
   }
 

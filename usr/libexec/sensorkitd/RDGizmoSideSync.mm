@@ -1,22 +1,22 @@
 @interface RDGizmoSideSync
 + (void)initialize;
-- (BOOL)prepareArchivesForSensor:(id)a3 deviceId:(id)a4;
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4;
+- (BOOL)prepareArchivesForSensor:(id)sensor deviceId:(id)id;
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state;
 - (void)dealloc;
-- (void)peripheral:(id)a3 didReceiveTimeSyncWithReferenceTime:(id)a4 localAbsolute:(id)a5 remoteAbsolute:(id)a6 receiveTime:(id)a7 GMTDelta:(id)a8 error:(id)a9;
-- (void)sendSnapshotForSensor:(id)a3 deviceId:(id)a4;
-- (void)sendStateToPeer:(id)a3;
-- (void)service:(id)a3 didFailMessageWithIDSIdentifier:(id)a4 error:(id)a5;
-- (void)service:(id)a3 didReceiveResourceServiceMessage:(id)a4 fromID:(id)a5 incomingResponseIdentifier:(id)a6 outgoingResponseIdentifier:(id)a7;
-- (void)service:(id)a3 didRequestToSendIDSMessage:(id)a4 withIDSIdentifier:(id)a5;
-- (void)service:(uint64_t)a1 connectedDevicesChanged:;
+- (void)peripheral:(id)peripheral didReceiveTimeSyncWithReferenceTime:(id)time localAbsolute:(id)absolute remoteAbsolute:(id)remoteAbsolute receiveTime:(id)receiveTime GMTDelta:(id)delta error:(id)error;
+- (void)sendSnapshotForSensor:(id)sensor deviceId:(id)id;
+- (void)sendStateToPeer:(id)peer;
+- (void)service:(id)service didFailMessageWithIDSIdentifier:(id)identifier error:(id)error;
+- (void)service:(id)service didReceiveResourceServiceMessage:(id)message fromID:(id)d incomingResponseIdentifier:(id)identifier outgoingResponseIdentifier:(id)responseIdentifier;
+- (void)service:(id)service didRequestToSendIDSMessage:(id)message withIDSIdentifier:(id)identifier;
+- (void)service:(uint64_t)service connectedDevicesChanged:;
 @end
 
 @implementation RDGizmoSideSync
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071AA0 = os_log_create("com.apple.SensorKit", "RDGizmoSideSync");
   }
@@ -42,9 +42,9 @@
   [(RDGizmoSideSync *)&v10 dealloc];
 }
 
-- (void)service:(id)a3 didReceiveResourceServiceMessage:(id)a4 fromID:(id)a5 incomingResponseIdentifier:(id)a6 outgoingResponseIdentifier:(id)a7
+- (void)service:(id)service didReceiveResourceServiceMessage:(id)message fromID:(id)d incomingResponseIdentifier:(id)identifier outgoingResponseIdentifier:(id)responseIdentifier
 {
-  v11 = [a4 objectForKeyedSubscript:?];
+  v11 = [message objectForKeyedSubscript:?];
   if (!v11)
   {
     v20 = qword_100071AA0;
@@ -58,13 +58,13 @@
   }
 
   v12 = v11;
-  v13 = [(RDGizmoSideSync *)self delegate];
-  v14 = [v12 integerValue];
-  if (v14 > 4)
+  delegate = [(RDGizmoSideSync *)self delegate];
+  integerValue = [v12 integerValue];
+  if (integerValue > 4)
   {
-    if ((v14 - 6) < 5)
+    if ((integerValue - 6) < 5)
     {
-      v15 = v14;
+      v15 = integerValue;
       v16 = qword_100071AA0;
       if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_FAULT))
       {
@@ -82,13 +82,13 @@ LABEL_7:
       return;
     }
 
-    if (v14 != 5)
+    if (integerValue != 5)
     {
       return;
     }
 
 LABEL_69:
-    obja = [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionRequiredKeysKey"];
+    obja = [message objectForKeyedSubscript:@"RDGizmoSyncCompanionRequiredKeysKey"];
     v86 = qword_100071AA0;
     if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEFAULT))
     {
@@ -253,23 +253,23 @@ LABEL_115:
     return;
   }
 
-  if (v14 == 2)
+  if (integerValue == 2)
   {
     if (self)
     {
-      v35 = [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionAbsoluteTimeKey"];
+      v35 = [message objectForKeyedSubscript:@"RDGizmoSyncCompanionAbsoluteTimeKey"];
       if (v35)
       {
         v36 = v35;
-        v37 = [a4 objectForKeyedSubscript:@"RDGizmoSyncGizmoAbsoluteTimeKey"];
+        v37 = [message objectForKeyedSubscript:@"RDGizmoSyncGizmoAbsoluteTimeKey"];
         if (v37)
         {
           v38 = v37;
-          v39 = [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionContinuousAbsoluteOffsetKey"];
+          v39 = [message objectForKeyedSubscript:@"RDGizmoSyncCompanionContinuousAbsoluteOffsetKey"];
           if (v39)
           {
             v40 = v39;
-            v41 = [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionRTCContinuousOffsetKey"];
+            v41 = [message objectForKeyedSubscript:@"RDGizmoSyncCompanionRTCContinuousOffsetKey"];
             if (v41)
             {
               v42 = v41;
@@ -294,11 +294,11 @@ LABEL_115:
               }
 
               v167 = 0;
-              v49 = [v38 unsignedLongLongValue];
-              v50 = [v36 unsignedLongLongValue];
-              v51 = [v40 unsignedLongLongValue];
+              unsignedLongLongValue = [v38 unsignedLongLongValue];
+              unsignedLongLongValue2 = [v36 unsignedLongLongValue];
+              unsignedLongLongValue3 = [v40 unsignedLongLongValue];
               [v42 doubleValue];
-              v53 = SRAbsoluteTimeSetSyntheticStartFromRemoteTime(v49, v50, v52, v51, &v167);
+              v53 = SRAbsoluteTimeSetSyntheticStartFromRemoteTime(unsignedLongLongValue, unsignedLongLongValue2, v52, unsignedLongLongValue3, &v167);
               powerAssertion = self->_powerAssertion;
               if (powerAssertion)
               {
@@ -332,8 +332,8 @@ LABEL_115:
                   _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "Time synced with remote. New current time is: %{public}f", buf, 0xCu);
                 }
 
-                v62 = [(RDGizmoSideSync *)self delegate];
-                [(RDGizmoSyncDelegate *)v62 gizmoSync:self didSyncRTCOffset:*&v167 timeBeforeUpdate:v56];
+                delegate2 = [(RDGizmoSideSync *)self delegate];
+                [(RDGizmoSyncDelegate *)delegate2 gizmoSync:self didSyncRTCOffset:*&v167 timeBeforeUpdate:v56];
                 v63 = self->_gizmoSyncService;
                 if (!v63)
                 {
@@ -362,9 +362,9 @@ LABEL_148:
                 TMGetKernelMonotonicClock();
                 v132 = v131;
                 v133 = mach_continuous_time();
-                v134 = [v38 unsignedLongLongValue];
-                v135 = [v36 unsignedLongLongValue];
-                v136 = [v40 unsignedLongLongValue];
+                unsignedLongLongValue4 = [v38 unsignedLongLongValue];
+                unsignedLongLongValue5 = [v36 unsignedLongLongValue];
+                unsignedLongLongValue6 = [v40 unsignedLongLongValue];
                 [v42 doubleValue];
                 *buf = 134219520;
                 *&buf[4] = Current;
@@ -373,11 +373,11 @@ LABEL_148:
                 *&buf[22] = 2048;
                 v156 = v133;
                 v157 = 2048;
-                v158 = v134;
+                v158 = unsignedLongLongValue4;
                 v159 = 2048;
-                v160 = v135;
+                v160 = unsignedLongLongValue5;
                 v161 = 2048;
-                v162 = v136;
+                v162 = unsignedLongLongValue6;
                 v163 = 2048;
                 v164 = v137;
                 _os_log_fault_impl(&_mh_execute_header, v55, OS_LOG_TYPE_FAULT, "Invalid time synced with remote. currentTime: %f, currentRTC: %f, currentContinuous: %llu, localAbsolute: %llu, remoteAbsolute: %llu, remoteContinuousAbsoluteOffset: %llu, remoteRTCContinuousOffset: %f", buf, 0x48u);
@@ -458,9 +458,9 @@ LABEL_146:
     goto LABEL_162;
   }
 
-  if (v14 != 3)
+  if (integerValue != 3)
   {
-    if (v14 != 4)
+    if (integerValue != 4)
     {
       return;
     }
@@ -469,11 +469,11 @@ LABEL_146:
     if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = a4;
+      *&buf[4] = message;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Received companion state: %{public}@", buf, 0xCu);
     }
 
-    if (!self || (v22 = self->_gizmoSyncService) == 0 || (v23 = sub_100023C20(v22, a5, [(IDSService *)v22->_resourceService devices])) == 0)
+    if (!self || (v22 = self->_gizmoSyncService) == 0 || (v23 = sub_100023C20(v22, d, [(IDSService *)v22->_resourceService devices])) == 0)
     {
       v102 = qword_100071AA0;
       if (!os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_ERROR))
@@ -488,50 +488,50 @@ LABEL_146:
 
     v24 = v23;
     v25 = objc_alloc_init(RDGizmoSyncState);
-    v26 = [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncCompanionPrerequisitesKey", "integerValue"}];
+    v26 = [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncCompanionPrerequisitesKey", "integerValue"}];
     if (v25)
     {
       v25->_prerequisites = v26;
     }
 
-    v27 = [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncCompanionRequiredAppInstalledKey", "BOOLValue"}];
+    v27 = [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncCompanionRequiredAppInstalledKey", "BOOLValue"}];
     if (v25)
     {
       v25->_requiredAppInstalled_deprecated = v27;
-      v28 = [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionRecordingStatesKey"];
+      v28 = [message objectForKeyedSubscript:@"RDGizmoSyncCompanionRecordingStatesKey"];
       objc_setProperty_nonatomic(v25, v29, v28, 16);
-      v30 = [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionServiceStartTimesKey"];
+      v30 = [message objectForKeyedSubscript:@"RDGizmoSyncCompanionServiceStartTimesKey"];
       objc_setProperty_nonatomic(v25, v31, v30, 24);
     }
 
     else
     {
-      [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionRecordingStatesKey"];
-      [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionServiceStartTimesKey"];
+      [message objectForKeyedSubscript:@"RDGizmoSyncCompanionRecordingStatesKey"];
+      [message objectForKeyedSubscript:@"RDGizmoSyncCompanionServiceStartTimesKey"];
     }
 
-    v32 = [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncCapabilitiesKey", "unsignedIntegerValue"}];
+    v32 = [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncCapabilitiesKey", "unsignedIntegerValue"}];
     if (v25)
     {
       v25->_capabilities = v32;
-      v33 = [a4 objectForKeyedSubscript:@"RDGizmoSyncSensorConfigurations"];
+      v33 = [message objectForKeyedSubscript:@"RDGizmoSyncSensorConfigurations"];
       objc_setProperty_nonatomic(v25, v34, v33, 40);
     }
 
     else
     {
-      [a4 objectForKeyedSubscript:@"RDGizmoSyncSensorConfigurations"];
+      [message objectForKeyedSubscript:@"RDGizmoSyncSensorConfigurations"];
     }
 
-    [(RDGizmoSyncDelegate *)v13 gizmoSync:self didSyncState:v25 deviceID:v24];
+    [(RDGizmoSyncDelegate *)delegate gizmoSync:self didSyncState:v25 deviceID:v24];
 
     self->_marshalledCapabilities = 0;
     [RDGizmoSideSync service:connectedDevicesChanged:]_0(self);
     goto LABEL_69;
   }
 
-  v64 = [a4 objectForKeyedSubscript:@"RDGizmoSyncSensorIdentifierKey"];
-  v65 = [a4 objectForKeyedSubscript:@"RDGizmoSyncSamplesURLKey"];
+  v64 = [message objectForKeyedSubscript:@"RDGizmoSyncSensorIdentifierKey"];
+  v65 = [message objectForKeyedSubscript:@"RDGizmoSyncSamplesURLKey"];
   sub_10001FF84(self, [v65 lastPathComponent]);
   if (self)
   {
@@ -549,7 +549,7 @@ LABEL_146:
   v69 = sub_100011CFC([RDEncryptingDatastore alloc], v68);
   v70 = sub_10001206C(v69, [v65 lastPathComponent]);
 
-  v71 = [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncArchiveTransferStatusKey", "integerValue"}];
+  v71 = [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncArchiveTransferStatusKey", "integerValue"}];
   v72 = qword_100071AA0;
   if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEFAULT))
   {
@@ -580,14 +580,14 @@ LABEL_146:
   obj = qword_100071B88;
   v154 = qword_100071B88;
   v74 = +[NSURL fileURLWithPath:isDirectory:relativeToURL:](NSURL, "fileURLWithPath:isDirectory:relativeToURL:", [v65 lastPathComponent], 0, sub_10001A924(v73, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v154, 1), v64));
-  v75 = [(RDGizmoSideSync *)self analyticsDelegate];
+  analyticsDelegate = [(RDGizmoSideSync *)self analyticsDelegate];
   if (v71 <= 2)
   {
     if (v71)
     {
       if (v71 == 1)
       {
-        v106 = v75;
+        v106 = analyticsDelegate;
         if (![+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
         {
           v125 = qword_100071AA0;
@@ -650,14 +650,14 @@ LABEL_146:
       }
 
       v76 = qword_100071AA0;
-      v77 = v75;
+      v77 = analyticsDelegate;
       v78 = os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEFAULT);
-      v75 = v77;
+      analyticsDelegate = v77;
       if (v78)
       {
         *buf = 0;
         _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "Error unarchiving on the companion. Removing our local snapshot", buf, 2u);
-        v75 = v77;
+        analyticsDelegate = v77;
       }
     }
 
@@ -671,13 +671,13 @@ LABEL_146:
       v79 = 3;
     }
 
-    [(RDAnalyticsEventDelegate *)v75 gizmoSync:self didDeliverAndUnarchive:v74 sensor:v64 keyName:v70 archiveStatus:v79];
+    [(RDAnalyticsEventDelegate *)analyticsDelegate gizmoSync:self didDeliverAndUnarchive:v74 sensor:v64 keyName:v70 archiveStatus:v79];
     v80 = qword_100071AA0;
     if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEFAULT))
     {
-      v81 = [(NSURL *)v74 lastPathComponent];
+      lastPathComponent = [(NSURL *)v74 lastPathComponent];
       *buf = 138543362;
-      *&buf[4] = v81;
+      *&buf[4] = lastPathComponent;
       _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, "Snapshot has been sent, removing %{public}@", buf, 0xCu);
     }
 
@@ -720,7 +720,7 @@ LABEL_139:
           return;
         }
 
-        if (!a7)
+        if (!responseIdentifier)
         {
           v126 = qword_100071AA0;
           if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_FAULT))
@@ -739,14 +739,14 @@ LABEL_139:
         *buf = &off_1000652C8;
         v167 = @"RDGizmoSyncMessageTypeKey";
         v168 = @"RDGizmoSyncSnapshotKey";
-        v118 = [(NSURL *)v74 path];
+        path = [(NSURL *)v74 path];
         v169 = @"RDGizmoSyncSensorIdentifierKey";
-        *&buf[8] = v118;
+        *&buf[8] = path;
         *&buf[16] = v64;
         v119 = [NSDictionary dictionaryWithObjects:buf forKeys:&v167 count:3];
         v165 = IDSSendMessageOptionPeerResponseIdentifierKey;
-        v166 = a7;
-        v120 = [NSDictionary dictionaryWithObjects:&v166 forKeys:&v165 count:1];
+        responseIdentifierCopy = responseIdentifier;
+        v120 = [NSDictionary dictionaryWithObjects:&responseIdentifierCopy forKeys:&v165 count:1];
         if (v117)
         {
           sub_100023F18(v117, v119, v117->_resourceService, v120);
@@ -765,7 +765,7 @@ LABEL_130:
 LABEL_131:
         v114 = sub_10003A334(v64, v113, self->_fileURLs, self->_defaults);
         v115 = sub_100012B50([RDIDSMessageStore alloc], v114);
-        sub_100013800(v115, a7);
+        sub_100013800(v115, responseIdentifier);
 
         [(RDGizmoSideSync *)self sendSnapshotForSensor:v64 deviceId:obj];
         return;
@@ -819,15 +819,15 @@ LABEL_131:
   }
 }
 
-- (void)service:(uint64_t)a1 connectedDevicesChanged:
+- (void)service:(uint64_t)service connectedDevicesChanged:
 {
-  if (!a1)
+  if (!service)
   {
     return;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 8));
-  if (([*(a1 + 104) sensorKitActive] & 1) == 0)
+  dispatch_assert_queue_V2(*(service + 8));
+  if (([*(service + 104) sensorKitActive] & 1) == 0)
   {
     v12 = qword_100071AA0;
     if (!os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_INFO))
@@ -856,11 +856,11 @@ LABEL_131:
   }
 
   v7 = v5 + v4 + v6;
-  v8 = *(a1 + 88);
+  v8 = *(service + 88);
   if (v8)
   {
     v9 = vabdd_f64(v7, *(v8 + 32));
-    if (v9 < sub_10002B504(*(a1 + 80)))
+    if (v9 < sub_10002B504(*(service + 80)))
     {
 LABEL_9:
       v10 = qword_100071AA0;
@@ -879,14 +879,14 @@ LABEL_9:
   else
   {
     v9 = vabdd_f64(v7, 0.0);
-    if (v9 < sub_10002B504(*(a1 + 80)))
+    if (v9 < sub_10002B504(*(service + 80)))
     {
       goto LABEL_9;
     }
   }
 
   v14 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v15 = *(a1 + 112);
+  v15 = *(service + 112);
   if (v14 < v15)
   {
     v16 = v14;
@@ -904,8 +904,8 @@ LABEL_9:
   }
 
   v18 = ((v14 - v15) / 0x3B9ACA00);
-  v19 = sub_10002B504(*(a1 + 80));
-  v20 = *(a1 + 120);
+  v19 = sub_10002B504(*(service + 80));
+  v20 = *(service + 120);
   v21 = (v20 * v20 * XPC_ACTIVITY_INTERVAL_1_MIN);
   v22 = fmin(v21, v19);
   if (v19 > v21)
@@ -918,31 +918,31 @@ LABEL_9:
     v23 = 0;
   }
 
-  *(a1 + 120) = v23;
+  *(service + 120) = v23;
   if (v22 <= v18)
   {
-    if ([*(a1 + 48) state] != 5)
+    if ([*(service + 48) state] != 5)
     {
       v33 = qword_100071AA0;
       if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEBUG))
       {
-        v34 = [*(a1 + 48) state];
+        state = [*(service + 48) state];
         *buf = 134349056;
-        v45 = *&v34;
+        v45 = *&state;
         _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "Ignoring CBManager state %{public}ld", buf, 0xCu);
       }
 
       return;
     }
 
-    v24 = *(a1 + 72);
+    v24 = *(service + 72);
     if (v24)
     {
-      v25 = [sub_100023AE0(v24) nsuuid];
-      if (v25)
+      nsuuid = [sub_100023AE0(v24) nsuuid];
+      if (nsuuid)
       {
-        v26 = v25;
-        v27 = [*(a1 + 48) retrieveConnectedPeripheralsWithServices:&__NSArray0__struct allowAll:1];
+        v26 = nsuuid;
+        v27 = [*(service + 48) retrieveConnectedPeripheralsWithServices:&__NSArray0__struct allowAll:1];
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
@@ -967,24 +967,24 @@ LABEL_9:
                 v35 = qword_100071AA0;
                 if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_INFO))
                 {
-                  v37 = [v32 identifier];
+                  identifier = [v32 identifier];
                   *buf = 138543362;
-                  v45 = *&v37;
+                  v45 = *&identifier;
                   _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Found connected peripheral %{public}@", buf, 0xCu);
                 }
 
-                objc_setProperty_nonatomic(a1, v36, v32, 56);
-                [*(a1 + 56) setDelegate:a1];
-                v38 = *(a1 + 16);
+                objc_setProperty_nonatomic(service, v36, v32, 56);
+                [*(service + 56) setDelegate:service];
+                v38 = *(service + 16);
                 if (v38)
                 {
                   CFRelease(v38);
-                  *(a1 + 16) = 0;
+                  *(service + 16) = 0;
                 }
 
-                *(a1 + 16) = CPPowerAssertionCreate();
-                *(a1 + 112) = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-                [*(a1 + 56) getTimeSyncData];
+                *(service + 16) = CPPowerAssertionCreate();
+                *(service + 112) = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
+                [*(service + 56) getTimeSyncData];
                 return;
               }
             }
@@ -1027,7 +1027,7 @@ LABEL_11:
   }
 }
 
-- (void)service:(id)a3 didFailMessageWithIDSIdentifier:(id)a4 error:(id)a5
+- (void)service:(id)service didFailMessageWithIDSIdentifier:(id)identifier error:(id)error
 {
   gizmoSyncService = self->_gizmoSyncService;
   if (gizmoSyncService)
@@ -1043,7 +1043,7 @@ LABEL_11:
 
   v10 = sub_10003A334(0, v9, self->_fileURLs, self->_defaults);
   v15 = sub_100012B50([RDIDSMessageStore alloc], v10);
-  v11 = sub_1000130DC(v15, a4);
+  v11 = sub_1000130DC(v15, identifier);
   v12 = [objc_msgSend(v11 objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", "integerValue"}];
   if (v12 == 2)
   {
@@ -1064,14 +1064,14 @@ LABEL_11:
     }
   }
 
-  sub_100013800(v15, a4);
+  sub_100013800(v15, identifier);
 }
 
-- (void)service:(id)a3 didRequestToSendIDSMessage:(id)a4 withIDSIdentifier:(id)a5
+- (void)service:(id)service didRequestToSendIDSMessage:(id)message withIDSIdentifier:(id)identifier
 {
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", "integerValue"}] == 2)
+  if ([objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", "integerValue"}] == 2)
   {
-    if (a3 && (v9 = sub_100023DB4(a3), sub_100023C20(a3, v9, [*(a3 + 3) devices])))
+    if (service && (v9 = sub_100023DB4(service), sub_100023C20(service, v9, [*(service + 3) devices])))
     {
       gizmoSyncService = self->_gizmoSyncService;
       if (gizmoSyncService)
@@ -1087,7 +1087,7 @@ LABEL_11:
 
       v13 = sub_10003A334(0, v12, self->_fileURLs, self->_defaults);
       v15 = sub_100012B50([RDIDSMessageStore alloc], v13);
-      sub_1000132DC(v15, a4, a5);
+      sub_1000132DC(v15, message, identifier);
     }
 
     else
@@ -1102,14 +1102,14 @@ LABEL_11:
   }
 }
 
-- (BOOL)prepareArchivesForSensor:(id)a3 deviceId:(id)a4
+- (BOOL)prepareArchivesForSensor:(id)sensor deviceId:(id)id
 {
   if (!self)
   {
     return 0;
   }
 
-  v7 = sub_10003A334(a3, a4, self->_fileURLs, self->_defaults);
+  v7 = sub_10003A334(sensor, id, self->_fileURLs, self->_defaults);
   v8 = sub_10000D068([RDInformingDatastore alloc], v7);
   v57 = 0;
   v58 = &v57;
@@ -1124,8 +1124,8 @@ LABEL_11:
   v74 = (sub_10001EA7C(&self->super.isa) & 2) != 0;
   v72 = &v57;
   v73 = 20;
-  v70 = self;
-  v71 = a3;
+  selfCopy = self;
+  sensorCopy = sensor;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -1154,7 +1154,7 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Snapshot %{public}@ found. Resending key but not regerating archive.", &buf, 0xCu);
         }
 
-        v17 = sub_100020564(self, [v15 lastPathComponent], a3, a4);
+        v17 = sub_100020564(self, [v15 lastPathComponent], sensor, id);
         if ([(NSDictionary *)v17 count])
         {
           v68(&v67, v17);
@@ -1194,7 +1194,7 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Snapshot %{public}@ found. Resending key for delivered snapshot but not regerating archive.", &buf, 0xCu);
         }
 
-        v24 = sub_100020564(self, [v22 lastPathComponent], a3, a4);
+        v24 = sub_100020564(self, [v22 lastPathComponent], sensor, id);
         if ([(NSDictionary *)v24 count])
         {
           v68(&v67, v24);
@@ -1215,7 +1215,7 @@ LABEL_11:
     *&buf = &off_100065280;
     *(&buf + 1) = v25;
     v75[2] = @"RDGizmoSyncSensorIdentifierKey";
-    v77 = a3;
+    sensorCopy2 = sensor;
     v26 = [NSDictionary dictionaryWithObjects:&buf forKeys:v75 count:3];
     gizmoSyncService = self->_gizmoSyncService;
     if (gizmoSyncService)
@@ -1225,7 +1225,7 @@ LABEL_11:
   }
 
   _Block_object_dispose(&v57, 8);
-  v28 = sub_10003A334(a3, a4, self->_fileURLs, self->_defaults);
+  v28 = sub_10003A334(sensor, id, self->_fileURLs, self->_defaults);
   v29 = sub_10000D068([RDInformingDatastore alloc], v28);
   v63 = 0u;
   v64 = 0u;
@@ -1254,7 +1254,7 @@ LABEL_29:
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Decrypted snapshot %{public}@ found. Retrying encryption", &v67, 0xCu);
       }
 
-      if (!sub_100021350(self, v35, a3, a4))
+      if (!sub_100021350(self, v35, sensor, id))
       {
         return 0;
       }
@@ -1272,7 +1272,7 @@ LABEL_29:
     }
   }
 
-  v37 = sub_10003A334(a3, a4, self->_fileURLs, self->_defaults);
+  v37 = sub_10003A334(sensor, id, self->_fileURLs, self->_defaults);
   v38 = mach_continuous_time();
   if (qword_100071B60 != -1)
   {
@@ -1288,9 +1288,9 @@ LABEL_29:
     v42 = -v42;
   }
 
-  v43 = [(NSURL *)sub_10001ADB4(v41 + v40 + v42) lastPathComponent];
+  lastPathComponent = [(NSURL *)sub_10001ADB4(v41 + v40 + v42) lastPathComponent];
   v44 = sub_10000E610([RDArchiveableDatastore alloc], &v37->super.isa);
-  v45 = sub_10000FBB0(v44, v43);
+  v45 = sub_10000FBB0(v44, lastPathComponent);
 
   if (!v45)
   {
@@ -1298,17 +1298,17 @@ LABEL_29:
     if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEFAULT))
     {
       *v78 = 138543362;
-      v79 = a3;
+      sensorCopy3 = sensor;
       _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "No archive created for %{public}@", v78, 0xCu);
     }
 
     return 0;
   }
 
-  return sub_100021350(self, v45, a3, a4);
+  return sub_100021350(self, v45, sensor, id);
 }
 
-- (void)sendSnapshotForSensor:(id)a3 deviceId:(id)a4
+- (void)sendSnapshotForSensor:(id)sensor deviceId:(id)id
 {
   if (self)
   {
@@ -1322,7 +1322,7 @@ LABEL_29:
     defaults = 0;
   }
 
-  v9 = sub_10003A334(a3, a4, fileURLs, defaults);
+  v9 = sub_10003A334(sensor, id, fileURLs, defaults);
   v10 = sub_10000D068([RDInformingDatastore alloc], v9);
   v12 = sub_10000D4A0(v10, v11);
   if (v12)
@@ -1350,7 +1350,7 @@ LABEL_29:
       v16 = 0;
     }
 
-    v17 = sub_10003A334(a3, v16, self->_fileURLs, self->_defaults);
+    v17 = sub_10003A334(sensor, v16, self->_fileURLs, self->_defaults);
     v18 = sub_100012B50([RDIDSMessageStore alloc], v17);
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -1382,7 +1382,7 @@ LABEL_29:
     }
 
     v25 = v43[3];
-    v26 = sub_10002B360(&self->_defaults->super.isa, a3);
+    v26 = sub_10002B360(&self->_defaults->super.isa, sensor);
     v27 = v43[3];
     if (v27 <= 0.0 || (v28 = v22 + v21 + v24, v26 <= (v28 - v25)))
     {
@@ -1411,20 +1411,20 @@ LABEL_29:
           v35 = 0;
         }
 
-        v36 = sub_10003A334(a3, v35, self->_fileURLs, self->_defaults);
+        v36 = sub_10003A334(sensor, v35, self->_fileURLs, self->_defaults);
         v37 = sub_100012B50([RDIDSMessageStore alloc], v36);
         sub_100013800(v37, v30);
       }
 
       v38 = self->_gizmoSyncService;
-      *buf = a3;
+      *buf = sensor;
       v56[0] = @"RDGizmoSyncSensorIdentifierKey";
       v56[1] = @"RDGizmoSyncSamplesURLKey";
       *&buf[8] = [v13 path];
       v39 = [NSDictionary dictionaryWithObjects:buf forKeys:v56 count:2];
       v54 = IDSSendMessageOptionTimeoutKey;
       v55 = [NSNumber numberWithDouble:sub_10002B1CC(self->_defaults)];
-      sub_1000242A0(v38, v13, a3, v39, [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1], v30 != 0);
+      sub_1000242A0(v38, v13, sensor, v39, [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1], v30 != 0);
     }
 
     else
@@ -1454,13 +1454,13 @@ LABEL_29:
     if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_INFO))
     {
       LODWORD(v49) = 138543362;
-      *(&v49 + 4) = a3;
+      *(&v49 + 4) = sensor;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "No snapshot to send for %{public}@", &v49, 0xCu);
     }
   }
 }
 
-- (void)sendStateToPeer:(id)a3
+- (void)sendStateToPeer:(id)peer
 {
   if (self)
   {
@@ -1475,10 +1475,10 @@ LABEL_29:
   v11[0] = &off_100065298;
   v10[0] = @"RDGizmoSyncMessageTypeKey";
   v10[1] = @"RDGizmoSyncGizmoRecordingStatesKey";
-  if (a3)
+  if (peer)
   {
-    v5 = *(a3 + 2);
-    v6 = *(a3 + 4);
+    v5 = *(peer + 2);
+    v6 = *(peer + 4);
   }
 
   else
@@ -1491,10 +1491,10 @@ LABEL_29:
   v10[2] = @"RDGizmoSyncGizmoPrerequisitesKey";
   v11[2] = [NSNumber numberWithUnsignedInteger:v6];
   v10[3] = @"RDGizmoSyncGizmoServiceStartTimesKey";
-  if (a3)
+  if (peer)
   {
-    v7 = *(a3 + 3);
-    v8 = *(a3 + 5);
+    v7 = *(peer + 3);
+    v8 = *(peer + 5);
   }
 
   else
@@ -1513,7 +1513,7 @@ LABEL_29:
   }
 }
 
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state
 {
   v7 = qword_100071AA0;
   if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEBUG))
@@ -1521,25 +1521,25 @@ LABEL_29:
     v8 = 138543618;
     v9 = NSStringFromSelector(a2);
     v10 = 2114;
-    v11 = a4;
+    stateCopy = state;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%{public}@, peripheral %{public}@", &v8, 0x16u);
   }
 
   [RDGizmoSideSync service:connectedDevicesChanged:]_0(self);
 }
 
-- (void)peripheral:(id)a3 didReceiveTimeSyncWithReferenceTime:(id)a4 localAbsolute:(id)a5 remoteAbsolute:(id)a6 receiveTime:(id)a7 GMTDelta:(id)a8 error:(id)a9
+- (void)peripheral:(id)peripheral didReceiveTimeSyncWithReferenceTime:(id)time localAbsolute:(id)absolute remoteAbsolute:(id)remoteAbsolute receiveTime:(id)receiveTime GMTDelta:(id)delta error:(id)error
 {
-  if (a9)
+  if (error)
   {
-    v10 = [a9 code];
+    code = [error code];
     v11 = qword_100071AA0;
-    if (v10)
+    if (code)
     {
       if (os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v25 = a9;
+        errorCopy = error;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to get time sync data. %{public}@", buf, 0xCu);
         if (!self)
         {
@@ -1581,9 +1581,9 @@ LABEL_12:
   if (self)
   {
     connectedPeripheral = self->_connectedPeripheral;
-    if (connectedPeripheral != a3)
+    if (connectedPeripheral != peripheral)
     {
-      p_isa = a3;
+      p_isa = peripheral;
       v14 = qword_100071AA0;
       if (!os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEFAULT))
       {
@@ -1593,14 +1593,14 @@ LABEL_12:
       goto LABEL_9;
     }
 
-    v16 = a6;
+    remoteAbsoluteCopy2 = remoteAbsolute;
     p_isa = &self->_gizmoSyncService->super.isa;
   }
 
   else
   {
-    p_isa = a3;
-    if (a3)
+    p_isa = peripheral;
+    if (peripheral)
     {
       v14 = qword_100071AA0;
       if (!os_log_type_enabled(qword_100071AA0, OS_LOG_TYPE_DEFAULT))
@@ -1611,22 +1611,22 @@ LABEL_12:
       connectedPeripheral = 0;
 LABEL_9:
       *buf = 138412546;
-      v25 = p_isa;
+      errorCopy = p_isa;
       v26 = 2112;
       v27 = connectedPeripheral;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Failed to get correct time sync data because peripheral %@ does not match expected %@", buf, 0x16u);
       return;
     }
 
-    v16 = a6;
+    remoteAbsoluteCopy2 = remoteAbsolute;
   }
 
   v23[0] = &off_1000652E0;
   v22[0] = @"RDGizmoSyncMessageTypeKey";
   v22[1] = @"RDGizmoSyncGizmoAbsoluteTimeKey";
   v22[2] = @"RDGizmoSyncCompanionAbsoluteTimeKey";
-  v23[1] = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [a5 unsignedLongLongValue]);
-  v23[2] = v16;
+  v23[1] = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [absolute unsignedLongLongValue]);
+  v23[2] = remoteAbsoluteCopy2;
   v17 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:3];
   v20 = IDSSendMessageOptionTimeoutKey;
   if (self)

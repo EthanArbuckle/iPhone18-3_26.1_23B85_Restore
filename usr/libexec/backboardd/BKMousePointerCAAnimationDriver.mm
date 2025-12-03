@@ -1,7 +1,7 @@
 @interface BKMousePointerCAAnimationDriver
-- (BKMousePointerCAAnimationDriver)initWithRelativeTranslation:(CGPoint)a3 animationSettings:(id)a4;
+- (BKMousePointerCAAnimationDriver)initWithRelativeTranslation:(CGPoint)translation animationSettings:(id)settings;
 - (CGPoint)currentTranslation;
-- (void)applyForTime:(double)a3;
+- (void)applyForTime:(double)time;
 @end
 
 @implementation BKMousePointerCAAnimationDriver
@@ -15,9 +15,9 @@
   return result;
 }
 
-- (void)applyForTime:(double)a3
+- (void)applyForTime:(double)time
 {
-  self->_elapsedTime = a3;
+  self->_elapsedTime = time;
   [(CABasicAnimation *)self->_animation applyForTime:self->_valueDictionary presentationObject:0 modelObject:?];
   v6 = [(NSMutableDictionary *)self->_valueDictionary objectForKey:@"value"];
   [v6 bs_CGPointValue];
@@ -25,17 +25,17 @@
   self->_currentTranslation.y = v5;
 }
 
-- (BKMousePointerCAAnimationDriver)initWithRelativeTranslation:(CGPoint)a3 animationSettings:(id)a4
+- (BKMousePointerCAAnimationDriver)initWithRelativeTranslation:(CGPoint)translation animationSettings:(id)settings
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = translation.y;
+  x = translation.x;
+  settingsCopy = settings;
   v22.receiver = self;
   v22.super_class = BKMousePointerCAAnimationDriver;
   v8 = [(BKMousePointerAnimationDriver *)&v22 initWithRelativeTranslation:x, y];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [settingsCopy copy];
     animationSettings = v8->_animationSettings;
     v8->_animationSettings = v9;
 

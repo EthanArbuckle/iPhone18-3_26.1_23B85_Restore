@@ -1,10 +1,10 @@
 @interface MUPlaceExternalActionViewModel
 - (BOOL)isEnabled;
 - (BOOL)shouldShowMenu;
-- (id)buildMenuWithPresentationOptions:(id)a3;
-- (void)buildMenuItemViewModelsWithUpdateDelegate:(id)a3 completion:(id)a4;
-- (void)openPartnerActionUsingMenuItemViewModel:(id)a3 presentationOptions:(id)a4;
-- (void)performSingleVendorSelectionActionWithPresentationOptions:(id)a3;
+- (id)buildMenuWithPresentationOptions:(id)options;
+- (void)buildMenuItemViewModelsWithUpdateDelegate:(id)delegate completion:(id)completion;
+- (void)openPartnerActionUsingMenuItemViewModel:(id)model presentationOptions:(id)options;
+- (void)performSingleVendorSelectionActionWithPresentationOptions:(id)options;
 @end
 
 @implementation MUPlaceExternalActionViewModel
@@ -16,58 +16,58 @@
     return 0;
   }
 
-  v3 = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
-  v4 = [v3 count] != 0;
+  actionProviders = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
+  v4 = [actionProviders count] != 0;
 
   return v4;
 }
 
-- (void)performSingleVendorSelectionActionWithPresentationOptions:(id)a3
+- (void)performSingleVendorSelectionActionWithPresentationOptions:(id)options
 {
   menuHelper = self->_menuHelper;
-  v4 = a3;
-  v5 = [(MUPlaceExternalActionMenuHelper *)menuHelper actionController];
-  [v5 openFirstPartnerActionWithPresentationOptions:v4];
+  optionsCopy = options;
+  actionController = [(MUPlaceExternalActionMenuHelper *)menuHelper actionController];
+  [actionController openFirstPartnerActionWithPresentationOptions:optionsCopy];
 }
 
-- (void)openPartnerActionUsingMenuItemViewModel:(id)a3 presentationOptions:(id)a4
+- (void)openPartnerActionUsingMenuItemViewModel:(id)model presentationOptions:(id)options
 {
   menuHelper = self->_menuHelper;
-  v6 = a4;
-  v7 = a3;
-  v9 = [(MUPlaceExternalActionMenuHelper *)menuHelper actionController];
-  v8 = [v7 vendorLinkViewModel];
+  optionsCopy = options;
+  modelCopy = model;
+  actionController = [(MUPlaceExternalActionMenuHelper *)menuHelper actionController];
+  vendorLinkViewModel = [modelCopy vendorLinkViewModel];
 
-  [v9 openPartnerActionUsingViewModel:v8 withPresentationOptions:v6];
+  [actionController openPartnerActionUsingViewModel:vendorLinkViewModel withPresentationOptions:optionsCopy];
 }
 
-- (void)buildMenuItemViewModelsWithUpdateDelegate:(id)a3 completion:(id)a4
+- (void)buildMenuItemViewModelsWithUpdateDelegate:(id)delegate completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  completionCopy = completion;
   if (![(MUPlaceExternalActionViewModel *)self shouldShowMenu])
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  [(MUPlaceExternalActionMenuHelper *)self->_menuHelper buildMenuItemViewModelsWithUpdateDelegate:v7 completion:v6];
+  [(MUPlaceExternalActionMenuHelper *)self->_menuHelper buildMenuItemViewModelsWithUpdateDelegate:delegateCopy completion:completionCopy];
 }
 
 - (BOOL)shouldShowMenu
 {
-  v2 = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
-  v3 = [v2 count] > 1;
+  actionProviders = [(GEOPlaceExternalAction *)self->_externalAction actionProviders];
+  v3 = [actionProviders count] > 1;
 
   return v3;
 }
 
-- (id)buildMenuWithPresentationOptions:(id)a3
+- (id)buildMenuWithPresentationOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if ([(MUPlaceExternalActionViewModel *)self shouldShowMenu])
   {
-    v5 = [(MUPlaceExternalActionMenuHelper *)self->_menuHelper buildMenuElementsWithPresentationOptions:v4];
-    if ([v4 isForActionBar])
+    v5 = [(MUPlaceExternalActionMenuHelper *)self->_menuHelper buildMenuElementsWithPresentationOptions:optionsCopy];
+    if ([optionsCopy isForActionBar])
     {
       [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F44CA030 image:0 identifier:0 options:1 children:v5];
     }

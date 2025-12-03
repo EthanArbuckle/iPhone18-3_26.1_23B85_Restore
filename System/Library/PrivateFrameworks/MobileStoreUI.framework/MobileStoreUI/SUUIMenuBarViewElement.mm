@@ -1,27 +1,27 @@
 @interface SUUIMenuBarViewElement
 + (id)supportedFeatures;
-- (SUUIMenuBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)_menuBarViewElementConfigurationRequestsReload:(id)a3;
+- (SUUIMenuBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)_menuBarViewElementConfigurationRequestsReload:(id)reload;
 - (void)_reloadMenuItems;
 @end
 
 @implementation SUUIMenuBarViewElement
 
-- (SUUIMenuBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIMenuBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
-    v20 = [v8 getAttribute:@"entityProviderID"];
+    v20 = [elementCopy getAttribute:@"entityProviderID"];
     v21 = [v20 length];
 
     if (v21)
     {
-      v15 = SUUIDynamicMenuBarViewElement;
+      _shelfMenuBarViewElementClass = SUUIDynamicMenuBarViewElement;
       goto LABEL_9;
     }
   }
@@ -29,21 +29,21 @@
   v12 = objc_opt_class();
   if (v12 == [objc_opt_class() _titlesMenuBarViewElementClass])
   {
-    v13 = [v8 getAttribute:@"type"];
+    v13 = [elementCopy getAttribute:@"type"];
     v14 = [v13 isEqualToString:@"shelf"];
 
     if (v14)
     {
-      v15 = [objc_opt_class() _shelfMenuBarViewElementClass];
+      _shelfMenuBarViewElementClass = [objc_opt_class() _shelfMenuBarViewElementClass];
 LABEL_9:
-      v17 = [[v15 alloc] initWithDOMElement:v8 parent:v9 elementFactory:v10];
+      v17 = [[_shelfMenuBarViewElementClass alloc] initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
       goto LABEL_10;
     }
   }
 
   v23.receiver = self;
   v23.super_class = SUUIMenuBarViewElement;
-  v16 = [(SUUIViewElement *)&v23 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v16 = [(SUUIViewElement *)&v23 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   v17 = v16;
   if (v16)
   {
@@ -64,7 +64,7 @@ LABEL_10:
   v9[1] = *MEMORY[0x277D85DE8];
   v9[0] = *MEMORY[0x277D1AF10];
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SUUIMenuBarViewElement;
   v4 = objc_msgSendSuper2(&v8, sel_supportedFeatures);
   if (v4)
@@ -81,14 +81,14 @@ LABEL_10:
   return v6;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
   v7.receiver = self;
   v7.super_class = SUUIMenuBarViewElement;
-  v4 = a3;
-  v5 = [(SUUIViewElement *)&v7 applyUpdatesWithElement:v4];
+  elementCopy = element;
+  v5 = [(SUUIViewElement *)&v7 applyUpdatesWithElement:elementCopy];
 
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     [(SUUIMenuBarViewElementConfiguration *)self->_configuration _setNeedsReload:1, v7.receiver, v7.super_class];
   }
@@ -96,9 +96,9 @@ LABEL_10:
   return v5;
 }
 
-- (void)_menuBarViewElementConfigurationRequestsReload:(id)a3
+- (void)_menuBarViewElementConfigurationRequestsReload:(id)reload
 {
-  if (self->_configuration == a3)
+  if (self->_configuration == reload)
   {
     [(SUUIMenuBarViewElement *)self _reloadMenuItems];
   }
@@ -107,12 +107,12 @@ LABEL_10:
 - (void)_reloadMenuItems
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIMenuBarViewElement *)self children];
+  children = [(SUUIMenuBarViewElement *)self children];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v4 = [children countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -125,7 +125,7 @@ LABEL_10:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -151,7 +151,7 @@ LABEL_10:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [children countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -184,11 +184,11 @@ LABEL_10:
     }
   }
 
-  v15 = [(SUUIMenuBarViewElement *)self style];
-  v16 = [v15 valueForStyle:@"itml-scroll-enabled"];
-  v17 = [v16 BOOLValue];
+  style = [(SUUIMenuBarViewElement *)self style];
+  v16 = [style valueForStyle:@"itml-scroll-enabled"];
+  bOOLValue = [v16 BOOLValue];
 
-  [(SUUIMenuBarViewElementConfiguration *)self->_configuration _reloadWithMenuBarStyle:v13 menuItemViewElements:v7 scrollEnabled:v17];
+  [(SUUIMenuBarViewElementConfiguration *)self->_configuration _reloadWithMenuBarStyle:v13 menuItemViewElements:v7 scrollEnabled:bOOLValue];
 }
 
 @end

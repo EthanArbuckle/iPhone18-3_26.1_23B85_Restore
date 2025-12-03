@@ -1,42 +1,42 @@
 @interface TTRIRootViewController
-- (_TtC9Reminders22TTRIRootViewController)initWithCoder:(id)a3;
-- (_TtC9Reminders22TTRIRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9Reminders22TTRIRootViewController)initWithStyle:(int64_t)a3;
-- (id)providerForDeferredMenuElement:(id)a3;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)splitViewControllerDidCollapse:(id)a3;
-- (void)splitViewControllerDidExpand:(id)a3;
+- (_TtC9Reminders22TTRIRootViewController)initWithCoder:(id)coder;
+- (_TtC9Reminders22TTRIRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9Reminders22TTRIRootViewController)initWithStyle:(int64_t)style;
+- (id)providerForDeferredMenuElement:(id)element;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)splitViewControllerDidCollapse:(id)collapse;
+- (void)splitViewControllerDidExpand:(id)expand;
 @end
 
 @implementation TTRIRootViewController
 
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10000E7B4(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = sub_10000E7B4(controllerCopy, column);
 
   return v8;
 }
 
-- (void)splitViewControllerDidCollapse:(id)a3
+- (void)splitViewControllerDidCollapse:(id)collapse
 {
-  v4 = a3;
-  v5 = self;
-  sub_100010910(v4);
+  collapseCopy = collapse;
+  selfCopy = self;
+  sub_100010910(collapseCopy);
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_100019B40(v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_100019B40(viewControllerCopy);
 }
 
-- (_TtC9Reminders22TTRIRootViewController)initWithCoder:(id)a3
+- (_TtC9Reminders22TTRIRootViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders22TTRIRootViewController_pendingNavigateToRootPromise) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders22TTRIRootViewController_activityItemsConfigurationProviding) = 0;
@@ -45,11 +45,11 @@
   return result;
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -58,10 +58,10 @@
   else
   {
     memset(v16, 0, sizeof(v16));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  sub_1002FBB48(a3, v16, &v17);
+  sub_1002FBB48(action, v16, &v17);
 
   sub_1000079B4(v16, &qword_10076AE40);
   v8 = v18;
@@ -85,7 +85,7 @@
   return v14;
 }
 
-- (id)providerForDeferredMenuElement:(id)a3
+- (id)providerForDeferredMenuElement:(id)element
 {
   v6[4] = sub_1002FBEDC;
   v6[5] = 0;
@@ -100,25 +100,25 @@
   return v4;
 }
 
-- (_TtC9Reminders22TTRIRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders22TTRIRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9Reminders22TTRIRootViewController)initWithStyle:(int64_t)a3
+- (_TtC9Reminders22TTRIRootViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)splitViewControllerDidExpand:(id)a3
+- (void)splitViewControllerDidExpand:(id)expand
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002FC56C(v4);
+  expandCopy = expand;
+  selfCopy = self;
+  sub_1002FC56C(expandCopy);
 }
 
 @end

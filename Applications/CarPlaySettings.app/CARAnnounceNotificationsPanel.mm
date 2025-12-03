@@ -1,33 +1,33 @@
 @interface CARAnnounceNotificationsPanel
 - (BOOL)_isAnnounceEnabled;
 - (BOOL)_isAnnounceMuted;
-- (CARAnnounceNotificationsPanel)initWithPanelController:(id)a3;
+- (CARAnnounceNotificationsPanel)initWithPanelController:(id)controller;
 - (CARSettingsButtonCellSpecifier)muteAnnouncementsSpecifier;
 - (CARSettingsSwitchCellSpecifier)announceEnabledSpecifier;
 - (CRSSiriPreferences)siriPreferences;
 - (id)_announceEnabledFooterText;
-- (id)_muteAnnouncementsSpecifierTitleForMuted:(BOOL)a3 announceEnablementType:(int64_t)a4;
+- (id)_muteAnnouncementsSpecifierTitleForMuted:(BOOL)muted announceEnablementType:(int64_t)type;
 - (id)cellSpecifier;
 - (id)specifierSections;
-- (void)_updateAnnounceEnabled:(BOOL)a3;
-- (void)_updateAnnounceMuted:(BOOL)a3;
-- (void)announceCarPlaySettingUpdated:(int64_t)a3;
+- (void)_updateAnnounceEnabled:(BOOL)enabled;
+- (void)_updateAnnounceMuted:(BOOL)muted;
+- (void)announceCarPlaySettingUpdated:(int64_t)updated;
 - (void)dealloc;
 - (void)invalidate;
-- (void)preferences:(id)a3 announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)a4;
-- (void)preferences:(id)a3 carPlayAnnounceEnablementTypeChanged:(int64_t)a4;
-- (void)setFocusActive:(BOOL)a3;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)preferences:(id)preferences announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)changed;
+- (void)preferences:(id)preferences carPlayAnnounceEnablementTypeChanged:(int64_t)changed;
+- (void)setFocusActive:(BOOL)active;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation CARAnnounceNotificationsPanel
 
-- (CARAnnounceNotificationsPanel)initWithPanelController:(id)a3
+- (CARAnnounceNotificationsPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = CARAnnounceNotificationsPanel;
-  v5 = [(CARSettingsPanel *)&v17 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v17 initWithPanelController:controllerCopy];
   if (v5)
   {
     v6 = sub_10001C784();
@@ -36,11 +36,11 @@
       sub_10009082C();
     }
 
-    v7 = [(CARSettingsPanel *)v5 panelController];
-    [v7 addSiriPreferencesObserver:v5];
+    panelController = [(CARSettingsPanel *)v5 panelController];
+    [panelController addSiriPreferencesObserver:v5];
 
-    v8 = [(CARSettingsPanel *)v5 panelController];
-    [v8 addNotificationSettingsObserver:v5];
+    panelController2 = [(CARSettingsPanel *)v5 panelController];
+    [panelController2 addNotificationSettingsObserver:v5];
 
     v5->_siriCallbackInvocationCount = 0;
     v5->_userNotificationsCallbackInvocationCount = 0;
@@ -104,11 +104,11 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[Settings] #DEBUG [LIFECYCLE] CARAnnounceNotificationsPanel Invalidate - Final flags: pendingFromSiri=%{public}d, pendingFromUserNotifications=%{public}d", buf, 0xEu);
   }
 
-  v10 = [(CARSettingsPanel *)self panelController];
-  [v10 removeSiriPreferencesObserver:self];
+  panelController = [(CARSettingsPanel *)self panelController];
+  [panelController removeSiriPreferencesObserver:self];
 
-  v11 = [(CARSettingsPanel *)self panelController];
-  [v11 removeNotificationSettingsObserver:self];
+  panelController2 = [(CARSettingsPanel *)self panelController];
+  [panelController2 removeNotificationSettingsObserver:self];
 
   [(DNDStateService *)self->_dndStateService removeStateUpdateListener:self];
   v12.receiver = self;
@@ -122,7 +122,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[Settings] #DEBUG [LIFECYCLE] CARAnnounceNotificationsPanel DEALLOC - Object %p being deallocated", buf, 0xCu);
   }
 
@@ -166,80 +166,80 @@
   v4 = sub_10001C784();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CARAnnounceNotificationsPanel *)self _isAnnounceEnabled];
-    v6 = [(CARAnnounceNotificationsPanel *)self _isAnnounceMuted];
-    v7 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-    [v7 carPlayAnnounceEnablementType];
+    _isAnnounceEnabled = [(CARAnnounceNotificationsPanel *)self _isAnnounceEnabled];
+    _isAnnounceMuted = [(CARAnnounceNotificationsPanel *)self _isAnnounceMuted];
+    siriPreferences = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+    [siriPreferences carPlayAnnounceEnablementType];
     v8 = AFSiriCarPlayAnnounceEnablementTypeGetName();
     *buf = 67240706;
-    v44 = v5;
+    v44 = _isAnnounceEnabled;
     v45 = 1026;
-    v46 = v6;
+    v46 = _isAnnounceMuted;
     v47 = 2114;
     v48 = v8;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[Settings] Updating Announce Notifications Panel with announceEnabled: %{public, BOOL}d, announceMuted: %{public, BOOL}d, announceEnablementType: %{public}@", buf, 0x18u);
   }
 
   v9 = [NSNumber numberWithBool:[(CARAnnounceNotificationsPanel *)self _isAnnounceEnabled]];
-  v10 = [(CARAnnounceNotificationsPanel *)self announceEnabledSpecifier];
-  [v10 setCellValue:v9];
+  announceEnabledSpecifier = [(CARAnnounceNotificationsPanel *)self announceEnabledSpecifier];
+  [announceEnabledSpecifier setCellValue:v9];
 
-  v11 = [(CARAnnounceNotificationsPanel *)self announceEnabledSpecifier];
-  [v11 setAccessibilityIdentifier:@"CPSettingsAnnounceMessagesToggle"];
+  announceEnabledSpecifier2 = [(CARAnnounceNotificationsPanel *)self announceEnabledSpecifier];
+  [announceEnabledSpecifier2 setAccessibilityIdentifier:@"CPSettingsAnnounceMessagesToggle"];
 
   if (![(CARAnnounceNotificationsPanel *)self _isAnnounceEnabled])
   {
     v37 = [CARSettingsCellSpecifierSection alloc];
-    v22 = [(CARAnnounceNotificationsPanel *)self _announceEnabledFooterText];
-    v34 = [(CARAnnounceNotificationsPanel *)self announceEnabledSpecifier];
-    v40 = v34;
+    _announceEnabledFooterText = [(CARAnnounceNotificationsPanel *)self _announceEnabledFooterText];
+    announceEnabledSpecifier3 = [(CARAnnounceNotificationsPanel *)self announceEnabledSpecifier];
+    v40 = announceEnabledSpecifier3;
     v35 = [NSArray arrayWithObjects:&v40 count:1];
-    v36 = [(CARSettingsCellSpecifierSection *)v37 initWithFooter:v22 specifiers:v35];
+    v36 = [(CARSettingsCellSpecifierSection *)v37 initWithFooter:_announceEnabledFooterText specifiers:v35];
     goto LABEL_9;
   }
 
   if (!self->_muteOptionsPanel)
   {
     v12 = [CARAnnounceNotificationsMuteOptionsPanel alloc];
-    v13 = [(CARSettingsPanel *)self panelController];
-    v14 = [(CARAnnounceNotificationsMuteOptionsPanel *)v12 initWithPanelController:v13];
+    panelController = [(CARSettingsPanel *)self panelController];
+    v14 = [(CARAnnounceNotificationsMuteOptionsPanel *)v12 initWithPanelController:panelController];
     muteOptionsPanel = self->_muteOptionsPanel;
     self->_muteOptionsPanel = v14;
   }
 
   v16 = [CARSettingsCellSpecifierSection alloc];
-  v17 = [(CARAnnounceNotificationsPanel *)self _announceEnabledFooterText];
-  v18 = [(CARAnnounceNotificationsPanel *)self announceEnabledSpecifier];
-  v42[0] = v18;
-  v19 = [(CARAnnounceNotificationsPanel *)self muteOptionsPanel];
-  v20 = [v19 cellSpecifier];
-  v42[1] = v20;
+  _announceEnabledFooterText2 = [(CARAnnounceNotificationsPanel *)self _announceEnabledFooterText];
+  announceEnabledSpecifier4 = [(CARAnnounceNotificationsPanel *)self announceEnabledSpecifier];
+  v42[0] = announceEnabledSpecifier4;
+  muteOptionsPanel = [(CARAnnounceNotificationsPanel *)self muteOptionsPanel];
+  cellSpecifier = [muteOptionsPanel cellSpecifier];
+  v42[1] = cellSpecifier;
   v21 = [NSArray arrayWithObjects:v42 count:2];
-  v22 = [(CARSettingsCellSpecifierSection *)v16 initWithFooter:v17 specifiers:v21];
+  _announceEnabledFooterText = [(CARSettingsCellSpecifierSection *)v16 initWithFooter:_announceEnabledFooterText2 specifiers:v21];
 
-  [v3 addObject:v22];
-  v23 = [(CARAnnounceNotificationsPanel *)self _isAnnounceMuted];
-  v24 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-  v25 = -[CARAnnounceNotificationsPanel _muteAnnouncementsSpecifierTitleForMuted:announceEnablementType:](self, "_muteAnnouncementsSpecifierTitleForMuted:announceEnablementType:", v23, [v24 carPlayAnnounceEnablementType]);
-  v26 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
-  [v26 setTitle:v25];
+  [v3 addObject:_announceEnabledFooterText];
+  _isAnnounceMuted2 = [(CARAnnounceNotificationsPanel *)self _isAnnounceMuted];
+  siriPreferences2 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+  v25 = -[CARAnnounceNotificationsPanel _muteAnnouncementsSpecifierTitleForMuted:announceEnablementType:](self, "_muteAnnouncementsSpecifierTitleForMuted:announceEnablementType:", _isAnnounceMuted2, [siriPreferences2 carPlayAnnounceEnablementType]);
+  muteAnnouncementsSpecifier = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
+  [muteAnnouncementsSpecifier setTitle:v25];
 
   v27 = [NSNumber numberWithBool:[(CARAnnounceNotificationsPanel *)self _isAnnounceMuted]];
-  v28 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
-  [v28 setCellValue:v27];
+  muteAnnouncementsSpecifier2 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
+  [muteAnnouncementsSpecifier2 setCellValue:v27];
 
-  v29 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
-  [v29 setAccessibilityIdentifier:@"CPSettingsAnnounceMessagesButton"];
+  muteAnnouncementsSpecifier3 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
+  [muteAnnouncementsSpecifier3 setAccessibilityIdentifier:@"CPSettingsAnnounceMessagesButton"];
 
-  v30 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
-  v31 = [v30 title];
-  v32 = [v31 length];
+  muteAnnouncementsSpecifier4 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
+  title = [muteAnnouncementsSpecifier4 title];
+  v32 = [title length];
 
   if (v32)
   {
     v33 = [CARSettingsCellSpecifierSection alloc];
-    v34 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
-    v41 = v34;
+    announceEnabledSpecifier3 = [(CARAnnounceNotificationsPanel *)self muteAnnouncementsSpecifier];
+    v41 = announceEnabledSpecifier3;
     v35 = [NSArray arrayWithObjects:&v41 count:1];
     v36 = [(CARSettingsCellSpecifierSection *)v33 initWithSpecifiers:v35];
 LABEL_9:
@@ -252,10 +252,10 @@ LABEL_9:
 
 - (CRSSiriPreferences)siriPreferences
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 siriPreferences];
+  panelController = [(CARSettingsPanel *)self panelController];
+  siriPreferences = [panelController siriPreferences];
 
-  return v3;
+  return siriPreferences;
 }
 
 - (CARSettingsSwitchCellSpecifier)announceEnabledSpecifier
@@ -289,9 +289,9 @@ LABEL_9:
   if (!muteAnnouncementsSpecifier)
   {
     objc_initWeak(&location, self);
-    v4 = [(CARAnnounceNotificationsPanel *)self _isAnnounceMuted];
-    v5 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-    v6 = -[CARAnnounceNotificationsPanel _muteAnnouncementsSpecifierTitleForMuted:announceEnablementType:](self, "_muteAnnouncementsSpecifierTitleForMuted:announceEnablementType:", v4, [v5 carPlayAnnounceEnablementType]);
+    _isAnnounceMuted = [(CARAnnounceNotificationsPanel *)self _isAnnounceMuted];
+    siriPreferences = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+    v6 = -[CARAnnounceNotificationsPanel _muteAnnouncementsSpecifierTitleForMuted:announceEnablementType:](self, "_muteAnnouncementsSpecifierTitleForMuted:announceEnablementType:", _isAnnounceMuted, [siriPreferences carPlayAnnounceEnablementType]);
 
     v7 = [CARSettingsButtonCellSpecifier alloc];
     v11[0] = _NSConcreteStackBlock;
@@ -311,13 +311,13 @@ LABEL_9:
   return muteAnnouncementsSpecifier;
 }
 
-- (void)setFocusActive:(BOOL)a3
+- (void)setFocusActive:(BOOL)active
 {
-  if (self->_focusActive != a3)
+  if (self->_focusActive != active)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_focusActive = a3;
+    self->_focusActive = active;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100005964;
@@ -327,7 +327,7 @@ LABEL_9:
   }
 }
 
-- (void)announceCarPlaySettingUpdated:(int64_t)a3
+- (void)announceCarPlaySettingUpdated:(int64_t)updated
 {
   [(CARAnnounceNotificationsPanel *)self setUserNotificationsCallbackInvocationCount:[(CARAnnounceNotificationsPanel *)self userNotificationsCallbackInvocationCount]+ 1];
   v4 = sub_10001C784();
@@ -350,7 +350,7 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)preferences:(id)a3 carPlayAnnounceEnablementTypeChanged:(int64_t)a4
+- (void)preferences:(id)preferences carPlayAnnounceEnablementTypeChanged:(int64_t)changed
 {
   [(CARAnnounceNotificationsPanel *)self setSiriCallbackInvocationCount:[(CARAnnounceNotificationsPanel *)self siriCallbackInvocationCount]+ 1];
   v5 = sub_10001C784();
@@ -373,14 +373,14 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)preferences:(id)a3 announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)a4
+- (void)preferences:(id)preferences announceNotificationsInCarPlayTemporarilyDisabledChanged:(BOOL)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   v6 = sub_10001C784();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67240192;
-    v9 = v4;
+    v9 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Settings] The new announceNotificationsInCarPlayTemporarilyDisabled value: %{public}d", buf, 8u);
   }
 
@@ -392,39 +392,39 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v6 = sub_10001C784();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 state];
+    state = [updateCopy state];
     v9[0] = 67240192;
-    v9[1] = [v7 isActive];
+    v9[1] = [state isActive];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Settings] Setting a new Do Not Disturb state, isActive: %{public}d", v9, 8u);
   }
 
-  v8 = [v5 state];
-  -[CARAnnounceNotificationsPanel setFocusActive:](self, "setFocusActive:", [v8 isActive]);
+  state2 = [updateCopy state];
+  -[CARAnnounceNotificationsPanel setFocusActive:](self, "setFocusActive:", [state2 isActive]);
 }
 
 - (BOOL)_isAnnounceEnabled
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 notificationSystemSettings];
-  v4 = [v3 announcementCarPlaySetting];
+  panelController = [(CARSettingsPanel *)self panelController];
+  notificationSystemSettings = [panelController notificationSystemSettings];
+  announcementCarPlaySetting = [notificationSystemSettings announcementCarPlaySetting];
 
-  return (v4 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  return (announcementCarPlaySetting & 0xFFFFFFFFFFFFFFFELL) == 2;
 }
 
-- (void)_updateAnnounceEnabled:(BOOL)a3
+- (void)_updateAnnounceEnabled:(BOOL)enabled
 {
   [(CARAnnounceNotificationsPanel *)self siriCallbackInvocationCount];
   [(CARAnnounceNotificationsPanel *)self userNotificationsCallbackInvocationCount];
   v5 = sub_10001C784();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100090F90(a3, v5);
+    sub_100090F90(enabled, v5);
   }
 
   v6 = sub_10001C784();
@@ -441,7 +441,7 @@ LABEL_9:
     sub_100091080();
   }
 
-  if (a3)
+  if (enabled)
   {
     v8 = 4;
     v9 = 3;
@@ -449,8 +449,8 @@ LABEL_9:
 
   else
   {
-    v10 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-    [v10 clearAnnounceNotificationsInCarPlayTemporarilyDisabled];
+    siriPreferences = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+    [siriPreferences clearAnnounceNotificationsInCarPlayTemporarilyDisabled];
 
     v9 = 1;
     v8 = 1;
@@ -463,14 +463,14 @@ LABEL_9:
   }
 
   v12 = +[UNNotificationSettingsCenter currentNotificationSettingsCenter];
-  v13 = [v12 notificationSystemSettings];
-  v14 = [v13 announcementCarPlaySetting];
+  notificationSystemSettings = [v12 notificationSystemSettings];
+  announcementCarPlaySetting = [notificationSystemSettings announcementCarPlaySetting];
 
   v15 = sub_10001C784();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v33 = 134349312;
-    v34 = v14;
+    v34 = announcementCarPlaySetting;
     v35 = 2050;
     v36 = v9;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[Settings] Current announcementCarPlaySetting:  %{public}li New announcementCarPlaySetting: %{public}li", &v33, 0x16u);
@@ -478,7 +478,7 @@ LABEL_9:
 
   v16 = sub_10001C784();
   v17 = v16;
-  if (v14 == v9)
+  if (announcementCarPlaySetting == v9)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
@@ -493,7 +493,7 @@ LABEL_9:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v33 = 134349312;
-      v34 = v14;
+      v34 = announcementCarPlaySetting;
       v35 = 2050;
       v36 = v9;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[Settings] Updating announcementCarPlaySetting from %{public}li to %{public}li", &v33, 0x16u);
@@ -506,14 +506,14 @@ LABEL_9:
     }
 
     [(CARAnnounceNotificationsPanel *)self setPendingAnnounceEnablementChangeFromUserNotifications:1];
-    v19 = [v12 notificationSystemSettings];
-    v20 = [v19 mutableCopy];
+    notificationSystemSettings2 = [v12 notificationSystemSettings];
+    v20 = [notificationSystemSettings2 mutableCopy];
 
     [v20 setAnnouncementCarPlaySetting:v9];
-    v21 = [v12 notificationSystemSettings];
-    v22 = [v21 announcementSetting];
+    notificationSystemSettings3 = [v12 notificationSystemSettings];
+    announcementSetting = [notificationSystemSettings3 announcementSetting];
 
-    if (v22 != 2)
+    if (announcementSetting != 2)
     {
       [v20 setAnnouncementSetting:2];
     }
@@ -526,14 +526,14 @@ LABEL_9:
     }
   }
 
-  v24 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-  v25 = [v24 carPlayAnnounceEnablementType];
+  siriPreferences2 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+  carPlayAnnounceEnablementType = [siriPreferences2 carPlayAnnounceEnablementType];
 
   v26 = sub_10001C784();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     v33 = 134349312;
-    v34 = v25;
+    v34 = carPlayAnnounceEnablementType;
     v35 = 2050;
     v36 = v8;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[Settings] Current carPlayAnnounceEnablementType: %{public}li New carPlayAnnounceEnablementType %{public}li", &v33, 0x16u);
@@ -541,7 +541,7 @@ LABEL_9:
 
   v27 = sub_10001C784();
   v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-  if (v25 == v8)
+  if (carPlayAnnounceEnablementType == v8)
   {
     if (v28)
     {
@@ -557,7 +557,7 @@ LABEL_9:
     if (v28)
     {
       v33 = 134349312;
-      v34 = v25;
+      v34 = carPlayAnnounceEnablementType;
       v35 = 2050;
       v36 = v8;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[Settings] Updating carPlayAnnounceEnablementType from %{public}li to %{public}li", &v33, 0x16u);
@@ -570,8 +570,8 @@ LABEL_9:
     }
 
     [(CARAnnounceNotificationsPanel *)self setPendingAnnounceEnablementChangeFromSiri:1];
-    v30 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-    [v30 setCarPlayAnnounceEnablementType:v8];
+    siriPreferences3 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+    [siriPreferences3 setCarPlayAnnounceEnablementType:v8];
 
     v31 = sub_10001C784();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -619,12 +619,12 @@ LABEL_9:
 
 - (BOOL)_isAnnounceMuted
 {
-  v3 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-  v4 = [v3 carPlayAnnounceEnablementType];
+  siriPreferences = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+  carPlayAnnounceEnablementType = [siriPreferences carPlayAnnounceEnablementType];
 
-  if ((v4 - 2) >= 3)
+  if ((carPlayAnnounceEnablementType - 2) >= 3)
   {
-    if (v4 >= 2)
+    if (carPlayAnnounceEnablementType >= 2)
     {
       v8 = sub_10001C784();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -638,33 +638,33 @@ LABEL_9:
 
   else
   {
-    v5 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-    v6 = [v5 announceNotificationsInCarPlayTemporarilyDisabled];
+    siriPreferences2 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+    announceNotificationsInCarPlayTemporarilyDisabled = [siriPreferences2 announceNotificationsInCarPlayTemporarilyDisabled];
 
-    return v6;
+    return announceNotificationsInCarPlayTemporarilyDisabled;
   }
 }
 
-- (void)_updateAnnounceMuted:(BOOL)a3
+- (void)_updateAnnounceMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v5 = sub_10001C784();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67240192;
-    v7[1] = v3;
+    v7[1] = mutedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Settings] AnnounceMuted state is updated, muted: %{public}d", v7, 8u);
   }
 
-  v6 = [(CARAnnounceNotificationsPanel *)self siriPreferences];
-  [v6 setAnnounceNotificationsInCarPlayTemporarilyDisabled:v3];
+  siriPreferences = [(CARAnnounceNotificationsPanel *)self siriPreferences];
+  [siriPreferences setAnnounceNotificationsInCarPlayTemporarilyDisabled:mutedCopy];
 
   [(CARSettingsTablePanel *)self reloadSpecifiers];
 }
 
-- (id)_muteAnnouncementsSpecifierTitleForMuted:(BOOL)a3 announceEnablementType:(int64_t)a4
+- (id)_muteAnnouncementsSpecifierTitleForMuted:(BOOL)muted announceEnablementType:(int64_t)type
 {
-  if (a4 < 2)
+  if (type < 2)
   {
     v5 = sub_10001C784();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -677,14 +677,14 @@ LABEL_9:
 
   else
   {
-    if ((a4 - 2) >= 2)
+    if ((type - 2) >= 2)
     {
-      if (a4 != 4)
+      if (type != 4)
       {
         goto LABEL_14;
       }
 
-      if (a3)
+      if (muted)
       {
         v4 = @"ANNOUNCE_BUTTON_ANNOUNCE_NEW_MESSAGES";
       }
@@ -695,7 +695,7 @@ LABEL_9:
       }
     }
 
-    else if (a3)
+    else if (muted)
     {
       v4 = @"ANNOUNCE_BUTTON_ANNOUNCE_FOR_DRIVE_ONLY";
     }

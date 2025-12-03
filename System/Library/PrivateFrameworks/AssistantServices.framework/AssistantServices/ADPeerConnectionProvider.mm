@@ -1,37 +1,37 @@
 @interface ADPeerConnectionProvider
-+ (void)getMetricsContext:(id)a3;
-- (BOOL)shouldFallbackFromError:(id)a3;
++ (void)getMetricsContext:(id)context;
+- (BOOL)shouldFallbackFromError:(id)error;
 - (id)_peerConnection;
 - (id)connectionType;
-- (id)headerDataWithForceReconnect:(BOOL)a3;
-- (id)initListenerWithQueue:(id)a3;
-- (void)_getNWConnectionWithInitialData:(id)a3 completion:(id)a4;
+- (id)headerDataWithForceReconnect:(BOOL)reconnect;
+- (id)initListenerWithQueue:(id)queue;
+- (void)_getNWConnectionWithInitialData:(id)data completion:(id)completion;
 - (void)close;
-- (void)peerStreamConnection:(id)a3 failedWithError:(id)a4;
-- (void)updateConnectionMetrics:(id)a3 completion:(id)a4;
+- (void)peerStreamConnection:(id)connection failedWithError:(id)error;
+- (void)updateConnectionMetrics:(id)metrics completion:(id)completion;
 @end
 
 @implementation ADPeerConnectionProvider
 
-- (void)peerStreamConnection:(id)a3 failedWithError:(id)a4
+- (void)peerStreamConnection:(id)connection failedWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connectionProvider:self receivedError:v5];
+  [WeakRetained connectionProvider:self receivedError:errorCopy];
 }
 
-- (void)updateConnectionMetrics:(id)a3 completion:(id)a4
+- (void)updateConnectionMetrics:(id)metrics completion:(id)completion
 {
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_10013F67C;
   v13 = &unk_10051E038;
-  v14 = a3;
-  v15 = a4;
+  metricsCopy = metrics;
+  completionCopy = completion;
   v9.receiver = self;
   v9.super_class = ADPeerConnectionProvider;
-  v6 = v15;
-  v7 = v14;
+  v6 = completionCopy;
+  v7 = metricsCopy;
   [(ADPeerConnectionProvider *)&v9 updateConnectionMetrics:v7 completion:&v10];
   v8 = [(ADPeerConnectionProvider *)self _peerConnection:v9.receiver];
   [v8 getLocalMetrics:&stru_100512D80];
@@ -52,26 +52,26 @@
   [(ADPeerStreamConnection *)self->_peerConnection close];
 }
 
-- (void)_getNWConnectionWithInitialData:(id)a3 completion:(id)a4
+- (void)_getNWConnectionWithInitialData:(id)data completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   kdebug_trace();
-  v6 = [(ADPeerConnectionProvider *)self _peerConnection];
+  _peerConnection = [(ADPeerConnectionProvider *)self _peerConnection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013F898;
   v8[3] = &unk_100512D40;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 getSocket:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_peerConnection getSocket:v8];
 }
 
-- (BOOL)shouldFallbackFromError:(id)a3
+- (BOOL)shouldFallbackFromError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"ADPeerStreamConnectionErrorDomain"] && !objc_msgSend(v3, "code"))
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"ADPeerStreamConnectionErrorDomain"] && !objc_msgSend(errorCopy, "code"))
   {
     if (qword_100590550 != -1)
     {
@@ -89,31 +89,31 @@
   return v5 & 1;
 }
 
-- (id)headerDataWithForceReconnect:(BOOL)a3
+- (id)headerDataWithForceReconnect:(BOOL)reconnect
 {
-  v3 = a3;
+  reconnectCopy = reconnect;
   v5 = AFSiriLogContextProxy;
   if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO))
   {
     v13 = 136315394;
     v14 = "[ADPeerConnectionProvider headerDataWithForceReconnect:]";
     v15 = 1024;
-    v16 = v3;
+    v16 = reconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s forceReconnect %d", &v13, 0x12u);
   }
 
-  v6 = [(ADPeerConnectionProvider *)self _url];
-  v7 = [v6 absoluteString];
-  v8 = [v7 UTF8String];
+  _url = [(ADPeerConnectionProvider *)self _url];
+  absoluteString = [_url absoluteString];
+  uTF8String = [absoluteString UTF8String];
 
-  if (v8)
+  if (uTF8String)
   {
-    v9 = strlen(v8);
+    v9 = strlen(uTF8String);
     v10 = malloc_type_malloc(v9 + 6, 0x8EC0D6CAuLL);
     *v10 = 17233;
-    v10[1] = v3;
+    v10[1] = reconnectCopy;
     v10[2] = bswap32(v9) >> 16;
-    memmove(v10 + 3, v8, v9);
+    memmove(v10 + 3, uTF8String, v9);
     v11 = dispatch_data_create(v10, v9 + 6, 0, _dispatch_data_destructor_free);
   }
 
@@ -140,9 +140,9 @@
   return peerConnection;
 }
 
-- (id)initListenerWithQueue:(id)a3
+- (id)initListenerWithQueue:(id)queue
 {
-  result = [(ADPeerConnectionProvider *)self initWithQueue:a3];
+  result = [(ADPeerConnectionProvider *)self initWithQueue:queue];
   if (result)
   {
     *(result + 24) = 1;
@@ -151,18 +151,18 @@
   return result;
 }
 
-+ (void)getMetricsContext:(id)a3
++ (void)getMetricsContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (AFIsNano())
   {
     v3 = [ADSharedPeerStreamConnection sharedPeerStreamConnectionWithServiceIdentifier:@"com.apple.private.alloy.siri.proxy" listener:0];
-    [v3 getMetricsContext:v4];
+    [v3 getMetricsContext:contextCopy];
   }
 
   else
   {
-    v4[2](v4, 0);
+    contextCopy[2](contextCopy, 0);
   }
 }
 

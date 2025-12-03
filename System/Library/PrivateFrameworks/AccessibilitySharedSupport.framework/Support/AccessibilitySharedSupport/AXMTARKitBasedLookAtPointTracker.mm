@@ -1,34 +1,34 @@
 @interface AXMTARKitBasedLookAtPointTracker
-- (AXMTARKitBasedLookAtPointTracker)initWithInput:(id)a3 trackingType:(unint64_t)a4;
+- (AXMTARKitBasedLookAtPointTracker)initWithInput:(id)input trackingType:(unint64_t)type;
 - (AXMTLookAtPointTrackerDelegate)delegate;
 - (BOOL)_isStarted;
 - (UIView)debugOverlayRootView;
 - (void)_updateWindowForDebugOverlay;
-- (void)arKitCameraInputSource:(id)a3 didFailToTrackFaceWithError:(id)a4;
-- (void)arKitCameraInputSource:(id)a3 didReceiveExpressionEnd:(unint64_t)a4;
-- (void)arKitCameraInputSource:(id)a3 didReceiveExpressionStart:(unint64_t)a4;
-- (void)arKitCameraInputSource:(id)a3 didReceivePoint:(CGPoint)a4;
-- (void)arKitCameraInputSourceWasInterrupted:(id)a3;
-- (void)setDebugOverlayEnabled:(BOOL)a3;
-- (void)setExpressionConfiguration:(id)a3;
-- (void)setJoystickModeMovementThreshold:(double)a3;
-- (void)setMotionTrackingMode:(unint64_t)a3;
-- (void)setSensitivity:(double)a3;
+- (void)arKitCameraInputSource:(id)source didFailToTrackFaceWithError:(id)error;
+- (void)arKitCameraInputSource:(id)source didReceiveExpressionEnd:(unint64_t)end;
+- (void)arKitCameraInputSource:(id)source didReceiveExpressionStart:(unint64_t)start;
+- (void)arKitCameraInputSource:(id)source didReceivePoint:(CGPoint)point;
+- (void)arKitCameraInputSourceWasInterrupted:(id)interrupted;
+- (void)setDebugOverlayEnabled:(BOOL)enabled;
+- (void)setExpressionConfiguration:(id)configuration;
+- (void)setJoystickModeMovementThreshold:(double)threshold;
+- (void)setMotionTrackingMode:(unint64_t)mode;
+- (void)setSensitivity:(double)sensitivity;
 - (void)startTracking;
 - (void)stopTracking;
 @end
 
 @implementation AXMTARKitBasedLookAtPointTracker
 
-- (AXMTARKitBasedLookAtPointTracker)initWithInput:(id)a3 trackingType:(unint64_t)a4
+- (AXMTARKitBasedLookAtPointTracker)initWithInput:(id)input trackingType:(unint64_t)type
 {
-  v5 = a3;
+  inputCopy = input;
   v12.receiver = self;
   v12.super_class = AXMTARKitBasedLookAtPointTracker;
   v6 = [(AXMTARKitBasedLookAtPointTracker *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [inputCopy copy];
     input = v6->_input;
     v6->_input = v7;
 
@@ -43,16 +43,16 @@
   return v6;
 }
 
-- (void)setDebugOverlayEnabled:(BOOL)a3
+- (void)setDebugOverlayEnabled:(BOOL)enabled
 {
-  if (self->_debugOverlayEnabled != a3)
+  if (self->_debugOverlayEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = AXSSLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"false";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = @"true";
       }
@@ -62,9 +62,9 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "AXMTARKitBasedLookAtPointTracker: setDebugOverlayEnabled: %@", &v8, 0xCu);
     }
 
-    self->_debugOverlayEnabled = v3;
-    v7 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v7 setDebugOverlayEnabled:v3];
+    self->_debugOverlayEnabled = enabledCopy;
+    _arkitCameraInputSource = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource setDebugOverlayEnabled:enabledCopy];
 
     [(AXMTARKitBasedLookAtPointTracker *)self _updateWindowForDebugOverlay];
   }
@@ -95,38 +95,38 @@
     }
 
     v14 = [AXMTARKitCameraInputSource alloc];
-    v15 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSourceWindow];
-    v16 = [(AXMTARKitCameraInputSource *)v14 initInsideView:v15];
+    _arkitCameraInputSourceWindow = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSourceWindow];
+    v16 = [(AXMTARKitCameraInputSource *)v14 initInsideView:_arkitCameraInputSourceWindow];
     [(AXMTARKitBasedLookAtPointTracker *)self set_arkitCameraInputSource:v16];
 
-    v17 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v17 setDelegate:self];
+    _arkitCameraInputSource = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource setDelegate:self];
 
     [(AXMTARKitBasedLookAtPointTracker *)self sensitivity];
     v19 = v18;
-    v20 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v20 setSensitivity:v19];
+    _arkitCameraInputSource2 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource2 setSensitivity:v19];
 
-    v21 = [(AXMTARKitBasedLookAtPointTracker *)self motionTrackingMode];
-    v22 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v22 setMotionTrackingMode:v21];
+    motionTrackingMode = [(AXMTARKitBasedLookAtPointTracker *)self motionTrackingMode];
+    _arkitCameraInputSource3 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource3 setMotionTrackingMode:motionTrackingMode];
 
     [(AXMTARKitBasedLookAtPointTracker *)self joystickModeMovementThreshold];
     v24 = v23;
-    v25 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v25 setJoystickModeMovementThreshold:v24];
+    _arkitCameraInputSource4 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource4 setJoystickModeMovementThreshold:v24];
 
-    v26 = [(AXMTARKitBasedLookAtPointTracker *)self debugOverlayEnabled];
-    v27 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v27 setDebugOverlayEnabled:v26];
+    debugOverlayEnabled = [(AXMTARKitBasedLookAtPointTracker *)self debugOverlayEnabled];
+    _arkitCameraInputSource5 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource5 setDebugOverlayEnabled:debugOverlayEnabled];
 
-    v28 = [(AXMTARKitBasedLookAtPointTracker *)self expressionConfiguration];
-    v29 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v29 setExpressionConfiguration:v28];
+    expressionConfiguration = [(AXMTARKitBasedLookAtPointTracker *)self expressionConfiguration];
+    _arkitCameraInputSource6 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource6 setExpressionConfiguration:expressionConfiguration];
 
     [(AXMTARKitBasedLookAtPointTracker *)self _updateWindowForDebugOverlay];
-    v30 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v30 startRunning];
+    _arkitCameraInputSource7 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource7 startRunning];
 
     v31 = AXSSLogForCategory();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -148,95 +148,95 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "AXMTARKitBasedLookAtPointTracker: stopTracking", v7, 2u);
     }
 
-    v4 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSourceWindow];
-    [v4 setHidden:1];
+    _arkitCameraInputSourceWindow = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSourceWindow];
+    [_arkitCameraInputSourceWindow setHidden:1];
 
     [(AXMTARKitBasedLookAtPointTracker *)self set_arkitCameraInputSourceWindow:0];
-    v5 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v5 stopRunning];
+    _arkitCameraInputSource = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource stopRunning];
 
-    v6 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v6 setDelegate:0];
+    _arkitCameraInputSource2 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource2 setDelegate:0];
 
     [(AXMTARKitBasedLookAtPointTracker *)self set_arkitCameraInputSource:0];
   }
 }
 
-- (void)setMotionTrackingMode:(unint64_t)a3
+- (void)setMotionTrackingMode:(unint64_t)mode
 {
-  if (self->_motionTrackingMode != a3)
+  if (self->_motionTrackingMode != mode)
   {
-    self->_motionTrackingMode = a3;
-    v5 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v5 setMotionTrackingMode:a3];
+    self->_motionTrackingMode = mode;
+    _arkitCameraInputSource = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource setMotionTrackingMode:mode];
   }
 }
 
-- (void)setSensitivity:(double)a3
+- (void)setSensitivity:(double)sensitivity
 {
-  if (vabdd_f64(self->_sensitivity, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_sensitivity, sensitivity) > 2.22044605e-16)
   {
-    self->_sensitivity = a3;
-    v4 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v4 setSensitivity:a3];
+    self->_sensitivity = sensitivity;
+    _arkitCameraInputSource = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource setSensitivity:sensitivity];
   }
 }
 
-- (void)setJoystickModeMovementThreshold:(double)a3
+- (void)setJoystickModeMovementThreshold:(double)threshold
 {
-  if (vabdd_f64(self->_joystickModeMovementThreshold, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_joystickModeMovementThreshold, threshold) > 2.22044605e-16)
   {
-    self->_joystickModeMovementThreshold = a3;
-    v4 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v4 setJoystickModeMovementThreshold:a3];
+    self->_joystickModeMovementThreshold = threshold;
+    _arkitCameraInputSource = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource setJoystickModeMovementThreshold:threshold];
   }
 }
 
-- (void)setExpressionConfiguration:(id)a3
+- (void)setExpressionConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if (([(AXSSMotionTrackingExpressionConfiguration *)self->_expressionConfiguration isEqualToMotionTrackingExpressionConfiguration:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_expressionConfiguration, a3);
-    v5 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-    [v5 setExpressionConfiguration:v6];
+    objc_storeStrong(&self->_expressionConfiguration, configuration);
+    _arkitCameraInputSource = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+    [_arkitCameraInputSource setExpressionConfiguration:configurationCopy];
   }
 }
 
-- (void)arKitCameraInputSource:(id)a3 didReceivePoint:(CGPoint)a4
+- (void)arKitCameraInputSource:(id)source didReceivePoint:(CGPoint)point
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100009A44;
   block[3] = &unk_1000489E8;
-  v5 = a4;
+  pointCopy = point;
   block[4] = self;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)arKitCameraInputSource:(id)a3 didReceiveExpressionStart:(unint64_t)a4
+- (void)arKitCameraInputSource:(id)source didReceiveExpressionStart:(unint64_t)start
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100009BE4;
   v4[3] = &unk_1000489C0;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = start;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)arKitCameraInputSource:(id)a3 didReceiveExpressionEnd:(unint64_t)a4
+- (void)arKitCameraInputSource:(id)source didReceiveExpressionEnd:(unint64_t)end
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100009D38;
   v4[3] = &unk_1000489C0;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = end;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)arKitCameraInputSourceWasInterrupted:(id)a3
+- (void)arKitCameraInputSourceWasInterrupted:(id)interrupted
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -246,39 +246,39 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)arKitCameraInputSource:(id)a3 didFailToTrackFaceWithError:(id)a4
+- (void)arKitCameraInputSource:(id)source didFailToTrackFaceWithError:(id)error
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100009FE8;
   v6[3] = &unk_100048948;
-  v7 = a4;
-  v8 = self;
-  v5 = v7;
+  errorCopy = error;
+  selfCopy = self;
+  v5 = errorCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
 - (BOOL)_isStarted
 {
-  v2 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
-  v3 = v2 != 0;
+  _arkitCameraInputSource = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSource];
+  v3 = _arkitCameraInputSource != 0;
 
   return v3;
 }
 
 - (void)_updateWindowForDebugOverlay
 {
-  v3 = [(AXMTARKitBasedLookAtPointTracker *)self debugOverlayEnabled];
-  v4 = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSourceWindow];
-  v5 = v4;
-  if (v3)
+  debugOverlayEnabled = [(AXMTARKitBasedLookAtPointTracker *)self debugOverlayEnabled];
+  _arkitCameraInputSourceWindow = [(AXMTARKitBasedLookAtPointTracker *)self _arkitCameraInputSourceWindow];
+  v5 = _arkitCameraInputSourceWindow;
+  if (debugOverlayEnabled)
   {
-    [v4 makeKeyAndVisible];
+    [_arkitCameraInputSourceWindow makeKeyAndVisible];
   }
 
   else
   {
-    [v4 setHidden:1];
+    [_arkitCameraInputSourceWindow setHidden:1];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface GatheringDataViewController
-- (_TtC23NewDeviceSetupUIService27GatheringDataViewController)initWithContentView:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (_TtC23NewDeviceSetupUIService27GatheringDataViewController)initWithContentView:(id)view;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100005834();
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -27,12 +27,12 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_100005F20(a3, v6, v7);
+  selfCopy = self;
+  sub_100005F20(animated, v6, v7);
   sub_10000617C(v6);
 }
 
-- (_TtC23NewDeviceSetupUIService27GatheringDataViewController)initWithContentView:(id)a3
+- (_TtC23NewDeviceSetupUIService27GatheringDataViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,31 +1,31 @@
 @interface DCDocCamPDFGenerator
 + (OS_dispatch_queue)fileQueue;
 + (OS_dispatch_queue)syncGeneratorQueue;
-+ (id)blockingGeneratepdfURLForDocumentInfoCollection:(id)a3 imageCache:(id)a4 withProgress:(id)a5 error:(id *)a6;
-+ (id)folderPathForDocumentInfoCollection:(id)a3;
-+ (id)folderPathForDocumentInfoCollectionIdentifier:(id)a3;
-+ (id)pdfURLForDocumentInfoCollection:(id)a3;
++ (id)blockingGeneratepdfURLForDocumentInfoCollection:(id)collection imageCache:(id)cache withProgress:(id)progress error:(id *)error;
++ (id)folderPathForDocumentInfoCollection:(id)collection;
++ (id)folderPathForDocumentInfoCollectionIdentifier:(id)identifier;
++ (id)pdfURLForDocumentInfoCollection:(id)collection;
 + (id)rootPDFFolderPath;
-+ (id)versionPDFPathForDocumentInfoCollection:(id)a3;
-+ (id)versionfolderPathForDocumentInfoCollection:(id)a3;
-+ (void)createEmptyPDFFileAtURLIFNecessaryForDocumentInfoCollection:(id)a3;
-+ (void)createTmpDirectory:(id)a3;
++ (id)versionPDFPathForDocumentInfoCollection:(id)collection;
++ (id)versionfolderPathForDocumentInfoCollection:(id)collection;
++ (void)createEmptyPDFFileAtURLIFNecessaryForDocumentInfoCollection:(id)collection;
++ (void)createTmpDirectory:(id)directory;
 + (void)deleteAllDocCamPDFs;
-+ (void)deletePDFFolderIfExistsForDocumentInfoCollection:(id)a3;
-+ (void)generatePDFsIfNecessaryForDocumentInfoCollection:(id)a3 imageCache:(id)a4 displayWindow:(id)a5 presentingViewController:(id)a6 completionHandler:(id)a7;
++ (void)deletePDFFolderIfExistsForDocumentInfoCollection:(id)collection;
++ (void)generatePDFsIfNecessaryForDocumentInfoCollection:(id)collection imageCache:(id)cache displayWindow:(id)window presentingViewController:(id)controller completionHandler:(id)handler;
 + (void)initialize;
-+ (void)performPDFGenerationWithGenerator:(id)a3 docInfoCollection:(id)a4 imageCache:(id)a5 progress:(id)a6;
++ (void)performPDFGenerationWithGenerator:(id)generator docInfoCollection:(id)collection imageCache:(id)cache progress:(id)progress;
 @end
 
 @implementation DCDocCamPDFGenerator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v4 = [a1 rootPDFFolderPath];
-    v3 = [a1 fileManager];
-    [v3 removeItemAtPath:v4 error:0];
+    rootPDFFolderPath = [self rootPDFFolderPath];
+    fileManager = [self fileManager];
+    [fileManager removeItemAtPath:rootPDFFolderPath error:0];
   }
 }
 
@@ -89,69 +89,69 @@ void __41__DCDocCamPDFGenerator_rootPDFFolderPath__block_invoke()
   rootPDFFolderPath_path = v0;
 }
 
-+ (id)folderPathForDocumentInfoCollectionIdentifier:(id)a3
++ (id)folderPathForDocumentInfoCollectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 rootPDFFolderPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  identifierCopy = identifier;
+  rootPDFFolderPath = [self rootPDFFolderPath];
+  v6 = [rootPDFFolderPath stringByAppendingPathComponent:identifierCopy];
 
   return v6;
 }
 
-+ (id)folderPathForDocumentInfoCollection:(id)a3
++ (id)folderPathForDocumentInfoCollection:(id)collection
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [a1 folderPathForDocumentInfoCollectionIdentifier:v4];
+  uniqueIdentifier = [collection uniqueIdentifier];
+  v5 = [self folderPathForDocumentInfoCollectionIdentifier:uniqueIdentifier];
 
   return v5;
 }
 
-+ (id)versionfolderPathForDocumentInfoCollection:(id)a3
++ (id)versionfolderPathForDocumentInfoCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [a1 folderPathForDocumentInfoCollection:v4];
+  collectionCopy = collection;
+  v5 = [self folderPathForDocumentInfoCollection:collectionCopy];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 docCamPDFVersion];
+  docCamPDFVersion = [collectionCopy docCamPDFVersion];
 
-  v8 = [v6 numberWithInteger:v7];
-  v9 = [v8 stringValue];
-  v10 = [v5 stringByAppendingPathComponent:v9];
+  v8 = [v6 numberWithInteger:docCamPDFVersion];
+  stringValue = [v8 stringValue];
+  v10 = [v5 stringByAppendingPathComponent:stringValue];
 
   return v10;
 }
 
-+ (id)versionPDFPathForDocumentInfoCollection:(id)a3
++ (id)versionPDFPathForDocumentInfoCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v5 dc_sanitizedFilenameString];
-  if (![(__CFString *)v6 length])
+  collectionCopy = collection;
+  title = [collectionCopy title];
+  dc_sanitizedFilenameString = [title dc_sanitizedFilenameString];
+  if (![(__CFString *)dc_sanitizedFilenameString length])
   {
 
-    v6 = @"Scanned Documents";
+    dc_sanitizedFilenameString = @"Scanned Documents";
   }
 
-  v7 = [a1 versionfolderPathForDocumentInfoCollection:v4];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v7 = [self versionfolderPathForDocumentInfoCollection:collectionCopy];
+  v8 = [v7 stringByAppendingPathComponent:dc_sanitizedFilenameString];
 
   v9 = [v8 stringByAppendingPathExtension:@"pdf"];
 
   return v9;
 }
 
-+ (void)createEmptyPDFFileAtURLIFNecessaryForDocumentInfoCollection:(id)a3
++ (void)createEmptyPDFFileAtURLIFNecessaryForDocumentInfoCollection:(id)collection
 {
-  v4 = [a1 versionPDFPathForDocumentInfoCollection:a3];
+  v4 = [self versionPDFPathForDocumentInfoCollection:collection];
   v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
-  v6 = [a1 fileQueue];
+  fileQueue = [self fileQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__DCDocCamPDFGenerator_createEmptyPDFFileAtURLIFNecessaryForDocumentInfoCollection___block_invoke;
   v8[3] = &unk_278F92CD8;
   v9 = v5;
-  v10 = a1;
+  selfCopy = self;
   v7 = v5;
-  dispatch_sync(v6, v8);
+  dispatch_sync(fileQueue, v8);
 }
 
 void __84__DCDocCamPDFGenerator_createEmptyPDFFileAtURLIFNecessaryForDocumentInfoCollection___block_invoke(uint64_t a1)
@@ -168,22 +168,22 @@ void __84__DCDocCamPDFGenerator_createEmptyPDFFileAtURLIFNecessaryForDocumentInf
   }
 }
 
-+ (void)createTmpDirectory:(id)a3
++ (void)createTmpDirectory:(id)directory
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__DCDocCamPDFGenerator_createTmpDirectory___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v4 = createTmpDirectory__once;
-  v5 = a3;
+  directoryCopy = directory;
   if (v4 != -1)
   {
     dispatch_once(&createTmpDirectory__once, block);
   }
 
-  v6 = [a1 fileManager];
-  [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:0];
+  fileManager = [self fileManager];
+  [fileManager createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:0];
 }
 
 void __43__DCDocCamPDFGenerator_createTmpDirectory___block_invoke(uint64_t a1)
@@ -195,27 +195,27 @@ void __43__DCDocCamPDFGenerator_createTmpDirectory___block_invoke(uint64_t a1)
   [v5 addObserver:v2 selector:sel_applicationWillTerminate_ name:v3 object:v4];
 }
 
-+ (void)deletePDFFolderIfExistsForDocumentInfoCollection:(id)a3
++ (void)deletePDFFolderIfExistsForDocumentInfoCollection:(id)collection
 {
-  v4 = a3;
-  v6 = [a1 fileManager];
-  v5 = [a1 folderPathForDocumentInfoCollection:v4];
+  collectionCopy = collection;
+  fileManager = [self fileManager];
+  v5 = [self folderPathForDocumentInfoCollection:collectionCopy];
 
-  if ([v6 fileExistsAtPath:v5])
+  if ([fileManager fileExistsAtPath:v5])
   {
-    [v6 removeItemAtPath:v5 error:0];
+    [fileManager removeItemAtPath:v5 error:0];
   }
 }
 
 + (void)deleteAllDocCamPDFs
 {
-  v3 = [a1 fileQueue];
+  fileQueue = [self fileQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__DCDocCamPDFGenerator_deleteAllDocCamPDFs__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_async(v3, block);
+  block[4] = self;
+  dispatch_async(fileQueue, block);
 
   v4 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -231,25 +231,25 @@ void __43__DCDocCamPDFGenerator_deleteAllDocCamPDFs__block_invoke(uint64_t a1)
   [v3 removeItemAtPath:v2 error:0];
 }
 
-+ (id)pdfURLForDocumentInfoCollection:(id)a3
++ (id)pdfURLForDocumentInfoCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v5 = [a1 fileQueue];
+  fileQueue = [self fileQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__DCDocCamPDFGenerator_pdfURLForDocumentInfoCollection___block_invoke;
   block[3] = &unk_278F932A0;
   v11 = &v13;
-  v12 = a1;
-  v10 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  selfCopy = self;
+  v10 = collectionCopy;
+  v6 = collectionCopy;
+  dispatch_sync(fileQueue, block);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -274,14 +274,14 @@ void __56__DCDocCamPDFGenerator_pdfURLForDocumentInfoCollection___block_invoke(u
   }
 }
 
-+ (void)generatePDFsIfNecessaryForDocumentInfoCollection:(id)a3 imageCache:(id)a4 displayWindow:(id)a5 presentingViewController:(id)a6 completionHandler:(id)a7
++ (void)generatePDFsIfNecessaryForDocumentInfoCollection:(id)collection imageCache:(id)cache displayWindow:(id)window presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v13)
+  collectionCopy = collection;
+  cacheCopy = cache;
+  windowCopy = window;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if (!windowCopy)
   {
     v16 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -294,8 +294,8 @@ void __56__DCDocCamPDFGenerator_pdfURLForDocumentInfoCollection___block_invoke(u
   v40[1] = v40;
   v40[2] = 0x2020000000;
   v41 = 0;
-  v17 = [v11 docInfos];
-  v18 = [v17 count];
+  docInfos = [collectionCopy docInfos];
+  v18 = [docInfos count];
 
   if (v18)
   {
@@ -307,22 +307,22 @@ void __56__DCDocCamPDFGenerator_pdfURLForDocumentInfoCollection___block_invoke(u
     v35 = &v34;
     v36 = 0x2020000000;
     v37 = 0;
-    v19 = [v11 docInfos];
-    v20 = [v19 count];
+    docInfos2 = [collectionCopy docInfos];
+    v20 = [docInfos2 count];
     v35[3] = v20;
 
-    v21 = [[DCLongRunningTaskController alloc] initWithWindow:v13 intervalBeforeOpeningProgressDialog:0.5];
+    v21 = [[DCLongRunningTaskController alloc] initWithWindow:windowCopy intervalBeforeOpeningProgressDialog:0.5];
     [(DCLongRunningTaskController *)v21 setProgressToStringTransformer:&__block_literal_global_30];
     [(DCLongRunningTaskController *)v21 setShouldShowCancelButton:1];
     [(DCLongRunningTaskController *)v21 setShouldShowCircularProgress:1];
-    [(DCLongRunningTaskController *)v21 setViewControllerToPresentFrom:v14];
+    [(DCLongRunningTaskController *)v21 setViewControllerToPresentFrom:controllerCopy];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __141__DCDocCamPDFGenerator_generatePDFsIfNecessaryForDocumentInfoCollection_imageCache_displayWindow_presentingViewController_completionHandler___block_invoke_2;
     v27[3] = &unk_278F932C8;
     v31 = &v34;
-    v28 = v11;
-    v29 = v12;
+    v28 = collectionCopy;
+    v29 = cacheCopy;
     v32 = v38;
     v33 = v40;
     v22 = v21;
@@ -333,16 +333,16 @@ void __56__DCDocCamPDFGenerator_pdfURLForDocumentInfoCollection___block_invoke(u
     v23[3] = &unk_278F93318;
     v26 = 0;
     v25 = v38;
-    v24 = v15;
+    v24 = handlerCopy;
     [(DCLongRunningTaskController *)v22 startTask:v27 completionBlock:v23];
 
     _Block_object_dispose(&v34, 8);
     _Block_object_dispose(v38, 8);
   }
 
-  else if (v15)
+  else if (handlerCopy)
   {
-    (*(v15 + 2))(v15, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 
   _Block_object_dispose(v40, 8);
@@ -378,31 +378,31 @@ void __141__DCDocCamPDFGenerator_generatePDFsIfNecessaryForDocumentInfoCollectio
   }
 }
 
-+ (id)blockingGeneratepdfURLForDocumentInfoCollection:(id)a3 imageCache:(id)a4 withProgress:(id)a5 error:(id *)a6
++ (id)blockingGeneratepdfURLForDocumentInfoCollection:(id)collection imageCache:(id)cache withProgress:(id)progress error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  cacheCopy = cache;
+  progressCopy = progress;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__0;
   v26 = __Block_byref_object_dispose__0;
-  v27 = [a1 pdfURLForDocumentInfoCollection:v9];
+  v27 = [self pdfURLForDocumentInfoCollection:collectionCopy];
   v12 = v23[5];
   if (!v12)
   {
-    v13 = [a1 syncGeneratorQueue];
+    syncGeneratorQueue = [self syncGeneratorQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __102__DCDocCamPDFGenerator_blockingGeneratepdfURLForDocumentInfoCollection_imageCache_withProgress_error___block_invoke;
     block[3] = &unk_278F93390;
-    v21 = a1;
-    v17 = v9;
-    v18 = v10;
-    v19 = v11;
+    selfCopy = self;
+    v17 = collectionCopy;
+    v18 = cacheCopy;
+    v19 = progressCopy;
     v20 = &v22;
-    dispatch_sync(v13, block);
+    dispatch_sync(syncGeneratorQueue, block);
 
     v12 = v23[5];
   }
@@ -491,30 +491,30 @@ void __102__DCDocCamPDFGenerator_blockingGeneratepdfURLForDocumentInfoCollection
   objc_storeStrong(v4, v3);
 }
 
-+ (void)performPDFGenerationWithGenerator:(id)a3 docInfoCollection:(id)a4 imageCache:(id)a5 progress:(id)a6
++ (void)performPDFGenerationWithGenerator:(id)generator docInfoCollection:(id)collection imageCache:(id)cache progress:(id)progress
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  generatorCopy = generator;
+  collectionCopy = collection;
+  cacheCopy = cache;
+  progressCopy = progress;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
   v25[3] = 0;
-  [v9 startGenerating];
-  v13 = [v10 docInfos];
+  [generatorCopy startGenerating];
+  docInfos = [collectionCopy docInfos];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __96__DCDocCamPDFGenerator_performPDFGenerationWithGenerator_docInfoCollection_imageCache_progress___block_invoke;
   v20 = &unk_278F933E0;
-  v14 = v12;
+  v14 = progressCopy;
   v21 = v14;
-  v15 = v11;
+  v15 = cacheCopy;
   v22 = v15;
   v24 = v25;
-  v16 = v9;
+  v16 = generatorCopy;
   v23 = v16;
-  [v13 enumerateObjectsUsingBlock:&v17];
+  [docInfos enumerateObjectsUsingBlock:&v17];
 
   [v16 finishGenerating];
   _Block_object_dispose(v25, 8);

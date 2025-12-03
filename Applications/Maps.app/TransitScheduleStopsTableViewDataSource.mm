@@ -1,25 +1,25 @@
 @interface TransitScheduleStopsTableViewDataSource
-+ (void)registerCellsForCollectionView:(id)a3;
++ (void)registerCellsForCollectionView:(id)view;
 - (BOOL)_hasVehicleDepartedStation;
 - (NSArray)stopIdentifiers;
-- (TransitScheduleStopsTableViewDataSource)initWithBoardingStopMuid:(unint64_t)a3 alightStopMuid:(unint64_t)a4 alightHallMuid:(unint64_t)a5 alightStationMuid:(unint64_t)a6 transitLine:(id)a7 referenceDate:(id)a8;
-- (TransitScheduleStopsTableViewDataSource)initWithBoardingStopMuid:(unint64_t)a3 transitLine:(id)a4 referenceDate:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)stopItemAtIndex:(unint64_t)a3;
-- (unint64_t)_linkColorTypeForStopAtIndex:(unint64_t)a3;
-- (void)_adjustIndexesForCollapsedStopsBeforeBoardingIndex:(unint64_t)a3;
+- (TransitScheduleStopsTableViewDataSource)initWithBoardingStopMuid:(unint64_t)muid alightStopMuid:(unint64_t)stopMuid alightHallMuid:(unint64_t)hallMuid alightStationMuid:(unint64_t)stationMuid transitLine:(id)line referenceDate:(id)date;
+- (TransitScheduleStopsTableViewDataSource)initWithBoardingStopMuid:(unint64_t)muid transitLine:(id)line referenceDate:(id)date;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)stopItemAtIndex:(unint64_t)index;
+- (unint64_t)_linkColorTypeForStopAtIndex:(unint64_t)index;
+- (void)_adjustIndexesForCollapsedStopsBeforeBoardingIndex:(unint64_t)index;
 - (void)_updatePastDepartureAndVehicleIndexes;
-- (void)buildTransitTripStopItemsWithTransitStops:(id)a3 boardingStopDepartureDate:(id)a4 maintainingCollapsedState:(BOOL)a5;
+- (void)buildTransitTripStopItemsWithTransitStops:(id)stops boardingStopDepartureDate:(id)date maintainingCollapsedState:(BOOL)state;
 - (void)removeAllStops;
-- (void)setReferenceDate:(id)a3 dataSource:(id)a4;
+- (void)setReferenceDate:(id)date dataSource:(id)source;
 @end
 
 @implementation TransitScheduleStopsTableViewDataSource
 
-- (unint64_t)_linkColorTypeForStopAtIndex:(unint64_t)a3
+- (unint64_t)_linkColorTypeForStopAtIndex:(unint64_t)index
 {
   boardingStopItemIndex = self->_boardingStopItemIndex;
-  if (boardingStopItemIndex != 0x7FFFFFFFFFFFFFFFLL && boardingStopItemIndex > a3)
+  if (boardingStopItemIndex != 0x7FFFFFFFFFFFFFFFLL && boardingStopItemIndex > index)
   {
     return 2;
   }
@@ -28,7 +28,7 @@
   if (mostRecentPastDepartureStopItemIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_6:
-    if (boardingStopItemIndex == a3)
+    if (boardingStopItemIndex == index)
     {
       return 3;
     }
@@ -39,11 +39,11 @@ LABEL_6:
     }
   }
 
-  if (self->_vehicleStopItemIndex != a3)
+  if (self->_vehicleStopItemIndex != index)
   {
-    if (mostRecentPastDepartureStopItemIndex < a3)
+    if (mostRecentPastDepartureStopItemIndex < index)
     {
-      if (mostRecentPastDepartureStopItemIndex + 1 == a3)
+      if (mostRecentPastDepartureStopItemIndex + 1 == index)
       {
         return 3;
       }
@@ -68,14 +68,14 @@ LABEL_6:
 - (BOOL)_hasVehicleDepartedStation
 {
   v3 = [(NSArray *)self->_transitTripStopItems objectAtIndexedSubscript:self->_vehicleStopItemIndex];
-  v4 = [v3 transitTripStop];
-  v5 = [v4 departure];
+  transitTripStop = [v3 transitTripStop];
+  departure = [transitTripStop departure];
 
-  v6 = [v5 departureDate];
+  departureDate = [departure departureDate];
 
-  if (v6)
+  if (departureDate)
   {
-    v7 = [v5 isPastDepartureRelativeToDate:self->_referenceDate usingGracePeriod:1];
+    v7 = [departure isPastDepartureRelativeToDate:self->_referenceDate usingGracePeriod:1];
   }
 
   else
@@ -86,33 +86,33 @@ LABEL_6:
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 row];
-  v10 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
-  v11 = [v10 objectAtIndexedSubscript:v9];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [pathCopy row];
+  transitTripStopItems = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
+  v11 = [transitTripStopItems objectAtIndexedSubscript:v9];
 
   if ([v11 isPlaceholder])
   {
     v12 = +[TransitSchedulesCollapsedStopsPlaceholderViewCell identifier];
-    v13 = [v8 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v7];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:pathCopy];
 
-    v14 = [v11 placeholderTextForLine:self->_transitLine];
-    [v13 setPlaceholderText:v14];
+    transitTripStop = [v11 placeholderTextForLine:self->_transitLine];
+    [v13 setPlaceholderText:transitTripStop];
   }
 
   else
   {
     v15 = +[TransitSchedulesStopViewCell identifier];
-    v13 = [v8 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v7];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
 
-    v14 = [v11 transitTripStop];
+    transitTripStop = [v11 transitTripStop];
     if (v9)
     {
-      v16 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
-      v17 = [v16 count] - 1;
+      transitTripStopItems2 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
+      v17 = [transitTripStopItems2 count] - 1;
 
       if (v9 == v17)
       {
@@ -133,8 +133,8 @@ LABEL_6:
     boardingStopItemIndex = self->_boardingStopItemIndex;
     if (v9 != boardingStopItemIndex && self->_hasAlightStop && v9 == self->_alightStopItemIndex)
     {
-      v20 = [v14 departure];
-      [v13 setHighlightStation:{objc_msgSend(v20, "isCanceled") ^ 1}];
+      departure = [transitTripStop departure];
+      [v13 setHighlightStation:{objc_msgSend(departure, "isCanceled") ^ 1}];
     }
 
     else
@@ -147,21 +147,21 @@ LABEL_6:
     if (v9)
     {
       v33 = v21;
-      v23 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
-      v24 = [v23 objectAtIndexedSubscript:v9 - 1];
+      transitTripStopItems3 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
+      v24 = [transitTripStopItems3 objectAtIndexedSubscript:v9 - 1];
 
-      v25 = [v24 transitTripStop];
-      v26 = [v25 timeZone];
+      transitTripStop2 = [v24 transitTripStop];
+      timeZone = [transitTripStop2 timeZone];
 
       v27 = 0;
-      if (([v24 isPlaceholder] & 1) == 0 && v26)
+      if (([v24 isPlaceholder] & 1) == 0 && timeZone)
       {
-        v28 = [v14 timeZone];
-        if (v28)
+        timeZone2 = [transitTripStop timeZone];
+        if (timeZone2)
         {
-          [v14 timeZone];
+          [transitTripStop timeZone];
           v29 = v32 = v18;
-          v27 = [v29 isEqualToTimeZone:v26] ^ 1;
+          v27 = [v29 isEqualToTimeZone:timeZone] ^ 1;
 
           v18 = v32;
         }
@@ -198,7 +198,7 @@ LABEL_6:
       v30 = 0;
     }
 
-    [v13 setTransitLine:self->_transitLine withTransitTripStop:v14 stopType:v18 colorStyleType:v22 vehiclePosition:v30 showTimeZone:v27];
+    [v13 setTransitLine:self->_transitLine withTransitTripStop:transitTripStop stopType:v18 colorStyleType:v22 vehiclePosition:v30 showTimeZone:v27];
   }
 
   return v13;
@@ -224,7 +224,7 @@ LABEL_6:
   v5[1] = v5;
   v5[2] = 0x2020000000;
   v6 = 0;
-  v3 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
+  transitTripStopItems = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10064F178;
@@ -234,7 +234,7 @@ LABEL_6:
   v4[6] = v7;
   v4[7] = &v9;
   v4[8] = &v13;
-  [v3 enumerateObjectsWithOptions:2 usingBlock:v4];
+  [transitTripStopItems enumerateObjectsWithOptions:2 usingBlock:v4];
 
   self->_mostRecentPastDepartureStopItemIndex = v10[3];
   self->_vehicleStopItemIndex = v14[3];
@@ -245,13 +245,13 @@ LABEL_6:
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)setReferenceDate:(id)a3 dataSource:(id)a4
+- (void)setReferenceDate:(id)date dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  if (![(NSDate *)self->_referenceDate isEqualToDate:v7])
+  dateCopy = date;
+  sourceCopy = source;
+  if (![(NSDate *)self->_referenceDate isEqualToDate:dateCopy])
   {
-    objc_storeStrong(&self->_referenceDate, a3);
+    objc_storeStrong(&self->_referenceDate, date);
     v9 = self->_mostRecentPastDepartureStopItemIndex == 0x7FFFFFFFFFFFFFFFLL ? 0 : self->_mostRecentPastDepartureStopItemIndex;
     [(TransitScheduleStopsTableViewDataSource *)self _updatePastDepartureAndVehicleIndexes];
     mostRecentPastDepartureStopItemIndex = self->_mostRecentPastDepartureStopItemIndex;
@@ -271,14 +271,14 @@ LABEL_6:
       v12 = &v11[-v9];
       if (v12 && [(TransitScheduleStopsTableViewDataSource *)self remoteNetworkState]== 1)
       {
-        v33 = v7;
+        v33 = dateCopy;
         v31 = [NSIndexSet indexSetWithIndexesInRange:v9, v12];
         v13 = [(NSArray *)self->_transitTripStopItems objectsAtIndexes:?];
         v14 = NSStringFromSelector("identifier");
         v15 = [v13 valueForKeyPath:v14];
 
-        v32 = v8;
-        v16 = [v8 snapshot];
+        v32 = sourceCopy;
+        snapshot = [sourceCopy snapshot];
         v30 = v15;
         v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v15, "count")}];
         v35 = 0u;
@@ -301,8 +301,8 @@ LABEL_6:
               }
 
               v23 = *(*(&v35 + 1) + 8 * i);
-              v24 = [v23 identifier];
-              if ([v16 indexOfItemIdentifier:v24] == 0x7FFFFFFFFFFFFFFFLL)
+              identifier = [v23 identifier];
+              if ([snapshot indexOfItemIdentifier:identifier] == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v25 = sub_100798DBC();
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -314,7 +314,7 @@ LABEL_6:
                   *buf = 138412802;
                   v40 = v28;
                   v41 = 2112;
-                  v42 = v24;
+                  v42 = identifier;
                   v43 = 2112;
                   v44 = v29;
                   _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%@ - Could not find identifier %@ for stop %@ in snapshot", buf, 0x20u);
@@ -326,7 +326,7 @@ LABEL_6:
 
               else
               {
-                [v17 addObject:v24];
+                [v17 addObject:identifier];
               }
             }
 
@@ -336,11 +336,11 @@ LABEL_6:
           while (v20);
         }
 
-        [v16 reloadItemsWithIdentifiers:v17];
-        v8 = v32;
-        [v32 applySnapshot:v16 animatingDifferences:1];
+        [snapshot reloadItemsWithIdentifiers:v17];
+        sourceCopy = v32;
+        [v32 applySnapshot:snapshot animatingDifferences:1];
 
-        v7 = v33;
+        dateCopy = v33;
       }
     }
   }
@@ -355,26 +355,26 @@ LABEL_6:
   return v4;
 }
 
-- (id)stopItemAtIndex:(unint64_t)a3
+- (id)stopItemAtIndex:(unint64_t)index
 {
-  v5 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
-  v6 = [v5 count];
+  transitTripStopItems = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
+  v6 = [transitTripStopItems count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    transitTripStopItems2 = [(TransitScheduleStopsTableViewDataSource *)self transitTripStopItems];
+    v8 = [transitTripStopItems2 objectAtIndexedSubscript:index];
   }
 
   return v8;
 }
 
-- (void)_adjustIndexesForCollapsedStopsBeforeBoardingIndex:(unint64_t)a3
+- (void)_adjustIndexesForCollapsedStopsBeforeBoardingIndex:(unint64_t)index
 {
   boardingStopItemIndex = self->_boardingStopItemIndex;
   mostRecentPastDepartureStopItemIndex = self->_mostRecentPastDepartureStopItemIndex;
@@ -382,7 +382,7 @@ LABEL_6:
   {
     if (mostRecentPastDepartureStopItemIndex >= boardingStopItemIndex)
     {
-      v5 = mostRecentPastDepartureStopItemIndex - a3 + 1;
+      v5 = mostRecentPastDepartureStopItemIndex - index + 1;
     }
 
     else
@@ -393,29 +393,29 @@ LABEL_6:
     self->_mostRecentPastDepartureStopItemIndex = v5;
   }
 
-  self->_boardingStopItemIndex = boardingStopItemIndex - a3 + 1;
+  self->_boardingStopItemIndex = boardingStopItemIndex - index + 1;
   alightStopItemIndex = self->_alightStopItemIndex;
   if (alightStopItemIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    self->_alightStopItemIndex = alightStopItemIndex - a3 + 1;
+    self->_alightStopItemIndex = alightStopItemIndex - index + 1;
   }
 }
 
-- (void)buildTransitTripStopItemsWithTransitStops:(id)a3 boardingStopDepartureDate:(id)a4 maintainingCollapsedState:(BOOL)a5
+- (void)buildTransitTripStopItemsWithTransitStops:(id)stops boardingStopDepartureDate:(id)date maintainingCollapsedState:(BOOL)state
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 copy];
+  stateCopy = state;
+  stopsCopy = stops;
+  dateCopy = date;
+  v10 = [stopsCopy copy];
   transitStops = self->_transitStops;
   self->_transitStops = v10;
 
-  objc_storeStrong(&self->_boardingStopDepartureDate, a4);
+  objc_storeStrong(&self->_boardingStopDepartureDate, date);
   v12.f64[0] = NAN;
   v12.f64[1] = NAN;
   *&self->_alightStopItemIndex = vnegq_f64(v12);
   self->_mostRecentPastDepartureStopItemIndex = 0x7FFFFFFFFFFFFFFFLL;
-  if (!v5)
+  if (!stateCopy)
   {
     self->_canShowMoreStops = 1;
   }
@@ -426,11 +426,11 @@ LABEL_6:
   v68[2] = sub_1006500B8;
   v68[3] = &unk_101624B60;
   v68[4] = self;
-  v56 = v9;
+  v56 = dateCopy;
   v69 = v56;
   v14 = v13;
   v70 = v14;
-  [v8 enumerateObjectsUsingBlock:v68];
+  [stopsCopy enumerateObjectsUsingBlock:v68];
   if (self->_boardingStopItemIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = sub_100798DBC();
@@ -470,7 +470,7 @@ LABEL_6:
   }
 
   alightStopItemIndex = self->_alightStopItemIndex;
-  if (alightStopItemIndex == 0x7FFFFFFFFFFFFFFFLL || alightStopItemIndex >= [v8 count] - 1)
+  if (alightStopItemIndex == 0x7FFFFFFFFFFFFFFFLL || alightStopItemIndex >= [stopsCopy count] - 1)
   {
     goto LABEL_27;
   }
@@ -496,7 +496,7 @@ LABEL_27:
   }
 
 LABEL_28:
-  if (v5 && [(NSArray *)self->_transitTripStopItems count])
+  if (stateCopy && [(NSArray *)self->_transitTripStopItems count])
   {
     v23 = v14;
     v66 = 0u;
@@ -562,7 +562,7 @@ LABEL_28:
     if (v59 && (v33 = self->_boardingStopItemIndex) != 0)
     {
       v34 = v33 - 1;
-      v35 = [v8 objectAtIndexedSubscript:v33 - 1];
+      v35 = [stopsCopy objectAtIndexedSubscript:v33 - 1];
       if ([v35 isHidden])
       {
         v34 = self->_boardingStopItemIndex;
@@ -582,16 +582,16 @@ LABEL_28:
 
     else
     {
-      v36 = [v8 count] - 1;
+      v36 = [stopsCopy count] - 1;
     }
 
-    if ([v8 count])
+    if ([stopsCopy count])
     {
       v37 = 0;
       v38 = ~v36;
       do
       {
-        v39 = [v8 objectAtIndexedSubscript:v37];
+        v39 = [stopsCopy objectAtIndexedSubscript:v37];
         v40 = v39;
         v41 = v59;
         if (v37 >= v34)
@@ -621,15 +621,15 @@ LABEL_28:
 
           if (v44 == 1)
           {
-            v43 = [v8 count] + v38;
+            v43 = [stopsCopy count] + v38;
             v42 = [[TransitTripStopItem alloc] initWithPlaceHolderType:2 numCollapsedStops:v43];
             [v32 addObject:v42];
           }
 
           else if ([v39 isHidden])
           {
-            v45 = [v57 firstObject];
-            [v45 rangeValue];
+            firstObject = [v57 firstObject];
+            [firstObject rangeValue];
             v43 = v46;
 
             [v57 removeObjectAtIndex:0];
@@ -662,7 +662,7 @@ LABEL_28:
         v37 += v43;
       }
 
-      while (v37 < [v8 count]);
+      while (v37 < [stopsCopy count]);
     }
 
     if (v59)
@@ -677,7 +677,7 @@ LABEL_28:
       v14 = v55;
     }
 
-    v50 = [v8 count];
+    v50 = [stopsCopy count];
     v51 = v58;
     if (v58)
     {
@@ -694,7 +694,7 @@ LABEL_28:
     v60[2] = sub_100650214;
     v60[3] = &unk_101626390;
     v61 = v32;
-    [v8 enumerateObjectsUsingBlock:v60];
+    [stopsCopy enumerateObjectsUsingBlock:v60];
     self->_canShowMoreStops = 0;
   }
 
@@ -714,19 +714,19 @@ LABEL_28:
   [(TransitScheduleStopsTableViewDataSource *)self setRemoteNetworkState:0];
 }
 
-- (TransitScheduleStopsTableViewDataSource)initWithBoardingStopMuid:(unint64_t)a3 transitLine:(id)a4 referenceDate:(id)a5
+- (TransitScheduleStopsTableViewDataSource)initWithBoardingStopMuid:(unint64_t)muid transitLine:(id)line referenceDate:(id)date
 {
-  v9 = a4;
-  v10 = a5;
+  lineCopy = line;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = TransitScheduleStopsTableViewDataSource;
   v11 = [(TransitScheduleStopsTableViewDataSource *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_boardingStopMuid = a3;
-    objc_storeStrong(&v11->_transitLine, a4);
-    objc_storeStrong(&v12->_referenceDate, a5);
+    v11->_boardingStopMuid = muid;
+    objc_storeStrong(&v11->_transitLine, line);
+    objc_storeStrong(&v12->_referenceDate, date);
     v12->_remoteNetworkState = 0;
     v13.f64[0] = NAN;
     v13.f64[1] = NAN;
@@ -736,32 +736,32 @@ LABEL_28:
   return v12;
 }
 
-- (TransitScheduleStopsTableViewDataSource)initWithBoardingStopMuid:(unint64_t)a3 alightStopMuid:(unint64_t)a4 alightHallMuid:(unint64_t)a5 alightStationMuid:(unint64_t)a6 transitLine:(id)a7 referenceDate:(id)a8
+- (TransitScheduleStopsTableViewDataSource)initWithBoardingStopMuid:(unint64_t)muid alightStopMuid:(unint64_t)stopMuid alightHallMuid:(unint64_t)hallMuid alightStationMuid:(unint64_t)stationMuid transitLine:(id)line referenceDate:(id)date
 {
-  result = [(TransitScheduleStopsTableViewDataSource *)self initWithBoardingStopMuid:a3 transitLine:a7 referenceDate:a8];
+  result = [(TransitScheduleStopsTableViewDataSource *)self initWithBoardingStopMuid:muid transitLine:line referenceDate:date];
   if (result)
   {
-    result->_alightStopMuid = a4;
-    result->_alightHallMuid = a5;
-    result->_alightStationMuid = a6;
+    result->_alightStopMuid = stopMuid;
+    result->_alightHallMuid = hallMuid;
+    result->_alightStationMuid = stationMuid;
     result->_hasAlightStop = 1;
   }
 
   return result;
 }
 
-+ (void)registerCellsForCollectionView:(id)a3
++ (void)registerCellsForCollectionView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   v3 = objc_opt_class();
   v4 = +[TransitSchedulesStopViewCell identifier];
-  [v7 registerClass:v3 forCellWithReuseIdentifier:v4];
+  [viewCopy registerClass:v3 forCellWithReuseIdentifier:v4];
 
   v5 = objc_opt_class();
   v6 = +[TransitSchedulesCollapsedStopsPlaceholderViewCell identifier];
-  [v7 registerClass:v5 forCellWithReuseIdentifier:v6];
+  [viewCopy registerClass:v5 forCellWithReuseIdentifier:v6];
 
-  [v7 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitScheduleNetworkActivityTableViewCellIdentifier"];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitScheduleNetworkActivityTableViewCellIdentifier"];
 }
 
 @end

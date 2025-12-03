@@ -15,27 +15,27 @@
 - (double)naturalSearchFieldHeight;
 - (double)prescribedWidth;
 - (double)searchFieldHeightUpdatingShrinkageAndFadeAlphas;
-- (double)widthForSearchFieldWidth:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)widthForSearchFieldWidth:(double)width;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)disownSearchField;
 - (void)applyLayout;
-- (void)restoreSearchField:(id)a3;
-- (void)sendWillLayoutSubviewsForSearchFieldContainerView:(id)a3;
-- (void)setAllowSearchFieldShrinkage:(BOOL)a3;
-- (void)setDrawsSearchIconOnly:(BOOL)a3;
-- (void)setHasCancelButton:(BOOL)a3;
-- (void)setHasDeleteButton:(BOOL)a3;
-- (void)setHasFloatingSearchIconBackgroundView:(BOOL)a3;
-- (void)setHasLeftButton:(BOOL)a3;
-- (void)setHostedInlineByNavigationBar:(BOOL)a3;
-- (void)setHostedInlineByToolbar:(BOOL)a3;
-- (void)setSearchBarReadableWidth:(double)a3;
-- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)a3;
-- (void)setSearchFieldEffectivelySupportsDynamicType:(BOOL)a3;
-- (void)setSearchFieldRespectsReadableWidth:(BOOL)a3;
-- (void)setSearchFieldUsesCustomBackgroundImage:(BOOL)a3;
-- (void)setTextFieldManagedInNSToolbar:(BOOL)a3;
+- (void)restoreSearchField:(id)field;
+- (void)sendWillLayoutSubviewsForSearchFieldContainerView:(id)view;
+- (void)setAllowSearchFieldShrinkage:(BOOL)shrinkage;
+- (void)setDrawsSearchIconOnly:(BOOL)only;
+- (void)setHasCancelButton:(BOOL)button;
+- (void)setHasDeleteButton:(BOOL)button;
+- (void)setHasFloatingSearchIconBackgroundView:(BOOL)view;
+- (void)setHasLeftButton:(BOOL)button;
+- (void)setHostedInlineByNavigationBar:(BOOL)bar;
+- (void)setHostedInlineByToolbar:(BOOL)toolbar;
+- (void)setSearchBarReadableWidth:(double)width;
+- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)adjustment;
+- (void)setSearchFieldEffectivelySupportsDynamicType:(BOOL)type;
+- (void)setSearchFieldRespectsReadableWidth:(BOOL)width;
+- (void)setSearchFieldUsesCustomBackgroundImage:(BOOL)image;
+- (void)setTextFieldManagedInNSToolbar:(BOOL)toolbar;
 - (void)updateLayout;
 @end
 
@@ -47,16 +47,16 @@
   v4 = v3;
   v6 = v5;
   [(_UISearchBarLayoutBase *)self barMetrics];
-  v7 = [(_UISearchBarSearchContainerLayout *)self searchField];
-  if (v7)
+  searchField = [(_UISearchBarSearchContainerLayout *)self searchField];
+  if (searchField)
   {
   }
 
   else
   {
-    v9 = [(_UISearchBarSearchContainerLayout *)self hasCancelButton];
+    hasCancelButton = [(_UISearchBarSearchContainerLayout *)self hasCancelButton];
     result = 0.0;
-    if (!v9)
+    if (!hasCancelButton)
     {
       return result;
     }
@@ -131,8 +131,8 @@
     v11 = v7;
     v12 = v8;
     v13 = *&self->_searchContainerLayoutFlags & 3;
-    v14 = [v4 subviews];
-    v15 = [v14 count];
+    subviews = [v4 subviews];
+    v15 = [subviews count];
 
     if (v15 || !+[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
@@ -151,8 +151,8 @@
       [v4 setAlpha:v16 * v17];
       if (*&self->_searchContainerLayoutFlags)
       {
-        v18 = [v4 traitCollection];
-        if ([v18 userInterfaceIdiom] == 3)
+        traitCollection = [v4 traitCollection];
+        if ([traitCollection userInterfaceIdiom] == 3)
         {
           v19 = _UISolariumEnabled();
 
@@ -185,7 +185,7 @@
       v26 = v12;
       v27 = v13 != 0;
       v21 = v4;
-      v22 = self;
+      selfCopy = self;
       [UIView performWithoutAnimation:v20];
     }
   }
@@ -224,7 +224,7 @@
     v20 = MEMORY[0x1E695F058];
     v21 = *(MEMORY[0x1E695F058] + 16);
     v22 = *(MEMORY[0x1E695F058] + 24);
-    v158 = [(_UISearchBarLayoutBase *)self isLayoutRTL];
+    isLayoutRTL = [(_UISearchBarLayoutBase *)self isLayoutRTL];
     v23 = 1.0;
     if ((*&self->_searchContainerLayoutFlags & 0x80) == 0)
     {
@@ -293,10 +293,10 @@ LABEL_12:
 
     v40 = v7;
     v156 = v22;
-    v41 = [(_UISearchBarLayoutBase *)self associatedView];
-    v42 = [v41 traitCollection];
+    associatedView = [(_UISearchBarLayoutBase *)self associatedView];
+    traitCollection = [associatedView traitCollection];
     v43 = 11.0;
-    if ([v42 userInterfaceIdiom] == 3)
+    if ([traitCollection userInterfaceIdiom] == 3)
     {
       if (_UISolariumEnabled())
       {
@@ -378,9 +378,9 @@ LABEL_12:
       v35 = 0.0;
     }
 
-    v61 = [(_UISearchBarLayoutBase *)self associatedView];
-    v62 = [v61 traitCollection];
-    if ([v62 userInterfaceIdiom] == 3)
+    associatedView2 = [(_UISearchBarLayoutBase *)self associatedView];
+    traitCollection2 = [associatedView2 traitCollection];
+    if ([traitCollection2 userInterfaceIdiom] == 3)
     {
       v63 = _UISolariumEnabled();
 
@@ -411,7 +411,7 @@ LABEL_42:
           *&aBlock[6] = v52;
           *&aBlock[7] = v57;
           *&aBlock[8] = v58;
-          v180 = v158;
+          v180 = isLayoutRTL;
           v72 = _Block_copy(aBlock);
           v67 = v72[2](v67, 0.0, v176, v177);
           v74 = v73;
@@ -451,9 +451,9 @@ LABEL_42:
         v192.size.height = v177;
         v170 = v81;
         v82 = fmax(v81, v167 + CGRectGetMaxX(v192));
-        v83 = [(_UISearchBarLayoutBase *)self associatedView];
-        v84 = [v83 traitCollection];
-        if ([v84 userInterfaceIdiom] == 3)
+        associatedView3 = [(_UISearchBarLayoutBase *)self associatedView];
+        traitCollection3 = [associatedView3 traitCollection];
+        if ([traitCollection3 userInterfaceIdiom] == 3)
         {
           v85 = _UISolariumEnabled();
 
@@ -488,7 +488,7 @@ LABEL_42:
         }
 
         v88 = v160;
-        if (v158)
+        if (isLayoutRTL)
         {
           v195.origin.x = v50;
           v195.origin.y = v52;
@@ -515,9 +515,9 @@ LABEL_42:
           v92 = v91;
           if (v33)
           {
-            v93 = [(_UISearchBarLayoutBase *)self associatedView];
-            v94 = [v93 traitCollection];
-            if ([v94 userInterfaceIdiom] == 3 && (_UISolariumEnabled() & 1) != 0)
+            associatedView4 = [(_UISearchBarLayoutBase *)self associatedView];
+            traitCollection4 = [associatedView4 traitCollection];
+            if ([traitCollection4 userInterfaceIdiom] == 3 && (_UISolariumEnabled() & 1) != 0)
             {
               v88 = v160;
               v95 = v92 - v163;
@@ -570,10 +570,10 @@ LABEL_42:
           v200.size.height = v177;
           v100 = v52 + (v99 - CGRectGetHeight(v200)) * 0.5;
           v101 = +[UIDevice currentDevice];
-          v102 = [v101 userInterfaceIdiom];
+          userInterfaceIdiom = [v101 userInterfaceIdiom];
           v103 = ceil(v100);
           v104 = floor(v100);
-          if (v102 == 1)
+          if (userInterfaceIdiom == 1)
           {
             v97 = v103;
           }
@@ -604,7 +604,7 @@ LABEL_42:
           if (v106)
           {
             [v106 UIOffsetValue];
-            if (v158)
+            if (isLayoutRTL)
             {
               v108 = -v108;
             }
@@ -629,8 +629,8 @@ LABEL_42:
         if ((v111 & 0x80) != 0)
         {
           v161 = v67;
-          v122 = [(UIBarButtonItem *)self->_searchIconBarButtonItem view];
-          [v122 imageViewSize];
+          view = [(UIBarButtonItem *)self->_searchIconBarButtonItem view];
+          [view imageViewSize];
           v124 = v123;
           v126 = v125;
 
@@ -674,8 +674,8 @@ LABEL_42:
 
           recta = v130 + MinY;
           v172 = v105;
-          v137 = [(UIBarButtonItem *)self->_searchIconBarButtonItem view];
-          [v137 backgroundSize];
+          view2 = [(UIBarButtonItem *)self->_searchIconBarButtonItem view];
+          [view2 backgroundSize];
           v139 = v138;
           v141 = v140;
 
@@ -718,8 +718,8 @@ LABEL_42:
           v159 = v116;
           v161 = v67;
           v172 = v105;
-          v132 = [(UIBarButtonItem *)self->_searchIconBarButtonItem view];
-          [v132 backgroundSize];
+          view3 = [(UIBarButtonItem *)self->_searchIconBarButtonItem view];
+          [view3 backgroundSize];
           v157 = v133;
           v135 = v134;
 
@@ -886,9 +886,9 @@ LABEL_92:
 
 - (double)naturalSearchFieldHeight
 {
-  v4 = [(_UISearchBarSearchContainerLayout *)self searchField];
+  searchField = [(_UISearchBarSearchContainerLayout *)self searchField];
 
-  if (!v4)
+  if (!searchField)
   {
     return 0.0;
   }
@@ -899,8 +899,8 @@ LABEL_92:
     v7 = v8;
     if (v8 == 0.0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"_UISearchBarSearchContainerLayout.m" lineNumber:221 description:@"searchBarFieldHeight is unexpectedly 0.0 in naturalContainerHeight"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchBarSearchContainerLayout.m" lineNumber:221 description:@"searchBarFieldHeight is unexpectedly 0.0 in naturalContainerHeight"];
     }
   }
 
@@ -1048,12 +1048,12 @@ LABEL_92:
   return result;
 }
 
-- (void)setHostedInlineByNavigationBar:(BOOL)a3
+- (void)setHostedInlineByNavigationBar:(BOOL)bar
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 0x10) == 0) ^ bar) & 1) == 0)
   {
-    if (a3)
+    if (bar)
     {
       v4 = 16;
     }
@@ -1068,12 +1068,12 @@ LABEL_92:
   }
 }
 
-- (void)setHostedInlineByToolbar:(BOOL)a3
+- (void)setHostedInlineByToolbar:(BOOL)toolbar
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 0x20) == 0) ^ toolbar) & 1) == 0)
   {
-    if (a3)
+    if (toolbar)
     {
       v4 = 32;
     }
@@ -1088,12 +1088,12 @@ LABEL_92:
   }
 }
 
-- (void)setTextFieldManagedInNSToolbar:(BOOL)a3
+- (void)setTextFieldManagedInNSToolbar:(BOOL)toolbar
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 0x40) == 0) ^ toolbar) & 1) == 0)
   {
-    if (a3)
+    if (toolbar)
     {
       v4 = 64;
     }
@@ -1108,12 +1108,12 @@ LABEL_92:
   }
 }
 
-- (void)setDrawsSearchIconOnly:(BOOL)a3
+- (void)setDrawsSearchIconOnly:(BOOL)only
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 0x80) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 0x80) == 0) ^ only) & 1) == 0)
   {
-    if (a3)
+    if (only)
     {
       v4 = 128;
     }
@@ -1128,22 +1128,22 @@ LABEL_92:
   }
 }
 
-- (void)setHasCancelButton:(BOOL)a3
+- (void)setHasCancelButton:(BOOL)button
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if ((searchContainerLayoutFlags & 1) != a3)
+  if ((searchContainerLayoutFlags & 1) != button)
   {
-    *&self->_searchContainerLayoutFlags = searchContainerLayoutFlags & 0xFFFE | a3;
+    *&self->_searchContainerLayoutFlags = searchContainerLayoutFlags & 0xFFFE | button;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (void)setHasDeleteButton:(BOOL)a3
+- (void)setHasDeleteButton:(BOOL)button
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 2) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 2) == 0) ^ button) & 1) == 0)
   {
-    if (a3)
+    if (button)
     {
       v4 = 2;
     }
@@ -1158,12 +1158,12 @@ LABEL_92:
   }
 }
 
-- (void)setHasLeftButton:(BOOL)a3
+- (void)setHasLeftButton:(BOOL)button
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 4) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 4) == 0) ^ button) & 1) == 0)
   {
-    if (a3)
+    if (button)
     {
       v4 = 4;
     }
@@ -1178,12 +1178,12 @@ LABEL_92:
   }
 }
 
-- (void)setHasFloatingSearchIconBackgroundView:(BOOL)a3
+- (void)setHasFloatingSearchIconBackgroundView:(BOOL)view
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 8) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 8) == 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
       v4 = 8;
     }
@@ -1198,12 +1198,12 @@ LABEL_92:
   }
 }
 
-- (void)setAllowSearchFieldShrinkage:(BOOL)a3
+- (void)setAllowSearchFieldShrinkage:(BOOL)shrinkage
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 0x100) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 0x100) == 0) ^ shrinkage) & 1) == 0)
   {
-    if (a3)
+    if (shrinkage)
     {
       v4 = 256;
     }
@@ -1218,12 +1218,12 @@ LABEL_92:
   }
 }
 
-- (void)setSearchFieldUsesCustomBackgroundImage:(BOOL)a3
+- (void)setSearchFieldUsesCustomBackgroundImage:(BOOL)image
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 0x200) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 0x200) == 0) ^ image) & 1) == 0)
   {
-    if (a3)
+    if (image)
     {
       v4 = 512;
     }
@@ -1238,12 +1238,12 @@ LABEL_92:
   }
 }
 
-- (void)setSearchFieldEffectivelySupportsDynamicType:(BOOL)a3
+- (void)setSearchFieldEffectivelySupportsDynamicType:(BOOL)type
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 0x400) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 0x400) == 0) ^ type) & 1) == 0)
   {
-    if (a3)
+    if (type)
     {
       v4 = 1024;
     }
@@ -1258,12 +1258,12 @@ LABEL_92:
   }
 }
 
-- (void)setSearchFieldRespectsReadableWidth:(BOOL)a3
+- (void)setSearchFieldRespectsReadableWidth:(BOOL)width
 {
   searchContainerLayoutFlags = self->_searchContainerLayoutFlags;
-  if (((((searchContainerLayoutFlags & 0x800) == 0) ^ a3) & 1) == 0)
+  if (((((searchContainerLayoutFlags & 0x800) == 0) ^ width) & 1) == 0)
   {
-    if (a3)
+    if (width)
     {
       v4 = 2048;
     }
@@ -1278,34 +1278,34 @@ LABEL_92:
   }
 }
 
-- (void)setSearchBarReadableWidth:(double)a3
+- (void)setSearchBarReadableWidth:(double)width
 {
   searchBarReadableWidth = self->_searchBarReadableWidth;
-  if (searchBarReadableWidth != a3)
+  if (searchBarReadableWidth != width)
   {
-    if (searchBarReadableWidth > a3 || (*&self->_searchContainerLayoutFlags & 0x1000) != 0)
+    if (searchBarReadableWidth > width || (*&self->_searchContainerLayoutFlags & 0x1000) != 0)
     {
       [(_UISearchBarLayoutBase *)self invalidateLayout];
     }
 
-    self->_searchBarReadableWidth = a3;
+    self->_searchBarReadableWidth = width;
   }
 }
 
-- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)a3
+- (void)setSearchFieldBackgroundPositionAdjustment:(UIOffset)adjustment
 {
-  if (a3.horizontal != self->_searchFieldBackgroundPositionAdjustment.horizontal || a3.vertical != self->_searchFieldBackgroundPositionAdjustment.vertical)
+  if (adjustment.horizontal != self->_searchFieldBackgroundPositionAdjustment.horizontal || adjustment.vertical != self->_searchFieldBackgroundPositionAdjustment.vertical)
   {
-    self->_searchFieldBackgroundPositionAdjustment = a3;
+    self->_searchFieldBackgroundPositionAdjustment = adjustment;
     [(_UISearchBarLayoutBase *)self invalidateLayout];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = _UISearchBarSearchContainerLayout;
-  v4 = [(_UISearchBarLayoutBase *)&v12 copyWithZone:a3];
+  v4 = [(_UISearchBarLayoutBase *)&v12 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -1363,27 +1363,27 @@ LABEL_92:
   return result;
 }
 
-- (double)widthForSearchFieldWidth:(double)a3
+- (double)widthForSearchFieldWidth:(double)width
 {
   if ([(_UISearchBarSearchContainerLayout *)self isHostedInlineByNavigationBar])
   {
     if ([(_UISearchBarSearchContainerLayout *)self drawsSearchIconOnly])
     {
-      v5 = [(UIBarButtonItem *)self->_searchIconBarButtonItem view];
-      [v5 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-      a3 = v6;
+      view = [(UIBarButtonItem *)self->_searchIconBarButtonItem view];
+      [view sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+      width = v6;
     }
 
     else
     {
       [(_UISearchBarLayoutBase *)self contentInset];
-      v9 = v8 + a3;
+      v9 = v8 + width;
       [(_UISearchBarLayoutBase *)self contentInset];
-      a3 = v9 + v10;
+      width = v9 + v10;
       if ([(_UISearchBarSearchContainerLayout *)self hasCancelButton])
       {
         [(UIView *)self->_cancelButton sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-        return a3 + v11 + 11.0;
+        return width + v11 + 11.0;
       }
     }
   }
@@ -1393,7 +1393,7 @@ LABEL_92:
     return 0.0;
   }
 
-  return a3;
+  return width;
 }
 
 - (id)description
@@ -1544,13 +1544,13 @@ LABEL_2:
   return v3;
 }
 
-- (void)sendWillLayoutSubviewsForSearchFieldContainerView:(id)a3
+- (void)sendWillLayoutSubviewsForSearchFieldContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   layoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback = self->_layoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback;
   if (layoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback && (*&self->_searchContainerLayoutFlags & 0x30) == 0)
   {
-    v18 = v4;
+    v18 = viewCopy;
     [(_UISearchBarSearchContainerLayout *)self searchFieldLayoutFrame];
     v7 = v6;
     v9 = v8;
@@ -1558,13 +1558,13 @@ LABEL_2:
     v13 = v12;
     [(_UISearchBarSearchContainerLayout *)self cancelButtonLayoutFrame];
     layoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback[2](layoutCustomizationDelegateSearchFieldContainerWillLayoutSubviewsCallback, v18, v7, v9, v11, v13, v14, v15, v16, v17);
-    v4 = v18;
+    viewCopy = v18;
   }
 }
 
-- (void)restoreSearchField:(id)a3
+- (void)restoreSearchField:(id)field
 {
-  objc_storeStrong(&self->_searchField, a3);
+  objc_storeStrong(&self->_searchField, field);
 
   [(_UISearchBarSearchContainerLayout *)self applyLayout];
 }

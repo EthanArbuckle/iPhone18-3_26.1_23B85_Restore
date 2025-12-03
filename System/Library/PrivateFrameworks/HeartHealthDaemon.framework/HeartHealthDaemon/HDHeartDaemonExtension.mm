@@ -1,42 +1,42 @@
 @interface HDHeartDaemonExtension
-- (HDHeartDaemonExtension)initWithHealthDaemon:(id)a3 heartNotificationsUserDefaults:(id)a4;
-- (void)daemonReady:(id)a3;
-- (void)performPostInstallUpdateTaskForManager:(id)a3 completion:(id)a4;
+- (HDHeartDaemonExtension)initWithHealthDaemon:(id)daemon heartNotificationsUserDefaults:(id)defaults;
+- (void)daemonReady:(id)ready;
+- (void)performPostInstallUpdateTaskForManager:(id)manager completion:(id)completion;
 @end
 
 @implementation HDHeartDaemonExtension
 
-- (HDHeartDaemonExtension)initWithHealthDaemon:(id)a3 heartNotificationsUserDefaults:(id)a4
+- (HDHeartDaemonExtension)initWithHealthDaemon:(id)daemon heartNotificationsUserDefaults:(id)defaults
 {
-  v6 = a3;
-  v7 = a4;
+  daemonCopy = daemon;
+  defaultsCopy = defaults;
   v13.receiver = self;
   v13.super_class = HDHeartDaemonExtension;
   v8 = [(HDHeartDaemonExtension *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_healthDaemon, v6);
-    objc_storeStrong(&v9->_heartNotificationsUserDefaults, a4);
-    v10 = [[HDHRBloodPressureJournalPeriodicScheduler alloc] initWithDaemon:v6];
+    objc_storeWeak(&v8->_healthDaemon, daemonCopy);
+    objc_storeStrong(&v9->_heartNotificationsUserDefaults, defaults);
+    v10 = [[HDHRBloodPressureJournalPeriodicScheduler alloc] initWithDaemon:daemonCopy];
     bloodPressureJournalPeriodicScheduler = v9->_bloodPressureJournalPeriodicScheduler;
     v9->_bloodPressureJournalPeriodicScheduler = v10;
 
-    [v6 registerDaemonReadyObserver:v9 queue:0];
+    [daemonCopy registerDaemonReadyObserver:v9 queue:0];
   }
 
   return v9;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
-  v4 = [a3 postInstallUpdateManager];
-  [v4 registerUpdateTaskHandler:self queue:0];
+  postInstallUpdateManager = [ready postInstallUpdateManager];
+  [postInstallUpdateManager registerUpdateTaskHandler:self queue:0];
 }
 
-- (void)performPostInstallUpdateTaskForManager:(id)a3 completion:(id)a4
+- (void)performPostInstallUpdateTaskForManager:(id)manager completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v5 = HDMigrateHeartRateNotificationsUserDefaultsIfNecessary(self->_heartNotificationsUserDefaults);
   if ([v5 count])
   {
@@ -44,7 +44,7 @@
     HKSynchronizeNanoPreferencesUserDefaults();
   }
 
-  v7[2](v7, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
 @end

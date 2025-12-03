@@ -1,8 +1,8 @@
 @interface MPSectionedIdentifierListReverseEnumerator
-- (MPSectionedIdentifierListReverseEnumerator)initWithSectionedIdentifierList:(id)a3 options:(unint64_t)a4 startEntry:(id)a5 endEntry:(id)a6 withExclusiveAccessToken:(id)a7;
+- (MPSectionedIdentifierListReverseEnumerator)initWithSectionedIdentifierList:(id)list options:(unint64_t)options startEntry:(id)entry endEntry:(id)endEntry withExclusiveAccessToken:(id)token;
 - (id)_startEntryProxy;
 - (id)nextObject;
-- (id)nextObjectWithExclusiveAccessToken:(id)a3;
+- (id)nextObjectWithExclusiveAccessToken:(id)token;
 @end
 
 @implementation MPSectionedIdentifierListReverseEnumerator
@@ -52,55 +52,55 @@ void __56__MPSectionedIdentifierListReverseEnumerator_nextObject__block_invoke(u
   *(v4 + 40) = v3;
 }
 
-- (id)nextObjectWithExclusiveAccessToken:(id)a3
+- (id)nextObjectWithExclusiveAccessToken:(id)token
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 assertHasExclusiveAccessForOwner:self->_sectionedIdentifierList];
+  tokenCopy = token;
+  [tokenCopy assertHasExclusiveAccessForOwner:self->_sectionedIdentifierList];
   options = self->_options;
   v6 = &OBJC_IVAR___MPAVRoute__batteryLevel;
   v7 = &OBJC_IVAR___MPAVRoute__batteryLevel;
   v41 = *MEMORY[0x1E69B1340];
   v46 = options;
-  v47 = v4;
+  v47 = tokenCopy;
   while (1)
   {
     v8 = [(NSMutableArray *)self->_contexts count];
     v9 = v6[317];
     if (!v8 && ![*(&self->super.super.isa + v9) count])
     {
-      v10 = 0;
+      firstObject = 0;
       goto LABEL_57;
     }
 
     if ([*(&self->super.super.isa + v9) count])
     {
-      v10 = [*(&self->super.super.isa + v9) firstObject];
+      firstObject = [*(&self->super.super.isa + v9) firstObject];
       [*(&self->super.super.isa + v9) removeObjectAtIndex:0];
-      if (options & 0x20) == 0 || (_MPSectionedIdentifierListEnumeratorShouldEmitAsDataSourceEntry(self->_sectionedIdentifierList, v10, v4))
+      if (options & 0x20) == 0 || (_MPSectionedIdentifierListEnumeratorShouldEmitAsDataSourceEntry(self->_sectionedIdentifierList, firstObject, tokenCopy))
       {
         goto LABEL_57;
       }
     }
 
-    v11 = [(NSMutableArray *)self->_contexts lastObject];
-    v12 = [v11 nextObject];
-    v13 = v12;
-    if (v12)
+    lastObject = [(NSMutableArray *)self->_contexts lastObject];
+    nextObject = [lastObject nextObject];
+    v13 = nextObject;
+    if (nextObject)
     {
-      v14 = [v12 nextEntries];
-      v15 = [v14 objectEnumerator];
+      nextEntries = [nextObject nextEntries];
+      objectEnumerator = [nextEntries objectEnumerator];
 
-      [(NSMutableArray *)self->_contexts addObject:v15];
+      [(NSMutableArray *)self->_contexts addObject:objectEnumerator];
       [*(&self->super.super.isa + v7[319]) addObject:v13];
 
       goto LABEL_45;
     }
 
     v16 = v7[319];
-    v17 = [*(&self->super.super.isa + v16) lastObject];
+    lastObject2 = [*(&self->super.super.isa + v16) lastObject];
     contexts = self->_contexts;
-    if (v17 == self->_endEntry)
+    if (lastObject2 == self->_endEntry)
     {
       break;
     }
@@ -108,11 +108,11 @@ void __56__MPSectionedIdentifierListReverseEnumerator_nextObject__block_invoke(u
     [(NSMutableArray *)contexts removeLastObject];
     [*(&self->super.super.isa + v16) removeLastObject];
     v19 = self->_options;
-    if (v17 == self->_startEntryProxy)
+    if (lastObject2 == self->_startEntryProxy)
     {
       if (v19)
       {
-        endEntry = v17;
+        endEntry = lastObject2;
       }
 
       else
@@ -120,60 +120,60 @@ void __56__MPSectionedIdentifierListReverseEnumerator_nextObject__block_invoke(u
         endEntry = 0;
       }
 
-      v4 = v47;
+      tokenCopy = v47;
       goto LABEL_54;
     }
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v21 = [(MPSectionedIdentifierListEntry *)v17 previousEntry];
-    v48 = v21;
+    previousEntry = [(MPSectionedIdentifierListEntry *)lastObject2 previousEntry];
+    v48 = previousEntry;
     if (isKindOfClass)
     {
-      v22 = [(MPSectionedIdentifierListEntry *)v17 sectionHeadEntry];
+      sectionHeadEntry = [(MPSectionedIdentifierListEntry *)lastObject2 sectionHeadEntry];
 LABEL_16:
-      v23 = v22;
-      v49 = [(__CFString *)v22 nextEntries];
+      _startEntryProxy = sectionHeadEntry;
+      nextEntries2 = [(__CFString *)sectionHeadEntry nextEntries];
       goto LABEL_17;
     }
 
-    if (v21)
+    if (previousEntry)
     {
-      v22 = v21;
+      sectionHeadEntry = previousEntry;
       goto LABEL_16;
     }
 
-    v23 = [(MPSectionedIdentifierListReverseEnumerator *)self _startEntryProxy];
-    v49 = [(MPSectionedIdentifierList *)self->_sectionedIdentifierList _startEntriesWithExclusiveAccessToken:v47];
+    _startEntryProxy = [(MPSectionedIdentifierListReverseEnumerator *)self _startEntryProxy];
+    nextEntries2 = [(MPSectionedIdentifierList *)self->_sectionedIdentifierList _startEntriesWithExclusiveAccessToken:v47];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v37 = v17;
+      v37 = lastObject2;
       if ([(MPSectionedIdentifierListEntry *)v37 isShuffledHead])
       {
-        v45 = [(__CFString *)v49 arrayByAddingObject:v37];
+        v45 = [(__CFString *)nextEntries2 arrayByAddingObject:v37];
 
-        v49 = v45;
+        nextEntries2 = v45;
       }
     }
 
 LABEL_17:
-    if ([*(&self->super.super.isa + v16) indexOfObjectIdenticalTo:v23] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([*(&self->super.super.isa + v16) indexOfObjectIdenticalTo:_startEntryProxy] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [*(&self->super.super.isa + v16) addObject:v23];
-      v24 = [(__CFString *)v49 objectEnumerator];
-      v25 = [v24 nextObjectIdenticalTo:v17];
+      [*(&self->super.super.isa + v16) addObject:_startEntryProxy];
+      objectEnumerator2 = [(__CFString *)nextEntries2 objectEnumerator];
+      v25 = [objectEnumerator2 nextObjectIdenticalTo:lastObject2];
       if (!v25)
       {
         v26 = dispatch_semaphore_create(0);
         v44 = MEMORY[0x1E69B13D8];
         v52[0] = @"entryToEmit";
         v52[1] = @"nextEntryToEmit";
-        v53[0] = v17;
-        v53[1] = v23;
-        if (v49)
+        v53[0] = lastObject2;
+        v53[1] = _startEntryProxy;
+        if (nextEntries2)
         {
-          v27 = v49;
+          v27 = nextEntries2;
         }
 
         else
@@ -203,13 +203,13 @@ LABEL_17:
         [v44 snapshotWithDomain:v41 type:@"Bug" subType:@"Invalid-SIL" context:@"entryToEmit.previousEntry.nextEntries-2" triggerThresholdValues:&stru_1F149ECA8 events:v29 completion:v50];
 
         dispatch_semaphore_wait(v30, 0xFFFFFFFFFFFFFFFFLL);
-        v31 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v31 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEnumerator.m" lineNumber:340 description:@"entryToEmit not found in entryToEmit.previousEntry.nextEntries"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEnumerator.m" lineNumber:340 description:@"entryToEmit not found in entryToEmit.previousEntry.nextEntries"];
 
         v25 = 0;
       }
 
-      [(NSMutableArray *)self->_contexts addObject:v24];
+      [(NSMutableArray *)self->_contexts addObject:objectEnumerator2];
     }
 
     objc_opt_class();
@@ -219,16 +219,16 @@ LABEL_17:
     {
       v34 = 1;
       LOBYTE(options) = v46;
-      v4 = v47;
+      tokenCopy = v47;
       goto LABEL_44;
     }
 
     v35 = self->_options;
-    v36 = [(MPSectionedIdentifierListEntry *)v17 isDataSourceRemoved];
+    isDataSourceRemoved = [(MPSectionedIdentifierListEntry *)lastObject2 isDataSourceRemoved];
     LOBYTE(options) = v46;
-    if (v36 & 1) != 0 || ((v33 ^ 1))
+    if (isDataSourceRemoved & 1) != 0 || ((v33 ^ 1))
     {
-      v4 = v47;
+      tokenCopy = v47;
       if ((v35 & 2) != 0)
       {
         goto LABEL_41;
@@ -237,10 +237,10 @@ LABEL_17:
 
     else
     {
-      v4 = v47;
+      tokenCopy = v47;
       if ((v46 & 0x20) == 0)
       {
-        v36 = [(MPSectionedIdentifierListEntry *)v17 isRemoved];
+        isDataSourceRemoved = [(MPSectionedIdentifierListEntry *)lastObject2 isRemoved];
       }
 
       if ((v35 & 2) != 0)
@@ -249,20 +249,20 @@ LABEL_17:
       }
     }
 
-    if (v36)
+    if (isDataSourceRemoved)
     {
       goto LABEL_35;
     }
 
 LABEL_41:
-    if ((v46 & 0x20) != 0 && !_MPSectionedIdentifierListEnumeratorShouldEmitAsDataSourceEntry(self->_sectionedIdentifierList, v17, v4))
+    if ((v46 & 0x20) != 0 && !_MPSectionedIdentifierListEnumeratorShouldEmitAsDataSourceEntry(self->_sectionedIdentifierList, lastObject2, tokenCopy))
     {
 LABEL_35:
       v34 = 1;
       goto LABEL_44;
     }
 
-    v40 = v17;
+    v40 = lastObject2;
     v34 = 0;
 LABEL_44:
 
@@ -291,25 +291,25 @@ LABEL_54:
 LABEL_55:
 
 LABEL_56:
-  v10 = v40;
+  firstObject = v40;
 LABEL_57:
 
-  return v10;
+  return firstObject;
 }
 
-- (MPSectionedIdentifierListReverseEnumerator)initWithSectionedIdentifierList:(id)a3 options:(unint64_t)a4 startEntry:(id)a5 endEntry:(id)a6 withExclusiveAccessToken:(id)a7
+- (MPSectionedIdentifierListReverseEnumerator)initWithSectionedIdentifierList:(id)list options:(unint64_t)options startEntry:(id)entry endEntry:(id)endEntry withExclusiveAccessToken:(id)token
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v15 == v16 && v15 | v16)
+  listCopy = list;
+  entryCopy = entry;
+  endEntryCopy = endEntry;
+  tokenCopy = token;
+  if (entryCopy == endEntryCopy && entryCopy | endEntryCopy)
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    v37 = v36 = a4;
+    v37 = v36 = options;
     [v37 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEnumerator.m" lineNumber:234 description:@"endEntry cannot be the same as the startingEntry"];
 
-    a4 = v36;
+    options = v36;
   }
 
   v39.receiver = self;
@@ -318,39 +318,39 @@ LABEL_57:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_sectionedIdentifierList, a3);
-    v19->_options = a4;
-    v20 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v18->_sectionedIdentifierList, list);
+    v19->_options = options;
+    array = [MEMORY[0x1E695DF70] array];
     nextEmittableEnumerationResults = v19->_nextEmittableEnumerationResults;
-    v19->_nextEmittableEnumerationResults = v20;
+    v19->_nextEmittableEnumerationResults = array;
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     contexts = v19->_contexts;
-    v19->_contexts = v22;
+    v19->_contexts = array2;
 
-    v24 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     entriesToEmit = v19->_entriesToEmit;
-    v19->_entriesToEmit = v24;
+    v19->_entriesToEmit = array3;
 
-    objc_storeStrong(&v19->_endEntry, a6);
-    if ((a4 & 0x10) == 0 && !v15)
+    objc_storeStrong(&v19->_endEntry, endEntry);
+    if ((options & 0x10) == 0 && !entryCopy)
     {
-      [(MPSectionedIdentifierList *)v19->_sectionedIdentifierList _reverseEnumeratorWillStartAtEnd:v19 withExclusiveAccessToken:v17];
+      [(MPSectionedIdentifierList *)v19->_sectionedIdentifierList _reverseEnumeratorWillStartAtEnd:v19 withExclusiveAccessToken:tokenCopy];
     }
 
     options = v19->_options;
     v27 = v19->_contexts;
-    v28 = [MEMORY[0x1E695E0F0] objectEnumerator];
-    [(NSMutableArray *)v27 addObject:v28];
+    objectEnumerator = [MEMORY[0x1E695E0F0] objectEnumerator];
+    [(NSMutableArray *)v27 addObject:objectEnumerator];
 
-    if (v15)
+    if (entryCopy)
     {
-      v29 = v15;
+      v29 = entryCopy;
     }
 
     else
     {
-      v29 = [(MPSectionedIdentifierList *)v19->_sectionedIdentifierList _endEntryWithExclusiveAccessToken:v17];
+      v29 = [(MPSectionedIdentifierList *)v19->_sectionedIdentifierList _endEntryWithExclusiveAccessToken:tokenCopy];
       if (!v29)
       {
         goto LABEL_12;
@@ -359,13 +359,13 @@ LABEL_57:
 
     [(NSMutableArray *)v19->_entriesToEmit addObject:v29];
 LABEL_12:
-    if (!v15 && (options & 1) != 0)
+    if (!entryCopy && (options & 1) != 0)
     {
       v30 = *(&v19->super.super.isa + v38);
       v31 = +[_MPSectionedIdentifierListProxyEntry endEntry];
       [v30 addObject:v31];
 
-      v32 = [(MPSectionedIdentifierList *)v19->_sectionedIdentifierList _endEntryWithExclusiveAccessToken:v17];
+      v32 = [(MPSectionedIdentifierList *)v19->_sectionedIdentifierList _endEntryWithExclusiveAccessToken:tokenCopy];
 
       if (!v32)
       {
@@ -375,7 +375,7 @@ LABEL_12:
       }
     }
 
-    _MPSectionedIdentifierListEnumeratorAdjustForStartItemInclusionIfNeeded(v19, a4, v15, v17);
+    _MPSectionedIdentifierListEnumeratorAdjustForStartItemInclusionIfNeeded(v19, options, entryCopy, tokenCopy);
   }
 
   return v19;

@@ -1,22 +1,22 @@
 @interface MetricsController
 + (id)sharedInstance;
-- (BOOL)_hasEntitlements:(id)a3;
+- (BOOL)_hasEntitlements:(id)entitlements;
 - (MetricsController)init;
 - (id)_operationQueue;
 - (void)_cancelBackoffRetryTimer;
 - (void)_reportEvents;
 - (void)_reportEventsIfNeeded;
 - (void)_scheduleBackoffRetry;
-- (void)_sendUnentitledResponseToMessage:(id)a3 connection:(id)a4;
+- (void)_sendUnentitledResponseToMessage:(id)message connection:(id)connection;
 - (void)configureDuet;
 - (void)dealloc;
-- (void)getInternalSettingsWithMessage:(id)a3 connection:(id)a4;
-- (void)insertEventWithMessage:(id)a3 connection:(id)a4;
-- (void)observeXPCServer:(id)a3;
-- (void)recordAnalyticsWithMetricsDialogEvent:(id)a3 forTopic:(id)a4;
-- (void)recordAnalyticsWithMetricsDialogEventWithMessage:(id)a3 connection:(id)a4;
-- (void)reportEventsWithMessage:(id)a3 connection:(id)a4;
-- (void)setInternalSettingsWithMessage:(id)a3 connection:(id)a4;
+- (void)getInternalSettingsWithMessage:(id)message connection:(id)connection;
+- (void)insertEventWithMessage:(id)message connection:(id)connection;
+- (void)observeXPCServer:(id)server;
+- (void)recordAnalyticsWithMetricsDialogEvent:(id)event forTopic:(id)topic;
+- (void)recordAnalyticsWithMetricsDialogEventWithMessage:(id)message connection:(id)connection;
+- (void)reportEventsWithMessage:(id)message connection:(id)connection;
+- (void)setInternalSettingsWithMessage:(id)message connection:(id)connection;
 @end
 
 @implementation MetricsController
@@ -80,21 +80,21 @@
   return v3;
 }
 
-- (void)observeXPCServer:(id)a3
+- (void)observeXPCServer:(id)server
 {
-  v4 = a3;
-  [v4 addObserver:self selector:"getInternalSettingsWithMessage:connection:" forMessage:128];
-  [v4 addObserver:self selector:"insertEventWithMessage:connection:" forMessage:110];
-  [v4 addObserver:self selector:"reportEventsWithMessage:connection:" forMessage:114];
-  [v4 addObserver:self selector:"recordAnalyticsWithMetricsDialogEventWithMessage:connection:" forMessage:197];
-  [v4 addObserver:self selector:"setInternalSettingsWithMessage:connection:" forMessage:129];
+  serverCopy = server;
+  [serverCopy addObserver:self selector:"getInternalSettingsWithMessage:connection:" forMessage:128];
+  [serverCopy addObserver:self selector:"insertEventWithMessage:connection:" forMessage:110];
+  [serverCopy addObserver:self selector:"reportEventsWithMessage:connection:" forMessage:114];
+  [serverCopy addObserver:self selector:"recordAnalyticsWithMetricsDialogEventWithMessage:connection:" forMessage:197];
+  [serverCopy addObserver:self selector:"setInternalSettingsWithMessage:connection:" forMessage:129];
 }
 
-- (void)recordAnalyticsWithMetricsDialogEvent:(id)a3 forTopic:(id)a4
+- (void)recordAnalyticsWithMetricsDialogEvent:(id)event forTopic:(id)topic
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  eventCopy = event;
+  topicCopy = topic;
+  if (!eventCopy)
   {
     v9 = +[SSLogConfig sharedDaemonConfig];
     if (!v9)
@@ -102,19 +102,19 @@
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [(AnalyticsRecordingOperation *)v9 shouldLog];
+    shouldLog = [(AnalyticsRecordingOperation *)v9 shouldLog];
     if ([(AnalyticsRecordingOperation *)v9 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [(AnalyticsRecordingOperation *)v9 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [(AnalyticsRecordingOperation *)v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 &= 2u;
     }
@@ -132,7 +132,7 @@
         goto LABEL_16;
       }
 
-      v13 = [NSString stringWithCString:v15 encoding:4, &v18, v16];
+      oSLogObject = [NSString stringWithCString:v15 encoding:4, &v18, v16];
       free(v15);
       SSFileLog();
     }
@@ -141,13 +141,13 @@
   }
 
   v7 = [AnalyticsRecordingOperation alloc];
-  v17 = v5;
+  v17 = eventCopy;
   v8 = [NSArray arrayWithObjects:&v17 count:1];
   v9 = [(AnalyticsRecordingOperation *)v7 initWithMetricsEvents:v8];
 
-  if (v6)
+  if (topicCopy)
   {
-    [(AnalyticsRecordingOperation *)v9 setEventTopicOverride:v6];
+    [(AnalyticsRecordingOperation *)v9 setEventTopicOverride:topicCopy];
   }
 
   v10 = +[ISOperationQueue mainQueue];
@@ -167,13 +167,13 @@ LABEL_16:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)getInternalSettingsWithMessage:(id)a3 connection:(id)a4
+- (void)getInternalSettingsWithMessage:(id)message connection:(id)connection
 {
-  connection = a4;
-  v6 = a3;
+  connection = connection;
+  messageCopy = message;
   if ([(MetricsController *)self _hasEntitlements:connection])
   {
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(messageCopy);
 
     v8 = SSVMetricsInternalSettingReportingFrequency;
     v9 = kSSUserDefaultsIdentifier;
@@ -192,18 +192,18 @@ LABEL_16:
 
   else
   {
-    [(MetricsController *)self _sendUnentitledResponseToMessage:v6 connection:connection];
-    reply = v6;
+    [(MetricsController *)self _sendUnentitledResponseToMessage:messageCopy connection:connection];
+    reply = messageCopy;
   }
 }
 
-- (void)insertEventWithMessage:(id)a3 connection:(id)a4
+- (void)insertEventWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(MetricsController *)self _hasEntitlements:v7])
+  messageCopy = message;
+  connectionCopy = connection;
+  if (![(MetricsController *)self _hasEntitlements:connectionCopy])
   {
-    [(MetricsController *)self _sendUnentitledResponseToMessage:v6 connection:v7];
+    [(MetricsController *)self _sendUnentitledResponseToMessage:messageCopy connection:connectionCopy];
     goto LABEL_21;
   }
 
@@ -217,19 +217,19 @@ LABEL_16:
     v10 = +[SSLogConfig sharedConfig];
   }
 
-  v11 = [v10 shouldLog];
+  shouldLog = [v10 shouldLog];
   if ([v10 shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog;
   }
 
-  v13 = [v10 OSLogObject];
-  if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+  oSLogObject = [v10 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v12 &= 2u;
   }
@@ -253,9 +253,9 @@ LABEL_16:
 
   if (v16)
   {
-    v13 = [NSString stringWithCString:v16 encoding:4, &v27, v24];
+    oSLogObject = [NSString stringWithCString:v16 encoding:4, &v27, v24];
     free(v16);
-    v23 = v13;
+    v23 = oSLogObject;
     SSFileLog();
 LABEL_12:
   }
@@ -264,43 +264,43 @@ LABEL_12:
   v25 = 0;
   v18 = [(SSMetricsEventController *)eventController insertEventSummaries:v9 error:&v25];
   v19 = v25;
-  reply = xpc_dictionary_create_reply(v6);
+  reply = xpc_dictionary_create_reply(messageCopy);
   if (v18)
   {
-    v21 = 0;
+    code = 0;
   }
 
   else
   {
     if (v19)
     {
-      v21 = [v19 code];
+      code = [v19 code];
     }
 
     else
     {
-      v21 = 100;
+      code = 100;
       v19 = SSError();
     }
 
     SSXPCDictionarySetObject();
   }
 
-  v22 = [NSNumber numberWithInteger:v21, v23];
+  v22 = [NSNumber numberWithInteger:code, v23];
   SSXPCDictionarySetObject();
 
-  xpc_connection_send_message(v7, reply);
+  xpc_connection_send_message(connectionCopy, reply);
 LABEL_21:
 }
 
-- (void)recordAnalyticsWithMetricsDialogEventWithMessage:(id)a3 connection:(id)a4
+- (void)recordAnalyticsWithMetricsDialogEventWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MetricsController *)self _hasEntitlements:v7])
+  messageCopy = message;
+  connectionCopy = connection;
+  if ([(MetricsController *)self _hasEntitlements:connectionCopy])
   {
     v8 = [SSMetricsDialogEvent alloc];
-    v9 = xpc_dictionary_get_value(v6, "1");
+    v9 = xpc_dictionary_get_value(messageCopy, "1");
     v10 = [v8 initWithXPCEncoding:v9];
 
     objc_opt_class();
@@ -329,19 +329,19 @@ LABEL_21:
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [(AnalyticsRecordingOperation *)v14 shouldLog];
+    shouldLog = [(AnalyticsRecordingOperation *)v14 shouldLog];
     if ([(AnalyticsRecordingOperation *)v14 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [(AnalyticsRecordingOperation *)v14 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject = [(AnalyticsRecordingOperation *)v14 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 &= 2u;
     }
@@ -358,14 +358,14 @@ LABEL_21:
       {
 LABEL_18:
 
-        reply = xpc_dictionary_create_reply(v6);
+        reply = xpc_dictionary_create_reply(messageCopy);
         xpc_dictionary_set_BOOL(reply, "0", v10 != 0);
-        xpc_connection_send_message(v7, reply);
+        xpc_connection_send_message(connectionCopy, reply);
 
         goto LABEL_19;
       }
 
-      v18 = [NSString stringWithCString:v20 encoding:4, &v23, v22, v23];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, &v23, v22, v23];
       free(v20);
       SSFileLog();
     }
@@ -373,15 +373,15 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  [(MetricsController *)self _sendUnentitledResponseToMessage:v6 connection:v7];
+  [(MetricsController *)self _sendUnentitledResponseToMessage:messageCopy connection:connectionCopy];
 LABEL_19:
 }
 
-- (void)reportEventsWithMessage:(id)a3 connection:(id)a4
+- (void)reportEventsWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MetricsController *)self _hasEntitlements:v7])
+  messageCopy = message;
+  connectionCopy = connection;
+  if ([(MetricsController *)self _hasEntitlements:connectionCopy])
   {
     v26 = 0;
     v8 = SSXPCConnectionCopyClientIdentifier();
@@ -395,19 +395,19 @@ LABEL_19:
         v11 = +[SSLogConfig sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
+      shouldLog = [v11 shouldLog];
       if ([v11 shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog;
       }
 
-      v14 = [v11 OSLogObject];
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v11 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v13 &= 2u;
       }
@@ -427,14 +427,14 @@ LABEL_19:
 LABEL_14:
 
 LABEL_28:
-          reply = xpc_dictionary_create_reply(v6);
+          reply = xpc_dictionary_create_reply(messageCopy);
           SSXPCDictionarySetObject();
-          xpc_connection_send_message(v7, reply);
+          xpc_connection_send_message(connectionCopy, reply);
 
           goto LABEL_29;
         }
 
-        v14 = [NSString stringWithCString:v16 encoding:4, &v27, v24];
+        oSLogObject = [NSString stringWithCString:v16 encoding:4, &v27, v24];
         free(v16);
         SSFileLog();
       }
@@ -447,19 +447,19 @@ LABEL_28:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v11 shouldLog];
+    shouldLog2 = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog2 | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog2;
     }
 
-    v19 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v11 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v18 &= 2u;
     }
@@ -488,7 +488,7 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v19 = [NSString stringWithCString:v21 encoding:4, &v27, v24];
+      oSLogObject2 = [NSString stringWithCString:v21 encoding:4, &v27, v24];
       free(v21);
       SSFileLog();
     }
@@ -496,15 +496,15 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  [(MetricsController *)self _sendUnentitledResponseToMessage:v6 connection:v7];
+  [(MetricsController *)self _sendUnentitledResponseToMessage:messageCopy connection:connectionCopy];
 LABEL_29:
 }
 
-- (void)setInternalSettingsWithMessage:(id)a3 connection:(id)a4
+- (void)setInternalSettingsWithMessage:(id)message connection:(id)connection
 {
-  original = a3;
-  v6 = a4;
-  if ([(MetricsController *)self _hasEntitlements:v6])
+  original = message;
+  connectionCopy = connection;
+  if ([(MetricsController *)self _hasEntitlements:connectionCopy])
   {
     reply = xpc_dictionary_create_reply(original);
     v8 = xpc_dictionary_get_value(original, "1");
@@ -544,12 +544,12 @@ LABEL_29:
       CFPreferencesAppSynchronize(v15);
     }
 
-    xpc_connection_send_message(v6, reply);
+    xpc_connection_send_message(connectionCopy, reply);
   }
 
   else
   {
-    [(MetricsController *)self _sendUnentitledResponseToMessage:original connection:v6];
+    [(MetricsController *)self _sendUnentitledResponseToMessage:original connection:connectionCopy];
   }
 }
 
@@ -564,9 +564,9 @@ LABEL_29:
   }
 }
 
-- (BOOL)_hasEntitlements:(id)a3
+- (BOOL)_hasEntitlements:(id)entitlements
 {
-  v3 = a3;
+  entitlementsCopy = entitlements;
   HasEntitlement = SSXPCConnectionHasEntitlement();
   v5 = SSXPCConnectionHasEntitlement();
 
@@ -596,10 +596,10 @@ LABEL_29:
 
 - (void)_reportEvents
 {
-  v3 = [(MetricsController *)self _operationQueue];
-  v4 = [v3 operationCount];
+  _operationQueue = [(MetricsController *)self _operationQueue];
+  operationCount = [_operationQueue operationCount];
 
-  if (v4 < 4)
+  if (operationCount < 4)
   {
     v5 = [[AnalyticsReportingOperation alloc] initWithController:self->_eventController];
     v13[0] = _NSConcreteStackBlock;
@@ -608,8 +608,8 @@ LABEL_29:
     v13[3] = &unk_10032BE70;
     v13[4] = self;
     [(AnalyticsReportingOperation *)v5 setFinishBlock:v13];
-    v11 = [(MetricsController *)self _operationQueue];
-    [v11 addOperation:v5];
+    _operationQueue2 = [(MetricsController *)self _operationQueue];
+    [_operationQueue2 addOperation:v5];
 
     goto LABEL_14;
   }
@@ -620,19 +620,19 @@ LABEL_29:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [(AnalyticsReportingOperation *)v5 shouldLog];
+  shouldLog = [(AnalyticsReportingOperation *)v5 shouldLog];
   if ([(AnalyticsReportingOperation *)v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [(AnalyticsReportingOperation *)v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [(AnalyticsReportingOperation *)v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 &= 2u;
   }
@@ -652,7 +652,7 @@ LABEL_29:
 
   if (v10)
   {
-    v8 = [NSString stringWithCString:v10 encoding:4, &v14, v12];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v14, v12];
     free(v10);
     SSFileLog();
 LABEL_12:
@@ -674,19 +674,19 @@ LABEL_14:
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 &= 2u;
     }
@@ -709,7 +709,7 @@ LABEL_13:
         return;
       }
 
-      v9 = [NSString stringWithCString:v11 encoding:4, v19, v18, *v19, *&v19[16]];
+      oSLogObject = [NSString stringWithCString:v11 encoding:4, v19, v18, *v19, *&v19[16]];
       free(v11);
       SSFileLog();
     }
@@ -722,19 +722,19 @@ LABEL_13:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v12 = [v6 shouldLog];
+  shouldLog2 = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog2 | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog2;
   }
 
-  v14 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v6 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v13 &= 2u;
   }
@@ -773,19 +773,19 @@ LABEL_13:
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 &= 2u;
     }
@@ -810,7 +810,7 @@ LABEL_13:
         return;
       }
 
-      v7 = [NSString stringWithCString:v11 encoding:4, &v27, v25];
+      oSLogObject = [NSString stringWithCString:v11 encoding:4, &v27, v25];
       free(v11);
       SSFileLog();
     }
@@ -827,19 +827,19 @@ LABEL_13:
   }
 
   v14 = v12;
-  v15 = [v13 shouldLog];
+  shouldLog2 = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v16 = v15 | 2;
+    v16 = shouldLog2 | 2;
   }
 
   else
   {
-    v16 = v15;
+    v16 = shouldLog2;
   }
 
-  v17 = [v13 OSLogObject];
-  if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v13 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v16 &= 2u;
   }
@@ -859,7 +859,7 @@ LABEL_13:
 
   if (v19)
   {
-    v17 = [NSString stringWithCString:v19 encoding:4, &v27, v25];
+    oSLogObject2 = [NSString stringWithCString:v19 encoding:4, &v27, v25];
     free(v19);
     SSFileLog();
 LABEL_24:
@@ -883,29 +883,29 @@ LABEL_24:
   ++self->_backoffRetryCount;
 }
 
-- (void)_sendUnentitledResponseToMessage:(id)a3 connection:(id)a4
+- (void)_sendUnentitledResponseToMessage:(id)message connection:(id)connection
 {
-  v5 = a4;
-  v6 = a3;
+  connectionCopy = connection;
+  messageCopy = message;
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
   {
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v9 &= 2u;
   }
@@ -923,17 +923,17 @@ LABEL_24:
 
   if (v12)
   {
-    v10 = [NSString stringWithCString:v12 encoding:4, &v16, v15, v16];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v16, v15, v16];
     free(v12);
     SSFileLog();
 LABEL_11:
   }
 
-  reply = xpc_dictionary_create_reply(v6);
+  reply = xpc_dictionary_create_reply(messageCopy);
   v14 = SSError();
   SSXPCDictionarySetObject();
   SSXPCDictionarySetObject();
-  xpc_connection_send_message(v5, reply);
+  xpc_connection_send_message(connectionCopy, reply);
 }
 
 @end

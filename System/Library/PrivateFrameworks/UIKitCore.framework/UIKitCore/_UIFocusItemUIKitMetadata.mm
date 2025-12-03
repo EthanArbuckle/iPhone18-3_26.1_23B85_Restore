@@ -1,23 +1,23 @@
 @interface _UIFocusItemUIKitMetadata
 - (BOOL)isFocusMovementFlippedHorizontally;
-- (CGSize)itemSizeInCoordinateSpace:(id)a3;
-- (_UIFocusItemUIKitMetadata)initWithItem:(id)a3;
+- (CGSize)itemSizeInCoordinateSpace:(id)space;
+- (_UIFocusItemUIKitMetadata)initWithItem:(id)item;
 - (int64_t)focusTouchSensitivityStyle;
 - (int64_t)inheritedFocusMovementStyle;
 @end
 
 @implementation _UIFocusItemUIKitMetadata
 
-- (_UIFocusItemUIKitMetadata)initWithItem:(id)a3
+- (_UIFocusItemUIKitMetadata)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = _UIFocusItemUIKitMetadata;
   v6 = [(_UIFocusItemUIKitMetadata *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
@@ -27,18 +27,18 @@
 {
   if ((*&self->_flags & 1) == 0)
   {
-    v3 = [(_UIFocusItemUIKitMetadata *)self item];
-    if (_UIFocusItemIsViewOrRespondsToSelector(v3))
+    item = [(_UIFocusItemUIKitMetadata *)self item];
+    if (_UIFocusItemIsViewOrRespondsToSelector(item))
     {
-      v4 = [v3 _focusTouchSensitivityStyle];
+      _focusTouchSensitivityStyle = [item _focusTouchSensitivityStyle];
     }
 
     else
     {
-      v4 = 0;
+      _focusTouchSensitivityStyle = 0;
     }
 
-    self->_focusTouchSensitivityStyle = v4;
+    self->_focusTouchSensitivityStyle = _focusTouchSensitivityStyle;
     *&self->_flags |= 1u;
   }
 
@@ -53,13 +53,13 @@
     v7 = &v6;
     v8 = 0x2020000000;
     v9 = 0;
-    v3 = [(_UIFocusItemUIKitMetadata *)self item];
+    item = [(_UIFocusItemUIKitMetadata *)self item];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __63___UIFocusItemUIKitMetadata_isFocusMovementFlippedHorizontally__block_invoke;
     v5[3] = &unk_1E71080D8;
     v5[4] = &v6;
-    _UIFocusEnvironmentEnumerateAncestorEnvironments(v3, v5);
+    _UIFocusEnvironmentEnumerateAncestorEnvironments(item, v5);
 
     *(&self->_flags + 1) = *(v7 + 24);
     *&self->_flags |= 2u;
@@ -74,12 +74,12 @@
   result = self->_inheritedFocusMovementStyle;
   if (!result)
   {
-    v4 = [(_UIFocusItemUIKitMetadata *)self item];
+    item = [(_UIFocusItemUIKitMetadata *)self item];
 
-    if (v4)
+    if (item)
     {
-      v5 = [(_UIFocusItemUIKitMetadata *)self item];
-      self->_inheritedFocusMovementStyle = _UIFocusEnvironmentInheritedFocusMovementStyle(v5);
+      item2 = [(_UIFocusItemUIKitMetadata *)self item];
+      self->_inheritedFocusMovementStyle = _UIFocusEnvironmentInheritedFocusMovementStyle(item2);
 
       return self->_inheritedFocusMovementStyle;
     }
@@ -94,11 +94,11 @@
   return result;
 }
 
-- (CGSize)itemSizeInCoordinateSpace:(id)a3
+- (CGSize)itemSizeInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIFocusItemUIKitMetadata *)self item];
-  _UIFocusItemFrameInCoordinateSpace(v5, v4);
+  spaceCopy = space;
+  item = [(_UIFocusItemUIKitMetadata *)self item];
+  _UIFocusItemFrameInCoordinateSpace(item, spaceCopy);
   v7 = v6;
   v9 = v8;
 

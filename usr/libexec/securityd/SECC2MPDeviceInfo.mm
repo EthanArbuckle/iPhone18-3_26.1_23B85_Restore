@@ -1,62 +1,62 @@
 @interface SECC2MPDeviceInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInternalTestConfig:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInternalTestConfig:(id)config;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECC2MPDeviceInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(SECC2MPDeviceInfo *)self setProductName:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SECC2MPDeviceInfo *)self setProductType:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(SECC2MPDeviceInfo *)self setProductVersion:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SECC2MPDeviceInfo *)self setProductBuild:?];
   }
 
-  if (*(v4 + 84))
+  if (*(fromCopy + 84))
   {
-    self->_isAppleInternal = *(v4 + 80);
+    self->_isAppleInternal = *(fromCopy + 80);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SECC2MPDeviceInfo *)self setProcessName:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SECC2MPDeviceInfo *)self setProcessVersion:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SECC2MPDeviceInfo *)self setProcessUuid:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(SECC2MPDeviceInfo *)self setUserDefaultTestName:?];
   }
@@ -65,7 +65,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -114,16 +114,16 @@
   return v10 ^ v12 ^ [(NSMutableArray *)self->_internalTestConfigs hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   productName = self->_productName;
-  if (productName | *(v4 + 6))
+  if (productName | *(equalCopy + 6))
   {
     if (![(NSString *)productName isEqual:?])
     {
@@ -132,7 +132,7 @@
   }
 
   productType = self->_productType;
-  if (productType | *(v4 + 7))
+  if (productType | *(equalCopy + 7))
   {
     if (![(NSString *)productType isEqual:?])
     {
@@ -141,7 +141,7 @@
   }
 
   productVersion = self->_productVersion;
-  if (productVersion | *(v4 + 8))
+  if (productVersion | *(equalCopy + 8))
   {
     if (![(NSString *)productVersion isEqual:?])
     {
@@ -150,7 +150,7 @@
   }
 
   productBuild = self->_productBuild;
-  if (productBuild | *(v4 + 5))
+  if (productBuild | *(equalCopy + 5))
   {
     if (![(NSString *)productBuild isEqual:?])
     {
@@ -158,18 +158,18 @@
     }
   }
 
-  v9 = *(v4 + 84);
+  v9 = *(equalCopy + 84);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  if ((*(v4 + 84) & 1) == 0)
+  if ((*(equalCopy + 84) & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  v9 = *(v4 + 80);
+  v9 = *(equalCopy + 80);
   if (!self->_isAppleInternal)
   {
 LABEL_11:
@@ -183,20 +183,20 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 80) & 1) == 0)
+  if ((*(equalCopy + 80) & 1) == 0)
   {
     goto LABEL_23;
   }
 
 LABEL_12:
   processName = self->_processName;
-  if (processName | *(v4 + 2) && ![(NSString *)processName isEqual:?])
+  if (processName | *(equalCopy + 2) && ![(NSString *)processName isEqual:?])
   {
     goto LABEL_23;
   }
 
   processVersion = self->_processVersion;
-  if (processVersion | *(v4 + 4))
+  if (processVersion | *(equalCopy + 4))
   {
     if (![(NSString *)processVersion isEqual:?])
     {
@@ -205,7 +205,7 @@ LABEL_12:
   }
 
   processUuid = self->_processUuid;
-  if (processUuid | *(v4 + 3))
+  if (processUuid | *(equalCopy + 3))
   {
     if (![(NSString *)processUuid isEqual:?])
     {
@@ -214,7 +214,7 @@ LABEL_12:
   }
 
   userDefaultTestName = self->_userDefaultTestName;
-  if (userDefaultTestName | *(v4 + 9))
+  if (userDefaultTestName | *(equalCopy + 9))
   {
     if (![(NSString *)userDefaultTestName isEqual:?])
     {
@@ -223,7 +223,7 @@ LABEL_12:
   }
 
   internalTestConfigs = self->_internalTestConfigs;
-  if (internalTestConfigs | *(v4 + 1))
+  if (internalTestConfigs | *(equalCopy + 1))
   {
     v15 = [(NSMutableArray *)internalTestConfigs isEqual:?];
   }
@@ -238,22 +238,22 @@ LABEL_24:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_productName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_productName copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSString *)self->_productType copyWithZone:a3];
+  v8 = [(NSString *)self->_productType copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(NSString *)self->_productVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_productVersion copyWithZone:zone];
   v11 = v5[8];
   v5[8] = v10;
 
-  v12 = [(NSString *)self->_productBuild copyWithZone:a3];
+  v12 = [(NSString *)self->_productBuild copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
@@ -263,19 +263,19 @@ LABEL_24:
     *(v5 + 84) |= 1u;
   }
 
-  v14 = [(NSString *)self->_processName copyWithZone:a3];
+  v14 = [(NSString *)self->_processName copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
-  v16 = [(NSString *)self->_processVersion copyWithZone:a3];
+  v16 = [(NSString *)self->_processVersion copyWithZone:zone];
   v17 = v5[4];
   v5[4] = v16;
 
-  v18 = [(NSString *)self->_processUuid copyWithZone:a3];
+  v18 = [(NSString *)self->_processUuid copyWithZone:zone];
   v19 = v5[3];
   v5[3] = v18;
 
-  v20 = [(NSString *)self->_userDefaultTestName copyWithZone:a3];
+  v20 = [(NSString *)self->_userDefaultTestName copyWithZone:zone];
   v21 = v5[9];
   v5[9] = v20;
 
@@ -299,7 +299,7 @@ LABEL_24:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v29 + 1) + 8 * v26) copyWithZone:{a3, v29}];
+        v27 = [*(*(&v29 + 1) + 8 * v26) copyWithZone:{zone, v29}];
         [v5 addInternalTestConfig:v27];
 
         v26 = v26 + 1;
@@ -315,38 +315,38 @@ LABEL_24:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_productName)
   {
-    [v4 setProductName:?];
-    v4 = v9;
+    [toCopy setProductName:?];
+    toCopy = v9;
   }
 
   if (self->_productType)
   {
     [v9 setProductType:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_productVersion)
   {
     [v9 setProductVersion:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_productBuild)
   {
     [v9 setProductBuild:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    v4[80] = self->_isAppleInternal;
-    v4[84] |= 1u;
+    toCopy[80] = self->_isAppleInternal;
+    toCopy[84] |= 1u;
   }
 
   if (self->_processName)
@@ -372,10 +372,10 @@ LABEL_24:
   if ([(SECC2MPDeviceInfo *)self internalTestConfigsCount])
   {
     [v9 clearInternalTestConfigs];
-    v5 = [(SECC2MPDeviceInfo *)self internalTestConfigsCount];
-    if (v5)
+    internalTestConfigsCount = [(SECC2MPDeviceInfo *)self internalTestConfigsCount];
+    if (internalTestConfigsCount)
     {
-      v6 = v5;
+      v6 = internalTestConfigsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SECC2MPDeviceInfo *)self internalTestConfigAtIndex:i];
@@ -385,9 +385,9 @@ LABEL_24:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_productName)
   {
     PBDataWriterWriteStringField();
@@ -547,8 +547,8 @@ LABEL_24:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -568,28 +568,28 @@ LABEL_24:
   v7.receiver = self;
   v7.super_class = SECC2MPDeviceInfo;
   v3 = [(SECC2MPDeviceInfo *)&v7 description];
-  v4 = [(SECC2MPDeviceInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SECC2MPDeviceInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addInternalTestConfig:(id)a3
+- (void)addInternalTestConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   internalTestConfigs = self->_internalTestConfigs;
-  v8 = v4;
+  v8 = configCopy;
   if (!internalTestConfigs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_internalTestConfigs;
     self->_internalTestConfigs = v6;
 
-    v4 = v8;
+    configCopy = v8;
     internalTestConfigs = self->_internalTestConfigs;
   }
 
-  [(NSMutableArray *)internalTestConfigs addObject:v4];
+  [(NSMutableArray *)internalTestConfigs addObject:configCopy];
 }
 
 @end

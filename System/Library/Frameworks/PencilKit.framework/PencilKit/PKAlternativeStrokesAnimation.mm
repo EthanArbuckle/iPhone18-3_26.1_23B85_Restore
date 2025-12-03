@@ -1,45 +1,45 @@
 @interface PKAlternativeStrokesAnimation
-- (double)alphaAtTime:(uint64_t)a1;
-- (double)originalStrokeAlphaAtTime:(uint64_t)a1;
-- (id)initWithStrokes:(void *)a3 shape:(double)a4 startTime:(double)a5 fadeDuration:;
+- (double)alphaAtTime:(uint64_t)time;
+- (double)originalStrokeAlphaAtTime:(uint64_t)time;
+- (id)initWithStrokes:(void *)strokes shape:(double)shape startTime:(double)time fadeDuration:;
 @end
 
 @implementation PKAlternativeStrokesAnimation
 
-- (id)initWithStrokes:(void *)a3 shape:(double)a4 startTime:(double)a5 fadeDuration:
+- (id)initWithStrokes:(void *)strokes shape:(double)shape startTime:(double)time fadeDuration:
 {
   v10 = a2;
-  v11 = a3;
-  if (a1)
+  strokesCopy = strokes;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = PKAlternativeStrokesAnimation;
     v12 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
-      objc_storeStrong(v12 + 2, a3);
-      objc_storeStrong(a1 + 3, a2);
-      *(a1 + 4) = a4;
-      a1[5] = 0;
-      *(a1 + 6) = a5;
-      a1[7] = 0x3FE0000000000000;
+      objc_storeStrong(v12 + 2, strokes);
+      objc_storeStrong(self + 3, a2);
+      *(self + 4) = shape;
+      self[5] = 0;
+      *(self + 6) = time;
+      self[7] = 0x3FE0000000000000;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (double)alphaAtTime:(uint64_t)a1
+- (double)alphaAtTime:(uint64_t)time
 {
-  if (!a1)
+  if (!time)
   {
     return 0.0;
   }
 
-  if (*(a1 + 9) == 1)
+  if (*(time + 9) == 1)
   {
-    v2 = *(a1 + 8) == 0;
+    v2 = *(time + 8) == 0;
     v3 = 0.0;
     v4 = 1.0;
 LABEL_10:
@@ -51,9 +51,9 @@ LABEL_10:
     return v4;
   }
 
-  v5 = *(a1 + 40);
-  v6 = *(a1 + 48);
-  v4 = (a2 - *(a1 + 32)) / v6;
+  v5 = *(time + 40);
+  v6 = *(time + 48);
+  v4 = (a2 - *(time + 32)) / v6;
   if (v4 > 1.0)
   {
     v4 = 1.0;
@@ -68,24 +68,24 @@ LABEL_10:
     }
 
     v3 = v4 - v7;
-    v2 = *(a1 + 8) == 0;
+    v2 = *(time + 8) == 0;
     goto LABEL_10;
   }
 
   return v4;
 }
 
-- (double)originalStrokeAlphaAtTime:(uint64_t)a1
+- (double)originalStrokeAlphaAtTime:(uint64_t)time
 {
-  if (!a1)
+  if (!time)
   {
     return 0.0;
   }
 
-  if (*(a1 + 9) == 1)
+  if (*(time + 9) == 1)
   {
     v2 = 0.0;
-    if (!*(a1 + 8))
+    if (!*(time + 8))
     {
       return 1.0;
     }
@@ -93,10 +93,10 @@ LABEL_10:
 
   else
   {
-    v3 = *(a1 + 40);
-    v5 = *(a1 + 48);
-    v4 = *(a1 + 56);
-    v6 = (a2 - *(a1 + 32)) / v5;
+    v3 = *(time + 40);
+    v5 = *(time + 48);
+    v4 = *(time + 56);
+    v6 = (a2 - *(time + 32)) / v5;
     v7 = -v6;
     v8 = v6 <= 1.0;
     v9 = -1.0;
@@ -116,7 +116,7 @@ LABEL_10:
 
       v11 = v2 * (1.0 - v10);
       v12 = v2 + (1.0 - v4) * v10;
-      if (*(a1 + 8))
+      if (*(time + 8))
       {
         return v11;
       }

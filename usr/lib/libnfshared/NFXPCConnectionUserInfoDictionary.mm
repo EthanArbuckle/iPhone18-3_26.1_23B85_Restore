@@ -1,18 +1,18 @@
 @interface NFXPCConnectionUserInfoDictionary
-- (NFXPCConnectionUserInfoDictionary)initWithServiceWhitelist:(id)a3 clientName:(id)a4;
-- (id)objectForKey:(id)a3;
-- (id)objectsForKeys:(id)a3 notFoundMarker:(id)a4;
-- (void)modifyObjectForKey:(id)a3 handler:(id)a4;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (NFXPCConnectionUserInfoDictionary)initWithServiceWhitelist:(id)whitelist clientName:(id)name;
+- (id)objectForKey:(id)key;
+- (id)objectsForKeys:(id)keys notFoundMarker:(id)marker;
+- (void)modifyObjectForKey:(id)key handler:(id)handler;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation NFXPCConnectionUserInfoDictionary
 
-- (NFXPCConnectionUserInfoDictionary)initWithServiceWhitelist:(id)a3 clientName:(id)a4
+- (NFXPCConnectionUserInfoDictionary)initWithServiceWhitelist:(id)whitelist clientName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  whitelistCopy = whitelist;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = NFXPCConnectionUserInfoDictionary;
   v9 = [(NFXPCConnectionUserInfoDictionary *)&v14 init];
@@ -24,64 +24,64 @@
     data = v10->_data;
     v10->_data = v11;
 
-    objc_storeStrong(&v10->_serviceWhitelist, a3);
-    objc_storeStrong(&v10->_clientName, a4);
+    objc_storeStrong(&v10->_serviceWhitelist, whitelist);
+    objc_storeStrong(&v10->_clientName, name);
   }
 
   return v10;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_dataLock);
-  v6 = objc_msgSend_objectForKeyedSubscript_(self->_data, v5, v4);
+  v6 = objc_msgSend_objectForKeyedSubscript_(self->_data, v5, keyCopy);
 
   os_unfair_lock_unlock(&self->_dataLock);
 
   return v6;
 }
 
-- (id)objectsForKeys:(id)a3 notFoundMarker:(id)a4
+- (id)objectsForKeys:(id)keys notFoundMarker:(id)marker
 {
-  v6 = a4;
-  v7 = a3;
+  markerCopy = marker;
+  keysCopy = keys;
   os_unfair_lock_lock(&self->_dataLock);
-  v9 = objc_msgSend_objectsForKeys_notFoundMarker_(self->_data, v8, v7, v6);
+  v9 = objc_msgSend_objectsForKeys_notFoundMarker_(self->_data, v8, keysCopy, markerCopy);
 
   os_unfair_lock_unlock(&self->_dataLock);
 
   return v9;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_dataLock);
-  objc_msgSend_removeObjectForKey_(self->_data, v5, v4);
+  objc_msgSend_removeObjectForKey_(self->_data, v5, keyCopy);
 
   os_unfair_lock_unlock(&self->_dataLock);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_dataLock);
-  objc_msgSend_setObject_forKeyedSubscript_(self->_data, v8, v7, v6);
+  objc_msgSend_setObject_forKeyedSubscript_(self->_data, v8, objectCopy, keyCopy);
 
   os_unfair_lock_unlock(&self->_dataLock);
 }
 
-- (void)modifyObjectForKey:(id)a3 handler:(id)a4
+- (void)modifyObjectForKey:(id)key handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_dataLock);
-  v11 = objc_msgSend_objectForKeyedSubscript_(self->_data, v8, v7);
-  v9 = v6[2](v6, v11);
+  v11 = objc_msgSend_objectForKeyedSubscript_(self->_data, v8, keyCopy);
+  v9 = handlerCopy[2](handlerCopy, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(self->_data, v10, v9, v7);
+  objc_msgSend_setObject_forKeyedSubscript_(self->_data, v10, v9, keyCopy);
   os_unfair_lock_unlock(&self->_dataLock);
 }
 

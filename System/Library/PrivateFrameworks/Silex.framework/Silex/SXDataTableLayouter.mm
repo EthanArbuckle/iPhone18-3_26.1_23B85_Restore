@@ -1,48 +1,48 @@
 @interface SXDataTableLayouter
-- (SXDataTableLayouter)initWithDataSource:(id)a3;
+- (SXDataTableLayouter)initWithDataSource:(id)source;
 - (UIEdgeInsets)tableInsets;
-- (double)intendedPercentualWidthForColumnAtIndex:(unint64_t)a3;
-- (double)minimumWidthForColumnAtIndex:(unint64_t)a3;
+- (double)intendedPercentualWidthForColumnAtIndex:(unint64_t)index;
+- (double)minimumWidthForColumnAtIndex:(unint64_t)index;
 - (double)totalColumnDividerWidth;
 - (double)totalTableBorderHeight;
 - (double)totalTableBorderWidth;
-- (id)blueprintForWidth:(double)a3;
-- (id)blueprintUsingRowHeights:(id)a3 columnWidths:(id)a4 andTableWidth:(double)a5;
-- (id)columnWidthsForWidth:(double)a3 resultingTableWidth:(double *)a4;
-- (id)layoutDataTableForWidth:(double)a3;
-- (id)rowHeightsForColumnWidths:(id)a3;
+- (id)blueprintForWidth:(double)width;
+- (id)blueprintUsingRowHeights:(id)heights columnWidths:(id)widths andTableWidth:(double)width;
+- (id)columnWidthsForWidth:(double)width resultingTableWidth:(double *)tableWidth;
+- (id)layoutDataTableForWidth:(double)width;
+- (id)rowHeightsForColumnWidths:(id)widths;
 - (void)reset;
 @end
 
 @implementation SXDataTableLayouter
 
-- (SXDataTableLayouter)initWithDataSource:(id)a3
+- (SXDataTableLayouter)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = SXDataTableLayouter;
   v6 = [(SXDataTableLayouter *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_dataSource, source);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     minimumColumnWidths = v7->_minimumColumnWidths;
-    v7->_minimumColumnWidths = v8;
+    v7->_minimumColumnWidths = dictionary;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     intendedColumnWidths = v7->_intendedColumnWidths;
-    v7->_intendedColumnWidths = v10;
+    v7->_intendedColumnWidths = dictionary2;
   }
 
   return v7;
 }
 
-- (id)blueprintForWidth:(double)a3
+- (id)blueprintForWidth:(double)width
 {
-  if (self->_currentWidth != a3)
+  if (self->_currentWidth != width)
   {
-    self->_currentWidth = a3;
+    self->_currentWidth = width;
     v4 = [(SXDataTableLayouter *)self layoutDataTableForWidth:?];
     [(SXDataTableLayouter *)self setBlueprint:v4];
   }
@@ -52,36 +52,36 @@
 
 - (void)reset
 {
-  v3 = [(SXDataTableLayouter *)self minimumColumnWidths];
-  [v3 removeAllObjects];
+  minimumColumnWidths = [(SXDataTableLayouter *)self minimumColumnWidths];
+  [minimumColumnWidths removeAllObjects];
 
-  v4 = [(SXDataTableLayouter *)self intendedColumnWidths];
-  [v4 removeAllObjects];
+  intendedColumnWidths = [(SXDataTableLayouter *)self intendedColumnWidths];
+  [intendedColumnWidths removeAllObjects];
 
   [(SXDataTableLayouter *)self setBlueprint:0];
   self->_currentWidth = 1.79769313e308;
 }
 
-- (id)layoutDataTableForWidth:(double)a3
+- (id)layoutDataTableForWidth:(double)width
 {
-  v5 = [(SXDataTableLayouter *)self dataSource];
-  if ([v5 numberOfColumns])
+  dataSource = [(SXDataTableLayouter *)self dataSource];
+  if ([dataSource numberOfColumns])
   {
-    v6 = [(SXDataTableLayouter *)self dataSource];
-    v7 = [v6 numberOfRows];
+    dataSource2 = [(SXDataTableLayouter *)self dataSource];
+    numberOfRows = [dataSource2 numberOfRows];
 
-    if (v7)
+    if (numberOfRows)
     {
       [(SXDataTableLayouter *)self totalColumnDividerWidth];
       v9 = v8;
       [(SXDataTableLayouter *)self totalTableBorderWidth];
       v11 = v10;
       v17 = 0.0;
-      v12 = [(SXDataTableLayouter *)self columnWidthsForWidth:&v17 resultingTableWidth:a3 - v9 - v10];
+      v12 = [(SXDataTableLayouter *)self columnWidthsForWidth:&v17 resultingTableWidth:width - v9 - v10];
       v13 = [(SXDataTableLayouter *)self rowHeightsForColumnWidths:v12];
       v14 = [(SXDataTableLayouter *)self blueprintUsingRowHeights:v13 columnWidths:v12 andTableWidth:v11 + v9 + v17];
-      v15 = [(SXDataTableLayouter *)self dataSource];
-      [v14 setDataOrientation:{objc_msgSend(v15, "dataOrientation")}];
+      dataSource3 = [(SXDataTableLayouter *)self dataSource];
+      [v14 setDataOrientation:{objc_msgSend(dataSource3, "dataOrientation")}];
 
       goto LABEL_6;
     }
@@ -97,27 +97,27 @@ LABEL_6:
   return v14;
 }
 
-- (id)blueprintUsingRowHeights:(id)a3 columnWidths:(id)a4 andTableWidth:(double)a5
+- (id)blueprintUsingRowHeights:(id)heights columnWidths:(id)widths andTableWidth:(double)width
 {
-  v7 = a3;
-  v8 = a4;
+  heightsCopy = heights;
+  widthsCopy = widths;
   [(SXDataTableLayouter *)self tableInsets];
-  v74 = v7;
+  v74 = heightsCopy;
   v78 = v9;
   v72 = v10;
   v70 = v11;
-  v13 = -[SXDataTableBlueprint initWithNumberOfRows:numberOfColumns:withTableInsets:]([SXDataTableBlueprint alloc], "initWithNumberOfRows:numberOfColumns:withTableInsets:", [v7 count], objc_msgSend(v8, "count"), v9, v10, v11, v12);
-  v14 = [(SXDataTableLayouter *)self dataSource];
-  v15 = [v14 numberOfRows];
+  v13 = -[SXDataTableBlueprint initWithNumberOfRows:numberOfColumns:withTableInsets:]([SXDataTableBlueprint alloc], "initWithNumberOfRows:numberOfColumns:withTableInsets:", [heightsCopy count], objc_msgSend(widthsCopy, "count"), v9, v10, v11, v12);
+  dataSource = [(SXDataTableLayouter *)self dataSource];
+  numberOfRows = [dataSource numberOfRows];
 
-  v16 = [(SXDataTableLayouter *)self dataSource];
-  v17 = [v16 numberOfColumns];
+  dataSource2 = [(SXDataTableLayouter *)self dataSource];
+  numberOfColumns = [dataSource2 numberOfColumns];
 
-  if (v15)
+  if (numberOfRows)
   {
     v18 = 0;
-    v73 = v15;
-    v75 = v15 + -1.0;
+    v73 = numberOfRows;
+    v75 = numberOfRows + -1.0;
     v76 = 0.0;
     do
     {
@@ -125,59 +125,59 @@ LABEL_6:
       [v19 floatValue];
       v77 = v20;
 
-      v21 = [(SXDataTableLayouter *)self dataSource];
-      v22 = [v21 rowDividerAtIndex:v18];
+      dataSource3 = [(SXDataTableLayouter *)self dataSource];
+      v22 = [dataSource3 rowDividerAtIndex:v18];
 
-      if (v17)
+      if (numberOfColumns)
       {
         v23 = 0;
         v24 = 0.0;
         v25 = v72;
         do
         {
-          v26 = [v8 objectAtIndex:v23];
+          v26 = [widthsCopy objectAtIndex:v23];
           [v26 floatValue];
           v28 = v27;
 
           [(SXDataTableBlueprint *)v13 addCellRect:v18 forIndexPath:v23, v25, v78, v28, v77];
-          v29 = [(SXDataTableLayouter *)self dataSource];
-          [v29 paddingForCellAtIndexPath:{v18, v23}];
+          dataSource4 = [(SXDataTableLayouter *)self dataSource];
+          [dataSource4 paddingForCellAtIndexPath:{v18, v23}];
           v31 = v30;
           v33 = v32;
           v79 = v34;
           v36 = v35;
 
-          v37 = [(SXDataTableLayouter *)self dataSource];
-          v38 = [v37 cellBorderForCellAtIndexPath:{v18, v23}];
+          dataSource5 = [(SXDataTableLayouter *)self dataSource];
+          v38 = [dataSource5 cellBorderForCellAtIndexPath:{v18, v23}];
 
-          v39 = [v38 left];
-          [v39 width];
+          left = [v38 left];
+          [left width];
           v41 = v36 + v40;
 
           v42 = [v38 top];
           [v42 width];
           v44 = v31 + v43;
 
-          v45 = [v38 right];
-          [v45 width];
+          right = [v38 right];
+          [right width];
           v47 = v28 - v41 - v46 - v33;
 
-          v48 = [v38 bottom];
-          [v48 width];
+          bottom = [v38 bottom];
+          [bottom width];
           v50 = v77 - v44 - v49 - v79;
 
           [(SXDataTableBlueprint *)v13 addCellContentRect:v18 forIndexPath:v23, v41, v44, v47, v50];
-          v51 = [(SXDataTableLayouter *)self dataSource];
-          v52 = [v51 columnDividerAtIndex:v23];
+          dataSource6 = [(SXDataTableLayouter *)self dataSource];
+          v52 = [dataSource6 columnDividerAtIndex:v23];
 
           [v52 width];
           if (v53 != 0.0)
           {
-            v54 = [v52 color];
-            if (v54)
+            color = [v52 color];
+            if (color)
             {
 
-              v53 = v17 + -1.0;
+              v53 = numberOfColumns + -1.0;
               if (v53 != v24)
               {
                 v81.origin.x = v25;
@@ -204,8 +204,8 @@ LABEL_6:
           [v22 width];
           if (v59 != 0.0)
           {
-            v60 = [v22 color];
-            if (v60)
+            color2 = [v22 color];
+            if (color2)
             {
 
               v59 = v75;
@@ -240,7 +240,7 @@ LABEL_6:
           v24 = ++v23;
         }
 
-        while (v23 < v17);
+        while (v23 < numberOfColumns);
       }
 
       [v22 width];
@@ -253,32 +253,32 @@ LABEL_6:
   }
 
   [(SXDataTableBlueprint *)v13 rectForColumnAtIndex:0];
-  [(SXDataTableBlueprint *)v13 setTableSize:a5, v70 + CGRectGetMaxY(v87)];
+  [(SXDataTableBlueprint *)v13 setTableSize:width, v70 + CGRectGetMaxY(v87)];
 
   return v13;
 }
 
-- (id)columnWidthsForWidth:(double)a3 resultingTableWidth:(double *)a4
+- (id)columnWidthsForWidth:(double)width resultingTableWidth:(double *)tableWidth
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = [(SXDataTableLayouter *)self dataSource];
-  v7 = [v6 numberOfColumns];
+  dataSource = [(SXDataTableLayouter *)self dataSource];
+  numberOfColumns = [dataSource numberOfColumns];
 
-  if (v7)
+  if (numberOfColumns)
   {
     v8 = 0;
-    v9 = 0.0;
+    widthCopy2 = 0.0;
     v10 = 0.0;
     do
     {
       [(SXDataTableLayouter *)self minimumWidthForColumnAtIndex:v8];
-      v9 = v9 + v11;
+      widthCopy2 = widthCopy2 + v11;
       [(SXDataTableLayouter *)self intendedPercentualWidthForColumnAtIndex:v8];
       v10 = v10 + v12;
       ++v8;
     }
 
-    while (v7 != v8);
+    while (numberOfColumns != v8);
     v13 = v10 == 0.0;
     if (v10 == 0.0)
     {
@@ -290,10 +290,10 @@ LABEL_6:
       v14 = v10;
     }
 
-    if (v9 <= a3)
+    if (widthCopy2 <= width)
     {
       v17 = 0;
-      v59 = v7;
+      v59 = numberOfColumns;
       v15 = 0.0;
       do
       {
@@ -301,8 +301,8 @@ LABEL_6:
         v19 = v18;
         if (v10 == 0.0)
         {
-          v20 = [(SXDataTableLayouter *)self dataSource];
-          v21 = 100.0 / [v20 numberOfColumns];
+          dataSource2 = [(SXDataTableLayouter *)self dataSource];
+          v21 = 100.0 / [dataSource2 numberOfColumns];
         }
 
         else
@@ -311,7 +311,7 @@ LABEL_6:
           v21 = v22;
         }
 
-        v23 = v21 / v14 * a3;
+        v23 = v21 / v14 * width;
         if (v19 > v23)
         {
           v24 = v19 - v23;
@@ -327,49 +327,49 @@ LABEL_6:
         ++v17;
       }
 
-      while (v7 != v17);
+      while (numberOfColumns != v17);
       v16 = 0;
-      v9 = a3;
+      widthCopy2 = width;
     }
 
     else
     {
       v15 = 0.0;
       v16 = 1;
-      v59 = v7;
+      v59 = numberOfColumns;
     }
   }
 
   else
   {
     v15 = 0.0;
-    v16 = a3 < 0.0;
+    v16 = width < 0.0;
     v14 = 100.0;
     v13 = 1;
     v59 = 0;
-    if (a3 >= 0.0)
+    if (width >= 0.0)
     {
-      v9 = a3;
+      widthCopy2 = width;
     }
 
     else
     {
-      v9 = 0.0;
+      widthCopy2 = 0.0;
     }
   }
 
-  v25 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   do
   {
-    if (v7)
+    if (numberOfColumns)
     {
       v26 = 0;
       v27 = v59;
       while (!v16)
       {
-        if ([v25 count] == v7)
+        if ([array count] == numberOfColumns)
         {
-          v29 = [v25 objectAtIndex:v26];
+          v29 = [array objectAtIndex:v26];
           [v29 floatValue];
           v31 = v30;
         }
@@ -381,8 +381,8 @@ LABEL_6:
 
         if (v13)
         {
-          v32 = [(SXDataTableLayouter *)self dataSource];
-          v33 = 100.0 / [v32 numberOfColumns];
+          dataSource3 = [(SXDataTableLayouter *)self dataSource];
+          v33 = 100.0 / [dataSource3 numberOfColumns];
         }
 
         else
@@ -391,7 +391,7 @@ LABEL_6:
           v33 = v34;
         }
 
-        v35 = v9 * (v33 / v14);
+        v35 = widthCopy2 * (v33 / v14);
         [(SXDataTableLayouter *)self minimumWidthForColumnAtIndex:v26];
         if (v35 < v28 && v31 != v28)
         {
@@ -434,10 +434,10 @@ LABEL_6:
         }
 
 LABEL_48:
-        if ([v25 count] == v7 && v35 != 1.79769313e308)
+        if ([array count] == numberOfColumns && v35 != 1.79769313e308)
         {
           v42 = [MEMORY[0x1E696AD98] numberWithDouble:v35];
-          [v25 replaceObjectAtIndex:v26 withObject:v42];
+          [array replaceObjectAtIndex:v26 withObject:v42];
 LABEL_53:
 
           goto LABEL_54;
@@ -446,12 +446,12 @@ LABEL_53:
         if (v35 != 1.79769313e308)
         {
           v42 = [MEMORY[0x1E696AD98] numberWithDouble:v35];
-          [v25 addObject:v42];
+          [array addObject:v42];
           goto LABEL_53;
         }
 
 LABEL_54:
-        if (v7 == ++v26)
+        if (numberOfColumns == ++v26)
         {
           goto LABEL_58;
         }
@@ -468,12 +468,12 @@ LABEL_58:
   }
 
   while (v15 > 0.0);
-  *a4 = v9;
+  *tableWidth = widthCopy2;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v43 = v25;
+  v43 = array;
   v44 = [v43 countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (v44)
   {
@@ -533,60 +533,60 @@ LABEL_58:
   return v43;
 }
 
-- (id)rowHeightsForColumnWidths:(id)a3
+- (id)rowHeightsForColumnWidths:(id)widths
 {
-  v4 = a3;
-  v5 = [(SXDataTableLayouter *)self dataSource];
-  v6 = [v5 numberOfRows];
+  widthsCopy = widths;
+  dataSource = [(SXDataTableLayouter *)self dataSource];
+  numberOfRows = [dataSource numberOfRows];
 
-  v7 = [(SXDataTableLayouter *)self dataSource];
-  v8 = [v7 numberOfColumns];
+  dataSource2 = [(SXDataTableLayouter *)self dataSource];
+  numberOfColumns = [dataSource2 numberOfColumns];
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  if (v6)
+  array = [MEMORY[0x1E695DF70] array];
+  if (numberOfRows)
   {
-    for (i = 0; i != v6; ++i)
+    for (i = 0; i != numberOfRows; ++i)
     {
-      if (v8)
+      if (numberOfColumns)
       {
         v11 = 0;
         v12 = 0.0;
         do
         {
-          v13 = [(SXDataTableLayouter *)self dataSource];
-          [v13 heightForCellAtIndexPath:{i, v11}];
+          dataSource3 = [(SXDataTableLayouter *)self dataSource];
+          [dataSource3 heightForCellAtIndexPath:{i, v11}];
           v15 = v14;
 
-          v16 = [v4 objectAtIndex:v11];
+          v16 = [widthsCopy objectAtIndex:v11];
           [v16 floatValue];
           v18 = v17;
 
-          v19 = [(SXDataTableLayouter *)self dataSource];
-          [v19 paddingForCellAtIndexPath:{i, v11}];
+          dataSource4 = [(SXDataTableLayouter *)self dataSource];
+          [dataSource4 paddingForCellAtIndexPath:{i, v11}];
           v21 = v20;
           v23 = v22;
           v25 = v24;
           v27 = v26;
 
-          v28 = [(SXDataTableLayouter *)self dataSource];
-          v29 = [v28 cellBorderForCellAtIndexPath:{i, v11}];
+          dataSource5 = [(SXDataTableLayouter *)self dataSource];
+          v29 = [dataSource5 cellBorderForCellAtIndexPath:{i, v11}];
 
-          v30 = [v29 left];
-          [v30 width];
+          left = [v29 left];
+          [left width];
           v32 = v27 + v23 + v31;
-          v33 = [v29 right];
-          [v33 width];
+          right = [v29 right];
+          [right width];
           v35 = v18 - (v32 + v34);
 
-          v36 = [(SXDataTableLayouter *)self dataSource];
-          [v36 heightForCellndexPath:i forWidth:{v11, v35}];
+          dataSource6 = [(SXDataTableLayouter *)self dataSource];
+          [dataSource6 heightForCellndexPath:i forWidth:{v11, v35}];
           v38 = v37;
 
           v39 = [v29 top];
           [v39 width];
           v41 = v25 + v21 + v38 + v40;
-          v42 = [v29 bottom];
-          [v42 width];
+          bottom = [v29 bottom];
+          [bottom width];
           v44 = v41 + v43;
 
           if (v44 >= v15)
@@ -607,7 +607,7 @@ LABEL_58:
           ++v11;
         }
 
-        while (v8 != v11);
+        while (numberOfColumns != v11);
       }
 
       else
@@ -616,23 +616,23 @@ LABEL_58:
       }
 
       v46 = [MEMORY[0x1E696AD98] numberWithDouble:ceil(v12)];
-      [v9 addObject:v46];
+      [array addObject:v46];
     }
   }
 
-  return v9;
+  return array;
 }
 
 - (double)totalTableBorderWidth
 {
-  v2 = [(SXDataTableLayouter *)self dataSource];
-  v3 = [v2 tableBorder];
+  dataSource = [(SXDataTableLayouter *)self dataSource];
+  tableBorder = [dataSource tableBorder];
 
-  v4 = [v3 left];
-  [v4 width];
+  left = [tableBorder left];
+  [left width];
   v6 = v5;
-  v7 = [v3 right];
-  [v7 width];
+  right = [tableBorder right];
+  [right width];
   v9 = v6 + v8;
 
   return v9;
@@ -640,14 +640,14 @@ LABEL_58:
 
 - (double)totalTableBorderHeight
 {
-  v2 = [(SXDataTableLayouter *)self dataSource];
-  v3 = [v2 tableBorder];
+  dataSource = [(SXDataTableLayouter *)self dataSource];
+  tableBorder = [dataSource tableBorder];
 
-  v4 = [v3 top];
+  v4 = [tableBorder top];
   [v4 width];
   v6 = v5;
-  v7 = [v3 bottom];
-  [v7 width];
+  bottom = [tableBorder bottom];
+  [bottom width];
   v9 = v6 + v8;
 
   return v9;
@@ -655,11 +655,11 @@ LABEL_58:
 
 - (double)totalColumnDividerWidth
 {
-  v3 = [(SXDataTableLayouter *)self dataSource];
-  v4 = [v3 numberOfColumns];
+  dataSource = [(SXDataTableLayouter *)self dataSource];
+  numberOfColumns = [dataSource numberOfColumns];
 
-  v5 = v4 - 1;
-  if (v4 == 1)
+  v5 = numberOfColumns - 1;
+  if (numberOfColumns == 1)
   {
     return 0.0;
   }
@@ -668,8 +668,8 @@ LABEL_58:
   v7 = 0.0;
   do
   {
-    v8 = [(SXDataTableLayouter *)self dataSource];
-    v9 = [v8 columnDividerAtIndex:v6];
+    dataSource2 = [(SXDataTableLayouter *)self dataSource];
+    v9 = [dataSource2 columnDividerAtIndex:v6];
 
     [v9 width];
     v7 = v7 + v10;
@@ -681,11 +681,11 @@ LABEL_58:
   return v7;
 }
 
-- (double)intendedPercentualWidthForColumnAtIndex:(unint64_t)a3
+- (double)intendedPercentualWidthForColumnAtIndex:(unint64_t)index
 {
-  v5 = [(SXDataTableLayouter *)self intendedColumnWidths];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  intendedColumnWidths = [(SXDataTableLayouter *)self intendedColumnWidths];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  v7 = [intendedColumnWidths objectForKey:v6];
 
   if (v7)
   {
@@ -695,17 +695,17 @@ LABEL_58:
 
   else
   {
-    v10 = [(SXDataTableLayouter *)self dataSource];
-    v11 = [v10 numberOfRows];
+    dataSource = [(SXDataTableLayouter *)self dataSource];
+    numberOfRows = [dataSource numberOfRows];
 
-    if (v11)
+    if (numberOfRows)
     {
       v13 = 0;
       v9 = 1.79769313e308;
       do
       {
-        v14 = [(SXDataTableLayouter *)self dataSource];
-        [v14 widthForCellAtIndexPath:{v13, a3}];
+        dataSource2 = [(SXDataTableLayouter *)self dataSource];
+        [dataSource2 widthForCellAtIndexPath:{v13, index}];
         v16 = v15;
 
         if (v16 != 1.79769313e308)
@@ -734,7 +734,7 @@ LABEL_58:
         ++v13;
       }
 
-      while (v11 != v13);
+      while (numberOfRows != v13);
     }
 
     else
@@ -742,20 +742,20 @@ LABEL_58:
       v9 = 1.79769313e308;
     }
 
-    v17 = [(SXDataTableLayouter *)self intendedColumnWidths];
+    intendedColumnWidths2 = [(SXDataTableLayouter *)self intendedColumnWidths];
     v18 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [v17 setObject:v18 forKey:v19];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+    [intendedColumnWidths2 setObject:v18 forKey:v19];
   }
 
   return ceil(v9);
 }
 
-- (double)minimumWidthForColumnAtIndex:(unint64_t)a3
+- (double)minimumWidthForColumnAtIndex:(unint64_t)index
 {
-  v5 = [(SXDataTableLayouter *)self minimumColumnWidths];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  minimumColumnWidths = [(SXDataTableLayouter *)self minimumColumnWidths];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  v7 = [minimumColumnWidths objectForKey:v6];
 
   if (v7)
   {
@@ -765,32 +765,32 @@ LABEL_58:
 
   else
   {
-    v10 = [(SXDataTableLayouter *)self dataSource];
-    v11 = [v10 numberOfRows];
+    dataSource = [(SXDataTableLayouter *)self dataSource];
+    numberOfRows = [dataSource numberOfRows];
 
-    if (v11)
+    if (numberOfRows)
     {
       v12 = 0;
       v9 = 0.0;
       do
       {
-        v13 = [(SXDataTableLayouter *)self dataSource];
-        [v13 minimumWidthForCellAtIndexPath:{v12, a3}];
+        dataSource2 = [(SXDataTableLayouter *)self dataSource];
+        [dataSource2 minimumWidthForCellAtIndexPath:{v12, index}];
         v15 = v14;
 
-        v16 = [(SXDataTableLayouter *)self dataSource];
-        v17 = [v16 cellBorderForCellAtIndexPath:{v12, a3}];
+        dataSource3 = [(SXDataTableLayouter *)self dataSource];
+        v17 = [dataSource3 cellBorderForCellAtIndexPath:{v12, index}];
 
-        v18 = [(SXDataTableLayouter *)self dataSource];
-        [v18 paddingForCellAtIndexPath:{v12, a3}];
+        dataSource4 = [(SXDataTableLayouter *)self dataSource];
+        [dataSource4 paddingForCellAtIndexPath:{v12, index}];
         v20 = v19;
         v22 = v21;
 
-        v23 = [v17 left];
-        [v23 width];
+        left = [v17 left];
+        [left width];
         v25 = v15 + v24;
-        v26 = [v17 right];
-        [v26 width];
+        right = [v17 right];
+        [right width];
         v28 = v20 + v22 + v25 + v27;
 
         if (v28 >= v9)
@@ -801,7 +801,7 @@ LABEL_58:
         ++v12;
       }
 
-      while (v11 != v12);
+      while (numberOfRows != v12);
     }
 
     else
@@ -809,10 +809,10 @@ LABEL_58:
       v9 = 0.0;
     }
 
-    v29 = [(SXDataTableLayouter *)self minimumColumnWidths];
+    minimumColumnWidths2 = [(SXDataTableLayouter *)self minimumColumnWidths];
     v30 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
-    v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [v29 setObject:v30 forKey:v31];
+    v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+    [minimumColumnWidths2 setObject:v30 forKey:v31];
   }
 
   return ceil(v9);
@@ -820,20 +820,20 @@ LABEL_58:
 
 - (UIEdgeInsets)tableInsets
 {
-  v2 = [(SXDataTableLayouter *)self dataSource];
-  v3 = [v2 tableBorder];
+  dataSource = [(SXDataTableLayouter *)self dataSource];
+  tableBorder = [dataSource tableBorder];
 
-  v4 = [v3 top];
+  v4 = [tableBorder top];
   [v4 width];
   v6 = v5;
-  v7 = [v3 left];
-  [v7 width];
+  left = [tableBorder left];
+  [left width];
   v9 = v8;
-  v10 = [v3 bottom];
-  [v10 width];
+  bottom = [tableBorder bottom];
+  [bottom width];
   v12 = v11;
-  v13 = [v3 right];
-  [v13 width];
+  right = [tableBorder right];
+  [right width];
   v15 = v14;
 
   v16 = v6;

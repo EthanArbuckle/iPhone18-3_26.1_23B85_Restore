@@ -1,16 +1,16 @@
 @interface TDThemeLook
 - (BOOL)supportsContrastAdjustment;
-- (void)setSupportsContrastAdjustment:(BOOL)a3;
+- (void)setSupportsContrastAdjustment:(BOOL)adjustment;
 @end
 
 @implementation TDThemeLook
 
-- (void)setSupportsContrastAdjustment:(BOOL)a3
+- (void)setSupportsContrastAdjustment:(BOOL)adjustment
 {
-  if (*(&self->super._identifier + 4) != a3)
+  if (*(&self->super._identifier + 4) != adjustment)
   {
     [(TDThemeLook *)self willChangeValueForKey:@"supportsContrastAdjustment"];
-    *(&self->super._identifier + 4) = a3;
+    *(&self->super._identifier + 4) = adjustment;
 
     [(TDThemeLook *)self didChangeValueForKey:@"supportsContrastAdjustment"];
   }

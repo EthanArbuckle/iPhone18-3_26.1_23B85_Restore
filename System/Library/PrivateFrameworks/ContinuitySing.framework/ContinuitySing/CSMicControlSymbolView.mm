@@ -1,8 +1,8 @@
 @interface CSMicControlSymbolView
 - (CSMicControlSymbolView)init;
-- (id)_micImageForState:(unint64_t)a3;
+- (id)_micImageForState:(unint64_t)state;
 - (void)layoutSubviews;
-- (void)updateForState:(unint64_t)a3;
+- (void)updateForState:(unint64_t)state;
 @end
 
 @implementation CSMicControlSymbolView
@@ -44,56 +44,56 @@
     [(CSMicControlSymbolView *)v2 addSubview:v2->_imageView];
     [(UIImageView *)v2->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     v46 = MEMORY[0x277CCAAD0];
-    v51 = [(CSMicControlSymbolView *)v2 leadingAnchor];
-    v50 = [(UIImageView *)v2->_imageView leadingAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    leadingAnchor = [(CSMicControlSymbolView *)v2 leadingAnchor];
+    leadingAnchor2 = [(UIImageView *)v2->_imageView leadingAnchor];
+    v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v53[0] = v49;
-    v48 = [(CSMicControlSymbolView *)v2 trailingAnchor];
-    v47 = [(UIImageView *)v2->_imageView trailingAnchor];
-    v21 = [v48 constraintEqualToAnchor:v47];
+    trailingAnchor = [(CSMicControlSymbolView *)v2 trailingAnchor];
+    trailingAnchor2 = [(UIImageView *)v2->_imageView trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v53[1] = v21;
-    v22 = [(CSMicControlSymbolView *)v2 topAnchor];
-    v23 = [(UIImageView *)v2->_imageView topAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    topAnchor = [(CSMicControlSymbolView *)v2 topAnchor];
+    topAnchor2 = [(UIImageView *)v2->_imageView topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v53[2] = v24;
-    v25 = [(CSMicControlSymbolView *)v2 bottomAnchor];
-    v26 = [(UIImageView *)v2->_imageView bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    bottomAnchor = [(CSMicControlSymbolView *)v2 bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)v2->_imageView bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v53[3] = v27;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:4];
     [v46 activateConstraints:v28];
 
-    v29 = [(UIImageView *)v2->_imageView layer];
-    [v29 setShadowRadius:1.4];
+    layer = [(UIImageView *)v2->_imageView layer];
+    [layer setShadowRadius:1.4];
 
-    v30 = [MEMORY[0x277D75340] whiteColor];
-    v31 = [v30 CGColor];
-    v32 = [(UIImageView *)v2->_imageView layer];
-    [v32 setShadowColor:v31];
+    whiteColor = [MEMORY[0x277D75340] whiteColor];
+    cGColor = [whiteColor CGColor];
+    layer2 = [(UIImageView *)v2->_imageView layer];
+    [layer2 setShadowColor:cGColor];
 
     v33 = *MEMORY[0x277CBF3A8];
     v34 = *(MEMORY[0x277CBF3A8] + 8);
-    v35 = [(UIImageView *)v2->_imageView layer];
-    [v35 setShadowOffset:{v33, v34}];
+    layer3 = [(UIImageView *)v2->_imageView layer];
+    [layer3 setShadowOffset:{v33, v34}];
 
     v36 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v15, v16, v17, v18}];
     glowView = v2->_glowView;
     v2->_glowView = v36;
 
     v38 = [MEMORY[0x277D75340] colorWithWhite:1.0 alpha:0.2];
-    v39 = [v38 CGColor];
-    v40 = [(UIView *)v2->_glowView layer];
-    [v40 setShadowColor:v39];
+    cGColor2 = [v38 CGColor];
+    layer4 = [(UIView *)v2->_glowView layer];
+    [layer4 setShadowColor:cGColor2];
 
-    v41 = [(UIView *)v2->_glowView layer];
-    [v41 setShadowOffset:{v33, v34}];
+    layer5 = [(UIView *)v2->_glowView layer];
+    [layer5 setShadowOffset:{v33, v34}];
 
-    v42 = [(UIView *)v2->_glowView layer];
+    layer6 = [(UIView *)v2->_glowView layer];
     LODWORD(v43) = 1.0;
-    [v42 setShadowOpacity:v43];
+    [layer6 setShadowOpacity:v43];
 
-    v44 = [(UIView *)v2->_glowView layer];
-    [v44 setShadowRadius:20.0];
+    layer7 = [(UIView *)v2->_glowView layer];
+    [layer7 setShadowRadius:20.0];
 
     [(CSMicControlSymbolView *)v2 addSubview:v2->_glowView];
     [(CSMicControlSymbolView *)v2 updateForState:0];
@@ -102,11 +102,11 @@
   return v2;
 }
 
-- (void)updateForState:(unint64_t)a3
+- (void)updateForState:(unint64_t)state
 {
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (!a3)
+    if (!state)
     {
       v20 = [MEMORY[0x277D75340] colorWithWhite:0.25 alpha:1.0];
       [(UIImageView *)self->_imageView setTintColor:v20];
@@ -117,17 +117,17 @@
       *&v28.c = v22;
       *&v28.tx = *(MEMORY[0x277CBF2C0] + 32);
       [(UIImageView *)imageView setTransform:&v28];
-      v23 = [(UIImageView *)self->_imageView layer];
-      [v23 setShadowOpacity:0.0];
+      layer = [(UIImageView *)self->_imageView layer];
+      [layer setShadowOpacity:0.0];
 
-      v24 = [(UIView *)self->_glowView layer];
-      [v24 setShadowOpacity:0.0];
+      layer2 = [(UIView *)self->_glowView layer];
+      [layer2 setShadowOpacity:0.0];
 
       [(UIImageView *)self->_imageView removeAllSymbolEffects];
       goto LABEL_11;
     }
 
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_11;
     }
@@ -142,22 +142,22 @@
     *&v28.tx = *(MEMORY[0x277CBF2C0] + 32);
     [(UIImageView *)v6 setTransform:&v28];
     [(UIImageView *)self->_imageView removeAllSymbolEffects];
-    v8 = [(UIImageView *)self->_imageView layer];
+    layer3 = [(UIImageView *)self->_imageView layer];
     LODWORD(v9) = 1.0;
-    [v8 setShadowOpacity:v9];
+    [layer3 setShadowOpacity:v9];
 
-    v10 = [(UIView *)self->_glowView layer];
+    layer4 = [(UIView *)self->_glowView layer];
     LODWORD(v11) = 1.0;
-    [v10 setShadowOpacity:v11];
+    [layer4 setShadowOpacity:v11];
     goto LABEL_8;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     v12 = [MEMORY[0x277D75340] colorWithWhite:0.25 alpha:1.0];
     [(UIImageView *)self->_imageView setTintColor:v12];
@@ -166,33 +166,33 @@
     v13 = self->_imageView;
     v28 = v27;
     [(UIImageView *)v13 setTransform:&v28];
-    v14 = [(UIImageView *)self->_imageView layer];
-    [v14 setShadowOpacity:0.0];
+    layer5 = [(UIImageView *)self->_imageView layer];
+    [layer5 setShadowOpacity:0.0];
 
-    v15 = [(UIView *)self->_glowView layer];
-    [v15 setShadowOpacity:0.0];
+    layer6 = [(UIView *)self->_glowView layer];
+    [layer6 setShadowOpacity:0.0];
 
-    v10 = [MEMORY[0x277CE15E8] behaviorPeriodicWithDelay:0.5];
-    v16 = [MEMORY[0x277CE15E0] optionsWithRepeatBehavior:v10];
+    layer4 = [MEMORY[0x277CE15E8] behaviorPeriodicWithDelay:0.5];
+    v16 = [MEMORY[0x277CE15E0] optionsWithRepeatBehavior:layer4];
     v17 = [v16 optionsWithSpeed:1.5];
 
     v18 = self->_imageView;
-    v19 = [MEMORY[0x277CE15F8] effect];
-    [(UIImageView *)v18 addSymbolEffect:v19 options:v17 animated:1];
+    effect = [MEMORY[0x277CE15F8] effect];
+    [(UIImageView *)v18 addSymbolEffect:effect options:v17 animated:1];
 
 LABEL_8:
   }
 
 LABEL_11:
   v25 = self->_imageView;
-  v26 = [(CSMicControlSymbolView *)self _micImageForState:a3];
+  v26 = [(CSMicControlSymbolView *)self _micImageForState:state];
   [(UIImageView *)v25 setImage:v26];
 }
 
-- (id)_micImageForState:(unint64_t)a3
+- (id)_micImageForState:(unint64_t)state
 {
   v4 = &OBJC_IVAR___CSMicControlSymbolView__onImage;
-  if (a3 == 3 || a3 == 1)
+  if (state == 3 || state == 1)
   {
 LABEL_5:
     v5 = *(&self->super.super.super.isa + *v4);
@@ -200,7 +200,7 @@ LABEL_5:
     return v5;
   }
 
-  if (!a3)
+  if (!state)
   {
     v4 = &OBJC_IVAR___CSMicControlSymbolView__offImage;
     goto LABEL_5;
@@ -233,8 +233,8 @@ LABEL_5:
   if (v8)
   {
     v9 = v8;
-    v10 = [(UIView *)self->_glowView layer];
-    [v10 setShadowPath:v9];
+    layer = [(UIView *)self->_glowView layer];
+    [layer setShadowPath:v9];
 
     CGPathRelease(v9);
   }

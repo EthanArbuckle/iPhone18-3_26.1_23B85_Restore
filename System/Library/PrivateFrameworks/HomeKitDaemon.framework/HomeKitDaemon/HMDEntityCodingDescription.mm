@@ -1,6 +1,6 @@
 @interface HMDEntityCodingDescription
-- (id)descriptionForAttribute:(id)a3;
-- (id)descriptionForRelationship:(id)a3;
+- (id)descriptionForAttribute:(id)attribute;
+- (id)descriptionForRelationship:(id)relationship;
 @end
 
 @implementation HMDEntityCodingDescription
@@ -19,17 +19,17 @@ id __51__HMDEntityCodingDescription_initWithModel_entity___block_invoke(uint64_t
   return result;
 }
 
-- (id)descriptionForRelationship:(id)a3
+- (id)descriptionForRelationship:(id)relationship
 {
-  v5 = [a3 entity];
-  v6 = v5;
+  entity = [relationship entity];
+  v6 = entity;
   entity = self->_entity;
-  if (v5 == entity || [(NSEntityDescription *)v5 isKindOfEntity:self->_entity])
+  if (entity == entity || [(NSEntityDescription *)entity isKindOfEntity:self->_entity])
   {
 
 LABEL_4:
-    v8 = [a3 name];
-    v9 = [(NSDictionary *)self->_relationshipCodingKeysByPropertyName objectForKeyedSubscript:v8];
+    name = [relationship name];
+    v9 = [(NSDictionary *)self->_relationshipCodingKeysByPropertyName objectForKeyedSubscript:name];
     v10 = v9;
     if (v9)
     {
@@ -38,7 +38,7 @@ LABEL_4:
 
     else
     {
-      v11 = v8;
+      v11 = name;
     }
 
     v12 = v11;
@@ -47,8 +47,8 @@ LABEL_4:
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 name];
-      if ([v15 isEqualToString:v8])
+      name2 = [v13 name];
+      if ([name2 isEqualToString:name])
       {
         v16 = v14;
       }
@@ -82,17 +82,17 @@ LABEL_14:
   return v17;
 }
 
-- (id)descriptionForAttribute:(id)a3
+- (id)descriptionForAttribute:(id)attribute
 {
-  v5 = [a3 entity];
-  v6 = v5;
+  entity = [attribute entity];
+  v6 = entity;
   entity = self->_entity;
-  if (v5 == entity || [(NSEntityDescription *)v5 isKindOfEntity:self->_entity])
+  if (entity == entity || [(NSEntityDescription *)entity isKindOfEntity:self->_entity])
   {
 
 LABEL_4:
-    v8 = [a3 name];
-    v9 = [(NSDictionary *)self->_attributeCodingKeysByPropertyName objectForKeyedSubscript:v8];
+    name = [attribute name];
+    v9 = [(NSDictionary *)self->_attributeCodingKeysByPropertyName objectForKeyedSubscript:name];
     v10 = v9;
     if (v9)
     {
@@ -101,7 +101,7 @@ LABEL_4:
 
     else
     {
-      v11 = v8;
+      v11 = name;
     }
 
     v12 = v11;
@@ -110,8 +110,8 @@ LABEL_4:
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 name];
-      if ([v15 isEqualToString:v8])
+      name2 = [v13 name];
+      if ([name2 isEqualToString:name])
       {
         v16 = v14;
       }

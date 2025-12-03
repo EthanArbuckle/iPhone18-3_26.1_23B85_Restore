@@ -1,38 +1,38 @@
 @interface FMOOSModel
 - (FMCoreLocationController)fmCoreLocationController;
-- (FMOOSModel)initWithFMCoreData:(id)a3 locationController:(id)a4 withQueueName:(const char *)a5;
-- (id)getCoreTelephonyRATStringFromEnum:(int)a3;
-- (int)getOOSInsightRATFromString:(id)a3;
-- (void)_handleCellMonitorUpdate:(id)a3 info:(id)a4;
-- (void)_handleLocationUpdate:(id)a3;
-- (void)_handleRegistrationStatusChanged:(id)a3 registrationStatus:(id)a4;
-- (void)_handleRegulatoryDomainEstimateUpdate:(id)a3;
-- (void)_handleVisitEnded:(id)a3;
-- (void)_handleVisitStarted:(id)a3;
-- (void)_initializeStateForContext:(id)a3 atTime:(id)a4;
-- (void)_updateStateForContext:(id)a3 atTime:(id)a4 withExistingState:(id)a5;
+- (FMOOSModel)initWithFMCoreData:(id)data locationController:(id)controller withQueueName:(const char *)name;
+- (id)getCoreTelephonyRATStringFromEnum:(int)enum;
+- (int)getOOSInsightRATFromString:(id)string;
+- (void)_handleCellMonitorUpdate:(id)update info:(id)info;
+- (void)_handleLocationUpdate:(id)update;
+- (void)_handleRegistrationStatusChanged:(id)changed registrationStatus:(id)status;
+- (void)_handleRegulatoryDomainEstimateUpdate:(id)update;
+- (void)_handleVisitEnded:(id)ended;
+- (void)_handleVisitStarted:(id)started;
+- (void)_initializeStateForContext:(id)context atTime:(id)time;
+- (void)_updateStateForContext:(id)context atTime:(id)time withExistingState:(id)state;
 - (void)dealloc;
-- (void)fetchAndSendCrowdsourcedOOSInsightsPerTileForState:(id)a3 atLocation:(id)a4 withReason:(id)a5;
-- (void)fetchAndSendOnDeviceLearningsForState:(id)a3 withContext:(id)a4;
-- (void)sendOutOfServicePredictionEventWithClientPrediction:(id)a3 withSuppressionReason:(unsigned int)a4 didDeviceGoOutOfService:(BOOL)a5;
+- (void)fetchAndSendCrowdsourcedOOSInsightsPerTileForState:(id)state atLocation:(id)location withReason:(id)reason;
+- (void)fetchAndSendOnDeviceLearningsForState:(id)state withContext:(id)context;
+- (void)sendOutOfServicePredictionEventWithClientPrediction:(id)prediction withSuppressionReason:(unsigned int)reason didDeviceGoOutOfService:(BOOL)service;
 @end
 
 @implementation FMOOSModel
 
-- (FMOOSModel)initWithFMCoreData:(id)a3 locationController:(id)a4 withQueueName:(const char *)a5
+- (FMOOSModel)initWithFMCoreData:(id)data locationController:(id)controller withQueueName:(const char *)name
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = FMOOSModel;
-  v10 = [(FMModel *)&v24 initWithFMCoreData:v8 withQueueName:a5];
+  v10 = [(FMModel *)&v24 initWithFMCoreData:dataCopy withQueueName:name];
   v11 = v10;
   v12 = v10;
   if (v10)
   {
-    v13 = [(FMModel *)v10 fmRegulatoryDomainController];
-    v14 = [v13 getCurrentEstimates];
-    [(FMOOSModel *)v12 _handleRegulatoryDomainEstimateUpdate:v14];
+    fmRegulatoryDomainController = [(FMModel *)v10 fmRegulatoryDomainController];
+    getCurrentEstimates = [fmRegulatoryDomainController getCurrentEstimates];
+    [(FMOOSModel *)v12 _handleRegulatoryDomainEstimateUpdate:getCurrentEstimates];
 
     v15 = objc_alloc_init(NSMutableArray);
     prevVisits = v12->_prevVisits;
@@ -45,19 +45,19 @@
     v12->_curLocation = 0;
 
     v12->_isLocationAuthorized = 0;
-    v19 = [(FMModel *)v12 fmCoreTelephonyController];
-    -[FMOOSModel setIsAirplaneModeActive:](v12, "setIsAirplaneModeActive:", [v19 isAirplaneModeActive]);
+    fmCoreTelephonyController = [(FMModel *)v12 fmCoreTelephonyController];
+    -[FMOOSModel setIsAirplaneModeActive:](v12, "setIsAirplaneModeActive:", [fmCoreTelephonyController isAirplaneModeActive]);
 
-    objc_storeWeak(&v11->_fmCoreLocationController, v9);
-    [v9 addDelegate:v12];
+    objc_storeWeak(&v11->_fmCoreLocationController, controllerCopy);
+    [controllerCopy addDelegate:v12];
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
     {
       sub_100202AE8();
     }
 
-    v20 = [(FMModel *)v12 fmCoreTelephonyController];
-    v21 = [v20 getSubscriptionContextsInUse];
-    [(FMModel *)v12 populateSubscriptionContextsInUse:v21];
+    fmCoreTelephonyController2 = [(FMModel *)v12 fmCoreTelephonyController];
+    getSubscriptionContextsInUse = [fmCoreTelephonyController2 getSubscriptionContextsInUse];
+    [(FMModel *)v12 populateSubscriptionContextsInUse:getSubscriptionContextsInUse];
 
     v22 = v12;
   }
@@ -82,22 +82,22 @@
   [(FMModel *)&v3 dealloc];
 }
 
-- (void)_initializeStateForContext:(id)a3 atTime:(id)a4
+- (void)_initializeStateForContext:(id)context atTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMModel *)self fmCoreTelephonyController];
-  v9 = [v6 uuid];
-  v10 = [v8 getRegistrationStatus:v9];
+  contextCopy = context;
+  timeCopy = time;
+  fmCoreTelephonyController = [(FMModel *)self fmCoreTelephonyController];
+  uuid = [contextCopy uuid];
+  v10 = [fmCoreTelephonyController getRegistrationStatus:uuid];
 
-  v11 = [v6 mcc];
-  v12 = [v6 mnc];
+  v11 = [contextCopy mcc];
+  v12 = [contextCopy mnc];
   v13 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v6 uuid];
+    uuid2 = [contextCopy uuid];
     v20 = 138413058;
-    v21 = v19;
+    v21 = uuid2;
     v22 = 2112;
     v23 = v10;
     v24 = 2112;
@@ -108,14 +108,14 @@
   }
 
   v14 = [FMOOSContextState alloc];
-  v15 = [v6 subscriptionID];
-  v16 = [(FMOOSContextState *)v14 initWithStartTime:v7 subscriptionID:v15 registrationState:v10 homeMcc:v11 homeMnc:v12];
+  subscriptionID = [contextCopy subscriptionID];
+  v16 = [(FMOOSContextState *)v14 initWithStartTime:timeCopy subscriptionID:subscriptionID registrationState:v10 homeMcc:v11 homeMnc:v12];
 
   if (v16)
   {
-    v17 = [(FMModel *)self contextUUIDToStateMap];
-    v18 = [v6 uuid];
-    [v17 setObject:v16 forKey:v18];
+    contextUUIDToStateMap = [(FMModel *)self contextUUIDToStateMap];
+    uuid3 = [contextCopy uuid];
+    [contextUUIDToStateMap setObject:v16 forKey:uuid3];
   }
 
   else if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
@@ -124,29 +124,29 @@
   }
 }
 
-- (void)_updateStateForContext:(id)a3 atTime:(id)a4 withExistingState:(id)a5
+- (void)_updateStateForContext:(id)context atTime:(id)time withExistingState:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  timeCopy = time;
+  stateCopy = state;
   v11 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v8 uuid];
-    sub_100202C08(v12, buf, v11);
+    uuid = [contextCopy uuid];
+    sub_100202C08(uuid, buf, v11);
   }
 
-  v13 = [v10 subscriptionID];
-  v14 = [v8 subscriptionID];
-  if ([v13 isEqualToNumber:v14])
+  subscriptionID = [stateCopy subscriptionID];
+  subscriptionID2 = [contextCopy subscriptionID];
+  if ([subscriptionID isEqualToNumber:subscriptionID2])
   {
-    v15 = [v10 homeMcc];
-    v16 = [v8 mcc];
-    if ([v15 isEqualToString:v16])
+    homeMcc = [stateCopy homeMcc];
+    v16 = [contextCopy mcc];
+    if ([homeMcc isEqualToString:v16])
     {
-      v17 = [v10 homeMnc];
-      v18 = [v8 mnc];
-      v19 = [v17 isEqualToString:v18];
+      homeMnc = [stateCopy homeMnc];
+      v18 = [contextCopy mnc];
+      v19 = [homeMnc isEqualToString:v18];
 
       if (v19)
       {
@@ -158,19 +158,19 @@
   }
 
 LABEL_9:
-  [(FMOOSModel *)self _initializeStateForContext:v8 atTime:v9];
+  [(FMOOSModel *)self _initializeStateForContext:contextCopy atTime:timeCopy];
 LABEL_10:
 }
 
-- (void)fetchAndSendCrowdsourcedOOSInsightsPerTileForState:(id)a3 atLocation:(id)a4 withReason:(id)a5
+- (void)fetchAndSendCrowdsourcedOOSInsightsPerTileForState:(id)state atLocation:(id)location withReason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  locationCopy = location;
+  reasonCopy = reason;
   v11 = +[FMConfiguration sharedInstance];
-  v12 = [v11 disableCrowdsourcedLearnings];
+  disableCrowdsourcedLearnings = [v11 disableCrowdsourcedLearnings];
 
-  if (v12)
+  if (disableCrowdsourcedLearnings)
   {
     v13 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -179,12 +179,12 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Crowdsourced OOS learnings: Crowdsourced learnings disabled as per config, aborting", buf, 2u);
     }
 
-    v12 = 0x10000;
+    disableCrowdsourcedLearnings = 0x10000;
   }
 
-  v14 = [(FMOOSModel *)self isInCrowdsourcedDisabledCountry];
+  isInCrowdsourcedDisabledCountry = [(FMOOSModel *)self isInCrowdsourcedDisabledCountry];
   v15 = qword_1002DBE98;
-  if (v14)
+  if (isInCrowdsourcedDisabledCountry)
   {
     v16 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -194,19 +194,19 @@ LABEL_10:
       v15 = qword_1002DBE98;
     }
 
-    v12 |= 0x40000u;
+    disableCrowdsourcedLearnings |= 0x40000u;
   }
 
   v17 = *(v15 + 136);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    LODWORD(v39) = v12;
+    LODWORD(v39) = disableCrowdsourcedLearnings;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Crowdsourced OOS learnings: Suppression reason %u", buf, 8u);
   }
 
-  [v8 setPredictionSuppressionReason:{objc_msgSend(v8, "predictionSuppressionReason") | v12}];
-  if (([v8 predictionSuppressionReason] & 0xFFFD0000) != 0)
+  [stateCopy setPredictionSuppressionReason:{objc_msgSend(stateCopy, "predictionSuppressionReason") | disableCrowdsourcedLearnings}];
+  if (([stateCopy predictionSuppressionReason] & 0xFFFD0000) != 0)
   {
     v18 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -223,7 +223,7 @@ LABEL_15:
 
   else
   {
-    if (!v9)
+    if (!locationCopy)
     {
       v18 = *(qword_1002DBE98 + 136);
       if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -236,7 +236,7 @@ LABEL_15:
       goto LABEL_14;
     }
 
-    [v9 accuracy];
+    [locationCopy accuracy];
     v23 = v22;
     v24 = +[FMConfiguration sharedInstance];
     v25 = v23 < [v24 LocationHorizontalAccuracyThreshold];
@@ -250,7 +250,7 @@ LABEL_15:
         goto LABEL_25;
       }
 
-      [v9 accuracy];
+      [locationCopy accuracy];
       *buf = 134217984;
       v39 = v33;
       v19 = "FederatedMobility[FMOOSModel]:#I Not sending Crowdsourced prediction: horizontal accuracy %f is more than threshold";
@@ -265,32 +265,32 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Crowdsourced OOS learnings: Inside fetchAndSendCrowdsourcedOOSInsightsPerTile", buf, 2u);
     }
 
-    [v9 latitude];
+    [locationCopy latitude];
     v29 = v28;
-    [v9 longitude];
+    [locationCopy longitude];
     v31 = v30;
-    v32 = [(FMModel *)self _queue];
+    _queue = [(FMModel *)self _queue];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_10008C120;
     v34[3] = &unk_1002AE378;
-    v35 = v8;
-    v36 = v9;
-    v37 = v10;
-    [FMGEOServicesHandler getCellularCoverageTileConfigurationAtLatitude:v32 longitude:v37 queue:v34 reason:v29 responseBlock:v31];
+    v35 = stateCopy;
+    v36 = locationCopy;
+    v37 = reasonCopy;
+    [FMGEOServicesHandler getCellularCoverageTileConfigurationAtLatitude:_queue longitude:v37 queue:v34 reason:v29 responseBlock:v31];
   }
 
 LABEL_25:
 }
 
-- (void)_handleRegistrationStatusChanged:(id)a3 registrationStatus:(id)a4
+- (void)_handleRegistrationStatusChanged:(id)changed registrationStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  changedCopy = changed;
+  statusCopy = status;
+  if (statusCopy)
   {
-    v8 = [(FMModel *)self contextUUIDToStateMap];
-    v9 = [v8 objectForKey:v6];
+    contextUUIDToStateMap = [(FMModel *)self contextUUIDToStateMap];
+    v9 = [contextUUIDToStateMap objectForKey:changedCopy];
 
     v10 = os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG);
     if (!v9)
@@ -308,8 +308,8 @@ LABEL_25:
       sub_100202E10();
     }
 
-    v11 = [v9 registrationState];
-    [v9 setRegistrationState:v7];
+    registrationState = [v9 registrationState];
+    [v9 setRegistrationState:statusCopy];
     if ([(FMOOSModel *)self isAirplaneModeActive])
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
@@ -320,24 +320,24 @@ LABEL_25:
       goto LABEL_51;
     }
 
-    if ([WISTelephonyUtils isRegistrationDisplayStatusInService:v11]&& [WISTelephonyUtils isRegistrationDisplayStatusOutOfService:v7])
+    if ([WISTelephonyUtils isRegistrationDisplayStatusInService:registrationState]&& [WISTelephonyUtils isRegistrationDisplayStatusOutOfService:statusCopy])
     {
       v13 = *(qword_1002DBE98 + 136);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v73 = v6;
+        v73 = changedCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Device went OOS with context %@", buf, 0xCu);
       }
 
-      v14 = [v9 oosAreaEntry];
-      v15 = v14 == 0;
+      oosAreaEntry = [v9 oosAreaEntry];
+      v15 = oosAreaEntry == 0;
 
       if (v15)
       {
-        v71 = [(FMOOSModel *)self curLocation];
-        v28 = [v9 clientPrediction];
-        if (v28 && ([v9 clientPrediction], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isSent"), v29, v28, (v30 & 1) != 0))
+        curLocation = [(FMOOSModel *)self curLocation];
+        clientPrediction = [v9 clientPrediction];
+        if (clientPrediction && ([v9 clientPrediction], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isSent"), v29, clientPrediction, (v30 & 1) != 0))
         {
           v58 = 1;
         }
@@ -351,53 +351,53 @@ LABEL_25:
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I On-device prediction not sent, sending Crowdsourced OOS learnings", buf, 2u);
           }
 
-          [(FMOOSModel *)self fetchAndSendCrowdsourcedOOSInsightsPerTileForState:v9 atLocation:v71 withReason:@"OutOfService"];
+          [(FMOOSModel *)self fetchAndSendCrowdsourcedOOSInsightsPerTileForState:v9 atLocation:curLocation withReason:@"OutOfService"];
           v58 = 0;
         }
 
-        v62 = [v9 prevCells];
-        v61 = [v9 prevCells];
-        v66 = [v61 count];
+        prevCells = [v9 prevCells];
+        prevCells2 = [v9 prevCells];
+        v66 = [prevCells2 count];
         v60 = +[FMConfiguration sharedInstance];
-        v63 = [v60 OOSPrevCellsInDatabase];
-        if (v66 <= v63)
+        oOSPrevCellsInDatabase = [v60 OOSPrevCellsInDatabase];
+        if (v66 <= oOSPrevCellsInDatabase)
         {
           v68 = 0;
         }
 
         else
         {
-          v57 = [v9 prevCells];
-          v32 = [v57 count];
+          prevCells3 = [v9 prevCells];
+          v32 = [prevCells3 count];
           v56 = +[FMConfiguration sharedInstance];
           v68 = v32 - [v56 OOSPrevCellsInDatabase];
         }
 
-        v59 = [v9 prevCells];
-        v33 = [v59 count];
+        prevCells4 = [v9 prevCells];
+        v33 = [prevCells4 count];
         v34 = +[FMConfiguration sharedInstance];
         if (v33 >= [v34 OOSPrevCellsInDatabase])
         {
-          v35 = +[FMConfiguration sharedInstance];
-          v36 = [v35 OOSPrevCellsInDatabase];
+          prevCells5 = +[FMConfiguration sharedInstance];
+          oOSPrevCellsInDatabase2 = [prevCells5 OOSPrevCellsInDatabase];
         }
 
         else
         {
-          v35 = [v9 prevCells];
-          v36 = [v35 count];
+          prevCells5 = [v9 prevCells];
+          oOSPrevCellsInDatabase2 = [prevCells5 count];
         }
 
-        v69 = [v62 subarrayWithRange:{v68, v36}];
+        v69 = [prevCells subarrayWithRange:{v68, oOSPrevCellsInDatabase2}];
 
-        if (v66 > v63)
+        if (v66 > oOSPrevCellsInDatabase)
         {
         }
 
-        v37 = [(FMOOSModel *)self prevVisits];
-        v38 = [v37 lastObject];
+        prevVisits = [(FMOOSModel *)self prevVisits];
+        lastObject = [prevVisits lastObject];
 
-        v39 = [(FMOOSModel *)self curVisit];
+        curVisit = [(FMOOSModel *)self curVisit];
         v40 = +[NSDate now];
         v41 = *(qword_1002DBE98 + 136);
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
@@ -416,12 +416,12 @@ LABEL_25:
 
         v43 = sub_1000CDAE0();
         v44 = [FMOOSAreaEntry alloc];
-        v45 = [v9 clientPrediction];
-        v46 = [(FMOOSAreaEntry *)v44 init:v40 prevVisit:v38 curVisit:v39 entryLocation:v71 prevCells:v69 registrationState:v11 batteryLevel:v43 clientPrediction:v45];
+        clientPrediction2 = [v9 clientPrediction];
+        v46 = [(FMOOSAreaEntry *)v44 init:v40 prevVisit:lastObject curVisit:curVisit entryLocation:curLocation prevCells:v69 registrationState:registrationState batteryLevel:v43 clientPrediction:clientPrediction2];
         [v9 setOosAreaEntry:v46];
 
-        v47 = [v9 clientPrediction];
-        -[FMOOSModel sendOutOfServicePredictionEventWithClientPrediction:withSuppressionReason:didDeviceGoOutOfService:](self, "sendOutOfServicePredictionEventWithClientPrediction:withSuppressionReason:didDeviceGoOutOfService:", v47, [v9 predictionSuppressionReason], 1);
+        clientPrediction3 = [v9 clientPrediction];
+        -[FMOOSModel sendOutOfServicePredictionEventWithClientPrediction:withSuppressionReason:didDeviceGoOutOfService:](self, "sendOutOfServicePredictionEventWithClientPrediction:withSuppressionReason:didDeviceGoOutOfService:", clientPrediction3, [v9 predictionSuppressionReason], 1);
 
         [v9 setClientPrediction:0];
       }
@@ -434,7 +434,7 @@ LABEL_25:
       goto LABEL_51;
     }
 
-    if (![WISTelephonyUtils isRegistrationDisplayStatusOutOfService:v11]|| ![WISTelephonyUtils isRegistrationDisplayStatusInService:v7])
+    if (![WISTelephonyUtils isRegistrationDisplayStatusOutOfService:registrationState]|| ![WISTelephonyUtils isRegistrationDisplayStatusInService:statusCopy])
     {
 LABEL_51:
 
@@ -442,8 +442,8 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    v16 = [v9 oosAreaEntry];
-    v17 = v16 == 0;
+    oosAreaEntry2 = [v9 oosAreaEntry];
+    v17 = oosAreaEntry2 == 0;
 
     v18 = *(qword_1002DBE98 + 136);
     if (v17)
@@ -461,31 +461,31 @@ LABEL_52:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v73 = v6;
+      v73 = changedCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Device no longer OOS with context %@ according to registration display state", buf, 0xCu);
     }
 
     v70 = +[NSDate now];
-    v19 = [v9 oosAreaEntry];
-    v20 = [v19 timestamp];
-    [v70 timeIntervalSinceDate:v20];
+    oosAreaEntry3 = [v9 oosAreaEntry];
+    timestamp = [oosAreaEntry3 timestamp];
+    [v70 timeIntervalSinceDate:timestamp];
     v22 = v21;
 
     v23 = +[FMConfiguration sharedInstance];
     v65 = [v70 dateByAddingTimeInterval:{-objc_msgSend(v23, "OOSMaxSecondsSinceCellSeenBeforeInService")}];
 
-    v24 = [v9 prevCells];
-    v67 = [v24 lastObject];
+    prevCells6 = [v9 prevCells];
+    lastObject2 = [prevCells6 lastObject];
 
-    if (v67)
+    if (lastObject2)
     {
-      v25 = [v9 oosAreaEntry];
-      v26 = [v25 timestamp];
-      v27 = [v67 timestamp];
-      if ([v26 compare:v27] == -1)
+      oosAreaEntry4 = [v9 oosAreaEntry];
+      timestamp2 = [oosAreaEntry4 timestamp];
+      timestamp3 = [lastObject2 timestamp];
+      if ([timestamp2 compare:timestamp3] == -1)
       {
-        v48 = [v67 timestamp];
-        v64 = [v65 compare:v48] == -1;
+        timestamp4 = [lastObject2 timestamp];
+        v64 = [v65 compare:timestamp4] == -1;
 
         if (v64)
         {
@@ -493,19 +493,19 @@ LABEL_52:
           if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v73 = v6;
+            v73 = changedCopy;
             v74 = 2112;
-            *v75 = v67;
+            *v75 = lastObject2;
             _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Device back in service with context %@ and next cell %@", buf, 0x16u);
           }
 
-          v50 = [v9 subscriptionID];
-          v51 = [(FMModel *)self fmCoreTelephonyController];
-          v52 = [v51 isDataContextUuid:v6];
-          v53 = [v9 oosAreaEntry];
-          v54 = [v9 previousCrowdsourcedOOSInsights];
+          subscriptionID = [v9 subscriptionID];
+          fmCoreTelephonyController = [(FMModel *)self fmCoreTelephonyController];
+          v52 = [fmCoreTelephonyController isDataContextUuid:changedCopy];
+          oosAreaEntry5 = [v9 oosAreaEntry];
+          previousCrowdsourcedOOSInsights = [v9 previousCrowdsourcedOOSInsights];
           LODWORD(v55) = [v9 predictionSuppressionReason];
-          [(FMOOSModel *)self backInServiceWithSubscriptionID:v50 isDataContext:v52 afterDuration:v53 fromEntry:v67 withNextCell:v7 withRegistrationState:v54 previousCrowdsourcedPrediction:v22 withPredictionSuppressionReason:v55];
+          [(FMOOSModel *)self backInServiceWithSubscriptionID:subscriptionID isDataContext:v52 afterDuration:oosAreaEntry5 fromEntry:lastObject2 withNextCell:statusCopy withRegistrationState:previousCrowdsourcedOOSInsights previousCrowdsourcedPrediction:v22 withPredictionSuppressionReason:v55];
 
           [v9 setOosAreaEntry:0];
           [v9 setPreviousCrowdsourcedOOSInsights:0];
@@ -533,21 +533,21 @@ LABEL_50:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v73 = v6;
+    v73 = changedCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Received nil display status change for context %@", buf, 0xCu);
   }
 
 LABEL_53:
 }
 
-- (void)_handleCellMonitorUpdate:(id)a3 info:(id)a4
+- (void)_handleCellMonitorUpdate:(id)update info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  updateCopy = update;
+  infoCopy = info;
+  if (infoCopy)
   {
-    v8 = [(FMModel *)self contextUUIDToStateMap];
-    v9 = [v8 objectForKey:v6];
+    contextUUIDToStateMap = [(FMModel *)self contextUUIDToStateMap];
+    v9 = [contextUUIDToStateMap objectForKey:updateCopy];
 
     if (!v9)
     {
@@ -559,11 +559,11 @@ LABEL_53:
       goto LABEL_30;
     }
 
-    v43 = [WISTelephonyUtils getServingCellInfoFromArray:v7];
+    v43 = [WISTelephonyUtils getServingCellInfoFromArray:infoCopy];
     v10 = +[NSDate now];
-    v11 = [v9 subscriptionID];
+    subscriptionID = [v9 subscriptionID];
     v44 = 0;
-    v42 = [FMCoreTelephonyController cellInfoToFMServingCell:v43 atTime:v10 inSlot:v11 error:&v44];
+    v42 = [FMCoreTelephonyController cellInfoToFMServingCell:v43 atTime:v10 inSlot:subscriptionID error:&v44];
     v12 = v44;
 
     if (v12)
@@ -571,8 +571,8 @@ LABEL_53:
       v13 = *(qword_1002DBE98 + 136);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v12 localizedDescription];
-        sub_100203090(v6, v14, buf, v13);
+        localizedDescription = [v12 localizedDescription];
+        sub_100203090(updateCopy, localizedDescription, buf, v13);
       }
 
       goto LABEL_29;
@@ -588,11 +588,11 @@ LABEL_53:
       goto LABEL_29;
     }
 
-    v15 = [v9 oosAreaEntry];
-    if (v15)
+    oosAreaEntry = [v9 oosAreaEntry];
+    if (oosAreaEntry)
     {
-      v16 = [v9 registrationState];
-      v17 = [WISTelephonyUtils isRegistrationDisplayStatusInService:v16];
+      registrationState = [v9 registrationState];
+      v17 = [WISTelephonyUtils isRegistrationDisplayStatusInService:registrationState];
 
       if (v17)
       {
@@ -600,25 +600,25 @@ LABEL_53:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v46 = v6;
+          v46 = updateCopy;
           v47 = 2112;
           v48 = v42;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Device no longer OOS with context %@ according to registration display state and cell monitor with next cell %@", buf, 0x16u);
         }
 
-        v40 = [v9 subscriptionID];
-        v39 = [(FMModel *)self fmCoreTelephonyController];
-        v38 = [v39 isDataContextUuid:v6];
+        subscriptionID2 = [v9 subscriptionID];
+        fmCoreTelephonyController = [(FMModel *)self fmCoreTelephonyController];
+        v38 = [fmCoreTelephonyController isDataContextUuid:updateCopy];
         v41 = +[NSDate now];
-        v37 = [v9 oosAreaEntry];
-        v19 = [v37 timestamp];
+        oosAreaEntry2 = [v9 oosAreaEntry];
+        timestamp = [oosAreaEntry2 timestamp];
         [v41 timeIntervalSinceDate:?];
         v21 = v20;
-        v22 = [v9 oosAreaEntry];
-        v23 = [v9 registrationState];
-        v24 = [v9 previousCrowdsourcedOOSInsights];
+        oosAreaEntry3 = [v9 oosAreaEntry];
+        registrationState2 = [v9 registrationState];
+        previousCrowdsourcedOOSInsights = [v9 previousCrowdsourcedOOSInsights];
         LODWORD(v36) = [v9 predictionSuppressionReason];
-        [(FMOOSModel *)self backInServiceWithSubscriptionID:v40 isDataContext:v38 afterDuration:v22 fromEntry:v42 withNextCell:v23 withRegistrationState:v24 previousCrowdsourcedPrediction:v21 withPredictionSuppressionReason:v36];
+        [(FMOOSModel *)self backInServiceWithSubscriptionID:subscriptionID2 isDataContext:v38 afterDuration:oosAreaEntry3 fromEntry:v42 withNextCell:registrationState2 withRegistrationState:previousCrowdsourcedOOSInsights previousCrowdsourcedPrediction:v21 withPredictionSuppressionReason:v36];
 
         [v9 setOosAreaEntry:0];
         [v9 setPreviousCrowdsourcedOOSInsights:0];
@@ -626,16 +626,16 @@ LABEL_53:
       }
     }
 
-    v25 = [v9 prevCells];
-    v26 = [v25 lastObject];
+    prevCells = [v9 prevCells];
+    lastObject = [prevCells lastObject];
 
-    if (v26 && [v26 isEqual:v42])
+    if (lastObject && [lastObject isEqual:v42])
     {
-      v27 = [v42 timestamp];
-      [v26 updateTimestampTo:v27];
+      timestamp2 = [v42 timestamp];
+      [lastObject updateTimestampTo:timestamp2];
 
-      v28 = [v9 clientPrediction];
-      v29 = v28 == 0;
+      clientPrediction = [v9 clientPrediction];
+      v29 = clientPrediction == 0;
 
       if (!v29)
       {
@@ -655,31 +655,31 @@ LABEL_30:
 
     else
     {
-      v30 = [v9 prevCells];
-      [v30 addObject:v42];
+      prevCells2 = [v9 prevCells];
+      [prevCells2 addObject:v42];
 
       v31 = +[FMConfiguration sharedInstance];
-      v32 = [v31 OOSPrevCellsInMemory];
-      v33 = [v9 prevCells];
-      [FMUtil removeFirstElementsForCapacity:v32 fromArray:v33];
+      oOSPrevCellsInMemory = [v31 OOSPrevCellsInMemory];
+      prevCells3 = [v9 prevCells];
+      [FMUtil removeFirstElementsForCapacity:oOSPrevCellsInMemory fromArray:prevCells3];
     }
 
     v34 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [(FMOOSModel *)self isLocationAuthorized];
+      isLocationAuthorized = [(FMOOSModel *)self isLocationAuthorized];
       *buf = 138412802;
-      v46 = v6;
+      v46 = updateCopy;
       v47 = 2112;
       v48 = v42;
       v49 = 1024;
-      v50 = v35;
+      v50 = isLocationAuthorized;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Cell Monitor Update for context %@: %@, isLocationAuthorized: %{BOOL}d", buf, 0x1Cu);
     }
 
     if ([(FMOOSModel *)self isLocationAuthorized])
     {
-      [(FMOOSModel *)self fetchAndSendOnDeviceLearningsForState:v9 withContext:v6];
+      [(FMOOSModel *)self fetchAndSendOnDeviceLearningsForState:v9 withContext:updateCopy];
     }
 
     goto LABEL_26;
@@ -693,50 +693,50 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)fetchAndSendOnDeviceLearningsForState:(id)a3 withContext:(id)a4
+- (void)fetchAndSendOnDeviceLearningsForState:(id)state withContext:(id)context
 {
-  v6 = a3;
-  v93 = a4;
-  v92 = v6;
-  v7 = [v6 oosAreaEntry];
+  stateCopy = state;
+  contextCopy = context;
+  v92 = stateCopy;
+  oosAreaEntry = [stateCopy oosAreaEntry];
 
-  if (!v7)
+  if (!oosAreaEntry)
   {
-    v8 = [v6 clientPrediction];
-    -[FMOOSModel sendOutOfServicePredictionEventWithClientPrediction:withSuppressionReason:didDeviceGoOutOfService:](self, "sendOutOfServicePredictionEventWithClientPrediction:withSuppressionReason:didDeviceGoOutOfService:", v8, [v6 predictionSuppressionReason], 0);
+    clientPrediction = [stateCopy clientPrediction];
+    -[FMOOSModel sendOutOfServicePredictionEventWithClientPrediction:withSuppressionReason:didDeviceGoOutOfService:](self, "sendOutOfServicePredictionEventWithClientPrediction:withSuppressionReason:didDeviceGoOutOfService:", clientPrediction, [stateCopy predictionSuppressionReason], 0);
 
-    [v6 setClientPrediction:0];
-    [v6 setPredictionSuppressionReason:0];
+    [stateCopy setClientPrediction:0];
+    [stateCopy setPredictionSuppressionReason:0];
     v91 = +[NSDate now];
-    v9 = [(FMModel *)self fmCoreData];
-    v10 = [(FMOOSModel *)self prevVisits];
-    v11 = [v10 lastObject];
-    v12 = [(FMOOSModel *)self curVisit];
-    v13 = [v6 subscriptionID];
-    v14 = [v92 prevCells];
-    v15 = [(FMOOSModel *)self curLocation];
-    v16 = [FMOOSPredictor getOutOfServiceRecoveryPredictionWithFMCoreData:v9 prevVisit:v11 curVisit:v12 subscriptionID:v13 prevCells:v14 startTime:v91 entryLocation:v15];
+    fmCoreData = [(FMModel *)self fmCoreData];
+    prevVisits = [(FMOOSModel *)self prevVisits];
+    lastObject = [prevVisits lastObject];
+    curVisit = [(FMOOSModel *)self curVisit];
+    subscriptionID = [stateCopy subscriptionID];
+    prevCells = [v92 prevCells];
+    curLocation = [(FMOOSModel *)self curLocation];
+    v16 = [FMOOSPredictor getOutOfServiceRecoveryPredictionWithFMCoreData:fmCoreData prevVisit:lastObject curVisit:curVisit subscriptionID:subscriptionID prevCells:prevCells startTime:v91 entryLocation:curLocation];
 
     v95 = v16;
     if (v16 && ([v16 firstObject], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v90 = v17;
-      v18 = [v17 cells];
-      v19 = [v18 firstObject];
+      cells = [v17 cells];
+      firstObject = [cells firstObject];
 
-      if (v19)
+      if (firstObject)
       {
-        v20 = [v19 subscriptionID];
-        v21 = [v20 unsignedIntegerValue];
+        subscriptionID2 = [firstObject subscriptionID];
+        unsignedIntegerValue = [subscriptionID2 unsignedIntegerValue];
 
         v22 = *(qword_1002DBE98 + 136);
-        if (v21 < 2)
+        if (unsignedIntegerValue < 2)
         {
-          v89 = v19;
+          v89 = firstObject;
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            *&buf[4] = v93;
+            *&buf[4] = contextCopy;
             *&buf[12] = 2048;
             *&buf[14] = [v16 count];
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Received Recovery Predictions for context %@: %lu", buf, 0x16u);
@@ -756,13 +756,13 @@ LABEL_31:
             {
               v28 = [v95 count];
               v29 = [v95 objectAtIndexedSubscript:i];
-              v30 = [v29 cells];
-              v31 = [v30 count];
+              cells2 = [v29 cells];
+              v31 = [cells2 count];
               v32 = [v95 objectAtIndexedSubscript:i];
-              v33 = [v32 durations];
-              v34 = [v33 count];
+              durations = [v32 durations];
+              v34 = [durations count];
               *buf = 138413314;
-              *&buf[4] = v93;
+              *&buf[4] = contextCopy;
               *&buf[12] = 2048;
               v94 = i + 1;
               *&buf[14] = i + 1;
@@ -784,8 +784,8 @@ LABEL_31:
             while (1)
             {
               v36 = [v95 objectAtIndexedSubscript:i];
-              v37 = [v36 durations];
-              v38 = v35 < [v37 count];
+              durations2 = [v36 durations];
+              v38 = v35 < [durations2 count];
 
               if (!v38)
               {
@@ -797,14 +797,14 @@ LABEL_31:
               {
                 v40 = [v95 count];
                 v41 = [v95 objectAtIndexedSubscript:i];
-                v42 = [v41 durations];
-                v43 = [v42 count];
+                durations3 = [v41 durations];
+                v43 = [durations3 count];
                 v44 = [v95 objectAtIndexedSubscript:i];
-                v45 = [v44 durations];
-                v46 = [v45 objectAtIndexedSubscript:v35];
+                durations4 = [v44 durations];
+                v46 = [durations4 objectAtIndexedSubscript:v35];
                 ++v35;
                 *buf = 138413570;
-                *&buf[4] = v93;
+                *&buf[4] = contextCopy;
                 *&buf[12] = 2048;
                 *&buf[14] = v94;
                 v97 = 2048;
@@ -828,8 +828,8 @@ LABEL_31:
             while (1)
             {
               v48 = [v95 objectAtIndexedSubscript:i];
-              v49 = [v48 cells];
-              v50 = v47 < [v49 count];
+              cells3 = [v48 cells];
+              v50 = v47 < [cells3 count];
 
               if (!v50)
               {
@@ -841,14 +841,14 @@ LABEL_31:
               {
                 v52 = [v95 count];
                 v53 = [v95 objectAtIndexedSubscript:i];
-                v54 = [v53 cells];
-                v55 = [v54 count];
+                cells4 = [v53 cells];
+                v55 = [cells4 count];
                 v56 = [v95 objectAtIndexedSubscript:i];
-                v57 = [v56 cells];
-                v58 = [v57 objectAtIndexedSubscript:v47];
+                cells5 = [v56 cells];
+                v58 = [cells5 objectAtIndexedSubscript:v47];
                 ++v47;
                 *buf = 138413570;
-                *&buf[4] = v93;
+                *&buf[4] = contextCopy;
                 *&buf[12] = 2048;
                 *&buf[14] = v94;
                 v97 = 2048;
@@ -872,33 +872,33 @@ LABEL_31:
           if (v27)
           {
             *buf = 138412290;
-            *&buf[4] = v93;
+            *&buf[4] = contextCopy;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I Passing OOS recovery predictions for context %@ to clients", buf, 0xCu);
           }
 
-          v59 = [v90 durations];
+          durations5 = [v90 durations];
           v60 = +[FMConfiguration sharedInstance];
-          v61 = +[FMOOSPredictor getElementFromSortedArray:forPercentile:](FMOOSPredictor, "getElementFromSortedArray:forPercentile:", v59, [v60 onDeviceDurationPredictionPercentile]);
+          v61 = +[FMOOSPredictor getElementFromSortedArray:forPercentile:](FMOOSPredictor, "getElementFromSortedArray:forPercentile:", durations5, [v60 onDeviceDurationPredictionPercentile]);
 
           if (v61)
           {
             [v61 doubleValue];
             v63 = v62;
             v64 = +[FMConfiguration sharedInstance];
-            v65 = [v64 sendOOSPredictionsToBaseband];
+            sendOOSPredictionsToBaseband = [v64 sendOOSPredictionsToBaseband];
 
-            v66 = [v90 seenCount];
+            seenCount = [v90 seenCount];
             v67 = +[FMConfiguration sharedInstance];
-            v68 = [v67 OOSMinSeenCountForSendingPrediction] > v66;
+            v68 = [v67 OOSMinSeenCountForSendingPrediction] > seenCount;
 
             if (v68)
             {
-              v69 = v65 ^ 1 | 2;
+              v69 = sendOOSPredictionsToBaseband ^ 1 | 2;
             }
 
             else
             {
-              v69 = v65 ^ 1;
+              v69 = sendOOSPredictionsToBaseband ^ 1;
             }
 
             v70 = +[FMConfiguration sharedInstance];
@@ -949,12 +949,12 @@ LABEL_31:
                 v78 = @"yes";
               }
 
-              v79 = [v90 durations];
-              v80 = [FMOOSPredictor getElementFromSortedArray:v79 forPercentile:25];
-              v81 = [v90 durations];
-              v82 = [FMOOSPredictor getElementFromSortedArray:v81 forPercentile:50];
-              v83 = [v90 durations];
-              v84 = [FMOOSPredictor getElementFromSortedArray:v83 forPercentile:75];
+              durations6 = [v90 durations];
+              v80 = [FMOOSPredictor getElementFromSortedArray:durations6 forPercentile:25];
+              durations7 = [v90 durations];
+              v82 = [FMOOSPredictor getElementFromSortedArray:durations7 forPercentile:50];
+              durations8 = [v90 durations];
+              v84 = [FMOOSPredictor getElementFromSortedArray:durations8 forPercentile:75];
               *buf = 138413826;
               *&buf[4] = v89;
               *&buf[12] = 2048;
@@ -973,8 +973,8 @@ LABEL_31:
             }
 
             v85 = [FMOOSClientPrediction alloc];
-            v86 = [v90 cells];
-            v87 = -[FMOOSClientPrediction initWithPredictedCell:nextCells:oosAreaSeenCount:predictedOOSDuration:validPredictionDuration:isSent:](v85, "initWithPredictedCell:nextCells:oosAreaSeenCount:predictedOOSDuration:validPredictionDuration:isSent:", v89, v86, [v90 seenCount], v76 == 0, v63, v63 + 30.0);
+            cells6 = [v90 cells];
+            v87 = -[FMOOSClientPrediction initWithPredictedCell:nextCells:oosAreaSeenCount:predictedOOSDuration:validPredictionDuration:isSent:](v85, "initWithPredictedCell:nextCells:oosAreaSeenCount:predictedOOSDuration:validPredictionDuration:isSent:", v89, cells6, [v90 seenCount], v76 == 0, v63, v63 + 30.0);
             [v92 setClientPrediction:v87];
 
             [v92 setPredictionSuppressionReason:{objc_msgSend(v92, "predictionSuppressionReason") | v76}];
@@ -996,7 +996,7 @@ LABEL_31:
             sub_1002032C0();
           }
 
-          v19 = v89;
+          firstObject = v89;
         }
 
         else if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1022,7 +1022,7 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "FederatedMobility[FMOOSModel]:#I No OOS recovery predictions available for new cell", buf, 2u);
     }
 
-    v19 = 0;
+    firstObject = 0;
     goto LABEL_14;
   }
 
@@ -1034,45 +1034,45 @@ LABEL_14:
 LABEL_15:
 }
 
-- (int)getOOSInsightRATFromString:(id)a3
+- (int)getOOSInsightRATFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kCTCellMonitorRadioAccessTechnologyGSM])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyGSM])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:kCTCellMonitorRadioAccessTechnologyUTRAN])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyUTRAN])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMA1x])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMA1x])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMAEVDO])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMAEVDO])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMAHybrid])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyCDMAHybrid])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:kCTCellMonitorRadioAccessTechnologyLTE])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyLTE])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:kCTCellMonitorRadioAccessTechnologyUTRAN2])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyUTRAN2])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:kCTCellMonitorRadioAccessTechnologyNR])
+  else if ([stringCopy isEqualToString:kCTCellMonitorRadioAccessTechnologyNR])
   {
     v4 = 8;
   }
@@ -1085,72 +1085,72 @@ LABEL_15:
   return v4;
 }
 
-- (void)_handleLocationUpdate:(id)a3
+- (void)_handleLocationUpdate:(id)update
 {
-  v4 = a3;
-  [(FMOOSModel *)self setCurLocation:v4];
+  updateCopy = update;
+  [(FMOOSModel *)self setCurLocation:updateCopy];
   if (![(FMOOSModel *)self isAirplaneModeActive])
   {
-    v5 = [(FMModel *)self contextUUIDToStateMap];
+    contextUUIDToStateMap = [(FMModel *)self contextUUIDToStateMap];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10008FBC4;
     v6[3] = &unk_1002AE3A0;
-    v7 = v4;
-    v8 = self;
-    [v5 enumerateKeysAndObjectsUsingBlock:v6];
+    v7 = updateCopy;
+    selfCopy = self;
+    [contextUUIDToStateMap enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
 
-- (void)_handleVisitStarted:(id)a3
+- (void)_handleVisitStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_100203364();
   }
 
-  [(FMOOSModel *)self setCurVisit:v4];
+  [(FMOOSModel *)self setCurVisit:startedCopy];
   if ([(FMOOSModel *)self isLocationAuthorized])
   {
-    v5 = [(FMModel *)self fmCoreData];
-    [v5 updateOutOfServiceAreasWithNextVisit:v4];
+    fmCoreData = [(FMModel *)self fmCoreData];
+    [fmCoreData updateOutOfServiceAreasWithNextVisit:startedCopy];
   }
 }
 
-- (void)_handleVisitEnded:(id)a3
+- (void)_handleVisitEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_1002033A0();
   }
 
   [(FMOOSModel *)self setCurVisit:0];
-  v5 = [(FMOOSModel *)self prevVisits];
-  [v5 addObject:v4];
+  prevVisits = [(FMOOSModel *)self prevVisits];
+  [prevVisits addObject:endedCopy];
 
   v6 = +[FMConfiguration sharedInstance];
-  v7 = [v6 OOSPrevCellsInMemory];
-  v8 = [(FMOOSModel *)self prevVisits];
-  [FMUtil removeFirstElementsForCapacity:v7 fromArray:v8];
+  oOSPrevCellsInMemory = [v6 OOSPrevCellsInMemory];
+  prevVisits2 = [(FMOOSModel *)self prevVisits];
+  [FMUtil removeFirstElementsForCapacity:oOSPrevCellsInMemory fromArray:prevVisits2];
 }
 
-- (void)_handleRegulatoryDomainEstimateUpdate:(id)a3
+- (void)_handleRegulatoryDomainEstimateUpdate:(id)update
 {
-  v4 = a3;
-  if ([v4 count])
+  updateCopy = update;
+  if ([updateCopy count])
   {
     v5 = +[FMConfiguration sharedInstance];
-    v6 = [v5 crowdsourcedDisabledCountries];
+    crowdsourcedDisabledCountries = [v5 crowdsourcedDisabledCountries];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10009043C;
     v11[3] = &unk_1002AB1C8;
-    v7 = v6;
+    v7 = crowdsourcedDisabledCountries;
     v12 = v7;
-    v8 = [v4 indexOfObjectPassingTest:v11];
+    v8 = [updateCopy indexOfObjectPassingTest:v11];
     v9 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1175,29 +1175,29 @@ LABEL_15:
   }
 }
 
-- (id)getCoreTelephonyRATStringFromEnum:(int)a3
+- (id)getCoreTelephonyRATStringFromEnum:(int)enum
 {
-  if (a3 <= 8)
+  if (enum <= 8)
   {
-    self = **(&off_1002AE3E8 + a3);
+    self = **(&off_1002AE3E8 + enum);
   }
 
   return self;
 }
 
-- (void)sendOutOfServicePredictionEventWithClientPrediction:(id)a3 withSuppressionReason:(unsigned int)a4 didDeviceGoOutOfService:(BOOL)a5
+- (void)sendOutOfServicePredictionEventWithClientPrediction:(id)prediction withSuppressionReason:(unsigned int)reason didDeviceGoOutOfService:(BOOL)service
 {
-  v6 = a4;
-  v7 = a3;
-  if (v7 && (v6 & 0xFFFB) == 0)
+  reasonCopy = reason;
+  predictionCopy = prediction;
+  if (predictionCopy && (reasonCopy & 0xFFFB) == 0)
   {
     v8 = [NSString stringWithUTF8String:"com.apple.Telephony.fedMobilityPredictions"];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100091FD0;
     v9[3] = &unk_1002AB288;
-    v11 = a5;
-    v10 = v7;
+    serviceCopy = service;
+    v10 = predictionCopy;
     sub_1000158DC(v8, v9);
   }
 }

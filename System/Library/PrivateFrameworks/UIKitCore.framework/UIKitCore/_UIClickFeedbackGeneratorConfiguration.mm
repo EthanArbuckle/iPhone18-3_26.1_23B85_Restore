@@ -6,10 +6,10 @@
 - (_UIFeedbackDiscretePlayable)clickUpFeedback;
 - (_UIFeedbackDiscretePlayable)clickUpPattern;
 - (id)feedbackKeyPaths;
-- (void)setClickDownAudioFeedback:(id)a3;
-- (void)setClickUpAudioFeedback:(id)a3;
-- (void)setClickUpFeedback:(id)a3;
-- (void)setclickDownFeedback:(id)a3;
+- (void)setClickDownAudioFeedback:(id)feedback;
+- (void)setClickUpAudioFeedback:(id)feedback;
+- (void)setClickUpFeedback:(id)feedback;
+- (void)setclickDownFeedback:(id)feedback;
 @end
 
 @implementation _UIClickFeedbackGeneratorConfiguration
@@ -18,20 +18,20 @@
 {
   v3 = +[_UIFeedbackPattern feedbackPattern];
   [v3 _setCategory:0x1EFB4AA30];
-  v4 = [(_UIClickFeedbackGeneratorConfiguration *)self clickDownFeedback];
+  clickDownFeedback = [(_UIClickFeedbackGeneratorConfiguration *)self clickDownFeedback];
 
-  if (v4)
+  if (clickDownFeedback)
   {
-    v5 = [(_UIClickFeedbackGeneratorConfiguration *)self clickDownFeedback];
-    [v3 addFeedback:v5 atTime:0.0];
+    clickDownFeedback2 = [(_UIClickFeedbackGeneratorConfiguration *)self clickDownFeedback];
+    [v3 addFeedback:clickDownFeedback2 atTime:0.0];
   }
 
-  v6 = [(_UIClickFeedbackGeneratorConfiguration *)self clickDownAudioFeedback];
+  clickDownAudioFeedback = [(_UIClickFeedbackGeneratorConfiguration *)self clickDownAudioFeedback];
 
-  if (v6)
+  if (clickDownAudioFeedback)
   {
-    v7 = [(_UIClickFeedbackGeneratorConfiguration *)self clickDownAudioFeedback];
-    [v3 addFeedback:v7 atTime:0.0];
+    clickDownAudioFeedback2 = [(_UIClickFeedbackGeneratorConfiguration *)self clickDownAudioFeedback];
+    [v3 addFeedback:clickDownAudioFeedback2 atTime:0.0];
   }
 
   return v3;
@@ -41,20 +41,20 @@
 {
   v3 = +[_UIFeedbackPattern feedbackPattern];
   [v3 _setCategory:0x1EFB4AA30];
-  v4 = [(_UIClickFeedbackGeneratorConfiguration *)self clickUpFeedback];
+  clickUpFeedback = [(_UIClickFeedbackGeneratorConfiguration *)self clickUpFeedback];
 
-  if (v4)
+  if (clickUpFeedback)
   {
-    v5 = [(_UIClickFeedbackGeneratorConfiguration *)self clickUpFeedback];
-    [v3 addFeedback:v5 atTime:0.0];
+    clickUpFeedback2 = [(_UIClickFeedbackGeneratorConfiguration *)self clickUpFeedback];
+    [v3 addFeedback:clickUpFeedback2 atTime:0.0];
   }
 
-  v6 = [(_UIClickFeedbackGeneratorConfiguration *)self clickUpAudioFeedback];
+  clickUpAudioFeedback = [(_UIClickFeedbackGeneratorConfiguration *)self clickUpAudioFeedback];
 
-  if (v6)
+  if (clickUpAudioFeedback)
   {
-    v7 = [(_UIClickFeedbackGeneratorConfiguration *)self clickUpAudioFeedback];
-    [v3 addFeedback:v7 atTime:0.0];
+    clickUpAudioFeedback2 = [(_UIClickFeedbackGeneratorConfiguration *)self clickUpAudioFeedback];
+    [v3 addFeedback:clickUpAudioFeedback2 atTime:0.0];
   }
 
   return v3;
@@ -65,23 +65,23 @@
   v9[2] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = _UIClickFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v8 feedbackKeyPaths];
+  feedbackKeyPaths = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v8 feedbackKeyPaths];
   v3 = NSStringFromSelector(sel_clickDownPattern);
   v9[0] = v3;
   v4 = NSStringFromSelector(sel_clickUpPattern);
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-  v6 = [v2 arrayByAddingObjectsFromArray:v5];
+  v6 = [feedbackKeyPaths arrayByAddingObjectsFromArray:v5];
 
   return v6;
 }
 
-- (void)setclickDownFeedback:(id)a3
+- (void)setclickDownFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   clickDownFeedback = self->_clickDownFeedback;
-  self->_clickDownFeedback = v4;
+  self->_clickDownFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)clickDownFeedback
@@ -92,12 +92,12 @@
   return clickDownFeedback;
 }
 
-- (void)setClickDownAudioFeedback:(id)a3
+- (void)setClickDownAudioFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   clickDownAudioFeedback = self->_clickDownAudioFeedback;
-  self->_clickDownAudioFeedback = v4;
+  self->_clickDownAudioFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)clickDownAudioFeedback
@@ -108,12 +108,12 @@
   return clickDownAudioFeedback;
 }
 
-- (void)setClickUpFeedback:(id)a3
+- (void)setClickUpFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   clickUpFeedback = self->_clickUpFeedback;
-  self->_clickUpFeedback = v4;
+  self->_clickUpFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)clickUpFeedback
@@ -124,12 +124,12 @@
   return clickUpFeedback;
 }
 
-- (void)setClickUpAudioFeedback:(id)a3
+- (void)setClickUpAudioFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   clickUpAudioFeedback = self->_clickUpAudioFeedback;
-  self->_clickUpAudioFeedback = v4;
+  self->_clickUpAudioFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)clickUpAudioFeedback

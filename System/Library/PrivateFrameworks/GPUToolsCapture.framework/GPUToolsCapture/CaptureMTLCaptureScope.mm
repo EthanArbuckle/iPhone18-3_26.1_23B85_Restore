@@ -1,10 +1,10 @@
 @interface CaptureMTLCaptureScope
-- (CaptureMTLCaptureScope)initWithDevice:(id)a3 commandQueue:(id)a4 captureContext:(GTTraceContext *)a5;
+- (CaptureMTLCaptureScope)initWithDevice:(id)device commandQueue:(id)queue captureContext:(GTTraceContext *)context;
 - (unint64_t)streamReference;
 - (void)beginScope;
 - (void)dealloc;
 - (void)endScope;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CaptureMTLCaptureScope
@@ -35,10 +35,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCaptureScope *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCaptureScope *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -58,11 +58,11 @@
   [(CaptureMTLCaptureScope *)&v13 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v3.receiver = self;
   v3.super_class = CaptureMTLCaptureScope;
-  [(CaptureMTLCaptureScope *)&v3 setLabel:a3];
+  [(CaptureMTLCaptureScope *)&v3 setLabel:label];
   +[GTMTLCaptureScopeInfo updateAll];
 }
 
@@ -92,10 +92,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCaptureScope *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCaptureScope *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -108,10 +108,10 @@
   *v11 = v12;
   *(v11 + 8) = BYTE8(v28);
   *(v27 + 15) |= 8u;
-  v13 = [(CaptureMTLCaptureScope *)self traceStream];
-  if (v13)
+  traceStream2 = [(CaptureMTLCaptureScope *)self traceStream];
+  if (traceStream2)
   {
-    v14 = v13->var0;
+    v14 = traceStream2->var0;
   }
 
   else
@@ -120,10 +120,10 @@
   }
 
   v15 = *(&v27 + 1);
-  v16 = [(CaptureMTLCaptureScope *)self traceStream];
-  if (v16)
+  traceStream3 = [(CaptureMTLCaptureScope *)self traceStream];
+  if (traceStream3)
   {
-    v17 = v16->var0;
+    v17 = traceStream3->var0;
   }
 
   else
@@ -157,9 +157,9 @@
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v51);
   v50.receiver = self;
   v50.super_class = CaptureMTLCaptureScope;
-  v4 = [(CaptureMTLCaptureScope *)&v50 label];
+  label = [(CaptureMTLCaptureScope *)&v50 label];
 
-  if (v4)
+  if (label)
   {
     v5 = v52;
     *(v52 + 15) |= 1u;
@@ -181,10 +181,10 @@
     }
 
     *(v5 + 13) = v6;
-    v10 = [(CaptureMTLCaptureScope *)self traceStream];
-    if (v10)
+    traceStream = [(CaptureMTLCaptureScope *)self traceStream];
+    if (traceStream)
     {
-      var0 = v10->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -194,18 +194,18 @@
 
     v49.receiver = self;
     v49.super_class = CaptureMTLCaptureScope;
-    v12 = [(CaptureMTLCaptureScope *)&v49 label];
-    if ([v12 UTF8String])
+    label2 = [(CaptureMTLCaptureScope *)&v49 label];
+    if ([label2 UTF8String])
     {
       v48.receiver = self;
       v48.super_class = CaptureMTLCaptureScope;
-      v13 = [(CaptureMTLCaptureScope *)&v48 label];
-      v14 = [v13 UTF8String];
+      label3 = [(CaptureMTLCaptureScope *)&v48 label];
+      uTF8String = [label3 UTF8String];
       v47.receiver = self;
       v47.super_class = CaptureMTLCaptureScope;
-      v15 = [(CaptureMTLCaptureScope *)&v47 label];
-      v16 = strlen([v15 UTF8String]);
-      v17 = GTTraceEncoder_storeBytes(&v51, v14, v16 + 1);
+      label4 = [(CaptureMTLCaptureScope *)&v47 label];
+      v16 = strlen([label4 UTF8String]);
+      v17 = GTTraceEncoder_storeBytes(&v51, uTF8String, v16 + 1);
       *v7 = var0;
       v7[8] = v17;
       *(v7 + 9) = 0;
@@ -248,10 +248,10 @@
   }
 
   *(v21 + 13) = v22;
-  v26 = [(CaptureMTLCaptureScope *)self traceStream];
-  if (v26)
+  traceStream2 = [(CaptureMTLCaptureScope *)self traceStream];
+  if (traceStream2)
   {
-    v27 = v26->var0;
+    v27 = traceStream2->var0;
   }
 
   else
@@ -260,10 +260,10 @@
   }
 
   *v23 = v27;
-  v28 = [(CaptureMTLCaptureScope *)self traceStream];
-  if (v28)
+  traceStream3 = [(CaptureMTLCaptureScope *)self traceStream];
+  if (traceStream3)
   {
-    v29 = v28->var0;
+    v29 = traceStream3->var0;
   }
 
   else
@@ -272,10 +272,10 @@
   }
 
   v30 = *(&v52 + 1);
-  v31 = [(CaptureMTLCaptureScope *)self traceStream];
-  if (v31)
+  traceStream4 = [(CaptureMTLCaptureScope *)self traceStream];
+  if (traceStream4)
   {
-    v32 = v31->var0;
+    v32 = traceStream4->var0;
   }
 
   else
@@ -283,10 +283,10 @@
     v32 = 0;
   }
 
-  v33 = [*&self->MTLCaptureScope_opaque[OBJC_IVAR___MTLCaptureScope__device] traceStream];
-  if (v33)
+  traceStream5 = [*&self->MTLCaptureScope_opaque[OBJC_IVAR___MTLCaptureScope__device] traceStream];
+  if (traceStream5)
   {
-    v34 = *v33;
+    v34 = *traceStream5;
   }
 
   else
@@ -294,10 +294,10 @@
     v34 = 0;
   }
 
-  v35 = [*&self->MTLCaptureScope_opaque[OBJC_IVAR___MTLCaptureScope__commandQueue] traceStream];
-  if (v35)
+  traceStream6 = [*&self->MTLCaptureScope_opaque[OBJC_IVAR___MTLCaptureScope__commandQueue] traceStream];
+  if (traceStream6)
   {
-    v36 = *v35;
+    v36 = *traceStream6;
   }
 
   else
@@ -336,17 +336,17 @@
   }
 }
 
-- (CaptureMTLCaptureScope)initWithDevice:(id)a3 commandQueue:(id)a4 captureContext:(GTTraceContext *)a5
+- (CaptureMTLCaptureScope)initWithDevice:(id)device commandQueue:(id)queue captureContext:(GTTraceContext *)context
 {
   v10.receiver = self;
   v10.super_class = CaptureMTLCaptureScope;
-  v6 = [(CaptureMTLCaptureScope *)&v10 initWithDevice:a3 commandQueue:a4];
+  v6 = [(CaptureMTLCaptureScope *)&v10 initWithDevice:device commandQueue:queue];
   v7 = v6;
   if (v6)
   {
-    v6->_traceContext = a5;
+    v6->_traceContext = context;
     v8 = DEVICEOBJECT(v6);
-    v7->_traceStream = GTTraceContext_openStream(a5, v8, v7);
+    v7->_traceStream = GTTraceContext_openStream(context, v8, v7);
 
     [GTMTLCaptureScopeInfo addScope:v7];
   }

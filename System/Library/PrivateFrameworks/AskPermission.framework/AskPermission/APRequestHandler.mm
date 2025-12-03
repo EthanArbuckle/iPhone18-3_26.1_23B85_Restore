@@ -1,66 +1,66 @@
 @interface APRequestHandler
-+ (void)addExceptionRequestWithUUID:(id)a3 type:(int64_t)a4 title:(id)a5 message:(id)a6 bundleIdentifier:(id)a7 adamID:(id)a8 distributorID:(id)a9 ageRatingValue:(id)a10 preApprove:(id)a11 postApprove:(id)a12 preDecline:(id)a13 postDecline:(id)a14 responseBundleIdentifier:(id)a15 metadata:(id)a16 withCompletion:(id)a17;
-+ (void)addRequestWithURL:(id)a3 account:(id)a4 completion:(id)a5;
-+ (void)checkDownloadQueueWithContentType:(int64_t)a3;
-+ (void)clearExceptionRequestsWithCompletion:(id)a3;
-+ (void)didReceiveStorePushNotificationWithPayload:(id)a3;
-+ (void)getCachedRequestsWithCompletion:(id)a3;
-+ (void)getExceptionRequestWithDistributorIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)getExceptionRequestWithUniqueIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)getExceptionRequestsWithBundleIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)getExceptionRequestsWithCompletion:(id)a3;
-+ (void)getMatchingRequestsWithIdentifier:(id)a3 completion:(id)a4;
-+ (void)getRequestWithIdentifier:(id)a3 completion:(id)a4;
-+ (void)getRequestWithItemIdentifier:(id)a3 completion:(id)a4;
-+ (void)localApproveExceptionWithUniqueIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)localApproveRequestWithItemIdentifier:(id)a3 completion:(id)a4;
-+ (void)presentApprovalSheetWithRequestIdentifier:(id)a3 completion:(id)a4;
-+ (void)presentProductPageWithTitle:(id)a3 body:(id)a4 approve:(id)a5 decline:(id)a6 itemIdentifier:(id)a7 previewURL:(id)a8 offerName:(id)a9 requestString:(id)a10 requestSummary:(id)a11 priceSummary:(id)a12 isException:(BOOL)a13;
-+ (void)resetAccountWithType:(int64_t)a3;
++ (void)addExceptionRequestWithUUID:(id)d type:(int64_t)type title:(id)title message:(id)message bundleIdentifier:(id)identifier adamID:(id)iD distributorID:(id)distributorID ageRatingValue:(id)self0 preApprove:(id)self1 postApprove:(id)self2 preDecline:(id)self3 postDecline:(id)self4 responseBundleIdentifier:(id)self5 metadata:(id)self6 withCompletion:(id)self7;
++ (void)addRequestWithURL:(id)l account:(id)account completion:(id)completion;
++ (void)checkDownloadQueueWithContentType:(int64_t)type;
++ (void)clearExceptionRequestsWithCompletion:(id)completion;
++ (void)didReceiveStorePushNotificationWithPayload:(id)payload;
++ (void)getCachedRequestsWithCompletion:(id)completion;
++ (void)getExceptionRequestWithDistributorIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)getExceptionRequestWithUniqueIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)getExceptionRequestsWithBundleIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)getExceptionRequestsWithCompletion:(id)completion;
++ (void)getMatchingRequestsWithIdentifier:(id)identifier completion:(id)completion;
++ (void)getRequestWithIdentifier:(id)identifier completion:(id)completion;
++ (void)getRequestWithItemIdentifier:(id)identifier completion:(id)completion;
++ (void)localApproveExceptionWithUniqueIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)localApproveRequestWithItemIdentifier:(id)identifier completion:(id)completion;
++ (void)presentApprovalSheetWithRequestIdentifier:(id)identifier completion:(id)completion;
++ (void)presentProductPageWithTitle:(id)title body:(id)body approve:(id)approve decline:(id)decline itemIdentifier:(id)identifier previewURL:(id)l offerName:(id)name requestString:(id)self0 requestSummary:(id)self1 priceSummary:(id)self2 isException:(BOOL)self3;
++ (void)resetAccountWithType:(int64_t)type;
 + (void)restartAPNSConnection;
 + (void)startDaemon;
-+ (void)updateExceptionRequestWithUniqueIdentifier:(id)a3 action:(int64_t)a4 completionHandler:(id)a5;
-+ (void)updateRequestWithIdentifier:(id)a3 action:(int64_t)a4 completion:(id)a5;
++ (void)updateExceptionRequestWithUniqueIdentifier:(id)identifier action:(int64_t)action completionHandler:(id)handler;
++ (void)updateRequestWithIdentifier:(id)identifier action:(int64_t)action completion:(id)completion;
 @end
 
 @implementation APRequestHandler
 
-+ (void)addRequestWithURL:(id)a3 account:(id)a4 completion:(id)a5
++ (void)addRequestWithURL:(id)l account:(id)account completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  accountCopy = account;
+  completionCopy = completion;
   v11 = +[APLogConfig sharedFrameworkConfig];
   if (!v11)
   {
     v11 = +[APLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v22 = objc_opt_class();
     v23 = 2114;
-    v24 = v8;
+    v24 = lCopy;
     v25 = 2114;
-    v26 = v9;
+    v26 = accountCopy;
     v13 = v22;
-    _os_log_impl(&dword_241063000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Add request. URL: %{public}@, account: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Add request. URL: %{public}@, account: %{public}@", buf, 0x20u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v14 = +[APConnectionNotifier sharedNotifier];
-  v15 = [v14 remoteObjectProxy];
+  remoteObjectProxy = [v14 remoteObjectProxy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__APRequestHandler_addRequestWithURL_account_completion___block_invoke;
   v18[3] = &unk_278CC1740;
   objc_copyWeak(&v20, buf);
-  v16 = v10;
+  v16 = completionCopy;
   v19 = v16;
-  [v15 addRequestWithURL:v8 account:v9 completion:v18];
+  [remoteObjectProxy addRequestWithURL:lCopy account:accountCopy completion:v18];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);
@@ -129,39 +129,39 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)presentApprovalSheetWithRequestIdentifier:(id)a3 completion:(id)a4
++ (void)presentApprovalSheetWithRequestIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = +[APLogConfig sharedFrameworkConfig];
   if (!v8)
   {
     v8 = +[APLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
-    v21 = v6;
+    v21 = identifierCopy;
     v10 = v19;
-    _os_log_impl(&dword_241063000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Present Approval Sheet. Request identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Present Approval Sheet. Request identifier: %{public}@", buf, 0x16u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v11 = +[APConnectionNotifier sharedNotifier];
-  v12 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__APRequestHandler_presentApprovalSheetWithRequestIdentifier_completion___block_invoke;
   v15[3] = &unk_278CC1740;
   objc_copyWeak(&v17, buf);
-  v13 = v7;
+  v13 = completionCopy;
   v16 = v13;
-  [v12 presentApprovalSheetWithRequestIdentifier:v6 completion:v15];
+  [remoteObjectProxy presentApprovalSheetWithRequestIdentifier:identifierCopy completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -230,39 +230,39 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getRequestWithIdentifier:(id)a3 completion:(id)a4
++ (void)getRequestWithIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = +[APLogConfig sharedFrameworkConfig];
   if (!v8)
   {
     v8 = +[APLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
-    v21 = v6;
+    v21 = identifierCopy;
     v10 = v19;
-    _os_log_impl(&dword_241063000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Get Request Data. Request identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Get Request Data. Request identifier: %{public}@", buf, 0x16u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v11 = +[APConnectionNotifier sharedNotifier];
-  v12 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __56__APRequestHandler_getRequestWithIdentifier_completion___block_invoke;
   v15[3] = &unk_278CC1768;
   objc_copyWeak(&v17, buf);
-  v13 = v7;
+  v13 = completionCopy;
   v16 = v13;
-  [v12 getRequestWithIdentifier:v6 completion:v15];
+  [remoteObjectProxy getRequestWithIdentifier:identifierCopy completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -332,39 +332,39 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getMatchingRequestsWithIdentifier:(id)a3 completion:(id)a4
++ (void)getMatchingRequestsWithIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = +[APLogConfig sharedFrameworkConfig];
   if (!v8)
   {
     v8 = +[APLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
-    v21 = v6;
+    v21 = identifierCopy;
     v10 = v19;
-    _os_log_impl(&dword_241063000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Get Matching Requests. Request identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Get Matching Requests. Request identifier: %{public}@", buf, 0x16u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v11 = +[APConnectionNotifier sharedNotifier];
-  v12 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__APRequestHandler_getMatchingRequestsWithIdentifier_completion___block_invoke;
   v15[3] = &unk_278CC1790;
   objc_copyWeak(&v17, buf);
-  v13 = v7;
+  v13 = completionCopy;
   v16 = v13;
-  [v12 getMatchingRequestsWithIdentifier:v6 completion:v15];
+  [remoteObjectProxy getMatchingRequestsWithIdentifier:identifierCopy completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -434,39 +434,39 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getRequestWithItemIdentifier:(id)a3 completion:(id)a4
++ (void)getRequestWithItemIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = +[APLogConfig sharedFrameworkConfig];
   if (!v8)
   {
     v8 = +[APLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
-    v21 = v6;
+    v21 = identifierCopy;
     v10 = v19;
-    _os_log_impl(&dword_241063000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Get Request Data with itemIdentifier/adamID: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Get Request Data with itemIdentifier/adamID: %{public}@", buf, 0x16u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v11 = +[APConnectionNotifier sharedNotifier];
-  v12 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__APRequestHandler_getRequestWithItemIdentifier_completion___block_invoke;
   v15[3] = &unk_278CC1768;
   objc_copyWeak(&v17, buf);
-  v13 = v7;
+  v13 = completionCopy;
   v16 = v13;
-  [v12 getRequestWithItemIdentifier:v6 completion:v15];
+  [remoteObjectProxy getRequestWithItemIdentifier:identifierCopy completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -509,58 +509,58 @@ void __60__APRequestHandler_getRequestWithItemIdentifier_completion___block_invo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)addExceptionRequestWithUUID:(id)a3 type:(int64_t)a4 title:(id)a5 message:(id)a6 bundleIdentifier:(id)a7 adamID:(id)a8 distributorID:(id)a9 ageRatingValue:(id)a10 preApprove:(id)a11 postApprove:(id)a12 preDecline:(id)a13 postDecline:(id)a14 responseBundleIdentifier:(id)a15 metadata:(id)a16 withCompletion:(id)a17
++ (void)addExceptionRequestWithUUID:(id)d type:(int64_t)type title:(id)title message:(id)message bundleIdentifier:(id)identifier adamID:(id)iD distributorID:(id)distributorID ageRatingValue:(id)self0 preApprove:(id)self1 postApprove:(id)self2 preDecline:(id)self3 postDecline:(id)self4 responseBundleIdentifier:(id)self5 metadata:(id)self6 withCompletion:(id)self7
 {
   v59 = *MEMORY[0x277D85DE8];
-  v45 = a7;
-  v42 = a8;
-  v44 = a9;
-  v43 = a10;
-  v18 = a17;
-  v38 = a16;
-  v37 = a15;
-  v36 = a14;
-  v35 = a13;
-  v19 = a12;
-  v34 = a11;
-  v33 = a6;
-  v31 = a5;
-  v29 = a3;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  distributorIDCopy = distributorID;
+  valueCopy = value;
+  completionCopy = completion;
+  metadataCopy = metadata;
+  bundleIdentifierCopy = bundleIdentifier;
+  postDeclineCopy = postDecline;
+  declineCopy = decline;
+  postApproveCopy = postApprove;
+  approveCopy = approve;
+  messageCopy = message;
+  titleCopy = title;
+  dCopy = d;
   v20 = +[APLogConfig sharedFrameworkConfig];
   if (!v20)
   {
     v20 = +[APLogConfig sharedConfig];
   }
 
-  v21 = [v20 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v20 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v22 = objc_opt_class();
     v23 = v22;
-    v24 = [v43 stringValue];
+    stringValue = [valueCopy stringValue];
     *buf = 138544386;
     v50 = v22;
     v51 = 2112;
-    v52 = v45;
+    v52 = identifierCopy;
     v53 = 2112;
-    v54 = v42;
+    v54 = iDCopy;
     v55 = 2112;
-    v56 = v44;
+    v56 = distributorIDCopy;
     v57 = 2112;
-    v58 = v24;
-    _os_log_impl(&dword_241063000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: Adding Exception Request: %@, adamID: %@, distributor: %@, ageRatingValue: %@", buf, 0x34u);
+    v58 = stringValue;
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Adding Exception Request: %@, adamID: %@, distributor: %@, ageRatingValue: %@", buf, 0x34u);
   }
 
   v27 = +[APConnectionNotifier sharedNotifier];
-  v26 = [v27 remoteObjectProxy];
+  remoteObjectProxy = [v27 remoteObjectProxy];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __215__APRequestHandler_addExceptionRequestWithUUID_type_title_message_bundleIdentifier_adamID_distributorID_ageRatingValue_preApprove_postApprove_preDecline_postDecline_responseBundleIdentifier_metadata_withCompletion___block_invoke;
   v46[3] = &unk_278CC17B8;
-  v47 = v18;
-  v48 = a1;
-  v40 = v18;
-  [v26 addExceptionRequestWithUUID:v29 type:a4 title:v31 message:v33 bundleIdentifier:v45 adamID:v42 distributorID:v44 ageRatingValue:v43 preApprove:v34 postApprove:v19 preDecline:v35 postDecline:v36 responseBundleIdentifier:v37 metadata:v38 withCompletion:v46];
+  v47 = completionCopy;
+  selfCopy = self;
+  v40 = completionCopy;
+  [remoteObjectProxy addExceptionRequestWithUUID:dCopy type:type title:titleCopy message:messageCopy bundleIdentifier:identifierCopy adamID:iDCopy distributorID:distributorIDCopy ageRatingValue:valueCopy preApprove:approveCopy postApprove:postApproveCopy preDecline:declineCopy postDecline:postDeclineCopy responseBundleIdentifier:bundleIdentifierCopy metadata:metadataCopy withCompletion:v46];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -625,34 +625,34 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getExceptionRequestsWithCompletion:(id)a3
++ (void)getExceptionRequestsWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[APLogConfig sharedFrameworkConfig];
   if (!v4)
   {
     v4 = +[APLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v14 = objc_opt_class();
     v6 = v14;
-    _os_log_impl(&dword_241063000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting Exception Requests.", buf, 0xCu);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting Exception Requests.", buf, 0xCu);
   }
 
   v7 = +[APConnectionNotifier sharedNotifier];
-  v8 = [v7 remoteObjectProxy];
+  remoteObjectProxy = [v7 remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__APRequestHandler_getExceptionRequestsWithCompletion___block_invoke;
   v11[3] = &unk_278CC17E0;
-  v12 = v3;
-  v9 = v3;
-  [v8 getExceptionRequestsWithCompletion:v11];
+  v12 = completionCopy;
+  v9 = completionCopy;
+  [remoteObjectProxy getExceptionRequestsWithCompletion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -668,163 +668,163 @@ uint64_t __55__APRequestHandler_getExceptionRequestsWithCompletion___block_invok
   return result;
 }
 
-+ (void)getExceptionRequestWithUniqueIdentifier:(id)a3 completionHandler:(id)a4
++ (void)getExceptionRequestWithUniqueIdentifier:(id)identifier completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = +[APLogConfig sharedFrameworkConfig];
   if (!v7)
   {
     v7 = +[APLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
     v14 = objc_opt_class();
     v15 = 2112;
-    v16 = v5;
+    v16 = identifierCopy;
     v9 = v14;
-    _os_log_impl(&dword_241063000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting Exception Requests for UniqueID: %@", &v13, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting Exception Requests for UniqueID: %@", &v13, 0x16u);
   }
 
   v10 = +[APConnectionNotifier sharedNotifier];
-  v11 = [v10 remoteObjectProxy];
-  [v11 getExceptionRequestWithUniqueIdentifier:v5 completionHandler:v6];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy getExceptionRequestWithUniqueIdentifier:identifierCopy completionHandler:handlerCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getExceptionRequestsWithBundleIdentifier:(id)a3 completionHandler:(id)a4
++ (void)getExceptionRequestsWithBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = +[APLogConfig sharedFrameworkConfig];
   if (!v7)
   {
     v7 = +[APLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
     v14 = objc_opt_class();
     v15 = 2112;
-    v16 = v5;
+    v16 = identifierCopy;
     v9 = v14;
-    _os_log_impl(&dword_241063000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting Exception Requests for BundleID: %@", &v13, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting Exception Requests for BundleID: %@", &v13, 0x16u);
   }
 
   v10 = +[APConnectionNotifier sharedNotifier];
-  v11 = [v10 remoteObjectProxy];
-  [v11 getExceptionRequestsWithBundleIdentifier:v5 completionHandler:v6];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy getExceptionRequestsWithBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getExceptionRequestWithDistributorIdentifier:(id)a3 completionHandler:(id)a4
++ (void)getExceptionRequestWithDistributorIdentifier:(id)identifier completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = +[APLogConfig sharedFrameworkConfig];
   if (!v7)
   {
     v7 = +[APLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
     v14 = objc_opt_class();
     v15 = 2112;
-    v16 = v5;
+    v16 = identifierCopy;
     v9 = v14;
-    _os_log_impl(&dword_241063000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting Exception Requests for DistributorID: %@", &v13, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Getting Exception Requests for DistributorID: %@", &v13, 0x16u);
   }
 
   v10 = +[APConnectionNotifier sharedNotifier];
-  v11 = [v10 remoteObjectProxy];
-  [v11 getExceptionRequestWithDistributorIdentifier:v5 completionHandler:v6];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy getExceptionRequestWithDistributorIdentifier:identifierCopy completionHandler:handlerCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)localApproveExceptionWithUniqueIdentifier:(id)a3 completionHandler:(id)a4
++ (void)localApproveExceptionWithUniqueIdentifier:(id)identifier completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = +[APLogConfig sharedFrameworkConfig];
   if (!v7)
   {
     v7 = +[APLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
     v14 = objc_opt_class();
     v15 = 2112;
-    v16 = v5;
+    v16 = identifierCopy;
     v9 = v14;
-    _os_log_impl(&dword_241063000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Performing Local Approval for UniqueID: %@", &v13, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Performing Local Approval for UniqueID: %@", &v13, 0x16u);
   }
 
   v10 = +[APConnectionNotifier sharedNotifier];
-  v11 = [v10 remoteObjectProxy];
-  [v11 localApproveExceptionWithUniqueIdentifier:v5 completionHandler:v6];
+  remoteObjectProxy = [v10 remoteObjectProxy];
+  [remoteObjectProxy localApproveExceptionWithUniqueIdentifier:identifierCopy completionHandler:handlerCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateExceptionRequestWithUniqueIdentifier:(id)a3 action:(int64_t)a4 completionHandler:(id)a5
++ (void)updateExceptionRequestWithUniqueIdentifier:(id)identifier action:(int64_t)action completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v9 = +[APLogConfig sharedFrameworkConfig];
   if (!v9)
   {
     v9 = +[APLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = @"Decline";
     v17 = 138544130;
     v18 = v11;
     v19 = 2112;
-    if (!a4)
+    if (!action)
     {
       v12 = @"Approve";
     }
 
-    v20 = v7;
+    v20 = identifierCopy;
     v21 = 2048;
-    v22 = a4;
+    actionCopy = action;
     v23 = 2112;
     v24 = v12;
     v13 = v11;
-    _os_log_impl(&dword_241063000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating Exception Request with UniqueID: %@ action: %ld - (%@)", &v17, 0x2Au);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating Exception Request with UniqueID: %@ action: %ld - (%@)", &v17, 0x2Au);
   }
 
   v14 = +[APConnectionNotifier sharedNotifier];
-  v15 = [v14 remoteObjectProxy];
-  [v15 updateExceptionRequestWithUniqueIdentifier:v7 action:a4 completionHandler:v8];
+  remoteObjectProxy = [v14 remoteObjectProxy];
+  [remoteObjectProxy updateExceptionRequestWithUniqueIdentifier:identifierCopy action:action completionHandler:handlerCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)checkDownloadQueueWithContentType:(int64_t)a3
++ (void)checkDownloadQueueWithContentType:(int64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = +[APLogConfig sharedFrameworkConfig];
@@ -833,26 +833,26 @@ uint64_t __55__APRequestHandler_getExceptionRequestsWithCompletion___block_invok
     v5 = +[APLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v14 = objc_opt_class();
     v15 = 2050;
-    v16 = a3;
+    typeCopy = type;
     v7 = v14;
-    _os_log_impl(&dword_241063000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Checking download queue. Content type: %{public}ld.", buf, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Checking download queue. Content type: %{public}ld.", buf, 0x16u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v8 = +[APConnectionNotifier sharedNotifier];
-  v9 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__APRequestHandler_checkDownloadQueueWithContentType___block_invoke;
   v11[3] = &unk_278CC1568;
   objc_copyWeak(&v12, buf);
-  [v9 checkDownloadQueueWithContentType:a3 completion:v11];
+  [remoteObjectProxy checkDownloadQueueWithContentType:type completion:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -914,36 +914,36 @@ LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getCachedRequestsWithCompletion:(id)a3
++ (void)getCachedRequestsWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[APLogConfig sharedFrameworkConfig];
   if (!v5)
   {
     v5 = +[APLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v16 = objc_opt_class();
     v7 = v16;
-    _os_log_impl(&dword_241063000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Fetching item cache.", buf, 0xCu);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Fetching item cache.", buf, 0xCu);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v8 = +[APConnectionNotifier sharedNotifier];
-  v9 = [v8 remoteObjectProxy];
+  remoteObjectProxy = [v8 remoteObjectProxy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__APRequestHandler_getCachedRequestsWithCompletion___block_invoke;
   v12[3] = &unk_278CC1808;
   objc_copyWeak(&v14, buf);
-  v10 = v4;
+  v10 = completionCopy;
   v13 = v10;
-  [v9 getCachedRequestsWithCompletion:v12];
+  [remoteObjectProxy getCachedRequestsWithCompletion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -983,39 +983,39 @@ void __52__APRequestHandler_getCachedRequestsWithCompletion___block_invoke(uint6
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)localApproveRequestWithItemIdentifier:(id)a3 completion:(id)a4
++ (void)localApproveRequestWithItemIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = +[APLogConfig sharedFrameworkConfig];
   if (!v8)
   {
     v8 = +[APLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
-    v21 = v6;
+    v21 = identifierCopy;
     v10 = v19;
-    _os_log_impl(&dword_241063000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Local approve request. Item identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Local approve request. Item identifier: %{public}@", buf, 0x16u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v11 = +[APConnectionNotifier sharedNotifier];
-  v12 = [v11 remoteObjectProxy];
+  remoteObjectProxy = [v11 remoteObjectProxy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__APRequestHandler_localApproveRequestWithItemIdentifier_completion___block_invoke;
   v15[3] = &unk_278CC1740;
   objc_copyWeak(&v17, buf);
-  v13 = v7;
+  v13 = completionCopy;
   v16 = v13;
-  [v12 localApproveRequestWithItemIdentifier:v6 completion:v15];
+  [remoteObjectProxy localApproveRequestWithItemIdentifier:identifierCopy completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -1087,22 +1087,22 @@ LABEL_10:
 + (void)restartAPNSConnection
 {
   v3 = +[APConnectionNotifier sharedNotifier];
-  v2 = [v3 remoteObjectProxy];
-  [v2 restartAPNSConnection];
+  remoteObjectProxy = [v3 remoteObjectProxy];
+  [remoteObjectProxy restartAPNSConnection];
 }
 
-+ (void)clearExceptionRequestsWithCompletion:(id)a3
++ (void)clearExceptionRequestsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[APConnectionNotifier sharedNotifier];
-  v5 = [v4 remoteObjectProxy];
+  remoteObjectProxy = [v4 remoteObjectProxy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__APRequestHandler_clearExceptionRequestsWithCompletion___block_invoke;
   v7[3] = &unk_278CC1830;
-  v8 = v3;
-  v6 = v3;
-  [v5 clearExceptionRequestsWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [remoteObjectProxy clearExceptionRequestsWithCompletion:v7];
 }
 
 uint64_t __57__APRequestHandler_clearExceptionRequestsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1117,41 +1117,41 @@ uint64_t __57__APRequestHandler_clearExceptionRequestsWithCompletion___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)updateRequestWithIdentifier:(id)a3 action:(int64_t)a4 completion:(id)a5
++ (void)updateRequestWithIdentifier:(id)identifier action:(int64_t)action completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = +[APLogConfig sharedFrameworkConfig];
   if (!v10)
   {
     v10 = +[APLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v21 = objc_opt_class();
     v22 = 2114;
-    v23 = v8;
+    v23 = identifierCopy;
     v24 = 2050;
-    v25 = a4;
+    actionCopy = action;
     v12 = v21;
-    _os_log_impl(&dword_241063000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Update request. Identifier: %{public}@, action: %{public}ld", buf, 0x20u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Update request. Identifier: %{public}@, action: %{public}ld", buf, 0x20u);
   }
 
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v13 = +[APConnectionNotifier sharedNotifier];
-  v14 = [v13 remoteObjectProxy];
+  remoteObjectProxy = [v13 remoteObjectProxy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __66__APRequestHandler_updateRequestWithIdentifier_action_completion___block_invoke;
   v17[3] = &unk_278CC1740;
   objc_copyWeak(&v19, buf);
-  v15 = v9;
+  v15 = completionCopy;
   v18 = v15;
-  [v14 updateRequestWithIdentifier:v8 action:a4 completion:v17];
+  [remoteObjectProxy updateRequestWithIdentifier:identifierCopy action:action completion:v17];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);
@@ -1220,7 +1220,7 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)resetAccountWithType:(int64_t)a3
++ (void)resetAccountWithType:(int64_t)type
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = +[APLogConfig sharedFrameworkConfig];
@@ -1229,20 +1229,20 @@ LABEL_10:
     v4 = +[APLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
     v11 = objc_opt_class();
     v12 = 2050;
-    v13 = a3;
+    typeCopy = type;
     v6 = v11;
-    _os_log_impl(&dword_241063000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Reset account with type: %{public}ld", &v10, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Reset account with type: %{public}ld", &v10, 0x16u);
   }
 
   v7 = +[APConnectionNotifier sharedNotifier];
-  v8 = [v7 remoteObjectProxy];
-  [v8 resetAccountWithType:a3];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy resetAccountWithType:type];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -1256,66 +1256,66 @@ LABEL_10:
     v2 = +[APLogConfig sharedConfig];
   }
 
-  v3 = [v2 OSLogObject];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
     v9 = objc_opt_class();
     v4 = v9;
-    _os_log_impl(&dword_241063000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Start daemon", &v8, 0xCu);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Start daemon", &v8, 0xCu);
   }
 
   v5 = +[APConnectionNotifier sharedNotifier];
-  v6 = [v5 remoteObjectProxy];
-  [v6 start];
+  remoteObjectProxy = [v5 remoteObjectProxy];
+  [remoteObjectProxy start];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)presentProductPageWithTitle:(id)a3 body:(id)a4 approve:(id)a5 decline:(id)a6 itemIdentifier:(id)a7 previewURL:(id)a8 offerName:(id)a9 requestString:(id)a10 requestSummary:(id)a11 priceSummary:(id)a12 isException:(BOOL)a13
++ (void)presentProductPageWithTitle:(id)title body:(id)body approve:(id)approve decline:(id)decline itemIdentifier:(id)identifier previewURL:(id)l offerName:(id)name requestString:(id)self0 requestSummary:(id)self1 priceSummary:(id)self2 isException:(BOOL)self3
 {
   v50 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v35 = a4;
-  v37 = a7;
-  v18 = a8;
-  v34 = a12;
-  v33 = a11;
-  v32 = a10;
-  v31 = a9;
-  v30 = a6;
-  v29 = a5;
+  titleCopy = title;
+  bodyCopy = body;
+  identifierCopy = identifier;
+  lCopy = l;
+  priceSummaryCopy = priceSummary;
+  summaryCopy = summary;
+  stringCopy = string;
+  nameCopy = name;
+  declineCopy = decline;
+  approveCopy = approve;
   v19 = +[APLogConfig sharedFrameworkConfig];
   if (!v19)
   {
     v19 = +[APLogConfig sharedConfig];
   }
 
-  v20 = [v19 OSLogObject];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v19 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544642;
     v39 = objc_opt_class();
     v40 = 2114;
-    v41 = v36;
+    v41 = titleCopy;
     v42 = 2114;
-    v43 = v35;
+    v43 = bodyCopy;
     v44 = 2114;
-    v45 = v37;
+    v45 = identifierCopy;
     v46 = 2114;
-    v47 = v18;
+    v47 = lCopy;
     v48 = 1026;
-    v49 = a13;
+    exceptionCopy = exception;
     v21 = v39;
-    _os_log_impl(&dword_241063000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: Present product page. Title: %{public}@, body: %{public}@, itemIdentifier: %{public}@, previewURL: %{public}@, isException: %{public}d", buf, 0x3Au);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Present product page. Title: %{public}@, body: %{public}@, itemIdentifier: %{public}@, previewURL: %{public}@, isException: %{public}d", buf, 0x3Au);
   }
 
   v22 = +[APConnectionNotifier sharedNotifier];
-  v23 = [v22 remoteObjectProxy];
-  v24 = v23;
-  if (v37)
+  remoteObjectProxy = [v22 remoteObjectProxy];
+  v24 = remoteObjectProxy;
+  if (identifierCopy)
   {
-    v25 = v37;
+    v25 = identifierCopy;
   }
 
   else
@@ -1323,9 +1323,9 @@ LABEL_10:
     v25 = &stru_2852E06B8;
   }
 
-  if (v18)
+  if (lCopy)
   {
-    v26 = v18;
+    v26 = lCopy;
   }
 
   else
@@ -1333,36 +1333,36 @@ LABEL_10:
     v26 = &stru_2852E06B8;
   }
 
-  LOBYTE(v28) = a13;
-  [v23 presentProductPageWithTitle:v36 body:v35 approve:v29 decline:v30 itemIdentifier:v25 previewURL:v26 offerName:v31 requestString:v32 requestSummary:v33 priceSummary:v34 isException:v28];
+  LOBYTE(v28) = exception;
+  [remoteObjectProxy presentProductPageWithTitle:titleCopy body:bodyCopy approve:approveCopy decline:declineCopy itemIdentifier:v25 previewURL:v26 offerName:nameCopy requestString:stringCopy requestSummary:summaryCopy priceSummary:priceSummaryCopy isException:v28];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)didReceiveStorePushNotificationWithPayload:(id)a3
++ (void)didReceiveStorePushNotificationWithPayload:(id)payload
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[APLogConfig sharedFrameworkConfig];
   if (!v4)
   {
     v4 = +[APLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
     v11 = objc_opt_class();
     v12 = 2114;
-    v13 = v3;
+    v13 = payloadCopy;
     v6 = v11;
-    _os_log_impl(&dword_241063000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Received store push notification. Payload: %{public}@", &v10, 0x16u);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Received store push notification. Payload: %{public}@", &v10, 0x16u);
   }
 
   v7 = +[APConnectionNotifier sharedNotifier];
-  v8 = [v7 remoteObjectProxy];
-  [v8 didReceiveStorePushNotificationWithPayload:v3];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy didReceiveStorePushNotificationWithPayload:payloadCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }

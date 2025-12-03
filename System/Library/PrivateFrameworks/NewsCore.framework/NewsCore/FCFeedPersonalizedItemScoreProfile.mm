@@ -1,23 +1,23 @@
 @interface FCFeedPersonalizedItemScoreProfile
 - (FCFeedPersonalizedItemScoreProfile)init;
-- (FCFeedPersonalizedItemScoreProfile)initWithPBScoreProfile:(id)a3;
+- (FCFeedPersonalizedItemScoreProfile)initWithPBScoreProfile:(id)profile;
 - (NTPBScoreProfileDebug)debugFields;
 - (double)sortingScore;
-- (void)setDebugFields:(id)a3;
+- (void)setDebugFields:(id)fields;
 @end
 
 @implementation FCFeedPersonalizedItemScoreProfile
 
-- (FCFeedPersonalizedItemScoreProfile)initWithPBScoreProfile:(id)a3
+- (FCFeedPersonalizedItemScoreProfile)initWithPBScoreProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = FCFeedPersonalizedItemScoreProfile;
   v6 = [(FCFeedPersonalizedItemScoreProfile *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pbScoreProfile, a3);
+    objc_storeStrong(&v6->_pbScoreProfile, profile);
     v8 = [objc_alloc(MEMORY[0x1E69B6920]) initWithOptions:1];
     debugFieldsLock = v7->_debugFieldsLock;
     v7->_debugFieldsLock = v8;
@@ -42,14 +42,14 @@
   v10 = __Block_byref_object_copy__66;
   v11 = __Block_byref_object_dispose__66;
   v12 = 0;
-  v3 = [(FCFeedPersonalizedItemScoreProfile *)self debugFieldsLock];
+  debugFieldsLock = [(FCFeedPersonalizedItemScoreProfile *)self debugFieldsLock];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__FCFeedPersonalizedItemScoreProfile_debugFields__block_invoke;
   v6[3] = &unk_1E7C37160;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [debugFieldsLock performWithLockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -76,18 +76,18 @@ void __49__FCFeedPersonalizedItemScoreProfile_debugFields__block_invoke(uint64_t
   }
 }
 
-- (void)setDebugFields:(id)a3
+- (void)setDebugFields:(id)fields
 {
-  v4 = a3;
-  v5 = [(FCFeedPersonalizedItemScoreProfile *)self debugFieldsLock];
+  fieldsCopy = fields;
+  debugFieldsLock = [(FCFeedPersonalizedItemScoreProfile *)self debugFieldsLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__FCFeedPersonalizedItemScoreProfile_setDebugFields___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v7];
+  v8 = fieldsCopy;
+  v6 = fieldsCopy;
+  [debugFieldsLock performWithLockSync:v7];
 }
 
 void __53__FCFeedPersonalizedItemScoreProfile_setDebugFields___block_invoke(uint64_t a1)

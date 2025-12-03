@@ -1,8 +1,8 @@
 @interface MOEventPatternDetectorPredicateFilterByADPDCounts
 - (MOEventPatternDetectorPredicateFilterByADPDCounts)init;
-- (id)crossReference:(id)a3 withEvents:(id)a4 withGroupingStrategy:(unint64_t)a5;
-- (id)filterEvents:(id)a3;
-- (id)splitIntoWeekdays:(id)a3 withADPDEvents:(id)a4 withCalendar:(id)a5;
+- (id)crossReference:(id)reference withEvents:(id)events withGroupingStrategy:(unint64_t)strategy;
+- (id)filterEvents:(id)events;
+- (id)splitIntoWeekdays:(id)weekdays withADPDEvents:(id)events withCalendar:(id)calendar;
 @end
 
 @implementation MOEventPatternDetectorPredicateFilterByADPDCounts
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (id)filterEvents:(id)a3
+- (id)filterEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v5 = objc_opt_new();
   v6 = [NSPredicate predicateWithFormat:@"%K = %lu AND %K = %lu", @"category", 1, @"placeUserType", 1];
-  v7 = [v4 filteredArrayUsingPredicate:v6];
+  v7 = [eventsCopy filteredArrayUsingPredicate:v6];
   v47 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
   v59 = v47;
   v8 = [NSArray arrayWithObjects:&v59 count:1];
@@ -46,7 +46,7 @@
   if ([v10 count])
   {
     v43 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 15];
-    v12 = [v4 filteredArrayUsingPredicate:?];
+    v12 = [eventsCopy filteredArrayUsingPredicate:?];
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -57,7 +57,7 @@
     }
 
     v42 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 23];
-    v15 = [v4 filteredArrayUsingPredicate:?];
+    v15 = [eventsCopy filteredArrayUsingPredicate:?];
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -73,7 +73,7 @@
       v38 = v9;
       v39 = v7;
       v40 = v6;
-      v41 = v4;
+      v41 = eventsCopy;
       v21 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
       v22 = [(MOEventPatternDetectorPredicateFilterByADPDCounts *)self splitIntoWeekdays:v10 withADPDEvents:v12 withCalendar:v21];
       v36 = v21;
@@ -142,7 +142,7 @@
 
       v19 = v5;
       v6 = v40;
-      v4 = v41;
+      eventsCopy = v41;
       v9 = v38;
       v7 = v39;
       v10 = v37;
@@ -163,16 +163,16 @@
   return v19;
 }
 
-- (id)splitIntoWeekdays:(id)a3 withADPDEvents:(id)a4 withCalendar:(id)a5
+- (id)splitIntoWeekdays:(id)weekdays withADPDEvents:(id)events withCalendar:(id)calendar
 {
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
+  weekdaysCopy = weekdays;
+  eventsCopy = events;
+  calendarCopy = calendar;
   v9 = objc_opt_new();
-  v10 = [v8 firstObject];
-  v11 = [v10 category];
+  firstObject = [eventsCopy firstObject];
+  category = [firstObject category];
 
-  if (v11 == 15)
+  if (category == 15)
   {
     v12 = 0;
   }
@@ -182,10 +182,10 @@
     v12 = -1;
   }
 
-  v13 = [v8 firstObject];
-  v14 = [v13 category];
+  firstObject2 = [eventsCopy firstObject];
+  category2 = [firstObject2 category];
 
-  if (v14 == 23)
+  if (category2 == 23)
   {
     v15 = 1;
   }
@@ -199,7 +199,7 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v7;
+  obj = weekdaysCopy;
   v16 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v16)
   {
@@ -214,13 +214,13 @@
           objc_enumerationMutation(obj);
         }
 
-        v20 = [(MOEventPatternDetectorPredicateFilterByADPDCounts *)self crossReference:*(*(&v33 + 1) + 8 * i) withEvents:v8 withGroupingStrategy:v15];
+        v20 = [(MOEventPatternDetectorPredicateFilterByADPDCounts *)self crossReference:*(*(&v33 + 1) + 8 * i) withEvents:eventsCopy withGroupingStrategy:v15];
         v21 = v20;
         if (v20)
         {
-          v22 = [v20 startDate];
-          v23 = [v22 dateByAddingTimeInterval:-10800.0];
-          v24 = [v31 components:512 fromDate:v23];
+          startDate = [v20 startDate];
+          v23 = [startDate dateByAddingTimeInterval:-10800.0];
+          v24 = [calendarCopy components:512 fromDate:v23];
 
           v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v24 weekday]);
           v26 = [v9 objectForKey:v25];
@@ -245,18 +245,18 @@
   return v9;
 }
 
-- (id)crossReference:(id)a3 withEvents:(id)a4 withGroupingStrategy:(unint64_t)a5
+- (id)crossReference:(id)reference withEvents:(id)events withGroupingStrategy:(unint64_t)strategy
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 startDate];
-  v9 = [v6 endDate];
+  referenceCopy = reference;
+  eventsCopy = events;
+  startDate = [referenceCopy startDate];
+  endDate = [referenceCopy endDate];
   v96 = objc_opt_new();
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v10 = v7;
+  v10 = eventsCopy;
   v11 = [v10 countByEnumeratingWithState:&v105 objects:v111 count:16];
   if (v11)
   {
@@ -272,9 +272,9 @@
         }
 
         v15 = *(*(&v105 + 1) + 8 * i);
-        v16 = [v15 startDate];
-        v17 = [v15 endDate];
-        if ([v16 compare:v8] != -1 && objc_msgSend(v17, "compare:", v9) != 1)
+        startDate2 = [v15 startDate];
+        endDate2 = [v15 endDate];
+        if ([startDate2 compare:startDate] != -1 && objc_msgSend(endDate2, "compare:", endDate) != 1)
         {
           [v96 addObject:v15];
         }
@@ -294,9 +294,9 @@
 
   if ([v96 count] != 1)
   {
-    if (a5 == 1)
+    if (strategy == 1)
     {
-      v91 = v6;
+      v91 = referenceCopy;
       v99 = 0u;
       v100 = 0u;
       v97 = 0u;
@@ -320,20 +320,20 @@
             }
 
             v61 = *(*(&v97 + 1) + 8 * j);
-            v62 = [v61 densityScore];
-            [v62 floatValue];
+            densityScore = [v61 densityScore];
+            [densityScore floatValue];
             v64 = v63;
 
-            v65 = [v61 densityScore];
-            [v65 floatValue];
+            densityScore2 = [v61 densityScore];
+            [densityScore2 floatValue];
             v67 = v66;
 
             if (v67 > v59)
             {
               v68 = v61;
 
-              v69 = [v68 densityScore];
-              [v69 floatValue];
+              densityScore3 = [v68 densityScore];
+              [densityScore3 floatValue];
               v59 = v70;
 
               v56 = v68;
@@ -355,11 +355,11 @@
       }
 
       v71 = v58 / [objb count];
-      v72 = [objb sortMOEventArrayByStartDate];
-      v73 = [v72 firstObject];
+      sortMOEventArrayByStartDate = [objb sortMOEventArrayByStartDate];
+      firstObject = [sortMOEventArrayByStartDate firstObject];
 
-      v74 = [objb sortMOEventArrayByEndDate];
-      v75 = [v74 lastObject];
+      sortMOEventArrayByEndDate = [objb sortMOEventArrayByEndDate];
+      lastObject = [sortMOEventArrayByEndDate lastObject];
 
       if (v56)
       {
@@ -368,19 +368,19 @@
 
       else
       {
-        v76 = v73;
+        v76 = firstObject;
       }
 
-      v88 = [v76 eventIdentifier];
+      eventIdentifier = [v76 eventIdentifier];
       v77 = [MOEvent alloc];
-      v78 = [v73 startDate];
-      [v75 endDate];
-      v79 = objc = v73;
+      startDate3 = [firstObject startDate];
+      [lastObject endDate];
+      v79 = objc = firstObject;
       v80 = +[NSDate date];
-      v26 = [(MOEvent *)v77 initWithEventIdentifier:v88 startDate:v78 endDate:v79 creationDate:v80 provider:5 category:1];
+      v26 = [(MOEvent *)v77 initWithEventIdentifier:eventIdentifier startDate:startDate3 endDate:v79 creationDate:v80 provider:5 category:1];
 
-      v81 = [v75 endDate];
-      v82 = [v81 dateByAddingTimeInterval:2419200.0];
+      endDate3 = [lastObject endDate];
+      v82 = [endDate3 dateByAddingTimeInterval:2419200.0];
       [(MOEvent *)v26 setExpirationDate:v82];
 
       [(MOEvent *)v26 setPCount:&off_100369118];
@@ -389,11 +389,11 @@
       [(MOEvent *)v26 setDensityScore:v84];
 
       [(MOEvent *)v26 setTimeAtHomeSubType:3];
-      v6 = v91;
+      referenceCopy = v91;
       goto LABEL_49;
     }
 
-    if (!a5)
+    if (!strategy)
     {
       v103 = 0u;
       v104 = 0u;
@@ -408,11 +408,11 @@
       }
 
       v34 = v33;
-      v90 = v6;
+      v90 = referenceCopy;
       obja = v32;
       v87 = v10;
       v35 = 0;
-      v36 = 0;
+      intValue2 = 0;
       v37 = *v102;
       do
       {
@@ -424,15 +424,15 @@
           }
 
           v39 = *(*(&v101 + 1) + 8 * k);
-          v40 = [v39 pCount];
-          v41 = [v40 intValue];
+          pCount = [v39 pCount];
+          intValue = [pCount intValue];
 
-          if (v41 > v36)
+          if (intValue > intValue2)
           {
             v42 = v39;
 
-            v43 = [v42 pCount];
-            v36 = [v43 intValue];
+            pCount2 = [v42 pCount];
+            intValue2 = [pCount2 intValue];
 
             v35 = v42;
           }
@@ -446,24 +446,24 @@
       if (v35)
       {
         v44 = [MOEvent alloc];
-        v45 = [v35 eventIdentifier];
-        v46 = [v35 startDate];
-        v47 = [v35 endDate];
+        eventIdentifier2 = [v35 eventIdentifier];
+        startDate4 = [v35 startDate];
+        endDate4 = [v35 endDate];
         v48 = +[NSDate date];
-        v26 = [(MOEvent *)v44 initWithEventIdentifier:v45 startDate:v46 endDate:v47 creationDate:v48 provider:5 category:1];
+        v26 = [(MOEvent *)v44 initWithEventIdentifier:eventIdentifier2 startDate:startDate4 endDate:endDate4 creationDate:v48 provider:5 category:1];
 
-        v49 = [v35 endDate];
-        v50 = [v49 dateByAddingTimeInterval:2419200.0];
+        endDate5 = [v35 endDate];
+        v50 = [endDate5 dateByAddingTimeInterval:2419200.0];
         [(MOEvent *)v26 setExpirationDate:v50];
 
-        v51 = [v35 pCount];
-        [(MOEvent *)v26 setPCount:v51];
+        pCount3 = [v35 pCount];
+        [(MOEvent *)v26 setPCount:pCount3];
 
         [(MOEvent *)v26 setDensityScore:&off_10036E470];
         [(MOEvent *)v26 setTimeAtHomeSubType:3];
         v32 = v35;
         v10 = v87;
-        v6 = v90;
+        referenceCopy = v90;
         v18 = v96;
 LABEL_43:
 
@@ -472,7 +472,7 @@ LABEL_43:
 
       v26 = 0;
       v10 = v87;
-      v6 = v90;
+      referenceCopy = v90;
 LABEL_49:
       v18 = v96;
       goto LABEL_50;
@@ -483,41 +483,41 @@ LABEL_29:
     goto LABEL_50;
   }
 
-  v89 = v6;
+  v89 = referenceCopy;
   v19 = [MOEvent alloc];
-  v86 = [v96 firstObject];
-  v20 = [v86 eventIdentifier];
-  v21 = [v96 firstObject];
-  v22 = [v21 startDate];
-  v23 = [v96 firstObject];
-  v24 = [v23 endDate];
+  firstObject2 = [v96 firstObject];
+  eventIdentifier3 = [firstObject2 eventIdentifier];
+  firstObject3 = [v96 firstObject];
+  startDate5 = [firstObject3 startDate];
+  firstObject4 = [v96 firstObject];
+  endDate6 = [firstObject4 endDate];
   v25 = +[NSDate date];
-  v26 = [(MOEvent *)v19 initWithEventIdentifier:v20 startDate:v22 endDate:v24 creationDate:v25 provider:5 category:1];
+  v26 = [(MOEvent *)v19 initWithEventIdentifier:eventIdentifier3 startDate:startDate5 endDate:endDate6 creationDate:v25 provider:5 category:1];
 
   v18 = v96;
-  v27 = [v96 firstObject];
-  v28 = [v27 endDate];
-  v29 = [v28 dateByAddingTimeInterval:2419200.0];
+  firstObject5 = [v96 firstObject];
+  endDate7 = [firstObject5 endDate];
+  v29 = [endDate7 dateByAddingTimeInterval:2419200.0];
   [(MOEvent *)v26 setExpirationDate:v29];
 
-  if (a5 == 1)
+  if (strategy == 1)
   {
     [(MOEvent *)v26 setPCount:&off_100369118];
-    v52 = [v96 firstObject];
-    v53 = [v52 densityScore];
-    [(MOEvent *)v26 setDensityScore:v53];
+    firstObject6 = [v96 firstObject];
+    densityScore4 = [firstObject6 densityScore];
+    [(MOEvent *)v26 setDensityScore:densityScore4];
 
-    v6 = v89;
+    referenceCopy = v89;
   }
 
   else
   {
-    v6 = v89;
-    if (!a5)
+    referenceCopy = v89;
+    if (!strategy)
     {
-      v30 = [v96 firstObject];
-      v31 = [v30 pCount];
-      [(MOEvent *)v26 setPCount:v31];
+      firstObject7 = [v96 firstObject];
+      pCount4 = [firstObject7 pCount];
+      [(MOEvent *)v26 setPCount:pCount4];
 
       [(MOEvent *)v26 setDensityScore:&off_10036E470];
     }

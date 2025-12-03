@@ -2,54 +2,54 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)_test_managedDayRange;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)activeDayRange;
 - (BOOL)_didFetchMinimumAnalysis;
-- (HKMCViewModelProvider)initWithHealthStore:(id)a3 analysisProvider:(id)a4 pregnancyModelProvider:(id)a5 maximumActiveDuration:(int64_t)a6 minimumBufferDuration:(int64_t)a7 shouldFetchCycleFactors:(BOOL)a8 calendarCache:(id)a9;
-- (id)_copyWithDataSource:(id)a3 cycleFactorsDataSource:(id)a4 minimumBufferDuration:(int64_t)a5;
-- (id)_initWithDataSource:(id)a3 cycleFactorsDataSource:(id)a4 analysisProvider:(id)a5 maximumActiveDuration:(int64_t)a6 minimumBufferDuration:(int64_t)a7 prefetchDuration:(int64_t)a8 shouldFetchCycleFactors:(BOOL)a9 calendarCache:(id)a10 queue:(id)a11;
-- (id)_viewModelWithDayIndex:(int64_t)a3 fetchedDaySummary:(id)a4;
-- (id)copyWithMinimumBufferDuration:(int64_t)a3;
-- (id)dayViewModelAtIndex:(int64_t)a3;
-- (int64_t)_fetchStateForDayIndex:(int64_t)a3;
-- (unint64_t)_bleedingAfterPregnancyLevel:(int64_t)a3;
-- (unint64_t)_bleedingInPregnancyLevel:(int64_t)a3;
-- (unint64_t)_fertileWindowLevelWithDayIndex:(int64_t)a3;
-- (unint64_t)_menstruationLevelWithDayIndex:(int64_t)a3 menstrualFlow:(int64_t)a4 partiallyLoggedPeriod:(BOOL *)a5;
-- (unint64_t)_pregnancyStateWithDayIndex:(int64_t)a3 cycleFactors:(id)a4;
+- (HKMCViewModelProvider)initWithHealthStore:(id)store analysisProvider:(id)provider pregnancyModelProvider:(id)modelProvider maximumActiveDuration:(int64_t)duration minimumBufferDuration:(int64_t)bufferDuration shouldFetchCycleFactors:(BOOL)factors calendarCache:(id)cache;
+- (id)_copyWithDataSource:(id)source cycleFactorsDataSource:(id)dataSource minimumBufferDuration:(int64_t)duration;
+- (id)_initWithDataSource:(id)source cycleFactorsDataSource:(id)dataSource analysisProvider:(id)provider maximumActiveDuration:(int64_t)duration minimumBufferDuration:(int64_t)bufferDuration prefetchDuration:(int64_t)prefetchDuration shouldFetchCycleFactors:(BOOL)factors calendarCache:(id)self0 queue:(id)self1;
+- (id)_viewModelWithDayIndex:(int64_t)index fetchedDaySummary:(id)summary;
+- (id)copyWithMinimumBufferDuration:(int64_t)duration;
+- (id)dayViewModelAtIndex:(int64_t)index;
+- (int64_t)_fetchStateForDayIndex:(int64_t)index;
+- (unint64_t)_bleedingAfterPregnancyLevel:(int64_t)level;
+- (unint64_t)_bleedingInPregnancyLevel:(int64_t)level;
+- (unint64_t)_fertileWindowLevelWithDayIndex:(int64_t)index;
+- (unint64_t)_menstruationLevelWithDayIndex:(int64_t)index menstrualFlow:(int64_t)flow partiallyLoggedPeriod:(BOOL *)period;
+- (unint64_t)_pregnancyStateWithDayIndex:(int64_t)index cycleFactors:(id)factors;
 - (void)_queue_notifyObserversDidUpdate;
 - (void)_queue_runNotifyObserversOperationNow;
-- (void)_setFetchState:(int64_t)a3 forDayIndexRange:(id)a4;
+- (void)_setFetchState:(int64_t)state forDayIndexRange:(id)range;
 - (void)_updateManagedDayRangeIfNeeded;
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
-- (void)cycleFactorsDataSource:(id)a3 didFetchCycleFactors:(id)a4;
-- (void)cycleFactorsDataSource:(id)a3 didUpdatePregnancyModel:(id)a4;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
+- (void)cycleFactorsDataSource:(id)source didFetchCycleFactors:(id)factors;
+- (void)cycleFactorsDataSource:(id)source didUpdatePregnancyModel:(id)model;
 - (void)dealloc;
-- (void)setActiveCycles:(id)a3;
-- (void)setActiveDayRange:(id)a3;
-- (void)viewModelProviderDataSource:(id)a3 didFetchDaySummaries:(id)a4 forDayIndexRange:(id)a5 daySummaryAnchor:(id)a6;
-- (void)viewModelProviderDataSourceDidUpdateDaySummaries:(id)a3;
+- (void)setActiveCycles:(id)cycles;
+- (void)setActiveDayRange:(id)range;
+- (void)viewModelProviderDataSource:(id)source didFetchDaySummaries:(id)summaries forDayIndexRange:(id)range daySummaryAnchor:(id)anchor;
+- (void)viewModelProviderDataSourceDidUpdateDaySummaries:(id)summaries;
 @end
 
 @implementation HKMCViewModelProvider
 
-- (void)setActiveCycles:(id)a3
+- (void)setActiveCycles:(id)cycles
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 count])
+  cyclesCopy = cycles;
+  if (![cyclesCopy count])
   {
     [(HKMCViewModelProvider(HKMCCycle) *)a2 setActiveCycles:?];
   }
 
-  v6 = [(HKMCViewModelProvider *)self calendarCache];
-  v7 = [v6 currentCalendar];
-  v8 = HKMCTodayIndex(v7);
+  calendarCache = [(HKMCViewModelProvider *)self calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
+  v8 = HKMCTodayIndex(currentCalendar);
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v5;
+  v9 = cyclesCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
-  v23 = self;
+  selfCopy = self;
   if (v10)
   {
     v11 = v10;
@@ -66,19 +66,19 @@
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 menstruationSegment];
-        v18 = [v17 days];
+        menstruationSegment = [v16 menstruationSegment];
+        days = [menstruationSegment days];
 
-        if (v18 < v14)
+        if (days < v14)
         {
-          v14 = v18;
+          v14 = days;
         }
 
-        v19 = [v16 lastDayIndex];
-        v20 = [v19 integerValue];
-        if (v20)
+        lastDayIndex = [v16 lastDayIndex];
+        integerValue = [lastDayIndex integerValue];
+        if (integerValue)
         {
-          v21 = v20;
+          v21 = integerValue;
         }
 
         else
@@ -104,82 +104,82 @@
     v14 = 0x7FFFFFFFLL;
   }
 
-  [(HKMCViewModelProvider *)v23 setMaximumActiveDuration:v13 - v14 + 1];
-  [(HKMCViewModelProvider *)v23 setActiveDayRange:v14, v13 - v14 + 1];
+  [(HKMCViewModelProvider *)selfCopy setMaximumActiveDuration:v13 - v14 + 1];
+  [(HKMCViewModelProvider *)selfCopy setActiveDayRange:v14, v13 - v14 + 1];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (HKMCViewModelProvider)initWithHealthStore:(id)a3 analysisProvider:(id)a4 pregnancyModelProvider:(id)a5 maximumActiveDuration:(int64_t)a6 minimumBufferDuration:(int64_t)a7 shouldFetchCycleFactors:(BOOL)a8 calendarCache:(id)a9
+- (HKMCViewModelProvider)initWithHealthStore:(id)store analysisProvider:(id)provider pregnancyModelProvider:(id)modelProvider maximumActiveDuration:(int64_t)duration minimumBufferDuration:(int64_t)bufferDuration shouldFetchCycleFactors:(BOOL)factors calendarCache:(id)cache
 {
-  v15 = a9;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  cacheCopy = cache;
+  modelProviderCopy = modelProvider;
+  providerCopy = provider;
+  storeCopy = store;
   v19 = [HKMCViewModelProviderDataSource alloc];
   v20 = MEMORY[0x277D85CD0];
-  v21 = [(HKMCViewModelProviderDataSource *)v19 initWithHealthStore:v18 calendarCache:v15 queue:MEMORY[0x277D85CD0]];
-  v22 = [[HKMCCycleFactorsDataSource alloc] initWithHealthStore:v18 pregnancyModelProvider:v16 queue:v20];
+  v21 = [(HKMCViewModelProviderDataSource *)v19 initWithHealthStore:storeCopy calendarCache:cacheCopy queue:MEMORY[0x277D85CD0]];
+  v22 = [[HKMCCycleFactorsDataSource alloc] initWithHealthStore:storeCopy pregnancyModelProvider:modelProviderCopy queue:v20];
 
-  LOBYTE(v25) = a8;
-  v23 = [(HKMCViewModelProvider *)self _initWithDataSource:v21 cycleFactorsDataSource:v22 analysisProvider:v17 maximumActiveDuration:a6 minimumBufferDuration:a7 prefetchDuration:5 * a7 shouldFetchCycleFactors:v25 calendarCache:v15 queue:v20];
+  LOBYTE(v25) = factors;
+  v23 = [(HKMCViewModelProvider *)self _initWithDataSource:v21 cycleFactorsDataSource:v22 analysisProvider:providerCopy maximumActiveDuration:duration minimumBufferDuration:bufferDuration prefetchDuration:5 * bufferDuration shouldFetchCycleFactors:v25 calendarCache:cacheCopy queue:v20];
 
   return v23;
 }
 
-- (id)_initWithDataSource:(id)a3 cycleFactorsDataSource:(id)a4 analysisProvider:(id)a5 maximumActiveDuration:(int64_t)a6 minimumBufferDuration:(int64_t)a7 prefetchDuration:(int64_t)a8 shouldFetchCycleFactors:(BOOL)a9 calendarCache:(id)a10 queue:(id)a11
+- (id)_initWithDataSource:(id)source cycleFactorsDataSource:(id)dataSource analysisProvider:(id)provider maximumActiveDuration:(int64_t)duration minimumBufferDuration:(int64_t)bufferDuration prefetchDuration:(int64_t)prefetchDuration shouldFetchCycleFactors:(BOOL)factors calendarCache:(id)self0 queue:(id)self1
 {
   v35 = a2;
-  v18 = a3;
-  v38 = a4;
-  v37 = a5;
-  v39 = a10;
-  v36 = a11;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  providerCopy = provider;
+  cacheCopy = cache;
+  queueCopy = queue;
   v43.receiver = self;
   v43.super_class = HKMCViewModelProvider;
   v19 = [(HKMCViewModelProvider *)&v43 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_queue, a11);
-    objc_storeStrong((v20 + 8), a3);
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong((v20 + 8), source);
     [*(v20 + 8) setDelegate:v20];
-    objc_storeStrong((v20 + 16), a4);
-    objc_storeStrong((v20 + 24), a5);
+    objc_storeStrong((v20 + 16), dataSource);
+    objc_storeStrong((v20 + 24), provider);
     [*(v20 + 24) registerObserver:v20];
-    if (a9)
+    if (factors)
     {
       [*(v20 + 16) setDelegate:{v20, v35}];
     }
 
-    if (a7 > a8)
+    if (bufferDuration > prefetchDuration)
     {
       [HKMCViewModelProvider _initWithDataSource:v35 cycleFactorsDataSource:v20 analysisProvider:? maximumActiveDuration:? minimumBufferDuration:? prefetchDuration:? shouldFetchCycleFactors:? calendarCache:? queue:?];
     }
 
-    *(v20 + 152) = a6;
-    *(v20 + 56) = a7;
-    *(v20 + 64) = a8;
-    *(v20 + 48) = a9;
-    v21 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    *(v20 + 152) = duration;
+    *(v20 + 56) = bufferDuration;
+    *(v20 + 64) = prefetchDuration;
+    *(v20 + 48) = factors;
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v22 = *(v20 + 32);
-    *(v20 + 32) = v21;
+    *(v20 + 32) = weakObjectsHashTable;
 
-    v23 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     v24 = *(v20 + 88);
-    *(v20 + 88) = v23;
+    *(v20 + 88) = indexSet;
 
-    v25 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
     v26 = *(v20 + 96);
-    *(v20 + 96) = v25;
+    *(v20 + 96) = indexSet2;
 
-    v27 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v28 = *(v20 + 104);
-    *(v20 + 104) = v27;
+    *(v20 + 104) = dictionary;
 
-    objc_storeStrong((v20 + 160), a10);
-    v29 = [v39 currentCalendar];
-    *(v20 + 168) = HKMCTodayIndex(v29);
+    objc_storeStrong((v20 + 160), cache);
+    currentCalendar = [cacheCopy currentCalendar];
+    *(v20 + 168) = HKMCTodayIndex(currentCalendar);
 
     objc_initWeak(&location, v20);
     v30 = objc_alloc(MEMORY[0x277CCDD98]);
@@ -206,28 +206,28 @@ void __190__HKMCViewModelProvider__initWithDataSource_cycleFactorsDataSource_ana
   [WeakRetained _queue_runNotifyObserversOperationNow];
 }
 
-- (id)copyWithMinimumBufferDuration:(int64_t)a3
+- (id)copyWithMinimumBufferDuration:(int64_t)duration
 {
   v5 = [HKMCViewModelProviderDataSource alloc];
-  v6 = [(HKMCAnalysisProvider *)self->_analysisProvider healthStore];
-  v7 = [(HKMCViewModelProviderDataSource *)v5 initWithHealthStore:v6 calendarCache:self->_calendarCache queue:self->_queue];
+  healthStore = [(HKMCAnalysisProvider *)self->_analysisProvider healthStore];
+  v7 = [(HKMCViewModelProviderDataSource *)v5 initWithHealthStore:healthStore calendarCache:self->_calendarCache queue:self->_queue];
 
   v8 = [HKMCCycleFactorsDataSource alloc];
-  v9 = [(HKMCAnalysisProvider *)self->_analysisProvider healthStore];
-  v10 = [(HKMCCycleFactorsDataSource *)v8 initWithHealthStore:v9 pregnancyModelProvider:0 queue:self->_queue];
+  healthStore2 = [(HKMCAnalysisProvider *)self->_analysisProvider healthStore];
+  v10 = [(HKMCCycleFactorsDataSource *)v8 initWithHealthStore:healthStore2 pregnancyModelProvider:0 queue:self->_queue];
 
-  v11 = [(HKMCViewModelProvider *)self _copyWithDataSource:v7 cycleFactorsDataSource:v10 minimumBufferDuration:a3];
+  v11 = [(HKMCViewModelProvider *)self _copyWithDataSource:v7 cycleFactorsDataSource:v10 minimumBufferDuration:duration];
   return v11;
 }
 
-- (id)_copyWithDataSource:(id)a3 cycleFactorsDataSource:(id)a4 minimumBufferDuration:(int64_t)a5
+- (id)_copyWithDataSource:(id)source cycleFactorsDataSource:(id)dataSource minimumBufferDuration:(int64_t)duration
 {
-  v8 = a4;
-  v9 = a3;
+  dataSourceCopy = dataSource;
+  sourceCopy = source;
   v10 = objc_alloc(objc_opt_class());
   calendarCache = self->_calendarCache;
   LOBYTE(v29) = self->_shouldFetchCycleFactors;
-  v12 = [v10 _initWithDataSource:v9 cycleFactorsDataSource:v8 analysisProvider:self->_analysisProvider maximumActiveDuration:self->_maximumActiveDuration minimumBufferDuration:a5 prefetchDuration:5 * a5 shouldFetchCycleFactors:v29 calendarCache:calendarCache queue:self->_queue];
+  v12 = [v10 _initWithDataSource:sourceCopy cycleFactorsDataSource:dataSourceCopy analysisProvider:self->_analysisProvider maximumActiveDuration:self->_maximumActiveDuration minimumBufferDuration:duration prefetchDuration:5 * duration shouldFetchCycleFactors:v29 calendarCache:calendarCache queue:self->_queue];
 
   v13 = [(NSMutableIndexSet *)self->_fetchCompletedDayIndexes mutableCopy];
   v14 = v12[12];
@@ -280,16 +280,16 @@ uint64_t __90__HKMCViewModelProvider__copyWithDataSource_cycleFactorsDataSource_
   return result;
 }
 
-- (id)dayViewModelAtIndex:(int64_t)a3
+- (id)dayViewModelAtIndex:(int64_t)index
 {
   dispatch_assert_queue_V2(self->_queue);
-  if ([(HKMCViewModelProvider *)self _fetchStateForDayIndex:a3]== 2)
+  if ([(HKMCViewModelProvider *)self _fetchStateForDayIndex:index]== 2)
   {
     daySummariesByDayIndex = self->_daySummariesByDayIndex;
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v7 = [(NSMutableDictionary *)daySummariesByDayIndex objectForKeyedSubscript:v6];
 
-    v8 = [(HKMCViewModelProvider *)self _viewModelWithDayIndex:a3 fetchedDaySummary:v7];
+    v8 = [(HKMCViewModelProvider *)self _viewModelWithDayIndex:index fetchedDaySummary:v7];
   }
 
   else
@@ -300,10 +300,10 @@ uint64_t __90__HKMCViewModelProvider__copyWithDataSource_cycleFactorsDataSource_
   return v8;
 }
 
-- (void)setActiveDayRange:(id)a3
+- (void)setActiveDayRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   if (var1 <= self->_maximumActiveDuration)
@@ -337,7 +337,7 @@ uint64_t __90__HKMCViewModelProvider__copyWithDataSource_cycleFactorsDataSource_
       v15 = 138544130;
       v16 = v8;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = v10;
       v21 = 2114;
@@ -349,14 +349,14 @@ uint64_t __90__HKMCViewModelProvider__copyWithDataSource_cycleFactorsDataSource_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_viewModelWithDayIndex:(int64_t)a3 fetchedDaySummary:(id)a4
+- (id)_viewModelWithDayIndex:(int64_t)index fetchedDaySummary:(id)summary
 {
-  v6 = a4;
+  summaryCopy = summary;
   v27 = 0;
-  v7 = -[HKMCViewModelProvider _menstruationLevelWithDayIndex:menstrualFlow:partiallyLoggedPeriod:](self, "_menstruationLevelWithDayIndex:menstrualFlow:partiallyLoggedPeriod:", a3, [v6 menstrualFlow], &v27);
-  v8 = [(HKMCViewModelProvider *)self _fertileWindowLevelWithDayIndex:a3];
-  v9 = [(HKCalendarCache *)self->_calendarCache currentCalendar];
-  v10 = v9;
+  v7 = -[HKMCViewModelProvider _menstruationLevelWithDayIndex:menstrualFlow:partiallyLoggedPeriod:](self, "_menstruationLevelWithDayIndex:menstrualFlow:partiallyLoggedPeriod:", index, [summaryCopy menstrualFlow], &v27);
+  v8 = [(HKMCViewModelProvider *)self _fertileWindowLevelWithDayIndex:index];
+  currentCalendar = [(HKCalendarCache *)self->_calendarCache currentCalendar];
+  v10 = currentCalendar;
   cycleFactors = self->_cycleFactors;
   if (cycleFactors)
   {
@@ -364,14 +364,14 @@ uint64_t __90__HKMCViewModelProvider__copyWithDataSource_cycleFactorsDataSource_
     v24[1] = 3221225472;
     v24[2] = __66__HKMCViewModelProvider__viewModelWithDayIndex_fetchedDaySummary___block_invoke;
     v24[3] = &unk_2796D4E08;
-    v25 = v9;
-    v26 = a3;
+    v25 = currentCalendar;
+    indexCopy = index;
     v23 = [(NSArray *)cycleFactors hk_filter:v24];
-    v12 = [(HKMCViewModelProvider *)self _pregnancyStateWithDayIndex:a3 cycleFactors:self->_cycleFactors];
-    v13 = -[HKMCViewModelProvider _bleedingInPregnancyLevel:](self, "_bleedingInPregnancyLevel:", [v6 bleedingInPregnancyFlow]);
-    v14 = -[HKMCViewModelProvider _bleedingAfterPregnancyLevel:](self, "_bleedingAfterPregnancyLevel:", [v6 bleedingAfterPregnancyFlow]);
+    v12 = [(HKMCViewModelProvider *)self _pregnancyStateWithDayIndex:index cycleFactors:self->_cycleFactors];
+    v13 = -[HKMCViewModelProvider _bleedingInPregnancyLevel:](self, "_bleedingInPregnancyLevel:", [summaryCopy bleedingInPregnancyFlow]);
+    v14 = -[HKMCViewModelProvider _bleedingAfterPregnancyLevel:](self, "_bleedingAfterPregnancyLevel:", [summaryCopy bleedingAfterPregnancyFlow]);
 
-    if (v6)
+    if (summaryCopy)
     {
       goto LABEL_11;
     }
@@ -383,7 +383,7 @@ uint64_t __90__HKMCViewModelProvider__copyWithDataSource_cycleFactorsDataSource_
     v12 = 0;
     v13 = 0;
     v14 = 0;
-    if (v6)
+    if (summaryCopy)
     {
       goto LABEL_11;
     }
@@ -414,7 +414,7 @@ LABEL_11:
   LOBYTE(v22) = v18;
   v10 = v17;
   v19 = v23;
-  v20 = [HKMCDayViewModel dayViewModelWithMenstruationLevel:v16 fertileWindowLevel:v15 pregnancyState:v12 bleedingInPregnancyLevel:v13 bleedingAfterPregnancyLevel:v14 daySummary:v6 cycleFactors:v23 partiallyLoggedPeriod:v22 fetched:?];
+  v20 = [HKMCDayViewModel dayViewModelWithMenstruationLevel:v16 fertileWindowLevel:v15 pregnancyState:v12 bleedingInPregnancyLevel:v13 bleedingAfterPregnancyLevel:v14 daySummary:summaryCopy cycleFactors:v23 partiallyLoggedPeriod:v22 fetched:?];
 LABEL_12:
 
   return v20;
@@ -429,55 +429,55 @@ BOOL __66__HKMCViewModelProvider__viewModelWithDayIndex_fetchedDaySummary___bloc
   return !v7 && v6 < v4;
 }
 
-- (unint64_t)_pregnancyStateWithDayIndex:(int64_t)a3 cycleFactors:(id)a4
+- (unint64_t)_pregnancyStateWithDayIndex:(int64_t)index cycleFactors:(id)factors
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HKCalendarCache *)self->_calendarCache currentCalendar];
-  v8 = [MEMORY[0x277CCD5A0] recentPregnancyStartThresholdInDays];
-  v54 = [MEMORY[0x277CCD5A0] recentPregnancyEndThresholdInDays];
-  v9 = [MEMORY[0x277CCD5A0] maximumNumberOfWeeksPregnant];
-  v10 = [(HKMCPregnancyModel *)self->_lastPregnancyModel estimatedDueDate];
+  factorsCopy = factors;
+  currentCalendar = [(HKCalendarCache *)self->_calendarCache currentCalendar];
+  recentPregnancyStartThresholdInDays = [MEMORY[0x277CCD5A0] recentPregnancyStartThresholdInDays];
+  recentPregnancyEndThresholdInDays = [MEMORY[0x277CCD5A0] recentPregnancyEndThresholdInDays];
+  maximumNumberOfWeeksPregnant = [MEMORY[0x277CCD5A0] maximumNumberOfWeeksPregnant];
+  estimatedDueDate = [(HKMCPregnancyModel *)self->_lastPregnancyModel estimatedDueDate];
 
-  v56 = a3;
-  if (!v10)
+  indexCopy = index;
+  if (!estimatedDueDate)
   {
     goto LABEL_5;
   }
 
-  v11 = [(HKMCPregnancyModel *)self->_lastPregnancyModel estimatedDueDate];
-  v12 = [v11 hk_dayIndexWithCalendar:v7];
+  estimatedDueDate2 = [(HKMCPregnancyModel *)self->_lastPregnancyModel estimatedDueDate];
+  v12 = [estimatedDueDate2 hk_dayIndexWithCalendar:currentCalendar];
 
-  if (v12 != a3)
+  if (v12 != index)
   {
     goto LABEL_5;
   }
 
-  v13 = [(HKMCPregnancyModel *)self->_lastPregnancyModel pregnancyEndDate];
+  pregnancyEndDate = [(HKMCPregnancyModel *)self->_lastPregnancyModel pregnancyEndDate];
 
-  v14 = [(HKMCPregnancyModel *)self->_lastPregnancyModel pregnancyEndDate];
-  v15 = v7;
-  v16 = v14;
+  pregnancyEndDate2 = [(HKMCPregnancyModel *)self->_lastPregnancyModel pregnancyEndDate];
+  v15 = currentCalendar;
+  v16 = pregnancyEndDate2;
   v17 = v15;
-  v18 = [v14 hk_dayIndexWithCalendar:?];
+  v18 = [pregnancyEndDate2 hk_dayIndexWithCalendar:?];
 
   v19 = 4;
-  if (!v13)
+  if (!pregnancyEndDate)
   {
-    v7 = v17;
+    currentCalendar = v17;
     goto LABEL_47;
   }
 
-  v7 = v17;
-  if (v18 < v56)
+  currentCalendar = v17;
+  if (v18 < indexCopy)
   {
 LABEL_5:
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v51 = v6;
-    obj = v6;
+    v51 = factorsCopy;
+    obj = factorsCopy;
     v20 = [obj countByEnumeratingWithState:&v60 objects:v64 count:16];
     if (!v20)
     {
@@ -488,11 +488,11 @@ LABEL_5:
     v21 = v20;
     v57 = 0;
     v59 = 0;
-    v52 = 7 * v9;
-    v53 = self;
+    v52 = 7 * maximumNumberOfWeeksPregnant;
+    selfCopy = self;
     v22 = *v61;
     v23 = *MEMORY[0x277CCBA68];
-    v55 = v8 + 1;
+    v55 = recentPregnancyStartThresholdInDays + 1;
     while (1)
     {
       v24 = 0;
@@ -504,23 +504,23 @@ LABEL_5:
         }
 
         v25 = *(*(&v60 + 1) + 8 * v24);
-        v26 = [v25 categoryType];
-        v27 = [v26 identifier];
-        v28 = v27;
-        if (v27 != v23)
+        categoryType = [v25 categoryType];
+        identifier = [categoryType identifier];
+        v28 = identifier;
+        if (identifier != v23)
         {
 
           goto LABEL_34;
         }
 
         v29 = v22;
-        v30 = [v25 startDate];
-        v31 = v7;
-        v32 = [v30 hk_dayIndexWithCalendar:v7];
+        startDate = [v25 startDate];
+        v31 = currentCalendar;
+        v32 = [startDate hk_dayIndexWithCalendar:currentCalendar];
 
         if (v32 <= v59)
         {
-          v7 = v31;
+          currentCalendar = v31;
 LABEL_33:
           v22 = v29;
           goto LABEL_34;
@@ -528,11 +528,11 @@ LABEL_33:
 
         v33 = [v25 hk_dayIndexRangeWithCalendar:v31];
         v35 = v34;
-        v36 = [v25 startDate];
-        v37 = [v36 hk_dayIndexWithCalendar:v31];
+        startDate2 = [v25 startDate];
+        v37 = [startDate2 hk_dayIndexWithCalendar:v31];
 
-        v38 = [v25 endDate];
-        v39 = [v38 hk_dayIndexWithCalendar:v31];
+        endDate = [v25 endDate];
+        v39 = [endDate hk_dayIndexWithCalendar:v31];
 
         v40 = v37;
         if (v55 + v37 >= v39)
@@ -545,11 +545,11 @@ LABEL_33:
           v41 = v55;
         }
 
-        v7 = v31;
+        currentCalendar = v31;
         v59 = v40;
-        if (v56 < v33 || v56 - v33 >= v35)
+        if (indexCopy < v33 || indexCopy - v33 >= v35)
         {
-          v45 = v56 - v39 > v54 || v56 < v39;
+          v45 = indexCopy - v39 > recentPregnancyEndThresholdInDays || indexCopy < v39;
           v46 = v57;
           if (!v45)
           {
@@ -561,10 +561,10 @@ LABEL_33:
         }
 
         v22 = v29;
-        v42 = v56 - v40;
-        if (v53->_todayDayIndex >= v56)
+        v42 = indexCopy - v40;
+        if (selfCopy->_todayDayIndex >= indexCopy)
         {
-          v47 = v42 >= v41 || v56 < v40;
+          v47 = v42 >= v41 || indexCopy < v40;
           v44 = 5;
           if (v47)
           {
@@ -576,7 +576,7 @@ LABEL_33:
 
         if (v42 < v52)
         {
-          v43 = v42 >= v41 || v56 < v40;
+          v43 = v42 >= v41 || indexCopy < v40;
           v44 = 2;
           if (!v43)
           {
@@ -600,7 +600,7 @@ LABEL_34:
       {
 LABEL_46:
 
-        v6 = v51;
+        factorsCopy = v51;
         v19 = v57;
         break;
       }
@@ -613,15 +613,15 @@ LABEL_47:
   return v19;
 }
 
-- (unint64_t)_bleedingInPregnancyLevel:(int64_t)a3
+- (unint64_t)_bleedingInPregnancyLevel:(int64_t)level
 {
   v3 = 1;
-  if (a3 == 1)
+  if (level == 1)
   {
     v3 = 2;
   }
 
-  if (a3)
+  if (level)
   {
     return v3;
   }
@@ -632,15 +632,15 @@ LABEL_47:
   }
 }
 
-- (unint64_t)_bleedingAfterPregnancyLevel:(int64_t)a3
+- (unint64_t)_bleedingAfterPregnancyLevel:(int64_t)level
 {
   v3 = 1;
-  if (a3 == 1)
+  if (level == 1)
   {
     v3 = 2;
   }
 
-  if (a3)
+  if (level)
   {
     return v3;
   }
@@ -651,17 +651,17 @@ LABEL_47:
   }
 }
 
-- (unint64_t)_menstruationLevelWithDayIndex:(int64_t)a3 menstrualFlow:(int64_t)a4 partiallyLoggedPeriod:(BOOL *)a5
+- (unint64_t)_menstruationLevelWithDayIndex:(int64_t)index menstrualFlow:(int64_t)flow partiallyLoggedPeriod:(BOOL *)period
 {
   v43 = *MEMORY[0x277D85DE8];
-  if ((a4 - 1) >= 5)
+  if ((flow - 1) >= 5)
   {
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v9 = [(HKMCAnalysis *)self->_analysis cycles];
-    v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    cycles = [(HKMCAnalysis *)self->_analysis cycles];
+    v10 = [cycles countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v10)
     {
       v11 = v10;
@@ -672,14 +672,14 @@ LABEL_47:
         {
           if (*v38 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(cycles);
           }
 
-          v14 = [*(*(&v37 + 1) + 8 * i) menstruationSegment];
-          v15 = [v14 days];
+          menstruationSegment = [*(*(&v37 + 1) + 8 * i) menstruationSegment];
+          days = [menstruationSegment days];
           v17 = v16;
 
-          if (a3 >= v15 && a3 - v15 < v17)
+          if (index >= days && index - days < v17)
           {
 
             v5 = 3;
@@ -687,7 +687,7 @@ LABEL_47:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+        v11 = [cycles countByEnumeratingWithState:&v37 objects:v42 count:16];
         if (v11)
         {
           continue;
@@ -701,8 +701,8 @@ LABEL_47:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v19 = [(HKMCAnalysis *)self->_analysis menstruationProjections];
-    v20 = [v19 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    menstruationProjections = [(HKMCAnalysis *)self->_analysis menstruationProjections];
+    v20 = [menstruationProjections countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v20)
     {
       v21 = v20;
@@ -714,28 +714,28 @@ LABEL_47:
         {
           if (*v34 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(menstruationProjections);
           }
 
           v24 = *(*(&v33 + 1) + 8 * j);
-          v25 = [v24 mostLikelyDays];
-          if (a3 >= v25 && a3 - v25 < v26)
+          mostLikelyDays = [v24 mostLikelyDays];
+          if (index >= mostLikelyDays && index - mostLikelyDays < v26)
           {
             goto LABEL_32;
           }
 
-          v28 = [v24 allDays];
-          if (a3 >= v28 && a3 - v28 < v29)
+          allDays = [v24 allDays];
+          if (index >= allDays && index - allDays < v29)
           {
             v5 = 1;
 LABEL_32:
-            *a5 = [v24 isPartiallyLogged];
+            *period = [v24 isPartiallyLogged];
 
             goto LABEL_33;
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        v21 = [menstruationProjections countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v21)
         {
           continue;
@@ -750,7 +750,7 @@ LABEL_32:
 
   else
   {
-    v5 = qword_25192B3B0[a4 - 1];
+    v5 = qword_25192B3B0[flow - 1];
   }
 
 LABEL_33:
@@ -758,15 +758,15 @@ LABEL_33:
   return v5;
 }
 
-- (unint64_t)_fertileWindowLevelWithDayIndex:(int64_t)a3
+- (unint64_t)_fertileWindowLevelWithDayIndex:(int64_t)index
 {
   v46 = *MEMORY[0x277D85DE8];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = [(HKMCAnalysis *)self->_analysis cycles];
-  v6 = [v5 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  cycles = [(HKMCAnalysis *)self->_analysis cycles];
+  v6 = [cycles countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v6)
   {
     v7 = v6;
@@ -777,23 +777,23 @@ LABEL_33:
       {
         if (*v41 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cycles);
         }
 
         v10 = *(*(&v40 + 1) + 8 * i);
-        v11 = [v10 fertileWindowSegment];
+        fertileWindowSegment = [v10 fertileWindowSegment];
 
-        if (v11)
+        if (fertileWindowSegment)
         {
-          v12 = [v10 fertileWindowSegment];
-          v13 = [v12 days];
-          v15 = v14 + v13 - 1;
+          fertileWindowSegment2 = [v10 fertileWindowSegment];
+          days = [fertileWindowSegment2 days];
+          v15 = v14 + days - 1;
           if (v14 <= 0)
           {
             v15 = 0x7FFFFFFFFFFFFFFFLL;
           }
 
-          if (v15 == a3)
+          if (v15 == index)
           {
             if ([v10 ovulationConfirmationType] == 1)
             {
@@ -803,9 +803,9 @@ LABEL_39:
               goto LABEL_41;
             }
 
-            v16 = [v10 ovulationConfirmationType];
+            ovulationConfirmationType = [v10 ovulationConfirmationType];
 
-            if (v16 == 2)
+            if (ovulationConfirmationType == 2)
             {
               goto LABEL_39;
             }
@@ -815,11 +815,11 @@ LABEL_39:
           {
           }
 
-          v17 = [v10 fertileWindowSegment];
-          v18 = [v17 days];
+          fertileWindowSegment3 = [v10 fertileWindowSegment];
+          days2 = [fertileWindowSegment3 days];
           v20 = v19;
 
-          if (a3 >= v18 && a3 - v18 < v20)
+          if (index >= days2 && index - days2 < v20)
           {
             v25 = 2;
             goto LABEL_41;
@@ -827,7 +827,7 @@ LABEL_39:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v7 = [cycles countByEnumeratingWithState:&v40 objects:v45 count:16];
       if (v7)
       {
         continue;
@@ -841,8 +841,8 @@ LABEL_39:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = [(HKMCAnalysis *)self->_analysis fertileWindowProjections];
-  v22 = [v5 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  cycles = [(HKMCAnalysis *)self->_analysis fertileWindowProjections];
+  v22 = [cycles countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v22)
   {
     v23 = v22;
@@ -854,27 +854,27 @@ LABEL_22:
     {
       if (*v37 != v24)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(cycles);
       }
 
       v27 = *(*(&v36 + 1) + 8 * v26);
       if ([v27 predictionPrimarySource] == 3 || objc_msgSend(v27, "predictionPrimarySource") == 4)
       {
-        v28 = [v27 allDays];
-        v30 = v29 + v28 - 1;
+        allDays = [v27 allDays];
+        v30 = v29 + allDays - 1;
         if (v29 <= 0)
         {
           v30 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        if (v30 == a3)
+        if (v30 == index)
         {
           break;
         }
       }
 
-      v31 = [v27 allDays];
-      if (a3 >= v31 && a3 - v31 < v32)
+      allDays2 = [v27 allDays];
+      if (index >= allDays2 && index - allDays2 < v32)
       {
         v25 = 1;
         break;
@@ -882,7 +882,7 @@ LABEL_22:
 
       if (v23 == ++v26)
       {
-        v23 = [v5 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v23 = [cycles countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v23)
         {
           goto LABEL_22;
@@ -1019,7 +1019,7 @@ LABEL_41:
       *buf = 138543874;
       v39 = v30;
       v40 = 2048;
-      v41 = self;
+      selfCopy = self;
       v42 = 2114;
       v43 = v32;
       _os_log_impl(&dword_2518FC000, v29, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Updated managed day range: %{public}@", buf, 0x20u);
@@ -1079,7 +1079,7 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
   return [v6 fetchDaySummariesInDayIndexRange:{a2, a3}];
 }
 
-- (int64_t)_fetchStateForDayIndex:(int64_t)a3
+- (int64_t)_fetchStateForDayIndex:(int64_t)index
 {
   if (([(NSMutableIndexSet *)self->_fetchCompletedDayIndexes containsIndex:?]& 1) != 0)
   {
@@ -1088,15 +1088,15 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
 
   else
   {
-    return [(NSMutableIndexSet *)self->_fetchStartedDayIndexes containsIndex:a3];
+    return [(NSMutableIndexSet *)self->_fetchStartedDayIndexes containsIndex:index];
   }
 }
 
-- (void)_setFetchState:(int64_t)a3 forDayIndexRange:(id)a4
+- (void)_setFetchState:(int64_t)state forDayIndexRange:(id)range
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  if (a4.var0 < 0)
+  var1 = range.var1;
+  var0 = range.var0;
+  if (range.var0 < 0)
   {
     [HKMCViewModelProvider _setFetchState:forDayIndexRange:];
   }
@@ -1106,9 +1106,9 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
   fetchCompletedDayIndexes = self->_fetchCompletedDayIndexes;
   p_fetchCompletedDayIndexes = &self->_fetchCompletedDayIndexes;
   [(NSMutableIndexSet *)fetchCompletedDayIndexes removeIndexesInRange:var0, var1];
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       return;
     }
@@ -1123,18 +1123,18 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
 
 - (BOOL)_didFetchMinimumAnalysis
 {
-  v2 = self;
-  v3 = [(HKMCAnalysis *)self->_analysis latestSampleInfo];
-  v4 = [v3 anchor];
-  LOBYTE(v2) = v4 >= [(NSNumber *)v2->_minimumAnalysisAnchor longLongValue];
+  selfCopy = self;
+  latestSampleInfo = [(HKMCAnalysis *)self->_analysis latestSampleInfo];
+  anchor = [latestSampleInfo anchor];
+  LOBYTE(selfCopy) = anchor >= [(NSNumber *)selfCopy->_minimumAnalysisAnchor longLongValue];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)cycleFactorsDataSource:(id)a3 didFetchCycleFactors:(id)a4
+- (void)cycleFactorsDataSource:(id)source didFetchCycleFactors:(id)factors
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  factorsCopy = factors;
   _HKInitializeLogging();
   v6 = MEMORY[0x277CCC2E8];
   v7 = *MEMORY[0x277CCC2E8];
@@ -1144,18 +1144,18 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
     v9 = objc_opt_class();
     v10 = MEMORY[0x277CCABB0];
     v11 = v9;
-    v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+    v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(factorsCopy, "count")}];
     v13 = HKSensitiveLogItem();
     *buf = 138543874;
     v22 = v9;
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
     v26 = v13;
     _os_log_impl(&dword_2518FC000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Fetched %@ cycle factors", buf, 0x20u);
   }
 
-  if ([(NSArray *)self->_cycleFactors isEqualToArray:v5])
+  if ([(NSArray *)self->_cycleFactors isEqualToArray:factorsCopy])
   {
     if (HKShowSensitiveLogItems())
     {
@@ -1173,7 +1173,7 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
     v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:*MEMORY[0x277CCCD50] ascending:1];
     v20 = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-    v17 = [v5 sortedArrayUsingDescriptors:v16];
+    v17 = [factorsCopy sortedArrayUsingDescriptors:v16];
     cycleFactors = self->_cycleFactors;
     self->_cycleFactors = v17;
 
@@ -1183,13 +1183,13 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cycleFactorsDataSource:(id)a3 didUpdatePregnancyModel:(id)a4
+- (void)cycleFactorsDataSource:(id)source didUpdatePregnancyModel:(id)model
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  modelCopy = model;
   lastPregnancyModel = self->_lastPregnancyModel;
   v8 = HKShowSensitiveLogItems();
-  if (lastPregnancyModel == v6)
+  if (lastPregnancyModel == modelCopy)
   {
     if (v8)
     {
@@ -1201,7 +1201,7 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
         v16 = 138543618;
         v17 = objc_opt_class();
         v18 = 2048;
-        v19 = self;
+        selfCopy2 = self;
         v14 = v17;
         _os_log_impl(&dword_2518FC000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Skipping update due to identical pregnancy model", &v16, 0x16u);
       }
@@ -1220,26 +1220,26 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
         v16 = 138543618;
         v17 = objc_opt_class();
         v18 = 2048;
-        v19 = self;
+        selfCopy2 = self;
         v11 = v17;
         _os_log_impl(&dword_2518FC000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Updated pregnancy model", &v16, 0x16u);
       }
     }
 
-    objc_storeStrong(&self->_lastPregnancyModel, a4);
+    objc_storeStrong(&self->_lastPregnancyModel, model);
     [(HKMCViewModelProvider *)self _queue_notifyObserversDidUpdate];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewModelProviderDataSource:(id)a3 didFetchDaySummaries:(id)a4 forDayIndexRange:(id)a5 daySummaryAnchor:(id)a6
+- (void)viewModelProviderDataSource:(id)source didFetchDaySummaries:(id)summaries forDayIndexRange:(id)range daySummaryAnchor:(id)anchor
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v36 = a6;
+  summariesCopy = summaries;
+  anchorCopy = anchor;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -1248,12 +1248,12 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
     v13 = objc_opt_class();
     v14 = MEMORY[0x277CCABB0];
     v15 = v13;
-    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(summariesCopy, "count")}];
     v17 = NSStringFromHKDayIndexRange();
     *buf = 138544130;
     v48 = v13;
     v49 = 2048;
-    v50 = self;
+    selfCopy = self;
     v51 = 2112;
     v52 = v16;
     v53 = 2114;
@@ -1265,8 +1265,8 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = [(NSMutableDictionary *)self->_daySummariesByDayIndex allKeys];
-  v19 = [v18 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  allKeys = [(NSMutableDictionary *)self->_daySummariesByDayIndex allKeys];
+  v19 = [allKeys countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1277,18 +1277,18 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
       {
         if (*v42 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allKeys);
         }
 
         v23 = *(*(&v41 + 1) + 8 * i);
-        v24 = [v23 integerValue];
-        if (v24 >= var0 && v24 - var0 < var1)
+        integerValue = [v23 integerValue];
+        if (integerValue >= var0 && integerValue - var0 < var1)
         {
           [(NSMutableDictionary *)self->_daySummariesByDayIndex setObject:0 forKeyedSubscript:v23];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v20 = [allKeys countByEnumeratingWithState:&v41 objects:v46 count:16];
     }
 
     while (v20);
@@ -1298,7 +1298,7 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v26 = v10;
+  v26 = summariesCopy;
   v27 = [v26 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v27)
   {
@@ -1327,13 +1327,13 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
 
   [(HKMCViewModelProvider *)self _setFetchState:2 forDayIndexRange:var0, var1];
   minimumAnalysisAnchor = self->_minimumAnalysisAnchor;
-  self->_minimumAnalysisAnchor = v36;
+  self->_minimumAnalysisAnchor = anchorCopy;
 
   [(HKMCViewModelProvider *)self _queue_notifyObserversDidUpdate];
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewModelProviderDataSourceDidUpdateDaySummaries:(id)a3
+- (void)viewModelProviderDataSourceDidUpdateDaySummaries:(id)summaries
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -1353,10 +1353,10 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  analysisCopy = analysis;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -1365,13 +1365,13 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
     v11 = 138543618;
     v12 = objc_opt_class();
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v8 = v12;
     _os_log_impl(&dword_2518FC000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Updated analysis", &v11, 0x16u);
   }
 
   analysis = self->_analysis;
-  self->_analysis = v5;
+  self->_analysis = analysisCopy;
 
   [(HKMCViewModelProvider *)self _queue_notifyObserversDidUpdate];
   v10 = *MEMORY[0x277D85DE8];
@@ -1390,13 +1390,13 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
       v7 = objc_opt_class();
       analysis = self->_analysis;
       v9 = v7;
-      v10 = [(HKMCAnalysis *)analysis latestSampleInfo];
+      latestSampleInfo = [(HKMCAnalysis *)analysis latestSampleInfo];
       v11 = HKSensitiveLogItem();
       minimumAnalysisAnchor = self->_minimumAnalysisAnchor;
       v14 = 138544130;
       v15 = v7;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = v11;
       v20 = 2114;
@@ -1433,7 +1433,7 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
     *buf = 138543874;
     v22 = v5;
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
     v26 = v9;
     _os_log_impl(&dword_2518FC000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Notifying %{public}@ observers of updates", buf, 0x20u);
@@ -1483,7 +1483,7 @@ uint64_t __55__HKMCViewModelProvider__updateManagedDayRangeIfNeeded__block_invok
     *buf = 138543618;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v5 = v9;
     _os_log_impl(&dword_2518FC000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Dealloc", buf, 0x16u);
   }

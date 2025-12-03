@@ -1,76 +1,76 @@
 @interface OKPageUXViewController
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (BOOL)hasWidgetFocused;
 - (BOOL)prepareForDisplay;
 - (BOOL)prepareForUnload;
 - (BOOL)prepareForWarmup;
-- (CGPoint)convertPointWithMotionAndParallax:(CGPoint)a3 andZPosition:(double)a4;
+- (CGPoint)convertPointWithMotionAndParallax:(CGPoint)parallax andZPosition:(double)position;
 - (CGPoint)lastParallaxOffset;
-- (CGPoint)parallaxWithOffsetX:(double)a3 offsetY:(double)a4 zPosition:(double)a5;
-- (CGRect)calculateVisibleRectForWidget:(id)a3;
-- (CGRect)calculateVisibleRectForWidgetRect:(CGRect)a3 withParallax:(double)a4;
-- (id)_preparseLayoutString:(id)a3 targetView:(id *)a4 anchorView:(id *)a5;
-- (id)_remoteWidgetsForWidgetView:(id)a3 keyPath:(id)a4;
-- (id)addWidgetViewWithTemplateName:(id)a3 name:(id)a4 andSettings:(id)a5;
-- (id)allKeysForDictionaryProxy:(id)a3;
+- (CGPoint)parallaxWithOffsetX:(double)x offsetY:(double)y zPosition:(double)position;
+- (CGRect)calculateVisibleRectForWidget:(id)widget;
+- (CGRect)calculateVisibleRectForWidgetRect:(CGRect)rect withParallax:(double)parallax;
+- (id)_preparseLayoutString:(id)string targetView:(id *)view anchorView:(id *)anchorView;
+- (id)_remoteWidgetsForWidgetView:(id)view keyPath:(id)path;
+- (id)addWidgetViewWithTemplateName:(id)name name:(id)a4 andSettings:(id)settings;
+- (id)allKeysForDictionaryProxy:(id)proxy;
 - (id)currentRemoteWidgets;
-- (id)dictionaryProxy:(id)a3 objectForKey:(id)a4;
+- (id)dictionaryProxy:(id)proxy objectForKey:(id)key;
 - (id)mediaURLs;
-- (id)newWidgetViewWithTemplateName:(id)a3 name:(id)a4 andSettings:(id)a5;
-- (id)pageViewZonesInRect:(CGRect)a3;
-- (id)settingObjectForKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)newWidgetViewWithTemplateName:(id)name name:(id)a4 andSettings:(id)settings;
+- (id)pageViewZonesInRect:(CGRect)rect;
+- (id)settingObjectForKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
 - (id)visibleWidgets;
-- (id)widgetViewForName:(id)a3 recursively:(BOOL)a4;
-- (id)widgetViewResolution:(id)a3;
-- (id)widgetViewsInRect:(CGRect)a3;
-- (unint64_t)countOfDictionaryProxy:(id)a3;
-- (void)addWidgetViewInPageViewZones:(id)a3;
+- (id)widgetViewForName:(id)name recursively:(BOOL)recursively;
+- (id)widgetViewResolution:(id)resolution;
+- (id)widgetViewsInRect:(CGRect)rect;
+- (unint64_t)countOfDictionaryProxy:(id)proxy;
+- (void)addWidgetViewInPageViewZones:(id)zones;
 - (void)applySettings;
-- (void)collisionBehavior:(id)a3 beganContactForItem:(id)a4 withItem:(id)a5 atPoint:(CGPoint)a6;
+- (void)collisionBehavior:(id)behavior beganContactForItem:(id)item withItem:(id)withItem atPoint:(CGPoint)point;
 - (void)commonInit;
 - (void)dealloc;
 - (void)instantPause;
 - (void)instantResume;
 - (void)layoutDidChange;
-- (void)networkStatusDidChange:(int64_t)a3;
+- (void)networkStatusDidChange:(int64_t)change;
 - (void)prepareAllWidgets;
 - (void)prepareForRefresh;
 - (void)prepareForReload;
-- (void)prepareWidgetsInRect:(CGRect)a3;
+- (void)prepareWidgetsInRect:(CGRect)rect;
 - (void)reloadDynamics;
 - (void)reloadPageViewZones;
-- (void)reloadPageViewZonesForSubwidgets:(id)a3 withParallax:(double)a4;
-- (void)reloadPageViewZonesWithSize:(CGSize)a3;
-- (void)removeWidgetView:(id)a3;
-- (void)removeWidgetViewInPageViewZones:(id)a3;
+- (void)reloadPageViewZonesForSubwidgets:(id)subwidgets withParallax:(double)parallax;
+- (void)reloadPageViewZonesWithSize:(CGSize)size;
+- (void)removeWidgetView:(id)view;
+- (void)removeWidgetViewInPageViewZones:(id)zones;
 - (void)resetDynamics;
 - (void)resolutionDidChange;
-- (void)setSettingDynamicsCollisionConfinementEnabled:(BOOL)a3;
-- (void)setSettingDynamicsEnabled:(BOOL)a3;
-- (void)setSettingDynamicsGravityAngle:(float)a3;
-- (void)setSettingDynamicsGravityEnabled:(BOOL)a3;
-- (void)setSettingDynamicsGravityMagnitude:(float)a3;
-- (void)setSettingDynamicsGravityMotionDriven:(BOOL)a3;
-- (void)setSettingDynamicsPushBehaviors:(id)a3;
-- (void)setSettingParallaxEnabled:(BOOL)a3;
-- (void)setSettingParallaxRatioX:(double)a3;
-- (void)setSettingParallaxRatioY:(double)a3;
+- (void)setSettingDynamicsCollisionConfinementEnabled:(BOOL)enabled;
+- (void)setSettingDynamicsEnabled:(BOOL)enabled;
+- (void)setSettingDynamicsGravityAngle:(float)angle;
+- (void)setSettingDynamicsGravityEnabled:(BOOL)enabled;
+- (void)setSettingDynamicsGravityMagnitude:(float)magnitude;
+- (void)setSettingDynamicsGravityMotionDriven:(BOOL)driven;
+- (void)setSettingDynamicsPushBehaviors:(id)behaviors;
+- (void)setSettingParallaxEnabled:(BOOL)enabled;
+- (void)setSettingParallaxRatioX:(double)x;
+- (void)setSettingParallaxRatioY:(double)y;
 - (void)updateDynamics;
 - (void)updateLayoutSteps;
 - (void)updateMotion;
-- (void)updateMotionForWidgetView:(id)a3;
+- (void)updateMotionForWidgetView:(id)view;
 - (void)updateParallax;
-- (void)updateParallaxForWidgetView:(id)a3;
-- (void)updateParallaxWithOffsetX:(double)a3 offsetY:(double)a4;
-- (void)updateWidgetViewInPageViewZones:(id)a3;
-- (void)updateWithMotionTiltRotationX:(double)a3 tiltRotationY:(double)a4 tiltRotationZ:(double)a5;
+- (void)updateParallaxForWidgetView:(id)view;
+- (void)updateParallaxWithOffsetX:(double)x offsetY:(double)y;
+- (void)updateWidgetViewInPageViewZones:(id)zones;
+- (void)updateWithMotionTiltRotationX:(double)x tiltRotationY:(double)y tiltRotationZ:(double)z;
 - (void)viewDidLoad;
-- (void)widgetView:(id)a3 addHighSpeedOperations:(id)a4 andConsumingOperations:(id)a5;
-- (void)widgetViewCancelAllOperations:(id)a3;
-- (void)widgetViewCancelAllOperations:(id)a3 withIdentifier:(id)a4;
-- (void)widgetViewsInDisplayRect:(CGRect)a3 displaySet:(id)a4 andWarmupRect:(CGRect)a5 warmupSet:(id)a6;
+- (void)widgetView:(id)view addHighSpeedOperations:(id)operations andConsumingOperations:(id)consumingOperations;
+- (void)widgetViewCancelAllOperations:(id)operations;
+- (void)widgetViewCancelAllOperations:(id)operations withIdentifier:(id)identifier;
+- (void)widgetViewsInDisplayRect:(CGRect)rect displaySet:(id)set andWarmupRect:(CGRect)warmupRect warmupSet:(id)warmupSet;
 @end
 
 @implementation OKPageUXViewController
@@ -187,8 +187,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(OKPresentationPage *)[(OKPageViewController *)self page] widgets];
-  v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  widgets = [(OKPresentationPage *)[(OKPageViewController *)self page] widgets];
+  v7 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -199,7 +199,7 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(widgets);
         }
 
         v11 = [(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] widgetViewFromWidget:*(*(&v24 + 1) + 8 * i)];
@@ -211,7 +211,7 @@
         }
       }
 
-      v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v8 = [(NSMutableArray *)widgets countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v8);
@@ -227,8 +227,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = [(NSArray *)[(OKPageUXViewController *)self widgetViews] reverseObjectEnumerator];
-  v15 = [(NSEnumerator *)v14 countByEnumeratingWithState:&v20 objects:v29 count:16];
+  reverseObjectEnumerator = [(NSArray *)[(OKPageUXViewController *)self widgetViews] reverseObjectEnumerator];
+  v15 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v29 count:16];
   if (v15)
   {
     v16 = v15;
@@ -239,7 +239,7 @@
       {
         if (*v21 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v19 = *(*(&v20 + 1) + 8 * j);
@@ -247,7 +247,7 @@
         [-[OKPageUXViewController view](self "view")];
       }
 
-      v16 = [(NSEnumerator *)v14 countByEnumeratingWithState:&v20 objects:v29 count:16];
+      v16 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v29 count:16];
     }
 
     while (v16);
@@ -264,7 +264,7 @@
   }
 }
 
-- (void)networkStatusDidChange:(int64_t)a3
+- (void)networkStatusDidChange:(int64_t)change
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -286,7 +286,7 @@
           objc_enumerationMutation(widgetViews);
         }
 
-        [*(*(&v10 + 1) + 8 * i) networkStatusDidChange:a3];
+        [*(*(&v10 + 1) + 8 * i) networkStatusDidChange:change];
       }
 
       v7 = [(NSMutableArray *)widgetViews countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -295,7 +295,7 @@
     while (v7);
   }
 
-  [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] networkStatusDidChange:a3];
+  [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] networkStatusDidChange:change];
 }
 
 - (void)resolutionDidChange
@@ -457,7 +457,7 @@
 + (id)supportedSettings
 {
   v28[10] = *MEMORY[0x277D85DE8];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___OKPageUXViewController;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v6, sel_supportedSettings)}];
   v27[0] = @"parallaxEnabled";
@@ -535,18 +535,18 @@
   v7[1] = @"class";
   v8[1] = objc_opt_class();
   v7[2] = @"default";
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v7[3] = @"priority";
-  v8[2] = v4;
+  v8[2] = null;
   v8[3] = &unk_287AF0140;
   v28[9] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:4];
   [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v28, v27, 10)}];
   return v2;
 }
 
-- (id)settingObjectForKey:(id)a3
+- (id)settingObjectForKey:(id)key
 {
-  if ([(OKPageViewController *)self subNavigatorViewController]&& [(NSString *)[(OKPresentationCanvas *)[(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] navigator] name] isEqualToString:a3])
+  if ([(OKPageViewController *)self subNavigatorViewController]&& [(NSString *)[(OKPresentationCanvas *)[(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] navigator] name] isEqualToString:key])
   {
 
     return [(OKPageViewController *)self subNavigatorViewController];
@@ -555,25 +555,25 @@
   else
   {
 
-    return [(OKPageUXViewController *)self widgetViewForName:a3 recursively:0];
+    return [(OKPageUXViewController *)self widgetViewForName:key recursively:0];
   }
 }
 
-- (CGRect)calculateVisibleRectForWidget:(id)a3
+- (CGRect)calculateVisibleRectForWidget:(id)widget
 {
-  [a3 originalFrame];
+  [widget originalFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   if ([(OKPageUXViewController *)self parallaxEnabled])
   {
-    if ([a3 parallaxEnabled])
+    if ([widget parallaxEnabled])
     {
-      [objc_msgSend(a3 "layer")];
+      [objc_msgSend(widget "layer")];
       if (v13 != 0.0)
       {
-        [objc_msgSend(a3 "layer")];
+        [objc_msgSend(widget "layer")];
         [(OKPageUXViewController *)self calculateVisibleRectForWidgetRect:v6 withParallax:v8, v10, v12, v14];
         v6 = v15;
         v8 = v16;
@@ -594,21 +594,21 @@
   return result;
 }
 
-- (CGRect)calculateVisibleRectForWidgetRect:(CGRect)a3 withParallax:(double)a4
+- (CGRect)calculateVisibleRectForWidgetRect:(CGRect)rect withParallax:(double)parallax
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] presentationView] frame];
   v11 = v10;
   v13 = v12;
   if ([(OKPageUXViewController *)self parallaxEnabled])
   {
-    v14 = a4 * self->_parallaxRatioX + 1.0;
+    v14 = parallax * self->_parallaxRatioX + 1.0;
     v15 = x + width;
     x = (x - v11) / v14;
-    v16 = a4 * self->_parallaxRatioY + 1.0;
+    v16 = parallax * self->_parallaxRatioY + 1.0;
     v17 = y + height;
     y = (y - v13) / v16;
     width = v15 / v14 - x;
@@ -676,15 +676,15 @@
   [(OKPageUXViewController *)self reloadPageViewZonesWithSize:v13, v15];
 }
 
-- (void)reloadPageViewZonesWithSize:(CGSize)a3
+- (void)reloadPageViewZonesWithSize:(CGSize)size
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (a3.width > 0.0)
+  if (size.width > 0.0)
   {
-    height = a3.height;
-    if (a3.height > 0.0)
+    height = size.height;
+    if (size.height > 0.0)
     {
-      width = a3.width;
+      width = size.width;
       objc_sync_enter(self);
       pageViewZones = self->_pageViewZones;
       if (pageViewZones)
@@ -704,7 +704,7 @@
           break;
         }
 
-        v9 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         for (j = 0.0; ; j = height + j)
         {
           [-[OKPageUXViewController view](self "view")];
@@ -713,11 +713,11 @@
             break;
           }
 
-          v12 = [[OKPageViewZone alloc] initWithFrame:i, j, width, height];
-          [v9 addObject:v12];
+          height = [[OKPageViewZone alloc] initWithFrame:i, j, width, height];
+          [array addObject:height];
         }
 
-        [(NSMutableArray *)self->_pageViewZones addObject:v9];
+        [(NSMutableArray *)self->_pageViewZones addObject:array];
       }
 
       v31 = 0u;
@@ -769,15 +769,15 @@
 
             if ([v17 needsZoning])
             {
-              v22 = [v17 subWidgetViews];
-              v23 = [v17 parallaxEnabled];
+              subWidgetViews = [v17 subWidgetViews];
+              parallaxEnabled = [v17 parallaxEnabled];
               v24 = 0.0;
-              if (v23)
+              if (parallaxEnabled)
               {
                 [objc_msgSend(v17 layer];
               }
 
-              [(OKPageUXViewController *)self reloadPageViewZonesForSubwidgets:v22 withParallax:v24];
+              [(OKPageUXViewController *)self reloadPageViewZonesForSubwidgets:subWidgetViews withParallax:v24];
             }
           }
 
@@ -792,14 +792,14 @@
   }
 }
 
-- (void)reloadPageViewZonesForSubwidgets:(id)a3 withParallax:(double)a4
+- (void)reloadPageViewZonesForSubwidgets:(id)subwidgets withParallax:(double)parallax
 {
   v35 = *MEMORY[0x277D85DE8];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v7 = [subwidgets countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -810,7 +810,7 @@
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(subwidgets);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
@@ -853,23 +853,23 @@
 
         if ([v11 needsZoning])
         {
-          -[OKPageUXViewController reloadPageViewZonesForSubwidgets:withParallax:](self, "reloadPageViewZonesForSubwidgets:withParallax:", [v11 subWidgetViews], a4);
+          -[OKPageUXViewController reloadPageViewZonesForSubwidgets:withParallax:](self, "reloadPageViewZonesForSubwidgets:withParallax:", [v11 subWidgetViews], parallax);
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [subwidgets countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)pageViewZonesInRect:(CGRect)a3
+- (id)pageViewZonesInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_sync_enter(self);
   v8 = [MEMORY[0x277CBEB58] set];
   if (width <= 0.0 || height <= 0.0)
@@ -1011,11 +1011,11 @@ LABEL_13:
   return v8;
 }
 
-- (void)addWidgetViewInPageViewZones:(id)a3
+- (void)addWidgetViewInPageViewZones:(id)zones
 {
   v14 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  [(OKPageUXViewController *)self calculateVisibleRectForWidget:a3];
+  [(OKPageUXViewController *)self calculateVisibleRectForWidget:zones];
   v5 = [(OKPageUXViewController *)self pageViewZonesInRect:?];
   v11 = 0u;
   v12 = 0u;
@@ -1048,7 +1048,7 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (void)removeWidgetViewInPageViewZones:(id)a3
+- (void)removeWidgetViewInPageViewZones:(id)zones
 {
   v23 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -1107,7 +1107,7 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (void)updateWidgetViewInPageViewZones:(id)a3
+- (void)updateWidgetViewInPageViewZones:(id)zones
 {
   v32 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -1130,7 +1130,7 @@ LABEL_13:
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
-        [(OKPageUXViewController *)self calculateVisibleRectForWidget:a3];
+        [(OKPageUXViewController *)self calculateVisibleRectForWidget:zones];
         v10 = v9;
         v12 = v11;
         v14 = v13;
@@ -1185,22 +1185,22 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (id)widgetViewsInRect:(CGRect)a3
+- (id)widgetViewsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   obj = self;
   v8 = [MEMORY[0x277CBEB58] set];
-  v9 = [(OKPageUXViewController *)self pageViewZonesInRect:x, y, width, height];
+  height = [(OKPageUXViewController *)self pageViewZonesInRect:x, y, width, height];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v10 = [height countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v10)
   {
     v11 = *v26;
@@ -1210,7 +1210,7 @@ LABEL_13:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(height);
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
@@ -1218,8 +1218,8 @@ LABEL_13:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v14 = [v13 widgetViews];
-        v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        widgetViews = [v13 widgetViews];
+        v15 = [widgetViews countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v15)
         {
           v16 = *v22;
@@ -1229,7 +1229,7 @@ LABEL_13:
             {
               if (*v22 != v16)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(widgetViews);
               }
 
               v18 = *(*(&v21 + 1) + 8 * j);
@@ -1244,14 +1244,14 @@ LABEL_13:
               }
             }
 
-            v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v15 = [widgetViews countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v15);
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v10 = [height countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v10);
@@ -1261,26 +1261,26 @@ LABEL_13:
   return v8;
 }
 
-- (void)widgetViewsInDisplayRect:(CGRect)a3 displaySet:(id)a4 andWarmupRect:(CGRect)a5 warmupSet:(id)a6
+- (void)widgetViewsInDisplayRect:(CGRect)rect displaySet:(id)set andWarmupRect:(CGRect)warmupRect warmupSet:(id)warmupSet
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v60 = a3;
+  height = warmupRect.size.height;
+  width = warmupRect.size.width;
+  y = warmupRect.origin.y;
+  x = warmupRect.origin.x;
+  rectCopy = rect;
   v74 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   v62.origin.x = x;
   v62.origin.y = y;
   v62.size.width = width;
   v62.size.height = height;
-  v13 = [(OKPageUXViewController *)self pageViewZonesInRect:x, y, width, height];
+  height = [(OKPageUXViewController *)self pageViewZonesInRect:x, y, width, height];
   v14 = [MEMORY[0x277CBEB58] set];
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v15 = [v13 countByEnumeratingWithState:&v68 objects:v73 count:16];
+  v15 = [height countByEnumeratingWithState:&v68 objects:v73 count:16];
   if (v15)
   {
     v16 = *v69;
@@ -1290,13 +1290,13 @@ LABEL_13:
       {
         if (*v69 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(height);
         }
 
-        [v14 unionSet:{objc_msgSend(*(*(&v68 + 1) + 8 * i), "widgetViews", *&v60.origin.x, *&v60.origin.y, *&v60.size.width, *&v60.size.height)}];
+        [v14 unionSet:{objc_msgSend(*(*(&v68 + 1) + 8 * i), "widgetViews", *&rectCopy.origin.x, *&rectCopy.origin.y, *&rectCopy.size.width, *&rectCopy.size.height)}];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v68 objects:v73 count:16];
+      v15 = [height countByEnumeratingWithState:&v68 objects:v73 count:16];
     }
 
     while (v15);
@@ -1306,7 +1306,7 @@ LABEL_13:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v18 = [v14 countByEnumeratingWithState:&v64 objects:v72 count:{16, *&v60.origin.x, *&v60.origin.y, *&v60.size.width, *&v60.size.height}];
+  v18 = [v14 countByEnumeratingWithState:&v64 objects:v72 count:{16, *&rectCopy.origin.x, *&rectCopy.origin.y, *&rectCopy.size.width, *&rectCopy.size.height}];
   if (v18)
   {
     v19 = *v65;
@@ -1384,15 +1384,15 @@ LABEL_13:
           v76.size.height = v31;
           if (CGRectIntersectsRect(v76, v61))
           {
-            v43 = a4;
+            warmupSetCopy = set;
           }
 
           else
           {
-            v43 = a6;
+            warmupSetCopy = warmupSet;
           }
 
-          [v43 addObject:v23];
+          [warmupSetCopy addObject:v23];
           if (![v23 parentWidgetView] && objc_msgSend(v23, "parallaxEnabled"))
           {
             [v23 updateWithParallaxTranslationX:v42 translationY:v41];
@@ -1413,21 +1413,21 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (void)removeWidgetView:(id)a3
+- (void)removeWidgetView:(id)view
 {
   objc_sync_enter(self);
-  if (![a3 parentWidgetView])
+  if (![view parentWidgetView])
   {
-    [(OKPageUXViewController *)self removeWidgetViewInPageViewZones:a3];
-    [(NSMutableArray *)self->_newWidgetViews removeObject:a3];
-    [(NSMutableArray *)self->_widgetViews removeObject:a3];
-    [a3 removeFromSuperview];
+    [(OKPageUXViewController *)self removeWidgetViewInPageViewZones:view];
+    [(NSMutableArray *)self->_newWidgetViews removeObject:view];
+    [(NSMutableArray *)self->_widgetViews removeObject:view];
+    [view removeFromSuperview];
   }
 
   objc_sync_exit(self);
 }
 
-- (id)newWidgetViewWithTemplateName:(id)a3 name:(id)a4 andSettings:(id)a5
+- (id)newWidgetViewWithTemplateName:(id)name name:(id)a4 andSettings:(id)settings
 {
   v21 = *MEMORY[0x277D85DE8];
   v8 = [-[OKPresentation widgetTemplateWithName:](-[OKPresentationCanvas presentation](-[OKPageViewController page](self "page")];
@@ -1437,8 +1437,8 @@ LABEL_13:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [a5 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [settings allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1450,15 +1450,15 @@ LABEL_13:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
-        [v8 setSettingsObject:objc_msgSend(a5 forKeyPath:{"objectForKey:", *(*(&v16 + 1) + 8 * v13)), *(*(&v16 + 1) + 8 * v13)}];
+        [v8 setSettingsObject:objc_msgSend(settings forKeyPath:{"objectForKey:", *(*(&v16 + 1) + 8 * v13)), *(*(&v16 + 1) + 8 * v13)}];
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -1470,9 +1470,9 @@ LABEL_13:
   return v14;
 }
 
-- (id)addWidgetViewWithTemplateName:(id)a3 name:(id)a4 andSettings:(id)a5
+- (id)addWidgetViewWithTemplateName:(id)name name:(id)a4 andSettings:(id)settings
 {
-  v6 = [(OKPageUXViewController *)self newWidgetViewWithTemplateName:a3 name:a4 andSettings:a5];
+  v6 = [(OKPageUXViewController *)self newWidgetViewWithTemplateName:name name:a4 andSettings:settings];
   if (v6)
   {
     [v6 setPage:{-[OKPageViewController page](self, "page")}];
@@ -1524,9 +1524,9 @@ LABEL_13:
   return v3;
 }
 
-- (id)widgetViewForName:(id)a3 recursively:(BOOL)a4
+- (id)widgetViewForName:(id)name recursively:(BOOL)recursively
 {
-  v4 = a4;
+  recursivelyCopy = recursively;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
@@ -1549,14 +1549,14 @@ LABEL_13:
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
-        if ([objc_msgSend(v11 "widget")] && !objc_msgSend(objc_msgSend(objc_msgSend(v11, "widget"), "name"), "caseInsensitiveCompare:", a3))
+        if ([objc_msgSend(v11 "widget")] && !objc_msgSend(objc_msgSend(objc_msgSend(v11, "widget"), "name"), "caseInsensitiveCompare:", name))
         {
           return v11;
         }
 
-        if (v4)
+        if (recursivelyCopy)
         {
-          result = [v11 subWidgetViewForName:a3 recursively:1];
+          result = [v11 subWidgetViewForName:name recursively:1];
           if (result)
           {
             return result;
@@ -1581,12 +1581,12 @@ LABEL_13:
   return result;
 }
 
-- (void)prepareWidgetsInRect:(CGRect)a3
+- (void)prepareWidgetsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39 = *MEMORY[0x277D85DE8];
   v8 = [MEMORY[0x277CBEB58] set];
   v9 = [MEMORY[0x277CBEB58] set];
@@ -1709,8 +1709,8 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = OKPageUXViewController;
-  v3 = [(OKPageViewController *)&v14 prepareForDisplay];
-  if (v3)
+  prepareForDisplay = [(OKPageViewController *)&v14 prepareForDisplay];
+  if (prepareForDisplay)
   {
     [-[OKPageUXViewController view](self "view")];
     [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] prepareForDisplay];
@@ -1750,7 +1750,7 @@ LABEL_6:
     [(OKPageUXViewController *)self updateDynamics];
   }
 
-  return v3;
+  return prepareForDisplay;
 }
 
 - (BOOL)prepareForWarmup
@@ -1758,8 +1758,8 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = OKPageUXViewController;
-  v3 = [(OKPageViewController *)&v14 prepareForWarmup];
-  if (v3)
+  prepareForWarmup = [(OKPageViewController *)&v14 prepareForWarmup];
+  if (prepareForWarmup)
   {
     [-[OKPageUXViewController view](self "view")];
     [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] prepareForWarmup];
@@ -1799,7 +1799,7 @@ LABEL_6:
     [(OKPageUXViewController *)self updateDynamics];
   }
 
-  return v3;
+  return prepareForWarmup;
 }
 
 - (BOOL)prepareForUnload
@@ -1807,8 +1807,8 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = OKPageUXViewController;
-  v3 = [(OKPageViewController *)&v14 prepareForUnload];
-  if (v3)
+  prepareForUnload = [(OKPageViewController *)&v14 prepareForUnload];
+  if (prepareForUnload)
   {
     [-[OKPageUXViewController view](self "view")];
     [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] prepareForUnload];
@@ -1845,13 +1845,13 @@ LABEL_6:
     [(OKPageUXViewController *)self updateDynamics];
   }
 
-  return v3;
+  return prepareForUnload;
 }
 
 - (void)prepareForReload
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(OKPageViewController *)self prepareMode];
+  prepareMode = [(OKPageViewController *)self prepareMode];
   [(OKPageViewController *)self setNeedsApplySettings];
   [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] setNeedsApplySettings];
   v20 = 0u;
@@ -1882,7 +1882,7 @@ LABEL_6:
     while (v6);
   }
 
-  if (v3 - 1 <= 1)
+  if (prepareMode - 1 <= 1)
   {
     [(OKPageViewController *)self setNeedsPrepare];
     [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] setNeedsPrepare];
@@ -1914,7 +1914,7 @@ LABEL_6:
       while (v11);
     }
 
-    [(OKPageViewController *)self prepareForMode:v3];
+    [(OKPageViewController *)self prepareForMode:prepareMode];
   }
 }
 
@@ -2132,9 +2132,9 @@ LABEL_6:
   {
     if ([(OKPageViewController *)self motionEnabled])
     {
-      v3 = [(OKPageViewController *)self presentationViewController];
+      presentationViewController = [(OKPageViewController *)self presentationViewController];
 
-      [(OKPresentationViewController *)v3 updateMotion];
+      [(OKPresentationViewController *)presentationViewController updateMotion];
     }
 
     else
@@ -2185,11 +2185,11 @@ LABEL_6:
   }
 }
 
-- (void)updateWithMotionTiltRotationX:(double)a3 tiltRotationY:(double)a4 tiltRotationZ:(double)a5
+- (void)updateWithMotionTiltRotationX:(double)x tiltRotationY:(double)y tiltRotationZ:(double)z
 {
   if ([(OKPageViewController *)self prepareMode]== 1 || [(OKPageViewController *)self prepareMode]== 2)
   {
-    if (self->super._motionEnabled && (self->super._lastMotionRotationX != a3 || self->super._lastMotionRotationY != a4 || self->super._lastMotionRotationZ != a5))
+    if (self->super._motionEnabled && (self->super._lastMotionRotationX != x || self->super._lastMotionRotationY != y || self->super._lastMotionRotationZ != z))
     {
       [-[OKPageUXViewController view](self "view")];
       v39 = v9 * 0.5;
@@ -2250,9 +2250,9 @@ LABEL_6:
         *&v48.m23 = v32;
         CATransform3DTranslate(&v49, &v48, v20 - v39, v24 - v11, 0.0);
         height = self->super._motionXMinMax.height;
-        if (height > a3)
+        if (height > x)
         {
-          height = a3;
+          height = x;
         }
 
         if (height <= self->super._motionXMinMax.width)
@@ -2274,9 +2274,9 @@ LABEL_6:
         CATransform3DTranslate(&v48, &a, v27, v24 - v11, 0.0);
         v49 = v48;
         width = self->super._motionYMinMax.height;
-        if (width > a4)
+        if (width > y)
         {
-          width = a4;
+          width = y;
         }
 
         if (width <= self->super._motionYMinMax.width)
@@ -2297,19 +2297,19 @@ LABEL_6:
         a = v49;
         CATransform3DTranslate(&v48, &a, v27, v24 - v11, 0.0);
         v49 = v48;
-        v30 = self->super._motionZMinMax.height;
-        if (v30 > a5)
+        zCopy = self->super._motionZMinMax.height;
+        if (zCopy > z)
         {
-          v30 = a5;
+          zCopy = z;
         }
 
-        if (v30 <= self->super._motionZMinMax.width)
+        if (zCopy <= self->super._motionZMinMax.width)
         {
-          v30 = self->super._motionZMinMax.width;
+          zCopy = self->super._motionZMinMax.width;
         }
 
         a = v49;
-        CATransform3DRotate(&v48, &a, v30, 0.0, 0.0, 1.0);
+        CATransform3DRotate(&v48, &a, zCopy, 0.0, 0.0, 1.0);
         v49 = v48;
         a = v48;
         CATransform3DTranslate(&v48, &a, v39 - v20, v11 - v24, 0.0);
@@ -2336,16 +2336,16 @@ LABEL_6:
       v40[3] = &unk_279C8F958;
       v40[4] = self;
       v45 = isKindOfClass & 1;
-      v42 = a3;
-      v43 = a4;
-      v44 = a5;
+      xCopy = x;
+      yCopy = y;
+      zCopy2 = z;
       [(OKPageUXViewController *)self performBlockWithoutAnimations:v40];
-      self->super._lastMotionRotationX = a3;
-      self->super._lastMotionRotationY = a4;
-      self->super._lastMotionRotationZ = a5;
+      self->super._lastMotionRotationX = x;
+      self->super._lastMotionRotationY = y;
+      self->super._lastMotionRotationZ = z;
     }
 
-    [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController:v32] updateWithMotionTiltRotationX:a3 tiltRotationY:a4 tiltRotationZ:a5];
+    [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController:v32] updateWithMotionTiltRotationX:x tiltRotationY:y tiltRotationZ:z];
   }
 }
 
@@ -2429,7 +2429,7 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
   return result;
 }
 
-- (void)updateMotionForWidgetView:(id)a3
+- (void)updateMotionForWidgetView:(id)view
 {
   if ([(OKPageViewController *)self motionEnabled])
   {
@@ -2445,7 +2445,7 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
     lastMotionRotationZ = 0.0;
   }
 
-  [a3 updateWithMotionTiltRotationX:lastMotionRotationX tiltRotationY:lastMotionRotationY tiltRotationZ:lastMotionRotationZ];
+  [view updateWithMotionTiltRotationX:lastMotionRotationX tiltRotationY:lastMotionRotationY tiltRotationZ:lastMotionRotationZ];
 }
 
 - (void)updateParallax
@@ -2457,9 +2457,9 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
     {
       if ([-[OKPageUXViewController parentViewController](self "parentViewController")])
       {
-        v3 = [(OKPageViewController *)self navigatorViewController];
+        navigatorViewController = [(OKPageViewController *)self navigatorViewController];
 
-        [(OKNavigatorViewController *)v3 updateParallax];
+        [(OKNavigatorViewController *)navigatorViewController updateParallax];
       }
     }
 
@@ -2506,29 +2506,29 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
   }
 }
 
-- (CGPoint)parallaxWithOffsetX:(double)a3 offsetY:(double)a4 zPosition:(double)a5
+- (CGPoint)parallaxWithOffsetX:(double)x offsetY:(double)y zPosition:(double)position
 {
-  v8 = -(a3 * a5);
+  v8 = -(x * position);
   [(OKPageUXViewController *)self parallaxRatioX];
   v10 = v8 * v9;
   [(OKPageUXViewController *)self parallaxRatioY];
-  v12 = -(a4 * a5) * v11;
+  v12 = -(y * position) * v11;
   v13 = v10;
   result.y = v12;
   result.x = v13;
   return result;
 }
 
-- (void)updateParallaxWithOffsetX:(double)a3 offsetY:(double)a4
+- (void)updateParallaxWithOffsetX:(double)x offsetY:(double)y
 {
   if (([(OKPageViewController *)self prepareMode]== 1 || [(OKPageViewController *)self prepareMode]== 2) && [(OKPageUXViewController *)self parallaxEnabled])
   {
 
-    [(OKPageUXViewController *)self setLastParallaxOffset:a3, a4];
+    [(OKPageUXViewController *)self setLastParallaxOffset:x, y];
   }
 }
 
-- (void)updateParallaxForWidgetView:(id)a3
+- (void)updateParallaxForWidgetView:(id)view
 {
   if ([(OKPageUXViewController *)self parallaxEnabled])
   {
@@ -2536,7 +2536,7 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
     v6 = v5;
     [(OKPageUXViewController *)self lastParallaxOffset];
     v8 = v7;
-    [objc_msgSend(a3 "layer")];
+    [objc_msgSend(view "layer")];
     [(OKPageUXViewController *)self parallaxWithOffsetX:v6 offsetY:v8 zPosition:v9];
   }
 
@@ -2546,13 +2546,13 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
     v11 = 0.0;
   }
 
-  [a3 updateWithParallaxTranslationX:v10 translationY:v11];
+  [view updateWithParallaxTranslationX:v10 translationY:v11];
 }
 
-- (CGPoint)convertPointWithMotionAndParallax:(CGPoint)a3 andZPosition:(double)a4
+- (CGPoint)convertPointWithMotionAndParallax:(CGPoint)parallax andZPosition:(double)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = parallax.y;
+  x = parallax.x;
   [(OKPageViewController *)self layoutFactor];
   v9 = v8;
   v11 = v10;
@@ -2563,12 +2563,12 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
     {
       __geometryCalculationLayer = objc_alloc_init(MEMORY[0x277CD9ED0]);
       [__geometryCalculationLayer setHidden:1];
-      [__geometryCalculationLayer setZPosition:a4];
+      [__geometryCalculationLayer setZPosition:position];
       v12 = __geometryCalculationLayer;
     }
 
     [v12 setPosition:{x, y}];
-    [__geometryCalculationLayer setZPosition:a4];
+    [__geometryCalculationLayer setZPosition:position];
     v13 = [-[OKPageUXViewController view](self "view")];
     [v13 addSublayer:__geometryCalculationLayer];
     [__geometryCalculationLayer convertPoint:objc_msgSend(-[OKPageUXViewController view](self toLayer:{"view"), "layer"), 0.0, 0.0}];
@@ -2602,8 +2602,8 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(OKPageViewController *)self layoutSteps];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  layoutSteps = [(OKPageViewController *)self layoutSteps];
+  v4 = [(NSArray *)layoutSteps countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2615,7 +2615,7 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(layoutSteps);
         }
 
         v8 = [(OKPageUXViewController *)self _preparseLayoutString:*(*(&v10 + 1) + 8 * v7) targetView:&v15 anchorView:&v14];
@@ -2638,38 +2638,38 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v5 = [(NSArray *)layoutSteps countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_preparseLayoutString:(id)a3 targetView:(id *)a4 anchorView:(id *)a5
+- (id)_preparseLayoutString:(id)string targetView:(id *)view anchorView:(id *)anchorView
 {
-  *a4 = 0;
-  *a5 = 0;
+  *view = 0;
+  *anchorView = 0;
   v9 = [MEMORY[0x277CCAC80] scannerWithString:?];
   v18 = 0;
   if (([v9 scanUpToString:@"." intoString:&v18] & 1) == 0)
   {
-    NSLog(&cfstr_CouldnTReadTar.isa, a3);
+    NSLog(&cfstr_CouldnTReadTar.isa, string);
     return 0;
   }
 
   if (([v9 scanUpToString:@"=" intoString:0] & 1) == 0)
   {
-    NSLog(&cfstr_ExpectedInLayo.isa, a3);
+    NSLog(&cfstr_ExpectedInLayo.isa, string);
     return 0;
   }
 
   [v9 scanString:@"=" intoString:0];
   v17 = 0;
-  v10 = [v9 scanLocation];
+  scanLocation = [v9 scanLocation];
   [v9 scanUpToString:@"." intoString:&v17];
   if ([v9 isAtEnd])
   {
-    [v9 setScanLocation:v10];
+    [v9 setScanLocation:scanLocation];
     v17 = 0;
   }
 
@@ -2677,19 +2677,19 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
   {
     if ([v17 isEqualToString:@"superview"])
     {
-      v12 = [(OKPageUXViewController *)self view];
+      view = [(OKPageUXViewController *)self view];
     }
 
     else
     {
-      v12 = [(OKPageUXViewController *)self widgetViewForName:v17 recursively:0];
+      view = [(OKPageUXViewController *)self widgetViewForName:v17 recursively:0];
     }
 
-    *a5 = v12;
+    *anchorView = view;
   }
 
-  *a4 = [(OKPageUXViewController *)self widgetViewForName:v18 recursively:0];
-  v13 = [a3 stringByReplacingCharactersInRange:0 withString:{objc_msgSend(v18, "length"), @"t"}];
+  *view = [(OKPageUXViewController *)self widgetViewForName:v18 recursively:0];
+  v13 = [string stringByReplacingCharactersInRange:0 withString:{objc_msgSend(v18, "length"), @"t"}];
   v14 = v13;
   if (v17)
   {
@@ -2700,9 +2700,9 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
   return [objc_msgSend(v14 stringByReplacingOccurrencesOfString:@"{" withString:{@"<", "stringByReplacingOccurrencesOfString:withString:", @"}", @">"}];
 }
 
-- (unint64_t)countOfDictionaryProxy:(id)a3
+- (unint64_t)countOfDictionaryProxy:(id)proxy
 {
-  if ([a3 tag] == 1)
+  if ([proxy tag] == 1)
   {
     widgetViews = self->_widgetViews;
 
@@ -2713,13 +2713,13 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
   {
     v7.receiver = self;
     v7.super_class = OKPageUXViewController;
-    return [(OKPageViewController *)&v7 countOfDictionaryProxy:a3];
+    return [(OKPageViewController *)&v7 countOfDictionaryProxy:proxy];
   }
 }
 
-- (id)allKeysForDictionaryProxy:(id)a3
+- (id)allKeysForDictionaryProxy:(id)proxy
 {
-  if ([a3 tag] == 1)
+  if ([proxy tag] == 1)
   {
 
     return [(OKPageUXViewController *)self widgetViewNames];
@@ -2729,73 +2729,73 @@ uint64_t __84__OKPageUXViewController_updateWithMotionTiltRotationX_tiltRotation
   {
     v6.receiver = self;
     v6.super_class = OKPageUXViewController;
-    return [(OKPageViewController *)&v6 allKeysForDictionaryProxy:a3];
+    return [(OKPageViewController *)&v6 allKeysForDictionaryProxy:proxy];
   }
 }
 
-- (id)dictionaryProxy:(id)a3 objectForKey:(id)a4
+- (id)dictionaryProxy:(id)proxy objectForKey:(id)key
 {
-  if ([a3 tag] == 1)
+  if ([proxy tag] == 1)
   {
 
-    return [(OKPageUXViewController *)self widgetViewForName:a4 recursively:0];
+    return [(OKPageUXViewController *)self widgetViewForName:key recursively:0];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = OKPageUXViewController;
-    return [(OKPageViewController *)&v8 dictionaryProxy:a3 objectForKey:a4];
+    return [(OKPageViewController *)&v8 dictionaryProxy:proxy objectForKey:key];
   }
 }
 
-- (id)widgetViewResolution:(id)a3
+- (id)widgetViewResolution:(id)resolution
 {
-  v3 = [(OKPageViewController *)self presentationViewController];
+  presentationViewController = [(OKPageViewController *)self presentationViewController];
 
-  return [(OKPresentationViewControllerProxy *)v3 resolution];
+  return [(OKPresentationViewControllerProxy *)presentationViewController resolution];
 }
 
-- (void)widgetViewCancelAllOperations:(id)a3
+- (void)widgetViewCancelAllOperations:(id)operations
 {
-  [(OFNSOperationQueue *)[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] highSpeedOperationQueue] cancelAllOperationsWithContext:a3];
-  v5 = [(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] consumingOperationQueue];
+  [(OFNSOperationQueue *)[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] highSpeedOperationQueue] cancelAllOperationsWithContext:operations];
+  consumingOperationQueue = [(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] consumingOperationQueue];
 
-  [(OFNSOperationQueue *)v5 cancelAllOperationsWithContext:a3];
+  [(OFNSOperationQueue *)consumingOperationQueue cancelAllOperationsWithContext:operations];
 }
 
-- (void)widgetViewCancelAllOperations:(id)a3 withIdentifier:(id)a4
+- (void)widgetViewCancelAllOperations:(id)operations withIdentifier:(id)identifier
 {
-  [(OFNSOperationQueue *)[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] highSpeedOperationQueue] cancelAllOperationsWithContext:a3 andIdentifier:a4];
-  v7 = [(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] consumingOperationQueue];
+  [(OFNSOperationQueue *)[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] highSpeedOperationQueue] cancelAllOperationsWithContext:operations andIdentifier:identifier];
+  consumingOperationQueue = [(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] consumingOperationQueue];
 
-  [(OFNSOperationQueue *)v7 cancelAllOperationsWithContext:a3 andIdentifier:a4];
+  [(OFNSOperationQueue *)consumingOperationQueue cancelAllOperationsWithContext:operations andIdentifier:identifier];
 }
 
-- (void)widgetView:(id)a3 addHighSpeedOperations:(id)a4 andConsumingOperations:(id)a5
+- (void)widgetView:(id)view addHighSpeedOperations:(id)operations andConsumingOperations:(id)consumingOperations
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__OKPageUXViewController_widgetView_addHighSpeedOperations_andConsumingOperations___block_invoke;
   v10[3] = &unk_279C8F980;
   v10[4] = self;
-  v10[5] = a3;
-  [a4 enumerateObjectsUsingBlock:v10];
+  v10[5] = view;
+  [operations enumerateObjectsUsingBlock:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __83__OKPageUXViewController_widgetView_addHighSpeedOperations_andConsumingOperations___block_invoke_2;
   v9[3] = &unk_279C8F980;
   v9[4] = self;
-  v9[5] = a3;
-  [a5 enumerateObjectsUsingBlock:v9];
-  if ([a4 count])
+  v9[5] = view;
+  [consumingOperations enumerateObjectsUsingBlock:v9];
+  if ([operations count])
   {
-    [(OFNSOperationQueue *)[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] highSpeedOperationQueue] addOperations:a4 waitUntilFinished:0];
+    [(OFNSOperationQueue *)[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] highSpeedOperationQueue] addOperations:operations waitUntilFinished:0];
   }
 
-  if ([a5 count])
+  if ([consumingOperations count])
   {
-    [(OFNSOperationQueue *)[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] consumingOperationQueue] addOperations:a5 waitUntilFinished:0];
+    [(OFNSOperationQueue *)[(OKPresentationViewControllerProxy *)[(OKPageViewController *)self presentationViewController] consumingOperationQueue] addOperations:consumingOperations waitUntilFinished:0];
   }
 }
 
@@ -2815,18 +2815,18 @@ uint64_t __83__OKPageUXViewController_widgetView_addHighSpeedOperations_andConsu
   return [a2 setContext:v4];
 }
 
-- (id)_remoteWidgetsForWidgetView:(id)a3 keyPath:(id)a4
+- (id)_remoteWidgetsForWidgetView:(id)view keyPath:(id)path
 {
   v45[4] = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [objc_msgSend(a3 "widget")];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = [objc_msgSend(view "widget")];
   v9 = v8;
-  if (a4)
+  if (path)
   {
-    v9 = [a4 stringByAppendingFormat:@".%@", v8];
+    v9 = [path stringByAppendingFormat:@".%@", v8];
   }
 
-  if (([&unk_287AF2440 containsObject:{objc_msgSend(objc_msgSend(a3, "widget"), "name")}] & 1) != 0 || objc_msgSend(objc_msgSend(objc_msgSend(a3, "widget"), "name"), "hasPrefix:", @"media"))
+  if (([&unk_287AF2440 containsObject:{objc_msgSend(objc_msgSend(view, "widget"), "name")}] & 1) != 0 || objc_msgSend(objc_msgSend(objc_msgSend(view, "widget"), "name"), "hasPrefix:", @"media"))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2837,7 +2837,7 @@ uint64_t __83__OKPageUXViewController_widgetView_addHighSpeedOperations_andConsu
       v45[1] = v9;
       v44[2] = @"settings";
       v44[3] = @"info";
-      v45[2] = [objc_msgSend(a3 "widget")];
+      v45[2] = [objc_msgSend(view "widget")];
       v45[3] = MEMORY[0x277CBEC10];
       v10 = MEMORY[0x277CBEAC0];
       v11 = v45;
@@ -2849,13 +2849,13 @@ uint64_t __83__OKPageUXViewController_widgetView_addHighSpeedOperations_andConsu
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = -[OKPresentation mediaItemForURL:](-[OKPresentationViewControllerProxy presentation](-[OKPageViewController presentationViewController](self, "presentationViewController"), "presentation"), "mediaItemForURL:", [objc_msgSend(a3 "mediaURLs")]);
+        v13 = -[OKPresentation mediaItemForURL:](-[OKPresentationViewControllerProxy presentation](-[OKPageViewController presentationViewController](self, "presentationViewController"), "presentation"), "mediaItemForURL:", [objc_msgSend(view "mediaURLs")]);
         v42[0] = @"class";
         v42[1] = @"target";
         v43[0] = @"OKWidgetMediaView";
         v43[1] = v9;
         v42[2] = @"settings";
-        v43[2] = [objc_msgSend(a3 "widget")];
+        v43[2] = [objc_msgSend(view "widget")];
         v42[3] = @"info";
         v40[0] = @"mediaItemMetadata";
         v40[1] = @"thumbnails";
@@ -2881,7 +2881,7 @@ uint64_t __83__OKPageUXViewController_widgetView_addHighSpeedOperations_andConsu
         v39[1] = v9;
         v38[2] = @"settings";
         v38[3] = @"info";
-        v39[2] = [objc_msgSend(a3 "widget")];
+        v39[2] = [objc_msgSend(view "widget")];
         v39[3] = MEMORY[0x277CBEC10];
         v10 = MEMORY[0x277CBEAC0];
         v11 = v39;
@@ -2889,7 +2889,7 @@ uint64_t __83__OKPageUXViewController_widgetView_addHighSpeedOperations_andConsu
       }
     }
 
-    [v7 setObject:objc_msgSend(v10 forKey:{"dictionaryWithObjects:forKeys:count:", v11, v12, 4), objc_msgSend(objc_msgSend(a3, "widget"), "name")}];
+    [dictionary setObject:objc_msgSend(v10 forKey:{"dictionaryWithObjects:forKeys:count:", v11, v12, 4), objc_msgSend(objc_msgSend(view, "widget"), "name")}];
   }
 
 LABEL_12:
@@ -2897,8 +2897,8 @@ LABEL_12:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = [a3 allActionBindings];
-  v15 = [v14 countByEnumeratingWithState:&v30 objects:v37 count:16];
+  allActionBindings = [view allActionBindings];
+  v15 = [allActionBindings countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v15)
   {
     v16 = v15;
@@ -2910,10 +2910,10 @@ LABEL_12:
       {
         if (*v31 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allActionBindings);
         }
 
-        if (([&unk_287AF2458 containsObject:{objc_msgSend(objc_msgSend(a3, "widget"), "name")}] & 1) != 0 || (objc_msgSend(objc_msgSend(objc_msgSend(a3, "widget"), "name"), "hasPrefix:", @"cloud") & 1) != 0 || (objc_msgSend(objc_msgSend(objc_msgSend(a3, "widget"), "name"), "hasPrefix:", @"hill") & 1) != 0 || objc_msgSend(objc_msgSend(objc_msgSend(a3, "widget"), "name"), "hasPrefix:", @"groundFront"))
+        if (([&unk_287AF2458 containsObject:{objc_msgSend(objc_msgSend(view, "widget"), "name")}] & 1) != 0 || (objc_msgSend(objc_msgSend(objc_msgSend(view, "widget"), "name"), "hasPrefix:", @"cloud") & 1) != 0 || (objc_msgSend(objc_msgSend(objc_msgSend(view, "widget"), "name"), "hasPrefix:", @"hill") & 1) != 0 || objc_msgSend(objc_msgSend(objc_msgSend(view, "widget"), "name"), "hasPrefix:", @"groundFront"))
         {
           v35[0] = @"class";
           v19 = objc_opt_class();
@@ -2922,14 +2922,14 @@ LABEL_12:
           v35[1] = @"target";
           v35[2] = @"info";
           v36[2] = MEMORY[0x277CBEC10];
-          [v7 setObject:objc_msgSend(MEMORY[0x277CBEAC0] forKey:{"dictionaryWithObjects:forKeys:count:", v36, v35, 3), objc_msgSend(objc_msgSend(a3, "widget"), "name")}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x277CBEAC0] forKey:{"dictionaryWithObjects:forKeys:count:", v36, v35, 3), objc_msgSend(objc_msgSend(view, "widget"), "name")}];
         }
 
         ++v18;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v30 objects:v37 count:16];
+      v16 = [allActionBindings countByEnumeratingWithState:&v30 objects:v37 count:16];
     }
 
     while (v16);
@@ -2939,8 +2939,8 @@ LABEL_12:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v20 = [a3 subWidgetViews];
-  v21 = [v20 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  subWidgetViews = [view subWidgetViews];
+  v21 = [subWidgetViews countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v21)
   {
     v22 = v21;
@@ -2952,26 +2952,26 @@ LABEL_12:
       {
         if (*v27 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(subWidgetViews);
         }
 
-        [v7 addEntriesFromDictionary:{-[OKPageUXViewController _remoteWidgetsForWidgetView:keyPath:](self, "_remoteWidgetsForWidgetView:keyPath:", *(*(&v26 + 1) + 8 * v24++), v9)}];
+        [dictionary addEntriesFromDictionary:{-[OKPageUXViewController _remoteWidgetsForWidgetView:keyPath:](self, "_remoteWidgetsForWidgetView:keyPath:", *(*(&v26 + 1) + 8 * v24++), v9)}];
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v22 = [subWidgetViews countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v22);
   }
 
-  return v7;
+  return dictionary;
 }
 
 - (id)currentRemoteWidgets
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -2994,7 +2994,7 @@ LABEL_12:
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([v9 prepareMode] == 1)
         {
-          [v3 addEntriesFromDictionary:{-[OKPageUXViewController _remoteWidgetsForWidgetView:keyPath:](self, "_remoteWidgetsForWidgetView:keyPath:", v9, @"deepestDisplayedPage.widgets"}];
+          [dictionary addEntriesFromDictionary:{-[OKPageUXViewController _remoteWidgetsForWidgetView:keyPath:](self, "_remoteWidgetsForWidgetView:keyPath:", v9, @"deepestDisplayedPage.widgets"}];
         }
       }
 
@@ -3004,12 +3004,12 @@ LABEL_12:
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"widgets"])
+  if ([key isEqualToString:@"widgets"])
   {
     v5 = objc_opt_new();
     [v5 setTag:1];
@@ -3022,17 +3022,17 @@ LABEL_12:
   {
     v7.receiver = self;
     v7.super_class = OKPageUXViewController;
-    return [(OKPageViewController *)&v7 valueForUndefinedKey:a3];
+    return [(OKPageViewController *)&v7 valueForUndefinedKey:key];
   }
 }
 
-- (void)setSettingParallaxEnabled:(BOOL)a3
+- (void)setSettingParallaxEnabled:(BOOL)enabled
 {
-  if (self->_parallaxEnabled != a3)
+  if (self->_parallaxEnabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_parallaxEnabled = a3;
+    self->_parallaxEnabled = enabled;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __52__OKPageUXViewController_setSettingParallaxEnabled___block_invoke;
@@ -3042,13 +3042,13 @@ LABEL_12:
   }
 }
 
-- (void)setSettingParallaxRatioX:(double)a3
+- (void)setSettingParallaxRatioX:(double)x
 {
-  if (self->_parallaxRatioX != a3)
+  if (self->_parallaxRatioX != x)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_parallaxRatioX = a3;
+    self->_parallaxRatioX = x;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__OKPageUXViewController_setSettingParallaxRatioX___block_invoke;
@@ -3058,13 +3058,13 @@ LABEL_12:
   }
 }
 
-- (void)setSettingParallaxRatioY:(double)a3
+- (void)setSettingParallaxRatioY:(double)y
 {
-  if (self->_parallaxRatioY != a3)
+  if (self->_parallaxRatioY != y)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_parallaxRatioY = a3;
+    self->_parallaxRatioY = y;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__OKPageUXViewController_setSettingParallaxRatioY___block_invoke;
@@ -3074,13 +3074,13 @@ LABEL_12:
   }
 }
 
-- (void)setSettingDynamicsEnabled:(BOOL)a3
+- (void)setSettingDynamicsEnabled:(BOOL)enabled
 {
-  if (self->_dynamicsEnabled != a3)
+  if (self->_dynamicsEnabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_dynamicsEnabled = a3;
+    self->_dynamicsEnabled = enabled;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __52__OKPageUXViewController_setSettingDynamicsEnabled___block_invoke;
@@ -3090,10 +3090,10 @@ LABEL_12:
   }
 }
 
-- (void)setSettingDynamicsGravityEnabled:(BOOL)a3
+- (void)setSettingDynamicsGravityEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(OKPageUXViewController *)self settingDynamicsGravityEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(OKPageUXViewController *)self settingDynamicsGravityEnabled]!= enabled)
   {
     dynamicsGravityBehavior = self->_dynamicsGravityBehavior;
     if (dynamicsGravityBehavior)
@@ -3103,7 +3103,7 @@ LABEL_12:
       self->_dynamicsGravityBehavior = 0;
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       self->_dynamicsGravityBehavior = objc_alloc_init(MEMORY[0x277D75578]);
     }
@@ -3117,10 +3117,10 @@ LABEL_12:
   }
 }
 
-- (void)setSettingDynamicsGravityAngle:(float)a3
+- (void)setSettingDynamicsGravityAngle:(float)angle
 {
   [(UIGravityBehavior *)self->_dynamicsGravityBehavior angle];
-  if (v5 != a3)
+  if (v5 != angle)
   {
     [(UIGravityBehavior *)self->_dynamicsGravityBehavior setAngle:?];
     v6[0] = MEMORY[0x277D85DD0];
@@ -3132,10 +3132,10 @@ LABEL_12:
   }
 }
 
-- (void)setSettingDynamicsGravityMagnitude:(float)a3
+- (void)setSettingDynamicsGravityMagnitude:(float)magnitude
 {
   [(UIGravityBehavior *)self->_dynamicsGravityBehavior magnitude];
-  if (v5 != a3)
+  if (v5 != magnitude)
   {
     [(UIGravityBehavior *)self->_dynamicsGravityBehavior setMagnitude:?];
     v6[0] = MEMORY[0x277D85DD0];
@@ -3147,13 +3147,13 @@ LABEL_12:
   }
 }
 
-- (void)setSettingDynamicsGravityMotionDriven:(BOOL)a3
+- (void)setSettingDynamicsGravityMotionDriven:(BOOL)driven
 {
-  if (self->_dynamicsGravityBehaviorMotionDriven != a3)
+  if (self->_dynamicsGravityBehaviorMotionDriven != driven)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_dynamicsGravityBehaviorMotionDriven = a3;
+    self->_dynamicsGravityBehaviorMotionDriven = driven;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __64__OKPageUXViewController_setSettingDynamicsGravityMotionDriven___block_invoke;
@@ -3163,10 +3163,10 @@ LABEL_12:
   }
 }
 
-- (void)setSettingDynamicsCollisionConfinementEnabled:(BOOL)a3
+- (void)setSettingDynamicsCollisionConfinementEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(OKPageUXViewController *)self settingDynamicsCollisionConfinementEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(OKPageUXViewController *)self settingDynamicsCollisionConfinementEnabled]!= enabled)
   {
     dynamicsPageCollisionBehavior = self->_dynamicsPageCollisionBehavior;
     if (dynamicsPageCollisionBehavior)
@@ -3176,7 +3176,7 @@ LABEL_12:
       self->_dynamicsPageCollisionBehavior = 0;
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       v6 = objc_alloc_init(MEMORY[0x277D75338]);
       self->_dynamicsPageCollisionBehavior = v6;
@@ -3193,10 +3193,10 @@ LABEL_12:
   }
 }
 
-- (void)setSettingDynamicsPushBehaviors:(id)a3
+- (void)setSettingDynamicsPushBehaviors:(id)behaviors
 {
   dynamicsPushBehaviors = self->_dynamicsPushBehaviors;
-  if (a3)
+  if (behaviors)
   {
     if (!dynamicsPushBehaviors)
     {
@@ -3211,7 +3211,7 @@ LABEL_12:
 
   self->_dynamicsPushBehaviors = 0;
 LABEL_6:
-  self->_dynamicsPushBehaviors = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  self->_dynamicsPushBehaviors = [MEMORY[0x277CBEB38] dictionaryWithDictionary:behaviors];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__OKPageUXViewController_setSettingDynamicsPushBehaviors___block_invoke;
@@ -3250,8 +3250,8 @@ LABEL_6:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v4 = [(UIGravityBehavior *)self->_dynamicsGravityBehavior items];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v56 objects:v65 count:16];
+  items = [(UIGravityBehavior *)self->_dynamicsGravityBehavior items];
+  v5 = [(NSArray *)items countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3262,13 +3262,13 @@ LABEL_6:
       {
         if (*v57 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         [(UIGravityBehavior *)self->_dynamicsGravityBehavior removeItem:*(*(&v56 + 1) + 8 * i)];
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v56 objects:v65 count:16];
+      v6 = [(NSArray *)items countByEnumeratingWithState:&v56 objects:v65 count:16];
     }
 
     while (v6);
@@ -3278,8 +3278,8 @@ LABEL_6:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v9 = [(UICollisionBehavior *)self->_dynamicsPageCollisionBehavior items];
-  v10 = [(NSArray *)v9 countByEnumeratingWithState:&v52 objects:v64 count:16];
+  items2 = [(UICollisionBehavior *)self->_dynamicsPageCollisionBehavior items];
+  v10 = [(NSArray *)items2 countByEnumeratingWithState:&v52 objects:v64 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3290,13 +3290,13 @@ LABEL_6:
       {
         if (*v53 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(items2);
         }
 
         [(UICollisionBehavior *)self->_dynamicsPageCollisionBehavior removeItem:*(*(&v52 + 1) + 8 * j)];
       }
 
-      v11 = [(NSArray *)v9 countByEnumeratingWithState:&v52 objects:v64 count:16];
+      v11 = [(NSArray *)items2 countByEnumeratingWithState:&v52 objects:v64 count:16];
     }
 
     while (v11);
@@ -3306,8 +3306,8 @@ LABEL_6:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v14 = [(NSMutableDictionary *)self->_dynamicsWidgetCollisionBehaviors objectEnumerator];
-  v15 = [v14 countByEnumeratingWithState:&v48 objects:v63 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_dynamicsWidgetCollisionBehaviors objectEnumerator];
+  v15 = [objectEnumerator countByEnumeratingWithState:&v48 objects:v63 count:16];
   if (v15)
   {
     v16 = v15;
@@ -3318,7 +3318,7 @@ LABEL_6:
       {
         if (*v49 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v19 = *(*(&v48 + 1) + 8 * k);
@@ -3326,8 +3326,8 @@ LABEL_6:
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v20 = [v19 items];
-        v21 = [v20 countByEnumeratingWithState:&v44 objects:v62 count:16];
+        items3 = [v19 items];
+        v21 = [items3 countByEnumeratingWithState:&v44 objects:v62 count:16];
         if (v21)
         {
           v22 = v21;
@@ -3338,20 +3338,20 @@ LABEL_6:
             {
               if (*v45 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(items3);
               }
 
               [v19 removeItem:*(*(&v44 + 1) + 8 * m)];
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v44 objects:v62 count:16];
+            v22 = [items3 countByEnumeratingWithState:&v44 objects:v62 count:16];
           }
 
           while (v22);
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v48 objects:v63 count:16];
+      v16 = [objectEnumerator countByEnumeratingWithState:&v48 objects:v63 count:16];
     }
 
     while (v16);
@@ -3362,8 +3362,8 @@ LABEL_6:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v25 = [(NSMutableDictionary *)self->_dynamicsPushBehaviors objectEnumerator];
-  v26 = [v25 countByEnumeratingWithState:&v40 objects:v61 count:16];
+  objectEnumerator2 = [(NSMutableDictionary *)self->_dynamicsPushBehaviors objectEnumerator];
+  v26 = [objectEnumerator2 countByEnumeratingWithState:&v40 objects:v61 count:16];
   if (v26)
   {
     v27 = v26;
@@ -3374,7 +3374,7 @@ LABEL_6:
       {
         if (*v41 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v30 = *(*(&v40 + 1) + 8 * n);
@@ -3382,8 +3382,8 @@ LABEL_6:
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v31 = [v30 items];
-        v32 = [v31 countByEnumeratingWithState:&v36 objects:v60 count:16];
+        items4 = [v30 items];
+        v32 = [items4 countByEnumeratingWithState:&v36 objects:v60 count:16];
         if (v32)
         {
           v33 = v32;
@@ -3394,20 +3394,20 @@ LABEL_6:
             {
               if (*v37 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(items4);
               }
 
               [v30 removeItem:*(*(&v36 + 1) + 8 * ii)];
             }
 
-            v33 = [v31 countByEnumeratingWithState:&v36 objects:v60 count:16];
+            v33 = [items4 countByEnumeratingWithState:&v36 objects:v60 count:16];
           }
 
           while (v33);
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v40 objects:v61 count:16];
+      v27 = [objectEnumerator2 countByEnumeratingWithState:&v40 objects:v61 count:16];
     }
 
     while (v27);
@@ -3427,11 +3427,11 @@ LABEL_6:
       [(UIDynamicAnimator *)v3 setDelegate:self];
     }
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [v4 addEntriesFromDictionary:{-[OKPresentationViewControllerProxy dynamicsPushBehaviors](-[OKPageViewController presentationViewController](self, "presentationViewController"), "dynamicsPushBehaviors")}];
-    [v4 addEntriesFromDictionary:{-[OKNavigatorViewControllerProxy dynamicsPushBehaviors](-[OKPageViewController navigatorViewController](self, "navigatorViewController"), "dynamicsPushBehaviors")}];
-    v48 = v4;
-    [v4 addEntriesFromDictionary:self->_dynamicsPushBehaviors];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary addEntriesFromDictionary:{-[OKPresentationViewControllerProxy dynamicsPushBehaviors](-[OKPageViewController presentationViewController](self, "presentationViewController"), "dynamicsPushBehaviors")}];
+    [dictionary addEntriesFromDictionary:{-[OKNavigatorViewControllerProxy dynamicsPushBehaviors](-[OKPageViewController navigatorViewController](self, "navigatorViewController"), "dynamicsPushBehaviors")}];
+    v48 = dictionary;
+    [dictionary addEntriesFromDictionary:self->_dynamicsPushBehaviors];
     obj = objc_alloc_init(MEMORY[0x277CBEB18]);
     v72 = 0u;
     v73 = 0u;
@@ -3453,11 +3453,11 @@ LABEL_6:
           }
 
           v10 = *(*(&v72 + 1) + 8 * i);
-          v11 = [v10 dynamicProxy];
-          if (v11)
+          dynamicProxy = [v10 dynamicProxy];
+          if (dynamicProxy)
           {
-            v12 = v11;
-            if ([v11 enabled])
+            v12 = dynamicProxy;
+            if ([dynamicProxy enabled])
             {
               [v12 resetInitialValues];
               [obj addObject:v12];
@@ -3513,8 +3513,8 @@ LABEL_6:
           v67 = 0u;
           v64 = 0u;
           v65 = 0u;
-          v16 = [v15 attachmentBehaviors];
-          v17 = [v16 countByEnumeratingWithState:&v64 objects:v80 count:16];
+          attachmentBehaviors = [v15 attachmentBehaviors];
+          v17 = [attachmentBehaviors countByEnumeratingWithState:&v64 objects:v80 count:16];
           if (v17)
           {
             v18 = v17;
@@ -3525,7 +3525,7 @@ LABEL_6:
               {
                 if (*v65 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(attachmentBehaviors);
                 }
 
                 v21 = *(*(&v64 + 1) + 8 * j);
@@ -3533,7 +3533,7 @@ LABEL_6:
                 -[UIDynamicAnimator addBehavior:](self->_dynamicsAnimator, "addBehavior:", [v21 behavior]);
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v64 objects:v80 count:16];
+              v18 = [attachmentBehaviors countByEnumeratingWithState:&v64 objects:v80 count:16];
             }
 
             while (v18);
@@ -3543,8 +3543,8 @@ LABEL_6:
           v63 = 0u;
           v60 = 0u;
           v61 = 0u;
-          v22 = [v15 collisionGroups];
-          v23 = [v22 countByEnumeratingWithState:&v60 objects:v79 count:16];
+          collisionGroups = [v15 collisionGroups];
+          v23 = [collisionGroups countByEnumeratingWithState:&v60 objects:v79 count:16];
           v24 = 0x280361000uLL;
           if (v23)
           {
@@ -3556,7 +3556,7 @@ LABEL_6:
               {
                 if (*v61 != v26)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(collisionGroups);
                 }
 
                 v28 = *(*(&v60 + 1) + 8 * k);
@@ -3588,7 +3588,7 @@ LABEL_6:
                 }
               }
 
-              v25 = [v22 countByEnumeratingWithState:&v60 objects:v79 count:16];
+              v25 = [collisionGroups countByEnumeratingWithState:&v60 objects:v79 count:16];
             }
 
             while (v25);
@@ -3598,8 +3598,8 @@ LABEL_6:
           v59 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v34 = [v15 pushGroups];
-          v35 = [v34 countByEnumeratingWithState:&v56 objects:v77 count:16];
+          pushGroups = [v15 pushGroups];
+          v35 = [pushGroups countByEnumeratingWithState:&v56 objects:v77 count:16];
           v13 = v48;
           v36 = MEMORY[0x277D62808];
           if (v35)
@@ -3612,7 +3612,7 @@ LABEL_6:
               {
                 if (*v57 != v38)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(pushGroups);
                 }
 
                 v40 = *(*(&v56 + 1) + 8 * m);
@@ -3628,7 +3628,7 @@ LABEL_6:
                 }
               }
 
-              v37 = [v34 countByEnumeratingWithState:&v56 objects:v77 count:16];
+              v37 = [pushGroups countByEnumeratingWithState:&v56 objects:v77 count:16];
             }
 
             while (v37);
@@ -3648,8 +3648,8 @@ LABEL_6:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v42 = [v13 allValues];
-    v43 = [v42 countByEnumeratingWithState:&v52 objects:v76 count:16];
+    allValues = [v13 allValues];
+    v43 = [allValues countByEnumeratingWithState:&v52 objects:v76 count:16];
     if (v43)
     {
       v44 = v43;
@@ -3660,13 +3660,13 @@ LABEL_6:
         {
           if (*v53 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(allValues);
           }
 
           [(UIDynamicAnimator *)self->_dynamicsAnimator addBehavior:*(*(&v52 + 1) + 8 * n)];
         }
 
-        v44 = [v42 countByEnumeratingWithState:&v52 objects:v76 count:16];
+        v44 = [allValues countByEnumeratingWithState:&v52 objects:v76 count:16];
       }
 
       while (v44);
@@ -3684,7 +3684,7 @@ LABEL_6:
   }
 }
 
-- (void)collisionBehavior:(id)a3 beganContactForItem:(id)a4 withItem:(id)a5 atPoint:(CGPoint)a6
+- (void)collisionBehavior:(id)behavior beganContactForItem:(id)item withItem:(id)withItem atPoint:(CGPoint)point
 {
   v23 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -3694,8 +3694,8 @@ LABEL_6:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [(NSMutableDictionary *)self->_dynamicsWidgetCollisionBehaviors allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allKeys = [(NSMutableDictionary *)self->_dynamicsWidgetCollisionBehaviors allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -3706,18 +3706,18 @@ LABEL_4:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_dynamicsWidgetCollisionBehaviors objectForKeyedSubscript:{v15), "isEqual:", a3}])
+        if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_dynamicsWidgetCollisionBehaviors objectForKeyedSubscript:{v15), "isEqual:", behavior}])
         {
           break;
         }
 
         if (v12 == ++v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v12 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v12)
           {
             goto LABEL_4;
@@ -3734,28 +3734,28 @@ LABEL_4:
       v15 = 0;
     }
 
-    v16 = [a4 proxiedObject];
+    proxiedObject = [item proxiedObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [a5 proxiedObject];
+      proxiedObject2 = [withItem proxiedObject];
     }
 
     else
     {
-      v17 = 0;
+      proxiedObject2 = 0;
     }
 
-    [v16 beganCollisionWithWidgetView:v17 fromGroup:v15];
+    [proxiedObject beganCollisionWithWidgetView:proxiedObject2 fromGroup:v15];
   }
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKPageUXViewController"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPageUXViewController", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKPageUXViewController"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPageUXViewController", "objectForKeyedSubscript:", @"prototype"}];
   v6 = *MEMORY[0x277CD4638];
   v14[0] = *MEMORY[0x277CD4630];
   v5 = v14[0];
@@ -3771,7 +3771,7 @@ LABEL_4:
   v17[2] = MEMORY[0x277CBEC28];
   v17[3] = MEMORY[0x277CBEC38];
   [v4 defineProperty:@"removeWidget" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v17, v14, 4)}];
-  v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKPageUXViewController", "objectForKeyedSubscript:", @"prototype"}];
+  v11 = [objc_msgSend(context objectForKeyedSubscript:{@"OKPageUXViewController", "objectForKeyedSubscript:", @"prototype"}];
   v12[0] = v5;
   v12[1] = v6;
   v13[0] = &__block_literal_global_293;
@@ -3801,8 +3801,8 @@ uint64_t __49__OKPageUXViewController_setupJavascriptContext___block_invoke_2(ui
 
 - (id)visibleWidgets
 {
-  v3 = [[(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] currentPageViewController] visibleWidgets];
-  v4 = [MEMORY[0x277CBEB18] arrayWithArray:v3];
+  visibleWidgets = [[(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self subNavigatorViewController] currentPageViewController] visibleWidgets];
+  v4 = [MEMORY[0x277CBEB18] arrayWithArray:visibleWidgets];
   [(OKNavigatorViewControllerProxy *)[(OKPageViewController *)self navigatorViewController] visiblePageRect];
   [v4 addObjectsFromArray:{objc_msgSend(-[OKPageUXViewController widgetViewsInRect:](self, "widgetViewsInRect:"), "allObjects")}];
   return v4;

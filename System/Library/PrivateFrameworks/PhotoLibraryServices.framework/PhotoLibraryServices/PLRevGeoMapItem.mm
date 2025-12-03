@@ -1,35 +1,35 @@
 @interface PLRevGeoMapItem
-+ (id)mapItemWithGEOMapItem:(id)a3;
-+ (id)placeInfoWithName:(id)a3 geoPlaceInfo:(id)a4 dominantOrderType:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (PLRevGeoMapItem)initWithCoder:(id)a3;
-- (PLRevGeoMapItem)initWithSortedPlaceInfos:(id)a3 backupPlaceInfos:(id)a4 finalPlaceInfos:(id)a5;
++ (id)mapItemWithGEOMapItem:(id)item;
++ (id)placeInfoWithName:(id)name geoPlaceInfo:(id)info dominantOrderType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (PLRevGeoMapItem)initWithCoder:(id)coder;
+- (PLRevGeoMapItem)initWithSortedPlaceInfos:(id)infos backupPlaceInfos:(id)placeInfos finalPlaceInfos:(id)finalPlaceInfos;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLRevGeoMapItem
 
-+ (id)mapItemWithGEOMapItem:(id)a3
++ (id)mapItemWithGEOMapItem:(id)item
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 _asPlaceInfo];
-  v5 = [v3 _additionalPlaceInfos];
-  v6 = [v3 geoAddress];
-  v7 = [v6 structuredAddress];
+  itemCopy = item;
+  _asPlaceInfo = [itemCopy _asPlaceInfo];
+  _additionalPlaceInfos = [itemCopy _additionalPlaceInfos];
+  geoAddress = [itemCopy geoAddress];
+  structuredAddress = [geoAddress structuredAddress];
 
-  v8 = [MEMORY[0x1E695DF70] array];
-  v52 = [MEMORY[0x1E695DF70] array];
-  v51 = [MEMORY[0x1E695DF70] array];
-  if ([v5 count])
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  if ([_additionalPlaceInfos count])
   {
-    v50 = v3;
-    [v4 name];
-    v10 = v9 = v5;
-    v49 = v4;
-    v11 = [PLRevGeoMapItem placeInfoWithName:v10 geoPlaceInfo:v4 dominantOrderType:0];
-    [v8 addObject:v11];
+    v50 = itemCopy;
+    [_asPlaceInfo name];
+    v10 = v9 = _additionalPlaceInfos;
+    v49 = _asPlaceInfo;
+    v11 = [PLRevGeoMapItem placeInfoWithName:v10 geoPlaceInfo:_asPlaceInfo dominantOrderType:0];
+    [array addObject:v11];
 
     v55 = 0u;
     v56 = 0u;
@@ -52,9 +52,9 @@
           }
 
           v17 = *(*(&v53 + 1) + 8 * i);
-          v18 = [v17 name];
-          v19 = [PLRevGeoMapItem placeInfoWithName:v18 geoPlaceInfo:v17 dominantOrderType:0];
-          [v8 addObject:v19];
+          name = [v17 name];
+          v19 = [PLRevGeoMapItem placeInfoWithName:name geoPlaceInfo:v17 dominantOrderType:0];
+          [array addObject:v19];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v53 objects:v57 count:16];
@@ -64,99 +64,99 @@
     }
 
     v20 = +[PLRevGeoMapItem sortedAdditionalPlaceInfoComparator];
-    [v8 sortUsingComparator:v20];
+    [array sortUsingComparator:v20];
 
-    v4 = v49;
-    v3 = v50;
-    v5 = v48;
-    v22 = v51;
-    v21 = v52;
+    _asPlaceInfo = v49;
+    itemCopy = v50;
+    _additionalPlaceInfos = v48;
+    v22 = array3;
+    v21 = array2;
   }
 
   else
   {
-    v23 = [v7 areaOfInterestsCount];
-    v21 = v52;
-    if (v23)
+    areaOfInterestsCount = [structuredAddress areaOfInterestsCount];
+    v21 = array2;
+    if (areaOfInterestsCount)
     {
-      v24 = v23;
-      v25 = [v3 _placeType];
-      if (v24 != 1 || v25 != 11)
+      v24 = areaOfInterestsCount;
+      _placeType = [itemCopy _placeType];
+      if (v24 != 1 || _placeType != 11)
       {
-        v26 = [v7 areaOfInterestAtIndex:0];
-        v27 = [PLRevGeoMapItem placeInfoWithName:v26 geoPlaceInfo:v4 dominantOrderType:1];
+        v26 = [structuredAddress areaOfInterestAtIndex:0];
+        v27 = [PLRevGeoMapItem placeInfoWithName:v26 geoPlaceInfo:_asPlaceInfo dominantOrderType:1];
 
-        [v52 addObject:v27];
+        [array2 addObject:v27];
       }
     }
 
-    if ([v7 hasSubLocality])
+    if ([structuredAddress hasSubLocality])
     {
-      v28 = [v7 subLocality];
-      v29 = [PLRevGeoMapItem placeInfoWithName:v28 geoPlaceInfo:v4 dominantOrderType:3];
+      subLocality = [structuredAddress subLocality];
+      v29 = [PLRevGeoMapItem placeInfoWithName:subLocality geoPlaceInfo:_asPlaceInfo dominantOrderType:3];
 
-      [v52 addObject:v29];
+      [array2 addObject:v29];
     }
 
-    v22 = v51;
-    if ([v7 hasLocality])
+    v22 = array3;
+    if ([structuredAddress hasLocality])
     {
-      v30 = [v7 locality];
-      v31 = [PLRevGeoMapItem placeInfoWithName:v30 geoPlaceInfo:v4 dominantOrderType:5];
+      locality = [structuredAddress locality];
+      v31 = [PLRevGeoMapItem placeInfoWithName:locality geoPlaceInfo:_asPlaceInfo dominantOrderType:5];
 
-      [v52 addObject:v31];
+      [array2 addObject:v31];
     }
 
-    if ([v7 hasSubAdministrativeArea])
+    if ([structuredAddress hasSubAdministrativeArea])
     {
-      v32 = [v7 subAdministrativeArea];
-      v33 = [PLRevGeoMapItem placeInfoWithName:v32 geoPlaceInfo:v4 dominantOrderType:7];
+      subAdministrativeArea = [structuredAddress subAdministrativeArea];
+      v33 = [PLRevGeoMapItem placeInfoWithName:subAdministrativeArea geoPlaceInfo:_asPlaceInfo dominantOrderType:7];
 
-      [v52 addObject:v33];
+      [array2 addObject:v33];
     }
 
-    if ([v7 hasAdministrativeArea])
+    if ([structuredAddress hasAdministrativeArea])
     {
-      v34 = [v7 administrativeArea];
-      v35 = [PLRevGeoMapItem placeInfoWithName:v34 geoPlaceInfo:v4 dominantOrderType:10];
+      administrativeArea = [structuredAddress administrativeArea];
+      v35 = [PLRevGeoMapItem placeInfoWithName:administrativeArea geoPlaceInfo:_asPlaceInfo dominantOrderType:10];
 
-      [v52 addObject:v35];
+      [array2 addObject:v35];
     }
 
-    if ([v7 hasCountry])
+    if ([structuredAddress hasCountry])
     {
-      v36 = [v7 country];
-      v37 = [PLRevGeoMapItem placeInfoWithName:v36 geoPlaceInfo:v4 dominantOrderType:12];
+      country = [structuredAddress country];
+      v37 = [PLRevGeoMapItem placeInfoWithName:country geoPlaceInfo:_asPlaceInfo dominantOrderType:12];
 
-      [v52 addObject:v37];
+      [array2 addObject:v37];
     }
   }
 
-  if ([v7 hasThoroughfare])
+  if ([structuredAddress hasThoroughfare])
   {
-    v38 = [v7 thoroughfare];
-    v39 = [PLRevGeoMapItem placeInfoWithName:v38 geoPlaceInfo:v4 dominantOrderType:2];
+    thoroughfare = [structuredAddress thoroughfare];
+    v39 = [PLRevGeoMapItem placeInfoWithName:thoroughfare geoPlaceInfo:_asPlaceInfo dominantOrderType:2];
 
     [v22 addObject:v39];
   }
 
-  if ([v7 hasAdministrativeAreaCode])
+  if ([structuredAddress hasAdministrativeAreaCode])
   {
-    v40 = [v7 administrativeAreaCode];
-    v41 = [PLRevGeoMapItem placeInfoWithName:v40 geoPlaceInfo:v4 dominantOrderType:11];
+    administrativeAreaCode = [structuredAddress administrativeAreaCode];
+    v41 = [PLRevGeoMapItem placeInfoWithName:administrativeAreaCode geoPlaceInfo:_asPlaceInfo dominantOrderType:11];
 
     [v22 addObject:v41];
   }
 
-  if ([v7 hasCountryCode])
+  if ([structuredAddress hasCountryCode])
   {
-    v42 = [v7 countryCode];
-    v43 = [PLRevGeoMapItem placeInfoWithName:v42 geoPlaceInfo:v4 dominantOrderType:13];
+    countryCode = [structuredAddress countryCode];
+    v43 = [PLRevGeoMapItem placeInfoWithName:countryCode geoPlaceInfo:_asPlaceInfo dominantOrderType:13];
 
     [v22 addObject:v43];
   }
 
-  v44 = [[PLRevGeoMapItem alloc] initWithSortedPlaceInfos:v8 backupPlaceInfos:v21 finalPlaceInfos:v22];
+  v44 = [[PLRevGeoMapItem alloc] initWithSortedPlaceInfos:array backupPlaceInfos:v21 finalPlaceInfos:v22];
   v45 = v22;
   v46 = v44;
 
@@ -217,47 +217,47 @@ uint64_t __67__PLRevGeoMapItem_GEOServices__sortedAdditionalPlaceInfoComparator_
   return v10;
 }
 
-+ (id)placeInfoWithName:(id)a3 geoPlaceInfo:(id)a4 dominantOrderType:(unint64_t)a5
++ (id)placeInfoWithName:(id)name geoPlaceInfo:(id)info dominantOrderType:(unint64_t)type
 {
-  v7 = a4;
-  v8 = a3;
+  infoCopy = info;
+  nameCopy = name;
   v9 = [PLRevGeoMapItemAdditionalPlaceInfo alloc];
-  v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v7, "placeType")}];
-  [v7 areaInMeters];
+  v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(infoCopy, "placeType")}];
+  [infoCopy areaInMeters];
   v12 = v11;
 
-  v13 = [(PLRevGeoMapItemAdditionalPlaceInfo *)v9 initWithName:v8 placeType:v10 dominantOrderType:a5 areaInSquareMeters:v12];
+  v13 = [(PLRevGeoMapItemAdditionalPlaceInfo *)v9 initWithName:nameCopy placeType:v10 dominantOrderType:type areaInSquareMeters:v12];
 
   return v13;
 }
 
-- (PLRevGeoMapItem)initWithCoder:(id)a3
+- (PLRevGeoMapItem)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"sortedPlaceInfos"];
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:@"backupPlaceInfos"];
-  v10 = [v5 decodeObjectOfClasses:v7 forKey:@"finalPlaceInfos"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sortedPlaceInfos"];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:@"backupPlaceInfos"];
+  v10 = [coderCopy decodeObjectOfClasses:v7 forKey:@"finalPlaceInfos"];
 
   v11 = [(PLRevGeoMapItem *)self initWithSortedPlaceInfos:v8 backupPlaceInfos:v9 finalPlaceInfos:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sortedPlaceInfos = self->_sortedPlaceInfos;
-  v5 = a3;
-  [v5 encodeObject:sortedPlaceInfos forKey:@"sortedPlaceInfos"];
-  [v5 encodeObject:self->_backupPlaceInfos forKey:@"backupPlaceInfos"];
-  [v5 encodeObject:self->_finalPlaceInfos forKey:@"finalPlaceInfos"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sortedPlaceInfos forKey:@"sortedPlaceInfos"];
+  [coderCopy encodeObject:self->_backupPlaceInfos forKey:@"backupPlaceInfos"];
+  [coderCopy encodeObject:self->_finalPlaceInfos forKey:@"finalPlaceInfos"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -267,16 +267,16 @@ uint64_t __67__PLRevGeoMapItem_GEOServices__sortedAdditionalPlaceInfoComparator_
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       sortedPlaceInfos = self->_sortedPlaceInfos;
-      v9 = [(PLRevGeoMapItem *)v7 sortedPlaceInfos];
-      LODWORD(sortedPlaceInfos) = [(NSArray *)sortedPlaceInfos isEqualToArray:v9];
+      sortedPlaceInfos = [(PLRevGeoMapItem *)v7 sortedPlaceInfos];
+      LODWORD(sortedPlaceInfos) = [(NSArray *)sortedPlaceInfos isEqualToArray:sortedPlaceInfos];
 
       if (sortedPlaceInfos && (backupPlaceInfos = self->_backupPlaceInfos, [(PLRevGeoMapItem *)v7 backupPlaceInfos], v11 = objc_claimAutoreleasedReturnValue(), LODWORD(backupPlaceInfos) = [(NSArray *)backupPlaceInfos isEqualToArray:v11], v11, backupPlaceInfos))
       {
         finalPlaceInfos = self->_finalPlaceInfos;
-        v13 = [(PLRevGeoMapItem *)v7 finalPlaceInfos];
-        v6 = [(NSArray *)finalPlaceInfos isEqualToArray:v13];
+        finalPlaceInfos = [(PLRevGeoMapItem *)v7 finalPlaceInfos];
+        v6 = [(NSArray *)finalPlaceInfos isEqualToArray:finalPlaceInfos];
       }
 
       else
@@ -304,20 +304,20 @@ uint64_t __67__PLRevGeoMapItem_GEOServices__sortedAdditionalPlaceInfoComparator_
   return v6;
 }
 
-- (PLRevGeoMapItem)initWithSortedPlaceInfos:(id)a3 backupPlaceInfos:(id)a4 finalPlaceInfos:(id)a5
+- (PLRevGeoMapItem)initWithSortedPlaceInfos:(id)infos backupPlaceInfos:(id)placeInfos finalPlaceInfos:(id)finalPlaceInfos
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infosCopy = infos;
+  placeInfosCopy = placeInfos;
+  finalPlaceInfosCopy = finalPlaceInfos;
   v15.receiver = self;
   v15.super_class = PLRevGeoMapItem;
   v12 = [(PLRevGeoMapItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sortedPlaceInfos, a3);
-    objc_storeStrong(&v13->_backupPlaceInfos, a4);
-    objc_storeStrong(&v13->_finalPlaceInfos, a5);
+    objc_storeStrong(&v12->_sortedPlaceInfos, infos);
+    objc_storeStrong(&v13->_backupPlaceInfos, placeInfos);
+    objc_storeStrong(&v13->_finalPlaceInfos, finalPlaceInfos);
   }
 
   return v13;

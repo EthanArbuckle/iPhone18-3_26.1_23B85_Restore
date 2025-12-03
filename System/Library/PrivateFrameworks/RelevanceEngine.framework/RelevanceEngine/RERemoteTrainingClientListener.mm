@@ -1,6 +1,6 @@
 @interface RERemoteTrainingClientListener
 + (id)sharedTrainingClientListener;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RERemoteTrainingClientListener)init;
 - (RERemoteTrainingClientListenerDelegate)delegate;
 - (void)dealloc;
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __62__RERemoteTrainingClientListener_sharedTrainingClientListener__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedTrainingClientListener_onceToken != -1)
   {
     dispatch_once(&sharedTrainingClientListener_onceToken, block);
@@ -56,9 +56,9 @@ uint64_t __62__RERemoteTrainingClientListener_sharedTrainingClientListener__bloc
       _os_log_impl(&dword_22859F000, v7, OS_LOG_TYPE_INFO, "Starting remote training listener", v14, 2u);
     }
 
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    v9 = [v8 processName];
-    v10 = RERemoteTrainingMachServiceForProcessName(v9);
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    v10 = RERemoteTrainingMachServiceForProcessName(processName);
 
     v11 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v10];
     listener = v2->_listener;
@@ -83,20 +83,20 @@ uint64_t __62__RERemoteTrainingClientListener_sharedTrainingClientListener__bloc
   [(RERemoteTrainingClientListener *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__RERemoteTrainingClientListener_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_2785FB070;
-  v13 = v6;
-  v14 = v7;
-  v15 = self;
-  v9 = v7;
-  v10 = v6;
+  v13 = listenerCopy;
+  v14 = connectionCopy;
+  selfCopy = self;
+  v9 = connectionCopy;
+  v10 = listenerCopy;
   dispatch_async(queue, block);
 
   return 1;

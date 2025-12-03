@@ -1,8 +1,8 @@
 @interface SASBoardServicesConfiguration
 + (id)configuration;
 - (id)_init;
-- (id)domainForService:(int64_t)a3;
-- (id)identifierForService:(int64_t)a3;
+- (id)domainForService:(int64_t)service;
+- (id)identifierForService:(int64_t)service;
 @end
 
 @implementation SASBoardServicesConfiguration
@@ -44,47 +44,47 @@ uint64_t __46__SASBoardServicesConfiguration_configuration__block_invoke()
   return v3;
 }
 
-- (id)domainForService:(int64_t)a3
+- (id)domainForService:(int64_t)service
 {
-  if (a3 == 1)
+  if (service == 1)
   {
-    v3 = [(SASBoardServicesConfiguration *)self signalDomain];
+    signalDomain = [(SASBoardServicesConfiguration *)self signalDomain];
   }
 
   else
   {
-    if (a3)
+    if (service)
     {
       goto LABEL_6;
     }
 
-    v3 = [(SASBoardServicesConfiguration *)self presentationDomain];
+    signalDomain = [(SASBoardServicesConfiguration *)self presentationDomain];
   }
 
-  a2 = v3;
+  a2 = signalDomain;
 LABEL_6:
 
   return a2;
 }
 
-- (id)identifierForService:(int64_t)a3
+- (id)identifierForService:(int64_t)service
 {
-  if (a3 == 1)
+  if (service == 1)
   {
-    v3 = [(SASBoardServicesConfiguration *)self signalIdentifier];
+    signalIdentifier = [(SASBoardServicesConfiguration *)self signalIdentifier];
   }
 
   else
   {
-    if (a3)
+    if (service)
     {
       goto LABEL_6;
     }
 
-    v3 = [(SASBoardServicesConfiguration *)self presentationIdentifier];
+    signalIdentifier = [(SASBoardServicesConfiguration *)self presentationIdentifier];
   }
 
-  a2 = v3;
+  a2 = signalIdentifier;
 LABEL_6:
 
   return a2;

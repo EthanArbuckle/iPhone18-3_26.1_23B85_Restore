@@ -1,7 +1,7 @@
 @interface IMTransferEncryptionController
 + (id)sharedInstance;
-- (void)decryptURL:(id)a3 key:(id)a4 outputFileName:(id)a5 completionBlock:(id)a6;
-- (void)encryptURL:(id)a3 completionBlock:(id)a4;
+- (void)decryptURL:(id)l key:(id)key outputFileName:(id)name completionBlock:(id)block;
+- (void)encryptURL:(id)l completionBlock:(id)block;
 @end
 
 @implementation IMTransferEncryptionController
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (void)encryptURL:(id)a3 completionBlock:(id)a4
+- (void)encryptURL:(id)l completionBlock:(id)block
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  lCopy = l;
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
-    if (v5)
+    if (lCopy)
     {
       if (IMOSLoggingEnabled())
       {
@@ -34,34 +34,34 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v11 = 138412290;
-          v12 = v5;
+          v12 = lCopy;
           _os_log_impl(&dword_254850000, v9, OS_LOG_TYPE_INFO, "Request to encrypt data at url: %@", &v11, 0xCu);
         }
       }
 
-      objc_msgSend_encryptURL_completionBlock_(IMTransferEncryptionHelpers, v8, v5, v7);
+      objc_msgSend_encryptURL_completionBlock_(IMTransferEncryptionHelpers, v8, lCopy, v7);
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0, 0, 0, 0, 300);
+      (*(blockCopy + 2))(blockCopy, 0, 0, 0, 0, 300);
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)decryptURL:(id)a3 key:(id)a4 outputFileName:(id)a5 completionBlock:(id)a6
+- (void)decryptURL:(id)l key:(id)key outputFileName:(id)name completionBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  lCopy = l;
+  keyCopy = key;
+  nameCopy = name;
+  blockCopy = block;
+  v13 = blockCopy;
+  if (blockCopy)
   {
-    if (v9)
+    if (lCopy)
     {
       if (IMOSLoggingEnabled())
       {
@@ -69,19 +69,19 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v17 = 138412546;
-          v18 = v9;
+          v18 = lCopy;
           v19 = 2112;
-          v20 = v10;
+          v20 = keyCopy;
           _os_log_impl(&dword_254850000, v15, OS_LOG_TYPE_INFO, "Request to decrypt data at url: %@  with key: %@", &v17, 0x16u);
         }
       }
 
-      objc_msgSend_decryptURL_key_outputFileName_completionBlock_(IMTransferEncryptionHelpers, v14, v9, v10, v11, v13);
+      objc_msgSend_decryptURL_key_outputFileName_completionBlock_(IMTransferEncryptionHelpers, v14, lCopy, keyCopy, nameCopy, v13);
     }
 
     else
     {
-      (*(v12 + 2))(v12, 0, 0, 0, 301);
+      (*(blockCopy + 2))(blockCopy, 0, 0, 0, 301);
     }
   }
 

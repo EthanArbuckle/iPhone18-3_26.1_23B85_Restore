@@ -1,25 +1,25 @@
 @interface PXStoryViewModeBrowserToPlayerTransition
-- (PXStoryViewModeBrowserToPlayerTransition)initWithDestinationTimelineLayoutSnapshot:(id)a3 assetReference:(id)a4 trackingClipIdentifier:(int64_t)a5;
-- (double)alphaForClipWithInfo:(id *)a3 proposedAlpha:(double)a4 inViewMode:(int64_t)a5 layout:(id)a6;
+- (PXStoryViewModeBrowserToPlayerTransition)initWithDestinationTimelineLayoutSnapshot:(id)snapshot assetReference:(id)reference trackingClipIdentifier:(int64_t)identifier;
+- (double)alphaForClipWithInfo:(id *)info proposedAlpha:(double)alpha inViewMode:(int64_t)mode layout:(id)layout;
 - (double)springStiffness;
 @end
 
 @implementation PXStoryViewModeBrowserToPlayerTransition
 
-- (double)alphaForClipWithInfo:(id *)a3 proposedAlpha:(double)a4 inViewMode:(int64_t)a5 layout:(id)a6
+- (double)alphaForClipWithInfo:(id *)info proposedAlpha:(double)alpha inViewMode:(int64_t)mode layout:(id)layout
 {
-  v10 = a6;
-  var1 = a3->var1;
+  layoutCopy = layout;
+  var1 = info->var1;
   if (var1 <= 3 && var1 != 1)
   {
     v16.receiver = self;
     v16.super_class = PXStoryViewModeBrowserToPlayerTransition;
-    memcpy(v15, a3, sizeof(v15));
-    [(PXStoryViewModeTransition *)&v16 alphaForClipWithInfo:v15 proposedAlpha:a5 inViewMode:v10 layout:a4];
-    a4 = v13;
+    memcpy(v15, info, sizeof(v15));
+    [(PXStoryViewModeTransition *)&v16 alphaForClipWithInfo:v15 proposedAlpha:mode inViewMode:layoutCopy layout:alpha];
+    alpha = v13;
   }
 
-  return a4;
+  return alpha;
 }
 
 - (double)springStiffness
@@ -30,17 +30,17 @@
   return v2 * 1.5;
 }
 
-- (PXStoryViewModeBrowserToPlayerTransition)initWithDestinationTimelineLayoutSnapshot:(id)a3 assetReference:(id)a4 trackingClipIdentifier:(int64_t)a5
+- (PXStoryViewModeBrowserToPlayerTransition)initWithDestinationTimelineLayoutSnapshot:(id)snapshot assetReference:(id)reference trackingClipIdentifier:(int64_t)identifier
 {
-  v8 = a3;
+  snapshotCopy = snapshot;
   v9 = MEMORY[0x1E696AD50];
-  v10 = a4;
+  referenceCopy = reference;
   v11 = objc_alloc_init(v9);
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v13 = [v8 timeline];
-  if (v8)
+  timeline = [snapshotCopy timeline];
+  if (snapshotCopy)
   {
-    [v8 timeRange];
+    [snapshotCopy timeRange];
   }
 
   else
@@ -48,7 +48,7 @@
     memset(v30, 0, sizeof(v30));
   }
 
-  [v8 timelineRect];
+  [snapshotCopy timelineRect];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -61,11 +61,11 @@
   v29 = v12;
   v22 = v12;
   v23 = v11;
-  [v13 enumerateClipsInTimeRange:v30 rect:v27 usingBlock:{v15, v17, v19, v21}];
+  [timeline enumerateClipsInTimeRange:v30 rect:v27 usingBlock:{v15, v17, v19, v21}];
 
   v26.receiver = self;
   v26.super_class = PXStoryViewModeBrowserToPlayerTransition;
-  v24 = [(PXStoryViewModeFocusedClipsViewTransition *)&v26 initWithSourceViewMode:2 sourceSnapshot:0 destinationViewMode:1 destinationSnapshot:v8 assetReference:v10 focusedClipIdentifiers:v23 trackingClipIdentifier:a5];
+  v24 = [(PXStoryViewModeFocusedClipsViewTransition *)&v26 initWithSourceViewMode:2 sourceSnapshot:0 destinationViewMode:1 destinationSnapshot:snapshotCopy assetReference:referenceCopy focusedClipIdentifiers:v23 trackingClipIdentifier:identifier];
 
   return v24;
 }

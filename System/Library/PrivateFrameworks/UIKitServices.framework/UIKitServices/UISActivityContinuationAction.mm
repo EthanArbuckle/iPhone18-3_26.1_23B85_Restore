@@ -1,6 +1,6 @@
 @interface UISActivityContinuationAction
-+ (void)buildWithUserActivity:(id)a3 completion:(id)a4;
-- (BOOL)isKindOfClass:(Class)a3;
++ (void)buildWithUserActivity:(id)activity completion:(id)completion;
+- (BOOL)isKindOfClass:(Class)class;
 - (NSData)userActivityData;
 - (NSDate)lastUpdateTime;
 - (NSString)activityType;
@@ -8,27 +8,27 @@
 - (NSString)identifier;
 - (NSString)originatingDeviceName;
 - (NSString)originatingDeviceType;
-- (UISActivityContinuationAction)initWithSettings:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UISActivityContinuationAction)initWithSettings:(id)settings;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISActivityContinuationAction
 
-+ (void)buildWithUserActivity:(id)a3 completion:(id)a4
++ (void)buildWithUserActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 activityType];
+  completionCopy = completion;
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__UISActivityContinuationAction_buildWithUserActivity_completion___block_invoke;
   v11[3] = &unk_1E74591C0;
-  v13 = v6;
-  v14 = a1;
-  v12 = v8;
-  v9 = v8;
-  v10 = v6;
-  [v7 _createUserActivityDataWithOptions:MEMORY[0x1E695E0F8] completionHandler:v11];
+  v13 = completionCopy;
+  selfCopy = self;
+  v12 = activityType;
+  v9 = activityType;
+  v10 = completionCopy;
+  [activityCopy _createUserActivityDataWithOptions:MEMORY[0x1E695E0F8] completionHandler:v11];
 }
 
 void __66__UISActivityContinuationAction_buildWithUserActivity_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -67,35 +67,35 @@ void __66__UISActivityContinuationAction_buildWithUserActivity_completion___bloc
   }
 }
 
-- (UISActivityContinuationAction)initWithSettings:(id)a3
+- (UISActivityContinuationAction)initWithSettings:(id)settings
 {
-  v5 = a3;
-  if (!v5)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UISActivityContinuationAction.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"settings"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISActivityContinuationAction.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"settings"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v7 = [v5 objectForKey:&unk_1F0A843E8];
+  v7 = [settingsCopy objectForKey:&unk_1F0A843E8];
   [v6 setObject:v7 forSetting:1];
 
-  v8 = [v5 objectForKey:&unk_1F0A84400];
+  v8 = [settingsCopy objectForKey:&unk_1F0A84400];
   [v6 setObject:v8 forSetting:2];
 
-  v9 = [v5 objectForKey:&unk_1F0A84418];
+  v9 = [settingsCopy objectForKey:&unk_1F0A84418];
   [v6 setObject:v9 forSetting:3];
 
-  v10 = [v5 objectForKey:&unk_1F0A84430];
+  v10 = [settingsCopy objectForKey:&unk_1F0A84430];
   [v6 setObject:v10 forSetting:4];
 
-  v11 = [v5 objectForKey:&unk_1F0A843B8];
+  v11 = [settingsCopy objectForKey:&unk_1F0A843B8];
   [v6 setObject:v11 forSetting:5];
 
-  v12 = [v5 objectForKey:&unk_1F0A843D0];
+  v12 = [settingsCopy objectForKey:&unk_1F0A843D0];
   [v6 setObject:v12 forSetting:6];
 
-  v13 = [v5 objectForKey:&unk_1F0A843A0];
+  v13 = [settingsCopy objectForKey:&unk_1F0A843A0];
   [v6 setObject:v13 forSetting:7];
 
   v17.receiver = self;
@@ -107,74 +107,74 @@ void __66__UISActivityContinuationAction_buildWithUserActivity_completion___bloc
 
 - (NSString)identifier
 {
-  v2 = [(UISActivityContinuationAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UISActivityContinuationAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
 - (NSString)activityTypeIdentifier
 {
-  v2 = [(UISActivityContinuationAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(UISActivityContinuationAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
 - (NSString)originatingDeviceType
 {
-  v2 = [(UISActivityContinuationAction *)self info];
-  v3 = [v2 objectForSetting:3];
+  info = [(UISActivityContinuationAction *)self info];
+  v3 = [info objectForSetting:3];
 
   return v3;
 }
 
 - (NSString)originatingDeviceName
 {
-  v2 = [(UISActivityContinuationAction *)self info];
-  v3 = [v2 objectForSetting:4];
+  info = [(UISActivityContinuationAction *)self info];
+  v3 = [info objectForSetting:4];
 
   return v3;
 }
 
 - (NSString)activityType
 {
-  v2 = [(UISActivityContinuationAction *)self info];
-  v3 = [v2 objectForSetting:5];
+  info = [(UISActivityContinuationAction *)self info];
+  v3 = [info objectForSetting:5];
 
   return v3;
 }
 
 - (NSDate)lastUpdateTime
 {
-  v2 = [(UISActivityContinuationAction *)self info];
-  v3 = [v2 objectForSetting:6];
+  info = [(UISActivityContinuationAction *)self info];
+  v3 = [info objectForSetting:6];
 
   return v3;
 }
 
 - (NSData)userActivityData
 {
-  v2 = [(UISActivityContinuationAction *)self info];
-  v3 = [v2 objectForSetting:7];
+  info = [(UISActivityContinuationAction *)self info];
+  v3 = [info objectForSetting:7];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 6)
+  if (setting - 1 > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E74591E0[a3 - 1];
+    return off_1E74591E0[setting - 1];
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = UISActivityContinuationAction;
@@ -185,7 +185,7 @@ void __66__UISActivityContinuationAction_buildWithUserActivity_completion___bloc
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 

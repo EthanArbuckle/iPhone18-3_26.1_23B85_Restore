@@ -1,25 +1,25 @@
 @interface CNAutocompleteStewieSearch
-- (id)executeRequest:(id)a3 completionHandler:(id)a4;
+- (id)executeRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation CNAutocompleteStewieSearch
 
-- (id)executeRequest:(id)a3 completionHandler:(id)a4
+- (id)executeRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v8 = [v7 schedulerProvider];
-  v9 = [v8 backgroundScheduler];
+  requestCopy = request;
+  handlerCopy = handler;
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  schedulerProvider = [currentEnvironment schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__CNAutocompleteStewieSearch_executeRequest_completionHandler___block_invoke;
   v14[3] = &unk_2781C4000;
-  v15 = v5;
-  v16 = v6;
-  v10 = v5;
-  v11 = v6;
-  v12 = [v9 performCancelableBlock:v14];
+  v15 = requestCopy;
+  v16 = handlerCopy;
+  v10 = requestCopy;
+  v11 = handlerCopy;
+  v12 = [backgroundScheduler performCancelableBlock:v14];
 
   return v12;
 }

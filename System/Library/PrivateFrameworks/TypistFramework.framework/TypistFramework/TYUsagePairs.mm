@@ -25,16 +25,16 @@
 
 - (id)usagePages
 {
-  v2 = [(TYUsagePairs *)self _usagePages];
-  v3 = [v2 copy];
+  _usagePages = [(TYUsagePairs *)self _usagePages];
+  v3 = [_usagePages copy];
 
   return v3;
 }
 
 - (id)usages
 {
-  v2 = [(TYUsagePairs *)self _usages];
-  v3 = [v2 copy];
+  _usages = [(TYUsagePairs *)self _usages];
+  v3 = [_usages copy];
 
   return v3;
 }

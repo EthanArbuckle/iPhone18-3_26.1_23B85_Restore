@@ -1,8 +1,8 @@
 @interface CRKConcreteIdentity
-+ (id)identityWithCertificate:(id)a3 privateKey:(id)a4;
-+ (id)identityWithConfiguration:(id)a3;
++ (id)identityWithCertificate:(id)certificate privateKey:(id)key;
++ (id)identityWithConfiguration:(id)configuration;
 - (CRKCertificate)certificate;
-- (CRKConcreteIdentity)initWithIdentity:(__SecIdentity *)a3;
+- (CRKConcreteIdentity)initWithIdentity:(__SecIdentity *)identity;
 - (CRKPrivateKey)privateKey;
 - (void)dealloc;
 @end
@@ -17,31 +17,31 @@
   [(CRKConcreteIdentity *)&v3 dealloc];
 }
 
-- (CRKConcreteIdentity)initWithIdentity:(__SecIdentity *)a3
+- (CRKConcreteIdentity)initWithIdentity:(__SecIdentity *)identity
 {
   v6.receiver = self;
   v6.super_class = CRKConcreteIdentity;
   v4 = [(CRKConcreteIdentity *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_underlyingIdentity = a3;
+    CFRetain(identity);
+    v4->_underlyingIdentity = identity;
   }
 
   return v4;
 }
 
-+ (id)identityWithConfiguration:(id)a3
++ (id)identityWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[CRKIdentityRefFactory alloc] initWithConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[CRKIdentityRefFactory alloc] initWithConfiguration:configurationCopy];
 
   v11 = 0;
   v6 = [(CRKIdentityRefFactory *)v5 makeIdentityRefWithError:&v11];
   v7 = v11;
   if (v6)
   {
-    v8 = [[a1 alloc] initWithIdentity:v6];
+    v8 = [[self alloc] initWithIdentity:v6];
     CFRelease(v6);
   }
 
@@ -59,18 +59,18 @@
   return v8;
 }
 
-+ (id)identityWithCertificate:(id)a3 privateKey:(id)a4
++ (id)identityWithCertificate:(id)certificate privateKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  [a3 underlyingCertificate];
-  [v8 underlyingPrivateKey];
+  certificateCopy = certificate;
+  keyCopy = key;
+  [certificate underlyingCertificate];
+  [keyCopy underlyingPrivateKey];
 
   v9 = SecIdentityCreate();
   if (v9)
   {
     v10 = v9;
-    v11 = [[a1 alloc] initWithIdentity:v9];
+    v11 = [[self alloc] initWithIdentity:v9];
     CFRelease(v10);
   }
 

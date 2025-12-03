@@ -4,8 +4,8 @@
 - (NSArray)accessibilityElements;
 - (double)minimumGap;
 - (void)layoutSubviews;
-- (void)setBadgeSize:(CGSize)a3;
-- (void)setMinimumGap:(double)a3;
+- (void)setBadgeSize:(CGSize)size;
+- (void)setMinimumGap:(double)gap;
 @end
 
 @implementation TTRListAppearanceGridView
@@ -34,10 +34,10 @@
   return result;
 }
 
-- (void)setBadgeSize:(CGSize)a3
+- (void)setBadgeSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = (self + OBJC_IVAR____TtC15RemindersUICore25TTRListAppearanceGridView_badgeSize);
   swift_beginAccess();
   *v6 = width;
@@ -52,11 +52,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setMinimumGap:(double)a3
+- (void)setMinimumGap:(double)gap
 {
   v5 = OBJC_IVAR____TtC15RemindersUICore25TTRListAppearanceGridView_minimumGap;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = gap;
   [(TTRListAppearanceGridView *)self invalidateIntrinsicContentSize];
 }
 
@@ -72,7 +72,7 @@
 - (NSArray)accessibilityElements
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_21DBF8E0C();
   sub_21D7F6724(v4);
 

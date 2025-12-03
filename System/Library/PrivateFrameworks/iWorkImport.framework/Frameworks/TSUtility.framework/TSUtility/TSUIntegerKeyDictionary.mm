@@ -1,16 +1,16 @@
 @interface TSUIntegerKeyDictionary
-- (TSUIntegerKeyDictionary)initWithCapacity:(unint64_t)a3;
+- (TSUIntegerKeyDictionary)initWithCapacity:(unint64_t)capacity;
 - (id)allValues;
 - (id)description;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)valueEnumerator;
 - (void)dealloc;
 @end
 
 @implementation TSUIntegerKeyDictionary
 
-- (TSUIntegerKeyDictionary)initWithCapacity:(unint64_t)a3
+- (TSUIntegerKeyDictionary)initWithCapacity:(unint64_t)capacity
 {
   v4 = *MEMORY[0x277CBF138];
   keyCallBacks.retain = 0;
@@ -24,7 +24,7 @@
   v5 = [(TSUIntegerKeyDictionary *)&v7 init];
   if (v5)
   {
-    v5->mDictionary = CFDictionaryCreateMutable(0, a3, &keyCallBacks, MEMORY[0x277CBF150]);
+    v5->mDictionary = CFDictionaryCreateMutable(0, capacity, &keyCallBacks, MEMORY[0x277CBF150]);
   }
 
   return v5;
@@ -70,12 +70,12 @@
 
 - (id)valueEnumerator
 {
-  v2 = [(TSUIntegerKeyDictionary *)self allValues];
+  allValues = [(TSUIntegerKeyDictionary *)self allValues];
 
-  return [v2 objectEnumerator];
+  return [allValues objectEnumerator];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSUIntegerKeyDictionary);
   mDictionary = v4->mDictionary;
@@ -90,21 +90,21 @@
 
 - (id)description
 {
-  v3 = [(TSUIntegerKeyDictionary *)self keyEnumerator];
-  v4 = [MEMORY[0x277CCAB68] string];
-  [v4 appendString:@"{\n"];
-  v5 = [v3 nextKey];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  keyEnumerator = [(TSUIntegerKeyDictionary *)self keyEnumerator];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"{\n"];
+  nextKey = [keyEnumerator nextKey];
+  if (nextKey != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v5; i != 0x7FFFFFFFFFFFFFFFLL; i = [v3 nextKey])
+    for (i = nextKey; i != 0x7FFFFFFFFFFFFFFFLL; i = [keyEnumerator nextKey])
     {
       v7 = [(TSUIntegerKeyDictionary *)self objectForKey:i];
-      [v4 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%ld = %@;\n", i, objc_msgSend(v7, "description"))}];
+      [string appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%ld = %@;\n", i, objc_msgSend(v7, "description"))}];
     }
   }
 
-  [v4 appendString:@"}"];
-  return v4;
+  [string appendString:@"}"];
+  return string;
 }
 
 @end

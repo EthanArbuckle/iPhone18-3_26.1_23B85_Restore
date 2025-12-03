@@ -1,11 +1,11 @@
 @interface _WBSStartPageSuggestionsProviderProxy
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (NSArray)suggestions;
 - (NSString)providerSectionIdentifier;
 - (WBSStartPageSuggestionsProviderBroadcaster)owner;
 - (WBSStartPageSuggestionsProviderDelegate)suggestionsProviderDelegate;
-- (id)attributionViewForSuggestion:(id)a3;
-- (id)fetchMetadataForSuggestion:(id)a3 completionHandler:(id)a4;
+- (id)attributionViewForSuggestion:(id)suggestion;
+- (id)fetchMetadataForSuggestion:(id)suggestion completionHandler:(id)handler;
 @end
 
 @implementation _WBSStartPageSuggestionsProviderProxy
@@ -13,40 +13,40 @@
 - (NSString)providerSectionIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v3 = [WeakRetained suggestionsProvider];
-  v4 = [v3 providerSectionIdentifier];
+  suggestionsProvider = [WeakRetained suggestionsProvider];
+  providerSectionIdentifier = [suggestionsProvider providerSectionIdentifier];
 
-  return v4;
+  return providerSectionIdentifier;
 }
 
 - (NSArray)suggestions
 {
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v3 = [WeakRetained suggestionsProvider];
-  v4 = [v3 suggestions];
+  suggestionsProvider = [WeakRetained suggestionsProvider];
+  suggestions = [suggestionsProvider suggestions];
 
-  return v4;
+  return suggestions;
 }
 
-- (id)fetchMetadataForSuggestion:(id)a3 completionHandler:(id)a4
+- (id)fetchMetadataForSuggestion:(id)suggestion completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  suggestionCopy = suggestion;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  v9 = [WeakRetained suggestionsProvider];
-  v10 = [v9 fetchMetadataForSuggestion:v7 completionHandler:v6];
+  suggestionsProvider = [WeakRetained suggestionsProvider];
+  v10 = [suggestionsProvider fetchMetadataForSuggestion:suggestionCopy completionHandler:handlerCopy];
 
   return v10;
 }
 
-- (id)attributionViewForSuggestion:(id)a3
+- (id)attributionViewForSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
   if ([WeakRetained providerSupportsAttributionViews])
   {
-    v6 = [WeakRetained suggestionsProvider];
-    v7 = [v6 attributionViewForSuggestion:v4];
+    suggestionsProvider = [WeakRetained suggestionsProvider];
+    v7 = [suggestionsProvider attributionViewForSuggestion:suggestionCopy];
   }
 
   else
@@ -57,14 +57,14 @@
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_attributionViewForSuggestion_ == a3)
+  if (sel_attributionViewForSuggestion_ == selector)
   {
     WeakRetained = objc_loadWeakRetained(&self->_owner);
-    v5 = [WeakRetained providerSupportsAttributionViews];
+    providerSupportsAttributionViews = [WeakRetained providerSupportsAttributionViews];
 
-    return v5;
+    return providerSupportsAttributionViews;
   }
 
   else

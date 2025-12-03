@@ -1,21 +1,21 @@
 @interface PSGInputSuggestionsExplanationSet
-+ (id)_stringFromExplanation:(unsigned __int8)a3;
-+ (id)stringFromExplanationCode:(unsigned int)a3;
++ (id)_stringFromExplanation:(unsigned __int8)explanation;
++ (id)stringFromExplanationCode:(unsigned int)code;
 - (BOOL)hasContactsServingError;
 - (BOOL)hasPETLoggingData;
 - (BOOL)hasTriggeringXPCTimeout;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExplanationSet:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExplanationSet:(id)set;
 - (PSGInputSuggestionsExplanationSet)init;
-- (PSGInputSuggestionsExplanationSet)initWithCoder:(id)a3;
-- (PSGInputSuggestionsExplanationSet)initWithSet:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PSGInputSuggestionsExplanationSet)initWithCoder:(id)coder;
+- (PSGInputSuggestionsExplanationSet)initWithSet:(id)set;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)_pushExplanationCode:(unsigned __int16)a3 namespaceId:(unsigned __int16)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateExplanationCodeWithBlock:(id)a3;
+- (void)_pushExplanationCode:(unsigned __int16)code namespaceId:(unsigned __int16)id;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateExplanationCodeWithBlock:(id)block;
 @end
 
 @implementation PSGInputSuggestionsExplanationSet
@@ -79,13 +79,13 @@ void __48__PSGInputSuggestionsExplanationSet_description__block_invoke(uint64_t 
 
 - (unint64_t)hash
 {
-  v2 = [(_PASLock *)self->_lock unsafeGuardedData];
-  v3 = v2[1];
+  unsafeGuardedData = [(_PASLock *)self->_lock unsafeGuardedData];
+  v3 = unsafeGuardedData[1];
 
   if ([v3 count])
   {
-    v4 = [v3 allObjects];
-    v5 = [v4 objectAtIndexedSubscript:0];
+    allObjects = [v3 allObjects];
+    v5 = [allObjects objectAtIndexedSubscript:0];
     v6 = [v5 hash];
   }
 
@@ -97,82 +97,82 @@ void __48__PSGInputSuggestionsExplanationSet_description__block_invoke(uint64_t 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGInputSuggestionsExplanationSet *)self isEqualToExplanationSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGInputSuggestionsExplanationSet *)self isEqualToExplanationSet:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToExplanationSet:(id)a3
+- (BOOL)isEqualToExplanationSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     return 0;
   }
 
   lock = self->_lock;
-  v4 = a3;
-  v5 = [(_PASLock *)lock unsafeGuardedData];
-  v6 = v5[1];
-  v7 = v4[1];
+  setCopy = set;
+  unsafeGuardedData = [(_PASLock *)lock unsafeGuardedData];
+  v6 = unsafeGuardedData[1];
+  v7 = setCopy[1];
 
-  v8 = [v7 unsafeGuardedData];
-  LOBYTE(v6) = [v6 isEqualToSet:v8[1]];
+  unsafeGuardedData2 = [v7 unsafeGuardedData];
+  LOBYTE(v6) = [v6 isEqualToSet:unsafeGuardedData2[1]];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PSGInputSuggestionsExplanationSet alloc];
-  v6 = [(_PASLock *)self->_lock unsafeGuardedData];
-  v7 = [v6[1] copyWithZone:a3];
+  unsafeGuardedData = [(_PASLock *)self->_lock unsafeGuardedData];
+  v7 = [unsafeGuardedData[1] copyWithZone:zone];
   v8 = [(PSGInputSuggestionsExplanationSet *)v5 initWithSet:v7];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lock = self->_lock;
-  v4 = a3;
-  v5 = [(_PASLock *)lock unsafeGuardedData];
-  [v4 encodeObject:v5[1] forKey:@"set"];
+  coderCopy = coder;
+  unsafeGuardedData = [(_PASLock *)lock unsafeGuardedData];
+  [coderCopy encodeObject:unsafeGuardedData[1] forKey:@"set"];
 }
 
-- (PSGInputSuggestionsExplanationSet)initWithCoder:(id)a3
+- (PSGInputSuggestionsExplanationSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x277CBEB98]);
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"set"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"set"];
 
   if (v9)
   {
     self = [(PSGInputSuggestionsExplanationSet *)self initWithSet:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (BOOL)hasTriggeringXPCTimeout
@@ -340,16 +340,16 @@ uint64_t __42__PSGInputSuggestionsExplanationSet_count__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)enumerateExplanationCodeWithBlock:(id)a3
+- (void)enumerateExplanationCodeWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__PSGInputSuggestionsExplanationSet_enumerateExplanationCodeWithBlock___block_invoke;
   v7[3] = &unk_279ABCE38;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -373,18 +373,18 @@ uint64_t __71__PSGInputSuggestionsExplanationSet_enumerateExplanationCodeWithBlo
   return v4(v2, v3);
 }
 
-- (void)_pushExplanationCode:(unsigned __int16)a3 namespaceId:(unsigned __int16)a4
+- (void)_pushExplanationCode:(unsigned __int16)code namespaceId:(unsigned __int16)id
 {
-  v4 = a4;
+  idCopy = id;
   v12 = *MEMORY[0x277D85DE8];
-  if (a4 < 2u)
+  if (id < 2u)
   {
     lock = self->_lock;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __70__PSGInputSuggestionsExplanationSet__pushExplanationCode_namespaceId___block_invoke;
     v8[3] = &__block_descriptor_36_e54_v16__0__PSGInputSuggestionsExplanationSetGuardedData_8l;
-    v9 = a3 | (a4 << 16);
+    v9 = code | (id << 16);
     [(_PASLock *)lock runWithLockAcquired:v8];
   }
 
@@ -394,7 +394,7 @@ uint64_t __71__PSGInputSuggestionsExplanationSet_enumerateExplanationCodeWithBlo
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
       *buf = 67109120;
-      v11 = v4;
+      v11 = idCopy;
       _os_log_fault_impl(&dword_260D18000, v5, OS_LOG_TYPE_FAULT, "Unexpcted namespace id: %d", buf, 8u);
     }
   }
@@ -409,16 +409,16 @@ void __70__PSGInputSuggestionsExplanationSet__pushExplanationCode_namespaceId___
   [v2 addObject:v3];
 }
 
-- (PSGInputSuggestionsExplanationSet)initWithSet:(id)a3
+- (PSGInputSuggestionsExplanationSet)initWithSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v11.receiver = self;
   v11.super_class = PSGInputSuggestionsExplanationSet;
   v6 = [(PSGInputSuggestionsExplanationSet *)&v11 init];
   if (v6)
   {
     v7 = objc_opt_new();
-    objc_storeStrong(v7 + 1, a3);
+    objc_storeStrong(v7 + 1, set);
     v8 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v7];
     lock = v6->_lock;
     v6->_lock = v8;
@@ -435,36 +435,36 @@ void __70__PSGInputSuggestionsExplanationSet__pushExplanationCode_namespaceId___
   return v4;
 }
 
-+ (id)stringFromExplanationCode:(unsigned int)a3
++ (id)stringFromExplanationCode:(unsigned int)code
 {
-  if (HIWORD(a3) == 1)
+  if (HIWORD(code) == 1)
   {
-    v3 = [MEMORY[0x277D3A470] stringFromExplanation:a3];
+    v3 = [MEMORY[0x277D3A470] stringFromExplanation:code];
   }
 
-  else if (HIWORD(a3))
+  else if (HIWORD(code))
   {
     v3 = @"Unknown";
   }
 
   else
   {
-    v3 = [a1 _stringFromExplanation:a3];
+    v3 = [self _stringFromExplanation:code];
   }
 
   return v3;
 }
 
-+ (id)_stringFromExplanation:(unsigned __int8)a3
++ (id)_stringFromExplanation:(unsigned __int8)explanation
 {
-  if (a3 > 7u)
+  if (explanation > 7u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_279ABCED0 + a3);
+    return *(&off_279ABCED0 + explanation);
   }
 }
 

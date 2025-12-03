@@ -11,8 +11,8 @@
 {
   v2 = MEMORY[0x277CCD838];
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(WDDeviceStoredDataViewController *)self device];
-  v5 = [v3 setWithObject:v4];
+  device = [(WDDeviceStoredDataViewController *)self device];
+  v5 = [v3 setWithObject:device];
   v6 = [v2 predicateForObjectsFromDevices:v5];
 
   return v6;
@@ -20,52 +20,52 @@
 
 - (id)storedDataDisplayName
 {
-  v3 = [(WDDeviceStoredDataViewController *)self displayName];
-  v4 = v3;
-  if (v3)
+  displayName = [(WDDeviceStoredDataViewController *)self displayName];
+  v4 = displayName;
+  if (displayName)
   {
-    v5 = v3;
+    name = displayName;
   }
 
   else
   {
-    v6 = [(WDDeviceStoredDataViewController *)self device];
-    v5 = [v6 name];
+    device = [(WDDeviceStoredDataViewController *)self device];
+    name = [device name];
   }
 
-  return v5;
+  return name;
 }
 
 - (BOOL)shouldShowDeleteAllDataButton
 {
-  v3 = [(WDStoredDataByCategoryViewController *)self profile];
-  v4 = [v3 healthStore];
-  v5 = [v4 profileIdentifier];
-  v6 = [v5 type];
+  profile = [(WDStoredDataByCategoryViewController *)self profile];
+  healthStore = [profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v6 == 3)
+  if (type == 3)
   {
     return 0;
   }
 
-  v8 = [(WDStoredDataByCategoryViewController *)self capturedSampleTypes];
-  if ([v8 count])
+  capturedSampleTypes = [(WDStoredDataByCategoryViewController *)self capturedSampleTypes];
+  if ([capturedSampleTypes count])
   {
-    v7 = 1;
+    isAppleInternalInstall = 1;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCDD30] isAppleInternalInstall];
+    isAppleInternalInstall = [MEMORY[0x277CCDD30] isAppleInternalInstall];
   }
 
-  return v7;
+  return isAppleInternalInstall;
 }
 
 - (void)deleteAllStoredData
 {
   v27 = *MEMORY[0x277D85DE8];
-  v14 = [(WDDeviceStoredDataViewController *)self storedDataPredicate];
+  storedDataPredicate = [(WDDeviceStoredDataViewController *)self storedDataPredicate];
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
@@ -76,8 +76,8 @@
   v23 = 0u;
   v21 = 0u;
   v20 = 0u;
-  v4 = [(WDStoredDataByCategoryViewController *)self capturedSampleTypes];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  capturedSampleTypes = [(WDStoredDataByCategoryViewController *)self capturedSampleTypes];
+  v5 = [capturedSampleTypes countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v5)
   {
     v6 = *v21;
@@ -88,13 +88,13 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(capturedSampleTypes);
         }
 
         v8 = *(*(&v20 + 1) + 8 * v7);
         dispatch_group_enter(v3);
-        v9 = [(WDStoredDataByCategoryViewController *)self profile];
-        v10 = [v9 healthStore];
+        profile = [(WDStoredDataByCategoryViewController *)self profile];
+        healthStore = [profile healthStore];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __55__WDDeviceStoredDataViewController_deleteAllStoredData__block_invoke;
@@ -103,13 +103,13 @@
         v18 = v24;
         v19 = a2;
         v17 = v3;
-        [v10 deleteObjectsOfType:v8 predicate:v14 withCompletion:v16];
+        [healthStore deleteObjectsOfType:v8 predicate:storedDataPredicate withCompletion:v16];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v5 = [capturedSampleTypes countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v5);

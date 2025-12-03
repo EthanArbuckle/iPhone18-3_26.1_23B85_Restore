@@ -1,20 +1,20 @@
 @interface ICASCloudSyncableData
-- (ICASCloudSyncableData)initWithSyncableDataSummary:(id)a3;
+- (ICASCloudSyncableData)initWithSyncableDataSummary:(id)summary;
 - (id)toDict;
 @end
 
 @implementation ICASCloudSyncableData
 
-- (ICASCloudSyncableData)initWithSyncableDataSummary:(id)a3
+- (ICASCloudSyncableData)initWithSyncableDataSummary:(id)summary
 {
-  v5 = a3;
+  summaryCopy = summary;
   v9.receiver = self;
   v9.super_class = ICASCloudSyncableData;
   v6 = [(ICASCloudSyncableData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_syncableDataSummary, a3);
+    objc_storeStrong(&v6->_syncableDataSummary, summary);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"syncableDataSummary";
-  v3 = [(ICASCloudSyncableData *)self syncableDataSummary];
-  if (v3)
+  syncableDataSummary = [(ICASCloudSyncableData *)self syncableDataSummary];
+  if (syncableDataSummary)
   {
-    v4 = [(ICASCloudSyncableData *)self syncableDataSummary];
+    syncableDataSummary2 = [(ICASCloudSyncableData *)self syncableDataSummary];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    syncableDataSummary2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = syncableDataSummary2;
+  v10[0] = syncableDataSummary2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

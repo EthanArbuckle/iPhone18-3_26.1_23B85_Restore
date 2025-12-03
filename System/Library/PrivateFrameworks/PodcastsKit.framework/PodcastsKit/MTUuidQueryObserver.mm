@@ -1,15 +1,15 @@
 @interface MTUuidQueryObserver
-- (id)addResultsChangedHandler:(id)a3;
-- (void)controllerDidChangeContent:(id)a3;
+- (id)addResultsChangedHandler:(id)handler;
+- (void)controllerDidChangeContent:(id)content;
 - (void)notifyObservers;
 - (void)startObserving;
 @end
 
 @implementation MTUuidQueryObserver
 
-- (id)addResultsChangedHandler:(id)a3
+- (id)addResultsChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v7.receiver = self;
   v7.super_class = MTUuidQueryObserver;
   v5 = [(MTBaseQueryObserver *)&v7 addResultsChangedHandler:v4];
@@ -39,26 +39,26 @@
   v13[3] = &unk_279A44740;
   v13[4] = &v14;
   [(MTBaseQueryObserver *)self results:v13];
-  v3 = [(MTUuidQueryObserver *)self uuidOrder];
+  uuidOrder = [(MTUuidQueryObserver *)self uuidOrder];
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
   v5 = [v4 initWithArray:v15[5]];
-  v6 = [(MTUuidQueryObserver *)self uuidSet];
-  v7 = [v6 mutableCopy];
+  uuidSet = [(MTUuidQueryObserver *)self uuidSet];
+  v7 = [uuidSet mutableCopy];
   [v7 minusSet:v5];
   v8 = [v5 mutableCopy];
-  [v8 minusSet:v6];
+  [v8 minusSet:uuidSet];
   [(MTUuidQueryObserver *)self setUuidSet:v5];
   [(MTUuidQueryObserver *)self setUuidOrder:v15[5]];
-  if ([v7 count] || objc_msgSend(v8, "count") || (objc_msgSend(v3, "isEqual:", v15[5]) & 1) == 0)
+  if ([v7 count] || objc_msgSend(v8, "count") || (objc_msgSend(uuidOrder, "isEqual:", v15[5]) & 1) == 0)
   {
-    v9 = [(MTBaseQueryObserver *)self handlers];
+    handlers = [(MTBaseQueryObserver *)self handlers];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __38__MTUuidQueryObserver_notifyObservers__block_invoke_3;
     v10[3] = &unk_279A44DF8;
     v11 = v7;
     v12 = v8;
-    [v9 enumerateKeysAndObjectsUsingBlock:v10];
+    [handlers enumerateKeysAndObjectsUsingBlock:v10];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -80,11 +80,11 @@ void __38__MTUuidQueryObserver_notifyObservers__block_invoke_3(uint64_t a1, int 
   (*(v4 + 2))(v4, *(a1 + 32), *(a1 + 40));
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = [a3 delegate];
+  delegate = [content delegate];
 
-  if (v4)
+  if (delegate)
   {
 
     [(MTUuidQueryObserver *)self notifyObservers];

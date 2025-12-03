@@ -1,10 +1,10 @@
 @interface UITextCursorAssertionController
 - (BOOL)_isNonBlinking;
 - (UITextCursorAssertionControllerSubject)subject;
-- (id)_createAssertionWithReason:(id)a3 options:(unint64_t)a4 userInfo:(id)a5;
+- (id)_createAssertionWithReason:(id)reason options:(unint64_t)options userInfo:(id)info;
 - (id)debugDescription;
-- (void)_beginTrackingAssertion:(id)a3;
-- (void)_endTrackingAssertion:(id)a3;
+- (void)_beginTrackingAssertion:(id)assertion;
+- (void)_endTrackingAssertion:(id)assertion;
 - (void)_updateSubjectWithAssertionState;
 - (void)dealloc;
 @end
@@ -34,7 +34,7 @@
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v41 = self;
+  selfCopy = self;
   obj = self->_assertions;
   v2 = [(NSHashTable *)obj countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v2)
@@ -42,7 +42,7 @@
     v3 = v2;
     v4 = 0;
     v5 = 0;
-    v6 = 1;
+    integerValue = 1;
     v44 = *v49;
     LODWORD(v7) = 1;
     LODWORD(v8) = 1;
@@ -57,54 +57,54 @@
 
         v10 = *(*(&v48 + 1) + 8 * i);
         v11 = [v10 options] & 1;
-        v12 = [v10 options];
-        v46 = (v12 & 2 | v11) == 0;
-        v47 = (v12 & 2) == 0;
-        v45 = [v10 options];
+        options = [v10 options];
+        v46 = (options & 2 | v11) == 0;
+        v47 = (options & 2) == 0;
+        options2 = [v10 options];
         if (([v10 options] & 0x40) != 0)
         {
           v14 = v5 | 8;
-          v15 = [v10 userInfo];
-          v16 = [v15 objectForKeyedSubscript:@"_UITextCursorAnimationStyleUserInfoKey"];
-          v6 = [v16 integerValue];
+          userInfo = [v10 userInfo];
+          v16 = [userInfo objectForKeyedSubscript:@"_UITextCursorAnimationStyleUserInfoKey"];
+          integerValue = [v16 integerValue];
         }
 
         else
         {
-          v13 = [v10 options];
-          v14 = ([v10 options] >> 3) & 2 | (v13 >> 3) & 1 | v5;
+          options3 = [v10 options];
+          v14 = ([v10 options] >> 3) & 2 | (options3 >> 3) & 1 | v5;
         }
 
         v5 = ([v10 options] >> 3) & 0x10 | v14;
         if (([v10 options] & 0x20) != 0)
         {
-          v17 = [v10 userInfo];
-          [v17 objectForKeyedSubscript:@"_UITextCursorKeyboardIndicatorUserInfoKey"];
+          userInfo2 = [v10 userInfo];
+          [userInfo2 objectForKeyedSubscript:@"_UITextCursorKeyboardIndicatorUserInfoKey"];
           v43 = v7;
           v18 = v8;
-          v8 = v6;
+          v8 = integerValue;
           v19 = v4;
           v20 = v5;
           v22 = v21 = v3;
-          v23 = [v22 BOOLValue];
+          bOOLValue = [v22 BOOLValue];
 
           v3 = v21;
           v24 = 4;
-          if (v23)
+          if (bOOLValue)
           {
             v24 = 36;
           }
 
           v25 = v24 | v20;
           v4 = v19;
-          v6 = v8;
+          integerValue = v8;
           LODWORD(v8) = v18;
           LODWORD(v7) = v43;
-          v26 = [v10 userInfo];
-          v27 = [v26 objectForKeyedSubscript:@"_UITextCursorInputModeSwitcherUserInfoKey"];
-          v28 = [v27 BOOLValue];
+          userInfo3 = [v10 userInfo];
+          v27 = [userInfo3 objectForKeyedSubscript:@"_UITextCursorInputModeSwitcherUserInfoKey"];
+          bOOLValue2 = [v27 BOOLValue];
 
-          if (v28)
+          if (bOOLValue2)
           {
             v5 = v25 | 0x40;
           }
@@ -117,10 +117,10 @@
 
         v7 = v47 & v7;
         v8 = v46 & v8;
-        v4 |= (v45 >> 2) & 1;
+        v4 |= (options2 >> 2) & 1;
         if (!v5)
         {
-          v6 = 0;
+          integerValue = 0;
         }
       }
 
@@ -135,58 +135,58 @@
     LOBYTE(v4) = 0;
     v5 = 0;
     v7 = 1;
-    v6 = 1;
+    integerValue = 1;
     v8 = 1;
   }
 
-  WeakRetained = objc_loadWeakRetained(&v41->_subject);
-  v30 = [WeakRetained cursorVisible];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_subject);
+  cursorVisible = [WeakRetained cursorVisible];
 
-  if (v7 != v30)
+  if (v7 != cursorVisible)
   {
-    v31 = objc_loadWeakRetained(&v41->_subject);
+    v31 = objc_loadWeakRetained(&selfCopy->_subject);
     [v31 setCursorVisible:v7];
   }
 
-  v32 = objc_loadWeakRetained(&v41->_subject);
-  v33 = [v32 cursorBlinks];
+  v32 = objc_loadWeakRetained(&selfCopy->_subject);
+  cursorBlinks = [v32 cursorBlinks];
 
-  if (v8 != v33)
+  if (v8 != cursorBlinks)
   {
-    v34 = objc_loadWeakRetained(&v41->_subject);
+    v34 = objc_loadWeakRetained(&selfCopy->_subject);
     [v34 setCursorBlinks:v8];
   }
 
-  v35 = objc_loadWeakRetained(&v41->_subject);
-  v36 = [v35 ghostAppearance];
+  v35 = objc_loadWeakRetained(&selfCopy->_subject);
+  ghostAppearance = [v35 ghostAppearance];
 
-  if ((v4 & 1) != v36)
+  if ((v4 & 1) != ghostAppearance)
   {
-    v37 = objc_loadWeakRetained(&v41->_subject);
+    v37 = objc_loadWeakRetained(&selfCopy->_subject);
     [v37 setGhostAppearance:v4 & 1];
   }
 
-  v38 = objc_loadWeakRetained(&v41->_subject);
+  v38 = objc_loadWeakRetained(&selfCopy->_subject);
   v39 = objc_opt_respondsToSelector();
 
   if (v39)
   {
-    v40 = objc_loadWeakRetained(&v41->_subject);
-    [v40 setActiveIndicators:v5 animationStyle:v6];
+    v40 = objc_loadWeakRetained(&selfCopy->_subject);
+    [v40 setActiveIndicators:v5 animationStyle:integerValue];
   }
 }
 
-- (id)_createAssertionWithReason:(id)a3 options:(unint64_t)a4 userInfo:(id)a5
+- (id)_createAssertionWithReason:(id)reason options:(unint64_t)options userInfo:(id)info
 {
-  v9 = a5;
-  v10 = a3;
-  if (![v10 length])
+  infoCopy = info;
+  reasonCopy = reason;
+  if (![reasonCopy length])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITextCursorAssertion.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"reason.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextCursorAssertion.m" lineNumber:121 description:{@"Invalid parameter not satisfying: %@", @"reason.length > 0"}];
   }
 
-  v11 = [[_UITextCursorAssertion alloc] _initWithReason:v10 options:a4 controller:self userInfo:v9];
+  v11 = [[_UITextCursorAssertion alloc] _initWithReason:reasonCopy options:options controller:self userInfo:infoCopy];
 
   [(UITextCursorAssertionController *)self _beginTrackingAssertion:v11];
 
@@ -236,28 +236,28 @@ LABEL_11:
   return v3;
 }
 
-- (void)_beginTrackingAssertion:(id)a3
+- (void)_beginTrackingAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   assertions = self->_assertions;
-  v8 = v4;
+  v8 = assertionCopy;
   if (!assertions)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_assertions;
-    self->_assertions = v6;
+    self->_assertions = weakObjectsHashTable;
 
-    v4 = v8;
+    assertionCopy = v8;
     assertions = self->_assertions;
   }
 
-  [(NSHashTable *)assertions addObject:v4];
+  [(NSHashTable *)assertions addObject:assertionCopy];
   [(UITextCursorAssertionController *)self _updateSubjectWithAssertionState];
 }
 
-- (void)_endTrackingAssertion:(id)a3
+- (void)_endTrackingAssertion:(id)assertion
 {
-  [(NSHashTable *)self->_assertions removeObject:a3];
+  [(NSHashTable *)self->_assertions removeObject:assertion];
 
   [(UITextCursorAssertionController *)self _updateSubjectWithAssertionState];
 }
@@ -267,8 +267,8 @@ LABEL_11:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NSHashTable *)self->_assertions allObjects];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, v6];
+  allObjects = [(NSHashTable *)self->_assertions allObjects];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, allObjects];
 
   return v7;
 }

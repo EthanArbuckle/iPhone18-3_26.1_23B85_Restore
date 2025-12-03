@@ -1,100 +1,100 @@
 @interface VNTorsoprintGeneratorFaceBased
 + (CGSize)torsoprintDescriptorSize;
-+ (CGSize)torsoprintInputImageSizeForFaceOrientation:(int)a3;
-- (BOOL)_calculateTorsoBBoxFromFaceBBox:(CGRect)a3 insideImageWithSize:(CGSize)a4 faceOrientationRelativeToUpright:(int)a5 torsoBBox:(CGRect *)a6 error:(id *)a7;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (CGSize)torsoprintInputImageSizeForFaceOrientation:(int)orientation;
+- (BOOL)_calculateTorsoBBoxFromFaceBBox:(CGRect)box insideImageWithSize:(CGSize)size faceOrientationRelativeToUpright:(int)upright torsoBBox:(CGRect *)bBox error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNTorsoprintGeneratorFaceBased
 
-- (BOOL)_calculateTorsoBBoxFromFaceBBox:(CGRect)a3 insideImageWithSize:(CGSize)a4 faceOrientationRelativeToUpright:(int)a5 torsoBBox:(CGRect *)a6 error:(id *)a7
+- (BOOL)_calculateTorsoBBoxFromFaceBBox:(CGRect)box insideImageWithSize:(CGSize)size faceOrientationRelativeToUpright:(int)upright torsoBBox:(CGRect *)bBox error:(id *)error
 {
-  if (!a6)
+  if (!bBox)
   {
-    if (a7)
+    if (error)
     {
       v13 = @"Memory for torso bouding box is not allocated";
 LABEL_23:
-      v33 = [VNError errorForInternalErrorWithLocalizedDescription:v13, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.width, a4.height];
+      v33 = [VNError errorForInternalErrorWithLocalizedDescription:v13, box.origin.x, box.origin.y, box.size.width, box.size.height, size.width, size.height];
       v34 = v33;
       result = 0;
-      *a7 = v33;
+      *error = v33;
       return result;
     }
 
     return 0;
   }
 
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v11 = MEMORY[0x1E695F050];
   v36[0] = *MEMORY[0x1E695F050];
-  if (a5 <= 5)
+  if (upright <= 5)
   {
-    if (a5 == 1)
+    if (upright == 1)
     {
-      v20 = (a3.origin.x + a3.size.width * -0.5) * a4.width;
-      a3.origin.x = roundf(v20);
-      a4.width = -3.0;
-      a3.origin.y = a3.origin.y + a3.size.height * -3.0;
+      v20 = (box.origin.x + box.size.width * -0.5) * size.width;
+      box.origin.x = roundf(v20);
+      size.width = -3.0;
+      box.origin.y = box.origin.y + box.size.height * -3.0;
       goto LABEL_15;
     }
 
-    if (a5 == 3)
+    if (upright == 3)
     {
-      a4.width = -0.5;
-      v12 = (a3.origin.x + a3.size.width * -0.5) * width;
-      a3.origin.x = roundf(v12);
+      size.width = -0.5;
+      v12 = (box.origin.x + box.size.width * -0.5) * width;
+      box.origin.x = roundf(v12);
 LABEL_15:
-      v21 = a3.origin.y * a4.height;
+      v21 = box.origin.y * size.height;
       v16 = roundf(v21);
-      v22 = a3.size.height;
+      v22 = box.size.height;
       v18 = xmmword_1A6038EF0;
       goto LABEL_16;
     }
 
 LABEL_12:
-    if (a7)
+    if (error)
     {
-      v19 = [MEMORY[0x1E696AD98] numberWithInt:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.width, a4.height, a4.width, a4.height}];
-      *a7 = [VNError errorForInvalidArgument:v19 named:@"faceOrientationRelativeToUpright"];
+      v19 = [MEMORY[0x1E696AD98] numberWithInt:{box.origin.x, box.origin.y, box.size.width, box.size.height, size.width, size.height, size.width, size.height}];
+      *error = [VNError errorForInvalidArgument:v19 named:@"faceOrientationRelativeToUpright"];
     }
 
     return 0;
   }
 
-  if (a5 != 6)
+  if (upright != 6)
   {
-    if (a5 != 8)
+    if (upright != 8)
     {
       goto LABEL_12;
     }
 
-    a3.origin.x = a3.origin.x + a3.size.width * -3.0;
+    box.origin.x = box.origin.x + box.size.width * -3.0;
   }
 
-  v14 = a3.origin.x * a4.width;
-  a3.origin.x = roundf(v14);
-  a4.width = -0.5;
-  v15 = (a3.origin.y + a3.size.height * -0.5) * a4.height;
+  v14 = box.origin.x * size.width;
+  box.origin.x = roundf(v14);
+  size.width = -0.5;
+  v15 = (box.origin.y + box.size.height * -0.5) * size.height;
   v16 = roundf(v15);
-  v17 = a3.size.height;
+  v17 = box.size.height;
   v18 = xmmword_1A6038EE0;
 LABEL_16:
-  a3.size = vmulq_f64(a3.size, v18);
+  box.size = vmulq_f64(box.size, v18);
   v23.f64[0] = width;
-  v23.f64[1] = a4.height;
-  *&a3.size.width = vrnda_f32(vcvt_f32_f64(vmulq_f64(a3.size, v23)));
-  *&a3.size.height = vcvtq_f64_f32(*&a3.size.width);
-  a3.origin.y = v16;
-  v36[0] = *&a3.origin.x;
-  v36[1] = *&a3.origin.y;
-  v37 = *&a3.size.height;
-  if (*&a3.size.width == 0.0 || (LODWORD(a3.size.width) = HIDWORD(a3.size.width), *(&a3.size.width + 1) == 0.0))
+  v23.f64[1] = size.height;
+  *&box.size.width = vrnda_f32(vcvt_f32_f64(vmulq_f64(box.size, v23)));
+  *&box.size.height = vcvtq_f64_f32(*&box.size.width);
+  box.origin.y = v16;
+  v36[0] = *&box.origin.x;
+  v36[1] = *&box.origin.y;
+  v37 = *&box.size.height;
+  if (*&box.size.width == 0.0 || (LODWORD(box.size.width) = HIDWORD(box.size.width), *(&box.size.width + 1) == 0.0))
   {
-    if (a7)
+    if (error)
     {
       v13 = @"Error in calculating torso bounding box dimensions";
       goto LABEL_23;
@@ -103,12 +103,12 @@ LABEL_16:
     return 0;
   }
 
-  v24 = *&a3.size.height;
-  a3.size.height = v25;
+  v24 = *&box.size.height;
+  box.size.height = v25;
   v35 = v24;
   v26 = 0;
   v27 = 0;
-  v38 = CGRectIntersection(a3, *(&width - 2));
+  v38 = CGRectIntersection(box, *(&width - 2));
   v28 = v38.size.width * v38.size.height / vmuld_lane_f64(v35.f64[0], v35, 1);
   [objc_opt_class() minimumTorsoInsideInputImageThreshold];
   v29 = v36;
@@ -118,22 +118,22 @@ LABEL_16:
   }
 
   v31 = *(v29 + 1);
-  a6->origin = *v29;
-  a6->size = v31;
+  bBox->origin = *v29;
+  bBox->size = v31;
   return 1;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = VNCloneFaceObservationFromOptions(v12, a8);
+    v14 = VNCloneFaceObservationFromOptions(optionsCopy, error);
     if (v14)
     {
-      v15 = -[VNTorsoprintGeneratorFaceBased torsoprintForImageBuffer:requestRevision:error:](self, "torsoprintForImageBuffer:requestRevision:error:", a4, [v13 requestRevision], a8);
+      v15 = -[VNTorsoprintGeneratorFaceBased torsoprintForImageBuffer:requestRevision:error:](self, "torsoprintForImageBuffer:requestRevision:error:", buffer, [v13 requestRevision], error);
       if (v15)
       {
         [v14 setTorsoprint:v15];
@@ -161,34 +161,34 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  v12 = a4;
-  v13 = [(VNDetector *)self validatedImageBufferFromOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = [v12 objectForKeyedSubscript:@"VNImageBufferOption_FeatureOrientationRelativeToUpRight"];
-    v15 = [v14 integerValue];
+    v14 = [optionsCopy objectForKeyedSubscript:@"VNImageBufferOption_FeatureOrientationRelativeToUpRight"];
+    integerValue = [v14 integerValue];
 
-    [objc_opt_class() torsoprintInputImageSizeForFaceOrientation:v15];
+    [objc_opt_class() torsoprintInputImageSizeForFaceOrientation:integerValue];
     v17 = v16;
     v19 = v18;
-    v20 = [v12 objectForKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_X"];
+    v20 = [optionsCopy objectForKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_X"];
     [v20 doubleValue];
     v22 = v21;
-    v23 = [v12 objectForKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Y"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Y"];
     [v23 doubleValue];
     v25 = v24;
-    v26 = [v12 objectForKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Width"];
+    v26 = [optionsCopy objectForKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Width"];
     [v26 doubleValue];
     v28 = v27;
-    v29 = [v12 objectForKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Height"];
+    v29 = [optionsCopy objectForKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Height"];
     [v29 doubleValue];
     v31 = v30;
 
-    [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-    v32 = [v13 croppedBufferWithWidth:v17 height:v19 format:1111970369 cropRect:v12 options:a8 error:{v22, v25, v28, v31}];
-    *a7 = v32;
+    [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+    v32 = [v13 croppedBufferWithWidth:v17 height:v19 format:1111970369 cropRect:optionsCopy options:error error:{v22, v25, v28, v31}];
+    *buffer = v32;
     v33 = v32 != 0;
   }
 
@@ -200,70 +200,70 @@ LABEL_16:
   return v33;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v50[1] = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
-  v20 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a7];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v20 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v20)
   {
-    v21 = [VNValidationUtilities requiredFaceObservationInOptions:v17 error:a7];
-    if (v21 && ([v20 orientation], (VNSetFaceOrientationInOptionsDictionary(v21, v17, a7) & 1) != 0) && (objc_msgSend(v17, "objectForKeyedSubscript:", @"VNImageBufferOption_FeatureOrientationRelativeToUpRight"), v22 = objc_claimAutoreleasedReturnValue(), v47 = a3, v23 = objc_msgSend(v22, "integerValue"), v22, v24 = objc_msgSend(v20, "width"), v25 = objc_msgSend(v20, "height"), objc_msgSend(v21, "unalignedBoundingBox"), v27 = v26, v29 = v28, v31 = v30, v33 = v32, objc_msgSend(objc_opt_class(), "magnifiedBBoxScaleFactor"), v35 = (v34 + -1.0), v36 = -(v31 * v35) * 0.5, v37 = -(v33 * v35) * 0.5, v52.origin.x = v27, v52.origin.y = v29, v52.size.width = v31, v52.size.height = v33, v53 = CGRectInset(v52, v36, v37), v38 = *(MEMORY[0x1E695F040] + 16), v49.origin = *MEMORY[0x1E695F040], v49.size = v38, -[VNTorsoprintGeneratorFaceBased _calculateTorsoBBoxFromFaceBBox:insideImageWithSize:faceOrientationRelativeToUpright:torsoBBox:error:](self, "_calculateTorsoBBoxFromFaceBBox:insideImageWithSize:faceOrientationRelativeToUpright:torsoBBox:error:", v23, &v49, a7, v53.origin.x, v53.origin.y, v53.size.width, v53.size.height, v24, v25)))
+    v21 = [VNValidationUtilities requiredFaceObservationInOptions:optionsCopy error:error];
+    if (v21 && ([v20 orientation], (VNSetFaceOrientationInOptionsDictionary(v21, optionsCopy, error) & 1) != 0) && (objc_msgSend(optionsCopy, "objectForKeyedSubscript:", @"VNImageBufferOption_FeatureOrientationRelativeToUpRight"), v22 = objc_claimAutoreleasedReturnValue(), v47 = class, v23 = objc_msgSend(v22, "integerValue"), v22, v24 = objc_msgSend(v20, "width"), v25 = objc_msgSend(v20, "height"), objc_msgSend(v21, "unalignedBoundingBox"), v27 = v26, v29 = v28, v31 = v30, v33 = v32, objc_msgSend(objc_opt_class(), "magnifiedBBoxScaleFactor"), v35 = (v34 + -1.0), v36 = -(v31 * v35) * 0.5, v37 = -(v33 * v35) * 0.5, v52.origin.x = v27, v52.origin.y = v29, v52.size.width = v31, v52.size.height = v33, v53 = CGRectInset(v52, v36, v37), v38 = *(MEMORY[0x1E695F040] + 16), v49.origin = *MEMORY[0x1E695F040], v49.size = v38, -[VNTorsoprintGeneratorFaceBased _calculateTorsoBBoxFromFaceBBox:insideImageWithSize:faceOrientationRelativeToUpright:torsoBBox:error:](self, "_calculateTorsoBBoxFromFaceBBox:insideImageWithSize:faceOrientationRelativeToUpright:torsoBBox:error:", v23, &v49, error, v53.origin.x, v53.origin.y, v53.size.width, v53.size.height, v24, v25)))
     {
       if (CGRectIsNull(v49))
       {
-        v39 = VNCloneFaceObservationFromOptions(v17, a7);
+        v39 = VNCloneFaceObservationFromOptions(optionsCopy, error);
         v40 = v39;
         if (v39)
         {
           v50[0] = v39;
-          v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
+          height = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
         }
 
         else
         {
-          v41 = 0;
+          height = 0;
         }
       }
 
       else
       {
         v43 = [MEMORY[0x1E696AD98] numberWithDouble:v49.origin.x];
-        [v17 setObject:v43 forKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_X"];
+        [optionsCopy setObject:v43 forKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_X"];
 
         v44 = [MEMORY[0x1E696AD98] numberWithDouble:v49.origin.y];
-        [v17 setObject:v44 forKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Y"];
+        [optionsCopy setObject:v44 forKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Y"];
 
         v45 = [MEMORY[0x1E696AD98] numberWithDouble:v49.size.width];
-        [v17 setObject:v45 forKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Width"];
+        [optionsCopy setObject:v45 forKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Width"];
 
         v46 = [MEMORY[0x1E696AD98] numberWithDouble:v49.size.height];
-        [v17 setObject:v46 forKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Height"];
+        [optionsCopy setObject:v46 forKeyedSubscript:@"VNDetectorInternalProcessOption_TorsoBBox_Height"];
 
         v48.receiver = self;
         v48.super_class = VNTorsoprintGeneratorFaceBased;
-        v41 = [(VNDetector *)&v48 internalProcessUsingQualityOfServiceClass:v47 options:v17 regionOfInterest:v18 warningRecorder:a7 error:v19 progressHandler:x, y, width, height];
+        height = [(VNDetector *)&v48 internalProcessUsingQualityOfServiceClass:v47 options:optionsCopy regionOfInterest:recorderCopy warningRecorder:error error:handlerCopy progressHandler:x, y, width, height];
       }
     }
 
     else
     {
-      v41 = 0;
+      height = 0;
     }
   }
 
   else
   {
-    v41 = 0;
+    height = 0;
   }
 
-  return v41;
+  return height;
 }
 
 + (CGSize)torsoprintDescriptorSize
@@ -275,10 +275,10 @@ LABEL_16:
   return result;
 }
 
-+ (CGSize)torsoprintInputImageSizeForFaceOrientation:(int)a3
++ (CGSize)torsoprintInputImageSizeForFaceOrientation:(int)orientation
 {
   v3 = 128.0;
-  if (a3 <= 4)
+  if (orientation <= 4)
   {
     v4 = 128.0;
   }
@@ -288,7 +288,7 @@ LABEL_16:
     v4 = 256.0;
   }
 
-  if (a3 <= 4)
+  if (orientation <= 4)
   {
     v3 = 256.0;
   }

@@ -1,16 +1,16 @@
 @interface TSCHChartLogAxis
-- (double)doubleModelToAxisValue:(double)a3 forSeries:(id)a4;
-- (double)interceptForAxis:(id)a3;
-- (double)unitSpaceValueForDataSpaceValue:(double)a3 min:(double)a4 max:(double)a5;
-- (double)validateUserMaxForDouble:(double)a3;
+- (double)doubleModelToAxisValue:(double)value forSeries:(id)series;
+- (double)interceptForAxis:(id)axis;
+- (double)unitSpaceValueForDataSpaceValue:(double)value min:(double)min max:(double)max;
+- (double)validateUserMaxForDouble:(double)double;
 - (double)validateUserMinForDouble:(double)result;
-- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)a3;
-- (id)computeMinorGridlinesFromMajorGridlinesInAnalysis:(id)a3;
+- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)analysis;
+- (id)computeMinorGridlinesFromMajorGridlinesInAnalysis:(id)analysis;
 - (id)p_orthogonalAxis;
 - (id)userMax;
 - (id)userMin;
-- (void)adjustMinMaxForDataRangeInAnalysis:(id)a3;
-- (void)updateGridValueTypeInterceptInAnalysis:(id)a3;
+- (void)adjustMinMaxForDataRangeInAnalysis:(id)analysis;
+- (void)updateGridValueTypeInterceptInAnalysis:(id)analysis;
 @end
 
 @implementation TSCHChartLogAxis
@@ -66,12 +66,12 @@ LABEL_11:
   return v23;
 }
 
-- (double)interceptForAxis:(id)a3
+- (double)interceptForAxis:(id)axis
 {
-  v4 = a3;
-  v9 = v4;
+  axisCopy = axis;
+  v9 = axisCopy;
   v10 = NAN;
-  if (v4 && v4 != self)
+  if (axisCopy && axisCopy != self)
   {
     v11 = objc_msgSend_model(self, v5, v6, v7, v8);
     v16 = objc_msgSend_model(v9, v12, v13, v14, v15);
@@ -102,77 +102,77 @@ LABEL_11:
   return v10;
 }
 
-- (double)doubleModelToAxisValue:(double)a3 forSeries:(id)a4
+- (double)doubleModelToAxisValue:(double)value forSeries:(id)series
 {
-  objc_msgSend_axisInterceptPosition(self, a2, a3, v4, v5, a4);
-  v8 = a3 - v7;
+  objc_msgSend_axisInterceptPosition(self, a2, value, v4, v5, series);
+  v8 = value - v7;
   log(v8);
   return v8;
 }
 
-- (void)updateGridValueTypeInterceptInAnalysis:(id)a3
+- (void)updateGridValueTypeInterceptInAnalysis:(id)analysis
 {
-  v4 = a3;
+  analysisCopy = analysis;
   v13.receiver = self;
   v13.super_class = TSCHChartLogAxis;
-  [(TSCHChartAxis *)&v13 updateGridValueTypeInterceptInAnalysis:v4];
-  if (objc_msgSend_gridValueType(v4, v5, v6, v7, v8) == 2)
+  [(TSCHChartAxis *)&v13 updateGridValueTypeInterceptInAnalysis:analysisCopy];
+  if (objc_msgSend_gridValueType(analysisCopy, v5, v6, v7, v8) == 2)
   {
-    objc_msgSend_updateAxisDateInterceptInAnalysis_(self, v9, v10, v11, v12, v4);
+    objc_msgSend_updateAxisDateInterceptInAnalysis_(self, v9, v10, v11, v12, analysisCopy);
   }
 }
 
-- (void)adjustMinMaxForDataRangeInAnalysis:(id)a3
+- (void)adjustMinMaxForDataRangeInAnalysis:(id)analysis
 {
-  v4 = a3;
-  objc_msgSend_min(v4, v5, v6, v7, v8);
+  analysisCopy = analysis;
+  objc_msgSend_min(analysisCopy, v5, v6, v7, v8);
   v10 = v9;
   v89.receiver = self;
   v89.super_class = TSCHChartLogAxis;
-  [(TSCHChartValueAxis *)&v89 adjustMinMaxForDataRangeInAnalysis:v4];
-  objc_msgSend_min(v4, v11, v12, v13, v14);
+  [(TSCHChartValueAxis *)&v89 adjustMinMaxForDataRangeInAnalysis:analysisCopy];
+  objc_msgSend_min(analysisCopy, v11, v12, v13, v14);
   if (v16 <= 0.0)
   {
-    objc_msgSend_setMin_(v4, v15, fmin(v10, 1.0), v17, v18);
-    objc_msgSend_min(v4, v19, v20, v21, v22);
+    objc_msgSend_setMin_(analysisCopy, v15, fmin(v10, 1.0), v17, v18);
+    objc_msgSend_min(analysisCopy, v19, v20, v21, v22);
     objc_msgSend_validateUserMinForDouble_(self, v23, v24, v25, v26);
-    objc_msgSend_setMin_(v4, v27, v28, v29, v30);
+    objc_msgSend_setMin_(analysisCopy, v27, v28, v29, v30);
   }
 
-  objc_msgSend_max(v4, v15, v16, v17, v18);
+  objc_msgSend_max(analysisCopy, v15, v16, v17, v18);
   objc_msgSend_validateUserMaxForDouble_(self, v31, v32, v33, v34);
-  objc_msgSend_setMax_(v4, v35, v36, v37, v38);
-  objc_msgSend_min(v4, v39, v40, v41, v42);
+  objc_msgSend_setMax_(analysisCopy, v35, v36, v37, v38);
+  objc_msgSend_min(analysisCopy, v39, v40, v41, v42);
   if (v44 <= 0.0)
   {
     v47 = MEMORY[0x277D81150];
     v48 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v43, v44, v45, v46, "[TSCHChartLogAxis adjustMinMaxForDataRangeInAnalysis:]");
     v53 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v49, v50, v51, v52, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartLogAxis.m");
-    objc_msgSend_min(v4, v54, v55, v56, v57);
+    objc_msgSend_min(analysisCopy, v54, v55, v56, v57);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v47, v58, v59, v60, v61, v48, v53, 101, 0, "invalid calculated log min: %f", *&v59);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v62, v63, v64, v65);
   }
 
-  objc_msgSend_max(v4, v43, v44, v45, v46);
+  objc_msgSend_max(analysisCopy, v43, v44, v45, v46);
   if (v67 <= 0.0)
   {
     v70 = MEMORY[0x277D81150];
     v71 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v66, v67, v68, v69, "[TSCHChartLogAxis adjustMinMaxForDataRangeInAnalysis:]");
     v76 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v72, v73, v74, v75, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartLogAxis.m");
-    objc_msgSend_max(v4, v77, v78, v79, v80);
+    objc_msgSend_max(analysisCopy, v77, v78, v79, v80);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v70, v81, v82, v83, v84, v71, v76, 102, 0, "invalid calculated log max: %f", *&v82);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v85, v86, v87, v88);
   }
 }
 
-- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)a3
+- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)analysis
 {
-  v4 = a3;
-  objc_msgSend_min(v4, v5, v6, v7, v8);
+  analysisCopy = analysis;
+  objc_msgSend_min(analysisCopy, v5, v6, v7, v8);
   v10 = v9;
-  objc_msgSend_max(v4, v11, v9, v12, v13);
+  objc_msgSend_max(analysisCopy, v11, v9, v12, v13);
   v15 = v14;
   v19 = objc_msgSend_p_orthogonalAxis(self, v16, v14, v17, v18);
   objc_msgSend_interceptForAxis_(self, v20, v21, v22, v23, v19);
@@ -185,21 +185,21 @@ LABEL_11:
   v40 = objc_msgSend_intValueForProperty_defaultValue_(self, v36, v37, v38, v39, 1044, 0);
   v41 = v40 & ~(v40 >> 31);
   v42 = log(v25);
-  objc_msgSend_max(v4, v43, v42, v44, v45);
+  objc_msgSend_max(analysisCopy, v43, v42, v44, v45);
   v49 = 1.0;
   v97 = v50 > 0.0;
   v51 = 1.0;
   if (v97)
   {
-    objc_msgSend_max(v4, v46, 1.0, v47, v48);
+    objc_msgSend_max(analysisCopy, v46, 1.0, v47, v48);
   }
 
   v52 = log(v51);
   v53 = v52 - v42;
-  objc_msgSend_min(v4, v54, v52, v55, v56);
+  objc_msgSend_min(analysisCopy, v54, v52, v55, v56);
   if (v58 > 0.0)
   {
-    objc_msgSend_min(v4, v57, v58, v59, v60);
+    objc_msgSend_min(analysisCopy, v57, v58, v59, v60);
     v49 = v61;
   }
 
@@ -673,17 +673,17 @@ LABEL_55:
   }
 
 LABEL_134:
-  objc_msgSend_setMax_(v4, v71, v67, v74, v75);
-  objc_msgSend_setMin_(v4, v156, v68, v157, v158);
+  objc_msgSend_setMax_(analysisCopy, v71, v67, v74, v75);
+  objc_msgSend_setMin_(analysisCopy, v156, v68, v157, v158);
   objc_msgSend_sortUsingSelector_(v72, v159, v160, v161, v162, sel_compare_);
 
   return v72;
 }
 
-- (id)computeMinorGridlinesFromMajorGridlinesInAnalysis:(id)a3
+- (id)computeMinorGridlinesFromMajorGridlinesInAnalysis:(id)analysis
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_majorGridLocations(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_majorGridLocations(analysis, a2, v3, v4, v5);
   v7 = MEMORY[0x277CBEB18];
   v12 = objc_msgSend_count(v6, v8, v9, v10, v11);
   v17 = objc_msgSend_arrayWithCapacity_(v7, v13, v14, v15, v16, 8 * v12);
@@ -741,11 +741,11 @@ LABEL_3:
 {
   v10.receiver = self;
   v10.super_class = TSCHChartLogAxis;
-  v2 = [(TSCHChartValueAxis *)&v10 userMax];
-  v7 = v2;
-  if (v2)
+  userMax = [(TSCHChartValueAxis *)&v10 userMax];
+  v7 = userMax;
+  if (userMax)
   {
-    objc_msgSend_doubleValue(v2, v3, v4, v5, v6);
+    objc_msgSend_doubleValue(userMax, v3, v4, v5, v6);
     if (v8 <= 0.0)
     {
 
@@ -760,11 +760,11 @@ LABEL_3:
 {
   v10.receiver = self;
   v10.super_class = TSCHChartLogAxis;
-  v2 = [(TSCHChartValueAxis *)&v10 userMin];
-  v7 = v2;
-  if (v2)
+  userMin = [(TSCHChartValueAxis *)&v10 userMin];
+  v7 = userMin;
+  if (userMin)
   {
-    objc_msgSend_doubleValue(v2, v3, v4, v5, v6);
+    objc_msgSend_doubleValue(userMin, v3, v4, v5, v6);
     if (v8 <= 0.0)
     {
 
@@ -785,13 +785,13 @@ LABEL_3:
   return result;
 }
 
-- (double)validateUserMaxForDouble:(double)a3
+- (double)validateUserMaxForDouble:(double)double
 {
   result = 1.0;
-  if (a3 > 0.0)
+  if (double > 0.0)
   {
-    result = a3;
-    if (a3 > 1.0e307)
+    result = double;
+    if (double > 1.0e307)
     {
       return 1.0e307;
     }
@@ -800,13 +800,13 @@ LABEL_3:
   return result;
 }
 
-- (double)unitSpaceValueForDataSpaceValue:(double)a3 min:(double)a4 max:(double)a5
+- (double)unitSpaceValueForDataSpaceValue:(double)value min:(double)min max:(double)max
 {
-  v7 = log(a3);
+  v7 = log(value);
   if ((*&v7 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v8 = log(a4);
-    v10 = log(a5);
+    v8 = log(min);
+    v10 = log(max);
     v13 = v10;
     if ((*&v8 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {

@@ -1,28 +1,28 @@
 @interface RequestFactory
 + (id)_crossPlatformPropertyActions;
-+ (id)_propertyActionsForPlatform:(id)a3;
++ (id)_propertyActionsForPlatform:(id)platform;
 + (id)_propertyActionsForiOS;
-+ (id)_requestForEncodedLayersWithSnapshot:(id)a3;
-+ (id)_requestForEncodedSceneKitScenesWithSnapshot:(id)a3;
-+ (id)_requestForRenderedEffectViewsWithSnapshot:(id)a3;
-+ (id)_requestForRenderedMultiLayerViewsWithSnapshot:(id)a3;
-+ (id)_requestForRenderedSpriteKitTexturesWithSnapshot:(id)a3;
-+ (id)_requestForRenderedViewsWithSnapshot:(id)a3;
-+ (id)additionalRequestsWithSnapshot:(id)a3;
-+ (id)initialRequestForPlatform:(id)a3;
-+ (id)requestForRemainingLazyPropertiesWithSnapshot:(id)a3;
++ (id)_requestForEncodedLayersWithSnapshot:(id)snapshot;
++ (id)_requestForEncodedSceneKitScenesWithSnapshot:(id)snapshot;
++ (id)_requestForRenderedEffectViewsWithSnapshot:(id)snapshot;
++ (id)_requestForRenderedMultiLayerViewsWithSnapshot:(id)snapshot;
++ (id)_requestForRenderedSpriteKitTexturesWithSnapshot:(id)snapshot;
++ (id)_requestForRenderedViewsWithSnapshot:(id)snapshot;
++ (id)additionalRequestsWithSnapshot:(id)snapshot;
++ (id)initialRequestForPlatform:(id)platform;
++ (id)requestForRemainingLazyPropertiesWithSnapshot:(id)snapshot;
 @end
 
 @implementation RequestFactory
 
-+ (id)initialRequestForPlatform:(id)a3
++ (id)initialRequestForPlatform:(id)platform
 {
-  v4 = a3;
+  platformCopy = platform;
   v5 = objc_opt_new();
-  v6 = [a1 _crossPlatformPropertyActions];
-  [v5 addObjectsFromArray:v6];
+  _crossPlatformPropertyActions = [self _crossPlatformPropertyActions];
+  [v5 addObjectsFromArray:_crossPlatformPropertyActions];
 
-  v7 = [a1 _propertyActionsForPlatform:v4];
+  v7 = [self _propertyActionsForPlatform:platformCopy];
 
   [v5 addObjectsFromArray:v7];
   v8 = [DebugHierarchyRequest requestWithName:@"Initial request" discoveryType:1 actions:v5 completion:0];
@@ -30,45 +30,45 @@
   return v8;
 }
 
-+ (id)additionalRequestsWithSnapshot:(id)a3
++ (id)additionalRequestsWithSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = objc_opt_new();
-  v6 = [a1 _requestForEncodedLayersWithSnapshot:v4];
+  v6 = [self _requestForEncodedLayersWithSnapshot:snapshotCopy];
   if (v6)
   {
     [v5 addObject:v6];
   }
 
-  v7 = [a1 _requestForRenderedEffectViewsWithSnapshot:v4];
+  v7 = [self _requestForRenderedEffectViewsWithSnapshot:snapshotCopy];
 
   if (v7)
   {
     [v5 addObject:v7];
   }
 
-  v8 = [a1 _requestForRenderedMultiLayerViewsWithSnapshot:v4];
+  v8 = [self _requestForRenderedMultiLayerViewsWithSnapshot:snapshotCopy];
 
   if (v8)
   {
     [v5 addObject:v8];
   }
 
-  v9 = [a1 _requestForRenderedViewsWithSnapshot:v4];
+  v9 = [self _requestForRenderedViewsWithSnapshot:snapshotCopy];
 
   if (v9)
   {
     [v5 addObject:v9];
   }
 
-  v10 = [a1 _requestForRenderedSpriteKitTexturesWithSnapshot:v4];
+  v10 = [self _requestForRenderedSpriteKitTexturesWithSnapshot:snapshotCopy];
 
   if (v10)
   {
     [v5 addObject:v10];
   }
 
-  v11 = [a1 _requestForEncodedSceneKitScenesWithSnapshot:v4];
+  v11 = [self _requestForEncodedSceneKitScenesWithSnapshot:snapshotCopy];
 
   if (v11)
   {
@@ -78,7 +78,7 @@
   return v5;
 }
 
-+ (id)requestForRemainingLazyPropertiesWithSnapshot:(id)a3
++ (id)requestForRemainingLazyPropertiesWithSnapshot:(id)snapshot
 {
   v3 = objc_alloc_init(DebugHierarchyPropertyAction);
   [v3 setPropertyNames:&off_2F718 exlusive:1];
@@ -91,21 +91,21 @@
   return v5;
 }
 
-+ (id)_requestForEncodedLayersWithSnapshot:(id)a3
++ (id)_requestForEncodedLayersWithSnapshot:(id)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   v4 = [NSPredicate predicateWithFormat:@"groupingIdentifier == 'com.apple.QuartzCore.CALayer'"];
-  v5 = [v3 rootLevelSnapshotGroups];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
-  v7 = [v6 firstObject];
+  rootLevelSnapshotGroups = [snapshotCopy rootLevelSnapshotGroups];
+  v6 = [rootLevelSnapshotGroups filteredArrayUsingPredicate:v4];
+  firstObject = [v6 firstObject];
 
   v8 = +[NSMutableArray array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v7 allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  allObjects = [firstObject allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -116,14 +116,14 @@
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * i) identifier];
-        [v8 addObject:v14];
+        identifier = [*(*(&v20 + 1) + 8 * i) identifier];
+        [v8 addObject:identifier];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v11);
@@ -149,19 +149,19 @@
   return v18;
 }
 
-+ (id)_requestForRenderedEffectViewsWithSnapshot:(id)a3
++ (id)_requestForRenderedEffectViewsWithSnapshot:(id)snapshot
 {
-  v25 = a3;
-  v4 = [a1 _effectViewClassNames];
-  if ([v4 count])
+  snapshotCopy = snapshot;
+  _effectViewClassNames = [self _effectViewClassNames];
+  if ([_effectViewClassNames count])
   {
     v5 = +[NSMutableArray array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v23 = v4;
-    obj = v4;
+    v23 = _effectViewClassNames;
+    obj = _effectViewClassNames;
     v6 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v6)
     {
@@ -176,7 +176,7 @@
             objc_enumerationMutation(obj);
           }
 
-          v10 = [v25 nodesKindOfRuntimeClass:*(*(&v30 + 1) + 8 * i)];
+          v10 = [snapshotCopy nodesKindOfRuntimeClass:*(*(&v30 + 1) + 8 * i)];
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
@@ -198,8 +198,8 @@
                 v15 = *(*(&v26 + 1) + 8 * j);
                 if ([v15 hasPropertyWithName:@"snapshotImageRenderedUsingDrawHierarchyInRect"])
                 {
-                  v16 = [v15 identifier];
-                  [v5 addObject:v16];
+                  identifier = [v15 identifier];
+                  [v5 addObject:identifier];
                 }
               }
 
@@ -235,7 +235,7 @@
       v21 = 0;
     }
 
-    v4 = v23;
+    _effectViewClassNames = v23;
   }
 
   else
@@ -246,12 +246,12 @@
   return v21;
 }
 
-+ (id)_requestForRenderedMultiLayerViewsWithSnapshot:(id)a3
++ (id)_requestForRenderedMultiLayerViewsWithSnapshot:(id)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   v4 = +[NSMutableArray array];
   v5 = [NSPredicate predicateWithBlock:&__block_literal_global_0];
-  v6 = [v3 nodesMatchingPredicate:v5];
+  v6 = [snapshotCopy nodesMatchingPredicate:v5];
 
   v22 = 0u;
   v23 = 0u;
@@ -275,8 +275,8 @@
         v12 = *(*(&v20 + 1) + 8 * i);
         if ([v12 hasPropertyWithName:{@"snapshotImageRenderedUsingDrawHierarchyInRect", v20}])
         {
-          v13 = [v12 identifier];
-          [v4 addObject:v13];
+          identifier = [v12 identifier];
+          [v4 addObject:identifier];
         }
       }
 
@@ -325,21 +325,21 @@ BOOL __65__RequestFactory__requestForRenderedMultiLayerViewsWithSnapshot___block
   return v5;
 }
 
-+ (id)_requestForRenderedViewsWithSnapshot:(id)a3
++ (id)_requestForRenderedViewsWithSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v45 = [a1 _effectViewClassNames];
+  snapshotCopy = snapshot;
+  _effectViewClassNames = [self _effectViewClassNames];
   +[NSMutableArray array];
-  v43 = v42 = v4;
+  v43 = v42 = snapshotCopy;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v5 = [v4 identifierToNodeMap];
-  v6 = [v5 objectEnumerator];
+  identifierToNodeMap = [snapshotCopy identifierToNodeMap];
+  objectEnumerator = [identifierToNodeMap objectEnumerator];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v50 objects:v56 count:16];
+  obj = objectEnumerator;
+  v7 = [objectEnumerator countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (!v7)
   {
     goto LABEL_43;
@@ -358,15 +358,15 @@ BOOL __65__RequestFactory__requestForRenderedMultiLayerViewsWithSnapshot___block
       }
 
       v11 = *(*(&v50 + 1) + 8 * v10);
-      v12 = [v11 runtimeType];
-      if ([v12 isKindOfTypeWithName:@"UIView"])
+      runtimeType = [v11 runtimeType];
+      if ([runtimeType isKindOfTypeWithName:@"UIView"])
       {
       }
 
       else
       {
-        v13 = [v11 runtimeType];
-        v14 = [v13 isKindOfTypeWithName:@"NSView"];
+        runtimeType2 = [v11 runtimeType];
+        v14 = [runtimeType2 isKindOfTypeWithName:@"NSView"];
 
         if (!v14)
         {
@@ -378,8 +378,8 @@ BOOL __65__RequestFactory__requestForRenderedMultiLayerViewsWithSnapshot___block
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v15 = v45;
-      v16 = [v15 countByEnumeratingWithState:&v46 objects:v55 count:16];
+      runtimeType4 = _effectViewClassNames;
+      v16 = [runtimeType4 countByEnumeratingWithState:&v46 objects:v55 count:16];
       if (v16)
       {
         v17 = v16;
@@ -390,12 +390,12 @@ BOOL __65__RequestFactory__requestForRenderedMultiLayerViewsWithSnapshot___block
           {
             if (*v47 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(runtimeType4);
             }
 
             v20 = *(*(&v46 + 1) + 8 * i);
-            v21 = [v11 runtimeType];
-            LOBYTE(v20) = [v21 isKindOfTypeWithName:v20];
+            runtimeType3 = [v11 runtimeType];
+            LOBYTE(v20) = [runtimeType3 isKindOfTypeWithName:v20];
 
             if (v20)
             {
@@ -404,7 +404,7 @@ BOOL __65__RequestFactory__requestForRenderedMultiLayerViewsWithSnapshot___block
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v46 objects:v55 count:16];
+          v17 = [runtimeType4 countByEnumeratingWithState:&v46 objects:v55 count:16];
           if (v17)
           {
             continue;
@@ -414,20 +414,20 @@ BOOL __65__RequestFactory__requestForRenderedMultiLayerViewsWithSnapshot___block
         }
       }
 
-      v15 = [v11 runtimeType];
-      if ([v15 isKindOfTypeWithName:@"SCNView"])
+      runtimeType4 = [v11 runtimeType];
+      if ([runtimeType4 isKindOfTypeWithName:@"SCNView"])
       {
         goto LABEL_18;
       }
 
-      v23 = [v11 runtimeType];
-      if ([v23 isKindOfTypeWithName:@"SKView"])
+      runtimeType5 = [v11 runtimeType];
+      if ([runtimeType5 isKindOfTypeWithName:@"SKView"])
       {
         goto LABEL_23;
       }
 
-      v24 = [v11 runtimeType];
-      if ([v24 isKindOfTypeWithName:@"GLKView"])
+      runtimeType6 = [v11 runtimeType];
+      if ([runtimeType6 isKindOfTypeWithName:@"GLKView"])
       {
 
 LABEL_23:
@@ -437,17 +437,17 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v33 = [v11 runtimeType];
-      v34 = [v33 isKindOfTypeWithName:@"ARView"];
+      runtimeType7 = [v11 runtimeType];
+      v34 = [runtimeType7 isKindOfTypeWithName:@"ARView"];
 
       if ((v34 & 1) == 0)
       {
         v35 = [v11 groupWithID:@"com.apple.QuartzCore.CALayer"];
-        v15 = v35;
+        runtimeType4 = v35;
         if (v35)
         {
-          v23 = [v35 allObjects];
-          v22 = [v23 count] == 0;
+          runtimeType5 = [v35 allObjects];
+          v22 = [runtimeType5 count] == 0;
           goto LABEL_24;
         }
 
@@ -475,8 +475,8 @@ LABEL_26:
         goto LABEL_33;
       }
 
-      v27 = [v11 runtimeType];
-      v28 = [v27 isKindOfTypeWithName:@"UIImageView"];
+      runtimeType8 = [v11 runtimeType];
+      v28 = [runtimeType8 isKindOfTypeWithName:@"UIImageView"];
 
       if (v28)
       {
@@ -484,15 +484,15 @@ LABEL_26:
         if (v29)
         {
           v30 = v29;
-          v31 = [v29 BOOLValue];
+          bOOLValue = [v29 BOOLValue];
 
-          if (v31)
+          if (bOOLValue)
           {
 LABEL_33:
             if ([v11 hasPropertyWithName:@"snapshotImage"])
             {
-              v32 = [v11 identifier];
-              [v43 addObject:v32];
+              identifier = [v11 identifier];
+              [v43 addObject:identifier];
             }
           }
         }
@@ -530,9 +530,9 @@ LABEL_43:
   return v40;
 }
 
-+ (id)_requestForRenderedSpriteKitTexturesWithSnapshot:(id)a3
++ (id)_requestForRenderedSpriteKitTexturesWithSnapshot:(id)snapshot
 {
-  v3 = [a3 nodesKindOfRuntimeClass:@"SKNode"];
+  v3 = [snapshot nodesKindOfRuntimeClass:@"SKNode"];
   if ([v3 count])
   {
     v4 = +[NSMutableArray array];
@@ -558,8 +558,8 @@ LABEL_43:
           v10 = *(*(&v17 + 1) + 8 * i);
           if ([v10 hasPropertyWithName:{@"visualRepresentation", v17}])
           {
-            v11 = [v10 identifier];
-            [v4 addObject:v11];
+            identifier = [v10 identifier];
+            [v4 addObject:identifier];
           }
         }
 
@@ -595,10 +595,10 @@ LABEL_43:
   return v15;
 }
 
-+ (id)_requestForEncodedSceneKitScenesWithSnapshot:(id)a3
++ (id)_requestForEncodedSceneKitScenesWithSnapshot:(id)snapshot
 {
-  v3 = a3;
-  v4 = [v3 nodesKindOfRuntimeClass:@"SCNScene"];
+  snapshotCopy = snapshot;
+  v4 = [snapshotCopy nodesKindOfRuntimeClass:@"SCNScene"];
   if ([v4 count])
   {
     v5 = +[NSMutableArray array];
@@ -624,8 +624,8 @@ LABEL_43:
           v11 = *(*(&v35 + 1) + 8 * i);
           if ([v11 hasPropertyWithName:@"encodedPresentationScene"])
           {
-            v12 = [v11 identifier];
-            [v5 addObject:v12];
+            identifier = [v11 identifier];
+            [v5 addObject:identifier];
           }
         }
 
@@ -656,7 +656,7 @@ LABEL_43:
     v15 = &__NSArray0__struct;
   }
 
-  v16 = [v3 nodesKindOfRuntimeClass:@"SCNView"];
+  v16 = [snapshotCopy nodesKindOfRuntimeClass:@"SCNView"];
   if ([v16 count])
   {
     v30 = v4;
@@ -683,8 +683,8 @@ LABEL_43:
           v23 = *(*(&v31 + 1) + 8 * j);
           if ([v23 hasPropertyWithName:@"pointOfViewIndexPath"])
           {
-            v24 = [v23 identifier];
-            [v17 addObject:v24];
+            identifier2 = [v23 identifier];
+            [v17 addObject:identifier2];
           }
         }
 
@@ -748,19 +748,19 @@ LABEL_43:
   return v7;
 }
 
-+ (id)_propertyActionsForPlatform:(id)a3
++ (id)_propertyActionsForPlatform:(id)platform
 {
-  if ([a3 isEqualToString:@"iOS"])
+  if ([platform isEqualToString:@"iOS"])
   {
-    v4 = [a1 _propertyActionsForiOS];
+    _propertyActionsForiOS = [self _propertyActionsForiOS];
   }
 
   else
   {
-    v4 = 0;
+    _propertyActionsForiOS = 0;
   }
 
-  return v4;
+  return _propertyActionsForiOS;
 }
 
 + (id)_propertyActionsForiOS

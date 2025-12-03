@@ -1,7 +1,7 @@
 @interface AppleEthernetDNSConfigurator
 - (AppleEthernetDNSConfigurator)init;
-- (void)setValuesForConfig:(id)a3 fromService:(__SCNetworkService *)a4;
-- (void)updateSettings:(id)a3 fromCurrentConfig:(id)a4 toNewConfig:(id)a5;
+- (void)setValuesForConfig:(id)config fromService:(__SCNetworkService *)service;
+- (void)updateSettings:(id)settings fromCurrentConfig:(id)config toNewConfig:(id)newConfig;
 @end
 
 @implementation AppleEthernetDNSConfigurator
@@ -20,92 +20,92 @@
   return v3;
 }
 
-- (void)updateSettings:(id)a3 fromCurrentConfig:(id)a4 toNewConfig:(id)a5
+- (void)updateSettings:(id)settings fromCurrentConfig:(id)config toNewConfig:(id)newConfig
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = a5;
-  if ([v8 dnsConfig] == &dword_0 + 1)
+  settingsCopy = settings;
+  configCopy = config;
+  newConfigCopy = newConfig;
+  if ([newConfigCopy dnsConfig] == &dword_0 + 1)
   {
-    v9 = [v8 dnsServerAddresses];
+    dnsServerAddresses = [newConfigCopy dnsServerAddresses];
 
-    if (!v9)
+    if (!dnsServerAddresses)
     {
       v10 = +[NSArray array];
-      [v8 setDnsServerAddresses:v10];
+      [newConfigCopy setDnsServerAddresses:v10];
     }
 
-    v11 = [v8 dnsServerAddresses];
-    [v15 setObject:v11 forKeyedSubscript:kSCPropNetDNSServerAddresses];
+    dnsServerAddresses2 = [newConfigCopy dnsServerAddresses];
+    [settingsCopy setObject:dnsServerAddresses2 forKeyedSubscript:kSCPropNetDNSServerAddresses];
 
-    v12 = [v8 dnsSearchDomains];
+    dnsSearchDomains = [newConfigCopy dnsSearchDomains];
 
-    if (!v12)
+    if (!dnsSearchDomains)
     {
       v13 = +[NSArray array];
-      [v8 setDnsSearchDomains:v13];
+      [newConfigCopy setDnsSearchDomains:v13];
     }
 
-    v14 = [v8 dnsSearchDomains];
-    [v15 setObject:v14 forKeyedSubscript:kSCPropNetDNSSearchDomains];
+    dnsSearchDomains2 = [newConfigCopy dnsSearchDomains];
+    [settingsCopy setObject:dnsSearchDomains2 forKeyedSubscript:kSCPropNetDNSSearchDomains];
   }
 
-  else if ([v7 dnsConfig] == &dword_0 + 1)
+  else if ([configCopy dnsConfig] == &dword_0 + 1)
   {
-    [v15 removeObjectForKey:kSCPropNetDNSServerAddresses];
-    [v15 removeObjectForKey:kSCPropNetDNSSearchDomains];
+    [settingsCopy removeObjectForKey:kSCPropNetDNSServerAddresses];
+    [settingsCopy removeObjectForKey:kSCPropNetDNSSearchDomains];
   }
 }
 
-- (void)setValuesForConfig:(id)a3 fromService:(__SCNetworkService *)a4
+- (void)setValuesForConfig:(id)config fromService:(__SCNetworkService *)service
 {
-  v20 = a3;
-  v6 = [(AppleEthernetProtocolConfigurator *)self delegate];
-  v7 = [v6 getPersistentSettingsForKey:kSCEntNetDNS inService:a4];
+  configCopy = config;
+  delegate = [(AppleEthernetProtocolConfigurator *)self delegate];
+  v7 = [delegate getPersistentSettingsForKey:kSCEntNetDNS inService:service];
 
   v8 = [v7 objectForKeyedSubscript:kSCPropNetDNSServerAddresses];
-  [v20 setDnsServerAddresses:v8];
+  [configCopy setDnsServerAddresses:v8];
 
   v9 = [v7 objectForKeyedSubscript:kSCPropNetDNSSearchDomains];
-  [v20 setDnsSearchDomains:v9];
+  [configCopy setDnsSearchDomains:v9];
 
-  v10 = [v20 dnsServerAddresses];
-  if (v10)
+  dnsServerAddresses = [configCopy dnsServerAddresses];
+  if (dnsServerAddresses)
   {
   }
 
   else
   {
-    v11 = [v20 dnsSearchDomains];
+    dnsSearchDomains = [configCopy dnsSearchDomains];
 
-    if (!v11)
+    if (!dnsSearchDomains)
     {
-      v16 = [(AppleEthernetProtocolConfigurator *)self delegate];
-      v17 = [v16 getDynamicSettingsForKey:kSCEntNetDNS inService:a4];
+      delegate2 = [(AppleEthernetProtocolConfigurator *)self delegate];
+      v17 = [delegate2 getDynamicSettingsForKey:kSCEntNetDNS inService:service];
 
       v18 = [v17 objectForKeyedSubscript:kSCPropNetDNSServerAddresses];
-      [v20 setDnsServerAddresses:v18];
+      [configCopy setDnsServerAddresses:v18];
 
       v19 = [v17 objectForKeyedSubscript:kSCPropNetDNSSearchDomains];
-      [v20 setDnsSearchDomains:v19];
+      [configCopy setDnsSearchDomains:v19];
 
       v7 = v17;
       goto LABEL_5;
     }
   }
 
-  [v20 setDnsConfig:1];
+  [configCopy setDnsConfig:1];
 LABEL_5:
-  v12 = [v20 dnsSearchDomains];
+  dnsSearchDomains2 = [configCopy dnsSearchDomains];
 
-  if (!v12)
+  if (!dnsSearchDomains2)
   {
     v13 = [v7 objectForKeyedSubscript:kSCPropNetDNSDomainName];
     if (v13)
     {
       v14 = v13;
       v15 = [NSArray arrayWithObject:v13];
-      [v20 setDnsSearchDomains:v15];
+      [configCopy setDnsSearchDomains:v15];
     }
   }
 }

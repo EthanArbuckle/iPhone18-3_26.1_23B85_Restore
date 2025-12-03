@@ -4,14 +4,14 @@
 - (id)getMappableElementsToSystemGesturesElements;
 - (id)modeLabel;
 - (id)newSpecifiers;
-- (id)settingEnabled:(id)a3;
+- (id)settingEnabled:(id)enabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)didSelectItemInRemapController:(id)a3 item:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)didSelectItemInRemapController:(id)controller item:(id)item;
 - (void)initSettings;
 - (void)loadDevice;
-- (void)onLoadItemInRemapController:(id)a3 item:(id)a4 cell:(id)a5;
-- (void)setSettingEnabled:(id)a3 specifier:(id)a4;
+- (void)onLoadItemInRemapController:(id)controller item:(id)item cell:(id)cell;
+- (void)setSettingEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -42,8 +42,8 @@
     self->_elements = v7;
 
     v9 = self->_mappableToSystemGesturesButtons;
-    v10 = [(GCSettingsGameIntentController *)self getMappableElementsToSystemGesturesElements];
-    [(NSMutableArray *)v9 addObjectsFromArray:v10];
+    getMappableElementsToSystemGesturesElements = [(GCSettingsGameIntentController *)self getMappableElementsToSystemGesturesElements];
+    [(NSMutableArray *)v9 addObjectsFromArray:getMappableElementsToSystemGesturesElements];
 
     v4 = v11;
   }
@@ -64,8 +64,8 @@
     v7 = v6;
     if (v5)
     {
-      v8 = [(LSApplicationRecord *)self->_appRecord bundleIdentifier];
-      v9 = [v7 initWithBundleIdentifier:v8 forController:self->_device];
+      bundleIdentifier = [(LSApplicationRecord *)self->_appRecord bundleIdentifier];
+      v9 = [v7 initWithBundleIdentifier:bundleIdentifier forController:self->_device];
       settings = self->_settings;
       self->_settings = v9;
     }
@@ -73,14 +73,14 @@
     else
     {
       v11 = [v6 initForController:self->_device];
-      v8 = self->_settings;
+      bundleIdentifier = self->_settings;
       self->_settings = v11;
     }
 
-    v14 = [(GCSettingsGameIntentController *)self specifier];
-    v12 = [v14 name];
+    specifier = [(GCSettingsGameIntentController *)self specifier];
+    name = [specifier name];
     v13 = sub_9E38(@"GAME_INTENT_ON_CONNECT_TITLE");
-    self->_isOnConnectSettings = [v12 isEqualToString:v13];
+    self->_isOnConnectSettings = [name isEqualToString:v13];
   }
 }
 
@@ -111,18 +111,18 @@
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [(GCController *)self->_device physicalInputProfile];
-        v12 = [v11 buttons];
-        v13 = [v12 objectForKeyedSubscript:v10];
+        physicalInputProfile = [(GCController *)self->_device physicalInputProfile];
+        buttons = [physicalInputProfile buttons];
+        v13 = [buttons objectForKeyedSubscript:v10];
 
         if (v13)
         {
           elements = self->_elements;
-          v15 = [v13 primaryAlias];
-          [(NSMutableDictionary *)elements setObject:v13 forKey:v15];
+          primaryAlias = [v13 primaryAlias];
+          [(NSMutableDictionary *)elements setObject:v13 forKey:primaryAlias];
 
-          v16 = [v13 primaryAlias];
-          [v4 addObject:v16];
+          primaryAlias2 = [v13 primaryAlias];
+          [v4 addObject:primaryAlias2];
         }
       }
 
@@ -148,9 +148,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(GCSettingsGameIntentController *)self newSpecifiers];
+    newSpecifiers = [(GCSettingsGameIntentController *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -158,51 +158,51 @@
   return v4;
 }
 
-- (void)setSettingEnabled:(id)a3 specifier:(id)a4
+- (void)setSettingEnabled:(id)enabled specifier:(id)specifier
 {
-  v11 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   isOnConnectSettings = self->_isOnConnectSettings;
   settings = self->_settings;
-  v9 = [v11 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
   if (isOnConnectSettings)
   {
-    [(GCControllerSettings *)settings setScreenShotEnabled:v9];
+    [(GCControllerSettings *)settings setScreenShotEnabled:bOOLValue];
   }
 
   else
   {
-    [(GCControllerSettings *)settings setVideoRecordingEnabled:v9];
+    [(GCControllerSettings *)settings setVideoRecordingEnabled:bOOLValue];
   }
 
-  if ([v11 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
-    v10 = [(GCSettingsGameIntentController *)self gestureCustomizationSpecifiers];
-    [(GCSettingsGameIntentController *)self insertContiguousSpecifiers:v10 afterSpecifier:v6 animated:1];
+    gestureCustomizationSpecifiers = [(GCSettingsGameIntentController *)self gestureCustomizationSpecifiers];
+    [(GCSettingsGameIntentController *)self insertContiguousSpecifiers:gestureCustomizationSpecifiers afterSpecifier:specifierCopy animated:1];
   }
 
   else
   {
-    v10 = [(GCSettingsGameIntentController *)self specifiersForIDs:&off_10C218];
-    [(GCSettingsGameIntentController *)self removeContiguousSpecifiers:v10 animated:1];
+    gestureCustomizationSpecifiers = [(GCSettingsGameIntentController *)self specifiersForIDs:&off_10C218];
+    [(GCSettingsGameIntentController *)self removeContiguousSpecifiers:gestureCustomizationSpecifiers animated:1];
   }
 }
 
-- (id)settingEnabled:(id)a3
+- (id)settingEnabled:(id)enabled
 {
   isOnConnectSettings = self->_isOnConnectSettings;
   settings = self->_settings;
   if (isOnConnectSettings)
   {
-    v5 = [(GCControllerSettings *)settings screenShotEnabled];
+    screenShotEnabled = [(GCControllerSettings *)settings screenShotEnabled];
   }
 
   else
   {
-    v5 = [(GCControllerSettings *)settings videoRecordingEnabled];
+    screenShotEnabled = [(GCControllerSettings *)settings videoRecordingEnabled];
   }
 
-  v6 = [NSNumber numberWithBool:v5];
+  v6 = [NSNumber numberWithBool:screenShotEnabled];
 
   return v6;
 }
@@ -213,15 +213,15 @@
   settings = self->_settings;
   if (isOnConnectSettings)
   {
-    v4 = [(GCControllerSettings *)settings screenShotGesture];
+    screenShotGesture = [(GCControllerSettings *)settings screenShotGesture];
   }
 
   else
   {
-    v4 = [(GCControllerSettings *)settings videoRecordingGesture];
+    screenShotGesture = [(GCControllerSettings *)settings videoRecordingGesture];
   }
 
-  return sub_AC70(v4);
+  return sub_AC70(screenShotGesture);
 }
 
 - (id)modeLabel
@@ -246,8 +246,8 @@
   [(GCSettingsGameIntentController *)self initSettings];
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[PSSpecifier emptyGroupSpecifier];
-  v5 = [(GCSettingsGameIntentController *)self specifier];
-  v6 = [v5 propertyForKey:@"GameIntentButton"];
+  specifier = [(GCSettingsGameIntentController *)self specifier];
+  v6 = [specifier propertyForKey:@"GameIntentButton"];
 
   v7 = sub_9EAC(@"%@", @"GAME_INTENT_HOME_BUTTON_DETAIL_DESCRIPTION");
   v8 = [NSString stringWithFormat:v7, v6];
@@ -263,19 +263,19 @@
   }
 
   [v3 addObject:v4];
-  v10 = [(GCSettingsGameIntentController *)self specifier];
-  v11 = [v10 name];
+  specifier2 = [(GCSettingsGameIntentController *)self specifier];
+  name = [specifier2 name];
 
-  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:"setSettingEnabled:specifier:" get:"settingEnabled:" detail:0 cell:6 edit:0];
+  v12 = [PSSpecifier preferenceSpecifierNamed:name target:self set:"setSettingEnabled:specifier:" get:"settingEnabled:" detail:0 cell:6 edit:0];
 
   [v3 addObject:v12];
   v13 = [(GCSettingsGameIntentController *)self settingEnabled:0];
-  v14 = [v13 BOOLValue];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
-    v15 = [(GCSettingsGameIntentController *)self gestureCustomizationSpecifiers];
-    [v3 addObjectsFromArray:v15];
+    gestureCustomizationSpecifiers = [(GCSettingsGameIntentController *)self gestureCustomizationSpecifiers];
+    [v3 addObjectsFromArray:gestureCustomizationSpecifiers];
   }
 
   return v3;
@@ -366,38 +366,38 @@
   return v3;
 }
 
-- (void)onLoadItemInRemapController:(id)a3 item:(id)a4 cell:(id)a5
+- (void)onLoadItemInRemapController:(id)controller item:(id)item cell:(id)cell
 {
-  v29 = a4;
-  v8 = a5;
-  v9 = [a3 specifier];
-  v10 = [v9 propertyForKey:@"GCLOLSpecifierType"];
+  itemCopy = item;
+  cellCopy = cell;
+  specifier = [controller specifier];
+  v10 = [specifier propertyForKey:@"GCLOLSpecifierType"];
 
-  v11 = [v10 integerValue];
-  if (v10 && !v11)
+  integerValue = [v10 integerValue];
+  if (v10 && !integerValue)
   {
-    v12 = v29;
+    v12 = itemCopy;
     v13 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v12];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 unmappedSfSymbolsName];
-      sub_A26C(v8, v15);
+      unmappedSfSymbolsName = [v13 unmappedSfSymbolsName];
+      sub_A26C(cellCopy, unmappedSfSymbolsName);
 
-      v16 = [v8 titleLabel];
-      v17 = [v14 unmappedLocalizedName];
-      [v16 setText:v17];
+      titleLabel = [cellCopy titleLabel];
+      unmappedLocalizedName = [v14 unmappedLocalizedName];
+      [titleLabel setText:unmappedLocalizedName];
 
-      v29 = v12;
+      itemCopy = v12;
     }
 
     else
     {
-      v23 = [v8 titleLabel];
-      [v23 setText:v12];
+      titleLabel2 = [cellCopy titleLabel];
+      [titleLabel2 setText:v12];
 
-      v29 = +[NSString string];
-      v16 = v12;
+      itemCopy = +[NSString string];
+      titleLabel = v12;
     }
 
     settings = self->_settings;
@@ -414,8 +414,8 @@
     v26 = v25;
     if (v14)
     {
-      v27 = [v14 primaryAlias];
-      v28 = [v27 isEqualToString:v26];
+      primaryAlias = [v14 primaryAlias];
+      v28 = [primaryAlias isEqualToString:v26];
     }
 
     else
@@ -423,82 +423,82 @@
       v28 = [v25 length] == 0;
     }
 
-    [v8 setChecked:v28];
+    [cellCopy setChecked:v28];
 
     goto LABEL_22;
   }
 
-  if (v10 && v11 == &dword_0 + 1)
+  if (v10 && integerValue == &dword_0 + 1)
   {
-    v18 = [v29 integerValue];
-    v12 = sub_AC70(v18);
-    v19 = [v8 titleLabel];
-    [v19 setText:v12];
+    integerValue2 = [itemCopy integerValue];
+    v12 = sub_AC70(integerValue2);
+    titleLabel3 = [cellCopy titleLabel];
+    [titleLabel3 setText:v12];
 
     v20 = self->_settings;
     if (self->_isOnConnectSettings)
     {
-      v21 = [(GCControllerSettings *)v20 screenShotGesture];
+      screenShotGesture = [(GCControllerSettings *)v20 screenShotGesture];
     }
 
     else
     {
-      v21 = [(GCControllerSettings *)v20 videoRecordingGesture];
+      screenShotGesture = [(GCControllerSettings *)v20 videoRecordingGesture];
     }
 
     goto LABEL_21;
   }
 
-  if (v10 && v11 == &dword_0 + 2)
+  if (v10 && integerValue == &dword_0 + 2)
   {
-    v18 = [v29 integerValue];
-    v12 = sub_AD28(v18);
-    v22 = [v8 titleLabel];
-    [v22 setText:v12];
+    integerValue2 = [itemCopy integerValue];
+    v12 = sub_AD28(integerValue2);
+    titleLabel4 = [cellCopy titleLabel];
+    [titleLabel4 setText:v12];
 
-    v21 = [(GCControllerSettings *)self->_settings videoRecordingMode];
+    screenShotGesture = [(GCControllerSettings *)self->_settings videoRecordingMode];
 LABEL_21:
-    [v8 setChecked:v21 == v18];
+    [cellCopy setChecked:screenShotGesture == integerValue2];
 LABEL_22:
   }
 }
 
-- (void)didSelectItemInRemapController:(id)a3 item:(id)a4
+- (void)didSelectItemInRemapController:(id)controller item:(id)item
 {
-  v15 = a4;
-  v6 = [a3 specifier];
-  v7 = [v6 propertyForKey:@"GCLOLSpecifierType"];
+  itemCopy = item;
+  specifier = [controller specifier];
+  v7 = [specifier propertyForKey:@"GCLOLSpecifierType"];
 
-  v8 = [v7 integerValue];
-  if (!v7 || v8)
+  integerValue = [v7 integerValue];
+  if (!v7 || integerValue)
   {
-    if (v7 && v8 == &dword_0 + 1)
+    if (v7 && integerValue == &dword_0 + 1)
     {
-      v11 = [v15 integerValue];
+      integerValue2 = [itemCopy integerValue];
       settings = self->_settings;
       if (self->_isOnConnectSettings)
       {
-        [(GCControllerSettings *)settings setScreenShotGesture:v11];
+        [(GCControllerSettings *)settings setScreenShotGesture:integerValue2];
       }
 
       else
       {
-        [(GCControllerSettings *)settings setVideoRecordingGesture:v11];
+        [(GCControllerSettings *)settings setVideoRecordingGesture:integerValue2];
       }
     }
 
-    else if (v7 && v8 == &dword_0 + 2)
+    else if (v7 && integerValue == &dword_0 + 2)
     {
-      -[GCControllerSettings setVideoRecordingMode:](self->_settings, "setVideoRecordingMode:", [v15 integerValue]);
+      -[GCControllerSettings setVideoRecordingMode:](self->_settings, "setVideoRecordingMode:", [itemCopy integerValue]);
     }
   }
 
   else
   {
-    v9 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v15];
+    v9 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:itemCopy];
     if (v9)
     {
-      v10 = v15;
+      v10 = itemCopy;
     }
 
     else
@@ -509,7 +509,7 @@ LABEL_22:
     }
 
     v14 = self->_settings;
-    v15 = v10;
+    itemCopy = v10;
     if (self->_isOnConnectSettings)
     {
       [(GCControllerSettings *)v14 setScreenShotKey:?];
@@ -524,23 +524,23 @@ LABEL_22:
   [(GCSettingsGameIntentController *)self reloadSpecifiers];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GCSettingsGameIntentController *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(GCSettingsGameIntentController *)self specifierAtIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"GCLOLSpecifierType"];
-  v10 = [v9 integerValue];
-  if (!v9 || v10)
+  integerValue = [v9 integerValue];
+  if (!v9 || integerValue)
   {
     v18.receiver = self;
     v18.super_class = GCSettingsGameIntentController;
-    v11 = [(GCSettingsGameIntentController *)&v18 tableView:v7 cellForRowAtIndexPath:v6];
+    v11 = [(GCSettingsGameIntentController *)&v18 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    v11 = [v7 dequeueReusableCellWithIdentifier:@"RemappableElementCell" forIndexPath:v6];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"RemappableElementCell" forIndexPath:pathCopy];
 
     [v11 setAccessoryType:1];
     settings = self->_settings;
@@ -553,24 +553,24 @@ LABEL_22:
     {
       [(GCControllerSettings *)settings videoRecordingKey];
     }
-    v7 = ;
-    v13 = [v11 titleLabel];
-    v14 = [v8 name];
-    [v13 setText:v14];
+    viewCopy = ;
+    titleLabel = [v11 titleLabel];
+    name = [v8 name];
+    [titleLabel setText:name];
 
-    v15 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v7];
+    v15 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:viewCopy];
     v16 = v15;
     if (v15)
     {
-      v6 = [v15 unmappedSfSymbolsName];
+      pathCopy = [v15 unmappedSfSymbolsName];
     }
 
     else
     {
-      v6 = 0;
+      pathCopy = 0;
     }
 
-    sub_A394(v11, v6);
+    sub_A394(v11, pathCopy);
   }
 
   return v11;

@@ -2,36 +2,36 @@
 - (QSSMutableErrorBlamerRequest)init;
 - (double)latitude;
 - (double)longitude;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAudio_packets:(id)a3;
-- (void)setContextual_text:(id)a3;
-- (void)setLatitude:(double)a3;
-- (void)setLeft_context:(id)a3;
-- (void)setLongitude:(double)a3;
-- (void)setRef_transcript:(id)a3;
-- (void)setRight_context:(id)a3;
-- (void)setStart_speech_request:(id)a3;
-- (void)setUser_acoustic_profile:(id)a3;
-- (void)setUser_language_profile:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAudio_packets:(id)audio_packets;
+- (void)setContextual_text:(id)contextual_text;
+- (void)setLatitude:(double)latitude;
+- (void)setLeft_context:(id)left_context;
+- (void)setLongitude:(double)longitude;
+- (void)setRef_transcript:(id)ref_transcript;
+- (void)setRight_context:(id)right_context;
+- (void)setStart_speech_request:(id)start_speech_request;
+- (void)setUser_acoustic_profile:(id)user_acoustic_profile;
+- (void)setUser_language_profile:(id)user_language_profile;
 @end
 
 @implementation QSSMutableErrorBlamerRequest
 
-- (void)setRef_transcript:(id)a3
+- (void)setRef_transcript:(id)ref_transcript
 {
-  v4 = [a3 copy];
+  v4 = [ref_transcript copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setAudio_packets:(id)a3
+- (void)setAudio_packets:(id)audio_packets
 {
-  v4 = [a3 copy];
+  v4 = [audio_packets copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setLongitude:(double)a3
+- (void)setLongitude:(double)longitude
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:longitude];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
@@ -44,9 +44,9 @@
   return v4;
 }
 
-- (void)setLatitude:(double)a3
+- (void)setLatitude:(double)latitude
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:latitude];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
@@ -59,45 +59,45 @@
   return v4;
 }
 
-- (void)setUser_acoustic_profile:(id)a3
+- (void)setUser_acoustic_profile:(id)user_acoustic_profile
 {
-  v4 = [a3 copy];
+  v4 = [user_acoustic_profile copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setUser_language_profile:(id)a3
+- (void)setUser_language_profile:(id)user_language_profile
 {
-  v4 = [a3 copy];
+  v4 = [user_language_profile copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setRight_context:(id)a3
+- (void)setRight_context:(id)right_context
 {
-  v4 = [a3 copy];
+  v4 = [right_context copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setLeft_context:(id)a3
+- (void)setLeft_context:(id)left_context
 {
-  v4 = [a3 copy];
+  v4 = [left_context copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setContextual_text:(id)a3
+- (void)setContextual_text:(id)contextual_text
 {
-  v4 = [a3 copy];
+  v4 = [contextual_text copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setStart_speech_request:(id)a3
+- (void)setStart_speech_request:(id)start_speech_request
 {
-  v4 = [a3 copy];
+  v4 = [start_speech_request copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -112,9 +112,9 @@
   v2 = [(QSSMutableErrorBlamerRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

@@ -1,68 +1,68 @@
 @interface ASTAction
 - (ASTAction)init;
-- (ASTAction)initWithAction:(id)a3 data:(id)a4;
-- (ASTAction)initWithCoder:(id)a3;
+- (ASTAction)initWithAction:(id)action data:(id)data;
+- (ASTAction)initWithCoder:(id)coder;
 - (NSDictionary)dictionaryValue;
 - (id)acceptableDecoderClasses;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFinished:(BOOL)a3;
-- (void)setProgress:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFinished:(BOOL)finished;
+- (void)setProgress:(unint64_t)progress;
 @end
 
 @implementation ASTAction
 
 - (ASTAction)init
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionary];
-  v4 = [(ASTAction *)self initWithAction:&stru_2852CD800 data:v3];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v4 = [(ASTAction *)self initWithAction:&stru_2852CD800 data:dictionary];
 
   return v4;
 }
 
-- (ASTAction)initWithAction:(id)a3 data:(id)a4
+- (ASTAction)initWithAction:(id)action data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = ASTAction;
   v9 = [(ASTAction *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_action, a3);
+    objc_storeStrong(&v9->_action, action);
     *&v10->_finished = 0;
     v10->_progress = 0;
     v10->_resultCode = 2;
-    v11 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     results = v10->_results;
-    v10->_results = v11;
+    v10->_results = dictionary;
 
-    v13 = [v8 objectForKeyedSubscript:@"id"];
+    v13 = [dataCopy objectForKeyedSubscript:@"id"];
 
     if (v13)
     {
-      v14 = [v8 objectForKeyedSubscript:@"id"];
+      v14 = [dataCopy objectForKeyedSubscript:@"id"];
       identifier = v10->_identifier;
       v10->_identifier = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CCAD78] UUID];
-      v17 = [v16 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
       v18 = v10->_identifier;
-      v10->_identifier = v17;
+      v10->_identifier = uUIDString;
 
       v10->_generatedId = 1;
     }
 
-    v19 = [v8 objectForKeyedSubscript:@"parameters"];
+    v19 = [dataCopy objectForKeyedSubscript:@"parameters"];
 
     if (v19)
     {
-      v20 = [v8 objectForKeyedSubscript:@"parameters"];
+      v20 = [dataCopy objectForKeyedSubscript:@"parameters"];
       parameters = v10->_parameters;
       v10->_parameters = v20;
     }
@@ -71,20 +71,20 @@
   return v10;
 }
 
-- (void)setProgress:(unint64_t)a3
+- (void)setProgress:(unint64_t)progress
 {
-  v3 = 100;
-  if (a3 < 0x64)
+  progressCopy = 100;
+  if (progress < 0x64)
   {
-    v3 = a3;
+    progressCopy = progress;
   }
 
-  self->_progress = v3;
+  self->_progress = progressCopy;
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  if (a3)
+  if (finished)
   {
     self->_finished = 1;
   }
@@ -92,85 +92,85 @@
 
 - (NSDictionary)dictionaryValue
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(ASTAction *)self action];
-  [v3 setObject:v4 forKeyedSubscript:@"action"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  action = [(ASTAction *)self action];
+  [dictionary setObject:action forKeyedSubscript:@"action"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ASTAction progress](self, "progress")}];
-  [v3 setObject:v5 forKeyedSubscript:@"progress"];
+  [dictionary setObject:v5 forKeyedSubscript:@"progress"];
 
   if (![(ASTAction *)self generatedId])
   {
-    v6 = [(ASTAction *)self identifier];
-    [v3 setObject:v6 forKeyedSubscript:@"id"];
+    identifier = [(ASTAction *)self identifier];
+    [dictionary setObject:identifier forKeyedSubscript:@"id"];
   }
 
   if ([(ASTAction *)self isFinished])
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ASTAction resultCode](self, "resultCode")}];
-    [v3 setObject:v7 forKeyedSubscript:@"resultCode"];
+    [dictionary setObject:v7 forKeyedSubscript:@"resultCode"];
 
-    v8 = [(ASTAction *)self results];
-    [v3 setObject:v8 forKeyedSubscript:@"resultPayload"];
+    results = [(ASTAction *)self results];
+    [dictionary setObject:results forKeyedSubscript:@"resultPayload"];
   }
 
-  v9 = [v3 copy];
+  v9 = [dictionary copy];
 
   return v9;
 }
 
-- (ASTAction)initWithCoder:(id)a3
+- (ASTAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASTAction *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [(ASTAction *)v5 acceptableDecoderClasses];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"parameters"];
+    acceptableDecoderClasses = [(ASTAction *)v5 acceptableDecoderClasses];
+    v11 = [coderCopy decodeObjectOfClasses:acceptableDecoderClasses forKey:@"parameters"];
     parameters = v5->_parameters;
     v5->_parameters = v11;
 
-    v5->_progress = [v4 decodeIntegerForKey:@"progress"];
-    v5->_resultCode = [v4 decodeIntegerForKey:@"resultCode"];
-    v13 = [(ASTAction *)v5 acceptableDecoderClasses];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"resultPayload"];
+    v5->_progress = [coderCopy decodeIntegerForKey:@"progress"];
+    v5->_resultCode = [coderCopy decodeIntegerForKey:@"resultCode"];
+    acceptableDecoderClasses2 = [(ASTAction *)v5 acceptableDecoderClasses];
+    v14 = [coderCopy decodeObjectOfClasses:acceptableDecoderClasses2 forKey:@"resultPayload"];
     results = v5->_results;
     v5->_results = v14;
 
-    v5->_finished = [v4 decodeBoolForKey:@"finished"];
-    v5->_generatedId = [v4 decodeBoolForKey:@"generatedId"];
+    v5->_finished = [coderCopy decodeBoolForKey:@"finished"];
+    v5->_generatedId = [coderCopy decodeBoolForKey:@"generatedId"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(ASTAction *)self action];
-  [v8 encodeObject:v4 forKey:@"action"];
+  coderCopy = coder;
+  action = [(ASTAction *)self action];
+  [coderCopy encodeObject:action forKey:@"action"];
 
-  v5 = [(ASTAction *)self identifier];
-  [v8 encodeObject:v5 forKey:@"id"];
+  identifier = [(ASTAction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"id"];
 
-  v6 = [(ASTAction *)self parameters];
-  [v8 encodeObject:v6 forKey:@"parameters"];
+  parameters = [(ASTAction *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"parameters"];
 
-  [v8 encodeInteger:-[ASTAction progress](self forKey:{"progress"), @"progress"}];
-  [v8 encodeInteger:-[ASTAction resultCode](self forKey:{"resultCode"), @"resultCode"}];
-  v7 = [(ASTAction *)self results];
-  [v8 encodeObject:v7 forKey:@"resultPayload"];
+  [coderCopy encodeInteger:-[ASTAction progress](self forKey:{"progress"), @"progress"}];
+  [coderCopy encodeInteger:-[ASTAction resultCode](self forKey:{"resultCode"), @"resultCode"}];
+  results = [(ASTAction *)self results];
+  [coderCopy encodeObject:results forKey:@"resultPayload"];
 
-  [v8 encodeBool:-[ASTAction isFinished](self forKey:{"isFinished"), @"finished"}];
-  [v8 encodeBool:-[ASTAction generatedId](self forKey:{"generatedId"), @"generatedId"}];
+  [coderCopy encodeBool:-[ASTAction isFinished](self forKey:{"isFinished"), @"finished"}];
+  [coderCopy encodeBool:-[ASTAction generatedId](self forKey:{"generatedId"), @"generatedId"}];
 }
 
 - (id)acceptableDecoderClasses
@@ -201,24 +201,24 @@ uint64_t __37__ASTAction_acceptableDecoderClasses__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_action copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_action copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSDictionary *)self->_parameters copyWithZone:a3];
+  v10 = [(NSDictionary *)self->_parameters copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
   *(v5 + 16) = self->_progress;
   *(v5 + 48) = self->_resultCode;
-  v12 = [(NSDictionary *)self->_results copyWithZone:a3];
+  v12 = [(NSDictionary *)self->_results copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
@@ -232,13 +232,13 @@ uint64_t __37__ASTAction_acceptableDecoderClasses__block_invoke()
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASTAction *)self action];
-  v7 = [(ASTAction *)self identifier];
-  v8 = [(ASTAction *)self parameters];
-  v9 = [(ASTAction *)self progress];
-  v10 = [(ASTAction *)self resultCode];
-  v11 = [(ASTAction *)self results];
-  v12 = [v3 stringWithFormat:@"<%@: %p action = %@, identifier = %@, parameters = %@, progress = %lu, resultCode = %ld, results = %@, finished = %d, generatedId = %d>", v5, self, v6, v7, v8, v9, v10, v11, -[ASTAction isFinished](self, "isFinished"), -[ASTAction generatedId](self, "generatedId")];;
+  action = [(ASTAction *)self action];
+  identifier = [(ASTAction *)self identifier];
+  parameters = [(ASTAction *)self parameters];
+  progress = [(ASTAction *)self progress];
+  resultCode = [(ASTAction *)self resultCode];
+  results = [(ASTAction *)self results];
+  v12 = [v3 stringWithFormat:@"<%@: %p action = %@, identifier = %@, parameters = %@, progress = %lu, resultCode = %ld, results = %@, finished = %d, generatedId = %d>", v5, self, action, identifier, parameters, progress, resultCode, results, -[ASTAction isFinished](self, "isFinished"), -[ASTAction generatedId](self, "generatedId")];;
 
   return v12;
 }

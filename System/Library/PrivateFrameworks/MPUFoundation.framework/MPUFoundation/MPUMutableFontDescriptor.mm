@@ -1,95 +1,95 @@
 @interface MPUMutableFontDescriptor
-- (id)_copyAllowingGlobalCacheLookup:(BOOL)a3;
+- (id)_copyAllowingGlobalCacheLookup:(BOOL)lookup;
 - (void)_resetToDefaultValues;
-- (void)setDefaultPointSizeAdjustment:(double)a3;
-- (void)setLeadingAdjustment:(int64_t)a3;
-- (void)setSystemFontSize:(double)a3;
-- (void)setTextStyle:(int64_t)a3;
-- (void)setUsesCondensedMetrics:(BOOL)a3;
-- (void)setUsesItalic:(BOOL)a3;
-- (void)setWantsMonospaceNumbers:(BOOL)a3;
-- (void)setWeight:(int64_t)a3;
+- (void)setDefaultPointSizeAdjustment:(double)adjustment;
+- (void)setLeadingAdjustment:(int64_t)adjustment;
+- (void)setSystemFontSize:(double)size;
+- (void)setTextStyle:(int64_t)style;
+- (void)setUsesCondensedMetrics:(BOOL)metrics;
+- (void)setUsesItalic:(BOOL)italic;
+- (void)setWantsMonospaceNumbers:(BOOL)numbers;
+- (void)setWeight:(int64_t)weight;
 @end
 
 @implementation MPUMutableFontDescriptor
 
-- (void)setDefaultPointSizeAdjustment:(double)a3
+- (void)setDefaultPointSizeAdjustment:(double)adjustment
 {
-  if (!MPUFloatEqualToFloat(self->super._defaultPointSizeAdjustment, a3))
+  if (!MPUFloatEqualToFloat(self->super._defaultPointSizeAdjustment, adjustment))
   {
-    self->super._defaultPointSizeAdjustment = a3;
+    self->super._defaultPointSizeAdjustment = adjustment;
 
     [(MPUFontDescriptor *)self _invalidateCachedFontsAndMetrics];
   }
 }
 
-- (void)setLeadingAdjustment:(int64_t)a3
+- (void)setLeadingAdjustment:(int64_t)adjustment
 {
-  if (self->super._leadingAdjustment != a3)
+  if (self->super._leadingAdjustment != adjustment)
   {
-    self->super._leadingAdjustment = a3;
+    self->super._leadingAdjustment = adjustment;
     [(MPUFontDescriptor *)self _invalidateCachedFontsAndMetrics];
   }
 }
 
-- (void)setSystemFontSize:(double)a3
+- (void)setSystemFontSize:(double)size
 {
-  if (!MPUFloatEqualToFloat(self->super._systemFontSize, a3))
+  if (!MPUFloatEqualToFloat(self->super._systemFontSize, size))
   {
-    self->super._systemFontSize = a3;
+    self->super._systemFontSize = size;
 
     [(MPUFontDescriptor *)self _invalidateCachedFontsAndMetrics];
   }
 }
 
-- (void)setTextStyle:(int64_t)a3
+- (void)setTextStyle:(int64_t)style
 {
-  if (self->super._textStyle != a3)
+  if (self->super._textStyle != style)
   {
-    self->super._textStyle = a3;
+    self->super._textStyle = style;
     [(MPUFontDescriptor *)self _invalidateCachedFontsAndMetrics];
   }
 }
 
-- (void)setWeight:(int64_t)a3
+- (void)setWeight:(int64_t)weight
 {
-  if (self->super._weight != a3)
+  if (self->super._weight != weight)
   {
-    self->super._weight = a3;
+    self->super._weight = weight;
     [(MPUFontDescriptor *)self _invalidateCachedFontsAndMetrics];
   }
 }
 
-- (void)setUsesItalic:(BOOL)a3
+- (void)setUsesItalic:(BOOL)italic
 {
-  if (self->super._usesItalic != a3)
+  if (self->super._usesItalic != italic)
   {
-    self->super._usesItalic = a3;
+    self->super._usesItalic = italic;
     [(MPUFontDescriptor *)self _invalidateCachedFontsAndMetrics];
   }
 }
 
-- (void)setUsesCondensedMetrics:(BOOL)a3
+- (void)setUsesCondensedMetrics:(BOOL)metrics
 {
-  if (self->super._usesCondensedMetrics != a3)
+  if (self->super._usesCondensedMetrics != metrics)
   {
-    self->super._usesCondensedMetrics = a3;
+    self->super._usesCondensedMetrics = metrics;
     [(MPUFontDescriptor *)self _invalidateCachedFontsAndMetrics];
   }
 }
 
-- (void)setWantsMonospaceNumbers:(BOOL)a3
+- (void)setWantsMonospaceNumbers:(BOOL)numbers
 {
-  if (self->super._wantsMonospaceNumbers != a3)
+  if (self->super._wantsMonospaceNumbers != numbers)
   {
-    self->super._wantsMonospaceNumbers = a3;
+    self->super._wantsMonospaceNumbers = numbers;
     [(MPUFontDescriptor *)self _invalidateCachedFontsAndMetrics];
   }
 }
 
-- (id)_copyAllowingGlobalCacheLookup:(BOOL)a3
+- (id)_copyAllowingGlobalCacheLookup:(BOOL)lookup
 {
-  if (a3)
+  if (lookup)
   {
     v4 = +[MPUFontDescriptorCache sharedFontDescriptorCache];
     v5 = [v4 cachedImmutableFontDescriptorMatchingMutableFontDescriptor:self];

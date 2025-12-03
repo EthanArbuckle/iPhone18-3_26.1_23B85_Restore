@@ -1,9 +1,9 @@
 @interface CKMomentShareStatusChatItem
 - (BOOL)wantsDrawerLayout;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
 - (char)transcriptOrientation;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
 @end
 
@@ -31,10 +31,10 @@
 
 - (char)transcriptOrientation
 {
-  v2 = [(CKMomentShareStatusChatItem *)self _statusChatItem];
-  v3 = [v2 isFromMe];
+  _statusChatItem = [(CKMomentShareStatusChatItem *)self _statusChatItem];
+  isFromMe = [_statusChatItem isFromMe];
 
-  if (v3)
+  if (isFromMe)
   {
     return 2;
   }
@@ -69,17 +69,17 @@
   v3 = CKFrameworkBundle();
   v4 = [v3 localizedStringForKey:@"ATTRIBUTION_TEXT_PHOTOS_EXTENSION" value:&stru_1F04268F8 table:@"ChatKit"];
 
-  v52 = [(CKMomentShareStatusChatItem *)self _statusChatItem];
-  v5 = [v52 activityTitle];
+  _statusChatItem = [(CKMomentShareStatusChatItem *)self _statusChatItem];
+  activityTitle = [_statusChatItem activityTitle];
   v6 = 0x1E69DC000uLL;
   v51 = v4;
-  if (v5)
+  if (activityTitle)
   {
     goto LABEL_11;
   }
 
-  v7 = [v52 expirationDate];
-  v8 = v7;
+  expirationDate = [_statusChatItem expirationDate];
+  v8 = expirationDate;
   if (_TitleForExpirationDate_predicate != -1)
   {
     [CKMomentShareStatusChatItem loadTranscriptText];
@@ -89,11 +89,11 @@
     }
 
 LABEL_9:
-    v5 = 0;
+    activityTitle = 0;
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!expirationDate)
   {
     goto LABEL_9;
   }
@@ -107,10 +107,10 @@ LABEL_4:
   v14 = [v10 stringWithFormat:v13, v9];
 
   v4 = v12;
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
-  v16 = [v15 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v16 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v17 = @"\u200F";
   }
@@ -120,12 +120,12 @@ LABEL_4:
     v17 = @"\u200E";
   }
 
-  v5 = [(__CFString *)v17 stringByAppendingString:v14];
+  activityTitle = [(__CFString *)v17 stringByAppendingString:v14];
 
   v6 = 0x1E69DC000;
 LABEL_10:
 
-  if (!v5)
+  if (!activityTitle)
   {
     v53 = v4;
     goto LABEL_15;
@@ -135,12 +135,12 @@ LABEL_11:
   v18 = MEMORY[0x1E696AEC0];
   v19 = CKFrameworkBundle();
   v20 = [v19 localizedStringForKey:@"MOMENT_SHARE_STATUS_TITLE_FORMAT" value:&stru_1F04268F8 table:@"ChatKit"];
-  v21 = [v18 stringWithFormat:v20, v4, v5];
+  v21 = [v18 stringWithFormat:v20, v4, activityTitle];
 
-  v22 = [*(v6 + 1640) sharedApplication];
-  v23 = [v22 userInterfaceLayoutDirection];
+  sharedApplication = [*(v6 + 1640) sharedApplication];
+  userInterfaceLayoutDirection2 = [sharedApplication userInterfaceLayoutDirection];
 
-  if (v23 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v24 = @"\u200F";
   }
@@ -153,47 +153,47 @@ LABEL_11:
   v53 = [(__CFString *)v24 stringByAppendingString:v21];
 
 LABEL_15:
-  v25 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v26 = [v25 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v26 = [defaultParagraphStyle mutableCopy];
 
   [v26 setAlignment:{2 * (-[CKMomentShareStatusChatItem transcriptOrientation](self, "transcriptOrientation") != 0)}];
   [v26 setLineBreakMode:2];
   v27 = *MEMORY[0x1E69DB648];
   v56[0] = *MEMORY[0x1E69DB648];
   v28 = +[CKUIBehavior sharedBehaviors];
-  v29 = [v28 transcriptRegularFont];
-  v57[0] = v29;
+  transcriptRegularFont = [v28 transcriptRegularFont];
+  v57[0] = transcriptRegularFont;
   v30 = *MEMORY[0x1E69DB650];
   v56[1] = *MEMORY[0x1E69DB650];
   v31 = +[CKUIBehavior sharedBehaviors];
-  v32 = [v31 theme];
-  v33 = [v32 transcriptTextColor];
+  theme = [v31 theme];
+  transcriptTextColor = [theme transcriptTextColor];
   v34 = *MEMORY[0x1E69DB688];
   v56[2] = *MEMORY[0x1E69DB688];
-  v57[1] = v33;
+  v57[1] = transcriptTextColor;
   v57[2] = v26;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:3];
 
   v36 = v53;
   v50 = v35;
   v37 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v53 attributes:v35];
-  v38 = [v37 string];
+  string = [v37 string];
   v39 = v51;
-  v40 = [v38 rangeOfString:v51];
+  v40 = [string rangeOfString:v51];
   v49 = v41;
 
   if (v40 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v54[0] = v27;
     v42 = +[CKUIBehavior sharedBehaviors];
-    v43 = [v42 transcriptMessageStatusFont];
-    v55[0] = v43;
+    transcriptMessageStatusFont = [v42 transcriptMessageStatusFont];
+    v55[0] = transcriptMessageStatusFont;
     v54[1] = v30;
     v44 = +[CKUIBehavior sharedBehaviors];
-    v45 = [v44 theme];
-    v46 = [v45 transcriptTextColor];
+    theme2 = [v44 theme];
+    transcriptTextColor2 = [theme2 transcriptTextColor];
     v54[2] = v34;
-    v55[1] = v46;
+    v55[1] = transcriptTextColor2;
     v55[2] = v26;
     v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:3];
 
@@ -206,24 +206,24 @@ LABEL_15:
   return v37;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v9;
-    a4->left = v10;
-    a4->bottom = v11;
-    a4->right = v12;
+    insets->top = v9;
+    insets->left = v10;
+    insets->bottom = v11;
+    insets->right = v12;
   }
 
-  v13 = [(CKChatItem *)self transcriptText];
-  v14 = [(CKChatItem *)self transcriptTraitCollection];
-  [v14 displayScale];
-  [CKTranscriptMomentShareLabelCell sizeThatFits:v13 attributedText:width displayScale:height, v15];
+  transcriptText = [(CKChatItem *)self transcriptText];
+  transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+  [transcriptTraitCollection displayScale];
+  [CKTranscriptMomentShareLabelCell sizeThatFits:transcriptText attributedText:width displayScale:height, v15];
   v17 = v16;
   v19 = v18;
 
@@ -234,28 +234,28 @@ LABEL_15:
   return result;
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v27 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a4 - 1];
+    v14 = [itemsCopy objectAtIndex:index - 1];
   }
 
   v15 = +[CKUIBehavior sharedBehaviors];
   [v15 smallTranscriptSpace];
   v17 = v16;
 
-  v18 = [v14 layoutType];
-  if (v18 <= 0x13 && ((1 << v18) & 0xC0002) != 0)
+  layoutType = [v14 layoutType];
+  if (layoutType <= 0x13 && ((1 << layoutType) & 0xC0002) != 0)
   {
     if ([v14 hasTail])
     {

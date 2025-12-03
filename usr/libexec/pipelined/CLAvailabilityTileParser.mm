@@ -1,10 +1,10 @@
 @interface CLAvailabilityTileParser
-+ (BOOL)generateAvlTileFromJSON:(id)a3 atPath:(id)a4;
-+ (void)_setParamOverrides:(void *)a3 fromDict:(id)a4;
++ (BOOL)generateAvlTileFromJSON:(id)n atPath:(id)path;
++ (void)_setParamOverrides:(void *)overrides fromDict:(id)dict;
 - (BOOL)_openTileFileForIncrementalIO;
 - (CLAvailabilityTileParser)init;
 - (CLAvailabilityTileParser)initWithEmptyTile;
-- (CLAvailabilityTileParser)initWithTilePathIncrementalIO:(id)a3;
+- (CLAvailabilityTileParser)initWithTilePathIncrementalIO:(id)o;
 - (id).cxx_construct;
 - (int)numVenuesExpected;
 @end
@@ -53,9 +53,9 @@
     return 0;
   }
 
-  v3 = [(NSURL *)path path];
-  v4 = [v3 UTF8String];
-  v5 = strlen(v4);
+  path = [(NSURL *)path path];
+  uTF8String = [path UTF8String];
+  v5 = strlen(uTF8String);
   if (v5 >= 0x7FFFFFFFFFFFFFF8)
   {
     sub_10000D39C();
@@ -70,7 +70,7 @@
   v13 = v5;
   if (v5)
   {
-    memmove(&__dst, v4, v5);
+    memmove(&__dst, uTF8String, v5);
   }
 
   *(&__dst + v6) = 0;
@@ -154,14 +154,14 @@ LABEL_17:
   return 0;
 }
 
-- (CLAvailabilityTileParser)initWithTilePathIncrementalIO:(id)a3
+- (CLAvailabilityTileParser)initWithTilePathIncrementalIO:(id)o
 {
-  v5 = a3;
+  oCopy = o;
   v10.receiver = self;
   v10.super_class = CLAvailabilityTileParser;
   v6 = [(CLAvailabilityTileParser *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_path, a3), ![(CLAvailabilityTileParser *)v7 _openTileFileForIncrementalIO]))
+  if (v6 && (objc_storeStrong(&v6->_path, o), ![(CLAvailabilityTileParser *)v7 _openTileFileForIncrementalIO]))
   {
     v8 = 0;
   }
@@ -174,260 +174,260 @@ LABEL_17:
   return v8;
 }
 
-+ (void)_setParamOverrides:(void *)a3 fromDict:(id)a4
++ (void)_setParamOverrides:(void *)overrides fromDict:(id)dict
 {
-  v5 = a4;
-  v6 = [v5 valueForKey:@"notifyIntervalNanos"];
+  dictCopy = dict;
+  v6 = [dictCopy valueForKey:@"notifyIntervalNanos"];
 
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:@"notifyIntervalNanos"];
-    v8 = [v7 unsignedIntValue];
-    *(a3 + 75) |= 1u;
-    *(a3 + 2) = v8;
+    v7 = [dictCopy objectForKeyedSubscript:@"notifyIntervalNanos"];
+    unsignedIntValue = [v7 unsignedIntValue];
+    *(overrides + 75) |= 1u;
+    *(overrides + 2) = unsignedIntValue;
   }
 
-  v9 = [v5 valueForKey:@"numParticles"];
+  v9 = [dictCopy valueForKey:@"numParticles"];
 
   if (v9)
   {
-    v10 = [v5 objectForKeyedSubscript:@"numParticles"];
-    v11 = [v10 unsignedIntValue];
-    *(a3 + 75) |= 2u;
-    *(a3 + 6) = v11;
+    v10 = [dictCopy objectForKeyedSubscript:@"numParticles"];
+    unsignedIntValue2 = [v10 unsignedIntValue];
+    *(overrides + 75) |= 2u;
+    *(overrides + 6) = unsignedIntValue2;
   }
 
-  v12 = [v5 valueForKey:@"localizerType"];
+  v12 = [dictCopy valueForKey:@"localizerType"];
 
   if (v12)
   {
-    v13 = [v5 objectForKeyedSubscript:@"localizerType"];
-    v14 = [v13 unsignedIntValue];
-    *(a3 + 75) |= 4u;
-    *(a3 + 7) = v14;
+    v13 = [dictCopy objectForKeyedSubscript:@"localizerType"];
+    unsignedIntValue3 = [v13 unsignedIntValue];
+    *(overrides + 75) |= 4u;
+    *(overrides + 7) = unsignedIntValue3;
   }
 
-  v15 = [v5 valueForKey:@"modeEstimator"];
+  v15 = [dictCopy valueForKey:@"modeEstimator"];
 
   if (v15)
   {
-    v16 = [v5 objectForKeyedSubscript:@"modeEstimator"];
-    v17 = [v16 unsignedIntValue];
-    *(a3 + 75) |= 0x10u;
-    *(a3 + 9) = v17;
+    v16 = [dictCopy objectForKeyedSubscript:@"modeEstimator"];
+    unsignedIntValue4 = [v16 unsignedIntValue];
+    *(overrides + 75) |= 0x10u;
+    *(overrides + 9) = unsignedIntValue4;
   }
 
-  v18 = [v5 valueForKey:@"confidenceFactor"];
+  v18 = [dictCopy valueForKey:@"confidenceFactor"];
 
   if (v18)
   {
-    v19 = [v5 objectForKeyedSubscript:@"confidenceFactor"];
+    v19 = [dictCopy objectForKeyedSubscript:@"confidenceFactor"];
     [v19 floatValue];
-    *(a3 + 75) |= 0x20u;
-    *(a3 + 10) = v20;
+    *(overrides + 75) |= 0x20u;
+    *(overrides + 10) = v20;
   }
 
-  v21 = [v5 valueForKey:@"motionPdrUnmodelledHeadingVariancePerSecond"];
+  v21 = [dictCopy valueForKey:@"motionPdrUnmodelledHeadingVariancePerSecond"];
 
   if (v21)
   {
-    v22 = [v5 objectForKeyedSubscript:@"motionPdrUnmodelledHeadingVariancePerSecond"];
+    v22 = [dictCopy objectForKeyedSubscript:@"motionPdrUnmodelledHeadingVariancePerSecond"];
     [v22 floatValue];
-    *(a3 + 75) |= 0x40u;
-    *(a3 + 11) = v23;
+    *(overrides + 75) |= 0x40u;
+    *(overrides + 11) = v23;
   }
 
-  v24 = [v5 valueForKey:@"time2dMotionVariancePerSecond"];
+  v24 = [dictCopy valueForKey:@"time2dMotionVariancePerSecond"];
 
   if (v24)
   {
-    v25 = [v5 objectForKeyedSubscript:@"time2dMotionVariancePerSecond"];
+    v25 = [dictCopy objectForKeyedSubscript:@"time2dMotionVariancePerSecond"];
     [v25 floatValue];
-    *(a3 + 75) |= 0x800u;
-    *(a3 + 24) = v26;
+    *(overrides + 75) |= 0x800u;
+    *(overrides + 24) = v26;
   }
 
-  v27 = [v5 valueForKey:@"secondsBetweenVenueTransitions"];
+  v27 = [dictCopy valueForKey:@"secondsBetweenVenueTransitions"];
 
   if (v27)
   {
-    v28 = [v5 objectForKeyedSubscript:@"secondsBetweenVenueTransitions"];
+    v28 = [dictCopy objectForKeyedSubscript:@"secondsBetweenVenueTransitions"];
     [v28 doubleValue];
-    *(a3 + 75) |= 0x8000u;
-    *(a3 + 14) = v29;
+    *(overrides + 75) |= 0x8000u;
+    *(overrides + 14) = v29;
   }
 
-  v30 = [v5 valueForKey:@"coarseIndoorFloorSelection"];
+  v30 = [dictCopy valueForKey:@"coarseIndoorFloorSelection"];
 
   if (v30)
   {
-    v31 = [v5 objectForKeyedSubscript:@"coarseIndoorFloorSelection"];
-    v32 = [v31 unsignedIntValue];
-    *(a3 + 75) |= 1u;
-    *(a3 + 2) = v32;
+    v31 = [dictCopy objectForKeyedSubscript:@"coarseIndoorFloorSelection"];
+    unsignedIntValue5 = [v31 unsignedIntValue];
+    *(overrides + 75) |= 1u;
+    *(overrides + 2) = unsignedIntValue5;
   }
 
-  v33 = [v5 valueForKey:@"gpsStrobeDistance"];
+  v33 = [dictCopy valueForKey:@"gpsStrobeDistance"];
 
   if (v33)
   {
-    v34 = [v5 objectForKeyedSubscript:@"gpsStrobeDistance"];
+    v34 = [dictCopy objectForKeyedSubscript:@"gpsStrobeDistance"];
     [v34 floatValue];
-    *(a3 + 75) |= 0x20000u;
-    *(a3 + 30) = v35;
+    *(overrides + 75) |= 0x20000u;
+    *(overrides + 30) = v35;
   }
 
-  v36 = [v5 valueForKey:@"lifespanDeepIndoors"];
+  v36 = [dictCopy valueForKey:@"lifespanDeepIndoors"];
 
   if (v36)
   {
-    v37 = [v5 objectForKeyedSubscript:@"lifespanDeepIndoors"];
+    v37 = [dictCopy objectForKeyedSubscript:@"lifespanDeepIndoors"];
     [v37 floatValue];
-    *(a3 + 75) |= 0x40000u;
-    *(a3 + 31) = v38;
+    *(overrides + 75) |= 0x40000u;
+    *(overrides + 31) = v38;
   }
 
-  v39 = [v5 valueForKey:@"lifespanNearVenueEdge"];
+  v39 = [dictCopy valueForKey:@"lifespanNearVenueEdge"];
 
   if (v39)
   {
-    v40 = [v5 objectForKeyedSubscript:@"lifespanNearVenueEdge"];
+    v40 = [dictCopy objectForKeyedSubscript:@"lifespanNearVenueEdge"];
     [v40 floatValue];
-    *(a3 + 75) |= 0x80000u;
-    *(a3 + 32) = v41;
+    *(overrides + 75) |= 0x80000u;
+    *(overrides + 32) = v41;
   }
 
-  v42 = [v5 valueForKey:@"lifespanAuxiliary"];
+  v42 = [dictCopy valueForKey:@"lifespanAuxiliary"];
 
   if (v42)
   {
-    v43 = [v5 objectForKeyedSubscript:@"lifespanAuxiliary"];
+    v43 = [dictCopy objectForKeyedSubscript:@"lifespanAuxiliary"];
     [v43 floatValue];
-    *(a3 + 75) |= 0x100000u;
-    *(a3 + 33) = v44;
+    *(overrides + 75) |= 0x100000u;
+    *(overrides + 33) = v44;
   }
 
-  v45 = [v5 valueForKey:@"wifiLikelihoodOnMapPriorFactor"];
+  v45 = [dictCopy valueForKey:@"wifiLikelihoodOnMapPriorFactor"];
 
   if (v45)
   {
-    v46 = [v5 objectForKeyedSubscript:@"wifiLikelihoodOnMapPriorFactor"];
+    v46 = [dictCopy objectForKeyedSubscript:@"wifiLikelihoodOnMapPriorFactor"];
     [v46 floatValue];
-    *(a3 + 75) |= 0x200000u;
-    *(a3 + 34) = v47;
+    *(overrides + 75) |= 0x200000u;
+    *(overrides + 34) = v47;
   }
 
-  v48 = [v5 valueForKey:@"coarseIndoorRadioOddsTransform"];
+  v48 = [dictCopy valueForKey:@"coarseIndoorRadioOddsTransform"];
 
   if (v48)
   {
-    v49 = [v5 objectForKeyedSubscript:@"coarseIndoorRadioOddsTransform"];
-    v50 = [v49 unsignedIntValue];
-    *(a3 + 75) |= 0x800000u;
-    *(a3 + 35) = v50;
+    v49 = [dictCopy objectForKeyedSubscript:@"coarseIndoorRadioOddsTransform"];
+    unsignedIntValue6 = [v49 unsignedIntValue];
+    *(overrides + 75) |= 0x800000u;
+    *(overrides + 35) = unsignedIntValue6;
   }
 
-  v51 = [v5 valueForKey:@"feasibleLocationRequiredPrbIndoor"];
+  v51 = [dictCopy valueForKey:@"feasibleLocationRequiredPrbIndoor"];
 
   if (v51)
   {
-    v52 = [v5 objectForKeyedSubscript:@"feasibleLocationRequiredPrbIndoor"];
+    v52 = [dictCopy objectForKeyedSubscript:@"feasibleLocationRequiredPrbIndoor"];
     [v52 doubleValue];
-    *(a3 + 75) |= 0x1000000u;
-    *(a3 + 19) = v53;
+    *(overrides + 75) |= 0x1000000u;
+    *(overrides + 19) = v53;
   }
 
-  v54 = [v5 valueForKey:@"assignFloorWeightsByLikelihood"];
+  v54 = [dictCopy valueForKey:@"assignFloorWeightsByLikelihood"];
 
   if (v54)
   {
-    v55 = [v5 objectForKeyedSubscript:@"assignFloorWeightsByLikelihood"];
-    v56 = [v55 BOOLValue];
-    *(a3 + 75) |= 0x10000000u;
-    *(a3 + 192) = v56;
+    v55 = [dictCopy objectForKeyedSubscript:@"assignFloorWeightsByLikelihood"];
+    bOOLValue = [v55 BOOLValue];
+    *(overrides + 75) |= 0x10000000u;
+    *(overrides + 192) = bOOLValue;
   }
 
-  v57 = [v5 valueForKey:@"priorOnMapWeightFraction"];
+  v57 = [dictCopy valueForKey:@"priorOnMapWeightFraction"];
 
   if (v57)
   {
-    v58 = [v5 objectForKeyedSubscript:@"priorOnMapWeightFraction"];
+    v58 = [dictCopy objectForKeyedSubscript:@"priorOnMapWeightFraction"];
     [v58 doubleValue];
-    *(a3 + 75) |= 0x20000000u;
-    *(a3 + 23) = v59;
+    *(overrides + 75) |= 0x20000000u;
+    *(overrides + 23) = v59;
   }
 
-  v60 = [v5 valueForKey:@"enableBaroAidedFloorTransition"];
+  v60 = [dictCopy valueForKey:@"enableBaroAidedFloorTransition"];
 
   if (v60)
   {
-    v61 = [v5 objectForKeyedSubscript:@"enableBaroAidedFloorTransition"];
-    v62 = [v61 BOOLValue];
-    *(a3 + 75) |= 0x40000000u;
-    *(a3 + 193) = v62;
+    v61 = [dictCopy objectForKeyedSubscript:@"enableBaroAidedFloorTransition"];
+    bOOLValue2 = [v61 BOOLValue];
+    *(overrides + 75) |= 0x40000000u;
+    *(overrides + 193) = bOOLValue2;
   }
 
-  v63 = [v5 valueForKey:@"time2dMotionVariancePerSecondWifi2"];
+  v63 = [dictCopy valueForKey:@"time2dMotionVariancePerSecondWifi2"];
 
   if (v63)
   {
-    v64 = [v5 objectForKeyedSubscript:@"time2dMotionVariancePerSecondWifi2"];
+    v64 = [dictCopy objectForKeyedSubscript:@"time2dMotionVariancePerSecondWifi2"];
     [v64 floatValue];
-    *(a3 + 75) |= 0x80000000;
-    *(a3 + 49) = v65;
+    *(overrides + 75) |= 0x80000000;
+    *(overrides + 49) = v65;
   }
 
-  v66 = [v5 valueForKey:@"bilinearObservations"];
+  v66 = [dictCopy valueForKey:@"bilinearObservations"];
 
   if (v66)
   {
-    v67 = [v5 objectForKeyedSubscript:@"bilinearObservations"];
-    v68 = [v67 BOOLValue];
-    *(a3 + 76) |= 2u;
-    *(a3 + 194) = v68;
+    v67 = [dictCopy objectForKeyedSubscript:@"bilinearObservations"];
+    bOOLValue3 = [v67 BOOLValue];
+    *(overrides + 76) |= 2u;
+    *(overrides + 194) = bOOLValue3;
   }
 
-  v69 = [v5 valueForKey:@"walkableBlueDotSearchRadius"];
+  v69 = [dictCopy valueForKey:@"walkableBlueDotSearchRadius"];
 
   if (v69)
   {
-    v70 = [v5 objectForKeyedSubscript:@"walkableBlueDotSearchRadius"];
+    v70 = [dictCopy objectForKeyedSubscript:@"walkableBlueDotSearchRadius"];
     [v70 floatValue];
-    *(a3 + 76) |= 0x10u;
-    *(a3 + 56) = v71;
+    *(overrides + 76) |= 0x10u;
+    *(overrides + 56) = v71;
   }
 
-  v72 = [v5 valueForKey:@"motionPdrUnmodelledHeadingVariancePerSecondWifi2"];
+  v72 = [dictCopy valueForKey:@"motionPdrUnmodelledHeadingVariancePerSecondWifi2"];
 
   if (v72)
   {
-    v73 = [v5 objectForKeyedSubscript:@"motionPdrUnmodelledHeadingVariancePerSecondWifi2"];
+    v73 = [dictCopy objectForKeyedSubscript:@"motionPdrUnmodelledHeadingVariancePerSecondWifi2"];
     [v73 floatValue];
-    *(a3 + 76) |= 0x40u;
-    *(a3 + 57) = v74;
+    *(overrides + 76) |= 0x40u;
+    *(overrides + 57) = v74;
   }
 
-  v75 = [v5 valueForKey:@"particleFilterOffMapProbabilityFloor"];
+  v75 = [dictCopy valueForKey:@"particleFilterOffMapProbabilityFloor"];
 
   if (v75)
   {
-    v76 = [v5 objectForKeyedSubscript:@"particleFilterOffMapProbabilityFloor"];
+    v76 = [dictCopy objectForKeyedSubscript:@"particleFilterOffMapProbabilityFloor"];
     [v76 floatValue];
-    *(a3 + 76) |= 0x100u;
-    *(a3 + 62) = v77;
+    *(overrides + 76) |= 0x100u;
+    *(overrides + 62) = v77;
   }
 
-  v78 = [v5 valueForKey:@"coarseOutdoorProbabilityFloor"];
+  v78 = [dictCopy valueForKey:@"coarseOutdoorProbabilityFloor"];
 
   if (v78)
   {
-    v79 = [v5 objectForKeyedSubscript:@"coarseOutdoorProbabilityFloor"];
+    v79 = [dictCopy objectForKeyedSubscript:@"coarseOutdoorProbabilityFloor"];
     [v79 floatValue];
-    *(a3 + 76) |= 0x200u;
-    *(a3 + 63) = v80;
+    *(overrides + 76) |= 0x200u;
+    *(overrides + 63) = v80;
   }
 
-  v81 = [v5 valueForKey:@"pdr"];
+  v81 = [dictCopy valueForKey:@"pdr"];
 
   if (v81)
   {
@@ -458,7 +458,7 @@ LABEL_55:
   }
 
 LABEL_56:
-  v83 = [v5 valueForKey:@"pedomCompassMotionWifi2"];
+  v83 = [dictCopy valueForKey:@"pedomCompassMotionWifi2"];
 
   if (!v83)
   {
@@ -488,7 +488,7 @@ LABEL_59:
 LABEL_60:
 
 LABEL_61:
-  v85 = [v5 valueForKey:@"deadReckoning"];
+  v85 = [dictCopy valueForKey:@"deadReckoning"];
 
   if (!v85)
   {
@@ -518,7 +518,7 @@ LABEL_64:
 LABEL_65:
 
 LABEL_66:
-  v87 = [v5 valueForKey:@"coarseIndoor"];
+  v87 = [dictCopy valueForKey:@"coarseIndoor"];
 
   if (!v87)
   {
@@ -548,7 +548,7 @@ LABEL_69:
 LABEL_70:
 
 LABEL_71:
-  v89 = [v5 valueForKey:@"gpsFusionGlobalParams"];
+  v89 = [dictCopy valueForKey:@"gpsFusionGlobalParams"];
 
   if (!v89)
   {
@@ -578,7 +578,7 @@ LABEL_74:
 LABEL_75:
 
 LABEL_76:
-  v91 = [v5 valueForKey:@"wifi"];
+  v91 = [dictCopy valueForKey:@"wifi"];
 
   if (!v91)
   {
@@ -608,7 +608,7 @@ LABEL_79:
 LABEL_80:
 
 LABEL_81:
-  v93 = [v5 valueForKey:@"bodyFixed"];
+  v93 = [dictCopy valueForKey:@"bodyFixed"];
 
   if (!v93)
   {
@@ -638,7 +638,7 @@ LABEL_84:
 LABEL_85:
 
 LABEL_86:
-  v95 = [v5 valueForKey:@"motionTruth"];
+  v95 = [dictCopy valueForKey:@"motionTruth"];
 
   if (!v95)
   {
@@ -668,7 +668,7 @@ LABEL_89:
 LABEL_90:
 
 LABEL_91:
-  v97 = [v5 valueForKey:@"multiphoneDbm"];
+  v97 = [dictCopy valueForKey:@"multiphoneDbm"];
 
   if (!v97)
   {
@@ -698,7 +698,7 @@ LABEL_94:
 LABEL_95:
 
 LABEL_96:
-  v99 = [v5 valueForKey:@"pedomCompassMotion"];
+  v99 = [dictCopy valueForKey:@"pedomCompassMotion"];
 
   if (!v99)
   {
@@ -728,7 +728,7 @@ LABEL_99:
 LABEL_100:
 
 LABEL_101:
-  v101 = [v5 valueForKey:@"injection"];
+  v101 = [dictCopy valueForKey:@"injection"];
 
   if (!v101)
   {
@@ -758,7 +758,7 @@ LABEL_104:
 LABEL_105:
 
 LABEL_106:
-  v103 = [v5 valueForKey:@"beacon"];
+  v103 = [dictCopy valueForKey:@"beacon"];
 
   if (!v103)
   {
@@ -788,7 +788,7 @@ LABEL_109:
 LABEL_110:
 
 LABEL_111:
-  v105 = [v5 valueForKey:@"wallBehavior"];
+  v105 = [dictCopy valueForKey:@"wallBehavior"];
 
   if (!v105)
   {
@@ -818,7 +818,7 @@ LABEL_114:
 LABEL_115:
 
 LABEL_116:
-  v107 = [v5 valueForKey:@"dynamicUniverseParameters"];
+  v107 = [dictCopy valueForKey:@"dynamicUniverseParameters"];
 
   if (!v107)
   {
@@ -848,7 +848,7 @@ LABEL_119:
 LABEL_120:
 
 LABEL_121:
-  v109 = [v5 valueForKey:@"dynamicUniverseParameters"];
+  v109 = [dictCopy valueForKey:@"dynamicUniverseParameters"];
 
   if (!v109)
   {
@@ -878,7 +878,7 @@ LABEL_124:
 LABEL_125:
 
 LABEL_126:
-  v111 = [v5 valueForKey:@"altitude"];
+  v111 = [dictCopy valueForKey:@"altitude"];
 
   if (v111)
   {
@@ -911,17 +911,17 @@ LABEL_130:
 LABEL_131:
 }
 
-+ (BOOL)generateAvlTileFromJSON:(id)a3 atPath:(id)a4
++ (BOOL)generateAvlTileFromJSON:(id)n atPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v180 = v5;
-  v174 = v6;
-  if (v5)
+  nCopy = n;
+  pathCopy = path;
+  v180 = nCopy;
+  v174 = pathCopy;
+  if (nCopy)
   {
-    if (v6)
+    if (pathCopy)
     {
-      [v5 dataUsingEncoding:4];
+      [nCopy dataUsingEncoding:4];
       v173 = v204 = 0;
       v179 = [NSJSONSerialization JSONObjectWithData:"JSONObjectWithData:options:error:" options:? error:?];
       v176 = 0;
@@ -937,13 +937,13 @@ LABEL_131:
         {
           v7 = [v176 description];
           v8 = v7;
-          v9 = [v7 UTF8String];
+          uTF8String = [v7 UTF8String];
           v10 = v180;
-          v11 = [v180 UTF8String];
+          uTF8String2 = [v180 UTF8String];
           *buf = 136315394;
-          *&buf[4] = v9;
+          *&buf[4] = uTF8String;
           *&buf[12] = 2080;
-          *&buf[14] = v11;
+          *&buf[14] = uTF8String2;
           _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "@IndoorAvl, generateAvlTileFromJSON, failed to generate, error=%s, str=\n%s\n", buf, 0x16u);
         }
 
@@ -1156,20 +1156,20 @@ LABEL_131:
 
                         v50 = *(*(&v192 + 1) + 8 * m);
                         v51 = v50;
-                        v52 = [v50 UTF8String];
-                        v53 = v52;
+                        uTF8String3 = [v50 UTF8String];
+                        v53 = uTF8String3;
                         v54 = *(v18 + 28);
                         v55 = *(v18 + 24);
                         if (v55 >= v54)
                         {
                           if (v54 == *(v18 + 32))
                           {
-                            v52 = wireless_diagnostics::google::protobuf::internal::RepeatedPtrFieldBase::Reserve((v18 + 16), v54 + 1);
+                            uTF8String3 = wireless_diagnostics::google::protobuf::internal::RepeatedPtrFieldBase::Reserve((v18 + 16), v54 + 1);
                             v54 = *(v18 + 28);
                           }
 
                           *(v18 + 28) = v54 + 1;
-                          v57 = wireless_diagnostics::google::protobuf::internal::StringTypeHandlerBase::New(v52);
+                          v57 = wireless_diagnostics::google::protobuf::internal::StringTypeHandlerBase::New(uTF8String3);
                           v58 = *(v18 + 16);
                           v59 = *(v18 + 24);
                           *(v18 + 24) = v59 + 1;
@@ -1193,9 +1193,9 @@ LABEL_131:
                         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
                         {
                           v61 = v50;
-                          v62 = [v50 UTF8String];
+                          uTF8String4 = [v50 UTF8String];
                           LODWORD(v205[0]) = 136315138;
-                          *(v205 + 4) = v62;
+                          *(v205 + 4) = uTF8String4;
                           _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEBUG, "@IndoorAvl, generateAvlTileFromJSON, added venue ID %s", v205, 0xCu);
                         }
                       }
@@ -1207,12 +1207,12 @@ LABEL_131:
                   }
 
                   v63 = [v178 valueForKey:@"context"];
-                  v64 = [v63 intValue];
+                  intValue = [v63 intValue];
 
-                  if (v64 - 1 < 2)
+                  if (intValue - 1 < 2)
                   {
                     *(v18 + 104) |= 8u;
-                    *(v18 + 96) = v64;
+                    *(v18 + 96) = intValue;
                   }
 
                   v65 = [v178 objectForKey:@"tileDownloadConfiguration"];
@@ -1242,7 +1242,7 @@ LABEL_131:
                           objc_enumerationMutation(v68);
                         }
 
-                        v73 = [*(*(&v188 + 1) + 8 * n) unsignedIntValue];
+                        unsignedIntValue = [*(*(&v188 + 1) + 8 * n) unsignedIntValue];
                         v74 = *(v67 + 24);
                         v75 = *(v67 + 16);
                         if (v74 == *(v67 + 28))
@@ -1268,7 +1268,7 @@ LABEL_131:
 
                         v72 = *(v67 + 16);
                         *(v67 + 24) = v74 + 1;
-                        *(v72 + 4 * v74) = v73;
+                        *(v72 + 4 * v74) = unsignedIntValue;
                       }
 
                       v69 = [v68 countByEnumeratingWithState:&v188 objects:v206 count:16];
@@ -1319,9 +1319,9 @@ LABEL_131:
                 }
 
                 v87 = [v83 valueForKey:@"nonFitnessToCyclingSeconds"];
-                v88 = [v87 unsignedIntValue];
+                unsignedIntValue2 = [v87 unsignedIntValue];
                 *(v86 + 36) |= 1u;
-                *(v86 + 16) = v88;
+                *(v86 + 16) = unsignedIntValue2;
               }
 
               v89 = [v83 valueForKey:@"nonFitnessToRunningSeconds"];
@@ -1337,9 +1337,9 @@ LABEL_131:
                 }
 
                 v92 = [v83 valueForKey:@"nonFitnessToRunningSeconds"];
-                v93 = [v92 unsignedIntValue];
+                unsignedIntValue3 = [v92 unsignedIntValue];
                 *(v91 + 36) |= 2u;
-                *(v91 + 20) = v93;
+                *(v91 + 20) = unsignedIntValue3;
               }
 
               v94 = [v83 valueForKey:@"runningToNonFitnessSeconds"];
@@ -1355,9 +1355,9 @@ LABEL_131:
                 }
 
                 v97 = [v83 valueForKey:@"runningToNonFitnessSeconds"];
-                v98 = [v97 unsignedIntValue];
+                unsignedIntValue4 = [v97 unsignedIntValue];
                 *(v96 + 36) |= 4u;
-                *(v96 + 24) = v98;
+                *(v96 + 24) = unsignedIntValue4;
               }
 
               v99 = [v83 valueForKey:@"cyclingToNonFitnessSeconds"];
@@ -1373,9 +1373,9 @@ LABEL_131:
                 }
 
                 v102 = [v83 valueForKey:@"cyclingToNonFitnessSeconds"];
-                v103 = [v102 unsignedIntValue];
+                unsignedIntValue5 = [v102 unsignedIntValue];
                 *(v101 + 36) |= 8u;
-                *(v101 + 28) = v103;
+                *(v101 + 28) = unsignedIntValue5;
               }
             }
 
@@ -1396,9 +1396,9 @@ LABEL_131:
             if (!v109)
             {
               v110 = [v179 valueForKey:@"indoorPrefetchRadiusKM"];
-              v111 = [v110 unsignedIntValue];
+              unsignedIntValue6 = [v110 unsignedIntValue];
               v226 |= 8u;
-              v214 = v111;
+              v214 = unsignedIntValue6;
             }
 
             v112 = [v179 valueForKey:@"regionalPrefetchRadiusKM"];
@@ -1407,9 +1407,9 @@ LABEL_131:
             if (!v113)
             {
               v114 = [v179 valueForKey:@"regionalPrefetchRadiusKM"];
-              v115 = [v114 unsignedIntValue];
+              unsignedIntValue7 = [v114 unsignedIntValue];
               v226 |= 0x10u;
-              v215 = v115;
+              v215 = unsignedIntValue7;
             }
 
             v116 = [v179 valueForKey:@"indoorPrefetchMaxFloorCount"];
@@ -1418,9 +1418,9 @@ LABEL_131:
             if (!v117)
             {
               v118 = [v179 valueForKey:@"indoorPrefetchMaxFloorCount"];
-              v119 = [v118 unsignedIntValue];
+              unsignedIntValue8 = [v118 unsignedIntValue];
               v226 |= 0x20u;
-              v216 = v119;
+              v216 = unsignedIntValue8;
             }
 
             v120 = [v179 valueForKey:@"regionalPrefetchMaxFloorCount"];
@@ -1429,9 +1429,9 @@ LABEL_131:
             if (!v121)
             {
               v122 = [v179 valueForKey:@"regionalPrefetchMaxFloorCount"];
-              v123 = [v122 unsignedIntValue];
+              unsignedIntValue9 = [v122 unsignedIntValue];
               v226 |= 0x40u;
-              v217 = v123;
+              v217 = unsignedIntValue9;
             }
 
             v124 = [v179 valueForKey:@"indoorPrefetchMaxTotalBytes"];
@@ -1440,9 +1440,9 @@ LABEL_131:
             if (!v125)
             {
               v126 = [v179 valueForKey:@"indoorPrefetchMaxTotalBytes"];
-              v127 = [v126 unsignedIntValue];
+              unsignedIntValue10 = [v126 unsignedIntValue];
               v226 |= 0x80u;
-              v218 = v127;
+              v218 = unsignedIntValue10;
             }
 
             v128 = [v179 valueForKey:@"regionalPrefetchMaxTotalBytes"];
@@ -1451,9 +1451,9 @@ LABEL_131:
             if (!v129)
             {
               v130 = [v179 valueForKey:@"regionalPrefetchMaxTotalBytes"];
-              v131 = [v130 unsignedIntValue];
+              unsignedIntValue11 = [v130 unsignedIntValue];
               v226 |= 0x100u;
-              v219 = v131;
+              v219 = unsignedIntValue11;
             }
 
             v132 = [v179 valueForKey:@"indoorLocationOfInterestMergeRadiusKM"];
@@ -1462,9 +1462,9 @@ LABEL_131:
             if (!v133)
             {
               v134 = [v179 valueForKey:@"indoorLocationOfInterestMergeRadiusKM"];
-              v135 = [v134 unsignedIntValue];
+              unsignedIntValue12 = [v134 unsignedIntValue];
               v226 |= 0x200u;
-              v220 = v135;
+              v220 = unsignedIntValue12;
             }
 
             v136 = [v179 valueForKey:@"regionalLocationOfInterestMergeRadiusKM"];
@@ -1473,9 +1473,9 @@ LABEL_131:
             if (!v137)
             {
               v138 = [v179 valueForKey:@"regionalLocationOfInterestMergeRadiusKM"];
-              v139 = [v138 unsignedIntValue];
+              unsignedIntValue13 = [v138 unsignedIntValue];
               v226 |= 0x400u;
-              v221 = v139;
+              v221 = unsignedIntValue13;
             }
 
             v140 = [v179 valueForKey:@"preferPredictionWithinNActivityCycles"];
@@ -1484,9 +1484,9 @@ LABEL_131:
             if (!v141)
             {
               v142 = [v179 valueForKey:@"preferPredictionWithinNActivityCycles"];
-              v143 = [v142 unsignedIntValue];
+              unsignedIntValue14 = [v142 unsignedIntValue];
               v226 |= 0x800u;
-              v222 = v143;
+              v222 = unsignedIntValue14;
             }
 
             v144 = [v179 valueForKey:@"indoorNumberOfDaysBeforeTileRedownload"];
@@ -1511,10 +1511,10 @@ LABEL_131:
               v225 = v151;
             }
 
-            v152 = [v174 path];
-            v153 = v152;
-            v154 = [v152 UTF8String];
-            v155 = strlen(v154);
+            path = [v174 path];
+            v153 = path;
+            uTF8String5 = [path UTF8String];
+            v155 = strlen(uTF8String5);
             if (v155 >= 0x7FFFFFFFFFFFFFF8)
             {
               sub_10000D39C();
@@ -1529,7 +1529,7 @@ LABEL_131:
             *(&__dst.__r_.__value_.__s + 23) = v155;
             if (v155)
             {
-              memmove(&__dst, v154, v155);
+              memmove(&__dst, uTF8String5, v155);
             }
 
             __dst.__r_.__value_.__s.__data_[v156] = 0;
@@ -1601,9 +1601,9 @@ LABEL_131:
           if (os_log_type_enabled(v157, OS_LOG_TYPE_ERROR))
           {
             v160 = v180;
-            v161 = [v180 UTF8String];
+            uTF8String6 = [v180 UTF8String];
             *buf = 136315138;
-            *&buf[4] = v161;
+            *&buf[4] = uTF8String6;
             _os_log_impl(&_mh_execute_header, v157, OS_LOG_TYPE_ERROR, "@IndoorAvl, generateAvlTileFromJSON, expected at least one venue, str=\n%s\n", buf, 0xCu);
           }
         }
@@ -1619,9 +1619,9 @@ LABEL_131:
           if (os_log_type_enabled(v157, OS_LOG_TYPE_ERROR))
           {
             v158 = v180;
-            v159 = [v180 UTF8String];
+            uTF8String7 = [v180 UTF8String];
             *buf = 136315138;
-            *&buf[4] = v159;
+            *&buf[4] = uTF8String7;
             _os_log_impl(&_mh_execute_header, v157, OS_LOG_TYPE_ERROR, "@IndoorAvl, generateAvlTileFromJSON, no venues given in avl tile json??, str=\n%s\n", buf, 0xCu);
           }
         }

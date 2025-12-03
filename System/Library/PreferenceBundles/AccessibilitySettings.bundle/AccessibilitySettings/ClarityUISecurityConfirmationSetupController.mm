@@ -1,21 +1,21 @@
 @interface ClarityUISecurityConfirmationSetupController
 - (ClarityUIOnboardingDismissalDelegate)delegate;
-- (ClarityUISecurityConfirmationSetupController)initWithShortName:(id)a3 delegate:(id)a4 andCompletion:(id)a5;
-- (id)_axDeviceLockTypeDescription:(unint64_t)a3;
-- (id)_axDeviceLockTypeLabel:(unint64_t)a3;
+- (ClarityUISecurityConfirmationSetupController)initWithShortName:(id)name delegate:(id)delegate andCompletion:(id)completion;
+- (id)_axDeviceLockTypeDescription:(unint64_t)description;
+- (id)_axDeviceLockTypeLabel:(unint64_t)label;
 - (unint64_t)_axDeviceLockType;
-- (void)_didTapChangeSecuritySettingsButton:(id)a3;
+- (void)_didTapChangeSecuritySettingsButton:(id)button;
 @end
 
 @implementation ClarityUISecurityConfirmationSetupController
 
-- (ClarityUISecurityConfirmationSetupController)initWithShortName:(id)a3 delegate:(id)a4 andCompletion:(id)a5
+- (ClarityUISecurityConfirmationSetupController)initWithShortName:(id)name delegate:(id)delegate andCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ClarityUISecurityConfirmationSetupController *)self _axDeviceLockType];
-  if ([v8 length])
+  nameCopy = name;
+  delegateCopy = delegate;
+  completionCopy = completion;
+  _axDeviceLockType = [(ClarityUISecurityConfirmationSetupController *)self _axDeviceLockType];
+  if ([nameCopy length])
   {
     v12 = AXLocStringKeyForModel();
     v13 = settingsLocString(v12, @"ClarityUISettings");
@@ -28,16 +28,16 @@
     v14 = settingsLocString(v12, @"ClarityUISettings");
   }
 
-  v15 = [(ClarityUISecurityConfirmationSetupController *)self _axDeviceLockTypeDescription:v11];
+  v15 = [(ClarityUISecurityConfirmationSetupController *)self _axDeviceLockTypeDescription:_axDeviceLockType];
   v63.receiver = self;
   v63.super_class = ClarityUISecurityConfirmationSetupController;
   v16 = [(ClarityUISecurityConfirmationSetupController *)&v63 initWithTitle:v14 detailText:v15 symbolName:@"lock.fill" contentLayout:2];
 
   if (v16)
   {
-    v17 = [(ClarityUISecurityConfirmationSetupController *)v16 contentView];
-    objc_storeWeak(&v16->_delegate, v9);
-    v18 = objc_retainBlock(v10);
+    contentView = [(ClarityUISecurityConfirmationSetupController *)v16 contentView];
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    v18 = objc_retainBlock(completionCopy);
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v18;
 
@@ -47,8 +47,8 @@
     [v20 setTitle:v21 forState:0];
 
     [v20 addTarget:v16 action:"_didTapNextButton:" forControlEvents:0x2000];
-    v22 = [(ClarityUISecurityConfirmationSetupController *)v16 buttonTray];
-    [v22 addButton:v20];
+    buttonTray = [(ClarityUISecurityConfirmationSetupController *)v16 buttonTray];
+    [buttonTray addButton:v20];
 
     v23 = +[OBLinkTrayButton linkButton];
     v24 = settingsLocString(@"CHANGE_SECURITY_SETTINGS", @"ClarityUISettings");
@@ -56,8 +56,8 @@
 
     v59 = v23;
     [v23 addTarget:v16 action:"_didTapChangeSecuritySettingsButton:" forControlEvents:0x2000];
-    v25 = [(ClarityUISecurityConfirmationSetupController *)v16 buttonTray];
-    [v25 addButton:v23];
+    buttonTray2 = [(ClarityUISecurityConfirmationSetupController *)v16 buttonTray];
+    [buttonTray2 addButton:v23];
 
     v26 = objc_alloc_init(UILabel);
     [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -67,70 +67,70 @@
     [v26 setAdjustsFontForContentSizeCategory:1];
     [v26 setNumberOfLines:0];
     [v26 setTextAlignment:1];
-    v28 = [(ClarityUISecurityConfirmationSetupController *)v16 _axDeviceLockTypeLabel:v11];
+    v28 = [(ClarityUISecurityConfirmationSetupController *)v16 _axDeviceLockTypeLabel:_axDeviceLockType];
     [v26 setText:v28];
 
-    [v17 addSubview:v26];
-    v29 = [v26 trailingAnchor];
-    v30 = [v17 trailingAnchor];
-    [v29 constraintEqualToAnchor:v30];
+    [contentView addSubview:v26];
+    trailingAnchor = [v26 trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31 = v61 = v16;
     [v31 setActive:1];
 
-    v32 = [v26 leadingAnchor];
-    v33 = [v17 leadingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    leadingAnchor = [v26 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v34 setActive:1];
 
-    v35 = [v26 topAnchor];
-    v36 = [v17 topAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    topAnchor = [v26 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v37 setActive:1];
 
-    v38 = [v26 bottomAnchor];
-    v39 = [v17 bottomAnchor];
-    v40 = [v38 constraintLessThanOrEqualToAnchor:v39];
+    bottomAnchor = [v26 bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v40 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     [v40 setActive:1];
 
-    v58 = [v26 trailingAnchor];
-    v57 = [v17 trailingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    trailingAnchor3 = [v26 trailingAnchor];
+    trailingAnchor4 = [contentView trailingAnchor];
+    v56 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v64[0] = v56;
-    v55 = [v26 leadingAnchor];
-    v53 = [v17 leadingAnchor];
-    v52 = [v55 constraintEqualToAnchor:v53];
+    leadingAnchor3 = [v26 leadingAnchor];
+    leadingAnchor4 = [contentView leadingAnchor];
+    v52 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v64[1] = v52;
-    v51 = [v26 topAnchor];
-    v54 = v17;
-    v41 = [v17 topAnchor];
-    v42 = [v51 constraintEqualToAnchor:v41];
+    topAnchor3 = [v26 topAnchor];
+    v54 = contentView;
+    topAnchor4 = [contentView topAnchor];
+    v42 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v64[2] = v42;
-    v43 = [v26 bottomAnchor];
-    [v17 bottomAnchor];
-    v44 = v62 = v10;
-    [v43 constraintLessThanOrEqualToAnchor:v44];
+    bottomAnchor3 = [v26 bottomAnchor];
+    [contentView bottomAnchor];
+    v44 = v62 = completionCopy;
+    [bottomAnchor3 constraintLessThanOrEqualToAnchor:v44];
     v45 = v14;
-    v46 = v9;
-    v48 = v47 = v8;
+    v46 = delegateCopy;
+    v48 = v47 = nameCopy;
     v64[3] = v48;
     v49 = [NSArray arrayWithObjects:v64 count:4];
     [NSLayoutConstraint activateConstraints:v49];
 
-    v8 = v47;
-    v9 = v46;
+    nameCopy = v47;
+    delegateCopy = v46;
     v14 = v45;
 
-    v10 = v62;
+    completionCopy = v62;
     v16 = v61;
   }
 
   return v16;
 }
 
-- (void)_didTapChangeSecuritySettingsButton:(id)a3
+- (void)_didTapChangeSecuritySettingsButton:(id)button
 {
-  v3 = [(ClarityUISecurityConfirmationSetupController *)self delegate];
-  [v3 dimissOnboardingControllerEarlyWithCompletion:&__block_literal_global_56];
+  delegate = [(ClarityUISecurityConfirmationSetupController *)self delegate];
+  [delegate dimissOnboardingControllerEarlyWithCompletion:&__block_literal_global_56];
 }
 
 void __84__ClarityUISecurityConfirmationSetupController__didTapChangeSecuritySettingsButton___block_invoke(id a1)
@@ -145,14 +145,14 @@ void __84__ClarityUISecurityConfirmationSetupController__didTapChangeSecuritySet
   v2 = objc_alloc_init(LAContext);
   if ([v2 canEvaluatePolicy:1 error:0])
   {
-    v3 = [v2 biometryType];
+    biometryType = [v2 biometryType];
     v4 = 3;
-    if (v3 == &dword_0 + 2)
+    if (biometryType == &dword_0 + 2)
     {
       v4 = 1;
     }
 
-    if (v3 == &dword_0 + 1)
+    if (biometryType == &dword_0 + 1)
     {
       v5 = 2;
     }
@@ -176,19 +176,19 @@ void __84__ClarityUISecurityConfirmationSetupController__didTapChangeSecuritySet
   return v5;
 }
 
-- (id)_axDeviceLockTypeLabel:(unint64_t)a3
+- (id)_axDeviceLockTypeLabel:(unint64_t)label
 {
-  if (a3 <= 3)
+  if (label <= 3)
   {
-    self = settingsLocString(off_2586F0[a3], @"ClarityUISettings");
+    self = settingsLocString(off_2586F0[label], @"ClarityUISettings");
   }
 
   return self;
 }
 
-- (id)_axDeviceLockTypeDescription:(unint64_t)a3
+- (id)_axDeviceLockTypeDescription:(unint64_t)description
 {
-  if (a3 <= 3)
+  if (description <= 3)
   {
     v4 = AXLocStringKeyForModel();
     v3 = settingsLocString(v4, @"ClarityUISettings");

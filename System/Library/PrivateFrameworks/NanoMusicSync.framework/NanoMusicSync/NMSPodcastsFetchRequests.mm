@@ -1,8 +1,8 @@
 @interface NMSPodcastsFetchRequests
 + (id)_createFetchRequestForEpisodeDownloadableItem;
-+ (id)_predicateForDownloadableWatchEpisodesWithDownloadedOnly:(BOOL)a3 unplayedOnly:(BOOL)a4;
-+ (id)legacy_fetchRequestForEpisodesWithFeedURL:(id)a3 downloadedOnly:(BOOL)a4 ctx:(id)a5;
-+ (id)legacy_fetchRequestForStationWithUUID:(id)a3;
++ (id)_predicateForDownloadableWatchEpisodesWithDownloadedOnly:(BOOL)only unplayedOnly:(BOOL)unplayedOnly;
++ (id)legacy_fetchRequestForEpisodesWithFeedURL:(id)l downloadedOnly:(BOOL)only ctx:(id)ctx;
++ (id)legacy_fetchRequestForStationWithUUID:(id)d;
 @end
 
 @implementation NMSPodcastsFetchRequests
@@ -16,15 +16,15 @@ void __87__NMSPodcastsFetchRequests_fetchRequestForFeedURL_downloadSettings_down
   *(v3 + 40) = v2;
 }
 
-+ (id)_predicateForDownloadableWatchEpisodesWithDownloadedOnly:(BOOL)a3 unplayedOnly:(BOOL)a4
++ (id)_predicateForDownloadableWatchEpisodesWithDownloadedOnly:(BOOL)only unplayedOnly:(BOOL)unplayedOnly
 {
-  v4 = a4;
-  v5 = a3;
+  unplayedOnlyCopy = unplayedOnly;
+  onlyCopy = only;
   v6 = [MEMORY[0x277D3DAF8] predicateForAudio:1];
-  v7 = [MEMORY[0x277D3DAF8] predicateForEntitledEpisodes];
-  v8 = [v6 AND:v7];
+  predicateForEntitledEpisodes = [MEMORY[0x277D3DAF8] predicateForEntitledEpisodes];
+  v8 = [v6 AND:predicateForEntitledEpisodes];
 
-  if (v5)
+  if (onlyCopy)
   {
     v9 = [MEMORY[0x277D3DAF8] predicateForDownloaded:1 excludeHidden:1];
     v10 = [v8 AND:v9];
@@ -32,7 +32,7 @@ void __87__NMSPodcastsFetchRequests_fetchRequestForFeedURL_downloadSettings_down
     v8 = v10;
   }
 
-  if (v4)
+  if (unplayedOnlyCopy)
   {
     v11 = [MEMORY[0x277D3DAF8] predicateForVisuallyPlayed:0];
     v12 = [v8 AND:v11];
@@ -46,42 +46,42 @@ void __87__NMSPodcastsFetchRequests_fetchRequestForFeedURL_downloadSettings_down
 + (id)_createFetchRequestForEpisodeDownloadableItem
 {
   v2 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:*MEMORY[0x277D3DCF8]];
-  v3 = [MEMORY[0x277D3DAF8] propertiesToFetchDownloadInfo];
-  [v2 setPropertiesToFetch:v3];
+  propertiesToFetchDownloadInfo = [MEMORY[0x277D3DAF8] propertiesToFetchDownloadInfo];
+  [v2 setPropertiesToFetch:propertiesToFetchDownloadInfo];
 
-  v4 = [MEMORY[0x277D3DAF8] relationshipKeyPathsForPrefetchingDownloadInfo];
-  [v2 setRelationshipKeyPathsForPrefetching:v4];
+  relationshipKeyPathsForPrefetchingDownloadInfo = [MEMORY[0x277D3DAF8] relationshipKeyPathsForPrefetchingDownloadInfo];
+  [v2 setRelationshipKeyPathsForPrefetching:relationshipKeyPathsForPrefetchingDownloadInfo];
 
   [v2 setFetchBatchSize:20];
 
   return v2;
 }
 
-+ (id)legacy_fetchRequestForStationWithUUID:(id)a3
++ (id)legacy_fetchRequestForStationWithUUID:(id)d
 {
   v3 = MEMORY[0x277CBE428];
   v4 = *MEMORY[0x277D3DD48];
-  v5 = a3;
+  dCopy = d;
   v6 = [v3 fetchRequestWithEntityName:v4];
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", *MEMORY[0x277D3DE08], v5];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", *MEMORY[0x277D3DE08], dCopy];
 
-  [v6 setPredicate:v7];
+  [v6 setPredicate:dCopy];
   [v6 setFetchLimit:1];
 
   return v6;
 }
 
-+ (id)legacy_fetchRequestForEpisodesWithFeedURL:(id)a3 downloadedOnly:(BOOL)a4 ctx:(id)a5
++ (id)legacy_fetchRequestForEpisodesWithFeedURL:(id)l downloadedOnly:(BOOL)only ctx:(id)ctx
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  ctxCopy = ctx;
   v9 = MEMORY[0x277CBE428];
   v10 = *MEMORY[0x277D3DD50];
-  v11 = a3;
+  lCopy = l;
   v12 = [v9 fetchRequestWithEntityName:v10];
-  v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", *MEMORY[0x277D3DE68], v11];
+  lCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", *MEMORY[0x277D3DE68], lCopy];
 
-  [v12 setPredicate:v13];
+  [v12 setPredicate:lCopy];
   v14 = *MEMORY[0x277D3DE70];
   v30[0] = *MEMORY[0x277D3DF10];
   v30[1] = v14;
@@ -89,19 +89,19 @@ void __87__NMSPodcastsFetchRequests_fetchRequestForFeedURL_downloadSettings_down
   [v12 setPropertiesToFetch:v15];
 
   [v12 setFetchLimit:1];
-  v16 = [a1 _createFetchRequestForEpisodeDownloadableItem];
+  _createFetchRequestForEpisodeDownloadableItem = [self _createFetchRequestForEpisodeDownloadableItem];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __89__NMSPodcastsFetchRequests_legacy_fetchRequestForEpisodesWithFeedURL_downloadedOnly_ctx___block_invoke;
   v24[3] = &unk_27993E728;
-  v25 = v8;
+  v25 = ctxCopy;
   v26 = v12;
-  v17 = v16;
+  v17 = _createFetchRequestForEpisodeDownloadableItem;
   v27 = v17;
-  v28 = a1;
-  v29 = a4;
+  selfCopy = self;
+  onlyCopy = only;
   v18 = v12;
-  v19 = v8;
+  v19 = ctxCopy;
   [v19 performBlockAndWait:v24];
   v20 = v27;
   v21 = v17;

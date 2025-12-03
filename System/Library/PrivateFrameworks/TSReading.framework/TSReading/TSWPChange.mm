@@ -1,38 +1,38 @@
 @interface TSWPChange
-- (BOOL)canMergeWithKind:(int)a3 session:(id)a4;
+- (BOOL)canMergeWithKind:(int)kind session:(id)session;
 - (BOOL)showsHiddenDeletionMarkup;
 - (BOOL)showsMarkup;
 - (TSUColor)changeAdornmentsColor;
 - (TSUColor)textMarkupColor;
-- (TSWPChange)initWithContext:(id)a3 kind:(int)a4 session:(id)a5;
-- (id)copyWithContext:(id)a3;
+- (TSWPChange)initWithContext:(id)context kind:(int)kind session:(id)session;
+- (id)copyWithContext:(id)context;
 - (void)dealloc;
-- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setSession:(id)a3;
+- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)root;
+- (void)setDate:(id)date;
+- (void)setHidden:(BOOL)hidden;
+- (void)setSession:(id)session;
 - (void)trackedTextDidChange;
 @end
 
 @implementation TSWPChange
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  sessionCopy = session;
 
-  self->_session = a3;
+  self->_session = session;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  dateCopy = date;
 
-  self->_date = a3;
+  self->_date = date;
 }
 
-- (TSWPChange)initWithContext:(id)a3 kind:(int)a4 session:(id)a5
+- (TSWPChange)initWithContext:(id)context kind:(int)kind session:(id)session
 {
   v12.receiver = self;
   v12.super_class = TSWPChange;
@@ -40,11 +40,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_kind = a4;
-    v8->_session = a5;
+    v8->_kind = kind;
+    v8->_session = session;
     v9->_date = objc_alloc_init(MEMORY[0x277CBEAA8]);
     objc_opt_class();
-    [a3 documentObject];
+    [context documentObject];
     v10 = TSUDynamicCast();
     if (v10)
     {
@@ -67,17 +67,17 @@
   [(TSWPChange *)&v3 dealloc];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (a3 && self->_kind != 2)
+  if (hidden && self->_kind != 2)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPChange setHidden:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPChange.mm"), 90, @"Only deletions may be hidden"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPChange.mm"), 90, @"Only deletions may be hidden"}];
   }
 
   [(TSPObject *)self willModify];
-  self->_hidden = a3;
+  self->_hidden = hidden;
 }
 
 - (BOOL)showsMarkup
@@ -89,18 +89,18 @@
   }
 
   kind = self->_kind;
-  v6 = [(TSWPChangeSession *)self->_session date];
+  date = [(TSWPChangeSession *)self->_session date];
 
-  return [v3 shouldShowMarkupForChangeKind:kind date:v6];
+  return [v3 shouldShowMarkupForChangeKind:kind date:date];
 }
 
 - (BOOL)showsHiddenDeletionMarkup
 {
   if (self->_kind != 2)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPChange showsHiddenDeletionMarkup]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPChange.mm"), 116, @"Only call this method for deletions"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPChange.mm"), 116, @"Only call this method for deletions"}];
     if (self->_kind != 2)
     {
       return 0;
@@ -113,42 +113,42 @@
   }
 
   v6 = [-[TSPObject documentRoot](self "documentRoot")];
-  v7 = [(TSWPChangeSession *)self->_session date];
+  date = [(TSWPChangeSession *)self->_session date];
 
-  return [v6 shouldShowMarkupForChangeKind:1 date:v7];
+  return [v6 shouldShowMarkupForChangeKind:1 date:date];
 }
 
 - (TSUColor)textMarkupColor
 {
-  v2 = [(TSWPChangeSession *)self->_session author];
+  author = [(TSWPChangeSession *)self->_session author];
 
-  return [(TSKAnnotationAuthor *)v2 textMarkupColor];
+  return [(TSKAnnotationAuthor *)author textMarkupColor];
 }
 
 - (TSUColor)changeAdornmentsColor
 {
-  v2 = [(TSWPChangeSession *)self->_session author];
+  author = [(TSWPChangeSession *)self->_session author];
 
-  return [(TSKAnnotationAuthor *)v2 changeAdornmentsColor];
+  return [(TSKAnnotationAuthor *)author changeAdornmentsColor];
 }
 
 - (void)trackedTextDidChange
 {
-  v3 = [(TSPObject *)self documentRoot];
+  documentRoot = [(TSPObject *)self documentRoot];
 
-  [(TSWPChange *)self p_invalidateAnnotationResultsForDocumentRoot:v3];
+  [(TSWPChange *)self p_invalidateAnnotationResultsForDocumentRoot:documentRoot];
 }
 
-- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)a3
+- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)root
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v4 postNotificationName:@"kTSDAnnotationInvalidatedNotification" object:a3];
+  [defaultCenter postNotificationName:@"kTSDAnnotationInvalidatedNotification" object:root];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{-[TSWPChange zone](self, "zone")), "initWithContext:", a3}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{-[TSWPChange zone](self, "zone")), "initWithContext:", context}];
   v5 = v4;
   if (v4)
   {
@@ -161,11 +161,11 @@
   return v5;
 }
 
-- (BOOL)canMergeWithKind:(int)a3 session:(id)a4
+- (BOOL)canMergeWithKind:(int)kind session:(id)session
 {
-  if (self->_kind == a3)
+  if (self->_kind == kind)
   {
-    return [a4 isEqualToSession:self->_session];
+    return [session isEqualToSession:self->_session];
   }
 
   else

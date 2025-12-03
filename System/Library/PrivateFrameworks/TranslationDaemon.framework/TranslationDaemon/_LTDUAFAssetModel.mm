@@ -1,7 +1,7 @@
 @interface _LTDUAFAssetModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstalled;
-- (BOOL)supportsLocale:(id)a3;
+- (BOOL)supportsLocale:(id)locale;
 - (NSArray)localeIdentifiers;
 - (NSArray)supportedLanguages;
 - (NSString)assetBuild;
@@ -11,11 +11,11 @@
 - (NSString)coreAssetName;
 - (NSString)debugDescription;
 - (NSString)identifier;
-- (_LTDUAFAssetModel)initWithAssetIdentifier:(id)a3;
-- (_LTDUAFAssetModel)initWithAssetSpecifier:(id)a3;
-- (_LTDUAFAssetModel)initWithProvider:(id)a3;
+- (_LTDUAFAssetModel)initWithAssetIdentifier:(id)identifier;
+- (_LTDUAFAssetModel)initWithAssetSpecifier:(id)specifier;
+- (_LTDUAFAssetModel)initWithProvider:(id)provider;
 - (int64_t)assetVersion;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)contentVersion;
 - (int64_t)downloadSize;
 - (int64_t)requiredCapabilityIdentifier;
@@ -23,21 +23,21 @@
 - (unint64_t)assetSubtype;
 - (unint64_t)hash;
 - (unint64_t)state;
-- (void)setProvider:(id)a3;
+- (void)setProvider:(id)provider;
 @end
 
 @implementation _LTDUAFAssetModel
 
-- (_LTDUAFAssetModel)initWithProvider:(id)a3
+- (_LTDUAFAssetModel)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = _LTDUAFAssetModel;
   v5 = [(_LTDUAFAssetModel *)&v13 init];
   if (v5)
   {
-    v6 = [v4 metadata];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D77A20]];
+    metadata = [providerCopy metadata];
+    v7 = [metadata objectForKeyedSubscript:*MEMORY[0x277D77A20]];
     assetName = v5->_assetName;
     v5->_assetName = v7;
 
@@ -45,30 +45,30 @@
     identifier = v5->_identifier;
     v5->_identifier = v9;
 
-    [(_LTDUAFAssetModel *)v5 setProvider:v4];
+    [(_LTDUAFAssetModel *)v5 setProvider:providerCopy];
     v11 = v5;
   }
 
   return v5;
 }
 
-- (_LTDUAFAssetModel)initWithAssetIdentifier:(id)a3
+- (_LTDUAFAssetModel)initWithAssetIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = _LTDUAFAssetModel;
   v6 = [(_LTDUAFAssetModel *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
-    v8 = [_LTDUAFBridge assetSpecifierForAssetIdentifier:v5];
+    objc_storeStrong(&v6->_identifier, identifier);
+    v8 = [_LTDUAFBridge assetSpecifierForAssetIdentifier:identifierCopy];
     assetName = v7->_assetName;
     v7->_assetName = v8;
 
     v10 = MEMORY[0x277CE1AC0];
-    v11 = [(_LTDUAFAssetModel *)v7 identifier];
-    v12 = [v10 discreteProgressWithIdentifier:v11 totalUnitCount:{-[_LTDUAFAssetModel downloadSize](v7, "downloadSize")}];
+    identifier = [(_LTDUAFAssetModel *)v7 identifier];
+    v12 = [v10 discreteProgressWithIdentifier:identifier totalUnitCount:{-[_LTDUAFAssetModel downloadSize](v7, "downloadSize")}];
     progress = v7->_progress;
     v7->_progress = v12;
 
@@ -78,22 +78,22 @@
   return v7;
 }
 
-- (_LTDUAFAssetModel)initWithAssetSpecifier:(id)a3
+- (_LTDUAFAssetModel)initWithAssetSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v15.receiver = self;
   v15.super_class = _LTDUAFAssetModel;
   v6 = [(_LTDUAFAssetModel *)&v15 init];
   if (v6)
   {
-    v7 = [_LTDUAFBridge assetIdentifierForAssetSpecifier:v5];
+    v7 = [_LTDUAFBridge assetIdentifierForAssetSpecifier:specifierCopy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
-    objc_storeStrong(&v6->_assetName, a3);
+    objc_storeStrong(&v6->_assetName, specifier);
     v9 = MEMORY[0x277CE1AC0];
-    v10 = [(_LTDUAFAssetModel *)v6 identifier];
-    v11 = [v9 discreteProgressWithIdentifier:v10 totalUnitCount:{-[_LTDUAFAssetModel downloadSize](v6, "downloadSize")}];
+    identifier = [(_LTDUAFAssetModel *)v6 identifier];
+    v11 = [v9 discreteProgressWithIdentifier:identifier totalUnitCount:{-[_LTDUAFAssetModel downloadSize](v6, "downloadSize")}];
     progress = v6->_progress;
     v6->_progress = v11;
 
@@ -103,46 +103,46 @@
   return v6;
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  v5 = a3;
-  if (v5)
+  providerCopy = provider;
+  if (providerCopy)
   {
-    v18 = v5;
-    objc_storeStrong(&self->_provider, a3);
-    v6 = [(_LTDUAFAssetModel *)self downloadSize];
+    v18 = providerCopy;
+    objc_storeStrong(&self->_provider, provider);
+    downloadSize = [(_LTDUAFAssetModel *)self downloadSize];
     progress = self->_progress;
     if (progress)
     {
-      v8 = [(_LTAssetProgress *)progress offlineState];
+      offlineState = [(_LTAssetProgress *)progress offlineState];
       v9 = self->_progress;
-      if (v8 == 2)
+      if (offlineState == 2)
       {
-        v10 = v6;
-        v11 = v6;
+        v10 = downloadSize;
+        completedUnitCount = downloadSize;
       }
 
       else
       {
-        v11 = [(_LTAssetProgress *)v9 completedUnitCount];
+        completedUnitCount = [(_LTAssetProgress *)v9 completedUnitCount];
         v9 = self->_progress;
-        v10 = v6;
+        v10 = downloadSize;
       }
 
-      [(_LTAssetProgress *)v9 updateTotalUnitCount:v10 completedUnitCount:v11];
+      [(_LTAssetProgress *)v9 updateTotalUnitCount:v10 completedUnitCount:completedUnitCount];
     }
 
     else
     {
       v12 = MEMORY[0x277CE1AC0];
-      v13 = [(_LTDUAFAssetModel *)self identifier];
-      v14 = [v12 discreteProgressWithIdentifier:v13 totalUnitCount:v6];
+      identifier = [(_LTDUAFAssetModel *)self identifier];
+      v14 = [v12 discreteProgressWithIdentifier:identifier totalUnitCount:downloadSize];
       v15 = self->_progress;
       self->_progress = v14;
     }
 
-    v16 = [v18 location];
-    if (v16)
+    location = [v18 location];
+    if (location)
     {
       v17 = 2;
     }
@@ -154,7 +154,7 @@
 
     [(_LTAssetProgress *)self->_progress setOfflineState:v17];
 
-    v5 = v18;
+    providerCopy = v18;
   }
 }
 
@@ -163,8 +163,8 @@
   identifier = self->_identifier;
   if (!identifier)
   {
-    v4 = [(_LTDUAFAssetModel *)self assetName];
-    v5 = [_LTDUAFBridge assetIdentifierForAssetSpecifier:v4];
+    assetName = [(_LTDUAFAssetModel *)self assetName];
+    v5 = [_LTDUAFBridge assetIdentifierForAssetSpecifier:assetName];
     v6 = self->_identifier;
     self->_identifier = v5;
 
@@ -178,13 +178,13 @@
 
 - (NSString)assetBuild
 {
-  v3 = [(UAFAsset *)self->_provider metadata];
-  v4 = [v3 objectForKeyedSubscript:@"Build"];
+  metadata = [(UAFAsset *)self->_provider metadata];
+  v4 = [metadata objectForKeyedSubscript:@"Build"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UAFAsset *)self->_provider metadata];
-    v6 = [v5 objectForKeyedSubscript:@"Build"];
+    metadata2 = [(UAFAsset *)self->_provider metadata];
+    v6 = [metadata2 objectForKeyedSubscript:@"Build"];
   }
 
   else
@@ -197,14 +197,14 @@
 
 - (NSString)assetId
 {
-  v3 = [(UAFAsset *)self->_provider metadata];
+  metadata = [(UAFAsset *)self->_provider metadata];
   v4 = *MEMORY[0x277D77A18];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D77A18]];
+  v5 = [metadata objectForKeyedSubscript:*MEMORY[0x277D77A18]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(UAFAsset *)self->_provider metadata];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    metadata2 = [(UAFAsset *)self->_provider metadata];
+    v7 = [metadata2 objectForKeyedSubscript:v4];
   }
 
   else
@@ -222,11 +222,11 @@
     assetLanguage = self->_assetLanguage;
     if (!assetLanguage)
     {
-      v4 = [(_LTDUAFAssetModel *)self identifier];
-      v5 = [v4 substringFromIndex:{objc_msgSend(@"ASR-", "length")}];
-      v6 = [v5 lt_localeIdentifier];
+      identifier = [(_LTDUAFAssetModel *)self identifier];
+      v5 = [identifier substringFromIndex:{objc_msgSend(@"ASR-", "length")}];
+      lt_localeIdentifier = [v5 lt_localeIdentifier];
       v7 = self->_assetLanguage;
-      self->_assetLanguage = v6;
+      self->_assetLanguage = lt_localeIdentifier;
 
       assetLanguage = self->_assetLanguage;
     }
@@ -300,25 +300,25 @@
 
 - (NSString)assetTypeName
 {
-  v2 = [(_LTDUAFAssetModel *)self assetType];
-  if (v2 - 2 > 8)
+  assetType = [(_LTDUAFAssetModel *)self assetType];
+  if (assetType - 2 > 8)
   {
     return &stru_284834138;
   }
 
   else
   {
-    return &off_2789B6840[v2 - 2]->isa;
+    return &off_2789B6840[assetType - 2]->isa;
   }
 }
 
 - (int64_t)assetVersion
 {
-  v2 = [(UAFAsset *)self->_provider metadata];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D77A28]];
-  v4 = [v3 integerValue];
+  metadata = [(UAFAsset *)self->_provider metadata];
+  v3 = [metadata objectForKeyedSubscript:*MEMORY[0x277D77A28]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)contentVersion
@@ -333,36 +333,36 @@
 
 - (int64_t)downloadSize
 {
-  v3 = [(UAFAsset *)self->_provider metadata];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D77A30]];
-  v5 = [v4 integerValue];
+  metadata = [(UAFAsset *)self->_provider metadata];
+  v4 = [metadata objectForKeyedSubscript:*MEMORY[0x277D77A30]];
+  integerValue = [v4 integerValue];
 
-  if (v5 <= 0)
+  if (integerValue <= 0)
   {
-    v6 = [(_LTDUAFAssetModel *)self assetSubtype];
-    if (v6 - 2 > 8)
+    assetSubtype = [(_LTDUAFAssetModel *)self assetSubtype];
+    if (assetSubtype - 2 > 8)
     {
       v7 = MEMORY[0x277CE1C60];
     }
 
     else
     {
-      v7 = (&off_2789B6888)[v6 - 2];
+      v7 = (&off_2789B6888)[assetSubtype - 2];
     }
 
     return *v7;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (BOOL)isInstalled
 {
-  v2 = [(_LTDUAFAssetModel *)self getLocalFileUrl];
-  v3 = [v2 path];
+  getLocalFileUrl = [(_LTDUAFAssetModel *)self getLocalFileUrl];
+  path = [getLocalFileUrl path];
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   return v5;
 }
@@ -375,10 +375,10 @@
   }
 
   v3 = [(NSString *)self->_identifier componentsSeparatedByString:@"-"];
-  v4 = [v3 lastObject];
-  v5 = [v4 integerValue];
+  lastObject = [v3 lastObject];
+  integerValue = [lastObject integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (unint64_t)state
@@ -388,10 +388,10 @@
     return 1;
   }
 
-  v4 = [(_LTDUAFAssetModel *)self progress];
-  v5 = [v4 offlineState];
+  progress = [(_LTDUAFAssetModel *)self progress];
+  offlineState = [progress offlineState];
 
-  switch(v5)
+  switch(offlineState)
   {
     case 0:
       return 3;
@@ -408,11 +408,11 @@
 - (NSArray)supportedLanguages
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(_LTDUAFAssetModel *)self assetLanguage];
-  v3 = v2;
-  if (v2)
+  assetLanguage = [(_LTDUAFAssetModel *)self assetLanguage];
+  v3 = assetLanguage;
+  if (assetLanguage)
   {
-    v7[0] = v2;
+    v7[0] = assetLanguage;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -426,25 +426,25 @@
   return v4;
 }
 
-- (BOOL)supportsLocale:(id)a3
+- (BOOL)supportsLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(_LTDUAFAssetModel *)self assetLanguage];
-  v6 = [v4 _ltLocaleIdentifier];
+  localeCopy = locale;
+  assetLanguage = [(_LTDUAFAssetModel *)self assetLanguage];
+  _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(localeCopy) = [assetLanguage isEqualToString:_ltLocaleIdentifier];
+  return localeCopy;
 }
 
 - (int64_t)unarchivedSize
 {
-  v3 = [(UAFAsset *)self->_provider metadata];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D77A38]];
-  v5 = [v4 intValue];
+  metadata = [(UAFAsset *)self->_provider metadata];
+  v4 = [metadata objectForKeyedSubscript:*MEMORY[0x277D77A38]];
+  intValue = [v4 intValue];
 
-  if (v5)
+  if (intValue)
   {
-    v6 = v5;
+    v6 = intValue;
   }
 
   else
@@ -466,15 +466,15 @@
 - (NSArray)localeIdentifiers
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_LTDUAFAssetModel *)self identifier];
-  v4 = [v3 componentsSeparatedByString:@"-"];
+  identifier = [(_LTDUAFAssetModel *)self identifier];
+  v4 = [identifier componentsSeparatedByString:@"-"];
   v5 = [v4 mutableCopy];
 
-  v6 = [(_LTDUAFAssetModel *)self assetType];
+  assetType = [(_LTDUAFAssetModel *)self assetType];
   v7 = MEMORY[0x277CBEBF8];
-  if (v6 > 7)
+  if (assetType > 7)
   {
-    if (v6 == 8)
+    if (assetType == 8)
     {
       v8 = objc_opt_new();
       v19 = [v5 indexOfObject:@"partial"];
@@ -492,12 +492,12 @@
         goto LABEL_11;
       }
 
-      v9 = [v5 subarrayWithRange:{2, objc_msgSend(v5, "count") - 5}];
+      supportedLanguages = [v5 subarrayWithRange:{2, objc_msgSend(v5, "count") - 5}];
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v20 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v20 = [supportedLanguages countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v20)
       {
         v21 = v20;
@@ -508,14 +508,14 @@
           {
             if (*v33 != v22)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(supportedLanguages);
             }
 
             v24 = [_LTDAssetModel localeIdentifiersForLanguageName:*(*(&v32 + 1) + 8 * i)];
             [v8 addObjectsFromArray:v24];
           }
 
-          v21 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+          v21 = [supportedLanguages countByEnumeratingWithState:&v32 objects:v37 count:16];
         }
 
         while (v21);
@@ -531,7 +531,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (v6 == 10 && [v5 count] == 2)
+    if (assetType == 10 && [v5 count] == 2)
     {
       v18 = [v5 objectAtIndexedSubscript:1];
       v7 = [_LTDAssetModel localeIdentifiersForLanguageName:v18];
@@ -540,15 +540,15 @@ LABEL_12:
 
   else
   {
-    if ((v6 - 6) < 2)
+    if ((assetType - 6) < 2)
     {
       v8 = objc_opt_new();
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v9 = [(_LTDUAFAssetModel *)self supportedLanguages];
-      v10 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      supportedLanguages = [(_LTDUAFAssetModel *)self supportedLanguages];
+      v10 = [supportedLanguages countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v10)
       {
         v11 = v10;
@@ -559,14 +559,14 @@ LABEL_12:
           {
             if (*v29 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(supportedLanguages);
             }
 
             v14 = [*(*(&v28 + 1) + 8 * j) stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
             [v8 addObject:v14];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v11 = [supportedLanguages countByEnumeratingWithState:&v28 objects:v36 count:16];
         }
 
         while (v11);
@@ -575,7 +575,7 @@ LABEL_12:
       goto LABEL_10;
     }
 
-    if (v6 == 2 && [v5 count] == 2)
+    if (assetType == 2 && [v5 count] == 2)
     {
       v8 = [v5 objectAtIndexedSubscript:1];
       v38[0] = v8;
@@ -591,21 +591,21 @@ LABEL_13:
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = [(_LTDUAFAssetModel *)self assetType];
-  v5 = [(_LTDUAFAssetModel *)self assetType];
-  if (v4 == v5)
+  assetType = [(_LTDUAFAssetModel *)self assetType];
+  assetType2 = [(_LTDUAFAssetModel *)self assetType];
+  if (assetType == assetType2)
   {
     return 0;
   }
 
-  if (v4 == 5)
+  if (assetType == 5)
   {
     return -1;
   }
 
-  if (v5 == 5)
+  if (assetType2 == 5)
   {
     return 1;
   }
@@ -615,32 +615,32 @@ LABEL_13:
   v9 = 1;
   v10 = -1;
   v11 = 1;
-  if (v5 != 2)
+  if (assetType2 != 2)
   {
     v11 = -1;
   }
 
-  if (v4 != 2)
+  if (assetType != 2)
   {
     v10 = v11;
   }
 
-  if (v5 != 10)
+  if (assetType2 != 10)
   {
     v9 = v10;
   }
 
-  if (v4 != 10)
+  if (assetType != 10)
   {
     v8 = v9;
   }
 
-  if (v5 != 8)
+  if (assetType2 != 8)
   {
     v7 = v8;
   }
 
-  if (v4 == 8)
+  if (assetType == 8)
   {
     return -1;
   }
@@ -653,24 +653,24 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(_LTDUAFAssetModel *)self assetName];
-  v3 = [v2 hash];
+  assetName = [(_LTDUAFAssetModel *)self assetName];
+  v3 = [assetName hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -690,17 +690,17 @@ LABEL_13:
     }
 
     v8 = v6;
-    v9 = [(_LTDUAFAssetModel *)self assetName];
-    v10 = [(_LTDUAFAssetModel *)v8 assetName];
-    v11 = [v9 isEqualToString:v10];
+    assetName = [(_LTDUAFAssetModel *)self assetName];
+    assetName2 = [(_LTDUAFAssetModel *)v8 assetName];
+    v11 = [assetName isEqualToString:assetName2];
 
     if (v11)
     {
-      v12 = [(_LTDUAFAssetModel *)self getLocalFileUrl];
-      v13 = [(_LTDUAFAssetModel *)v8 getLocalFileUrl];
-      if (v12 | v13)
+      getLocalFileUrl = [(_LTDUAFAssetModel *)self getLocalFileUrl];
+      getLocalFileUrl2 = [(_LTDUAFAssetModel *)v8 getLocalFileUrl];
+      if (getLocalFileUrl | getLocalFileUrl2)
       {
-        v7 = [v12 isEqual:v13];
+        v7 = [getLocalFileUrl isEqual:getLocalFileUrl2];
       }
 
       else

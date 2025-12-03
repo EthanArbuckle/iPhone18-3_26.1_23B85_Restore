@@ -2,7 +2,7 @@
 - (TUIKTLearnMorePresenter)init;
 - (void)dealloc;
 - (void)init;
-- (void)presentWithPresentingViewController:(id)a3;
+- (void)presentWithPresentingViewController:(id)controller;
 @end
 
 @implementation TUIKTLearnMorePresenter
@@ -55,9 +55,9 @@ uint64_t __34__TUIKTLearnMorePresenter_dealloc__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)presentWithPresentingViewController:(id)a3
+- (void)presentWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_3 != -1)
   {
     [TUIKTLearnMorePresenter presentWithPresentingViewController:];
@@ -68,7 +68,7 @@ uint64_t __34__TUIKTLearnMorePresenter_dealloc__block_invoke()
     [TUIKTLearnMorePresenter presentWithPresentingViewController:];
   }
 
-  [(OBPrivacyPresenter *)self->_privacyPresenter setPresentingViewController:v4];
+  [(OBPrivacyPresenter *)self->_privacyPresenter setPresentingViewController:controllerCopy];
   [(OBPrivacyPresenter *)self->_privacyPresenter present];
 }
 

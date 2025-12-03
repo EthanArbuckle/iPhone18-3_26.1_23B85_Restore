@@ -1,15 +1,15 @@
 @interface CRLPointPathSource
 + (id)p_percentageNumberFormatter;
-+ (id)pathSourceWithType:(unint64_t)a3 point:(CGPoint)a4 naturalSize:(CGSize)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)pathSourceWithType:(unint64_t)type point:(CGPoint)point naturalSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)p_isArrowType;
 - (BOOL)p_isFlippedDoubleArrow;
 - (BOOL)p_isRightFacingArrow;
-- (CGPath)newFeedbackPathForKnob:(unint64_t)a3;
+- (CGPath)newFeedbackPathForKnob:(unint64_t)knob;
 - (CGPath)p_newArrowPath;
 - (CGPath)p_newPlusPath;
 - (CGPath)p_newStarPath;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)maxPointValue;
 - (CGPoint)minPointValue;
 - (CGPoint)p_getControlKnobPointForArrow;
@@ -18,19 +18,19 @@
 - (CGPoint)p_getControlKnobPointForStarPoints;
 - (CGPoint)point;
 - (CGSize)naturalSize;
-- (CRLPointPathSource)initWithType:(unint64_t)a3 point:(CGPoint)a4 naturalSize:(CGSize)a5;
+- (CRLPointPathSource)initWithType:(unint64_t)type point:(CGPoint)point naturalSize:(CGSize)size;
 - (double)arrowHead;
 - (double)arrowIndent;
 - (double)maxArrowHead;
 - (double)maxArrowIndent;
 - (double)starRadius;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)crlaxLabelComponentForKnobTag:(unint64_t)a3;
-- (id)crlaxUserInputLabelForKnobTag:(unint64_t)a3;
-- (id)crlaxValueForKnobTag:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)crlaxLabelComponentForKnobTag:(unint64_t)tag;
+- (id)crlaxUserInputLabelForKnobTag:(unint64_t)tag;
+- (id)crlaxValueForKnobTag:(unint64_t)tag;
 - (id)description;
-- (id)getFeedbackStringForKnob:(unint64_t)a3;
+- (id)getFeedbackStringForKnob:(unint64_t)knob;
 - (id)inferredAccessibilityDescription;
 - (id)inferredAccessibilityDescriptionNoShapeNames;
 - (id)inferredLocalizedAccessibilityDescriptionPlaceholder;
@@ -39,19 +39,19 @@
 - (unint64_t)hash;
 - (unint64_t)numberOfControlKnobs;
 - (unint64_t)starPoints;
-- (void)p_setControlKnobPointForArrow:(CGPoint)a3;
-- (void)p_setControlKnobPointForPlus:(CGPoint)a3;
-- (void)p_setControlKnobPointForStarInnerRadius:(CGPoint)a3;
-- (void)p_setControlKnobPointForStarPoints:(CGPoint)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
+- (void)p_setControlKnobPointForArrow:(CGPoint)arrow;
+- (void)p_setControlKnobPointForPlus:(CGPoint)plus;
+- (void)p_setControlKnobPointForStarInnerRadius:(CGPoint)radius;
+- (void)p_setControlKnobPointForStarPoints:(CGPoint)points;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
 @end
 
 @implementation CRLPointPathSource
 
-+ (id)pathSourceWithType:(unint64_t)a3 point:(CGPoint)a4 naturalSize:(CGSize)a5
++ (id)pathSourceWithType:(unint64_t)type point:(CGPoint)point naturalSize:(CGSize)size
 {
-  v5 = [[a1 alloc] initWithType:a3 point:a4.x naturalSize:{a4.y, a5.width, a5.height}];
+  v5 = [[self alloc] initWithType:type point:point.x naturalSize:{point.y, size.width, size.height}];
 
   return v5;
 }
@@ -68,19 +68,19 @@
   return v3;
 }
 
-- (CRLPointPathSource)initWithType:(unint64_t)a3 point:(CGPoint)a4 naturalSize:(CGSize)a5
+- (CRLPointPathSource)initWithType:(unint64_t)type point:(CGPoint)point naturalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
+  height = size.height;
+  width = size.width;
+  y = point.y;
+  x = point.x;
   v13.receiver = self;
   v13.super_class = CRLPointPathSource;
   v10 = [(CRLPointPathSource *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(CRLPointPathSource *)v10 setType:a3];
+    [(CRLPointPathSource *)v10 setType:type];
     [(CRLPointPathSource *)v11 setPoint:x, y];
     [(CRLPointPathSource *)v11 setNaturalSize:width, height];
   }
@@ -88,11 +88,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CRLPointPathSource;
-  v4 = [(CRLPathSource *)&v6 copyWithZone:a3];
+  v4 = [(CRLPathSource *)&v6 copyWithZone:zone];
   [v4 setType:{-[CRLPointPathSource type](self, "type")}];
   [(CRLPointPathSource *)self point];
   [v4 setPoint:?];
@@ -101,10 +101,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v20 = 1;
   }
@@ -113,12 +113,12 @@
   {
     v22.receiver = self;
     v22.super_class = CRLPointPathSource;
-    if ([(CRLPathSource *)&v22 isEqual:v4])
+    if ([(CRLPathSource *)&v22 isEqual:equalCopy])
     {
       v5 = objc_opt_class();
-      v6 = sub_100014370(v5, v4);
-      v7 = [(CRLPointPathSource *)self type];
-      if (v7 == [v6 type] && (-[CRLPointPathSource point](self, "point"), v9 = v8, v11 = v10, objc_msgSend(v6, "point"), sub_10011ECC8(v9, v11, v12, v13)))
+      v6 = sub_100014370(v5, equalCopy);
+      type = [(CRLPointPathSource *)self type];
+      if (type == [v6 type] && (-[CRLPointPathSource point](self, "point"), v9 = v8, v11 = v10, objc_msgSend(v6, "point"), sub_10011ECC8(v9, v11, v12, v13)))
       {
         [(CRLPointPathSource *)self naturalSize];
         v15 = v14;
@@ -158,12 +158,12 @@
   v3 = [(CRLPointPathSource *)&v10 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(CRLPointPathSource *)self type];
+  type = [(CRLPointPathSource *)self type];
   [(CRLPointPathSource *)self point];
   v6 = NSStringFromCGPoint(v12);
   [(CRLPointPathSource *)self naturalSize];
   v7 = NSStringFromCGSize(v13);
-  v8 = [NSString stringWithFormat:@" type=%lu; point=%@; natural size=%@", v5, v6, v7];;
+  v8 = [NSString stringWithFormat:@" type=%lu; point=%@; natural size=%@", type, v6, v7];;
   [v4 appendString:v8];
 
   return v4;
@@ -172,8 +172,8 @@
 - (CGPoint)minPointValue
 {
   y = CGPointZero.y;
-  v3 = [(CRLPointPathSource *)self type];
-  if (v3 == 100)
+  type = [(CRLPointPathSource *)self type];
+  if (type == 100)
   {
     v4 = 0.1;
   }
@@ -184,7 +184,7 @@
   }
 
   x = 3.0;
-  if (v3 != 100)
+  if (type != 100)
   {
     x = CGPointZero.x;
   }
@@ -198,16 +198,16 @@
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
-  v5 = [(CRLPointPathSource *)self type];
-  if (v5 > 99)
+  type = [(CRLPointPathSource *)self type];
+  if (type > 99)
   {
-    if (v5 == 100)
+    if (type == 100)
     {
       y = 1.0;
       x = 100.0;
     }
 
-    else if (v5 == 200)
+    else if (type == 200)
     {
       [(CRLPointPathSource *)self naturalSize];
       x = v7 * 0.5;
@@ -215,9 +215,9 @@
     }
   }
 
-  else if (v5 >= 2)
+  else if (type >= 2)
   {
-    if (v5 == 10)
+    if (type == 10)
     {
       [(CRLPointPathSource *)self naturalSize];
       y = 0.5;
@@ -313,19 +313,19 @@
 {
   if ([(CRLPointPathSource *)self type])
   {
-    v3 = [(CRLPointPathSource *)self type];
-    if (v3 != 1)
+    type = [(CRLPointPathSource *)self type];
+    if (type != 1)
     {
-      LOBYTE(v3) = [(CRLPointPathSource *)self type]== 10;
+      LOBYTE(type) = [(CRLPointPathSource *)self type]== 10;
     }
   }
 
   else
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(type) = 1;
   }
 
-  return v3;
+  return type;
 }
 
 - (double)arrowIndent
@@ -468,12 +468,12 @@
   return result;
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CRLPointPathSource *)self type];
-  if (v6 <= 0xA && ((1 << v6) & 0x403) != 0 || v6 == 200)
+  height = size.height;
+  width = size.width;
+  type = [(CRLPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0 || type == 200)
   {
     [(CRLPathSource *)self uniformScaleForScalingToNaturalSize:width, height];
     self->mPoint.x = v7 * self->mPoint.x;
@@ -496,17 +496,17 @@
   }
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v5 = [(CRLPointPathSource *)self type];
-  if (v5 <= 0xA && ((1 << v5) & 0x403) != 0)
+  type = [(CRLPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0)
   {
     [(CRLPointPathSource *)self p_getControlKnobPointForArrow];
   }
 
-  else if (v5 == 100)
+  else if (type == 100)
   {
-    if (a3 == 12)
+    if (position == 12)
     {
       [(CRLPointPathSource *)self p_getControlKnobPointForStarPoints];
     }
@@ -521,7 +521,7 @@
   {
     v7 = 0.0;
     v6 = 0.0;
-    if (v5 == 200)
+    if (type == 200)
     {
       [(CRLPointPathSource *)self p_getControlKnobPointForPlus:0.0];
     }
@@ -532,20 +532,20 @@
   return result;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(CRLPointPathSource *)self type];
-  if (v8 <= 0xA && ((1 << v8) & 0x403) != 0)
+  y = point.y;
+  x = point.x;
+  type = [(CRLPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0)
   {
 
     [(CRLPointPathSource *)self p_setControlKnobPointForArrow:x, y];
   }
 
-  else if (v8 == 100)
+  else if (type == 100)
   {
-    if (a3 == 12)
+    if (position == 12)
     {
 
       [(CRLPointPathSource *)self p_setControlKnobPointForStarPoints:x, y];
@@ -558,26 +558,26 @@
     }
   }
 
-  else if (v8 == 200)
+  else if (type == 200)
   {
 
     [(CRLPointPathSource *)self p_setControlKnobPointForPlus:x, y];
   }
 }
 
-- (id)getFeedbackStringForKnob:(unint64_t)a3
+- (id)getFeedbackStringForKnob:(unint64_t)knob
 {
-  v5 = [(CRLPointPathSource *)self type];
-  if (v5 <= 0xA && ((1 << v5) & 0x403) != 0 || v5 == 200)
+  type = [(CRLPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0 || type == 200)
   {
     v10 = &stru_1018BCA28;
   }
 
-  else if (v5 == 100)
+  else if (type == 100)
   {
     v6 = +[NSBundle mainBundle];
     v7 = v6;
-    if (a3 == 12)
+    if (knob == 12)
     {
       v8 = [v6 localizedStringForKey:@"Points: %d" value:0 table:0];
       [(CRLPointPathSource *)self point];
@@ -587,8 +587,8 @@
     else
     {
       v8 = [v6 localizedStringForKey:@"Radius: %@" value:0 table:0];
-      v12 = [(CRLPointPathSource *)self p_innerRadiusLocalizedPercent];
-      v10 = [NSString localizedStringWithFormat:v8, v12];
+      p_innerRadiusLocalizedPercent = [(CRLPointPathSource *)self p_innerRadiusLocalizedPercent];
+      v10 = [NSString localizedStringWithFormat:v8, p_innerRadiusLocalizedPercent];
     }
   }
 
@@ -600,14 +600,14 @@
   return v10;
 }
 
-- (CGPath)newFeedbackPathForKnob:(unint64_t)a3
+- (CGPath)newFeedbackPathForKnob:(unint64_t)knob
 {
-  v5 = [(CRLPointPathSource *)self type];
+  type = [(CRLPointPathSource *)self type];
   Mutable = 0;
-  if (a3 == 12 && v5 == 100)
+  if (knob == 12 && type == 100)
   {
-    v7 = [(CRLPathSource *)self bezierPath];
-    [v7 bounds];
+    bezierPath = [(CRLPathSource *)self bezierPath];
+    [bezierPath bounds];
     v9 = v8;
     v11 = v10;
 
@@ -631,24 +631,24 @@
 
 - (id)bezierPathWithoutFlips
 {
-  v3 = [(CRLPointPathSource *)self type];
-  if (v3 <= 0xA && ((1 << v3) & 0x403) != 0)
+  type = [(CRLPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0)
   {
-    v4 = [(CRLPointPathSource *)self p_newArrowPath];
+    p_newArrowPath = [(CRLPointPathSource *)self p_newArrowPath];
 LABEL_8:
-    v5 = v4;
+    v5 = p_newArrowPath;
     goto LABEL_9;
   }
 
-  if (v3 == 100)
+  if (type == 100)
   {
-    v4 = [(CRLPointPathSource *)self p_newStarPath];
+    p_newArrowPath = [(CRLPointPathSource *)self p_newStarPath];
     goto LABEL_8;
   }
 
-  if (v3 == 200)
+  if (type == 200)
   {
-    v4 = [(CRLPointPathSource *)self p_newPlusPath];
+    p_newArrowPath = [(CRLPointPathSource *)self p_newPlusPath];
     goto LABEL_8;
   }
 
@@ -662,18 +662,18 @@ LABEL_9:
 
 - (id)name
 {
-  v2 = [(CRLPointPathSource *)self type];
+  type = [(CRLPointPathSource *)self type];
   v3 = 0;
-  if (v2 > 99)
+  if (type > 99)
   {
-    if (v2 == 100)
+    if (type == 100)
     {
       v4 = @"Star";
     }
 
     else
     {
-      if (v2 != 200)
+      if (type != 200)
       {
         goto LABEL_11;
       }
@@ -682,9 +682,9 @@ LABEL_9:
     }
   }
 
-  else if (v2 >= 2)
+  else if (type >= 2)
   {
-    if (v2 != 10)
+    if (type != 10)
     {
       goto LABEL_11;
     }
@@ -978,10 +978,10 @@ LABEL_9:
   return v7;
 }
 
-- (void)p_setControlKnobPointForArrow:(CGPoint)a3
+- (void)p_setControlKnobPointForArrow:(CGPoint)arrow
 {
-  y = a3.y;
-  x = a3.x;
+  y = arrow.y;
+  x = arrow.x;
   [(CRLPointPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
@@ -1012,9 +1012,9 @@ LABEL_9:
   [(CRLPointPathSource *)self naturalSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLPointPathSource *)self p_isRightFacingArrow];
+  p_isRightFacingArrow = [(CRLPointPathSource *)self p_isRightFacingArrow];
   x = self->mPoint.x;
-  if (v7)
+  if (p_isRightFacingArrow)
   {
     x = v4 - x;
   }
@@ -1028,16 +1028,16 @@ LABEL_9:
   return result;
 }
 
-- (void)p_setControlKnobPointForStarPoints:(CGPoint)a3
+- (void)p_setControlKnobPointForStarPoints:(CGPoint)points
 {
-  y = a3.y;
-  x = a3.x;
+  y = points.y;
+  x = points.x;
   [(CRLPointPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(CRLPathSource *)self hasVerticalFlip];
+  hasVerticalFlip = [(CRLPathSource *)self hasVerticalFlip];
   v11 = v9 - y;
-  if (!v10)
+  if (!hasVerticalFlip)
   {
     v11 = y;
   }
@@ -1082,10 +1082,10 @@ LABEL_9:
   sub_100120F28(&v12, v4 * 0.5 * 0.7, (((v3 - 3) / 18.0) + -0.25) * 6.28318531);
   v12 = v8 + v12;
   v13 = v7 * 0.5 + v7 / v5 * v13;
-  v9 = [(CRLPathSource *)self hasVerticalFlip];
+  hasVerticalFlip = [(CRLPathSource *)self hasVerticalFlip];
   v10 = v12;
   v11 = v13;
-  if (v9)
+  if (hasVerticalFlip)
   {
     v11 = v7 - v13;
   }
@@ -1095,10 +1095,10 @@ LABEL_9:
   return result;
 }
 
-- (void)p_setControlKnobPointForStarInnerRadius:(CGPoint)a3
+- (void)p_setControlKnobPointForStarInnerRadius:(CGPoint)radius
 {
-  y = a3.y;
-  x = a3.x;
+  y = radius.y;
+  x = radius.x;
   [(CRLPointPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
@@ -1134,10 +1134,10 @@ LABEL_9:
   sub_100120F28(&v14, v10, 3.14159265 / v4 + -1.57079633);
   v14 = v9 + v14;
   v15 = v8 * 0.5 + v8 / v6 * v15;
-  v11 = [(CRLPathSource *)self hasVerticalFlip];
+  hasVerticalFlip = [(CRLPathSource *)self hasVerticalFlip];
   v12 = v14;
   v13 = v15;
-  if (v11)
+  if (hasVerticalFlip)
   {
     v13 = v8 - v15;
   }
@@ -1147,10 +1147,10 @@ LABEL_9:
   return result;
 }
 
-- (void)p_setControlKnobPointForPlus:(CGPoint)a3
+- (void)p_setControlKnobPointForPlus:(CGPoint)plus
 {
-  y = a3.y;
-  x = a3.x;
+  y = plus.y;
+  x = plus.x;
   [(CRLPointPathSource *)self naturalSize];
   v7 = v6;
   v8 = v6 - y * 2.0;
@@ -1198,31 +1198,31 @@ LABEL_9:
 
 - (id)inferredAccessibilityDescriptionNoShapeNames
 {
-  v3 = [(CRLPathSource *)self userDefinedName];
-  if (![v3 length])
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
+  if (![userDefinedName length])
   {
-    v4 = [(CRLPointPathSource *)self inferredAccessibilityDescription];
+    inferredAccessibilityDescription = [(CRLPointPathSource *)self inferredAccessibilityDescription];
 
-    v3 = v4;
+    userDefinedName = inferredAccessibilityDescription;
   }
 
-  return v3;
+  return userDefinedName;
 }
 
 - (id)inferredAccessibilityDescription
 {
-  v2 = [(CRLPointPathSource *)self type];
+  type = [(CRLPointPathSource *)self type];
   v3 = 0;
-  if (v2 > 99)
+  if (type > 99)
   {
-    if (v2 == 100)
+    if (type == 100)
     {
       v4 = @"Star";
     }
 
     else
     {
-      if (v2 != 200)
+      if (type != 200)
       {
         goto LABEL_11;
       }
@@ -1231,9 +1231,9 @@ LABEL_9:
     }
   }
 
-  else if (v2 >= 2)
+  else if (type >= 2)
   {
-    if (v2 != 10)
+    if (type != 10)
     {
       goto LABEL_11;
     }
@@ -1256,18 +1256,18 @@ LABEL_11:
 
 - (id)inferredLocalizedAccessibilityDescriptionPlaceholder
 {
-  v2 = [(CRLPointPathSource *)self type];
+  type = [(CRLPointPathSource *)self type];
   v3 = 0;
-  if (v2 > 99)
+  if (type > 99)
   {
-    if (v2 == 100)
+    if (type == 100)
     {
       v4 = @"Describe the selected star.";
     }
 
     else
     {
-      if (v2 != 200)
+      if (type != 200)
       {
         goto LABEL_11;
       }
@@ -1276,9 +1276,9 @@ LABEL_11:
     }
   }
 
-  else if (v2 >= 2)
+  else if (type >= 2)
   {
-    if (v2 != 10)
+    if (type != 10)
     {
       goto LABEL_11;
     }
@@ -1299,10 +1299,10 @@ LABEL_11:
   return v3;
 }
 
-- (id)crlaxLabelComponentForKnobTag:(unint64_t)a3
+- (id)crlaxLabelComponentForKnobTag:(unint64_t)tag
 {
-  v4 = [(CRLPointPathSource *)self type];
-  if (v4 <= 0xA && ((1 << v4) & 0x403) != 0)
+  type = [(CRLPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0)
   {
     v5 = @"Tail length and width";
 LABEL_4:
@@ -1312,15 +1312,15 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  if (v4 == 100)
+  if (type == 100)
   {
-    if (a3 == 12)
+    if (tag == 12)
     {
       v5 = @"Points";
       goto LABEL_4;
     }
 
-    if (a3 == 13)
+    if (tag == 13)
     {
       v5 = @"Inner radius";
       goto LABEL_4;
@@ -1333,38 +1333,38 @@ LABEL_10:
   return v7;
 }
 
-- (id)crlaxValueForKnobTag:(unint64_t)a3
+- (id)crlaxValueForKnobTag:(unint64_t)tag
 {
   if ([(CRLPointPathSource *)self type]!= 100)
   {
 LABEL_5:
-    v6 = 0;
+    p_innerRadiusLocalizedPercent = 0;
     goto LABEL_6;
   }
 
-  if (a3 != 13)
+  if (tag != 13)
   {
-    if (a3 == 12)
+    if (tag == 12)
     {
       [(CRLPointPathSource *)self point];
-      v6 = [NSString stringWithFormat:@"%d", v5];
+      p_innerRadiusLocalizedPercent = [NSString stringWithFormat:@"%d", v5];
       goto LABEL_6;
     }
 
     goto LABEL_5;
   }
 
-  v6 = [(CRLPointPathSource *)self p_innerRadiusLocalizedPercent];
+  p_innerRadiusLocalizedPercent = [(CRLPointPathSource *)self p_innerRadiusLocalizedPercent];
 LABEL_6:
 
-  return v6;
+  return p_innerRadiusLocalizedPercent;
 }
 
-- (id)crlaxUserInputLabelForKnobTag:(unint64_t)a3
+- (id)crlaxUserInputLabelForKnobTag:(unint64_t)tag
 {
-  v4 = [(CRLPointPathSource *)self crlaxLabelComponentForKnobTag:a3];
-  v5 = [(CRLPointPathSource *)self type];
-  if (v5 <= 0xA && ((1 << v5) & 0x403) != 0)
+  v4 = [(CRLPointPathSource *)self crlaxLabelComponentForKnobTag:tag];
+  type = [(CRLPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Tail" value:0 table:0];

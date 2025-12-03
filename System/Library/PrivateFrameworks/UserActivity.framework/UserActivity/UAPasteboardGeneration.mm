@@ -1,14 +1,14 @@
 @interface UAPasteboardGeneration
-- (BOOL)addItem:(id)a3;
-- (BOOL)addType:(id)a3 toItemAtIndex:(unint64_t)a4;
-- (UAPasteboardGeneration)initWithGeneration:(unint64_t)a3;
+- (BOOL)addItem:(id)item;
+- (BOOL)addType:(id)type toItemAtIndex:(unint64_t)index;
+- (UAPasteboardGeneration)initWithGeneration:(unint64_t)generation;
 - (id)getTypePaths;
-- (void)fetchTypeURL:(id)a3;
+- (void)fetchTypeURL:(id)l;
 @end
 
 @implementation UAPasteboardGeneration
 
-- (UAPasteboardGeneration)initWithGeneration:(unint64_t)a3
+- (UAPasteboardGeneration)initWithGeneration:(unint64_t)generation
 {
   v10.receiver = self;
   v10.super_class = UAPasteboardGeneration;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_generation = a3;
+    v4->_generation = generation;
     v6 = objc_alloc_init(MEMORY[0x277CBEA60]);
     [(UAPasteboardGeneration *)v5 setItems:v6];
 
@@ -32,18 +32,18 @@
 
 - (id)getTypePaths
 {
-  v2 = [(UAPasteboardGeneration *)self typePaths];
-  v3 = [v2 copy];
+  typePaths = [(UAPasteboardGeneration *)self typePaths];
+  v3 = [typePaths copy];
 
   return v3;
 }
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UAPasteboardGeneration *)self items];
-  v6 = [v5 arrayByAddingObject:v4];
+  itemCopy = item;
+  items = [(UAPasteboardGeneration *)self items];
+  v6 = [items arrayByAddingObject:itemCopy];
   [(UAPasteboardGeneration *)self setItems:v6];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -51,8 +51,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v4 types];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  types = [itemCopy types];
+  v9 = [types countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -64,64 +64,64 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(types);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) type];
-        [v7 addObject:v13];
+        type = [*(*(&v18 + 1) + 8 * v12) type];
+        [v7 addObject:type];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [types countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(UAPasteboardGeneration *)self allTypes];
-  v15 = [v14 setByAddingObjectsFromSet:v7];
+  allTypes = [(UAPasteboardGeneration *)self allTypes];
+  v15 = [allTypes setByAddingObjectsFromSet:v7];
   [(UAPasteboardGeneration *)self setAllTypes:v15];
 
   v16 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (BOOL)addType:(id)a3 toItemAtIndex:(unint64_t)a4
+- (BOOL)addType:(id)type toItemAtIndex:(unint64_t)index
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(UAPasteboardGeneration *)self items];
-  v8 = [v7 count];
+  typeCopy = type;
+  items = [(UAPasteboardGeneration *)self items];
+  v8 = [items count];
 
-  if (v8 <= a4)
+  if (v8 <= index)
   {
-    v18 = [(UAPasteboardGeneration *)self items];
-    v19 = [v18 count];
+    items2 = [(UAPasteboardGeneration *)self items];
+    v19 = [items2 count];
 
     v20 = _uaGetLogForCategory(@"pasteboard-client");
     v13 = v20;
-    if (v19 == a4)
+    if (v19 == index)
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v21 = [(UAPasteboardGeneration *)self generation];
-        v22 = [v6 type];
+        generation = [(UAPasteboardGeneration *)self generation];
+        type = [typeCopy type];
         v38 = 134218498;
-        v39 = a4;
+        indexCopy2 = index;
         v40 = 2048;
-        v41 = v21;
+        v41 = generation;
         v42 = 2112;
-        v43 = v22;
+        v43 = type;
         _os_log_impl(&dword_226A4E000, &v13->super, OS_LOG_TYPE_DEBUG, "[Local Pasteboard] Adding type to index %lu for generation %lu: %@", &v38, 0x20u);
       }
 
       v13 = objc_alloc_init(UAPasteboardItem);
-      [(UAPasteboardItem *)v13 addType:v6];
-      v23 = [(UAPasteboardGeneration *)self allTypes];
-      v24 = [v6 type];
-      v25 = [v23 setByAddingObject:v24];
+      [(UAPasteboardItem *)v13 addType:typeCopy];
+      allTypes = [(UAPasteboardGeneration *)self allTypes];
+      type2 = [typeCopy type];
+      v25 = [allTypes setByAddingObject:type2];
       [(UAPasteboardGeneration *)self setAllTypes:v25];
 
       v17 = [(UAPasteboardGeneration *)self addItem:v13];
@@ -131,12 +131,12 @@
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+        v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
         v27 = MEMORY[0x277CCABB0];
-        v28 = [(UAPasteboardGeneration *)self items];
-        v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(v28, "count")}];
+        items3 = [(UAPasteboardGeneration *)self items];
+        v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(items3, "count")}];
         v38 = 138412546;
-        v39 = v26;
+        indexCopy2 = v26;
         v40 = 2112;
         v41 = v29;
         _os_log_impl(&dword_226A4E000, &v13->super, OS_LOG_TYPE_ERROR, "[Local Pasteboard] Error adding type to item %@, cur count: %@", &v38, 0x16u);
@@ -151,48 +151,48 @@
     v9 = _uaGetLogForCategory(@"pasteboard-client");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(UAPasteboardGeneration *)self generation];
-      v11 = [v6 type];
+      generation2 = [(UAPasteboardGeneration *)self generation];
+      type3 = [typeCopy type];
       v38 = 134218498;
-      v39 = a4;
+      indexCopy2 = index;
       v40 = 2048;
-      v41 = v10;
+      v41 = generation2;
       v42 = 2112;
-      v43 = v11;
+      v43 = type3;
       _os_log_impl(&dword_226A4E000, v9, OS_LOG_TYPE_DEBUG, "[Local Pasteboard] Adding type to index %lu for generation %lu: %@", &v38, 0x20u);
     }
 
-    v12 = [(UAPasteboardGeneration *)self items];
-    v13 = [v12 objectAtIndex:a4];
+    items4 = [(UAPasteboardGeneration *)self items];
+    v13 = [items4 objectAtIndex:index];
 
-    [(UAPasteboardItem *)v13 addType:v6];
-    v14 = [(UAPasteboardGeneration *)self allTypes];
-    v15 = [v6 type];
-    v16 = [v14 setByAddingObject:v15];
+    [(UAPasteboardItem *)v13 addType:typeCopy];
+    allTypes2 = [(UAPasteboardGeneration *)self allTypes];
+    type4 = [typeCopy type];
+    v16 = [allTypes2 setByAddingObject:type4];
     [(UAPasteboardGeneration *)self setAllTypes:v16];
 
     v17 = 1;
   }
 
-  v30 = v6;
+  v30 = typeCopy;
   if ([v30 conformsToProtocol:&unk_283A69178] && objc_msgSend(v30, "preferFileRep"))
   {
     if (objc_opt_respondsToSelector())
     {
-      v31 = [v30 getFileName];
-      if (v31)
+      getFileName = [v30 getFileName];
+      if (getFileName)
       {
-        v32 = [(UAPasteboardGeneration *)self typePaths];
-        v33 = [v30 uuid];
-        [v32 setObject:v31 forKey:v33];
+        typePaths = [(UAPasteboardGeneration *)self typePaths];
+        uuid = [v30 uuid];
+        [typePaths setObject:getFileName forKey:uuid];
       }
     }
   }
 
   else
   {
-    v34 = [v30 type];
-    v35 = [v34 isEqualToString:@"public.file-url"];
+    type5 = [v30 type];
+    v35 = [type5 isEqualToString:@"public.file-url"];
 
     if (v35)
     {
@@ -204,17 +204,17 @@
   return v17;
 }
 
-- (void)fetchTypeURL:(id)a3
+- (void)fetchTypeURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 getFileName];
-    if (v5)
+    getFileName = [lCopy getFileName];
+    if (getFileName)
     {
-      v6 = [(UAPasteboardGeneration *)self typePaths];
-      v7 = [v4 uuid];
-      [v6 setObject:v5 forKey:v7];
+      typePaths = [(UAPasteboardGeneration *)self typePaths];
+      uuid = [lCopy uuid];
+      [typePaths setObject:getFileName forKey:uuid];
     }
   }
 
@@ -226,7 +226,7 @@
     v8[2] = __39__UAPasteboardGeneration_fetchTypeURL___block_invoke;
     v8[3] = &unk_2785C4600;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = lCopy;
     [v9 getDataWithCompletionBlock:v8];
 
     objc_destroyWeak(&v10);

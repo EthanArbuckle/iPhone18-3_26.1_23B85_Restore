@@ -6,8 +6,8 @@
 
 - (int64_t)currentSchemaVersion
 {
-  v2 = [MEMORY[0x277D115D0] sharedBehavior];
-  [v2 medicationsFutureMigrationsEnabled];
+  mEMORY[0x277D115D0] = [MEMORY[0x277D115D0] sharedBehavior];
+  [mEMORY[0x277D115D0] medicationsFutureMigrationsEnabled];
 
   return 0;
 }

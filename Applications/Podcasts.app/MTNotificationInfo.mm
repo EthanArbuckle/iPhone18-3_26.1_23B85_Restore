@@ -1,8 +1,8 @@
 @interface MTNotificationInfo
 - (MTNotificationInfo)init;
-- (id)addPodcastWithTitle:(id)a3 uuid:(id)a4;
+- (id)addPodcastWithTitle:(id)title uuid:(id)uuid;
 - (id)descriptionForNotificationLogging;
-- (void)addPodcast:(id)a3;
+- (void)addPodcast:(id)podcast;
 @end
 
 @implementation MTNotificationInfo
@@ -22,29 +22,29 @@
   return v2;
 }
 
-- (id)addPodcastWithTitle:(id)a3 uuid:(id)a4
+- (id)addPodcastWithTitle:(id)title uuid:(id)uuid
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MTNotificationPodcast alloc] initWithUuid:v6 title:v7];
+  uuidCopy = uuid;
+  titleCopy = title;
+  v8 = [[MTNotificationPodcast alloc] initWithUuid:uuidCopy title:titleCopy];
 
   [(MTNotificationInfo *)self addPodcast:v8];
 
   return v8;
 }
 
-- (void)addPodcast:(id)a3
+- (void)addPodcast:(id)podcast
 {
   podcasts = self->_podcasts;
-  v4 = a3;
-  v5 = [v4 uuid];
-  [(NSMutableDictionary *)podcasts setObject:v4 forKey:v5];
+  podcastCopy = podcast;
+  uuid = [podcastCopy uuid];
+  [(NSMutableDictionary *)podcasts setObject:podcastCopy forKey:uuid];
 }
 
 - (id)descriptionForNotificationLogging
 {
-  v3 = [(MTNotificationInfo *)self podcasts];
-  v4 = [v3 count];
+  podcasts = [(MTNotificationInfo *)self podcasts];
+  v4 = [podcasts count];
 
   if (v4)
   {
@@ -53,8 +53,8 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(MTNotificationInfo *)self podcasts];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    podcasts2 = [(MTNotificationInfo *)self podcasts];
+    v7 = [podcasts2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -65,14 +65,14 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(podcasts2);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) descriptionForNotificationLogging];
-          [(__CFString *)v5 appendString:v11];
+          descriptionForNotificationLogging = [*(*(&v13 + 1) + 8 * i) descriptionForNotificationLogging];
+          [(__CFString *)v5 appendString:descriptionForNotificationLogging];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [podcasts2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);

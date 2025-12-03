@@ -2,15 +2,15 @@
 - (NSProgress)progress;
 - (PLAtomicProgressIvar)init;
 - (void)cancel;
-- (void)setProgress:(id)a3;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation PLAtomicProgressIvar
 
 - (void)cancel
 {
-  v2 = [(PLAtomicProgressIvar *)self progress];
-  [v2 cancel];
+  progress = [(PLAtomicProgressIvar *)self progress];
+  [progress cancel];
 }
 
 - (NSProgress)progress
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v4 = a3;
-  v3 = v4;
+  progressCopy = progress;
+  v3 = progressCopy;
   PLSafeRunWithUnfairLock();
 }
 

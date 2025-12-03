@@ -1,33 +1,33 @@
 @interface PKCarKeyInvitationViewController
-- (PKCarKeyInvitationViewController)initWithContext:(int64_t)a3 invitation:(id)a4 delegate:(id)a5;
+- (PKCarKeyInvitationViewController)initWithContext:(int64_t)context invitation:(id)invitation delegate:(id)delegate;
 - (id)_bodyText;
 - (id)_localizedIssuerName;
 - (id)_titleText;
-- (void)activationCodeDidChangeToCode:(id)a3;
+- (void)activationCodeDidChangeToCode:(id)code;
 - (void)continueButtonPressed;
 - (void)continueLaterButtonPressed;
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4;
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading;
 - (void)resetState;
-- (void)showWithProvisioningError:(id)a3;
+- (void)showWithProvisioningError:(id)error;
 - (void)viewDidLoad;
 @end
 
 @implementation PKCarKeyInvitationViewController
 
-- (PKCarKeyInvitationViewController)initWithContext:(int64_t)a3 invitation:(id)a4 delegate:(id)a5
+- (PKCarKeyInvitationViewController)initWithContext:(int64_t)context invitation:(id)invitation delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  invitationCopy = invitation;
+  delegateCopy = delegate;
   v11 = [(PKPassShareRedemptionViewController *)self init];
   v12 = v11;
   if (v11)
   {
-    v11->_setupContext = a3;
-    objc_storeStrong(&v11->_invitation, a4);
-    objc_storeWeak(&v12->_delegate, v10);
+    v11->_setupContext = context;
+    objc_storeStrong(&v11->_invitation, invitation);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     [(PKPassShareRedemptionViewController *)v12 setAnalyticsEnabled:1];
-    v13 = [(PKPassShareRedemptionViewController *)v12 analyticsReporter];
-    [v13 setAccessPassType:4];
+    analyticsReporter = [(PKPassShareRedemptionViewController *)v12 analyticsReporter];
+    [analyticsReporter setAccessPassType:4];
   }
 
   return v12;
@@ -38,39 +38,39 @@
   v24.receiver = self;
   v24.super_class = PKCarKeyInvitationViewController;
   [(PKPassShareRedemptionViewController *)&v24 viewDidLoad];
-  v3 = [(PKCarKeyInvitationViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
+  navigationItem = [(PKCarKeyInvitationViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 
-  v4 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
   v5 = MEMORY[0x1E69DCAB8];
   v6 = PKPassKitUIBundle();
   v7 = [v5 imageNamed:@"SubcredentialInvitation" inBundle:v6];
 
-  v8 = [(PKSharingCarKeyInvitation *)self->_invitation displayInformation];
-  v9 = [v8 imageURL];
+  displayInformation = [(PKSharingCarKeyInvitation *)self->_invitation displayInformation];
+  imageURL = [displayInformation imageURL];
 
-  if (v9)
+  if (imageURL)
   {
-    [v4 showLoadingContent];
+    [cardHeaderView showLoadingContent];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __47__PKCarKeyInvitationViewController_viewDidLoad__block_invoke;
     v21 = &unk_1E8012968;
-    v22 = v4;
+    v22 = cardHeaderView;
     v23 = v7;
-    PKCommonCachedImageFromURL(v9, &v18);
+    PKCommonCachedImageFromURL(imageURL, &v18);
   }
 
   else
   {
-    [v4 setCardImage:v7];
+    [cardHeaderView setCardImage:v7];
   }
 
   v10 = [(PKCarKeyInvitationViewController *)self _titleText:v18];
   [(PKPaymentSetupOptionsViewController *)self setTitleText:v10];
 
-  v11 = [(PKCarKeyInvitationViewController *)self _bodyText];
-  [(PKPaymentSetupOptionsViewController *)self setSubtitleText:v11];
+  _bodyText = [(PKCarKeyInvitationViewController *)self _bodyText];
+  [(PKPaymentSetupOptionsViewController *)self setSubtitleText:_bodyText];
 
   v12 = PKLocalizedCredentialString(&cfstr_AddCarKey.isa);
   [(PKPassShareRedemptionViewController *)self setContinueButtonText:v12];
@@ -78,12 +78,12 @@
   v13 = PKLocalizedCredentialString(&cfstr_NotNow.isa);
   [(PKPassShareRedemptionViewController *)self setContinueLaterText:v13];
 
-  v14 = [(PKSharingCarKeyInvitation *)self->_invitation proprietaryData];
-  v15 = [v14 displayableSharedEntitlements];
-  [(PKPassShareRedemptionViewController *)self setDisplayableSharedEntitlements:v15];
+  proprietaryData = [(PKSharingCarKeyInvitation *)self->_invitation proprietaryData];
+  displayableSharedEntitlements = [proprietaryData displayableSharedEntitlements];
+  [(PKPassShareRedemptionViewController *)self setDisplayableSharedEntitlements:displayableSharedEntitlements];
 
-  v16 = [(PKSharingCarKeyInvitation *)self->_invitation activationOptions];
-  [(PKPassShareRedemptionViewController *)self setActivationOptions:v16];
+  activationOptions = [(PKSharingCarKeyInvitation *)self->_invitation activationOptions];
+  [(PKPassShareRedemptionViewController *)self setActivationOptions:activationOptions];
 
   v17 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:8];
   [(PKPaymentSetupOptionsViewController *)self setPrivacyLink:v17];
@@ -125,11 +125,11 @@ uint64_t __47__PKCarKeyInvitationViewController_viewDidLoad__block_invoke(uint64
 
   else
   {
-    v3 = [(PKSharingCarKeyInvitation *)self->_invitation vehicleIssuer];
-    v4 = v3;
-    if (v3)
+    vehicleIssuer = [(PKSharingCarKeyInvitation *)self->_invitation vehicleIssuer];
+    v4 = vehicleIssuer;
+    if (vehicleIssuer)
     {
-      PKLocalizedCredentialString(&cfstr_InvitationTitl_0.isa, &stru_1F3BD5BF0.isa, v3);
+      PKLocalizedCredentialString(&cfstr_InvitationTitl_0.isa, &stru_1F3BD5BF0.isa, vehicleIssuer);
     }
 
     else
@@ -172,10 +172,10 @@ uint64_t __47__PKCarKeyInvitationViewController_viewDidLoad__block_invoke(uint64
 
 - (id)_localizedIssuerName
 {
-  v2 = [(PKSharingCarKeyInvitation *)self->_invitation vehicleIssuer];
-  v3 = [MEMORY[0x1E69B8EF8] sharedService];
-  v4 = [v3 supportedRegionFeatureOfType:2 didFailOSVersionRequirements:0];
-  v5 = [v4 localizedNameForIssuerWithIdentifier:v2];
+  vehicleIssuer = [(PKSharingCarKeyInvitation *)self->_invitation vehicleIssuer];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v4 = [mEMORY[0x1E69B8EF8] supportedRegionFeatureOfType:2 didFailOSVersionRequirements:0];
+  v5 = [v4 localizedNameForIssuerWithIdentifier:vehicleIssuer];
   v6 = v5;
   if (v5)
   {
@@ -211,24 +211,24 @@ uint64_t __47__PKCarKeyInvitationViewController_viewDidLoad__block_invoke(uint64
   [WeakRetained carKeyInvitationViewControllerDidCancel:self];
 }
 
-- (void)activationCodeDidChangeToCode:(id)a3
+- (void)activationCodeDidChangeToCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained carKeyInvitationViewController:self didEnterActivationCode:v4];
+  [WeakRetained carKeyInvitationViewController:self didEnterActivationCode:codeCopy];
 }
 
-- (void)showWithProvisioningError:(id)a3
+- (void)showWithProvisioningError:(id)error
 {
-  v4 = a3;
-  if (([v4 hasLocalizedTitleAndMessage] & 1) == 0)
+  errorCopy = error;
+  if (([errorCopy hasLocalizedTitleAndMessage] & 1) == 0)
   {
     v5 = PKLocalizedCredentialString(&cfstr_CarkeyCannotAd.isa);
-    [v4 setLocalizedTitle:v5];
+    [errorCopy setLocalizedTitle:v5];
 
-    v6 = [(PKCarKeyInvitationViewController *)self _localizedIssuerName];
-    v7 = PKLocalizedCredentialString(&cfstr_CarkeyFailedAd.isa, &stru_1F3BD5BF0.isa, v6);
-    [v4 setLocalizedMessage:v7];
+    _localizedIssuerName = [(PKCarKeyInvitationViewController *)self _localizedIssuerName];
+    v7 = PKLocalizedCredentialString(&cfstr_CarkeyFailedAd.isa, &stru_1F3BD5BF0.isa, _localizedIssuerName);
+    [errorCopy setLocalizedMessage:v7];
   }
 
   v8 = MEMORY[0x1E69DC650];
@@ -238,12 +238,12 @@ uint64_t __47__PKCarKeyInvitationViewController_viewDidLoad__block_invoke(uint64
   v12[2] = __62__PKCarKeyInvitationViewController_showWithProvisioningError___block_invoke_2;
   v12[3] = &unk_1E8010A10;
   v12[4] = self;
-  v13 = v4;
+  v13 = errorCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__PKCarKeyInvitationViewController_showWithProvisioningError___block_invoke_3;
   v11[3] = &unk_1E8010970;
-  v9 = v4;
+  v9 = errorCopy;
   v10 = [v8 alertForErrorWithError:v9 acknowledgeButtonText:0 exitButtonText:0 onAcknowledge:&__block_literal_global_133 onExit:v12 onTryAgain:v11];
   [(PKCarKeyInvitationViewController *)self presentViewController:v10 animated:1 completion:0];
 }
@@ -268,14 +268,14 @@ void __62__PKCarKeyInvitationViewController_showWithProvisioningError___block_in
   [WeakRetained carKeyInvitationViewControllerDidCancel:*(a1 + 32)];
 }
 
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading
 {
-  if (a4)
+  if (loading)
   {
     [(PKPassShareRedemptionViewController *)self showLoadingUI];
   }
 
-  else if (a3 == 8)
+  else if (to == 8)
   {
     [(PKPassShareRedemptionViewController *)self showSuccessUI];
   }

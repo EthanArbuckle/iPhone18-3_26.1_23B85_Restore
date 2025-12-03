@@ -10,7 +10,7 @@
 
 - (NSDictionary)configDictionaryForCoreODI
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ASDConfigurationManager.configDictionaryForCoreODI.getter();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (double)cacheV2MaxAge
 {
-  v2 = self;
+  selfCopy = self;
   ASDConfigurationManager.cacheV2MaxAge.getter();
   v4 = v3;
 
@@ -27,7 +27,7 @@
 
 - (NSDictionary)payloadWorkflowTTLs
 {
-  v2 = self;
+  selfCopy = self;
   ASDConfigurationManager.payloadWorkflowTTLs.getter();
 
   sub_1000591B0(0, &qword_1006CA338, NSNumber_ptr);
@@ -38,7 +38,7 @@
 
 - (void)pushInitialCoreODIConfig
 {
-  v2 = self;
+  selfCopy = self;
   ASDConfigurationManager.pushInitialCoreODIConfig()();
 }
 

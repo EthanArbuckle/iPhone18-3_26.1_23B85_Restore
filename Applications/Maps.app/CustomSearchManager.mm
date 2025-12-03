@@ -2,8 +2,8 @@
 + (id)sharedManager;
 - (CustomSearchManager)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCustomSearchResult:(id)a3 animated:(BOOL)a4 shouldSelectOnMap:(id)a5 context:(id)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCustomSearchResult:(id)result animated:(BOOL)animated shouldSelectOnMap:(id)map context:(id)context;
 @end
 
 @implementation CustomSearchManager
@@ -35,21 +35,21 @@
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = v8;
-  if (self->_customSearchResult == a4)
+  pathCopy = path;
+  v9 = pathCopy;
+  if (self->_customSearchResult == object)
   {
     v10 = kAnnotationCoordinateKey;
-    if (([v8 isEqualToString:kAnnotationCoordinateKey] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"reverseGeocoded"))
+    if (([pathCopy isEqualToString:kAnnotationCoordinateKey] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"reverseGeocoded"))
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v11 = [(NSHashTable *)self->_observers allObjects];
-      v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      allObjects = [(NSHashTable *)self->_observers allObjects];
+      v12 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v12)
       {
         v13 = v12;
@@ -61,7 +61,7 @@
           {
             if (*v17 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allObjects);
             }
 
             [*(*(&v16 + 1) + 8 * v15) customSearchManager:self didModifyCustomSearchResult:self->_customSearchResult coordinateChanged:{objc_msgSend(v9, "isEqualToString:", v10)}];
@@ -69,7 +69,7 @@
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v13 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v13);
@@ -78,14 +78,14 @@
   }
 }
 
-- (void)setCustomSearchResult:(id)a3 animated:(BOOL)a4 shouldSelectOnMap:(id)a5 context:(id)a6
+- (void)setCustomSearchResult:(id)result animated:(BOOL)animated shouldSelectOnMap:(id)map context:(id)context
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  animatedCopy = animated;
+  resultCopy = result;
+  mapCopy = map;
+  contextCopy = context;
   p_customSearchResult = &self->_customSearchResult;
-  if (![self->_customSearchResult isEqualToSearchResult:v11 forPurpose:5])
+  if (![self->_customSearchResult isEqualToSearchResult:resultCopy forPurpose:5])
   {
     if (*p_customSearchResult)
     {
@@ -93,7 +93,7 @@
       [self->_customSearchResult removeObserver:self forKeyPath:@"reverseGeocoded"];
     }
 
-    objc_storeStrong(&self->_customSearchResult, a3);
+    objc_storeStrong(&self->_customSearchResult, result);
     if (*p_customSearchResult)
     {
       [*p_customSearchResult addObserver:self forKeyPath:kAnnotationCoordinateKey options:0 context:0];
@@ -104,8 +104,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v15 = [(NSHashTable *)self->_observers allObjects];
-    v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v16 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v16)
     {
       v17 = v16;
@@ -116,13 +116,13 @@
         {
           if (*v21 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allObjects);
           }
 
-          [*(*(&v20 + 1) + 8 * i) customSearchManager:self didReplaceCustomSearchResult:v11 animated:v8 shouldSelectOnMap:v12 context:v13];
+          [*(*(&v20 + 1) + 8 * i) customSearchManager:self didReplaceCustomSearchResult:resultCopy animated:animatedCopy shouldSelectOnMap:mapCopy context:contextCopy];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v17 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v17);

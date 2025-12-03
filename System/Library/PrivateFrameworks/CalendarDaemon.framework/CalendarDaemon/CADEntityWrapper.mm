@@ -1,14 +1,14 @@
 @interface CADEntityWrapper
-- (CADEntityWrapper)initWithCalEntity:(void *)a3 loadedValues:(id)a4;
-- (CADEntityWrapper)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CADEntityWrapper)initWithCalEntity:(void *)entity loadedValues:(id)values;
+- (CADEntityWrapper)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADEntityWrapper
 
-- (CADEntityWrapper)initWithCalEntity:(void *)a3 loadedValues:(id)a4
+- (CADEntityWrapper)initWithCalEntity:(void *)entity loadedValues:(id)values
 {
-  v6 = a4;
+  valuesCopy = values;
   v12.receiver = self;
   v12.super_class = CADEntityWrapper;
   v7 = [(CADEntityWrapper *)&v12 init];
@@ -27,7 +27,7 @@
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v7->_loadedValues, a4);
+    objc_storeStrong(&v7->_loadedValues, values);
   }
 
   v10 = v7;
@@ -36,9 +36,9 @@ LABEL_6:
   return v10;
 }
 
-- (CADEntityWrapper)initWithCoder:(id)a3
+- (CADEntityWrapper)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -55,10 +55,10 @@ LABEL_6:
       [CADEntityWrapper initWithCoder:];
     }
 
-    v7 = [v5 decodeIntForKey:@"entityType"];
-    v8 = [v5 decodeIntForKey:@"rowID"];
-    v9 = [v5 decodeIntForKey:@"dbID"];
-    v10 = [v5 decodeObjectOfClasses:initWithCoder__allowedObjectClasses forKey:@"objects"];
+    v7 = [coderCopy decodeIntForKey:@"entityType"];
+    v8 = [coderCopy decodeIntForKey:@"rowID"];
+    v9 = [coderCopy decodeIntForKey:@"dbID"];
+    v10 = [coderCopy decodeObjectOfClasses:initWithCoder__allowedObjectClasses forKey:@"objects"];
     loadedValues = v6->_loadedValues;
     v6->_loadedValues = v10;
 
@@ -91,27 +91,27 @@ uint64_t __34__CADEntityWrapper_initWithCoder___block_invoke()
   return MEMORY[0x2821F96F8](v11);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(CADEntityWrapper *)a2 encodeWithCoder:?];
   }
 
-  [v7 encodeInt:self->_entityType forKey:@"entityType"];
-  [v7 encodeInt:self->_rowID forKey:@"rowID"];
+  [coderCopy encodeInt:self->_entityType forKey:@"entityType"];
+  [coderCopy encodeInt:self->_rowID forKey:@"rowID"];
   databaseID = self->_databaseID;
   if (databaseID)
   {
-    [v7 encodeInt:databaseID forKey:@"dbID"];
+    [coderCopy encodeInt:databaseID forKey:@"dbID"];
   }
 
   loadedValues = self->_loadedValues;
   if (loadedValues)
   {
-    [v7 encodeObject:loadedValues forKey:@"objects"];
+    [coderCopy encodeObject:loadedValues forKey:@"objects"];
   }
 }
 

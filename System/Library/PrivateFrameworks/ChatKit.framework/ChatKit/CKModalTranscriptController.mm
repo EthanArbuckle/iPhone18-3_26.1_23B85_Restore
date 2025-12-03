@@ -1,48 +1,48 @@
 @interface CKModalTranscriptController
 - (BOOL)_deviceIsLocked;
-- (BOOL)_insertMediaObject:(id)a3;
+- (BOOL)_insertMediaObject:(id)object;
 - (BOOL)_shouldUseExistingConversations;
-- (BOOL)messageEntryViewWidth:(double *)a3 andOffset:(double *)a4;
+- (BOOL)messageEntryViewWidth:(double *)width andOffset:(double *)offset;
 - (CKComposeAssetExplorerManager)assetExplorerManager;
-- (CKModalTranscriptController)initWithNavigationController:(id)a3;
+- (CKModalTranscriptController)initWithNavigationController:(id)controller;
 - (NSMutableArray)deferredInsertMediaObjectBlocks;
-- (double)_offsetForScreenWidth:(double)a3 containerWidth:(double)a4 windowOffset:(CGPoint)a5;
+- (double)_offsetForScreenWidth:(double)width containerWidth:(double)containerWidth windowOffset:(CGPoint)offset;
 - (id)proposedParticipantHandles;
-- (void)_conversationListDidFinishLoading:(id)a3;
-- (void)_insertMediaObjectAndReturnFrame:(id)a3;
+- (void)_conversationListDidFinishLoading:(id)loading;
+- (void)_insertMediaObjectAndReturnFrame:(id)frame;
 - (void)_setConversationDeferredSetup;
-- (void)_setEntryViewVisible:(BOOL)a3;
-- (void)createCompositionForPluginPayload:(id)a3 shelfMediaObject:(id)a4 collaborationShareOptions:(id)a5 completionHandler:(id)a6;
+- (void)_setEntryViewVisible:(BOOL)visible;
+- (void)createCompositionForPluginPayload:(id)payload shelfMediaObject:(id)object collaborationShareOptions:(id)options completionHandler:(id)handler;
 - (void)disableCameraAttachments;
-- (void)hideEntryViewContent:(BOOL)a3;
-- (void)insertData:(id)a3 MIMEType:(id)a4 exportedFilename:(id)a5;
-- (void)insertFileURL:(id)a3 filename:(id)a4 fileIsResolved:(BOOL)a5 transcoderUserInfo:(id)a6 fullyRealizedPreview:(id)a7 rawPreview:(id)a8 appendedVideoURL:(id)a9 completion:(id)a10;
-- (void)insertFileURLAsMediaObject:(id)a3 filename:(id)a4 fileIsResolved:(BOOL)a5 transcoderUserInfo:(id)a6 fullyRealizedPreview:(id)a7 rawPreview:(id)a8 appendedVideoURL:(id)a9;
-- (void)insertFileURLForCollaboration:(id)a3 collaborationShareOptions:(id)a4 metadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 completionHandler:(id)a8;
-- (void)insertGroupActivity:(id)a3;
-- (void)insertMessage:(id)a3 bundleProxy:(id)a4 extensionBundleIdentifier:(id)a5;
-- (void)insertRichLinkWithCloudKitShare:(id)a3 containerSetupInfo:(id)a4 collaborationShareOptions:(id)a5 isCollaboration:(BOOL)a6;
-- (void)insertRichLinkWithCloudKitShare:(id)a3 containerSetupInfo:(id)a4 collaborationShareOptions:(id)a5 isCollaboration:(BOOL)a6 completionHandler:(id)a7;
-- (void)insertRichLinkWithURL:(id)a3 sendAsCopyURL:(id)a4 data:(id)a5 collaborationType:(int64_t)a6 collaborationShareOptions:(id)a7 metadata:(id)a8 isCollaboration:(BOOL)a9 completionHandler:(id)a10;
-- (void)insertSWYPendingCollaboration:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 completionHandler:(id)a8;
+- (void)hideEntryViewContent:(BOOL)content;
+- (void)insertData:(id)data MIMEType:(id)type exportedFilename:(id)filename;
+- (void)insertFileURL:(id)l filename:(id)filename fileIsResolved:(BOOL)resolved transcoderUserInfo:(id)info fullyRealizedPreview:(id)preview rawPreview:(id)rawPreview appendedVideoURL:(id)rL completion:(id)self0;
+- (void)insertFileURLAsMediaObject:(id)object filename:(id)filename fileIsResolved:(BOOL)resolved transcoderUserInfo:(id)info fullyRealizedPreview:(id)preview rawPreview:(id)rawPreview appendedVideoURL:(id)l;
+- (void)insertFileURLForCollaboration:(id)collaboration collaborationShareOptions:(id)options metadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler;
+- (void)insertGroupActivity:(id)activity;
+- (void)insertMessage:(id)message bundleProxy:(id)proxy extensionBundleIdentifier:(id)identifier;
+- (void)insertRichLinkWithCloudKitShare:(id)share containerSetupInfo:(id)info collaborationShareOptions:(id)options isCollaboration:(BOOL)collaboration;
+- (void)insertRichLinkWithCloudKitShare:(id)share containerSetupInfo:(id)info collaborationShareOptions:(id)options isCollaboration:(BOOL)collaboration completionHandler:(id)handler;
+- (void)insertRichLinkWithURL:(id)l sendAsCopyURL:(id)rL data:(id)data collaborationType:(int64_t)type collaborationShareOptions:(id)options metadata:(id)metadata isCollaboration:(BOOL)collaboration completionHandler:(id)self0;
+- (void)insertSWYPendingCollaboration:(id)collaboration collaborationShareOptions:(id)options collaborationMetadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler;
 - (void)loadChatInputController;
 - (void)registerForNotifications;
-- (void)sendComposition:(id)a3;
-- (void)setCanEditRecipients:(BOOL)a3;
-- (void)setComposition:(id)a3;
-- (void)setCompositionForPluginPayload:(id)a3 shelfMediaObject:(id)a4 collaborationShareOptions:(id)a5 completionHandler:(id)a6;
-- (void)setEntryView:(id)a3;
-- (void)setForceMMS:(BOOL)a3;
-- (void)setPendingAddresses:(id)a3;
-- (void)setTextEntryContentsVisible:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)sendComposition:(id)composition;
+- (void)setCanEditRecipients:(BOOL)recipients;
+- (void)setComposition:(id)composition;
+- (void)setCompositionForPluginPayload:(id)payload shelfMediaObject:(id)object collaborationShareOptions:(id)options completionHandler:(id)handler;
+- (void)setEntryView:(id)view;
+- (void)setForceMMS:(BOOL)s;
+- (void)setPendingAddresses:(id)addresses;
+- (void)setTextEntryContentsVisible:(BOOL)visible;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKModalTranscriptController
 
-- (CKModalTranscriptController)initWithNavigationController:(id)a3
+- (CKModalTranscriptController)initWithNavigationController:(id)controller
 {
   v11.receiver = self;
   v11.super_class = CKModalTranscriptController;
@@ -55,14 +55,14 @@
 
     if (([MEMORY[0x1E69DCBB8] usesInputSystemUI] & 1) == 0)
     {
-      v6 = [MEMORY[0x1E69DCBE0] sharedInstance];
+      mEMORY[0x1E69DCBE0] = [MEMORY[0x1E69DCBE0] sharedInstance];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v8 = [MEMORY[0x1E69DCBE0] sharedInstance];
+        mEMORY[0x1E69DCBE0]2 = [MEMORY[0x1E69DCBE0] sharedInstance];
         v9 = objc_opt_new();
-        [v8 setDelegate:v9 force:1];
+        [mEMORY[0x1E69DCBE0]2 setDelegate:v9 force:1];
       }
     }
 
@@ -72,50 +72,50 @@
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CKModalTranscriptController;
-  [(CKShareSheetChatController *)&v6 viewDidAppear:a3];
+  [(CKShareSheetChatController *)&v6 viewDidAppear:appear];
   [(CKModalTranscriptController *)self setAppearCompleted:1];
-  v4 = [(CKChatController *)self entryView];
-  v5 = [v4 contentView];
-  [v5 setForceEnsureTextViewVisble:0];
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  [contentView setForceEnsureTextViewVisble:0];
 }
 
-- (void)setComposition:(id)a3
+- (void)setComposition:(id)composition
 {
   v4.receiver = self;
   v4.super_class = CKModalTranscriptController;
-  [(CKChatController *)&v4 setComposition:a3];
+  [(CKChatController *)&v4 setComposition:composition];
   [(CKChatEagerUploadController *)self->_eagerUploadController cancelAll];
 }
 
-- (void)setEntryView:(id)a3
+- (void)setEntryView:(id)view
 {
   v6.receiver = self;
   v6.super_class = CKModalTranscriptController;
-  [(CKChatController *)&v6 setEntryView:a3];
+  [(CKChatController *)&v6 setEntryView:view];
   if (![(CKModalTranscriptController *)self appearCompleted])
   {
-    v4 = [(CKChatController *)self entryView];
-    v5 = [v4 contentView];
-    [v5 setForceEnsureTextViewVisble:1];
+    entryView = [(CKChatController *)self entryView];
+    contentView = [entryView contentView];
+    [contentView setForceEnsureTextViewVisble:1];
   }
 }
 
-- (void)_insertMediaObjectAndReturnFrame:(id)a3
+- (void)_insertMediaObjectAndReturnFrame:(id)frame
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  frameCopy = frame;
+  v5 = frameCopy;
+  if (frameCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __64__CKModalTranscriptController__insertMediaObjectAndReturnFrame___block_invoke;
     aBlock[3] = &unk_1E72EB8D0;
     aBlock[4] = self;
-    v13 = v4;
+    v13 = frameCopy;
     v6 = _Block_copy(aBlock);
     v7 = v6;
     if (self->_alreadySetUp)
@@ -135,9 +135,9 @@
         }
       }
 
-      v9 = [(CKModalTranscriptController *)self deferredInsertMediaObjectBlocks];
+      deferredInsertMediaObjectBlocks = [(CKModalTranscriptController *)self deferredInsertMediaObjectBlocks];
       v10 = _Block_copy(v7);
-      [v9 addObject:v10];
+      [deferredInsertMediaObjectBlocks addObject:v10];
     }
   }
 }
@@ -199,25 +199,25 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)_insertMediaObject:(id)a3
+- (BOOL)_insertMediaObject:(id)object
 {
-  v4 = a3;
-  if (v4 && !self->_alreadySetUp)
+  objectCopy = object;
+  if (objectCopy && !self->_alreadySetUp)
   {
-    v5 = [(CKChatController *)self composition];
-    if (v5)
+    composition = [(CKChatController *)self composition];
+    if (composition)
     {
-      v6 = v5;
-      v7 = [v5 compositionByAppendingMediaObject:v4];
+      v6 = composition;
+      v7 = [composition compositionByAppendingMediaObject:objectCopy];
     }
 
     else
     {
-      v7 = [CKComposition compositionWithMediaObject:v4 subject:0];
+      v7 = [CKComposition compositionWithMediaObject:objectCopy subject:0];
     }
 
-    v8 = [(CKCoreChatController *)self conversation];
-    v9 = [v8 canSendComposition:v7 error:0];
+    conversation = [(CKCoreChatController *)self conversation];
+    v9 = [conversation canSendComposition:v7 error:0];
 
     if (v9)
     {
@@ -225,7 +225,7 @@ LABEL_14:
     }
   }
 
-  return v4 != 0;
+  return objectCopy != 0;
 }
 
 - (NSMutableArray)deferredInsertMediaObjectBlocks
@@ -243,22 +243,22 @@ LABEL_14:
   return deferredInsertMediaObjectBlocks;
 }
 
-- (void)insertRichLinkWithURL:(id)a3 sendAsCopyURL:(id)a4 data:(id)a5 collaborationType:(int64_t)a6 collaborationShareOptions:(id)a7 metadata:(id)a8 isCollaboration:(BOOL)a9 completionHandler:(id)a10
+- (void)insertRichLinkWithURL:(id)l sendAsCopyURL:(id)rL data:(id)data collaborationType:(int64_t)type collaborationShareOptions:(id)options metadata:(id)metadata isCollaboration:(BOOL)collaboration completionHandler:(id)self0
 {
   v85[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v45 = a4;
-  v17 = a5;
-  v46 = a7;
-  v18 = a8;
-  v19 = a10;
-  v20 = v19;
-  v47 = v18;
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
+  optionsCopy = options;
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  v20 = handlerCopy;
+  v47 = metadataCopy;
   if (self->_alreadySetUp)
   {
-    if (v19)
+    if (handlerCopy)
     {
-      (*(v19 + 2))(v19, 1);
+      (*(handlerCopy + 2))(handlerCopy, 1);
     }
   }
 
@@ -267,16 +267,16 @@ LABEL_14:
     v21 = objc_alloc_init(MEMORY[0x1E69A6170]);
     [v21 startTimingForKey:@"insertRichLinkWithURL"];
     self->_alreadySetUp = 1;
-    if ((v16 || a6 != 1) && (a6 != 3 || v18))
+    if ((lCopy || type != 1) && (type != 3 || metadataCopy))
     {
       *buf = 0;
       v80 = buf;
       v81 = 0x3032000000;
       v82 = __Block_byref_object_copy__56;
       v83 = __Block_byref_object_dispose__56;
-      v84 = [CKBrowserItemPayload createBrowserItemPayloadWithURL:v16 data:v17];
-      [*(v80 + 5) setPayloadCollaborationType:a6];
-      [*(v80 + 5) setSendAsCopyURL:v45];
+      v84 = [CKBrowserItemPayload createBrowserItemPayloadWithURL:lCopy data:dataCopy];
+      [*(v80 + 5) setPayloadCollaborationType:type];
+      [*(v80 + 5) setSendAsCopyURL:rLCopy];
       v77[0] = 0;
       v77[1] = v77;
       v77[2] = 0x3032000000;
@@ -288,7 +288,7 @@ LABEL_14:
       v75[2] = 0x3032000000;
       v75[3] = __Block_byref_object_copy__56;
       v75[4] = __Block_byref_object_dispose__56;
-      v30 = v16;
+      v30 = lCopy;
       v76 = v30;
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -296,16 +296,16 @@ LABEL_14:
       aBlock[3] = &unk_1E72F6148;
       v31 = v21;
       v65 = v31;
-      v43 = v18;
+      v43 = metadataCopy;
       v66 = v43;
       v70 = buf;
-      v44 = v46;
+      v44 = optionsCopy;
       v67 = v44;
-      v68 = self;
+      selfCopy = self;
       v71 = v77;
-      v73 = a6;
-      v74 = a9;
-      v32 = v45;
+      typeCopy = type;
+      collaborationCopy = collaboration;
+      v32 = rLCopy;
       v69 = v32;
       v72 = v75;
       v33 = _Block_copy(aBlock);
@@ -313,11 +313,11 @@ LABEL_14:
       {
         v34 = v31;
         v40 = objc_alloc_init(MEMORY[0x1E696ABF8]);
-        v39 = [v40 retainAccess];
+        retainAccess = [v40 retainAccess];
         v35 = [MEMORY[0x1E696ABF0] readingIntentWithURL:v30 options:0];
         v85[0] = v35;
         v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:1];
-        v41 = [MEMORY[0x1E696ADC8] mainQueue];
+        mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
         v48[0] = MEMORY[0x1E69E9820];
         v48[1] = 3221225472;
         v48[2] = __159__CKModalTranscriptController_insertRichLinkWithURL_sendAsCopyURL_data_collaborationType_collaborationShareOptions_metadata_isCollaboration_completionHandler___block_invoke_255;
@@ -327,20 +327,20 @@ LABEL_14:
         v49 = v38;
         v50 = v30;
         v61 = buf;
-        v63 = a9;
+        collaborationCopy2 = collaboration;
         v51 = v32;
         v52 = v34;
         v62 = v77;
         v58 = v33;
         v36 = v40;
         v53 = v36;
-        v37 = v39;
+        v37 = retainAccess;
         v54 = v37;
         v55 = v44;
         v59 = v20;
         v56 = v43;
-        v57 = self;
-        [v36 coordinateAccessWithIntents:v42 queue:v41 byAccessor:v48];
+        selfCopy2 = self;
+        [v36 coordinateAccessWithIntents:v42 queue:mainQueue byAccessor:v48];
 
         v31 = v34;
       }
@@ -363,7 +363,7 @@ LABEL_14:
     else
     {
       v22 = [CKBrowserItemPayload browserItemPayloadForCollaborationWithURL:0 collaborationType:1];
-      [v22 setSendAsCopy:!a9];
+      [v22 setSendAsCopy:!collaboration];
       v23 = [[CKComposition alloc] initWithText:0 subject:0 shelfPluginPayload:v22];
       [(CKModalTranscriptController *)self setComposition:v23];
       if (IMOSLoggingEnabled())
@@ -376,11 +376,11 @@ LABEL_14:
         }
       }
 
-      v25 = [(CKChatController *)self entryView];
-      v26 = [v25 contentView];
-      v27 = [v26 shelfPluginPayload];
-      v28 = [v27 datasource];
-      v29 = [v28 pluginPayload];
+      entryView = [(CKChatController *)self entryView];
+      contentView = [entryView contentView];
+      shelfPluginPayload = [contentView shelfPluginPayload];
+      datasource = [shelfPluginPayload datasource];
+      pluginPayload = [datasource pluginPayload];
 
       if (v20)
       {
@@ -1039,28 +1039,28 @@ void __159__CKModalTranscriptController_insertRichLinkWithURL_sendAsCopyURL_data
   }
 }
 
-- (void)insertRichLinkWithCloudKitShare:(id)a3 containerSetupInfo:(id)a4 collaborationShareOptions:(id)a5 isCollaboration:(BOOL)a6
+- (void)insertRichLinkWithCloudKitShare:(id)share containerSetupInfo:(id)info collaborationShareOptions:(id)options isCollaboration:(BOOL)collaboration
 {
-  v6 = a6;
+  collaborationCopy = collaboration;
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v39 = a4;
-  v11 = a5;
+  shareCopy = share;
+  infoCopy = info;
+  optionsCopy = options;
   if (!self->_alreadySetUp)
   {
-    v37 = v11;
+    v37 = optionsCopy;
     self->_alreadySetUp = 1;
-    v12 = [v10 URL];
+    v12 = [shareCopy URL];
     v13 = [CKBrowserItemPayload createBrowserItemPayloadWithURL:v12 data:0];
 
     [v13 setPayloadCollaborationType:2];
-    [v13 setCloudKitShare:v10];
-    [v13 setSendAsCopy:!v6];
-    v38 = [v10 URL];
-    v30 = [v38 absoluteString];
-    v35 = [v38 fragment];
-    v33 = [v10 objectForKeyedSubscript:*MEMORY[0x1E695B828]];
-    v36 = [v10 objectForKeyedSubscript:*MEMORY[0x1E695B830]];
+    [v13 setCloudKitShare:shareCopy];
+    [v13 setSendAsCopy:!collaborationCopy];
+    v38 = [shareCopy URL];
+    absoluteString = [v38 absoluteString];
+    fragment = [v38 fragment];
+    v33 = [shareCopy objectForKeyedSubscript:*MEMORY[0x1E695B828]];
+    v36 = [shareCopy objectForKeyedSubscript:*MEMORY[0x1E695B830]];
     if (v36)
     {
       v14 = [MEMORY[0x1E6982C40] typeWithIdentifier:?];
@@ -1087,10 +1087,10 @@ void __159__CKModalTranscriptController_insertRichLinkWithURL_sendAsCopyURL_data
       v14 = 0;
     }
 
-    if (v35)
+    if (fragment)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%@", v35];
-      v31 = [v30 stringByReplacingOccurrencesOfString:v16 withString:&stru_1F04268F8];
+      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%@", fragment];
+      v31 = [absoluteString stringByReplacingOccurrencesOfString:v16 withString:&stru_1F04268F8];
     }
 
     else
@@ -1098,25 +1098,25 @@ void __159__CKModalTranscriptController_insertRichLinkWithURL_sendAsCopyURL_data
       v31 = &stru_1F04268F8;
     }
 
-    v32 = [MEMORY[0x1E695DF00] date];
-    v34 = [v10 currentUserParticipant];
-    v17 = [v34 userIdentity];
-    v18 = [v17 lookupInfo];
-    v19 = [v18 phoneNumber];
-    v20 = v19;
-    if (v19)
+    date = [MEMORY[0x1E695DF00] date];
+    currentUserParticipant = [shareCopy currentUserParticipant];
+    userIdentity = [currentUserParticipant userIdentity];
+    lookupInfo = [userIdentity lookupInfo];
+    phoneNumber = [lookupInfo phoneNumber];
+    v20 = phoneNumber;
+    if (phoneNumber)
     {
-      v21 = v19;
+      emailAddress = phoneNumber;
     }
 
     else
     {
-      v21 = [v18 emailAddress];
+      emailAddress = [lookupInfo emailAddress];
     }
 
-    v22 = v21;
+    v22 = emailAddress;
 
-    v23 = [v17 nameComponents];
+    nameComponents = [userIdentity nameComponents];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v46 = 0x3032000000;
@@ -1125,16 +1125,16 @@ void __159__CKModalTranscriptController_insertRichLinkWithURL_sendAsCopyURL_data
     v49 = 0;
     if ([MEMORY[0x1E697B700] instancesRespondToSelector:sel_initWithCollaborationIdentifier_title_defaultShareOptions_creationDate_contentType_initiatorHandle_initiatorNameComponents_containerSetupInfo_sourceProcessData_])
     {
-      v24 = [objc_alloc(MEMORY[0x1E697B700]) initWithCollaborationIdentifier:v31 title:v33 defaultShareOptions:v37 creationDate:v32 contentType:v14 initiatorHandle:v22 initiatorNameComponents:v23 containerSetupInfo:v39 sourceProcessData:0];
-      v25 = *(*(&buf + 1) + 40);
+      v24 = [objc_alloc(MEMORY[0x1E697B700]) initWithCollaborationIdentifier:v31 title:v33 defaultShareOptions:v37 creationDate:date contentType:v14 initiatorHandle:v22 initiatorNameComponents:nameComponents containerSetupInfo:infoCopy sourceProcessData:0];
+      optionsGroups = *(*(&buf + 1) + 40);
       *(*(&buf + 1) + 40) = v24;
     }
 
     else
     {
       v26 = objc_alloc(MEMORY[0x1E697B700]);
-      v25 = [v37 optionsGroups];
-      v27 = [v26 initWithCollaborationIdentifier:v31 title:v33 defaultOptions:v25 creationDate:v32 contentType:v14 initiatorHandle:v22 initiatorNameComponents:v23];
+      optionsGroups = [v37 optionsGroups];
+      v27 = [v26 initWithCollaborationIdentifier:v31 title:v33 defaultOptions:optionsGroups creationDate:date contentType:v14 initiatorHandle:v22 initiatorNameComponents:nameComponents];
       v28 = *(*(&buf + 1) + 40);
       *(*(&buf + 1) + 40) = v27;
     }
@@ -1146,12 +1146,12 @@ void __159__CKModalTranscriptController_insertRichLinkWithURL_sendAsCopyURL_data
     p_buf = &buf;
     v41 = v13;
     v42 = v37;
-    v43 = self;
+    selfCopy = self;
     v29 = v13;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     _Block_object_dispose(&buf, 8);
-    v11 = v37;
+    optionsCopy = v37;
   }
 }
 
@@ -1248,25 +1248,25 @@ void __124__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containe
   [*(a1 + 64) setCompositionForPluginPayload:*(a1 + 48) shelfMediaObject:0 collaborationShareOptions:*(a1 + 56)];
 }
 
-- (void)insertRichLinkWithCloudKitShare:(id)a3 containerSetupInfo:(id)a4 collaborationShareOptions:(id)a5 isCollaboration:(BOOL)a6 completionHandler:(id)a7
+- (void)insertRichLinkWithCloudKitShare:(id)share containerSetupInfo:(id)info collaborationShareOptions:(id)options isCollaboration:(BOOL)collaboration completionHandler:(id)handler
 {
-  v8 = a6;
+  collaborationCopy = collaboration;
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v51 = a4;
-  v52 = a5;
-  v13 = a7;
+  shareCopy = share;
+  infoCopy = info;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v14 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      *&buf[4] = v12;
+      *&buf[4] = shareCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v51;
+      *&buf[14] = infoCopy;
       *&buf[22] = 2112;
-      v60 = v52;
+      v60 = optionsCopy;
       _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Inserting Rich Links With CloudKitShare: %@, containerSetupInfo: %@, collaborationShareOptions: %@", buf, 0x20u);
     }
   }
@@ -1277,22 +1277,22 @@ void __124__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containe
   }
 
   self->_alreadySetUp = 1;
-  v15 = [v12 URL];
+  v15 = [shareCopy URL];
   v16 = v15 == 0;
 
   if (!v16)
   {
-    v17 = [v12 URL];
+    v17 = [shareCopy URL];
     v18 = [CKBrowserItemPayload createBrowserItemPayloadWithURL:v17 data:0];
 
     [v18 setPayloadCollaborationType:2];
-    [v18 setCloudKitShare:v12];
-    [v18 setSendAsCopy:!v8];
-    v50 = [v12 URL];
-    v42 = [v50 absoluteString];
-    v48 = [v50 fragment];
-    v46 = [v12 objectForKeyedSubscript:*MEMORY[0x1E695B828]];
-    v49 = [v12 objectForKeyedSubscript:*MEMORY[0x1E695B830]];
+    [v18 setCloudKitShare:shareCopy];
+    [v18 setSendAsCopy:!collaborationCopy];
+    v50 = [shareCopy URL];
+    absoluteString = [v50 absoluteString];
+    fragment = [v50 fragment];
+    v46 = [shareCopy objectForKeyedSubscript:*MEMORY[0x1E695B828]];
+    v49 = [shareCopy objectForKeyedSubscript:*MEMORY[0x1E695B830]];
     if (v49)
     {
       v19 = [MEMORY[0x1E6982C40] typeWithIdentifier:?];
@@ -1319,10 +1319,10 @@ void __124__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containe
       v19 = 0;
     }
 
-    if (v48)
+    if (fragment)
     {
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%@", v48];
-      v43 = [v42 stringByReplacingOccurrencesOfString:v29 withString:&stru_1F04268F8];
+      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%@", fragment];
+      v43 = [absoluteString stringByReplacingOccurrencesOfString:v29 withString:&stru_1F04268F8];
     }
 
     else
@@ -1330,23 +1330,23 @@ void __124__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containe
       v43 = &stru_1F04268F8;
     }
 
-    v45 = [MEMORY[0x1E695DF00] date];
-    v47 = [v12 currentUserParticipant];
-    v30 = [v47 userIdentity];
-    v31 = [v30 lookupInfo];
-    v32 = [v31 phoneNumber];
-    v33 = v32;
-    if (v32)
+    date = [MEMORY[0x1E695DF00] date];
+    currentUserParticipant = [shareCopy currentUserParticipant];
+    userIdentity = [currentUserParticipant userIdentity];
+    lookupInfo = [userIdentity lookupInfo];
+    phoneNumber = [lookupInfo phoneNumber];
+    v33 = phoneNumber;
+    if (phoneNumber)
     {
-      v44 = v32;
+      emailAddress = phoneNumber;
     }
 
     else
     {
-      v44 = [v31 emailAddress];
+      emailAddress = [lookupInfo emailAddress];
     }
 
-    v34 = [v30 nameComponents];
+    nameComponents = [userIdentity nameComponents];
     v35 = v18;
     *buf = 0;
     *&buf[8] = buf;
@@ -1356,16 +1356,16 @@ void __124__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containe
     v62 = 0;
     if ([MEMORY[0x1E697B700] instancesRespondToSelector:sel_initWithCollaborationIdentifier_title_defaultShareOptions_creationDate_contentType_initiatorHandle_initiatorNameComponents_containerSetupInfo_sourceProcessData_])
     {
-      v36 = [objc_alloc(MEMORY[0x1E697B700]) initWithCollaborationIdentifier:v43 title:v46 defaultShareOptions:v52 creationDate:v45 contentType:v19 initiatorHandle:v44 initiatorNameComponents:v34 containerSetupInfo:v51 sourceProcessData:0];
-      v37 = *(*&buf[8] + 40);
+      v36 = [objc_alloc(MEMORY[0x1E697B700]) initWithCollaborationIdentifier:v43 title:v46 defaultShareOptions:optionsCopy creationDate:date contentType:v19 initiatorHandle:emailAddress initiatorNameComponents:nameComponents containerSetupInfo:infoCopy sourceProcessData:0];
+      optionsGroups = *(*&buf[8] + 40);
       *(*&buf[8] + 40) = v36;
     }
 
     else
     {
       v38 = objc_alloc(MEMORY[0x1E697B700]);
-      v37 = [v52 optionsGroups];
-      v39 = [v38 initWithCollaborationIdentifier:v43 title:v46 defaultOptions:v37 creationDate:v45 contentType:v19 initiatorHandle:v44 initiatorNameComponents:v34];
+      optionsGroups = [optionsCopy optionsGroups];
+      v39 = [v38 initWithCollaborationIdentifier:v43 title:v46 defaultOptions:optionsGroups creationDate:date contentType:v19 initiatorHandle:emailAddress initiatorNameComponents:nameComponents];
       v40 = *(*&buf[8] + 40);
       *(*&buf[8] + 40) = v39;
     }
@@ -1374,26 +1374,26 @@ void __124__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containe
     block[1] = 3221225472;
     block[2] = __142__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containerSetupInfo_collaborationShareOptions_isCollaboration_completionHandler___block_invoke;
     block[3] = &unk_1E72F62B0;
-    v54 = v51;
+    v54 = infoCopy;
     v55 = v35;
     v58 = buf;
-    v56 = self;
-    v57 = v52;
+    selfCopy = self;
+    v57 = optionsCopy;
     v41 = v35;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     _Block_object_dispose(buf, 8);
 LABEL_36:
-    if (v13)
+    if (handlerCopy)
     {
-      v13[2](v13, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
 
     goto LABEL_38;
   }
 
   v20 = [CKBrowserItemPayload browserItemPayloadForCollaborationWithURL:0 collaborationType:2];
-  [v20 setSendAsCopy:!v8];
+  [v20 setSendAsCopy:!collaborationCopy];
   v21 = [[CKComposition alloc] initWithText:0 subject:0 shelfPluginPayload:v20];
   [(CKModalTranscriptController *)self setComposition:v21];
   if (IMOSLoggingEnabled())
@@ -1406,15 +1406,15 @@ LABEL_36:
     }
   }
 
-  v23 = [(CKChatController *)self entryView];
-  v24 = [v23 contentView];
-  v25 = [v24 shelfPluginPayload];
-  v26 = [v25 datasource];
-  v27 = [v26 pluginPayload];
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  shelfPluginPayload = [contentView shelfPluginPayload];
+  datasource = [shelfPluginPayload datasource];
+  pluginPayload = [datasource pluginPayload];
 
-  if (v13)
+  if (handlerCopy)
   {
-    v13[2](v13, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
 LABEL_38:
@@ -1584,32 +1584,32 @@ void __142__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containe
   [v8 setupShelfPluginPayload:*(a1 + 32)];
 }
 
-- (void)createCompositionForPluginPayload:(id)a3 shelfMediaObject:(id)a4 collaborationShareOptions:(id)a5 completionHandler:(id)a6
+- (void)createCompositionForPluginPayload:(id)payload shelfMediaObject:(id)object collaborationShareOptions:(id)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  payloadCopy = payload;
+  objectCopy = object;
+  optionsCopy = options;
+  handlerCopy = handler;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__56;
   v28 = __Block_byref_object_dispose__56;
-  v29 = [(CKChatController *)self composition];
-  if (v11)
+  composition = [(CKChatController *)self composition];
+  if (objectCopy)
   {
-    v14 = [(CKChatController *)self composition];
-    v15 = [v14 compositionByAppendingText:0 shelfPluginPayload:0 shelfMediaObject:v11 collaborationShareOptions:v12];
+    composition2 = [(CKChatController *)self composition];
+    v15 = [composition2 compositionByAppendingText:0 shelfPluginPayload:0 shelfMediaObject:objectCopy collaborationShareOptions:optionsCopy];
 
-    v16 = [(CKChatController *)self composition];
+    composition3 = [(CKChatController *)self composition];
     v17 = v15;
-    if (!v16)
+    if (!composition3)
     {
-      v17 = [CKComposition compositionWithShelfMediaObject:v11];
+      v17 = [CKComposition compositionWithShelfMediaObject:objectCopy];
     }
 
     objc_storeStrong(v25 + 5, v17);
-    if (!v16)
+    if (!composition3)
     {
     }
   }
@@ -1620,11 +1620,11 @@ void __142__CKModalTranscriptController_insertRichLinkWithCloudKitShare_containe
   v20[3] = &unk_1E72F62D8;
   v23 = &v24;
   v20[4] = self;
-  v18 = v12;
+  v18 = optionsCopy;
   v21 = v18;
-  v19 = v13;
+  v19 = handlerCopy;
   v22 = v19;
-  [CKComposition compositionWithShelfPluginPayload:v10 completionHandler:v20];
+  [CKComposition compositionWithShelfPluginPayload:payloadCopy completionHandler:v20];
 
   _Block_object_dispose(&v24, 8);
 }
@@ -1664,33 +1664,33 @@ void __126__CKModalTranscriptController_createCompositionForPluginPayload_shelfM
   }
 }
 
-- (void)setCompositionForPluginPayload:(id)a3 shelfMediaObject:(id)a4 collaborationShareOptions:(id)a5 completionHandler:(id)a6
+- (void)setCompositionForPluginPayload:(id)payload shelfMediaObject:(id)object collaborationShareOptions:(id)options completionHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  payloadCopy = payload;
+  objectCopy = object;
+  optionsCopy = options;
+  handlerCopy = handler;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy__56;
   v41 = __Block_byref_object_dispose__56;
-  v42 = [(CKChatController *)self composition];
-  if (v11)
+  composition = [(CKChatController *)self composition];
+  if (objectCopy)
   {
-    v14 = [(CKChatController *)self composition];
-    v15 = [v14 compositionByAppendingText:0 shelfPluginPayload:0 shelfMediaObject:v11 collaborationShareOptions:v12];
+    composition2 = [(CKChatController *)self composition];
+    v15 = [composition2 compositionByAppendingText:0 shelfPluginPayload:0 shelfMediaObject:objectCopy collaborationShareOptions:optionsCopy];
 
-    v16 = [(CKChatController *)self composition];
+    composition3 = [(CKChatController *)self composition];
     v17 = v15;
-    if (!v16)
+    if (!composition3)
     {
-      v17 = [CKComposition compositionWithShelfMediaObject:v11];
+      v17 = [CKComposition compositionWithShelfMediaObject:objectCopy];
     }
 
     objc_storeStrong(v38 + 5, v17);
-    if (!v16)
+    if (!composition3)
     {
     }
   }
@@ -1700,20 +1700,20 @@ void __126__CKModalTranscriptController_createCompositionForPluginPayload_shelfM
   v31 = __123__CKModalTranscriptController_setCompositionForPluginPayload_shelfMediaObject_collaborationShareOptions_completionHandler___block_invoke;
   v32 = &unk_1E72F62D8;
   v36 = &v37;
-  v33 = self;
-  v18 = v12;
+  selfCopy = self;
+  v18 = optionsCopy;
   v34 = v18;
-  v19 = v13;
+  v19 = handlerCopy;
   v35 = v19;
   v20 = _Block_copy(&v29);
-  v21 = [v10 shouldStageAsEmbeddedTextAttachment];
+  shouldStageAsEmbeddedTextAttachment = [payloadCopy shouldStageAsEmbeddedTextAttachment];
   if (IMOSLoggingEnabled())
   {
     v22 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = @"NO";
-      if (v21)
+      if (shouldStageAsEmbeddedTextAttachment)
       {
         v23 = @"YES";
       }
@@ -1724,11 +1724,11 @@ void __126__CKModalTranscriptController_createCompositionForPluginPayload_shelfM
     }
   }
 
-  if (v21)
+  if (shouldStageAsEmbeddedTextAttachment)
   {
-    v24 = [v10 url];
+    v24 = [payloadCopy url];
     v25 = [CKEmbeddedRichLinkConfiguration richLinkConfigurationWithURL:v24];
-    [v25 setPluginPayload:v10];
+    [v25 setPluginPayload:payloadCopy];
     v43 = @"EmbeddedRichLinkConfiguration";
     v44 = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
@@ -1739,7 +1739,7 @@ void __126__CKModalTranscriptController_createCompositionForPluginPayload_shelfM
 
   else
   {
-    [CKComposition compositionWithShelfPluginPayload:v10 completionHandler:v20];
+    [CKComposition compositionWithShelfPluginPayload:payloadCopy completionHandler:v20];
   }
 
   _Block_object_dispose(&v37, 8);
@@ -1785,24 +1785,24 @@ void __123__CKModalTranscriptController_setCompositionForPluginPayload_shelfMedi
   }
 }
 
-- (void)insertMessage:(id)a3 bundleProxy:(id)a4 extensionBundleIdentifier:(id)a5
+- (void)insertMessage:(id)message bundleProxy:(id)proxy extensionBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && !self->_alreadySetUp)
+  messageCopy = message;
+  proxyCopy = proxy;
+  identifierCopy = identifier;
+  if (messageCopy && !self->_alreadySetUp)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundleIdentifier___block_invoke;
     aBlock[3] = &unk_1E72EBEF8;
-    v36 = v9;
-    v37 = v10;
-    v11 = v8;
+    v36 = proxyCopy;
+    v37 = identifierCopy;
+    v11 = messageCopy;
     v38 = v11;
-    v39 = self;
+    selfCopy = self;
     v12 = _Block_copy(aBlock);
-    v13 = [v11 layout];
+    layout = [v11 layout];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     v16 = [v15 isEqualToString:@"MSMessageLiveLayout"];
@@ -1810,9 +1810,9 @@ void __123__CKModalTranscriptController_setCompositionForPluginPayload_shelfMedi
     if (v16)
     {
       v17 = +[CKBalloonPluginManager sharedInstance];
-      v18 = [v17 hasLoadedExtensions];
+      hasLoadedExtensions = [v17 hasLoadedExtensions];
 
-      if (!v18)
+      if (!hasLoadedExtensions)
       {
         if (IMOSLoggingEnabled())
         {
@@ -1830,15 +1830,15 @@ void __123__CKModalTranscriptController_setCompositionForPluginPayload_shelfMedi
         v32 = __Block_byref_object_copy__56;
         v33 = __Block_byref_object_dispose__56;
         v34 = 0;
-        v22 = [MEMORY[0x1E696AD88] defaultCenter];
-        v23 = [MEMORY[0x1E696ADC8] mainQueue];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
         v26[2] = __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundleIdentifier___block_invoke_305;
         v26[3] = &unk_1E72F6300;
         v28 = buf;
         v27 = v12;
-        v24 = [v22 addObserverForName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0 queue:v23 usingBlock:v26];
+        v24 = [defaultCenter addObserverForName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0 queue:mainQueue usingBlock:v26];
         v25 = *(v30 + 5);
         *(v30 + 5) = v24;
 
@@ -2130,46 +2130,46 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
   }
 }
 
-- (void)insertFileURL:(id)a3 filename:(id)a4 fileIsResolved:(BOOL)a5 transcoderUserInfo:(id)a6 fullyRealizedPreview:(id)a7 rawPreview:(id)a8 appendedVideoURL:(id)a9 completion:(id)a10
+- (void)insertFileURL:(id)l filename:(id)filename fileIsResolved:(BOOL)resolved transcoderUserInfo:(id)info fullyRealizedPreview:(id)preview rawPreview:(id)rawPreview appendedVideoURL:(id)rL completion:(id)self0
 {
-  v45 = a5;
+  resolvedCopy = resolved;
   v51 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (v15)
+  lCopy = l;
+  filenameCopy = filename;
+  infoCopy = info;
+  previewCopy = preview;
+  rawPreviewCopy = rawPreview;
+  rLCopy = rL;
+  if (lCopy)
   {
-    v21 = [(CKModalTranscriptController *)self assetExplorerManager];
-    v22 = [v21 generatePackageFromAssetURL:v15 appendedVideoURL:v20 previewImage:v18];
+    assetExplorerManager = [(CKModalTranscriptController *)self assetExplorerManager];
+    v22 = [assetExplorerManager generatePackageFromAssetURL:lCopy appendedVideoURL:rLCopy previewImage:previewCopy];
 
-    v23 = [(CKModalTranscriptController *)self assetExplorerManager];
-    v24 = v23;
+    assetExplorerManager2 = [(CKModalTranscriptController *)self assetExplorerManager];
+    v24 = assetExplorerManager2;
     if (v22)
     {
-      [v23 saveFileURL:v15 filename:v16 transcoderUserInfo:v17 fullyRealizedPreview:v18 rawPreview:v19 appendedVideoURL:v20];
+      [assetExplorerManager2 saveFileURL:lCopy filename:filenameCopy transcoderUserInfo:infoCopy fullyRealizedPreview:previewCopy rawPreview:rawPreviewCopy appendedVideoURL:rLCopy];
 
-      v25 = [(CKModalTranscriptController *)self assetExplorerManager];
-      [v25 stageAssetPackage:v22];
+      assetExplorerManager3 = [(CKModalTranscriptController *)self assetExplorerManager];
+      [assetExplorerManager3 stageAssetPackage:v22];
     }
 
     else
     {
-      v38 = v20;
-      v39 = v19;
-      v40 = v18;
-      v41 = v17;
-      v42 = v16;
-      v43 = v15;
-      v26 = [v23 clearAndDisableShelfAndReturnPreviouslyShelvedData];
+      v38 = rLCopy;
+      v39 = rawPreviewCopy;
+      v40 = previewCopy;
+      v41 = infoCopy;
+      v42 = filenameCopy;
+      v43 = lCopy;
+      clearAndDisableShelfAndReturnPreviouslyShelvedData = [assetExplorerManager2 clearAndDisableShelfAndReturnPreviouslyShelvedData];
 
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      obj = v26;
+      obj = clearAndDisableShelfAndReturnPreviouslyShelvedData;
       v27 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
       if (v27)
       {
@@ -2185,13 +2185,13 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
             }
 
             v31 = *(*(&v46 + 1) + 8 * i);
-            v32 = [v31 fileURL];
-            v33 = [v31 filename];
-            v34 = [v31 transcoderUserInfo];
-            v35 = [v31 fullyRealizedPreview];
-            v36 = [v31 rawPreview];
-            v37 = [v31 appendedVideoURL];
-            [(CKModalTranscriptController *)self insertFileURLAsMediaObject:v32 filename:v33 fileIsResolved:v45 transcoderUserInfo:v34 fullyRealizedPreview:v35 rawPreview:v36 appendedVideoURL:v37];
+            fileURL = [v31 fileURL];
+            filename = [v31 filename];
+            transcoderUserInfo = [v31 transcoderUserInfo];
+            fullyRealizedPreview = [v31 fullyRealizedPreview];
+            rawPreview = [v31 rawPreview];
+            appendedVideoURL = [v31 appendedVideoURL];
+            [(CKModalTranscriptController *)self insertFileURLAsMediaObject:fileURL filename:filename fileIsResolved:resolvedCopy transcoderUserInfo:transcoderUserInfo fullyRealizedPreview:fullyRealizedPreview rawPreview:rawPreview appendedVideoURL:appendedVideoURL];
           }
 
           v28 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -2200,38 +2200,38 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
         while (v28);
       }
 
-      v20 = v38;
-      v19 = v39;
-      v16 = v42;
-      v15 = v43;
-      v18 = v40;
-      v17 = v41;
-      [(CKModalTranscriptController *)self insertFileURLAsMediaObject:v43 filename:v42 fileIsResolved:v45 transcoderUserInfo:v41 fullyRealizedPreview:v40 rawPreview:v39 appendedVideoURL:v38];
+      rLCopy = v38;
+      rawPreviewCopy = v39;
+      filenameCopy = v42;
+      lCopy = v43;
+      previewCopy = v40;
+      infoCopy = v41;
+      [(CKModalTranscriptController *)self insertFileURLAsMediaObject:v43 filename:v42 fileIsResolved:resolvedCopy transcoderUserInfo:v41 fullyRealizedPreview:v40 rawPreview:v39 appendedVideoURL:v38];
 
       v22 = 0;
     }
   }
 }
 
-- (void)insertFileURLAsMediaObject:(id)a3 filename:(id)a4 fileIsResolved:(BOOL)a5 transcoderUserInfo:(id)a6 fullyRealizedPreview:(id)a7 rawPreview:(id)a8 appendedVideoURL:(id)a9
+- (void)insertFileURLAsMediaObject:(id)object filename:(id)filename fileIsResolved:(BOOL)resolved transcoderUserInfo:(id)info fullyRealizedPreview:(id)preview rawPreview:(id)rawPreview appendedVideoURL:(id)l
 {
-  v12 = a5;
+  resolvedCopy = resolved;
   v55 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v44 = a8;
-  v19 = a9;
-  v20 = [v15 startAccessingSecurityScopedResource];
+  objectCopy = object;
+  filenameCopy = filename;
+  infoCopy = info;
+  previewCopy = preview;
+  rawPreviewCopy = rawPreview;
+  lCopy = l;
+  startAccessingSecurityScopedResource = [objectCopy startAccessingSecurityScopedResource];
   v21 = +[CKMediaObjectManager sharedInstance];
   LOWORD(v43) = 0;
-  v22 = [v21 mediaObjectWithFileURL:v15 filename:v16 fileIsResolved:v12 transcoderUserInfo:v17 attributionInfo:0 adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:v43 isScreenshot:?];
+  v22 = [v21 mediaObjectWithFileURL:objectCopy filename:filenameCopy fileIsResolved:resolvedCopy transcoderUserInfo:infoCopy attributionInfo:0 adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:v43 isScreenshot:?];
 
-  v23 = [objc_opt_class() canGeneratePreviewInMVSHostProcess];
+  canGeneratePreviewInMVSHostProcess = [objc_opt_class() canGeneratePreviewInMVSHostProcess];
   if ([MEMORY[0x1E69A80C0] isCroppingAvoidanceEnabled])
   {
-    if (v23)
+    if (canGeneratePreviewInMVSHostProcess)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -2242,14 +2242,14 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
 
         v27 = [v22 previewForWidth:0 orientation:v26];
 
-        v18 = v27;
+        previewCopy = v27;
       }
     }
   }
 
-  if (((v18 != 0) & v23) == 1)
+  if (((previewCopy != 0) & canGeneratePreviewInMVSHostProcess) == 1)
   {
-    [v22 cacheAndPersistPreview:v18 orientation:1];
+    [v22 cacheAndPersistPreview:previewCopy orientation:1];
   }
 
   if (IMOSLoggingEnabled())
@@ -2258,84 +2258,84 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 138413314;
-      v46 = v15;
+      v46 = objectCopy;
       v47 = 2112;
-      v48 = v16;
+      v48 = filenameCopy;
       v49 = 2112;
-      v50 = v17;
+      v50 = infoCopy;
       v51 = 2112;
-      v52 = v19;
+      v52 = lCopy;
       v53 = 2112;
       v54 = v22;
       _os_log_impl(&dword_19020E000, v28, OS_LOG_TYPE_INFO, "fileURL %@, filename %@, transcoderUserInfo %@, appendedVideoURL %@, mediaObject %@", buf, 0x34u);
     }
   }
 
-  v29 = [v19 path];
-  v30 = [v29 length] == 0;
+  path = [lCopy path];
+  v30 = [path length] == 0;
 
   if (!v30)
   {
-    v31 = [v22 fileURL];
-    v32 = CKGetTmpPathForAppendedVideoURL(v19, v31);
+    fileURL = [v22 fileURL];
+    v32 = CKGetTmpPathForAppendedVideoURL(lCopy, fileURL);
 
-    v33 = [v22 transferGUID];
-    CKLinkAndCreateAppendedVideoTransfer(v32, v19, v33);
+    transferGUID = [v22 transferGUID];
+    CKLinkAndCreateAppendedVideoTransfer(v32, lCopy, transferGUID);
   }
 
   [(CKModalTranscriptController *)self _insertMediaObjectAndReturnFrame:v22];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([v22 duration], v35 = v34, -[CKCoreChatController conversation](self, "conversation"), v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v36, "maxTrimDurationForMedia:", v22), v38 = v35 <= v37, v36, v38))
   {
-    v39 = [v22 transfer];
-    v40 = CKFileSizeEligibleForEagerUpload([v39 totalBytes]);
+    transfer = [v22 transfer];
+    v40 = CKFileSizeEligibleForEagerUpload([transfer totalBytes]);
 
     if (v40)
     {
       eagerUploadController = self->_eagerUploadController;
-      v42 = [(CKModalTranscriptController *)self proposedParticipantHandles];
-      [(CKChatEagerUploadController *)eagerUploadController uploadFileURL:v15 filename:v16 transcoderUserInfo:v17 videoComplementURL:v19 attributionInfo:0 identifier:0 recipients:v42];
+      proposedParticipantHandles = [(CKModalTranscriptController *)self proposedParticipantHandles];
+      [(CKChatEagerUploadController *)eagerUploadController uploadFileURL:objectCopy filename:filenameCopy transcoderUserInfo:infoCopy videoComplementURL:lCopy attributionInfo:0 identifier:0 recipients:proposedParticipantHandles];
     }
   }
 
-  if (v20)
+  if (startAccessingSecurityScopedResource)
   {
-    [v15 stopAccessingSecurityScopedResource];
+    [objectCopy stopAccessingSecurityScopedResource];
   }
 }
 
 - (id)proposedParticipantHandles
 {
-  v3 = [(CKComposeChatController *)self proposedRecipients];
-  v4 = [v3 __im_canonicalIDSAddressesFromEntities];
+  proposedRecipients = [(CKComposeChatController *)self proposedRecipients];
+  __im_canonicalIDSAddressesFromEntities = [proposedRecipients __im_canonicalIDSAddressesFromEntities];
 
-  v5 = [(CKCoreChatController *)self conversation];
-  v6 = [v5 senderIdentifier];
+  conversation = [(CKCoreChatController *)self conversation];
+  senderIdentifier = [conversation senderIdentifier];
   v7 = IMChatCanonicalIDSIDsForAddress();
 
   if ([v7 length])
   {
-    v8 = [v4 arrayByAddingObject:v7];
+    v8 = [__im_canonicalIDSAddressesFromEntities arrayByAddingObject:v7];
 
-    v4 = v8;
+    __im_canonicalIDSAddressesFromEntities = v8;
   }
 
-  return v4;
+  return __im_canonicalIDSAddressesFromEntities;
 }
 
-- (void)insertData:(id)a3 MIMEType:(id)a4 exportedFilename:(id)a5
+- (void)insertData:(id)data MIMEType:(id)type exportedFilename:(id)filename
 {
   v8 = *MEMORY[0x1E6963718];
-  v9 = a5;
-  v10 = a3;
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v8, a4, 0);
+  filenameCopy = filename;
+  dataCopy = data;
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v8, type, 0);
   v11 = +[CKMediaObjectManager sharedInstance];
-  v12 = [v11 mediaObjectWithData:v10 UTIType:PreferredIdentifierForTag filename:v9 transcoderUserInfo:0];
+  v12 = [v11 mediaObjectWithData:dataCopy UTIType:PreferredIdentifierForTag filename:filenameCopy transcoderUserInfo:0];
 
   [(CKModalTranscriptController *)self _insertMediaObject:v12];
 }
 
-- (BOOL)messageEntryViewWidth:(double *)a3 andOffset:(double *)a4
+- (BOOL)messageEntryViewWidth:(double *)width andOffset:(double *)offset
 {
   v20 = 0;
   v21 = 0.0;
@@ -2345,13 +2345,13 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
   if (v7 && !CKIsRunningInMessages())
   {
     v20 = 0;
-    v8 = [(CKChatController *)self entryView];
-    v9 = [v8 window];
+    entryView = [(CKChatController *)self entryView];
+    window = [entryView window];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 hostedWindowOffset];
+      [window hostedWindowOffset];
       v11 = v10;
       v13 = v12;
     }
@@ -2362,32 +2362,32 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
       v13 = *(MEMORY[0x1E695EFF8] + 8);
     }
 
-    v14 = [(CKModalTranscriptController *)self view];
-    v15 = [v14 window];
-    [v15 bounds];
+    view = [(CKModalTranscriptController *)self view];
+    window2 = [view window];
+    [window2 bounds];
     [(CKModalTranscriptController *)self _offsetForScreenWidth:v16 containerWidth:v21 windowOffset:v11, v13];
     v20 = v17;
   }
 
-  if (a3)
+  if (width)
   {
-    *a3 = v21;
+    *width = v21;
   }
 
-  if (a4)
+  if (offset)
   {
-    *a4 = v20;
+    *offset = v20;
   }
 
   return v7;
 }
 
-- (double)_offsetForScreenWidth:(double)a3 containerWidth:(double)a4 windowOffset:(CGPoint)a5
+- (double)_offsetForScreenWidth:(double)width containerWidth:(double)containerWidth windowOffset:(CGPoint)offset
 {
-  result = a3 * 0.5 - a4 * 0.5;
-  if (a5.x != 0.0)
+  result = width * 0.5 - containerWidth * 0.5;
+  if (offset.x != 0.0)
   {
-    return a5.x;
+    return offset.x;
   }
 
   return result;
@@ -2399,8 +2399,8 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
   if (!assetExplorerManager)
   {
     v4 = [CKComposeAssetExplorerManager alloc];
-    v5 = [(CKCoreChatController *)self inputController];
-    v6 = [(CKComposeAssetExplorerManager *)v4 initWithInputController:v5];
+    inputController = [(CKCoreChatController *)self inputController];
+    v6 = [(CKComposeAssetExplorerManager *)v4 initWithInputController:inputController];
     v7 = self->_assetExplorerManager;
     self->_assetExplorerManager = v6;
 
@@ -2415,25 +2415,25 @@ void __83__CKModalTranscriptController_insertMessage_bundleProxy_extensionBundle
   v5.receiver = self;
   v5.super_class = CKModalTranscriptController;
   [(CKChatController *)&v5 loadChatInputController];
-  v3 = [(CKModalTranscriptController *)self assetExplorerManager];
-  v4 = [(CKCoreChatController *)self inputController];
-  [v3 setInputController:v4];
+  assetExplorerManager = [(CKModalTranscriptController *)self assetExplorerManager];
+  inputController = [(CKCoreChatController *)self inputController];
+  [assetExplorerManager setInputController:inputController];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CKModalTranscriptController;
-  v7 = a4;
-  [(CKChatController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CKChatController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E72EC3E8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -2449,17 +2449,17 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
   [v11 setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = CKModalTranscriptController;
-  [(CKComposeChatController *)&v11 viewWillAppear:a3];
+  [(CKComposeChatController *)&v11 viewWillAppear:appear];
   if (!self->_alreadySetUp)
   {
     [(CKModalTranscriptController *)self _setEntryViewVisible:self->_entryViewInvisible == 0];
     self->_alreadySetUp = 1;
-    v4 = [(CKModalTranscriptController *)self deferredInsertMediaObjectBlocks];
-    v5 = [v4 count];
+    deferredInsertMediaObjectBlocks = [(CKModalTranscriptController *)self deferredInsertMediaObjectBlocks];
+    v5 = [deferredInsertMediaObjectBlocks count];
 
     if (v5)
     {
@@ -2473,11 +2473,11 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
         }
       }
 
-      v7 = [(CKModalTranscriptController *)self deferredInsertMediaObjectBlocks];
-      [v7 enumerateObjectsUsingBlock:&__block_literal_global_325_1];
+      deferredInsertMediaObjectBlocks2 = [(CKModalTranscriptController *)self deferredInsertMediaObjectBlocks];
+      [deferredInsertMediaObjectBlocks2 enumerateObjectsUsingBlock:&__block_literal_global_325_1];
 
-      v8 = [(CKModalTranscriptController *)self deferredInsertMediaObjectBlocks];
-      [v8 removeAllObjects];
+      deferredInsertMediaObjectBlocks3 = [(CKModalTranscriptController *)self deferredInsertMediaObjectBlocks];
+      [deferredInsertMediaObjectBlocks3 removeAllObjects];
     }
   }
 
@@ -2485,25 +2485,25 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
   [v9 resort];
 }
 
-- (void)sendComposition:(id)a3
+- (void)sendComposition:(id)composition
 {
   v10.receiver = self;
   v10.super_class = CKModalTranscriptController;
-  v4 = a3;
-  [(CKShareSheetChatController *)&v10 sendComposition:v4];
-  v5 = [v4 shelfPluginPayload];
+  compositionCopy = composition;
+  [(CKShareSheetChatController *)&v10 sendComposition:compositionCopy];
+  shelfPluginPayload = [compositionCopy shelfPluginPayload];
 
-  v6 = [v5 pluginBundleID];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
 
-  if (v6)
+  if (pluginBundleID)
   {
     v7 = +[CKBalloonPluginManager sharedInstance];
-    v8 = [v7 isPluginEnabled:v6];
+    v8 = [v7 isPluginEnabled:pluginBundleID];
 
     if ((v8 & 1) == 0)
     {
       v9 = +[CKBalloonPluginManager sharedInstance];
-      [v9 setEnabled:1 forPlugin:v6];
+      [v9 setEnabled:1 forPlugin:pluginBundleID];
     }
   }
 
@@ -2515,9 +2515,9 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
   v5.receiver = self;
   v5.super_class = CKModalTranscriptController;
   [(CKComposeChatController *)&v5 _setConversationDeferredSetup];
-  v3 = [(CKModalTranscriptController *)self _deviceIsLocked];
-  v4 = [(CKChatController *)self collectionView];
-  [v4 setHidden:v3];
+  _deviceIsLocked = [(CKModalTranscriptController *)self _deviceIsLocked];
+  collectionView = [(CKChatController *)self collectionView];
+  [collectionView setHidden:_deviceIsLocked];
 }
 
 - (BOOL)_deviceIsLocked
@@ -2532,16 +2532,16 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
   return v2;
 }
 
-- (void)setPendingAddresses:(id)a3
+- (void)setPendingAddresses:(id)addresses
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  addressesCopy = addresses;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = addressesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -2578,48 +2578,48 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
   [(CKComposeChatController *)self setPrepopulatedRecipients:v5];
 }
 
-- (void)setCanEditRecipients:(BOOL)a3
+- (void)setCanEditRecipients:(BOOL)recipients
 {
-  v3 = a3;
-  v4 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v4 setEditable:v3];
+  recipientsCopy = recipients;
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController setEditable:recipientsCopy];
 }
 
-- (void)insertFileURLForCollaboration:(id)a3 collaborationShareOptions:(id)a4 metadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 completionHandler:(id)a8
+- (void)insertFileURLForCollaboration:(id)collaboration collaborationShareOptions:(id)options metadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler
 {
   self->_alreadySetUp = 0;
-  LOBYTE(v8) = a7;
-  [(CKModalTranscriptController *)self insertRichLinkWithURL:a3 sendAsCopyURL:a6 data:0 collaborationType:1 collaborationShareOptions:a4 metadata:a5 isCollaboration:v8 completionHandler:a8];
+  LOBYTE(v8) = isCollaboration;
+  [(CKModalTranscriptController *)self insertRichLinkWithURL:collaboration sendAsCopyURL:l data:0 collaborationType:1 collaborationShareOptions:options metadata:metadata isCollaboration:v8 completionHandler:handler];
 }
 
-- (void)insertSWYPendingCollaboration:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 completionHandler:(id)a8
+- (void)insertSWYPendingCollaboration:(id)collaboration collaborationShareOptions:(id)options collaborationMetadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler
 {
-  v21 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  optionsCopy = options;
+  metadataCopy = metadata;
+  lCopy = l;
+  handlerCopy = handler;
   self->_alreadySetUp = 0;
-  v17 = [a3 fileURL];
-  v18 = v17;
-  if (v21)
+  fileURL = [collaboration fileURL];
+  v18 = fileURL;
+  if (optionsCopy)
   {
-    LOBYTE(v20) = a7;
-    [(CKModalTranscriptController *)self insertRichLinkWithURL:v17 sendAsCopyURL:v15 data:0 collaborationType:3 collaborationShareOptions:v21 metadata:v14 isCollaboration:v20 completionHandler:v16];
+    LOBYTE(v20) = isCollaboration;
+    [(CKModalTranscriptController *)self insertRichLinkWithURL:fileURL sendAsCopyURL:lCopy data:0 collaborationType:3 collaborationShareOptions:optionsCopy metadata:metadataCopy isCollaboration:v20 completionHandler:handlerCopy];
   }
 
   else
   {
-    v19 = [v14 defaultShareOptions];
-    LOBYTE(v20) = a7;
-    [(CKModalTranscriptController *)self insertRichLinkWithURL:v18 sendAsCopyURL:v15 data:0 collaborationType:3 collaborationShareOptions:v19 metadata:v14 isCollaboration:v20 completionHandler:v16];
+    defaultShareOptions = [metadataCopy defaultShareOptions];
+    LOBYTE(v20) = isCollaboration;
+    [(CKModalTranscriptController *)self insertRichLinkWithURL:v18 sendAsCopyURL:lCopy data:0 collaborationType:3 collaborationShareOptions:defaultShareOptions metadata:metadataCopy isCollaboration:v20 completionHandler:handlerCopy];
   }
 }
 
-- (void)insertGroupActivity:(id)a3
+- (void)insertGroupActivity:(id)activity
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3 && IMOSLoggingEnabled())
+  activityCopy = activity;
+  if (!activityCopy && IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -2641,53 +2641,53 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
     v6 = 0;
   }
 
-  v7 = [v3 concatenatedMetadataDescription];
-  v8 = [v7 length] == 0;
+  concatenatedMetadataDescription = [activityCopy concatenatedMetadataDescription];
+  v8 = [concatenatedMetadataDescription length] == 0;
 
   if (v8)
   {
-    v36 = 0;
+    concatenatedMetadataDescription2 = 0;
   }
 
   else
   {
-    v36 = [v3 concatenatedMetadataDescription];
+    concatenatedMetadataDescription2 = [activityCopy concatenatedMetadataDescription];
   }
 
   v9 = NSSelectorFromString(&cfstr_Settitle.isa);
   if (objc_opt_respondsToSelector())
   {
-    [v6 performSelector:v9 withObject:v36];
+    [v6 performSelector:v9 withObject:concatenatedMetadataDescription2];
   }
 
   v10 = NSSelectorFromString(&cfstr_Setapplication.isa);
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v3 bundleIdentifier];
-    [v6 performSelector:v10 withObject:v11];
+    bundleIdentifier = [activityCopy bundleIdentifier];
+    [v6 performSelector:v10 withObject:bundleIdentifier];
   }
 
   v12 = NSSelectorFromString(&cfstr_Setapplication_0.isa);
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v3 localizedApplicationName];
-    if (v13)
+    localizedApplicationName = [activityCopy localizedApplicationName];
+    if (localizedApplicationName)
     {
-      [v6 performSelector:v12 withObject:v13];
+      [v6 performSelector:v12 withObject:localizedApplicationName];
     }
 
     else
     {
-      v14 = [v3 fallbackApplicationName];
-      [v6 performSelector:v12 withObject:v14];
+      fallbackApplicationName = [activityCopy fallbackApplicationName];
+      [v6 performSelector:v12 withObject:fallbackApplicationName];
     }
   }
 
-  v15 = [v3 metadata];
-  v16 = [v15 imageData];
-  v17 = v16 == 0;
+  metadata = [activityCopy metadata];
+  imageData = [metadata imageData];
+  v17 = imageData == 0;
 
-  if (v17 || (v18 = MEMORY[0x1E69DCAB8], [v3 metadata], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "imageData"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "imageWithData:", v20), v21 = objc_claimAutoreleasedReturnValue(), v20, v19, !v21))
+  if (v17 || (v18 = MEMORY[0x1E69DCAB8], [activityCopy metadata], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "imageData"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "imageWithData:", v20), v21 = objc_claimAutoreleasedReturnValue(), v20, v19, !v21))
   {
     if (IMOSLoggingEnabled())
     {
@@ -2729,19 +2729,19 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
   }
 
   v28 = objc_alloc_init(CKBrowserItemPayload);
-  v29 = [MEMORY[0x1E696AEC0] stringGUID];
-  [(CKBrowserItemPayload *)v28 setMessageGUID:v29];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+  [(CKBrowserItemPayload *)v28 setMessageGUID:stringGUID];
 
   [(CKBrowserItemPayload *)v28 setPluginBundleID:*MEMORY[0x1E69A6A18]];
   [(CKBrowserItemPayload *)v28 setData:v26];
-  v30 = [(CKChatController *)self composition];
+  composition = [(CKChatController *)self composition];
   v31 = [[CKComposition alloc] initWithText:0 subject:0 shelfPluginPayload:v28];
-  v32 = [(CKComposition *)v31 shelfPluginPayload];
-  [v32 setGroupActivity:v3];
+  shelfPluginPayload = [(CKComposition *)v31 shelfPluginPayload];
+  [shelfPluginPayload setGroupActivity:activityCopy];
 
-  if (v30)
+  if (composition)
   {
-    v33 = [v30 compositionByAppendingComposition:v31];
+    v33 = [composition compositionByAppendingComposition:v31];
   }
 
   else
@@ -2766,7 +2766,7 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v40 = v3;
+      v40 = activityCopy;
       _os_log_impl(&dword_19020E000, v35, OS_LOG_TYPE_INFO, "Did insert group activity %@", buf, 0xCu);
     }
   }
@@ -2790,64 +2790,64 @@ void __82__CKModalTranscriptController_viewWillTransitionToSize_withTransitionCo
   self->_cameraSelectionDisabled = 1;
 }
 
-- (void)setTextEntryContentsVisible:(BOOL)a3
+- (void)setTextEntryContentsVisible:(BOOL)visible
 {
   if (self->_alreadySetUp)
   {
-    [(CKModalTranscriptController *)self _setEntryViewVisible:a3];
+    [(CKModalTranscriptController *)self _setEntryViewVisible:visible];
   }
 
   else
   {
-    self->_entryViewInvisible = !a3;
+    self->_entryViewInvisible = !visible;
   }
 }
 
-- (void)setForceMMS:(BOOL)a3
+- (void)setForceMMS:(BOOL)s
 {
-  self->_forceMMS = a3;
-  v4 = [(CKCoreChatController *)self conversation];
-  [v4 setForceMMS:self->_forceMMS];
+  self->_forceMMS = s;
+  conversation = [(CKCoreChatController *)self conversation];
+  [conversation setForceMMS:self->_forceMMS];
 }
 
-- (void)_setEntryViewVisible:(BOOL)a3
+- (void)_setEntryViewVisible:(BOOL)visible
 {
-  v3 = a3;
-  v7 = [(CKChatController *)self entryView];
-  v4 = [v7 contentView];
-  v5 = v4;
+  visibleCopy = visible;
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  v5 = contentView;
   v6 = 0.0;
-  if (v3)
+  if (visibleCopy)
   {
     v6 = 1.0;
   }
 
-  [v4 setAlpha:v6];
+  [contentView setAlpha:v6];
 }
 
-- (void)hideEntryViewContent:(BOOL)a3
+- (void)hideEntryViewContent:(BOOL)content
 {
-  v3 = a3;
-  v5 = [(CKChatController *)self entryView];
-  v4 = [v5 contentView];
-  [v4 setHidden:v3];
+  contentCopy = content;
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  [contentView setHidden:contentCopy];
 }
 
 - (void)registerForNotifications
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   if (!CKIsRunningInMessagesOrSpringBoard())
   {
-    [v4 addObserver:self selector:sel__applicationBecameActive_ name:*MEMORY[0x1E69DDAB0] object:0];
-    [v4 addObserver:self selector:sel__screenLocked_ name:*MEMORY[0x1E69DDB98] object:0];
-    [v4 addObserver:self selector:sel__screenUnlocked_ name:*MEMORY[0x1E69DDB78] object:0];
-    [v4 addObserver:self selector:sel__conversationListDidFinishLoading_ name:@"CKConversationListFinishedLoadingNotification" object:0];
-    v3 = [MEMORY[0x1E69A6160] sharedInstance];
-    [v3 addListener:self];
+    [defaultCenter addObserver:self selector:sel__applicationBecameActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+    [defaultCenter addObserver:self selector:sel__screenLocked_ name:*MEMORY[0x1E69DDB98] object:0];
+    [defaultCenter addObserver:self selector:sel__screenUnlocked_ name:*MEMORY[0x1E69DDB78] object:0];
+    [defaultCenter addObserver:self selector:sel__conversationListDidFinishLoading_ name:@"CKConversationListFinishedLoadingNotification" object:0];
+    mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
+    [mEMORY[0x1E69A6160] addListener:self];
   }
 }
 
-- (void)_conversationListDidFinishLoading:(id)a3
+- (void)_conversationListDidFinishLoading:(id)loading
 {
   v3 = +[CKConversationList sharedConversationList];
   [v3 resort];

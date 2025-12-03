@@ -1,12 +1,12 @@
 @interface PGMeaningfulEventMatchingCriteria
-- (PGMeaningfulEventMatchingCriteria)initWithMoment:(id)a3 cache:(id)a4 serviceManager:(id)a5;
-- (double)_calculateMatchingScoreForPartOfDayWithMatchingTrait:(id)a3 requiredTrait:(id)a4 requiresStrictMatching:(BOOL)a5;
-- (double)matchingScoreWithCriteria:(id)a3 failed:(BOOL *)a4 isReliable:(BOOL *)a5;
+- (PGMeaningfulEventMatchingCriteria)initWithMoment:(id)moment cache:(id)cache serviceManager:(id)manager;
+- (double)_calculateMatchingScoreForPartOfDayWithMatchingTrait:(id)trait requiredTrait:(id)requiredTrait requiresStrictMatching:(BOOL)matching;
+- (double)matchingScoreWithCriteria:(id)criteria failed:(BOOL *)failed isReliable:(BOOL *)reliable;
 - (id)debugDescription;
-- (id)matchingResultWithCriteria:(id)a3;
-- (void)_calculateMatchingScoreForLocationsWithMatchingTrait:(id)a3 requiredTrait:(id)a4 result:(id)a5;
-- (void)_calculateMatchingScoreForPOIROIWithMatchingTrait:(id)a3 requiredTrait:(id)a4 result:(id)a5;
-- (void)_calculateMatchingScoreForScenesWithRequiredCriteria:(id)a3 result:(id)a4;
+- (id)matchingResultWithCriteria:(id)criteria;
+- (void)_calculateMatchingScoreForLocationsWithMatchingTrait:(id)trait requiredTrait:(id)requiredTrait result:(id)result;
+- (void)_calculateMatchingScoreForPOIROIWithMatchingTrait:(id)trait requiredTrait:(id)requiredTrait result:(id)result;
+- (void)_calculateMatchingScoreForScenesWithRequiredCriteria:(id)criteria result:(id)result;
 @end
 
 @implementation PGMeaningfulEventMatchingCriteria
@@ -21,20 +21,20 @@
   return v6;
 }
 
-- (double)_calculateMatchingScoreForPartOfDayWithMatchingTrait:(id)a3 requiredTrait:(id)a4 requiresStrictMatching:(BOOL)a5
+- (double)_calculateMatchingScoreForPartOfDayWithMatchingTrait:(id)trait requiredTrait:(id)requiredTrait requiresStrictMatching:(BOOL)matching
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [a3 value];
-  v9 = [v7 value];
-  v10 = [v7 forbiddenValue];
-  if (v10 == 1 || (v12 = 0.0, (v8 & v10 & 0x3F) == 0))
+  matchingCopy = matching;
+  requiredTraitCopy = requiredTrait;
+  value = [trait value];
+  value2 = [requiredTraitCopy value];
+  forbiddenValue = [requiredTraitCopy forbiddenValue];
+  if (forbiddenValue == 1 || (v12 = 0.0, (value & forbiddenValue & 0x3F) == 0))
   {
-    v11.i32[0] = v9 & v8 & 0x3F;
+    v11.i32[0] = value2 & value & 0x3F;
     v13 = vcnt_s8(v11);
     v13.i16[0] = vaddlv_u8(v13);
     v14 = v13.u32[0];
-    v13.i32[0] = v8 & 0x3F;
+    v13.i32[0] = value & 0x3F;
     v15 = vcnt_s8(v13);
     v15.i16[0] = vaddlv_u8(v15);
     if (v15.i32[0] <= v14)
@@ -47,7 +47,7 @@
       v16 = 0;
     }
 
-    if (v5)
+    if (matchingCopy)
     {
       v14 = v16;
     }
@@ -55,11 +55,11 @@
     v12 = v14;
   }
 
-  v17 = [v7 isMatchingRequired];
+  isMatchingRequired = [requiredTraitCopy isMatchingRequired];
   v18 = 1.0;
-  if (v17)
+  if (isMatchingRequired)
   {
-    [v7 minimumScore];
+    [requiredTraitCopy minimumScore];
   }
 
   v19 = fmin(v12 / v18, 1.0);
@@ -67,19 +67,19 @@
   return v19;
 }
 
-- (void)_calculateMatchingScoreForLocationsWithMatchingTrait:(id)a3 requiredTrait:(id)a4 result:(id)a5
+- (void)_calculateMatchingScoreForLocationsWithMatchingTrait:(id)trait requiredTrait:(id)requiredTrait result:(id)result
 {
-  v23 = a4;
-  v8 = a5;
-  v9 = [a3 nodes];
-  v10 = [v23 nodes];
-  v11 = [v23 negativeNodes];
-  v12 = [v9 count];
-  v13 = [v11 count];
-  v14 = [v23 useStrictNegativeNodesMatching];
+  requiredTraitCopy = requiredTrait;
+  resultCopy = result;
+  nodes = [trait nodes];
+  nodes2 = [requiredTraitCopy nodes];
+  negativeNodes = [requiredTraitCopy negativeNodes];
+  v12 = [nodes count];
+  v13 = [negativeNodes count];
+  useStrictNegativeNodesMatching = [requiredTraitCopy useStrictNegativeNodesMatching];
   if (v13)
   {
-    if (v14)
+    if (useStrictNegativeNodesMatching)
     {
       v15 = v12;
     }
@@ -89,62 +89,62 @@
       v15 = 1;
     }
 
-    v16 = [v11 collectionByIntersecting:v9];
+    v16 = [negativeNodes collectionByIntersecting:nodes];
     v17 = [v16 count];
     if (v17 && v17 >= v15)
     {
       [(PGMeaningfulEventCriteria *)self isDebug];
       v18.n128_u64[0] = 0;
-      v8[2](v8, v18);
+      resultCopy[2](resultCopy, v18);
 LABEL_11:
 
       goto LABEL_16;
     }
   }
 
-  if ([v10 count])
+  if ([nodes2 count])
   {
-    v16 = [v10 collectionByIntersecting:v9];
+    v16 = [nodes2 collectionByIntersecting:nodes];
     v20 = [v16 count] / v12;
     [(PGMeaningfulEventCriteria *)self isDebug];
     v21.n128_f64[0] = v20;
-    v8[2](v8, v21);
+    resultCopy[2](resultCopy, v21);
     goto LABEL_11;
   }
 
   v19.n128_u64[0] = 1.0;
   if (!v12)
   {
-    v22 = [v23 skipNegativeRequirementForMissingLocation];
+    skipNegativeRequirementForMissingLocation = [requiredTraitCopy skipNegativeRequirementForMissingLocation];
     v19.n128_u64[0] = 0;
-    if (v22)
+    if (skipNegativeRequirementForMissingLocation)
     {
       v19.n128_f64[0] = 1.0;
     }
   }
 
-  v8[2](v8, v19);
+  resultCopy[2](resultCopy, v19);
 LABEL_16:
 }
 
-- (void)_calculateMatchingScoreForPOIROIWithMatchingTrait:(id)a3 requiredTrait:(id)a4 result:(id)a5
+- (void)_calculateMatchingScoreForPOIROIWithMatchingTrait:(id)trait requiredTrait:(id)requiredTrait result:(id)result
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 nodes];
-  v11 = [v8 nodes];
-  v12 = [v8 negativeNodes];
-  v13 = [v11 count];
+  requiredTraitCopy = requiredTrait;
+  resultCopy = result;
+  nodes = [trait nodes];
+  nodes2 = [requiredTraitCopy nodes];
+  negativeNodes = [requiredTraitCopy negativeNodes];
+  v13 = [nodes2 count];
   v14 = self->_momentNode;
-  if ([v12 count])
+  if ([negativeNodes count])
   {
-    v15 = [v12 collectionByIntersecting:v10];
+    v15 = [negativeNodes collectionByIntersecting:nodes];
     v16 = [v15 count];
     if (v16)
     {
       if (![(PGMeaningfulEventCriteria *)self isDebug])
       {
-        v9[2](v9, 0.0);
+        resultCopy[2](resultCopy, 0.0);
 
         goto LABEL_10;
       }
@@ -164,17 +164,17 @@ LABEL_16:
   v23 = &unk_278882088;
   v28 = v13;
   v29 = v16;
-  v24 = self;
-  v25 = v8;
+  selfCopy = self;
+  v25 = requiredTraitCopy;
   v26 = v14;
-  v17 = v10;
+  v17 = nodes;
   v27 = v17;
   v18 = _Block_copy(&v20);
-  v19 = [v11 collectionByIntersecting:{v17, v20, v21, v22, v23, v24}];
+  v19 = [nodes2 collectionByIntersecting:{v17, v20, v21, v22, v23, selfCopy}];
   v18[2](v18, v19);
-  if (v9)
+  if (resultCopy)
   {
-    (v9[2])(v9);
+    (resultCopy[2])(resultCopy);
   }
 
 LABEL_10:
@@ -235,56 +235,56 @@ double __108__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForPOIROI
   return v5;
 }
 
-- (void)_calculateMatchingScoreForScenesWithRequiredCriteria:(id)a3 result:(id)a4
+- (void)_calculateMatchingScoreForScenesWithRequiredCriteria:(id)criteria result:(id)result
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGMeaningfulEventCriteria *)self scenesTrait];
-  v42 = v6;
-  v9 = [v6 scenesTrait];
-  v41 = v8;
-  v10 = [v8 nodes];
-  v11 = [v9 nodes];
-  v12 = [v9 negativeNodes];
-  v40 = v11;
-  v13 = [v11 count];
-  v14 = [v9 accumulateHighConfidenceAssetCounts];
+  criteriaCopy = criteria;
+  resultCopy = result;
+  scenesTrait = [(PGMeaningfulEventCriteria *)self scenesTrait];
+  v42 = criteriaCopy;
+  scenesTrait2 = [criteriaCopy scenesTrait];
+  v41 = scenesTrait;
+  nodes = [scenesTrait nodes];
+  nodes2 = [scenesTrait2 nodes];
+  negativeNodes = [scenesTrait2 negativeNodes];
+  v40 = nodes2;
+  v13 = [nodes2 count];
+  accumulateHighConfidenceAssetCounts = [scenesTrait2 accumulateHighConfidenceAssetCounts];
   v15 = self->_momentNode;
-  v16 = [(PGMeaningfulEventCriteria *)self isDebug];
+  isDebug = [(PGMeaningfulEventCriteria *)self isDebug];
   v43 = v15;
-  v44 = v10;
-  v39 = v12;
-  if ([v12 count])
+  v44 = nodes;
+  v39 = negativeNodes;
+  if ([negativeNodes count])
   {
-    v17 = [v12 collectionByIntersecting:v10];
-    v18 = [(PGGraphMomentNode *)v15 collection];
-    v19 = +[PGGraphSceneEdge filterWithMinimumNumberOfHighConfidenceAssets:](PGGraphSceneEdge, "filterWithMinimumNumberOfHighConfidenceAssets:", [v9 minimumNumberOfNegativeHighConfidenceAssets]);
-    v20 = [(MAEdgeCollection *)PGGraphSceneEdgeCollection edgesFromNodes:v18 toNodes:v17 matchingFilter:v19];
+    v17 = [negativeNodes collectionByIntersecting:nodes];
+    collection = [(PGGraphMomentNode *)v15 collection];
+    v19 = +[PGGraphSceneEdge filterWithMinimumNumberOfHighConfidenceAssets:](PGGraphSceneEdge, "filterWithMinimumNumberOfHighConfidenceAssets:", [scenesTrait2 minimumNumberOfNegativeHighConfidenceAssets]);
+    v20 = [(MAEdgeCollection *)PGGraphSceneEdgeCollection edgesFromNodes:collection toNodes:v17 matchingFilter:v19];
 
     if ([v20 count])
     {
       v21 = v42;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
-        v36 = [(PGMeaningfulEventMatchingCriteria *)self momentNode];
-        v37 = [v36 name];
-        v38 = [v42 identifier];
+        momentNode = [(PGMeaningfulEventMatchingCriteria *)self momentNode];
+        name = [momentNode name];
+        identifier = [v42 identifier];
         *buf = 138478083;
-        v53 = v37;
+        v53 = name;
         v54 = 2114;
-        v55 = v38;
+        v55 = identifier;
         _os_log_debug_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "[MeaningInference] Moment %{private}@ matched negative scenes for identifier %{public}@", buf, 0x16u);
       }
 
-      v7[2](v7, 0.0, 0.0);
+      resultCopy[2](resultCopy, 0.0, 0.0);
 
       v22 = v40;
       goto LABEL_12;
     }
 
     v15 = v43;
-    v10 = v44;
+    nodes = v44;
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -292,19 +292,19 @@ double __108__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForPOIROI
   aBlock[2] = __97__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForScenesWithRequiredCriteria_result___block_invoke;
   aBlock[3] = &unk_278882040;
   v49 = v13;
-  v50 = v16;
+  v50 = isDebug;
   v23 = v15;
   v46 = v23;
-  v47 = v9;
-  v51 = v14;
-  v24 = v10;
+  v47 = scenesTrait2;
+  v51 = accumulateHighConfidenceAssetCounts;
+  v24 = nodes;
   v48 = v24;
   v25 = _Block_copy(aBlock);
   v22 = v40;
   v26 = [v40 collectionByIntersecting:v24];
   cache = self->_cache;
-  v28 = [(PGGraphMomentNode *)v23 collection];
-  v29 = [(PGMeaningfulEventProcessorCache *)cache reliableSceneNodesForMomentNodes:v28];
+  collection2 = [(PGGraphMomentNode *)v23 collection];
+  v29 = [(PGMeaningfulEventProcessorCache *)cache reliableSceneNodesForMomentNodes:collection2];
   v30 = [v26 collectionByIntersecting:v29];
 
   v31 = v25[2](v25, v26);
@@ -316,9 +316,9 @@ double __108__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForPOIROI
     v34.n128_u64[0] = v25[2](v25, v30);
   }
 
-  if (v7)
+  if (resultCopy)
   {
-    (v7[2])(v7, v31, v34);
+    (resultCopy[2])(resultCopy, v31, v34);
   }
 
   v17 = v46;
@@ -451,17 +451,17 @@ void __97__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForScenesWit
   }
 }
 
-- (double)matchingScoreWithCriteria:(id)a3 failed:(BOOL *)a4 isReliable:(BOOL *)a5
+- (double)matchingScoreWithCriteria:(id)criteria failed:(BOOL *)failed isReliable:(BOOL *)reliable
 {
-  v7 = a3;
-  v8 = [(PGMeaningfulEventCriteria *)self isDebug];
-  v9 = 1;
-  if (!v8)
+  criteriaCopy = criteria;
+  isDebug = [(PGMeaningfulEventCriteria *)self isDebug];
+  isDebug2 = 1;
+  if (!isDebug)
   {
-    v9 = [v7 isDebug];
+    isDebug2 = [criteriaCopy isDebug];
   }
 
-  [(PGMeaningfulEventCriteria *)self setDebug:v9];
+  [(PGMeaningfulEventCriteria *)self setDebug:isDebug2];
   v264 = 0;
   v265 = &v264;
   v266 = 0x2020000000;
@@ -482,75 +482,75 @@ void __97__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForScenesWit
   v249 = &v248;
   v250 = 0x2020000000;
   v251 = 1;
-  v10 = [v7 numberOfPeopleTrait];
-  v218 = [v10 isMatchingRequired];
+  numberOfPeopleTrait = [criteriaCopy numberOfPeopleTrait];
+  isMatchingRequired = [numberOfPeopleTrait isMatchingRequired];
 
-  v11 = [v7 peopleTrait];
-  v217 = [v11 isMatchingRequired];
+  peopleTrait = [criteriaCopy peopleTrait];
+  isMatchingRequired2 = [peopleTrait isMatchingRequired];
 
-  v12 = [v7 socialGroupsTrait];
-  v216 = [v12 isMatchingRequired];
+  socialGroupsTrait = [criteriaCopy socialGroupsTrait];
+  isMatchingRequired3 = [socialGroupsTrait isMatchingRequired];
 
-  v13 = [v7 locationsTrait];
-  v215 = [v13 isMatchingRequired];
+  locationsTrait = [criteriaCopy locationsTrait];
+  isMatchingRequired4 = [locationsTrait isMatchingRequired];
 
-  v14 = [v7 datesTrait];
-  v212 = [v14 isMatchingRequired];
+  datesTrait = [criteriaCopy datesTrait];
+  isMatchingRequired5 = [datesTrait isMatchingRequired];
 
-  v15 = [v7 scenesTrait];
-  v206 = [v15 isMatchingRequired];
+  scenesTrait = [criteriaCopy scenesTrait];
+  isMatchingRequired6 = [scenesTrait isMatchingRequired];
 
-  v16 = [v7 roisTrait];
-  v210 = [v16 isMatchingRequired];
+  roisTrait = [criteriaCopy roisTrait];
+  isMatchingRequired7 = [roisTrait isMatchingRequired];
 
-  v17 = [v7 poisTrait];
-  v209 = [v17 isMatchingRequired];
+  poisTrait = [criteriaCopy poisTrait];
+  isMatchingRequired8 = [poisTrait isMatchingRequired];
 
-  v18 = [v7 minimumDurationTrait];
-  v214 = [v18 isMatchingRequired];
+  minimumDurationTrait = [criteriaCopy minimumDurationTrait];
+  isMatchingRequired9 = [minimumDurationTrait isMatchingRequired];
 
-  v19 = [v7 maximumDurationTrait];
-  v211 = [v19 isMatchingRequired];
+  maximumDurationTrait = [criteriaCopy maximumDurationTrait];
+  isMatchingRequired10 = [maximumDurationTrait isMatchingRequired];
 
-  v20 = [v7 significantPartsOfDayTrait];
-  v205 = [v20 isMatchingRequired];
+  significantPartsOfDayTrait = [criteriaCopy significantPartsOfDayTrait];
+  isMatchingRequired11 = [significantPartsOfDayTrait isMatchingRequired];
 
-  v21 = [v7 allPartsOfDayTrait];
-  v204 = [v21 isMatchingRequired];
+  allPartsOfDayTrait = [criteriaCopy allPartsOfDayTrait];
+  isMatchingRequired12 = [allPartsOfDayTrait isMatchingRequired];
 
-  v22 = [v7 locationMobilityTrait];
-  v213 = [v22 isMatchingRequired];
+  locationMobilityTrait = [criteriaCopy locationMobilityTrait];
+  isMatchingRequired13 = [locationMobilityTrait isMatchingRequired];
 
-  v23 = [v7 publicEventCategoriesTrait];
-  v207 = [v23 isMatchingRequired];
+  publicEventCategoriesTrait = [criteriaCopy publicEventCategoriesTrait];
+  isMatchingRequired14 = [publicEventCategoriesTrait isMatchingRequired];
 
-  v24 = [v7 numberOfPeopleTrait];
-  v25 = [v24 isActive];
+  numberOfPeopleTrait2 = [criteriaCopy numberOfPeopleTrait];
+  isActive = [numberOfPeopleTrait2 isActive];
 
-  if (v25)
+  if (isActive)
   {
-    v26 = [v7 numberOfPeopleTrait];
-    [v26 value];
+    numberOfPeopleTrait3 = [criteriaCopy numberOfPeopleTrait];
+    [numberOfPeopleTrait3 value];
     v28 = v27;
 
-    v29 = [(PGMeaningfulEventCriteria *)self numberOfPeopleTrait];
-    [v29 value];
+    numberOfPeopleTrait4 = [(PGMeaningfulEventCriteria *)self numberOfPeopleTrait];
+    [numberOfPeopleTrait4 value];
     v31 = v30;
 
     v32 = 1.0;
-    if (v218)
+    if (isMatchingRequired)
     {
-      v33 = [v7 numberOfPeopleTrait];
-      [v33 minimumScore];
+      numberOfPeopleTrait5 = [criteriaCopy numberOfPeopleTrait];
+      [numberOfPeopleTrait5 minimumScore];
       v32 = v34;
     }
 
-    [v7 minimumScore];
+    [criteriaCopy minimumScore];
     v35 = v31 / v28;
     v200 = fmin(v35 / v32 * v36, 1.0);
     if (v35 < v32)
     {
-      v37 = v218;
+      v37 = isMatchingRequired;
     }
 
     else
@@ -558,8 +558,8 @@ void __97__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForScenesWit
       v37 = 0;
     }
 
-    v38 = v218;
-    if (v218)
+    v38 = isMatchingRequired;
+    if (isMatchingRequired)
     {
       v39 = v200 + 0.0;
     }
@@ -578,15 +578,15 @@ void __97__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForScenesWit
     v39 = 0.0;
   }
 
-  v40 = [v7 locationMobilityTrait];
+  locationMobilityTrait2 = [criteriaCopy locationMobilityTrait];
   v41 = 0.0;
-  if ([v40 isActive])
+  if ([locationMobilityTrait2 isActive])
   {
     if (v37)
     {
-      v42 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug3 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v42)
+      if (!isDebug3)
       {
         v37 = 1;
         goto LABEL_27;
@@ -597,13 +597,13 @@ void __97__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForScenesWit
     {
     }
 
-    v40 = [v7 locationMobilityTrait];
-    v43 = [v40 value];
-    v44 = [(PGMeaningfulEventCriteria *)self locationMobilityTrait];
-    v45 = [v44 value];
+    locationMobilityTrait2 = [criteriaCopy locationMobilityTrait];
+    value = [locationMobilityTrait2 value];
+    locationMobilityTrait3 = [(PGMeaningfulEventCriteria *)self locationMobilityTrait];
+    value2 = [locationMobilityTrait3 value];
 
     v46 = 1.0;
-    if (v43 == v45)
+    if (value == value2)
     {
       v47 = 1.0;
     }
@@ -613,15 +613,15 @@ void __97__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForScenesWit
       v47 = 0.0;
     }
 
-    if (v213)
+    if (isMatchingRequired13)
     {
-      [v40 minimumScore];
+      [locationMobilityTrait2 minimumScore];
       v46 = v48;
     }
 
-    [v7 minimumScore];
+    [criteriaCopy minimumScore];
     v41 = fmin(v47 / v46 * v49, 1.0);
-    if (v213)
+    if (isMatchingRequired13)
     {
       v39 = v39 + v41;
       ++v38;
@@ -633,9 +633,9 @@ void __97__PGMeaningfulEventMatchingCriteria__calculateMatchingScoreForScenesWit
   }
 
 LABEL_27:
-  v50 = [v7 significantPartsOfDayTrait];
+  significantPartsOfDayTrait2 = [criteriaCopy significantPartsOfDayTrait];
   v203 = 0.0;
-  if (![v50 isActive])
+  if (![significantPartsOfDayTrait2 isActive])
   {
 LABEL_35:
 
@@ -644,9 +644,9 @@ LABEL_35:
 
   if (v37)
   {
-    v51 = [(PGMeaningfulEventCriteria *)self isDebug];
+    isDebug4 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-    if (!v51)
+    if (!isDebug4)
     {
       v37 = 1;
       v203 = 0.0;
@@ -658,17 +658,17 @@ LABEL_35:
   {
   }
 
-  v52 = [(PGMeaningfulEventCriteria *)self significantPartsOfDayTrait];
-  v53 = [v7 significantPartsOfDayTrait];
-  [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForPartOfDayWithMatchingTrait:v52 requiredTrait:v53 requiresStrictMatching:0];
+  significantPartsOfDayTrait3 = [(PGMeaningfulEventCriteria *)self significantPartsOfDayTrait];
+  significantPartsOfDayTrait4 = [criteriaCopy significantPartsOfDayTrait];
+  [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForPartOfDayWithMatchingTrait:significantPartsOfDayTrait3 requiredTrait:significantPartsOfDayTrait4 requiresStrictMatching:0];
   v55 = v54;
 
-  [v7 minimumScore];
+  [criteriaCopy minimumScore];
   v203 = fmin(v55 * v56, 1.0);
-  if (v205)
+  if (isMatchingRequired11)
   {
-    v50 = [v7 significantPartsOfDayTrait];
-    [v50 minimumScore];
+    significantPartsOfDayTrait2 = [criteriaCopy significantPartsOfDayTrait];
+    [significantPartsOfDayTrait2 minimumScore];
     v39 = v39 + v203;
     ++v38;
     if (v55 < v57)
@@ -680,9 +680,9 @@ LABEL_35:
   }
 
 LABEL_36:
-  v58 = [v7 allPartsOfDayTrait];
+  allPartsOfDayTrait2 = [criteriaCopy allPartsOfDayTrait];
   v202 = 0.0;
-  if (![v58 isActive])
+  if (![allPartsOfDayTrait2 isActive])
   {
 LABEL_44:
 
@@ -691,9 +691,9 @@ LABEL_44:
 
   if (v37)
   {
-    v59 = [(PGMeaningfulEventCriteria *)self isDebug];
+    isDebug5 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-    if (!v59)
+    if (!isDebug5)
     {
       v37 = 1;
       v202 = 0.0;
@@ -705,17 +705,17 @@ LABEL_44:
   {
   }
 
-  v60 = [(PGMeaningfulEventCriteria *)self allPartsOfDayTrait];
-  v61 = [v7 allPartsOfDayTrait];
-  [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForPartOfDayWithMatchingTrait:v60 requiredTrait:v61 requiresStrictMatching:0];
+  allPartsOfDayTrait3 = [(PGMeaningfulEventCriteria *)self allPartsOfDayTrait];
+  allPartsOfDayTrait4 = [criteriaCopy allPartsOfDayTrait];
+  [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForPartOfDayWithMatchingTrait:allPartsOfDayTrait3 requiredTrait:allPartsOfDayTrait4 requiresStrictMatching:0];
   v63 = v62;
 
-  [v7 minimumScore];
+  [criteriaCopy minimumScore];
   v202 = fmin(v63 * v64, 1.0);
-  if (v204)
+  if (isMatchingRequired12)
   {
-    v58 = [v7 allPartsOfDayTrait];
-    [v58 minimumScore];
+    allPartsOfDayTrait2 = [criteriaCopy allPartsOfDayTrait];
+    [allPartsOfDayTrait2 minimumScore];
     v39 = v39 + v202;
     ++v38;
     if (v63 < v65)
@@ -727,8 +727,8 @@ LABEL_44:
   }
 
 LABEL_45:
-  v66 = [v7 minimumDurationTrait];
-  if (![v66 isActive])
+  minimumDurationTrait2 = [criteriaCopy minimumDurationTrait];
+  if (![minimumDurationTrait2 isActive])
   {
 
     goto LABEL_50;
@@ -736,9 +736,9 @@ LABEL_45:
 
   if (v37)
   {
-    v67 = [(PGMeaningfulEventCriteria *)self isDebug];
+    isDebug6 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-    if (!v67)
+    if (!isDebug6)
     {
       v37 = 1;
 LABEL_50:
@@ -751,26 +751,26 @@ LABEL_50:
   {
   }
 
-  v68 = [v7 minimumDurationTrait];
-  [v68 value];
+  minimumDurationTrait3 = [criteriaCopy minimumDurationTrait];
+  [minimumDurationTrait3 value];
   v70 = v69;
 
-  v71 = [(PGMeaningfulEventCriteria *)self minimumDurationTrait];
-  [v71 value];
+  minimumDurationTrait4 = [(PGMeaningfulEventCriteria *)self minimumDurationTrait];
+  [minimumDurationTrait4 value];
   v73 = v72;
 
   v74 = 1.0;
-  if (v214)
+  if (isMatchingRequired9)
   {
-    v75 = [v7 minimumDurationTrait];
-    [v75 minimumScore];
+    minimumDurationTrait5 = [criteriaCopy minimumDurationTrait];
+    [minimumDurationTrait5 minimumScore];
     v74 = v76;
   }
 
-  [v7 minimumScore];
+  [criteriaCopy minimumScore];
   v78 = fmin(v73 / v70 / v74 * v77, 1.0);
   v199 = v78;
-  if (v214)
+  if (isMatchingRequired9)
   {
     v39 = v39 + v78;
     ++v38;
@@ -781,8 +781,8 @@ LABEL_50:
   }
 
 LABEL_57:
-  v79 = [v7 maximumDurationTrait];
-  if (![v79 isActive])
+  maximumDurationTrait2 = [criteriaCopy maximumDurationTrait];
+  if (![maximumDurationTrait2 isActive])
   {
 
     goto LABEL_62;
@@ -790,13 +790,13 @@ LABEL_57:
 
   if (v37)
   {
-    v80 = [(PGMeaningfulEventCriteria *)self isDebug];
+    isDebug7 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-    if (!v80)
+    if (!isDebug7)
     {
       v37 = 1;
 LABEL_62:
-      [v7 peopleTrait];
+      [criteriaCopy peopleTrait];
       goto LABEL_70;
     }
   }
@@ -805,26 +805,26 @@ LABEL_62:
   {
   }
 
-  v81 = [v7 maximumDurationTrait];
-  [v81 value];
+  maximumDurationTrait3 = [criteriaCopy maximumDurationTrait];
+  [maximumDurationTrait3 value];
   v83 = v82;
 
-  v84 = [(PGMeaningfulEventCriteria *)self maximumDurationTrait];
-  [v84 value];
+  maximumDurationTrait4 = [(PGMeaningfulEventCriteria *)self maximumDurationTrait];
+  [maximumDurationTrait4 value];
   v86 = v85;
 
   v87 = 1.0;
-  if (v211)
+  if (isMatchingRequired10)
   {
-    v88 = [v7 maximumDurationTrait];
-    [v88 minimumScore];
+    maximumDurationTrait5 = [criteriaCopy maximumDurationTrait];
+    [maximumDurationTrait5 minimumScore];
     v87 = v89;
   }
 
-  [v7 minimumScore];
+  [criteriaCopy minimumScore];
   v90 = 1.0 - v86 / v83;
   v92 = fmin(v90 / v87 * v91, 1.0);
-  if (v211)
+  if (isMatchingRequired10)
   {
     v39 = v39 + v92;
     ++v38;
@@ -834,17 +834,17 @@ LABEL_62:
     }
   }
 
-  [v7 peopleTrait];
-  v93 = LABEL_70:;
+  [criteriaCopy peopleTrait];
+  nodes = LABEL_70:;
   v94 = 0.0;
-  v208 = a5;
-  if ([v93 isActive])
+  reliableCopy = reliable;
+  if ([nodes isActive])
   {
     if (v37)
     {
-      v95 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug8 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v95)
+      if (!isDebug8)
       {
         v37 = 1;
         goto LABEL_82;
@@ -855,27 +855,27 @@ LABEL_62:
     {
     }
 
-    v96 = [v7 peopleTrait];
-    v93 = [v96 nodes];
+    peopleTrait2 = [criteriaCopy peopleTrait];
+    nodes = [peopleTrait2 nodes];
 
-    v97 = [(PGMeaningfulEventCriteria *)self peopleTrait];
-    v98 = [v97 nodes];
+    peopleTrait3 = [(PGMeaningfulEventCriteria *)self peopleTrait];
+    nodes2 = [peopleTrait3 nodes];
 
-    v99 = [v93 collectionByIntersecting:v98];
+    v99 = [nodes collectionByIntersecting:nodes2];
     v100 = [v99 count];
-    v101 = [v93 count];
+    v101 = [nodes count];
     v102 = 1.0;
-    if (v217)
+    if (isMatchingRequired2)
     {
-      v103 = [v7 peopleTrait];
-      [v103 minimumScore];
+      peopleTrait4 = [criteriaCopy peopleTrait];
+      [peopleTrait4 minimumScore];
       v102 = v104;
     }
 
-    [v7 minimumScore];
+    [criteriaCopy minimumScore];
     v105 = v100 / v101;
     v94 = fmin(v105 / v102 * v106, 1.0);
-    if (v217)
+    if (isMatchingRequired2)
     {
       v39 = v39 + v94;
       ++v38;
@@ -887,19 +887,19 @@ LABEL_62:
 
     [(PGMeaningfulEventCriteria *)self isDebug];
 
-    a5 = v208;
+    reliable = reliableCopy;
   }
 
 LABEL_82:
-  v107 = [v7 socialGroupsTrait];
+  socialGroupsTrait2 = [criteriaCopy socialGroupsTrait];
   v108 = 0.0;
-  if ([v107 isActive])
+  if ([socialGroupsTrait2 isActive])
   {
     if (v37)
     {
-      v109 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug9 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v109)
+      if (!isDebug9)
       {
         v37 = 1;
         goto LABEL_94;
@@ -910,27 +910,27 @@ LABEL_82:
     {
     }
 
-    v110 = [v7 socialGroupsTrait];
-    v107 = [v110 nodes];
+    socialGroupsTrait3 = [criteriaCopy socialGroupsTrait];
+    socialGroupsTrait2 = [socialGroupsTrait3 nodes];
 
-    v111 = [(PGMeaningfulEventCriteria *)self socialGroupsTrait];
-    v112 = [v111 nodes];
+    socialGroupsTrait4 = [(PGMeaningfulEventCriteria *)self socialGroupsTrait];
+    nodes3 = [socialGroupsTrait4 nodes];
 
-    v113 = [v107 collectionByIntersecting:v112];
+    v113 = [socialGroupsTrait2 collectionByIntersecting:nodes3];
     v114 = [v113 count];
-    v115 = [v107 count];
+    v115 = [socialGroupsTrait2 count];
     v116 = 1.0;
-    if (v216)
+    if (isMatchingRequired3)
     {
-      v117 = [v7 socialGroupsTrait];
-      [v117 minimumScore];
+      socialGroupsTrait5 = [criteriaCopy socialGroupsTrait];
+      [socialGroupsTrait5 minimumScore];
       v116 = v118;
     }
 
-    [v7 minimumScore];
+    [criteriaCopy minimumScore];
     v119 = v114 / v115;
     v108 = fmin(v119 / v116 * v120, 1.0);
-    if (v216)
+    if (isMatchingRequired3)
     {
       v39 = v39 + v108;
       ++v38;
@@ -942,18 +942,18 @@ LABEL_82:
 
     [(PGMeaningfulEventCriteria *)self isDebug];
 
-    a5 = v208;
+    reliable = reliableCopy;
   }
 
 LABEL_94:
-  v121 = [v7 locationsTrait];
-  if ([v121 isActive])
+  locationsTrait2 = [criteriaCopy locationsTrait];
+  if ([locationsTrait2 isActive])
   {
     if (v37)
     {
-      v122 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug10 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v122)
+      if (!isDebug10)
       {
         v37 = 1;
         goto LABEL_104;
@@ -964,28 +964,28 @@ LABEL_94:
     {
     }
 
-    v123 = [v7 locationsTrait];
-    [v123 minimumScore];
+    locationsTrait3 = [criteriaCopy locationsTrait];
+    [locationsTrait3 minimumScore];
     v125 = v124;
 
     v244 = 0;
     v245 = &v244;
     v246 = 0x2020000000;
     v247 = 0;
-    v126 = [(PGMeaningfulEventCriteria *)self locationsTrait];
-    v127 = [v7 locationsTrait];
+    locationsTrait4 = [(PGMeaningfulEventCriteria *)self locationsTrait];
+    locationsTrait5 = [criteriaCopy locationsTrait];
     v238[0] = MEMORY[0x277D85DD0];
     v238[1] = 3221225472;
     v238[2] = __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_isReliable___block_invoke;
     v238[3] = &unk_278881FA8;
-    v243 = v215;
+    v243 = isMatchingRequired4;
     v242 = v125;
     v240 = &v244;
     v241 = &v264;
-    v239 = v7;
-    [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForLocationsWithMatchingTrait:v126 requiredTrait:v127 result:v238];
+    v239 = criteriaCopy;
+    [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForLocationsWithMatchingTrait:locationsTrait4 requiredTrait:locationsTrait5 result:v238];
 
-    if (v215)
+    if (isMatchingRequired4)
     {
       v39 = v39 + v265[3];
       ++v38;
@@ -1003,15 +1003,15 @@ LABEL_94:
   }
 
 LABEL_104:
-  v128 = [v7 datesTrait];
+  datesTrait2 = [criteriaCopy datesTrait];
   v129 = 0.0;
-  if ([v128 isActive])
+  if ([datesTrait2 isActive])
   {
     if (v37)
     {
-      v130 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug11 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v130)
+      if (!isDebug11)
       {
         v37 = 1;
         goto LABEL_119;
@@ -1022,13 +1022,13 @@ LABEL_104:
     {
     }
 
-    v131 = [v7 datesTrait];
-    v128 = [v131 nodes];
+    datesTrait3 = [criteriaCopy datesTrait];
+    datesTrait2 = [datesTrait3 nodes];
 
-    v132 = [(PGMeaningfulEventCriteria *)self datesTrait];
-    v133 = [v132 nodes];
+    datesTrait4 = [(PGMeaningfulEventCriteria *)self datesTrait];
+    nodes4 = [datesTrait4 nodes];
 
-    v134 = [v128 collectionByIntersecting:v133];
+    v134 = [datesTrait2 collectionByIntersecting:nodes4];
     v135 = 1.0;
     if ([v134 count])
     {
@@ -1040,16 +1040,16 @@ LABEL_104:
       v136 = 0.0;
     }
 
-    if (v212)
+    if (isMatchingRequired5)
     {
-      v137 = [v7 datesTrait];
-      [v137 minimumScore];
+      datesTrait5 = [criteriaCopy datesTrait];
+      [datesTrait5 minimumScore];
       v135 = v138;
     }
 
-    [v7 minimumScore];
+    [criteriaCopy minimumScore];
     v129 = fmin(v136 / v135 * v139, 1.0);
-    if (v212)
+    if (isMatchingRequired5)
     {
       v39 = v39 + v129;
       ++v38;
@@ -1059,18 +1059,18 @@ LABEL_104:
       }
     }
 
-    a5 = v208;
+    reliable = reliableCopy;
   }
 
 LABEL_119:
-  v140 = [v7 scenesTrait];
-  if ([v140 isActive])
+  scenesTrait2 = [criteriaCopy scenesTrait];
+  if ([scenesTrait2 isActive])
   {
     if (v37)
     {
-      v141 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug12 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v141)
+      if (!isDebug12)
       {
         v37 = 1;
         goto LABEL_129;
@@ -1081,8 +1081,8 @@ LABEL_119:
     {
     }
 
-    v142 = [v7 scenesTrait];
-    [v142 minimumScore];
+    scenesTrait3 = [criteriaCopy scenesTrait];
+    [scenesTrait3 minimumScore];
     v144 = v143;
 
     v244 = 0;
@@ -1096,11 +1096,11 @@ LABEL_119:
     v236 = v144;
     v233 = &v248;
     v234 = &v244;
-    v237 = v206;
+    v237 = isMatchingRequired6;
     v235 = &v260;
-    v232 = v7;
+    v232 = criteriaCopy;
     [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForScenesWithRequiredCriteria:v232 result:v231];
-    if (v206)
+    if (isMatchingRequired6)
     {
       v39 = v39 + v261[3];
       ++v38;
@@ -1118,14 +1118,14 @@ LABEL_119:
   }
 
 LABEL_129:
-  v145 = [v7 roisTrait];
-  if ([v145 isActive])
+  roisTrait2 = [criteriaCopy roisTrait];
+  if ([roisTrait2 isActive])
   {
     if (v37)
     {
-      v146 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug13 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v146)
+      if (!isDebug13)
       {
         v37 = 1;
         goto LABEL_139;
@@ -1136,28 +1136,28 @@ LABEL_129:
     {
     }
 
-    v147 = [v7 roisTrait];
-    [v147 minimumScore];
+    roisTrait3 = [criteriaCopy roisTrait];
+    [roisTrait3 minimumScore];
     v149 = v148;
 
     v244 = 0;
     v245 = &v244;
     v246 = 0x2020000000;
     v247 = 0;
-    v150 = [(PGMeaningfulEventCriteria *)self roisTrait];
-    v151 = [v7 roisTrait];
+    roisTrait4 = [(PGMeaningfulEventCriteria *)self roisTrait];
+    roisTrait5 = [criteriaCopy roisTrait];
     v225[0] = MEMORY[0x277D85DD0];
     v225[1] = 3221225472;
     v225[2] = __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_isReliable___block_invoke_3;
     v225[3] = &unk_278881FA8;
-    v230 = v210;
+    v230 = isMatchingRequired7;
     v229 = v149;
     v227 = &v244;
     v228 = &v256;
-    v226 = v7;
-    [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForPOIROIWithMatchingTrait:v150 requiredTrait:v151 result:v225];
+    v226 = criteriaCopy;
+    [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForPOIROIWithMatchingTrait:roisTrait4 requiredTrait:roisTrait5 result:v225];
 
-    if (v210)
+    if (isMatchingRequired7)
     {
       v39 = v39 + v257[3];
       ++v38;
@@ -1175,14 +1175,14 @@ LABEL_129:
   }
 
 LABEL_139:
-  v152 = [v7 poisTrait];
-  if ([v152 isActive])
+  poisTrait2 = [criteriaCopy poisTrait];
+  if ([poisTrait2 isActive])
   {
     if (v37)
     {
-      v153 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug14 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v153)
+      if (!isDebug14)
       {
         v37 = 1;
         goto LABEL_149;
@@ -1193,28 +1193,28 @@ LABEL_139:
     {
     }
 
-    v154 = [v7 poisTrait];
-    [v154 minimumScore];
+    poisTrait3 = [criteriaCopy poisTrait];
+    [poisTrait3 minimumScore];
     v156 = v155;
 
     v244 = 0;
     v245 = &v244;
     v246 = 0x2020000000;
     v247 = 0;
-    v157 = [(PGMeaningfulEventCriteria *)self poisTrait];
-    v158 = [v7 poisTrait];
+    poisTrait4 = [(PGMeaningfulEventCriteria *)self poisTrait];
+    poisTrait5 = [criteriaCopy poisTrait];
     v219[0] = MEMORY[0x277D85DD0];
     v219[1] = 3221225472;
     v219[2] = __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_isReliable___block_invoke_4;
     v219[3] = &unk_278881FA8;
-    v224 = v209;
+    v224 = isMatchingRequired8;
     v223 = v156;
     v221 = &v244;
     v222 = &v252;
-    v220 = v7;
-    [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForPOIROIWithMatchingTrait:v157 requiredTrait:v158 result:v219];
+    v220 = criteriaCopy;
+    [(PGMeaningfulEventMatchingCriteria *)self _calculateMatchingScoreForPOIROIWithMatchingTrait:poisTrait4 requiredTrait:poisTrait5 result:v219];
 
-    if (v209)
+    if (isMatchingRequired8)
     {
       v39 = v39 + v253[3];
       ++v38;
@@ -1232,15 +1232,15 @@ LABEL_139:
   }
 
 LABEL_149:
-  v159 = [v7 publicEventCategoriesTrait];
+  publicEventCategoriesTrait2 = [criteriaCopy publicEventCategoriesTrait];
   v160 = 0.0;
-  if ([v159 isActive])
+  if ([publicEventCategoriesTrait2 isActive])
   {
     if (v37)
     {
-      v161 = [(PGMeaningfulEventCriteria *)self isDebug];
+      isDebug15 = [(PGMeaningfulEventCriteria *)self isDebug];
 
-      if (!v161)
+      if (!isDebug15)
       {
         v37 = 1;
         if (!v38)
@@ -1269,27 +1269,27 @@ LABEL_164:
     {
     }
 
-    v163 = [v7 publicEventCategoriesTrait];
-    v159 = [v163 nodes];
+    publicEventCategoriesTrait3 = [criteriaCopy publicEventCategoriesTrait];
+    publicEventCategoriesTrait2 = [publicEventCategoriesTrait3 nodes];
 
-    v164 = [(PGMeaningfulEventCriteria *)self publicEventCategoriesTrait];
-    v165 = [v164 nodes];
+    publicEventCategoriesTrait4 = [(PGMeaningfulEventCriteria *)self publicEventCategoriesTrait];
+    nodes5 = [publicEventCategoriesTrait4 nodes];
 
-    v166 = [v159 collectionByIntersecting:v165];
+    v166 = [publicEventCategoriesTrait2 collectionByIntersecting:nodes5];
     v167 = [v166 count];
-    v168 = [v159 count];
+    v168 = [publicEventCategoriesTrait2 count];
     v169 = 1.0;
-    if (v207)
+    if (isMatchingRequired14)
     {
-      v170 = [v7 publicEventCategoriesTrait];
-      [v170 minimumScore];
+      publicEventCategoriesTrait5 = [criteriaCopy publicEventCategoriesTrait];
+      [publicEventCategoriesTrait5 minimumScore];
       v169 = v171;
     }
 
-    [v7 minimumScore];
+    [criteriaCopy minimumScore];
     v172 = v167 / v168;
     v160 = fmin(v172 / v169 * v173, 1.0);
-    if (v207)
+    if (isMatchingRequired14)
     {
       v39 = v39 + v160;
       ++v38;
@@ -1299,7 +1299,7 @@ LABEL_164:
       }
     }
 
-    a5 = v208;
+    reliable = reliableCopy;
   }
 
   if (v38)
@@ -1315,8 +1315,8 @@ LABEL_153:
   }
 
 LABEL_165:
-  v174 = [v7 numberOfPeopleTrait];
-  if (v218 & 1 | (([v174 isActive] & 1) == 0))
+  numberOfPeopleTrait6 = [criteriaCopy numberOfPeopleTrait];
+  if (isMatchingRequired & 1 | (([numberOfPeopleTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1331,8 +1331,8 @@ LABEL_165:
     }
   }
 
-  v176 = [v7 peopleTrait];
-  if (v217 & 1 | (([v176 isActive] & 1) == 0))
+  peopleTrait5 = [criteriaCopy peopleTrait];
+  if (isMatchingRequired2 & 1 | (([peopleTrait5 isActive] & 1) == 0))
   {
   }
 
@@ -1346,8 +1346,8 @@ LABEL_165:
     }
   }
 
-  v177 = [v7 socialGroupsTrait];
-  if (v216 & 1 | (([v177 isActive] & 1) == 0))
+  socialGroupsTrait6 = [criteriaCopy socialGroupsTrait];
+  if (isMatchingRequired3 & 1 | (([socialGroupsTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1361,8 +1361,8 @@ LABEL_165:
     }
   }
 
-  v178 = [v7 locationsTrait];
-  if (v215 & 1 | (([v178 isActive] & 1) == 0))
+  locationsTrait6 = [criteriaCopy locationsTrait];
+  if (isMatchingRequired4 & 1 | (([locationsTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1377,8 +1377,8 @@ LABEL_165:
     }
   }
 
-  v180 = [v7 datesTrait];
-  if (v212 & 1 | (([v180 isActive] & 1) == 0))
+  datesTrait6 = [criteriaCopy datesTrait];
+  if (isMatchingRequired5 & 1 | (([datesTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1392,8 +1392,8 @@ LABEL_165:
     }
   }
 
-  v181 = [v7 scenesTrait];
-  if (v206 & 1 | (([v181 isActive] & 1) == 0))
+  scenesTrait4 = [criteriaCopy scenesTrait];
+  if (isMatchingRequired6 & 1 | (([scenesTrait4 isActive] & 1) == 0))
   {
   }
 
@@ -1408,8 +1408,8 @@ LABEL_165:
     }
   }
 
-  v183 = [v7 roisTrait];
-  if (v210 & 1 | (([v183 isActive] & 1) == 0))
+  roisTrait6 = [criteriaCopy roisTrait];
+  if (isMatchingRequired7 & 1 | (([roisTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1424,8 +1424,8 @@ LABEL_165:
     }
   }
 
-  v185 = [v7 poisTrait];
-  if (v209 & 1 | (([v185 isActive] & 1) == 0))
+  poisTrait6 = [criteriaCopy poisTrait];
+  if (isMatchingRequired8 & 1 | (([poisTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1440,8 +1440,8 @@ LABEL_165:
     }
   }
 
-  v187 = [v7 minimumDurationTrait];
-  if (v214 & 1 | (([v187 isActive] & 1) == 0))
+  minimumDurationTrait6 = [criteriaCopy minimumDurationTrait];
+  if (isMatchingRequired9 & 1 | (([minimumDurationTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1456,8 +1456,8 @@ LABEL_165:
     }
   }
 
-  v189 = [v7 maximumDurationTrait];
-  if (v211 & 1 | (([v189 isActive] & 1) == 0))
+  maximumDurationTrait6 = [criteriaCopy maximumDurationTrait];
+  if (isMatchingRequired10 & 1 | (([maximumDurationTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1472,8 +1472,8 @@ LABEL_165:
     }
   }
 
-  v191 = [v7 significantPartsOfDayTrait];
-  if (v205 & 1 | (([v191 isActive] & 1) == 0))
+  significantPartsOfDayTrait5 = [criteriaCopy significantPartsOfDayTrait];
+  if (isMatchingRequired11 & 1 | (([significantPartsOfDayTrait5 isActive] & 1) == 0))
   {
   }
 
@@ -1488,8 +1488,8 @@ LABEL_165:
     }
   }
 
-  v193 = [v7 allPartsOfDayTrait];
-  if (v204 & 1 | (([v193 isActive] & 1) == 0))
+  allPartsOfDayTrait5 = [criteriaCopy allPartsOfDayTrait];
+  if (isMatchingRequired12 & 1 | (([allPartsOfDayTrait5 isActive] & 1) == 0))
   {
   }
 
@@ -1504,8 +1504,8 @@ LABEL_165:
     }
   }
 
-  v195 = [v7 locationMobilityTrait];
-  if (v213 & 1 | (([v195 isActive] & 1) == 0))
+  locationMobilityTrait4 = [criteriaCopy locationMobilityTrait];
+  if (isMatchingRequired13 & 1 | (([locationMobilityTrait4 isActive] & 1) == 0))
   {
   }
 
@@ -1519,8 +1519,8 @@ LABEL_165:
     }
   }
 
-  v196 = [v7 publicEventCategoriesTrait];
-  if (v207 & 1 | (([v196 isActive] & 1) == 0))
+  publicEventCategoriesTrait6 = [criteriaCopy publicEventCategoriesTrait];
+  if (isMatchingRequired14 & 1 | (([publicEventCategoriesTrait6 isActive] & 1) == 0))
   {
   }
 
@@ -1542,14 +1542,14 @@ LABEL_223:
     v39 = v39 / v38;
   }
 
-  if (a4)
+  if (failed)
   {
-    *a4 = v37;
+    *failed = v37;
   }
 
-  if (a5)
+  if (reliable)
   {
-    *a5 = *(v249 + 24);
+    *reliable = *(v249 + 24);
   }
 
   _Block_object_dispose(&v248, 8);
@@ -1631,30 +1631,30 @@ double __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_
   return result;
 }
 
-- (id)matchingResultWithCriteria:(id)a3
+- (id)matchingResultWithCriteria:(id)criteria
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  criteriaCopy = criteria;
   if ([(PGMeaningfulEventCriteria *)self isDebug])
   {
-    v5 = 1;
+    isDebug = 1;
   }
 
   else
   {
-    v5 = [v4 isDebug];
+    isDebug = [criteriaCopy isDebug];
   }
 
-  [(PGMeaningfulEventCriteria *)self setDebug:v5];
+  [(PGMeaningfulEventCriteria *)self setDebug:isDebug];
   v23 = 0;
-  [v4 minimumScore];
+  [criteriaCopy minimumScore];
   v7 = v6;
   interestingForMeaningInference = self->_interestingForMeaningInference;
-  v9 = [v4 mustBeInteresting];
-  v10 = v9;
-  if (interestingForMeaningInference || !v9)
+  mustBeInteresting = [criteriaCopy mustBeInteresting];
+  v10 = mustBeInteresting;
+  if (interestingForMeaningInference || !mustBeInteresting)
   {
-    [(PGMeaningfulEventMatchingCriteria *)self matchingScoreWithCriteria:v4 failed:&v23 + 1 isReliable:&v23];
+    [(PGMeaningfulEventMatchingCriteria *)self matchingScoreWithCriteria:criteriaCopy failed:&v23 + 1 isReliable:&v23];
     v12 = v13;
     if (HIBYTE(v23))
     {
@@ -1675,10 +1675,10 @@ double __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(PGGraphMomentNode *)self->_momentNode name];
+    name = [(PGGraphMomentNode *)self->_momentNode name];
     v19 = @"NO";
     *buf = 138413826;
-    v25 = v18;
+    v25 = name;
     if (v11)
     {
       v20 = @"YES";
@@ -1730,39 +1730,39 @@ double __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_
   }
 
   v14 = [PGMeaningfulEventMatchingResult alloc];
-  v15 = [(PGMeaningfulEventMatchingResult *)v14 initWithIsMatching:v11 score:v23 isReliable:v4 requiredCriteria:v12];
+  v15 = [(PGMeaningfulEventMatchingResult *)v14 initWithIsMatching:v11 score:v23 isReliable:criteriaCopy requiredCriteria:v12];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (PGMeaningfulEventMatchingCriteria)initWithMoment:(id)a3 cache:(id)a4 serviceManager:(id)a5
+- (PGMeaningfulEventMatchingCriteria)initWithMoment:(id)moment cache:(id)cache serviceManager:(id)manager
 {
   v95 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v80 = a5;
-  v11 = [v9 graph];
+  momentCopy = moment;
+  cacheCopy = cache;
+  managerCopy = manager;
+  graph = [momentCopy graph];
   v92.receiver = self;
   v92.super_class = PGMeaningfulEventMatchingCriteria;
-  v12 = [(PGMeaningfulEventCriteria *)&v92 initWithGraph:v11];
+  v12 = [(PGMeaningfulEventCriteria *)&v92 initWithGraph:graph];
 
   if (v12)
   {
-    v70 = a3;
+    momentCopy2 = moment;
     v71 = v12;
-    objc_storeStrong(&v12->_cache, a4);
-    v13 = [v9 collection];
-    v14 = [v9 universalStartDate];
-    v76 = v9;
-    v15 = [v9 universalEndDate];
-    v79 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v14 endDate:v15];
-    v16 = v14;
-    v17 = v15;
-    v72 = v10;
-    v75 = v13;
-    [v10 preciseAddressNodesForMomentNodes:v13];
+    objc_storeStrong(&v12->_cache, cache);
+    collection = [momentCopy collection];
+    universalStartDate = [momentCopy universalStartDate];
+    v76 = momentCopy;
+    universalEndDate = [momentCopy universalEndDate];
+    v79 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:universalStartDate endDate:universalEndDate];
+    v16 = universalStartDate;
+    v17 = universalEndDate;
+    v72 = cacheCopy;
+    v75 = collection;
+    [cacheCopy preciseAddressNodesForMomentNodes:collection];
     v88 = 0u;
     v89 = 0u;
     v90 = 0u;
@@ -1787,7 +1787,7 @@ double __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_
           }
 
           v82 = v19;
-          v20 = [v80 fetchLocationOfInterestVisitsAtLocation:*(*(&v88 + 1) + 8 * v19) inDateInterval:v79];
+          v20 = [managerCopy fetchLocationOfInterestVisitsAtLocation:*(*(&v88 + 1) + 8 * v19) inDateInterval:v79];
           v84 = 0u;
           v85 = 0u;
           v86 = 0u;
@@ -1810,12 +1810,12 @@ double __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_
                   objc_enumerationMutation(v83);
                 }
 
-                v27 = [*(*(&v84 + 1) + 8 * v24) visitInterval];
-                v28 = [v27 startDate];
-                v29 = [v27 endDate];
-                v18 = [v26 earlierDate:v28];
+                visitInterval = [*(*(&v84 + 1) + 8 * v24) visitInterval];
+                startDate = [visitInterval startDate];
+                endDate = [visitInterval endDate];
+                v18 = [v26 earlierDate:startDate];
 
-                v17 = [v25 laterDate:v29];
+                v17 = [v25 laterDate:endDate];
 
                 ++v24;
                 v25 = v17;
@@ -1846,7 +1846,7 @@ double __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_
     [(PGMeaningfulEventCriteria *)v71 setNumberOfPeopleTrait:v32];
 
     v33 = [PGMeaningfulEventCollectionTrait alloc];
-    v10 = v72;
+    cacheCopy = v72;
     v34 = [v72 peopleNodesForMomentNodes:v75];
     v35 = [(PGMeaningfulEventCollectionTrait *)v33 initWithNodes:v34];
     [(PGMeaningfulEventCriteria *)v71 setPeopleTrait:v35];
@@ -1894,11 +1894,11 @@ double __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_
     [(PGMeaningfulEventCriteria *)v71 setAllPartsOfDayTrait:v57];
 
     v58 = [v72 mobilityNodesForMomentNodes:v75];
-    v59 = [v58 locationMobilityTypes];
-    v60 = [v59 firstObject];
-    v61 = [v60 unsignedIntegerValue];
+    locationMobilityTypes = [v58 locationMobilityTypes];
+    firstObject = [locationMobilityTypes firstObject];
+    unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-    v62 = [[PGMeaningfulEventLocationMobilityTrait alloc] initWithMobility:v61];
+    v62 = [[PGMeaningfulEventLocationMobilityTrait alloc] initWithMobility:unsignedIntegerValue];
     [(PGMeaningfulEventCriteria *)v71 setLocationMobilityTrait:v62];
 
     v63 = [PGMeaningfulEventCollectionTrait alloc];
@@ -1906,20 +1906,20 @@ double __81__PGMeaningfulEventMatchingCriteria_matchingScoreWithCriteria_failed_
     v65 = [(PGMeaningfulEventCollectionTrait *)v63 initWithNodes:v64];
     [(PGMeaningfulEventCriteria *)v71 setPublicEventCategoriesTrait:v65];
 
-    objc_storeStrong(&v71->_momentNode, v70);
+    objc_storeStrong(&v71->_momentNode, momentCopy2);
     if ([(PGGraphMomentNode *)v71->_momentNode isInteresting])
     {
-      v66 = 1;
+      isSmartInteresting = 1;
     }
 
     else
     {
-      v66 = [(PGGraphMomentNode *)v71->_momentNode isSmartInteresting];
+      isSmartInteresting = [(PGGraphMomentNode *)v71->_momentNode isSmartInteresting];
     }
 
-    v71->_interestingForMeaningInference = v66;
+    v71->_interestingForMeaningInference = isSmartInteresting;
 
-    v9 = v76;
+    momentCopy = v76;
   }
 
   v67 = *MEMORY[0x277D85DE8];

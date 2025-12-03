@@ -1,38 +1,38 @@
 @interface _UISceneZoomTransitionClientComponent
 - (NSString)debugDescription;
 - (id)succinctDescription;
-- (id)trackingViewForInteraction:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)dismissInteraction:(id)a3 didBeginAtLocation:(CGPoint)a4 withVelocity:(CGPoint)a5;
-- (void)dismissInteraction:(id)a3 didCancelWithVelocity:(CGPoint)a4 originalPosition:(CGPoint)a5;
-- (void)dismissInteraction:(id)a3 didDismissWithVelocity:(CGPoint)a4;
-- (void)dismissInteraction:(id)a3 didIssueUpdate:(id)a4;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (id)trackingViewForInteraction:(id)interaction;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)dismissInteraction:(id)interaction didBeginAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity;
+- (void)dismissInteraction:(id)interaction didCancelWithVelocity:(CGPoint)velocity originalPosition:(CGPoint)position;
+- (void)dismissInteraction:(id)interaction didDismissWithVelocity:(CGPoint)velocity;
+- (void)dismissInteraction:(id)interaction didIssueUpdate:(id)update;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation _UISceneZoomTransitionClientComponent
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [a4 settingsDiff];
-  v6 = [v5 containsProperty:sel_wantsDismissInteraction];
+  settingsDiff = [settings settingsDiff];
+  v6 = [settingsDiff containsProperty:sel_wantsDismissInteraction];
 
   if (v6)
   {
-    v7 = [(_UISceneInterfaceProtectionClientComponent *)self settings];
-    v8 = [v7 wantsDismissInteraction];
+    settings = [(_UISceneInterfaceProtectionClientComponent *)self settings];
+    wantsDismissInteraction = [settings wantsDismissInteraction];
 
-    if (v8)
+    if (wantsDismissInteraction)
     {
       if (self)
       {
         if (self->_dismissInteraction)
         {
           v17 = MEMORY[0x1E696AEC0];
-          v18 = [(FBSSceneComponent *)self clientScene];
-          v19 = [v18 identityToken];
-          v20 = [v17 stringWithFormat:@"Dismiss interaction has already been installed on %@", v19];
+          clientScene = [(FBSSceneComponent *)self clientScene];
+          identityToken = [clientScene identityToken];
+          v20 = [v17 stringWithFormat:@"Dismiss interaction has already been installed on %@", identityToken];
 
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -44,7 +44,7 @@
             v27 = 2114;
             v28 = v23;
             v29 = 2048;
-            v30 = self;
+            selfCopy = self;
             v31 = 2114;
             v32 = @"_UISceneZoomTransitionClientComponent.m";
             v33 = 1024;
@@ -60,27 +60,27 @@
           JUMPOUT(0x189DA282CLL);
         }
 
-        v9 = [(FBSSceneComponent *)self clientScene];
-        v24 = [UIScene _sceneForFBSScene:v9];
+        clientScene2 = [(FBSSceneComponent *)self clientScene];
+        v24 = [UIScene _sceneForFBSScene:clientScene2];
 
-        v10 = [v24 delegate];
-        LOBYTE(v9) = objc_opt_respondsToSelector();
+        delegate = [v24 delegate];
+        LOBYTE(clientScene2) = objc_opt_respondsToSelector();
 
-        if (v9)
+        if (clientScene2)
         {
-          v11 = [v24 delegate];
-          v12 = [v11 window];
+          delegate2 = [v24 delegate];
+          window = [delegate2 window];
 
-          if (v12)
+          if (window)
           {
             v13 = objc_opt_new();
             [(_UIDismissInteraction *)v13 setDelegate:self];
             [(_UIDismissInteraction *)v13 setStyles:6];
-            [v12 addInteraction:v13];
+            [window addInteraction:v13];
             dismissInteraction = self->_dismissInteraction;
             self->_dismissInteraction = v13;
 
-            objc_storeWeak(&self->_dismissInteractionWindow, v12);
+            objc_storeWeak(&self->_dismissInteractionWindow, window);
           }
         }
       }
@@ -99,67 +99,67 @@
   }
 }
 
-- (id)trackingViewForInteraction:(id)a3
+- (id)trackingViewForInteraction:(id)interaction
 {
   WeakRetained = objc_loadWeakRetained(&self->_dismissInteractionWindow);
 
   return WeakRetained;
 }
 
-- (void)dismissInteraction:(id)a3 didBeginAtLocation:(CGPoint)a4 withVelocity:(CGPoint)a5
+- (void)dismissInteraction:(id)interaction didBeginAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity
 {
-  v8 = [(_UISceneZoomTransitionDismissInteractionActionToHost *)a4.x actionForDismissInteractionDidBeginAtLocation:a5.x withVelocity:a5.y];
-  v6 = [(FBSSceneComponent *)self clientScene];
+  v8 = [(_UISceneZoomTransitionDismissInteractionActionToHost *)location.x actionForDismissInteractionDidBeginAtLocation:velocity.x withVelocity:velocity.y];
+  clientScene = [(FBSSceneComponent *)self clientScene];
   v7 = [MEMORY[0x1E695DFD8] setWithObject:v8];
-  [v6 sendPrivateActions:v7];
+  [clientScene sendPrivateActions:v7];
 }
 
-- (void)dismissInteraction:(id)a3 didIssueUpdate:(id)a4
+- (void)dismissInteraction:(id)interaction didIssueUpdate:(id)update
 {
-  v7 = [_UISceneZoomTransitionDismissInteractionActionToHost actionForDismissInteractionDidIssueUpdate:a4];
-  v5 = [(FBSSceneComponent *)self clientScene];
+  v7 = [_UISceneZoomTransitionDismissInteractionActionToHost actionForDismissInteractionDidIssueUpdate:update];
+  clientScene = [(FBSSceneComponent *)self clientScene];
   v6 = [MEMORY[0x1E695DFD8] setWithObject:v7];
-  [v5 sendPrivateActions:v6];
+  [clientScene sendPrivateActions:v6];
 }
 
-- (void)dismissInteraction:(id)a3 didDismissWithVelocity:(CGPoint)a4
+- (void)dismissInteraction:(id)interaction didDismissWithVelocity:(CGPoint)velocity
 {
-  v7 = [(_UISceneZoomTransitionDismissInteractionActionToHost *)a4.x actionForDismissInteractionDidDismissWithVelocity:?];
-  v5 = [(FBSSceneComponent *)self clientScene];
+  v7 = [(_UISceneZoomTransitionDismissInteractionActionToHost *)velocity.x actionForDismissInteractionDidDismissWithVelocity:?];
+  clientScene = [(FBSSceneComponent *)self clientScene];
   v6 = [MEMORY[0x1E695DFD8] setWithObject:v7];
-  [v5 sendPrivateActions:v6];
+  [clientScene sendPrivateActions:v6];
 }
 
-- (void)dismissInteraction:(id)a3 didCancelWithVelocity:(CGPoint)a4 originalPosition:(CGPoint)a5
+- (void)dismissInteraction:(id)interaction didCancelWithVelocity:(CGPoint)velocity originalPosition:(CGPoint)position
 {
-  v8 = [(_UISceneZoomTransitionDismissInteractionActionToHost *)a4.x actionForDismissInteractionDidCancelWithVelocity:a5.x originalPosition:a5.y];
-  v6 = [(FBSSceneComponent *)self clientScene];
+  v8 = [(_UISceneZoomTransitionDismissInteractionActionToHost *)velocity.x actionForDismissInteractionDidCancelWithVelocity:position.x originalPosition:position.y];
+  clientScene = [(FBSSceneComponent *)self clientScene];
   v7 = [MEMORY[0x1E695DFD8] setWithObject:v8];
-  [v6 sendPrivateActions:v7];
+  [clientScene sendPrivateActions:v7];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67___UISceneZoomTransitionClientComponent_appendDescriptionToStream___block_invoke;
   v11[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = streamCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v11];
-  v6 = [v5 style];
-  v7 = [v6 verbosity];
+  style = [v5 style];
+  verbosity = [style verbosity];
 
-  if (v7 != 2)
+  if (verbosity != 2)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __67___UISceneZoomTransitionClientComponent_appendDescriptionToStream___block_invoke_2;
     v8[3] = &unk_1E70F35B8;
     v9 = v5;
-    v10 = self;
+    selfCopy2 = self;
     [v9 appendBodySectionWithName:0 block:v8];
   }
 }
@@ -167,8 +167,8 @@
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -176,8 +176,8 @@
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

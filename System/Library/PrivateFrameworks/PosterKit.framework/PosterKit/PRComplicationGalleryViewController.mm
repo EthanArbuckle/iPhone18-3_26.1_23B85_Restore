@@ -1,38 +1,38 @@
 @interface PRComplicationGalleryViewController
-- (PRComplicationGalleryViewController)initWithSuggestionSets:(id)a3 applicationWidgetCollections:(id)a4 listLayoutProvider:(id)a5 iconViewProvider:(id)a6;
+- (PRComplicationGalleryViewController)initWithSuggestionSets:(id)sets applicationWidgetCollections:(id)collections listLayoutProvider:(id)provider iconViewProvider:(id)viewProvider;
 - (PRComplicationGalleryViewControllerDelegate)delegate;
 - (id)_buildSnapshot;
-- (id)_descriptorFromWidgetIcon:(id)a3;
-- (id)_galleryItemForComplicationDescriptor:(id)a3 iconImageHidden:(BOOL)a4;
-- (id)_galleryItemForWidgetDescriptor:(id)a3 family:(int64_t)a4 iconImageHidden:(BOOL)a5;
-- (id)_galleryItemsForWidgetDescriptors:(id)a3 iconImageHidden:(BOOL)a4;
-- (id)widgetIconForDescriptor:(id)a3 sizeClass:(int64_t)a4;
-- (id)widgetIconForDescriptors:(id)a3 sizeClass:(int64_t)a4;
-- (id)widgetIconForGalleryItem:(id)a3 sizeClass:(int64_t)a4;
-- (int64_t)layoutStyleForSectionIndex:(int64_t)a3;
-- (void)_configureWidgetCell:(id)a3 forItem:(id)a4 atIndexPath:(id)a5;
-- (void)_configureWidgetHostViewController:(id)a3 forWidgetDescriptor:(id)a4;
-- (void)addWidgetSheetViewController:(id)a3 didSelectWidgetIconView:(id)a4;
-- (void)addWidgetSheetViewControllerDidCancel:(id)a3;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)didBeginDraggingWidgetIcon:(id)a3;
-- (void)iconTapped:(id)a3;
+- (id)_descriptorFromWidgetIcon:(id)icon;
+- (id)_galleryItemForComplicationDescriptor:(id)descriptor iconImageHidden:(BOOL)hidden;
+- (id)_galleryItemForWidgetDescriptor:(id)descriptor family:(int64_t)family iconImageHidden:(BOOL)hidden;
+- (id)_galleryItemsForWidgetDescriptors:(id)descriptors iconImageHidden:(BOOL)hidden;
+- (id)widgetIconForDescriptor:(id)descriptor sizeClass:(int64_t)class;
+- (id)widgetIconForDescriptors:(id)descriptors sizeClass:(int64_t)class;
+- (id)widgetIconForGalleryItem:(id)item sizeClass:(int64_t)class;
+- (int64_t)layoutStyleForSectionIndex:(int64_t)index;
+- (void)_configureWidgetCell:(id)cell forItem:(id)item atIndexPath:(id)path;
+- (void)_configureWidgetHostViewController:(id)controller forWidgetDescriptor:(id)descriptor;
+- (void)addWidgetSheetViewController:(id)controller didSelectWidgetIconView:(id)view;
+- (void)addWidgetSheetViewControllerDidCancel:(id)cancel;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)didBeginDraggingWidgetIcon:(id)icon;
+- (void)iconTapped:(id)tapped;
 - (void)loadView;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)setApplicationWidgetCollections:(id)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)setApplicationWidgetCollections:(id)collections;
 - (void)viewDidLoad;
 @end
 
 @implementation PRComplicationGalleryViewController
 
-- (PRComplicationGalleryViewController)initWithSuggestionSets:(id)a3 applicationWidgetCollections:(id)a4 listLayoutProvider:(id)a5 iconViewProvider:(id)a6
+- (PRComplicationGalleryViewController)initWithSuggestionSets:(id)sets applicationWidgetCollections:(id)collections listLayoutProvider:(id)provider iconViewProvider:(id)viewProvider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  setsCopy = sets;
+  collectionsCopy = collections;
+  providerCopy = provider;
+  viewProviderCopy = viewProvider;
   v20.receiver = self;
   v20.super_class = PRComplicationGalleryViewController;
   v14 = [(PRComplicationGalleryViewController *)&v20 initWithNibName:0 bundle:0];
@@ -42,13 +42,13 @@
     widgetHostViewControllersPerReason = v14->_widgetHostViewControllersPerReason;
     v14->_widgetHostViewControllersPerReason = v15;
 
-    v17 = [v10 bs_compactMap:&__block_literal_global_6];
+    v17 = [setsCopy bs_compactMap:&__block_literal_global_6];
     suggestionSets = v14->_suggestionSets;
     v14->_suggestionSets = v17;
 
-    objc_storeStrong(&v14->_applicationWidgetCollections, a4);
-    objc_storeStrong(&v14->_listLayoutProvider, a5);
-    objc_storeStrong(&v14->_iconViewProvider, a6);
+    objc_storeStrong(&v14->_applicationWidgetCollections, collections);
+    objc_storeStrong(&v14->_listLayoutProvider, provider);
+    objc_storeStrong(&v14->_iconViewProvider, viewProvider);
   }
 
   return v14;
@@ -155,15 +155,15 @@ LABEL_9:
   v30[3] = &unk_1E78432B0;
   objc_copyWeak(&v31, &location);
   v7 = [v5 registrationWithCellClass:v6 configurationHandler:v30];
-  v8 = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
-  [v8 setDelegate:self];
+  collectionView = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
+  [collectionView setDelegate:self];
   v9 = MEMORY[0x1E69DC800];
   v10 = objc_opt_class();
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __50__PRComplicationGalleryViewController_viewDidLoad__block_invoke_2;
   v28[3] = &unk_1E78434A8;
-  v11 = v8;
+  v11 = collectionView;
   v29 = v11;
   v12 = [v9 registrationWithCellClass:v10 configurationHandler:v28];
   v13 = objc_alloc(MEMORY[0x1E69DC820]);
@@ -183,8 +183,8 @@ LABEL_9:
 
   [v14 setContentInset:{8.0, 0.0, 0.0, 0.0, v21, v22, v23, v24}];
   v19 = self->_dataSource;
-  v20 = [(PRComplicationGalleryViewController *)self _buildSnapshot];
-  [(UICollectionViewDiffableDataSource *)v19 applySnapshot:v20 animatingDifferences:0];
+  _buildSnapshot = [(PRComplicationGalleryViewController *)self _buildSnapshot];
+  [(UICollectionViewDiffableDataSource *)v19 applySnapshot:_buildSnapshot animatingDifferences:0];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&location);
@@ -304,15 +304,15 @@ id __50__PRComplicationGalleryViewController_viewDidLoad__block_invoke_4(void *a
   return v16;
 }
 
-- (void)setApplicationWidgetCollections:(id)a3
+- (void)setApplicationWidgetCollections:(id)collections
 {
-  v7 = a3;
+  collectionsCopy = collections;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_applicationWidgetCollections, a3);
+    objc_storeStrong(&self->_applicationWidgetCollections, collections);
     dataSource = self->_dataSource;
-    v6 = [(PRComplicationGalleryViewController *)self _buildSnapshot];
-    [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:v6 animatingDifferences:0];
+    _buildSnapshot = [(PRComplicationGalleryViewController *)self _buildSnapshot];
+    [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:_buildSnapshot animatingDifferences:0];
   }
 }
 
@@ -323,13 +323,13 @@ id __50__PRComplicationGalleryViewController_viewDidLoad__block_invoke_4(void *a
   if ([(NSArray *)self->_suggestionSets count])
   {
     v4 = [(NSArray *)self->_suggestionSets bs_map:&__block_literal_global_49];
-    v5 = [v4 bs_flatten];
+    bs_flatten = [v4 bs_flatten];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __53__PRComplicationGalleryViewController__buildSnapshot__block_invoke_2;
     v11[3] = &unk_1E78434F8;
     v11[4] = self;
-    v6 = [v5 bs_map:v11];
+    v6 = [bs_flatten bs_map:v11];
 
     v13[0] = @"PRComplicationSuggestionsSectionIdentifier";
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
@@ -356,41 +356,41 @@ PRComplicationGalleryItem *__53__PRComplicationGalleryViewController__buildSnaps
   return v3;
 }
 
-- (id)_galleryItemForComplicationDescriptor:(id)a3 iconImageHidden:(BOOL)a4
+- (id)_galleryItemForComplicationDescriptor:(id)descriptor iconImageHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 widget];
+  hiddenCopy = hidden;
+  descriptorCopy = descriptor;
+  widget = [descriptorCopy widget];
   v7 = [PRComplicationDescriptor alloc];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
-  v10 = [(PRComplicationDescriptor *)v7 initWithUniqueIdentifier:v9 widget:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [(PRComplicationDescriptor *)v7 initWithUniqueIdentifier:uUIDString widget:widget];
 
-  v11 = [v5 suggestedComplication];
+  suggestedComplication = [descriptorCopy suggestedComplication];
 
-  [(PRComplicationDescriptor *)v10 setSuggestedComplication:v11];
+  [(PRComplicationDescriptor *)v10 setSuggestedComplication:suggestedComplication];
   v12 = [PRComplicationGalleryWidgetItem alloc];
   v13 = PRSharedWidgetExtensionProvider();
-  v14 = [v13 widgetDescriptorForWidget:v6];
-  v15 = [v14 displayName];
-  v16 = [(PRComplicationGalleryWidgetItem *)v12 initWithDisplayName:v15 selected:0 iconImageHidden:v4 descriptor:v10];
+  v14 = [v13 widgetDescriptorForWidget:widget];
+  displayName = [v14 displayName];
+  v16 = [(PRComplicationGalleryWidgetItem *)v12 initWithDisplayName:displayName selected:0 iconImageHidden:hiddenCopy descriptor:v10];
 
   v17 = [[PRComplicationGalleryItem alloc] initWithWidgetItem:v16];
 
   return v17;
 }
 
-- (id)_galleryItemsForWidgetDescriptors:(id)a3 iconImageHidden:(BOOL)a4
+- (id)_galleryItemsForWidgetDescriptors:(id)descriptors iconImageHidden:(BOOL)hidden
 {
-  v4 = a4;
+  hiddenCopy = hidden;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
+  descriptorsCopy = descriptors;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = descriptorsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -408,14 +408,14 @@ PRComplicationGalleryItem *__53__PRComplicationGalleryViewController__buildSnaps
         v13 = *(*(&v18 + 1) + 8 * i);
         if (([v13 supportedFamilies] & 0x400) != 0)
         {
-          v14 = [(PRComplicationGalleryViewController *)self _galleryItemForWidgetDescriptor:v13 family:10 iconImageHidden:v4];
-          [v7 addObject:v14];
+          v14 = [(PRComplicationGalleryViewController *)self _galleryItemForWidgetDescriptor:v13 family:10 iconImageHidden:hiddenCopy];
+          [array addObject:v14];
         }
 
         if (([v13 supportedFamilies] & 0x800) != 0)
         {
-          v15 = [(PRComplicationGalleryViewController *)self _galleryItemForWidgetDescriptor:v13 family:11 iconImageHidden:v4];
-          [v7 addObject:v15];
+          v15 = [(PRComplicationGalleryViewController *)self _galleryItemForWidgetDescriptor:v13 family:11 iconImageHidden:hiddenCopy];
+          [array addObject:v15];
         }
       }
 
@@ -425,82 +425,82 @@ PRComplicationGalleryItem *__53__PRComplicationGalleryViewController__buildSnaps
     while (v10);
   }
 
-  v16 = [v7 copy];
+  v16 = [array copy];
 
   return v16;
 }
 
-- (id)_galleryItemForWidgetDescriptor:(id)a3 family:(int64_t)a4 iconImageHidden:(BOOL)a5
+- (id)_galleryItemForWidgetDescriptor:(id)descriptor family:(int64_t)family iconImageHidden:(BOOL)hidden
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [v7 widgetForFamily:a4 intent:0];
+  hiddenCopy = hidden;
+  descriptorCopy = descriptor;
+  v8 = [descriptorCopy widgetForFamily:family intent:0];
   v9 = [PRComplicationDescriptor alloc];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
-  v12 = [(PRComplicationDescriptor *)v9 initWithUniqueIdentifier:v11 widget:v8];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [(PRComplicationDescriptor *)v9 initWithUniqueIdentifier:uUIDString widget:v8];
 
   v13 = [PRComplicationGalleryWidgetItem alloc];
-  v14 = [v7 displayName];
+  displayName = [descriptorCopy displayName];
 
-  v15 = [(PRComplicationGalleryWidgetItem *)v13 initWithDisplayName:v14 selected:0 iconImageHidden:v5 descriptor:v12];
+  v15 = [(PRComplicationGalleryWidgetItem *)v13 initWithDisplayName:displayName selected:0 iconImageHidden:hiddenCopy descriptor:v12];
   v16 = [[PRComplicationGalleryItem alloc] initWithWidgetItem:v15];
 
   return v16;
 }
 
-- (void)_configureWidgetCell:(id)a3 forItem:(id)a4 atIndexPath:(id)a5
+- (void)_configureWidgetCell:(id)cell forItem:(id)item atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 descriptor];
-  v11 = [v10 widget];
+  cellCopy = cell;
+  pathCopy = path;
+  descriptor = [item descriptor];
+  widget = [descriptor widget];
 
   v12 = PRSharedWidgetExtensionProvider();
-  v32 = [v12 widgetDescriptorForWidget:v11];
+  v32 = [v12 widgetDescriptorForWidget:widget];
 
   v13 = objc_alloc(MEMORY[0x1E69D40F0]);
-  v14 = [(PRComplicationGalleryViewController *)self listLayoutProvider];
-  v15 = [(PRComplicationGalleryViewController *)self iconViewProvider];
-  v16 = [v13 initWithGalleryItem:v32 titleAndSubtitleVisible:0 listLayoutProvider:v14 iconViewProvider:v15];
+  listLayoutProvider = [(PRComplicationGalleryViewController *)self listLayoutProvider];
+  iconViewProvider = [(PRComplicationGalleryViewController *)self iconViewProvider];
+  v16 = [v13 initWithGalleryItem:v32 titleAndSubtitleVisible:0 listLayoutProvider:listLayoutProvider iconViewProvider:iconViewProvider];
 
-  [v16 setSelectedSizeClass:{objc_msgSend(v11, "family")}];
+  [v16 setSelectedSizeClass:{objc_msgSend(widget, "family")}];
   [v16 setDelegate:self];
   [v16 setUsesAmbientScaleFactorForRemovableBackgroundItems:0];
-  v17 = [v16 wrapperView];
-  [v17 setBackgroundType:0];
+  wrapperView = [v16 wrapperView];
+  [wrapperView setBackgroundType:0];
 
-  v18 = [v16 wrapperView];
-  [v18 setCornerRadius:PRWidgetPlatterCornerRadius()];
+  wrapperView2 = [v16 wrapperView];
+  [wrapperView2 setCornerRadius:PRWidgetPlatterCornerRadius()];
 
-  [v8 setWidgetWrapperViewController:v16];
+  [cellCopy setWidgetWrapperViewController:v16];
   v19 = +[PRWidgetMetricsProvider sharedInstance];
-  v20 = [v19 systemMetricsForWidget:v11];
+  v20 = [v19 systemMetricsForWidget:widget];
 
-  v21 = [(PRComplicationGalleryViewController *)self traitCollection];
-  [v21 displayScale];
+  traitCollection = [(PRComplicationGalleryViewController *)self traitCollection];
+  [traitCollection displayScale];
   v23 = v22;
 
   [v20 _effectiveSizePixelAlignedForDisplayScale:v23];
-  [v8 setContentSize:?];
-  v24 = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
-  v25 = [v11 extensionIdentity];
-  v26 = [v25 extensionBundleIdentifier];
+  [cellCopy setContentSize:?];
+  collectionView = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
+  extensionIdentity = [widget extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIndexPath___block_invoke;
   v33[3] = &unk_1E7843348;
-  v34 = v24;
-  v35 = v8;
-  v36 = v9;
-  v27 = v9;
-  v28 = v8;
-  v29 = v24;
-  [PRComplicationGalleryIconProvider loadIconImageForExtensionBundleIdentifier:v26 atWidth:v33 completion:20.0];
+  v34 = collectionView;
+  v35 = cellCopy;
+  v36 = pathCopy;
+  v27 = pathCopy;
+  v28 = cellCopy;
+  v29 = collectionView;
+  [PRComplicationGalleryIconProvider loadIconImageForExtensionBundleIdentifier:extensionBundleIdentifier atWidth:v33 completion:20.0];
 
-  v30 = [v16 view];
-  v31 = [v30 superview];
-  [(PRComplicationGalleryViewController *)self bs_addChildViewController:v16 withSuperview:v31];
+  view = [v16 view];
+  superview = [view superview];
+  [(PRComplicationGalleryViewController *)self bs_addChildViewController:v16 withSuperview:superview];
 }
 
 void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -515,21 +515,21 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
   }
 }
 
-- (void)_configureWidgetHostViewController:(id)a3 forWidgetDescriptor:(id)a4
+- (void)_configureWidgetHostViewController:(id)controller forWidgetDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = [a4 widget];
+  controllerCopy = controller;
+  widget = [descriptor widget];
   v7 = PRSharedWidgetExtensionProvider();
-  v8 = [v7 widgetDescriptorForWidget:v6];
+  v8 = [v7 widgetDescriptorForWidget:widget];
 
-  v9 = [v8 intentType];
-  if (v9 && (v10 = v9, [v6 intent], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+  intentType = [v8 intentType];
+  if (intentType && (v10 = intentType, [widget intent], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
   {
-    v12 = [v8 defaultIntent];
-    if (v12)
+    defaultIntent = [v8 defaultIntent];
+    if (defaultIntent)
     {
-      v13 = [v6 widgetByReplacingIntent:v12];
-      [v5 setWidget:v13];
+      v13 = [widget widgetByReplacingIntent:defaultIntent];
+      [controllerCopy setWidget:v13];
     }
 
     else
@@ -537,54 +537,54 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
       v13 = PRLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [PRComplicationGalleryViewController _configureWidgetHostViewController:v6 forWidgetDescriptor:?];
+        [PRComplicationGalleryViewController _configureWidgetHostViewController:widget forWidgetDescriptor:?];
       }
     }
   }
 
   else
   {
-    [v5 setWidget:v6];
+    [controllerCopy setWidget:widget];
   }
 }
 
-- (id)_descriptorFromWidgetIcon:(id)a3
+- (id)_descriptorFromWidgetIcon:(id)icon
 {
-  v3 = a3;
-  v4 = [v3 activeWidget];
-  v5 = [v3 gridSizeClass];
+  iconCopy = icon;
+  activeWidget = [iconCopy activeWidget];
+  gridSizeClass = [iconCopy gridSizeClass];
 
-  v6 = PRWidgetFamilyForIconGridSizeClass(v5);
+  v6 = PRWidgetFamilyForIconGridSizeClass(gridSizeClass);
   v7 = objc_alloc(MEMORY[0x1E6994370]);
-  v8 = [v4 extensionBundleIdentifier];
-  v9 = [v4 containerBundleIdentifier];
-  v10 = [v4 kind];
-  v11 = [v7 initWithExtensionBundleIdentifier:v8 containerBundleIdentifier:v9 kind:v10 family:v6 intent:0];
+  extensionBundleIdentifier = [activeWidget extensionBundleIdentifier];
+  containerBundleIdentifier = [activeWidget containerBundleIdentifier];
+  kind = [activeWidget kind];
+  v11 = [v7 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier kind:kind family:v6 intent:0];
 
   v12 = [PRComplicationDescriptor alloc];
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v14 = [v13 UUIDString];
-  v15 = [(PRComplicationDescriptor *)v12 initWithUniqueIdentifier:v14 widget:v11];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v15 = [(PRComplicationDescriptor *)v12 initWithUniqueIdentifier:uUIDString widget:v11];
 
   return v15;
 }
 
-- (int64_t)layoutStyleForSectionIndex:(int64_t)a3
+- (int64_t)layoutStyleForSectionIndex:(int64_t)index
 {
-  v4 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v5 = [v4 sectionIdentifiers];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v6 = [sectionIdentifiers objectAtIndexedSubscript:index];
   v7 = v6 != @"PRComplicationSuggestionsSectionIdentifier";
 
   return v7;
 }
 
-- (void)addWidgetSheetViewController:(id)a3 didSelectWidgetIconView:(id)a4
+- (void)addWidgetSheetViewController:(id)controller didSelectWidgetIconView:(id)view
 {
-  v13 = a4;
-  v5 = [v13 icon];
+  viewCopy = view;
+  icon = [viewCopy icon];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = icon;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -605,19 +605,19 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
 
   v9 = v8;
 
-  v11 = v13;
+  v11 = viewCopy;
   if (v9)
   {
-    v12 = [(PRComplicationGalleryViewController *)self delegate];
-    [v12 complicationGalleryViewController:self didSelectWidgetIconView:v13];
+    delegate = [(PRComplicationGalleryViewController *)self delegate];
+    [delegate complicationGalleryViewController:self didSelectWidgetIconView:viewCopy];
 
-    v11 = v13;
+    v11 = viewCopy;
   }
 
   MEMORY[0x1EEE66BB8](v10, v11);
 }
 
-- (void)addWidgetSheetViewControllerDidCancel:(id)a3
+- (void)addWidgetSheetViewControllerDidCancel:(id)cancel
 {
   v17 = *MEMORY[0x1E69E9840];
   [(PRComplicationGalleryViewController *)self dismissViewControllerAnimated:1 completion:0];
@@ -625,10 +625,10 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  collectionView = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -640,29 +640,29 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
-        [v11 deselectItemAtIndexPath:v10 animated:1];
+        collectionView2 = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
+        [collectionView2 deselectItemAtIndexPath:v10 animated:1];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v17 = a3;
-  v5 = a4;
-  v6 = [v17 cellForItemAtIndexPath:v5];
+  viewCopy = view;
+  pathCopy = path;
+  v6 = [viewCopy cellForItemAtIndexPath:pathCopy];
   v7 = objc_opt_class();
   v8 = v6;
   if (v7)
@@ -686,10 +686,10 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
   v10 = v9;
 
   [v10 setSeparatorVisible:0];
-  if ([v5 item] >= 1)
+  if ([pathCopy item] >= 1)
   {
-    v11 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v5 inSection:{"item") - 1, objc_msgSend(v5, "section")}];
-    v12 = [v17 cellForItemAtIndexPath:v11];
+    v11 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"item") - 1, objc_msgSend(pathCopy, "section")}];
+    v12 = [viewCopy cellForItemAtIndexPath:v11];
     v13 = objc_opt_class();
     v14 = v12;
     if (v13)
@@ -716,11 +716,11 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
   }
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v17 = a3;
-  v5 = a4;
-  v6 = [v17 cellForItemAtIndexPath:v5];
+  viewCopy = view;
+  pathCopy = path;
+  v6 = [viewCopy cellForItemAtIndexPath:pathCopy];
   v7 = objc_opt_class();
   v8 = v6;
   if (v7)
@@ -743,11 +743,11 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
 
   v10 = v9;
 
-  [v10 setSeparatorVisible:{objc_msgSend(v5, "item") != objc_msgSend(v17, "numberOfItemsInSection:", objc_msgSend(v5, "section")) - 1}];
-  if ([v5 item] >= 1)
+  [v10 setSeparatorVisible:{objc_msgSend(pathCopy, "item") != objc_msgSend(viewCopy, "numberOfItemsInSection:", objc_msgSend(pathCopy, "section")) - 1}];
+  if ([pathCopy item] >= 1)
   {
-    v11 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v5 inSection:{"item") - 1, objc_msgSend(v5, "section")}];
-    v12 = [v17 cellForItemAtIndexPath:v11];
+    v11 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"item") - 1, objc_msgSend(pathCopy, "section")}];
+    v12 = [viewCopy cellForItemAtIndexPath:v11];
     v13 = objc_opt_class();
     v14 = v12;
     if (v13)
@@ -774,12 +774,12 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
   v9 = objc_opt_class();
   v10 = v8;
   if (v9)
@@ -802,14 +802,14 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
 
   v12 = v11;
 
-  v13 = [v12 applicationWidgetCollection];
+  applicationWidgetCollection = [v12 applicationWidgetCollection];
 
-  if (v13)
+  if (applicationWidgetCollection)
   {
-    v14 = [v6 cellForItemAtIndexPath:v7];
+    v14 = [viewCopy cellForItemAtIndexPath:pathCopy];
     v15 = objc_opt_class();
     v16 = v14;
-    v51 = v6;
+    v51 = viewCopy;
     if (v15)
     {
       if (objc_opt_isKindOfClass())
@@ -838,32 +838,32 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
     v26 = v25;
 
     v27 = [objc_alloc(MEMORY[0x1E69D40A0]) initWithName:@"iconImages" iconImageInfo:{v20, v22, v24, v26}];
-    v28 = [MEMORY[0x1E69DC938] currentDevice];
-    v29 = [v28 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v48 = v27;
-    v30 = [(SBHAddWidgetSheetViewControllerBase *)[PRComplicationGalleryDetailViewController alloc] initWithListLayoutProvider:self->_listLayoutProvider iconViewProvider:self->_iconViewProvider allowedWidgets:3072 appCellIconImageCache:256 addWidgetSheetStyle:v27, (v29 & 0xFFFFFFFFFFFFFFFBLL) == 1];
-    v31 = [v12 applicationWidgetCollection];
-    [(PRComplicationGalleryDetailViewController *)v30 setApplicationWidgetCollection:v31];
-    v32 = [v31 icon];
-    v33 = v32;
+    v30 = [(SBHAddWidgetSheetViewControllerBase *)[PRComplicationGalleryDetailViewController alloc] initWithListLayoutProvider:self->_listLayoutProvider iconViewProvider:self->_iconViewProvider allowedWidgets:3072 appCellIconImageCache:256 addWidgetSheetStyle:v27, (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
+    applicationWidgetCollection2 = [v12 applicationWidgetCollection];
+    [(PRComplicationGalleryDetailViewController *)v30 setApplicationWidgetCollection:applicationWidgetCollection2];
+    icon = [applicationWidgetCollection2 icon];
+    v33 = icon;
     v49 = v12;
-    if (!v32)
+    if (!icon)
     {
-      v32 = v31;
+      icon = applicationWidgetCollection2;
     }
 
-    v34 = [v32 displayName];
+    displayName = [icon displayName];
     [(SBHAddWidgetSheetViewControllerBase *)v30 setDelegate:self];
-    [(PRComplicationGalleryDetailViewController *)v30 setAppName:v34];
-    v35 = [v52 titleView];
-    v36 = [v35 iconImage];
-    [(PRComplicationGalleryDetailViewController *)v30 setIconImage:v36];
+    [(PRComplicationGalleryDetailViewController *)v30 setAppName:displayName];
+    titleView = [v52 titleView];
+    iconImage = [titleView iconImage];
+    [(PRComplicationGalleryDetailViewController *)v30 setIconImage:iconImage];
 
-    v37 = [(PRComplicationGalleryDetailViewController *)v30 presentationController];
+    presentationController = [(PRComplicationGalleryDetailViewController *)v30 presentationController];
     v38 = objc_opt_class();
-    v39 = v37;
-    v50 = v7;
+    v39 = presentationController;
+    v50 = pathCopy;
     if (v38)
     {
       if (objc_opt_isKindOfClass())
@@ -890,34 +890,34 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
     [v41 setDetents:v43];
 
     [v41 setLargestUndimmedDetentIdentifier:@"ComplicationGalleryDodge"];
-    v44 = [v41 dimmingView];
-    v45 = [v44 layer];
-    [v45 setHitTestsAsOpaque:0];
+    dimmingView = [v41 dimmingView];
+    layer = [dimmingView layer];
+    [layer setHitTestsAsOpaque:0];
 
-    v46 = [v41 _confinedDimmingView];
-    v47 = [v46 layer];
-    [v47 setHitTestsAsOpaque:0];
+    _confinedDimmingView = [v41 _confinedDimmingView];
+    layer2 = [_confinedDimmingView layer];
+    [layer2 setHitTestsAsOpaque:0];
 
     [v41 setDelegate:self];
     [(PRComplicationGalleryViewController *)self presentViewController:v30 animated:1 completion:0];
 
-    v7 = v50;
-    v6 = v51;
+    pathCopy = v50;
+    viewCopy = v51;
     v12 = v49;
   }
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView:a3];
-  v5 = [v4 indexPathsForSelectedItems];
+  v4 = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView:dismiss];
+  indexPathsForSelectedItems = [v4 indexPathsForSelectedItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -929,36 +929,36 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
-        [v11 deselectItemAtIndexPath:v10 animated:1];
+        collectionView = [(PRComplicationGalleryView *)self->_complicationGalleryView collectionView];
+        [collectionView deselectItemAtIndexPath:v10 animated:1];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)didBeginDraggingWidgetIcon:(id)a3
+- (void)didBeginDraggingWidgetIcon:(id)icon
 {
-  v5 = [(PRComplicationGalleryViewController *)self _descriptorFromWidgetIcon:a3];
-  v4 = [(PRComplicationGalleryViewController *)self delegate];
-  [v4 complicationGalleryViewController:self didBeginDraggingComplication:v5];
+  v5 = [(PRComplicationGalleryViewController *)self _descriptorFromWidgetIcon:icon];
+  delegate = [(PRComplicationGalleryViewController *)self delegate];
+  [delegate complicationGalleryViewController:self didBeginDraggingComplication:v5];
 }
 
-- (id)widgetIconForGalleryItem:(id)a3 sizeClass:(int64_t)a4
+- (id)widgetIconForGalleryItem:(id)item sizeClass:(int64_t)class
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = itemCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -981,7 +981,7 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
 
   if (v10)
   {
-    v11 = [(PRComplicationGalleryViewController *)self widgetIconForDescriptor:v10 sizeClass:a4];
+    v11 = [(PRComplicationGalleryViewController *)self widgetIconForDescriptor:v10 sizeClass:class];
   }
 
   else
@@ -992,45 +992,45 @@ void __80__PRComplicationGalleryViewController__configureWidgetCell_forItem_atIn
   return v11;
 }
 
-- (id)widgetIconForDescriptor:(id)a3 sizeClass:(int64_t)a4
+- (id)widgetIconForDescriptor:(id)descriptor sizeClass:(int64_t)class
 {
   v5 = MEMORY[0x1E69D40E8];
-  v6 = a3;
+  descriptorCopy = descriptor;
   v7 = [v5 alloc];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v6 kind];
-  v11 = [v6 extensionIdentity];
-  v12 = [v11 extensionBundleIdentifier];
-  v13 = [v6 extensionIdentity];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  kind = [descriptorCopy kind];
+  extensionIdentity = [descriptorCopy extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  extensionIdentity2 = [descriptorCopy extensionIdentity];
 
-  v14 = [v13 containerBundleIdentifier];
-  v15 = [v7 initWithUniqueIdentifier:v9 kind:v10 extensionBundleIdentifier:v12 containerBundleIdentifier:v14];
+  containerBundleIdentifier = [extensionIdentity2 containerBundleIdentifier];
+  v15 = [v7 initWithUniqueIdentifier:uUIDString kind:kind extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier];
 
   v16 = [objc_alloc(MEMORY[0x1E69D4118]) initWithWidget:v15];
-  v17 = PRIconGridSizeClassForWidgetFamily(a4);
+  v17 = PRIconGridSizeClassForWidgetFamily(class);
   [v16 setGridSizeClass:v17];
 
   return v16;
 }
 
-- (id)widgetIconForDescriptors:(id)a3 sizeClass:(int64_t)a4
+- (id)widgetIconForDescriptors:(id)descriptors sizeClass:(int64_t)class
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PRComplicationGalleryViewController.m" lineNumber:485 description:@"We shouldn't be showing widget stacks in the lock screen widget gallery"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PRComplicationGalleryViewController.m" lineNumber:485 description:@"We shouldn't be showing widget stacks in the lock screen widget gallery"];
 
   return 0;
 }
 
-- (void)iconTapped:(id)a3
+- (void)iconTapped:(id)tapped
 {
-  v4 = [a3 wrapperView];
-  v6 = [v4 contentView];
+  wrapperView = [tapped wrapperView];
+  contentView = [wrapperView contentView];
 
-  if (v6)
+  if (contentView)
   {
-    v5 = [(PRComplicationGalleryViewController *)self delegate];
-    [v5 complicationGalleryViewController:self didSelectWidgetIconView:v6];
+    delegate = [(PRComplicationGalleryViewController *)self delegate];
+    [delegate complicationGalleryViewController:self didSelectWidgetIconView:contentView];
   }
 }
 

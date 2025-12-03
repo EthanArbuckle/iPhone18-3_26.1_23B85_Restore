@@ -1,51 +1,51 @@
 @interface PUPhotoKitEditActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
 - (void)_beginEditingCurrentAsset;
-- (void)_presentEditorForAsset:(id)a3;
+- (void)_presentEditorForAsset:(id)asset;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PUPhotoKitEditActionPerformer
 
-- (void)_presentEditorForAsset:(id)a3
+- (void)_presentEditorForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v12 = objc_alloc_init(PUPhotoKitMediaProvider);
   v5 = objc_alloc_init(MEMORY[0x1E69C42B8]);
   v6 = +[PUPhotoEditProtoSettings sharedInstance];
   [v5 setApplyVideoOrientationAsMetadata:{objc_msgSend(v6, "applyVideoOrientationAsMetadata")}];
 
-  v7 = [(PUAssetActionPerformer *)self actionType];
-  if (v7 - 16 > 0xC)
+  actionType = [(PUAssetActionPerformer *)self actionType];
+  if (actionType - 16 > 0xC)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = qword_1B3D0D430[v7 - 16];
+    v8 = qword_1B3D0D430[actionType - 16];
   }
 
-  v9 = [[PUPhotoEditViewController alloc] initWithPhoto:v4 mediaProvider:v12 mediaDestination:v5];
+  v9 = [[PUPhotoEditViewController alloc] initWithPhoto:assetCopy mediaProvider:v12 mediaDestination:v5];
 
   [(PUPhotoEditViewController *)v9 setInitialToolType:v8];
-  v10 = [(PUPhotoKitEditActionPerformer *)self quickCropContext];
-  [(PUPhotoEditViewController *)v9 setQuickCropContext:v10];
+  quickCropContext = [(PUPhotoKitEditActionPerformer *)self quickCropContext];
+  [(PUPhotoEditViewController *)v9 setQuickCropContext:quickCropContext];
 
-  v11 = [(PUPhotoKitEditActionPerformer *)self pendingEditsRequest];
-  [(PUPhotoEditViewController *)v9 setInitialPendingEditsRequest:v11];
+  pendingEditsRequest = [(PUPhotoKitEditActionPerformer *)self pendingEditsRequest];
+  [(PUPhotoEditViewController *)v9 setInitialPendingEditsRequest:pendingEditsRequest];
 
   [(PUAssetActionPerformer *)self completeUserInteractionTaskWithSuccess:[(PUAssetActionPerformer *)self presentViewController:v9] error:0];
 }
 
 - (void)_beginEditingCurrentAsset
 {
-  v3 = [(PUAssetActionPerformer *)self assets];
-  v4 = [v3 firstObject];
+  assets = [(PUAssetActionPerformer *)self assets];
+  firstObject = [assets firstObject];
 
-  if ([v4 canPerformEditOperation:2])
+  if ([firstObject canPerformEditOperation:2])
   {
-    [(PUPhotoKitEditActionPerformer *)self _presentEditorForAsset:v4];
+    [(PUPhotoKitEditActionPerformer *)self _presentEditorForAsset:firstObject];
   }
 
   else
@@ -57,7 +57,7 @@
     v6[2] = __58__PUPhotoKitEditActionPerformer__beginEditingCurrentAsset__block_invoke;
     v6[3] = &unk_1E7B7BB40;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = firstObject;
     [v5 createEditableCopyForReadOnlyPhoto:v7 completionHandler:v6];
 
     objc_destroyWeak(&v8);
@@ -96,17 +96,17 @@ void __58__PUPhotoKitEditActionPerformer__beginEditingCurrentAsset__block_invoke
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PUAssetActionPerformer *)self assets];
-  v5 = [v4 count];
+  assets = [(PUAssetActionPerformer *)self assets];
+  v5 = [assets count];
 
   if (v5 != 1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:1451 description:@"There can be only one asset in an edit action"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:1451 description:@"There can be only one asset in an edit action"];
   }
 
-  v6 = [(PUAssetActionPerformer *)self assets];
-  v7 = [v6 firstObject];
+  assets2 = [(PUAssetActionPerformer *)self assets];
+  firstObject = [assets2 firstObject];
 
   v8 = MEMORY[0x1E69C3370];
   v14[0] = MEMORY[0x1E69E9820];
@@ -118,9 +118,9 @@ void __58__PUPhotoKitEditActionPerformer__beginEditingCurrentAsset__block_invoke
   v11[1] = 3221225472;
   v11[2] = __59__PUPhotoKitEditActionPerformer_performUserInteractionTask__block_invoke_2;
   v11[3] = &unk_1E7B80088;
-  v12 = v7;
-  v13 = self;
-  v9 = v7;
+  v12 = firstObject;
+  selfCopy = self;
+  v9 = firstObject;
   [v8 checkIsSupportedAndPresentAlertForAsset:v9 type:0 alertControllerPresenter:v14 completionHandler:v11];
 }
 
@@ -222,33 +222,33 @@ LABEL_22:
   *(v22 + 80) = 0;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  collectionCopy = collection;
   v7 = +[PUPhotoEditProtoSettings sharedInstance];
-  v8 = [v7 enableSpatialMediaEditing];
+  enableSpatialMediaEditing = [v7 enableSpatialMediaEditing];
 
-  if (([v5 isPhoto] & 1) == 0 && (!objc_msgSend(v5, "isVideo") || (objc_msgSend(v5, "isTimelapsePlaceholder") & 1) != 0 || !objc_msgSend(v5, "canPerformEditOperation:", 2)) || (objc_msgSend(v5, "px_isSharedAlbumAsset") & 1) != 0 || (objc_msgSend(v6, "isTrashBin") & 1) != 0 || (objc_msgSend(v6, "px_isDuplicatesAlbum") & 1) != 0 || objc_msgSend(v5, "sourceType") == 8)
+  if (([assetCopy isPhoto] & 1) == 0 && (!objc_msgSend(assetCopy, "isVideo") || (objc_msgSend(assetCopy, "isTimelapsePlaceholder") & 1) != 0 || !objc_msgSend(assetCopy, "canPerformEditOperation:", 2)) || (objc_msgSend(assetCopy, "px_isSharedAlbumAsset") & 1) != 0 || (objc_msgSend(collectionCopy, "isTrashBin") & 1) != 0 || (objc_msgSend(collectionCopy, "px_isDuplicatesAlbum") & 1) != 0 || objc_msgSend(assetCopy, "sourceType") == 8)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [v5 px_isSyndicatedAsset];
-    if (((v9 | v8) & 1) == 0)
+    px_isSyndicatedAsset = [assetCopy px_isSyndicatedAsset];
+    if (((px_isSyndicatedAsset | enableSpatialMediaEditing) & 1) == 0)
     {
-      if (![v5 isSpatialMedia])
+      if (![assetCopy isSpatialMedia])
       {
         v10 = 1;
         goto LABEL_14;
       }
 
-      LOBYTE(v9) = [v5 isPhoto];
+      LOBYTE(px_isSyndicatedAsset) = [assetCopy isPhoto];
     }
 
-    v10 = v9 ^ 1;
+    v10 = px_isSyndicatedAsset ^ 1;
   }
 
 LABEL_14:

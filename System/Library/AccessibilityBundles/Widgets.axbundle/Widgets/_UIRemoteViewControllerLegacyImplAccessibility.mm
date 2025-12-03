@@ -1,22 +1,22 @@
 @interface _UIRemoteViewControllerLegacyImplAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_wantsKeyboardEnvironmentEventDeferringForFocusOnScreen:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_wantsKeyboardEnvironmentEventDeferringForFocusOnScreen:(id)screen;
 @end
 
 @implementation _UIRemoteViewControllerLegacyImplAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_WGWidgetRemoteViewController" isKindOfClass:@"_UIRemoteViewController"];
-  [v3 validateClass:@"_UIRemoteViewControllerLegacyImpl" hasInstanceMethod:@"_wantsKeyboardEnvironmentEventDeferringForFocusOnScreen:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"_UIRemoteViewControllerLegacyImpl" conformsToProtocol:@"_UIRemoteViewControllerImpl"];
-  [v3 validateProtocol:@"_UIRemoteViewControllerImpl" hasRequiredInstanceMethod:@"_owningRemoteViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_WGWidgetRemoteViewController" isKindOfClass:@"_UIRemoteViewController"];
+  [validationsCopy validateClass:@"_UIRemoteViewControllerLegacyImpl" hasInstanceMethod:@"_wantsKeyboardEnvironmentEventDeferringForFocusOnScreen:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"_UIRemoteViewControllerLegacyImpl" conformsToProtocol:@"_UIRemoteViewControllerImpl"];
+  [validationsCopy validateProtocol:@"_UIRemoteViewControllerImpl" hasRequiredInstanceMethod:@"_owningRemoteViewController"];
 }
 
-- (BOOL)_wantsKeyboardEnvironmentEventDeferringForFocusOnScreen:(id)a3
+- (BOOL)_wantsKeyboardEnvironmentEventDeferringForFocusOnScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v5 = [(_UIRemoteViewControllerLegacyImplAccessibility *)self safeValueForKey:@"_owningRemoteViewController"];
   MEMORY[0x29ED42A50](@"_WGWidgetRemoteViewController");
   isKindOfClass = objc_opt_isKindOfClass();
@@ -29,10 +29,10 @@
   v13 = 0;
   objc_opt_class();
   v7 = __UIAccessibilityCastAsClass();
-  v8 = [v7 view];
-  v9 = [v8 _accessibilityIsFKARunningForFocusItem];
+  view = [v7 view];
+  _accessibilityIsFKARunningForFocusItem = [view _accessibilityIsFKARunningForFocusItem];
 
-  if (v9)
+  if (_accessibilityIsFKARunningForFocusItem)
   {
     v10 = 0;
   }
@@ -42,7 +42,7 @@
 LABEL_4:
     v12.receiver = self;
     v12.super_class = _UIRemoteViewControllerLegacyImplAccessibility;
-    v10 = [(_UIRemoteViewControllerLegacyImplAccessibility *)&v12 _wantsKeyboardEnvironmentEventDeferringForFocusOnScreen:v4];
+    v10 = [(_UIRemoteViewControllerLegacyImplAccessibility *)&v12 _wantsKeyboardEnvironmentEventDeferringForFocusOnScreen:screenCopy];
   }
 
   return v10;

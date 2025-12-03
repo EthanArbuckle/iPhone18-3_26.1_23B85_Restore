@@ -1,33 +1,33 @@
 @interface REExportedObjectValue
-- (BOOL)shouldEncodeProperty:(id)a3;
-- (REExportedObjectValue)initWithObject:(id)a3;
-- (id)exportedValueForKey:(id)a3;
+- (BOOL)shouldEncodeProperty:(id)property;
+- (REExportedObjectValue)initWithObject:(id)object;
+- (id)exportedValueForKey:(id)key;
 - (unint64_t)propertyCount;
-- (void)enumerateValuesUsingBlock:(id)a3;
+- (void)enumerateValuesUsingBlock:(id)block;
 @end
 
 @implementation REExportedObjectValue
 
-- (REExportedObjectValue)initWithObject:(id)a3
+- (REExportedObjectValue)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = REExportedObjectValue;
   v6 = [(REExportedObjectValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
     v7->_allowsEncoding = objc_opt_respondsToSelector() & 1;
   }
 
   return v7;
 }
 
-- (void)enumerateValuesUsingBlock:(id)a3
+- (void)enumerateValuesUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = +[(RESingleton *)REInterfaceCache];
     object = self->_object;
@@ -37,7 +37,7 @@
     v8[2] = __51__REExportedObjectValue_enumerateValuesUsingBlock___block_invoke;
     v8[3] = &unk_2785F9DC8;
     v8[4] = self;
-    v9 = v4;
+    v9 = blockCopy;
     [v5 enumerateExportedPropertiesOfClass:v7 usingBlock:v8];
   }
 }
@@ -67,11 +67,11 @@ void __51__REExportedObjectValue_enumerateValuesUsingBlock___block_invoke(uint64
   return v2;
 }
 
-- (BOOL)shouldEncodeProperty:(id)a3
+- (BOOL)shouldEncodeProperty:(id)property
 {
   if (self->_allowsEncoding)
   {
-    return [self->_object shouldEncodeProperty:a3];
+    return [self->_object shouldEncodeProperty:property];
   }
 
   else
@@ -80,14 +80,14 @@ void __51__REExportedObjectValue_enumerateValuesUsingBlock___block_invoke(uint64
   }
 }
 
-- (id)exportedValueForKey:(id)a3
+- (id)exportedValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   object = self->_object;
-  NSSelectorFromString(v4);
+  NSSelectorFromString(keyCopy);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [self->_object valueForKey:v4];
+    v6 = [self->_object valueForKey:keyCopy];
     if (v6)
     {
       v7 = [REExportedValue exportedValueForObject:v6];
@@ -95,12 +95,12 @@ void __51__REExportedObjectValue_enumerateValuesUsingBlock___block_invoke(uint64
       goto LABEL_7;
     }
 
-    [(REExportedValue *)&v9 exportedValueForKey:v4, self, REExportedObjectValue, exc_buf.receiver, exc_buf.super_class];
+    [(REExportedValue *)&v9 exportedValueForKey:keyCopy, self, REExportedObjectValue, exc_buf.receiver, exc_buf.super_class];
   }
 
   else
   {
-    [(REExportedValue *)&exc_buf exportedValueForKey:v4, v9.receiver, v9.super_class, self, REExportedObjectValue];
+    [(REExportedValue *)&exc_buf exportedValueForKey:keyCopy, v9.receiver, v9.super_class, self, REExportedObjectValue];
   }
   v7 = ;
 LABEL_7:

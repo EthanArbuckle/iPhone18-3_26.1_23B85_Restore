@@ -1,11 +1,11 @@
 @interface NTKSnapshotRequest
 - (NTKSnapshotLoadState)loadState;
 - (NTKSnapshotRequest)init;
-- (id)observeChangesToLoadStateWithPriority:(unint64_t)a3 callback:(id)a4;
+- (id)observeChangesToLoadStateWithPriority:(unint64_t)priority callback:(id)callback;
 - (unint64_t)priority;
-- (void)observeChangesToLoadStateWithToken:(id)a3;
-- (void)setLoadState:(id)a3;
-- (void)stopObservingChanges:(id)a3;
+- (void)observeChangesToLoadStateWithToken:(id)token;
+- (void)setLoadState:(id)state;
+- (void)stopObservingChanges:(id)changes;
 - (void)updatePriority;
 @end
 
@@ -20,9 +20,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     lock_tokens = v3->_lock_tokens;
-    v3->_lock_tokens = v4;
+    v3->_lock_tokens = weakObjectsHashTable;
 
     v6 = +[NTKSnapshotLoadState pending];
     lock_loadState = v3->_lock_loadState;
@@ -43,20 +43,20 @@
   return v3;
 }
 
-- (void)setLoadState:(id)a3
+- (void)setLoadState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_lock_loadState, a3);
-  v6 = [(NSHashTable *)self->_lock_tokens allObjects];
+  objc_storeStrong(&self->_lock_loadState, state);
+  allObjects = [(NSHashTable *)self->_lock_tokens allObjects];
   os_unfair_lock_unlock(&self->_lock);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __35__NTKSnapshotRequest_setLoadState___block_invoke;
   aBlock[3] = &unk_27877E438;
-  v7 = v6;
+  v7 = allObjects;
   v13 = v7;
-  v8 = v5;
+  v8 = stateCopy;
   v14 = v8;
   v9 = _Block_copy(aBlock);
   if ([MEMORY[0x277CCACC8] isMainThread])
@@ -119,7 +119,7 @@ void __35__NTKSnapshotRequest_setLoadState___block_invoke(uint64_t a1)
 - (void)updatePriority
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_lock_tokens allObjects];
+  allObjects = [(NSHashTable *)self->_lock_tokens allObjects];
   v5 = 0;
   v6 = &v5;
   v7 = 0x2020000000;
@@ -129,7 +129,7 @@ void __35__NTKSnapshotRequest_setLoadState___block_invoke(uint64_t a1)
   v4[2] = __36__NTKSnapshotRequest_updatePriority__block_invoke;
   v4[3] = &unk_278781D70;
   v4[4] = &v5;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [allObjects enumerateObjectsUsingBlock:v4];
   self->_lock_priority = v6[3];
   os_unfair_lock_unlock(&self->_lock);
   _Block_object_dispose(&v5, 8);
@@ -160,19 +160,19 @@ unint64_t __36__NTKSnapshotRequest_updatePriority__block_invoke(uint64_t a1, voi
   return lock_priority;
 }
 
-- (void)observeChangesToLoadStateWithToken:(id)a3
+- (void)observeChangesToLoadStateWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_tokens addObject:v4];
+  [(NSHashTable *)self->_lock_tokens addObject:tokenCopy];
   v5 = self->_lock_loadState;
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [v4 callback];
-  if (v6)
+  callback = [tokenCopy callback];
+  if (callback)
   {
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
-      (v6)[2](v6, v5);
+      (callback)[2](callback, v5);
     }
 
     else
@@ -181,31 +181,31 @@ unint64_t __36__NTKSnapshotRequest_updatePriority__block_invoke(uint64_t a1, voi
       v8 = 3221225472;
       v9 = __57__NTKSnapshotRequest_observeChangesToLoadStateWithToken___block_invoke;
       v10 = &unk_27877E570;
-      v12 = v6;
+      v12 = callback;
       v11 = v5;
       dispatch_async(MEMORY[0x277D85CD0], &v7);
     }
   }
 
-  [v4 setRequest:{self, v7, v8, v9, v10}];
+  [tokenCopy setRequest:{self, v7, v8, v9, v10}];
   [(NTKSnapshotRequest *)self updatePriority];
 }
 
-- (id)observeChangesToLoadStateWithPriority:(unint64_t)a3 callback:(id)a4
+- (id)observeChangesToLoadStateWithPriority:(unint64_t)priority callback:(id)callback
 {
-  v6 = a4;
-  v7 = [[NTKSnapshotToken alloc] initWithPriority:a3 callback:v6];
+  callbackCopy = callback;
+  v7 = [[NTKSnapshotToken alloc] initWithPriority:priority callback:callbackCopy];
 
   [(NTKSnapshotRequest *)self observeChangesToLoadStateWithToken:v7];
 
   return v7;
 }
 
-- (void)stopObservingChanges:(id)a3
+- (void)stopObservingChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_tokens removeObject:v4];
+  [(NSHashTable *)self->_lock_tokens removeObject:changesCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 

@@ -13,29 +13,29 @@
 - (CGRect)outputStyledCropRect;
 - (CGRect)primaryCaptureRect;
 - (CMISmartStyleProcessorInputOutputV1)init;
-- (__n128)setSpotlightAffineTransform:(__n128)a3;
+- (__n128)setSpotlightAffineTransform:(__n128)transform;
 - (__n128)spotlightAffineTransform;
 - (void)dealloc;
-- (void)setInputDeltaMapPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputGainMapPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputLearningTargetPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputLearningTargetThumbnailPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputLinearPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputPersonMaskPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputReferenceForDeltaMapComputationPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputSRLPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputSkinMaskPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputSkyMaskPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputSmartStyle:(id)a3;
-- (void)setInputStyleCoefficientsPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputUnstyledPixelBuffer:(__CVBuffer *)a3;
-- (void)setInputUnstyledThumbnailPixelBuffer:(__CVBuffer *)a3;
-- (void)setOutputDeltaMapPixelBuffer:(__CVBuffer *)a3;
-- (void)setOutputGainMapPixelBuffer:(__CVBuffer *)a3;
-- (void)setOutputLearnedStyleCoefficientsPixelBuffer:(__CVBuffer *)a3;
-- (void)setOutputSmallLightMapPixelBuffer:(__CVBuffer *)a3;
-- (void)setOutputSmallLinearLightMapPixelBuffer:(__CVBuffer *)a3;
-- (void)setOutputStyledPixelBuffer:(__CVBuffer *)a3;
+- (void)setInputDeltaMapPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputGainMapPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputLearningTargetPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputLearningTargetThumbnailPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputLinearPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputPersonMaskPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputReferenceForDeltaMapComputationPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputSRLPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputSkinMaskPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputSkyMaskPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputSmartStyle:(id)style;
+- (void)setInputStyleCoefficientsPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputUnstyledPixelBuffer:(__CVBuffer *)buffer;
+- (void)setInputUnstyledThumbnailPixelBuffer:(__CVBuffer *)buffer;
+- (void)setOutputDeltaMapPixelBuffer:(__CVBuffer *)buffer;
+- (void)setOutputGainMapPixelBuffer:(__CVBuffer *)buffer;
+- (void)setOutputLearnedStyleCoefficientsPixelBuffer:(__CVBuffer *)buffer;
+- (void)setOutputSmallLightMapPixelBuffer:(__CVBuffer *)buffer;
+- (void)setOutputSmallLinearLightMapPixelBuffer:(__CVBuffer *)buffer;
+- (void)setOutputStyledPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation CMISmartStyleProcessorInputOutputV1
@@ -187,22 +187,22 @@
   [(CMISmartStyleProcessorInputOutputV1 *)&v22 dealloc];
 }
 
-- (void)setInputSmartStyle:(id)a3
+- (void)setInputSmartStyle:(id)style
 {
-  v5 = a3;
-  if ([v5 smartStyleVersion] == 1)
+  styleCopy = style;
+  if ([styleCopy smartStyleVersion] == 1)
   {
-    objc_storeStrong(&self->_inputSmartStyle, a3);
+    objc_storeStrong(&self->_inputSmartStyle, style);
   }
 }
 
-- (void)setInputUnstyledPixelBuffer:(__CVBuffer *)a3
+- (void)setInputUnstyledPixelBuffer:(__CVBuffer *)buffer
 {
   inputUnstyledPixelBuffer = self->_inputUnstyledPixelBuffer;
-  self->_inputUnstyledPixelBuffer = a3;
-  if (a3)
+  self->_inputUnstyledPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputUnstyledPixelBuffer)
@@ -212,13 +212,13 @@
   }
 }
 
-- (void)setInputUnstyledThumbnailPixelBuffer:(__CVBuffer *)a3
+- (void)setInputUnstyledThumbnailPixelBuffer:(__CVBuffer *)buffer
 {
   inputUnstyledThumbnailPixelBuffer = self->_inputUnstyledThumbnailPixelBuffer;
-  self->_inputUnstyledThumbnailPixelBuffer = a3;
-  if (a3)
+  self->_inputUnstyledThumbnailPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputUnstyledThumbnailPixelBuffer)
@@ -228,13 +228,13 @@
   }
 }
 
-- (void)setInputLearningTargetPixelBuffer:(__CVBuffer *)a3
+- (void)setInputLearningTargetPixelBuffer:(__CVBuffer *)buffer
 {
   inputLearningTargetPixelBuffer = self->_inputLearningTargetPixelBuffer;
-  self->_inputLearningTargetPixelBuffer = a3;
-  if (a3)
+  self->_inputLearningTargetPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputLearningTargetPixelBuffer)
@@ -244,13 +244,13 @@
   }
 }
 
-- (void)setInputLearningTargetThumbnailPixelBuffer:(__CVBuffer *)a3
+- (void)setInputLearningTargetThumbnailPixelBuffer:(__CVBuffer *)buffer
 {
   inputLearningTargetThumbnailPixelBuffer = self->_inputLearningTargetThumbnailPixelBuffer;
-  self->_inputLearningTargetThumbnailPixelBuffer = a3;
-  if (a3)
+  self->_inputLearningTargetThumbnailPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputLearningTargetThumbnailPixelBuffer)
@@ -260,13 +260,13 @@
   }
 }
 
-- (void)setInputLinearPixelBuffer:(__CVBuffer *)a3
+- (void)setInputLinearPixelBuffer:(__CVBuffer *)buffer
 {
   inputLinearPixelBuffer = self->_inputLinearPixelBuffer;
-  self->_inputLinearPixelBuffer = a3;
-  if (a3)
+  self->_inputLinearPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputLinearPixelBuffer)
@@ -276,13 +276,13 @@
   }
 }
 
-- (void)setInputGainMapPixelBuffer:(__CVBuffer *)a3
+- (void)setInputGainMapPixelBuffer:(__CVBuffer *)buffer
 {
   inputGainMapPixelBuffer = self->_inputGainMapPixelBuffer;
-  self->_inputGainMapPixelBuffer = a3;
-  if (a3)
+  self->_inputGainMapPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputGainMapPixelBuffer)
@@ -292,13 +292,13 @@
   }
 }
 
-- (void)setInputDeltaMapPixelBuffer:(__CVBuffer *)a3
+- (void)setInputDeltaMapPixelBuffer:(__CVBuffer *)buffer
 {
   inputDeltaMapPixelBuffer = self->_inputDeltaMapPixelBuffer;
-  self->_inputDeltaMapPixelBuffer = a3;
-  if (a3)
+  self->_inputDeltaMapPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputDeltaMapPixelBuffer)
@@ -308,13 +308,13 @@
   }
 }
 
-- (void)setInputReferenceForDeltaMapComputationPixelBuffer:(__CVBuffer *)a3
+- (void)setInputReferenceForDeltaMapComputationPixelBuffer:(__CVBuffer *)buffer
 {
   inputReferenceForDeltaMapComputationPixelBuffer = self->_inputReferenceForDeltaMapComputationPixelBuffer;
-  self->_inputReferenceForDeltaMapComputationPixelBuffer = a3;
-  if (a3)
+  self->_inputReferenceForDeltaMapComputationPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputReferenceForDeltaMapComputationPixelBuffer)
@@ -324,13 +324,13 @@
   }
 }
 
-- (void)setInputPersonMaskPixelBuffer:(__CVBuffer *)a3
+- (void)setInputPersonMaskPixelBuffer:(__CVBuffer *)buffer
 {
   inputPersonMaskPixelBuffer = self->_inputPersonMaskPixelBuffer;
-  self->_inputPersonMaskPixelBuffer = a3;
-  if (a3)
+  self->_inputPersonMaskPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputPersonMaskPixelBuffer)
@@ -340,13 +340,13 @@
   }
 }
 
-- (void)setInputSkinMaskPixelBuffer:(__CVBuffer *)a3
+- (void)setInputSkinMaskPixelBuffer:(__CVBuffer *)buffer
 {
   inputSkinMaskPixelBuffer = self->_inputSkinMaskPixelBuffer;
-  self->_inputSkinMaskPixelBuffer = a3;
-  if (a3)
+  self->_inputSkinMaskPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputSkinMaskPixelBuffer)
@@ -356,13 +356,13 @@
   }
 }
 
-- (void)setInputSkyMaskPixelBuffer:(__CVBuffer *)a3
+- (void)setInputSkyMaskPixelBuffer:(__CVBuffer *)buffer
 {
   inputSkyMaskPixelBuffer = self->_inputSkyMaskPixelBuffer;
-  self->_inputSkyMaskPixelBuffer = a3;
-  if (a3)
+  self->_inputSkyMaskPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputSkyMaskPixelBuffer)
@@ -372,13 +372,13 @@
   }
 }
 
-- (void)setInputSRLPixelBuffer:(__CVBuffer *)a3
+- (void)setInputSRLPixelBuffer:(__CVBuffer *)buffer
 {
   inputSRLPixelBuffer = self->_inputSRLPixelBuffer;
-  self->_inputSRLPixelBuffer = a3;
-  if (a3)
+  self->_inputSRLPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputSRLPixelBuffer)
@@ -388,13 +388,13 @@
   }
 }
 
-- (void)setInputStyleCoefficientsPixelBuffer:(__CVBuffer *)a3
+- (void)setInputStyleCoefficientsPixelBuffer:(__CVBuffer *)buffer
 {
   inputStyleCoefficientsPixelBuffer = self->_inputStyleCoefficientsPixelBuffer;
-  self->_inputStyleCoefficientsPixelBuffer = a3;
-  if (a3)
+  self->_inputStyleCoefficientsPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (inputStyleCoefficientsPixelBuffer)
@@ -404,13 +404,13 @@
   }
 }
 
-- (void)setOutputStyledPixelBuffer:(__CVBuffer *)a3
+- (void)setOutputStyledPixelBuffer:(__CVBuffer *)buffer
 {
   outputStyledPixelBuffer = self->_outputStyledPixelBuffer;
-  self->_outputStyledPixelBuffer = a3;
-  if (a3)
+  self->_outputStyledPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (outputStyledPixelBuffer)
@@ -420,13 +420,13 @@
   }
 }
 
-- (void)setOutputGainMapPixelBuffer:(__CVBuffer *)a3
+- (void)setOutputGainMapPixelBuffer:(__CVBuffer *)buffer
 {
   outputGainMapPixelBuffer = self->_outputGainMapPixelBuffer;
-  self->_outputGainMapPixelBuffer = a3;
-  if (a3)
+  self->_outputGainMapPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (outputGainMapPixelBuffer)
@@ -436,13 +436,13 @@
   }
 }
 
-- (void)setOutputSmallLightMapPixelBuffer:(__CVBuffer *)a3
+- (void)setOutputSmallLightMapPixelBuffer:(__CVBuffer *)buffer
 {
   outputSmallLightMapPixelBuffer = self->_outputSmallLightMapPixelBuffer;
-  self->_outputSmallLightMapPixelBuffer = a3;
-  if (a3)
+  self->_outputSmallLightMapPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (outputSmallLightMapPixelBuffer)
@@ -452,13 +452,13 @@
   }
 }
 
-- (void)setOutputSmallLinearLightMapPixelBuffer:(__CVBuffer *)a3
+- (void)setOutputSmallLinearLightMapPixelBuffer:(__CVBuffer *)buffer
 {
   outputSmallLinearLightMapPixelBuffer = self->_outputSmallLinearLightMapPixelBuffer;
-  self->_outputSmallLinearLightMapPixelBuffer = a3;
-  if (a3)
+  self->_outputSmallLinearLightMapPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (outputSmallLinearLightMapPixelBuffer)
@@ -468,13 +468,13 @@
   }
 }
 
-- (void)setOutputLearnedStyleCoefficientsPixelBuffer:(__CVBuffer *)a3
+- (void)setOutputLearnedStyleCoefficientsPixelBuffer:(__CVBuffer *)buffer
 {
   outputLearnedStyleCoefficientsPixelBuffer = self->_outputLearnedStyleCoefficientsPixelBuffer;
-  self->_outputLearnedStyleCoefficientsPixelBuffer = a3;
-  if (a3)
+  self->_outputLearnedStyleCoefficientsPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (outputLearnedStyleCoefficientsPixelBuffer)
@@ -484,13 +484,13 @@
   }
 }
 
-- (void)setOutputDeltaMapPixelBuffer:(__CVBuffer *)a3
+- (void)setOutputDeltaMapPixelBuffer:(__CVBuffer *)buffer
 {
   outputDeltaMapPixelBuffer = self->_outputDeltaMapPixelBuffer;
-  self->_outputDeltaMapPixelBuffer = a3;
-  if (a3)
+  self->_outputDeltaMapPixelBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if (outputDeltaMapPixelBuffer)
@@ -671,16 +671,16 @@
 
 - (__n128)spotlightAffineTransform
 {
-  result = *(a1 + 688);
-  v2 = *(a1 + 704);
-  v3 = *(a1 + 720);
+  result = *(self + 688);
+  v2 = *(self + 704);
+  v3 = *(self + 720);
   return result;
 }
 
-- (__n128)setSpotlightAffineTransform:(__n128)a3
+- (__n128)setSpotlightAffineTransform:(__n128)transform
 {
   result[43] = a2;
-  result[44] = a3;
+  result[44] = transform;
   result[45] = a4;
   return result;
 }

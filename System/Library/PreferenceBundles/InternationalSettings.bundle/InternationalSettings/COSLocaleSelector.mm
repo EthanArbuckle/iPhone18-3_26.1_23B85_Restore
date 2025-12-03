@@ -1,28 +1,28 @@
 @interface COSLocaleSelector
-- (COSLocaleSelector)initWithInternationalController:(id)a3;
+- (COSLocaleSelector)initWithInternationalController:(id)controller;
 - (id)availableLocaleIdentifiers;
 - (id)currentLocale;
 - (void)postLocaleChangedNotification;
 - (void)resetTimeFormat;
-- (void)setLocale:(id)a3;
-- (void)setLocaleFromCalendarID:(id)a3;
-- (void)setLocaleFromLanguageIdentifier:(id)a3;
-- (void)setLocaleOnly:(id)a3;
-- (void)updateLocale:(id)a3;
+- (void)setLocale:(id)locale;
+- (void)setLocaleFromCalendarID:(id)d;
+- (void)setLocaleFromLanguageIdentifier:(id)identifier;
+- (void)setLocaleOnly:(id)only;
+- (void)updateLocale:(id)locale;
 @end
 
 @implementation COSLocaleSelector
 
-- (COSLocaleSelector)initWithInternationalController:(id)a3
+- (COSLocaleSelector)initWithInternationalController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = COSLocaleSelector;
   v6 = [(COSLocaleSelector *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internationalController, a3);
+    objc_storeStrong(&v6->_internationalController, controller);
     v8 = [[NPSDomainAccessor alloc] initWithDomain:@".GlobalPreferences"];
     gizmoGlobalDomain = v7->_gizmoGlobalDomain;
     v7->_gizmoGlobalDomain = v8;
@@ -35,9 +35,9 @@
   return v7;
 }
 
-- (void)setLocaleOnly:(id)a3
+- (void)setLocaleOnly:(id)only
 {
-  [(COSLocaleSelector *)self updateLocale:a3];
+  [(COSLocaleSelector *)self updateLocale:only];
 
   [(COSLocaleSelector *)self postLocaleChangedNotification];
 }
@@ -49,72 +49,72 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.nano.watchlocalechanged", 0, 0, 1u);
 }
 
-- (void)updateLocale:(id)a3
+- (void)updateLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  [v5 setObject:v4 forKey:@"AppleLocale"];
+  localeCopy = locale;
+  gizmoGlobalDomain = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  [gizmoGlobalDomain setObject:localeCopy forKey:@"AppleLocale"];
 
-  v6 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  v7 = [v6 synchronize];
+  gizmoGlobalDomain2 = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  synchronize = [gizmoGlobalDomain2 synchronize];
 
-  v8 = [(COSLocaleSelector *)self syncManager];
-  v9 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  v10 = [v9 domain];
+  syncManager = [(COSLocaleSelector *)self syncManager];
+  gizmoGlobalDomain3 = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  domain = [gizmoGlobalDomain3 domain];
   v13 = @"AppleLocale";
   v11 = [NSArray arrayWithObjects:&v13 count:1];
   v12 = [NSSet setWithArray:v11];
-  [v8 synchronizeNanoDomain:v10 keys:v12];
+  [syncManager synchronizeNanoDomain:domain keys:v12];
 }
 
 - (void)resetTimeFormat
 {
-  v3 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  [v3 setObject:0 forKey:@"AppleICUForce12HourTime"];
+  gizmoGlobalDomain = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  [gizmoGlobalDomain setObject:0 forKey:@"AppleICUForce12HourTime"];
 
-  v4 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  v5 = [v4 synchronize];
+  gizmoGlobalDomain2 = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  synchronize = [gizmoGlobalDomain2 synchronize];
 
-  v6 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  [v6 setObject:0 forKey:@"AppleICUForce24HourTime"];
+  gizmoGlobalDomain3 = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  [gizmoGlobalDomain3 setObject:0 forKey:@"AppleICUForce24HourTime"];
 
   v12[0] = @"AppleICUForce24HourTime";
   v12[1] = @"AppleICUForce12HourTime";
   v7 = [NSArray arrayWithObjects:v12 count:2];
-  v8 = [(COSLocaleSelector *)self syncManager];
-  v9 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  v10 = [v9 domain];
+  syncManager = [(COSLocaleSelector *)self syncManager];
+  gizmoGlobalDomain4 = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  domain = [gizmoGlobalDomain4 domain];
   v11 = [NSSet setWithArray:v7];
-  [v8 synchronizeNanoDomain:v10 keys:v11];
+  [syncManager synchronizeNanoDomain:domain keys:v11];
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  [(COSLocaleSelector *)self updateLocale:a3];
+  [(COSLocaleSelector *)self updateLocale:locale];
   [(COSLocaleSelector *)self resetTimeFormat];
 
   [(COSLocaleSelector *)self postLocaleChangedNotification];
 }
 
-- (void)setLocaleFromCalendarID:(id)a3
+- (void)setLocaleFromCalendarID:(id)d
 {
-  v11 = a3;
-  v4 = [(COSLocaleSelector *)self currentLocale];
-  v5 = [v4 localeIdentifier];
+  dCopy = d;
+  currentLocale = [(COSLocaleSelector *)self currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v6 = [NSLocale componentsFromLocaleIdentifier:v5];
+  v6 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier];
   v7 = [NSMutableDictionary dictionaryWithDictionary:v6];
-  v8 = [(COSLocaleSelector *)self internationalController];
-  v9 = [v8 defaultCalendarForLocaleID:v5];
+  internationalController = [(COSLocaleSelector *)self internationalController];
+  v9 = [internationalController defaultCalendarForLocaleID:localeIdentifier];
 
-  if ([v9 isEqual:v11])
+  if ([v9 isEqual:dCopy])
   {
     [v7 removeObjectForKey:@"calendar"];
   }
 
   else
   {
-    [v7 setObject:v11 forKey:@"calendar"];
+    [v7 setObject:dCopy forKey:@"calendar"];
   }
 
   if (([v6 isEqual:v7] & 1) == 0)
@@ -122,7 +122,7 @@
     v10 = [NSLocale canonicalLocaleIdentifierFromComponents:v7];
 
     [(COSLocaleSelector *)self setLocaleOnly:v10];
-    v5 = v10;
+    localeIdentifier = v10;
   }
 }
 
@@ -139,11 +139,11 @@
 
 - (id)currentLocale
 {
-  v3 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  v4 = [v3 synchronize];
+  gizmoGlobalDomain = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  synchronize = [gizmoGlobalDomain synchronize];
 
-  v5 = [(COSLocaleSelector *)self gizmoGlobalDomain];
-  v6 = [v5 objectForKey:@"AppleLocale"];
+  gizmoGlobalDomain2 = [(COSLocaleSelector *)self gizmoGlobalDomain];
+  v6 = [gizmoGlobalDomain2 objectForKey:@"AppleLocale"];
 
   if (v6)
   {
@@ -169,13 +169,13 @@
   return v8;
 }
 
-- (void)setLocaleFromLanguageIdentifier:(id)a3
+- (void)setLocaleFromLanguageIdentifier:(id)identifier
 {
-  v12 = a3;
-  v4 = [(COSLocaleSelector *)self currentLocale];
-  v5 = [v4 localeIdentifier];
+  identifierCopy = identifier;
+  currentLocale = [(COSLocaleSelector *)self currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v6 = [NSLocale canonicalLocaleIdentifier:v5 withNewLanguageIdentifier:v12];
+  v6 = [NSLocale canonicalLocaleIdentifier:localeIdentifier withNewLanguageIdentifier:identifierCopy];
   internationalController = self->_internationalController;
   if (!internationalController)
   {
@@ -190,7 +190,7 @@
   [v10 removeObjectForKey:@"numbers"];
   v11 = [(COSInternationalController *)self->_internationalController canonicalLocaleIdentifierWithValidCalendarForComponents:v10];
 
-  if (([v11 isEqualToString:v5] & 1) == 0)
+  if (([v11 isEqualToString:localeIdentifier] & 1) == 0)
   {
     [(COSLocaleSelector *)self setLocale:v11];
   }

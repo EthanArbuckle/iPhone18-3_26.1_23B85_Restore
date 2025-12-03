@@ -1,17 +1,17 @@
 @interface TableDrivenLowTempController
-- (BOOL)populateIntArray:(int *)a3 params:(id)a4 key:(id)a5 expectedCount:(unint64_t)a6 assertArraySorting:(BOOL)a7;
-- (TableDrivenLowTempController)initWithParams:(id)a3;
-- (int)mitigationIndexForBatteryTemperature:(int)a3 stateOfCharge:(int)a4 batteryRaValue:(int)a5;
+- (BOOL)populateIntArray:(int *)array params:(id)params key:(id)key expectedCount:(unint64_t)count assertArraySorting:(BOOL)sorting;
+- (TableDrivenLowTempController)initWithParams:(id)params;
+- (int)mitigationIndexForBatteryTemperature:(int)temperature stateOfCharge:(int)charge batteryRaValue:(int)value;
 @end
 
 @implementation TableDrivenLowTempController
 
-- (TableDrivenLowTempController)initWithParams:(id)a3
+- (TableDrivenLowTempController)initWithParams:(id)params
 {
   *&self->_tempThresholdHysteresis = 0xFFFFFFFF00000000;
-  sub_100002A20(a3, @"tempLimitHysteresis", kCFNumberIntType, &self->_tempThresholdHysteresis);
-  v5 = [a3 valueForKey:@"tempLimits"];
-  v6 = [a3 valueForKey:@"chargeLimits"];
+  sub_100002A20(params, @"tempLimitHysteresis", kCFNumberIntType, &self->_tempThresholdHysteresis);
+  v5 = [params valueForKey:@"tempLimits"];
+  v6 = [params valueForKey:@"chargeLimits"];
   if (v5)
   {
     v7 = v6;
@@ -50,13 +50,13 @@
     if (chargeThresholdCount >= 1)
     {
       self->_responseTableCellCount = temperatureThresholdCount + 1 + (temperatureThresholdCount + 1) * chargeThresholdCount;
-      [TableDrivenLowTempController populateIntArray:"populateIntArray:params:key:expectedCount:assertArraySorting:" params:self->_temperatureThresholds key:a3 expectedCount:@"tempLimits" assertArraySorting:?];
-      [(TableDrivenLowTempController *)self populateIntArray:self->_chargeThresholds params:a3 key:@"chargeLimits" expectedCount:self->_chargeThresholdCount assertArraySorting:1];
-      [(TableDrivenLowTempController *)self populateTableValues:a3 expectedCount:self->_responseTableCellCount assertArraySorting:0];
+      [TableDrivenLowTempController populateIntArray:"populateIntArray:params:key:expectedCount:assertArraySorting:" params:self->_temperatureThresholds key:params expectedCount:@"tempLimits" assertArraySorting:?];
+      [(TableDrivenLowTempController *)self populateIntArray:self->_chargeThresholds params:params key:@"chargeLimits" expectedCount:self->_chargeThresholdCount assertArraySorting:1];
+      [(TableDrivenLowTempController *)self populateTableValues:params expectedCount:self->_responseTableCellCount assertArraySorting:0];
     }
   }
 
-  v12 = [a3 valueForKey:@"RaLimits"];
+  v12 = [params valueForKey:@"RaLimits"];
   if (v12)
   {
     v13 = [v12 count];
@@ -65,7 +65,7 @@
     {
       if (v13 >= 1)
       {
-        [(TableDrivenLowTempController *)self populateIntArray:self->_batteryRaThresholds params:a3 key:@"RaLimits" expectedCount:v13 & 0x7FFFFFFF assertArraySorting:1];
+        [(TableDrivenLowTempController *)self populateIntArray:self->_batteryRaThresholds params:params key:@"RaLimits" expectedCount:v13 & 0x7FFFFFFF assertArraySorting:1];
         if (byte_1000AB2F8 == 1)
         {
           v14 = qword_1000AB718;
@@ -100,19 +100,19 @@
   return self;
 }
 
-- (BOOL)populateIntArray:(int *)a3 params:(id)a4 key:(id)a5 expectedCount:(unint64_t)a6 assertArraySorting:(BOOL)a7
+- (BOOL)populateIntArray:(int *)array params:(id)params key:(id)key expectedCount:(unint64_t)count assertArraySorting:(BOOL)sorting
 {
-  if (a3 && a4 && a5)
+  if (array && params && key)
   {
-    v7 = a7;
-    v9 = a3;
-    v10 = [a4 valueForKey:a5];
+    sortingCopy = sorting;
+    arrayCopy = array;
+    v10 = [params valueForKey:key];
     if (v10)
     {
       v11 = v10;
-      if ([v10 count] == a6)
+      if ([v10 count] == count)
       {
-        if (a6)
+        if (count)
         {
           v12 = 0;
           v13 = -32768;
@@ -121,11 +121,11 @@
             v14 = [v11 objectAtIndex:v12];
             if (v14)
             {
-              v15 = [v14 intValue];
-              if (v7)
+              intValue = [v14 intValue];
+              if (sortingCopy)
               {
-                v16 = v15 <= v13;
-                v13 = v15;
+                v16 = intValue <= v13;
+                v13 = intValue;
                 if (v16)
                 {
                   sub_10005533C(&v19);
@@ -133,13 +133,13 @@
                 }
               }
 
-              *v9++ = v15;
+              *arrayCopy++ = intValue;
             }
 
             ++v12;
           }
 
-          while (a6 != v12);
+          while (count != v12);
         }
 
         return 1;
@@ -166,7 +166,7 @@
   }
 }
 
-- (int)mitigationIndexForBatteryTemperature:(int)a3 stateOfCharge:(int)a4 batteryRaValue:(int)a5
+- (int)mitigationIndexForBatteryTemperature:(int)temperature stateOfCharge:(int)charge batteryRaValue:(int)value
 {
   temperatureThresholdCount = self->_temperatureThresholdCount;
   if (temperatureThresholdCount <= 0)
@@ -186,7 +186,7 @@ LABEL_7:
         v7 += self->_tempThresholdHysteresis;
       }
 
-      if (v7 > a3)
+      if (v7 > temperature)
       {
         break;
       }
@@ -207,7 +207,7 @@ LABEL_7:
   else
   {
     v9 = 0;
-    while (self->_batteryRaThresholds[v9] <= a5)
+    while (self->_batteryRaThresholds[v9] <= value)
     {
       if (batteryRaThresholdCount == ++v9)
       {
@@ -234,7 +234,7 @@ LABEL_20:
   else
   {
     v12 = 0;
-    while (self->_chargeThresholds[v12] <= a4)
+    while (self->_chargeThresholds[v12] <= charge)
     {
       if (chargeThresholdCount == ++v12)
       {

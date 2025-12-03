@@ -1,49 +1,49 @@
 @interface PUAssetExplorerReviewScreenViewController
-- (BOOL)assetExplorerReviewScreenActionManager:(id)a3 canPerformActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6;
-- (BOOL)assetExplorerReviewScreenActionManager:(id)a3 shouldEnableActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6;
+- (BOOL)assetExplorerReviewScreenActionManager:(id)manager canPerformActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
+- (BOOL)assetExplorerReviewScreenActionManager:(id)manager shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
 - (PUAssetExplorerAnalytics)assetExplorerAnalytics;
-- (PUAssetExplorerReviewScreenViewController)initWithDataSourceManager:(id)a3 mediaProvider:(id)a4 reviewAssetProvider:(id)a5 initialIndexPath:(id)a6 initialAssetReference:(id)a7 initialSelectedAssetUUIDs:(id)a8 initialDisabledLivePhotoAssetUUIDs:(id)a9 selectionCountLimit:(id)a10 sourceType:(unint64_t)a11 lowMemoryMode:(BOOL)a12 reviewBarsModel:(id)a13 resizeTaskDescriptorViewModel:(id)a14 options:(unint64_t)a15;
+- (PUAssetExplorerReviewScreenViewController)initWithDataSourceManager:(id)manager mediaProvider:(id)provider reviewAssetProvider:(id)assetProvider initialIndexPath:(id)path initialAssetReference:(id)reference initialSelectedAssetUUIDs:(id)ds initialDisabledLivePhotoAssetUUIDs:(id)iDs selectionCountLimit:(id)self0 sourceType:(unint64_t)self1 lowMemoryMode:(BOOL)self2 reviewBarsModel:(id)self3 resizeTaskDescriptorViewModel:(id)self4 options:(unint64_t)self5;
 - (PUAssetExplorerReviewScreenViewControllerDelegate)delegate;
 - (id)_createBrowsingSessionIfNecessary;
-- (id)_createProgressControllerForRemainingRequests:(id)a3;
-- (id)_createReviewAssetRequestForAsset:(id)a3;
-- (id)_fileSizeMenuForSelectedUUIDs:(id)a3;
+- (id)_createProgressControllerForRemainingRequests:(id)requests;
+- (id)_createReviewAssetRequestForAsset:(id)asset;
+- (id)_fileSizeMenuForSelectedUUIDs:(id)ds;
 - (id)_getSelectedSubstituteAssetsAndRemoveFilesForUnneededAssets;
 - (id)_remainingReviewAssetRequests;
-- (id)_reviewAssetRequestForAssetUUID:(id)a3;
-- (id)_substituteAssetForUUID:(id)a3;
-- (id)_titleForSelectedAssetUUIDs:(id)a3;
+- (id)_reviewAssetRequestForAssetUUID:(id)d;
+- (id)_substituteAssetForUUID:(id)d;
+- (id)_titleForSelectedAssetUUIDs:(id)ds;
 - (id)childViewControllerForStatusBarHidden;
 - (id)childViewControllerForStatusBarStyle;
-- (id)reviewAssetProviderRequestForDisplayAsset:(id)a3;
-- (void)_cancelReviewAssetRequestForAssetUUID:(id)a3;
+- (id)reviewAssetProviderRequestForDisplayAsset:(id)asset;
+- (void)_cancelReviewAssetRequestForAssetUUID:(id)d;
 - (void)_cancelReviewAssetRequests;
 - (void)_deleteAllLinkedFiles;
-- (void)_handleCompletionAction:(unint64_t)a3;
-- (void)_handleProgressControllerCanceled:(id)a3;
-- (void)_handleReviewAssetRequest:(id)a3 completedWithSuccess:(BOOL)a4 canceled:(BOOL)a5 error:(id)a6 reviewAsset:(id)a7;
+- (void)_handleCompletionAction:(unint64_t)action;
+- (void)_handleProgressControllerCanceled:(id)canceled;
+- (void)_handleReviewAssetRequest:(id)request completedWithSuccess:(BOOL)success canceled:(BOOL)canceled error:(id)error reviewAsset:(id)asset;
 - (void)_handleSelectionChanged;
 - (void)_performCancelAction;
-- (void)_performCompletionAction:(unint64_t)a3;
-- (void)_performCompletionActionSteps:(unint64_t)a3;
+- (void)_performCompletionAction:(unint64_t)action;
+- (void)_performCompletionActionSteps:(unint64_t)steps;
 - (void)_performRetakeAction;
-- (void)_presentConfidentialityAlertWithConfirmAction:(id)a3 abortAction:(id)a4;
-- (void)_requestReviewAssetForAsset:(id)a3;
-- (void)_setSubstituteAsset:(id)a3;
+- (void)_presentConfidentialityAlertWithConfirmAction:(id)action abortAction:(id)abortAction;
+- (void)_requestReviewAssetForAsset:(id)asset;
+- (void)_setSubstituteAsset:(id)asset;
 - (void)_showFailedReviewAssetRequestAlert;
-- (void)_updateForCompletedReviewAssetRequest:(id)a3;
-- (void)_updateWithSubstituteAsset:(id)a3 shouldSelect:(BOOL)a4;
-- (void)assetExplorerReviewScreenActionManager:(id)a3 didPressSelectForAsset:(id)a4;
-- (void)assetExplorerReviewScreenActionManager:(id)a3 didToggleLivePhoto:(id)a4;
-- (void)assetExplorerReviewScreenActionManagerDidPressDeselectAll:(id)a3;
-- (void)assetExplorerReviewScreenActionManagerDidPressSelectAll:(id)a3;
+- (void)_updateForCompletedReviewAssetRequest:(id)request;
+- (void)_updateWithSubstituteAsset:(id)asset shouldSelect:(BOOL)select;
+- (void)assetExplorerReviewScreenActionManager:(id)manager didPressSelectForAsset:(id)asset;
+- (void)assetExplorerReviewScreenActionManager:(id)manager didToggleLivePhoto:(id)photo;
+- (void)assetExplorerReviewScreenActionManagerDidPressDeselectAll:(id)all;
+- (void)assetExplorerReviewScreenActionManagerDidPressSelectAll:(id)all;
 - (void)loadView;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photoEditController:(id)a3 didFinishEditingSessionForAsset:(id)a4 completed:(BOOL)a5;
-- (void)photoMarkupController:(id)a3 didFinishWithSavedAsset:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photoEditController:(id)controller didFinishEditingSessionForAsset:(id)asset completed:(BOOL)completed;
+- (void)photoMarkupController:(id)controller didFinishWithSavedAsset:(id)asset;
+- (void)setDelegate:(id)delegate;
+- (void)viewModel:(id)model didChange:(id)change;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUAssetExplorerReviewScreenViewController
@@ -55,31 +55,31 @@
   return WeakRetained;
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  if ([a4 currentAssetDidChange])
+  if ([change currentAssetDidChange])
   {
-    v9 = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
-    v5 = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
-    v6 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-    v7 = [v6 selectionManager];
-    v8 = [v7 selectedUUIDs];
-    [v9 sendEvent:@"PUAssetExplorerAnalyticsEventScroll" view:2 source:v5 currentAssetCount:{objc_msgSend(v8, "count")}];
+    assetExplorerAnalytics = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
+    sourceType = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
+    _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+    selectionManager = [_actionManager selectionManager];
+    selectedUUIDs = [selectionManager selectedUUIDs];
+    [assetExplorerAnalytics sendEvent:@"PUAssetExplorerAnalyticsEventScroll" view:2 source:sourceType currentAssetCount:{objc_msgSend(selectedUUIDs, "count")}];
   }
 }
 
-- (void)_presentConfidentialityAlertWithConfirmAction:(id)a3 abortAction:(id)a4
+- (void)_presentConfidentialityAlertWithConfirmAction:(id)action abortAction:(id)abortAction
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69DC648];
-  v7 = a4;
-  v8 = a3;
+  abortActionCopy = abortAction;
+  actionCopy = action;
   v9 = PULocalizedString(@"OK");
-  v10 = [v6 actionWithTitle:v9 style:0 handler:v8];
+  v10 = [v6 actionWithTitle:v9 style:0 handler:actionCopy];
 
   v11 = MEMORY[0x1E69DC648];
   v12 = PULocalizedString(@"CANCEL");
-  v13 = [v11 actionWithTitle:v12 style:0 handler:v7];
+  v13 = [v11 actionWithTitle:v12 style:0 handler:abortActionCopy];
 
   v14 = MEMORY[0x1E69C3A10];
   v17[0] = v10;
@@ -90,32 +90,32 @@
   [(PUAssetExplorerReviewScreenViewController *)self presentViewController:v16 animated:1 completion:0];
 }
 
-- (void)_performCompletionActionSteps:(unint64_t)a3
+- (void)_performCompletionActionSteps:(unint64_t)steps
 {
-  v22 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v5 = [v22 selectionManager];
-  v6 = [v5 selectedUUIDs];
-  v7 = [v22 disableLivePhotosSelectionManager];
-  v8 = [v7 selectedUUIDs];
-  v9 = [(PUAssetExplorerReviewScreenViewController *)self _getSelectedSubstituteAssetsAndRemoveFilesForUnneededAssets];
-  v10 = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
-  [v10 detachFromOriginalDataSourceManager];
+  _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager = [_actionManager selectionManager];
+  selectedUUIDs = [selectionManager selectedUUIDs];
+  disableLivePhotosSelectionManager = [_actionManager disableLivePhotosSelectionManager];
+  selectedUUIDs2 = [disableLivePhotosSelectionManager selectedUUIDs];
+  _getSelectedSubstituteAssetsAndRemoveFilesForUnneededAssets = [(PUAssetExplorerReviewScreenViewController *)self _getSelectedSubstituteAssetsAndRemoveFilesForUnneededAssets];
+  _reviewDataSourceManager = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
+  [_reviewDataSourceManager detachFromOriginalDataSourceManager];
 
   if (self->_delegateFlags.respondsToDidPerformCompletionAction)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained assetExplorerReviewScreenViewController:self didPerformCompletionAction:a3 withSelectedAssetUUIDs:v6 livePhotoDisabledAssetUUIDs:v8 substituteAssetsByUUID:v9];
+    [WeakRetained assetExplorerReviewScreenViewController:self didPerformCompletionAction:steps withSelectedAssetUUIDs:selectedUUIDs livePhotoDisabledAssetUUIDs:selectedUUIDs2 substituteAssetsByUUID:_getSelectedSubstituteAssetsAndRemoveFilesForUnneededAssets];
   }
 
-  v20 = v5;
-  v12 = v6;
-  if (!a3)
+  v20 = selectionManager;
+  v12 = selectedUUIDs;
+  if (!steps)
   {
     v13 = PUAssetExplorerAnalyticsEventCompleteReviewDone;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (steps == 1)
   {
     v13 = PUAssetExplorerAnalyticsEventCompleteReviewSend;
 LABEL_7:
@@ -125,17 +125,17 @@ LABEL_7:
 
   v14 = 0;
 LABEL_9:
-  v15 = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
-  v16 = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
-  v17 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v18 = [v17 selectionManager];
-  v19 = [v18 selectedUUIDs];
-  [v15 sendEvent:v14 view:2 source:v16 currentAssetCount:{objc_msgSend(v19, "count")}];
+  assetExplorerAnalytics = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
+  sourceType = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
+  _actionManager2 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager2 = [_actionManager2 selectionManager];
+  selectedUUIDs3 = [selectionManager2 selectedUUIDs];
+  [assetExplorerAnalytics sendEvent:v14 view:2 source:sourceType currentAssetCount:{objc_msgSend(selectedUUIDs3, "count")}];
 
   kdebug_trace();
 }
 
-- (void)_performCompletionAction:(unint64_t)a3
+- (void)_performCompletionAction:(unint64_t)action
 {
   v39 = *MEMORY[0x1E69E9840];
   if (![MEMORY[0x1E69C3A10] confidentialityCheckRequired])
@@ -143,33 +143,33 @@ LABEL_9:
     goto LABEL_25;
   }
 
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
+  sourceType = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
   v6 = 0;
-  if (v5 <= 3 && v5 != 2)
+  if (sourceType <= 3 && sourceType != 2)
   {
-    v31 = a3;
-    v7 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-    v8 = [v7 selectionManager];
-    v9 = [v8 selectedUUIDs];
-    v10 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    if (!v10)
+    actionCopy = action;
+    _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+    selectionManager = [_actionManager selectionManager];
+    selectedUUIDs = [selectionManager selectedUUIDs];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    if (!px_deprecated_appPhotoLibrary)
     {
-      v10 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+      px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
     }
 
-    v11 = [v10 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v12 = v9;
+    v12 = selectedUUIDs;
     v13 = [v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v13)
     {
       v14 = v13;
-      v28 = v10;
-      v29 = v8;
-      v30 = v7;
+      v28 = px_deprecated_appPhotoLibrary;
+      v29 = selectionManager;
+      v30 = _actionManager;
       v15 = *v34;
 LABEL_8:
       v16 = 0;
@@ -184,10 +184,10 @@ LABEL_8:
         v37 = *(*(&v33 + 1) + 8 * v16);
         v6 = 1;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
-        v19 = [v17 fetchAssetsWithLocalIdentifiers:v18 options:v11];
-        v20 = [v19 lastObject];
+        v19 = [v17 fetchAssetsWithLocalIdentifiers:v18 options:librarySpecificFetchOptions];
+        lastObject = [v19 lastObject];
 
-        LOBYTE(v18) = [MEMORY[0x1E69C3A10] confidentialWarningRequiredForAsset:v20];
+        LOBYTE(v18) = [MEMORY[0x1E69C3A10] confidentialWarningRequiredForAsset:lastObject];
         if (v18)
         {
           break;
@@ -206,9 +206,9 @@ LABEL_8:
         }
       }
 
-      v7 = v30;
-      v10 = v28;
-      v8 = v29;
+      _actionManager = v30;
+      px_deprecated_appPhotoLibrary = v28;
+      selectionManager = v29;
     }
 
     else
@@ -216,14 +216,14 @@ LABEL_8:
       v6 = 0;
     }
 
-    a3 = v31;
+    action = actionCopy;
   }
 
-  v21 = [(PUAssetExplorerReviewScreenViewController *)self _browsingSession];
-  v22 = [v21 viewModel];
-  v23 = [v22 currentAssetReference];
-  v24 = [v23 asset];
-  v25 = [v24 conformsToProtocol:&unk_1F2BDF898];
+  _browsingSession = [(PUAssetExplorerReviewScreenViewController *)self _browsingSession];
+  viewModel = [_browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  asset = [currentAssetReference asset];
+  v25 = [asset conformsToProtocol:&unk_1F2BDF898];
 
   if (!v25)
   {
@@ -234,12 +234,12 @@ LABEL_8:
     }
 
 LABEL_25:
-    [(PUAssetExplorerReviewScreenViewController *)self _performCompletionActionSteps:a3];
+    [(PUAssetExplorerReviewScreenViewController *)self _performCompletionActionSteps:action];
     return;
   }
 
-  v26 = [v23 asset];
-  if (v26)
+  asset2 = [currentAssetReference asset];
+  if (asset2)
   {
     v27 = v6;
   }
@@ -251,7 +251,7 @@ LABEL_25:
 
   if ((v27 & 1) == 0)
   {
-    LOBYTE(v6) = [MEMORY[0x1E69C3A10] confidentialWarningRequiredForAsset:v26];
+    LOBYTE(v6) = [MEMORY[0x1E69C3A10] confidentialWarningRequiredForAsset:asset2];
   }
 
   if ((v6 & 1) == 0)
@@ -265,7 +265,7 @@ LABEL_27:
   v32[2] = __70__PUAssetExplorerReviewScreenViewController__performCompletionAction___block_invoke;
   v32[3] = &unk_1E7B75770;
   v32[4] = self;
-  v32[5] = a3;
+  v32[5] = action;
   [(PUAssetExplorerReviewScreenViewController *)self _presentConfidentialityAlertWithConfirmAction:v32 abortAction:0];
 }
 
@@ -284,8 +284,8 @@ LABEL_27:
 {
   [(PUAssetExplorerReviewScreenViewController *)self _cancelReviewAssetRequests];
   [(PUAssetExplorerReviewScreenViewController *)self _deleteAllLinkedFiles];
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
-  [v3 detachFromOriginalDataSourceManager];
+  _reviewDataSourceManager = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
+  [_reviewDataSourceManager detachFromOriginalDataSourceManager];
 
   if (self->_delegateFlags.respondsToDidPressCancel)
   {
@@ -294,22 +294,22 @@ LABEL_27:
   }
 }
 
-- (id)reviewAssetProviderRequestForDisplayAsset:(id)a3
+- (id)reviewAssetProviderRequestForDisplayAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetProvider];
-  v6 = [v5 reviewAssetProviderRequestForDisplayAsset:v4];
+  _reviewAssetProvider = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetProvider];
+  v6 = [_reviewAssetProvider reviewAssetProviderRequestForDisplayAsset:assetCopy];
 
   return v6;
 }
 
-- (void)photoMarkupController:(id)a3 didFinishWithSavedAsset:(id)a4
+- (void)photoMarkupController:(id)controller didFinishWithSavedAsset:(id)asset
 {
-  v13 = a3;
-  if (a4)
+  controllerCopy = controller;
+  if (asset)
   {
-    [(PUAssetExplorerReviewScreenViewController *)self _updateWithSubstituteAsset:a4 shouldSelect:1];
+    [(PUAssetExplorerReviewScreenViewController *)self _updateWithSubstituteAsset:asset shouldSelect:1];
     v6 = PUAssetExplorerAnalyticsEventMarkupSave;
   }
 
@@ -319,30 +319,30 @@ LABEL_27:
   }
 
   v7 = *v6;
-  v8 = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
-  v9 = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
-  v10 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v11 = [v10 selectionManager];
-  v12 = [v11 selectedUUIDs];
-  [v8 sendEvent:v7 view:2 source:v9 currentAssetCount:{objc_msgSend(v12, "count")}];
+  assetExplorerAnalytics = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
+  sourceType = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
+  _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager = [_actionManager selectionManager];
+  selectedUUIDs = [selectionManager selectedUUIDs];
+  [assetExplorerAnalytics sendEvent:v7 view:2 source:sourceType currentAssetCount:{objc_msgSend(selectedUUIDs, "count")}];
 
-  [v13 unregisterObserver:self];
+  [controllerCopy unregisterObserver:self];
 }
 
-- (void)photoEditController:(id)a3 didFinishEditingSessionForAsset:(id)a4 completed:(BOOL)a5
+- (void)photoEditController:(id)controller didFinishEditingSessionForAsset:(id)asset completed:(BOOL)completed
 {
-  v5 = a5;
-  v16 = a4;
-  if (v5)
+  completedCopy = completed;
+  assetCopy = asset;
+  if (completedCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:1021 description:@"Editing a photo must output a PUReviewAsset!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:1021 description:@"Editing a photo must output a PUReviewAsset!"];
     }
 
-    [(PUAssetExplorerReviewScreenViewController *)self _updateWithSubstituteAsset:v16 shouldSelect:1];
+    [(PUAssetExplorerReviewScreenViewController *)self _updateWithSubstituteAsset:assetCopy shouldSelect:1];
     v8 = PUAssetExplorerAnalyticsEventEditSave;
   }
 
@@ -352,47 +352,47 @@ LABEL_27:
   }
 
   v9 = *v8;
-  v10 = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
-  v11 = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
-  v12 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v13 = [v12 selectionManager];
-  v14 = [v13 selectedUUIDs];
-  [v10 sendEvent:v9 view:2 source:v11 currentAssetCount:{objc_msgSend(v14, "count")}];
+  assetExplorerAnalytics = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
+  sourceType = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
+  _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager = [_actionManager selectionManager];
+  selectedUUIDs = [selectionManager selectedUUIDs];
+  [assetExplorerAnalytics sendEvent:v9 view:2 source:sourceType currentAssetCount:{objc_msgSend(selectedUUIDs, "count")}];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PUReviewScreenSelectionManagerObservationContext == a5)
+  if (PUReviewScreenSelectionManagerObservationContext == context)
   {
-    [(PUAssetExplorerReviewScreenViewController *)self _handleSelectionChanged:a3];
+    [(PUAssetExplorerReviewScreenViewController *)self _handleSelectionChanged:observable];
   }
 }
 
-- (void)assetExplorerReviewScreenActionManager:(id)a3 didToggleLivePhoto:(id)a4
+- (void)assetExplorerReviewScreenActionManager:(id)manager didToggleLivePhoto:(id)photo
 {
-  v5 = a4;
-  if ([v5 conformsToProtocol:&unk_1F2BDF7B0])
+  photoCopy = photo;
+  if ([photoCopy conformsToProtocol:&unk_1F2BDF7B0])
   {
-    v6 = v5;
-    v7 = [v6 uuid];
-    v8 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-    v9 = [v8 disableLivePhotosSelectionManager];
-    v10 = [v9 isSelectedUUID:v7];
+    v6 = photoCopy;
+    uuid = [v6 uuid];
+    _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+    disableLivePhotosSelectionManager = [_actionManager disableLivePhotosSelectionManager];
+    v10 = [disableLivePhotosSelectionManager isSelectedUUID:uuid];
 
-    v11 = [PUReviewAsset createUniqueMediaDirectoryForAssetWithIdentifier:v7];
+    v11 = [PUReviewAsset createUniqueMediaDirectoryForAssetWithIdentifier:uuid];
     v12 = [PUReviewAsset alloc];
-    v13 = [v11 path];
-    v14 = [(PUReviewAsset *)v12 initWithReviewAsset:v6 linkFileURLsToUniquePathsInDirectory:v13 canPlayPhotoIris:v10 ^ 1u];
+    path = [v11 path];
+    v14 = [(PUReviewAsset *)v12 initWithReviewAsset:v6 linkFileURLsToUniquePathsInDirectory:path canPlayPhotoIris:v10 ^ 1u];
 
-    v15 = [(PUAssetExplorerReviewScreenViewController *)self _browsingSession];
-    v16 = [v15 viewModel];
-    v17 = [v16 assetViewModelForCurrentAssetReference];
+    _browsingSession = [(PUAssetExplorerReviewScreenViewController *)self _browsingSession];
+    viewModel = [_browsingSession viewModel];
+    assetViewModelForCurrentAssetReference = [viewModel assetViewModelForCurrentAssetReference];
 
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __103__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScreenActionManager_didToggleLivePhoto___block_invoke;
     v30[3] = &unk_1E7B80DD0;
-    v18 = v17;
+    v18 = assetViewModelForCurrentAssetReference;
     v31 = v18;
     [v18 performChanges:v30];
     [(PUAssetExplorerReviewScreenViewController *)self _updateWithSubstituteAsset:v14 shouldSelect:0];
@@ -404,26 +404,26 @@ LABEL_27:
     v19 = v18;
     [v19 performChanges:&v25];
     v20 = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics:v25];
-    v21 = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
-    v22 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-    v23 = [v22 selectionManager];
-    v24 = [v23 selectedUUIDs];
-    [v20 sendEvent:@"PUAssetExplorerAnalyticsEventToggleLivePhoto" view:2 source:v21 currentAssetCount:{objc_msgSend(v24, "count")}];
+    sourceType = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
+    _actionManager2 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+    selectionManager = [_actionManager2 selectionManager];
+    selectedUUIDs = [selectionManager selectedUUIDs];
+    [v20 sendEvent:@"PUAssetExplorerAnalyticsEventToggleLivePhoto" view:2 source:sourceType currentAssetCount:{objc_msgSend(selectedUUIDs, "count")}];
   }
 }
 
-- (void)_handleProgressControllerCanceled:(id)a3
+- (void)_handleProgressControllerCanceled:(id)canceled
 {
-  v8 = a3;
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self _requestProgressController];
+  canceledCopy = canceled;
+  _requestProgressController = [(PUAssetExplorerReviewScreenViewController *)self _requestProgressController];
 
-  v6 = v8;
-  if (v5 != v8)
+  v6 = canceledCopy;
+  if (_requestProgressController != canceledCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:958 description:@"Not expecting multiple progress controllers"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:958 description:@"Not expecting multiple progress controllers"];
 
-    v6 = v8;
+    v6 = canceledCopy;
   }
 
   [v6 hideAnimated:1 allowDelay:0];
@@ -431,13 +431,13 @@ LABEL_27:
   [(PUAssetExplorerReviewScreenViewController *)self _performCancelAction];
 }
 
-- (void)_handleCompletionAction:(unint64_t)a3
+- (void)_handleCompletionAction:(unint64_t)action
 {
   kdebug_trace();
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self _remainingReviewAssetRequests];
-  if ([v5 count])
+  _remainingReviewAssetRequests = [(PUAssetExplorerReviewScreenViewController *)self _remainingReviewAssetRequests];
+  if ([_remainingReviewAssetRequests count])
   {
-    v6 = [(PUAssetExplorerReviewScreenViewController *)self _createProgressControllerForRemainingRequests:v5];
+    v6 = [(PUAssetExplorerReviewScreenViewController *)self _createProgressControllerForRemainingRequests:_remainingReviewAssetRequests];
     v7 = PULocalizedString(@"REVIEW_DOWNLOADING_ASSETS_TITLE");
     [v6 setTitle:v7];
     objc_initWeak(&location, self);
@@ -449,7 +449,7 @@ LABEL_27:
     objc_copyWeak(&v12, &location);
     objc_copyWeak(&v13, &from);
     [v6 setCancellationHandler:&v8];
-    [v6 showAnimated:1 allowDelay:{objc_msgSend(v5, "count", v8, v9, v10, v11) == 1}];
+    [v6 showAnimated:1 allowDelay:{objc_msgSend(_remainingReviewAssetRequests, "count", v8, v9, v10, v11) == 1}];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&v12);
     objc_destroyWeak(&from);
@@ -458,7 +458,7 @@ LABEL_27:
 
   else
   {
-    [(PUAssetExplorerReviewScreenViewController *)self _performCompletionAction:a3];
+    [(PUAssetExplorerReviewScreenViewController *)self _performCompletionAction:action];
   }
 }
 
@@ -469,13 +469,13 @@ void __69__PUAssetExplorerReviewScreenViewController__handleCompletionAction___b
   [WeakRetained _handleProgressControllerCanceled:v2];
 }
 
-- (id)_fileSizeMenuForSelectedUUIDs:(id)a3
+- (id)_fileSizeMenuForSelectedUUIDs:(id)ds
 {
   if (self->_delegateFlags.respondsToFileSizeMenu)
   {
-    v4 = a3;
-    v5 = [(PUAssetExplorerReviewScreenViewController *)self delegate];
-    v6 = [v5 assetExplorerReviewScreenViewController:self fileSizeMenuForSelectedUUIDs:v4];
+    dsCopy = ds;
+    delegate = [(PUAssetExplorerReviewScreenViewController *)self delegate];
+    v6 = [delegate assetExplorerReviewScreenViewController:self fileSizeMenuForSelectedUUIDs:dsCopy];
   }
 
   else
@@ -486,37 +486,37 @@ void __69__PUAssetExplorerReviewScreenViewController__handleCompletionAction___b
   return v6;
 }
 
-- (id)_titleForSelectedAssetUUIDs:(id)a3
+- (id)_titleForSelectedAssetUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (([(PUAssetExplorerReviewScreenViewController *)self _options]& 8) == 0)
   {
     [(PUAssetExplorerReviewScreenViewController *)self _options];
   }
 
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
-  v6 = [v5 assetsDataSource];
+  _reviewDataSourceManager = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
+  assetsDataSource = [_reviewDataSourceManager assetsDataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
-    v9 = [v8 assetsDataSource];
+    _reviewDataSourceManager2 = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
+    assetsDataSource2 = [_reviewDataSourceManager2 assetsDataSource];
 
-    v10 = [v9 photosDataSource];
-    v11 = [v10 photoLibrary];
-    v12 = [v11 librarySpecificFetchOptions];
+    photosDataSource = [assetsDataSource2 photosDataSource];
+    photoLibrary = [photosDataSource photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v13 = MEMORY[0x1E6978630];
-    v14 = [v4 allObjects];
-    v15 = [v13 fetchAssetsWithUUIDs:v14 options:v12];
+    allObjects = [dsCopy allObjects];
+    v15 = [v13 fetchAssetsWithUUIDs:allObjects options:librarySpecificFetchOptions];
 
     [v15 countOfAssetsWithMediaType:1];
     [v15 countOfAssetsWithMediaType:2];
   }
 
-  [v4 count];
+  [dsCopy count];
   v16 = PXLocalizedSelectionMessageForAssetsCount();
 
   return v16;
@@ -526,35 +526,35 @@ void __69__PUAssetExplorerReviewScreenViewController__handleCompletionAction___b
 {
   if (([(PUAssetExplorerReviewScreenViewController *)self _options]& 4) != 0)
   {
-    v3 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-    v4 = [v3 selectionManager];
+    _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+    selectionManager = [_actionManager selectionManager];
 
-    v5 = [v4 selectedUUIDs];
-    v6 = [(PUAssetExplorerReviewScreenViewController *)self _titleForSelectedAssetUUIDs:v5];
+    selectedUUIDs = [selectionManager selectedUUIDs];
+    v6 = [(PUAssetExplorerReviewScreenViewController *)self _titleForSelectedAssetUUIDs:selectedUUIDs];
 
-    v7 = [v4 selectedUUIDs];
-    v8 = [(PUAssetExplorerReviewScreenViewController *)self _fileSizeMenuForSelectedUUIDs:v7];
+    selectedUUIDs2 = [selectionManager selectedUUIDs];
+    v8 = [(PUAssetExplorerReviewScreenViewController *)self _fileSizeMenuForSelectedUUIDs:selectedUUIDs2];
 
-    v9 = [(PUAssetExplorerReviewScreenViewController *)self _browsingSession];
-    v10 = [v9 viewModel];
+    _browsingSession = [(PUAssetExplorerReviewScreenViewController *)self _browsingSession];
+    viewModel = [_browsingSession viewModel];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __68__PUAssetExplorerReviewScreenViewController__handleSelectionChanged__block_invoke;
     v17[3] = &unk_1E7B80C38;
-    v18 = v10;
+    v18 = viewModel;
     v19 = v6;
     v11 = v6;
-    v12 = v10;
+    v12 = viewModel;
     [v12 performChanges:v17];
-    v13 = [v12 resizeTaskDescriptorViewModel];
+    resizeTaskDescriptorViewModel = [v12 resizeTaskDescriptorViewModel];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __68__PUAssetExplorerReviewScreenViewController__handleSelectionChanged__block_invoke_2;
     v15[3] = &unk_1E7B77B90;
     v16 = v8;
     v14 = v8;
-    [v13 performChanges:v15];
+    [resizeTaskDescriptorViewModel performChanges:v15];
   }
 }
 
@@ -566,12 +566,12 @@ uint64_t __68__PUAssetExplorerReviewScreenViewController__handleSelectionChanged
   return [v2 signalReviewScreenSelectionChanged];
 }
 
-- (void)assetExplorerReviewScreenActionManagerDidPressDeselectAll:(id)a3
+- (void)assetExplorerReviewScreenActionManagerDidPressDeselectAll:(id)all
 {
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v4 = [v3 selectionManager];
+  _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager = [_actionManager selectionManager];
 
-  [v4 performChanges:&__block_literal_global_275];
+  [selectionManager performChanges:&__block_literal_global_275];
 }
 
 void __103__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScreenActionManagerDidPressDeselectAll___block_invoke(uint64_t a1, void *a2)
@@ -582,38 +582,38 @@ void __103__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScreenA
   [v3 setSelectedUUIDs:v4];
 }
 
-- (void)assetExplorerReviewScreenActionManagerDidPressSelectAll:(id)a3
+- (void)assetExplorerReviewScreenActionManagerDidPressSelectAll:(id)all
 {
-  v4 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v5 = [v4 selectionManager];
+  _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager = [_actionManager selectionManager];
 
-  v6 = [(PUAssetExplorerReviewScreenViewController *)self initialSelectedAssetUUIDs];
+  initialSelectedAssetUUIDs = [(PUAssetExplorerReviewScreenViewController *)self initialSelectedAssetUUIDs];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __101__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScreenActionManagerDidPressSelectAll___block_invoke;
   v8[3] = &unk_1E7B75620;
-  v9 = v6;
-  v7 = v6;
-  [v5 performChanges:v8];
+  v9 = initialSelectedAssetUUIDs;
+  v7 = initialSelectedAssetUUIDs;
+  [selectionManager performChanges:v8];
 }
 
-- (void)assetExplorerReviewScreenActionManager:(id)a3 didPressSelectForAsset:(id)a4
+- (void)assetExplorerReviewScreenActionManager:(id)manager didPressSelectForAsset:(id)asset
 {
-  v5 = a4;
-  v6 = [v5 uuid];
-  v7 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v8 = [v7 selectionManager];
-  v9 = [(PUAssetExplorerReviewScreenViewController *)self selectionCountLimit];
-  v10 = [v8 isSelectedUUID:v6];
-  v39 = v9;
-  if ((v10 & 1) == 0 && v9 && ([v8 selectedUUIDs], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v13 = objc_msgSend(v9, "unsignedIntValue"), v11, v12 >= v13))
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager = [_actionManager selectionManager];
+  selectionCountLimit = [(PUAssetExplorerReviewScreenViewController *)self selectionCountLimit];
+  v10 = [selectionManager isSelectedUUID:uuid];
+  v39 = selectionCountLimit;
+  if ((v10 & 1) == 0 && selectionCountLimit && ([selectionManager selectedUUIDs], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v13 = objc_msgSend(selectionCountLimit, "unsignedIntValue"), v11, v12 >= v13))
   {
     v26 = PXLocalizedString();
     v27 = PXLocalizedString();
-    v35 = [v9 unsignedIntValue];
+    unsignedIntValue = [selectionCountLimit unsignedIntValue];
     v28 = PULocalizedStringWithValidatedFormat(v27, @"%lu");
 
-    v29 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v26 message:v28 preferredStyle:{1, v35}];
+    v29 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v26 message:v28 preferredStyle:{1, unsignedIntValue}];
     v30 = MEMORY[0x1E69DC648];
     v31 = PXLocalizedString();
     v32 = [v30 actionWithTitle:v31 style:1 handler:0];
@@ -624,17 +624,17 @@ void __103__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScreenA
 
   else
   {
-    v37 = v7;
+    v37 = _actionManager;
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __107__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScreenActionManager_didPressSelectForAsset___block_invoke;
     v40[3] = &unk_1E7B75728;
     v42 = v10 ^ 1;
-    v38 = v6;
-    v14 = v6;
+    v38 = uuid;
+    v14 = uuid;
     v41 = v14;
-    v36 = v8;
-    [v8 performChanges:v40];
+    v36 = selectionManager;
+    [selectionManager performChanges:v40];
     v15 = @"PUAssetExplorerAnalyticsEventReselectPhoto";
     if (v10)
     {
@@ -642,26 +642,26 @@ void __103__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScreenA
     }
 
     v16 = v15;
-    v17 = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
-    v18 = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
-    v19 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-    [v19 selectionManager];
-    v21 = v20 = v5;
-    v22 = [v21 selectedUUIDs];
-    [v17 sendEvent:v16 view:2 source:v18 currentAssetCount:{objc_msgSend(v22, "count")}];
+    assetExplorerAnalytics = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
+    sourceType = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
+    _actionManager2 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+    [_actionManager2 selectionManager];
+    v21 = v20 = assetCopy;
+    selectedUUIDs = [v21 selectedUUIDs];
+    [assetExplorerAnalytics sendEvent:v16 view:2 source:sourceType currentAssetCount:{objc_msgSend(selectedUUIDs, "count")}];
 
-    v5 = v20;
-    v23 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetProvider];
-    if (v23)
+    assetCopy = v20;
+    _reviewAssetProvider = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetProvider];
+    if (_reviewAssetProvider)
     {
-      v24 = [(PUAssetExplorerReviewScreenViewController *)self initialSelectedAssetUUIDs];
-      v25 = v24;
+      initialSelectedAssetUUIDs = [(PUAssetExplorerReviewScreenViewController *)self initialSelectedAssetUUIDs];
+      v25 = initialSelectedAssetUUIDs;
       if (v10)
       {
         [(PUAssetExplorerReviewScreenViewController *)self _cancelReviewAssetRequestForAssetUUID:v14];
       }
 
-      else if (([v24 containsObject:v14] & 1) == 0)
+      else if (([initialSelectedAssetUUIDs containsObject:v14] & 1) == 0)
       {
         v33 = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetForUUID:v14];
         v34 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestForAssetUUID:v14];
@@ -672,9 +672,9 @@ void __103__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScreenA
       }
     }
 
-    v7 = v37;
-    v6 = v38;
-    v8 = v36;
+    _actionManager = v37;
+    uuid = v38;
+    selectionManager = v36;
   }
 }
 
@@ -692,40 +692,40 @@ uint64_t __107__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScr
   }
 }
 
-- (BOOL)assetExplorerReviewScreenActionManager:(id)a3 shouldEnableActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6
+- (BOOL)assetExplorerReviewScreenActionManager:(id)manager shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
   if (!self->_delegateFlags.respondsToShouldEnableActionType)
   {
     return 1;
   }
 
-  v9 = a6;
-  v10 = a5;
+  collectionCopy = collection;
+  assetCopy = asset;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a4) = [WeakRetained assetExplorerReviewScreenViewController:self shouldEnableActionType:a4 onAsset:v10 inAssetCollection:v9];
+  LOBYTE(type) = [WeakRetained assetExplorerReviewScreenViewController:self shouldEnableActionType:type onAsset:assetCopy inAssetCollection:collectionCopy];
 
-  return a4;
+  return type;
 }
 
-- (BOOL)assetExplorerReviewScreenActionManager:(id)a3 canPerformActionType:(unint64_t)a4 onAsset:(id)a5 inAssetCollection:(id)a6
+- (BOOL)assetExplorerReviewScreenActionManager:(id)manager canPerformActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (self->_delegateFlags.respondsToCanPerformActionType && (WeakRetained = objc_loadWeakRetained(&self->_delegate), v14 = [WeakRetained assetExplorerReviewScreenViewController:self canPerformActionType:a4 onAsset:v11 inAssetCollection:v12], WeakRetained, !v14))
+  managerCopy = manager;
+  assetCopy = asset;
+  collectionCopy = collection;
+  if (self->_delegateFlags.respondsToCanPerformActionType && (WeakRetained = objc_loadWeakRetained(&self->_delegate), v14 = [WeakRetained assetExplorerReviewScreenViewController:self canPerformActionType:type onAsset:assetCopy inAssetCollection:collectionCopy], WeakRetained, !v14))
   {
     v22 = 0;
   }
 
-  else if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 8)
+  else if ((type & 0xFFFFFFFFFFFFFFFELL) == 8)
   {
-    v15 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-    v16 = [v15 selectionManager];
-    v17 = [v16 selectedUUIDs];
-    v18 = [v17 count];
+    _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+    selectionManager = [_actionManager selectionManager];
+    selectedUUIDs = [selectionManager selectedUUIDs];
+    v18 = [selectedUUIDs count];
 
-    v19 = [(PUAssetExplorerReviewScreenViewController *)self initialSelectedAssetUUIDs];
-    v20 = [v19 count];
+    initialSelectedAssetUUIDs = [(PUAssetExplorerReviewScreenViewController *)self initialSelectedAssetUUIDs];
+    v20 = [initialSelectedAssetUUIDs count];
 
     v21 = 8;
     if (v18 != v20)
@@ -733,7 +733,7 @@ uint64_t __107__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScr
       v21 = 9;
     }
 
-    v22 = v21 != a4;
+    v22 = v21 != type;
   }
 
   else
@@ -747,20 +747,20 @@ uint64_t __107__PUAssetExplorerReviewScreenViewController_assetExplorerReviewScr
 - (id)_getSelectedSubstituteAssetsAndRemoveFilesForUnneededAssets
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v4 = [v3 selectionManager];
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetsByUUID];
+  _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager = [_actionManager selectionManager];
+  _substituteAssetsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetsByUUID];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __104__PUAssetExplorerReviewScreenViewController__getSelectedSubstituteAssetsAndRemoveFilesForUnneededAssets__block_invoke;
   v14 = &unk_1E7B75700;
-  v15 = v4;
+  v15 = selectionManager;
   v16 = v6;
   v7 = v6;
-  v8 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v11];
-  [v5 removeAllObjects];
+  v8 = selectionManager;
+  [_substituteAssetsByUUID enumerateKeysAndObjectsUsingBlock:&v11];
+  [_substituteAssetsByUUID removeAllObjects];
   v9 = [v7 copy];
 
   return v9;
@@ -785,36 +785,36 @@ void __104__PUAssetExplorerReviewScreenViewController__getSelectedSubstituteAsse
 - (void)_deleteAllLinkedFiles
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetsByUUID];
-  [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_261];
-  [v3 removeAllObjects];
+  _substituteAssetsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetsByUUID];
+  [_substituteAssetsByUUID enumerateKeysAndObjectsUsingBlock:&__block_literal_global_261];
+  [_substituteAssetsByUUID removeAllObjects];
 }
 
-- (void)_updateWithSubstituteAsset:(id)a3 shouldSelect:(BOOL)a4
+- (void)_updateWithSubstituteAsset:(id)asset shouldSelect:(BOOL)select
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  selectCopy = select;
+  assetCopy = asset;
+  if (assetCopy)
   {
-    [(PUAssetExplorerReviewScreenViewController *)self _setSubstituteAsset:v6];
-    v7 = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
+    [(PUAssetExplorerReviewScreenViewController *)self _setSubstituteAsset:assetCopy];
+    _reviewDataSourceManager = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __85__PUAssetExplorerReviewScreenViewController__updateWithSubstituteAsset_shouldSelect___block_invoke;
     v13[3] = &unk_1E7B756B8;
-    v8 = v6;
+    v8 = assetCopy;
     v14 = v8;
-    [v7 performChanges:v13];
-    if (v4)
+    [_reviewDataSourceManager performChanges:v13];
+    if (selectCopy)
     {
-      v9 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-      v10 = [v9 selectionManager];
+      _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+      selectionManager = [_actionManager selectionManager];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __85__PUAssetExplorerReviewScreenViewController__updateWithSubstituteAsset_shouldSelect___block_invoke_2;
       v11[3] = &unk_1E7B75620;
       v12 = v8;
-      [v10 performChanges:v11];
+      [selectionManager performChanges:v11];
     }
   }
 }
@@ -827,47 +827,47 @@ void __85__PUAssetExplorerReviewScreenViewController__updateWithSubstituteAsset_
   [v3 addSelectedUUID:v4];
 }
 
-- (void)_setSubstituteAsset:(id)a3
+- (void)_setSubstituteAsset:(id)asset
 {
-  v7 = a3;
+  assetCopy = asset;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = [v7 uuid];
-  if (v4)
+  uuid = [assetCopy uuid];
+  if (uuid)
   {
-    v5 = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetsByUUID];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    _substituteAssetsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetsByUUID];
+    v6 = [_substituteAssetsByUUID objectForKeyedSubscript:uuid];
     [v6 removeAllFilesAtReferencedURLs];
-    [v5 setObject:v7 forKeyedSubscript:v4];
+    [_substituteAssetsByUUID setObject:assetCopy forKeyedSubscript:uuid];
   }
 }
 
-- (id)_substituteAssetForUUID:(id)a3
+- (id)_substituteAssetForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetsByUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  _substituteAssetsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetsByUUID];
+  v6 = [_substituteAssetsByUUID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)_createProgressControllerForRemainingRequests:(id)a3
+- (id)_createProgressControllerForRemainingRequests:(id)requests
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PUAssetExplorerReviewScreenViewController *)self _requestProgressController];
+  requestsCopy = requests;
+  _requestProgressController = [(PUAssetExplorerReviewScreenViewController *)self _requestProgressController];
 
-  if (v6)
+  if (_requestProgressController)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:612 description:@"Not expecting existing progress controller"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:612 description:@"Not expecting existing progress controller"];
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v5;
+  v7 = requestsCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
@@ -883,8 +883,8 @@ void __85__PUAssetExplorerReviewScreenViewController__updateWithSubstituteAsset_
           objc_enumerationMutation(v7);
         }
 
-        v13 = [*(*(&v29 + 1) + 8 * i) progress];
-        v10 += [v13 totalUnitCount];
+        progress = [*(*(&v29 + 1) + 8 * i) progress];
+        v10 += [progress totalUnitCount];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -918,11 +918,11 @@ void __85__PUAssetExplorerReviewScreenViewController__updateWithSubstituteAsset_
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v25 + 1) + 8 * j) progress];
-        v21 = v20;
-        if (v20)
+        progress2 = [*(*(&v25 + 1) + 8 * j) progress];
+        v21 = progress2;
+        if (progress2)
         {
-          [v14 addChild:v20 withPendingUnitCount:{objc_msgSend(v20, "totalUnitCount")}];
+          [v14 addChild:progress2 withPendingUnitCount:{objc_msgSend(progress2, "totalUnitCount")}];
         }
       }
 
@@ -941,8 +941,8 @@ void __85__PUAssetExplorerReviewScreenViewController__updateWithSubstituteAsset_
 
 - (void)_showFailedReviewAssetRequestAlert
 {
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _failedReviewAssetRequestAlertController];
-  if (!v3)
+  _failedReviewAssetRequestAlertController = [(PUAssetExplorerReviewScreenViewController *)self _failedReviewAssetRequestAlertController];
+  if (!_failedReviewAssetRequestAlertController)
   {
     v4 = PULocalizedString(@"OK");
     v5 = PULocalizedString(@"REVIEW_DOWNLOADING_ASSETS_ERROR_TITLE");
@@ -971,40 +971,40 @@ void __79__PUAssetExplorerReviewScreenViewController__showFailedReviewAssetReque
   [WeakRetained _handleFailedReviewAssetRequestAlertControllerDismissal];
 }
 
-- (void)_handleReviewAssetRequest:(id)a3 completedWithSuccess:(BOOL)a4 canceled:(BOOL)a5 error:(id)a6 reviewAsset:(id)a7
+- (void)_handleReviewAssetRequest:(id)request completedWithSuccess:(BOOL)success canceled:(BOOL)canceled error:(id)error reviewAsset:(id)asset
 {
-  v9 = a4;
-  v12 = a3;
-  v13 = a7;
-  if (v12)
+  successCopy = success;
+  requestCopy = request;
+  assetCopy = asset;
+  if (requestCopy)
   {
-    v14 = [v12 sourceAsset];
-    v15 = [v14 uuid];
-    v16 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestForAssetUUID:v15];
-    if (v16 != v12)
+    sourceAsset = [requestCopy sourceAsset];
+    uuid = [sourceAsset uuid];
+    v16 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestForAssetUUID:uuid];
+    if (v16 != requestCopy)
     {
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    if (v13 && v9)
+    if (assetCopy && successCopy)
     {
-      v17 = [v13 identifier];
-      v18 = [v17 isEqualToString:v15];
+      identifier = [assetCopy identifier];
+      v18 = [identifier isEqualToString:uuid];
 
       if ((v18 & 1) == 0)
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v24 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:554 description:@"Expected asset identifiers to match"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:554 description:@"Expected asset identifiers to match"];
       }
 
-      v19 = NSTemporaryDirectory();
-      if ([v13 canPlayPhotoIris])
+      _actionManager2 = NSTemporaryDirectory();
+      if ([assetCopy canPlayPhotoIris])
       {
-        v20 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-        v21 = [v20 disableLivePhotosSelectionManager];
-        v22 = [v21 isSelectedUUID:v15] ^ 1;
+        _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+        disableLivePhotosSelectionManager = [_actionManager disableLivePhotosSelectionManager];
+        v22 = [disableLivePhotosSelectionManager isSelectedUUID:uuid] ^ 1;
       }
 
       else
@@ -1012,27 +1012,27 @@ LABEL_15:
         v22 = 0;
       }
 
-      v23 = [[PUReviewAsset alloc] initWithReviewAsset:v13 linkFileURLsToUniquePathsInDirectory:v19 canPlayPhotoIris:v22];
-      [(PUAssetExplorerReviewScreenViewController *)self _updateWithSubstituteAsset:v23 shouldSelect:0];
+      selectionManager = [[PUReviewAsset alloc] initWithReviewAsset:assetCopy linkFileURLsToUniquePathsInDirectory:_actionManager2 canPlayPhotoIris:v22];
+      [(PUAssetExplorerReviewScreenViewController *)self _updateWithSubstituteAsset:selectionManager shouldSelect:0];
     }
 
     else
     {
-      if (a5)
+      if (canceled)
       {
 LABEL_14:
-        [(PUAssetExplorerReviewScreenViewController *)self _updateForCompletedReviewAssetRequest:v12];
+        [(PUAssetExplorerReviewScreenViewController *)self _updateForCompletedReviewAssetRequest:requestCopy];
         goto LABEL_15;
       }
 
-      v19 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-      v23 = [v19 selectionManager];
+      _actionManager2 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+      selectionManager = [_actionManager2 selectionManager];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __119__PUAssetExplorerReviewScreenViewController__handleReviewAssetRequest_completedWithSuccess_canceled_error_reviewAsset___block_invoke;
       v25[3] = &unk_1E7B75620;
-      v26 = v15;
-      [(PUReviewAsset *)v23 performChanges:v25];
+      v26 = uuid;
+      [(PUReviewAsset *)selectionManager performChanges:v25];
       [(PUAssetExplorerReviewScreenViewController *)self _showFailedReviewAssetRequestAlert];
     }
 
@@ -1042,19 +1042,19 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)_requestReviewAssetForAsset:(id)a3
+- (void)_requestReviewAssetForAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 uuid];
-  v7 = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetForUUID:v6];
-  v8 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestForAssetUUID:v6];
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  v7 = [(PUAssetExplorerReviewScreenViewController *)self _substituteAssetForUUID:uuid];
+  v8 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestForAssetUUID:uuid];
   if (v7 | v8)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:523 description:@"We should not be trying to request an asset that we already have a file-backed asset for or for which we have a reviewAssetRequest in progress"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenViewController.m" lineNumber:523 description:@"We should not be trying to request an asset that we already have a file-backed asset for or for which we have a reviewAssetRequest in progress"];
   }
 
-  v9 = [(PUAssetExplorerReviewScreenViewController *)self _createReviewAssetRequestForAsset:v5];
+  v9 = [(PUAssetExplorerReviewScreenViewController *)self _createReviewAssetRequestForAsset:assetCopy];
   if (v9)
   {
     objc_initWeak(&location, self);
@@ -1085,45 +1085,45 @@ void __73__PUAssetExplorerReviewScreenViewController__requestReviewAssetForAsset
 - (void)_cancelReviewAssetRequests
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
-  [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_229];
-  [v3 removeAllObjects];
+  _reviewAssetRequestsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
+  [_reviewAssetRequestsByUUID enumerateKeysAndObjectsUsingBlock:&__block_literal_global_229];
+  [_reviewAssetRequestsByUUID removeAllObjects];
 }
 
-- (void)_cancelReviewAssetRequestForAssetUUID:(id)a3
+- (void)_cancelReviewAssetRequestForAssetUUID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
-  v5 = [v4 objectForKeyedSubscript:v7];
+  _reviewAssetRequestsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
+  v5 = [_reviewAssetRequestsByUUID objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
     [v5 cancelReviewAssetRequest];
-    [v4 removeObjectForKey:v7];
+    [_reviewAssetRequestsByUUID removeObjectForKey:dCopy];
   }
 }
 
-- (void)_updateForCompletedReviewAssetRequest:(id)a3
+- (void)_updateForCompletedReviewAssetRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v11 = [v4 sourceAsset];
+  sourceAsset = [requestCopy sourceAsset];
 
-  v5 = [v11 uuid];
-  if (v5)
+  uuid = [sourceAsset uuid];
+  if (uuid)
   {
-    v6 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
-    [v6 removeObjectForKey:v5];
-    v7 = [v6 count];
-    v8 = [(PUAssetExplorerReviewScreenViewController *)self _requestProgressController];
-    v9 = v8;
-    if (!v7 && v8)
+    _reviewAssetRequestsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
+    [_reviewAssetRequestsByUUID removeObjectForKey:uuid];
+    v7 = [_reviewAssetRequestsByUUID count];
+    _requestProgressController = [(PUAssetExplorerReviewScreenViewController *)self _requestProgressController];
+    v9 = _requestProgressController;
+    if (!v7 && _requestProgressController)
     {
-      v10 = [(PUAssetExplorerReviewScreenViewController *)self _failedReviewAssetRequestAlertController];
+      _failedReviewAssetRequestAlertController = [(PUAssetExplorerReviewScreenViewController *)self _failedReviewAssetRequestAlertController];
       [v9 hideAnimated:1 allowDelay:0];
       [(PUAssetExplorerReviewScreenViewController *)self _tearDownProgressController];
-      if (!v10)
+      if (!_failedReviewAssetRequestAlertController)
       {
         [(PUAssetExplorerReviewScreenViewController *)self _performCompletionAction:0];
       }
@@ -1131,30 +1131,30 @@ void __73__PUAssetExplorerReviewScreenViewController__requestReviewAssetForAsset
   }
 }
 
-- (id)_createReviewAssetRequestForAsset:(id)a3
+- (id)_createReviewAssetRequestForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetProvider];
-  v6 = [v5 reviewAssetProviderRequestForDisplayAsset:v4];
+  _reviewAssetProvider = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetProvider];
+  v6 = [_reviewAssetProvider reviewAssetProviderRequestForDisplayAsset:assetCopy];
   if (v6)
   {
-    v7 = [v4 uuid];
-    v8 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
-    [v8 setObject:v6 forKeyedSubscript:v7];
+    uuid = [assetCopy uuid];
+    _reviewAssetRequestsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
+    [_reviewAssetRequestsByUUID setObject:v6 forKeyedSubscript:uuid];
   }
 
   return v6;
 }
 
-- (id)_reviewAssetRequestForAssetUUID:(id)a3
+- (id)_reviewAssetRequestForAssetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (dCopy)
   {
-    v5 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    _reviewAssetRequestsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
+    v6 = [_reviewAssetRequestsByUUID objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -1168,62 +1168,62 @@ void __73__PUAssetExplorerReviewScreenViewController__requestReviewAssetForAsset
 - (id)_remainingReviewAssetRequests
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
-  v4 = [v3 allValues];
+  _reviewAssetRequestsByUUID = [(PUAssetExplorerReviewScreenViewController *)self _reviewAssetRequestsByUUID];
+  allValues = [_reviewAssetRequestsByUUID allValues];
 
-  return v4;
+  return allValues;
 }
 
 - (id)childViewControllerForStatusBarHidden
 {
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _navigationController];
+  _navigationController = [(PUAssetExplorerReviewScreenViewController *)self _navigationController];
 
-  if (v3)
+  if (_navigationController)
   {
-    v4 = [(PUAssetExplorerReviewScreenViewController *)self _navigationController];
+    _navigationController2 = [(PUAssetExplorerReviewScreenViewController *)self _navigationController];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PUAssetExplorerReviewScreenViewController;
-    v4 = [(PUAssetExplorerReviewScreenViewController *)&v6 childViewControllerForStatusBarHidden];
+    _navigationController2 = [(PUAssetExplorerReviewScreenViewController *)&v6 childViewControllerForStatusBarHidden];
   }
 
-  return v4;
+  return _navigationController2;
 }
 
 - (id)childViewControllerForStatusBarStyle
 {
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _navigationController];
+  _navigationController = [(PUAssetExplorerReviewScreenViewController *)self _navigationController];
 
-  if (v3)
+  if (_navigationController)
   {
-    v4 = [(PUAssetExplorerReviewScreenViewController *)self _navigationController];
+    _navigationController2 = [(PUAssetExplorerReviewScreenViewController *)self _navigationController];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PUAssetExplorerReviewScreenViewController;
-    v4 = [(PUAssetExplorerReviewScreenViewController *)&v6 childViewControllerForStatusBarStyle];
+    _navigationController2 = [(PUAssetExplorerReviewScreenViewController *)&v6 childViewControllerForStatusBarStyle];
   }
 
-  return v4;
+  return _navigationController2;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = PUAssetExplorerReviewScreenViewController;
-  [(PUAssetExplorerReviewScreenViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PUAssetExplorerReviewScreenViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if (self->_delegateFlags.respondsToWillTransitionToSize)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained assetExplorerReviewScreenViewController:self willTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+    [WeakRetained assetExplorerReviewScreenViewController:self willTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
   }
 }
 
@@ -1232,65 +1232,65 @@ void __73__PUAssetExplorerReviewScreenViewController__requestReviewAssetForAsset
   browsingSession = self->__browsingSession;
   if (!browsingSession)
   {
-    v4 = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
-    v5 = [(PUAssetExplorerReviewScreenViewController *)self _reviewMediaProvider];
-    v6 = [(PUAssetExplorerReviewScreenViewController *)self initialSelectedAssetUUIDs];
-    v7 = [(PUAssetExplorerReviewScreenViewController *)self initialDisabledLivePhotoAssetUUIDs];
+    _reviewDataSourceManager = [(PUAssetExplorerReviewScreenViewController *)self _reviewDataSourceManager];
+    _reviewMediaProvider = [(PUAssetExplorerReviewScreenViewController *)self _reviewMediaProvider];
+    initialSelectedAssetUUIDs = [(PUAssetExplorerReviewScreenViewController *)self initialSelectedAssetUUIDs];
+    initialDisabledLivePhotoAssetUUIDs = [(PUAssetExplorerReviewScreenViewController *)self initialDisabledLivePhotoAssetUUIDs];
     v8 = [[PUAssetExplorerReviewScreenActionManager alloc] initWithSourceType:[(PUAssetExplorerReviewScreenViewController *)self sourceType]];
     [(PUAssetExplorerReviewScreenActionManager *)v8 setReviewScreenActionManagerDelegate:self];
     [(PUAssetExplorerReviewScreenActionManager *)v8 setReviewAssetProvider:self];
-    v9 = [(PUAssetExplorerReviewScreenActionManager *)v8 selectionManager];
+    selectionManager = [(PUAssetExplorerReviewScreenActionManager *)v8 selectionManager];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __78__PUAssetExplorerReviewScreenViewController__createBrowsingSessionIfNecessary__block_invoke;
     v43[3] = &unk_1E7B75620;
-    v10 = v6;
+    v10 = initialSelectedAssetUUIDs;
     v44 = v10;
-    [v9 performChanges:v43];
-    [v9 registerChangeObserver:self context:PUReviewScreenSelectionManagerObservationContext];
-    v11 = [(PUAssetExplorerReviewScreenActionManager *)v8 disableLivePhotosSelectionManager];
+    [selectionManager performChanges:v43];
+    [selectionManager registerChangeObserver:self context:PUReviewScreenSelectionManagerObservationContext];
+    disableLivePhotosSelectionManager = [(PUAssetExplorerReviewScreenActionManager *)v8 disableLivePhotosSelectionManager];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __78__PUAssetExplorerReviewScreenViewController__createBrowsingSessionIfNecessary__block_invoke_2;
     v41[3] = &unk_1E7B75620;
-    v30 = v11;
-    v31 = v7;
+    v30 = disableLivePhotosSelectionManager;
+    v31 = initialDisabledLivePhotoAssetUUIDs;
     v42 = v31;
-    [v11 performChanges:v41];
-    v32 = v5;
-    v33 = v4;
-    v12 = [[PUBrowsingSession alloc] initWithDataSourceManager:v4 actionManager:v8 mediaProvider:v5 photosDetailsContext:0 lowMemoryMode:[(PUAssetExplorerReviewScreenViewController *)self _lowMemoryMode]];
-    v13 = [(PUAssetExplorerReviewScreenViewController *)self initialAssetReference];
-    if (v13)
+    [disableLivePhotosSelectionManager performChanges:v41];
+    v32 = _reviewMediaProvider;
+    v33 = _reviewDataSourceManager;
+    v12 = [[PUBrowsingSession alloc] initWithDataSourceManager:_reviewDataSourceManager actionManager:v8 mediaProvider:_reviewMediaProvider photosDetailsContext:0 lowMemoryMode:[(PUAssetExplorerReviewScreenViewController *)self _lowMemoryMode]];
+    initialAssetReference = [(PUAssetExplorerReviewScreenViewController *)self initialAssetReference];
+    if (initialAssetReference)
     {
-      v14 = v13;
+      startingAssetReference = initialAssetReference;
     }
 
     else
     {
-      v15 = [(PUAssetExplorerReviewScreenViewController *)self initialIndexPath];
-      if (!v15 || (v16 = v15, [v33 assetsDataSource], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "assetReferenceAtIndexPath:", v16), v14 = objc_claimAutoreleasedReturnValue(), v17, v16, !v14))
+      initialIndexPath = [(PUAssetExplorerReviewScreenViewController *)self initialIndexPath];
+      if (!initialIndexPath || (v16 = initialIndexPath, [v33 assetsDataSource], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "assetReferenceAtIndexPath:", v16), startingAssetReference = objc_claimAutoreleasedReturnValue(), v17, v16, !startingAssetReference))
       {
-        v18 = [v33 assetsDataSource];
-        v14 = [v18 startingAssetReference];
+        assetsDataSource = [v33 assetsDataSource];
+        startingAssetReference = [assetsDataSource startingAssetReference];
       }
     }
 
-    v19 = [(PUBrowsingSession *)v12 viewModel];
+    viewModel = [(PUBrowsingSession *)v12 viewModel];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __78__PUAssetExplorerReviewScreenViewController__createBrowsingSessionIfNecessary__block_invoke_3;
     v36[3] = &unk_1E7B7F1D0;
-    v37 = v14;
-    v38 = v19;
-    v39 = self;
+    v37 = startingAssetReference;
+    v38 = viewModel;
+    selfCopy = self;
     v20 = v10;
     v40 = v20;
-    v21 = v19;
-    v22 = v14;
+    v21 = viewModel;
+    v22 = startingAssetReference;
     [v21 performChanges:v36];
     [v21 registerChangeObserver:self];
-    v23 = [(PUAssetExplorerReviewScreenViewController *)self resizeTaskDescriptorViewModel];
+    resizeTaskDescriptorViewModel = [(PUAssetExplorerReviewScreenViewController *)self resizeTaskDescriptorViewModel];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __78__PUAssetExplorerReviewScreenViewController__createBrowsingSessionIfNecessary__block_invoke_4;
@@ -1298,7 +1298,7 @@ void __73__PUAssetExplorerReviewScreenViewController__requestReviewAssetForAsset
     v34[4] = self;
     v35 = v20;
     v24 = v20;
-    [v23 performChanges:v34];
+    [resizeTaskDescriptorViewModel performChanges:v34];
 
     actionManager = self->__actionManager;
     self->__actionManager = v8;
@@ -1360,36 +1360,36 @@ void __78__PUAssetExplorerReviewScreenViewController__createBrowsingSessionIfNec
   v23.receiver = self;
   v23.super_class = PUAssetExplorerReviewScreenViewController;
   [(PUAssetExplorerReviewScreenViewController *)&v23 loadView];
-  v3 = [(PUAssetExplorerReviewScreenViewController *)self _spec];
-  v4 = [(PUAssetExplorerReviewScreenViewController *)self _createBrowsingSessionIfNecessary];
-  v5 = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
-  v6 = -[PUOneUpViewController initWithBrowsingSession:options:initialActivity:]([PUOneUpViewController alloc], "initWithBrowsingSession:options:initialActivity:", v4, [v3 oneUpOptions], 0);
+  _spec = [(PUAssetExplorerReviewScreenViewController *)self _spec];
+  _createBrowsingSessionIfNecessary = [(PUAssetExplorerReviewScreenViewController *)self _createBrowsingSessionIfNecessary];
+  sourceType = [(PUAssetExplorerReviewScreenViewController *)self sourceType];
+  v6 = -[PUOneUpViewController initWithBrowsingSession:options:initialActivity:]([PUOneUpViewController alloc], "initWithBrowsingSession:options:initialActivity:", _createBrowsingSessionIfNecessary, [_spec oneUpOptions], 0);
   v7 = [[PUNavigationController alloc] initWithRootViewController:v6];
   [(PUAssetExplorerReviewScreenViewController *)self addChildViewController:v7];
-  v8 = [(PUAssetExplorerReviewScreenViewController *)self view];
-  [v8 bounds];
+  view = [(PUAssetExplorerReviewScreenViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(PUNavigationController *)v7 view];
-  [v17 setFrame:{v10, v12, v14, v16}];
-  [v17 setAutoresizingMask:18];
-  [v8 addSubview:v17];
+  view2 = [(PUNavigationController *)v7 view];
+  [view2 setFrame:{v10, v12, v14, v16}];
+  [view2 setAutoresizingMask:18];
+  [view addSubview:view2];
   [(PUNavigationController *)v7 didMoveToParentViewController:self];
   navigationController = self->__navigationController;
   self->__navigationController = v7;
 
-  v19 = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
-  v20 = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
-  v21 = [v20 selectionManager];
-  v22 = [v21 selectedUUIDs];
-  [v19 sendEvent:@"PUAssetExplorerAnalyticsEventOpen1Up" view:1 source:v5 currentAssetCount:{objc_msgSend(v22, "count")}];
+  assetExplorerAnalytics = [(PUAssetExplorerReviewScreenViewController *)self assetExplorerAnalytics];
+  _actionManager = [(PUAssetExplorerReviewScreenViewController *)self _actionManager];
+  selectionManager = [_actionManager selectionManager];
+  selectedUUIDs = [selectionManager selectedUUIDs];
+  [assetExplorerAnalytics sendEvent:@"PUAssetExplorerAnalyticsEventOpen1Up" view:1 source:sourceType currentAssetCount:{objc_msgSend(selectedUUIDs, "count")}];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1421,29 +1421,29 @@ void __78__PUAssetExplorerReviewScreenViewController__createBrowsingSessionIfNec
   return assetExplorerAnalytics;
 }
 
-- (PUAssetExplorerReviewScreenViewController)initWithDataSourceManager:(id)a3 mediaProvider:(id)a4 reviewAssetProvider:(id)a5 initialIndexPath:(id)a6 initialAssetReference:(id)a7 initialSelectedAssetUUIDs:(id)a8 initialDisabledLivePhotoAssetUUIDs:(id)a9 selectionCountLimit:(id)a10 sourceType:(unint64_t)a11 lowMemoryMode:(BOOL)a12 reviewBarsModel:(id)a13 resizeTaskDescriptorViewModel:(id)a14 options:(unint64_t)a15
+- (PUAssetExplorerReviewScreenViewController)initWithDataSourceManager:(id)manager mediaProvider:(id)provider reviewAssetProvider:(id)assetProvider initialIndexPath:(id)path initialAssetReference:(id)reference initialSelectedAssetUUIDs:(id)ds initialDisabledLivePhotoAssetUUIDs:(id)iDs selectionCountLimit:(id)self0 sourceType:(unint64_t)self1 lowMemoryMode:(BOOL)self2 reviewBarsModel:(id)self3 resizeTaskDescriptorViewModel:(id)self4 options:(unint64_t)self5
 {
-  v53 = a3;
-  v51 = a4;
-  v50 = a5;
-  v45 = a6;
-  v49 = a6;
-  v48 = a7;
-  v52 = a8;
-  v21 = a9;
-  v22 = a10;
-  v47 = a13;
-  v46 = a14;
+  managerCopy = manager;
+  providerCopy = provider;
+  assetProviderCopy = assetProvider;
+  pathCopy = path;
+  pathCopy2 = path;
+  referenceCopy = reference;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  limitCopy = limit;
+  modelCopy = model;
+  viewModelCopy = viewModel;
   v54.receiver = self;
   v54.super_class = PUAssetExplorerReviewScreenViewController;
   v23 = [(PUAssetExplorerReviewScreenViewController *)&v54 initWithNibName:0 bundle:0];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->__clientDataSourceManager, a3);
-    objc_storeStrong(&v24->__clientMediaProvider, a4);
-    objc_storeStrong(&v24->__reviewAssetProvider, a5);
-    v25 = [[PUAssetExplorerReviewScreenAssetsDataSourceManager alloc] initWithOriginalDataSourceManager:v53];
+    objc_storeStrong(&v23->__clientDataSourceManager, manager);
+    objc_storeStrong(&v24->__clientMediaProvider, provider);
+    objc_storeStrong(&v24->__reviewAssetProvider, assetProvider);
+    v25 = [[PUAssetExplorerReviewScreenAssetsDataSourceManager alloc] initWithOriginalDataSourceManager:managerCopy];
     reviewDataSourceManager = v24->__reviewDataSourceManager;
     v24->__reviewDataSourceManager = v25;
 
@@ -1454,22 +1454,22 @@ void __78__PUAssetExplorerReviewScreenViewController__createBrowsingSessionIfNec
     v29 = objc_alloc_init(PUReviewAssetsMediaProvider);
     [(PUJoiningMediaProvider *)v24->__reviewMediaProvider registerMediaProvider:v29 forAssetPassingTest:&__block_literal_global_10474];
     v30 = v24->__reviewMediaProvider;
-    v31 = [(PUAssetExplorerReviewScreenViewController *)v24 _clientMediaProvider];
-    [(PUJoiningMediaProvider *)v30 registerMediaProvider:v31 forAssetClass:objc_opt_class()];
+    _clientMediaProvider = [(PUAssetExplorerReviewScreenViewController *)v24 _clientMediaProvider];
+    [(PUJoiningMediaProvider *)v30 registerMediaProvider:_clientMediaProvider forAssetClass:objc_opt_class()];
 
-    objc_storeStrong(&v24->_initialIndexPath, v45);
-    objc_storeStrong(&v24->_initialAssetReference, a7);
-    v32 = [v52 copy];
+    objc_storeStrong(&v24->_initialIndexPath, pathCopy);
+    objc_storeStrong(&v24->_initialAssetReference, reference);
+    v32 = [dsCopy copy];
     initialSelectedAssetUUIDs = v24->_initialSelectedAssetUUIDs;
     v24->_initialSelectedAssetUUIDs = v32;
 
-    v34 = [v21 copy];
+    v34 = [iDsCopy copy];
     initialDisabledLivePhotoAssetUUIDs = v24->_initialDisabledLivePhotoAssetUUIDs;
     v24->_initialDisabledLivePhotoAssetUUIDs = v34;
 
-    objc_storeStrong(&v24->_selectionCountLimit, a10);
-    objc_storeStrong(&v24->_reviewBarsModel, a13);
-    objc_storeStrong(&v24->_resizeTaskDescriptorViewModel, a14);
+    objc_storeStrong(&v24->_selectionCountLimit, limit);
+    objc_storeStrong(&v24->_reviewBarsModel, model);
+    objc_storeStrong(&v24->_resizeTaskDescriptorViewModel, viewModel);
     v36 = objc_alloc_init(MEMORY[0x1E695DF90]);
     reviewAssetRequestsByUUID = v24->__reviewAssetRequestsByUUID;
     v24->__reviewAssetRequestsByUUID = v36;
@@ -1478,10 +1478,10 @@ void __78__PUAssetExplorerReviewScreenViewController__createBrowsingSessionIfNec
     substituteAssetsByUUID = v24->__substituteAssetsByUUID;
     v24->__substituteAssetsByUUID = v38;
 
-    v24->_sourceType = a11;
-    v24->__lowMemoryMode = a12;
-    v24->__options = a15;
-    v40 = [[PUReviewScreenSpec alloc] initWithOptions:a15];
+    v24->_sourceType = type;
+    v24->__lowMemoryMode = mode;
+    v24->__options = options;
+    v40 = [[PUReviewScreenSpec alloc] initWithOptions:options];
     spec = v24->__spec;
     v24->__spec = v40;
 

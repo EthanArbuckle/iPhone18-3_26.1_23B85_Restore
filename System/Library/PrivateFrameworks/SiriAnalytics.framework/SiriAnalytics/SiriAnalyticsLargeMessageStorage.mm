@@ -1,22 +1,22 @@
 @interface SiriAnalyticsLargeMessageStorage
-- (SiriAnalyticsLargeMessageStorage)initWithApplicationIdentifier:(id)a3 processor:(id)a4 runtimeQueue:(id)a5;
-- (void)enqueueLargeMessageObjectFromPath:(id)a3 messageWrapper:(id)a4 requestIdentifier:(id)a5 completion:(id)a6;
+- (SiriAnalyticsLargeMessageStorage)initWithApplicationIdentifier:(id)identifier processor:(id)processor runtimeQueue:(id)queue;
+- (void)enqueueLargeMessageObjectFromPath:(id)path messageWrapper:(id)wrapper requestIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SiriAnalyticsLargeMessageStorage
 
-- (void)enqueueLargeMessageObjectFromPath:(id)a3 messageWrapper:(id)a4 requestIdentifier:(id)a5 completion:(id)a6
+- (void)enqueueLargeMessageObjectFromPath:(id)path messageWrapper:(id)wrapper requestIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __114__SiriAnalyticsLargeMessageStorage_enqueueLargeMessageObjectFromPath_messageWrapper_requestIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E8587898;
-  v27 = v13;
-  v14 = v13;
+  v27 = completionCopy;
+  v14 = completionCopy;
   v15 = _Block_copy(aBlock);
   runtimeQueue = self->_runtimeQueue;
   v21[0] = MEMORY[0x1E69E9820];
@@ -24,14 +24,14 @@
   v21[2] = __114__SiriAnalyticsLargeMessageStorage_enqueueLargeMessageObjectFromPath_messageWrapper_requestIdentifier_completion___block_invoke_2;
   v21[3] = &unk_1E8587990;
   v21[4] = self;
-  v22 = v11;
-  v24 = v10;
+  v22 = wrapperCopy;
+  v24 = pathCopy;
   v25 = v15;
-  v23 = v12;
-  v17 = v10;
+  v23 = identifierCopy;
+  v17 = pathCopy;
   v18 = v15;
-  v19 = v12;
-  v20 = v11;
+  v19 = identifierCopy;
+  v20 = wrapperCopy;
   dispatch_async(runtimeQueue, v21);
 }
 
@@ -261,25 +261,25 @@ void __114__SiriAnalyticsLargeMessageStorage_enqueueLargeMessageObjectFromPath_m
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (SiriAnalyticsLargeMessageStorage)initWithApplicationIdentifier:(id)a3 processor:(id)a4 runtimeQueue:(id)a5
+- (SiriAnalyticsLargeMessageStorage)initWithApplicationIdentifier:(id)identifier processor:(id)processor runtimeQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  processorCopy = processor;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = SiriAnalyticsLargeMessageStorage;
   v12 = [(SiriAnalyticsLargeMessageStorage *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_applicationIdentifier, a3);
-    objc_storeStrong(&v13->_processor, a4);
+    objc_storeStrong(&v12->_applicationIdentifier, identifier);
+    objc_storeStrong(&v13->_processor, processor);
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v15 = dispatch_queue_create("com.apple.siri.analytics.storage.blob", v14);
     queue = v13->_queue;
     v13->_queue = v15;
 
-    objc_storeStrong(&v13->_runtimeQueue, a5);
+    objc_storeStrong(&v13->_runtimeQueue, queue);
   }
 
   return v13;

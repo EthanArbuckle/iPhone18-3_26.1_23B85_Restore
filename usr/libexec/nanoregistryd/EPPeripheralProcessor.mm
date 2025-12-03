@@ -1,15 +1,15 @@
 @interface EPPeripheralProcessor
-- (EPPeripheralProcessor)initWithDeviceIDs:(id)a3 block:(id)a4 completion:(id)a5;
+- (EPPeripheralProcessor)initWithDeviceIDs:(id)ds block:(id)block completion:(id)completion;
 - (void)update;
 @end
 
 @implementation EPPeripheralProcessor
 
-- (EPPeripheralProcessor)initWithDeviceIDs:(id)a3 block:(id)a4 completion:(id)a5
+- (EPPeripheralProcessor)initWithDeviceIDs:(id)ds block:(id)block completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dsCopy = ds;
+  blockCopy = block;
+  completionCopy = completion;
   v22.receiver = self;
   v22.super_class = EPPeripheralProcessor;
   v12 = [(EPPeripheralProcessor *)&v22 init];
@@ -17,12 +17,12 @@
   if (v12)
   {
     objc_storeStrong(&v12->_me, v12);
-    objc_storeStrong(&v13->_deviceIDs, a3);
-    v14 = objc_retainBlock(v10);
+    objc_storeStrong(&v13->_deviceIDs, ds);
+    v14 = objc_retainBlock(blockCopy);
     v15 = v13->_block;
     v13->_block = v14;
 
-    v16 = objc_retainBlock(v11);
+    v16 = objc_retainBlock(completionCopy);
     completion = v13->_completion;
     v13->_completion = v16;
 
@@ -55,8 +55,8 @@
 
     if ([(EPResource *)centralManager availability]== 1)
     {
-      v7 = [(EPCentralManager *)self->_centralManager manager];
-      v8 = [v7 retrievePeripheralsWithIdentifiers:self->_deviceIDs];
+      manager = [(EPCentralManager *)self->_centralManager manager];
+      v8 = [manager retrievePeripheralsWithIdentifiers:self->_deviceIDs];
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;

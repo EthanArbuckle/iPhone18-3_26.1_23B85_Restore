@@ -1,26 +1,26 @@
 @interface PKCurrencyAmountSelectorCustomEntryItem
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (PKCurrencyAmountSelectorCustomEntryItem)initWithCurrencyCode:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (PKCurrencyAmountSelectorCustomEntryItem)initWithCurrencyCode:(id)code;
 - (id)decimalNumberValue;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_textFieldValueChanged:(id)a3;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
+- (void)_textFieldValueChanged:(id)changed;
 - (void)clear;
 - (void)endEditing;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason;
 @end
 
 @implementation PKCurrencyAmountSelectorCustomEntryItem
 
-- (PKCurrencyAmountSelectorCustomEntryItem)initWithCurrencyCode:(id)a3
+- (PKCurrencyAmountSelectorCustomEntryItem)initWithCurrencyCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v9.receiver = self;
   v9.super_class = PKCurrencyAmountSelectorCustomEntryItem;
   v5 = [(PKCurrencyAmountSelectorCustomEntryItem *)&v9 init];
   if (v5)
   {
-    v6 = [[PKTextfieldTableViewSettingsRowCurrencyFormatter alloc] initWithCurrencyCode:v4];
+    v6 = [[PKTextfieldTableViewSettingsRowCurrencyFormatter alloc] initWithCurrencyCode:codeCopy];
     formatter = v5->_formatter;
     v5->_formatter = v6;
   }
@@ -30,27 +30,27 @@
 
 - (void)endEditing
 {
-  v2 = [(PKTextFieldTableViewCell *)self->_cell textField];
-  [v2 endEditing:1];
+  textField = [(PKTextFieldTableViewCell *)self->_cell textField];
+  [textField endEditing:1];
 }
 
 - (void)clear
 {
-  v2 = [(PKTextFieldTableViewCell *)self->_cell textField];
-  [v2 setText:0];
+  textField = [(PKTextFieldTableViewCell *)self->_cell textField];
+  [textField setText:0];
 }
 
 - (id)decimalNumberValue
 {
-  v3 = [(PKTextFieldTableViewCell *)self->_cell textField];
-  v4 = [v3 text];
+  textField = [(PKTextFieldTableViewCell *)self->_cell textField];
+  text = [textField text];
 
-  if (v4 && [v4 length])
+  if (text && [text length])
   {
-    v5 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)self->_formatter submissionValueFromFormattedInput:v4];
+    v5 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)self->_formatter submissionValueFromFormattedInput:text];
     v6 = [objc_alloc(MEMORY[0x1E696AB90]) initWithString:v5];
-    v7 = [MEMORY[0x1E696AB90] notANumber];
-    v8 = [v6 isEqualToNumber:v7];
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v8 = [v6 isEqualToNumber:notANumber];
 
     if (v8)
     {
@@ -71,26 +71,26 @@
   return v9;
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
   cell = self->_cell;
   if (!cell)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [objc_opt_class() cellReuseIdentifier];
-    v10 = [v8 dequeueReusableCellWithIdentifier:v9 forIndexPath:v7];
+    pathCopy = path;
+    viewCopy = view;
+    cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
     v11 = self->_cell;
     self->_cell = v10;
 
-    v12 = [(PKTextFieldTableViewCell *)self->_cell textField];
+    textField = [(PKTextFieldTableViewCell *)self->_cell textField];
     v13 = PKLocalizedFeatureString();
-    [v12 setPlaceholder:v13];
+    [textField setPlaceholder:v13];
 
-    [v12 setKeyboardType:8];
-    [v12 setDelegate:self];
-    [v12 addTarget:self action:sel__textFieldValueChanged_ forControlEvents:0x20000];
+    [textField setKeyboardType:8];
+    [textField setDelegate:self];
+    [textField addTarget:self action:sel__textFieldValueChanged_ forControlEvents:0x20000];
     [(PKTextFieldTableViewCell *)self->_cell setAccessibilityIdentifier:*MEMORY[0x1E69B9660]];
 
     cell = self->_cell;
@@ -99,23 +99,23 @@
   return cell;
 }
 
-- (void)_textFieldValueChanged:(id)a3
+- (void)_textFieldValueChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   formatter = self->_formatter;
   if (formatter)
   {
-    v13 = v4;
-    v6 = [v4 text];
-    v7 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)formatter formattedValueFromInput:v6];
+    v13 = changedCopy;
+    text = [changedCopy text];
+    v7 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)formatter formattedValueFromInput:text];
 
     [v13 setText:v7];
     v8 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)self->_formatter numberFromInput:v7];
-    v9 = [v8 integerValue];
+    integerValue = [v8 integerValue];
     maximumInput = self->_maximumInput;
     v11 = MEMORY[0x1E69DC888];
-    self->_inputIsValid = v9 <= maximumInput;
-    if (v9 > maximumInput)
+    self->_inputIsValid = integerValue <= maximumInput;
+    if (integerValue > maximumInput)
     {
       [v11 redColor];
     }
@@ -128,25 +128,25 @@
     [v13 setTextColor:v12];
 
     (*(self->_inputValueChangedHandler + 2))();
-    v4 = v13;
+    changedCopy = v13;
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = [a3 text];
-  v11 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  text = [field text];
+  v11 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   v12 = [(PKTextfieldTableViewSettingsRowCurrencyFormatter *)self->_formatter numberFromInput:v11];
-  LOBYTE(v10) = self->_inputIsValid | ([v12 integerValue] <= self->_maximumInput);
+  LOBYTE(text) = self->_inputIsValid | ([v12 integerValue] <= self->_maximumInput);
 
-  return v10 & 1;
+  return text & 1;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   editingChangedHandler = self->_editingChangedHandler;
   if (editingChangedHandler)
@@ -155,7 +155,7 @@
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason
 {
   editingChangedHandler = self->_editingChangedHandler;
   if (editingChangedHandler)

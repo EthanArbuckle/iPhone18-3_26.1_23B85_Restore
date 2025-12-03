@@ -5,24 +5,24 @@
 - (NSString)verboseSmartDescriptionMixed;
 - (NSString)verboseSmartDescriptionPrivate;
 - (NSString)verboseSmartDescriptionShared;
-- (PGHighlightEnrichmentValues)initWithHighlight:(id)a3;
+- (PGHighlightEnrichmentValues)initWithHighlight:(id)highlight;
 - (id)description;
-- (void)setSmartDescriptionMixed:(id)a3;
-- (void)setSmartDescriptionPrivate:(id)a3;
-- (void)setSmartDescriptionShared:(id)a3;
-- (void)setVerboseSmartDescriptionMixed:(id)a3;
-- (void)setVerboseSmartDescriptionPrivate:(id)a3;
-- (void)setVerboseSmartDescriptionShared:(id)a3;
+- (void)setSmartDescriptionMixed:(id)mixed;
+- (void)setSmartDescriptionPrivate:(id)private;
+- (void)setSmartDescriptionShared:(id)shared;
+- (void)setVerboseSmartDescriptionMixed:(id)mixed;
+- (void)setVerboseSmartDescriptionPrivate:(id)private;
+- (void)setVerboseSmartDescriptionShared:(id)shared;
 @end
 
 @implementation PGHighlightEnrichmentValues
 
-- (void)setVerboseSmartDescriptionMixed:(id)a3
+- (void)setVerboseSmartDescriptionMixed:(id)mixed
 {
-  v6 = a3;
-  if ([v6 length])
+  mixedCopy = mixed;
+  if ([mixedCopy length])
   {
-    v4 = [v6 copy];
+    v4 = [mixedCopy copy];
   }
 
   else
@@ -34,12 +34,12 @@
   self->_verboseSmartDescriptionMixed = v4;
 }
 
-- (void)setSmartDescriptionMixed:(id)a3
+- (void)setSmartDescriptionMixed:(id)mixed
 {
-  v6 = a3;
-  if ([v6 length])
+  mixedCopy = mixed;
+  if ([mixedCopy length])
   {
-    v4 = [v6 copy];
+    v4 = [mixedCopy copy];
   }
 
   else
@@ -51,12 +51,12 @@
   self->_smartDescriptionMixed = v4;
 }
 
-- (void)setVerboseSmartDescriptionShared:(id)a3
+- (void)setVerboseSmartDescriptionShared:(id)shared
 {
-  v6 = a3;
-  if ([v6 length])
+  sharedCopy = shared;
+  if ([sharedCopy length])
   {
-    v4 = [v6 copy];
+    v4 = [sharedCopy copy];
   }
 
   else
@@ -68,12 +68,12 @@
   self->_verboseSmartDescriptionShared = v4;
 }
 
-- (void)setSmartDescriptionShared:(id)a3
+- (void)setSmartDescriptionShared:(id)shared
 {
-  v6 = a3;
-  if ([v6 length])
+  sharedCopy = shared;
+  if ([sharedCopy length])
   {
-    v4 = [v6 copy];
+    v4 = [sharedCopy copy];
   }
 
   else
@@ -85,12 +85,12 @@
   self->_smartDescriptionShared = v4;
 }
 
-- (void)setVerboseSmartDescriptionPrivate:(id)a3
+- (void)setVerboseSmartDescriptionPrivate:(id)private
 {
-  v6 = a3;
-  if ([v6 length])
+  privateCopy = private;
+  if ([privateCopy length])
   {
-    v4 = [v6 copy];
+    v4 = [privateCopy copy];
   }
 
   else
@@ -102,12 +102,12 @@
   self->_verboseSmartDescriptionPrivate = v4;
 }
 
-- (void)setSmartDescriptionPrivate:(id)a3
+- (void)setSmartDescriptionPrivate:(id)private
 {
-  v6 = a3;
-  if ([v6 length])
+  privateCopy = private;
+  if ([privateCopy length])
   {
-    v4 = [v6 copy];
+    v4 = [privateCopy copy];
   }
 
   else
@@ -220,16 +220,16 @@
   return v8;
 }
 
-- (PGHighlightEnrichmentValues)initWithHighlight:(id)a3
+- (PGHighlightEnrichmentValues)initWithHighlight:(id)highlight
 {
-  v5 = a3;
+  highlightCopy = highlight;
   v9.receiver = self;
   v9.super_class = PGHighlightEnrichmentValues;
   v6 = [(PGHighlightEnrichmentValues *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_highlight, a3);
+    objc_storeStrong(&v6->_highlight, highlight);
     v7->_mood = -1;
     v7->_promotionScore = -1.0;
     v7->_enrichmentState = -1;

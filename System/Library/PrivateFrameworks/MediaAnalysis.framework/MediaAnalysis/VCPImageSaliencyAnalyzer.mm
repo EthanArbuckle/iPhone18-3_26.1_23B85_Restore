@@ -1,23 +1,23 @@
 @interface VCPImageSaliencyAnalyzer
-+ (VCPImageSaliencyAnalyzer)analyzerWith:(int)a3 prune:(BOOL)a4;
-- (VCPImageSaliencyAnalyzer)initWithMaxNumRegions:(int)a3 prune:(BOOL)a4;
-- (float)computeScore:(float *)a3 width:(int)a4 height:(int)a5 posX:(int)a6 posY:(int)a7;
++ (VCPImageSaliencyAnalyzer)analyzerWith:(int)with prune:(BOOL)prune;
+- (VCPImageSaliencyAnalyzer)initWithMaxNumRegions:(int)regions prune:(BOOL)prune;
+- (float)computeScore:(float *)score width:(int)width height:(int)height posX:(int)x posY:(int)y;
 - (id).cxx_construct;
-- (id)pruneRegions:(id)a3;
-- (int)aggregateTileResults:(id)a3 tileRect:(CGRect)a4 imageSize:(CGSize)a5 landscape:(BOOL)a6 results:(id)a7;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 withChunk:(int)a5;
-- (int)generateSalientRegion:(float *)a3 outHeight:(int)a4 outWidth:(int)a5;
-- (int)saliencyDetection:(__CVBuffer *)a3 salientRegions:(id)a4 cancel:(id)a5;
-- (int)scaleImage:(__CVBuffer *)a3 toData:(float *)a4 withWidth:(int)a5 andHeight:(int)a6;
+- (id)pruneRegions:(id)regions;
+- (int)aggregateTileResults:(id)results tileRect:(CGRect)rect imageSize:(CGSize)size landscape:(BOOL)landscape results:(id)a7;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data withChunk:(int)chunk;
+- (int)generateSalientRegion:(float *)region outHeight:(int)height outWidth:(int)width;
+- (int)saliencyDetection:(__CVBuffer *)detection salientRegions:(id)regions cancel:(id)cancel;
+- (int)scaleImage:(__CVBuffer *)image toData:(float *)data withWidth:(int)width andHeight:(int)height;
 @end
 
 @implementation VCPImageSaliencyAnalyzer
 
-+ (VCPImageSaliencyAnalyzer)analyzerWith:(int)a3 prune:(BOOL)a4
++ (VCPImageSaliencyAnalyzer)analyzerWith:(int)with prune:(BOOL)prune
 {
-  v4 = a4;
-  v5 = *&a3;
+  pruneCopy = prune;
+  v5 = *&with;
   {
     +[VCPImageSaliencyAnalyzer analyzerWith:prune:]::analyzerClass = objc_opt_class();
   }
@@ -27,7 +27,7 @@
     +[VCPImageSaliencyAnalyzer analyzerWith:prune:];
   }
 
-  v6 = [objc_alloc(+[VCPImageSaliencyAnalyzer analyzerWith:prune:]::analyzerClass) initWithMaxNumRegions:v5 prune:v4];
+  v6 = [objc_alloc(+[VCPImageSaliencyAnalyzer analyzerWith:prune:]::analyzerClass) initWithMaxNumRegions:v5 prune:pruneCopy];
 
   return v6;
 }
@@ -49,7 +49,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
   return result;
 }
 
-- (VCPImageSaliencyAnalyzer)initWithMaxNumRegions:(int)a3 prune:(BOOL)a4
+- (VCPImageSaliencyAnalyzer)initWithMaxNumRegions:(int)regions prune:(BOOL)prune
 {
   v12.receiver = self;
   v12.super_class = VCPImageSaliencyAnalyzer;
@@ -73,42 +73,42 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
     }
 
     v6->_chunk = v8;
-    if (a3 >= 5)
+    if (regions >= 5)
     {
-      v9 = 5;
+      regionsCopy = 5;
     }
 
     else
     {
-      v9 = a3;
+      regionsCopy = regions;
     }
 
-    if (a3 <= 1)
+    if (regions <= 1)
     {
-      v9 = 1;
+      regionsCopy = 1;
     }
 
-    v6->_maxNumRegions = v9;
-    v6->_prune = a4;
+    v6->_maxNumRegions = regionsCopy;
+    v6->_prune = prune;
     v10 = v6;
   }
 
   return v6;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 withChunk:(int)a5
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data withChunk:(int)chunk
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -119,21 +119,21 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
   }
 
   v10 = Height;
-  v11 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v11 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v36 = v11;
-  if (!v11 || (v12 = v11, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v40 = a3, v41 = 1024, v42 = v12, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v12 = v36) == 0))
+  if (!v11 || (v12 = v11, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v40 = image, v41 = 1024, v42 = v12, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v12 = v36) == 0))
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    if (a5 == 4)
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    if (chunk == 4)
     {
-      bzero(a4, 16 * Width * v10);
+      bzero(data, 16 * Width * v10);
       if (v10 >= 1)
       {
         v16 = 0;
-        v17 = a4 + 3;
-        v18 = a4 + 2;
-        v19 = a4 + 1;
+        v17 = data + 3;
+        v18 = data + 2;
+        v19 = data + 1;
         v20 = 4 * Width;
         do
         {
@@ -145,7 +145,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
             {
               LOBYTE(v15) = BaseAddress[v21 + 2];
               *&v23 = LODWORD(v15) / 255.0;
-              a4[v21] = *&v23;
+              data[v21] = *&v23;
               LOBYTE(v23) = BaseAddress[v21 + 1];
               *&v24 = v23 / 255.0;
               v19[v21] = *&v24;
@@ -160,7 +160,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
             while (v22);
           }
 
-          a4 += v20;
+          data += v20;
           v19 += v20;
           v18 += v20;
           BaseAddress += BytesPerRow;
@@ -174,13 +174,13 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
 
     else
     {
-      bzero(a4, 16 * Width * v10);
+      bzero(data, 16 * Width * v10);
       if (v10 >= 1)
       {
         v27 = 0;
-        v28 = &a4[3 * v10 * Width];
-        v29 = &a4[2 * v10 * Width];
-        v30 = &a4[v10 * Width];
+        v28 = &data[3 * v10 * Width];
+        v29 = &data[2 * v10 * Width];
+        v30 = &data[v10 * Width];
         v31 = 4 * Width;
         do
         {
@@ -192,7 +192,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
             {
               LOBYTE(v26) = BaseAddress[(v32 * 4) + 2];
               *&v34 = LODWORD(v26) / 255.0;
-              a4[v32] = *&v34;
+              data[v32] = *&v34;
               LOBYTE(v34) = BaseAddress[(v32 * 4) + 1];
               *&v35 = v34 / 255.0;
               v30[v32] = *&v35;
@@ -211,7 +211,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
           v28 = (v28 + v31);
           v29 = (v29 + v31);
           v30 = (v30 + v31);
-          a4 = (a4 + v31);
+          data = (data + v31);
         }
 
         while (v27 != v10);
@@ -228,19 +228,19 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
   return v12;
 }
 
-- (int)scaleImage:(__CVBuffer *)a3 toData:(float *)a4 withWidth:(int)a5 andHeight:(int)a6
+- (int)scaleImage:(__CVBuffer *)image toData:(float *)data withWidth:(int)width andHeight:(int)height
 {
-  if (!a4)
+  if (!data)
   {
     return -50;
   }
 
   cf = 0;
-  Scaler::Scale(&self->_scaler, a3, &cf, *&a5, *&a6, 1111970369);
+  Scaler::Scale(&self->_scaler, image, &cf, *&width, *&height, 1111970369);
   v9 = v8;
   if (!v8)
   {
-    v9 = [(VCPImageSaliencyAnalyzer *)self copyImage:cf toData:a4 withChunk:self->_chunk];
+    v9 = [(VCPImageSaliencyAnalyzer *)self copyImage:cf toData:data withChunk:self->_chunk];
   }
 
   if (cf)
@@ -251,12 +251,12 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
   return v9;
 }
 
-- (float)computeScore:(float *)a3 width:(int)a4 height:(int)a5 posX:(int)a6 posY:(int)a7
+- (float)computeScore:(float *)score width:(int)width height:(int)height posX:(int)x posY:(int)y
 {
   v49 = *MEMORY[0x1E69E9840];
   memset(v48, 0, sizeof(v48));
-  v44 = a5 - 1;
-  if (a5 < 1)
+  v44 = height - 1;
+  if (height < 1)
   {
     v13 = 0.0;
     v11 = 0.0;
@@ -265,30 +265,30 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
   else
   {
     v8 = 0;
-    v9 = (a4 * a4 + a5 * a5);
-    v46 = a4;
-    v10 = a5;
-    v45 = -a6;
+    v9 = (width * width + height * height);
+    widthCopy = width;
+    heightCopy = height;
+    v45 = -x;
     v11 = 0.0;
-    v12 = a3;
+    scoreCopy = score;
     v13 = 0.0;
     do
     {
-      if (a4 >= 1)
+      if (width >= 1)
       {
-        if (v8 - a7 >= 0)
+        if (v8 - y >= 0)
         {
-          v14 = v8 - a7;
+          v14 = v8 - y;
         }
 
         else
         {
-          v14 = a7 - v8;
+          v14 = y - v8;
         }
 
-        v15 = v46;
+        v15 = widthCopy;
         v16 = v45;
-        v17 = v12;
+        v17 = scoreCopy;
         do
         {
           v18 = *v17;
@@ -304,7 +304,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
 
           if (v14 > 2 || v19 >= 3)
           {
-            v20 = sqrtf(((v8 - a7) * (v8 - a7) + v16 * v16));
+            v20 = sqrtf(((v8 - y) * (v8 - y) + v16 * v16));
             v11 = v11 + (((1.0 - expf((((v20 + -2.0) * (v20 + -2.0)) * -5.0) / v9)) * v18) * v18);
           }
 
@@ -322,51 +322,51 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
       }
 
       ++v8;
-      v12 += a4;
+      scoreCopy += width;
     }
 
-    while (v8 != v10);
+    while (v8 != heightCopy);
   }
 
-  if (a7 <= 2)
+  if (y <= 2)
   {
-    v21 = 2;
+    yCopy = 2;
   }
 
   else
   {
-    v21 = a7;
+    yCopy = y;
   }
 
-  v22 = a7 + 2;
-  if (v44 < a7 + 2)
+  v22 = y + 2;
+  if (v44 < y + 2)
   {
     v22 = v44;
   }
 
-  if (v21 - 2 <= v22)
+  if (yCopy - 2 <= v22)
   {
-    if (a6 <= 2)
+    if (x <= 2)
     {
-      v23 = 2;
+      xCopy = 2;
     }
 
     else
     {
-      v23 = a6;
+      xCopy = x;
     }
 
-    v24 = v23 - 2;
-    v25 = a6 + 2;
-    if (a4 - 1 < a6 + 2)
+    v24 = xCopy - 2;
+    v25 = x + 2;
+    if (width - 1 < x + 2)
     {
-      v25 = a4 - 1;
+      v25 = width - 1;
     }
 
-    v26 = v21 - 2;
+    v26 = yCopy - 2;
     v27 = v22 + 1;
-    v28 = &a3[v26 * a4 - 2 + v23];
-    v29 = v25 - v23 + 3;
+    v28 = &score[v26 * width - 2 + xCopy];
+    v29 = v25 - xCopy + 3;
     do
     {
       v30 = v29;
@@ -390,7 +390,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
       }
 
       ++v26;
-      v28 += a4;
+      v28 += width;
     }
 
     while (v27 != v26);
@@ -440,27 +440,27 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
   return result;
 }
 
-- (int)generateSalientRegion:(float *)a3 outHeight:(int)a4 outWidth:(int)a5
+- (int)generateSalientRegion:(float *)region outHeight:(int)height outWidth:(int)width
 {
-  v5 = *&a5;
+  v5 = *&width;
   *&v92[28] = *MEMORY[0x1E69E9840];
   [(VCPImageSaliencyAnalyzer *)self outputScaling];
-  if (!a3)
+  if (!region)
   {
     return -18;
   }
 
   v10 = v9;
-  v82 = self;
-  v11 = 4 * v5 * a4;
-  if (v5 * a4 < 0)
+  selfCopy = self;
+  v11 = 4 * v5 * height;
+  if (v5 * height < 0)
   {
     v12 = -1;
   }
 
   else
   {
-    v12 = 4 * v5 * a4;
+    v12 = 4 * v5 * height;
   }
 
   v13 = MEMORY[0x1E69E5398];
@@ -485,7 +485,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
   else
   {
     v89 = v5;
-    v19 = (a4 * a4 + v5 * v5);
+    v19 = (height * height + v5 * v5);
     bzero(v14, v11);
     v20 = 0;
     v21 = v92;
@@ -510,7 +510,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
     }
 
     while (v20 != 3);
-    if (a4 >= 1)
+    if (height >= 1)
     {
       v29 = 0;
       v30 = 0;
@@ -519,8 +519,8 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
       {
         if (v89 >= 1)
         {
-          chunk = v82->_chunk;
-          v33 = &a3[chunk * v30];
+          chunk = selfCopy->_chunk;
+          v33 = &region[chunk * v30];
           v34 = 4 * chunk;
           v30 += v89;
           v35 = v89;
@@ -539,24 +539,24 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
         v31 += v89;
       }
 
-      while (v29 != a4);
+      while (v29 != height);
     }
 
     memcpy(v16, v14, v11);
-    if (v82->_maxNumRegions >= 1)
+    if (selfCopy->_maxNumRegions >= 1)
     {
       v37 = 0;
-      v86 = (a4 - 2);
+      v86 = (height - 2);
       v38 = v89;
-      v84 = a4 / -2;
-      v78 = a4;
-      v76 = 5.0 / a4;
+      v84 = height / -2;
+      heightCopy = height;
+      v76 = 5.0 / height;
       v77 = 5.0 / v89;
       v39 = 4 * v89;
       v79 = v14;
       v80 = v16;
-      v81 = a4;
-      while (a4 >= 5)
+      heightCopy2 = height;
+      while (height >= 5)
       {
         v83 = v37;
         v40 = 0;
@@ -661,8 +661,8 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
         }
 
         v14 = v79;
-        [(VCPImageSaliencyAnalyzer *)v82 computeScore:v79 width:v89 height:v81 posX:v40 posY:v41];
-        v82->_score[v83] = v55;
+        [(VCPImageSaliencyAnalyzer *)selfCopy computeScore:v79 width:v89 height:heightCopy2 posX:v40 posY:v41];
+        selfCopy->_score[v83] = v55;
         if (v55 == 0.0)
         {
           v58 = v41 - 2;
@@ -674,7 +674,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
           v56 = v40 - 2;
           v57 = (v40 - 2) / v89;
           v58 = v41 - 2;
-          v59 = (v41 - 2) / v78;
+          v59 = (v41 - 2) / heightCopy;
           v60 = v57;
           v61 = v59;
           if (v57 < 1.0)
@@ -734,7 +734,7 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
             v67 = v76;
           }
 
-          p_x = &v82->_region[v83].origin.x;
+          p_x = &selfCopy->_region[v83].origin.x;
           *p_x = v63;
           p_x[1] = v65;
           if (v76 <= 0.0)
@@ -772,8 +772,8 @@ uint64_t __47__VCPImageSaliencyAnalyzer_analyzerWith_prune___block_invoke()
 
         while (v74 < v70);
         v37 = v83 + 1;
-        a4 = v81;
-        if (v83 + 1 >= v82->_maxNumRegions)
+        height = heightCopy2;
+        if (v83 + 1 >= selfCopy->_maxNumRegions)
         {
           break;
         }
@@ -797,11 +797,11 @@ LABEL_77:
   return v18;
 }
 
-- (int)saliencyDetection:(__CVBuffer *)a3 salientRegions:(id)a4 cancel:(id)a5
+- (int)saliencyDetection:(__CVBuffer *)detection salientRegions:(id)regions cancel:(id)cancel
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  regionsCopy = regions;
+  cancelCopy = cancel;
   v10 = 0;
   score = self->_score;
   v12 = MEMORY[0x1E695F058];
@@ -816,8 +816,8 @@ LABEL_77:
 
   while (v10 != 5);
   v15 = objc_autoreleasePoolPush();
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(detection);
+  Height = CVPixelBufferGetHeight(detection);
   v18 = Height;
   if (Width <= Height)
   {
@@ -855,10 +855,10 @@ LABEL_77:
   if (!v21)
   {
     v22 = [(VCPImageSaliencyAnalyzer *)self getInputBuffer:v18 srcWidth:Width cnnInputHeight:&v30 cnnInputWidth:&v30 + 4];
-    v21 = [(VCPImageSaliencyAnalyzer *)self scaleImage:a3 toData:v22 withWidth:HIDWORD(v30) andHeight:v30];
+    v21 = [(VCPImageSaliencyAnalyzer *)self scaleImage:detection toData:v22 withWidth:HIDWORD(v30) andHeight:v30];
     if (!v21)
     {
-      v21 = [(VCPImageSaliencyAnalyzer *)self getSalientRegions:v9];
+      v21 = [(VCPImageSaliencyAnalyzer *)self getSalientRegions:cancelCopy];
       if (!v21)
       {
         if (self->_maxNumRegions < 1)
@@ -882,7 +882,7 @@ LABEL_12:
             v27 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
             v32[1] = v27;
             v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
-            [v8 addObject:v28];
+            [regionsCopy addObject:v28];
           }
 
           v21 = 0;
@@ -901,19 +901,19 @@ LABEL_21:
   return v21;
 }
 
-- (int)aggregateTileResults:(id)a3 tileRect:(CGRect)a4 imageSize:(CGSize)a5 landscape:(BOOL)a6 results:(id)a7
+- (int)aggregateTileResults:(id)results tileRect:(CGRect)rect imageSize:(CGSize)size landscape:(BOOL)landscape results:(id)a7
 {
-  v8 = a6;
-  height = a5.height;
-  width = a5.width;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  landscapeCopy = landscape;
+  height = size.height;
+  width = size.width;
+  v11 = rect.size.height;
+  v12 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v47 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  resultsCopy = results;
   v39 = a7;
-  if (v8)
+  if (landscapeCopy)
   {
     v16 = v12 / width;
     v17 = x / width;
@@ -929,7 +929,7 @@ LABEL_21:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v18 = v15;
+  v18 = resultsCopy;
   v19 = [v18 countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v19)
   {
@@ -963,7 +963,7 @@ LABEL_21:
             v33 = v48.size.width;
             v34 = v48.size.height;
 
-            if (v8)
+            if (landscapeCopy)
             {
               v31 = v24 + v31 * v23;
               v33 = v33 * v23;
@@ -1000,12 +1000,12 @@ LABEL_21:
   return 0;
 }
 
-- (id)pruneRegions:(id)a3
+- (id)pruneRegions:(id)regions
 {
   v38 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v26 = [MEMORY[0x1E695DF70] array];
-  v28 = [MEMORY[0x1E695DF70] arrayWithArray:v25];
+  regionsCopy = regions;
+  array = [MEMORY[0x1E695DF70] array];
+  v28 = [MEMORY[0x1E695DF70] arrayWithArray:regionsCopy];
   if (self->_maxNumRegions >= 1)
   {
     v29 = 0;
@@ -1021,7 +1021,7 @@ LABEL_21:
       rect[0] = *MEMORY[0x1E695F058];
       v4 = *(MEMORY[0x1E695F058] + 16);
       v5 = *(MEMORY[0x1E695F058] + 24);
-      v6 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v33 = 0u;
       v34 = 0u;
       memset(&rect[1], 0, 32);
@@ -1060,7 +1060,7 @@ LABEL_21:
             {
               if (v19 > v31)
               {
-                [v6 addObject:v11];
+                [array2 addObject:v11];
                 v30 = v19;
                 *rect = x;
                 v3 = y;
@@ -1094,7 +1094,7 @@ LABEL_21:
                 v3 = v44.origin.y;
                 v4 = v44.size.width;
                 v5 = v44.size.height;
-                [v6 addObject:v11];
+                [array2 addObject:v11];
               }
             }
           }
@@ -1128,10 +1128,10 @@ LABEL_21:
         v22 = NSStringFromRect(v46);
         v36[1] = v22;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
-        [v26 addObject:v23];
+        [array addObject:v23];
       }
 
-      [v7 removeObjectsInArray:v6];
+      [v7 removeObjectsInArray:array2];
 
       ++v29;
     }
@@ -1139,15 +1139,15 @@ LABEL_21:
     while (v29 < self->_maxNumRegions);
   }
 
-  return v26;
+  return array;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v51 = *MEMORY[0x1E69E9840];
-  v33 = a6;
+  cancelCopy = cancel;
   v8 = 0;
-  *a5 = 0;
+  *results = 0;
   v9 = MEMORY[0x1E695F058];
   do
   {
@@ -1159,9 +1159,9 @@ LABEL_21:
   }
 
   while (v8 != 5);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v34 = [MEMORY[0x1E695DF70] array];
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  array = [MEMORY[0x1E695DF70] array];
   if (Height >= Width)
   {
     v14 = Width;
@@ -1184,19 +1184,19 @@ LABEL_21:
 
   if ((v15 / v14) <= 2.0)
   {
-    v16 = [(VCPImageSaliencyAnalyzer *)self saliencyDetection:a3 salientRegions:v34 cancel:v33];
+    v16 = [(VCPImageSaliencyAnalyzer *)self saliencyDetection:buffer salientRegions:array cancel:cancelCopy];
   }
 
   else
   {
-    v16 = [(VCPImageAnalyzer *)self analyzePixelBufferInTiles:a3 results:v34 cancel:v33];
+    v16 = [(VCPImageAnalyzer *)self analyzePixelBufferInTiles:buffer results:array cancel:cancelCopy];
   }
 
   v17 = v16;
   if (!v16)
   {
-    [v34 sortUsingComparator:&__block_literal_global_202];
-    v18 = v34;
+    [array sortUsingComparator:&__block_literal_global_202];
+    v18 = array;
     v19 = v18;
     if (self->_prune)
     {
@@ -1210,7 +1210,7 @@ LABEL_21:
       obj = v18;
     }
 
-    v38 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -1256,7 +1256,7 @@ LABEL_18:
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:2];
         v49 = v28;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-        [v38 addObject:v29];
+        [array2 addObject:v29];
 
         ++v23;
         if (v21 == ++v22)
@@ -1272,11 +1272,11 @@ LABEL_18:
       }
     }
 
-    if ([v38 count])
+    if ([array2 count])
     {
       v44 = @"SaliencyResults";
-      v45 = v38;
-      *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
+      v45 = array2;
+      *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
     }
 
     v17 = 0;

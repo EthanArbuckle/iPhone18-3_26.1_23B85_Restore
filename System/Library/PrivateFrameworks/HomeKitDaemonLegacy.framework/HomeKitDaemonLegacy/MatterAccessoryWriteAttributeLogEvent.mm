@@ -1,9 +1,9 @@
 @interface MatterAccessoryWriteAttributeLogEvent
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
-- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithHome:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 value:(id)a8 timedWriteTimeout:(id)a9;
-- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithHomeUUID:(id)a3;
-- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
+- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithHome:(id)home nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId value:(id)value timedWriteTimeout:(id)timeout;
+- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithHomeUUID:(id)d;
+- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
 - (id)value;
 @end
 
@@ -19,17 +19,17 @@
   return v2;
 }
 
-- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithHome:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 value:(id)a8 timedWriteTimeout:(id)a9
+- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithHome:(id)home nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId value:(id)value timedWriteTimeout:(id)timeout
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  homeCopy = home;
+  endpointIdCopy = endpointId;
+  clusterIdCopy = clusterId;
+  attributeIdCopy = attributeId;
   swift_unknownObjectRetain();
-  v17 = a9;
+  timeoutCopy = timeout;
   sub_253CD0E18();
   swift_unknownObjectRelease();
-  v18 = sub_253231458(v13, a4, v14, v15, v16, &v20, a9);
+  v18 = sub_253231458(homeCopy, id, endpointIdCopy, clusterIdCopy, attributeIdCopy, &v20, timeout);
 
   return v18;
 }
@@ -46,7 +46,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_2532310E0();
 
   sub_25320DC70();
@@ -55,7 +55,7 @@
   return v3;
 }
 
-- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithHomeUUID:(id)a3
+- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithHomeUUID:(id)d
 {
   v3 = sub_253CCFF58();
   v4 = *(*(v3 - 8) + 64);
@@ -66,7 +66,7 @@
   return result;
 }
 
-- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (_TtC19HomeKitDaemonLegacy37MatterAccessoryWriteAttributeLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
   v4 = sub_253CCFF58();
   v5 = *(*(v4 - 8) + 64);

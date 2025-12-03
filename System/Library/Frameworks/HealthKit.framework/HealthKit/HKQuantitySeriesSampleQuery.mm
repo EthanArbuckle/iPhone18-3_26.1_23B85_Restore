@@ -1,15 +1,15 @@
 @interface HKQuantitySeriesSampleQuery
 - (HKQuantitySeriesSampleQuery)initWithQuantityType:(HKQuantityType *)quantityType predicate:(NSPredicate *)predicate quantityHandler:(void *)quantityHandler;
-- (HKQuantitySeriesSampleQuery)initWithQuantityType:(id)a3 predicate:(id)a4 quantityBatchHandler:(id)a5;
+- (HKQuantitySeriesSampleQuery)initWithQuantityType:(id)type predicate:(id)predicate quantityBatchHandler:(id)handler;
 - (HKQuantitySeriesSampleQuery)initWithSample:(HKQuantitySample *)quantitySample quantityHandler:(void *)quantityHandler;
-- (id)_quantitySampleForEnumerationResult:(id)a3 UUID:(id)a4;
+- (id)_quantitySampleForEnumerationResult:(id)result UUID:(id)d;
 - (id)quantityHandlerWithSample;
 - (id)quantityHandlerWithoutSample;
-- (void)client_deliverEnumerationResults:(id)a3 isFinal:(BOOL)a4 query:(id)a5;
-- (void)client_deliverQuantitySeries:(id)a3 seriesAnchor:(int64_t)a4 isFinal:(BOOL)a5 query:(id)a6;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (void)client_deliverEnumerationResults:(id)results isFinal:(BOOL)final query:(id)query;
+- (void)client_deliverQuantitySeries:(id)series seriesAnchor:(int64_t)anchor isFinal:(BOOL)final query:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)setIncludeSample:(BOOL)includeSample;
 - (void)setOrderByQuantitySampleStartDate:(BOOL)orderByQuantitySampleStartDate;
 @end
@@ -40,10 +40,10 @@
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "quantityHandler"}];
 LABEL_3:
-  v10 = [(HKQuantitySample *)v7 quantityType];
+  quantityType = [(HKQuantitySample *)v7 quantityType];
   v16.receiver = self;
   v16.super_class = HKQuantitySeriesSampleQuery;
-  v11 = [(HKQuery *)&v16 _initWithObjectType:v10 predicate:0];
+  v11 = [(HKQuery *)&v16 _initWithObjectType:quantityType predicate:0];
 
   if (v11)
   {
@@ -123,15 +123,15 @@ void __78__HKQuantitySeriesSampleQuery_initWithQuantityType_predicate_quantityHa
   (*(*(a1 + 32) + 16))();
 }
 
-- (HKQuantitySeriesSampleQuery)initWithQuantityType:(id)a3 predicate:(id)a4 quantityBatchHandler:(id)a5
+- (HKQuantitySeriesSampleQuery)initWithQuantityType:(id)type predicate:(id)predicate quantityBatchHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  typeCopy = type;
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (typeCopy)
   {
-    if (v10)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -150,7 +150,7 @@ void __78__HKQuantitySeriesSampleQuery_initWithQuantityType_predicate_quantityHa
 LABEL_3:
   v16.receiver = self;
   v16.super_class = HKQuantitySeriesSampleQuery;
-  v12 = [(HKQuery *)&v16 _initWithObjectType:v8 predicate:v9];
+  v12 = [(HKQuery *)&v16 _initWithObjectType:typeCopy predicate:predicateCopy];
   if (v12)
   {
     v13 = [v11 copy];
@@ -178,46 +178,46 @@ LABEL_3:
 - (void)setIncludeSample:(BOOL)includeSample
 {
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v5 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__HKQuantitySeriesSampleQuery_setIncludeSample___block_invoke;
   v6[3] = &unk_1E7378680;
   v6[4] = self;
   v7 = includeSample;
-  dispatch_sync(v5, v6);
+  dispatch_sync(queue, v6);
 }
 
 - (void)setOrderByQuantitySampleStartDate:(BOOL)orderByQuantitySampleStartDate
 {
   [(HKQuery *)self _throwInvalidArgumentExceptionIfHasBeenExecuted:a2];
-  v5 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__HKQuantitySeriesSampleQuery_setOrderByQuantitySampleStartDate___block_invoke;
   v6[3] = &unk_1E7378680;
   v6[4] = self;
   v7 = orderByQuantitySampleStartDate;
-  dispatch_sync(v5, v6);
+  dispatch_sync(queue, v6);
 }
 
-- (void)client_deliverQuantitySeries:(id)a3 seriesAnchor:(int64_t)a4 isFinal:(BOOL)a5 query:(id)a6
+- (void)client_deliverQuantitySeries:(id)series seriesAnchor:(int64_t)anchor isFinal:(BOOL)final query:(id)query
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(HKQuery *)self queue];
+  seriesCopy = series;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__HKQuantitySeriesSampleQuery_client_deliverQuantitySeries_seriesAnchor_isFinal_query___block_invoke;
   block[3] = &unk_1E737D590;
   block[4] = self;
-  v16 = v11;
-  v19 = a5;
-  v17 = v10;
-  v18 = a4;
-  v13 = v10;
-  v14 = v11;
-  dispatch_async(v12, block);
+  v16 = queryCopy;
+  finalCopy = final;
+  v17 = seriesCopy;
+  anchorCopy = anchor;
+  v13 = seriesCopy;
+  v14 = queryCopy;
+  dispatch_async(queue, block);
 }
 
 void __87__HKQuantitySeriesSampleQuery_client_deliverQuantitySeries_seriesAnchor_isFinal_query___block_invoke(uint64_t a1)
@@ -369,22 +369,22 @@ LABEL_4:
   }
 }
 
-- (void)client_deliverEnumerationResults:(id)a3 isFinal:(BOOL)a4 query:(id)a5
+- (void)client_deliverEnumerationResults:(id)results isFinal:(BOOL)final query:(id)query
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HKQuery *)self queue];
+  resultsCopy = results;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__HKQuantitySeriesSampleQuery_client_deliverEnumerationResults_isFinal_query___block_invoke;
   v13[3] = &unk_1E7378428;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = resultsCopy;
+  selfCopy = self;
+  v16 = queryCopy;
+  finalCopy = final;
+  v11 = queryCopy;
+  v12 = resultsCopy;
+  dispatch_async(queue, v13);
 }
 
 void __78__HKQuantitySeriesSampleQuery_client_deliverEnumerationResults_isFinal_query___block_invoke(uint64_t a1)
@@ -545,18 +545,18 @@ LABEL_4:
   }
 }
 
-- (id)_quantitySampleForEnumerationResult:(id)a3 UUID:(id)a4
+- (id)_quantitySampleForEnumerationResult:(id)result UUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  dCopy = d;
   if (self->_includeSample)
   {
-    if ([v6 hasQuantitySample])
+    if ([resultCopy hasQuantitySample])
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v10 = [v6 quantitySample];
-      v11 = [v8 unarchivedObjectOfClass:v9 fromData:v10 error:0];
+      quantitySample = [resultCopy quantitySample];
+      v11 = [v8 unarchivedObjectOfClass:v9 fromData:quantitySample error:0];
 
       if (!self->_receivedSamplesByUUID)
       {
@@ -567,21 +567,21 @@ LABEL_4:
 
       if ([v11 count] >= 2)
       {
-        v14 = [v6 seriesIndex] + 1;
-        if (v14 < [v6 count])
+        v14 = [resultCopy seriesIndex] + 1;
+        if (v14 < [resultCopy count])
         {
-          [(NSMutableDictionary *)self->_receivedSamplesByUUID setObject:v11 forKeyedSubscript:v7];
+          [(NSMutableDictionary *)self->_receivedSamplesByUUID setObject:v11 forKeyedSubscript:dCopy];
         }
       }
     }
 
     else
     {
-      v11 = [(NSMutableDictionary *)self->_receivedSamplesByUUID objectForKeyedSubscript:v7];
-      v16 = [v6 seriesIndex] + 1;
-      if (v16 >= [v6 count])
+      v11 = [(NSMutableDictionary *)self->_receivedSamplesByUUID objectForKeyedSubscript:dCopy];
+      v16 = [resultCopy seriesIndex] + 1;
+      if (v16 >= [resultCopy count])
       {
-        [(NSMutableDictionary *)self->_receivedSamplesByUUID removeObjectForKey:v7];
+        [(NSMutableDictionary *)self->_receivedSamplesByUUID removeObjectForKey:dCopy];
       }
     }
   }
@@ -594,15 +594,15 @@ LABEL_4:
   return v11;
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = HKQuantitySeriesSampleQuery;
-  [(HKQuery *)&v8 queue_populateConfiguration:v4];
-  [v4 setQuantitySample:self->_sample];
-  [v4 setSeriesAnchor:self->_anchor];
-  [v4 setMode:self->_seriesHandler == 0];
+  [(HKQuery *)&v8 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setQuantitySample:self->_sample];
+  [configurationCopy setSeriesAnchor:self->_anchor];
+  [configurationCopy setMode:self->_seriesHandler == 0];
   if (self->_orderByQuantitySampleStartDate)
   {
     includeSample = self->_includeSample | 2;
@@ -613,33 +613,33 @@ LABEL_4:
     includeSample = self->_includeSample;
   }
 
-  [v4 setOptions:includeSample];
+  [configurationCopy setOptions:includeSample];
   if (self->_hasMaximumReceivedStartTime)
   {
     v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:self->_maximumReceivedStartTime];
-    [v4 setMaximumStartDate:v6];
+    [configurationCopy setMaximumStartDate:v6];
   }
 
   else
   {
-    [v4 setMaximumStartDate:0];
+    [configurationCopy setMaximumStartDate:0];
   }
 
   v7 = [MEMORY[0x1E696AFB0] hk_UUIDWithData:self->_latestReceivedUUIDData];
-  [v4 setLatestUUID:v7];
+  [configurationCopy setLatestUUID:v7];
 
-  [v4 setLatestSampleStartDate:self->_latestSampleStartDate];
+  [configurationCopy setLatestSampleStartDate:self->_latestSampleStartDate];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_seriesHandler);
   v6 = _Block_copy(self->_quantityBatchHandler);
   v7 = v6;
   if (v5)
   {
-    v8 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __50__HKQuantitySeriesSampleQuery_queue_deliverError___block_invoke;
@@ -648,17 +648,17 @@ LABEL_4:
     v17 = v5;
     v15[4] = self;
     v10 = &v16;
-    v16 = v4;
+    v16 = errorCopy;
     v11 = v15;
 LABEL_5:
-    dispatch_async(v8, v11);
+    dispatch_async(clientQueue, v11);
 
     goto LABEL_6;
   }
 
   if (v6)
   {
-    v8 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __50__HKQuantitySeriesSampleQuery_queue_deliverError___block_invoke_2;
@@ -667,7 +667,7 @@ LABEL_5:
     v14 = v7;
     v12[4] = self;
     v10 = &v13;
-    v13 = v4;
+    v13 = errorCopy;
     v11 = v12;
     goto LABEL_5;
   }
@@ -675,11 +675,11 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v6.receiver = self;
   v6.super_class = HKQuantitySeriesSampleQuery;
-  [(HKQuery *)&v6 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v6 queue_queryDidDeactivate:deactivate];
   seriesHandler = self->_seriesHandler;
   self->_seriesHandler = 0;
 

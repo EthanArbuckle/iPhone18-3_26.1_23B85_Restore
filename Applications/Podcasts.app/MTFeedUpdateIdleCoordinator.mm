@@ -3,9 +3,9 @@
 - (BOOL)_shouldDeferWork;
 - (id)_dequeueAllDeferredWorkBlocks;
 - (id)_initShared;
-- (void)_appendDeferredWorkBlock:(id)a3;
+- (void)_appendDeferredWorkBlock:(id)block;
 - (void)_attemptToPerformDeferredWork;
-- (void)scheduleFeedUpdateIdleBlock:(id)a3;
+- (void)scheduleFeedUpdateIdleBlock:(id)block;
 @end
 
 @implementation MTFeedUpdateIdleCoordinator
@@ -46,12 +46,12 @@
   return v2;
 }
 
-- (void)scheduleFeedUpdateIdleBlock:(id)a3
+- (void)scheduleFeedUpdateIdleBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = v4;
+    v5 = blockCopy;
     if ([(MTFeedUpdateIdleCoordinator *)self _shouldDeferWork])
     {
       [(MTFeedUpdateIdleCoordinator *)self _appendDeferredWorkBlock:v5];
@@ -62,7 +62,7 @@
       v5[2]();
     }
 
-    v4 = v5;
+    blockCopy = v5;
   }
 }
 
@@ -74,8 +74,8 @@
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(MTFeedUpdateIdleCoordinator *)self _dequeueAllDeferredWorkBlocks];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    _dequeueAllDeferredWorkBlocks = [(MTFeedUpdateIdleCoordinator *)self _dequeueAllDeferredWorkBlocks];
+    v4 = [_dequeueAllDeferredWorkBlocks countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -87,7 +87,7 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_dequeueAllDeferredWorkBlocks);
           }
 
           (*(*(*(&v8 + 1) + 8 * v7) + 16))();
@@ -95,7 +95,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [_dequeueAllDeferredWorkBlocks countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -103,29 +103,29 @@
   }
 }
 
-- (void)_appendDeferredWorkBlock:(id)a3
+- (void)_appendDeferredWorkBlock:(id)block
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  deferredWorkBlocks = v4->_deferredWorkBlocks;
-  v6 = objc_retainBlock(v7);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deferredWorkBlocks = selfCopy->_deferredWorkBlocks;
+  v6 = objc_retainBlock(blockCopy);
   [(NSMutableArray *)deferredWorkBlocks addObject:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_dequeueAllDeferredWorkBlocks
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTFeedUpdateIdleCoordinator *)v2 deferredWorkBlocks];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deferredWorkBlocks = [(MTFeedUpdateIdleCoordinator *)selfCopy deferredWorkBlocks];
+  v4 = [deferredWorkBlocks copy];
 
-  v5 = [(MTFeedUpdateIdleCoordinator *)v2 deferredWorkBlocks];
-  [v5 removeAllObjects];
+  deferredWorkBlocks2 = [(MTFeedUpdateIdleCoordinator *)selfCopy deferredWorkBlocks];
+  [deferredWorkBlocks2 removeAllObjects];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -133,26 +133,26 @@
 - (BOOL)_shouldDeferWork
 {
   v2 = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncController];
-  v3 = [v2 isRunning];
+  isRunning = [v2 isRunning];
 
-  if (!v3)
+  if (!isRunning)
   {
     return 1;
   }
 
   v4 = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncController];
-  v5 = [v4 isSyncing];
+  isSyncing = [v4 isSyncing];
 
-  if (v5)
+  if (isSyncing)
   {
     return 1;
   }
 
   v7 = +[MTFeedUpdateManager sharedInstance];
-  v8 = [v7 statusManager];
-  v9 = [v8 isUpdating];
+  statusManager = [v7 statusManager];
+  isUpdating = [statusManager isUpdating];
 
-  return v9;
+  return isUpdating;
 }
 
 @end

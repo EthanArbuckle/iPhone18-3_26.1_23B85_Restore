@@ -1,33 +1,33 @@
 @interface _SBIconProgressStateTransition
-+ (Class)_classForTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-+ (id)newTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-- (id)_initWithFromState:(int64_t)a3 toState:(int64_t)a4;
-- (void)_updateView:(id)a3;
-- (void)updateView:(id)a3 withElapsedTime:(double)a4;
++ (Class)_classForTransitionFromState:(int64_t)state toState:(int64_t)toState;
++ (id)newTransitionFromState:(int64_t)state toState:(int64_t)toState;
+- (id)_initWithFromState:(int64_t)state toState:(int64_t)toState;
+- (void)_updateView:(id)view;
+- (void)updateView:(id)view withElapsedTime:(double)time;
 @end
 
 @implementation _SBIconProgressStateTransition
 
-+ (id)newTransitionFromState:(int64_t)a3 toState:(int64_t)a4
++ (id)newTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  v6 = objc_alloc([a1 _classForTransitionFromState:? toState:?]);
+  v6 = objc_alloc([self _classForTransitionFromState:? toState:?]);
 
-  return [v6 _initWithFromState:a3 toState:a4];
+  return [v6 _initWithFromState:state toState:toState];
 }
 
-+ (Class)_classForTransitionFromState:(int64_t)a3 toState:(int64_t)a4
++ (Class)_classForTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  if (a3 == 2)
+  if (state == 2)
   {
-    if (a4 > 1)
+    if (toState > 1)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
-    if (a4 && a4 != 2)
+    if (toState && toState != 2)
     {
 LABEL_9:
       v5 = 0;
@@ -36,7 +36,7 @@ LABEL_9:
     }
   }
 
-  else if (a3 || a4 != 1 && a4 != 2)
+  else if (state || toState != 1 && toState != 2)
   {
     goto LABEL_9;
   }
@@ -46,7 +46,7 @@ LABEL_9:
   return v5;
 }
 
-- (id)_initWithFromState:(int64_t)a3 toState:(int64_t)a4
+- (id)_initWithFromState:(int64_t)state toState:(int64_t)toState
 {
   v12.receiver = self;
   v12.super_class = _SBIconProgressStateTransition;
@@ -54,9 +54,9 @@ LABEL_9:
   v7 = v6;
   if (v6)
   {
-    v6->_fromState = a3;
-    v6->_toState = a4;
-    if (v6->_fromState >= a4)
+    v6->_fromState = state;
+    v6->_toState = toState;
+    if (v6->_fromState >= toState)
     {
       v8 = MEMORY[0x1E6979EB0];
     }
@@ -76,10 +76,10 @@ LABEL_9:
   return v7;
 }
 
-- (void)updateView:(id)a3 withElapsedTime:(double)a4
+- (void)updateView:(id)view withElapsedTime:(double)time
 {
-  v11 = a3;
-  v6 = self->_totalElapsedTime + a4;
+  viewCopy = view;
+  v6 = self->_totalElapsedTime + time;
   self->_totalElapsedTime = v6;
   duration = self->_duration;
   v8 = 1.0;
@@ -92,16 +92,16 @@ LABEL_9:
   }
 
   self->_fraction = v8;
-  [(_SBIconProgressStateTransition *)self _updateView:v11];
+  [(_SBIconProgressStateTransition *)self _updateView:viewCopy];
 }
 
-- (void)_updateView:(id)a3
+- (void)_updateView:(id)view
 {
-  v4 = a3;
-  [v4 setDisplayedState:self->_toState];
-  if ([(_SBIconProgressStateTransition *)self isCompleteWithView:v4]&& self->_toState != 2)
+  viewCopy = view;
+  [viewCopy setDisplayedState:self->_toState];
+  if ([(_SBIconProgressStateTransition *)self isCompleteWithView:viewCopy]&& self->_toState != 2)
   {
-    [v4 setDisplayedFraction:0.0];
+    [viewCopy setDisplayedFraction:0.0];
   }
 }
 

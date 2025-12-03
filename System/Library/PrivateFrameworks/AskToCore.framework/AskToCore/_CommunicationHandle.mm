@@ -1,10 +1,10 @@
 @interface _CommunicationHandle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC9AskToCore20_CommunicationHandle)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CommunicationHandle
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2410DF4E0();
     swift_unknownObjectRelease();
@@ -34,7 +34,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _CommunicationHandle.isEqual(_:)(v8);
@@ -50,26 +50,26 @@
   swift_beginAccess();
   v5 = *v3;
   v4 = v3[1];
-  v6 = self;
+  selfCopy = self;
 
   sub_2410DF150();
 
   v7 = OBJC_IVAR____TtC9AskToCore20_CommunicationHandle_kind;
   swift_beginAccess();
-  MEMORY[0x245CD9E40](*(&v6->super.isa + v7));
+  MEMORY[0x245CD9E40](*(&selfCopy->super.isa + v7));
   v8 = sub_2410DF9E0();
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _CommunicationHandle.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _CommunicationHandle.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   v5 = objc_allocWithZone(ObjectType);

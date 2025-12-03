@@ -2,10 +2,10 @@
 - (id)linearFocusItems;
 - (unint64_t)visibleCount;
 - (void)_reloadConstraints;
-- (void)_setAnchorPoint:(CGPoint)a3 forView:(id)a4;
-- (void)animateUpdateForWidgetViewController:(id)a3 withOldUserInterfaceStyle:(int64_t)a4 newUserInterfaceStyle:(int64_t)a5 updateBlock:(id)a6 completion:(id)a7;
-- (void)animateWithUpdates:(id)a3 completion:(id)a4;
-- (void)setWidgetViewControllers:(id)a3;
+- (void)_setAnchorPoint:(CGPoint)point forView:(id)view;
+- (void)animateUpdateForWidgetViewController:(id)controller withOldUserInterfaceStyle:(int64_t)style newUserInterfaceStyle:(int64_t)interfaceStyle updateBlock:(id)block completion:(id)completion;
+- (void)animateWithUpdates:(id)updates completion:(id)completion;
+- (void)setWidgetViewControllers:(id)controllers;
 - (void)viewDidLoad;
 @end
 
@@ -13,58 +13,58 @@
 
 - (void)_reloadConstraints
 {
-  v2 = self;
-  v3 = [(DBWidgetStackViewController *)self currentConstraints];
+  selfCopy = self;
+  currentConstraints = [(DBWidgetStackViewController *)self currentConstraints];
 
-  if (v3)
+  if (currentConstraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(DBWidgetStackViewController *)v2 currentConstraints];
-    [v4 deactivateConstraints:v5];
+    currentConstraints2 = [(DBWidgetStackViewController *)selfCopy currentConstraints];
+    [v4 deactivateConstraints:currentConstraints2];
 
-    [(DBWidgetStackViewController *)v2 setCurrentConstraints:0];
+    [(DBWidgetStackViewController *)selfCopy setCurrentConstraints:0];
   }
 
   v6 = objc_opt_new();
   v48 = objc_opt_new();
   v47 = objc_opt_new();
-  v7 = [(DBWidgetStackViewController *)v2 widgetViewControllers];
-  v8 = [v7 count];
+  widgetViewControllers = [(DBWidgetStackViewController *)selfCopy widgetViewControllers];
+  v8 = [widgetViewControllers count];
 
   if (v8)
   {
     v9 = 0;
-    v49 = v2;
+    v49 = selfCopy;
     v50 = 0;
     v10 = 0;
     do
     {
-      v11 = [(DBWidgetStackViewController *)v2 widgetViewControllers];
-      v12 = [v11 objectAtIndexedSubscript:v10];
+      widgetViewControllers2 = [(DBWidgetStackViewController *)selfCopy widgetViewControllers];
+      v12 = [widgetViewControllers2 objectAtIndexedSubscript:v10];
 
-      LODWORD(v11) = [v12 isHidden];
-      v13 = [v12 view];
-      v14 = [v13 topAnchor];
-      if (v11)
+      LODWORD(widgetViewControllers2) = [v12 isHidden];
+      view = [v12 view];
+      topAnchor = [view topAnchor];
+      if (widgetViewControllers2)
       {
         if (v9)
         {
-          v15 = [v9 view];
-          [v15 bottomAnchor];
+          view2 = [v9 view];
+          [view2 bottomAnchor];
         }
 
         else
         {
-          v15 = [(DBWidgetStackViewController *)v2 view];
-          [v15 topAnchor];
+          view2 = [(DBWidgetStackViewController *)selfCopy view];
+          [view2 topAnchor];
         }
         v18 = ;
-        v19 = [v14 constraintEqualToAnchor:v18];
+        v19 = [topAnchor constraintEqualToAnchor:v18];
         [v6 addObject:v19];
 
-        v20 = [v12 view];
-        v21 = [v20 heightAnchor];
-        v22 = [v21 constraintEqualToConstant:0.0];
+        view3 = [v12 view];
+        heightAnchor = [view3 heightAnchor];
+        v22 = [heightAnchor constraintEqualToConstant:0.0];
         [v6 addObject:v22];
       }
 
@@ -72,16 +72,16 @@
       {
         if (v50)
         {
-          v16 = [v50 view];
-          v17 = [v16 bottomAnchor];
-          [v14 constraintEqualToAnchor:v17 constant:4.0];
+          view4 = [v50 view];
+          bottomAnchor = [view4 bottomAnchor];
+          [topAnchor constraintEqualToAnchor:bottomAnchor constant:4.0];
         }
 
         else
         {
-          v16 = [(DBWidgetStackViewController *)v49 view];
-          v17 = [v16 topAnchor];
-          [v14 constraintEqualToAnchor:v17];
+          view4 = [(DBWidgetStackViewController *)v49 view];
+          bottomAnchor = [view4 topAnchor];
+          [topAnchor constraintEqualToAnchor:bottomAnchor];
         }
         v23 = ;
         [v6 addObject:v23];
@@ -97,28 +97,28 @@
         }
 
         [v24 addObject:v12];
-        v20 = v50;
+        view3 = v50;
         v50 = v12;
-        v2 = v49;
+        selfCopy = v49;
       }
 
-      v25 = [v12 view];
-      v26 = [v25 leadingAnchor];
-      v27 = [(DBWidgetStackViewController *)v2 view];
-      v28 = [v27 leadingAnchor];
-      v29 = [v26 constraintEqualToAnchor:v28];
+      view5 = [v12 view];
+      leadingAnchor = [view5 leadingAnchor];
+      view6 = [(DBWidgetStackViewController *)selfCopy view];
+      leadingAnchor2 = [view6 leadingAnchor];
+      v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v6 addObject:v29];
 
-      v30 = [v12 view];
-      v31 = [v30 trailingAnchor];
-      v32 = [(DBWidgetStackViewController *)v2 view];
-      v33 = [v32 trailingAnchor];
-      v34 = [v31 constraintEqualToAnchor:v33];
+      view7 = [v12 view];
+      trailingAnchor = [view7 trailingAnchor];
+      view8 = [(DBWidgetStackViewController *)selfCopy view];
+      trailingAnchor2 = [view8 trailingAnchor];
+      v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v6 addObject:v34];
 
       ++v10;
-      v35 = [(DBWidgetStackViewController *)v2 widgetViewControllers];
-      v36 = [v35 count];
+      widgetViewControllers3 = [(DBWidgetStackViewController *)selfCopy widgetViewControllers];
+      v36 = [widgetViewControllers3 count];
 
       v9 = v12;
     }
@@ -132,47 +132,47 @@
     v12 = 0;
   }
 
-  v37 = [v48 firstObject];
-  if (v37)
+  firstObject = [v48 firstObject];
+  if (firstObject)
   {
-    v38 = [(DBWidgetStackViewController *)v2 widgetViewControllers];
+    widgetViewControllers4 = [(DBWidgetStackViewController *)selfCopy widgetViewControllers];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __49__DBWidgetStackViewController__reloadConstraints__block_invoke;
     v54[3] = &unk_278F02CD0;
-    v55 = v37;
+    v55 = firstObject;
     v56 = v6;
-    [v38 enumerateObjectsUsingBlock:v54];
+    [widgetViewControllers4 enumerateObjectsUsingBlock:v54];
 
     v39 = v55;
   }
 
   else
   {
-    v40 = [v47 firstObject];
-    v41 = [(DBWidgetStackViewController *)v2 widgetViewControllers];
+    firstObject2 = [v47 firstObject];
+    widgetViewControllers5 = [(DBWidgetStackViewController *)selfCopy widgetViewControllers];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __49__DBWidgetStackViewController__reloadConstraints__block_invoke_2;
     v51[3] = &unk_278F02CD0;
-    v52 = v40;
+    v52 = firstObject2;
     v53 = v6;
-    v39 = v40;
-    [v41 enumerateObjectsUsingBlock:v51];
+    v39 = firstObject2;
+    [widgetViewControllers5 enumerateObjectsUsingBlock:v51];
   }
 
   if (v12)
   {
-    v42 = [(DBWidgetStackViewController *)v2 view];
-    v43 = [v42 bottomAnchor];
-    v44 = [v12 view];
-    v45 = [v44 bottomAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45];
+    view9 = [(DBWidgetStackViewController *)selfCopy view];
+    bottomAnchor2 = [view9 bottomAnchor];
+    view10 = [v12 view];
+    bottomAnchor3 = [view10 bottomAnchor];
+    v46 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v6 addObject:v46];
   }
 
   [MEMORY[0x277CCAAD0] activateConstraints:v6];
-  [(DBWidgetStackViewController *)v2 setCurrentConstraints:v6];
+  [(DBWidgetStackViewController *)selfCopy setCurrentConstraints:v6];
 }
 
 void __49__DBWidgetStackViewController__reloadConstraints__block_invoke(uint64_t a1, void *a2)
@@ -240,13 +240,13 @@ void __49__DBWidgetStackViewController__reloadConstraints__block_invoke(uint64_t
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(DBWidgetStackViewController *)self widgetViewControllers];
+  widgetViewControllers = [(DBWidgetStackViewController *)self widgetViewControllers];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__DBWidgetStackViewController_visibleCount__block_invoke;
   v5[3] = &unk_278F02CA8;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [widgetViewControllers enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -264,13 +264,13 @@ uint64_t __43__DBWidgetStackViewController_visibleCount__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setWidgetViewControllers:(id)a3
+- (void)setWidgetViewControllers:(id)controllers
 {
-  v5 = a3;
-  if (([v5 isEqualToArray:self->_widgetViewControllers] & 1) == 0)
+  controllersCopy = controllers;
+  if (([controllersCopy isEqualToArray:self->_widgetViewControllers] & 1) == 0)
   {
     [(NSArray *)self->_widgetViewControllers enumerateObjectsUsingBlock:&__block_literal_global_9];
-    objc_storeStrong(&self->_widgetViewControllers, a3);
+    objc_storeStrong(&self->_widgetViewControllers, controllers);
     widgetViewControllers = self->_widgetViewControllers;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -307,20 +307,20 @@ void __56__DBWidgetStackViewController_setWidgetViewControllers___block_invoke_2
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (void)animateWithUpdates:(id)a3 completion:(id)a4
+- (void)animateWithUpdates:(id)updates completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DBWidgetStackViewController *)self widgetViewControllers];
-  v9 = [v8 db_map:&__block_literal_global_20];
+  updatesCopy = updates;
+  completionCopy = completion;
+  widgetViewControllers = [(DBWidgetStackViewController *)self widgetViewControllers];
+  v9 = [widgetViewControllers db_map:&__block_literal_global_20];
 
-  if (v6)
+  if (updatesCopy)
   {
-    v6[2](v6);
+    updatesCopy[2](updatesCopy);
   }
 
-  v10 = [(DBWidgetStackViewController *)self widgetViewControllers];
-  v11 = [v10 db_map:&__block_literal_global_20];
+  widgetViewControllers2 = [(DBWidgetStackViewController *)self widgetViewControllers];
+  v11 = [widgetViewControllers2 db_map:&__block_literal_global_20];
 
   v50 = 0;
   v51 = &v50;
@@ -367,57 +367,57 @@ void __56__DBWidgetStackViewController_setWidgetViewControllers___block_invoke_2
     v30[1] = 3221225472;
     v30[2] = __61__DBWidgetStackViewController_animateWithUpdates_completion___block_invoke_10;
     v30[3] = &unk_278F02C58;
-    v31 = v7;
+    v31 = completionCopy;
     [v14 _animateUsingSpringWithDuration:0 delay:v32 options:v30 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:350.0 animations:42.0 completion:0.0];
   }
 
   else
   {
     v15 = [v9 objectAtIndexedSubscript:?];
-    v16 = [v15 view];
+    view = [v15 view];
 
     v17 = [v11 objectAtIndexedSubscript:v51[3]];
-    v18 = [v17 view];
+    view2 = [v17 view];
 
-    v19 = [v16 snapshotViewAfterScreenUpdates:0];
-    v20 = [(DBWidgetStackViewController *)self view];
-    [v20 addSubview:v19];
+    v19 = [view snapshotViewAfterScreenUpdates:0];
+    view3 = [(DBWidgetStackViewController *)self view];
+    [view3 addSubview:v19];
 
-    [v16 frame];
+    [view frame];
     [v19 setFrame:?];
-    v21 = [v19 layer];
+    layer = [v19 layer];
     v22 = *MEMORY[0x277CDA2E0];
-    [v21 setMinificationFilter:*MEMORY[0x277CDA2E0]];
+    [layer setMinificationFilter:*MEMORY[0x277CDA2E0]];
 
-    v23 = [v19 layer];
-    [v23 setMagnificationFilter:v22];
+    layer2 = [v19 layer];
+    [layer2 setMagnificationFilter:v22];
 
-    [v16 setAlpha:0.0];
+    [view setAlpha:0.0];
     [(DBWidgetStackViewController *)self _reloadConstraints];
-    v24 = [(DBWidgetStackViewController *)self view];
-    [v24 layoutIfNeeded];
+    view4 = [(DBWidgetStackViewController *)self view];
+    [view4 layoutIfNeeded];
 
     [(DBWidgetStackViewController *)self _setAnchorPoint:v19 forView:0.5, 0.0];
-    [(DBWidgetStackViewController *)self _setAnchorPoint:v18 forView:0.5, 1.0];
+    [(DBWidgetStackViewController *)self _setAnchorPoint:view2 forView:0.5, 1.0];
     CGAffineTransformMakeScale(&v43, 0.01, 0.01);
-    v25 = [v18 layer];
+    layer3 = [view2 layer];
     v42 = v43;
-    [v25 setAffineTransform:&v42];
+    [layer3 setAffineTransform:&v42];
 
-    [v18 setAlpha:0.0];
+    [view2 setAlpha:0.0];
     v26 = MEMORY[0x277D75D18];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __61__DBWidgetStackViewController_animateWithUpdates_completion___block_invoke_4;
     v40[3] = &unk_278F01580;
-    v41 = v18;
+    v41 = view2;
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __61__DBWidgetStackViewController_animateWithUpdates_completion___block_invoke_5;
     v37[3] = &unk_278F02C30;
     v27 = v41;
     v38 = v27;
-    v39 = v7;
+    v39 = completionCopy;
     [v26 _animateUsingSpringWithDuration:0 delay:v40 options:v37 mass:0.78 stiffness:0.02 damping:2.0 initialVelocity:350.0 animations:42.0 completion:0.0];
     v28 = MEMORY[0x277D75D18];
     v35[0] = MEMORY[0x277D85DD0];
@@ -562,59 +562,59 @@ uint64_t __61__DBWidgetStackViewController_animateWithUpdates_completion___block
   return result;
 }
 
-- (void)animateUpdateForWidgetViewController:(id)a3 withOldUserInterfaceStyle:(int64_t)a4 newUserInterfaceStyle:(int64_t)a5 updateBlock:(id)a6 completion:(id)a7
+- (void)animateUpdateForWidgetViewController:(id)controller withOldUserInterfaceStyle:(int64_t)style newUserInterfaceStyle:(int64_t)interfaceStyle updateBlock:(id)block completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v36 = a7;
-  v14 = [v12 snapshotViewAfterScreenUpdates:0];
-  [v14 setOverrideUserInterfaceStyle:a4];
+  controllerCopy = controller;
+  blockCopy = block;
+  completionCopy = completion;
+  v14 = [controllerCopy snapshotViewAfterScreenUpdates:0];
+  [v14 setOverrideUserInterfaceStyle:style];
   v38 = [MEMORY[0x277D75210] effectWithBlurRadius:20.0];
   v15 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
   [v14 bounds];
   [v15 setFrame:?];
-  v16 = [v14 layer];
-  [v16 setMasksToBounds:1];
+  layer = [v14 layer];
+  [layer setMasksToBounds:1];
 
   [v14 addSubview:v15];
-  v17 = [(DBWidgetStackViewController *)self view];
-  [v17 addSubview:v14];
+  view = [(DBWidgetStackViewController *)self view];
+  [view addSubview:v14];
 
-  v18 = [v12 view];
-  [v18 frame];
+  view2 = [controllerCopy view];
+  [view2 frame];
   [v14 setFrame:?];
 
-  if (v13)
+  if (blockCopy)
   {
-    v13[2](v13);
+    blockCopy[2](blockCopy);
   }
 
-  [v12 snapshotViewAfterScreenUpdates:1];
-  v19 = v37 = v13;
-  [v19 setOverrideUserInterfaceStyle:a5];
+  [controllerCopy snapshotViewAfterScreenUpdates:1];
+  v19 = v37 = blockCopy;
+  [v19 setOverrideUserInterfaceStyle:interfaceStyle];
   v20 = [MEMORY[0x277D75210] effectWithBlurRadius:20.0];
   v21 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v20];
   [v19 bounds];
   [v21 setFrame:?];
   [v19 addSubview:v21];
-  v22 = [v19 layer];
-  [v22 setMasksToBounds:1];
+  layer2 = [v19 layer];
+  [layer2 setMasksToBounds:1];
 
-  v23 = [(DBWidgetStackViewController *)self view];
-  [v23 addSubview:v19];
+  view3 = [(DBWidgetStackViewController *)self view];
+  [view3 addSubview:v19];
 
-  v24 = [v12 view];
-  [v24 frame];
+  view4 = [controllerCopy view];
+  [view4 frame];
   [v19 setFrame:?];
 
   CGAffineTransformMakeScale(&v53, 0.8, 0.8);
-  v25 = [v19 layer];
+  layer3 = [v19 layer];
   v52 = v53;
-  [v25 setAffineTransform:&v52];
+  [layer3 setAffineTransform:&v52];
 
   [v19 setAlpha:0.0];
-  v26 = [v12 view];
-  [v26 setHidden:1];
+  view5 = [controllerCopy view];
+  [view5 setHidden:1];
 
   v27 = MEMORY[0x277D75D18];
   v49[0] = MEMORY[0x277D85DD0];
@@ -628,10 +628,10 @@ uint64_t __61__DBWidgetStackViewController_animateWithUpdates_completion___block
   v45[2] = __139__DBWidgetStackViewController_animateUpdateForWidgetViewController_withOldUserInterfaceStyle_newUserInterfaceStyle_updateBlock_completion___block_invoke_2;
   v45[3] = &unk_278F02C80;
   v46 = v50;
-  v47 = v12;
-  v48 = v36;
-  v28 = v36;
-  v29 = v12;
+  v47 = controllerCopy;
+  v48 = completionCopy;
+  v28 = completionCopy;
+  v29 = controllerCopy;
   v30 = v50;
   v31 = v21;
   [v27 _animateUsingSpringWithDuration:0 delay:v49 options:v45 mass:0.6 stiffness:0.02 damping:2.0 initialVelocity:219.325 animations:33.51 completion:0.0];
@@ -696,14 +696,14 @@ uint64_t __139__DBWidgetStackViewController_animateUpdateForWidgetViewController
 - (id)linearFocusItems
 {
   v3 = objc_opt_new();
-  v4 = [(DBWidgetStackViewController *)self widgetViewControllers];
+  widgetViewControllers = [(DBWidgetStackViewController *)self widgetViewControllers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__DBWidgetStackViewController_linearFocusItems__block_invoke;
   v7[3] = &unk_278F02BC0;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [widgetViewControllers enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -724,13 +724,13 @@ void __47__DBWidgetStackViewController_linearFocusItems__block_invoke(uint64_t a
   v5.receiver = self;
   v5.super_class = DBWidgetStackViewController;
   [(DBWidgetStackViewController *)&v5 viewDidLoad];
-  v3 = [(DBWidgetStackViewController *)self widgetViewControllers];
+  widgetViewControllers = [(DBWidgetStackViewController *)self widgetViewControllers];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__DBWidgetStackViewController_viewDidLoad__block_invoke;
   v4[3] = &unk_278F02BC0;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [widgetViewControllers enumerateObjectsUsingBlock:v4];
 
   [(DBWidgetStackViewController *)self _reloadConstraints];
 }
@@ -781,36 +781,36 @@ uint64_t __49__DBWidgetStackViewController__reloadConstraints__block_invoke_2(ui
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_setAnchorPoint:(CGPoint)a3 forView:(id)a4
+- (void)_setAnchorPoint:(CGPoint)point forView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = a4;
-  [v5 bounds];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  [viewCopy bounds];
   v7 = v6;
-  [v5 bounds];
+  [viewCopy bounds];
   v41 = v8;
-  [v5 bounds];
+  [viewCopy bounds];
   v42 = v9;
-  v10 = [v5 layer];
-  [v10 anchorPoint];
+  layer = [viewCopy layer];
+  [layer anchorPoint];
   v40 = v11;
-  [v5 bounds];
+  [viewCopy bounds];
   v39 = v12;
-  v13 = [v5 layer];
-  [v13 anchorPoint];
+  layer2 = [viewCopy layer];
+  [layer2 anchorPoint];
   v38 = v14;
 
-  if (v5)
+  if (viewCopy)
   {
-    [v5 transform];
+    [viewCopy transform];
     v15 = v44;
     v16 = v45;
     v17 = v46;
     v18 = v47;
     v19 = v48;
     v20 = v49;
-    [v5 transform];
+    [viewCopy transform];
     v22 = v44;
     v21 = v45;
     v24 = v46;
@@ -839,16 +839,16 @@ uint64_t __49__DBWidgetStackViewController__reloadConstraints__block_invoke_2(ui
   v28 = v19 + y * v41 * v17 + v15 * (x * v7);
   v29 = v26 + v39 * v38 * v24 + v22 * (v42 * v40);
   v30 = v25 + v39 * v38 * v23 + v21 * (v42 * v40);
-  v31 = [v5 layer];
-  [v31 position];
+  layer3 = [viewCopy layer];
+  [layer3 position];
   v33 = v32;
   v35 = v34;
 
-  v36 = [v5 layer];
-  [v36 setPosition:{v28 + v33 - v29, v27 + v35 - v30}];
+  layer4 = [viewCopy layer];
+  [layer4 setPosition:{v28 + v33 - v29, v27 + v35 - v30}];
 
-  v37 = [v5 layer];
-  [v37 setAnchorPoint:{x, y}];
+  layer5 = [viewCopy layer];
+  [layer5 setAnchorPoint:{x, y}];
 }
 
 @end

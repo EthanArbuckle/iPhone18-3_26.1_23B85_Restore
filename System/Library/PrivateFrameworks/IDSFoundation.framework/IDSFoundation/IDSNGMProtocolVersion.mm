@@ -1,13 +1,13 @@
 @interface IDSNGMProtocolVersion
-+ (BOOL)isVersionSupported:(unsigned int)a3;
++ (BOOL)isVersionSupported:(unsigned int)supported;
 + (unsigned)supportedVersion;
 @end
 
 @implementation IDSNGMProtocolVersion
 
-+ (BOOL)isVersionSupported:(unsigned int)a3
++ (BOOL)isVersionSupported:(unsigned int)supported
 {
-  v3 = *&a3;
+  v3 = *&supported;
   v4 = NSClassFromString(&cfstr_Ngmprotocolver.isa);
   if (v4)
   {
@@ -17,8 +17,8 @@
 
   else
   {
-    v6 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
     {
       sub_1A7E19E40();
     }
@@ -38,8 +38,8 @@
 
   else
   {
-    v3 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
     {
       sub_1A7E19E40();
     }

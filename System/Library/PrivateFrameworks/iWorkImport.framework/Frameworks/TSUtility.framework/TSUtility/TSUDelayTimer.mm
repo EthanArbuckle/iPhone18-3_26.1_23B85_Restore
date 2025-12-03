@@ -1,14 +1,14 @@
 @interface TSUDelayTimer
-- (TSUDelayTimer)initWithTargetSerialQueue:(id)a3;
+- (TSUDelayTimer)initWithTargetSerialQueue:(id)queue;
 - (void)_reallyCancel;
-- (void)afterDelay:(double)a3 processBlock:(id)a4;
+- (void)afterDelay:(double)delay processBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 @end
 
 @implementation TSUDelayTimer
 
-- (TSUDelayTimer)initWithTargetSerialQueue:(id)a3
+- (TSUDelayTimer)initWithTargetSerialQueue:(id)queue
 {
   v12.receiver = self;
   v12.super_class = TSUDelayTimer;
@@ -16,9 +16,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (queue)
     {
-      [(TSUDelayTimer *)v4 _setDispatchQueue:a3];
+      [(TSUDelayTimer *)v4 _setDispatchQueue:queue];
     }
 
     else
@@ -49,26 +49,26 @@
   [(TSUDelayTimer *)&v3 dealloc];
 }
 
-- (void)afterDelay:(double)a3 processBlock:(id)a4
+- (void)afterDelay:(double)delay processBlock:(id)block
 {
   atomic_store(0, &self->_cancelled);
-  v7 = [(TSUDelayTimer *)self _dispatchQueue];
+  _dispatchQueue = [(TSUDelayTimer *)self _dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2770B3D78;
   block[3] = &unk_27A702778;
-  *&block[6] = a3;
+  *&block[6] = delay;
   block[4] = self;
-  block[5] = a4;
-  dispatch_async(v7, block);
+  block[5] = block;
+  dispatch_async(_dispatchQueue, block);
 }
 
 - (void)_reallyCancel
 {
-  v3 = [(TSUDelayTimer *)self _dispatchTimer];
-  if (v3)
+  _dispatchTimer = [(TSUDelayTimer *)self _dispatchTimer];
+  if (_dispatchTimer)
   {
-    dispatch_source_cancel(v3);
+    dispatch_source_cancel(_dispatchTimer);
 
     [(TSUDelayTimer *)self _setDispatchTimer:0];
   }
@@ -77,13 +77,13 @@
 - (void)cancel
 {
   atomic_store(1u, &self->_cancelled);
-  v3 = [(TSUDelayTimer *)self _dispatchQueue];
+  _dispatchQueue = [(TSUDelayTimer *)self _dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2770B3FE8;
   block[3] = &unk_27A701878;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(_dispatchQueue, block);
 }
 
 @end

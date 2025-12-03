@@ -20,7 +20,7 @@
 - (void)tv_setAssociatedIKViewElement:()TVMLKitAdditions
 {
   v16 = *MEMORY[0x277D85DE8];
-  objc_setAssociatedObject(a1, "_TVObjectKeyViewElement", a3, 0x301);
+  objc_setAssociatedObject(self, "_TVObjectKeyViewElement", a3, 0x301);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (!a3 && (isKindOfClass & 1) != 0)
@@ -29,8 +29,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [a1 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subviews = [self subviews];
+    v7 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -42,14 +42,14 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v11 + 1) + 8 * v10++) tv_setAssociatedIKViewElement:0];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -75,13 +75,13 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+    selfCopy3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v3 = a1;
-    v4 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    selfCopy2 = self;
+    v4 = [selfCopy2 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v4)
     {
       v5 = v4;
@@ -92,17 +92,17 @@
         {
           if (*v26 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(selfCopy2);
           }
 
           v8 = *(*(&v25 + 1) + 8 * i);
-          v9 = [v3 objectForKey:v8];
-          v10 = [v9 tv_JSCompatibleValue];
+          v9 = [selfCopy2 objectForKey:v8];
+          tv_JSCompatibleValue = [v9 tv_JSCompatibleValue];
 
-          v11 = [v8 tv_JSCompatibleValue];
-          if (v11)
+          tv_JSCompatibleValue2 = [v8 tv_JSCompatibleValue];
+          if (tv_JSCompatibleValue2)
           {
-            v12 = v10 == 0;
+            v12 = tv_JSCompatibleValue == 0;
           }
 
           else
@@ -112,11 +112,11 @@
 
           if (!v12)
           {
-            [v2 setObject:v10 forKey:v11];
+            [selfCopy3 setObject:tv_JSCompatibleValue forKey:tv_JSCompatibleValue2];
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v5 = [selfCopy2 countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v5);
@@ -130,13 +130,13 @@ LABEL_25:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+    selfCopy3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v3 = a1;
-    v13 = [v3 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    selfCopy2 = self;
+    v13 = [selfCopy2 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -147,17 +147,17 @@ LABEL_25:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(selfCopy2);
           }
 
-          v17 = [*(*(&v21 + 1) + 8 * j) tv_JSCompatibleValue];
-          if (v17)
+          tv_JSCompatibleValue3 = [*(*(&v21 + 1) + 8 * j) tv_JSCompatibleValue];
+          if (tv_JSCompatibleValue3)
           {
-            [v2 addObject:v17];
+            [selfCopy3 addObject:tv_JSCompatibleValue3];
           }
         }
 
-        v14 = [v3 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v14 = [selfCopy2 countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v14);
@@ -166,26 +166,26 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v19 = [MEMORY[0x277D82BB8] tv_allowedLiteralJSONObjects];
-  if ([v19 containsObject:objc_opt_class()])
+  tv_allowedLiteralJSONObjects = [MEMORY[0x277D82BB8] tv_allowedLiteralJSONObjects];
+  if ([tv_allowedLiteralJSONObjects containsObject:objc_opt_class()])
   {
 
 LABEL_32:
-    v2 = a1;
+    selfCopy3 = self;
     goto LABEL_26;
   }
 
-  v20 = [a1 conformsToProtocol:&unk_287EADA10];
+  v20 = [self conformsToProtocol:&unk_287EADA10];
 
   if (v20)
   {
     goto LABEL_32;
   }
 
-  v2 = 0;
+  selfCopy3 = 0;
 LABEL_26:
 
-  return v2;
+  return selfCopy3;
 }
 
 - (id)tv_toPropertiesJSDictionary
@@ -200,12 +200,12 @@ LABEL_26:
     for (i = 0; i < outCount; ++i)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithCString:property_getName(v5[i]) encoding:4];
-      v8 = [a1 valueForKey:v7];
-      v9 = [v8 tv_JSCompatibleValue];
+      v8 = [self valueForKey:v7];
+      tv_JSCompatibleValue = [v8 tv_JSCompatibleValue];
 
-      if (v9)
+      if (tv_JSCompatibleValue)
       {
-        [v2 setObject:v9 forKey:v7];
+        [v2 setObject:tv_JSCompatibleValue forKey:v7];
       }
     }
   }

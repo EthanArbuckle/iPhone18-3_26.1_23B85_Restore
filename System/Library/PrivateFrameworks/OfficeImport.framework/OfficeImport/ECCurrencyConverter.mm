@@ -1,9 +1,9 @@
 @interface ECCurrencyConverter
 + (id)currencyConverter;
 - (id)lassoCurrencyCodeForDollar;
-- (id)lassoCurrencyCodeFromXl:(id)a3;
-- (id)xlCurrencyCodeFromLasso:(id)a3;
-- (int)xlAccountFormatFromLasso:(id)a3;
+- (id)lassoCurrencyCodeFromXl:(id)xl;
+- (id)xlCurrencyCodeFromLasso:(id)lasso;
+- (int)xlAccountFormatFromLasso:(id)lasso;
 - (void)populateDictionaries;
 @end
 
@@ -16,38 +16,38 @@
   return v2;
 }
 
-- (id)lassoCurrencyCodeFromXl:(id)a3
+- (id)lassoCurrencyCodeFromXl:(id)xl
 {
-  v4 = a3;
+  xlCopy = xl;
   if (!self->mXlToLassoCurrencyCode)
   {
     [(ECCurrencyConverter *)self populateDictionaries];
   }
 
-  if ([v4 isEqualToString:@"$"])
+  if ([xlCopy isEqualToString:@"$"])
   {
-    v5 = [(ECCurrencyConverter *)self lassoCurrencyCodeForDollar];
+    lassoCurrencyCodeForDollar = [(ECCurrencyConverter *)self lassoCurrencyCodeForDollar];
 LABEL_5:
-    v6 = v5;
+    v6 = lassoCurrencyCodeForDollar;
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"$USD"])
+  if ([xlCopy isEqualToString:@"$USD"])
   {
     v6 = @"USD";
     goto LABEL_13;
   }
 
-  if ([v4 rangeOfString:@"€"] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([xlCopy rangeOfString:@"€"] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = @"EUR";
     goto LABEL_13;
   }
 
-  v7 = [v4 rangeOfString:@"-"];
+  v7 = [xlCopy rangeOfString:@"-"];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v4 substringFromIndex:1];
+    v6 = [xlCopy substringFromIndex:1];
     if ([(__CFString *)v6 length])
     {
       goto LABEL_13;
@@ -56,7 +56,7 @@ LABEL_5:
 
   else
   {
-    v10 = [v4 substringFromIndex:v7 + v8];
+    v10 = [xlCopy substringFromIndex:v7 + v8];
     if ([(__CFString *)v10 length])
     {
       v6 = [(NSMutableDictionary *)self->mXlToLassoCurrencyCode objectForKey:v10];
@@ -70,28 +70,28 @@ LABEL_5:
     v6 = v10;
   }
 
-  if ([v4 length] == 3)
+  if ([xlCopy length] == 3)
   {
-    v11 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-    v12 = [v4 stringByTrimmingCharactersInSet:v11];
+    uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+    v12 = [xlCopy stringByTrimmingCharactersInSet:uppercaseLetterCharacterSet];
     v13 = [v12 length];
 
     if (!v13)
     {
-      v14 = [MEMORY[0x277CBEAF8] ISOCurrencyCodes];
-      v15 = [v14 containsObject:v4];
+      iSOCurrencyCodes = [MEMORY[0x277CBEAF8] ISOCurrencyCodes];
+      v15 = [iSOCurrencyCodes containsObject:xlCopy];
 
       if (v15)
       {
-        v5 = v4;
+        lassoCurrencyCodeForDollar = xlCopy;
         goto LABEL_5;
       }
     }
   }
 
-  if ([v4 length])
+  if ([xlCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->mXlToLassoCurrencyCodeBySymbol objectForKey:v4];
+    lassoCurrencyCodeForDollar = [(NSMutableDictionary *)self->mXlToLassoCurrencyCodeBySymbol objectForKey:xlCopy];
     goto LABEL_5;
   }
 
@@ -101,25 +101,25 @@ LABEL_13:
   return v6;
 }
 
-- (id)xlCurrencyCodeFromLasso:(id)a3
+- (id)xlCurrencyCodeFromLasso:(id)lasso
 {
-  v4 = a3;
+  lassoCopy = lasso;
   if (!self->mLassoToXlCurrencyCode)
   {
     [(ECCurrencyConverter *)self populateDictionaries];
   }
 
   v5 = +[OITSULocale currentLocale];
-  v6 = [v5 currencyCode];
+  currencyCode = [v5 currencyCode];
 
-  if (([v4 isEqualToString:v6] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"KRW") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"JPY") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"TWD") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"USD") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"THB") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"INR") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"EUR") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"GBP") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"BRL"))
+  if (([lassoCopy isEqualToString:currencyCode] & 1) != 0 || (objc_msgSend(lassoCopy, "isEqualToString:", @"KRW") & 1) != 0 || (objc_msgSend(lassoCopy, "isEqualToString:", @"JPY") & 1) != 0 || (objc_msgSend(lassoCopy, "isEqualToString:", @"TWD") & 1) != 0 || (objc_msgSend(lassoCopy, "isEqualToString:", @"USD") & 1) != 0 || (objc_msgSend(lassoCopy, "isEqualToString:", @"THB") & 1) != 0 || (objc_msgSend(lassoCopy, "isEqualToString:", @"INR") & 1) != 0 || (objc_msgSend(lassoCopy, "isEqualToString:", @"EUR") & 1) != 0 || (objc_msgSend(lassoCopy, "isEqualToString:", @"GBP") & 1) != 0 || objc_msgSend(lassoCopy, "isEqualToString:", @"BRL"))
   {
-    v7 = [(NSMutableDictionary *)self->mLassoToXlCurrencyCode objectForKey:v4];
+    v7 = [(NSMutableDictionary *)self->mLassoToXlCurrencyCode objectForKey:lassoCopy];
     if ([v7 isEqualToString:@"$"])
     {
       v8 = v7;
 LABEL_17:
-      v9 = v8;
+      lassoCopy = v8;
 
       goto LABEL_18;
     }
@@ -131,33 +131,33 @@ LABEL_17:
     }
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"[$%@]", v4];
+  lassoCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"[$%@]", lassoCopy];
 LABEL_18:
 
-  return v9;
+  return lassoCopy;
 }
 
-- (int)xlAccountFormatFromLasso:(id)a3
+- (int)xlAccountFormatFromLasso:(id)lasso
 {
-  v4 = a3;
+  lassoCopy = lasso;
   if (!self->mLassoToXlCurrencyCode)
   {
     [(ECCurrencyConverter *)self populateDictionaries];
   }
 
-  v5 = [(NSMutableDictionary *)self->mXlAccountingFormat objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->mXlAccountingFormat objectForKey:lassoCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v7 = 0;
+    intValue = 0;
   }
 
-  return v7;
+  return intValue;
 }
 
 - (void)populateDictionaries
@@ -320,9 +320,9 @@ LABEL_18:
   self->mXlAccountingFormat = v10;
 
   v12 = +[OITSULocale currentLocale];
-  v13 = [v12 currencyCode];
+  currencyCode = [v12 currencyCode];
 
-  v14 = [OITSUNumberFormatter currencySymbolForCurrencyCode:v13];
+  v14 = [OITSUNumberFormatter currencySymbolForCurrencyCode:currencyCode];
   v15 = [v14 isEqualToString:@"$"];
 
   for (i = 0; i != 138; ++i)
@@ -331,7 +331,7 @@ LABEL_18:
     [(NSMutableDictionary *)self->mXlToLassoCurrencyCode setValue:v17[1] forKey:v17[2]];
     if (*(v17 + 32) == 1)
     {
-      if (v15 && ([v13 isEqualToString:v17[1]] & 1) != 0)
+      if (v15 && ([currencyCode isEqualToString:v17[1]] & 1) != 0)
       {
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v17[3]];
       }
@@ -367,9 +367,9 @@ LABEL_18:
 - (id)lassoCurrencyCodeForDollar
 {
   v2 = +[OITSULocale currentLocale];
-  v3 = [v2 currencyCode];
+  currencyCode = [v2 currencyCode];
 
-  v4 = [OITSUNumberFormatter currencySymbolForCurrencyCode:v3];
+  v4 = [OITSUNumberFormatter currencySymbolForCurrencyCode:currencyCode];
   if ([v4 rangeOfString:@"$"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = @"USD";
@@ -377,7 +377,7 @@ LABEL_18:
 
   else
   {
-    v5 = v3;
+    v5 = currencyCode;
   }
 
   return v5;

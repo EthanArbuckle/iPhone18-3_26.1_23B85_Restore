@@ -12,7 +12,7 @@
   v2 = *(self + OBJC_IVAR____TtC5BooksP33_68DD4628432DB32CCFA3947CA529962B17AnnotationWrapper_annotationLocation + 8);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_1007A23E4();
 
@@ -24,8 +24,8 @@
 
 - (NSString)annotationUuid
 {
-  v2 = self;
-  v3 = [(AnnotationWrapper *)v2 description];
+  selfCopy = self;
+  v3 = [(AnnotationWrapper *)selfCopy description];
   sub_1007A2254();
 
   v7._countAndFlagsBits = 1145656661;
@@ -39,7 +39,7 @@
 
 - (BOOL)annotationHasNote
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100217694();
 
   return v3 & 1;

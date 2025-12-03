@@ -1,23 +1,23 @@
 @interface FBApplicationProcessLaunchTransaction
 - (FBApplicationProcessLaunchTransaction)init;
-- (FBApplicationProcessLaunchTransaction)initWithApplicationBundleID:(id)a3 executionContextProvider:(id)a4;
-- (FBApplicationProcessLaunchTransaction)initWithApplicationProcess:(id)a3;
-- (FBApplicationProcessLaunchTransaction)initWithProcessIdentity:(id)a3 executionContextProvider:(id)a4;
+- (FBApplicationProcessLaunchTransaction)initWithApplicationBundleID:(id)d executionContextProvider:(id)provider;
+- (FBApplicationProcessLaunchTransaction)initWithApplicationProcess:(id)process;
+- (FBApplicationProcessLaunchTransaction)initWithProcessIdentity:(id)identity executionContextProvider:(id)provider;
 - (id)_customizedDescriptionProperties;
 - (void)_begin;
-- (void)_childTransactionDidComplete:(id)a3;
+- (void)_childTransactionDidComplete:(id)complete;
 - (void)_didComplete;
-- (void)_queue_finishProcessLaunch:(BOOL)a3;
-- (void)_queue_launchProcess:(id)a3;
+- (void)_queue_finishProcessLaunch:(BOOL)launch;
+- (void)_queue_launchProcess:(id)process;
 - (void)_queue_noteExited;
-- (void)_queue_processWillLaunch:(id)a3;
+- (void)_queue_processWillLaunch:(id)launch;
 - (void)_willComplete;
-- (void)_willFailWithReason:(id)a3;
-- (void)_willInterruptWithReason:(id)a3;
-- (void)add:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)remove:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_willFailWithReason:(id)reason;
+- (void)_willInterruptWithReason:(id)reason;
+- (void)add:(id)add;
+- (void)addObserver:(id)observer;
+- (void)remove:(id)remove;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FBApplicationProcessLaunchTransaction
@@ -93,7 +93,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBApplicationProcessLaunchTransaction.m";
     v17 = 1024;
@@ -109,47 +109,47 @@
   return result;
 }
 
-- (FBApplicationProcessLaunchTransaction)initWithApplicationProcess:(id)a3
+- (FBApplicationProcessLaunchTransaction)initWithApplicationProcess:(id)process
 {
-  v5 = a3;
-  if (!v5)
+  processCopy = process;
+  if (!processCopy)
   {
     [FBApplicationProcessLaunchTransaction initWithApplicationProcess:a2];
   }
 
-  v6 = v5;
-  v7 = [v5 identity];
-  v8 = [(FBApplicationProcessLaunchTransaction *)self initWithProcessIdentity:v7 executionContextProvider:0];
+  v6 = processCopy;
+  identity = [processCopy identity];
+  v8 = [(FBApplicationProcessLaunchTransaction *)self initWithProcessIdentity:identity executionContextProvider:0];
 
   return v8;
 }
 
-- (FBApplicationProcessLaunchTransaction)initWithApplicationBundleID:(id)a3 executionContextProvider:(id)a4
+- (FBApplicationProcessLaunchTransaction)initWithApplicationBundleID:(id)d executionContextProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  providerCopy = provider;
+  if (!dCopy)
   {
     [FBApplicationProcessLaunchTransaction initWithApplicationBundleID:a2 executionContextProvider:?];
   }
 
-  v9 = v8;
-  v10 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:v7];
+  v9 = providerCopy;
+  v10 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:dCopy];
   v11 = [(FBApplicationProcessLaunchTransaction *)self initWithProcessIdentity:v10 executionContextProvider:v9];
 
   return v11;
 }
 
-- (FBApplicationProcessLaunchTransaction)initWithProcessIdentity:(id)a3 executionContextProvider:(id)a4
+- (FBApplicationProcessLaunchTransaction)initWithProcessIdentity:(id)identity executionContextProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identityCopy = identity;
+  providerCopy = provider;
+  if (!identityCopy)
   {
     [FBApplicationProcessLaunchTransaction initWithProcessIdentity:a2 executionContextProvider:?];
   }
 
-  v9 = v8;
+  v9 = providerCopy;
   v20.receiver = self;
   v20.super_class = FBApplicationProcessLaunchTransaction;
   v10 = [(FBTransaction *)&v20 init];
@@ -159,7 +159,7 @@
     processManager = v10->_processManager;
     v10->_processManager = v11;
 
-    v13 = [v7 copy];
+    v13 = [identityCopy copy];
     identity = v10->_identity;
     v10->_identity = v13;
 
@@ -175,57 +175,57 @@
   return v10;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FBApplicationProcessLaunchTransaction;
-  [(FBApplicationProcessLaunchTransaction *)&v3 addObserver:a3];
+  [(FBApplicationProcessLaunchTransaction *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FBApplicationProcessLaunchTransaction;
-  [(FBApplicationProcessLaunchTransaction *)&v3 removeObserver:a3];
+  [(FBApplicationProcessLaunchTransaction *)&v3 removeObserver:observer];
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
   v3.receiver = self;
   v3.super_class = FBApplicationProcessLaunchTransaction;
-  [(FBApplicationProcessLaunchTransaction *)&v3 addObserver:a3];
+  [(FBApplicationProcessLaunchTransaction *)&v3 addObserver:add];
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
   v3.receiver = self;
   v3.super_class = FBApplicationProcessLaunchTransaction;
-  [(FBApplicationProcessLaunchTransaction *)&v3 removeObserver:a3];
+  [(FBApplicationProcessLaunchTransaction *)&v3 removeObserver:remove];
 }
 
-- (void)_willInterruptWithReason:(id)a3
+- (void)_willInterruptWithReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = FBApplicationProcessLaunchTransaction;
-  [(FBApplicationProcessLaunchTransaction *)&v4 _willInterruptWithReason:a3];
+  [(FBApplicationProcessLaunchTransaction *)&v4 _willInterruptWithReason:reason];
   [(BSAtomicSignal *)self->_interruptedOrComplete signal];
 }
 
-- (void)_willFailWithReason:(id)a3
+- (void)_willFailWithReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = FBApplicationProcessLaunchTransaction;
-  [(FBApplicationProcessLaunchTransaction *)&v4 _willFailWithReason:a3];
+  [(FBApplicationProcessLaunchTransaction *)&v4 _willFailWithReason:reason];
   [(BSAtomicSignal *)self->_interruptedOrComplete signal];
 }
 
-- (void)_childTransactionDidComplete:(id)a3
+- (void)_childTransactionDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_deathTransaction == v4)
+  completeCopy = complete;
+  v5 = completeCopy;
+  if (self->_deathTransaction == completeCopy)
   {
-    if (([(FBWaitForProcessDeathTransaction *)v4 isFailed]& 1) == 0 && ([(FBWaitForProcessDeathTransaction *)v5 isInterrupted]& 1) == 0)
+    if (([(FBWaitForProcessDeathTransaction *)completeCopy isFailed]& 1) == 0 && ([(FBWaitForProcessDeathTransaction *)v5 isInterrupted]& 1) == 0)
     {
       if ([(FBApplicationProcessLaunchTransaction *)self isAuditHistoryEnabled])
       {
@@ -246,8 +246,8 @@
 
 - (id)_customizedDescriptionProperties
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   if (self->_process)
   {
     process = self->_process;
@@ -258,7 +258,7 @@
     process = @"(none)";
   }
 
-  [v3 setObject:process forKey:@"Process"];
+  [dictionary setObject:process forKey:@"Process"];
 
   return v4;
 }
@@ -272,18 +272,18 @@
   }
 }
 
-- (void)_queue_launchProcess:(id)a3
+- (void)_queue_launchProcess:(id)process
 {
-  v5 = a3;
+  processCopy = process;
   if (self->_process)
   {
     [FBApplicationProcessLaunchTransaction _queue_launchProcess:a2];
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = processCopy;
+  if (processCopy)
   {
-    [(FBApplicationProcessLaunchTransaction *)self _queue_processWillLaunch:v5];
+    [(FBApplicationProcessLaunchTransaction *)self _queue_processWillLaunch:processCopy];
     if ([v6 finishedLaunching])
     {
       [(FBApplicationProcessLaunchTransaction *)self _queue_finishProcessLaunch:1];
@@ -323,13 +323,13 @@
   v10 = v7;
 LABEL_10:
   [(FBProcessExecutionContext *)v10 setIdentity:self->_identity];
-  v11 = [(FBProcessExecutionContext *)v10 completion];
+  completion = [(FBProcessExecutionContext *)v10 completion];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__FBApplicationProcessLaunchTransaction__queue_launchProcess___block_invoke_3;
   v16[3] = &unk_1E783D710;
   v16[4] = self;
-  v12 = v11;
+  v12 = completion;
   v17 = v12;
   [(FBProcessExecutionContext *)v10 setCompletion:v16];
   v13 = [(FBProcessManager *)self->_processManager _createProcessFutureWithExecutionContext:v10 error:0];
@@ -401,18 +401,18 @@ void __62__FBApplicationProcessLaunchTransaction__queue_launchProcess___block_in
   dispatch_async(v4, v5);
 }
 
-- (void)_queue_processWillLaunch:(id)a3
+- (void)_queue_processWillLaunch:(id)launch
 {
-  v6 = a3;
+  launchCopy = launch;
   if (self->_process)
   {
     [FBApplicationProcessLaunchTransaction _queue_processWillLaunch:a2];
   }
 
-  v7 = v6;
-  if (v6)
+  v7 = launchCopy;
+  if (launchCopy)
   {
-    objc_storeStrong(&self->_process, a3);
+    objc_storeStrong(&self->_process, launch);
     [(FBApplicationProcessLaunchTransaction *)self addMilestone:@"processDidFinishLaunching"];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -449,9 +449,9 @@ void __66__FBApplicationProcessLaunchTransaction__queue_processWillLaunch___bloc
   }
 }
 
-- (void)_queue_finishProcessLaunch:(BOOL)a3
+- (void)_queue_finishProcessLaunch:(BOOL)launch
 {
-  v3 = a3;
+  launchCopy = launch;
   if ([(BSAtomicSignal *)self->_interruptedOrComplete hasBeenSignalled])
   {
     if ([(FBApplicationProcessLaunchTransaction *)self isAuditHistoryEnabled])
@@ -461,7 +461,7 @@ void __66__FBApplicationProcessLaunchTransaction__queue_processWillLaunch___bloc
     }
   }
 
-  else if (v3)
+  else if (launchCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -474,10 +474,10 @@ void __66__FBApplicationProcessLaunchTransaction__queue_processWillLaunch___bloc
 
   else
   {
-    v5 = [(FBProcess *)self->_process exitContext];
-    v6 = [v5 createError];
+    exitContext = [(FBProcess *)self->_process exitContext];
+    createError = [exitContext createError];
 
-    [(FBApplicationProcessLaunchTransaction *)self _failWithReason:@"process launch failed" description:@"Process failed to launch." precipitatingError:v6];
+    [(FBApplicationProcessLaunchTransaction *)self _failWithReason:@"process launch failed" description:@"Process failed to launch." precipitatingError:createError];
   }
 }
 

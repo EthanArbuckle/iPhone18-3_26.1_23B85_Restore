@@ -3,11 +3,11 @@
 - (MobileAssetManager)init;
 - (NSArray)domains;
 - (NSNumber)assetVersion;
-- (id)constructDomainsWithPlist:(id)a3;
+- (id)constructDomainsWithPlist:(id)plist;
 - (id)debugDescription;
-- (void)_initDomainsWithConfigPlist:(id)a3;
-- (void)_onMobileAssetQueue_fetchMobileAssetContentWithCompletion:(id)a3;
-- (void)_onMobileAssetQueue_markInterestInMobileAssetWithCompletion:(id)a3;
+- (void)_initDomainsWithConfigPlist:(id)plist;
+- (void)_onMobileAssetQueue_fetchMobileAssetContentWithCompletion:(id)completion;
+- (void)_onMobileAssetQueue_markInterestInMobileAssetWithCompletion:(id)completion;
 - (void)asyncRefetchMobileAsset;
 - (void)registerForMobileAssetUpdateNotification;
 @end
@@ -16,24 +16,24 @@
 
 - (id)debugDescription
 {
-  v3 = [(MobileAssetManager *)self fallbackVersion];
-  v4 = [(MobileAssetManager *)self assetVersion];
-  v5 = [NSString stringWithFormat:@"<MobileAssetManager fallbackVersion: %@ assetVersion: %@>", v3, v4];
+  fallbackVersion = [(MobileAssetManager *)self fallbackVersion];
+  assetVersion = [(MobileAssetManager *)self assetVersion];
+  v5 = [NSString stringWithFormat:@"<MobileAssetManager fallbackVersion: %@ assetVersion: %@>", fallbackVersion, assetVersion];
 
   return v5;
 }
 
-- (void)_onMobileAssetQueue_fetchMobileAssetContentWithCompletion:(id)a3
+- (void)_onMobileAssetQueue_fetchMobileAssetContentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MobileAssetManager *)self mobileAssetQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  mobileAssetQueue = [(MobileAssetManager *)self mobileAssetQueue];
+  dispatch_assert_queue_V2(mobileAssetQueue);
 
   v6 = [[MAAutoAssetSelector alloc] initForAssetType:@"com.apple.MobileAsset.OSEligibility" withAssetSpecifier:@"Parameters"];
   v7 = [MAAutoAsset alloc];
-  v8 = [(MobileAssetManager *)self mobileAssetQueue];
+  mobileAssetQueue2 = [(MobileAssetManager *)self mobileAssetQueue];
   v15 = 0;
-  v9 = [v7 initForClientName:@"eligibilityd:lockContent" selectingAsset:v6 completingFromQueue:v8 error:&v15];
+  v9 = [v7 initForClientName:@"eligibilityd:lockContent" selectingAsset:v6 completingFromQueue:mobileAssetQueue2 error:&v15];
   v10 = v15;
 
   if (v9)
@@ -42,7 +42,7 @@
     v12[1] = 3221225472;
     v12[2] = sub_100023CD8;
     v12[3] = &unk_100046898;
-    v14 = v4;
+    v14 = completionCopy;
     v12[4] = self;
     v13 = v9;
     [v13 lockContent:@"lockEligibilityConfigOptions" withTimeout:-1 completion:v12];
@@ -60,32 +60,32 @@
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s: Unable to create auto-asset instance: %@", buf, 0x16u);
     }
 
-    (*(v4 + 2))(v4, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
 - (void)asyncRefetchMobileAsset
 {
-  v3 = [(MobileAssetManager *)self mobileAssetQueue];
+  mobileAssetQueue = [(MobileAssetManager *)self mobileAssetQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000243B8;
   v4[3] = &unk_1000469A0;
   v4[4] = self;
-  sub_100025F54(v3, v4);
+  sub_100025F54(mobileAssetQueue, v4);
 }
 
-- (void)_onMobileAssetQueue_markInterestInMobileAssetWithCompletion:(id)a3
+- (void)_onMobileAssetQueue_markInterestInMobileAssetWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MobileAssetManager *)self mobileAssetQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  mobileAssetQueue = [(MobileAssetManager *)self mobileAssetQueue];
+  dispatch_assert_queue_V2(mobileAssetQueue);
 
   v6 = [[MAAutoAssetSelector alloc] initForAssetType:@"com.apple.MobileAsset.OSEligibility" withAssetSpecifier:@"Parameters"];
   v7 = [MAAutoAsset alloc];
-  v8 = [(MobileAssetManager *)self mobileAssetQueue];
+  mobileAssetQueue2 = [(MobileAssetManager *)self mobileAssetQueue];
   v14 = 0;
-  v9 = [v7 initForClientName:@"eligibilityd:interestInContent" selectingAsset:v6 completingFromQueue:v8 error:&v14];
+  v9 = [v7 initForClientName:@"eligibilityd:interestInContent" selectingAsset:v6 completingFromQueue:mobileAssetQueue2 error:&v14];
   v10 = v14;
 
   if (v9)
@@ -94,7 +94,7 @@
     v12[1] = 3221225472;
     v12[2] = sub_1000247E4;
     v12[3] = &unk_100046850;
-    v13 = v4;
+    v13 = completionCopy;
     [v9 interestInContent:@"EligibilityConfig" completion:v12];
   }
 
@@ -110,7 +110,7 @@
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s: Unable to create auto-asset instance: %@", buf, 0x16u);
     }
 
-    (*(v4 + 2))(v4, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -118,16 +118,16 @@
 {
   v3 = [MAAutoAssetNotifications notifyRegistrationName:@"ASSET_VERSION_DOWNLOADED" forAssetType:@"com.apple.MobileAsset.OSEligibility"];
   out_token = -1;
-  v4 = [v3 UTF8String];
-  v5 = [(MobileAssetManager *)self mobileAssetQueue];
+  uTF8String = [v3 UTF8String];
+  mobileAssetQueue = [(MobileAssetManager *)self mobileAssetQueue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100024A54;
   handler[3] = &unk_100046828;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
-  notify_register_dispatch(v4, &out_token, v5, handler);
+  notify_register_dispatch(uTF8String, &out_token, mobileAssetQueue, handler);
 }
 
 - (MobileAssetManager)init
@@ -164,9 +164,9 @@
   return v2;
 }
 
-- (void)_initDomainsWithConfigPlist:(id)a3
+- (void)_initDomainsWithConfigPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v5 = &off_100057AB8;
   v6 = &off_100057AB8;
   v7 = [&off_100057AB8 objectForKeyedSubscript:@"Version"];
@@ -196,7 +196,7 @@
   }
 
   [(MobileAssetManager *)self setFallbackVersion:v9];
-  if (!v4)
+  if (!plistCopy)
   {
     v13 = 0;
 LABEL_15:
@@ -204,7 +204,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"Version"];
+  v11 = [plistCopy objectForKeyedSubscript:@"Version"];
   objc_opt_class();
   v12 = v11;
   if (objc_opt_isKindOfClass())
@@ -222,13 +222,13 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v14 = v4;
+  v14 = plistCopy;
 
 LABEL_16:
   v15 = +[GlobalConfiguration sharedInstance];
-  v16 = [v15 hasInternalContent];
+  hasInternalContent = [v15 hasInternalContent];
 
-  if (v16)
+  if (hasInternalContent)
   {
     v32 = 0;
     if (asprintf(&v32, "%s%s", "/", "/private/var/db/eligibilityd/mobileAssetParametersOverride.plist") == -1)
@@ -256,11 +256,11 @@ LABEL_16:
         v22 = sub_10001F638();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [v20 path];
+          path = [v20 path];
           *buf = 136315394;
           v34 = "[MobileAssetManager _initDomainsWithConfigPlist:]";
           v35 = 2112;
-          v36 = v23;
+          v36 = path;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s: Found Mobile Asset override plist at path %@; Using that instead instead of real values", buf, 0x16u);
         }
 
@@ -282,7 +282,7 @@ LABEL_16:
   }
 
   v25 = [(MobileAssetManager *)self constructDomainsWithPlist:v14];
-  v26 = [(MobileAssetManager *)self internalQueue];
+  internalQueue = [(MobileAssetManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100025664;
@@ -292,19 +292,19 @@ LABEL_16:
   v31 = v25;
   v27 = v25;
   v28 = v13;
-  dispatch_sync(v26, block);
+  dispatch_sync(internalQueue, block);
 }
 
-- (id)constructDomainsWithPlist:(id)a3
+- (id)constructDomainsWithPlist:(id)plist
 {
-  v3 = a3;
+  plistCopy = plist;
   v9 = 0;
-  v4 = [[PlistParser alloc] initWithPlistDictionary:v3 dataStore:0 error:&v9];
+  v4 = [[PlistParser alloc] initWithPlistDictionary:plistCopy dataStore:0 error:&v9];
 
   v5 = v9;
   if (v4)
   {
-    v6 = [(PlistParser *)v4 domains];
+    domains = [(PlistParser *)v4 domains];
   }
 
   else
@@ -319,10 +319,10 @@ LABEL_16:
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s: Malformed plist, skipping update: %@", buf, 0x16u);
     }
 
-    v6 = 0;
+    domains = 0;
   }
 
-  return v6;
+  return domains;
 }
 
 - (NSArray)domains
@@ -333,14 +333,14 @@ LABEL_16:
   v10 = sub_100025908;
   v11 = sub_100025918;
   v12 = 0;
-  v3 = [(MobileAssetManager *)self internalQueue];
+  internalQueue = [(MobileAssetManager *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100025920;
   v6[3] = &unk_100046A18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -356,14 +356,14 @@ LABEL_16:
   v10 = sub_100025908;
   v11 = sub_100025918;
   v12 = 0;
-  v3 = [(MobileAssetManager *)self internalQueue];
+  internalQueue = [(MobileAssetManager *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100025A50;
   v6[3] = &unk_100046A18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -377,7 +377,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_100025B04;
   block[3] = &unk_100046900;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10005D520 != -1)
   {
     dispatch_once(&qword_10005D520, block);

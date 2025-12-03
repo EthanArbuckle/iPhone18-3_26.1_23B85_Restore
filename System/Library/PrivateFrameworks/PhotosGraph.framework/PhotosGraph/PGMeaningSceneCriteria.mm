@@ -1,17 +1,17 @@
 @interface PGMeaningSceneCriteria
-+ (id)criteriaWithDictionary:(id)a3;
++ (id)criteriaWithDictionary:(id)dictionary;
 - (BOOL)isValid;
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4;
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache;
 - (NSString)description;
 @end
 
 @implementation PGMeaningSceneCriteria
 
-+ (id)criteriaWithDictionary:(id)a3
++ (id)criteriaWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"positiveScenes"];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"positiveScenes"];
   v7 = v6;
   v8 = MEMORY[0x277CBEBF8];
   if (v6)
@@ -27,48 +27,48 @@
   v10 = v9;
 
   [v5 setPositiveScenes:v10];
-  v11 = [v4 objectForKeyedSubscript:@"minimumNumberOfPositiveScenes"];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"minimumNumberOfPositiveScenes"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  if (v12 <= 1)
+  if (unsignedIntegerValue <= 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v12;
+    v13 = unsignedIntegerValue;
   }
 
   [v5 setMinimumNumberOfPositiveScenes:v13];
-  v14 = [v4 objectForKeyedSubscript:@"minimumNumberOfNegativeScenes"];
-  v15 = [v14 unsignedIntegerValue];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"minimumNumberOfNegativeScenes"];
+  unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
-  if (v15 <= 1)
+  if (unsignedIntegerValue2 <= 1)
   {
     v16 = 1;
   }
 
   else
   {
-    v16 = v15;
+    v16 = unsignedIntegerValue2;
   }
 
   [v5 setMinimumNumberOfNegativeScenes:v16];
-  v17 = [v4 objectForKeyedSubscript:@"minimumNumberOfAssetsWithPositiveScenes"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"minimumNumberOfAssetsWithPositiveScenes"];
   [v5 setMinimumNumberOfAssetsWithPositiveScenes:{objc_msgSend(v17, "unsignedIntegerValue")}];
 
-  v18 = [v4 objectForKeyedSubscript:@"accumulateAssetCountsWithPositiveScenes"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"accumulateAssetCountsWithPositiveScenes"];
   [v5 setAccumulateAssetCountsWithPositiveScenes:{objc_msgSend(v18, "BOOLValue")}];
 
-  v19 = [v4 objectForKeyedSubscript:@"minimumNumberOfAssetsWithNegativeScenes"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"minimumNumberOfAssetsWithNegativeScenes"];
   [v5 setMinimumNumberOfAssetsWithNegativeScenes:{objc_msgSend(v19, "unsignedIntegerValue")}];
 
-  v20 = [v4 objectForKeyedSubscript:@"minimumRatioOfAssetsWithPositiveScenes"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"minimumRatioOfAssetsWithPositiveScenes"];
   [v20 doubleValue];
   [v5 setMinimumRatioOfAssetsWithPositiveScenes:?];
 
-  v21 = [v4 objectForKeyedSubscript:@"negativeScenes"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"negativeScenes"];
 
   if (v21)
   {
@@ -89,40 +89,40 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(PGMeaningSceneCriteria *)self positiveScenes];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  string = [MEMORY[0x277CCAB68] string];
+  positiveScenes = [(PGMeaningSceneCriteria *)self positiveScenes];
+  v5 = [positiveScenes componentsJoinedByString:{@", "}];
 
-  v6 = [(PGMeaningSceneCriteria *)self negativeScenes];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  negativeScenes = [(PGMeaningSceneCriteria *)self negativeScenes];
+  v7 = [negativeScenes componentsJoinedByString:{@", "}];
 
-  [v3 appendFormat:@"positiveScenes: %@\n", v5];
-  [v3 appendFormat:@"minimumNumberOfPositiveScenes: %d\n", -[PGMeaningSceneCriteria minimumNumberOfPositiveScenes](self, "minimumNumberOfPositiveScenes")];
-  [v3 appendFormat:@"minimumNumberOfAssetsWithPositiveScenes: %d\n", -[PGMeaningSceneCriteria minimumNumberOfAssetsWithPositiveScenes](self, "minimumNumberOfAssetsWithPositiveScenes")];
+  [string appendFormat:@"positiveScenes: %@\n", v5];
+  [string appendFormat:@"minimumNumberOfPositiveScenes: %d\n", -[PGMeaningSceneCriteria minimumNumberOfPositiveScenes](self, "minimumNumberOfPositiveScenes")];
+  [string appendFormat:@"minimumNumberOfAssetsWithPositiveScenes: %d\n", -[PGMeaningSceneCriteria minimumNumberOfAssetsWithPositiveScenes](self, "minimumNumberOfAssetsWithPositiveScenes")];
   [(PGMeaningSceneCriteria *)self minimumRatioOfAssetsWithPositiveScenes];
-  [v3 appendFormat:@"minimumRatioOfAssetsWithPositiveScenes: %d\n", v8];
-  v9 = [(PGMeaningSceneCriteria *)self accumulateAssetCountsWithPositiveScenes];
+  [string appendFormat:@"minimumRatioOfAssetsWithPositiveScenes: %d\n", v8];
+  accumulateAssetCountsWithPositiveScenes = [(PGMeaningSceneCriteria *)self accumulateAssetCountsWithPositiveScenes];
   v10 = @"NO";
-  if (v9)
+  if (accumulateAssetCountsWithPositiveScenes)
   {
     v10 = @"YES";
   }
 
-  [v3 appendFormat:@"accumulateAssetCountsWithPositiveScenes: %@\n", v10];
-  [v3 appendFormat:@"negativeScenes: %@\n", v7];
-  [v3 appendFormat:@"minimumNumberOfNegativeScenes: %d\n", -[PGMeaningSceneCriteria minimumNumberOfNegativeScenes](self, "minimumNumberOfNegativeScenes")];
-  [v3 appendFormat:@"minimumNumberOfAssetsWithNegativeScenes: %d\n", -[PGMeaningSceneCriteria minimumNumberOfAssetsWithNegativeScenes](self, "minimumNumberOfAssetsWithNegativeScenes")];
+  [string appendFormat:@"accumulateAssetCountsWithPositiveScenes: %@\n", v10];
+  [string appendFormat:@"negativeScenes: %@\n", v7];
+  [string appendFormat:@"minimumNumberOfNegativeScenes: %d\n", -[PGMeaningSceneCriteria minimumNumberOfNegativeScenes](self, "minimumNumberOfNegativeScenes")];
+  [string appendFormat:@"minimumNumberOfAssetsWithNegativeScenes: %d\n", -[PGMeaningSceneCriteria minimumNumberOfAssetsWithNegativeScenes](self, "minimumNumberOfAssetsWithNegativeScenes")];
 
-  return v3;
+  return string;
 }
 
 - (BOOL)isValid
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D3B4C8] sharedTaxonomy];
-  v4 = [(PGMeaningSceneCriteria *)self positiveScenes];
-  v5 = [(PGMeaningSceneCriteria *)self negativeScenes];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  mEMORY[0x277D3B4C8] = [MEMORY[0x277D3B4C8] sharedTaxonomy];
+  positiveScenes = [(PGMeaningSceneCriteria *)self positiveScenes];
+  negativeScenes = [(PGMeaningSceneCriteria *)self negativeScenes];
+  v6 = [positiveScenes arrayByAddingObjectsFromArray:negativeScenes];
 
   v24 = 0u;
   v25 = 0u;
@@ -147,18 +147,18 @@
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 lowercaseString];
-        v16 = [v3 nodeForName:v15];
+        lowercaseString = [v14 lowercaseString];
+        v16 = [mEMORY[0x277D3B4C8] nodeForName:lowercaseString];
         if (!v16)
         {
           v17 = +[PGLogging sharedLogging];
-          v18 = [v17 loggingConnection];
+          loggingConnection = [v17 loggingConnection];
 
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
           {
             *buf = v21;
             v27 = v14;
-            _os_log_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid scene name %@", buf, 0xCu);
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid scene name %@", buf, 0xCu);
           }
 
           v12 = 0;
@@ -180,15 +180,15 @@
   return v12 & 1;
 }
 
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGMeaningSceneCriteria *)self positiveScenes];
-  v9 = [v8 count];
+  nodeCopy = node;
+  cacheCopy = cache;
+  positiveScenes = [(PGMeaningSceneCriteria *)self positiveScenes];
+  v9 = [positiveScenes count];
 
-  v10 = [(PGMeaningSceneCriteria *)self negativeScenes];
-  v11 = [v10 count];
+  negativeScenes = [(PGMeaningSceneCriteria *)self negativeScenes];
+  v11 = [negativeScenes count];
 
   if (v9 | v11)
   {
@@ -196,7 +196,7 @@
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = v9 == 0;
-    v13 = [v6 numberOfAssets];
+    numberOfAssets = [nodeCopy numberOfAssets];
     v19[0] = 0;
     v19[1] = v19;
     v19[2] = 0x2020000000;
@@ -221,11 +221,11 @@
     v15[5] = &v20;
     v15[6] = v19;
     v15[7] = v17;
-    v15[10] = v13;
+    v15[10] = numberOfAssets;
     v15[11] = v11;
     v15[8] = v18;
     v15[9] = v16;
-    [v7 enumerateSceneEdgesAndNodesUsingBlock:v15];
+    [cacheCopy enumerateSceneEdgesAndNodesUsingBlock:v15];
     v12 = *(v21 + 24);
     _Block_object_dispose(v16, 8);
     _Block_object_dispose(v17, 8);

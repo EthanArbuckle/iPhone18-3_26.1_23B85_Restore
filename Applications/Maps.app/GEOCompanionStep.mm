@@ -25,8 +25,8 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v5 = [(GEOCompanionStep *)self guidanceEvents];
-  v4 = sub_100B687D0(v5);
+  guidanceEvents = [(GEOCompanionStep *)self guidanceEvents];
+  v4 = sub_100B687D0(guidanceEvents);
 
   if (v4)
   {

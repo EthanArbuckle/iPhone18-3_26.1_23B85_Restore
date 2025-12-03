@@ -1,34 +1,34 @@
 @interface STConcreteSetupService
 - (STSetupServiceDelegate)delegate;
-- (void)applyUpdatedConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)currentConfigurationForUser:(id)a3 completionHandler:(id)a4;
-- (void)promptForPasscodeFromUserWithEndpoint:(id)a3 completionHandler:(id)a4;
+- (void)applyUpdatedConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)currentConfigurationForUser:(id)user completionHandler:(id)handler;
+- (void)promptForPasscodeFromUserWithEndpoint:(id)endpoint completionHandler:(id)handler;
 @end
 
 @implementation STConcreteSetupService
 
-- (void)currentConfigurationForUser:(id)a3 completionHandler:(id)a4
+- (void)currentConfigurationForUser:(id)user completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteSetupService *)self delegate];
-  [v8 currentConfigurationForUser:v7 completionHandler:v6];
+  handlerCopy = handler;
+  userCopy = user;
+  delegate = [(STConcreteSetupService *)self delegate];
+  [delegate currentConfigurationForUser:userCopy completionHandler:handlerCopy];
 }
 
-- (void)applyUpdatedConfiguration:(id)a3 completionHandler:(id)a4
+- (void)applyUpdatedConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteSetupService *)self delegate];
-  [v8 applyUpdatedConfiguration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  delegate = [(STConcreteSetupService *)self delegate];
+  [delegate applyUpdatedConfiguration:configurationCopy completionHandler:handlerCopy];
 }
 
-- (void)promptForPasscodeFromUserWithEndpoint:(id)a3 completionHandler:(id)a4
+- (void)promptForPasscodeFromUserWithEndpoint:(id)endpoint completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteSetupService *)self delegate];
-  [v8 promptForPasscodeFromUserWithEndpoint:v7 completionHandler:v6];
+  handlerCopy = handler;
+  endpointCopy = endpoint;
+  delegate = [(STConcreteSetupService *)self delegate];
+  [delegate promptForPasscodeFromUserWithEndpoint:endpointCopy completionHandler:handlerCopy];
 }
 
 - (STSetupServiceDelegate)delegate

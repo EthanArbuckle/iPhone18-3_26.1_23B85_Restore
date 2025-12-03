@@ -6,10 +6,10 @@
 
 - (id)apui_intent
 {
-  v1 = [a1 interaction];
-  v2 = [v1 apui_intent];
+  interaction = [self interaction];
+  apui_intent = [interaction apui_intent];
 
-  return v2;
+  return apui_intent;
 }
 
 @end

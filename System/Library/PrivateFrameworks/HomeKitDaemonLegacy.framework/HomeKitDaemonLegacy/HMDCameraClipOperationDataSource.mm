@@ -1,24 +1,24 @@
 @interface HMDCameraClipOperationDataSource
 - (double)operationTimeout;
-- (void)submitOperationEvent:(id)a3;
+- (void)submitOperationEvent:(id)event;
 @end
 
 @implementation HMDCameraClipOperationDataSource
 
-- (void)submitOperationEvent:(id)a3
+- (void)submitOperationEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[HMDMetricsManager sharedLogEventSubmitter];
-  [v4 submitLogEvent:v3];
+  [v4 submitLogEvent:eventCopy];
 }
 
 - (double)operationTimeout
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"clipModelOperationTimeout"];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"clipModelOperationTimeout"];
 
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;

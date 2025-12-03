@@ -1,20 +1,20 @@
 @interface AlertDeliveryTypeCell
-+ (double)preferredHeightInWidth:(double)a3;
-- (AlertDeliveryTypeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
++ (double)preferredHeightInWidth:(double)width;
+- (AlertDeliveryTypeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (id)_currentDescriptor;
-- (void)_handleLocationViewPress:(id)a3;
+- (void)_handleLocationViewPress:(id)press;
 - (void)layoutSubviews;
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4;
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated;
 @end
 
 @implementation AlertDeliveryTypeCell
 
-- (AlertDeliveryTypeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AlertDeliveryTypeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v28.receiver = self;
   v28.super_class = AlertDeliveryTypeCell;
-  v4 = [(AlertDeliveryTypeCell *)&v28 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AlertDeliveryTypeCell *)&v28 initWithStyle:style reuseIdentifier:identifier];
   [(AlertDeliveryTypeCell *)v4 setClipsToBounds:1];
   v5 = +[NSMutableArray array];
   deliveryTypeCellGestures = v4->_deliveryTypeCellGestures;
@@ -63,8 +63,8 @@
         }
 
         v20 = *(*(&v24 + 1) + 8 * v19);
-        v21 = [(AlertDeliveryTypeCell *)v4 contentView];
-        [v21 addSubview:v20];
+        contentView = [(AlertDeliveryTypeCell *)v4 contentView];
+        [contentView addSubview:v20];
 
         v22 = [[UILongPressGestureRecognizer alloc] initWithTarget:v4 action:"_handleLocationViewPress:"];
         [v22 setMinimumPressDuration:0.0];
@@ -91,22 +91,22 @@
   v51.receiver = self;
   v51.super_class = AlertDeliveryTypeCell;
   [(AlertDeliveryTypeCell *)&v51 layoutSubviews];
-  v3 = [(AlertDeliveryTypeCell *)self specifier];
-  v4 = [v3 performGetter];
+  specifier = [(AlertDeliveryTypeCell *)self specifier];
+  performGetter = [specifier performGetter];
 
-  if ([v4 lockScreenSetting])
+  if ([performGetter lockScreenSetting])
   {
-    -[AlertDeliveryLocationView setSelected:](self->_lockscreenLocationView, "setSelected:", [v4 lockScreenSetting] == &dword_0 + 2);
+    -[AlertDeliveryLocationView setSelected:](self->_lockscreenLocationView, "setSelected:", [performGetter lockScreenSetting] == &dword_0 + 2);
   }
 
-  if ([v4 notificationCenterSetting])
+  if ([performGetter notificationCenterSetting])
   {
-    -[AlertDeliveryLocationView setSelected:](self->_historyLocationView, "setSelected:", [v4 notificationCenterSetting] == &dword_0 + 2);
+    -[AlertDeliveryLocationView setSelected:](self->_historyLocationView, "setSelected:", [performGetter notificationCenterSetting] == &dword_0 + 2);
   }
 
-  if ([v4 bannerSetting])
+  if ([performGetter bannerSetting])
   {
-    -[AlertDeliveryLocationView setSelected:](self->_bannersLocationView, "setSelected:", [v4 bannerSetting] == &dword_0 + 2);
+    -[AlertDeliveryLocationView setSelected:](self->_bannersLocationView, "setSelected:", [performGetter bannerSetting] == &dword_0 + 2);
   }
 
   v5 = +[NSMutableArray array];
@@ -118,9 +118,9 @@
   v8 = [NSArray arrayWithObjects:v55 count:3];
   if ([(AlertDeliveryTypeCell *)self effectiveUserInterfaceLayoutDirection]== &dword_0 + 1)
   {
-    v9 = [v8 bs_reverse];
+    bs_reverse = [v8 bs_reverse];
 
-    v8 = v9;
+    v8 = bs_reverse;
   }
 
   v49 = 0u;
@@ -143,7 +143,7 @@
         }
 
         v15 = *(*(&v47 + 1) + 8 * i);
-        if (AlertDeliveryLocationTypeShouldBeHiddenForDescriptor([v15 type], v4))
+        if (AlertDeliveryLocationTypeShouldBeHiddenForDescriptor([v15 type], performGetter))
         {
           v16 = v6;
         }
@@ -163,11 +163,11 @@
   }
 
   [v5 count];
-  v17 = [(AlertDeliveryTypeCell *)self contentView];
-  [v17 bounds];
+  contentView = [(AlertDeliveryTypeCell *)self contentView];
+  [contentView bounds];
 
-  v18 = [(AlertDeliveryTypeCell *)self traitCollection];
-  [v18 displayScale];
+  traitCollection = [(AlertDeliveryTypeCell *)self traitCollection];
+  [traitCollection displayScale];
 
   v19 = +[AlertDeliveryLocationView preferredFont];
   [v19 _scaledValueForValue:24.0];
@@ -238,7 +238,7 @@
   }
 }
 
-+ (double)preferredHeightInWidth:(double)a3
++ (double)preferredHeightInWidth:(double)width
 {
   v3 = +[AlertDeliveryLocationView preferredFont];
   v4 = +[UIScreen mainScreen];
@@ -255,37 +255,37 @@
   return v12;
 }
 
-- (void)_handleLocationViewPress:(id)a3
+- (void)_handleLocationViewPress:(id)press
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 == &dword_0 + 1)
+  pressCopy = press;
+  state = [pressCopy state];
+  if (state == &dword_0 + 1)
   {
     [(UIImpactFeedbackGenerator *)self->_feedbackGenerator prepare];
   }
 
-  v13 = [(AlertDeliveryTypeCell *)self _locationViewForGestureRecognizer:v4];
-  [v4 locationInView:v13];
+  v13 = [(AlertDeliveryTypeCell *)self _locationViewForGestureRecognizer:pressCopy];
+  [pressCopy locationInView:v13];
   v7 = v6;
   v9 = v8;
 
   v10 = [v13 pointInside:0 withEvent:{v7, v9}];
-  [v13 setHighlighted:((v5 - 1) < 2) & v10];
-  if (v5 == &dword_0 + 3 && (v10 & 1) != 0)
+  [v13 setHighlighted:((state - 1) < 2) & v10];
+  if (state == &dword_0 + 3 && (v10 & 1) != 0)
   {
     [v13 setSelected:objc_msgSend(v13 animated:{"selected") ^ 1, 1}];
-    v11 = [(AlertDeliveryTypeCell *)self specifier];
-    v12 = [(AlertDeliveryTypeCell *)self _currentDescriptor];
-    [v11 performSetterWithValue:v12];
+    specifier = [(AlertDeliveryTypeCell *)self specifier];
+    _currentDescriptor = [(AlertDeliveryTypeCell *)self _currentDescriptor];
+    [specifier performSetterWithValue:_currentDescriptor];
 
     [(UIImpactFeedbackGenerator *)self->_feedbackGenerator impactOccurred];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if ([(NSMutableArray *)self->_deliveryTypeCellGestures containsObject:a3])
+  gestureRecognizerCopy = gestureRecognizer;
+  if ([(NSMutableArray *)self->_deliveryTypeCellGestures containsObject:recognizer])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -299,14 +299,14 @@
   return isKindOfClass & 1;
 }
 
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7.receiver = self;
   v7.super_class = AlertDeliveryTypeCell;
-  [(AlertDeliveryTypeCell *)&v7 reloadWithSpecifier:a3 animated:?];
+  [(AlertDeliveryTypeCell *)&v7 reloadWithSpecifier:specifier animated:?];
   [(AlertDeliveryTypeCell *)self setNeedsLayout];
-  if (v4)
+  if (animatedCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;

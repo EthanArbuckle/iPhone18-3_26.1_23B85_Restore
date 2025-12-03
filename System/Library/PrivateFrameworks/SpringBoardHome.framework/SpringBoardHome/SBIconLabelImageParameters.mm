@@ -1,16 +1,16 @@
 @interface SBIconLabelImageParameters
 - (BOOL)isColorspaceGrayscale;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)maxSize;
 - (SBIconLabelImageMetrics)metrics;
 - (SBIconLabelImageParameters)init;
-- (SBIconLabelImageParameters)initWithParameters:(id)a3;
-- (SBIconLabelImageParameters)initWithText:(id)a3 maxSize:(CGSize)a4 font:(id)a5 scale:(double)a6 canTruncate:(BOOL)a7 canTighten:(BOOL)a8 containsEmoji:(BOOL)a9 legibilityStyle:(unint64_t)a10 textColor:(id)a11 accessibilityReduceTransparencyEnabled:(BOOL)a12 contentSizeCategory:(id)a13 focusHighlightColor:(id)a14 textInsets:(UIEdgeInsets)a15 fontLanguageInsets:(UIEdgeInsets)a16 overrideTraitCollection:(id)a17 colorspaceGrayscale:(BOOL)a18;
+- (SBIconLabelImageParameters)initWithParameters:(id)parameters;
+- (SBIconLabelImageParameters)initWithText:(id)text maxSize:(CGSize)size font:(id)font scale:(double)scale canTruncate:(BOOL)truncate canTighten:(BOOL)tighten containsEmoji:(BOOL)emoji legibilityStyle:(unint64_t)self0 textColor:(id)self1 accessibilityReduceTransparencyEnabled:(BOOL)self2 contentSizeCategory:(id)self3 focusHighlightColor:(id)self4 textInsets:(UIEdgeInsets)self5 fontLanguageInsets:(UIEdgeInsets)self6 overrideTraitCollection:(id)self7 colorspaceGrayscale:(BOOL)self8;
 - (UIEdgeInsets)fontLanguageInsets;
 - (UIEdgeInsets)textInsets;
 - (id)_init;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)markDirty;
 @end
@@ -146,98 +146,98 @@
   return lock_hash;
 }
 
-- (SBIconLabelImageParameters)initWithText:(id)a3 maxSize:(CGSize)a4 font:(id)a5 scale:(double)a6 canTruncate:(BOOL)a7 canTighten:(BOOL)a8 containsEmoji:(BOOL)a9 legibilityStyle:(unint64_t)a10 textColor:(id)a11 accessibilityReduceTransparencyEnabled:(BOOL)a12 contentSizeCategory:(id)a13 focusHighlightColor:(id)a14 textInsets:(UIEdgeInsets)a15 fontLanguageInsets:(UIEdgeInsets)a16 overrideTraitCollection:(id)a17 colorspaceGrayscale:(BOOL)a18
+- (SBIconLabelImageParameters)initWithText:(id)text maxSize:(CGSize)size font:(id)font scale:(double)scale canTruncate:(BOOL)truncate canTighten:(BOOL)tighten containsEmoji:(BOOL)emoji legibilityStyle:(unint64_t)self0 textColor:(id)self1 accessibilityReduceTransparencyEnabled:(BOOL)self2 contentSizeCategory:(id)self3 focusHighlightColor:(id)self4 textInsets:(UIEdgeInsets)self5 fontLanguageInsets:(UIEdgeInsets)self6 overrideTraitCollection:(id)self7 colorspaceGrayscale:(BOOL)self8
 {
-  right = a15.right;
-  bottom = a15.bottom;
-  left = a15.left;
-  top = a15.top;
-  height = a4.height;
-  width = a4.width;
-  v28 = a3;
-  v29 = a5;
-  v30 = a11;
-  v39 = a13;
-  v38 = a14;
-  v37 = a17;
-  v31 = [(SBIconLabelImageParameters *)self _init];
-  if (v31)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  textCopy = text;
+  fontCopy = font;
+  colorCopy = color;
+  categoryCopy = category;
+  highlightColorCopy = highlightColor;
+  collectionCopy = collection;
+  _init = [(SBIconLabelImageParameters *)self _init];
+  if (_init)
   {
-    v32 = [v28 copy];
-    text = v31->_text;
-    v31->_text = v32;
+    v32 = [textCopy copy];
+    text = _init->_text;
+    _init->_text = v32;
 
-    v31->_maxSize.width = width;
-    v31->_maxSize.height = height;
-    objc_storeStrong(&v31->_font, a5);
-    v31->_scale = a6;
-    v31->_canTruncate = a7;
-    v31->_containsEmoji = a9;
-    v31->_legibilityStyle = a10;
-    objc_storeStrong(&v31->_textColor, a11);
-    v31->_accessibilityReduceTransparencyEnabled = a12;
-    objc_storeStrong(&v31->_contentSizeCategory, a13);
-    objc_storeStrong(&v31->_focusHighlightColor, a14);
-    v31->_textInsets.top = top;
-    v31->_textInsets.left = left;
-    v31->_textInsets.bottom = bottom;
-    v31->_textInsets.right = right;
-    v31->_fontLanguageInsets = a16;
-    objc_storeStrong(&v31->_overrideTraitCollection, a17);
-    v31->_colorspaceGrayscale = a18;
-    v31->_colorspaceGrayscaleSet = a18;
+    _init->_maxSize.width = width;
+    _init->_maxSize.height = height;
+    objc_storeStrong(&_init->_font, font);
+    _init->_scale = scale;
+    _init->_canTruncate = truncate;
+    _init->_containsEmoji = emoji;
+    _init->_legibilityStyle = style;
+    objc_storeStrong(&_init->_textColor, color);
+    _init->_accessibilityReduceTransparencyEnabled = enabled;
+    objc_storeStrong(&_init->_contentSizeCategory, category);
+    objc_storeStrong(&_init->_focusHighlightColor, highlightColor);
+    _init->_textInsets.top = top;
+    _init->_textInsets.left = left;
+    _init->_textInsets.bottom = bottom;
+    _init->_textInsets.right = right;
+    _init->_fontLanguageInsets = languageInsets;
+    objc_storeStrong(&_init->_overrideTraitCollection, collection);
+    _init->_colorspaceGrayscale = grayscale;
+    _init->_colorspaceGrayscaleSet = grayscale;
   }
 
-  return v31;
+  return _init;
 }
 
-- (SBIconLabelImageParameters)initWithParameters:(id)a3
+- (SBIconLabelImageParameters)initWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(SBIconLabelImageParameters *)self _init];
-  if (v5)
+  parametersCopy = parameters;
+  _init = [(SBIconLabelImageParameters *)self _init];
+  if (_init)
   {
-    v6 = [*(v4 + 2) copy];
-    v7 = *(v5 + 2);
-    *(v5 + 2) = v6;
+    v6 = [*(parametersCopy + 2) copy];
+    v7 = *(_init + 2);
+    *(_init + 2) = v6;
 
-    v5[24] = v4[24];
-    v5[25] = v4[25];
-    v5[26] = v4[26];
-    *(v5 + 3) = *(v4 + 3);
-    objc_storeStrong(v5 + 1, *(v4 + 1));
-    *(v5 + 8) = *(v4 + 8);
-    *(v5 + 5) = *(v4 + 5);
-    objc_storeStrong(v5 + 9, *(v4 + 9));
-    v5[27] = v4[27];
-    v8 = [*(v4 + 4) copy];
-    v9 = *(v5 + 4);
-    *(v5 + 4) = v8;
+    _init[24] = parametersCopy[24];
+    _init[25] = parametersCopy[25];
+    _init[26] = parametersCopy[26];
+    *(_init + 3) = *(parametersCopy + 3);
+    objc_storeStrong(_init + 1, *(parametersCopy + 1));
+    *(_init + 8) = *(parametersCopy + 8);
+    *(_init + 5) = *(parametersCopy + 5);
+    objc_storeStrong(_init + 9, *(parametersCopy + 9));
+    _init[27] = parametersCopy[27];
+    v8 = [*(parametersCopy + 4) copy];
+    v9 = *(_init + 4);
+    *(_init + 4) = v8;
 
-    objc_storeStrong(v5 + 10, *(v4 + 10));
-    v10 = *(v4 + 88);
-    *(v5 + 104) = *(v4 + 104);
-    *(v5 + 88) = v10;
-    v11 = *(v4 + 120);
-    *(v5 + 136) = *(v4 + 136);
-    *(v5 + 120) = v11;
-    v5[28] = v4[28];
-    v5[29] = v4[29];
-    os_unfair_lock_lock(v4 + 48);
-    v12 = v4[168];
-    v5[168] = v12;
+    objc_storeStrong(_init + 10, *(parametersCopy + 10));
+    v10 = *(parametersCopy + 88);
+    *(_init + 104) = *(parametersCopy + 104);
+    *(_init + 88) = v10;
+    v11 = *(parametersCopy + 120);
+    *(_init + 136) = *(parametersCopy + 136);
+    *(_init + 120) = v11;
+    _init[28] = parametersCopy[28];
+    _init[29] = parametersCopy[29];
+    os_unfair_lock_lock(parametersCopy + 48);
+    v12 = parametersCopy[168];
+    _init[168] = v12;
     if ((v12 & 1) == 0)
     {
-      *(v5 + 22) = *(v4 + 22);
-      v13 = [*(v4 + 23) copy];
-      v14 = *(v5 + 23);
-      *(v5 + 23) = v13;
+      *(_init + 22) = *(parametersCopy + 22);
+      v13 = [*(parametersCopy + 23) copy];
+      v14 = *(_init + 23);
+      *(_init + 23) = v13;
     }
 
-    os_unfair_lock_unlock(v4 + 48);
+    os_unfair_lock_unlock(parametersCopy + 48);
   }
 
-  return v5;
+  return _init;
 }
 
 - (SBIconLabelImageParameters)init
@@ -258,10 +258,10 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -273,7 +273,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if (self->_legibilityStyle != v7->_legibilityStyle || !BSFloatEqualToFloat() || !SBFBoolEquals() || !SBFBoolEquals())
       {
         goto LABEL_21;
@@ -331,12 +331,12 @@ LABEL_23:
   }
 
   v17 = [v3 appendObject:self->_overrideTraitCollection withName:@"overrideTraitCollection" skipIfNil:1];
-  v18 = [v3 build];
+  build = [v3 build];
 
-  return v18;
+  return build;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBMutableIconLabelImageParameters alloc];
 

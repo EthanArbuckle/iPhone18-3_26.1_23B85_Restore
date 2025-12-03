@@ -1,17 +1,17 @@
 @interface CAMediaTimingFunction
-+ (CAMediaTimingFunction)functionWithControlPoints:(const CGPoint *)a3;
++ (CAMediaTimingFunction)functionWithControlPoints:(const CGPoint *)points;
 @end
 
 @implementation CAMediaTimingFunction
 
-+ (CAMediaTimingFunction)functionWithControlPoints:(const CGPoint *)a3
++ (CAMediaTimingFunction)functionWithControlPoints:(const CGPoint *)points
 {
-  x = a3->x;
-  y = a3->y;
-  *&x = a3->x;
+  x = points->x;
+  y = points->y;
+  *&x = points->x;
   *&y = y;
-  v5 = a3[1].x;
-  v6 = a3[1].y;
+  v5 = points[1].x;
+  v6 = points[1].y;
   *&v5 = v5;
   *&v6 = v6;
   return [CAMediaTimingFunction functionWithControlPoints:x];

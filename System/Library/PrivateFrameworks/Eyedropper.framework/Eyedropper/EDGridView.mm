@@ -1,12 +1,12 @@
 @interface EDGridView
-- (EDGridView)initWithWithCellCount:(int64_t)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setStrokeColor:(id)a3;
+- (EDGridView)initWithWithCellCount:(int64_t)count;
+- (void)drawRect:(CGRect)rect;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation EDGridView
 
-- (EDGridView)initWithWithCellCount:(int64_t)a3
+- (EDGridView)initWithWithCellCount:(int64_t)count
 {
   v9.receiver = self;
   v9.super_class = EDGridView;
@@ -14,23 +14,23 @@
   v5 = v4;
   if (v4)
   {
-    v4->_cellCount = a3;
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    v4->_cellCount = count;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     strokeColor = v5->_strokeColor;
-    v5->_strokeColor = v6;
+    v5->_strokeColor = whiteColor;
   }
 
   return v5;
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  objc_storeStrong(&self->_strokeColor, a3);
+  objc_storeStrong(&self->_strokeColor, color);
 
   [(EDGridView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v16 = *MEMORY[0x277D85DE8];
   CurrentContext = UIGraphicsGetCurrentContext();

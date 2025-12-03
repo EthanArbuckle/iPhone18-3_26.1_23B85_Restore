@@ -1,18 +1,18 @@
 @interface MRDSleepAssertion
-- (MRDSleepAssertion)initWithName:(id)a3 timeout:(double)a4;
+- (MRDSleepAssertion)initWithName:(id)name timeout:(double)timeout;
 - (void)invalidate;
 @end
 
 @implementation MRDSleepAssertion
 
-- (MRDSleepAssertion)initWithName:(id)a3 timeout:(double)a4
+- (MRDSleepAssertion)initWithName:(id)name timeout:(double)timeout
 {
-  v7 = a3;
+  nameCopy = name;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v7;
+    nameCopy2 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Initialization sleep assertion %@", buf, 0xCu);
   }
 
@@ -22,9 +22,9 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
+    objc_storeStrong(&v9->_name, name);
     v10->_assertionID = 0;
-    v11 = IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", @"com.apple.mediaremote.powerassertion", 0, v7, 0, a4, @"TimeoutActionRelease", &v10->_assertionID);
+    v11 = IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", @"com.apple.mediaremote.powerassertion", 0, nameCopy, 0, timeout, @"TimeoutActionRelease", &v10->_assertionID);
     assertionID = v10->_assertionID;
     p_super = _MRLogForCategory();
     v14 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT);
@@ -44,9 +44,9 @@
       {
         name = v10->_name;
         *buf = 138412546;
-        v20 = name;
+        nameCopy2 = name;
         v21 = 2048;
-        v22 = a4;
+        timeoutCopy = timeout;
         _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_DEFAULT, "Taking sleep assertion %@ for a max of %lf seconds", buf, 0x16u);
       }
     }

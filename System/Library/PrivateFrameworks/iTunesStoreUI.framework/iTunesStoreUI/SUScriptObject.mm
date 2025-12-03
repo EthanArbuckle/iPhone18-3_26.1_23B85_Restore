@@ -1,9 +1,9 @@
 @interface SUScriptObject
-+ (BOOL)isSelectorExcludedFromWebScript:(SEL)a3;
-+ (id)webScriptNameForKey:(const char *)a3;
++ (BOOL)isSelectorExcludedFromWebScript:(SEL)script;
++ (id)webScriptNameForKey:(const char *)key;
 + (void)initialize;
 - (BOOL)isVisible;
-- (BOOL)scriptObjectIsCheckedIn:(id)a3;
+- (BOOL)scriptObjectIsCheckedIn:(id)in;
 - (BOOL)sourceIsTrusted;
 - (NSMutableArray)scriptAttributeKeys;
 - (OpaqueJSContext)copyJavaScriptContext;
@@ -12,31 +12,31 @@
 - (SUScriptObject)init;
 - (SUScriptObject)parentScriptObject;
 - (WebFrame)webFrame;
-- (id)DOMElementWithElement:(id)a3;
-- (id)_copyListenersForName:(id)a3;
-- (id)copyObjectForScriptFromPoolWithClass:(Class)a3;
-- (id)invocationBatch:(BOOL)a3;
-- (id)newImageWithURL:(id)a3;
-- (id)newImageWithURL:(id)a3 scale:(double)a4;
+- (id)DOMElementWithElement:(id)element;
+- (id)_copyListenersForName:(id)name;
+- (id)copyObjectForScriptFromPoolWithClass:(Class)class;
+- (id)invocationBatch:(BOOL)batch;
+- (id)newImageWithURL:(id)l;
+- (id)newImageWithURL:(id)l scale:(double)scale;
 - (id)parentViewController;
 - (id)viewControllerFactory;
 - (id)webThreadMainThreadBatchProxy;
 - (void)_checkOutAfterVisibilityChange;
-- (void)addListenerForEventWithName:(id)a3 callback:(id)a4 useCapture:(BOOL)a5;
-- (void)checkInScriptObject:(id)a3;
-- (void)checkInScriptObjects:(id)a3;
-- (void)checkOutBatchTarget:(id)a3;
-- (void)checkOutScriptObject:(id)a3;
-- (void)checkOutScriptObjects:(id)a3;
+- (void)addListenerForEventWithName:(id)name callback:(id)callback useCapture:(BOOL)capture;
+- (void)checkInScriptObject:(id)object;
+- (void)checkInScriptObjects:(id)objects;
+- (void)checkOutBatchTarget:(id)target;
+- (void)checkOutScriptObject:(id)object;
+- (void)checkOutScriptObjects:(id)objects;
 - (void)dealloc;
 - (void)didPerformBatchedInvocations;
-- (void)dispatchEvent:(id)a3 forName:(id)a4 synchronously:(BOOL)a5;
+- (void)dispatchEvent:(id)event forName:(id)name synchronously:(BOOL)synchronously;
 - (void)finalizeForWebScript;
-- (void)loadImageWithURL:(id)a3 completionBlock:(id)a4;
-- (void)removeListenerForEventWithName:(id)a3 callback:(id)a4 useCapture:(BOOL)a5;
-- (void)setNativeObject:(id)a3;
-- (void)setParentScriptObject:(id)a3;
-- (void)setVisible:(BOOL)a3;
+- (void)loadImageWithURL:(id)l completionBlock:(id)block;
+- (void)removeListenerForEventWithName:(id)name callback:(id)callback useCapture:(BOOL)capture;
+- (void)setNativeObject:(id)object;
+- (void)setParentScriptObject:(id)object;
+- (void)setVisible:(BOOL)visible;
 - (void)tearDownUserInterface;
 - (void)willPerformBatchedInvocations;
 @end
@@ -84,18 +84,18 @@
   [(SUScriptObject *)&v8 dealloc];
 }
 
-- (void)checkInScriptObject:(id)a3
+- (void)checkInScriptObject:(id)object
 {
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithObjects:{v5, 0}];
+  objectCopy = object;
+  v6 = [[v4 alloc] initWithObjects:{objectCopy, 0}];
 
   [(SUScriptObject *)self checkInScriptObjects:v6];
 }
 
-- (void)checkInScriptObjects:(id)a3
+- (void)checkInScriptObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   [(SUScriptObject *)self lock];
   if (!self->_scriptObjects)
   {
@@ -104,31 +104,31 @@
     self->_scriptObjects = v5;
   }
 
-  [v4 makeObjectsPerformSelector:sel_setParentScriptObject_ withObject:self];
-  [(NSMutableSet *)self->_scriptObjects addObjectsFromArray:v4];
+  [objectsCopy makeObjectsPerformSelector:sel_setParentScriptObject_ withObject:self];
+  [(NSMutableSet *)self->_scriptObjects addObjectsFromArray:objectsCopy];
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)checkOutScriptObject:(id)a3
+- (void)checkOutScriptObject:(id)object
 {
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithObjects:{v5, 0}];
+  objectCopy = object;
+  v6 = [[v4 alloc] initWithObjects:{objectCopy, 0}];
 
   [(SUScriptObject *)self checkOutScriptObjects:v6];
 }
 
-- (void)checkOutScriptObjects:(id)a3
+- (void)checkOutScriptObjects:(id)objects
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   [(SUScriptObject *)self lock];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = objectsCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -162,52 +162,52 @@
 
 - (SUClientInterface)clientInterface
 {
-  v2 = [(SUScriptObject *)self parentScriptObject];
-  v3 = [v2 clientInterface];
+  parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+  clientInterface = [parentScriptObject clientInterface];
 
-  return v3;
+  return clientInterface;
 }
 
 - (OpaqueJSContext)copyJavaScriptContext
 {
-  v2 = [(SUScriptObject *)self parentScriptObject];
-  v3 = [v2 copyJavaScriptContext];
+  parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+  copyJavaScriptContext = [parentScriptObject copyJavaScriptContext];
 
-  return v3;
+  return copyJavaScriptContext;
 }
 
-- (id)copyObjectForScriptFromPoolWithClass:(Class)a3
+- (id)copyObjectForScriptFromPoolWithClass:(Class)class
 {
-  v5 = [(SUScriptObject *)self parentViewController];
-  v6 = [v5 copyObjectForScriptFromPoolWithClass:a3];
+  parentViewController = [(SUScriptObject *)self parentViewController];
+  v6 = [parentViewController copyObjectForScriptFromPoolWithClass:class];
 
   if (!v6)
   {
-    v6 = objc_alloc_init(a3);
+    v6 = objc_alloc_init(class);
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v7 = [(SUScriptObject *)self clientInterface];
-    v8 = [v7 appearance];
-    [v8 styleBarButtonItem:v6];
+    clientInterface = [(SUScriptObject *)self clientInterface];
+    appearance = [clientInterface appearance];
+    [appearance styleBarButtonItem:v6];
   }
 
   return v6;
 }
 
-- (void)dispatchEvent:(id)a3 forName:(id)a4 synchronously:(BOOL)a5
+- (void)dispatchEvent:(id)event forName:(id)name synchronously:(BOOL)synchronously
 {
-  v5 = a5;
+  synchronouslyCopy = synchronously;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(SUScriptObject *)self _copyListenersForName:a4];
-  if (v5 && (WebThreadIsCurrent() & 1) == 0)
+  eventCopy = event;
+  v9 = [(SUScriptObject *)self _copyListenersForName:name];
+  if (synchronouslyCopy && (WebThreadIsCurrent() & 1) == 0)
   {
     WebThreadLock();
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{self, v8, 0}];
+  v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{self, eventCopy, 0}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -227,10 +227,10 @@
           objc_enumerationMutation(v11);
         }
 
-        if (v5)
+        if (synchronouslyCopy)
         {
-          v16 = [*(*(&v19 + 1) + 8 * i) callback];
-          v17 = [v16 callWebScriptMethod:@"call" withArguments:v10];
+          callback = [*(*(&v19 + 1) + 8 * i) callback];
+          v17 = [callback callWebScriptMethod:@"call" withArguments:v10];
         }
 
         else
@@ -253,11 +253,11 @@ void __54__SUScriptObject_dispatchEvent_forName_synchronously___block_invoke(uin
   v2 = [v3 callWebScriptMethod:@"call" withArguments:*(a1 + 40)];
 }
 
-- (id)DOMElementWithElement:(id)a3
+- (id)DOMElementWithElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SUScriptObject *)self parentScriptObject];
-  v6 = [v5 DOMElementWithElement:v4];
+  elementCopy = element;
+  parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+  v6 = [parentScriptObject DOMElementWithElement:elementCopy];
 
   return v6;
 }
@@ -272,23 +272,23 @@ void __54__SUScriptObject_dispatchEvent_forName_synchronously___block_invoke(uin
     return 1;
   }
 
-  v4 = [(SUScriptObject *)self parentScriptObject];
-  v5 = [v4 isVisible];
+  parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+  isVisible = [parentScriptObject isVisible];
 
-  return v5;
+  return isVisible;
 }
 
-- (void)loadImageWithURL:(id)a3 completionBlock:(id)a4
+- (void)loadImageWithURL:(id)l completionBlock:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  blockCopy = block;
   v7 = objc_alloc_init(MEMORY[0x1E69E47E0]);
   v8 = +[(ISDataProvider *)SUImageDataProvider];
   [v7 setDataProvider:v8];
 
   [v7 setUrlKnownToBeTrusted:1];
-  v9 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:v5];
+  v9 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:lCopy];
   [v9 setAllowedRetryCount:0];
   [v9 setTimeoutInterval:10.0];
   [v7 setRequestProperties:v9];
@@ -299,23 +299,23 @@ void __54__SUScriptObject_dispatchEvent_forName_synchronously___block_invoke(uin
   v25 = &unk_1E8164638;
   v11 = v10;
   v26 = v11;
-  v12 = v6;
+  v12 = blockCopy;
   v27 = v12;
   [v7 setCompletionBlock:&v22];
-  v13 = [MEMORY[0x1E69D4938] sharedConfig];
-  v14 = [v13 shouldLog];
-  if ([v13 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog;
   }
 
-  v16 = [v13 OSLogObject];
-  if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v15 &= 2u;
   }
@@ -329,21 +329,21 @@ void __54__SUScriptObject_dispatchEvent_forName_synchronously___block_invoke(uin
   v28 = 138412546;
   v29 = v17;
   v30 = 2112;
-  v31 = v5;
+  v31 = lCopy;
   v18 = v17;
   LODWORD(v21) = 22;
   v19 = _os_log_send_and_compose_impl();
 
   if (v19)
   {
-    v16 = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v28, v21, v22, v23, v24, v25, v26}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v28, v21, v22, v23, v24, v25, v26}];
     free(v19);
     SSFileLog();
 LABEL_9:
   }
 
-  v20 = [MEMORY[0x1E69E4798] mainQueue];
-  [v20 addOperation:v7];
+  mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+  [mainQueue addOperation:v7];
 }
 
 void __51__SUScriptObject_loadImageWithURL_completionBlock___block_invoke(uint64_t a1)
@@ -374,55 +374,55 @@ void __51__SUScriptObject_loadImageWithURL_completionBlock___block_invoke(uint64
   return v3;
 }
 
-- (id)newImageWithURL:(id)a3
+- (id)newImageWithURL:(id)l
 {
   v4 = MEMORY[0x1E69DCEB0];
-  v5 = a3;
-  v6 = [v4 mainScreen];
-  [v6 scale];
-  v7 = [(SUScriptObject *)self newImageWithURL:v5 scale:?];
+  lCopy = l;
+  mainScreen = [v4 mainScreen];
+  [mainScreen scale];
+  v7 = [(SUScriptObject *)self newImageWithURL:lCopy scale:?];
 
   return v7;
 }
 
-- (id)newImageWithURL:(id)a3 scale:(double)a4
+- (id)newImageWithURL:(id)l scale:(double)scale
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  lCopy = l;
+  v7 = lCopy;
+  if (lCopy)
   {
-    v8 = [v6 scheme];
-    v9 = [v8 caseInsensitiveCompare:@"data"];
+    scheme = [lCopy scheme];
+    v9 = [scheme caseInsensitiveCompare:@"data"];
 
     if (v9)
     {
-      v10 = [v7 host];
+      host = [v7 host];
 
-      if (!v10)
+      if (!host)
       {
-        v14 = 0;
+        data = 0;
         goto LABEL_11;
       }
 
-      v11 = [(SUScriptObject *)self webFrame];
-      v12 = [v11 dataSource];
+      webFrame = [(SUScriptObject *)self webFrame];
+      dataSource = [webFrame dataSource];
 
-      v13 = [v12 subresourceForURL:v7];
-      v14 = [v13 data];
+      v13 = [dataSource subresourceForURL:v7];
+      data = [v13 data];
 
-      if (!v14)
+      if (!data)
       {
         goto LABEL_7;
       }
 
 LABEL_9:
-      v10 = [objc_alloc(MEMORY[0x1E69DCAB8]) _initWithData:v14 scale:a4];
-      objc_setAssociatedObject(v10, "com.apple.iTunesStoreUI.SUScriptObject.imageURL", v7, 0x303);
+      host = [objc_alloc(MEMORY[0x1E69DCAB8]) _initWithData:data scale:scale];
+      objc_setAssociatedObject(host, "com.apple.iTunesStoreUI.SUScriptObject.imageURL", v7, 0x303);
       goto LABEL_11;
     }
 
-    v14 = SUGetDataForDataURL(v7, 0);
-    if (v14)
+    data = SUGetDataForDataURL(v7, 0);
+    if (data)
     {
       goto LABEL_9;
     }
@@ -430,14 +430,14 @@ LABEL_9:
 
   else
   {
-    v14 = 0;
+    data = 0;
   }
 
 LABEL_7:
-  v10 = 0;
+  host = 0;
 LABEL_11:
 
-  return v10;
+  return host;
 }
 
 - (SUScriptObject)parentScriptObject
@@ -451,17 +451,17 @@ LABEL_11:
 
 - (id)parentViewController
 {
-  v2 = [(SUScriptObject *)self parentScriptObject];
-  v3 = [v2 parentViewController];
+  parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+  parentViewController = [parentScriptObject parentViewController];
 
-  return v3;
+  return parentViewController;
 }
 
-- (BOOL)scriptObjectIsCheckedIn:(id)a3
+- (BOOL)scriptObjectIsCheckedIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   [(SUScriptObject *)self lock];
-  v5 = [(NSMutableSet *)self->_scriptObjects containsObject:v4];
+  v5 = [(NSMutableSet *)self->_scriptObjects containsObject:inCopy];
   [(SUScriptObject *)self unlock];
   if (v5)
   {
@@ -470,44 +470,44 @@ LABEL_11:
 
   else
   {
-    v7 = [(SUScriptObject *)self parentScriptObject];
-    v6 = [v7 scriptObjectIsCheckedIn:v4];
+    parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+    v6 = [parentScriptObject scriptObjectIsCheckedIn:inCopy];
   }
 
   return v6;
 }
 
-- (void)setNativeObject:(id)a3
+- (void)setNativeObject:(id)object
 {
-  v6 = a3;
+  objectCopy = object;
   [(SUScriptObject *)self lock];
   nativeObject = self->_nativeObject;
-  if (nativeObject != v6)
+  if (nativeObject != objectCopy)
   {
     [(SUScriptNativeObject *)nativeObject setScriptObject:0];
-    objc_storeStrong(&self->_nativeObject, a3);
+    objc_storeStrong(&self->_nativeObject, object);
     [(SUScriptNativeObject *)self->_nativeObject setScriptObject:self];
   }
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setParentScriptObject:(id)a3
+- (void)setParentScriptObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(SUScriptObject *)self lock];
   parentScriptObject = self->_parentScriptObject;
-  self->_parentScriptObject = v4;
+  self->_parentScriptObject = objectCopy;
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(SUScriptObject *)self lock];
   v5 = *(self + 56);
-  if ((((v5 & 2) == 0) ^ v3))
+  if ((((v5 & 2) == 0) ^ visibleCopy))
   {
 
     [(SUScriptObject *)self unlock];
@@ -515,7 +515,7 @@ LABEL_11:
 
   else
   {
-    if (v3)
+    if (visibleCopy)
     {
       v6 = 2;
     }
@@ -527,7 +527,7 @@ LABEL_11:
 
     *(self + 56) = v5 & 0xFD | v6;
     [(SUScriptObject *)self unlock];
-    if (!v3)
+    if (!visibleCopy)
     {
 
       [(SUScriptObject *)self _checkOutAfterVisibilityChange];
@@ -537,12 +537,12 @@ LABEL_11:
 
 - (BOOL)sourceIsTrusted
 {
-  v2 = [(SUScriptObject *)self webFrame];
-  v3 = [v2 dataSource];
-  v4 = [v3 mainResource];
-  v5 = [v4 URL];
-  v6 = [v5 scheme];
-  v7 = [v6 isEqualToString:@"https"];
+  webFrame = [(SUScriptObject *)self webFrame];
+  dataSource = [webFrame dataSource];
+  mainResource = [dataSource mainResource];
+  v5 = [mainResource URL];
+  scheme = [v5 scheme];
+  v7 = [scheme isEqualToString:@"https"];
 
   return v7;
 }
@@ -557,31 +557,31 @@ LABEL_11:
 
 - (id)viewControllerFactory
 {
-  v3 = [(SUScriptObject *)self parentViewController];
-  v4 = [v3 viewControllerFactory];
+  parentViewController = [(SUScriptObject *)self parentViewController];
+  viewControllerFactory = [parentViewController viewControllerFactory];
 
-  if (!v4)
+  if (!viewControllerFactory)
   {
-    v5 = [(SUScriptObject *)self clientInterface];
-    v4 = [v5 viewControllerFactory];
+    clientInterface = [(SUScriptObject *)self clientInterface];
+    viewControllerFactory = [clientInterface viewControllerFactory];
   }
 
-  return v4;
+  return viewControllerFactory;
 }
 
 - (WebFrame)webFrame
 {
-  v2 = [(SUScriptObject *)self parentScriptObject];
-  v3 = [v2 webFrame];
+  parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+  webFrame = [parentScriptObject webFrame];
 
-  return v3;
+  return webFrame;
 }
 
-- (void)addListenerForEventWithName:(id)a3 callback:(id)a4 useCapture:(BOOL)a5
+- (void)addListenerForEventWithName:(id)name callback:(id)callback useCapture:(BOOL)capture
 {
-  v5 = a5;
-  v16 = a3;
-  v8 = a4;
+  captureCopy = capture;
+  nameCopy = name;
+  callbackCopy = callback;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v10 = MEMORY[0x1E69E2F88];
@@ -602,9 +602,9 @@ LABEL_8:
   }
 
   v11 = objc_alloc_init(SUScriptEventListener);
-  [(SUScriptEventListener *)v11 setCallback:v8];
-  [(SUScriptEventListener *)v11 setName:v16];
-  [(SUScriptEventListener *)v11 setShouldUseCapture:v5];
+  [(SUScriptEventListener *)v11 setCallback:callbackCopy];
+  [(SUScriptEventListener *)v11 setName:nameCopy];
+  [(SUScriptEventListener *)v11 setShouldUseCapture:captureCopy];
   [(SUScriptObject *)self lock];
   eventListeners = self->_eventListeners;
   if (!eventListeners)
@@ -622,11 +622,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)removeListenerForEventWithName:(id)a3 callback:(id)a4 useCapture:(BOOL)a5
+- (void)removeListenerForEventWithName:(id)name callback:(id)callback useCapture:(BOOL)capture
 {
-  v5 = a5;
-  v18 = a3;
-  v8 = a4;
+  captureCopy = capture;
+  nameCopy = name;
+  callbackCopy = callback;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v10 = MEMORY[0x1E69E2F88];
@@ -653,15 +653,15 @@ LABEL_15:
     for (i = v11 + 1; i > 1; --i)
     {
       v13 = [(NSMutableArray *)self->_eventListeners objectAtIndex:i - 2];
-      v14 = [v13 name];
-      if ([v14 isEqualToString:v18])
+      name = [v13 name];
+      if ([name isEqualToString:nameCopy])
       {
-        v15 = [v13 callback];
-        if ([v15 isEqual:v8])
+        callback = [v13 callback];
+        if ([callback isEqual:callbackCopy])
         {
-          v16 = [v13 shouldUseCapture];
+          shouldUseCapture = [v13 shouldUseCapture];
 
-          if (v16 == v5)
+          if (shouldUseCapture == captureCopy)
           {
             [v13 setCallback:0];
             [(NSMutableArray *)self->_eventListeners removeObjectAtIndex:i - 2];
@@ -697,18 +697,18 @@ LABEL_16:
     [v7 makeObjectsPerformSelector:a2];
     if (v5)
     {
-      v6 = [(SUScriptObject *)self parentScriptObject];
-      [v6 checkOutScriptObject:self];
+      parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+      [parentScriptObject checkOutScriptObject:self];
     }
 
     v4 = v7;
   }
 }
 
-- (id)_copyListenersForName:(id)a3
+- (id)_copyListenersForName:(id)name
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(SUScriptObject *)self lock];
   v17 = 0u;
@@ -731,8 +731,8 @@ LABEL_16:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v4];
+        name = [v11 name];
+        v13 = [name isEqualToString:nameCopy];
 
         if (v13)
         {
@@ -750,16 +750,16 @@ LABEL_16:
   return v5;
 }
 
-+ (BOOL)isSelectorExcludedFromWebScript:(SEL)a3
++ (BOOL)isSelectorExcludedFromWebScript:(SEL)script
 {
-  v5 = [a1 webScriptNameForSelector:?];
+  v5 = [self webScriptNameForSelector:?];
 
   if (v5)
   {
     return 0;
   }
 
-  v7 = NSStringFromSelector(a3);
+  v7 = NSStringFromSelector(script);
   if ([v7 hasSuffix:@":"])
   {
     v6 = 1;
@@ -767,17 +767,17 @@ LABEL_16:
 
   else
   {
-    v8 = [a1 webScriptNameForKeyName:v7];
+    v8 = [self webScriptNameForKeyName:v7];
     v6 = v8 == 0;
   }
 
   return v6;
 }
 
-+ (id)webScriptNameForKey:(const char *)a3
++ (id)webScriptNameForKey:(const char *)key
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3];
-  v5 = [a1 webScriptNameForKeyName:v4];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:key];
+  v5 = [self webScriptNameForKeyName:v4];
 
   return v5;
 }
@@ -785,8 +785,8 @@ LABEL_16:
 - (NSMutableArray)scriptAttributeKeys
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [__KeyMapping_8 allKeys];
-  [v2 addObjectsFromArray:v3];
+  allKeys = [__KeyMapping_8 allKeys];
+  [v2 addObjectsFromArray:allKeys];
 
   return v2;
 }
@@ -821,7 +821,7 @@ void __38__SUScriptObject_finalizeForWebScript__block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_6 = sel_addListenerForEventWithName_callback_useCapture_;
     unk_1EBF3A8A0 = @"addEventListener";
@@ -837,11 +837,11 @@ void __38__SUScriptObject_finalizeForWebScript__block_invoke(uint64_t a1)
   }
 }
 
-- (void)checkOutBatchTarget:(id)a3
+- (void)checkOutBatchTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v5 = [(SUScriptObject *)self invocationBatch:0];
-  [v5 checkOutBatchTarget:v4];
+  [v5 checkOutBatchTarget:targetCopy];
 }
 
 - (void)didPerformBatchedInvocations
@@ -852,11 +852,11 @@ void __38__SUScriptObject_finalizeForWebScript__block_invoke(uint64_t a1)
   [v4 makeObjectsPerformSelector:a2];
 }
 
-- (id)invocationBatch:(BOOL)a3
+- (id)invocationBatch:(BOOL)batch
 {
-  v3 = a3;
-  v5 = [(SUScriptObject *)self parentScriptObject];
-  v6 = [v5 invocationBatch:v3];
+  batchCopy = batch;
+  parentScriptObject = [(SUScriptObject *)self parentScriptObject];
+  v6 = [parentScriptObject invocationBatch:batchCopy];
 
   if (!v6)
   {
@@ -869,7 +869,7 @@ void __38__SUScriptObject_finalizeForWebScript__block_invoke(uint64_t a1)
 
     else
     {
-      v8 = !v3;
+      v8 = !batchCopy;
     }
 
     if (!v8)

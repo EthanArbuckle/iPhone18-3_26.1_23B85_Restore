@@ -1,21 +1,21 @@
 @interface _UIOShowTouchAction_TestingOnly
-- (_UIOShowTouchAction_TestingOnly)initWithPoint:(CGPoint)a3 inView:(id)a4;
+- (_UIOShowTouchAction_TestingOnly)initWithPoint:(CGPoint)point inView:(id)view;
 - (void)_removeIndicatorView;
-- (void)performActionFromConnection:(id)a3;
+- (void)performActionFromConnection:(id)connection;
 @end
 
 @implementation _UIOShowTouchAction_TestingOnly
 
-- (_UIOShowTouchAction_TestingOnly)initWithPoint:(CGPoint)a3 inView:(id)a4
+- (_UIOShowTouchAction_TestingOnly)initWithPoint:(CGPoint)point inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v8 = +[_UIOServerActionOriginContext defaultOriginContext];
   v9 = [v8 mutableCopy];
 
   [v9 setLayerReferencePoint:{x, y}];
-  v10 = [v7 layer];
+  layer = [viewCopy layer];
 
   [v9 setLayerId:CALayerGetRenderId()];
   v11 = [(_UIOServerAction *)self initWithOriginContext:v9 info:0 responder:0];
@@ -38,16 +38,16 @@
   [UIView animateWithDuration:0 delay:v3 options:v2 animations:0.3 completion:1.0];
 }
 
-- (void)performActionFromConnection:(id)a3
+- (void)performActionFromConnection:(id)connection
 {
-  v4 = [a3 server];
-  v5 = [v4 displayDelegateForAction:self];
+  server = [connection server];
+  v5 = [server displayDelegateForAction:self];
 
-  v6 = [v5 rootViewController];
-  v7 = [v6 view];
+  rootViewController = [v5 rootViewController];
+  view = [rootViewController view];
 
-  v8 = [(_UIOServerAction *)self originContext];
-  [v8 translatedReferencePointForDestinationView:v7];
+  originContext = [(_UIOServerAction *)self originContext];
+  [originContext translatedReferencePointForDestinationView:view];
   v10 = v9;
   v12 = v11;
 
@@ -55,14 +55,14 @@
   indicatorView = self->_indicatorView;
   self->_indicatorView = v13;
 
-  v15 = [(UIView *)self->_indicatorView layer];
-  [v15 setCornerRadius:50.0];
+  layer = [(UIView *)self->_indicatorView layer];
+  [layer setCornerRadius:50.0];
 
   [(UIView *)self->_indicatorView setCenter:v10, v12];
   v16 = +[UIColor redColor];
   [(UIView *)self->_indicatorView setBackgroundColor:v16];
 
-  [v7 addSubview:self->_indicatorView];
+  [view addSubview:self->_indicatorView];
   CGAffineTransformMakeScale(&v21, 4.0, 4.0);
   v17 = self->_indicatorView;
   v20 = v21;

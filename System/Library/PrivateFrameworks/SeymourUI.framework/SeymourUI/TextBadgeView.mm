@@ -7,14 +7,14 @@
 
 - (NSLayoutYAxisAnchor)firstBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI13TextBadgeView_textLabel) firstBaselineAnchor];
+  firstBaselineAnchor = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI13TextBadgeView_textLabel) firstBaselineAnchor];
 
-  return v2;
+  return firstBaselineAnchor;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20B623454();
   v5 = v4;
 

@@ -1,44 +1,44 @@
 @interface MTL4DebugArgumentTable
-- (MTL4DebugArgumentTable)initWithArgumentTable:(id)a3 device:(id)a4 descriptor:(id)a5;
-- (const)bufferBindingAtIndex:(unsigned int)a3;
-- (const)samplerBindingAtIndex:(unsigned int)a3;
-- (const)textureBindingAtIndex:(unsigned int)a3;
+- (MTL4DebugArgumentTable)initWithArgumentTable:(id)table device:(id)device descriptor:(id)descriptor;
+- (const)bufferBindingAtIndex:(unsigned int)index;
+- (const)samplerBindingAtIndex:(unsigned int)index;
+- (const)textureBindingAtIndex:(unsigned int)index;
 - (id).cxx_construct;
-- (void)setAddress:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setAddress:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setResource:(MTLResourceID)a3 atBufferIndex:(unint64_t)a4;
-- (void)setSamplerState:(MTLResourceID)a3 atIndex:(unint64_t)a4;
-- (void)setTexture:(MTLResourceID)a3 atIndex:(unint64_t)a4;
+- (void)setAddress:(unint64_t)address atIndex:(unint64_t)index;
+- (void)setAddress:(unint64_t)address attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setResource:(MTLResourceID)resource atBufferIndex:(unint64_t)index;
+- (void)setSamplerState:(MTLResourceID)state atIndex:(unint64_t)index;
+- (void)setTexture:(MTLResourceID)texture atIndex:(unint64_t)index;
 @end
 
 @implementation MTL4DebugArgumentTable
 
-- (MTL4DebugArgumentTable)initWithArgumentTable:(id)a3 device:(id)a4 descriptor:(id)a5
+- (MTL4DebugArgumentTable)initWithArgumentTable:(id)table device:(id)device descriptor:(id)descriptor
 {
   v12.receiver = self;
   v12.super_class = MTL4DebugArgumentTable;
-  v6 = [(MTL4ToolsArgumentTable *)&v12 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTL4ToolsArgumentTable *)&v12 initWithBaseObject:table parent:device];
   if (v6)
   {
-    v7 = [a5 maxBufferBindCount];
+    maxBufferBindCount = [descriptor maxBufferBindCount];
     LODWORD(v11) = 0;
-    BYTE4(v11) = [a5 initializeBindings];
-    std::vector<MTL4DebugBindingInfo>::resize(&v6->_bufferBindings.__begin_, v7, &v11);
-    v8 = [a5 maxTextureBindCount];
+    BYTE4(v11) = [descriptor initializeBindings];
+    std::vector<MTL4DebugBindingInfo>::resize(&v6->_bufferBindings.__begin_, maxBufferBindCount, &v11);
+    maxTextureBindCount = [descriptor maxTextureBindCount];
     LODWORD(v11) = 0;
-    BYTE4(v11) = [a5 initializeBindings];
-    std::vector<MTL4DebugBindingInfo>::resize(&v6->_textureBindings.__begin_, v8, &v11);
-    v9 = [a5 maxSamplerStateBindCount];
+    BYTE4(v11) = [descriptor initializeBindings];
+    std::vector<MTL4DebugBindingInfo>::resize(&v6->_textureBindings.__begin_, maxTextureBindCount, &v11);
+    maxSamplerStateBindCount = [descriptor maxSamplerStateBindCount];
     LODWORD(v11) = 0;
-    BYTE4(v11) = [a5 initializeBindings];
-    std::vector<MTL4DebugBindingInfo>::resize(&v6->_samplerBindings.__begin_, v9, &v11);
-    v6->_supportsAttributeStrides = [a5 supportAttributeStrides];
+    BYTE4(v11) = [descriptor initializeBindings];
+    std::vector<MTL4DebugBindingInfo>::resize(&v6->_samplerBindings.__begin_, maxSamplerStateBindCount, &v11);
+    v6->_supportsAttributeStrides = [descriptor supportAttributeStrides];
   }
 
   return v6;
 }
 
-- (void)setAddress:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setAddress:(unint64_t)address atIndex:(unint64_t)index
 {
   v12 = 0;
   v10 = 0u;
@@ -46,7 +46,7 @@
   v9 = 0u;
   [(MTLToolsObject *)self baseObject];
   _MTLMessageContextBegin_();
-  if (a4 >= self->_bufferBindings.__end_ - self->_bufferBindings.__begin_)
+  if (index >= self->_bufferBindings.__end_ - self->_bufferBindings.__begin_)
   {
     _MTLMessageContextPush_();
   }
@@ -55,16 +55,16 @@
   {
     v8.receiver = self;
     v8.super_class = MTL4DebugArgumentTable;
-    [(MTL4ToolsArgumentTable *)&v8 setAddress:a3 atIndex:a4];
-    v7 = &self->_bufferBindings.__begin_[a4];
+    [(MTL4ToolsArgumentTable *)&v8 setAddress:address atIndex:index];
+    v7 = &self->_bufferBindings.__begin_[index];
     v7->var0 = 1;
-    v7->var1 = a3 == 0;
+    v7->var1 = address == 0;
   }
 
   _MTLMessageContextEnd();
 }
 
-- (void)setAddress:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setAddress:(unint64_t)address attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   v14 = 0;
   v12 = 0u;
@@ -77,7 +77,7 @@
     _MTLMessageContextPush_();
   }
 
-  if (a5 >= self->_bufferBindings.__end_ - self->_bufferBindings.__begin_)
+  if (index >= self->_bufferBindings.__end_ - self->_bufferBindings.__begin_)
   {
     _MTLMessageContextPush_();
   }
@@ -86,16 +86,16 @@
   {
     v10.receiver = self;
     v10.super_class = MTL4DebugArgumentTable;
-    [(MTL4ToolsArgumentTable *)&v10 setAddress:a3 attributeStride:a4 atIndex:a5];
-    v9 = &self->_bufferBindings.__begin_[a5];
+    [(MTL4ToolsArgumentTable *)&v10 setAddress:address attributeStride:stride atIndex:index];
+    v9 = &self->_bufferBindings.__begin_[index];
     v9->var0 = 1;
-    v9->var1 = a3 == 0;
+    v9->var1 = address == 0;
   }
 
   _MTLMessageContextEnd();
 }
 
-- (void)setResource:(MTLResourceID)a3 atBufferIndex:(unint64_t)a4
+- (void)setResource:(MTLResourceID)resource atBufferIndex:(unint64_t)index
 {
   v12 = 0;
   v10 = 0u;
@@ -103,7 +103,7 @@
   v9 = 0u;
   [(MTLToolsObject *)self baseObject];
   _MTLMessageContextBegin_();
-  if (a4 >= self->_bufferBindings.__end_ - self->_bufferBindings.__begin_)
+  if (index >= self->_bufferBindings.__end_ - self->_bufferBindings.__begin_)
   {
     _MTLMessageContextPush_();
   }
@@ -112,16 +112,16 @@
   {
     v8.receiver = self;
     v8.super_class = MTL4DebugArgumentTable;
-    [(MTL4ToolsArgumentTable *)&v8 setResource:a3._impl atBufferIndex:a4];
-    v7 = &self->_bufferBindings.__begin_[a4];
+    [(MTL4ToolsArgumentTable *)&v8 setResource:resource._impl atBufferIndex:index];
+    v7 = &self->_bufferBindings.__begin_[index];
     v7->var0 = 2;
-    v7->var1 = a3._impl == 0;
+    v7->var1 = resource._impl == 0;
   }
 
   _MTLMessageContextEnd();
 }
 
-- (void)setTexture:(MTLResourceID)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(MTLResourceID)texture atIndex:(unint64_t)index
 {
   v12 = 0;
   v10 = 0u;
@@ -129,7 +129,7 @@
   v9 = 0u;
   [(MTLToolsObject *)self baseObject];
   _MTLMessageContextBegin_();
-  if (a4 >= self->_textureBindings.__end_ - self->_textureBindings.__begin_)
+  if (index >= self->_textureBindings.__end_ - self->_textureBindings.__begin_)
   {
     _MTLMessageContextPush_();
   }
@@ -138,16 +138,16 @@
   {
     v8.receiver = self;
     v8.super_class = MTL4DebugArgumentTable;
-    [(MTL4ToolsArgumentTable *)&v8 setTexture:a3._impl atIndex:a4];
-    v7 = &self->_textureBindings.__begin_[a4];
+    [(MTL4ToolsArgumentTable *)&v8 setTexture:texture._impl atIndex:index];
+    v7 = &self->_textureBindings.__begin_[index];
     v7->var0 = 2;
-    v7->var1 = a3._impl == 0;
+    v7->var1 = texture._impl == 0;
   }
 
   _MTLMessageContextEnd();
 }
 
-- (void)setSamplerState:(MTLResourceID)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(MTLResourceID)state atIndex:(unint64_t)index
 {
   v12 = 0;
   v10 = 0u;
@@ -155,7 +155,7 @@
   v9 = 0u;
   [(MTLToolsObject *)self baseObject];
   _MTLMessageContextBegin_();
-  if (a4 >= self->_samplerBindings.__end_ - self->_samplerBindings.__begin_)
+  if (index >= self->_samplerBindings.__end_ - self->_samplerBindings.__begin_)
   {
     _MTLMessageContextPush_();
   }
@@ -164,21 +164,21 @@
   {
     v8.receiver = self;
     v8.super_class = MTL4DebugArgumentTable;
-    [(MTL4ToolsArgumentTable *)&v8 setSamplerState:a3._impl atIndex:a4];
-    v7 = &self->_samplerBindings.__begin_[a4];
+    [(MTL4ToolsArgumentTable *)&v8 setSamplerState:state._impl atIndex:index];
+    v7 = &self->_samplerBindings.__begin_[index];
     v7->var0 = 2;
-    v7->var1 = a3._impl == 0;
+    v7->var1 = state._impl == 0;
   }
 
   _MTLMessageContextEnd();
 }
 
-- (const)bufferBindingAtIndex:(unsigned int)a3
+- (const)bufferBindingAtIndex:(unsigned int)index
 {
   begin = self->_bufferBindings.__begin_;
   v4 = self->_bufferBindings.__end_ - begin;
-  v5 = &begin[a3];
-  if (a3 >= (v4 >> 3))
+  v5 = &begin[index];
+  if (index >= (v4 >> 3))
   {
     return 0;
   }
@@ -189,12 +189,12 @@
   }
 }
 
-- (const)textureBindingAtIndex:(unsigned int)a3
+- (const)textureBindingAtIndex:(unsigned int)index
 {
   begin = self->_textureBindings.__begin_;
   v4 = self->_textureBindings.__end_ - begin;
-  v5 = &begin[a3];
-  if (a3 >= (v4 >> 3))
+  v5 = &begin[index];
+  if (index >= (v4 >> 3))
   {
     return 0;
   }
@@ -205,12 +205,12 @@
   }
 }
 
-- (const)samplerBindingAtIndex:(unsigned int)a3
+- (const)samplerBindingAtIndex:(unsigned int)index
 {
   begin = self->_samplerBindings.__begin_;
   v4 = self->_samplerBindings.__end_ - begin;
-  v5 = &begin[a3];
-  if (a3 >= (v4 >> 3))
+  v5 = &begin[index];
+  if (index >= (v4 >> 3))
   {
     return 0;
   }

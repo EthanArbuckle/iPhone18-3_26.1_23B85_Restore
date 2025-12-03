@@ -1,15 +1,15 @@
 @interface _SBSUIOrientedImageView
-- (_SBSUIOrientedImageView)initWithFrame:(CGRect)a3;
+- (_SBSUIOrientedImageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _SBSUIOrientedImageView
 
-- (_SBSUIOrientedImageView)initWithFrame:(CGRect)a3
+- (_SBSUIOrientedImageView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _SBSUIOrientedImageView;
-  v3 = [(_SBSUIOrientedImageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SBSUIOrientedImageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -35,8 +35,8 @@
   [(UIImageView *)imageView setFrame:?];
   [(_SBSUIOrientedImageView *)self frame];
   v5 = v4;
-  v6 = [(_SBSUIOrientedImageView *)self portraitImage];
-  [v6 size];
+  portraitImage = [(_SBSUIOrientedImageView *)self portraitImage];
+  [portraitImage size];
   v8 = v7;
 
   if (v8 <= v5)

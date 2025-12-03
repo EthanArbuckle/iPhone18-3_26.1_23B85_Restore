@@ -1,11 +1,11 @@
 @interface CLKWatchFaceLibrary
-+ (BOOL)_unzipFile:(id)a3 toPath:(id)a4;
++ (BOOL)_unzipFile:(id)file toPath:(id)path;
 + (CLKWatchFaceLibrary)sharedInstance;
-+ (id)errorWithCode:(int64_t)a3;
++ (id)errorWithCode:(int64_t)code;
 - (CLKWatchFaceLibrary)init;
-- (void)_addWatchFaceAtURL:(id)a3 shouldValidate:(BOOL)a4 completionHandler:(id)a5;
-- (void)_importWatchFaceAtURL:(id)a3 completionHandler:(id)a4;
-- (void)_validateWatchFaceAtURL:(id)a3 completionHandler:(id)a4;
+- (void)_addWatchFaceAtURL:(id)l shouldValidate:(BOOL)validate completionHandler:(id)handler;
+- (void)_importWatchFaceAtURL:(id)l completionHandler:(id)handler;
+- (void)_validateWatchFaceAtURL:(id)l completionHandler:(id)handler;
 - (void)addWatchFaceAtURL:(NSURL *)fileURL completionHandler:(void *)handler;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __37__CLKWatchFaceLibrary_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -58,24 +58,24 @@ uint64_t __37__CLKWatchFaceLibrary_sharedInstance__block_invoke(uint64_t a1)
   v6 = MEMORY[0x277CCAC38];
   v7 = handler;
   v8 = fileURL;
-  v9 = [v6 processInfo];
-  v10 = [v9 processName];
-  v11 = [v10 lowercaseString];
+  processInfo = [v6 processInfo];
+  processName = [processInfo processName];
+  lowercaseString = [processName lowercaseString];
 
-  -[CLKWatchFaceLibrary _addWatchFaceAtURL:shouldValidate:completionHandler:](self, "_addWatchFaceAtURL:shouldValidate:completionHandler:", v8, [v11 isEqualToString:@"mobilesms"] ^ 1, v7);
+  -[CLKWatchFaceLibrary _addWatchFaceAtURL:shouldValidate:completionHandler:](self, "_addWatchFaceAtURL:shouldValidate:completionHandler:", v8, [lowercaseString isEqualToString:@"mobilesms"] ^ 1, v7);
 }
 
-- (void)_addWatchFaceAtURL:(id)a3 shouldValidate:(BOOL)a4 completionHandler:(id)a5
+- (void)_addWatchFaceAtURL:(id)l shouldValidate:(BOOL)validate completionHandler:(id)handler
 {
-  v6 = a4;
+  validateCopy = validate;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v10 = CLKLoggingObjectForDomain(9);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v8;
+    v27 = lCopy;
     _os_log_impl(&dword_23702D000, v10, OS_LOG_TYPE_DEFAULT, "importWatchFaceAtURL: %@", buf, 0xCu);
   }
 
@@ -83,23 +83,23 @@ uint64_t __37__CLKWatchFaceLibrary_sharedInstance__block_invoke(uint64_t a1)
   v24[1] = 3221225472;
   v24[2] = __75__CLKWatchFaceLibrary__addWatchFaceAtURL_shouldValidate_completionHandler___block_invoke;
   v24[3] = &unk_278A1E728;
-  v11 = v9;
+  v11 = handlerCopy;
   v25 = v11;
   v12 = MEMORY[0x2383C4AF0](v24);
-  if ([v8 isFileURL])
+  if ([lCopy isFileURL])
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __75__CLKWatchFaceLibrary__addWatchFaceAtURL_shouldValidate_completionHandler___block_invoke_3;
     v21[3] = &unk_278A1FAD0;
     v21[4] = self;
-    v13 = v8;
+    v13 = lCopy;
     v22 = v13;
     v14 = v12;
     v23 = v14;
     v15 = MEMORY[0x2383C4AF0](v21);
     v16 = v15;
-    if (v6)
+    if (validateCopy)
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
@@ -150,17 +150,17 @@ uint64_t __75__CLKWatchFaceLibrary__addWatchFaceAtURL_shouldValidate_completionH
   }
 }
 
-+ (id)errorWithCode:(int64_t)a3
++ (id)errorWithCode:(int64_t)code
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if ((a3 - 1) > 4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ((code - 1) > 4)
   {
     v5 = @"IMPORT_FACE_ERROR_UNKNOWN";
   }
 
   else
   {
-    v5 = off_278A1FE28[a3 - 1];
+    v5 = off_278A1FE28[code - 1];
   }
 
   v6 = CLKGreenfieldLocalizedString(v5);
@@ -169,25 +169,25 @@ uint64_t __75__CLKWatchFaceLibrary__addWatchFaceAtURL_shouldValidate_completionH
     v5 = v6;
   }
 
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA450]];
-  v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLKWatchFaceLibraryErrorDomain" code:a3 userInfo:v4];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA450]];
+  v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLKWatchFaceLibraryErrorDomain" code:code userInfo:dictionary];
 
   return v7;
 }
 
-- (void)_validateWatchFaceAtURL:(id)a3 completionHandler:(id)a4
+- (void)_validateWatchFaceAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   helperQueue = self->_helperQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__CLKWatchFaceLibrary__validateWatchFaceAtURL_completionHandler___block_invoke;
   v11[3] = &unk_278A1FBE8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   dispatch_async(helperQueue, v11);
 }
 
@@ -386,20 +386,20 @@ void __65__CLKWatchFaceLibrary__validateWatchFaceAtURL_completionHandler___block
   }
 }
 
-+ (BOOL)_unzipFile:(id)a3 toPath:(id)a4
++ (BOOL)_unzipFile:(id)file toPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  fileCopy = file;
+  pathCopy = path;
   archive_read_new();
   archive_read_support_format_zip();
   archive_read_support_filter_gzip();
-  [v5 fileSystemRepresentation];
+  [fileCopy fileSystemRepresentation];
   if (archive_read_open_filename())
   {
     v7 = CLKLoggingObjectForDomain(9);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [CLKWatchFaceLibrary _unzipFile:v5 toPath:v7];
+      [CLKWatchFaceLibrary _unzipFile:fileCopy toPath:v7];
     }
 
     v8 = 0;
@@ -416,8 +416,8 @@ void __65__CLKWatchFaceLibrary__validateWatchFaceAtURL_completionHandler___block
       }
 
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:archive_entry_pathname()];
-      v11 = [v6 path];
-      v12 = [v11 stringByAppendingPathComponent:v10];
+      path = [pathCopy path];
+      v12 = [path stringByAppendingPathComponent:v10];
 
       [v12 UTF8String];
       archive_entry_set_pathname();
@@ -455,20 +455,20 @@ LABEL_16:
   return v8;
 }
 
-- (void)_importWatchFaceAtURL:(id)a3 completionHandler:(id)a4
+- (void)_importWatchFaceAtURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x277CCAC90];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithURL:v7 readonly:1];
+  handlerCopy = handler;
+  lCopy = l;
+  v8 = [[v5 alloc] initWithURL:lCopy readonly:1];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     v11 = +[CLKWatchFaceLibraryServer sharedInstance];
-    [v11 openWatchFaceURLWithSecurityScopedURL:v8 sourceApplicationBundleIdentifier:v10 completionHandler:v6];
+    [v11 openWatchFaceURLWithSecurityScopedURL:v8 sourceApplicationBundleIdentifier:bundleIdentifier completionHandler:handlerCopy];
   }
 
   else
@@ -480,7 +480,7 @@ LABEL_16:
     }
 
     v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"CLKWatchFaceLibraryErrorDomain" code:5 userInfo:0];
-    (*(v6 + 2))(v6, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 }
 

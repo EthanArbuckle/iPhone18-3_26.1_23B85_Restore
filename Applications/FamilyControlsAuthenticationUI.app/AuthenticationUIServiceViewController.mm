@@ -1,14 +1,14 @@
 @interface AuthenticationUIServiceViewController
-- (_TtC30FamilyControlsAuthenticationUI37AuthenticationUIServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC30FamilyControlsAuthenticationUI37AuthenticationUIServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation AuthenticationUIServiceViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -21,23 +21,23 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_10000ADD8(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10000ADD8(context, v6, v7);
   sub_10000FA84(v6);
 }
 
-- (_TtC30FamilyControlsAuthenticationUI37AuthenticationUIServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC30FamilyControlsAuthenticationUI37AuthenticationUIServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10000EB0C(a3);
+  selfCopy = self;
+  sub_10000EB0C(disappear);
 }
 
 @end

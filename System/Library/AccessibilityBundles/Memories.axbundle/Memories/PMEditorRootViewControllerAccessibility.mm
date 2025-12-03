@@ -1,15 +1,15 @@
 @interface PMEditorRootViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PMEditorRootViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PMEditorRootViewController" hasInstanceMethod:@"orientationButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMEditorRootViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PMEditorRootViewController" hasInstanceMethod:@"orientationButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMEditorRootViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,18 +1,18 @@
 @interface AFXPCWrapper
-- (AFXPCWrapper)initWithCoder:(id)a3;
-- (AFXPCWrapper)initWithXPCObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AFXPCWrapper)initWithCoder:(id)coder;
+- (AFXPCWrapper)initWithXPCObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFXPCWrapper
 
-- (AFXPCWrapper)initWithCoder:(id)a3
+- (AFXPCWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9F08] forKey:@"_xpcObject"];
+    v5 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9F08] forKey:@"_xpcObject"];
   }
 
   else
@@ -25,29 +25,29 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self->_xpcObject)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 encodeXPCObject:self->_xpcObject forKey:@"_xpcObject"];
+      [coderCopy encodeXPCObject:self->_xpcObject forKey:@"_xpcObject"];
     }
   }
 }
 
-- (AFXPCWrapper)initWithXPCObject:(id)a3
+- (AFXPCWrapper)initWithXPCObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = AFXPCWrapper;
   v6 = [(AFXPCWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcObject, a3);
+    objc_storeStrong(&v6->_xpcObject, object);
   }
 
   return v7;

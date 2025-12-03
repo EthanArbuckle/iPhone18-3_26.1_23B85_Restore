@@ -1,22 +1,22 @@
 @interface JEExtractAndReplaceField
-+ (id)metricsAfterExtractAndReplaceSubFieldWithConfig:(id)a3 metrics:(id)a4;
++ (id)metricsAfterExtractAndReplaceSubFieldWithConfig:(id)config metrics:(id)metrics;
 @end
 
 @implementation JEExtractAndReplaceField
 
-+ (id)metricsAfterExtractAndReplaceSubFieldWithConfig:(id)a3 metrics:(id)a4
++ (id)metricsAfterExtractAndReplaceSubFieldWithConfig:(id)config metrics:(id)metrics
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"extractFromLists"];
-  v26 = [v5 objectForKey:@"replacementField"];
-  v8 = [v5 objectForKey:@"subFieldToExtract"];
-  v27 = v5;
-  v35 = [v5 objectForKey:@"replacementIndexSubField"];
+  configCopy = config;
+  metricsCopy = metrics;
+  v7 = [configCopy objectForKey:@"extractFromLists"];
+  v26 = [configCopy objectForKey:@"replacementField"];
+  v8 = [configCopy objectForKey:@"subFieldToExtract"];
+  v27 = configCopy;
+  v35 = [configCopy objectForKey:@"replacementIndexSubField"];
   v9 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v30 = v6;
-  v31 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v6];
+  v30 = metricsCopy;
+  v31 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:metricsCopy];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -109,8 +109,8 @@
 
   if ([v9 count])
   {
-    v24 = [v9 array];
-    [v31 setObject:v24 forKey:v26];
+    array = [v9 array];
+    [v31 setObject:array forKey:v26];
   }
 
   return v31;

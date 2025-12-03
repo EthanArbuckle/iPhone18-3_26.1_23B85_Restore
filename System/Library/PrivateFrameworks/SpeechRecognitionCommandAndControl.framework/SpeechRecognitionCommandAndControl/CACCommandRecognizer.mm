@@ -1,31 +1,31 @@
 @interface CACCommandRecognizer
-+ (void)_accumulateCloseMatchUsingCommandIdentifier:(id)a3 substitutionTable:(id)a4;
++ (void)_accumulateCloseMatchUsingCommandIdentifier:(id)identifier substitutionTable:(id)table;
 + (void)_showHintWithAccumulateCloseMatches;
 + (void)resetCloseMatchAccumulator;
 + (void)suspendCloseMatchAccumulatorForCommand;
 - (BOOL)isAppropriateForContext;
-- (CACCommandRecognizer)initWithCommands:(id)a3 contextEvaluators:(id)a4 builtInLMIdentifiers:(id)a5;
+- (CACCommandRecognizer)initWithCommands:(id)commands contextEvaluators:(id)evaluators builtInLMIdentifiers:(id)identifiers;
 - (CACCommandRecognizerDelegate)delegate;
-- (id)_commandParametersFromCACLanguageModel:(id)a3;
-- (id)commandParametersFromCACLanguageModel:(id)a3;
+- (id)_commandParametersFromCACLanguageModel:(id)model;
+- (id)commandParametersFromCACLanguageModel:(id)model;
 - (id)commandStrings;
-- (id)commandTextSequenceFromCACLanguageModel:(id)a3;
+- (id)commandTextSequenceFromCACLanguageModel:(id)model;
 - (void)_buildLanguageModelUsingCommands;
 - (void)_synchronizeSpeechRecognizerSettings;
-- (void)handleSpokenCommand:(id)a3;
-- (void)speechRecognizer:(id)a3 didRecognize:(id)a4;
+- (void)handleSpokenCommand:(id)command;
+- (void)speechRecognizer:(id)recognizer didRecognize:(id)recognize;
 - (void)startListening;
 - (void)stopListening;
-- (void)synchronizeWithReason:(id)a3;
+- (void)synchronizeWithReason:(id)reason;
 @end
 
 @implementation CACCommandRecognizer
 
-- (CACCommandRecognizer)initWithCommands:(id)a3 contextEvaluators:(id)a4 builtInLMIdentifiers:(id)a5
+- (CACCommandRecognizer)initWithCommands:(id)commands contextEvaluators:(id)evaluators builtInLMIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  commandsCopy = commands;
+  evaluatorsCopy = evaluators;
+  identifiersCopy = identifiers;
   v12 = [(CACCommandRecognizer *)self init];
   if (v12)
   {
@@ -34,9 +34,9 @@
     v12->_speechRecognizer = v13;
 
     [(CACSpeechRecognizer *)v12->_speechRecognizer setDelegate:v12];
-    objc_storeStrong(&v12->_spokenCommandsCache, a3);
-    objc_storeStrong(&v12->_contextEvaluators, a4);
-    objc_storeStrong(&v12->_builtInLMIdentifiers, a5);
+    objc_storeStrong(&v12->_spokenCommandsCache, commands);
+    objc_storeStrong(&v12->_contextEvaluators, evaluators);
+    objc_storeStrong(&v12->_builtInLMIdentifiers, identifiers);
     [(CACCommandRecognizer *)v12 _synchronizeSpeechRecognizerSettings];
     [(CACCommandRecognizer *)v12 _buildLanguageModelUsingCommands];
   }
@@ -44,20 +44,20 @@
   return v12;
 }
 
-- (void)synchronizeWithReason:(id)a3
+- (void)synchronizeWithReason:(id)reason
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
   if ([v5 isListening])
   {
-    v6 = [(CACCommandRecognizer *)v4 isAppropriateForContext];
+    isAppropriateForContext = [(CACCommandRecognizer *)selfCopy isAppropriateForContext];
 
-    if (v6)
+    if (isAppropriateForContext)
     {
-      [(CACCommandRecognizer *)v4 _synchronizeSpeechRecognizerSettings];
-      [(CACCommandRecognizer *)v4 startListening];
+      [(CACCommandRecognizer *)selfCopy _synchronizeSpeechRecognizerSettings];
+      [(CACCommandRecognizer *)selfCopy startListening];
       goto LABEL_6;
     }
   }
@@ -66,15 +66,15 @@
   {
   }
 
-  [(CACCommandRecognizer *)v4 stopListening];
+  [(CACCommandRecognizer *)selfCopy stopListening];
 LABEL_6:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_synchronizeSpeechRecognizerSettings
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 dictationRecognizerMode];
+  dictationRecognizerMode = [v3 dictationRecognizerMode];
 
   speechRecognizer = self->_speechRecognizer;
   v6 = +[CACPreferences sharedPreferences];
@@ -91,7 +91,7 @@ LABEL_6:
 
   v8 = self->_speechRecognizer;
 
-  [(CACSpeechRecognizer *)v8 setSpellingMode:v4 == 3];
+  [(CACSpeechRecognizer *)v8 setSpellingMode:dictationRecognizerMode == 3];
 }
 
 - (void)_buildLanguageModelUsingCommands
@@ -119,10 +119,10 @@ LABEL_6:
 
         v9 = *(*(&v11 + 1) + 8 * i);
         [v9 setCommandRecognizer:{self, v11}];
-        v10 = [v9 languageModel];
-        if (v10)
+        languageModel = [v9 languageModel];
+        if (languageModel)
         {
-          [v3 addChildLanguageModel:v10];
+          [v3 addChildLanguageModel:languageModel];
         }
       }
 
@@ -139,9 +139,9 @@ LABEL_6:
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 forceAllCommandsToBeActive];
+  forceAllCommandsToBeActive = [v3 forceAllCommandsToBeActive];
 
-  if (v4)
+  if (forceAllCommandsToBeActive)
   {
     return 1;
   }
@@ -150,8 +150,8 @@ LABEL_6:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(NSDictionary *)self->_contextEvaluators allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [(NSDictionary *)self->_contextEvaluators allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -162,7 +162,7 @@ LABEL_6:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -176,7 +176,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v8)
       {
         continue;
@@ -223,8 +223,8 @@ LABEL_15:
   {
   }
 
-  v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  if ([v6 isSiriListening])
+  allKeys = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
+  if ([allKeys isSiriListening])
   {
     v18 = [(NSDictionary *)self->_contextEvaluators objectForKey:kCACCommandContextSupportDuringSiriListening];
     v5 = v18 != 0;
@@ -242,51 +242,51 @@ LABEL_19:
 
 - (void)startListening
 {
-  v2 = [(CACCommandRecognizer *)self speechRecognizer];
-  [v2 startListening];
+  speechRecognizer = [(CACCommandRecognizer *)self speechRecognizer];
+  [speechRecognizer startListening];
 }
 
 - (void)stopListening
 {
-  v2 = [(CACCommandRecognizer *)self speechRecognizer];
-  [v2 stopListening];
+  speechRecognizer = [(CACCommandRecognizer *)self speechRecognizer];
+  [speechRecognizer stopListening];
 }
 
-- (void)handleSpokenCommand:(id)a3
+- (void)handleSpokenCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   v4 = CACLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(CACCommandRecognizer *)v3 handleSpokenCommand:v4];
+    [(CACCommandRecognizer *)commandCopy handleSpokenCommand:v4];
   }
 }
 
-- (void)speechRecognizer:(id)a3 didRecognize:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognize:(id)recognize
 {
   v115 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 transcriptionResult];
-  v7 = [v6 isPartialResult];
+  recognizeCopy = recognize;
+  transcriptionResult = [recognizeCopy transcriptionResult];
+  isPartialResult = [transcriptionResult isPartialResult];
 
-  v8 = [MEMORY[0x277D79898] shared];
-  v9 = v8;
-  if (v7)
+  mEMORY[0x277D79898] = [MEMORY[0x277D79898] shared];
+  v9 = mEMORY[0x277D79898];
+  if (isPartialResult)
   {
-    [v8 partialCommandReceivedInUI];
+    [mEMORY[0x277D79898] partialCommandReceivedInUI];
   }
 
   else
   {
-    [v8 finalCommandReceivedInUI];
+    [mEMORY[0x277D79898] finalCommandReceivedInUI];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v5 transcriptionResult];
-    v13 = [v11 utteranceIDHasBeenHandled:{objc_msgSend(v12, "utteranceID")}];
+    transcriptionResult2 = [recognizeCopy transcriptionResult];
+    v13 = [v11 utteranceIDHasBeenHandled:{objc_msgSend(transcriptionResult2, "utteranceID")}];
   }
 
   else
@@ -294,17 +294,17 @@ LABEL_19:
     v13 = 0;
   }
 
-  if ([v5 languageObject] && RXLanguageObjectGetCount() == 1)
+  if ([recognizeCopy languageObject] && RXLanguageObjectGetCount() == 1)
   {
     ObjectAtIndex = RXLanguageObjectGetObjectAtIndex();
     v15 = 0x279CEA000uLL;
     v16 = +[CACSpeechSystem speechSystem];
     v17 = [v16 resultLanguageModelFromRXLanguageObject:ObjectAtIndex];
 
-    if (v13 & 1) != 0 || ([v5 transcriptionResult], ObjectAtIndex = objc_claimAutoreleasedReturnValue(), (objc_msgSend(ObjectAtIndex, "isPartialResult")))
+    if (v13 & 1) != 0 || ([recognizeCopy transcriptionResult], ObjectAtIndex = objc_claimAutoreleasedReturnValue(), (objc_msgSend(ObjectAtIndex, "isPartialResult")))
     {
-      v18 = [v17 identifier];
-      v19 = [CACSpokenCommandManager commandIdentifierIsDictation:v18];
+      identifier = [v17 identifier];
+      v19 = [CACSpokenCommandManager commandIdentifierIsDictation:identifier];
 
       if (v13)
       {
@@ -357,9 +357,9 @@ LABEL_21:
           }
 
           v25 = *(*(&v109 + 1) + 8 * v24);
-          v26 = [v25 identifier];
-          v27 = [v17 identifier];
-          v28 = [v26 isEqualToString:v27];
+          identifier2 = [v25 identifier];
+          identifier3 = [v17 identifier];
+          v28 = [identifier2 isEqualToString:identifier3];
 
           if (v28)
           {
@@ -367,38 +367,38 @@ LABEL_21:
             v30 = [(CACCommandRecognizer *)self commandParametersFromCACLanguageModel:v17];
             [v29 setRecognizedParameters:v30];
 
-            [v29 setLanguageObject:v5];
+            [v29 setLanguageObject:recognizeCopy];
             v31 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
             [v31 stopAnyRepeatingSpokenCommand];
 
             v32 = +[CACRecordedUserActionManager sharedManager];
             [v32 cancelExecution];
 
-            v33 = v5;
-            v34 = [v5 transcriptionResult];
-            if (([v34 isPartialResult] & 1) == 0)
+            v33 = recognizeCopy;
+            transcriptionResult3 = [recognizeCopy transcriptionResult];
+            if (([transcriptionResult3 isPartialResult] & 1) == 0)
             {
 
 LABEL_60:
               v68 = objc_loadWeakRetained(&self->_delegate);
-              v5 = v33;
+              recognizeCopy = v33;
               if (v68)
               {
                 v69 = v68;
-                v70 = [v99 identifier];
-                v71 = [CACSpokenCommandManager commandIdentifierIsDictation:v70];
+                identifier4 = [v99 identifier];
+                v71 = [CACSpokenCommandManager commandIdentifierIsDictation:identifier4];
 
                 if (!v71)
                 {
                   v72 = objc_loadWeakRetained(&self->_delegate);
-                  v73 = [v33 transcriptionResult];
-                  [v72 willHandleCommandForUtteranceID:{objc_msgSend(v73, "utteranceID")}];
+                  transcriptionResult4 = [v33 transcriptionResult];
+                  [v72 willHandleCommandForUtteranceID:{objc_msgSend(transcriptionResult4, "utteranceID")}];
                 }
               }
 
               v74 = +[CACPreferences sharedPreferences];
-              v75 = [v29 identifier];
-              if (![v74 isConfirmationRequiredForCommandIdentifier:v75])
+              identifier5 = [v29 identifier];
+              if (![v74 isConfirmationRequiredForCommandIdentifier:identifier5])
               {
                 goto LABEL_70;
               }
@@ -416,38 +416,38 @@ LABEL_60:
               }
 
               v78 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-              v79 = [v78 commandRecognitionLogPath];
-              if (v79)
+              commandRecognitionLogPath = [v78 commandRecognitionLogPath];
+              if (commandRecognitionLogPath)
               {
 
 LABEL_68:
-                v5 = v33;
+                recognizeCopy = v33;
 LABEL_69:
 
 LABEL_70:
 LABEL_71:
-                v67 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-                [v67 handleRecognizedCommand:v29];
+                string = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
+                [string handleRecognizedCommand:v29];
               }
 
               else
               {
                 v80 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-                v104 = [v80 usingAutomationMode];
+                usingAutomationMode = [v80 usingAutomationMode];
 
-                v5 = v33;
-                if (v104)
+                recognizeCopy = v33;
+                if (usingAutomationMode)
                 {
                   goto LABEL_71;
                 }
 
-                v81 = [v29 recognizedParameters];
-                v82 = [CACSpokenCommand attributedStringFromRecognizedCommandParameters:v81 variantOverrides:0];
-                v67 = [v82 string];
+                recognizedParameters = [v29 recognizedParameters];
+                v82 = [CACSpokenCommand attributedStringFromRecognizedCommandParameters:recognizedParameters variantOverrides:0];
+                string = [v82 string];
 
                 v83 = MEMORY[0x277CCACA8];
                 v84 = [CACLocaleUtilities localizedUIStringForKey:@"ConfirmationAlertDescription.CommandStringFormat"];
-                v85 = [v83 stringWithValidatedFormat:v84 validFormatSpecifiers:@"%@" error:0, v67];
+                v85 = [v83 stringWithValidatedFormat:v84 validFormatSpecifiers:@"%@" error:0, string];
 
                 v86 = +[CACDisplayManager sharedManager];
                 v87 = [CACLocaleUtilities localizedUIStringForKey:@"ConfirmationAlertTitle.ExecuteThisCommand"];
@@ -456,7 +456,7 @@ LABEL_71:
                 v90 = [v29 copy];
                 [v86 presentModalAlertWithTitle:v87 description:v85 okButtonText:v88 cancelButtonText:v89 object:v90 okButtonHandler:&__block_literal_global_19];
 
-                v5 = v33;
+                recognizeCopy = v33;
               }
 
               v17 = v99;
@@ -464,15 +464,15 @@ LABEL_71:
             }
 
             v35 = +[CACPreferences sharedPreferences];
-            v36 = [v29 identifier];
-            v37 = [v35 isConfirmationRequiredForCommandIdentifier:v36];
+            identifier6 = [v29 identifier];
+            v37 = [v35 isConfirmationRequiredForCommandIdentifier:identifier6];
 
             if ((v37 & 1) == 0)
             {
               goto LABEL_60;
             }
 
-            v5 = v33;
+            recognizeCopy = v33;
             v17 = v99;
           }
 
@@ -492,8 +492,8 @@ LABEL_71:
       goto LABEL_75;
     }
 
-    v38 = [v5 transcriptionResult];
-    v39 = [v38 isPartialResult] | v13;
+    transcriptionResult5 = [recognizeCopy transcriptionResult];
+    v39 = [transcriptionResult5 isPartialResult] | v13;
 
     if (v39)
     {
@@ -506,8 +506,8 @@ LABEL_75:
     if ([(CACCommandRecognizer *)self isListening]&& ([(NSArray *)obj userHintsFeatures]& 1) != 0)
     {
       v100 = v17;
-      v92 = v5;
-      v91 = [(NSArray *)obj bestLocaleIdentifier];
+      v92 = recognizeCopy;
+      bestLocaleIdentifier = [(NSArray *)obj bestLocaleIdentifier];
       v40 = [(NSArray *)obj builtInCommandsStringsTableForLocaleIdentifier:?];
       v96 = objc_opt_new();
       v41 = RXObjectCopyProperty();
@@ -518,22 +518,22 @@ LABEL_75:
         v44 = 0;
         v45 = MEMORY[0x277D65608];
         v94 = v41;
-        v95 = self;
+        selfCopy = self;
         v93 = v42;
         while (1)
         {
           v97 = v44;
           [v41 objectAtIndex:?];
           v46 = RXLanguageObjectGetObjectAtIndex();
-          v47 = [*(v15 + 1728) speechSystem];
-          v48 = [v47 resultLanguageModelFromRXLanguageObject:v46];
+          speechSystem = [*(v15 + 1728) speechSystem];
+          v48 = [speechSystem resultLanguageModelFromRXLanguageObject:v46];
 
           v103 = objc_opt_new();
           v49 = [(CACCommandRecognizer *)self commandParametersFromCACLanguageModel:v48];
           v50 = objc_alloc(MEMORY[0x277CCAB68]);
           v98 = v48;
-          v51 = [v48 identifier];
-          v52 = [v50 initWithString:v51];
+          identifier7 = [v48 identifier];
+          v52 = [v50 initWithString:identifier7];
 
           if (![v52 length] || (objc_msgSend(&unk_287BEFFA8, "containsObject:", v52) & 1) != 0)
           {
@@ -545,8 +545,8 @@ LABEL_75:
           v108 = 0u;
           v105 = 0u;
           v106 = 0u;
-          v53 = [v49 allKeys];
-          v54 = [v53 countByEnumeratingWithState:&v105 objects:v113 count:16];
+          allKeys = [v49 allKeys];
+          v54 = [allKeys countByEnumeratingWithState:&v105 objects:v113 count:16];
           if (v54)
           {
             v55 = v54;
@@ -557,7 +557,7 @@ LABEL_75:
               {
                 if (*v106 != v56)
                 {
-                  objc_enumerationMutation(v53);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v58 = *(*(&v105 + 1) + 8 * i);
@@ -577,14 +577,14 @@ LABEL_75:
                 }
               }
 
-              v55 = [v53 countByEnumeratingWithState:&v105 objects:v113 count:16];
+              v55 = [allKeys countByEnumeratingWithState:&v105 objects:v113 count:16];
             }
 
             while (v55);
           }
 
-          v63 = [v98 identifier];
-          if ([v96 containsObject:v63])
+          identifier8 = [v98 identifier];
+          if ([v96 containsObject:identifier8])
           {
             break;
           }
@@ -594,16 +594,16 @@ LABEL_75:
 
           v52 = v102;
           v41 = v94;
-          self = v95;
+          self = selfCopy;
           v15 = 0x279CEA000;
           v43 = v93;
           if (v65)
           {
-            v66 = [v98 identifier];
-            [CACCommandRecognizer _accumulateCloseMatchUsingCommandIdentifier:v66 substitutionTable:v103];
+            identifier9 = [v98 identifier];
+            [CACCommandRecognizer _accumulateCloseMatchUsingCommandIdentifier:identifier9 substitutionTable:v103];
 
-            v63 = [v98 identifier];
-            [v96 addObject:v63];
+            identifier8 = [v98 identifier];
+            [v96 addObject:identifier8];
             goto LABEL_55;
           }
 
@@ -617,7 +617,7 @@ LABEL_56:
         }
 
         v41 = v94;
-        self = v95;
+        self = selfCopy;
         v15 = 0x279CEA000;
         v43 = v93;
 LABEL_55:
@@ -628,13 +628,13 @@ LABEL_55:
 
 LABEL_57:
 
-      v5 = v92;
+      recognizeCopy = v92;
       v17 = v100;
     }
 
     v29 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v67 = [(CACCommandRecognizer *)self speechRecognizer];
-    [v29 registerSignPostEndProcessingForSpeechRecognizer:v67 message:@"Close Result."];
+    string = [(CACCommandRecognizer *)self speechRecognizer];
+    [v29 registerSignPostEndProcessingForSpeechRecognizer:string message:@"Close Result."];
 LABEL_73:
 
 LABEL_74:
@@ -663,17 +663,17 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
   [v2 handleRecognizedCommand:*(a1 + 32)];
 }
 
-- (id)commandParametersFromCACLanguageModel:(id)a3
+- (id)commandParametersFromCACLanguageModel:(id)model
 {
-  v4 = a3;
-  v5 = [(CACCommandRecognizer *)self _commandParametersFromCACLanguageModel:v4];
-  v6 = [(CACCommandRecognizer *)self commandTextSequenceFromCACLanguageModel:v4];
+  modelCopy = model;
+  v5 = [(CACCommandRecognizer *)self _commandParametersFromCACLanguageModel:modelCopy];
+  v6 = [(CACCommandRecognizer *)self commandTextSequenceFromCACLanguageModel:modelCopy];
 
   [v5 setObject:v6 forKey:kCACCommandParameterTextSequence];
   v7 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v8 = [v7 dictationRecognizerMode];
+  dictationRecognizerMode = [v7 dictationRecognizerMode];
 
-  if (v8 == 3)
+  if (dictationRecognizerMode == 3)
   {
     [v5 setObject:&unk_287BEFE50 forKey:@"SRCSClientDictationRecognizerModeIsSpelling"];
   }
@@ -681,30 +681,30 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
   return v5;
 }
 
-- (id)_commandParametersFromCACLanguageModel:(id)a3
+- (id)_commandParametersFromCACLanguageModel:(id)model
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_new();
-  v6 = [v4 text];
-  if ([v6 length])
+  text = [modelCopy text];
+  if ([text length])
   {
-    [v5 setObject:v6 forKey:kCACCommandParameterText];
+    [v5 setObject:text forKey:kCACCommandParameterText];
   }
 
-  v28 = v6;
-  v7 = [v4 attributes];
-  v8 = [v7 objectForKey:kCACLanguageModelAttributeTextVariants];
+  v28 = text;
+  attributes = [modelCopy attributes];
+  v8 = [attributes objectForKey:kCACLanguageModelAttributeTextVariants];
 
   if (v8)
   {
-    v9 = [v4 attributes];
-    v10 = [v9 objectForKey:kCACLanguageModelAttributeTextVariants];
+    attributes2 = [modelCopy attributes];
+    v10 = [attributes2 objectForKey:kCACLanguageModelAttributeTextVariants];
     [v5 setObject:v10 forKey:kCACCommandParameterTextVariants];
   }
 
-  v11 = [v4 attributes];
-  v12 = [v11 objectForKey:kCACLanguageModelAttributeCommandParameters];
+  attributes3 = [modelCopy attributes];
+  v12 = [attributes3 objectForKey:kCACLanguageModelAttributeCommandParameters];
 
   if ([v12 count])
   {
@@ -716,9 +716,9 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v29 = v4;
-  v13 = [v4 children];
-  v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v29 = modelCopy;
+  children = [modelCopy children];
+  v14 = [children countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v14)
   {
     v15 = v14;
@@ -729,17 +729,17 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
       {
         if (*v31 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(children);
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
         v19 = [(CACCommandRecognizer *)self _commandParametersFromCACLanguageModel:v18];
-        v20 = [v18 identifier];
+        identifier = [v18 identifier];
         if ([v19 count])
         {
-          if ([v20 length])
+          if ([identifier length])
           {
-            [v5 setObject:v19 forKey:v20];
+            [v5 setObject:v19 forKey:identifier];
           }
 
           else
@@ -756,14 +756,14 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v15 = [children countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v15);
   }
 
-  v22 = [v29 attributes];
-  v23 = [v22 objectForKey:kCACLanguageModelAttributeProxyIdentifier];
+  attributes4 = [v29 attributes];
+  v23 = [attributes4 objectForKey:kCACLanguageModelAttributeProxyIdentifier];
 
   if (v23)
   {
@@ -779,34 +779,34 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
   return v5;
 }
 
-- (id)commandTextSequenceFromCACLanguageModel:(id)a3
+- (id)commandTextSequenceFromCACLanguageModel:(id)model
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [v4 text];
-  if ([v7 length])
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  text = [modelCopy text];
+  if ([text length])
   {
-    [v6 setObject:v7 forKey:kCACCommandParameterText];
+    [dictionary setObject:text forKey:kCACCommandParameterText];
   }
 
-  v8 = [v4 attributes];
-  v9 = [v8 objectForKey:kCACLanguageModelAttributeTextVariants];
+  attributes = [modelCopy attributes];
+  v9 = [attributes objectForKey:kCACLanguageModelAttributeTextVariants];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
-    if ([v7 length])
+    array = [MEMORY[0x277CBEB18] array];
+    if ([text length])
     {
-      v32 = v6;
-      [v10 addObject:v7];
+      v32 = dictionary;
+      [array addObject:text];
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v11 = [v4 attributes];
-      v12 = [v11 objectForKey:kCACLanguageModelAttributeTextVariants];
+      attributes2 = [modelCopy attributes];
+      v12 = [attributes2 objectForKey:kCACLanguageModelAttributeTextVariants];
 
       v13 = [v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v13)
@@ -823,9 +823,9 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
             }
 
             v17 = *(*(&v37 + 1) + 8 * i);
-            if (([v17 isEqualToString:v7] & 1) == 0)
+            if (([v17 isEqualToString:text] & 1) == 0)
             {
-              [v10 addObject:v17];
+              [array addObject:v17];
             }
           }
 
@@ -835,29 +835,29 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
         while (v14);
       }
 
-      v6 = v32;
-      [v32 setObject:v10 forKey:kCACCommandParameterTextVariants];
+      dictionary = v32;
+      [v32 setObject:array forKey:kCACCommandParameterTextVariants];
     }
 
     else
     {
-      v18 = [v4 attributes];
-      v19 = [v18 objectForKey:kCACLanguageModelAttributeTextVariants];
-      [v6 setObject:v19 forKey:kCACCommandParameterTextVariants];
+      attributes3 = [modelCopy attributes];
+      v19 = [attributes3 objectForKey:kCACLanguageModelAttributeTextVariants];
+      [dictionary setObject:v19 forKey:kCACCommandParameterTextVariants];
     }
   }
 
-  v20 = [v4 identifier];
-  v21 = [v20 length];
+  identifier = [modelCopy identifier];
+  v21 = [identifier length];
 
   if (v21)
   {
-    v22 = [v4 identifier];
-    [v6 setObject:v22 forKey:kCACCommandParameterBuiltInIdentifier];
+    identifier2 = [modelCopy identifier];
+    [dictionary setObject:identifier2 forKey:kCACCommandParameterBuiltInIdentifier];
   }
 
-  v23 = [v4 children];
-  v24 = [v23 count];
+  children = [modelCopy children];
+  v24 = [children count];
 
   if (v24)
   {
@@ -865,8 +865,8 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v25 = [v4 children];
-    v26 = [v25 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    children2 = [modelCopy children];
+    v26 = [children2 countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v26)
     {
       v27 = v26;
@@ -877,14 +877,14 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
         {
           if (*v34 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(children2);
           }
 
           v30 = [(CACCommandRecognizer *)self commandTextSequenceFromCACLanguageModel:*(*(&v33 + 1) + 8 * j)];
           [v5 addObjectsFromArray:v30];
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        v27 = [children2 countByEnumeratingWithState:&v33 objects:v41 count:16];
       }
 
       while (v27);
@@ -893,7 +893,7 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
 
   else
   {
-    [v5 addObject:v6];
+    [v5 addObject:dictionary];
   }
 
   return v5;
@@ -922,8 +922,8 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) strings];
-        [v3 addObjectsFromArray:v9];
+        strings = [*(*(&v11 + 1) + 8 * i) strings];
+        [v3 addObjectsFromArray:strings];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -935,20 +935,20 @@ void __54__CACCommandRecognizer_speechRecognizer_didRecognize___block_invoke_2(u
   return v3;
 }
 
-+ (void)_accumulateCloseMatchUsingCommandIdentifier:(id)a3 substitutionTable:(id)a4
++ (void)_accumulateCloseMatchUsingCommandIdentifier:(id)identifier substitutionTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  tableCopy = table;
   v8 = objc_opt_class();
   objc_sync_enter(v8);
   if (gAccumulatedCloseMatchesForDisplay)
   {
-    [gAccumulatedCloseMatchesForDisplay setObject:v7 forKey:v6];
+    [gAccumulatedCloseMatchesForDisplay setObject:tableCopy forKey:identifierCopy];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __86__CACCommandRecognizer__accumulateCloseMatchUsingCommandIdentifier_substitutionTable___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -978,7 +978,7 @@ uint64_t __86__CACCommandRecognizer__accumulateCloseMatchUsingCommandIdentifier_
 {
   obj = objc_opt_class();
   objc_sync_enter(obj);
-  [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:a1 selector:sel__showHintWithAccumulateCloseMatches object:0];
+  [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__showHintWithAccumulateCloseMatches object:0];
   v3 = gAccumulatedCloseMatchesForDisplay;
   gAccumulatedCloseMatchesForDisplay = 0;
 
@@ -994,17 +994,17 @@ uint64_t __86__CACCommandRecognizer__accumulateCloseMatchUsingCommandIdentifier_
   {
     v34 = objc_opt_new();
     v2 = +[CACPreferences sharedPreferences];
-    v3 = [v2 builtInCommandsTable];
-    v4 = [v3 objectForKey:@"HistoricalCommandFrequencies"];
+    builtInCommandsTable = [v2 builtInCommandsTable];
+    v4 = [builtInCommandsTable objectForKey:@"HistoricalCommandFrequencies"];
 
-    v5 = [gAccumulatedCloseMatchesForDisplay allKeys];
+    allKeys = [gAccumulatedCloseMatchesForDisplay allKeys];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __59__CACCommandRecognizer__showHintWithAccumulateCloseMatches__block_invoke;
     v46[3] = &unk_279CEB718;
     v31 = v4;
     v47 = v31;
-    v6 = [v5 sortedArrayUsingComparator:v46];
+    v6 = [allKeys sortedArrayUsingComparator:v46];
 
     v44 = 0u;
     v45 = 0u;
@@ -1037,8 +1037,8 @@ uint64_t __86__CACCommandRecognizer__accumulateCloseMatchUsingCommandIdentifier_
             v41 = 0u;
             v38 = 0u;
             v39 = 0u;
-            v15 = [v10 allKeys];
-            v16 = [v15 countByEnumeratingWithState:&v38 objects:v48 count:16];
+            allKeys2 = [v10 allKeys];
+            v16 = [allKeys2 countByEnumeratingWithState:&v38 objects:v48 count:16];
             if (v16)
             {
               v17 = *v39;
@@ -1048,7 +1048,7 @@ uint64_t __86__CACCommandRecognizer__accumulateCloseMatchUsingCommandIdentifier_
                 {
                   if (*v39 != v17)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(allKeys2);
                   }
 
                   v19 = *(*(&v38 + 1) + 8 * j);
@@ -1056,7 +1056,7 @@ uint64_t __86__CACCommandRecognizer__accumulateCloseMatchUsingCommandIdentifier_
                   [v14 replaceOccurrencesOfString:v19 withString:v20 options:0 range:{0, objc_msgSend(v14, "length")}];
                 }
 
-                v16 = [v15 countByEnumeratingWithState:&v38 objects:v48 count:16];
+                v16 = [allKeys2 countByEnumeratingWithState:&v38 objects:v48 count:16];
               }
 
               while (v16);
@@ -1097,8 +1097,8 @@ uint64_t __86__CACCommandRecognizer__accumulateCloseMatchUsingCommandIdentifier_
     v37 = v28;
     dispatch_after(v27, MEMORY[0x277D85CD0], block);
     v29 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v30 = [gAccumulatedCloseMatchesForDisplay allKeys];
-    [v29 didFindCloseSpokenCommandIdentifiers:v30];
+    allKeys3 = [gAccumulatedCloseMatchesForDisplay allKeys];
+    [v29 didFindCloseSpokenCommandIdentifiers:allKeys3];
   }
 
   objc_sync_exit(obj);

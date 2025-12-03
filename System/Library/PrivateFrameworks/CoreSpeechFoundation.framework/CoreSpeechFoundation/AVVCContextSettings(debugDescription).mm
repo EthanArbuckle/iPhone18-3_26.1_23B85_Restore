@@ -6,14 +6,14 @@
 
 - (id)debugDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
-  [v2 appendFormat:@"[Context = %ld]", objc_msgSend(a1, "activationMode")];
-  v3 = [a1 activationDeviceUID];
-  [v2 appendFormat:@"[DeviceId = %@]", v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"[Context = %ld]", objc_msgSend(self, "activationMode")];
+  activationDeviceUID = [self activationDeviceUID];
+  [string appendFormat:@"[DeviceId = %@]", activationDeviceUID];
 
-  [v2 appendFormat:@"[Announced = %d]", objc_msgSend(a1, "announceCallsEnabled")];
+  [string appendFormat:@"[Announced = %d]", objc_msgSend(self, "announceCallsEnabled")];
 
-  return v2;
+  return string;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface VCPVideoCNNCameraMotion
 - (VCPVideoCNNCameraMotion)init;
 - (id)results;
-- (int)run:(id)a3 withPersons:(id)a4 andRegionCrop:(CGRect)a5 atTime:(id *)a6 andDuration:(id *)a7;
+- (int)run:(id)run withPersons:(id)persons andRegionCrop:(CGRect)crop atTime:(id *)time andDuration:(id *)duration;
 @end
 
 @implementation VCPVideoCNNCameraMotion
@@ -13,14 +13,14 @@
   v2 = [(VCPVideoCNNCameraMotion *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v4 = [v3 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v5 = [MEMORY[0x1E695DFF8] URLWithString:@"cameramotiontype_head.espresso.net" relativeToURL:v4];
-    v6 = [MEMORY[0x1E695DFF8] URLWithString:@"cameramotionscore_head.espresso.net" relativeToURL:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
+    v5 = [MEMORY[0x1E695DFF8] URLWithString:@"cameramotiontype_head.espresso.net" relativeToURL:resourceURL];
+    v6 = [MEMORY[0x1E695DFF8] URLWithString:@"cameramotionscore_head.espresso.net" relativeToURL:resourceURL];
+    array = [MEMORY[0x1E695DF70] array];
     results = v2->_results;
-    v2->_results = v7;
+    v2->_results = array;
 
     v9 = [VCPCNNModelEspresso alloc];
     v10 = [(VCPCNNModelEspresso *)v9 initWithParameters:v5 inputNames:&unk_1F49BF208 outputNames:0 properties:MEMORY[0x1E695E0F8]];
@@ -49,11 +49,11 @@
   return v2;
 }
 
-- (int)run:(id)a3 withPersons:(id)a4 andRegionCrop:(CGRect)a5 atTime:(id *)a6 andDuration:(id *)a7
+- (int)run:(id)run withPersons:(id)persons andRegionCrop:(CGRect)crop atTime:(id *)time andDuration:(id *)duration
 {
   v50[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = -[VCPCNNModelEspresso espressoForward:](self->_motionTypeModel, "espressoForward:", [v10 outputBeforeTemporalPooling]);
+  runCopy = run;
+  v11 = -[VCPCNNModelEspresso espressoForward:](self->_motionTypeModel, "espressoForward:", [runCopy outputBeforeTemporalPooling]);
   if (v11)
   {
     goto LABEL_21;
@@ -99,7 +99,7 @@
   }
 
   while ((v18 & 1) != 0);
-  v11 = -[VCPCNNModelEspresso espressoForward:](self->_motionScoreModel, "espressoForward:", [v10 outputBeforeTemporalPooling]);
+  v11 = -[VCPCNNModelEspresso espressoForward:](self->_motionScoreModel, "espressoForward:", [runCopy outputBeforeTemporalPooling]);
   if (!v11)
   {
     motionScoreModel = self->_motionScoreModel;
@@ -109,7 +109,7 @@
       v40 = time.value;
       if (time.value)
       {
-        v39 = a6;
+        timeCopy = time;
         v23 = 0;
         v24 = &v46;
         v25 = 1;
@@ -136,12 +136,12 @@
 
           while (v29 != 5);
           memset(&v44, 0, sizeof(v44));
-          time = *a7;
+          time = *duration;
           CMTimeMultiply(&v42, &time, v23);
           time = v42;
           CMTimeMultiplyByRatio(&v43, &time, 1, 2);
           time = v43;
-          rhs = *v39;
+          rhs = *timeCopy;
           CMTimeAdd(&v44, &time, &rhs);
           results = self->_results;
           v49[0] = @"start";
@@ -149,7 +149,7 @@
           v32 = CMTimeCopyAsDictionary(&time, 0);
           v50[0] = v32;
           v49[1] = @"duration";
-          time = *a7;
+          time = *duration;
           CMTimeMultiplyByRatio(&rhs, &time, 1, 2);
           time = rhs;
           v33 = CMTimeCopyAsDictionary(&time, 0);

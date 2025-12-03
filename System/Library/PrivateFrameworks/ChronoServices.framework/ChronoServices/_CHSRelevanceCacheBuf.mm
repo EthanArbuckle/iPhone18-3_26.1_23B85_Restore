@@ -1,15 +1,15 @@
 @interface _CHSRelevanceCacheBuf
-- (BOOL)enumerateArchivedObjectsUsingBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)enumerateArchivedObjectsUsingBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)verifyUTF8Fields;
 - (NSArray)archivedObjects;
 - (NSArray)groups;
 - (NSData)archivedObjectsAsData;
-- (_CHSRelevanceCacheBuf)initWithBufRef:(id)a3 cppPointer:(const RelevanceCacheBuf *)a4;
-- (const)archivedObjectsAsCArrayWithCount:(unint64_t *)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (_CHSRelevanceCacheBuf)initWithBufRef:(id)ref cppPointer:(const RelevanceCacheBuf *)pointer;
+- (const)archivedObjectsAsCArrayWithCount:(unint64_t *)count;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 - (unint64_t)hash;
 @end
 
@@ -50,8 +50,8 @@
     v8 = CFDataCreateWithBytesNoCopy(0, v7[4].var0, *v7->var0, [(AFBBufRef *)self->_br deallocator]);
     if (!v8)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:187 description:@"Failed to create CFData"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:187 description:@"Failed to create CFData"];
     }
   }
 
@@ -63,11 +63,11 @@
   return v8;
 }
 
-- (const)archivedObjectsAsCArrayWithCount:(unint64_t *)a3
+- (const)archivedObjectsAsCArrayWithCount:(unint64_t *)count
 {
-  if (a3)
+  if (count)
   {
-    *a3 = 0;
+    *count = 0;
   }
 
   ptr = self->_ptr;
@@ -85,9 +85,9 @@
 
   v6 = &ptr[v5 + *ptr[v5].var0];
   v7 = *v6->var0;
-  if (a3)
+  if (count)
   {
-    *a3 = v7;
+    *count = v7;
   }
 
   v8 = &v6[4];
@@ -102,9 +102,9 @@
   }
 }
 
-- (BOOL)enumerateArchivedObjectsUsingBlock:(id)a3
+- (BOOL)enumerateArchivedObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   ptr = self->_ptr;
   v6 = &ptr[-*ptr->var0];
   if (*v6->var0 >= 5u && (v7 = *v6[4].var0) != 0)
@@ -125,7 +125,7 @@
         }
 
         v13 = v12;
-        v4[2](v4, *(v11 + v10), v10, &v17);
+        blockCopy[2](blockCopy, *(v11 + v10), v10, &v17);
         v14 = v17;
         objc_autoreleasePoolPop(v13);
         if (v14)
@@ -175,36 +175,36 @@
   return v8;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(_CHSRelevanceCacheBuf *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(_CHSRelevanceCacheBuf *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_6;
   }
 
-  if (v8[8] == 1)
+  if (changesCopy[8] == 1)
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 3)];
+    v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 3)];
     goto LABEL_13;
   }
 
-  if (v8[8])
+  if (changesCopy[8])
   {
     v11 = 0;
   }
@@ -212,10 +212,10 @@
   else
   {
 LABEL_6:
-    v10 = [(_CHSRelevanceCacheBuf *)self archivedObjects];
-    if (v10)
+    archivedObjects = [(_CHSRelevanceCacheBuf *)self archivedObjects];
+    if (archivedObjects)
     {
-      v11 = [v7 createVectorOfUInt8WithArray:v10];
+      v11 = [builderCopy createVectorOfUInt8WithArray:archivedObjects];
     }
 
     else
@@ -223,36 +223,36 @@ LABEL_6:
       v11 = 0;
     }
 
-    if (!v8)
+    if (!changesCopy)
     {
       goto LABEL_15;
     }
   }
 
 LABEL_13:
-  if (v8[16] == 1)
+  if (changesCopy[16] == 1)
   {
-    v16 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v8 + 5)];
+    v16 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(changesCopy + 5)];
   }
 
   else
   {
-    if (!v8[16])
+    if (!changesCopy[16])
     {
 LABEL_15:
-      v12 = [(_CHSRelevanceCacheBuf *)self groups];
-      if (v12)
+      groups = [(_CHSRelevanceCacheBuf *)self groups];
+      if (groups)
       {
-        v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
+        v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(groups, "count")}];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __60___CHSRelevanceCacheBuf_deepCopyUsingBufferBuilder_changes___block_invoke;
         v25[3] = &unk_1E7453F38;
         v14 = v13;
         v26 = v14;
-        v15 = v7;
+        v15 = builderCopy;
         v27 = v15;
-        [v12 enumerateObjectsUsingBlock:v25];
+        [groups enumerateObjectsUsingBlock:v25];
         v16 = [v15 _chsCreateVectorOfWidgetRelevancePropertiesBufWithOffsets:v14];
       }
 
@@ -276,37 +276,37 @@ LABEL_21:
   v23 = v17;
   v24 = v16;
   v18 = v16;
-  v19 = [v7 _chsCreateRelevanceCacheBufUsingBlock:v22];
+  v19 = [builderCopy _chsCreateRelevanceCacheBufUsingBlock:v22];
 
   objc_autoreleasePoolPop(v9);
 
   return v19;
 }
 
-- (_CHSRelevanceCacheBuf)initWithBufRef:(id)a3 cppPointer:(const RelevanceCacheBuf *)a4
+- (_CHSRelevanceCacheBuf)initWithBufRef:(id)ref cppPointer:(const RelevanceCacheBuf *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = _CHSRelevanceCacheBuf;
   v8 = [(_CHSRelevanceCacheBuf *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -315,11 +315,11 @@ LABEL_21:
   }
 
   v20 = v13;
-  v21 = [v10 length];
+  v21 = [dataCopy length];
   LODWORD(v22) = 0;
-  HIDWORD(v22) = a5;
+  HIDWORD(v22) = depth;
   LODWORD(v23) = 0;
-  HIDWORD(v23) = a6;
+  HIDWORD(v23) = tables;
   v24 = 0;
   LOBYTE(v25) = 1;
   if (v21 >= 0x7FFFFFFF)
@@ -331,24 +331,24 @@ LABEL_21:
   {
     v14 = *v13;
     v15 = objc_alloc(MEMORY[0x1E698C1D8]);
-    v16 = [v15 initWithData:{v10, v20, v21, v22, v23, v24, v25}];
+    v16 = [v15 initWithData:{dataCopy, v20, v21, v22, v23, v24, v25}];
     self = [(_CHSRelevanceCacheBuf *)self initWithBufRef:v16 cppPointer:v13 + v14];
 
-    v17 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(_CHSRelevanceCacheBuf *)self verifyUTF8Fields])
       {
-        v17 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v17 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v18 = v17;
+    v18 = selfCopy2;
   }
 
   else
@@ -363,9 +363,9 @@ LABEL_21:
 
 - (BOOL)verifyUTF8Fields
 {
-  v2 = [(_CHSRelevanceCacheBuf *)self groups];
-  v3 = v2;
-  if (!v2)
+  groups = [(_CHSRelevanceCacheBuf *)self groups];
+  v3 = groups;
+  if (!groups)
   {
     goto LABEL_3;
   }
@@ -379,7 +379,7 @@ LABEL_21:
   v7[2] = __41___CHSRelevanceCacheBuf_verifyUTF8Fields__block_invoke;
   v7[3] = &unk_1E7453F88;
   v7[4] = &v8;
-  [v2 enumerateObjectsUsingBlock:v7];
+  [groups enumerateObjectsUsingBlock:v7];
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   if ((v4 & 1) == 0)
@@ -399,41 +399,41 @@ LABEL_3:
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_CHSRelevanceCacheBuf *)self archivedObjects];
-  v5 = [v4 hash];
+  archivedObjects = [(_CHSRelevanceCacheBuf *)self archivedObjects];
+  v5 = [archivedObjects hash];
 
-  v6 = [(_CHSRelevanceCacheBuf *)self groups];
-  v7 = [v6 hash] + 37 * v5;
+  groups = [(_CHSRelevanceCacheBuf *)self groups];
+  v7 = [groups hash] + 37 * v5;
 
   objc_autoreleasePoolPop(v3);
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [(_CHSRelevanceCacheBuf *)self archivedObjects];
-      v9 = [v6 archivedObjects];
-      if (v8 | v9 && (v10 = [v8 isEqual:v9], v9, v8, !v10))
+      archivedObjects = [(_CHSRelevanceCacheBuf *)self archivedObjects];
+      archivedObjects2 = [v6 archivedObjects];
+      if (archivedObjects | archivedObjects2 && (v10 = [archivedObjects isEqual:archivedObjects2], archivedObjects2, archivedObjects, !v10))
       {
         v13 = 0;
       }
 
       else
       {
-        v11 = [(_CHSRelevanceCacheBuf *)self groups];
-        v12 = [v6 groups];
-        if (v11 | v12)
+        groups = [(_CHSRelevanceCacheBuf *)self groups];
+        groups2 = [v6 groups];
+        if (groups | groups2)
         {
-          v13 = [v11 isEqual:v12];
+          v13 = [groups isEqual:groups2];
         }
 
         else

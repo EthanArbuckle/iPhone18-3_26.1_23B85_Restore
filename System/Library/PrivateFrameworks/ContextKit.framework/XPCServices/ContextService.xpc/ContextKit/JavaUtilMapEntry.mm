@@ -1,19 +1,19 @@
 @interface JavaUtilMapEntry
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilMapEntry)initWithId:(id)a3 withId:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilMapEntry)initWithId:(id)id withId:(id)withId;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)setValueWithId:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)setValueWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilMapEntry
 
-- (JavaUtilMapEntry)initWithId:(id)a3 withId:(id)a4
+- (JavaUtilMapEntry)initWithId:(id)id withId:(id)withId
 {
-  JreStrongAssign(&self->key_, a3);
-  JreStrongAssign(&self->value_, a4);
+  JreStrongAssign(&self->key_, id);
+  JreStrongAssign(&self->value_, withId);
   return self;
 }
 
@@ -24,60 +24,60 @@
   return [(JavaUtilMapEntry *)&v3 clone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
-    LOBYTE(v5) = 1;
-    return v5;
+    LOBYTE(getValue) = 1;
+    return getValue;
   }
 
-  LODWORD(v5) = [JavaUtilMap_Entry_class_() isInstance:a3];
-  if (v5)
+  LODWORD(getValue) = [JavaUtilMap_Entry_class_() isInstance:equal];
+  if (getValue)
   {
     v6 = JavaUtilMap_Entry_class_();
-    if (!a3)
+    if (!equal)
     {
       JreThrowNullPointerException();
     }
 
-    if (([v6 isInstance:a3] & 1) == 0)
+    if (([v6 isInstance:equal] & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
     key = self->key_;
-    v8 = [a3 getKey];
+    getKey = [equal getKey];
     if (key)
     {
-      LODWORD(v5) = [key isEqual:v8];
-      if (!v5)
+      LODWORD(getValue) = [key isEqual:getKey];
+      if (!getValue)
       {
-        return v5;
+        return getValue;
       }
     }
 
-    else if (v8)
+    else if (getKey)
     {
-      LOBYTE(v5) = 0;
-      return v5;
+      LOBYTE(getValue) = 0;
+      return getValue;
     }
 
     value = self->value_;
-    v5 = [a3 getValue];
+    getValue = [equal getValue];
     if (value)
     {
 
-      LOBYTE(v5) = [value isEqual:v5];
+      LOBYTE(getValue) = [value isEqual:getValue];
     }
 
     else
     {
-      LOBYTE(v5) = v5 == 0;
+      LOBYTE(getValue) = getValue == 0;
     }
   }
 
-  return v5;
+  return getValue;
 }
 
 - (unint64_t)hash
@@ -102,10 +102,10 @@
   return (value ^ v4);
 }
 
-- (id)setValueWithId:(id)a3
+- (id)setValueWithId:(id)id
 {
   value = self->value_;
-  JreStrongAssign(&self->value_, a3);
+  JreStrongAssign(&self->value_, id);
   return value;
 }
 
@@ -116,11 +116,11 @@
   [(JavaUtilMapEntry *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilMapEntry *)self clone];
+  clone = [(JavaUtilMapEntry *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

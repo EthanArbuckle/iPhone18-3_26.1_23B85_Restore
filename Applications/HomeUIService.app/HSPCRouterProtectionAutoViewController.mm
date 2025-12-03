@@ -1,26 +1,26 @@
 @interface HSPCRouterProtectionAutoViewController
 - (BOOL)_hasNetworkCustomizableAccessories;
-- (HSPCRouterProtectionAutoViewController)initWithCoordinator:(id)a3 configurationDelegate:(id)a4;
+- (HSPCRouterProtectionAutoViewController)initWithCoordinator:(id)coordinator configurationDelegate:(id)delegate;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (void)_updateNetworkProtection:(int64_t)a3 andFinishWithActionResult:(unint64_t)a4;
+- (void)_updateNetworkProtection:(int64_t)protection andFinishWithActionResult:(unint64_t)result;
 @end
 
 @implementation HSPCRouterProtectionAutoViewController
 
-- (HSPCRouterProtectionAutoViewController)initWithCoordinator:(id)a3 configurationDelegate:(id)a4
+- (HSPCRouterProtectionAutoViewController)initWithCoordinator:(id)coordinator configurationDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  delegateCopy = delegate;
   v9 = [UIImageView alloc];
   v10 = HUImageNamed();
   v11 = [v9 initWithImage:v10];
 
   [v11 setContentMode:1];
-  v12 = [v11 image];
-  [v12 size];
+  image = [v11 image];
+  [image size];
   v14 = v13;
-  v15 = [v11 image];
-  [v15 size];
+  image2 = [v11 image];
+  [image2 size];
   v17 = v14 / v16;
 
   v39.receiver = self;
@@ -29,8 +29,8 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_coordinator, a3);
-    objc_storeWeak(&v19->_delegate, v8);
+    objc_storeStrong(&v18->_coordinator, coordinator);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
     v20 = HULocalizedString();
     [(HSPCRouterProtectionAutoViewController *)v19 setTitle:v20];
 
@@ -66,41 +66,41 @@
 
 - (BOOL)_hasNetworkCustomizableAccessories
 {
-  v2 = [(HSPCRouterProtectionAutoViewController *)self coordinator];
-  v3 = [v2 activeTuple];
-  v4 = [v3 configuration];
-  v5 = [v4 home];
+  coordinator = [(HSPCRouterProtectionAutoViewController *)self coordinator];
+  activeTuple = [coordinator activeTuple];
+  configuration = [activeTuple configuration];
+  home = [configuration home];
 
-  v6 = [v5 accessoryProtectionGroups];
-  if ([v6 count])
+  accessoryProtectionGroups = [home accessoryProtectionGroups];
+  if ([accessoryProtectionGroups count])
   {
-    v7 = [v5 hf_isNetworkProtectionSupportedForAccessories];
+    hf_isNetworkProtectionSupportedForAccessories = [home hf_isNetworkProtectionSupportedForAccessories];
   }
 
   else
   {
-    v7 = 0;
+    hf_isNetworkProtectionSupportedForAccessories = 0;
   }
 
-  return v7;
+  return hf_isNetworkProtectionSupportedForAccessories;
 }
 
-- (void)_updateNetworkProtection:(int64_t)a3 andFinishWithActionResult:(unint64_t)a4
+- (void)_updateNetworkProtection:(int64_t)protection andFinishWithActionResult:(unint64_t)result
 {
-  v7 = [(HSPCRouterProtectionAutoViewController *)self coordinator];
-  v8 = [v7 activeTuple];
-  v9 = [v8 configuration];
-  v10 = [v9 home];
+  coordinator = [(HSPCRouterProtectionAutoViewController *)self coordinator];
+  activeTuple = [coordinator activeTuple];
+  configuration = [activeTuple configuration];
+  home = [configuration home];
 
   [(HSPCRouterProtectionAutoViewController *)self showActivityIndicatorWithStatus:&stru_1000C89F8];
   objc_initWeak(&location, self);
-  v11 = [v10 hf_updateNetworkProtection:a3];
+  v11 = [home hf_updateNetworkProtection:protection];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004615C;
   v13[3] = &unk_1000C7600;
   objc_copyWeak(v14, &location);
-  v14[1] = a4;
+  v14[1] = result;
   v12 = [v11 addCompletionBlock:v13];
 
   objc_destroyWeak(v14);

@@ -17,7 +17,7 @@
   }
 
   v5 = v4;
-  v6 = [a1 setWithArray:v5];
+  v6 = [self setWithArray:v5];
 
   return v6;
 }
@@ -26,30 +26,30 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)vk_removeNonNilObject:()VK
 {
   if (a3)
   {
-    return [a1 removeObject:?];
+    return [self removeObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)vk_addObjectsFromNonNilArray:()VK
 {
   if (a3)
   {
-    return [a1 addObjectsFromArray:?];
+    return [self addObjectsFromArray:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)vk_removeObjectsFromNonNilArray:()VK
@@ -75,7 +75,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 removeObject:*(*(&v9 + 1) + 8 * v8++)];
+        [self removeObject:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);

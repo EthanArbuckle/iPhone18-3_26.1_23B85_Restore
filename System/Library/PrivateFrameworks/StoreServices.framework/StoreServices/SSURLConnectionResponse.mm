@@ -2,9 +2,9 @@
 - (BOOL)ssv_isExpiredResponse;
 - (NSData)databaseEncoding;
 - (NSString)storeCorrelationID;
-- (SSURLConnectionResponse)initWithDatabaseEncoding:(id)a3;
-- (SSURLConnectionResponse)initWithURLResponse:(id)a3 bodyData:(id)a4;
-- (SSURLConnectionResponse)initWithXPCEncoding:(id)a3;
+- (SSURLConnectionResponse)initWithDatabaseEncoding:(id)encoding;
+- (SSURLConnectionResponse)initWithURLResponse:(id)response bodyData:(id)data;
+- (SSURLConnectionResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
 @end
@@ -13,21 +13,21 @@
 
 - (BOOL)ssv_isExpiredResponse
 {
-  v2 = [(SSURLConnectionResponse *)self URLResponse];
-  v3 = [v2 ssv_isExpiredResponse];
+  uRLResponse = [(SSURLConnectionResponse *)self URLResponse];
+  ssv_isExpiredResponse = [uRLResponse ssv_isExpiredResponse];
 
-  return v3;
+  return ssv_isExpiredResponse;
 }
 
-- (SSURLConnectionResponse)initWithURLResponse:(id)a3 bodyData:(id)a4
+- (SSURLConnectionResponse)initWithURLResponse:(id)response bodyData:(id)data
 {
   v8.receiver = self;
   v8.super_class = SSURLConnectionResponse;
   v6 = [(SSURLConnectionResponse *)&v8 init];
   if (v6)
   {
-    v6->_bodyData = [a4 copy];
-    v6->_urlResponse = a3;
+    v6->_bodyData = [data copy];
+    v6->_urlResponse = response;
   }
 
   return v6;
@@ -40,13 +40,13 @@
   [(SSURLConnectionResponse *)&v3 dealloc];
 }
 
-- (SSURLConnectionResponse)initWithDatabaseEncoding:(id)a3
+- (SSURLConnectionResponse)initWithDatabaseEncoding:(id)encoding
 {
   v41 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:0];
+    v5 = [MEMORY[0x1E696AE40] propertyListWithData:encoding options:0 format:0 error:0];
   }
 
   else
@@ -76,15 +76,15 @@
             v8 = +[SSLogConfig sharedConfig];
           }
 
-          v9 = [v8 shouldLog];
+          shouldLog = [v8 shouldLog];
           if ([v8 shouldLogToDisk])
           {
-            v10 = v9 | 2;
+            v10 = shouldLog | 2;
           }
 
           else
           {
-            v10 = v9;
+            v10 = shouldLog;
           }
 
           if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -126,12 +126,12 @@
             v24 = [v5 objectForKey:@"4"];
             if (objc_opt_respondsToSelector())
             {
-              v25 = [v24 integerValue];
+              integerValue = [v24 integerValue];
             }
 
             else
             {
-              v25 = 0;
+              integerValue = 0;
             }
 
             v26 = [v5 objectForKey:@"2"];
@@ -142,7 +142,7 @@
             }
 
             v27 = objc_alloc(MEMORY[0x1E696AC68]);
-            v28 = [v27 initWithURL:v23 statusCode:v25 HTTPVersion:*MEMORY[0x1E695ADB8] headerFields:v26];
+            v28 = [v27 initWithURL:v23 statusCode:integerValue HTTPVersion:*MEMORY[0x1E695ADB8] headerFields:v26];
             if ([(NSHTTPURLResponse *)v28 _CFURLResponse])
             {
               [v5 objectForKey:@"3"];
@@ -220,15 +220,15 @@
         v9 = +[SSLogConfig sharedConfig];
       }
 
-      v10 = [v9 shouldLog];
+      shouldLog = [v9 shouldLog];
       if ([v9 shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
       if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -290,9 +290,9 @@
   return v3;
 }
 
-- (SSURLConnectionResponse)initWithXPCEncoding:(id)a3
+- (SSURLConnectionResponse)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v9.receiver = self;
     v9.super_class = SSURLConnectionResponse;
@@ -300,16 +300,16 @@
     if (v5)
     {
       objc_opt_class();
-      v5->_bodyData = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+      v5->_bodyData = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
       objc_opt_class();
-      v7 = SSXPCDictionaryCopyCFObjectWithClass(a3, "3");
+      v7 = SSXPCDictionaryCopyCFObjectWithClass(encoding, "3");
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v5->_metricsPageEvent = [(SSMetricsMutableEvent *)[SSMetricsPageEvent alloc] initWithBodyDictionary:v7];
       }
 
-      value = xpc_dictionary_get_value(a3, "9");
+      value = xpc_dictionary_get_value(encoding, "9");
       if (value)
       {
         v5->_urlResponse = [objc_alloc(MEMORY[0x1E696AC68]) initWithXPCEncoding:value];

@@ -7,7 +7,7 @@
 - (id)bs_fetchBundleIdentifierFromXPCConnection
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = objc_getAssociatedObject(a1, "BSNSXPCTransport");
+  v4 = objc_getAssociatedObject(self, "BSNSXPCTransport");
   v5 = v4;
   if (v4)
   {
@@ -16,13 +16,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v18 = MEMORY[0x1E696AEC0];
-      v19 = [v6 classForCoder];
-      if (!v19)
+      classForCoder = [v6 classForCoder];
+      if (!classForCoder)
       {
-        v19 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v20 = NSStringFromClass(v19);
+      v20 = NSStringFromClass(classForCoder);
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
       v23 = [v18 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"transport", v20, v22];
@@ -37,7 +37,7 @@
         v30 = 2114;
         v31 = v26;
         v32 = 2048;
-        v33 = a1;
+        selfCopy2 = self;
         v34 = 2114;
         v35 = @"BSNSXPCTransport.m";
         v36 = 1024;
@@ -54,16 +54,16 @@
       JUMPOUT(0x19A83EF2CLL);
     }
 
-    v7 = [(BSXPCServiceConnection *)v6[1] _underlyingServerPeerConnection];
+    _underlyingServerPeerConnection = [(BSXPCServiceConnection *)v6[1] _underlyingServerPeerConnection];
   }
 
   else
   {
-    v7 = [a1 _xpcConnection];
+    _underlyingServerPeerConnection = [self _xpcConnection];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = _underlyingServerPeerConnection;
+  if (!_underlyingServerPeerConnection)
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"could not find underlying xpcConnection"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@
       v30 = 2114;
       v31 = v16;
       v32 = 2048;
-      v33 = a1;
+      selfCopy2 = self;
       v34 = 2114;
       v35 = @"BSNSXPCTransport.m";
       v36 = 1024;

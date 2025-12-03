@@ -11,36 +11,36 @@
   v25.receiver = self;
   v25.super_class = MBPrebuddyLoadingViewController;
   [(MBPrebuddyLoadingViewController *)&v25 viewDidLoad];
-  v3 = [(MBPrebuddyLoadingViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(MBPrebuddyLoadingViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v4 = [MBLoadingStatusView alloc];
   v5 = MBLocalizedStringFromTable();
   v6 = [(MBLoadingStatusView *)v4 initWithStatusText:v5 backgroundColor:0];
 
   [(MBPrebuddyLoadingViewController *)self setStatusView:v6];
-  v7 = [(MBPrebuddyLoadingViewController *)self view];
-  [v7 addSubview:v6];
+  view = [(MBPrebuddyLoadingViewController *)self view];
+  [view addSubview:v6];
 
-  v23 = [(MBLoadingStatusView *)v6 leadingAnchor];
-  v24 = [(MBPrebuddyLoadingViewController *)self view];
-  v22 = [v24 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  leadingAnchor = [(MBLoadingStatusView *)v6 leadingAnchor];
+  view2 = [(MBPrebuddyLoadingViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v21;
-  v19 = [(MBLoadingStatusView *)v6 topAnchor];
-  v20 = [(MBPrebuddyLoadingViewController *)self view];
-  v18 = [v20 topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  topAnchor = [(MBLoadingStatusView *)v6 topAnchor];
+  view3 = [(MBPrebuddyLoadingViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[1] = v17;
-  v8 = [(MBLoadingStatusView *)v6 trailingAnchor];
-  v9 = [(MBPrebuddyLoadingViewController *)self view];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [(MBLoadingStatusView *)v6 trailingAnchor];
+  view4 = [(MBPrebuddyLoadingViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[2] = v11;
-  v12 = [(MBLoadingStatusView *)v6 bottomAnchor];
-  v13 = [(MBPrebuddyLoadingViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  bottomAnchor = [(MBLoadingStatusView *)v6 bottomAnchor];
+  view5 = [(MBPrebuddyLoadingViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v15;
   v16 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v16];
@@ -50,14 +50,14 @@
 
 - (void)startAnimating
 {
-  v2 = [(MBPrebuddyLoadingViewController *)self statusView];
-  [v2 startAnimating];
+  statusView = [(MBPrebuddyLoadingViewController *)self statusView];
+  [statusView startAnimating];
 }
 
 - (void)stopAnimating
 {
-  v2 = [(MBPrebuddyLoadingViewController *)self statusView];
-  [v2 stopAnimating];
+  statusView = [(MBPrebuddyLoadingViewController *)self statusView];
+  [statusView stopAnimating];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface HMXPCEventRouterProtoChangeRegistrationsMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addTopicFilterAdditions:(id)a3;
-- (void)addTopicFilterRemovals:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTopicFilterAdditions:(id)additions;
+- (void)addTopicFilterRemovals:(id)removals;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMXPCEventRouterProtoChangeRegistrationsMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -50,7 +50,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -79,13 +79,13 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((topicFilterAdditions = self->_topicFilterAdditions, !(topicFilterAdditions | v4[1])) || -[NSMutableArray isEqual:](topicFilterAdditions, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((topicFilterAdditions = self->_topicFilterAdditions, !(topicFilterAdditions | equalCopy[1])) || -[NSMutableArray isEqual:](topicFilterAdditions, "isEqual:")))
   {
     topicFilterRemovals = self->_topicFilterRemovals;
-    if (topicFilterRemovals | v4[2])
+    if (topicFilterRemovals | equalCopy[2])
     {
       v7 = [(NSMutableArray *)topicFilterRemovals isEqual:?];
     }
@@ -104,10 +104,10 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -128,7 +128,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addTopicFilterAdditions:v11];
 
         ++v10;
@@ -161,7 +161,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addTopicFilterRemovals:v17];
 
         ++v16;
@@ -178,44 +178,44 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(HMXPCEventRouterProtoChangeRegistrationsMessage *)self topicFilterAdditionsCount])
   {
-    [v12 clearTopicFilterAdditions];
-    v4 = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)self topicFilterAdditionsCount];
-    if (v4)
+    [toCopy clearTopicFilterAdditions];
+    topicFilterAdditionsCount = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)self topicFilterAdditionsCount];
+    if (topicFilterAdditionsCount)
     {
-      v5 = v4;
+      v5 = topicFilterAdditionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)self topicFilterAdditionsAtIndex:i];
-        [v12 addTopicFilterAdditions:v7];
+        [toCopy addTopicFilterAdditions:v7];
       }
     }
   }
 
   if ([(HMXPCEventRouterProtoChangeRegistrationsMessage *)self topicFilterRemovalsCount])
   {
-    [v12 clearTopicFilterRemovals];
-    v8 = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)self topicFilterRemovalsCount];
-    if (v8)
+    [toCopy clearTopicFilterRemovals];
+    topicFilterRemovalsCount = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)self topicFilterRemovalsCount];
+    if (topicFilterRemovalsCount)
     {
-      v9 = v8;
+      v9 = topicFilterRemovalsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)self topicFilterRemovalsAtIndex:j];
-        [v12 addTopicFilterRemovals:v11];
+        [toCopy addTopicFilterRemovals:v11];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -285,12 +285,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   topicFilterAdditions = self->_topicFilterAdditions;
   if (topicFilterAdditions)
   {
-    [v3 setObject:topicFilterAdditions forKey:@"topicFilterAdditions"];
+    [dictionary setObject:topicFilterAdditions forKey:@"topicFilterAdditions"];
   }
 
   topicFilterRemovals = self->_topicFilterRemovals;
@@ -308,46 +308,46 @@
   v8.receiver = self;
   v8.super_class = HMXPCEventRouterProtoChangeRegistrationsMessage;
   v4 = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)&v8 description];
-  v5 = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMXPCEventRouterProtoChangeRegistrationsMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTopicFilterRemovals:(id)a3
+- (void)addTopicFilterRemovals:(id)removals
 {
-  v4 = a3;
+  removalsCopy = removals;
   topicFilterRemovals = self->_topicFilterRemovals;
-  v8 = v4;
+  v8 = removalsCopy;
   if (!topicFilterRemovals)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_topicFilterRemovals;
     self->_topicFilterRemovals = v6;
 
-    v4 = v8;
+    removalsCopy = v8;
     topicFilterRemovals = self->_topicFilterRemovals;
   }
 
-  [(NSMutableArray *)topicFilterRemovals addObject:v4];
+  [(NSMutableArray *)topicFilterRemovals addObject:removalsCopy];
 }
 
-- (void)addTopicFilterAdditions:(id)a3
+- (void)addTopicFilterAdditions:(id)additions
 {
-  v4 = a3;
+  additionsCopy = additions;
   topicFilterAdditions = self->_topicFilterAdditions;
-  v8 = v4;
+  v8 = additionsCopy;
   if (!topicFilterAdditions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_topicFilterAdditions;
     self->_topicFilterAdditions = v6;
 
-    v4 = v8;
+    additionsCopy = v8;
     topicFilterAdditions = self->_topicFilterAdditions;
   }
 
-  [(NSMutableArray *)topicFilterAdditions addObject:v4];
+  [(NSMutableArray *)topicFilterAdditions addObject:additionsCopy];
 }
 
 @end

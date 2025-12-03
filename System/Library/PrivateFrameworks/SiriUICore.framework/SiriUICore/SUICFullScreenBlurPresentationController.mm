@@ -1,12 +1,12 @@
 @interface SUICFullScreenBlurPresentationController
-- (SUICFullScreenBlurPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 blurStyle:(unint64_t)a5;
+- (SUICFullScreenBlurPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController blurStyle:(unint64_t)style;
 - (unint64_t)blurStyle;
 - (void)_stageViewsForFadeIn;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)setBlurStyle:(unint64_t)a3;
+- (void)setBlurStyle:(unint64_t)style;
 @end
 
 @implementation SUICFullScreenBlurPresentationController
@@ -15,8 +15,8 @@
 {
   [(_UIBackdropView *)self->_fullScreenBlurView setAlpha:0.0];
   [(SUICFullScreenBlurPresentationController *)self _stageViewsForFadeIn];
-  v3 = [(SUICFullScreenBlurPresentationController *)self presentingViewController];
-  v4 = [v3 transitionCoordinator];
+  presentingViewController = [(SUICFullScreenBlurPresentationController *)self presentingViewController];
+  transitionCoordinator = [presentingViewController transitionCoordinator];
 
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
@@ -29,7 +29,7 @@
   v5[2] = __75__SUICFullScreenBlurPresentationController_presentationTransitionWillBegin__block_invoke_2;
   v5[3] = &unk_1E81E7D90;
   objc_copyWeak(&v6, &location);
-  [v4 animateAlongsideTransition:v7 completion:v5];
+  [transitionCoordinator animateAlongsideTransition:v7 completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -59,9 +59,9 @@ void __75__SUICFullScreenBlurPresentationController_presentationTransitionWillBe
   }
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
     [(_UIBackdropView *)self->_fullScreenBlurView removeFromSuperview];
   }
@@ -69,8 +69,8 @@ void __75__SUICFullScreenBlurPresentationController_presentationTransitionWillBe
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(SUICFullScreenBlurPresentationController *)self presentingViewController];
-  v4 = [v3 transitionCoordinator];
+  presentingViewController = [(SUICFullScreenBlurPresentationController *)self presentingViewController];
+  transitionCoordinator = [presentingViewController transitionCoordinator];
 
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
@@ -83,7 +83,7 @@ void __75__SUICFullScreenBlurPresentationController_presentationTransitionWillBe
   v5[2] = __72__SUICFullScreenBlurPresentationController_dismissalTransitionWillBegin__block_invoke_2;
   v5[3] = &unk_1E81E7D90;
   objc_copyWeak(&v6, &location);
-  [v4 animateAlongsideTransition:v7 completion:v5];
+  [transitionCoordinator animateAlongsideTransition:v7 completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -118,23 +118,23 @@ void __72__SUICFullScreenBlurPresentationController_dismissalTransitionWillBegin
   }
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
     [(SUICFullScreenBlurPresentationController *)self _stageViewsForFadeIn];
   }
 }
 
-- (SUICFullScreenBlurPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 blurStyle:(unint64_t)a5
+- (SUICFullScreenBlurPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController blurStyle:(unint64_t)style
 {
   v12.receiver = self;
   v12.super_class = SUICFullScreenBlurPresentationController;
-  v6 = [(SUICFullScreenBlurPresentationController *)&v12 initWithPresentedViewController:a3 presentingViewController:a4];
+  v6 = [(SUICFullScreenBlurPresentationController *)&v12 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E69DD370]);
-    if (a5 == 2)
+    if (style == 2)
     {
       v8 = 2020;
     }
@@ -152,10 +152,10 @@ void __72__SUICFullScreenBlurPresentationController_dismissalTransitionWillBegin
   return v6;
 }
 
-- (void)setBlurStyle:(unint64_t)a3
+- (void)setBlurStyle:(unint64_t)style
 {
   fullScreenBlurView = self->_fullScreenBlurView;
-  if (a3 == 2)
+  if (style == 2)
   {
     v4 = 2020;
   }
@@ -183,16 +183,16 @@ void __72__SUICFullScreenBlurPresentationController_dismissalTransitionWillBegin
 
 - (void)_stageViewsForFadeIn
 {
-  v6 = [(SUICFullScreenBlurPresentationController *)self containerView];
+  containerView = [(SUICFullScreenBlurPresentationController *)self containerView];
   fullScreenBlurView = self->_fullScreenBlurView;
-  [v6 bounds];
+  [containerView bounds];
   [(_UIBackdropView *)fullScreenBlurView setFrame:?];
-  [v6 addSubview:self->_fullScreenBlurView];
-  v4 = [(SUICFullScreenBlurPresentationController *)self presentedViewController];
-  v5 = [v4 view];
+  [containerView addSubview:self->_fullScreenBlurView];
+  presentedViewController = [(SUICFullScreenBlurPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
   [(_UIBackdropView *)self->_fullScreenBlurView bounds];
-  [v5 setFrame:?];
-  [(_UIBackdropView *)self->_fullScreenBlurView addSubview:v5];
+  [view setFrame:?];
+  [(_UIBackdropView *)self->_fullScreenBlurView addSubview:view];
 }
 
 @end

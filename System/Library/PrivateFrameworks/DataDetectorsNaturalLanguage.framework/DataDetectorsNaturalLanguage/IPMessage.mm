@@ -1,16 +1,16 @@
 @interface IPMessage
 - (IPMessage)init;
-- (IPMessage)initWithDateSent:(id)a3 subject:(id)a4;
-- (IPMessage)initWithHTMLContent:(id)a3 emailHeadersDictionary:(id)a4 dateSent:(id)a5;
-- (IPMessage)initWithIdentifier:(id)a3 subject:(id)a4 sender:(id)a5 recipients:(id)a6 dateSent:(id)a7 type:(id)a8;
-- (IPMessage)initWithSGIPMessage:(id)a3;
+- (IPMessage)initWithDateSent:(id)sent subject:(id)subject;
+- (IPMessage)initWithHTMLContent:(id)content emailHeadersDictionary:(id)dictionary dateSent:(id)sent;
+- (IPMessage)initWithIdentifier:(id)identifier subject:(id)subject sender:(id)sender recipients:(id)recipients dateSent:(id)sent type:(id)type;
+- (IPMessage)initWithSGIPMessage:(id)message;
 - (NSArray)messageUnits;
 - (NSString)lowercaseSubject;
 - (id)detectedKeywordsDictionary;
-- (id)firstHeaderValueForKey:(id)a3 inHeaders:(id)a4;
-- (void)addDetectedKeyword:(id)a3 classificationTypeIdentifier:(id)a4;
-- (void)addMessageUnit:(id)a3;
-- (void)setMessageUnits:(id)a3;
+- (id)firstHeaderValueForKey:(id)key inHeaders:(id)headers;
+- (void)addDetectedKeyword:(id)keyword classificationTypeIdentifier:(id)identifier;
+- (void)addMessageUnit:(id)unit;
+- (void)setMessageUnits:(id)units;
 @end
 
 @implementation IPMessage
@@ -22,32 +22,32 @@
   return 0;
 }
 
-- (IPMessage)initWithIdentifier:(id)a3 subject:(id)a4 sender:(id)a5 recipients:(id)a6 dateSent:(id)a7 type:(id)a8
+- (IPMessage)initWithIdentifier:(id)identifier subject:(id)subject sender:(id)sender recipients:(id)recipients dateSent:(id)sent type:(id)type
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  subjectCopy = subject;
+  senderCopy = sender;
+  recipientsCopy = recipients;
+  sentCopy = sent;
+  typeCopy = type;
   v28.receiver = self;
   v28.super_class = IPMessage;
   v20 = [(IPMessage *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    [(IPMessage *)v20 setIdentifier:v14];
-    [(IPMessage *)v21 setSubject:v15];
-    [(IPMessage *)v21 setSender:v16];
-    [(IPMessage *)v21 setRecipients:v17];
-    [(IPMessage *)v21 setDateSent:v18];
-    [(IPMessage *)v21 setType:v19];
+    [(IPMessage *)v20 setIdentifier:identifierCopy];
+    [(IPMessage *)v21 setSubject:subjectCopy];
+    [(IPMessage *)v21 setSender:senderCopy];
+    [(IPMessage *)v21 setRecipients:recipientsCopy];
+    [(IPMessage *)v21 setDateSent:sentCopy];
+    [(IPMessage *)v21 setType:typeCopy];
     [(IPMessage *)v21 setIsReply:0];
-    v22 = [(IPMessage *)v21 subject];
+    subject = [(IPMessage *)v21 subject];
 
-    if (v22)
+    if (subject)
     {
-      v23 = [v15 length];
+      v23 = [subjectCopy length];
       if (v23 >= 0x2710)
       {
         v24 = 10000;
@@ -59,7 +59,7 @@
       }
 
       v25 = +[IPRegexToolbox emailSubjectPrefixRegex];
-      v26 = [v25 numberOfMatchesInString:v15 options:2 range:{0, v24}];
+      v26 = [v25 numberOfMatchesInString:subjectCopy options:2 range:{0, v24}];
 
       [(IPMessage *)v21 setIsReply:v26 != 0];
     }
@@ -68,17 +68,17 @@
   return v21;
 }
 
-- (IPMessage)initWithSGIPMessage:(id)a3
+- (IPMessage)initWithSGIPMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [v4 recipients];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  recipients = [messageCopy recipients];
+  v7 = [recipients countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -90,7 +90,7 @@
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recipients);
         }
 
         v11 = [[IPPerson alloc] initWithSGIPPerson:*(*(&v28 + 1) + 8 * v10)];
@@ -103,34 +103,34 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v8 = [recipients countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v8);
   }
 
-  v25 = [v4 messageId];
-  v12 = [v25 copy];
-  v13 = [v4 subject];
-  v14 = [v13 copy];
+  messageId = [messageCopy messageId];
+  v12 = [messageId copy];
+  subject = [messageCopy subject];
+  v14 = [subject copy];
   v15 = [IPPerson alloc];
-  v16 = [v4 sender];
-  v17 = [(IPPerson *)v15 initWithSGIPPerson:v16];
-  v18 = [v4 dateSent];
-  v19 = [v18 copy];
+  sender = [messageCopy sender];
+  v17 = [(IPPerson *)v15 initWithSGIPPerson:sender];
+  dateSent = [messageCopy dateSent];
+  v19 = [dateSent copy];
   v20 = [(IPMessage *)self initWithIdentifier:v12 subject:v14 sender:v17 recipients:v5 dateSent:v19 type:IPMessageTypeEmail];
 
-  -[IPMessage setIsSent:](v20, "setIsSent:", [v4 isSent]);
-  -[IPMessage setIsGroupConversation:](v20, "setIsGroupConversation:", [v4 isGroupConversation]);
-  -[IPMessage setIsSenderSignificant:](v20, "setIsSenderSignificant:", [v4 isSenderSignificant]);
-  v21 = [v4 messageUnits];
+  -[IPMessage setIsSent:](v20, "setIsSent:", [messageCopy isSent]);
+  -[IPMessage setIsGroupConversation:](v20, "setIsGroupConversation:", [messageCopy isGroupConversation]);
+  -[IPMessage setIsSenderSignificant:](v20, "setIsSenderSignificant:", [messageCopy isSenderSignificant]);
+  messageUnits = [messageCopy messageUnits];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __33__IPMessage_initWithSGIPMessage___block_invoke;
   v26[3] = &unk_278F22E28;
   v22 = v20;
   v27 = v22;
-  [v21 enumerateObjectsUsingBlock:v26];
+  [messageUnits enumerateObjectsUsingBlock:v26];
 
   v23 = *MEMORY[0x277D85DE8];
   return v22;
@@ -145,19 +145,19 @@ void __33__IPMessage_initWithSGIPMessage___block_invoke(uint64_t a1, void *a2, u
   [v5 addMessageUnit:v7];
 }
 
-- (IPMessage)initWithDateSent:(id)a3 subject:(id)a4
+- (IPMessage)initWithDateSent:(id)sent subject:(id)subject
 {
-  if (!a4)
+  if (!subject)
   {
-    a4 = &stru_285AD0E88;
+    subject = &stru_285AD0E88;
   }
 
-  return [(IPMessage *)self initWithIdentifier:@"0" subject:a4 sender:0 recipients:MEMORY[0x277CBEBF8] dateSent:a3 type:0];
+  return [(IPMessage *)self initWithIdentifier:@"0" subject:subject sender:0 recipients:MEMORY[0x277CBEBF8] dateSent:sent type:0];
 }
 
-- (id)firstHeaderValueForKey:(id)a3 inHeaders:(id)a4
+- (id)firstHeaderValueForKey:(id)key inHeaders:(id)headers
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [headers objectForKeyedSubscript:key];
   if ([v4 count])
   {
     v5 = [v4 objectAtIndexedSubscript:0];
@@ -171,39 +171,39 @@ void __33__IPMessage_initWithSGIPMessage___block_invoke(uint64_t a1, void *a2, u
   return v5;
 }
 
-- (IPMessage)initWithHTMLContent:(id)a3 emailHeadersDictionary:(id)a4 dateSent:(id)a5
+- (IPMessage)initWithHTMLContent:(id)content emailHeadersDictionary:(id)dictionary dateSent:(id)sent
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IPMessage *)self firstHeaderValueForKey:@"Message-Id" inHeaders:v9];
-  v12 = [(IPMessage *)self firstHeaderValueForKey:@"Subject" inHeaders:v9];
+  sentCopy = sent;
+  dictionaryCopy = dictionary;
+  contentCopy = content;
+  v11 = [(IPMessage *)self firstHeaderValueForKey:@"Message-Id" inHeaders:dictionaryCopy];
+  v12 = [(IPMessage *)self firstHeaderValueForKey:@"Subject" inHeaders:dictionaryCopy];
 
-  v13 = [(IPMessage *)self initWithIdentifier:v11 subject:v12 sender:0 recipients:0 dateSent:v8 type:IPMessageTypeEmail];
-  [(IPMessage *)v13 setHtmlContent:v10];
+  v13 = [(IPMessage *)self initWithIdentifier:v11 subject:v12 sender:0 recipients:0 dateSent:sentCopy type:IPMessageTypeEmail];
+  [(IPMessage *)v13 setHtmlContent:contentCopy];
 
   return v13;
 }
 
-- (void)addMessageUnit:(id)a3
+- (void)addMessageUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   messageUnits = self->_messageUnits;
-  v9 = v4;
+  v9 = unitCopy;
   if (!messageUnits)
   {
     v6 = objc_opt_new();
     v7 = self->_messageUnits;
     self->_messageUnits = v6;
 
-    v4 = v9;
+    unitCopy = v9;
     self->_messageUnitsTextLength = 0;
     messageUnits = self->_messageUnits;
   }
 
-  [(NSMutableArray *)messageUnits addObject:v4];
-  v8 = [v9 text];
-  self->_messageUnitsTextLength += [v8 length];
+  [(NSMutableArray *)messageUnits addObject:unitCopy];
+  text = [v9 text];
+  self->_messageUnitsTextLength += [text length];
 }
 
 - (NSArray)messageUnits
@@ -212,8 +212,8 @@ void __33__IPMessage_initWithSGIPMessage___block_invoke(uint64_t a1, void *a2, u
   messageUnits = self->_messageUnits;
   if (!messageUnits)
   {
-    v4 = [(IPMessage *)self htmlContent];
-    v5 = [IPQuoteParser strippedQuoteBlockWithHtml:v4];
+    htmlContent = [(IPMessage *)self htmlContent];
+    v5 = [IPQuoteParser strippedQuoteBlockWithHtml:htmlContent];
 
     v6 = [v5 dataUsingEncoding:4];
     v7 = _MDPlainTextFromHTMLData();
@@ -233,10 +233,10 @@ void __33__IPMessage_initWithSGIPMessage___block_invoke(uint64_t a1, void *a2, u
   return messageUnits;
 }
 
-- (void)setMessageUnits:(id)a3
+- (void)setMessageUnits:(id)units
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unitsCopy = units;
   messageUnits = self->_messageUnits;
   self->_messageUnits = 0;
 
@@ -244,7 +244,7 @@ void __33__IPMessage_initWithSGIPMessage___block_invoke(uint64_t a1, void *a2, u
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = unitsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -278,10 +278,10 @@ void __33__IPMessage_initWithSGIPMessage___block_invoke(uint64_t a1, void *a2, u
   lowercaseSubject = self->_lowercaseSubject;
   if (!lowercaseSubject)
   {
-    v4 = [(IPMessage *)self subject];
-    v5 = [v4 lowercaseString];
+    subject = [(IPMessage *)self subject];
+    lowercaseString = [subject lowercaseString];
     v6 = self->_lowercaseSubject;
-    self->_lowercaseSubject = v5;
+    self->_lowercaseSubject = lowercaseString;
 
     lowercaseSubject = self->_lowercaseSubject;
   }
@@ -289,11 +289,11 @@ void __33__IPMessage_initWithSGIPMessage___block_invoke(uint64_t a1, void *a2, u
   return lowercaseSubject;
 }
 
-- (void)addDetectedKeyword:(id)a3 classificationTypeIdentifier:(id)a4
+- (void)addDetectedKeyword:(id)keyword classificationTypeIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && v6)
+  keywordCopy = keyword;
+  identifierCopy = identifier;
+  if (keywordCopy && identifierCopy)
   {
     keywordsDictionary = self->_keywordsDictionary;
     if (!keywordsDictionary)
@@ -305,7 +305,7 @@ void __33__IPMessage_initWithSGIPMessage___block_invoke(uint64_t a1, void *a2, u
       keywordsDictionary = self->_keywordsDictionary;
     }
 
-    [(NSMutableDictionary *)keywordsDictionary setObject:v6 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)keywordsDictionary setObject:identifierCopy forKeyedSubscript:keywordCopy];
   }
 }
 

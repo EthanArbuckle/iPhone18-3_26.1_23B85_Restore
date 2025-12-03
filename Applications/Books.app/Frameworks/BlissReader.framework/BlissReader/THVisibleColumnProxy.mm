@@ -1,5 +1,5 @@
 @interface THVisibleColumnProxy
-- (THVisibleColumnProxy)initWithPageIndex:(unint64_t)a3 pageController:(id)a4;
+- (THVisibleColumnProxy)initWithPageIndex:(unint64_t)index pageController:(id)controller;
 - (_NSRange)anchoredRange;
 - (_NSRange)range;
 - (const)p_targetFirstHint;
@@ -9,7 +9,7 @@
 
 @implementation THVisibleColumnProxy
 
-- (THVisibleColumnProxy)initWithPageIndex:(unint64_t)a3 pageController:(id)a4
+- (THVisibleColumnProxy)initWithPageIndex:(unint64_t)index pageController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = THVisibleColumnProxy;
@@ -17,8 +17,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->mPageIndex = a3;
-    v6->mPageController = a4;
+    v6->mPageIndex = index;
+    v6->mPageController = controller;
   }
 
   return v7;
@@ -33,9 +33,9 @@
 
 - (_NSRange)range
 {
-  v3 = [(THVisibleColumnProxy *)self p_targetFirstHint];
-  location = v3->var1.location;
-  length = v3->var1.length;
+  p_targetFirstHint = [(THVisibleColumnProxy *)self p_targetFirstHint];
+  location = p_targetFirstHint->var1.location;
+  length = p_targetFirstHint->var1.length;
   v6 = *([(THVisibleColumnProxy *)self p_targetLastHint]+ 2);
   v7.location = location;
   v7.length = length;
@@ -60,9 +60,9 @@
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v3 = [(THVisibleColumnProxy *)self p_targetFirstHint];
-  location = v3->var3.location;
-  length = v3->var3.length;
+  p_targetFirstHint = [(THVisibleColumnProxy *)self p_targetFirstHint];
+  location = p_targetFirstHint->var3.location;
+  length = p_targetFirstHint->var3.length;
   v6 = *([(THVisibleColumnProxy *)self p_targetLastHint]+ 56);
   v7.location = location;
   v7.length = length;

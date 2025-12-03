@@ -1,9 +1,9 @@
 @interface CACGridOverlayNumberOfRowsController
 - (CACGridOverlayNumberOfRowsController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CACGridOverlayNumberOfRowsController
@@ -72,21 +72,21 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = CACGridOverlayNumberOfRowsController;
-  v6 = a4;
-  v7 = [(CACGridOverlayNumberOfRowsController *)&v16 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(CACGridOverlayNumberOfRowsController *)self specifierAtIndexPath:v6, v16.receiver, v16.super_class];
+  pathCopy = path;
+  v7 = [(CACGridOverlayNumberOfRowsController *)&v16 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(CACGridOverlayNumberOfRowsController *)self specifierAtIndexPath:pathCopy, v16.receiver, v16.super_class];
 
   v9 = [v8 propertyForKey:@"GridOverlayNumberOfRows"];
   v10 = +[CACPreferences sharedPreferences];
-  v11 = [v10 gridOverlayCustomRowsEnabled];
+  gridOverlayCustomRowsEnabled = [v10 gridOverlayCustomRowsEnabled];
 
   if ([v9 integerValue])
   {
-    if (v11)
+    if (gridOverlayCustomRowsEnabled)
     {
       v12 = +[CACPreferences sharedPreferences];
       [v7 setChecked:{objc_msgSend(v12, "gridOverlayCustomRowsCount") == objc_msgSend(v9, "integerValue")}];
@@ -100,7 +100,7 @@
 
   else
   {
-    v13 = v11 ^ 1;
+    v13 = gridOverlayCustomRowsEnabled ^ 1;
     v14 = v7;
   }
 
@@ -110,18 +110,18 @@ LABEL_7:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = CACGridOverlayNumberOfRowsController;
-  [(CACGridOverlayNumberOfRowsController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(CACGridOverlayNumberOfRowsController *)self specifierAtIndexPath:v6];
+  [(CACGridOverlayNumberOfRowsController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(CACGridOverlayNumberOfRowsController *)self specifierAtIndexPath:pathCopy];
   v8 = [v7 propertyForKey:@"GridOverlayNumberOfRows"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   v10 = +[CACPreferences sharedPreferences];
   v11 = v10;
-  if (v9)
+  if (integerValue)
   {
     [v10 setGridOverlayCustomRowsEnabled:1];
 
@@ -134,7 +134,7 @@ LABEL_7:
     [v10 setGridOverlayCustomRowsEnabled:0];
   }
 
-  [(CACGridOverlayNumberOfRowsController *)self updateTableCheckedSelection:v6];
+  [(CACGridOverlayNumberOfRowsController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

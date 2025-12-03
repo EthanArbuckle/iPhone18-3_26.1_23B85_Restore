@@ -1,31 +1,31 @@
 @interface MHSchemaMHOdldFalseTriggerMitigated
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHOdldFalseTriggerMitigated)initWithDictionary:(id)a3;
-- (MHSchemaMHOdldFalseTriggerMitigated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHOdldFalseTriggerMitigated)initWithDictionary:(id)dictionary;
+- (MHSchemaMHOdldFalseTriggerMitigated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAnchorSocialScore:(BOOL)a3;
-- (void)setHasConversationalOdldScore:(BOOL)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasOdldScoreThreshold:(BOOL)a3;
-- (void)setHasSocialScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAnchorSocialScore:(BOOL)score;
+- (void)setHasConversationalOdldScore:(BOOL)score;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasOdldScoreThreshold:(BOOL)threshold;
+- (void)setHasSocialScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHOdldFalseTriggerMitigated
 
-- (MHSchemaMHOdldFalseTriggerMitigated)initWithDictionary:(id)a3
+- (MHSchemaMHOdldFalseTriggerMitigated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = MHSchemaMHOdldFalseTriggerMitigated;
   v5 = [(MHSchemaMHOdldFalseTriggerMitigated *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(MHSchemaMHOdldFalseTriggerMitigated *)v5 setModelVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"odldScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"odldScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
     }
 
     v23 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"odldScoreThreshold"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"odldScoreThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
     }
 
     v22 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"errorMessage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"errorMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,14 +59,14 @@
       [(MHSchemaMHOdldFalseTriggerMitigated *)v5 setErrorMessage:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHOdldFalseTriggerMitigated setErrorCode:](v5, "setErrorCode:", [v12 unsignedIntValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"anchorRequestId"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"anchorRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(MHSchemaMHOdldFalseTriggerMitigated *)v5 setAnchorRequestId:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"previousRequestId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"previousRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(MHSchemaMHOdldFalseTriggerMitigated *)v5 setPreviousRequestId:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"anchorSocialScore"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"anchorSocialScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(MHSchemaMHOdldFalseTriggerMitigated *)v5 setAnchorSocialScore:?];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"socialScore"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"socialScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
       [(MHSchemaMHOdldFalseTriggerMitigated *)v5 setSocialScore:?];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"conversationalOdldScore"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"conversationalOdldScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,30 +112,30 @@
   return v5;
 }
 
-- (MHSchemaMHOdldFalseTriggerMitigated)initWithJSON:(id)a3
+- (MHSchemaMHOdldFalseTriggerMitigated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHOdldFalseTriggerMitigated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHOdldFalseTriggerMitigated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHOdldFalseTriggerMitigated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -148,20 +148,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anchorRequestId)
   {
-    v4 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    anchorRequestId = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
+    dictionaryRepresentation = [anchorRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"anchorRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"anchorRequestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"anchorRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"anchorRequestId"];
     }
   }
 
@@ -171,7 +171,7 @@
     v20 = MEMORY[0x1E696AD98];
     [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorSocialScore];
     v21 = [v20 numberWithFloat:?];
-    [v3 setObject:v21 forKeyedSubscript:@"anchorSocialScore"];
+    [dictionary setObject:v21 forKeyedSubscript:@"anchorSocialScore"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -194,28 +194,28 @@ LABEL_8:
   v22 = MEMORY[0x1E696AD98];
   [(MHSchemaMHOdldFalseTriggerMitigated *)self conversationalOdldScore];
   v23 = [v22 numberWithFloat:?];
-  [v3 setObject:v23 forKeyedSubscript:@"conversationalOdldScore"];
+  [dictionary setObject:v23 forKeyedSubscript:@"conversationalOdldScore"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHOdldFalseTriggerMitigated errorCode](self, "errorCode")}];
-    [v3 setObject:v8 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v8 forKeyedSubscript:@"errorCode"];
   }
 
 LABEL_10:
   if (self->_errorMessage)
   {
-    v9 = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"errorMessage"];
+    errorMessage = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
+    v10 = [errorMessage copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"errorMessage"];
   }
 
   if (self->_modelVersion)
   {
-    v11 = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
+    v12 = [modelVersion copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"modelVersion"];
   }
 
   v13 = self->_has;
@@ -224,7 +224,7 @@ LABEL_10:
     v14 = MEMORY[0x1E696AD98];
     [(MHSchemaMHOdldFalseTriggerMitigated *)self odldScore];
     v15 = [v14 numberWithFloat:?];
-    [v3 setObject:v15 forKeyedSubscript:@"odldScore"];
+    [dictionary setObject:v15 forKeyedSubscript:@"odldScore"];
 
     v13 = self->_has;
   }
@@ -234,22 +234,22 @@ LABEL_10:
     v16 = MEMORY[0x1E696AD98];
     [(MHSchemaMHOdldFalseTriggerMitigated *)self odldScoreThreshold];
     v17 = [v16 numberWithFloat:?];
-    [v3 setObject:v17 forKeyedSubscript:@"odldScoreThreshold"];
+    [dictionary setObject:v17 forKeyedSubscript:@"odldScoreThreshold"];
   }
 
   if (self->_previousRequestId)
   {
-    v18 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    previousRequestId = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
+    dictionaryRepresentation2 = [previousRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"previousRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"previousRequestId"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"previousRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"previousRequestId"];
     }
   }
 
@@ -258,12 +258,12 @@ LABEL_10:
     v25 = MEMORY[0x1E696AD98];
     [(MHSchemaMHOdldFalseTriggerMitigated *)self socialScore];
     v26 = [v25 numberWithFloat:?];
-    [v3 setObject:v26 forKeyedSubscript:@"socialScore"];
+    [dictionary setObject:v26 forKeyedSubscript:@"socialScore"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -478,28 +478,28 @@ LABEL_10:
   return v6 ^ v3 ^ v11 ^ v16 ^ v17 ^ v18 ^ v19 ^ v22 ^ v27 ^ v32;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
-  v6 = [v4 modelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
+  modelVersion2 = [equalCopy modelVersion];
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
-  if (v7)
+  modelVersion3 = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
+  if (modelVersion3)
   {
-    v8 = v7;
-    v9 = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
-    v10 = [v4 modelVersion];
-    v11 = [v9 isEqual:v10];
+    v8 = modelVersion3;
+    modelVersion4 = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
+    modelVersion5 = [equalCopy modelVersion];
+    v11 = [modelVersion4 isEqual:modelVersion5];
 
     if (!v11)
     {
@@ -512,7 +512,7 @@ LABEL_10:
   }
 
   has = self->_has;
-  v13 = v4[68];
+  v13 = equalCopy[68];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_32;
@@ -521,14 +521,14 @@ LABEL_10:
   if (*&has)
   {
     odldScore = self->_odldScore;
-    [v4 odldScore];
+    [equalCopy odldScore];
     if (odldScore != v15)
     {
       goto LABEL_32;
     }
 
     has = self->_has;
-    v13 = v4[68];
+    v13 = equalCopy[68];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -540,27 +540,27 @@ LABEL_10:
   if (v16)
   {
     odldScoreThreshold = self->_odldScoreThreshold;
-    [v4 odldScoreThreshold];
+    [equalCopy odldScoreThreshold];
     if (odldScoreThreshold != v18)
     {
       goto LABEL_32;
     }
   }
 
-  v5 = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
-  v6 = [v4 errorMessage];
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
+  modelVersion2 = [equalCopy errorMessage];
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
     goto LABEL_31;
   }
 
-  v19 = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
-  if (v19)
+  errorMessage = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
+  if (errorMessage)
   {
-    v20 = v19;
-    v21 = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
-    v22 = [v4 errorMessage];
-    v23 = [v21 isEqual:v22];
+    v20 = errorMessage;
+    errorMessage2 = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
+    errorMessage3 = [equalCopy errorMessage];
+    v23 = [errorMessage2 isEqual:errorMessage3];
 
     if (!v23)
     {
@@ -573,7 +573,7 @@ LABEL_10:
   }
 
   v24 = (*&self->_has >> 2) & 1;
-  if (v24 != ((v4[68] >> 2) & 1))
+  if (v24 != ((equalCopy[68] >> 2) & 1))
   {
     goto LABEL_32;
   }
@@ -581,26 +581,26 @@ LABEL_10:
   if (v24)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_32;
     }
   }
 
-  v5 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
-  v6 = [v4 anchorRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
+  modelVersion2 = [equalCopy anchorRequestId];
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
     goto LABEL_31;
   }
 
-  v26 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
-  if (v26)
+  anchorRequestId = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
+  if (anchorRequestId)
   {
-    v27 = v26;
-    v28 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
-    v29 = [v4 anchorRequestId];
-    v30 = [v28 isEqual:v29];
+    v27 = anchorRequestId;
+    anchorRequestId2 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
+    anchorRequestId3 = [equalCopy anchorRequestId];
+    v30 = [anchorRequestId2 isEqual:anchorRequestId3];
 
     if (!v30)
     {
@@ -612,22 +612,22 @@ LABEL_10:
   {
   }
 
-  v5 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
-  v6 = [v4 previousRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
+  modelVersion2 = [equalCopy previousRequestId];
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v31 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
-  if (v31)
+  previousRequestId = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
+  if (previousRequestId)
   {
-    v32 = v31;
-    v33 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
-    v34 = [v4 previousRequestId];
-    v35 = [v33 isEqual:v34];
+    v32 = previousRequestId;
+    previousRequestId2 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
+    previousRequestId3 = [equalCopy previousRequestId];
+    v35 = [previousRequestId2 isEqual:previousRequestId3];
 
     if (!v35)
     {
@@ -641,20 +641,20 @@ LABEL_31:
 
   v38 = self->_has;
   v39 = (*&v38 >> 3) & 1;
-  v40 = v4[68];
+  v40 = equalCopy[68];
   if (v39 == ((v40 >> 3) & 1))
   {
     if (v39)
     {
       anchorSocialScore = self->_anchorSocialScore;
-      [v4 anchorSocialScore];
+      [equalCopy anchorSocialScore];
       if (anchorSocialScore != v42)
       {
         goto LABEL_32;
       }
 
       v38 = self->_has;
-      v40 = v4[68];
+      v40 = equalCopy[68];
     }
 
     v43 = (*&v38 >> 4) & 1;
@@ -663,20 +663,20 @@ LABEL_31:
       if (v43)
       {
         socialScore = self->_socialScore;
-        [v4 socialScore];
+        [equalCopy socialScore];
         if (socialScore != v45)
         {
           goto LABEL_32;
         }
 
         v38 = self->_has;
-        v40 = v4[68];
+        v40 = equalCopy[68];
       }
 
       v46 = (*&v38 >> 5) & 1;
       if (v46 == ((v40 >> 5) & 1))
       {
-        if (!v46 || (conversationalOdldScore = self->_conversationalOdldScore, [v4 conversationalOdldScore], conversationalOdldScore == v48))
+        if (!v46 || (conversationalOdldScore = self->_conversationalOdldScore, [equalCopy conversationalOdldScore], conversationalOdldScore == v48))
         {
           v36 = 1;
           goto LABEL_33;
@@ -692,12 +692,12 @@ LABEL_33:
   return v36;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
+  toCopy = to;
+  modelVersion = [(MHSchemaMHOdldFalseTriggerMitigated *)self modelVersion];
 
-  if (v4)
+  if (modelVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -714,9 +714,9 @@ LABEL_33:
     PBDataWriterWriteFloatField();
   }
 
-  v6 = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
+  errorMessage = [(MHSchemaMHOdldFalseTriggerMitigated *)self errorMessage];
 
-  if (v6)
+  if (errorMessage)
   {
     PBDataWriterWriteStringField();
   }
@@ -726,19 +726,19 @@ LABEL_33:
     PBDataWriterWriteUint32Field();
   }
 
-  v7 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
+  anchorRequestId = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
 
-  if (v7)
+  if (anchorRequestId)
   {
-    v8 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
+    anchorRequestId2 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
+  previousRequestId = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
 
-  if (v9)
+  if (previousRequestId)
   {
-    v10 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
+    previousRequestId2 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -749,24 +749,24 @@ LABEL_33:
     v11 = self->_has;
   }
 
-  v12 = v13;
+  v12 = toCopy;
   if ((v11 & 0x10) != 0)
   {
     PBDataWriterWriteFloatField();
-    v12 = v13;
+    v12 = toCopy;
     v11 = self->_has;
   }
 
   if ((v11 & 0x20) != 0)
   {
     PBDataWriterWriteFloatField();
-    v12 = v13;
+    v12 = toCopy;
   }
 }
 
-- (void)setHasConversationalOdldScore:(BOOL)a3
+- (void)setHasConversationalOdldScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 32;
   }
@@ -779,9 +779,9 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSocialScore:(BOOL)a3
+- (void)setHasSocialScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 16;
   }
@@ -794,9 +794,9 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAnchorSocialScore:(BOOL)a3
+- (void)setHasAnchorSocialScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -809,9 +809,9 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -824,9 +824,9 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasOdldScoreThreshold:(BOOL)a3
+- (void)setHasOdldScoreThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 2;
   }
@@ -839,26 +839,26 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = MHSchemaMHOdldFalseTriggerMitigated;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  anchorRequestId = [(MHSchemaMHOdldFalseTriggerMitigated *)self anchorRequestId];
+  v7 = [anchorRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MHSchemaMHOdldFalseTriggerMitigated *)self deleteAnchorRequestId];
   }
 
-  v9 = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  previousRequestId = [(MHSchemaMHOdldFalseTriggerMitigated *)self previousRequestId];
+  v10 = [previousRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MHSchemaMHOdldFalseTriggerMitigated *)self deletePreviousRequestId];
   }

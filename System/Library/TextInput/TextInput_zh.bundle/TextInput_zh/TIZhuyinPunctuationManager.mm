@@ -1,7 +1,7 @@
 @interface TIZhuyinPunctuationManager
 + (id)shareZhuyinPunctuationManager;
 - (NSDictionary)punctuationMap;
-- (id)candidatesFor:(id)a3;
+- (id)candidatesFor:(id)for;
 @end
 
 @implementation TIZhuyinPunctuationManager
@@ -25,15 +25,15 @@ uint64_t __59__TIZhuyinPunctuationManager_shareZhuyinPunctuationManager__block_i
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)candidatesFor:(id)a3
+- (id)candidatesFor:(id)for
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [(TIZhuyinPunctuationManager *)self punctuationMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  forCopy = for;
+  punctuationMap = [(TIZhuyinPunctuationManager *)self punctuationMap];
+  v6 = [punctuationMap objectForKeyedSubscript:forCopy];
 
   v7 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
-  v8 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -57,7 +57,7 @@ uint64_t __59__TIZhuyinPunctuationManager_shareZhuyinPunctuationManager__block_i
         v14 = [MEMORY[0x29EDC7088] candidateWithCandidate:v13 forInput:0];
         v15 = [v7 localizedStringForKey:v13 value:&stru_2A252F9A8 table:@"CIMPunctuationDescription_zh_Hant"];
         [v14 setAlternativeText:v15];
-        [v8 addObject:v14];
+        [array addObject:v14];
       }
 
       v10 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -68,7 +68,7 @@ uint64_t __59__TIZhuyinPunctuationManager_shareZhuyinPunctuationManager__block_i
 
   v16 = *MEMORY[0x29EDCA608];
 
-  return v8;
+  return array;
 }
 
 - (NSDictionary)punctuationMap

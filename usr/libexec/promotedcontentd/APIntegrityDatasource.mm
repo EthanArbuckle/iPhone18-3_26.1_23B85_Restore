@@ -10,22 +10,22 @@
 + (int64_t)reportFrequency
 {
   v3 = [APConfigurationMediator configurationForClass:objc_opt_class()];
-  v4 = [v3 reportingFrequency];
+  reportingFrequency = [v3 reportingFrequency];
 
-  if (v4)
+  if (reportingFrequency)
   {
-    v5 = [v3 reportingFrequency];
-    v6 = [v5 integerValue];
+    reportingFrequency2 = [v3 reportingFrequency];
+    integerValue = [reportingFrequency2 integerValue];
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___APIntegrityDatasource;
-    v6 = objc_msgSendSuper2(&v8, "reportFrequency");
+    integerValue = objc_msgSendSuper2(&v8, "reportFrequency");
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (id)reportType
@@ -39,9 +39,9 @@
 
 - (id)_createProperties
 {
-  v2 = [(APIntegrityDatasource *)self _eventCountDictionary];
-  v3 = v2;
-  if (v2 && [v2 count])
+  _eventCountDictionary = [(APIntegrityDatasource *)self _eventCountDictionary];
+  v3 = _eventCountDictionary;
+  if (_eventCountDictionary && [_eventCountDictionary count])
   {
     v29 = objc_alloc_init(NSMutableDictionary);
     v39 = 0u;
@@ -67,9 +67,9 @@
           v34 = v4;
           v5 = *(*(&v39 + 1) + 8 * v4);
           v6 = objc_alloc_init(NSMutableDictionary);
-          v7 = [(APBaseReport *)self reportDate];
-          v8 = [v7 reportDayString];
-          [v6 setObject:v8 forKey:@"date_MMDD"];
+          reportDate = [(APBaseReport *)self reportDate];
+          reportDayString = [reportDate reportDayString];
+          [v6 setObject:reportDayString forKey:@"date_MMDD"];
 
           v9 = [NSNumber numberWithInteger:[(APBaseReport *)self purpose]];
           [v6 setObject:v9 forKey:@"report_purpose"];
@@ -101,8 +101,8 @@
                 }
 
                 v18 = *(*(&v35 + 1) + 8 * i);
-                v19 = [v18 event];
-                v20 = [v12 objectForKey:v19];
+                event = [v18 event];
+                v20 = [v12 objectForKey:event];
 
                 [v18 count];
                 if (v20)
@@ -114,8 +114,8 @@
                   v22 = {;
                 }
 
-                v23 = [v18 event];
-                [v12 setObject:v22 forKey:v23];
+                event2 = [v18 event];
+                [v12 setObject:v22 forKey:event2];
               }
 
               v15 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -151,9 +151,9 @@
 
 - (id)_eventCountDictionary
 {
-  v3 = [(APBaseReport *)self reportDate];
-  v4 = [(APBaseReport *)self purpose];
-  if ([objc_opt_class() reportFrequency] == 1901 && (-[APBaseReport reportEventCount](self, "reportEventCount"), v5 = objc_claimAutoreleasedReturnValue(), +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", objc_msgSend(v3, "reportEndDay")), v6 = objc_claimAutoreleasedReturnValue(), +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v4), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "groupedEventCountForDayOfYear:purpose:", v6, v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v8))
+  reportDate = [(APBaseReport *)self reportDate];
+  purpose = [(APBaseReport *)self purpose];
+  if ([objc_opt_class() reportFrequency] == 1901 && (-[APBaseReport reportEventCount](self, "reportEventCount"), v5 = objc_claimAutoreleasedReturnValue(), +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", objc_msgSend(reportDate, "reportEndDay")), v6 = objc_claimAutoreleasedReturnValue(), +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", purpose), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "groupedEventCountForDayOfYear:purpose:", v6, v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v8))
   {
     v9 = [NSDictionary dictionaryWithDictionary:v8];
   }

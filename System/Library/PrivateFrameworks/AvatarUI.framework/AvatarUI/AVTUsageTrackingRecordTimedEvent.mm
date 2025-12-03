@@ -1,37 +1,37 @@
 @interface AVTUsageTrackingRecordTimedEvent
-- (AVTUsageTrackingRecordTimedEvent)initWithStartTime:(id)a3 record:(id)a4;
-- (double)totalElapsedTimeAtTime:(id)a3;
-- (void)pauseAtTime:(id)a3;
-- (void)resumeAtTime:(id)a3;
+- (AVTUsageTrackingRecordTimedEvent)initWithStartTime:(id)time record:(id)record;
+- (double)totalElapsedTimeAtTime:(id)time;
+- (void)pauseAtTime:(id)time;
+- (void)resumeAtTime:(id)time;
 @end
 
 @implementation AVTUsageTrackingRecordTimedEvent
 
-- (AVTUsageTrackingRecordTimedEvent)initWithStartTime:(id)a3 record:(id)a4
+- (AVTUsageTrackingRecordTimedEvent)initWithStartTime:(id)time record:(id)record
 {
-  v7 = a3;
-  v8 = a4;
+  timeCopy = time;
+  recordCopy = record;
   v12.receiver = self;
   v12.super_class = AVTUsageTrackingRecordTimedEvent;
   v9 = [(AVTUsageTrackingRecordTimedEvent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_currentStartTime, a3);
-    objc_storeStrong(&v10->_record, a4);
+    objc_storeStrong(&v9->_currentStartTime, time);
+    objc_storeStrong(&v10->_record, record);
   }
 
   return v10;
 }
 
-- (void)pauseAtTime:(id)a3
+- (void)pauseAtTime:(id)time
 {
-  v8 = a3;
+  timeCopy = time;
   if (![(AVTUsageTrackingRecordTimedEvent *)self paused])
   {
     [(AVTUsageTrackingRecordTimedEvent *)self setPaused:1];
-    v4 = [(AVTUsageTrackingRecordTimedEvent *)self currentStartTime];
-    [v8 timeIntervalSinceDate:v4];
+    currentStartTime = [(AVTUsageTrackingRecordTimedEvent *)self currentStartTime];
+    [timeCopy timeIntervalSinceDate:currentStartTime];
     v6 = v5;
 
     [(AVTUsageTrackingRecordTimedEvent *)self totalTime];
@@ -39,22 +39,22 @@
   }
 }
 
-- (void)resumeAtTime:(id)a3
+- (void)resumeAtTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   if ([(AVTUsageTrackingRecordTimedEvent *)self paused])
   {
     [(AVTUsageTrackingRecordTimedEvent *)self setPaused:0];
-    [(AVTUsageTrackingRecordTimedEvent *)self setCurrentStartTime:v4];
+    [(AVTUsageTrackingRecordTimedEvent *)self setCurrentStartTime:timeCopy];
   }
 }
 
-- (double)totalElapsedTimeAtTime:(id)a3
+- (double)totalElapsedTimeAtTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   if (![(AVTUsageTrackingRecordTimedEvent *)self paused])
   {
-    [(AVTUsageTrackingRecordTimedEvent *)self pauseAtTime:v4];
+    [(AVTUsageTrackingRecordTimedEvent *)self pauseAtTime:timeCopy];
   }
 
   [(AVTUsageTrackingRecordTimedEvent *)self totalTime];

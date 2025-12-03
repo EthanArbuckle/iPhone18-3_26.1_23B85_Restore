@@ -1,5 +1,5 @@
 @interface BRCSharingPCSChainFolderOperation
-- (BRCSharingPCSChainFolderOperation)initWithItem:(id)a3 sessionContext:(id)a4 syncUpCallback:(id)a5;
+- (BRCSharingPCSChainFolderOperation)initWithItem:(id)item sessionContext:(id)context syncUpCallback:(id)callback;
 - (id)createActivity;
 - (void)_performPCSChainBatch;
 - (void)main;
@@ -7,40 +7,40 @@
 
 @implementation BRCSharingPCSChainFolderOperation
 
-- (BRCSharingPCSChainFolderOperation)initWithItem:(id)a3 sessionContext:(id)a4 syncUpCallback:(id)a5
+- (BRCSharingPCSChainFolderOperation)initWithItem:(id)item sessionContext:(id)context syncUpCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 itemID];
-  v12 = [v11 debugItemIDString];
-  v13 = [@"sharing/prepare-folder-pcs" stringByAppendingPathComponent:v12];
+  itemCopy = item;
+  callbackCopy = callback;
+  contextCopy = context;
+  itemID = [itemCopy itemID];
+  debugItemIDString = [itemID debugItemIDString];
+  v13 = [@"sharing/prepare-folder-pcs" stringByAppendingPathComponent:debugItemIDString];
 
-  v14 = [v8 serverZone];
-  v15 = [v14 metadataSyncContext];
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v25.receiver = self;
   v25.super_class = BRCSharingPCSChainFolderOperation;
-  v16 = [(_BRCOperation *)&v25 initWithName:v13 syncContext:v15 sessionContext:v10];
+  v16 = [(_BRCOperation *)&v25 initWithName:v13 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v16)
   {
     [(_BRCOperation *)v16 setNonDiscretionary:1];
-    v17 = [v8 appLibrary];
+    appLibrary = [itemCopy appLibrary];
     appLibrary = v16->_appLibrary;
-    v16->_appLibrary = v17;
+    v16->_appLibrary = appLibrary;
 
-    v19 = [v8 clientZone];
-    v20 = [v8 itemID];
-    v21 = [v19 serverItemByItemID:v20];
+    clientZone = [itemCopy clientZone];
+    itemID2 = [itemCopy itemID];
+    v21 = [clientZone serverItemByItemID:itemID2];
     serverItem = v16->_serverItem;
     v16->_serverItem = v21;
 
-    v23 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v16 setGroup:v23];
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v16 setGroup:br_sharingMisc];
 
     v16->_chainedRecordsCount = 0;
-    objc_storeStrong(&v16->_syncUpCallback, a5);
-    [(BRCServerItem *)v16->_serverItem overrideCKInfoIfNecessaryForOutOfBandSyncOpWithLocalItem:v8];
+    objc_storeStrong(&v16->_syncUpCallback, callback);
+    [(BRCServerItem *)v16->_serverItem overrideCKInfoIfNecessaryForOutOfBandSyncOpWithLocalItem:itemCopy];
   }
 
   return v16;

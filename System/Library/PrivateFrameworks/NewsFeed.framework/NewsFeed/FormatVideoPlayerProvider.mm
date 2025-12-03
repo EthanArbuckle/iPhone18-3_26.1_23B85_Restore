@@ -1,9 +1,9 @@
 @interface FormatVideoPlayerProvider
 - (_TtC8NewsFeed25FormatVideoPlayerProvider)init;
-- (id)loadWithCompletionBlock:(id)a3;
-- (void)playbackFailedWithError:(id)a3;
+- (id)loadWithCompletionBlock:(id)block;
+- (void)playbackFailedWithError:(id)error;
 - (void)playbackFinished;
-- (void)playbackInitiatedWithButtonTapped:(BOOL)a3;
+- (void)playbackInitiatedWithButtonTapped:(BOOL)tapped;
 - (void)playbackPaused;
 - (void)playbackReadyToStart;
 - (void)playbackResumed;
@@ -14,14 +14,14 @@
 
 @implementation FormatVideoPlayerProvider
 
-- (id)loadWithCompletionBlock:(id)a3
+- (id)loadWithCompletionBlock:(id)block
 {
   sub_1D5B5472C(0, &qword_1EDF45B40, MEMORY[0x1E6968FB0], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &aBlock[-1] - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v9, v10);
   v12 = &aBlock[-1] - v11;
-  v13 = _Block_copy(a3);
+  v13 = _Block_copy(block);
   v14 = self + OBJC_IVAR____TtC8NewsFeed25FormatVideoPlayerProvider_data;
   v15 = *(type metadata accessor for FormatVideoPlayerData() + 36);
   v16 = sub_1D72585BC();
@@ -30,7 +30,7 @@
   (*(v17 + 56))(v12, 0, 1, v16);
   sub_1D5EB84C0(v12, v8);
   LODWORD(v15) = (*(v17 + 48))(v8, 1, v16);
-  v18 = self;
+  selfCopy = self;
   v19 = 0;
   if (v15 != 1)
   {
@@ -44,7 +44,7 @@
   sub_1D5E3E404(v12);
   v21 = OBJC_IVAR____TtC8NewsFeed25FormatVideoPlayerProvider_metadata;
   swift_beginAccess();
-  *(&v18->super.isa + v21) = v20;
+  *(&selfCopy->super.isa + v21) = v20;
 
   swift_unknownObjectRelease();
   aBlock[4] = nullsub_1;
@@ -58,16 +58,16 @@
   return v22;
 }
 
-- (void)playbackInitiatedWithButtonTapped:(BOOL)a3
+- (void)playbackInitiatedWithButtonTapped:(BOOL)tapped
 {
-  v3 = self;
+  selfCopy = self;
   _s8NewsFeed25FormatVideoPlayerProviderC17playbackInitiated16withButtonTappedySb_tF_0();
 }
 
 - (void)playbackReadyToStart
 {
   v2 = qword_1EDF32A58;
-  v7 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -89,44 +89,44 @@
 
 - (void)playbackStarted
 {
-  v2 = self;
+  selfCopy = self;
   FormatVideoPlayerProvider.playbackStarted()();
 }
 
 - (void)playbackPaused
 {
-  v2 = self;
+  selfCopy = self;
   FormatVideoPlayerProvider.playbackPaused()();
 }
 
 - (void)playbackResumed
 {
-  v2 = self;
+  selfCopy = self;
   FormatVideoPlayerProvider.playbackResumed()();
 }
 
 - (void)playbackFinished
 {
-  v2 = self;
+  selfCopy = self;
   FormatVideoPlayerProvider.playbackFinished()();
 }
 
-- (void)playbackFailedWithError:(id)a3
+- (void)playbackFailedWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  errorCopy = error;
   _s8NewsFeed25FormatVideoPlayerProviderC23playbackFailedWithErroryys0J0_pSgF_0();
 }
 
 - (void)startedPictureInPicture
 {
-  v2 = self;
+  selfCopy = self;
   FormatVideoPlayerProvider.startedPictureInPicture()();
 }
 
 - (void)stoppedPictureInPicture
 {
-  v2 = self;
+  selfCopy = self;
   FormatVideoPlayerProvider.stoppedPictureInPicture()();
 }
 

@@ -1,47 +1,47 @@
 @interface CRLCanvasInfoGeometry
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3;
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3 widthValid:(BOOL)a4 heightValid:(BOOL)a5;
-+ (id)geometryFromTransform:(CGAffineTransform *)a3 withSize:(CGSize)a4;
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform;
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform widthValid:(BOOL)valid heightValid:(BOOL)heightValid;
++ (id)geometryFromTransform:(CGAffineTransform *)transform withSize:(CGSize)size;
 - (BOOL)allValuesValidNumbers;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualExceptForPosition:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualExceptForPosition:(id)position;
 - (CGAffineTransform)fullTransform;
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transformBasedOnPoint:(SEL)a3 centeredAtPoint:(CGPoint)a4 withFlips:(CGPoint)a5;
-- (CGAffineTransform)transformBasedOnRect:(SEL)a3;
+- (CGAffineTransform)transformBasedOnPoint:(SEL)point centeredAtPoint:(CGPoint)atPoint withFlips:(CGPoint)flips;
+- (CGAffineTransform)transformBasedOnRect:(SEL)rect;
 - (CGAffineTransform)transformWithoutFlips;
 - (CGPoint)center;
 - (CGPoint)position;
 - (CGRect)boundsBeforeRotation;
 - (CGRect)transformedBounds;
 - (CGSize)size;
-- (CRLCanvasInfoGeometry)geometryWithNewBounds:(CGRect)a3;
-- (CRLCanvasInfoGeometry)geometryWithParentGeometry:(id)a3;
+- (CRLCanvasInfoGeometry)geometryWithNewBounds:(CGRect)bounds;
+- (CRLCanvasInfoGeometry)geometryWithParentGeometry:(id)geometry;
 - (CRLCanvasInfoGeometry)geometryWithValidNumbers;
-- (CRLCanvasInfoGeometry)initWithFullTransform:(CGAffineTransform *)a3 widthValid:(BOOL)a4 heightValid:(BOOL)a5;
-- (CRLCanvasInfoGeometry)initWithLayoutGeometry:(id)a3;
-- (CRLCanvasInfoGeometry)initWithPosition:(CGPoint)a3 size:(CGSize)a4 widthValid:(BOOL)a5 heightValid:(BOOL)a6 horizontalFlip:(BOOL)a7 verticalFlip:(BOOL)a8 angle:(double)a9;
-- (CRLCanvasInfoGeometry)initWithTransform:(CGAffineTransform *)a3 size:(CGSize)a4;
-- (CRLCanvasInfoGeometry)initWithTransformedBoundsOrigin:(CGPoint)a3 size:(CGSize)a4 horizontalFlip:(BOOL)a5 verticalFlip:(BOOL)a6 angle:(double)a7;
+- (CRLCanvasInfoGeometry)initWithFullTransform:(CGAffineTransform *)transform widthValid:(BOOL)valid heightValid:(BOOL)heightValid;
+- (CRLCanvasInfoGeometry)initWithLayoutGeometry:(id)geometry;
+- (CRLCanvasInfoGeometry)initWithPosition:(CGPoint)position size:(CGSize)size widthValid:(BOOL)valid heightValid:(BOOL)heightValid horizontalFlip:(BOOL)flip verticalFlip:(BOOL)verticalFlip angle:(double)angle;
+- (CRLCanvasInfoGeometry)initWithTransform:(CGAffineTransform *)transform size:(CGSize)size;
+- (CRLCanvasInfoGeometry)initWithTransformedBoundsOrigin:(CGPoint)origin size:(CGSize)size horizontalFlip:(BOOL)flip verticalFlip:(BOOL)verticalFlip angle:(double)angle;
 - (id)description;
-- (id)geometryByAppendingTransform:(CGAffineTransform *)a3;
-- (id)geometryRelativeToGeometry:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)geometryByAppendingTransform:(CGAffineTransform *)transform;
+- (id)geometryRelativeToGeometry:(id)geometry;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)normalizedGeometry;
-- (id)parentGeometryWithRelativeGeometry:(id)a3 parentSize:(CGSize)a4;
+- (id)parentGeometryWithRelativeGeometry:(id)geometry parentSize:(CGSize)size;
 @end
 
 @implementation CRLCanvasInfoGeometry
 
-- (CRLCanvasInfoGeometry)initWithPosition:(CGPoint)a3 size:(CGSize)a4 widthValid:(BOOL)a5 heightValid:(BOOL)a6 horizontalFlip:(BOOL)a7 verticalFlip:(BOOL)a8 angle:(double)a9
+- (CRLCanvasInfoGeometry)initWithPosition:(CGPoint)position size:(CGSize)size widthValid:(BOOL)valid heightValid:(BOOL)heightValid horizontalFlip:(BOOL)flip verticalFlip:(BOOL)verticalFlip angle:(double)angle
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  verticalFlipCopy = verticalFlip;
+  flipCopy = flip;
+  heightValidCopy = heightValid;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
   v25.receiver = self;
   v25.super_class = CRLCanvasInfoGeometry;
   v18 = [(CRLCanvasInfoGeometry *)&v25 init];
@@ -52,7 +52,7 @@
     v18->_position.y = y;
     v18->_size.width = width;
     v18->_size.height = height;
-    if (v11)
+    if (heightValidCopy)
     {
       v20 = 2;
     }
@@ -62,7 +62,7 @@
       v20 = 0;
     }
 
-    if (v10)
+    if (flipCopy)
     {
       v21 = 4;
     }
@@ -72,7 +72,7 @@
       v21 = 0;
     }
 
-    if (v9)
+    if (verticalFlipCopy)
     {
       v22 = 8;
     }
@@ -82,43 +82,43 @@
       v22 = 0;
     }
 
-    *&v18->_flags = v20 | a5 | v21 | v22 | *&v18->_flags & 0xF0;
-    sub_1001208E0(a9);
+    *&v18->_flags = v20 | valid | v21 | v22 | *&v18->_flags & 0xF0;
+    sub_1001208E0(angle);
     v19->_angle = v23;
   }
 
   return v19;
 }
 
-- (CRLCanvasInfoGeometry)initWithFullTransform:(CGAffineTransform *)a3 widthValid:(BOOL)a4 heightValid:(BOOL)a5
+- (CRLCanvasInfoGeometry)initWithFullTransform:(CGAffineTransform *)transform widthValid:(BOOL)valid heightValid:(BOOL)heightValid
 {
-  v5 = a5;
-  v6 = a4;
+  heightValidCopy = heightValid;
+  validCopy = valid;
   v29.receiver = self;
   v29.super_class = CRLCanvasInfoGeometry;
   v8 = [(CRLCanvasInfoGeometry *)&v29 init];
   if (v8)
   {
-    v9 = v6;
-    v10 = v5;
-    v11 = *&a3->c;
-    *&v28.a = *&a3->a;
+    v9 = validCopy;
+    v10 = heightValidCopy;
+    v11 = *&transform->c;
+    *&v28.a = *&transform->a;
     *&v28.c = v11;
-    *&v28.tx = *&a3->tx;
+    *&v28.tx = *&transform->tx;
     v12 = 0.0;
     v13 = 0;
     *&v11 = 0;
     v30 = CGRectApplyAffineTransform(*(&v9 - 2), &v28);
     v14 = 0.0;
-    if (v6)
+    if (validCopy)
     {
-      v14 = sqrt(a3->b * a3->b + a3->a * a3->a);
+      v14 = sqrt(transform->b * transform->b + transform->a * transform->a);
     }
 
-    if (v5)
+    if (heightValidCopy)
     {
-      v12 = sqrt(a3->d * a3->d + a3->c * a3->c);
-      LOBYTE(v5) = 2;
+      v12 = sqrt(transform->d * transform->d + transform->c * transform->c);
+      LOBYTE(heightValidCopy) = 2;
     }
 
     v8->_size.width = v14;
@@ -126,13 +126,13 @@
     v15 = sub_100120414(v30.origin.x, v30.origin.y, v30.size.width, v30.size.height);
     v8->_position.x = sub_10011F334(v15, v16, v14 * -0.5);
     v8->_position.y = v17;
-    v18 = sub_10011F31C(a3->tx + CGPointZero.y * a3->c + a3->a * CGPointZero.x, a3->ty + CGPointZero.y * a3->d + a3->b * CGPointZero.x, a3->tx + a3->c * 0.0 + a3->a * -1000.0);
+    v18 = sub_10011F31C(transform->tx + CGPointZero.y * transform->c + transform->a * CGPointZero.x, transform->ty + CGPointZero.y * transform->d + transform->b * CGPointZero.x, transform->tx + transform->c * 0.0 + transform->a * -1000.0);
     v20 = sub_1001208D0(v18, v19) * -57.2957795;
     v8->_angle = v20;
-    v21 = v5 | v6;
-    v22 = v5 | v6 | *&v8->_flags & 0xFC;
+    v21 = heightValidCopy | validCopy;
+    v22 = heightValidCopy | validCopy | *&v8->_flags & 0xFC;
     *&v8->_flags = v21 | *&v8->_flags & 0xFC;
-    v23 = sub_10011FBE4(a3->a, a3->c, a3->b, a3->d);
+    v23 = sub_10011FBE4(transform->a, transform->c, transform->b, transform->d);
     v24 = v23 <= 0.0;
     *&v8->_flags = v22 & 0xF3 | (4 * (v23 > 0.0));
     v25 = v20 + -180.0;
@@ -148,7 +148,7 @@
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRLCanvasMutableInfoGeometry alloc];
   flags = self->_flags;
@@ -161,15 +161,15 @@
   return [(CRLCanvasInfoGeometry *)v4 initWithPosition:*&flags & 1 size:(*&flags >> 1) & 1 widthValid:(*&flags >> 2) & 1 heightValid:(*&flags >> 3) & 1 horizontalFlip:x verticalFlip:y angle:width, height, angle];
 }
 
-- (CRLCanvasInfoGeometry)initWithTransformedBoundsOrigin:(CGPoint)a3 size:(CGSize)a4 horizontalFlip:(BOOL)a5 verticalFlip:(BOOL)a6 angle:(double)a7
+- (CRLCanvasInfoGeometry)initWithTransformedBoundsOrigin:(CGPoint)origin size:(CGSize)size horizontalFlip:(BOOL)flip verticalFlip:(BOOL)verticalFlip angle:(double)angle
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = [(CRLCanvasInfoGeometry *)self initWithPosition:1 size:1 widthValid:a5 heightValid:a6 horizontalFlip:CGPointZero.x verticalFlip:CGPointZero.y angle:a4.width, a4.height, a7];
-  v10 = v9;
-  if (v9)
+  y = origin.y;
+  x = origin.x;
+  angle = [(CRLCanvasInfoGeometry *)self initWithPosition:1 size:1 widthValid:flip heightValid:verticalFlip horizontalFlip:CGPointZero.x verticalFlip:CGPointZero.y angle:size.width, size.height, angle];
+  v10 = angle;
+  if (angle)
   {
-    [(CRLCanvasInfoGeometry *)v9 transformedBoundsOrigin];
+    [(CRLCanvasInfoGeometry *)angle transformedBoundsOrigin];
     v12 = sub_10011F31C(v10->_position.x, v10->_position.y, v11);
     v10->_position.x = sub_10011F334(x, y, v12);
     v10->_position.y = v13;
@@ -178,34 +178,34 @@
   return v10;
 }
 
-- (CRLCanvasInfoGeometry)initWithTransform:(CGAffineTransform *)a3 size:(CGSize)a4
+- (CRLCanvasInfoGeometry)initWithTransform:(CGAffineTransform *)transform size:(CGSize)size
 {
-  v6 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v6 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v6;
-  *&v10.tx = *&a3->tx;
-  CGAffineTransformScale(&v11, &v10, a4.width, a4.height);
+  *&v10.tx = *&transform->tx;
+  CGAffineTransformScale(&v11, &v10, size.width, size.height);
   v7 = *&v11.c;
-  *&a3->a = *&v11.a;
-  *&a3->c = v7;
-  *&a3->tx = *&v11.tx;
-  v8 = *&a3->c;
-  *&v11.a = *&a3->a;
+  *&transform->a = *&v11.a;
+  *&transform->c = v7;
+  *&transform->tx = *&v11.tx;
+  v8 = *&transform->c;
+  *&v11.a = *&transform->a;
   *&v11.c = v8;
-  *&v11.tx = *&a3->tx;
+  *&v11.tx = *&transform->tx;
   return [(CRLCanvasInfoGeometry *)self initWithFullTransform:&v11 widthValid:1 heightValid:1];
 }
 
-- (CRLCanvasInfoGeometry)initWithLayoutGeometry:(id)a3
+- (CRLCanvasInfoGeometry)initWithLayoutGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = v4;
+  geometryCopy = geometry;
+  v5 = geometryCopy;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
-  if (v4)
+  if (geometryCopy)
   {
-    [v4 transform];
+    [geometryCopy transform];
     v17 = v20;
     v18 = v21;
     v19 = v22;
@@ -264,7 +264,7 @@
   return [(CRLCanvasInfoGeometry *)self transformBasedOnRect:?];
 }
 
-- (CGAffineTransform)transformBasedOnRect:(SEL)a3
+- (CGAffineTransform)transformBasedOnRect:(SEL)rect
 {
   y = a4.origin.y;
   x = a4.origin.x;
@@ -273,16 +273,16 @@
   return [(CRLCanvasInfoGeometry *)self transformBasedOnPoint:x centeredAtPoint:y, v8, v7];
 }
 
-- (CGAffineTransform)transformBasedOnPoint:(SEL)a3 centeredAtPoint:(CGPoint)a4 withFlips:(CGPoint)a5
+- (CGAffineTransform)transformBasedOnPoint:(SEL)point centeredAtPoint:(CGPoint)atPoint withFlips:(CGPoint)flips
 {
   v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.x;
+  y = flips.y;
+  x = flips.x;
+  v9 = atPoint.x;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  CGAffineTransformMakeTranslation(retstr, a4.x, a4.y);
+  CGAffineTransformMakeTranslation(retstr, atPoint.x, atPoint.y);
   result = [(CRLCanvasInfoGeometry *)self angle];
   v14 = v13;
   if (v13 != 0.0 || v6 && ([(CRLCanvasInfoGeometry *)self horizontalFlip]|| (result = [(CRLCanvasInfoGeometry *)self verticalFlip], result)))
@@ -403,39 +403,39 @@
 
 - (CRLCanvasInfoGeometry)geometryWithValidNumbers
 {
-  v2 = self;
-  if ([(CRLCanvasInfoGeometry *)v2 allValuesValidNumbers])
+  selfCopy = self;
+  if ([(CRLCanvasInfoGeometry *)selfCopy allValuesValidNumbers])
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
   {
-    v3 = [(CRLCanvasInfoGeometry *)v2 mutableCopy];
-    [(CRLCanvasInfoGeometry *)v2 size];
+    v3 = [(CRLCanvasInfoGeometry *)selfCopy mutableCopy];
+    [(CRLCanvasInfoGeometry *)selfCopy size];
     if (!sub_100120888(v4, v5))
     {
       [(CRLCanvasInfoGeometry *)v3 setSize:1.0, 1.0];
-      if (![(CRLCanvasInfoGeometry *)v2 widthValid])
+      if (![(CRLCanvasInfoGeometry *)selfCopy widthValid])
       {
         [(CRLCanvasInfoGeometry *)v3 size];
         [(CRLCanvasInfoGeometry *)v3 setSize:0.0];
       }
 
-      if (![(CRLCanvasInfoGeometry *)v2 heightValid])
+      if (![(CRLCanvasInfoGeometry *)selfCopy heightValid])
       {
         [(CRLCanvasInfoGeometry *)v3 size];
         [(CRLCanvasInfoGeometry *)v3 setSize:?];
       }
     }
 
-    [(CRLCanvasInfoGeometry *)v2 position];
+    [(CRLCanvasInfoGeometry *)selfCopy position];
     if (!sub_100120888(v6, v7))
     {
       [(CRLCanvasInfoGeometry *)v3 setPosition:CGPointZero.x, CGPointZero.y];
     }
 
-    [(CRLCanvasInfoGeometry *)v2 angle];
+    [(CRLCanvasInfoGeometry *)selfCopy angle];
     if ((v8 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       [(CRLCanvasInfoGeometry *)v3 setAngle:0.0];
@@ -445,16 +445,16 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_8;
@@ -477,20 +477,20 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqualExceptForPosition:(id)a3
+- (BOOL)isEqualExceptForPosition:(id)position
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  positionCopy = position;
+  v5 = positionCopy;
+  if (positionCopy)
   {
-    if (v4 == self)
+    if (positionCopy == self)
     {
       v7 = 1;
     }
 
     else
     {
-      v6 = v4;
+      v6 = positionCopy;
       if (sub_10011ECC8(self->_size.width, self->_size.height, v6->_size.width, v6->_size.height) && ((*&v6->_flags ^ *&self->_flags) & 0xF) == 0)
       {
         angle = self->_angle;
@@ -546,63 +546,63 @@ LABEL_8:
   return result;
 }
 
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3 widthValid:(BOOL)a4 heightValid:(BOOL)a5
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform widthValid:(BOOL)valid heightValid:(BOOL)heightValid
 {
-  v5 = a5;
-  v6 = a4;
+  heightValidCopy = heightValid;
+  validCopy = valid;
   v8 = [CRLCanvasInfoGeometry alloc];
-  v9 = *&a3->c;
-  v12[0] = *&a3->a;
+  v9 = *&transform->c;
+  v12[0] = *&transform->a;
   v12[1] = v9;
-  v12[2] = *&a3->tx;
-  v10 = [(CRLCanvasInfoGeometry *)v8 initWithFullTransform:v12 widthValid:v6 heightValid:v5];
+  v12[2] = *&transform->tx;
+  v10 = [(CRLCanvasInfoGeometry *)v8 initWithFullTransform:v12 widthValid:validCopy heightValid:heightValidCopy];
 
   return v10;
 }
 
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v6[0] = *&a3->a;
+  v3 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v3;
-  v6[2] = *&a3->tx;
+  v6[2] = *&transform->tx;
   v4 = [CRLCanvasInfoGeometry geometryFromFullTransform:v6 widthValid:1 heightValid:1];
 
   return v4;
 }
 
-+ (id)geometryFromTransform:(CGAffineTransform *)a3 withSize:(CGSize)a4
++ (id)geometryFromTransform:(CGAffineTransform *)transform withSize:(CGSize)size
 {
-  v4 = *&a3->c;
-  *&v7.a = *&a3->a;
+  v4 = *&transform->c;
+  *&v7.a = *&transform->a;
   *&v7.c = v4;
-  *&v7.tx = *&a3->tx;
-  CGAffineTransformScale(&v8, &v7, a4.width, a4.height);
+  *&v7.tx = *&transform->tx;
+  CGAffineTransformScale(&v8, &v7, size.width, size.height);
   v5 = [CRLCanvasInfoGeometry geometryFromFullTransform:&v8];
 
   return v5;
 }
 
-- (id)geometryByAppendingTransform:(CGAffineTransform *)a3
+- (id)geometryByAppendingTransform:(CGAffineTransform *)transform
 {
   [(CRLCanvasInfoGeometry *)self fullTransform];
-  v5 = *&a3->c;
-  *&v8.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v8.a = *&transform->a;
   *&v8.c = v5;
-  *&v8.tx = *&a3->tx;
+  *&v8.tx = *&transform->tx;
   CGAffineTransformConcat(&v10, &t1, &v8);
   v6 = [CRLCanvasInfoGeometry geometryFromFullTransform:&v10 widthValid:[(CRLCanvasInfoGeometry *)self widthValid] heightValid:[(CRLCanvasInfoGeometry *)self heightValid]];
 
   return v6;
 }
 
-- (CRLCanvasInfoGeometry)geometryWithParentGeometry:(id)a3
+- (CRLCanvasInfoGeometry)geometryWithParentGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   [(CRLCanvasInfoGeometry *)self fullTransform];
-  if (v4)
+  if (geometryCopy)
   {
-    [v4 transform];
+    [geometryCopy transform];
   }
 
   else
@@ -616,13 +616,13 @@ LABEL_8:
   return v5;
 }
 
-- (id)geometryRelativeToGeometry:(id)a3
+- (id)geometryRelativeToGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   [(CRLCanvasInfoGeometry *)self fullTransform];
-  if (v4)
+  if (geometryCopy)
   {
-    [v4 transform];
+    [geometryCopy transform];
   }
 
   else
@@ -637,15 +637,15 @@ LABEL_8:
   return v5;
 }
 
-- (id)parentGeometryWithRelativeGeometry:(id)a3 parentSize:(CGSize)a4
+- (id)parentGeometryWithRelativeGeometry:(id)geometry parentSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  geometryCopy = geometry;
   [(CRLCanvasInfoGeometry *)self size];
   v9 = v8;
   v11 = v10;
-  [v7 size];
+  [geometryCopy size];
   if (!sub_10011ECC8(v9, v11, v12, v13))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -676,9 +676,9 @@ LABEL_8:
   }
 
   memset(&v24, 0, sizeof(v24));
-  if (v7)
+  if (geometryCopy)
   {
-    [v7 transform];
+    [geometryCopy transform];
   }
 
   else
@@ -695,17 +695,17 @@ LABEL_8:
   CGAffineTransformConcat(&v22, &t1, &v20);
   v17 = [CRLCanvasInfoGeometry alloc];
   t1 = v22;
-  v18 = [(CRLCanvasInfoGeometry *)v17 initWithTransform:&t1 size:width, height];
+  height = [(CRLCanvasInfoGeometry *)v17 initWithTransform:&t1 size:width, height];
 
-  return v18;
+  return height;
 }
 
-- (CRLCanvasInfoGeometry)geometryWithNewBounds:(CGRect)a3
+- (CRLCanvasInfoGeometry)geometryWithNewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = [(CRLCanvasInfoGeometry *)self mutableCopy];
   [v8 setSize:{width, height}];
   v9 = sub_100120414(x, y, width, height);
@@ -736,9 +736,9 @@ LABEL_8:
     angle = v6;
   }
 
-  v7 = [[CRLCanvasInfoGeometry alloc] initWithPosition:*&self->_flags & 1 size:(*&self->_flags >> 1) & 1 widthValid:v5 heightValid:0 horizontalFlip:self->_position.x verticalFlip:self->_position.y angle:self->_size.width, self->_size.height, angle];
+  angle = [[CRLCanvasInfoGeometry alloc] initWithPosition:*&self->_flags & 1 size:(*&self->_flags >> 1) & 1 widthValid:v5 heightValid:0 horizontalFlip:self->_position.x verticalFlip:self->_position.y angle:self->_size.width, self->_size.height, angle];
 
-  return v7;
+  return angle;
 }
 
 - (id)description

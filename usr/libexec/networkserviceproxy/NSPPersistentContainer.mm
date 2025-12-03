@@ -10,18 +10,18 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 firstObject];
-    if (v5)
+    firstObject = [v3 firstObject];
+    if (firstObject)
     {
       v6 = nplog_obj();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = v5;
+        v14 = firstObject;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Application Support Directory: %@", buf, 0xCu);
       }
 
-      v7 = [NSString stringWithFormat:@"%@/networkserviceproxy", v5];
+      v7 = [NSString stringWithFormat:@"%@/networkserviceproxy", firstObject];
       if (v7)
       {
         v8 = [NSURL fileURLWithPath:v7 isDirectory:1];
@@ -49,7 +49,7 @@
     _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to set custom directory for coreData storage, using default Directory", buf, 2u);
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___NSPPersistentContainer;
   v8 = objc_msgSendSuper2(&v12, "defaultDirectoryURL");
 LABEL_15:

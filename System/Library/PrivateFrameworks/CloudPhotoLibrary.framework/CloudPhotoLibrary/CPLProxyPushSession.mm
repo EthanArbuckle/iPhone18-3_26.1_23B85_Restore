@@ -1,5 +1,5 @@
 @interface CPLProxyPushSession
-- (void)commitChangeBatch:(id)a3 withCompletionHandler:(id)a4;
+- (void)commitChangeBatch:(id)batch withCompletionHandler:(id)handler;
 @end
 
 @implementation CPLProxyPushSession
@@ -110,18 +110,18 @@ uint64_t __63__CPLProxyPushSession_commitChangeBatch_withCompletionHandler___blo
   return result;
 }
 
-- (void)commitChangeBatch:(id)a3 withCompletionHandler:(id)a4
+- (void)commitChangeBatch:(id)batch withCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  handlerCopy = handler;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v8 = __CPLProxyPushSessionOSLogDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = batchCopy;
       OUTLINED_FUNCTION_1_1(&dword_1DC05A000, v8, v9, "Comitting %@", buf);
     }
 
@@ -140,11 +140,11 @@ uint64_t __63__CPLProxyPushSession_commitChangeBatch_withCompletionHandler___blo
   v14[1] = 3221225472;
   v14[2] = __63__CPLProxyPushSession_commitChangeBatch_withCompletionHandler___block_invoke;
   v14[3] = &unk_1E861ABE0;
-  v15 = v6;
-  v16 = v7;
+  v15 = batchCopy;
+  v16 = handlerCopy;
   v14[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = batchCopy;
+  v12 = handlerCopy;
   [(CPLProxySession *)self dispatchBlockWhenLibraryIsOpen:v14];
 
   v13 = *MEMORY[0x1E69E9840];

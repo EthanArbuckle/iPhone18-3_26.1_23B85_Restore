@@ -1,5 +1,5 @@
 @interface FedStatsCohortFactory
-+ (id)cohortQueryFieldByName:(id)a3;
++ (id)cohortQueryFieldByName:(id)name;
 + (id)sharedInstance;
 - (FedStatsCohortFactory)init;
 @end
@@ -377,7 +377,7 @@
   block[1] = 3221225472;
   block[2] = __39__FedStatsCohortFactory_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -395,22 +395,22 @@ uint64_t __39__FedStatsCohortFactory_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)cohortQueryFieldByName:(id)a3
++ (id)cohortQueryFieldByName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[FedStatsCohortFactory sharedInstance];
-  v5 = [v4 cohortObjects];
+  cohortObjects = [v4 cohortObjects];
 
-  v6 = [v5 objectForKey:v3];
+  v6 = [cohortObjects objectForKey:nameCopy];
 
   if (v6)
   {
-    [v5 objectForKey:v3];
+    [cohortObjects objectForKey:nameCopy];
   }
 
   else
   {
-    [FedStatsCohortQueryFieldGeneric cohortQueryFieldWithKey:v3];
+    [FedStatsCohortQueryFieldGeneric cohortQueryFieldWithKey:nameCopy];
   }
   v7 = ;
 

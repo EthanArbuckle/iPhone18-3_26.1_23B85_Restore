@@ -1,7 +1,7 @@
 @interface PHQueryPersonContext
-+ (id)fetchOptionsWithOverriddenChangeDetectionCriteriaIfNecessary:(id)a3;
-+ (id)subpredicatesForFetchOptions:(id)a3;
-- (PHQueryPersonContext)initWithFetchOptions:(id)a3;
++ (id)fetchOptionsWithOverriddenChangeDetectionCriteriaIfNecessary:(id)necessary;
++ (id)subpredicatesForFetchOptions:(id)options;
+- (PHQueryPersonContext)initWithFetchOptions:(id)options;
 - (id)_verifiedVisiblePredicate;
 - (id)personContextAdditionalPredicate;
 - (id)personContextDetailPredicate;
@@ -18,9 +18,9 @@
 {
   v10[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [(PHQueryPersonContext *)self _verifiedVisiblePredicate];
-  v5 = [(PHQueryPersonContext *)self _notHiddenTypePredicate];
-  v10[1] = v5;
+  _verifiedVisiblePredicate = [(PHQueryPersonContext *)self _verifiedVisiblePredicate];
+  _notHiddenTypePredicate = [(PHQueryPersonContext *)self _notHiddenTypePredicate];
+  v10[1] = _notHiddenTypePredicate;
   v6 = [(PHQueryPersonContext *)self _faceCountPredicateWithMinimum:1];
   v10[2] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
@@ -46,78 +46,78 @@
 - (id)subpredicates
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PHFetchOptions *)self->_fetchOptions personContext];
+  personContext = [(PHFetchOptions *)self->_fetchOptions personContext];
   v4 = MEMORY[0x1E695E0F0];
-  if (v3 <= 2)
+  if (personContext <= 2)
   {
-    if (v3)
+    if (personContext)
     {
-      if (v3 == 1)
+      if (personContext == 1)
       {
-        v5 = [(PHQueryPersonContext *)self personContextPeopleHomePredicate];
-        v13 = v5;
+        personContextPeopleHomePredicate = [(PHQueryPersonContext *)self personContextPeopleHomePredicate];
+        v13 = personContextPeopleHomePredicate;
         v6 = &v13;
       }
 
       else
       {
-        if (v3 != 2)
+        if (personContext != 2)
         {
           goto LABEL_18;
         }
 
-        v5 = [(PHQueryPersonContext *)self personContextAdditionalPredicate];
-        v12 = v5;
+        personContextPeopleHomePredicate = [(PHQueryPersonContext *)self personContextAdditionalPredicate];
+        v12 = personContextPeopleHomePredicate;
         v6 = &v12;
       }
     }
 
     else
     {
-      v5 = [(PHQueryPersonContext *)self personContextNonePredicates];
-      v14[0] = v5;
+      personContextPeopleHomePredicate = [(PHQueryPersonContext *)self personContextNonePredicates];
+      v14[0] = personContextPeopleHomePredicate;
       v6 = v14;
     }
   }
 
-  else if (v3 > 5)
+  else if (personContext > 5)
   {
-    if (v3 == 6)
+    if (personContext == 6)
     {
-      v5 = [(PHQueryPersonContext *)self personContextUnverifiedPredicate];
-      v9 = v5;
+      personContextPeopleHomePredicate = [(PHQueryPersonContext *)self personContextUnverifiedPredicate];
+      v9 = personContextPeopleHomePredicate;
       v6 = &v9;
     }
 
     else
     {
-      if (v3 != 7)
+      if (personContext != 7)
       {
         goto LABEL_18;
       }
 
-      v5 = [(PHQueryPersonContext *)self personContextNoTombstonePredicate];
-      v8 = v5;
+      personContextPeopleHomePredicate = [(PHQueryPersonContext *)self personContextNoTombstonePredicate];
+      v8 = personContextPeopleHomePredicate;
       v6 = &v8;
     }
   }
 
-  else if (v3 == 3)
+  else if (personContext == 3)
   {
-    v5 = [(PHQueryPersonContext *)self personContextDetailPredicate];
-    v11 = v5;
+    personContextPeopleHomePredicate = [(PHQueryPersonContext *)self personContextDetailPredicate];
+    v11 = personContextPeopleHomePredicate;
     v6 = &v11;
   }
 
   else
   {
-    if (v3 != 4)
+    if (personContext != 4)
     {
       goto LABEL_18;
     }
 
-    v5 = [(PHQueryPersonContext *)self personContextOneUpPredicate];
-    v10 = v5;
+    personContextPeopleHomePredicate = [(PHQueryPersonContext *)self personContextOneUpPredicate];
+    v10 = personContextPeopleHomePredicate;
     v6 = &v10;
   }
 
@@ -132,16 +132,16 @@ LABEL_18:
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [(PHQueryPersonContext *)self _verifiedPredicate];
-  v19[0] = v4;
+  _verifiedPredicate = [(PHQueryPersonContext *)self _verifiedPredicate];
+  v19[0] = _verifiedPredicate;
   v5 = [(PHQueryPersonContext *)self _faceCountPredicateWithMinimum:[(PHFetchOptions *)self->_fetchOptions minimumVerifiedFaceCount]];
   v19[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v7 = [v3 andPredicateWithSubpredicates:v6];
 
   v8 = MEMORY[0x1E696AB28];
-  v9 = [(PHQueryPersonContext *)self _notVerifiedPredicate];
-  v18[0] = v9;
+  _notVerifiedPredicate = [(PHQueryPersonContext *)self _notVerifiedPredicate];
+  v18[0] = _notVerifiedPredicate;
   v10 = [(PHQueryPersonContext *)self _faceCountPredicateWithMinimum:[(PHFetchOptions *)self->_fetchOptions minimumUnverifiedFaceCount]];
   v18[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
@@ -160,8 +160,8 @@ LABEL_18:
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [(PHQueryPersonContext *)self _notVerifiedPredicate];
-  v9[0] = v4;
+  _notVerifiedPredicate = [(PHQueryPersonContext *)self _notVerifiedPredicate];
+  v9[0] = _notVerifiedPredicate;
   v5 = [(PHQueryPersonContext *)self _faceCountPredicateWithMinimum:[(PHFetchOptions *)self->_fetchOptions minimumUnverifiedFaceCount]];
   v9[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
@@ -176,8 +176,8 @@ LABEL_18:
   v2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K >= 1)", @"faceCount"];
   v3 = MEMORY[0x1E696AB28];
   v8[0] = v2;
-  v4 = [MEMORY[0x1E69BE608] predicateForVisibleKeyFace];
-  v8[1] = v4;
+  predicateForVisibleKeyFace = [MEMORY[0x1E69BE608] predicateForVisibleKeyFace];
+  v8[1] = predicateForVisibleKeyFace;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v6 = [v3 andPredicateWithSubpredicates:v5];
 
@@ -188,16 +188,16 @@ LABEL_18:
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [(PHQueryPersonContext *)self _notVerifiedPredicate];
-  v20[0] = v4;
+  _notVerifiedPredicate = [(PHQueryPersonContext *)self _notVerifiedPredicate];
+  v20[0] = _notVerifiedPredicate;
   v5 = [(PHQueryPersonContext *)self _faceCountPredicateWithMinimum:7];
   v20[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v7 = [v3 andPredicateWithSubpredicates:v6];
 
   v8 = MEMORY[0x1E696AB28];
-  v9 = [(PHQueryPersonContext *)self _verifiedVisiblePredicate];
-  v19[0] = v9;
+  _verifiedVisiblePredicate = [(PHQueryPersonContext *)self _verifiedVisiblePredicate];
+  v19[0] = _verifiedVisiblePredicate;
   v10 = [(PHQueryPersonContext *)self _faceCountPredicateWithMinimum:1];
   v19[1] = v10;
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(noindex:(%K) != %d)", @"type", -1];
@@ -228,26 +228,26 @@ LABEL_18:
   return v6;
 }
 
-- (PHQueryPersonContext)initWithFetchOptions:(id)a3
+- (PHQueryPersonContext)initWithFetchOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = PHQueryPersonContext;
   v6 = [(PHQueryPersonContext *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fetchOptions, a3);
+    objc_storeStrong(&v6->_fetchOptions, options);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (id)fetchOptionsWithOverriddenChangeDetectionCriteriaIfNecessary:(id)a3
++ (id)fetchOptionsWithOverriddenChangeDetectionCriteriaIfNecessary:(id)necessary
 {
-  v3 = a3;
-  v4 = [v3 copy];
+  necessaryCopy = necessary;
+  v4 = [necessaryCopy copy];
   v5 = v4;
   if (v4)
   {
@@ -261,30 +261,30 @@ LABEL_18:
 
   v7 = v6;
 
-  v8 = [v3 personContext];
-  if (v8 == 1)
+  personContext = [necessaryCopy personContext];
+  if (personContext == 1)
   {
     v9 = objc_alloc_init(MEMORY[0x1E69BE700]);
-    v10 = [MEMORY[0x1E69BE540] entityName];
-    [v9 addAttributeKeyPath:@"hidden" forEntityName:v10];
+    entityName = [MEMORY[0x1E69BE540] entityName];
+    [v9 addAttributeKeyPath:@"hidden" forEntityName:entityName];
 
-    v11 = [MEMORY[0x1E69BE540] entityName];
-    [v9 addAttributeKeyPath:@"trashedState" forEntityName:v11];
+    entityName2 = [MEMORY[0x1E69BE540] entityName];
+    [v9 addAttributeKeyPath:@"trashedState" forEntityName:entityName2];
 
-    v12 = [MEMORY[0x1E69BE540] entityName];
-    [v9 addAttributeKeyPath:@"visibilityState" forEntityName:v12];
+    entityName3 = [MEMORY[0x1E69BE540] entityName];
+    [v9 addAttributeKeyPath:@"visibilityState" forEntityName:entityName3];
 
-    v13 = [MEMORY[0x1E69BE540] entityName];
-    [v9 addRelationshipKeyPath:@"detectedFaces" forEntityName:v13];
+    entityName4 = [MEMORY[0x1E69BE540] entityName];
+    [v9 addRelationshipKeyPath:@"detectedFaces" forEntityName:entityName4];
 
-    v14 = [MEMORY[0x1E69BE540] entityName];
-    [v9 addRelationshipKeyPath:@"temporalDetectedFaces" forEntityName:v14];
+    entityName5 = [MEMORY[0x1E69BE540] entityName];
+    [v9 addRelationshipKeyPath:@"temporalDetectedFaces" forEntityName:entityName5];
 
-    v15 = [MEMORY[0x1E69BE608] entityName];
-    [v9 addRelationshipKeyPath:@"detectedFaces" forEntityName:v15];
+    entityName6 = [MEMORY[0x1E69BE608] entityName];
+    [v9 addRelationshipKeyPath:@"detectedFaces" forEntityName:entityName6];
 
-    v16 = [MEMORY[0x1E69BE608] entityName];
-    [v9 addRelationshipKeyPath:@"temporalDetectedFaces" forEntityName:v16];
+    entityName7 = [MEMORY[0x1E69BE608] entityName];
+    [v9 addRelationshipKeyPath:@"temporalDetectedFaces" forEntityName:entityName7];
 
     v17 = [[PHQueryChangeDetectionCriteria alloc] initWithPLQueryChangeDetectionCriteria:v9];
     [v7 setChangeDetectionCriteria:v17];
@@ -293,18 +293,18 @@ LABEL_18:
   return v7;
 }
 
-+ (id)subpredicatesForFetchOptions:(id)a3
++ (id)subpredicatesForFetchOptions:(id)options
 {
-  v3 = a3;
-  if (!v3)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v3 = objc_opt_new();
+    optionsCopy = objc_opt_new();
   }
 
-  v4 = [[PHQueryPersonContext alloc] initWithFetchOptions:v3];
-  v5 = [(PHQueryPersonContext *)v4 subpredicates];
+  v4 = [[PHQueryPersonContext alloc] initWithFetchOptions:optionsCopy];
+  subpredicates = [(PHQueryPersonContext *)v4 subpredicates];
 
-  return v5;
+  return subpredicates;
 }
 
 @end

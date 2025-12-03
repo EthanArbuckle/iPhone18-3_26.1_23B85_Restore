@@ -1,6 +1,6 @@
 @interface MTKView
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)GenericRGB;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)GenericRGB;
 @end
 
 @implementation MTKView
@@ -165,61 +165,61 @@
   return v9;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)GenericRGB
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)GenericRGB
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"deviceName"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"deviceName"])
   {
-    v10 = [v9 device];
+    device = [objectCopy device];
 LABEL_5:
-    v11 = v10;
-    v12 = [v10 name];
+    layer = device;
+    name = [device name];
     goto LABEL_6;
   }
 
-  if ([v8 isEqualToString:@"preferredDeviceName"])
+  if ([nameCopy isEqualToString:@"preferredDeviceName"])
   {
-    v10 = [v9 preferredDevice];
+    device = [objectCopy preferredDevice];
     goto LABEL_5;
   }
 
-  if ([v8 isEqualToString:@"colorPixelFormatName"])
+  if ([nameCopy isEqualToString:@"colorPixelFormatName"])
   {
-    [v9 colorPixelFormat];
+    [objectCopy colorPixelFormat];
   }
 
   else
   {
-    if ([v8 isEqualToString:@"clearColorAsCGColor"])
+    if ([nameCopy isEqualToString:@"clearColorAsCGColor"])
     {
-      [v9 clearColor];
+      [objectCopy clearColor];
       GenericRGB = CGColorCreateGenericRGB(v17, v18, v19, v20);
       goto LABEL_8;
     }
 
-    if (![v8 isEqualToString:@"depthStencilPixelFormatName"])
+    if (![nameCopy isEqualToString:@"depthStencilPixelFormatName"])
     {
-      if ([v8 isEqualToString:@"maximumDrawableCount"])
+      if ([nameCopy isEqualToString:@"maximumDrawableCount"])
       {
-        v11 = [v9 layer];
-        v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 maximumDrawableCount]);
+        layer = [objectCopy layer];
+        name = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [layer maximumDrawableCount]);
       }
 
       else
       {
-        if ([v8 isEqualToString:@"presentsWithTransaction"])
+        if ([nameCopy isEqualToString:@"presentsWithTransaction"])
         {
-          v11 = [v9 layer];
-          v21 = [v11 presentsWithTransaction];
+          layer = [objectCopy layer];
+          presentsWithTransaction = [layer presentsWithTransaction];
         }
 
         else
         {
-          if (![v8 isEqualToString:@"allowsNextDrawableTimeout"])
+          if (![nameCopy isEqualToString:@"allowsNextDrawableTimeout"])
           {
-            v11 = v9;
-            v22 = v8;
+            layer = objectCopy;
+            v22 = nameCopy;
             if (![v22 length])
             {
               goto LABEL_41;
@@ -235,25 +235,25 @@ LABEL_5:
             {
               if ([v22 length] < 2)
               {
-                v27 = [v22 uppercaseString];
+                uppercaseString = [v22 uppercaseString];
               }
 
               else
               {
                 v24 = [v22 substringToIndex:1];
-                v25 = [v24 uppercaseString];
+                uppercaseString2 = [v24 uppercaseString];
                 v26 = [v22 substringFromIndex:1];
-                v27 = [v25 stringByAppendingString:v26];
+                uppercaseString = [uppercaseString2 stringByAppendingString:v26];
               }
 
-              v28 = [@"is" stringByAppendingString:v27];
+              v28 = [@"is" stringByAppendingString:uppercaseString];
               NSSelectorFromString(v28);
               v23 = (objc_opt_respondsToSelector() & 1) != 0 ? v28 : 0;
             }
 
             if (v23)
             {
-              GenericRGB = [v11 valueForKey:v23];
+              GenericRGB = [layer valueForKey:v23];
             }
 
             else
@@ -262,9 +262,9 @@ LABEL_41:
               if (GenericRGB)
               {
                 v29 = v22;
-                if (v11)
+                if (layer)
                 {
-                  v30 = [NSString stringWithFormat:@"%@", v11];
+                  v30 = [NSString stringWithFormat:@"%@", layer];
                 }
 
                 else
@@ -308,21 +308,21 @@ LABEL_41:
             goto LABEL_7;
           }
 
-          v11 = [v9 layer];
-          v21 = [v11 allowsNextDrawableTimeout];
+          layer = [objectCopy layer];
+          presentsWithTransaction = [layer allowsNextDrawableTimeout];
         }
 
-        v12 = [NSNumber numberWithBool:v21];
+        name = [NSNumber numberWithBool:presentsWithTransaction];
       }
 
 LABEL_6:
-      GenericRGB = v12;
+      GenericRGB = name;
 LABEL_7:
 
       goto LABEL_8;
     }
 
-    [v9 depthStencilPixelFormat];
+    [objectCopy depthStencilPixelFormat];
   }
 
   Name = MTLPixelFormatGetName();

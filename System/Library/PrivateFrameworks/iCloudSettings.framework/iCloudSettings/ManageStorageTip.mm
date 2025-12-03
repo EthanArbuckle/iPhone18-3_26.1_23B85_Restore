@@ -8,7 +8,7 @@
 
 - (BOOL)containsUpsellAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2758A11FC();
 
   return v3;
@@ -16,7 +16,7 @@
 
 - (BOOL)containsFamilyAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2758A1330();
 
   return v3;

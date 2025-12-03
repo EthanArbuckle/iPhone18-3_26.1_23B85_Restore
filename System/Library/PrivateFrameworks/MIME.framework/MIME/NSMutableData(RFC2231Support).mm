@@ -24,15 +24,15 @@
     v41.length = v8;
     if (CFStringFindCharacterFromSet(v34, mf_appendRFC2231CompliantValue_forKey__specialCSet, v41, 0, 0))
     {
-      v9 = [(__CFString *)v34 mf_bestMimeCharset];
-      v32 = [v9 cfStringEncoding];
-      v10 = [v9 charsetName];
+      mf_bestMimeCharset = [(__CFString *)v34 mf_bestMimeCharset];
+      cfStringEncoding = [mf_bestMimeCharset cfStringEncoding];
+      charsetName = [mf_bestMimeCharset charsetName];
     }
 
     else
     {
-      v10 = 0;
-      v32 = 1536;
+      charsetName = 0;
+      cfStringEncoding = 1536;
     }
 
     if (v8 >= 1)
@@ -50,20 +50,20 @@
         v36 = 0xAAAAAAAAAAAAAAAALL;
         v40.location = v11;
         v40.length = v8;
-        Bytes = MFStringGetBytes(v34, v40, v32, 0, 0, v38, 64, &v36);
-        [a1 mf_appendCString:";\n\t"];
-        [a1 appendData:v33];
+        Bytes = MFStringGetBytes(v34, v40, cfStringEncoding, 0, 0, v38, 64, &v36);
+        [self mf_appendCString:";\n\t"];
+        [self appendData:v33];
         if (v8 > Bytes || (v12 & 0x80000000) == 0)
         {
           memset(v37, 170, 20);
-          [a1 appendBytes:"*" length:1];
-          [a1 appendBytes:v37 length:{__snprintf_chk(v37, 0x14uLL, 0, 0x14uLL, "%d", ++v12)}];
+          [self appendBytes:"*" length:1];
+          [self appendBytes:v37 length:{__snprintf_chk(v37, 0x14uLL, 0, 0x14uLL, "%d", ++v12)}];
         }
 
         v35 = v8 - Bytes;
         v15 = v36;
         v16 = v38 + v36;
-        if (v10)
+        if (charsetName)
         {
           break;
         }
@@ -79,7 +79,7 @@
           mf_appendRFC2231CompliantValue_forKey__mimeNeedsEscapeByteSet = v24;
         }
 
-        [a1 appendBytes:"=" length:1];
+        [self appendBytes:"=" length:1];
         if (v15 >= 1)
         {
           v26 = v38;
@@ -93,7 +93,7 @@
           }
 
           v20 = mf_appendRFC2231CompliantValue_forKey__mimeNeedsEscapeByteSet;
-          [a1 appendBytes:"" length:1];
+          [self appendBytes:"" length:1];
           goto LABEL_27;
         }
 
@@ -124,13 +124,13 @@ LABEL_41:
       }
 
       v20 = v17;
-      [a1 appendBytes:"*=" length:2];
+      [self appendBytes:"*=" length:2];
       if (v12 <= 0)
       {
-        v21 = [v10 dataUsingEncoding:1 allowLossyConversion:1];
-        [a1 appendData:v21];
+        v21 = [charsetName dataUsingEncoding:1 allowLossyConversion:1];
+        [self appendData:v21];
 
-        [a1 mf_appendCString:"''"];
+        [self mf_appendCString:"''"];
       }
 
 LABEL_27:
@@ -145,20 +145,20 @@ LABEL_27:
           {
             if (v29 > v28)
             {
-              [a1 appendBytes:v28 length:v27 - v28];
+              [self appendBytes:v28 length:v27 - v28];
               v28 = v29;
             }
 
-            if (v10)
+            if (charsetName)
             {
               *v37 = -1431655766;
-              [a1 appendBytes:v37 length:{__snprintf_chk(v37, 4uLL, 0, 4uLL, "%%%02X", *v29)}];
+              [self appendBytes:v37 length:{__snprintf_chk(v37, 4uLL, 0, 4uLL, "%%%02X", *v29)}];
               ++v28;
             }
 
             else
             {
-              [a1 appendBytes:"\\"" length:1];
+              [self appendBytes:"\\"" length:1];
             }
           }
 
@@ -169,13 +169,13 @@ LABEL_27:
         while (v29 < v16);
         if (v29 > v28)
         {
-          [a1 appendBytes:v28 length:v27 - v28];
+          [self appendBytes:v28 length:v27 - v28];
         }
       }
 
-      if (!v10 && v20)
+      if (!charsetName && v20)
       {
-        [a1 appendBytes:"" length:1];
+        [self appendBytes:"" length:1];
       }
 
       goto LABEL_41;

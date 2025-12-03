@@ -1,17 +1,17 @@
 @interface PHDuplicateDetection
-+ (BOOL)assetsArePendingForDuplicateMergeProcessing:(id)a3 inPhotoLibrary:(id)a4;
-+ (void)mergeDuplicateAssetWithLocalIdentifierGroupingContainer:(id)a3 inPhotoLibrary:(id)a4 completionHandler:(id)a5;
++ (BOOL)assetsArePendingForDuplicateMergeProcessing:(id)processing inPhotoLibrary:(id)library;
++ (void)mergeDuplicateAssetWithLocalIdentifierGroupingContainer:(id)container inPhotoLibrary:(id)library completionHandler:(id)handler;
 @end
 
 @implementation PHDuplicateDetection
 
-+ (void)mergeDuplicateAssetWithLocalIdentifierGroupingContainer:(id)a3 inPhotoLibrary:(id)a4 completionHandler:(id)a5
++ (void)mergeDuplicateAssetWithLocalIdentifierGroupingContainer:(id)container inPhotoLibrary:(id)library completionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  if (a4)
+  handlerCopy = handler;
+  if (library)
   {
-    [a4 mergeDuplicateAssetsWithLocalIdentifierGroupingContainer:a3 completionHandler:v7];
+    [library mergeDuplicateAssetsWithLocalIdentifierGroupingContainer:container completionHandler:handlerCopy];
   }
 
   else
@@ -30,20 +30,20 @@
       _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_ERROR, "Duplicate Merge processing failed with missing photolibrary. Error: %@", &v12, 0xCu);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0, v10);
+      handlerCopy[2](handlerCopy, 0, v10);
     }
   }
 }
 
-+ (BOOL)assetsArePendingForDuplicateMergeProcessing:(id)a3 inPhotoLibrary:(id)a4
++ (BOOL)assetsArePendingForDuplicateMergeProcessing:(id)processing inPhotoLibrary:(id)library
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (library)
   {
 
-    return [a4 assetsArePendingForDuplicateMergeProcessingWithLocalIdentifiers:a3];
+    return [library assetsArePendingForDuplicateMergeProcessingWithLocalIdentifiers:processing];
   }
 
   else

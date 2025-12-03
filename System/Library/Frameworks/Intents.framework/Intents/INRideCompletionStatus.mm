@@ -6,14 +6,14 @@
 + (INRideCompletionStatus)completedWithOutstandingFeedbackType:(INRideFeedbackTypeOptions)feedbackType;
 + (INRideCompletionStatus)completedWithOutstandingPaymentAmount:(INCurrencyAmount *)outstandingPaymentAmount;
 + (INRideCompletionStatus)completedWithSettledPaymentAmount:(INCurrencyAmount *)settledPaymentAmount;
-- (INRideCompletionStatus)initWithCoder:(id)a3;
+- (INRideCompletionStatus)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_initCompleted:(BOOL)a3 canceledByService:(BOOL)a4 missedPickup:(BOOL)a5 amount:(id)a6 feedbackType:(unint64_t)a7 outstanding:(BOOL)a8;
-- (id)_initWithValue:(id)a3;
+- (id)_initCompleted:(BOOL)completed canceledByService:(BOOL)service missedPickup:(BOOL)pickup amount:(id)amount feedbackType:(unint64_t)type outstanding:(BOOL)outstanding;
+- (id)_initWithValue:(id)value;
 - (id)_intents_cacheableObjects;
 - (id)_newValue;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRideCompletionStatus
@@ -23,15 +23,15 @@
   v19[8] = *MEMORY[0x1E69E9840];
   v18[0] = @"completionUserActivity";
   completionUserActivity = self->_completionUserActivity;
-  v4 = completionUserActivity;
+  null = completionUserActivity;
   if (!completionUserActivity)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v4;
+  v19[0] = null;
   v18[1] = @"completed";
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:{self->_completed, v4}];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:{self->_completed, null}];
   v19[1] = v17;
   v18[2] = @"isCanceled";
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[INRideCompletionStatus isCompleted](self, "isCompleted") ^ 1}];
@@ -41,22 +41,22 @@
   v19[3] = v6;
   v18[4] = @"paymentAmount";
   paymentAmount = self->_paymentAmount;
-  v8 = paymentAmount;
+  null2 = paymentAmount;
   if (!paymentAmount)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[4] = v8;
+  v19[4] = null2;
   v18[5] = @"defaultTippingOptions";
   defaultTippingOptions = self->_defaultTippingOptions;
-  v10 = defaultTippingOptions;
+  null3 = defaultTippingOptions;
   if (!defaultTippingOptions)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[5] = v10;
+  v19[5] = null3;
   v18[6] = @"feedbackType";
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_feedbackType];
   v19[6] = v11;
@@ -92,14 +92,14 @@ LABEL_9:
   return v13;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRideCompletionStatus;
   v6 = [(INRideCompletionStatus *)&v11 description];
-  v7 = [(INRideCompletionStatus *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRideCompletionStatus *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
@@ -111,8 +111,8 @@ LABEL_9:
   [(_INPBRideCompletionStatus *)v3 setCompleted:[(INRideCompletionStatus *)self isCompleted]];
   [(_INPBRideCompletionStatus *)v3 setCanceledByService:[(INRideCompletionStatus *)self isCanceledByService]];
   [(_INPBRideCompletionStatus *)v3 setMissedPickup:[(INRideCompletionStatus *)self isMissedPickup]];
-  v4 = [(INRideCompletionStatus *)self paymentAmount];
-  v5 = INIntentSlotValueTransformToCurrencyAmountValue(v4);
+  paymentAmount = [(INRideCompletionStatus *)self paymentAmount];
+  v5 = INIntentSlotValueTransformToCurrencyAmountValue(paymentAmount);
   [(_INPBRideCompletionStatus *)v3 setPaymentAmount:v5];
 
   [(_INPBRideCompletionStatus *)v3 setOutstanding:[(INRideCompletionStatus *)self isOutstanding]];
@@ -123,54 +123,54 @@ LABEL_9:
     [(_INPBRideCompletionStatus *)v3 setCompletionUserActivity:v7];
   }
 
-  v8 = [(INRideCompletionStatus *)self feedbackType];
+  feedbackType = [(INRideCompletionStatus *)self feedbackType];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __35__INRideCompletionStatus__newValue__block_invoke;
   v16[3] = &unk_1E7288628;
   v9 = v3;
   v17 = v9;
-  INRideFeedbackTypeOptionsEnumerateBackingTypes(v8, v16);
+  INRideFeedbackTypeOptionsEnumerateBackingTypes(feedbackType, v16);
   v10 = MEMORY[0x1E695DF70];
-  v11 = [(INRideCompletionStatus *)self defaultTippingOptions];
-  v12 = [v11 allObjects];
-  v13 = INIntentSlotValueTransformToCurrencyAmountValues(v12);
+  defaultTippingOptions = [(INRideCompletionStatus *)self defaultTippingOptions];
+  allObjects = [defaultTippingOptions allObjects];
+  v13 = INIntentSlotValueTransformToCurrencyAmountValues(allObjects);
   v14 = [v10 arrayWithArray:v13];
   [(_INPBRideCompletionStatus *)v9 setDefaultTippingOptions:v14];
 
   return v9;
 }
 
-- (id)_initWithValue:(id)a3
+- (id)_initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v24.receiver = self;
   v24.super_class = INRideCompletionStatus;
   v5 = [(INRideCompletionStatus *)&v24 init];
   if (v5)
   {
-    v5->_completed = [v4 completed];
-    v5->_canceledByService = [v4 canceledByService];
-    v5->_missedPickup = [v4 missedPickup];
-    v6 = [v4 paymentAmount];
-    v7 = INIntentSlotValueTransformFromCurrencyAmountValue(v6);
+    v5->_completed = [valueCopy completed];
+    v5->_canceledByService = [valueCopy canceledByService];
+    v5->_missedPickup = [valueCopy missedPickup];
+    paymentAmount = [valueCopy paymentAmount];
+    v7 = INIntentSlotValueTransformFromCurrencyAmountValue(paymentAmount);
     paymentAmount = v5->_paymentAmount;
     v5->_paymentAmount = v7;
 
-    v5->_outstanding = [v4 outstanding];
-    v9 = [v4 completionUserActivity];
-    v10 = INUserActivityDeserializeFromBackingStore(v9);
+    v5->_outstanding = [valueCopy outstanding];
+    completionUserActivity = [valueCopy completionUserActivity];
+    v10 = INUserActivityDeserializeFromBackingStore(completionUserActivity);
     completionUserActivity = v5->_completionUserActivity;
     v5->_completionUserActivity = v10;
 
     v5->_feedbackType = 0;
-    v12 = [v4 feedbackTypesCount];
-    if (v12)
+    feedbackTypesCount = [valueCopy feedbackTypesCount];
+    if (feedbackTypesCount)
     {
-      v13 = v12;
+      v13 = feedbackTypesCount;
       for (i = 0; i != v13; ++i)
       {
-        v15 = [v4 feedbackTypeAtIndex:i];
+        v15 = [valueCopy feedbackTypeAtIndex:i];
         feedbackType = v5->_feedbackType;
         v17 = feedbackType | 2;
         if (v15 == 1)
@@ -188,8 +188,8 @@ LABEL_9:
     }
 
     v18 = MEMORY[0x1E695DFD8];
-    v19 = [v4 defaultTippingOptions];
-    v20 = INIntentSlotValueTransformFromCurrencyAmountValues(v19);
+    defaultTippingOptions = [valueCopy defaultTippingOptions];
+    v20 = INIntentSlotValueTransformFromCurrencyAmountValues(defaultTippingOptions);
     v21 = [v18 setWithArray:v20];
     defaultTippingOptions = v5->_defaultTippingOptions;
     v5->_defaultTippingOptions = v21;
@@ -198,43 +198,43 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   completed = self->_completed;
-  v5 = a3;
-  [v5 encodeBool:completed forKey:@"isCompleted"];
-  [v5 encodeBool:self->_canceledByService forKey:@"isCanceledByService"];
-  [v5 encodeBool:self->_missedPickup forKey:@"isMissedPickup"];
-  [v5 encodeObject:self->_paymentAmount forKey:@"paymentAmount"];
-  [v5 encodeInteger:self->_feedbackType forKey:@"feedbackType"];
-  [v5 encodeObject:self->_defaultTippingOptions forKey:@"defaultTippingOptions"];
-  [v5 encodeBool:self->_outstanding forKey:@"isOutstanding"];
+  coderCopy = coder;
+  [coderCopy encodeBool:completed forKey:@"isCompleted"];
+  [coderCopy encodeBool:self->_canceledByService forKey:@"isCanceledByService"];
+  [coderCopy encodeBool:self->_missedPickup forKey:@"isMissedPickup"];
+  [coderCopy encodeObject:self->_paymentAmount forKey:@"paymentAmount"];
+  [coderCopy encodeInteger:self->_feedbackType forKey:@"feedbackType"];
+  [coderCopy encodeObject:self->_defaultTippingOptions forKey:@"defaultTippingOptions"];
+  [coderCopy encodeBool:self->_outstanding forKey:@"isOutstanding"];
   v6 = INUserActivitySerializeToData(self->_completionUserActivity);
-  [v5 encodeObject:v6 forKey:@"completionUserActivity"];
+  [coderCopy encodeObject:v6 forKey:@"completionUserActivity"];
 }
 
-- (INRideCompletionStatus)initWithCoder:(id)a3
+- (INRideCompletionStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = INRideCompletionStatus;
   v5 = [(INRideCompletionStatus *)&v14 init];
   if (v5)
   {
-    v5->_completed = [v4 decodeBoolForKey:@"isCompleted"];
-    v5->_canceledByService = [v4 decodeBoolForKey:@"isCanceledByService"];
-    v5->_missedPickup = [v4 decodeBoolForKey:@"isMissedPickup"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentAmount"];
+    v5->_completed = [coderCopy decodeBoolForKey:@"isCompleted"];
+    v5->_canceledByService = [coderCopy decodeBoolForKey:@"isCanceledByService"];
+    v5->_missedPickup = [coderCopy decodeBoolForKey:@"isMissedPickup"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentAmount"];
     paymentAmount = v5->_paymentAmount;
     v5->_paymentAmount = v6;
 
-    v5->_feedbackType = [v4 decodeIntegerForKey:@"feedbackType"];
-    v8 = [v4 decodeObjectForKey:@"defaultTippingOptions"];
+    v5->_feedbackType = [coderCopy decodeIntegerForKey:@"feedbackType"];
+    v8 = [coderCopy decodeObjectForKey:@"defaultTippingOptions"];
     defaultTippingOptions = v5->_defaultTippingOptions;
     v5->_defaultTippingOptions = v8;
 
-    v5->_outstanding = [v4 decodeBoolForKey:@"isOutstanding"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completionUserActivity"];
+    v5->_outstanding = [coderCopy decodeBoolForKey:@"isOutstanding"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completionUserActivity"];
     v11 = INUserActivityDeserializeFromData(v10);
     completionUserActivity = v5->_completionUserActivity;
     v5->_completionUserActivity = v11;
@@ -243,24 +243,24 @@ LABEL_9:
   return v5;
 }
 
-- (id)_initCompleted:(BOOL)a3 canceledByService:(BOOL)a4 missedPickup:(BOOL)a5 amount:(id)a6 feedbackType:(unint64_t)a7 outstanding:(BOOL)a8
+- (id)_initCompleted:(BOOL)completed canceledByService:(BOOL)service missedPickup:(BOOL)pickup amount:(id)amount feedbackType:(unint64_t)type outstanding:(BOOL)outstanding
 {
-  v14 = a6;
+  amountCopy = amount;
   v20.receiver = self;
   v20.super_class = INRideCompletionStatus;
   v15 = [(INRideCompletionStatus *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    v15->_completed = a3;
-    v15->_canceledByService = a4;
-    v15->_missedPickup = a5;
-    v17 = [v14 copy];
+    v15->_completed = completed;
+    v15->_canceledByService = service;
+    v15->_missedPickup = pickup;
+    v17 = [amountCopy copy];
     paymentAmount = v16->_paymentAmount;
     v16->_paymentAmount = v17;
 
-    v16->_feedbackType = a7;
-    v16->_outstanding = a8;
+    v16->_feedbackType = type;
+    v16->_outstanding = outstanding;
   }
 
   return v16;
@@ -268,28 +268,28 @@ LABEL_9:
 
 + (INRideCompletionStatus)canceledMissedPickup
 {
-  v2 = [[a1 alloc] _initCompleted:0 canceledByService:1 missedPickup:1 amount:0 feedbackType:0 outstanding:0];
+  v2 = [[self alloc] _initCompleted:0 canceledByService:1 missedPickup:1 amount:0 feedbackType:0 outstanding:0];
 
   return v2;
 }
 
 + (INRideCompletionStatus)canceledByService
 {
-  v2 = [[a1 alloc] _initCompleted:0 canceledByService:1 missedPickup:0 amount:0 feedbackType:0 outstanding:0];
+  v2 = [[self alloc] _initCompleted:0 canceledByService:1 missedPickup:0 amount:0 feedbackType:0 outstanding:0];
 
   return v2;
 }
 
 + (INRideCompletionStatus)canceledByUser
 {
-  v2 = [[a1 alloc] _initCompleted:0 canceledByService:0 missedPickup:0 amount:0 feedbackType:0 outstanding:0];
+  v2 = [[self alloc] _initCompleted:0 canceledByService:0 missedPickup:0 amount:0 feedbackType:0 outstanding:0];
 
   return v2;
 }
 
 + (INRideCompletionStatus)completedWithOutstandingFeedbackType:(INRideFeedbackTypeOptions)feedbackType
 {
-  v3 = [[a1 alloc] _initCompleted:1 canceledByService:0 missedPickup:0 amount:0 feedbackType:feedbackType outstanding:1];
+  v3 = [[self alloc] _initCompleted:1 canceledByService:0 missedPickup:0 amount:0 feedbackType:feedbackType outstanding:1];
 
   return v3;
 }
@@ -297,7 +297,7 @@ LABEL_9:
 + (INRideCompletionStatus)completedWithOutstandingPaymentAmount:(INCurrencyAmount *)outstandingPaymentAmount
 {
   v4 = outstandingPaymentAmount;
-  v5 = [[a1 alloc] _initCompleted:1 canceledByService:0 missedPickup:0 amount:v4 feedbackType:0 outstanding:1];
+  v5 = [[self alloc] _initCompleted:1 canceledByService:0 missedPickup:0 amount:v4 feedbackType:0 outstanding:1];
 
   return v5;
 }
@@ -305,14 +305,14 @@ LABEL_9:
 + (INRideCompletionStatus)completedWithSettledPaymentAmount:(INCurrencyAmount *)settledPaymentAmount
 {
   v4 = settledPaymentAmount;
-  v5 = [[a1 alloc] _initCompleted:1 canceledByService:0 missedPickup:0 amount:v4 feedbackType:0 outstanding:0];
+  v5 = [[self alloc] _initCompleted:1 canceledByService:0 missedPickup:0 amount:v4 feedbackType:0 outstanding:0];
 
   return v5;
 }
 
 + (INRideCompletionStatus)completed
 {
-  v2 = [[a1 alloc] _initCompleted:1 canceledByService:0 missedPickup:0 amount:0 feedbackType:0 outstanding:0];
+  v2 = [[self alloc] _initCompleted:1 canceledByService:0 missedPickup:0 amount:0 feedbackType:0 outstanding:0];
 
   return v2;
 }
@@ -320,12 +320,12 @@ LABEL_9:
 - (id)_intents_cacheableObjects
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INRideCompletionStatus *)self completionUserActivity];
+  completionUserActivity = [(INRideCompletionStatus *)self completionUserActivity];
 
-  if (v4)
+  if (completionUserActivity)
   {
-    v5 = [(INRideCompletionStatus *)self completionUserActivity];
-    [v3 addObject:v5];
+    completionUserActivity2 = [(INRideCompletionStatus *)self completionUserActivity];
+    [v3 addObject:completionUserActivity2];
   }
 
   if ([v3 count])

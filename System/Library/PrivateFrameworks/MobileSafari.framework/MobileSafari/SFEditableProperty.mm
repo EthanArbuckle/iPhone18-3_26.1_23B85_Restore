@@ -1,24 +1,24 @@
 @interface SFEditableProperty
-+ (id)BOOLValue:(BOOL)a3 named:(id)a4;
-+ (id)compoundValueNamed:(id)a3 components:(id)a4;
-+ (id)edgeInsetsValue:(double)a3 named:(double)a4 min:(double)a5 max:(double)a6 roundedTo:(double)a7;
-+ (id)floatValue:(double)a3 named:(id)a4 min:(double)a5 max:(double)a6 roundedTo:(double)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)BOOLValue:(BOOL)value named:(id)named;
++ (id)compoundValueNamed:(id)named components:(id)components;
++ (id)edgeInsetsValue:(double)value named:(double)named min:(double)min max:(double)max roundedTo:(double)to;
++ (id)floatValue:(double)value named:(id)named min:(double)min max:(double)max roundedTo:(double)to;
+- (BOOL)isEqual:(id)equal;
 - (NSString)name;
 - (SFEditableProperty)init;
 - (UIEdgeInsets)edgeInsetsValue;
 - (double)floatValue;
-- (id)copyWithZone:(void *)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (int64_t)hash;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation SFEditableProperty
 
 - (UIEdgeInsets)edgeInsetsValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BB33C40();
   v5 = v4;
   v7 = v6;
@@ -54,7 +54,7 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_18BC20BD8();
   v5 = (self + OBJC_IVAR___SFEditableProperty_name);
@@ -62,9 +62,9 @@
   v5[1] = v6;
 }
 
-+ (id)BOOLValue:(BOOL)a3 named:(id)a4
++ (id)BOOLValue:(BOOL)value named:(id)named
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = sub_18BC20BD8();
   v7 = v6;
   v8 = objc_allocWithZone(SFEditableProperty);
@@ -72,7 +72,7 @@
   *v9 = v5;
   v9[1] = v7;
   v10 = &v8[OBJC_IVAR___SFEditableProperty_value];
-  *v10 = v4;
+  *v10 = valueCopy;
   *(v10 + 1) = 0;
   v10[32] = 0;
   *(v10 + 2) = 0;
@@ -84,7 +84,7 @@
   return v11;
 }
 
-+ (id)compoundValueNamed:(id)a3 components:(id)a4
++ (id)compoundValueNamed:(id)named components:(id)components
 {
   v4 = sub_18BC20BD8();
   v6 = v5;
@@ -107,18 +107,18 @@
   return v11;
 }
 
-+ (id)edgeInsetsValue:(double)a3 named:(double)a4 min:(double)a5 max:(double)a6 roundedTo:(double)a7
++ (id)edgeInsetsValue:(double)value named:(double)named min:(double)min max:(double)max roundedTo:(double)to
 {
   sub_18BC20BD8();
-  v28 = sub_18BB36D70(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13);
+  v28 = sub_18BB36D70(self, a2, value, named, min, max, to, a8, a9, a10, a11, a12, a13);
 
   return v28;
 }
 
-+ (id)floatValue:(double)a3 named:(id)a4 min:(double)a5 max:(double)a6 roundedTo:(double)a7
++ (id)floatValue:(double)value named:(id)named min:(double)min max:(double)max roundedTo:(double)to
 {
   result = sub_18BC20BD8();
-  if (a5 > a6)
+  if (min > max)
   {
     __break(1u);
   }
@@ -132,10 +132,10 @@
     *v16 = v13;
     *(v16 + 1) = v14;
     v17 = &v15[OBJC_IVAR___SFEditableProperty_value];
-    *v17 = a3;
-    v17[1] = a5;
-    v17[2] = a6;
-    v17[3] = a7;
+    *v17 = value;
+    v17[1] = min;
+    v17[2] = max;
+    v17[3] = to;
     *(v17 + 32) = 2;
     v19.receiver = v15;
     v19.super_class = SFEditableProperty;
@@ -147,28 +147,28 @@
   return result;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
   v4 = sub_18BC20BD8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_18BB34328(v4, v6);
 
   return v8;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  v4 = [(SFEditableProperty *)v3 name];
+  selfCopy = self;
+  name = [(SFEditableProperty *)selfCopy name];
   v5 = sub_18BC20BD8();
   v7 = v6;
 
-  v8 = *(v3 + OBJC_IVAR___SFEditableProperty_value);
-  v9 = *(v3 + OBJC_IVAR___SFEditableProperty_value + 8);
-  v10 = *(v3 + OBJC_IVAR___SFEditableProperty_value + 16);
-  v11 = *(v3 + OBJC_IVAR___SFEditableProperty_value + 24);
-  v12 = *(v3 + OBJC_IVAR___SFEditableProperty_value + 32);
+  v8 = *(selfCopy + OBJC_IVAR___SFEditableProperty_value);
+  v9 = *(selfCopy + OBJC_IVAR___SFEditableProperty_value + 8);
+  v10 = *(selfCopy + OBJC_IVAR___SFEditableProperty_value + 16);
+  v11 = *(selfCopy + OBJC_IVAR___SFEditableProperty_value + 24);
+  v12 = *(selfCopy + OBJC_IVAR___SFEditableProperty_value + 32);
   v13 = objc_allocWithZone(SFEditableProperty);
   v14 = &v13[OBJC_IVAR___SFEditableProperty_name];
   *v14 = v5;
@@ -187,11 +187,11 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18BC218B8();
     swift_unknownObjectRelease();
@@ -200,7 +200,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SFEditableProperty.isEqual(_:)(v8);
@@ -211,7 +211,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SFEditableProperty.hash.getter();
 
   return v3;

@@ -9,8 +9,8 @@
   v13 = *MEMORY[0x277D85DE8];
   if ([(TRCompletionOperation *)self isCancelled])
   {
-    v8 = [objc_opt_class() userCancelledError];
-    [(TROperation *)self finishWithError:v8];
+    userCancelledError = [objc_opt_class() userCancelledError];
+    [(TROperation *)self finishWithError:userCancelledError];
     v3 = *MEMORY[0x277D85DE8];
   }
 
@@ -30,13 +30,13 @@
     v5 = objc_alloc_init(TRSetupCompletionRequest);
     [(TRSetupCompletionRequest *)v5 setCompletedSuccessfully:1];
     objc_initWeak(buf, self);
-    v6 = [(TROperation *)self session];
+    session = [(TROperation *)self session];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __32__TRCompletionOperation_execute__block_invoke;
     v9[3] = &unk_279DCECD0;
     objc_copyWeak(&v10, buf);
-    [v6 sendRequest:v5 withResponseHandler:v9];
+    [session sendRequest:v5 withResponseHandler:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);

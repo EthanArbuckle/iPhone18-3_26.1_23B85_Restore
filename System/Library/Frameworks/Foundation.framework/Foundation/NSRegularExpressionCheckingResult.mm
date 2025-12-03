@@ -1,17 +1,17 @@
 @interface NSRegularExpressionCheckingResult
-- (NSRegularExpressionCheckingResult)initWithCoder:(id)a3;
-- (_NSRange)rangeWithName:(id)a3;
+- (NSRegularExpressionCheckingResult)initWithCoder:(id)coder;
+- (_NSRange)rangeWithName:(id)name;
 - (id)description;
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSRegularExpressionCheckingResult
 
-- (_NSRange)rangeWithName:(id)a3
+- (_NSRange)rangeWithName:(id)name
 {
-  v5 = [(NSRegularExpressionCheckingResult *)self regularExpression];
-  if (v5 && (v6 = v5, v7 = [(NSTextCheckingResult *)self numberOfRanges], v8 = [(NSRegularExpression *)v6 _captureGroupNumberWithName:a3], v8 < v7))
+  regularExpression = [(NSRegularExpressionCheckingResult *)self regularExpression];
+  if (regularExpression && (v6 = regularExpression, v7 = [(NSTextCheckingResult *)self numberOfRanges], v8 = [(NSRegularExpression *)v6 _captureGroupNumberWithName:name], v8 < v7))
   {
     v9 = [(NSTextCheckingResult *)self rangeAtIndex:v8];
   }
@@ -35,39 +35,39 @@
   return [NSString stringWithFormat:@"%@{%@}", [(NSTextCheckingResult *)&v3 description], [(NSRegularExpressionCheckingResult *)self regularExpression]];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(NSRegularExpressionCheckingResult *)self regularExpression];
-  v6 = [(NSRegularExpressionCheckingResult *)self rangeArray];
-  if ([a3 allowsKeyedCoding])
+  regularExpression = [(NSRegularExpressionCheckingResult *)self regularExpression];
+  rangeArray = [(NSRegularExpressionCheckingResult *)self rangeArray];
+  if ([coder allowsKeyedCoding])
   {
-    [(NSTextCheckingResult *)self encodeRangeWithCoder:a3];
-    [a3 encodeObject:v5 forKey:@"NSRegularExpression"];
+    [(NSTextCheckingResult *)self encodeRangeWithCoder:coder];
+    [coder encodeObject:regularExpression forKey:@"NSRegularExpression"];
 
-    [a3 encodeObject:v6 forKey:@"NSRangeArray"];
+    [coder encodeObject:rangeArray forKey:@"NSRangeArray"];
   }
 
   else
   {
-    [a3 encodeObject:v5];
+    [coder encodeObject:regularExpression];
 
-    [a3 encodeObject:v6];
+    [coder encodeObject:rangeArray];
   }
 }
 
-- (NSRegularExpressionCheckingResult)initWithCoder:(id)a3
+- (NSRegularExpressionCheckingResult)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSRegularExpression"];
+    decodeObject = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSRegularExpression"];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
-    v9 = [a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, objc_opt_class(), 0), @"NSRangeArray"}];
+    decodeObject2 = [coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, objc_opt_class(), 0), @"NSRangeArray"}];
   }
 
   else
   {
-    v10 = [a3 versionForClassName:@"NSTextCheckingResult"];
+    v10 = [coder versionForClassName:@"NSTextCheckingResult"];
     if (v10 != 1)
     {
       v12 = v10;
@@ -77,47 +77,47 @@
       return 0;
     }
 
-    v6 = [a3 decodeObject];
-    v9 = [a3 decodeObject];
+    decodeObject = [coder decodeObject];
+    decodeObject2 = [coder decodeObject];
   }
 
-  return [(NSRegularExpressionCheckingResult *)self initWithRangeArray:v9 regularExpression:v6];
+  return [(NSRegularExpressionCheckingResult *)self initWithRangeArray:decodeObject2 regularExpression:decodeObject];
 }
 
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset
 {
-  v6 = [(NSRegularExpressionCheckingResult *)self rangeArray];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(NSTextCheckingResult *)self numberOfRanges];
-  if (v8)
+  rangeArray = [(NSRegularExpressionCheckingResult *)self rangeArray];
+  array = [MEMORY[0x1E695DF70] array];
+  numberOfRanges = [(NSTextCheckingResult *)self numberOfRanges];
+  if (numberOfRanges)
   {
-    v9 = v8;
+    v9 = numberOfRanges;
     for (i = 0; i != v9; ++i)
     {
-      v11 = [-[NSArray objectAtIndex:](v6 objectAtIndex:{i), "rangeValue"}];
+      v11 = [-[NSArray objectAtIndex:](rangeArray objectAtIndex:{i), "rangeValue"}];
       v13 = 0x7FFFFFFFFFFFFFFFLL;
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (a3 < 0 && v11 < -a3)
+        if (offset < 0 && v11 < -offset)
         {
           v16 = v11;
-          v17 = self;
+          selfCopy = self;
           v18 = v12;
-          v19 = _NSFullMethodName(v17, a2);
+          v19 = _NSFullMethodName(selfCopy, a2);
           v22.location = v16;
           v22.length = v18;
-          v20 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v19, a3, NSStringFromRange(v22)), 0}];
+          v20 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v19, offset, NSStringFromRange(v22)), 0}];
           objc_exception_throw(v20);
         }
 
-        v13 = v11 + a3;
+        v13 = v11 + offset;
       }
 
-      [v7 addObject:{+[NSValue valueWithRange:](NSValue, "valueWithRange:", v13, v12)}];
+      [array addObject:{+[NSValue valueWithRange:](NSValue, "valueWithRange:", v13, v12)}];
     }
   }
 
-  v14 = [objc_alloc(objc_opt_class()) initWithRangeArray:v7 regularExpression:{-[NSRegularExpressionCheckingResult regularExpression](self, "regularExpression")}];
+  v14 = [objc_alloc(objc_opt_class()) initWithRangeArray:array regularExpression:{-[NSRegularExpressionCheckingResult regularExpression](self, "regularExpression")}];
 
   return v14;
 }

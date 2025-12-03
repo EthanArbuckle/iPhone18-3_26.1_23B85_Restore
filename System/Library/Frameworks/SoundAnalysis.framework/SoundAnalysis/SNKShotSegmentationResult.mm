@@ -2,8 +2,8 @@
 - (MLMultiArray)exemplarEmbedding;
 - (NSArray)segments;
 - (NSNumber)exemplarIndex;
-- (void)setExemplarEmbedding:(id)a3;
-- (void)setExemplarIndex:(id)a3;
+- (void)setExemplarEmbedding:(id)embedding;
+- (void)setExemplarIndex:(id)index;
 @end
 
 @implementation SNKShotSegmentationResult
@@ -15,16 +15,16 @@
   return v2;
 }
 
-- (void)setExemplarEmbedding:(id)a3
+- (void)setExemplarEmbedding:(id)embedding
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C97B5A48(v4);
+  embeddingCopy = embedding;
+  selfCopy = self;
+  sub_1C97B5A48(embeddingCopy);
 }
 
 - (NSArray)segments
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C97B5B44();
 
   type metadata accessor for SNKShotSegment(0);
@@ -35,17 +35,17 @@
 
 - (NSNumber)exemplarIndex
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C97B6040();
 
   return v3;
 }
 
-- (void)setExemplarIndex:(id)a3
+- (void)setExemplarIndex:(id)index
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C97B60F0(v4);
+  indexCopy = index;
+  selfCopy = self;
+  sub_1C97B60F0(indexCopy);
 }
 
 @end

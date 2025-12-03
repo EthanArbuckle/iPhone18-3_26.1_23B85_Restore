@@ -1,12 +1,12 @@
 @interface CalSigTermCancellableTask
-+ (BOOL)performCancellableTask:(id)a3;
++ (BOOL)performCancellableTask:(id)task;
 @end
 
 @implementation CalSigTermCancellableTask
 
-+ (BOOL)performCancellableTask:(id)a3
++ (BOOL)performCancellableTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v4 = [[CalSignalSensor alloc] initWithSignal:15];
   v5 = [[CalSignalSensor alloc] initWithSignal:2];
   v6 = objc_opt_new();
@@ -21,14 +21,14 @@
   [(CalSignalSensor *)v5 setFireBlock:v8];
   [(CalSignalSensor *)v4 startSensor];
   [(CalSignalSensor *)v5 startSensor];
-  v9 = [v7 token];
-  v3[2](v3, v9);
+  token = [v7 token];
+  taskCopy[2](taskCopy, token);
 
   [(CalSignalSensor *)v4 stopSensor];
   [(CalSignalSensor *)v5 stopSensor];
-  LOBYTE(v3) = [v9 isCancelled];
+  LOBYTE(taskCopy) = [token isCancelled];
 
-  return v3;
+  return taskCopy;
 }
 
 @end

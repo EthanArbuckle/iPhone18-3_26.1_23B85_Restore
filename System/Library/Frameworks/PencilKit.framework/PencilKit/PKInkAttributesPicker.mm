@@ -1,30 +1,30 @@
 @interface PKInkAttributesPicker
 - (PKInk)selectedInk;
-- (PKInkAttributesPicker)initWithInk:(id)a3 toolConfiguration:(id)a4;
+- (PKInkAttributesPicker)initWithInk:(id)ink toolConfiguration:(id)configuration;
 - (int64_t)colorUserInterfaceStyle;
 - (unint64_t)displayMode;
-- (void)_inkAttributesPickerViewUserDidEndDraggingSlider:(id)a3;
-- (void)_inkAttributesPickerViewUserDidStartDraggingSlider:(id)a3;
+- (void)_inkAttributesPickerViewUserDidEndDraggingSlider:(id)slider;
+- (void)_inkAttributesPickerViewUserDidStartDraggingSlider:(id)slider;
 - (void)_notifyInkAttributesPickerDidChangeInk;
 - (void)_updateUI;
-- (void)inkAttributesPickerViewDidChangeInkAzimuth:(id)a3;
-- (void)inkAttributesPickerViewDidChangeInkOpacity:(id)a3;
-- (void)inkAttributesPickerViewDidChangeInkThickness:(id)a3;
-- (void)setColorUserInterfaceStyle:(int64_t)a3;
-- (void)setDisplayMode:(unint64_t)a3;
-- (void)setMinimumOpacityValue:(double)a3;
-- (void)setSelectedInk:(id)a3 animated:(BOOL)a4;
-- (void)setTopViewController:(id)a3;
+- (void)inkAttributesPickerViewDidChangeInkAzimuth:(id)azimuth;
+- (void)inkAttributesPickerViewDidChangeInkOpacity:(id)opacity;
+- (void)inkAttributesPickerViewDidChangeInkThickness:(id)thickness;
+- (void)setColorUserInterfaceStyle:(int64_t)style;
+- (void)setDisplayMode:(unint64_t)mode;
+- (void)setMinimumOpacityValue:(double)value;
+- (void)setSelectedInk:(id)ink animated:(BOOL)animated;
+- (void)setTopViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation PKInkAttributesPicker
 
-- (PKInkAttributesPicker)initWithInk:(id)a3 toolConfiguration:(id)a4
+- (PKInkAttributesPicker)initWithInk:(id)ink toolConfiguration:(id)configuration
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  inkCopy = ink;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = PKInkAttributesPicker;
   v8 = [(PKInkAttributesPicker *)&v17 init];
@@ -32,7 +32,7 @@
   if (v8)
   {
     v8->_minimumOpacityValue = 0.1;
-    v10 = [[_PKInkAttributesPickerView alloc] initWithInk:v6 toolConfiguration:v7];
+    v10 = [[_PKInkAttributesPickerView alloc] initWithInk:inkCopy toolConfiguration:configurationCopy];
     pickerView = v9->_pickerView;
     v9->_pickerView = v10;
 
@@ -60,43 +60,43 @@
   v24.receiver = self;
   v24.super_class = PKInkAttributesPicker;
   [(PKInkAttributesPicker *)&v24 viewDidLoad];
-  v3 = [(PKInkAttributesPicker *)self view];
-  [v3 addSubview:self->_stackView];
+  view = [(PKInkAttributesPicker *)self view];
+  [view addSubview:self->_stackView];
 
-  v4 = [(PKInkAttributesPicker *)self view];
-  v5 = [v4 safeAreaLayoutGuide];
-  v6 = [v5 leadingAnchor];
-  v7 = [(UIStackView *)self->_stackView leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  view2 = [(PKInkAttributesPicker *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+  leadingAnchor2 = [(UIStackView *)self->_stackView leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v8 setActive:1];
 
-  v9 = [(PKInkAttributesPicker *)self view];
-  v10 = [v9 safeAreaLayoutGuide];
-  v11 = [v10 trailingAnchor];
-  v12 = [(UIStackView *)self->_stackView trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  view3 = [(PKInkAttributesPicker *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide2 trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_stackView trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v13 setActive:1];
 
-  v14 = [(PKInkAttributesPicker *)self view];
-  v15 = [v14 safeAreaLayoutGuide];
-  v16 = [v15 topAnchor];
-  v17 = [(UIStackView *)self->_stackView topAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  view4 = [(PKInkAttributesPicker *)self view];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide3 topAnchor];
+  topAnchor2 = [(UIStackView *)self->_stackView topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v18 setActive:1];
 
-  v19 = [(PKInkAttributesPicker *)self view];
-  v20 = [v19 safeAreaLayoutGuide];
-  v21 = [v20 bottomAnchor];
-  v22 = [(UIStackView *)self->_stackView bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  view5 = [(PKInkAttributesPicker *)self view];
+  safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide4 bottomAnchor];
+  bottomAnchor2 = [(UIStackView *)self->_stackView bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v23 setActive:1];
 }
 
-- (void)setTopViewController:(id)a3
+- (void)setTopViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   topViewController = self->_topViewController;
-  if (topViewController != v5)
+  if (topViewController != controllerCopy)
   {
     if (topViewController)
     {
@@ -107,7 +107,7 @@
       self->_topViewControllerViewWrapper = 0;
     }
 
-    objc_storeStrong(&self->_topViewController, a3);
+    objc_storeStrong(&self->_topViewController, controller);
     [(_PKInkAttributesPickerView *)self->_pickerView setShowsTopSeparator:self->_topViewController != 0];
     [(_PKInkAttributesPickerView *)self->_pickerView sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
     v9 = v8;
@@ -120,9 +120,9 @@
 
       [(UIView *)self->_topViewControllerViewWrapper setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)self->_topViewControllerViewWrapper setClipsToBounds:1];
-      v14 = [(UIViewController *)self->_topViewController view];
-      [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(UIView *)self->_topViewControllerViewWrapper addSubview:v14];
+      view = [(UIViewController *)self->_topViewController view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(UIView *)self->_topViewControllerViewWrapper addSubview:view];
       [(PKInkAttributesPicker *)self addChildViewController:self->_topViewController];
       [(UIStackView *)self->_stackView insertArrangedSubview:self->_topViewControllerViewWrapper atIndex:0];
       [(UIViewController *)self->_topViewController didMoveToParentViewController:self];
@@ -151,28 +151,28 @@
       }
 
       v11 = v11 + v19;
-      v20 = [(UIView *)self->_topViewControllerViewWrapper heightAnchor];
-      v21 = [v20 constraintEqualToConstant:v19];
+      heightAnchor = [(UIView *)self->_topViewControllerViewWrapper heightAnchor];
+      v21 = [heightAnchor constraintEqualToConstant:v19];
       [v21 setActive:1];
 
-      v22 = [v14 leadingAnchor];
-      v23 = [(UIView *)self->_topViewControllerViewWrapper leadingAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23];
+      leadingAnchor = [view leadingAnchor];
+      leadingAnchor2 = [(UIView *)self->_topViewControllerViewWrapper leadingAnchor];
+      v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v24 setActive:1];
 
-      v25 = [v14 trailingAnchor];
-      v26 = [(UIView *)self->_topViewControllerViewWrapper trailingAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      trailingAnchor = [view trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_topViewControllerViewWrapper trailingAnchor];
+      v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v27 setActive:1];
 
-      v28 = [v14 topAnchor];
-      v29 = [(UIView *)self->_topViewControllerViewWrapper topAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      topAnchor = [view topAnchor];
+      topAnchor2 = [(UIView *)self->_topViewControllerViewWrapper topAnchor];
+      v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v30 setActive:1];
 
-      v31 = [v14 bottomAnchor];
-      v32 = [(UIView *)self->_topViewControllerViewWrapper bottomAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
+      bottomAnchor = [view bottomAnchor];
+      bottomAnchor2 = [(UIView *)self->_topViewControllerViewWrapper bottomAnchor];
+      v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v33 setActive:1];
     }
 
@@ -180,25 +180,25 @@
   }
 }
 
-- (void)setColorUserInterfaceStyle:(int64_t)a3
+- (void)setColorUserInterfaceStyle:(int64_t)style
 {
-  v4 = [(PKInkAttributesPicker *)self pickerView];
-  [v4 setColorUserInterfaceStyle:a3];
+  pickerView = [(PKInkAttributesPicker *)self pickerView];
+  [pickerView setColorUserInterfaceStyle:style];
 }
 
 - (int64_t)colorUserInterfaceStyle
 {
-  v2 = [(PKInkAttributesPicker *)self pickerView];
-  v3 = [v2 colorUserInterfaceStyle];
+  pickerView = [(PKInkAttributesPicker *)self pickerView];
+  colorUserInterfaceStyle = [pickerView colorUserInterfaceStyle];
 
-  return v3;
+  return colorUserInterfaceStyle;
 }
 
-- (void)setMinimumOpacityValue:(double)a3
+- (void)setMinimumOpacityValue:(double)value
 {
-  if (self->_minimumOpacityValue != a3)
+  if (self->_minimumOpacityValue != value)
   {
-    self->_minimumOpacityValue = a3;
+    self->_minimumOpacityValue = value;
     [(PKInkAttributesPicker *)self _updateUI];
   }
 }
@@ -207,152 +207,152 @@
 {
   [(PKInkAttributesPicker *)self minimumOpacityValue];
   v4 = v3;
-  v5 = [(PKInkAttributesPicker *)self pickerView];
-  [v5 setMinimumOpacityValue:v4];
+  pickerView = [(PKInkAttributesPicker *)self pickerView];
+  [pickerView setMinimumOpacityValue:v4];
 }
 
 - (PKInk)selectedInk
 {
-  v2 = [(PKInkAttributesPicker *)self pickerView];
-  v3 = [v2 ink];
+  pickerView = [(PKInkAttributesPicker *)self pickerView];
+  v3 = [pickerView ink];
 
   return v3;
 }
 
-- (void)setSelectedInk:(id)a3 animated:(BOOL)a4
+- (void)setSelectedInk:(id)ink animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PKInkAttributesPicker *)self pickerView];
-  [v7 setInk:v6 animated:v4];
+  animatedCopy = animated;
+  inkCopy = ink;
+  pickerView = [(PKInkAttributesPicker *)self pickerView];
+  [pickerView setInk:inkCopy animated:animatedCopy];
 }
 
 - (unint64_t)displayMode
 {
-  v2 = [(PKInkAttributesPicker *)self pickerView];
-  v3 = [v2 displayMode];
+  pickerView = [(PKInkAttributesPicker *)self pickerView];
+  displayMode = [pickerView displayMode];
 
-  return v3;
+  return displayMode;
 }
 
-- (void)setDisplayMode:(unint64_t)a3
+- (void)setDisplayMode:(unint64_t)mode
 {
-  v5 = [(PKInkAttributesPicker *)self pickerView];
-  [v5 setDisplayMode:a3];
+  pickerView = [(PKInkAttributesPicker *)self pickerView];
+  [pickerView setDisplayMode:mode];
 
-  v6 = [(PKInkAttributesPicker *)self pickerView];
-  [v6 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  pickerView2 = [(PKInkAttributesPicker *)self pickerView];
+  [pickerView2 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   [(PKInkAttributesPicker *)self setPreferredContentSize:?];
 }
 
 - (void)_notifyInkAttributesPickerDidChangeInk
 {
-  v3 = [(PKInkAttributesPicker *)self delegate];
-  if (v3)
+  delegate = [(PKInkAttributesPicker *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(PKInkAttributesPicker *)self delegate];
+    v4 = delegate;
+    delegate2 = [(PKInkAttributesPicker *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(PKInkAttributesPicker *)self delegate];
-      [v7 inkAttributesPickerDidChangeSelectedInk:self];
+      delegate3 = [(PKInkAttributesPicker *)self delegate];
+      [delegate3 inkAttributesPickerDidChangeSelectedInk:self];
     }
   }
 }
 
-- (void)inkAttributesPickerViewDidChangeInkAzimuth:(id)a3
+- (void)inkAttributesPickerViewDidChangeInkAzimuth:(id)azimuth
 {
   [(PKPaletteAttributeViewController *)self setDidExperienceUserInteraction:1];
   [(PKInkAttributesPicker *)self _notifyInkAttributesPickerDidChangeInk];
-  v4 = [(PKInkAttributesPicker *)self delegate];
-  if (v4)
+  delegate = [(PKInkAttributesPicker *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PKInkAttributesPicker *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PKInkAttributesPicker *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PKInkAttributesPicker *)self delegate];
-      [v8 inkAttributesPickerDidChangeInkAzimuth:self];
+      delegate3 = [(PKInkAttributesPicker *)self delegate];
+      [delegate3 inkAttributesPickerDidChangeInkAzimuth:self];
     }
   }
 }
 
-- (void)inkAttributesPickerViewDidChangeInkThickness:(id)a3
+- (void)inkAttributesPickerViewDidChangeInkThickness:(id)thickness
 {
   [(PKPaletteAttributeViewController *)self setDidExperienceUserInteraction:1];
   [(PKInkAttributesPicker *)self _notifyInkAttributesPickerDidChangeInk];
-  v4 = [(PKInkAttributesPicker *)self delegate];
-  if (v4)
+  delegate = [(PKInkAttributesPicker *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PKInkAttributesPicker *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PKInkAttributesPicker *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PKInkAttributesPicker *)self delegate];
-      [v8 inkAttributesPickerDidChangeInkThickness:self];
+      delegate3 = [(PKInkAttributesPicker *)self delegate];
+      [delegate3 inkAttributesPickerDidChangeInkThickness:self];
     }
   }
 }
 
-- (void)inkAttributesPickerViewDidChangeInkOpacity:(id)a3
+- (void)inkAttributesPickerViewDidChangeInkOpacity:(id)opacity
 {
   [(PKPaletteAttributeViewController *)self setDidExperienceUserInteraction:1];
   [(PKInkAttributesPicker *)self _notifyInkAttributesPickerDidChangeInk];
-  v4 = [(PKInkAttributesPicker *)self delegate];
-  if (v4)
+  delegate = [(PKInkAttributesPicker *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PKInkAttributesPicker *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PKInkAttributesPicker *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PKInkAttributesPicker *)self delegate];
-      [v8 inkAttributesPickerDidChangeInkOpacity:self];
+      delegate3 = [(PKInkAttributesPicker *)self delegate];
+      [delegate3 inkAttributesPickerDidChangeInkOpacity:self];
     }
   }
 }
 
-- (void)_inkAttributesPickerViewUserDidStartDraggingSlider:(id)a3
+- (void)_inkAttributesPickerViewUserDidStartDraggingSlider:(id)slider
 {
   self->_updatingOpacityValue = 1;
   [(PKPaletteAttributeViewController *)self setDidExperienceUserInteraction:1];
-  v4 = [(PKInkAttributesPicker *)self delegate];
-  if (v4)
+  delegate = [(PKInkAttributesPicker *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PKInkAttributesPicker *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PKInkAttributesPicker *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PKInkAttributesPicker *)self delegate];
-      [v8 _inkAttributesPickerUserDidStartDraggingSlider:self];
+      delegate3 = [(PKInkAttributesPicker *)self delegate];
+      [delegate3 _inkAttributesPickerUserDidStartDraggingSlider:self];
     }
   }
 }
 
-- (void)_inkAttributesPickerViewUserDidEndDraggingSlider:(id)a3
+- (void)_inkAttributesPickerViewUserDidEndDraggingSlider:(id)slider
 {
   self->_updatingOpacityValue = 0;
   [(PKPaletteAttributeViewController *)self setDidExperienceUserInteraction:1];
-  v4 = [(PKInkAttributesPicker *)self delegate];
-  if (v4)
+  delegate = [(PKInkAttributesPicker *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PKInkAttributesPicker *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PKInkAttributesPicker *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PKInkAttributesPicker *)self delegate];
-      [v8 _inkAttributesPickerUserDidEndDraggingSlider:self];
+      delegate3 = [(PKInkAttributesPicker *)self delegate];
+      [delegate3 _inkAttributesPickerUserDidEndDraggingSlider:self];
     }
   }
 }

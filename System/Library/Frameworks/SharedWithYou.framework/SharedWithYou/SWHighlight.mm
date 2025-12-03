@@ -1,41 +1,41 @@
 @interface SWHighlight
-+ (id)highlightsForSLHighlights:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)highlightsForSLHighlights:(id)highlights;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocalResource;
 - (BOOL)isSyndicatableMedia;
 - (NSURL)URL;
-- (SWHighlight)initWithCSSearchableItem:(id)a3 error:(id *)a4;
-- (SWHighlight)initWithCSSearchableItemUniqueIdentifier:(id)a3 error:(id *)a4;
-- (SWHighlight)initWithCoder:(id)a3;
-- (SWHighlight)initWithSLHighlight:(id)a3;
+- (SWHighlight)initWithCSSearchableItem:(id)item error:(id *)error;
+- (SWHighlight)initWithCSSearchableItemUniqueIdentifier:(id)identifier error:(id *)error;
+- (SWHighlight)initWithCoder:(id)coder;
+- (SWHighlight)initWithSLHighlight:(id)highlight;
 - (id)attributions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)hideContextMenu;
 - (id)livePhotoComplementURL;
-- (id)replyContextMenuWithPresentingViewController:(id)a3;
+- (id)replyContextMenuWithPresentingViewController:(id)controller;
 - (id)resourceUTI;
 - (id)stringIdentifier;
 - (id)timestamp;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWHighlight
 
-- (SWHighlight)initWithSLHighlight:(id)a3
+- (SWHighlight)initWithSLHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   v13.receiver = self;
   v13.super_class = SWHighlight;
   v5 = [(SWHighlight *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(SWHighlight *)v5 _setSLHighlight:v4];
+    [(SWHighlight *)v5 _setSLHighlight:highlightCopy];
     v7 = [SWHighlightIdentifier alloc];
-    v8 = [(SWHighlight *)v6 slHighlight];
-    v9 = [v8 identifier];
-    v10 = [(SWHighlightIdentifier *)v7 initWithStringIdentifier:v9];
+    slHighlight = [(SWHighlight *)v6 slHighlight];
+    identifier = [slHighlight identifier];
+    v10 = [(SWHighlightIdentifier *)v7 initWithStringIdentifier:identifier];
     identifier = v6->_identifier;
     v6->_identifier = v10;
   }
@@ -45,46 +45,46 @@
 
 - (id)stringIdentifier
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 identifier];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  identifier = [slHighlight identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSURL)URL
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 resourceURL];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  resourceURL = [slHighlight resourceURL];
 
-  return v3;
+  return resourceURL;
 }
 
 - (id)attributions
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 attributions];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  attributions = [slHighlight attributions];
 
-  return v3;
+  return attributions;
 }
 
 - (id)timestamp
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 timestamp];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  timestamp = [slHighlight timestamp];
 
-  return v3;
+  return timestamp;
 }
 
-+ (id)highlightsForSLHighlights:(id)a3
++ (id)highlightsForSLHighlights:(id)highlights
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  highlightsCopy = highlights;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = highlightsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -113,7 +113,7 @@
         }
 
         v13 = v11;
-        [v4 addObject:{v11, v17}];
+        [array addObject:{v11, v17}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -122,94 +122,94 @@
     while (v7);
   }
 
-  v14 = [v4 copy];
+  v14 = [array copy];
   v15 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-- (SWHighlight)initWithCSSearchableItem:(id)a3 error:(id *)a4
+- (SWHighlight)initWithCSSearchableItem:(id)item error:(id *)error
 {
   v6 = MEMORY[0x1E69D3810];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithCSSearchableItem:v7 error:a4];
+  itemCopy = item;
+  v8 = [[v6 alloc] initWithCSSearchableItem:itemCopy error:error];
 
   if (v8)
   {
     self = [(SWHighlight *)self initWithSLHighlight:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (SWHighlight)initWithCSSearchableItemUniqueIdentifier:(id)a3 error:(id *)a4
+- (SWHighlight)initWithCSSearchableItemUniqueIdentifier:(id)identifier error:(id *)error
 {
   v6 = MEMORY[0x1E69D3810];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithCSSearchableItemUniqueIdentifier:v7 error:a4];
+  identifierCopy = identifier;
+  v8 = [[v6 alloc] initWithCSSearchableItemUniqueIdentifier:identifierCopy error:error];
 
   if (v8)
   {
     self = [(SWHighlight *)self initWithSLHighlight:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (BOOL)isLocalResource
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 isLocalResource];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  isLocalResource = [slHighlight isLocalResource];
 
-  return v3;
+  return isLocalResource;
 }
 
 - (BOOL)isSyndicatableMedia
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 isSyndicatableMedia];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  isSyndicatableMedia = [slHighlight isSyndicatableMedia];
 
-  return v3;
+  return isSyndicatableMedia;
 }
 
 - (id)livePhotoComplementURL
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 livePhotoComplementURL];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  livePhotoComplementURL = [slHighlight livePhotoComplementURL];
 
-  return v3;
+  return livePhotoComplementURL;
 }
 
 - (id)resourceUTI
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 resourceUTI];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  resourceUTI = [slHighlight resourceUTI];
 
-  return v3;
+  return resourceUTI;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWHighlight *)self slHighlight];
-  [v4 encodeObject:v5 forKey:@"slh"];
+  coderCopy = coder;
+  slHighlight = [(SWHighlight *)self slHighlight];
+  [coderCopy encodeObject:slHighlight forKey:@"slh"];
 }
 
-- (SWHighlight)initWithCoder:(id)a3
+- (SWHighlight)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SWHighlight;
   v5 = [(SWHighlight *)&v14 init];
@@ -218,48 +218,48 @@
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"slh"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"slh"];
   [(SWHighlight *)v5 _setSLHighlight:v6];
 
-  v7 = [(SWHighlight *)v5 slHighlight];
+  slHighlight = [(SWHighlight *)v5 slHighlight];
 
-  if (v7)
+  if (slHighlight)
   {
     v8 = [SWHighlightIdentifier alloc];
-    v9 = [(SWHighlight *)v5 slHighlight];
-    v10 = [v9 identifier];
-    v11 = [(SWHighlightIdentifier *)v8 initWithStringIdentifier:v10];
+    slHighlight2 = [(SWHighlight *)v5 slHighlight];
+    identifier = [slHighlight2 identifier];
+    v11 = [(SWHighlightIdentifier *)v8 initWithStringIdentifier:identifier];
     identifier = v5->_identifier;
     v5->_identifier = v11;
 
 LABEL_4:
-    v7 = v5;
+    slHighlight = v5;
   }
 
-  return v7;
+  return slHighlight;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(SWHighlight *)self slHighlight];
-  v6 = [v5 copy];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  v6 = [slHighlight copy];
   [v4 _setSLHighlight:v6];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SWHighlight *)self slHighlight];
-    v7 = [v5 slHighlight];
+    v5 = equalCopy;
+    slHighlight = [(SWHighlight *)self slHighlight];
+    slHighlight2 = [v5 slHighlight];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [slHighlight isEqual:slHighlight2];
   }
 
   else
@@ -272,18 +272,18 @@ LABEL_4:
 
 - (unint64_t)hash
 {
-  v2 = [(SWHighlight *)self slHighlight];
-  v3 = [v2 hash];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  v3 = [slHighlight hash];
 
   return v3;
 }
 
-- (id)replyContextMenuWithPresentingViewController:(id)a3
+- (id)replyContextMenuWithPresentingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SWHighlight *)self slHighlight];
-  v6 = [v5 attributions];
-  v7 = [v6 count];
+  controllerCopy = controller;
+  slHighlight = [(SWHighlight *)self slHighlight];
+  attributions = [slHighlight attributions];
+  v7 = [attributions count];
 
   if (v7 == 1)
   {
@@ -292,11 +292,11 @@ LABEL_4:
     v15 = 3221225472;
     v16 = __60__SWHighlight_replyContextMenuWithPresentingViewController___block_invoke;
     v17 = &unk_1E7FDDFC0;
-    v18 = self;
-    v19 = v4;
+    selfCopy = self;
+    v19 = controllerCopy;
     v9 = _Block_copy(&v14);
     v10 = SWFrameworkBundle();
-    v11 = [v10 localizedStringForKey:@"REPLY_CONTEXTMENU" value:&stru_1F3ABB850 table:{@"SharedWithYou", v14, v15, v16, v17, v18}];
+    v11 = [v10 localizedStringForKey:@"REPLY_CONTEXTMENU" value:&stru_1F3ABB850 table:{@"SharedWithYou", v14, v15, v16, v17, selfCopy}];
     [(SWHighlightContextMenu *)v8 setTitle:v11];
 
     [(SWHighlightContextMenu *)v8 setIdentifier:*MEMORY[0x1E697B768]];
@@ -343,22 +343,22 @@ void __60__SWHighlight_replyContextMenuWithPresentingViewController___block_invo
 - (id)hideContextMenu
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(SWHighlight *)self slHighlight];
-  v4 = [v3 attributions];
-  v5 = [v4 count];
+  slHighlight = [(SWHighlight *)self slHighlight];
+  attributions = [slHighlight attributions];
+  v5 = [attributions count];
 
   if (v5)
   {
     v6 = objc_alloc_init(SWHighlightContextMenu);
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = [(SWHighlight *)self slHighlight];
-    v9 = [v8 attributions];
+    slHighlight2 = [(SWHighlight *)self slHighlight];
+    attributions2 = [slHighlight2 attributions];
 
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v10 = [attributions2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
@@ -369,17 +369,17 @@ void __60__SWHighlight_replyContextMenuWithPresentingViewController___block_invo
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(attributions2);
           }
 
-          v14 = [*(*(&v23 + 1) + 8 * i) uniqueIdentifier];
-          if ([v14 length])
+          uniqueIdentifier = [*(*(&v23 + 1) + 8 * i) uniqueIdentifier];
+          if ([uniqueIdentifier length])
           {
-            [v7 addObject:v14];
+            [array addObject:uniqueIdentifier];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v11 = [attributions2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v11);
@@ -389,8 +389,8 @@ void __60__SWHighlight_replyContextMenuWithPresentingViewController___block_invo
     aBlock[1] = 3221225472;
     aBlock[2] = __30__SWHighlight_hideContextMenu__block_invoke;
     aBlock[3] = &unk_1E7FDDC38;
-    v22 = v7;
-    v15 = v7;
+    v22 = array;
+    v15 = array;
     v16 = _Block_copy(aBlock);
     v17 = SWFrameworkBundle();
     v18 = [v17 localizedStringForKey:@"HIDE_CONTEXTMENU" value:&stru_1F3ABB850 table:@"SharedWithYou"];

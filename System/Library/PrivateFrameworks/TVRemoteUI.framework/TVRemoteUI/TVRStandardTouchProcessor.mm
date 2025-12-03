@@ -1,25 +1,25 @@
 @interface TVRStandardTouchProcessor
-- (void)_tap:(id)a3;
-- (void)_touchpadClickVirtualizerTimerFired:(id)a3;
-- (void)setTouchpadView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_tap:(id)_tap;
+- (void)_touchpadClickVirtualizerTimerFired:(id)fired;
+- (void)setTouchpadView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation TVRStandardTouchProcessor
 
-- (void)setTouchpadView:(id)a3
+- (void)setTouchpadView:(id)view
 {
-  v4 = a3;
-  v5 = [(TVRTouchProcessor *)self touchpadView];
-  [v5 removeGestureRecognizer:self->_tapGestureRecognizer];
+  viewCopy = view;
+  touchpadView = [(TVRTouchProcessor *)self touchpadView];
+  [touchpadView removeGestureRecognizer:self->_tapGestureRecognizer];
 
   v9.receiver = self;
   v9.super_class = TVRStandardTouchProcessor;
-  [(TVRTouchProcessor *)&v9 setTouchpadView:v4];
-  if (v4)
+  [(TVRTouchProcessor *)&v9 setTouchpadView:viewCopy];
+  if (viewCopy)
   {
     tapGestureRecognizer = self->_tapGestureRecognizer;
     if (!tapGestureRecognizer)
@@ -34,20 +34,20 @@
       tapGestureRecognizer = self->_tapGestureRecognizer;
     }
 
-    [v4 addGestureRecognizer:tapGestureRecognizer];
+    [viewCopy addGestureRecognizer:tapGestureRecognizer];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   clickVirtualizerTimer = self->_clickVirtualizerTimer;
-  v7 = a4;
-  v8 = a3;
+  eventCopy = event;
+  beganCopy = began;
   [(NSTimer *)clickVirtualizerTimer invalidate];
-  v9 = [v8 anyObject];
+  anyObject = [beganCopy anyObject];
   self->_clickVirtualizerState = 1;
-  v10 = [(TVRTouchProcessor *)self touchpadView];
-  [v9 preciseLocationInView:v10];
+  touchpadView = [(TVRTouchProcessor *)self touchpadView];
+  [anyObject preciseLocationInView:touchpadView];
   self->_touchBeganLocation.x = v11;
   self->_touchBeganLocation.y = v12;
 
@@ -57,16 +57,16 @@
 
   v15.receiver = self;
   v15.super_class = TVRStandardTouchProcessor;
-  [(TVRTouchProcessor *)&v15 touchesBegan:v8 withEvent:v7];
+  [(TVRTouchProcessor *)&v15 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  v9 = [(TVRTouchProcessor *)self touchpadView];
-  [v8 preciseLocationInView:v9];
+  movedCopy = moved;
+  eventCopy = event;
+  anyObject = [movedCopy anyObject];
+  touchpadView = [(TVRTouchProcessor *)self touchpadView];
+  [anyObject preciseLocationInView:touchpadView];
   v12 = hypot(v10 - self->_touchBeganLocation.x, v11 - self->_touchBeganLocation.y);
   if (_TVRCGetTouchToSelectTravelDistance_onceToken != -1)
   {
@@ -75,8 +75,8 @@
 
   if ((__hasCachedTouchToSelectTravelDistance & 1) == 0)
   {
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v14 = [v13 objectForKey:@"TouchToSelectTravelDistance"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v14 = [standardUserDefaults objectForKey:@"TouchToSelectTravelDistance"];
 
     if (v14)
     {
@@ -99,17 +99,17 @@
 
   v17.receiver = self;
   v17.super_class = TVRStandardTouchProcessor;
-  [(TVRTouchProcessor *)&v17 touchesMoved:v6 withEvent:v7];
+  [(TVRTouchProcessor *)&v17 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   [(NSTimer *)self->_clickVirtualizerTimer invalidate];
-  v8 = [v6 anyObject];
-  v9 = [(TVRTouchProcessor *)self touchpadView];
-  [v8 preciseLocationInView:v9];
+  anyObject = [endedCopy anyObject];
+  touchpadView = [(TVRTouchProcessor *)self touchpadView];
+  [anyObject preciseLocationInView:touchpadView];
   v12 = hypot(v10 - self->_touchBeganLocation.x, v11 - self->_touchBeganLocation.y);
   if (_TVRCGetTouchToSelectTravelDistance_onceToken != -1)
   {
@@ -118,8 +118,8 @@
 
   if ((__hasCachedTouchToSelectTravelDistance & 1) == 0)
   {
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v14 = [v13 objectForKey:@"TouchToSelectTravelDistance"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v14 = [standardUserDefaults objectForKey:@"TouchToSelectTravelDistance"];
 
     if (v14)
     {
@@ -155,21 +155,21 @@ LABEL_13:
 
   v17.receiver = self;
   v17.super_class = TVRStandardTouchProcessor;
-  [(TVRTouchProcessor *)&v17 touchesEnded:v6 withEvent:v7];
+  [(TVRTouchProcessor *)&v17 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   clickVirtualizerTimer = self->_clickVirtualizerTimer;
-  v7 = a4;
-  v8 = a3;
+  eventCopy = event;
+  cancelledCopy = cancelled;
   [(NSTimer *)clickVirtualizerTimer invalidate];
   v9.receiver = self;
   v9.super_class = TVRStandardTouchProcessor;
-  [(TVRTouchProcessor *)&v9 touchesCancelled:v8 withEvent:v7];
+  [(TVRTouchProcessor *)&v9 touchesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
-- (void)_touchpadClickVirtualizerTimerFired:(id)a3
+- (void)_touchpadClickVirtualizerTimerFired:(id)fired
 {
   if (self->_clickVirtualizerState == 1)
   {
@@ -178,9 +178,9 @@ LABEL_13:
   }
 }
 
-- (void)_tap:(id)a3
+- (void)_tap:(id)_tap
 {
-  if ([a3 state] == 3)
+  if ([_tap state] == 3)
   {
 
     [(TVRTouchProcessor *)self markCurrentTouchToBeCancelled];

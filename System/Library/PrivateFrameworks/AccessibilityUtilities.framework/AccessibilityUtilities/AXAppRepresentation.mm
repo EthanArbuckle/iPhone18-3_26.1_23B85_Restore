@@ -1,20 +1,20 @@
 @interface AXAppRepresentation
-+ (id)appWithPID:(int)a3 bundleID:(id)a4;
++ (id)appWithPID:(int)d bundleID:(id)iD;
 - (AXAppRepresentation)init;
-- (AXAppRepresentation)initWithCoder:(id)a3;
+- (AXAppRepresentation)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXAppRepresentation
 
-+ (id)appWithPID:(int)a3 bundleID:(id)a4
++ (id)appWithPID:(int)d bundleID:(id)iD
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&d;
+  iDCopy = iD;
   v6 = objc_alloc_init(AXAppRepresentation);
   [(AXAppRepresentation *)v6 setPid:v4];
-  [(AXAppRepresentation *)v6 setBundleIdentifier:v5];
+  [(AXAppRepresentation *)v6 setBundleIdentifier:iDCopy];
 
   return v6;
 }
@@ -37,31 +37,31 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[AXAppRepresentation pid](self, "pid")}];
-  v5 = [(AXAppRepresentation *)self bundleIdentifier];
+  bundleIdentifier = [(AXAppRepresentation *)self bundleIdentifier];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXAppRepresentation isLayoutPrimary](self, "isLayoutPrimary")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXAppRepresentation isLayoutFullscreenModal](self, "isLayoutFullscreenModal")}];
-  v8 = [v3 stringWithFormat:@"AXApp<%p>: PID:%@ BundleID:%@ Primary:%@ FullScrModal:%@", self, v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"AXApp<%p>: PID:%@ BundleID:%@ Primary:%@ FullScrModal:%@", self, v4, bundleIdentifier, v6, v7];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInt:{-[AXAppRepresentation pid](self, "pid")}];
-  [v5 encodeObject:v6 forKey:@"pid"];
+  [coderCopy encodeObject:v6 forKey:@"pid"];
 
-  v7 = [(AXAppRepresentation *)self bundleIdentifier];
-  [v5 encodeObject:v7 forKey:@"bundleID"];
+  bundleIdentifier = [(AXAppRepresentation *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleID"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AXAppRepresentation layoutRole](self, "layoutRole")}];
-  [v5 encodeObject:v8 forKey:@"layoutRole"];
+  [coderCopy encodeObject:v8 forKey:@"layoutRole"];
 }
 
-- (AXAppRepresentation)initWithCoder:(id)a3
+- (AXAppRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AXAppRepresentation;
   v5 = [(AXAppRepresentation *)&v11 init];
@@ -69,13 +69,13 @@
   if (v5)
   {
     [(AXAppRepresentation *)v5 _commonInit];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
     -[AXAppRepresentation setPid:](v6, "setPid:", [v7 intValue]);
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     [(AXAppRepresentation *)v6 setBundleIdentifier:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutRole"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutRole"];
     -[AXAppRepresentation setLayoutRole:](v6, "setLayoutRole:", [v9 unsignedIntegerValue]);
   }
 

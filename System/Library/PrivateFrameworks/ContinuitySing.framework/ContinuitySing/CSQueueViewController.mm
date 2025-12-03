@@ -1,11 +1,11 @@
 @interface CSQueueViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (CSQueueViewController)initWithAddSongHandler:(id)a3;
-- (id)cellForIndexPath:(id)a3 queueEntry:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (CSQueueViewController)initWithAddSongHandler:(id)handler;
+- (id)cellForIndexPath:(id)path queueEntry:(id)entry;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)setupHeaderView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateDataSource;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -13,25 +13,25 @@
 
 @implementation CSQueueViewController
 
-- (CSQueueViewController)initWithAddSongHandler:(id)a3
+- (CSQueueViewController)initWithAddSongHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = CSQueueViewController;
   v5 = [(CSQueueViewController *)&v13 initWithStyle:0];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     addSongHandler = v5->_addSongHandler;
     v5->_addSongHandler = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     itemsPendingAttribution = v5->_itemsPendingAttribution;
-    v5->_itemsPendingAttribution = v8;
+    v5->_itemsPendingAttribution = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     attributions = v5->_attributions;
-    v5->_attributions = v10;
+    v5->_attributions = dictionary2;
   }
 
   return v5;
@@ -42,41 +42,41 @@
   v19.receiver = self;
   v19.super_class = CSQueueViewController;
   [(CSQueueViewController *)&v19 viewDidLoad];
-  v3 = [(CSQueueViewController *)self tableView];
-  [v3 setSeparatorStyle:0];
-  [v3 contentInset];
-  [v3 setVerticalScrollIndicatorInsets:?];
-  [v3 setSectionHeaderTopPadding:0.0];
-  [v3 setAllowsSelection:1];
-  [v3 setRowHeight:56.0];
-  [v3 setEditing:1];
-  [v3 setAllowsSelectionDuringEditing:1];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"Song"];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"Add Song"];
+  tableView = [(CSQueueViewController *)self tableView];
+  [tableView setSeparatorStyle:0];
+  [tableView contentInset];
+  [tableView setVerticalScrollIndicatorInsets:?];
+  [tableView setSectionHeaderTopPadding:0.0];
+  [tableView setAllowsSelection:1];
+  [tableView setRowHeight:56.0];
+  [tableView setEditing:1];
+  [tableView setAllowsSelectionDuringEditing:1];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"Song"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"Add Song"];
   objc_initWeak(&location, self);
   v4 = [CSQueueViewControllerDataSource alloc];
-  v5 = [(CSQueueViewController *)self tableView];
+  tableView2 = [(CSQueueViewController *)self tableView];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __36__CSQueueViewController_viewDidLoad__block_invoke;
   v16 = &unk_278E0BB70;
   objc_copyWeak(&v17, &location);
-  v6 = [(UITableViewDiffableDataSource *)v4 initWithTableView:v5 cellProvider:&v13];
+  v6 = [(UITableViewDiffableDataSource *)v4 initWithTableView:tableView2 cellProvider:&v13];
   dataSource = self->_dataSource;
   self->_dataSource = v6;
 
   [(CSQueueViewController *)self setupHeaderView:v13];
   [(CSQueueViewController *)self updateDataSource];
   v8 = +[CSShieldManager sharedManager];
-  v9 = [v8 playbackManager];
-  [v9 addObserver:self];
+  playbackManager = [v8 playbackManager];
+  [playbackManager addObserver:self];
 
   v10 = objc_alloc_init(MEMORY[0x277D75FB8]);
   grabberView = self->_grabberView;
   self->_grabberView = v10;
 
-  v12 = [(CSQueueViewController *)self tableView];
-  [v12 addSubview:self->_grabberView];
+  tableView3 = [(CSQueueViewController *)self tableView];
+  [tableView3 addSubview:self->_grabberView];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -92,35 +92,35 @@ id __36__CSQueueViewController_viewDidLoad__block_invoke(uint64_t a1, uint64_t a
   return v9;
 }
 
-- (id)cellForIndexPath:(id)a3 queueEntry:(id)a4
+- (id)cellForIndexPath:(id)path queueEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
-  v9 = [v8 isAddSongsItem];
+  pathCopy = path;
+  entryCopy = entry;
+  v8 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
+  isAddSongsItem = [v8 isAddSongsItem];
 
-  v10 = [(CSQueueViewController *)self tableView];
-  v11 = v10;
-  if (v9)
+  tableView = [(CSQueueViewController *)self tableView];
+  v11 = tableView;
+  if (isAddSongsItem)
   {
-    v12 = [v10 dequeueReusableCellWithIdentifier:@"Add Song"];
+    v12 = [tableView dequeueReusableCellWithIdentifier:@"Add Song"];
 LABEL_5:
     v19 = v12;
     goto LABEL_7;
   }
 
-  v13 = [v10 dequeueReusableCellWithIdentifier:@"Song" forIndexPath:v6];
+  v13 = [tableView dequeueReusableCellWithIdentifier:@"Song" forIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v7 responseItem];
-    [v13 setContent:v14];
+    responseItem = [entryCopy responseItem];
+    [v13 setContent:responseItem];
 
     attributions = self->_attributions;
-    v16 = [v7 responseItem];
-    v17 = [v16 queueItemIdentifier];
-    v18 = [(NSMutableDictionary *)attributions objectForKeyedSubscript:v17];
+    responseItem2 = [entryCopy responseItem];
+    queueItemIdentifier = [responseItem2 queueItemIdentifier];
+    v18 = [(NSMutableDictionary *)attributions objectForKeyedSubscript:queueItemIdentifier];
     [v13 setParticipantInfo:v18];
 
     v12 = v13;
@@ -140,14 +140,14 @@ LABEL_7:
   v15.receiver = self;
   v15.super_class = CSQueueViewController;
   [(CSQueueViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(CSQueueViewController *)self tableView];
-  [v3 bounds];
+  tableView = [(CSQueueViewController *)self tableView];
+  [tableView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CSQueueViewController *)self tableView];
-  [v12 bringSubviewToFront:self->_headerView];
+  tableView2 = [(CSQueueViewController *)self tableView];
+  [tableView2 bringSubviewToFront:self->_headerView];
 
   v16.origin.x = v5;
   v16.origin.y = v7;
@@ -159,81 +159,81 @@ LABEL_7:
   v17.size.width = v9;
   v17.size.height = v11;
   [(_UIGrabber *)self->_grabberView setFrame:v13, CGRectGetMinY(v17) + 4.0, 50.0, 5.0];
-  v14 = [(CSQueueViewController *)self tableView];
-  [v14 bringSubviewToFront:self->_grabberView];
+  tableView3 = [(CSQueueViewController *)self tableView];
+  [tableView3 bringSubviewToFront:self->_grabberView];
 }
 
 - (void)setupHeaderView
 {
   v3 = [CSQueueHeaderView alloc];
-  v4 = [(CSQueueViewController *)self tableView];
-  [v4 bounds];
+  tableView = [(CSQueueViewController *)self tableView];
+  [tableView bounds];
   v5 = [(CSQueueHeaderView *)v3 initWithFrame:0.0, 0.0, CGRectGetWidth(v10), 220.0];
   headerView = self->_headerView;
   self->_headerView = v5;
 
   v7 = self->_headerView;
-  v8 = [(CSQueueViewController *)self tableView];
-  [v8 setTableHeaderView:v7];
+  tableView2 = [(CSQueueViewController *)self tableView];
+  [tableView2 setTableHeaderView:v7];
 }
 
 - (void)updateDataSource
 {
   v3 = objc_alloc_init(MEMORY[0x277CFB888]);
   v4 = +[CSShieldManager sharedManager];
-  v5 = [v4 playbackManager];
-  v6 = [v5 tracklist];
+  playbackManager = [v4 playbackManager];
+  tracklist = [playbackManager tracklist];
 
-  v7 = [v6 displayItems];
+  displayItems = [tracklist displayItems];
 
-  if (v7)
+  if (displayItems)
   {
     v29[0] = @"Up Next";
     v29[1] = @"Continue Playing";
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
     [v3 appendSectionsWithIdentifiers:v8];
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __41__CSQueueViewController_updateDataSource__block_invoke;
     aBlock[3] = &unk_278E0BB98;
     aBlock[4] = self;
-    v27 = v9;
+    v27 = dictionary;
     v10 = v3;
     v28 = v10;
-    v11 = v9;
+    v11 = dictionary;
     v12 = _Block_copy(aBlock);
-    v13 = [v6 displayItems];
+    displayItems2 = [tracklist displayItems];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __41__CSQueueViewController_updateDataSource__block_invoke_2;
     v23[3] = &unk_278E0BBC0;
     v25 = v12;
-    v24 = v6;
+    v24 = tracklist;
     v14 = v12;
-    [v13 enumerateSectionsUsingBlock:v23];
+    [displayItems2 enumerateSectionsUsingBlock:v23];
 
-    v15 = [[CSPlayerResponseItemWrapper alloc] initAddSongsItem];
-    v22 = v15;
+    initAddSongsItem = [[CSPlayerResponseItemWrapper alloc] initAddSongsItem];
+    v22 = initAddSongsItem;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
     [v10 appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:@"Up Next"];
 
     [(NSMutableDictionary *)self->_itemsPendingAttribution addEntriesFromDictionary:v11];
     v17 = +[CSQueueAttributionManager sharedManager];
-    v18 = [v11 allKeys];
+    allKeys = [v11 allKeys];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __41__CSQueueViewController_updateDataSource__block_invoke_3;
     v21[3] = &unk_278E0BBE8;
     v21[4] = self;
-    [v17 retrieveAttributionsForQueueIdentifiers:v18 withResultHandler:v21];
+    [v17 retrieveAttributionsForQueueIdentifiers:allKeys withResultHandler:v21];
   }
 
   [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:v3 animatingDifferences:1];
   headerView = self->_headerView;
-  v20 = [v6 playingItem];
-  [(CSQueueHeaderView *)headerView setNowPlayingItem:v20];
+  playingItem = [tracklist playingItem];
+  [(CSQueueHeaderView *)headerView setNowPlayingItem:playingItem];
 }
 
 void __41__CSQueueViewController_updateDataSource__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -399,9 +399,9 @@ void __41__CSQueueViewController_updateDataSource__block_invoke_5(uint64_t a1, v
   [*(*(a1 + 32) + 1048) setObject:0 forKeyedSubscript:v6];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [(UITableViewDiffableDataSource *)self->_dataSource sectionIdentifierForIndex:a4];
+  v6 = [(UITableViewDiffableDataSource *)self->_dataSource sectionIdentifierForIndex:section];
   v7 = [v6 isEqualToString:@"Up Next"];
 
   if (v7)
@@ -411,7 +411,7 @@ void __41__CSQueueViewController_updateDataSource__block_invoke_5(uint64_t a1, v
 
   else
   {
-    v9 = [(UITableViewDiffableDataSource *)self->_dataSource sectionIdentifierForIndex:a4];
+    v9 = [(UITableViewDiffableDataSource *)self->_dataSource sectionIdentifierForIndex:section];
     v10 = [v9 isEqualToString:@"Continue Playing"];
 
     if (v10)
@@ -428,21 +428,21 @@ void __41__CSQueueViewController_updateDataSource__block_invoke_5(uint64_t a1, v
       [(CSQueueSectionHeader *)v8 addSubview:v11];
       [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
       v24 = MEMORY[0x277CCAAD0];
-      v29 = [v11 topAnchor];
-      v28 = [(CSQueueSectionHeader *)v8 topAnchor];
-      v27 = [v29 constraintEqualToAnchor:v28 constant:24.0];
+      topAnchor = [v11 topAnchor];
+      topAnchor2 = [(CSQueueSectionHeader *)v8 topAnchor];
+      v27 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:24.0];
       v30[0] = v27;
-      v26 = [v11 bottomAnchor];
-      v25 = [(CSQueueSectionHeader *)v8 bottomAnchor];
-      v15 = [v26 constraintEqualToAnchor:v25 constant:-18.0];
+      bottomAnchor = [v11 bottomAnchor];
+      bottomAnchor2 = [(CSQueueSectionHeader *)v8 bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-18.0];
       v30[1] = v15;
-      v16 = [v11 leadingAnchor];
-      v17 = [(CSQueueSectionHeader *)v8 leadingAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17 constant:32.0];
+      leadingAnchor = [v11 leadingAnchor];
+      leadingAnchor2 = [(CSQueueSectionHeader *)v8 leadingAnchor];
+      v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:32.0];
       v30[2] = v18;
-      v19 = [v11 trailingAnchor];
-      v20 = [(CSQueueSectionHeader *)v8 trailingAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20 constant:-8.0];
+      trailingAnchor = [v11 trailingAnchor];
+      trailingAnchor2 = [(CSQueueSectionHeader *)v8 trailingAnchor];
+      v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
       v30[3] = v21;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
       [v24 activateConstraints:v22];
@@ -457,11 +457,11 @@ void __41__CSQueueViewController_updateDataSource__block_invoke_5(uint64_t a1, v
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v9 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v9 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
 
   if ([v9 isAddSongsItem])
   {
@@ -480,43 +480,43 @@ void __41__CSQueueViewController_updateDataSource__block_invoke_5(uint64_t a1, v
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a4];
-  v5 = [v4 isAddSongsItem];
+  v4 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
+  isAddSongsItem = [v4 isAddSongsItem];
 
-  return v5;
+  return isAddSongsItem;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 section];
-  v11 = [v9 section];
-  if (v10 == v11)
+  viewCopy = view;
+  indexPathCopy = indexPath;
+  section = [path section];
+  section2 = [indexPathCopy section];
+  if (section == section2)
   {
-    v12 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v9];
-    v13 = [v12 isAddSongsItem];
+    v12 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:indexPathCopy];
+    isAddSongsItem = [v12 isAddSongsItem];
 
-    if (!v13)
+    if (!isAddSongsItem)
     {
-      v18 = v9;
+      v18 = indexPathCopy;
       goto LABEL_12;
     }
 
     v14 = MEMORY[0x277CCAA70];
-    v15 = [v9 row];
+    v15 = [indexPathCopy row];
     goto LABEL_9;
   }
 
-  if (v10 <= v11)
+  if (section <= section2)
   {
-    v19 = [(UITableViewDiffableDataSource *)self->_dataSource sectionIdentifierForIndex:v10];
+    v19 = [(UITableViewDiffableDataSource *)self->_dataSource sectionIdentifierForIndex:section];
     v20 = [v19 isEqualToString:@"Up Next"];
 
     v14 = MEMORY[0x277CCAA70];
-    v15 = [v8 numberOfRowsInSection:v10];
+    v15 = [viewCopy numberOfRowsInSection:section];
     if (v20)
     {
       v17 = v15 - 2;
@@ -533,7 +533,7 @@ LABEL_9:
   v16 = MEMORY[0x277CCAA70];
   v17 = 0;
 LABEL_11:
-  v18 = [v16 indexPathForRow:v17 inSection:v10];
+  v18 = [v16 indexPathForRow:v17 inSection:section];
 LABEL_12:
   v21 = v18;
 

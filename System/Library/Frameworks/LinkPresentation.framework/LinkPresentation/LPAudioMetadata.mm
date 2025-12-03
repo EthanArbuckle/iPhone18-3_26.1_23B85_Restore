@@ -1,9 +1,9 @@
 @interface LPAudioMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LPAudioMetadata)init;
-- (LPAudioMetadata)initWithCoder:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LPAudioMetadata)initWithCoder:(id)coder;
+- (id)_initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPAudioMetadata
@@ -23,13 +23,13 @@
   return v3;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(LPAudioMetadata *)self init];
-  if (v5 && (URLForKey(v4, @"LPMetadataAudioURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
+  if (v5 && (URLForKey(dictionaryCopy, @"LPMetadataAudioURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
   {
-    v8 = stringForKey(v4, @"LPMetadataAudioType");
+    v8 = stringForKey(dictionaryCopy, @"LPMetadataAudioType");
     type = v5->_type;
     v5->_type = v8;
 
@@ -44,24 +44,24 @@
   return v10;
 }
 
-- (LPAudioMetadata)initWithCoder:(id)a3
+- (LPAudioMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = LPAudioMetadata;
   v5 = [(LPAudioMetadata *)&v14 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = decodeStringForKey(v4, @"type");
+    v8 = decodeStringForKey(coderCopy, @"type");
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = decodeStringForKey(v4, @"accessibilityText");
+    v10 = decodeStringForKey(coderCopy, @"accessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v10;
 
@@ -71,21 +71,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:self->_version forKey:@"version"];
-  [v4 _lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v4 _lp_encodeStringIfNotNil:self->_type forKey:@"type"];
-  [v4 _lp_encodeStringIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_version forKey:@"version"];
+  [coderCopy _lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_type forKey:@"type"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = LPAudioMetadata;
-  if ([(LPAudioMetadata *)&v9 isEqual:v4])
+  if ([(LPAudioMetadata *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -95,7 +95,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && (objectsAreEqual_0(v6[2], self->_URL) & 1) != 0 && objectsAreEqual_0(v7[3], self->_type))
       {

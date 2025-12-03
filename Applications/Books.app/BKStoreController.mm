@@ -1,51 +1,51 @@
 @interface BKStoreController
 - (BKLibraryAssetProvider)libraryAssetProvider;
 - (BKLibraryDownloadQueueManager)downloadQueueManager;
-- (BKStoreController)initWithLibrary:(id)a3 downloadQueueManager:(id)a4;
+- (BKStoreController)initWithLibrary:(id)library downloadQueueManager:(id)manager;
 - (BOOL)allowCitationForProtectedBooks;
-- (BOOL)citationAllowedForStoreFrontID:(unint64_t)a3;
-- (BOOL)isAssetDownloadableWithStoreId:(id)a3;
+- (BOOL)citationAllowedForStoreFrontID:(unint64_t)d;
+- (BOOL)isAssetDownloadableWithStoreId:(id)id;
 - (BOOL)isReportConcernEnabled;
 - (NSSet)storeIDsWithAvailableUpdates;
 - (NSURL)bookmarkGetAllUrl;
 - (NSURL)bookmarkSetAllUrl;
 - (NSURL)tellAFriendEmailBodyURLBase;
-- (id)assetDownloadProgressWithStoreId:(id)a3;
-- (id)bookUrlForStoreId:(id)a3;
+- (id)assetDownloadProgressWithStoreId:(id)id;
+- (id)bookUrlForStoreId:(id)id;
 - (id)storesAllowingCitation;
 - (unint64_t)lastBookUpdateCheck;
-- (void)_bagInvalidated:(id)a3;
+- (void)_bagInvalidated:(id)invalidated;
 - (void)_notifyStoreIDsWithAvailableUpdatesChanged;
-- (void)_operationDidFinish:(id)a3 result:(id)a4;
+- (void)_operationDidFinish:(id)finish result:(id)result;
 - (void)bumpLastBookUpdateCheck;
-- (void)canCheckForBookUpdatesWithCompletion:(id)a3;
-- (void)cancelDownloadingAssetWithStoreId:(id)a3;
-- (void)clearAvailableUpdatesForStoreIDAndRefreshUpdateCount:(id)a3;
-- (void)coverForAssetWithStoreId:(id)a3 supplementalAssetID:(id)a4 completion:(id)a5;
+- (void)canCheckForBookUpdatesWithCompletion:(id)completion;
+- (void)cancelDownloadingAssetWithStoreId:(id)id;
+- (void)clearAvailableUpdatesForStoreIDAndRefreshUpdateCount:(id)count;
+- (void)coverForAssetWithStoreId:(id)id supplementalAssetID:(id)d completion:(id)completion;
 - (void)dealloc;
 - (void)downloadQueueReload;
-- (void)getStoreIDsWithAvailableUpdatesWithCompletion:(id)a3;
-- (void)libraryOperationDidComplete:(id)a3;
-- (void)openEBookProductPageForStoreID:(id)a3;
+- (void)getStoreIDsWithAvailableUpdatesWithCompletion:(id)completion;
+- (void)libraryOperationDidComplete:(id)complete;
+- (void)openEBookProductPageForStoreID:(id)d;
 - (void)refreshUpdateCountAsync;
-- (void)setStoreIDsWithAvailableUpdates:(id)a3;
+- (void)setStoreIDsWithAvailableUpdates:(id)updates;
 - (void)startAllowingRefreshUpdateCount;
-- (void)startOrResumeDownloadingAssetWithStoreId:(id)a3;
+- (void)startOrResumeDownloadingAssetWithStoreId:(id)id;
 @end
 
 @implementation BKStoreController
 
-- (BKStoreController)initWithLibrary:(id)a3 downloadQueueManager:(id)a4
+- (BKStoreController)initWithLibrary:(id)library downloadQueueManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  managerCopy = manager;
   v29.receiver = self;
   v29.super_class = BKStoreController;
   v8 = [(BKStoreController *)&v29 init];
   v9 = v8;
   if (v8)
   {
-    [(BKStoreController *)v8 setLibraryAssetProvider:v6];
+    [(BKStoreController *)v8 setLibraryAssetProvider:libraryCopy];
     v10 = dispatch_queue_create("BKStoreController.storeIDsWithAvailableUpdates", 0);
     storeIDsWithAvailableUpdatesSync = v9->_storeIDsWithAvailableUpdatesSync;
     v9->_storeIDsWithAvailableUpdatesSync = v10;
@@ -79,7 +79,7 @@
     v25 = +[NSNotificationCenter defaultCenter];
     [v25 addObserver:v9 selector:"libraryOperationDidComplete:" name:BKLibraryOperationCompleteNotification object:0];
 
-    [(BKStoreController *)v9 setDownloadQueueManager:v7];
+    [(BKStoreController *)v9 setDownloadQueueManager:managerCopy];
     v26 = objc_alloc_init(NSOperationQueue);
     operationQueue = v9->_operationQueue;
     v9->_operationQueue = v26;
@@ -112,7 +112,7 @@
   [(BKStoreController *)&v6 dealloc];
 }
 
-- (void)_bagInvalidated:(id)a3
+- (void)_bagInvalidated:(id)invalidated
 {
   bagSnapshotAccessQueue = self->_bagSnapshotAccessQueue;
   block[0] = _NSConcreteStackBlock;
@@ -146,22 +146,22 @@
   dispatch_async(updateQueue, block);
 }
 
-- (void)openEBookProductPageForStoreID:(id)a3
+- (void)openEBookProductPageForStoreID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[BKAppDelegate sceneManager];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10005182C;
   v6[3] = &unk_100A03698;
-  v7 = v3;
-  v5 = v3;
+  v7 = dCopy;
+  v5 = dCopy;
   [v4 requestPrimaryScene:v6];
 }
 
-- (id)bookUrlForStoreId:(id)a3
+- (id)bookUrlForStoreId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -177,7 +177,7 @@
   block[5] = &v16;
   dispatch_sync(bagSnapshotAccessQueue, block);
   v6 = v17[5];
-  v7 = v4;
+  v7 = idCopy;
   v8 = v6;
   v9 = [v7 length];
   if (v8)
@@ -197,8 +197,8 @@
 
   else
   {
-    v11 = [v8 absoluteString];
-    v12 = [v11 stringByAppendingFormat:@"?id=%@", v7];
+    absoluteString = [v8 absoluteString];
+    v12 = [absoluteString stringByAppendingFormat:@"?id=%@", v7];
     v13 = [NSURL URLWithString:v12];
   }
 
@@ -207,14 +207,14 @@
   return v13;
 }
 
-- (BOOL)isAssetDownloadableWithStoreId:(id)a3
+- (BOOL)isAssetDownloadableWithStoreId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [(BKStoreController *)self libraryAssetProvider];
-  v6 = [v5 libraryAssetOnMainQueueWithStoreID:v4];
+  libraryAssetProvider = [(BKStoreController *)self libraryAssetProvider];
+  v6 = [libraryAssetProvider libraryAssetOnMainQueueWithStoreID:idCopy];
 
-  if ([v5 isDownloadableFromLibraryAsset:v6])
+  if ([libraryAssetProvider isDownloadableFromLibraryAsset:v6])
   {
     v7 = +[BKReachability isOffline]^ 1;
   }
@@ -227,12 +227,12 @@
   return v7;
 }
 
-- (void)startOrResumeDownloadingAssetWithStoreId:(id)a3
+- (void)startOrResumeDownloadingAssetWithStoreId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v5 = +[BKLibraryAssetStatusController sharedController];
-  v6 = [v5 statusForAssetID:v4];
+  v6 = [v5 statusForAssetID:idCopy];
 
   if ([v6 canResume])
   {
@@ -240,59 +240,59 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v15 = v4;
+      v15 = idCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Resuming download of asset with ID %{private}@", buf, 0xCu);
     }
 
     v8 = +[BKLibraryAssetStatusController sharedController];
-    [v8 resumeDownloadOfAsset:v4];
+    [v8 resumeDownloadOfAsset:idCopy];
   }
 
   else
   {
-    v9 = [(BKStoreController *)self libraryAssetProvider];
-    v8 = [v9 libraryAssetOnMainQueueWithStoreID:v4];
+    libraryAssetProvider = [(BKStoreController *)self libraryAssetProvider];
+    v8 = [libraryAssetProvider libraryAssetOnMainQueueWithStoreID:idCopy];
 
     v10 = BCBookDownloadLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v15 = v4;
+      v15 = idCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Requesting download of asset with ID %{private}@", buf, 0xCu);
     }
 
-    v11 = [(BKStoreController *)self libraryAssetProvider];
+    libraryAssetProvider2 = [(BKStoreController *)self libraryAssetProvider];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100051D3C;
     v12[3] = &unk_100A036E8;
-    v13 = v4;
-    [v11 resolveLibraryAsset:v8 completion:v12];
+    v13 = idCopy;
+    [libraryAssetProvider2 resolveLibraryAsset:v8 completion:v12];
   }
 }
 
-- (void)cancelDownloadingAssetWithStoreId:(id)a3
+- (void)cancelDownloadingAssetWithStoreId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v4 = BCBookDownloadLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138477827;
-    v7 = v3;
+    v7 = idCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Cancelling download of asset with ID %{private}@", &v6, 0xCu);
   }
 
   v5 = +[BKLibraryAssetStatusController sharedController];
-  [v5 cancelDownloadOfAsset:v3];
+  [v5 cancelDownloadOfAsset:idCopy];
 }
 
-- (id)assetDownloadProgressWithStoreId:(id)a3
+- (id)assetDownloadProgressWithStoreId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v4 = +[BKLibraryAssetStatusController sharedController];
-  v5 = [v4 statusForAssetID:v3];
+  v5 = [v4 statusForAssetID:idCopy];
 
   if ([v5 state] == 4)
   {
@@ -315,10 +315,10 @@
   return v6;
 }
 
-- (void)coverForAssetWithStoreId:(id)a3 supplementalAssetID:(id)a4 completion:(id)a5
+- (void)coverForAssetWithStoreId:(id)id supplementalAssetID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  dCopy = d;
+  completionCopy = completion;
   if (!+[NSThread isMainThread])
   {
     v8 = BCImageCacheLog();
@@ -334,9 +334,9 @@
   v10[1] = 3221225472;
   v10[2] = sub_1000520D4;
   v10[3] = &unk_100A03710;
-  v11 = v7;
-  v9 = v7;
-  [BKLibraryManager fetchImageForAssetID:v6 size:1 includeSpine:1 includeShadow:0 coverEffectsEnvironment:v10 completion:256.0, 256.0];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [BKLibraryManager fetchImageForAssetID:dCopy size:1 includeSpine:1 includeShadow:0 coverEffectsEnvironment:v10 completion:256.0, 256.0];
 }
 
 - (void)bumpLastBookUpdateCheck
@@ -371,13 +371,13 @@
 
 - (void)downloadQueueReload
 {
-  v2 = [(BKStoreController *)self downloadQueueManager];
-  [v2 reloadDownloadQueue];
+  downloadQueueManager = [(BKStoreController *)self downloadQueueManager];
+  [downloadQueueManager reloadDownloadQueue];
 }
 
-- (void)setStoreIDsWithAvailableUpdates:(id)a3
+- (void)setStoreIDsWithAvailableUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -400,7 +400,7 @@
   block[2] = sub_100052694;
   block[3] = &unk_100A03738;
   block[4] = self;
-  v6 = v4;
+  v6 = updatesCopy;
   v22 = v6;
   v23 = &v38;
   v24 = &v32;
@@ -410,8 +410,8 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [NSNumber numberWithBool:*(v39 + 24)];
-    v9 = [v6 allObjects];
-    v10 = [v9 componentsJoinedByString:{@", "}];
+    allObjects = [v6 allObjects];
+    v10 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 138412546;
     v44 = v8;
     v45 = 2112;
@@ -466,9 +466,9 @@
   _Block_object_dispose(&v38, 8);
 }
 
-- (void)libraryOperationDidComplete:(id)a3
+- (void)libraryOperationDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -492,8 +492,8 @@
     v7[1] = 3221225472;
     v7[2] = sub_100052938;
     v7[3] = &unk_100A03760;
-    v8 = v4;
-    v9 = self;
+    v8 = completeCopy;
+    selfCopy = self;
     v10 = &v11;
     dispatch_sync(v6, v7);
     if (*(v12 + 24) == 1)
@@ -507,13 +507,13 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)clearAvailableUpdatesForStoreIDAndRefreshUpdateCount:(id)a3
+- (void)clearAvailableUpdatesForStoreIDAndRefreshUpdateCount:(id)count
 {
-  v4 = a3;
-  v5 = [(BKStoreController *)self storeIDsWithAvailableUpdates];
-  v6 = [v5 mutableCopy];
+  countCopy = count;
+  storeIDsWithAvailableUpdates = [(BKStoreController *)self storeIDsWithAvailableUpdates];
+  v6 = [storeIDsWithAvailableUpdates mutableCopy];
 
-  [v6 removeObject:v4];
+  [v6 removeObject:countCopy];
   v7 = [v6 copy];
   [(BKStoreController *)self setStoreIDsWithAvailableUpdates:v7];
 
@@ -521,7 +521,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = countCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Removed %@ from storeIDsWithAvailableUpdates", buf, 0xCu);
   }
 
@@ -531,8 +531,8 @@
   v11[2] = sub_100052C30;
   v11[3] = &unk_100A03440;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = countCopy;
+  v10 = countCopy;
   dispatch_sync(storeIDsWithAssetVersionUpdatePendingSync, v11);
 }
 
@@ -568,13 +568,13 @@
   return v3;
 }
 
-- (void)getStoreIDsWithAvailableUpdatesWithCompletion:(id)a3
+- (void)getStoreIDsWithAvailableUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_hasSetStoreIDsWithAvailableUpdates)
   {
-    if (v4)
+    if (completionCopy)
     {
       *v17 = 0;
       v18 = v17;
@@ -593,8 +593,8 @@
       v7 = BKStoreBookUpdateLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [*(v18 + 5) allObjects];
-        v9 = [v8 componentsJoinedByString:{@", "}];
+        allObjects = [*(v18 + 5) allObjects];
+        v9 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 138412290;
         v24 = v9;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Returning these items with update: [%@]", buf, 0xCu);
@@ -631,15 +631,15 @@
   }
 }
 
-- (void)_operationDidFinish:(id)a3 result:(id)a4
+- (void)_operationDidFinish:(id)finish result:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_updateQueue);
   v6 = +[NSMutableSet set];
-  if ([v5 count])
+  if ([resultCopy count])
   {
     [(BKStoreController *)self bumpLastBookUpdateCheck];
-    v7 = [v5 objectForKey:@"items"];
+    v7 = [resultCopy objectForKey:@"items"];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -648,8 +648,8 @@
     if (v8)
     {
       v9 = v8;
-      v27 = self;
-      v28 = v5;
+      selfCopy = self;
+      v28 = resultCopy;
       v10 = *v37;
       do
       {
@@ -660,19 +660,19 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v36 + 1) + 8 * i) objectForKeyedSubscript:{@"item-id", v27, v28}];
-          v13 = [v12 adamIDStringValue];
-          if (v13)
+          v12 = [*(*(&v36 + 1) + 8 * i) objectForKeyedSubscript:{@"item-id", selfCopy, v28}];
+          adamIDStringValue = [v12 adamIDStringValue];
+          if (adamIDStringValue)
           {
             v14 = BKStoreBookUpdateLog();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v42 = v13;
+              v42 = adamIDStringValue;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Adding storeId (%@) from server response to storeIdsWithAvailableUpdates", buf, 0xCu);
             }
 
-            [v6 addObject:v13];
+            [v6 addObject:adamIDStringValue];
           }
         }
 
@@ -680,8 +680,8 @@
       }
 
       while (v9);
-      self = v27;
-      v5 = v28;
+      self = selfCopy;
+      resultCopy = v28;
     }
   }
 
@@ -695,14 +695,14 @@
     }
   }
 
-  v15 = [(BKStoreController *)self libraryAssetProvider];
-  v16 = [v15 storeIDsForDownloadingBooks];
+  libraryAssetProvider = [(BKStoreController *)self libraryAssetProvider];
+  storeIDsForDownloadingBooks = [libraryAssetProvider storeIDsForDownloadingBooks];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = v16;
+  v17 = storeIDsForDownloadingBooks;
   v18 = [v17 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v18)
   {
@@ -729,8 +729,8 @@
   v22 = BKStoreBookUpdateLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v6 allObjects];
-    v24 = [v23 componentsJoinedByString:{@", "}];
+    allObjects = [v6 allObjects];
+    v24 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 138412290;
     v42 = v24;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Fetching items to filter out unowned ones: [%@]", buf, 0xCu);
@@ -742,7 +742,7 @@
   v29[2] = sub_10005358C;
   v29[3] = &unk_100A037B0;
   v30 = v6;
-  v31 = self;
+  selfCopy2 = self;
   v26 = v6;
   [v25 fetchItemsForStoreIDs:v26 completion:v29];
 }
@@ -851,26 +851,26 @@
   return v3;
 }
 
-- (BOOL)citationAllowedForStoreFrontID:(unint64_t)a3
+- (BOOL)citationAllowedForStoreFrontID:(unint64_t)d
 {
-  v5 = [(BKStoreController *)self storesAllowingCitation];
-  if (v5)
+  storesAllowingCitation = [(BKStoreController *)self storesAllowingCitation];
+  if (storesAllowingCitation)
   {
-    v6 = [NSNumber numberWithUnsignedLongLong:a3];
-    v7 = [v5 containsObject:v6];
+    v6 = [NSNumber numberWithUnsignedLongLong:d];
+    allowCitationForProtectedBooks = [storesAllowingCitation containsObject:v6];
   }
 
   else
   {
-    v7 = [(BKStoreController *)self allowCitationForProtectedBooks];
+    allowCitationForProtectedBooks = [(BKStoreController *)self allowCitationForProtectedBooks];
   }
 
-  return v7;
+  return allowCitationForProtectedBooks;
 }
 
-- (void)canCheckForBookUpdatesWithCompletion:(id)a3
+- (void)canCheckForBookUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v26[0] = 0;
@@ -880,7 +880,7 @@
   v26[4] = sub_1000275B0;
   v27 = 0;
   v6 = +[BUBag defaultBag];
-  v7 = [v6 availableBookUpdatesReloadFrequency];
+  availableBookUpdatesReloadFrequency = [v6 availableBookUpdatesReloadFrequency];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000540DC;
@@ -888,7 +888,7 @@
   v25 = v26;
   v8 = v5;
   v24 = v8;
-  [v7 valueWithCompletion:v23];
+  [availableBookUpdatesReloadFrequency valueWithCompletion:v23];
 
   dispatch_group_enter(v8);
   v9 = +[BUBag defaultBag];
@@ -916,8 +916,8 @@
   v16 = v21;
   v17 = v26;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = completionCopy;
+  v13 = completionCopy;
   dispatch_group_notify(v11, v12, v14);
 
   _Block_object_dispose(v21, 8);

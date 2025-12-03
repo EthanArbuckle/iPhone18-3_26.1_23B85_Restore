@@ -1,59 +1,59 @@
 @interface SXQuickLookComponentFileProvider
-- (SXQuickLookComponentFileProvider)initWithDOMObjectProvider:(id)a3 resourceDataSourceProvider:(id)a4 shareURLProvider:(id)a5;
-- (id)copyFileIfNeeded:(id)a3 to:(id)a4 error:(id *)a5;
-- (void)fileForComponent:(id)a3 onCompletion:(id)a4 onError:(id)a5;
+- (SXQuickLookComponentFileProvider)initWithDOMObjectProvider:(id)provider resourceDataSourceProvider:(id)sourceProvider shareURLProvider:(id)lProvider;
+- (id)copyFileIfNeeded:(id)needed to:(id)to error:(id *)error;
+- (void)fileForComponent:(id)component onCompletion:(id)completion onError:(id)error;
 @end
 
 @implementation SXQuickLookComponentFileProvider
 
-- (SXQuickLookComponentFileProvider)initWithDOMObjectProvider:(id)a3 resourceDataSourceProvider:(id)a4 shareURLProvider:(id)a5
+- (SXQuickLookComponentFileProvider)initWithDOMObjectProvider:(id)provider resourceDataSourceProvider:(id)sourceProvider shareURLProvider:(id)lProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  sourceProviderCopy = sourceProvider;
+  lProviderCopy = lProvider;
   v15.receiver = self;
   v15.super_class = SXQuickLookComponentFileProvider;
   v12 = [(SXQuickLookComponentFileProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_DOMObjectProvider, a3);
-    objc_storeStrong(&v13->_resourceDataSourceProvider, a4);
-    objc_storeStrong(&v13->_shareURLProvider, a5);
+    objc_storeStrong(&v12->_DOMObjectProvider, provider);
+    objc_storeStrong(&v13->_resourceDataSourceProvider, sourceProvider);
+    objc_storeStrong(&v13->_shareURLProvider, lProvider);
   }
 
   return v13;
 }
 
-- (void)fileForComponent:(id)a3 onCompletion:(id)a4 onError:(id)a5
+- (void)fileForComponent:(id)component onCompletion:(id)completion onError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SXQuickLookComponentFileProvider *)self DOMObjectProvider];
-  v12 = [v8 resourceIdentifier];
-  v13 = [v11 resourceForIdentifier:v12];
+  componentCopy = component;
+  completionCopy = completion;
+  errorCopy = error;
+  dOMObjectProvider = [(SXQuickLookComponentFileProvider *)self DOMObjectProvider];
+  resourceIdentifier = [componentCopy resourceIdentifier];
+  v13 = [dOMObjectProvider resourceForIdentifier:resourceIdentifier];
 
-  v14 = [(SXQuickLookComponentFileProvider *)self resourceDataSourceProvider];
-  v15 = [v14 resourceDataSource];
+  resourceDataSourceProvider = [(SXQuickLookComponentFileProvider *)self resourceDataSourceProvider];
+  resourceDataSource = [resourceDataSourceProvider resourceDataSource];
   v16 = [v13 URL];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __74__SXQuickLookComponentFileProvider_fileForComponent_onCompletion_onError___block_invoke;
   v22[3] = &unk_1E8500DC0;
-  v23 = v8;
-  v24 = self;
-  v25 = v9;
-  v26 = v10;
+  v23 = componentCopy;
+  selfCopy = self;
+  v25 = completionCopy;
+  v26 = errorCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __74__SXQuickLookComponentFileProvider_fileForComponent_onCompletion_onError___block_invoke_3;
   v20[3] = &unk_1E8500DE8;
   v21 = v26;
   v17 = v26;
-  v18 = v9;
-  v19 = v8;
-  [v15 fileURLForURL:v16 onCompletion:v22 onError:v20];
+  v18 = completionCopy;
+  v19 = componentCopy;
+  [resourceDataSource fileURLForURL:v16 onCompletion:v22 onError:v20];
 }
 
 void __74__SXQuickLookComponentFileProvider_fileForComponent_onCompletion_onError___block_invoke(uint64_t a1, void *a2)
@@ -120,16 +120,16 @@ void __74__SXQuickLookComponentFileProvider_fileForComponent_onCompletion_onErro
   }
 }
 
-- (id)copyFileIfNeeded:(id)a3 to:(id)a4 error:(id *)a5
+- (id)copyFileIfNeeded:(id)needed to:(id)to error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 pathExtension];
-  v10 = [v8 pathExtension];
-  v11 = [v9 isEqualToString:v10];
+  neededCopy = needed;
+  toCopy = to;
+  pathExtension = [neededCopy pathExtension];
+  pathExtension2 = [toCopy pathExtension];
+  v11 = [pathExtension isEqualToString:pathExtension2];
 
-  v12 = v7;
-  if (v11 & 1) != 0 || ([MEMORY[0x1E696AC08] defaultManager], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "path"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "fileExistsAtPath:", v14), v14, v13, v12 = v8, (v15) || (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "copyItemAtURL:toURL:error:", v7, v8, a5), v16, v12 = v8, v17))
+  v12 = neededCopy;
+  if (v11 & 1) != 0 || ([MEMORY[0x1E696AC08] defaultManager], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(toCopy, "path"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "fileExistsAtPath:", v14), v14, v13, v12 = toCopy, (v15) || (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "copyItemAtURL:toURL:error:", neededCopy, toCopy, error), v16, v12 = toCopy, v17))
   {
     v18 = v12;
   }

@@ -1,14 +1,14 @@
 @interface SBDraggingSystemManager
 + (SBDraggingSystemManager)sharedInstance;
-- (id)touchRoutingPolicyForBeginningDragSessionWithInfo:(id)a3;
+- (id)touchRoutingPolicyForBeginningDragSessionWithInfo:(id)info;
 - (void)_acquireRoutingKeysAssertion;
 - (void)_invalidateRoutingKeysAssertion;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)cancelActiveDraggingSystemSession;
-- (void)dragSessionDidBegin:(id)a3;
-- (void)dragSessionDidEnd:(id)a3;
-- (void)setCommandeered:(BOOL)a3 forDraggingSystemSession:(id)a4 forReason:(id)a5;
-- (void)setCommandeered:(BOOL)a3 forDropSession:(id)a4 forReason:(id)a5;
+- (void)dragSessionDidBegin:(id)begin;
+- (void)dragSessionDidEnd:(id)end;
+- (void)setCommandeered:(BOOL)commandeered forDraggingSystemSession:(id)session forReason:(id)reason;
+- (void)setCommandeered:(BOOL)commandeered forDropSession:(id)session forReason:(id)reason;
 @end
 
 @implementation SBDraggingSystemManager
@@ -22,8 +22,8 @@
     v4 = sharedInstance_sharedInstance_0;
     sharedInstance_sharedInstance_0 = v3;
 
-    v5 = [MEMORY[0x277D75490] sharedInstance];
-    [v5 setDelegate:sharedInstance_sharedInstance_0];
+    mEMORY[0x277D75490] = [MEMORY[0x277D75490] sharedInstance];
+    [mEMORY[0x277D75490] setDelegate:sharedInstance_sharedInstance_0];
 
     v2 = sharedInstance_sharedInstance_0;
   }
@@ -31,41 +31,41 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)setCommandeered:(BOOL)a3 forDropSession:(id)a4 forReason:(id)a5
+- (void)setCommandeered:(BOOL)commandeered forDropSession:(id)session forReason:(id)reason
 {
-  v6 = a3;
+  commandeeredCopy = commandeered;
   v8 = MEMORY[0x277D75490];
-  v9 = a5;
-  v10 = a4;
-  v12 = [v8 sharedInstance];
-  v11 = [v12 sessionForDropSession:v10];
+  reasonCopy = reason;
+  sessionCopy = session;
+  sharedInstance = [v8 sharedInstance];
+  v11 = [sharedInstance sessionForDropSession:sessionCopy];
 
-  [(SBDraggingSystemManager *)self setCommandeered:v6 forDraggingSystemSession:v11 forReason:v9];
+  [(SBDraggingSystemManager *)self setCommandeered:commandeeredCopy forDraggingSystemSession:v11 forReason:reasonCopy];
 }
 
-- (void)setCommandeered:(BOOL)a3 forDraggingSystemSession:(id)a4 forReason:(id)a5
+- (void)setCommandeered:(BOOL)commandeered forDraggingSystemSession:(id)session forReason:(id)reason
 {
-  v6 = a3;
-  v15 = a4;
-  v8 = a5;
+  commandeeredCopy = commandeered;
+  sessionCopy = session;
+  reasonCopy = reason;
   commandeerReasons = self->_commandeerReasons;
   if (commandeerReasons)
   {
@@ -74,39 +74,39 @@
 
   else
   {
-    v10 = !v6;
+    v10 = !commandeeredCopy;
   }
 
   if (!v10)
   {
-    v11 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v12 = self->_commandeerReasons;
-    self->_commandeerReasons = v11;
+    self->_commandeerReasons = weakToStrongObjectsMapTable;
 
     commandeerReasons = self->_commandeerReasons;
   }
 
-  v13 = [(NSMapTable *)commandeerReasons objectForKey:v15];
+  v13 = [(NSMapTable *)commandeerReasons objectForKey:sessionCopy];
   v14 = v13;
-  if (v6)
+  if (commandeeredCopy)
   {
     if (!v13)
     {
       v14 = objc_alloc_init(MEMORY[0x277CCA940]);
-      [(NSMapTable *)self->_commandeerReasons setObject:v14 forKey:v15];
+      [(NSMapTable *)self->_commandeerReasons setObject:v14 forKey:sessionCopy];
     }
 
-    [v14 addObject:v8];
-    [v15 setCommandeered:1];
+    [v14 addObject:reasonCopy];
+    [sessionCopy setCommandeered:1];
   }
 
   else
   {
-    [v13 removeObject:v8];
+    [v13 removeObject:reasonCopy];
     if (v14 && ![v14 count])
     {
-      [v15 setCommandeered:0];
-      [(NSMapTable *)self->_commandeerReasons removeObjectForKey:v15];
+      [sessionCopy setCommandeered:0];
+      [(NSMapTable *)self->_commandeerReasons removeObjectForKey:sessionCopy];
     }
   }
 }
@@ -142,11 +142,11 @@
   }
 }
 
-- (void)dragSessionDidBegin:(id)a3
+- (void)dragSessionDidBegin:(id)begin
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_currentSession, a3);
+  beginCopy = begin;
+  objc_storeStrong(&self->_currentSession, begin);
   [(SBDraggingSystemManager *)self _acquireRoutingKeysAssertion];
   v13 = 0u;
   v14 = 0u;
@@ -168,7 +168,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) dragSessionDidBegin:v5];
+        [*(*(&v11 + 1) + 8 * v10++) dragSessionDidBegin:beginCopy];
       }
 
       while (v8 != v10);
@@ -179,10 +179,10 @@
   }
 }
 
-- (void)dragSessionDidEnd:(id)a3
+- (void)dragSessionDidEnd:(id)end
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endCopy = end;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -203,7 +203,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) dragSessionDidEnd:v4];
+        [*(*(&v11 + 1) + 8 * v9++) dragSessionDidEnd:endCopy];
       }
 
       while (v7 != v9);
@@ -218,11 +218,11 @@
   self->_currentSession = 0;
 }
 
-- (id)touchRoutingPolicyForBeginningDragSessionWithInfo:(id)a3
+- (id)touchRoutingPolicyForBeginningDragSessionWithInfo:(id)info
 {
   v80 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 supportsSystemDrag])
+  infoCopy = info;
+  if (![infoCopy supportsSystemDrag])
   {
     v21 = 0;
     goto LABEL_54;
@@ -241,10 +241,10 @@
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v6 = [SBApp windowSceneManager];
-  v7 = [v6 connectedWindowScenes];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-  v8 = [v7 countByEnumeratingWithState:&v70 objects:v79 count:16];
+  v8 = [connectedWindowScenes countByEnumeratingWithState:&v70 objects:v79 count:16];
   if (v8)
   {
     v9 = v8;
@@ -255,50 +255,50 @@
       {
         if (*v71 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(connectedWindowScenes);
         }
 
-        v12 = [*(*(&v70 + 1) + 8 * i) switcherController];
-        v13 = [v12 switcherWindow];
+        switcherController = [*(*(&v70 + 1) + 8 * i) switcherController];
+        switcherWindow = [switcherController switcherWindow];
 
-        if (v13)
+        if (switcherWindow)
         {
-          (v5)[2](v5, v13);
+          (v5)[2](v5, switcherWindow);
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v70 objects:v79 count:16];
+      v9 = [connectedWindowScenes countByEnumeratingWithState:&v70 objects:v79 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [v3 processIdentifier];
+  processIdentifier = [infoCopy processIdentifier];
   v68 = 0u;
   v69 = 0u;
-  if (v3)
+  if (infoCopy)
   {
-    [v3 auditToken];
+    [infoCopy auditToken];
   }
 
   v67[0] = v68;
   v67[1] = v69;
   v54 = [MEMORY[0x277CF0B98] tokenFromAuditToken:v67];
-  v51 = v14;
-  if (v14 == getpid() || [v54 hasEntitlement:@"com.apple.springboard.app-drag"])
+  v51 = processIdentifier;
+  if (processIdentifier == getpid() || [v54 hasEntitlement:@"com.apple.springboard.app-drag"])
   {
-    v50 = v3;
+    v50 = infoCopy;
     v15 = +[SBUIController sharedInstance];
-    v16 = [v15 window];
+    window = [v15 window];
 
-    v17 = [v16 _sbWindowScene];
-    v18 = [v17 controlCenterController];
-    v19 = [v18 _controlCenterWindow];
+    _sbWindowScene = [window _sbWindowScene];
+    controlCenterController = [_sbWindowScene controlCenterController];
+    _controlCenterWindow = [controlCenterController _controlCenterWindow];
 
-    if (v19)
+    if (_controlCenterWindow)
     {
-      v20 = [v19 isHidden] ^ 1;
-      if (!v16)
+      v20 = [_controlCenterWindow isHidden] ^ 1;
+      if (!window)
       {
         goto LABEL_22;
       }
@@ -307,18 +307,18 @@
     else
     {
       LOBYTE(v20) = 0;
-      if (!v16)
+      if (!window)
       {
 LABEL_22:
-        v49 = v19;
+        v49 = _controlCenterWindow;
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v22 = [SBApp windowSceneManager];
-        v23 = [v22 connectedWindowScenes];
+        windowSceneManager2 = [SBApp windowSceneManager];
+        connectedWindowScenes2 = [windowSceneManager2 connectedWindowScenes];
 
-        v24 = [v23 countByEnumeratingWithState:&v63 objects:v78 count:16];
+        v24 = [connectedWindowScenes2 countByEnumeratingWithState:&v63 objects:v78 count:16];
         if (v24)
         {
           v25 = v24;
@@ -326,42 +326,42 @@ LABEL_22:
           do
           {
             v27 = 0;
-            v28 = v16;
+            v28 = window;
             do
             {
               if (*v64 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(connectedWindowScenes2);
               }
 
               v29 = *(*(&v63 + 1) + 8 * v27);
-              v30 = [v29 homeScreenController];
-              v16 = [v30 window];
+              homeScreenController = [v29 homeScreenController];
+              window = [homeScreenController window];
 
               if (!((v29 == 0) | v20 & 1))
               {
-                (v5)[2](v5, v16);
+                (v5)[2](v5, window);
               }
 
               ++v27;
-              v28 = v16;
+              v28 = window;
             }
 
             while (v25 != v27);
-            v25 = [v23 countByEnumeratingWithState:&v63 objects:v78 count:16];
+            v25 = [connectedWindowScenes2 countByEnumeratingWithState:&v63 objects:v78 count:16];
           }
 
           while (v25);
         }
 
-        v3 = v50;
+        infoCopy = v50;
         goto LABEL_32;
       }
     }
 
     if ((v20 & 1) == 0)
     {
-      (v5)[2](v5, v16);
+      (v5)[2](v5, window);
     }
 
     goto LABEL_22;
@@ -372,10 +372,10 @@ LABEL_32:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v31 = [SBApp windowSceneManager];
-  v32 = [v31 connectedWindowScenes];
+  windowSceneManager3 = [SBApp windowSceneManager];
+  connectedWindowScenes3 = [windowSceneManager3 connectedWindowScenes];
 
-  v33 = [v32 countByEnumeratingWithState:&v59 objects:v77 count:16];
+  v33 = [connectedWindowScenes3 countByEnumeratingWithState:&v59 objects:v77 count:16];
   if (v33)
   {
     v34 = v33;
@@ -386,19 +386,19 @@ LABEL_32:
       {
         if (*v60 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(connectedWindowScenes3);
         }
 
-        v37 = [*(*(&v59 + 1) + 8 * j) floatingDockController];
-        v38 = [v37 floatingDockWindow];
+        floatingDockController = [*(*(&v59 + 1) + 8 * j) floatingDockController];
+        floatingDockWindow = [floatingDockController floatingDockWindow];
 
-        if (v38)
+        if (floatingDockWindow)
         {
-          (v5)[2](v5, v38);
+          (v5)[2](v5, floatingDockWindow);
         }
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v59 objects:v77 count:16];
+      v34 = [connectedWindowScenes3 countByEnumeratingWithState:&v59 objects:v77 count:16];
     }
 
     while (v34);
@@ -408,10 +408,10 @@ LABEL_32:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v39 = [SBApp windowSceneManager];
-  v40 = [v39 connectedWindowScenes];
+  windowSceneManager4 = [SBApp windowSceneManager];
+  connectedWindowScenes4 = [windowSceneManager4 connectedWindowScenes];
 
-  v41 = [v40 countByEnumeratingWithState:&v55 objects:v76 count:16];
+  v41 = [connectedWindowScenes4 countByEnumeratingWithState:&v55 objects:v76 count:16];
   if (v41)
   {
     v42 = v41;
@@ -422,20 +422,20 @@ LABEL_32:
       {
         if (*v56 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(connectedWindowScenes4);
         }
 
-        v45 = [*(*(&v55 + 1) + 8 * k) controlCenterController];
-        v46 = [v45 _controlCenterWindow];
+        controlCenterController2 = [*(*(&v55 + 1) + 8 * k) controlCenterController];
+        _controlCenterWindow2 = [controlCenterController2 _controlCenterWindow];
 
-        v47 = [v46 isHidden];
-        if (v46 && (v47 & 1) == 0)
+        isHidden = [_controlCenterWindow2 isHidden];
+        if (_controlCenterWindow2 && (isHidden & 1) == 0)
         {
-          (v5)[2](v5, v46);
+          (v5)[2](v5, _controlCenterWindow2);
         }
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v55 objects:v76 count:16];
+      v42 = [connectedWindowScenes4 countByEnumeratingWithState:&v55 objects:v76 count:16];
     }
 
     while (v42);

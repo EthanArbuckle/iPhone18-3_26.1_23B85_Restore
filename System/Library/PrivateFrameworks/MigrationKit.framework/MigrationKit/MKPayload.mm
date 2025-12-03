@@ -82,7 +82,7 @@
   v6 = 0x277CCA000uLL;
   if ([v5 count])
   {
-    v35 = self;
+    selfCopy = self;
     v36 = v5;
     v7 = 0;
     v8 = 0;
@@ -95,8 +95,8 @@
       v13 = [v11 size];
       v37 = v13 >> 30;
       v38 = [v11 totalElapsedTime] / 0x3CuLL;
-      v14 = [v11 importElapsedTime];
-      [v14 doubleValue];
+      importElapsedTime = [v11 importElapsedTime];
+      [importElapsedTime doubleValue];
       v16 = v15 / 60.0;
 
       v8 += v13;
@@ -121,9 +121,9 @@
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_import_time", v10];
       [v3 setObject:v25 forKey:v26];
 
-      v27 = [v11 state];
+      state = [v11 state];
       v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_state", v10];
-      [v3 setObject:v27 forKey:v28];
+      [v3 setObject:state forKey:v28];
 
       v5 = v36;
       ++v9;
@@ -131,7 +131,7 @@
 
     while (v9 < [v36 count]);
     v29 = v8 >> 30;
-    self = v35;
+    self = selfCopy;
     v6 = 0x277CCA000;
   }
 
@@ -147,8 +147,8 @@
   v31 = [*(v6 + 2992) numberWithUnsignedLongLong:v29];
   [v3 setObject:v31 forKey:@"data_size"];
 
-  v32 = [*(v6 + 2992) numberWithUnsignedLongLong:self->_elapsedTime / 0x3C];
-  [v3 setObject:v32 forKey:@"elapsed_time"];
+  0x3C = [*(v6 + 2992) numberWithUnsignedLongLong:self->_elapsedTime / 0x3C];
+  [v3 setObject:0x3C forKey:@"elapsed_time"];
 
   v33 = *MEMORY[0x277D85DE8];
 

@@ -9,19 +9,19 @@
 + (SKConstraint)positionX:(SKRange *)xRange Y:(SKRange *)yRange;
 + (SKConstraint)positionY:(SKRange *)range;
 + (SKConstraint)zRotation:(SKRange *)zRange;
-+ (id)height:(id)a3;
-+ (id)scale:(id)a3;
-+ (id)scaleX:(id)a3;
-+ (id)scaleX:(id)a3 scaleY:(id)a4;
-+ (id)scaleY:(id)a3;
-+ (id)width:(id)a3;
-+ (id)width:(id)a3 height:(id)a4;
-- (BOOL)isEqualToConstraint:(id)a3;
++ (id)height:(id)height;
++ (id)scale:(id)scale;
++ (id)scaleX:(id)x;
++ (id)scaleX:(id)x scaleY:(id)y;
++ (id)scaleY:(id)y;
++ (id)width:(id)width;
++ (id)width:(id)width height:(id)height;
+- (BOOL)isEqualToConstraint:(id)constraint;
 - (SKConstraint)init;
-- (SKConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKConstraint
@@ -41,57 +41,57 @@
   return v3;
 }
 
-- (SKConstraint)initWithCoder:(id)a3
+- (SKConstraint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SKConstraint;
   v5 = [(SKConstraint *)&v8 init];
   if (v5)
   {
-    -[SKConstraint setEnabled:](v5, "setEnabled:", [v4 decodeBoolForKey:@"_enabled"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_referenceNode"];
+    -[SKConstraint setEnabled:](v5, "setEnabled:", [coderCopy decodeBoolForKey:@"_enabled"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_referenceNode"];
     [(SKConstraint *)v5 setReferenceNode:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[SKConstraint enabled](self forKey:{"enabled"), @"_enabled"}];
-  v4 = [(SKConstraint *)self referenceNode];
-  [v5 encodeObject:v4 forKey:@"_referenceNode"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SKConstraint enabled](self forKey:{"enabled"), @"_enabled"}];
+  referenceNode = [(SKConstraint *)self referenceNode];
+  [coderCopy encodeObject:referenceNode forKey:@"_referenceNode"];
 }
 
-- (BOOL)isEqualToConstraint:(id)a3
+- (BOOL)isEqualToConstraint:(id)constraint
 {
-  v4 = a3;
-  if (v4 == self)
+  constraintCopy = constraint;
+  if (constraintCopy == self)
   {
     goto LABEL_21;
   }
 
-  v5 = [(SKConstraint *)self enabled];
-  if (v5 == [(SKConstraint *)v4 enabled])
+  enabled = [(SKConstraint *)self enabled];
+  if (enabled == [(SKConstraint *)constraintCopy enabled])
   {
-    v6 = [(SKConstraint *)self referenceNode];
-    if (v6)
+    referenceNode = [(SKConstraint *)self referenceNode];
+    if (referenceNode)
     {
     }
 
     else
     {
-      v7 = [(SKConstraint *)v4 referenceNode];
+      referenceNode2 = [(SKConstraint *)constraintCopy referenceNode];
 
-      if (!v7)
+      if (!referenceNode2)
       {
 LABEL_7:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(SKConstraint *)self isEqualToSizeConstraint:v4];
+          v11 = [(SKConstraint *)self isEqualToSizeConstraint:constraintCopy];
 LABEL_20:
           v12 = v11;
           goto LABEL_22;
@@ -100,35 +100,35 @@ LABEL_20:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(SKConstraint *)self isEqualToScaleConstraint:v4];
+          v11 = [(SKConstraint *)self isEqualToScaleConstraint:constraintCopy];
           goto LABEL_20;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(SKConstraint *)self isEqualToPositionConstraint:v4];
+          v11 = [(SKConstraint *)self isEqualToPositionConstraint:constraintCopy];
           goto LABEL_20;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(SKConstraint *)self isEqualToRotationConstraint:v4];
+          v11 = [(SKConstraint *)self isEqualToRotationConstraint:constraintCopy];
           goto LABEL_20;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(SKConstraint *)self isEqualToOrientationConstraint:v4];
+          v11 = [(SKConstraint *)self isEqualToOrientationConstraint:constraintCopy];
           goto LABEL_20;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(SKConstraint *)self isEqualToDistanceConstraint:v4];
+          v11 = [(SKConstraint *)self isEqualToDistanceConstraint:constraintCopy];
           goto LABEL_20;
         }
 
@@ -138,9 +138,9 @@ LABEL_21:
       }
     }
 
-    v8 = [(SKConstraint *)self referenceNode];
-    v9 = [(SKConstraint *)v4 referenceNode];
-    v10 = [v8 isEqualToNode:v9];
+    referenceNode3 = [(SKConstraint *)self referenceNode];
+    referenceNode4 = [(SKConstraint *)constraintCopy referenceNode];
+    v10 = [referenceNode3 isEqualToNode:referenceNode4];
 
     if (v10)
     {
@@ -224,51 +224,51 @@ LABEL_22:
   return v4;
 }
 
-+ (id)width:(id)a3
++ (id)width:(id)width
 {
-  v3 = [SKSizeConstraint constraintWithWidthRange:a3];
+  v3 = [SKSizeConstraint constraintWithWidthRange:width];
 
   return v3;
 }
 
-+ (id)height:(id)a3
++ (id)height:(id)height
 {
-  v3 = [SKSizeConstraint constraintWithHeightRange:a3];
+  v3 = [SKSizeConstraint constraintWithHeightRange:height];
 
   return v3;
 }
 
-+ (id)width:(id)a3 height:(id)a4
++ (id)width:(id)width height:(id)height
 {
-  v4 = [SKSizeConstraint constraintWithWidthRange:a3 heightRange:a4];
+  v4 = [SKSizeConstraint constraintWithWidthRange:width heightRange:height];
 
   return v4;
 }
 
-+ (id)scale:(id)a3
++ (id)scale:(id)scale
 {
-  v3 = [SKScaleConstraint constraintWithScaleRange:a3];
+  v3 = [SKScaleConstraint constraintWithScaleRange:scale];
 
   return v3;
 }
 
-+ (id)scaleX:(id)a3
++ (id)scaleX:(id)x
 {
-  v3 = [SKScaleConstraint constraintWithXRange:a3];
+  v3 = [SKScaleConstraint constraintWithXRange:x];
 
   return v3;
 }
 
-+ (id)scaleY:(id)a3
++ (id)scaleY:(id)y
 {
-  v3 = [SKScaleConstraint constraintWithYRange:a3];
+  v3 = [SKScaleConstraint constraintWithYRange:y];
 
   return v3;
 }
 
-+ (id)scaleX:(id)a3 scaleY:(id)a4
++ (id)scaleX:(id)x scaleY:(id)y
 {
-  v4 = [SKScaleConstraint constraintWithXRange:a3 YRange:a4];
+  v4 = [SKScaleConstraint constraintWithXRange:x YRange:y];
 
   return v4;
 }
@@ -276,9 +276,9 @@ LABEL_22:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKConstraint *)self enabled];
+  enabled = [(SKConstraint *)self enabled];
   v4 = @"NO";
-  if (v3)
+  if (enabled)
   {
     v4 = @"YES";
   }
@@ -286,12 +286,12 @@ LABEL_22:
   return [v2 stringWithFormat:@"<SKConstraint> enabled: %@", v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setEnabled:{-[SKConstraint enabled](self, "enabled")}];
-  v5 = [(SKConstraint *)self referenceNode];
-  [v4 setReferenceNode:v5];
+  referenceNode = [(SKConstraint *)self referenceNode];
+  [v4 setReferenceNode:referenceNode];
 
   return v4;
 }

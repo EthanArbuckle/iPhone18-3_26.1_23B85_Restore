@@ -1,41 +1,41 @@
 @interface PEResourceManager
 - (PEResourceManager)init;
-- (id)compositionControllerWithoutSource:(id)a3 originalComposition:(BOOL)a4 editorBundleID:(id *)a5;
-- (id)originalCompositionControllerWithoutSource:(id)a3 reconstructIfMissing:(BOOL)a4;
-- (void)_removeFromSet:(id)a3;
-- (void)_resourceLoader:(id)a3 loadedResult:(id)a4 error:(id)a5;
+- (id)compositionControllerWithoutSource:(id)source originalComposition:(BOOL)composition editorBundleID:(id *)d;
+- (id)originalCompositionControllerWithoutSource:(id)source reconstructIfMissing:(BOOL)missing;
+- (void)_removeFromSet:(id)set;
+- (void)_resourceLoader:(id)loader loadedResult:(id)result error:(id)error;
 - (void)cancelAllRequests;
-- (void)loadResourceForAsset:(id)a3 requireLocalResources:(BOOL)a4 forceRunAsUnadjustedAsset:(BOOL)a5 progressHandler:(id)a6 resultHandler:(id)a7;
-- (void)resourceLoader:(id)a3 request:(id)a4 didCompleteWithResult:(id)a5;
-- (void)resourceLoader:(id)a3 request:(id)a4 downloadProgress:(double)a5;
-- (void)resourceLoader:(id)a3 request:(id)a4 mediaLoadDidFailWithError:(id)a5;
+- (void)loadResourceForAsset:(id)asset requireLocalResources:(BOOL)resources forceRunAsUnadjustedAsset:(BOOL)unadjustedAsset progressHandler:(id)handler resultHandler:(id)resultHandler;
+- (void)resourceLoader:(id)loader request:(id)request didCompleteWithResult:(id)result;
+- (void)resourceLoader:(id)loader request:(id)request downloadProgress:(double)progress;
+- (void)resourceLoader:(id)loader request:(id)request mediaLoadDidFailWithError:(id)error;
 @end
 
 @implementation PEResourceManager
 
-- (void)_removeFromSet:(id)a3
+- (void)_removeFromSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   resourceQueue = self->_resourceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__PEResourceManager__removeFromSet___block_invoke;
   v7[3] = &unk_279A31000;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   dispatch_async(resourceQueue, v7);
 }
 
-- (void)_resourceLoader:(id)a3 loadedResult:(id)a4 error:(id)a5
+- (void)_resourceLoader:(id)loader loadedResult:(id)result error:(id)error
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  loaderCopy = loader;
+  resultCopy = result;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v14;
+    v10 = loaderCopy;
   }
 
   else
@@ -44,24 +44,24 @@
   }
 
   v11 = v10;
-  v12 = [v11 resultHandler];
+  resultHandler = [v11 resultHandler];
 
-  if (v12)
+  if (resultHandler)
   {
-    v13 = [v11 resultHandler];
-    (v13)[2](v13, v8, v9);
+    resultHandler2 = [v11 resultHandler];
+    (resultHandler2)[2](resultHandler2, resultCopy, errorCopy);
   }
 
-  [(PEResourceManager *)self _removeFromSet:v14];
+  [(PEResourceManager *)self _removeFromSet:loaderCopy];
 }
 
-- (void)resourceLoader:(id)a3 request:(id)a4 downloadProgress:(double)a5
+- (void)resourceLoader:(id)loader request:(id)request downloadProgress:(double)progress
 {
-  v10 = a3;
+  loaderCopy = loader;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v10;
+    v6 = loaderCopy;
   }
 
   else
@@ -70,38 +70,38 @@
   }
 
   v7 = v6;
-  v8 = [v7 progressHandler];
+  progressHandler = [v7 progressHandler];
 
-  if (v8)
+  if (progressHandler)
   {
-    v9 = [v7 progressHandler];
-    v9[2](a5);
+    progressHandler2 = [v7 progressHandler];
+    progressHandler2[2](progress);
   }
 }
 
-- (void)resourceLoader:(id)a3 request:(id)a4 mediaLoadDidFailWithError:(id)a5
+- (void)resourceLoader:(id)loader request:(id)request mediaLoadDidFailWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  loaderCopy = loader;
+  errorCopy = error;
+  if (errorCopy)
   {
     v9 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v8;
+      v11 = errorCopy;
       _os_log_impl(&dword_25E6E9000, v9, OS_LOG_TYPE_ERROR, "Error fetching the resource: %@", &v10, 0xCu);
     }
   }
 
-  [(PEResourceManager *)self _resourceLoader:v7 loadedResult:0 error:v8];
+  [(PEResourceManager *)self _resourceLoader:loaderCopy loadedResult:0 error:errorCopy];
 }
 
-- (void)resourceLoader:(id)a3 request:(id)a4 didCompleteWithResult:(id)a5
+- (void)resourceLoader:(id)loader request:(id)request didCompleteWithResult:(id)result
 {
-  v7 = a5;
-  v8 = a3;
+  resultCopy = result;
+  loaderCopy = loader;
   v9 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -109,7 +109,7 @@
     _os_log_impl(&dword_25E6E9000, v9, OS_LOG_TYPE_DEFAULT, "PEResourceManager completed resource fetch.", v10, 2u);
   }
 
-  [(PEResourceManager *)self _resourceLoader:v8 loadedResult:v7 error:0];
+  [(PEResourceManager *)self _resourceLoader:loaderCopy loadedResult:resultCopy error:0];
 }
 
 - (void)cancelAllRequests
@@ -157,26 +157,26 @@ void __38__PEResourceManager_cancelAllRequests__block_invoke(uint64_t a1)
   }
 }
 
-- (void)loadResourceForAsset:(id)a3 requireLocalResources:(BOOL)a4 forceRunAsUnadjustedAsset:(BOOL)a5 progressHandler:(id)a6 resultHandler:(id)a7
+- (void)loadResourceForAsset:(id)asset requireLocalResources:(BOOL)resources forceRunAsUnadjustedAsset:(BOOL)unadjustedAsset progressHandler:(id)handler resultHandler:(id)resultHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
+  unadjustedAssetCopy = unadjustedAsset;
+  resourcesCopy = resources;
+  resultHandlerCopy = resultHandler;
+  handlerCopy = handler;
+  assetCopy = asset;
   v15 = [_PEResourceHandler alloc];
-  v16 = [(PEResourceManager *)self loadingQueue];
-  v17 = [(PEResourceLoader *)v15 initWithAsset:v14 loadingQueue:v16];
+  loadingQueue = [(PEResourceManager *)self loadingQueue];
+  v17 = [(PEResourceLoader *)v15 initWithAsset:assetCopy loadingQueue:loadingQueue];
 
-  [(_PEResourceHandler *)v17 setProgressHandler:v13];
-  [(_PEResourceHandler *)v17 setResultHandler:v12];
+  [(_PEResourceHandler *)v17 setProgressHandler:handlerCopy];
+  [(_PEResourceHandler *)v17 setResultHandler:resultHandlerCopy];
 
-  [(PEResourceLoader *)v17 setForceRunAsUnadjustedAsset:v8];
+  [(PEResourceLoader *)v17 setForceRunAsUnadjustedAsset:unadjustedAssetCopy];
   [(PEResourceLoader *)v17 setSkipDisplaySizeImage:1];
   v18 = objc_alloc_init(PEResourceLoadRequest);
   [(PEResourceLoadRequest *)v18 setDelegate:self];
   [(PEResourceLoadRequest *)v18 setRequireAdjustments:1];
-  [(PEResourceLoadRequest *)v18 setRequireLocalResources:v9];
+  [(PEResourceLoadRequest *)v18 setRequireLocalResources:resourcesCopy];
   [(PEResourceLoader *)v17 enqueueRequest:v18];
   resourceQueue = self->_resourceQueue;
   v21[0] = MEMORY[0x277D85DD0];
@@ -189,22 +189,22 @@ void __38__PEResourceManager_cancelAllRequests__block_invoke(uint64_t a1)
   dispatch_async(resourceQueue, v21);
 }
 
-- (id)originalCompositionControllerWithoutSource:(id)a3 reconstructIfMissing:(BOOL)a4
+- (id)originalCompositionControllerWithoutSource:(id)source reconstructIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
+  missingCopy = missing;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(PEResourceManager *)self compositionControllerWithoutSource:v6 originalComposition:1 editorBundleID:0];
-    if (!v7 && v4)
+    v7 = [(PEResourceManager *)self compositionControllerWithoutSource:sourceCopy originalComposition:1 editorBundleID:0];
+    if (!v7 && missingCopy)
     {
       v8 = objc_alloc(MEMORY[0x277D3A870]);
-      v9 = [MEMORY[0x277D3A938] newComposition];
-      v10 = [v8 initWithComposition:v9];
+      newComposition = [MEMORY[0x277D3A938] newComposition];
+      v10 = [v8 initWithComposition:newComposition];
 
-      v11 = [(PEResourceManager *)self compositionControllerWithoutSource:v6 originalComposition:0 editorBundleID:0];
-      v7 = +[PESupport repairedAsShotCompositionController:forCurrentCompositionController:isLivePhoto:metadata:](PESupport, "repairedAsShotCompositionController:forCurrentCompositionController:isLivePhoto:metadata:", v10, v11, [v6 isLivePhoto], 0);
+      v11 = [(PEResourceManager *)self compositionControllerWithoutSource:sourceCopy originalComposition:0 editorBundleID:0];
+      v7 = +[PESupport repairedAsShotCompositionController:forCurrentCompositionController:isLivePhoto:metadata:](PESupport, "repairedAsShotCompositionController:forCurrentCompositionController:isLivePhoto:metadata:", v10, v11, [sourceCopy isLivePhoto], 0);
     }
   }
 
@@ -216,23 +216,23 @@ void __38__PEResourceManager_cancelAllRequests__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)compositionControllerWithoutSource:(id)a3 originalComposition:(BOOL)a4 editorBundleID:(id *)a5
+- (id)compositionControllerWithoutSource:(id)source originalComposition:(BOOL)composition editorBundleID:(id *)d
 {
-  v6 = a4;
-  v7 = a3;
+  compositionCopy = composition;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = sourceCopy;
     v12 = 0;
-    v9 = [PEAdjustmentDataCache synchronousCompositionControllerForAsset:v8 networkAccessAllowed:0 disposition:&v12 originalComposition:v6];
-    if (a5)
+    v9 = [PEAdjustmentDataCache synchronousCompositionControllerForAsset:v8 networkAccessAllowed:0 disposition:&v12 originalComposition:compositionCopy];
+    if (d)
     {
       v10 = [PEAdjustmentDataCache synchronousEditorBundleIDForAsset:v8];
       if (v10)
       {
         v10 = v10;
-        *a5 = v10;
+        *d = v10;
       }
     }
   }

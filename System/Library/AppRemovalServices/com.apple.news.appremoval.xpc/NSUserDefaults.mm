@@ -1,6 +1,6 @@
 @interface NSUserDefaults
 + (id)nanoNewsSyncDefaults;
-- (void)nn_synchronizeKeys:(id)a3;
+- (void)nn_synchronizeKeys:(id)keys;
 @end
 
 @implementation NSUserDefaults
@@ -17,9 +17,9 @@
   return v3;
 }
 
-- (void)nn_synchronizeKeys:(id)a3
+- (void)nn_synchronizeKeys:(id)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2050000000;
@@ -39,7 +39,7 @@
   v5 = v4;
   _Block_object_dispose(&v8, 8);
   v6 = objc_opt_new();
-  [v6 synchronizeUserDefaultsDomain:@"com.apple.nanonews.sync" keys:v3];
+  [v6 synchronizeUserDefaultsDomain:@"com.apple.nanonews.sync" keys:keysCopy];
 }
 
 @end

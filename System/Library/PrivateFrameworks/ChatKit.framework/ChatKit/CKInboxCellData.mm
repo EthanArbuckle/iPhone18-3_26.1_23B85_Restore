@@ -1,6 +1,6 @@
 @interface CKInboxCellData
 - (CKInboxCellData)init;
-- (CKInboxCellData)initWithImageName:(id)a3 title:(id)a4 filterMode:(unint64_t)a5;
+- (CKInboxCellData)initWithImageName:(id)name title:(id)title filterMode:(unint64_t)mode;
 - (UIImage)image;
 @end
 
@@ -8,14 +8,14 @@
 
 - (UIImage)image
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190D56ED0();
-  v4 = [objc_opt_self() _systemImageNamed_];
+  _systemImageNamed_ = [objc_opt_self() _systemImageNamed_];
 
-  return v4;
+  return _systemImageNamed_;
 }
 
-- (CKInboxCellData)initWithImageName:(id)a3 title:(id)a4 filterMode:(unint64_t)a5
+- (CKInboxCellData)initWithImageName:(id)name title:(id)title filterMode:(unint64_t)mode
 {
   v7 = sub_190D56F10();
   v9 = v8;
@@ -26,7 +26,7 @@
   v12 = (self + OBJC_IVAR___CKInboxCellData_title);
   *v12 = v10;
   v12[1] = v13;
-  *(self + OBJC_IVAR___CKInboxCellData_filterMode) = a5;
+  *(self + OBJC_IVAR___CKInboxCellData_filterMode) = mode;
   v15.receiver = self;
   v15.super_class = type metadata accessor for InboxCellData();
   return [(CKInboxCellData *)&v15 init];

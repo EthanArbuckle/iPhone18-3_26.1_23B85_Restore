@@ -1,26 +1,26 @@
 @interface CRLiOSCanvasDragInteractionDelegate
-- (BOOL)dragInteraction:(id)a3 prefersFullSizePreviewsForSession:(id)a4;
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4;
+- (BOOL)dragInteraction:(id)interaction prefersFullSizePreviewsForSession:(id)session;
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation;
 - (CRLiOSCanvasDragInteractionDelegate)init;
-- (CRLiOSCanvasDragInteractionDelegate)initWithInteractiveCanvasController:(id)a3;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)p_dragItemsAtPoint:(CGPoint)a3;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
+- (CRLiOSCanvasDragInteractionDelegate)initWithInteractiveCanvasController:(id)controller;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)p_dragItemsAtPoint:(CGPoint)point;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
 @end
 
 @implementation CRLiOSCanvasDragInteractionDelegate
 
-- (CRLiOSCanvasDragInteractionDelegate)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSCanvasDragInteractionDelegate)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CRLiOSCanvasDragInteractionDelegate;
   v5 = [(CRLiOSCanvasDragInteractionDelegate *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_icc, v4);
+    objc_storeWeak(&v5->_icc, controllerCopy);
     v7 = [[NSMapTable alloc] initWithKeyOptions:0 valueOptions:0 capacity:0];
     dragItemsToCanvasDragItems = v6->_dragItemsToCanvasDragItems;
     v6->_dragItemsToCanvasDragItems = v7;
@@ -81,13 +81,13 @@
   objc_exception_throw(v10);
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v9 = [WeakRetained canvasView];
-  [v7 locationInView:v9];
+  canvasView = [WeakRetained canvasView];
+  [sessionCopy locationInView:canvasView];
   v11 = v10;
   v13 = v12;
 
@@ -99,38 +99,38 @@
   v19 = objc_loadWeakRetained(&self->_icc);
   v20 = [v19 hitRep:{v16, v18}];
 
-  [v6 _liftDelay];
-  if (v21 == 0.7 || ([v6 _liftDelay], objc_msgSend(v20, "supportsAlternateLiftDelay:")))
+  [interactionCopy _liftDelay];
+  if (v21 == 0.7 || ([interactionCopy _liftDelay], objc_msgSend(v20, "supportsAlternateLiftDelay:")))
   {
     v22 = [(CRLiOSCanvasDragInteractionDelegate *)self p_dragItemsAtPoint:v16, v18];
     dragItemsToCanvasDragItems = self->_dragItemsToCanvasDragItems;
-    v24 = [v22 firstObject];
-    v25 = [(NSMapTable *)dragItemsToCanvasDragItems objectForKey:v24];
+    firstObject = [v22 firstObject];
+    v25 = [(NSMapTable *)dragItemsToCanvasDragItems objectForKey:firstObject];
 
     if ([v22 count])
     {
-      v26 = [v25 sourceObject];
-      if (v26)
+      sourceObject = [v25 sourceObject];
+      if (sourceObject)
       {
-        [v7 setLocalContext:v26];
+        [sessionCopy setLocalContext:sourceObject];
       }
 
       else
       {
         v27 = [[CRLiOSCanvasDraggingContext alloc] initWithSourceObject:0];
         v35 = objc_loadWeakRetained(&self->_icc);
-        v34 = [v35 layerHost];
-        v28 = [v34 asiOSCVC];
-        v29 = [v28 modelContainerForLocalDragContext];
-        [(CRLiOSCanvasDraggingContext *)v27 setModelContainer:v29];
+        layerHost = [v35 layerHost];
+        asiOSCVC = [layerHost asiOSCVC];
+        modelContainerForLocalDragContext = [asiOSCVC modelContainerForLocalDragContext];
+        [(CRLiOSCanvasDraggingContext *)v27 setModelContainer:modelContainerForLocalDragContext];
 
-        [v7 setLocalContext:v27];
+        [sessionCopy setLocalContext:v27];
       }
 
       v30 = objc_loadWeakRetained(&self->_icc);
-      v31 = [v30 layerHost];
-      v32 = [v31 asiOSCVC];
-      [v32 dragSessionWillBegin];
+      layerHost2 = [v30 layerHost];
+      asiOSCVC2 = [layerHost2 asiOSCVC];
+      [asiOSCVC2 dragSessionWillBegin];
     }
   }
 
@@ -142,39 +142,39 @@
   return v22;
 }
 
-- (id)p_dragItemsAtPoint:(CGPoint)a3
+- (id)p_dragItemsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   v7 = [WeakRetained hitRep:{x, y}];
 
   v8 = +[NSMutableArray array];
   v9 = objc_loadWeakRetained(&self->_icc);
-  v10 = [v9 layerHost];
-  v11 = [v10 asiOSCVC];
-  v12 = [v11 allowsSystemDragSession];
+  layerHost = [v9 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  allowsSystemDragSession = [asiOSCVC allowsSystemDragSession];
 
-  if (v12)
+  if (allowsSystemDragSession)
   {
-    v13 = [v7 repForDragging];
-    [v13 convertNaturalPointFromUnscaledCanvas:{x, y}];
-    v28 = v13;
-    if (v13 && ([v13 shouldOverrideParentForBeginningDragAtPoint:v13] & 1) == 0 && (objc_msgSend(v13, "parentRep"), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    repForDragging = [v7 repForDragging];
+    [repForDragging convertNaturalPointFromUnscaledCanvas:{x, y}];
+    v28 = repForDragging;
+    if (repForDragging && ([repForDragging shouldOverrideParentForBeginningDragAtPoint:repForDragging] & 1) == 0 && (objc_msgSend(repForDragging, "parentRep"), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v15 = v14;
       while (1)
       {
-        v16 = [v15 dragItemsForBeginningDragOfChildRep:v13];
+        v16 = [v15 dragItemsForBeginningDragOfChildRep:repForDragging];
         if (v16)
         {
           break;
         }
 
-        v17 = [v15 parentRep];
+        parentRep = [v15 parentRep];
 
-        v15 = v17;
-        if (!v17)
+        v15 = parentRep;
+        if (!parentRep)
         {
           goto LABEL_8;
         }
@@ -215,8 +215,8 @@ LABEL_8:
             [v24 setAllowsMoveOperation:1];
           }
 
-          v25 = [v24 itemProvider];
-          v26 = [[UIDragItem alloc] initWithItemProvider:v25];
+          itemProvider = [v24 itemProvider];
+          v26 = [[UIDragItem alloc] initWithItemProvider:itemProvider];
           [v8 addObject:v26];
           [(NSMapTable *)self->_dragItemsToCanvasDragItems setObject:v24 forKey:v26];
         }
@@ -231,23 +231,23 @@ LABEL_8:
   return v8;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   dragItemsToCanvasDragItems = self->_dragItemsToCanvasDragItems;
-  v6 = a4;
-  v7 = [(NSMapTable *)dragItemsToCanvasDragItems objectForKey:v6];
-  v8 = [v7 previewGeneratingBlock];
-  v9 = (v8)[2](v8, v6);
+  itemCopy = item;
+  v7 = [(NSMapTable *)dragItemsToCanvasDragItems objectForKey:itemCopy];
+  previewGeneratingBlock = [v7 previewGeneratingBlock];
+  v9 = (previewGeneratingBlock)[2](previewGeneratingBlock, itemCopy);
 
   return v9;
 }
 
-- (BOOL)dragInteraction:(id)a3 prefersFullSizePreviewsForSession:(id)a4
+- (BOOL)dragInteraction:(id)interaction prefersFullSizePreviewsForSession:(id)session
 {
-  v5 = [a4 items];
-  v6 = [v5 firstObject];
+  items = [session items];
+  firstObject = [items firstObject];
 
-  v7 = [(NSMapTable *)self->_dragItemsToCanvasDragItems objectForKey:v6];
+  v7 = [(NSMapTable *)self->_dragItemsToCanvasDragItems objectForKey:firstObject];
   if (!v7)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -277,17 +277,17 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:131 isFatal:0 description:"invalid nil value for '%{public}s'", "canvasDragItem"];
   }
 
-  v11 = [v7 prefersFullSizePreviews];
+  prefersFullSizePreviews = [v7 prefersFullSizePreviews];
 
-  return v11;
+  return prefersFullSizePreviews;
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation
 {
-  v5 = [a4 items];
-  v6 = [v5 firstObject];
+  items = [operation items];
+  firstObject = [items firstObject];
 
-  v7 = [(NSMapTable *)self->_dragItemsToCanvasDragItems objectForKey:v6];
+  v7 = [(NSMapTable *)self->_dragItemsToCanvasDragItems objectForKey:firstObject];
   if (!v7)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -317,19 +317,19 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:138 isFatal:0 description:"invalid nil value for '%{public}s'", "canvasDragItem"];
   }
 
-  v11 = [v7 allowsMoveOperation];
+  allowsMoveOperation = [v7 allowsMoveOperation];
 
-  return v11;
+  return allowsMoveOperation;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a4 items];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  items = [session items];
+  v7 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -341,7 +341,7 @@ LABEL_8:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(items);
         }
 
         [(NSMapTable *)self->_dragItemsToCanvasDragItems removeObjectForKey:*(*(&v11 + 1) + 8 * v10)];
@@ -349,7 +349,7 @@ LABEL_8:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);

@@ -1,16 +1,16 @@
 @interface LNUIPluginModel
-- (LNUIPluginModel)initWithCoder:(id)a3;
-- (LNUIPluginModel)initWithPluginModelData:(id)a3 bundleIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (LNUIPluginModel)initWithCoder:(id)coder;
+- (LNUIPluginModel)initWithPluginModelData:(id)data bundleIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNUIPluginModel
 
-- (LNUIPluginModel)initWithCoder:(id)a3
+- (LNUIPluginModel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pluginModelData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pluginModelData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   if (v5)
   {
@@ -24,40 +24,40 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNUIPluginModel *)self initWithPluginModelData:v5 bundleIdentifier:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNUIPluginModel *)self pluginModelData];
-  [v4 encodeObject:v5 forKey:@"pluginModelData"];
+  coderCopy = coder;
+  pluginModelData = [(LNUIPluginModel *)self pluginModelData];
+  [coderCopy encodeObject:pluginModelData forKey:@"pluginModelData"];
 
-  v6 = [(LNUIPluginModel *)self bundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(LNUIPluginModel *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (LNUIPluginModel)initWithPluginModelData:(id)a3 bundleIdentifier:(id)a4
+- (LNUIPluginModel)initWithPluginModelData:(id)data bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = LNUIPluginModel;
   v9 = [(LNUIPluginModel *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pluginModelData, a3);
-    objc_storeStrong(&v10->_bundleIdentifier, a4);
+    objc_storeStrong(&v9->_pluginModelData, data);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
     v11 = v10;
   }
 

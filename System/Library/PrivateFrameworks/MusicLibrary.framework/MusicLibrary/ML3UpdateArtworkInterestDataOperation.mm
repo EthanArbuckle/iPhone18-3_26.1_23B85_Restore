@@ -1,11 +1,11 @@
 @interface ML3UpdateArtworkInterestDataOperation
-- (BOOL)_execute:(id *)a3;
-- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)a3;
+- (BOOL)_execute:(id *)_execute;
+- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)properties;
 @end
 
 @implementation ML3UpdateArtworkInterestDataOperation
 
-- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)a3
+- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)properties
 {
   v13.receiver = self;
   v13.super_class = ML3UpdateArtworkInterestDataOperation;
@@ -14,11 +14,11 @@
     return 0;
   }
 
-  v5 = [(ML3DatabaseOperation *)self attributes];
-  v6 = [v5 objectForKey:@"MLDatabaseOperationAttributeArtworkTokenKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v6 = [attributes objectForKey:@"MLDatabaseOperationAttributeArtworkTokenKey"];
 
-  v7 = [(ML3DatabaseOperation *)self attributes];
-  v8 = [v7 objectForKey:@"MLDatabaseOperationAttributeArtworkInterestDataKey"];
+  attributes2 = [(ML3DatabaseOperation *)self attributes];
+  v8 = [attributes2 objectForKey:@"MLDatabaseOperationAttributeArtworkInterestDataKey"];
 
   objc_opt_class();
   v9 = (objc_opt_isKindOfClass() & 1) != 0 && [v6 length] != 0;
@@ -35,31 +35,31 @@
   }
 
   v10 = v9 & isKindOfClass;
-  if (a3 && !v10)
+  if (properties && !v10)
   {
-    *a3 = [ML3MediaLibraryWriter writerErrorWithCode:500 description:@"ML3UpdateArtworkInterestDataOperation requires an artworkToken attribute and an artwork interest data blob"];
+    *properties = [ML3MediaLibraryWriter writerErrorWithCode:500 description:@"ML3UpdateArtworkInterestDataOperation requires an artworkToken attribute and an artwork interest data blob"];
   }
 
   return v10;
 }
 
-- (BOOL)_execute:(id *)a3
+- (BOOL)_execute:(id *)_execute
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v5 = [(ML3DatabaseOperation *)self attributes];
-  v6 = [v5 objectForKey:@"MLDatabaseOperationAttributeArtworkTokenKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v6 = [attributes objectForKey:@"MLDatabaseOperationAttributeArtworkTokenKey"];
 
-  v7 = [(ML3DatabaseOperation *)self attributes];
-  v8 = [v7 objectForKey:@"MLDatabaseOperationAttributeArtworkInterestDataKey"];
+  attributes2 = [(ML3DatabaseOperation *)self attributes];
+  v8 = [attributes2 objectForKey:@"MLDatabaseOperationAttributeArtworkInterestDataKey"];
 
-  v9 = [(ML3DatabaseOperation *)self transaction];
-  v10 = [v9 connection];
+  transaction = [(ML3DatabaseOperation *)self transaction];
+  connection = [transaction connection];
 
   v22[0] = v8;
   v22[1] = v6;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
   v17 = 0;
-  v12 = [v10 executeUpdate:@"UPDATE artwork SET interest_data = ? WHERE artwork_token = ?" withParameters:v11 error:&v17];
+  v12 = [connection executeUpdate:@"UPDATE artwork SET interest_data = ? WHERE artwork_token = ?" withParameters:v11 error:&v17];
   v13 = v17;
 
   if ((v12 & 1) == 0)
@@ -76,7 +76,7 @@
   }
 
   v15 = v13;
-  *a3 = v13;
+  *_execute = v13;
 
   return v12;
 }

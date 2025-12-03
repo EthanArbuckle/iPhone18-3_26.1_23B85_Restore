@@ -1,58 +1,58 @@
 @interface SearchStringWaypointRequest
-- (BOOL)isEquivalentToOtherRequest:(id)a3;
+- (BOOL)isEquivalentToOtherRequest:(id)request;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)waypointName;
 - (SearchStringWaypointRequest)init;
-- (SearchStringWaypointRequest)initWithSearchString:(id)a3 completionItem:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)recordRAPInformation:(id)a3;
+- (SearchStringWaypointRequest)initWithSearchString:(id)string completionItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)recordRAPInformation:(id)information;
 @end
 
 @implementation SearchStringWaypointRequest
 
-- (void)recordRAPInformation:(id)a3
+- (void)recordRAPInformation:(id)information
 {
-  v6 = a3;
+  informationCopy = information;
   v4 = [(NSString *)self->_searchString copy];
-  [v6 setSearchString:v4];
+  [informationCopy setSearchString:v4];
 
   if (self->_completionItem)
   {
     v5 = [GEOStorageCompletion storageForCompletionItem:?];
-    [v6 setCompletionStorage:v5];
+    [informationCopy setCompletionStorage:v5];
   }
 }
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
   searchString = self->_searchString;
   completionItem = self->_completionItem;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = sub_100C2093C(a5);
-  v15 = [GEOComposedWaypoint composedWaypointForSearchString:searchString completionItem:completionItem traits:v13 clientAttributes:0 clientResolvedCompletionHandler:v12 completionHandler:v14 networkActivityHandler:v11];
+  activityHandlerCopy = activityHandler;
+  handlerCopy = handler;
+  traitsCopy = traits;
+  v14 = sub_100C2093C(completionHandler);
+  v15 = [GEOComposedWaypoint composedWaypointForSearchString:searchString completionItem:completionItem traits:traitsCopy clientAttributes:0 clientResolvedCompletionHandler:handlerCopy completionHandler:v14 networkActivityHandler:activityHandlerCopy];
 
   return v15;
 }
 
-- (BOOL)isEquivalentToOtherRequest:(id)a3
+- (BOOL)isEquivalentToOtherRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v7 = [v5[3] _geoMapItem];
-    v8 = v7;
-    if (v6 && v7)
+    v5 = requestCopy;
+    _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _geoMapItem2 = [v5[3] _geoMapItem];
+    v8 = _geoMapItem2;
+    if (_geoMapItem && _geoMapItem2)
     {
-      if (![v6 _hasMUID] || !objc_msgSend(v8, "_hasMUID") || (v9 = objc_msgSend(v6, "_muid"), v9 == objc_msgSend(v8, "_muid")))
+      if (![_geoMapItem _hasMUID] || !objc_msgSend(v8, "_hasMUID") || (v9 = objc_msgSend(_geoMapItem, "_muid"), v9 == objc_msgSend(v8, "_muid")))
       {
         IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
 LABEL_16:
@@ -98,19 +98,19 @@ LABEL_17:
 
 - (NSString)waypointName
 {
-  v3 = [(GEOCompletionItem *)self->_completionItem displayLines];
-  v4 = [v3 firstObject];
+  displayLines = [(GEOCompletionItem *)self->_completionItem displayLines];
+  firstObject = [displayLines firstObject];
 
-  if ([v4 length])
+  if ([firstObject length])
   {
-    v5 = v4;
+    v5 = firstObject;
   }
 
   else
   {
-    v6 = [(MKMapItem *)self->_mapItem name];
-    searchString = v6;
-    if (!v6)
+    name = [(MKMapItem *)self->_mapItem name];
+    searchString = name;
+    if (!name)
     {
       searchString = self->_searchString;
     }
@@ -143,19 +143,19 @@ LABEL_17:
   return result;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, @"completionItem", self->_completionItem);
-  (*v4)(v6, @"mapItem", self->_mapItem);
+  (*v4)(blockCopy, @"completionItem", self->_completionItem);
+  (*v4)(blockCopy, @"mapItem", self->_mapItem);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1007825FC;
@@ -163,8 +163,8 @@ LABEL_17:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(SearchStringWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(SearchStringWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -198,7 +198,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10078284C;
@@ -206,8 +206,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(SearchStringWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(SearchStringWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -239,9 +239,9 @@ LABEL_9:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   searchString = self->_searchString;
   completionItem = self->_completionItem;
 
@@ -258,42 +258,42 @@ LABEL_9:
   return 0;
 }
 
-- (SearchStringWaypointRequest)initWithSearchString:(id)a3 completionItem:(id)a4
+- (SearchStringWaypointRequest)initWithSearchString:(id)string completionItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  stringCopy = string;
+  itemCopy = item;
+  if ([stringCopy length])
   {
     v17.receiver = self;
     v17.super_class = SearchStringWaypointRequest;
     v8 = [(SearchStringWaypointRequest *)&v17 init];
     if (v8)
     {
-      v9 = [v6 copy];
+      v9 = [stringCopy copy];
       searchString = v8->_searchString;
       v8->_searchString = v9;
 
-      objc_storeStrong(&v8->_completionItem, a4);
+      objc_storeStrong(&v8->_completionItem, item);
       if (v8->_completionItem)
       {
         v11 = [MKMapItem alloc];
-        v12 = [(GEOCompletionItem *)v8->_completionItem geoMapItem];
-        v13 = [v11 initWithGeoMapItem:v12 isPlaceHolderPlace:0];
+        geoMapItem = [(GEOCompletionItem *)v8->_completionItem geoMapItem];
+        v13 = [v11 initWithGeoMapItem:geoMapItem isPlaceHolderPlace:0];
         mapItem = v8->_mapItem;
         v8->_mapItem = v13;
       }
     }
 
     self = v8;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

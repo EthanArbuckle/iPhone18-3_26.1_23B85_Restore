@@ -1,18 +1,18 @@
 @interface EDIndexedAttachment
 - (EDIndexedAttachment)init;
-- (EDIndexedAttachment)initWithMessageID:(id)a3 attachmentID:(id)a4;
+- (EDIndexedAttachment)initWithMessageID:(id)d attachmentID:(id)iD;
 @end
 
 @implementation EDIndexedAttachment
 
-- (EDIndexedAttachment)initWithMessageID:(id)a3 attachmentID:(id)a4
+- (EDIndexedAttachment)initWithMessageID:(id)d attachmentID:(id)iD
 {
-  *(&self->super.isa + OBJC_IVAR___EDIndexedAttachment_messageID) = a3;
-  *(&self->super.isa + OBJC_IVAR___EDIndexedAttachment_attachmentID) = a4;
+  *(&self->super.isa + OBJC_IVAR___EDIndexedAttachment_messageID) = d;
+  *(&self->super.isa + OBJC_IVAR___EDIndexedAttachment_attachmentID) = iD;
   v8.receiver = self;
   v8.super_class = EDIndexedAttachment;
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   return [(EDIndexedAttachment *)&v8 init];
 }
 

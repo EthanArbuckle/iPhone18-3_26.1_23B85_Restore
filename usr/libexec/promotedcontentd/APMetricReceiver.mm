@@ -1,54 +1,54 @@
 @interface APMetricReceiver
-- (APMetricReceiver)initWithConnection:(id)a3;
+- (APMetricReceiver)initWithConnection:(id)connection;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)extendCollectionClassesForExportedInterface:(id)a3;
-- (void)receivedMetric:(id)a3;
+- (void)extendCollectionClassesForExportedInterface:(id)interface;
+- (void)receivedMetric:(id)metric;
 - (void)terminateConnection;
 @end
 
 @implementation APMetricReceiver
 
-- (APMetricReceiver)initWithConnection:(id)a3
+- (APMetricReceiver)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = APMetricReceiver;
   v6 = [(APMetricReceiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)receivedMetric:(id)a3
+- (void)receivedMetric:(id)metric
 {
-  v4 = a3;
-  v5 = [(APMetricReceiver *)self connection];
-  v6 = [v5 bundleID];
-  v7 = [v6 length];
+  metricCopy = metric;
+  connection = [(APMetricReceiver *)self connection];
+  bundleID = [connection bundleID];
+  v7 = [bundleID length];
 
   if (v7)
   {
-    v8 = [(APMetricReceiver *)self connection];
-    v9 = [v8 bundleID];
+    connection2 = [(APMetricReceiver *)self connection];
+    bundleID2 = [connection2 bundleID];
   }
 
   else
   {
-    v9 = @"nil";
+    bundleID2 = @"nil";
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(__CFString *)v4 performSelector:"updateClientBundleID:" withObject:v9];
+    [(__CFString *)metricCopy performSelector:"updateClientBundleID:" withObject:bundleID2];
   }
 
-  v10 = [(__CFString *)v4 internalProperties];
-  v11 = [v10 objectForKeyedSubscript:kAPMetricClientSourceKey];
+  internalProperties = [(__CFString *)metricCopy internalProperties];
+  v11 = [internalProperties objectForKeyedSubscript:kAPMetricClientSourceKey];
 
   if (v11)
   {
@@ -57,9 +57,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [NSString stringWithFormat:@"%@%@%@", v9, @".", v11];
+        v12 = [NSString stringWithFormat:@"%@%@%@", bundleID2, @".", v11];
 
-        v9 = v12;
+        bundleID2 = v12;
       }
     }
   }
@@ -73,44 +73,44 @@
       *buf = 138478339;
       v30 = objc_opt_class();
       v31 = 2114;
-      v32 = v9;
+      v32 = bundleID2;
       v33 = 2114;
-      v34 = v4;
+      v34 = metricCopy;
       v15 = v30;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{private}@] Received metric from %{public}@: %{public}@", buf, 0x20u);
     }
 
-    v16 = [(__CFString *)v4 purpose];
-    if (v16)
+    purpose = [(__CFString *)metricCopy purpose];
+    if (purpose)
     {
-      v17 = [APECPurposeConfig purposeConfig:v16];
+      v17 = [APECPurposeConfig purposeConfig:purpose];
       if (v17)
       {
-        v18 = [(APMetricReceiver *)self connection];
-        v19 = [v18 bundleID];
+        connection3 = [(APMetricReceiver *)self connection];
+        bundleID3 = [connection3 bundleID];
 
-        if (!v19)
+        if (!bundleID3)
         {
           v22 = APLogForCategory();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v30 = v4;
+            v30 = metricCopy;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Error missing BundleID for metric %{public}@", buf, 0xCu);
           }
 
           goto LABEL_24;
         }
 
-        v20 = [(APMetricReceiver *)self connection];
-        v21 = [v20 bundleID];
-        v22 = [v21 dataUsingEncoding:4];
+        connection4 = [(APMetricReceiver *)self connection];
+        bundleID4 = [connection4 bundleID];
+        v22 = [bundleID4 dataUsingEncoding:4];
 
-        v23 = [v22 sha256];
-        v24 = [v23 asHexString];
-        v25 = [NSPredicate predicateWithFormat:@"SELF contains %@", v24];
-        v26 = [v17 allowedSources];
-        v27 = [v26 filteredArrayUsingPredicate:v25];
+        sha256 = [v22 sha256];
+        asHexString = [sha256 asHexString];
+        v25 = [NSPredicate predicateWithFormat:@"SELF contains %@", asHexString];
+        allowedSources = [v17 allowedSources];
+        v27 = [allowedSources filteredArrayUsingPredicate:v25];
 
         if (!v27 || [v27 count] != 1)
         {
@@ -118,9 +118,9 @@
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
             *buf = 138543618;
-            v30 = v9;
+            v30 = bundleID2;
             v31 = 2114;
-            v32 = v4;
+            v32 = metricCopy;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Metric %{public}@ from client %{public}@ not allowed ", buf, 0x16u);
           }
 
@@ -135,7 +135,7 @@
     }
 
     v22 = +[MetricsModule storage];
-    [v22 receivedMetric:v4];
+    [v22 receivedMetric:metricCopy];
 LABEL_24:
 
     goto LABEL_25;
@@ -153,22 +153,22 @@ LABEL_25:
 
 - (void)terminateConnection
 {
-  v3 = [(APMetricReceiver *)self connection];
+  connection = [(APMetricReceiver *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(APMetricReceiver *)self connection];
-    [v4 invalidate];
+    connection2 = [(APMetricReceiver *)self connection];
+    [connection2 invalidate];
 
     [(APMetricReceiver *)self setConnection:0];
   }
 }
 
-- (void)extendCollectionClassesForExportedInterface:(id)a3
+- (void)extendCollectionClassesForExportedInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = +[NSSet setWithObjects:](NSSet, "setWithObjects:", +[MetricsModuleCommon metricClass], 0);
-  [v3 setClasses:v4 forSelector:"receivedMetric:" argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v4 forSelector:"receivedMetric:" argumentIndex:0 ofReply:0];
 }
 
 - (void)connectionInvalidated

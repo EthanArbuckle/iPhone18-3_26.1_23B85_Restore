@@ -1,9 +1,9 @@
 @interface EXAuditToken
 + ($115C4C562B26FF47E01F9F4EA65B5887)auditTokenForCurrentProcess;
-- (BOOL)isEqual:(id)a3;
-- (EXAuditToken)initWithAuditToken:(id *)a3;
-- (EXAuditToken)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (EXAuditToken)initWithAuditToken:(id *)token;
+- (EXAuditToken)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -22,54 +22,54 @@
   return result;
 }
 
-- (EXAuditToken)initWithAuditToken:(id *)a3
+- (EXAuditToken)initWithAuditToken:(id *)token
 {
   v6.receiver = self;
   v6.super_class = EXAuditToken;
   result = [(EXAuditToken *)&v6 init];
   if (result)
   {
-    v5 = *a3->var0;
-    *&result->_auditToken.val[4] = *&a3->var0[4];
+    v5 = *token->var0;
+    *&result->_auditToken.val[4] = *&token->var0[4];
     *result->_auditToken.val = v5;
   }
 
   return result;
 }
 
-- (EXAuditToken)initWithCoder:(id)a3
+- (EXAuditToken)initWithCoder:(id)coder
 {
   v11 = 0;
-  v5 = a3;
-  v6 = [a3 decodeBytesForKey:@"auditToken" returnedLength:&v11];
-  v7 = 0;
+  coderCopy = coder;
+  v6 = [coder decodeBytesForKey:@"auditToken" returnedLength:&v11];
+  selfCopy = 0;
   if (v6 && v11 == 32)
   {
     v8 = v6[1];
     v10[0] = *v6;
     v10[1] = v8;
     self = [(EXAuditToken *)self initWithAuditToken:v10];
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = *&self->_auditToken.val[4];
   v7[0] = *self->_auditToken.val;
   v7[1] = v5;
   return [v4 initWithAuditToken:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
-    v8 = self == v4 || *self->_auditToken.val == *v4->_auditToken.val && *&self->_auditToken.val[2] == *&v4->_auditToken.val[2] && *&self->_auditToken.val[4] == *&v4->_auditToken.val[4] && *&self->_auditToken.val[6] == *&v4->_auditToken.val[6];
+    v8 = self == equalCopy || *self->_auditToken.val == *equalCopy->_auditToken.val && *&self->_auditToken.val[2] == *&equalCopy->_auditToken.val[2] && *&self->_auditToken.val[4] == *&equalCopy->_auditToken.val[4] && *&self->_auditToken.val[6] == *&equalCopy->_auditToken.val[6];
   }
 
   else

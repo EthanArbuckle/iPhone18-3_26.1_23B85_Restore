@@ -1,27 +1,27 @@
 @interface SCNCone
 + (SCNCone)coneWithTopRadius:(CGFloat)topRadius bottomRadius:(CGFloat)bottomRadius height:(CGFloat)height;
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4;
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius;
 - (CGFloat)bottomRadius;
 - (CGFloat)height;
 - (CGFloat)topRadius;
 - (NSInteger)heightSegmentCount;
 - (NSInteger)radialSegmentCount;
 - (SCNCone)init;
-- (SCNCone)initWithCoder:(id)a3;
-- (SCNCone)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNCone)initWithCoder:(id)coder;
+- (SCNCone)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3;
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref;
 - (id)presentationCone;
 - (int64_t)primitiveType;
-- (void)_setupObjCModelFrom:(id)a3;
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setupObjCModelFrom:(id)from;
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model;
+- (void)encodeWithCoder:(id)coder;
 - (void)setBottomRadius:(CGFloat)bottomRadius;
 - (void)setHeight:(CGFloat)height;
 - (void)setHeightSegmentCount:(NSInteger)heightSegmentCount;
-- (void)setPrimitiveType:(int64_t)a3;
+- (void)setPrimitiveType:(int64_t)type;
 - (void)setRadialSegmentCount:(NSInteger)radialSegmentCount;
 - (void)setTopRadius:(CGFloat)topRadius;
 @end
@@ -47,11 +47,11 @@
   return v5;
 }
 
-- (SCNCone)initWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (SCNCone)initWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNCone;
-  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:a3];
+  v3 = [(SCNGeometry *)&v7 initWithGeometryRef:ref];
   v4 = v3;
   if (v3)
   {
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)a3
+- (id)initPresentationParametricGeometryWithParametricGeometryRef:(__C3DParametricGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = SCNCone;
-  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:a3];
+  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:ref];
 }
 
 - (id)presentationCone
@@ -78,14 +78,14 @@
   return v2;
 }
 
-- (void)_syncObjCModel:(__C3DParametricGeometry *)a3
+- (void)_syncObjCModel:(__C3DParametricGeometry *)model
 {
-  self->_conetopRadius = C3DParametricGeometryGetFloatValue(a3, 5);
-  self->_conebottomRadius = C3DParametricGeometryGetFloatValue(a3, 6);
-  self->_coneheight = C3DParametricGeometryGetFloatValue(a3, 1);
-  self->_coneheightSegmentCount = C3DParametricGeometryGetIntValue(a3, 12);
-  self->_coneradialSegmentCount = C3DParametricGeometryGetIntValue(a3, 15);
-  self->_coneprimitiveType = C3DParametricGeometryGetIntValue(a3, 20);
+  self->_conetopRadius = C3DParametricGeometryGetFloatValue(model, 5);
+  self->_conebottomRadius = C3DParametricGeometryGetFloatValue(model, 6);
+  self->_coneheight = C3DParametricGeometryGetFloatValue(model, 1);
+  self->_coneheightSegmentCount = C3DParametricGeometryGetIntValue(model, 12);
+  self->_coneradialSegmentCount = C3DParametricGeometryGetIntValue(model, 15);
+  self->_coneprimitiveType = C3DParametricGeometryGetIntValue(model, 20);
 }
 
 - (CGFloat)bottomRadius
@@ -95,11 +95,11 @@
     return self->_conebottomRadius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   BottomRadius = C3DParametricGeometryGetBottomRadius([(SCNGeometry *)self geometryRef]);
@@ -125,14 +125,14 @@
   else if (self->_conebottomRadius != bottomRadius)
   {
     self->_conebottomRadius = bottomRadius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __27__SCNCone_setBottomRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = bottomRadius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"bottomRadius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"bottomRadius" applyBlock:v7];
   }
 }
 
@@ -151,11 +151,11 @@ void __27__SCNCone_setBottomRadius___block_invoke(uint64_t a1)
     return self->_coneheight;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   Height = C3DParametricGeometryGetHeight([(SCNGeometry *)self geometryRef]);
@@ -181,14 +181,14 @@ void __27__SCNCone_setBottomRadius___block_invoke(uint64_t a1)
   else if (self->_coneheight != height)
   {
     self->_coneheight = height;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __21__SCNCone_setHeight___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = height;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"height" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"height" applyBlock:v7];
   }
 }
 
@@ -207,11 +207,11 @@ void __21__SCNCone_setHeight___block_invoke(uint64_t a1)
     return self->_coneheightSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   HeightSegmentCount = C3DParametricGeometryGetHeightSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -237,14 +237,14 @@ void __21__SCNCone_setHeight___block_invoke(uint64_t a1)
   else if (self->_coneheightSegmentCount != heightSegmentCount)
   {
     self->_coneheightSegmentCount = heightSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__SCNCone_setHeightSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = heightSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"heightSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"heightSegmentCount" applyBlock:v7];
   }
 }
 
@@ -263,11 +263,11 @@ void __33__SCNCone_setHeightSegmentCount___block_invoke(uint64_t a1)
     return self->_coneprimitiveType;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PrimitiveType = C3DParametricGeometryGetPrimitiveType([(SCNGeometry *)self geometryRef]);
@@ -279,7 +279,7 @@ void __33__SCNCone_setHeightSegmentCount___block_invoke(uint64_t a1)
   return PrimitiveType;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -290,17 +290,17 @@ void __33__SCNCone_setHeightSegmentCount___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_coneprimitiveType != a3)
+  else if (self->_coneprimitiveType != type)
   {
-    self->_coneprimitiveType = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_coneprimitiveType = type;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__SCNCone_setPrimitiveType___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    v7[5] = type;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -319,11 +319,11 @@ void __28__SCNCone_setPrimitiveType___block_invoke(uint64_t a1)
     return self->_coneradialSegmentCount;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   RadialSegmentCount = C3DParametricGeometryGetRadialSegmentCount([(SCNGeometry *)self geometryRef]);
@@ -349,14 +349,14 @@ void __28__SCNCone_setPrimitiveType___block_invoke(uint64_t a1)
   else if (self->_coneradialSegmentCount != radialSegmentCount)
   {
     self->_coneradialSegmentCount = radialSegmentCount;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__SCNCone_setRadialSegmentCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = radialSegmentCount;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"radialSegmentCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"radialSegmentCount" applyBlock:v7];
   }
 }
 
@@ -375,11 +375,11 @@ void __33__SCNCone_setRadialSegmentCount___block_invoke(uint64_t a1)
     return self->_conetopRadius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   TopRadius = C3DParametricGeometryGetTopRadius([(SCNGeometry *)self geometryRef]);
@@ -405,14 +405,14 @@ void __33__SCNCone_setRadialSegmentCount___block_invoke(uint64_t a1)
   else if (self->_conetopRadius != topRadius)
   {
     self->_conetopRadius = topRadius;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __24__SCNCone_setTopRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = topRadius;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"topRadius" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"topRadius" applyBlock:v7];
   }
 }
 
@@ -424,7 +424,7 @@ void __24__SCNCone_setTopRadius___block_invoke(uint64_t a1)
   C3DParametricGeometrySetTopRadius(v2, v3);
 }
 
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
   v25 = 0.0;
   v24 = 0;
@@ -432,11 +432,11 @@ void __24__SCNCone_setTopRadius___block_invoke(uint64_t a1)
   v22 = 0;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef])
@@ -464,7 +464,7 @@ LABEL_11:
     {
       v21.receiver = self;
       v21.super_class = SCNCone;
-      return [(SCNGeometry *)&v21 getBoundingBoxMin:a3 max:a4];
+      return [(SCNGeometry *)&v21 getBoundingBoxMin:min max:max];
     }
 
     [(SCNCone *)self topRadius];
@@ -479,47 +479,47 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (a3)
+  if (min)
   {
     v18 = v25;
-    *&a3->x = v24;
-    a3->z = v18;
+    *&min->x = v24;
+    min->z = v18;
   }
 
-  if (a4)
+  if (max)
   {
     v19 = v23;
-    *&a4->x = v22;
-    a4->z = v19;
+    *&max->x = v22;
+    max->z = v19;
   }
 
   return BoundingBox;
 }
 
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius
 {
   v18 = 0uLL;
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v7 = [(SCNGeometry *)self sceneRef];
-    v8 = v7;
-    if (v7)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v8 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v7);
+      C3DSceneLock(sceneRef);
     }
 
     if ([(SCNGeometry *)self geometryRef]&& C3DConeGetBoundingSphere([(SCNGeometry *)self geometryRef], &v18))
     {
-      if (a3)
+      if (center)
       {
         v9 = *(&v18 + 2);
-        *&a3->x = v18;
-        a3->z = v9;
+        *&center->x = v18;
+        center->z = v9;
       }
 
-      if (a4)
+      if (radius)
       {
-        *a4 = *(&v18 + 3);
+        *radius = *(&v18 + 3);
       }
 
       v10 = 1;
@@ -552,16 +552,16 @@ LABEL_12:
     return 0;
   }
 
-  if (a3)
+  if (center)
   {
     v16 = *(&v18 + 2);
-    *&a3->x = v18;
-    a3->z = v16;
+    *&center->x = v18;
+    center->z = v16;
   }
 
-  if (a4)
+  if (radius)
   {
-    *a4 = *(&v18 + 3);
+    *radius = *(&v18 + 3);
   }
 
   return 1;
@@ -569,7 +569,7 @@ LABEL_12:
 
 + (SCNCone)coneWithTopRadius:(CGFloat)topRadius bottomRadius:(CGFloat)bottomRadius height:(CGFloat)height
 {
-  v8 = objc_alloc_init(a1);
+  v8 = objc_alloc_init(self);
   [v8 setTopRadius:topRadius];
   [v8 setBottomRadius:bottomRadius];
   [v8 setHeight:height];
@@ -580,35 +580,35 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCNGeometry *)self geometryDescription];
+  geometryDescription = [(SCNGeometry *)self geometryDescription];
   [(SCNCone *)self topRadius];
   v6 = v5;
   [(SCNCone *)self bottomRadius];
   v8 = v7;
   [(SCNCone *)self height];
-  return [v3 stringWithFormat:@"<%@ | topRadius=%.3f bottomRadius=%.3f height=%.3f>", v4, v6, v8, v9];
+  return [v3 stringWithFormat:@"<%@ | topRadius=%.3f bottomRadius=%.3f height=%.3f>", geometryDescription, v6, v8, v9];
 }
 
-- (void)_setupObjCModelFrom:(id)a3
+- (void)_setupObjCModelFrom:(id)from
 {
   v5.receiver = self;
   v5.super_class = SCNCone;
   [(SCNGeometry *)&v5 _setupObjCModelFrom:?];
   +[SCNTransaction begin];
   [SCNTransaction setImmediateMode:1];
-  [a3 topRadius];
+  [from topRadius];
   [(SCNCone *)self setTopRadius:?];
-  [a3 bottomRadius];
+  [from bottomRadius];
   [(SCNCone *)self setBottomRadius:?];
-  [a3 height];
+  [from height];
   [(SCNCone *)self setHeight:?];
-  -[SCNCone setHeightSegmentCount:](self, "setHeightSegmentCount:", [a3 heightSegmentCount]);
-  -[SCNCone setRadialSegmentCount:](self, "setRadialSegmentCount:", [a3 radialSegmentCount]);
-  -[SCNCone setPrimitiveType:](self, "setPrimitiveType:", [a3 primitiveType]);
+  -[SCNCone setHeightSegmentCount:](self, "setHeightSegmentCount:", [from heightSegmentCount]);
+  -[SCNCone setRadialSegmentCount:](self, "setRadialSegmentCount:", [from radialSegmentCount]);
+  -[SCNCone setPrimitiveType:](self, "setPrimitiveType:", [from primitiveType]);
   +[SCNTransaction commitImmediate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 _setupObjCModelFrom:self];
@@ -616,7 +616,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNCone;
@@ -626,15 +626,15 @@ LABEL_12:
     [(SCNCone *)self _syncObjCModel:[(SCNGeometry *)self geometryRef]];
   }
 
-  [a3 encodeDouble:@"conetopRadius" forKey:self->_conetopRadius];
-  [a3 encodeDouble:@"conebottomRadius" forKey:self->_conebottomRadius];
-  [a3 encodeDouble:@"coneheight" forKey:self->_coneheight];
-  [a3 encodeInteger:self->_coneheightSegmentCount forKey:@"coneheightSegmentCount"];
-  [a3 encodeInteger:self->_coneradialSegmentCount forKey:@"coneradialSegmentCount"];
-  [a3 encodeInteger:self->_coneprimitiveType forKey:@"coneprimitiveType"];
+  [coder encodeDouble:@"conetopRadius" forKey:self->_conetopRadius];
+  [coder encodeDouble:@"conebottomRadius" forKey:self->_conebottomRadius];
+  [coder encodeDouble:@"coneheight" forKey:self->_coneheight];
+  [coder encodeInteger:self->_coneheightSegmentCount forKey:@"coneheightSegmentCount"];
+  [coder encodeInteger:self->_coneradialSegmentCount forKey:@"coneradialSegmentCount"];
+  [coder encodeInteger:self->_coneprimitiveType forKey:@"coneprimitiveType"];
 }
 
-- (SCNCone)initWithCoder:(id)a3
+- (SCNCone)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNCone;
@@ -643,15 +643,15 @@ LABEL_12:
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [a3 decodeDoubleForKey:@"conetopRadius"];
+    [coder decodeDoubleForKey:@"conetopRadius"];
     [(SCNCone *)v4 setTopRadius:?];
-    [a3 decodeDoubleForKey:@"conebottomRadius"];
+    [coder decodeDoubleForKey:@"conebottomRadius"];
     [(SCNCone *)v4 setBottomRadius:?];
-    [a3 decodeDoubleForKey:@"coneheight"];
+    [coder decodeDoubleForKey:@"coneheight"];
     [(SCNCone *)v4 setHeight:?];
-    -[SCNCone setHeightSegmentCount:](v4, "setHeightSegmentCount:", [a3 decodeIntegerForKey:@"coneheightSegmentCount"]);
-    -[SCNCone setRadialSegmentCount:](v4, "setRadialSegmentCount:", [a3 decodeIntegerForKey:@"coneradialSegmentCount"]);
-    -[SCNCone setPrimitiveType:](v4, "setPrimitiveType:", [a3 decodeIntegerForKey:@"coneprimitiveType"]);
+    -[SCNCone setHeightSegmentCount:](v4, "setHeightSegmentCount:", [coder decodeIntegerForKey:@"coneheightSegmentCount"]);
+    -[SCNCone setRadialSegmentCount:](v4, "setRadialSegmentCount:", [coder decodeIntegerForKey:@"coneradialSegmentCount"]);
+    -[SCNCone setPrimitiveType:](v4, "setPrimitiveType:", [coder decodeIntegerForKey:@"coneprimitiveType"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

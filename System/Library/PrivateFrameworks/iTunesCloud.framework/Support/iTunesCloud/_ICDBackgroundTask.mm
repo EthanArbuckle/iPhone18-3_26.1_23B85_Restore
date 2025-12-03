@@ -1,35 +1,35 @@
 @interface _ICDBackgroundTask
-+ (id)taskWithType:(int64_t)a3 configuration:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_ICDBackgroundTask)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)taskWithType:(int64_t)type configuration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
+- (_ICDBackgroundTask)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ICDBackgroundTask
 
-- (_ICDBackgroundTask)initWithCoder:(id)a3
+- (_ICDBackgroundTask)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"config"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"config"];
 
   v7 = [_ICDBackgroundTask taskWithType:v5 configuration:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[_ICDBackgroundTask type](self forKey:{"type"), @"type"}];
-  v5 = [(_ICDBackgroundTask *)self configuration];
-  [v4 encodeObject:v5 forKey:@"config"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[_ICDBackgroundTask type](self forKey:{"type"), @"type"}];
+  configuration = [(_ICDBackgroundTask *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"config"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -39,9 +39,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_ICDBackgroundTask *)v4 name];
-      v6 = [(_ICDBackgroundTask *)self name];
-      v7 = [v5 isEqualToString:v6];
+      name = [(_ICDBackgroundTask *)equalCopy name];
+      name2 = [(_ICDBackgroundTask *)self name];
+      v7 = [name isEqualToString:name2];
     }
 
     else
@@ -53,17 +53,17 @@
   return v7;
 }
 
-+ (id)taskWithType:(int64_t)a3 configuration:(id)a4
++ (id)taskWithType:(int64_t)type configuration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v6 = objc_alloc_init(_ICDBackgroundTask);
-  v6->_type = a3;
-  v7 = [v5 copy];
+  v6->_type = type;
+  v7 = [configurationCopy copy];
   configuration = v6->_configuration;
   v6->_configuration = v7;
 
-  v9 = [v5 userIdentity];
-  v10 = [v9 accountDSID];
+  userIdentity = [configurationCopy userIdentity];
+  accountDSID = [userIdentity accountDSID];
   v72 = 0u;
   v71 = 0u;
   v70 = 0u;
@@ -73,7 +73,7 @@
   v66 = 0u;
   memset(&v65, 0, sizeof(v65));
   CC_SHA1_Init(&v65);
-  v11 = v10;
+  v11 = accountDSID;
   CC_SHA1_Update(&v65, [v11 UTF8String], objc_msgSend(v11, "length"));
 
   memset(&v73[8], 0, 64);
@@ -312,7 +312,7 @@ LABEL_54:
 LABEL_48:
 
   v59 = @"com.apple.itunescloudd.deferredPushUpdate.jalisco";
-  if (!a3)
+  if (!type)
   {
     v59 = @"com.apple.itunescloudd.deferredPushUpdate.saga";
   }

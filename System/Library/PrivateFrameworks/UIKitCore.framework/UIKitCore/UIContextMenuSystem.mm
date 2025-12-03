@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __35__UIContextMenuSystem_sharedSystem__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_1209 != -1)
   {
     dispatch_once(&_MergedGlobals_1209, block);
@@ -35,16 +35,16 @@ void __35__UIContextMenuSystem_sharedSystem__block_invoke(uint64_t a1)
   if ([UIApp _supportsMenuActions])
   {
     v2 = +[UIDevice currentDevice];
-    v3 = [v2 userInterfaceIdiom];
+    userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-    if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v56 = [UIApp _appAdoptsUISceneLifecycle];
+      _appAdoptsUISceneLifecycle = [UIApp _appAdoptsUISceneLifecycle];
     }
 
     else
     {
-      v56 = 0;
+      _appAdoptsUISceneLifecycle = 0;
     }
 
     v5 = [UICommand _defaultCommandForAction:sel_cut_];
@@ -84,7 +84,7 @@ void __35__UIContextMenuSystem_sharedSystem__block_invoke(uint64_t a1)
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:5];
     v45 = [UIMenu _defaultInlineMenuWithIdentifier:@"com.apple.menu.replace" children:?];
     v67[1] = v45;
-    if (v56)
+    if (_appAdoptsUISceneLifecycle)
     {
       v23 = [UICommand _defaultCommandForAction:sel__openInNewCanvas_];
       v64 = v23;
@@ -144,7 +144,7 @@ void __35__UIContextMenuSystem_sharedSystem__block_invoke(uint64_t a1)
     v67[7] = v21;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:8];
 
-    if (v56)
+    if (_appAdoptsUISceneLifecycle)
     {
     }
   }

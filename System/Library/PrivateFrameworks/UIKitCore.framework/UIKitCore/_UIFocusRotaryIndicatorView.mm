@@ -1,23 +1,23 @@
 @interface _UIFocusRotaryIndicatorView
-+ (id)createRotaryIndicatorInView:(id)a3;
-- (_UIFocusRotaryIndicatorView)initWithFrame:(CGRect)a3;
++ (id)createRotaryIndicatorInView:(id)view;
+- (_UIFocusRotaryIndicatorView)initWithFrame:(CGRect)frame;
 - (unint64_t)_calculateCurrentRotaryAxis;
 - (void)_updateArrowDisplay;
 - (void)_updateArrowsForCurrentFocus;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)toggleVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateFailedMovementHeading:(unint64_t)a3;
-- (void)updateWheelPosition:(double)a3;
+- (void)toggleVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)updateFailedMovementHeading:(unint64_t)heading;
+- (void)updateWheelPosition:(double)position;
 @end
 
 @implementation _UIFocusRotaryIndicatorView
 
-+ (id)createRotaryIndicatorInView:(id)a3
++ (id)createRotaryIndicatorInView:(id)view
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  viewCopy = view;
   if (_UIInternalPreferenceUsesDefault(&_MergedGlobals_961, @"RotaryFocusRingDiameter", _UIInternalPreferenceUpdateDouble))
   {
     v4 = 80.0;
@@ -40,19 +40,19 @@
   [(_UIFocusRotaryIndicatorView *)v8 toggleVisible:0 animated:0];
   [(UIView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v8 setUserInteractionEnabled:0];
-  v9 = [(UIView *)v8 layer];
-  [v9 setZPosition:100.0];
+  layer = [(UIView *)v8 layer];
+  [layer setZPosition:100.0];
 
-  [v3 addSubview:v8];
+  [viewCopy addSubview:v8];
   v23 = MEMORY[0x1E69977A0];
-  v26 = [(UIView *)v8 widthAnchor];
-  v25 = [v26 constraintEqualToConstant:v7];
+  widthAnchor = [(UIView *)v8 widthAnchor];
+  v25 = [widthAnchor constraintEqualToConstant:v7];
   v27[0] = v25;
-  v24 = [(UIView *)v8 heightAnchor];
-  v10 = [v24 constraintEqualToConstant:v7];
+  heightAnchor = [(UIView *)v8 heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:v7];
   v27[1] = v10;
-  v11 = [(UIView *)v8 topAnchor];
-  v12 = [v3 topAnchor];
+  topAnchor = [(UIView *)v8 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
   v13 = _UIInternalPreferenceUsesDefault(algn_1ED48B9E8, @"RotaryFocusRingMargin", _UIInternalPreferenceUpdateDouble);
   v14 = *&qword_1ED48B9F0;
   if (v13)
@@ -60,11 +60,11 @@
     v14 = 40.0;
   }
 
-  v15 = [v11 constraintEqualToAnchor:v12 constant:v14];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v14];
   v27[2] = v15;
-  v16 = [v3 trailingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
 
-  v17 = [(UIView *)v8 trailingAnchor];
+  trailingAnchor2 = [(UIView *)v8 trailingAnchor];
   v18 = _UIInternalPreferenceUsesDefault(algn_1ED48B9E8, @"RotaryFocusRingMargin", _UIInternalPreferenceUpdateDouble);
   v19 = *&qword_1ED48B9F0;
   if (v18)
@@ -72,7 +72,7 @@
     v19 = 40.0;
   }
 
-  v20 = [v16 constraintEqualToAnchor:v17 constant:v19];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v19];
   v27[3] = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
   [v23 activateConstraints:v21];
@@ -80,18 +80,18 @@
   return v8;
 }
 
-- (_UIFocusRotaryIndicatorView)initWithFrame:(CGRect)a3
+- (_UIFocusRotaryIndicatorView)initWithFrame:(CGRect)frame
 {
   v140[20] = *MEMORY[0x1E69E9840];
   v139.receiver = self;
   v139.super_class = _UIFocusRotaryIndicatorView;
-  v3 = [(UIView *)&v139 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v139 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_visible = 1;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__updateArrowsForCurrentFocus name:@"UIFocusDidUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__updateArrowsForCurrentFocus name:@"UIFocusDidUpdateNotification" object:0];
 
     if (_UIInternalPreferenceUsesDefault(&_MergedGlobals_961, @"RotaryFocusRingDiameter", _UIInternalPreferenceUpdateDouble))
     {
@@ -119,9 +119,9 @@
     v13 = +[UIColor blackColor];
     [(UIView *)v12 setBackgroundColor:v13];
 
-    v14 = [(UIView *)v4->_rotaryScrubCenterPunchout layer];
+    layer = [(UIView *)v4->_rotaryScrubCenterPunchout layer];
     v15 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-    [v14 setCompositingFilter:v15];
+    [layer setCompositingFilter:v15];
 
     [(UIView *)v4->_rotaryScrubCenterPunchout setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4 addSubview:v4->_rotaryScrubCenterPunchout];
@@ -133,7 +133,7 @@
     v19 = +[UIColor whiteColor];
     [(UIView *)v18 setBackgroundColor:v19];
 
-    v20 = [(UIView *)v4->_roundPointerView layer];
+    layer2 = [(UIView *)v4->_roundPointerView layer];
     v21 = _UIInternalPreferenceUsesDefault(algn_1ED48B9D8, @"RotaryFocusRingPointerDiameter", _UIInternalPreferenceUpdateDouble);
     v22 = *&qword_1ED48B9E0 * 0.5;
     if (v21)
@@ -141,11 +141,11 @@
       v22 = 12.0;
     }
 
-    [v20 setCornerRadius:v22];
+    [layer2 setCornerRadius:v22];
 
     [(UIView *)v4->_roundPointerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [(UIView *)v4->_roundPointerView layer];
-    _UIFocusRotaryRingConfigureShadowForLayer(v23);
+    layer3 = [(UIView *)v4->_roundPointerView layer];
+    _UIFocusRotaryRingConfigureShadowForLayer(layer3);
 
     [(UIView *)v4 addSubview:v4->_roundPointerView];
     v24 = objc_alloc_init(UIView);
@@ -153,9 +153,9 @@
     v4->_ringView = v24;
 
     v26 = +[UIColor whiteColor];
-    v27 = [v26 CGColor];
-    v28 = [(UIView *)v4->_ringView layer];
-    [v28 setBorderColor:v27];
+    cGColor = [v26 CGColor];
+    layer4 = [(UIView *)v4->_ringView layer];
+    [layer4 setBorderColor:cGColor];
 
     if (_UIInternalPreferenceUsesDefault(algn_1ED48B9B8, @"RotaryFocusRingBorderWidth", _UIInternalPreferenceUpdateDouble))
     {
@@ -167,8 +167,8 @@
       v29 = *&qword_1ED48B9C0;
     }
 
-    v30 = [(UIView *)v4->_ringView layer];
-    [v30 setBorderWidth:v29];
+    layer5 = [(UIView *)v4->_ringView layer];
+    [layer5 setBorderWidth:v29];
 
     if (_UIInternalPreferenceUsesDefault(&_MergedGlobals_961, @"RotaryFocusRingDiameter", _UIInternalPreferenceUpdateDouble))
     {
@@ -180,12 +180,12 @@
       v31 = *&qword_1ED48B9B0 * 0.5;
     }
 
-    v32 = [(UIView *)v4->_ringView layer];
-    [v32 setCornerRadius:v31];
+    layer6 = [(UIView *)v4->_ringView layer];
+    [layer6 setCornerRadius:v31];
 
     [(UIView *)v4->_ringView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v33 = [(UIView *)v4->_ringView layer];
-    _UIFocusRotaryRingConfigureShadowForLayer(v33);
+    layer7 = [(UIView *)v4->_ringView layer];
+    _UIFocusRotaryRingConfigureShadowForLayer(layer7);
 
     [(UIView *)v4 addSubview:v4->_ringView];
     v34 = [UIView alloc];
@@ -206,7 +206,7 @@
     v42 = +[UIColor blackColor];
     [(UIView *)v41 setBackgroundColor:v42];
 
-    v43 = [(UIView *)v4->_fingerPositionView layer];
+    layer8 = [(UIView *)v4->_fingerPositionView layer];
     v44 = _UIInternalPreferenceUsesDefault(algn_1ED48B9C8, @"RotaryFocusRingFingerPositionDiameter", _UIInternalPreferenceUpdateDouble);
     v45 = *&qword_1ED48B9D0 * 0.5;
     if (v44)
@@ -214,7 +214,7 @@
       v45 = 6.0;
     }
 
-    [v43 setCornerRadius:v45];
+    [layer8 setCornerRadius:v45];
 
     [(UIView *)v4->_fingerPositionView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_fingerPositionContainerView addSubview:v4->_fingerPositionView];
@@ -272,22 +272,22 @@
     v137 = v135;
     [(UIView *)v59 setTransform:&v137];
     [(UIView *)v4 addSubview:v4->_rightArrow];
-    v133 = [(UIView *)v4->_rotaryScrubCenterPunchout centerXAnchor];
-    v132 = [(UIView *)v4 centerXAnchor];
-    v131 = [v133 constraintEqualToAnchor:v132];
+    centerXAnchor = [(UIView *)v4->_rotaryScrubCenterPunchout centerXAnchor];
+    centerXAnchor2 = [(UIView *)v4 centerXAnchor];
+    v131 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v140[0] = v131;
-    v130 = [(UIView *)v4->_rotaryScrubCenterPunchout centerYAnchor];
-    v129 = [(UIView *)v4 centerYAnchor];
-    v128 = [v130 constraintEqualToAnchor:v129];
+    centerYAnchor = [(UIView *)v4->_rotaryScrubCenterPunchout centerYAnchor];
+    centerYAnchor2 = [(UIView *)v4 centerYAnchor];
+    v128 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v140[1] = v128;
-    v127 = [(UIView *)v4->_rotaryScrubCenterPunchout widthAnchor];
-    v126 = [v127 constraintEqualToConstant:v9];
+    widthAnchor = [(UIView *)v4->_rotaryScrubCenterPunchout widthAnchor];
+    v126 = [widthAnchor constraintEqualToConstant:v9];
     v140[2] = v126;
-    v125 = [(UIView *)v4->_rotaryScrubCenterPunchout heightAnchor];
-    v124 = [v125 constraintEqualToConstant:v9];
+    heightAnchor = [(UIView *)v4->_rotaryScrubCenterPunchout heightAnchor];
+    v124 = [heightAnchor constraintEqualToConstant:v9];
     v140[3] = v124;
-    v60 = [(UIView *)v4->_roundPointerView widthAnchor];
-    v123 = v60;
+    widthAnchor2 = [(UIView *)v4->_roundPointerView widthAnchor];
+    v123 = widthAnchor2;
     v61 = _UIInternalPreferenceUsesDefault(algn_1ED48B9D8, @"RotaryFocusRingPointerDiameter", _UIInternalPreferenceUpdateDouble);
     v62 = *&qword_1ED48B9E0;
     if (v61)
@@ -295,10 +295,10 @@
       v62 = 24.0;
     }
 
-    v122 = [v60 constraintEqualToConstant:v62];
+    v122 = [widthAnchor2 constraintEqualToConstant:v62];
     v140[4] = v122;
-    v63 = [(UIView *)v4->_roundPointerView heightAnchor];
-    v121 = v63;
+    heightAnchor2 = [(UIView *)v4->_roundPointerView heightAnchor];
+    v121 = heightAnchor2;
     v64 = _UIInternalPreferenceUsesDefault(algn_1ED48B9D8, @"RotaryFocusRingPointerDiameter", _UIInternalPreferenceUpdateDouble);
     v65 = *&qword_1ED48B9E0;
     if (v64)
@@ -306,18 +306,18 @@
       v65 = 24.0;
     }
 
-    v120 = [v63 constraintEqualToConstant:v65];
+    v120 = [heightAnchor2 constraintEqualToConstant:v65];
     v140[5] = v120;
-    v119 = [(UIView *)v4->_roundPointerView centerXAnchor];
-    v118 = [(UIView *)v4 centerXAnchor];
-    v117 = [v119 constraintEqualToAnchor:v118];
+    centerXAnchor3 = [(UIView *)v4->_roundPointerView centerXAnchor];
+    centerXAnchor4 = [(UIView *)v4 centerXAnchor];
+    v117 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v140[6] = v117;
-    v116 = [(UIView *)v4->_roundPointerView centerYAnchor];
-    v115 = [(UIView *)v4 centerYAnchor];
-    v114 = [v116 constraintEqualToAnchor:v115];
+    centerYAnchor3 = [(UIView *)v4->_roundPointerView centerYAnchor];
+    centerYAnchor4 = [(UIView *)v4 centerYAnchor];
+    v114 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v140[7] = v114;
-    v66 = [(UIView *)v4->_ringView widthAnchor];
-    v113 = v66;
+    widthAnchor3 = [(UIView *)v4->_ringView widthAnchor];
+    v113 = widthAnchor3;
     v67 = _UIInternalPreferenceUsesDefault(&_MergedGlobals_961, @"RotaryFocusRingDiameter", _UIInternalPreferenceUpdateDouble);
     v68 = *&qword_1ED48B9B0;
     if (v67)
@@ -325,10 +325,10 @@
       v68 = 80.0;
     }
 
-    v112 = [v66 constraintEqualToConstant:v68];
+    v112 = [widthAnchor3 constraintEqualToConstant:v68];
     v140[8] = v112;
-    v69 = [(UIView *)v4->_ringView heightAnchor];
-    v111 = v69;
+    heightAnchor3 = [(UIView *)v4->_ringView heightAnchor];
+    v111 = heightAnchor3;
     v70 = _UIInternalPreferenceUsesDefault(&_MergedGlobals_961, @"RotaryFocusRingDiameter", _UIInternalPreferenceUpdateDouble);
     v71 = *&qword_1ED48B9B0;
     if (v70)
@@ -336,34 +336,34 @@
       v71 = 80.0;
     }
 
-    v110 = [v69 constraintEqualToConstant:v71];
+    v110 = [heightAnchor3 constraintEqualToConstant:v71];
     v140[9] = v110;
-    v109 = [(UIView *)v4->_ringView centerXAnchor];
-    v108 = [(UIView *)v4 centerXAnchor];
-    v107 = [v109 constraintEqualToAnchor:v108];
+    centerXAnchor5 = [(UIView *)v4->_ringView centerXAnchor];
+    centerXAnchor6 = [(UIView *)v4 centerXAnchor];
+    v107 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v140[10] = v107;
-    v106 = [(UIView *)v4->_ringView centerYAnchor];
-    v105 = [(UIView *)v4 centerYAnchor];
-    v104 = [v106 constraintEqualToAnchor:v105];
+    centerYAnchor5 = [(UIView *)v4->_ringView centerYAnchor];
+    centerYAnchor6 = [(UIView *)v4 centerYAnchor];
+    v104 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v140[11] = v104;
-    v103 = [(UIView *)v4->_fingerPositionContainerView widthAnchor];
-    v102 = [(UIView *)v4 widthAnchor];
-    v101 = [v103 constraintEqualToAnchor:v102];
+    widthAnchor4 = [(UIView *)v4->_fingerPositionContainerView widthAnchor];
+    widthAnchor5 = [(UIView *)v4 widthAnchor];
+    v101 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
     v140[12] = v101;
-    v100 = [(UIView *)v4->_fingerPositionContainerView heightAnchor];
-    v99 = [(UIView *)v4 heightAnchor];
-    v98 = [v100 constraintEqualToAnchor:v99];
+    heightAnchor4 = [(UIView *)v4->_fingerPositionContainerView heightAnchor];
+    heightAnchor5 = [(UIView *)v4 heightAnchor];
+    v98 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
     v140[13] = v98;
-    v97 = [(UIView *)v4->_fingerPositionContainerView centerXAnchor];
-    v96 = [(UIView *)v4 centerXAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    centerXAnchor7 = [(UIView *)v4->_fingerPositionContainerView centerXAnchor];
+    centerXAnchor8 = [(UIView *)v4 centerXAnchor];
+    v95 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     v140[14] = v95;
-    v94 = [(UIView *)v4->_fingerPositionContainerView centerYAnchor];
-    v93 = [(UIView *)v4 centerYAnchor];
-    v92 = [v94 constraintEqualToAnchor:v93];
+    centerYAnchor7 = [(UIView *)v4->_fingerPositionContainerView centerYAnchor];
+    centerYAnchor8 = [(UIView *)v4 centerYAnchor];
+    v92 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v140[15] = v92;
-    v72 = [(UIView *)v4->_fingerPositionView widthAnchor];
-    v91 = v72;
+    widthAnchor6 = [(UIView *)v4->_fingerPositionView widthAnchor];
+    v91 = widthAnchor6;
     v73 = _UIInternalPreferenceUsesDefault(algn_1ED48B9C8, @"RotaryFocusRingFingerPositionDiameter", _UIInternalPreferenceUpdateDouble);
     v74 = *&qword_1ED48B9D0;
     if (v73)
@@ -371,9 +371,9 @@
       v74 = 12.0;
     }
 
-    v90 = [v72 constraintEqualToConstant:v74];
+    v90 = [widthAnchor6 constraintEqualToConstant:v74];
     v140[16] = v90;
-    v75 = [(UIView *)v4->_fingerPositionView heightAnchor];
+    heightAnchor6 = [(UIView *)v4->_fingerPositionView heightAnchor];
     v76 = _UIInternalPreferenceUsesDefault(algn_1ED48B9C8, @"RotaryFocusRingFingerPositionDiameter", _UIInternalPreferenceUpdateDouble);
     v77 = *&qword_1ED48B9D0;
     if (v76)
@@ -381,14 +381,14 @@
       v77 = 12.0;
     }
 
-    v78 = [v75 constraintEqualToConstant:v77];
+    v78 = [heightAnchor6 constraintEqualToConstant:v77];
     v140[17] = v78;
-    v79 = [(UIView *)v4->_fingerPositionView centerXAnchor];
-    v80 = [(UIView *)v4->_fingerPositionContainerView centerXAnchor];
-    v81 = [v79 constraintEqualToAnchor:v80];
+    centerXAnchor9 = [(UIView *)v4->_fingerPositionView centerXAnchor];
+    centerXAnchor10 = [(UIView *)v4->_fingerPositionContainerView centerXAnchor];
+    v81 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
     v140[18] = v81;
-    v82 = [(UIView *)v4->_fingerPositionView centerYAnchor];
-    v83 = [(UIView *)v4->_fingerPositionContainerView centerYAnchor];
+    centerYAnchor9 = [(UIView *)v4->_fingerPositionView centerYAnchor];
+    centerYAnchor10 = [(UIView *)v4->_fingerPositionContainerView centerYAnchor];
     if (_UIInternalPreferenceUsesDefault(&_MergedGlobals_961, @"RotaryFocusRingDiameter", _UIInternalPreferenceUpdateDouble))
     {
       v84 = 80.0;
@@ -406,7 +406,7 @@
       v86 = 16.0;
     }
 
-    v87 = [v82 constraintEqualToAnchor:v83 constant:(v84 - v86) * -0.5];
+    v87 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10 constant:(v84 - v86) * -0.5];
     v140[19] = v87;
     v88 = [MEMORY[0x1E695DEC8] arrayWithObjects:v140 count:20];
 
@@ -418,8 +418,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIFocusDidUpdateNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIFocusDidUpdateNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIFocusRotaryIndicatorView;
@@ -481,11 +481,11 @@
   [(UIView *)self->_rightArrow setCenter:CGRectGetMaxX(v18) - v10, MidY];
 }
 
-- (void)updateFailedMovementHeading:(unint64_t)a3
+- (void)updateFailedMovementHeading:(unint64_t)heading
 {
   if ((_UIInternalPreferenceUsesDefault(&_UIInternalPreference_RotaryFocusRingHidesArrowsOnFailedMovement, @"RotaryFocusRingHidesArrowsOnFailedMovement", _UIInternalPreferenceUpdateBool) & 1) != 0 || byte_1EA95E95C)
   {
-    self->_failedMovementHeading = a3;
+    self->_failedMovementHeading = heading;
 
     [(_UIFocusRotaryIndicatorView *)self _updateArrowDisplay];
   }
@@ -524,14 +524,14 @@
   [(UIView *)rightArrow setHidden:v5];
 }
 
-- (void)toggleVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)toggleVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_visible == a3)
+  if (self->_visible == visible)
   {
     if (self->_rotaryScrubHideAnimator)
     {
       v5 = 0;
-      if (a4)
+      if (animated)
       {
         return;
       }
@@ -540,7 +540,7 @@
     else
     {
       v5 = self->_rotaryScrubUnhideAnimator == 0;
-      if (a4)
+      if (animated)
       {
         return;
       }
@@ -552,10 +552,10 @@
     }
   }
 
-  self->_visible = a3;
-  if (a4)
+  self->_visible = visible;
+  if (animated)
   {
-    if (a3)
+    if (visible)
     {
       memset(&v46, 0, sizeof(v46));
       [(_UIFocusRotaryIndicatorView *)self _transformForWheelPosition:self->_wheelPosition];
@@ -592,9 +592,9 @@
         [(UIView *)fingerPositionContainerView setTransform:&v43];
         v43 = v44;
         [(UIView *)self setTransform:&v43];
-        v10 = [(UIView *)self->_rotaryScrubCenterPunchout layer];
+        layer = [(UIView *)self->_rotaryScrubCenterPunchout layer];
         v11 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-        [v10 setCompositingFilter:v11];
+        [layer setCompositingFilter:v11];
 
         rotaryScrubHideAnimator = self->_rotaryScrubHideAnimator;
       }
@@ -704,9 +704,9 @@
       *&v46.tx = *(MEMORY[0x1E695EFD0] + 32);
       [(UIView *)self setTransform:&v46];
       [(UIView *)self setAlpha:1.0];
-      v27 = [(UIView *)self->_rotaryScrubCenterPunchout layer];
+      layer2 = [(UIView *)self->_rotaryScrubCenterPunchout layer];
       v28 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-      [v27 setCompositingFilter:v28];
+      [layer2 setCompositingFilter:v28];
     }
 
     else
@@ -736,17 +736,17 @@
       v45 = v46;
       [(UIView *)self setTransform:&v45];
       [(UIView *)self setAlpha:0.0];
-      v27 = [(UIView *)self->_rotaryScrubCenterPunchout layer];
-      [v27 setCompositingFilter:0];
+      layer2 = [(UIView *)self->_rotaryScrubCenterPunchout layer];
+      [layer2 setCompositingFilter:0];
     }
   }
 }
 
-- (void)updateWheelPosition:(double)a3
+- (void)updateWheelPosition:(double)position
 {
-  if (self->_wheelPosition != a3)
+  if (self->_wheelPosition != position)
   {
-    self->_wheelPosition = a3;
+    self->_wheelPosition = position;
     if (self->_visible)
     {
       rotaryScrubBackwardsFingerPositionAnimator = self->_rotaryScrubBackwardsFingerPositionAnimator;
@@ -759,7 +759,7 @@
       v8 = 0u;
       v9 = 0u;
       v7 = 0u;
-      [(_UIFocusRotaryIndicatorView *)self _transformForWheelPosition:a3];
+      [(_UIFocusRotaryIndicatorView *)self _transformForWheelPosition:position];
       v6[0] = v7;
       v6[1] = v8;
       v6[2] = v9;
@@ -770,17 +770,17 @@
 
 - (void)_updateArrowsForCurrentFocus
 {
-  v3 = [(_UIFocusRotaryIndicatorView *)self _calculateCurrentRotaryAxis];
+  _calculateCurrentRotaryAxis = [(_UIFocusRotaryIndicatorView *)self _calculateCurrentRotaryAxis];
 
-  [(_UIFocusRotaryIndicatorView *)self showArrowsForAxis:v3];
+  [(_UIFocusRotaryIndicatorView *)self showArrowsForAxis:_calculateCurrentRotaryAxis];
 }
 
 - (unint64_t)_calculateCurrentRotaryAxis
 {
   v2 = [UIFocusSystem focusSystemForEnvironment:self];
-  v3 = [v2 focusedItem];
-  v4 = v3;
-  if (v3 && (v5 = _UIFocusEnvironmentResolvedRotaryFocusMovementAxis(v3, 0), (v5 - 1) <= 2))
+  focusedItem = [v2 focusedItem];
+  v4 = focusedItem;
+  if (focusedItem && (v5 = _UIFocusEnvironmentResolvedRotaryFocusMovementAxis(focusedItem, 0), (v5 - 1) <= 2))
   {
     v6 = qword_18A683E90[v5 - 1];
   }

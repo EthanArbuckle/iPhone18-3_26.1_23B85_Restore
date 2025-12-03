@@ -1,22 +1,22 @@
 @interface CanvasLocationsMapCell
-- (_TtC7Journal22CanvasLocationsMapCell)initWithCoder:(id)a3;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
+- (_TtC7Journal22CanvasLocationsMapCell)initWithCoder:(id)coder;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
 - (void)prepareForReuse;
 - (void)updateCameraRegion;
 @end
 
 @implementation CanvasLocationsMapCell
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1007A52CC();
 
   (*(v5 + 8))(v7, v4);
@@ -32,7 +32,7 @@
   [objc_opt_self() cancelPreviousPerformRequestsWithTarget:v2 selector:"updateCameraRegion" object:{0, v3.receiver, v3.super_class}];
 }
 
-- (_TtC7Journal22CanvasLocationsMapCell)initWithCoder:(id)a3
+- (_TtC7Journal22CanvasLocationsMapCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal22CanvasLocationsMapCell_mapView;
   *(&self->super.super.super.super.super.super.isa + v4) = [objc_allocWithZone(MKMapView) init];
@@ -43,15 +43,15 @@
   return result;
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
   if (*(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal22CanvasLocationsMapCell_shouldUpdateSavedZoom) == 1)
   {
     v6 = objc_opt_self();
-    v7 = a3;
-    v8 = self;
-    [v6 cancelPreviousPerformRequestsWithTarget:v8 selector:"updateCameraRegion" object:0];
-    [(CanvasLocationsMapCell *)v8 performSelector:"updateCameraRegion" withObject:0 afterDelay:1.5];
+    viewCopy = view;
+    selfCopy = self;
+    [v6 cancelPreviousPerformRequestsWithTarget:selfCopy selector:"updateCameraRegion" object:0];
+    [(CanvasLocationsMapCell *)selfCopy performSelector:"updateCameraRegion" withObject:0 afterDelay:1.5];
   }
 
   else
@@ -68,21 +68,21 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_1003E9BBC(0, 0, v5, &unk_100968158, v9);
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_1007A68D0(v6, a4);
+  selfCopy = self;
+  v8 = sub_1007A68D0(viewCopy, annotation);
 
   swift_unknownObjectRelease();
 

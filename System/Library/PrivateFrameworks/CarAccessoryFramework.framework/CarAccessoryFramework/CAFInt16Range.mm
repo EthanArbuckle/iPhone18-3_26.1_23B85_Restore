@@ -2,47 +2,47 @@
 - (signed)maximumValue;
 - (signed)minimumValue;
 - (signed)stepValue;
-- (signed)valueRoundedToNearestStepValue:(signed __int16)a3;
+- (signed)valueRoundedToNearestStepValue:(signed __int16)value;
 @end
 
 @implementation CAFInt16Range
 
 - (signed)minimumValue
 {
-  v2 = [(CAFRange *)self minimum];
-  v3 = [v2 shortValue];
+  minimum = [(CAFRange *)self minimum];
+  shortValue = [minimum shortValue];
 
-  return v3;
+  return shortValue;
 }
 
 - (signed)maximumValue
 {
-  v2 = [(CAFRange *)self maximum];
-  v3 = [v2 shortValue];
+  maximum = [(CAFRange *)self maximum];
+  shortValue = [maximum shortValue];
 
-  return v3;
+  return shortValue;
 }
 
 - (signed)stepValue
 {
-  v2 = [(CAFRange *)self step];
-  v3 = [v2 shortValue];
+  step = [(CAFRange *)self step];
+  shortValue = [step shortValue];
 
-  return v3;
+  return shortValue;
 }
 
-- (signed)valueRoundedToNearestStepValue:(signed __int16)a3
+- (signed)valueRoundedToNearestStepValue:(signed __int16)value
 {
-  v3 = a3;
+  valueCopy = value;
   if ([(CAFInt16Range *)self stepValue])
   {
-    v3 -= [(CAFInt16Range *)self minimumValue];
-    v5 = v3 / [(CAFInt16Range *)self stepValue];
-    LOWORD(v3) = [(CAFInt16Range *)self minimumValue];
-    LOWORD(v3) = v3 + [(CAFInt16Range *)self stepValue]* v5;
+    valueCopy -= [(CAFInt16Range *)self minimumValue];
+    v5 = valueCopy / [(CAFInt16Range *)self stepValue];
+    LOWORD(valueCopy) = [(CAFInt16Range *)self minimumValue];
+    LOWORD(valueCopy) = valueCopy + [(CAFInt16Range *)self stepValue]* v5;
   }
 
-  return v3;
+  return valueCopy;
 }
 
 @end

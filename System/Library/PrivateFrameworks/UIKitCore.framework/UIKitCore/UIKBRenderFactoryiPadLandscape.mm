@@ -47,8 +47,8 @@
 
   else
   {
-    v5 = [(UIKBRenderFactory *)self renderConfig];
-    if ([v5 colorAdaptiveBackground])
+    renderConfig = [(UIKBRenderFactory *)self renderConfig];
+    if ([renderConfig colorAdaptiveBackground])
     {
       v4 = 12.0;
     }
@@ -112,9 +112,9 @@
 
 - (double)stringKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 27.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -126,9 +126,9 @@
 
 - (double)dualStringKeyFontSizeAdjustment
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = -5.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -140,9 +140,9 @@
 
 - (double)bottomRowDefaultFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 24.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -154,9 +154,9 @@
 
 - (double)fontSizeAdjustmentForNonAlphanumericKeycaps
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 6.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -168,9 +168,9 @@
 
 - (double)shiftKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 20.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -182,9 +182,9 @@
 
 - (double)deleteKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 17.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -196,9 +196,9 @@
 
 - (double)moreKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 22.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -223,9 +223,9 @@
 
 - (double)dictationKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 25.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -237,9 +237,9 @@
 
 - (double)spaceKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 22.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -264,9 +264,9 @@
 
 - (double)smallKanaKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 18.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -278,9 +278,9 @@
 
 - (double)emailDotKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 12.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -292,9 +292,9 @@
 
 - (double)facemarkKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 28.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -306,9 +306,9 @@
 
 - (double)zhuyinFirstToneKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 22.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -320,9 +320,9 @@
 
 - (double)symbolImageControlKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 26.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -334,9 +334,9 @@
 
 - (double)fallbackFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 28.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -348,9 +348,9 @@
 
 - (double)messagesTypeKeyplanSwitchKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 22.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPadLandscape;
@@ -527,8 +527,8 @@
 
 - (UIEdgeInsets)dynamicInsets
 {
-  v2 = [(UIKBRenderFactory *)self dynamicFactory];
-  if (v2)
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
+  if (dynamicFactory)
   {
     v3 = 4.0;
   }
@@ -538,7 +538,7 @@
     v3 = 6.0;
   }
 
-  if (v2)
+  if (dynamicFactory)
   {
     v4 = 6.0;
   }
@@ -559,9 +559,9 @@
 
 - (double)dynamicBottomRowMultiplier
 {
-  v2 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 1.2;
-  if (v2)
+  if (dynamicFactory)
   {
     return 1.07;
   }

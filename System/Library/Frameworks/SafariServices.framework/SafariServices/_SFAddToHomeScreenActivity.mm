@@ -1,28 +1,28 @@
 @interface _SFAddToHomeScreenActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (_SFAddToHomeScreenActivity)initWithWebView:(id)a3;
-- (void)prepareWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (_SFAddToHomeScreenActivity)initWithWebView:(id)view;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation _SFAddToHomeScreenActivity
 
-- (_SFAddToHomeScreenActivity)initWithWebView:(id)a3
+- (_SFAddToHomeScreenActivity)initWithWebView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _SFAddToHomeScreenActivity;
   v6 = [(UIActivity *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webView, a3);
+    objc_storeStrong(&v6->_webView, view);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v8[1] = *MEMORY[0x1E69E9840];
   if (!self->_webView)
@@ -39,7 +39,7 @@
   return v5;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v6[1] = *MEMORY[0x1E69E9840];
   if (self->_webView)

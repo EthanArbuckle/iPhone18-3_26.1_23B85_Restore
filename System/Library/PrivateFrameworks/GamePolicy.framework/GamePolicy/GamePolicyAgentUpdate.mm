@@ -1,15 +1,15 @@
 @interface GamePolicyAgentUpdate
 - (_TtC10GamePolicy21GamePolicyAgentUpdate)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GamePolicyAgentUpdate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E5CC788(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24E5CC788(coderCopy);
 }
 
 - (_TtC10GamePolicy21GamePolicyAgentUpdate)init

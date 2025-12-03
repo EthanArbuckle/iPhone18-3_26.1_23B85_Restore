@@ -1,18 +1,18 @@
 @interface PXStoryTransitionExposureBleed
-- (PXStoryTransitionExposureBleed)initWithTransitionInfo:(id *)a3 effect:(id)a4;
-- (PXStoryTransitionExposureBleed)initWithTransitionInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5;
-- (double)clipAlphaForTime:(id *)a3;
-- (void)configureEffectForTime:(id *)a3;
+- (PXStoryTransitionExposureBleed)initWithTransitionInfo:(id *)info effect:(id)effect;
+- (PXStoryTransitionExposureBleed)initWithTransitionInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts;
+- (double)clipAlphaForTime:(id *)time;
+- (void)configureEffectForTime:(id *)time;
 @end
 
 @implementation PXStoryTransitionExposureBleed
 
-- (void)configureEffectForTime:(id *)a3
+- (void)configureEffectForTime:(id *)time
 {
   +[PXStoryTransitionsSettings sharedInstance];
   objc_claimAutoreleasedReturnValue();
-  v6 = [(PXStoryConcreteTransition *)self effect];
-  if (v6)
+  effect = [(PXStoryConcreteTransition *)self effect];
+  if (effect)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -20,23 +20,23 @@
       goto LABEL_3;
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v9 = NSStringFromClass(v10);
-    v11 = [v6 px_descriptionForAssertionMessage];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:347 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.effect", v9, v11}];
+    px_descriptionForAssertionMessage = [effect px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:347 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.effect", v9, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:347 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.effect", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:347 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.effect", v9}];
   }
 
 LABEL_3:
-  time = *a3;
+  time = *time;
   CMTimeGetSeconds(&time);
   [(PXStoryConcreteTransition *)self duration];
   time = v12;
@@ -44,13 +44,13 @@ LABEL_3:
   PXClamp();
 }
 
-- (double)clipAlphaForTime:(id *)a3
+- (double)clipAlphaForTime:(id *)time
 {
   [(PXStoryConcreteTransition *)self duration];
   time = v12;
   if (CMTimeGetSeconds(&time) > 0.0)
   {
-    time = *a3;
+    time = *time;
     CMTimeGetSeconds(&time);
     PXClamp();
   }
@@ -59,8 +59,8 @@ LABEL_3:
   [v6 exposureBleedTransitionMidpoint];
   v8 = v7;
 
-  v9 = [(PXStoryConcreteTransition *)self event];
-  if (v9 == 1)
+  event = [(PXStoryConcreteTransition *)self event];
+  if (event == 1)
   {
     result = 0.0;
     if (v8 <= 1.0)
@@ -69,7 +69,7 @@ LABEL_3:
     }
   }
 
-  else if (v9 == 2)
+  else if (event == 2)
   {
     result = 0.0;
     if (v8 > 1.0)
@@ -81,10 +81,10 @@ LABEL_3:
   else
   {
     result = 0.0;
-    if (!v9)
+    if (!event)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:331 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:331 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -93,11 +93,11 @@ LABEL_3:
   return result;
 }
 
-- (PXStoryTransitionExposureBleed)initWithTransitionInfo:(id *)a3 effect:(id)a4
+- (PXStoryTransitionExposureBleed)initWithTransitionInfo:(id *)info effect:(id)effect
 {
-  v11 = *(&a3->var1 + 3);
-  v12 = *&a3->var2.var2;
-  v4 = [(PXStoryConcreteTransition *)self initWithKind:4 duration:&v11 effect:a4];
+  v11 = *(&info->var1 + 3);
+  v12 = *&info->var2.var2;
+  v4 = [(PXStoryConcreteTransition *)self initWithKind:4 duration:&v11 effect:effect];
   LODWORD(v5) = 1050253722;
   LODWORD(v6) = 1.0;
   LODWORD(v7) = 1.0;
@@ -108,11 +108,11 @@ LABEL_3:
   return v4;
 }
 
-- (PXStoryTransitionExposureBleed)initWithTransitionInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5
+- (PXStoryTransitionExposureBleed)initWithTransitionInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts
 {
-  v6 = *(&a3->var1 + 3);
-  v7 = *&a3->var2.var2;
-  return [(PXStoryConcreteTransition *)self initWithKind:4 duration:&v6 event:a4 clipLayouts:a5];
+  v6 = *(&info->var1 + 3);
+  v7 = *&info->var2.var2;
+  return [(PXStoryConcreteTransition *)self initWithKind:4 duration:&v6 event:event clipLayouts:layouts];
 }
 
 @end

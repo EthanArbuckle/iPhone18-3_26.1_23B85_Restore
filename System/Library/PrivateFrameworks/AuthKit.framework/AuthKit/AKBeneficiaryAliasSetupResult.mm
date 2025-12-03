@@ -1,63 +1,63 @@
 @interface AKBeneficiaryAliasSetupResult
-- (AKBeneficiaryAliasSetupResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AKBeneficiaryAliasSetupResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKBeneficiaryAliasSetupResult
 
-- (AKBeneficiaryAliasSetupResult)initWithCoder:(id)a3
+- (AKBeneficiaryAliasSetupResult)initWithCoder:(id)coder
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10 = [(AKBeneficiaryAliasSetupResult *)v3 init];
-  v12 = v10;
-  objc_storeStrong(&v12, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_beneficiaryAltDSID"];
-    beneficiaryAltDSID = v12->_beneficiaryAltDSID;
-    v12->_beneficiaryAltDSID = v4;
+    beneficiaryAltDSID = selfCopy->_beneficiaryAltDSID;
+    selfCopy->_beneficiaryAltDSID = v4;
     MEMORY[0x1E69E5920](beneficiaryAltDSID);
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_beneficiaryAccountName"];
-    beneficiaryAccountName = v12->_beneficiaryAccountName;
-    v12->_beneficiaryAccountName = v6;
+    beneficiaryAccountName = selfCopy->_beneficiaryAccountName;
+    selfCopy->_beneficiaryAccountName = v6;
     MEMORY[0x1E69E5920](beneficiaryAccountName);
   }
 
-  v9 = MEMORY[0x1E69E5928](v12);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_beneficiaryAltDSID forKey:@"_beneficiaryAltDSID"];
-  [location[0] encodeObject:v4->_beneficiaryAccountName forKey:@"_beneficiaryAccountName"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_beneficiaryAltDSID forKey:@"_beneficiaryAltDSID"];
+  [location[0] encodeObject:selfCopy->_beneficiaryAccountName forKey:@"_beneficiaryAccountName"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v10 = self;
+  selfCopy = self;
   v9[2] = a2;
-  v9[1] = a3;
-  v9[0] = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v3 = [(NSString *)v10->_beneficiaryAltDSID copy];
+  v9[1] = zone;
+  v9[0] = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v3 = [(NSString *)selfCopy->_beneficiaryAltDSID copy];
   v4 = *(v9[0] + 1);
   *(v9[0] + 1) = v3;
   MEMORY[0x1E69E5920](v4);
-  v5 = [(NSString *)v10->_beneficiaryAccountName copy];
+  v5 = [(NSString *)selfCopy->_beneficiaryAccountName copy];
   v6 = *(v9[0] + 2);
   *(v9[0] + 2) = v5;
   MEMORY[0x1E69E5920](v6);

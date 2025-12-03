@@ -1,10 +1,10 @@
 @interface WebPluginContainerCheck
-+ (id)checkWithRequest:(id)a3 target:(id)a4 resultObject:(id)a5 selector:(SEL)a6 controller:(id)a7 contextInfo:(id)a8;
++ (id)checkWithRequest:(id)request target:(id)target resultObject:(id)object selector:(SEL)selector controller:(id)controller contextInfo:(id)info;
 - (BOOL)_isForbiddenFileLoad;
-- (WebPluginContainerCheck)initWithRequest:(id)a3 target:(id)a4 resultObject:(id)a5 selector:(SEL)a6 controller:(id)a7 contextInfo:(id)a8;
-- (id)_actionInformationWithURL:(id)a3;
+- (WebPluginContainerCheck)initWithRequest:(id)request target:(id)target resultObject:(id)object selector:(SEL)selector controller:(id)controller contextInfo:(id)info;
+- (id)_actionInformationWithURL:(id)l;
 - (void)_askPolicyDelegate;
-- (void)_continueWithPolicy:(unsigned __int8)a3;
+- (void)_continueWithPolicy:(unsigned __int8)policy;
 - (void)cancel;
 - (void)dealloc;
 - (void)start;
@@ -12,37 +12,37 @@
 
 @implementation WebPluginContainerCheck
 
-- (WebPluginContainerCheck)initWithRequest:(id)a3 target:(id)a4 resultObject:(id)a5 selector:(SEL)a6 controller:(id)a7 contextInfo:(id)a8
+- (WebPluginContainerCheck)initWithRequest:(id)request target:(id)target resultObject:(id)object selector:(SEL)selector controller:(id)controller contextInfo:(id)info
 {
   v17.receiver = self;
   v17.super_class = WebPluginContainerCheck;
   v14 = [(WebPluginContainerCheck *)&v17 init];
   if (v14)
   {
-    v14->_request = [a3 copy];
-    v14->_target = [a4 copy];
-    v14->_resultObject = a5;
-    if (a6)
+    v14->_request = [request copy];
+    v14->_target = [target copy];
+    v14->_resultObject = object;
+    if (selector)
     {
-      v15 = a6;
+      selectorCopy = selector;
     }
 
     else
     {
-      v15 = 0;
+      selectorCopy = 0;
     }
 
-    v14->_resultSelector = v15;
-    v14->_contextInfo = a8;
-    v14->_controller = a7;
+    v14->_resultSelector = selectorCopy;
+    v14->_contextInfo = info;
+    v14->_controller = controller;
   }
 
   return v14;
 }
 
-+ (id)checkWithRequest:(id)a3 target:(id)a4 resultObject:(id)a5 selector:(SEL)a6 controller:(id)a7 contextInfo:(id)a8
++ (id)checkWithRequest:(id)request target:(id)target resultObject:(id)object selector:(SEL)selector controller:(id)controller contextInfo:(id)info
 {
-  result = [[a1 alloc] initWithRequest:a3 target:a4 resultObject:a5 selector:a6 controller:a7 contextInfo:a8];
+  result = [[self alloc] initWithRequest:request target:target resultObject:object selector:selector controller:controller contextInfo:info];
   if (result)
   {
     v9 = result;
@@ -60,7 +60,7 @@
   [(WebPluginContainerCheck *)&v2 dealloc];
 }
 
-- (void)_continueWithPolicy:(unsigned __int8)a3
+- (void)_continueWithPolicy:(unsigned __int8)policy
 {
   resultSelector = self->_resultSelector;
   contextInfo = self->_contextInfo;
@@ -79,7 +79,7 @@
 
     [resultObject v7];
     controller = self->_controller;
-    v10 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -96,10 +96,10 @@
 
     [resultObject v8];
     controller = self->_controller;
-    v10 = self;
+    selfCopy2 = self;
   }
 
-  [(WebPluginContainerCheckController *)controller _webPluginContainerCancelCheckIfAllowedToLoadRequest:v10];
+  [(WebPluginContainerCheckController *)controller _webPluginContainerCancelCheckIfAllowedToLoadRequest:selfCopy2];
 }
 
 - (BOOL)_isForbiddenFileLoad
@@ -123,7 +123,7 @@
   return canDisplay ^ 1;
 }
 
-- (id)_actionInformationWithURL:(id)a3
+- (id)_actionInformationWithURL:(id)l
 {
   v5[3] = *MEMORY[0x1E69E9840];
   v4[0] = WebActionNavigationTypeKey;
@@ -131,30 +131,30 @@
   v5[0] = &unk_1F474C408;
   v5[1] = &unk_1F474C420;
   v4[2] = WebActionOriginalURLKey;
-  v5[2] = a3;
+  v5[2] = l;
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:v4 count:3];
 }
 
 - (void)_askPolicyDelegate
 {
-  v3 = [(WebPluginContainerCheckController *)self->_controller webView];
+  webView = [(WebPluginContainerCheckController *)self->_controller webView];
   v4 = [(NSString *)self->_target length];
-  v5 = [(WebPluginContainerCheckController *)self->_controller webFrame];
-  v6 = v5;
+  webFrame = [(WebPluginContainerCheckController *)self->_controller webFrame];
+  v6 = webFrame;
   if (v4)
   {
-    v6 = [v5 findFrameNamed:self->_target];
+    v6 = [webFrame findFrameNamed:self->_target];
   }
 
   v7 = [(WebPluginContainerCheck *)self _actionInformationWithURL:[(NSURLRequest *)self->_request URL]];
   self->_listener = [[WebPolicyDecisionListener alloc] _initWithTarget:self action:sel__continueWithPolicy_];
-  v8 = [v3 _policyDelegateForwarder];
+  _policyDelegateForwarder = [webView _policyDelegateForwarder];
   request = self->_request;
   if (v6)
   {
     listener = self->_listener;
 
-    [v8 webView:v3 decidePolicyForNavigationAction:v7 request:request frame:v6 decisionListener:listener];
+    [_policyDelegateForwarder webView:webView decidePolicyForNavigationAction:v7 request:request frame:v6 decisionListener:listener];
   }
 
   else
@@ -162,7 +162,7 @@
     target = self->_target;
     v12 = self->_listener;
 
-    [v8 webView:v3 decidePolicyForNewWindowAction:v7 request:request newFrameName:target decisionListener:v12];
+    [_policyDelegateForwarder webView:webView decidePolicyForNewWindowAction:v7 request:request newFrameName:target decisionListener:v12];
   }
 }
 

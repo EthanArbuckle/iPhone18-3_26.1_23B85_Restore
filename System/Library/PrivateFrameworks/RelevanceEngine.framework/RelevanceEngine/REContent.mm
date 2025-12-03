@@ -1,6 +1,6 @@
 @interface REContent
 - (BOOL)bodyImageShouldStretch;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)tintColorAffectsHeader;
 - (BOOL)useMonospaceFont;
 - (CGRect)imageFocusRect;
@@ -14,34 +14,34 @@
 - (REAccessoryImage)imageAccessory;
 - (REAccessoryMatchup)matchupAccessory;
 - (REContent)init;
-- (REContent)initWithCoder:(id)a3;
+- (REContent)initWithCoder:(id)coder;
 - (REImageContentProvider)bodyImageContentProvider;
 - (REImageContentProvider)headerImageContentProvider;
 - (RETextContentProvider)description1TextContentProvider;
 - (RETextContentProvider)description2TextContentProvider;
 - (RETextContentProvider)description3TextContentProvider;
 - (RETextContentProvider)headerTextContentProvider;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)description1FontStyle;
 - (unint64_t)description2FontStyle;
 - (unint64_t)headerFontStyle;
 - (unint64_t)punchThrough;
 - (unint64_t)style;
 - (unsigned)headerImageEdge;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDescription1FontStyle:(unint64_t)a3;
-- (void)setDescription1Text:(id)a3;
-- (void)setDescription2FontStyle:(unint64_t)a3;
-- (void)setDescription2Text:(id)a3;
-- (void)setDescription3Text:(id)a3;
-- (void)setDescriptionAccessory:(id)a3;
-- (void)setHeaderFontStyle:(unint64_t)a3;
-- (void)setHeaderText:(id)a3;
-- (void)setImageAccessory:(id)a3;
-- (void)setImageFocusRect:(CGRect)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setPunchThrough:(unint64_t)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDescription1FontStyle:(unint64_t)style;
+- (void)setDescription1Text:(id)text;
+- (void)setDescription2FontStyle:(unint64_t)style;
+- (void)setDescription2Text:(id)text;
+- (void)setDescription3Text:(id)text;
+- (void)setDescriptionAccessory:(id)accessory;
+- (void)setHeaderFontStyle:(unint64_t)style;
+- (void)setHeaderText:(id)text;
+- (void)setImageAccessory:(id)accessory;
+- (void)setImageFocusRect:(CGRect)rect;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setPunchThrough:(unint64_t)through;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation REContent
@@ -53,13 +53,13 @@
   v2 = [(REContent *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     contents = v2->_contents;
-    v2->_contents = v3;
+    v2->_contents = dictionary;
 
-    v5 = [MEMORY[0x277CBEBB0] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
     timeZone = v2->_timeZone;
-    v2->_timeZone = v5;
+    v2->_timeZone = defaultTimeZone;
 
     [(REContent *)v2 setObject:@"REElementInteractionDefault" forKey:@"REContentInteractionKey"];
   }
@@ -67,21 +67,21 @@
   return v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v15 = a3;
-  v12 = a4;
-  if (v12)
+  objectCopy = object;
+  keyCopy = key;
+  if (keyCopy)
   {
     contents = self->_contents;
-    if (v15)
+    if (objectCopy)
     {
-      [(NSMutableDictionary *)contents setObject:v15 forKey:v12];
+      [(NSMutableDictionary *)contents setObject:objectCopy forKey:keyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)contents removeObjectForKey:v12];
+      [(NSMutableDictionary *)contents removeObjectForKey:keyCopy];
     }
   }
 
@@ -91,10 +91,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -104,7 +104,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       timeZone = v5->_timeZone;
       v7 = self->_timeZone;
       v8 = v7;
@@ -150,9 +150,9 @@ LABEL_14:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:self->_contents copyItems:1];
   v6 = *(v4 + 8);
   *(v4 + 8) = v5;
@@ -161,19 +161,19 @@ LABEL_14:
   return v4;
 }
 
-- (REContent)initWithCoder:(id)a3
+- (REContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = REContent;
   v5 = [(REContent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"content"];
+    v6 = [coderCopy decodeObjectForKey:@"content"];
     contents = v5->_contents;
     v5->_contents = v6;
 
-    v8 = [v4 decodeObjectForKey:@"timezone"];
+    v8 = [coderCopy decodeObjectForKey:@"timezone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v8;
   }
@@ -181,12 +181,12 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contents = self->_contents;
-  v5 = a3;
-  [v5 encodeObject:contents forKey:@"content"];
-  [v5 encodeObject:self->_timeZone forKey:@"timezone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contents forKey:@"content"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timezone"];
 }
 
 - (NSDictionary)loggingContentValues
@@ -276,9 +276,9 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
   return v3;
 }
 
-- (void)setPunchThrough:(unint64_t)a3
+- (void)setPunchThrough:(unint64_t)through
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:through];
   [(REContent *)self setObject:v4 forKey:@"REContentPunchThroughKey"];
 }
 
@@ -290,20 +290,20 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
   [(REContent *)self setObject:v4 forKey:@"REContentStyleKey"];
 }
 
@@ -315,15 +315,15 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)useMonospaceFont
@@ -334,20 +334,20 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setHeaderFontStyle:(unint64_t)a3
+- (void)setHeaderFontStyle:(unint64_t)style
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
   [(REContent *)self setObject:v4 forKey:@"REContentHeaderFontStyleKey"];
 }
 
@@ -359,20 +359,20 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 2;
+    unsignedIntegerValue = 2;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setDescription1FontStyle:(unint64_t)a3
+- (void)setDescription1FontStyle:(unint64_t)style
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
   [(REContent *)self setObject:v4 forKey:@"REContentDescription1FontStyleKey"];
 }
 
@@ -384,20 +384,20 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setDescription2FontStyle:(unint64_t)a3
+- (void)setDescription2FontStyle:(unint64_t)style
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
   [(REContent *)self setObject:v4 forKey:@"REContentDescription2FontStyleKey"];
 }
 
@@ -409,15 +409,15 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)tintColorAffectsHeader
@@ -428,15 +428,15 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)bodyImageShouldStretch
@@ -447,15 +447,15 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unsigned)headerImageEdge
@@ -466,20 +466,20 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
   if (v3)
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)setDescriptionAccessory:(id)a3
+- (void)setDescriptionAccessory:(id)accessory
 {
-  v4 = [a3 copy];
+  v4 = [accessory copy];
   [(REContent *)self setObject:v4 forKey:@"REContentDescriptionAccessoryKey"];
 }
 
@@ -492,9 +492,9 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
   return v3;
 }
 
-- (void)setImageAccessory:(id)a3
+- (void)setImageAccessory:(id)accessory
 {
-  v4 = [a3 copy];
+  v4 = [accessory copy];
   [(REContent *)self setObject:v4 forKey:@"REContentImageAccessoryKey"];
 }
 
@@ -516,9 +516,9 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
   return v3;
 }
 
-- (void)setImageFocusRect:(CGRect)a3
+- (void)setImageFocusRect:(CGRect)rect
 {
-  v4 = [MEMORY[0x277CCAE60] re_valueWithCGRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v4 = [MEMORY[0x277CCAE60] re_valueWithCGRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   [(REContent *)self setObject:v4 forKey:@"REContentImageFocusRectKey"];
 }
 
@@ -565,9 +565,9 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
   return v3;
 }
 
-- (void)setDescription1Text:(id)a3
+- (void)setDescription1Text:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = [(RETextContentProvider *)RESimpleTextContentProvider contentProviderFromAttributedString:?];
     [(REContent *)self setDescription1TextContentProvider:v4];
@@ -582,17 +582,17 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
 - (NSAttributedString)description1Text
 {
-  v2 = [(REContent *)self description1TextContentProvider];
+  description1TextContentProvider = [(REContent *)self description1TextContentProvider];
   objc_opt_class();
-  v3 = REValidateObjectOfClass(v2);
-  v4 = [v3 attributedStringRepresentation];
+  v3 = REValidateObjectOfClass(description1TextContentProvider);
+  attributedStringRepresentation = [v3 attributedStringRepresentation];
 
-  return v4;
+  return attributedStringRepresentation;
 }
 
-- (void)setDescription2Text:(id)a3
+- (void)setDescription2Text:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = [(RETextContentProvider *)RESimpleTextContentProvider contentProviderFromAttributedString:?];
     [(REContent *)self setDescription2TextContentProvider:v4];
@@ -607,17 +607,17 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
 - (NSAttributedString)description2Text
 {
-  v2 = [(REContent *)self description2TextContentProvider];
+  description2TextContentProvider = [(REContent *)self description2TextContentProvider];
   objc_opt_class();
-  v3 = REValidateObjectOfClass(v2);
-  v4 = [v3 attributedStringRepresentation];
+  v3 = REValidateObjectOfClass(description2TextContentProvider);
+  attributedStringRepresentation = [v3 attributedStringRepresentation];
 
-  return v4;
+  return attributedStringRepresentation;
 }
 
-- (void)setDescription3Text:(id)a3
+- (void)setDescription3Text:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = [(RETextContentProvider *)RESimpleTextContentProvider contentProviderFromAttributedString:?];
     [(REContent *)self setDescription3TextContentProvider:v4];
@@ -632,17 +632,17 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
 - (NSAttributedString)description3Text
 {
-  v2 = [(REContent *)self description3TextContentProvider];
+  description3TextContentProvider = [(REContent *)self description3TextContentProvider];
   objc_opt_class();
-  v3 = REValidateObjectOfClass(v2);
-  v4 = [v3 attributedStringRepresentation];
+  v3 = REValidateObjectOfClass(description3TextContentProvider);
+  attributedStringRepresentation = [v3 attributedStringRepresentation];
 
-  return v4;
+  return attributedStringRepresentation;
 }
 
-- (void)setHeaderText:(id)a3
+- (void)setHeaderText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = [(RETextContentProvider *)RESimpleTextContentProvider contentProviderFromAttributedString:?];
     [(REContent *)self setHeaderTextContentProvider:v4];
@@ -657,12 +657,12 @@ void __33__REContent_loggingContentValues__block_invoke(uint64_t a1, void *a2, v
 
 - (NSAttributedString)headerText
 {
-  v2 = [(REContent *)self headerTextContentProvider];
+  headerTextContentProvider = [(REContent *)self headerTextContentProvider];
   objc_opt_class();
-  v3 = REValidateObjectOfClass(v2);
-  v4 = [v3 attributedStringRepresentation];
+  v3 = REValidateObjectOfClass(headerTextContentProvider);
+  attributedStringRepresentation = [v3 attributedStringRepresentation];
 
-  return v4;
+  return attributedStringRepresentation;
 }
 
 @end

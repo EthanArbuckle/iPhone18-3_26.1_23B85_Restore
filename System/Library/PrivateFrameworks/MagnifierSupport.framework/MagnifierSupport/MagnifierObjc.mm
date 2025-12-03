@@ -1,22 +1,22 @@
 @interface MagnifierObjc
-+ (BOOL)catchException:(id)a3 error:(id *)a4;
-+ (void)sbs_unlockDeviceIfNeededAndPerform:(id)a3;
++ (BOOL)catchException:(id)exception error:(id *)error;
++ (void)sbs_unlockDeviceIfNeededAndPerform:(id)perform;
 @end
 
 @implementation MagnifierObjc
 
-+ (BOOL)catchException:(id)a3 error:(id *)a4
++ (BOOL)catchException:(id)exception error:(id *)error
 {
-  v4 = a3;
-  v4[2]();
+  exceptionCopy = exception;
+  exceptionCopy[2]();
 
   return 1;
 }
 
-+ (void)sbs_unlockDeviceIfNeededAndPerform:(id)a3
++ (void)sbs_unlockDeviceIfNeededAndPerform:(id)perform
 {
-  v4 = a3;
-  v3 = v4;
+  performCopy = perform;
+  v3 = performCopy;
   SBSRequestPasscodeUnlockUI();
 }
 

@@ -1,16 +1,16 @@
 @interface GalleryCollectionViewLayout
 + (Class)layoutAttributesClass;
-- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4;
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithCoder:(id)a3;
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)a3;
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5;
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSectionProvider:(id)a3;
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)invalidationContextForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes;
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithCoder:(id)coder;
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)section;
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration;
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSectionProvider:(id)provider;
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)invalidationContextForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
 @end
 
@@ -23,7 +23,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal27GalleryCollectionViewLayout_state;
   type metadata accessor for GalleryCollectionViewLayout.SectionProviderState();
@@ -38,18 +38,18 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_10020A59C();
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for GalleryCollectionViewLayout();
-  v4 = a3;
+  contextCopy = context;
   v5 = v8.receiver;
-  [(GalleryCollectionViewLayout *)&v8 invalidateLayoutWithContext:v4];
-  if ([v4 invalidateEverything])
+  [(GalleryCollectionViewLayout *)&v8 invalidateLayoutWithContext:contextCopy];
+  if ([contextCopy invalidateEverything])
   {
 
 LABEL_4:
@@ -60,21 +60,21 @@ LABEL_4:
     return;
   }
 
-  v6 = [v4 invalidateDataSourceCounts];
+  invalidateDataSourceCounts = [contextCopy invalidateDataSourceCounts];
 
-  if (v6)
+  if (invalidateDataSourceCounts)
   {
     goto LABEL_4;
   }
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_10020AE40(x, y, width, height);
 
   if (v8)
@@ -91,17 +91,17 @@ LABEL_4:
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
   v10 = type metadata accessor for GalleryCollectionViewLayout();
-  v15.receiver = v8;
+  v15.receiver = selfCopy;
   v15.super_class = v10;
   v11 = [(GalleryCollectionViewLayout *)&v15 layoutAttributesForItemAtIndexPath:isa];
 
@@ -118,7 +118,7 @@ LABEL_4:
     else
     {
 
-      v8 = v11;
+      selfCopy = v11;
     }
   }
 
@@ -132,57 +132,57 @@ LABEL_4:
   return v13;
 }
 
-- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4
+- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10020B5D0(v6, v7);
+  attributesCopy = attributes;
+  originalAttributesCopy = originalAttributes;
+  selfCopy = self;
+  v9 = sub_10020B5D0(attributesCopy, originalAttributesCopy);
 
   return v9 & 1;
 }
 
-- (id)invalidationContextForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4
+- (id)invalidationContextForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10020BA6C(v6, v7);
+  attributesCopy = attributes;
+  originalAttributesCopy = originalAttributes;
+  selfCopy = self;
+  v9 = sub_10020BA6C(attributesCopy, originalAttributesCopy);
 
   return v9;
 }
 
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)a3
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)section
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSectionProvider:(id)a3
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSectionProvider:(id)provider
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  _Block_copy(a3);
+  _Block_copy(provider);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5
+- (_TtC7Journal27GalleryCollectionViewLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

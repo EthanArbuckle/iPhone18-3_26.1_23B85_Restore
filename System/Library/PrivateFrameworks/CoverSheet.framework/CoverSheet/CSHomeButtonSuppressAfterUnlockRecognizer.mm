@@ -6,7 +6,7 @@
 - (void)_startTimer;
 - (void)_timerFired;
 - (void)dealloc;
-- (void)handleBiometricEvent:(unint64_t)a3;
+- (void)handleBiometricEvent:(unint64_t)event;
 @end
 
 @implementation CSHomeButtonSuppressAfterUnlockRecognizer
@@ -118,9 +118,9 @@ void __56__CSHomeButtonSuppressAfterUnlockRecognizer__startTimer__block_invoke(u
   [(CSHomeButtonSuppressAfterUnlockRecognizer *)&v4 dealloc];
 }
 
-- (void)handleBiometricEvent:(unint64_t)a3
+- (void)handleBiometricEvent:(unint64_t)event
 {
-  if (!a3)
+  if (!event)
   {
     v8 = v3;
     v9 = v4;

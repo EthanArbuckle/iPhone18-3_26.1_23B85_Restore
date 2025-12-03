@@ -1,30 +1,30 @@
 @interface NDOCompositionLayer
 + (_TtC8ndoagent18NDOUIActionHandler)uiActionHandler;
 + (id)makePushHandler;
-+ (id)makeWarrantyPropertiesLoaderFor:(unint64_t)a3;
-+ (void)getLocalDeviceListWithCompletion:(id)a3;
-+ (void)getLocalDeviceWarrantyFor:(id)a3 completion:(id)a4;
-+ (void)getRemoteDeviceListWithCompletion:(id)a3;
-+ (void)getRemoteDeviceWarrantyFor:(id)a3 with:(id)a4 completion:(id)a5;
-+ (void)registerBackgroundCheckInTasksWith:(id)a3;
-+ (void)setUiActionHandler:(id)a3;
++ (id)makeWarrantyPropertiesLoaderFor:(unint64_t)for;
++ (void)getLocalDeviceListWithCompletion:(id)completion;
++ (void)getLocalDeviceWarrantyFor:(id)for completion:(id)completion;
++ (void)getRemoteDeviceListWithCompletion:(id)completion;
++ (void)getRemoteDeviceWarrantyFor:(id)for with:(id)with completion:(id)completion;
++ (void)registerBackgroundCheckInTasksWith:(id)with;
++ (void)setUiActionHandler:(id)handler;
 - (_TtC8ndoagent19NDOCompositionLayer)init;
 @end
 
 @implementation NDOCompositionLayer
 
-+ (void)getLocalDeviceListWithCompletion:(id)a3
++ (void)getLocalDeviceListWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   ObjCClassMetadata = swift_getObjCClassMetadata();
   sub_10004E4F4(ObjCClassMetadata, v3);
 
   _Block_release(v3);
 }
 
-+ (void)getRemoteDeviceListWithCompletion:(id)a3
++ (void)getRemoteDeviceListWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   ObjCClassMetadata = swift_getObjCClassMetadata();
@@ -42,9 +42,9 @@
   sub_100001E74(v8);
 }
 
-+ (void)getLocalDeviceWarrantyFor:(id)a3 completion:(id)a4
++ (void)getLocalDeviceWarrantyFor:(id)for completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   ObjCClassMetadata = swift_getObjCClassMetadata();
@@ -54,9 +54,9 @@
   _Block_release(v4);
 }
 
-+ (void)getRemoteDeviceWarrantyFor:(id)a3 with:(id)a4 completion:(id)a5
++ (void)getRemoteDeviceWarrantyFor:(id)for with:(id)with completion:(id)completion
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -77,10 +77,10 @@
   return qword_1000B1FA0;
 }
 
-+ (void)setUiActionHandler:(id)a3
++ (void)setUiActionHandler:(id)handler
 {
   v3 = qword_1000B04A8;
-  v4 = a3;
+  handlerCopy = handler;
   if (v3 != -1)
   {
     swift_once();
@@ -88,10 +88,10 @@
 
   swift_beginAccess();
   v5 = qword_1000B1FA0;
-  qword_1000B1FA0 = v4;
+  qword_1000B1FA0 = handlerCopy;
 }
 
-+ (void)registerBackgroundCheckInTasksWith:(id)a3
++ (void)registerBackgroundCheckInTasksWith:(id)with
 {
   v4 = qword_1000B04B8;
   swift_unknownObjectRetain();
@@ -105,10 +105,10 @@
   v6 = qword_1000B1FD0;
   v7 = swift_allocObject();
   *(v7 + 16) = ObjCClassMetadata;
-  *(v7 + 24) = a3;
+  *(v7 + 24) = with;
   v8 = swift_allocObject();
   *(v8 + 16) = ObjCClassMetadata;
-  *(v8 + 24) = a3;
+  *(v8 + 24) = with;
   v9 = *((swift_isaMask & *v6) + 0x78);
   swift_unknownObjectRetain_n();
   v10 = v6;
@@ -132,10 +132,10 @@
   return [(NDOCompositionLayer *)&v3 init];
 }
 
-+ (id)makeWarrantyPropertiesLoaderFor:(unint64_t)a3
++ (id)makeWarrantyPropertiesLoaderFor:(unint64_t)for
 {
   swift_getObjCClassMetadata();
-  v4 = sub_10006F3FC(a3);
+  v4 = sub_10006F3FC(for);
 
   return v4;
 }

@@ -1,32 +1,32 @@
 @interface SUUIColumnViewElement
-- (SUUIColumnViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIColumnViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUIHeaderViewElement)headerElement;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUIColumnViewElement
 
-- (SUUIColumnViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIColumnViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUIColumnViewElement;
-  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"span"];
+    v10 = [elementCopy getAttribute:@"span"];
     if ([v10 length])
     {
-      v11 = [v10 integerValue];
-      if (v11 <= 1)
+      integerValue = [v10 integerValue];
+      if (integerValue <= 1)
       {
         v12 = 1;
       }
 
       else
       {
-        v12 = v11;
+        v12 = integerValue;
       }
     }
 
@@ -73,30 +73,30 @@ void __38__SUUIColumnViewElement_headerElement__block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v7.receiver = self;
   v7.super_class = SUUIColumnViewElement;
-  v5 = [(SUUIViewElement *)&v7 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v7 applyUpdatesWithElement:elementCopy];
   if (v5 == self)
   {
-    self->_columnSpan = [v4 columnSpan];
+    self->_columnSpan = [elementCopy columnSpan];
   }
 
   return v5;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(SUUIViewElement *)self descendsFromElementWithType:17])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __53__SUUIColumnViewElement_enumerateChildrenUsingBlock___block_invoke;
     v6[3] = &unk_2798F6008;
-    v7 = v4;
+    v7 = blockCopy;
     v5.receiver = self;
     v5.super_class = SUUIColumnViewElement;
     [(SUUIViewElement *)&v5 enumerateChildrenUsingBlock:v6];
@@ -106,7 +106,7 @@ void __38__SUUIColumnViewElement_headerElement__block_invoke(uint64_t a1, void *
   {
     v8.receiver = self;
     v8.super_class = SUUIColumnViewElement;
-    [(SUUIViewElement *)&v8 enumerateChildrenUsingBlock:v4];
+    [(SUUIViewElement *)&v8 enumerateChildrenUsingBlock:blockCopy];
   }
 }
 

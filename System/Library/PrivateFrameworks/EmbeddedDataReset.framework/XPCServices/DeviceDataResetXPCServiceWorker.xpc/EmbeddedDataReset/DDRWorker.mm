@@ -1,32 +1,32 @@
 @interface DDRWorker
-- (DDRWorker)initWithQueue:(id)a3;
+- (DDRWorker)initWithQueue:(id)queue;
 - (DDRWorkerDelegate)delegate;
 - (void)didCompleteAllTasks;
-- (void)progressDidUpdateWithPercentage:(double)a3;
-- (void)resetDataWithRequest:(id)a3 completion:(id)a4;
+- (void)progressDidUpdateWithPercentage:(double)percentage;
+- (void)resetDataWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation DDRWorker
 
-- (DDRWorker)initWithQueue:(id)a3
+- (DDRWorker)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = DDRWorker;
   v5 = [(DDRWorker *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DDRWorker *)v5 setWorkerQueue:v4];
+    [(DDRWorker *)v5 setWorkerQueue:queueCopy];
   }
 
   return v6;
 }
 
-- (void)resetDataWithRequest:(id)a3 completion:(id)a4
+- (void)resetDataWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  [(DDRWorker *)self setCompletionBlock:a4];
+  requestCopy = request;
+  [(DDRWorker *)self setCompletionBlock:completion];
   v7 = DDRLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -34,12 +34,12 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "entering data reset scheduler phase", buf, 2u);
   }
 
-  v8 = [v6 mode];
+  mode = [requestCopy mode];
   v9 = 0;
-  v44 = v8;
-  if (v8 > 3)
+  v44 = mode;
+  if (mode > 3)
   {
-    if ((v8 - 4) >= 3)
+    if ((mode - 4) >= 3)
     {
       goto LABEL_22;
     }
@@ -51,12 +51,12 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "data reset mode data partition reset", buf, 2u);
     }
 
-    v13 = [[DDRSchedulerPreObliterate alloc] initWithRequest:v6];
+    v13 = [[DDRSchedulerPreObliterate alloc] initWithRequest:requestCopy];
   }
 
   else
   {
-    switch(v8)
+    switch(mode)
     {
       case 1:
         v14 = DDRLogForCategory(0);
@@ -99,7 +99,7 @@
   [(DDRWorker *)self setResetScheduler:v13, v44];
   [(DDRSchedulerPreObliterate *)v9 configureTasks];
 LABEL_22:
-  v47 = v6;
+  v47 = requestCopy;
   v16 = DDRLogForCategory(0);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -107,16 +107,16 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "calling data reset in XPCService worker", buf, 2u);
   }
 
-  v46 = self;
+  selfCopy = self;
 
   v45 = v9;
-  v17 = [(DDRSchedulerPreObliterate *)v9 scheduledTasks];
+  scheduledTasks = [(DDRSchedulerPreObliterate *)v9 scheduledTasks];
   v18 = dispatch_queue_create("com.apple.devicedatareset.taskqueue", 0);
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v19 = v17;
+  v19 = scheduledTasks;
   v20 = [v19 countByEnumeratingWithState:&v53 objects:v62 count:16];
   if (v20)
   {
@@ -136,9 +136,9 @@ LABEL_22:
         v26 = DDRLogForCategory(0);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v25 identifier];
+          identifier = [v25 identifier];
           *buf = 138412290;
-          v59 = v27;
+          v59 = identifier;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Prereset with task: %@", buf, 0xCu);
         }
 
@@ -148,9 +148,9 @@ LABEL_22:
         v30 = DDRLogForCategory(0);
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v25 identifier];
+          identifier2 = [v25 identifier];
           *buf = 138412546;
-          v59 = v31;
+          v59 = identifier2;
           v60 = 2048;
           v61 = v29;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Estimate completion time for reset task: %@ is %lf", buf, 0x16u);
@@ -171,17 +171,17 @@ LABEL_22:
   }
 
   v32 = -[DDRProgress initWithTotalDuration:totalTaskCount:progressTickInterval:]([DDRProgress alloc], "initWithTotalDuration:totalTaskCount:progressTickInterval:", [v19 count], v23, 0.05);
-  [(DDRWorker *)v46 setProgress:v32];
+  [(DDRWorker *)selfCopy setProgress:v32];
 
-  v33 = [(DDRWorker *)v46 progress];
-  [v33 setDelegate:v46];
+  progress = [(DDRWorker *)selfCopy progress];
+  [progress setDelegate:selfCopy];
 
-  v34 = [(DDRWorker *)v46 delegate];
-  v35 = [(DDRWorker *)v46 resetScheduler];
-  [v34 resetWithModeDidBegin:{objc_msgSend(v35, "mode")}];
+  delegate = [(DDRWorker *)selfCopy delegate];
+  resetScheduler = [(DDRWorker *)selfCopy resetScheduler];
+  [delegate resetWithModeDidBegin:{objc_msgSend(resetScheduler, "mode")}];
 
-  v36 = [(DDRWorker *)v46 resetScheduler];
-  DDRDonateResetSignalStart([v36 mode]);
+  resetScheduler2 = [(DDRWorker *)selfCopy resetScheduler];
+  DDRDonateResetSignalStart([resetScheduler2 mode]);
 
   v37 = DDRLogForCategory(0);
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -216,7 +216,7 @@ LABEL_22:
         block[2] = sub_1000085B8;
         block[3] = &unk_100014640;
         block[4] = v43;
-        block[5] = v46;
+        block[5] = selfCopy;
         dispatch_async(v18, block);
       }
 
@@ -227,27 +227,27 @@ LABEL_22:
   }
 }
 
-- (void)progressDidUpdateWithPercentage:(double)a3
+- (void)progressDidUpdateWithPercentage:(double)percentage
 {
-  v5 = [(DDRWorker *)self workerQueue];
+  workerQueue = [(DDRWorker *)self workerQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000087D4;
   v6[3] = &unk_1000147D8;
-  *&v6[5] = a3;
+  *&v6[5] = percentage;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(workerQueue, v6);
 }
 
 - (void)didCompleteAllTasks
 {
-  v3 = [(DDRWorker *)self workerQueue];
+  workerQueue = [(DDRWorker *)self workerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000894C;
   block[3] = &unk_100014800;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workerQueue, block);
 }
 
 - (DDRWorkerDelegate)delegate

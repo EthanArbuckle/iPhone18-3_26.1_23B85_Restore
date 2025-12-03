@@ -1,14 +1,14 @@
 @interface ETVideoMessage
 - (ETVideoMessage)init;
-- (ETVideoMessage)initWithArchiveData:(id)a3;
+- (ETVideoMessage)initWithArchiveData:(id)data;
 - (UIImage)stillImage;
-- (double)compressTimeSinceStartOfMessage:(double)a3;
+- (double)compressTimeSinceStartOfMessage:(double)message;
 - (double)messageDuration;
 - (id)archiveData;
-- (int)_etpMediaTypeFromETMediaType:(unint64_t)a3;
-- (unint64_t)_mediaTypeFromETPVideoType:(int)a3;
-- (void)setIntroMessage:(id)a3;
-- (void)setPlayingMessages:(id)a3;
+- (int)_etpMediaTypeFromETMediaType:(unint64_t)type;
+- (unint64_t)_mediaTypeFromETPVideoType:(int)type;
+- (void)setIntroMessage:(id)message;
+- (void)setPlayingMessages:(id)messages;
 @end
 
 @implementation ETVideoMessage
@@ -20,9 +20,9 @@
   v2 = [(ETMessage *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     playingMessages = v2->_playingMessages;
-    v2->_playingMessages = v3;
+    v2->_playingMessages = array;
 
     v2->_mediaType = 1;
     v5 = v2;
@@ -31,18 +31,18 @@
   return v2;
 }
 
-- (ETVideoMessage)initWithArchiveData:(id)a3
+- (ETVideoMessage)initWithArchiveData:(id)data
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v34.receiver = self;
   v34.super_class = ETVideoMessage;
-  v5 = [(ETMessage *)&v34 initWithArchiveData:v4];
+  v5 = [(ETMessage *)&v34 initWithArchiveData:dataCopy];
   if (v5)
   {
-    v6 = [[ETPVideo alloc] initWithData:v4];
-    v7 = [(ETPVideo *)v6 introMessageData];
-    v8 = [ETMessage unarchive:v7];
+    v6 = [[ETPVideo alloc] initWithData:dataCopy];
+    introMessageData = [(ETPVideo *)v6 introMessageData];
+    v8 = [ETMessage unarchive:introMessageData];
     introMessage = v5->_introMessage;
     v5->_introMessage = v8;
 
@@ -55,9 +55,9 @@
     v13 = objc_opt_class();
     v27 = [v10 setWithObjects:{v11, v12, v13, objc_opt_class(), 0}];
     v14 = MEMORY[0x277CCAAC8];
-    v15 = [(ETPVideo *)v6 playingMessagesData];
+    playingMessagesData = [(ETPVideo *)v6 playingMessagesData];
     v33 = 0;
-    v16 = [v14 _strictlyUnarchivedObjectOfClasses:v27 fromData:v15 error:&v33];
+    v16 = [v14 _strictlyUnarchivedObjectOfClasses:v27 fromData:playingMessagesData error:&v33];
     v28 = v33;
 
     if (v28 && IMOSLoggingEnabled())
@@ -125,9 +125,9 @@
   return v5;
 }
 
-- (unint64_t)_mediaTypeFromETPVideoType:(int)a3
+- (unint64_t)_mediaTypeFromETPVideoType:(int)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
@@ -138,9 +138,9 @@
   }
 }
 
-- (int)_etpMediaTypeFromETMediaType:(unint64_t)a3
+- (int)_etpMediaTypeFromETMediaType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
@@ -158,11 +158,11 @@
   introMessage = self->_introMessage;
   if (introMessage)
   {
-    v5 = [(ETMessage *)introMessage archive];
-    [(ETPVideo *)v3 setIntroMessageData:v5];
+    archive = [(ETMessage *)introMessage archive];
+    [(ETPVideo *)v3 setIntroMessageData:archive];
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -182,8 +182,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) archive];
-        [v6 addObject:v12];
+        archive2 = [*(*(&v16 + 1) + 8 * i) archive];
+        [array addObject:archive2];
       }
 
       v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -192,20 +192,20 @@
     while (v9);
   }
 
-  v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+  v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:array requiringSecureCoding:1 error:0];
   [(ETPVideo *)v3 setPlayingMessagesData:v13];
 
   [(ETPVideo *)v3 setMediaType:[(ETVideoMessage *)self _etpMediaTypeFromETMediaType:self->_mediaType]];
-  v14 = [(ETPVideo *)v3 data];
+  data = [(ETPVideo *)v3 data];
 
-  return v14;
+  return data;
 }
 
-- (void)setPlayingMessages:(id)a3
+- (void)setPlayingMessages:(id)messages
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithArray:v4];
+  messagesCopy = messages;
+  v5 = [MEMORY[0x277CBEB18] arrayWithArray:messagesCopy];
   playingMessages = self->_playingMessages;
   self->_playingMessages = v5;
 
@@ -213,7 +213,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v4;
+  v7 = messagesCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -240,26 +240,26 @@
   }
 }
 
-- (void)setIntroMessage:(id)a3
+- (void)setIntroMessage:(id)message
 {
-  objc_storeStrong(&self->_introMessage, a3);
-  v4 = a3;
-  [v4 setSupportsPlaybackTimeOffset:1];
+  objc_storeStrong(&self->_introMessage, message);
+  messageCopy = message;
+  [messageCopy setSupportsPlaybackTimeOffset:1];
 }
 
-- (double)compressTimeSinceStartOfMessage:(double)a3
+- (double)compressTimeSinceStartOfMessage:(double)message
 {
   if (!self->_pauseTimeCompression)
   {
-    v3 = a3 - self->_compressedTimeLastEventTime;
+    v3 = message - self->_compressedTimeLastEventTime;
     if (v3 > 0.5)
     {
       self->_compressedTimeTotal = v3 + -0.5 + self->_compressedTimeTotal;
     }
   }
 
-  self->_compressedTimeLastEventTime = a3;
-  return a3 - self->_compressedTimeTotal;
+  self->_compressedTimeLastEventTime = message;
+  return message - self->_compressedTimeTotal;
 }
 
 - (UIImage)stillImage
@@ -322,8 +322,8 @@ LABEL_12:
       }
 
       v5 = MEMORY[0x277CBEA90];
-      v6 = [(NSURL *)self->_mediaURL path];
-      v7 = [v5 dataWithContentsOfFile:v6];
+      path = [(NSURL *)self->_mediaURL path];
+      v7 = [v5 dataWithContentsOfFile:path];
 
       v8 = [MEMORY[0x277D755B8] imageWithData:v7];
       v9 = self->_stillImage;
@@ -343,10 +343,10 @@ LABEL_13:
 {
   if (self->_mediaType != 1)
   {
-    v4 = [(NSMutableArray *)self->_playingMessages lastObject];
-    [v4 startDelay];
+    lastObject = [(NSMutableArray *)self->_playingMessages lastObject];
+    [lastObject startDelay];
     v6 = v5;
-    [v4 messageDuration];
+    [lastObject messageDuration];
     Seconds = v6 + v7;
 LABEL_8:
     self->_messageDuration = Seconds;
@@ -357,7 +357,7 @@ LABEL_8:
   if (self->_messageDuration == 0.0)
   {
     v3 = [MEMORY[0x277CE6650] URLAssetWithURL:self->_mediaURL options:0];
-    v4 = v3;
+    lastObject = v3;
     if (v3)
     {
       [v3 duration];

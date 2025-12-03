@@ -1,8 +1,8 @@
 @interface EPPeripheralConnectorManagerFactory
 + (id)sharedConnectorManagerFactory;
-- (BOOL)isConnected:(id)a3;
+- (BOOL)isConnected:(id)connected;
 - (EPPeripheralConnectorManagerFactory)init;
-- (id)connectorManagerWithUuid:(id)a3;
+- (id)connectorManagerWithUuid:(id)uuid;
 @end
 
 @implementation EPPeripheralConnectorManagerFactory
@@ -34,10 +34,10 @@
   return v2;
 }
 
-- (id)connectorManagerWithUuid:(id)a3
+- (id)connectorManagerWithUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_connectorManagers objectForKey:v4];
+  uuidCopy = uuid;
+  v5 = [(NSMapTable *)self->_connectorManagers objectForKey:uuidCopy];
   if (v5)
   {
     v6 = v5;
@@ -55,17 +55,17 @@
       goto LABEL_9;
     }
 
-    v10 = [v4 UUIDString];
+    uUIDString = [uuidCopy UUIDString];
     v15 = 134218242;
     v16 = v6;
     v17 = 2112;
-    v18 = v10;
+    v18 = uUIDString;
     v11 = "EPPeripheralConnectorManagerFactory: Reusing existing EPPeripheralConnectorManager %p to manage BT peripheral %@";
     goto LABEL_8;
   }
 
-  v6 = [[EPPeripheralConnectorManager alloc] initWithUuid:v4];
-  [(NSMapTable *)self->_connectorManagers setObject:v6 forKey:v4];
+  v6 = [[EPPeripheralConnectorManager alloc] initWithUuid:uuidCopy];
+  [(NSMapTable *)self->_connectorManagers setObject:v6 forKey:uuidCopy];
   v12 = sub_1000A98C0();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -77,11 +77,11 @@
   v9 = sub_1000A98C0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 UUIDString];
+    uUIDString = [uuidCopy UUIDString];
     v15 = 134218242;
     v16 = v6;
     v17 = 2112;
-    v18 = v10;
+    v18 = uUIDString;
     v11 = "EPPeripheralConnectorManagerFactory: Created new EPPeripheralConnectorManager %p to manage BT peripheral %@";
 LABEL_8:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, v11, &v15, 0x16u);
@@ -94,12 +94,12 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isConnected:(id)a3
+- (BOOL)isConnected:(id)connected
 {
-  v3 = [(NSMapTable *)self->_connectorManagers objectForKey:a3];
-  v4 = [v3 isConnected];
+  v3 = [(NSMapTable *)self->_connectorManagers objectForKey:connected];
+  isConnected = [v3 isConnected];
 
-  return v4;
+  return isConnected;
 }
 
 @end

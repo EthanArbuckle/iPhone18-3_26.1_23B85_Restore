@@ -38,9 +38,9 @@
 
   else
   {
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"int getCATDisableLogging(void)"];
-    [v2 handleFailureInFunction:v3 file:@"LNDialog+CATSupport.m" lineNumber:14 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v3 file:@"LNDialog+CATSupport.m" lineNumber:14 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

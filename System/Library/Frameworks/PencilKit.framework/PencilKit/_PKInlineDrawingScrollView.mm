@@ -1,15 +1,15 @@
 @interface _PKInlineDrawingScrollView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (id)_parentScrollView;
-- (void)setContentOffset:(CGPoint)a3;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation _PKInlineDrawingScrollView
 
 - (id)_parentScrollView
 {
-  v2 = [(_PKInlineDrawingScrollView *)self superview];
-  if (v2)
+  superview = [(_PKInlineDrawingScrollView *)self superview];
+  if (superview)
   {
     do
     {
@@ -19,34 +19,34 @@
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_PKInlineDrawingScrollView *)self panGestureRecognizer];
-  v9 = [(_PKInlineDrawingScrollView *)self _parentScrollView];
-  v10 = [v9 panGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  panGestureRecognizer = [(_PKInlineDrawingScrollView *)self panGestureRecognizer];
+  _parentScrollView = [(_PKInlineDrawingScrollView *)self _parentScrollView];
+  panGestureRecognizer2 = [_parentScrollView panGestureRecognizer];
 
-  v12 = v8 == v7 && v10 == v6;
+  v12 = panGestureRecognizer == recognizerCopy && panGestureRecognizer2 == gestureRecognizerCopy;
   return v12;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
   v3.receiver = self;
   v3.super_class = _PKInlineDrawingScrollView;
-  [(_PKInlineDrawingScrollView *)&v3 setContentOffset:a3.x, 0.0];
+  [(_PKInlineDrawingScrollView *)&v3 setContentOffset:offset.x, 0.0];
 }
 
 @end

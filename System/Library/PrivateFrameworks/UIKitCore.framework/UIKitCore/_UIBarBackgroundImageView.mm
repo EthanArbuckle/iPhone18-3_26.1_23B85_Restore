@@ -1,7 +1,7 @@
 @interface _UIBarBackgroundImageView
 - (id)image;
 - (void)removeTopStripView;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 - (void)updateTopStripViewCreateIfNecessary;
 @end
 
@@ -11,17 +11,17 @@
 {
   if (self->_topStripView)
   {
-    v2 = [(UIImageView *)self->_customImageContainer image];
+    image = [(UIImageView *)self->_customImageContainer image];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = _UIBarBackgroundImageView;
-    v2 = [(UIImageView *)&v4 image];
+    image = [(UIImageView *)&v4 image];
   }
 
-  return v2;
+  return image;
 }
 
 - (void)updateTopStripViewCreateIfNecessary
@@ -31,13 +31,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIView *)self window];
-  v12 = __UIStatusBarManagerForWindow(v11);
+  window = [(UIView *)self window];
+  v12 = __UIStatusBarManagerForWindow(window);
   [v12 defaultStatusBarHeightInOrientation:1];
   v14 = v13;
 
   v15 = v10 - (v14 + 0.0);
-  v16 = [(_UIBarBackgroundImageView *)self image];
+  image = [(_UIBarBackgroundImageView *)self image];
   topStripView = self->_topStripView;
   if (!topStripView)
   {
@@ -52,7 +52,7 @@
     self->_customImageContainer = &v20->super;
 
     [(UIView *)self->_customImageContainer setAutoresizingMask:2];
-    [(UIImageView *)self->_customImageContainer setImage:v16];
+    [(UIImageView *)self->_customImageContainer setImage:image];
     v25.receiver = self;
     v25.super_class = _UIBarBackgroundImageView;
     [(UIImageView *)&v25 setImage:0];
@@ -60,9 +60,9 @@
     topStripView = self->_topStripView;
   }
 
-  v22 = [(_UIBarBackgroundImageView *)self isTranslucent];
+  isTranslucent = [(_UIBarBackgroundImageView *)self isTranslucent];
   v23 = 1.0;
-  if (v22)
+  if (isTranslucent)
   {
     v23 = 0.96;
   }
@@ -76,7 +76,7 @@
 
 - (void)removeTopStripView
 {
-  v3 = [(_UIBarBackgroundImageView *)self image];
+  image = [(_UIBarBackgroundImageView *)self image];
   topStripView = self->_topStripView;
   if (topStripView)
   {
@@ -86,30 +86,30 @@
 
     v19.receiver = self;
     v19.super_class = _UIBarBackgroundImageView;
-    [(UIImageView *)&v19 setImage:v3];
+    [(UIImageView *)&v19 setImage:image];
     [(UIView *)self->_customImageContainer removeFromSuperview];
     customImageContainer = self->_customImageContainer;
     self->_customImageContainer = 0;
   }
 
-  if (v3)
+  if (image)
   {
-    [v3 size];
+    [image size];
     v8 = v7;
     [(UIView *)self bounds];
     if (v8 < v9)
     {
-      [v3 capInsets];
+      [image capInsets];
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      if (([v3 _isResizable] & 1) == 0)
+      if (([image _isResizable] & 1) == 0)
       {
-        [v3 size];
+        [image size];
         if (v16 > 1.0)
         {
-          [v3 size];
-          v18 = [v3 resizableImageWithCapInsets:{v17 + -1.0, v11, v13, v15}];
+          [image size];
+          v18 = [image resizableImageWithCapInsets:{v17 + -1.0, v11, v13, v15}];
           [(_UIBarBackgroundImageView *)self setImage:v18];
         }
       }
@@ -117,13 +117,13 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   if (self->_topStripView)
   {
     customImageContainer = self->_customImageContainer;
 
-    [(UIImageView *)customImageContainer setImage:a3];
+    [(UIImageView *)customImageContainer setImage:image];
   }
 
   else
@@ -132,7 +132,7 @@
     v8 = v4;
     v6.receiver = self;
     v6.super_class = _UIBarBackgroundImageView;
-    [(UIImageView *)&v6 setImage:a3];
+    [(UIImageView *)&v6 setImage:image];
   }
 }
 

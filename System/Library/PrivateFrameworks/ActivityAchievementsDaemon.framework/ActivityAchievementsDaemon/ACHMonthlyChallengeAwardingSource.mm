@@ -2,50 +2,50 @@
 - (ACHAchievementProgressEngine)progressEngine;
 - (ACHEarnedInstanceAwardingEngine)engine;
 - (ACHEarnedInstanceStore)earnedInstanceStore;
-- (ACHMonthlyChallengeAwardingSource)initWithHealthStore:(id)a3 awardingEngine:(id)a4 templateStore:(id)a5 earnedInstanceStore:(id)a6 monthlyDataSource:(id)a7 creatorDevice:(unsigned __int8)a8 progressEngine:(id)a9;
+- (ACHMonthlyChallengeAwardingSource)initWithHealthStore:(id)store awardingEngine:(id)engine templateStore:(id)templateStore earnedInstanceStore:(id)instanceStore monthlyDataSource:(id)source creatorDevice:(unsigned __int8)device progressEngine:(id)progressEngine;
 - (ACHMonthlyChallengeDataSource)monthlyDataSource;
 - (ACHTemplateStore)templateStore;
 - (BOOL)isAppleWatch;
-- (BOOL)providesProgressForTemplate:(id)a3;
-- (id)_earnedDateComponentsForTemplate:(id)a3;
-- (id)_earnedInstancesForInterval:(id)a3;
-- (id)_evaluationEnvironmentForTemplate:(id)a3;
-- (id)_evaluationEnvironmentForTemplate:(id)a3 andDateComponentInterval:(id)a4;
-- (id)_monthlyChallengeTemplatesForHistoricalInterval:(id)a3;
-- (id)_queue_goalQuantityForTemplate:(id)a3;
-- (id)_queue_progressQuantityForTemplate:(id)a3;
-- (id)earnedInstancesForHistoricalInterval:(id)a3 error:(id *)a4;
+- (BOOL)providesProgressForTemplate:(id)template;
+- (id)_earnedDateComponentsForTemplate:(id)template;
+- (id)_earnedInstancesForInterval:(id)interval;
+- (id)_evaluationEnvironmentForTemplate:(id)template;
+- (id)_evaluationEnvironmentForTemplate:(id)template andDateComponentInterval:(id)interval;
+- (id)_monthlyChallengeTemplatesForHistoricalInterval:(id)interval;
+- (id)_queue_goalQuantityForTemplate:(id)template;
+- (id)_queue_progressQuantityForTemplate:(id)template;
+- (id)earnedInstancesForHistoricalInterval:(id)interval error:(id *)error;
 - (void)_requestIncrementalEvaluation;
 - (void)_startQueries;
-- (void)currentActivitySummaryQueryDidUpdateTodayActivitySummary:(id)a3 changedFields:(unint64_t)a4;
-- (void)currentActivitySummaryQueryDidUpdateYesterdayActivitySummary:(id)a3 changedFields:(unint64_t)a4;
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3;
-- (void)workoutsAdded:(id)a3;
+- (void)currentActivitySummaryQueryDidUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields;
+- (void)currentActivitySummaryQueryDidUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields;
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates;
+- (void)workoutsAdded:(id)added;
 @end
 
 @implementation ACHMonthlyChallengeAwardingSource
 
-- (ACHMonthlyChallengeAwardingSource)initWithHealthStore:(id)a3 awardingEngine:(id)a4 templateStore:(id)a5 earnedInstanceStore:(id)a6 monthlyDataSource:(id)a7 creatorDevice:(unsigned __int8)a8 progressEngine:(id)a9
+- (ACHMonthlyChallengeAwardingSource)initWithHealthStore:(id)store awardingEngine:(id)engine templateStore:(id)templateStore earnedInstanceStore:(id)instanceStore monthlyDataSource:(id)source creatorDevice:(unsigned __int8)device progressEngine:(id)progressEngine
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
+  storeCopy = store;
+  engineCopy = engine;
+  templateStoreCopy = templateStore;
+  instanceStoreCopy = instanceStore;
+  sourceCopy = source;
+  progressEngineCopy = progressEngine;
   v27.receiver = self;
   v27.super_class = ACHMonthlyChallengeAwardingSource;
   v22 = [(ACHMonthlyChallengeAwardingSource *)&v27 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_healthStore, a3);
-    objc_storeWeak(&v23->_engine, v17);
-    objc_storeWeak(&v23->_progressEngine, v21);
-    objc_storeWeak(&v23->_templateStore, v18);
-    objc_storeWeak(&v23->_earnedInstanceStore, v19);
-    objc_storeWeak(&v23->_monthlyDataSource, v20);
-    v23->_creatorDevice = a8;
+    objc_storeStrong(&v22->_healthStore, store);
+    objc_storeWeak(&v23->_engine, engineCopy);
+    objc_storeWeak(&v23->_progressEngine, progressEngineCopy);
+    objc_storeWeak(&v23->_templateStore, templateStoreCopy);
+    objc_storeWeak(&v23->_earnedInstanceStore, instanceStoreCopy);
+    objc_storeWeak(&v23->_monthlyDataSource, sourceCopy);
+    v23->_creatorDevice = device;
     v24 = HKCreateSerialDispatchQueue();
     internalQueue = v23->_internalQueue;
     v23->_internalQueue = v24;
@@ -70,9 +70,9 @@
   self->_summaryQuery = v4;
 
   v6 = objc_alloc(MEMORY[0x277CCCFF0]);
-  v7 = [MEMORY[0x277CCD8D8] workoutType];
-  v8 = [MEMORY[0x277CCD840] latestAnchor];
-  v9 = [v6 initWithType:v7 predicate:0 anchor:v8 limit:0 resultsHandler:&__block_literal_global_0];
+  workoutType = [MEMORY[0x277CCD8D8] workoutType];
+  latestAnchor = [MEMORY[0x277CCD840] latestAnchor];
+  v9 = [v6 initWithType:workoutType predicate:0 anchor:latestAnchor limit:0 resultsHandler:&__block_literal_global_0];
   workoutQuery = self->_workoutQuery;
   self->_workoutQuery = v9;
 
@@ -82,13 +82,13 @@
   v15[3] = &unk_278490848;
   objc_copyWeak(&v16, &location);
   [(HKAnchoredObjectQuery *)self->_workoutQuery setUpdateHandler:v15];
-  v11 = [(ACHMonthlyChallengeAwardingSource *)self healthStore];
-  v12 = [(ACHMonthlyChallengeAwardingSource *)self summaryQuery];
-  [v11 executeQuery:v12];
+  healthStore = [(ACHMonthlyChallengeAwardingSource *)self healthStore];
+  summaryQuery = [(ACHMonthlyChallengeAwardingSource *)self summaryQuery];
+  [healthStore executeQuery:summaryQuery];
 
-  v13 = [(ACHMonthlyChallengeAwardingSource *)self healthStore];
-  v14 = [(ACHMonthlyChallengeAwardingSource *)self workoutQuery];
-  [v13 executeQuery:v14];
+  healthStore2 = [(ACHMonthlyChallengeAwardingSource *)self healthStore];
+  workoutQuery = [(ACHMonthlyChallengeAwardingSource *)self workoutQuery];
+  [healthStore2 executeQuery:workoutQuery];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v18);
@@ -123,47 +123,47 @@ void __50__ACHMonthlyChallengeAwardingSource__startQueries__block_invoke_3(uint6
 
 - (BOOL)isAppleWatch
 {
-  v3 = [(ACHMonthlyChallengeAwardingSource *)self overrideIsAppleWatch];
+  overrideIsAppleWatch = [(ACHMonthlyChallengeAwardingSource *)self overrideIsAppleWatch];
 
-  if (v3)
+  if (overrideIsAppleWatch)
   {
-    v4 = [(ACHMonthlyChallengeAwardingSource *)self overrideIsAppleWatch];
-    v5 = [v4 BOOLValue];
+    overrideIsAppleWatch2 = [(ACHMonthlyChallengeAwardingSource *)self overrideIsAppleWatch];
+    bOOLValue = [overrideIsAppleWatch2 BOOLValue];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v5 = [v4 isAppleWatch];
+    overrideIsAppleWatch2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    bOOLValue = [overrideIsAppleWatch2 isAppleWatch];
   }
 
-  v6 = v5;
+  v6 = bOOLValue;
 
   return v6;
 }
 
-- (id)earnedInstancesForHistoricalInterval:(id)a3 error:(id *)a4
+- (id)earnedInstancesForHistoricalInterval:(id)interval error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intervalCopy = interval;
   v6 = ACHLogMonthlyChallenges();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v5;
+    v11 = intervalCopy;
     _os_log_impl(&dword_221DDC000, v6, OS_LOG_TYPE_DEFAULT, "MonthlyChallengeAwardingSource querying for earned instances in interval: %{public}@", &v10, 0xCu);
   }
 
-  v7 = [(ACHMonthlyChallengeAwardingSource *)self _earnedInstancesForInterval:v5];
+  v7 = [(ACHMonthlyChallengeAwardingSource *)self _earnedInstancesForInterval:intervalCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (void)currentActivitySummaryQueryDidUpdateTodayActivitySummary:(id)a3 changedFields:(unint64_t)a4
+- (void)currentActivitySummaryQueryDidUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v5 = [(ACHMonthlyChallengeAwardingSource *)self progressEngine:a3];
+  v5 = [(ACHMonthlyChallengeAwardingSource *)self progressEngine:summary];
   [v5 requestProgressUpdateForProgressProvider:self];
 
   if (ACHConfigurationSupportsIncrementalEvaluationWithIsAppleWatch([(ACHMonthlyChallengeAwardingSource *)self isAppleWatch]))
@@ -179,9 +179,9 @@ void __50__ACHMonthlyChallengeAwardingSource__startQueries__block_invoke_3(uint6
   }
 }
 
-- (void)currentActivitySummaryQueryDidUpdateYesterdayActivitySummary:(id)a3 changedFields:(unint64_t)a4
+- (void)currentActivitySummaryQueryDidUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v5 = [(ACHMonthlyChallengeAwardingSource *)self progressEngine:a3];
+  v5 = [(ACHMonthlyChallengeAwardingSource *)self progressEngine:summary];
   [v5 requestProgressUpdateForProgressProvider:self];
 
   if (ACHConfigurationSupportsIncrementalEvaluationWithIsAppleWatch([(ACHMonthlyChallengeAwardingSource *)self isAppleWatch]))
@@ -197,12 +197,12 @@ void __50__ACHMonthlyChallengeAwardingSource__startQueries__block_invoke_3(uint6
   }
 }
 
-- (void)workoutsAdded:(id)a3
+- (void)workoutsAdded:(id)added
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeAwardingSource *)self progressEngine];
-  [v5 requestProgressUpdateForProgressProvider:self];
+  addedCopy = added;
+  progressEngine = [(ACHMonthlyChallengeAwardingSource *)self progressEngine];
+  [progressEngine requestProgressUpdateForProgressProvider:self];
 
   if (ACHConfigurationSupportsIncrementalEvaluationWithIsAppleWatch([(ACHMonthlyChallengeAwardingSource *)self isAppleWatch]))
   {
@@ -210,7 +210,7 @@ void __50__ACHMonthlyChallengeAwardingSource__startQueries__block_invoke_3(uint6
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = [v4 count];
+      v9 = [addedCopy count];
       _os_log_impl(&dword_221DDC000, v6, OS_LOG_TYPE_DEFAULT, "MonthlyChallengeAwardingProvider found %lu new workout samples, requesting incremental evaluation", &v8, 0xCu);
     }
 
@@ -220,28 +220,28 @@ void __50__ACHMonthlyChallengeAwardingSource__startQueries__block_invoke_3(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)providesProgressForTemplate:(id)a3
+- (BOOL)providesProgressForTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   if (ACHTemplateIsMonthlyChallenge())
   {
-    v4 = [v3 uniqueName];
-    v5 = [v4 componentsSeparatedByString:@"_"];
+    uniqueName = [templateCopy uniqueName];
+    v5 = [uniqueName componentsSeparatedByString:@"_"];
 
     if ([v5 count] == 3)
     {
       v6 = [v5 objectAtIndexedSubscript:1];
-      v7 = [v6 integerValue];
+      integerValue = [v6 integerValue];
 
       v8 = [v5 objectAtIndexedSubscript:2];
-      v9 = [v8 integerValue];
+      integerValue2 = [v8 integerValue];
 
-      v10 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+      hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
       v11 = *MEMORY[0x277CE8B28];
-      v12 = [MEMORY[0x277CBEAA8] date];
-      v13 = [v10 components:v11 fromDate:v12];
+      date = [MEMORY[0x277CBEAA8] date];
+      v13 = [hk_gregorianCalendar components:v11 fromDate:date];
 
-      v14 = v7 == [v13 year] && v9 == objc_msgSend(v13, "month");
+      v14 = integerValue == [v13 year] && integerValue2 == objc_msgSend(v13, "month");
     }
 
     else
@@ -258,18 +258,18 @@ void __50__ACHMonthlyChallengeAwardingSource__startQueries__block_invoke_3(uint6
   return v14;
 }
 
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates
 {
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeAwardingSource *)self internalQueue];
+  templatesCopy = templates;
+  internalQueue = [(ACHMonthlyChallengeAwardingSource *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__ACHMonthlyChallengeAwardingSource_requestAchievementProgressUpdatesForTemplates___block_invoke;
   v7[3] = &unk_278490898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = templatesCopy;
+  selfCopy = self;
+  v6 = templatesCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __83__ACHMonthlyChallengeAwardingSource_requestAchievementProgressUpdatesForTemplates___block_invoke(uint64_t a1)
@@ -323,103 +323,103 @@ void __83__ACHMonthlyChallengeAwardingSource_requestAchievementProgressUpdatesFo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_progressQuantityForTemplate:(id)a3
+- (id)_queue_progressQuantityForTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:v4];
-  v6 = [v4 graceProgressExpression];
-  v7 = v6;
-  if (v6)
+  templateCopy = template;
+  v5 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:templateCopy];
+  graceProgressExpression = [templateCopy graceProgressExpression];
+  v7 = graceProgressExpression;
+  if (graceProgressExpression)
   {
-    v8 = v6;
+    progressExpression = graceProgressExpression;
   }
 
   else
   {
-    v8 = [v4 progressExpression];
+    progressExpression = [templateCopy progressExpression];
   }
 
-  v9 = v8;
+  v9 = progressExpression;
 
   v10 = [MEMORY[0x277CCA9C0] expressionWithFormat:v9];
   v11 = [v10 expressionValueWithObject:v5 context:0];
-  v12 = [v4 canonicalUnit];
+  canonicalUnit = [templateCopy canonicalUnit];
   v13 = ACHHKQuantityWithValueAndUnit();
 
   return v13;
 }
 
-- (id)_queue_goalQuantityForTemplate:(id)a3
+- (id)_queue_goalQuantityForTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:v4];
-  v6 = [v4 graceGoalExpression];
-  v7 = v6;
-  if (v6)
+  templateCopy = template;
+  v5 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:templateCopy];
+  graceGoalExpression = [templateCopy graceGoalExpression];
+  v7 = graceGoalExpression;
+  if (graceGoalExpression)
   {
-    v8 = v6;
+    goalExpression = graceGoalExpression;
   }
 
   else
   {
-    v8 = [v4 goalExpression];
+    goalExpression = [templateCopy goalExpression];
   }
 
-  v9 = v8;
+  v9 = goalExpression;
 
   v10 = [MEMORY[0x277CCA9C0] expressionWithFormat:v9];
   v11 = [v10 expressionValueWithObject:v5 context:0];
-  v12 = [v4 canonicalUnit];
+  canonicalUnit = [templateCopy canonicalUnit];
   v13 = ACHHKQuantityWithValueAndUnit();
 
   return v13;
 }
 
-- (id)_evaluationEnvironmentForTemplate:(id)a3
+- (id)_evaluationEnvironmentForTemplate:(id)template
 {
   v4 = MEMORY[0x277CE8D30];
-  v5 = a3;
+  templateCopy = template;
   v6 = [v4 alloc];
-  v7 = [v5 availabilityStart];
-  v8 = [v5 availabilityEnd];
-  v9 = [v6 initWithStartDateComponents:v7 endDateComponents:v8];
+  availabilityStart = [templateCopy availabilityStart];
+  availabilityEnd = [templateCopy availabilityEnd];
+  v9 = [v6 initWithStartDateComponents:availabilityStart endDateComponents:availabilityEnd];
 
-  v10 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:v5 andDateComponentInterval:v9];
+  v10 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:templateCopy andDateComponentInterval:v9];
 
   return v10;
 }
 
-- (id)_evaluationEnvironmentForTemplate:(id)a3 andDateComponentInterval:(id)a4
+- (id)_evaluationEnvironmentForTemplate:(id)template andDateComponentInterval:(id)interval
 {
-  v5 = a4;
+  intervalCopy = interval;
   v6 = [ACHMonthlyChallengeEvaluationEnvironment alloc];
-  v7 = [(ACHMonthlyChallengeAwardingSource *)self monthlyDataSource];
-  v8 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v9 = [(ACHMonthlyChallengeEvaluationEnvironment *)v6 initWithMonthlyChallengeDataSource:v7 dateComponentInterval:v5 calendar:v8];
+  monthlyDataSource = [(ACHMonthlyChallengeAwardingSource *)self monthlyDataSource];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v9 = [(ACHMonthlyChallengeEvaluationEnvironment *)v6 initWithMonthlyChallengeDataSource:monthlyDataSource dateComponentInterval:intervalCopy calendar:hk_gregorianCalendar];
 
   return v9;
 }
 
-- (id)_earnedInstancesForInterval:(id)a3
+- (id)_earnedInstancesForInterval:(id)interval
 {
   v68 = *MEMORY[0x277D85DE8];
-  v45 = a3;
+  intervalCopy = interval;
   v46 = [MEMORY[0x277CBEB58] set];
-  v3 = [(ACHMonthlyChallengeAwardingSource *)self _monthlyChallengeTemplatesForHistoricalInterval:v45];
+  v3 = [(ACHMonthlyChallengeAwardingSource *)self _monthlyChallengeTemplatesForHistoricalInterval:intervalCopy];
   v4 = ACHLogMonthlyChallenges();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
     v63 = [v3 count];
     v64 = 2114;
-    v65 = v45;
+    v65 = intervalCopy;
     v66 = 2114;
     v67 = v3;
     _os_log_impl(&dword_221DDC000, v4, OS_LOG_TYPE_DEFAULT, "Found %lu monthly templates for interval %{public}@: %{public}@", buf, 0x20u);
   }
 
   v55 = objc_alloc_init(MEMORY[0x277CE8D40]);
-  v44 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
@@ -449,19 +449,19 @@ void __83__ACHMonthlyChallengeAwardingSource_requestAchievementProgressUpdatesFo
       if ([v8 isValid])
       {
         v9 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:v6];
-        v10 = [v6 gracePredicate];
-        v11 = v10;
-        if (v10)
+        gracePredicate = [v6 gracePredicate];
+        v11 = gracePredicate;
+        if (gracePredicate)
         {
-          v12 = v10;
+          predicate = gracePredicate;
         }
 
         else
         {
-          v12 = [v6 predicate];
+          predicate = [v6 predicate];
         }
 
-        v14 = v12;
+        v14 = predicate;
 
         v15 = [MEMORY[0x277CCAC30] predicateWithFormat:v14];
         v16 = [v15 evaluateWithObject:v9];
@@ -474,9 +474,9 @@ void __83__ACHMonthlyChallengeAwardingSource_requestAchievementProgressUpdatesFo
         v17 = ACHLogMonthlyChallenges();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v6 uniqueName];
+          uniqueName = [v6 uniqueName];
           *buf = 138543618;
-          v63 = v18;
+          v63 = uniqueName;
           v64 = 2114;
           v65 = v6;
           _os_log_impl(&dword_221DDC000, v17, OS_LOG_TYPE_DEFAULT, "Template %{public}@ evaluated to true for monthly challenge; full template: %{public}@", buf, 0x16u);
@@ -486,26 +486,26 @@ void __83__ACHMonthlyChallengeAwardingSource_requestAchievementProgressUpdatesFo
         if (v19)
         {
           v53 = objc_alloc_init(MEMORY[0x277CE8D38]);
-          v20 = [v6 uniqueName];
-          [v53 setTemplateUniqueName:v20];
+          uniqueName2 = [v6 uniqueName];
+          [v53 setTemplateUniqueName:uniqueName2];
 
           [v53 setEarnedDateComponents:v19];
-          v21 = [v6 graceValueExpression];
-          v22 = v21;
-          if (v21)
+          graceValueExpression = [v6 graceValueExpression];
+          v22 = graceValueExpression;
+          if (graceValueExpression)
           {
-            v50 = v21;
+            valueExpression = graceValueExpression;
           }
 
           else
           {
-            v50 = [v6 valueExpression];
+            valueExpression = [v6 valueExpression];
           }
 
-          v25 = [v6 canonicalUnit];
-          if (v25)
+          canonicalUnit = [v6 canonicalUnit];
+          if (canonicalUnit)
           {
-            v26 = v50 == 0;
+            v26 = valueExpression == 0;
           }
 
           else
@@ -518,18 +518,18 @@ void __83__ACHMonthlyChallengeAwardingSource_requestAchievementProgressUpdatesFo
           if (v27)
           {
             v28 = objc_alloc(MEMORY[0x277CE8D30]);
-            v29 = [v6 availabilityStart];
-            v48 = [v28 initWithStartDateComponents:v29 endDateComponents:v19];
+            availabilityStart = [v6 availabilityStart];
+            v48 = [v28 initWithStartDateComponents:availabilityStart endDateComponents:v19];
 
             v47 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:v6 andDateComponentInterval:v48];
-            v30 = [MEMORY[0x277CCA9C0] expressionWithFormat:v50];
+            v30 = [MEMORY[0x277CCA9C0] expressionWithFormat:valueExpression];
             v31 = [v30 expressionValueWithObject:v47 context:0];
             if (v31)
             {
               v32 = MEMORY[0x277CCD7E8];
-              v33 = [v6 canonicalUnit];
+              canonicalUnit2 = [v6 canonicalUnit];
               [v31 doubleValue];
-              v34 = [v32 quantityWithUnit:v33 doubleValue:?];
+              v34 = [v32 quantityWithUnit:canonicalUnit2 doubleValue:?];
               [v53 setValue:v34];
             }
           }
@@ -538,9 +538,9 @@ void __83__ACHMonthlyChallengeAwardingSource_requestAchievementProgressUpdatesFo
           v35 = ACHLogMonthlyChallenges();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
-            v36 = [v6 uniqueName];
+            uniqueName3 = [v6 uniqueName];
             *buf = 138543618;
-            v63 = v36;
+            v63 = uniqueName3;
             v64 = 2112;
             v65 = v53;
             _os_log_impl(&dword_221DDC000, v35, OS_LOG_TYPE_DEFAULT, "Earned instance created for template %{public}@: %@", buf, 0x16u);
@@ -554,9 +554,9 @@ LABEL_37:
         v23 = ACHLogMonthlyChallenges();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v6 uniqueName];
+          uniqueName4 = [v6 uniqueName];
           *buf = 138412290;
-          v63 = v24;
+          v63 = uniqueName4;
           _os_log_impl(&dword_221DDC000, v23, OS_LOG_TYPE_DEFAULT, "Unable to determine earned date components for %@, not creating earned instance.", buf, 0xCu);
         }
       }
@@ -566,9 +566,9 @@ LABEL_37:
         v9 = ACHLogAwardEngine();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v6 uniqueName];
+          uniqueName5 = [v6 uniqueName];
           *buf = 138412290;
-          v63 = v13;
+          v63 = uniqueName5;
           _os_log_impl(&dword_221DDC000, v9, OS_LOG_TYPE_DEFAULT, "Template has invalid predicates, skipping: %@", buf, 0xCu);
         }
       }
@@ -584,11 +584,11 @@ LABEL_38:
   while (v56);
 LABEL_42:
 
-  v37 = [MEMORY[0x277CBEAA8] date];
-  [v37 timeIntervalSinceReferenceDate];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceReferenceDate];
   v39 = v38;
-  [v44 timeIntervalSinceReferenceDate];
-  [ACHDMetricsReporter reportProcessingMetricsWithSourceType:2 intervalProcessed:v45 processingDuration:v51 recordsProcessed:0 error:v39 - v40];
+  [date timeIntervalSinceReferenceDate];
+  [ACHDMetricsReporter reportProcessingMetricsWithSourceType:2 intervalProcessed:intervalCopy processingDuration:v51 recordsProcessed:0 error:v39 - v40];
   v41 = [v46 copy];
 
   v42 = *MEMORY[0x277D85DE8];
@@ -596,26 +596,26 @@ LABEL_42:
   return v41;
 }
 
-- (id)_earnedDateComponentsForTemplate:(id)a3
+- (id)_earnedDateComponentsForTemplate:(id)template
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  templateCopy = template;
   v36 = objc_alloc_init(MEMORY[0x277CE8D40]);
-  v37 = [v36 validateTemplate:v3];
+  v37 = [v36 validateTemplate:templateCopy];
   if ([v37 isValid])
   {
-    v39 = [v3 availabilityStart];
-    v4 = [v3 availabilityEnd];
+    availabilityStart = [templateCopy availabilityStart];
+    availabilityEnd = [templateCopy availabilityEnd];
     v5 = ACHLogMonthlyChallenges();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v3 uniqueName];
+      uniqueName = [templateCopy uniqueName];
       *buf = 138412290;
-      v41 = v6;
+      v41 = uniqueName;
       _os_log_impl(&dword_221DDC000, v5, OS_LOG_TYPE_DEFAULT, "[Earned Instance Date: %@] Determining earned instance date", buf, 0xCu);
     }
 
-    v8 = __70__ACHMonthlyChallengeAwardingSource__earnedDateComponentsForTemplate___block_invoke(v7, v39, v4);
+    v8 = __70__ACHMonthlyChallengeAwardingSource__earnedDateComponentsForTemplate___block_invoke(v7, availabilityStart, availabilityEnd);
     if ([0 isEqual:v8])
     {
       v9 = 0;
@@ -627,34 +627,34 @@ LABEL_42:
       do
       {
         v18 = objc_alloc(MEMORY[0x277CE8D30]);
-        v19 = [v3 availabilityStart];
-        v20 = [v18 initWithStartDateComponents:v19 endDateComponents:v8];
+        availabilityStart2 = [templateCopy availabilityStart];
+        v20 = [v18 initWithStartDateComponents:availabilityStart2 endDateComponents:v8];
 
-        v21 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:v3 andDateComponentInterval:v20];
+        v21 = [(ACHMonthlyChallengeAwardingSource *)self _evaluationEnvironmentForTemplate:templateCopy andDateComponentInterval:v20];
         v22 = ACHLogMonthlyChallenges();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v3 uniqueName];
+          uniqueName2 = [templateCopy uniqueName];
           *buf = 138412546;
-          v41 = v23;
+          v41 = uniqueName2;
           v42 = 2112;
           v43 = v20;
           _os_log_impl(&dword_221DDC000, v22, OS_LOG_TYPE_DEFAULT, "[Earned Instance Date: %@] Evaluating for interval: %@", buf, 0x16u);
         }
 
-        v24 = [v3 gracePredicate];
-        v25 = v24;
-        if (v24)
+        gracePredicate = [templateCopy gracePredicate];
+        v25 = gracePredicate;
+        if (gracePredicate)
         {
-          v26 = v24;
+          predicate = gracePredicate;
         }
 
         else
         {
-          v26 = [v3 predicate];
+          predicate = [templateCopy predicate];
         }
 
-        v27 = v26;
+        v27 = predicate;
 
         v28 = [MEMORY[0x277CCAC30] predicateWithFormat:v27];
         v29 = [v28 evaluateWithObject:v21];
@@ -664,18 +664,18 @@ LABEL_42:
           v30 = ACHLogMonthlyChallenges();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
-            v31 = [v3 uniqueName];
+            uniqueName3 = [templateCopy uniqueName];
             *buf = 138412802;
-            v41 = v31;
+            v41 = uniqueName3;
             v42 = 2112;
             v43 = v8;
             v44 = 2112;
-            v45 = v39;
+            v45 = availabilityStart;
             _os_log_impl(&dword_221DDC000, v30, OS_LOG_TYPE_DEFAULT, "[Earned Instance Date: %@] Updating mostRecentEarnedDateComponents to: %@, oldestUnearnedDateComponents = %@", buf, 0x20u);
           }
 
-          v32 = v4;
-          v4 = v8;
+          v32 = availabilityEnd;
+          availabilityEnd = v8;
         }
 
         else
@@ -683,24 +683,24 @@ LABEL_42:
           v30 = ACHLogMonthlyChallenges();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [v3 uniqueName];
+            uniqueName4 = [templateCopy uniqueName];
             *buf = 138412802;
-            v41 = v33;
+            v41 = uniqueName4;
             v42 = 2112;
             v43 = v8;
             v44 = 2112;
-            v45 = v4;
+            v45 = availabilityEnd;
             _os_log_impl(&dword_221DDC000, v30, OS_LOG_TYPE_DEFAULT, "[Earned Instance Date: %@] Updating oldestUnearnedDateComponents to: %@, mostRecentEarnedDateComponents = %@", buf, 0x20u);
           }
 
-          v32 = v39;
-          v39 = v8;
+          v32 = availabilityStart;
+          availabilityStart = v8;
         }
 
         v34 = v8;
         v9 = v34;
 
-        v8 = __70__ACHMonthlyChallengeAwardingSource__earnedDateComponentsForTemplate___block_invoke(v35, v39, v4);
+        v8 = __70__ACHMonthlyChallengeAwardingSource__earnedDateComponentsForTemplate___block_invoke(v35, availabilityStart, availabilityEnd);
 
         v17 = v9;
       }
@@ -711,16 +711,16 @@ LABEL_42:
     v10 = ACHLogMonthlyChallenges();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v3 uniqueName];
+      uniqueName5 = [templateCopy uniqueName];
       *buf = 138412546;
-      v41 = v11;
+      v41 = uniqueName5;
       v42 = 2112;
-      v43 = v4;
+      v43 = availabilityEnd;
       _os_log_impl(&dword_221DDC000, v10, OS_LOG_TYPE_DEFAULT, "[Earned Instance Date: %@] Determined earned date is: %@", buf, 0x16u);
     }
 
-    v12 = v4;
-    v13 = v39;
+    v12 = availabilityEnd;
+    v13 = availabilityStart;
   }
 
   else
@@ -729,7 +729,7 @@ LABEL_42:
     v13 = v14;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [(ACHMonthlyChallengeAwardingSource *)v3 _earnedDateComponentsForTemplate:v14];
+      [(ACHMonthlyChallengeAwardingSource *)templateCopy _earnedDateComponentsForTemplate:v14];
       v12 = 0;
       v13 = v14;
     }
@@ -760,29 +760,29 @@ id __70__ACHMonthlyChallengeAwardingSource__earnedDateComponentsForTemplate___bl
   return v9;
 }
 
-- (id)_monthlyChallengeTemplatesForHistoricalInterval:(id)a3
+- (id)_monthlyChallengeTemplatesForHistoricalInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeAwardingSource *)self templateStore];
-  v6 = [v5 allTemplates];
+  intervalCopy = interval;
+  templateStore = [(ACHMonthlyChallengeAwardingSource *)self templateStore];
+  allTemplates = [templateStore allTemplates];
 
-  v7 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v8 = [v4 startDate];
-  v9 = [v7 startOfDayForDate:v8];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  startDate = [intervalCopy startDate];
+  v9 = [hk_gregorianCalendar startOfDayForDate:startDate];
 
   v10 = objc_alloc(MEMORY[0x277CCA970]);
-  v11 = [v4 endDate];
+  endDate = [intervalCopy endDate];
 
-  v12 = [v10 initWithStartDate:v9 endDate:v11];
+  v12 = [v10 initWithStartDate:v9 endDate:endDate];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __85__ACHMonthlyChallengeAwardingSource__monthlyChallengeTemplatesForHistoricalInterval___block_invoke;
   v17[3] = &unk_2784909F0;
-  v18 = v7;
+  v18 = hk_gregorianCalendar;
   v19 = v12;
   v13 = v12;
-  v14 = v7;
-  v15 = [v6 hk_filter:v17];
+  v14 = hk_gregorianCalendar;
+  v15 = [allTemplates hk_filter:v17];
 
   return v15;
 }
@@ -818,14 +818,14 @@ uint64_t __85__ACHMonthlyChallengeAwardingSource__monthlyChallengeTemplatesForHi
 
 - (void)_requestIncrementalEvaluation
 {
-  v3 = [(ACHMonthlyChallengeAwardingSource *)self engine];
-  v4 = [(ACHMonthlyChallengeAwardingSource *)self uniqueName];
+  engine = [(ACHMonthlyChallengeAwardingSource *)self engine];
+  uniqueName = [(ACHMonthlyChallengeAwardingSource *)self uniqueName];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__ACHMonthlyChallengeAwardingSource__requestIncrementalEvaluation__block_invoke;
   v5[3] = &unk_278490A18;
   v5[4] = self;
-  [v3 requestIncrementalEvaluationForSource:v4 evaluationBlock:v5];
+  [engine requestIncrementalEvaluationForSource:uniqueName evaluationBlock:v5];
 }
 
 id __66__ACHMonthlyChallengeAwardingSource__requestIncrementalEvaluation__block_invoke(uint64_t a1, void *a2)

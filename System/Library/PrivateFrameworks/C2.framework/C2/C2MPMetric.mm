@@ -1,19 +1,19 @@
 @interface C2MPMetric
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMetricType:(id)a3;
+- (int)StringAsMetricType:(id)type;
 - (int)metricType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMetricType:(BOOL)a3;
-- (void)setHasReportFrequencyBase:(BOOL)a3;
-- (void)setHasReportTransportAllowExpensiveAccess:(BOOL)a3;
-- (void)setHasReportTransportAllowPowerNapScheduling:(BOOL)a3;
-- (void)setHasTriggers:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMetricType:(BOOL)type;
+- (void)setHasReportFrequencyBase:(BOOL)base;
+- (void)setHasReportTransportAllowExpensiveAccess:(BOOL)access;
+- (void)setHasReportTransportAllowPowerNapScheduling:(BOOL)scheduling;
+- (void)setHasTriggers:(BOOL)triggers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation C2MPMetric
@@ -31,9 +31,9 @@
   }
 }
 
-- (void)setHasMetricType:(BOOL)a3
+- (void)setHasMetricType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -46,20 +46,20 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsMetricType:(id)a3
+- (int)StringAsMetricType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"none_type"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"none_type"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"network_event_type"])
+  else if ([typeCopy isEqualToString:@"network_event_type"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"generic_event_type"])
+  else if ([typeCopy isEqualToString:@"generic_event_type"])
   {
     v4 = 201;
   }
@@ -72,9 +72,9 @@
   return v4;
 }
 
-- (void)setHasTriggers:(BOOL)a3
+- (void)setHasTriggers:(BOOL)triggers
 {
-  if (a3)
+  if (triggers)
   {
     v3 = 4;
   }
@@ -87,9 +87,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasReportFrequencyBase:(BOOL)a3
+- (void)setHasReportFrequencyBase:(BOOL)base
 {
-  if (a3)
+  if (base)
   {
     v3 = 2;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasReportTransportAllowExpensiveAccess:(BOOL)a3
+- (void)setHasReportTransportAllowExpensiveAccess:(BOOL)access
 {
-  if (a3)
+  if (access)
   {
     v3 = 16;
   }
@@ -117,9 +117,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasReportTransportAllowPowerNapScheduling:(BOOL)a3
+- (void)setHasReportTransportAllowPowerNapScheduling:(BOOL)scheduling
 {
-  if (a3)
+  if (scheduling)
   {
     v3 = 32;
   }
@@ -138,15 +138,15 @@
   v8.receiver = self;
   v8.super_class = C2MPMetric;
   v4 = [(C2MPMetric *)&v8 description];
-  v5 = [(C2MPMetric *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(C2MPMetric *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 8) != 0)
   {
     metricType = self->_metricType;
@@ -173,35 +173,35 @@
       v5 = @"none_type";
     }
 
-    [v3 setObject:v5 forKey:@"metric_type"];
+    [dictionary setObject:v5 forKey:@"metric_type"];
   }
 
   deviceInfo = self->_deviceInfo;
   if (deviceInfo)
   {
-    v7 = [(C2MPDeviceInfo *)deviceInfo dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"device_info"];
+    dictionaryRepresentation = [(C2MPDeviceInfo *)deviceInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"device_info"];
   }
 
   cloudkitInfo = self->_cloudkitInfo;
   if (cloudkitInfo)
   {
-    v9 = [(C2MPCloudKitInfo *)cloudkitInfo dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"cloudkit_info"];
+    dictionaryRepresentation2 = [(C2MPCloudKitInfo *)cloudkitInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"cloudkit_info"];
   }
 
   serverInfo = self->_serverInfo;
   if (serverInfo)
   {
-    v11 = [(C2MPServerInfo *)serverInfo dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"server_info"];
+    dictionaryRepresentation3 = [(C2MPServerInfo *)serverInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"server_info"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_triggers];
-    [v3 setObject:v21 forKey:@"triggers"];
+    [dictionary setObject:v21 forKey:@"triggers"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -222,7 +222,7 @@ LABEL_18:
   }
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_reportFrequency];
-  [v3 setObject:v22 forKey:@"report_frequency"];
+  [dictionary setObject:v22 forKey:@"report_frequency"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -238,7 +238,7 @@ LABEL_19:
 
 LABEL_35:
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_reportFrequencyBase];
-  [v3 setObject:v23 forKey:@"report_frequency_base"];
+  [dictionary setObject:v23 forKey:@"report_frequency_base"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -254,72 +254,72 @@ LABEL_20:
 
 LABEL_36:
   v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_reportTransportAllowExpensiveAccess];
-  [v3 setObject:v24 forKey:@"report_transport_allow_expensive_access"];
+  [dictionary setObject:v24 forKey:@"report_transport_allow_expensive_access"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_21:
     v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_reportTransportAllowPowerNapScheduling];
-    [v3 setObject:v13 forKey:@"report_transport_allow_power_nap_scheduling"];
+    [dictionary setObject:v13 forKey:@"report_transport_allow_power_nap_scheduling"];
   }
 
 LABEL_22:
   reportTransportSourceApplicationBundleIdentifier = self->_reportTransportSourceApplicationBundleIdentifier;
   if (reportTransportSourceApplicationBundleIdentifier)
   {
-    [v3 setObject:reportTransportSourceApplicationBundleIdentifier forKey:@"report_transport_source_application_bundle_identifier"];
+    [dictionary setObject:reportTransportSourceApplicationBundleIdentifier forKey:@"report_transport_source_application_bundle_identifier"];
   }
 
   reportTransportSourceApplicationSecondaryIdentifier = self->_reportTransportSourceApplicationSecondaryIdentifier;
   if (reportTransportSourceApplicationSecondaryIdentifier)
   {
-    [v3 setObject:reportTransportSourceApplicationSecondaryIdentifier forKey:@"report_transport_source_application_secondary_identifier"];
+    [dictionary setObject:reportTransportSourceApplicationSecondaryIdentifier forKey:@"report_transport_source_application_secondary_identifier"];
   }
 
   networkEvent = self->_networkEvent;
   if (networkEvent)
   {
-    v17 = [(C2MPNetworkEvent *)networkEvent dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"network_event"];
+    dictionaryRepresentation4 = [(C2MPNetworkEvent *)networkEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"network_event"];
   }
 
   genericEvent = self->_genericEvent;
   if (genericEvent)
   {
-    v19 = [(C2MPGenericEvent *)genericEvent dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"generic_event"];
+    dictionaryRepresentation5 = [(C2MPGenericEvent *)genericEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"generic_event"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
     metricType = self->_metricType;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_deviceInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_cloudkitInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_serverInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -327,7 +327,7 @@ LABEL_22:
   {
     triggers = self->_triggers;
     PBDataWriterWriteUint64Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -348,7 +348,7 @@ LABEL_11:
 
   reportFrequency = self->_reportFrequency;
   PBDataWriterWriteUint64Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -364,7 +364,7 @@ LABEL_12:
 LABEL_28:
   reportFrequencyBase = self->_reportFrequencyBase;
   PBDataWriterWriteUint64Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -380,74 +380,74 @@ LABEL_13:
 LABEL_29:
   reportTransportAllowExpensiveAccess = self->_reportTransportAllowExpensiveAccess;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_14:
     reportTransportAllowPowerNapScheduling = self->_reportTransportAllowPowerNapScheduling;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_15:
   if (self->_reportTransportSourceApplicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_reportTransportSourceApplicationSecondaryIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_networkEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_genericEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
-    v4[14] = self->_metricType;
-    *(v4 + 100) |= 8u;
+    toCopy[14] = self->_metricType;
+    *(toCopy + 100) |= 8u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_deviceInfo)
   {
-    [v4 setDeviceInfo:?];
-    v4 = v6;
+    [toCopy setDeviceInfo:?];
+    toCopy = v6;
   }
 
   if (self->_cloudkitInfo)
   {
     [v6 setCloudkitInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_serverInfo)
   {
     [v6 setServerInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_triggers;
-    *(v4 + 100) |= 4u;
+    *(toCopy + 3) = self->_triggers;
+    *(toCopy + 100) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -466,8 +466,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 1) = self->_reportFrequency;
-  *(v4 + 100) |= 1u;
+  *(toCopy + 1) = self->_reportFrequency;
+  *(toCopy + 100) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -481,8 +481,8 @@ LABEL_12:
   }
 
 LABEL_28:
-  *(v4 + 2) = self->_reportFrequencyBase;
-  *(v4 + 100) |= 2u;
+  *(toCopy + 2) = self->_reportFrequencyBase;
+  *(toCopy + 100) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -496,44 +496,44 @@ LABEL_13:
   }
 
 LABEL_29:
-  *(v4 + 96) = self->_reportTransportAllowExpensiveAccess;
-  *(v4 + 100) |= 0x10u;
+  *(toCopy + 96) = self->_reportTransportAllowExpensiveAccess;
+  *(toCopy + 100) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_14:
-    *(v4 + 97) = self->_reportTransportAllowPowerNapScheduling;
-    *(v4 + 100) |= 0x20u;
+    *(toCopy + 97) = self->_reportTransportAllowPowerNapScheduling;
+    *(toCopy + 100) |= 0x20u;
   }
 
 LABEL_15:
   if (self->_reportTransportSourceApplicationBundleIdentifier)
   {
     [v6 setReportTransportSourceApplicationBundleIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_reportTransportSourceApplicationSecondaryIdentifier)
   {
     [v6 setReportTransportSourceApplicationSecondaryIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_networkEvent)
   {
     [v6 setNetworkEvent:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_genericEvent)
   {
     [v6 setGenericEvent:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 8) != 0)
   {
@@ -541,15 +541,15 @@ LABEL_15:
     *(v5 + 100) |= 8u;
   }
 
-  v7 = [(C2MPDeviceInfo *)self->_deviceInfo copyWithZone:a3];
+  v7 = [(C2MPDeviceInfo *)self->_deviceInfo copyWithZone:zone];
   v8 = *(v6 + 40);
   *(v6 + 40) = v7;
 
-  v9 = [(C2MPCloudKitInfo *)self->_cloudkitInfo copyWithZone:a3];
+  v9 = [(C2MPCloudKitInfo *)self->_cloudkitInfo copyWithZone:zone];
   v10 = *(v6 + 32);
   *(v6 + 32) = v9;
 
-  v11 = [(C2MPServerInfo *)self->_serverInfo copyWithZone:a3];
+  v11 = [(C2MPServerInfo *)self->_serverInfo copyWithZone:zone];
   v12 = *(v6 + 88);
   *(v6 + 88) = v11;
 
@@ -616,55 +616,55 @@ LABEL_8:
   }
 
 LABEL_9:
-  v14 = [(NSString *)self->_reportTransportSourceApplicationBundleIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_reportTransportSourceApplicationBundleIdentifier copyWithZone:zone];
   v15 = *(v6 + 72);
   *(v6 + 72) = v14;
 
-  v16 = [(NSString *)self->_reportTransportSourceApplicationSecondaryIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_reportTransportSourceApplicationSecondaryIdentifier copyWithZone:zone];
   v17 = *(v6 + 80);
   *(v6 + 80) = v16;
 
-  v18 = [(C2MPNetworkEvent *)self->_networkEvent copyWithZone:a3];
+  v18 = [(C2MPNetworkEvent *)self->_networkEvent copyWithZone:zone];
   v19 = *(v6 + 64);
   *(v6 + 64) = v18;
 
-  v20 = [(C2MPGenericEvent *)self->_genericEvent copyWithZone:a3];
+  v20 = [(C2MPGenericEvent *)self->_genericEvent copyWithZone:zone];
   v21 = *(v6 + 48);
   *(v6 + 48) = v20;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_51;
   }
 
-  v5 = *(v4 + 100);
+  v5 = *(equalCopy + 100);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 100) & 8) == 0 || self->_metricType != *(v4 + 14))
+    if ((*(equalCopy + 100) & 8) == 0 || self->_metricType != *(equalCopy + 14))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 100) & 8) != 0)
+  else if ((*(equalCopy + 100) & 8) != 0)
   {
     goto LABEL_51;
   }
 
   deviceInfo = self->_deviceInfo;
-  if (deviceInfo | *(v4 + 5) && ![(C2MPDeviceInfo *)deviceInfo isEqual:?])
+  if (deviceInfo | *(equalCopy + 5) && ![(C2MPDeviceInfo *)deviceInfo isEqual:?])
   {
     goto LABEL_51;
   }
 
   cloudkitInfo = self->_cloudkitInfo;
-  if (cloudkitInfo | *(v4 + 4))
+  if (cloudkitInfo | *(equalCopy + 4))
   {
     if (![(C2MPCloudKitInfo *)cloudkitInfo isEqual:?])
     {
@@ -673,7 +673,7 @@ LABEL_9:
   }
 
   serverInfo = self->_serverInfo;
-  if (serverInfo | *(v4 + 11))
+  if (serverInfo | *(equalCopy + 11))
   {
     if (![(C2MPServerInfo *)serverInfo isEqual:?])
     {
@@ -681,76 +681,76 @@ LABEL_9:
     }
   }
 
-  v9 = *(v4 + 100);
+  v9 = *(equalCopy + 100);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_triggers != *(v4 + 3))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_triggers != *(equalCopy + 3))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 100) & 4) != 0)
+  else if ((*(equalCopy + 100) & 4) != 0)
   {
     goto LABEL_51;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 100) & 1) == 0 || self->_reportFrequency != *(v4 + 1))
+    if ((*(equalCopy + 100) & 1) == 0 || self->_reportFrequency != *(equalCopy + 1))
     {
       goto LABEL_51;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 100) & 2) == 0 || self->_reportFrequencyBase != *(v4 + 2))
+    if ((*(equalCopy + 100) & 2) == 0 || self->_reportFrequencyBase != *(equalCopy + 2))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 100) & 2) != 0)
+  else if ((*(equalCopy + 100) & 2) != 0)
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 100) & 0x10) == 0)
+    if ((*(equalCopy + 100) & 0x10) == 0)
     {
       goto LABEL_51;
     }
 
-    v15 = *(v4 + 96);
+    v15 = *(equalCopy + 96);
     if (self->_reportTransportAllowExpensiveAccess)
     {
-      if ((*(v4 + 96) & 1) == 0)
+      if ((*(equalCopy + 96) & 1) == 0)
       {
         goto LABEL_51;
       }
     }
 
-    else if (*(v4 + 96))
+    else if (*(equalCopy + 96))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 100) & 0x10) != 0)
+  else if ((*(equalCopy + 100) & 0x10) != 0)
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 0x20) == 0)
   {
-    if ((*(v4 + 100) & 0x20) == 0)
+    if ((*(equalCopy + 100) & 0x20) == 0)
     {
       goto LABEL_32;
     }
@@ -760,34 +760,34 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  if ((*(v4 + 100) & 0x20) == 0)
+  if ((*(equalCopy + 100) & 0x20) == 0)
   {
     goto LABEL_51;
   }
 
-  v16 = *(v4 + 97);
+  v16 = *(equalCopy + 97);
   if (self->_reportTransportAllowPowerNapScheduling)
   {
-    if ((*(v4 + 97) & 1) == 0)
+    if ((*(equalCopy + 97) & 1) == 0)
     {
       goto LABEL_51;
     }
   }
 
-  else if (*(v4 + 97))
+  else if (*(equalCopy + 97))
   {
     goto LABEL_51;
   }
 
 LABEL_32:
   reportTransportSourceApplicationBundleIdentifier = self->_reportTransportSourceApplicationBundleIdentifier;
-  if (reportTransportSourceApplicationBundleIdentifier | *(v4 + 9) && ![(NSString *)reportTransportSourceApplicationBundleIdentifier isEqual:?])
+  if (reportTransportSourceApplicationBundleIdentifier | *(equalCopy + 9) && ![(NSString *)reportTransportSourceApplicationBundleIdentifier isEqual:?])
   {
     goto LABEL_51;
   }
 
   reportTransportSourceApplicationSecondaryIdentifier = self->_reportTransportSourceApplicationSecondaryIdentifier;
-  if (reportTransportSourceApplicationSecondaryIdentifier | *(v4 + 10))
+  if (reportTransportSourceApplicationSecondaryIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)reportTransportSourceApplicationSecondaryIdentifier isEqual:?])
     {
@@ -796,7 +796,7 @@ LABEL_32:
   }
 
   networkEvent = self->_networkEvent;
-  if (networkEvent | *(v4 + 8))
+  if (networkEvent | *(equalCopy + 8))
   {
     if (![(C2MPNetworkEvent *)networkEvent isEqual:?])
     {
@@ -805,7 +805,7 @@ LABEL_32:
   }
 
   genericEvent = self->_genericEvent;
-  if (genericEvent | *(v4 + 6))
+  if (genericEvent | *(equalCopy + 6))
   {
     v14 = [(C2MPGenericEvent *)genericEvent isEqual:?];
   }
@@ -906,13 +906,13 @@ LABEL_15:
   return v14 ^ v15 ^ [(C2MPGenericEvent *)self->_genericEvent hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[25] & 8) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[25] & 8) != 0)
   {
-    self->_metricType = v4[14];
+    self->_metricType = fromCopy[14];
     *&self->_has |= 8u;
   }
 

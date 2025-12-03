@@ -1,24 +1,24 @@
 @interface BCSURLDataParser
-+ (id)_canonicalizeMessageURL:(id)a3;
-+ (id)parseString:(id)a3;
-+ (id)parseURL:(id)a3 originalString:(id)a4;
-+ (int64_t)_dataTypeForSchemeIfSupportedByDataDetectors:(id)a3;
++ (id)_canonicalizeMessageURL:(id)l;
++ (id)parseString:(id)string;
++ (id)parseURL:(id)l originalString:(id)string;
++ (int64_t)_dataTypeForSchemeIfSupportedByDataDetectors:(id)detectors;
 @end
 
 @implementation BCSURLDataParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v5)
   {
     [(BCSURLDataParser *)v5 parseString:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  if ([v4 length] < 0xFA1)
+  if ([stringCopy length] < 0xFA1)
   {
-    if ([v4 _bcs_hasCaseInsensitivePrefix:@"URL:"])
+    if ([stringCopy _bcs_hasCaseInsensitivePrefix:@"URL:"])
     {
       v14 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
       if (v14)
@@ -26,16 +26,16 @@
         [(BCSURLDataParser *)v14 parseString:v15, v16, v17, v18, v19, v20, v21];
       }
 
-      v22 = [v4 substringFromIndex:4];
-      v23 = [v22 _bcs_trimmedString];
+      v22 = [stringCopy substringFromIndex:4];
+      _bcs_trimmedString = [v22 _bcs_trimmedString];
 
-      v4 = v23;
+      stringCopy = _bcs_trimmedString;
     }
 
-    v24 = [MEMORY[0x277CBEBC0] _bcs_URLWithUserTypedString:v4];
+    v24 = [MEMORY[0x277CBEBC0] _bcs_URLWithUserTypedString:stringCopy];
     if (v24)
     {
-      v13 = [a1 parseURL:v24 originalString:v4];
+      v13 = [self parseURL:v24 originalString:stringCopy];
     }
 
     else
@@ -54,7 +54,7 @@
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [BCSURLDataParser parseString:v4];
+      [BCSURLDataParser parseString:stringCopy];
     }
 
     v13 = 0;
@@ -63,20 +63,20 @@
   return v13;
 }
 
-+ (id)parseURL:(id)a3 originalString:(id)a4
++ (id)parseURL:(id)l originalString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 _bcs_isMapsURL])
+  lCopy = l;
+  stringCopy = string;
+  if ([lCopy _bcs_isMapsURL])
   {
-    v8 = [[BCSParsedURLData alloc] initWithURL:v6 type:6];
+    v8 = [[BCSParsedURLData alloc] initWithURL:lCopy type:6];
     goto LABEL_52;
   }
 
-  v9 = [v6 scheme];
-  v10 = [v9 lowercaseString];
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (![(__CFString *)v10 length])
+  if (![(__CFString *)lowercaseString length])
   {
     v20 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v20)
@@ -88,15 +88,15 @@
     goto LABEL_51;
   }
 
-  if (([(__CFString *)v10 isEqualToString:@"smsto"]& 1) != 0 || [(__CFString *)v10 isEqualToString:@"sms"])
+  if (([(__CFString *)lowercaseString isEqualToString:@"smsto"]& 1) != 0 || [(__CFString *)lowercaseString isEqualToString:@"sms"])
   {
-    v11 = [a1 _canonicalizeMessageURL:v6];
+    v11 = [self _canonicalizeMessageURL:lCopy];
 
-    v10 = @"sms";
-    v6 = v11;
+    lowercaseString = @"sms";
+    lCopy = v11;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"continuitycamera"])
+  if ([(__CFString *)lowercaseString isEqualToString:@"continuitycamera"])
   {
     v12 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v12)
@@ -104,7 +104,7 @@
       [(BCSURLDataParser *)v12 parseURL:v13 originalString:v14, v15, v16, v17, v18, v19];
     }
 
-    v8 = [[BCSParsedURLData alloc] initWithURL:v6 type:15];
+    v8 = [[BCSParsedURLData alloc] initWithURL:lCopy type:15];
     goto LABEL_51;
   }
 
@@ -126,18 +126,18 @@
 
   v29 = v28;
   _Block_object_dispose(&v88, 8);
-  v30 = [v6 absoluteString];
-  v31 = [v28 communicationProtocolForSetupPayloadURLString:v30];
+  absoluteString = [lCopy absoluteString];
+  v31 = [v28 communicationProtocolForSetupPayloadURLString:absoluteString];
 
   if (v31)
   {
-    v32 = [v31 integerValue];
-    if (v32 == 2)
+    integerValue = [v31 integerValue];
+    if (integerValue == 2)
     {
       v63 = MEMORY[0x277CBEBC0];
       v64 = MEMORY[0x277CCACA8];
-      v65 = [v6 absoluteString];
-      v66 = [v64 stringWithFormat:@"com.apple.Home-private://addAccessory?payload=%@", v65];
+      absoluteString2 = [lCopy absoluteString];
+      v66 = [v64 stringWithFormat:@"com.apple.Home-private://addAccessory?payload=%@", absoluteString2];
       v53 = [v63 _bcs_URLWithUserTypedString:v66];
 
       v67 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
@@ -150,7 +150,7 @@
       goto LABEL_36;
     }
 
-    if (v32 == 1)
+    if (integerValue == 1)
     {
       v33 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
       if (v33)
@@ -159,22 +159,22 @@
       }
 
       v41 = [BCSParsedURLData alloc];
-      v42 = v6;
+      v42 = lCopy;
       v43 = 9;
       goto LABEL_48;
     }
   }
 
-  if (![v6 _bcs_isSHCURL])
+  if (![lCopy _bcs_isSHCURL])
   {
-    if ([v6 _bcs_isWalletRemoteRequestURL] && _os_feature_enabled_impl())
+    if ([lCopy _bcs_isWalletRemoteRequestURL] && _os_feature_enabled_impl())
     {
       v41 = [BCSParsedURLData alloc];
-      v42 = v6;
+      v42 = lCopy;
       v43 = 16;
     }
 
-    else if ([v6 as_isPasskeyRegistrationURL])
+    else if ([lCopy as_isPasskeyRegistrationURL])
     {
       v55 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
       if (v55)
@@ -183,15 +183,15 @@
       }
 
       v41 = [BCSParsedURLData alloc];
-      v42 = v6;
+      v42 = lCopy;
       v43 = 14;
     }
 
-    else if (([v6 as_isPasskeyURL] & 1) != 0 || objc_msgSend(v6, "_bcs_hasScheme:", @"fido"))
+    else if (([lCopy as_isPasskeyURL] & 1) != 0 || objc_msgSend(lCopy, "_bcs_hasScheme:", @"fido"))
     {
-      v75 = [v6 as_passkeyURLType];
+      as_passkeyURLType = [lCopy as_passkeyURLType];
       v76 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
-      if (v75 == 3)
+      if (as_passkeyURLType == 3)
       {
         if (v76)
         {
@@ -199,7 +199,7 @@
         }
 
         v41 = [BCSParsedURLData alloc];
-        v42 = v6;
+        v42 = lCopy;
         v43 = 17;
       }
 
@@ -211,19 +211,19 @@
         }
 
         v41 = [BCSParsedURLData alloc];
-        v42 = v6;
+        v42 = lCopy;
         v43 = 13;
       }
     }
 
     else
     {
-      v84 = [a1 _dataTypeForSchemeIfSupportedByDataDetectors:v10];
+      v84 = [self _dataTypeForSchemeIfSupportedByDataDetectors:lowercaseString];
       v41 = [BCSParsedURLData alloc];
-      v42 = v6;
+      v42 = lCopy;
       if (!v84)
       {
-        v85 = [(BCSParsedURLData *)v41 initWithURL:v6];
+        v85 = [(BCSParsedURLData *)v41 initWithURL:lCopy];
         goto LABEL_49;
       }
 
@@ -244,7 +244,7 @@ LABEL_49:
   }
 
   v52 = [BCSParsedURLData alloc];
-  v53 = [v6 _bcs_redirectedHealthURLWithOriginalString:v7];
+  v53 = [lCopy _bcs_redirectedHealthURLWithOriginalString:stringCopy];
   v54 = [(BCSParsedURLData *)v52 initWithURL:v53];
 LABEL_36:
   v8 = v54;
@@ -257,20 +257,20 @@ LABEL_52:
   return v8;
 }
 
-+ (int64_t)_dataTypeForSchemeIfSupportedByDataDetectors:(id)a3
++ (int64_t)_dataTypeForSchemeIfSupportedByDataDetectors:(id)detectors
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"tel"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"facetime") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"facetime-audio"))
+  detectorsCopy = detectors;
+  if ([detectorsCopy isEqualToString:@"tel"] & 1) != 0 || (objc_msgSend(detectorsCopy, "isEqualToString:", @"facetime") & 1) != 0 || (objc_msgSend(detectorsCopy, "isEqualToString:", @"facetime-audio"))
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"mailto"])
+  else if ([detectorsCopy isEqualToString:@"mailto"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"sms"])
+  else if ([detectorsCopy isEqualToString:@"sms"])
   {
     v4 = 5;
   }
@@ -283,26 +283,26 @@ LABEL_52:
   return v4;
 }
 
-+ (id)_canonicalizeMessageURL:(id)a3
++ (id)_canonicalizeMessageURL:(id)l
 {
   v3 = MEMORY[0x277CCACE0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithURL:v4 resolvingAgainstBaseURL:0];
-  v6 = [v4 scheme];
+  lCopy = l;
+  v5 = [[v3 alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
+  scheme = [lCopy scheme];
 
-  v7 = [v6 lowercaseString];
-  v8 = [v7 isEqualToString:@"smsto"];
+  lowercaseString = [scheme lowercaseString];
+  v8 = [lowercaseString isEqualToString:@"smsto"];
 
   if (v8)
   {
-    v9 = [v5 path];
-    v10 = [v9 rangeOfString:@":"];
+    path = [v5 path];
+    v10 = [path rangeOfString:@":"];
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v9 substringToIndex:v10];
+      v11 = [path substringToIndex:v10];
 
       [v5 setPath:v11];
-      v9 = v11;
+      path = v11;
     }
 
     [v5 setQuery:0];

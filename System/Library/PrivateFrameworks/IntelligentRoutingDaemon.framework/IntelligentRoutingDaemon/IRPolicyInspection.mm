@@ -1,13 +1,13 @@
 @interface IRPolicyInspection
-- (IRPolicyInspection)initWithName:(id)a3;
+- (IRPolicyInspection)initWithName:(id)name;
 - (NSSet)candidates;
 @end
 
 @implementation IRPolicyInspection
 
-- (IRPolicyInspection)initWithName:(id)a3
+- (IRPolicyInspection)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = IRPolicyInspection;
   v6 = [(IRPolicyInspection *)&v10 init];
@@ -17,7 +17,7 @@
     internalCandidates = v6->_internalCandidates;
     v6->_internalCandidates = v7;
 
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v6;

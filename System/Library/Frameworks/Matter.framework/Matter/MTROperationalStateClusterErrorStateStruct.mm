@@ -1,6 +1,6 @@
 @interface MTROperationalStateClusterErrorStateStruct
 - (MTROperationalStateClusterErrorStateStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalStateClusterErrorStateStruct);
-  v5 = [(MTROperationalStateClusterErrorStateStruct *)self errorStateID];
-  [(MTROperationalStateClusterErrorStateStruct *)v4 setErrorStateID:v5];
+  errorStateID = [(MTROperationalStateClusterErrorStateStruct *)self errorStateID];
+  [(MTROperationalStateClusterErrorStateStruct *)v4 setErrorStateID:errorStateID];
 
-  v6 = [(MTROperationalStateClusterErrorStateStruct *)self errorStateLabel];
-  [(MTROperationalStateClusterErrorStateStruct *)v4 setErrorStateLabel:v6];
+  errorStateLabel = [(MTROperationalStateClusterErrorStateStruct *)self errorStateLabel];
+  [(MTROperationalStateClusterErrorStateStruct *)v4 setErrorStateLabel:errorStateLabel];
 
-  v7 = [(MTROperationalStateClusterErrorStateStruct *)self errorStateDetails];
-  [(MTROperationalStateClusterErrorStateStruct *)v4 setErrorStateDetails:v7];
+  errorStateDetails = [(MTROperationalStateClusterErrorStateStruct *)self errorStateDetails];
+  [(MTROperationalStateClusterErrorStateStruct *)v4 setErrorStateDetails:errorStateDetails];
 
   return v4;
 }

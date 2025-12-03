@@ -1,43 +1,43 @@
 @interface NTKComplicationViewController
 - (CGAffineTransform)_contentTransform;
 - (CLKComplicationBackgroundDescriptor)backgroundDescriptor;
-- (NTKComplicationViewController)initWithVariant:(id)a3 device:(id)a4 complication:(id)a5 displayProperties:(id)a6;
+- (NTKComplicationViewController)initWithVariant:(id)variant device:(id)device complication:(id)complication displayProperties:(id)properties;
 - (NTKComplicationViewControllerDelegate)delegate;
 - (id)_effectiveMetrics;
 - (id)takeTouchCancellationAssertion;
 - (void)_applyPresentationState;
 - (void)_applyStyleIfPossible;
-- (void)_applyStyleToDisplay:(id)a3;
+- (void)_applyStyleToDisplay:(id)display;
 - (void)_recreateDisplayIfNecessary;
 - (void)_updateController;
 - (void)_updatePresentationState;
-- (void)_updateWidgetDescriptorForComplication:(id)a3 withProvider:(id)a4;
-- (void)complicationController:(id)a3 touchedDownForDisplayWrapper:(id)a4;
-- (void)complicationController:(id)a3 touchedUpForDisplayWrapper:(id)a4;
-- (void)complicationProviderComplicationsDidChange:(id)a3;
+- (void)_updateWidgetDescriptorForComplication:(id)complication withProvider:(id)provider;
+- (void)complicationController:(id)controller touchedDownForDisplayWrapper:(id)wrapper;
+- (void)complicationController:(id)controller touchedUpForDisplayWrapper:(id)wrapper;
+- (void)complicationProviderComplicationsDidChange:(id)change;
 - (void)dealloc;
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3;
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider;
 - (void)displayWrapperTemplateBackgroundChanged;
-- (void)ensureContentWithTimeout:(double)a3 completion:(id)a4;
+- (void)ensureContentWithTimeout:(double)timeout completion:(id)completion;
 - (void)loadView;
-- (void)setComplication:(id)a3;
-- (void)setComplication:(id)a3 displayProperties:(id)a4;
-- (void)setDisplayProperties:(id)a3;
-- (void)setForceLivePresentationState:(BOOL)a3;
-- (void)setStyle:(id)a3;
-- (void)updateDisplayPropertiesWithBlock:(id)a3;
+- (void)setComplication:(id)complication;
+- (void)setComplication:(id)complication displayProperties:(id)properties;
+- (void)setDisplayProperties:(id)properties;
+- (void)setForceLivePresentationState:(BOOL)state;
+- (void)setStyle:(id)style;
+- (void)updateDisplayPropertiesWithBlock:(id)block;
 - (void)viewDidLayoutSubviews;
-- (void)willLaunchAppForComplicationDisplayWrapper:(id)a3;
+- (void)willLaunchAppForComplicationDisplayWrapper:(id)wrapper;
 @end
 
 @implementation NTKComplicationViewController
 
-- (NTKComplicationViewController)initWithVariant:(id)a3 device:(id)a4 complication:(id)a5 displayProperties:(id)a6
+- (NTKComplicationViewController)initWithVariant:(id)variant device:(id)device complication:(id)complication displayProperties:(id)properties
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  variantCopy = variant;
+  deviceCopy = device;
+  complicationCopy = complication;
+  propertiesCopy = properties;
   v27.receiver = self;
   v27.super_class = NTKComplicationViewController;
   v15 = [(NTKComplicationViewController *)&v27 initWithNibName:0 bundle:0];
@@ -46,24 +46,24 @@
 
   if (v15)
   {
-    objc_storeStrong(&v15->_variant, a3);
-    objc_storeStrong(&v15->_device, a4);
-    objc_storeStrong(&v15->_complication, a5);
+    objc_storeStrong(&v15->_variant, variant);
+    objc_storeStrong(&v15->_device, device);
+    objc_storeStrong(&v15->_complication, complication);
     v17 = objc_opt_new();
     style = v15->_style;
     v15->_style = v17;
 
-    v19 = [[NTKMonochromeModel alloc] initWithDevice:v12];
+    v19 = [[NTKMonochromeModel alloc] initWithDevice:deviceCopy];
     monochromeModel = v15->_monochromeModel;
     v15->_monochromeModel = v19;
 
     v15->_presentationState = 2;
     v15->_forceLivePresentationState = 0;
-    v21 = [v14 copy];
+    v21 = [propertiesCopy copy];
     displayProperties = v15->_displayProperties;
     v15->_displayProperties = v21;
 
-    v23 = [NTKComplicationProvider providerForDevice:v12];
+    v23 = [NTKComplicationProvider providerForDevice:deviceCopy];
     [v23 registerObserver:v15];
   }
 
@@ -86,14 +86,14 @@
   [(NTKComplicationViewController *)&v3 dealloc];
 }
 
-- (void)setComplication:(id)a3 displayProperties:(id)a4
+- (void)setComplication:(id)complication displayProperties:(id)properties
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  complicationCopy = complication;
+  v7 = [properties copy];
   displayProperties = self->_displayProperties;
   self->_displayProperties = v7;
 
-  [(NTKComplicationViewController *)self setComplication:v6];
+  [(NTKComplicationViewController *)self setComplication:complicationCopy];
   controller = self->_controller;
   v10 = self->_displayProperties;
   wrapperView = self->_wrapperView;
@@ -120,8 +120,8 @@
   [(NTKComplicationDisplayWrapperView *)v5 setDisplayConfigurationHandler:&v7];
   [(NTKComplicationDisplayWrapperView *)self->_wrapperView addBackgroundObserver:self, v7, v8, v9, v10];
   [(NTKComplicationViewController *)self _updatePresentationState];
-  v6 = [(NTKComplicationViewController *)self view];
-  [v6 addSubview:self->_wrapperView];
+  view = [(NTKComplicationViewController *)self view];
+  [view addSubview:self->_wrapperView];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -145,8 +145,8 @@ void __41__NTKComplicationViewController_loadView__block_invoke(uint64_t a1, voi
   [(NTKComplicationViewController *)&v13 viewDidLayoutSubviews];
   v3 = *MEMORY[0x277CBF348];
   v4 = *(MEMORY[0x277CBF348] + 8);
-  v5 = [(NTKComplicationViewController *)self _effectiveMetrics];
-  [v5 size];
+  _effectiveMetrics = [(NTKComplicationViewController *)self _effectiveMetrics];
+  [_effectiveMetrics size];
   [(NTKComplicationDisplayWrapperView *)self->_wrapperView setBounds:v3, v4, v6, v7];
 
   [(NTKComplicationViewController *)self _contentTransform];
@@ -155,59 +155,59 @@ void __41__NTKComplicationViewController_loadView__block_invoke(uint64_t a1, voi
   v12[1] = v12[4];
   v12[2] = v12[5];
   [(NTKComplicationDisplayWrapperView *)wrapperView setContentTransform:v12];
-  v9 = [(NTKComplicationViewController *)self view];
-  [v9 bounds];
+  view = [(NTKComplicationViewController *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v14);
-  v11 = [(NTKComplicationViewController *)self view];
-  [v11 bounds];
+  view2 = [(NTKComplicationViewController *)self view];
+  [view2 bounds];
   [(NTKComplicationDisplayWrapperView *)self->_wrapperView setCenter:MidX, CGRectGetMidY(v15)];
 }
 
 - (id)takeTouchCancellationAssertion
 {
-  v3 = [(NTKComplicationDisplayWrapperView *)self->_wrapperView display];
+  display = [(NTKComplicationDisplayWrapperView *)self->_wrapperView display];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(NTKComplicationDisplayWrapperView *)self->_wrapperView display];
-    v6 = [v5 takeTouchCancellationAssertion];
+    display2 = [(NTKComplicationDisplayWrapperView *)self->_wrapperView display];
+    takeTouchCancellationAssertion = [display2 takeTouchCancellationAssertion];
   }
 
   else
   {
-    v6 = 0;
+    takeTouchCancellationAssertion = 0;
   }
 
-  return v6;
+  return takeTouchCancellationAssertion;
 }
 
-- (void)ensureContentWithTimeout:(double)a3 completion:(id)a4
+- (void)ensureContentWithTimeout:(double)timeout completion:(id)completion
 {
-  v9 = a4;
-  v6 = [(NTKComplicationDisplayWrapperView *)self->_wrapperView display];
+  completionCopy = completion;
+  display = [(NTKComplicationDisplayWrapperView *)self->_wrapperView display];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(NTKComplicationDisplayWrapperView *)self->_wrapperView display];
-    [v8 ensureContentWithTimeout:v9 completion:a3];
+    display2 = [(NTKComplicationDisplayWrapperView *)self->_wrapperView display];
+    [display2 ensureContentWithTimeout:completionCopy completion:timeout];
   }
 
   else
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   if (![(NTKComplicationStyle *)self->_style isEqual:?])
   {
-    v4 = [v6 copy];
+    v4 = [styleCopy copy];
     style = self->_style;
     self->_style = v4;
 
@@ -215,35 +215,35 @@ void __41__NTKComplicationViewController_loadView__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)setComplication:(id)a3
+- (void)setComplication:(id)complication
 {
-  v8 = a3;
+  complicationCopy = complication;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = +[NTKWidgetDescriptorProvider sharedInstance];
-    [(NTKComplicationViewController *)self _updateWidgetDescriptorForComplication:v8 withProvider:v4];
+    [(NTKComplicationViewController *)self _updateWidgetDescriptorForComplication:complicationCopy withProvider:v4];
   }
 
-  if (([v8 isEqual:self->_complication] & 1) == 0)
+  if (([complicationCopy isEqual:self->_complication] & 1) == 0)
   {
-    v5 = [v8 copy];
+    v5 = [complicationCopy copy];
     complication = self->_complication;
     self->_complication = v5;
 
     [(NTKComplicationViewController *)self _updatePresentationState];
     [(NTKComplicationViewController *)self _updateController];
-    v7 = [(NTKComplicationViewController *)self view];
-    [v7 setNeedsLayout];
+    view = [(NTKComplicationViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setDisplayProperties:(id)a3
+- (void)setDisplayProperties:(id)properties
 {
-  v6 = a3;
-  if ((NTKEqualObjects(self->_displayProperties, v6) & 1) == 0)
+  propertiesCopy = properties;
+  if ((NTKEqualObjects(self->_displayProperties, propertiesCopy) & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [propertiesCopy copy];
     displayProperties = self->_displayProperties;
     self->_displayProperties = v4;
 
@@ -251,40 +251,40 @@ void __41__NTKComplicationViewController_loadView__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)updateDisplayPropertiesWithBlock:(id)a3
+- (void)updateDisplayPropertiesWithBlock:(id)block
 {
   displayProperties = self->_displayProperties;
-  v5 = a3;
+  blockCopy = block;
   v6 = [(NTKComplicationControllerDisplayProperties *)displayProperties mutableCopy];
-  v5[2](v5, v6);
+  blockCopy[2](blockCopy, v6);
 
   [(NTKComplicationViewController *)self setDisplayProperties:v6];
 }
 
-- (void)setForceLivePresentationState:(BOOL)a3
+- (void)setForceLivePresentationState:(BOOL)state
 {
-  if (self->_forceLivePresentationState != a3)
+  if (self->_forceLivePresentationState != state)
   {
-    self->_forceLivePresentationState = a3;
+    self->_forceLivePresentationState = state;
   }
 
-  v4 = [(NTKComplicationViewController *)self viewIfLoaded];
+  viewIfLoaded = [(NTKComplicationViewController *)self viewIfLoaded];
 
-  if (v4)
+  if (viewIfLoaded)
   {
 
     [(NTKComplicationViewController *)self _updatePresentationState];
   }
 }
 
-- (void)_updateWidgetDescriptorForComplication:(id)a3 withProvider:(id)a4
+- (void)_updateWidgetDescriptorForComplication:(id)complication withProvider:(id)provider
 {
-  v23 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 descriptorsByExtensionIdentifier];
-  v7 = [v5 extensionBundleIdentifier];
-  v8 = [v6 objectForKey:v7];
+  complicationCopy = complication;
+  descriptorsByExtensionIdentifier = [provider descriptorsByExtensionIdentifier];
+  extensionBundleIdentifier = [complicationCopy extensionBundleIdentifier];
+  v8 = [descriptorsByExtensionIdentifier objectForKey:extensionBundleIdentifier];
 
   v29 = 0u;
   v30 = 0u;
@@ -297,7 +297,7 @@ void __41__NTKComplicationViewController_loadView__block_invoke(uint64_t a1, voi
     v11 = v10;
     v12 = *v28;
     v24 = v9;
-    v25 = v5;
+    v25 = complicationCopy;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -308,38 +308,38 @@ void __41__NTKComplicationViewController_loadView__block_invoke(uint64_t a1, voi
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        v15 = [v5 kind];
-        v16 = [v14 kind];
-        if (![v15 isEqual:v16])
+        kind = [complicationCopy kind];
+        kind2 = [v14 kind];
+        if (![kind isEqual:kind2])
         {
           goto LABEL_11;
         }
 
-        v17 = [v5 containerBundleIdentifier];
-        v18 = [v14 containerBundleIdentifier];
-        if (![v17 isEqual:v18])
+        containerBundleIdentifier = [complicationCopy containerBundleIdentifier];
+        containerBundleIdentifier2 = [v14 containerBundleIdentifier];
+        if (![containerBundleIdentifier isEqual:containerBundleIdentifier2])
         {
 
 LABEL_11:
           continue;
         }
 
-        v19 = [v5 extensionBundleIdentifier];
+        extensionBundleIdentifier2 = [complicationCopy extensionBundleIdentifier];
         [v14 extensionBundleIdentifier];
         v20 = v11;
         v22 = v21 = v12;
-        v26 = [v19 isEqual:v22];
+        v26 = [extensionBundleIdentifier2 isEqual:v22];
 
         v12 = v21;
         v11 = v20;
 
         v9 = v24;
-        v5 = v25;
+        complicationCopy = v25;
 
         if (v26)
         {
-          objc_storeStrong(&v23->_widgetDescriptor, v14);
-          [(NTKComplicationViewController *)v23 displayWrapperTemplateBackgroundChanged];
+          objc_storeStrong(&selfCopy->_widgetDescriptor, v14);
+          [(NTKComplicationViewController *)selfCopy displayWrapperTemplateBackgroundChanged];
           goto LABEL_14;
         }
       }
@@ -356,10 +356,10 @@ LABEL_14:
 - (void)_updatePresentationState
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [(NTKComplicationVariant *)self->_variant family];
+  family = [(NTKComplicationVariant *)self->_variant family];
   v4 = [NTKComplicationProvider providerForDevice:self->_device];
   complication = self->_complication;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:family];
   v15[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   LOBYTE(complication) = [v4 isComplicationAvailable:complication forFamilies:v7];
@@ -432,11 +432,11 @@ LABEL_14:
 
 - (void)_recreateDisplayIfNecessary
 {
-  v3 = [(NTKComplicationController *)self->_controller richComplicationDisplayViewClass];
-  if (v3)
+  richComplicationDisplayViewClass = [(NTKComplicationController *)self->_controller richComplicationDisplayViewClass];
+  if (richComplicationDisplayViewClass)
   {
-    v4 = v3;
-    if ([(objc_class *)v3 instancesRespondToSelector:sel_initWithFamily_])
+    v4 = richComplicationDisplayViewClass;
+    if ([(objc_class *)richComplicationDisplayViewClass instancesRespondToSelector:sel_initWithFamily_])
     {
       v5 = [[v4 alloc] initWithFamily:{-[NTKComplicationVariant family](self->_variant, "family")}];
     }
@@ -456,28 +456,28 @@ LABEL_14:
   wrapperView = self->_wrapperView;
   if (wrapperView)
   {
-    v4 = [(NTKComplicationDisplayWrapperView *)wrapperView display];
-    [(NTKComplicationViewController *)self _applyStyleToDisplay:v4];
+    display = [(NTKComplicationDisplayWrapperView *)wrapperView display];
+    [(NTKComplicationViewController *)self _applyStyleToDisplay:display];
   }
 }
 
-- (void)_applyStyleToDisplay:(id)a3
+- (void)_applyStyleToDisplay:(id)display
 {
-  v9 = a3;
-  if ([v9 conformsToProtocol:&unk_28A7FF4C0])
+  displayCopy = display;
+  if ([displayCopy conformsToProtocol:&unk_28A7FF4C0])
   {
-    v4 = v9;
-    v5 = [(NTKComplicationViewController *)self style];
-    v6 = [v5 circularPlatterColor];
-    [v4 setPlatterColor:v6];
+    v4 = displayCopy;
+    style = [(NTKComplicationViewController *)self style];
+    circularPlatterColor = [style circularPlatterColor];
+    [v4 setPlatterColor:circularPlatterColor];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v9;
-    v8 = [(NTKComplicationViewController *)self style];
-    [v7 setFontStyle:{objc_msgSend(v8, "fontStyle")}];
+    v7 = displayCopy;
+    style2 = [(NTKComplicationViewController *)self style];
+    [v7 setFontStyle:{objc_msgSend(style2, "fontStyle")}];
 
     [v7 setFilterProvider:self->_monochromeModel];
     [v7 transitionToMonochromeWithFraction:0.0];
@@ -498,13 +498,13 @@ LABEL_14:
 
   else
   {
-    v8 = [(NTKComplicationViewController *)self variant];
-    v9 = [v8 family];
-    v10 = [(NTKComplicationViewController *)self device];
-    v33 = [NTKComplicationMetrics defaultMetricsForFamily:v9 device:v10];
+    variant = [(NTKComplicationViewController *)self variant];
+    family = [variant family];
+    device = [(NTKComplicationViewController *)self device];
+    v33 = [NTKComplicationMetrics defaultMetricsForFamily:family device:device];
 
-    v11 = [(NTKComplicationViewController *)self variant];
-    v12 = [v11 metrics];
+    variant2 = [(NTKComplicationViewController *)self variant];
+    metrics = [variant2 metrics];
 
     [v33 size];
     v14 = v13;
@@ -513,11 +513,11 @@ LABEL_14:
     [v33 safeAreaInsets];
     v19 = v14 - (v17 + v18);
     v22 = v16 - (v20 + v21);
-    [v12 size];
+    [metrics size];
     v24 = v23;
-    [v12 size];
+    [metrics size];
     v26 = v25;
-    [v12 safeAreaInsets];
+    [metrics safeAreaInsets];
     v31 = (v24 - (v27 + v28)) / v19;
     v32 = (v26 - (v29 + v30)) / v22;
     if (v31 < v32)
@@ -535,27 +535,27 @@ LABEL_14:
 {
   if ([(NTKComplication *)self->_complication complicationType]== 56)
   {
-    v3 = [(NTKComplicationViewController *)self variant];
-    v4 = [v3 metrics];
+    variant = [(NTKComplicationViewController *)self variant];
+    metrics = [variant metrics];
   }
 
   else
   {
-    v3 = [(NTKComplicationViewController *)self variant];
-    v5 = [v3 family];
-    v6 = [(NTKComplicationViewController *)self device];
-    v4 = [NTKComplicationMetrics defaultMetricsForFamily:v5 device:v6];
+    variant = [(NTKComplicationViewController *)self variant];
+    family = [variant family];
+    device = [(NTKComplicationViewController *)self device];
+    metrics = [NTKComplicationMetrics defaultMetricsForFamily:family device:device];
   }
 
-  return v4;
+  return metrics;
 }
 
 - (void)displayWrapperTemplateBackgroundChanged
 {
-  v3 = [(NTKComplicationViewController *)self delegate];
+  delegate = [(NTKComplicationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 complicationViewControllerBackgroundChanged:self];
+    [delegate complicationViewControllerBackgroundChanged:self];
   }
 }
 
@@ -567,60 +567,60 @@ LABEL_14:
     [(NTKComplicationVariant *)self->_variant family];
     if (([(CHSWidgetDescriptor *)self->_widgetDescriptor wantsMaterialBackgroundForFamily:CLKWidgetFamilyForComplicationFamily()]& 1) != 0 || ([(CHSWidgetDescriptor *)self->_widgetDescriptor isLinkedOnOrAfter:0]& 1) == 0)
     {
-      v3 = [objc_alloc(MEMORY[0x277CBB710]) initWithMaterialBackground];
+      initWithMaterialBackground = [objc_alloc(MEMORY[0x277CBB710]) initWithMaterialBackground];
     }
 
     else
     {
-      v3 = [objc_alloc(MEMORY[0x277CBB710]) initWithClearBackground];
+      initWithMaterialBackground = [objc_alloc(MEMORY[0x277CBB710]) initWithClearBackground];
     }
 
-    v7 = v3;
+    v7 = initWithMaterialBackground;
   }
 
   else
   {
-    v4 = [(NTKComplicationDisplayWrapperView *)self->_wrapperView complicationTemplate];
-    v5 = [v4 backgroundDescriptor];
+    complicationTemplate = [(NTKComplicationDisplayWrapperView *)self->_wrapperView complicationTemplate];
+    backgroundDescriptor = [complicationTemplate backgroundDescriptor];
 
-    if (v5)
+    if (backgroundDescriptor)
     {
-      v6 = v5;
+      initWithMaterialBackground2 = backgroundDescriptor;
     }
 
     else
     {
-      v8 = [(NTKComplicationVariant *)self->_variant metrics];
-      v9 = [v8 opaque];
+      metrics = [(NTKComplicationVariant *)self->_variant metrics];
+      opaque = [metrics opaque];
 
       v10 = objc_alloc(MEMORY[0x277CBB710]);
-      if (v9)
+      if (opaque)
       {
-        v6 = [v10 initWithMaterialBackground];
+        initWithMaterialBackground2 = [v10 initWithMaterialBackground];
       }
 
       else
       {
-        v6 = [v10 initWithClearBackground];
+        initWithMaterialBackground2 = [v10 initWithClearBackground];
       }
     }
 
-    v7 = v6;
+    v7 = initWithMaterialBackground2;
   }
 
   return v7;
 }
 
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__NTKComplicationViewController_descriptorsDidChangeForDescriptorProvider___block_invoke;
   v6[3] = &unk_27877E438;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = providerCopy;
+  v5 = providerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -640,9 +640,9 @@ uint64_t __75__NTKComplicationViewController_descriptorsDidChangeForDescriptorPr
   return result;
 }
 
-- (void)complicationController:(id)a3 touchedUpForDisplayWrapper:(id)a4
+- (void)complicationController:(id)controller touchedUpForDisplayWrapper:(id)wrapper
 {
-  [(NTKComplicationViewController *)self setTouchedDown:0, a4];
+  [(NTKComplicationViewController *)self setTouchedDown:0, wrapper];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -650,9 +650,9 @@ uint64_t __75__NTKComplicationViewController_descriptorsDidChangeForDescriptorPr
   }
 }
 
-- (void)complicationController:(id)a3 touchedDownForDisplayWrapper:(id)a4
+- (void)complicationController:(id)controller touchedDownForDisplayWrapper:(id)wrapper
 {
-  [(NTKComplicationViewController *)self setTouchedDown:1, a4];
+  [(NTKComplicationViewController *)self setTouchedDown:1, wrapper];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -660,7 +660,7 @@ uint64_t __75__NTKComplicationViewController_descriptorsDidChangeForDescriptorPr
   }
 }
 
-- (void)willLaunchAppForComplicationDisplayWrapper:(id)a3
+- (void)willLaunchAppForComplicationDisplayWrapper:(id)wrapper
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -669,7 +669,7 @@ uint64_t __75__NTKComplicationViewController_descriptorsDidChangeForDescriptorPr
   }
 }
 
-- (void)complicationProviderComplicationsDidChange:(id)a3
+- (void)complicationProviderComplicationsDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

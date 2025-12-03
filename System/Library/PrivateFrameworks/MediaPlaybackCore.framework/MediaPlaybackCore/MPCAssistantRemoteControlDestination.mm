@@ -3,32 +3,32 @@
 + (id)nowPlayingApplicationDestination;
 + (id)podcastsApplicationDestination;
 + (id)systemMediaApplicationDestination;
-- (MPCAssistantRemoteControlDestination)initWithAppBundleID:(id)a3 playerID:(id)a4 origin:(void *)a5;
-- (MPCAssistantRemoteControlDestination)initWithCoder:(id)a3;
-- (MPCAssistantRemoteControlDestination)initWithPlayerPath:(id)a3;
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPCAssistantRemoteControlDestination)initWithAppBundleID:(id)d playerID:(id)iD origin:(void *)origin;
+- (MPCAssistantRemoteControlDestination)initWithCoder:(id)coder;
+- (MPCAssistantRemoteControlDestination)initWithPlayerPath:(id)path;
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)createPlayerPath;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)resolveForWatchControlCommandWithRouteIdentifiers:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)resolveWithQueue:(id)a3 hashedRouteIdentifiers:(id)a4 localPlaybackPermitted:(BOOL)a5 audioRoutingInfo:(id)a6 completion:(id)a7;
-- (void)resolveWithQueue:(id)a3 routeIdentifiers:(id)a4 localPlaybackPermitted:(BOOL)a5 audioRoutingInfo:(id)a6 completion:(id)a7;
+- (void)encodeWithCoder:(id)coder;
+- (void)resolveForWatchControlCommandWithRouteIdentifiers:(id)identifiers queue:(id)queue completion:(id)completion;
+- (void)resolveWithQueue:(id)queue hashedRouteIdentifiers:(id)identifiers localPlaybackPermitted:(BOOL)permitted audioRoutingInfo:(id)info completion:(id)completion;
+- (void)resolveWithQueue:(id)queue routeIdentifiers:(id)identifiers localPlaybackPermitted:(BOOL)permitted audioRoutingInfo:(id)info completion:(id)completion;
 @end
 
 @implementation MPCAssistantRemoteControlDestination
 
-- (MPCAssistantRemoteControlDestination)initWithCoder:(id)a3
+- (MPCAssistantRemoteControlDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppBundleID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PlayerID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppBundleID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PlayerID"];
   v7 = [(MPCAssistantRemoteControlDestination *)self initWithAppBundleID:v5 playerID:v6 origin:0];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OriginatingOutputDeviceUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OriginatingOutputDeviceUID"];
     originatingOutputDeviceUID = v7->_originatingOutputDeviceUID;
     v7->_originatingOutputDeviceUID = v8;
   }
@@ -36,18 +36,18 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originatingOutputDeviceUID = self->_originatingOutputDeviceUID;
-  v5 = a3;
-  [v5 encodeObject:originatingOutputDeviceUID forKey:@"OriginatingOutputDeviceUID"];
-  [v5 encodeObject:self->_appBundleID forKey:@"AppBundleID"];
-  [v5 encodeObject:self->_playerID forKey:@"PlayerID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originatingOutputDeviceUID forKey:@"OriginatingOutputDeviceUID"];
+  [coderCopy encodeObject:self->_appBundleID forKey:@"AppBundleID"];
+  [coderCopy encodeObject:self->_playerID forKey:@"PlayerID"];
 }
 
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   v6 = [(NSString *)self->_appBundleID copy];
   v7 = v5[1];
   v5[1] = v6;
@@ -90,11 +90,11 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MPCAssistantRemoteControlDestination *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MPCAssistantRemoteControlDestination *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
 + (id)nowPlayingApplicationDestination
@@ -121,10 +121,10 @@
 + (id)systemMediaApplicationDestination
 {
   v2 = *MEMORY[0x1E69B12F0];
-  v3 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v4 = [v3 sonicHijack];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  sonicHijack = [standardUserDefaults sonicHijack];
 
-  if (v4)
+  if (sonicHijack)
   {
 
     v2 = @"com.apple.Sonic";
@@ -135,23 +135,23 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MPCAssistantRemoteControlDestination *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MPCAssistantRemoteControlDestination *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (void)resolveForWatchControlCommandWithRouteIdentifiers:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)resolveForWatchControlCommandWithRouteIdentifiers:(id)identifiers queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = [(MPCAssistantRemoteControlDestination *)self mutableCopy];
-  if ([v8 count])
+  if ([identifiersCopy count])
   {
-    [v11 setOutputDeviceUIDs:v8];
-    v10[2](v10, v11);
+    [v11 setOutputDeviceUIDs:identifiersCopy];
+    completionCopy[2](completionCopy, v11);
   }
 
   else
@@ -169,7 +169,7 @@
     v23[2] = __107__MPCAssistantRemoteControlDestination_resolveForWatchControlCommandWithRouteIdentifiers_queue_completion___block_invoke_43;
     v23[3] = &unk_1E8231210;
     v23[4] = self;
-    v24 = v9;
+    v24 = queueCopy;
     v25 = v12;
     v14 = v13;
     v26 = v14;
@@ -182,7 +182,7 @@
     }
 
     v19 = v15;
-    v20 = v10;
+    v20 = completionCopy;
     v21 = v14;
     v17 = v14;
     v18 = v15;
@@ -294,33 +294,33 @@ uint64_t __107__MPCAssistantRemoteControlDestination_resolveForWatchControlComma
   return (*(*v8 + 2))();
 }
 
-- (void)resolveWithQueue:(id)a3 routeIdentifiers:(id)a4 localPlaybackPermitted:(BOOL)a5 audioRoutingInfo:(id)a6 completion:(id)a7
+- (void)resolveWithQueue:(id)queue routeIdentifiers:(id)identifiers localPlaybackPermitted:(BOOL)permitted audioRoutingInfo:(id)info completion:(id)completion
 {
-  v12 = a4;
-  v9 = a7;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v10 = [(MPCAssistantRemoteControlDestination *)self mutableCopy];
-  if ([v12 count])
+  if ([identifiersCopy count])
   {
-    [v10 setOutputDeviceUIDs:v12];
-    v9[2](v9, v10);
+    [v10 setOutputDeviceUIDs:identifiersCopy];
+    completionCopy[2](completionCopy, v10);
   }
 
   else
   {
     v11 = [(MPCAssistantRemoteControlDestination *)self copy];
-    v9[2](v9, v11);
+    completionCopy[2](completionCopy, v11);
 
-    v9 = v11;
+    completionCopy = v11;
   }
 }
 
-- (void)resolveWithQueue:(id)a3 hashedRouteIdentifiers:(id)a4 localPlaybackPermitted:(BOOL)a5 audioRoutingInfo:(id)a6 completion:(id)a7
+- (void)resolveWithQueue:(id)queue hashedRouteIdentifiers:(id)identifiers localPlaybackPermitted:(BOOL)permitted audioRoutingInfo:(id)info completion:(id)completion
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if ([v13 count])
+  permittedCopy = permitted;
+  queueCopy = queue;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if ([identifiersCopy count])
   {
     v15 = [(MPCAssistantRemoteControlDestination *)self mutableCopy];
     v16 = objc_alloc_init(MPCAssistantEncodings);
@@ -330,15 +330,15 @@ uint64_t __107__MPCAssistantRemoteControlDestination_resolveForWatchControlComma
     v19[3] = &unk_1E8231198;
     v20 = v16;
     v21 = v15;
-    v22 = v14;
+    v22 = completionCopy;
     v17 = v15;
     v18 = v16;
-    [(MPCAssistantEncodings *)v18 decodeHashedRouteUIDs:v13 completion:v19];
+    [(MPCAssistantEncodings *)v18 decodeHashedRouteUIDs:identifiersCopy completion:v19];
   }
 
   else
   {
-    [(MPCAssistantRemoteControlDestination *)self resolveWithQueue:v12 routeIdentifiers:0 localPlaybackPermitted:v9 audioRoutingInfo:*&a6 completion:v14];
+    [(MPCAssistantRemoteControlDestination *)self resolveWithQueue:queueCopy routeIdentifiers:0 localPlaybackPermitted:permittedCopy audioRoutingInfo:*&info completion:completionCopy];
   }
 }
 
@@ -396,14 +396,14 @@ void __131__MPCAssistantRemoteControlDestination_resolveWithQueue_hashedRouteIde
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@ %p ", objc_opt_class(), self];
   if ([(NSArray *)self->_outputDeviceUIDs count])
   {
-    v4 = [(NSArray *)self->_outputDeviceUIDs msv_compactDescription];
-    [v3 appendFormat:@"outputDeviceUIDs=[%@] ", v4];
+    msv_compactDescription = [(NSArray *)self->_outputDeviceUIDs msv_compactDescription];
+    [v3 appendFormat:@"outputDeviceUIDs=[%@] ", msv_compactDescription];
   }
 
   if ([(NSArray *)self->_outputGroups count])
   {
-    v5 = [(NSArray *)self->_outputGroups msv_compactDescription];
-    [v3 appendFormat:@"outputGroups=[%@] ", v5];
+    msv_compactDescription2 = [(NSArray *)self->_outputGroups msv_compactDescription];
+    [v3 appendFormat:@"outputGroups=[%@] ", msv_compactDescription2];
   }
 
   if ([(NSString *)self->_outputGroupID length])
@@ -416,8 +416,8 @@ void __131__MPCAssistantRemoteControlDestination_resolveWithQueue_hashedRouteIde
     [v3 appendFormat:@"originatingOutputDeviceUID=%@ ", self->_originatingOutputDeviceUID];
   }
 
-  v6 = [(MPCAssistantRemoteControlDestination *)self createPlayerPath];
-  [v3 appendFormat:@"playerPath=%@ ", v6];
+  createPlayerPath = [(MPCAssistantRemoteControlDestination *)self createPlayerPath];
+  [v3 appendFormat:@"playerPath=%@ ", createPlayerPath];
   if (self->_isCompanion)
   {
     [v3 appendString:@"isCompanion=YES "];
@@ -457,39 +457,39 @@ void __131__MPCAssistantRemoteControlDestination_resolveWithQueue_hashedRouteIde
   [(MPCAssistantRemoteControlDestination *)&v4 dealloc];
 }
 
-- (MPCAssistantRemoteControlDestination)initWithPlayerPath:(id)a3
+- (MPCAssistantRemoteControlDestination)initWithPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 client];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v4 player];
-  v8 = [v7 identifier];
-  v9 = [v4 origin];
+  pathCopy = path;
+  client = [pathCopy client];
+  bundleIdentifier = [client bundleIdentifier];
+  player = [pathCopy player];
+  identifier = [player identifier];
+  origin = [pathCopy origin];
 
-  v10 = [(MPCAssistantRemoteControlDestination *)self initWithAppBundleID:v6 playerID:v8 origin:v9];
+  v10 = [(MPCAssistantRemoteControlDestination *)self initWithAppBundleID:bundleIdentifier playerID:identifier origin:origin];
   return v10;
 }
 
-- (MPCAssistantRemoteControlDestination)initWithAppBundleID:(id)a3 playerID:(id)a4 origin:(void *)a5
+- (MPCAssistantRemoteControlDestination)initWithAppBundleID:(id)d playerID:(id)iD origin:(void *)origin
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v17.receiver = self;
   v17.super_class = MPCAssistantRemoteControlDestination;
   v10 = [(MPCAssistantRemoteControlDestination *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     appBundleID = v10->_appBundleID;
     v10->_appBundleID = v11;
 
-    v13 = [v9 copy];
+    v13 = [iDCopy copy];
     playerID = v10->_playerID;
     v10->_playerID = v13;
 
-    if (a5)
+    if (origin)
     {
-      v15 = CFRetain(a5);
+      v15 = CFRetain(origin);
     }
 
     else

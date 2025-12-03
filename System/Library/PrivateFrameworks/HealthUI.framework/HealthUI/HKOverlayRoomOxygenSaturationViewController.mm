@@ -1,50 +1,50 @@
 @interface HKOverlayRoomOxygenSaturationViewController
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
-- (HKOverlayRoomOxygenSaturationViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 preferredOverlay:(int64_t)a6 trendModel:(id)a7 factorDisplayTypes:(id)a8;
-- (id)_buildAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
+- (HKOverlayRoomOxygenSaturationViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types;
+- (id)_buildAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store;
 - (id)_buildGranularAverageDataSourceTitleFromTimeScope;
-- (id)_configureContextSectionsForFullMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)_configureContextSectionsForSingleOverlayMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
+- (id)_configureContextSectionsForFullMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)_configureContextSectionsForSingleOverlayMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
 - (id)_createOverrideOnboardingGestureRecognizer;
-- (id)_makeAverageContextForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 contextDelegate:(id *)a6;
-- (id)_makeLatestContextForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)_makePressureOverlayContextForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 context:(unint64_t)a6 contextDelegate:(id *)a7;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (id)_makeAverageContextForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller contextDelegate:(id *)delegate;
+- (id)_makeLatestContextForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)_makePressureOverlayContextForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller context:(unint64_t)context contextDelegate:(id *)delegate;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
 - (void)_installOverrideOnboardingGestureRecognizer;
-- (void)_overrideOnboardingAction:(id)a3;
+- (void)_overrideOnboardingAction:(id)action;
 - (void)_uninstallOverrideOnboardingGestureRecognizer;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HKOverlayRoomOxygenSaturationViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a6;
-  v20 = a5;
-  v21 = [[a1 alloc] initWithDisplayDate:v19 applicationItems:v20 mode:1 preferredOverlay:a7 trendModel:v17 factorDisplayTypes:v16];
+  typesCopy = types;
+  modelCopy = model;
+  activityCopy = activity;
+  dateCopy = date;
+  itemsCopy = items;
+  v21 = [[self alloc] initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:1 preferredOverlay:overlay trendModel:modelCopy factorDisplayTypes:typesCopy];
 
-  [v21 setRestorationUserActivity:v18];
-  [v21 setAdditionalChartOptions:a11];
+  [v21 setRestorationUserActivity:activityCopy];
+  [v21 setAdditionalChartOptions:options];
 
   return v21;
 }
 
-- (HKOverlayRoomOxygenSaturationViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 preferredOverlay:(int64_t)a6 trendModel:(id)a7 factorDisplayTypes:(id)a8
+- (HKOverlayRoomOxygenSaturationViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
-  v17 = a4;
-  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:v15];
+  dateCopy = date;
+  modelCopy = model;
+  typesCopy = types;
+  itemsCopy = items;
+  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:modelCopy];
   v19 = v18;
   if (v18)
   {
@@ -53,14 +53,14 @@
 
   else
   {
-    v20 = v14;
+    v20 = dateCopy;
   }
 
   v21 = v20;
 
   v31.receiver = self;
   v31.super_class = HKOverlayRoomOxygenSaturationViewController;
-  v22 = [(HKOverlayRoomViewController *)&v31 initWithDisplayDate:v21 applicationItems:v17 factorDisplayTypes:v16 mode:a5];
+  v22 = [(HKOverlayRoomViewController *)&v31 initWithDisplayDate:v21 applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:mode];
 
   if (v22)
   {
@@ -68,22 +68,22 @@
     contextDelegates = v22->_contextDelegates;
     v22->_contextDelegates = v23;
 
-    v22->_preferredOverlay = a6;
+    v22->_preferredOverlay = overlay;
     preferredOverlayIndex = v22->_preferredOverlayIndex;
     v22->_preferredOverlayIndex = 0;
 
-    objc_storeStrong(&v22->_trendModel, a7);
-    if (a5 == 3)
+    objc_storeStrong(&v22->_trendModel, model);
+    if (mode == 3)
     {
       v26 = 0;
     }
 
     else
     {
-      v27 = [v15 selectTrendInitially];
-      if (a5)
+      selectTrendInitially = [modelCopy selectTrendInitially];
+      if (mode)
       {
-        v28 = a6 == 0;
+        v28 = overlay == 0;
       }
 
       else
@@ -92,7 +92,7 @@
       }
 
       v29 = !v28;
-      v26 = v29 | v27;
+      v26 = v29 | selectTrendInitially;
     }
 
     [(HKOverlayRoomViewController *)v22 setShouldSelectInitialOverlay:v26 & 1];
@@ -101,7 +101,7 @@
   return v22;
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   v3 = HKHealthKitFrameworkBundle();
   v4 = [v3 localizedStringForKey:@"OXYGEN_SATURATION" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
@@ -109,20 +109,20 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HKOverlayRoomOxygenSaturationViewController;
-  [(HKOverlayRoomOxygenSaturationViewController *)&v4 viewWillAppear:a3];
+  [(HKOverlayRoomOxygenSaturationViewController *)&v4 viewWillAppear:appear];
   if ([MEMORY[0x1E696C608] isAppleInternalInstall])
   {
     [(HKOverlayRoomOxygenSaturationViewController *)self _installOverrideOnboardingGestureRecognizer];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([MEMORY[0x1E696C608] isAppleInternalInstall])
   {
     [(HKOverlayRoomOxygenSaturationViewController *)self _uninstallOverrideOnboardingGestureRecognizer];
@@ -130,26 +130,26 @@
 
   v5.receiver = self;
   v5.super_class = HKOverlayRoomOxygenSaturationViewController;
-  [(HKOverlayRoomOxygenSaturationViewController *)&v5 viewWillDisappear:v3];
+  [(HKOverlayRoomOxygenSaturationViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)_installOverrideOnboardingGestureRecognizer
 {
-  v3 = [(HKOverlayRoomOxygenSaturationViewController *)self _createOverrideOnboardingGestureRecognizer];
-  [(HKOverlayRoomOxygenSaturationViewController *)self setOverrideOnboardingRecognizer:v3];
+  _createOverrideOnboardingGestureRecognizer = [(HKOverlayRoomOxygenSaturationViewController *)self _createOverrideOnboardingGestureRecognizer];
+  [(HKOverlayRoomOxygenSaturationViewController *)self setOverrideOnboardingRecognizer:_createOverrideOnboardingGestureRecognizer];
 
-  v6 = [(HKOverlayRoomOxygenSaturationViewController *)self navigationController];
-  v4 = [v6 navigationBar];
-  v5 = [(HKOverlayRoomOxygenSaturationViewController *)self overrideOnboardingRecognizer];
-  [v4 addGestureRecognizer:v5];
+  navigationController = [(HKOverlayRoomOxygenSaturationViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  overrideOnboardingRecognizer = [(HKOverlayRoomOxygenSaturationViewController *)self overrideOnboardingRecognizer];
+  [navigationBar addGestureRecognizer:overrideOnboardingRecognizer];
 }
 
 - (void)_uninstallOverrideOnboardingGestureRecognizer
 {
-  v3 = [(HKOverlayRoomOxygenSaturationViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  v5 = [(HKOverlayRoomOxygenSaturationViewController *)self overrideOnboardingRecognizer];
-  [v4 removeGestureRecognizer:v5];
+  navigationController = [(HKOverlayRoomOxygenSaturationViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  overrideOnboardingRecognizer = [(HKOverlayRoomOxygenSaturationViewController *)self overrideOnboardingRecognizer];
+  [navigationBar removeGestureRecognizer:overrideOnboardingRecognizer];
 
   [(HKOverlayRoomOxygenSaturationViewController *)self setOverrideOnboardingRecognizer:0];
 }
@@ -161,7 +161,7 @@
   return v2;
 }
 
-- (void)_overrideOnboardingAction:(id)a3
+- (void)_overrideOnboardingAction:(id)action
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BD58]];
@@ -173,35 +173,35 @@
   v9 = [(HKFeatureAvailabilityInternalSettingsConfiguration *)v5 initWithFeatureIdentifier:v6 userDefaultsDomain:v7 userDefaultsFeatureEnabledKey:@"HKRPBloodOxygenSaturationEnabled" userDefaultsDisabledOverrideKey:@"OverrideIsRemoteDisabled" options:15 samplesTypesToDelete:v8];
 
   v10 = [HKFeatureAvailabilityInternalSettingsViewController alloc];
-  v11 = [(HKOverlayRoomViewController *)self applicationItems];
-  v12 = [v11 healthStore];
-  v13 = [(HKFeatureAvailabilityInternalSettingsViewController *)v10 initWithHealthStore:v12 configuration:v9];
+  applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+  healthStore = [applicationItems healthStore];
+  v13 = [(HKFeatureAvailabilityInternalSettingsViewController *)v10 initWithHealthStore:healthStore configuration:v9];
 
   [(HKOverlayRoomOxygenSaturationViewController *)self showViewController:v13 sender:self];
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   v3 = MEMORY[0x1E696C2E0];
   v4 = *MEMORY[0x1E696BD58];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v3 quantityTypeForIdentifier:v4];
-  v7 = [v5 displayTypeController];
+  displayTypeController = [itemsCopy displayTypeController];
 
-  v8 = [v7 displayTypeForObjectType:v6];
+  v8 = [displayTypeController displayTypeForObjectType:v6];
 
   return v8;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if ((a3 - 1) < 2)
+  itemsCopy = items;
+  controllerCopy = controller;
+  if ((mode - 1) < 2)
   {
     v10 = [HKOverlayContextSectionContainer alloc];
-    v11 = [(HKOverlayRoomOxygenSaturationViewController *)self _configureContextSectionsForSingleOverlayMode:a3 applicationItems:v8 overlayChartController:v9];
+    v11 = [(HKOverlayRoomOxygenSaturationViewController *)self _configureContextSectionsForSingleOverlayMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy];
     v12 = [(HKOverlayContextSectionContainer *)v10 initWithContainerTitle:0 overlayContextSections:v11];
     v18[0] = v12;
     v13 = v18;
@@ -211,10 +211,10 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
     v14 = [HKOverlayContextSectionContainer alloc];
-    v11 = [(HKOverlayRoomOxygenSaturationViewController *)self _configureContextSectionsForFullMode:3 applicationItems:v8 overlayChartController:v9];
+    v11 = [(HKOverlayRoomOxygenSaturationViewController *)self _configureContextSectionsForFullMode:3 applicationItems:itemsCopy overlayChartController:controllerCopy];
     v12 = [(HKOverlayContextSectionContainer *)v14 initWithContainerTitle:0 overlayContextSections:v11];
     v17 = v12;
     v13 = &v17;
@@ -227,17 +227,17 @@ LABEL_7:
   return v15;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v10 = [HKOverlayRoomOxygenSaturationViewController alloc];
-  v11 = [(HKOverlayRoomOxygenSaturationViewController *)self preferredOverlay];
+  preferredOverlay = [(HKOverlayRoomOxygenSaturationViewController *)self preferredOverlay];
   trendModel = self->_trendModel;
-  v13 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v14 = [(HKOverlayRoomOxygenSaturationViewController *)v10 initWithDisplayDate:v9 applicationItems:v8 mode:a3 preferredOverlay:v11 trendModel:trendModel factorDisplayTypes:v13];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v14 = [(HKOverlayRoomOxygenSaturationViewController *)v10 initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:mode preferredOverlay:preferredOverlay trendModel:trendModel factorDisplayTypes:factorDisplayTypes];
 
-  [(HKOverlayRoomViewController *)v14 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3]];
+  [(HKOverlayRoomViewController *)v14 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode]];
 
   return v14;
 }
@@ -250,35 +250,35 @@ LABEL_7:
     if (v3 != 8)
     {
       v4 = v3;
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 timeScopeController];
-      [v6 setSelectedTimeScope:v4];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      timeScopeController = [applicationItems timeScopeController];
+      [timeScopeController setSelectedTimeScope:v4];
     }
   }
 
   v9.receiver = self;
   v9.super_class = HKOverlayRoomOxygenSaturationViewController;
-  v7 = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
+  createChartOverlayViewController = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
 
-  return v7;
+  return createChartOverlayViewController;
 }
 
-- (id)_configureContextSectionsForSingleOverlayMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)_configureContextSectionsForSingleOverlayMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeLatestContextForMode:a3 applicationItems:v8 overlayChartController:v9];
+  itemsCopy = items;
+  controllerCopy = controller;
+  v10 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeLatestContextForMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy];
   preferredOverlayIndex = self->_preferredOverlayIndex;
   self->_preferredOverlayIndex = &unk_1F43824E8;
 
   trendModel = self->_trendModel;
   if (trendModel && [(HKChartSummaryTrendModel *)trendModel selectTrendInitially])
   {
-    v13 = [(HKOverlayRoomOxygenSaturationViewController *)self primaryDisplayTypeWithApplicationItems:v8];
-    v14 = [[HKOverlayRoomTrendContext alloc] initWithBaseDisplayType:v13 trendModel:self->_trendModel overlayChartController:v9 applicationItems:v8 overlayMode:a3];
-    v15 = [(HKOverlayRoomViewController *)self chartController];
-    [v15 setTrendAccessibilityDelegate:v14];
+    v13 = [(HKOverlayRoomOxygenSaturationViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
+    v14 = [[HKOverlayRoomTrendContext alloc] initWithBaseDisplayType:v13 trendModel:self->_trendModel overlayChartController:controllerCopy applicationItems:itemsCopy overlayMode:mode];
+    chartController = [(HKOverlayRoomViewController *)self chartController];
+    [chartController setTrendAccessibilityDelegate:v14];
 
     v10 = v14;
   }
@@ -294,47 +294,47 @@ LABEL_7:
   return v19;
 }
 
-- (id)_configureContextSectionsForFullMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)_configureContextSectionsForFullMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  controllerCopy = controller;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeLatestContextForMode:a3 applicationItems:v8 overlayChartController:v9];
+  v11 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeLatestContextForMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy];
   [v10 addObject:v11];
   v30 = v11;
-  v29 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeRangeContextForMode:a3 applicationItems:v8 overlayChartController:v9];
+  v29 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeRangeContextForMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy];
   [v10 addObject:?];
   v32 = 0;
-  v12 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeAverageContextForMode:a3 applicationItems:v8 overlayChartController:v9 contextDelegate:&v32];
+  v12 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeAverageContextForMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy contextDelegate:&v32];
   v13 = v32;
   [v10 addObject:v12];
   if (v13)
   {
-    v14 = [(HKOverlayRoomOxygenSaturationViewController *)self contextDelegates];
-    [v14 addObject:v13];
+    contextDelegates = [(HKOverlayRoomOxygenSaturationViewController *)self contextDelegates];
+    [contextDelegates addObject:v13];
   }
 
   v31 = 0;
-  v15 = [(HKOverlayRoomOxygenSaturationViewController *)self _makePressureOverlayContextForMode:a3 applicationItems:v8 overlayChartController:v9 context:1 contextDelegate:&v31];
+  v15 = [(HKOverlayRoomOxygenSaturationViewController *)self _makePressureOverlayContextForMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy context:1 contextDelegate:&v31];
   v16 = v31;
   v28 = v15;
   [v10 addObject:v15];
   if (v16)
   {
-    v17 = [(HKOverlayRoomOxygenSaturationViewController *)self contextDelegates];
-    [v17 addObject:v16];
+    contextDelegates2 = [(HKOverlayRoomOxygenSaturationViewController *)self contextDelegates];
+    [contextDelegates2 addObject:v16];
   }
 
-  v18 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeSleepContextForMode:a3 applicationItems:v8 overlayChartController:v9];
+  v18 = [(HKOverlayRoomOxygenSaturationViewController *)self _makeSleepContextForMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy];
   [v10 addObject:v18];
   v19 = v30;
   if (self->_trendModel)
   {
-    v20 = [(HKOverlayRoomOxygenSaturationViewController *)self primaryDisplayTypeWithApplicationItems:v8];
-    v21 = [[HKOverlayRoomTrendContext alloc] initWithBaseDisplayType:v20 trendModel:self->_trendModel overlayChartController:v9 applicationItems:v8 overlayMode:a3];
-    v22 = [(HKOverlayRoomViewController *)self chartController];
-    [v22 setTrendAccessibilityDelegate:v21];
+    v20 = [(HKOverlayRoomOxygenSaturationViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
+    v21 = [[HKOverlayRoomTrendContext alloc] initWithBaseDisplayType:v20 trendModel:self->_trendModel overlayChartController:controllerCopy applicationItems:itemsCopy overlayMode:mode];
+    chartController = [(HKOverlayRoomViewController *)self chartController];
+    [chartController setTrendAccessibilityDelegate:v21];
 
     [v10 addObject:v21];
     v19 = v30;
@@ -367,91 +367,91 @@ LABEL_7:
   return v26;
 }
 
-- (id)_makePressureOverlayContextForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 context:(unint64_t)a6 contextDelegate:(id *)a7
+- (id)_makePressureOverlayContextForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller context:(unint64_t)context contextDelegate:(id *)delegate
 {
-  v13 = a4;
-  v14 = a5;
+  itemsCopy = items;
+  controllerCopy = controller;
   v15 = HKOxygenSaturationLowBarometricPressureThresholdQuantity();
-  if (a6)
+  if (context)
   {
-    if (a6 != 1)
+    if (context != 1)
     {
       v23 = 0;
       v20 = 0;
       goto LABEL_7;
     }
 
-    v16 = [MEMORY[0x1E696C378] predicateForObjectsWithMetadataKey:*MEMORY[0x1E696BA50] operatorType:1 value:v15];
+    currentHandler = [MEMORY[0x1E696C378] predicateForObjectsWithMetadataKey:*MEMORY[0x1E696BA50] operatorType:1 value:v15];
     v17 = [HKInteractiveChartOverlayPredicate alloc];
     v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v19 = [v18 localizedStringForKey:@"SCANDIUM_OVERLAY_LOW_AIR_PRESSURE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Scandium"];
-    v20 = [(HKInteractiveChartOverlayPredicate *)v17 initWithPredicate:v16 name:v19];
+    v20 = [(HKInteractiveChartOverlayPredicate *)v17 initWithPredicate:currentHandler name:v19];
 
     v21 = [_HKOxygenSaturationIntegratedContextDelegate alloc];
-    v22 = [(HKOverlayRoomViewController *)self primaryDisplayType];
-    v23 = [(_HKOxygenSaturationIntegratedContextDelegate *)v21 initWithCustomDataSource:0 primaryDisplayType:v22 context:1];
+    primaryDisplayType = [(HKOverlayRoomViewController *)self primaryDisplayType];
+    v23 = [(_HKOxygenSaturationIntegratedContextDelegate *)v21 initWithCustomDataSource:0 primaryDisplayType:primaryDisplayType context:1];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HKOverlayRoomOxygenSaturationViewController.m" lineNumber:320 description:@"unsupported context"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKOverlayRoomOxygenSaturationViewController.m" lineNumber:320 description:@"unsupported context"];
     v23 = 0;
     v20 = 0;
   }
 
 LABEL_7:
-  v24 = [HKOverlayRoomViewControllerIntegratedContext distributionContextWithStyle:0 namedPredicate:v20 overlayChartController:v14 applicationItems:v13 optionalDelegate:v23 options:0 mode:a3];
-  if (a7 && v23)
+  v24 = [HKOverlayRoomViewControllerIntegratedContext distributionContextWithStyle:0 namedPredicate:v20 overlayChartController:controllerCopy applicationItems:itemsCopy optionalDelegate:v23 options:0 mode:mode];
+  if (delegate && v23)
   {
     v25 = v23;
-    *a7 = v23;
+    *delegate = v23;
   }
 
   return v24;
 }
 
-- (id)_makeLatestContextForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)_makeLatestContextForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[HKOverlayRoomViewControllerLastQuantityContext alloc] initWithOverlayChartController:v7 applicationItems:v8 mode:a3];
+  controllerCopy = controller;
+  itemsCopy = items;
+  v9 = [[HKOverlayRoomViewControllerLastQuantityContext alloc] initWithOverlayChartController:controllerCopy applicationItems:itemsCopy mode:mode];
 
   return v9;
 }
 
-- (id)_makeAverageContextForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 contextDelegate:(id *)a6
+- (id)_makeAverageContextForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller contextDelegate:(id *)delegate
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [(HKOverlayRoomOxygenSaturationViewController *)self primaryDisplayTypeWithApplicationItems:v11];
-  v13 = [v11 unitController];
-  v14 = [v11 healthStore];
-  v15 = [(HKOverlayRoomOxygenSaturationViewController *)self _buildAverageDataSourceWithUnitController:v13 displayType:v12 healthStore:v14];
+  controllerCopy = controller;
+  itemsCopy = items;
+  v12 = [(HKOverlayRoomOxygenSaturationViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
+  unitController = [itemsCopy unitController];
+  healthStore = [itemsCopy healthStore];
+  v15 = [(HKOverlayRoomOxygenSaturationViewController *)self _buildAverageDataSourceWithUnitController:unitController displayType:v12 healthStore:healthStore];
 
   v16 = [[_HKOxygenSaturationIntegratedContextDelegate alloc] initWithCustomDataSource:v15 primaryDisplayType:v12 context:0];
   v17 = v16;
-  if (a6)
+  if (delegate)
   {
     v18 = v16;
-    *a6 = v17;
+    *delegate = v17;
   }
 
-  v19 = [HKOverlayRoomViewControllerIntegratedContext quantityContextWithIdentifier:*MEMORY[0x1E696BD58] overlayChartController:v10 applicationItems:v11 optionalDelegate:v17 seriesOptions:0 mode:a3];
+  v19 = [HKOverlayRoomViewControllerIntegratedContext quantityContextWithIdentifier:*MEMORY[0x1E696BD58] overlayChartController:controllerCopy applicationItems:itemsCopy optionalDelegate:v17 seriesOptions:0 mode:mode];
 
   return v19;
 }
 
-- (id)_buildAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5
+- (id)_buildAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[HKQuantityTypeDataSource alloc] initWithUnitController:v10 options:2 displayType:v9 healthStore:v8];
+  storeCopy = store;
+  typeCopy = type;
+  controllerCopy = controller;
+  v11 = [[HKQuantityTypeDataSource alloc] initWithUnitController:controllerCopy options:2 displayType:typeCopy healthStore:storeCopy];
 
   [(HKQuantityTypeDataSource *)v11 setUserInfoCreationBlock:&__block_literal_global_20];
-  v12 = [(HKOverlayRoomOxygenSaturationViewController *)self _buildGranularAverageDataSourceTitleFromTimeScope];
-  v13 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v11 named:@"HKOverlayRoomNamedChartCacheDataSource_OxygenSaturation" withContextTitleForTimeScope:v12];
+  _buildGranularAverageDataSourceTitleFromTimeScope = [(HKOverlayRoomOxygenSaturationViewController *)self _buildGranularAverageDataSourceTitleFromTimeScope];
+  v13 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v11 named:@"HKOverlayRoomNamedChartCacheDataSource_OxygenSaturation" withContextTitleForTimeScope:_buildGranularAverageDataSourceTitleFromTimeScope];
 
   return v13;
 }

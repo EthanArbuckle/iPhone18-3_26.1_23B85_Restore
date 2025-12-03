@@ -1,41 +1,41 @@
 @interface CDASchemaCDAUserFeedbackParticipant
-- (BOOL)isEqual:(id)a3;
-- (CDASchemaCDAUserFeedbackParticipant)initWithDictionary:(id)a3;
-- (CDASchemaCDAUserFeedbackParticipant)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CDASchemaCDAUserFeedbackParticipant)initWithDictionary:(id)dictionary;
+- (CDASchemaCDAUserFeedbackParticipant)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addProductTypes:(id)a3;
-- (void)setHasAlarmState:(BOOL)a3;
-- (void)setHasGranularBoostDecay:(BOOL)a3;
-- (void)setHasGranularBoostValue:(BOOL)a3;
-- (void)setHasIsNearMiss:(BOOL)a3;
-- (void)setHasMediaState:(BOOL)a3;
-- (void)setHasPsdScore:(BOOL)a3;
-- (void)setHasRawGoodnessScore:(BOOL)a3;
-- (void)setHasTimeSinceLastWinInMilliseconds:(BOOL)a3;
-- (void)setHasTimeSinceTriggerInMilliseconds:(BOOL)a3;
-- (void)setHasTimerState:(BOOL)a3;
-- (void)setHasTriggerType:(BOOL)a3;
-- (void)setHasTrumpReason:(BOOL)a3;
-- (void)setHasVoiceTriggerTimeNS:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addProductTypes:(id)types;
+- (void)setHasAlarmState:(BOOL)state;
+- (void)setHasGranularBoostDecay:(BOOL)decay;
+- (void)setHasGranularBoostValue:(BOOL)value;
+- (void)setHasIsNearMiss:(BOOL)miss;
+- (void)setHasMediaState:(BOOL)state;
+- (void)setHasPsdScore:(BOOL)score;
+- (void)setHasRawGoodnessScore:(BOOL)score;
+- (void)setHasTimeSinceLastWinInMilliseconds:(BOOL)milliseconds;
+- (void)setHasTimeSinceTriggerInMilliseconds:(BOOL)milliseconds;
+- (void)setHasTimerState:(BOOL)state;
+- (void)setHasTriggerType:(BOOL)type;
+- (void)setHasTrumpReason:(BOOL)reason;
+- (void)setHasVoiceTriggerTimeNS:(BOOL)s;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CDASchemaCDAUserFeedbackParticipant
 
-- (CDASchemaCDAUserFeedbackParticipant)initWithDictionary:(id)a3
+- (CDASchemaCDAUserFeedbackParticipant)initWithDictionary:(id)dictionary
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v76.receiver = self;
   v76.super_class = CDASchemaCDAUserFeedbackParticipant;
   v5 = [(CDASchemaCDAUserFeedbackParticipant *)&v76 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriSpeechId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriSpeechId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(CDASchemaCDAUserFeedbackParticipant *)v5 setSiriSpeechId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"cdaId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cdaId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(CDASchemaCDAUserFeedbackParticipant *)v5 setCdaId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"requestId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(CDASchemaCDAUserFeedbackParticipant *)v5 setRequestId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"halTargetSiriSpeechId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"halTargetSiriSpeechId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,21 +67,21 @@
       [(CDASchemaCDAUserFeedbackParticipant *)v5 setHalTargetSiriSpeechId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"decision"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"decision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAUserFeedbackParticipant setDecision:](v5, "setDecision:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"voiceTriggerTimeNS"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerTimeNS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAUserFeedbackParticipant setVoiceTriggerTimeNS:](v5, "setVoiceTriggerTimeNS:", [v15 unsignedLongLongValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"rawGoodnessScore"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"rawGoodnessScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
     }
 
     v61 = v16;
-    v17 = [v4 objectForKeyedSubscript:@"granularBoostValue"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"granularBoostValue"];
     objc_opt_class();
     v71 = v17;
     if (objc_opt_isKindOfClass())
@@ -97,7 +97,7 @@
       -[CDASchemaCDAUserFeedbackParticipant setGranularBoostValue:](v5, "setGranularBoostValue:", [v17 unsignedIntValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"granularBoostDecay"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"granularBoostDecay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,7 +106,7 @@
     }
 
     v60 = v18;
-    v19 = [v4 objectForKeyedSubscript:@"trumpReason"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"trumpReason"];
     objc_opt_class();
     v70 = v19;
     if (objc_opt_isKindOfClass())
@@ -115,7 +115,7 @@
     }
 
     v62 = v15;
-    v20 = [v4 objectForKeyedSubscript:@"psdScore"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"psdScore"];
     objc_opt_class();
     v69 = v20;
     v21 = v10;
@@ -124,14 +124,14 @@
       -[CDASchemaCDAUserFeedbackParticipant setPsdScore:](v5, "setPsdScore:", [v20 unsignedIntValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"mediaState"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"mediaState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAUserFeedbackParticipant setMediaState:](v5, "setMediaState:", [v22 intValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"alarmState"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"alarmState"];
     objc_opt_class();
     v68 = v23;
     if (objc_opt_isKindOfClass())
@@ -139,14 +139,14 @@
       -[CDASchemaCDAUserFeedbackParticipant setAlarmState:](v5, "setAlarmState:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"timerState"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"timerState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAUserFeedbackParticipant setTimerState:](v5, "setTimerState:", [v24 intValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"timeSinceLastWinInMilliseconds"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastWinInMilliseconds"];
     objc_opt_class();
     v67 = v25;
     if (objc_opt_isKindOfClass())
@@ -155,7 +155,7 @@
     }
 
     v64 = v12;
-    v26 = [v4 objectForKeyedSubscript:@"triggerType"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"triggerType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -163,7 +163,7 @@
     }
 
     v63 = v14;
-    v27 = [v4 objectForKeyedSubscript:@"roomNameHash"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"roomNameHash"];
     objc_opt_class();
     v66 = v27;
     v28 = v6;
@@ -173,7 +173,7 @@
       [(CDASchemaCDAUserFeedbackParticipant *)v5 setRoomNameHash:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"timeSinceTriggerInMilliseconds"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceTriggerInMilliseconds"];
     objc_opt_class();
     v31 = v8;
     if (objc_opt_isKindOfClass())
@@ -182,7 +182,7 @@
     }
 
     v57 = v30;
-    v32 = [v4 objectForKeyedSubscript:@"scoreBoosters"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"scoreBoosters"];
     objc_opt_class();
     v65 = v32;
     v33 = v21;
@@ -192,7 +192,7 @@
       [(CDASchemaCDAUserFeedbackParticipant *)v5 setScoreBoosters:v34];
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"build"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"build"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -201,7 +201,7 @@
     }
 
     v59 = v22;
-    v37 = [v4 objectForKeyedSubscript:@"locale"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -212,7 +212,7 @@
     v55 = v37;
     v56 = v35;
     v58 = v24;
-    v39 = [v4 objectForKeyedSubscript:@"advertisement"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"advertisement"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -220,7 +220,7 @@
       [(CDASchemaCDAUserFeedbackParticipant *)v5 setAdvertisement:v40];
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"productTypes"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"productTypes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -266,7 +266,7 @@
       v33 = v52;
     }
 
-    v49 = [v4 objectForKeyedSubscript:@"isNearMiss"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"isNearMiss"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -279,30 +279,30 @@
   return v5;
 }
 
-- (CDASchemaCDAUserFeedbackParticipant)initWithJSON:(id)a3
+- (CDASchemaCDAUserFeedbackParticipant)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CDASchemaCDAUserFeedbackParticipant *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CDASchemaCDAUserFeedbackParticipant *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CDASchemaCDAUserFeedbackParticipant *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -315,20 +315,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_advertisement)
   {
-    v4 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    advertisement = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
+    dictionaryRepresentation = [advertisement dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"advertisement"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"advertisement"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"advertisement"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"advertisement"];
     }
   }
 
@@ -345,43 +345,43 @@
       v8 = off_1E78D2940[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"alarmState"];
+    [dictionary setObject:v8 forKeyedSubscript:@"alarmState"];
   }
 
   if (self->_build)
   {
-    v9 = [(CDASchemaCDAUserFeedbackParticipant *)self build];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"build"];
+    build = [(CDASchemaCDAUserFeedbackParticipant *)self build];
+    v10 = [build copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"build"];
   }
 
   if (self->_cdaId)
   {
-    v11 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    cdaId = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
+    dictionaryRepresentation2 = [cdaId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"cdaId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"cdaId"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"cdaId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"cdaId"];
     }
   }
 
   v14 = *(&self->_isNearMiss + 1);
   if (v14)
   {
-    v15 = [(CDASchemaCDAUserFeedbackParticipant *)self decision];
+    decision = [(CDASchemaCDAUserFeedbackParticipant *)self decision];
     v16 = @"CDADECISION_UNKNOWN";
-    if (v15 == 1)
+    if (decision == 1)
     {
       v16 = @"CDADECISION_WIN";
     }
 
-    if (v15 == 2)
+    if (decision == 2)
     {
       v17 = @"CDADECISION_LOSS";
     }
@@ -391,7 +391,7 @@
       v17 = v16;
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"decision"];
+    [dictionary setObject:v17 forKeyedSubscript:@"decision"];
     v14 = *(&self->_isNearMiss + 1);
   }
 
@@ -400,7 +400,7 @@
     v18 = MEMORY[0x1E696AD98];
     [(CDASchemaCDAUserFeedbackParticipant *)self granularBoostDecay];
     v19 = [v18 numberWithDouble:?];
-    [v3 setObject:v19 forKeyedSubscript:@"granularBoostDecay"];
+    [dictionary setObject:v19 forKeyedSubscript:@"granularBoostDecay"];
 
     v14 = *(&self->_isNearMiss + 1);
   }
@@ -408,36 +408,36 @@
   if ((v14 & 8) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAUserFeedbackParticipant granularBoostValue](self, "granularBoostValue")}];
-    [v3 setObject:v20 forKeyedSubscript:@"granularBoostValue"];
+    [dictionary setObject:v20 forKeyedSubscript:@"granularBoostValue"];
   }
 
   if (self->_halTargetSiriSpeechId)
   {
-    v21 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    halTargetSiriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
+    dictionaryRepresentation3 = [halTargetSiriSpeechId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"halTargetSiriSpeechId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"halTargetSiriSpeechId"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"halTargetSiriSpeechId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"halTargetSiriSpeechId"];
     }
   }
 
   if ((*(&self->_isNearMiss + 1) & 0x2000) != 0)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[CDASchemaCDAUserFeedbackParticipant isNearMiss](self, "isNearMiss")}];
-    [v3 setObject:v24 forKeyedSubscript:@"isNearMiss"];
+    [dictionary setObject:v24 forKeyedSubscript:@"isNearMiss"];
   }
 
   if (self->_locale)
   {
-    v25 = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
-    v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"locale"];
+    locale = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
+    v26 = [locale copy];
+    [dictionary setObject:v26 forKeyedSubscript:@"locale"];
   }
 
   if ((*(&self->_isNearMiss + 1) & 0x80) != 0)
@@ -453,21 +453,21 @@
       v28 = off_1E78D2910[v27];
     }
 
-    [v3 setObject:v28 forKeyedSubscript:@"mediaState"];
+    [dictionary setObject:v28 forKeyedSubscript:@"mediaState"];
   }
 
   if (self->_productTypes)
   {
-    v29 = [(CDASchemaCDAUserFeedbackParticipant *)self productTypes];
-    v30 = [v29 copy];
-    [v3 setObject:v30 forKeyedSubscript:@"productTypes"];
+    productTypes = [(CDASchemaCDAUserFeedbackParticipant *)self productTypes];
+    v30 = [productTypes copy];
+    [dictionary setObject:v30 forKeyedSubscript:@"productTypes"];
   }
 
   v31 = *(&self->_isNearMiss + 1);
   if ((v31 & 0x40) != 0)
   {
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAUserFeedbackParticipant psdScore](self, "psdScore")}];
-    [v3 setObject:v32 forKeyedSubscript:@"psdScore"];
+    [dictionary setObject:v32 forKeyedSubscript:@"psdScore"];
 
     v31 = *(&self->_isNearMiss + 1);
   }
@@ -475,61 +475,61 @@
   if ((v31 & 4) != 0)
   {
     v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAUserFeedbackParticipant rawGoodnessScore](self, "rawGoodnessScore")}];
-    [v3 setObject:v33 forKeyedSubscript:@"rawGoodnessScore"];
+    [dictionary setObject:v33 forKeyedSubscript:@"rawGoodnessScore"];
   }
 
   if (self->_requestId)
   {
-    v34 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    requestId = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
+    dictionaryRepresentation4 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"requestId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_roomNameHash)
   {
-    v37 = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
-    v38 = [v37 copy];
-    [v3 setObject:v38 forKeyedSubscript:@"roomNameHash"];
+    roomNameHash = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
+    v38 = [roomNameHash copy];
+    [dictionary setObject:v38 forKeyedSubscript:@"roomNameHash"];
   }
 
   if (self->_scoreBoosters)
   {
-    v39 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
-    v40 = [v39 dictionaryRepresentation];
-    if (v40)
+    scoreBoosters = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
+    dictionaryRepresentation5 = [scoreBoosters dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v40 forKeyedSubscript:@"scoreBoosters"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"scoreBoosters"];
     }
 
     else
     {
-      v41 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v41 forKeyedSubscript:@"scoreBoosters"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"scoreBoosters"];
     }
   }
 
   if (self->_siriSpeechId)
   {
-    v42 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
-    v43 = [v42 dictionaryRepresentation];
-    if (v43)
+    siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
+    dictionaryRepresentation6 = [siriSpeechId dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v43 forKeyedSubscript:@"siriSpeechId"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"siriSpeechId"];
     }
 
     else
     {
-      v44 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v44 forKeyedSubscript:@"siriSpeechId"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"siriSpeechId"];
     }
   }
 
@@ -537,7 +537,7 @@
   if ((v45 & 0x400) != 0)
   {
     v49 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[CDASchemaCDAUserFeedbackParticipant timeSinceLastWinInMilliseconds](self, "timeSinceLastWinInMilliseconds")}];
-    [v3 setObject:v49 forKeyedSubscript:@"timeSinceLastWinInMilliseconds"];
+    [dictionary setObject:v49 forKeyedSubscript:@"timeSinceLastWinInMilliseconds"];
 
     v45 = *(&self->_isNearMiss + 1);
     if ((v45 & 0x1000) == 0)
@@ -558,7 +558,7 @@ LABEL_68:
   }
 
   v50 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[CDASchemaCDAUserFeedbackParticipant timeSinceTriggerInMilliseconds](self, "timeSinceTriggerInMilliseconds")}];
-  [v3 setObject:v50 forKeyedSubscript:@"timeSinceTriggerInMilliseconds"];
+  [dictionary setObject:v50 forKeyedSubscript:@"timeSinceTriggerInMilliseconds"];
 
   v45 = *(&self->_isNearMiss + 1);
   if ((v45 & 0x200) == 0)
@@ -584,7 +584,7 @@ LABEL_76:
     v52 = off_1E78D2940[v51];
   }
 
-  [v3 setObject:v52 forKeyedSubscript:@"timerState"];
+  [dictionary setObject:v52 forKeyedSubscript:@"timerState"];
   v45 = *(&self->_isNearMiss + 1);
   if ((v45 & 0x800) == 0)
   {
@@ -606,7 +606,7 @@ LABEL_84:
       v56 = off_1E78D2998[v55];
     }
 
-    [v3 setObject:v56 forKeyedSubscript:@"trumpReason"];
+    [dictionary setObject:v56 forKeyedSubscript:@"trumpReason"];
     if ((*(&self->_isNearMiss + 1) & 2) != 0)
     {
       goto LABEL_72;
@@ -627,7 +627,7 @@ LABEL_80:
     v54 = off_1E78D2958[v53];
   }
 
-  [v3 setObject:v54 forKeyedSubscript:@"triggerType"];
+  [dictionary setObject:v54 forKeyedSubscript:@"triggerType"];
   v45 = *(&self->_isNearMiss + 1);
   if ((v45 & 0x20) != 0)
   {
@@ -639,14 +639,14 @@ LABEL_71:
   {
 LABEL_72:
     v46 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[CDASchemaCDAUserFeedbackParticipant voiceTriggerTimeNS](self, "voiceTriggerTimeNS")}];
-    [v3 setObject:v46 forKeyedSubscript:@"voiceTriggerTimeNS"];
+    [dictionary setObject:v46 forKeyedSubscript:@"voiceTriggerTimeNS"];
   }
 
 LABEL_73:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v47 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v47 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -865,28 +865,28 @@ LABEL_30:
   return v32 ^ v33 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v9 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_102;
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
-  v6 = [v4 siriSpeechId];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
+  siriSpeechId2 = [equalCopy siriSpeechId];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v7 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
-  if (v7)
+  siriSpeechId3 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
+  if (siriSpeechId3)
   {
-    v8 = v7;
-    v9 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
-    v10 = [v4 siriSpeechId];
-    v11 = [v9 isEqual:v10];
+    v8 = siriSpeechId3;
+    siriSpeechId4 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
+    siriSpeechId5 = [equalCopy siriSpeechId];
+    v11 = [siriSpeechId4 isEqual:siriSpeechId5];
 
     if (!v11)
     {
@@ -898,20 +898,20 @@ LABEL_30:
   {
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
-  v6 = [v4 cdaId];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
+  siriSpeechId2 = [equalCopy cdaId];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v12 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
-  if (v12)
+  cdaId = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
+  if (cdaId)
   {
-    v13 = v12;
-    v14 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
-    v15 = [v4 cdaId];
-    v16 = [v14 isEqual:v15];
+    v13 = cdaId;
+    cdaId2 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
+    cdaId3 = [equalCopy cdaId];
+    v16 = [cdaId2 isEqual:cdaId3];
 
     if (!v16)
     {
@@ -923,20 +923,20 @@ LABEL_30:
   {
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
+  siriSpeechId2 = [equalCopy requestId];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v17 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
-  if (v17)
+  requestId = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
+  if (requestId)
   {
-    v18 = v17;
-    v19 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
-    v20 = [v4 requestId];
-    v21 = [v19 isEqual:v20];
+    v18 = requestId;
+    requestId2 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v21 = [requestId2 isEqual:requestId3];
 
     if (!v21)
     {
@@ -948,20 +948,20 @@ LABEL_30:
   {
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
-  v6 = [v4 halTargetSiriSpeechId];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
+  siriSpeechId2 = [equalCopy halTargetSiriSpeechId];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v22 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
-  if (v22)
+  halTargetSiriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
+  if (halTargetSiriSpeechId)
   {
-    v23 = v22;
-    v24 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
-    v25 = [v4 halTargetSiriSpeechId];
-    v26 = [v24 isEqual:v25];
+    v23 = halTargetSiriSpeechId;
+    halTargetSiriSpeechId2 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
+    halTargetSiriSpeechId3 = [equalCopy halTargetSiriSpeechId];
+    v26 = [halTargetSiriSpeechId2 isEqual:halTargetSiriSpeechId3];
 
     if (!v26)
     {
@@ -974,7 +974,7 @@ LABEL_30:
   }
 
   v27 = *(&self->_isNearMiss + 1);
-  v28 = *(v4 + 169);
+  v28 = *(equalCopy + 169);
   if ((v27 & 1) != (v28 & 1))
   {
     goto LABEL_102;
@@ -983,13 +983,13 @@ LABEL_30:
   if (v27)
   {
     decision = self->_decision;
-    if (decision != [v4 decision])
+    if (decision != [equalCopy decision])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v30 = (v27 >> 1) & 1;
@@ -1001,13 +1001,13 @@ LABEL_30:
   if (v30)
   {
     voiceTriggerTimeNS = self->_voiceTriggerTimeNS;
-    if (voiceTriggerTimeNS != [v4 voiceTriggerTimeNS])
+    if (voiceTriggerTimeNS != [equalCopy voiceTriggerTimeNS])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v32 = (v27 >> 2) & 1;
@@ -1019,13 +1019,13 @@ LABEL_30:
   if (v32)
   {
     rawGoodnessScore = self->_rawGoodnessScore;
-    if (rawGoodnessScore != [v4 rawGoodnessScore])
+    if (rawGoodnessScore != [equalCopy rawGoodnessScore])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v34 = (v27 >> 3) & 1;
@@ -1037,13 +1037,13 @@ LABEL_30:
   if (v34)
   {
     granularBoostValue = self->_granularBoostValue;
-    if (granularBoostValue != [v4 granularBoostValue])
+    if (granularBoostValue != [equalCopy granularBoostValue])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v36 = (v27 >> 4) & 1;
@@ -1055,14 +1055,14 @@ LABEL_30:
   if (v36)
   {
     granularBoostDecay = self->_granularBoostDecay;
-    [v4 granularBoostDecay];
+    [equalCopy granularBoostDecay];
     if (granularBoostDecay != v38)
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v39 = (v27 >> 5) & 1;
@@ -1074,13 +1074,13 @@ LABEL_30:
   if (v39)
   {
     trumpReason = self->_trumpReason;
-    if (trumpReason != [v4 trumpReason])
+    if (trumpReason != [equalCopy trumpReason])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v41 = (v27 >> 6) & 1;
@@ -1092,13 +1092,13 @@ LABEL_30:
   if (v41)
   {
     psdScore = self->_psdScore;
-    if (psdScore != [v4 psdScore])
+    if (psdScore != [equalCopy psdScore])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v43 = (v27 >> 7) & 1;
@@ -1110,13 +1110,13 @@ LABEL_30:
   if (v43)
   {
     mediaState = self->_mediaState;
-    if (mediaState != [v4 mediaState])
+    if (mediaState != [equalCopy mediaState])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v45 = (v27 >> 8) & 1;
@@ -1128,13 +1128,13 @@ LABEL_30:
   if (v45)
   {
     alarmState = self->_alarmState;
-    if (alarmState != [v4 alarmState])
+    if (alarmState != [equalCopy alarmState])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v47 = (v27 >> 9) & 1;
@@ -1146,13 +1146,13 @@ LABEL_30:
   if (v47)
   {
     timerState = self->_timerState;
-    if (timerState != [v4 timerState])
+    if (timerState != [equalCopy timerState])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v49 = (v27 >> 10) & 1;
@@ -1164,13 +1164,13 @@ LABEL_30:
   if (v49)
   {
     timeSinceLastWinInMilliseconds = self->_timeSinceLastWinInMilliseconds;
-    if (timeSinceLastWinInMilliseconds != [v4 timeSinceLastWinInMilliseconds])
+    if (timeSinceLastWinInMilliseconds != [equalCopy timeSinceLastWinInMilliseconds])
     {
       goto LABEL_102;
     }
 
     v27 = *(&self->_isNearMiss + 1);
-    v28 = *(v4 + 169);
+    v28 = *(equalCopy + 169);
   }
 
   v51 = (v27 >> 11) & 1;
@@ -1182,26 +1182,26 @@ LABEL_30:
   if (v51)
   {
     triggerType = self->_triggerType;
-    if (triggerType != [v4 triggerType])
+    if (triggerType != [equalCopy triggerType])
     {
       goto LABEL_102;
     }
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
-  v6 = [v4 roomNameHash];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
+  siriSpeechId2 = [equalCopy roomNameHash];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v53 = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
-  if (v53)
+  roomNameHash = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
+  if (roomNameHash)
   {
-    v54 = v53;
-    v55 = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
-    v56 = [v4 roomNameHash];
-    v57 = [v55 isEqual:v56];
+    v54 = roomNameHash;
+    roomNameHash2 = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
+    roomNameHash3 = [equalCopy roomNameHash];
+    v57 = [roomNameHash2 isEqual:roomNameHash3];
 
     if (!v57)
     {
@@ -1214,7 +1214,7 @@ LABEL_30:
   }
 
   v58 = (*(&self->_isNearMiss + 1) >> 12) & 1;
-  if (v58 != ((*(v4 + 169) >> 12) & 1))
+  if (v58 != ((*(equalCopy + 169) >> 12) & 1))
   {
     goto LABEL_102;
   }
@@ -1222,26 +1222,26 @@ LABEL_30:
   if (v58)
   {
     timeSinceTriggerInMilliseconds = self->_timeSinceTriggerInMilliseconds;
-    if (timeSinceTriggerInMilliseconds != [v4 timeSinceTriggerInMilliseconds])
+    if (timeSinceTriggerInMilliseconds != [equalCopy timeSinceTriggerInMilliseconds])
     {
       goto LABEL_102;
     }
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
-  v6 = [v4 scoreBoosters];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
+  siriSpeechId2 = [equalCopy scoreBoosters];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v60 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
-  if (v60)
+  scoreBoosters = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
+  if (scoreBoosters)
   {
-    v61 = v60;
-    v62 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
-    v63 = [v4 scoreBoosters];
-    v64 = [v62 isEqual:v63];
+    v61 = scoreBoosters;
+    scoreBoosters2 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
+    scoreBoosters3 = [equalCopy scoreBoosters];
+    v64 = [scoreBoosters2 isEqual:scoreBoosters3];
 
     if (!v64)
     {
@@ -1253,20 +1253,20 @@ LABEL_30:
   {
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self build];
-  v6 = [v4 build];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self build];
+  siriSpeechId2 = [equalCopy build];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v65 = [(CDASchemaCDAUserFeedbackParticipant *)self build];
-  if (v65)
+  build = [(CDASchemaCDAUserFeedbackParticipant *)self build];
+  if (build)
   {
-    v66 = v65;
-    v67 = [(CDASchemaCDAUserFeedbackParticipant *)self build];
-    v68 = [v4 build];
-    v69 = [v67 isEqual:v68];
+    v66 = build;
+    build2 = [(CDASchemaCDAUserFeedbackParticipant *)self build];
+    build3 = [equalCopy build];
+    v69 = [build2 isEqual:build3];
 
     if (!v69)
     {
@@ -1278,20 +1278,20 @@ LABEL_30:
   {
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
-  v6 = [v4 locale];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
+  siriSpeechId2 = [equalCopy locale];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v70 = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
-  if (v70)
+  locale = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
+  if (locale)
   {
-    v71 = v70;
-    v72 = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
-    v73 = [v4 locale];
-    v74 = [v72 isEqual:v73];
+    v71 = locale;
+    locale2 = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
+    locale3 = [equalCopy locale];
+    v74 = [locale2 isEqual:locale3];
 
     if (!v74)
     {
@@ -1303,20 +1303,20 @@ LABEL_30:
   {
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
-  v6 = [v4 advertisement];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
+  siriSpeechId2 = [equalCopy advertisement];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
     goto LABEL_101;
   }
 
-  v75 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
-  if (v75)
+  advertisement = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
+  if (advertisement)
   {
-    v76 = v75;
-    v77 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
-    v78 = [v4 advertisement];
-    v79 = [v77 isEqual:v78];
+    v76 = advertisement;
+    advertisement2 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
+    advertisement3 = [equalCopy advertisement];
+    v79 = [advertisement2 isEqual:advertisement3];
 
     if (!v79)
     {
@@ -1328,22 +1328,22 @@ LABEL_30:
   {
   }
 
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self productTypes];
-  v6 = [v4 productTypes];
-  if ((v5 != 0) == (v6 == 0))
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self productTypes];
+  siriSpeechId2 = [equalCopy productTypes];
+  if ((siriSpeechId != 0) == (siriSpeechId2 == 0))
   {
 LABEL_101:
 
     goto LABEL_102;
   }
 
-  v80 = [(CDASchemaCDAUserFeedbackParticipant *)self productTypes];
-  if (v80)
+  productTypes = [(CDASchemaCDAUserFeedbackParticipant *)self productTypes];
+  if (productTypes)
   {
-    v81 = v80;
-    v82 = [(CDASchemaCDAUserFeedbackParticipant *)self productTypes];
-    v83 = [v4 productTypes];
-    v84 = [v82 isEqual:v83];
+    v81 = productTypes;
+    productTypes2 = [(CDASchemaCDAUserFeedbackParticipant *)self productTypes];
+    productTypes3 = [equalCopy productTypes];
+    v84 = [productTypes2 isEqual:productTypes3];
 
     if (!v84)
     {
@@ -1356,9 +1356,9 @@ LABEL_101:
   }
 
   v87 = (*(&self->_isNearMiss + 1) >> 13) & 1;
-  if (v87 == ((*(v4 + 169) >> 13) & 1))
+  if (v87 == ((*(equalCopy + 169) >> 13) & 1))
   {
-    if (!v87 || (isNearMiss = self->_isNearMiss, isNearMiss == [v4 isNearMiss]))
+    if (!v87 || (isNearMiss = self->_isNearMiss, isNearMiss == [equalCopy isNearMiss]))
     {
       v85 = 1;
       goto LABEL_103;
@@ -1372,39 +1372,39 @@ LABEL_103:
   return v85;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
+  toCopy = to;
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
 
-  if (v5)
+  if (siriSpeechId)
   {
-    v6 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
+    siriSpeechId2 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
+  cdaId = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
 
-  if (v7)
+  if (cdaId)
   {
-    v8 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
+    cdaId2 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
+  requestId = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
 
-  if (v9)
+  if (requestId)
   {
-    v10 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
+    requestId2 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
+  halTargetSiriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
 
-  if (v11)
+  if (halTargetSiriSpeechId)
   {
-    v12 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
+    halTargetSiriSpeechId2 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1564,9 +1564,9 @@ LABEL_21:
   }
 
 LABEL_22:
-  v14 = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
+  roomNameHash = [(CDASchemaCDAUserFeedbackParticipant *)self roomNameHash];
 
-  if (v14)
+  if (roomNameHash)
   {
     PBDataWriterWriteStringField();
   }
@@ -1576,33 +1576,33 @@ LABEL_22:
     PBDataWriterWriteUint64Field();
   }
 
-  v15 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
+  scoreBoosters = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
 
-  if (v15)
+  if (scoreBoosters)
   {
-    v16 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
+    scoreBoosters2 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(CDASchemaCDAUserFeedbackParticipant *)self build];
+  build = [(CDASchemaCDAUserFeedbackParticipant *)self build];
 
-  if (v17)
+  if (build)
   {
     PBDataWriterWriteStringField();
   }
 
-  v18 = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
+  locale = [(CDASchemaCDAUserFeedbackParticipant *)self locale];
 
-  if (v18)
+  if (locale)
   {
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
+  advertisement = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
 
-  if (v19)
+  if (advertisement)
   {
-    v20 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
+    advertisement2 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1640,9 +1640,9 @@ LABEL_22:
   }
 }
 
-- (void)setHasIsNearMiss:(BOOL)a3
+- (void)setHasIsNearMiss:(BOOL)miss
 {
-  if (a3)
+  if (miss)
   {
     v3 = 0x2000;
   }
@@ -1655,27 +1655,27 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xDFFF | v3;
 }
 
-- (void)addProductTypes:(id)a3
+- (void)addProductTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   productTypes = self->_productTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!productTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_productTypes;
-    self->_productTypes = v6;
+    self->_productTypes = array;
 
-    v4 = v8;
+    typesCopy = v8;
     productTypes = self->_productTypes;
   }
 
-  [(NSArray *)productTypes addObject:v4];
+  [(NSArray *)productTypes addObject:typesCopy];
 }
 
-- (void)setHasTimeSinceTriggerInMilliseconds:(BOOL)a3
+- (void)setHasTimeSinceTriggerInMilliseconds:(BOOL)milliseconds
 {
-  if (a3)
+  if (milliseconds)
   {
     v3 = 4096;
   }
@@ -1688,9 +1688,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xEFFF | v3;
 }
 
-- (void)setHasTriggerType:(BOOL)a3
+- (void)setHasTriggerType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2048;
   }
@@ -1703,9 +1703,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xF7FF | v3;
 }
 
-- (void)setHasTimeSinceLastWinInMilliseconds:(BOOL)a3
+- (void)setHasTimeSinceLastWinInMilliseconds:(BOOL)milliseconds
 {
-  if (a3)
+  if (milliseconds)
   {
     v3 = 1024;
   }
@@ -1718,9 +1718,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFBFF | v3;
 }
 
-- (void)setHasTimerState:(BOOL)a3
+- (void)setHasTimerState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 512;
   }
@@ -1733,9 +1733,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFDFF | v3;
 }
 
-- (void)setHasAlarmState:(BOOL)a3
+- (void)setHasAlarmState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 256;
   }
@@ -1748,9 +1748,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFEFF | v3;
 }
 
-- (void)setHasMediaState:(BOOL)a3
+- (void)setHasMediaState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 128;
   }
@@ -1763,9 +1763,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFF7F | v3;
 }
 
-- (void)setHasPsdScore:(BOOL)a3
+- (void)setHasPsdScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 64;
   }
@@ -1778,9 +1778,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFFBF | v3;
 }
 
-- (void)setHasTrumpReason:(BOOL)a3
+- (void)setHasTrumpReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 32;
   }
@@ -1793,9 +1793,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasGranularBoostDecay:(BOOL)a3
+- (void)setHasGranularBoostDecay:(BOOL)decay
 {
-  if (a3)
+  if (decay)
   {
     v3 = 16;
   }
@@ -1808,9 +1808,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFFEF | v3;
 }
 
-- (void)setHasGranularBoostValue:(BOOL)a3
+- (void)setHasGranularBoostValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -1823,9 +1823,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasRawGoodnessScore:(BOOL)a3
+- (void)setHasRawGoodnessScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -1838,9 +1838,9 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasVoiceTriggerTimeNS:(BOOL)a3
+- (void)setHasVoiceTriggerTimeNS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 2;
   }
@@ -1853,68 +1853,68 @@ LABEL_22:
   *(&self->_isNearMiss + 1) = *(&self->_isNearMiss + 1) & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v25.receiver = self;
   v25.super_class = CDASchemaCDAUserFeedbackParticipant;
-  v5 = [(SISchemaInstrumentationMessage *)&v25 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:8])
+  v5 = [(SISchemaInstrumentationMessage *)&v25 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:8])
   {
     [(CDASchemaCDAUserFeedbackParticipant *)self deleteSiriSpeechId];
     [(CDASchemaCDAUserFeedbackParticipant *)self deleteHalTargetSiriSpeechId];
   }
 
-  v6 = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  siriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self siriSpeechId];
+  v7 = [siriSpeechId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CDASchemaCDAUserFeedbackParticipant *)self deleteSiriSpeechId];
   }
 
-  v9 = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  cdaId = [(CDASchemaCDAUserFeedbackParticipant *)self cdaId];
+  v10 = [cdaId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CDASchemaCDAUserFeedbackParticipant *)self deleteCdaId];
   }
 
-  v12 = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  requestId = [(CDASchemaCDAUserFeedbackParticipant *)self requestId];
+  v13 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CDASchemaCDAUserFeedbackParticipant *)self deleteRequestId];
   }
 
-  v15 = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  halTargetSiriSpeechId = [(CDASchemaCDAUserFeedbackParticipant *)self halTargetSiriSpeechId];
+  v16 = [halTargetSiriSpeechId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(CDASchemaCDAUserFeedbackParticipant *)self deleteHalTargetSiriSpeechId];
   }
 
-  v18 = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  scoreBoosters = [(CDASchemaCDAUserFeedbackParticipant *)self scoreBoosters];
+  v19 = [scoreBoosters applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(CDASchemaCDAUserFeedbackParticipant *)self deleteScoreBoosters];
   }
 
-  v21 = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  advertisement = [(CDASchemaCDAUserFeedbackParticipant *)self advertisement];
+  v22 = [advertisement applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(CDASchemaCDAUserFeedbackParticipant *)self deleteAdvertisement];
   }

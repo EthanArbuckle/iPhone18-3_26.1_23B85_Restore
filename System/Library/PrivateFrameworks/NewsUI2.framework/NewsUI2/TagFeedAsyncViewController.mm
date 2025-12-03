@@ -1,14 +1,14 @@
 @interface TagFeedAsyncViewController
-- (_TtC7NewsUI226TagFeedAsyncViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI226TagFeedAsyncViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (_TtC7NewsUI226TagFeedAsyncViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI226TagFeedAsyncViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TagFeedAsyncViewController
 
-- (_TtC7NewsUI226TagFeedAsyncViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI226TagFeedAsyncViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI226TagFeedAsyncViewController_promiseViewController) = 0;
   v4 = OBJC_IVAR____TtC7NewsUI226TagFeedAsyncViewController_coverViewManager;
@@ -22,29 +22,29 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2194065FC();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2194067B8();
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI226TagFeedAsyncViewController_promiseViewController);
-  if (v4)
+  contentScrollViewForEdge_ = *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI226TagFeedAsyncViewController_promiseViewController);
+  if (contentScrollViewForEdge_)
   {
-    v4 = [v4 contentScrollViewForEdge_];
+    contentScrollViewForEdge_ = [contentScrollViewForEdge_ contentScrollViewForEdge_];
     v3 = vars8;
   }
 
-  return v4;
+  return contentScrollViewForEdge_;
 }
 
-- (_TtC7NewsUI226TagFeedAsyncViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI226TagFeedAsyncViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

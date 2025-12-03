@@ -1,7 +1,7 @@
 @interface IMMessageContext
 - (IMMessageContext)init;
 - (OS_xpc_object)xpcMessage;
-- (void)setXpcMessage:(id)a3;
+- (void)setXpcMessage:(id)message;
 @end
 
 @implementation IMMessageContext
@@ -24,25 +24,25 @@
   return v3;
 }
 
-- (void)setXpcMessage:(id)a3
+- (void)setXpcMessage:(id)message
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_xpcMessage != v6)
+  messageCopy = message;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_xpcMessage != messageCopy)
   {
-    objc_storeStrong(&v5->_xpcMessage, a3);
+    objc_storeStrong(&selfCopy->_xpcMessage, message);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (OS_xpc_object)xpcMessage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_xpcMessage;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_xpcMessage;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

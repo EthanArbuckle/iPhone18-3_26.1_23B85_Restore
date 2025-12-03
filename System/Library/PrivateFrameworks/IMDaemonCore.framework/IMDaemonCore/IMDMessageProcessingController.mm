@@ -1,22 +1,22 @@
 @interface IMDMessageProcessingController
 - (IMDMessageProcessingController)init;
-- (IMDMessageProcessingController)initWithMessagesPTaskStore:(id)a3;
-- (void)_indexSpotlightIfNeedForPTask:(id)a3;
+- (IMDMessageProcessingController)initWithMessagesPTaskStore:(id)store;
+- (void)_indexSpotlightIfNeedForPTask:(id)task;
 - (void)_processingTimerFired;
-- (void)_scheduleDeferredProcessingWithTimeInterval:(double)a3;
+- (void)_scheduleDeferredProcessingWithTimeInterval:(double)interval;
 - (void)dealloc;
 @end
 
 @implementation IMDMessageProcessingController
 
-- (IMDMessageProcessingController)initWithMessagesPTaskStore:(id)a3
+- (IMDMessageProcessingController)initWithMessagesPTaskStore:(id)store
 {
   v6.receiver = self;
   v6.super_class = IMDMessageProcessingController;
   v4 = [(IMDMessageProcessingController *)&v6 init];
   if (v4)
   {
-    v4->_pTaskStore = a3;
+    v4->_pTaskStore = store;
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   }
 
@@ -44,22 +44,22 @@
   [(IMDMessageProcessingController *)&v3 dealloc];
 }
 
-- (void)_scheduleDeferredProcessingWithTimeInterval:(double)a3
+- (void)_scheduleDeferredProcessingWithTimeInterval:(double)interval
 {
-  if (a3 > 0.0)
+  if (interval > 0.0)
   {
     v10[6] = v6;
     v10[7] = v5;
     v10[10] = v3;
     v10[11] = v4;
-    v9 = [MEMORY[0x277CCACC8] mainThread];
+    mainThread = [MEMORY[0x277CCACC8] mainThread];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = sub_22B50A054;
     v10[3] = &unk_278703228;
-    *&v10[5] = a3;
+    *&v10[5] = interval;
     v10[4] = self;
-    [v9 __im_performBlock:v10];
+    [mainThread __im_performBlock:v10];
   }
 }
 
@@ -84,9 +84,9 @@
     self->_processingTimer = 0;
   }
 
-  v5 = [(IMDMessagePTaskStore *)self->_pTaskStore loadMostRecentMessagePTasks];
+  loadMostRecentMessagePTasks = [(IMDMessagePTaskStore *)self->_pTaskStore loadMostRecentMessagePTasks];
   v6 = IMOSLoggingEnabled();
-  if (!v5)
+  if (!loadMostRecentMessagePTasks)
   {
     if (!v6)
     {
@@ -111,7 +111,7 @@ LABEL_28:
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v5 count];
+      v8 = [loadMostRecentMessagePTasks count];
       *buf = 134217984;
       v24 = v8;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Found %ld messages that need processing", buf, 0xCu);
@@ -122,7 +122,7 @@ LABEL_28:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [loadMostRecentMessagePTasks countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = *v19;
@@ -132,20 +132,20 @@ LABEL_28:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(loadMostRecentMessagePTasks);
         }
 
         [(IMDMessageProcessingController *)self _indexSpotlightIfNeedForPTask:*(*(&v18 + 1) + 8 * i)];
       }
 
-      v9 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [loadMostRecentMessagePTasks countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 
   [(IMDMessagePTaskStore *)self->_pTaskStore deleteAllCompletedTasks];
-  v12 = [v5 count] == 100;
+  v12 = [loadMostRecentMessagePTasks count] == 100;
   v13 = IMOSLoggingEnabled();
   if (!v12)
   {
@@ -180,15 +180,15 @@ LABEL_29:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_indexSpotlightIfNeedForPTask:(id)a3
+- (void)_indexSpotlightIfNeedForPTask:(id)task
 {
-  if ([a3 needsProccesingFor:1])
+  if ([task needsProccesingFor:1])
   {
-    [a3 compeletedTask:1];
-    [(IMDMessagePTaskStore *)self->_pTaskStore updateTaskFlagsForPTask:a3];
+    [task compeletedTask:1];
+    [(IMDMessagePTaskStore *)self->_pTaskStore updateTaskFlagsForPTask:task];
     if ([(IMDMessageProcessingController *)self _pref_IMDCoreSpotlightHasMigrated])
     {
-      [a3 guid];
+      [task guid];
 
       MEMORY[0x2821F9670](self, sel__xpc_IMDCoreSpotlightAddMessageGUID_reason_);
     }

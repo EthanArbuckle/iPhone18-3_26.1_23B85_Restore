@@ -2,26 +2,26 @@
 - (BOOL)_attemptQueueStart;
 - (BOOL)_startQueueWithRetry;
 - (BOOL)play;
-- (HUWrappedAudioQueue)initWithSampleRate:(double)a3;
-- (id)convertBufferIfNecessary:(id)a3;
+- (HUWrappedAudioQueue)initWithSampleRate:(double)rate;
+- (id)convertBufferIfNecessary:(id)necessary;
 - (unint64_t)_minimumBufferByteSize;
 - (void)_rebuildAudioQueue;
 - (void)_reconfigureQueueFormatForMultiChannelOutputIfNecessary;
 - (void)_scheduleDeferredStop;
 - (void)_tearDownAudioQueue;
-- (void)bufferCallback:(AudioQueueBuffer *)a3;
+- (void)bufferCallback:(AudioQueueBuffer *)callback;
 - (void)dealloc;
-- (void)scheduleBuffer:(id)a3 completionHandler:(id)a4;
-- (void)scheduleBuffer:(id)a3 completionHandler:(id)a4 lastBuffer:(BOOL)a5;
-- (void)setAudioDevice:(unsigned int)a3;
-- (void)setAudioQueueFlags:(unsigned int)a3;
-- (void)setOutputFormat:(id)a3;
+- (void)scheduleBuffer:(id)buffer completionHandler:(id)handler;
+- (void)scheduleBuffer:(id)buffer completionHandler:(id)handler lastBuffer:(BOOL)lastBuffer;
+- (void)setAudioDevice:(unsigned int)device;
+- (void)setAudioQueueFlags:(unsigned int)flags;
+- (void)setOutputFormat:(id)format;
 - (void)stop;
 @end
 
 @implementation HUWrappedAudioQueue
 
-- (HUWrappedAudioQueue)initWithSampleRate:(double)a3
+- (HUWrappedAudioQueue)initWithSampleRate:(double)rate
 {
   v22.receiver = self;
   v22.super_class = HUWrappedAudioQueue;
@@ -30,21 +30,21 @@
   if (v4)
   {
     *&v4->_bufferLock._os_unfair_lock_opaque = 0;
-    v6 = [objc_alloc(MEMORY[0x1E6958418]) initWithCommonFormat:1 sampleRate:1 channels:0 interleaved:a3];
+    v6 = [objc_alloc(MEMORY[0x1E6958418]) initWithCommonFormat:1 sampleRate:1 channels:0 interleaved:rate];
     format = v5->_format;
     v5->_format = v6;
 
-    v8 = [objc_alloc(MEMORY[0x1E6958418]) initWithCommonFormat:1 sampleRate:1 channels:1 interleaved:a3];
+    v8 = [objc_alloc(MEMORY[0x1E6958418]) initWithCommonFormat:1 sampleRate:1 channels:1 interleaved:rate];
     queueFormat = v5->_queueFormat;
     v5->_queueFormat = v8;
 
-    v10 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     availableBuffers = v5->_availableBuffers;
-    v5->_availableBuffers = v10;
+    v5->_availableBuffers = orderedSet;
 
-    v12 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
     inflightBuffers = v5->_inflightBuffers;
-    v5->_inflightBuffers = v12;
+    v5->_inflightBuffers = orderedSet2;
 
     v14 = objc_alloc_init(MEMORY[0x1E696AB30]);
     buffersAvailable = v5->_buffersAvailable;
@@ -60,8 +60,8 @@
     v5->_deferredStopQueue = v18;
 
     v5->_audioDevice = 0;
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v5 selector:sel_handleMediaServicesReset name:*MEMORY[0x1E6958128] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_handleMediaServicesReset name:*MEMORY[0x1E6958128] object:0];
   }
 
   return v5;
@@ -69,8 +69,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(HUWrappedAudioQueue *)self _tearDownAudioQueue];
   v4.receiver = self;
@@ -78,32 +78,32 @@
   [(HUWrappedAudioQueue *)&v4 dealloc];
 }
 
-- (id)convertBufferIfNecessary:(id)a3
+- (id)convertBufferIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(HUWrappedAudioQueue *)self queueFormat];
-  v6 = [v4 format];
-  v7 = [v5 isEqual:v6];
+  necessaryCopy = necessary;
+  queueFormat = [(HUWrappedAudioQueue *)self queueFormat];
+  format = [necessaryCopy format];
+  v7 = [queueFormat isEqual:format];
 
   if (v7)
   {
-    v8 = v4;
+    v8 = necessaryCopy;
     goto LABEL_10;
   }
 
-  v9 = [(HUWrappedAudioQueue *)self cachedAudioConverter];
-  if (v9)
+  cachedAudioConverter = [(HUWrappedAudioQueue *)self cachedAudioConverter];
+  if (cachedAudioConverter)
   {
-    v10 = v9;
-    v11 = [(HUWrappedAudioQueue *)self cachedAudioConverter];
-    v12 = [v11 inputFormat];
-    v13 = [v4 format];
-    if ([v12 isEqual:v13])
+    v10 = cachedAudioConverter;
+    cachedAudioConverter2 = [(HUWrappedAudioQueue *)self cachedAudioConverter];
+    inputFormat = [cachedAudioConverter2 inputFormat];
+    format2 = [necessaryCopy format];
+    if ([inputFormat isEqual:format2])
     {
-      v14 = [(HUWrappedAudioQueue *)self cachedAudioConverter];
-      v15 = [v14 outputFormat];
-      v16 = [(HUWrappedAudioQueue *)self queueFormat];
-      v17 = [v15 isEqual:v16];
+      cachedAudioConverter3 = [(HUWrappedAudioQueue *)self cachedAudioConverter];
+      outputFormat = [cachedAudioConverter3 outputFormat];
+      queueFormat2 = [(HUWrappedAudioQueue *)self queueFormat];
+      v17 = [outputFormat isEqual:queueFormat2];
 
       if (v17)
       {
@@ -117,36 +117,36 @@
   }
 
   v18 = objc_alloc(MEMORY[0x1E69583F0]);
-  v19 = [v4 format];
-  v20 = [(HUWrappedAudioQueue *)self queueFormat];
-  v21 = [v18 initFromFormat:v19 toFormat:v20];
+  format3 = [necessaryCopy format];
+  queueFormat3 = [(HUWrappedAudioQueue *)self queueFormat];
+  v21 = [v18 initFromFormat:format3 toFormat:queueFormat3];
   [(HUWrappedAudioQueue *)self setCachedAudioConverter:v21];
 
 LABEL_9:
-  v22 = [(HUWrappedAudioQueue *)self queueFormat];
-  [v22 sampleRate];
+  queueFormat4 = [(HUWrappedAudioQueue *)self queueFormat];
+  [queueFormat4 sampleRate];
   v24 = v23;
-  v25 = [v4 format];
-  [v25 sampleRate];
+  format4 = [necessaryCopy format];
+  [format4 sampleRate];
   *&v24 = v24 / v26;
 
   v27 = objc_alloc(MEMORY[0x1E6958440]);
-  v28 = [(HUWrappedAudioQueue *)self queueFormat];
-  v8 = [v27 initWithPCMFormat:v28 frameCapacity:(*&v24 * objc_msgSend(v4, "frameLength"))];
+  queueFormat5 = [(HUWrappedAudioQueue *)self queueFormat];
+  v8 = [v27 initWithPCMFormat:queueFormat5 frameCapacity:(*&v24 * objc_msgSend(necessaryCopy, "frameLength"))];
 
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
   v37 = 0;
-  v29 = [(HUWrappedAudioQueue *)self cachedAudioConverter];
+  cachedAudioConverter4 = [(HUWrappedAudioQueue *)self cachedAudioConverter];
   v34 = v36;
   v35 = 0;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __48__HUWrappedAudioQueue_convertBufferIfNecessary___block_invoke;
   v32[3] = &unk_1E85CD258;
-  v33 = v4;
-  [v29 convertToBuffer:v8 error:&v35 withInputFromBlock:v32];
+  v33 = necessaryCopy;
+  [cachedAudioConverter4 convertToBuffer:v8 error:&v35 withInputFromBlock:v32];
   v30 = v35;
 
   _Block_object_dispose(v36, 8);
@@ -174,11 +174,11 @@ id __48__HUWrappedAudioQueue_convertBufferIfNecessary___block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)scheduleBuffer:(id)a3 completionHandler:(id)a4 lastBuffer:(BOOL)a5
+- (void)scheduleBuffer:(id)buffer completionHandler:(id)handler lastBuffer:(BOOL)lastBuffer
 {
-  v5 = a5;
-  [(HUWrappedAudioQueue *)self scheduleBuffer:a3 completionHandler:a4];
-  if (v5)
+  lastBufferCopy = lastBuffer;
+  [(HUWrappedAudioQueue *)self scheduleBuffer:buffer completionHandler:handler];
+  if (lastBufferCopy)
   {
     AX_PERFORM_WITH_LOCK();
   }
@@ -191,17 +191,17 @@ uint64_t __67__HUWrappedAudioQueue_scheduleBuffer_completionHandler_lastBuffer__
   return AudioQueueFlush(v1);
 }
 
-- (void)scheduleBuffer:(id)a3 completionHandler:(id)a4
+- (void)scheduleBuffer:(id)buffer completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  handlerCopy = handler;
   if ([(HUWrappedAudioQueue *)self state])
   {
-    v8 = [(HUWrappedAudioQueue *)self convertBufferIfNecessary:v6];
+    v8 = [(HUWrappedAudioQueue *)self convertBufferIfNecessary:bufferCopy];
 
-    v9 = [v8 frameLength];
-    v10 = [v8 format];
-    v11 = (*([v10 streamDescription] + 24) * v9);
+    frameLength = [v8 frameLength];
+    format = [v8 format];
+    v11 = (*([format streamDescription] + 24) * frameLength);
 
     v43 = 0;
     v44 = &v43;
@@ -221,7 +221,7 @@ uint64_t __67__HUWrappedAudioQueue_scheduleBuffer_completionHandler_lastBuffer__
     v29 = 3221225472;
     v30 = __56__HUWrappedAudioQueue_scheduleBuffer_completionHandler___block_invoke;
     v31 = &unk_1E85CD280;
-    v32 = self;
+    selfCopy = self;
     v33 = v41;
     v35 = &v37;
     v36 = v11;
@@ -236,19 +236,19 @@ uint64_t __67__HUWrappedAudioQueue_scheduleBuffer_completionHandler_lastBuffer__
         v24 = 3221225472;
         v25 = __56__HUWrappedAudioQueue_scheduleBuffer_completionHandler___block_invoke_2;
         v26 = &unk_1E85C9F60;
-        v27 = self;
+        selfCopy2 = self;
         AX_PERFORM_WITH_LOCK();
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
       else
       {
-        [v12 setCompletionHandler:v7];
+        [v12 setCompletionHandler:handlerCopy];
         *([v44[5] aqBuffer] + 16) = v11;
         if ([v8 frameLength] == 1)
         {
-          v14 = [(HUWrappedAudioQueue *)self queueFormat];
-          v15 = *([v14 streamDescription] + 24);
+          queueFormat = [(HUWrappedAudioQueue *)self queueFormat];
+          v15 = *([queueFormat streamDescription] + 24);
 
           v16 = *[v44[5] aqBuffer];
           if (v15 << 8 >= v16)
@@ -282,7 +282,7 @@ uint64_t __67__HUWrappedAudioQueue_scheduleBuffer_completionHandler_lastBuffer__
           if (*(v20 + 6) == -66671)
           {
             AX_PERFORM_WITH_LOCK();
-            v7[2](v7);
+            handlerCopy[2](handlerCopy);
           }
 
           else if ([(HUWrappedAudioQueue *)self state]== 3)
@@ -307,10 +307,10 @@ uint64_t __67__HUWrappedAudioQueue_scheduleBuffer_completionHandler_lastBuffer__
 
     else
     {
-      v13 = [(HUWrappedAudioQueue *)self buffersAvailable];
-      [v13 wait];
+      buffersAvailable = [(HUWrappedAudioQueue *)self buffersAvailable];
+      [buffersAvailable wait];
 
-      [(HUWrappedAudioQueue *)self scheduleBuffer:v8 completionHandler:v7];
+      [(HUWrappedAudioQueue *)self scheduleBuffer:v8 completionHandler:handlerCopy];
     }
 
     _Block_object_dispose(&v37, 8);
@@ -320,8 +320,8 @@ uint64_t __67__HUWrappedAudioQueue_scheduleBuffer_completionHandler_lastBuffer__
 
   else
   {
-    v7[2](v7);
-    v8 = v6;
+    handlerCopy[2](handlerCopy);
+    v8 = bufferCopy;
   }
 }
 
@@ -543,11 +543,11 @@ uint64_t __56__HUWrappedAudioQueue_scheduleBuffer_completionHandler___block_invo
     }
 
     [(HUWrappedAudioQueue *)self _buildAudioQueue];
-    v6 = [(HUWrappedAudioQueue *)self _attemptQueueStart];
+    _attemptQueueStart = [(HUWrappedAudioQueue *)self _attemptQueueStart];
     v4 = v5 + 1;
   }
 
-  while (!v6);
+  while (!_attemptQueueStart);
   return v5 < 2;
 }
 
@@ -591,13 +591,13 @@ uint64_t __39__HUWrappedAudioQueue__buildAudioQueue__block_invoke(uint64_t a1)
   }
 
   [(HUWrappedAudioQueue *)self _buildAudioQueue];
-  v3 = [(HUWrappedAudioQueue *)self deferredStopQueue];
+  deferredStopQueue = [(HUWrappedAudioQueue *)self deferredStopQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __27__HUWrappedAudioQueue_play__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(deferredStopQueue, block);
 
   if ([(HUWrappedAudioQueue *)self state]== 3 && ![(HUWrappedAudioQueue *)self _startQueueWithRetry])
   {
@@ -636,8 +636,8 @@ uint64_t __28__HUWrappedAudioQueue_pause__block_invoke(uint64_t a1)
 {
   AX_PERFORM_WITH_LOCK();
   [(HUWrappedAudioQueue *)self setState:0];
-  v3 = [(HUWrappedAudioQueue *)self buffersAvailable];
-  [v3 broadcast];
+  buffersAvailable = [(HUWrappedAudioQueue *)self buffersAvailable];
+  [buffersAvailable broadcast];
 
   [(HUWrappedAudioQueue *)self _scheduleDeferredStop];
 }
@@ -649,35 +649,35 @@ uint64_t __27__HUWrappedAudioQueue_stop__block_invoke(uint64_t a1)
   return AudioQueueReset(v1);
 }
 
-- (void)setAudioDevice:(unsigned int)a3
+- (void)setAudioDevice:(unsigned int)device
 {
-  if (self->_audioDevice != a3)
+  if (self->_audioDevice != device)
   {
-    self->_audioDevice = a3;
+    self->_audioDevice = device;
     [(HUWrappedAudioQueue *)self setShouldRebuildAudioQueue:1];
   }
 }
 
-- (void)setOutputFormat:(id)a3
+- (void)setOutputFormat:(id)format
 {
-  v6 = a3;
-  v4 = [(HUWrappedAudioQueue *)self format];
-  v5 = [v6 isEqual:v4];
+  formatCopy = format;
+  format = [(HUWrappedAudioQueue *)self format];
+  v5 = [formatCopy isEqual:format];
 
   if ((v5 & 1) == 0)
   {
-    [(HUWrappedAudioQueue *)self setFormat:v6];
+    [(HUWrappedAudioQueue *)self setFormat:formatCopy];
     [(HUWrappedAudioQueue *)self setShouldRebuildAudioQueue:1];
   }
 
   [(HUWrappedAudioQueue *)self _reconfigureQueueFormatForMultiChannelOutputIfNecessary];
 }
 
-- (void)setAudioQueueFlags:(unsigned int)a3
+- (void)setAudioQueueFlags:(unsigned int)flags
 {
-  if (self->_audioQueueFlags != a3)
+  if (self->_audioQueueFlags != flags)
   {
-    self->_audioQueueFlags = a3;
+    self->_audioQueueFlags = flags;
     [(HUWrappedAudioQueue *)self setShouldRebuildAudioQueue:1];
   }
 }
@@ -690,7 +690,7 @@ uint64_t __47__HUWrappedAudioQueue_handleMediaServicesReset__block_invoke(uint64
   return [v2 _rebuildAudioQueue];
 }
 
-- (void)bufferCallback:(AudioQueueBuffer *)a3
+- (void)bufferCallback:(AudioQueueBuffer *)callback
 {
   v4 = 0;
   v5 = &v4;
@@ -735,13 +735,13 @@ void __38__HUWrappedAudioQueue_bufferCallback___block_invoke(uint64_t a1)
 
 - (void)_scheduleDeferredStop
 {
-  v3 = [(HUWrappedAudioQueue *)self deferredStopQueue];
+  deferredStopQueue = [(HUWrappedAudioQueue *)self deferredStopQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__HUWrappedAudioQueue__scheduleDeferredStop__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(deferredStopQueue, block);
 }
 
 void __44__HUWrappedAudioQueue__scheduleDeferredStop__block_invoke(uint64_t a1)
@@ -802,11 +802,11 @@ uint64_t __44__HUWrappedAudioQueue__scheduleDeferredStop__block_invoke_3(uint64_
 
 - (unint64_t)_minimumBufferByteSize
 {
-  v3 = [(HUWrappedAudioQueue *)self format];
-  [v3 sampleRate];
+  format = [(HUWrappedAudioQueue *)self format];
+  [format sampleRate];
   v5 = (v4 * 0.1);
-  v6 = [(HUWrappedAudioQueue *)self format];
-  v7 = *([v6 streamDescription] + 24) * v5;
+  format2 = [(HUWrappedAudioQueue *)self format];
+  v7 = *([format2 streamDescription] + 24) * v5;
 
   return v7;
 }
@@ -860,17 +860,17 @@ void __42__HUWrappedAudioQueue__tearDownAudioQueue__block_invoke(uint64_t a1)
   v3 = outAQ;
   self->_aqRef = outAQ;
   AudioQueueAddPropertyListener(v3, 0x6171726Eu, WrappedAudioQueueRunningStateChanged, self);
-  v4 = [(HUWrappedAudioQueue *)self buffersAvailable];
-  [v4 broadcast];
+  buffersAvailable = [(HUWrappedAudioQueue *)self buffersAvailable];
+  [buffersAvailable broadcast];
 }
 
 - (void)_reconfigureQueueFormatForMultiChannelOutputIfNecessary
 {
-  v3 = [(HUWrappedAudioQueue *)self format];
+  format = [(HUWrappedAudioQueue *)self format];
   queueFormat = self->_queueFormat;
-  self->_queueFormat = v3;
+  self->_queueFormat = format;
 
-  MEMORY[0x1EEE66BB8](v3, queueFormat);
+  MEMORY[0x1EEE66BB8](format, queueFormat);
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface MADProtoComputeSyncThumbnailPayload
-+ (id)payloadFromVSKAsset:(id)a3 imageEmbeddingVersion:(signed __int16)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)payloadFromVSKAsset:(id)asset imageEmbeddingVersion:(signed __int16)version;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)a3;
+- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)addImageEmbeddingResults:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setImageEmbeddingResultsFromVSKAsset:(id)a3 imageEmbeddingVersion:(signed __int16)a4;
-- (void)writeTo:(id)a3;
+- (void)addImageEmbeddingResults:(id)results;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setImageEmbeddingResultsFromVSKAsset:(id)asset imageEmbeddingVersion:(signed __int16)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MADProtoComputeSyncThumbnailPayload
 
-- (void)addImageEmbeddingResults:(id)a3
+- (void)addImageEmbeddingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageEmbeddingResults = self->_imageEmbeddingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageEmbeddingResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageEmbeddingResults;
     self->_imageEmbeddingResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageEmbeddingResults = self->_imageEmbeddingResults;
   }
 
-  [(NSMutableArray *)imageEmbeddingResults addObject:v4];
+  [(NSMutableArray *)imageEmbeddingResults addObject:resultsCopy];
 }
 
 - (id)description
@@ -39,8 +39,8 @@
   v8.receiver = self;
   v8.super_class = MADProtoComputeSyncThumbnailPayload;
   v4 = [(MADProtoComputeSyncThumbnailPayload *)&v8 description];
-  v5 = [(MADProtoComputeSyncThumbnailPayload *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MADProtoComputeSyncThumbnailPayload *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -48,11 +48,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_imageEmbeddingVersion];
-    [v3 setObject:v4 forKey:@"imageEmbeddingVersion"];
+    [dictionary setObject:v4 forKey:@"imageEmbeddingVersion"];
   }
 
   if ([(NSMutableArray *)self->_imageEmbeddingResults count])
@@ -77,8 +77,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -87,16 +87,16 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"imageEmbeddingResults"];
+    [dictionary setObject:v5 forKey:@"imageEmbeddingResults"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -134,23 +134,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_imageEmbeddingVersion;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_imageEmbeddingVersion;
+    *(toCopy + 20) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingResultsCount])
   {
     [v9 clearImageEmbeddingResults];
-    v5 = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingResultsCount];
-    if (v5)
+    imageEmbeddingResultsCount = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingResultsCount];
+    if (imageEmbeddingResultsCount)
     {
-      v6 = v5;
+      v6 = imageEmbeddingResultsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingResultsAtIndex:i];
@@ -160,10 +160,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -191,7 +191,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addImageEmbeddingResults:v12];
 
         ++v11;
@@ -207,23 +207,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_imageEmbeddingVersion != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_imageEmbeddingVersion != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v6 = 0;
@@ -231,7 +231,7 @@ LABEL_9:
   }
 
   imageEmbeddingResults = self->_imageEmbeddingResults;
-  if (imageEmbeddingResults | *(v4 + 1))
+  if (imageEmbeddingResults | *(equalCopy + 1))
   {
     v6 = [(NSMutableArray *)imageEmbeddingResults isEqual:?];
   }
@@ -261,14 +261,14 @@ LABEL_10:
   return [(NSMutableArray *)self->_imageEmbeddingResults hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 20))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 20))
   {
-    self->_imageEmbeddingVersion = *(v4 + 4);
+    self->_imageEmbeddingVersion = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -276,7 +276,7 @@ LABEL_10:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -303,14 +303,14 @@ LABEL_10:
   }
 }
 
-+ (id)payloadFromVSKAsset:(id)a3 imageEmbeddingVersion:(signed __int16)a4
++ (id)payloadFromVSKAsset:(id)asset imageEmbeddingVersion:(signed __int16)version
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  versionCopy = version;
+  assetCopy = asset;
+  if (assetCopy)
   {
     v6 = objc_alloc_init(MADProtoComputeSyncThumbnailPayload);
-    [(MADProtoComputeSyncThumbnailPayload *)v6 setImageEmbeddingResultsFromVSKAsset:v5 imageEmbeddingVersion:v4];
+    [(MADProtoComputeSyncThumbnailPayload *)v6 setImageEmbeddingResultsFromVSKAsset:assetCopy imageEmbeddingVersion:versionCopy];
   }
 
   else
@@ -327,17 +327,17 @@ LABEL_10:
   return v6;
 }
 
-- (void)setImageEmbeddingResultsFromVSKAsset:(id)a3 imageEmbeddingVersion:(signed __int16)a4
+- (void)setImageEmbeddingResultsFromVSKAsset:(id)asset imageEmbeddingVersion:(signed __int16)version
 {
-  v4 = a4;
-  v9 = a3;
+  versionCopy = version;
+  assetCopy = asset;
   v6 = [VCPProtoEmbeddingResult resultsFromVSKAsset:?];
   [(MADProtoComputeSyncThumbnailPayload *)self setImageEmbeddingResults:v6];
 
-  v7 = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingResults];
-  if ([v7 count])
+  imageEmbeddingResults = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingResults];
+  if ([imageEmbeddingResults count])
   {
-    v8 = v4;
+    v8 = versionCopy;
   }
 
   else
@@ -348,14 +348,14 @@ LABEL_10:
   [(MADProtoComputeSyncThumbnailPayload *)self setImageEmbeddingVersion:v8];
 }
 
-- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)a3
+- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingVersion]>= 73)
   {
-    v6 = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingResults];
-    v5 = [VCPProtoEmbeddingResult imageEmbeddingVSKAssetFromResults:v6 localIdentifier:v4];
+    imageEmbeddingResults = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingResults];
+    v5 = [VCPProtoEmbeddingResult imageEmbeddingVSKAssetFromResults:imageEmbeddingResults localIdentifier:identifierCopy];
   }
 
   else
@@ -363,9 +363,9 @@ LABEL_10:
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412802;
-      v9 = v4;
+      v9 = identifierCopy;
       v10 = 1024;
-      v11 = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingVersion];
+      imageEmbeddingVersion = [(MADProtoComputeSyncThumbnailPayload *)self imageEmbeddingVersion];
       v12 = 1024;
       v13 = 73;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProtoComputeSyncThumbnailPayload->VSKAsset][%@] Image embedding version %d < forward compatible version %d", &v8, 0x18u);

@@ -1,17 +1,17 @@
 @interface _TVAlertTemplateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setViewsAbove:(id)a3;
-- (void)setViewsBelow:(id)a3;
+- (void)setViewsAbove:(id)above;
+- (void)setViewsBelow:(id)below;
 @end
 
 @implementation _TVAlertTemplateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVAlertTemplateView" hasInstanceMethod:@"viewsAbove" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVAlertTemplateView" hasInstanceMethod:@"viewsBelow" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVAlertTemplateView" hasInstanceMethod:@"viewsAbove" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVAlertTemplateView" hasInstanceMethod:@"viewsBelow" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -91,19 +91,19 @@
   v20 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setViewsAbove:(id)a3
+- (void)setViewsAbove:(id)above
 {
   v4.receiver = self;
   v4.super_class = _TVAlertTemplateViewAccessibility;
-  [(_TVAlertTemplateViewAccessibility *)&v4 setViewsAbove:a3];
+  [(_TVAlertTemplateViewAccessibility *)&v4 setViewsAbove:above];
   [(_TVAlertTemplateViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setViewsBelow:(id)a3
+- (void)setViewsBelow:(id)below
 {
   v4.receiver = self;
   v4.super_class = _TVAlertTemplateViewAccessibility;
-  [(_TVAlertTemplateViewAccessibility *)&v4 setViewsBelow:a3];
+  [(_TVAlertTemplateViewAccessibility *)&v4 setViewsBelow:below];
   [(_TVAlertTemplateViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

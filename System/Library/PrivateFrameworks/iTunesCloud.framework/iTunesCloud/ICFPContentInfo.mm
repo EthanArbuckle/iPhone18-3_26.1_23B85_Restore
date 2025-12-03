@@ -1,5 +1,5 @@
 @interface ICFPContentInfo
-+ (id)whaContentInfoWithAccountID:(unint64_t)a3;
++ (id)whaContentInfoWithAccountID:(unint64_t)d;
 - (FPContentInfo_)fpContentInfo;
 - (id)_init;
 @end
@@ -26,16 +26,16 @@
   return [(ICFPContentInfo *)&v3 init];
 }
 
-+ (id)whaContentInfoWithAccountID:(unint64_t)a3
++ (id)whaContentInfoWithAccountID:(unint64_t)d
 {
-  v4 = [[a1 alloc] _init];
-  if (v4)
+  _init = [[self alloc] _init];
+  if (_init)
   {
-    v4[1] = 3;
-    v4[2] = a3;
+    _init[1] = 3;
+    _init[2] = d;
   }
 
-  return v4;
+  return _init;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface GKFriendBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-- (GKFriendBulletin)initWithPushNotification:(id)a3;
-- (void)handleAction:(id)a3;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
+- (GKFriendBulletin)initWithPushNotification:(id)notification;
+- (void)handleAction:(id)action;
 @end
 
 @implementation GKFriendBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v4);
@@ -16,16 +16,16 @@
   _Block_release(v4);
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_1001FA3D8();
 }
 
-- (GKFriendBulletin)initWithPushNotification:(id)a3
+- (GKFriendBulletin)initWithPushNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
     v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

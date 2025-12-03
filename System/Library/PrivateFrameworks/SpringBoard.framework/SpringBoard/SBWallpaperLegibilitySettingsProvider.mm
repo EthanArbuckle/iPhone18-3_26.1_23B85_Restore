@@ -1,11 +1,11 @@
 @interface SBWallpaperLegibilitySettingsProvider
 - (SBFLegibilitySettingsProviderDelegate)delegate;
-- (SBWallpaperLegibilitySettingsProvider)initWithVariant:(int64_t)a3;
+- (SBWallpaperLegibilitySettingsProvider)initWithVariant:(int64_t)variant;
 - (_UILegibilitySettings)legibilitySettings;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)wallpaperDidChangeForVariant:(int64_t)a3;
-- (void)wallpaperLegibilitySettingsDidChange:(id)a3 forVariant:(int64_t)a4;
+- (void)setDelegate:(id)delegate;
+- (void)wallpaperDidChangeForVariant:(int64_t)variant;
+- (void)wallpaperLegibilitySettingsDidChange:(id)change forVariant:(int64_t)variant;
 @end
 
 @implementation SBWallpaperLegibilitySettingsProvider
@@ -28,7 +28,7 @@
   [(SBWallpaperLegibilitySettingsProvider *)&v4 dealloc];
 }
 
-- (SBWallpaperLegibilitySettingsProvider)initWithVariant:(int64_t)a3
+- (SBWallpaperLegibilitySettingsProvider)initWithVariant:(int64_t)variant
 {
   v7.receiver = self;
   v7.super_class = SBWallpaperLegibilitySettingsProvider;
@@ -37,15 +37,15 @@
   if (v4)
   {
     objc_storeWeak(&v4->_delegate, 0);
-    v5->_variant = a3;
+    v5->_variant = variant;
   }
 
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -68,18 +68,18 @@
   }
 }
 
-- (void)wallpaperDidChangeForVariant:(int64_t)a3
+- (void)wallpaperDidChangeForVariant:(int64_t)variant
 {
-  if (self->_variant == a3)
+  if (self->_variant == variant)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained providerLegibilitySettingsChanged:self];
   }
 }
 
-- (void)wallpaperLegibilitySettingsDidChange:(id)a3 forVariant:(int64_t)a4
+- (void)wallpaperLegibilitySettingsDidChange:(id)change forVariant:(int64_t)variant
 {
-  if (self->_variant == a4)
+  if (self->_variant == variant)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained providerLegibilitySettingsChanged:self];

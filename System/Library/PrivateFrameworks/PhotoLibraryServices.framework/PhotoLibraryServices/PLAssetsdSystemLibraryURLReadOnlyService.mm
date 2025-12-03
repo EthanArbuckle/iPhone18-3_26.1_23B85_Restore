@@ -1,28 +1,28 @@
 @interface PLAssetsdSystemLibraryURLReadOnlyService
-- (PLAssetsdSystemLibraryURLReadOnlyService)initWithConnectionAuthorization:(id)a3;
-- (void)systemPhotoLibraryURL:(id)a3;
+- (PLAssetsdSystemLibraryURLReadOnlyService)initWithConnectionAuthorization:(id)authorization;
+- (void)systemPhotoLibraryURL:(id)l;
 @end
 
 @implementation PLAssetsdSystemLibraryURLReadOnlyService
 
-- (void)systemPhotoLibraryURL:(id)a3
+- (void)systemPhotoLibraryURL:(id)l
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: systemPhotoLibraryURL:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v9 + 1), (&v11 + 8));
   }
 
-  v5 = [MEMORY[0x1E69BF2A8] systemLibraryURL];
-  v3[2](v3, v5, 0);
+  systemLibraryURL = [MEMORY[0x1E69BF2A8] systemLibraryURL];
+  lCopy[2](lCopy, systemLibraryURL, 0);
 
   if (v10 == 1)
   {
@@ -43,16 +43,16 @@
   }
 }
 
-- (PLAssetsdSystemLibraryURLReadOnlyService)initWithConnectionAuthorization:(id)a3
+- (PLAssetsdSystemLibraryURLReadOnlyService)initWithConnectionAuthorization:(id)authorization
 {
-  v5 = a3;
+  authorizationCopy = authorization;
   v9.receiver = self;
   v9.super_class = PLAssetsdSystemLibraryURLReadOnlyService;
   v6 = [(PLAssetsdSystemLibraryURLReadOnlyService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionAuthorization, a3);
+    objc_storeStrong(&v6->_connectionAuthorization, authorization);
   }
 
   return v7;

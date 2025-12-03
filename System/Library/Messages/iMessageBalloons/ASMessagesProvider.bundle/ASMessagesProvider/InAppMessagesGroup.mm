@@ -1,11 +1,11 @@
 @interface InAppMessagesGroup
 - (_TtC18ASMessagesProvider18InAppMessagesGroup)init;
-- (_TtC18ASMessagesProvider18InAppMessagesGroup)initWithGroupIdentifier:(id)a3;
+- (_TtC18ASMessagesProvider18InAppMessagesGroup)initWithGroupIdentifier:(id)identifier;
 @end
 
 @implementation InAppMessagesGroup
 
-- (_TtC18ASMessagesProvider18InAppMessagesGroup)initWithGroupIdentifier:(id)a3
+- (_TtC18ASMessagesProvider18InAppMessagesGroup)initWithGroupIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

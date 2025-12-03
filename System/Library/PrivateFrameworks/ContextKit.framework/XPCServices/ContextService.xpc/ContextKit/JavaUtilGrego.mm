@@ -1,35 +1,35 @@
 @interface JavaUtilGrego
-+ (int64_t)floorDivideWithLong:(int64_t)a3 withLong:(int64_t)a4;
++ (int64_t)floorDivideWithLong:(int64_t)long withLong:(int64_t)withLong;
 + (void)initialize;
 @end
 
 @implementation JavaUtilGrego
 
-+ (int64_t)floorDivideWithLong:(int64_t)a3 withLong:(int64_t)a4
++ (int64_t)floorDivideWithLong:(int64_t)long withLong:(int64_t)withLong
 {
   if (atomic_load_explicit(&JavaUtilGrego__initialized, memory_order_acquire))
   {
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((long & 0x8000000000000000) == 0)
     {
-      return a3 / a4;
+      return long / withLong;
     }
   }
 
   else
   {
     sub_1001ACF80();
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((long & 0x8000000000000000) == 0)
     {
-      return a3 / a4;
+      return long / withLong;
     }
   }
 
-  return (a3 + 1) / a4 - 1;
+  return (long + 1) / withLong - 1;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3[2] = xmmword_100314BA4;
     v3[3] = unk_100314BB4;

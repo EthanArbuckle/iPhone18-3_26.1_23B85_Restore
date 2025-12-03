@@ -1,34 +1,34 @@
 @interface CXMember
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMember:(id)a3;
-- (CXMember)initWithCoder:(id)a3;
-- (CXMember)initWithHandle:(id)a3 identityBlob:(id)a4 stableDeviceIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMember:(id)member;
+- (CXMember)initWithCoder:(id)coder;
+- (CXMember)initWithHandle:(id)handle identityBlob:(id)blob stableDeviceIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CXMember
 
-- (CXMember)initWithHandle:(id)a3 identityBlob:(id)a4 stableDeviceIdentifier:(id)a5
+- (CXMember)initWithHandle:(id)handle identityBlob:(id)blob stableDeviceIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handleCopy = handle;
+  blobCopy = blob;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CXMember;
   v12 = [(CXMember *)&v14 init];
   if (v12)
   {
-    if (!v9)
+    if (!handleCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXMember initWithHandle:identityBlob:stableDeviceIdentifier:]", @"handle"}];
     }
 
-    objc_storeStrong(&v12->_handle, a3);
-    objc_storeStrong(&v12->_identityBlob, a4);
-    objc_storeStrong(&v12->_stableDeviceIdentifier, a5);
+    objc_storeStrong(&v12->_handle, handle);
+    objc_storeStrong(&v12->_identityBlob, blob);
+    objc_storeStrong(&v12->_stableDeviceIdentifier, identifier);
   }
 
   return v12;
@@ -43,10 +43,10 @@
 
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CXMember *)self handle];
-  v6 = [v5 description];
-  v7 = [(CXMember *)self identityBlob];
-  v8 = [v7 description];
+  handle = [(CXMember *)self handle];
+  v6 = [handle description];
+  identityBlob = [(CXMember *)self identityBlob];
+  v8 = [identityBlob description];
   v9 = [v3 stringWithFormat:@"<%@ %p handle=%@ identityBlob=%@>", v4, self, v6, v8];
 
   return v9;
@@ -59,41 +59,41 @@ uint64_t __23__CXMember_description__block_invoke()
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXMember *)self isEqualToMember:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXMember *)self isEqualToMember:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToMember:(id)a3
+- (BOOL)isEqualToMember:(id)member
 {
-  v4 = a3;
-  v5 = [(CXMember *)self handle];
-  v6 = [v4 handle];
-  if (v5 | v6 && ![v5 isEqual:v6])
+  memberCopy = member;
+  handle = [(CXMember *)self handle];
+  handle2 = [memberCopy handle];
+  if (handle | handle2 && ![handle isEqual:handle2])
   {
     v11 = 0;
   }
 
   else
   {
-    v7 = [(CXMember *)self identityBlob];
-    v8 = [v4 identityBlob];
-    if (v7 | v8 && ![v7 isEqualToData:v8])
+    identityBlob = [(CXMember *)self identityBlob];
+    identityBlob2 = [memberCopy identityBlob];
+    if (identityBlob | identityBlob2 && ![identityBlob isEqualToData:identityBlob2])
     {
       v11 = 0;
     }
 
     else
     {
-      v9 = [(CXMember *)self stableDeviceIdentifier];
-      v10 = [v4 stableDeviceIdentifier];
-      if (v9 | v10)
+      stableDeviceIdentifier = [(CXMember *)self stableDeviceIdentifier];
+      stableDeviceIdentifier2 = [memberCopy stableDeviceIdentifier];
+      if (stableDeviceIdentifier | stableDeviceIdentifier2)
       {
-        v11 = [v9 isEqual:v10];
+        v11 = [stableDeviceIdentifier isEqual:stableDeviceIdentifier2];
       }
 
       else
@@ -108,60 +108,60 @@ uint64_t __23__CXMember_description__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(CXMember *)self handle];
-  v4 = [v3 hash];
-  v5 = [(CXMember *)self identityBlob];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CXMember *)self stableDeviceIdentifier];
-  v8 = [v7 hash];
+  handle = [(CXMember *)self handle];
+  v4 = [handle hash];
+  identityBlob = [(CXMember *)self identityBlob];
+  v6 = [identityBlob hash] ^ v4;
+  stableDeviceIdentifier = [(CXMember *)self stableDeviceIdentifier];
+  v8 = [stableDeviceIdentifier hash];
 
   return v6 ^ v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CXMember *)self handle];
-  v6 = [(CXMember *)self identityBlob];
-  v7 = [(CXMember *)self stableDeviceIdentifier];
-  v8 = [v4 initWithHandle:v5 identityBlob:v6 stableDeviceIdentifier:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  handle = [(CXMember *)self handle];
+  identityBlob = [(CXMember *)self identityBlob];
+  stableDeviceIdentifier = [(CXMember *)self stableDeviceIdentifier];
+  v8 = [v4 initWithHandle:handle identityBlob:identityBlob stableDeviceIdentifier:stableDeviceIdentifier];
 
   return v8;
 }
 
-- (CXMember)initWithCoder:(id)a3
+- (CXMember)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_handle);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_identityBlob);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_stableDeviceIdentifier);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = [(CXMember *)self initWithHandle:v7 identityBlob:v10 stableDeviceIdentifier:v13];
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXMember *)self handle];
+  coderCopy = coder;
+  handle = [(CXMember *)self handle];
   v6 = NSStringFromSelector(sel_handle);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:handle forKey:v6];
 
-  v7 = [(CXMember *)self identityBlob];
+  identityBlob = [(CXMember *)self identityBlob];
   v8 = NSStringFromSelector(sel_identityBlob);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:identityBlob forKey:v8];
 
-  v10 = [(CXMember *)self stableDeviceIdentifier];
+  stableDeviceIdentifier = [(CXMember *)self stableDeviceIdentifier];
   v9 = NSStringFromSelector(sel_stableDeviceIdentifier);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:stableDeviceIdentifier forKey:v9];
 }
 
 @end

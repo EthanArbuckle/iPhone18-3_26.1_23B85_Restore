@@ -1,36 +1,36 @@
 @interface RCNetworkOperationURLSessionDelegate
-- (RCNetworkOperationURLSessionDelegate)initWithSessionIdentifier:(id)a3;
-- (id)_existingNetworkTaskForURLSessionTask:(id)a3;
-- (id)_networkTaskForIdentifier:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)observeCompletionOfTaskWithIdentifier:(id)a3 completion:(id)a4;
+- (RCNetworkOperationURLSessionDelegate)initWithSessionIdentifier:(id)identifier;
+- (id)_existingNetworkTaskForURLSessionTask:(id)task;
+- (id)_networkTaskForIdentifier:(id)identifier;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
+- (void)addObserver:(id)observer;
+- (void)observeCompletionOfTaskWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation RCNetworkOperationURLSessionDelegate
 
-- (RCNetworkOperationURLSessionDelegate)initWithSessionIdentifier:(id)a3
+- (RCNetworkOperationURLSessionDelegate)initWithSessionIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = RCNetworkOperationURLSessionDelegate;
   v6 = [(RCNetworkOperationURLSessionDelegate *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionIdentifier, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_sessionIdentifier, identifier);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     runningTasks = v7->_runningTasks;
-    v7->_runningTasks = v8;
+    v7->_runningTasks = dictionary;
 
-    v10 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     sessionDidFinishObservers = v7->_sessionDidFinishObservers;
-    v7->_sessionDidFinishObservers = v10;
+    v7->_sessionDidFinishObservers = weakObjectsPointerArray;
 
     v12 = [[RCUnfairLock alloc] initWithOptions:1];
     taskLock = v7->_taskLock;
@@ -40,73 +40,73 @@
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
-  v4 = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
-  v5 = [v4 rc_containsObject:v7];
+  observerCopy = observer;
+  sessionDidFinishObservers = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
+  v5 = [sessionDidFinishObservers rc_containsObject:observerCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
-    [v6 addPointer:v7];
+    sessionDidFinishObservers2 = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
+    [sessionDidFinishObservers2 addPointer:observerCopy];
   }
 }
 
-- (void)observeCompletionOfTaskWithIdentifier:(id)a3 completion:(id)a4
+- (void)observeCompletionOfTaskWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v9 = [(RCNetworkOperationURLSessionDelegate *)self _networkTaskForIdentifier:a3];
-  v7 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v7 lock];
+  completionCopy = completion;
+  v9 = [(RCNetworkOperationURLSessionDelegate *)self _networkTaskForIdentifier:identifier];
+  taskLock = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock lock];
 
-  [v9 setCompletionHandler:v6];
-  v8 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v8 unlock];
+  [v9 setCompletionHandler:completionCopy];
+  taskLock2 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock2 unlock];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = RCSharedLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
-  if (v7)
+  if (errorCopy)
   {
     if (v9)
     {
       [RCNetworkOperationURLSessionDelegate URLSession:didBecomeInvalidWithError:];
     }
 
-    v10 = v7;
+    rc_unknownBackgroundNetworkOperationError = errorCopy;
   }
 
   else
   {
     if (v9)
     {
-      [RCNetworkOperationURLSessionDelegate URLSession:v6 didBecomeInvalidWithError:?];
+      [RCNetworkOperationURLSessionDelegate URLSession:sessionCopy didBecomeInvalidWithError:?];
     }
 
-    v10 = [MEMORY[0x277CCA9B8] rc_unknownBackgroundNetworkOperationError];
+    rc_unknownBackgroundNetworkOperationError = [MEMORY[0x277CCA9B8] rc_unknownBackgroundNetworkOperationError];
   }
 
-  v11 = v10;
-  v12 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v12 lock];
+  v11 = rc_unknownBackgroundNetworkOperationError;
+  taskLock = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock lock];
 
-  v13 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-  v14 = [v13 allValues];
+  runningTasks = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+  allValues = [runningTasks allValues];
 
-  v15 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v15 unlock];
+  taskLock2 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock2 unlock];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v16 = v14;
+  v16 = allValues;
   v17 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v17)
   {
@@ -122,12 +122,12 @@
         }
 
         v21 = *(*(&v28 + 1) + 8 * i);
-        v22 = [v21 completionHandler];
+        completionHandler = [v21 completionHandler];
 
-        if (v22)
+        if (completionHandler)
         {
-          v23 = [v21 completionHandler];
-          (v23)[2](v23, 0, 0, v11);
+          completionHandler2 = [v21 completionHandler];
+          (completionHandler2)[2](completionHandler2, 0, 0, v11);
         }
       }
 
@@ -137,24 +137,24 @@
     while (v18);
   }
 
-  v24 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v24 lock];
+  taskLock3 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock3 lock];
 
-  v25 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-  [v25 removeAllObjects];
+  runningTasks2 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+  [runningTasks2 removeAllObjects];
 
-  v26 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v26 unlock];
+  taskLock4 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock4 unlock];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v51[3] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(RCNetworkOperationURLSessionDelegate *)self _existingNetworkTaskForURLSessionTask:v7];
+  taskCopy = task;
+  errorCopy = error;
+  v9 = [(RCNetworkOperationURLSessionDelegate *)self _existingNetworkTaskForURLSessionTask:taskCopy];
 
   if (!v9)
   {
@@ -162,20 +162,20 @@
     v43[1] = 3221225472;
     v43[2] = __77__RCNetworkOperationURLSessionDelegate_URLSession_task_didCompleteWithError___block_invoke;
     v43[3] = &unk_27822F130;
-    v44 = v7;
-    v45 = self;
+    v44 = taskCopy;
+    selfCopy = self;
     __77__RCNetworkOperationURLSessionDelegate_URLSession_task_didCompleteWithError___block_invoke(v43);
     v10 = v44;
     goto LABEL_26;
   }
 
-  v10 = [(RCNetworkOperationURLSessionDelegate *)self _existingNetworkTaskForURLSessionTask:v7];
+  v10 = [(RCNetworkOperationURLSessionDelegate *)self _existingNetworkTaskForURLSessionTask:taskCopy];
   v11 = objc_opt_class();
-  v12 = [v7 response];
-  v13 = RCDynamicCast(v11, v12);
+  response = [taskCopy response];
+  v13 = RCDynamicCast(v11, response);
 
   [v10 receiveHTTPResponse:v13];
-  if (v8)
+  if (errorCopy)
   {
     v14 = RCSharedLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -183,17 +183,17 @@
       [RCNetworkOperationURLSessionDelegate URLSession:task:didCompleteWithError:];
     }
 
-    v15 = [v10 completionHandler];
+    completionHandler = [v10 completionHandler];
 
-    if (!v15)
+    if (!completionHandler)
     {
       goto LABEL_21;
     }
 
-    v16 = [v10 completionHandler];
-    v17 = [v10 data];
-    v18 = [v7 response];
-    (v16)[2](v16, v17, v18, v8);
+    completionHandler2 = [v10 completionHandler];
+    data = [v10 data];
+    response2 = [taskCopy response];
+    (completionHandler2)[2](completionHandler2, data, response2, errorCopy);
   }
 
   else if (v13 && [v13 isFailure])
@@ -204,40 +204,40 @@
       [RCNetworkOperationURLSessionDelegate URLSession:task:didCompleteWithError:];
     }
 
-    v20 = [v10 completionHandler];
+    completionHandler3 = [v10 completionHandler];
 
-    if (!v20)
+    if (!completionHandler3)
     {
       goto LABEL_21;
     }
 
     v50[0] = @"RCErrorHTTPURL";
     v41 = [v13 URL];
-    v21 = [v41 absoluteString];
-    v51[0] = v21;
+    absoluteString = [v41 absoluteString];
+    v51[0] = absoluteString;
     v50[1] = @"RCErrorHTTPRequestUUID";
-    v22 = [v7 taskDescription];
-    v51[1] = v22;
+    taskDescription = [taskCopy taskDescription];
+    v51[1] = taskDescription;
     v50[2] = @"RCErrorHTTPStatusCode";
     v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v13, "statusCode")}];
     v51[2] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:3];
-    v16 = [v24 mutableCopy];
+    completionHandler2 = [v24 mutableCopy];
 
-    v25 = [v13 allHeaderFields];
+    allHeaderFields = [v13 allHeaderFields];
 
-    if (v25)
+    if (allHeaderFields)
     {
-      v26 = [v13 allHeaderFields];
-      [v16 setObject:v26 forKeyedSubscript:@"RCErrorHTTPResponseHeaders"];
+      allHeaderFields2 = [v13 allHeaderFields];
+      [completionHandler2 setObject:allHeaderFields2 forKeyedSubscript:@"RCErrorHTTPResponseHeaders"];
     }
 
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"URL session task failed with status code %lu", objc_msgSend(v13, "statusCode")];
-    v18 = [MEMORY[0x277CCA9B8] rc_errorWithCode:3 description:v17 additionalUserInfo:v16];
-    v42 = [v10 completionHandler];
-    v27 = [v10 data];
-    v28 = [v7 response];
-    (v42)[2](v42, v27, v28, v18);
+    data = [MEMORY[0x277CCACA8] stringWithFormat:@"URL session task failed with status code %lu", objc_msgSend(v13, "statusCode")];
+    response2 = [MEMORY[0x277CCA9B8] rc_errorWithCode:3 description:data additionalUserInfo:completionHandler2];
+    completionHandler4 = [v10 completionHandler];
+    data2 = [v10 data];
+    response3 = [taskCopy response];
+    (completionHandler4)[2](completionHandler4, data2, response3, response2);
   }
 
   else
@@ -245,54 +245,54 @@
     v29 = RCSharedLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v7 rc_logIdentifier];
+      rc_logIdentifier = [taskCopy rc_logIdentifier];
       *buf = 138543362;
-      v47 = v30;
+      v47 = rc_logIdentifier;
       _os_log_impl(&dword_2179FC000, v29, OS_LOG_TYPE_DEFAULT, "Network operation %{public}@ did succeed", buf, 0xCu);
     }
 
-    v31 = [v10 completionHandler];
+    completionHandler5 = [v10 completionHandler];
 
-    if (!v31)
+    if (!completionHandler5)
     {
       goto LABEL_21;
     }
 
-    v16 = [v10 completionHandler];
-    v17 = [v10 data];
-    v18 = [v7 response];
-    (v16)[2](v16, v17, v18, 0);
+    completionHandler2 = [v10 completionHandler];
+    data = [v10 data];
+    response2 = [taskCopy response];
+    (completionHandler2)[2](completionHandler2, data, response2, 0);
   }
 
 LABEL_21:
-  v32 = [v10 completionHandler];
+  completionHandler6 = [v10 completionHandler];
 
-  if (v32)
+  if (completionHandler6)
   {
-    v33 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-    [v33 lock];
+    taskLock = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+    [taskLock lock];
 
-    v34 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-    v35 = [v7 taskDescription];
-    [v34 setObject:0 forKeyedSubscript:v35];
+    runningTasks = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+    taskDescription2 = [taskCopy taskDescription];
+    [runningTasks setObject:0 forKeyedSubscript:taskDescription2];
 
-    v36 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-    [v36 unlock];
+    taskLock2 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+    [taskLock2 unlock];
   }
 
   else
   {
-    v36 = RCSharedLog();
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+    taskLock2 = RCSharedLog();
+    if (os_log_type_enabled(taskLock2, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v7 rc_logIdentifier];
-      v38 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-      v39 = [v38 allKeys];
+      rc_logIdentifier2 = [taskCopy rc_logIdentifier];
+      runningTasks2 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+      allKeys = [runningTasks2 allKeys];
       *buf = 138543618;
-      v47 = v37;
+      v47 = rc_logIdentifier2;
       v48 = 2114;
-      v49 = v39;
-      _os_log_impl(&dword_2179FC000, v36, OS_LOG_TYPE_DEFAULT, "Network operation task %{public}@ has no completion handler. Tasks: %{public}@", buf, 0x16u);
+      v49 = allKeys;
+      _os_log_impl(&dword_2179FC000, taskLock2, OS_LOG_TYPE_DEFAULT, "Network operation task %{public}@ has no completion handler. Tasks: %{public}@", buf, 0x16u);
     }
   }
 
@@ -309,10 +309,10 @@ void __77__RCNetworkOperationURLSessionDelegate_URLSession_task_didCompleteWithE
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v6 = a4;
-  v7 = a5;
+  taskCopy = task;
+  metricsCopy = metrics;
   v8 = RCSharedLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -320,34 +320,34 @@ void __77__RCNetworkOperationURLSessionDelegate_URLSession_task_didCompleteWithE
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 taskDescription];
+  taskCopy = task;
+  dataCopy = data;
+  taskDescription = [taskCopy taskDescription];
 
-  if (v9)
+  if (taskDescription)
   {
-    v10 = [v7 taskDescription];
+    taskDescription2 = [taskCopy taskDescription];
     v11 = RCSharedLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 rc_logIdentifier];
+      rc_logIdentifier = [taskCopy rc_logIdentifier];
       *buf = 138543618;
-      v20 = v12;
+      v20 = rc_logIdentifier;
       v21 = 2048;
-      v22 = [v8 length];
+      v22 = [dataCopy length];
       _os_log_impl(&dword_2179FC000, v11, OS_LOG_TYPE_DEFAULT, "Network operation with request %{public}@ received data (%lu bytes)", buf, 0x16u);
     }
 
-    v13 = [(RCNetworkOperationURLSessionDelegate *)self _networkTaskForIdentifier:v10];
-    v14 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-    [v14 lock];
+    v13 = [(RCNetworkOperationURLSessionDelegate *)self _networkTaskForIdentifier:taskDescription2];
+    taskLock = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+    [taskLock lock];
 
-    [v13 receiveData:v8];
-    v15 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-    [v15 unlock];
+    [v13 receiveData:dataCopy];
+    taskLock2 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+    [taskLock2 unlock];
   }
 
   else
@@ -356,9 +356,9 @@ void __77__RCNetworkOperationURLSessionDelegate_URLSession_task_didCompleteWithE
     v17[1] = 3221225472;
     v17[2] = __75__RCNetworkOperationURLSessionDelegate_URLSession_dataTask_didReceiveData___block_invoke;
     v17[3] = &unk_27822F2B0;
-    v18 = v7;
+    v18 = taskCopy;
     __75__RCNetworkOperationURLSessionDelegate_URLSession_dataTask_didReceiveData___block_invoke(v17);
-    v10 = v18;
+    taskDescription2 = v18;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -373,34 +373,34 @@ void __75__RCNetworkOperationURLSessionDelegate_URLSession_dataTask_didReceiveDa
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  lCopy = l;
   v23 = 0;
-  v9 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8 options:0 error:&v23];
+  v9 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:0 error:&v23];
   v10 = v23;
   v11 = RCSharedLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v7 rc_logIdentifier];
+    rc_logIdentifier = [taskCopy rc_logIdentifier];
     v13 = [v9 length];
-    v14 = [v8 absoluteString];
+    absoluteString = [lCopy absoluteString];
     *buf = 138543874;
-    v25 = v12;
+    v25 = rc_logIdentifier;
     v26 = 2048;
     v27 = v13;
     v28 = 2114;
-    v29 = v14;
+    v29 = absoluteString;
     _os_log_impl(&dword_2179FC000, v11, OS_LOG_TYPE_DEFAULT, "Network operation with request %{public}@ finished downloading data (%lu bytes) to location %{public}@", buf, 0x20u);
   }
 
-  v15 = [v7 taskDescription];
+  taskDescription = [taskCopy taskDescription];
 
-  if (v15)
+  if (taskDescription)
   {
-    v16 = [v7 taskDescription];
+    taskDescription2 = [taskCopy taskDescription];
     if (v10)
     {
       v17 = RCSharedLog();
@@ -412,13 +412,13 @@ void __75__RCNetworkOperationURLSessionDelegate_URLSession_dataTask_didReceiveDa
 
     else
     {
-      v17 = [(RCNetworkOperationURLSessionDelegate *)self _networkTaskForIdentifier:v16];
-      v18 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-      [v18 lock];
+      v17 = [(RCNetworkOperationURLSessionDelegate *)self _networkTaskForIdentifier:taskDescription2];
+      taskLock = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+      [taskLock lock];
 
       [v17 receiveData:v9];
-      v19 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-      [v19 unlock];
+      taskLock2 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+      [taskLock2 unlock];
     }
   }
 
@@ -428,9 +428,9 @@ void __75__RCNetworkOperationURLSessionDelegate_URLSession_dataTask_didReceiveDa
     v21[1] = 3221225472;
     v21[2] = __90__RCNetworkOperationURLSessionDelegate_URLSession_downloadTask_didFinishDownloadingToURL___block_invoke;
     v21[3] = &unk_27822F2B0;
-    v22 = v7;
+    v22 = taskCopy;
     __90__RCNetworkOperationURLSessionDelegate_URLSession_downloadTask_didFinishDownloadingToURL___block_invoke(v21);
-    v16 = v22;
+    taskDescription2 = v22;
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -445,65 +445,65 @@ void __90__RCNetworkOperationURLSessionDelegate_URLSession_downloadTask_didFinis
   }
 }
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = RCSharedLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 rc_logIdentifier];
+    rc_logIdentifier = [sessionCopy rc_logIdentifier];
     *buf = 138543362;
-    v39 = v6;
+    v39 = rc_logIdentifier;
     _os_log_impl(&dword_2179FC000, v5, OS_LOG_TYPE_DEFAULT, "Background URL session did finish for identifier: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v7 lock];
+  taskLock = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock lock];
 
-  v8 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-  v9 = [v8 allValues];
+  runningTasks = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+  allValues = [runningTasks allValues];
 
-  v10 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v10 unlock];
+  taskLock2 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock2 unlock];
 
-  v11 = [(RCNetworkOperationURLSessionDelegate *)self observerLock];
-  [v11 lock];
+  observerLock = [(RCNetworkOperationURLSessionDelegate *)self observerLock];
+  [observerLock lock];
 
-  v12 = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
-  v13 = [v12 count];
+  sessionDidFinishObservers = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
+  v13 = [sessionDidFinishObservers count];
 
   if (v13)
   {
     v14 = 0;
     do
     {
-      v15 = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
-      v16 = [v15 pointerAtIndex:v14];
+      sessionDidFinishObservers2 = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
+      v16 = [sessionDidFinishObservers2 pointerAtIndex:v14];
 
-      [v16 networkSessionDidFinishWithTasks:v9];
+      [v16 networkSessionDidFinishWithTasks:allValues];
       ++v14;
-      v17 = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
-      v18 = [v17 count];
+      sessionDidFinishObservers3 = [(RCNetworkOperationURLSessionDelegate *)self sessionDidFinishObservers];
+      v18 = [sessionDidFinishObservers3 count];
     }
 
     while (v14 < v18);
   }
 
-  v19 = [(RCNetworkOperationURLSessionDelegate *)self observerLock];
-  [v19 unlock];
+  observerLock2 = [(RCNetworkOperationURLSessionDelegate *)self observerLock];
+  [observerLock2 unlock];
 
-  v20 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v20 lock];
+  taskLock3 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock3 lock];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v21 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-  v22 = [v21 allValues];
+  runningTasks2 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+  allValues2 = [runningTasks2 allValues];
 
-  v23 = [v22 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v23 = [allValues2 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v23)
   {
     v24 = v23;
@@ -514,68 +514,68 @@ void __90__RCNetworkOperationURLSessionDelegate_URLSession_downloadTask_didFinis
       {
         if (*v34 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(allValues2);
         }
 
         v27 = *(*(&v33 + 1) + 8 * i);
-        v28 = [v27 completionHandler];
+        completionHandler = [v27 completionHandler];
 
-        if (!v28)
+        if (!completionHandler)
         {
-          v29 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-          v30 = [v27 identifier];
-          [v29 setObject:0 forKeyedSubscript:v30];
+          runningTasks3 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+          identifier = [v27 identifier];
+          [runningTasks3 setObject:0 forKeyedSubscript:identifier];
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v24 = [allValues2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v24);
   }
 
-  v31 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v31 unlock];
+  taskLock4 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock4 unlock];
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_networkTaskForIdentifier:(id)a3
+- (id)_networkTaskForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v5 lock];
+  identifierCopy = identifier;
+  taskLock = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock lock];
 
-  v6 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  runningTasks = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+  v7 = [runningTasks objectForKeyedSubscript:identifierCopy];
 
   if (!v7)
   {
-    v7 = [[RCNetworkOperationTask alloc] initWithIdentifier:v4];
-    v8 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-    [v8 setObject:v7 forKeyedSubscript:v4];
+    v7 = [[RCNetworkOperationTask alloc] initWithIdentifier:identifierCopy];
+    runningTasks2 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+    [runningTasks2 setObject:v7 forKeyedSubscript:identifierCopy];
   }
 
-  v9 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-  [v9 unlock];
+  taskLock2 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+  [taskLock2 unlock];
 
   return v7;
 }
 
-- (id)_existingNetworkTaskForURLSessionTask:(id)a3
+- (id)_existingNetworkTaskForURLSessionTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 taskDescription];
-  if (v5)
+  taskCopy = task;
+  taskDescription = [taskCopy taskDescription];
+  if (taskDescription)
   {
-    v6 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-    [v6 lock];
+    taskLock = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+    [taskLock lock];
 
-    v7 = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    runningTasks = [(RCNetworkOperationURLSessionDelegate *)self runningTasks];
+    v8 = [runningTasks objectForKeyedSubscript:taskDescription];
 
-    v9 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
-    [v9 unlock];
+    taskLock2 = [(RCNetworkOperationURLSessionDelegate *)self taskLock];
+    [taskLock2 unlock];
   }
 
   else

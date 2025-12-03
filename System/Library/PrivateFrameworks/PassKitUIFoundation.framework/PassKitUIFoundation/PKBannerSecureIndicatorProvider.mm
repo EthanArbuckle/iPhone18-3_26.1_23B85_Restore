@@ -2,12 +2,12 @@
 - (PKBannerSecureIndicatorProvider)init;
 - (id)_calculateEffectiveState;
 - (void)_notifyIndicatorWaiters;
-- (void)bannerHandle:(id)a3 didChangeFromServerState:(id)a4;
-- (void)consumer:(id)a3 ensureIndicatorWithCompletion:(id)a4;
-- (void)consumer:(id)a3 requestsState:(id)a4;
+- (void)bannerHandle:(id)handle didChangeFromServerState:(id)state;
+- (void)consumer:(id)consumer ensureIndicatorWithCompletion:(id)completion;
+- (void)consumer:(id)consumer requestsState:(id)state;
 - (void)dealloc;
-- (void)registerConsumer:(id)a3;
-- (void)unregisterConsumer:(id)a3;
+- (void)registerConsumer:(id)consumer;
+- (void)unregisterConsumer:(id)consumer;
 @end
 
 @implementation PKBannerSecureIndicatorProvider
@@ -96,12 +96,12 @@ void __42__PKBannerSecureIndicatorProvider_dealloc__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerConsumer:(id)a3
+- (void)registerConsumer:(id)consumer
 {
-  v4 = a3;
-  if (v4)
+  consumerCopy = consumer;
+  if (consumerCopy)
   {
-    v5 = v4;
+    v5 = consumerCopy;
     os_unfair_lock_lock(&self->_lock);
     consumers = self->_consumers;
     if (!consumers)
@@ -123,8 +123,8 @@ void __42__PKBannerSecureIndicatorProvider_dealloc__block_invoke(uint64_t a1)
       else
       {
         v12 = MEMORY[0x277D37DD8];
-        v13 = [MEMORY[0x277D37EC0] create];
-        v14 = [v12 createHandleForRequest:v13 queue:MEMORY[0x277D85CD0]];
+        create = [MEMORY[0x277D37EC0] create];
+        v14 = [v12 createHandleForRequest:create queue:MEMORY[0x277D85CD0]];
         banner = self->_banner;
         self->_banner = v14;
 
@@ -136,11 +136,11 @@ void __42__PKBannerSecureIndicatorProvider_dealloc__block_invoke(uint64_t a1)
       }
 
       [(NSMutableArray *)self->_consumers addObject:v5];
-      v10 = [(PKBannerSecureIndicatorProvider *)self _calculateEffectiveState];
+      _calculateEffectiveState = [(PKBannerSecureIndicatorProvider *)self _calculateEffectiveState];
       effectiveState = self->_effectiveState;
-      if (effectiveState != v10)
+      if (effectiveState != _calculateEffectiveState)
       {
-        objc_storeStrong(&self->_effectiveState, v10);
+        objc_storeStrong(&self->_effectiveState, _calculateEffectiveState);
       }
 
       v11 = self->_banner;
@@ -155,31 +155,31 @@ void __42__PKBannerSecureIndicatorProvider_dealloc__block_invoke(uint64_t a1)
         objc_copyWeak(&v26, &location);
         v19 = v9;
         v24 = v19;
-        v25 = self;
+        selfCopy = self;
         [(PKBannerHandle *)v19 displayWithDelegate:self completion:&v20];
 
         objc_destroyWeak(&v26);
         objc_destroyWeak(&location);
-        if (effectiveState == v10)
+        if (effectiveState == _calculateEffectiveState)
         {
           v9 = v19;
           goto LABEL_16;
         }
       }
 
-      else if (effectiveState == v10)
+      else if (effectiveState == _calculateEffectiveState)
       {
         v9 = 0;
         goto LABEL_16;
       }
 
-      [(PKBannerHandle *)v11 setState:v10, v20, v21, v22, v23];
+      [(PKBannerHandle *)v11 setState:_calculateEffectiveState, v20, v21, v22, v23];
       goto LABEL_16;
     }
 
     os_unfair_lock_unlock(&self->_lock);
     v9 = 0;
-    v10 = 0;
+    _calculateEffectiveState = 0;
     v11 = 0;
 LABEL_16:
 
@@ -218,18 +218,18 @@ void __52__PKBannerSecureIndicatorProvider_registerConsumer___block_invoke(id *a
   }
 }
 
-- (void)unregisterConsumer:(id)a3
+- (void)unregisterConsumer:(id)consumer
 {
-  v11 = a3;
-  if (!v11)
+  consumerCopy = consumer;
+  if (!consumerCopy)
   {
     __break(1u);
     return;
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_consumers removeObjectIdenticalTo:v11];
-  [(NSMapTable *)self->_states removeObjectForKey:v11];
+  [(NSMutableArray *)self->_consumers removeObjectIdenticalTo:consumerCopy];
+  [(NSMapTable *)self->_states removeObjectForKey:consumerCopy];
   v4 = self->_banner;
   v5 = [(NSMutableArray *)self->_consumers count]== 0;
   if (v4)
@@ -245,8 +245,8 @@ void __52__PKBannerSecureIndicatorProvider_registerConsumer___block_invoke(id *a
 
   if (!v5)
   {
-    v7 = [(PKBannerSecureIndicatorProvider *)self _calculateEffectiveState];
-    if (self->_effectiveState == v7)
+    _calculateEffectiveState = [(PKBannerSecureIndicatorProvider *)self _calculateEffectiveState];
+    if (self->_effectiveState == _calculateEffectiveState)
     {
       v8 = 0;
       if (!v6)
@@ -257,7 +257,7 @@ void __52__PKBannerSecureIndicatorProvider_registerConsumer___block_invoke(id *a
 
     else
     {
-      objc_storeStrong(&self->_effectiveState, v7);
+      objc_storeStrong(&self->_effectiveState, _calculateEffectiveState);
       v8 = 1;
       if (!v6)
       {
@@ -269,7 +269,7 @@ void __52__PKBannerSecureIndicatorProvider_registerConsumer___block_invoke(id *a
   }
 
   v8 = 0;
-  v7 = 0;
+  _calculateEffectiveState = 0;
   if (v6)
   {
 LABEL_10:
@@ -284,7 +284,7 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
   if (v8)
   {
-    [(PKBannerHandle *)v4 setState:v7];
+    [(PKBannerHandle *)v4 setState:_calculateEffectiveState];
   }
 
   if (v6)
@@ -346,19 +346,19 @@ LABEL_11:
   }
 }
 
-- (void)bannerHandle:(id)a3 didChangeFromServerState:(id)a4
+- (void)bannerHandle:(id)handle didChangeFromServerState:(id)state
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  handleCopy = handle;
+  stateCopy = state;
+  if (handleCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     banner = self->_banner;
-    if (banner == v10)
+    if (banner == handleCopy)
     {
-      v8 = [(PKBannerHandle *)banner serverState];
+      serverState = [(PKBannerHandle *)banner serverState];
       serverState = self->_serverState;
-      self->_serverState = v8;
+      self->_serverState = serverState;
 
       os_unfair_lock_unlock(&self->_lock);
       [(PKBannerSecureIndicatorProvider *)self _notifyIndicatorWaiters];
@@ -427,11 +427,11 @@ LABEL_11:
   return v9;
 }
 
-- (void)consumer:(id)a3 ensureIndicatorWithCompletion:(id)a4
+- (void)consumer:(id)consumer ensureIndicatorWithCompletion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
-  if (!v14)
+  consumerCopy = consumer;
+  completionCopy = completion;
+  if (!consumerCopy)
   {
     __break(1u);
     return;
@@ -458,7 +458,7 @@ LABEL_11:
     }
 
     v8 = 0;
-    if (v6 && v9)
+    if (completionCopy && v9)
     {
       completions = self->_completions;
       if (!completions)
@@ -470,7 +470,7 @@ LABEL_11:
         completions = self->_completions;
       }
 
-      v13 = MEMORY[0x25F8AAFE0](v6);
+      v13 = MEMORY[0x25F8AAFE0](completionCopy);
       [(NSMutableArray *)completions addObject:v13];
 
       os_unfair_lock_unlock(&self->_lock);
@@ -485,53 +485,53 @@ LABEL_11:
 
 LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 
 LABEL_16:
 }
 
-- (void)consumer:(id)a3 requestsState:(id)a4
+- (void)consumer:(id)consumer requestsState:(id)state
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12)
+  consumerCopy = consumer;
+  stateCopy = state;
+  if (consumerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     states = self->_states;
-    if (v6)
+    if (stateCopy)
     {
       if (!states)
       {
-        v8 = [MEMORY[0x277CCAB00] pk_createWeakPointerPersonalityToStrongObjects];
+        pk_createWeakPointerPersonalityToStrongObjects = [MEMORY[0x277CCAB00] pk_createWeakPointerPersonalityToStrongObjects];
         v9 = self->_states;
-        self->_states = v8;
+        self->_states = pk_createWeakPointerPersonalityToStrongObjects;
 
         states = self->_states;
       }
 
-      [(NSMapTable *)states setObject:v6 forKey:v12];
+      [(NSMapTable *)states setObject:stateCopy forKey:consumerCopy];
     }
 
     else
     {
-      [(NSMapTable *)states removeObjectForKey:v12];
+      [(NSMapTable *)states removeObjectForKey:consumerCopy];
     }
 
-    v10 = [(PKBannerSecureIndicatorProvider *)self _calculateEffectiveState];
+    _calculateEffectiveState = [(PKBannerSecureIndicatorProvider *)self _calculateEffectiveState];
     v11 = self->_banner;
-    if (self->_effectiveState == v10)
+    if (self->_effectiveState == _calculateEffectiveState)
     {
       os_unfair_lock_unlock(&self->_lock);
     }
 
     else
     {
-      objc_storeStrong(&self->_effectiveState, v10);
+      objc_storeStrong(&self->_effectiveState, _calculateEffectiveState);
       os_unfair_lock_unlock(&self->_lock);
-      [(PKBannerHandle *)v11 setState:v10];
+      [(PKBannerHandle *)v11 setState:_calculateEffectiveState];
     }
   }
 

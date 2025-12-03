@@ -6,17 +6,17 @@
 
 - (void)navigateToScrollView
 {
-  v8 = [(ApplicationTest *)self extractInitialDateOption];
-  v3 = [(ApplicationTest *)self model];
-  [v3 setSelectedDate:v8];
+  extractInitialDateOption = [(ApplicationTest *)self extractInitialDateOption];
+  model = [(ApplicationTest *)self model];
+  [model setSelectedDate:extractInitialDateOption];
 
-  v4 = [(ApplicationTest *)self application];
-  v5 = [v4 rootNavigationController];
-  v6 = [v5 resetToWeekView];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToWeekView = [rootNavigationController resetToWeekView];
   controller = self->_controller;
-  self->_controller = v6;
+  self->_controller = resetToWeekView;
 
-  [(WeekViewController *)self->_controller setDisplayedDate:v8 animated:0];
+  [(WeekViewController *)self->_controller setDisplayedDate:extractInitialDateOption animated:0];
 }
 
 @end

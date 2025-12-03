@@ -1,15 +1,15 @@
 @interface PXSettingsHighlightEstimatesExportViewController
 - (void)_fetchHighlightEstimatesDictionary;
-- (void)_sendEmail:(id)a3;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_sendEmail:(id)email;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PXSettingsHighlightEstimatesExportViewController
 
-- (void)_sendEmail:(id)a3
+- (void)_sendEmail:(id)email
 {
   if ([getMFMailComposeViewControllerClass_141480() canSendMail])
   {
@@ -94,17 +94,17 @@ void __63__PXSettingsHighlightEstimatesExportViewController__sendEmail___block_i
 
 - (void)_fetchHighlightEstimatesDictionary
 {
-  v3 = [(PXSettingsHighlightEstimatesExportViewController *)self textView];
-  [v3 setText:@"\nFetching library estimates.\nThis might take a while…"];
+  textView = [(PXSettingsHighlightEstimatesExportViewController *)self textView];
+  [textView setText:@"\nFetching library estimates.\nThis might take a while…"];
 
   objc_initWeak(&location, self);
-  v4 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __86__PXSettingsHighlightEstimatesExportViewController__fetchHighlightEstimatesDictionary__block_invoke;
   v5[3] = &unk_1E773D0A0;
   objc_copyWeak(&v6, &location);
-  [v4 requestHighlightEstimatesWithCompletion:v5];
+  [px_deprecated_appPhotoLibrary requestHighlightEstimatesWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -152,14 +152,14 @@ void __86__PXSettingsHighlightEstimatesExportViewController__fetchHighlightEstim
   }
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __100__PXSettingsHighlightEstimatesExportViewController_mailComposeController_didFinishWithResult_error___block_invoke;
   v5[3] = &unk_1E774C648;
   v5[4] = self;
-  [(PXSettingsHighlightEstimatesExportViewController *)self dismissViewControllerAnimated:1 completion:v5, a5];
+  [(PXSettingsHighlightEstimatesExportViewController *)self dismissViewControllerAnimated:1 completion:v5, error];
 }
 
 void __100__PXSettingsHighlightEstimatesExportViewController_mailComposeController_didFinishWithResult_error___block_invoke(uint64_t a1)
@@ -168,21 +168,21 @@ void __100__PXSettingsHighlightEstimatesExportViewController_mailComposeControll
   v1 = [v2 popViewControllerAnimated:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = PXSettingsHighlightEstimatesExportViewController;
   [(PXSettingsHighlightEstimatesExportViewController *)&v6 viewDidDisappear:?];
-  v5 = [(PXSettingsHighlightEstimatesExportViewController *)self navigationController];
-  [v5 setToolbarHidden:1 animated:v3];
+  navigationController = [(PXSettingsHighlightEstimatesExportViewController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXSettingsHighlightEstimatesExportViewController;
-  [(PXSettingsHighlightEstimatesExportViewController *)&v4 viewDidAppear:a3];
+  [(PXSettingsHighlightEstimatesExportViewController *)&v4 viewDidAppear:appear];
   if ([(PXSettingsHighlightEstimatesExportViewController *)self exportHighlightEstimatesOnViewDidAppear])
   {
     [(PXSettingsHighlightEstimatesExportViewController *)self setExportHighlightEstimatesOnViewDidAppear:0];
@@ -196,17 +196,17 @@ void __100__PXSettingsHighlightEstimatesExportViewController_mailComposeControll
   v7.super_class = PXSettingsHighlightEstimatesExportViewController;
   [(PXSettingsHighlightEstimatesExportViewController *)&v7 viewDidLoad];
   [(PXSettingsHighlightEstimatesExportViewController *)self setExportHighlightEstimatesOnViewDidAppear:1];
-  v3 = [(PXSettingsHighlightEstimatesExportViewController *)self view];
+  view = [(PXSettingsHighlightEstimatesExportViewController *)self view];
   v4 = objc_alloc(MEMORY[0x1E69DD168]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   [v5 setAutoresizingMask:18];
   [v5 setEditable:0];
-  [v3 addSubview:v5];
+  [view addSubview:v5];
   [(PXSettingsHighlightEstimatesExportViewController *)self setTextView:v5];
   [(PXSettingsHighlightEstimatesExportViewController *)self setTitle:@"Export Library Estimates"];
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
-  [v3 setBackgroundColor:v6];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [view setBackgroundColor:whiteColor];
 }
 
 @end

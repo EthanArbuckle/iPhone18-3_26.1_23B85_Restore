@@ -1,13 +1,13 @@
 @interface TSTIntegerKeyDict
 - (TSTIntegerKeyDict)init;
 - (id)allValues;
-- (id)objectForKey:(unsigned int)a3;
-- (void)applyFunction:(void *)a3 withState:(void *)a4;
-- (void)applyFunction:(void *)a3 withState:(void *)a4 andState:(void *)a5;
+- (id)objectForKey:(unsigned int)key;
+- (void)applyFunction:(void *)function withState:(void *)state;
+- (void)applyFunction:(void *)function withState:(void *)state andState:(void *)andState;
 - (void)dealloc;
-- (void)makeObjectsPerformSelector:(SEL)a3;
-- (void)setObject:(id)a3 forKey:(unsigned int)a4;
-- (void)transformWithFunction:(void *)a3 withState:(void *)a4;
+- (void)makeObjectsPerformSelector:(SEL)selector;
+- (void)setObject:(id)object forKey:(unsigned int)key;
+- (void)transformWithFunction:(void *)function withState:(void *)state;
 @end
 
 @implementation TSTIntegerKeyDict
@@ -38,10 +38,10 @@
   [(TSTIntegerKeyDict *)&v5 dealloc];
 }
 
-- (id)objectForKey:(unsigned int)a3
+- (id)objectForKey:(unsigned int)key
 {
-  v4 = a3;
-  result = std::__hash_table<std::__hash_value_type<unsigned int,std::pair<EQKit::Font::STIXCollection::StretchInfo,unsigned long>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,std::pair<EQKit::Font::STIXCollection::StretchInfo,unsigned long>>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,std::pair<EQKit::Font::STIXCollection::StretchInfo,unsigned long>>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,std::pair<EQKit::Font::STIXCollection::StretchInfo,unsigned long>>>>::find<unsigned int>(self->mMap, &v4);
+  keyCopy = key;
+  result = std::__hash_table<std::__hash_value_type<unsigned int,std::pair<EQKit::Font::STIXCollection::StretchInfo,unsigned long>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,std::pair<EQKit::Font::STIXCollection::StretchInfo,unsigned long>>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,std::pair<EQKit::Font::STIXCollection::StretchInfo,unsigned long>>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,std::pair<EQKit::Font::STIXCollection::StretchInfo,unsigned long>>>>::find<unsigned int>(self->mMap, &keyCopy);
   if (result)
   {
     return *(result + 3);
@@ -50,53 +50,53 @@
   return result;
 }
 
-- (void)setObject:(id)a3 forKey:(unsigned int)a4
+- (void)setObject:(id)object forKey:(unsigned int)key
 {
-  if (!a3)
+  if (!object)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTIntegerKeyDict setObject:forKey:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTIntegerKeyDict.mm"), 45, @"Can't set nil objects in this map!"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTIntegerKeyDict.mm"), 45, @"Can't set nil objects in this map!"}];
   }
 
   mMap = self->mMap;
-  v10 = a3;
-  v12 = a4;
-  v13 = a3;
-  v11 = a3;
-  std::__hash_table<std::__hash_value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,TSTIntHasher,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::equal_to<unsigned int>,TSTIntHasher,true>,std::allocator<std::__hash_value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__emplace_unique_key_args<unsigned int,std::pair<unsigned int const,SFUtility::ObjcSharedPtr<NSObject>>>(mMap, &v12);
+  objectCopy = object;
+  keyCopy = key;
+  objectCopy2 = object;
+  objectCopy3 = object;
+  std::__hash_table<std::__hash_value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,TSTIntHasher,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::equal_to<unsigned int>,TSTIntHasher,true>,std::allocator<std::__hash_value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__emplace_unique_key_args<unsigned int,std::pair<unsigned int const,SFUtility::ObjcSharedPtr<NSObject>>>(mMap, &keyCopy);
 }
 
-- (void)makeObjectsPerformSelector:(SEL)a3
+- (void)makeObjectsPerformSelector:(SEL)selector
 {
   for (i = *(self->mMap + 2); i; i = *i)
   {
-    [i[3] performSelector:a3];
+    [i[3] performSelector:selector];
   }
 }
 
-- (void)applyFunction:(void *)a3 withState:(void *)a4
+- (void)applyFunction:(void *)function withState:(void *)state
 {
   for (i = *(self->mMap + 2); i; i = *i)
   {
-    (a3)(*(i + 4), i[3], a4);
+    (function)(*(i + 4), i[3], state);
   }
 }
 
-- (void)applyFunction:(void *)a3 withState:(void *)a4 andState:(void *)a5
+- (void)applyFunction:(void *)function withState:(void *)state andState:(void *)andState
 {
   for (i = *(self->mMap + 2); i; i = *i)
   {
-    (a3)(*(i + 4), i[3], a4, a5);
+    (function)(*(i + 4), i[3], state, andState);
   }
 }
 
-- (void)transformWithFunction:(void *)a3 withState:(void *)a4
+- (void)transformWithFunction:(void *)function withState:(void *)state
 {
   for (i = *(self->mMap + 2); i; i = *i)
   {
     v7 = i[3];
-    v8 = (a3)(*(i + 4), v7, a4);
+    v8 = (function)(*(i + 4), v7, state);
     if (v8)
     {
       v9 = v8 == v7;

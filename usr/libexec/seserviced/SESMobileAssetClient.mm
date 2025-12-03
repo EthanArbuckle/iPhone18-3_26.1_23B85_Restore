@@ -1,27 +1,27 @@
 @interface SESMobileAssetClient
 + (unint64_t)getWeeksTryingToDownload;
-- (BOOL)isEligibleAsset:(id)a3;
-- (SESMobileAssetClient)initWithManager:(id)a3;
-- (id)optionsForInterval:(double)a3;
+- (BOOL)isEligibleAsset:(id)asset;
+- (SESMobileAssetClient)initWithManager:(id)manager;
+- (id)optionsForInterval:(double)interval;
 - (os_state_data_s)dumpState;
-- (void)downloadAsset:(id)a3;
-- (void)handleAvailableAsset:(id)a3;
-- (void)handleQueryResult:(int64_t)a3 query:(id)a4;
-- (void)handleQuerySuccess:(id)a3;
+- (void)downloadAsset:(id)asset;
+- (void)handleAvailableAsset:(id)asset;
+- (void)handleQueryResult:(int64_t)result query:(id)query;
+- (void)handleQuerySuccess:(id)success;
 - (void)maybeQueryMetadata;
-- (void)onAlarm:(id)a3;
-- (void)onDarwinNotification:(id)a3;
+- (void)onAlarm:(id)alarm;
+- (void)onDarwinNotification:(id)notification;
 - (void)queryMA;
 - (void)queryMetadata;
-- (void)retryWithBackoff:(id)a3;
+- (void)retryWithBackoff:(id)backoff;
 - (void)triggerUserInitiatedSync;
 @end
 
 @implementation SESMobileAssetClient
 
-- (SESMobileAssetClient)initWithManager:(id)a3
+- (SESMobileAssetClient)initWithManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = SESMobileAssetClient;
   v5 = [(SESMobileAssetClient *)&v27 init];
@@ -36,11 +36,11 @@
     v9 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.seserviced"];
     [(SESMobileAssetClient *)v5 setUserDefaults:v9];
 
-    [(SESMobileAssetClient *)v5 setMobileAssetManager:v4];
+    [(SESMobileAssetClient *)v5 setMobileAssetManager:managerCopy];
     [(SESMobileAssetClient *)v5 setMetadataQueryInterval:172800.0];
     [(SESMobileAssetClient *)v5 setRetryInProgress:0];
     v5->_errorCount = [(NSUserDefaults *)v5->_userDefaults integerForKey:@"downloadErrorCount"];
-    -[SESMobileAssetClient setCurrentCompatibilityVersion:](v5, "setCurrentCompatibilityVersion:", [v4 currentCompatibilityVersion]);
+    -[SESMobileAssetClient setCurrentCompatibilityVersion:](v5, "setCurrentCompatibilityVersion:", [managerCopy currentCompatibilityVersion]);
     [(SESMobileAssetClient *)v5 setDownloadTimeoutInterval:0];
     v5->_userInitiated = [(NSUserDefaults *)v5->_userDefaults BOOLForKey:@"mobileasset.isUserInitiated"];
     if (SESInternalVariant())
@@ -57,8 +57,8 @@
         goto LABEL_10;
       }
 
-      v11 = [(SESMobileAssetClient *)v5 userDefaults];
-      v12 = [v11 objectForKey:@"debug.mobileasset.metadataQueryInterval"];
+      userDefaults = [(SESMobileAssetClient *)v5 userDefaults];
+      v12 = [userDefaults objectForKey:@"debug.mobileasset.metadataQueryInterval"];
 
       if (v12)
       {
@@ -66,12 +66,12 @@
         [(SESMobileAssetClient *)v5 setMetadataQueryInterval:?];
       }
 
-      v13 = [(SESMobileAssetClient *)v5 userDefaults];
-      -[SESMobileAssetClient setDownloadTimeoutInterval:](v5, "setDownloadTimeoutInterval:", [v13 integerForKey:@"debug.mobileasset.downloadTimeoutInterval"]);
+      userDefaults2 = [(SESMobileAssetClient *)v5 userDefaults];
+      -[SESMobileAssetClient setDownloadTimeoutInterval:](v5, "setDownloadTimeoutInterval:", [userDefaults2 integerForKey:@"debug.mobileasset.downloadTimeoutInterval"]);
 
-      v14 = [(SESMobileAssetClient *)v5 userDefaults];
+      userDefaults3 = [(SESMobileAssetClient *)v5 userDefaults];
       v15 = [NSNumber numberWithUnsignedInteger:[(SESMobileAssetClient *)v5 currentCompatibilityVersion]];
-      [v14 setObject:v15 forKey:@"debug.mobileasset.currentCompatibilityVersion"];
+      [userDefaults3 setObject:v15 forKey:@"debug.mobileasset.currentCompatibilityVersion"];
     }
 
     queue = v5->_queue;
@@ -96,31 +96,31 @@ LABEL_10:
   return v5;
 }
 
-- (void)onAlarm:(id)a3
+- (void)onAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100051684;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = alarmCopy;
+  selfCopy = self;
+  v6 = alarmCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)onDarwinNotification:(id)a3
+- (void)onDarwinNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100051800;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -157,12 +157,12 @@ LABEL_10:
 
 - (void)maybeQueryMetadata
 {
-  v3 = [(SESMobileAssetClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SESMobileAssetClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [SESAlarm clearAlarm:@"com.apple.seserviced.download.catalog"];
-  v4 = [(SESMobileAssetClient *)self userDefaults];
-  v5 = [v4 objectForKey:@"nextMetadataCheck"];
+  userDefaults = [(SESMobileAssetClient *)self userDefaults];
+  v5 = [userDefaults objectForKey:@"nextMetadataCheck"];
 
   if (v5)
   {
@@ -186,8 +186,8 @@ LABEL_10:
     [(SESMobileAssetClient *)self metadataQueryInterval];
     v9 = [NSDate dateWithTimeIntervalSinceNow:?];
 
-    v10 = [(SESMobileAssetClient *)self userDefaults];
-    [v10 setObject:v9 forKey:@"nextMetadataCheck"];
+    userDefaults2 = [(SESMobileAssetClient *)self userDefaults];
+    [userDefaults2 setObject:v9 forKey:@"nextMetadataCheck"];
 
     v11 = SESDefaultLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -226,11 +226,11 @@ LABEL_10:
 
 - (void)queryMetadata
 {
-  v3 = [(SESMobileAssetClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SESMobileAssetClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SESMobileAssetClient *)self userDefaults];
-  v5 = [v4 objectForKey:@"catalogDownloadStartedOn"];
+  userDefaults = [(SESMobileAssetClient *)self userDefaults];
+  v5 = [userDefaults objectForKey:@"catalogDownloadStartedOn"];
 
   if (v5)
   {
@@ -240,9 +240,9 @@ LABEL_10:
 
   else
   {
-    v8 = [(SESMobileAssetClient *)self userDefaults];
+    userDefaults2 = [(SESMobileAssetClient *)self userDefaults];
     v9 = +[NSDate now];
-    [v8 setObject:v9 forKey:@"catalogDownloadStartedOn"];
+    [userDefaults2 setObject:v9 forKey:@"catalogDownloadStartedOn"];
 
     v7 = 0.0;
   }
@@ -258,8 +258,8 @@ LABEL_10:
 
 - (void)queryMA
 {
-  v3 = [(SESMobileAssetClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SESMobileAssetClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -280,16 +280,16 @@ LABEL_10:
   [v6 queryMetaData:v7];
 }
 
-- (void)handleQueryResult:(int64_t)a3 query:(id)a4
+- (void)handleQueryResult:(int64_t)result query:(id)query
 {
-  v6 = a4;
-  v7 = [(SESMobileAssetClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  queryCopy = query;
+  queue = [(SESMobileAssetClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [SESAlarm clearAlarm:@"com.apple.seserviced.download.asset"];
-  if (a3 <= 0xE)
+  if (result <= 0xE)
   {
-    if (((1 << a3) & 0x7F5A) != 0)
+    if (((1 << result) & 0x7F5A) != 0)
     {
       v8 = SESDefaultLogObject();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -302,7 +302,7 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    if (((1 << a3) & 0xA0) != 0)
+    if (((1 << result) & 0xA0) != 0)
     {
       v9 = SESDefaultLogObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -314,33 +314,33 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    if (a3 == 2)
+    if (result == 2)
     {
       [(SESMobileAssetClient *)self queryMetadata];
       goto LABEL_6;
     }
   }
 
-  if (!a3)
+  if (!result)
   {
-    v10 = [v6 results];
-    [(SESMobileAssetClient *)self handleQuerySuccess:v10];
+    results = [queryCopy results];
+    [(SESMobileAssetClient *)self handleQuerySuccess:results];
   }
 
 LABEL_6:
 }
 
-- (void)handleQuerySuccess:(id)a3
+- (void)handleQuerySuccess:(id)success
 {
-  v4 = a3;
-  v5 = [(SESMobileAssetClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  successCopy = success;
+  queue = [(SESMobileAssetClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = successCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v7)
   {
@@ -360,38 +360,38 @@ LABEL_6:
         v12 = SESDefaultLogObject();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [v11 assetId];
-          v14 = [v11 state];
-          v15 = [v11 attributes];
+          assetId = [v11 assetId];
+          state = [v11 state];
+          attributes = [v11 attributes];
           *buf = 138412802;
-          v28 = v13;
+          v28 = assetId;
           v29 = 2048;
-          v30 = v14;
+          v30 = state;
           v31 = 2112;
-          v32 = v15;
+          v32 = attributes;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Got asset id %@ state %ld attributes %@", buf, 0x20u);
         }
 
         v16 = [(SESMobileAssetClient *)self isEligibleAsset:v11];
-        v17 = [v11 state];
+        state2 = [v11 state];
         if (v16)
         {
-          if (v17 <= 6)
+          if (state2 <= 6)
           {
-            if (((1 << v17) & 0x64) != 0)
+            if (((1 << state2) & 0x64) != 0)
             {
               [(SESMobileAssetClient *)self handleAvailableAsset:v11];
               continue;
             }
 
-            if (((1 << v17) & 0x12) != 0)
+            if (((1 << state2) & 0x12) != 0)
             {
               [(SESMobileAssetClient *)self downloadAsset:v11];
               v22 = 1;
               continue;
             }
 
-            if (v17 == 3)
+            if (state2 == 3)
             {
               v19 = v11;
               v20 = &stru_1004C2BD8;
@@ -401,13 +401,13 @@ LABEL_18:
             }
           }
 
-          if (!v17)
+          if (!state2)
           {
             [(SESMobileAssetClient *)self retryWithBackoff:@"com.apple.seserviced.download.asset"];
           }
         }
 
-        else if (v17 == 2 || [v11 state] == 3)
+        else if (state2 == 2 || [v11 state] == 3)
         {
           v18 = SESDefaultLogObject();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -448,14 +448,14 @@ LABEL_29:
 LABEL_32:
 }
 
-- (void)downloadAsset:(id)a3
+- (void)downloadAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(SESMobileAssetClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  assetCopy = asset;
+  queue = [(SESMobileAssetClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(SESMobileAssetClient *)self userDefaults];
-  v7 = [v6 objectForKey:@"assetDownloadStartedOn"];
+  userDefaults = [(SESMobileAssetClient *)self userDefaults];
+  v7 = [userDefaults objectForKey:@"assetDownloadStartedOn"];
 
   if (v7)
   {
@@ -465,9 +465,9 @@ LABEL_32:
 
   else
   {
-    v10 = [(SESMobileAssetClient *)self userDefaults];
+    userDefaults2 = [(SESMobileAssetClient *)self userDefaults];
     v11 = +[NSDate now];
-    [v10 setObject:v11 forKey:@"assetDownloadStartedOn"];
+    [userDefaults2 setObject:v11 forKey:@"assetDownloadStartedOn"];
 
     v9 = 0.0;
   }
@@ -478,22 +478,22 @@ LABEL_32:
   v14[2] = sub_100052814;
   v14[3] = &unk_1004C2B78;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = assetCopy;
+  v13 = assetCopy;
   [v13 startDownload:v12 then:v14];
 }
 
-- (void)handleAvailableAsset:(id)a3
+- (void)handleAvailableAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(SESMobileAssetClient *)self isEligibleAsset:v4])
+  if ([(SESMobileAssetClient *)self isEligibleAsset:assetCopy])
   {
-    v5 = [v4 getLocalFileUrl];
-    if (v5)
+    getLocalFileUrl = [assetCopy getLocalFileUrl];
+    if (getLocalFileUrl)
     {
-      v6 = [(SESMobileAssetClient *)self mobileAssetManager];
-      [v6 handleDownloadedAsset:v5];
+      mobileAssetManager = [(SESMobileAssetClient *)self mobileAssetManager];
+      [mobileAssetManager handleDownloadedAsset:getLocalFileUrl];
 
       v7 = SESDefaultLogObject();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -502,7 +502,7 @@ LABEL_32:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Set downloaded asset successfully", v10, 2u);
       }
 
-      [v4 purge:&stru_1004C2C18];
+      [assetCopy purge:&stru_1004C2C18];
       [(SESMobileAssetClient *)self setErrorCount:0];
       [(SESMobileAssetClient *)self setUserInitiated:0];
     }
@@ -529,38 +529,38 @@ LABEL_32:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Purging ineligible asset", buf, 2u);
     }
 
-    [v4 purge:&stru_1004C2BF8];
+    [assetCopy purge:&stru_1004C2BF8];
   }
 }
 
-- (void)retryWithBackoff:(id)a3
+- (void)retryWithBackoff:(id)backoff
 {
-  v4 = a3;
-  v5 = [(SESMobileAssetClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  backoffCopy = backoff;
+  queue = [(SESMobileAssetClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([SESAlarm isAlarmSet:v4])
+  if ([SESAlarm isAlarmSet:backoffCopy])
   {
     v6 = SESDefaultLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = backoffCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Already have alarm for %@ ...", &v11, 0xCu);
     }
   }
 
   else
   {
-    v7 = [(SESMobileAssetClient *)self errorCount];
-    if (v7 >= 6)
+    errorCount = [(SESMobileAssetClient *)self errorCount];
+    if (errorCount >= 6)
     {
       v8 = 6;
     }
 
     else
     {
-      v8 = v7;
+      v8 = errorCount;
     }
 
     v9 = dword_100408BB8[v8];
@@ -569,30 +569,30 @@ LABEL_32:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v4;
+      v12 = backoffCopy;
       v13 = 2048;
       v14 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Scheduling retry of %@ for %lu seconds from now", &v11, 0x16u);
     }
 
-    [SESAlarm setAlarm:v4 secondsFromNow:v9];
+    [SESAlarm setAlarm:backoffCopy secondsFromNow:v9];
   }
 }
 
-- (BOOL)isEligibleAsset:(id)a3
+- (BOOL)isEligibleAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKeyedSubscript:@"_CompatibilityVersion"];
-  v7 = [v6 intValue];
+  assetCopy = asset;
+  attributes = [assetCopy attributes];
+  v6 = [attributes objectForKeyedSubscript:@"_CompatibilityVersion"];
+  intValue = [v6 intValue];
 
-  if ([(SESMobileAssetClient *)self currentCompatibilityVersion]!= v7)
+  if ([(SESMobileAssetClient *)self currentCompatibilityVersion]!= intValue)
   {
     v11 = SESDefaultLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v16 = 67109376;
-      *v17 = v7;
+      *v17 = intValue;
       *&v17[4] = 2048;
       *&v17[6] = [(SESMobileAssetClient *)self currentCompatibilityVersion];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Asset ineligible, asset compatVersion %d mine %lu", &v16, 0x12u);
@@ -601,15 +601,15 @@ LABEL_32:
     goto LABEL_8;
   }
 
-  v8 = [(SESMobileAssetClient *)self mobileAssetManager];
-  v9 = [v8 currentContentVersion];
+  mobileAssetManager = [(SESMobileAssetClient *)self mobileAssetManager];
+  currentContentVersion = [mobileAssetManager currentContentVersion];
 
-  v10 = [v4 attributes];
-  v11 = [v10 objectForKeyedSubscript:@"_ContentVersion"];
+  attributes2 = [assetCopy attributes];
+  v11 = [attributes2 objectForKeyedSubscript:@"_ContentVersion"];
 
-  v12 = [v11 unsignedIntValue];
-  v13 = v9 < v12;
-  if (v9 >= v12)
+  unsignedIntValue = [v11 unsignedIntValue];
+  v13 = currentContentVersion < unsignedIntValue;
+  if (currentContentVersion >= unsignedIntValue)
   {
     v14 = SESDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -617,7 +617,7 @@ LABEL_32:
       v16 = 138412546;
       *v17 = v11;
       *&v17[8] = 2048;
-      *&v17[10] = v9;
+      *&v17[10] = currentContentVersion;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Asset CV %@ <= currentCV %lu", &v16, 0x16u);
     }
 
@@ -628,13 +628,13 @@ LABEL_8:
   return v13;
 }
 
-- (id)optionsForInterval:(double)a3
+- (id)optionsForInterval:(double)interval
 {
   v5 = objc_opt_new();
-  [v5 setRequiresPowerPluggedIn:a3 < 259200.0 && !self->_userInitiated];
-  [v5 setDiscretionary:(a3 < 518400.0) & !self->_userInitiated];
-  [v5 setAllowsCellularAccess:(a3 > 518400.0) | self->_userInitiated];
-  [v5 setAllowsExpensiveAccess:(a3 > 777600.0) | self->_userInitiated];
+  [v5 setRequiresPowerPluggedIn:interval < 259200.0 && !self->_userInitiated];
+  [v5 setDiscretionary:(interval < 518400.0) & !self->_userInitiated];
+  [v5 setAllowsCellularAccess:(interval > 518400.0) | self->_userInitiated];
+  [v5 setAllowsExpensiveAccess:(interval > 777600.0) | self->_userInitiated];
   if (SESInternalVariant() && [(SESMobileAssetClient *)self downloadTimeoutInterval])
   {
     [v5 setTimeoutIntervalForResource:{-[SESMobileAssetClient downloadTimeoutInterval](self, "downloadTimeoutInterval")}];

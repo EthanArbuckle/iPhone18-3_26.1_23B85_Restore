@@ -1,5 +1,5 @@
 @interface SKUILoadingViewController
-- (SKUILoadingViewController)initWithClientContext:(id)a3;
+- (SKUILoadingViewController)initWithClientContext:(id)context;
 - (void)_initializeLoadingView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -7,9 +7,9 @@
 
 @implementation SKUILoadingViewController
 
-- (SKUILoadingViewController)initWithClientContext:(id)a3
+- (SKUILoadingViewController)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUILoadingViewController initWithClientContext:];
@@ -21,7 +21,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;
@@ -32,74 +32,74 @@
   v7.receiver = self;
   v7.super_class = SKUILoadingViewController;
   [(SKUILoadingViewController *)&v7 viewDidLoad];
-  v3 = [(SKUILoadingViewController *)self backgroundColor];
-  v4 = v3;
-  if (!v3)
+  backgroundColor = [(SKUILoadingViewController *)self backgroundColor];
+  systemBackgroundColor = backgroundColor;
+  if (!backgroundColor)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   }
 
-  v5 = [(SKUILoadingViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(SKUILoadingViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  if (!v3)
+  if (!backgroundColor)
   {
   }
 
-  v6 = [(SKUILoadingViewController *)self view];
-  [v6 setAccessibilityIgnoresInvertColors:1];
+  view2 = [(SKUILoadingViewController *)self view];
+  [view2 setAccessibilityIgnoresInvertColors:1];
 
   [(SKUILoadingViewController *)self _initializeLoadingView];
 }
 
 - (void)_initializeLoadingView
 {
-  v3 = 0x2781F6000uLL;
+  clientContext = 0x2781F6000uLL;
   v4 = objc_alloc_init(SKUILoadingView);
   [(SKUILoadingViewController *)self setLoadingView:v4];
 
-  v5 = [(SKUILoadingViewController *)self loadingText];
-  if (v5)
+  loadingText = [(SKUILoadingViewController *)self loadingText];
+  if (loadingText)
   {
     [(SKUILoadingViewController *)self loadingText];
   }
 
   else
   {
-    v3 = [(SKUILoadingViewController *)self clientContext];
-    [SKUILoadingView defaultLoadingTextWithClientContext:v3];
+    clientContext = [(SKUILoadingViewController *)self clientContext];
+    [SKUILoadingView defaultLoadingTextWithClientContext:clientContext];
   }
   v6 = ;
-  v7 = [(SKUILoadingViewController *)self loadingView];
-  [v7 setLoadingText:v6];
+  loadingView = [(SKUILoadingViewController *)self loadingView];
+  [loadingView setLoadingText:v6];
 
-  if (!v5)
+  if (!loadingText)
   {
 
-    v6 = v3;
+    v6 = clientContext;
   }
 
-  v8 = [(SKUILoadingViewController *)self view];
-  v9 = [v8 backgroundColor];
-  v10 = [(SKUILoadingViewController *)self loadingView];
-  [v10 setBackgroundColor:v9];
+  view = [(SKUILoadingViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  loadingView2 = [(SKUILoadingViewController *)self loadingView];
+  [loadingView2 setBackgroundColor:backgroundColor];
 
-  v11 = [(SKUILoadingViewController *)self spinnerColorScheme];
-  v12 = [(SKUILoadingViewController *)self loadingView];
-  [v12 setColorScheme:v11];
+  spinnerColorScheme = [(SKUILoadingViewController *)self spinnerColorScheme];
+  loadingView3 = [(SKUILoadingViewController *)self loadingView];
+  [loadingView3 setColorScheme:spinnerColorScheme];
 
-  v13 = [(SKUILoadingViewController *)self loadingView];
-  [v13 sizeToFit];
+  loadingView4 = [(SKUILoadingViewController *)self loadingView];
+  [loadingView4 sizeToFit];
 
-  v15 = [(SKUILoadingViewController *)self view];
-  v14 = [(SKUILoadingViewController *)self loadingView];
-  [v15 addSubview:v14];
+  view2 = [(SKUILoadingViewController *)self view];
+  loadingView5 = [(SKUILoadingViewController *)self loadingView];
+  [view2 addSubview:loadingView5];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SKUILoadingViewController *)self view];
-  [v3 bounds];
+  view = [(SKUILoadingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -107,8 +107,8 @@
 
   v12 = *(MEMORY[0x277CBF3A0] + 8);
   rect.origin.x = *MEMORY[0x277CBF3A0];
-  v13 = [(SKUILoadingViewController *)self loadingView];
-  [v13 bounds];
+  loadingView = [(SKUILoadingViewController *)self loadingView];
+  [loadingView bounds];
   v15 = v14;
   v17 = v16;
 
@@ -132,8 +132,8 @@
   v27.size.width = v15;
   v27.size.height = v17;
   v21 = floor(v20 - CGRectGetHeight(v27));
-  v22 = [(SKUILoadingViewController *)self loadingView];
-  [v22 setFrame:{v19, v21, v15, v17}];
+  loadingView2 = [(SKUILoadingViewController *)self loadingView];
+  [loadingView2 setFrame:{v19, v21, v15, v17}];
 
   *&rect.origin.y = self;
   *&rect.size.width = SKUILoadingViewController;

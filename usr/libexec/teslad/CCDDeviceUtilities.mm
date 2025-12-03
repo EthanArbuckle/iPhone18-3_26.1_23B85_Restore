@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = sub_100003EAC;
   block[3] = &unk_10001C670;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100025A28 != -1)
   {
     dispatch_once(&qword_100025A28, block);
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = sub_100003F90;
   block[3] = &unk_10001C670;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100025A38 != -1)
   {
     dispatch_once(&qword_100025A38, block);
@@ -66,7 +66,7 @@
   block[1] = 3221225472;
   block[2] = sub_100004074;
   block[3] = &unk_10001C670;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100025A48 != -1)
   {
     dispatch_once(&qword_100025A48, block);
@@ -81,7 +81,7 @@
   block[1] = 3221225472;
   block[2] = sub_100004158;
   block[3] = &unk_10001C670;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100025A58 != -1)
   {
     dispatch_once(&qword_100025A58, block);
@@ -96,7 +96,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000423C;
   block[3] = &unk_10001C670;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100025A68 != -1)
   {
     dispatch_once(&qword_100025A68, block);
@@ -165,24 +165,24 @@
 
 + (id)productName
 {
-  v2 = [a1 _systemInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ProductName"];
+  _systemInfo = [self _systemInfo];
+  v3 = [_systemInfo objectForKeyedSubscript:@"ProductName"];
 
   return v3;
 }
 
 + (id)productVersion
 {
-  v2 = [a1 _systemInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ProductVersion"];
+  _systemInfo = [self _systemInfo];
+  v3 = [_systemInfo objectForKeyedSubscript:@"ProductVersion"];
 
   return v3;
 }
 
 + (id)productBuildVersion
 {
-  v2 = [a1 _systemInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ProductBuildVersion"];
+  _systemInfo = [self _systemInfo];
+  v3 = [_systemInfo objectForKeyedSubscript:@"ProductBuildVersion"];
 
   return v3;
 }

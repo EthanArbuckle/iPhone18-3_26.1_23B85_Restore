@@ -1,5 +1,5 @@
 @interface _SFSearchResult
-- (_SFSearchResult)initWithVoiceSearchResult:(id)a3;
+- (_SFSearchResult)initWithVoiceSearchResult:(id)result;
 - (id)description;
 @end
 
@@ -40,28 +40,28 @@
   return v8;
 }
 
-- (_SFSearchResult)initWithVoiceSearchResult:(id)a3
+- (_SFSearchResult)initWithVoiceSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v21.receiver = self;
   v21.super_class = _SFSearchResult;
   v5 = [(_SFSearchResult *)&v21 init];
   if (v5)
   {
     v6 = *MEMORY[0x1E695E480];
-    v7 = [v4 statusCode];
-    v8 = [v7 intValue];
-    Response = CFHTTPMessageCreateResponse(v6, v8, &stru_1F2139F58, *MEMORY[0x1E695ADB8]);
+    statusCode = [resultCopy statusCode];
+    intValue = [statusCode intValue];
+    Response = CFHTTPMessageCreateResponse(v6, intValue, &stru_1F2139F58, *MEMORY[0x1E695ADB8]);
 
     if (Response)
     {
-      v10 = [v4 headers];
+      headers = [resultCopy headers];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __45___SFSearchResult_initWithVoiceSearchResult___block_invoke;
       v20[3] = &__block_descriptor_40_e35_v32__0__NSString_8__NSString_16_B24l;
       v20[4] = Response;
-      [v10 enumerateKeysAndObjectsUsingBlock:v20];
+      [headers enumerateKeysAndObjectsUsingBlock:v20];
 
       v11 = CFURLResponseCreateWithHTTPResponse();
       if (v11)
@@ -77,19 +77,19 @@
       CFRelease(Response);
     }
 
-    v15 = [v4 result];
+    result = [resultCopy result];
     data = v5->_data;
-    v5->_data = v15;
+    v5->_data = result;
 
-    v17 = [v4 searchType];
-    if ([v17 isEqualToString:*MEMORY[0x1E69C81F8]])
+    searchType = [resultCopy searchType];
+    if ([searchType isEqualToString:*MEMORY[0x1E69C81F8]])
     {
       v18 = 1;
     }
 
     else
     {
-      if (![v17 isEqualToString:*MEMORY[0x1E69C8200]])
+      if (![searchType isEqualToString:*MEMORY[0x1E69C8200]])
       {
 LABEL_11:
 

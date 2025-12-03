@@ -1,29 +1,29 @@
 @interface TVRUIDockViewController
 - (TVRUIActionProviding)actionProvider;
-- (TVRUIDockViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TVRUIDockViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (TVRUINowPlayingProviding)nowPlayingProvider;
 - (TVRUIUpNextProviding)upNextProvider;
 - (_TVRUIEventDelegate)buttonActionsDelegate;
 - (void)_invokeLayoutHandlerIfNeeded;
-- (void)_nowPlayingInfoDidChange:(id)a3;
-- (void)_updateNowPlayingInfo:(id)a3 previousNowPlayingInfo:(id)a4;
+- (void)_nowPlayingInfoDidChange:(id)change;
+- (void)_updateNowPlayingInfo:(id)info previousNowPlayingInfo:(id)playingInfo;
 - (void)configureHierarchy;
 - (void)dealloc;
-- (void)resetContentAnimated:(BOOL)a3;
-- (void)selectViewControllerIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setStyleProvider:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)resetContentAnimated:(BOOL)animated;
+- (void)selectViewControllerIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setStyleProvider:(id)provider;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVRUIDockViewController
 
-- (TVRUIDockViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TVRUIDockViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v8 = [[TVRUIUpNextViewController alloc] initWithNibName:0 bundle:0];
   [(TVRUIUpNextViewController *)v8 setMode:2];
   v9 = [[TVRUIAppLauncherStackViewController alloc] initWithNibName:0 bundle:0];
@@ -55,8 +55,8 @@
     v17[2] = __50__TVRUIDockViewController_initWithNibName_bundle___block_invoke;
     v17[3] = &unk_279D87BD0;
     objc_copyWeak(&v18, &location);
-    v15 = [(TVRUIDockViewController *)v13 dockPreferredStackController];
-    [v15 setPreferredStackDidChangeHandler:v17];
+    dockPreferredStackController = [(TVRUIDockViewController *)v13 dockPreferredStackController];
+    [dockPreferredStackController setPreferredStackDidChangeHandler:v17];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -71,29 +71,29 @@ void __50__TVRUIDockViewController_initWithNibName_bundle___block_invoke(uint64_
   [WeakRetained selectViewControllerIndex:a2 animated:1];
 }
 
-- (void)resetContentAnimated:(BOOL)a3
+- (void)resetContentAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(TVRUIDockViewController *)self upNextViewController];
-  [v5 resetContent];
+  animatedCopy = animated;
+  upNextViewController = [(TVRUIDockViewController *)self upNextViewController];
+  [upNextViewController resetContent];
 
-  v6 = [(TVRUIDockViewController *)self appLauncherViewController];
-  [v6 resetContent];
+  appLauncherViewController = [(TVRUIDockViewController *)self appLauncherViewController];
+  [appLauncherViewController resetContent];
 
-  v7 = [(TVRUIDockViewController *)self nowPlayingViewController];
-  [v7 resetContent];
+  nowPlayingViewController = [(TVRUIDockViewController *)self nowPlayingViewController];
+  [nowPlayingViewController resetContent];
 
-  v8 = [(TVRUIDockViewController *)self castViewController];
-  [v8 resetContent];
+  castViewController = [(TVRUIDockViewController *)self castViewController];
+  [castViewController resetContent];
 
-  v9 = [(TVRUIDockViewController *)self dockPreferredStackController];
-  -[TVRUIDockViewController selectViewControllerIndex:animated:](self, "selectViewControllerIndex:animated:", [v9 currentStackIndex], v3);
+  dockPreferredStackController = [(TVRUIDockViewController *)self dockPreferredStackController];
+  -[TVRUIDockViewController selectViewControllerIndex:animated:](self, "selectViewControllerIndex:animated:", [dockPreferredStackController currentStackIndex], animatedCopy);
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVRUIDockViewController;
@@ -105,82 +105,82 @@ void __50__TVRUIDockViewController_initWithNibName_bundle___block_invoke(uint64_
   v22.receiver = self;
   v22.super_class = TVRUIDockViewController;
   [(TVRUIStackViewController *)&v22 viewDidLoad];
-  v3 = [(TVRUIDockViewController *)self upNextProvider];
-  v4 = [(TVRUIDockViewController *)self upNextViewController];
-  [v4 setUpNextProvider:v3];
+  upNextProvider = [(TVRUIDockViewController *)self upNextProvider];
+  upNextViewController = [(TVRUIDockViewController *)self upNextViewController];
+  [upNextViewController setUpNextProvider:upNextProvider];
 
-  v5 = [(TVRUIDockViewController *)self actionProvider];
-  v6 = [(TVRUIDockViewController *)self upNextViewController];
-  [v6 setActionProvider:v5];
+  actionProvider = [(TVRUIDockViewController *)self actionProvider];
+  upNextViewController2 = [(TVRUIDockViewController *)self upNextViewController];
+  [upNextViewController2 setActionProvider:actionProvider];
 
-  v7 = [(TVRUIDockViewController *)self nowPlayingProvider];
-  v8 = [(TVRUIDockViewController *)self upNextViewController];
-  [v8 setNowPlayingProvider:v7];
+  nowPlayingProvider = [(TVRUIDockViewController *)self nowPlayingProvider];
+  upNextViewController3 = [(TVRUIDockViewController *)self upNextViewController];
+  [upNextViewController3 setNowPlayingProvider:nowPlayingProvider];
 
-  v9 = [(TVRUIDockViewController *)self styleProvider];
-  v10 = [(TVRUIDockViewController *)self appLauncherViewController];
-  [v10 setStyleProvider:v9];
+  styleProvider = [(TVRUIDockViewController *)self styleProvider];
+  appLauncherViewController = [(TVRUIDockViewController *)self appLauncherViewController];
+  [appLauncherViewController setStyleProvider:styleProvider];
 
-  v11 = [(TVRUIDockViewController *)self actionProvider];
-  v12 = [(TVRUIDockViewController *)self appLauncherViewController];
-  [v12 setActionProvider:v11];
+  actionProvider2 = [(TVRUIDockViewController *)self actionProvider];
+  appLauncherViewController2 = [(TVRUIDockViewController *)self appLauncherViewController];
+  [appLauncherViewController2 setActionProvider:actionProvider2];
 
-  v13 = [(TVRUIDockViewController *)self launchableAppsController];
-  v14 = [(TVRUIDockViewController *)self appLauncherViewController];
-  [v14 setLaunchableAppsController:v13];
+  launchableAppsController = [(TVRUIDockViewController *)self launchableAppsController];
+  appLauncherViewController3 = [(TVRUIDockViewController *)self appLauncherViewController];
+  [appLauncherViewController3 setLaunchableAppsController:launchableAppsController];
 
-  v15 = [(TVRUIDockViewController *)self nowPlayingProvider];
-  v16 = [(TVRUIDockViewController *)self appLauncherViewController];
-  [v16 setNowPlayingProvider:v15];
+  nowPlayingProvider2 = [(TVRUIDockViewController *)self nowPlayingProvider];
+  appLauncherViewController4 = [(TVRUIDockViewController *)self appLauncherViewController];
+  [appLauncherViewController4 setNowPlayingProvider:nowPlayingProvider2];
 
-  v17 = [(TVRUIDockViewController *)self actionProvider];
-  v18 = [(TVRUIDockViewController *)self nowPlayingViewController];
-  [v18 setActionProvider:v17];
+  actionProvider3 = [(TVRUIDockViewController *)self actionProvider];
+  nowPlayingViewController = [(TVRUIDockViewController *)self nowPlayingViewController];
+  [nowPlayingViewController setActionProvider:actionProvider3];
 
-  v19 = [(TVRUIDockViewController *)self actionProvider];
-  v20 = [(TVRUIDockViewController *)self castViewController];
-  [v20 setActionProvider:v19];
+  actionProvider4 = [(TVRUIDockViewController *)self actionProvider];
+  castViewController = [(TVRUIDockViewController *)self castViewController];
+  [castViewController setActionProvider:actionProvider4];
 
   [(TVRUIDockViewController *)self configureHierarchy];
-  v21 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v21 addObserver:self selector:sel__nowPlayingInfoDidChange_ name:@"TVRUINowPlayingControllerInfoDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__nowPlayingInfoDidChange_ name:@"TVRUINowPlayingControllerInfoDidChangeNotification" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = TVRUIDockViewController;
-  [(TVRUIDockViewController *)&v5 viewWillAppear:a3];
-  v4 = [(TVRUIDockViewController *)self upNextProvider];
-  [v4 refreshIfNeeded];
+  [(TVRUIDockViewController *)&v5 viewWillAppear:appear];
+  upNextProvider = [(TVRUIDockViewController *)self upNextProvider];
+  [upNextProvider refreshIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = TVRUIDockViewController;
-  [(TVRUIDockViewController *)&v7 viewDidAppear:a3];
-  v4 = [(TVRUIDockViewController *)self nowPlayingProvider];
-  v5 = [v4 nowPlayingInfo];
-  v6 = [(TVRUIDockViewController *)self nowPlayingInfo];
-  [(TVRUIDockViewController *)self _updateNowPlayingInfo:v5 previousNowPlayingInfo:v6];
+  [(TVRUIDockViewController *)&v7 viewDidAppear:appear];
+  nowPlayingProvider = [(TVRUIDockViewController *)self nowPlayingProvider];
+  nowPlayingInfo = [nowPlayingProvider nowPlayingInfo];
+  nowPlayingInfo2 = [(TVRUIDockViewController *)self nowPlayingInfo];
+  [(TVRUIDockViewController *)self _updateNowPlayingInfo:nowPlayingInfo previousNowPlayingInfo:nowPlayingInfo2];
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  objc_storeStrong(&self->_styleProvider, a3);
-  v5 = [(TVRUIDockViewController *)self styleProvider];
-  v4 = [v5 touchpadBackgroundColor];
-  [(TVRUIStackViewController *)self setStackBackgroundColor:v4];
+  objc_storeStrong(&self->_styleProvider, provider);
+  styleProvider = [(TVRUIDockViewController *)self styleProvider];
+  touchpadBackgroundColor = [styleProvider touchpadBackgroundColor];
+  [(TVRUIStackViewController *)self setStackBackgroundColor:touchpadBackgroundColor];
 }
 
-- (void)selectViewControllerIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)selectViewControllerIndex:(unint64_t)index animated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = TVRUIDockViewController;
-  [(TVRUIStackViewController *)&v7 selectViewControllerIndex:a3 animated:a4];
-  v6 = [(TVRUIDockViewController *)self dockPreferredStackController];
-  [v6 didChangeCurrentStackIndex:a3];
+  [(TVRUIStackViewController *)&v7 selectViewControllerIndex:index animated:animated];
+  dockPreferredStackController = [(TVRUIDockViewController *)self dockPreferredStackController];
+  [dockPreferredStackController didChangeCurrentStackIndex:index];
 }
 
 - (void)configureHierarchy
@@ -206,27 +206,27 @@ void __45__TVRUIDockViewController_configureHierarchy__block_invoke(uint64_t a1)
   [WeakRetained _invokeLayoutHandlerIfNeeded];
 }
 
-- (void)_nowPlayingInfoDidChange:(id)a3
+- (void)_nowPlayingInfoDidChange:(id)change
 {
-  v4 = [(TVRUIDockViewController *)self nowPlayingProvider];
-  v6 = [v4 nowPlayingInfo];
+  nowPlayingProvider = [(TVRUIDockViewController *)self nowPlayingProvider];
+  nowPlayingInfo = [nowPlayingProvider nowPlayingInfo];
 
-  v5 = [(TVRUIDockViewController *)self nowPlayingInfo];
-  [(TVRUIDockViewController *)self _updateNowPlayingInfo:v6 previousNowPlayingInfo:v5];
+  nowPlayingInfo2 = [(TVRUIDockViewController *)self nowPlayingInfo];
+  [(TVRUIDockViewController *)self _updateNowPlayingInfo:nowPlayingInfo previousNowPlayingInfo:nowPlayingInfo2];
 }
 
-- (void)_updateNowPlayingInfo:(id)a3 previousNowPlayingInfo:(id)a4
+- (void)_updateNowPlayingInfo:(id)info previousNowPlayingInfo:(id)playingInfo
 {
-  v6 = a3;
-  v7 = [a4 metadata];
-  v8 = [v6 metadata];
-  v9 = [v7 isEqualToNowPlayingMetadata:v8];
+  infoCopy = info;
+  metadata = [playingInfo metadata];
+  metadata2 = [infoCopy metadata];
+  v9 = [metadata isEqualToNowPlayingMetadata:metadata2];
 
-  v10 = [v6 playbackState];
-  if ([v10 integerValue] == 1)
+  playbackState = [infoCopy playbackState];
+  if ([playbackState integerValue] == 1)
   {
-    v11 = [v6 playbackRate];
-    v12 = [v11 integerValue] != 1;
+    playbackRate = [infoCopy playbackRate];
+    v12 = [playbackRate integerValue] != 1;
   }
 
   else
@@ -236,12 +236,12 @@ void __45__TVRUIDockViewController_configureHierarchy__block_invoke(uint64_t a1)
 
   if ((v9 & 1) == 0)
   {
-    v13 = [(TVRUIDockViewController *)self nowPlayingViewController];
-    [v13 setNowPlayingInfo:v6];
+    nowPlayingViewController = [(TVRUIDockViewController *)self nowPlayingViewController];
+    [nowPlayingViewController setNowPlayingInfo:infoCopy];
 
-    v14 = [v6 metadata];
-    v15 = [(TVRUIDockViewController *)self castViewController];
-    [v15 setMetadata:v14];
+    metadata3 = [infoCopy metadata];
+    castViewController = [(TVRUIDockViewController *)self castViewController];
+    [castViewController setMetadata:metadata3];
 
     if (!v12)
     {
@@ -255,17 +255,17 @@ void __45__TVRUIDockViewController_configureHierarchy__block_invoke(uint64_t a1)
     }
   }
 
-  [(TVRUIDockViewController *)self setNowPlayingInfo:v6];
+  [(TVRUIDockViewController *)self setNowPlayingInfo:infoCopy];
 }
 
 - (void)_invokeLayoutHandlerIfNeeded
 {
-  v3 = [(TVRUIDockViewController *)self layoutHandler];
+  layoutHandler = [(TVRUIDockViewController *)self layoutHandler];
 
-  if (v3)
+  if (layoutHandler)
   {
-    v4 = [(TVRUIDockViewController *)self layoutHandler];
-    v4[2]();
+    layoutHandler2 = [(TVRUIDockViewController *)self layoutHandler];
+    layoutHandler2[2]();
   }
 }
 

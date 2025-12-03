@@ -2,28 +2,28 @@
 + (void)initialize;
 - (BOOL)isPinned;
 - (BOOL)isUnsupported;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (REMAccountCapabilities)accountCapabilities;
-- (REMSmartListChangeItem)initWithCustomSmartListObjectID:(id)a3 insertIntoAccountChangeItem:(id)a4 withParentListChangeItem:(id)a5;
-- (REMSmartListChangeItem)initWithCustomSmartListObjectID:(id)a3 insertIntoListSublistContextChangeItem:(id)a4;
-- (REMSmartListChangeItem)initWithSaveRequest:(id)a3 storage:(id)a4 changedKeysObserver:(id)a5;
+- (REMSmartListChangeItem)initWithCustomSmartListObjectID:(id)d insertIntoAccountChangeItem:(id)item withParentListChangeItem:(id)changeItem;
+- (REMSmartListChangeItem)initWithCustomSmartListObjectID:(id)d insertIntoListSublistContextChangeItem:(id)item;
+- (REMSmartListChangeItem)initWithSaveRequest:(id)request storage:(id)storage changedKeysObserver:(id)observer;
 - (REMSmartListCustomContextChangeItem)customContext;
 - (REMSmartListSectionContextChangeItem)sectionsContextChangeItem;
 - (id)changedKeys;
-- (id)removeFromParentAllowingUndoWithAccountChangeItem:(id)a3;
-- (id)resolutionTokenKeyForChangedKey:(id)a3;
-- (id)shallowCopyWithSaveRequest:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)assertIsCustomSmartListWithAction:(id)a3;
-- (void)setIsPinned:(BOOL)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)removeFromParentAllowingUndoWithAccountChangeItem:(id)item;
+- (id)resolutionTokenKeyForChangedKey:(id)key;
+- (id)shallowCopyWithSaveRequest:(id)request;
+- (id)valueForUndefinedKey:(id)key;
+- (void)assertIsCustomSmartListWithAction:(id)action;
+- (void)setIsPinned:(BOOL)pinned;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation REMSmartListChangeItem
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = __sKeysToObserve_2;
     __sKeysToObserve_2 = &unk_1F0D99A00;
@@ -34,12 +34,12 @@
   }
 }
 
-- (REMSmartListChangeItem)initWithSaveRequest:(id)a3 storage:(id)a4 changedKeysObserver:(id)a5
+- (REMSmartListChangeItem)initWithSaveRequest:(id)request storage:(id)storage changedKeysObserver:(id)observer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  requestCopy = request;
+  storageCopy = storage;
+  observerCopy = observer;
+  if (storageCopy)
   {
     v18.receiver = self;
     v18.super_class = REMSmartListChangeItem;
@@ -47,13 +47,13 @@
     p_isa = &v13->super.isa;
     if (v13)
     {
-      objc_storeStrong(&v13->_saveRequest, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      objc_storeStrong(&v13->_saveRequest, request);
+      objc_storeStrong(p_isa + 2, storage);
+      objc_storeStrong(p_isa + 3, observer);
     }
 
     self = p_isa;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
@@ -65,84 +65,84 @@
     }
 
     NSLog(&cfstr_SIsUnexpectedl.isa, "storage");
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (REMSmartListChangeItem)initWithCustomSmartListObjectID:(id)a3 insertIntoAccountChangeItem:(id)a4 withParentListChangeItem:(id)a5
+- (REMSmartListChangeItem)initWithCustomSmartListObjectID:(id)d insertIntoAccountChangeItem:(id)item withParentListChangeItem:(id)changeItem
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 capabilities];
-  v12 = [v11 supportsCustomSmartLists];
+  itemCopy = item;
+  changeItemCopy = changeItem;
+  dCopy = d;
+  capabilities = [itemCopy capabilities];
+  supportsCustomSmartLists = [capabilities supportsCustomSmartLists];
 
-  if ((v12 & 1) == 0)
+  if ((supportsCustomSmartLists & 1) == 0)
   {
-    [REMSmartListChangeItem initWithCustomSmartListObjectID:v8 insertIntoAccountChangeItem:? withParentListChangeItem:?];
+    [REMSmartListChangeItem initWithCustomSmartListObjectID:itemCopy insertIntoAccountChangeItem:? withParentListChangeItem:?];
   }
 
   v13 = [REMSmartListStorage alloc];
-  v14 = [v8 objectID];
-  v15 = [(REMSmartListStorage *)v13 initWithObjectID:v10 accountID:v14 smartListType:@"com.apple.reminders.smartlist.custom"];
+  objectID = [itemCopy objectID];
+  v15 = [(REMSmartListStorage *)v13 initWithObjectID:dCopy accountID:objectID smartListType:@"com.apple.reminders.smartlist.custom"];
 
-  v16 = [v8 objectID];
-  [(REMSmartListStorage *)v15 setParentAccountID:v16];
+  objectID2 = [itemCopy objectID];
+  [(REMSmartListStorage *)v15 setParentAccountID:objectID2];
 
   v17 = +[REMManualOrdering newObjectID];
   v18 = [REMManualOrdering alloc];
-  v19 = [v10 uuid];
-  v20 = [v19 UUIDString];
+  uuid = [dCopy uuid];
+  uUIDString = [uuid UUIDString];
   v21 = objc_opt_new();
-  v22 = [(REMManualOrdering *)v18 initWithObjectID:v17 listType:2 listID:v20 modifiedDate:v21];
+  v22 = [(REMManualOrdering *)v18 initWithObjectID:v17 listType:2 listID:uUIDString modifiedDate:v21];
 
   [(REMSmartListStorage *)v15 setManualOrdering:v22];
-  v23 = [v9 objectID];
-  [(REMSmartListStorage *)v15 setParentListID:v23];
+  objectID3 = [changeItemCopy objectID];
+  [(REMSmartListStorage *)v15 setParentListID:objectID3];
 
-  [v8 lowLevelAddMergeableOrderingNodeIDToOrdering:v10 withParentMergeableOrderingNode:v9];
-  v24 = [v8 saveRequest];
-  v25 = [(REMSmartListChangeItem *)self initWithSaveRequest:v24 storage:v15 observeInitialValues:1];
+  [itemCopy lowLevelAddMergeableOrderingNodeIDToOrdering:dCopy withParentMergeableOrderingNode:changeItemCopy];
+  saveRequest = [itemCopy saveRequest];
+  v25 = [(REMSmartListChangeItem *)self initWithSaveRequest:saveRequest storage:v15 observeInitialValues:1];
 
   return v25;
 }
 
-- (REMSmartListChangeItem)initWithCustomSmartListObjectID:(id)a3 insertIntoListSublistContextChangeItem:(id)a4
+- (REMSmartListChangeItem)initWithCustomSmartListObjectID:(id)d insertIntoListSublistContextChangeItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 listChangeItem];
-  v9 = [v8 saveRequest];
-  v10 = [v9 _updateAccountWithListChangeItem:v8];
+  itemCopy = item;
+  dCopy = d;
+  listChangeItem = [itemCopy listChangeItem];
+  saveRequest = [listChangeItem saveRequest];
+  v10 = [saveRequest _updateAccountWithListChangeItem:listChangeItem];
 
-  v11 = [v6 listChangeItem];
+  listChangeItem2 = [itemCopy listChangeItem];
 
-  v12 = [(REMSmartListChangeItem *)self initWithCustomSmartListObjectID:v7 insertIntoAccountChangeItem:v10 withParentListChangeItem:v11];
+  v12 = [(REMSmartListChangeItem *)self initWithCustomSmartListObjectID:dCopy insertIntoAccountChangeItem:v10 withParentListChangeItem:listChangeItem2];
   return v12;
 }
 
 - (id)changedKeys
 {
-  v2 = [(REMSmartListChangeItem *)self changedKeysObserver];
-  v3 = [v2 changedKeys];
+  changedKeysObserver = [(REMSmartListChangeItem *)self changedKeysObserver];
+  changedKeys = [changedKeysObserver changedKeys];
 
-  return v3;
+  return changedKeys;
 }
 
-- (id)resolutionTokenKeyForChangedKey:(id)a3
+- (id)resolutionTokenKeyForChangedKey:(id)key
 {
   v3 = __resolutionTokenKeyDenylist_2;
-  v4 = a3;
-  if ([v3 containsObject:v4])
+  keyCopy = key;
+  if ([v3 containsObject:keyCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = keyCopy;
   }
 
   v6 = v5;
@@ -150,17 +150,17 @@
   return v5;
 }
 
-- (id)shallowCopyWithSaveRequest:(id)a3
+- (id)shallowCopyWithSaveRequest:(id)request
 {
-  v5 = a3;
-  v6 = [(REMSmartListChangeItem *)self storage];
+  requestCopy = request;
+  storage = [(REMSmartListChangeItem *)self storage];
 
-  if (v6)
+  if (storage)
   {
     v7 = [REMSmartListChangeItem alloc];
-    v8 = [(REMSmartListChangeItem *)self storage];
-    v9 = [(REMSmartListChangeItem *)self changedKeysObserver];
-    v10 = [(REMSmartListChangeItem *)v7 initWithSaveRequest:v5 storage:v8 changedKeysObserver:v9];
+    storage2 = [(REMSmartListChangeItem *)self storage];
+    changedKeysObserver = [(REMSmartListChangeItem *)self changedKeysObserver];
+    storage3 = [(REMSmartListChangeItem *)v7 initWithSaveRequest:requestCopy storage:storage2 changedKeysObserver:changedKeysObserver];
   }
 
   else
@@ -171,11 +171,11 @@
       [(REMTemplateChangeItem *)self shallowCopyWithSaveRequest:a2];
     }
 
-    v10 = [(REMSmartListChangeItem *)self storage];
+    storage3 = [(REMSmartListChangeItem *)self storage];
 
-    if (v10)
+    if (storage3)
     {
-      v10 = 0;
+      storage3 = 0;
     }
 
     else
@@ -184,57 +184,57 @@
     }
   }
 
-  return v10;
+  return storage3;
 }
 
-- (void)assertIsCustomSmartListWithAction:(id)a3
+- (void)assertIsCustomSmartListWithAction:(id)action
 {
-  v4 = a3;
-  v5 = [(REMSmartListChangeItem *)self smartListType];
-  v6 = [@"com.apple.reminders.smartlist.custom" isEqual:v5];
+  actionCopy = action;
+  smartListType = [(REMSmartListChangeItem *)self smartListType];
+  v6 = [@"com.apple.reminders.smartlist.custom" isEqual:smartListType];
 
   if ((v6 & 1) == 0)
   {
     v7 = +[REMLogStore write];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(REMSmartListChangeItem *)v4 assertIsCustomSmartListWithAction:?];
+      [(REMSmartListChangeItem *)actionCopy assertIsCustomSmartListWithAction:?];
     }
 
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D930];
-    v10 = [(REMSmartListChangeItem *)self remObjectID];
-    [v8 raise:v9 format:{@"Action is only applicable to CSL {action: %@, smartList: %@}", v4, v10}];
+    remObjectID = [(REMSmartListChangeItem *)self remObjectID];
+    [v8 raise:v9 format:{@"Action is only applicable to CSL {action: %@, smartList: %@}", actionCopy, remObjectID}];
   }
 }
 
 - (REMAccountCapabilities)accountCapabilities
 {
-  v2 = [(REMSmartListChangeItem *)self storage];
-  v3 = [v2 accountCapabilities];
+  storage = [(REMSmartListChangeItem *)self storage];
+  accountCapabilities = [storage accountCapabilities];
 
-  return v3;
+  return accountCapabilities;
 }
 
 - (BOOL)isPinned
 {
-  v2 = [(REMSmartListChangeItem *)self pinnedDate];
-  v3 = v2 != 0;
+  pinnedDate = [(REMSmartListChangeItem *)self pinnedDate];
+  v3 = pinnedDate != 0;
 
   return v3;
 }
 
-- (void)setIsPinned:(BOOL)a3
+- (void)setIsPinned:(BOOL)pinned
 {
-  v3 = a3;
-  v5 = [(REMSmartListChangeItem *)self accountCapabilities];
-  v6 = [v5 supportsPinnedLists];
+  pinnedCopy = pinned;
+  accountCapabilities = [(REMSmartListChangeItem *)self accountCapabilities];
+  supportsPinnedLists = [accountCapabilities supportsPinnedLists];
 
-  if (v6)
+  if (supportsPinnedLists)
   {
-    if ([(REMSmartListChangeItem *)self isPinned]!= v3)
+    if ([(REMSmartListChangeItem *)self isPinned]!= pinnedCopy)
     {
-      if (v3)
+      if (pinnedCopy)
       {
         v8 = [MEMORY[0x1E695DF00] now];
         [(REMSmartListChangeItem *)self setPinnedDate:v8];
@@ -258,16 +258,16 @@
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMSmartListChangeItem *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(REMSmartListChangeItem *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = REMSmartListChangeItem;
@@ -278,21 +278,21 @@
 
   else
   {
-    v5 = [(REMSmartListChangeItem *)self storage];
+    storage = [(REMSmartListChangeItem *)self storage];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMSmartListChangeItem *)self saveRequest];
-  v9 = [v8 isSaved];
+  keyCopy = key;
+  valueCopy = value;
+  saveRequest = [(REMSmartListChangeItem *)self saveRequest];
+  isSaved = [saveRequest isSaved];
 
-  if (v9)
+  if (isSaved)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -302,40 +302,40 @@
     }
   }
 
-  v11 = [(REMSmartListChangeItem *)self storage];
-  [v11 setValue:v7 forKey:v6];
+  storage = [(REMSmartListChangeItem *)self storage];
+  [storage setValue:valueCopy forKey:keyCopy];
 }
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMSmartListChangeItem *)self storage];
-  v3 = [v2 isUnsupported];
+  storage = [(REMSmartListChangeItem *)self storage];
+  isUnsupported = [storage isUnsupported];
 
-  return v3;
+  return isUnsupported;
 }
 
-- (id)removeFromParentAllowingUndoWithAccountChangeItem:(id)a3
+- (id)removeFromParentAllowingUndoWithAccountChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = [(REMSmartListChangeItem *)self parentAccountID];
+  itemCopy = item;
+  parentAccountID = [(REMSmartListChangeItem *)self parentAccountID];
 
-  if (v5)
+  if (parentAccountID)
   {
-    v6 = [(REMSmartListChangeItem *)self saveRequest];
-    v7 = [(REMSmartListChangeItem *)self parentAccountID];
-    v8 = [v6 _trackedAccountChangeItemForObjectID:v7];
+    saveRequest = [(REMSmartListChangeItem *)self saveRequest];
+    parentAccountID2 = [(REMSmartListChangeItem *)self parentAccountID];
+    v8 = [saveRequest _trackedAccountChangeItemForObjectID:parentAccountID2];
 
-    if (!v8 || v8 != v4)
+    if (!v8 || v8 != itemCopy)
     {
       v9 = MEMORY[0x1E695DF30];
       v10 = *MEMORY[0x1E695D930];
-      v11 = [(REMSmartListChangeItem *)self parentAccountID];
-      v12 = [v4 objectID];
-      [v9 raise:v10 format:{@"REMSmartListChangeItem tries to remove itself from an untracked or unknown account change item {parentAccountID: %@, accountChangeItem.objectID: %@}", v11, v12}];
+      parentAccountID3 = [(REMSmartListChangeItem *)self parentAccountID];
+      objectID = [itemCopy objectID];
+      [v9 raise:v10 format:{@"REMSmartListChangeItem tries to remove itself from an untracked or unknown account change item {parentAccountID: %@, accountChangeItem.objectID: %@}", parentAccountID3, objectID}];
     }
 
-    v13 = [(REMSmartListChangeItem *)self objectID];
-    v14 = [v8 lowLevelRemoveMergeableOrderingNodeIDFromOrdering:v13];
+    objectID2 = [(REMSmartListChangeItem *)self objectID];
+    v14 = [v8 lowLevelRemoveMergeableOrderingNodeIDFromOrdering:objectID2];
   }
 
   else
@@ -351,8 +351,8 @@
 
 - (REMSmartListCustomContextChangeItem)customContext
 {
-  v3 = [(REMSmartListChangeItem *)self smartListType];
-  v4 = [v3 isEqualToString:@"com.apple.reminders.smartlist.custom"];
+  smartListType = [(REMSmartListChangeItem *)self smartListType];
+  v4 = [smartListType isEqualToString:@"com.apple.reminders.smartlist.custom"];
 
   if (v4)
   {
@@ -369,10 +369,10 @@
 
 - (REMSmartListSectionContextChangeItem)sectionsContextChangeItem
 {
-  v3 = [(REMSmartListChangeItem *)self accountCapabilities];
-  v4 = [v3 supportsSections];
+  accountCapabilities = [(REMSmartListChangeItem *)self accountCapabilities];
+  supportsSections = [accountCapabilities supportsSections];
 
-  if (v4)
+  if (supportsSections)
   {
     v5 = [[REMSmartListSectionContextChangeItem alloc] initWithSmartListChangeItem:self];
   }

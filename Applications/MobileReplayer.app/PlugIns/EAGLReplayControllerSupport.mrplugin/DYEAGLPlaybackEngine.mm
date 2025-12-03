@@ -1,5 +1,5 @@
 @interface DYEAGLPlaybackEngine
-- (BOOL)layerHasSameProperties:(id)a3 layer:(id)a4;
+- (BOOL)layerHasSameProperties:(id)properties layer:(id)layer;
 - (id)newFunctionPlayer;
 @end
 
@@ -8,18 +8,18 @@
 - (id)newFunctionPlayer
 {
   v3 = [DYEAGLFunctionPlayer alloc];
-  v4 = [(DYEAGLPlaybackEngine *)self captureStore];
-  v5 = [(DYEAGLFunctionPlayer *)v3 initWithCaptureStore:v4];
+  captureStore = [(DYEAGLPlaybackEngine *)self captureStore];
+  v5 = [(DYEAGLFunctionPlayer *)v3 initWithCaptureStore:captureStore];
 
   [(DYEAGLFunctionPlayer *)v5 setLayerManager:self];
   return v5;
 }
 
-- (BOOL)layerHasSameProperties:(id)a3 layer:(id)a4
+- (BOOL)layerHasSameProperties:(id)properties layer:(id)layer
 {
-  v5 = a3;
-  v6 = [a4 drawableProperties];
-  v7 = [v6 isEqualToDictionary:v5];
+  propertiesCopy = properties;
+  drawableProperties = [layer drawableProperties];
+  v7 = [drawableProperties isEqualToDictionary:propertiesCopy];
 
   return v7;
 }

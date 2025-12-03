@@ -1,50 +1,50 @@
 @interface HMDSignificantTimeEventModel
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6;
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message;
 + (id)properties;
 @end
 
 @implementation HMDSignificantTimeEventModel
 
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  dCopy = d;
+  messageCopy = message;
   v13 = *MEMORY[0x277CD2680];
-  v14 = [v9 dateComponentsFromDataForKey:*MEMORY[0x277CD2680]];
+  v14 = [dictionaryCopy dateComponentsFromDataForKey:*MEMORY[0x277CD2680]];
   if ([HMDTimeEvent isValidOffsetDateComponents:v14])
   {
-    v15 = [HMDEventModel eventModelWithDictionary:v9 home:v10 eventTriggerUUID:v11 className:objc_opt_class() message:v12];
-    v16 = [v9 hmf_stringForKey:*MEMORY[0x277CD2688]];
+    responseHandler2 = [HMDEventModel eventModelWithDictionary:dictionaryCopy home:homeCopy eventTriggerUUID:dCopy className:objc_opt_class() message:messageCopy];
+    v16 = [dictionaryCopy hmf_stringForKey:*MEMORY[0x277CD2688]];
     if (HMIsValidSignificantEvent())
     {
-      [v15 setSignificantEvent:v16];
-      v17 = [v9 hmf_dataForKey:v13];
-      [v15 setOffset:v17];
+      [responseHandler2 setSignificantEvent:v16];
+      v17 = [dictionaryCopy hmf_dataForKey:v13];
+      [responseHandler2 setOffset:v17];
 
-      v15 = v15;
-      v18 = v15;
+      responseHandler2 = responseHandler2;
+      v18 = responseHandler2;
 LABEL_8:
 
       goto LABEL_9;
     }
 
     v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v12 respondWithError:v20];
+    [messageCopy respondWithError:v20];
 
 LABEL_7:
     v18 = 0;
     goto LABEL_8;
   }
 
-  v19 = [v12 responseHandler];
+  responseHandler = [messageCopy responseHandler];
 
-  if (v19)
+  if (responseHandler)
   {
-    v15 = [v12 responseHandler];
+    responseHandler2 = [messageCopy responseHandler];
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    (*(v15 + 2))(v15, v16, 0);
+    (*(responseHandler2 + 2))(responseHandler2, v16, 0);
     goto LABEL_7;
   }
 
@@ -60,7 +60,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __42__HMDSignificantTimeEventModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_66944 != -1)
   {
     dispatch_once(&properties_onceToken_66944, block);

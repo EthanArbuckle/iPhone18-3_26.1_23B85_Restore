@@ -1,34 +1,34 @@
 @interface CKWatchfaceImageBalloonView
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setMetadata:(id)a3;
-- (void)tapGestureRecognized:(id)a3;
+- (void)setMetadata:(id)metadata;
+- (void)tapGestureRecognized:(id)recognized;
 @end
 
 @implementation CKWatchfaceImageBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect
 {
-  v6 = a5;
-  v10 = a3;
+  orientationCopy = orientation;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v10 linkMetadataForWidth:v6 orientation:a4];
+    v9 = [objectCopy linkMetadataForWidth:orientationCopy orientation:width];
     [(CKWatchfaceImageBalloonView *)self setMetadata:v9];
   }
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v5 = a3;
-  if (self->_metadata != v5)
+  metadataCopy = metadata;
+  if (self->_metadata != metadataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_metadata, a3);
+    v6 = metadataCopy;
+    objc_storeStrong(&self->_metadata, metadata);
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
-    v5 = v6;
+    metadataCopy = v6;
   }
 }
 
@@ -43,18 +43,18 @@
 
 - (void)prepareForDisplay
 {
-  v3 = [(CKLinkBalloonView *)self linkView];
+  linkView = [(CKLinkBalloonView *)self linkView];
 
-  if (v3)
+  if (linkView)
   {
-    v4 = [(CKLinkBalloonView *)self linkView];
-    [v4 setMetadata:self->_metadata];
+    linkView2 = [(CKLinkBalloonView *)self linkView];
+    [linkView2 setMetadata:self->_metadata];
   }
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x1E696ECC8]) initWithMetadata:self->_metadata];
-    [(CKLinkBalloonView *)self setLinkView:v4];
+    linkView2 = [objc_alloc(MEMORY[0x1E696ECC8]) initWithMetadata:self->_metadata];
+    [(CKLinkBalloonView *)self setLinkView:linkView2];
   }
 
   v5.receiver = self;
@@ -62,18 +62,18 @@
   [(CKLinkBalloonView *)&v5 prepareForDisplay];
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v7 = a3;
+  recognizedCopy = recognized;
   metadata = self->_metadata;
   if (metadata)
   {
-    v5 = [(LPLinkMetadata *)metadata originalURL];
+    originalURL = [(LPLinkMetadata *)metadata originalURL];
 
-    if (v5)
+    if (originalURL)
     {
-      v6 = [(LPLinkMetadata *)self->_metadata originalURL];
-      [CKWatchfaceUtilities addWatchFaceAtURL:v6 completionHandler:&__block_literal_global_84];
+      originalURL2 = [(LPLinkMetadata *)self->_metadata originalURL];
+      [CKWatchfaceUtilities addWatchFaceAtURL:originalURL2 completionHandler:&__block_literal_global_84];
     }
   }
 }

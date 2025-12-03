@@ -1,15 +1,15 @@
 @interface SKUIRedeemCameraLandingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIRedeemCameraLandingView)initWithClientContext:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIRedeemCameraLandingView)initWithClientContext:(id)context;
 - (void)layoutSubviews;
-- (void)setSpacingStyle:(int64_t)a3;
+- (void)setSpacingStyle:(int64_t)style;
 @end
 
 @implementation SKUIRedeemCameraLandingView
 
-- (SKUIRedeemCameraLandingView)initWithClientContext:(id)a3
+- (SKUIRedeemCameraLandingView)initWithClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRedeemCameraLandingView initWithClientContext:];
@@ -34,8 +34,8 @@
     v5->_headerLabel = v11;
 
     v13 = v5->_headerLabel;
-    v14 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v13 setBackgroundColor:v14];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v13 setBackgroundColor:whiteColor];
 
     v15 = v5->_headerLabel;
     v16 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
@@ -43,14 +43,14 @@
 
     [(UILabel *)v5->_headerLabel setNumberOfLines:0];
     v17 = v5->_headerLabel;
-    v18 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v17 setTextColor:v18];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v17 setTextColor:blackColor];
 
     [(UILabel *)v5->_headerLabel setTextAlignment:1];
     v19 = MGCopyAnswer();
-    v20 = [SKUIRedeemViewControllerLegacy redeemRequiresNationalId:v4];
-    v21 = [v19 integerValue];
-    switch(v21)
+    v20 = [SKUIRedeemViewControllerLegacy redeemRequiresNationalId:contextCopy];
+    integerValue = [v19 integerValue];
+    switch(integerValue)
     {
       case 1:
         v22 = v5->_headerLabel;
@@ -85,9 +85,9 @@ LABEL_19:
           v30 = @"CAMERA_REDEEM_CARD_DESCRIPTION";
         }
 
-        if (v4)
+        if (contextCopy)
         {
-          [v4 localizedStringForKey:v30 inTable:@"Redeem"];
+          [contextCopy localizedStringForKey:v30 inTable:@"Redeem"];
         }
 
         else
@@ -99,11 +99,11 @@ LABEL_19:
 
         v32 = v5->_bodyLabel;
         v33 = MEMORY[0x277D74300];
-        v34 = [MEMORY[0x277D75418] currentDevice];
-        v35 = [v34 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
         v36 = 14.0;
-        if ((v35 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
           v36 = 16.0;
         }
@@ -118,8 +118,8 @@ LABEL_19:
         [(UILabel *)v5->_bodyLabel setNumberOfLines:0];
         [(UILabel *)v5->_bodyLabel setTextAlignment:1];
         v40 = v5->_bodyLabel;
-        v41 = [MEMORY[0x277D75348] whiteColor];
-        [(UILabel *)v40 setBackgroundColor:v41];
+        whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+        [(UILabel *)v40 setBackgroundColor:whiteColor2];
 
         [(SKUIRedeemCameraLandingView *)v5 addSubview:v5->_bodyLabel];
         v42 = [MEMORY[0x277D75220] buttonWithType:1];
@@ -127,9 +127,9 @@ LABEL_19:
         v5->_button = v42;
 
         v44 = v5->_button;
-        if (v4)
+        if (contextCopy)
         {
-          [v4 localizedStringForKey:@"CAMERA_REDEEM_USE_CAMERA_BUTTON" inTable:@"Redeem"];
+          [contextCopy localizedStringForKey:@"CAMERA_REDEEM_USE_CAMERA_BUTTON" inTable:@"Redeem"];
         }
 
         else
@@ -139,14 +139,14 @@ LABEL_19:
         v45 = ;
         [(UIButton *)v44 setTitle:v45 forState:0];
 
-        v46 = [(UIButton *)v5->_button titleLabel];
+        titleLabel = [(UIButton *)v5->_button titleLabel];
         v47 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-        [v46 setFont:v47];
+        [titleLabel setFont:v47];
 
         [(UIButton *)v5->_button sizeToFit];
         [(SKUIRedeemCameraLandingView *)v5 addSubview:v5->_button];
-        v48 = [MEMORY[0x277D75348] whiteColor];
-        [(SKUIRedeemCameraLandingView *)v5 setBackgroundColor:v48];
+        whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+        [(SKUIRedeemCameraLandingView *)v5 setBackgroundColor:whiteColor3];
 
         [(SKUIRedeemCameraLandingView *)v5 setClipsToBounds:1];
         goto LABEL_31;
@@ -162,9 +162,9 @@ LABEL_19:
       v25 = v23;
     }
 
-    if (v4)
+    if (contextCopy)
     {
-      [v4 localizedStringForKey:v25 inTable:@"Redeem"];
+      [contextCopy localizedStringForKey:v25 inTable:@"Redeem"];
     }
 
     else
@@ -182,11 +182,11 @@ LABEL_31:
   return v5;
 }
 
-- (void)setSpacingStyle:(int64_t)a3
+- (void)setSpacingStyle:(int64_t)style
 {
-  if (self->_spacingStyle != a3)
+  if (self->_spacingStyle != style)
   {
-    self->_spacingStyle = a3;
+    self->_spacingStyle = style;
     [(SKUIRedeemCameraLandingView *)self setNeedsLayout];
   }
 }
@@ -210,10 +210,10 @@ LABEL_31:
   [(UIImageView *)self->_imageView frame];
   v16 = v15;
   v18 = v17;
-  v19 = [MEMORY[0x277D75418] currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v21 = 55.0;
   }
@@ -228,11 +228,11 @@ LABEL_31:
   }
 
   v22 = v10 + v18 + v21;
-  v23 = [MEMORY[0x277D75418] currentDevice];
-  v24 = [v23 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v25 = 11.0;
-  if ((v24 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v25 = 13.0;
     if (self->_spacingStyle == 1)
@@ -242,10 +242,10 @@ LABEL_31:
   }
 
   v26 = v58 + v22 + v25;
-  v27 = [MEMORY[0x277D75418] currentDevice];
-  v28 = [v27 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if ((v28 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v29 = 36.0;
   }
@@ -269,10 +269,10 @@ LABEL_31:
   v60.size.width = v16;
   v60.size.height = v18;
   MaxY = CGRectGetMaxY(v60);
-  v35 = [MEMORY[0x277D75418] currentDevice];
-  v36 = [v35 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-  if ((v36 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v37 = 55.0;
   }
@@ -295,11 +295,11 @@ LABEL_31:
   v61.size.width = v56;
   v61.size.height = v10;
   v41 = CGRectGetMaxY(v61);
-  v42 = [MEMORY[0x277D75418] currentDevice];
-  v43 = [v42 userInterfaceIdiom];
+  currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom5 = [currentDevice5 userInterfaceIdiom];
 
   v44 = 11.0;
-  if ((v43 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v44 = 13.0;
     if (self->_spacingStyle == 1)
@@ -317,10 +317,10 @@ LABEL_31:
   v62.size.width = v7;
   v62.size.height = v58;
   v48 = CGRectGetMaxY(v62);
-  v49 = [MEMORY[0x277D75418] currentDevice];
-  v50 = [v49 userInterfaceIdiom];
+  currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom6 = [currentDevice6 userInterfaceIdiom];
 
-  if ((v50 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v51 = 36.0;
   }
@@ -342,9 +342,9 @@ LABEL_31:
   [(UIButton *)button setFrame:v55, v52];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [(UILabel *)self->_bodyLabel frame];
   [(UIButton *)self->_button frame];
   v6 = v5;
@@ -355,10 +355,10 @@ LABEL_31:
   v10 = v9;
   [(UILabel *)self->_headerLabel sizeThatFits:width + -30.0, 1.79769313e308];
   v12 = v11;
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v14 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v15 = 55.0;
   }
@@ -373,11 +373,11 @@ LABEL_31:
     v15 = 25.0;
   }
 
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  v17 = [v16 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v18 = 11.0;
-  if ((v17 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     if (self->_spacingStyle == 1)
     {
@@ -390,10 +390,10 @@ LABEL_31:
     }
   }
 
-  v19 = [MEMORY[0x277D75418] currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v21 = 36.0;
   }

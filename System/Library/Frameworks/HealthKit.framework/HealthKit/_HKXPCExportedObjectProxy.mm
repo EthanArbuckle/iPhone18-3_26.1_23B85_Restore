@@ -1,41 +1,41 @@
 @interface _HKXPCExportedObjectProxy
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)weakExportedObject;
-- (void)forwardInvocation:(id)a3;
-- (void)setWeakExportedObject:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)setWeakExportedObject:(id)object;
 @end
 
 @implementation _HKXPCExportedObjectProxy
 
-- (void)setWeakExportedObject:(id)a3
+- (void)setWeakExportedObject:(id)object
 {
-  v4 = a3;
-  objc_storeWeak(&self->_weakExportedObject, v4);
+  objectCopy = object;
+  objc_storeWeak(&self->_weakExportedObject, objectCopy);
   v5 = objc_opt_class();
 
   [(_HKXPCExportedObjectProxy *)self setWeakExportedObjectClass:v5];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = [(_HKXPCExportedObjectProxy *)self weakExportedObject];
-  v6 = [v5 methodSignatureForSelector:a3];
+  weakExportedObject = [(_HKXPCExportedObjectProxy *)self weakExportedObject];
+  v6 = [weakExportedObject methodSignatureForSelector:selector];
 
   if (!v6)
   {
-    v6 = [(objc_class *)[(_HKXPCExportedObjectProxy *)self weakExportedObjectClass] instanceMethodSignatureForSelector:a3];
+    v6 = [(objc_class *)[(_HKXPCExportedObjectProxy *)self weakExportedObjectClass] instanceMethodSignatureForSelector:selector];
   }
 
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = a3;
-  v4 = [(_HKXPCExportedObjectProxy *)self weakExportedObject];
-  if (v4)
+  invocationCopy = invocation;
+  weakExportedObject = [(_HKXPCExportedObjectProxy *)self weakExportedObject];
+  if (weakExportedObject)
   {
-    [v5 invokeWithTarget:v4];
+    [invocationCopy invokeWithTarget:weakExportedObject];
   }
 }
 

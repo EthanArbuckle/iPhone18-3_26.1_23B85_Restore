@@ -1,20 +1,20 @@
 @interface ICMusicAccountNotificationsSettingsSwitch
 - (BOOL)hasBeenPreviouslyToggled;
 - (BOOL)isToggled;
-- (ICMusicAccountNotificationsSettingsSwitch)initWithItemResponseDictionary:(id)a3;
-- (ICMusicAccountNotificationsSettingsSwitch)initWithToggleState:(BOOL)a3 hasBeenToggled:(BOOL)a4 identifier:(id)a5;
+- (ICMusicAccountNotificationsSettingsSwitch)initWithItemResponseDictionary:(id)dictionary;
+- (ICMusicAccountNotificationsSettingsSwitch)initWithToggleState:(BOOL)state hasBeenToggled:(BOOL)toggled identifier:(id)identifier;
 - (NSString)identifier;
-- (void)setHasBeenPreviouslyToggled:(BOOL)a3;
-- (void)setIsToggled:(BOOL)a3;
+- (void)setHasBeenPreviouslyToggled:(BOOL)toggled;
+- (void)setIsToggled:(BOOL)toggled;
 @end
 
 @implementation ICMusicAccountNotificationsSettingsSwitch
 
-- (void)setHasBeenPreviouslyToggled:(BOOL)a3
+- (void)setHasBeenPreviouslyToggled:(BOOL)toggled
 {
   if (self->_valueDictionary)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithBool:toggled];
     [(NSMutableDictionary *)self->_valueDictionary setObject:v4 forKeyedSubscript:@"dataUpdated"];
   }
 }
@@ -30,22 +30,22 @@
   v3 = [(NSMutableDictionary *)valueDictionary objectForKey:@"dataUpdated"];
   if (_NSIsNSNumber())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setIsToggled:(BOOL)a3
+- (void)setIsToggled:(BOOL)toggled
 {
   if (self->_valueDictionary)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithBool:toggled];
     [(NSMutableDictionary *)self->_valueDictionary setObject:v4 forKeyedSubscript:ICMusicAccountNotificationsSettingsSwitchIsToggledKey];
   }
 }
@@ -61,15 +61,15 @@
   v3 = [(NSMutableDictionary *)valueDictionary objectForKey:ICMusicAccountNotificationsSettingsSwitchIsToggledKey];
   if (_NSIsNSNumber())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)identifier
@@ -98,11 +98,11 @@
   return v3;
 }
 
-- (ICMusicAccountNotificationsSettingsSwitch)initWithToggleState:(BOOL)a3 hasBeenToggled:(BOOL)a4 identifier:(id)a5
+- (ICMusicAccountNotificationsSettingsSwitch)initWithToggleState:(BOOL)state hasBeenToggled:(BOOL)toggled identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  toggledCopy = toggled;
+  stateCopy = state;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = ICMusicAccountNotificationsSettingsSwitch;
   v9 = [(ICMusicAccountNotificationsSettingsSwitch *)&v20 init];
@@ -111,14 +111,14 @@
     v10 = objc_alloc(MEMORY[0x1E695DF90]);
     v11 = MEMORY[0x1E695E0F8];
     v12 = [v10 initWithDictionary:MEMORY[0x1E695E0F8]];
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:stateCopy];
     [(NSMutableDictionary *)v12 setObject:v13 forKeyedSubscript:ICMusicAccountNotificationsSettingsSwitchIsToggledKey];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:toggledCopy];
     [(NSMutableDictionary *)v12 setObject:v14 forKeyedSubscript:@"dataUpdated"];
 
     v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v11];
-    [(NSDictionary *)v15 setObject:v8 forKeyedSubscript:ICMusicAccountNotificationsSettingsSwitchIdentifierKey];
+    [(NSDictionary *)v15 setObject:identifierCopy forKeyedSubscript:ICMusicAccountNotificationsSettingsSwitchIdentifierKey];
     [(NSDictionary *)v15 setObject:v12 forKeyedSubscript:@"value"];
     itemResponseDictionary = v9->_itemResponseDictionary;
     v9->_itemResponseDictionary = v15;
@@ -131,16 +131,16 @@
   return v9;
 }
 
-- (ICMusicAccountNotificationsSettingsSwitch)initWithItemResponseDictionary:(id)a3
+- (ICMusicAccountNotificationsSettingsSwitch)initWithItemResponseDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ICMusicAccountNotificationsSettingsSwitch;
   v6 = [(ICMusicAccountNotificationsSettingsSwitch *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_itemResponseDictionary, a3);
+    objc_storeStrong(&v6->_itemResponseDictionary, dictionary);
     v8 = [(NSDictionary *)v7->_itemResponseDictionary objectForKey:@"value"];
     if (_NSIsNSDictionary())
     {

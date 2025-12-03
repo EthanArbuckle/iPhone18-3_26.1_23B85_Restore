@@ -1,10 +1,10 @@
 @interface UITextServicesInteraction
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (void)_addShortcut:(id)a3;
-- (void)_beginSessionWithType:(int64_t)a3 sender:(id)a4;
-- (void)_define:(id)a3;
-- (void)_share:(id)a3;
-- (void)_translate:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (void)_addShortcut:(id)shortcut;
+- (void)_beginSessionWithType:(int64_t)type sender:(id)sender;
+- (void)_define:(id)_define;
+- (void)_share:(id)_share;
+- (void)_translate:(id)_translate;
 - (void)finishSetup;
 @end
 
@@ -12,68 +12,68 @@
 
 - (void)finishSetup
 {
-  v3 = [(UITextInteraction *)self _textInput];
-  v4 = [_UITextServicesResponderProxy _proxyWithResponder:v3];
+  _textInput = [(UITextInteraction *)self _textInput];
+  v4 = [_UITextServicesResponderProxy _proxyWithResponder:_textInput];
   [(UITextServicesInteraction *)self setResponderProxy:v4];
 
-  v5 = [(UITextServicesInteraction *)self responderProxy];
-  [v5 setDelegate:self];
+  responderProxy = [(UITextServicesInteraction *)self responderProxy];
+  [responderProxy setDelegate:self];
 }
 
-- (void)_beginSessionWithType:(int64_t)a3 sender:(id)a4
+- (void)_beginSessionWithType:(int64_t)type sender:(id)sender
 {
-  v6 = a4;
-  if (a3 > 7)
+  senderCopy = sender;
+  if (type > 7)
   {
-    if (a3 == 32)
+    if (type == 32)
     {
-      v7 = v6;
-      [(UITextServicesInteraction *)self _translate:v6];
+      v7 = senderCopy;
+      [(UITextServicesInteraction *)self _translate:senderCopy];
       goto LABEL_11;
     }
 
-    if (a3 != 16)
+    if (type != 16)
     {
-      if (a3 != 8)
+      if (type != 8)
       {
         goto LABEL_12;
       }
 
-      v7 = v6;
-      [(UITextServicesInteraction *)self _share:v6];
+      v7 = senderCopy;
+      [(UITextServicesInteraction *)self _share:senderCopy];
       goto LABEL_11;
     }
 
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
 LABEL_9:
-    v7 = v6;
-    [(UITextServicesInteraction *)self _define:v6];
+    v7 = senderCopy;
+    [(UITextServicesInteraction *)self _define:senderCopy];
     goto LABEL_11;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
     goto LABEL_12;
   }
 
-  v7 = v6;
-  [(UITextServicesInteraction *)self _addShortcut:v6];
+  v7 = senderCopy;
+  [(UITextServicesInteraction *)self _addShortcut:senderCopy];
 LABEL_11:
-  v6 = v7;
+  senderCopy = v7;
 LABEL_12:
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v5 = [(UITextInteraction *)self _textInput:a3];
+  v5 = [(UITextInteraction *)self _textInput:action];
   if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 isSecureTextEntry] & 1) == 0)
   {
     v7 = [_UITextServiceSessionContext selectedTextRangeForTextInput:v5];
-    if (sel__share_ == a3 || sel_share_ == a3)
+    if (sel__share_ == action || sel_share_ == action)
     {
       if (qword_1ED49A3E0 != -1)
       {
@@ -81,81 +81,81 @@ LABEL_12:
       }
 
       v9 = [v5 textInRange:v7];
-      v10 = [v9 stringByTrimmingCharactersInSet:_MergedGlobals_3_20];
+      textInputView3 = [v9 stringByTrimmingCharactersInSet:_MergedGlobals_3_20];
 
-      if (![v10 length])
+      if (![textInputView3 length])
       {
         goto LABEL_34;
       }
 
-      v11 = [v5 textInputView];
-      v6 = [v11 _canShowTextServiceForType:8];
+      textInputView = [v5 textInputView];
+      _shouldDisplayWritingToolsCalloutBarItem = [textInputView _canShowTextServiceForType:8];
     }
 
     else
     {
-      if (sel__define_ == a3)
+      if (sel__define_ == action)
       {
-        v12 = [v5 textInputView];
-        v10 = v12;
+        textInputView2 = [v5 textInputView];
+        textInputView3 = textInputView2;
         v13 = 2;
       }
 
       else
       {
-        if (sel__translate_ != a3 && sel_translate_ != a3)
+        if (sel__translate_ != action && sel_translate_ != action)
         {
-          if (sel__addShortcut_ != a3 && sel_addShortcut_ != a3)
+          if (sel__addShortcut_ != action && sel_addShortcut_ != action)
           {
-            if (sel_showWritingTools_ == a3)
+            if (sel_showWritingTools_ == action)
             {
-              v10 = [v5 textInputView];
-              v6 = [v10 _shouldDisplayWritingToolsCalloutBarItem];
+              textInputView3 = [v5 textInputView];
+              _shouldDisplayWritingToolsCalloutBarItem = [textInputView3 _shouldDisplayWritingToolsCalloutBarItem];
 LABEL_35:
 
               goto LABEL_36;
             }
 
 LABEL_27:
-            v6 = 0;
+            _shouldDisplayWritingToolsCalloutBarItem = 0;
 LABEL_36:
 
             goto LABEL_37;
           }
 
           v14 = [_UITextServiceSession textServiceSessionForType:4];
-          v15 = [v14 isDisplaying];
+          isDisplaying = [v14 isDisplaying];
 
-          if (v15 & 1) != 0 || ([v7 isEmpty])
+          if (isDisplaying & 1) != 0 || ([v7 isEmpty])
           {
             goto LABEL_27;
           }
 
-          v10 = [v5 textInputView];
-          if ([v10 _canShowTextServiceForType:4] && TIEnabledInputModesAllowOneToManyShortcuts())
+          textInputView3 = [v5 textInputView];
+          if ([textInputView3 _canShowTextServiceForType:4] && TIEnabledInputModesAllowOneToManyShortcuts())
           {
-            v11 = [v5 textInRange:v7];
-            if (![v11 _containsCJScripts] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v10, "_inPopover") & 1) != 0)
+            textInputView = [v5 textInRange:v7];
+            if (![textInputView _containsCJScripts] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(textInputView3, "_inPopover") & 1) != 0)
             {
-              v6 = 0;
+              _shouldDisplayWritingToolsCalloutBarItem = 0;
             }
 
             else
             {
               v17 = +[UIDevice currentDevice];
-              v18 = [v17 userInterfaceIdiom];
+              userInterfaceIdiom = [v17 userInterfaceIdiom];
 
-              if ((v18 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+              if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
               {
-                v19 = [v10 window];
-                v20 = [v19 _isTextEffectsWindow];
+                window = [textInputView3 window];
+                _isTextEffectsWindow = [window _isTextEffectsWindow];
 
-                v6 = v20 ^ 1;
+                _shouldDisplayWritingToolsCalloutBarItem = _isTextEffectsWindow ^ 1;
               }
 
               else
               {
-                v6 = 1;
+                _shouldDisplayWritingToolsCalloutBarItem = 1;
               }
             }
 
@@ -163,22 +163,22 @@ LABEL_36:
           }
 
 LABEL_34:
-          v6 = 0;
+          _shouldDisplayWritingToolsCalloutBarItem = 0;
           goto LABEL_35;
         }
 
-        v12 = [v5 textInputView];
-        v10 = v12;
+        textInputView2 = [v5 textInputView];
+        textInputView3 = textInputView2;
         v13 = 32;
       }
 
-      if (![v12 _canShowTextServiceForType:v13])
+      if (![textInputView2 _canShowTextServiceForType:v13])
       {
         goto LABEL_34;
       }
 
-      v11 = [v5 textInRange:v7];
-      v6 = [v11 length] != 0;
+      textInputView = [v5 textInRange:v7];
+      _shouldDisplayWritingToolsCalloutBarItem = [textInputView length] != 0;
     }
 
 LABEL_24:
@@ -186,10 +186,10 @@ LABEL_24:
     goto LABEL_35;
   }
 
-  v6 = 0;
+  _shouldDisplayWritingToolsCalloutBarItem = 0;
 LABEL_37:
 
-  return v6 & 1;
+  return _shouldDisplayWritingToolsCalloutBarItem & 1;
 }
 
 void __57__UITextServicesInteraction_canPerformAction_withSender___block_invoke()
@@ -206,20 +206,20 @@ void __57__UITextServicesInteraction_canPerformAction_withSender___block_invoke(
   _MergedGlobals_3_20 = v3;
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v4 = [(UITextInteraction *)self _textInput];
+  _textInput = [(UITextInteraction *)self _textInput];
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(UITextServicesInteraction *)self _removeShareController];
   }
 
-  v7 = [_UITextServiceSessionContext sessionContextForType:8 withTextInput:v4];
-  v8 = [(UITextInteraction *)self view];
-  v9 = [v8 _showServiceForType:8 withContext:v7];
+  v7 = [_UITextServiceSessionContext sessionContextForType:8 withTextInput:_textInput];
+  view = [(UITextInteraction *)self view];
+  v9 = [view _showServiceForType:8 withContext:v7];
   shareSession = self->_shareSession;
   self->_shareSession = v9;
 
@@ -239,26 +239,26 @@ void __36__UITextServicesInteraction__share___block_invoke(uint64_t a1)
   *(v1 + 128) = 0;
 }
 
-- (void)_addShortcut:(id)a3
+- (void)_addShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(UITextInteraction *)self _textInput];
-  v6 = [(UITextInteraction *)self assistantDelegate];
+  shortcutCopy = shortcut;
+  _textInput = [(UITextInteraction *)self _textInput];
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(UITextServicesInteraction *)self _removeShortcutController];
   }
 
-  v9 = [_UITextServiceSessionContext sessionContextForType:4 withTextInput:v5];
-  v10 = [(UITextInteraction *)self view];
-  v11 = [v10 _showServiceForType:4 withContext:v9];
+  v9 = [_UITextServiceSessionContext sessionContextForType:4 withTextInput:_textInput];
+  view = [(UITextInteraction *)self view];
+  v11 = [view _showServiceForType:4 withContext:v9];
   learnSession = self->_learnSession;
   self->_learnSession = v11;
 
-  [v5 resignFirstResponder];
+  [_textInput resignFirstResponder];
   objc_initWeak(&location, self);
   v13 = self->_learnSession;
   v15[0] = MEMORY[0x1E69E9820];
@@ -266,7 +266,7 @@ void __36__UITextServicesInteraction__share___block_invoke(uint64_t a1)
   v15[2] = __42__UITextServicesInteraction__addShortcut___block_invoke;
   v15[3] = &unk_1E7125400;
   objc_copyWeak(&v17, &location);
-  v14 = v6;
+  v14 = assistantDelegate;
   v16 = v14;
   [(_UITextServiceSession *)v13 setDismissedHandler:v15];
 
@@ -298,18 +298,18 @@ void __42__UITextServicesInteraction__addShortcut___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
-  v5 = [(UITextInteraction *)self _textInput];
+  _textInput = [(UITextInteraction *)self _textInput];
   if (self->_lookupSession)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UITextServicesInteraction.m" lineNumber:274 description:@"Shouldn't have a lookup session"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextServicesInteraction.m" lineNumber:274 description:@"Shouldn't have a lookup session"];
   }
 
-  v6 = [_UITextServiceSessionContext sessionContextForType:16 withTextInput:v5];
-  v7 = [(UITextInteraction *)self view];
-  v8 = [v7 _showServiceForType:16 withContext:v6];
+  v6 = [_UITextServiceSessionContext sessionContextForType:16 withTextInput:_textInput];
+  view = [(UITextInteraction *)self view];
+  v8 = [view _showServiceForType:16 withContext:v6];
   lookupSession = self->_lookupSession;
   self->_lookupSession = v8;
 
@@ -329,18 +329,18 @@ void __37__UITextServicesInteraction__define___block_invoke(uint64_t a1)
   *(v1 + 136) = 0;
 }
 
-- (void)_translate:(id)a3
+- (void)_translate:(id)_translate
 {
-  v5 = [(UITextInteraction *)self _textInput];
+  _textInput = [(UITextInteraction *)self _textInput];
   if (self->_translateSession)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UITextServicesInteraction.m" lineNumber:286 description:@"Shouldn't have a translate session"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextServicesInteraction.m" lineNumber:286 description:@"Shouldn't have a translate session"];
   }
 
-  v6 = [_UITextServiceSessionContext sessionContextForType:32 withTextInput:v5];
-  v7 = [(UITextInteraction *)self view];
-  v8 = [v7 _showServiceForType:32 withContext:v6];
+  v6 = [_UITextServiceSessionContext sessionContextForType:32 withTextInput:_textInput];
+  view = [(UITextInteraction *)self view];
+  v8 = [view _showServiceForType:32 withContext:v6];
   translateSession = self->_translateSession;
   self->_translateSession = v8;
 

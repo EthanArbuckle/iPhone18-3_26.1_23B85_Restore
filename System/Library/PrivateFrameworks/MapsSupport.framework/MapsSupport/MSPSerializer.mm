@@ -1,33 +1,33 @@
 @interface MSPSerializer
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4;
-- (id)dataFromChange:(id)a3;
+- (id)changeFromData:(id)data ofType:(int64_t)type;
+- (id)dataFromChange:(id)change;
 @end
 
 @implementation MSPSerializer
 
-- (id)dataFromChange:(id)a3
+- (id)dataFromChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 data];
+    data = [changeCopy data];
   }
 
   else
   {
-    v4 = 0;
+    data = 0;
   }
 
-  return v4;
+  return data;
 }
 
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4
+- (id)changeFromData:(id)data ofType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[MSPCompanionSyncedItem alloc] initWithData:v5];
+  dataCopy = data;
+  v6 = [[MSPCompanionSyncedItem alloc] initWithData:dataCopy];
 
-  [(MSPCompanionSyncedItem *)v6 setSyChangeType:a4];
+  [(MSPCompanionSyncedItem *)v6 setSyChangeType:type];
 
   return v6;
 }

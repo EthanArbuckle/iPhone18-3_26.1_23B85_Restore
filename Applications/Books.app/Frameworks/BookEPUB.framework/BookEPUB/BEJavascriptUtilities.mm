@@ -1,29 +1,29 @@
 @interface BEJavascriptUtilities
-+ (CGRect)rectFromRectDictionary:(id)a3;
-+ (CGSize)_sizeFromArray:(id)a3;
-+ (CGSize)sizeFromJSON:(id)a3;
-+ (double)floatFromJSON:(id)a3;
-+ (id)_combinedRectsOnSameLineWhichAreNearby:(id)a3 isVerticalDocument:(BOOL)a4;
-+ (id)_filteredRectsFromArrayOfRects:(id)a3;
-+ (id)_reduceRectArrayToContainedRects:(id)a3 isVerticalDocument:(BOOL)a4;
-+ (id)collapsedLineRectsFromArrayOfRectDictionaries:(id)a3 isVerticalDocument:(BOOL)a4 needsFiltering:(BOOL)a5;
-+ (id)collapsedLineRectsFromArrayOfRects:(id)a3 isVerticalDocument:(BOOL)a4 needsFiltering:(BOOL)a5 wordSpacingMultiplier:(double)a6;
-+ (id)keyedRectFromKeyedDOMRect:(id)a3;
-+ (id)keyedRectsFromKeyedDOMRects:(id)a3;
++ (CGRect)rectFromRectDictionary:(id)dictionary;
++ (CGSize)_sizeFromArray:(id)array;
++ (CGSize)sizeFromJSON:(id)n;
++ (double)floatFromJSON:(id)n;
++ (id)_combinedRectsOnSameLineWhichAreNearby:(id)nearby isVerticalDocument:(BOOL)document;
++ (id)_filteredRectsFromArrayOfRects:(id)rects;
++ (id)_reduceRectArrayToContainedRects:(id)rects isVerticalDocument:(BOOL)document;
++ (id)collapsedLineRectsFromArrayOfRectDictionaries:(id)dictionaries isVerticalDocument:(BOOL)document needsFiltering:(BOOL)filtering;
++ (id)collapsedLineRectsFromArrayOfRects:(id)rects isVerticalDocument:(BOOL)document needsFiltering:(BOOL)filtering wordSpacingMultiplier:(double)multiplier;
++ (id)keyedRectFromKeyedDOMRect:(id)rect;
++ (id)keyedRectsFromKeyedDOMRects:(id)rects;
 @end
 
 @implementation BEJavascriptUtilities
 
-+ (CGSize)_sizeFromArray:(id)a3
++ (CGSize)_sizeFromArray:(id)array
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  [a1 floatFromJSON:v5];
+  arrayCopy = array;
+  firstObject = [arrayCopy firstObject];
+  [self floatFromJSON:firstObject];
   v7 = v6;
 
-  v8 = [v4 lastObject];
+  lastObject = [arrayCopy lastObject];
 
-  [a1 floatFromJSON:v8];
+  [self floatFromJSON:lastObject];
   v10 = v9;
 
   v11 = v7;
@@ -33,9 +33,9 @@
   return result;
 }
 
-+ (double)floatFromJSON:(id)a3
++ (double)floatFromJSON:(id)n
 {
-  v3 = a3;
+  nCopy = n;
   objc_opt_class();
   v4 = BUDynamicCast();
   v5 = v4;
@@ -65,14 +65,14 @@
   return v7;
 }
 
-+ (CGSize)sizeFromJSON:(id)a3
++ (CGSize)sizeFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   objc_opt_class();
   v5 = BUDynamicCast();
   if (v5)
   {
-    [a1 _sizeFromArray:v5];
+    [self _sizeFromArray:v5];
     width = v6;
     height = v8;
   }
@@ -93,7 +93,7 @@
       v14 = BUDynamicCast();
       if (v14)
       {
-        [a1 _sizeFromArray:0];
+        [self _sizeFromArray:0];
         width = v15;
         height = v16;
       }
@@ -107,27 +107,27 @@
   return result;
 }
 
-+ (CGRect)rectFromRectDictionary:(id)a3
++ (CGRect)rectFromRectDictionary:(id)dictionary
 {
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v7 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v8 = [v7 objectForKeyedSubscript:@"left"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"left"];
   v9 = BUDynamicCast();
 
   objc_opt_class();
-  v10 = [v7 objectForKeyedSubscript:@"top"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"top"];
   v11 = BUDynamicCast();
 
   objc_opt_class();
-  v12 = [v7 objectForKeyedSubscript:@"width"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"width"];
   v13 = BUDynamicCast();
 
   objc_opt_class();
-  v14 = [v7 objectForKeyedSubscript:@"height"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"height"];
 
   v15 = BUDynamicCast();
 
@@ -154,17 +154,17 @@
   return result;
 }
 
-+ (id)keyedRectFromKeyedDOMRect:(id)a3
++ (id)keyedRectFromKeyedDOMRect:(id)rect
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
-  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  rectCopy = rect;
+  allKeys = [rectCopy allKeys];
+  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [allKeys count]);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v3;
+  v6 = rectCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -198,17 +198,17 @@
   return v5;
 }
 
-+ (id)keyedRectsFromKeyedDOMRects:(id)a3
++ (id)keyedRectsFromKeyedDOMRects:(id)rects
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
-  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  rectsCopy = rects;
+  allKeys = [rectsCopy allKeys];
+  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [allKeys count]);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v3;
+  v6 = rectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -242,17 +242,17 @@
   return v5;
 }
 
-+ (id)collapsedLineRectsFromArrayOfRectDictionaries:(id)a3 isVerticalDocument:(BOOL)a4 needsFiltering:(BOOL)a5
++ (id)collapsedLineRectsFromArrayOfRectDictionaries:(id)dictionaries isVerticalDocument:(BOOL)document needsFiltering:(BOOL)filtering
 {
-  v21 = a5;
-  v5 = a4;
-  v7 = a3;
+  filteringCopy = filtering;
+  documentCopy = document;
+  dictionariesCopy = dictionaries;
   v8 = objc_alloc_init(NSMutableArray);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v7;
+  v9 = dictionariesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -267,7 +267,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [a1 rectFromRectDictionary:*(*(&v23 + 1) + 8 * i)];
+        [self rectFromRectDictionary:*(*(&v23 + 1) + 8 * i)];
         x = v29.origin.x;
         y = v29.origin.y;
         width = v29.size.width;
@@ -289,20 +289,20 @@
     while (v11);
   }
 
-  v19 = [BEJavascriptUtilities collapsedLineRectsFromArrayOfRects:v8 isVerticalDocument:v5 needsFiltering:v21 wordSpacingMultiplier:0.0];
+  v19 = [BEJavascriptUtilities collapsedLineRectsFromArrayOfRects:v8 isVerticalDocument:documentCopy needsFiltering:filteringCopy wordSpacingMultiplier:0.0];
 
   return v19;
 }
 
-+ (id)_filteredRectsFromArrayOfRects:(id)a3
++ (id)_filteredRectsFromArrayOfRects:(id)rects
 {
-  v3 = a3;
+  rectsCopy = rects;
   v4 = +[NSMutableIndexSet indexSet];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = v3;
+  v5 = rectsCopy;
   v6 = [v5 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v6)
   {
@@ -381,30 +381,30 @@
   return v33;
 }
 
-+ (id)collapsedLineRectsFromArrayOfRects:(id)a3 isVerticalDocument:(BOOL)a4 needsFiltering:(BOOL)a5 wordSpacingMultiplier:(double)a6
++ (id)collapsedLineRectsFromArrayOfRects:(id)rects isVerticalDocument:(BOOL)document needsFiltering:(BOOL)filtering wordSpacingMultiplier:(double)multiplier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (a6 == 0.0)
+  filteringCopy = filtering;
+  documentCopy = document;
+  rectsCopy = rects;
+  v10 = rectsCopy;
+  if (multiplier == 0.0)
   {
     v11 = 200.0;
   }
 
   else
   {
-    v11 = a6 * 200.0;
+    v11 = multiplier * 200.0;
   }
 
-  if (v11 <= [v9 count])
+  if (v11 <= [rectsCopy count])
   {
     v13 = &__NSArray0__struct;
   }
 
   else
   {
-    if (v7)
+    if (filteringCopy)
     {
       v12 = [BEJavascriptUtilities _filteredRectsFromArrayOfRects:v10];
     }
@@ -424,42 +424,42 @@
       v14 = v10;
     }
 
-    v15 = [BEJavascriptUtilities _reduceRectArrayToContainedRects:v14 isVerticalDocument:v8];
-    v13 = [BEJavascriptUtilities _combinedRectsOnSameLineWhichAreNearby:v15 isVerticalDocument:v8];
+    v15 = [BEJavascriptUtilities _reduceRectArrayToContainedRects:v14 isVerticalDocument:documentCopy];
+    v13 = [BEJavascriptUtilities _combinedRectsOnSameLineWhichAreNearby:v15 isVerticalDocument:documentCopy];
   }
 
   return v13;
 }
 
-+ (id)_combinedRectsOnSameLineWhichAreNearby:(id)a3 isVerticalDocument:(BOOL)a4
++ (id)_combinedRectsOnSameLineWhichAreNearby:(id)nearby isVerticalDocument:(BOOL)document
 {
-  v5 = a3;
+  nearbyCopy = nearby;
   v6 = objc_opt_new();
-  if ([v5 count])
+  if ([nearbyCopy count])
   {
-    v7 = [v5 objectAtIndexedSubscript:0];
+    v7 = [nearbyCopy objectAtIndexedSubscript:0];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     height = v14;
 
-    v16 = [v5 objectAtIndexedSubscript:0];
+    v16 = [nearbyCopy objectAtIndexedSubscript:0];
     [v6 setObject:v16 atIndexedSubscript:0];
 
-    if ([v5 count] >= 2)
+    if ([nearbyCopy count] >= 2)
     {
       v17 = 1;
       v18 = 1;
       do
       {
-        v19 = [v5 objectAtIndexedSubscript:v18];
+        v19 = [nearbyCopy objectAtIndexedSubscript:v18];
         [v19 CGRectValue];
         x = v20;
         y = v21;
         width = v22;
         rect = v23;
-        if (a4)
+        if (document)
         {
           MinX = CGRectGetMinX(*&v20);
           v39.origin.x = v9;
@@ -544,23 +544,23 @@ LABEL_14:
         v13 = width;
       }
 
-      while (v18 < [v5 count]);
+      while (v18 < [nearbyCopy count]);
     }
   }
 
   return v6;
 }
 
-+ (id)_reduceRectArrayToContainedRects:(id)a3 isVerticalDocument:(BOOL)a4
++ (id)_reduceRectArrayToContainedRects:(id)rects isVerticalDocument:(BOOL)document
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  documentCopy = document;
+  rectsCopy = rects;
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [rectsCopy count]);
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v7 = v5;
+  v7 = rectsCopy;
   v8 = [v7 countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v8)
   {
@@ -597,7 +597,7 @@ LABEL_14:
             v18 = y;
             v19 = width;
             v20 = height;
-            if (v4)
+            if (documentCopy)
             {
               MinY = CGRectGetMinY(*&v17);
               v72.origin.x = x;
@@ -678,7 +678,7 @@ LABEL_14:
                         v35 = v31;
                         v36 = v32;
                         v37 = v33;
-                        if (v4)
+                        if (documentCopy)
                         {
                           MinX = CGRectGetMinY(*&v34);
                           v79.origin.x = v30;

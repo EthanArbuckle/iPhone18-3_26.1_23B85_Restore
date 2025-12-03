@@ -1,7 +1,7 @@
 @interface ServiceNavigationController
 - (BOOL)shouldAutorotate;
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_TtC7Sidecar27ServiceNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
+- (_TtC7Sidecar27ServiceNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
 - (unint64_t)supportedInterfaceOrientations;
 @end
 
@@ -9,7 +9,7 @@
 
 - (BOOL)shouldAutorotate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000E954();
 
   return v3 & 1;
@@ -17,7 +17,7 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000E9E4();
 
   return v3;
@@ -25,18 +25,18 @@
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000EA84();
 
   return v3;
 }
 
-- (_TtC7Sidecar27ServiceNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC7Sidecar27ServiceNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_3;
     }
@@ -47,7 +47,7 @@ LABEL_5:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_5;
   }

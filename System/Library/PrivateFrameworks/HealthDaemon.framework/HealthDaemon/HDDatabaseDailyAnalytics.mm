@@ -1,30 +1,30 @@
 @interface HDDatabaseDailyAnalytics
-- (HDDatabaseDailyAnalytics)initWithProfile:(id)a3;
-- (id)_binnedAnalyticsValue:(int64_t)a3 error:(id)a4;
-- (id)_predicateForDeletedObjectsBetweenDate:(id)a3 andOlderDate:(id)a4;
-- (void)daemonReady:(id)a3;
+- (HDDatabaseDailyAnalytics)initWithProfile:(id)profile;
+- (id)_binnedAnalyticsValue:(int64_t)value error:(id)error;
+- (id)_predicateForDeletedObjectsBetweenDate:(id)date andOlderDate:(id)olderDate;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4;
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion;
 @end
 
 @implementation HDDatabaseDailyAnalytics
 
-- (HDDatabaseDailyAnalytics)initWithProfile:(id)a3
+- (HDDatabaseDailyAnalytics)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDDatabaseDailyAnalytics;
   v5 = [(HDDatabaseDailyAnalytics *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     serialAsynchronousQueue = v6->_serialAsynchronousQueue;
     v6->_serialAsynchronousQueue = v7;
 
-    v9 = [v4 daemon];
-    [v9 registerDaemonReadyObserver:v6 queue:v6->_serialAsynchronousQueue];
+    daemon = [profileCopy daemon];
+    [daemon registerDaemonReadyObserver:v6 queue:v6->_serialAsynchronousQueue];
   }
 
   return v6;
@@ -33,61 +33,61 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 analyticsSubmissionCoordinator];
-  [v5 removeObserver:self];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = HDDatabaseDailyAnalytics;
   [(HDDatabaseDailyAnalytics *)&v6 dealloc];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 analyticsSubmissionCoordinator];
-  [v5 addObserver:self queue:self->_serialAsynchronousQueue];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator addObserver:self queue:self->_serialAsynchronousQueue];
 }
 
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion
 {
-  v138 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
-  v7 = [v6 _newCorruptionEventStore];
+  database = [WeakRetained database];
+  _newCorruptionEventStore = [database _newCorruptionEventStore];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v8 setObject:&unk_283CB0990 forKeyedSubscript:@"hfdSchema"];
   v9 = objc_loadWeakRetained(&self->_profile);
-  v10 = [v9 profileIdentifier];
-  v11 = [v7 mostRecentCorruptionEventForProfileIdentifier:v10 component:2];
-  v12 = [v11 date];
+  profileIdentifier = [v9 profileIdentifier];
+  v11 = [_newCorruptionEventStore mostRecentCorruptionEventForProfileIdentifier:profileIdentifier component:2];
+  date = [v11 date];
 
   v13 = objc_loadWeakRetained(&self->_profile);
-  v14 = [v13 profileIdentifier];
-  v15 = [v7 mostRecentCorruptionEventForProfileIdentifier:v14 component:1];
-  v16 = [v15 date];
+  profileIdentifier2 = [v13 profileIdentifier];
+  v15 = [_newCorruptionEventStore mostRecentCorruptionEventForProfileIdentifier:profileIdentifier2 component:1];
+  date2 = [v15 date];
 
   v17 = objc_loadWeakRetained(&self->_profile);
-  v18 = [v17 profileIdentifier];
-  v19 = [v7 mostRecentCorruptionEventForProfileIdentifier:v18 component:0];
-  v20 = [v19 date];
+  profileIdentifier3 = [v17 profileIdentifier];
+  v19 = [_newCorruptionEventStore mostRecentCorruptionEventForProfileIdentifier:profileIdentifier3 component:0];
+  date3 = [v19 date];
 
-  v139 = v7;
-  v21 = [v7 dateOfMostRecentDeviceOutOfSpaceEvent];
+  v139 = _newCorruptionEventStore;
+  dateOfMostRecentDeviceOutOfSpaceEvent = [_newCorruptionEventStore dateOfMostRecentDeviceOutOfSpaceEvent];
   v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
-  if (v12)
+  if (date)
   {
-    v23 = [v12 compare:v22] == 1;
-    if (v16)
+    v23 = [date compare:v22] == 1;
+    if (date2)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v24 = 0;
-    if (v20)
+    if (date3)
     {
       goto LABEL_4;
     }
@@ -96,18 +96,18 @@ LABEL_6:
   }
 
   v23 = 0;
-  if (!v16)
+  if (!date2)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v24 = [v16 compare:v22] == 1;
-  if (v20)
+  v24 = [date2 compare:v22] == 1;
+  if (date3)
   {
 LABEL_4:
     v25 = v22;
-    v26 = [v20 compare:v22] == 1;
+    v26 = [date3 compare:v22] == 1;
     goto LABEL_8;
   }
 
@@ -115,13 +115,13 @@ LABEL_7:
   v25 = v22;
   v26 = 0;
 LABEL_8:
-  v136 = v16;
-  v137 = v12;
-  v135 = v21;
+  v136 = date2;
+  v137 = date;
+  v135 = dateOfMostRecentDeviceOutOfSpaceEvent;
   v134 = v25;
-  if (v21)
+  if (dateOfMostRecentDeviceOutOfSpaceEvent)
   {
-    v21 = [v21 compare:v25] == 1;
+    dateOfMostRecentDeviceOutOfSpaceEvent = [dateOfMostRecentDeviceOutOfSpaceEvent compare:v25] == 1;
   }
 
   v27 = [MEMORY[0x277CCABB0] numberWithBool:v23];
@@ -133,10 +133,10 @@ LABEL_8:
   v29 = [MEMORY[0x277CCABB0] numberWithBool:v26];
   [v8 setObject:v29 forKeyedSubscript:@"corruptionSeen.unprotected"];
 
-  v30 = [MEMORY[0x277CCABB0] numberWithBool:v21];
+  v30 = [MEMORY[0x277CCABB0] numberWithBool:dateOfMostRecentDeviceOutOfSpaceEvent];
   [v8 setObject:v30 forKeyedSubscript:@"outOfSpaceSeen"];
 
-  if (v21)
+  if (dateOfMostRecentDeviceOutOfSpaceEvent)
   {
     v31 = &unk_283CB09A8;
   }
@@ -170,55 +170,55 @@ LABEL_8:
 
   [v8 setObject:v33 forKeyedSubscript:@"sqliteCorruptionDailyCount"];
   v34 = objc_loadWeakRetained(&self->_profile);
-  v35 = [v34 database];
+  database2 = [v34 database];
   v158[0] = 0;
-  v36 = [(HDHealthEntity *)HDSourceEntity countOfObjectsWithPredicate:0 healthDatabase:v35 error:v158];
+  v36 = [(HDHealthEntity *)HDSourceEntity countOfObjectsWithPredicate:0 healthDatabase:database2 error:v158];
   v37 = v158[0];
 
   v38 = [(HDDatabaseDailyAnalytics *)self _binnedAnalyticsValue:v36 error:v37];
 
   [v8 setObject:v38 forKeyedSubscript:@"numberOfSourceRows"];
   v39 = objc_loadWeakRetained(&self->_profile);
-  v40 = [v39 database];
+  database3 = [v39 database];
   v157 = 0;
-  v41 = [(HDHealthEntity *)HDLogicalSourceEntity countOfObjectsWithPredicate:0 healthDatabase:v40 error:&v157];
+  v41 = [(HDHealthEntity *)HDLogicalSourceEntity countOfObjectsWithPredicate:0 healthDatabase:database3 error:&v157];
   v42 = v157;
 
   v43 = [(HDDatabaseDailyAnalytics *)self _binnedAnalyticsValue:v41 error:v42];
 
   [v8 setObject:v43 forKeyedSubscript:@"numberOfLogicalSourceRows"];
   v44 = objc_loadWeakRetained(&self->_profile);
-  v45 = [v44 database];
+  database4 = [v44 database];
   v156 = 0;
-  v46 = [(HDHealthEntity *)HDLogicalSourceOrderEntity countOfObjectsWithPredicate:0 healthDatabase:v45 error:&v156];
+  v46 = [(HDHealthEntity *)HDLogicalSourceOrderEntity countOfObjectsWithPredicate:0 healthDatabase:database4 error:&v156];
   v47 = v156;
 
   v48 = [(HDDatabaseDailyAnalytics *)self _binnedAnalyticsValue:v46 error:v47];
 
   [v8 setObject:v48 forKeyedSubscript:@"numberOfSourceOrderRows"];
   v49 = objc_loadWeakRetained(&self->_profile);
-  v50 = [v49 database];
+  database5 = [v49 database];
   v155 = 0;
-  v51 = [(HDHealthEntity *)HDSourceEntity countDistinctForProperty:@"logical_source_id" healthDatabase:v50 error:&v155];
+  v51 = [(HDHealthEntity *)HDSourceEntity countDistinctForProperty:@"logical_source_id" healthDatabase:database5 error:&v155];
   v52 = v155;
-  v53 = [v51 integerValue];
+  integerValue = [v51 integerValue];
 
-  v54 = [(HDDatabaseDailyAnalytics *)self _binnedAnalyticsValue:v53 error:v52];
+  v54 = [(HDDatabaseDailyAnalytics *)self _binnedAnalyticsValue:integerValue error:v52];
 
   [v8 setObject:v54 forKeyedSubscript:@"numberOfUniqueSources"];
   v55 = objc_loadWeakRetained(&self->_profile);
-  v56 = [v55 database];
+  database6 = [v55 database];
   v154 = 0;
-  v57 = [(HDHealthEntity *)HDCachedQueryMetadataEntity countOfObjectsWithPredicate:0 healthDatabase:v56 error:&v154];
+  v57 = [(HDHealthEntity *)HDCachedQueryMetadataEntity countOfObjectsWithPredicate:0 healthDatabase:database6 error:&v154];
   v58 = v154;
 
   v59 = [(HDDatabaseDailyAnalytics *)self _binnedAnalyticsValue:v57 error:v58];
 
   [v8 setObject:v59 forKeyedSubscript:@"numberOfQueriesUsingCachedData"];
   v60 = objc_loadWeakRetained(&self->_profile);
-  v61 = [v60 database];
+  database7 = [v60 database];
   v153 = 0;
-  v62 = [(HDHealthEntity *)HDSampleAggregateCacheEntity countOfObjectsWithPredicate:0 healthDatabase:v61 error:&v153];
+  v62 = [(HDHealthEntity *)HDSampleAggregateCacheEntity countOfObjectsWithPredicate:0 healthDatabase:database7 error:&v153];
   v63 = v153;
 
   v64 = [(HDDatabaseDailyAnalytics *)self _binnedAnalyticsValue:v62 error:v63];
@@ -227,9 +227,9 @@ LABEL_8:
   [v8 setObject:v64 forKeyedSubscript:@"cacheRowCount"];
 
   v65 = objc_loadWeakRetained(&self->_profile);
-  v66 = [v65 database];
+  database8 = [v65 database];
   v152 = 0;
-  v67 = [(HDHealthEntity *)HDSampleAggregateCacheEntity sizeOfDatabaseTableInHealthDatabase:v66 error:&v152];
+  v67 = [(HDHealthEntity *)HDSampleAggregateCacheEntity sizeOfDatabaseTableInHealthDatabase:database8 error:&v152];
   v68 = v152;
 
   v69 = [(HDDatabaseDailyAnalytics *)self _binnedAnalyticsValue:v67 error:v68];
@@ -249,9 +249,9 @@ LABEL_8:
 
   v75 = MEMORY[0x277CCABB0];
   v76 = objc_loadWeakRetained(&self->_profile);
-  v77 = [v76 database];
+  database9 = [v76 database];
   v151 = 0;
-  v78 = [HDDataEntity countOfObjectsWithPredicate:v74 healthDatabase:v77 error:&v151];
+  v78 = [HDDataEntity countOfObjectsWithPredicate:v74 healthDatabase:database9 error:&v151];
   v79 = v151;
   v80 = [v75 numberWithInteger:v78];
   [v144 setObject:v80 forKeyedSubscript:@"countDeletedSamplesOneToThreeMonthsOld"];
@@ -262,9 +262,9 @@ LABEL_8:
 
   v84 = MEMORY[0x277CCABB0];
   v85 = objc_loadWeakRetained(&self->_profile);
-  v86 = [v85 database];
+  database10 = [v85 database];
   v150 = v79;
-  v87 = [HDDataEntity countOfObjectsWithPredicate:v83 healthDatabase:v86 error:&v150];
+  v87 = [HDDataEntity countOfObjectsWithPredicate:v83 healthDatabase:database10 error:&v150];
   v131 = v150;
 
   v88 = [v84 numberWithInteger:v87];
@@ -276,9 +276,9 @@ LABEL_8:
 
   v91 = MEMORY[0x277CCABB0];
   v92 = objc_loadWeakRetained(&self->_profile);
-  v93 = [v92 database];
+  database11 = [v92 database];
   v149 = v131;
-  v94 = [HDDataEntity countOfObjectsWithPredicate:v130 healthDatabase:v93 error:&v149];
+  v94 = [HDDataEntity countOfObjectsWithPredicate:v130 healthDatabase:database11 error:&v149];
   v95 = v149;
 
   v96 = [v91 numberWithInteger:v94];
@@ -290,9 +290,9 @@ LABEL_8:
 
   v100 = MEMORY[0x277CCABB0];
   v101 = objc_loadWeakRetained(&self->_profile);
-  v102 = [v101 database];
+  database12 = [v101 database];
   v148 = v95;
-  v103 = [HDDataEntity countOfObjectsWithPredicate:v99 healthDatabase:v102 error:&v148];
+  v103 = [HDDataEntity countOfObjectsWithPredicate:v99 healthDatabase:database12 error:&v148];
   v104 = v148;
 
   v105 = [v100 numberWithInteger:v103];
@@ -304,9 +304,9 @@ LABEL_8:
 
   v109 = MEMORY[0x277CCABB0];
   v110 = objc_loadWeakRetained(&self->_profile);
-  v111 = [v110 database];
+  database13 = [v110 database];
   v147 = v104;
-  v112 = [HDDataEntity countOfObjectsWithPredicate:v108 healthDatabase:v111 error:&v147];
+  v112 = [HDDataEntity countOfObjectsWithPredicate:v108 healthDatabase:database13 error:&v147];
   v113 = v147;
 
   v114 = [v109 numberWithInteger:v112];
@@ -318,9 +318,9 @@ LABEL_8:
 
   v118 = MEMORY[0x277CCABB0];
   v119 = objc_loadWeakRetained(&self->_profile);
-  v120 = [v119 database];
+  database14 = [v119 database];
   v146 = v113;
-  v121 = [HDDataEntity countOfObjectsWithPredicate:v117 healthDatabase:v120 error:&v146];
+  v121 = [HDDataEntity countOfObjectsWithPredicate:v117 healthDatabase:database14 error:&v146];
   v122 = v146;
 
   v123 = [v118 numberWithInteger:v121];
@@ -328,20 +328,20 @@ LABEL_8:
 
   v124 = MEMORY[0x277CCABB0];
   v125 = objc_loadWeakRetained(&self->_profile);
-  v126 = [v125 database];
+  database15 = [v125 database];
   v145 = v122;
-  v127 = [HDDataEntity countOfObjectsWithPredicate:v70 healthDatabase:v126 error:&v145];
+  v127 = [HDDataEntity countOfObjectsWithPredicate:v70 healthDatabase:database15 error:&v145];
   v128 = v145;
 
   v129 = [v124 numberWithInteger:v127];
   [v144 setObject:v129 forKeyedSubscript:@"totalCountDeletedSamples"];
 
-  (*(v138 + 2))(v138, v144, 0, 0);
+  (*(completionCopy + 2))(completionCopy, v144, 0, 0);
 }
 
-- (id)_predicateForDeletedObjectsBetweenDate:(id)a3 andOlderDate:(id)a4
+- (id)_predicateForDeletedObjectsBetweenDate:(id)date andOlderDate:(id)olderDate
 {
-  v4 = a4;
+  olderDateCopy = olderDate;
   v5 = HDDataEntityPredicateForCreationDate(3);
   v6 = HDDataEntityPredicateForCreationDate(5);
 
@@ -350,24 +350,24 @@ LABEL_8:
   return v7;
 }
 
-- (id)_binnedAnalyticsValue:(int64_t)a3 error:(id)a4
+- (id)_binnedAnalyticsValue:(int64_t)value error:(id)error
 {
-  v5 = a4;
-  if (v5)
+  errorCopy = error;
+  if (errorCopy)
   {
     v6 = &unk_283CB09F0;
     goto LABEL_17;
   }
 
-  if (a3 <= 99)
+  if (value <= 99)
   {
     v7 = 10;
-    if (a3 >= 11)
+    if (value >= 11)
     {
-      v7 = 10 * (a3 / 0xAu);
+      v7 = 10 * (value / 0xAu);
     }
 
-    if (a3)
+    if (value)
     {
       v8 = v7;
     }
@@ -380,9 +380,9 @@ LABEL_8:
     goto LABEL_16;
   }
 
-  if (a3 != 100)
+  if (value != 100)
   {
-    if (a3 < 0x3E9)
+    if (value < 0x3E9)
     {
       v9 = 100;
     }
@@ -390,7 +390,7 @@ LABEL_8:
     else
     {
       v8 = 1000000;
-      if (a3 >= 0xF4240)
+      if (value >= 0xF4240)
       {
         goto LABEL_16;
       }
@@ -398,7 +398,7 @@ LABEL_8:
       v9 = 1000;
     }
 
-    v8 = (v9 * (a3 / v9));
+    v8 = (v9 * (value / v9));
     goto LABEL_16;
   }
 

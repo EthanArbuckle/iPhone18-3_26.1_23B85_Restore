@@ -1,6 +1,6 @@
 @interface ICMinimalDeviceInfo
 - (ICMinimalDeviceInfo)init;
-- (ICMinimalDeviceInfo)initWithName:(id)a3 upgradable:(BOOL)a4 upgraded:(BOOL)a5;
+- (ICMinimalDeviceInfo)initWithName:(id)name upgradable:(BOOL)upgradable upgraded:(BOOL)upgraded;
 - (id)description;
 - (id)loggableDescription;
 @end
@@ -14,11 +14,11 @@
   return 0;
 }
 
-- (ICMinimalDeviceInfo)initWithName:(id)a3 upgradable:(BOOL)a4 upgraded:(BOOL)a5
+- (ICMinimalDeviceInfo)initWithName:(id)name upgradable:(BOOL)upgradable upgraded:(BOOL)upgraded
 {
   v6.receiver = self;
   v6.super_class = ICMinimalDeviceInfo;
-  return [(ICMigrationDeviceInfo *)&v6 initWithName:a3 upgradable:a4 upgraded:a5];
+  return [(ICMigrationDeviceInfo *)&v6 initWithName:name upgradable:upgradable upgraded:upgraded];
 }
 
 - (id)description
@@ -27,7 +27,7 @@
   v10.super_class = ICMinimalDeviceInfo;
   v3 = [(ICMinimalDeviceInfo *)&v10 description];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ICMigrationDeviceInfo *)self name];
+  name = [(ICMigrationDeviceInfo *)self name];
   if ([(ICMigrationDeviceInfo *)self upgradable])
   {
     v6 = @"YES";
@@ -48,7 +48,7 @@
     v7 = @"NO";
   }
 
-  v8 = [v4 stringWithFormat:@"%@ <name: %@, Upgradable: %@, Upgraded: %@", v3, v5, v6, v7];
+  v8 = [v4 stringWithFormat:@"%@ <name: %@, Upgradable: %@, Upgraded: %@", v3, name, v6, v7];
 
   return v8;
 }

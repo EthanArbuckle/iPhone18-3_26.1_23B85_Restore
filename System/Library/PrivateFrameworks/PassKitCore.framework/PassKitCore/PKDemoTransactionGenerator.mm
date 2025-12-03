@@ -1,33 +1,33 @@
 @interface PKDemoTransactionGenerator
-+ (id)_recordSpecificKeysForConfiguration:(id)a3;
++ (id)_recordSpecificKeysForConfiguration:(id)configuration;
 + (id)allMerchants;
 + (id)allPeople;
-+ (id)demoMerchantForType:(int64_t)a3;
-+ (id)itemIdentifierForAccountUser:(id)a3;
-+ (id)itemIdentifierForPass:(id)a3;
-+ (id)randomAmountForMerchant:(int64_t)a3;
-+ (void)demoTransactionsAndEventsForItemIdentifier:(id)a3 configuration:(id)a4 transactions:(id *)a5 events:(id *)a6;
-+ (void)demoTransactionsAndEventsWithConfiguration:(id)a3 transactions:(id *)a4 events:(id *)a5;
-+ (void)generateDemoFilesForPasses:(id)a3 accountUsers:(id)a4 peerPaymentPassSerialNumber:(id)a5;
-+ (void)generateDemoFilesWithCompletion:(id)a3;
-+ (void)insertTransactionAndEventsWithConfiguration:(id)a3 completion:(id)a4;
++ (id)demoMerchantForType:(int64_t)type;
++ (id)itemIdentifierForAccountUser:(id)user;
++ (id)itemIdentifierForPass:(id)pass;
++ (id)randomAmountForMerchant:(int64_t)merchant;
++ (void)demoTransactionsAndEventsForItemIdentifier:(id)identifier configuration:(id)configuration transactions:(id *)transactions events:(id *)events;
++ (void)demoTransactionsAndEventsWithConfiguration:(id)configuration transactions:(id *)transactions events:(id *)events;
++ (void)generateDemoFilesForPasses:(id)passes accountUsers:(id)users peerPaymentPassSerialNumber:(id)number;
++ (void)generateDemoFilesWithCompletion:(id)completion;
++ (void)insertTransactionAndEventsWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation PKDemoTransactionGenerator
 
-+ (void)generateDemoFilesWithCompletion:(id)a3
++ (void)generateDemoFilesWithCompletion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  completionCopy = completion;
   v3 = +[PKPassLibrary sharedInstance];
   v4 = [v3 passesOfType:1];
-  v5 = [v3 peerPaymentPassUniqueID];
+  peerPaymentPassUniqueID = [v3 peerPaymentPassUniqueID];
   v34 = v3;
-  v6 = [v3 passWithUniqueID:v5];
-  v7 = [v6 paymentPass];
+  v6 = [v3 passWithUniqueID:peerPaymentPassUniqueID];
+  paymentPass = [v6 paymentPass];
 
-  v33 = v7;
-  v30 = [v7 serialNumber];
+  v33 = paymentPass;
+  serialNumber = [paymentPass serialNumber];
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v49 = 0u;
   v50 = 0u;
@@ -49,12 +49,12 @@
         }
 
         v14 = *(*(&v49 + 1) + 8 * i);
-        v15 = [v14 associatedAccountServiceAccountIdentifier];
+        associatedAccountServiceAccountIdentifier = [v14 associatedAccountServiceAccountIdentifier];
 
-        if (v15)
+        if (associatedAccountServiceAccountIdentifier)
         {
-          v16 = [v14 associatedAccountServiceAccountIdentifier];
-          [v8 addObject:v16];
+          associatedAccountServiceAccountIdentifier2 = [v14 associatedAccountServiceAccountIdentifier];
+          [v8 addObject:associatedAccountServiceAccountIdentifier2];
         }
       }
 
@@ -109,13 +109,13 @@
   block[1] = 3221225472;
   block[2] = __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___block_invoke_3;
   block[3] = &unk_1E79D1F80;
-  v40 = v31;
-  v41 = a1;
+  v40 = completionCopy;
+  selfCopy = self;
   v37 = v29;
   v38 = v17;
-  v39 = v30;
-  v25 = v31;
-  v26 = v30;
+  v39 = serialNumber;
+  v25 = completionCopy;
+  v26 = serialNumber;
   v27 = v17;
   v28 = v29;
   dispatch_group_notify(v18, MEMORY[0x1E69E96A0], block);
@@ -161,19 +161,19 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
   return result;
 }
 
-+ (void)generateDemoFilesForPasses:(id)a3 accountUsers:(id)a4 peerPaymentPassSerialNumber:(id)a5
++ (void)generateDemoFilesForPasses:(id)passes accountUsers:(id)users peerPaymentPassSerialNumber:(id)number
 {
   v62 = *MEMORY[0x1E69E9840];
-  obj = a3;
-  v47 = a4;
-  v49 = a5;
+  obj = passes;
+  usersCopy = users;
+  numberCopy = number;
   v8 = _demoDirectory();
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  [v9 removeItemAtPath:v8 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtPath:v8 error:0];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v48 = v8;
-  [v10 createDirectoryAtPath:v8 withIntermediateDirectories:0 attributes:0 error:0];
+  [defaultManager2 createDirectoryAtPath:v8 withIntermediateDirectories:0 attributes:0 error:0];
 
   for (i = 0; i != 18; ++i)
   {
@@ -206,7 +206,7 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
   v59 = 0u;
   obja = obj;
   v26 = [obja countByEnumeratingWithState:&v56 objects:v61 count:16];
-  v27 = v49;
+  v27 = numberCopy;
   if (v26)
   {
     v28 = v26;
@@ -223,9 +223,9 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
         v31 = *(*(&v56 + 1) + 8 * k);
         if (([v31 isAppleBalancePass] & 1) == 0)
         {
-          v32 = [v31 serialNumber];
+          serialNumber = [v31 serialNumber];
           v33 = v27;
-          if (v32 == v33)
+          if (serialNumber == v33)
           {
             v34 = 1;
           }
@@ -233,17 +233,17 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
           else
           {
             v34 = 0;
-            if (v27 && v32)
+            if (v27 && serialNumber)
             {
-              v34 = [v32 isEqualToString:v33];
+              v34 = [serialNumber isEqualToString:v33];
             }
           }
 
-          v35 = [a1 itemIdentifierForPass:v31];
+          v35 = [self itemIdentifierForPass:v31];
           v36 = _demoTransactionArrayForItemIdentifier(v35, v34);
           [v25 addObjectsFromArray:v36];
 
-          v27 = v49;
+          v27 = numberCopy;
         }
       }
 
@@ -257,7 +257,7 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v37 = v47;
+  v37 = usersCopy;
   v38 = [v37 countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v38)
   {
@@ -272,7 +272,7 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
           objc_enumerationMutation(v37);
         }
 
-        v42 = [a1 itemIdentifierForAccountUser:*(*(&v52 + 1) + 8 * m)];
+        v42 = [self itemIdentifierForAccountUser:*(*(&v52 + 1) + 8 * m)];
         v43 = _demoTransactionArrayForItemIdentifier(v42, 0);
         [v25 addObjectsFromArray:v43];
       }
@@ -289,17 +289,17 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
   [v45 writeToFile:v46 atomically:1 encoding:4 error:0];
 }
 
-+ (id)demoMerchantForType:(int64_t)a3
++ (id)demoMerchantForType:(int64_t)type
 {
-  v3 = _demoMerchantToDictionary(a3);
+  v3 = _demoMerchantToDictionary(type);
   v4 = _merchantFromDictionary(v3);
 
   return v4;
 }
 
-+ (id)randomAmountForMerchant:(int64_t)a3
++ (id)randomAmountForMerchant:(int64_t)merchant
 {
-  v3 = _demoMerchantToDictionary(a3);
+  v3 = _demoMerchantToDictionary(merchant);
   v4 = [v3 objectForKey:@"minAmount"];
   v5 = [v3 objectForKey:@"maxAmount"];
   if ([v4 length] && objc_msgSend(v5, "length"))
@@ -322,24 +322,24 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
   return v11;
 }
 
-+ (void)demoTransactionsAndEventsForItemIdentifier:(id)a3 configuration:(id)a4 transactions:(id *)a5 events:(id *)a6
++ (void)demoTransactionsAndEventsForItemIdentifier:(id)identifier configuration:(id)configuration transactions:(id *)transactions events:(id *)events
 {
   v75[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = v12;
-  if (v9)
+  if (identifierCopy)
   {
-    v48 = a5;
-    v49 = a6;
+    transactionsCopy = transactions;
+    eventsCopy = events;
     v50 = v11;
     v53 = v12;
-    v54 = v9;
+    v54 = identifierCopy;
     v14 = _demoDirectory();
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v52 = v14;
     v17 = [MEMORY[0x1E695DFF8] URLWithString:v14];
     v18 = *MEMORY[0x1E695DB78];
@@ -347,7 +347,7 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
     v75[1] = v18;
     v75[2] = *MEMORY[0x1E695DBC8];
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:3];
-    v20 = [v16 enumeratorAtURL:v17 includingPropertiesForKeys:v19 options:0 errorHandler:0];
+    v20 = [defaultManager enumeratorAtURL:v17 includingPropertiesForKeys:v19 options:0 errorHandler:0];
 
     v72 = 0u;
     v73 = 0u;
@@ -371,14 +371,14 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
           }
 
           v25 = *(*(&v70 + 1) + 8 * i);
-          v26 = [v25 lastPathComponent];
+          lastPathComponent = [v25 lastPathComponent];
           v27 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v25];
           v69 = 0;
           v28 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v27 options:0 error:&v69];
           v29 = v69;
-          if (v26)
+          if (lastPathComponent)
           {
-            if ([v26 isEqual:@"StoreDemoTransactions.json"])
+            if ([lastPathComponent isEqual:@"StoreDemoTransactions.json"])
             {
               objc_opt_class();
               if (objc_opt_isKindOfClass())
@@ -394,7 +394,7 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v15 setObject:v28 forKeyedSubscript:v26];
+            [v15 setObject:v28 forKeyedSubscript:lastPathComponent];
           }
         }
 
@@ -425,14 +425,14 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
     v38 = v36;
     v68 = v36;
     [v37 enumerateKeysAndObjectsUsingBlock:v65];
-    v9 = v54;
+    identifierCopy = v54;
     v39 = [MEMORY[0x1E696AE18] predicateWithFormat:@"itemIdentifier == %@", v54];
     v40 = [v56 filteredArrayUsingPredicate:v39];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __107__PKDemoTransactionGenerator_demoTransactionsAndEventsForItemIdentifier_configuration_transactions_events___block_invoke_2;
     v58[3] = &unk_1E79E0388;
-    v59 = v10;
+    v59 = configurationCopy;
     v60 = v34;
     v61 = v38;
     v62 = v35;
@@ -448,16 +448,16 @@ uint64_t __62__PKDemoTransactionGenerator_generateDemoFilesWithCompletion___bloc
     v45 = _removeFutureTransactionsFromTransaction(v42);
 
     v11 = [v45 mutableCopy];
-    if (v48)
+    if (transactionsCopy)
     {
       v46 = v11;
-      *v48 = v11;
+      *transactionsCopy = v11;
     }
 
-    if (v49)
+    if (eventsCopy)
     {
       v47 = v41;
-      *v49 = v41;
+      *eventsCopy = v41;
     }
   }
 }
@@ -520,24 +520,24 @@ void __107__PKDemoTransactionGenerator_demoTransactionsAndEventsForItemIdentifie
   [a1[9] addObject:v11];
 }
 
-+ (void)demoTransactionsAndEventsWithConfiguration:(id)a3 transactions:(id *)a4 events:(id *)a5
++ (void)demoTransactionsAndEventsWithConfiguration:(id)configuration transactions:(id *)transactions events:(id *)events
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v5 transactionCount];
-  v8 = [v5 demoPerson];
-  v9 = [v5 demoMerchant];
-  if (v7 >= 1)
+  transactionCount = [configurationCopy transactionCount];
+  demoPerson = [configurationCopy demoPerson];
+  demoMerchant = [configurationCopy demoMerchant];
+  if (transactionCount >= 1)
   {
-    v10 = v9;
+    v10 = demoMerchant;
     v11 = 0x1E696A000uLL;
     while (1)
     {
       v12 = [*(v11 + 2960) decimalNumberWithMantissa:arc4random_uniform(0x2710u) exponent:4294967294 isNegative:0];
-      v13 = [MEMORY[0x1E695DF00] date];
-      v14 = _commonTransactionForAmount(v12, @"USD", v13, v5);
-      if ((v8 & 0x8000000000000000) == 0)
+      date = [MEMORY[0x1E695DF00] date];
+      v14 = _commonTransactionForAmount(v12, @"USD", date, configurationCopy);
+      if ((demoPerson & 0x8000000000000000) == 0)
       {
         break;
       }
@@ -547,9 +547,9 @@ void __107__PKDemoTransactionGenerator_demoTransactionsAndEventsForItemIdentifie
         v15 = _demoMerchantToDictionary(v10);
         v28 = _merchantFromDictionary(v15);
         v29 = 0;
-        _updateTransactionWithMerchantData(v14, v15, v28, v5, &v29);
-        v16 = v8;
-        v17 = v5;
+        _updateTransactionWithMerchantData(v14, v15, v28, configurationCopy, &v29);
+        v16 = demoPerson;
+        v17 = configurationCopy;
         v18 = v6;
         v19 = v10;
         v20 = v29;
@@ -557,8 +557,8 @@ void __107__PKDemoTransactionGenerator_demoTransactionsAndEventsForItemIdentifie
 
         v10 = v19;
         v6 = v18;
-        v5 = v17;
-        v8 = v16;
+        configurationCopy = v17;
+        demoPerson = v16;
         v11 = 0x1E696A000;
 
         goto LABEL_7;
@@ -567,13 +567,13 @@ void __107__PKDemoTransactionGenerator_demoTransactionsAndEventsForItemIdentifie
 LABEL_8:
       [v6 safelyAddObject:v14];
 
-      if (!--v7)
+      if (!--transactionCount)
       {
         goto LABEL_9;
       }
     }
 
-    v15 = _demoPersonToDictionary(v8);
+    v15 = _demoPersonToDictionary(demoPerson);
     _updateTransactionWithCounterpartData(v14, v15);
 LABEL_7:
 
@@ -584,36 +584,36 @@ LABEL_9:
   v21 = _removeFutureTransactionsFromTransaction(v6);
   v22 = [v21 mutableCopy];
 
-  if (a4)
+  if (transactions)
   {
     v23 = v22;
-    *a4 = v22;
+    *transactions = v22;
   }
 
   v24 = v27;
-  if (a5)
+  if (events)
   {
     v24 = v27;
-    *a5 = v24;
+    *events = v24;
   }
 }
 
-+ (id)itemIdentifierForPass:(id)a3
++ (id)itemIdentifierForPass:(id)pass
 {
-  v3 = [a3 paymentPass];
-  v4 = [v3 serialNumber];
+  paymentPass = [pass paymentPass];
+  serialNumber = [paymentPass serialNumber];
 
-  return v4;
+  return serialNumber;
 }
 
-+ (id)itemIdentifierForAccountUser:(id)a3
++ (id)itemIdentifierForAccountUser:(id)user
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 accountIdentifier];
-  v6 = [v4 altDSID];
+  userCopy = user;
+  accountIdentifier = [userCopy accountIdentifier];
+  altDSID = [userCopy altDSID];
 
-  v7 = [v3 stringWithFormat:@"%@:%@", v5, v6];
+  v7 = [v3 stringWithFormat:@"%@:%@", accountIdentifier, altDSID];
 
   return v7;
 }
@@ -646,56 +646,56 @@ LABEL_9:
   return v5;
 }
 
-+ (void)insertTransactionAndEventsWithConfiguration:(id)a3 completion:(id)a4
++ (void)insertTransactionAndEventsWithConfiguration:(id)configuration completion:(id)completion
 {
   v76 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v48 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v7 = +[PKPaymentService paymentService];
   v50 = objc_alloc_init(PKCloudStoreService);
-  if ([v6 codingType])
+  if ([configurationCopy codingType])
   {
-    v8 = [v6 codingType];
+    codingType = [configurationCopy codingType];
   }
 
   else
   {
-    v8 = 2;
+    codingType = 2;
   }
 
   v9 = dispatch_group_create();
-  v10 = [v6 transactions];
+  transactions = [configurationCopy transactions];
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
   v70[2] = __85__PKDemoTransactionGenerator_insertTransactionAndEventsWithConfiguration_completion___block_invoke;
   v70[3] = &unk_1E79E03D8;
   v11 = v9;
   v71 = v11;
-  v12 = v6;
+  v12 = configurationCopy;
   v72 = v12;
   v47 = v7;
   v73 = v47;
-  [v10 enumerateObjectsUsingBlock:v70];
-  v49 = [v12 accountEvents];
+  [transactions enumerateObjectsUsingBlock:v70];
+  accountEvents = [v12 accountEvents];
   v51 = v12;
-  if ([v49 count])
+  if ([accountEvents count])
   {
     v13 = objc_alloc_init(PKAccountService);
-    v14 = [v12 accountIdentifier];
-    v15 = v14;
-    v45 = v10;
-    v46 = a1;
-    if (v14)
+    accountIdentifier = [v12 accountIdentifier];
+    v15 = accountIdentifier;
+    v45 = transactions;
+    selfCopy = self;
+    if (accountIdentifier)
     {
-      v16 = v14;
-      v17 = v49;
+      accountIdentifier2 = accountIdentifier;
+      v17 = accountEvents;
     }
 
     else
     {
-      v17 = v49;
-      v18 = [v49 firstObject];
-      v16 = [v18 accountIdentifier];
+      v17 = accountEvents;
+      firstObject = [accountEvents firstObject];
+      accountIdentifier2 = [firstObject accountIdentifier];
     }
 
     dispatch_group_enter(v11);
@@ -706,9 +706,9 @@ LABEL_9:
     v68[3] = &unk_1E79C7D08;
     v20 = v11;
     v69 = v20;
-    v43 = v16;
+    v43 = accountIdentifier2;
     v44 = v13;
-    [(PKAccountService *)v13 insertEvents:v19 withAccountidentifier:v16 completion:v68];
+    [(PKAccountService *)v13 insertEvents:v19 withAccountidentifier:accountIdentifier2 completion:v68];
 
     v21 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v64 = 0u;
@@ -731,7 +731,7 @@ LABEL_9:
           }
 
           v27 = [[PKCloudStoreUploadItemConfiguration alloc] initWithItem:*(*(&v64 + 1) + 8 * i)];
-          [(PKCloudStoreUploadItemConfiguration *)v27 setCodingType:v8];
+          [(PKCloudStoreUploadItemConfiguration *)v27 setCodingType:codingType];
           [v21 addObject:v27];
         }
 
@@ -750,17 +750,17 @@ LABEL_9:
     [(PKCloudStoreService *)v50 updateCloudStoreWithLocalItemsWithConfigurations:v21 completion:v62];
 
     v12 = v51;
-    v10 = v45;
-    a1 = v46;
+    transactions = v45;
+    self = selfCopy;
   }
 
   v28 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v29 = [a1 _recordSpecificKeysForConfiguration:v12];
+  v29 = [self _recordSpecificKeysForConfiguration:v12];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v30 = v10;
+  v30 = transactions;
   v31 = [v30 countByEnumeratingWithState:&v58 objects:v74 count:16];
   if (v31)
   {
@@ -776,7 +776,7 @@ LABEL_9:
         }
 
         v35 = [[PKCloudStoreUploadItemConfiguration alloc] initWithItem:*(*(&v58 + 1) + 8 * j) recordSpecificKeys:v29];
-        [(PKCloudStoreUploadItemConfiguration *)v35 setCodingType:v8];
+        [(PKCloudStoreUploadItemConfiguration *)v35 setCodingType:codingType];
         [v28 addObject:v35];
       }
 
@@ -814,8 +814,8 @@ LABEL_9:
   v52[1] = 3221225472;
   v52[2] = __85__PKDemoTransactionGenerator_insertTransactionAndEventsWithConfiguration_completion___block_invoke_7;
   v52[3] = &unk_1E79C4428;
-  v53 = v48;
-  v42 = v48;
+  v53 = completionCopy;
+  v42 = completionCopy;
   dispatch_group_notify(v38, v41, v52);
 }
 
@@ -869,75 +869,75 @@ uint64_t __85__PKDemoTransactionGenerator_insertTransactionAndEventsWithConfigur
   return result;
 }
 
-+ (id)_recordSpecificKeysForConfiguration:(id)a3
++ (id)_recordSpecificKeysForConfiguration:(id)configuration
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 paymentPass];
-  v7 = [v4 accountIdentifier];
-  v8 = [v4 accountType];
+  paymentPass = [configurationCopy paymentPass];
+  accountIdentifier = [configurationCopy accountIdentifier];
+  accountType = [configurationCopy accountType];
 
-  v9 = [v6 serialNumber];
-  v10 = [v6 passTypeIdentifier];
-  v11 = [v6 primaryAccountIdentifier];
-  v12 = [v6 devicePrimaryPaymentApplication];
-  v13 = [v12 dpanIdentifier];
+  serialNumber = [paymentPass serialNumber];
+  passTypeIdentifier = [paymentPass passTypeIdentifier];
+  primaryAccountIdentifier = [paymentPass primaryAccountIdentifier];
+  devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+  dpanIdentifier = [devicePrimaryPaymentApplication dpanIdentifier];
 
   v14 = +[PKSecureElement primarySecureElementIdentifier];
-  if (!v7)
+  if (!accountIdentifier)
   {
-    if ([v6 hasAssociatedPeerPaymentAccount])
+    if ([paymentPass hasAssociatedPeerPaymentAccount])
     {
       v15 = +[PKPeerPaymentService sharedInstance];
-      v16 = [v15 account];
-      v7 = [v16 identifier];
+      account = [v15 account];
+      accountIdentifier = [account identifier];
 
-      v8 = 1;
+      accountType = 1;
     }
 
     else
     {
-      v7 = [v6 associatedAccountServiceAccountIdentifier];
+      accountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
 
-      if (v7)
+      if (accountIdentifier)
       {
-        v7 = [v6 associatedAccountServiceAccountIdentifier];
-        v8 = 2;
+        accountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+        accountType = 2;
       }
     }
   }
 
-  if ([v7 length])
+  if ([accountIdentifier length])
   {
     v17 = &PKCloudTransactionAccountIdentifierKey;
-    v18 = v7;
+    v18 = accountIdentifier;
 LABEL_12:
     [v5 setObject:v18 forKey:*v17];
     goto LABEL_13;
   }
 
-  if ([v9 length])
+  if ([serialNumber length])
   {
-    [v5 setObject:v9 forKey:@"passSerialNumber"];
+    [v5 setObject:serialNumber forKey:@"passSerialNumber"];
   }
 
-  if ([v10 length])
+  if ([passTypeIdentifier length])
   {
     v17 = &PKCloudTransactionPassTypeIdentifierKey;
-    v18 = v10;
+    v18 = passTypeIdentifier;
     goto LABEL_12;
   }
 
 LABEL_13:
-  if ([v11 length])
+  if ([primaryAccountIdentifier length])
   {
-    [v5 setObject:v11 forKey:@"fpanIdentifier"];
+    [v5 setObject:primaryAccountIdentifier forKey:@"fpanIdentifier"];
   }
 
-  if ([v13 length])
+  if ([dpanIdentifier length])
   {
-    [v5 setObject:v13 forKey:@"dpanIdentifier"];
+    [v5 setObject:dpanIdentifier forKey:@"dpanIdentifier"];
   }
 
   if (v14)
@@ -945,7 +945,7 @@ LABEL_13:
     [v5 setObject:v14 forKey:@"originDeviceID"];
   }
 
-  v19 = PKPaymentTransactionAccountTypeToString(v8);
+  v19 = PKPaymentTransactionAccountTypeToString(accountType);
   [v5 setObject:v19 forKey:@"feature"];
 
   [v5 setObject:&unk_1F23B5678 forKey:@"cloudVersion"];

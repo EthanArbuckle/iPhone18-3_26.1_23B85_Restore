@@ -1,13 +1,13 @@
 @interface FCPersonalizationDecomposedURL
-- (FCPersonalizationDecomposedURL)initWithURL:(id)a3;
-- (FCPersonalizationDecomposedURL)initWithURLString:(id)a3;
+- (FCPersonalizationDecomposedURL)initWithURL:(id)l;
+- (FCPersonalizationDecomposedURL)initWithURLString:(id)string;
 @end
 
 @implementation FCPersonalizationDecomposedURL
 
-- (FCPersonalizationDecomposedURL)initWithURL:(id)a3
+- (FCPersonalizationDecomposedURL)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v39.receiver = self;
   v39.super_class = FCPersonalizationDecomposedURL;
   v5 = [(FCPersonalizationDecomposedURL *)&v39 init];
@@ -21,7 +21,7 @@
     v34[1] = 3221225472;
     v34[2] = __46__FCPersonalizationDecomposedURL_initWithURL___block_invoke;
     v34[3] = &unk_1E7C41BA0;
-    v35 = v4;
+    v35 = lCopy;
     v36 = v37;
     v6 = __46__FCPersonalizationDecomposedURL_initWithURL___block_invoke(v34);
     v32[0] = MEMORY[0x1E69E9820];
@@ -179,9 +179,9 @@ void __46__FCPersonalizationDecomposedURL_initWithURL___block_invoke_4(uint64_t 
   [v13 addObject:@"/"];
 }
 
-- (FCPersonalizationDecomposedURL)initWithURLString:(id)a3
+- (FCPersonalizationDecomposedURL)initWithURLString:(id)string
 {
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:string];
   v5 = [(FCPersonalizationDecomposedURL *)self initWithURL:v4];
 
   return v5;

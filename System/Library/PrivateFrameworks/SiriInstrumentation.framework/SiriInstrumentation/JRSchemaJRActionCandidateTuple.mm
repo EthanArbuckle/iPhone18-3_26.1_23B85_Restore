@@ -1,27 +1,27 @@
 @interface JRSchemaJRActionCandidateTuple
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRActionCandidateTuple)initWithDictionary:(id)a3;
-- (JRSchemaJRActionCandidateTuple)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRActionCandidateTuple)initWithDictionary:(id)dictionary;
+- (JRSchemaJRActionCandidateTuple)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addCandidateIds:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidateIds:(id)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRActionCandidateTuple
 
-- (JRSchemaJRActionCandidateTuple)initWithDictionary:(id)a3
+- (JRSchemaJRActionCandidateTuple)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = JRSchemaJRActionCandidateTuple;
   v5 = [(JRSchemaJRActionCandidateTuple *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"candidateIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"candidateIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (JRSchemaJRActionCandidateTuple)initWithJSON:(id)a3
+- (JRSchemaJRActionCandidateTuple)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRActionCandidateTuple *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRActionCandidateTuple *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRActionCandidateTuple *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,10 +108,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_candidateIds count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -131,16 +131,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -150,26 +150,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"candidateIds"];
+    [dictionary setObject:array forKeyedSubscript:@"candidateIds"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v13];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v13];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(JRSchemaJRActionCandidateTuple *)self candidateIds];
-    v6 = [v4 candidateIds];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    candidateIds = [(JRSchemaJRActionCandidateTuple *)self candidateIds];
+    candidateIds2 = [equalCopy candidateIds];
+    v7 = candidateIds2;
+    if ((candidateIds != 0) != (candidateIds2 == 0))
     {
-      v8 = [(JRSchemaJRActionCandidateTuple *)self candidateIds];
-      if (!v8)
+      candidateIds3 = [(JRSchemaJRActionCandidateTuple *)self candidateIds];
+      if (!candidateIds3)
       {
 
 LABEL_10:
@@ -177,10 +177,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(JRSchemaJRActionCandidateTuple *)self candidateIds];
-      v11 = [v4 candidateIds];
-      v12 = [v10 isEqual:v11];
+      v9 = candidateIds3;
+      candidateIds4 = [(JRSchemaJRActionCandidateTuple *)self candidateIds];
+      candidateIds5 = [equalCopy candidateIds];
+      v12 = [candidateIds4 isEqual:candidateIds5];
 
       if (v12)
       {
@@ -199,10 +199,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -235,32 +235,32 @@ LABEL_8:
   }
 }
 
-- (void)addCandidateIds:(id)a3
+- (void)addCandidateIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   candidateIds = self->_candidateIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!candidateIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidateIds;
-    self->_candidateIds = v6;
+    self->_candidateIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     candidateIds = self->_candidateIds;
   }
 
-  [(NSArray *)candidateIds addObject:v4];
+  [(NSArray *)candidateIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = JRSchemaJRActionCandidateTuple;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(JRSchemaJRActionCandidateTuple *)self candidateIds:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(JRSchemaJRActionCandidateTuple *)self setCandidateIds:v7];
 

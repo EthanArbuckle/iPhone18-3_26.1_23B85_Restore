@@ -1,10 +1,10 @@
 @interface AALoginContextManager
 + (AALoginContextManager)sharedManager;
-+ (void)stashLoginResponseWithAuthenticationResults:(id)a3 cloudKitToken:(id)a4;
++ (void)stashLoginResponseWithAuthenticationResults:(id)results cloudKitToken:(id)token;
 - (AALoginContextManager)init;
 - (AAStorableLoginContext)stashedContext;
 - (void)persistStashedContext;
-- (void)setStashedContext:(id)a3;
+- (void)setStashedContext:(id)context;
 @end
 
 @implementation AALoginContextManager
@@ -57,7 +57,7 @@ uint64_t __38__AALoginContextManager_sharedManager__block_invoke()
   v6[1] = 3221225472;
   v7 = __39__AALoginContextManager_stashedContext__block_invoke;
   v8 = &unk_1E7C9CD58;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_stashedContextLock);
@@ -70,16 +70,16 @@ uint64_t __38__AALoginContextManager_sharedManager__block_invoke()
   return v4;
 }
 
-- (void)setStashedContext:(id)a3
+- (void)setStashedContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__AALoginContextManager_setStashedContext___block_invoke;
   v6[3] = &unk_1E7C9ADE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = contextCopy;
+  v5 = contextCopy;
   os_unfair_lock_lock(&self->_stashedContextLock);
   __43__AALoginContextManager_setStashedContext___block_invoke(v6);
   os_unfair_lock_unlock(&self->_stashedContextLock);
@@ -119,18 +119,18 @@ void __46__AALoginContextManager_persistStashedContext__block_invoke(uint64_t a1
   }
 }
 
-+ (void)stashLoginResponseWithAuthenticationResults:(id)a3 cloudKitToken:(id)a4
++ (void)stashLoginResponseWithAuthenticationResults:(id)results cloudKitToken:(id)token
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  tokenCopy = token;
   v7 = _AALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     +[AALoginContextManager stashLoginResponseWithAuthenticationResults:cloudKitToken:];
   }
 
-  v8 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBF0]];
+  v8 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBF0]];
   if (!v8)
   {
     v9 = _AALogSystem();
@@ -140,7 +140,7 @@ void __46__AALoginContextManager_persistStashedContext__block_invoke(uint64_t a1
     }
   }
 
-  v10 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
+  v10 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
   if (!v10)
   {
     v11 = _AALogSystem();
@@ -152,7 +152,7 @@ void __46__AALoginContextManager_persistStashedContext__block_invoke(uint64_t a1
 
   v33 = v8;
   v12 = [[AAStorableLoginContext alloc] initWithAppleID:v8 altDSID:v10];
-  v13 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
+  v13 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
   v32 = v13;
   if (v13)
   {
@@ -168,7 +168,7 @@ void __46__AALoginContextManager_persistStashedContext__block_invoke(uint64_t a1
     }
   }
 
-  v15 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBD0]];
+  v15 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBD0]];
   if (v15)
   {
     [(AAStorableLoginContext *)v12 setRawPassword:v15];
@@ -183,7 +183,7 @@ void __46__AALoginContextManager_persistStashedContext__block_invoke(uint64_t a1
     }
   }
 
-  v17 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBA0]];
+  v17 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBA0]];
 
   if (v17)
   {
@@ -197,21 +197,21 @@ void __46__AALoginContextManager_persistStashedContext__block_invoke(uint64_t a1
     [(AAStorableLoginContext *)v12 setBeneficiaryLogin:1];
   }
 
-  v19 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DB90]];
+  v19 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB90]];
   if (v19)
   {
     [(AAStorableLoginContext *)v12 setFirstName:v19];
   }
 
-  v20 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBB8]];
+  v20 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBB8]];
   if (v20)
   {
     [(AAStorableLoginContext *)v12 setLastName:v20];
   }
 
-  if (v6)
+  if (tokenCopy)
   {
-    [(AAStorableLoginContext *)v12 setCloudKitToken:v6];
+    [(AAStorableLoginContext *)v12 setCloudKitToken:tokenCopy];
   }
 
   else
@@ -223,13 +223,13 @@ void __46__AALoginContextManager_persistStashedContext__block_invoke(uint64_t a1
     }
   }
 
-  v34 = v6;
-  v22 = [MEMORY[0x1E6959A48] defaultStore];
-  v23 = [v22 aa_authKitAccountForAltDSID:v10];
+  v34 = tokenCopy;
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v23 = [defaultStore aa_authKitAccountForAltDSID:v10];
   v24 = v23;
   if (v23)
   {
-    v25 = [v23 credential];
+    credential = [v23 credential];
     v26 = _AALogSystem();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -238,21 +238,21 @@ void __46__AALoginContextManager_persistStashedContext__block_invoke(uint64_t a1
       _os_log_impl(&dword_1B6F6A000, v26, OS_LOG_TYPE_DEFAULT, "Trying to add CK and PRK for %@ to login context...", buf, 0xCu);
     }
 
-    v27 = [v25 credentialItemForKey:*MEMORY[0x1E6959950]];
+    v27 = [credential credentialItemForKey:*MEMORY[0x1E6959950]];
     [(AAStorableLoginContext *)v12 setContinuationKey:v27];
 
-    v28 = [v25 credentialItemForKey:*MEMORY[0x1E69599E0]];
+    v28 = [credential credentialItemForKey:*MEMORY[0x1E69599E0]];
     [(AAStorableLoginContext *)v12 setPasswordResetKey:v28];
   }
 
   else
   {
-    v25 = _AALogSystem();
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    credential = _AALogSystem();
+    if (os_log_type_enabled(credential, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v36 = v10;
-      _os_log_impl(&dword_1B6F6A000, v25, OS_LOG_TYPE_DEFAULT, "No AuthKit account to grab CK and PRK from for altDSID: %{mask}@", buf, 0xCu);
+      _os_log_impl(&dword_1B6F6A000, credential, OS_LOG_TYPE_DEFAULT, "No AuthKit account to grab CK and PRK from for altDSID: %{mask}@", buf, 0xCu);
     }
   }
 

@@ -1,51 +1,51 @@
 @interface ADAppAdvertisement
-- (ADAppAdvertisement)initWithAdamID:(id)a3 assetInfo:(id)a4 adData:(id)a5;
-- (ADAppAdvertisement)initWithAdamID:(id)a3 assetInfo:(id)a4 adData:(id)a5 instanceID:(id)a6;
-- (ADAppAdvertisement)initWithAdamID:(id)a3 cppIDs:(id)a4 serverCppID:(id)a5 adData:(id)a6 instanceID:(id)a7;
+- (ADAppAdvertisement)initWithAdamID:(id)d assetInfo:(id)info adData:(id)data;
+- (ADAppAdvertisement)initWithAdamID:(id)d assetInfo:(id)info adData:(id)data instanceID:(id)iD;
+- (ADAppAdvertisement)initWithAdamID:(id)d cppIDs:(id)ds serverCppID:(id)iD adData:(id)data instanceID:(id)instanceID;
 - (APOdmlServerResponse)odmlResponse;
 - (id)AD_jsonDictionary;
 @end
 
 @implementation ADAppAdvertisement
 
-- (ADAppAdvertisement)initWithAdamID:(id)a3 assetInfo:(id)a4 adData:(id)a5
+- (ADAppAdvertisement)initWithAdamID:(id)d assetInfo:(id)info adData:(id)data
 {
   v8 = MEMORY[0x277CCAD78];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  dataCopy = data;
+  infoCopy = info;
+  dCopy = d;
   v16 = objc_msgSend_UUID(v8, v12, v13, v14, v15);
   v21 = objc_msgSend_UUIDString(v16, v17, v18, v19, v20);
-  v23 = objc_msgSend_initWithAdamID_assetInfo_adData_instanceID_(self, v22, v11, v10, v9, v21);
+  v23 = objc_msgSend_initWithAdamID_assetInfo_adData_instanceID_(self, v22, dCopy, infoCopy, dataCopy, v21);
 
   return v23;
 }
 
-- (ADAppAdvertisement)initWithAdamID:(id)a3 assetInfo:(id)a4 adData:(id)a5 instanceID:(id)a6
+- (ADAppAdvertisement)initWithAdamID:(id)d assetInfo:(id)info adData:(id)data instanceID:(id)iD
 {
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  iDCopy = iD;
   v16.receiver = self;
   v16.super_class = ADAppAdvertisement;
-  v13 = [(ADAppRepresentation *)&v16 initWithAdamID:a3 assetInformation:a4];
+  v13 = [(ADAppRepresentation *)&v16 initWithAdamID:d assetInformation:info];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_adData, a5);
-    objc_storeStrong(&v14->_instanceID, a6);
+    objc_storeStrong(&v13->_adData, data);
+    objc_storeStrong(&v14->_instanceID, iD);
   }
 
   return v14;
 }
 
-- (ADAppAdvertisement)initWithAdamID:(id)a3 cppIDs:(id)a4 serverCppID:(id)a5 adData:(id)a6 instanceID:(id)a7
+- (ADAppAdvertisement)initWithAdamID:(id)d cppIDs:(id)ds serverCppID:(id)iD adData:(id)data instanceID:(id)instanceID
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  dsCopy = ds;
+  iDCopy = iD;
+  dataCopy = data;
+  instanceIDCopy = instanceID;
   v17 = APLogForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -53,28 +53,28 @@
     v19 = @"nil";
     *buf = 138412802;
     v40 = v18;
-    if (v14)
+    if (iDCopy)
     {
-      v19 = v14;
+      v19 = iDCopy;
     }
 
     v41 = 2112;
-    v42 = v12;
+    v42 = dCopy;
     v43 = 2112;
     v44 = v19;
     _os_log_impl(&dword_264E42000, v17, OS_LOG_TYPE_INFO, "[%@] For adamID: %@ this is the serverCppID: %@.", buf, 0x20u);
   }
 
-  if (v13)
+  if (dsCopy)
   {
-    v37 = v12;
-    v23 = v14;
-    v24 = a6;
-    v25 = a7;
-    v26 = a5;
-    v27 = v16;
-    v28 = v15;
-    v29 = objc_msgSend_componentsJoinedByString_(v13, v20, @" , ", v21, v22);
+    v37 = dCopy;
+    v23 = iDCopy;
+    dataCopy2 = data;
+    instanceIDCopy2 = instanceID;
+    iDCopy2 = iD;
+    v27 = instanceIDCopy;
+    v28 = dataCopy;
+    v29 = objc_msgSend_componentsJoinedByString_(dsCopy, v20, @" , ", v21, v22);
     v30 = APLogForCategory();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
@@ -86,13 +86,13 @@
       _os_log_impl(&dword_264E42000, v30, OS_LOG_TYPE_INFO, "[%@] cppIDs provided from the server are: %@", buf, 0x16u);
     }
 
-    v15 = v28;
-    v16 = v27;
-    a5 = v26;
-    a7 = v25;
-    a6 = v24;
-    v14 = v23;
-    v12 = v37;
+    dataCopy = v28;
+    instanceIDCopy = v27;
+    iD = iDCopy2;
+    instanceID = instanceIDCopy2;
+    data = dataCopy2;
+    iDCopy = v23;
+    dCopy = v37;
   }
 
   else
@@ -109,13 +109,13 @@
 
   v38.receiver = self;
   v38.super_class = ADAppAdvertisement;
-  v33 = [(ADAppRepresentation *)&v38 initWithAdamID:v12];
+  v33 = [(ADAppRepresentation *)&v38 initWithAdamID:dCopy];
   v34 = v33;
   if (v33)
   {
-    objc_storeStrong(&v33->_adData, a6);
-    objc_storeStrong(&v34->_instanceID, a7);
-    objc_storeStrong(&v34->_selectedCppID, a5);
+    objc_storeStrong(&v33->_adData, data);
+    objc_storeStrong(&v34->_instanceID, instanceID);
+    objc_storeStrong(&v34->_selectedCppID, iD);
   }
 
   v35 = *MEMORY[0x277D85DE8];

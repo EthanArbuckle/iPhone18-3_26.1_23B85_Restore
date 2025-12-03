@@ -1,30 +1,30 @@
 @interface HUCharacteristicEventServicePickerContentViewController
 + (id)splitCharacteristicResults;
 + (id)transformationSetBlock;
-- (BOOL)canSelectItem:(id)a3 indexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)serviceGridItemManager:(id)a3 shouldHideItem:(id)a4;
-- (HUCharacteristicEventServicePickerContentViewController)initWithFlow:(id)a3 stepIdentifier:(id)a4;
-- (HUCharacteristicEventServicePickerContentViewController)initWithServiceGridItemManager:(id)a3;
-- (HUCharacteristicEventServicePickerContentViewController)initWithTriggerBuilder:(id)a3 eventBuilderItem:(id)a4 source:(unint64_t)a5;
+- (BOOL)canSelectItem:(id)item indexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)serviceGridItemManager:(id)manager shouldHideItem:(id)item;
+- (HUCharacteristicEventServicePickerContentViewController)initWithFlow:(id)flow stepIdentifier:(id)identifier;
+- (HUCharacteristicEventServicePickerContentViewController)initWithServiceGridItemManager:(id)manager;
+- (HUCharacteristicEventServicePickerContentViewController)initWithTriggerBuilder:(id)builder eventBuilderItem:(id)item source:(unint64_t)source;
 - (HUCharacteristicEventServicePickerContentViewControllerDelegate)servicePickerDelegate;
-- (id)layoutOptionsForSection:(int64_t)a3;
-- (void)_addCharacteristicEventsForAlarmItem:(id)a3;
-- (void)_addCharacteristicEventsForOtherDeviceItem:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (id)layoutOptionsForSection:(int64_t)section;
+- (void)_addCharacteristicEventsForAlarmItem:(id)item;
+- (void)_addCharacteristicEventsForOtherDeviceItem:(id)item;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
 - (void)didChangeSelection;
-- (void)itemManagerDidUpdate:(id)a3;
+- (void)itemManagerDidUpdate:(id)update;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCharacteristicEventServicePickerContentViewController
 
-- (HUCharacteristicEventServicePickerContentViewController)initWithTriggerBuilder:(id)a3 eventBuilderItem:(id)a4 source:(unint64_t)a5
+- (HUCharacteristicEventServicePickerContentViewController)initWithTriggerBuilder:(id)builder eventBuilderItem:(id)item source:(unint64_t)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [objc_opt_class() transformationSetBlock];
+  builderCopy = builder;
+  itemCopy = item;
+  transformationSetBlock = [objc_opt_class() transformationSetBlock];
   v12 = [(HUSelectableServiceGridViewController *)HUCharacteristicEventServicePickerContentViewController defaultItemProviderCreatorWithOptions:9];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -32,7 +32,7 @@
   aBlock[3] = &unk_277DBB520;
   v13 = v12;
   v22 = v13;
-  v14 = v11;
+  v14 = transformationSetBlock;
   v23 = v14;
   v15 = _Block_copy(aBlock);
   v16 = [[HUServiceGridItemManager alloc] initWithDelegate:self shouldGroupByRoom:1 itemProvidersCreator:v15];
@@ -42,9 +42,9 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_eventBuilderItem, a4);
-    objc_storeStrong(&v18->_triggerBuilder, a3);
-    v18->_source = a5;
+    objc_storeStrong(&v17->_eventBuilderItem, item);
+    objc_storeStrong(&v18->_triggerBuilder, builder);
+    v18->_source = source;
     [(HUSelectableServiceGridViewController *)v18 setAllowsMultipleSelection:0];
   }
 
@@ -73,29 +73,29 @@ id __106__HUCharacteristicEventServicePickerContentViewController_initWithTrigge
   return v5;
 }
 
-- (HUCharacteristicEventServicePickerContentViewController)initWithFlow:(id)a3 stepIdentifier:(id)a4
+- (HUCharacteristicEventServicePickerContentViewController)initWithFlow:(id)flow stepIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 viewController:self servicePickerSourceForStep:v7];
-  v9 = [v6 triggerBuilder];
-  v10 = [v6 eventBuilderItem];
-  v11 = [(HUCharacteristicEventServicePickerContentViewController *)self initWithTriggerBuilder:v9 eventBuilderItem:v10 source:v8];
+  flowCopy = flow;
+  identifierCopy = identifier;
+  v8 = [flowCopy viewController:self servicePickerSourceForStep:identifierCopy];
+  triggerBuilder = [flowCopy triggerBuilder];
+  eventBuilderItem = [flowCopy eventBuilderItem];
+  v11 = [(HUCharacteristicEventServicePickerContentViewController *)self initWithTriggerBuilder:triggerBuilder eventBuilderItem:eventBuilderItem source:v8];
 
   if (v11)
   {
-    [(HUCharacteristicEventServicePickerContentViewController *)v11 setFlow:v6];
-    [(HUCharacteristicEventServicePickerContentViewController *)v11 setStepIdentifier:v7];
+    [(HUCharacteristicEventServicePickerContentViewController *)v11 setFlow:flowCopy];
+    [(HUCharacteristicEventServicePickerContentViewController *)v11 setStepIdentifier:identifierCopy];
   }
 
   return v11;
 }
 
-- (HUCharacteristicEventServicePickerContentViewController)initWithServiceGridItemManager:(id)a3
+- (HUCharacteristicEventServicePickerContentViewController)initWithServiceGridItemManager:(id)manager
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithFlow_stepIdentifier_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCharacteristicEventServicePickerContentViewController.m" lineNumber:91 description:{@"%s is unavailable; use %@ instead", "-[HUCharacteristicEventServicePickerContentViewController initWithServiceGridItemManager:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCharacteristicEventServicePickerContentViewController.m" lineNumber:91 description:{@"%s is unavailable; use %@ instead", "-[HUCharacteristicEventServicePickerContentViewController initWithServiceGridItemManager:]", v6}];
 
   return 0;
 }
@@ -105,44 +105,44 @@ id __106__HUCharacteristicEventServicePickerContentViewController_initWithTrigge
   v13.receiver = self;
   v13.super_class = HUCharacteristicEventServicePickerContentViewController;
   [(HUServiceGridViewController *)&v13 viewDidLoad];
-  v3 = [(HUCharacteristicEventServicePickerContentViewController *)self collectionView];
-  [v3 _setShouldDeriveVisibleBoundsFromContainingScrollView:1];
+  collectionView = [(HUCharacteristicEventServicePickerContentViewController *)self collectionView];
+  [collectionView _setShouldDeriveVisibleBoundsFromContainingScrollView:1];
 
-  v4 = [(HUCharacteristicEventServicePickerContentViewController *)self collectionView];
-  [v4 setScrollEnabled:0];
+  collectionView2 = [(HUCharacteristicEventServicePickerContentViewController *)self collectionView];
+  [collectionView2 setScrollEnabled:0];
 
-  v5 = [(HUCharacteristicEventServicePickerContentViewController *)self collectionView];
-  [v5 setClipsToBounds:1];
+  collectionView3 = [(HUCharacteristicEventServicePickerContentViewController *)self collectionView];
+  [collectionView3 setClipsToBounds:1];
 
-  v6 = [MEMORY[0x277D75348] clearColor];
-  v7 = [(HUCharacteristicEventServicePickerContentViewController *)self collectionView];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView4 = [(HUCharacteristicEventServicePickerContentViewController *)self collectionView];
+  [collectionView4 setBackgroundColor:clearColor];
 
-  v8 = [MEMORY[0x277D75348] clearColor];
-  v9 = [(HUCharacteristicEventServicePickerContentViewController *)self view];
-  [v9 setBackgroundColor:v8];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  view = [(HUCharacteristicEventServicePickerContentViewController *)self view];
+  [view setBackgroundColor:clearColor2];
 
-  v10 = [(HUCharacteristicEventServicePickerContentViewController *)self servicePickerDelegate];
-  v11 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v12 = [v11 toSet];
-  [v10 characteristicEventServicePickerContentViewController:self didChangeNumberOfSelectedItems:{objc_msgSend(v12, "count")}];
+  servicePickerDelegate = [(HUCharacteristicEventServicePickerContentViewController *)self servicePickerDelegate];
+  selectedItems = [(HUSelectableServiceGridViewController *)self selectedItems];
+  toSet = [selectedItems toSet];
+  [servicePickerDelegate characteristicEventServicePickerContentViewController:self didChangeNumberOfSelectedItems:{objc_msgSend(toSet, "count")}];
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v31 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = HUCharacteristicEventServicePickerContentViewController;
-  [(HUSelectableServiceGridViewController *)&v29 itemManagerDidUpdate:a3];
+  [(HUSelectableServiceGridViewController *)&v29 itemManagerDidUpdate:update];
   v20 = [MEMORY[0x277CBEB58] set];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [(HUItemCollectionViewController *)self itemManager];
-  v5 = [v4 allDisplayedItems];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  allDisplayedItems = [itemManager allDisplayedItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v6 = [allDisplayedItems countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -153,7 +153,7 @@ id __106__HUCharacteristicEventServicePickerContentViewController_initWithTrigge
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allDisplayedItems);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
@@ -165,13 +165,13 @@ id __106__HUCharacteristicEventServicePickerContentViewController_initWithTrigge
         if ([v10 conformsToProtocol:&unk_28251AFC0])
         {
           v11 = v10;
-          v12 = [v11 services];
+          services = [v11 services];
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v24[2] = __80__HUCharacteristicEventServicePickerContentViewController_itemManagerDidUpdate___block_invoke;
           v24[3] = &unk_277DB9560;
           v24[4] = self;
-          v13 = [v12 na_any:v24];
+          v13 = [services na_any:v24];
 
           if (v13)
           {
@@ -181,7 +181,7 @@ id __106__HUCharacteristicEventServicePickerContentViewController_initWithTrigge
             v21[3] = &unk_277DBB548;
             v14 = v11;
             v22 = v14;
-            v23 = self;
+            selfCopy = self;
             if (__80__HUCharacteristicEventServicePickerContentViewController_itemManagerDidUpdate___block_invoke_3(v21))
             {
               [v20 addObject:v14];
@@ -190,7 +190,7 @@ id __106__HUCharacteristicEventServicePickerContentViewController_initWithTrigge
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v7 = [allDisplayedItems countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v7);
@@ -200,10 +200,10 @@ id __106__HUCharacteristicEventServicePickerContentViewController_initWithTrigge
   v16 = [v15 copy];
   [(HUSelectableServiceGridViewController *)self setSelectedItems:v16];
 
-  v17 = [(HUCharacteristicEventServicePickerContentViewController *)self servicePickerDelegate];
-  v18 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v19 = [v18 toSet];
-  [v17 characteristicEventServicePickerContentViewController:self didChangeNumberOfSelectedItems:{objc_msgSend(v19, "count")}];
+  servicePickerDelegate = [(HUCharacteristicEventServicePickerContentViewController *)self servicePickerDelegate];
+  selectedItems = [(HUSelectableServiceGridViewController *)self selectedItems];
+  toSet = [selectedItems toSet];
+  [servicePickerDelegate characteristicEventServicePickerContentViewController:self didChangeNumberOfSelectedItems:{objc_msgSend(toSet, "count")}];
 }
 
 uint64_t __80__HUCharacteristicEventServicePickerContentViewController_itemManagerDidUpdate___block_invoke(uint64_t a1, void *a2)
@@ -262,14 +262,14 @@ uint64_t __80__HUCharacteristicEventServicePickerContentViewController_itemManag
   return v8;
 }
 
-- (id)layoutOptionsForSection:(int64_t)a3
+- (id)layoutOptionsForSection:(int64_t)section
 {
   v7.receiver = self;
   v7.super_class = HUCharacteristicEventServicePickerContentViewController;
   v4 = [(HUServiceGridViewController *)&v7 layoutOptionsForSection:?];
   v5 = [v4 copy];
 
-  if (!a3)
+  if (!section)
   {
     [v5 sectionTitleMargin];
     [v5 setSectionTitleMargin:9.0];
@@ -278,50 +278,50 @@ uint64_t __80__HUCharacteristicEventServicePickerContentViewController_itemManag
   return v5;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v7.receiver = self;
   v7.super_class = HUCharacteristicEventServicePickerContentViewController;
-  [(HUSelectableServiceGridViewController *)&v7 configureCell:v6 forItem:a4];
+  [(HUSelectableServiceGridViewController *)&v7 configureCell:cellCopy forItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setShouldColorDescription:0];
+    [cellCopy setShouldColorDescription:0];
   }
 }
 
-- (BOOL)serviceGridItemManager:(id)a3 shouldHideItem:(id)a4
+- (BOOL)serviceGridItemManager:(id)manager shouldHideItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  itemCopy = item;
   if ([objc_opt_class() instancesRespondToSelector:sel_serviceGridItemManager_shouldHideItem_])
   {
     v25.receiver = self;
     v25.super_class = HUCharacteristicEventServicePickerContentViewController;
-    if ([(HUSelectableServiceGridViewController *)&v25 serviceGridItemManager:v6 shouldHideItem:v7])
+    if ([(HUSelectableServiceGridViewController *)&v25 serviceGridItemManager:managerCopy shouldHideItem:itemCopy])
     {
       goto LABEL_3;
     }
   }
 
-  if (![v7 conformsToProtocol:&unk_28251AFC0])
+  if (![itemCopy conformsToProtocol:&unk_28251AFC0])
   {
     goto LABEL_13;
   }
 
-  v9 = v7;
-  v10 = [(HUCharacteristicEventServicePickerContentViewController *)self source];
-  if (v10)
+  filter2 = itemCopy;
+  source = [(HUCharacteristicEventServicePickerContentViewController *)self source];
+  if (source)
   {
-    if (v10 != 1)
+    if (source != 1)
     {
 
       goto LABEL_13;
     }
 
     v22 = 0;
-    v11 = [HUCharacteristicEventOptionProvider hasOptionsForServiceVendingItem:v9 outCharacteristicType:&v22];
+    v11 = [HUCharacteristicEventOptionProvider hasOptionsForServiceVendingItem:filter2 outCharacteristicType:&v22];
     v12 = v22;
     v13 = v12;
     if (!v11)
@@ -333,37 +333,37 @@ LABEL_15:
       goto LABEL_17;
     }
 
-    v14 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
-    v15 = [v14 containsObject:v13];
+    hf_sensingCharacteristicTypes = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+    v15 = [hf_sensingCharacteristicTypes containsObject:v13];
 
     if ((v15 & 1) == 0)
     {
 LABEL_13:
-      v20 = [(HUCharacteristicEventServicePickerContentViewController *)self filter];
+      filter = [(HUCharacteristicEventServicePickerContentViewController *)self filter];
 
-      if (!v20)
+      if (!filter)
       {
         LOBYTE(v8) = 0;
         goto LABEL_17;
       }
 
-      v9 = [(HUCharacteristicEventServicePickerContentViewController *)self filter];
-      v8 = (*(v9 + 2))(v9, v7) ^ 1;
+      filter2 = [(HUCharacteristicEventServicePickerContentViewController *)self filter];
+      v8 = (*(filter2 + 2))(filter2, itemCopy) ^ 1;
       goto LABEL_15;
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
-    v17 = [v9 services];
+    hf_sensingCharacteristicTypes2 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+    services = [filter2 services];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __97__HUCharacteristicEventServicePickerContentViewController_serviceGridItemManager_shouldHideItem___block_invoke;
     v23[3] = &unk_277DB9560;
-    v24 = v16;
-    v18 = v16;
-    v19 = [v17 na_any:v23];
+    v24 = hf_sensingCharacteristicTypes2;
+    v18 = hf_sensingCharacteristicTypes2;
+    v19 = [services na_any:v23];
 
     if (v19)
     {
@@ -400,13 +400,13 @@ uint64_t __97__HUCharacteristicEventServicePickerContentViewController_serviceGr
   return v4;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v4 = [(HUCharacteristicEventServicePickerContentViewController *)self triggerBuilder:a3];
-  v5 = [v4 home];
-  v6 = [v5 hf_currentUserIsAdministrator];
+  v4 = [(HUCharacteristicEventServicePickerContentViewController *)self triggerBuilder:view];
+  home = [v4 home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  return v6;
+  return hf_currentUserIsAdministrator;
 }
 
 - (void)didChangeSelection
@@ -414,44 +414,44 @@ uint64_t __97__HUCharacteristicEventServicePickerContentViewController_serviceGr
   v11.receiver = self;
   v11.super_class = HUCharacteristicEventServicePickerContentViewController;
   [(HUSelectableServiceGridViewController *)&v11 didChangeSelection];
-  v3 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v4 = [v3 toSet];
-  v5 = [v4 anyObject];
+  selectedItems = [(HUSelectableServiceGridViewController *)self selectedItems];
+  toSet = [selectedItems toSet];
+  anyObject = [toSet anyObject];
 
-  if (v5 && ([v5 conformsToProtocol:&unk_28251AFC0] & 1) == 0)
+  if (anyObject && ([anyObject conformsToProtocol:&unk_28251AFC0] & 1) == 0)
   {
     NSLog(&cfstr_OurItemsMustVe.isa);
   }
 
-  if ([v5 conformsToProtocol:&unk_28251AFC0])
+  if ([anyObject conformsToProtocol:&unk_28251AFC0])
   {
-    v6 = v5;
-    v7 = [(HUCharacteristicEventServicePickerContentViewController *)self source];
-    if (v7 == 1)
+    v6 = anyObject;
+    source = [(HUCharacteristicEventServicePickerContentViewController *)self source];
+    if (source == 1)
     {
       [(HUCharacteristicEventServicePickerContentViewController *)self _addCharacteristicEventsForOtherDeviceItem:v6];
     }
 
-    else if (!v7)
+    else if (!source)
     {
       [(HUCharacteristicEventServicePickerContentViewController *)self _addCharacteristicEventsForAlarmItem:v6];
     }
   }
 
-  v8 = [(HUCharacteristicEventServicePickerContentViewController *)self servicePickerDelegate];
-  v9 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v10 = [v9 toSet];
-  [v8 characteristicEventServicePickerContentViewController:self didChangeNumberOfSelectedItems:{objc_msgSend(v10, "count")}];
+  servicePickerDelegate = [(HUCharacteristicEventServicePickerContentViewController *)self servicePickerDelegate];
+  selectedItems2 = [(HUSelectableServiceGridViewController *)self selectedItems];
+  toSet2 = [selectedItems2 toSet];
+  [servicePickerDelegate characteristicEventServicePickerContentViewController:self didChangeNumberOfSelectedItems:{objc_msgSend(toSet2, "count")}];
 }
 
-- (BOOL)canSelectItem:(id)a3 indexPath:(id)a4
+- (BOOL)canSelectItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = HUCharacteristicEventServicePickerContentViewController;
-  if ([(HUSelectableServiceGridViewController *)&v17 canSelectItem:v6 indexPath:a4])
+  if ([(HUSelectableServiceGridViewController *)&v17 canSelectItem:itemCopy indexPath:path])
   {
-    v7 = v6;
+    v7 = itemCopy;
     if ([v7 conformsToProtocol:&unk_28251AFC0])
     {
       v8 = v7;
@@ -464,8 +464,8 @@ uint64_t __97__HUCharacteristicEventServicePickerContentViewController_serviceGr
 
     v9 = v8;
 
-    v10 = [v9 accessories];
-    v11 = [v10 na_any:&__block_literal_global_171];
+    accessories = [v9 accessories];
+    v11 = [accessories na_any:&__block_literal_global_171];
 
     if (v11)
     {
@@ -474,10 +474,10 @@ uint64_t __97__HUCharacteristicEventServicePickerContentViewController_serviceGr
 
     else if (v9)
     {
-      v13 = [v9 services];
-      v14 = [(HUCharacteristicEventServicePickerContentViewController *)self triggerBuilder];
-      v15 = [v14 home];
-      v12 = ![HUCharacteristicEventOptionProvider homeHubUpdateRequiredForServices:v13 forHome:v15];
+      services = [v9 services];
+      triggerBuilder = [(HUCharacteristicEventServicePickerContentViewController *)self triggerBuilder];
+      home = [triggerBuilder home];
+      v12 = ![HUCharacteristicEventOptionProvider homeHubUpdateRequiredForServices:services forHome:home];
     }
 
     else
@@ -494,12 +494,12 @@ uint64_t __97__HUCharacteristicEventServicePickerContentViewController_serviceGr
   return v12;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v10 = v9;
   if ([v10 conformsToProtocol:&unk_28251AFC0])
@@ -514,8 +514,8 @@ uint64_t __97__HUCharacteristicEventServicePickerContentViewController_serviceGr
 
   v12 = v11;
 
-  v13 = [v12 accessories];
-  v14 = [v13 na_any:&__block_literal_global_99_2];
+  accessories = [v12 accessories];
+  v14 = [accessories na_any:&__block_literal_global_99_2];
 
   if (v14)
   {
@@ -538,10 +538,10 @@ LABEL_9:
 
   if (v12)
   {
-    v17 = [v12 services];
-    v18 = [(HUCharacteristicEventServicePickerContentViewController *)self triggerBuilder];
-    v19 = [v18 home];
-    v20 = [HUCharacteristicEventOptionProvider homeHubUpdateRequiredForServices:v17 forHome:v19];
+    services = [v12 services];
+    triggerBuilder = [(HUCharacteristicEventServicePickerContentViewController *)self triggerBuilder];
+    home = [triggerBuilder home];
+    v20 = [HUCharacteristicEventOptionProvider homeHubUpdateRequiredForServices:services forHome:home];
 
     if (v20)
     {
@@ -554,78 +554,78 @@ LABEL_9:
 LABEL_10:
   v28.receiver = self;
   v28.super_class = HUCharacteristicEventServicePickerContentViewController;
-  [(HUSelectableServiceGridViewController *)&v28 collectionView:v6 didSelectItemAtIndexPath:v7];
+  [(HUSelectableServiceGridViewController *)&v28 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
 }
 
-- (void)_addCharacteristicEventsForAlarmItem:(id)a3
+- (void)_addCharacteristicEventsForAlarmItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 services];
-  v5 = [v4 na_map:&__block_literal_global_121_1];
-  v6 = [v5 na_setByFlattening];
+  itemCopy = item;
+  services = [itemCopy services];
+  v5 = [services na_map:&__block_literal_global_121_1];
+  na_setByFlattening = [v5 na_setByFlattening];
 
-  v7 = [v3 latestResults];
-  v8 = [v7 objectForKeyedSubscript:@"HUCharacteristicEventServiceRepresentativeCharacteristicKey"];
+  latestResults = [itemCopy latestResults];
+  v8 = [latestResults objectForKeyedSubscript:@"HUCharacteristicEventServiceRepresentativeCharacteristicKey"];
 
-  if (v8 && [v6 containsObject:v8])
+  if (v8 && [na_setByFlattening containsObject:v8])
   {
     v9 = [MEMORY[0x277CBEB98] setWithObject:v8];
 
-    v6 = v9;
+    na_setByFlattening = v9;
   }
 
-  v10 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+  hf_sensingCharacteristicTypes = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __96__HUCharacteristicEventServicePickerContentViewController__addCharacteristicEventsForAlarmItem___block_invoke_2;
   v38[3] = &unk_277DB9538;
-  v32 = v10;
+  v32 = hf_sensingCharacteristicTypes;
   v39 = v32;
-  v11 = [v6 na_firstObjectPassingTest:v38];
-  v12 = [v11 characteristicType];
+  v11 = [na_setByFlattening na_firstObjectPassingTest:v38];
+  characteristicType = [v11 characteristicType];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __96__HUCharacteristicEventServicePickerContentViewController__addCharacteristicEventsForAlarmItem___block_invoke_3;
   v36[3] = &unk_277DB9538;
-  v13 = v12;
+  v13 = characteristicType;
   v37 = v13;
-  v14 = [v6 na_filter:v36];
+  v14 = [na_setByFlattening na_filter:v36];
   v15 = [MEMORY[0x277CD1970] hf_abnormalValueForSensorCharacteristicType:v13];
   if (![v14 count])
   {
-    NSLog(&cfstr_NoAlarmCharact.isa, v3);
+    NSLog(&cfstr_NoAlarmCharact.isa, itemCopy);
   }
 
-  v16 = self;
+  selfCopy = self;
   if (!v15)
   {
     NSLog(&cfstr_NoAbnormalValu.isa, v13);
   }
 
   v31 = v13;
-  v17 = [(HUCharacteristicEventServicePickerContentViewController *)self eventBuilderItem];
+  eventBuilderItem = [(HUCharacteristicEventServicePickerContentViewController *)self eventBuilderItem];
   v30 = v14;
-  v18 = [v17 setCharacteristics:v14 triggerValue:v15];
+  v18 = [eventBuilderItem setCharacteristics:v14 triggerValue:v15];
 
-  v19 = [(HUCharacteristicEventServicePickerContentViewController *)self flow];
-  if (!v19 || (v20 = v19, -[HUCharacteristicEventServicePickerContentViewController flow](self, "flow"), v21 = objc_claimAutoreleasedReturnValue(), -[HUCharacteristicEventServicePickerContentViewController stepIdentifier](self, "stepIdentifier"), v22 = v8, v23 = v6, v24 = v4, v25 = v3, v26 = objc_claimAutoreleasedReturnValue(), v27 = [v21 shouldSaveEventBuildersToTriggerBuilderForStep:v26], v26, v3 = v25, v4 = v24, v6 = v23, v8 = v22, v16 = self, v21, v20, v27))
+  flow = [(HUCharacteristicEventServicePickerContentViewController *)self flow];
+  if (!flow || (v20 = flow, -[HUCharacteristicEventServicePickerContentViewController flow](self, "flow"), v21 = objc_claimAutoreleasedReturnValue(), -[HUCharacteristicEventServicePickerContentViewController stepIdentifier](self, "stepIdentifier"), v22 = v8, v23 = na_setByFlattening, v24 = services, v25 = itemCopy, v26 = objc_claimAutoreleasedReturnValue(), v27 = [v21 shouldSaveEventBuildersToTriggerBuilderForStep:v26], v26, itemCopy = v25, services = v24, na_setByFlattening = v23, v8 = v22, selfCopy = self, v21, v20, v27))
   {
-    v28 = [v18 deletions];
+    deletions = [v18 deletions];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __96__HUCharacteristicEventServicePickerContentViewController__addCharacteristicEventsForAlarmItem___block_invoke_4;
     v35[3] = &unk_277DBB5D8;
-    v35[4] = v16;
-    [v28 na_each:v35];
+    v35[4] = selfCopy;
+    [deletions na_each:v35];
 
-    v29 = [v18 additions];
+    additions = [v18 additions];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __96__HUCharacteristicEventServicePickerContentViewController__addCharacteristicEventsForAlarmItem___block_invoke_5;
     v34[3] = &unk_277DBB5D8;
-    v34[4] = v16;
-    [v29 na_each:v34];
+    v34[4] = selfCopy;
+    [additions na_each:v34];
   }
 }
 
@@ -682,19 +682,19 @@ void __96__HUCharacteristicEventServicePickerContentViewController__addCharacter
   [v4 addEventBuilder:v3];
 }
 
-- (void)_addCharacteristicEventsForOtherDeviceItem:(id)a3
+- (void)_addCharacteristicEventsForOtherDeviceItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 services];
-  v6 = [v5 na_map:&__block_literal_global_131_2];
-  v7 = [v6 na_setByFlattening];
+  itemCopy = item;
+  services = [itemCopy services];
+  v6 = [services na_map:&__block_literal_global_131_2];
+  na_setByFlattening = [v6 na_setByFlattening];
 
   v30[0] = 0;
-  [HUCharacteristicEventOptionProvider hasOptionsForServiceVendingItem:v4 outCharacteristicType:v30];
+  [HUCharacteristicEventOptionProvider hasOptionsForServiceVendingItem:itemCopy outCharacteristicType:v30];
   v8 = v30[0];
   if (!v8)
   {
-    NSLog(&cfstr_NoSupportedCha.isa, v4);
+    NSLog(&cfstr_NoSupportedCha.isa, itemCopy);
   }
 
   v28[0] = MEMORY[0x277D85DD0];
@@ -703,33 +703,33 @@ void __96__HUCharacteristicEventServicePickerContentViewController__addCharacter
   v28[3] = &unk_277DB9538;
   v9 = v8;
   v29 = v9;
-  v10 = [v7 na_filter:v28];
+  v10 = [na_setByFlattening na_filter:v28];
   if (![v10 count])
   {
-    NSLog(&cfstr_NoCharacterist.isa, v9, v4);
+    NSLog(&cfstr_NoCharacterist.isa, v9, itemCopy);
   }
 
-  v11 = [(HUCharacteristicEventServicePickerContentViewController *)self eventBuilderItem];
-  v12 = [v11 setCharacteristics:v10 triggerValue:0];
+  eventBuilderItem = [(HUCharacteristicEventServicePickerContentViewController *)self eventBuilderItem];
+  v12 = [eventBuilderItem setCharacteristics:v10 triggerValue:0];
 
-  v13 = [(HUCharacteristicEventServicePickerContentViewController *)self flow];
-  if (!v13 || (v14 = v13, -[HUCharacteristicEventServicePickerContentViewController flow](self, "flow"), v25 = v10, v15 = v9, v16 = v4, v17 = v7, v18 = v5, v19 = objc_claimAutoreleasedReturnValue(), -[HUCharacteristicEventServicePickerContentViewController stepIdentifier](self, "stepIdentifier"), v20 = self, v21 = objc_claimAutoreleasedReturnValue(), v22 = [v19 shouldSaveEventBuildersToTriggerBuilderForStep:v21], v21, self = v20, v19, v5 = v18, v7 = v17, v4 = v16, v9 = v15, v10 = v25, v14, v22))
+  flow = [(HUCharacteristicEventServicePickerContentViewController *)self flow];
+  if (!flow || (v14 = flow, -[HUCharacteristicEventServicePickerContentViewController flow](self, "flow"), v25 = v10, v15 = v9, v16 = itemCopy, v17 = na_setByFlattening, v18 = services, v19 = objc_claimAutoreleasedReturnValue(), -[HUCharacteristicEventServicePickerContentViewController stepIdentifier](self, "stepIdentifier"), v20 = self, v21 = objc_claimAutoreleasedReturnValue(), v22 = [v19 shouldSaveEventBuildersToTriggerBuilderForStep:v21], v21, self = v20, v19, services = v18, na_setByFlattening = v17, itemCopy = v16, v9 = v15, v10 = v25, v14, v22))
   {
-    v23 = [v12 deletions];
+    deletions = [v12 deletions];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __102__HUCharacteristicEventServicePickerContentViewController__addCharacteristicEventsForOtherDeviceItem___block_invoke_3;
     v27[3] = &unk_277DBB5D8;
     v27[4] = self;
-    [v23 na_each:v27];
+    [deletions na_each:v27];
 
-    v24 = [v12 additions];
+    additions = [v12 additions];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __102__HUCharacteristicEventServicePickerContentViewController__addCharacteristicEventsForOtherDeviceItem___block_invoke_4;
     v26[3] = &unk_277DBB5D8;
     v26[4] = self;
-    [v24 na_each:v26];
+    [additions na_each:v26];
   }
 }
 
@@ -773,7 +773,7 @@ void __102__HUCharacteristicEventServicePickerContentViewController__addCharacte
   aBlock[1] = 3221225472;
   aBlock[2] = __81__HUCharacteristicEventServicePickerContentViewController_transformationSetBlock__block_invoke;
   aBlock[3] = &__block_descriptor_40_e23___NSSet_16__0__HFItem_8l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
 
   return v2;

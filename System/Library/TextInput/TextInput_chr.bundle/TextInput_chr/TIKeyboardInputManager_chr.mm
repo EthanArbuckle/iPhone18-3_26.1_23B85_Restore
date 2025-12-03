@@ -1,8 +1,8 @@
 @interface TIKeyboardInputManager_chr
-+ (id)stringByComposingInput:(id)a3;
++ (id)stringByComposingInput:(id)input;
 - (id)contextualDisplayKeys;
-- (id)externalStringToInternal:(id)a3;
-- (id)internalStringToExternal:(id)a3;
+- (id)externalStringToInternal:(id)internal;
+- (id)internalStringToExternal:(id)external;
 - (void)initImplementation;
 @end
 
@@ -18,11 +18,11 @@
   return *(&self->super.super.super.isa + *MEMORY[0x29EDC7290]);
 }
 
-+ (id)stringByComposingInput:(id)a3
++ (id)stringByComposingInput:(id)input
 {
   v23 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [v3 length];
+  inputCopy = input;
+  v4 = [inputCopy length];
   v5 = MEMORY[0x2A1C7C4A8]();
   v7 = &v22 - v6;
   if (v5)
@@ -33,7 +33,7 @@
     v10 = 0;
     while (1)
     {
-      v11 = [v3 characterAtIndex:{v9, v22, v23}];
+      v11 = [inputCopy characterAtIndex:{v9, v22, v23}];
       if (v4 - 1 > v9)
       {
         break;
@@ -51,7 +51,7 @@ LABEL_42:
       }
     }
 
-    v12 = [v3 characterAtIndex:v10 + 1];
+    v12 = [inputCopy characterAtIndex:v10 + 1];
     if (v11 <= 5067)
     {
       if (v11 > 5048)
@@ -179,17 +179,17 @@ LABEL_45:
   return v19;
 }
 
-- (id)internalStringToExternal:(id)a3
+- (id)internalStringToExternal:(id)external
 {
-  v4 = a3;
+  externalCopy = external;
   if ([(TIKeyboardInputManager_chr *)self inHardwareKeyboardMode])
   {
-    v5 = v4;
+    v5 = externalCopy;
   }
 
   else
   {
-    v5 = [objc_opt_class() stringByComposingInput:v4];
+    v5 = [objc_opt_class() stringByComposingInput:externalCopy];
   }
 
   v6 = v5;
@@ -197,27 +197,27 @@ LABEL_45:
   return v6;
 }
 
-- (id)externalStringToInternal:(id)a3
+- (id)externalStringToInternal:(id)internal
 {
   v17[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  internalCopy = internal;
   if ([(TIKeyboardInputManager_chr *)self inHardwareKeyboardMode])
   {
-    v5 = v4;
+    v5 = internalCopy;
   }
 
   else
   {
-    [v4 length];
+    [internalCopy length];
     MEMORY[0x2A1C7C4A8]();
     v7 = v17 - v6;
-    if ([v4 length])
+    if ([internalCopy length])
     {
       v8 = 0;
       v9 = 0;
       do
       {
-        v10 = [v4 characterAtIndex:v8];
+        v10 = [internalCopy characterAtIndex:v8];
         v11 = 1;
         v12 = 1;
         switch(v10)
@@ -447,7 +447,7 @@ LABEL_80:
         ++v8;
       }
 
-      while ([v4 length] > v8);
+      while ([internalCopy length] > v8);
       v14 = v9;
     }
 
@@ -467,13 +467,13 @@ LABEL_80:
 - (id)contextualDisplayKeys
 {
   v26 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = [(TIKeyboardInputManager_chr *)self keyboardState];
-  v5 = [v4 documentState];
-  v6 = [v5 contextBeforeInput];
-  v7 = [v6 _lastGrapheme];
-  v8 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v9 = [v7 stringByTrimmingCharactersInSet:v8];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  keyboardState = [(TIKeyboardInputManager_chr *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
+  _lastGrapheme = [contextBeforeInput _lastGrapheme];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v9 = [_lastGrapheme stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v23 = 0u;
   v24 = 0u;
@@ -502,15 +502,15 @@ LABEL_80:
 
           if (([v17 isEqualToString:v9] & 1) == 0 && (objc_msgSend(v17, "hasSuffix:", v14) & 1) == 0)
           {
-            [v3 setObject:v17 forKeyedSubscript:v14];
+            [dictionary setObject:v17 forKeyedSubscript:v14];
           }
         }
 
-        v18 = [v3 objectForKeyedSubscript:v14];
+        v18 = [dictionary objectForKeyedSubscript:v14];
 
         if (!v18)
         {
-          [v3 setObject:@"UI-Nothing" forKeyedSubscript:v14];
+          [dictionary setObject:@"UI-Nothing" forKeyedSubscript:v14];
         }
       }
 
@@ -522,7 +522,7 @@ LABEL_80:
 
   v19 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return dictionary;
 }
 
 @end

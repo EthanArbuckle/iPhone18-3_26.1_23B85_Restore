@@ -1,6 +1,6 @@
 @interface CardAuxiliaryNavigationBarViewModel
 - (_TtC11BookStoreUI35CardAuxiliaryNavigationBarViewModel)init;
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5;
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event;
 @end
 
 @implementation CardAuxiliaryNavigationBarViewModel
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event
 {
-  v7 = a3;
-  v8 = self;
-  sub_13FC60(v7, a4);
+  triggerCopy = trigger;
+  selfCopy = self;
+  sub_13FC60(triggerCopy, state);
 }
 
 @end

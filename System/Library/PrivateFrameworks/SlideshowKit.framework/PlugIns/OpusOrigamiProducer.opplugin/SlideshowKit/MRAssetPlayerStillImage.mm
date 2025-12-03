@@ -1,17 +1,17 @@
 @interface MRAssetPlayerStillImage
-- (MRAssetPlayerStillImage)initWithPath:(id)a3 size:(CGSize)a4 master:(id)a5 andOptions:(id)a6;
-- (id)retainedByUserImageAtTime:(double)a3 displayLinkTimestamp:(double)a4;
+- (MRAssetPlayerStillImage)initWithPath:(id)path size:(CGSize)size master:(id)master andOptions:(id)options;
+- (id)retainedByUserImageAtTime:(double)time displayLinkTimestamp:(double)timestamp;
 - (void)dealloc;
-- (void)loadForTime:(double)a3;
+- (void)loadForTime:(double)time;
 @end
 
 @implementation MRAssetPlayerStillImage
 
-- (MRAssetPlayerStillImage)initWithPath:(id)a3 size:(CGSize)a4 master:(id)a5 andOptions:(id)a6
+- (MRAssetPlayerStillImage)initWithPath:(id)path size:(CGSize)size master:(id)master andOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = MRAssetPlayerStillImage;
-  v6 = [(MRAssetPlayer *)&v8 initWithPath:a3 size:a5 master:a6 andOptions:a4.width, a4.height];
+  v6 = [(MRAssetPlayer *)&v8 initWithPath:path size:master master:options andOptions:size.width, size.height];
   if (v6)
   {
     v6->_semaphore = dispatch_semaphore_create(0);
@@ -36,11 +36,11 @@
   [(MRAssetPlayer *)&v4 dealloc];
 }
 
-- (id)retainedByUserImageAtTime:(double)a3 displayLinkTimestamp:(double)a4
+- (id)retainedByUserImageAtTime:(double)time displayLinkTimestamp:(double)timestamp
 {
   if (self->_isLoaded)
   {
-    v5 = [(MRImage *)self->super._image retainByUser:a3];
+    retainByUser = [(MRImage *)self->super._image retainByUser:time];
     semaphore = self->_semaphore;
     if (semaphore)
     {
@@ -48,18 +48,18 @@
       self->_semaphore = 0;
     }
 
-    return v5;
+    return retainByUser;
   }
 
   objc_sync_enter(self);
   image = self->super._image;
   if ((image || self->super._thumbnailIsOK && (image = [-[MRAssetMaster thumbnailForFlagsMonochromatic:mipmap:powerOfTwo:](self->super._master thumbnailForFlagsMonochromatic:self->super._isMonochromatic mipmap:self->super._generatesMipmap powerOfTwo:{self->super._usesPowerOfTwo), "retainByUser"}], (self->super._image = image) != 0)) && (self->_isLoaded || self->super._thumbnailIsOK))
   {
-    v5 = [(MRImage *)image retainByUser];
+    retainByUser = [(MRImage *)image retainByUser];
     objc_sync_exit(self);
-    if (v5)
+    if (retainByUser)
     {
-      return v5;
+      return retainByUser;
     }
   }
 
@@ -75,7 +75,7 @@
   return [(MRImage *)v9 retainByUser];
 }
 
-- (void)loadForTime:(double)a3
+- (void)loadForTime:(double)time
 {
   if (!self->_isLoaded)
   {

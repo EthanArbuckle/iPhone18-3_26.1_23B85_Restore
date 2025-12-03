@@ -1,25 +1,25 @@
 @interface HDCodableWorkoutSessionGlobalState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionState:(BOOL)a3;
-- (void)setHasSessionStateChangeDate:(BOOL)a3;
-- (void)setHasSessionStateEvent:(BOOL)a3;
-- (void)setHasSessionStateEventDate:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionState:(BOOL)state;
+- (void)setHasSessionStateChangeDate:(BOOL)date;
+- (void)setHasSessionStateEvent:(BOOL)event;
+- (void)setHasSessionStateEventDate:(BOOL)date;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableWorkoutSessionGlobalState
 
-- (void)setHasSessionState:(BOOL)a3
+- (void)setHasSessionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSessionStateChangeDate:(BOOL)a3
+- (void)setHasSessionStateChangeDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSessionStateEvent:(BOOL)a3
+- (void)setHasSessionStateEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 8;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSessionStateEventDate:(BOOL)a3
+- (void)setHasSessionStateEventDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 16;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 32;
   }
@@ -92,22 +92,22 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   events = self->_events;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!events)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventsCopy];
 }
 
 - (id)description
@@ -116,8 +116,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableWorkoutSessionGlobalState;
   v4 = [(HDCodableWorkoutSessionGlobalState *)&v8 description];
-  v5 = [(HDCodableWorkoutSessionGlobalState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableWorkoutSessionGlobalState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -125,12 +125,12 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sessionState];
-    [v3 setObject:v17 forKey:@"sessionState"];
+    [dictionary setObject:v17 forKey:@"sessionState"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -151,7 +151,7 @@ LABEL_3:
   }
 
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:self->_sessionStateChangeDate];
-  [v3 setObject:v18 forKey:@"sessionStateChangeDate"];
+  [dictionary setObject:v18 forKey:@"sessionStateChangeDate"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -167,7 +167,7 @@ LABEL_4:
 
 LABEL_24:
   v19 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sessionStateEvent];
-  [v3 setObject:v19 forKey:@"sessionStateEvent"];
+  [dictionary setObject:v19 forKey:@"sessionStateEvent"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -183,7 +183,7 @@ LABEL_5:
 
 LABEL_25:
   v20 = [MEMORY[0x277CCABB0] numberWithDouble:self->_sessionStateEventDate];
-  [v3 setObject:v20 forKey:@"sessionStateEventDate"];
+  [dictionary setObject:v20 forKey:@"sessionStateEventDate"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -199,21 +199,21 @@ LABEL_6:
 
 LABEL_26:
   v21 = [MEMORY[0x277CCABB0] numberWithDouble:self->_startDate];
-  [v3 setObject:v21 forKey:@"startDate"];
+  [dictionary setObject:v21 forKey:@"startDate"];
 
   if (*&self->_has)
   {
 LABEL_7:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_endDate];
-    [v3 setObject:v5 forKey:@"endDate"];
+    [dictionary setObject:v5 forKey:@"endDate"];
   }
 
 LABEL_8:
   currentActivity = self->_currentActivity;
   if (currentActivity)
   {
-    v7 = [(HDCodableWorkoutActivity *)currentActivity dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"currentActivity"];
+    dictionaryRepresentation = [(HDCodableWorkoutActivity *)currentActivity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"currentActivity"];
   }
 
   if ([(NSMutableArray *)self->_events count])
@@ -238,8 +238,8 @@ LABEL_8:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -248,18 +248,18 @@ LABEL_8:
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"events"];
+    [dictionary setObject:v8 forKey:@"events"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -375,14 +375,14 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_sessionState;
-    *(v4 + 72) |= 2u;
+    toCopy[2] = self->_sessionState;
+    *(toCopy + 72) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -401,8 +401,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = *&self->_sessionStateChangeDate;
-  *(v4 + 72) |= 4u;
+  toCopy[3] = *&self->_sessionStateChangeDate;
+  *(toCopy + 72) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -416,8 +416,8 @@ LABEL_4:
   }
 
 LABEL_19:
-  v4[4] = self->_sessionStateEvent;
-  *(v4 + 72) |= 8u;
+  toCopy[4] = self->_sessionStateEvent;
+  *(toCopy + 72) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -431,8 +431,8 @@ LABEL_5:
   }
 
 LABEL_20:
-  v4[5] = *&self->_sessionStateEventDate;
-  *(v4 + 72) |= 0x10u;
+  toCopy[5] = *&self->_sessionStateEventDate;
+  *(toCopy + 72) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -446,29 +446,29 @@ LABEL_6:
   }
 
 LABEL_21:
-  v4[6] = *&self->_startDate;
-  *(v4 + 72) |= 0x20u;
+  toCopy[6] = *&self->_startDate;
+  *(toCopy + 72) |= 0x20u;
   if (*&self->_has)
   {
 LABEL_7:
-    v4[1] = *&self->_endDate;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = *&self->_endDate;
+    *(toCopy + 72) |= 1u;
   }
 
 LABEL_8:
-  v10 = v4;
+  v10 = toCopy;
   if (self->_currentActivity)
   {
-    [v4 setCurrentActivity:?];
+    [toCopy setCurrentActivity:?];
   }
 
   if ([(HDCodableWorkoutSessionGlobalState *)self eventsCount])
   {
     [v10 clearEvents];
-    v6 = [(HDCodableWorkoutSessionGlobalState *)self eventsCount];
-    if (v6)
+    eventsCount = [(HDCodableWorkoutSessionGlobalState *)self eventsCount];
+    if (eventsCount)
     {
-      v7 = v6;
+      v7 = eventsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableWorkoutSessionGlobalState *)self eventsAtIndex:i];
@@ -478,10 +478,10 @@ LABEL_8:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -561,7 +561,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v8 = [(HDCodableWorkoutActivity *)self->_currentActivity copyWithZone:a3];
+  v8 = [(HDCodableWorkoutActivity *)self->_currentActivity copyWithZone:zone];
   v9 = v6[7];
   v6[7] = v8;
 
@@ -584,7 +584,7 @@ LABEL_8:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addEvents:v15];
       }
 
@@ -598,24 +598,24 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_sessionState != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_sessionState != *(equalCopy + 2))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
 LABEL_36:
     v8 = 0;
@@ -624,77 +624,77 @@ LABEL_36:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_sessionStateChangeDate != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_sessionStateChangeDate != *(equalCopy + 3))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_sessionStateEvent != *(v4 + 4))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_sessionStateEvent != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 72) & 0x10) == 0 || self->_sessionStateEventDate != *(v4 + 5))
+    if ((*(equalCopy + 72) & 0x10) == 0 || self->_sessionStateEventDate != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 72) & 0x10) != 0)
+  else if ((*(equalCopy + 72) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 72) & 0x20) == 0 || self->_startDate != *(v4 + 6))
+    if ((*(equalCopy + 72) & 0x20) == 0 || self->_startDate != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 72) & 0x20) != 0)
+  else if ((*(equalCopy + 72) & 0x20) != 0)
   {
     goto LABEL_36;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_36;
   }
 
   currentActivity = self->_currentActivity;
-  if (currentActivity | *(v4 + 7) && ![(HDCodableWorkoutActivity *)currentActivity isEqual:?])
+  if (currentActivity | *(equalCopy + 7) && ![(HDCodableWorkoutActivity *)currentActivity isEqual:?])
   {
     goto LABEL_36;
   }
 
   events = self->_events;
-  if (events | *(v4 + 8))
+  if (events | *(equalCopy + 8))
   {
     v8 = [(NSMutableArray *)events isEqual:?];
   }
@@ -876,17 +876,17 @@ LABEL_17:
   return v23 ^ [(NSMutableArray *)self->_events hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 72);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 72);
   if ((v6 & 2) != 0)
   {
-    self->_sessionState = *(v4 + 2);
+    self->_sessionState = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v6 = *(v4 + 72);
+    v6 = *(fromCopy + 72);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -899,14 +899,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 72) & 4) == 0)
+  else if ((*(fromCopy + 72) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sessionStateChangeDate = *(v4 + 3);
+  self->_sessionStateChangeDate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 8) == 0)
   {
 LABEL_4:
@@ -919,9 +919,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_sessionStateEvent = *(v4 + 4);
+  self->_sessionStateEvent = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 0x10) == 0)
   {
 LABEL_5:
@@ -934,9 +934,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_sessionStateEventDate = *(v4 + 5);
+  self->_sessionStateEventDate = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 0x20) == 0)
   {
 LABEL_6:
@@ -949,12 +949,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_startDate = *(v4 + 6);
+  self->_startDate = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
 LABEL_7:
-    self->_endDate = *(v4 + 1);
+    self->_endDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

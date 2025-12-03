@@ -1,15 +1,15 @@
 @interface _FPFilePresenterObserver
 - (NSFileProviderManager)parentConnection;
-- (void)observePresentedFilesDidChange:(id)a3;
+- (void)observePresentedFilesDidChange:(id)change;
 @end
 
 @implementation _FPFilePresenterObserver
 
-- (void)observePresentedFilesDidChange:(id)a3
+- (void)observePresentedFilesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_parentConnection);
-  [WeakRetained setPresentedFiles:v4];
+  [WeakRetained setPresentedFiles:changeCopy];
 }
 
 - (NSFileProviderManager)parentConnection

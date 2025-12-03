@@ -1,28 +1,28 @@
 @interface TGTextGenerationPrompt
-- (BOOL)isEqual:(id)a3;
-- (TGTextGenerationPrompt)initWithInstructionText:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TGTextGenerationPrompt)initWithInstructionText:(id)text;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation TGTextGenerationPrompt
 
-- (TGTextGenerationPrompt)initWithInstructionText:(id)a3
+- (TGTextGenerationPrompt)initWithInstructionText:(id)text
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = TGTextGenerationPrompt;
   v5 = [(TGTextGenerationPrompt *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [textCopy copy];
     instructionText = v5->_instructionText;
     v5->_instructionText = v6;
 
     v14 = @"instructionText";
-    v15[0] = v4;
+    v15[0] = textCopy;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v9 = [v8 description];
     description = v5->_description;
@@ -33,48 +33,48 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TGTextGenerationPrompt alloc];
-  v5 = [(TGTextGenerationPrompt *)self instructionText];
-  v6 = [(TGTextGenerationPrompt *)v4 initWithInstructionText:v5];
+  instructionText = [(TGTextGenerationPrompt *)self instructionText];
+  v6 = [(TGTextGenerationPrompt *)v4 initWithInstructionText:instructionText];
 
-  v7 = [(TGTextGenerationPrompt *)self contextText];
-  [(TGTextGenerationPrompt *)v6 setContextText:v7];
+  contextText = [(TGTextGenerationPrompt *)self contextText];
+  [(TGTextGenerationPrompt *)v6 setContextText:contextText];
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TGMutableTextGenerationPrompt alloc];
-  v5 = [(TGTextGenerationPrompt *)self instructionText];
-  v6 = [(TGTextGenerationPrompt *)v4 initWithInstructionText:v5];
+  instructionText = [(TGTextGenerationPrompt *)self instructionText];
+  v6 = [(TGTextGenerationPrompt *)v4 initWithInstructionText:instructionText];
 
-  v7 = [(TGTextGenerationPrompt *)self contextText];
-  [(TGTextGenerationPrompt *)v6 setContextText:v7];
+  contextText = [(TGTextGenerationPrompt *)self contextText];
+  [(TGTextGenerationPrompt *)v6 setContextText:contextText];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TGTextGenerationPrompt *)self instructionText];
-  v4 = [v3 hash];
+  instructionText = [(TGTextGenerationPrompt *)self instructionText];
+  v4 = [instructionText hash];
 
-  v5 = [(TGTextGenerationPrompt *)self contextText];
-  v6 = [v5 hash];
+  contextText = [(TGTextGenerationPrompt *)self contextText];
+  v6 = [contextText hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -85,13 +85,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(TGTextGenerationPrompt *)self instructionText];
-    v8 = [v6 instructionText];
-    if ([v7 isEqual:v8])
+    instructionText = [(TGTextGenerationPrompt *)self instructionText];
+    instructionText2 = [v6 instructionText];
+    if ([instructionText isEqual:instructionText2])
     {
-      v9 = [(TGTextGenerationPrompt *)self contextText];
-      v10 = [v6 contextText];
-      v11 = TGTextGenerationEqualAllowingNil(v9, v10);
+      contextText = [(TGTextGenerationPrompt *)self contextText];
+      contextText2 = [v6 contextText];
+      v11 = TGTextGenerationEqualAllowingNil(contextText, contextText2);
     }
 
     else

@@ -1,7 +1,7 @@
 @interface TESPatternMatcherBase
 - (TESPatternMatcherBase)init;
-- (id)createMatchResultForMatchRange:(_NSRange)a3 sourceString:(id)a4;
-- (id)matchesForString:(id)a3 searchRange:(_NSRange)a4;
+- (id)createMatchResultForMatchRange:(_NSRange)range sourceString:(id)string;
+- (id)matchesForString:(id)string searchRange:(_NSRange)range;
 - (void)configurePrecompiledRegularExpression;
 @end
 
@@ -25,22 +25,22 @@
 - (void)configurePrecompiledRegularExpression
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = [a1 pattern];
-  v6 = [a2 localizedDescription];
+  pattern = [self pattern];
+  localizedDescription = [a2 localizedDescription];
   OUTLINED_FUNCTION_0_2();
   _os_log_error_impl(&dword_1AF04E000, a3, OS_LOG_TYPE_ERROR, "configurePrecompiledRegularExpression: regular expression pattern %{public}@ could not be compiled. Error: '%{public}@'", v7, 0x16u);
 }
 
-- (id)createMatchResultForMatchRange:(_NSRange)a3 sourceString:(id)a4
+- (id)createMatchResultForMatchRange:(_NSRange)range sourceString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v8 = objc_alloc_init(TESMatchResult);
   [(TESMatchResult *)v8 setMatchType:[(TESPatternMatcherBase *)self matchType]];
   [(TESMatchResult *)v8 setEffectType:[(TESPatternMatcherBase *)self effectType]];
   [(TESMatchResult *)v8 setMatchRange:location, length];
-  [(TESMatchResult *)v8 setSourceString:v7];
+  [(TESMatchResult *)v8 setSourceString:stringCopy];
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
@@ -49,23 +49,23 @@
   return v8;
 }
 
-- (id)matchesForString:(id)a3 searchRange:(_NSRange)a4
+- (id)matchesForString:(id)string searchRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(TESPatternMatcherBase *)self regularExpression];
+  regularExpression = [(TESPatternMatcherBase *)self regularExpression];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__TESPatternMatcherBase_matchesForString_searchRange___block_invoke;
   v14[3] = &unk_1E7A5F6C8;
   v14[4] = self;
-  v15 = v7;
+  v15 = stringCopy;
   v16 = v8;
   v10 = v8;
-  v11 = v7;
-  [v9 enumerateMatchesInString:v11 options:0 range:location usingBlock:{length, v14}];
+  v11 = stringCopy;
+  [regularExpression enumerateMatchesInString:v11 options:0 range:location usingBlock:{length, v14}];
 
   v12 = [v10 copy];
 

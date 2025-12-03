@@ -1,18 +1,18 @@
 @interface TrackCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation TrackCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicMessagesApp.TrackCellView" hasInstanceMethod:@"isNowPlaying" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicMessagesApp.TrackCellView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicMessagesApp.TrackCellView" hasInstanceMethod:@"artist" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicMessagesApp.TrackCellView" hasInstanceMethod:@"isExplicit" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicMessagesApp.TrackCellView" hasInstanceMethod:@"isNowPlaying" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicMessagesApp.TrackCellView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicMessagesApp.TrackCellView" hasInstanceMethod:@"artist" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicMessagesApp.TrackCellView" hasInstanceMethod:@"isExplicit" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

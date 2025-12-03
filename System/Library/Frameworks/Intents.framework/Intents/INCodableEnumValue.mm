@@ -1,24 +1,24 @@
 @interface INCodableEnumValue
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)_intents_compareValue:(id)a3 relation:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (BOOL)_intents_compareValue:(id)value relation:(unint64_t)relation;
+- (BOOL)isEqual:(id)equal;
 - (INCodableEnum)_codableEnum;
-- (INCodableEnumValue)initWithCoder:(id)a3;
+- (INCodableEnumValue)initWithCoder:(id)coder;
 - (NSString)localizedDisplayName;
 - (id)__INCodableEnumDisplayNameIDKey;
 - (id)__INCodableEnumDisplayNameKey;
 - (id)__INCodableEnumIndexKey;
 - (id)__INCodableEnumNameKey;
 - (id)__INCodableEnumSynonymsKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedDisplayNameForLanguage:(id)a3;
-- (id)localizedDisplayNameWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedDisplayNameForLanguage:(id)language;
+- (id)localizedDisplayNameWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableEnumValue
@@ -32,49 +32,49 @@
 
 - (id)__INCodableEnumIndexKey
 {
-  v2 = [(INCodableEnumValue *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueIndexKey];
+  _codableEnum = [(INCodableEnumValue *)self _codableEnum];
+  __INCodableEnumValueIndexKey = [objc_opt_class() __INCodableEnumValueIndexKey];
 
-  return v3;
+  return __INCodableEnumValueIndexKey;
 }
 
 - (id)__INCodableEnumNameKey
 {
-  v2 = [(INCodableEnumValue *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueNameKey];
+  _codableEnum = [(INCodableEnumValue *)self _codableEnum];
+  __INCodableEnumValueNameKey = [objc_opt_class() __INCodableEnumValueNameKey];
 
-  return v3;
+  return __INCodableEnumValueNameKey;
 }
 
 - (id)__INCodableEnumDisplayNameKey
 {
-  v2 = [(INCodableEnumValue *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueDisplayNameKey];
+  _codableEnum = [(INCodableEnumValue *)self _codableEnum];
+  __INCodableEnumValueDisplayNameKey = [objc_opt_class() __INCodableEnumValueDisplayNameKey];
 
-  return v3;
+  return __INCodableEnumValueDisplayNameKey;
 }
 
 - (id)__INCodableEnumDisplayNameIDKey
 {
-  v2 = [(INCodableEnumValue *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueDisplayNameIDKey];
+  _codableEnum = [(INCodableEnumValue *)self _codableEnum];
+  __INCodableEnumValueDisplayNameIDKey = [objc_opt_class() __INCodableEnumValueDisplayNameIDKey];
 
-  return v3;
+  return __INCodableEnumValueDisplayNameIDKey;
 }
 
 - (id)__INCodableEnumSynonymsKey
 {
-  v2 = [(INCodableEnumValue *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueSynonymsKey];
+  _codableEnum = [(INCodableEnumValue *)self _codableEnum];
+  __INCodableEnumValueSynonymsKey = [objc_opt_class() __INCodableEnumValueSynonymsKey];
 
-  return v3;
+  return __INCodableEnumValueSynonymsKey;
 }
 
-- (BOOL)_intents_compareValue:(id)a3 relation:(unint64_t)a4
+- (BOOL)_intents_compareValue:(id)value relation:(unint64_t)relation
 {
-  v6 = a3;
+  valueCopy = value;
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[INCodableEnumValue index](self, "index")}];
-  v8 = v6;
+  v8 = valueCopy;
   if (v8)
   {
     objc_opt_class();
@@ -99,7 +99,7 @@
   v11 = [v10 if_flatMap:&__block_literal_global_71237];
   if (v11)
   {
-    v12 = [v7 _intents_compareValue:v11 relation:a4];
+    v12 = [v7 _intents_compareValue:v11 relation:relation];
   }
 
   else
@@ -127,9 +127,9 @@
 
     v16 = v15;
 
-    v17 = [v16 index];
-    v18 = [v13 numberWithInteger:v17];
-    v12 = [v7 _intents_compareValue:v18 relation:a4];
+    index = [v16 index];
+    v18 = [v13 numberWithInteger:index];
+    v12 = [v7 _intents_compareValue:v18 relation:relation];
   }
 
   return v12;
@@ -144,96 +144,96 @@ id __90__INCodableEnumValue_INCodableAttributeRelationComparing___intents_compar
   return v4;
 }
 
-- (INCodableEnumValue)initWithCoder:(id)a3
+- (INCodableEnumValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = INCodableEnumValue;
   v5 = [(INCodableEnumValue *)&v18 init];
   if (v5)
   {
-    -[INCodableEnumValue setIndex:](v5, "setIndex:", [v4 decodeIntegerForKey:@"index"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    -[INCodableEnumValue setIndex:](v5, "setIndex:", [coderCopy decodeIntegerForKey:@"index"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(INCodableEnumValue *)v5 setName:v6];
 
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"displayName"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"displayName"];
     [(INCodableEnumValue *)v5 setDisplayName:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayNameLocID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayNameLocID"];
     [(INCodableEnumValue *)v5 setDisplayNameLocID:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_codableEnum"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_codableEnum"];
     [(INCodableEnumValue *)v5 _setCodableEnum:v12];
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"synonyms"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"synonyms"];
     [(INCodableEnumValue *)v5 setSynonyms:v16];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[INCodableEnumValue index](self forKey:{"index"), @"index"}];
-  v5 = [(INCodableEnumValue *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[INCodableEnumValue index](self forKey:{"index"), @"index"}];
+  name = [(INCodableEnumValue *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(INCodableEnumValue *)self displayName];
-  [v4 encodeObject:v6 forKey:@"displayName"];
+  displayName = [(INCodableEnumValue *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v7 = [(INCodableEnumValue *)self displayNameLocID];
-  [v4 encodeObject:v7 forKey:@"displayNameLocID"];
+  displayNameLocID = [(INCodableEnumValue *)self displayNameLocID];
+  [coderCopy encodeObject:displayNameLocID forKey:@"displayNameLocID"];
 
-  v8 = [(INCodableEnumValue *)self synonyms];
-  [v4 encodeObject:v8 forKey:@"synonyms"];
+  synonyms = [(INCodableEnumValue *)self synonyms];
+  [coderCopy encodeObject:synonyms forKey:@"synonyms"];
 
-  v9 = [(INCodableEnumValue *)self _codableEnum];
-  [v4 encodeConditionalObject:v9 forKey:@"_codableEnum"];
+  _codableEnum = [(INCodableEnumValue *)self _codableEnum];
+  [coderCopy encodeConditionalObject:_codableEnum forKey:@"_codableEnum"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 intents_setIntegerIfNonZero:-[INCodableEnumValue index](self forKey:{"index"), @"index"}];
-  v8 = [(INCodableEnumValue *)self name];
-  [v7 intents_setPlistSafeObject:v8 forKey:@"name"];
+  parametersCopy = parameters;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary intents_setIntegerIfNonZero:-[INCodableEnumValue index](self forKey:{"index"), @"index"}];
+  name = [(INCodableEnumValue *)self name];
+  [dictionary intents_setPlistSafeObject:name forKey:@"name"];
 
-  v9 = [v6 languageCode];
-  if (v9)
+  languageCode = [parametersCopy languageCode];
+  if (languageCode)
   {
-    v10 = [INStringLocalizer localizerForLanguage:v9];
+    v10 = [INStringLocalizer localizerForLanguage:languageCode];
     v11 = [(INCodableEnumValue *)self localizedDisplayNameWithLocalizer:v10];
 
-    [v7 intents_setPlistSafeObject:v11 forKey:@"localizedName"];
+    [dictionary intents_setPlistSafeObject:v11 forKey:@"localizedName"];
   }
 
-  v12 = [(INCodableEnumValue *)self displayName];
-  v13 = [v12 intents_encodeForPlistRepresentationWithParameters:v6];
-  [v7 intents_setPlistSafeObject:v13 forKey:@"displayName"];
+  displayName = [(INCodableEnumValue *)self displayName];
+  v13 = [displayName intents_encodeForPlistRepresentationWithParameters:parametersCopy];
+  [dictionary intents_setPlistSafeObject:v13 forKey:@"displayName"];
 
-  v14 = [(INCodableEnumValue *)self displayNameLocID];
-  [v7 intents_setPlistSafeObject:v14 forKey:@"displayNameLocID"];
+  displayNameLocID = [(INCodableEnumValue *)self displayNameLocID];
+  [dictionary intents_setPlistSafeObject:displayNameLocID forKey:@"displayNameLocID"];
 
-  v15 = [(INCodableEnumValue *)self synonyms];
+  synonyms = [(INCodableEnumValue *)self synonyms];
   v20 = 0;
-  [v7 intents_setArrayOfWidgetPlistRepresentable:v15 forKey:@"synonyms" error:&v20];
+  [dictionary intents_setArrayOfWidgetPlistRepresentable:synonyms forKey:@"synonyms" error:&v20];
   v16 = v20;
 
   if (v16)
   {
-    if (a4)
+    if (error)
     {
       v17 = v16;
       v18 = 0;
-      *a4 = v16;
+      *error = v16;
     }
 
     else
@@ -244,64 +244,64 @@ id __90__INCodableEnumValue_INCodableAttributeRelationComparing___intents_compar
 
   else
   {
-    v18 = [v7 copy];
+    v18 = [dictionary copy];
   }
 
   return v18;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v45[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INCodableEnumValue *)self __INCodableEnumIndexKey];
-  v44[0] = v5;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[INCodableEnumValue index](self, "index")}];
-  v7 = v6;
-  if (!v6)
+  localizerCopy = localizer;
+  __INCodableEnumIndexKey = [(INCodableEnumValue *)self __INCodableEnumIndexKey];
+  v44[0] = __INCodableEnumIndexKey;
+  null = [MEMORY[0x1E696AD98] numberWithInteger:{-[INCodableEnumValue index](self, "index")}];
+  v7 = null;
+  if (!null)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v6;
-  v45[0] = v6;
-  v38 = [(INCodableEnumValue *)self __INCodableEnumNameKey];
-  v44[1] = v38;
-  v8 = [(INCodableEnumValue *)self name];
-  v9 = v8;
-  if (!v8)
+  v34 = null;
+  v45[0] = null;
+  __INCodableEnumNameKey = [(INCodableEnumValue *)self __INCodableEnumNameKey];
+  v44[1] = __INCodableEnumNameKey;
+  name = [(INCodableEnumValue *)self name];
+  v9 = name;
+  if (!name)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    name = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v8;
-  v45[1] = v8;
-  v37 = [(INCodableEnumValue *)self __INCodableEnumDisplayNameKey];
-  v44[2] = v37;
-  v10 = [(INCodableEnumValue *)self localizedDisplayNameWithLocalizer:v4];
-  v11 = v10;
-  if (!v10)
+  v33 = name;
+  v45[1] = name;
+  __INCodableEnumDisplayNameKey = [(INCodableEnumValue *)self __INCodableEnumDisplayNameKey];
+  v44[2] = __INCodableEnumDisplayNameKey;
+  null2 = [(INCodableEnumValue *)self localizedDisplayNameWithLocalizer:localizerCopy];
+  v11 = null2;
+  if (!null2)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v10;
-  v45[2] = v10;
-  v36 = [(INCodableEnumValue *)self __INCodableEnumDisplayNameIDKey];
-  v44[3] = v36;
-  v12 = [(INCodableEnumValue *)self displayNameLocID];
-  v13 = v12;
-  if (!v12)
+  v32 = null2;
+  v45[2] = null2;
+  __INCodableEnumDisplayNameIDKey = [(INCodableEnumValue *)self __INCodableEnumDisplayNameIDKey];
+  v44[3] = __INCodableEnumDisplayNameIDKey;
+  displayNameLocID = [(INCodableEnumValue *)self displayNameLocID];
+  v13 = displayNameLocID;
+  if (!displayNameLocID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    displayNameLocID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v12;
-  v45[3] = v12;
-  v35 = [(INCodableEnumValue *)self __INCodableEnumSynonymsKey];
-  v44[4] = v35;
-  v14 = [(INCodableEnumValue *)self synonyms];
-  v15 = [v14 count];
+  v31 = displayNameLocID;
+  v45[3] = displayNameLocID;
+  __INCodableEnumSynonymsKey = [(INCodableEnumValue *)self __INCodableEnumSynonymsKey];
+  v44[4] = __INCodableEnumSynonymsKey;
+  synonyms = [(INCodableEnumValue *)self synonyms];
+  v15 = [synonyms count];
 
   if (!v15)
   {
@@ -309,14 +309,14 @@ id __90__INCodableEnumValue_INCodableAttributeRelationComparing___intents_compar
   }
 
   v29 = v7;
-  v30 = v5;
+  v30 = __INCodableEnumIndexKey;
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v17 = [(INCodableEnumValue *)self synonyms];
-  v18 = [v17 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  synonyms2 = [(INCodableEnumValue *)self synonyms];
+  v18 = [synonyms2 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v18)
   {
     v19 = v18;
@@ -327,36 +327,36 @@ id __90__INCodableEnumValue_INCodableAttributeRelationComparing___intents_compar
       {
         if (*v40 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(synonyms2);
         }
 
-        v22 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:{v4, v29, v30}];
+        v22 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:{localizerCopy, v29, v30}];
         [v16 if_addObjectIfNonNil:v22];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v19 = [synonyms2 countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v19);
   }
 
   v7 = v29;
-  v5 = v30;
+  __INCodableEnumIndexKey = v30;
   if (v16)
   {
     v23 = 0;
-    v24 = v16;
+    null3 = v16;
   }
 
   else
   {
 LABEL_19:
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
     v16 = 0;
     v23 = 1;
   }
 
-  v45[4] = v24;
+  v45[4] = null3;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:{5, v29, v30}];
   if (v23)
   {
@@ -378,11 +378,11 @@ LABEL_19:
   {
   }
 
-  v26 = [v25 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v25 if_dictionaryWithNonEmptyValues];
 
   v27 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return if_dictionaryWithNonEmptyValues;
 }
 
 - (id)dictionaryRepresentation
@@ -393,28 +393,28 @@ LABEL_19:
   return v4;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INCodableEnumValue *)self __INCodableEnumIndexKey];
-  v6 = [v4 objectForKey:v5];
+  dictionaryCopy = dictionary;
+  __INCodableEnumIndexKey = [(INCodableEnumValue *)self __INCodableEnumIndexKey];
+  v6 = [dictionaryCopy objectForKey:__INCodableEnumIndexKey];
   -[INCodableEnumValue setIndex:](self, "setIndex:", [v6 integerValue]);
 
-  v7 = [(INCodableEnumValue *)self __INCodableEnumNameKey];
-  v8 = [v4 objectForKey:v7];
+  __INCodableEnumNameKey = [(INCodableEnumValue *)self __INCodableEnumNameKey];
+  v8 = [dictionaryCopy objectForKey:__INCodableEnumNameKey];
   [(INCodableEnumValue *)self setName:v8];
 
-  v9 = [(INCodableEnumValue *)self __INCodableEnumDisplayNameKey];
-  v10 = [v4 objectForKey:v9];
+  __INCodableEnumDisplayNameKey = [(INCodableEnumValue *)self __INCodableEnumDisplayNameKey];
+  v10 = [dictionaryCopy objectForKey:__INCodableEnumDisplayNameKey];
   [(INCodableEnumValue *)self setDisplayName:v10];
 
-  v11 = [(INCodableEnumValue *)self __INCodableEnumDisplayNameIDKey];
-  v12 = [v4 objectForKey:v11];
+  __INCodableEnumDisplayNameIDKey = [(INCodableEnumValue *)self __INCodableEnumDisplayNameIDKey];
+  v12 = [dictionaryCopy objectForKey:__INCodableEnumDisplayNameIDKey];
   [(INCodableEnumValue *)self setDisplayNameLocID:v12];
 
-  v13 = [(INCodableEnumValue *)self __INCodableEnumSynonymsKey];
-  v14 = [v4 objectForKey:v13];
+  __INCodableEnumSynonymsKey = [(INCodableEnumValue *)self __INCodableEnumSynonymsKey];
+  v14 = [dictionaryCopy objectForKey:__INCodableEnumSynonymsKey];
 
   if (v14)
   {
@@ -439,7 +439,7 @@ LABEL_19:
 
   if ([v16 count])
   {
-    v26 = v4;
+    v26 = dictionaryCopy;
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v27 = 0u;
     v28 = 0u;
@@ -478,27 +478,27 @@ LABEL_19:
     }
 
     [(INCodableEnumValue *)self setSynonyms:v17];
-    v4 = v26;
+    dictionaryCopy = v26;
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)localizedDisplayNameWithLocalizer:(id)a3
+- (id)localizedDisplayNameWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableEnumValue *)self _codableEnum];
-  v6 = [(INCodableEnumValue *)self displayNameLocID];
-  v7 = [(INCodableEnumValue *)self displayName];
-  v8 = [v5 _localizationTable];
-  v9 = INLocalizedStringFromCodable(v6, v7, v8, v4, 0);
+  localizerCopy = localizer;
+  _codableEnum = [(INCodableEnumValue *)self _codableEnum];
+  displayNameLocID = [(INCodableEnumValue *)self displayNameLocID];
+  displayName = [(INCodableEnumValue *)self displayName];
+  _localizationTable = [_codableEnum _localizationTable];
+  v9 = INLocalizedStringFromCodable(displayNameLocID, displayName, _localizationTable, localizerCopy, 0);
 
   return v9;
 }
 
-- (id)localizedDisplayNameForLanguage:(id)a3
+- (id)localizedDisplayNameForLanguage:(id)language
 {
-  v4 = [INStringLocalizer localizerForLanguage:a3];
+  v4 = [INStringLocalizer localizerForLanguage:language];
   v5 = [(INCodableEnumValue *)self localizedDisplayNameWithLocalizer:v4];
 
   return v5;
@@ -512,18 +512,18 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(INCodableEnumValue *)self index];
-    if (v5 == [v4 index])
+    index = [(INCodableEnumValue *)self index];
+    if (index == [equalCopy index])
     {
-      v6 = [(INCodableEnumValue *)self name];
-      v7 = [v4 name];
-      v8 = v6;
-      v9 = v7;
+      name = [(INCodableEnumValue *)self name];
+      name2 = [equalCopy name];
+      v8 = name;
+      v9 = name2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -550,10 +550,10 @@ LABEL_24:
         }
       }
 
-      v15 = [(INCodableEnumValue *)self displayName];
-      v16 = [v4 displayName];
-      v13 = v15;
-      v17 = v16;
+      displayName = [(INCodableEnumValue *)self displayName];
+      displayName2 = [equalCopy displayName];
+      v13 = displayName;
+      v17 = displayName2;
       v12 = v17;
       if (v13 == v17)
       {
@@ -580,10 +580,10 @@ LABEL_23:
         }
       }
 
-      v20 = [(INCodableEnumValue *)self displayNameLocID];
-      v21 = [v4 displayNameLocID];
-      v19 = v20;
-      v22 = v21;
+      displayNameLocID = [(INCodableEnumValue *)self displayNameLocID];
+      displayNameLocID2 = [equalCopy displayNameLocID];
+      v19 = displayNameLocID;
+      v22 = displayNameLocID2;
       v18 = v22;
       if (v19 == v22)
       {
@@ -613,47 +613,47 @@ LABEL_25:
 {
   v3 = [MEMORY[0x1E696AD98] numberWithInteger:{-[INCodableEnumValue index](self, "index")}];
   v4 = [v3 hash];
-  v5 = [(INCodableEnumValue *)self name];
-  v6 = [v5 hash];
-  v7 = [(INCodableEnumValue *)self displayName];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(INCodableEnumValue *)self displayNameLocID];
-  v10 = v8 ^ [v9 hash];
+  name = [(INCodableEnumValue *)self name];
+  v6 = [name hash];
+  displayName = [(INCodableEnumValue *)self displayName];
+  v8 = v6 ^ [displayName hash];
+  displayNameLocID = [(INCodableEnumValue *)self displayNameLocID];
+  v10 = v8 ^ [displayNameLocID hash];
 
   return v10 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[INCodableEnumValue allocWithZone:?]];
   [(INCodableEnumValue *)v4 setIndex:[(INCodableEnumValue *)self index]];
-  v5 = [(INCodableEnumValue *)self name];
-  [(INCodableEnumValue *)v4 setName:v5];
+  name = [(INCodableEnumValue *)self name];
+  [(INCodableEnumValue *)v4 setName:name];
 
-  v6 = [(INCodableEnumValue *)self displayName];
-  [(INCodableEnumValue *)v4 setDisplayName:v6];
+  displayName = [(INCodableEnumValue *)self displayName];
+  [(INCodableEnumValue *)v4 setDisplayName:displayName];
 
-  v7 = [(INCodableEnumValue *)self displayNameLocID];
-  [(INCodableEnumValue *)v4 setDisplayNameLocID:v7];
+  displayNameLocID = [(INCodableEnumValue *)self displayNameLocID];
+  [(INCodableEnumValue *)v4 setDisplayNameLocID:displayNameLocID];
 
   return v4;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_alloc_init(INCodableEnumValue);
-  -[INCodableEnumValue setIndex:](v6, "setIndex:", [v5 intents_intForKey:@"index"]);
-  v7 = [v5 intents_stringForKey:@"name"];
+  -[INCodableEnumValue setIndex:](v6, "setIndex:", [representationCopy intents_intForKey:@"index"]);
+  v7 = [representationCopy intents_stringForKey:@"name"];
   [(INCodableEnumValue *)v6 setName:v7];
 
-  v8 = [v5 intents_stringForKey:@"localizedName"];
+  v8 = [representationCopy intents_stringForKey:@"localizedName"];
   [(INCodableEnumValue *)v6 setLocalizedName:v8];
 
-  v9 = [v5 intents_stringForKey:@"displayName"];
+  v9 = [representationCopy intents_stringForKey:@"displayName"];
   [(INCodableEnumValue *)v6 setDisplayName:v9];
 
-  v10 = [v5 intents_stringForKey:@"displayNameLocID"];
+  v10 = [representationCopy intents_stringForKey:@"displayNameLocID"];
   [(INCodableEnumValue *)v6 setDisplayNameLocID:v10];
 
   v23 = 0;
@@ -663,17 +663,17 @@ LABEL_25:
   v21 = &unk_1E7285B78;
   v11 = v6;
   v22 = v11;
-  v12 = [INCodableEnumValueSynonym intents_arrayOfWidgetPlistRepresentableInDict:v5 key:@"synonyms" error:&v23 resultTransformer:&v18];
+  v12 = [INCodableEnumValueSynonym intents_arrayOfWidgetPlistRepresentableInDict:representationCopy key:@"synonyms" error:&v23 resultTransformer:&v18];
 
   v13 = v23;
   v14 = v13;
   if (v13)
   {
-    if (a4)
+    if (error)
     {
       v15 = v13;
       v16 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else

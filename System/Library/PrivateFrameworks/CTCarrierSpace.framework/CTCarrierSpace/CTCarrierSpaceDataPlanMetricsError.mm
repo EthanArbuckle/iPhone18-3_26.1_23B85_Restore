@@ -1,19 +1,19 @@
 @interface CTCarrierSpaceDataPlanMetricsError
-+ (id)errorDescriptionForCode:(int64_t)a3;
++ (id)errorDescriptionForCode:(int64_t)code;
 @end
 
 @implementation CTCarrierSpaceDataPlanMetricsError
 
-+ (id)errorDescriptionForCode:(int64_t)a3
++ (id)errorDescriptionForCode:(int64_t)code
 {
-  if (a3 > 0x12)
+  if (code > 0x12)
   {
     return @"Unknown Error";
   }
 
   else
   {
-    return off_278D645B0[a3];
+    return off_278D645B0[code];
   }
 }
 

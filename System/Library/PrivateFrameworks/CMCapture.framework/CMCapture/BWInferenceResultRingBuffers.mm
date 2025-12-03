@@ -1,10 +1,10 @@
 @interface BWInferenceResultRingBuffers
 - (BWInferenceResultRingBuffers)init;
-- (id)retrieveInferencesForType:(int)a3 beginning:(id *)a4 until:(id *)a5;
-- (void)bufferingStatsForType:(int)a3 firstOut:(id *)a4 lastOut:(id *)a5 countOut:(int *)a6;
+- (id)retrieveInferencesForType:(int)type beginning:(id *)beginning until:(id *)until;
+- (void)bufferingStatsForType:(int)type firstOut:(id *)out lastOut:(id *)lastOut countOut:(int *)countOut;
 - (void)dealloc;
-- (void)insertInferenceResultsFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)setupRingBuffer:(int)a3 inferencesOfType:(int)a4;
+- (void)insertInferenceResultsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)setupRingBuffer:(int)buffer inferencesOfType:(int)type;
 @end
 
 @implementation BWInferenceResultRingBuffers
@@ -32,10 +32,10 @@
   [(BWInferenceResultRingBuffers *)&v3 dealloc];
 }
 
-- (void)setupRingBuffer:(int)a3 inferencesOfType:(int)a4
+- (void)setupRingBuffer:(int)buffer inferencesOfType:(int)type
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&type;
+  v5 = *&buffer;
   FigSimpleMutexLock();
   if (v5)
   {
@@ -52,12 +52,12 @@
   FigSimpleMutexUnlock();
 }
 
-- (id)retrieveInferencesForType:(int)a3 beginning:(id *)a4 until:(id *)a5
+- (id)retrieveInferencesForType:(int)type beginning:(id *)beginning until:(id *)until
 {
-  v7 = *&a3;
+  v7 = *&type;
   FigSimpleMutexLock();
-  time1 = *a4;
-  time2 = *a5;
+  time1 = *beginning;
+  time2 = *until;
   if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
   {
     [BWInferenceResultRingBuffers retrieveInferencesForType:beginning:until:];
@@ -86,10 +86,10 @@ LABEL_8:
     v13[1] = 3221225472;
     v13[2] = __74__BWInferenceResultRingBuffers_retrieveInferencesForType_beginning_until___block_invoke;
     v13[3] = &unk_1E7999F40;
-    v14 = *&a5->var0;
-    var3 = a5->var3;
+    v14 = *&until->var0;
+    var3 = until->var3;
     v13[4] = v11;
-    time1 = *a4;
+    time1 = *beginning;
     [v10 enumerateObjectsStartingAt:&time1 usingBlock:v13];
   }
 
@@ -112,20 +112,20 @@ uint64_t __74__BWInferenceResultRingBuffers_retrieveInferencesForType_beginning_
   return result;
 }
 
-- (void)bufferingStatsForType:(int)a3 firstOut:(id *)a4 lastOut:(id *)a5 countOut:(int *)a6
+- (void)bufferingStatsForType:(int)type firstOut:(id *)out lastOut:(id *)lastOut countOut:(int *)countOut
 {
-  v9 = *&a3;
+  v9 = *&type;
   FigSimpleMutexLock();
   v11 = -[NSMutableDictionary objectForKeyedSubscript:](self->_rings, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v9]);
   v12 = v11;
-  if (a4)
+  if (out)
   {
     if (!v11)
     {
       v14 = MEMORY[0x1E6960C70];
-      *&a4->var0 = *MEMORY[0x1E6960C70];
-      a4->var3 = *(v14 + 16);
-      if (!a5)
+      *&out->var0 = *MEMORY[0x1E6960C70];
+      out->var3 = *(v14 + 16);
+      if (!lastOut)
       {
         goto LABEL_10;
       }
@@ -134,11 +134,11 @@ uint64_t __74__BWInferenceResultRingBuffers_retrieveInferencesForType_beginning_
     }
 
     [v11 firstTime];
-    *&a4->var0 = v16;
-    a4->var3 = v17;
+    *&out->var0 = v16;
+    out->var3 = v17;
   }
 
-  if (!a5)
+  if (!lastOut)
   {
     goto LABEL_10;
   }
@@ -147,26 +147,26 @@ uint64_t __74__BWInferenceResultRingBuffers_retrieveInferencesForType_beginning_
   {
 LABEL_8:
     v15 = MEMORY[0x1E6960C70];
-    *&a5->var0 = *MEMORY[0x1E6960C70];
+    *&lastOut->var0 = *MEMORY[0x1E6960C70];
     v13 = *(v15 + 16);
     goto LABEL_9;
   }
 
   [v12 lastTime];
-  *&a5->var0 = v16;
+  *&lastOut->var0 = v16;
   v13 = v17;
 LABEL_9:
-  a5->var3 = v13;
+  lastOut->var3 = v13;
 LABEL_10:
-  if (a6)
+  if (countOut)
   {
-    *a6 = [v12 count];
+    *countOut = [v12 count];
   }
 
   FigSimpleMutexUnlock();
 }
 
-- (void)insertInferenceResultsFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)insertInferenceResultsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   FigSimpleMutexLock();
   rings = self->_rings;
@@ -174,7 +174,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v6[2] = __71__BWInferenceResultRingBuffers_insertInferenceResultsFromSampleBuffer___block_invoke;
   v6[3] = &__block_descriptor_40_e45_v32__0__NSNumber_8__BWObjectRingBuffer_16_B24l;
-  v6[4] = a3;
+  v6[4] = buffer;
   [(NSMutableDictionary *)rings enumerateKeysAndObjectsUsingBlock:v6];
   FigSimpleMutexUnlock();
 }

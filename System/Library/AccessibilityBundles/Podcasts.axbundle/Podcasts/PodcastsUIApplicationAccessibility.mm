@@ -1,20 +1,20 @@
 @interface PodcastsUIApplicationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityPlayer;
 - (id)accessibilityPlaybackSpeed;
 @end
 
 @implementation PodcastsUIApplicationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTPlayerController"];
-  [v3 validateClass:@"MTPlayerController" hasClassMethod:@"defaultInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTPlayerController" hasInstanceMethod:@"mediaRemoteController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMMediaRemoteController" hasInstanceMethod:@"player" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMAVPlayer" hasInstanceMethod:@"playbackSpeed" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"IMAVPlayer" hasInstanceMethod:@"togglePlayPause" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTPlayerController"];
+  [validationsCopy validateClass:@"MTPlayerController" hasClassMethod:@"defaultInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTPlayerController" hasInstanceMethod:@"mediaRemoteController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMMediaRemoteController" hasInstanceMethod:@"player" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMAVPlayer" hasInstanceMethod:@"playbackSpeed" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"IMAVPlayer" hasInstanceMethod:@"togglePlayPause" withFullSignature:{"B", 0}];
 }
 
 - (id)_accessibilityPlayer
@@ -29,8 +29,8 @@
 
 - (id)accessibilityPlaybackSpeed
 {
-  v2 = [(PodcastsUIApplicationAccessibility *)self _accessibilityPlayer];
-  v3 = [v2 safeUnsignedIntegerForKey:@"playbackSpeed"];
+  _accessibilityPlayer = [(PodcastsUIApplicationAccessibility *)self _accessibilityPlayer];
+  v3 = [_accessibilityPlayer safeUnsignedIntegerForKey:@"playbackSpeed"];
 
   if (v3 > 5)
   {

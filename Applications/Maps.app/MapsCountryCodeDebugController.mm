@@ -1,8 +1,8 @@
 @interface MapsCountryCodeDebugController
 - (MapsCountryCodeDebugController)init;
 - (id)_countryCode;
-- (void)_countryChanged:(id)a3;
-- (void)_setCountryCode:(id)a3;
+- (void)_countryChanged:(id)changed;
+- (void)_setCountryCode:(id)code;
 - (void)prepareContent;
 @end
 
@@ -11,8 +11,8 @@
 - (void)prepareContent
 {
   objc_initWeak(&location, self);
-  v3 = [objc_opt_class() _knownCountryCodes];
-  v4 = [objc_opt_class() _namesOfCountriesWithKnownCodes];
+  _knownCountryCodes = [objc_opt_class() _knownCountryCodes];
+  _namesOfCountriesWithKnownCodes = [objc_opt_class() _namesOfCountriesWithKnownCodes];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -26,9 +26,9 @@
   v23[3] = &unk_101653EE8;
   v27 = v28;
   v23[4] = self;
-  v6 = v3;
+  v6 = _knownCountryCodes;
   v24 = v6;
-  v7 = v4;
+  v7 = _namesOfCountriesWithKnownCodes;
   v25 = v7;
   v8 = v5;
   v26 = v8;
@@ -71,13 +71,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_setCountryCode:(id)a3
+- (void)_setCountryCode:(id)code
 {
-  v4 = a3;
-  if ([v4 length] && (+[NSLocale ISOCountryCodes](NSLocale, "ISOCountryCodes"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", v4), v5, (v6 & 1) == 0))
+  codeCopy = code;
+  if ([codeCopy length] && (+[NSLocale ISOCountryCodes](NSLocale, "ISOCountryCodes"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", codeCopy), v5, (v6 & 1) == 0))
   {
-    v7 = [NSString stringWithFormat:@"%@ Is not a valid ISO Country Code", v4];
-    v8 = [UIAlertController alertControllerWithTitle:@"Oops" message:v7 preferredStyle:1];
+    codeCopy = [NSString stringWithFormat:@"%@ Is not a valid ISO Country Code", codeCopy];
+    v8 = [UIAlertController alertControllerWithTitle:@"Oops" message:codeCopy preferredStyle:1];
     v9 = [UIAlertAction actionWithTitle:@"OK" style:0 handler:0];
     [v8 addAction:v9];
     v11[0] = _NSConcreteStackBlock;
@@ -91,7 +91,7 @@
   else
   {
     GEOConfigSetBOOL();
-    if (v4)
+    if (codeCopy)
     {
       GEOConfigSetString();
     }
@@ -123,10 +123,10 @@
   return v2;
 }
 
-- (void)_countryChanged:(id)a3
+- (void)_countryChanged:(id)changed
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKeyedSubscript:GEODeviceCountryCodeKey];
+  userInfo = [changed userInfo];
+  v4 = [userInfo objectForKeyedSubscript:GEODeviceCountryCodeKey];
   actualCountry = self->_actualCountry;
   self->_actualCountry = v4;
 
@@ -144,9 +144,9 @@
     [v3 addObserver:v2 selector:"_countryChanged:" name:GEOCountryConfigurationCountryCodeDidChangeNotification object:0];
 
     v4 = +[GEOCountryConfiguration sharedConfiguration];
-    v5 = [v4 countryCode];
+    countryCode = [v4 countryCode];
     actualCountry = v2->_actualCountry;
-    v2->_actualCountry = v5;
+    v2->_actualCountry = countryCode;
   }
 
   return v2;

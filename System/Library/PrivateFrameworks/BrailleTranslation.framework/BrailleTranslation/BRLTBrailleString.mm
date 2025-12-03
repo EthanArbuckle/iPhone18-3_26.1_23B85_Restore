@@ -1,70 +1,70 @@
 @interface BRLTBrailleString
-+ (BOOL)isValidBRF:(id)a3;
-+ (id)brfToUnicode:(id)a3;
-+ (id)dinToUnicode:(id)a3;
-+ (id)unicodeToBestEffortBrf:(id)a3;
-+ (id)unicodeToDin:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBrailleString:(id)a3;
-- (BRLTBrailleString)initWithBrailleChars:(id)a3;
-- (BRLTBrailleString)initWithBrf:(id)a3;
-- (BRLTBrailleString)initWithUnicode:(id)a3;
++ (BOOL)isValidBRF:(id)f;
++ (id)brfToUnicode:(id)unicode;
++ (id)dinToUnicode:(id)unicode;
++ (id)unicodeToBestEffortBrf:(id)brf;
++ (id)unicodeToDin:(id)din;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBrailleString:(id)string;
+- (BRLTBrailleString)initWithBrailleChars:(id)chars;
+- (BRLTBrailleString)initWithBrf:(id)brf;
+- (BRLTBrailleString)initWithUnicode:(id)unicode;
 - (NSArray)brailleChars;
 - (NSString)unicode;
 - (id)bestEffortBrf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BRLTBrailleString
 
-- (BRLTBrailleString)initWithBrailleChars:(id)a3
+- (BRLTBrailleString)initWithBrailleChars:(id)chars
 {
-  v4 = a3;
+  charsCopy = chars;
   v9.receiver = self;
   v9.super_class = BRLTBrailleString;
   v5 = [(BRLTBrailleString *)&v9 init];
-  if (v4)
+  if (charsCopy)
   {
-    v6 = [v4 mutableCopy];
+    array = [charsCopy mutableCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   brailleChars = v5->_brailleChars;
-  v5->_brailleChars = v6;
+  v5->_brailleChars = array;
 
   return v5;
 }
 
-- (BRLTBrailleString)initWithUnicode:(id)a3
+- (BRLTBrailleString)initWithUnicode:(id)unicode
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([v4 length])
+  unicodeCopy = unicode;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([unicodeCopy length])
   {
     v6 = 0;
     do
     {
-      v7 = +[BRLTBrailleChar charWithUnichar:](BRLTBrailleChar, "charWithUnichar:", [v4 characterAtIndex:v6]);
-      [v5 addObject:v7];
+      v7 = +[BRLTBrailleChar charWithUnichar:](BRLTBrailleChar, "charWithUnichar:", [unicodeCopy characterAtIndex:v6]);
+      [array addObject:v7];
 
       ++v6;
     }
 
-    while (v6 < [v4 length]);
+    while (v6 < [unicodeCopy length]);
   }
 
-  v8 = [(BRLTBrailleString *)self initWithBrailleChars:v5];
+  v8 = [(BRLTBrailleString *)self initWithBrailleChars:array];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [BRLTBrailleString allocWithZone:a3];
+  v4 = [BRLTBrailleString allocWithZone:zone];
   brailleChars = self->_brailleChars;
 
   return [(BRLTBrailleString *)v4 initWithBrailleChars:brailleChars];
@@ -73,7 +73,7 @@
 - (NSString)unicode
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -93,8 +93,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) unicode];
-        [v3 appendString:v9];
+        unicode = [*(*(&v12 + 1) + 8 * i) unicode];
+        [string appendString:unicode];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -105,13 +105,13 @@
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
-- (BRLTBrailleString)initWithBrf:(id)a3
+- (BRLTBrailleString)initWithBrf:(id)brf
 {
-  v4 = [a3 uppercaseString];
-  v5 = [BRLTBrailleString brfToUnicode:v4];
+  uppercaseString = [brf uppercaseString];
+  v5 = [BRLTBrailleString brfToUnicode:uppercaseString];
   v6 = [(BRLTBrailleString *)self initWithUnicode:v5];
 
   return v6;
@@ -124,16 +124,16 @@
   return v2;
 }
 
-+ (id)dinToUnicode:(id)a3
++ (id)dinToUnicode:(id)unicode
 {
-  v3 = a3;
-  if ([v3 length])
+  unicodeCopy = unicode;
+  if ([unicodeCopy length])
   {
     v4 = 0;
     v5 = &stru_2853FD1A8;
     do
     {
-      v6 = [v3 characterAtIndex:v4];
+      v6 = [unicodeCopy characterAtIndex:v4];
       if (v6 == 32)
       {
         LOWORD(v7) = 10240;
@@ -161,7 +161,7 @@
       v5 = v11;
     }
 
-    while ([v3 length] > v4);
+    while ([unicodeCopy length] > v4);
   }
 
   else
@@ -172,11 +172,11 @@
   return v11;
 }
 
-+ (id)unicodeToDin:(id)a3
++ (id)unicodeToDin:(id)din
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  dinCopy = din;
+  v4 = dinCopy;
   for (i = 0; i != 256; ++i)
   {
     if (i == 32)
@@ -201,7 +201,7 @@
     v16[v6] = i;
   }
 
-  if ([v3 length])
+  if ([dinCopy length])
   {
     v9 = 0;
     v10 = &stru_2853FD1A8;
@@ -228,48 +228,48 @@
   return v13;
 }
 
-+ (id)brfToUnicode:(id)a3
++ (id)brfToUnicode:(id)unicode
 {
-  v4 = [a3 uppercaseString];
-  v5 = [a1 brfTable];
-  v6 = malloc_type_malloc(2 * [v4 length], 0x1000040BDFB0063uLL);
-  if ([v4 length])
+  uppercaseString = [unicode uppercaseString];
+  brfTable = [self brfTable];
+  v6 = malloc_type_malloc(2 * [uppercaseString length], 0x1000040BDFB0063uLL);
+  if ([uppercaseString length])
   {
     v7 = 0;
     do
     {
-      v8 = [v4 substringWithRange:{v7, 1}];
-      v6[v7] = [v5 rangeOfString:v8] + 10240;
+      v8 = [uppercaseString substringWithRange:{v7, 1}];
+      v6[v7] = [brfTable rangeOfString:v8] + 10240;
 
       ++v7;
     }
 
-    while ([v4 length] > v7);
+    while ([uppercaseString length] > v7);
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithCharacters:v6 length:{objc_msgSend(v4, "length")}];
+  v9 = [MEMORY[0x277CCACA8] stringWithCharacters:v6 length:{objc_msgSend(uppercaseString, "length")}];
   free(v6);
 
   return v9;
 }
 
-+ (BOOL)isValidBRF:(id)a3
++ (BOOL)isValidBRF:(id)f
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__BRLTBrailleString_isValidBRF___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = isValidBRF__onceToken;
-  v4 = a3;
+  fCopy = f;
   if (v3 != -1)
   {
     dispatch_once(&isValidBRF__onceToken, block);
   }
 
-  v5 = [v4 uppercaseString];
+  uppercaseString = [fCopy uppercaseString];
 
-  v6 = [v5 rangeOfCharacterFromSet:isValidBRF__nonBrfSet] == 0x7FFFFFFFFFFFFFFFLL;
+  v6 = [uppercaseString rangeOfCharacterFromSet:isValidBRF__nonBrfSet] == 0x7FFFFFFFFFFFFFFFLL;
   return v6;
 }
 
@@ -285,21 +285,21 @@ void __32__BRLTBrailleString_isValidBRF___block_invoke(uint64_t a1)
   isValidBRF__nonBrfSet = v3;
 }
 
-+ (id)unicodeToBestEffortBrf:(id)a3
++ (id)unicodeToBestEffortBrf:(id)brf
 {
-  v3 = a3;
+  brfCopy = brf;
   if (unicodeToBestEffortBrf__onceToken != -1)
   {
     +[BRLTBrailleString unicodeToBestEffortBrf:];
   }
 
-  v4 = [MEMORY[0x277CCAB68] string];
-  if ([v3 length])
+  string = [MEMORY[0x277CCAB68] string];
+  if ([brfCopy length])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 characterAtIndex:v5];
+      v6 = [brfCopy characterAtIndex:v5];
       v7 = v6 - 10240;
       if (v7 >= 0x40)
       {
@@ -313,7 +313,7 @@ void __32__BRLTBrailleString_isValidBRF___block_invoke(uint64_t a1)
 
       if (v7 >= 0x40)
       {
-        v9 = v3;
+        v9 = brfCopy;
       }
 
       else
@@ -322,15 +322,15 @@ void __32__BRLTBrailleString_isValidBRF___block_invoke(uint64_t a1)
       }
 
       v10 = [v9 substringWithRange:{v8, 1}];
-      [v4 appendString:v10];
+      [string appendString:v10];
 
       ++v5;
     }
 
-    while (v5 < [v3 length]);
+    while (v5 < [brfCopy length]);
   }
 
-  return v4;
+  return string;
 }
 
 uint64_t __44__BRLTBrailleString_unicodeToBestEffortBrf___block_invoke()
@@ -349,25 +349,25 @@ uint64_t __44__BRLTBrailleString_unicodeToBestEffortBrf___block_invoke()
 
 - (id)bestEffortBrf
 {
-  v2 = [(BRLTBrailleString *)self unicode];
-  v3 = [BRLTBrailleString unicodeToBestEffortBrf:v2];
+  unicode = [(BRLTBrailleString *)self unicode];
+  v3 = [BRLTBrailleString unicodeToBestEffortBrf:unicode];
 
   return v3;
 }
 
-- (BOOL)isEqualToBrailleString:(id)a3
+- (BOOL)isEqualToBrailleString:(id)string
 {
   brailleChars = self->_brailleChars;
-  v4 = [a3 brailleChars];
-  LOBYTE(brailleChars) = [(NSMutableArray *)brailleChars isEqualToArray:v4];
+  brailleChars = [string brailleChars];
+  LOBYTE(brailleChars) = [(NSMutableArray *)brailleChars isEqualToArray:brailleChars];
 
   return brailleChars;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -375,7 +375,7 @@ uint64_t __44__BRLTBrailleString_unicodeToBestEffortBrf___block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRLTBrailleString *)self isEqualToBrailleString:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRLTBrailleString *)self isEqualToBrailleString:equalCopy];
   }
 
   return v5;

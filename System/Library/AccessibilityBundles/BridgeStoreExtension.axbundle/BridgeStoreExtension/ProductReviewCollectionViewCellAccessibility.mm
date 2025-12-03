@@ -1,22 +1,22 @@
 @interface ProductReviewCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation ProductReviewCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityDateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityRatingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityAuthorLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityBodyLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityResponseTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityResponseDateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityResponseBodyLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityDateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityRatingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityAuthorLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityBodyLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityResponseTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityResponseDateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BridgeStoreExtension.ProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityResponseBodyLabel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -29,8 +29,8 @@
 - (id)accessibilityLabel
 {
   v3 = [(ProductReviewCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityResponseTitleLabel"];
-  v4 = [v3 _accessibilityViewIsVisible];
-  if (v4)
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
+  if (_accessibilityViewIsVisible)
   {
     v5 = [(ProductReviewCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityResponseTitleLabel"];
   }
@@ -41,8 +41,8 @@
   }
 
   v6 = [(ProductReviewCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityResponseDateLabel"];
-  v7 = [v6 _accessibilityViewIsVisible];
-  if (v7)
+  _accessibilityViewIsVisible2 = [v6 _accessibilityViewIsVisible];
+  if (_accessibilityViewIsVisible2)
   {
     v8 = [(ProductReviewCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityResponseDateLabel"];
   }
@@ -67,11 +67,11 @@
     v10 = __UIAXStringForVariables();
   }
 
-  if (v7)
+  if (_accessibilityViewIsVisible2)
   {
   }
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
   }
 

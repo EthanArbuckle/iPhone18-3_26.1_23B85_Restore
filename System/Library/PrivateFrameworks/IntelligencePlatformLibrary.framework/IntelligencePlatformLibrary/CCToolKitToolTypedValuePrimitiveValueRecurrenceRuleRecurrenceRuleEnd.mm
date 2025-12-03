@@ -1,25 +1,25 @@
 @interface CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolTimestamp)date;
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)initWithOccurences:(id)a3 date:(id)a4 never:(id)a5 error:(id *)a6;
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)initWithOccurences:(id)occurences date:(id)date never:(id)never error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd
 
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v17[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"occurences"];
-    v10 = [v6 objectForKeyedSubscript:@"date"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"occurences"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"date"];
     if (v10)
     {
       v11 = v10;
@@ -41,8 +41,8 @@
       v12 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"never"];
-    v15 = [[CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd alloc] initWithOccurences:v9 date:v12 never:v14 error:a4];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"never"];
+    v15 = [[CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd alloc] initWithOccurences:v9 date:v12 never:v14 error:error];
     v11 = v12;
 LABEL_10:
 
@@ -67,9 +67,9 @@ LABEL_11:
 
   if (self->_date)
   {
-    v5 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd *)self date];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"date"];
+    date = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd *)self date];
+    jsonDictionary = [date jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"date"];
   }
 
   if (self->_hasNever)
@@ -83,26 +83,26 @@ LABEL_11:
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_hasOccurences)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] int64Value:self->_occurences];
-    v9[2](v9, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_date)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 subMessageValue:self->_date];
-    v9[2](v9, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_hasNever)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 BOOLValue:self->_never];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
@@ -113,10 +113,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v52 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v52];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   v8 = MEMORY[0x1E6993AA8];
@@ -362,13 +362,13 @@ LABEL_63:
   return v50;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)initWithOccurences:(id)a3 date:(id)a4 never:(id)a5 error:(id *)a6
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)initWithOccurences:(id)occurences date:(id)date never:(id)never error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  occurencesCopy = occurences;
+  dateCopy = date;
+  neverCopy = never;
   v13 = objc_opt_new();
-  if (v10)
+  if (occurencesCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -378,13 +378,13 @@ LABEL_63:
       goto LABEL_7;
     }
 
-    [v10 longLongValue];
+    [occurencesCopy longLongValue];
     CCPBDataWriterWriteInt64Field();
-    if (!v11)
+    if (!dateCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (neverCopy)
       {
         goto LABEL_5;
       }
@@ -398,7 +398,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!dateCopy)
     {
       goto LABEL_4;
     }
@@ -411,15 +411,15 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
-  v20 = [v11 data];
+  data = [dateCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (!v12)
+  if (!neverCopy)
   {
     goto LABEL_11;
   }
@@ -431,22 +431,22 @@ LABEL_5:
 
   if (v17)
   {
-    [v12 BOOLValue];
+    [neverCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
 LABEL_12:
-    v21 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v21 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

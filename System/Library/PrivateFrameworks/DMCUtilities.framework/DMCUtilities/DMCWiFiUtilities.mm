@@ -6,7 +6,7 @@
 - (void)cancelTimeoutBlock;
 - (void)cleanup;
 - (void)dealloc;
-- (void)enableAutoJoinIfNeededWithTimeout:(double)a3 completionHandler:(id)a4;
+- (void)enableAutoJoinIfNeededWithTimeout:(double)timeout completionHandler:(id)handler;
 @end
 
 @implementation DMCWiFiUtilities
@@ -46,16 +46,16 @@
   [(DMCWiFiUtilities *)&v3 dealloc];
 }
 
-- (void)enableAutoJoinIfNeededWithTimeout:(double)a3 completionHandler:(id)a4
+- (void)enableAutoJoinIfNeededWithTimeout:(double)timeout completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__DMCWiFiUtilities_enableAutoJoinIfNeededWithTimeout_completionHandler___block_invoke;
   block[3] = &unk_1E7ADC950;
   block[4] = self;
-  v7 = v6;
+  v7 = handlerCopy;
   v32 = v7;
   v8 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
   timeoutBlock = self->_timeoutBlock;
@@ -87,13 +87,13 @@ LABEL_4:
       }
 
       [(DMCWiFiUtilities *)self cancelTimeoutBlock];
-      v22 = [(DMCWiFiUtilities *)self _noRecoveryNetworkError];
-      (*(v7 + 2))(v7, 0, v22);
+      _noRecoveryNetworkError = [(DMCWiFiUtilities *)self _noRecoveryNetworkError];
+      (*(v7 + 2))(v7, 0, _noRecoveryNetworkError);
     }
 
     else
     {
-      v15 = dispatch_time(0, (a3 * 1000000000.0));
+      v15 = dispatch_time(0, (timeout * 1000000000.0));
       dispatch_after(v15, self->_timeoutQueue, self->_timeoutBlock);
       [(CWFInterface *)self->_interface performAutoJoinWithParameters:self->_config reply:&__block_literal_global_19];
       objc_initWeak(&location, self);
@@ -278,15 +278,15 @@ LABEL_19:
 
 - (BOOL)haveNetwork
 {
-  v3 = [(CWFInterface *)self->_interface IPv4Addresses];
-  v4 = [(CWFInterface *)self->_interface IPv4RouterAddress];
-  v5 = [v3 count];
-  v6 = [(CWFInterface *)self->_interface IPv6Addresses];
-  v7 = [(CWFInterface *)self->_interface IPv6RouterAddress];
-  v8 = [v6 count];
+  iPv4Addresses = [(CWFInterface *)self->_interface IPv4Addresses];
+  iPv4RouterAddress = [(CWFInterface *)self->_interface IPv4RouterAddress];
+  v5 = [iPv4Addresses count];
+  iPv6Addresses = [(CWFInterface *)self->_interface IPv6Addresses];
+  iPv6RouterAddress = [(CWFInterface *)self->_interface IPv6RouterAddress];
+  v8 = [iPv6Addresses count];
   if (v5)
   {
-    v9 = v4 == 0;
+    v9 = iPv4RouterAddress == 0;
   }
 
   else
@@ -294,15 +294,15 @@ LABEL_19:
     v9 = 1;
   }
 
-  if (v9 && (v8 ? (v10 = v7 == 0) : (v10 = 1), v10))
+  if (v9 && (v8 ? (v10 = iPv6RouterAddress == 0) : (v10 = 1), v10))
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [(CWFInterface *)self->_interface networkName];
-    v11 = v12 != 0;
+    networkName = [(CWFInterface *)self->_interface networkName];
+    v11 = networkName != 0;
   }
 
   return v11;

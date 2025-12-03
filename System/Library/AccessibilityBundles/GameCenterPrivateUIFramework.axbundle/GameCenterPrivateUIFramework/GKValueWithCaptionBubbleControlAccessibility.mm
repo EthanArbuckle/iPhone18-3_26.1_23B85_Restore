@@ -1,5 +1,5 @@
 @interface GKValueWithCaptionBubbleControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
@@ -7,11 +7,11 @@
 
 @implementation GKValueWithCaptionBubbleControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GKValueWithCaptionBubbleControl" hasInstanceMethod:@"captionText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKValueWithCaptionBubbleControl" hasInstanceMethod:@"valueText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GKValueWithCaptionBubbleControl" hasInstanceMethod:@"captionText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKValueWithCaptionBubbleControl" hasInstanceMethod:@"valueText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -63,8 +63,8 @@
     return 0;
   }
 
-  v3 = [(GKValueWithCaptionBubbleControlAccessibility *)self accessibilityLabel];
-  v4 = [v3 length] != 0;
+  accessibilityLabel = [(GKValueWithCaptionBubbleControlAccessibility *)self accessibilityLabel];
+  v4 = [accessibilityLabel length] != 0;
 
   return v4;
 }

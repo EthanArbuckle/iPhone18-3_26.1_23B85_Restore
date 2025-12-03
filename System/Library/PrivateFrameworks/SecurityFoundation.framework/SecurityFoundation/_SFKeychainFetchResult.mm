@@ -1,31 +1,31 @@
 @interface _SFKeychainFetchResult
-+ (id)fetchResultWithError:(id)a3;
-+ (id)fetchResultWithValue:(id)a3;
-- (_SFKeychainFetchResult)initWithError:(id)a3;
-- (_SFKeychainFetchResult)initWithValue:(id)a3;
++ (id)fetchResultWithError:(id)error;
++ (id)fetchResultWithValue:(id)value;
+- (_SFKeychainFetchResult)initWithError:(id)error;
+- (_SFKeychainFetchResult)initWithValue:(id)value;
 @end
 
 @implementation _SFKeychainFetchResult
 
-+ (id)fetchResultWithValue:(id)a3
++ (id)fetchResultWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithValue:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithValue:valueCopy];
 
   return v5;
 }
 
-+ (id)fetchResultWithError:(id)a3
++ (id)fetchResultWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithError:errorCopy];
 
   return v5;
 }
 
-- (_SFKeychainFetchResult)initWithValue:(id)a3
+- (_SFKeychainFetchResult)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = _SFKeychainFetchResult;
   v6 = [(_SFKeychainFetchResult *)&v10 init];
@@ -35,16 +35,16 @@
     keychainFetchResultInternal = v6->_keychainFetchResultInternal;
     v6->_keychainFetchResultInternal = v7;
 
-    objc_storeStrong(v6->_keychainFetchResultInternal + 2, a3);
+    objc_storeStrong(v6->_keychainFetchResultInternal + 2, value);
     *(v6->_keychainFetchResultInternal + 1) = 0;
   }
 
   return v6;
 }
 
-- (_SFKeychainFetchResult)initWithError:(id)a3
+- (_SFKeychainFetchResult)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = _SFKeychainFetchResult;
   v6 = [(_SFKeychainFetchResult *)&v10 init];
@@ -54,7 +54,7 @@
     keychainFetchResultInternal = v6->_keychainFetchResultInternal;
     v6->_keychainFetchResultInternal = v7;
 
-    objc_storeStrong(v6->_keychainFetchResultInternal + 3, a3);
+    objc_storeStrong(v6->_keychainFetchResultInternal + 3, error);
     *(v6->_keychainFetchResultInternal + 1) = 2;
   }
 

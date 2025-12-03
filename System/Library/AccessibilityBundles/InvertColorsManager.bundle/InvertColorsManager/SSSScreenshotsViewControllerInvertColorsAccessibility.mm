@@ -7,8 +7,8 @@
 - (void)_accessibilityLoadInvertColors
 {
   v3 = [(SSSScreenshotsViewControllerInvertColorsAccessibility *)self safeUIViewForKey:@"view"];
-  v2 = [v3 window];
-  [v2 setAccessibilityIgnoresInvertColors:1];
+  window = [v3 window];
+  [window setAccessibilityIgnoresInvertColors:1];
 }
 
 @end

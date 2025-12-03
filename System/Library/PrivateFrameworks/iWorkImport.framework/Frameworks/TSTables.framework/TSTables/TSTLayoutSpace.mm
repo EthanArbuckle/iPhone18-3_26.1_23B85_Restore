@@ -1,133 +1,133 @@
 @interface TSTLayoutSpace
-+ ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRangeOfLayoutSpace:(id)a3;
-+ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionColumnGridRange:(id)a3 ofLayoutSpace:(id)a4;
-+ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionGridRange:(id)a3 ofLayoutSpace:(id)a4;
-+ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionRowGridRange:(id)a3 ofLayoutSpace:(id)a4;
-- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForColumnGridRange:(SEL)a3;
-- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForGridRange:(SEL)a3 strokeWidthOverride:(id)a4;
-- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForRowGridRange:(SEL)a3;
-- ($49C15799EE3625B6AB482F2FFBF0D806)p_frameSpecForGridRange:(SEL)a3 frameType:(id)a4 strokeWidthOverride:(int)a5;
-- ($85CD2974BE96D4886BB301820D1C36C2)gridPointHitByCanvasPoint:(CGPoint)a3 tabsViewable:(BOOL)a4;
-- ($85CD2974BE96D4886BB301820D1C36C2)gridPointHitByLayoutPoint:(CGPoint)a3;
-- ($85CD2974BE96D4886BB301820D1C36C2)p_gridPointForTablePoint:(CGPoint)a3;
++ ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRangeOfLayoutSpace:(id)space;
++ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionColumnGridRange:(id)range ofLayoutSpace:(id)space;
++ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionGridRange:(id)range ofLayoutSpace:(id)space;
++ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionRowGridRange:(id)range ofLayoutSpace:(id)space;
+- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForColumnGridRange:(SEL)range;
+- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForGridRange:(SEL)range strokeWidthOverride:(id)override;
+- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForRowGridRange:(SEL)range;
+- ($49C15799EE3625B6AB482F2FFBF0D806)p_frameSpecForGridRange:(SEL)range frameType:(id)type strokeWidthOverride:(int)override;
+- ($85CD2974BE96D4886BB301820D1C36C2)gridPointHitByCanvasPoint:(CGPoint)point tabsViewable:(BOOL)viewable;
+- ($85CD2974BE96D4886BB301820D1C36C2)gridPointHitByLayoutPoint:(CGPoint)point;
+- ($85CD2974BE96D4886BB301820D1C36C2)p_gridPointForTablePoint:(CGPoint)point;
 - ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRange;
-- ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRangeForLayoutRect:(CGRect)a3;
+- ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRangeForLayoutRect:(CGRect)rect;
 - ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_bodyGridRange;
 - ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_extendedBodyGridRange;
 - ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_footerRowsGridRange;
-- ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_gridRangeForTableRect:(CGRect)a3;
+- ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_gridRangeForTableRect:(CGRect)rect;
 - ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_headerColumnsGridRange;
 - ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_headerRowsGridRange;
 - ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_topLeftCornerGridRange;
-- (BOOL)containsCellRange:(TSUCellRect)a3;
-- (BOOL)containsGridRange:(id)a3;
-- (BOOL)intersectsCellRange:(TSUCellRect)a3;
-- (BOOL)intersectsColumnGridRange:(id)a3;
-- (BOOL)intersectsGridRange:(id)a3;
-- (BOOL)intersectsRowGridRange:(id)a3;
-- (BOOL)p_drawStrokeForGridColumn:(unsigned int)a3 strokeRect:(id)a4 clearStroke:(BOOL)a5 shadowType:(int)a6 context:(CGContext *)a7;
-- (BOOL)p_drawStrokeForGridRow:(unsigned int)a3 strokeRect:(id)a4 clearStroke:(BOOL)a5 shadowType:(int)a6 context:(CGContext *)a7;
+- (BOOL)containsCellRange:(TSUCellRect)range;
+- (BOOL)containsGridRange:(id)range;
+- (BOOL)intersectsCellRange:(TSUCellRect)range;
+- (BOOL)intersectsColumnGridRange:(id)range;
+- (BOOL)intersectsGridRange:(id)range;
+- (BOOL)intersectsRowGridRange:(id)range;
+- (BOOL)p_drawStrokeForGridColumn:(unsigned int)column strokeRect:(id)rect clearStroke:(BOOL)stroke shadowType:(int)type context:(CGContext *)context;
+- (BOOL)p_drawStrokeForGridRow:(unsigned int)row strokeRect:(id)rect clearStroke:(BOOL)stroke shadowType:(int)type context:(CGContext *)context;
 - (BOOL)p_getLayoutDirectionLeftToRight;
 - (CGAffineTransform)transformFromCanvas;
 - (CGAffineTransform)transformFromDevice;
 - (CGAffineTransform)transformToCanvas;
 - (CGAffineTransform)transformToDevice;
-- (CGPoint)canvasPointForLayoutPoint:(CGPoint)a3;
-- (CGPoint)layoutPointForCanvasPoint:(CGPoint)a3;
-- (CGPoint)p_layoutOffsetForGridPoint:(id)a3;
-- (CGPoint)p_layoutOffsetForTablePoint:(CGPoint)a3;
-- (CGPoint)p_layoutPointForTablePoint:(CGPoint)a3;
-- (CGPoint)p_tablePointForLayoutPoint:(CGPoint)a3;
+- (CGPoint)canvasPointForLayoutPoint:(CGPoint)point;
+- (CGPoint)layoutPointForCanvasPoint:(CGPoint)point;
+- (CGPoint)p_layoutOffsetForGridPoint:(id)point;
+- (CGPoint)p_layoutOffsetForTablePoint:(CGPoint)point;
+- (CGPoint)p_layoutPointForTablePoint:(CGPoint)point;
+- (CGPoint)p_tablePointForLayoutPoint:(CGPoint)point;
 - (CGPoint)tableOffset;
-- (CGRect)alignedContentFrameForGridRange:(id)a3;
+- (CGRect)alignedContentFrameForGridRange:(id)range;
 - (CGRect)alignedFrame;
-- (CGRect)alignedFrameForGridRange:(id)a3;
-- (CGRect)alignedOverrideFrameForGridRange:(id)a3 strokeWidthOverride:(double)a4;
-- (CGRect)alignedRectForLayoutRect:(CGRect)a3;
+- (CGRect)alignedFrameForGridRange:(id)range;
+- (CGRect)alignedOverrideFrameForGridRange:(id)range strokeWidthOverride:(double)override;
+- (CGRect)alignedRectForLayoutRect:(CGRect)rect;
 - (CGRect)alignedStrokeFrame;
-- (CGRect)alignedStrokeFrameForCellRange:(TSUCellRect)a3;
-- (CGRect)alignedStrokeFrameForGridRange:(id)a3;
+- (CGRect)alignedStrokeFrameForCellRange:(TSUCellRect)range;
+- (CGRect)alignedStrokeFrameForGridRange:(id)range;
 - (CGRect)alignedStrokeFrameForTableNameBorder;
-- (CGRect)alignedStrokeLineForColumnGridRange:(id)a3;
-- (CGRect)alignedStrokeLineForRowGridRange:(id)a3;
+- (CGRect)alignedStrokeLineForColumnGridRange:(id)range;
+- (CGRect)alignedStrokeLineForRowGridRange:(id)range;
 - (CGRect)cachedAlignedFrame;
 - (CGRect)cachedAlignedStrokeFrame;
 - (CGRect)cachedFrame;
 - (CGRect)cachedStrokeFrame;
 - (CGRect)canvasFrame;
-- (CGRect)canvasFrameForCellRange:(TSUCellRect)a3;
-- (CGRect)canvasFrameForGridRange:(id)a3;
-- (CGRect)canvasRectForLayoutRect:(CGRect)a3;
+- (CGRect)canvasFrameForCellRange:(TSUCellRect)range;
+- (CGRect)canvasFrameForGridRange:(id)range;
+- (CGRect)canvasRectForLayoutRect:(CGRect)rect;
 - (CGRect)canvasStrokeFrame;
-- (CGRect)canvasStrokeFrameForGridRange:(id)a3;
-- (CGRect)contentFrameForGridRange:(id)a3;
-- (CGRect)contentFrameForRange:(TSUCellRect)a3;
+- (CGRect)canvasStrokeFrameForGridRange:(id)range;
+- (CGRect)contentFrameForGridRange:(id)range;
+- (CGRect)contentFrameForRange:(TSUCellRect)range;
 - (CGRect)frame;
-- (CGRect)frameForGridRange:(id)a3;
-- (CGRect)frameForRange:(TSUCellRect)a3;
+- (CGRect)frameForGridRange:(id)range;
+- (CGRect)frameForRange:(TSUCellRect)range;
 - (CGRect)frameForTableNameBorder;
-- (CGRect)layoutRectForCanvasRect:(CGRect)a3;
-- (CGRect)p_layoutRectForTableRect:(CGRect)a3;
-- (CGRect)p_tableRectForGridRange:(id)a3;
-- (CGRect)p_tableRectForLayoutRect:(CGRect)a3;
+- (CGRect)layoutRectForCanvasRect:(CGRect)rect;
+- (CGRect)p_layoutRectForTableRect:(CGRect)rect;
+- (CGRect)p_tableRectForGridRange:(id)range;
+- (CGRect)p_tableRectForLayoutRect:(CGRect)rect;
 - (CGRect)strokeFrame;
-- (CGRect)strokeFrameForGridRange:(id)a3;
-- (CGRect)strokeFrameForRange:(TSUCellRect)a3;
+- (CGRect)strokeFrameForGridRange:(id)range;
+- (CGRect)strokeFrameForRange:(TSUCellRect)range;
 - (CGRect)strokeFrameForTableNameBorder;
 - (TSTLayout)layout;
 - (TSTLayoutEngine)layoutEngine;
-- (TSTLayoutSpace)initWithLayoutSpaceBundle:(id)a3 type:(int)a4;
+- (TSTLayoutSpace)initWithLayoutSpaceBundle:(id)bundle type:(int)type;
 - (TSTLayoutSpaceBundle)bundle;
 - (TSUCellRect)cellRange;
-- (TSUCellRect)intersectionCellRange:(TSUCellRect)a3;
-- (TSUCellRect)nearestRangeForLayoutRect:(CGRect)a3;
-- (TSUCellRect)p_rangeForLayoutRect:(CGRect)a3;
-- (TSUCellRect)rangeIntersectingLayoutRect:(CGRect)a3;
-- (TSUCellRect)visiblePartOfRange:(TSUCellRect)a3;
+- (TSUCellRect)intersectionCellRange:(TSUCellRect)range;
+- (TSUCellRect)nearestRangeForLayoutRect:(CGRect)rect;
+- (TSUCellRect)p_rangeForLayoutRect:(CGRect)rect;
+- (TSUCellRect)rangeIntersectingLayoutRect:(CGRect)rect;
+- (TSUCellRect)visiblePartOfRange:(TSUCellRect)range;
 - (TSUCellRect)visibleRange;
-- (double)canvasPositionForGridColumn:(unsigned int)a3;
-- (double)canvasPositionForGridRow:(unsigned int)a3;
+- (double)canvasPositionForGridColumn:(unsigned int)column;
+- (double)canvasPositionForGridRow:(unsigned int)row;
 - (double)headerColumnsWidth;
 - (double)headerRowsHeight;
 - (double)p_bodyTranslationX;
 - (double)p_bodyTranslationY;
-- (double)p_layoutCoordinateForGridColumn:(unsigned int)a3;
-- (double)p_layoutCoordinateForGridRow:(unsigned int)a3;
-- (double)p_rawTableCoordinateForGridColumn:(unsigned int)a3;
-- (double)p_tableCoordinateForGridColumn:(unsigned int)a3;
-- (double)p_tableCoordinateForGridRow:(unsigned int)a3;
-- (double)p_tableCoordinateForX:(double)a3;
-- (double)p_tableCoordinateForY:(double)a3;
-- (id)alignedMaskStrokeFramePathForTransform:(CGAffineTransform *)a3 cornerRadius:(double)a4;
-- (id)alignedStrokeFramePathForGridRange:(id)a3 transform:(CGAffineTransform *)a4 inset:(double)a5 reoriginToZero:(BOOL)a6 cornerRadius:(double)a7;
-- (id)alignedStrokeLinePathForColumnGridRange:(id)a3 transform:(CGAffineTransform *)a4 inset:(double)a5 reoriginToZero:(BOOL)a6 cornerRadius:(double)a7;
-- (id)alignedStrokeLinePathForRowGridRange:(id)a3 transform:(CGAffineTransform *)a4 inset:(double)a5 reoriginToZero:(BOOL)a6 cornerRadius:(double)a7;
-- (id)p_createColumnCoordinatesForGridRange:(id)a3 invalidColumnIndex:(unsigned __int16)a4 previousCoordinates:(id)a5 outCoordinatesChanged:(BOOL *)a6;
-- (id)p_createRowCoordinatesForGridRange:(id)a3 invalidRowIndex:(unsigned int)a4 previousCoordinates:(id)a5 validateSingleRow:(BOOL)a6 outCoordinatesChanged:(BOOL *)a7;
-- (int)p_cellTypeForGridPoint:(id)a3;
-- (int)validate:(id)a3;
-- (int)validateCoordinateCache:(id)a3;
-- (int)validateTableOffset:(id)a3;
-- (unsigned)p_gridColumnForTableCoordinate:(double)a3;
-- (unsigned)p_gridRowForTableCoordinate:(double)a3;
-- (void)alignStrokeCoordinatesOfBeginPoint:(CGPoint *)a3 endPoint:(CGPoint *)a4 width:(double *)a5;
+- (double)p_layoutCoordinateForGridColumn:(unsigned int)column;
+- (double)p_layoutCoordinateForGridRow:(unsigned int)row;
+- (double)p_rawTableCoordinateForGridColumn:(unsigned int)column;
+- (double)p_tableCoordinateForGridColumn:(unsigned int)column;
+- (double)p_tableCoordinateForGridRow:(unsigned int)row;
+- (double)p_tableCoordinateForX:(double)x;
+- (double)p_tableCoordinateForY:(double)y;
+- (id)alignedMaskStrokeFramePathForTransform:(CGAffineTransform *)transform cornerRadius:(double)radius;
+- (id)alignedStrokeFramePathForGridRange:(id)range transform:(CGAffineTransform *)transform inset:(double)inset reoriginToZero:(BOOL)zero cornerRadius:(double)radius;
+- (id)alignedStrokeLinePathForColumnGridRange:(id)range transform:(CGAffineTransform *)transform inset:(double)inset reoriginToZero:(BOOL)zero cornerRadius:(double)radius;
+- (id)alignedStrokeLinePathForRowGridRange:(id)range transform:(CGAffineTransform *)transform inset:(double)inset reoriginToZero:(BOOL)zero cornerRadius:(double)radius;
+- (id)p_createColumnCoordinatesForGridRange:(id)range invalidColumnIndex:(unsigned __int16)index previousCoordinates:(id)coordinates outCoordinatesChanged:(BOOL *)changed;
+- (id)p_createRowCoordinatesForGridRange:(id)range invalidRowIndex:(unsigned int)index previousCoordinates:(id)coordinates validateSingleRow:(BOOL)row outCoordinatesChanged:(BOOL *)changed;
+- (int)p_cellTypeForGridPoint:(id)point;
+- (int)validate:(id)validate;
+- (int)validateCoordinateCache:(id)cache;
+- (int)validateTableOffset:(id)offset;
+- (unsigned)p_gridColumnForTableCoordinate:(double)coordinate;
+- (unsigned)p_gridRowForTableCoordinate:(double)coordinate;
+- (void)alignStrokeCoordinatesOfBeginPoint:(CGPoint *)point endPoint:(CGPoint *)endPoint width:(double *)width;
 - (void)dealloc;
-- (void)drawSingleStroke:(id)a3 context:(CGContext *)a4 beginPoint:(CGPoint)a5 endPoint:(CGPoint)a6 width:(double)a7 strokeWidthForDrawing:(double)a8 strokeFrame:(CGRect)a9;
-- (void)drawStrokesInGridRange:(id)a3 clearStrokes:(BOOL)a4 context:(CGContext *)a5;
+- (void)drawSingleStroke:(id)stroke context:(CGContext *)context beginPoint:(CGPoint)point endPoint:(CGPoint)endPoint width:(double)width strokeWidthForDrawing:(double)drawing strokeFrame:(CGRect)frame;
+- (void)drawStrokesInGridRange:(id)range clearStrokes:(BOOL)strokes context:(CGContext *)context;
 - (void)invalidateCoordinates;
-- (void)invalidateCoordinatesAfterColumn:(unsigned __int16)a3;
-- (void)invalidateCoordinatesAfterRow:(unsigned int)a3;
-- (void)invalidateCoordinatesForEditingCellID:(TSUCellCoord)a3;
-- (void)p_alignFrameSpec:(id *)a3;
-- (void)p_alignStrokeHeight:(double)a3 deviceWidth:(double *)a4 scaledWidth:(double *)a5;
-- (void)p_alignStrokeWidth:(double)a3 deviceWidth:(double *)a4 scaledWidth:(double *)a5;
-- (void)setGridRange:(id)a3;
-- (void)setTransformFromCanvas:(CGAffineTransform *)a3;
-- (void)setTransformFromDevice:(CGAffineTransform *)a3;
-- (void)setTransformToCanvas:(CGAffineTransform *)a3;
-- (void)setTransformToDevice:(CGAffineTransform *)a3;
-- (void)setUserSpaceToDeviceSpaceTransform:(CGAffineTransform *)a3;
-- (void)setViewScale:(double)a3;
+- (void)invalidateCoordinatesAfterColumn:(unsigned __int16)column;
+- (void)invalidateCoordinatesAfterRow:(unsigned int)row;
+- (void)invalidateCoordinatesForEditingCellID:(TSUCellCoord)d;
+- (void)p_alignFrameSpec:(id *)spec;
+- (void)p_alignStrokeHeight:(double)height deviceWidth:(double *)width scaledWidth:(double *)scaledWidth;
+- (void)p_alignStrokeWidth:(double)width deviceWidth:(double *)deviceWidth scaledWidth:(double *)scaledWidth;
+- (void)setGridRange:(id)range;
+- (void)setTransformFromCanvas:(CGAffineTransform *)canvas;
+- (void)setTransformFromDevice:(CGAffineTransform *)device;
+- (void)setTransformToCanvas:(CGAffineTransform *)canvas;
+- (void)setTransformToDevice:(CGAffineTransform *)device;
+- (void)setUserSpaceToDeviceSpaceTransform:(CGAffineTransform *)transform;
+- (void)setViewScale:(double)scale;
 - (void)validateCachedFrames;
 - (void)validateCoordinateDirection;
 @end
@@ -161,16 +161,16 @@
   return v5;
 }
 
-- (TSTLayoutSpace)initWithLayoutSpaceBundle:(id)a3 type:(int)a4
+- (TSTLayoutSpace)initWithLayoutSpaceBundle:(id)bundle type:(int)type
 {
-  v6 = a3;
+  bundleCopy = bundle;
   v28.receiver = self;
   v28.super_class = TSTLayoutSpace;
   v7 = [(TSTLayoutSpace *)&v28 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_bundle, v6);
+    objc_storeWeak(&v7->_bundle, bundleCopy);
     v9 = MEMORY[0x277CBF2C0];
     v10 = *MEMORY[0x277CBF2C0];
     v11 = *(MEMORY[0x277CBF2C0] + 16);
@@ -189,7 +189,7 @@
     v8->_gridRange.bottomRight = -1;
     v8->_viewScale = 1.0;
     v8->_invalidColumnIndex = 0;
-    v8->_layoutSpaceType = a4;
+    v8->_layoutSpaceType = type;
     v8->_invalidRowIndex = 0;
     *&v8->_transformToDevice.tx = v13;
     *&v8->_transformFromDevice.a = v12;
@@ -245,66 +245,66 @@
   self->_invalidatedForEditingCell = 0;
 }
 
-- (void)invalidateCoordinatesAfterColumn:(unsigned __int16)a3
+- (void)invalidateCoordinatesAfterColumn:(unsigned __int16)column
 {
   invalidColumnIndex = self->_invalidColumnIndex;
-  if (invalidColumnIndex >= a3)
+  if (invalidColumnIndex >= column)
   {
-    v4 = a3;
+    columnCopy = column;
   }
 
   else
   {
-    v4 = self->_invalidColumnIndex;
+    columnCopy = self->_invalidColumnIndex;
   }
 
   if (invalidColumnIndex == 0x7FFF)
   {
-    v5 = a3;
+    columnCopy2 = column;
   }
 
   else
   {
-    v5 = v4;
+    columnCopy2 = columnCopy;
   }
 
-  self->_invalidColumnIndex = v5;
+  self->_invalidColumnIndex = columnCopy2;
   self->_invalidatedForEditingCell = 0;
 }
 
-- (void)invalidateCoordinatesAfterRow:(unsigned int)a3
+- (void)invalidateCoordinatesAfterRow:(unsigned int)row
 {
   invalidRowIndex = self->_invalidRowIndex;
-  if (invalidRowIndex >= a3)
+  if (invalidRowIndex >= row)
   {
-    v4 = a3;
+    rowCopy = row;
   }
 
   else
   {
-    v4 = self->_invalidRowIndex;
+    rowCopy = self->_invalidRowIndex;
   }
 
   if (invalidRowIndex == 0x7FFFFFFF)
   {
-    v5 = a3;
+    rowCopy2 = row;
   }
 
   else
   {
-    v5 = v4;
+    rowCopy2 = rowCopy;
   }
 
-  self->_invalidRowIndex = v5;
+  self->_invalidRowIndex = rowCopy2;
   self->_invalidatedForEditingCell = 0;
 }
 
-- (void)invalidateCoordinatesForEditingCellID:(TSUCellCoord)a3
+- (void)invalidateCoordinatesForEditingCellID:(TSUCellCoord)d
 {
-  v5 = a3;
-  v7 = objc_msgSend_layout(self, a2, *&a3, v3, v4);
+  dCopy = d;
+  v7 = objc_msgSend_layout(self, a2, *&d, v3, v4);
   v12 = objc_msgSend_tableInfo(v7, v8, v9, v10, v11);
-  isSingleCellOrMergeRange = objc_msgSend_isSingleCellOrMergeRange_(v12, v13, *&v5, 0x100000001, v14);
+  isSingleCellOrMergeRange = objc_msgSend_isSingleCellOrMergeRange_(v12, v13, *&dCopy, 0x100000001, v14);
 
   if ((isSingleCellOrMergeRange & 1) == 0)
   {
@@ -318,24 +318,24 @@
 
   v31 = objc_msgSend_layout(self, v16, v17, v18, v19);
   v36 = objc_msgSend_tableInfo(v31, v32, v33, v34, v35);
-  v40 = objc_msgSend_mergeRangeAtCellID_(v36, v37, *&v5, v38, v39);
+  v40 = objc_msgSend_mergeRangeAtCellID_(v36, v37, *&dCopy, v38, v39);
   v42 = v41;
   v43.origin = v40;
   v43.size = v41;
 
   if (v40 != 0x7FFFFFFF && (v40 & 0xFFFF00000000) != 0x7FFF00000000 && HIDWORD(*&v42) && v42.numberOfColumns)
   {
-    v5.row = TSUCellRect::lastRow(&v43);
+    dCopy.row = TSUCellRect::lastRow(&v43);
   }
 
   self->_invalidatedForEditingCell = 1;
-  self->_invalidRowIndex = v5.row;
+  self->_invalidRowIndex = dCopy.row;
   self->_invalidColumnIndex = self->_gridRange.bottomRight.column;
 }
 
-- (int)validate:(id)a3
+- (int)validate:(id)validate
 {
-  v8 = a3;
+  validateCopy = validate;
   if (!self->_invalidTableOffset && self->_invalidColumnIndex == 0x7FFF && self->_invalidRowIndex == 0x7FFFFFFF)
   {
     v9 = 0;
@@ -346,8 +346,8 @@
     objc_msgSend_lockForWrite(self, v4, v5, v6, v7);
     self->_layoutDirectionIsLeftToRight = objc_msgSend_p_getLayoutDirectionLeftToRight(self, v10, v11, v12, v13);
     objc_msgSend_validateCachedFrames(self, v14, v15, v16, v17);
-    v21 = objc_msgSend_validateCoordinateCache_(self, v18, v8, v19, v20);
-    v25 = objc_msgSend_validateTableOffset_(self, v22, v8, v23, v24);
+    v21 = objc_msgSend_validateCoordinateCache_(self, v18, validateCopy, v19, v20);
+    v25 = objc_msgSend_validateTableOffset_(self, v22, validateCopy, v23, v24);
     v30 = objc_msgSend_bezierPathCache(self, v26, v27, v28, v29);
     objc_msgSend_removeAllObjects(v30, v31, v32, v33, v34);
 
@@ -373,22 +373,22 @@
   }
 }
 
-- (void)setGridRange:(id)a3
+- (void)setGridRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   topLeft = self->_gridRange.topLeft;
   bottomRight = self->_gridRange.bottomRight;
-  if (a3.var0.var0 != -1 && a3.var1.var0 != -1 && a3.var0.var0 <= a3.var1.var0 && a3.var0.var1 != 0xFFFFFFFFLL && a3.var1.var1 != 0xFFFFFFFFLL && a3.var0.var1 <= a3.var1.var1 || (topLeft.column != -1 ? (v9 = bottomRight.column == -1) : (v9 = 1), !v9 ? (v10 = topLeft.column > bottomRight.column) : (v10 = 1), (v11 = HIDWORD(*&topLeft), v12 = HIDWORD(*&bottomRight), !v10) ? (v13 = v11 == 0xFFFFFFFF) : (v13 = 1), !v13 ? (v14 = v12 == 0xFFFFFFFF) : (v14 = 1), !v14 ? (v15 = v11 > v12) : (v15 = 1), !v15))
+  if (range.var0.var0 != -1 && range.var1.var0 != -1 && range.var0.var0 <= range.var1.var0 && range.var0.var1 != 0xFFFFFFFFLL && range.var1.var1 != 0xFFFFFFFFLL && range.var0.var1 <= range.var1.var1 || (topLeft.column != -1 ? (v9 = bottomRight.column == -1) : (v9 = 1), !v9 ? (v10 = topLeft.column > bottomRight.column) : (v10 = 1), (v11 = HIDWORD(*&topLeft), v12 = HIDWORD(*&bottomRight), !v10) ? (v13 = v11 == 0xFFFFFFFF) : (v13 = 1), !v13 ? (v14 = v12 == 0xFFFFFFFF) : (v14 = 1), !v14 ? (v15 = v11 > v12) : (v15 = 1), !v15))
   {
-    if (a3.var0.var0 != topLeft.column || (*&topLeft ^ *&a3.var0) >> 32 || a3.var1.var0 != bottomRight.column || (*&bottomRight ^ *&a3.var1) >> 32)
+    if (range.var0.var0 != topLeft.column || (*&topLeft ^ *&range.var0) >> 32 || range.var1.var0 != bottomRight.column || (*&bottomRight ^ *&range.var1) >> 32)
     {
-      if (bottomRight.column >= a3.var1.var0)
+      if (bottomRight.column >= range.var1.var0)
       {
-        LOWORD(bottomRight.column) = a3.var1.var0;
+        LOWORD(bottomRight.column) = range.var1.var0;
       }
 
-      objc_msgSend_invalidateCoordinatesAfterColumn_(self, a2, LOWORD(bottomRight.column), *&a3.var1, v3);
+      objc_msgSend_invalidateCoordinatesAfterColumn_(self, a2, LOWORD(bottomRight.column), *&range.var1, v3);
       row = self->_gridRange.bottomRight.row;
       if (row >= var1.var1)
       {
@@ -406,13 +406,13 @@
   }
 }
 
-+ ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRangeOfLayoutSpace:(id)a3
++ ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRangeOfLayoutSpace:(id)space
 {
-  v3 = a3;
-  v8 = v3;
-  if (v3)
+  spaceCopy = space;
+  v8 = spaceCopy;
+  if (spaceCopy)
   {
-    v9 = objc_msgSend_gridRange(v3, v4, v5, v6, v7);
+    v9 = objc_msgSend_gridRange(spaceCopy, v4, v5, v6, v7);
     v11 = v10;
   }
 
@@ -475,15 +475,15 @@
   return result;
 }
 
-- (int)validateTableOffset:(id)a3
+- (int)validateTableOffset:(id)offset
 {
-  v4 = a3;
-  v9 = v4;
+  offsetCopy = offset;
+  v9 = offsetCopy;
   if (self->_invalidTableOffset)
   {
-    if (v4)
+    if (offsetCopy)
     {
-      objc_msgSend_tableOffset(v4, v5, v6, v7, v8);
+      objc_msgSend_tableOffset(offsetCopy, v5, v6, v7, v8);
       v10 = 0;
       objc_msgSend_setTableOffset_(self, v11, v12, v13, v14, v15, v16);
     }
@@ -1002,7 +1002,7 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)containsGridRange:(id)a3
+- (BOOL)containsGridRange:(id)range
 {
   topLeft = self->_gridRange.topLeft;
   bottomRight = self->_gridRange.bottomRight;
@@ -1019,19 +1019,19 @@ LABEL_17:
     return 0;
   }
 
-  v13 = a3.var1.var1 == 0xFFFFFFFFLL || a3.var0.var1 > a3.var1.var1;
-  v14 = a3.var0.var1 == 0xFFFFFFFFLL || v13;
-  if (a3.var0.var0 > a3.var1.var0)
+  v13 = range.var1.var1 == 0xFFFFFFFFLL || range.var0.var1 > range.var1.var1;
+  v14 = range.var0.var1 == 0xFFFFFFFFLL || v13;
+  if (range.var0.var0 > range.var1.var0)
   {
     v14 = 1;
   }
 
-  if (a3.var1.var0 == -1)
+  if (range.var1.var0 == -1)
   {
     v14 = 1;
   }
 
-  if (a3.var0.var0 == -1)
+  if (range.var0.var0 == -1)
   {
     v15 = 1;
   }
@@ -1041,17 +1041,17 @@ LABEL_17:
     v15 = v14;
   }
 
-  v17 = topLeft.column > a3.var0.var0 || v7 > a3.var0.var1;
+  v17 = topLeft.column > range.var0.var0 || v7 > range.var0.var1;
   v18 = v15 | v17;
-  v20 = a3.var1.var0 <= bottomRight.column && a3.var1.var1 <= v8;
+  v20 = range.var1.var0 <= bottomRight.column && range.var1.var1 <= v8;
   return v20 & ~v18;
 }
 
-- (BOOL)containsCellRange:(TSUCellRect)a3
+- (BOOL)containsCellRange:(TSUCellRect)range
 {
-  size = a3.size;
-  origin = a3.origin;
-  v6 = objc_msgSend_cellRange(self, a2, *&a3.origin, *&a3.size, v3);
+  size = range.size;
+  origin = range.origin;
+  v6 = objc_msgSend_cellRange(self, a2, *&range.origin, *&range.size, v3);
   v8 = 0;
   if (HIDWORD(v7))
   {
@@ -1158,11 +1158,11 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)intersectsCellRange:(TSUCellRect)a3
+- (BOOL)intersectsCellRange:(TSUCellRect)range
 {
-  size = a3.size;
-  origin = a3.origin;
-  v6 = objc_msgSend_cellRange(self, a2, *&a3.origin, *&a3.size, v3);
+  size = range.size;
+  origin = range.origin;
+  v6 = objc_msgSend_cellRange(self, a2, *&range.origin, *&range.size, v3);
   v8 = sub_221119E0C(v6, v7, origin, size);
   if ((v8 & 0xFFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL)
   {
@@ -1178,7 +1178,7 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)intersectsGridRange:(id)a3
+- (BOOL)intersectsGridRange:(id)range
 {
   topLeft = self->_gridRange.topLeft;
   bottomRight = self->_gridRange.bottomRight;
@@ -1196,35 +1196,35 @@ LABEL_7:
   }
 
   result = 0;
-  if (a3.var0.var0 == -1)
+  if (range.var0.var0 == -1)
   {
     return result;
   }
 
-  if (a3.var1.var0 == -1)
+  if (range.var1.var0 == -1)
   {
     return result;
   }
 
-  if (a3.var0.var0 > a3.var1.var0)
+  if (range.var0.var0 > range.var1.var0)
   {
     return result;
   }
 
   result = 0;
-  if (a3.var0.var1 == 0xFFFFFFFFLL || a3.var1.var1 == 0xFFFFFFFFLL || a3.var0.var1 > a3.var1.var1)
+  if (range.var0.var1 == 0xFFFFFFFFLL || range.var1.var1 == 0xFFFFFFFFLL || range.var0.var1 > range.var1.var1)
   {
     return result;
   }
 
-  if (topLeft.column <= a3.var0.var0)
+  if (topLeft.column <= range.var0.var0)
   {
-    topLeft.column = a3.var0.var0;
+    topLeft.column = range.var0.var0;
   }
 
-  if (bottomRight.column >= a3.var1.var0)
+  if (bottomRight.column >= range.var1.var0)
   {
-    bottomRight.column = a3.var1.var0;
+    bottomRight.column = range.var1.var0;
   }
 
   if (topLeft.column > bottomRight.column)
@@ -1232,9 +1232,9 @@ LABEL_7:
     return 0;
   }
 
-  if (v8 >= a3.var1.var1)
+  if (v8 >= range.var1.var1)
   {
-    var1 = a3.var1.var1;
+    var1 = range.var1.var1;
   }
 
   else
@@ -1242,9 +1242,9 @@ LABEL_7:
     var1 = v8;
   }
 
-  if (v7 <= a3.var0.var1)
+  if (v7 <= range.var0.var1)
   {
-    v13 = a3.var0.var1;
+    v13 = range.var0.var1;
   }
 
   else
@@ -1255,11 +1255,11 @@ LABEL_7:
   return v13 <= var1;
 }
 
-- (TSUCellRect)intersectionCellRange:(TSUCellRect)a3
+- (TSUCellRect)intersectionCellRange:(TSUCellRect)range
 {
-  size = a3.size;
-  origin = a3.origin;
-  v6 = objc_msgSend_cellRange(self, a2, *&a3.origin, *&a3.size, v3);
+  size = range.size;
+  origin = range.origin;
+  v6 = objc_msgSend_cellRange(self, a2, *&range.origin, *&range.size, v3);
 
   v8 = sub_221119E0C(v6, v7, origin, size);
   result.size = v9;
@@ -1267,13 +1267,13 @@ LABEL_7:
   return result;
 }
 
-+ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionGridRange:(id)a3 ofLayoutSpace:(id)a4
++ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionGridRange:(id)range ofLayoutSpace:(id)space
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = a4;
-  v11 = v6;
-  if (!v6)
+  var1 = range.var1;
+  var0 = range.var0;
+  spaceCopy = space;
+  v11 = spaceCopy;
+  if (!spaceCopy)
   {
     v14 = -1;
 LABEL_28:
@@ -1281,7 +1281,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v12 = objc_msgSend_gridRange(v6, v7, v8, v9, v10);
+  v12 = objc_msgSend_gridRange(spaceCopy, v7, v8, v9, v10);
   v14 = -1;
   if (v12 == -1 || v13 == -1)
   {
@@ -1338,7 +1338,7 @@ LABEL_29:
   return result;
 }
 
-- (BOOL)intersectsRowGridRange:(id)a3
+- (BOOL)intersectsRowGridRange:(id)range
 {
   topLeft = self->_gridRange.topLeft;
   bottomRight = self->_gridRange.bottomRight;
@@ -1356,35 +1356,35 @@ LABEL_29:
   }
 
   result = 0;
-  if (a3.var0.var0 == -1)
+  if (range.var0.var0 == -1)
   {
     return result;
   }
 
-  if (a3.var1.var0 == -1)
+  if (range.var1.var0 == -1)
   {
     return result;
   }
 
-  if (a3.var0.var0 > a3.var1.var0)
+  if (range.var0.var0 > range.var1.var0)
   {
     return result;
   }
 
   result = 0;
-  if (a3.var0.var1 == 0xFFFFFFFFLL || a3.var1.var1 == 0xFFFFFFFFLL || a3.var0.var1 > a3.var1.var1)
+  if (range.var0.var1 == 0xFFFFFFFFLL || range.var1.var1 == 0xFFFFFFFFLL || range.var0.var1 > range.var1.var1)
   {
     return result;
   }
 
-  if (topLeft.column <= a3.var0.var0)
+  if (topLeft.column <= range.var0.var0)
   {
-    topLeft.column = a3.var0.var0;
+    topLeft.column = range.var0.var0;
   }
 
-  if (bottomRight.column >= a3.var1.var0)
+  if (bottomRight.column >= range.var1.var0)
   {
-    bottomRight.column = a3.var1.var0;
+    bottomRight.column = range.var1.var0;
   }
 
   if (topLeft.column > bottomRight.column)
@@ -1392,9 +1392,9 @@ LABEL_29:
     return 0;
   }
 
-  if (v8 >= a3.var1.var1)
+  if (v8 >= range.var1.var1)
   {
-    var1 = a3.var1.var1;
+    var1 = range.var1.var1;
   }
 
   else
@@ -1402,9 +1402,9 @@ LABEL_29:
     var1 = v8;
   }
 
-  if (v7 <= a3.var0.var1)
+  if (v7 <= range.var0.var1)
   {
-    v13 = a3.var0.var1;
+    v13 = range.var0.var1;
   }
 
   else
@@ -1415,7 +1415,7 @@ LABEL_29:
   return v13 <= var1;
 }
 
-- (BOOL)intersectsColumnGridRange:(id)a3
+- (BOOL)intersectsColumnGridRange:(id)range
 {
   topLeft = self->_gridRange.topLeft;
   bottomRight = self->_gridRange.bottomRight;
@@ -1434,35 +1434,35 @@ LABEL_29:
   }
 
   result = 0;
-  if (a3.var0.var0 == -1)
+  if (range.var0.var0 == -1)
   {
     return result;
   }
 
-  if (a3.var1.var0 == -1)
+  if (range.var1.var0 == -1)
   {
     return result;
   }
 
-  if (a3.var0.var0 > a3.var1.var0)
+  if (range.var0.var0 > range.var1.var0)
   {
     return result;
   }
 
   result = 0;
-  if (a3.var0.var1 == 0xFFFFFFFFLL || a3.var1.var1 == 0xFFFFFFFFLL || a3.var0.var1 > a3.var1.var1)
+  if (range.var0.var1 == 0xFFFFFFFFLL || range.var1.var1 == 0xFFFFFFFFLL || range.var0.var1 > range.var1.var1)
   {
     return result;
   }
 
-  if (topLeft.column <= a3.var0.var0)
+  if (topLeft.column <= range.var0.var0)
   {
-    topLeft.column = a3.var0.var0;
+    topLeft.column = range.var0.var0;
   }
 
-  if (var0 >= a3.var1.var0)
+  if (var0 >= range.var1.var0)
   {
-    var0 = a3.var1.var0;
+    var0 = range.var1.var0;
   }
 
   if (topLeft.column > var0)
@@ -1470,9 +1470,9 @@ LABEL_29:
     return 0;
   }
 
-  if (v9 >= a3.var1.var1)
+  if (v9 >= range.var1.var1)
   {
-    var1 = a3.var1.var1;
+    var1 = range.var1.var1;
   }
 
   else
@@ -1480,21 +1480,21 @@ LABEL_29:
     var1 = v9;
   }
 
-  if (v8 <= a3.var0.var1)
+  if (v8 <= range.var0.var1)
   {
-    v8 = a3.var0.var1;
+    v8 = range.var0.var1;
   }
 
   return v8 <= var1;
 }
 
-+ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionRowGridRange:(id)a3 ofLayoutSpace:(id)a4
++ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionRowGridRange:(id)range ofLayoutSpace:(id)space
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = a4;
-  v11 = v6;
-  if (!v6)
+  var1 = range.var1;
+  var0 = range.var0;
+  spaceCopy = space;
+  v11 = spaceCopy;
+  if (!spaceCopy)
   {
     v14 = -1;
 LABEL_28:
@@ -1502,7 +1502,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v12 = objc_msgSend_gridRange(v6, v7, v8, v9, v10);
+  v12 = objc_msgSend_gridRange(spaceCopy, v7, v8, v9, v10);
   v14 = -1;
   if (v12 == -1 || v13 == -1)
   {
@@ -1559,13 +1559,13 @@ LABEL_29:
   return result;
 }
 
-+ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionColumnGridRange:(id)a3 ofLayoutSpace:(id)a4
++ ($D854FC4CDD8DDEA9B2859E823A7C8A75)intersectionColumnGridRange:(id)range ofLayoutSpace:(id)space
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = a4;
-  v11 = v6;
-  if (!v6)
+  var1 = range.var1;
+  var0 = range.var0;
+  spaceCopy = space;
+  v11 = spaceCopy;
+  if (!spaceCopy)
   {
     v14 = -1;
 LABEL_28:
@@ -1573,7 +1573,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v12 = objc_msgSend_gridRange(v6, v7, v8, v9, v10);
+  v12 = objc_msgSend_gridRange(spaceCopy, v7, v8, v9, v10);
   v14 = -1;
   if (v12 == -1)
   {
@@ -1636,9 +1636,9 @@ LABEL_29:
   return result;
 }
 
-- ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRangeForLayoutRect:(CGRect)a3
+- ($D854FC4CDD8DDEA9B2859E823A7C8A75)gridRangeForLayoutRect:(CGRect)rect
 {
-  objc_msgSend_p_tableRectForLayoutRect_(self, a2, v3, v4, v5, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  objc_msgSend_p_tableRectForLayoutRect_(self, a2, v3, v4, v5, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
   v11 = objc_msgSend_p_gridRangeForTableRect_(self, v7, v8, v9, v10);
   result.var1 = v12;
@@ -1646,9 +1646,9 @@ LABEL_29:
   return result;
 }
 
-- (TSUCellRect)p_rangeForLayoutRect:(CGRect)a3
+- (TSUCellRect)p_rangeForLayoutRect:(CGRect)rect
 {
-  v6 = objc_msgSend_gridRangeForLayoutRect_(self, a2, v3, v4, v5, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  v6 = objc_msgSend_gridRangeForLayoutRect_(self, a2, v3, v4, v5, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v8 = HIDWORD(v6);
   if (v6 == -1 || v7 == -1 || v6 > v7)
   {
@@ -1757,12 +1757,12 @@ LABEL_29:
   return result;
 }
 
-- (TSUCellRect)nearestRangeForLayoutRect:(CGRect)a3
+- (TSUCellRect)nearestRangeForLayoutRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = objc_msgSend_p_rangeForLayoutRect_(self, a2, v3, v4, v5);
   v16 = v11;
   if (v15 == 0x7FFFFFFF || (v15 & 0xFFFF00000000) == 0x7FFF00000000 || !(v11 >> 32) || !v11)
@@ -1881,9 +1881,9 @@ LABEL_29:
   return result;
 }
 
-- (TSUCellRect)rangeIntersectingLayoutRect:(CGRect)a3
+- (TSUCellRect)rangeIntersectingLayoutRect:(CGRect)rect
 {
-  objc_msgSend_p_tableRectForLayoutRect_(self, a2, v3, v4, v5, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  objc_msgSend_p_tableRectForLayoutRect_(self, a2, v3, v4, v5, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -2013,24 +2013,24 @@ LABEL_29:
   return result;
 }
 
-- (double)p_layoutCoordinateForGridColumn:(unsigned int)a3
+- (double)p_layoutCoordinateForGridColumn:(unsigned int)column
 {
-  objc_msgSend_p_tableCoordinateForGridColumn_(self, a2, *&a3, v3, v4);
+  objc_msgSend_p_tableCoordinateForGridColumn_(self, a2, *&column, v3, v4);
 
   objc_msgSend_p_layoutPointForTablePoint_(self, v6, v7, v8, v9);
   return result;
 }
 
-- (double)p_layoutCoordinateForGridRow:(unsigned int)a3
+- (double)p_layoutCoordinateForGridRow:(unsigned int)row
 {
-  objc_msgSend_p_tableCoordinateForGridRow_(self, a2, *&a3, v3, v4);
+  objc_msgSend_p_tableCoordinateForGridRow_(self, a2, *&row, v3, v4);
   objc_msgSend_p_layoutPointForTablePoint_(self, v6, v7, v8, v9, 0.0, v10);
   return v11;
 }
 
-- (CGRect)frameForGridRange:(id)a3
+- (CGRect)frameForGridRange:(id)range
 {
-  objc_msgSend_p_tableRectForGridRange_(self, a2, *&a3.var0, *&a3.var1, v3);
+  objc_msgSend_p_tableRectForGridRange_(self, a2, *&range.var0, *&range.var1, v3);
 
   MEMORY[0x2821F9670](self, sel_p_layoutRectForTableRect_, v5, v6, v7);
   result.size.height = v11;
@@ -2040,9 +2040,9 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)contentFrameForGridRange:(id)a3
+- (CGRect)contentFrameForGridRange:(id)range
 {
-  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, a2, *&a3.var0, *&a3.var1, 0, 0);
+  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, a2, *&range.var0, *&range.var1, 0, 0);
   v3 = 0.0 * 0.5 + 0.0;
   v4 = v3;
   v5 = 0.0 - 0.0 * 0.5 - v3;
@@ -2054,9 +2054,9 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)strokeFrameForGridRange:(id)a3
+- (CGRect)strokeFrameForGridRange:(id)range
 {
-  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, a2, *&a3.var0, *&a3.var1, 0, 0);
+  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, a2, *&range.var0, *&range.var1, 0, 0);
   v3 = 0.0 - 0.0 * 0.5;
   v4 = v3;
   v5 = 0.0 * 0.5 + 0.0 - v3;
@@ -2068,32 +2068,32 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)frameForRange:(TSUCellRect)a3
+- (CGRect)frameForRange:(TSUCellRect)range
 {
-  if (a3.origin.column == 0x7FFF)
+  if (range.origin.column == 0x7FFF)
   {
     column = 0xFFFFFFFFLL;
   }
 
   else
   {
-    column = a3.origin.column;
+    column = range.origin.column;
   }
 
-  v5 = *&a3.origin << 32;
+  v5 = *&range.origin << 32;
   v6 = 0xFFFFFFFF00000000;
-  if (a3.origin.row == 0x7FFFFFFF)
+  if (range.origin.row == 0x7FFFFFFF)
   {
     v5 = 0xFFFFFFFF00000000;
   }
 
-  v7 = (a3.size.numberOfColumns + column - 1);
-  if (a3.size.numberOfRows)
+  v7 = (range.size.numberOfColumns + column - 1);
+  if (range.size.numberOfRows)
   {
-    v6 = ((v5 + *&a3.size) & 0xFFFFFFFF00000000) - 0x100000000;
+    v6 = ((v5 + *&range.size) & 0xFFFFFFFF00000000) - 0x100000000;
   }
 
-  if (!a3.size.numberOfColumns)
+  if (!range.size.numberOfColumns)
   {
     v7 = 0xFFFFFFFFLL;
   }
@@ -2106,32 +2106,32 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)contentFrameForRange:(TSUCellRect)a3
+- (CGRect)contentFrameForRange:(TSUCellRect)range
 {
-  if (a3.origin.column == 0x7FFF)
+  if (range.origin.column == 0x7FFF)
   {
     column = 0xFFFFFFFFLL;
   }
 
   else
   {
-    column = a3.origin.column;
+    column = range.origin.column;
   }
 
-  v5 = *&a3.origin << 32;
+  v5 = *&range.origin << 32;
   v6 = 0xFFFFFFFF00000000;
-  if (a3.origin.row == 0x7FFFFFFF)
+  if (range.origin.row == 0x7FFFFFFF)
   {
     v5 = 0xFFFFFFFF00000000;
   }
 
-  v7 = (a3.size.numberOfColumns + column - 1);
-  if (a3.size.numberOfRows)
+  v7 = (range.size.numberOfColumns + column - 1);
+  if (range.size.numberOfRows)
   {
-    v6 = ((v5 + *&a3.size) & 0xFFFFFFFF00000000) - 0x100000000;
+    v6 = ((v5 + *&range.size) & 0xFFFFFFFF00000000) - 0x100000000;
   }
 
-  if (!a3.size.numberOfColumns)
+  if (!range.size.numberOfColumns)
   {
     v7 = 0xFFFFFFFFLL;
   }
@@ -2144,32 +2144,32 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)strokeFrameForRange:(TSUCellRect)a3
+- (CGRect)strokeFrameForRange:(TSUCellRect)range
 {
-  if (a3.origin.column == 0x7FFF)
+  if (range.origin.column == 0x7FFF)
   {
     column = 0xFFFFFFFFLL;
   }
 
   else
   {
-    column = a3.origin.column;
+    column = range.origin.column;
   }
 
-  v5 = *&a3.origin << 32;
+  v5 = *&range.origin << 32;
   v6 = 0xFFFFFFFF00000000;
-  if (a3.origin.row == 0x7FFFFFFF)
+  if (range.origin.row == 0x7FFFFFFF)
   {
     v5 = 0xFFFFFFFF00000000;
   }
 
-  v7 = (a3.size.numberOfColumns + column - 1);
-  if (a3.size.numberOfRows)
+  v7 = (range.size.numberOfColumns + column - 1);
+  if (range.size.numberOfRows)
   {
-    v6 = ((v5 + *&a3.size) & 0xFFFFFFFF00000000) - 0x100000000;
+    v6 = ((v5 + *&range.size) & 0xFFFFFFFF00000000) - 0x100000000;
   }
 
-  if (!a3.size.numberOfColumns)
+  if (!range.size.numberOfColumns)
   {
     v7 = 0xFFFFFFFFLL;
   }
@@ -2528,17 +2528,17 @@ LABEL_29:
   return result;
 }
 
-- (void)setTransformToCanvas:(CGAffineTransform *)a3
+- (void)setTransformToCanvas:(CGAffineTransform *)canvas
 {
-  v4 = *&a3->a;
-  v5 = *&a3->tx;
-  *&self->_transformToCanvas.c = *&a3->c;
+  v4 = *&canvas->a;
+  v5 = *&canvas->tx;
+  *&self->_transformToCanvas.c = *&canvas->c;
   *&self->_transformToCanvas.tx = v5;
   *&self->_transformToCanvas.a = v4;
-  v6 = *&a3->c;
-  *&v8.a = *&a3->a;
+  v6 = *&canvas->c;
+  *&v8.a = *&canvas->a;
   *&v8.c = v6;
-  *&v8.tx = *&a3->tx;
+  *&v8.tx = *&canvas->tx;
   CGAffineTransformInvert(&v9, &v8);
   v7 = *&v9.c;
   *&self->_transformFromCanvas.a = *&v9.a;
@@ -2546,54 +2546,54 @@ LABEL_29:
   *&self->_transformFromCanvas.tx = *&v9.tx;
 }
 
-- (void)setViewScale:(double)a3
+- (void)setViewScale:(double)scale
 {
-  if (self->_viewScale != a3)
+  if (self->_viewScale != scale)
   {
-    self->_viewScale = a3;
+    self->_viewScale = scale;
     self->_invalidTableOffset = 1;
   }
 }
 
-- (CGPoint)layoutPointForCanvasPoint:(CGPoint)a3
+- (CGPoint)layoutPointForCanvasPoint:(CGPoint)point
 {
-  v3 = vaddq_f64(*&self->_transformFromCanvas.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_transformFromCanvas.c, a3.y), *&self->_transformFromCanvas.a, a3.x));
+  v3 = vaddq_f64(*&self->_transformFromCanvas.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_transformFromCanvas.c, point.y), *&self->_transformFromCanvas.a, point.x));
   v4 = v3.f64[1];
   result.x = v3.f64[0];
   result.y = v4;
   return result;
 }
 
-- (CGPoint)canvasPointForLayoutPoint:(CGPoint)a3
+- (CGPoint)canvasPointForLayoutPoint:(CGPoint)point
 {
-  v3 = vaddq_f64(*&self->_transformToCanvas.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_transformToCanvas.c, a3.y), *&self->_transformToCanvas.a, a3.x));
+  v3 = vaddq_f64(*&self->_transformToCanvas.tx, vmlaq_n_f64(vmulq_n_f64(*&self->_transformToCanvas.c, point.y), *&self->_transformToCanvas.a, point.x));
   v4 = v3.f64[1];
   result.x = v3.f64[0];
   result.y = v4;
   return result;
 }
 
-- (CGRect)layoutRectForCanvasRect:(CGRect)a3
+- (CGRect)layoutRectForCanvasRect:(CGRect)rect
 {
   v3 = *&self->_transformFromCanvas.c;
   *&v4.a = *&self->_transformFromCanvas.a;
   *&v4.c = v3;
   *&v4.tx = *&self->_transformFromCanvas.tx;
-  return CGRectApplyAffineTransform(a3, &v4);
+  return CGRectApplyAffineTransform(rect, &v4);
 }
 
-- (CGRect)canvasRectForLayoutRect:(CGRect)a3
+- (CGRect)canvasRectForLayoutRect:(CGRect)rect
 {
   v3 = *&self->_transformToCanvas.c;
   *&v4.a = *&self->_transformToCanvas.a;
   *&v4.c = v3;
   *&v4.tx = *&self->_transformToCanvas.tx;
-  return CGRectApplyAffineTransform(a3, &v4);
+  return CGRectApplyAffineTransform(rect, &v4);
 }
 
-- (CGRect)canvasFrameForGridRange:(id)a3
+- (CGRect)canvasFrameForGridRange:(id)range
 {
-  objc_msgSend_frameForGridRange_(self, a2, *&a3.var0, *&a3.var1, v3);
+  objc_msgSend_frameForGridRange_(self, a2, *&range.var0, *&range.var1, v3);
 
   objc_msgSend_canvasRectForLayoutRect_(self, v5, v6, v7, v8);
   result.size.height = v12;
@@ -2603,32 +2603,32 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)canvasFrameForCellRange:(TSUCellRect)a3
+- (CGRect)canvasFrameForCellRange:(TSUCellRect)range
 {
-  if (a3.origin.column == 0x7FFF)
+  if (range.origin.column == 0x7FFF)
   {
     column = 0xFFFFFFFFLL;
   }
 
   else
   {
-    column = a3.origin.column;
+    column = range.origin.column;
   }
 
-  v6 = *&a3.origin << 32;
+  v6 = *&range.origin << 32;
   v7 = 0xFFFFFFFF00000000;
-  if (a3.origin.row == 0x7FFFFFFF)
+  if (range.origin.row == 0x7FFFFFFF)
   {
     v6 = 0xFFFFFFFF00000000;
   }
 
-  v8 = (a3.size.numberOfColumns + column - 1);
-  if (a3.size.numberOfRows)
+  v8 = (range.size.numberOfColumns + column - 1);
+  if (range.size.numberOfRows)
   {
-    v7 = ((v6 + *&a3.size) & 0xFFFFFFFF00000000) - 0x100000000;
+    v7 = ((v6 + *&range.size) & 0xFFFFFFFF00000000) - 0x100000000;
   }
 
-  if (!a3.size.numberOfColumns)
+  if (!range.size.numberOfColumns)
   {
     v8 = 0xFFFFFFFFLL;
   }
@@ -2655,11 +2655,11 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)canvasStrokeFrameForGridRange:(id)a3
+- (CGRect)canvasStrokeFrameForGridRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  objc_msgSend_lockForRead(self, a2, *&a3.var0, *&a3.var1, v3);
+  var1 = range.var1;
+  var0 = range.var0;
+  objc_msgSend_lockForRead(self, a2, *&range.var0, *&range.var1, v3);
   objc_msgSend_strokeFrameForGridRange_(self, v7, var0, var1, v8);
   objc_msgSend_canvasRectForLayoutRect_(self, v9, v10, v11, v12);
   v14 = v13;
@@ -2690,28 +2690,28 @@ LABEL_29:
   return result;
 }
 
-- (double)canvasPositionForGridColumn:(unsigned int)a3
+- (double)canvasPositionForGridColumn:(unsigned int)column
 {
-  objc_msgSend_p_layoutCoordinateForGridColumn_(self, a2, *&a3, v3, v4);
+  objc_msgSend_p_layoutCoordinateForGridColumn_(self, a2, *&column, v3, v4);
 
   objc_msgSend_canvasPointForLayoutPoint_(self, v6, v7, v8, v9);
   return result;
 }
 
-- (double)canvasPositionForGridRow:(unsigned int)a3
+- (double)canvasPositionForGridRow:(unsigned int)row
 {
-  objc_msgSend_p_layoutCoordinateForGridRow_(self, a2, *&a3, v3, v4);
+  objc_msgSend_p_layoutCoordinateForGridRow_(self, a2, *&row, v3, v4);
   objc_msgSend_canvasPointForLayoutPoint_(self, v6, v7, v8, v9, 0.0, v10);
   return v11;
 }
 
-- ($85CD2974BE96D4886BB301820D1C36C2)gridPointHitByCanvasPoint:(CGPoint)a3 tabsViewable:(BOOL)a4
+- ($85CD2974BE96D4886BB301820D1C36C2)gridPointHitByCanvasPoint:(CGPoint)point tabsViewable:(BOOL)viewable
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = point.y;
+  x = point.x;
+  if (viewable)
   {
-    v9 = objc_msgSend_layout(self, a2, a4, v4, v5);
+    v9 = objc_msgSend_layout(self, a2, viewable, v4, v5);
     v10 = sub_2211B905C(v9);
     v12 = v11;
     v14 = v13;
@@ -2744,20 +2744,20 @@ LABEL_29:
     v42.y = y;
     if (CGRectContainsPoint(v44, v42))
     {
-      objc_msgSend_canvasPointForLayoutPoint_(self, a2, a4, v4, v5, -31.0, 0.0);
+      objc_msgSend_canvasPointForLayoutPoint_(self, a2, viewable, v4, v5, -31.0, 0.0);
       x = v37;
     }
   }
 
-  objc_msgSend_layoutPointForCanvasPoint_(self, a2, a4, v4, v5, x, y);
+  objc_msgSend_layoutPointForCanvasPoint_(self, a2, viewable, v4, v5, x, y);
 LABEL_7:
 
   return MEMORY[0x2821F9670](self, sel_gridPointHitByLayoutPoint_, v26, v27, v28);
 }
 
-- ($85CD2974BE96D4886BB301820D1C36C2)gridPointHitByLayoutPoint:(CGPoint)a3
+- ($85CD2974BE96D4886BB301820D1C36C2)gridPointHitByLayoutPoint:(CGPoint)point
 {
-  objc_msgSend_p_tablePointForLayoutPoint_(self, a2, v3, v4, v5, a3.x, a3.y);
+  objc_msgSend_p_tablePointForLayoutPoint_(self, a2, v3, v4, v5, point.x, point.y);
   v11 = objc_msgSend_p_gridPointForTablePoint_(self, v7, v8, v9, v10);
   v12 = 0xFFFFFFFF00000000;
   if (self->_gridRange.bottomRight.row >= HIDWORD(v11))
@@ -2852,11 +2852,11 @@ LABEL_7:
   return result;
 }
 
-- (TSUCellRect)visiblePartOfRange:(TSUCellRect)a3
+- (TSUCellRect)visiblePartOfRange:(TSUCellRect)range
 {
-  size = a3.size;
-  origin = a3.origin;
-  v7 = objc_msgSend_visibleRange(self, a2, *&a3.origin, *&a3.size, v3);
+  size = range.size;
+  origin = range.origin;
+  v7 = objc_msgSend_visibleRange(self, a2, *&range.origin, *&range.size, v3);
 
   v8 = sub_221119E0C(origin, size, v7, v6);
   result.size = v9;
@@ -2864,17 +2864,17 @@ LABEL_7:
   return result;
 }
 
-- (void)setUserSpaceToDeviceSpaceTransform:(CGAffineTransform *)a3
+- (void)setUserSpaceToDeviceSpaceTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->a;
-  v5 = *&a3->tx;
-  *&self->_transformToDevice.c = *&a3->c;
+  v4 = *&transform->a;
+  v5 = *&transform->tx;
+  *&self->_transformToDevice.c = *&transform->c;
   *&self->_transformToDevice.tx = v5;
   *&self->_transformToDevice.a = v4;
-  v6 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v6 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v6;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   CGAffineTransformInvert(&v11, &v10);
   v7 = *&v11.c;
   *&self->_transformFromDevice.a = *&v11.a;
@@ -2888,12 +2888,12 @@ LABEL_7:
   self->_cachedAlignedStrokeFrame.size = v9;
 }
 
-- (CGRect)alignedRectForLayoutRect:(CGRect)a3
+- (CGRect)alignedRectForLayoutRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (objc_msgSend_drawPreventAntialias(self, a2, v3, v4, v5))
   {
     v38.origin.x = x;
@@ -2952,23 +2952,23 @@ LABEL_7:
   return result;
 }
 
-- (void)p_alignStrokeWidth:(double)a3 deviceWidth:(double *)a4 scaledWidth:(double *)a5
+- (void)p_alignStrokeWidth:(double)width deviceWidth:(double *)deviceWidth scaledWidth:(double *)scaledWidth
 {
   v5 = 0.0;
-  if (a3 < 0.0)
+  if (width < 0.0)
   {
-    a3 = 0.0;
+    width = 0.0;
   }
 
-  if (a3 <= 0.0)
+  if (width <= 0.0)
   {
-    *a5 = 0.0;
+    *scaledWidth = 0.0;
   }
 
   else
   {
-    v6 = a3 * self->_transformToDevice.c + self->_transformToDevice.a * a3;
-    v7 = a3 * self->_transformToDevice.d + self->_transformToDevice.b * a3;
+    v6 = width * self->_transformToDevice.c + self->_transformToDevice.a * width;
+    v7 = width * self->_transformToDevice.d + self->_transformToDevice.b * width;
     v8 = fabs(v6);
     v9 = floor(v8 + 0.00000011920929);
     if (v8 >= 1.0)
@@ -2981,30 +2981,30 @@ LABEL_7:
       v10 = 1.0;
     }
 
-    *a5 = v10;
+    *scaledWidth = v10;
     v5 = v7 * self->_transformFromDevice.c + self->_transformFromDevice.a * v10;
   }
 
-  *a4 = v5;
+  *deviceWidth = v5;
 }
 
-- (void)p_alignStrokeHeight:(double)a3 deviceWidth:(double *)a4 scaledWidth:(double *)a5
+- (void)p_alignStrokeHeight:(double)height deviceWidth:(double *)width scaledWidth:(double *)scaledWidth
 {
   v5 = 0.0;
-  if (a3 < 0.0)
+  if (height < 0.0)
   {
-    a3 = 0.0;
+    height = 0.0;
   }
 
-  if (a3 <= 0.0)
+  if (height <= 0.0)
   {
-    *a5 = 0.0;
+    *scaledWidth = 0.0;
   }
 
   else
   {
-    v6 = a3 * self->_transformToDevice.c + self->_transformToDevice.a * a3;
-    v7 = fabs(a3 * self->_transformToDevice.d + self->_transformToDevice.b * a3);
+    v6 = height * self->_transformToDevice.c + self->_transformToDevice.a * height;
+    v7 = fabs(height * self->_transformToDevice.d + self->_transformToDevice.b * height);
     v8 = floor(v7 + 0.00000011920929);
     if (v7 >= 1.0)
     {
@@ -3016,52 +3016,52 @@ LABEL_7:
       v9 = 1.0;
     }
 
-    *a5 = v9;
+    *scaledWidth = v9;
     v5 = self->_transformFromDevice.d * v9 + self->_transformFromDevice.b * v6;
   }
 
-  *a4 = v5;
+  *width = v5;
 }
 
-- (void)alignStrokeCoordinatesOfBeginPoint:(CGPoint *)a3 endPoint:(CGPoint *)a4 width:(double *)a5
+- (void)alignStrokeCoordinatesOfBeginPoint:(CGPoint *)point endPoint:(CGPoint *)endPoint width:(double *)width
 {
   if (self->_drawPreventAntialias)
   {
     v52 = 0.0;
     v53 = 0.0;
-    x = a3->x;
-    y = a3->y;
-    v11 = a4->y;
-    if (a3->x == a4->x)
+    x = point->x;
+    y = point->y;
+    v11 = endPoint->y;
+    if (point->x == endPoint->x)
     {
       if (y >= v11)
       {
-        v12 = *a5;
+        v12 = *width;
         v13 = NSStringFromCGPoint(*&x);
-        v14 = NSStringFromCGPoint(*a4);
+        v14 = NSStringFromCGPoint(*endPoint);
         NSLog(&cfstr_WarningVertica.isa, v12, v13, v14);
 
-        a4->y = a3->y + 1.0;
+        endPoint->y = point->y + 1.0;
       }
 
-      objc_msgSend_p_alignStrokeWidth_deviceWidth_scaledWidth_(self, a2, &v52, &v53, a5, *a5);
+      objc_msgSend_p_alignStrokeWidth_deviceWidth_scaledWidth_(self, a2, &v52, &v53, width, *width);
       v15 = v52;
-      *a5 = v52;
-      v16 = a3->y;
+      *width = v52;
+      v16 = point->y;
       b = self->_transformToDevice.b;
       d = self->_transformToDevice.d;
       tx = self->_transformToDevice.tx;
       ty = self->_transformToDevice.ty;
-      v21 = ty + a4->y * d + b * a3->x;
-      v22 = floor(tx + v16 * self->_transformToDevice.c + self->_transformToDevice.a * a3->x - v53 * 0.5 + 0.00000011920929);
-      v23 = floor(ty + v16 * d + b * a3->x + 0.00000011920929);
+      v21 = ty + endPoint->y * d + b * point->x;
+      v22 = floor(tx + v16 * self->_transformToDevice.c + self->_transformToDevice.a * point->x - v53 * 0.5 + 0.00000011920929);
+      v23 = floor(ty + v16 * d + b * point->x + 0.00000011920929);
       v24 = 0.0;
       if (v22 >= 0.0)
       {
         v24 = v22;
       }
 
-      if (a3->x >= 0.0 && tx >= -1.0)
+      if (point->x >= 0.0 && tx >= -1.0)
       {
         v22 = v24;
       }
@@ -3082,27 +3082,27 @@ LABEL_7:
         return;
       }
 
-      if (x >= a4->x)
+      if (x >= endPoint->x)
       {
-        v33 = *a5;
+        v33 = *width;
         v34 = NSStringFromCGPoint(*&x);
-        v35 = NSStringFromCGPoint(*a4);
+        v35 = NSStringFromCGPoint(*endPoint);
         NSLog(&cfstr_WarningHorizon.isa, v33, v34, v35);
 
-        a4->x = a3->x + 1.0;
+        endPoint->x = point->x + 1.0;
       }
 
-      objc_msgSend_p_alignStrokeHeight_deviceWidth_scaledWidth_(self, a2, &v52, &v53, a5, *a5);
+      objc_msgSend_p_alignStrokeHeight_deviceWidth_scaledWidth_(self, a2, &v52, &v53, width, *width);
       v36 = v52;
-      *a5 = v52;
-      v37 = a3->y;
+      *width = v52;
+      v37 = point->y;
       a = self->_transformToDevice.a;
       v39 = self->_transformToDevice.tx;
       v40 = self->_transformToDevice.ty;
       v41 = v37 * self->_transformToDevice.c;
-      v42 = v39 + v41 + a * a4->x;
-      v43 = floor(v39 + v41 + a * a3->x + 0.00000011920929);
-      v44 = floor(v40 + v37 * self->_transformToDevice.d + self->_transformToDevice.b * a3->x - v53 * 0.5 + 0.00000011920929);
+      v42 = v39 + v41 + a * endPoint->x;
+      v43 = floor(v39 + v41 + a * point->x + 0.00000011920929);
+      v44 = floor(v40 + v37 * self->_transformToDevice.d + self->_transformToDevice.b * point->x - v53 * 0.5 + 0.00000011920929);
       v45 = 0.0;
       if (v44 >= 0.0)
       {
@@ -3129,16 +3129,16 @@ LABEL_7:
       v30 = v29;
     }
 
-    a3->x = v31;
-    a3->y = v29;
-    a4->x = v32;
-    a4->y = v30;
+    point->x = v31;
+    point->y = v29;
+    endPoint->x = v32;
+    endPoint->y = v30;
   }
 }
 
-- (CGRect)alignedFrameForGridRange:(id)a3
+- (CGRect)alignedFrameForGridRange:(id)range
 {
-  objc_msgSend_frameForGridRange_(self, a2, *&a3.var0, *&a3.var1, v3);
+  objc_msgSend_frameForGridRange_(self, a2, *&range.var0, *&range.var1, v3);
 
   objc_msgSend_alignedRectForLayoutRect_(self, v5, v6, v7, v8);
   result.size.height = v12;
@@ -3148,9 +3148,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)alignedContentFrameForGridRange:(id)a3
+- (CGRect)alignedContentFrameForGridRange:(id)range
 {
-  objc_msgSend_p_alignedFrameSpecForGridRange_strokeWidthOverride_(self, a2, *&a3.var0, *&a3.var1, 0);
+  objc_msgSend_p_alignedFrameSpecForGridRange_strokeWidthOverride_(self, a2, *&range.var0, *&range.var1, 0);
   v3 = 0.0 * 0.5 + 0.0;
   v4 = v3;
   v5 = 0.0 - 0.0 * 0.5 - v3;
@@ -3162,9 +3162,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)alignedStrokeFrameForGridRange:(id)a3
+- (CGRect)alignedStrokeFrameForGridRange:(id)range
 {
-  objc_msgSend_p_alignedFrameSpecForGridRange_strokeWidthOverride_(self, a2, *&a3.var0, *&a3.var1, 0);
+  objc_msgSend_p_alignedFrameSpecForGridRange_strokeWidthOverride_(self, a2, *&range.var0, *&range.var1, 0);
   v3 = 0.0 - 0.0 * 0.5;
   v4 = v3;
   v5 = 0.0 * 0.5 + 0.0 - v3;
@@ -3176,32 +3176,32 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)alignedStrokeFrameForCellRange:(TSUCellRect)a3
+- (CGRect)alignedStrokeFrameForCellRange:(TSUCellRect)range
 {
-  if (a3.origin.column == 0x7FFF)
+  if (range.origin.column == 0x7FFF)
   {
     column = 0xFFFFFFFFLL;
   }
 
   else
   {
-    column = a3.origin.column;
+    column = range.origin.column;
   }
 
-  v5 = *&a3.origin << 32;
+  v5 = *&range.origin << 32;
   v6 = 0xFFFFFFFF00000000;
-  if (a3.origin.row == 0x7FFFFFFF)
+  if (range.origin.row == 0x7FFFFFFF)
   {
     v5 = 0xFFFFFFFF00000000;
   }
 
-  v7 = (a3.size.numberOfColumns + column - 1);
-  if (a3.size.numberOfRows)
+  v7 = (range.size.numberOfColumns + column - 1);
+  if (range.size.numberOfRows)
   {
-    v6 = ((v5 + *&a3.size) & 0xFFFFFFFF00000000) - 0x100000000;
+    v6 = ((v5 + *&range.size) & 0xFFFFFFFF00000000) - 0x100000000;
   }
 
-  if (!a3.size.numberOfColumns)
+  if (!range.size.numberOfColumns)
   {
     v7 = 0xFFFFFFFFLL;
   }
@@ -3214,9 +3214,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)alignedStrokeLineForRowGridRange:(id)a3
+- (CGRect)alignedStrokeLineForRowGridRange:(id)range
 {
-  objc_msgSend_p_alignedFrameSpecForRowGridRange_(self, a2, *&a3.var0, *&a3.var1, v3);
+  objc_msgSend_p_alignedFrameSpecForRowGridRange_(self, a2, *&range.var0, *&range.var1, v3);
   v4 = 0.0 - 0.0 * 0.5;
   v5 = v4;
   v6 = 0.0 * 0.5 + 0.0 - v4;
@@ -3228,9 +3228,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)alignedStrokeLineForColumnGridRange:(id)a3
+- (CGRect)alignedStrokeLineForColumnGridRange:(id)range
 {
-  objc_msgSend_p_alignedFrameSpecForColumnGridRange_(self, a2, *&a3.var0, *&a3.var1, v3);
+  objc_msgSend_p_alignedFrameSpecForColumnGridRange_(self, a2, *&range.var0, *&range.var1, v3);
   v4 = 0.0 - 0.0 * 0.5;
   v5 = v4;
   v6 = 0.0 * 0.5 + 0.0 - v4;
@@ -3242,30 +3242,30 @@ LABEL_7:
   return result;
 }
 
-- (id)alignedStrokeFramePathForGridRange:(id)a3 transform:(CGAffineTransform *)a4 inset:(double)a5 reoriginToZero:(BOOL)a6 cornerRadius:(double)a7
+- (id)alignedStrokeFramePathForGridRange:(id)range transform:(CGAffineTransform *)transform inset:(double)inset reoriginToZero:(BOOL)zero cornerRadius:(double)radius
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v12 = a3.var0.var1;
-  v13 = a3.var1;
-  if (a3.var0.var0 != -1)
+  var1 = range.var1;
+  var0 = range.var0;
+  v12 = range.var0.var1;
+  v13 = range.var1;
+  if (range.var0.var0 != -1)
   {
-    v13 = a3.var1;
-    if (a3.var1.var0 != -1)
+    v13 = range.var1;
+    if (range.var1.var0 != -1)
     {
-      v13 = a3.var1;
-      if (a3.var0.var0 <= a3.var1.var0)
+      v13 = range.var1;
+      if (range.var0.var0 <= range.var1.var0)
       {
-        v13 = a3.var1;
-        if (a3.var0.var1 != 0xFFFFFFFFLL)
+        v13 = range.var1;
+        if (range.var0.var1 != 0xFFFFFFFFLL)
         {
-          v13 = a3.var1;
-          if (a3.var1.var1 != 0xFFFFFFFFLL)
+          v13 = range.var1;
+          if (range.var1.var1 != 0xFFFFFFFFLL)
           {
-            v13 = a3.var1;
-            if (a3.var0.var1 <= a3.var1.var1)
+            v13 = range.var1;
+            if (range.var0.var1 <= range.var1.var1)
             {
-              v13 = (*&a3.var1 & 0xFFFFFFFF00000000 | (a3.var1.var0 + 1)) + 0x100000000;
+              v13 = (*&range.var1 & 0xFFFFFFFF00000000 | (range.var1.var0 + 1)) + 0x100000000;
             }
           }
         }
@@ -3273,7 +3273,7 @@ LABEL_7:
     }
   }
 
-  v67 = a6;
+  zeroCopy = zero;
   v79 = 0;
   v80 = &v79;
   v81 = 0x2020000000;
@@ -3400,7 +3400,7 @@ LABEL_7:
         y = v46;
         width = v48;
         height = v50;
-        if (v67)
+        if (zeroCopy)
         {
           if (!v27)
           {
@@ -3412,25 +3412,25 @@ LABEL_7:
           y = v53;
         }
 
-        if (a5 != 0.0)
+        if (inset != 0.0)
         {
           v84.origin.x = x;
           v84.origin.y = y;
           v84.size.width = width;
           v84.size.height = height;
-          v85 = CGRectInset(v84, a5, a5);
+          v85 = CGRectInset(v84, inset, inset);
           x = v85.origin.x;
           y = v85.origin.y;
           width = v85.size.width;
           height = v85.size.height;
         }
 
-        if (a4)
+        if (transform)
         {
-          v54 = *&a4->c;
-          *&v69.a = *&a4->a;
+          v54 = *&transform->c;
+          *&v69.a = *&transform->a;
           *&v69.c = v54;
-          *&v69.tx = *&a4->tx;
+          *&v69.tx = *&transform->tx;
           v55 = x;
           *&v54 = y;
           v56 = width;
@@ -3444,7 +3444,7 @@ LABEL_7:
 
         if (v29)
         {
-          if (a7 == 0.0)
+          if (radius == 0.0)
           {
             v61 = objc_msgSend_bezierPathWithRect_(MEMORY[0x277D81160], v40, v41, v42, v43, x, y, width, height);
             objc_msgSend_uniteWithPolygonalBezierPath_(v29, v58, v61, v59, v60);
@@ -3452,7 +3452,7 @@ LABEL_7:
 
           else
           {
-            v61 = objc_msgSend_bezierPathWithContinuousCornerRoundedRect_cornerRadius_(MEMORY[0x277D81160], v40, v41, v42, v43, x, y, width, height, a7);
+            v61 = objc_msgSend_bezierPathWithContinuousCornerRoundedRect_cornerRadius_(MEMORY[0x277D81160], v40, v41, v42, v43, x, y, width, height, radius);
             objc_msgSend_uniteWithBezierPath_(v29, v62, v61, v63, v64);
           }
           v65 = ;
@@ -3462,14 +3462,14 @@ LABEL_7:
 
         else
         {
-          if (a7 == 0.0)
+          if (radius == 0.0)
           {
             objc_msgSend_bezierPathWithRect_(MEMORY[0x277D81160], v40, v41, v42, v43, x, y, width, height);
           }
 
           else
           {
-            objc_msgSend_bezierPathWithContinuousCornerRoundedRect_cornerRadius_(MEMORY[0x277D81160], v40, v41, v42, v43, x, y, width, height, a7);
+            objc_msgSend_bezierPathWithContinuousCornerRoundedRect_cornerRadius_(MEMORY[0x277D81160], v40, v41, v42, v43, x, y, width, height, radius);
           }
           v29 = ;
         }
@@ -3489,9 +3489,9 @@ LABEL_7:
   return v29;
 }
 
-- (id)alignedMaskStrokeFramePathForTransform:(CGAffineTransform *)a3 cornerRadius:(double)a4
+- (id)alignedMaskStrokeFramePathForTransform:(CGAffineTransform *)transform cornerRadius:(double)radius
 {
-  IsLeftToRight = objc_msgSend_layoutDirectionIsLeftToRight(self, a2, a3, v4, v5);
+  IsLeftToRight = objc_msgSend_layoutDirectionIsLeftToRight(self, a2, transform, v4, v5);
   v14 = objc_msgSend_layoutSpaceType(self, v10, v11, v12, v13);
   v19 = objc_msgSend_visibleRange(self, v15, v16, v17, v18);
   v21 = v19;
@@ -3515,7 +3515,7 @@ LABEL_7:
 
         v24 = (v20 + v23 - 1);
         v25 = (&v20[v19 << 32] & 0xFFFFFFFF00000000) - 0x100000000;
-        v69 = objc_msgSend_alignedStrokeFramePathForGridRange_transform_inset_reoriginToZero_cornerRadius_(self, v20, v23 | (v19 << 32), v24 | v25, a3, 0, 0.0, a4);
+        v69 = objc_msgSend_alignedStrokeFramePathForGridRange_transform_inset_reoriginToZero_cornerRadius_(self, v20, v23 | (v19 << 32), v24 | v25, transform, 0, 0.0, radius);
         switch(v14)
         {
           case 3:
@@ -3601,10 +3601,10 @@ LABEL_7:
 
             CGRectGetMaxY(*&v35);
             TSURectWithPoints();
-            v63 = *&a3->c;
-            *&v70.a = *&a3->a;
+            v63 = *&transform->c;
+            *&v70.a = *&transform->a;
             *&v70.c = v63;
-            *&v70.tx = *&a3->tx;
+            *&v70.tx = *&transform->tx;
             *&v53 = CGRectApplyAffineTransform(v79, &v70);
             goto LABEL_25;
           default:
@@ -3616,7 +3616,7 @@ LABEL_22:
             v30 = v69;
 LABEL_25:
             v67 = objc_msgSend_bezierPathWithRect_(MEMORY[0x277D81160], v26, v27, v28, v29, v53, v54, v55, v56);
-            if (a4 == 0.0)
+            if (radius == 0.0)
             {
               objc_msgSend_uniteWithPolygonalBezierPath_(v30, v64, v67, v65, v66);
             }
@@ -3630,10 +3630,10 @@ LABEL_25:
             goto LABEL_29;
         }
 
-        v58 = *&a3->c;
-        *&v70.a = *&a3->a;
+        v58 = *&transform->c;
+        *&v70.a = *&transform->a;
         *&v70.c = v58;
-        *&v70.tx = *&a3->tx;
+        *&v70.tx = *&transform->tx;
         *&v53 = CGRectApplyAffineTransform(*&v48, &v70);
         goto LABEL_22;
       }
@@ -3645,15 +3645,15 @@ LABEL_29:
   return v22;
 }
 
-- (id)alignedStrokeLinePathForRowGridRange:(id)a3 transform:(CGAffineTransform *)a4 inset:(double)a5 reoriginToZero:(BOOL)a6 cornerRadius:(double)a7
+- (id)alignedStrokeLinePathForRowGridRange:(id)range transform:(CGAffineTransform *)transform inset:(double)inset reoriginToZero:(BOOL)zero cornerRadius:(double)radius
 {
-  v8 = a6;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v14 = a3.var1.var0 + 1;
-  v15 = *&a3.var0 & 0xFFFFFFFF00000000;
-  v16 = objc_msgSend_bezierPathCache(self, a2, *&a3.var0, *&a3.var1, a4);
-  v18 = objc_msgSend_bezierPathForGridRange_transform_inset_reoriginToZero_(v16, v17, var0, v15 | v14, a4, v8, a5);
+  zeroCopy = zero;
+  var1 = range.var1;
+  var0 = range.var0;
+  v14 = range.var1.var0 + 1;
+  v15 = *&range.var0 & 0xFFFFFFFF00000000;
+  v16 = objc_msgSend_bezierPathCache(self, a2, *&range.var0, *&range.var1, transform);
+  v18 = objc_msgSend_bezierPathForGridRange_transform_inset_reoriginToZero_(v16, v17, var0, v15 | v14, transform, zeroCopy, inset);
 
   if (v18)
   {
@@ -3700,18 +3700,18 @@ LABEL_29:
     v35 = v14;
     v33[4] = self;
     v33[5] = v38;
-    v36 = v8;
+    v36 = zeroCopy;
     v33[6] = v37;
     v33[7] = v45;
-    *&v33[10] = a5;
-    v33[11] = a4;
+    *&v33[10] = inset;
+    v33[11] = transform;
     v33[8] = v47;
     v33[9] = &v39;
-    *&v33[12] = a7;
+    *&v33[12] = radius;
     objc_msgSend_enumerateMergedStrokesForGridRow_from_to_usingBlock_(v24, v25, HIDWORD(var0), var0, v14, v33);
 
     v30 = objc_msgSend_bezierPathCache(self, v26, v27, v28, v29);
-    objc_msgSend_insertBezierPath_gridRange_transform_inset_reoriginToZero_(v30, v31, v40[5], var0, v15 | v14, a4, v8, a5);
+    objc_msgSend_insertBezierPath_gridRange_transform_inset_reoriginToZero_(v30, v31, v40[5], var0, v15 | v14, transform, zeroCopy, inset);
 
     v23 = v40[5];
     _Block_object_dispose(v37, 8);
@@ -3725,15 +3725,15 @@ LABEL_29:
   return v23;
 }
 
-- (id)alignedStrokeLinePathForColumnGridRange:(id)a3 transform:(CGAffineTransform *)a4 inset:(double)a5 reoriginToZero:(BOOL)a6 cornerRadius:(double)a7
+- (id)alignedStrokeLinePathForColumnGridRange:(id)range transform:(CGAffineTransform *)transform inset:(double)inset reoriginToZero:(BOOL)zero cornerRadius:(double)radius
 {
-  v8 = a6;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v14 = a3.var1.var1 + 1;
-  v15 = a3.var0.var0 | (v14 << 32);
-  v16 = objc_msgSend_bezierPathCache(self, a2, *&a3.var0, *&a3.var1, a4);
-  v18 = objc_msgSend_bezierPathForGridRange_transform_inset_reoriginToZero_(v16, v17, var0, v15, a4, v8, a5);
+  zeroCopy = zero;
+  var1 = range.var1;
+  var0 = range.var0;
+  v14 = range.var1.var1 + 1;
+  v15 = range.var0.var0 | (v14 << 32);
+  v16 = objc_msgSend_bezierPathCache(self, a2, *&range.var0, *&range.var1, transform);
+  v18 = objc_msgSend_bezierPathForGridRange_transform_inset_reoriginToZero_(v16, v17, var0, v15, transform, zeroCopy, inset);
 
   if (v18)
   {
@@ -3780,18 +3780,18 @@ LABEL_29:
     v35 = v14;
     v33[4] = self;
     v33[5] = v38;
-    v36 = v8;
+    v36 = zeroCopy;
     v33[6] = v37;
     v33[7] = v45;
-    *&v33[10] = a5;
-    v33[11] = a4;
+    *&v33[10] = inset;
+    v33[11] = transform;
     v33[8] = v47;
     v33[9] = &v39;
-    *&v33[12] = a7;
+    *&v33[12] = radius;
     objc_msgSend_enumerateMergedStrokesForGridColumn_from_to_usingBlock_(v24, v25, var0, HIDWORD(var0), v14, v33);
 
     v30 = objc_msgSend_bezierPathCache(self, v26, v27, v28, v29);
-    objc_msgSend_insertBezierPath_gridRange_transform_inset_reoriginToZero_(v30, v31, v40[5], var0, v15, a4, v8, a5);
+    objc_msgSend_insertBezierPath_gridRange_transform_inset_reoriginToZero_(v30, v31, v40[5], var0, v15, transform, zeroCopy, inset);
 
     v23 = v40[5];
     _Block_object_dispose(v37, 8);
@@ -3805,10 +3805,10 @@ LABEL_29:
   return v23;
 }
 
-- (CGRect)alignedOverrideFrameForGridRange:(id)a3 strokeWidthOverride:(double)a4
+- (CGRect)alignedOverrideFrameForGridRange:(id)range strokeWidthOverride:(double)override
 {
-  v8 = a4;
-  objc_msgSend_p_alignedFrameSpecForGridRange_strokeWidthOverride_(self, a2, *&a3.var0, *&a3.var1, &v8);
+  overrideCopy = override;
+  objc_msgSend_p_alignedFrameSpecForGridRange_strokeWidthOverride_(self, a2, *&range.var0, *&range.var1, &overrideCopy);
   v4 = 0.0 - 0.0 * 0.5;
   v5 = v4;
   v6 = 0.0 * 0.5 + 0.0 - v4;
@@ -3872,13 +3872,13 @@ LABEL_29:
   return result;
 }
 
-- (void)drawSingleStroke:(id)a3 context:(CGContext *)a4 beginPoint:(CGPoint)a5 endPoint:(CGPoint)a6 width:(double)a7 strokeWidthForDrawing:(double)a8 strokeFrame:(CGRect)a9
+- (void)drawSingleStroke:(id)stroke context:(CGContext *)context beginPoint:(CGPoint)point endPoint:(CGPoint)endPoint width:(double)width strokeWidthForDrawing:(double)drawing strokeFrame:(CGRect)frame
 {
-  x = a6.x;
-  v12 = a5.x;
-  v79 = a3;
-  v18 = objc_msgSend_empty(v79, v14, v15, v16, v17);
-  if (a7 <= 0.0)
+  x = endPoint.x;
+  v12 = point.x;
+  strokeCopy = stroke;
+  v18 = objc_msgSend_empty(strokeCopy, v14, v15, v16, v17);
+  if (width <= 0.0)
   {
     v23 = 1;
   }
@@ -3890,17 +3890,17 @@ LABEL_29:
 
   if ((v23 & 1) == 0)
   {
-    v24 = objc_msgSend_mutableCopy(v79, v19, v20, v21, v22);
-    objc_msgSend_setWidth_(v24, v25, v26, v27, v28, a7);
-    v33 = objc_msgSend_solid(v79, v29, v30, v31, v32);
-    v42 = objc_msgSend_dontClearBackground(v79, v34, v35, v36, v37);
-    if (a8 < 1.0)
+    v24 = objc_msgSend_mutableCopy(strokeCopy, v19, v20, v21, v22);
+    objc_msgSend_setWidth_(v24, v25, v26, v27, v28, width);
+    v33 = objc_msgSend_solid(strokeCopy, v29, v30, v31, v32);
+    v42 = objc_msgSend_dontClearBackground(strokeCopy, v34, v35, v36, v37);
+    if (drawing < 1.0)
     {
-      v43 = objc_msgSend_color(v79, v38, v39, v40, v41);
+      v43 = objc_msgSend_color(strokeCopy, v38, v39, v40, v41);
       objc_msgSend_alphaComponent(v43, v44, v45, v46, v47);
       v49 = v48;
 
-      v58 = objc_msgSend_color(v79, v50, v51, v52, v53);
+      v58 = objc_msgSend_color(strokeCopy, v50, v51, v52, v53);
       if (v49 >= 1.0)
       {
         objc_msgSend_whiteColor(MEMORY[0x277D81180], v54, v55, v56, v57);
@@ -3911,7 +3911,7 @@ LABEL_29:
         objc_msgSend_clearColor(MEMORY[0x277D81180], v54, v55, v56, v57);
       }
       v59 = ;
-      v63 = objc_msgSend_newBlendedColorWithFraction_ofColor_(v58, v60, v59, v61, v62, 1.0 - a8);
+      v63 = objc_msgSend_newBlendedColorWithFraction_ofColor_(v58, v60, v59, v61, v62, 1.0 - drawing);
 
       objc_msgSend_setColor_(v24, v64, v63, v65, v66);
     }
@@ -3919,14 +3919,14 @@ LABEL_29:
     v67 = v33 ^ 1 | v42;
     if (v67)
     {
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       if ((v33 & 1) == 0)
       {
-        objc_msgSend_isRoundDash(v79, v68, v69, v70, v71);
-        v72 = a9.origin.x;
-        y = a9.origin.y;
-        width = a9.size.width;
-        height = a9.size.height;
+        objc_msgSend_isRoundDash(strokeCopy, v68, v69, v70, v71);
+        v72 = frame.origin.x;
+        y = frame.origin.y;
+        width = frame.size.width;
+        height = frame.size.height;
         if (v12 == x)
         {
           CGRectGetMinY(*&v72);
@@ -3942,28 +3942,28 @@ LABEL_29:
 
       if (v42)
       {
-        CGContextSetBlendMode(a4, kCGBlendModeNormal);
+        CGContextSetBlendMode(context, kCGBlendModeNormal);
       }
     }
 
     Mutable = CGPathCreateMutable();
     CGPathMoveToPointSafe();
     CGPathAddLineToPointSafe();
-    objc_msgSend_paintPath_inContext_(v24, v77, Mutable, a4, v78);
+    objc_msgSend_paintPath_inContext_(v24, v77, Mutable, context, v78);
     CGPathRelease(Mutable);
     if (v67)
     {
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
     }
   }
 }
 
-- (BOOL)p_drawStrokeForGridColumn:(unsigned int)a3 strokeRect:(id)a4 clearStroke:(BOOL)a5 shadowType:(int)a6 context:(CGContext *)a7
+- (BOOL)p_drawStrokeForGridColumn:(unsigned int)column strokeRect:(id)rect clearStroke:(BOOL)stroke shadowType:(int)type context:(CGContext *)context
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v12 = *&a3;
-  v14 = objc_msgSend_layoutEngine(self, a2, *&a3, *&a4.var0, *&a4.var1);
+  var1 = rect.var1;
+  var0 = rect.var0;
+  v12 = *&column;
+  v14 = objc_msgSend_layoutEngine(self, a2, *&column, *&rect.var0, *&rect.var1);
   v19 = sub_2213AAEDC(v14, v12);
   if ((v19 & 1) == 0)
   {
@@ -3990,11 +3990,11 @@ LABEL_29:
     v47 = var1;
     v40 = v35;
     v38[4] = self;
-    v48 = a6;
+    typeCopy = type;
     v49 = v12;
     v39 = v14;
-    v41 = a7;
-    v50 = a5;
+    contextCopy = context;
+    strokeCopy = stroke;
     v42 = v31;
     v43 = v32;
     v44 = v33;
@@ -4005,12 +4005,12 @@ LABEL_29:
   return v19 ^ 1;
 }
 
-- (BOOL)p_drawStrokeForGridRow:(unsigned int)a3 strokeRect:(id)a4 clearStroke:(BOOL)a5 shadowType:(int)a6 context:(CGContext *)a7
+- (BOOL)p_drawStrokeForGridRow:(unsigned int)row strokeRect:(id)rect clearStroke:(BOOL)stroke shadowType:(int)type context:(CGContext *)context
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v12 = *&a3;
-  v14 = objc_msgSend_layoutEngine(self, a2, *&a3, *&a4.var0, *&a4.var1);
+  var1 = rect.var1;
+  var0 = rect.var0;
+  v12 = *&row;
+  v14 = objc_msgSend_layoutEngine(self, a2, *&row, *&rect.var0, *&rect.var1);
   v19 = sub_2213AAE20(v14, v12);
   if ((v19 & 1) == 0)
   {
@@ -4037,11 +4037,11 @@ LABEL_29:
     v47 = var1;
     v38[4] = self;
     v40 = v35;
-    v48 = a6;
+    typeCopy = type;
     v49 = v12;
     v39 = v14;
-    v41 = a7;
-    v50 = a5;
+    contextCopy = context;
+    strokeCopy = stroke;
     v42 = v31;
     v43 = v32;
     v44 = v33;
@@ -4052,15 +4052,15 @@ LABEL_29:
   return v19 ^ 1;
 }
 
-- (void)drawStrokesInGridRange:(id)a3 clearStrokes:(BOOL)a4 context:(CGContext *)a5
+- (void)drawStrokesInGridRange:(id)range clearStrokes:(BOOL)strokes context:(CGContext *)context
 {
-  v111 = a4;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v113 = objc_msgSend_layoutEngine(self, a2, *&a3.var0, *&a3.var1, a4);
+  strokesCopy = strokes;
+  var1 = range.var1;
+  var0 = range.var0;
+  v113 = objc_msgSend_layoutEngine(self, a2, *&range.var0, *&range.var1, strokes);
   v13 = objc_msgSend_layoutSpaceType(self, v9, v10, v11, v12);
-  CGContextSaveGState(a5);
-  CGContextSetBlendMode(a5, kCGBlendModeCopy);
+  CGContextSaveGState(context);
+  CGContextSetBlendMode(context, kCGBlendModeCopy);
   topLeft = self->_gridRange.topLeft;
   bottomRight = self->_gridRange.bottomRight;
   if (topLeft.column != -1 && bottomRight.column != -1 && topLeft.column <= bottomRight.column)
@@ -4249,7 +4249,7 @@ LABEL_44:
     v65 = -1;
   }
 
-  v106 = self;
+  selfCopy = self;
   v75 = objc_msgSend_layout(self, v70, v71, v72, v73);
   v76 = sub_2211B7664(v75);
 
@@ -4307,7 +4307,7 @@ LABEL_44:
         LODWORD(v91) = v103;
       }
 
-      else if ((objc_msgSend_p_drawStrokeForGridColumn_strokeRect_clearStroke_shadowType_context_(v106, v87, v91, v112, v22, v111, 0, a5) & 1) == 0)
+      else if ((objc_msgSend_p_drawStrokeForGridColumn_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v91, v112, v22, strokesCopy, 0, context) & 1) == 0)
       {
         LODWORD(v91) = objc_msgSend_indexOfVisibleColumnAfterColumnAtIndex_(v113, v87, v91, v92, v93) - 1;
       }
@@ -4326,7 +4326,7 @@ LABEL_44:
   }
 
   v102 = v76;
-  c = a5;
+  c = context;
   v94 = HIDWORD(v112);
   v95 = (v88 + 1);
   if (HIDWORD(v112) <= HIDWORD(v22))
@@ -4362,7 +4362,7 @@ LABEL_44:
           v98 = v102;
           if (v94 != v102)
           {
-            if ((objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(v106, v87, v94, v112, v22, v111, 0, c) & 1) == 0)
+            if ((objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v94, v112, v22, strokesCopy, 0, c) & 1) == 0)
             {
               LODWORD(v94) = objc_msgSend_indexOfVisibleRowAfterRowAtIndex_(v113, v87, v94, v99, v100) - 1;
             }
@@ -4392,37 +4392,37 @@ LABEL_106:
 LABEL_79:
   if (v105)
   {
-    objc_msgSend_p_drawStrokeForGridColumn_strokeRect_clearStroke_shadowType_context_(v106, v87, v103, v112, v22, v111, (v13 - 1) < 2, c);
+    objc_msgSend_p_drawStrokeForGridColumn_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v103, v112, v22, strokesCopy, (v13 - 1) < 2, c);
   }
 
   if (v96)
   {
-    objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(v106, v87, v107, v112, v22, v111, (v13 & 0xFFFFFFFD) == 1, c);
+    objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v107, v112, v22, strokesCopy, (v13 & 0xFFFFFFFD) == 1, c);
   }
 
   if (v101)
   {
-    objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(v106, v87, v102, v112, v22, v111, 0, c);
+    objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v102, v112, v22, strokesCopy, 0, c);
   }
 
   if (v90)
   {
-    objc_msgSend_p_drawStrokeForGridColumn_strokeRect_clearStroke_shadowType_context_(v106, v87, v39, v112, v22, v111, 0, c);
+    objc_msgSend_p_drawStrokeForGridColumn_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v39, v112, v22, strokesCopy, 0, c);
   }
 
   if (v110)
   {
-    objc_msgSend_p_drawStrokeForGridColumn_strokeRect_clearStroke_shadowType_context_(v106, v87, v89, v112, v22, v111, 0, c);
+    objc_msgSend_p_drawStrokeForGridColumn_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v89, v112, v22, strokesCopy, 0, c);
   }
 
   if (v97)
   {
-    objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(v106, v87, v59, v112, v22, v111, 0, c);
+    objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v59, v112, v22, strokesCopy, 0, c);
   }
 
   if (v108)
   {
-    objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(v106, v87, v95, v112, v22, v111, 0, c);
+    objc_msgSend_p_drawStrokeForGridRow_strokeRect_clearStroke_shadowType_context_(selfCopy, v87, v95, v112, v22, strokesCopy, 0, c);
   }
 
   CGContextRestoreGState(c);
@@ -4468,12 +4468,12 @@ LABEL_79:
   return result;
 }
 
-- (id)p_createColumnCoordinatesForGridRange:(id)a3 invalidColumnIndex:(unsigned __int16)a4 previousCoordinates:(id)a5 outCoordinatesChanged:(BOOL *)a6
+- (id)p_createColumnCoordinatesForGridRange:(id)range invalidColumnIndex:(unsigned __int16)index previousCoordinates:(id)coordinates outCoordinatesChanged:(BOOL *)changed
 {
-  v6 = a4;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v10 = a5;
+  indexCopy = index;
+  var1 = range.var1;
+  var0 = range.var0;
+  coordinatesCopy = coordinates;
   v15 = [TSTCoordinateArray alloc];
   if (var0 == -1 || var1.var0 == -1 || var1.var0 < var0 || (HIDWORD(var0) <= HIDWORD(*&var1) ? (v16 = HIDWORD(var0) == 0xFFFFFFFF) : (v16 = 1), !v16 ? (v17 = HIDWORD(*&var1) == 0xFFFFFFFF) : (v17 = 1), v17))
   {
@@ -4522,18 +4522,18 @@ LABEL_79:
     var1.var0 = v58;
   }
 
-  if (v10)
+  if (coordinatesCopy)
   {
-    v62 = a6;
-    if (v6 && !v31)
+    changedCopy2 = changed;
+    if (indexCopy && !v31)
     {
-      var0 = sub_2211F0154(v21, v10, v6, &v78);
+      var0 = sub_2211F0154(v21, coordinatesCopy, indexCopy, &v78);
     }
   }
 
   else
   {
-    v62 = a6;
+    changedCopy2 = changed;
   }
 
   if (var0 <= var1.var0)
@@ -4560,11 +4560,11 @@ LABEL_79:
     sub_2211EFC48(v21, var0, v63);
   }
 
-  if (v62)
+  if (changedCopy2)
   {
-    if (v10)
+    if (coordinatesCopy)
     {
-      isEqual = objc_msgSend_isEqual_(v10, v59, v21, v60, v61);
+      isEqual = objc_msgSend_isEqual_(coordinatesCopy, v59, v21, v60, v61);
     }
 
     else
@@ -4572,18 +4572,18 @@ LABEL_79:
       isEqual = 0;
     }
 
-    *v62 = isEqual ^ 1;
+    *changedCopy2 = isEqual ^ 1;
   }
 
   return v21;
 }
 
-- (id)p_createRowCoordinatesForGridRange:(id)a3 invalidRowIndex:(unsigned int)a4 previousCoordinates:(id)a5 validateSingleRow:(BOOL)a6 outCoordinatesChanged:(BOOL *)a7
+- (id)p_createRowCoordinatesForGridRange:(id)range invalidRowIndex:(unsigned int)index previousCoordinates:(id)coordinates validateSingleRow:(BOOL)row outCoordinatesChanged:(BOOL *)changed
 {
-  v7 = a6;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v12 = a5;
+  rowCopy = row;
+  var1 = range.var1;
+  var0 = range.var0;
+  coordinatesCopy = coordinates;
   v13 = [TSTCoordinateArray alloc];
   v15 = HIDWORD(*&var1);
   if (var0.var0 == -1 || var1.var0 == -1 || var0.var0 > var1.var0)
@@ -4640,9 +4640,9 @@ LABEL_14:
     v76 = v15;
   }
 
-  if (v12 && a4 != 0x7FFFFFFF && !v95)
+  if (coordinatesCopy && index != 0x7FFFFFFF && !v95)
   {
-    v16 = sub_2211F0154(IsLeftToRight, v12, a4, &v97);
+    v16 = sub_2211F0154(IsLeftToRight, coordinatesCopy, index, &v97);
   }
 
   if (v16 <= v76)
@@ -4660,16 +4660,16 @@ LABEL_14:
         v87 = v35 * v88;
       }
 
-      if (v12 && v16 == a4 && v7)
+      if (coordinatesCopy && v16 == index && rowCopy)
       {
         v89 = v97;
-        v81 = v87 + v89 - sub_2211EFCD0(v12, a4 + 1);
+        v81 = v87 + v89 - sub_2211EFCD0(coordinatesCopy, index + 1);
         if (v81 == 0.0)
         {
-          v94 = v12;
+          v94 = coordinatesCopy;
 
-          v90 = a7;
-          if (a7)
+          changedCopy2 = changed;
+          if (changed)
           {
             v92 = 0;
             IsLeftToRight = v94;
@@ -4698,7 +4698,7 @@ LABEL_14:
       }
 
       v16 = (v16 + 1);
-      v82 = v81 + sub_2211EFCD0(v12, v16);
+      v82 = v81 + sub_2211EFCD0(coordinatesCopy, v16);
       v80 = 1;
 LABEL_44:
       v97 = v82;
@@ -4710,12 +4710,12 @@ LABEL_44:
     }
   }
 
-  v90 = a7;
-  if (a7)
+  changedCopy2 = changed;
+  if (changed)
   {
-    if (v12)
+    if (coordinatesCopy)
     {
-      isEqual = objc_msgSend_isEqual_(v12, v77, IsLeftToRight, v78, v79);
+      isEqual = objc_msgSend_isEqual_(coordinatesCopy, v77, IsLeftToRight, v78, v79);
     }
 
     else
@@ -4725,7 +4725,7 @@ LABEL_44:
 
     v92 = isEqual ^ 1;
 LABEL_51:
-    *v90 = (*v90 | v92) & 1;
+    *changedCopy2 = (*changedCopy2 | v92) & 1;
   }
 
 LABEL_52:
@@ -4750,9 +4750,9 @@ LABEL_52:
   }
 }
 
-- (int)validateCoordinateCache:(id)a3
+- (int)validateCoordinateCache:(id)cache
 {
-  v7 = a3;
+  cacheCopy = cache;
   v83 = 0;
   invalidColumnIndex = self->_invalidColumnIndex;
   invalidRowIndex = self->_invalidRowIndex;
@@ -4886,15 +4886,15 @@ LABEL_8:
     }
 
     v68 = objc_msgSend_isMain(self, v27, v28, v29, v30) ^ 1;
-    if (!v7)
+    if (!cacheCopy)
     {
       LOBYTE(v68) = 0;
     }
 
     if (v68)
     {
-      objc_msgSend_gridRange(v7, v64, v65, v66, v67);
-      objc_msgSend_p_rawTableCoordinateForGridColumn_(v7, v74, (v74 + 1), v75, v76);
+      objc_msgSend_gridRange(cacheCopy, v64, v65, v66, v67);
+      objc_msgSend_p_rawTableCoordinateForGridColumn_(cacheCopy, v74, (v74 + 1), v75, v76);
     }
 
     else
@@ -4941,10 +4941,10 @@ LABEL_71:
   return v10;
 }
 
-- (double)p_tableCoordinateForGridColumn:(unsigned int)a3
+- (double)p_tableCoordinateForGridColumn:(unsigned int)column
 {
   headerRowColumnCoordinates = self->_headerRowColumnCoordinates;
-  if (headerRowColumnCoordinates && sub_2211EFC24(headerRowColumnCoordinates, a3))
+  if (headerRowColumnCoordinates && sub_2211EFC24(headerRowColumnCoordinates, column))
   {
     p_headerRowColumnCoordinates = &self->_headerRowColumnCoordinates;
   }
@@ -4956,13 +4956,13 @@ LABEL_71:
 
   v7 = *p_headerRowColumnCoordinates;
 
-  return sub_2211EFCD0(v7, a3);
+  return sub_2211EFCD0(v7, column);
 }
 
-- (double)p_rawTableCoordinateForGridColumn:(unsigned int)a3
+- (double)p_rawTableCoordinateForGridColumn:(unsigned int)column
 {
   headerRowColumnCoordinates = self->_headerRowColumnCoordinates;
-  if (headerRowColumnCoordinates && sub_2211EFC24(headerRowColumnCoordinates, a3))
+  if (headerRowColumnCoordinates && sub_2211EFC24(headerRowColumnCoordinates, column))
   {
     p_headerRowColumnCoordinates = &self->_headerRowColumnCoordinates;
   }
@@ -4974,13 +4974,13 @@ LABEL_71:
 
   v7 = *p_headerRowColumnCoordinates;
 
-  return sub_2211EFE04(v7, a3);
+  return sub_2211EFE04(v7, column);
 }
 
-- (double)p_tableCoordinateForGridRow:(unsigned int)a3
+- (double)p_tableCoordinateForGridRow:(unsigned int)row
 {
   headerColumnRowCoordinates = self->_headerColumnRowCoordinates;
-  if (headerColumnRowCoordinates && sub_2211EFC24(headerColumnRowCoordinates, a3))
+  if (headerColumnRowCoordinates && sub_2211EFC24(headerColumnRowCoordinates, row))
   {
     p_headerColumnRowCoordinates = &self->_headerColumnRowCoordinates;
   }
@@ -4992,41 +4992,41 @@ LABEL_71:
 
   v7 = *p_headerColumnRowCoordinates;
 
-  return sub_2211EFCD0(v7, a3);
+  return sub_2211EFCD0(v7, row);
 }
 
-- (unsigned)p_gridColumnForTableCoordinate:(double)a3
+- (unsigned)p_gridColumnForTableCoordinate:(double)coordinate
 {
   headerRowColumnCoordinates = self->_headerRowColumnCoordinates;
-  if (!headerRowColumnCoordinates || (result = sub_2211EFF18(headerRowColumnCoordinates, a3), result == -1))
+  if (!headerRowColumnCoordinates || (result = sub_2211EFF18(headerRowColumnCoordinates, coordinate), result == -1))
   {
     bodyColumnCoordinates = self->_bodyColumnCoordinates;
 
-    return sub_2211EFF18(bodyColumnCoordinates, a3);
+    return sub_2211EFF18(bodyColumnCoordinates, coordinate);
   }
 
   return result;
 }
 
-- (unsigned)p_gridRowForTableCoordinate:(double)a3
+- (unsigned)p_gridRowForTableCoordinate:(double)coordinate
 {
   headerColumnRowCoordinates = self->_headerColumnRowCoordinates;
-  if (!headerColumnRowCoordinates || (result = sub_2211EFF18(headerColumnRowCoordinates, a3), result == -1))
+  if (!headerColumnRowCoordinates || (result = sub_2211EFF18(headerColumnRowCoordinates, coordinate), result == -1))
   {
     bodyRowCoordinates = self->_bodyRowCoordinates;
 
-    return sub_2211EFF18(bodyRowCoordinates, a3);
+    return sub_2211EFF18(bodyRowCoordinates, coordinate);
   }
 
   return result;
 }
 
-- ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_gridRangeForTableRect:(CGRect)a3
+- ($D854FC4CDD8DDEA9B2859E823A7C8A75)p_gridRangeForTableRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_msgSend_frame(self, a2, v3, v4, v5);
   objc_msgSend_p_tableRectForLayoutRect_(self, v11, v12, v13, v14);
   v15 = v54.origin.x;
@@ -5226,10 +5226,10 @@ LABEL_23:
   return result;
 }
 
-- ($85CD2974BE96D4886BB301820D1C36C2)p_gridPointForTablePoint:(CGPoint)a3
+- ($85CD2974BE96D4886BB301820D1C36C2)p_gridPointForTablePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   objc_msgSend_frame(self, a2, v3, v4, v5);
   objc_msgSend_p_tableRectForLayoutRect_(self, v9, v10, v11, v12);
   v13 = v29.origin.x;
@@ -5263,11 +5263,11 @@ LABEL_23:
   return (v26 | v21);
 }
 
-- (CGRect)p_tableRectForGridRange:(id)a3
+- (CGRect)p_tableRectForGridRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  objc_msgSend_p_tableCoordinateForGridColumn_(self, a2, *&a3.var0, *&a3.var1, v3);
+  var1 = range.var1;
+  var0 = range.var0;
+  objc_msgSend_p_tableCoordinateForGridColumn_(self, a2, *&range.var0, *&range.var1, v3);
   v8 = v7;
   objc_msgSend_p_tableCoordinateForGridRow_(self, v9, HIDWORD(*&var0), v10, v11);
   v13 = v12;
@@ -5306,12 +5306,12 @@ LABEL_23:
   return result;
 }
 
-- (double)p_tableCoordinateForX:(double)a3
+- (double)p_tableCoordinateForX:(double)x
 {
   objc_msgSend_tableOffset(self, a2, v3, v4, v5);
   v9 = v8;
   v14 = objc_msgSend_layout(self, v10, v11, v12, v13);
-  v23 = a3 - v9;
+  v23 = x - v9;
   if (sub_2211B7A08(v14, v15, v16, v17, v18))
   {
   }
@@ -5333,12 +5333,12 @@ LABEL_23:
   return v23;
 }
 
-- (double)p_tableCoordinateForY:(double)a3
+- (double)p_tableCoordinateForY:(double)y
 {
   objc_msgSend_tableOffset(self, a2, v3, v4, v5);
   v9 = v8;
   v14 = objc_msgSend_layout(self, v10, v11, v12, v13);
-  v23 = a3 - v9;
+  v23 = y - v9;
   if (sub_2211B4730(v14, v15, v16, v17, v18))
   {
   }
@@ -5360,10 +5360,10 @@ LABEL_23:
   return v23;
 }
 
-- (CGPoint)p_tablePointForLayoutPoint:(CGPoint)a3
+- (CGPoint)p_tablePointForLayoutPoint:(CGPoint)point
 {
-  y = a3.y;
-  objc_msgSend_p_tableCoordinateForX_(self, a2, v3, v4, v5, a3.x);
+  y = point.y;
+  objc_msgSend_p_tableCoordinateForX_(self, a2, v3, v4, v5, point.x);
   v9 = v8;
   objc_msgSend_p_tableCoordinateForY_(self, v10, v11, v12, v13, y);
   v15 = v14;
@@ -5373,15 +5373,15 @@ LABEL_23:
   return result;
 }
 
-- (int)p_cellTypeForGridPoint:(id)a3
+- (int)p_cellTypeForGridPoint:(id)point
 {
-  v7 = objc_msgSend_layout(self, a2, *&a3, v3, v4);
+  v7 = objc_msgSend_layout(self, a2, *&point, v3, v4);
   v8 = v7;
   v9 = 0;
-  if (*&a3 <= 0xFFFFFFFEFFFFFFFFLL && a3.var0 != 0xFFFFFFFFLL)
+  if (*&point <= 0xFFFFFFFEFFFFFFFFLL && point.var0 != 0xFFFFFFFFLL)
   {
     v10 = sub_2211B7764(v7);
-    v15 = HIDWORD(*&a3);
+    v15 = HIDWORD(*&point);
     if (WORD2(v10) == 0x7FFF)
     {
       v16 = -1;
@@ -5409,9 +5409,9 @@ LABEL_23:
     }
 
     v19 = HIDWORD(v17);
-    if (v16 <= a3.var0)
+    if (v16 <= point.var0)
     {
-      if (v15 < v19 && v11 && v11 + v16 - 1 < a3.var0)
+      if (v15 < v19 && v11 && v11 + v16 - 1 < point.var0)
       {
         if (objc_msgSend_layoutDirectionIsLeftToRight(self, v11, v12, v13, v14))
         {
@@ -5462,11 +5462,11 @@ LABEL_23:
   return v9;
 }
 
-- (CGPoint)p_layoutOffsetForGridPoint:(id)a3
+- (CGPoint)p_layoutOffsetForGridPoint:(id)point
 {
   v6 = *MEMORY[0x277CBF348];
   v7 = *(MEMORY[0x277CBF348] + 8);
-  v8 = objc_msgSend_p_cellTypeForGridPoint_(self, a2, *&a3, v3, v4);
+  v8 = objc_msgSend_p_cellTypeForGridPoint_(self, a2, *&point, v3, v4);
   if (v8 <= 2)
   {
     if (v8)
@@ -5519,10 +5519,10 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)p_layoutOffsetForTablePoint:(CGPoint)a3
+- (CGPoint)p_layoutOffsetForTablePoint:(CGPoint)point
 {
-  y = a3.y;
-  v8 = objc_msgSend_p_gridColumnForTableCoordinate_(self, a2, v3, v4, v5, a3.x);
+  y = point.y;
+  v8 = objc_msgSend_p_gridColumnForTableCoordinate_(self, a2, v3, v4, v5, point.x);
   v14 = v8 | (objc_msgSend_p_gridRowForTableCoordinate_(self, v9, v10, v11, v12, y) << 32);
 
   objc_msgSend_p_layoutOffsetForGridPoint_(self, v13, v14, v15, v16);
@@ -5531,10 +5531,10 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)p_layoutPointForTablePoint:(CGPoint)a3
+- (CGPoint)p_layoutPointForTablePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   objc_msgSend_p_layoutOffsetForTablePoint_(self, a2, v3, v4, v5);
   v9 = x + v8;
   v11 = y + v10;
@@ -5543,9 +5543,9 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)p_tableRectForLayoutRect:(CGRect)a3
+- (CGRect)p_tableRectForLayoutRect:(CGRect)rect
 {
-  objc_msgSend_p_tablePointForLayoutPoint_(self, a2, v3, v4, v5, a3.origin.x, a3.origin.y);
+  objc_msgSend_p_tablePointForLayoutPoint_(self, a2, v3, v4, v5, rect.origin.x, rect.origin.y);
 
   TSURectWithOriginAndSize();
   result.size.height = v9;
@@ -5555,9 +5555,9 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)p_layoutRectForTableRect:(CGRect)a3
+- (CGRect)p_layoutRectForTableRect:(CGRect)rect
 {
-  objc_msgSend_p_layoutPointForTablePoint_(self, a2, v3, v4, v5, a3.origin.x, a3.origin.y);
+  objc_msgSend_p_layoutPointForTablePoint_(self, a2, v3, v4, v5, rect.origin.x, rect.origin.y);
 
   TSURectWithOriginAndSize();
   result.size.height = v9;
@@ -5567,11 +5567,11 @@ LABEL_11:
   return result;
 }
 
-- ($49C15799EE3625B6AB482F2FFBF0D806)p_frameSpecForGridRange:(SEL)a3 frameType:(id)a4 strokeWidthOverride:(int)a5
+- ($49C15799EE3625B6AB482F2FFBF0D806)p_frameSpecForGridRange:(SEL)range frameType:(id)type strokeWidthOverride:(int)override
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v103 = objc_msgSend_layoutEngine(self, a3, *&a4.var0, *&a4.var1, *&a5);
+  var1 = type.var1;
+  var0 = type.var0;
+  v103 = objc_msgSend_layoutEngine(self, range, *&type.var0, *&type.var1, *&override);
   v101 = objc_msgSend_layout(self, v12, v13, v14, v15);
   v20 = objc_msgSend_layoutHint(v101, v16, v17, v18, v19);
   IsLeftToRight = objc_msgSend_layoutDirectionIsLeftToRight(self, v21, v22, v23, v24);
@@ -5587,9 +5587,9 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  if (a5 != 1)
+  if (override != 1)
   {
-    if (a5 == 2)
+    if (override == 2)
     {
       objc_msgSend_strokeHeightOfGridRow_atColumnIndex_(v103, v25, HIDWORD(var0), var0, v26);
       v32 = v37;
@@ -5610,9 +5610,9 @@ LABEL_11:
     objc_msgSend_strokeWidthOfGridColumn_beginRow_endRow_(v103, v97, (var1 + 1), HIDWORD(var0), (HIDWORD(var1) + 1));
     v30 = v98;
 LABEL_3:
-    if (a5 != 2)
+    if (override != 2)
     {
-      if (a5 != 1)
+      if (override != 1)
       {
         v33 = objc_msgSend_intersectionGridRange_ofLayoutSpace_(TSTLayoutSpace, v25, var0, var1, self);
         goto LABEL_12;
@@ -5641,7 +5641,7 @@ LABEL_12:
   objc_msgSend_p_tableCoordinateForGridColumn_(self, v34, v33, v35, v36, v99);
   v57 = v56;
   v58 = v56;
-  if (a5 != 2)
+  if (override != 2)
   {
     objc_msgSend_p_tableCoordinateForGridColumn_(self, v52, (v51 + 1), v54, v55);
     v58 = v59;
@@ -5665,7 +5665,7 @@ LABEL_12:
   objc_msgSend_p_tableCoordinateForGridRow_(self, v52, HIDWORD(v50), v54, v55);
   v68 = v67;
   v69 = v67;
-  if (a5 != 1)
+  if (override != 1)
   {
     objc_msgSend_p_tableCoordinateForGridRow_(self, v63, (HIDWORD(v51) + 1), v65, v66);
     v69 = v70;
@@ -5765,39 +5765,39 @@ LABEL_12:
   return result;
 }
 
-- (void)p_alignFrameSpec:(id *)a3
+- (void)p_alignFrameSpec:(id *)spec
 {
-  var0 = a3->var0;
+  var0 = spec->var0;
   v18[0] = var0.x + 1.0;
   v18[1] = var0.y;
-  objc_msgSend_alignStrokeCoordinatesOfBeginPoint_endPoint_width_(self, a2, &var0, v18, &a3->var4);
-  v17 = a3->var0;
+  objc_msgSend_alignStrokeCoordinatesOfBeginPoint_endPoint_width_(self, a2, &var0, v18, &spec->var4);
+  v17 = spec->var0;
   v16[0] = *&v17.x;
   *&v16[1] = v17.y + 1.0;
-  objc_msgSend_alignStrokeCoordinatesOfBeginPoint_endPoint_width_(self, v5, &v17, v16, &a3->var6);
-  var1 = a3->var1;
+  objc_msgSend_alignStrokeCoordinatesOfBeginPoint_endPoint_width_(self, v5, &v17, v16, &spec->var6);
+  var1 = spec->var1;
   v14[0] = var1.x + 1.0;
   v14[1] = var1.y;
-  objc_msgSend_alignStrokeCoordinatesOfBeginPoint_endPoint_width_(self, v6, &var1, v14, &a3->var5);
-  var2 = a3->var2;
+  objc_msgSend_alignStrokeCoordinatesOfBeginPoint_endPoint_width_(self, v6, &var1, v14, &spec->var5);
+  var2 = spec->var2;
   v12[0] = *&var2.x;
   *&v12[1] = var2.y + 1.0;
-  objc_msgSend_alignStrokeCoordinatesOfBeginPoint_endPoint_width_(self, v7, &var2, v12, &a3->var7);
+  objc_msgSend_alignStrokeCoordinatesOfBeginPoint_endPoint_width_(self, v7, &var2, v12, &spec->var7);
   x = v17.x;
   y = var0.y;
-  a3->var0.x = v17.x;
-  a3->var0.y = y;
+  spec->var0.x = v17.x;
+  spec->var0.y = y;
   v10 = var2.x;
   v11 = var1.y;
-  a3->var3.x = var2.x;
-  a3->var3.y = v11;
-  a3->var1.x = x;
-  a3->var1.y = v11;
-  a3->var2.x = v10;
-  a3->var2.y = y;
+  spec->var3.x = var2.x;
+  spec->var3.y = v11;
+  spec->var1.x = x;
+  spec->var1.y = v11;
+  spec->var2.x = v10;
+  spec->var2.y = y;
 }
 
-- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForGridRange:(SEL)a3 strokeWidthOverride:(id)a4
+- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForGridRange:(SEL)range strokeWidthOverride:(id)override
 {
   *&retstr->var4 = 0u;
   *&retstr->var6 = 0u;
@@ -5805,12 +5805,12 @@ LABEL_12:
   retstr->var3 = 0u;
   retstr->var0 = 0u;
   retstr->var1 = 0u;
-  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, a3, *&a4.var0, *&a4.var1, 0, a5);
+  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, range, *&override.var0, *&override.var1, 0, a5);
 
   return MEMORY[0x2821F9670](self, sel_p_alignFrameSpec_, retstr, v7, v8);
 }
 
-- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForRowGridRange:(SEL)a3
+- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForRowGridRange:(SEL)range
 {
   *&retstr->var4 = 0u;
   *&retstr->var6 = 0u;
@@ -5818,12 +5818,12 @@ LABEL_12:
   retstr->var3 = 0u;
   retstr->var0 = 0u;
   retstr->var1 = 0u;
-  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, a3, *&a4.var0, *&a4.var1, 1, 0);
+  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, range, *&a4.var0, *&a4.var1, 1, 0);
 
   return MEMORY[0x2821F9670](self, sel_p_alignFrameSpec_, retstr, v6, v7);
 }
 
-- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForColumnGridRange:(SEL)a3
+- ($49C15799EE3625B6AB482F2FFBF0D806)p_alignedFrameSpecForColumnGridRange:(SEL)range
 {
   *&retstr->var4 = 0u;
   *&retstr->var6 = 0u;
@@ -5831,7 +5831,7 @@ LABEL_12:
   retstr->var3 = 0u;
   retstr->var0 = 0u;
   retstr->var1 = 0u;
-  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, a3, *&a4.var0, *&a4.var1, 2, 0);
+  objc_msgSend_p_frameSpecForGridRange_frameType_strokeWidthOverride_(self, range, *&a4.var0, *&a4.var1, 2, 0);
 
   return MEMORY[0x2821F9670](self, sel_p_alignFrameSpec_, retstr, v6, v7);
 }
@@ -5861,11 +5861,11 @@ LABEL_12:
   return self;
 }
 
-- (void)setTransformFromCanvas:(CGAffineTransform *)a3
+- (void)setTransformFromCanvas:(CGAffineTransform *)canvas
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transformFromCanvas.c = *&a3->c;
+  v3 = *&canvas->a;
+  v4 = *&canvas->tx;
+  *&self->_transformFromCanvas.c = *&canvas->c;
   *&self->_transformFromCanvas.tx = v4;
   *&self->_transformFromCanvas.a = v3;
 }
@@ -5879,11 +5879,11 @@ LABEL_12:
   return self;
 }
 
-- (void)setTransformToDevice:(CGAffineTransform *)a3
+- (void)setTransformToDevice:(CGAffineTransform *)device
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transformToDevice.c = *&a3->c;
+  v3 = *&device->a;
+  v4 = *&device->tx;
+  *&self->_transformToDevice.c = *&device->c;
   *&self->_transformToDevice.tx = v4;
   *&self->_transformToDevice.a = v3;
 }
@@ -5897,11 +5897,11 @@ LABEL_12:
   return self;
 }
 
-- (void)setTransformFromDevice:(CGAffineTransform *)a3
+- (void)setTransformFromDevice:(CGAffineTransform *)device
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transformFromDevice.c = *&a3->c;
+  v3 = *&device->a;
+  v4 = *&device->tx;
+  *&self->_transformFromDevice.c = *&device->c;
   *&self->_transformFromDevice.tx = v4;
   *&self->_transformFromDevice.a = v3;
 }

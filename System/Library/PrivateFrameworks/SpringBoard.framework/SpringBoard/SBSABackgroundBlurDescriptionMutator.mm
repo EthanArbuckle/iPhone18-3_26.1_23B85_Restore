@@ -1,20 +1,20 @@
 @interface SBSABackgroundBlurDescriptionMutator
 - (CGRect)blurFrame;
-- (SBSABackgroundBlurDescriptionMutator)initWithBackgroundBlurDescription:(id)a3;
+- (SBSABackgroundBlurDescriptionMutator)initWithBackgroundBlurDescription:(id)description;
 @end
 
 @implementation SBSABackgroundBlurDescriptionMutator
 
-- (SBSABackgroundBlurDescriptionMutator)initWithBackgroundBlurDescription:(id)a3
+- (SBSABackgroundBlurDescriptionMutator)initWithBackgroundBlurDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = SBSABackgroundBlurDescriptionMutator;
   v6 = [(SBSABackgroundBlurDescriptionMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backgroundBlurDescription, a3);
+    objc_storeStrong(&v6->_backgroundBlurDescription, description);
   }
 
   return v7;

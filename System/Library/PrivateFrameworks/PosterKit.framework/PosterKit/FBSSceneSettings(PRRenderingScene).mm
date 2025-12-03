@@ -10,8 +10,8 @@
 
 - (double)pr_unlockProgress
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20664];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20664];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -50,8 +50,8 @@
 
 - (uint64_t)pr_adjustedLuminance
 {
-  v2 = [a1 otherSettings];
-  v3 = [v2 objectForSetting:20668];
+  otherSettings = [self otherSettings];
+  v3 = [otherSettings objectForSetting:20668];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -76,31 +76,31 @@
 
   if (v7)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v9 = [a1 bls_visualState];
-    v10 = v9;
-    if (v9)
+    bls_visualState = [self bls_visualState];
+    v10 = bls_visualState;
+    if (bls_visualState)
     {
-      v8 = [v9 adjustedLuminance];
+      integerValue = [bls_visualState adjustedLuminance];
     }
 
     else
     {
-      v8 = 2;
+      integerValue = 2;
     }
   }
 
-  return v8;
+  return integerValue;
 }
 
 - (uint64_t)pr_titleAlignment
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20662];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20662];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -125,21 +125,21 @@
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)pr_appliesCountertransformForRotation
 {
-  v1 = [a1 otherSettings];
-  [v1 flagForSetting:20669];
+  otherSettings = [self otherSettings];
+  [otherSettings flagForSetting:20669];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -147,8 +147,8 @@
 
 - (uint64_t)pr_wakeSourceIsSwipeToUnlock
 {
-  v1 = [a1 otherSettings];
-  [v1 flagForSetting:20663];
+  otherSettings = [self otherSettings];
+  [otherSettings flagForSetting:20663];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;

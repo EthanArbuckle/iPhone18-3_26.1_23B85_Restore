@@ -3,16 +3,16 @@
 - (CGRect)chartBodyFrameInRepElementSpace;
 - (CGRect)interceptRect;
 - (TSCHMultiDataLayerAnimationInfo)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addAnimationForLayer:(id)a3 key:(id)a4 values:(id)a5 keyTimes:(id)a6 needPresentationLayerValues:(BOOL)a7;
-- (void)addImageContentsAnimationForLayer:(id)a3 fromImage:(id)a4 toImage:(id)a5 keyTimes:(id)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addAnimationForLayer:(id)layer key:(id)key values:(id)values keyTimes:(id)times needPresentationLayerValues:(BOOL)layerValues;
+- (void)addImageContentsAnimationForLayer:(id)layer fromImage:(id)image toImage:(id)toImage keyTimes:(id)times;
 @end
 
 @implementation TSCHMultiDataLayerAnimationInfo
 
 + (id)animationInfo
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -51,10 +51,10 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v20 = v15;
   if (v15)
@@ -89,22 +89,22 @@
   return v20;
 }
 
-- (void)addAnimationForLayer:(id)a3 key:(id)a4 values:(id)a5 keyTimes:(id)a6 needPresentationLayerValues:(BOOL)a7
+- (void)addAnimationForLayer:(id)layer key:(id)key values:(id)values keyTimes:(id)times needPresentationLayerValues:(BOOL)layerValues
 {
-  v15 = objc_msgSend_animationValuesWithLayer_key_values_keyTimes_needPresentationLayerValues_(TSCHMultiDataLayerAnimationValues, a2, v7, v8, v9, a3, a4, a5, a6, a7);
+  v15 = objc_msgSend_animationValuesWithLayer_key_values_keyTimes_needPresentationLayerValues_(TSCHMultiDataLayerAnimationValues, a2, v7, v8, v9, layer, key, values, times, layerValues);
   objc_msgSend_addObject_(self->_layerAnimationValues, v11, v12, v13, v14);
 }
 
-- (void)addImageContentsAnimationForLayer:(id)a3 fromImage:(id)a4 toImage:(id)a5 keyTimes:(id)a6
+- (void)addImageContentsAnimationForLayer:(id)layer fromImage:(id)image toImage:(id)toImage keyTimes:(id)times
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v14 = a6;
-  if (v11)
+  layerCopy = layer;
+  imageCopy = image;
+  toImageCopy = toImage;
+  timesCopy = times;
+  if (imageCopy)
   {
-    v18 = v11;
+    v18 = imageCopy;
   }
 
   else
@@ -113,9 +113,9 @@
   }
 
   v23 = v18;
-  if (v12)
+  if (toImageCopy)
   {
-    v24 = v12;
+    v24 = toImageCopy;
   }
 
   else
@@ -127,7 +127,7 @@
   v35[0] = v23;
   v35[1] = v24;
   v30 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v25, v26, v27, v28, v35, 2);
-  objc_msgSend_addAnimationForLayer_key_values_keyTimes_needPresentationLayerValues_(self, v31, v32, v33, v34, v10, @"contents", v30, v14, 1);
+  objc_msgSend_addAnimationForLayer_key_values_keyTimes_needPresentationLayerValues_(self, v31, v32, v33, v34, layerCopy, @"contents", v30, timesCopy, 1);
 }
 
 - (CGRect)interceptRect

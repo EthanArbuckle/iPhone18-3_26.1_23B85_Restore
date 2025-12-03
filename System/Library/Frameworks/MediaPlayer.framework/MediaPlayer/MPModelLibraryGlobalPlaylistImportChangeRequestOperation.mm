@@ -7,36 +7,36 @@
 - (void)execute
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)self globalPlaylistID];
+  globalPlaylistID = [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)self globalPlaylistID];
   if ([(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)self shouldLibraryAdd])
   {
     v4 = os_log_create("com.apple.amp.mediaplayer", "Default");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = v3;
+      v12 = globalPlaylistID;
       _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEFAULT, "MPModelLibraryGlobalPlaylistImportChangeRequestOperation adding playlist with globalID=%{public}@", buf, 0xCu);
     }
 
-    v5 = [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)self mediaLibrary];
+    mediaLibrary = [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)self mediaLibrary];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __67__MPModelLibraryGlobalPlaylistImportChangeRequestOperation_execute__block_invoke;
     v8[3] = &unk_1E767B680;
-    v9 = v3;
-    v10 = self;
-    [v5 addGlobalPlaylistWithID:v9 andAddToCloudLibrary:1 completion:v8];
+    v9 = globalPlaylistID;
+    selfCopy = self;
+    [mediaLibrary addGlobalPlaylistWithID:v9 andAddToCloudLibrary:1 completion:v8];
   }
 
   else
   {
-    v6 = [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)self mediaLibrary];
+    mediaLibrary2 = [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)self mediaLibrary];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __67__MPModelLibraryGlobalPlaylistImportChangeRequestOperation_execute__block_invoke_3;
     v7[3] = &unk_1E767AF00;
     v7[4] = self;
-    [v6 addNonLibraryOwnedPlaylistWithGlobalID:v3 completion:v7];
+    [mediaLibrary2 addNonLibraryOwnedPlaylistWithGlobalID:globalPlaylistID completion:v7];
   }
 }
 

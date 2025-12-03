@@ -2,23 +2,23 @@
 - (CarKeyboardModeController)keyboardMode;
 - (CarKeyboardSearchResultsViewController)init;
 - (double)preferredMinimumRowHeight;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)itemAtIndexPath:(id)a3;
-- (id)modelForItemAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)traitsForSearchCategoriesRow:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)itemAtIndexPath:(id)path;
+- (id)modelForItemAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)traitsForSearchCategoriesRow:(id)row;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)handleCancelButtonPressed;
-- (void)handleSearchButtonPressedWithText:(id)a3;
-- (void)handleSearchTextDidChange:(id)a3;
+- (void)handleSearchButtonPressedWithText:(id)text;
+- (void)handleSearchTextDidChange:(id)change;
 - (void)prepareTableView;
-- (void)searchCategoriesRow:(id)a3 didSelectCategory:(id)a4;
-- (void)searchDataProviderDidUpdate:(id)a3;
-- (void)setKeyboardMode:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateForInteractionModel:(unint64_t)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)searchCategoriesRow:(id)row didSelectCategory:(id)category;
+- (void)searchDataProviderDidUpdate:(id)update;
+- (void)setKeyboardMode:(id)mode;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateForInteractionModel:(unint64_t)model;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -31,24 +31,24 @@
   return WeakRetained;
 }
 
-- (id)modelForItemAtIndexPath:(id)a3
+- (id)modelForItemAtIndexPath:(id)path
 {
   modelsByItem = self->_modelsByItem;
-  v4 = [(CarKeyboardSearchResultsViewController *)self itemAtIndexPath:a3];
+  v4 = [(CarKeyboardSearchResultsViewController *)self itemAtIndexPath:path];
   v5 = [(NSMapTable *)modelsByItem objectForKey:v4];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v20 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v7 = +[CarSearchItemCell reuseIdentifier];
-  v8 = [v20 dequeueReusableCellWithIdentifier:v7 forIndexPath:v6];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:v7 forIndexPath:pathCopy];
 
-  v9 = [(CarKeyboardSearchResultsViewController *)self itemAtIndexPath:v6];
-  v10 = [(CarKeyboardSearchResultsViewController *)self modelForItemAtIndexPath:v6];
+  v9 = [(CarKeyboardSearchResultsViewController *)self itemAtIndexPath:pathCopy];
+  v10 = [(CarKeyboardSearchResultsViewController *)self modelForItemAtIndexPath:pathCopy];
   if (!v10)
   {
     objc_initWeak(location, v8);
@@ -73,10 +73,10 @@
   v12 = sub_100006E1C();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v13 = self;
-    if (!v13)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v18 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_12;
     }
 
@@ -84,26 +84,26 @@
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(CarKeyboardSearchResultsViewController *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(CarKeyboardSearchResultsViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy, v17];
 
         goto LABEL_10;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy];
 LABEL_10:
 
 LABEL_12:
     *location = 138543874;
-    *&location[4] = v18;
+    *&location[4] = selfCopy;
     v26 = 2112;
     v27 = v10;
     v28 = 2112;
-    v29 = v6;
+    v29 = pathCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "[%{public}@] [SearchAC] Setting up cell with model: %@, indexpath: %@", location, 0x20u);
   }
 
@@ -112,11 +112,11 @@ LABEL_12:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(CarKeyboardSearchResultsViewController *)self itemAtIndexPath:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = [(CarKeyboardSearchResultsViewController *)self itemAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -135,10 +135,10 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v11 = self;
-  if (!v11)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v16 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_13;
   }
 
@@ -146,32 +146,32 @@ LABEL_12:
   v13 = NSStringFromClass(v12);
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(CarKeyboardSearchResultsViewController *)v11 performSelector:"accessibilityIdentifier"];
+    v14 = [(CarKeyboardSearchResultsViewController *)selfCopy performSelector:"accessibilityIdentifier"];
     v15 = v14;
     if (v14 && ![v14 isEqualToString:v13])
     {
-      v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy, v15];
 
       goto LABEL_11;
     }
   }
 
-  v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy];
 LABEL_11:
 
 LABEL_13:
   *buf = 138543874;
-  v25 = v16;
+  v25 = selfCopy;
   v26 = 2112;
   v27 = v7;
   v28 = 2112;
-  v29 = v6;
+  v29 = pathCopy;
   _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] [SearchAC] Selected item: %@ at indexPath: %@", buf, 0x20u);
 
 LABEL_14:
-  v17 = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
-  v18 = [v17 chromeViewController];
-  [v18 captureUserAction:2007 mapItem:v9 atResultIndex:{objc_msgSend(v6, "row")}];
+  keyboardMode = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
+  chromeViewController = [keyboardMode chromeViewController];
+  [chromeViewController captureUserAction:2007 mapItem:v9 atResultIndex:{objc_msgSend(pathCopy, "row")}];
 
   if ([(NSString *)self->_inputText length])
   {
@@ -199,28 +199,28 @@ LABEL_14:
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CarKeyboardSearchResultsViewController *)self itemAtIndexPath:v7];
-  v9 = [(CarKeyboardSearchResultsViewController *)self modelForItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CarKeyboardSearchResultsViewController *)self itemAtIndexPath:pathCopy];
+  v9 = [(CarKeyboardSearchResultsViewController *)self modelForItemAtIndexPath:pathCopy];
   if (!v9)
   {
     v9 = [CarSearchItemCellModel modelWithUpdateBlock:0];
     [v8 updateModel:v9];
   }
 
-  v10 = [v9 rating];
-  if (v10)
+  rating = [v9 rating];
+  if (rating)
   {
   }
 
   else
   {
-    v11 = [v9 chargerNumberString];
+    chargerNumberString = [v9 chargerNumberString];
 
-    if (!v11)
+    if (!chargerNumberString)
     {
       v12 = &qword_101215AD0;
       goto LABEL_7;
@@ -234,53 +234,53 @@ LABEL_7:
   return v13;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   filteredResults = self->_filteredResults;
-  v4 = a3;
-  v5 = -[NSArray objectAtIndex:](filteredResults, "objectAtIndex:", [v4 section]);
-  v6 = [v5 items];
-  v7 = [v4 row];
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndex:](filteredResults, "objectAtIndex:", [pathCopy section]);
+  items = [v5 items];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [items objectAtIndex:v7];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 autocompleteObject];
+    autocompleteObject = [v8 autocompleteObject];
 
-    v8 = v9;
+    v8 = autocompleteObject;
   }
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_filteredResults objectAtIndex:a4];
-  v5 = [v4 items];
-  v6 = [v5 count];
+  v4 = [(NSArray *)self->_filteredResults objectAtIndex:section];
+  items = [v4 items];
+  v6 = [items count];
 
   return v6;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 isActive];
-  v6 = sub_100006E1C();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (!v5)
+  controllerCopy = controller;
+  isActive = [controllerCopy isActive];
+  currentTraits = sub_100006E1C();
+  v7 = os_log_type_enabled(currentTraits, OS_LOG_TYPE_INFO);
+  if (!isActive)
   {
     if (!v7)
     {
       goto LABEL_26;
     }
 
-    v14 = self;
-    if (!v14)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v19 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_25;
     }
 
@@ -288,33 +288,33 @@ LABEL_7:
     v16 = NSStringFromClass(v15);
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(CarKeyboardSearchResultsViewController *)v14 performSelector:"accessibilityIdentifier"];
+      v17 = [(CarKeyboardSearchResultsViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v18 = v17;
       if (v17 && ![v17 isEqualToString:v16])
       {
-        v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy, v18];
 
         goto LABEL_17;
       }
     }
 
-    v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy];
 LABEL_17:
 
 LABEL_25:
     *buf = 138543362;
-    v32 = v19;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] [SearchAC] Seaarch controller is not active", buf, 0xCu);
+    v32 = selfCopy;
+    _os_log_impl(&_mh_execute_header, currentTraits, OS_LOG_TYPE_INFO, "[%{public}@] [SearchAC] Seaarch controller is not active", buf, 0xCu);
 
     goto LABEL_26;
   }
 
   if (v7)
   {
-    v8 = self;
-    if (!v8)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v13 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_19;
     }
 
@@ -322,45 +322,45 @@ LABEL_25:
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(CarKeyboardSearchResultsViewController *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(CarKeyboardSearchResultsViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy2, v12];
 
         goto LABEL_9;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy2];
 LABEL_9:
 
 LABEL_19:
-    v20 = [v4 searchBar];
-    v21 = [v20 text];
+    searchBar = [controllerCopy searchBar];
+    text = [searchBar text];
     *buf = 138543618;
-    v32 = v13;
+    v32 = selfCopy2;
     v33 = 2112;
-    v34 = v21;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] [SearchAC] Processing new query on CarPlay : %@", buf, 0x16u);
+    v34 = text;
+    _os_log_impl(&_mh_execute_header, currentTraits, OS_LOG_TYPE_INFO, "[%{public}@] [SearchAC] Processing new query on CarPlay : %@", buf, 0x16u);
   }
 
-  v22 = [v4 searchBar];
-  v23 = [v22 text];
+  searchBar2 = [controllerCopy searchBar];
+  text2 = [searchBar2 text];
   inputText = self->_inputText;
-  self->_inputText = v23;
+  self->_inputText = text2;
 
-  v25 = [(CarKeyboardSearchResultsViewController *)self searchResultTableView];
-  [v25 scrollRectToVisible:0 animated:{0.0, 0.0, 1.0, 1.0}];
+  searchResultTableView = [(CarKeyboardSearchResultsViewController *)self searchResultTableView];
+  [searchResultTableView scrollRectToVisible:0 animated:{0.0, 0.0, 1.0, 1.0}];
 
-  v26 = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
-  v27 = [v26 chromeViewController];
-  v6 = [v27 currentTraits];
+  keyboardMode = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
+  chromeViewController = [keyboardMode chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
   v28 = +[MNNavigationService sharedService];
-  LODWORD(v27) = [v28 isInNavigatingState];
+  LODWORD(chromeViewController) = [v28 isInNavigatingState];
 
-  if (v27)
+  if (chromeViewController)
   {
     v29 = 2;
   }
@@ -370,25 +370,25 @@ LABEL_19:
     v29 = 0;
   }
 
-  [v6 setAutocompleteOriginationType:v29];
+  [currentTraits setAutocompleteOriginationType:v29];
   v30 = +[MNNavigationService sharedService];
-  -[NSObject setNavigating:](v6, "setNavigating:", [v30 isInNavigatingState]);
+  -[NSObject setNavigating:](currentTraits, "setNavigating:", [v30 isInNavigatingState]);
 
-  [v6 addSupportedAutocompleteListType:2];
-  [(SearchDataProvider *)self->_searchDataProvider setInputText:self->_inputText traits:v6 source:12];
+  [currentTraits addSupportedAutocompleteListType:2];
+  [(SearchDataProvider *)self->_searchDataProvider setInputText:self->_inputText traits:currentTraits source:12];
 LABEL_26:
 }
 
-- (void)searchDataProviderDidUpdate:(id)a3
+- (void)searchDataProviderDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v37 = objc_alloc_init(NSMutableArray);
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v34 = v3;
-  obj = [v3 sections];
+  v34 = updateCopy;
+  obj = [updateCopy sections];
   v39 = [obj countByEnumeratingWithState:&v46 objects:v57 count:16];
   if (v39)
   {
@@ -406,16 +406,16 @@ LABEL_26:
         v41 = v4;
         v5 = *(*(&v46 + 1) + 8 * v4);
         v6 = [NSMutableArray alloc];
-        v7 = [v5 items];
-        v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+        items = [v5 items];
+        v8 = [v6 initWithCapacity:{objc_msgSend(items, "count")}];
 
         v44 = 0u;
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
         v40 = v5;
-        v9 = [v5 items];
-        v10 = [v9 countByEnumeratingWithState:&v42 objects:v56 count:16];
+        items2 = [v5 items];
+        v10 = [items2 countByEnumeratingWithState:&v42 objects:v56 count:16];
         if (v10)
         {
           v11 = v10;
@@ -426,25 +426,25 @@ LABEL_26:
             {
               if (*v43 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(items2);
               }
 
               v14 = *(*(&v42 + 1) + 8 * i);
-              v15 = [v14 autocompleteObject];
+              autocompleteObject = [v14 autocompleteObject];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v16 = v15;
-                v17 = [v16 collectionResult];
-                if (v17)
+                v16 = autocompleteObject;
+                collectionResult = [v16 collectionResult];
+                if (collectionResult)
                 {
                 }
 
                 else
                 {
-                  v18 = [v16 publisherResult];
+                  publisherResult = [v16 publisherResult];
 
-                  if (!v18)
+                  if (!publisherResult)
                   {
                     [v8 addObject:v14];
                   }
@@ -457,7 +457,7 @@ LABEL_26:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v42 objects:v56 count:16];
+            v11 = [items2 countByEnumeratingWithState:&v42 objects:v56 count:16];
           }
 
           while (v11);
@@ -468,7 +468,7 @@ LABEL_26:
           v19 = sub_100006E1C();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
-            v20 = self;
+            selfCopy = self;
             if (self)
             {
               v21 = objc_opt_class();
@@ -478,29 +478,29 @@ LABEL_26:
                 goto LABEL_27;
               }
 
-              v23 = [(CarKeyboardSearchResultsViewController *)v20 performSelector:"accessibilityIdentifier"];
+              v23 = [(CarKeyboardSearchResultsViewController *)selfCopy performSelector:"accessibilityIdentifier"];
               v24 = v23;
               if (v23 && ![v23 isEqualToString:v22])
               {
-                v25 = [NSString stringWithFormat:@"%@<%p, %@>", v22, v20, v24];
+                selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v22, selfCopy, v24];
               }
 
               else
               {
 
 LABEL_27:
-                v25 = [NSString stringWithFormat:@"%@<%p>", v22, v20];
+                selfCopy = [NSString stringWithFormat:@"%@<%p>", v22, selfCopy];
               }
             }
 
             else
             {
-              v25 = @"<nil>";
+              selfCopy = @"<nil>";
             }
 
             v26 = [v8 count];
             *buf = 138543874;
-            v51 = v25;
+            v51 = selfCopy;
             v52 = 2112;
             v53 = v40;
             v54 = 2048;
@@ -509,8 +509,8 @@ LABEL_27:
           }
 
           v27 = [AutocompleteSection alloc];
-          v28 = [v40 title];
-          v29 = -[AutocompleteSection initWithTitle:items:isQuerySuggestionsSection:](v27, "initWithTitle:items:isQuerySuggestionsSection:", v28, v8, [v40 isQuerySuggestionsSection]);
+          title = [v40 title];
+          v29 = -[AutocompleteSection initWithTitle:items:isQuerySuggestionsSection:](v27, "initWithTitle:items:isQuerySuggestionsSection:", title, v8, [v40 isQuerySuggestionsSection]);
           [v37 addObject:v29];
         }
 
@@ -529,8 +529,8 @@ LABEL_27:
   filteredResults = self->_filteredResults;
   self->_filteredResults = v31;
 
-  v33 = [(CarKeyboardSearchResultsViewController *)self searchResultTableView];
-  [v33 reloadData];
+  searchResultTableView = [(CarKeyboardSearchResultsViewController *)self searchResultTableView];
+  [searchResultTableView reloadData];
 }
 
 - (void)handleCancelButtonPressed
@@ -538,10 +538,10 @@ LABEL_27:
   v3 = sub_100006E1C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -549,33 +549,33 @@ LABEL_27:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarKeyboardSearchResultsViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarKeyboardSearchResultsViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v13 = v9;
+    v13 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] [SearchAC] Keyboard cancel button pressed.", buf, 0xCu);
   }
 
-  v10 = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
-  v11 = [v10 chromeViewController];
-  [v11 captureUserAction:2003];
+  keyboardMode = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
+  chromeViewController = [keyboardMode chromeViewController];
+  [chromeViewController captureUserAction:2003];
 }
 
-- (void)handleSearchTextDidChange:(id)a3
+- (void)handleSearchTextDidChange:(id)change
 {
-  v4 = [a3 length];
+  v4 = [change length];
   categoriesRow = self->_categoriesRow;
   if (v4)
   {
@@ -596,26 +596,26 @@ LABEL_10:
       [(UITableView *)self->_searchResultTableView setHidden:1];
     }
 
-    v8 = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
-    v7 = [v8 chromeViewController];
-    [v7 captureUserAction:2003];
+    keyboardMode = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
+    chromeViewController = [keyboardMode chromeViewController];
+    [chromeViewController captureUserAction:2003];
   }
 }
 
-- (void)handleSearchButtonPressedWithText:(id)a3
+- (void)handleSearchButtonPressedWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
-  v6 = [v5 chromeViewController];
-  [v6 captureUserAction:2014];
+  textCopy = text;
+  keyboardMode = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
+  chromeViewController = [keyboardMode chromeViewController];
+  [chromeViewController captureUserAction:2014];
 
   v7 = sub_100006E1C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = self;
-    if (!v8)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v13 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -623,62 +623,62 @@ LABEL_10:
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(CarKeyboardSearchResultsViewController *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(CarKeyboardSearchResultsViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_8;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v19 = v13;
+    v19 = selfCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] [SearchAC] Keyboard search button pressed, will perform search", buf, 0xCu);
   }
 
   v14 = objc_alloc_init(SearchFieldItem);
-  v15 = [v4 _maps_stringByTrimmingLeadingWhitespace];
-  [(SearchFieldItem *)v14 setSearchString:v15];
+  _maps_stringByTrimmingLeadingWhitespace = [textCopy _maps_stringByTrimmingLeadingWhitespace];
+  [(SearchFieldItem *)v14 setSearchString:_maps_stringByTrimmingLeadingWhitespace];
 
-  [(SearchFieldItem *)v14 setUserTypedStringForRAP:v4];
+  [(SearchFieldItem *)v14 setUserTypedStringForRAP:textCopy];
   v16 = +[CarDisplayController sharedInstance];
   v17 = [v16 processSearchFieldItem:v14 searchInfo:0 userInfo:0];
 }
 
-- (void)updateForInteractionModel:(unint64_t)a3
+- (void)updateForInteractionModel:(unint64_t)model
 {
-  v3 = a3 != 1;
-  v4 = [(CarKeyboardSearchResultsViewController *)self searchResultTableView];
-  [v4 setScrollEnabled:v3];
+  v3 = model != 1;
+  searchResultTableView = [(CarKeyboardSearchResultsViewController *)self searchResultTableView];
+  [searchResultTableView setScrollEnabled:v3];
 }
 
-- (id)traitsForSearchCategoriesRow:(id)a3
+- (id)traitsForSearchCategoriesRow:(id)row
 {
-  v3 = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
-  v4 = [v3 chromeViewController];
-  v5 = [v4 navigationAwareTraits];
+  keyboardMode = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
+  chromeViewController = [keyboardMode chromeViewController];
+  navigationAwareTraits = [chromeViewController navigationAwareTraits];
 
-  return v5;
+  return navigationAwareTraits;
 }
 
-- (void)searchCategoriesRow:(id)a3 didSelectCategory:(id)a4
+- (void)searchCategoriesRow:(id)row didSelectCategory:(id)category
 {
-  v4 = a4;
+  categoryCopy = category;
   v5 = +[CarChromeModeCoordinator sharedInstance];
-  [v5 displaySearchResultsWithCategory:v4];
+  [v5 displaySearchResultsWithCategory:categoryCopy];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = CarKeyboardSearchResultsViewController;
-  [(CarKeyboardSearchResultsViewController *)&v8 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(CarKeyboardSearchResultsViewController *)&v8 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
   if (_UISolariumEnabled())
   {
     categoriesRow = self->_categoriesRow;
@@ -687,8 +687,8 @@ LABEL_10:
       v6 = [(CarSearchCategoriesRow *)categoriesRow isAnyCategoryFocused]^ 1;
       if (self->_hasFocusedCategories != v6)
       {
-        v7 = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
-        [v7 wantsKeyboardVisible:v6];
+        keyboardMode = [(CarKeyboardSearchResultsViewController *)self keyboardMode];
+        [keyboardMode wantsKeyboardVisible:v6];
 
         self->_hasFocusedCategories = v6;
       }
@@ -696,10 +696,10 @@ LABEL_10:
   }
 }
 
-- (void)setKeyboardMode:(id)a3
+- (void)setKeyboardMode:(id)mode
 {
-  objc_storeWeak(&self->_keyboardMode, a3);
-  if (a3)
+  objc_storeWeak(&self->_keyboardMode, mode);
+  if (mode)
   {
     categoriesRow = self->_categoriesRow;
 
@@ -740,16 +740,16 @@ LABEL_10:
   v5 = +[UIColor clearColor];
   [(UITableView *)self->_searchResultTableView setBackgroundColor:v5];
 
-  v6 = [(UITableView *)self->_searchResultTableView topEdgeEffect];
-  [v6 setHidden:1];
+  topEdgeEffect = [(UITableView *)self->_searchResultTableView topEdgeEffect];
+  [topEdgeEffect setHidden:1];
 
   v7 = self->_searchResultTableView;
   v8 = objc_opt_class();
   v9 = +[CarSearchItemCell reuseIdentifier];
   [(UITableView *)v7 registerClass:v8 forCellReuseIdentifier:v9];
 
-  v10 = [(CarKeyboardSearchResultsViewController *)self view];
-  [v10 addSubview:self->_searchResultTableView];
+  view = [(CarKeyboardSearchResultsViewController *)self view];
+  [view addSubview:self->_searchResultTableView];
 
   if (GEOConfigGetBOOL())
   {
@@ -758,26 +758,26 @@ LABEL_10:
     self->_categoriesRow = v11;
 
     [(CarSearchCategoriesRow *)self->_categoriesRow setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(CarKeyboardSearchResultsViewController *)self view];
-    [v13 addSubview:self->_categoriesRow];
+    view2 = [(CarKeyboardSearchResultsViewController *)self view];
+    [view2 addSubview:self->_categoriesRow];
 
-    v34 = [(CarSearchCategoriesRow *)self->_categoriesRow topAnchor];
-    v35 = [(CarKeyboardSearchResultsViewController *)self view];
-    v33 = [v35 safeAreaLayoutGuide];
-    v32 = [v33 topAnchor];
-    v31 = [v34 constraintEqualToAnchor:v32];
+    topAnchor = [(CarSearchCategoriesRow *)self->_categoriesRow topAnchor];
+    view3 = [(CarKeyboardSearchResultsViewController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v36[0] = v31;
-    v29 = [(CarSearchCategoriesRow *)self->_categoriesRow leadingAnchor];
-    v30 = [(CarKeyboardSearchResultsViewController *)self view];
-    v28 = [v30 safeAreaLayoutGuide];
-    v14 = [v28 leadingAnchor];
-    v15 = [v29 constraintEqualToAnchor:v14];
+    leadingAnchor = [(CarSearchCategoriesRow *)self->_categoriesRow leadingAnchor];
+    view4 = [(CarKeyboardSearchResultsViewController *)self view];
+    safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v36[1] = v15;
-    v16 = [(CarKeyboardSearchResultsViewController *)self view];
-    v17 = [v16 safeAreaLayoutGuide];
-    v18 = [v17 trailingAnchor];
-    v19 = [(CarSearchCategoriesRow *)self->_categoriesRow trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    view5 = [(CarKeyboardSearchResultsViewController *)self view];
+    safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+    trailingAnchor = [safeAreaLayoutGuide3 trailingAnchor];
+    trailingAnchor2 = [(CarSearchCategoriesRow *)self->_categoriesRow trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v36[2] = v20;
     v21 = [NSArray arrayWithObjects:v36 count:3];
     [NSLayoutConstraint activateConstraints:v21];
@@ -786,12 +786,12 @@ LABEL_10:
   }
 
   v22 = self->_searchResultTableView;
-  v23 = [(CarKeyboardSearchResultsViewController *)self view];
-  v24 = [v23 safeAreaLayoutGuide];
+  view6 = [(CarKeyboardSearchResultsViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
   LODWORD(v25) = 1148846080;
-  v26 = [(UITableView *)v22 _maps_constraintsEqualToEdgesOfLayoutGuide:v24 insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v25];
-  v27 = [v26 allConstraints];
-  [NSLayoutConstraint activateConstraints:v27];
+  v26 = [(UITableView *)v22 _maps_constraintsEqualToEdgesOfLayoutGuide:safeAreaLayoutGuide4 insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v25];
+  allConstraints = [v26 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
 - (void)viewDidLoad

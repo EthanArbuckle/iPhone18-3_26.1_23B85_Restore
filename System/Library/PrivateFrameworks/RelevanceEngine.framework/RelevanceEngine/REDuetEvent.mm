@@ -1,25 +1,25 @@
 @interface REDuetEvent
-+ (id)eventWithInterval:(id)a3 value:(id)a4 confidence:(double)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithInterval:(id)interval value:(id)value confidence:(double)confidence;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation REDuetEvent
 
-+ (id)eventWithInterval:(id)a3 value:(id)a4 confidence:(double)a5
++ (id)eventWithInterval:(id)interval value:(id)value confidence:(double)confidence
 {
-  v7 = a3;
-  v8 = a4;
+  intervalCopy = interval;
+  valueCopy = value;
   v9 = objc_opt_new();
   v10 = *(v9 + 8);
-  *(v9 + 8) = v7;
-  v11 = v7;
+  *(v9 + 8) = intervalCopy;
+  v11 = intervalCopy;
 
-  v12 = [v8 copy];
+  v12 = [valueCopy copy];
   v13 = *(v9 + 16);
   *(v9 + 16) = v12;
 
-  *(v9 + 24) = a5;
+  *(v9 + 24) = confidence;
 
   return v9;
 }
@@ -34,10 +34,10 @@
   return v4 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -47,7 +47,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       interval = v5->_interval;
       v7 = self->_interval;
       v8 = v7;

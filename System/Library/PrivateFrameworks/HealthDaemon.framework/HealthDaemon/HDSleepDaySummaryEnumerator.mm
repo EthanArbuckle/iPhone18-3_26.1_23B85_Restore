@@ -1,72 +1,72 @@
 @interface HDSleepDaySummaryEnumerator
-+ (id)sleepAnalysisQueryDescriptorForDateInterval:(id)a3 options:(unint64_t)a4;
-+ (id)sleepTypesQueryDescriptorsForDateInterval:(id)a3 options:(unint64_t)a4;
-- (BOOL)enumerateWithError:(id *)a3 handler:(id)a4;
-- (HDSleepDaySummaryEnumerator)initWithProfile:(id)a3 cachingSession:(id)a4 gregorianCalendar:(id)a5 morningIndexRange:(id)a6 ascending:(BOOL)a7 options:(unint64_t)a8 debugIdentifier:(id)a9;
-- (id)_updatedBuilderForMorningIndex:(void *)a3 fromBuilders:(int)a4 createIfNeeded:;
-- (uint64_t)_aggregationIntervalAdjustedMorningIndexFromMorningIndex:(void *)a1;
-- (uint64_t)_enumerateSleepDaySummariesForMorningIndexRanges:(uint64_t)a3 summariesToCache:(void *)a4 error:(void *)a5 handler:(void *)a6;
-- (void)_closeBuilders:(uint64_t)a3 fromIndex:(uint64_t)a4 toIndex:(void *)a5 summariesToCache:(void *)a6 handler:(_BYTE *)a7 stop:;
++ (id)sleepAnalysisQueryDescriptorForDateInterval:(id)interval options:(unint64_t)options;
++ (id)sleepTypesQueryDescriptorsForDateInterval:(id)interval options:(unint64_t)options;
+- (BOOL)enumerateWithError:(id *)error handler:(id)handler;
+- (HDSleepDaySummaryEnumerator)initWithProfile:(id)profile cachingSession:(id)session gregorianCalendar:(id)calendar morningIndexRange:(id)range ascending:(BOOL)ascending options:(unint64_t)options debugIdentifier:(id)identifier;
+- (id)_updatedBuilderForMorningIndex:(void *)index fromBuilders:(int)builders createIfNeeded:;
+- (uint64_t)_aggregationIntervalAdjustedMorningIndexFromMorningIndex:(void *)index;
+- (uint64_t)_enumerateSleepDaySummariesForMorningIndexRanges:(uint64_t)ranges summariesToCache:(void *)cache error:(void *)error handler:(void *)handler;
+- (void)_closeBuilders:(uint64_t)builders fromIndex:(uint64_t)index toIndex:(void *)toIndex summariesToCache:(void *)cache handler:(_BYTE *)handler stop:;
 @end
 
 @implementation HDSleepDaySummaryEnumerator
 
-- (HDSleepDaySummaryEnumerator)initWithProfile:(id)a3 cachingSession:(id)a4 gregorianCalendar:(id)a5 morningIndexRange:(id)a6 ascending:(BOOL)a7 options:(unint64_t)a8 debugIdentifier:(id)a9
+- (HDSleepDaySummaryEnumerator)initWithProfile:(id)profile cachingSession:(id)session gregorianCalendar:(id)calendar morningIndexRange:(id)range ascending:(BOOL)ascending options:(unint64_t)options debugIdentifier:(id)identifier
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v30 = a9;
+  var1 = range.var1;
+  var0 = range.var0;
+  profileCopy = profile;
+  sessionCopy = session;
+  calendarCopy = calendar;
+  identifierCopy = identifier;
   v31.receiver = self;
   v31.super_class = HDSleepDaySummaryEnumerator;
   v18 = [(HDSleepDaySummaryEnumerator *)&v31 init];
   v19 = v18;
   if (v18)
   {
-    v29 = v16;
-    objc_storeWeak(&v18->_profile, v15);
-    objc_storeStrong(&v19->_cachingSession, a4);
-    objc_storeStrong(&v19->_gregorianCalendar, a5);
+    v29 = sessionCopy;
+    objc_storeWeak(&v18->_profile, profileCopy);
+    objc_storeStrong(&v19->_cachingSession, session);
+    objc_storeStrong(&v19->_gregorianCalendar, calendar);
     v19->_morningIndexRange.start = var0;
     v19->_morningIndexRange.duration = var1;
-    v19->_ascending = a7;
-    v19->_options = a8;
-    objc_storeStrong(&v19->_debugIdentifier, a9);
-    v20 = [MEMORY[0x277CBEAB8] hk_componentsWithDayIndex:var0 calendar:v17];
-    v21 = [v20 date];
-    v22 = [v17 component:512 fromDate:v21];
+    v19->_ascending = ascending;
+    v19->_options = options;
+    objc_storeStrong(&v19->_debugIdentifier, identifier);
+    v20 = [MEMORY[0x277CBEAB8] hk_componentsWithDayIndex:var0 calendar:calendarCopy];
+    date = [v20 date];
+    v22 = [calendarCopy component:512 fromDate:date];
 
     v19->_cachedFirstDayOfWeek = var0 - v22 + 1;
     options = v19->_options;
     if ((options & 4) != 0 || (options & 0x18) == 0)
     {
-      v24 = [HDStatisticsCollectionCalculatorCachingSourceOrderProvider sleepSourceOrderProviderForProfile:v15, v16];
+      sessionCopy = [HDStatisticsCollectionCalculatorCachingSourceOrderProvider sleepSourceOrderProviderForProfile:profileCopy, sessionCopy];
     }
 
     else
     {
-      v24 = 0;
+      sessionCopy = 0;
     }
 
     sourceOrderProvider = v19->_sourceOrderProvider;
-    v19->_sourceOrderProvider = v24;
+    v19->_sourceOrderProvider = sessionCopy;
 
     v26 = objc_alloc_init(MEMORY[0x277CBEB38]);
     adjustedMorningIndexCache = v19->_adjustedMorningIndexCache;
     v19->_adjustedMorningIndexCache = v26;
 
-    v16 = v29;
+    sessionCopy = v29;
   }
 
   return v19;
 }
 
-- (BOOL)enumerateWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateWithError:(id *)error handler:(id)handler
 {
   v102 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v6 = MEMORY[0x277CCC320];
   v7 = *MEMORY[0x277CCC320];
@@ -98,12 +98,12 @@
 
   v19 = self->_cachingSession;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v21 = [WeakRetained daemon];
-  v22 = [v21 behavior];
-  v23 = [v22 supportsCachedSleepDaySummaryQueries];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  supportsCachedSleepDaySummaryQueries = [behavior supportsCachedSleepDaySummaryQueries];
   if (v19)
   {
-    v24 = v23;
+    v24 = supportsCachedSleepDaySummaryQueries;
   }
 
   else
@@ -134,9 +134,9 @@
   if (self->_morningIndexRange.start != *MEMORY[0x277CCBBF8] || self->_morningIndexRange.duration != *(MEMORY[0x277CCBBF8] + 8))
   {
     v36 = objc_loadWeakRetained(&self->_profile);
-    v37 = [v36 database];
+    database = [v36 database];
     v95 = 0;
-    v89 = [(HDHealthEntity *)HDSampleEntity maxRowIDForPredicate:0 healthDatabase:v37 error:&v95];
+    v89 = [(HDHealthEntity *)HDSampleEntity maxRowIDForPredicate:0 healthDatabase:database error:&v95];
     v38 = v95;
 
     if (!v89)
@@ -162,11 +162,11 @@
       v39 = v55;
       if (v55)
       {
-        if (a3)
+        if (error)
         {
           v56 = v55;
           v35 = 0;
-          *a3 = v39;
+          *error = v39;
         }
 
         else
@@ -209,7 +209,7 @@
       v62 = v19;
       v88 = v89;
       v63 = v39;
-      v64 = v5;
+      v64 = handlerCopy;
       v96[0] = 0;
       v96[1] = v96;
       v96[2] = 0x2020000000;
@@ -295,10 +295,10 @@ LABEL_52:
         v53 = v71;
         if (v71)
         {
-          if (a3)
+          if (error)
           {
             v72 = v71;
-            *a3 = v53;
+            *error = v53;
           }
 
           else
@@ -331,7 +331,7 @@ LABEL_49:
       }
 
       v93 = v41;
-      v47 = [(HDSleepDaySummaryEnumerator *)self _enumerateSleepDaySummariesForMorningIndexRanges:self->_morningIndexRange.duration summariesToCache:v39 error:&v93 handler:v5];
+      v47 = [(HDSleepDaySummaryEnumerator *)self _enumerateSleepDaySummariesForMorningIndexRanges:self->_morningIndexRange.duration summariesToCache:v39 error:&v93 handler:handlerCopy];
       v48 = v93;
 
       v41 = v48;
@@ -362,10 +362,10 @@ LABEL_49:
     v53 = v68;
     if (v68)
     {
-      if (a3)
+      if (error)
       {
         v69 = v68;
-        *a3 = v53;
+        *error = v53;
       }
 
       else
@@ -393,32 +393,32 @@ LABEL_49:
   }
 
 LABEL_14:
-  v35 = [(HDSleepDaySummaryEnumerator *)self _enumerateSleepDaySummariesForMorningIndexRanges:self->_morningIndexRange.duration summariesToCache:0 error:a3 handler:v5];
+  v35 = [(HDSleepDaySummaryEnumerator *)self _enumerateSleepDaySummariesForMorningIndexRanges:self->_morningIndexRange.duration summariesToCache:0 error:error handler:handlerCopy];
 LABEL_53:
 
   v73 = *MEMORY[0x277D85DE8];
   return v35;
 }
 
-- (uint64_t)_enumerateSleepDaySummariesForMorningIndexRanges:(uint64_t)a3 summariesToCache:(void *)a4 error:(void *)a5 handler:(void *)a6
+- (uint64_t)_enumerateSleepDaySummariesForMorningIndexRanges:(uint64_t)ranges summariesToCache:(void *)cache error:(void *)error handler:(void *)handler
 {
   v146 = *MEMORY[0x277D85DE8];
-  v110 = a4;
-  v111 = a6;
-  if (!a1)
+  cacheCopy = cache;
+  handlerCopy = handler;
+  if (!self)
   {
     v71 = 0;
     goto LABEL_97;
   }
 
   v109 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = *(a1 + 24);
-  v11 = a2 == *MEMORY[0x277CCBBF8] && a3 == *(MEMORY[0x277CCBBF8] + 8);
+  v10 = *(self + 24);
+  v11 = a2 == *MEMORY[0x277CCBBF8] && ranges == *(MEMORY[0x277CCBBF8] + 8);
   v12 = v11;
   v107 = v12;
-  v105 = a3;
+  rangesCopy = ranges;
   v106 = a2;
-  v117 = a1;
+  selfCopy = self;
   if (v11)
   {
     v13 = 0;
@@ -426,15 +426,15 @@ LABEL_53:
 
   else
   {
-    v14 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndexRange:a2 calendar:{a3, v10}];
+    v14 = [MEMORY[0x277CCA970] hk_sleepDayIntervalForMorningIndexRange:a2 calendar:{ranges, v10}];
     v15 = v14;
     if (v14)
     {
       v16 = objc_alloc(MEMORY[0x277CCA970]);
-      v17 = [v15 startDate];
-      v18 = [v17 dateByAddingTimeInterval:-172800.0];
-      v19 = [v15 endDate];
-      v13 = [v16 initWithStartDate:v18 endDate:v19];
+      startDate = [v15 startDate];
+      v18 = [startDate dateByAddingTimeInterval:-172800.0];
+      endDate = [v15 endDate];
+      v13 = [v16 initWithStartDate:v18 endDate:endDate];
     }
 
     else
@@ -442,29 +442,29 @@ LABEL_53:
       v13 = 0;
     }
 
-    a3 = v105;
+    ranges = rangesCopy;
     a2 = v106;
   }
 
   v20 = v13;
   v112 = v20;
-  if ((*(a1 + 56) & 2) != 0)
+  if ((*(self + 56) & 2) != 0)
   {
   }
 
   else
   {
     v113 = +[HDDataEntity hk_timeZoneEncodingOptions];
-    v115 = [v112 startDate];
-    v21 = a1;
-    v22 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    startDate2 = [v112 startDate];
+    selfCopy2 = self;
+    v22 = *(self + 80);
+    *(self + 80) = 0;
 
     v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v24 = *(a1 + 72);
-    *(a1 + 72) = v23;
+    v24 = *(self + 72);
+    *(self + 72) = v23;
 
-    if (v115)
+    if (startDate2)
     {
       v139 = 0u;
       v140 = 0u;
@@ -489,13 +489,13 @@ LABEL_53:
             }
 
             v32 = *(*(&v137 + 1) + 8 * v30);
-            v33 = [v32 integerValue];
-            WeakRetained = objc_loadWeakRetained((v117 + 8));
+            integerValue = [v32 integerValue];
+            WeakRetained = objc_loadWeakRetained((selfCopy + 8));
             v132 = v31;
-            v35 = [HDSleepScheduleEntity mostRecentSleepScheduleForWeekday:v33 beforeDate:v115 profile:WeakRetained encodingOptions:v113 error:&v132];
+            v35 = [HDSleepScheduleEntity mostRecentSleepScheduleForWeekday:integerValue beforeDate:startDate2 profile:WeakRetained encodingOptions:v113 error:&v132];
             v27 = v132;
 
-            [*(v117 + 72) setObject:v35 forKeyedSubscript:v32];
+            [*(selfCopy + 72) setObject:v35 forKeyedSubscript:v32];
             if (v35)
             {
               v36 = 1;
@@ -508,13 +508,13 @@ LABEL_53:
 
             if (!v36)
             {
-              v76 = *(v117 + 72);
-              *(v117 + 72) = 0;
+              v76 = *(selfCopy + 72);
+              *(selfCopy + 72) = 0;
 
-              if (a5)
+              if (error)
               {
                 v77 = v27;
-                *a5 = v27;
+                *error = v27;
               }
 
               else
@@ -540,17 +540,17 @@ LABEL_53:
         }
       }
 
-      v37 = [MEMORY[0x277CCD720] sleepDurationGoalType];
-      v38 = objc_loadWeakRetained((v117 + 8));
+      sleepDurationGoalType = [MEMORY[0x277CCD720] sleepDurationGoalType];
+      v38 = objc_loadWeakRetained((selfCopy + 8));
       v39 = HDSampleEntityPredicateForStartDate(3);
       v128 = v27;
-      v40 = [(HDSampleEntity *)HDQuantitySampleEntity mostRecentSampleWithType:v37 profile:v38 encodingOptions:v113 predicate:v39 anchor:0 error:&v128];
+      v40 = [(HDSampleEntity *)HDQuantitySampleEntity mostRecentSampleWithType:sleepDurationGoalType profile:v38 encodingOptions:v113 predicate:v39 anchor:0 error:&v128];
       v26 = v128;
 
-      v41 = *(v117 + 80);
-      *(v117 + 80) = v40;
+      v41 = *(selfCopy + 80);
+      *(selfCopy + 80) = v40;
 
-      if (!*(v117 + 72))
+      if (!*(selfCopy + 72))
       {
         v42 = v26;
         if (!v26)
@@ -565,10 +565,10 @@ LABEL_95:
         }
 
 LABEL_79:
-        if (a5)
+        if (error)
         {
           v93 = v42;
-          *a5 = v26;
+          *error = v26;
         }
 
         else
@@ -581,24 +581,24 @@ LABEL_79:
       }
 
       v42 = v26;
-      if (!*(v117 + 80) && v26)
+      if (!*(selfCopy + 80) && v26)
       {
         v43 = v26;
         goto LABEL_79;
       }
 
-      v21 = v117;
+      selfCopy2 = selfCopy;
     }
 
     v141 = 0;
-    v94 = objc_loadWeakRetained((v21 + 8));
-    v95 = [v94 userCharacteristicsManager];
+    v94 = objc_loadWeakRetained((selfCopy2 + 8));
+    userCharacteristicsManager = [v94 userCharacteristicsManager];
     v96 = [MEMORY[0x277CCD0D0] characteristicTypeForIdentifier:*MEMORY[0x277CCBB18]];
-    v97 = [v95 userCharacteristicForType:v96 error:&v141];
+    v97 = [userCharacteristicsManager userCharacteristicForType:v96 error:&v141];
 
     if (v97)
     {
-      v98 = [v97 hk_dayIndexByAddingYears:18 gregorianCalendar:*(v117 + 24)];
+      v98 = [v97 hk_dayIndexByAddingYears:18 gregorianCalendar:*(selfCopy + 24)];
     }
 
     else
@@ -607,15 +607,15 @@ LABEL_79:
     }
 
     v27 = v141;
-    v99 = *(v117 + 96);
-    *(v117 + 96) = v98;
+    v99 = *(selfCopy + 96);
+    *(selfCopy + 96) = v98;
 
-    if (!*(v117 + 96) && v27)
+    if (!*(selfCopy + 96) && v27)
     {
-      if (a5)
+      if (error)
       {
         v100 = v27;
-        *a5 = v27;
+        *error = v27;
       }
 
       else
@@ -626,9 +626,9 @@ LABEL_79:
       goto LABEL_95;
     }
 
-    a3 = v105;
+    ranges = rangesCopy;
     a2 = v106;
-    a1 = v117;
+    self = selfCopy;
   }
 
   v136 = 0;
@@ -637,13 +637,13 @@ LABEL_79:
   v138 = 0x2020000000uLL;
   if ((v107 & 1) == 0)
   {
-    v44 = a3 + a2 - 1;
-    if (a3 <= 0)
+    v44 = ranges + a2 - 1;
+    if (ranges <= 0)
     {
       v44 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (*(a1 + 48))
+    if (*(self + 48))
     {
       v45 = a2;
     }
@@ -653,7 +653,7 @@ LABEL_79:
       v45 = v44;
     }
 
-    v46 = [(HDSleepDaySummaryEnumerator *)a1 _aggregationIntervalAdjustedMorningIndexFromMorningIndex:v45];
+    v46 = [(HDSleepDaySummaryEnumerator *)self _aggregationIntervalAdjustedMorningIndexFromMorningIndex:v45];
     *(*(&v137 + 1) + 24) = v46;
   }
 
@@ -669,28 +669,28 @@ LABEL_79:
   v118[1] = 3221225472;
   v119 = __111__HDSleepDaySummaryEnumerator__enumerateSleepDaySummariesForMorningIndexRanges_summariesToCache_error_handler___block_invoke;
   v120 = &unk_2786171E0;
-  v121 = a1;
+  selfCopy3 = self;
   v116 = v109;
   v122 = v116;
   v125 = &v137;
   v126 = &v128;
-  v114 = v110;
+  v114 = cacheCopy;
   v123 = v114;
-  v103 = v111;
+  v103 = handlerCopy;
   v124 = v103;
   v127 = &v132;
   v47 = v112;
   v48 = v118;
-  if ((*(a1 + 56) & 2) == 0)
+  if ((*(self + 56) & 2) == 0)
   {
     v49 = v47;
-    v50 = [objc_opt_class() sleepTypesQueryDescriptorsForDateInterval:v49 options:{*(v117 + 56), v103}];
+    v50 = [objc_opt_class() sleepTypesQueryDescriptorsForDateInterval:v49 options:{*(selfCopy + 56), v103}];
 
-    v51 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:*MEMORY[0x277CCCD50] ascending:*(v117 + 48)];
+    v51 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:*MEMORY[0x277CCCD50] ascending:*(selfCopy + 48)];
     v52 = [HDMultiTypeSortedSampleIterator alloc];
     *buf = v51;
     v53 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:1];
-    v54 = objc_loadWeakRetained((v117 + 8));
+    v54 = objc_loadWeakRetained((selfCopy + 8));
     v55 = [(HDMultiTypeSortedSampleIterator *)v52 initWithQueryDescriptors:v50 includeDeletedObjects:0 anchor:0 sortDescriptors:v53 bufferSize:100 profile:v54];
 
     *buf = 0;
@@ -701,8 +701,8 @@ LABEL_79:
       while ((v136 & 1) == 0)
       {
         v57 = objc_autoreleasePoolPush();
-        v58 = [(HDMultiTypeSortedSampleIterator *)v55 sample];
-        v119(v48, v58, &v136);
+        sample = [(HDMultiTypeSortedSampleIterator *)v55 sample];
+        v119(v48, sample, &v136);
 
         objc_autoreleasePoolPop(v57);
         *buf = v56;
@@ -749,18 +749,18 @@ LABEL_59:
   v61 = *MEMORY[0x277CCBAB8];
   v62 = v47;
   v63 = [v60 categoryTypeForIdentifier:{v61, v103}];
-  v64 = [objc_opt_class() sleepAnalysisQueryDescriptorForDateInterval:v62 options:*(v117 + 56)];
+  v64 = [objc_opt_class() sleepAnalysisQueryDescriptorForDateInterval:v62 options:*(selfCopy + 56)];
 
-  v65 = objc_loadWeakRetained((v117 + 8));
+  v65 = objc_loadWeakRetained((selfCopy + 8));
   v66 = [HDSampleEntity entityEnumeratorWithType:v63 profile:v65];
 
-  v67 = [v64 samplePredicate];
-  [v66 setPredicate:v67];
+  samplePredicate = [v64 samplePredicate];
+  [v66 setPredicate:samplePredicate];
 
-  v68 = [v64 encodingOptions];
-  [v66 addEncodingOptionsFromDictionary:v68];
+  encodingOptions = [v64 encodingOptions];
+  [v66 addEncodingOptionsFromDictionary:encodingOptions];
 
-  v69 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"start_date" entityClass:objc_opt_class() ascending:*(v117 + 48)];
+  v69 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"start_date" entityClass:objc_opt_class() ascending:*(selfCopy + 48)];
   *buf = v69;
   v70 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:1];
   [v66 setOrderingTerms:v70];
@@ -799,10 +799,10 @@ LABEL_60:
     v90 = v89;
     if (v89)
     {
-      if (a5)
+      if (error)
       {
         v91 = v89;
-        *a5 = v90;
+        *error = v90;
       }
 
       else
@@ -819,7 +819,7 @@ LABEL_60:
   if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
   {
     v84 = objc_opt_class();
-    v85 = *(v117 + 64);
+    v85 = *(selfCopy + 64);
     v86 = v133[3];
     *buf = 138543874;
     *&buf[4] = v84;
@@ -841,15 +841,15 @@ LABEL_60:
     else
     {
       v88 = v106;
-      if (*(v117 + 48) == 1)
+      if (*(selfCopy + 48) == 1)
       {
-        if (v105 <= 0)
+        if (rangesCopy <= 0)
         {
           v92 = 0x7FFFFFFFFFFFFFFFLL;
           goto LABEL_77;
         }
 
-        v88 = v105 + v106 - 1;
+        v88 = rangesCopy + v106 - 1;
       }
     }
 
@@ -857,7 +857,7 @@ LABEL_60:
     if (v88)
     {
 LABEL_77:
-      [(HDSleepDaySummaryEnumerator *)v117 _closeBuilders:v116 fromIndex:*(*(&v137 + 1) + 24) toIndex:v92 summariesToCache:v114 handler:v104 stop:&v136];
+      [(HDSleepDaySummaryEnumerator *)selfCopy _closeBuilders:v116 fromIndex:*(*(&v137 + 1) + 24) toIndex:v92 summariesToCache:v114 handler:v104 stop:&v136];
     }
   }
 
@@ -873,19 +873,19 @@ LABEL_97:
   return v71;
 }
 
-- (uint64_t)_aggregationIntervalAdjustedMorningIndexFromMorningIndex:(void *)a1
+- (uint64_t)_aggregationIntervalAdjustedMorningIndexFromMorningIndex:(void *)index
 {
-  v2 = a2;
-  v4 = a1[14];
+  integerValue = a2;
+  v4 = index[14];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:a2];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (!v6)
   {
-    v7 = a1[7];
+    v7 = index[7];
     if ((v7 & 0x10) != 0)
     {
-      v8 = [MEMORY[0x277CBEAA8] hk_sleepMonthStartForMorningIndex:v2 calendar:a1[3]];
+      v8 = [MEMORY[0x277CBEAA8] hk_sleepMonthStartForMorningIndex:integerValue calendar:index[3]];
     }
 
     else
@@ -895,24 +895,24 @@ LABEL_97:
         goto LABEL_8;
       }
 
-      v8 = [MEMORY[0x277CBEAA8] hk_sleepWeekStartForMorningIndex:v2 calendar:a1[3]];
+      v8 = [MEMORY[0x277CBEAA8] hk_sleepWeekStartForMorningIndex:integerValue calendar:index[3]];
     }
 
     v9 = v8;
-    v10 = [v8 hk_morningIndexWithCalendar:a1[3]];
+    v10 = [v8 hk_morningIndexWithCalendar:index[3]];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
-    v12 = a1[14];
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:v2];
+    v12 = index[14];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
     [v12 setObject:v11 forKeyedSubscript:v13];
 
-    v2 = v10;
+    integerValue = v10;
     goto LABEL_8;
   }
 
-  v2 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 LABEL_8:
 
-  return v2;
+  return integerValue;
 }
 
 void __111__HDSleepDaySummaryEnumerator__enumerateSleepDaySummariesForMorningIndexRanges_summariesToCache_error_handler___block_invoke(void *a1, void *a2, _BYTE *a3)
@@ -1106,12 +1106,12 @@ LABEL_15:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_closeBuilders:(uint64_t)a3 fromIndex:(uint64_t)a4 toIndex:(void *)a5 summariesToCache:(void *)a6 handler:(_BYTE *)a7 stop:
+- (void)_closeBuilders:(uint64_t)builders fromIndex:(uint64_t)index toIndex:(void *)toIndex summariesToCache:(void *)cache handler:(_BYTE *)handler stop:
 {
   v76 = *MEMORY[0x277D85DE8];
   v65 = a2;
-  v63 = a5;
-  v62 = a6;
+  toIndexCopy = toIndex;
+  cacheCopy = cache;
   _HKInitializeLogging();
   v12 = MEMORY[0x277CCC320];
   v13 = *MEMORY[0x277CCC320];
@@ -1119,8 +1119,8 @@ LABEL_15:
   {
     v54 = v13;
     v55 = objc_opt_class();
-    v56 = *(a1 + 64);
-    v57 = *(a1 + 48);
+    v56 = *(self + 64);
+    v57 = *(self + 48);
     v58 = v55;
     v59 = HKStringFromBool();
     *buf = 138544386;
@@ -1129,22 +1129,22 @@ LABEL_15:
     v69 = v56;
     v12 = MEMORY[0x277CCC320];
     v70 = 2050;
-    v71 = a3;
+    buildersCopy4 = builders;
     v72 = 2050;
-    v73 = a4;
+    indexCopy = index;
     v74 = 2112;
     v75 = v59;
     _os_log_debug_impl(&dword_228986000, v54, OS_LOG_TYPE_DEBUG, "[%{public}@:%{public}@] Closing builders from %{public}ld to %{public}ld (ascending = %@)", buf, 0x34u);
   }
 
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v15 = a3 <= a4;
+    v15 = builders <= index;
   }
 
   else
   {
-    v15 = a3 >= a4;
+    v15 = builders >= index;
   }
 
   if (v15)
@@ -1153,20 +1153,20 @@ LABEL_15:
     v16 = *(MEMORY[0x277CCBBF8] + 8);
     *&v14 = 138543874;
     v60 = v14;
-    v61 = a4;
+    indexCopy2 = index;
     do
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = *(a1 + 32);
-      v20 = *(a1 + 40);
+      v19 = *(self + 32);
+      v20 = *(self + 40);
       v21 = v19 == v17 && v20 == v16;
-      if (v21 || ((v22 = __OFSUB__(a3, v19), v23 = a3 - v19, v23 < 0 == v22) ? (v24 = v23 < v20) : (v24 = 0), v24))
+      if (v21 || ((v22 = __OFSUB__(builders, v19), v23 = builders - v19, v23 < 0 == v22) ? (v24 = v23 < v20) : (v24 = 0), v24))
       {
-        v33 = *(a1 + 56);
+        v33 = *(self + 56);
         if ((v33 & 0x10) != 0)
         {
-          v39 = [(HDSleepDaySummaryEnumerator *)a1 _aggregationIntervalAdjustedMorningIndexFromMorningIndex:a3];
-          if (a3 == v39)
+          v39 = [(HDSleepDaySummaryEnumerator *)self _aggregationIntervalAdjustedMorningIndexFromMorningIndex:builders];
+          if (builders == v39)
           {
             goto LABEL_24;
           }
@@ -1178,15 +1178,15 @@ LABEL_15:
           {
             v26 = v47;
             v48 = objc_opt_class();
-            v49 = *(a1 + 64);
+            v49 = *(self + 64);
             *buf = 138544130;
             v67 = v48;
             v68 = 2114;
             v69 = v49;
             v70 = 2050;
-            v71 = a3;
+            buildersCopy4 = builders;
             v72 = 2050;
-            v73 = v46;
+            indexCopy = v46;
             v29 = v48;
             v30 = v26;
             v31 = "[%{public}@:%{public}@] Aggregating monthly! Skipping day index %{public}ld because it's beyond start of month index %{public}ld";
@@ -1199,31 +1199,31 @@ LABEL_30:
 
         else
         {
-          if ((v33 & 8) == 0 || (v34 = [(HDSleepDaySummaryEnumerator *)a1 _aggregationIntervalAdjustedMorningIndexFromMorningIndex:a3], a3 == v34))
+          if ((v33 & 8) == 0 || (v34 = [(HDSleepDaySummaryEnumerator *)self _aggregationIntervalAdjustedMorningIndexFromMorningIndex:builders], builders == v34))
           {
 LABEL_24:
             v40 = v16;
             v41 = v17;
-            v42 = [(HDSleepDaySummaryEnumerator *)a1 _updatedBuilderForMorningIndex:a3 fromBuilders:v65 createIfNeeded:(*(a1 + 56) & 1) == 0];
+            v42 = [(HDSleepDaySummaryEnumerator *)self _updatedBuilderForMorningIndex:builders fromBuilders:v65 createIfNeeded:(*(self + 56) & 1) == 0];
             v43 = v42;
             if (v42)
             {
-              v44 = [v42 createDaySummary];
-              v45 = [v44 periods];
-              if ([v45 count])
+              createDaySummary = [v42 createDaySummary];
+              periods = [createDaySummary periods];
+              if ([periods count])
               {
 
 LABEL_32:
-                v62[2](v62, v44, a7);
-                if (v63)
+                cacheCopy[2](cacheCopy, createDaySummary, handler);
+                if (toIndexCopy)
                 {
-                  [v63 addObject:v44];
+                  [toIndexCopy addObject:createDaySummary];
                 }
 
-                v51 = [MEMORY[0x277CCABB0] numberWithInteger:{a3, v60}];
+                v51 = [MEMORY[0x277CCABB0] numberWithInteger:{builders, v60}];
                 [v65 setObject:0 forKeyedSubscript:v51];
 
-                if (*a7)
+                if (*handler)
                 {
 
                   objc_autoreleasePoolPop(v18);
@@ -1233,7 +1233,7 @@ LABEL_32:
 
               else
               {
-                v50 = *(a1 + 56);
+                v50 = *(self + 56);
 
                 if ((v50 & 1) == 0)
                 {
@@ -1241,7 +1241,7 @@ LABEL_32:
                 }
               }
 
-              a4 = v61;
+              index = indexCopy2;
               v12 = MEMORY[0x277CCC320];
             }
 
@@ -1257,15 +1257,15 @@ LABEL_32:
           {
             v26 = v36;
             v37 = objc_opt_class();
-            v38 = *(a1 + 64);
+            v38 = *(self + 64);
             *buf = 138544130;
             v67 = v37;
             v68 = 2114;
             v69 = v38;
             v70 = 2050;
-            v71 = a3;
+            buildersCopy4 = builders;
             v72 = 2050;
-            v73 = v35;
+            indexCopy = v35;
             v29 = v37;
             v30 = v26;
             v31 = "[%{public}@:%{public}@] Aggregating weekly! Skipping day index %{public}ld because it's beyond start of week index %{public}ld";
@@ -1282,13 +1282,13 @@ LABEL_32:
         {
           v26 = v25;
           v27 = objc_opt_class();
-          v28 = *(a1 + 64);
+          v28 = *(self + 64);
           *buf = v60;
           v67 = v27;
           v68 = 2114;
           v69 = v28;
           v70 = 2050;
-          v71 = a3;
+          buildersCopy4 = builders;
           v29 = v27;
           v30 = v26;
           v31 = "[%{public}@:%{public}@] Skipping index out of range for morning index %{public}ld";
@@ -1299,24 +1299,24 @@ LABEL_32:
 
 LABEL_37:
       objc_autoreleasePoolPop(v18);
-      if (*(a1 + 48))
+      if (*(self + 48))
       {
-        ++a3;
+        ++builders;
       }
 
       else
       {
-        --a3;
+        --builders;
       }
 
-      if (*(a1 + 48))
+      if (*(self + 48))
       {
-        v52 = a3 <= a4;
+        v52 = builders <= index;
       }
 
       else
       {
-        v52 = a3 >= a4;
+        v52 = builders >= index;
       }
     }
 
@@ -1493,14 +1493,14 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
   return 1;
 }
 
-- (id)_updatedBuilderForMorningIndex:(void *)a3 fromBuilders:(int)a4 createIfNeeded:
+- (id)_updatedBuilderForMorningIndex:(void *)index fromBuilders:(int)builders createIfNeeded:
 {
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(HDSleepDaySummaryEnumerator *)a1 _aggregationIntervalAdjustedMorningIndexFromMorningIndex:a2];
+  indexCopy = index;
+  v8 = [(HDSleepDaySummaryEnumerator *)self _aggregationIntervalAdjustedMorningIndexFromMorningIndex:a2];
   v9 = 0x277CCA000uLL;
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
-  v11 = [v7 objectForKeyedSubscript:v10];
+  v11 = [indexCopy objectForKeyedSubscript:v10];
 
   if (v11)
   {
@@ -1509,7 +1509,7 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
 
   else
   {
-    v12 = a4 == 0;
+    v12 = builders == 0;
   }
 
   if (!v12)
@@ -1520,7 +1520,7 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
     {
       v42 = v13;
       v43 = objc_opt_class();
-      v44 = *(a1 + 64);
+      v44 = *(self + 64);
       *buf = 138543874;
       *&buf[4] = v43;
       *&buf[12] = 2114;
@@ -1531,52 +1531,52 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
       _os_log_debug_impl(&dword_228986000, v42, OS_LOG_TYPE_DEBUG, "[%{public}@:%{public}@] Creating builder for morning index %{public}ld", buf, 0x20u);
     }
 
-    v14 = v8 - *(a1 + 88) + *MEMORY[0x277CCBC00];
+    v14 = v8 - *(self + 88) + *MEMORY[0x277CCBC00];
     v15 = HKSleepScheduleWeekdayFromWeekdayComponent();
-    v16 = *(a1 + 56);
+    v16 = *(self + 56);
     v17 = (v16 >> 5) & 2 | (v16 >> 2) & 1 | (v16 >> 4) & 8;
     if ((v16 & 2) == 0 || ([MEMORY[0x277CCDD30] sharedBehavior], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "features"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "timeInBedTracking"), v19, v18, v20))
     {
       v17 |= 4uLL;
     }
 
-    v21 = *(a1 + 56);
+    v21 = *(self + 56);
     if ((v21 & 0x10) != 0)
     {
       v25 = [HDSleepIntervalSummaryBuilder alloc];
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v26 = [MEMORY[0x277CBEAA8] hk_noonWithDayIndex:v8 calendar:*(a1 + 24)];
-      [*(a1 + 24) rangeOfUnit:16 inUnit:8 forDate:v26];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      v26 = [MEMORY[0x277CBEAA8] hk_noonWithDayIndex:v8 calendar:*(self + 24)];
+      [*(self + 24) rangeOfUnit:16 inUnit:8 forDate:v26];
       v28 = v27;
 
-      v29 = *(a1 + 24);
+      v29 = *(self + 24);
       v30 = v28;
       v9 = 0x277CCA000;
-      v24 = [(HDSleepDaySummaryBuilder *)v25 initWithProfile:WeakRetained dayIndexRange:v8 weekday:v30 options:v15 eighteenthBirthdayDayIndex:v17 gregorianCalendar:*(a1 + 96) sourceOrderProvider:v29, *(a1 + 104), *buf, *&buf[16], v51];
+      v24 = [(HDSleepDaySummaryBuilder *)v25 initWithProfile:WeakRetained dayIndexRange:v8 weekday:v30 options:v15 eighteenthBirthdayDayIndex:v17 gregorianCalendar:*(self + 96) sourceOrderProvider:v29, *(self + 104), *buf, *&buf[16], v51];
     }
 
     else if ((v21 & 8) != 0)
     {
       v31 = [HDSleepIntervalSummaryBuilder alloc];
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v32 = *(a1 + 24);
-      v24 = [(HDSleepDaySummaryBuilder *)v31 initWithProfile:WeakRetained dayIndexRange:v8 weekday:7 options:v15 eighteenthBirthdayDayIndex:v17 gregorianCalendar:*(a1 + 96) sourceOrderProvider:v32, *(a1 + 104), *buf, *&buf[16], v51];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      v32 = *(self + 24);
+      v24 = [(HDSleepDaySummaryBuilder *)v31 initWithProfile:WeakRetained dayIndexRange:v8 weekday:7 options:v15 eighteenthBirthdayDayIndex:v17 gregorianCalendar:*(self + 96) sourceOrderProvider:v32, *(self + 104), *buf, *&buf[16], v51];
     }
 
     else
     {
       v22 = [HDSleepDaySummaryBuilder alloc];
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v24 = [(HDSleepDaySummaryBuilder *)v22 initWithProfile:WeakRetained morningIndex:v8 weekday:v15 options:v17 eighteenthBirthdayDayIndex:*(a1 + 96) gregorianCalendar:*(a1 + 24) sourceOrderProvider:*(a1 + 104)];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      v24 = [(HDSleepDaySummaryBuilder *)v22 initWithProfile:WeakRetained morningIndex:v8 weekday:v15 options:v17 eighteenthBirthdayDayIndex:*(self + 96) gregorianCalendar:*(self + 24) sourceOrderProvider:*(self + 104)];
     }
 
     v11 = v24;
 
     v33 = [*(v9 + 2992) numberWithInteger:v8];
-    [v7 setObject:v11 forKeyedSubscript:v33];
+    [indexCopy setObject:v11 forKeyedSubscript:v33];
   }
 
-  if (v11 && (*(a1 + 56) & 2) == 0)
+  if (v11 && (*(self + 56) & 2) == 0)
   {
     _HKInitializeLogging();
     v34 = *MEMORY[0x277CCC320];
@@ -1584,7 +1584,7 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
     {
       v46 = v34;
       v47 = objc_opt_class();
-      v48 = *(a1 + 64);
+      v48 = *(self + 64);
       *buf = 138543874;
       *&buf[4] = v47;
       *&buf[12] = 2114;
@@ -1595,9 +1595,9 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
       _os_log_debug_impl(&dword_228986000, v46, OS_LOG_TYPE_DEBUG, "[%{public}@:%{public}@] Updating builder with schedule and goal for morning index %{public}ld", buf, 0x20u);
     }
 
-    v35 = a2 - *(a1 + 88) + *MEMORY[0x277CCBC00];
+    v35 = a2 - *(self + 88) + *MEMORY[0x277CCBC00];
     v36 = HKSleepScheduleWeekdayFromWeekdayComponent();
-    v37 = *(a1 + 72);
+    v37 = *(self + 72);
     v38 = [*(v9 + 2992) numberWithUnsignedInteger:v36];
     v39 = [v37 objectForKeyedSubscript:v38];
 
@@ -1606,7 +1606,7 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
       [v11 addOrderedSample:v39];
     }
 
-    if (*(a1 + 80))
+    if (*(self + 80))
     {
       [v11 addOrderedSample:?];
     }
@@ -1617,22 +1617,22 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
   return v11;
 }
 
-+ (id)sleepAnalysisQueryDescriptorForDateInterval:(id)a3 options:(unint64_t)a4
++ (id)sleepAnalysisQueryDescriptorForDateInterval:(id)interval options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v21[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intervalCopy = interval;
   v6 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBAB8]];
   v7 = [&unk_283CAE800 hk_map:&__block_literal_global_33];
   v8 = [MEMORY[0x277D10B20] predicateMatchingAnyPredicates:v7];
   v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v8, 0}];
-  if (v5)
+  if (intervalCopy)
   {
-    v10 = HDSampleEntityPredicateForDateInterval(v5, v6);
+    v10 = HDSampleEntityPredicateForDateInterval(intervalCopy, v6);
     [v9 addObject:v10];
   }
 
-  if ((v4 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
     v11 = HDDataEntityPredicateForObjectsFromAppleWatchSources(1);
     [v9 addObject:v11];
@@ -1653,17 +1653,17 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
   return v18;
 }
 
-+ (id)sleepTypesQueryDescriptorsForDateInterval:(id)a3 options:(unint64_t)a4
++ (id)sleepTypesQueryDescriptorsForDateInterval:(id)interval options:(unint64_t)options
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  intervalCopy = interval;
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
-  v8 = [a1 sleepAnalysisQueryDescriptorForDateInterval:v6 options:a4];
+  v8 = [self sleepAnalysisQueryDescriptorForDateInterval:intervalCopy options:options];
   v20[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v10 = [v7 initWithArray:v9];
 
-  if ((a4 & 2) == 0)
+  if ((options & 2) == 0)
   {
     v11 = [MEMORY[0x277CCD8D8] dataTypeWithCode:198];
     v19[0] = v11;
@@ -1675,7 +1675,7 @@ uint64_t __89__HDSleepDaySummaryEnumerator__enumerateSleepSamplesWithDateInterva
     v17[1] = 3221225472;
     v17[2] = __81__HDSleepDaySummaryEnumerator_sleepTypesQueryDescriptorsForDateInterval_options___block_invoke;
     v17[3] = &unk_278617278;
-    v18 = v6;
+    v18 = intervalCopy;
     v14 = [v13 hk_map:v17];
     [v10 addObjectsFromArray:v14];
   }

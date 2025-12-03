@@ -1,22 +1,22 @@
 @interface PRPosterDescriptorGalleryOptions
-+ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)a3;
-+ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)a3 galleryPresentationStyle:(unint64_t)a4;
-+ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)a3 galleryPresentationStyle:(unint64_t)a4 galleryDisplayStyle:(unint64_t)a5;
-+ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)a3 galleryPresentationStyle:(unint64_t)a4 galleryDisplayStyle:(unint64_t)a5 preferredTitleStyle:(id)a6;
-+ (id)galleryOptionsFromDictionaryRepresentation:(id)a3;
-- (PRPosterDescriptorGalleryOptions)initWithAssetLookupInfo:(id)a3 galleryPresentationStyle:(unint64_t)a4 galleryDisplayStyle:(unint64_t)a5 preferredTitleStyle:(id)a6;
-- (PRPosterDescriptorGalleryOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)info;
++ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)info galleryPresentationStyle:(unint64_t)style;
++ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)info galleryPresentationStyle:(unint64_t)style galleryDisplayStyle:(unint64_t)displayStyle;
++ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)info galleryPresentationStyle:(unint64_t)style galleryDisplayStyle:(unint64_t)displayStyle preferredTitleStyle:(id)titleStyle;
++ (id)galleryOptionsFromDictionaryRepresentation:(id)representation;
+- (PRPosterDescriptorGalleryOptions)initWithAssetLookupInfo:(id)info galleryPresentationStyle:(unint64_t)style galleryDisplayStyle:(unint64_t)displayStyle preferredTitleStyle:(id)titleStyle;
+- (PRPosterDescriptorGalleryOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterDescriptorGalleryOptions
 
-+ (id)galleryOptionsFromDictionaryRepresentation:(id)a3
++ (id)galleryOptionsFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"presentationStyle"];
-  v5 = [v3 objectForKeyedSubscript:@"displayStyle"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKeyedSubscript:@"presentationStyle"];
+  v5 = [representationCopy objectForKeyedSubscript:@"displayStyle"];
 
   v6 = PRPosterGalleryPresentationStyleFromString(v4);
   v7 = PRPosterGalleryDisplayStyleFromString(v5);
@@ -27,14 +27,14 @@
   return v10;
 }
 
-+ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)a3
++ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = [PRPosterDescriptorGalleryOptions alloc];
   v5 = v4;
-  if (v3)
+  if (infoCopy)
   {
-    v6 = [(PRPosterDescriptorGalleryOptions *)v4 initWithAssetLookupInfo:v3 galleryPresentationStyle:0 galleryDisplayStyle:0 preferredTitleStyle:0];
+    v6 = [(PRPosterDescriptorGalleryOptions *)v4 initWithAssetLookupInfo:infoCopy galleryPresentationStyle:0 galleryDisplayStyle:0 preferredTitleStyle:0];
   }
 
   else
@@ -46,47 +46,47 @@
   return v6;
 }
 
-+ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)a3 galleryPresentationStyle:(unint64_t)a4
++ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)info galleryPresentationStyle:(unint64_t)style
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = [PRPosterDescriptorGalleryOptions alloc];
   v7 = v6;
-  if (v5)
+  if (infoCopy)
   {
-    v8 = [(PRPosterDescriptorGalleryOptions *)v6 initWithAssetLookupInfo:v5 galleryPresentationStyle:a4 galleryDisplayStyle:0 preferredTitleStyle:0];
+    v8 = [(PRPosterDescriptorGalleryOptions *)v6 initWithAssetLookupInfo:infoCopy galleryPresentationStyle:style galleryDisplayStyle:0 preferredTitleStyle:0];
   }
 
   else
   {
     v9 = +[PRPosterDescriptorGalleryAssetLookupInfo defaultLookupInfo];
-    v8 = [(PRPosterDescriptorGalleryOptions *)v7 initWithAssetLookupInfo:v9 galleryPresentationStyle:a4 galleryDisplayStyle:0 preferredTitleStyle:0];
+    v8 = [(PRPosterDescriptorGalleryOptions *)v7 initWithAssetLookupInfo:v9 galleryPresentationStyle:style galleryDisplayStyle:0 preferredTitleStyle:0];
   }
 
   return v8;
 }
 
-+ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)a3 galleryPresentationStyle:(unint64_t)a4 galleryDisplayStyle:(unint64_t)a5
++ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)info galleryPresentationStyle:(unint64_t)style galleryDisplayStyle:(unint64_t)displayStyle
 {
-  v7 = a3;
-  v8 = [[PRPosterDescriptorGalleryOptions alloc] initWithAssetLookupInfo:v7 galleryPresentationStyle:a4 galleryDisplayStyle:a5 preferredTitleStyle:0];
+  infoCopy = info;
+  v8 = [[PRPosterDescriptorGalleryOptions alloc] initWithAssetLookupInfo:infoCopy galleryPresentationStyle:style galleryDisplayStyle:displayStyle preferredTitleStyle:0];
 
   return v8;
 }
 
-+ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)a3 galleryPresentationStyle:(unint64_t)a4 galleryDisplayStyle:(unint64_t)a5 preferredTitleStyle:(id)a6
++ (PRPosterDescriptorGalleryOptions)galleryOptionsWithAssetLookupInfo:(id)info galleryPresentationStyle:(unint64_t)style galleryDisplayStyle:(unint64_t)displayStyle preferredTitleStyle:(id)titleStyle
 {
-  v9 = a6;
-  v10 = a3;
-  v11 = [[PRPosterDescriptorGalleryOptions alloc] initWithAssetLookupInfo:v10 galleryPresentationStyle:a4 galleryDisplayStyle:a5 preferredTitleStyle:v9];
+  titleStyleCopy = titleStyle;
+  infoCopy = info;
+  v11 = [[PRPosterDescriptorGalleryOptions alloc] initWithAssetLookupInfo:infoCopy galleryPresentationStyle:style galleryDisplayStyle:displayStyle preferredTitleStyle:titleStyleCopy];
 
   return v11;
 }
 
-- (PRPosterDescriptorGalleryOptions)initWithAssetLookupInfo:(id)a3 galleryPresentationStyle:(unint64_t)a4 galleryDisplayStyle:(unint64_t)a5 preferredTitleStyle:(id)a6
+- (PRPosterDescriptorGalleryOptions)initWithAssetLookupInfo:(id)info galleryPresentationStyle:(unint64_t)style galleryDisplayStyle:(unint64_t)displayStyle preferredTitleStyle:(id)titleStyle
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = v11;
+  infoCopy = info;
+  titleStyleCopy = titleStyle;
+  v13 = infoCopy;
   NSClassFromString(&cfstr_Prposterdescri_5.isa);
   if (!v13)
   {
@@ -98,7 +98,7 @@
     [PRPosterDescriptorGalleryOptions initWithAssetLookupInfo:a2 galleryPresentationStyle:? galleryDisplayStyle:? preferredTitleStyle:?];
   }
 
-  if (a4 >= 2)
+  if (style >= 2)
   {
     [PRPosterDescriptorGalleryOptions initWithAssetLookupInfo:a2 galleryPresentationStyle:? galleryDisplayStyle:? preferredTitleStyle:?];
   }
@@ -112,9 +112,9 @@
     galleryAssetLookupInfo = v14->_galleryAssetLookupInfo;
     v14->_galleryAssetLookupInfo = v15;
 
-    v14->_presentationStyle = a4;
-    v14->_displayStyle = a5;
-    v17 = [v12 copy];
+    v14->_presentationStyle = style;
+    v14->_displayStyle = displayStyle;
+    v17 = [titleStyleCopy copy];
     preferredTitleStyle = v14->_preferredTitleStyle;
     v14->_preferredTitleStyle = v17;
   }
@@ -122,33 +122,33 @@
   return v14;
 }
 
-- (PRPosterDescriptorGalleryOptions)initWithCoder:(id)a3
+- (PRPosterDescriptorGalleryOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"galleryAssetLookupInfo"];
-  v7 = [v4 decodeIntegerForKey:@"presentationStyle"];
-  v8 = [v4 decodeIntegerForKey:@"displayStyle"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"galleryAssetLookupInfo"];
+  v7 = [coderCopy decodeIntegerForKey:@"presentationStyle"];
+  v8 = [coderCopy decodeIntegerForKey:@"displayStyle"];
   v9 = objc_opt_self();
-  v10 = [v4 decodeObjectOfClass:v9 forKey:@"preferredTitleStyle"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"preferredTitleStyle"];
 
   v11 = [(PRPosterDescriptorGalleryOptions *)self initWithAssetLookupInfo:v6 galleryPresentationStyle:v7 galleryDisplayStyle:v8 preferredTitleStyle:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   galleryAssetLookupInfo = self->_galleryAssetLookupInfo;
-  v5 = a3;
-  [v5 encodeObject:galleryAssetLookupInfo forKey:@"galleryAssetLookupInfo"];
-  [v5 encodeInteger:self->_presentationStyle forKey:@"presentationStyle"];
-  [v5 encodeInteger:self->_displayStyle forKey:@"displayStyle"];
-  [v5 encodeObject:self->_preferredTitleStyle forKey:@"preferredTitleStyle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:galleryAssetLookupInfo forKey:@"galleryAssetLookupInfo"];
+  [coderCopy encodeInteger:self->_presentationStyle forKey:@"presentationStyle"];
+  [coderCopy encodeInteger:self->_displayStyle forKey:@"displayStyle"];
+  [coderCopy encodeObject:self->_preferredTitleStyle forKey:@"preferredTitleStyle"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   galleryAssetLookupInfo = self->_galleryAssetLookupInfo;
   presentationStyle = self->_presentationStyle;
   displayStyle = self->_displayStyle;

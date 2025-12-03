@@ -1,40 +1,40 @@
 @interface ARSessionMetricsFrameProperties
-- (ARSessionMetricsFrameProperties)initWithFrame:(id)a3;
+- (ARSessionMetricsFrameProperties)initWithFrame:(id)frame;
 @end
 
 @implementation ARSessionMetricsFrameProperties
 
-- (ARSessionMetricsFrameProperties)initWithFrame:(id)a3
+- (ARSessionMetricsFrameProperties)initWithFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v19.receiver = self;
   v19.super_class = ARSessionMetricsFrameProperties;
   v5 = [(ARSessionMetricsFrameProperties *)&v19 init];
   if (v5)
   {
-    v6 = [v4 camera];
+    camera = [frameCopy camera];
     camera = v5->_camera;
-    v5->_camera = v6;
+    v5->_camera = camera;
 
-    v8 = [v4 worldTrackingState];
+    worldTrackingState = [frameCopy worldTrackingState];
     worldTrackingState = v5->_worldTrackingState;
-    v5->_worldTrackingState = v8;
+    v5->_worldTrackingState = worldTrackingState;
 
-    v10 = [v4 anchors];
+    anchors = [frameCopy anchors];
     anchors = v5->_anchors;
-    v5->_anchors = v10;
+    v5->_anchors = anchors;
 
-    v12 = [v4 geoTrackingStatus];
+    geoTrackingStatus = [frameCopy geoTrackingStatus];
     geoTrackingStatus = v5->_geoTrackingStatus;
-    v5->_geoTrackingStatus = v12;
+    v5->_geoTrackingStatus = geoTrackingStatus;
 
-    v14 = [v4 location];
+    location = [frameCopy location];
     location = v5->_location;
-    v5->_location = v14;
+    v5->_location = location;
 
-    v16 = [v4 vlState];
+    vlState = [frameCopy vlState];
     vlState = v5->_vlState;
-    v5->_vlState = v16;
+    v5->_vlState = vlState;
   }
 
   return v5;

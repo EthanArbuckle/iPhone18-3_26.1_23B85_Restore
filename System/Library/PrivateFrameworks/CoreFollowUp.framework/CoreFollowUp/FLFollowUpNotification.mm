@@ -1,16 +1,16 @@
 @interface FLFollowUpNotification
-- (BOOL)_shouldDeliverNotificationWithStringOut:(id *)a3;
+- (BOOL)_shouldDeliverNotificationWithStringOut:(id *)out;
 - (FLFollowUpNotification)init;
-- (FLFollowUpNotification)initWithCoder:(id)a3;
+- (FLFollowUpNotification)initWithCoder:(id)coder;
 - (double)_creationDateAugmentedRepeatTimer;
 - (double)_frequencyDelta;
 - (id)_optionsData;
 - (id)description;
 - (void)_optionsData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)recalculateActionDateToAccountForDelay;
-- (void)setForceDelivery:(BOOL)a3;
-- (void)set_optionsData:(id)a3;
+- (void)setForceDelivery:(BOOL)delivery;
+- (void)set_optionsData:(id)data;
 @end
 
 @implementation FLFollowUpNotification
@@ -22,9 +22,9 @@
   v2 = [(FLFollowUpNotification *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v2->_creationDate;
-    v2->_creationDate = v3;
+    v2->_creationDate = date;
 
     v5 = +[FLFollowUpNotification defaultOptions];
     options = v2->_options;
@@ -34,76 +34,76 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"_title"];
-  [v5 encodeObject:self->_informativeText forKey:@"_informativeText"];
-  [v5 encodeObject:self->_subtitleText forKey:@"_subtitleText"];
-  [v5 encodeObject:self->_unlockActionLabel forKey:@"_unlockActionLabel"];
-  [v5 encodeObject:self->_previousNotificationActionDate forKey:@"_previousNotificationActionDate"];
-  [v5 encodeObject:self->_creationDate forKey:@"_creationDate"];
-  [v5 encodeObject:self->_activateAction forKey:@"_activateAction"];
-  [v5 encodeObject:self->_dismissAction forKey:@"_dismissAction"];
-  [v5 encodeObject:self->_clearAction forKey:@"_clearAction"];
-  [v5 encodeDouble:@"_frequency" forKey:self->_frequency];
-  [v5 encodeInteger:self->_sqlID forKey:@"_sqlID"];
-  [v5 encodeDouble:@"_firstNotificationDelay" forKey:self->_firstNotificationDelay];
-  [v5 encodeObject:self->_options forKey:@"_options"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"_title"];
+  [coderCopy encodeObject:self->_informativeText forKey:@"_informativeText"];
+  [coderCopy encodeObject:self->_subtitleText forKey:@"_subtitleText"];
+  [coderCopy encodeObject:self->_unlockActionLabel forKey:@"_unlockActionLabel"];
+  [coderCopy encodeObject:self->_previousNotificationActionDate forKey:@"_previousNotificationActionDate"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"_creationDate"];
+  [coderCopy encodeObject:self->_activateAction forKey:@"_activateAction"];
+  [coderCopy encodeObject:self->_dismissAction forKey:@"_dismissAction"];
+  [coderCopy encodeObject:self->_clearAction forKey:@"_clearAction"];
+  [coderCopy encodeDouble:@"_frequency" forKey:self->_frequency];
+  [coderCopy encodeInteger:self->_sqlID forKey:@"_sqlID"];
+  [coderCopy encodeDouble:@"_firstNotificationDelay" forKey:self->_firstNotificationDelay];
+  [coderCopy encodeObject:self->_options forKey:@"_options"];
 }
 
-- (FLFollowUpNotification)initWithCoder:(id)a3
+- (FLFollowUpNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FLFollowUpNotification *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_informativeText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_informativeText"];
     informativeText = v5->_informativeText;
     v5->_informativeText = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_subtitleText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_subtitleText"];
     subtitleText = v5->_subtitleText;
     v5->_subtitleText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_unlockActionLabel"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_unlockActionLabel"];
     unlockActionLabel = v5->_unlockActionLabel;
     v5->_unlockActionLabel = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_previousNotificationActionDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_previousNotificationActionDate"];
     previousNotificationActionDate = v5->_previousNotificationActionDate;
     v5->_previousNotificationActionDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_creationDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_activateAction"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_activateAction"];
     activateAction = v5->_activateAction;
     v5->_activateAction = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dismissAction"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dismissAction"];
     dismissAction = v5->_dismissAction;
     v5->_dismissAction = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clearAction"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clearAction"];
     clearAction = v5->_clearAction;
     v5->_clearAction = v22;
 
-    [v4 decodeDoubleForKey:@"_frequency"];
+    [coderCopy decodeDoubleForKey:@"_frequency"];
     v5->_frequency = v24;
-    v5->_sqlID = [v4 decodeIntegerForKey:@"_sqlID"];
-    [v4 decodeDoubleForKey:@"_firstNotificationDelay"];
+    v5->_sqlID = [coderCopy decodeIntegerForKey:@"_sqlID"];
+    [coderCopy decodeDoubleForKey:@"_firstNotificationDelay"];
     v5->_firstNotificationDelay = v25;
     v26 = MEMORY[0x277CBEB98];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"_options"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"_options"];
     options = v5->_options;
     v5->_options = v29;
   }
@@ -111,7 +111,7 @@
   return v5;
 }
 
-- (BOOL)_shouldDeliverNotificationWithStringOut:(id *)a3
+- (BOOL)_shouldDeliverNotificationWithStringOut:(id *)out
 {
   [(FLFollowUpNotification *)self _frequencyDelta];
   v6 = v5;
@@ -120,7 +120,7 @@
   v9 = v7 > 0.0 && (v6 >= v7 || self->_previousNotificationActionDate == 0);
   v10 = v7 == 0.0 && self->_previousNotificationActionDate == 0;
   v11 = [(NSSet *)self->_options containsObject:@"force"]|| v10 || v9;
-  if (a3)
+  if (out)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = [MEMORY[0x277CCABB0] numberWithBool:v11 & 1];
@@ -128,17 +128,17 @@
     v15 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:self->_firstNotificationDelay];
-    *a3 = objc_msgSend(v12, "stringWithFormat:", @"Delivery State: %@ (force = %@, delta = %@, repeat = %@, delay = %@"), v13, v14, v15, v16, v17;
+    *out = objc_msgSend(v12, "stringWithFormat:", @"Delivery State: %@ (force = %@, delta = %@, repeat = %@, delay = %@"), v13, v14, v15, v16, v17;
   }
 
   return v11 & 1;
 }
 
-- (void)setForceDelivery:(BOOL)a3
+- (void)setForceDelivery:(BOOL)delivery
 {
   v14 = *MEMORY[0x277D85DE8];
   options = self->_options;
-  if (a3)
+  if (delivery)
   {
     v5 = [(NSSet *)options setByAddingObject:@"force"];
     v6 = self->_options;
@@ -168,18 +168,18 @@
 
 - (id)_optionsData
 {
-  v3 = [(FLFollowUpNotification *)self options];
+  options = [(FLFollowUpNotification *)self options];
 
-  if (v3)
+  if (options)
   {
     v4 = MEMORY[0x277CCAC58];
-    v5 = [(FLFollowUpNotification *)self options];
-    v6 = [v5 allObjects];
+    options2 = [(FLFollowUpNotification *)self options];
+    allObjects = [options2 allObjects];
     v10 = 0;
-    v3 = [v4 dataWithPropertyList:v6 format:200 options:0 error:&v10];
+    options = [v4 dataWithPropertyList:allObjects format:200 options:0 error:&v10];
     v7 = v10;
 
-    if (!v3)
+    if (!options)
     {
       v8 = _FLLogSystem();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -189,22 +189,22 @@
     }
   }
 
-  return v3;
+  return options;
 }
 
-- (void)set_optionsData:(id)a3
+- (void)set_optionsData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v9 = 0;
-    v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:&v9];
+    v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:&v9];
     v5 = v9;
     v6 = [MEMORY[0x277CBEB98] setWithArray:v4];
     [(FLFollowUpNotification *)self setOptions:v6];
 
-    v7 = [(FLFollowUpNotification *)self options];
+    options = [(FLFollowUpNotification *)self options];
 
-    if (!v7)
+    if (!options)
     {
       v8 = _FLLogSystem();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -222,8 +222,8 @@
     return 0.0;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_previousNotificationActionDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_previousNotificationActionDate];
   v5 = v4;
 
   return v5;
@@ -254,9 +254,9 @@
       frequency = self->_frequency;
       if (frequency > 0.0)
       {
-        v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:firstNotificationDelay - frequency];
+        frequency = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:firstNotificationDelay - frequency];
         previousNotificationActionDate = self->_previousNotificationActionDate;
-        self->_previousNotificationActionDate = v5;
+        self->_previousNotificationActionDate = frequency;
 
         v7 = _FLLogSystem();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

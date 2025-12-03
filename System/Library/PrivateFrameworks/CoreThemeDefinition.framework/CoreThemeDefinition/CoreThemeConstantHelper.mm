@@ -1,5 +1,5 @@
 @interface CoreThemeConstantHelper
-+ (id)helperForStructAtIndex:(int64_t)a3 inAssociatedGlobalList:(void *)a4;
++ (id)helperForStructAtIndex:(int64_t)index inAssociatedGlobalList:(void *)list;
 - (id)description;
 - (void)dealloc;
 @end
@@ -20,20 +20,20 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - identifier: %ld, constantName: %@, displayName: %@", -[CoreThemeConstantHelper description](&v3, sel_description), self->_identifier, self->_label, self->_displayName];
 }
 
-+ (id)helperForStructAtIndex:(int64_t)a3 inAssociatedGlobalList:(void *)a4
++ (id)helperForStructAtIndex:(int64_t)index inAssociatedGlobalList:(void *)list
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v7 = v6;
-  if (a4 == MEMORY[0x277D02798])
+  if (list == MEMORY[0x277D02798])
   {
-    v10 = (MEMORY[0x277D02798] + 32 * a3);
+    v10 = (MEMORY[0x277D02798] + 32 * index);
     goto LABEL_34;
   }
 
   v8 = MEMORY[0x277D02778];
-  if (a4 == MEMORY[0x277D02778] || (v8 = MEMORY[0x277D027D0], a4 == MEMORY[0x277D027D0]) || (v8 = MEMORY[0x277D027B8], a4 == MEMORY[0x277D027B8]) || (v8 = MEMORY[0x277D027C8], a4 == MEMORY[0x277D027C8]) || (v8 = MEMORY[0x277D02800], a4 == MEMORY[0x277D02800]) || (v8 = MEMORY[0x277D02788], a4 == MEMORY[0x277D02788]))
+  if (list == MEMORY[0x277D02778] || (v8 = MEMORY[0x277D027D0], list == MEMORY[0x277D027D0]) || (v8 = MEMORY[0x277D027B8], list == MEMORY[0x277D027B8]) || (v8 = MEMORY[0x277D027C8], list == MEMORY[0x277D027C8]) || (v8 = MEMORY[0x277D02800], list == MEMORY[0x277D02800]) || (v8 = MEMORY[0x277D02788], list == MEMORY[0x277D02788]))
   {
-    v10 = (v8 + 24 * a3);
+    v10 = (v8 + 24 * index);
 LABEL_34:
     if (!*(v10 + 1))
     {
@@ -44,17 +44,17 @@ LABEL_34:
     goto LABEL_36;
   }
 
-  if (a4 == MEMORY[0x277D02808] || a4 == MEMORY[0x277D02818] || a4 == MEMORY[0x277D02810] || a4 == MEMORY[0x277D027E8] || a4 == MEMORY[0x277D027E0] || a4 == MEMORY[0x277D027F0] || a4 == MEMORY[0x277D02768] || a4 == MEMORY[0x277D02770] || a4 == MEMORY[0x277D02780] || a4 == MEMORY[0x277D027A0] || a4 == MEMORY[0x277D027D8] || a4 == MEMORY[0x277D027F8] || a4 == MEMORY[0x277D02738] || a4 == MEMORY[0x277D02740] || a4 == MEMORY[0x277D027C0] || a4 == MEMORY[0x277D027B0] || a4 == MEMORY[0x277D02750] || a4 == MEMORY[0x277D02748] || a4 == MEMORY[0x277D02728] || a4 == MEMORY[0x277D02758])
+  if (list == MEMORY[0x277D02808] || list == MEMORY[0x277D02818] || list == MEMORY[0x277D02810] || list == MEMORY[0x277D027E8] || list == MEMORY[0x277D027E0] || list == MEMORY[0x277D027F0] || list == MEMORY[0x277D02768] || list == MEMORY[0x277D02770] || list == MEMORY[0x277D02780] || list == MEMORY[0x277D027A0] || list == MEMORY[0x277D027D8] || list == MEMORY[0x277D027F8] || list == MEMORY[0x277D02738] || list == MEMORY[0x277D02740] || list == MEMORY[0x277D027C0] || list == MEMORY[0x277D027B0] || list == MEMORY[0x277D02750] || list == MEMORY[0x277D02748] || list == MEMORY[0x277D02728] || list == MEMORY[0x277D02758])
   {
-    v10 = (a4 + 24 * a3);
+    v10 = (list + 24 * index);
     goto LABEL_34;
   }
 
-  if (a4 != gThemeIterationTypes)
+  if (list != gThemeIterationTypes)
   {
-    if (a4 == MEMORY[0x277D02760])
+    if (list == MEMORY[0x277D02760])
     {
-      v13 = (MEMORY[0x277D02760] + 24 * a3);
+      v13 = (MEMORY[0x277D02760] + 24 * index);
       v14 = v13[1];
       if (v14)
       {
@@ -70,13 +70,13 @@ LABEL_45:
 
     else
     {
-      if (a4 != &gSchemaCategories)
+      if (list != &gSchemaCategories)
       {
 
         return 0;
       }
 
-      v17 = [objc_msgSend(MEMORY[0x277D026E0] schemaForPlatform:{0), "elementCategoryAtIndex:", a3}];
+      v17 = [objc_msgSend(MEMORY[0x277D026E0] schemaForPlatform:{0), "elementCategoryAtIndex:", index}];
       if (v17[1])
       {
         v18 = v17;
@@ -94,7 +94,7 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v10 = &gThemeIterationTypes[6 * a3];
+  v10 = &gThemeIterationTypes[6 * index];
   if (!*(v10 + 1))
   {
     goto LABEL_46;

@@ -1,66 +1,66 @@
 @interface TADeviceRecord
-+ (id)notificationInternalStateToString:(unint64_t)a3;
-+ (unint64_t)_convertTANotificationStateToTANotificationInternalState:(unint64_t)a3;
-- (BOOL)hasStagedImmediateDetections:(id)a3;
-- (BOOL)hasSurfacedNotificationFor:(id)a3;
-- (BOOL)isAISFetchSuccessful:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKnownDevice:(id)a3;
++ (id)notificationInternalStateToString:(unint64_t)string;
++ (unint64_t)_convertTANotificationStateToTANotificationInternalState:(unint64_t)state;
+- (BOOL)hasStagedImmediateDetections:(id)detections;
+- (BOOL)hasSurfacedNotificationFor:(id)for;
+- (BOOL)isAISFetchSuccessful:(id)successful;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKnownDevice:(id)device;
 - (TADeviceRecord)init;
-- (TADeviceRecord)initWithCoder:(id)a3;
-- (TADeviceRecord)initWithSettings:(id)a3;
+- (TADeviceRecord)initWithCoder:(id)coder;
+- (TADeviceRecord)initWithSettings:(id)settings;
 - (TAStoreRequestProtocol)delegate;
-- (id)_determineFirstObservationDateWithTASuspiciousDevice:(id)a3;
-- (id)_determineHELEKeepInStagingUntil:(id)a3;
-- (id)_determineKeepInStagingUntil:(id)a3;
-- (id)_getDeviceRecord:(id)a3;
-- (id)_getDeviceRecordWithUUID:(id)a3;
-- (id)createTAOutgoingRequestForUnstagingUpdateFor:(id)a3 withCurrentDate:(id)a4;
-- (id)createTAOutgoingRequestWithExpiringTASingleDeviceRecord:(id)a3 withCurrentDate:(id)a4;
+- (id)_determineFirstObservationDateWithTASuspiciousDevice:(id)device;
+- (id)_determineHELEKeepInStagingUntil:(id)until;
+- (id)_determineKeepInStagingUntil:(id)until;
+- (id)_getDeviceRecord:(id)record;
+- (id)_getDeviceRecordWithUUID:(id)d;
+- (id)createTAOutgoingRequestForUnstagingUpdateFor:(id)for withCurrentDate:(id)date;
+- (id)createTAOutgoingRequestWithExpiringTASingleDeviceRecord:(id)record withCurrentDate:(id)date;
 - (id)description;
 - (id)descriptionDictionary;
-- (id)getAccessoryInfo:(id)a3;
+- (id)getAccessoryInfo:(id)info;
 - (id)getDetectionResultsToPush;
-- (id)getDeviceUUID:(id)a3;
-- (id)getFirstStagedDetectionDate:(id)a3;
-- (id)getLatestAdvertisement:(id)a3;
-- (id)getLatestBeepOnMoveDate:(id)a3;
-- (id)getUnknownBeacon:(id)a3;
-- (id)limitSuspiciousDevicesSentToObservers:(id)a3 forDailyMaximum:(unint64_t)a4;
-- (unint64_t)getAISFetchState:(id)a3;
-- (unint64_t)getDeviceNotificationState:(id)a3;
-- (unint64_t)getDeviceOwnershipType:(id)a3;
-- (unint64_t)getDeviceType:(id)a3;
-- (unint64_t)getNumOfAISFetch:(id)a3;
-- (unint64_t)getNumStagedDetections:(id)a3;
-- (unint64_t)getNumSurfacedAlerts:(id)a3;
-- (void)_beepOnMoveForceAlertIfEligableForDeviceRecord:(id)a3 andAdvertisment:(id)a4;
-- (void)_clearStagedDetectionsForDevice:(id)a3;
-- (void)_createRecordIfNecessaryWithAdvertisement:(id)a3 withDate:(id)a4;
-- (void)_didSurfaceNotificationFor:(id)a3;
-- (void)_performNotificationStateTransitionActionsForDevice:(id)a3 from:(unint64_t)a4 to:(unint64_t)a5;
-- (void)_processAISFetchSuccess:(id)a3 andAppendOutgoingRequestsTo:(id)a4;
-- (void)_processPlaySoundSuccess:(id)a3 andAppendOutgoingRequestsTo:(id)a4;
-- (void)_setDevice:(id)a3 withExternalState:(unint64_t)a4 withDate:(id)a5;
-- (void)_setDevice:(id)a3 withInternalState:(unint64_t)a4 withDate:(id)a5;
-- (void)_setDevice:(id)a3 withType:(unint64_t)a4 withDate:(id)a5;
-- (void)_updateAISStateOnNotificationStateChange:(id)a3 from:(unint64_t)a4 to:(unint64_t)a5;
-- (void)_updateAdvertisement:(id)a3 andAppendOutgoingRequestsTo:(id)a4;
-- (void)_updateKeepInStagingUntil:(id)a3;
-- (void)checkForScanRequestsWithClock:(id)a3 andAppendOutgoingRequestsTo:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)forceStagedDetectionsToSurfaceImmediatelyWithAdvertisement:(id)a3 withReason:(unint64_t)a4;
-- (void)forceUpdateAISFetchState:(id)a3 state:(unint64_t)a4;
-- (void)ingestTAEvent:(id)a3 andAppendOutgoingRequestsTo:(id)a4;
+- (id)getDeviceUUID:(id)d;
+- (id)getFirstStagedDetectionDate:(id)date;
+- (id)getLatestAdvertisement:(id)advertisement;
+- (id)getLatestBeepOnMoveDate:(id)date;
+- (id)getUnknownBeacon:(id)beacon;
+- (id)limitSuspiciousDevicesSentToObservers:(id)observers forDailyMaximum:(unint64_t)maximum;
+- (unint64_t)getAISFetchState:(id)state;
+- (unint64_t)getDeviceNotificationState:(id)state;
+- (unint64_t)getDeviceOwnershipType:(id)type;
+- (unint64_t)getDeviceType:(id)type;
+- (unint64_t)getNumOfAISFetch:(id)fetch;
+- (unint64_t)getNumStagedDetections:(id)detections;
+- (unint64_t)getNumSurfacedAlerts:(id)alerts;
+- (void)_beepOnMoveForceAlertIfEligableForDeviceRecord:(id)record andAdvertisment:(id)advertisment;
+- (void)_clearStagedDetectionsForDevice:(id)device;
+- (void)_createRecordIfNecessaryWithAdvertisement:(id)advertisement withDate:(id)date;
+- (void)_didSurfaceNotificationFor:(id)for;
+- (void)_performNotificationStateTransitionActionsForDevice:(id)device from:(unint64_t)from to:(unint64_t)to;
+- (void)_processAISFetchSuccess:(id)success andAppendOutgoingRequestsTo:(id)to;
+- (void)_processPlaySoundSuccess:(id)success andAppendOutgoingRequestsTo:(id)to;
+- (void)_setDevice:(id)device withExternalState:(unint64_t)state withDate:(id)date;
+- (void)_setDevice:(id)device withInternalState:(unint64_t)state withDate:(id)date;
+- (void)_setDevice:(id)device withType:(unint64_t)type withDate:(id)date;
+- (void)_updateAISStateOnNotificationStateChange:(id)change from:(unint64_t)from to:(unint64_t)to;
+- (void)_updateAdvertisement:(id)advertisement andAppendOutgoingRequestsTo:(id)to;
+- (void)_updateKeepInStagingUntil:(id)until;
+- (void)checkForScanRequestsWithClock:(id)clock andAppendOutgoingRequestsTo:(id)to;
+- (void)encodeWithCoder:(id)coder;
+- (void)forceStagedDetectionsToSurfaceImmediatelyWithAdvertisement:(id)advertisement withReason:(unint64_t)reason;
+- (void)forceUpdateAISFetchState:(id)state state:(unint64_t)a4;
+- (void)ingestTAEvent:(id)event andAppendOutgoingRequestsTo:(id)to;
 - (void)logDeviceRecord;
-- (void)mergeWithAnotherDeviceRecord:(id)a3;
-- (void)processBackgroundDetection:(id)a3;
-- (void)processSurfacedAlerts:(id)a3;
-- (void)purgeWithClock:(id)a3 andAppendOutgoingRequestsTo:(id)a4;
-- (void)removeDevice:(id)a3;
-- (void)requestAISFetchIfNeeded:(id)a3;
-- (void)stageDetectionResults:(id)a3;
-- (void)updateDeviceRecordOnSessionChange:(id)a3 WithCurrentDate:(id)a4;
+- (void)mergeWithAnotherDeviceRecord:(id)record;
+- (void)processBackgroundDetection:(id)detection;
+- (void)processSurfacedAlerts:(id)alerts;
+- (void)purgeWithClock:(id)clock andAppendOutgoingRequestsTo:(id)to;
+- (void)removeDevice:(id)device;
+- (void)requestAISFetchIfNeeded:(id)needed;
+- (void)stageDetectionResults:(id)results;
+- (void)updateDeviceRecordOnSessionChange:(id)change WithCurrentDate:(id)date;
 @end
 
 @implementation TADeviceRecord
@@ -90,8 +90,8 @@
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v9, v14];
-        v11 = [v10 getDetectionsReadyToPushAndCheckForAISFetch];
-        [v3 addObjectsFromArray:v11];
+        getDetectionsReadyToPushAndCheckForAISFetch = [v10 getDetectionsReadyToPushAndCheckForAISFetch];
+        [v3 addObjectsFromArray:getDetectionsReadyToPushAndCheckForAISFetch];
 
         [(TADeviceRecord *)self requestAISFetchIfNeeded:v9];
       }
@@ -115,9 +115,9 @@
   return v4;
 }
 
-- (TADeviceRecord)initWithSettings:(id)a3
+- (TADeviceRecord)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v16.receiver = self;
   v16.super_class = TADeviceRecord;
   v6 = [(TADeviceRecord *)&v16 init];
@@ -127,15 +127,15 @@
     deviceRecord = v6->_deviceRecord;
     v6->_deviceRecord = v7;
 
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastPurgeDate = v6->_lastPurgeDate;
-    v6->_lastPurgeDate = v9;
+    v6->_lastPurgeDate = distantPast;
 
-    v11 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
     lastScanAttemptDate = v6->_lastScanAttemptDate;
-    v6->_lastScanAttemptDate = v11;
+    v6->_lastScanAttemptDate = distantPast2;
 
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     deviceUUIDToAddress = v6->_deviceUUIDToAddress;
     v6->_deviceUUIDToAddress = v13;
@@ -144,27 +144,27 @@
   return v6;
 }
 
-+ (id)notificationInternalStateToString:(unint64_t)a3
++ (id)notificationInternalStateToString:(unint64_t)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_279DD1ED0[a3];
+    return off_279DD1ED0[string];
   }
 }
 
-- (id)_getDeviceRecord:(id)a3
+- (id)_getDeviceRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
+  recordCopy = record;
+  v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:recordCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:recordCopy];
   }
 
   else
@@ -175,14 +175,14 @@
   return v6;
 }
 
-- (id)_getDeviceRecordWithUUID:(id)a3
+- (id)_getDeviceRecordWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_deviceUUIDToAddress objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_deviceUUIDToAddress objectForKeyedSubscript:dCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_deviceUUIDToAddress objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_deviceUUIDToAddress objectForKeyedSubscript:dCopy];
     v7 = [(TADeviceRecord *)self _getDeviceRecord:v6];
     v8 = v7;
     if (v7)
@@ -199,92 +199,92 @@
   return v8;
 }
 
-- (unint64_t)getDeviceOwnershipType:(id)a3
+- (unint64_t)getDeviceOwnershipType:(id)type
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 type];
+    type = [v3 type];
   }
 
   else
   {
-    v5 = 0;
+    type = 0;
   }
 
-  return v5;
+  return type;
 }
 
-- (unint64_t)getDeviceNotificationState:(id)a3
+- (unint64_t)getDeviceNotificationState:(id)state
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:state];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 state];
+    state = [v3 state];
   }
 
   else
   {
-    v5 = 0;
+    state = 0;
   }
 
-  return v5;
+  return state;
 }
 
-- (unint64_t)getNumSurfacedAlerts:(id)a3
+- (unint64_t)getNumSurfacedAlerts:(id)alerts
 {
-  v4 = a3;
-  v5 = [v4 latestAdvertisement];
-  v6 = [v4 date];
-  [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:v5 withDate:v6];
+  alertsCopy = alerts;
+  latestAdvertisement = [alertsCopy latestAdvertisement];
+  date = [alertsCopy date];
+  [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:latestAdvertisement withDate:date];
 
-  v7 = [v4 address];
+  address = [alertsCopy address];
 
-  v8 = [(TADeviceRecord *)self _getDeviceRecord:v7];
+  v8 = [(TADeviceRecord *)self _getDeviceRecord:address];
 
-  v9 = [v8 numSurfacedAlerts];
-  return v9;
+  numSurfacedAlerts = [v8 numSurfacedAlerts];
+  return numSurfacedAlerts;
 }
 
-- (id)getLatestAdvertisement:(id)a3
+- (id)getLatestAdvertisement:(id)advertisement
 {
-  v3 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:advertisement];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 latestAdvertisement];
+    latestAdvertisement = [v3 latestAdvertisement];
   }
 
   else
   {
-    v5 = 0;
+    latestAdvertisement = 0;
   }
 
-  return v5;
+  return latestAdvertisement;
 }
 
-- (unint64_t)getAISFetchState:(id)a3
+- (unint64_t)getAISFetchState:(id)state
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:state];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 AISFetchState];
+    aISFetchState = [v3 AISFetchState];
   }
 
   else
   {
-    v5 = 0;
+    aISFetchState = 0;
   }
 
-  return v5;
+  return aISFetchState;
 }
 
-- (void)forceUpdateAISFetchState:(id)a3 state:(unint64_t)a4
+- (void)forceUpdateAISFetchState:(id)state state:(unint64_t)a4
 {
-  v5 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v5 = [(TADeviceRecord *)self _getDeviceRecord:state];
   if (v5)
   {
     v6 = v5;
@@ -293,49 +293,49 @@
   }
 }
 
-- (id)getDeviceUUID:(id)a3
+- (id)getDeviceUUID:(id)d
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 uuid];
+    uuid = [v3 uuid];
   }
 
   else
   {
-    v5 = 0;
+    uuid = 0;
   }
 
-  return v5;
+  return uuid;
 }
 
-- (id)getUnknownBeacon:(id)a3
+- (id)getUnknownBeacon:(id)beacon
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  beaconCopy = beacon;
+  if (beaconCopy)
   {
-    v5 = [(TADeviceRecord *)self _getDeviceRecordWithUUID:v4];
+    v5 = [(TADeviceRecord *)self _getDeviceRecordWithUUID:beaconCopy];
     if (v5)
     {
       v6 = [TAUnknownBeacon instancesRespondToSelector:NSSelectorFromString(&cfstr_Initwithbeacon.isa)];
       v7 = [TAUnknownBeacon alloc];
-      v8 = [v5 uuid];
-      v9 = [v5 address];
-      v10 = [v5 getDeviceType];
-      v11 = [v5 accessoryInfo];
+      uuid = [v5 uuid];
+      address = [v5 address];
+      getDeviceType = [v5 getDeviceType];
+      accessoryInfo = [v5 accessoryInfo];
       if (v6)
       {
-        v12 = [v5 latestAdvertisement];
-        v13 = [v12 isPosh];
-        v14 = [v5 latestAdvertisement];
-        v15 = -[TAUnknownBeacon initWithBeaconUUID:address:deviceType:withAccessoryInfo:isPoshAccessory:isFindMyNetwork:](v7, "initWithBeaconUUID:address:deviceType:withAccessoryInfo:isPoshAccessory:isFindMyNetwork:", v8, v9, v10, v11, v13, [v14 isApple]);
+        latestAdvertisement = [v5 latestAdvertisement];
+        isPosh = [latestAdvertisement isPosh];
+        latestAdvertisement2 = [v5 latestAdvertisement];
+        v15 = -[TAUnknownBeacon initWithBeaconUUID:address:deviceType:withAccessoryInfo:isPoshAccessory:isFindMyNetwork:](v7, "initWithBeaconUUID:address:deviceType:withAccessoryInfo:isPoshAccessory:isFindMyNetwork:", uuid, address, getDeviceType, accessoryInfo, isPosh, [latestAdvertisement2 isApple]);
       }
 
       else
       {
-        v15 = [(TAUnknownBeacon *)v7 initWithBeaconUUID:v8 address:v9 deviceType:v10 withAccessoryInfo:v11];
+        v15 = [(TAUnknownBeacon *)v7 initWithBeaconUUID:uuid address:address deviceType:getDeviceType withAccessoryInfo:accessoryInfo];
       }
     }
 
@@ -375,52 +375,52 @@
   return v15;
 }
 
-+ (unint64_t)_convertTANotificationStateToTANotificationInternalState:(unint64_t)a3
++ (unint64_t)_convertTANotificationStateToTANotificationInternalState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-- (void)_createRecordIfNecessaryWithAdvertisement:(id)a3 withDate:(id)a4
+- (void)_createRecordIfNecessaryWithAdvertisement:(id)advertisement withDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  advertisementCopy = advertisement;
+  dateCopy = date;
+  if (advertisementCopy)
   {
     deviceRecord = self->_deviceRecord;
-    v9 = [v6 address];
-    v10 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:v9];
+    address = [advertisementCopy address];
+    v10 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:address];
 
-    if (v7)
+    if (dateCopy)
     {
       if (!v10)
       {
         v11 = TAStatusLog;
         if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
         {
-          [TADeviceRecord _createRecordIfNecessaryWithAdvertisement:v11 withDate:v6];
+          [TADeviceRecord _createRecordIfNecessaryWithAdvertisement:v11 withDate:advertisementCopy];
         }
 
         v12 = [TASingleDeviceRecord alloc];
         [(TADeviceRecordSettings *)self->_settings keepAliveInterval];
-        v13 = [(TASingleDeviceRecord *)v12 initWithDeviceAdvertisement:v6 state:0 type:0 date:v7 keepAliveInterval:?];
+        v13 = [(TASingleDeviceRecord *)v12 initWithDeviceAdvertisement:advertisementCopy state:0 type:0 date:dateCopy keepAliveInterval:?];
         if (v13)
         {
           v14 = self->_deviceRecord;
-          v15 = [v6 address];
-          [(NSMutableDictionary *)v14 setObject:v13 forKey:v15];
+          address2 = [advertisementCopy address];
+          [(NSMutableDictionary *)v14 setObject:v13 forKey:address2];
 
           deviceUUIDToAddress = self->_deviceUUIDToAddress;
-          v17 = [v6 address];
-          v18 = [(TASingleDeviceRecord *)v13 uuid];
-          [(NSMutableDictionary *)deviceUUIDToAddress setObject:v17 forKey:v18];
+          address3 = [advertisementCopy address];
+          uuid = [(TASingleDeviceRecord *)v13 uuid];
+          [(NSMutableDictionary *)deviceUUIDToAddress setObject:address3 forKey:uuid];
         }
 
         else
@@ -436,48 +436,48 @@
   }
 }
 
-- (void)_setDevice:(id)a3 withType:(unint64_t)a4 withDate:(id)a5
+- (void)_setDevice:(id)device withType:(unint64_t)type withDate:(id)date
 {
-  if (a4 && a3 && a5)
+  if (type && device && date)
   {
-    v8 = a3;
-    [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:v8 withDate:a5];
+    deviceCopy = device;
+    [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:deviceCopy withDate:date];
     deviceRecord = self->_deviceRecord;
-    v11 = [v8 address];
+    address = [deviceCopy address];
 
-    v10 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:v11];
-    [v10 setType:a4];
+    v10 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:address];
+    [v10 setType:type];
   }
 }
 
-- (void)_setDevice:(id)a3 withExternalState:(unint64_t)a4 withDate:(id)a5
+- (void)_setDevice:(id)device withExternalState:(unint64_t)state withDate:(id)date
 {
-  v8 = a5;
-  v9 = a3;
-  [(TADeviceRecord *)self _setDevice:v9 withInternalState:[TADeviceRecord withDate:"_convertTANotificationStateToTANotificationInternalState:" _convertTANotificationStateToTANotificationInternalState:a4], v8];
+  dateCopy = date;
+  deviceCopy = device;
+  [(TADeviceRecord *)self _setDevice:deviceCopy withInternalState:[TADeviceRecord withDate:"_convertTANotificationStateToTANotificationInternalState:" _convertTANotificationStateToTANotificationInternalState:state], dateCopy];
 }
 
-- (void)_setDevice:(id)a3 withInternalState:(unint64_t)a4 withDate:(id)a5
+- (void)_setDevice:(id)device withInternalState:(unint64_t)state withDate:(id)date
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!a4 || !v8 || !v9)
+  deviceCopy = device;
+  dateCopy = date;
+  v10 = dateCopy;
+  if (!state || !deviceCopy || !dateCopy)
   {
     goto LABEL_39;
   }
 
-  [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:v8 withDate:v9];
-  v11 = [v8 address];
-  v12 = [(TADeviceRecord *)self getDeviceNotificationState:v11];
+  [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:deviceCopy withDate:dateCopy];
+  address = [deviceCopy address];
+  v12 = [(TADeviceRecord *)self getDeviceNotificationState:address];
 
   if (v12 > 1)
   {
     switch(v12)
     {
       case 2:
-        if (a4 - 1 >= 4)
+        if (state - 1 >= 4)
         {
           if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
           {
@@ -487,11 +487,11 @@
           goto LABEL_31;
         }
 
-        v15 = (a4 - 1) & 0xF;
+        v15 = (state - 1) & 0xF;
         v16 = 8;
         goto LABEL_22;
       case 3:
-        if (a4 - 1 >= 4)
+        if (state - 1 >= 4)
         {
           if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
           {
@@ -501,12 +501,12 @@
           goto LABEL_31;
         }
 
-        v15 = (a4 - 1) & 0xF;
+        v15 = (state - 1) & 0xF;
         v16 = 11;
         goto LABEL_22;
       case 4:
-        v13 = a4 - 1;
-        if (a4 - 1 >= 4)
+        v13 = state - 1;
+        if (state - 1 >= 4)
         {
           if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
           {
@@ -526,8 +526,8 @@ LABEL_31:
 
   if (!v12)
   {
-    v13 = a4 - 1;
-    if (a4 - 1 >= 4)
+    v13 = state - 1;
+    if (state - 1 >= 4)
     {
       if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
       {
@@ -557,8 +557,8 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  LOBYTE(v14) = a4 - 1;
-  if (a4 - 1 >= 4)
+  LOBYTE(v14) = state - 1;
+  if (state - 1 >= 4)
   {
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
     {
@@ -572,7 +572,7 @@ LABEL_32:
   v18 = TAStatusLog;
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = self;
+    selfCopy = self;
     v19 = v10;
     if (v14)
     {
@@ -585,17 +585,17 @@ LABEL_32:
     }
 
     v21 = v18;
-    v22 = [v8 address];
-    v23 = [v22 hexString];
+    address2 = [deviceCopy address];
+    hexString = [address2 hexString];
     [TADeviceRecord notificationInternalStateToString:v12];
     v24 = v33 = v12;
-    v25 = [TADeviceRecord notificationInternalStateToString:a4];
+    v25 = [TADeviceRecord notificationInternalStateToString:state];
     *buf = 136315907;
     v35 = v20;
     v10 = v19;
-    self = v32;
+    self = selfCopy;
     v36 = 2113;
-    v37 = v23;
+    v37 = hexString;
     v38 = 2114;
     v39 = v24;
     v40 = 2114;
@@ -607,16 +607,16 @@ LABEL_32:
 
   if (v14)
   {
-    v26 = [v8 address];
-    [(TADeviceRecord *)self _performNotificationStateTransitionActionsForDevice:v26 from:v12 to:a4];
+    address3 = [deviceCopy address];
+    [(TADeviceRecord *)self _performNotificationStateTransitionActionsForDevice:address3 from:v12 to:state];
 
-    v27 = [v8 address];
-    [(TADeviceRecord *)self _updateAISStateOnNotificationStateChange:v27 from:v12 to:a4];
+    address4 = [deviceCopy address];
+    [(TADeviceRecord *)self _updateAISStateOnNotificationStateChange:address4 from:v12 to:state];
 
     deviceRecord = self->_deviceRecord;
-    v29 = [v8 address];
-    v30 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:v29];
-    [v30 setState:a4];
+    address5 = [deviceCopy address];
+    v30 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:address5];
+    [v30 setState:state];
   }
 
 LABEL_39:
@@ -624,18 +624,18 @@ LABEL_39:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAISStateOnNotificationStateChange:(id)a3 from:(unint64_t)a4 to:(unint64_t)a5
+- (void)_updateAISStateOnNotificationStateChange:(id)change from:(unint64_t)from to:(unint64_t)to
 {
-  v8 = a3;
-  if (a4 - 1 < 2)
+  changeCopy = change;
+  if (from - 1 < 2)
   {
-    if (a5 == 4)
+    if (to == 4)
     {
-      v17 = v8;
-      v12 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v8];
-      v13 = [v12 AISFetchState];
+      v17 = changeCopy;
+      v12 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:changeCopy];
+      aISFetchState = [v12 AISFetchState];
 
-      if (v13 == 8 || v13 == 4)
+      if (aISFetchState == 8 || aISFetchState == 4)
       {
         v15 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v17];
         [v15 setAISFetchState:0];
@@ -643,13 +643,13 @@ LABEL_39:
     }
   }
 
-  else if ((!a4 || a4 == 4) && a5 == 3)
+  else if ((!from || from == 4) && to == 3)
   {
-    v16 = v8;
-    v9 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v8];
-    v10 = [v9 AISFetchState];
+    v16 = changeCopy;
+    v9 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:changeCopy];
+    aISFetchState2 = [v9 AISFetchState];
 
-    if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 0)
+    if ((aISFetchState2 & 0xFFFFFFFFFFFFFFFBLL) == 0)
     {
       v11 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v16];
       [v11 setAISFetchState:1];
@@ -661,62 +661,62 @@ LABEL_39:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_performNotificationStateTransitionActionsForDevice:(id)a3 from:(unint64_t)a4 to:(unint64_t)a5
+- (void)_performNotificationStateTransitionActionsForDevice:(id)device from:(unint64_t)from to:(unint64_t)to
 {
-  v7 = a3;
-  v8 = v7;
-  if (a5 == 2)
+  deviceCopy = device;
+  v8 = deviceCopy;
+  if (to == 2)
   {
-    v9 = v7;
-    [(TADeviceRecord *)self _clearStagedDetectionsForDevice:v7];
-    v7 = [(TADeviceRecord *)self _didSurfaceNotificationFor:v9];
+    v9 = deviceCopy;
+    [(TADeviceRecord *)self _clearStagedDetectionsForDevice:deviceCopy];
+    deviceCopy = [(TADeviceRecord *)self _didSurfaceNotificationFor:v9];
   }
 
   else
   {
-    if (a5 != 1)
+    if (to != 1)
     {
       goto LABEL_6;
     }
 
-    v9 = v7;
-    v7 = [(TADeviceRecord *)self _clearStagedDetectionsForDevice:v7];
+    v9 = deviceCopy;
+    deviceCopy = [(TADeviceRecord *)self _clearStagedDetectionsForDevice:deviceCopy];
   }
 
   v8 = v9;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](deviceCopy, v8);
 }
 
-- (void)_updateAdvertisement:(id)a3 andAppendOutgoingRequestsTo:(id)a4
+- (void)_updateAdvertisement:(id)advertisement andAppendOutgoingRequestsTo:(id)to
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 beepOnMoveHigh])
+  advertisementCopy = advertisement;
+  toCopy = to;
+  if ([advertisementCopy beepOnMoveHigh])
   {
-    v7 = [v11 scanDate];
-    [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:v11 withDate:v7];
+    scanDate = [advertisementCopy scanDate];
+    [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:advertisementCopy withDate:scanDate];
   }
 
   deviceRecord = self->_deviceRecord;
-  v9 = [v11 address];
-  v10 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:v9];
+  address = [advertisementCopy address];
+  v10 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:address];
 
   if (v10)
   {
-    [v10 updateAdvertisement:v11 andAppendOutgoingRequestsTo:v6];
-    [(TADeviceRecord *)self _beepOnMoveForceAlertIfEligableForDeviceRecord:v10 andAdvertisment:v11];
+    [v10 updateAdvertisement:advertisementCopy andAppendOutgoingRequestsTo:toCopy];
+    [(TADeviceRecord *)self _beepOnMoveForceAlertIfEligableForDeviceRecord:v10 andAdvertisment:advertisementCopy];
   }
 }
 
-- (void)_beepOnMoveForceAlertIfEligableForDeviceRecord:(id)a3 andAdvertisment:(id)a4
+- (void)_beepOnMoveForceAlertIfEligableForDeviceRecord:(id)record andAdvertisment:(id)advertisment
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 getDeviceType] == 1)
+  recordCopy = record;
+  advertismentCopy = advertisment;
+  if ([recordCopy getDeviceType] == 1)
   {
-    v7 = [v6 isPosh] ^ 1;
+    v7 = [advertismentCopy isPosh] ^ 1;
   }
 
   else
@@ -724,44 +724,44 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = [v10 accessoryInfo];
-  v9 = 0;
-  if ([v6 isPosh] && v8)
+  accessoryInfo = [recordCopy accessoryInfo];
+  isApple = 0;
+  if ([advertismentCopy isPosh] && accessoryInfo)
   {
-    if ([v8 isCapableOfBOM])
+    if ([accessoryInfo isCapableOfBOM])
     {
-      v9 = [v6 isApple];
+      isApple = [advertismentCopy isApple];
     }
 
     else
     {
-      v9 = 0;
+      isApple = 0;
     }
   }
 
-  if (-[TADeviceRecordSettings surfaceImmediatelyBeepOnMove](self->_settings, "surfaceImmediatelyBeepOnMove") && [v6 beepOnMoveHigh] && ((v7 | v9) & 1) != 0 && objc_msgSend(v10, "numStagedDetections"))
+  if (-[TADeviceRecordSettings surfaceImmediatelyBeepOnMove](self->_settings, "surfaceImmediatelyBeepOnMove") && [advertismentCopy beepOnMoveHigh] && ((v7 | isApple) & 1) != 0 && objc_msgSend(recordCopy, "numStagedDetections"))
   {
-    [(TADeviceRecord *)self forceStagedDetectionsToSurfaceImmediatelyWithAdvertisement:v6 withReason:2];
+    [(TADeviceRecord *)self forceStagedDetectionsToSurfaceImmediatelyWithAdvertisement:advertismentCopy withReason:2];
   }
 }
 
-- (void)_processPlaySoundSuccess:(id)a3 andAppendOutgoingRequestsTo:(id)a4
+- (void)_processPlaySoundSuccess:(id)success andAppendOutgoingRequestsTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  successCopy = success;
+  toCopy = to;
+  if (successCopy)
   {
-    v8 = [v6 address];
+    address = [successCopy address];
 
-    if (v8)
+    if (address)
     {
-      v9 = [v6 address];
-      v10 = [(TADeviceRecord *)self _getDeviceRecord:v9];
+      address2 = [successCopy address];
+      v10 = [(TADeviceRecord *)self _getDeviceRecord:address2];
 
       if (v10)
       {
-        [v10 processPlaySoundSuccess:v6 andAppendOutgoingRequestsTo:v7];
+        [v10 processPlaySoundSuccess:successCopy andAppendOutgoingRequestsTo:toCopy];
 LABEL_8:
 
         goto LABEL_9;
@@ -774,7 +774,7 @@ LABEL_8:
       }
 
       v12 = v14;
-      v15 = [v6 description];
+      v15 = [successCopy description];
       v16 = 68289283;
       v17 = 0;
       v18 = 2082;
@@ -792,7 +792,7 @@ LABEL_7:
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
   {
     v10 = v11;
-    v12 = [v6 description];
+    v12 = [successCopy description];
     v16 = 68289283;
     v17 = 0;
     v18 = 2082;
@@ -808,27 +808,27 @@ LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestAISFetchIfNeeded:(id)a3
+- (void)requestAISFetchIfNeeded:(id)needed
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
+  neededCopy = needed;
+  v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:neededCopy];
   v6 = v5;
   if (!v5)
   {
     v15 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
     {
-      v12 = v15;
-      v13 = [v4 hexString];
+      delegate = v15;
+      hexString = [neededCopy hexString];
       v35 = 68289283;
       v36 = 0;
       v37 = 2082;
       v38 = "";
       v39 = 2113;
-      v40 = v13;
+      v40 = hexString;
       v14 = "{msg%{public}.0s:#TADeviceRecord no records exist for AIS fetch, address:%{private}@}";
-      v16 = v12;
+      v16 = delegate;
       v17 = OS_LOG_TYPE_ERROR;
 LABEL_23:
       _os_log_impl(&dword_26F2E2000, v16, v17, v14, &v35, 0x1Cu);
@@ -842,22 +842,22 @@ LABEL_24:
 
   if ([v5 getDeviceType] == 1)
   {
-    v7 = [v6 latestAdvertisement];
-    v8 = [v7 isPosh];
+    latestAdvertisement = [v6 latestAdvertisement];
+    isPosh = [latestAdvertisement isPosh];
 
-    if ((v8 & 1) == 0)
+    if ((isPosh & 1) == 0)
     {
       v26 = TAStatusLog;
       if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = v26;
-        v13 = [v4 hexString];
+        delegate = v26;
+        hexString = [neededCopy hexString];
         v35 = 68289283;
         v36 = 0;
         v37 = 2082;
         v38 = "";
         v39 = 2113;
-        v40 = v13;
+        v40 = hexString;
         v14 = "{msg%{public}.0s:#TADeviceRecord skip request AIS fetch - non-posh durian type, address:%{private}@}";
         goto LABEL_22;
       }
@@ -866,8 +866,8 @@ LABEL_24:
     }
   }
 
-  v9 = [v6 latestAdvertisement];
-  if ([v9 isPosh])
+  latestAdvertisement2 = [v6 latestAdvertisement];
+  if ([latestAdvertisement2 isPosh])
   {
     v10 = _os_feature_enabled_impl();
 
@@ -876,17 +876,17 @@ LABEL_24:
       v11 = TAStatusLog;
       if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = v11;
-        v13 = [v4 hexString];
+        delegate = v11;
+        hexString = [neededCopy hexString];
         v35 = 68289283;
         v36 = 0;
         v37 = 2082;
         v38 = "";
         v39 = 2113;
-        v40 = v13;
+        v40 = hexString;
         v14 = "{msg%{public}.0s:#TADeviceRecord skip request AIS fetch for posh type - feature isn't enabled, address:%{private}@}";
 LABEL_22:
-        v16 = v12;
+        v16 = delegate;
         v17 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_23;
       }
@@ -901,30 +901,30 @@ LABEL_22:
 
   if ([v6 AISFetchCount] < 0xA)
   {
-    v19 = [v6 AISFetchState];
-    v12 = [(TADeviceRecord *)self delegate];
-    if (v19 == 5)
+    aISFetchState = [v6 AISFetchState];
+    delegate = [(TADeviceRecord *)self delegate];
+    if (aISFetchState == 5)
     {
       v28 = TAStatusLog;
       if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
       {
         v29 = v28;
-        v30 = [v4 hexString];
+        hexString2 = [neededCopy hexString];
         v35 = 68289539;
         v36 = 0;
         v37 = 2082;
         v38 = "";
         v39 = 2113;
-        v40 = v30;
+        v40 = hexString2;
         v41 = 2050;
-        v42 = [v6 AISFetchCount];
+        aISFetchCount = [v6 AISFetchCount];
         _os_log_impl(&dword_26F2E2000, v29, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TADeviceRecord request AIS fetch, address:%{private}@, requestedCount:%{public}lu}", &v35, 0x26u);
       }
 
-      v31 = [v6 uuid];
-      v13 = [(TADeviceRecord *)self getUnknownBeacon:v31];
+      uuid = [v6 uuid];
+      hexString = [(TADeviceRecord *)self getUnknownBeacon:uuid];
 
-      if (v13)
+      if (hexString)
       {
         v24 = v6;
         v25 = 6;
@@ -940,7 +940,7 @@ LABEL_22:
 
     else
     {
-      if (v19 != 1)
+      if (aISFetchState != 1)
       {
 LABEL_25:
 
@@ -951,29 +951,29 @@ LABEL_25:
       if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
       {
         v21 = v20;
-        v22 = [v4 hexString];
+        hexString3 = [neededCopy hexString];
         v35 = 68289539;
         v36 = 0;
         v37 = 2082;
         v38 = "";
         v39 = 2113;
-        v40 = v22;
+        v40 = hexString3;
         v41 = 2050;
-        v42 = [v6 AISFetchCount];
+        aISFetchCount = [v6 AISFetchCount];
         _os_log_impl(&dword_26F2E2000, v21, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TADeviceRecord request AIS fetch, address:%{private}@, requestedCount:%{public}lu}", &v35, 0x26u);
       }
 
-      v23 = [v6 uuid];
-      v13 = [(TADeviceRecord *)self getUnknownBeacon:v23];
+      uuid2 = [v6 uuid];
+      hexString = [(TADeviceRecord *)self getUnknownBeacon:uuid2];
 
-      if (v13)
+      if (hexString)
       {
         v24 = v6;
         v25 = 2;
 LABEL_31:
         [v24 setAISFetchState:v25];
         [v6 setAISFetchCount:{objc_msgSend(v6, "AISFetchCount") + 1}];
-        [v12 requestAIS:v13];
+        [delegate requestAIS:hexString];
         goto LABEL_24;
       }
 
@@ -985,13 +985,13 @@ LABEL_31:
     }
 
     v33 = v32;
-    v34 = [v4 hexString];
+    hexString4 = [neededCopy hexString];
     v35 = 68289283;
     v36 = 0;
     v37 = 2082;
     v38 = "";
     v39 = 2113;
-    v40 = v34;
+    v40 = hexString4;
     _os_log_impl(&dword_26F2E2000, v33, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#TADeviceRecord can't construct TAUnknownBeacon for AIS fetch, address:%{private}@}", &v35, 0x1Cu);
 
     goto LABEL_24;
@@ -1000,14 +1000,14 @@ LABEL_31:
   v18 = TAStatusLog;
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = v18;
-    v13 = [v4 hexString];
+    delegate = v18;
+    hexString = [neededCopy hexString];
     v35 = 68289283;
     v36 = 0;
     v37 = 2082;
     v38 = "";
     v39 = 2113;
-    v40 = v13;
+    v40 = hexString;
     v14 = "{msg%{public}.0s:#TADeviceRecord skip request AIS fetch - reach maximum attemps, address:%{private}@}";
     goto LABEL_22;
   }
@@ -1017,10 +1017,10 @@ LABEL_26:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateKeepInStagingUntil:(id)a3
+- (void)_updateKeepInStagingUntil:(id)until
 {
   v29 = *MEMORY[0x277D85DE8];
-  [(TADeviceRecord *)self _getDeviceRecord:a3];
+  [(TADeviceRecord *)self _getDeviceRecord:until];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1041,9 +1041,9 @@ LABEL_26:
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 keepInStagingUntil];
-        v10 = [v8 detection];
-        v11 = [(TADeviceRecord *)self _determineHELEKeepInStagingUntil:v10];
+        keepInStagingUntil = [v8 keepInStagingUntil];
+        detection = [v8 detection];
+        v11 = [(TADeviceRecord *)self _determineHELEKeepInStagingUntil:detection];
 
         [v8 setKeepInStagingUntil:v11];
         v12 = TAStatusLog;
@@ -1054,7 +1054,7 @@ LABEL_26:
           v22 = 2082;
           v23 = "";
           v24 = 2113;
-          v25 = v9;
+          v25 = keepInStagingUntil;
           v26 = 2113;
           v27 = v11;
           _os_log_impl(&dword_26F2E2000, v12, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#TADeviceRecord update KeepInStagingUntil for new AirPods, before:%{private}@, after:%{private}@}", buf, 0x26u);
@@ -1070,19 +1070,19 @@ LABEL_26:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processAISFetchSuccess:(id)a3 andAppendOutgoingRequestsTo:(id)a4
+- (void)_processAISFetchSuccess:(id)success andAppendOutgoingRequestsTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  successCopy = success;
+  toCopy = to;
+  if (successCopy)
   {
-    v8 = [v6 uuid];
+    uuid = [successCopy uuid];
 
-    if (v8)
+    if (uuid)
     {
-      v9 = [v6 uuid];
-      v10 = [(TADeviceRecord *)self _getDeviceRecordWithUUID:v9];
+      uuid2 = [successCopy uuid];
+      v10 = [(TADeviceRecord *)self _getDeviceRecordWithUUID:uuid2];
 
       v11 = TAStatusLog;
       if (v10)
@@ -1090,7 +1090,7 @@ LABEL_26:
         if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
         {
           v12 = v11;
-          v13 = [v6 description];
+          v13 = [successCopy description];
           v23 = 68289283;
           v24 = 0;
           v25 = 2082;
@@ -1100,18 +1100,18 @@ LABEL_26:
           _os_log_impl(&dword_26F2E2000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TADeviceRecord received AIS fetch info for uuid, AISFetch:%{private}@}", &v23, 0x1Cu);
         }
 
-        [v10 processAISFetchEvent:v6 andAppendOutgoingRequestsTo:v7];
-        v14 = [v6 info];
-        if (v14)
+        [v10 processAISFetchEvent:successCopy andAppendOutgoingRequestsTo:toCopy];
+        info = [successCopy info];
+        if (info)
         {
-          v15 = v14;
-          v16 = [v6 info];
-          v17 = [v16 isHawkeyeAudioAccessory];
+          v15 = info;
+          info2 = [successCopy info];
+          isHawkeyeAudioAccessory = [info2 isHawkeyeAudioAccessory];
 
-          if (v17)
+          if (isHawkeyeAudioAccessory)
           {
-            v18 = [v10 address];
-            [(TADeviceRecord *)self _updateKeepInStagingUntil:v18];
+            address = [v10 address];
+            [(TADeviceRecord *)self _updateKeepInStagingUntil:address];
           }
         }
 
@@ -1126,7 +1126,7 @@ LABEL_12:
       }
 
       v20 = v11;
-      v22 = [v6 description];
+      v22 = [successCopy description];
       v23 = 68289283;
       v24 = 0;
       v25 = 2082;
@@ -1144,7 +1144,7 @@ LABEL_11:
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
   {
     v10 = v19;
-    v20 = [v6 description];
+    v20 = [successCopy description];
     v23 = 68289283;
     v24 = 0;
     v25 = 2082;
@@ -1160,41 +1160,41 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ingestTAEvent:(id)a3 andAppendOutgoingRequestsTo:(id)a4
+- (void)ingestTAEvent:(id)event andAppendOutgoingRequestsTo:(id)to
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isMemberOfClass:objc_opt_class()])
+  eventCopy = event;
+  toCopy = to;
+  if ([eventCopy isMemberOfClass:objc_opt_class()])
   {
-    v8 = v6;
-    v9 = [v8 advertisement];
-    v10 = [v8 notificationState];
-    v11 = [v8 getDate];
-    [(TADeviceRecord *)self _setDevice:v9 withExternalState:v10 withDate:v11];
+    v8 = eventCopy;
+    advertisement = [v8 advertisement];
+    notificationState = [v8 notificationState];
+    getDate = [v8 getDate];
+    [(TADeviceRecord *)self _setDevice:advertisement withExternalState:notificationState withDate:getDate];
 
-    v12 = [v8 advertisement];
-    v13 = [v8 deviceType];
-    v14 = [v8 getDate];
-    [(TADeviceRecord *)self _setDevice:v12 withType:v13 withDate:v14];
+    advertisement2 = [v8 advertisement];
+    deviceType = [v8 deviceType];
+    getDate2 = [v8 getDate];
+    [(TADeviceRecord *)self _setDevice:advertisement2 withType:deviceType withDate:getDate2];
 
-    v15 = [v8 advertisement];
+    advertisement3 = [v8 advertisement];
 
-    [(TADeviceRecord *)self _updateAdvertisement:v15 andAppendOutgoingRequestsTo:v7];
+    [(TADeviceRecord *)self _updateAdvertisement:advertisement3 andAppendOutgoingRequestsTo:toCopy];
   }
 
-  else if ([v6 isMemberOfClass:objc_opt_class()])
+  else if ([eventCopy isMemberOfClass:objc_opt_class()])
   {
-    [(TADeviceRecord *)self _updateAdvertisement:v6 andAppendOutgoingRequestsTo:v7];
+    [(TADeviceRecord *)self _updateAdvertisement:eventCopy andAppendOutgoingRequestsTo:toCopy];
   }
 
-  else if ([v6 isMemberOfClass:objc_opt_class()])
+  else if ([eventCopy isMemberOfClass:objc_opt_class()])
   {
     v16 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v16;
-      v18 = [v6 description];
+      v18 = [eventCopy description];
       v20[0] = 68289283;
       v20[1] = 0;
       v21 = 2082;
@@ -1204,23 +1204,23 @@ LABEL_13:
       _os_log_impl(&dword_26F2E2000, v17, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TADeviceRecord adding playsound, playsound:%{private}@}", v20, 0x1Cu);
     }
 
-    [(TADeviceRecord *)self _processPlaySoundSuccess:v6 andAppendOutgoingRequestsTo:v7];
+    [(TADeviceRecord *)self _processPlaySoundSuccess:eventCopy andAppendOutgoingRequestsTo:toCopy];
   }
 
-  else if ([v6 isMemberOfClass:objc_opt_class()])
+  else if ([eventCopy isMemberOfClass:objc_opt_class()])
   {
-    [(TADeviceRecord *)self _processAISFetchSuccess:v6 andAppendOutgoingRequestsTo:v7];
+    [(TADeviceRecord *)self _processAISFetchSuccess:eventCopy andAppendOutgoingRequestsTo:toCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkForScanRequestsWithClock:(id)a3 andAppendOutgoingRequestsTo:(id)a4
+- (void)checkForScanRequestsWithClock:(id)clock andAppendOutgoingRequestsTo:(id)to
 {
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  [v7 timeIntervalSinceDate:self->_lastScanAttemptDate];
+  clockCopy = clock;
+  toCopy = to;
+  [clockCopy timeIntervalSinceDate:self->_lastScanAttemptDate];
   v10 = v9;
   [(TADeviceRecordSettings *)self->_settings scanInterval];
   if (v10 < v11)
@@ -1228,9 +1228,9 @@ LABEL_13:
     goto LABEL_22;
   }
 
-  v33 = v8;
-  v34 = v7;
-  objc_storeStrong(&self->_lastScanAttemptDate, a3);
+  v33 = toCopy;
+  v34 = clockCopy;
+  objc_storeStrong(&self->_lastScanAttemptDate, clock);
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -1258,27 +1258,27 @@ LABEL_13:
       }
 
       v19 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:*(*(&v35 + 1) + 8 * i), v33];
-      v20 = [v19 latestAdvertisement];
-      v21 = [v20 hasHawkeyeAdvertisementPolicy];
+      latestAdvertisement = [v19 latestAdvertisement];
+      hasHawkeyeAdvertisementPolicy = [latestAdvertisement hasHawkeyeAdvertisementPolicy];
 
-      if (v21)
+      if (hasHawkeyeAdvertisementPolicy)
       {
-        v22 = [v19 getStagedDetections];
-        v16 |= [v22 count] != 0;
+        getStagedDetections = [v19 getStagedDetections];
+        v16 |= [getStagedDetections count] != 0;
       }
 
       else
       {
-        v23 = [v19 latestAdvertisement];
-        v24 = [v23 hasHawkeyeLowEnergyAdvertisementPolicy];
+        latestAdvertisement2 = [v19 latestAdvertisement];
+        hasHawkeyeLowEnergyAdvertisementPolicy = [latestAdvertisement2 hasHawkeyeLowEnergyAdvertisementPolicy];
 
-        if (!v24)
+        if (!hasHawkeyeLowEnergyAdvertisementPolicy)
         {
           goto LABEL_12;
         }
 
-        v22 = [v19 getStagedDetections];
-        v15 |= [v22 count] != 0;
+        getStagedDetections = [v19 getStagedDetections];
+        v15 |= [getStagedDetections count] != 0;
       }
 
 LABEL_12:
@@ -1291,7 +1291,7 @@ LABEL_12:
 LABEL_16:
 
   v25 = TAStatusLog;
-  v8 = v33;
+  toCopy = v33;
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
   {
     *buf = 68289538;
@@ -1305,7 +1305,7 @@ LABEL_16:
     _os_log_impl(&dword_26F2E2000, v25, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#TADeviceRecord device record scan request, shouldScanHawkeye:%{public}hhd, shouldScanHawkeyeLowEnergy:%{public}hhd}", buf, 0x1Eu);
   }
 
-  v7 = v34;
+  clockCopy = v34;
   if (v16)
   {
     v26 = [TAOutgoingRequests alloc];
@@ -1333,47 +1333,47 @@ LABEL_22:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createTAOutgoingRequestWithExpiringTASingleDeviceRecord:(id)a3 withCurrentDate:(id)a4
+- (id)createTAOutgoingRequestWithExpiringTASingleDeviceRecord:(id)record withCurrentDate:(id)date
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  recordCopy = record;
+  dateCopy = date;
+  if (recordCopy)
   {
-    v7 = [v5 address];
+    address = [recordCopy address];
 
-    if (v7)
+    if (address)
     {
       v8 = [TAOutgoingRequests alloc];
-      v9 = [v5 address];
-      v13 = v9;
-      v14[0] = v5;
+      address2 = [recordCopy address];
+      v13 = address2;
+      v14[0] = recordCopy;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      v7 = [(TAOutgoingRequests *)v8 initWithRequestKey:@"ExpiringRecordMetrics" additionalInformation:v10 date:v6];
+      address = [(TAOutgoingRequests *)v8 initWithRequestKey:@"ExpiringRecordMetrics" additionalInformation:v10 date:dateCopy];
     }
   }
 
   else
   {
-    v7 = 0;
+    address = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return address;
 }
 
-- (id)createTAOutgoingRequestForUnstagingUpdateFor:(id)a3 withCurrentDate:(id)a4
+- (id)createTAOutgoingRequestForUnstagingUpdateFor:(id)for withCurrentDate:(id)date
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  forCopy = for;
+  dateCopy = date;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = forCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v9)
   {
@@ -1388,8 +1388,8 @@ LABEL_22:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * i) detection];
-        [v7 addObject:v13];
+        detection = [*(*(&v19 + 1) + 8 * i) detection];
+        [array addObject:detection];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -1400,24 +1400,24 @@ LABEL_22:
 
   v14 = [TAOutgoingRequests alloc];
   v23 = @"UnstagingUpdate";
-  v24 = v7;
+  v24 = array;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-  v16 = [(TAOutgoingRequests *)v14 initWithRequestKey:@"UnstagingUpdate" additionalInformation:v15 date:v6];
+  v16 = [(TAOutgoingRequests *)v14 initWithRequestKey:@"UnstagingUpdate" additionalInformation:v15 date:dateCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (void)purgeWithClock:(id)a3 andAppendOutgoingRequestsTo:(id)a4
+- (void)purgeWithClock:(id)clock andAppendOutgoingRequestsTo:(id)to
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  [v7 timeIntervalSinceDate:self->_lastPurgeDate];
+  clockCopy = clock;
+  toCopy = to;
+  [clockCopy timeIntervalSinceDate:self->_lastPurgeDate];
   if (v9 < 0.0 || (v10 = v9, [(TADeviceRecordSettings *)self->_settings purgeTimeInterval], v10 >= v11))
   {
-    v31 = a3;
+    clockCopy2 = clock;
     v12 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
@@ -1446,8 +1446,8 @@ LABEL_22:
 
           v17 = *(*(&v33 + 1) + 8 * i);
           v18 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v17];
-          v19 = [v18 creationDate];
-          [v7 timeIntervalSinceDate:v19];
+          creationDate = [v18 creationDate];
+          [clockCopy timeIntervalSinceDate:creationDate];
           v21 = v20;
 
           [(TADeviceRecordSettings *)self->_settings futureExpiryTimeInterval];
@@ -1459,19 +1459,19 @@ LABEL_22:
               [(TADeviceRecord *)&buf purgeWithClock:v24 andAppendOutgoingRequestsTo:v17, &v38];
             }
 
-            v25 = [(TADeviceRecord *)self createTAOutgoingRequestWithExpiringTASingleDeviceRecord:v18 withCurrentDate:v7];
-            [v8 addObject:v25];
+            v25 = [(TADeviceRecord *)self createTAOutgoingRequestWithExpiringTASingleDeviceRecord:v18 withCurrentDate:clockCopy];
+            [toCopy addObject:v25];
             [(NSMutableDictionary *)self->_deviceRecord removeObjectForKey:v17];
             deviceUUIDToAddress = self->_deviceUUIDToAddress;
-            v27 = [v18 uuid];
-            [(NSMutableDictionary *)deviceUUIDToAddress removeObjectForKey:v27];
+            uuid = [v18 uuid];
+            [(NSMutableDictionary *)deviceUUIDToAddress removeObjectForKey:uuid];
           }
 
-          v28 = [v18 purgeStagedDetectionsWithClock:v7];
+          v28 = [v18 purgeStagedDetectionsWithClock:clockCopy];
           if ([v28 count])
           {
-            v29 = [(TADeviceRecord *)self createTAOutgoingRequestForUnstagingUpdateFor:v28 withCurrentDate:v7];
-            [v8 addObject:v29];
+            v29 = [(TADeviceRecord *)self createTAOutgoingRequestForUnstagingUpdateFor:v28 withCurrentDate:clockCopy];
+            [toCopy addObject:v29];
           }
         }
 
@@ -1481,25 +1481,25 @@ LABEL_22:
       while (v14);
     }
 
-    objc_storeStrong(&self->_lastPurgeDate, v31);
+    objc_storeStrong(&self->_lastPurgeDate, clockCopy2);
     [(TADeviceRecord *)self logDeviceRecord];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isKnownDevice:(id)a3
+- (BOOL)isKnownDevice:(id)device
 {
-  v3 = [(TADeviceRecord *)self getDeviceOwnershipType:a3];
+  v3 = [(TADeviceRecord *)self getDeviceOwnershipType:device];
 
   return [TADeviceRecord _isKnownDevice:v3];
 }
 
-- (void)updateDeviceRecordOnSessionChange:(id)a3 WithCurrentDate:(id)a4
+- (void)updateDeviceRecordOnSessionChange:(id)change WithCurrentDate:(id)date
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  dateCopy = date;
   v8 = TAStatusLog;
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -1519,8 +1519,8 @@ LABEL_22:
     v11 = 0x279DD1000;
     *&v9 = 68289283;
     v40 = v9;
-    v43 = self;
-    v46 = v7;
+    selfCopy = self;
+    v46 = dateCopy;
     v47 = *v51;
     do
     {
@@ -1534,42 +1534,42 @@ LABEL_22:
 
         v13 = *(*(&v50 + 1) + 8 * v12);
         v14 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v13, v40];
-        [v14 updateSingleDeviceRecordOnSessionChangeWithCurrentDate:v7];
-        if (!v6)
+        [v14 updateSingleDeviceRecordOnSessionChangeWithCurrentDate:dateCopy];
+        if (!changeCopy)
         {
           goto LABEL_21;
         }
 
-        if ([v6 lastStateTransition] != 3)
+        if ([changeCopy lastStateTransition] != 3)
         {
           goto LABEL_15;
         }
 
-        v15 = [v6 getLatestValidVisit];
-        if (!v15)
+        getLatestValidVisit = [changeCopy getLatestValidVisit];
+        if (!getLatestValidVisit)
         {
           goto LABEL_15;
         }
 
-        v16 = v15;
-        v17 = [v6 getLatestValidVisit];
-        v18 = [v17 arrivalDate];
-        v19 = [MEMORY[0x277CBEAA8] distantPast];
-        if (v18 == v19)
+        v16 = getLatestValidVisit;
+        getLatestValidVisit2 = [changeCopy getLatestValidVisit];
+        arrivalDate = [getLatestValidVisit2 arrivalDate];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
+        if (arrivalDate == distantPast)
         {
           goto LABEL_14;
         }
 
-        v44 = v17;
-        v20 = [v6 getLatestValidVisit];
-        v21 = [v20 arrivalDate];
-        v22 = [v14 lastSurfacedAlertDate];
-        if ([v21 compare:v22] != -1)
+        v44 = getLatestValidVisit2;
+        getLatestValidVisit3 = [changeCopy getLatestValidVisit];
+        arrivalDate2 = [getLatestValidVisit3 arrivalDate];
+        lastSurfacedAlertDate = [v14 lastSurfacedAlertDate];
+        if ([arrivalDate2 compare:lastSurfacedAlertDate] != -1)
         {
 
-          self = v43;
-          v17 = v44;
-          v7 = v46;
+          self = selfCopy;
+          getLatestValidVisit2 = v44;
+          dateCopy = v46;
 LABEL_14:
 
           v10 = v47;
@@ -1580,28 +1580,28 @@ LABEL_14:
         if ([v14 state] == 2)
         {
 
-          self = v43;
-          v7 = v46;
+          self = selfCopy;
+          dateCopy = v46;
           v10 = v47;
           v11 = 0x279DD1000;
 LABEL_36:
           v33 = TAStatusLog;
           if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
           {
-            v32 = v33;
-            v34 = [v13 hexString];
+            latestAdvertisement = v33;
+            hexString = [v13 hexString];
             *buf = v40;
             v57 = 0;
             v58 = 2082;
             v59 = "";
             v60 = 2113;
-            v61 = v34;
-            v35 = v32;
+            v61 = hexString;
+            v35 = latestAdvertisement;
             v36 = "{msg%{public}.0s:#TADeviceRecord skip reprompting since we have issued an alert upon arrival, address:%{private}@}";
 LABEL_41:
             _os_log_impl(&dword_26F2E2000, v35, OS_LOG_TYPE_DEBUG, v36, buf, 0x1Cu);
 
-            v7 = v46;
+            dateCopy = v46;
 LABEL_28:
 
             goto LABEL_29;
@@ -1610,48 +1610,48 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v41 = [v14 state];
+        state = [v14 state];
 
-        self = v43;
-        v7 = v46;
+        self = selfCopy;
+        dateCopy = v46;
         v10 = v47;
         v11 = 0x279DD1000;
-        if (v41 == 1)
+        if (state == 1)
         {
           goto LABEL_36;
         }
 
 LABEL_15:
-        if ([v6 lastStateTransition] != 4)
+        if ([changeCopy lastStateTransition] != 4)
         {
           goto LABEL_21;
         }
 
-        v23 = [v6 getLatestValidVisit];
-        if (!v23)
+        getLatestValidVisit4 = [changeCopy getLatestValidVisit];
+        if (!getLatestValidVisit4)
         {
           goto LABEL_21;
         }
 
-        v24 = v23;
-        v25 = [v6 getLatestValidVisit];
-        v26 = [v25 departureDate];
-        v27 = [MEMORY[0x277CBEAA8] distantFuture];
-        if (v26 == v27)
+        v24 = getLatestValidVisit4;
+        getLatestValidVisit5 = [changeCopy getLatestValidVisit];
+        departureDate = [getLatestValidVisit5 departureDate];
+        distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+        if (departureDate == distantFuture)
         {
           goto LABEL_20;
         }
 
-        v45 = v25;
-        v28 = [v6 getLatestValidVisit];
-        v29 = [v28 departureDate];
-        v30 = [v14 lastSurfacedAlertDate];
-        if ([v29 compare:v30] != -1)
+        v45 = getLatestValidVisit5;
+        getLatestValidVisit6 = [changeCopy getLatestValidVisit];
+        departureDate2 = [getLatestValidVisit6 departureDate];
+        lastSurfacedAlertDate2 = [v14 lastSurfacedAlertDate];
+        if ([departureDate2 compare:lastSurfacedAlertDate2] != -1)
         {
 
-          self = v43;
-          v25 = v45;
-          v7 = v46;
+          self = selfCopy;
+          getLatestValidVisit5 = v45;
+          dateCopy = v46;
 LABEL_20:
 
           v10 = v47;
@@ -1665,8 +1665,8 @@ LABEL_21:
               [(TADeviceRecord *)&v54 updateDeviceRecordOnSessionChange:v31 WithCurrentDate:v13, &v55];
             }
 
-            v32 = [v14 latestAdvertisement];
-            [(TADeviceRecord *)self _setDevice:v32 withInternalState:4 withDate:v7];
+            latestAdvertisement = [v14 latestAdvertisement];
+            [(TADeviceRecord *)self _setDevice:latestAdvertisement withInternalState:4 withDate:dateCopy];
             goto LABEL_28;
           }
 
@@ -1676,21 +1676,21 @@ LABEL_21:
         if ([v14 state] == 2)
         {
 
-          self = v43;
-          v7 = v46;
+          self = selfCopy;
+          dateCopy = v46;
           v10 = v47;
           v11 = 0x279DD1000;
         }
 
         else
         {
-          v42 = [v14 state];
+          state2 = [v14 state];
 
-          self = v43;
-          v7 = v46;
+          self = selfCopy;
+          dateCopy = v46;
           v10 = v47;
           v11 = 0x279DD1000;
-          if (v42 != 1)
+          if (state2 != 1)
           {
             goto LABEL_21;
           }
@@ -1699,15 +1699,15 @@ LABEL_21:
         v37 = TAStatusLog;
         if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
         {
-          v32 = v37;
-          v34 = [v13 hexString];
+          latestAdvertisement = v37;
+          hexString = [v13 hexString];
           *buf = v40;
           v57 = 0;
           v58 = 2082;
           v59 = "";
           v60 = 2113;
-          v61 = v34;
-          v35 = v32;
+          v61 = hexString;
+          v35 = latestAdvertisement;
           v36 = "{msg%{public}.0s:#TADeviceRecord skip reprompting since we have issued an alert upon departure, address:%{private}@}";
           goto LABEL_41;
         }
@@ -1736,8 +1736,8 @@ LABEL_29:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(NSMutableDictionary *)self->_deviceRecord allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_deviceRecord allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1748,7 +1748,7 @@ LABEL_29:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = TAStatusLog;
@@ -1756,18 +1756,18 @@ LABEL_29:
         {
           v9 = *(*(&v15 + 1) + 8 * i);
           v10 = v8;
-          v11 = [v9 hexString];
+          hexString = [v9 hexString];
           v12 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v9];
           v13 = [v12 description];
           *buf = 138478083;
-          v20 = v11;
+          v20 = hexString;
           v21 = 2113;
           v22 = v13;
           _os_log_impl(&dword_26F2E2000, v10, OS_LOG_TYPE_DEFAULT, "#TADeviceRecord status for %{private}@:%{private}@", buf, 0x16u);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v5);
@@ -1776,9 +1776,9 @@ LABEL_29:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clearStagedDetectionsForDevice:(id)a3
+- (void)_clearStagedDetectionsForDevice:(id)device
 {
-  v3 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:device];
   v4 = v3;
   if (v3)
   {
@@ -1795,17 +1795,17 @@ LABEL_29:
   }
 }
 
-- (id)_determineFirstObservationDateWithTASuspiciousDevice:(id)a3
+- (id)_determineFirstObservationDateWithTASuspiciousDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 date];
+  deviceCopy = device;
+  date = [deviceCopy date];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v4 locationHistory];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  locationHistory = [deviceCopy locationHistory];
+  v7 = [locationHistory countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1813,58 +1813,58 @@ LABEL_29:
     do
     {
       v10 = 0;
-      v11 = v5;
+      v11 = date;
       do
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(locationHistory);
         }
 
-        v12 = [*(*(&v20 + 1) + 8 * v10) getDate];
-        v5 = [v11 earlierDate:v12];
+        getDate = [*(*(&v20 + 1) + 8 * v10) getDate];
+        date = [v11 earlierDate:getDate];
 
         ++v10;
-        v11 = v5;
+        v11 = date;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [locationHistory countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 
   deviceRecord = self->_deviceRecord;
-  v14 = [v4 address];
-  v15 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:v14];
+  address = [deviceCopy address];
+  v15 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:address];
 
-  v16 = [v15 earliestObservationDate];
-  v17 = [v5 earlierDate:v16];
+  earliestObservationDate = [v15 earliestObservationDate];
+  v17 = [date earlierDate:earliestObservationDate];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (id)_determineHELEKeepInStagingUntil:(id)a3
+- (id)_determineHELEKeepInStagingUntil:(id)until
 {
-  v4 = a3;
-  v5 = [(TADeviceRecord *)self _determineFirstObservationDateWithTASuspiciousDevice:v4];
+  untilCopy = until;
+  v5 = [(TADeviceRecord *)self _determineFirstObservationDateWithTASuspiciousDevice:untilCopy];
   v6 = MEMORY[0x277CBEAA8];
-  v7 = [(TADeviceRecord *)self settings];
-  [v7 maxExpectedHELEWildInterval];
+  settings = [(TADeviceRecord *)self settings];
+  [settings maxExpectedHELEWildInterval];
   v8 = [v6 dateWithTimeInterval:v5 sinceDate:?];
 
-  v9 = [(TADeviceRecord *)self settings];
-  if ([v9 shouldAlertHELEImmediatelyForImmediateTypes])
+  settings2 = [(TADeviceRecord *)self settings];
+  if ([settings2 shouldAlertHELEImmediatelyForImmediateTypes])
   {
-    v10 = [v4 immediacyType];
+    immediacyType = [untilCopy immediacyType];
 
-    if (v10 == 2)
+    if (immediacyType == 2)
     {
-      v11 = [v4 date];
-      v12 = [v8 laterDate:v11];
+      date = [untilCopy date];
+      v12 = [v8 laterDate:date];
       goto LABEL_15;
     }
   }
@@ -1873,19 +1873,19 @@ LABEL_29:
   {
   }
 
-  v11 = [v4 date];
+  date = [untilCopy date];
   v13 = MEMORY[0x277CBEAA8];
   [(TADeviceRecordSettings *)self->_settings minimumHELEStagingInterval];
   v14 = [v13 dateWithTimeInterval:v5 sinceDate:?];
-  v15 = [v14 laterDate:v11];
+  v15 = [v14 laterDate:date];
 
-  v16 = [(TADeviceRecord *)self settings];
-  v17 = [v16 stagingHELEBackstopHour];
+  settings3 = [(TADeviceRecord *)self settings];
+  stagingHELEBackstopHour = [settings3 stagingHELEBackstopHour];
 
-  if (v17 < 25)
+  if (stagingHELEBackstopHour < 25)
   {
-    v18 = [v11 getNextDateAtHour:{-[TADeviceRecordSettings assumedKeyRollHour](self->_settings, "assumedKeyRollHour")}];
-    v19 = [v11 getNextDateAtHour:{-[TADeviceRecordSettings stagingHELEBackstopHour](self->_settings, "stagingHELEBackstopHour")}];
+    v18 = [date getNextDateAtHour:{-[TADeviceRecordSettings assumedKeyRollHour](self->_settings, "assumedKeyRollHour")}];
+    v19 = [date getNextDateAtHour:{-[TADeviceRecordSettings stagingHELEBackstopHour](self->_settings, "stagingHELEBackstopHour")}];
     if ([v19 compare:v18] == -1)
     {
       v23 = [v15 earlierDate:v19];
@@ -1896,8 +1896,8 @@ LABEL_29:
       if ([(TADeviceRecordSettings *)self->_settings surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll])
       {
         v20 = MEMORY[0x277CBEAA8];
-        v21 = [(TADeviceRecord *)self settings];
-        [v21 hyperHELEStagingInterval];
+        settings4 = [(TADeviceRecord *)self settings];
+        [settings4 hyperHELEStagingInterval];
         v22 = [v20 dateWithTimeInterval:v5 sinceDate:?];
 
 LABEL_13:
@@ -1921,26 +1921,26 @@ LABEL_15:
   return v12;
 }
 
-- (id)_determineKeepInStagingUntil:(id)a3
+- (id)_determineKeepInStagingUntil:(id)until
 {
-  v4 = a3;
-  v5 = [v4 latestAdvertisement];
-  if ([v5 getDeviceType] == 3)
+  untilCopy = until;
+  latestAdvertisement = [untilCopy latestAdvertisement];
+  if ([latestAdvertisement getDeviceType] == 3)
   {
 
 LABEL_5:
-    v10 = [(TADeviceRecord *)self _determineHELEKeepInStagingUntil:v4];
+    v10 = [(TADeviceRecord *)self _determineHELEKeepInStagingUntil:untilCopy];
     goto LABEL_17;
   }
 
-  v6 = [v4 accessoryInfo];
-  if (v6)
+  accessoryInfo = [untilCopy accessoryInfo];
+  if (accessoryInfo)
   {
-    v7 = v6;
-    v8 = [v4 accessoryInfo];
-    v9 = [v8 isHawkeyeAudioAccessory];
+    v7 = accessoryInfo;
+    accessoryInfo2 = [untilCopy accessoryInfo];
+    isHawkeyeAudioAccessory = [accessoryInfo2 isHawkeyeAudioAccessory];
 
-    if (v9)
+    if (isHawkeyeAudioAccessory)
     {
       goto LABEL_5;
     }
@@ -1950,23 +1950,23 @@ LABEL_5:
   {
   }
 
-  v11 = [(TADeviceRecord *)self _determineFirstObservationDateWithTASuspiciousDevice:v4];
+  v11 = [(TADeviceRecord *)self _determineFirstObservationDateWithTASuspiciousDevice:untilCopy];
   v12 = MEMORY[0x277CBEAA8];
-  v13 = [(TADeviceRecord *)self settings];
-  [v13 maxExpectedDurianWildInterval];
+  settings = [(TADeviceRecord *)self settings];
+  [settings maxExpectedDurianWildInterval];
   v14 = [v12 dateWithTimeInterval:v11 sinceDate:?];
 
-  v15 = [v4 immediacyType];
-  v16 = [v4 date];
-  if (v15 != 2)
+  immediacyType = [untilCopy immediacyType];
+  date = [untilCopy date];
+  if (immediacyType != 2)
   {
-    v17 = [v16 getNextDateAtHour:{-[TADeviceRecordSettings assumedKeyRollHour](self->_settings, "assumedKeyRollHour")}];
+    v17 = [date getNextDateAtHour:{-[TADeviceRecordSettings assumedKeyRollHour](self->_settings, "assumedKeyRollHour")}];
     v18 = MEMORY[0x277CBEAA8];
     [(TADeviceRecordSettings *)self->_settings minimumStagingInterval];
     v19 = [v18 dateWithTimeInterval:v11 sinceDate:?];
-    v20 = [v19 laterDate:v16];
+    v20 = [v19 laterDate:date];
 
-    v21 = [v16 getNextDateAtHour:{-[TADeviceRecordSettings stagingBackstopHour](self->_settings, "stagingBackstopHour")}];
+    v21 = [date getNextDateAtHour:{-[TADeviceRecordSettings stagingBackstopHour](self->_settings, "stagingBackstopHour")}];
     if ([v21 compare:v17] == -1)
     {
       v25 = [v20 earlierDate:v21];
@@ -1977,8 +1977,8 @@ LABEL_5:
       if ([(TADeviceRecordSettings *)self->_settings surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll])
       {
         v22 = MEMORY[0x277CBEAA8];
-        v23 = [(TADeviceRecord *)self settings];
-        [v23 hyperStagingInterval];
+        settings2 = [(TADeviceRecord *)self settings];
+        [settings2 hyperStagingInterval];
         v24 = [v22 dateWithTimeInterval:v11 sinceDate:?];
 
 LABEL_15:
@@ -1994,7 +1994,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v10 = [v14 laterDate:v16];
+  v10 = [v14 laterDate:date];
 LABEL_16:
 
 LABEL_17:
@@ -2002,15 +2002,15 @@ LABEL_17:
   return v10;
 }
 
-- (void)stageDetectionResults:(id)a3
+- (void)stageDetectionResults:(id)results
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v5 = [resultsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2021,13 +2021,13 @@ LABEL_17:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
         deviceRecord = self->_deviceRecord;
-        v11 = [v9 address];
-        v12 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:v11];
+        address = [v9 address];
+        v12 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:address];
 
         if (v12)
         {
@@ -2058,7 +2058,7 @@ LABEL_17:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v6 = [resultsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v6);
@@ -2067,18 +2067,18 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)limitSuspiciousDevicesSentToObservers:(id)a3 forDailyMaximum:(unint64_t)a4
+- (id)limitSuspiciousDevicesSentToObservers:(id)observers forDailyMaximum:(unint64_t)maximum
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  observersCopy = observers;
+  v7 = observersCopy;
+  if (!observersCopy || ![observersCopy count])
   {
-    v34 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
     goto LABEL_25;
   }
 
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -2101,13 +2101,13 @@ LABEL_17:
 
         v12 = *(*(&v36 + 1) + 8 * i);
         v13 = [(TADeviceRecord *)self getNumSurfacedAlerts:v12];
-        v14 = [v12 address];
-        v15 = [(TADeviceRecord *)self _getDeviceRecord:v14];
+        address = [v12 address];
+        v15 = [(TADeviceRecord *)self _getDeviceRecord:address];
 
         [v15 setNumPotentialSurfacedAlerts:{objc_msgSend(v15, "numPotentialSurfacedAlerts") + 1}];
-        if (v13 < a4)
+        if (v13 < maximum)
         {
-          [v34 addObject:v12];
+          [array addObject:v12];
         }
 
         v16 = TAStatusLog;
@@ -2115,7 +2115,7 @@ LABEL_17:
         {
           v17 = v16;
           v18 = [v15 description];
-          v19 = [v15 numPotentialSurfacedAlerts];
+          numPotentialSurfacedAlerts = [v15 numPotentialSurfacedAlerts];
           *buf = 68289795;
           v41 = 0;
           v42 = 2082;
@@ -2125,7 +2125,7 @@ LABEL_17:
           v46 = 2049;
           v47 = v13;
           v48 = 2049;
-          v49 = v19;
+          v49 = numPotentialSurfacedAlerts;
           _os_log_impl(&dword_26F2E2000, v17, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#TADeviceRecord number of staged and potential alerts for device record, singleDeviceRecord:%{private}@, numSurfacedAlerts:%{private}lu, numPotentialSurfacedAlerts:%{private}lu}", buf, 0x30u);
         }
       }
@@ -2137,9 +2137,9 @@ LABEL_17:
   }
 
   v20 = [obj count];
-  v21 = [v34 count];
+  v21 = [array count];
   v22 = v20 - v21;
-  if ([v34 count])
+  if ([array count])
   {
     v23 = TAStatusLog;
     v24 = os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT);
@@ -2205,75 +2205,75 @@ LABEL_25:
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v34;
+  return array;
 }
 
-- (void)mergeWithAnotherDeviceRecord:(id)a3
+- (void)mergeWithAnotherDeviceRecord:(id)record
 {
   v93 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = TAStatusLog;
-  if (v4)
+  if (recordCopy)
   {
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEBUG))
     {
       settings = self->_settings;
       log = v5;
       v64 = [(TADeviceRecordSettings *)settings description];
-      v59 = [v64 UTF8String];
-      v63 = [(NSDate *)self->_lastPurgeDate getDateString];
-      v57 = [v63 UTF8String];
-      v62 = [(NSDate *)self->_lastScanAttemptDate getDateString];
-      v56 = [v62 UTF8String];
+      uTF8String = [v64 UTF8String];
+      getDateString = [(NSDate *)self->_lastPurgeDate getDateString];
+      uTF8String2 = [getDateString UTF8String];
+      getDateString2 = [(NSDate *)self->_lastScanAttemptDate getDateString];
+      uTF8String3 = [getDateString2 UTF8String];
       v55 = [(NSMutableDictionary *)self->_deviceRecord count];
       v54 = [(NSMutableDictionary *)self->_deviceUUIDToAddress count];
-      v60 = [v4 settings];
-      v7 = [v60 description];
-      v53 = [v7 UTF8String];
-      v58 = [v4 lastPurgeDate];
-      v8 = [v58 getDateString];
-      v52 = [v8 UTF8String];
-      v9 = [v4 lastScanAttemptDate];
-      v10 = [v9 getDateString];
-      v11 = [v10 UTF8String];
-      v12 = [v4 deviceRecord];
-      v13 = [v12 count];
-      v14 = [v4 deviceUUIDToAddress];
+      settings = [recordCopy settings];
+      v7 = [settings description];
+      uTF8String4 = [v7 UTF8String];
+      lastPurgeDate = [recordCopy lastPurgeDate];
+      getDateString3 = [lastPurgeDate getDateString];
+      uTF8String5 = [getDateString3 UTF8String];
+      lastScanAttemptDate = [recordCopy lastScanAttemptDate];
+      getDateString4 = [lastScanAttemptDate getDateString];
+      uTF8String6 = [getDateString4 UTF8String];
+      deviceRecord = [recordCopy deviceRecord];
+      v13 = [deviceRecord count];
+      deviceUUIDToAddress = [recordCopy deviceUUIDToAddress];
       buf = 68291586;
       v71 = 2082;
       v72 = "";
       v73 = 2082;
-      v74 = v59;
+      v74 = uTF8String;
       v75 = 2082;
-      v76 = v57;
+      v76 = uTF8String2;
       v77 = 2082;
-      v78 = v56;
+      v78 = uTF8String3;
       v79 = 2050;
       v80 = v55;
       v81 = 2050;
       v82 = v54;
       v83 = 2082;
-      v84 = v53;
+      v84 = uTF8String4;
       v85 = 2082;
-      v86 = v52;
+      v86 = uTF8String5;
       v87 = 2082;
-      v88 = v11;
+      v88 = uTF8String6;
       v89 = 2050;
       v90 = v13;
       v91 = 2050;
-      v92 = [v14 count];
+      v92 = [deviceUUIDToAddress count];
       _os_log_impl(&dword_26F2E2000, log, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#TADeviceRecord merging with other record, self.settings:%{public}s, self.lastPurgeDate:%{public}s, self.lastScanAttemptDate:%{public}s, self.deviceRecord.count:%{public}lu, self.deviceUUIDToAddress.count:%{public}lu, other.settings:%{public}s, other.lastPurgeDate:%{public}s, other.lastScanAttemptDate:%{public}s, other.deviceRecord.count:%{public}lu, other.deviceUUIDToAddress.count:%{public}lu}", &buf, 0x76u);
     }
 
     lastPurgeDate = self->_lastPurgeDate;
-    v16 = [v4 lastPurgeDate];
-    v17 = [(NSDate *)lastPurgeDate laterDate:v16];
+    lastPurgeDate2 = [recordCopy lastPurgeDate];
+    v17 = [(NSDate *)lastPurgeDate laterDate:lastPurgeDate2];
     v18 = self->_lastPurgeDate;
     self->_lastPurgeDate = v17;
 
     lastScanAttemptDate = self->_lastScanAttemptDate;
-    v20 = [v4 lastScanAttemptDate];
-    v21 = [(NSDate *)lastScanAttemptDate laterDate:v20];
+    lastScanAttemptDate2 = [recordCopy lastScanAttemptDate];
+    v21 = [(NSDate *)lastScanAttemptDate laterDate:lastScanAttemptDate2];
     v22 = self->_lastScanAttemptDate;
     self->_lastScanAttemptDate = v21;
 
@@ -2281,8 +2281,8 @@ LABEL_25:
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v23 = [v4 deviceRecord];
-    v24 = [v23 countByEnumeratingWithState:&v65 objects:v69 count:16];
+    deviceRecord2 = [recordCopy deviceRecord];
+    v24 = [deviceRecord2 countByEnumeratingWithState:&v65 objects:v69 count:16];
     if (v24)
     {
       v25 = v24;
@@ -2293,7 +2293,7 @@ LABEL_25:
         {
           if (*v66 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(deviceRecord2);
           }
 
           v28 = *(*(&v65 + 1) + 8 * i);
@@ -2301,33 +2301,33 @@ LABEL_25:
 
           if (v29)
           {
-            v30 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v28];
-            v31 = [v4 deviceRecord];
-            v32 = [v31 objectForKeyedSubscript:v28];
+            deviceRecord4 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v28];
+            deviceRecord3 = [recordCopy deviceRecord];
+            v32 = [deviceRecord3 objectForKeyedSubscript:v28];
 
-            [v30 mergeWithAnotherSingleDeviceRecord:v32];
+            [deviceRecord4 mergeWithAnotherSingleDeviceRecord:v32];
           }
 
           else
           {
-            v30 = [v4 deviceRecord];
-            v32 = [v30 objectForKeyedSubscript:v28];
+            deviceRecord4 = [recordCopy deviceRecord];
+            v32 = [deviceRecord4 objectForKeyedSubscript:v28];
             [(NSMutableDictionary *)self->_deviceRecord setObject:v32 forKeyedSubscript:v28];
           }
 
           v33 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v28];
-          v34 = [v33 uuid];
+          uuid = [v33 uuid];
 
-          if (v34)
+          if (uuid)
           {
             deviceUUIDToAddress = self->_deviceUUIDToAddress;
             v36 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v28];
-            v37 = [v36 uuid];
-            [(NSMutableDictionary *)deviceUUIDToAddress setObject:v28 forKeyedSubscript:v37];
+            uuid2 = [v36 uuid];
+            [(NSMutableDictionary *)deviceUUIDToAddress setObject:v28 forKeyedSubscript:uuid2];
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v65 objects:v69 count:16];
+        v25 = [deviceRecord2 countByEnumeratingWithState:&v65 objects:v69 count:16];
       }
 
       while (v25);
@@ -2339,22 +2339,22 @@ LABEL_25:
       v39 = self->_settings;
       v40 = v38;
       v41 = [(TADeviceRecordSettings *)v39 description];
-      v42 = [v41 UTF8String];
-      v43 = [(NSDate *)self->_lastPurgeDate getDateString];
-      v44 = [v43 UTF8String];
-      v45 = [(NSDate *)self->_lastScanAttemptDate getDateString];
-      v46 = [v45 UTF8String];
+      uTF8String7 = [v41 UTF8String];
+      getDateString5 = [(NSDate *)self->_lastPurgeDate getDateString];
+      uTF8String8 = [getDateString5 UTF8String];
+      getDateString6 = [(NSDate *)self->_lastScanAttemptDate getDateString];
+      uTF8String9 = [getDateString6 UTF8String];
       v47 = [(NSMutableDictionary *)self->_deviceRecord count];
       v48 = [(NSMutableDictionary *)self->_deviceUUIDToAddress count];
       buf = 68290306;
       v71 = 2082;
       v72 = "";
       v73 = 2082;
-      v74 = v42;
+      v74 = uTF8String7;
       v75 = 2082;
-      v76 = v44;
+      v76 = uTF8String8;
       v77 = 2082;
-      v78 = v46;
+      v78 = uTF8String9;
       v79 = 2050;
       v80 = v47;
       v81 = 2050;
@@ -2371,28 +2371,28 @@ LABEL_25:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceStagedDetectionsToSurfaceImmediatelyWithAdvertisement:(id)a3 withReason:(unint64_t)a4
+- (void)forceStagedDetectionsToSurfaceImmediatelyWithAdvertisement:(id)advertisement withReason:(unint64_t)reason
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  advertisementCopy = advertisement;
   deviceRecord = self->_deviceRecord;
-  v7 = [v5 address];
-  v8 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:v7];
+  address = [advertisementCopy address];
+  v8 = [(NSMutableDictionary *)deviceRecord objectForKeyedSubscript:address];
 
   if (v8)
   {
-    v9 = [v8 getStagedDetections];
-    v10 = [v9 count];
+    getStagedDetections = [v8 getStagedDetections];
+    v10 = [getStagedDetections count];
 
     if (v10)
     {
-      if ([v5 getDeviceType] != 3 || -[TADeviceRecordSettings shouldAlertHELEImmediatelyForImmediateTypes](self->_settings, "shouldAlertHELEImmediatelyForImmediateTypes"))
+      if ([advertisementCopy getDeviceType] != 3 || -[TADeviceRecordSettings shouldAlertHELEImmediatelyForImmediateTypes](self->_settings, "shouldAlertHELEImmediatelyForImmediateTypes"))
       {
         v11 = TAStatusLog;
         if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
         {
           v12 = v11;
-          v13 = [v5 description];
+          v13 = [advertisementCopy description];
           v14 = [v8 description];
           buf = 68289539;
           v44 = 2082;
@@ -2404,7 +2404,7 @@ LABEL_25:
           _os_log_impl(&dword_26F2E2000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TADeviceRecord forcing staged detections to surface immediately, advertisement:%{private}@, singleDeviceRecord:%{private}@}", &buf, 0x26u);
         }
 
-        v33 = v5;
+        v33 = advertisementCopy;
         v40 = 0u;
         v41 = 0u;
         v38 = 0u;
@@ -2412,7 +2412,7 @@ LABEL_25:
         v35 = v8;
         obj = [v8 getStagedDetections];
         v15 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
-        v16 = a4;
+        reasonCopy2 = reason;
         if (v15)
         {
           v17 = v15;
@@ -2427,33 +2427,33 @@ LABEL_25:
               }
 
               v19 = *(*(&v38 + 1) + 8 * i);
-              v20 = [v19 detection];
-              v21 = [(TADeviceRecord *)self _determineFirstObservationDateWithTASuspiciousDevice:v20];
+              detection = [v19 detection];
+              v21 = [(TADeviceRecord *)self _determineFirstObservationDateWithTASuspiciousDevice:detection];
 
-              v22 = [v19 detection];
-              [v22 updateForceReasonWith:v16];
+              detection2 = [v19 detection];
+              [detection2 updateForceReasonWith:reasonCopy2];
 
-              v23 = [v19 detection];
-              v24 = [v23 latestAdvertisement];
-              if ([v24 getDeviceType] == 3)
+              detection3 = [v19 detection];
+              latestAdvertisement = [detection3 latestAdvertisement];
+              if ([latestAdvertisement getDeviceType] == 3)
               {
 
 LABEL_16:
                 v29 = MEMORY[0x277CBEAA8];
-                v30 = [(TADeviceRecord *)self settings];
-                [v30 maxExpectedHELEWildInterval];
+                settings = [(TADeviceRecord *)self settings];
+                [settings maxExpectedHELEWildInterval];
                 goto LABEL_19;
               }
 
-              v25 = [v35 accessoryInfo];
-              if (v25)
+              accessoryInfo = [v35 accessoryInfo];
+              if (accessoryInfo)
               {
-                v26 = v25;
-                v27 = [v35 accessoryInfo];
-                v28 = [v27 isHawkeyeAudioAccessory];
+                v26 = accessoryInfo;
+                accessoryInfo2 = [v35 accessoryInfo];
+                isHawkeyeAudioAccessory = [accessoryInfo2 isHawkeyeAudioAccessory];
 
-                v16 = a4;
-                if (v28)
+                reasonCopy2 = reason;
+                if (isHawkeyeAudioAccessory)
                 {
                   goto LABEL_16;
                 }
@@ -2464,8 +2464,8 @@ LABEL_16:
               }
 
               v29 = MEMORY[0x277CBEAA8];
-              v30 = [(TADeviceRecord *)self settings];
-              [v30 maxExpectedDurianWildInterval];
+              settings = [(TADeviceRecord *)self settings];
+              [settings maxExpectedDurianWildInterval];
 LABEL_19:
               v31 = [v29 dateWithTimeInterval:v21 sinceDate:?];
 
@@ -2478,7 +2478,7 @@ LABEL_19:
           while (v17);
         }
 
-        v5 = v33;
+        advertisementCopy = v33;
         v8 = v35;
       }
     }
@@ -2487,10 +2487,10 @@ LABEL_19:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didSurfaceNotificationFor:(id)a3
+- (void)_didSurfaceNotificationFor:(id)for
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:for];
   v4 = v3;
   if (v3)
   {
@@ -2533,60 +2533,60 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasSurfacedNotificationFor:(id)a3
+- (BOOL)hasSurfacedNotificationFor:(id)for
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:for];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 hasSurfacedNotification];
+    hasSurfacedNotification = [v3 hasSurfacedNotification];
   }
 
   else
   {
-    v5 = 0;
+    hasSurfacedNotification = 0;
   }
 
-  return v5;
+  return hasSurfacedNotification;
 }
 
-- (BOOL)hasStagedImmediateDetections:(id)a3
+- (BOOL)hasStagedImmediateDetections:(id)detections
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:detections];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 hasStagedImmediateDetections];
+    hasStagedImmediateDetections = [v3 hasStagedImmediateDetections];
   }
 
   else
   {
-    v5 = 0;
+    hasStagedImmediateDetections = 0;
   }
 
-  return v5;
+  return hasStagedImmediateDetections;
 }
 
-- (unint64_t)getNumStagedDetections:(id)a3
+- (unint64_t)getNumStagedDetections:(id)detections
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:detections];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 numStagedDetections];
+    numStagedDetections = [v3 numStagedDetections];
   }
 
   else
   {
-    v5 = 0;
+    numStagedDetections = 0;
   }
 
-  return v5;
+  return numStagedDetections;
 }
 
-- (id)getFirstStagedDetectionDate:(id)a3
+- (id)getFirstStagedDetectionDate:(id)date
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:date];
   v4 = v3;
   if (v3)
   {
@@ -2602,26 +2602,26 @@ LABEL_6:
   return v5;
 }
 
-- (unint64_t)getNumOfAISFetch:(id)a3
+- (unint64_t)getNumOfAISFetch:(id)fetch
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:fetch];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 AISFetchCount];
+    aISFetchCount = [v3 AISFetchCount];
   }
 
   else
   {
-    v5 = 0;
+    aISFetchCount = 0;
   }
 
-  return v5;
+  return aISFetchCount;
 }
 
-- (BOOL)isAISFetchSuccessful:(id)a3
+- (BOOL)isAISFetchSuccessful:(id)successful
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:successful];
   v4 = v3;
   if (v3)
   {
@@ -2636,34 +2636,34 @@ LABEL_6:
   return v5;
 }
 
-- (void)processBackgroundDetection:(id)a3
+- (void)processBackgroundDetection:(id)detection
 {
-  if (a3)
+  if (detection)
   {
-    v4 = a3;
-    v5 = [v4 latestAdvertisement];
-    v6 = [v4 date];
-    [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:v5 withDate:v6];
+    detectionCopy = detection;
+    latestAdvertisement = [detectionCopy latestAdvertisement];
+    date = [detectionCopy date];
+    [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:latestAdvertisement withDate:date];
 
-    v7 = [v4 address];
-    v8 = [(TADeviceRecord *)self _getDeviceRecord:v7];
+    address = [detectionCopy address];
+    v8 = [(TADeviceRecord *)self _getDeviceRecord:address];
 
-    [v8 processBackgroundDetection:v4];
+    [v8 processBackgroundDetection:detectionCopy];
   }
 }
 
-- (void)processSurfacedAlerts:(id)a3
+- (void)processSurfacedAlerts:(id)alerts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  alertsCopy = alerts;
+  v5 = alertsCopy;
+  if (alertsCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v6 = [alertsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2678,12 +2678,12 @@ LABEL_6:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 latestAdvertisement];
-          v12 = [v10 date];
-          [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:v11 withDate:v12];
+          latestAdvertisement = [v10 latestAdvertisement];
+          date = [v10 date];
+          [(TADeviceRecord *)self _createRecordIfNecessaryWithAdvertisement:latestAdvertisement withDate:date];
 
-          v13 = [v10 address];
-          v14 = [(TADeviceRecord *)self _getDeviceRecord:v13];
+          address = [v10 address];
+          v14 = [(TADeviceRecord *)self _getDeviceRecord:address];
 
           [v14 processSurfacedAlert:v10];
         }
@@ -2698,68 +2698,68 @@ LABEL_6:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getLatestBeepOnMoveDate:(id)a3
+- (id)getLatestBeepOnMoveDate:(id)date
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:date];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 latestBeepOnMoveDate];
+    latestBeepOnMoveDate = [v3 latestBeepOnMoveDate];
   }
 
   else
   {
-    v5 = 0;
+    latestBeepOnMoveDate = 0;
   }
 
-  return v5;
+  return latestBeepOnMoveDate;
 }
 
-- (unint64_t)getDeviceType:(id)a3
+- (unint64_t)getDeviceType:(id)type
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 getDeviceType];
+    getDeviceType = [v3 getDeviceType];
   }
 
   else
   {
-    v5 = 0;
+    getDeviceType = 0;
   }
 
-  return v5;
+  return getDeviceType;
 }
 
-- (id)getAccessoryInfo:(id)a3
+- (id)getAccessoryInfo:(id)info
 {
-  v3 = [(TADeviceRecord *)self _getDeviceRecord:a3];
+  v3 = [(TADeviceRecord *)self _getDeviceRecord:info];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 accessoryInfo];
+    accessoryInfo = [v3 accessoryInfo];
   }
 
   else
   {
-    v5 = 0;
+    accessoryInfo = 0;
   }
 
-  return v5;
+  return accessoryInfo;
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
-  v4 = a3;
-  [(TADeviceRecord *)self _clearStagedDetectionsForDevice:v4];
-  [(NSMutableDictionary *)self->_deviceRecord removeObjectForKey:v4];
+  deviceCopy = device;
+  [(TADeviceRecord *)self _clearStagedDetectionsForDevice:deviceCopy];
+  [(NSMutableDictionary *)self->_deviceRecord removeObjectForKey:deviceCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -2769,34 +2769,34 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(TADeviceRecord *)self deviceRecord];
-      v8 = [(TADeviceRecord *)v6 deviceRecord];
-      if (v7 != v8)
+      v6 = equalCopy;
+      deviceRecord = [(TADeviceRecord *)self deviceRecord];
+      deviceRecord2 = [(TADeviceRecord *)v6 deviceRecord];
+      if (deviceRecord != deviceRecord2)
       {
-        v9 = [(TADeviceRecord *)self deviceRecord];
+        deviceRecord3 = [(TADeviceRecord *)self deviceRecord];
         [(TADeviceRecord *)v6 deviceRecord];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = deviceRecord3;
+        if (![deviceRecord3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(TADeviceRecord *)self lastPurgeDate];
-      v12 = [(TADeviceRecord *)v6 lastPurgeDate];
-      if (v11 != v12)
+      lastPurgeDate = [(TADeviceRecord *)self lastPurgeDate];
+      lastPurgeDate2 = [(TADeviceRecord *)v6 lastPurgeDate];
+      if (lastPurgeDate != lastPurgeDate2)
       {
-        v3 = [(TADeviceRecord *)self lastPurgeDate];
-        v30 = [(TADeviceRecord *)v6 lastPurgeDate];
-        if (![v3 isEqual:?])
+        lastPurgeDate3 = [(TADeviceRecord *)self lastPurgeDate];
+        lastPurgeDate4 = [(TADeviceRecord *)v6 lastPurgeDate];
+        if (![lastPurgeDate3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (deviceRecord == deviceRecord2)
           {
 LABEL_25:
 
@@ -2809,38 +2809,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(TADeviceRecord *)self lastScanAttemptDate];
-      v14 = [(TADeviceRecord *)v6 lastScanAttemptDate];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      lastScanAttemptDate = [(TADeviceRecord *)self lastScanAttemptDate];
+      lastScanAttemptDate2 = [(TADeviceRecord *)v6 lastScanAttemptDate];
+      v31 = lastScanAttemptDate;
+      v15 = lastScanAttemptDate == lastScanAttemptDate2;
+      v16 = lastScanAttemptDate2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = lastPurgeDate3;
+        v29 = lastPurgeDate2;
       }
 
       else
       {
-        v17 = [(TADeviceRecord *)self lastScanAttemptDate];
-        v25 = [(TADeviceRecord *)v6 lastScanAttemptDate];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        lastScanAttemptDate3 = [(TADeviceRecord *)self lastScanAttemptDate];
+        lastScanAttemptDate4 = [(TADeviceRecord *)v6 lastScanAttemptDate];
+        v26 = lastScanAttemptDate3;
+        if (![lastScanAttemptDate3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = lastPurgeDate3;
+        v29 = lastPurgeDate2;
       }
 
       v27 = v16;
-      v18 = [(TADeviceRecord *)self settings];
-      v19 = [(TADeviceRecord *)v6 settings];
-      v20 = v19;
-      if (v18 == v19)
+      settings = [(TADeviceRecord *)self settings];
+      settings2 = [(TADeviceRecord *)v6 settings];
+      v20 = settings2;
+      if (settings == settings2)
       {
 
         v10 = 1;
@@ -2848,20 +2848,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(TADeviceRecord *)self settings];
-        v22 = [(TADeviceRecord *)v6 settings];
-        v10 = [v21 isEqual:v22];
+        settings3 = [(TADeviceRecord *)self settings];
+        settings4 = [(TADeviceRecord *)v6 settings];
+        v10 = [settings3 isEqual:settings4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      lastPurgeDate3 = v28;
+      lastPurgeDate2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (lastPurgeDate == lastPurgeDate2)
         {
           goto LABEL_23;
         }
@@ -2889,8 +2889,8 @@ LABEL_26:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(NSMutableDictionary *)self->_deviceRecord allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [(NSMutableDictionary *)self->_deviceRecord allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2901,17 +2901,17 @@ LABEL_26:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v8];
-        v10 = [v9 descriptionDictionary];
-        v11 = [v8 hexString];
-        [0 setObject:v10 forKey:v11];
+        descriptionDictionary = [v9 descriptionDictionary];
+        hexString = [v8 hexString];
+        [0 setObject:descriptionDictionary forKey:hexString];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -2925,9 +2925,9 @@ LABEL_26:
 
 - (id)description
 {
-  v3 = [(TADeviceRecord *)self descriptionDictionary];
+  descriptionDictionary = [(TADeviceRecord *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -2937,23 +2937,23 @@ LABEL_26:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (TADeviceRecord)initWithCoder:(id)a3
+- (TADeviceRecord)initWithCoder:(id)coder
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v48.receiver = self;
   v48.super_class = TADeviceRecord;
   v5 = [(TADeviceRecord *)&v48 init];
@@ -2963,18 +2963,18 @@ LABEL_26:
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"DeviceRecord"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"DeviceRecord"];
     deviceRecord = v5->_deviceRecord;
     v5->_deviceRecord = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastPurgeDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastPurgeDate"];
     lastPurgeDate = v5->_lastPurgeDate;
     v5->_lastPurgeDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastScanAttemptDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastScanAttemptDate"];
     if (v14)
     {
-      [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastScanAttemptDate"];
+      [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastScanAttemptDate"];
     }
 
     else
@@ -2985,7 +2985,7 @@ LABEL_26:
     lastScanAttemptDate = v5->_lastScanAttemptDate;
     v5->_lastScanAttemptDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Settings"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Settings"];
     settings = v5->_settings;
     v5->_settings = v17;
 
@@ -2993,7 +2993,7 @@ LABEL_26:
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v19 setWithObjects:{v20, v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"UUIDToAddress"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"UUIDToAddress"];
     deviceUUIDToAddress = v5->_deviceUUIDToAddress;
     v5->_deviceUUIDToAddress = v23;
 
@@ -3014,13 +3014,13 @@ LABEL_26:
       v5->_deviceUUIDToAddress = v26;
     }
 
-    v43 = v4;
+    v43 = coderCopy;
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v28 = [(NSMutableDictionary *)v5->_deviceRecord allKeys];
-    v29 = [v28 countByEnumeratingWithState:&v44 objects:v55 count:16];
+    allKeys = [(NSMutableDictionary *)v5->_deviceRecord allKeys];
+    v29 = [allKeys countByEnumeratingWithState:&v44 objects:v55 count:16];
     if (v29)
     {
       v30 = v29;
@@ -3031,18 +3031,18 @@ LABEL_26:
         {
           if (*v45 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(allKeys);
           }
 
           v33 = *(*(&v44 + 1) + 8 * i);
           v34 = [(NSMutableDictionary *)v5->_deviceRecord objectForKeyedSubscript:v33];
-          v35 = [v34 uuid];
+          uuid = [v34 uuid];
 
-          if (v35)
+          if (uuid)
           {
             v36 = v5->_deviceUUIDToAddress;
-            v37 = [v34 uuid];
-            [(NSMutableDictionary *)v36 setObject:v33 forKey:v37];
+            uuid2 = [v34 uuid];
+            [(NSMutableDictionary *)v36 setObject:v33 forKey:uuid2];
           }
 
           else
@@ -3051,40 +3051,40 @@ LABEL_26:
             if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
             {
               v39 = v38;
-              v40 = [v33 hexString];
+              hexString = [v33 hexString];
               *buf = 68289283;
               v50 = 0;
               v51 = 2082;
               v52 = "";
               v53 = 2113;
-              v54 = v40;
+              v54 = hexString;
               _os_log_impl(&dword_26F2E2000, v39, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#TADeviceRecord found a record with address but no uuid, address:%{private}@}", buf, 0x1Cu);
             }
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v44 objects:v55 count:16];
+        v30 = [allKeys countByEnumeratingWithState:&v44 objects:v55 count:16];
       }
 
       while (v30);
     }
 
-    v4 = v43;
+    coderCopy = v43;
   }
 
   v41 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceRecord = self->_deviceRecord;
-  v5 = a3;
-  [v5 encodeObject:deviceRecord forKey:@"DeviceRecord"];
-  [v5 encodeObject:self->_lastPurgeDate forKey:@"LastPurgeDate"];
-  [v5 encodeObject:self->_lastScanAttemptDate forKey:@"LastScanAttemptDate"];
-  [v5 encodeObject:self->_settings forKey:@"Settings"];
-  [v5 encodeObject:self->_deviceUUIDToAddress forKey:@"UUIDToAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceRecord forKey:@"DeviceRecord"];
+  [coderCopy encodeObject:self->_lastPurgeDate forKey:@"LastPurgeDate"];
+  [coderCopy encodeObject:self->_lastScanAttemptDate forKey:@"LastScanAttemptDate"];
+  [coderCopy encodeObject:self->_settings forKey:@"Settings"];
+  [coderCopy encodeObject:self->_deviceUUIDToAddress forKey:@"UUIDToAddress"];
 }
 
 - (TAStoreRequestProtocol)delegate

@@ -1,34 +1,34 @@
 @interface DESChunk
-- (BOOL)isEqual:(id)a3;
-- (DESChunk)initWithKey:(id)a3 clippingBound:(id)a4 data:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (DESChunk)initWithKey:(id)key clippingBound:(id)bound data:(id)data;
 - (unint64_t)hash;
 @end
 
 @implementation DESChunk
 
-- (DESChunk)initWithKey:(id)a3 clippingBound:(id)a4 data:(id)a5
+- (DESChunk)initWithKey:(id)key clippingBound:(id)bound data:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  boundCopy = bound;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = DESChunk;
   v12 = [(DESChunk *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_key, a3);
-    objc_storeStrong(&v13->_clippingBound, a4);
-    objc_storeStrong(&v13->_data, a5);
+    objc_storeStrong(&v12->_key, key);
+    objc_storeStrong(&v13->_clippingBound, bound);
+    objc_storeStrong(&v13->_data, data);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -38,18 +38,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(DESChunk *)self key];
       v7 = [(DESChunk *)v5 key];
       if ([v6 isEqualToString:v7])
       {
-        v8 = [(DESChunk *)self clippingBound];
-        v9 = [(DESChunk *)v5 clippingBound];
-        if (v8 == v9)
+        clippingBound = [(DESChunk *)self clippingBound];
+        clippingBound2 = [(DESChunk *)v5 clippingBound];
+        if (clippingBound == clippingBound2)
         {
-          v11 = [(DESChunk *)self data];
-          v12 = [(DESChunk *)v5 data];
-          v10 = [v11 isEqualToData:v12];
+          data = [(DESChunk *)self data];
+          data2 = [(DESChunk *)v5 data];
+          v10 = [data isEqualToData:data2];
         }
 
         else

@@ -1,20 +1,20 @@
 @interface MTStateMachineState
 - (MTStateMachine)stateMachine;
-- (MTStateMachineState)initWithStateMachine:(id)a3;
+- (MTStateMachineState)initWithStateMachine:(id)machine;
 @end
 
 @implementation MTStateMachineState
 
-- (MTStateMachineState)initWithStateMachine:(id)a3
+- (MTStateMachineState)initWithStateMachine:(id)machine
 {
-  v4 = a3;
+  machineCopy = machine;
   v8.receiver = self;
   v8.super_class = MTStateMachineState;
   v5 = [(MTStateMachineState *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_stateMachine, v4);
+    objc_storeWeak(&v5->_stateMachine, machineCopy);
   }
 
   return v6;

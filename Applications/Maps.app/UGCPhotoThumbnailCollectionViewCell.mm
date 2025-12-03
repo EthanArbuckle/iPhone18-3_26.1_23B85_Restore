@@ -1,14 +1,14 @@
 @interface UGCPhotoThumbnailCollectionViewCell
 + (NSString)reuseIdentifier;
-- (UGCPhotoThumbnailCollectionViewCell)initWithFrame:(CGRect)a3;
+- (UGCPhotoThumbnailCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIImage)image;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateBadge;
 - (void)prepareForReuse;
-- (void)setImage:(id)a3;
-- (void)setProviderName:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setImage:(id)image;
+- (void)setProviderName:(id)name;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UGCPhotoThumbnailCollectionViewCell
@@ -26,17 +26,17 @@
   self->_providerName = 0;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = UGCPhotoThumbnailCollectionViewCell;
-  v4 = a3;
-  [(UGCPhotoThumbnailCollectionViewCell *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UGCPhotoThumbnailCollectionViewCell *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(UGCPhotoThumbnailCollectionViewCell *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     [(UGCPhotoThumbnailCollectionViewCell *)self _updateBadge];
@@ -82,12 +82,12 @@
   }
 }
 
-- (void)setProviderName:(id)a3
+- (void)setProviderName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (([(NSString *)self->_providerName isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     providerName = self->_providerName;
     self->_providerName = v4;
 
@@ -98,62 +98,62 @@
 
 - (UIImage)image
 {
-  v2 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v3 = [v2 image];
+  photoImageView = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  image = [photoImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  photoImageView = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  [photoImageView setImage:imageCopy];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(UGCPhotoThumbnailCollectionViewCell *)self contentView];
-  v37 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v36 = [v37 leadingAnchor];
-  v35 = [v3 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  contentView = [(UGCPhotoThumbnailCollectionViewCell *)self contentView];
+  photoImageView = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  leadingAnchor = [photoImageView leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[0] = v34;
-  v33 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v32 = [v33 trailingAnchor];
-  v31 = [v3 trailingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  photoImageView2 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  trailingAnchor = [photoImageView2 trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[1] = v30;
-  v28 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v27 = [v28 topAnchor];
-  v29 = v3;
-  v26 = [v3 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  photoImageView3 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  topAnchor = [photoImageView3 topAnchor];
+  v29 = contentView;
+  topAnchor2 = [contentView topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[2] = v25;
-  v24 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v23 = [v24 bottomAnchor];
-  v22 = [v3 bottomAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  photoImageView4 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  bottomAnchor = [photoImageView4 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[3] = v21;
-  v19 = [(UGCPhotoThumbnailBadgeView *)self->_badgeView leadingAnchor];
-  v20 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v18 = [v20 leadingAnchor];
-  v17 = [v19 constraintGreaterThanOrEqualToAnchor:v18 constant:kMUPlaceSystemSpacing];
+  leadingAnchor3 = [(UGCPhotoThumbnailBadgeView *)self->_badgeView leadingAnchor];
+  photoImageView5 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  leadingAnchor4 = [photoImageView5 leadingAnchor];
+  v17 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:kMUPlaceSystemSpacing];
   v38[4] = v17;
-  v15 = [(UGCPhotoThumbnailBadgeView *)self->_badgeView trailingAnchor];
-  v16 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v14 = [v16 trailingAnchor];
-  v4 = [v15 constraintEqualToAnchor:v14];
+  trailingAnchor3 = [(UGCPhotoThumbnailBadgeView *)self->_badgeView trailingAnchor];
+  photoImageView6 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  trailingAnchor4 = [photoImageView6 trailingAnchor];
+  v4 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v38[5] = v4;
-  v5 = [(UGCPhotoThumbnailBadgeView *)self->_badgeView bottomAnchor];
-  v6 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v7 = [v6 bottomAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  bottomAnchor3 = [(UGCPhotoThumbnailBadgeView *)self->_badgeView bottomAnchor];
+  photoImageView7 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  bottomAnchor4 = [photoImageView7 bottomAnchor];
+  v8 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v38[6] = v8;
-  v9 = [(UGCPhotoThumbnailBadgeView *)self->_badgeView topAnchor];
-  v10 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
-  v11 = [v10 topAnchor];
-  v12 = [v9 constraintGreaterThanOrEqualToAnchor:v11];
+  topAnchor3 = [(UGCPhotoThumbnailBadgeView *)self->_badgeView topAnchor];
+  photoImageView8 = [(UGCPhotoThumbnailCollectionViewCell *)self photoImageView];
+  topAnchor4 = [photoImageView8 topAnchor];
+  v12 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v38[7] = v12;
   v13 = [NSArray arrayWithObjects:v38 count:8];
   [NSLayoutConstraint activateConstraints:v13];
@@ -174,12 +174,12 @@
   [(UIImageView *)self->_photoImageView setClipsToBounds:1];
   [(UIImageView *)self->_photoImageView setAccessibilityIgnoresInvertColors:1];
   [(UIImageView *)self->_photoImageView setAccessibilityIdentifier:@"PhotoImageView"];
-  v9 = [(UGCPhotoThumbnailCollectionViewCell *)self contentView];
-  [v9 addSubview:self->_photoImageView];
+  contentView = [(UGCPhotoThumbnailCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_photoImageView];
 
-  v10 = [[_TtC4Maps26UGCPhotoThumbnailBadgeView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[_TtC4Maps26UGCPhotoThumbnailBadgeView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   badgeView = self->_badgeView;
-  self->_badgeView = v10;
+  self->_badgeView = height;
 
   [(UGCPhotoThumbnailBadgeView *)self->_badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = self->_photoImageView;
@@ -188,11 +188,11 @@
   [(UIImageView *)v12 addSubview:v13];
 }
 
-- (UGCPhotoThumbnailCollectionViewCell)initWithFrame:(CGRect)a3
+- (UGCPhotoThumbnailCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = UGCPhotoThumbnailCollectionViewCell;
-  v3 = [(UGCPhotoThumbnailCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCPhotoThumbnailCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();

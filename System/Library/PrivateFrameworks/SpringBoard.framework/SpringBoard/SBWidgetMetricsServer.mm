@@ -3,46 +3,46 @@
 - (SBSWidgetMetricsProviding)lockScreenMetricsProvider;
 - (SBSWidgetMetricsProviding)systemMetricsProvider;
 - (SBWidgetMetricsServer)init;
-- (SBWidgetMetricsServer)initWithSystemMetricsProvider:(id)a3 lockScreenMetricsProvider:(id)a4 ambientMetricsProvider:(id)a5;
-- (id)_defaultMetricsProviderForWidget:(id)a3;
-- (id)_metricsProviderForHostingEnvironment:(id)a3;
-- (id)previewMetricsSpecificationForBundleIdentifier:(id)a3;
-- (id)previewMetricsSpecificationForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5;
-- (id)previewMetricsSpecificationsForBundleIdentifier:(id)a3;
-- (id)previewMetricsSpecificationsForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5;
-- (id)systemMetricsForWidget:(id)a3;
-- (id)systemMetricsForWidget:(id)a3 inHostingEnvironment:(id)a4;
+- (SBWidgetMetricsServer)initWithSystemMetricsProvider:(id)provider lockScreenMetricsProvider:(id)metricsProvider ambientMetricsProvider:(id)ambientMetricsProvider;
+- (id)_defaultMetricsProviderForWidget:(id)widget;
+- (id)_metricsProviderForHostingEnvironment:(id)environment;
+- (id)previewMetricsSpecificationForBundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationsForBundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationsForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier;
+- (id)systemMetricsForWidget:(id)widget;
+- (id)systemMetricsForWidget:(id)widget inHostingEnvironment:(id)environment;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation SBWidgetMetricsServer
 
 - (SBWidgetMetricsServer)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBWidgetMetricsServer.m" lineNumber:43 description:@"Use initWithMetricsProvider:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBWidgetMetricsServer.m" lineNumber:43 description:@"Use initWithMetricsProvider:"];
 
   return 0;
 }
 
-- (SBWidgetMetricsServer)initWithSystemMetricsProvider:(id)a3 lockScreenMetricsProvider:(id)a4 ambientMetricsProvider:(id)a5
+- (SBWidgetMetricsServer)initWithSystemMetricsProvider:(id)provider lockScreenMetricsProvider:(id)metricsProvider ambientMetricsProvider:(id)ambientMetricsProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  metricsProviderCopy = metricsProvider;
+  ambientMetricsProviderCopy = ambientMetricsProvider;
   v26.receiver = self;
   v26.super_class = SBWidgetMetricsServer;
   v11 = [(SBWidgetMetricsServer *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_systemMetricsProvider, v8);
-    objc_storeWeak(&v12->_lockScreenMetricsProvider, v9);
-    objc_storeWeak(&v12->_ambientMetricsProvider, v10);
-    v13 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v11->_systemMetricsProvider, providerCopy);
+    objc_storeWeak(&v12->_lockScreenMetricsProvider, metricsProviderCopy);
+    objc_storeWeak(&v12->_ambientMetricsProvider, ambientMetricsProviderCopy);
+    array = [MEMORY[0x277CBEB18] array];
     connections = v12->_connections;
-    v12->_connections = v13;
+    v12->_connections = array;
 
     v15 = [objc_alloc(MEMORY[0x277D0AAF8]) initWithEntitlement:@"com.apple.springboard.widget-metrics"];
     authenticator = v12->_authenticator;
@@ -81,42 +81,42 @@ void __104__SBWidgetMetricsServer_initWithSystemMetricsProvider_lockScreenMetric
 
 - (void)dealloc
 {
-  v3 = [(SBWidgetMetricsServer *)self listener];
-  [v3 invalidate];
+  listener = [(SBWidgetMetricsServer *)self listener];
+  [listener invalidate];
 
   v4.receiver = self;
   v4.super_class = SBWidgetMetricsServer;
   [(SBWidgetMetricsServer *)&v4 dealloc];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v22 = v6;
+    v22 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "SBWidgetMetricsServer: received connection: %{public}@", buf, 0xCu);
   }
 
-  v8 = [(SBWidgetMetricsServer *)self authenticator];
-  v9 = [v6 remoteProcess];
-  v10 = [v9 auditToken];
-  v11 = [v8 authenticateAuditToken:v10];
+  authenticator = [(SBWidgetMetricsServer *)self authenticator];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  v11 = [authenticator authenticateAuditToken:auditToken];
 
   if (v11)
   {
-    v12 = [(SBWidgetMetricsServer *)self queue];
+    queue = [(SBWidgetMetricsServer *)self queue];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __67__SBWidgetMetricsServer_listener_didReceiveConnection_withContext___block_invoke;
     v18 = &unk_2783A92D8;
-    v13 = v6;
+    v13 = connectionCopy;
     v19 = v13;
-    v20 = self;
-    dispatch_sync(v12, &v15);
+    selfCopy = self;
+    dispatch_sync(queue, &v15);
 
     [v13 activate];
   }
@@ -126,10 +126,10 @@ void __104__SBWidgetMetricsServer_initWithSystemMetricsProvider_lockScreenMetric
     v14 = SBLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [SBWidgetMetricsServer listener:v6 didReceiveConnection:v14 withContext:?];
+      [SBWidgetMetricsServer listener:connectionCopy didReceiveConnection:v14 withContext:?];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -201,33 +201,33 @@ void __67__SBWidgetMetricsServer_listener_didReceiveConnection_withContext___blo
   }
 }
 
-- (id)_defaultMetricsProviderForWidget:(id)a3
+- (id)_defaultMetricsProviderForWidget:(id)widget
 {
-  v4 = [a3 family];
-  if (v4 <= 0xC && ((1 << v4) & 0x1C20) != 0)
+  family = [widget family];
+  if (family <= 0xC && ((1 << family) & 0x1C20) != 0)
   {
-    v5 = [(SBWidgetMetricsServer *)self lockScreenMetricsProvider];
+    lockScreenMetricsProvider = [(SBWidgetMetricsServer *)self lockScreenMetricsProvider];
   }
 
   else
   {
-    v5 = [(SBWidgetMetricsServer *)self systemMetricsProvider];
+    lockScreenMetricsProvider = [(SBWidgetMetricsServer *)self systemMetricsProvider];
   }
 
-  return v5;
+  return lockScreenMetricsProvider;
 }
 
-- (id)_metricsProviderForHostingEnvironment:(id)a3
+- (id)_metricsProviderForHostingEnvironment:(id)environment
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D67250]])
+  environmentCopy = environment;
+  if ([environmentCopy isEqualToString:*MEMORY[0x277D67250]])
   {
-    v5 = [(SBWidgetMetricsServer *)self lockScreenMetricsProvider];
+    lockScreenMetricsProvider = [(SBWidgetMetricsServer *)self lockScreenMetricsProvider];
   }
 
   else
   {
-    if ([v4 isEqualToString:*MEMORY[0x277D67240]])
+    if ([environmentCopy isEqualToString:*MEMORY[0x277D67240]])
     {
       [(SBWidgetMetricsServer *)self ambientMetricsProvider];
     }
@@ -236,31 +236,31 @@ void __67__SBWidgetMetricsServer_listener_didReceiveConnection_withContext___blo
     {
       [(SBWidgetMetricsServer *)self systemMetricsProvider];
     }
-    v5 = ;
+    lockScreenMetricsProvider = ;
   }
 
-  v6 = v5;
+  v6 = lockScreenMetricsProvider;
 
   return v6;
 }
 
-- (id)systemMetricsForWidget:(id)a3
+- (id)systemMetricsForWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [(SBWidgetMetricsServer *)self _defaultMetricsProviderForWidget:v4];
-  v6 = [v5 systemMetricsForWidget:v4];
+  widgetCopy = widget;
+  v5 = [(SBWidgetMetricsServer *)self _defaultMetricsProviderForWidget:widgetCopy];
+  v6 = [v5 systemMetricsForWidget:widgetCopy];
 
   return v6;
 }
 
-- (id)previewMetricsSpecificationForBundleIdentifier:(id)a3
+- (id)previewMetricsSpecificationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBWidgetMetricsServer *)self systemMetricsProvider];
-  v6 = [v5 previewMetricsSpecificationForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  systemMetricsProvider = [(SBWidgetMetricsServer *)self systemMetricsProvider];
+  v6 = [systemMetricsProvider previewMetricsSpecificationForBundleIdentifier:identifierCopy];
 
-  v7 = [(SBWidgetMetricsServer *)self lockScreenMetricsProvider];
-  v8 = [v7 previewMetricsSpecificationForBundleIdentifier:v4];
+  lockScreenMetricsProvider = [(SBWidgetMetricsServer *)self lockScreenMetricsProvider];
+  v8 = [lockScreenMetricsProvider previewMetricsSpecificationForBundleIdentifier:identifierCopy];
 
   v9 = objc_alloc_init(MEMORY[0x277CFA2D0]);
   v10 = [v6 metricsForFamily:1];
@@ -290,16 +290,16 @@ void __67__SBWidgetMetricsServer_listener_didReceiveConnection_withContext___blo
   return v9;
 }
 
-- (id)previewMetricsSpecificationForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5
+- (id)previewMetricsSpecificationForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBWidgetMetricsServer *)self systemMetricsProvider];
-  v12 = [v11 previewMetricsSpecificationForDeviceContext:v10 displayContext:v9 bundleIdentifier:v8];
+  identifierCopy = identifier;
+  displayContextCopy = displayContext;
+  contextCopy = context;
+  systemMetricsProvider = [(SBWidgetMetricsServer *)self systemMetricsProvider];
+  v12 = [systemMetricsProvider previewMetricsSpecificationForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
-  v13 = [(SBWidgetMetricsServer *)self lockScreenMetricsProvider];
-  v14 = [v13 previewMetricsSpecificationForDeviceContext:v10 displayContext:v9 bundleIdentifier:v8];
+  lockScreenMetricsProvider = [(SBWidgetMetricsServer *)self lockScreenMetricsProvider];
+  v14 = [lockScreenMetricsProvider previewMetricsSpecificationForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
   v15 = objc_alloc_init(MEMORY[0x277CFA2D0]);
   v16 = [v12 metricsForFamily:1];
@@ -329,30 +329,30 @@ void __67__SBWidgetMetricsServer_listener_didReceiveConnection_withContext___blo
   return v15;
 }
 
-- (id)systemMetricsForWidget:(id)a3 inHostingEnvironment:(id)a4
+- (id)systemMetricsForWidget:(id)widget inHostingEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = [(SBWidgetMetricsServer *)self _metricsProviderForHostingEnvironment:a4];
-  v8 = [v7 systemMetricsForWidget:v6];
+  widgetCopy = widget;
+  v7 = [(SBWidgetMetricsServer *)self _metricsProviderForHostingEnvironment:environment];
+  v8 = [v7 systemMetricsForWidget:widgetCopy];
 
   return v8;
 }
 
-- (id)previewMetricsSpecificationsForBundleIdentifier:(id)a3
+- (id)previewMetricsSpecificationsForBundleIdentifier:(id)identifier
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D67248];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(SBWidgetMetricsServer *)self _metricsProviderForHostingEnvironment:v4];
-  v7 = [v6 previewMetricsSpecificationForBundleIdentifier:v5];
+  v7 = [v6 previewMetricsSpecificationForBundleIdentifier:identifierCopy];
 
   v8 = *MEMORY[0x277D67250];
   v9 = [(SBWidgetMetricsServer *)self _metricsProviderForHostingEnvironment:*MEMORY[0x277D67250]];
-  v10 = [v9 previewMetricsSpecificationForBundleIdentifier:v5];
+  v10 = [v9 previewMetricsSpecificationForBundleIdentifier:identifierCopy];
 
   v11 = *MEMORY[0x277D67240];
   v12 = [(SBWidgetMetricsServer *)self _metricsProviderForHostingEnvironment:*MEMORY[0x277D67240]];
-  v13 = [v12 previewMetricsSpecificationForBundleIdentifier:v5];
+  v13 = [v12 previewMetricsSpecificationForBundleIdentifier:identifierCopy];
 
   v16[0] = v4;
   v16[1] = v8;
@@ -365,23 +365,23 @@ void __67__SBWidgetMetricsServer_listener_didReceiveConnection_withContext___blo
   return v14;
 }
 
-- (id)previewMetricsSpecificationsForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5
+- (id)previewMetricsSpecificationsForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier
 {
   v23[3] = *MEMORY[0x277D85DE8];
   v8 = *MEMORY[0x277D67248];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  identifierCopy = identifier;
+  displayContextCopy = displayContext;
+  contextCopy = context;
   v12 = [(SBWidgetMetricsServer *)self _metricsProviderForHostingEnvironment:v8];
-  v13 = [v12 previewMetricsSpecificationForDeviceContext:v11 displayContext:v10 bundleIdentifier:v9];
+  v13 = [v12 previewMetricsSpecificationForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
   v14 = *MEMORY[0x277D67250];
   v15 = [(SBWidgetMetricsServer *)self _metricsProviderForHostingEnvironment:*MEMORY[0x277D67250]];
-  v16 = [v15 previewMetricsSpecificationForDeviceContext:v11 displayContext:v10 bundleIdentifier:v9];
+  v16 = [v15 previewMetricsSpecificationForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
   v17 = *MEMORY[0x277D67240];
   v18 = [(SBWidgetMetricsServer *)self _metricsProviderForHostingEnvironment:*MEMORY[0x277D67240]];
-  v19 = [v18 previewMetricsSpecificationForDeviceContext:v11 displayContext:v10 bundleIdentifier:v9];
+  v19 = [v18 previewMetricsSpecificationForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
   v22[0] = v8;
   v22[1] = v14;

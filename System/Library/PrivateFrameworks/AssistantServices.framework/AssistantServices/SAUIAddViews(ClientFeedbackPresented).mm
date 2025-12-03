@@ -10,13 +10,13 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 dialogPhase];
+    dialogPhase = [self dialogPhase];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [a1 views];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    views = [self views];
+    v7 = [views countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -28,7 +28,7 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(views);
           }
 
           v11 = *(*(&v16 + 1) + 8 * v10);
@@ -36,7 +36,7 @@
           v13[1] = 3221225472;
           v13[2] = __76__SAUIAddViews_ClientFeedbackPresented___af_enumerateClientFeedbackDetails___block_invoke;
           v13[3] = &unk_1E7347130;
-          v14 = v5;
+          v14 = dialogPhase;
           v15 = v4;
           [v11 _af_enumerateClientFeedbackDetails:v13];
 
@@ -44,7 +44,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [views countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);

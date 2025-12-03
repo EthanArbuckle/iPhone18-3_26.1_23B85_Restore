@@ -1,50 +1,50 @@
 @interface WFSetupViewProvider
-- (id)credentialsViewControllerWithContext:(id)a3;
-- (id)networkDetailsViewControllerWithContext:(id)a3;
-- (id)otherNetworkViewControllerWithContext:(id)a3 appearanceProxy:(id)a4;
+- (id)credentialsViewControllerWithContext:(id)context;
+- (id)networkDetailsViewControllerWithContext:(id)context;
+- (id)otherNetworkViewControllerWithContext:(id)context appearanceProxy:(id)proxy;
 @end
 
 @implementation WFSetupViewProvider
 
-- (id)credentialsViewControllerWithContext:(id)a3
+- (id)credentialsViewControllerWithContext:(id)context
 {
   v4 = MEMORY[0x277D7B9F0];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 alloc];
   v7 = WFCurrentDeviceCapability();
-  v8 = [MEMORY[0x277D7B980] setupAppearanceProxy];
-  v9 = [v6 initWithCredentialsProviderContext:v5 deviceCapability:v7 appearanceProxy:v8];
+  setupAppearanceProxy = [MEMORY[0x277D7B980] setupAppearanceProxy];
+  v9 = [v6 initWithCredentialsProviderContext:contextCopy deviceCapability:v7 appearanceProxy:setupAppearanceProxy];
 
-  v10 = [(WFSettingsViewProvider *)self credentialsViewControllerMap];
-  [v10 setObject:v9 forKey:v5];
+  credentialsViewControllerMap = [(WFSettingsViewProvider *)self credentialsViewControllerMap];
+  [credentialsViewControllerMap setObject:v9 forKey:contextCopy];
 
   return v9;
 }
 
-- (id)networkDetailsViewControllerWithContext:(id)a3
+- (id)networkDetailsViewControllerWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [WFSettingsController alloc];
-  v6 = [MEMORY[0x277D7B980] setupAppearanceProxy];
-  v7 = [(WFSettingsController *)v5 initWithDetailsContext:v4 appearanceProxy:v6];
+  setupAppearanceProxy = [MEMORY[0x277D7B980] setupAppearanceProxy];
+  v7 = [(WFSettingsController *)v5 initWithDetailsContext:contextCopy appearanceProxy:setupAppearanceProxy];
 
   [(WFSettingsViewProvider *)self setSettingsController:v7];
-  v8 = [(WFSettingsViewProvider *)self settingsController];
-  v9 = [v8 settingsViewController];
+  settingsController = [(WFSettingsViewProvider *)self settingsController];
+  settingsViewController = [settingsController settingsViewController];
 
-  return v9;
+  return settingsViewController;
 }
 
-- (id)otherNetworkViewControllerWithContext:(id)a3 appearanceProxy:(id)a4
+- (id)otherNetworkViewControllerWithContext:(id)context appearanceProxy:(id)proxy
 {
   v4 = MEMORY[0x277D7B9F0];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 alloc];
   v7 = WFCurrentDeviceCapability();
-  v8 = [MEMORY[0x277D7B980] setupAppearanceProxy];
-  v9 = [v6 initWithOtherNetworkProviderContext:v5 deviceCapability:v7 appearanceProxy:v8];
+  setupAppearanceProxy = [MEMORY[0x277D7B980] setupAppearanceProxy];
+  v9 = [v6 initWithOtherNetworkProviderContext:contextCopy deviceCapability:v7 appearanceProxy:setupAppearanceProxy];
 
-  [v9 setDelegate:v5];
+  [v9 setDelegate:contextCopy];
 
   return v9;
 }

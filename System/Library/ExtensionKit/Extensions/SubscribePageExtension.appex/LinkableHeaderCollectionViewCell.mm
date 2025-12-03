@@ -1,11 +1,11 @@
 @interface LinkableHeaderCollectionViewCell
-- (_TtC22SubscribePageExtension32LinkableHeaderCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension32LinkableHeaderCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation LinkableHeaderCollectionViewCell
 
-- (_TtC22SubscribePageExtension32LinkableHeaderCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension32LinkableHeaderCollectionViewCell)initWithCoder:(id)coder
 {
   result = sub_100754644();
   __break(1u);
@@ -18,7 +18,7 @@
   v12.super_class = type metadata accessor for LinkableHeaderCollectionViewCell();
   v2 = v12.receiver;
   [(LinkableHeaderCollectionViewCell *)&v12 layoutSubviews];
-  v3 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100009D34();
   sub_1007477B4();
   v5 = v4;

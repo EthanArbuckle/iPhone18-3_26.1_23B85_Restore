@@ -1,17 +1,17 @@
 @interface AXNotificationObserver
-- (AXNotificationObserver)initWithNotifications:(id)a3 registrationQueue:(id)a4;
+- (AXNotificationObserver)initWithNotifications:(id)notifications registrationQueue:(id)queue;
 - (AXNotificationObserverDelegate)delegate;
-- (void)_didObserveNotification:(int)a3 notificationData:(void *)a4;
-- (void)_registerForAXNotifications:(BOOL)a3;
+- (void)_didObserveNotification:(int)notification notificationData:(void *)data;
+- (void)_registerForAXNotifications:(BOOL)notifications;
 - (void)dealloc;
 @end
 
 @implementation AXNotificationObserver
 
-- (AXNotificationObserver)initWithNotifications:(id)a3 registrationQueue:(id)a4
+- (AXNotificationObserver)initWithNotifications:(id)notifications registrationQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  notificationsCopy = notifications;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = AXNotificationObserver;
   v8 = [(AXNotificationObserver *)&v15 init];
@@ -22,14 +22,14 @@
 
   if (_AXSApplicationAccessibilityEnabled() || _AXSAccessibilityNeedsMiniServer())
   {
-    [(AXNotificationObserver *)v8 setNotifications:v6];
+    [(AXNotificationObserver *)v8 setNotifications:notificationsCopy];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __66__AXNotificationObserver_initWithNotifications_registrationQueue___block_invoke;
     v12[3] = &unk_1E80D3DA8;
     v13 = v8;
-    v14 = v6;
-    dispatch_async(v7, v12);
+    v14 = notificationsCopy;
+    dispatch_async(queueCopy, v12);
 
 LABEL_5:
     v9 = v8;
@@ -87,9 +87,9 @@ LABEL_4:
   [v8 _registerForAXNotifications:1];
 }
 
-- (void)_registerForAXNotifications:(BOOL)a3
+- (void)_registerForAXNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
@@ -113,14 +113,14 @@ LABEL_4:
         objc_enumerationMutation(obj);
       }
 
-      v9 = [*(*(&v19 + 1) + 8 * i) intValue];
+      intValue = [*(*(&v19 + 1) + 8 * i) intValue];
       observer = self->_observer;
       v11 = +[AXElement systemWideElement];
-      v12 = [v11 uiElement];
-      v13 = [v12 axElement];
-      if (v3)
+      uiElement = [v11 uiElement];
+      axElement = [uiElement axElement];
+      if (notificationsCopy)
       {
-        v14 = AXObserverAddNotification(observer, v13, v9, self);
+        v14 = AXObserverAddNotification(observer, axElement, intValue, self);
 
         if (v14)
         {
@@ -138,7 +138,7 @@ LABEL_17:
 
       else
       {
-        v15 = AXObserverRemoveNotification(observer, v13, v9);
+        v15 = AXObserverRemoveNotification(observer, axElement, intValue);
 
         if (v15)
         {
@@ -165,22 +165,22 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_didObserveNotification:(int)a3 notificationData:(void *)a4
+- (void)_didObserveNotification:(int)notification notificationData:(void *)data
 {
-  v5 = *&a3;
+  v5 = *&notification;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     [AXNotificationObserver _didObserveNotification:a2 notificationData:self];
   }
 
-  v8 = [(AXNotificationObserver *)self notifications];
+  notifications = [(AXNotificationObserver *)self notifications];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-  v10 = [v8 containsObject:v9];
+  v10 = [notifications containsObject:v9];
 
   if (v10)
   {
-    v11 = [(AXNotificationObserver *)self delegate];
-    [v11 observer:self didObserveNotification:v5 notificationData:a4];
+    delegate = [(AXNotificationObserver *)self delegate];
+    [delegate observer:self didObserveNotification:v5 notificationData:data];
   }
 }
 

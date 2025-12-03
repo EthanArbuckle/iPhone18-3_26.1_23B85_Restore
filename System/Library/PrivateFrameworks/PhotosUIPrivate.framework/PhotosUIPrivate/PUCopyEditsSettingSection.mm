@@ -1,23 +1,23 @@
 @interface PUCopyEditsSettingSection
-- (PUCopyEditsSettingSection)initWithItems:(id)a3 header:(id)a4 footer:(id)a5;
+- (PUCopyEditsSettingSection)initWithItems:(id)items header:(id)header footer:(id)footer;
 @end
 
 @implementation PUCopyEditsSettingSection
 
-- (PUCopyEditsSettingSection)initWithItems:(id)a3 header:(id)a4 footer:(id)a5
+- (PUCopyEditsSettingSection)initWithItems:(id)items header:(id)header footer:(id)footer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemsCopy = items;
+  headerCopy = header;
+  footerCopy = footer;
   v15.receiver = self;
   v15.super_class = PUCopyEditsSettingSection;
   v12 = [(PUCopyEditsSettingSection *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_items, a3);
-    objc_storeStrong(&v13->_header, a4);
-    objc_storeStrong(&v13->_footer, a5);
+    objc_storeStrong(&v12->_items, items);
+    objc_storeStrong(&v13->_header, header);
+    objc_storeStrong(&v13->_footer, footer);
   }
 
   return v13;

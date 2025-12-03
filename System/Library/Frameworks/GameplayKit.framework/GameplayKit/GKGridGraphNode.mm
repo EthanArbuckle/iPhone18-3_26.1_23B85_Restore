@@ -1,11 +1,11 @@
 @interface GKGridGraphNode
 + (GKGridGraphNode)nodeWithGridPosition:(vector_int2)gridPosition;
-- (GKGridGraphNode)initWithCoder:(id)a3;
+- (GKGridGraphNode)initWithCoder:(id)coder;
 - (GKGridGraphNode)initWithGridPosition:(vector_int2)gridPosition;
-- (float)costToNode:(id)a3;
-- (float)estimatedCostToNode:(id)a3;
+- (float)costToNode:(id)node;
+- (float)estimatedCostToNode:(id)node;
 - (void)deleteCGraphNode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKGridGraphNode
@@ -38,44 +38,44 @@
   return result;
 }
 
-- (float)estimatedCostToNode:(id)a3
+- (float)estimatedCostToNode:(id)node
 {
-  v4 = a3;
-  v5 = (*(*self->_cGridGraphNode + 24))(self->_cGridGraphNode, [v4 cGraphNode]);
+  nodeCopy = node;
+  v5 = (*(*self->_cGridGraphNode + 24))(self->_cGridGraphNode, [nodeCopy cGraphNode]);
 
   return v5;
 }
 
-- (float)costToNode:(id)a3
+- (float)costToNode:(id)node
 {
-  v4 = a3;
-  v5 = (*(*self->_cGridGraphNode + 24))(self->_cGridGraphNode, [v4 cGraphNode]);
+  nodeCopy = node;
+  v5 = (*(*self->_cGridGraphNode + 24))(self->_cGridGraphNode, [nodeCopy cGraphNode]);
 
   return v5;
 }
 
-- (GKGridGraphNode)initWithCoder:(id)a3
+- (GKGridGraphNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GKGridGraphNode;
-  v5 = [(GKGraphNode *)&v8 initWithCoder:v4];
-  v6 = [v4 decodeIntForKey:@"positionX"];
-  *(v5->_cGridGraphNode + 8) = __PAIR64__([v4 decodeIntForKey:@"positionY"], v6);
+  v5 = [(GKGraphNode *)&v8 initWithCoder:coderCopy];
+  v6 = [coderCopy decodeIntForKey:@"positionX"];
+  *(v5->_cGridGraphNode + 8) = __PAIR64__([coderCopy decodeIntForKey:@"positionY"], v6);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = GKGridGraphNode;
-  [(GKGraphNode *)&v7 encodeWithCoder:v4];
+  [(GKGraphNode *)&v7 encodeWithCoder:coderCopy];
   [(GKGridGraphNode *)self gridPosition];
-  [v4 encodeInt:v5 forKey:@"positionX"];
+  [coderCopy encodeInt:v5 forKey:@"positionX"];
   [(GKGridGraphNode *)self gridPosition];
-  [v4 encodeInt:v6 forKey:@"positionY"];
+  [coderCopy encodeInt:v6 forKey:@"positionY"];
 }
 
 @end

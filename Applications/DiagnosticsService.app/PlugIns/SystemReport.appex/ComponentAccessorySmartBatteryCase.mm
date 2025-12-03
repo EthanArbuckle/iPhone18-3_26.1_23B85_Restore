@@ -2,7 +2,7 @@
 - (BOOL)isPresent;
 - (ComponentAccessorySmartBatteryCase)init;
 - (id)batterySerialNumber;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentAccessorySmartBatteryCase
@@ -26,42 +26,42 @@
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentAccessorySmartBatteryCase *)self device];
-  v3 = v2 != 0;
+  device = [(ComponentAccessorySmartBatteryCase *)self device];
+  v3 = device != 0;
 
   return v3;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v12 = a3;
-  v4 = [(ComponentAccessorySmartBatteryCase *)self device];
-  v5 = [v4 serialNumber];
-  if (v5)
+  attributesCopy = attributes;
+  device = [(ComponentAccessorySmartBatteryCase *)self device];
+  serialNumber = [device serialNumber];
+  if (serialNumber)
   {
-    [v12 setObject:v5 forKeyedSubscript:@"serialNumber"];
+    [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
   }
 
   else
   {
     v6 = +[NSNull null];
-    [v12 setObject:v6 forKeyedSubscript:@"serialNumber"];
+    [attributesCopy setObject:v6 forKeyedSubscript:@"serialNumber"];
   }
 
-  v7 = [(ComponentAccessorySmartBatteryCase *)self batterySerialNumber];
-  if (v7)
+  batterySerialNumber = [(ComponentAccessorySmartBatteryCase *)self batterySerialNumber];
+  if (batterySerialNumber)
   {
-    [v12 setObject:v7 forKeyedSubscript:@"batterySerialNumber"];
+    [attributesCopy setObject:batterySerialNumber forKeyedSubscript:@"batterySerialNumber"];
   }
 
-  v8 = [(ComponentAccessorySmartBatteryCase *)self device];
-  v9 = [v8 serialNumber];
-  v10 = [DSEADevice deviceWithSerialNumber:v9];
+  device2 = [(ComponentAccessorySmartBatteryCase *)self device];
+  serialNumber2 = [device2 serialNumber];
+  v10 = [DSEADevice deviceWithSerialNumber:serialNumber2];
 
   if (v10)
   {
-    v11 = [v10 information];
-    [v12 addEntriesFromDictionary:v11];
+    information = [v10 information];
+    [attributesCopy addEntriesFromDictionary:information];
   }
 }
 

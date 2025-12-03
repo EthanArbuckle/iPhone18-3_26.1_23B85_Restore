@@ -1,30 +1,30 @@
 @interface TVRUIAppLauncherStackViewController
 - (BOOL)isCurrentlyPlayingMedia;
 - (TVRUIActionProviding)actionProvider;
-- (TVRUIAppLauncherStackViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TVRUIAppLauncherStackViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (TVRUINowPlayingProviding)nowPlayingProvider;
 - (id)collectionViewLayout;
-- (void)_appInfosDidUpdateNotification:(id)a3;
-- (void)_appInfosWillUpdateNotification:(id)a3;
-- (void)_confirmOkToOpenApp:(id)a3 withHandler:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_appInfosDidUpdateNotification:(id)notification;
+- (void)_appInfosWillUpdateNotification:(id)notification;
+- (void)_confirmOkToOpenApp:(id)app withHandler:(id)handler;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)configureHierarchy;
 - (void)dealloc;
-- (void)hideApp:(id)a3;
-- (void)launchApp:(id)a3;
+- (void)hideApp:(id)app;
+- (void)launchApp:(id)app;
 - (void)resetContent;
-- (void)updateFromAppInfosAnimated:(BOOL)a3;
+- (void)updateFromAppInfosAnimated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVRUIAppLauncherStackViewController
 
-- (TVRUIAppLauncherStackViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TVRUIAppLauncherStackViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = TVRUIAppLauncherStackViewController;
-  v4 = [(TVRUIAppLauncherStackViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(TVRUIAppLauncherStackViewController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -41,8 +41,8 @@
 - (void)resetContent
 {
   v4 = objc_alloc_init(MEMORY[0x277CFB890]);
-  v3 = [(TVRUIAppLauncherStackViewController *)self dataSource];
-  [v3 applySnapshot:v4 animatingDifferences:0];
+  dataSource = [(TVRUIAppLauncherStackViewController *)self dataSource];
+  [dataSource applySnapshot:v4 animatingDifferences:0];
 }
 
 - (void)viewDidLoad
@@ -52,38 +52,38 @@
   [(TVRUIAppLauncherStackViewController *)&v10 viewDidLoad];
   [(TVRUIAppLauncherStackViewController *)self configureHierarchy];
   [(TVRUIAppLauncherStackViewController *)self updateFromAppInfosAnimated:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__appInfosDidUpdateNotification_ name:@"TVRUILaunchableAppsControllerAppInfosDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__appInfosDidUpdateNotification_ name:@"TVRUILaunchableAppsControllerAppInfosDidChangeNotification" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__appInfosWillUpdateNotification_ name:@"TVRUILaunchableAppsControllerAppInfosWillChangeNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__appInfosWillUpdateNotification_ name:@"TVRUILaunchableAppsControllerAppInfosWillChangeNotification" object:0];
 
-  v5 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
-  v6 = [v5 appInfos];
-  v7 = [v6 count];
+  launchableAppsController = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
+  appInfos = [launchableAppsController appInfos];
+  v7 = [appInfos count];
 
   if (!v7)
   {
-    v8 = [(TVRUIAppLauncherStackViewController *)self loadingView];
-    [v8 reset];
+    loadingView = [(TVRUIAppLauncherStackViewController *)self loadingView];
+    [loadingView reset];
 
-    v9 = [(TVRUIAppLauncherStackViewController *)self loadingView];
-    [v9 didStartLoadingWithTimeout:15.0];
+    loadingView2 = [(TVRUIAppLauncherStackViewController *)self loadingView];
+    [loadingView2 didStartLoadingWithTimeout:15.0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TVRUIAppLauncherStackViewController;
-  [(TVRUIAppLauncherStackViewController *)&v4 viewWillAppear:a3];
+  [(TVRUIAppLauncherStackViewController *)&v4 viewWillAppear:appear];
   [(TVRUIAppLauncherStackViewController *)self updateFromAppInfosAnimated:1];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVRUIAppLauncherStackViewController;
@@ -94,19 +94,19 @@
 {
   v53[8] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D752A0]);
-  v45 = self;
-  v4 = [(TVRUIAppLauncherStackViewController *)self collectionViewLayout];
-  v5 = [v3 initWithFrame:v4 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  selfCopy = self;
+  collectionViewLayout = [(TVRUIAppLauncherStackViewController *)self collectionViewLayout];
+  v5 = [v3 initWithFrame:collectionViewLayout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   v46 = v5;
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v46 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v46 setBackgroundColor:clearColor];
 
   [v46 setShowsVerticalScrollIndicator:0];
-  [v46 setDelegate:v45];
+  [v46 setDelegate:selfCopy];
   [v46 setBouncesVertically:0];
-  objc_initWeak(&location, v45);
+  objc_initWeak(&location, selfCopy);
   v7 = MEMORY[0x277D752B0];
   v8 = objc_opt_class();
   v50[0] = MEMORY[0x277D85DD0];
@@ -132,48 +132,48 @@
   v14 = [v13 localizedStringForKey:@"TVRUINoAppsFound" value:&stru_287E6AEF8 table:@"Localizable"];
   [(TVRUILoadingView *)v12 setNoContentText:v14];
 
-  v15 = [(TVRUIAppLauncherStackViewController *)v45 view];
-  [v15 addSubview:v46];
-  [v15 addSubview:v12];
+  view = [(TVRUIAppLauncherStackViewController *)selfCopy view];
+  [view addSubview:v46];
+  [view addSubview:v12];
   v26 = MEMORY[0x277CCAAD0];
-  v44 = [v46 leadingAnchor];
-  v43 = [v15 leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  leadingAnchor = [v46 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v53[0] = v42;
-  v41 = [v46 trailingAnchor];
-  v40 = [v15 trailingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  trailingAnchor = [v46 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v53[1] = v39;
-  v38 = [v46 topAnchor];
-  v37 = [v15 topAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  topAnchor = [v46 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v53[2] = v36;
-  v35 = [v46 bottomAnchor];
-  v34 = [v15 bottomAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  bottomAnchor = [v46 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v53[3] = v33;
-  v32 = [(TVRUILoadingView *)v12 leadingAnchor];
-  v31 = [v15 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  leadingAnchor3 = [(TVRUILoadingView *)v12 leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v53[4] = v30;
-  v29 = [(TVRUILoadingView *)v12 trailingAnchor];
-  v28 = [v15 trailingAnchor];
-  v16 = [v29 constraintEqualToAnchor:v28];
+  trailingAnchor3 = [(TVRUILoadingView *)v12 trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v53[5] = v16;
-  v17 = [(TVRUILoadingView *)v12 topAnchor];
-  v18 = [v15 topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  topAnchor3 = [(TVRUILoadingView *)v12 topAnchor];
+  topAnchor4 = [view topAnchor];
+  v19 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v53[6] = v19;
-  v20 = [(TVRUILoadingView *)v12 bottomAnchor];
-  v21 = [v15 bottomAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  bottomAnchor3 = [(TVRUILoadingView *)v12 bottomAnchor];
+  bottomAnchor4 = [view bottomAnchor];
+  v22 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v53[7] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:8];
   [v26 activateConstraints:v23];
 
-  [(TVRUIAppLauncherStackViewController *)v45 setCollectionView:v46];
-  [(TVRUIAppLauncherStackViewController *)v45 setDataSource:v27];
-  [(TVRUIAppLauncherStackViewController *)v45 setLoadingView:v12];
+  [(TVRUIAppLauncherStackViewController *)selfCopy setCollectionView:v46];
+  [(TVRUIAppLauncherStackViewController *)selfCopy setDataSource:v27];
+  [(TVRUIAppLauncherStackViewController *)selfCopy setLoadingView:v12];
 
   objc_destroyWeak(&v51);
   objc_destroyWeak(&location);
@@ -242,39 +242,39 @@ id __59__TVRUIAppLauncherStackViewController_collectionViewLayout__block_invoke(
   return v12;
 }
 
-- (void)_appInfosWillUpdateNotification:(id)a3
+- (void)_appInfosWillUpdateNotification:(id)notification
 {
-  v4 = [(TVRUIAppLauncherStackViewController *)self loadingView];
-  [v4 reset];
+  loadingView = [(TVRUIAppLauncherStackViewController *)self loadingView];
+  [loadingView reset];
 
-  v5 = [(TVRUIAppLauncherStackViewController *)self loadingView];
-  [v5 didStartLoadingWithTimeout:15.0];
+  loadingView2 = [(TVRUIAppLauncherStackViewController *)self loadingView];
+  [loadingView2 didStartLoadingWithTimeout:15.0];
 }
 
-- (void)_appInfosDidUpdateNotification:(id)a3
+- (void)_appInfosDidUpdateNotification:(id)notification
 {
   [(TVRUIAppLauncherStackViewController *)self updateFromAppInfosAnimated:1];
-  v4 = [(TVRUIAppLauncherStackViewController *)self dataSource];
-  v5 = [v4 snapshot];
-  v6 = [v5 numberOfItems] > 0;
+  dataSource = [(TVRUIAppLauncherStackViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
+  v6 = [snapshot numberOfItems] > 0;
 
-  v7 = [(TVRUIAppLauncherStackViewController *)self loadingView];
-  [v7 loadingCompleteWithContent:v6];
+  loadingView = [(TVRUIAppLauncherStackViewController *)self loadingView];
+  [loadingView loadingCompleteWithContent:v6];
 }
 
-- (void)updateFromAppInfosAnimated:(BOOL)a3
+- (void)updateFromAppInfosAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v28 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CFB890]);
   [v5 appendSectionsWithIdentifiers:&unk_287E84A98];
-  v6 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
-  v7 = [v6 orderedAppInfos];
-  v8 = v7;
+  launchableAppsController = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
+  orderedAppInfos = [launchableAppsController orderedAppInfos];
+  v8 = orderedAppInfos;
   v9 = MEMORY[0x277CBEBF8];
-  if (v7)
+  if (orderedAppInfos)
   {
-    v9 = v7;
+    v9 = orderedAppInfos;
   }
 
   v10 = v9;
@@ -313,53 +313,53 @@ id __59__TVRUIAppLauncherStackViewController_collectionViewLayout__block_invoke(
     while (v14);
   }
 
-  v18 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
-  if (![v18 hasHiddenApps])
+  launchableAppsController2 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
+  if (![launchableAppsController2 hasHiddenApps])
   {
     goto LABEL_13;
   }
 
-  v19 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
-  v20 = [v19 orderedAppInfos];
-  v21 = [v20 count];
+  launchableAppsController3 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
+  orderedAppInfos2 = [launchableAppsController3 orderedAppInfos];
+  v21 = [orderedAppInfos2 count];
 
   if (v21)
   {
-    v18 = +[_TVRUIAppInfoItem unhideItem];
-    [v11 addObject:v18];
+    launchableAppsController2 = +[_TVRUIAppInfoItem unhideItem];
+    [v11 addObject:launchableAppsController2];
 LABEL_13:
   }
 
   [v5 appendItemsWithIdentifiers:{v11, v23}];
-  v22 = [(TVRUIAppLauncherStackViewController *)self dataSource];
-  [v22 applySnapshot:v5 animatingDifferences:v3];
+  dataSource = [(TVRUIAppLauncherStackViewController *)self dataSource];
+  [dataSource applySnapshot:v5 animatingDifferences:animatedCopy];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TVRUIAppLauncherStackViewController *)self dataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  dataSource = [(TVRUIAppLauncherStackViewController *)self dataSource];
+  v9 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   if ([v9 isUnhideItem])
   {
-    v10 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
-    [v10 unhideApps];
+    launchableAppsController = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
+    [launchableAppsController unhideApps];
   }
 
   else
   {
-    v11 = [v9 appInfo];
+    appInfo = [v9 appInfo];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __79__TVRUIAppLauncherStackViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
     v13[3] = &unk_279D88050;
     v13[4] = self;
-    v14 = v11;
-    v15 = v6;
-    v16 = v7;
-    v12 = v11;
+    v14 = appInfo;
+    v15 = viewCopy;
+    v16 = pathCopy;
+    v12 = appInfo;
     [(TVRUIAppLauncherStackViewController *)self _confirmOkToOpenApp:v12 withHandler:v13];
   }
 }
@@ -420,13 +420,13 @@ uint64_t __79__TVRUIAppLauncherStackViewController_collectionView_didSelectItemA
 
 - (BOOL)isCurrentlyPlayingMedia
 {
-  v2 = [(TVRUIAppLauncherStackViewController *)self nowPlayingProvider];
-  v3 = [v2 nowPlayingInfo];
+  nowPlayingProvider = [(TVRUIAppLauncherStackViewController *)self nowPlayingProvider];
+  nowPlayingInfo = [nowPlayingProvider nowPlayingInfo];
 
-  if (v3)
+  if (nowPlayingInfo)
   {
-    v4 = [v3 playbackRate];
-    [v4 floatValue];
+    playbackRate = [nowPlayingInfo playbackRate];
+    [playbackRate floatValue];
     if (v5 == 0.0)
     {
       v7 = 0;
@@ -434,8 +434,8 @@ uint64_t __79__TVRUIAppLauncherStackViewController_collectionView_didSelectItemA
 
     else
     {
-      v6 = [v3 playbackState];
-      v7 = [v6 integerValue] == 1;
+      playbackState = [nowPlayingInfo playbackState];
+      v7 = [playbackState integerValue] == 1;
     }
   }
 
@@ -447,27 +447,27 @@ uint64_t __79__TVRUIAppLauncherStackViewController_collectionView_didSelectItemA
   return v7;
 }
 
-- (void)_confirmOkToOpenApp:(id)a3 withHandler:(id)a4
+- (void)_confirmOkToOpenApp:(id)app withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  handlerCopy = handler;
   if ([(TVRUIAppLauncherStackViewController *)self isCurrentlyPlayingMedia])
   {
-    v8 = [(TVRUIAppLauncherStackViewController *)self nowPlayingProvider];
-    v9 = [v8 nowPlayingInfo];
-    v29 = [v9 metadata];
+    nowPlayingProvider = [(TVRUIAppLauncherStackViewController *)self nowPlayingProvider];
+    nowPlayingInfo = [nowPlayingProvider nowPlayingInfo];
+    metadata = [nowPlayingInfo metadata];
 
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"TVRUINowPlayingFormatted" value:&stru_287E6AEF8 table:@"Localizable"];
-    v13 = [v29 title];
-    v28 = [v10 stringWithFormat:v12, v13];
+    title = [metadata title];
+    v28 = [v10 stringWithFormat:v12, title];
 
     v14 = MEMORY[0x277CCACA8];
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16 = [v15 localizedStringForKey:@"TVRUIOpenApp" value:&stru_287E6AEF8 table:@"Localizable"];
-    v17 = [v6 localizedName];
-    v27 = [v14 stringWithFormat:v16, v17];
+    localizedName = [appCopy localizedName];
+    v27 = [v14 stringWithFormat:v16, localizedName];
 
     v18 = [MEMORY[0x277D75110] alertControllerWithTitle:v28 message:v27 preferredStyle:1];
     v19 = MEMORY[0x277D750F8];
@@ -483,7 +483,7 @@ uint64_t __79__TVRUIAppLauncherStackViewController_collectionView_didSelectItemA
     v30[1] = 3221225472;
     v30[2] = __71__TVRUIAppLauncherStackViewController__confirmOkToOpenApp_withHandler___block_invoke_2;
     v30[3] = &unk_279D88098;
-    v31 = v7;
+    v31 = handlerCopy;
     v26 = [v23 actionWithTitle:v25 style:0 handler:v30];
     [v18 addAction:v26];
 
@@ -492,30 +492,30 @@ uint64_t __79__TVRUIAppLauncherStackViewController_collectionView_didSelectItemA
 
   else
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)launchApp:(id)a3
+- (void)launchApp:(id)app
 {
-  v6 = [a3 bundleID];
-  if ([v6 length])
+  bundleID = [app bundleID];
+  if ([bundleID length])
   {
-    v4 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
-    [v4 launchAppWithBundleID:v6];
+    launchableAppsController = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
+    [launchableAppsController launchAppWithBundleID:bundleID];
 
-    v5 = [(TVRUIAppLauncherStackViewController *)self eventHaptic];
-    [v5 playSelectionEventHaptic];
+    eventHaptic = [(TVRUIAppLauncherStackViewController *)self eventHaptic];
+    [eventHaptic playSelectionEventHaptic];
   }
 }
 
-- (void)hideApp:(id)a3
+- (void)hideApp:(id)app
 {
-  v5 = [a3 bundleID];
-  if ([v5 length])
+  bundleID = [app bundleID];
+  if ([bundleID length])
   {
-    v4 = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
-    [v4 hideAppWithBundleID:v5];
+    launchableAppsController = [(TVRUIAppLauncherStackViewController *)self launchableAppsController];
+    [launchableAppsController hideAppWithBundleID:bundleID];
   }
 }
 

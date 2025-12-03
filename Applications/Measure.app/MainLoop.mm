@@ -1,36 +1,36 @@
 @interface MainLoop
-- (BOOL)sessionShouldAttemptRelocalization:(id)a3;
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4;
-- (void)session:(id)a3 didAddAnchors:(id)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didRemoveAnchors:(id)a4;
-- (void)session:(id)a3 didUpdateAnchors:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionWasInterrupted:(id)a3;
+- (BOOL)sessionShouldAttemptRelocalization:(id)relocalization;
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state;
+- (void)session:(id)session didAddAnchors:(id)anchors;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didRemoveAnchors:(id)anchors;
+- (void)session:(id)session didUpdateAnchors:(id)anchors;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionWasInterrupted:(id)interrupted;
 @end
 
 @implementation MainLoop
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_1000E4A74(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1000E4A74(errorCopy);
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
-  v4 = a3;
-  v5 = self;
+  interruptedCopy = interrupted;
+  selfCopy = self;
   sub_1000E4CDC();
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
   v3 = *(**(self + qword_1004A8420) + 400);
-  v4 = self;
+  selfCopy = self;
 
   v5 = v3(v9);
   v7 = *v6;
@@ -49,7 +49,7 @@
   sub_1000E25F8();
 }
 
-- (BOOL)sessionShouldAttemptRelocalization:(id)a3
+- (BOOL)sessionShouldAttemptRelocalization:(id)relocalization
 {
   v3 = *(self + qword_1004A8460);
   if (*(v3 + 24) != 1)
@@ -62,33 +62,33 @@
   return result;
 }
 
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000E2FA4(v6);
+  sessionCopy = session;
+  stateCopy = state;
+  selfCopy = self;
+  sub_1000E2FA4(sessionCopy);
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000E377C(v6, v7);
+  sessionCopy = session;
+  frameCopy = frame;
+  selfCopy = self;
+  sub_1000E377C(sessionCopy, frameCopy);
 }
 
-- (void)session:(id)a3 didUpdateAnchors:(id)a4
+- (void)session:(id)session didUpdateAnchors:(id)anchors
 {
   sub_100018630(0, &unk_1004A8730);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sessionCopy = session;
+  selfCopy = self;
   v9._rawValue = v6;
-  sub_1000E4E50(v7, v9);
+  sub_1000E4E50(sessionCopy, v9);
 }
 
-- (void)session:(id)a3 didRemoveAnchors:(id)a4
+- (void)session:(id)session didRemoveAnchors:(id)anchors
 {
   sub_100018630(0, &unk_1004A8730);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -100,12 +100,12 @@
   static WorldAnchor.didRemove(anchors:)();
 }
 
-- (void)session:(id)a3 didAddAnchors:(id)a4
+- (void)session:(id)session didAddAnchors:(id)anchors
 {
   sub_100018630(0, &unk_1004A8730);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_1000E5044(v6);
 }
 

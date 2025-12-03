@@ -1,15 +1,15 @@
 @interface PowerUIMLAudioAccessoryModelPredictor
-- (BOOL)deviceHasAtLeastOneLongConnection:(id)a3 forReferenceDate:(id)a4;
-- (BOOL)isSufficientDataAvailableForEngagementForDevice:(id)a3;
+- (BOOL)deviceHasAtLeastOneLongConnection:(id)connection forReferenceDate:(id)date;
+- (BOOL)isSufficientDataAvailableForEngagementForDevice:(id)device;
 - (MLModel)highUsageEngageModel;
 - (MLModel)highUsageRegressionModel;
 - (MLModel)lowUsageEngageModel;
 - (MLModel)lowUsageRegressionModel;
 - (PowerUIMLAudioAccessoryModelPredictor)init;
-- (double)historicalMeaningfulUnderchargeRate:(id)a3;
-- (id)chargingDecisionForDate:(id)a3 forAudioAccessory:(id)a4;
-- (id)getBTConnectionEventsUpTo:(id)a3 withMinimumDuration:(double)a4 withLimit:(unsigned int)a5 forDevice:(id)a6;
-- (id)getInputFeaturesForDate:(id)a3 withEventsInDescendingOrder:(id)a4 withLog:(id)a5;
+- (double)historicalMeaningfulUnderchargeRate:(id)rate;
+- (id)chargingDecisionForDate:(id)date forAudioAccessory:(id)accessory;
+- (id)getBTConnectionEventsUpTo:(id)to withMinimumDuration:(double)duration withLimit:(unsigned int)limit forDevice:(id)device;
+- (id)getInputFeaturesForDate:(id)date withEventsInDescendingOrder:(id)order withLog:(id)log;
 @end
 
 @implementation PowerUIMLAudioAccessoryModelPredictor
@@ -42,28 +42,28 @@
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 intValue];
+      intValue = [v9 intValue];
     }
 
     else
     {
-      v11 = 14;
+      intValue = 14;
     }
 
-    v3->_minimumDaysOfHistory = v11;
+    v3->_minimumDaysOfHistory = intValue;
     v12 = [PowerUISmartChargeUtilities numberForPreferenceKey:@"MinimumNumberOfPreviousConnections" inDomain:@"com.apple.smartcharging.topoffprotection.audioaccessories"];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 intValue];
+      intValue2 = [v12 intValue];
     }
 
     else
     {
-      v14 = 10;
+      intValue2 = 10;
     }
 
-    v3->_minimumNumberOfPreviousConnections = v14;
+    v3->_minimumNumberOfPreviousConnections = intValue2;
     v3->_lastUsedLeeway = -1.0;
   }
 
@@ -216,21 +216,21 @@
   return v13;
 }
 
-- (id)chargingDecisionForDate:(id)a3 forAudioAccessory:(id)a4
+- (id)chargingDecisionForDate:(id)date forAudioAccessory:(id)accessory
 {
   v77 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  accessoryCopy = accessory;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v72 = *&v6;
+    v72 = *&dateCopy;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "chargingDecisionForDate %@ was called", buf, 0xCu);
   }
 
   v9 = os_transaction_create();
-  v10 = [(PowerUIMLAudioAccessoryModelPredictor *)self getBTConnectionEventsForPredictionUpTo:v6 forDevice:v7];
+  v10 = [(PowerUIMLAudioAccessoryModelPredictor *)self getBTConnectionEventsForPredictionUpTo:dateCopy forDevice:accessoryCopy];
   v11 = [PowerUISmartChargeUtilities concatenateChargeSessions:v10 withMaxDeltaSecondsBetweenEvents:10];
 
   v12 = self->_log;
@@ -246,12 +246,12 @@
 
   if ([v11 count] >= self->_minimumNumberOfPreviousConnections)
   {
-    v19 = [v11 reverseObjectEnumerator];
-    v18 = [v19 allObjects];
+    reverseObjectEnumerator = [v11 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    [PowerUIPredictorHelper meanEventDuration:v18];
+    [PowerUIPredictorHelper meanEventDuration:allObjects];
     v21 = v20;
-    [PowerUIPredictorHelper medianTimeBetweenDescendingEvents:v18];
+    [PowerUIPredictorHelper medianTimeBetweenDescendingEvents:allObjects];
     v23 = v22;
     v24 = self->_log;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -266,42 +266,42 @@
     v66 = v9;
     if (v21 >= 1400.0)
     {
-      v25 = [(PowerUIMLAudioAccessoryModelPredictor *)self highUsageEngageModel];
+      highUsageEngageModel = [(PowerUIMLAudioAccessoryModelPredictor *)self highUsageEngageModel];
       if (v23 >= 139200.0)
       {
-        v68 = [(PowerUIMLAudioAccessoryModelPredictor *)self lowUsageRegressionModel];
+        lowUsageRegressionModel = [(PowerUIMLAudioAccessoryModelPredictor *)self lowUsageRegressionModel];
         v26 = 0.88;
       }
 
       else
       {
-        v68 = [(PowerUIMLAudioAccessoryModelPredictor *)self highUsageRegressionModel];
+        lowUsageRegressionModel = [(PowerUIMLAudioAccessoryModelPredictor *)self highUsageRegressionModel];
         v26 = 0.82;
       }
     }
 
     else
     {
-      v25 = [(PowerUIMLAudioAccessoryModelPredictor *)self lowUsageEngageModel];
+      highUsageEngageModel = [(PowerUIMLAudioAccessoryModelPredictor *)self lowUsageEngageModel];
       if (v23 >= 139200.0)
       {
-        v68 = [(PowerUIMLAudioAccessoryModelPredictor *)self lowUsageRegressionModel];
+        lowUsageRegressionModel = [(PowerUIMLAudioAccessoryModelPredictor *)self lowUsageRegressionModel];
         v26 = 0.84;
       }
 
       else
       {
-        v68 = [(PowerUIMLAudioAccessoryModelPredictor *)self highUsageRegressionModel];
+        lowUsageRegressionModel = [(PowerUIMLAudioAccessoryModelPredictor *)self highUsageRegressionModel];
         v26 = 0.75;
       }
     }
 
     self->_lastUsedLeeway = 9.375;
-    v27 = [v25 modelDescription];
-    v28 = [v27 metadata];
-    v29 = [v28 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+    modelDescription = [highUsageEngageModel modelDescription];
+    metadata = [modelDescription metadata];
+    v29 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
     v30 = [v29 objectForKeyedSubscript:@"model_version"];
-    v67 = [v30 stringValue];
+    stringValue = [v30 stringValue];
 
     v31 = self->_log;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -315,14 +315,14 @@
       v73 = 2112;
       v74 = *&v35;
       v75 = 2112;
-      v76 = v67;
+      v76 = stringValue;
       _os_log_impl(&dword_21B766000, v33, OS_LOG_TYPE_DEFAULT, "threshold: %@ - leeway: %@ - model version: %@", buf, 0x20u);
     }
 
-    v36 = [(PowerUIMLAudioAccessoryModelPredictor *)self getInputFeaturesForDate:v6 withEventsInDescendingOrder:v18 withLog:self->_log];
+    v36 = [(PowerUIMLAudioAccessoryModelPredictor *)self getInputFeaturesForDate:dateCopy withEventsInDescendingOrder:allObjects withLog:self->_log];
     v70 = 0;
-    v65 = v25;
-    v37 = [v25 predictionFromFeatures:v36 error:&v70];
+    v65 = highUsageEngageModel;
+    v37 = [highUsageEngageModel predictionFromFeatures:v36 error:&v70];
     v38 = v70;
     if (v38 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -330,24 +330,24 @@
     }
 
     v39 = [v37 featureValueForName:@"classProbability"];
-    v40 = [v39 dictionaryValue];
+    dictionaryValue = [v39 dictionaryValue];
 
     v41 = self->_log;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       v42 = v41;
-      v43 = [v40 description];
+      v43 = [dictionaryValue description];
       *buf = 138412290;
       v72 = *&v43;
       _os_log_impl(&dword_21B766000, v42, OS_LOG_TYPE_DEFAULT, "Engagement model raw output %@", buf, 0xCu);
     }
 
-    v44 = [v40 objectForKeyedSubscript:&unk_282D4E098];
+    v44 = [dictionaryValue objectForKeyedSubscript:&unk_282D4E098];
     [v44 doubleValue];
     v46 = v45;
 
     v69 = v38;
-    v47 = [v68 predictionFromFeatures:v36 error:&v69];
+    v47 = [lowUsageRegressionModel predictionFromFeatures:v36 error:&v69];
     v48 = v69;
 
     if (v48)
@@ -388,13 +388,13 @@
 
         if (v61 > 0.0 && v61 <= 4320.0)
         {
-          v53 = v67;
-          v54 = [[PowerUIModelPredictionContainer alloc] initWithEngagementConfidence:v67 withSmartChargeDuration:v46 withModelVersion:v61];
+          v53 = stringValue;
+          v54 = [[PowerUIModelPredictionContainer alloc] initWithEngagementConfidence:stringValue withSmartChargeDuration:v46 withModelVersion:v61];
           goto LABEL_32;
         }
 
         v64 = self->_log;
-        v53 = v67;
+        v53 = stringValue;
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
@@ -429,7 +429,7 @@ LABEL_32:
       v50 = v46;
       v51 = v61;
 LABEL_30:
-      v53 = v67;
+      v53 = stringValue;
       goto LABEL_31;
     }
 
@@ -447,7 +447,7 @@ LABEL_30:
   }
 
   v17 = [[PowerUIModelPredictionContainer alloc] initInvalidEntry:1 withEngagementConfidence:@"Unknown" withSmartChargeDuration:0.0 withModelVersion:0.0];
-  v18 = v11;
+  allObjects = v11;
 LABEL_33:
 
   v55 = *MEMORY[0x277D85DE8];
@@ -455,19 +455,19 @@ LABEL_33:
   return v17;
 }
 
-- (id)getInputFeaturesForDate:(id)a3 withEventsInDescendingOrder:(id)a4 withLog:(id)a5
+- (id)getInputFeaturesForDate:(id)date withEventsInDescendingOrder:(id)order withLog:(id)log
 {
   v75 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
-  v11 = [v10 components:608 fromDate:v7];
+  dateCopy = date;
+  orderCopy = order;
+  logCopy = log;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v11 = [currentCalendar components:608 fromDate:dateCopy];
 
-  v12 = [v11 hour];
-  v13 = v12;
+  hour = [v11 hour];
+  v13 = hour;
   v14 = 0.0;
-  if ([PowerUISmartChargeUtilities isWeekend:v7])
+  if ([PowerUISmartChargeUtilities isWeekend:dateCopy])
   {
     v15 = 1.0;
   }
@@ -477,10 +477,10 @@ LABEL_33:
     v15 = 0.0;
   }
 
-  v16 = [PowerUIPredictorHelper timeBetweenUsesForSortedDescendingByAgeEvents:v8 forHourBin:1 atDate:v7 addAtDate:1];
-  v17 = [PowerUIPredictorHelper timeBetweenUsesForSortedDescendingByAgeEvents:v8 forHourBin:2 atDate:v7 addAtDate:1];
-  v18 = [PowerUIPredictorHelper timeBetweenUsesForSortedDescendingByAgeEvents:v8 forHourBin:4 atDate:v7 addAtDate:1];
-  v19 = [PowerUIPredictorHelper timeBetweenUsesForSortedDescendingByAgeEvents:v8 forHourBin:24 atDate:v7 addAtDate:1];
+  v16 = [PowerUIPredictorHelper timeBetweenUsesForSortedDescendingByAgeEvents:orderCopy forHourBin:1 atDate:dateCopy addAtDate:1];
+  v17 = [PowerUIPredictorHelper timeBetweenUsesForSortedDescendingByAgeEvents:orderCopy forHourBin:2 atDate:dateCopy addAtDate:1];
+  v18 = [PowerUIPredictorHelper timeBetweenUsesForSortedDescendingByAgeEvents:orderCopy forHourBin:4 atDate:dateCopy addAtDate:1];
+  v19 = [PowerUIPredictorHelper timeBetweenUsesForSortedDescendingByAgeEvents:orderCopy forHourBin:24 atDate:dateCopy addAtDate:1];
   [PowerUIPredictorHelper medianOf:v16];
   v21 = v20;
   [PowerUIPredictorHelper medianOf:v17];
@@ -500,49 +500,49 @@ LABEL_33:
   v66 = v19;
   [PowerUIPredictorHelper standardDeviationOf:v19];
   v65 = v30;
-  v70 = v9;
-  v31 = [PowerUIPredictorHelper getUsageBucketsForEvents:v8 forDate:v7 withLog:v9];
+  v70 = logCopy;
+  v31 = [PowerUIPredictorHelper getUsageBucketsForEvents:orderCopy forDate:dateCopy withLog:logCopy];
   v69 = v11;
-  +[PowerUIPredictorHelper hoursUntilUseFromBucketedUsage:withCurrentHour:withComponentsMinutes:](PowerUIPredictorHelper, "hoursUntilUseFromBucketedUsage:withCurrentHour:withComponentsMinutes:", v31, v12, [v11 minute]);
+  +[PowerUIPredictorHelper hoursUntilUseFromBucketedUsage:withCurrentHour:withComponentsMinutes:](PowerUIPredictorHelper, "hoursUntilUseFromBucketedUsage:withCurrentHour:withComponentsMinutes:", v31, hour, [v11 minute]);
   v64 = v32;
-  [(PowerUIMLAudioAccessoryModelPredictor *)self historicalMeaningfulUnderchargeRate:v8];
+  [(PowerUIMLAudioAccessoryModelPredictor *)self historicalMeaningfulUnderchargeRate:orderCopy];
   v34 = v33;
-  v35 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v36 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
-  [v35 setObject:v36 forKeyedSubscript:@"hour"];
+  [dictionary setObject:v36 forKeyedSubscript:@"hour"];
 
   v37 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-  [v35 setObject:v37 forKeyedSubscript:@"is_weekend"];
+  [dictionary setObject:v37 forKeyedSubscript:@"is_weekend"];
 
   v38 = [MEMORY[0x277CCABB0] numberWithDouble:v34];
-  [v35 setObject:v38 forKeyedSubscript:@"meaningful_undercharge_rolling_average"];
+  [dictionary setObject:v38 forKeyedSubscript:@"meaningful_undercharge_rolling_average"];
 
   v39 = [MEMORY[0x277CCABB0] numberWithDouble:v21];
-  [v35 setObject:v39 forKeyedSubscript:@"classic_time_between_uses_med_dur_1"];
+  [dictionary setObject:v39 forKeyedSubscript:@"classic_time_between_uses_med_dur_1"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
-  [v35 setObject:v40 forKeyedSubscript:@"classic_time_between_uses_med_dur_2"];
+  [dictionary setObject:v40 forKeyedSubscript:@"classic_time_between_uses_med_dur_2"];
 
   v41 = [MEMORY[0x277CCABB0] numberWithDouble:v25];
-  [v35 setObject:v41 forKeyedSubscript:@"classic_time_between_uses_med_dur_4"];
+  [dictionary setObject:v41 forKeyedSubscript:@"classic_time_between_uses_med_dur_4"];
 
   v42 = [MEMORY[0x277CCABB0] numberWithDouble:v60];
-  [v35 setObject:v42 forKeyedSubscript:@"classic_time_between_uses_med_dur_24"];
+  [dictionary setObject:v42 forKeyedSubscript:@"classic_time_between_uses_med_dur_24"];
 
   v43 = [MEMORY[0x277CCABB0] numberWithDouble:v61];
-  [v35 setObject:v43 forKeyedSubscript:@"classic_time_between_uses_std_dur_1"];
+  [dictionary setObject:v43 forKeyedSubscript:@"classic_time_between_uses_std_dur_1"];
 
   v44 = [MEMORY[0x277CCABB0] numberWithDouble:v62];
-  [v35 setObject:v44 forKeyedSubscript:@"classic_time_between_uses_std_dur_2"];
+  [dictionary setObject:v44 forKeyedSubscript:@"classic_time_between_uses_std_dur_2"];
 
   v45 = [MEMORY[0x277CCABB0] numberWithDouble:v63];
-  [v35 setObject:v45 forKeyedSubscript:@"classic_time_between_uses_std_dur_4"];
+  [dictionary setObject:v45 forKeyedSubscript:@"classic_time_between_uses_std_dur_4"];
 
   v46 = [MEMORY[0x277CCABB0] numberWithDouble:v65];
-  [v35 setObject:v46 forKeyedSubscript:@"classic_time_between_uses_std_dur_24"];
+  [dictionary setObject:v46 forKeyedSubscript:@"classic_time_between_uses_std_dur_24"];
 
   v47 = [MEMORY[0x277CCABB0] numberWithDouble:v64];
-  [v35 setObject:v47 forKeyedSubscript:@"hours_until_use"];
+  [dictionary setObject:v47 forKeyedSubscript:@"hours_until_use"];
 
   v48 = 0;
   do
@@ -558,7 +558,7 @@ LABEL_33:
     v52 = [v31 objectAtIndexedSubscript:v50];
     [v52 doubleValue];
     v53 = [v51 numberWithDouble:?];
-    [v35 setObject:v53 forKeyedSubscript:v49];
+    [dictionary setObject:v53 forKeyedSubscript:v49];
 
     v14 = v14 + 1.0;
     v48 = (v48 + 1);
@@ -569,12 +569,12 @@ LABEL_33:
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v74 = v35;
+    v74 = dictionary;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "ml input dict: %@", buf, 0xCu);
   }
 
   v72 = 0;
-  v55 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v35 error:&v72];
+  v55 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:dictionary error:&v72];
   v56 = v72;
   if (v56)
   {
@@ -592,19 +592,19 @@ LABEL_33:
   return v55;
 }
 
-- (BOOL)isSufficientDataAvailableForEngagementForDevice:(id)a3
+- (BOOL)isSufficientDataAvailableForEngagementForDevice:(id)device
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if (self->_minimumNumberOfPreviousConnections > 0)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(PowerUIMLAudioAccessoryModelPredictor *)self getBTConnectionEventsForPredictionUpTo:v5 forDevice:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [(PowerUIMLAudioAccessoryModelPredictor *)self getBTConnectionEventsForPredictionUpTo:date forDevice:deviceCopy];
     if ([v6 count] >= self->_minimumNumberOfPreviousConnections)
     {
-      v18 = [v6 firstObject];
-      v19 = [v18 startDate];
-      [v5 timeIntervalSinceDate:v19];
+      firstObject = [v6 firstObject];
+      startDate = [firstObject startDate];
+      [date timeIntervalSinceDate:startDate];
       v21 = v20;
 
       if (v21 < self->_minimumDaysOfHistory * 86400.0)
@@ -615,14 +615,14 @@ LABEL_33:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           log = v22;
-          v31 = [v6 firstObject];
-          v23 = [v31 startDate];
-          v24 = [v10 stringFromDate:v23];
-          v25 = [v24 UTF8String];
+          firstObject2 = [v6 firstObject];
+          startDate2 = [firstObject2 startDate];
+          v24 = [v10 stringFromDate:startDate2];
+          uTF8String = [v24 UTF8String];
           v26 = [MEMORY[0x277CCABB0] numberWithDouble:v21 / 86400.0];
           v27 = [MEMORY[0x277CCABB0] numberWithInt:self->_minimumDaysOfHistory];
           *buf = 136315650;
-          v33 = v25;
+          v33 = uTF8String;
           v34 = 2112;
           v35 = v26;
           v36 = 2112;
@@ -679,17 +679,17 @@ LABEL_14:
   return v8;
 }
 
-- (id)getBTConnectionEventsUpTo:(id)a3 withMinimumDuration:(double)a4 withLimit:(unsigned int)a5 forDevice:(id)a6
+- (id)getBTConnectionEventsUpTo:(id)to withMinimumDuration:(double)duration withLimit:(unsigned int)limit forDevice:(id)device
 {
-  v9 = a3;
-  v10 = a6;
+  toCopy = to;
+  deviceCopy = device;
   v28 = os_transaction_create();
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
   v46 = __Block_byref_object_copy_;
   v47 = __Block_byref_object_dispose_;
-  v48 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x3032000000;
@@ -703,29 +703,29 @@ LABEL_14:
   v39[4] = __Block_byref_object_dispose_;
   v40 = 0;
   v11 = objc_alloc(MEMORY[0x277CF1A50]);
-  v12 = [v9 dateByAddingTimeInterval:-2592000.0];
-  v33 = [v11 initWithStartDate:v12 endDate:v9 maxEvents:a5 lastN:0 reversed:0];
-  v34 = v9;
+  v12 = [toCopy dateByAddingTimeInterval:-2592000.0];
+  v33 = [v11 initWithStartDate:v12 endDate:toCopy maxEvents:limit lastN:0 reversed:0];
+  v34 = toCopy;
 
   v13 = objc_alloc(MEMORY[0x277CF1A50]);
-  v14 = [v9 dateByAddingTimeInterval:-5184000.0];
-  v30 = [v13 initWithStartDate:v14 endDate:v9 maxEvents:0 lastN:0 reversed:0];
+  v14 = [toCopy dateByAddingTimeInterval:-5184000.0];
+  v30 = [v13 initWithStartDate:v14 endDate:toCopy maxEvents:0 lastN:0 reversed:0];
 
   v32 = BiomeLibrary();
-  v31 = [v32 Device];
-  v15 = [v31 Wireless];
-  v16 = [v15 Bluetooth];
-  v17 = [v16 publisherWithOptions:v33];
+  device = [v32 Device];
+  wireless = [device Wireless];
+  bluetooth = [wireless Bluetooth];
+  v17 = [bluetooth publisherWithOptions:v33];
   v18 = BiomeLibrary();
-  v19 = [v18 Device];
-  v20 = [v19 TimeZone];
-  v21 = [v20 publisherWithOptions:v30];
+  device2 = [v18 Device];
+  timeZone = [device2 TimeZone];
+  v21 = [timeZone publisherWithOptions:v30];
   v22 = [v17 orderedMergeWithOther:v21 comparator:&__block_literal_global];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __107__PowerUIMLAudioAccessoryModelPredictor_getBTConnectionEventsUpTo_withMinimumDuration_withLimit_forDevice___block_invoke_2;
   v37[3] = &unk_2782D3DE8;
-  v23 = v10;
+  v23 = deviceCopy;
   v38 = v23;
   v24 = [v22 filterWithIsIncluded:v37];
   v36[0] = MEMORY[0x277D85DD0];
@@ -739,7 +739,7 @@ LABEL_14:
   v35[3] = &unk_2782D3E38;
   v35[4] = self;
   v35[5] = v41;
-  *&v35[8] = a4;
+  *&v35[8] = duration;
   v35[6] = v39;
   v35[7] = &v43;
   v25 = [v24 sinkWithCompletion:v36 receiveInput:v35];
@@ -891,16 +891,16 @@ LABEL_18:
   objc_autoreleasePoolPop(v5);
 }
 
-- (BOOL)deviceHasAtLeastOneLongConnection:(id)a3 forReferenceDate:(id)a4
+- (BOOL)deviceHasAtLeastOneLongConnection:(id)connection forReferenceDate:(id)date
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:a4 sinceDate:-2592000.0];
+  connectionCopy = connection;
+  v7 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:date sinceDate:-2592000.0];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v6;
+  v8 = connectionCopy;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
@@ -916,18 +916,18 @@ LABEL_3:
       }
 
       v13 = *(*(&v27 + 1) + 8 * v12);
-      v14 = [v13 startDate];
-      v15 = [v7 earlierDate:v14];
-      v16 = [v13 startDate];
+      startDate = [v13 startDate];
+      v15 = [v7 earlierDate:startDate];
+      startDate2 = [v13 startDate];
 
-      if (v15 == v16)
+      if (v15 == startDate2)
       {
         break;
       }
 
-      v17 = [v13 endDate];
-      v18 = [v13 startDate];
-      [v17 timeIntervalSinceDate:v18];
+      endDate = [v13 endDate];
+      startDate3 = [v13 startDate];
+      [endDate timeIntervalSinceDate:startDate3];
       v20 = v19;
 
       if (v20 >= 10800.0)
@@ -971,10 +971,10 @@ LABEL_15:
   return v22;
 }
 
-- (double)historicalMeaningfulUnderchargeRate:(id)a3
+- (double)historicalMeaningfulUnderchargeRate:(id)rate
 {
-  v3 = a3;
-  v4 = [v3 count];
+  rateCopy = rate;
+  v4 = [rateCopy count];
   if (v4 < 2)
   {
     v5 = 0;
@@ -990,16 +990,16 @@ LABEL_15:
     {
       v37 = v5;
       v9 = v7 - 1;
-      v10 = [v3 objectAtIndexedSubscript:{v7 - 1, v7}];
-      v11 = [v10 endDate];
-      v12 = [v11 dateByAddingTimeInterval:9000.0];
+      v10 = [rateCopy objectAtIndexedSubscript:{v7 - 1, v7}];
+      endDate = [v10 endDate];
+      v12 = [endDate dateByAddingTimeInterval:9000.0];
 
-      v13 = [v3 objectAtIndexedSubscript:v9];
-      v14 = [v13 endDate];
+      v13 = [rateCopy objectAtIndexedSubscript:v9];
+      endDate2 = [v13 endDate];
       v35 = v9;
-      v15 = [v3 objectAtIndexedSubscript:v9];
-      v16 = [v15 startDate];
-      [v14 timeIntervalSinceDate:v16];
+      v15 = [rateCopy objectAtIndexedSubscript:v9];
+      startDate = [v15 startDate];
+      [endDate2 timeIntervalSinceDate:startDate];
       v18 = v17;
 
       v19 = v8;
@@ -1007,23 +1007,23 @@ LABEL_15:
       v20 = v6;
       do
       {
-        v21 = [v3 objectAtIndexedSubscript:v20];
-        v22 = [v21 startDate];
-        v23 = [v12 earlierDate:v22];
-        v24 = [v3 objectAtIndexedSubscript:v20];
-        v25 = [v24 startDate];
+        v21 = [rateCopy objectAtIndexedSubscript:v20];
+        startDate2 = [v21 startDate];
+        v23 = [v12 earlierDate:startDate2];
+        v24 = [rateCopy objectAtIndexedSubscript:v20];
+        startDate3 = [v24 startDate];
 
-        if (v23 != v25)
+        if (v23 != startDate3)
         {
           break;
         }
 
-        v26 = [v3 objectAtIndexedSubscript:v20];
-        v27 = [v26 endDate];
-        v28 = [v27 earlierDate:v12];
-        v29 = [v3 objectAtIndexedSubscript:v20];
-        v30 = [v29 startDate];
-        [v28 timeIntervalSinceDate:v30];
+        v26 = [rateCopy objectAtIndexedSubscript:v20];
+        endDate3 = [v26 endDate];
+        v28 = [endDate3 earlierDate:v12];
+        v29 = [rateCopy objectAtIndexedSubscript:v20];
+        startDate4 = [v29 startDate];
+        [v28 timeIntervalSinceDate:startDate4];
         v18 = v18 + v31;
 
         --v20;
@@ -1046,9 +1046,9 @@ LABEL_15:
   }
 
   v32 = 0.0;
-  if ([v3 count] && v5)
+  if ([rateCopy count] && v5)
   {
-    v32 = v5 / [v3 count];
+    v32 = v5 / [rateCopy count];
   }
 
   return v32;

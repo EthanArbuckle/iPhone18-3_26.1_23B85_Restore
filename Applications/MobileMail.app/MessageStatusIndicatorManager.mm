@@ -1,10 +1,10 @@
 @interface MessageStatusIndicatorManager
-+ (id)statusIndicatorColorWithOptions:(unint64_t)a3 flagColors:(id)a4 useSelectedColors:(BOOL)a5;
++ (id)statusIndicatorColorWithOptions:(unint64_t)options flagColors:(id)colors useSelectedColors:(BOOL)selectedColors;
 - (double)midXToMidXSpacing;
-- (id)statusIndicatorColorWithOptionsMask:(unint64_t)a3;
-- (id)statusIndicatorImageWithOptionsMask:(unint64_t)a3;
-- (void)_setIndicatorOptions:(unint64_t)a3 disabled:(BOOL)a4;
-- (void)pruneIndicatorOptions:(int64_t)a3;
+- (id)statusIndicatorColorWithOptionsMask:(unint64_t)mask;
+- (id)statusIndicatorImageWithOptionsMask:(unint64_t)mask;
+- (void)_setIndicatorOptions:(unint64_t)options disabled:(BOOL)disabled;
+- (void)pruneIndicatorOptions:(int64_t)options;
 @end
 
 @implementation MessageStatusIndicatorManager
@@ -30,20 +30,20 @@
   return result;
 }
 
-- (id)statusIndicatorColorWithOptionsMask:(unint64_t)a3
+- (id)statusIndicatorColorWithOptionsMask:(unint64_t)mask
 {
-  v5 = [(MessageStatusIndicatorManager *)self effectiveIndicatorOptions];
-  v6 = [(MessageStatusIndicatorManager *)self flagColors];
-  v7 = [MessageStatusIndicatorManager statusIndicatorColorWithOptions:v5 & a3 flagColors:v6 useSelectedColors:[(MessageStatusIndicatorManager *)self useSelectedColors]];
+  effectiveIndicatorOptions = [(MessageStatusIndicatorManager *)self effectiveIndicatorOptions];
+  flagColors = [(MessageStatusIndicatorManager *)self flagColors];
+  v7 = [MessageStatusIndicatorManager statusIndicatorColorWithOptions:effectiveIndicatorOptions & mask flagColors:flagColors useSelectedColors:[(MessageStatusIndicatorManager *)self useSelectedColors]];
 
   return v7;
 }
 
-+ (id)statusIndicatorColorWithOptions:(unint64_t)a3 flagColors:(id)a4 useSelectedColors:(BOOL)a5
++ (id)statusIndicatorColorWithOptions:(unint64_t)options flagColors:(id)colors useSelectedColors:(BOOL)selectedColors
 {
-  v5 = a5;
-  v7 = a4;
-  if (v5)
+  selectedColorsCopy = selectedColors;
+  colorsCopy = colors;
+  if (selectedColorsCopy)
   {
     +[UIColor systemWhiteColor];
   }
@@ -53,14 +53,14 @@
     +[UIColor systemBlueColor];
   }
   v8 = ;
-  if (a3 <= 127)
+  if (options <= 127)
   {
-    if (a3 - 2 <= 0x3E)
+    if (options - 2 <= 0x3E)
     {
-      if (((1 << (a3 - 2)) & 0x4000000040404040) != 0)
+      if (((1 << (options - 2)) & 0x4000000040404040) != 0)
       {
 LABEL_7:
-        if (v5)
+        if (selectedColorsCopy)
         {
           +[UIColor mailMessageListSelectedStatusIndicatorColor];
         }
@@ -78,35 +78,35 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      if (a3 == 2)
+      if (options == 2)
       {
         v9 = +[UIColor systemYellowColor];
         goto LABEL_34;
       }
 
-      if (a3 == 4)
+      if (options == 4)
       {
-        if ([v7 count])
+        if ([colorsCopy count])
         {
-          v10 = [v7 firstIndex];
+          firstIndex = [colorsCopy firstIndex];
         }
 
         else
         {
-          v10 = 0;
+          firstIndex = 0;
         }
 
-        v9 = [UIColor mf_colorFromFlagColor:v10];
+        v9 = [UIColor mf_colorFromFlagColor:firstIndex];
         goto LABEL_34;
       }
     }
 
-    if (a3 != 1)
+    if (options != 1)
     {
       goto LABEL_35;
     }
 
-    if (v5)
+    if (selectedColorsCopy)
     {
       +[UIColor systemWhiteColor];
     }
@@ -119,9 +119,9 @@ LABEL_34:
     goto LABEL_9;
   }
 
-  if (a3 > 1023)
+  if (options > 1023)
   {
-    switch(a3)
+    switch(options)
     {
       case 0x400uLL:
         v9 = +[UIColor systemGreenColor];
@@ -139,7 +139,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  switch(a3)
+  switch(options)
   {
     case 0x80uLL:
       goto LABEL_7;
@@ -155,7 +155,7 @@ LABEL_35:
   return v8;
 }
 
-- (void)pruneIndicatorOptions:(int64_t)a3
+- (void)pruneIndicatorOptions:(int64_t)options
 {
   self->_pruneDisabledIndicatorOptions = 0;
   v5[0] = 0;
@@ -168,7 +168,7 @@ LABEL_35:
   v4[3] = &unk_100653030;
   v4[4] = self;
   v4[5] = v5;
-  v4[6] = a3;
+  v4[6] = options;
   v3 = objc_retainBlock(v4);
   (v3[2])(v3, 1);
   (v3[2])(v3, 4);
@@ -183,9 +183,9 @@ LABEL_35:
   _Block_object_dispose(v5, 8);
 }
 
-- (id)statusIndicatorImageWithOptionsMask:(unint64_t)a3
+- (id)statusIndicatorImageWithOptionsMask:(unint64_t)mask
 {
-  v3 = [(MessageStatusIndicatorManager *)self effectiveIndicatorOptions]& a3;
+  v3 = [(MessageStatusIndicatorManager *)self effectiveIndicatorOptions]& mask;
   if (v3 > 31)
   {
     if (v3 > 511)
@@ -328,16 +328,16 @@ LABEL_41:
   return v5;
 }
 
-- (void)_setIndicatorOptions:(unint64_t)a3 disabled:(BOOL)a4
+- (void)_setIndicatorOptions:(unint64_t)options disabled:(BOOL)disabled
 {
-  if (a4)
+  if (disabled)
   {
-    v4 = self->_disabledIndicatorOptions | a3;
+    v4 = self->_disabledIndicatorOptions | options;
   }
 
   else
   {
-    v4 = self->_disabledIndicatorOptions & ~a3;
+    v4 = self->_disabledIndicatorOptions & ~options;
   }
 
   self->_disabledIndicatorOptions = v4;

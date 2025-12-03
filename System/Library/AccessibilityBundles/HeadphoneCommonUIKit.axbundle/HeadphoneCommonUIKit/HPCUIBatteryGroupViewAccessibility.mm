@@ -1,19 +1,19 @@
 @interface HPCUIBatteryGroupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityOverridesInvalidFrames;
 - (CGRect)accessibilityFrame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetupLabel;
-- (void)setAXBatteryType:(id)a3;
+- (void)setAXBatteryType:(id)type;
 @end
 
 @implementation HPCUIBatteryGroupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HPCUIBatteryGroupView" hasInstanceVariable:@"batteryPercentLabel" withType:"UILabel"];
-  [v3 validateClass:@"HPCUIBatteryGroupView" hasInstanceMethod:@"setChargePercent:" withFullSignature:{"v", "C", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HPCUIBatteryGroupView" hasInstanceVariable:@"batteryPercentLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"HPCUIBatteryGroupView" hasInstanceMethod:@"setChargePercent:" withFullSignature:{"v", "C", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -53,11 +53,11 @@
   {
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    v11 = [v10 superview];
-    v12 = v11;
-    if (v11)
+    superview = [v10 superview];
+    v12 = superview;
+    if (superview)
     {
-      [v11 accessibilityFrame];
+      [superview accessibilityFrame];
       v5 = v13;
       v7 = v14;
       v8 = v15;
@@ -76,9 +76,9 @@
   return result;
 }
 
-- (void)setAXBatteryType:(id)a3
+- (void)setAXBatteryType:(id)type
 {
-  [(HPCUIBatteryGroupViewAccessibility *)self _axSetBatteryType:a3];
+  [(HPCUIBatteryGroupViewAccessibility *)self _axSetBatteryType:type];
 
   [(HPCUIBatteryGroupViewAccessibility *)self _axSetupLabel];
 }
@@ -89,10 +89,10 @@
   v3 = [(HPCUIBatteryGroupViewAccessibility *)self safeValueForKey:@"batteryPercentLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [(HPCUIBatteryGroupViewAccessibility *)self _axBatteryType];
-  v6 = [v4 text];
+  _axBatteryType = [(HPCUIBatteryGroupViewAccessibility *)self _axBatteryType];
+  text = [v4 text];
   v7 = __UIAXStringForVariables();
-  [v4 setAccessibilityLabel:{v7, v6, @"__AXStringForVariablesSentinel"}];
+  [v4 setAccessibilityLabel:{v7, text, @"__AXStringForVariablesSentinel"}];
 }
 
 @end

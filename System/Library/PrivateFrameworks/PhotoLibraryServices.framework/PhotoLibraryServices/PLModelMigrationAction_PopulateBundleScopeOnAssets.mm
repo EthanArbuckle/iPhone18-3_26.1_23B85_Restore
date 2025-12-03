@@ -1,17 +1,17 @@
 @interface PLModelMigrationAction_PopulateBundleScopeOnAssets
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_PopulateBundleScopeOnAssets
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v38 = self;
+  contextCopy = context;
+  selfCopy = self;
   v7 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:2 pendingParentUnitCount:0];
   v8 = [PLPersistentHistoryTransactionModifiers transactionAuthorFromChangeSource:2];
-  [v6 setTransactionAuthor:v8];
+  [contextCopy setTransactionAuthor:v8];
 
   v9 = MEMORY[0x1E695D560];
   v10 = +[PLManagedAsset entityName];
@@ -27,19 +27,19 @@
 
   [v11 setResultType:2];
   v41 = 0;
-  v14 = [v6 executeRequest:v11 error:&v41];
+  v14 = [contextCopy executeRequest:v11 error:&v41];
   v15 = v41;
   v39 = v7;
   if (v14)
   {
-    v37 = a4;
+    errorCopy = error;
     [v7 setCompletedUnitCount:1];
     v16 = PLMigrationGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v14 result];
+      result = [v14 result];
       *buf = 138412290;
-      v47 = v17;
+      v47 = result;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Populated bundleScope for %@ CloudShared assets", buf, 0xCu);
     }
 
@@ -69,7 +69,7 @@
 
     [v11 setResultType:2];
     v40 = v15;
-    v30 = [v6 executeRequest:v11 error:&v40];
+    v30 = [contextCopy executeRequest:v11 error:&v40];
     v31 = v40;
 
     if (v30)
@@ -78,9 +78,9 @@
       v32 = PLMigrationGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v30 result];
+        result2 = [v30 result];
         *buf = 138412290;
-        v47 = v33;
+        v47 = result2;
         _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_DEFAULT, "Populated bundleScope for %@ MomentShare assets", buf, 0xCu);
       }
 
@@ -102,7 +102,7 @@
       v34 = 3;
     }
 
-    a4 = v37;
+    error = errorCopy;
   }
 
   else
@@ -121,11 +121,11 @@
     v31 = v15;
   }
 
-  [(PLModelMigrationActionCore *)v38 finalizeProgress];
-  if (a4)
+  [(PLModelMigrationActionCore *)selfCopy finalizeProgress];
+  if (error)
   {
     v35 = v31;
-    *a4 = v31;
+    *error = v31;
   }
 
   return v34;

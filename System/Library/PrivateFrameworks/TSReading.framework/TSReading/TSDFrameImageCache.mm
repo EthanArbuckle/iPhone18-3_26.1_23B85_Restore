@@ -1,11 +1,11 @@
 @interface TSDFrameImageCache
 + (id)sharedFrameImageCache;
-- (CGImage)newCachedImageForFrame:(id)a3 size:(CGSize)a4 viewScale:(double)a5 forCALayer:(BOOL)a6 mask:(BOOL)a7;
-- (CGImage)setCachedImage:(CGImage *)a3 forFrame:(id)a4 size:(CGSize)a5 viewScale:(double)a6 forCALayer:(BOOL)a7 mask:(BOOL)a8;
+- (CGImage)newCachedImageForFrame:(id)frame size:(CGSize)size viewScale:(double)scale forCALayer:(BOOL)layer mask:(BOOL)mask;
+- (CGImage)setCachedImage:(CGImage *)image forFrame:(id)frame size:(CGSize)size viewScale:(double)scale forCALayer:(BOOL)layer mask:(BOOL)mask;
 - (TSDFrameImageCache)init;
-- (id)p_newEntryForFrame:(id)a3 size:(CGSize)a4 viewScale:(double)a5 createIfNeeded:(BOOL)a6;
+- (id)p_newEntryForFrame:(id)frame size:(CGSize)size viewScale:(double)scale createIfNeeded:(BOOL)needed;
 - (void)dealloc;
-- (void)p_didReceiveMemoryWarning:(id)a3;
+- (void)p_didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation TSDFrameImageCache
@@ -15,21 +15,21 @@
   result = sharedFrameImageCache_instance;
   if (!sharedFrameImageCache_instance)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!sharedFrameImageCache_instance)
     {
-      v4 = objc_alloc_init(a1);
+      v4 = objc_alloc_init(self);
       __dmb(0xBu);
       sharedFrameImageCache_instance = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDFrameImageCache sharedFrameImageCache]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameImageCache.m"), 104, @"Couldn't initialize lazy variable %s", "instance"}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameImageCache.m"), 104, @"Couldn't initialize lazy variable %s", "instance"}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return sharedFrameImageCache_instance;
   }
 
@@ -44,8 +44,8 @@
   if (v2)
   {
     v2->mEntries = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_p_didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:{objc_msgSend(MEMORY[0x277D75128], "sharedApplication")}];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_p_didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:{objc_msgSend(MEMORY[0x277D75128], "sharedApplication")}];
   }
 
   return v2;
@@ -60,18 +60,18 @@
   [(TSDFrameImageCache *)&v3 dealloc];
 }
 
-- (CGImage)newCachedImageForFrame:(id)a3 size:(CGSize)a4 viewScale:(double)a5 forCALayer:(BOOL)a6 mask:(BOOL)a7
+- (CGImage)newCachedImageForFrame:(id)frame size:(CGSize)size viewScale:(double)scale forCALayer:(BOOL)layer mask:(BOOL)mask
 {
-  v7 = a7;
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
+  maskCopy = mask;
+  layerCopy = layer;
+  height = size.height;
+  width = size.width;
   objc_sync_enter(self);
-  v14 = [(TSDFrameImageCache *)self p_newEntryForFrame:a3 size:0 viewScale:width createIfNeeded:height, a5];
-  v15 = v14;
-  if (v14)
+  scale = [(TSDFrameImageCache *)self p_newEntryForFrame:frame size:0 viewScale:width createIfNeeded:height, scale];
+  v15 = scale;
+  if (scale)
   {
-    v16 = [v14 newImageForCALayer:v8 mask:v7];
+    v16 = [scale newImageForCALayer:layerCopy mask:maskCopy];
   }
 
   else
@@ -83,26 +83,26 @@
   return v16;
 }
 
-- (CGImage)setCachedImage:(CGImage *)a3 forFrame:(id)a4 size:(CGSize)a5 viewScale:(double)a6 forCALayer:(BOOL)a7 mask:(BOOL)a8
+- (CGImage)setCachedImage:(CGImage *)image forFrame:(id)frame size:(CGSize)size viewScale:(double)scale forCALayer:(BOOL)layer mask:(BOOL)mask
 {
-  v8 = a8;
-  v9 = a7;
-  height = a5.height;
-  width = a5.width;
+  maskCopy = mask;
+  layerCopy = layer;
+  height = size.height;
+  width = size.width;
   objc_sync_enter(self);
-  v16 = [(TSDFrameImageCache *)self p_newEntryForFrame:a4 size:1 viewScale:width createIfNeeded:height, a6];
-  [v16 setImage:a3 forCALayer:v9 mask:v8];
-  v17 = [v16 newImageForCALayer:v9 mask:v8];
+  scale = [(TSDFrameImageCache *)self p_newEntryForFrame:frame size:1 viewScale:width createIfNeeded:height, scale];
+  [scale setImage:image forCALayer:layerCopy mask:maskCopy];
+  v17 = [scale newImageForCALayer:layerCopy mask:maskCopy];
 
   objc_sync_exit(self);
   return v17;
 }
 
-- (id)p_newEntryForFrame:(id)a3 size:(CGSize)a4 viewScale:(double)a5 createIfNeeded:(BOOL)a6
+- (id)p_newEntryForFrame:(id)frame size:(CGSize)size viewScale:(double)scale createIfNeeded:(BOOL)needed
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
+  neededCopy = needed;
+  height = size.height;
+  width = size.width;
   v12 = [(NSMutableArray *)self->mEntries count];
   if (v12)
   {
@@ -111,19 +111,19 @@
     while (1)
     {
       v15 = [(NSMutableArray *)self->mEntries objectAtIndex:v14];
-      v16 = [(TSDFrameImageCacheEntry *)v15 frameSpec];
-      if (v16 == [a3 frameSpec])
+      frameSpec = [(TSDFrameImageCacheEntry *)v15 frameSpec];
+      if (frameSpec == [frame frameSpec])
       {
         [(TSDFrameImageCacheEntry *)v15 assetScale];
         v18 = v17;
-        [a3 assetScale];
+        [frame assetScale];
         if (v18 == v19)
         {
           [(TSDFrameImageCacheEntry *)v15 size];
           if (v21 == width && v20 == height)
           {
             [(TSDFrameImageCacheEntry *)v15 viewScale];
-            if (v23 == a5)
+            if (v23 == scale)
             {
               break;
             }
@@ -148,14 +148,14 @@ LABEL_14:
     v15 = 0;
   }
 
-  if (!v15 && v6)
+  if (!v15 && neededCopy)
   {
     v15 = objc_alloc_init(TSDFrameImageCacheEntry);
-    -[TSDFrameImageCacheEntry setFrameSpec:](v15, "setFrameSpec:", [a3 frameSpec]);
-    [a3 assetScale];
+    -[TSDFrameImageCacheEntry setFrameSpec:](v15, "setFrameSpec:", [frame frameSpec]);
+    [frame assetScale];
     [(TSDFrameImageCacheEntry *)v15 setAssetScale:?];
     [(TSDFrameImageCacheEntry *)v15 setSize:width, height];
-    [(TSDFrameImageCacheEntry *)v15 setViewScale:a5];
+    [(TSDFrameImageCacheEntry *)v15 setViewScale:scale];
     if ([(NSMutableArray *)self->mEntries count]>= 0xA)
     {
       do
@@ -172,7 +172,7 @@ LABEL_14:
   return v15;
 }
 
-- (void)p_didReceiveMemoryWarning:(id)a3
+- (void)p_didReceiveMemoryWarning:(id)warning
 {
   objc_sync_enter(self);
   [(NSMutableArray *)self->mEntries removeAllObjects];

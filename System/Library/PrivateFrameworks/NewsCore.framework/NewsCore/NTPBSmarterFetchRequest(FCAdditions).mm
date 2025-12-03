@@ -15,7 +15,7 @@
   v22 = a9;
   v23 = a10;
   v24 = a11;
-  v32.receiver = a1;
+  v32.receiver = self;
   v32.super_class = &off_1F2EE75E0;
   v25 = objc_msgSendSuper2(&v32, sel_init);
   v26 = v25;

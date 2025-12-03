@@ -1,23 +1,23 @@
 @interface PRSQueryRankingConfiguration
-+ (void)updateMailVIP:(id)a3 phoneFavorites:(id)a4 meEmailAddresses:(id)a5;
++ (void)updateMailVIP:(id)p phoneFavorites:(id)favorites meEmailAddresses:(id)addresses;
 @end
 
 @implementation PRSQueryRankingConfiguration
 
-+ (void)updateMailVIP:(id)a3 phoneFavorites:(id)a4 meEmailAddresses:(id)a5
++ (void)updateMailVIP:(id)p phoneFavorites:(id)favorites meEmailAddresses:(id)addresses
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  updateVIPRankingQuery(v7);
-  updatePhoneFavoritesQuery(v8);
+  pCopy = p;
+  favoritesCopy = favorites;
+  addressesCopy = addresses;
+  updateVIPRankingQuery(pCopy);
+  updatePhoneFavoritesQuery(favoritesCopy);
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v7;
+  v11 = pCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -47,7 +47,7 @@
   }
 
   updateVIPList(v11, v10);
-  updateMeEmailAddresses(v9);
+  updateMeEmailAddresses(addressesCopy);
 
   v17 = *MEMORY[0x1E69E9840];
 }

@@ -1,38 +1,38 @@
 @interface BMTextUnderstandingPoemEntityTopic
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMTextUnderstandingPoemEntityTopic)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMTextUnderstandingPoemEntityTopic)initWithTopic:(id)a3 qid:(id)a4 mdIdentifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMTextUnderstandingPoemEntityTopic)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMTextUnderstandingPoemEntityTopic)initWithTopic:(id)topic qid:(id)qid mdIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMTextUnderstandingPoemEntityTopic
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMTextUnderstandingPoemEntityTopic *)self topic];
-    v7 = [v5 topic];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    topic = [(BMTextUnderstandingPoemEntityTopic *)self topic];
+    topic2 = [v5 topic];
+    v8 = topic2;
+    if (topic == topic2)
     {
     }
 
     else
     {
-      v9 = [(BMTextUnderstandingPoemEntityTopic *)self topic];
-      v10 = [v5 topic];
-      v11 = [v9 isEqual:v10];
+      topic3 = [(BMTextUnderstandingPoemEntityTopic *)self topic];
+      topic4 = [v5 topic];
+      v11 = [topic3 isEqual:topic4];
 
       if (!v11)
       {
@@ -63,18 +63,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMTextUnderstandingPoemEntityTopic *)self mdIdentifier];
-    v20 = [v5 mdIdentifier];
-    if (v19 == v20)
+    mdIdentifier = [(BMTextUnderstandingPoemEntityTopic *)self mdIdentifier];
+    mdIdentifier2 = [v5 mdIdentifier];
+    if (mdIdentifier == mdIdentifier2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMTextUnderstandingPoemEntityTopic *)self mdIdentifier];
-      v22 = [v5 mdIdentifier];
-      v12 = [v21 isEqual:v22];
+      mdIdentifier3 = [(BMTextUnderstandingPoemEntityTopic *)self mdIdentifier];
+      mdIdentifier4 = [v5 mdIdentifier];
+      v12 = [mdIdentifier3 isEqual:mdIdentifier4];
     }
 
     goto LABEL_15;
@@ -89,35 +89,35 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMTextUnderstandingPoemEntityTopic *)self topic];
+  topic = [(BMTextUnderstandingPoemEntityTopic *)self topic];
   v4 = [(BMTextUnderstandingPoemEntityTopic *)self qid];
-  v5 = [(BMTextUnderstandingPoemEntityTopic *)self mdIdentifier];
+  mdIdentifier = [(BMTextUnderstandingPoemEntityTopic *)self mdIdentifier];
   v12[0] = @"topic";
-  v6 = v3;
-  if (!v3)
+  null = topic;
+  if (!topic)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"qid";
-  v7 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"mdIdentifier";
-  v8 = v5;
-  if (!v5)
+  null3 = mdIdentifier;
+  if (!mdIdentifier)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v5)
+  if (mdIdentifier)
   {
     if (v4)
     {
@@ -126,7 +126,7 @@ LABEL_16:
 
 LABEL_14:
 
-    if (v3)
+    if (topic)
     {
       goto LABEL_10;
     }
@@ -140,7 +140,7 @@ LABEL_14:
   }
 
 LABEL_9:
-  if (v3)
+  if (topic)
   {
     goto LABEL_10;
   }
@@ -153,25 +153,25 @@ LABEL_10:
   return v9;
 }
 
-- (BMTextUnderstandingPoemEntityTopic)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMTextUnderstandingPoemEntityTopic)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"topic"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"topic"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"qid"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"qid"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_12;
         }
 
@@ -183,8 +183,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v19 = [v23 initWithDomain:v18 code:2 userInfo:v11];
         v10 = 0;
-        v13 = 0;
-        *a4 = v19;
+        selfCopy = 0;
+        *error = v19;
         goto LABEL_11;
       }
 
@@ -196,13 +196,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"mdIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"mdIdentifier"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v22 = *MEMORY[0x1E698F240];
@@ -210,11 +210,11 @@ LABEL_4:
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"mdIdentifier"];
           v26 = v20;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-          *a4 = [v24 initWithDomain:v22 code:2 userInfo:v21];
+          *error = [v24 initWithDomain:v22 code:2 userInfo:v21];
         }
 
         v12 = 0;
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_11;
       }
 
@@ -227,7 +227,7 @@ LABEL_4:
     }
 
     self = [(BMTextUnderstandingPoemEntityTopic *)self initWithTopic:v8 qid:v10 mdIdentifier:v12];
-    v13 = self;
+    selfCopy = self;
 LABEL_11:
 
     goto LABEL_12;
@@ -240,10 +240,10 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -254,50 +254,50 @@ LABEL_11:
   v30[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v8 = 0;
-  v13 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
 LABEL_12:
 
 LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMTextUnderstandingPoemEntityTopic *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_topic)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_qid)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mdIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMTextUnderstandingPoemEntityTopic;
   v5 = [(BMEventBase *)&v23 init];
@@ -306,12 +306,12 @@ LABEL_13:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -322,18 +322,18 @@ LABEL_13:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -350,9 +350,9 @@ LABEL_13:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -375,13 +375,13 @@ LABEL_16:
         *(&v5->super.super.isa + v18) = v17;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v21 = 0;
@@ -399,28 +399,28 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMTextUnderstandingPoemEntityTopic *)self topic];
+  topic = [(BMTextUnderstandingPoemEntityTopic *)self topic];
   v5 = [(BMTextUnderstandingPoemEntityTopic *)self qid];
-  v6 = [(BMTextUnderstandingPoemEntityTopic *)self mdIdentifier];
-  v7 = [v3 initWithFormat:@"BMTextUnderstandingPoemEntityTopic with topic: %@, qid: %@, mdIdentifier: %@", v4, v5, v6];
+  mdIdentifier = [(BMTextUnderstandingPoemEntityTopic *)self mdIdentifier];
+  v7 = [v3 initWithFormat:@"BMTextUnderstandingPoemEntityTopic with topic: %@, qid: %@, mdIdentifier: %@", topic, v5, mdIdentifier];
 
   return v7;
 }
 
-- (BMTextUnderstandingPoemEntityTopic)initWithTopic:(id)a3 qid:(id)a4 mdIdentifier:(id)a5
+- (BMTextUnderstandingPoemEntityTopic)initWithTopic:(id)topic qid:(id)qid mdIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  topicCopy = topic;
+  qidCopy = qid;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = BMTextUnderstandingPoemEntityTopic;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_topic, a3);
-    objc_storeStrong(&v12->_qid, a4);
-    objc_storeStrong(&v12->_mdIdentifier, a5);
+    objc_storeStrong(&v12->_topic, topic);
+    objc_storeStrong(&v12->_qid, qid);
+    objc_storeStrong(&v12->_mdIdentifier, identifier);
   }
 
   return v12;
@@ -457,9 +457,9 @@ LABEL_24:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -467,8 +467,8 @@ LABEL_24:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMTextUnderstandingPoemEntityTopic alloc] initByReadFrom:v7];
     v4 = v8;

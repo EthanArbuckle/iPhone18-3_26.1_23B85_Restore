@@ -1,20 +1,20 @@
 @interface ITIdleTimerStateClient
-- (BOOL)handleIdleEvent:(id)a3 usingConfigurationWithIdentifier:(id)a4;
+- (BOOL)handleIdleEvent:(id)event usingConfigurationWithIdentifier:(id)identifier;
 - (BOOL)isIdleTimerServiceAvailable;
-- (ITIdleTimerStateClient)initWithDelegate:(id)a3;
-- (void)_access_addIdleTimerConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5;
-- (void)_access_removeIdleTimerConfiguration:(id)a3 forReason:(id)a4;
+- (ITIdleTimerStateClient)initWithDelegate:(id)delegate;
+- (void)_access_addIdleTimerConfiguration:(id)configuration forReason:(id)reason error:(id *)error;
+- (void)_access_removeIdleTimerConfiguration:(id)configuration forReason:(id)reason;
 - (void)_connectionInterrupted;
-- (void)addIdleTimerConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5;
+- (void)addIdleTimerConfiguration:(id)configuration forReason:(id)reason error:(id *)error;
 - (void)isIdleTimerServiceAvailable;
-- (void)removeIdleTimerConfiguration:(id)a3 forReason:(id)a4;
+- (void)removeIdleTimerConfiguration:(id)configuration forReason:(id)reason;
 @end
 
 @implementation ITIdleTimerStateClient
 
-- (ITIdleTimerStateClient)initWithDelegate:(id)a3
+- (ITIdleTimerStateClient)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = ITIdleTimerStateClient;
   v5 = [(ITIdleTimerStateClient *)&v17 init];
@@ -26,7 +26,7 @@
 
   v5->_accessLock._os_unfair_lock_opaque = 0;
   v5->_access_serviceAvailability = 0;
-  objc_storeWeak(&v5->_delegate, v4);
+  objc_storeWeak(&v5->_delegate, delegateCopy);
   v7 = [MEMORY[0x277CF3288] endpointForMachName:@"com.apple.frontboard.systemappservices" service:@"com.apple.idletimer-service" instance:0];
   if (v7)
   {
@@ -134,9 +134,9 @@ void __43__ITIdleTimerStateClient_initWithDelegate___block_invoke_59(uint64_t a1
 
   else
   {
-    v5 = [(BSServiceConnection *)self->_connection remoteTarget];
+    remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
     v8 = 0;
-    LODWORD(v4) = [v5 isIdleTimerServiceAvailableWithError:&v8];
+    LODWORD(v4) = [remoteTarget isIdleTimerServiceAvailableWithError:&v8];
     v6 = v8;
 
     if (v6)
@@ -166,43 +166,43 @@ void __43__ITIdleTimerStateClient_initWithDelegate___block_invoke_59(uint64_t a1
   return v4;
 }
 
-- (void)addIdleTimerConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5
+- (void)addIdleTimerConfiguration:(id)configuration forReason:(id)reason error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  reasonCopy = reason;
+  configurationCopy = configuration;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
   v12 = 0;
-  [(ITIdleTimerStateClient *)self _access_addIdleTimerConfiguration:v9 forReason:v8 error:&v12];
+  [(ITIdleTimerStateClient *)self _access_addIdleTimerConfiguration:configurationCopy forReason:reasonCopy error:&v12];
 
   v10 = v12;
   os_unfair_lock_unlock(&self->_accessLock);
-  if (a5 && v10)
+  if (error && v10)
   {
     v11 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 }
 
-- (void)removeIdleTimerConfiguration:(id)a3 forReason:(id)a4
+- (void)removeIdleTimerConfiguration:(id)configuration forReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  configurationCopy = configuration;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(ITIdleTimerStateClient *)self _access_removeIdleTimerConfiguration:v7 forReason:v6];
+  [(ITIdleTimerStateClient *)self _access_removeIdleTimerConfiguration:configurationCopy forReason:reasonCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (BOOL)handleIdleEvent:(id)a3 usingConfigurationWithIdentifier:(id)a4
+- (BOOL)handleIdleEvent:(id)event usingConfigurationWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a3 unsignedIntegerValue];
+  identifierCopy = identifier;
+  unsignedIntegerValue = [event unsignedIntegerValue];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v7) = [WeakRetained handleIdleEvent:v7 usingConfigurationWithIdentifier:v6];
+  LOBYTE(unsignedIntegerValue) = [WeakRetained handleIdleEvent:unsignedIntegerValue usingConfigurationWithIdentifier:identifierCopy];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (void)_connectionInterrupted
@@ -212,14 +212,14 @@ void __43__ITIdleTimerStateClient_initWithDelegate___block_invoke_59(uint64_t a1
   [WeakRetained resendIdleTimerAssertions];
 }
 
-- (void)_access_addIdleTimerConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5
+- (void)_access_addIdleTimerConfiguration:(id)configuration forReason:(id)reason error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  reasonCopy = reason;
+  configurationCopy = configuration;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v10 = [(BSServiceConnection *)self->_connection remoteTarget];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
   v14 = 0;
-  [v10 addIdleTimerServiceConfiguration:v9 forReason:v8 error:&v14];
+  [remoteTarget addIdleTimerServiceConfiguration:configurationCopy forReason:reasonCopy error:&v14];
 
   v11 = v14;
   if (v11)
@@ -230,22 +230,22 @@ void __43__ITIdleTimerStateClient_initWithDelegate___block_invoke_59(uint64_t a1
       [ITIdleTimerStateClient _access_addIdleTimerOnBehalfOfSceneWithPID:withConfiguration:forReason:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v13 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 }
 
-- (void)_access_removeIdleTimerConfiguration:(id)a3 forReason:(id)a4
+- (void)_access_removeIdleTimerConfiguration:(id)configuration forReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  configurationCopy = configuration;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v8 = [(BSServiceConnection *)self->_connection remoteTarget];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
   v11 = 0;
-  [v8 removeIdleTimerServiceConfiguration:v7 forReason:v6 error:&v11];
+  [remoteTarget removeIdleTimerServiceConfiguration:configurationCopy forReason:reasonCopy error:&v11];
 
   v9 = v11;
   if (v9)

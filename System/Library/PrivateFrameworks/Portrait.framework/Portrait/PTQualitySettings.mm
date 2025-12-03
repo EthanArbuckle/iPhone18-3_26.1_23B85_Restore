@@ -1,15 +1,15 @@
 @interface PTQualitySettings
-+ (id)createWithQuality:(int)a3 options:(id)a4;
++ (id)createWithQuality:(int)quality options:(id)options;
 - (void)updateDescription;
 @end
 
 @implementation PTQualitySettings
 
-+ (id)createWithQuality:(int)a3 options:(id)a4
++ (id)createWithQuality:(int)quality options:(id)options
 {
-  v4 = *&a3;
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:&unk_2837F3058];
+  v4 = *&quality;
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKeyedSubscript:&unk_2837F3058];
   if (v6)
   {
     goto LABEL_40;
@@ -37,11 +37,11 @@
 
   *&v8 = v9;
   [v6 setDisparityUpsampleFactor:v8];
-  v10 = [v5 objectForKeyedSubscript:&unk_2837F3070];
+  v10 = [optionsCopy objectForKeyedSubscript:&unk_2837F3070];
 
   if (v10)
   {
-    v11 = [v5 objectForKeyedSubscript:&unk_2837F3070];
+    v11 = [optionsCopy objectForKeyedSubscript:&unk_2837F3070];
     [v11 floatValue];
     [v6 setDisparityUpsampleFactor:?];
   }
@@ -115,22 +115,22 @@ LABEL_21:
   }
 
 LABEL_26:
-  v16 = [v5 objectForKeyedSubscript:&unk_2837F3088];
+  v16 = [optionsCopy objectForKeyedSubscript:&unk_2837F3088];
 
   if (v16)
   {
-    v17 = [v5 objectForKeyedSubscript:&unk_2837F3088];
+    v17 = [optionsCopy objectForKeyedSubscript:&unk_2837F3088];
     [v17 floatValue];
     [v6 setRenderDownscale:?];
   }
 
   [v6 renderDownscale];
   [v6 setDoIntermediate2XUpscale:v18 > 3.0];
-  v19 = [v5 objectForKeyedSubscript:&unk_2837F30A0];
+  v19 = [optionsCopy objectForKeyedSubscript:&unk_2837F30A0];
 
   if (v19)
   {
-    v21 = [v5 objectForKeyedSubscript:&unk_2837F30A0];
+    v21 = [optionsCopy objectForKeyedSubscript:&unk_2837F30A0];
     [v6 setDoMacroApertureLimit:{objc_msgSend(v21, "BOOLValue")}];
   }
 
@@ -138,30 +138,30 @@ LABEL_26:
   [v6 setCircleOfConfusionLimitBackground:v20];
   LODWORD(v22) = 2143289344;
   [v6 setCircleOfConfusionLimitForeground:v22];
-  v23 = [v5 objectForKeyedSubscript:&unk_2837F30B8];
+  v23 = [optionsCopy objectForKeyedSubscript:&unk_2837F30B8];
 
   if (v23)
   {
-    v24 = [v5 objectForKeyedSubscript:&unk_2837F30B8];
+    v24 = [optionsCopy objectForKeyedSubscript:&unk_2837F30B8];
     [v24 floatValue];
     [v6 setCircleOfConfusionLimitBackground:?];
   }
 
-  v25 = [v5 objectForKeyedSubscript:&unk_2837F30D0];
+  v25 = [optionsCopy objectForKeyedSubscript:&unk_2837F30D0];
 
   if (v25)
   {
-    v26 = [v5 objectForKeyedSubscript:&unk_2837F30D0];
+    v26 = [optionsCopy objectForKeyedSubscript:&unk_2837F30D0];
     [v26 floatValue];
     [v6 setCircleOfConfusionLimitForeground:?];
   }
 
   [v6 setPortraitPreviewDeadzone:0];
-  v27 = [v5 objectForKeyedSubscript:&unk_2837F30E8];
+  v27 = [optionsCopy objectForKeyedSubscript:&unk_2837F30E8];
 
   if (v27)
   {
-    v28 = [v5 objectForKeyedSubscript:&unk_2837F30E8];
+    v28 = [optionsCopy objectForKeyedSubscript:&unk_2837F30E8];
     [v6 setPortraitPreviewDeadzone:{objc_msgSend(v28, "BOOLValue")}];
   }
 
@@ -175,15 +175,15 @@ LABEL_26:
   [v6 setDoIntermediate2XUpscale:{objc_msgSend(v6, "doIntermediate2XUpscale")}];
   if ([v6 doFocusEdgeMask])
   {
-    v29 = [v6 rayMarch];
+    rayMarch = [v6 rayMarch];
   }
 
   else
   {
-    v29 = 0;
+    rayMarch = 0;
   }
 
-  [v6 setDoFocusEdgeMask:v29];
+  [v6 setDoFocusEdgeMask:rayMarch];
   [v6 updateDescription];
 LABEL_40:
   v30 = v6;

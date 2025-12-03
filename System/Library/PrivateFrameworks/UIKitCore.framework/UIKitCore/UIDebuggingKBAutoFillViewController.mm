@@ -1,10 +1,10 @@
 @interface UIDebuggingKBAutoFillViewController
-- (id)_formTypeFileName:(int64_t)a3;
-- (id)_getTopMostViewControllerInWindow:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)_formTypeFileName:(int64_t)name;
+- (id)_getTopMostViewControllerInWindow:(id)window;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_archiveTopMostViewControllerForAutoFillTest;
-- (void)autoFillTestGroundTruthGenerationViewController:(id)a3 didFinishWithResult:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)autoFillTestGroundTruthGenerationViewController:(id)controller didFinishWithResult:(id)result;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -16,60 +16,60 @@
   v10.super_class = UIDebuggingKBAutoFillViewController;
   [(UIViewController *)&v10 viewDidLoad];
   v3 = [UITableView alloc];
-  v4 = [(UIViewController *)self view];
-  [v4 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v5 = [(UITableView *)v3 initWithFrame:0 style:?];
   tableView = self->_tableView;
   self->_tableView = v5;
 
   [(UIView *)self->_tableView setAutoresizingMask:18];
-  v7 = [(UIViewController *)self view];
-  [v7 addSubview:self->_tableView];
+  view2 = [(UIViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
   [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView setDataSource:self];
   v8 = +[UIColor whiteColor];
-  v9 = [(UIViewController *)self view];
-  [v9 setBackgroundColor:v8];
+  view3 = [(UIViewController *)self view];
+  [view3 setBackgroundColor:v8];
 }
 
-- (id)_getTopMostViewControllerInWindow:(id)a3
+- (id)_getTopMostViewControllerInWindow:(id)window
 {
-  v3 = [a3 rootViewController];
-  v4 = [v3 presentedViewController];
+  rootViewController = [window rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     do
     {
-      v5 = [v3 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v6 = [v5 presentedViewController];
+      v5PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v3 = v5;
+      rootViewController = presentedViewController2;
     }
 
-    while (v6);
+    while (v5PresentedViewController);
   }
 
   else
   {
-    v5 = v3;
+    presentedViewController2 = rootViewController;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 topViewController];
+    topViewController = [presentedViewController2 topViewController];
   }
 
   else
   {
-    v7 = v5;
+    topViewController = presentedViewController2;
   }
 
-  v8 = v7;
+  v8 = topViewController;
 
   return v8;
 }
@@ -77,12 +77,12 @@
 - (void)_archiveTopMostViewControllerForAutoFillTest
 {
   v3 = +[UIDebuggingInformationOverlay overlay];
-  v4 = [v3 inspectedWindow];
-  v11 = [(UIDebuggingKBAutoFillViewController *)self _getTopMostViewControllerInWindow:v4];
+  inspectedWindow = [v3 inspectedWindow];
+  v11 = [(UIDebuggingKBAutoFillViewController *)self _getTopMostViewControllerInWindow:inspectedWindow];
 
   v5 = [UIKBAutoFillTestArchiveMaker archiveMakerWithViewControllerToSnapshot:v11];
-  v6 = [v5 makeArchive];
-  v7 = [v6 copy];
+  makeArchive = [v5 makeArchive];
+  v7 = [makeArchive copy];
 
   v8 = [[UIKBAutoFillTestViewController alloc] initWithAutoFillTestArchive:v7];
   v9 = [[UIKBAutoFillTestGroundTruthGenerationViewController alloc] initWithAutoFillTestViewController:v8];
@@ -91,16 +91,16 @@
   [(UIViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (id)_formTypeFileName:(int64_t)a3
+- (id)_formTypeFileName:(int64_t)name
 {
-  if (a3 <= 2)
+  if (name <= 2)
   {
-    if ((a3 - 1) < 2)
+    if ((name - 1) < 2)
     {
       return @"SignIn";
     }
 
-    if (!a3)
+    if (!name)
     {
       return @"Unspecified";
     }
@@ -108,14 +108,14 @@
     return &stru_1EFB14550;
   }
 
-  if ((a3 - 3) < 2)
+  if ((name - 3) < 2)
   {
     return @"SignUp";
   }
 
-  if (a3 != 5)
+  if (name != 5)
   {
-    if (a3 == 10000)
+    if (name == 10000)
     {
       return @"Other";
     }
@@ -126,23 +126,23 @@
   return @"ChangePassword";
 }
 
-- (void)autoFillTestGroundTruthGenerationViewController:(id)a3 didFinishWithResult:(id)a4
+- (void)autoFillTestGroundTruthGenerationViewController:(id)controller didFinishWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  controllerCopy = controller;
+  resultCopy = result;
+  if (resultCopy)
   {
-    v8 = [v6 testViewController];
-    v9 = [v8 testArchive];
+    testViewController = [controllerCopy testViewController];
+    testArchive = [testViewController testArchive];
 
-    [v9 setExpectedResult:v7];
+    [testArchive setExpectedResult:resultCopy];
     v10 = [UIAlertController alertControllerWithTitle:0 message:@"Saving AutoFill Test Archive" preferredStyle:1];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __107__UIDebuggingKBAutoFillViewController_autoFillTestGroundTruthGenerationViewController_didFinishWithResult___block_invoke;
     aBlock[3] = &unk_1E7127AC8;
     v22 = v10;
-    v11 = v6;
+    v11 = controllerCopy;
     v23 = v11;
     v12 = v10;
     v13 = _Block_copy(aBlock);
@@ -151,17 +151,17 @@
     v16[2] = __107__UIDebuggingKBAutoFillViewController_autoFillTestGroundTruthGenerationViewController_didFinishWithResult___block_invoke_46;
     v16[3] = &unk_1E7127AF0;
     v20 = v13;
-    v17 = v9;
-    v18 = self;
-    v19 = v7;
+    v17 = testArchive;
+    selfCopy = self;
+    v19 = resultCopy;
     v14 = v13;
-    v15 = v9;
+    v15 = testArchive;
     [v11 presentViewController:v12 animated:1 completion:v16];
   }
 
   else
   {
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    [controllerCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -290,11 +290,11 @@ void __107__UIDebuggingKBAutoFillViewController_autoFillTestGroundTruthGeneratio
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = [pathCopy row];
 
   if (!v7)
   {
@@ -303,16 +303,16 @@ void __107__UIDebuggingKBAutoFillViewController_autoFillTestGroundTruthGeneratio
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"cell"];
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = [view dequeueReusableCellWithIdentifier:@"cell"];
+  v7 = [pathCopy row];
 
   if (!v7)
   {
-    v8 = [v6 textLabel];
-    [v8 setText:@"Create AutoFill Test Archive"];
+    textLabel = [v6 textLabel];
+    [textLabel setText:@"Create AutoFill Test Archive"];
   }
 
   return v6;

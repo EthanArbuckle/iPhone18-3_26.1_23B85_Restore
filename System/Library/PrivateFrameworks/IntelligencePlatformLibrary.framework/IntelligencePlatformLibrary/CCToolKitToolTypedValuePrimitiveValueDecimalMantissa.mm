@@ -1,16 +1,16 @@
 @interface CCToolKitToolTypedValuePrimitiveValueDecimalMantissa
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueDecimalMantissa)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueDecimalMantissa)initWithX_0:(id)a3 x_0Type:(unsigned int)a4 x_1:(id)a5 x_1Type:(unsigned int)a6 x_2:(id)a7 x_2Type:(unsigned int)a8 x_3:(id)a9 x_3Type:(unsigned int)a10 x_4:(id)a11 x_4Type:(unsigned int)a12 x_5:(id)a13 x_5Type:(unsigned int)a14 x_6:(id)a15 x_6Type:(unsigned int)a16 x_7:(id)a17 x_7Type:(unsigned int)a18 error:(id *)a19;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueDecimalMantissa)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueDecimalMantissa)initWithX_0:(id)x_0 x_0Type:(unsigned int)type x_1:(id)x_1 x_1Type:(unsigned int)x_1Type x_2:(id)x_2 x_2Type:(unsigned int)x_2Type x_3:(id)x_3 x_3Type:(unsigned int)self0 x_4:(id)self1 x_4Type:(unsigned int)self2 x_5:(id)self3 x_5Type:(unsigned int)self4 x_6:(id)self5 x_6Type:(unsigned int)self6 x_7:(id)self7 x_7Type:(unsigned int)self8 error:(id *)self9;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValueDecimalMantissa
 
-- (CCToolKitToolTypedValuePrimitiveValueDecimalMantissa)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValueDecimalMantissa)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
@@ -21,15 +21,15 @@
     goto LABEL_25;
   }
 
-  v40 = a4;
-  v9 = [v6 objectForKeyedSubscript:@"_0"];
-  v10 = [v6 objectForKeyedSubscript:@"_1"];
-  v44 = [v6 objectForKeyedSubscript:@"_2"];
-  v11 = [v6 objectForKeyedSubscript:@"_3"];
-  v12 = [v6 objectForKeyedSubscript:@"_4"];
-  v13 = [v6 objectForKeyedSubscript:@"_5"];
-  v14 = [v6 objectForKeyedSubscript:@"_6"];
-  v15 = [v6 objectForKeyedSubscript:@"_7"];
+  errorCopy = error;
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"_0"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"_1"];
+  v44 = [dictionaryCopy objectForKeyedSubscript:@"_2"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"_3"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"_4"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"_5"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"_6"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"_7"];
   if (v9)
   {
     v16 = v9;
@@ -94,7 +94,7 @@ LABEL_11:
   v35 = 5;
 LABEL_15:
   v41 = v10;
-  v43 = self;
+  selfCopy = self;
   if (v13)
   {
     v22 = v13;
@@ -135,10 +135,10 @@ LABEL_15:
   LODWORD(v32) = v23;
   LODWORD(v31) = v35;
   LODWORD(v30) = v36;
-  v18 = [[CCToolKitToolTypedValuePrimitiveValueDecimalMantissa alloc] initWithX_0:v26 x_0Type:v39 x_1:v41 x_1Type:v38 x_2:v44 x_2Type:v37 x_3:v11 x_3Type:v30 x_4:v12 x_4Type:v31 x_5:v13 x_5Type:v32 x_6:v14 x_6Type:v33 x_7:v15 x_7Type:v34 error:v40];
+  v18 = [[CCToolKitToolTypedValuePrimitiveValueDecimalMantissa alloc] initWithX_0:v26 x_0Type:v39 x_1:v41 x_1Type:v38 x_2:v44 x_2Type:v37 x_3:v11 x_3Type:v30 x_4:v12 x_4Type:v31 x_5:v13 x_5Type:v32 x_6:v14 x_6Type:v33 x_7:v15 x_7Type:v34 error:errorCopy];
 
   v8 = v42;
-  self = v43;
+  self = selfCopy;
 LABEL_25:
 
   return v18;
@@ -200,63 +200,63 @@ LABEL_25:
   return v13;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v14 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_has_0)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] uint32Value:self->__0];
-    v14[2](v14, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_has_1)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->__1];
-    v14[2](v14, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_has_2)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->__2];
-    v14[2](v14, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_has_3)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->__3];
-    v14[2](v14, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_has_4)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->__4];
-    v14[2](v14, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_has_5)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->__5];
-    v14[2](v14, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_has_6)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->__6];
-    v14[2](v14, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_has_7)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->__7];
-    v14[2](v14, v13);
+    blockCopy[2](blockCopy, v13);
   }
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -751,13 +751,13 @@ LABEL_122:
       {
         v83 = objc_opt_class();
         NSStringFromClass(v83);
-        v92 = a4;
-        v85 = v84 = v6;
+        errorCopy = error;
+        v85 = v84 = dataCopy;
         v86 = *&v7[*v10];
         v11 = CCSkipFieldErrorForMessage();
 
-        v6 = v84;
-        a4 = v92;
+        dataCopy = v84;
+        error = errorCopy;
       }
 
       goto LABEL_123;
@@ -793,45 +793,45 @@ LABEL_132:
   return v90;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValueDecimalMantissa)initWithX_0:(id)a3 x_0Type:(unsigned int)a4 x_1:(id)a5 x_1Type:(unsigned int)a6 x_2:(id)a7 x_2Type:(unsigned int)a8 x_3:(id)a9 x_3Type:(unsigned int)a10 x_4:(id)a11 x_4Type:(unsigned int)a12 x_5:(id)a13 x_5Type:(unsigned int)a14 x_6:(id)a15 x_6Type:(unsigned int)a16 x_7:(id)a17 x_7Type:(unsigned int)a18 error:(id *)a19
+- (CCToolKitToolTypedValuePrimitiveValueDecimalMantissa)initWithX_0:(id)x_0 x_0Type:(unsigned int)type x_1:(id)x_1 x_1Type:(unsigned int)x_1Type x_2:(id)x_2 x_2Type:(unsigned int)x_2Type x_3:(id)x_3 x_3Type:(unsigned int)self0 x_4:(id)self1 x_4Type:(unsigned int)self2 x_5:(id)self3 x_5Type:(unsigned int)self4 x_6:(id)self5 x_6Type:(unsigned int)self6 x_7:(id)self7 x_7Type:(unsigned int)self8 error:(id *)self9
 {
-  v23 = a3;
-  v24 = a5;
-  v25 = a7;
-  v26 = a9;
-  v27 = a11;
-  v58 = a13;
-  v57 = a15;
-  v56 = a17;
+  x_0Copy = x_0;
+  x_1Copy = x_1;
+  x_2Copy = x_2;
+  x_3Copy = x_3;
+  x_4Copy = x_4;
+  x_5Copy = x_5;
+  x_6Copy = x_6;
+  x_7Copy = x_7;
   v28 = objc_opt_new();
   v29 = 0;
-  v55 = v24;
-  if (v23)
+  v55 = x_1Copy;
+  if (x_0Copy)
   {
-    v30 = v26;
-    v31 = v27;
-    if (a4 == 1)
+    v30 = x_3Copy;
+    v31 = x_4Copy;
+    if (type == 1)
     {
       objc_opt_class();
       IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
       v29 = 0;
       if (!IsInstanceOfExpectedClass)
       {
-        v38 = v25;
+        v38 = x_2Copy;
         v39 = v30;
-        v40 = v27;
+        v40 = x_4Copy;
         CCSetError();
         v41 = 0;
 LABEL_51:
-        v44 = v58;
+        v44 = x_5Copy;
         goto LABEL_52;
       }
 
-      [v23 unsignedIntValue];
+      [x_0Copy unsignedIntValue];
       CCPBDataWriterWriteUint32Field();
     }
 
-    if (!v24)
+    if (!x_1Copy)
     {
       goto LABEL_11;
     }
@@ -839,9 +839,9 @@ LABEL_51:
 
   else
   {
-    v30 = v26;
-    v31 = v27;
-    if (!v24)
+    v30 = x_3Copy;
+    v31 = x_4Copy;
+    if (!x_1Copy)
     {
 LABEL_11:
       v34 = v29;
@@ -849,7 +849,7 @@ LABEL_11:
     }
   }
 
-  if (a6 != 2)
+  if (x_1Type != 2)
   {
     goto LABEL_11;
   }
@@ -860,7 +860,7 @@ LABEL_11:
 
   if (!v33)
   {
-    v38 = v25;
+    v38 = x_2Copy;
     v39 = v30;
     v40 = v31;
     CCSetError();
@@ -869,11 +869,11 @@ LABEL_11:
     goto LABEL_51;
   }
 
-  [v24 unsignedIntValue];
+  [x_1Copy unsignedIntValue];
   CCPBDataWriterWriteUint32Field();
 LABEL_12:
-  v51 = self;
-  if (v25 && a8 == 3)
+  selfCopy = self;
+  if (x_2Copy && x_2Type == 3)
   {
     objc_opt_class();
     v35 = CCValidateIsInstanceOfExpectedClass();
@@ -884,7 +884,7 @@ LABEL_12:
       goto LABEL_27;
     }
 
-    [v25 unsignedIntValue];
+    [x_2Copy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
     if (!v30)
     {
@@ -908,7 +908,7 @@ LABEL_23:
     }
   }
 
-  if (a10 != 4)
+  if (x_3Type != 4)
   {
     goto LABEL_23;
   }
@@ -919,7 +919,7 @@ LABEL_23:
 
   if (!v36)
   {
-    v38 = v25;
+    v38 = x_2Copy;
     v39 = v30;
     v40 = v31;
 LABEL_46:
@@ -937,7 +937,7 @@ LABEL_46:
   }
 
 LABEL_24:
-  if (a12 == 5)
+  if (x_4Type == 5)
   {
     objc_opt_class();
     v42 = CCValidateIsInstanceOfExpectedClass();
@@ -945,30 +945,30 @@ LABEL_24:
 
     if (v42)
     {
-      v38 = v25;
+      v38 = x_2Copy;
       [v31 unsignedIntValue];
       CCPBDataWriterWriteUint32Field();
       goto LABEL_31;
     }
 
 LABEL_27:
-    v38 = v25;
+    v38 = x_2Copy;
     v39 = v30;
     v40 = v31;
     goto LABEL_28;
   }
 
 LABEL_30:
-  v38 = v25;
+  v38 = x_2Copy;
   v29 = v37;
 LABEL_31:
   v39 = v30;
   v40 = v31;
-  if (v58 && a14 == 6)
+  if (x_5Copy && x_5Type == 6)
   {
     objc_opt_class();
     v43 = CCValidateIsInstanceOfExpectedClass();
-    v44 = v58;
+    v44 = x_5Copy;
     v45 = v29;
 
     if (!v43)
@@ -979,7 +979,7 @@ LABEL_31:
       goto LABEL_48;
     }
 
-    [v58 unsignedIntValue];
+    [x_5Copy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
   }
 
@@ -988,11 +988,11 @@ LABEL_31:
     v45 = v29;
   }
 
-  if (!v57 || a16 != 7)
+  if (!x_6Copy || x_6Type != 7)
   {
     v29 = v45;
 LABEL_42:
-    if (!v56 || a18 != 8)
+    if (!x_7Copy || x_7Type != 8)
     {
       v37 = v29;
       goto LABEL_50;
@@ -1004,11 +1004,11 @@ LABEL_42:
 
     if (v47)
     {
-      [v56 unsignedIntValue];
+      [x_7Copy unsignedIntValue];
       CCPBDataWriterWriteUint32Field();
 LABEL_50:
-      v48 = [v28 immutableData];
-      v49 = [v52 initWithData:v48 error:a19];
+      immutableData = [v28 immutableData];
+      v49 = [v52 initWithData:immutableData error:error];
 
       self = v49;
       v29 = v37;
@@ -1025,7 +1025,7 @@ LABEL_50:
 
   if (v46)
   {
-    [v57 unsignedIntValue];
+    [x_6Copy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
     goto LABEL_42;
   }
@@ -1034,9 +1034,9 @@ LABEL_28:
   CCSetError();
   v41 = 0;
 LABEL_47:
-  v44 = v58;
+  v44 = x_5Copy;
 LABEL_48:
-  self = v51;
+  self = selfCopy;
 LABEL_52:
 
   return v41;

@@ -2,30 +2,30 @@
 - (MKPlaceSectionView)sectionView;
 - (void)dealloc;
 - (void)loadView;
-- (void)stackViewNeedsLayout:(id)a3;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)stackViewNeedsLayout:(id)layout;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation MKPlaceSectionViewController
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(MKPlaceSectionViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(MKPlaceSectionViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (userInterfaceStyle != userInterfaceStyle2 && (objc_opt_respondsToSelector() & 1) != 0)
   {
 
     [(UIViewController *)self infoCardThemeChanged];
   }
 }
 
-- (void)stackViewNeedsLayout:(id)a3
+- (void)stackViewNeedsLayout:(id)layout
 {
-  v4 = [(MKPlaceSectionViewController *)self parentViewController];
-  v3 = [v4 view];
-  [v3 _mapkit_layoutIfNeeded];
+  parentViewController = [(MKPlaceSectionViewController *)self parentViewController];
+  view = [parentViewController view];
+  [view _mapkit_layoutIfNeeded];
 }
 
 - (MKPlaceSectionView)sectionView
@@ -33,7 +33,7 @@
   sectionView = self->_sectionView;
   if (!sectionView)
   {
-    v4 = [(MKPlaceSectionViewController *)self view];
+    view = [(MKPlaceSectionViewController *)self view];
     sectionView = self->_sectionView;
   }
 

@@ -1,16 +1,16 @@
 @interface MSDAppHelper
 + (id)sharedInstance;
-- (BOOL)isInstalledApp:(id)a3;
-- (BOOL)stopAllAppsExcept:(id)a3;
-- (BOOL)waitForAppToInstall:(id)a3 withTimeout:(unint64_t)a4;
-- (id)acquireAppTerminationAssertionForApp:(id)a3;
-- (id)bundleLocalizedNameForInstalledApp:(id)a3;
-- (id)bundlePathForInstalledApp:(id)a3;
+- (BOOL)isInstalledApp:(id)app;
+- (BOOL)stopAllAppsExcept:(id)except;
+- (BOOL)waitForAppToInstall:(id)install withTimeout:(unint64_t)timeout;
+- (id)acquireAppTerminationAssertionForApp:(id)app;
+- (id)bundleLocalizedNameForInstalledApp:(id)app;
+- (id)bundlePathForInstalledApp:(id)app;
 - (id)installedApps;
 - (id)runningApps;
-- (id)runningApps:(BOOL)a3;
+- (id)runningApps:(BOOL)apps;
 - (id)visibleApps;
-- (void)releaseAppTerminationAssertion:(id)a3 forApp:(id)a4;
+- (void)releaseAppTerminationAssertion:(id)assertion forApp:(id)app;
 @end
 
 @implementation MSDAppHelper
@@ -30,13 +30,13 @@
 - (id)installedApps
 {
   v2 = +[LSApplicationWorkspace defaultWorkspace];
-  v3 = [v2 allApplications];
+  allApplications = [v2 allApplications];
   v4 = [NSMutableArray arrayWithCapacity:0];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = allApplications;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -52,18 +52,18 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 applicationType];
-        if ([v11 isEqualToString:@"User"])
+        applicationType = [v10 applicationType];
+        if ([applicationType isEqualToString:@"User"])
         {
-          v12 = [v10 isPlaceholder];
+          isPlaceholder = [v10 isPlaceholder];
 
-          if (v12)
+          if (isPlaceholder)
           {
             continue;
           }
 
-          v11 = [v10 applicationIdentifier];
-          [v4 addObject:v11];
+          applicationType = [v10 applicationIdentifier];
+          [v4 addObject:applicationType];
         }
       }
 
@@ -80,17 +80,17 @@
 {
   v2 = [[NSMutableArray alloc] initWithCapacity:0];
   v3 = objc_alloc_init(SBSHomeScreenService);
-  v4 = [v3 allHomeScreenApplicationBundleIdentifiers];
-  [v2 addObjectsFromArray:v4];
+  allHomeScreenApplicationBundleIdentifiers = [v3 allHomeScreenApplicationBundleIdentifiers];
+  [v2 addObjectsFromArray:allHomeScreenApplicationBundleIdentifiers];
 
   v5 = [NSArray arrayWithArray:v2];
 
   return v5;
 }
 
-- (id)runningApps:(BOOL)a3
+- (id)runningApps:(BOOL)apps
 {
-  v3 = a3;
+  appsCopy = apps;
   v5 = +[RBSProcessStateDescriptor descriptor];
   v6 = +[RBSProcessPredicate predicateMatchingProcessTypeApplication];
   v30 = [NSMutableArray arrayWithCapacity:0];
@@ -109,7 +109,7 @@
     v26 = v10;
     v28 = v6;
     v29 = v5;
-    v31 = [(MSDAppHelper *)self visibleApps];
+    visibleApps = [(MSDAppHelper *)self visibleApps];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -134,16 +134,16 @@
         }
 
         v17 = *(*(&v32 + 1) + 8 * i);
-        v18 = [v17 taskState];
-        if (v3)
+        taskState = [v17 taskState];
+        if (appsCopy)
         {
-          if (v18 != 2 && [v17 taskState] != 4)
+          if (taskState != 2 && [v17 taskState] != 4)
           {
             goto LABEL_19;
           }
 
-          v19 = [v17 endowmentNamespaces];
-          v20 = [v19 containsObject:v7];
+          endowmentNamespaces = [v17 endowmentNamespaces];
+          v20 = [endowmentNamespaces containsObject:v7];
 
           if ((v20 & 1) == 0)
           {
@@ -156,11 +156,11 @@
           goto LABEL_19;
         }
 
-        v21 = [v17 process];
-        v22 = [v21 bundle];
-        v23 = [v22 identifier];
+        process = [v17 process];
+        bundle = [process bundle];
+        identifier = [bundle identifier];
 
-        if (!v23)
+        if (!identifier)
         {
           v24 = sub_100063A54();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -171,13 +171,13 @@
           }
 
 LABEL_19:
-          v23 = 0;
+          identifier = 0;
           goto LABEL_20;
         }
 
-        if ([v31 containsObject:v23])
+        if ([visibleApps containsObject:identifier])
         {
-          [v30 addObject:v23];
+          [v30 addObject:identifier];
         }
 
 LABEL_20:
@@ -224,7 +224,7 @@ LABEL_23:
     v22 = v8;
     v24 = v4;
     v25 = v3;
-    v10 = [(MSDAppHelper *)self visibleApps];
+    visibleApps = [(MSDAppHelper *)self visibleApps];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -255,11 +255,11 @@ LABEL_23:
           goto LABEL_14;
         }
 
-        v17 = [v16 process];
-        v18 = [v17 bundle];
-        v19 = [v18 identifier];
+        process = [v16 process];
+        bundle = [process bundle];
+        identifier = [bundle identifier];
 
-        if (!v19)
+        if (!identifier)
         {
           v20 = sub_100063A54();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -270,13 +270,13 @@ LABEL_23:
           }
 
 LABEL_14:
-          v19 = 0;
+          identifier = 0;
           goto LABEL_15;
         }
 
-        if ([v10 containsObject:v19])
+        if ([visibleApps containsObject:identifier])
         {
-          [v5 addObject:v19];
+          [v5 addObject:identifier];
         }
 
 LABEL_15:
@@ -297,70 +297,70 @@ LABEL_17:
   }
 
   sub_1000D8F28(v8, buf);
-  v10 = *buf;
+  visibleApps = *buf;
 LABEL_18:
 
   return v5;
 }
 
-- (id)bundleLocalizedNameForInstalledApp:(id)a3
+- (id)bundleLocalizedNameForInstalledApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v8 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v8];
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:appCopy allowPlaceholder:1 error:&v8];
   v5 = v8;
   if (v4)
   {
-    v6 = [v4 localizedName];
+    localizedName = [v4 localizedName];
   }
 
   else
   {
-    sub_1000D8FDC(v3, v5);
-    v6 = 0;
+    sub_1000D8FDC(appCopy, v5);
+    localizedName = 0;
   }
 
-  return v6;
+  return localizedName;
 }
 
-- (id)bundlePathForInstalledApp:(id)a3
+- (id)bundlePathForInstalledApp:(id)app
 {
-  v3 = [LSApplicationProxy applicationProxyForIdentifier:a3];
-  v4 = [v3 bundleURL];
-  v5 = [v4 path];
+  v3 = [LSApplicationProxy applicationProxyForIdentifier:app];
+  bundleURL = [v3 bundleURL];
+  path = [bundleURL path];
 
-  return v5;
+  return path;
 }
 
-- (BOOL)isInstalledApp:(id)a3
+- (BOOL)isInstalledApp:(id)app
 {
-  v3 = [LSApplicationProxy applicationProxyForIdentifier:a3];
+  v3 = [LSApplicationProxy applicationProxyForIdentifier:app];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 appState];
-    v6 = [v5 isInstalled];
+    appState = [v3 appState];
+    isInstalled = [appState isInstalled];
   }
 
   else
   {
-    v6 = 0;
+    isInstalled = 0;
   }
 
-  return v6;
+  return isInstalled;
 }
 
-- (BOOL)waitForAppToInstall:(id)a3 withTimeout:(unint64_t)a4
+- (BOOL)waitForAppToInstall:(id)install withTimeout:(unint64_t)timeout
 {
-  v6 = a3;
+  installCopy = install;
   v7 = +[NSDistributedNotificationCenter defaultCenter];
-  v8 = [NSDate dateWithTimeIntervalSinceNow:a4];
+  v8 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v9 = objc_alloc_init(NSCondition);
   v10 = sub_100063A54();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v6;
+    v22 = installCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Wait for app to install: %{public}@", buf, 0xCu);
   }
 
@@ -378,7 +378,7 @@ LABEL_18:
     [v12 lock];
     while (1)
     {
-      v14 = [(MSDAppHelper *)self isInstalledApp:v6];
+      v14 = [(MSDAppHelper *)self isInstalledApp:installCopy];
       if (v14)
       {
         break;
@@ -421,16 +421,16 @@ LABEL_18:
   return v14;
 }
 
-- (BOOL)stopAllAppsExcept:(id)a3
+- (BOOL)stopAllAppsExcept:(id)except
 {
-  v4 = a3;
+  exceptCopy = except;
   v18 = +[LSApplicationWorkspace defaultWorkspace];
-  v5 = [v18 allApplications];
+  allApplications = [v18 allApplications];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  v6 = [allApplications countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -441,39 +441,39 @@ LABEL_18:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allApplications);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 applicationIdentifier];
-        v12 = [v4 containsObject:v11];
+        applicationIdentifier = [v10 applicationIdentifier];
+        v12 = [exceptCopy containsObject:applicationIdentifier];
 
         if ((v12 & 1) == 0)
         {
-          v13 = [v10 applicationIdentifier];
-          v14 = [(MSDAppHelper *)self acquireAppTerminationAssertionForApp:v13];
+          applicationIdentifier2 = [v10 applicationIdentifier];
+          v14 = [(MSDAppHelper *)self acquireAppTerminationAssertionForApp:applicationIdentifier2];
 
           if (v14)
           {
-            v15 = [v10 applicationIdentifier];
-            [(MSDAppHelper *)self releaseAppTerminationAssertion:v14 forApp:v15];
+            applicationIdentifier3 = [v10 applicationIdentifier];
+            [(MSDAppHelper *)self releaseAppTerminationAssertion:v14 forApp:applicationIdentifier3];
           }
 
           else
           {
-            v15 = sub_100063A54();
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            applicationIdentifier3 = sub_100063A54();
+            if (os_log_type_enabled(applicationIdentifier3, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v10 applicationIdentifier];
+              applicationIdentifier4 = [v10 applicationIdentifier];
               *buf = 138543362;
-              v24 = v16;
-              _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "ERROR - Failed to acquire termination assertion for app:  %{public}@", buf, 0xCu);
+              v24 = applicationIdentifier4;
+              _os_log_impl(&_mh_execute_header, applicationIdentifier3, OS_LOG_TYPE_DEFAULT, "ERROR - Failed to acquire termination assertion for app:  %{public}@", buf, 0xCu);
             }
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v7 = [allApplications countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v7);
@@ -482,18 +482,18 @@ LABEL_18:
   return 1;
 }
 
-- (id)acquireAppTerminationAssertionForApp:(id)a3
+- (id)acquireAppTerminationAssertionForApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     sub_1000D9120();
   }
 
-  v5 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v3];
+  v5 = [RBSProcessPredicate predicateMatchingBundleIdentifier:appCopy];
   v6 = [RBSTerminateContext alloc];
-  v7 = [@"Installing application %@" stringByAppendingString:v3];
+  v7 = [@"Installing application %@" stringByAppendingString:appCopy];
   v8 = [v6 initWithExplanation:v7];
 
   [v8 setMaximumTerminationResistance:50];
@@ -518,7 +518,7 @@ LABEL_18:
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_1000D9188(v3, v12);
+        sub_1000D9188(appCopy, v12);
       }
 
       v10 = 0;
@@ -534,23 +534,23 @@ LABEL_18:
   return v10;
 }
 
-- (void)releaseAppTerminationAssertion:(id)a3 forApp:(id)a4
+- (void)releaseAppTerminationAssertion:(id)assertion forApp:(id)app
 {
-  v5 = a3;
-  v6 = a4;
+  assertionCopy = assertion;
+  appCopy = app;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_1000D932C();
   }
 
-  if (v5)
+  if (assertionCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v12 = 0;
-      v8 = [v5 invalidateWithError:&v12];
+      v8 = [assertionCopy invalidateWithError:&v12];
       v9 = v12;
       v10 = sub_100063A54();
       v11 = v10;
@@ -564,7 +564,7 @@ LABEL_18:
 
       else
       {
-        sub_1000D9394(v10, v6, v9);
+        sub_1000D9394(v10, appCopy, v9);
       }
     }
   }

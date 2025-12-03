@@ -1,12 +1,12 @@
 @interface IdentityProofingPendingViewController
-- (_TtC9CoreIDVUI37IdentityProofingPendingViewController)initWithCoder:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC9CoreIDVUI37IdentityProofingPendingViewController)initWithCoder:(id)coder;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation IdentityProofingPendingViewController
 
-- (_TtC9CoreIDVUI37IdentityProofingPendingViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI37IdentityProofingPendingViewController)initWithCoder:(id)coder
 {
   result = sub_2459115D4();
   __break(1u);
@@ -34,10 +34,10 @@
   sub_24584E074();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24584E244(a3);
+  selfCopy = self;
+  sub_24584E244(appear);
 }
 
 @end

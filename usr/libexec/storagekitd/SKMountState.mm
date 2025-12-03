@@ -1,25 +1,25 @@
 @interface SKMountState
-- (SKMountState)initWithMountPoint:(id)a3;
+- (SKMountState)initWithMountPoint:(id)point;
 @end
 
 @implementation SKMountState
 
-- (SKMountState)initWithMountPoint:(id)a3
+- (SKMountState)initWithMountPoint:(id)point
 {
-  v5 = a3;
+  pointCopy = point;
   v15.receiver = self;
   v15.super_class = SKMountState;
   v6 = [(SKMountState *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mountPoint, a3);
+    objc_storeStrong(&v6->_mountPoint, point);
     v8 = objc_opt_new();
     mountFlags = v7->_mountFlags;
     v7->_mountFlags = v8;
 
     bzero(&v16, 0x878uLL);
-    if (!statfs([v5 UTF8String], &v16))
+    if (!statfs([pointCopy UTF8String], &v16))
     {
       v10 = 16;
       v11 = &dword_100049240;

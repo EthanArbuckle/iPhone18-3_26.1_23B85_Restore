@@ -1,248 +1,248 @@
 @interface SXDOMAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXDOMAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F53BE580 factory:&__block_literal_global_4];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F53BE580 factory:&__block_literal_global_4];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerClass:objc_opt_class() factory:&__block_literal_global_76];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_76];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerProtocol:&unk_1F53D5B58 factory:&__block_literal_global_86];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerProtocol:&unk_1F53D5B58 factory:&__block_literal_global_86];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerProtocol:&unk_1F53D5AE0 factory:&__block_literal_global_93];
+  publicContainer4 = [registryCopy publicContainer];
+  v11 = [publicContainer4 registerProtocol:&unk_1F53D5AE0 factory:&__block_literal_global_93];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerProtocol:&unk_1F53D5BB8 factory:&__block_literal_global_97];
+  publicContainer5 = [registryCopy publicContainer];
+  v13 = [publicContainer5 registerProtocol:&unk_1F53D5BB8 factory:&__block_literal_global_97];
 
-  v14 = [v3 publicContainer];
-  v15 = [v14 registerProtocol:&unk_1F53E7F88 factory:&__block_literal_global_105];
+  publicContainer6 = [registryCopy publicContainer];
+  v15 = [publicContainer6 registerProtocol:&unk_1F53E7F88 factory:&__block_literal_global_105];
 
-  v16 = [v3 publicContainer];
-  v17 = [v16 registerClass:objc_opt_class() factory:&__block_literal_global_109];
+  publicContainer7 = [registryCopy publicContainer];
+  v17 = [publicContainer7 registerClass:objc_opt_class() factory:&__block_literal_global_109];
 
-  v18 = [v3 publicContainer];
-  v19 = [v18 registerProtocol:&unk_1F53D5A80 factory:&__block_literal_global_117];
+  publicContainer8 = [registryCopy publicContainer];
+  v19 = [publicContainer8 registerProtocol:&unk_1F53D5A80 factory:&__block_literal_global_117];
 
-  v20 = [v3 privateContainer];
-  v21 = [v20 registerClass:objc_opt_class() factory:&__block_literal_global_120];
+  privateContainer = [registryCopy privateContainer];
+  v21 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_120];
 
-  v22 = [v3 privateContainer];
-  v23 = [v22 registerProtocol:&unk_1F540E9E0 factory:&__block_literal_global_126];
+  privateContainer2 = [registryCopy privateContainer];
+  v23 = [privateContainer2 registerProtocol:&unk_1F540E9E0 factory:&__block_literal_global_126];
 
-  v24 = [v3 publicContainer];
-  v25 = [v24 registerProtocol:&unk_1F53E5E68 factory:&__block_literal_global_130];
+  publicContainer9 = [registryCopy publicContainer];
+  v25 = [publicContainer9 registerProtocol:&unk_1F53E5E68 factory:&__block_literal_global_130];
 
-  v26 = [v3 callback];
+  callback = [registryCopy callback];
   v27 = TFCallbackScopeAny();
-  [v26 whenResolvingProtocol:&unk_1F53AC020 scope:v27 callbackBlock:&__block_literal_global_160];
+  [callback whenResolvingProtocol:&unk_1F53AC020 scope:v27 callbackBlock:&__block_literal_global_160];
 
-  v28 = [v3 privateContainer];
-  v29 = [v28 registerClass:objc_opt_class() factory:&__block_literal_global_164];
+  privateContainer3 = [registryCopy privateContainer];
+  v29 = [privateContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_164];
   v30 = [v29 withConfiguration:&__block_literal_global_173_0];
 
-  v31 = [v3 publicContainer];
-  v32 = [v31 registerClass:objc_opt_class() factory:&__block_literal_global_188];
+  publicContainer10 = [registryCopy publicContainer];
+  v32 = [publicContainer10 registerClass:objc_opt_class() factory:&__block_literal_global_188];
 
-  v33 = [v3 privateContainer];
-  v34 = [v33 registerProtocol:&unk_1F53E7308 factory:&__block_literal_global_229];
+  privateContainer4 = [registryCopy privateContainer];
+  v34 = [privateContainer4 registerProtocol:&unk_1F53E7308 factory:&__block_literal_global_229];
 
-  v35 = [v3 privateContainer];
-  v36 = [v35 registerProtocol:&unk_1F53A0DE8 factory:&__block_literal_global_238];
+  privateContainer5 = [registryCopy privateContainer];
+  v36 = [privateContainer5 registerProtocol:&unk_1F53A0DE8 factory:&__block_literal_global_238];
 
-  v37 = [v3 privateContainer];
-  v38 = [v37 registerClass:objc_opt_class() factory:&__block_literal_global_242_0];
+  privateContainer6 = [registryCopy privateContainer];
+  v38 = [privateContainer6 registerClass:objc_opt_class() factory:&__block_literal_global_242_0];
 
-  v39 = [v3 privateContainer];
-  v40 = [v39 registerClass:objc_opt_class() factory:&__block_literal_global_245];
+  privateContainer7 = [registryCopy privateContainer];
+  v40 = [privateContainer7 registerClass:objc_opt_class() factory:&__block_literal_global_245];
 
-  v41 = [v3 privateContainer];
-  v42 = [v41 registerClass:objc_opt_class() factory:&__block_literal_global_248];
+  privateContainer8 = [registryCopy privateContainer];
+  v42 = [privateContainer8 registerClass:objc_opt_class() factory:&__block_literal_global_248];
 
-  v43 = [v3 privateContainer];
-  v44 = [v43 registerClass:objc_opt_class() factory:&__block_literal_global_251];
+  privateContainer9 = [registryCopy privateContainer];
+  v44 = [privateContainer9 registerClass:objc_opt_class() factory:&__block_literal_global_251];
 
-  v45 = [v3 privateContainer];
-  v46 = [v45 registerClass:objc_opt_class() factory:&__block_literal_global_254];
+  privateContainer10 = [registryCopy privateContainer];
+  v46 = [privateContainer10 registerClass:objc_opt_class() factory:&__block_literal_global_254];
 
-  v47 = [v3 privateContainer];
-  v48 = [v47 registerClass:objc_opt_class() factory:&__block_literal_global_257];
+  privateContainer11 = [registryCopy privateContainer];
+  v48 = [privateContainer11 registerClass:objc_opt_class() factory:&__block_literal_global_257];
 
-  v49 = [v3 privateContainer];
-  v50 = [v49 registerClass:objc_opt_class() factory:&__block_literal_global_261];
+  privateContainer12 = [registryCopy privateContainer];
+  v50 = [privateContainer12 registerClass:objc_opt_class() factory:&__block_literal_global_261];
 
-  v51 = [v3 privateContainer];
-  v52 = [v51 registerProtocol:&unk_1F53BA830 factory:&__block_literal_global_263];
+  privateContainer13 = [registryCopy privateContainer];
+  v52 = [privateContainer13 registerProtocol:&unk_1F53BA830 factory:&__block_literal_global_263];
 
-  v53 = [v3 privateContainer];
-  v54 = [v53 registerClass:objc_opt_class() factory:&__block_literal_global_266];
+  privateContainer14 = [registryCopy privateContainer];
+  v54 = [privateContainer14 registerClass:objc_opt_class() factory:&__block_literal_global_266];
 
-  v55 = [v3 privateContainer];
-  v56 = [v55 registerClass:objc_opt_class() factory:&__block_literal_global_269];
+  privateContainer15 = [registryCopy privateContainer];
+  v56 = [privateContainer15 registerClass:objc_opt_class() factory:&__block_literal_global_269];
 
-  v57 = [v3 privateContainer];
-  v58 = [v57 registerClass:objc_opt_class() factory:&__block_literal_global_316];
+  privateContainer16 = [registryCopy privateContainer];
+  v58 = [privateContainer16 registerClass:objc_opt_class() factory:&__block_literal_global_316];
 
-  v59 = [v3 privateContainer];
-  v60 = [v59 registerClass:objc_opt_class() factory:&__block_literal_global_318];
+  privateContainer17 = [registryCopy privateContainer];
+  v60 = [privateContainer17 registerClass:objc_opt_class() factory:&__block_literal_global_318];
 
-  v61 = [v3 privateContainer];
-  v62 = [v61 registerClass:objc_opt_class() factory:&__block_literal_global_320];
+  privateContainer18 = [registryCopy privateContainer];
+  v62 = [privateContainer18 registerClass:objc_opt_class() factory:&__block_literal_global_320];
 
-  v63 = [v3 privateContainer];
-  v64 = [v63 registerClass:objc_opt_class() name:@"ComponentStyle" factory:&__block_literal_global_323];
+  privateContainer19 = [registryCopy privateContainer];
+  v64 = [privateContainer19 registerClass:objc_opt_class() name:@"ComponentStyle" factory:&__block_literal_global_323];
 
-  v65 = [v3 privateContainer];
-  v66 = [v65 registerClass:objc_opt_class() name:@"ComponentTextStyle" factory:&__block_literal_global_332];
+  privateContainer20 = [registryCopy privateContainer];
+  v66 = [privateContainer20 registerClass:objc_opt_class() name:@"ComponentTextStyle" factory:&__block_literal_global_332];
 
-  v67 = [v3 privateContainer];
-  v68 = [v67 registerClass:objc_opt_class() name:@"TextStyle" factory:&__block_literal_global_338];
+  privateContainer21 = [registryCopy privateContainer];
+  v68 = [privateContainer21 registerClass:objc_opt_class() name:@"TextStyle" factory:&__block_literal_global_338];
 
-  v69 = [v3 privateContainer];
-  v70 = [v69 registerClass:objc_opt_class() name:@"Component" factory:&__block_literal_global_344];
+  privateContainer22 = [registryCopy privateContainer];
+  v70 = [privateContainer22 registerClass:objc_opt_class() name:@"Component" factory:&__block_literal_global_344];
 
-  v71 = [v3 privateContainer];
-  v72 = [v71 registerClass:objc_opt_class() name:@"ComponentLayout" factory:&__block_literal_global_350];
+  privateContainer23 = [registryCopy privateContainer];
+  v72 = [privateContainer23 registerClass:objc_opt_class() name:@"ComponentLayout" factory:&__block_literal_global_350];
 
-  v73 = [v3 privateContainer];
-  v74 = [v73 registerClass:objc_opt_class() name:@"AdvertisementAutoPlacement" factory:&__block_literal_global_356];
+  privateContainer24 = [registryCopy privateContainer];
+  v74 = [privateContainer24 registerClass:objc_opt_class() name:@"AdvertisementAutoPlacement" factory:&__block_literal_global_356];
 
-  v75 = [v3 privateContainer];
-  v76 = [v75 registerClass:objc_opt_class() name:@"SuggestedArticlesAutoPlacement" factory:&__block_literal_global_362];
+  privateContainer25 = [registryCopy privateContainer];
+  v76 = [privateContainer25 registerClass:objc_opt_class() name:@"SuggestedArticlesAutoPlacement" factory:&__block_literal_global_362];
 
-  v77 = [v3 privateContainer];
-  v78 = [v77 registerClass:objc_opt_class() name:@"DocumentStyle" factory:&__block_literal_global_368];
+  privateContainer26 = [registryCopy privateContainer];
+  v78 = [privateContainer26 registerClass:objc_opt_class() name:@"DocumentStyle" factory:&__block_literal_global_368];
 
-  v79 = [v3 privateContainer];
-  v80 = [v79 registerClass:objc_opt_class() name:@"Component" factory:&__block_literal_global_375];
+  privateContainer27 = [registryCopy privateContainer];
+  v80 = [privateContainer27 registerClass:objc_opt_class() name:@"Component" factory:&__block_literal_global_375];
 
-  v81 = [v3 privateContainer];
-  v82 = [v81 registerClass:objc_opt_class() name:@"TextStyle" factory:&__block_literal_global_380];
+  privateContainer28 = [registryCopy privateContainer];
+  v82 = [privateContainer28 registerClass:objc_opt_class() name:@"TextStyle" factory:&__block_literal_global_380];
 
-  v83 = [v3 privateContainer];
-  v84 = [v83 registerClass:objc_opt_class() name:@"ComponentTextStyle" factory:&__block_literal_global_382];
+  privateContainer29 = [registryCopy privateContainer];
+  v84 = [privateContainer29 registerClass:objc_opt_class() name:@"ComponentTextStyle" factory:&__block_literal_global_382];
 
-  v85 = [v3 privateContainer];
-  v86 = [v85 registerClass:objc_opt_class() name:@"ComponentLayout" factory:&__block_literal_global_384_0];
+  privateContainer30 = [registryCopy privateContainer];
+  v86 = [privateContainer30 registerClass:objc_opt_class() name:@"ComponentLayout" factory:&__block_literal_global_384_0];
 
-  v87 = [v3 privateContainer];
-  v88 = [v87 registerClass:objc_opt_class() name:@"ComponentStyle" factory:&__block_literal_global_386];
+  privateContainer31 = [registryCopy privateContainer];
+  v88 = [privateContainer31 registerClass:objc_opt_class() name:@"ComponentStyle" factory:&__block_literal_global_386];
 
-  v89 = [v3 privateContainer];
-  v90 = [v89 registerClass:objc_opt_class() name:@"AdvertisementAutoPlacement" factory:&__block_literal_global_388];
+  privateContainer32 = [registryCopy privateContainer];
+  v90 = [privateContainer32 registerClass:objc_opt_class() name:@"AdvertisementAutoPlacement" factory:&__block_literal_global_388];
 
-  v91 = [v3 privateContainer];
-  v92 = [v91 registerClass:objc_opt_class() name:@"SuggestedArticlesAutoPlacement" factory:&__block_literal_global_390];
+  privateContainer33 = [registryCopy privateContainer];
+  v92 = [privateContainer33 registerClass:objc_opt_class() name:@"SuggestedArticlesAutoPlacement" factory:&__block_literal_global_390];
 
-  v93 = [v3 privateContainer];
-  v94 = [v93 registerClass:objc_opt_class() name:@"DocumentStyle" factory:&__block_literal_global_392];
+  privateContainer34 = [registryCopy privateContainer];
+  v94 = [privateContainer34 registerClass:objc_opt_class() name:@"DocumentStyle" factory:&__block_literal_global_392];
 
-  v95 = [v3 callback];
+  callback2 = [registryCopy callback];
   v96 = objc_opt_class();
   v97 = TFCallbackScopeAny();
-  [v95 whenResolvingClass:v96 scope:v97 callbackBlock:&__block_literal_global_396];
+  [callback2 whenResolvingClass:v96 scope:v97 callbackBlock:&__block_literal_global_396];
 
-  v98 = [v3 publicContainer];
-  v99 = [v98 registerProtocol:&unk_1F540FF20 factory:&__block_literal_global_421];
+  publicContainer11 = [registryCopy publicContainer];
+  v99 = [publicContainer11 registerProtocol:&unk_1F540FF20 factory:&__block_literal_global_421];
 
-  v100 = [v3 privateContainer];
-  v101 = [v100 registerClass:objc_opt_class() factory:&__block_literal_global_424];
+  privateContainer35 = [registryCopy privateContainer];
+  v101 = [privateContainer35 registerClass:objc_opt_class() factory:&__block_literal_global_424];
 
-  v102 = [v3 publicContainer];
-  v103 = [v102 registerProtocol:&unk_1F538E720 factory:&__block_literal_global_427];
+  publicContainer12 = [registryCopy publicContainer];
+  v103 = [publicContainer12 registerProtocol:&unk_1F538E720 factory:&__block_literal_global_427];
 
-  v104 = [v3 privateContainer];
-  v105 = [v104 registerProtocol:&unk_1F53C6D40 factory:&__block_literal_global_430];
+  privateContainer36 = [registryCopy privateContainer];
+  v105 = [privateContainer36 registerProtocol:&unk_1F53C6D40 factory:&__block_literal_global_430];
 
-  v106 = [v3 privateContainer];
-  v107 = [v106 registerClass:objc_opt_class() factory:&__block_literal_global_434];
+  privateContainer37 = [registryCopy privateContainer];
+  v107 = [privateContainer37 registerClass:objc_opt_class() factory:&__block_literal_global_434];
 
-  v108 = [v3 privateContainer];
-  v109 = [v108 registerClass:objc_opt_class() factory:&__block_literal_global_437];
+  privateContainer38 = [registryCopy privateContainer];
+  v109 = [privateContainer38 registerClass:objc_opt_class() factory:&__block_literal_global_437];
 
-  v110 = [v3 privateContainer];
-  v111 = [v110 registerClass:objc_opt_class() factory:&__block_literal_global_440];
+  privateContainer39 = [registryCopy privateContainer];
+  v111 = [privateContainer39 registerClass:objc_opt_class() factory:&__block_literal_global_440];
 
-  v112 = [v3 privateContainer];
-  v113 = [v112 registerClass:objc_opt_class() factory:&__block_literal_global_443];
+  privateContainer40 = [registryCopy privateContainer];
+  v113 = [privateContainer40 registerClass:objc_opt_class() factory:&__block_literal_global_443];
 
-  v114 = [v3 privateContainer];
-  v115 = [v114 registerClass:objc_opt_class() factory:&__block_literal_global_446];
+  privateContainer41 = [registryCopy privateContainer];
+  v115 = [privateContainer41 registerClass:objc_opt_class() factory:&__block_literal_global_446];
 
-  v116 = [v3 privateContainer];
-  v117 = [v116 registerClass:objc_opt_class() factory:&__block_literal_global_449];
+  privateContainer42 = [registryCopy privateContainer];
+  v117 = [privateContainer42 registerClass:objc_opt_class() factory:&__block_literal_global_449];
 
-  v118 = [v3 privateContainer];
-  v119 = [v118 registerClass:objc_opt_class() factory:&__block_literal_global_452];
+  privateContainer43 = [registryCopy privateContainer];
+  v119 = [privateContainer43 registerClass:objc_opt_class() factory:&__block_literal_global_452];
 
-  v120 = [v3 privateContainer];
-  v121 = [v120 registerClass:objc_opt_class() factory:&__block_literal_global_455];
+  privateContainer44 = [registryCopy privateContainer];
+  v121 = [privateContainer44 registerClass:objc_opt_class() factory:&__block_literal_global_455];
 
-  v122 = [v3 privateContainer];
-  v123 = [v122 registerClass:objc_opt_class() factory:&__block_literal_global_458];
+  privateContainer45 = [registryCopy privateContainer];
+  v123 = [privateContainer45 registerClass:objc_opt_class() factory:&__block_literal_global_458];
 
-  v124 = [v3 privateContainer];
-  v125 = [v124 registerClass:objc_opt_class() factory:&__block_literal_global_461];
+  privateContainer46 = [registryCopy privateContainer];
+  v125 = [privateContainer46 registerClass:objc_opt_class() factory:&__block_literal_global_461];
 
-  v126 = [v3 privateContainer];
-  v127 = [v126 registerClass:objc_opt_class() factory:&__block_literal_global_464];
+  privateContainer47 = [registryCopy privateContainer];
+  v127 = [privateContainer47 registerClass:objc_opt_class() factory:&__block_literal_global_464];
 
-  v128 = [v3 privateContainer];
-  v129 = [v128 registerClass:objc_opt_class() factory:&__block_literal_global_467];
+  privateContainer48 = [registryCopy privateContainer];
+  v129 = [privateContainer48 registerClass:objc_opt_class() factory:&__block_literal_global_467];
 
-  v130 = [v3 privateContainer];
-  v131 = [v130 registerClass:objc_opt_class() factory:&__block_literal_global_470];
+  privateContainer49 = [registryCopy privateContainer];
+  v131 = [privateContainer49 registerClass:objc_opt_class() factory:&__block_literal_global_470];
 
-  v132 = [v3 privateContainer];
-  v133 = [v132 registerClass:objc_opt_class() factory:&__block_literal_global_473];
+  privateContainer50 = [registryCopy privateContainer];
+  v133 = [privateContainer50 registerClass:objc_opt_class() factory:&__block_literal_global_473];
 
-  v134 = [v3 privateContainer];
-  v135 = [v134 registerClass:objc_opt_class() factory:&__block_literal_global_475];
+  privateContainer51 = [registryCopy privateContainer];
+  v135 = [privateContainer51 registerClass:objc_opt_class() factory:&__block_literal_global_475];
 
-  v136 = [v3 privateContainer];
-  v137 = [v136 registerClass:objc_opt_class() factory:&__block_literal_global_477];
+  privateContainer52 = [registryCopy privateContainer];
+  v137 = [privateContainer52 registerClass:objc_opt_class() factory:&__block_literal_global_477];
 
-  v138 = [v3 privateContainer];
-  v139 = [v138 registerClass:objc_opt_class() factory:&__block_literal_global_479];
+  privateContainer53 = [registryCopy privateContainer];
+  v139 = [privateContainer53 registerClass:objc_opt_class() factory:&__block_literal_global_479];
 
-  v140 = [v3 privateContainer];
-  v141 = [v140 registerClass:objc_opt_class() factory:&__block_literal_global_481];
+  privateContainer54 = [registryCopy privateContainer];
+  v141 = [privateContainer54 registerClass:objc_opt_class() factory:&__block_literal_global_481];
 
-  v142 = [v3 privateContainer];
-  v143 = [v142 registerClass:objc_opt_class() factory:&__block_literal_global_483];
+  privateContainer55 = [registryCopy privateContainer];
+  v143 = [privateContainer55 registerClass:objc_opt_class() factory:&__block_literal_global_483];
 
-  v144 = [v3 privateContainer];
-  v145 = [v144 registerClass:objc_opt_class() factory:&__block_literal_global_487];
+  privateContainer56 = [registryCopy privateContainer];
+  v145 = [privateContainer56 registerClass:objc_opt_class() factory:&__block_literal_global_487];
 
-  v146 = [v3 publicContainer];
-  v147 = [v146 registerClass:objc_opt_class() factory:&__block_literal_global_489];
+  publicContainer13 = [registryCopy publicContainer];
+  v147 = [publicContainer13 registerClass:objc_opt_class() factory:&__block_literal_global_489];
 
-  v148 = [v3 privateContainer];
-  v149 = [v148 registerProtocol:&unk_1F53FBEF8 factory:&__block_literal_global_491];
+  privateContainer57 = [registryCopy privateContainer];
+  v149 = [privateContainer57 registerProtocol:&unk_1F53FBEF8 factory:&__block_literal_global_491];
   v150 = [v149 withConfiguration:&__block_literal_global_495];
 
-  v151 = [v3 publicContainer];
-  v152 = [v151 registerProtocol:&unk_1F53E0D50 factory:&__block_literal_global_500];
+  publicContainer14 = [registryCopy publicContainer];
+  v152 = [publicContainer14 registerProtocol:&unk_1F53E0D50 factory:&__block_literal_global_500];
 
-  v153 = [v3 privateContainer];
-  v154 = [v153 registerClass:objc_opt_class() factory:&__block_literal_global_503];
+  privateContainer58 = [registryCopy privateContainer];
+  v154 = [privateContainer58 registerClass:objc_opt_class() factory:&__block_literal_global_503];
 
-  v155 = [v3 privateContainer];
-  v156 = [v155 registerProtocol:&unk_1F5429A20 factory:&__block_literal_global_505];
+  privateContainer59 = [registryCopy privateContainer];
+  v156 = [privateContainer59 registerProtocol:&unk_1F5429A20 factory:&__block_literal_global_505];
 
-  v157 = [v3 privateContainer];
-  v158 = [v157 registerClass:objc_opt_class() factory:&__block_literal_global_508];
+  privateContainer60 = [registryCopy privateContainer];
+  v158 = [privateContainer60 registerClass:objc_opt_class() factory:&__block_literal_global_508];
 
-  v160 = [v3 privateContainer];
+  privateContainer61 = [registryCopy privateContainer];
 
-  v159 = [v160 registerClass:objc_opt_class() factory:&__block_literal_global_510];
+  v159 = [privateContainer61 registerClass:objc_opt_class() factory:&__block_literal_global_510];
 }
 
 id __32__SXDOMAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

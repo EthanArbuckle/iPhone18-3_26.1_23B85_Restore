@@ -2,35 +2,35 @@
 - (BOOL)_requiresRemoteUI;
 - (BOOL)_shouldShowUIForBiometryRequired;
 - (BOOL)processHomeButtonPressed;
-- (id)_coachingTextForFeedback:(int64_t)a3;
-- (id)_createGlyphViewForRetryUI:(BOOL)a3;
-- (void)_animateAlongsideTransitionFinishedWithContext:(id)a3;
-- (void)_animateAlongsideTransitionStartedWithContext:(id)a3;
+- (id)_coachingTextForFeedback:(int64_t)feedback;
+- (id)_createGlyphViewForRetryUI:(BOOL)i;
+- (void)_animateAlongsideTransitionFinishedWithContext:(id)context;
+- (void)_animateAlongsideTransitionStartedWithContext:(id)context;
 - (void)_destroyViewControllers;
 - (void)_dismissCoachingViews;
-- (void)_dismissToastWithDelay:(double)a3 completion:(id)a4;
-- (void)_handleBioLockout:(id)a3;
+- (void)_dismissToastWithDelay:(double)delay completion:(id)completion;
+- (void)_handleBioLockout:(id)lockout;
 - (void)_handleMatch;
-- (void)_handleNoMatchOrSensorInactive:(id)a3;
-- (void)_handleSensorActiveWithCompletion:(id)a3;
-- (void)_handleToastPresentedWithCompletion:(id)a3;
-- (void)_hideGlyphWithSpecialUi:(BOOL)a3;
-- (void)_presentToastWithCompletion:(id)a3;
-- (void)_processCoachingFeedback:(int64_t)a3;
+- (void)_handleNoMatchOrSensorInactive:(id)inactive;
+- (void)_handleSensorActiveWithCompletion:(id)completion;
+- (void)_handleToastPresentedWithCompletion:(id)completion;
+- (void)_hideGlyphWithSpecialUi:(BOOL)ui;
+- (void)_presentToastWithCompletion:(id)completion;
+- (void)_processCoachingFeedback:(int64_t)feedback;
 - (void)_setActionButtons;
-- (void)_setupToastWithGlyph:(id)a3;
-- (void)_shake:(BOOL)a3;
+- (void)_setupToastWithGlyph:(id)glyph;
+- (void)_shake:(BOOL)_shake;
 - (void)_showFailAlert;
 - (void)_updatePearlViews;
 - (void)dealloc;
-- (void)dismissChildWithCompletionHandler:(id)a3;
+- (void)dismissChildWithCompletionHandler:(id)handler;
 - (void)loadView;
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5;
-- (void)setSuspended:(BOOL)a3;
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply;
+- (void)setSuspended:(BOOL)suspended;
 - (void)uiCancelByGestureIfPossible;
-- (void)uiEvent:(int64_t)a3 options:(id)a4;
+- (void)uiEvent:(int64_t)event options:(id)options;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation FaceIdViewController
@@ -41,7 +41,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v45 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "loadView on %{public}@", buf, 0xCu);
   }
 
@@ -55,9 +55,9 @@
   self->_dimmingView = v6;
 
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(ScreenDimmingView *)self->_dimmingView setDimEnabled:1];
   }
@@ -67,8 +67,8 @@
   self->_fallbackVisible = 1;
   self->_showFallback = 0;
   self->_coachingFeedback = 1;
-  v10 = [(TransitionViewController *)self options];
-  v11 = [v10 objectForKeyedSubscript:&off_10009A938];
+  options = [(TransitionViewController *)self options];
+  v11 = [options objectForKeyedSubscript:&off_10009A938];
 
   if (v11)
   {
@@ -93,21 +93,21 @@
   self->_glyphView = v16;
 
   [(FaceIdViewController *)self _setupToastWithGlyph:self->_glyphView];
-  v18 = [(TransitionViewController *)self internalInfo];
-  v19 = [v18 objectForKeyedSubscript:@"FaceIdWithButton"];
+  internalInfo = [(TransitionViewController *)self internalInfo];
+  v19 = [internalInfo objectForKeyedSubscript:@"FaceIdWithButton"];
 
   if ([v19 intValue] != 2)
   {
     v20 = [LAUIPhysicalButtonView alloc];
     v21 = +[UIDevice currentDevice];
-    v22 = [v21 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v21 userInterfaceIdiom];
 
-    v23 = [v20 initWithStyle:(v22 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+    v23 = [v20 initWithStyle:(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1];
     physicalButtonView = self->_physicalButtonView;
     self->_physicalButtonView = v23;
 
-    v25 = [(TransitionViewController *)self options];
-    v26 = [v25 objectForKeyedSubscript:&off_10009A950];
+    options2 = [(TransitionViewController *)self options];
+    v26 = [options2 objectForKeyedSubscript:&off_10009A950];
     if (v26)
     {
       [(LAUIPhysicalButtonView *)self->_physicalButtonView setInstruction:v26];
@@ -127,9 +127,9 @@
   }
 
   v29 = +[UIDevice currentDevice];
-  v30 = [v29 userInterfaceIdiom];
+  userInterfaceIdiom3 = [v29 userInterfaceIdiom];
 
-  if ((v30 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v31 = +[UIScreen mainScreen];
     [v31 bounds];
@@ -142,27 +142,27 @@
     [(LAUIHorizontalArrowView *)self->_horizontalArrowView sizeToFit];
     [(LAUIHorizontalArrowView *)self->_horizontalArrowView frame];
     [(LAUIHorizontalArrowView *)self->_horizontalArrowView setDisplacement:v33 * 0.5 - v36];
-    v37 = [(FaceIdViewController *)self traitCollection];
-    if ([v37 userInterfaceStyle] == 1)
+    traitCollection = [(FaceIdViewController *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 1)
     {
-      v38 = [(FaceIdViewController *)self toastController];
-      v39 = [v38 lightweightUIMode];
+      toastController = [(FaceIdViewController *)self toastController];
+      lightweightUIMode = [toastController lightweightUIMode];
       v40 = LACLightweightUIModeOverShield;
 
-      if (v39 != v40)
+      if (lightweightUIMode != v40)
       {
 LABEL_21:
-        v41 = [(FaceIdViewController *)self view];
-        [v41 addSubview:self->_horizontalArrowView];
+        view = [(FaceIdViewController *)self view];
+        [view addSubview:self->_horizontalArrowView];
 
-        v42 = [(FaceIdViewController *)self view];
-        [v42 bringSubviewToFront:self->_horizontalArrowView];
+        view2 = [(FaceIdViewController *)self view];
+        [view2 bringSubviewToFront:self->_horizontalArrowView];
 
         goto LABEL_22;
       }
 
-      v37 = +[UIColor darkGrayColor];
-      [(LAUIHorizontalArrowView *)self->_horizontalArrowView setTintColor:v37];
+      traitCollection = +[UIColor darkGrayColor];
+      [(LAUIHorizontalArrowView *)self->_horizontalArrowView setTintColor:traitCollection];
     }
 
     goto LABEL_21;
@@ -180,11 +180,11 @@ LABEL_22:
   [(TransitionViewController *)&v3 dealloc];
 }
 
-- (id)_createGlyphViewForRetryUI:(BOOL)a3
+- (id)_createGlyphViewForRetryUI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   v5 = sub_10001C164();
-  v6 = [(TransitionViewController *)self options];
+  options = [(TransitionViewController *)self options];
   v7 = LACLightweightUIModeFromOptions();
 
   if (v5 && v7)
@@ -195,9 +195,9 @@ LABEL_22:
   if (v5)
   {
     v9 = +[LACSecureFaceIDUIUtilities sharedInstance];
-    v10 = [v9 isActive];
+    isActive = [v9 isActive];
 
-    if (v10)
+    if (isActive)
     {
 LABEL_3:
       v8 = 0;
@@ -226,12 +226,12 @@ LABEL_3:
 
   if (!v7)
   {
-    v3 = 1;
+    iCopy = 1;
   }
 
   [v11 setInitialStyle:v13];
   [v11 setSecureVariantEnabled:1];
-  [v11 setSecureVariantType:!v3];
+  [v11 setSecureVariantType:!iCopy];
   v14 = [[LAUIPearlGlyphView alloc] initWithConfiguration:v11];
   v15 = LACLogFaceIDUI();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -249,13 +249,13 @@ LABEL_3:
 
   if (sub_10001C164())
   {
-    v17 = [(TransitionViewController *)self options];
-    v18 = [v17 objectForKeyedSubscript:&off_10009A968];
+    options2 = [(TransitionViewController *)self options];
+    v18 = [options2 objectForKeyedSubscript:&off_10009A968];
     v19 = [v18 objectForKeyedSubscript:&off_10009A980];
     v20 = [v19 objectForKeyedSubscript:&off_10009A998];
-    v21 = [v20 integerValue];
+    integerValue = [v20 integerValue];
 
-    if (v21 == 2)
+    if (integerValue == 2)
     {
       [v14 setFaceVisibility:7 animated:0];
     }
@@ -268,18 +268,18 @@ LABEL_22:
   return v8;
 }
 
-- (void)_setupToastWithGlyph:(id)a3
+- (void)_setupToastWithGlyph:(id)glyph
 {
-  v4 = a3;
+  glyphCopy = glyph;
   v5 = [FaceIdToastViewController alloc];
   v14 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v14 localizedStringForKey:@"PEARL" value:&stru_1000992A0 table:@"MobileUI"];
-  v7 = [(TransitionViewController *)self options];
+  options = [(TransitionViewController *)self options];
   v8 = LACLightweightUIModeFromOptions();
-  v9 = [(TransitionViewController *)self options];
+  options2 = [(TransitionViewController *)self options];
   v10 = [NSNumber numberWithInteger:LACPolicyOptionSecureUIRecording];
-  v11 = [v9 objectForKeyedSubscript:v10];
-  v12 = -[FaceIdToastViewController initWithGlyph:presentingController:title:lightweightUIMode:secureUIRecording:](v5, "initWithGlyph:presentingController:title:lightweightUIMode:secureUIRecording:", v4, self, v6, v8, [v11 BOOLValue]);
+  v11 = [options2 objectForKeyedSubscript:v10];
+  v12 = -[FaceIdToastViewController initWithGlyph:presentingController:title:lightweightUIMode:secureUIRecording:](v5, "initWithGlyph:presentingController:title:lightweightUIMode:secureUIRecording:", glyphCopy, self, v6, v8, [v11 BOOLValue]);
 
   toastController = self->_toastController;
   self->_toastController = v12;
@@ -293,9 +293,9 @@ LABEL_22:
   [(FaceIdViewController *)self _updatePearlViews];
 }
 
-- (void)_presentToastWithCompletion:(id)a3
+- (void)_presentToastWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_toastController)
   {
     goto LABEL_10;
@@ -317,7 +317,7 @@ LABEL_22:
       }
 
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will not present Face ID glyph because %{public}@ is %{public}@", buf, 0x16u);
@@ -327,9 +327,9 @@ LABEL_22:
   }
 
   v7 = +[TransitionViewController rootController];
-  v8 = [v7 disappeared];
+  disappeared = [v7 disappeared];
 
-  if (v8)
+  if (disappeared)
   {
     v9 = LACLogFaceIDUI();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -345,9 +345,9 @@ LABEL_18:
   }
 
   v11 = +[TransitionViewController rootController];
-  v12 = [v11 dismissing];
+  dismissing = [v11 dismissing];
 
-  if (v12)
+  if (dismissing)
   {
     v9 = LACLogFaceIDUI();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -360,7 +360,7 @@ LABEL_18:
 LABEL_19:
 
 LABEL_10:
-    v4[2](v4);
+    completionCopy[2](completionCopy);
     goto LABEL_11;
   }
 
@@ -381,16 +381,16 @@ LABEL_10:
   v14[2] = sub_100005868;
   v14[3] = &unk_100096300;
   v14[4] = self;
-  v15 = v4;
+  v15 = completionCopy;
   [(PresentationViewController *)toastController presentOnParentViewController:self animated:0 completionHandler:v14];
 
 LABEL_11:
 }
 
-- (void)_handleToastPresentedWithCompletion:(id)a3
+- (void)_handleToastPresentedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_toastController)
   {
     objc_initWeak(&location, self);
@@ -405,8 +405,8 @@ LABEL_11:
     physicalButtonView = self->_physicalButtonView;
     if (physicalButtonView && ([(LAUIPhysicalButtonView *)physicalButtonView isHidden]& 1) == 0)
     {
-      v8 = [(LAUIPhysicalButtonView *)self->_physicalButtonView instruction];
-      UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, v8);
+      instruction = [(LAUIPhysicalButtonView *)self->_physicalButtonView instruction];
+      UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, instruction);
     }
 
     objc_destroyWeak(&v11);
@@ -415,7 +415,7 @@ LABEL_11:
 
   else
   {
-    (*(v4 + 2))(v4);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -426,7 +426,7 @@ LABEL_11:
   {
     pearlUIState = self->_pearlUIState;
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 1024;
     v8 = pearlUIState;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ requested cancel while in state:%d", &v5, 0x12u);
@@ -452,9 +452,9 @@ LABEL_7:
 {
   objc_initWeak(&location, self);
   v3 = sub_10001C164();
-  v4 = [(FaceIdViewController *)self alertController];
+  alertController = [(FaceIdViewController *)self alertController];
 
-  if (!v4)
+  if (!alertController)
   {
     if (v3)
     {
@@ -464,16 +464,16 @@ LABEL_7:
       goto LABEL_11;
     }
 
-    v8 = [(FaceIdViewController *)self toastController];
-    if ([v8 isViewLoaded])
+    toastController = [(FaceIdViewController *)self toastController];
+    if ([toastController isViewLoaded])
     {
-      v9 = [(FaceIdViewController *)self toastController];
-      v10 = [v9 view];
-      v11 = [v10 window];
+      toastController2 = [(FaceIdViewController *)self toastController];
+      view = [toastController2 view];
+      window = [view window];
 
-      if (v11)
+      if (window)
       {
-        v5 = [(FaceIdViewController *)self toastController];
+        toastController3 = [(FaceIdViewController *)self toastController];
         v6 = v12;
         v12[0] = _NSConcreteStackBlock;
         v12[1] = 3221225472;
@@ -481,7 +481,7 @@ LABEL_7:
         v12[3] = &unk_100096350;
         objc_copyWeak(&v13, &location);
         v14 = 0;
-        [v5 dismissWithDelay:v12 completion:0.0];
+        [toastController3 dismissWithDelay:v12 completion:0.0];
         goto LABEL_3;
       }
     }
@@ -495,7 +495,7 @@ LABEL_7:
   }
 
   [(FaceIdViewController *)self setDismissingTemporarily:1];
-  v5 = [(FaceIdViewController *)self alertController];
+  toastController3 = [(FaceIdViewController *)self alertController];
   v6 = v15;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -503,7 +503,7 @@ LABEL_7:
   v15[3] = &unk_100096350;
   objc_copyWeak(&v16, &location);
   v17 = v3;
-  [v5 dismissViewControllerAnimated:0 completion:v15];
+  [toastController3 dismissViewControllerAnimated:0 completion:v15];
 LABEL_3:
 
   objc_destroyWeak(v6 + 4);
@@ -511,28 +511,28 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_hideGlyphWithSpecialUi:(BOOL)a3
+- (void)_hideGlyphWithSpecialUi:(BOOL)ui
 {
-  if (a3)
+  if (ui)
   {
-    v3 = [(FaceIdViewController *)self toastController];
-    [v3 dismissWithDelay:&stru_100096400 completion:0.0];
+    toastController = [(FaceIdViewController *)self toastController];
+    [toastController dismissWithDelay:&stru_100096400 completion:0.0];
   }
 
   else
   {
-    v3 = [(FaceIdViewController *)self alertController];
-    [v3 setGlyph:0];
+    toastController = [(FaceIdViewController *)self alertController];
+    [toastController setGlyph:0];
   }
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
-  v5 = [(FaceIdViewController *)self toastController];
-  v6 = [v5 lightweightUI];
+  suspendedCopy = suspended;
+  toastController = [(FaceIdViewController *)self toastController];
+  lightweightUI = [toastController lightweightUI];
 
-  v7 = v6 | v3;
+  v7 = lightweightUI | suspendedCopy;
   v8 = LACLogFaceIDUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -543,14 +543,14 @@ LABEL_11:
     }
 
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ has been %s", &v11, 0x16u);
   }
 
-  v10 = [(FaceIdViewController *)self dimmingView];
-  [v10 setHidden:v7];
+  dimmingView = [(FaceIdViewController *)self dimmingView];
+  [dimmingView setHidden:v7];
 
   self->_suspended = v7;
 }
@@ -559,23 +559,23 @@ LABEL_11:
 {
   objc_initWeak(&location, self);
   pearlUIState = self->_pearlUIState;
-  v4 = [(TransitionViewController *)self options];
-  v5 = [v4 objectForKeyedSubscript:&off_10009A9C8];
+  options = [(TransitionViewController *)self options];
+  v5 = [options objectForKeyedSubscript:&off_10009A9C8];
   v96 = 0;
   v97 = &v96;
   v98 = 0x2020000000;
   v61 = v5;
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  v99 = v6;
+  v99 = bOOLValue;
   v92 = 0;
   v93 = &v92;
   v94 = 0x2020000000;
@@ -587,14 +587,14 @@ LABEL_11:
   v89 = &v88;
   v90 = 0x2020000000;
   v91 = 0;
-  v65 = [v4 objectForKeyedSubscript:&off_10009A9E0];
-  v8 = [v65 BOOLValue];
-  self->_fallbackVisible = v8;
+  v65 = [options objectForKeyedSubscript:&off_10009A9E0];
+  bOOLValue2 = [v65 BOOLValue];
+  self->_fallbackVisible = bOOLValue2;
   if ((pearlUIState - 5) < 3)
   {
-    if (v8)
+    if (bOOLValue2)
     {
-      v8 = 1;
+      bOOLValue2 = 1;
       goto LABEL_11;
     }
 
@@ -606,7 +606,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v8 = 0;
+    bOOLValue2 = 0;
     goto LABEL_11;
   }
 
@@ -615,7 +615,7 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v8 = 1;
+  bOOLValue2 = 1;
   *(v89 + 24) = 1;
   if (!self->_fallbackVisible)
   {
@@ -635,7 +635,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  if ((v8 & 1) == 0)
+  if ((bOOLValue2 & 1) == 0)
   {
     goto LABEL_13;
   }
@@ -649,14 +649,14 @@ LABEL_14:
   v9 = LACLogFaceIDUI();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(FaceIdViewController *)self alertController];
+    alertController = [(FaceIdViewController *)self alertController];
     fallbackVisible = self->_fallbackVisible;
     v12 = *(v97 + 24);
     showFallback = self->_showFallback;
     *buf = 138544386;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v10;
+    *&buf[14] = alertController;
     *&buf[22] = 1024;
     v102 = v12;
     v103 = 1024;
@@ -684,7 +684,7 @@ LABEL_14:
   v72[3] = &unk_100096450;
   v72[4] = self;
   v74 = &v88;
-  v63 = v4;
+  v63 = options;
   v73 = v63;
   v75 = &v80;
   v76 = &v84;
@@ -716,12 +716,12 @@ LABEL_14:
         [(TransitionViewController *)self setAuthenticationSubtitle:v33];
 
         alertController = self->_alertController;
-        v35 = [(TransitionViewController *)self authenticationTitle];
-        [(FaceIdAlertViewController *)alertController setTitle:v35];
+        authenticationTitle = [(TransitionViewController *)self authenticationTitle];
+        [(FaceIdAlertViewController *)alertController setTitle:authenticationTitle];
 
         v36 = self->_alertController;
-        v37 = [(TransitionViewController *)self authenticationSubtitle];
-        [(FaceIdAlertViewController *)v36 setMessage:v37];
+        authenticationSubtitle = [(TransitionViewController *)self authenticationSubtitle];
+        [(FaceIdAlertViewController *)v36 setMessage:authenticationSubtitle];
 
         v38 = [NSBundle bundleForClass:objc_opt_class()];
         v39 = [v38 localizedStringForKey:@"OK" value:&stru_1000992A0 table:@"MobileUI"];
@@ -753,12 +753,12 @@ LABEL_14:
         [(TransitionViewController *)self setAuthenticationSubtitle:v25];
 
         v26 = self->_alertController;
-        v27 = [(TransitionViewController *)self authenticationTitle];
-        [(FaceIdAlertViewController *)v26 setTitle:v27];
+        authenticationTitle2 = [(TransitionViewController *)self authenticationTitle];
+        [(FaceIdAlertViewController *)v26 setTitle:authenticationTitle2];
 
         v28 = self->_alertController;
-        v29 = [(TransitionViewController *)self authenticationSubtitle];
-        [(FaceIdAlertViewController *)v28 setMessage:v29];
+        authenticationSubtitle2 = [(TransitionViewController *)self authenticationSubtitle];
+        [(FaceIdAlertViewController *)v28 setMessage:authenticationSubtitle2];
 
         break;
       default:
@@ -840,16 +840,16 @@ LABEL_44:
 
   objc_destroyWeak(&v67);
 LABEL_45:
-  v51 = [(FaceIdAlertViewController *)self->_alertController actions];
-  v52 = [v51 objectAtIndexedSubscript:0];
+  actions = [(FaceIdAlertViewController *)self->_alertController actions];
+  v52 = [actions objectAtIndexedSubscript:0];
   [(FaceIdAlertViewController *)self->_alertController setPreferredAction:v52];
 
   if (pearlUIState != 6 && !self->_hwIssueEvent && (pearlUIState - 7) >= 2)
   {
     if (pearlUIState == 3)
     {
-      v53 = [NSBundle bundleForClass:objc_opt_class()];
-      v54 = [v53 localizedStringForKey:@"FACE_ID_UNBOUND_MESSAGE" value:&stru_1000992A0 table:@"MobileUI"];
+      options2 = [NSBundle bundleForClass:objc_opt_class()];
+      v54 = [options2 localizedStringForKey:@"FACE_ID_UNBOUND_MESSAGE" value:&stru_1000992A0 table:@"MobileUI"];
       [(TransitionViewController *)self setAuthenticationSubtitle:v54];
     }
 
@@ -857,8 +857,8 @@ LABEL_45:
     {
       if (*(v81 + 24) == 1)
       {
-        v53 = [(TransitionViewController *)self options];
-        v54 = [v53 objectForKeyedSubscript:&off_10009A998];
+        options2 = [(TransitionViewController *)self options];
+        v54 = [options2 objectForKeyedSubscript:&off_10009A998];
         v57 = [LACStringHelper truncateString:v54 maxLength:512];
         [(TransitionViewController *)self setAuthenticationSubtitle:v57];
       }
@@ -870,15 +870,15 @@ LABEL_45:
         {
           if (*(v85 + 24))
           {
-            v53 = [NSBundle bundleForClass:objc_opt_class()];
+            options2 = [NSBundle bundleForClass:objc_opt_class()];
             v54 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"TRY_AGAIN_OR_ENTER_PASSCODE"];
-            v59 = [v53 localizedStringForKey:v54 value:&stru_1000992A0 table:@"MobileUI"];
+            v59 = [options2 localizedStringForKey:v54 value:&stru_1000992A0 table:@"MobileUI"];
           }
 
           else
           {
-            v53 = [NSBundle bundleForClass:objc_opt_class()];
-            v59 = [v53 localizedStringForKey:@"TRY_AGAIN_OR_ENTER_PASSWORD" value:&stru_1000992A0 table:@"MobileUI"];
+            options2 = [NSBundle bundleForClass:objc_opt_class()];
+            v59 = [options2 localizedStringForKey:@"TRY_AGAIN_OR_ENTER_PASSWORD" value:&stru_1000992A0 table:@"MobileUI"];
             v54 = v59;
           }
 
@@ -893,15 +893,15 @@ LABEL_45:
         {
           if (*(v85 + 24))
           {
-            v53 = [NSBundle bundleForClass:objc_opt_class()];
+            options2 = [NSBundle bundleForClass:objc_opt_class()];
             v54 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"ENTER_PASSCODE"];
-            v59 = [v53 localizedStringForKey:v54 value:&stru_1000992A0 table:@"MobileUI"];
+            v59 = [options2 localizedStringForKey:v54 value:&stru_1000992A0 table:@"MobileUI"];
           }
 
           else
           {
-            v53 = [NSBundle bundleForClass:objc_opt_class()];
-            v59 = [v53 localizedStringForKey:@"ENTER_YOUR_PASSWORD" value:&stru_1000992A0 table:@"MobileUI"];
+            options2 = [NSBundle bundleForClass:objc_opt_class()];
+            v59 = [options2 localizedStringForKey:@"ENTER_YOUR_PASSWORD" value:&stru_1000992A0 table:@"MobileUI"];
             v54 = v59;
           }
 
@@ -924,14 +924,14 @@ LABEL_45:
 
       if ([(FaceIdViewController *)self _shouldShowUIForBiometryRequired])
       {
-        v53 = [NSBundle bundleForClass:objc_opt_class()];
-        [v53 localizedStringForKey:@"FACE_ID_REQUIRED_MESSAGE" value:&stru_1000992A0 table:@"MobileUI"];
+        options2 = [NSBundle bundleForClass:objc_opt_class()];
+        [options2 localizedStringForKey:@"FACE_ID_REQUIRED_MESSAGE" value:&stru_1000992A0 table:@"MobileUI"];
       }
 
       else
       {
-        v53 = [NSBundle bundleForClass:objc_opt_class()];
-        [v53 localizedStringForKey:@"TRY_AGAIN" value:&stru_1000992A0 table:@"MobileUI"];
+        options2 = [NSBundle bundleForClass:objc_opt_class()];
+        [options2 localizedStringForKey:@"TRY_AGAIN" value:&stru_1000992A0 table:@"MobileUI"];
       }
       v60 = ;
       [(TransitionViewController *)self setAuthenticationSubtitle:v60];
@@ -942,8 +942,8 @@ LABEL_50:
 
 LABEL_51:
     v55 = self->_alertController;
-    v56 = [(TransitionViewController *)self authenticationSubtitle];
-    [(FaceIdAlertViewController *)v55 setMessage:v56];
+    authenticationSubtitle3 = [(TransitionViewController *)self authenticationSubtitle];
+    [(FaceIdAlertViewController *)v55 setMessage:authenticationSubtitle3];
   }
 
   objc_destroyWeak(v79);
@@ -960,17 +960,17 @@ LABEL_51:
 
 - (BOOL)_shouldShowUIForBiometryRequired
 {
-  v2 = [(TransitionViewController *)self options];
+  options = [(TransitionViewController *)self options];
   v3 = [NSNumber numberWithInteger:LACPolicyOptionShowUIForBiometryRequired];
-  v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  v4 = [options objectForKeyedSubscript:v3];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_shake:(BOOL)a3
+- (void)_shake:(BOOL)_shake
 {
-  if (a3)
+  if (_shake)
   {
     [(FaceIdViewController *)self toastController];
   }
@@ -988,18 +988,18 @@ LABEL_51:
   UIAccessibilityPostNotification(v3, v4);
 }
 
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  replyCopy = reply;
   v10 = LACLogFaceIDUI();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromMechanismEventAndValue();
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
-    v17 = a3;
+    eventCopy = event;
     v18 = 2112;
     v19 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ has received mechanism event %d (%@)", &v14, 0x1Cu);
@@ -1008,30 +1008,30 @@ LABEL_51:
   underlyingError = self->_underlyingError;
   self->_underlyingError = 0;
 
-  if (a3 <= 7)
+  if (event <= 7)
   {
-    if (a3 > 4)
+    if (event > 4)
     {
-      if (a3 == 5)
+      if (event == 5)
       {
         [(FaceIdViewController *)self _handleSensorActiveWithCompletion:&stru_100096498];
         goto LABEL_35;
       }
 
-      if (a3 != 6)
+      if (event != 6)
       {
-        v13 = [v8 copy];
+        v13 = [valueCopy copy];
         [(FaceIdViewController *)self _handleBioLockout:v13];
         goto LABEL_25;
       }
     }
 
-    else if (a3 != 1)
+    else if (event != 1)
     {
-      if (a3 == 2)
+      if (event == 2)
       {
         [(FaceIdViewController *)self _handleMatch];
-        if (!v9)
+        if (!replyCopy)
         {
           goto LABEL_37;
         }
@@ -1039,14 +1039,14 @@ LABEL_51:
         goto LABEL_36;
       }
 
-      if (a3 == 3)
+      if (event == 3)
       {
         self->_animationStart = CFAbsoluteTimeGetCurrent();
         [(FaceIdViewController *)self _setGlyphState:2 animated:1];
         if (self->_pearlUIState == 5)
         {
           self->_pearlUIState = 4;
-          if (!v9)
+          if (!replyCopy)
           {
             goto LABEL_37;
           }
@@ -1058,11 +1058,11 @@ LABEL_51:
       goto LABEL_35;
     }
 
-    v13 = [v8 copy];
+    v13 = [valueCopy copy];
     [(FaceIdViewController *)self _handleNoMatchOrSensorInactive:v13];
 LABEL_25:
 
-    if (!v9)
+    if (!replyCopy)
     {
       goto LABEL_37;
     }
@@ -1070,12 +1070,12 @@ LABEL_25:
     goto LABEL_36;
   }
 
-  if (a3 > 11)
+  if (event > 11)
   {
-    if (a3 <= 13)
+    if (event <= 13)
     {
-      [(LAUIPhysicalButtonView *)self->_physicalButtonView setHidden:a3 == 12];
-      if (!v9)
+      [(LAUIPhysicalButtonView *)self->_physicalButtonView setHidden:event == 12];
+      if (!replyCopy)
       {
         goto LABEL_37;
       }
@@ -1083,10 +1083,10 @@ LABEL_25:
       goto LABEL_36;
     }
 
-    if (a3 == 14)
+    if (event == 14)
     {
-      -[FaceIdViewController _processCoachingFeedback:](self, "_processCoachingFeedback:", [v8 intValue]);
-      if (!v9)
+      -[FaceIdViewController _processCoachingFeedback:](self, "_processCoachingFeedback:", [valueCopy intValue]);
+      if (!replyCopy)
       {
         goto LABEL_37;
       }
@@ -1094,19 +1094,19 @@ LABEL_25:
       goto LABEL_36;
     }
 
-    if (a3 == 20)
+    if (event == 20)
     {
-      [(FaceIdViewController *)self _handleSensorActiveWithCompletion:v9];
+      [(FaceIdViewController *)self _handleSensorActiveWithCompletion:replyCopy];
       goto LABEL_37;
     }
   }
 
-  else if ((a3 - 8) >= 3)
+  else if ((event - 8) >= 3)
   {
-    if (a3 == 11)
+    if (event == 11)
     {
       self->_silentFallback = 1;
-      if (!v9)
+      if (!replyCopy)
       {
         goto LABEL_37;
       }
@@ -1117,11 +1117,11 @@ LABEL_25:
 
   else
   {
-    self->_hwIssueEvent = a3;
+    self->_hwIssueEvent = event;
     if ([(TransitionViewController *)self appeared])
     {
       [(FaceIdViewController *)self _showFailAlert];
-      if (!v9)
+      if (!replyCopy)
       {
         goto LABEL_37;
       }
@@ -1131,10 +1131,10 @@ LABEL_25:
   }
 
 LABEL_35:
-  if (v9)
+  if (replyCopy)
   {
 LABEL_36:
-    v9[2](v9);
+    replyCopy[2](replyCopy);
   }
 
 LABEL_37:
@@ -1145,8 +1145,8 @@ LABEL_37:
   self->_pearlUIState = 1;
   [(FaceIdViewController *)self _dismissCoachingViews];
   [(ScreenDimmingView *)self->_dimmingView setDimEnabled:0];
-  v3 = [(FaceIdViewController *)self toastController];
-  if ([v3 lightweightUI])
+  toastController = [(FaceIdViewController *)self toastController];
+  if ([toastController lightweightUI])
   {
 
     v4 = 0.0;
@@ -1162,7 +1162,7 @@ LABEL_37:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v10 = self;
+        selfCopy = self;
         v11 = 2048;
         v12 = v4;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will extend animation time by %.02f sec", buf, 0x16u);
@@ -1182,16 +1182,16 @@ LABEL_37:
   objc_destroyWeak(buf);
 }
 
-- (void)_handleSensorActiveWithCompletion:(id)a3
+- (void)_handleSensorActiveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000086E4;
   v14[3] = &unk_100096328;
   objc_copyWeak(&v16, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v15 = v5;
   v6 = objc_retainBlock(v14);
   self->_animationStart = 0.0;
@@ -1229,39 +1229,39 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleNoMatchOrSensorInactive:(id)a3
+- (void)_handleNoMatchOrSensorInactive:(id)inactive
 {
-  v4 = a3;
+  inactiveCopy = inactive;
   if ((self->_pearlUIState | 4) == 4)
   {
-    v16 = v4;
-    v5 = [v4 objectForKeyedSubscript:&off_10009AA28];
-    v6 = [v5 BOOLValue];
+    v16 = inactiveCopy;
+    v5 = [inactiveCopy objectForKeyedSubscript:&off_10009AA28];
+    bOOLValue = [v5 BOOLValue];
 
     v7 = [v16 objectForKeyedSubscript:&off_10009A9F8];
-    v8 = [v7 BOOLValue];
+    bOOLValue2 = [v7 BOOLValue];
 
-    v9 = [(FaceIdViewController *)self _shouldShowUIForBiometryRequired];
+    _shouldShowUIForBiometryRequired = [(FaceIdViewController *)self _shouldShowUIForBiometryRequired];
     v10 = [v16 objectForKeyedSubscript:&off_10009AA40];
-    v11 = [v10 BOOLValue];
+    bOOLValue3 = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue3)
     {
       v12 = 3;
     }
 
     else
     {
-      if (v6)
+      if (bOOLValue)
       {
         v13 = 7;
-        if (v8 & 1 | ((v9 & 1) == 0))
+        if (bOOLValue2 & 1 | ((_shouldShowUIForBiometryRequired & 1) == 0))
         {
           v13 = 5;
         }
 
         self->_pearlUIState = v13;
-        if (!(v8 & 1 | ((v9 & 1) == 0)))
+        if (!(bOOLValue2 & 1 | ((_shouldShowUIForBiometryRequired & 1) == 0)))
         {
           v14 = [v16 objectForKeyedSubscript:&off_10009A998];
           underlyingError = self->_underlyingError;
@@ -1277,26 +1277,26 @@ LABEL_10:
     self->_pearlUIState = v12;
 LABEL_11:
     [(FaceIdViewController *)self _showFailAlert];
-    v4 = v16;
+    inactiveCopy = v16;
   }
 }
 
-- (void)_handleBioLockout:(id)a3
+- (void)_handleBioLockout:(id)lockout
 {
-  v10 = a3;
+  lockoutCopy = lockout;
   if ((self->_pearlUIState - 6) >= 3)
   {
-    v4 = [v10 objectForKeyedSubscript:&off_10009A9F8];
-    v5 = [v4 BOOLValue];
+    v4 = [lockoutCopy objectForKeyedSubscript:&off_10009A9F8];
+    bOOLValue = [v4 BOOLValue];
 
-    v6 = [(FaceIdViewController *)self _shouldShowUIForBiometryRequired];
+    _shouldShowUIForBiometryRequired = [(FaceIdViewController *)self _shouldShowUIForBiometryRequired];
     v7 = 7;
-    if (v5)
+    if (bOOLValue)
     {
       v7 = 8;
     }
 
-    if (!v6)
+    if (!_shouldShowUIForBiometryRequired)
     {
       v7 = 6;
     }
@@ -1304,7 +1304,7 @@ LABEL_11:
     self->_pearlUIState = v7;
     if ((v7 - 7) <= 1)
     {
-      v8 = [v10 objectForKeyedSubscript:&off_10009A998];
+      v8 = [lockoutCopy objectForKeyedSubscript:&off_10009A998];
       underlyingError = self->_underlyingError;
       self->_underlyingError = v8;
     }
@@ -1313,15 +1313,15 @@ LABEL_11:
   [(FaceIdViewController *)self _showFailAlert];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     objc_initWeak(&location, self);
     v15[0] = _NSConcreteStackBlock;
@@ -1336,10 +1336,10 @@ LABEL_11:
     v13[3] = &unk_1000964C0;
     objc_copyWeak(&v14, &location);
     v11 = objc_retainBlock(v13);
-    [v7 animateAlongsideTransition:v10 completion:v11];
+    [coordinatorCopy animateAlongsideTransition:v10 completion:v11];
     v12.receiver = self;
     v12.super_class = FaceIdViewController;
-    [(FaceIdViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(FaceIdViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&v16);
@@ -1350,11 +1350,11 @@ LABEL_11:
   {
     v18.receiver = self;
     v18.super_class = FaceIdViewController;
-    [(FaceIdViewController *)&v18 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(FaceIdViewController *)&v18 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   }
 }
 
-- (void)_animateAlongsideTransitionStartedWithContext:(id)a3
+- (void)_animateAlongsideTransitionStartedWithContext:(id)context
 {
   [(LAUIPhysicalButtonView *)self->_physicalButtonView setAnimating:0];
   [(LAUIHorizontalArrowView *)self->_horizontalArrowView setAnimating:0];
@@ -1362,7 +1362,7 @@ LABEL_11:
   [(FaceIdViewController *)self _updateSecureFaceIDViewForRotationStarting:1];
 }
 
-- (void)_animateAlongsideTransitionFinishedWithContext:(id)a3
+- (void)_animateAlongsideTransitionFinishedWithContext:(id)context
 {
   [(FaceIdViewController *)self _updatePearlViews];
   [(LAUIPhysicalButtonView *)self->_physicalButtonView setAnimating:1];
@@ -1385,22 +1385,22 @@ LABEL_11:
   }
 }
 
-- (void)_processCoachingFeedback:(int64_t)a3
+- (void)_processCoachingFeedback:(int64_t)feedback
 {
   v5 = LACLogFaceIDUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 67109120;
-    LODWORD(v20) = a3;
+    LODWORD(feedbackCopy) = feedback;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_processCoachingFeedback %d", &v19, 8u);
   }
 
   if (self->_dismissed)
   {
-    a3 = 1;
+    feedback = 1;
   }
 
-  if (a3 == 10)
+  if (feedback == 10)
   {
     if ([(FaceIdViewController *)self interfaceOrientation]!= 2)
     {
@@ -1431,7 +1431,7 @@ LABEL_10:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v19 = 134217984;
-      v20 = a3;
+      feedbackCopy = feedback;
       v7 = "ignoring the same coaching feedback: %ld";
       v8 = v6;
       v9 = OS_LOG_TYPE_INFO;
@@ -1444,21 +1444,21 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 == self->_coachingFeedback)
+  if (feedback == self->_coachingFeedback)
   {
     goto LABEL_10;
   }
 
-  self->_coachingFeedback = a3;
-  if (a3 == 11)
+  self->_coachingFeedback = feedback;
+  if (feedback == 11)
   {
-    v11 = [(TransitionViewController *)self options];
-    v12 = [v11 objectForKeyedSubscript:&off_10009A9E0];
+    options = [(TransitionViewController *)self options];
+    v12 = [options objectForKeyedSubscript:&off_10009A9E0];
     if ([v12 BOOLValue] && (+[LACPolicyUtilities isBiometricOnlyPolicy:](LACPolicyUtilities, "isBiometricOnlyPolicy:", -[TransitionViewController policy](self, "policy")) & 1) == 0)
     {
-      v18 = [(FaceIdViewController *)self _requiresRemoteUI];
+      _requiresRemoteUI = [(FaceIdViewController *)self _requiresRemoteUI];
 
-      if ((v18 & 1) == 0)
+      if ((_requiresRemoteUI & 1) == 0)
       {
         [(TransitionViewController *)self uiFallback];
         return;
@@ -1474,25 +1474,25 @@ LABEL_20:
   alertController = self->_alertController;
   if (alertController)
   {
-    v14 = [(FaceIdAlertViewController *)alertController view];
-    v15 = [v14 superview];
+    view = [(FaceIdAlertViewController *)alertController view];
+    superview = [view superview];
   }
 
   else
   {
-    v15 = [(FaceIdViewController *)self view];
+    superview = [(FaceIdViewController *)self view];
   }
 
-  v16 = [(LAUIHorizontalArrowView *)self->_horizontalArrowView superview];
+  superview2 = [(LAUIHorizontalArrowView *)self->_horizontalArrowView superview];
 
-  if (v16 != v15)
+  if (superview2 != superview)
   {
     [(LAUIHorizontalArrowView *)self->_horizontalArrowView removeFromSuperview];
-    [v15 addSubview:self->_horizontalArrowView];
-    [v15 bringSubviewToFront:self->_horizontalArrowView];
+    [superview addSubview:self->_horizontalArrowView];
+    [superview bringSubviewToFront:self->_horizontalArrowView];
   }
 
-  v17 = [(FaceIdViewController *)self _coachingTextForFeedback:a3];
+  v17 = [(FaceIdViewController *)self _coachingTextForFeedback:feedback];
   if (self->_pearlUIState)
   {
     [(FaceIdAlertViewController *)self->_alertController setTitle:v17];
@@ -1509,36 +1509,36 @@ LABEL_20:
 
 - (BOOL)_requiresRemoteUI
 {
-  v2 = [(TransitionViewController *)self options];
-  v3 = [v2 objectForKeyedSubscript:&off_10009A968];
+  options = [(TransitionViewController *)self options];
+  v3 = [options objectForKeyedSubscript:&off_10009A968];
   v4 = [v3 objectForKeyedSubscript:&off_10009A998];
 
   v5 = [v4 objectForKeyedSubscript:&off_10009AA28];
   if ([v5 BOOLValue])
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
     v7 = [v4 objectForKeyedSubscript:&off_10009AA40];
-    v6 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)_coachingTextForFeedback:(int64_t)a3
+- (id)_coachingTextForFeedback:(int64_t)feedback
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
   v6 = @"PEARL";
-  if (a3 == 10)
+  if (feedback == 10)
   {
     v6 = @"PEARL_COACHING_LOOK_DOWN";
   }
 
-  if (a3 == 8)
+  if (feedback == 8)
   {
     v7 = @"PEARL_COACHING_CAMERA_COVERED";
   }
@@ -1584,16 +1584,16 @@ LABEL_20:
   self->_alertController = 0;
 }
 
-- (void)dismissChildWithCompletionHandler:(id)a3
+- (void)dismissChildWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100009648;
   v12[3] = &unk_100096328;
   objc_copyWeak(&v14, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v13 = v5;
   v6 = objc_retainBlock(v12);
   if (!self->_dismissed && (self->_toastController || self->_alertController))
@@ -1631,18 +1631,18 @@ LABEL_20:
   objc_destroyWeak(&location);
 }
 
-- (void)_dismissToastWithDelay:(double)a3 completion:(id)a4
+- (void)_dismissToastWithDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   toastController = self->_toastController;
   if (toastController)
   {
-    [(FaceIdToastViewController *)toastController dismissWithDelay:v6 completion:a3];
+    [(FaceIdToastViewController *)toastController dismissWithDelay:completionCopy completion:delay];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   _objc_release_x1();
@@ -1657,20 +1657,20 @@ LABEL_20:
     return;
   }
 
-  v4 = [(LAUIHorizontalArrowView *)horizontalArrowView superview];
-  [v4 bounds];
+  superview = [(LAUIHorizontalArrowView *)horizontalArrowView superview];
+  [superview bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
   v13 = +[LACMobileGestalt faceIDCameraOrientation];
-  v14 = [(FaceIdViewController *)self interfaceOrientation];
-  if (v14 <= 2)
+  interfaceOrientation = [(FaceIdViewController *)self interfaceOrientation];
+  if (interfaceOrientation <= 2)
   {
-    if (v14 != 1)
+    if (interfaceOrientation != 1)
     {
-      if (v14 != 2)
+      if (interfaceOrientation != 2)
       {
         return;
       }
@@ -1705,9 +1705,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v14 != 3)
+  if (interfaceOrientation != 3)
   {
-    if (v14 != 4)
+    if (interfaceOrientation != 4)
     {
       return;
     }
@@ -1754,13 +1754,13 @@ LABEL_18:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138543362;
-        v8 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ recognized home gesture in Jindo for Stockholm", &v7, 0xCu);
       }
 
       [(FaceIdViewController *)self uiEvent:10 options:0];
-      v5 = [(FaceIdViewController *)self toastController];
-      [v5 dismissWithDelay:&stru_100096598 completion:0.0];
+      toastController = [(FaceIdViewController *)self toastController];
+      [toastController dismissWithDelay:&stru_100096598 completion:0.0];
 
       LOBYTE(v3) = 1;
     }
@@ -1774,16 +1774,16 @@ LABEL_18:
   return v3;
 }
 
-- (void)uiEvent:(int64_t)a3 options:(id)a4
+- (void)uiEvent:(int64_t)event options:(id)options
 {
   v6.receiver = self;
   v6.super_class = FaceIdViewController;
-  [(TransitionViewController *)&v6 uiEvent:a3 options:a4];
+  [(TransitionViewController *)&v6 uiEvent:event options:options];
   if (sub_10001C164())
   {
-    if ((a3 | 4) == 6)
+    if ((event | 4) == 6)
     {
-      [(FaceIdViewController *)self _dismissAlertWithDelay:a3 == 6 temporarily:0 completion:0.0];
+      [(FaceIdViewController *)self _dismissAlertWithDelay:event == 6 temporarily:0 completion:0.0];
     }
   }
 }

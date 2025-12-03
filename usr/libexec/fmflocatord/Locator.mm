@@ -1,11 +1,11 @@
 @interface Locator
-- (Locator)initWithLocationManager:(id)a3;
+- (Locator)initWithLocationManager:(id)manager;
 - (void)_discardLocationManager;
-- (void)_processStopTimeout:(id)a3;
-- (void)_publishResultLocation:(id)a3;
+- (void)_processStopTimeout:(id)timeout;
+- (void)_publishResultLocation:(id)location;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)startLocator;
 - (void)stopLocator;
 @end
@@ -41,20 +41,20 @@
     dispatch_sync(&_dispatch_main_q, block);
   }
 
-  v5 = [(Locator *)self finishedTimer];
-  [v5 invalidate];
+  finishedTimer = [(Locator *)self finishedTimer];
+  [finishedTimer invalidate];
 
-  v6 = [(Locator *)self publishTimer];
-  [v6 invalidate];
+  publishTimer = [(Locator *)self publishTimer];
+  [publishTimer invalidate];
 
   v7.receiver = self;
   v7.super_class = Locator;
   [(Locator *)&v7 dealloc];
 }
 
-- (Locator)initWithLocationManager:(id)a3
+- (Locator)initWithLocationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = Locator;
   v6 = [(Locator *)&v9 init];
@@ -64,7 +64,7 @@
     *(v6 + 40) = xmmword_100044C10;
     *(v6 + 24) = xmmword_100044C20;
     *(v6 + 56) = xmmword_100044C30;
-    objc_storeStrong(v6 + 12, a3);
+    objc_storeStrong(v6 + 12, manager);
     [(CLLocationManager *)v7->_locManager setDelegate:v7];
     [(CLLocationManager *)v7->_locManager setDesiredAccuracy:v7->_desiredAccuracy];
     [(CLLocationManager *)v7->_locManager setDistanceFilter:kCLDistanceFilterNone];
@@ -78,12 +78,12 @@
   if (![(Locator *)self locatorRunning])
   {
     v3 = +[PowerMgr sharedInstance];
-    v4 = [(Locator *)self powerAssertionName];
-    [v3 powerAssertionEnableWithReason:v4 timeout:(self->_duration + 2.0)];
+    powerAssertionName = [(Locator *)self powerAssertionName];
+    [v3 powerAssertionEnableWithReason:powerAssertionName timeout:(self->_duration + 2.0)];
 
     v5 = +[FMXPCTransactionManager sharedInstance];
-    v6 = [(Locator *)self xpcTransactionName];
-    [v5 beginTransaction:v6];
+    xpcTransactionName = [(Locator *)self xpcTransactionName];
+    [v5 beginTransaction:xpcTransactionName];
 
     [(Locator *)self setFinished:0];
     [(Locator *)self setLocatorRunning:1];
@@ -97,9 +97,9 @@
     v8 = sub_100002830();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(Locator *)self fm_logID];
+      fm_logID = [(Locator *)self fm_logID];
       v10 = 138412290;
-      v11 = v9;
+      v11 = fm_logID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ Starting location service now", &v10, 0xCu);
     }
 
@@ -112,36 +112,36 @@
   v3 = sub_100002830();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(Locator *)self fm_logID];
+    fm_logID = [(Locator *)self fm_logID];
     v14 = 138412290;
-    v15 = v4;
+    v15 = fm_logID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ Stopping location service now", &v14, 0xCu);
   }
 
   [(Locator *)self setLocatorRunning:0];
-  v5 = [(Locator *)self locManager];
+  locManager = [(Locator *)self locManager];
 
-  if (v5)
+  if (locManager)
   {
     [(Locator *)self _discardLocationManager];
   }
 
-  v6 = [(Locator *)self finishedTimer];
+  finishedTimer = [(Locator *)self finishedTimer];
 
-  if (v6)
+  if (finishedTimer)
   {
-    v7 = [(Locator *)self finishedTimer];
-    [v7 invalidate];
+    finishedTimer2 = [(Locator *)self finishedTimer];
+    [finishedTimer2 invalidate];
 
     [(Locator *)self setFinishedTimer:0];
   }
 
-  v8 = [(Locator *)self publishTimer];
+  publishTimer = [(Locator *)self publishTimer];
 
-  if (v8)
+  if (publishTimer)
   {
-    v9 = [(Locator *)self publishTimer];
-    [v9 invalidate];
+    publishTimer2 = [(Locator *)self publishTimer];
+    [publishTimer2 invalidate];
 
     [(Locator *)self setPublishTimer:0];
   }
@@ -155,19 +155,19 @@
   }
 
   v10 = +[PowerMgr sharedInstance];
-  v11 = [(Locator *)self powerAssertionName];
-  [v10 powerAssertionDisableWithReason:v11];
+  powerAssertionName = [(Locator *)self powerAssertionName];
+  [v10 powerAssertionDisableWithReason:powerAssertionName];
 
   v12 = +[FMXPCTransactionManager sharedInstance];
-  v13 = [(Locator *)self xpcTransactionName];
-  [v12 endTransaction:v13];
+  xpcTransactionName = [(Locator *)self xpcTransactionName];
+  [v12 endTransaction:xpcTransactionName];
 }
 
 - (void)_discardLocationManager
 {
-  v3 = [(Locator *)self locManager];
+  locManager = [(Locator *)self locManager];
 
-  if (v3)
+  if (locManager)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -178,35 +178,35 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  managerCopy = manager;
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    v8 = [v7 lastObject];
-    v9 = v8;
-    if (!v8)
+    lastObject = [locationsCopy lastObject];
+    v9 = lastObject;
+    if (!lastObject)
     {
 LABEL_39:
 
       goto LABEL_40;
     }
 
-    v10 = +[CommonUtil stringForLocationType:](CommonUtil, "stringForLocationType:", [v8 type]);
+    v10 = +[CommonUtil stringForLocationType:](CommonUtil, "stringForLocationType:", [lastObject type]);
     v11 = sub_10001BA58();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(Locator *)self fm_logID];
+      fm_logID = [(Locator *)self fm_logID];
       [v9 horizontalAccuracy];
       v14 = v13;
       [v9 coordinate];
       v16 = v15;
       [v9 coordinate];
       v18 = v17;
-      v19 = [v9 timestamp];
+      timestamp = [v9 timestamp];
       *buf = 138413571;
-      v95 = v12;
+      v95 = fm_logID;
       v96 = 2112;
       v97 = v10;
       v98 = 2049;
@@ -216,7 +216,7 @@ LABEL_39:
       v102 = 2049;
       v103 = v18;
       v104 = 2112;
-      v105 = v19;
+      v105 = timestamp;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Received location with Position Type = %@, Accuracy = %{private}f, Latitude = %{private}f, Longitude = %{private}f, Timestamp = %@", buf, 0x3Eu);
     }
 
@@ -228,11 +228,11 @@ LABEL_39:
         sub_1000368D0(self);
       }
 
-      [v6 setDelegate:0];
-      [v6 stopUpdatingLocation];
-      v28 = [(Locator *)self locManager];
+      [managerCopy setDelegate:0];
+      [managerCopy stopUpdatingLocation];
+      locManager = [(Locator *)self locManager];
 
-      if (v28 == v6)
+      if (locManager == managerCopy)
       {
         [(Locator *)self _discardLocationManager];
       }
@@ -246,10 +246,10 @@ LABEL_39:
       v21 = sub_100002830();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(Locator *)self fm_logID];
+        fm_logID2 = [(Locator *)self fm_logID];
         [v9 horizontalAccuracy];
         *buf = 138412546;
-        v95 = v22;
+        v95 = fm_logID2;
         v96 = 2048;
         v97 = v23;
         v24 = "%@ Location has a -ve horizontalAccuracy (%.2f). Not using it";
@@ -271,11 +271,11 @@ LABEL_36:
       v21 = sub_100002830();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(Locator *)self fm_logID];
+        fm_logID3 = [(Locator *)self fm_logID];
         [v9 horizontalAccuracy];
         startThreshold = self->_startThreshold;
         *buf = 138412802;
-        v95 = v30;
+        v95 = fm_logID3;
         v96 = 2048;
         v97 = v32;
         v98 = 2048;
@@ -286,8 +286,8 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v33 = [v9 timestamp];
-    [v33 timeIntervalSinceReferenceDate];
+    timestamp2 = [v9 timestamp];
+    [timestamp2 timeIntervalSinceReferenceDate];
     v35 = v34;
     v36 = self->_launchTime - self->_cachedLocValidityDuration;
 
@@ -299,15 +299,15 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v22 = [(Locator *)self fm_logID];
+      fm_logID2 = [(Locator *)self fm_logID];
       *buf = 138412290;
-      v95 = v22;
+      v95 = fm_logID2;
       v24 = "%@ Location is really old. Discarding it & waiting for a newer one";
       goto LABEL_35;
     }
 
-    v37 = [v9 timestamp];
-    [v37 timeIntervalSinceReferenceDate];
+    timestamp3 = [v9 timestamp];
+    [timestamp3 timeIntervalSinceReferenceDate];
     v39 = v38;
     launchTime = self->_launchTime;
 
@@ -316,10 +316,10 @@ LABEL_36:
       v41 = sub_100002830();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
-        v42 = [(Locator *)self fm_logID];
+        fm_logID4 = [(Locator *)self fm_logID];
         cachedLocValidityDuration = self->_cachedLocValidityDuration;
         *buf = 138412546;
-        v95 = v42;
+        v95 = fm_logID4;
         v96 = 2048;
         v97 = *&cachedLocValidityDuration;
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%@ Location is an old cached one but not older than %.0f seconds before the start of this cycle. Considering it for later use", buf, 0x16u);
@@ -338,10 +338,10 @@ LABEL_22:
       v69 = sub_100002830();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
       {
-        v70 = [(Locator *)self fm_logID];
+        fm_logID5 = [(Locator *)self fm_logID];
         endThreshold = self->_endThreshold;
         *buf = 138412546;
-        v95 = v70;
+        v95 = fm_logID5;
         v96 = 2048;
         v97 = *&endThreshold;
         _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "%@ Location has accuracy below the end threshold %f. Publishing it immediately & finishing the locate cycle", buf, 0x16u);
@@ -349,12 +349,12 @@ LABEL_22:
 
       [(Locator *)self setLocationForPublish:v9];
       [(Locator *)self setLastPublishReason:3];
-      v72 = [(Locator *)self publishTimer];
+      publishTimer = [(Locator *)self publishTimer];
 
-      if (v72)
+      if (publishTimer)
       {
-        v73 = [(Locator *)self publishTimer];
-        [v73 invalidate];
+        publishTimer2 = [(Locator *)self publishTimer];
+        [publishTimer2 invalidate];
 
         [(Locator *)self setPublishTimer:0];
       }
@@ -377,10 +377,10 @@ LABEL_22:
       v59 = sub_100002830();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
       {
-        v60 = [(Locator *)self fm_logID];
+        fm_logID6 = [(Locator *)self fm_logID];
         currentThreshold = self->_currentThreshold;
         *buf = 138412802;
-        v95 = v60;
+        v95 = fm_logID6;
         v96 = 2048;
         v97 = *&currentThreshold;
         v98 = 2048;
@@ -402,10 +402,10 @@ LABEL_22:
       v66 = sub_100002830();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
       {
-        v67 = [(Locator *)self fm_logID];
+        fm_logID7 = [(Locator *)self fm_logID];
         v68 = self->_currentThreshold;
         *buf = 138412546;
-        v95 = v67;
+        v95 = fm_logID7;
         v96 = 2048;
         v97 = *&v68;
         _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "%@ New publish threshold is %.2f", buf, 0x16u);
@@ -415,10 +415,10 @@ LABEL_22:
       v44 = 2;
     }
 
-    v76 = [(Locator *)self lastLocation];
-    if (v76)
+    lastLocation = [(Locator *)self lastLocation];
+    if (lastLocation)
     {
-      v77 = v76;
+      v77 = lastLocation;
     }
 
     else
@@ -427,27 +427,27 @@ LABEL_22:
       if (v79 > self->_startThreshold)
       {
 LABEL_71:
-        v82 = [(Locator *)self lastLocation];
+        lastLocation2 = [(Locator *)self lastLocation];
 
-        if (!v82 || ![v9 type])
+        if (!lastLocation2 || ![v9 type])
         {
           goto LABEL_23;
         }
 
         v93 = v44;
-        v83 = [v9 type];
-        v84 = [(Locator *)self lastLocation];
-        v85 = [v84 type];
+        type = [v9 type];
+        lastLocation3 = [(Locator *)self lastLocation];
+        type2 = [lastLocation3 type];
 
-        if (v83 == v85)
+        if (type == type2)
         {
           v44 = v93;
         }
 
         else
         {
-          v86 = [(Locator *)self lastLocation];
-          [v86 distanceFromLocation:v9];
+          lastLocation4 = [(Locator *)self lastLocation];
+          [lastLocation4 distanceFromLocation:v9];
           v88 = v87;
 
           v44 = v93;
@@ -456,12 +456,12 @@ LABEL_71:
             v41 = sub_100002830();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
             {
-              v89 = [(Locator *)self fm_logID];
-              v90 = [(Locator *)self lastLocation];
-              v91 = +[CommonUtil stringForLocationType:](CommonUtil, "stringForLocationType:", [v90 type]);
+              fm_logID8 = [(Locator *)self fm_logID];
+              lastLocation5 = [(Locator *)self lastLocation];
+              v91 = +[CommonUtil stringForLocationType:](CommonUtil, "stringForLocationType:", [lastLocation5 type]);
               v92 = +[CommonUtil stringForLocationType:](CommonUtil, "stringForLocationType:", [v9 type]);
               *buf = 138413058;
-              v95 = v89;
+              v95 = fm_logID8;
               v96 = 2112;
               v97 = v91;
               v98 = 2112;
@@ -478,17 +478,17 @@ LABEL_71:
         }
 
 LABEL_23:
-        v46 = [(Locator *)self lastLocation];
-        if (!v46)
+        lastLocation6 = [(Locator *)self lastLocation];
+        if (!lastLocation6)
         {
           goto LABEL_25;
         }
 
-        v47 = v46;
+        v47 = lastLocation6;
         [v9 horizontalAccuracy];
         v49 = v48;
-        v50 = [(Locator *)self lastLocation];
-        [v50 horizontalAccuracy];
+        lastLocation7 = [(Locator *)self lastLocation];
+        [lastLocation7 horizontalAccuracy];
         v52 = v51;
 
         if (v49 <= v52)
@@ -497,9 +497,9 @@ LABEL_25:
           v53 = sub_100002830();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
-            v54 = [(Locator *)self fm_logID];
+            fm_logID9 = [(Locator *)self fm_logID];
             *buf = 138412290;
-            v95 = v54;
+            v95 = fm_logID9;
             _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%@ Storing this location as the best last known location in this locate cycle", buf, 0xCu);
           }
 
@@ -512,12 +512,12 @@ LABEL_25:
         {
           if (v45 != 1)
           {
-            v74 = [(Locator *)self publishTimer];
+            publishTimer3 = [(Locator *)self publishTimer];
 
-            if (v74)
+            if (publishTimer3)
             {
-              v75 = [(Locator *)self publishTimer];
-              [v75 invalidate];
+              publishTimer4 = [(Locator *)self publishTimer];
+              [publishTimer4 invalidate];
 
               [(Locator *)self setPublishTimer:0];
             }
@@ -526,17 +526,17 @@ LABEL_25:
             goto LABEL_38;
           }
 
-          v55 = [(Locator *)self publishTimer];
+          publishTimer5 = [(Locator *)self publishTimer];
 
           v21 = sub_100002830();
           v56 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-          if (!v55)
+          if (!publishTimer5)
           {
             if (v56)
             {
-              v78 = [(Locator *)self fm_logID];
+              fm_logID10 = [(Locator *)self fm_logID];
               *buf = 138412546;
-              v95 = v78;
+              v95 = fm_logID10;
               v96 = 2048;
               v97 = 0x4000000000000000;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@ Scheduling the location to be published in %f seconds", buf, 0x16u);
@@ -549,9 +549,9 @@ LABEL_25:
 
           if (v56)
           {
-            v22 = [(Locator *)self fm_logID];
+            fm_logID2 = [(Locator *)self fm_logID];
             *buf = 138412546;
-            v95 = v22;
+            v95 = fm_logID2;
             v96 = 2048;
             v97 = 0x4000000000000000;
             v24 = "%@ A timer is already running to publish the location within the next %f seconds";
@@ -570,9 +570,9 @@ LABEL_38:
           goto LABEL_37;
         }
 
-        v22 = [(Locator *)self fm_logID];
+        fm_logID2 = [(Locator *)self fm_logID];
         *buf = 138412290;
-        v95 = v22;
+        v95 = fm_logID2;
         v24 = "%@ Not publishing this location";
 LABEL_35:
         v25 = v21;
@@ -583,10 +583,10 @@ LABEL_35:
       v77 = sub_100002830();
       if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
       {
-        v80 = [(Locator *)self fm_logID];
+        fm_logID11 = [(Locator *)self fm_logID];
         v81 = self->_startThreshold;
         *buf = 138412546;
-        v95 = v80;
+        v95 = fm_logID11;
         v96 = 2048;
         v97 = *&v81;
         _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "%@ This is the first location with accuracy below the start threshold %.2f. Publishing it immediately", buf, 0x16u);
@@ -602,30 +602,30 @@ LABEL_35:
 LABEL_40:
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_100002830();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(Locator *)self fm_logID];
+    fm_logID = [(Locator *)self fm_logID];
     v11 = 138412546;
-    v12 = v7;
+    v12 = fm_logID;
     v13 = 2112;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ Location updates failed with error: %@", &v11, 0x16u);
   }
 
-  v8 = [v5 domain];
-  if (![v8 isEqualToString:kCLErrorDomain])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:kCLErrorDomain])
   {
 
     goto LABEL_9;
   }
 
-  v9 = [v5 code];
+  code = [errorCopy code];
 
-  if (v9)
+  if (code)
   {
 LABEL_9:
     [(Locator *)self stopLocator];
@@ -642,21 +642,21 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_processStopTimeout:(id)a3
+- (void)_processStopTimeout:(id)timeout
 {
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(Locator *)self fm_logID];
+    fm_logID = [(Locator *)self fm_logID];
     v7 = 138412290;
-    v8 = v5;
+    v8 = fm_logID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ Location Services ending now after timeout", &v7, 0xCu);
   }
 
   [(Locator *)self setLocatorRunning:0];
-  v6 = [(Locator *)self lastLocation];
+  lastLocation = [(Locator *)self lastLocation];
 
-  if (v6)
+  if (lastLocation)
   {
     [(Locator *)self setFinished:1];
     [(Locator *)self setLastPublishReason:5];
@@ -666,25 +666,25 @@ LABEL_10:
   [(Locator *)self stopLocator];
 }
 
-- (void)_publishResultLocation:(id)a3
+- (void)_publishResultLocation:(id)location
 {
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(Locator *)self fm_logID];
+    fm_logID = [(Locator *)self fm_logID];
     v17 = 138412546;
-    v18 = v5;
+    v18 = fm_logID;
     v19 = 2048;
-    v20 = [(Locator *)self lastPublishReason];
+    lastPublishReason = [(Locator *)self lastPublishReason];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ Publishing the location to the server for reason %ld", &v17, 0x16u);
   }
 
-  v6 = [(Locator *)self publishTimer];
+  publishTimer = [(Locator *)self publishTimer];
 
-  if (v6)
+  if (publishTimer)
   {
-    v7 = [(Locator *)self publishTimer];
-    [v7 invalidate];
+    publishTimer2 = [(Locator *)self publishTimer];
+    [publishTimer2 invalidate];
 
     [(Locator *)self setPublishTimer:0];
   }
@@ -695,20 +695,20 @@ LABEL_10:
   {
     [(Locator *)self lastPublishedAccuracy];
     v11 = v10;
-    v12 = [(Locator *)self locationForPublish];
-    [v12 horizontalAccuracy];
+    locationForPublish = [(Locator *)self locationForPublish];
+    [locationForPublish horizontalAccuracy];
     v8 = v11 - v13;
   }
 
   receivedLocationBlock = self->_receivedLocationBlock;
   if (receivedLocationBlock)
   {
-    v15 = [(Locator *)self locationForPublish];
-    receivedLocationBlock[2](receivedLocationBlock, v15, [(Locator *)self finished], [(Locator *)self lastPublishReason], v8);
+    locationForPublish2 = [(Locator *)self locationForPublish];
+    receivedLocationBlock[2](receivedLocationBlock, locationForPublish2, [(Locator *)self finished], [(Locator *)self lastPublishReason], v8);
   }
 
-  v16 = [(Locator *)self locationForPublish];
-  [v16 horizontalAccuracy];
+  locationForPublish3 = [(Locator *)self locationForPublish];
+  [locationForPublish3 horizontalAccuracy];
   [(Locator *)self setLastPublishedAccuracy:?];
 
   ++self->_numPublished;

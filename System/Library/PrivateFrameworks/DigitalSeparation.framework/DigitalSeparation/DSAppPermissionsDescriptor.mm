@@ -1,19 +1,19 @@
 @interface DSAppPermissionsDescriptor
-+ (id)appsWithPermission:(id)a3 fromAllApps:(id)a4;
-+ (id)enumerateAppPermissionPairsFromApps:(id)a3 permissions:(id)a4;
-+ (id)localizedDescriptionFromApps:(id)a3 permission:(id)a4;
-+ (id)localizedDescriptionFromPermissions:(id)a3;
-+ (id)localizedNameForPermission:(id)a3;
-+ (id)sortSensorDict:(id)a3;
-+ (void)ensureApp:(id)a3 inSensorDict:(id)a4;
++ (id)appsWithPermission:(id)permission fromAllApps:(id)apps;
++ (id)enumerateAppPermissionPairsFromApps:(id)apps permissions:(id)permissions;
++ (id)localizedDescriptionFromApps:(id)apps permission:(id)permission;
++ (id)localizedDescriptionFromPermissions:(id)permissions;
++ (id)localizedNameForPermission:(id)permission;
++ (id)sortSensorDict:(id)dict;
++ (void)ensureApp:(id)app inSensorDict:(id)dict;
 @end
 
 @implementation DSAppPermissionsDescriptor
 
-+ (id)sortSensorDict:(id)a3
++ (id)sortSensorDict:(id)dict
 {
-  v3 = [a3 allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_3];
+  allValues = [dict allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_3];
 
   return v4;
 }
@@ -41,18 +41,18 @@ uint64_t __45__DSAppPermissionsDescriptor_sortSensorDict___block_invoke(uint64_t
   return v10;
 }
 
-+ (void)ensureApp:(id)a3 inSensorDict:(id)a4
++ (void)ensureApp:(id)app inSensorDict:(id)dict
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  appCopy = app;
+  dictCopy = dict;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v23 = v5;
-  v7 = [v5 permissionsGranted];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v23 = appCopy;
+  permissionsGranted = [appCopy permissionsGranted];
+  v8 = [permissionsGranted countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -63,7 +63,7 @@ uint64_t __45__DSAppPermissionsDescriptor_sortSensorDict___block_invoke(uint64_t
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(permissionsGranted);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
@@ -75,11 +75,11 @@ uint64_t __45__DSAppPermissionsDescriptor_sortSensorDict___block_invoke(uint64_t
           v15 = objc_alloc_init(DSSensor);
           [(DSSensor *)v15 setLocalizedName:v14];
           [(DSSensor *)v15 setTccPermission:v12];
-          [v6 setValue:v15 forKey:v14];
+          [dictCopy setValue:v15 forKey:v14];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [permissionsGranted countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -89,14 +89,14 @@ uint64_t __45__DSAppPermissionsDescriptor_sortSensorDict___block_invoke(uint64_t
   v24[1] = 3221225472;
   v24[2] = __53__DSAppPermissionsDescriptor_ensureApp_inSensorDict___block_invoke;
   v24[3] = &unk_278F72D70;
-  v25 = v6;
-  v16 = v6;
+  v25 = dictCopy;
+  v16 = dictCopy;
   v17 = MEMORY[0x24C1E7EB0](v24);
   if ([v23 hasLocationAccess])
   {
-    v18 = [v23 locationAuthorization];
+    locationAuthorization = [v23 locationAuthorization];
     v19 = @"DSLocationWhenInUse";
-    if (v18 == 2)
+    if (locationAuthorization == 2)
     {
       v19 = @"DSLocationAlways";
     }
@@ -125,16 +125,16 @@ void __53__DSAppPermissionsDescriptor_ensureApp_inSensorDict___block_invoke(uint
   }
 }
 
-+ (id)localizedNameForPermission:(id)a3
++ (id)localizedNameForPermission:(id)permission
 {
   v3 = localizedNameForPermission__token;
-  v4 = a3;
+  permissionCopy = permission;
   if (v3 != -1)
   {
     +[DSAppPermissionsDescriptor localizedNameForPermission:];
   }
 
-  v5 = [localizedNameForPermission__localizedNames objectForKey:v4];
+  v5 = [localizedNameForPermission__localizedNames objectForKey:permissionCopy];
 
   return v5;
 }
@@ -146,10 +146,10 @@ uint64_t __57__DSAppPermissionsDescriptor_localizedNameForPermission___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)localizedDescriptionFromPermissions:(id)a3
++ (id)localizedDescriptionFromPermissions:(id)permissions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  permissionsCopy = permissions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = +[DSUtilities tccServices];
   v17 = 0u;
@@ -171,7 +171,7 @@ uint64_t __57__DSAppPermissionsDescriptor_localizedNameForPermission___block_inv
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        if ([DSApp app:v3 hasPermission:v10])
+        if ([DSApp app:permissionsCopy hasPermission:v10])
         {
           v11 = [DSAppPermissionsDescriptor localizedNameForPermission:v10];
           v12 = v11;
@@ -196,17 +196,17 @@ uint64_t __57__DSAppPermissionsDescriptor_localizedNameForPermission___block_inv
   return v14;
 }
 
-+ (id)appsWithPermission:(id)a3 fromAllApps:(id)a4
++ (id)appsWithPermission:(id)permission fromAllApps:(id)apps
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  permissionCopy = permission;
+  appsCopy = apps;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = appsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -222,7 +222,7 @@ uint64_t __57__DSAppPermissionsDescriptor_localizedNameForPermission___block_inv
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([DSApp app:v13 hasPermissionAcceptingAnyLocationAuthorization:v5, v16])
+        if ([DSApp app:v13 hasPermissionAcceptingAnyLocationAuthorization:permissionCopy, v16])
         {
           [v7 addObject:v13];
         }
@@ -239,12 +239,12 @@ uint64_t __57__DSAppPermissionsDescriptor_localizedNameForPermission___block_inv
   return v7;
 }
 
-+ (id)localizedDescriptionFromApps:(id)a3 permission:(id)a4
++ (id)localizedDescriptionFromApps:(id)apps permission:(id)permission
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 tccPermission];
-  v7 = [DSAppPermissionsDescriptor appsWithPermission:v6 fromAllApps:v5];
+  appsCopy = apps;
+  tccPermission = [permission tccPermission];
+  v7 = [DSAppPermissionsDescriptor appsWithPermission:tccPermission fromAllApps:appsCopy];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
@@ -266,8 +266,8 @@ uint64_t __57__DSAppPermissionsDescriptor_localizedNameForPermission___block_inv
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) displayName];
-        [v8 addObject:v14];
+        displayName = [*(*(&v18 + 1) + 8 * i) displayName];
+        [v8 addObject:displayName];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -283,17 +283,17 @@ uint64_t __57__DSAppPermissionsDescriptor_localizedNameForPermission___block_inv
   return v15;
 }
 
-+ (id)enumerateAppPermissionPairsFromApps:(id)a3 permissions:(id)a4
++ (id)enumerateAppPermissionPairsFromApps:(id)apps permissions:(id)permissions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  appsCopy = apps;
+  permissionsCopy = permissions;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = permissionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -309,8 +309,8 @@ uint64_t __57__DSAppPermissionsDescriptor_localizedNameForPermission___block_inv
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v5 allObjects];
-        v15 = [DSAppPermissionsDescriptor appsWithPermission:v13 fromAllApps:v14];
+        allObjects = [appsCopy allObjects];
+        v15 = [DSAppPermissionsDescriptor appsWithPermission:v13 fromAllApps:allObjects];
 
         if ([v15 count])
         {

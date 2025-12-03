@@ -1,65 +1,65 @@
 @interface ATXScoreNormalizationArtifactsArchive
-- (ATXScoreNormalizationArtifactsArchive)initWithCoder:(id)a3;
-- (ATXScoreNormalizationArtifactsArchive)initWithScoreNormalizationModelsDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXScoreNormalizationArtifactsArchive)initWithCoder:(id)coder;
+- (ATXScoreNormalizationArtifactsArchive)initWithScoreNormalizationModelsDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXScoreNormalizationArtifactsArchive
 
-- (ATXScoreNormalizationArtifactsArchive)initWithScoreNormalizationModelsDictionary:(id)a3
+- (ATXScoreNormalizationArtifactsArchive)initWithScoreNormalizationModelsDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ATXScoreNormalizationArtifactsArchive;
   v6 = [(ATXScoreNormalizationArtifactsArchive *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scoreNormalizationModelsDict, a3);
+    objc_storeStrong(&v6->_scoreNormalizationModelsDict, dictionary);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ATXScoreNormalizationArtifactsArchive *)self scoreNormalizationModelsDict];
-  v6 = [v4 initWithScoreNormalizationModelsDictionary:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  scoreNormalizationModelsDict = [(ATXScoreNormalizationArtifactsArchive *)self scoreNormalizationModelsDict];
+  v6 = [v4 initWithScoreNormalizationModelsDictionary:scoreNormalizationModelsDict];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXScoreNormalizationArtifactsArchive *)self scoreNormalizationModelsDict];
-  [v4 encodeObject:v5 forKey:@"scoreNormalizationModelsDict"];
+  coderCopy = coder;
+  scoreNormalizationModelsDict = [(ATXScoreNormalizationArtifactsArchive *)self scoreNormalizationModelsDict];
+  [coderCopy encodeObject:scoreNormalizationModelsDict forKey:@"scoreNormalizationModelsDict"];
 }
 
-- (ATXScoreNormalizationArtifactsArchive)initWithCoder:(id)a3
+- (ATXScoreNormalizationArtifactsArchive)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v4 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [v5 decodeObjectOfClasses:v9 forKey:@"scoreNormalizationModelsDict"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"scoreNormalizationModelsDict"];
 
   if (v10)
   {
     self = [(ATXScoreNormalizationArtifactsArchive *)self initWithScoreNormalizationModelsDictionary:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

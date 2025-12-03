@@ -1,24 +1,24 @@
 @interface MediaControlsRouteView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MediaControlsRouteView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MediaControlsRouteView)initWithFrame:(CGRect)frame;
 - (void)_contentSizeCategoryDidChange;
 - (void)_updateLabelVisualStyling;
 - (void)layoutSubviews;
-- (void)setLabelHidden:(BOOL)a3;
-- (void)setPackageName:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setVisualStylingProvider:(id)a3;
-- (void)showMessage:(id)a3;
+- (void)setLabelHidden:(BOOL)hidden;
+- (void)setPackageName:(id)name;
+- (void)setTitle:(id)title;
+- (void)setVisualStylingProvider:(id)provider;
+- (void)showMessage:(id)message;
 @end
 
 @implementation MediaControlsRouteView
 
-- (MediaControlsRouteView)initWithFrame:(CGRect)a3
+- (MediaControlsRouteView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19.receiver = self;
   v19.super_class = MediaControlsRouteView;
   v7 = [(MediaControlsRouteView *)&v19 initWithFrame:?];
@@ -48,13 +48,13 @@
     LODWORD(v15) = 1051931443;
     [(UILabel *)v7->_messageLabel _setHyphenationFactor:v15];
     [(UILabel *)v7->_messageLabel setAlpha:0.0];
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v7->_messageLabel setTextColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v7->_messageLabel setTextColor:labelColor];
 
     [(MediaControlsRouteView *)v7 addSubview:v7->_messageLabel];
     [(MediaControlsRouteView *)v7 _contentSizeCategoryDidChange];
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v7 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v7;
@@ -168,9 +168,9 @@
   [*(&self->super.super.super.isa + v54) setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (self->_labelHidden)
   {
     v4 = 48.0;
@@ -178,7 +178,7 @@
 
   else
   {
-    [(UILabel *)self->_titleLabel sizeThatFits:a3.width, a3.height];
+    [(UILabel *)self->_titleLabel sizeThatFits:fits.width, fits.height];
     v4 = v5 + 48.0;
   }
 
@@ -188,56 +188,56 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(MediaControlsRouteView *)self setNeedsLayout];
 }
 
-- (void)setPackageName:(id)a3
+- (void)setPackageName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_packageName isEqualToString:?])
   {
-    objc_storeStrong(&self->_packageName, a3);
+    objc_storeStrong(&self->_packageName, name);
     v5 = MEMORY[0x1E6997248];
-    v6 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-    v7 = [v5 descriptionForPackageNamed:v8 inBundle:v6];
+    mediaControlsBundle = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+    v7 = [v5 descriptionForPackageNamed:nameCopy inBundle:mediaControlsBundle];
     [(CCUICAPackageView *)self->_packageView setPackageDescription:v7];
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3
+- (void)setVisualStylingProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   visualStylingProvider = self->_visualStylingProvider;
-  if (visualStylingProvider != v5)
+  if (visualStylingProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(MTVisualStylingProvider *)visualStylingProvider _removeObserver:self];
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     [(MTVisualStylingProvider *)self->_visualStylingProvider _addObserver:self];
     visualStylingProvider = [(MediaControlsRouteView *)self _updateLabelVisualStyling];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](visualStylingProvider, v5);
+  MEMORY[0x1EEE66BB8](visualStylingProvider, providerCopy);
 }
 
-- (void)setLabelHidden:(BOOL)a3
+- (void)setLabelHidden:(BOOL)hidden
 {
-  self->_labelHidden = a3;
+  self->_labelHidden = hidden;
   [(MediaControlsRouteView *)self _updateLabelVisualStyling];
 
   [(MediaControlsRouteView *)self setNeedsLayout];
 }
 
-- (void)showMessage:(id)a3
+- (void)showMessage:(id)message
 {
-  [(UILabel *)self->_messageLabel setText:a3];
+  [(UILabel *)self->_messageLabel setText:message];
   [(MediaControlsRouteView *)self setNeedsLayout];
   [(MediaControlsRouteView *)self layoutIfNeeded];
   v4[0] = MEMORY[0x1E69E9820];

@@ -1,34 +1,34 @@
 @interface MKAppLaunchController
 + (id)sharedController;
-+ (void)launchAttributionURLs:(id)a3 withAttribution:(id)a4 usingTarget:(int)a5 completionHandler:(id)a6;
-- (void)lookUpAppStoreURLForBundle:(id)a3 usingTarget:(int)a4 completionHandler:(id)a5;
++ (void)launchAttributionURLs:(id)ls withAttribution:(id)attribution usingTarget:(int)target completionHandler:(id)handler;
+- (void)lookUpAppStoreURLForBundle:(id)bundle usingTarget:(int)target completionHandler:(id)handler;
 @end
 
 @implementation MKAppLaunchController
 
-- (void)lookUpAppStoreURLForBundle:(id)a3 usingTarget:(int)a4 completionHandler:(id)a5
+- (void)lookUpAppStoreURLForBundle:(id)bundle usingTarget:(int)target completionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 length])
+  bundleCopy = bundle;
+  handlerCopy = handler;
+  if ([bundleCopy length])
   {
     v10 = +[MKAppleMediaServices sharedInstance];
-    v15[0] = v8;
+    v15[0] = bundleCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__MKAppLaunchController_lookUpAppStoreURLForBundle_usingTarget_completionHandler___block_invoke;
     v12[3] = &unk_1E76C81B8;
     v12[4] = self;
-    v13 = v9;
-    v14 = a4;
+    v13 = handlerCopy;
+    targetCopy = target;
     [v10 appleMediaServicesResultsWithBundleIdentifiers:v11 source:1 completion:v12];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -87,28 +87,28 @@ LABEL_5:
 LABEL_12:
 }
 
-+ (void)launchAttributionURLs:(id)a3 withAttribution:(id)a4 usingTarget:(int)a5 completionHandler:(id)a6
++ (void)launchAttributionURLs:(id)ls withAttribution:(id)attribution usingTarget:(int)target completionHandler:(id)handler
 {
   v157 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 count])
+  lsCopy = ls;
+  attributionCopy = attribution;
+  handlerCopy = handler;
+  if ([lsCopy count])
   {
-    v96 = a5;
-    v89 = a1;
-    v13 = [a1 sharedController];
-    [v13 setWebURL:0];
+    targetCopy = target;
+    selfCopy = self;
+    sharedController = [self sharedController];
+    [sharedController setWebURL:0];
     v145 = 0u;
     v146 = 0u;
     v143 = 0u;
     v144 = 0u;
-    obj = v10;
-    v99 = v13;
-    v100 = v11;
+    obj = lsCopy;
+    v99 = sharedController;
+    v100 = attributionCopy;
     v101 = [obj countByEnumeratingWithState:&v143 objects:v156 count:16];
-    v97 = v10;
-    v98 = v12;
+    v97 = lsCopy;
+    v98 = handlerCopy;
     if (v101)
     {
       v104 = 0;
@@ -126,31 +126,31 @@ LABEL_12:
           }
 
           v18 = [MEMORY[0x1E695DFF8] URLWithString:*(*(&v143 + 1) + 8 * v16)];
-          v19 = [v18 scheme];
-          if (([v19 isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(v18, "scheme"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", @"https"), v20, v21))
+          scheme = [v18 scheme];
+          if (([scheme isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(v18, "scheme"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", @"https"), v20, v21))
           {
-            v22 = [v13 webURL];
+            webURL = [sharedController webURL];
 
-            if (!v22)
+            if (!webURL)
             {
-              [v13 setWebURL:v18];
+              [sharedController setWebURL:v18];
             }
           }
 
-          else if ([v19 isEqualToString:v15])
+          else if ([scheme isEqualToString:v15])
           {
             if (!v104)
             {
-              v23 = [MEMORY[0x1E6963608] defaultWorkspace];
-              v104 = [v23 applicationsAvailableForOpeningURL:v18];
+              defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+              v104 = [defaultWorkspace applicationsAvailableForOpeningURL:v18];
             }
 
             v141 = 0u;
             v142 = 0u;
             v139 = 0u;
             v140 = 0u;
-            v105 = [v11 attributionApps];
-            v90 = [v105 countByEnumeratingWithState:&v139 objects:v155 count:16];
+            attributionApps = [attributionCopy attributionApps];
+            v90 = [attributionApps countByEnumeratingWithState:&v139 objects:v155 count:16];
             if (v90)
             {
               v24 = *v140;
@@ -164,11 +164,11 @@ LABEL_12:
                 {
                   if (*v140 != v24)
                   {
-                    objc_enumerationMutation(v105);
+                    objc_enumerationMutation(attributionApps);
                   }
 
                   v93 = v25;
-                  v26 = [*(*(&v139 + 1) + 8 * v25) appBundleIdentifier];
+                  appBundleIdentifier = [*(*(&v139 + 1) + 8 * v25) appBundleIdentifier];
                   v135 = 0u;
                   v136 = 0u;
                   v137 = 0u;
@@ -188,27 +188,27 @@ LABEL_12:
                           objc_enumerationMutation(v27);
                         }
 
-                        v32 = [*(*(&v135 + 1) + 8 * i) bundleIdentifier];
-                        v33 = [v32 isEqualToString:v26];
+                        bundleIdentifier = [*(*(&v135 + 1) + 8 * i) bundleIdentifier];
+                        v33 = [bundleIdentifier isEqualToString:appBundleIdentifier];
 
                         if (v33)
                         {
-                          v12 = v98;
+                          handlerCopy = v98;
                           if (v98)
                           {
-                            v98[2](v98, v18, v26);
+                            v98[2](v98, v18, appBundleIdentifier);
                           }
 
                           v36 = +[MKSystemController sharedInstance];
-                          [v36 openURL:v18 bundleIdentifier:v26 completionHandler:0];
+                          [v36 openURL:v18 bundleIdentifier:appBundleIdentifier completionHandler:0];
 
                           v37 = +[MKMapService sharedService];
-                          v38 = [v18 absoluteString];
-                          [v37 captureUserAction:6050 onTarget:v96 eventValue:v38];
+                          absoluteString = [v18 absoluteString];
+                          [v37 captureUserAction:6050 onTarget:targetCopy eventValue:absoluteString];
 
                           v104 = v27;
-                          v13 = v99;
-                          v11 = v100;
+                          sharedController = v99;
+                          attributionCopy = v100;
 LABEL_38:
 
                           goto LABEL_108;
@@ -222,8 +222,8 @@ LABEL_38:
                   }
 
                   v25 = v93 + 1;
-                  v13 = v99;
-                  v11 = v100;
+                  sharedController = v99;
+                  attributionCopy = v100;
                   v15 = v83;
                   v14 = v86;
                   v17 = v101;
@@ -231,7 +231,7 @@ LABEL_38:
                 }
 
                 while (v93 + 1 != v90);
-                v90 = [v105 countByEnumeratingWithState:&v139 objects:v155 count:16];
+                v90 = [attributionApps countByEnumeratingWithState:&v139 objects:v155 count:16];
               }
 
               while (v90);
@@ -240,12 +240,12 @@ LABEL_38:
 
           else
           {
-            v34 = [MEMORY[0x1E69DC668] sharedApplication];
-            v35 = [v34 canOpenURL:v18];
+            mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+            v35 = [mEMORY[0x1E69DC668] canOpenURL:v18];
 
             if (v35)
             {
-              v12 = v98;
+              handlerCopy = v98;
               if (v98)
               {
                 v98[2](v98, v18, 0);
@@ -255,9 +255,9 @@ LABEL_38:
               [v80 openURL:v18 completionHandler:0];
 
               v81 = +[MKMapService sharedService];
-              v26 = [v18 absoluteString];
-              v105 = v81;
-              [v81 captureUserAction:6050 onTarget:v96 eventValue:v26];
+              appBundleIdentifier = [v18 absoluteString];
+              attributionApps = v81;
+              [v81 captureUserAction:6050 onTarget:targetCopy eventValue:appBundleIdentifier];
               goto LABEL_38;
             }
 
@@ -279,7 +279,7 @@ LABEL_38:
       v104 = 0;
     }
 
-    if (GEOConfigGetBOOL() && [v11 shouldOpenInAppStore])
+    if (GEOConfigGetBOOL() && [attributionCopy shouldOpenInAppStore])
     {
       v133 = 0u;
       v134 = 0u;
@@ -309,8 +309,8 @@ LABEL_38:
             v128 = 0u;
             v129 = 0u;
             v130 = 0u;
-            v19 = [v11 attributionApps];
-            v102 = [v19 countByEnumeratingWithState:&v127 objects:v152 count:16];
+            scheme = [attributionCopy attributionApps];
+            v102 = [scheme countByEnumeratingWithState:&v127 objects:v152 count:16];
             if (v102)
             {
               v44 = *v128;
@@ -321,7 +321,7 @@ LABEL_38:
                 {
                   if (*v128 != v44)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(scheme);
                   }
 
                   v46 = *(*(&v127 + 1) + 8 * j);
@@ -329,8 +329,8 @@ LABEL_38:
                   v124 = 0u;
                   v125 = 0u;
                   v126 = 0u;
-                  v105 = [v46 handledSchemes];
-                  v47 = [v105 countByEnumeratingWithState:&v123 objects:v151 count:16];
+                  attributionApps = [v46 handledSchemes];
+                  v47 = [attributionApps countByEnumeratingWithState:&v123 objects:v151 count:16];
                   if (v47)
                   {
                     v48 = v47;
@@ -341,36 +341,36 @@ LABEL_38:
                       {
                         if (*v124 != v49)
                         {
-                          objc_enumerationMutation(v105);
+                          objc_enumerationMutation(attributionApps);
                         }
 
                         v51 = *(*(&v123 + 1) + 8 * k);
-                        v52 = [v18 scheme];
-                        LODWORD(v51) = [v52 isEqualToString:v51];
+                        scheme2 = [v18 scheme];
+                        LODWORD(v51) = [scheme2 isEqualToString:v51];
 
                         if (v51)
                         {
 LABEL_102:
-                          v76 = [v89 sharedController];
-                          v77 = [v46 appBundleIdentifier];
-                          v12 = v98;
-                          [v76 lookUpAppStoreURLForBundle:v77 usingTarget:v96 completionHandler:v98];
+                          sharedController2 = [selfCopy sharedController];
+                          appBundleIdentifier2 = [v46 appBundleIdentifier];
+                          handlerCopy = v98;
+                          [sharedController2 lookUpAppStoreURLForBundle:appBundleIdentifier2 usingTarget:targetCopy completionHandler:v98];
 
                           goto LABEL_107;
                         }
                       }
 
-                      v48 = [v105 countByEnumeratingWithState:&v123 objects:v151 count:16];
+                      v48 = [attributionApps countByEnumeratingWithState:&v123 objects:v151 count:16];
                     }
 
                     while (v48);
                   }
 
-                  v11 = v100;
+                  attributionCopy = v100;
                   v44 = v94;
                 }
 
-                v102 = [v19 countByEnumeratingWithState:&v127 objects:v152 count:16];
+                v102 = [scheme countByEnumeratingWithState:&v127 objects:v152 count:16];
               }
 
               while (v102);
@@ -413,14 +413,14 @@ LABEL_67:
       }
 
       v18 = [MEMORY[0x1E695DFF8] URLWithString:*(*(&v119 + 1) + 8 * v57)];
-      v58 = [v18 scheme];
-      if ([v58 isEqualToString:@"http"])
+      scheme3 = [v18 scheme];
+      if ([scheme3 isEqualToString:@"http"])
       {
         break;
       }
 
-      v59 = [v18 scheme];
-      v60 = [v59 isEqualToString:@"https"];
+      scheme4 = [v18 scheme];
+      v60 = [scheme4 isEqualToString:@"https"];
 
       if (v60)
       {
@@ -442,16 +442,16 @@ LABEL_74:
           v103 = [v61 countByEnumeratingWithState:&v115 objects:v149 count:16];
           if (!v103)
           {
-            v13 = v99;
-            v11 = v100;
-            v12 = v98;
+            sharedController = v99;
+            attributionCopy = v100;
+            handlerCopy = v98;
             goto LABEL_109;
           }
 
           v62 = *v116;
           v63 = 0x1E695D000uLL;
-          v12 = v98;
-          v13 = v99;
+          handlerCopy = v98;
+          sharedController = v99;
           while (2)
           {
             v64 = 0;
@@ -462,16 +462,16 @@ LABEL_77:
             }
 
             v18 = [*(v63 + 4088) URLWithString:*(*(&v115 + 1) + 8 * v64)];
-            v19 = [v18 scheme];
-            if ([v19 isEqualToString:@"http"])
+            scheme = [v18 scheme];
+            if ([scheme isEqualToString:@"http"])
             {
 LABEL_80:
             }
 
             else
             {
-              v65 = [v18 scheme];
-              v66 = [v65 isEqualToString:@"https"];
+              scheme5 = [v18 scheme];
+              v66 = [scheme5 isEqualToString:@"https"];
 
               if ((v66 & 1) == 0)
               {
@@ -479,8 +479,8 @@ LABEL_80:
                 v114 = 0u;
                 v111 = 0u;
                 v112 = 0u;
-                v19 = [v100 attributionApps];
-                v95 = [v19 countByEnumeratingWithState:&v111 objects:v148 count:16];
+                scheme = [v100 attributionApps];
+                v95 = [scheme countByEnumeratingWithState:&v111 objects:v148 count:16];
                 if (v95)
                 {
                   v85 = v62;
@@ -494,7 +494,7 @@ LABEL_80:
                     {
                       if (*v112 != v67)
                       {
-                        objc_enumerationMutation(v19);
+                        objc_enumerationMutation(scheme);
                       }
 
                       v46 = *(*(&v111 + 1) + 8 * v68);
@@ -502,8 +502,8 @@ LABEL_80:
                       v108 = 0u;
                       v109 = 0u;
                       v110 = 0u;
-                      v105 = [v46 handledSchemes];
-                      v69 = [v105 countByEnumeratingWithState:&v107 objects:v147 count:16];
+                      attributionApps = [v46 handledSchemes];
+                      v69 = [attributionApps countByEnumeratingWithState:&v107 objects:v147 count:16];
                       if (v69)
                       {
                         v70 = v69;
@@ -514,12 +514,12 @@ LABEL_91:
                         {
                           if (*v108 != v71)
                           {
-                            objc_enumerationMutation(v105);
+                            objc_enumerationMutation(attributionApps);
                           }
 
                           v73 = *(*(&v107 + 1) + 8 * v72);
-                          v74 = [v18 scheme];
-                          LOBYTE(v73) = [v74 isEqualToString:v73];
+                          scheme6 = [v18 scheme];
+                          LOBYTE(v73) = [scheme6 isEqualToString:v73];
 
                           if (v73)
                           {
@@ -528,7 +528,7 @@ LABEL_91:
 
                           if (v70 == ++v72)
                           {
-                            v70 = [v105 countByEnumeratingWithState:&v107 objects:v147 count:16];
+                            v70 = [attributionApps countByEnumeratingWithState:&v107 objects:v147 count:16];
                             if (v70)
                             {
                               goto LABEL_91;
@@ -541,12 +541,12 @@ LABEL_91:
 
                       ++v68;
                       v67 = v92;
-                      v12 = v98;
-                      v13 = v99;
+                      handlerCopy = v98;
+                      sharedController = v99;
                     }
 
                     while (v68 != v95);
-                    v95 = [v19 countByEnumeratingWithState:&v111 objects:v148 count:16];
+                    v95 = [scheme countByEnumeratingWithState:&v111 objects:v148 count:16];
                     if (v95)
                     {
                       continue;
@@ -570,7 +570,7 @@ LABEL_91:
               v103 = v75;
               if (!v75)
               {
-                v11 = v100;
+                attributionCopy = v100;
                 goto LABEL_109;
               }
 
@@ -586,10 +586,10 @@ LABEL_91:
     }
 
 LABEL_104:
-    v78 = [v89 sharedController];
-    [v78 setWebURL:v18];
+    sharedController3 = [selfCopy sharedController];
+    [sharedController3 setWebURL:v18];
 
-    v12 = v98;
+    handlerCopy = v98;
     if (v98)
     {
       v98[2](v98, v18, 0);
@@ -598,16 +598,16 @@ LABEL_104:
     v79 = +[MKSystemController sharedInstance];
     [v79 openURL:v18 completionHandler:0];
 
-    v19 = +[MKMapService sharedService];
-    v105 = [v18 absoluteString];
-    [v19 captureUserAction:6050 onTarget:v96 eventValue:?];
+    scheme = +[MKMapService sharedService];
+    attributionApps = [v18 absoluteString];
+    [scheme captureUserAction:6050 onTarget:targetCopy eventValue:?];
 LABEL_107:
-    v13 = v99;
-    v11 = v100;
+    sharedController = v99;
+    attributionCopy = v100;
 LABEL_108:
 
 LABEL_109:
-    v10 = v97;
+    lsCopy = v97;
   }
 }
 

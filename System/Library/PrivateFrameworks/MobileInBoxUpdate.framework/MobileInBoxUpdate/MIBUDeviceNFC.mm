@@ -1,11 +1,11 @@
 @interface MIBUDeviceNFC
 - (BOOL)endSession;
-- (BOOL)shutdown:(id *)a3;
-- (BOOL)startDiag:(id *)a3;
+- (BOOL)shutdown:(id *)shutdown;
+- (BOOL)startDiag:(id *)diag;
 - (BOOL)startSession;
 - (MIBUDeviceNFC)init;
-- (void)configureNFC:(id)a3 error:(id *)a4;
-- (void)getDeviceInfo:(id *)a3;
+- (void)configureNFC:(id)c error:(id *)error;
+- (void)getDeviceInfo:(id *)info;
 - (void)startSession;
 @end
 
@@ -59,13 +59,13 @@
   v3 = objc_alloc_init(MIBUNFCReaderSession);
   [(MIBUDeviceNFC *)self setMibureaderSession:v3];
 
-  v4 = [(MIBUDeviceNFC *)self mibureaderSession];
+  mibureaderSession = [(MIBUDeviceNFC *)self mibureaderSession];
 
-  if (v4)
+  if (mibureaderSession)
   {
-    v5 = [(MIBUDeviceNFC *)self mibureaderSession];
+    mibureaderSession2 = [(MIBUDeviceNFC *)self mibureaderSession];
     v8 = 0;
-    [v5 start:&v8];
+    [mibureaderSession2 start:&v8];
     v6 = v8;
 
     if (v6)
@@ -119,13 +119,13 @@ void __29__MIBUDeviceNFC_startSession__block_invoke_27()
   }
 }
 
-- (void)getDeviceInfo:(id *)a3
+- (void)getDeviceInfo:(id *)info
 {
   v34 = *MEMORY[0x277D85DE8];
   v4 = [[MIBUNFCCommand alloc] initWithCommandCode:1 andPayload:0];
-  v5 = [(MIBUDeviceNFC *)self mibureaderSession];
+  mibureaderSession = [(MIBUDeviceNFC *)self mibureaderSession];
   v29 = 0;
-  v6 = [v5 sendCommand:v4 withError:&v29];
+  v6 = [mibureaderSession sendCommand:v4 withError:&v29];
   v7 = v29;
 
   if (v7)
@@ -142,7 +142,7 @@ void __29__MIBUDeviceNFC_startSession__block_invoke_27()
       v10 = v8;
       v11 = [v9 stringWithFormat:@"Failed at command step: %@", v7];
       *buf = 138543618;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
       v33 = v11;
       _os_log_impl(&dword_259ABF000, v10, OS_LOG_TYPE_DEFAULT, "Device %{public}@: %{public}@", buf, 0x16u);
@@ -152,40 +152,40 @@ void __29__MIBUDeviceNFC_startSession__block_invoke_27()
   else
   {
     v12 = v6;
-    v13 = [v12 serialNumber];
+    serialNumber = [v12 serialNumber];
     serialNumber = self->_serialNumber;
-    self->_serialNumber = v13;
+    self->_serialNumber = serialNumber;
 
-    v15 = [v12 ecid];
+    ecid = [v12 ecid];
     ecid = self->_ecid;
-    self->_ecid = v15;
+    self->_ecid = ecid;
 
-    v17 = [v12 boardID];
+    boardID = [v12 boardID];
     boardID = self->_boardID;
-    self->_boardID = v17;
+    self->_boardID = boardID;
 
-    v19 = [v12 chipID];
+    chipID = [v12 chipID];
     chipID = self->_chipID;
-    self->_chipID = v19;
+    self->_chipID = chipID;
 
     self->_securityDomain = [v12 securityDomain];
-    v21 = [v12 apNonce];
+    apNonce = [v12 apNonce];
     apNonce = self->_apNonce;
-    self->_apNonce = v21;
+    self->_apNonce = apNonce;
 
     self->_productionMode = [v12 productionMode];
     self->_securityMode = [v12 securityMode];
     self->_uidMode = [v12 uidMode];
-    v23 = [v12 sepNonce];
+    sepNonce = [v12 sepNonce];
     sepNonce = self->_sepNonce;
-    self->_sepNonce = v23;
+    self->_sepNonce = sepNonce;
 
-    v25 = [v12 sikaFuse];
+    sikaFuse = [v12 sikaFuse];
     sikaFuse = self->_sikaFuse;
-    self->_sikaFuse = v25;
+    self->_sikaFuse = sikaFuse;
 
-    v27 = [v12 sikaFuseExists];
-    self->_sikaFuseExists = v27;
+    sikaFuseExists = [v12 sikaFuseExists];
+    self->_sikaFuseExists = sikaFuseExists;
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -207,7 +207,7 @@ void __31__MIBUDeviceNFC_getDeviceInfo___block_invoke()
   }
 }
 
-- (BOOL)startDiag:(id *)a3
+- (BOOL)startDiag:(id *)diag
 {
   v30 = *MEMORY[0x277D85DE8];
   v25 = 0;
@@ -228,7 +228,7 @@ void __31__MIBUDeviceNFC_getDeviceInfo___block_invoke()
     v9 = v7;
     v10 = [v8 stringWithFormat:@"tatsu ticket: %@", v5];
     *buf = 138543618;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2114;
     v29 = v10;
     _os_log_impl(&dword_259ABF000, v9, OS_LOG_TYPE_DEFAULT, "Device %{public}@: %{public}@", buf, 0x16u);
@@ -240,9 +240,9 @@ void __31__MIBUDeviceNFC_getDeviceInfo___block_invoke()
   [v4 setObject:v11 forKey:@"TimeStamp"];
 
   v12 = [[MIBUNFCCommand alloc] initWithCommandCode:11 andPayload:v4];
-  v13 = [(MIBUDeviceNFC *)self mibureaderSession];
+  mibureaderSession = [(MIBUDeviceNFC *)self mibureaderSession];
   v23 = v6;
-  v14 = [v13 sendCommand:v12 withError:&v23];
+  v14 = [mibureaderSession sendCommand:v12 withError:&v23];
   v15 = v23;
 
   if (v15)
@@ -273,7 +273,7 @@ void __31__MIBUDeviceNFC_getDeviceInfo___block_invoke()
       v19 = v17;
       v20 = [v18 stringWithFormat:@"Tatsu ticket check successful"];
       *buf = 138543618;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = v20;
       _os_log_impl(&dword_259ABF000, v19, OS_LOG_TYPE_DEFAULT, "Device %{public}@: %{public}@", buf, 0x16u);
@@ -332,10 +332,10 @@ void __27__MIBUDeviceNFC_startDiag___block_invoke_50()
   }
 }
 
-- (void)configureNFC:(id)a3 error:(id *)a4
+- (void)configureNFC:(id)c error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cCopy = c;
   if (MIBUOnceToken != -1)
   {
     [MIBUDeviceNFC configureNFC:error:];
@@ -346,21 +346,21 @@ void __27__MIBUDeviceNFC_startDiag___block_invoke_50()
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = v7;
-    v10 = [v8 stringWithFormat:@"Configuring NFC with options %@", v6];
+    cCopy = [v8 stringWithFormat:@"Configuring NFC with options %@", cCopy];
     *buf = 138543618;
     *&buf[4] = self;
     v22 = 2114;
-    v23 = v10;
+    v23 = cCopy;
     _os_log_impl(&dword_259ABF000, v9, OS_LOG_TYPE_DEFAULT, "Device %{public}@: %{public}@", buf, 0x16u);
   }
 
   v11 = objc_opt_new();
-  v12 = [v6 objectForKey:@"NFCInactivityTimeout"];
+  v12 = [cCopy objectForKey:@"NFCInactivityTimeout"];
   if (!v12)
   {
     [(MIBUDeviceNFC *)self configureNFC:buf error:?];
     v16 = *buf;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -370,16 +370,16 @@ void __27__MIBUDeviceNFC_startDiag___block_invoke_50()
 
   [v11 setObject:v12 forKey:@"NFCInactivityTimeout"];
   v13 = [[MIBUNFCCommand alloc] initWithCommandCode:10 andPayload:v11];
-  v14 = [(MIBUDeviceNFC *)self mibureaderSession];
+  mibureaderSession = [(MIBUDeviceNFC *)self mibureaderSession];
   v19 = 0;
-  v15 = [v14 sendCommand:v13 withError:&v19];
+  v15 = [mibureaderSession sendCommand:v13 withError:&v19];
   v16 = v19;
 
-  if (a4)
+  if (error)
   {
 LABEL_7:
     v17 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
 LABEL_8:
@@ -419,7 +419,7 @@ void __36__MIBUDeviceNFC_configureNFC_error___block_invoke_61()
   }
 }
 
-- (BOOL)shutdown:(id *)a3
+- (BOOL)shutdown:(id *)shutdown
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -437,16 +437,16 @@ void __36__MIBUDeviceNFC_configureNFC_error___block_invoke_61()
     v7 = v5;
     v8 = [v6 stringWithFormat:@"Begin heartbeat with period: 0.5 timeout: 0..."];;
     *buf = 138543618;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2114;
     v26 = v8;
     _os_log_impl(&dword_259ABF000, v7, OS_LOG_TYPE_DEFAULT, "Device %{public}@: %{public}@", buf, 0x16u);
   }
 
   v9 = [[MIBUNFCCommand alloc] initWithCommandCode:7 andPayload:v4];
-  v10 = [(MIBUDeviceNFC *)self mibureaderSession];
+  mibureaderSession = [(MIBUDeviceNFC *)self mibureaderSession];
   v22 = 0;
-  v11 = [v10 sendCommand:v9 withError:&v22];
+  v11 = [mibureaderSession sendCommand:v9 withError:&v22];
   v12 = v22;
 
   if (v12 || ([v11 error], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
@@ -479,7 +479,7 @@ void __36__MIBUDeviceNFC_configureNFC_error___block_invoke_61()
       v20 = v18;
       v21 = [v19 stringWithFormat:@"heartbeat successful"];
       *buf = 138543618;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = v21;
       _os_log_impl(&dword_259ABF000, v20, OS_LOG_TYPE_DEFAULT, "Device %{public}@: %{public}@", buf, 0x16u);
@@ -555,14 +555,14 @@ void __26__MIBUDeviceNFC_shutdown___block_invoke_78()
     v5 = v3;
     v6 = [v4 stringWithFormat:@"mibureader object disconnectTag"];
     v15 = 138543618;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2114;
     v18 = v6;
     _os_log_impl(&dword_259ABF000, v5, OS_LOG_TYPE_DEFAULT, "Device %{public}@: %{public}@", &v15, 0x16u);
   }
 
-  v7 = [(MIBUDeviceNFC *)self mibureaderSession];
-  [v7 disconnectTag:0];
+  mibureaderSession = [(MIBUDeviceNFC *)self mibureaderSession];
+  [mibureaderSession disconnectTag:0];
 
   if (MIBUOnceToken != -1)
   {
@@ -576,14 +576,14 @@ void __26__MIBUDeviceNFC_shutdown___block_invoke_78()
     v10 = v8;
     v11 = [v9 stringWithFormat:@"mibureader object end"];
     v15 = 138543618;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2114;
     v18 = v11;
     _os_log_impl(&dword_259ABF000, v10, OS_LOG_TYPE_DEFAULT, "Device %{public}@: %{public}@", &v15, 0x16u);
   }
 
-  v12 = [(MIBUDeviceNFC *)self mibureaderSession];
-  [v12 end];
+  mibureaderSession2 = [(MIBUDeviceNFC *)self mibureaderSession];
+  [mibureaderSession2 end];
 
   v13 = *MEMORY[0x277D85DE8];
   return 1;

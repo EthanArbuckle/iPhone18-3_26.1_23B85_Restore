@@ -1,15 +1,15 @@
 @interface PHASEEnvironment
 - (BOOL)isOverridingMedium;
-- (BOOL)isOverridingStreamForKey:(id)a3;
+- (BOOL)isOverridingStreamForKey:(id)key;
 - (PHASEEnvironment)init;
-- (PHASEEnvironment)initWithEngine:(id)a3 shapes:(id)a4;
+- (PHASEEnvironment)initWithEngine:(id)engine shapes:(id)shapes;
 - (PHASEMedium)mediumOverride;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)streamForKey:(id)a3;
-- (void)overrideMedium:(id)a3;
-- (void)overrideStream:(id)a3 forKey:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)streamForKey:(id)key;
+- (void)overrideMedium:(id)medium;
+- (void)overrideStream:(id)stream forKey:(id)key;
 - (void)removeMediumOverride;
-- (void)removeOverrideForKey:(id)a3;
+- (void)removeOverrideForKey:(id)key;
 @end
 
 @implementation PHASEEnvironment
@@ -21,31 +21,31 @@
   return 0;
 }
 
-- (PHASEEnvironment)initWithEngine:(id)a3 shapes:(id)a4
+- (PHASEEnvironment)initWithEngine:(id)engine shapes:(id)shapes
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  engineCopy = engine;
+  shapesCopy = shapes;
+  if (!engineCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"engine is nil."];
   }
 
-  if (!v7)
+  if (!shapesCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"shapes is nil."];
   }
 
-  if (![v7 count])
+  if (![shapesCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"shapes is empty."];
   }
 
   v19.receiver = self;
   v19.super_class = PHASEEnvironment;
-  v8 = [(PHASEObject *)&v19 initWithEngine:v6 entityType:5 shapes:v7];
+  v8 = [(PHASEObject *)&v19 initWithEngine:engineCopy entityType:5 shapes:shapesCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEA60] arrayWithArray:v7];
+    v9 = [MEMORY[0x277CBEA60] arrayWithArray:shapesCopy];
     shapes = v8->_shapes;
     v8->_shapes = v9;
 
@@ -69,77 +69,77 @@
   return v8;
 }
 
-- (void)overrideStream:(id)a3 forKey:(id)a4
+- (void)overrideStream:(id)stream forKey:(id)key
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14)
+  streamCopy = stream;
+  keyCopy = key;
+  if (streamCopy)
   {
-    v7 = [v14 engine];
-    v8 = [(PHASEObject *)self engine];
+    engine = [streamCopy engine];
+    engine2 = [(PHASEObject *)self engine];
 
-    if (v7 != v8)
+    if (engine != engine2)
     {
       v9 = MEMORY[0x277CBEAD8];
-      v10 = [v14 engine];
-      v11 = [(PHASEObject *)self engine];
-      [v9 raise:*MEMORY[0x277CBE660] format:{@"stream's engine %p does not match this environment's engine %p.", v10, v11}];
+      engine3 = [streamCopy engine];
+      engine4 = [(PHASEObject *)self engine];
+      [v9 raise:*MEMORY[0x277CBE660] format:{@"stream's engine %p does not match this environment's engine %p.", engine3, engine4}];
     }
   }
 
-  if (!v6)
+  if (!keyCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"engine is nil."];
   }
 
-  if (v14 && (PHASEEnvironmentalMetadataStreamKeyIsPublished(v6) & 1) == 0)
+  if (streamCopy && (PHASEEnvironmentalMetadataStreamKeyIsPublished(keyCopy) & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"key is unpublished."];
   }
 
   v12 = self->_streamOverridesLock;
   objc_sync_enter(v12);
-  if (v14)
+  if (streamCopy)
   {
-    [(NSMutableDictionary *)self->_streamOverrides setObject:v14 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_streamOverrides setObject:streamCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableDictionary *)self->_streamOverrides setObject:v13 forKeyedSubscript:v6];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableDictionary *)self->_streamOverrides setObject:null forKeyedSubscript:keyCopy];
   }
 
   objc_sync_exit(v12);
 }
 
-- (void)removeOverrideForKey:(id)a3
+- (void)removeOverrideForKey:(id)key
 {
-  v6 = a3;
-  if (!v6)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"key is nil."];
   }
 
   v4 = self->_streamOverridesLock;
   objc_sync_enter(v4);
-  v5 = [(PHASEEnvironment *)self streamOverrides];
-  [v5 removeObjectForKey:v6];
+  streamOverrides = [(PHASEEnvironment *)self streamOverrides];
+  [streamOverrides removeObjectForKey:keyCopy];
 
   objc_sync_exit(v4);
 }
 
-- (id)streamForKey:(id)a3
+- (id)streamForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"engine is nil."];
   }
 
   v5 = self->_streamOverridesLock;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_streamOverrides objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_streamOverrides objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -156,18 +156,18 @@
   return v7;
 }
 
-- (BOOL)isOverridingStreamForKey:(id)a3
+- (BOOL)isOverridingStreamForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"engine is nil."];
   }
 
   v5 = self->_streamOverridesLock;
   objc_sync_enter(v5);
-  v6 = [(PHASEEnvironment *)self streamOverrides];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  streamOverrides = [(PHASEEnvironment *)self streamOverrides];
+  v7 = [streamOverrides objectForKeyedSubscript:keyCopy];
 
   if (v7)
   {
@@ -178,21 +178,21 @@
   return v7 != 0;
 }
 
-- (void)overrideMedium:(id)a3
+- (void)overrideMedium:(id)medium
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  mediumCopy = medium;
+  v5 = mediumCopy;
+  if (mediumCopy)
   {
-    v6 = [(PHASEMedium *)v4 engine];
-    v7 = [(PHASEObject *)self engine];
+    engine = [(PHASEMedium *)mediumCopy engine];
+    engine2 = [(PHASEObject *)self engine];
 
-    if (v6 != v7)
+    if (engine != engine2)
     {
       v8 = MEMORY[0x277CBEAD8];
-      v9 = [(PHASEMedium *)v5 engine];
-      v10 = [(PHASEObject *)self engine];
-      [v8 raise:*MEMORY[0x277CBE660] format:{@"medium's engine %p does not match this environment's engine %p.", v9, v10}];
+      engine3 = [(PHASEMedium *)v5 engine];
+      engine4 = [(PHASEObject *)self engine];
+      [v8 raise:*MEMORY[0x277CBE660] format:{@"medium's engine %p does not match this environment's engine %p.", engine3, engine4}];
     }
   }
 
@@ -238,21 +238,21 @@
 
 - (BOOL)isOverridingMedium
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_mediumOverrideLock;
   objc_sync_enter(v3);
-  LOBYTE(v2) = v2->_mediumOverrideActive;
+  LOBYTE(selfCopy) = selfCopy->_mediumOverrideActive;
   objc_sync_exit(v3);
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PHASEObject *)self engine];
-  v6 = [(PHASEEnvironment *)self shapes];
-  v7 = [v4 initWithEngine:v5 shapes:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  engine = [(PHASEObject *)self engine];
+  shapes = [(PHASEEnvironment *)self shapes];
+  v7 = [v4 initWithEngine:engine shapes:shapes];
 
   v8 = self->_streamOverridesLock;
   objc_sync_enter(v8);

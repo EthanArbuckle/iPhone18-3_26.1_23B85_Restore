@@ -1,5 +1,5 @@
 @interface PXPhotoKitAssetCollectionStoryDemoActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performUserInteractionTask;
 @end
 
@@ -7,39 +7,39 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXAssetCollectionActionPerformer *)self assetsDataSource];
-  if (!v3)
+  assetsDataSource = [(PXAssetCollectionActionPerformer *)self assetsDataSource];
+  if (!assetsDataSource)
   {
     goto LABEL_11;
   }
 
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollectionReference];
-  v5 = [v3 assetCollectionReferenceForAssetCollectionReference:v4];
+  assetCollectionReference = [(PXAssetCollectionActionPerformer *)self assetCollectionReference];
+  v5 = [assetsDataSource assetCollectionReferenceForAssetCollectionReference:assetCollectionReference];
 
-  v6 = [v5 assetCollection];
-  if (v6 || ([v3 containerCollection], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "canContainAssets"), v10, v11) && (objc_msgSend(v3, "containerCollection"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  assetCollection = [v5 assetCollection];
+  if (assetCollection || ([assetsDataSource containerCollection], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "canContainAssets"), v10, v11) && (objc_msgSend(assetsDataSource, "containerCollection"), (assetCollection = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = v6;
-    v8 = [[PXStoryConfiguration alloc] initWithAssetCollection:v6];
+    v7 = assetCollection;
+    v8 = [[PXStoryConfiguration alloc] initWithAssetCollection:assetCollection];
   }
 
   else
   {
-    if ([v3 numberOfSections] <= 0)
+    if ([assetsDataSource numberOfSections] <= 0)
     {
 
 LABEL_11:
       v12 = [PXStoryConfiguration alloc];
-      v13 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-      v9 = [(PXStoryConfiguration *)v12 initWithAssetCollection:v13];
+      assetCollection2 = [(PXAssetCollectionActionPerformer *)self assetCollection];
+      v9 = [(PXStoryConfiguration *)v12 initWithAssetCollection:assetCollection2];
 
       goto LABEL_12;
     }
 
-    v18 = [v3 identifier];
+    identifier = [assetsDataSource identifier];
     v19 = xmmword_1A5380D10;
     v20 = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = [v3 assetsInSectionIndexPath:&v18];
+    v7 = [assetsDataSource assetsInSectionIndexPath:&identifier];
     v8 = [[PXStoryConfiguration alloc] initWithAssets:v7];
   }
 
@@ -56,7 +56,7 @@ LABEL_12:
   v15[2] = __79__PXPhotoKitAssetCollectionStoryDemoActionPerformer_performUserInteractionTask__block_invoke;
   v15[3] = &unk_1E774C620;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v14 = v9;
   dispatch_async(MEMORY[0x1E69E96A0], v15);
 }
@@ -68,9 +68,9 @@ void __79__PXPhotoKitAssetCollectionStoryDemoActionPerformer_performUserInteract
   [*(a1 + 40) completeUserInteractionTaskWithSuccess:1 error:0];
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = a3;
+  referenceCopy = reference;
   v5 = +[PXRootSettings sharedInstance];
   if ([v5 canShowInternalUI])
   {
@@ -82,7 +82,7 @@ void __79__PXPhotoKitAssetCollectionStoryDemoActionPerformer_performUserInteract
 
     else
     {
-      v8 = [v4 assetCollection];
+      assetCollection = [referenceCopy assetCollection];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }

@@ -4,9 +4,9 @@
 - (BOOL)isInRoot;
 - (BOOL)isReflowablePresentation;
 - (double)p_insetAmount;
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4 scale:(double)a5;
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize scale:(double)scale;
 - (id)layoutGeometryFromProvider;
-- (id)p_expandedLayoutGeometryForFrame:(CGRect)a3;
+- (id)p_expandedLayoutGeometryForFrame:(CGRect)frame;
 @end
 
 @implementation THImageLayout
@@ -29,16 +29,16 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THImageLayout *)self delegate];
+  delegate = [(THImageLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THImageLayout *)self delegate];
+  delegate = [(THImageLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (BOOL)isInRoot
@@ -50,17 +50,17 @@
 
 - (double)p_insetAmount
 {
-  v3 = [(THImageLayout *)self isIntroMedia];
+  isIntroMedia = [(THImageLayout *)self isIntroMedia];
   result = 0.0;
-  if ((v3 & 1) == 0)
+  if ((isIntroMedia & 1) == 0)
   {
-    v5 = [-[THImageLayout layoutController](self layoutController];
+    layoutController = [-[THImageLayout layoutController](self layoutController];
     result = 10.0;
-    if ((v5 & 1) == 0)
+    if ((layoutController & 1) == 0)
     {
-      v6 = [-[THImageLayout layoutController](self layoutController];
+      layoutController2 = [-[THImageLayout layoutController](self layoutController];
       result = 32.0;
-      if (v6)
+      if (layoutController2)
       {
         return 10.0;
       }
@@ -70,12 +70,12 @@
   return result;
 }
 
-- (id)p_expandedLayoutGeometryForFrame:(CGRect)a3
+- (id)p_expandedLayoutGeometryForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(THImageLayout *)self p_insetAmount];
   v9 = v8;
   v12.origin.x = x;
@@ -105,16 +105,16 @@
   }
 }
 
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4 scale:(double)a5
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(THImageLayout *)self p_expandedLayoutGeometryForFrame:0.0, 0.0, a3.width, a3.height, a5];
-  v9 = [(THImageLayout *)self p_expandedLayoutGeometryForFrame:0.0, 0.0, width, height];
-  [v8 frame];
+  height = toSize.height;
+  width = toSize.width;
+  scale = [(THImageLayout *)self p_expandedLayoutGeometryForFrame:0.0, 0.0, size.width, size.height, scale];
+  height = [(THImageLayout *)self p_expandedLayoutGeometryForFrame:0.0, 0.0, width, height];
+  [scale frame];
   v11 = v10;
   v13 = v12;
-  [v9 frame];
+  [height frame];
   result = 1.0;
   if (v11 > 0.0 && v13 > 0.0)
   {

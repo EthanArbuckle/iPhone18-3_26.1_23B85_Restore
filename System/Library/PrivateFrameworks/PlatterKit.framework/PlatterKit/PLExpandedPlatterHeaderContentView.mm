@@ -1,40 +1,40 @@
 @interface PLExpandedPlatterHeaderContentView
-- (CGRect)_titleLabelBoundsForSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_headerHeightForWidth:(double)a3;
+- (CGRect)_titleLabelBoundsForSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_headerHeightForWidth:(double)width;
 - (double)_largeTextLabelBaselineOffsetFromBottom;
 - (double)_largeTextTitleLabelBaselineOffset;
 - (double)_titleFirstLineCenterY;
 - (id)_ellipsisHighlightedBackgroundImage;
 - (id)_newIconButton;
-- (void)_configureIconButton:(id)a3 withIcon:(id)a4;
+- (void)_configureIconButton:(id)button withIcon:(id)icon;
 - (void)_configureUtilityButton;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_layoutTitleLabelWithScale:(double)a3;
-- (void)_layoutUtilityButtonWithScale:(double)a3;
-- (void)_updateStylingForTitleLabel:(id)a3;
+- (void)_layoutTitleLabelWithScale:(double)scale;
+- (void)_layoutUtilityButtonWithScale:(double)scale;
+- (void)_updateStylingForTitleLabel:(id)label;
 - (void)_updateUtilityButtonFont;
 @end
 
 @implementation PLExpandedPlatterHeaderContentView
 
-- (double)_headerHeightForWidth:(double)a3
+- (double)_headerHeightForWidth:(double)width
 {
-  v5 = [(PLPlatterHeaderContentView *)self _usesLargeTextLayout];
-  if (a3 <= 0.0 || !v5)
+  _usesLargeTextLayout = [(PLPlatterHeaderContentView *)self _usesLargeTextLayout];
+  if (width <= 0.0 || !_usesLargeTextLayout)
   {
-    v8 = [(PLPlatterHeaderContentView *)self _titleLabelFont];
-    [v8 _scaledValueForValue:16.0];
+    _titleLabelFont = [(PLPlatterHeaderContentView *)self _titleLabelFont];
+    [_titleLabelFont _scaledValueForValue:16.0];
     v10 = v7 * 2.0 + 20.0;
   }
 
   else
   {
     [(PLExpandedPlatterHeaderContentView *)self _shouldReverseLayoutDirection];
-    [(PLExpandedPlatterHeaderContentView *)self _titleLabelBoundsForSize:a3 + -16.0 + -56.0, 1.79769313e308];
+    [(PLExpandedPlatterHeaderContentView *)self _titleLabelBoundsForSize:width + -16.0 + -56.0, 1.79769313e308];
     [(PLExpandedPlatterHeaderContentView *)self _largeTextLabelBaselineOffsetFromBottom];
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    _titleLabelFont = [MEMORY[0x277D759A0] mainScreen];
+    [_titleLabelFont scale];
     UIRoundToScale();
     v10 = v9;
   }
@@ -42,9 +42,9 @@
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (a3.width <= 0.0)
+  if (fits.width <= 0.0)
   {
     width = *MEMORY[0x277CBF3A8];
     v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -52,7 +52,7 @@
 
   else
   {
-    width = a3.width;
+    width = fits.width;
     [(PLExpandedPlatterHeaderContentView *)self _headerHeightForWidth:?];
     v5 = v4;
   }
@@ -75,9 +75,9 @@
   v7 = [v4 stringWithFormat:@"%@.ellipsesHighlightImage", v6];
   [v3 removeImageForKey:v7];
 
-  v8 = [(PLPlatterHeaderContentView *)self _utilityButton];
-  v9 = [(PLExpandedPlatterHeaderContentView *)self _ellipsisHighlightedBackgroundImage];
-  [v8 setBackgroundImage:v9 forState:1];
+  _utilityButton = [(PLPlatterHeaderContentView *)self _utilityButton];
+  _ellipsisHighlightedBackgroundImage = [(PLExpandedPlatterHeaderContentView *)self _ellipsisHighlightedBackgroundImage];
+  [_utilityButton setBackgroundImage:_ellipsisHighlightedBackgroundImage forState:1];
 
   [(PLExpandedPlatterHeaderContentView *)self setNeedsLayout];
 }
@@ -86,22 +86,22 @@
 {
   v8.receiver = self;
   v8.super_class = PLExpandedPlatterHeaderContentView;
-  v3 = [(PLPlatterHeaderContentView *)&v8 _newIconButton];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  _newIconButton = [(PLPlatterHeaderContentView *)&v8 _newIconButton];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    [v3 setPointerInteractionEnabled:1];
+    [_newIconButton setPointerInteractionEnabled:1];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __52__PLExpandedPlatterHeaderContentView__newIconButton__block_invoke;
     v7[3] = &unk_278425820;
     v7[4] = self;
-    [v3 setPointerStyleProvider:v7];
+    [_newIconButton setPointerStyleProvider:v7];
   }
 
-  return v3;
+  return _newIconButton;
 }
 
 id __52__PLExpandedPlatterHeaderContentView__newIconButton__block_invoke(uint64_t a1)
@@ -118,37 +118,37 @@ id __52__PLExpandedPlatterHeaderContentView__newIconButton__block_invoke(uint64_
   return v8;
 }
 
-- (void)_configureIconButton:(id)a3 withIcon:(id)a4
+- (void)_configureIconButton:(id)button withIcon:(id)icon
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLExpandedPlatterHeaderContentView *)self traitCollection];
-  v9 = [v6 mt_imageWithDefaultShadowAttributesForUserInterfaceStyle:{objc_msgSend(v8, "userInterfaceStyle")}];
+  iconCopy = icon;
+  buttonCopy = button;
+  traitCollection = [(PLExpandedPlatterHeaderContentView *)self traitCollection];
+  v9 = [iconCopy mt_imageWithDefaultShadowAttributesForUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
   v10.receiver = self;
   v10.super_class = PLExpandedPlatterHeaderContentView;
-  [(PLPlatterHeaderContentView *)&v10 _configureIconButton:v7 withIcon:v9];
+  [(PLPlatterHeaderContentView *)&v10 _configureIconButton:buttonCopy withIcon:v9];
 }
 
-- (void)_updateStylingForTitleLabel:(id)a3
+- (void)_updateStylingForTitleLabel:(id)label
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 _secondaryLabelColor];
-  [v4 setTextColor:v5];
+  labelCopy = label;
+  _secondaryLabelColor = [v3 _secondaryLabelColor];
+  [labelCopy setTextColor:_secondaryLabelColor];
 }
 
 - (void)_updateUtilityButtonFont
 {
-  v3 = [(PLPlatterHeaderContentView *)self _utilityButton];
+  _utilityButton = [(PLPlatterHeaderContentView *)self _utilityButton];
 
-  if (v3)
+  if (_utilityButton)
   {
-    v7 = [(PLPlatterHeaderContentView *)self utilityButton];
-    v4 = [v7 titleLabel];
-    v5 = [(PLPlatterHeaderContentView *)self _fontProvider];
-    v6 = [v5 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
-    [v4 setFont:v6];
+    utilityButton = [(PLPlatterHeaderContentView *)self utilityButton];
+    titleLabel = [utilityButton titleLabel];
+    _fontProvider = [(PLPlatterHeaderContentView *)self _fontProvider];
+    v6 = [_fontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
+    [titleLabel setFont:v6];
   }
 }
 
@@ -191,29 +191,29 @@ id __73__PLExpandedPlatterHeaderContentView__ellipsisHighlightedBackgroundImage_
   v3 = MEMORY[0x277D755B8];
   v4 = PlatterKitFrameworkBundle();
   v5 = [v3 imageNamed:@"ellipsis" inBundle:v4];
-  v6 = [MEMORY[0x277D75348] _secondaryLabelColor];
-  v7 = [v5 _flatImageWithColor:v6];
+  _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+  v7 = [v5 _flatImageWithColor:_secondaryLabelColor];
 
-  v8 = [(PLPlatterHeaderContentView *)self utilityButton];
-  [v8 setImage:v7 forState:0];
+  utilityButton = [(PLPlatterHeaderContentView *)self utilityButton];
+  [utilityButton setImage:v7 forState:0];
 
-  v9 = [(PLPlatterHeaderContentView *)self utilityButton];
-  v10 = [(PLExpandedPlatterHeaderContentView *)self _ellipsisHighlightedBackgroundImage];
-  [v9 setBackgroundImage:v10 forState:1];
+  utilityButton2 = [(PLPlatterHeaderContentView *)self utilityButton];
+  _ellipsisHighlightedBackgroundImage = [(PLExpandedPlatterHeaderContentView *)self _ellipsisHighlightedBackgroundImage];
+  [utilityButton2 setBackgroundImage:_ellipsisHighlightedBackgroundImage forState:1];
 
-  v11 = [(PLPlatterHeaderContentView *)self utilityButton];
-  [v11 setAdjustsImageWhenHighlighted:0];
+  utilityButton3 = [(PLPlatterHeaderContentView *)self utilityButton];
+  [utilityButton3 setAdjustsImageWhenHighlighted:0];
 
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v14 = [(PLPlatterHeaderContentView *)self utilityButton];
-    [v14 setPointerInteractionEnabled:1];
+    utilityButton4 = [(PLPlatterHeaderContentView *)self utilityButton];
+    [utilityButton4 setPointerInteractionEnabled:1];
 
-    v15 = [(PLPlatterHeaderContentView *)self utilityButton];
-    [v15 setPointerStyleProvider:&__block_literal_global_21];
+    utilityButton5 = [(PLPlatterHeaderContentView *)self utilityButton];
+    [utilityButton5 setPointerStyleProvider:&__block_literal_global_21];
   }
 
   [(PLExpandedPlatterHeaderContentView *)self _updateUtilityButtonVibrantStyling];
@@ -237,20 +237,20 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
   return v15;
 }
 
-- (void)_layoutTitleLabelWithScale:(double)a3
+- (void)_layoutTitleLabelWithScale:(double)scale
 {
-  v4 = [(PLPlatterHeaderContentView *)self _titleLabel];
-  if (v4)
+  _titleLabel = [(PLPlatterHeaderContentView *)self _titleLabel];
+  if (_titleLabel)
   {
-    v47 = v4;
+    v47 = _titleLabel;
     [(PLExpandedPlatterHeaderContentView *)self bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(PLPlatterHeaderContentView *)self _usesLargeTextLayout];
-    v14 = [(PLExpandedPlatterHeaderContentView *)self _shouldReverseLayoutDirection];
-    if (v13)
+    _usesLargeTextLayout = [(PLPlatterHeaderContentView *)self _usesLargeTextLayout];
+    _shouldReverseLayoutDirection = [(PLExpandedPlatterHeaderContentView *)self _shouldReverseLayoutDirection];
+    if (_usesLargeTextLayout)
     {
       [(PLExpandedPlatterHeaderContentView *)self _shouldReverseLayoutDirection];
       v49.origin.x = v6;
@@ -264,10 +264,10 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
       v46 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(PLPlatterHeaderContentView *)self iconButtons];
-      [v21 count];
+      iconButtons = [(PLPlatterHeaderContentView *)self iconButtons];
+      [iconButtons count];
 
-      if (v14)
+      if (_shouldReverseLayoutDirection)
       {
         v50.origin.x = v6;
         v50.origin.y = v8;
@@ -293,16 +293,16 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
       v43 = v23;
       v44 = v24;
       v26 = v25;
-      v27 = [(PLPlatterHeaderContentView *)self _dateLabel];
-      if (v27)
+      _dateLabel = [(PLPlatterHeaderContentView *)self _dateLabel];
+      if (_dateLabel)
       {
         v28 = 72.0;
       }
 
       else
       {
-        v29 = [(PLPlatterHeaderContentView *)self _utilityButton];
-        if (v29)
+        _utilityButton = [(PLPlatterHeaderContentView *)self _utilityButton];
+        if (_utilityButton)
         {
           v28 = 72.0;
         }
@@ -313,7 +313,7 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
         }
       }
 
-      if ((v14 & 1) == 0)
+      if ((_shouldReverseLayoutDirection & 1) == 0)
       {
         v52.origin.x = v6;
         v52.origin.y = v8;
@@ -322,8 +322,8 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
         v28 = CGRectGetMaxX(v52) - v28;
       }
 
-      v30 = [(PLPlatterHeaderContentView *)self iconButtons];
-      if ([v30 count])
+      iconButtons2 = [(PLPlatterHeaderContentView *)self iconButtons];
+      if ([iconButtons2 count])
       {
         v31 = 16.0;
       }
@@ -333,7 +333,7 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
         v31 = 17.0;
       }
 
-      if (v14)
+      if (_shouldReverseLayoutDirection)
       {
         v41 = v6;
         v53.origin.x = v6;
@@ -389,22 +389,22 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
       v58.size.width = v33;
       v58.size.height = v26;
       CGRectGetMinX(v58);
-      v37 = [v47 font];
-      [v37 capHeight];
-      v38 = [v47 font];
-      [v38 _scaledValueForValue:16.0];
+      font = [v47 font];
+      [font capHeight];
+      font2 = [v47 font];
+      [font2 _scaledValueForValue:16.0];
       [v47 _firstLineBaselineOffsetFromBoundsTop];
     }
 
     UIRectIntegralWithScale();
     [v47 setFrame:?];
-    v4 = v47;
+    _titleLabel = v47;
   }
 }
 
-- (void)_layoutUtilityButtonWithScale:(double)a3
+- (void)_layoutUtilityButtonWithScale:(double)scale
 {
-  v24 = [(PLPlatterHeaderContentView *)self utilityButton];
+  utilityButton = [(PLPlatterHeaderContentView *)self utilityButton];
   BSRectWithSize();
   v5 = v4;
   v7 = v6;
@@ -418,7 +418,7 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
     v27.size.width = v9;
     v27.size.height = v11;
     Width = CGRectGetWidth(v27);
-    v19 = [v24 imageForState:0];
+    v19 = [utilityButton imageForState:0];
     [v19 size];
     v21 = (Width - v20) * 0.5;
 
@@ -468,25 +468,25 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
   }
 
   UIRectIntegralWithScale();
-  [v24 setFrame:?];
+  [utilityButton setFrame:?];
 }
 
 - (double)_titleFirstLineCenterY
 {
-  v3 = [(PLPlatterHeaderContentView *)self _titleLabelFont];
-  [v3 capHeight];
+  _titleLabelFont = [(PLPlatterHeaderContentView *)self _titleLabelFont];
+  [_titleLabelFont capHeight];
   v5 = v4;
 
   [(PLExpandedPlatterHeaderContentView *)self _largeTextTitleLabelBaselineOffset];
   return v6 + v5 * -0.5;
 }
 
-- (CGRect)_titleLabelBoundsForSize:(CGSize)a3
+- (CGRect)_titleLabelBoundsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PLPlatterHeaderContentView *)self _titleLabel];
-  [v5 sizeThatFits:{width, height}];
+  height = size.height;
+  width = size.width;
+  _titleLabel = [(PLPlatterHeaderContentView *)self _titleLabel];
+  [_titleLabel sizeThatFits:{width, height}];
   BSRectWithSize();
   v7 = v6;
   v9 = v8;
@@ -506,8 +506,8 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
 
 - (double)_largeTextTitleLabelBaselineOffset
 {
-  v2 = [(PLPlatterHeaderContentView *)self _titleLabelFont];
-  [v2 _scaledValueForValue:16.5];
+  _titleLabelFont = [(PLPlatterHeaderContentView *)self _titleLabelFont];
+  [_titleLabelFont _scaledValueForValue:16.5];
   v4 = v3;
 
   return v4;
@@ -515,8 +515,8 @@ id __61__PLExpandedPlatterHeaderContentView__configureUtilityButton__block_invok
 
 - (double)_largeTextLabelBaselineOffsetFromBottom
 {
-  v2 = [(PLPlatterHeaderContentView *)self _titleLabelFont];
-  [v2 _scaledValueForValue:6.5];
+  _titleLabelFont = [(PLPlatterHeaderContentView *)self _titleLabelFont];
+  [_titleLabelFont _scaledValueForValue:6.5];
   v4 = v3;
 
   return v4;

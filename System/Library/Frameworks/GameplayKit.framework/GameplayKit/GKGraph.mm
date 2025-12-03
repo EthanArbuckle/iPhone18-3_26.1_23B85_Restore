@@ -2,15 +2,15 @@
 + (GKGraph)graphWithNodes:(NSArray *)nodes;
 + (id)graph;
 - (GKGraph)init;
-- (GKGraph)initWithCoder:(id)a3;
+- (GKGraph)initWithCoder:(id)coder;
 - (GKGraph)initWithNodes:(NSArray *)nodes;
 - (NSArray)findPathFromNode:(GKGraphNode *)startNode toNode:(GKGraphNode *)endNode;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)addNodes:(NSArray *)nodes;
 - (void)connectNodeToLowestCostNode:(GKGraphNode *)node bidirectional:(BOOL)bidirectional;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeNodes:(NSArray *)nodes;
 @end
 
@@ -43,13 +43,13 @@
   v2 = [(GKGraph *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     nodes = v2->_nodes;
-    v2->_nodes = v3;
+    v2->_nodes = array;
 
-    v5 = [(GKGraph *)v2 makeCGraph];
-    v2->_cGraph = v5;
-    objc_storeWeak((v5 + 32), v2);
+    makeCGraph = [(GKGraph *)v2 makeCGraph];
+    v2->_cGraph = makeCGraph;
+    objc_storeWeak((makeCGraph + 32), v2);
   }
 
   return v2;
@@ -188,10 +188,10 @@
   return v4;
 }
 
-- (GKGraph)initWithCoder:(id)a3
+- (GKGraph)initWithCoder:(id)coder
 {
   v35[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(GKGraph *)self initWithNodes:MEMORY[0x277CBEBF8]];
   if (v5)
   {
@@ -205,14 +205,14 @@
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:6];
     [v27 addObjectsFromArray:v6];
 
-    v7 = [v4 allowedClasses];
-    [v27 unionSet:v7];
+    allowedClasses = [coderCopy allowedClasses];
+    [v27 unionSet:allowedClasses];
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
     v33 = 0;
-    v11 = [v4 decodeTopLevelObjectOfClasses:v10 forKey:@"_nodes" error:&v33];
+    v11 = [coderCopy decodeTopLevelObjectOfClasses:v10 forKey:@"_nodes" error:&v33];
     v12 = v33;
 
     objc_opt_class();
@@ -262,13 +262,13 @@
 
     else
     {
-      v20 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v15 = v5->_nodes;
-      v5->_nodes = v20;
+      v5->_nodes = array;
     }
 
     v28 = v12;
-    v21 = [v4 decodeTopLevelObjectOfClasses:v27 forKey:@"_info" error:&v28];
+    v21 = [coderCopy decodeTopLevelObjectOfClasses:v27 forKey:@"_info" error:&v28];
     v22 = v28;
 
     info = v5->__info;
@@ -279,11 +279,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_nodes forKey:@"_nodes"];
-  [v4 encodeObject:self->__info forKey:@"_info"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_nodes forKey:@"_nodes"];
+  [coderCopy encodeObject:self->__info forKey:@"_info"];
 }
 
 - (id)copy
@@ -293,7 +293,7 @@
   return [(GKGraph *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v4 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];

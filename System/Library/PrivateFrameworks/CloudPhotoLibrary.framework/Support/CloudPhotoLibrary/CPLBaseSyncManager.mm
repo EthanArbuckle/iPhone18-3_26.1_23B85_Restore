@@ -1,18 +1,18 @@
 @interface CPLBaseSyncManager
-- (CPLBaseSyncManager)initWithAbstractObject:(id)a3;
-- (int64_t)_baseProgressForState:(unint64_t)a3 totalUnits:(int64_t *)a4;
+- (CPLBaseSyncManager)initWithAbstractObject:(id)object;
+- (int64_t)_baseProgressForState:(unint64_t)state totalUnits:(int64_t *)units;
 - (void)_actuallyStartShowingIndicatorLocked;
 - (void)_actuallyStopShowingIndicatorLocked;
 - (void)_emitActivityStateLog;
-- (void)_startShowingIndicator:(id)a3;
-- (void)_stopShowingIndicator:(id)a3;
+- (void)_startShowingIndicator:(id)indicator;
+- (void)_stopShowingIndicator:(id)indicator;
 - (void)_updateOverridingForeground;
 - (void)didFinishSyncSession;
-- (void)didMoveToState:(unint64_t)a3;
-- (void)didProgress:(float)a3 userInfo:(id)a4 forState:(unint64_t)a5;
+- (void)didMoveToState:(unint64_t)state;
+- (void)didProgress:(float)progress userInfo:(id)info forState:(unint64_t)state;
 - (void)prepareForClose;
-- (void)setSyncSessionShouldBeForeground:(BOOL)a3;
-- (void)syncSessionDidFailWithError:(id)a3;
+- (void)setSyncSessionShouldBeForeground:(BOOL)foreground;
+- (void)syncSessionDidFailWithError:(id)error;
 - (void)syncSessionDidSucceed;
 - (void)willStartSyncSession;
 @end
@@ -25,10 +25,10 @@
   {
     if (self->_overridingForeground)
     {
-      v6 = [(CPLBaseSyncManager *)self abstractObject];
-      v7 = [v6 engineLibrary];
-      v8 = [v7 systemMonitor];
-      [v8 stopOverridingSystemBudgets:8 reason:2];
+      abstractObject = [(CPLBaseSyncManager *)self abstractObject];
+      engineLibrary = [abstractObject engineLibrary];
+      systemMonitor = [engineLibrary systemMonitor];
+      [systemMonitor stopOverridingSystemBudgets:8 reason:2];
 
       self->_overridingForeground = 0;
     }
@@ -36,20 +36,20 @@
 
   else if (!self->_overridingForeground)
   {
-    v3 = [(CPLBaseSyncManager *)self abstractObject];
-    v4 = [v3 engineLibrary];
-    v5 = [v4 systemMonitor];
-    [v5 startOverridingSystemBudgets:8 reason:2];
+    abstractObject2 = [(CPLBaseSyncManager *)self abstractObject];
+    engineLibrary2 = [abstractObject2 engineLibrary];
+    systemMonitor2 = [engineLibrary2 systemMonitor];
+    [systemMonitor2 startOverridingSystemBudgets:8 reason:2];
 
     self->_overridingForeground = 1;
   }
 }
 
-- (CPLBaseSyncManager)initWithAbstractObject:(id)a3
+- (CPLBaseSyncManager)initWithAbstractObject:(id)object
 {
   v10.receiver = self;
   v10.super_class = CPLBaseSyncManager;
-  v3 = [(CPLBaseSyncManager *)&v10 initWithAbstractObject:a3];
+  v3 = [(CPLBaseSyncManager *)&v10 initWithAbstractObject:object];
   if (v3)
   {
     v4 = CPLCopyDefaultSerialQueueAttributes();
@@ -103,16 +103,16 @@
   }
 }
 
-- (void)_startShowingIndicator:(id)a3
+- (void)_startShowingIndicator:(id)indicator
 {
-  v4 = a3;
+  indicatorCopy = indicator;
   indicatorQueue = self->_indicatorQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10014F05C;
   v10[3] = &unk_1002720E0;
   v10[4] = self;
-  v11 = v4;
+  v11 = indicatorCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -120,21 +120,21 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = indicatorQueue;
-  v8 = v4;
+  v8 = indicatorCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)_stopShowingIndicator:(id)a3
+- (void)_stopShowingIndicator:(id)indicator
 {
-  v5 = a3;
+  indicatorCopy = indicator;
   indicatorQueue = self->_indicatorQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10014F1E4;
   v11[3] = &unk_1002733C8;
   v11[4] = self;
-  v12 = v5;
+  v12 = indicatorCopy;
   v13 = a2;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
@@ -143,14 +143,14 @@
   block[3] = &unk_100271E98;
   v15 = v7;
   v8 = indicatorQueue;
-  v9 = v5;
+  v9 = indicatorCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (void)setSyncSessionShouldBeForeground:(BOOL)a3
+- (void)setSyncSessionShouldBeForeground:(BOOL)foreground
 {
-  self->_foreground = a3;
+  self->_foreground = foreground;
   [(_CPLProgress *)self->_progress setForeground:?];
 
   [(CPLBaseSyncManager *)self _updateOverridingForeground];
@@ -190,10 +190,10 @@
     }
 
     v6 = [_CPLProgress alloc];
-    v7 = [(CPLBaseSyncManager *)self abstractObject];
-    v8 = [v7 engineLibrary];
-    v9 = [v8 libraryIdentifier];
-    v10 = [(_CPLProgress *)v6 initWithIdentifier:v9 firstSyncOfMainLibrary:0];
+    abstractObject = [(CPLBaseSyncManager *)self abstractObject];
+    engineLibrary = [abstractObject engineLibrary];
+    libraryIdentifier = [engineLibrary libraryIdentifier];
+    v10 = [(_CPLProgress *)v6 initWithIdentifier:libraryIdentifier firstSyncOfMainLibrary:0];
     v11 = self->_progress;
     self->_progress = v10;
 
@@ -231,49 +231,49 @@
   }
 
   [(CPLBaseSyncManager *)self _updateOverridingForeground];
-  v3 = [(CPLBaseSyncManager *)self abstractObject];
-  v4 = [v3 engineLibrary];
-  [v4 reportQuarantineCountIfNecessary];
+  abstractObject = [(CPLBaseSyncManager *)self abstractObject];
+  engineLibrary = [abstractObject engineLibrary];
+  [engineLibrary reportQuarantineCountIfNecessary];
 }
 
-- (int64_t)_baseProgressForState:(unint64_t)a3 totalUnits:(int64_t *)a4
+- (int64_t)_baseProgressForState:(unint64_t)state totalUnits:(int64_t *)units
 {
-  if (a3 < 0xE)
+  if (state < 0xE)
   {
-    if (a3)
+    if (state)
     {
-      v5 = 8 * a3 - 8;
-      *a4 = *(&qword_1002D2A20 + v5);
+      v5 = 8 * state - 8;
+      *units = *(&qword_1002D2A20 + v5);
       return *(&qword_1002D2A90 + v5);
     }
 
     else
     {
       result = 0;
-      *a4 = 0;
+      *units = 0;
     }
   }
 
   else
   {
-    *a4 = 0;
+    *units = 0;
     return qword_1002D2A18;
   }
 
   return result;
 }
 
-- (void)didMoveToState:(unint64_t)a3
+- (void)didMoveToState:(unint64_t)state
 {
-  self->_currentState = a3;
-  if (a3)
+  self->_currentState = state;
+  if (state)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v5 = sub_100002F50();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        v6 = [CPLEngineSyncManager shortDescriptionForState:a3];
+        v6 = [CPLEngineSyncManager shortDescriptionForState:state];
         v7 = v6;
         if (self->_foreground)
         {
@@ -297,9 +297,9 @@
     {
       *v10 = 0;
       v9 = [(CPLBaseSyncManager *)self _baseProgressForState:self->_currentState totalUnits:v10];
-      if (a3 <= 0xB && ((0x631u >> (a3 - 1)) & 1) != 0)
+      if (state <= 0xB && ((0x631u >> (state - 1)) & 1) != 0)
       {
-        [(_CPLProgress *)self->_progress setUserInfoObject:off_10027B438[a3 - 1] forKey:CPLSyncProgressStateKey];
+        [(_CPLProgress *)self->_progress setUserInfoObject:off_10027B438[state - 1] forKey:CPLSyncProgressStateKey];
       }
 
       [(_CPLProgress *)self->_progress setCompletedUnitCount:v9];
@@ -335,8 +335,8 @@
     v4 = sub_10014EDBC();
     if (sub_10014FD8C(v4))
     {
-      v5 = [(NSCountedSet *)self->_activities allObjects];
-      v17 = [v5 componentsJoinedByString:{@", "}];
+      allObjects = [(NSCountedSet *)self->_activities allObjects];
+      v17 = [allObjects componentsJoinedByString:{@", "}];
       sub_10014FD7C();
       _os_log_impl(v6, v7, v8, v9, v10, 0xCu);
     }
@@ -358,15 +358,15 @@
   }
 }
 
-- (void)syncSessionDidFailWithError:(id)a3
+- (void)syncSessionDidFailWithError:(id)error
 {
-  v4 = a3;
-  if ([v4 isCPLOperationCancelledError])
+  errorCopy = error;
+  if ([errorCopy isCPLOperationCancelledError])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
-      v5 = sub_100002F50();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      transport = sub_100002F50();
+      if (os_log_type_enabled(transport, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v21) = 0;
         sub_100013984();
@@ -379,14 +379,14 @@ LABEL_17:
 
   else
   {
-    if (![v4 isCPLErrorWithCode:10000])
+    if (![errorCopy isCPLErrorWithCode:10000])
     {
-      v14 = [(CPLBaseSyncManager *)self abstractObject];
-      v15 = [v14 engineLibrary];
-      v5 = [v15 transport];
+      abstractObject = [(CPLBaseSyncManager *)self abstractObject];
+      engineLibrary = [abstractObject engineLibrary];
+      transport = [engineLibrary transport];
 
-      v16 = [v4 userInfo];
-      v17 = [v16 objectForKey:NSUnderlyingErrorKey];
+      userInfo = [errorCopy userInfo];
+      v17 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -403,11 +403,11 @@ LABEL_17:
             v19 = "";
           }
 
-          v20 = [v5 bestErrorForUnderlyingError:v17];
+          v20 = [transport bestErrorForUnderlyingError:v17];
           v21 = 136315650;
           v22 = v19;
           v23 = 2112;
-          v24 = v4;
+          v24 = errorCopy;
           v25 = 2112;
           v26 = v20;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Sync session did fail with error%s: %@, underlying error: %@", &v21, 0x20u);
@@ -419,10 +419,10 @@ LABEL_17:
 
     if ((_CPLSilentLogging & 1) == 0)
     {
-      v5 = sub_100002F50();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      transport = sub_100002F50();
+      if (os_log_type_enabled(transport, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 localizedDescription];
+        [errorCopy localizedDescription];
         v22 = v21 = 138412290;
         sub_100013984();
         _os_log_impl(v10, v11, OS_LOG_TYPE_DEFAULT, v12, v13, 0xCu);
@@ -447,17 +447,17 @@ LABEL_17:
   }
 }
 
-- (void)didProgress:(float)a3 userInfo:(id)a4 forState:(unint64_t)a5
+- (void)didProgress:(float)progress userInfo:(id)info forState:(unint64_t)state
 {
-  v8 = a4;
-  self->_currentState = a5;
-  currentState = a5;
+  infoCopy = info;
+  self->_currentState = state;
+  currentState = state;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v10 = sub_100002F50();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [CPLEngineSyncManager shortDescriptionForState:a5];
+      v11 = [CPLEngineSyncManager shortDescriptionForState:state];
       foreground = self->_foreground;
       *buf = 138412802;
       *&buf[4] = v11;
@@ -472,7 +472,7 @@ LABEL_17:
       }
 
       v21 = 2048;
-      v22 = (a3 * 100.0);
+      v22 = (progress * 100.0);
       v23 = 2080;
       v24 = v13;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Sync session progress: %@/%lu%%%s", buf, 0x20u);
@@ -484,12 +484,12 @@ LABEL_17:
   *buf = 0;
   v14 = [(CPLBaseSyncManager *)self _baseProgressForState:currentState totalUnits:buf];
   v15 = 0;
-  if (a5 - 3 <= 0xA)
+  if (state - 3 <= 0xA)
   {
-    v15 = qword_10024B8F0[a5 - 3];
+    v15 = qword_10024B8F0[state - 3];
   }
 
-  v16 = (*buf * a3);
+  v16 = (*buf * progress);
   progress = self->_progress;
   v18 = [NSNumber numberWithUnsignedInteger:v15];
   [(_CPLProgress *)progress setUserInfoObject:v18 forKey:CPLSyncProgressStateKey];
@@ -499,7 +499,7 @@ LABEL_17:
   v19[2] = sub_10014F790;
   v19[3] = &unk_10027B3B8;
   v19[4] = self;
-  [v8 enumerateKeysAndObjectsUsingBlock:v19];
+  [infoCopy enumerateKeysAndObjectsUsingBlock:v19];
   [(_CPLProgress *)self->_progress setCompletedUnitCount:v14 + v16];
 }
 

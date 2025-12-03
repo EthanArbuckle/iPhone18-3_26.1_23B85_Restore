@@ -1,23 +1,23 @@
 @interface AMSBiometricsPresentationProxy
-- (AMSBiometricsPresentationProxy)initWithSession:(id)a3 task:(id)a4;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
+- (AMSBiometricsPresentationProxy)initWithSession:(id)session task:(id)task;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSBiometricsPresentationProxy
 
-- (AMSBiometricsPresentationProxy)initWithSession:(id)a3 task:(id)a4
+- (AMSBiometricsPresentationProxy)initWithSession:(id)session task:(id)task
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   v15.receiver = self;
   v15.super_class = AMSBiometricsPresentationProxy;
   v9 = [(AMSBiometricsPresentationProxy *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    objc_storeStrong(&v10->_task, a4);
+    objc_storeStrong(&v9->_session, session);
+    objc_storeStrong(&v10->_task, task);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.AppleMediaServices.AMSBiometricsPresentationProxy.delegatePresentQueue", v11);
     delegateQueue = v10->_delegateQueue;
@@ -27,12 +27,12 @@
   return v10;
 }
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSBiometricsPresentationProxy *)self session];
-  v9 = [v8 delegate];
+  requestCopy = request;
+  completionCopy = completion;
+  session = [(AMSBiometricsPresentationProxy *)self session];
+  delegate = [session delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
@@ -43,15 +43,15 @@
     block[2] = __71__AMSBiometricsPresentationProxy_handleAuthenticateRequest_completion___block_invoke;
     block[3] = &unk_1E73B5230;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = requestCopy;
+    v15 = completionCopy;
     dispatch_async(delegateQueue, block);
   }
 
   else
   {
     v12 = AMSError(6, @"Biometrics presentation error", @"Delegate doesn't respond to AMSURLSession:task:handleAuthenticateRequest:completion:", 0);
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 }
 
@@ -87,29 +87,29 @@ void __71__AMSBiometricsPresentationProxy_handleAuthenticateRequest_completion__
   [v9 AMSURLSession:v10 task:v11 handleAuthenticateRequest:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(AMSBiometricsPresentationProxy *)self session];
-  v8 = [v7 delegate];
+  requestCopy = request;
+  completionCopy = completion;
+  session = [(AMSBiometricsPresentationProxy *)self session];
+  delegate = [session delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(AMSBiometricsPresentationProxy *)self session];
-    v11 = [v10 delegate];
-    v12 = [(AMSBiometricsPresentationProxy *)self session];
-    v13 = [(AMSBiometricsPresentationProxy *)self task];
-    [v11 AMSURLSession:v12 task:v13 handleDialogRequest:v14 completion:v6];
+    session2 = [(AMSBiometricsPresentationProxy *)self session];
+    delegate2 = [session2 delegate];
+    session3 = [(AMSBiometricsPresentationProxy *)self session];
+    task = [(AMSBiometricsPresentationProxy *)self task];
+    [delegate2 AMSURLSession:session3 task:task handleDialogRequest:requestCopy completion:completionCopy];
 
-    v6 = v11;
+    completionCopy = delegate2;
   }
 
   else
   {
-    v10 = AMSError(6, @"Biometrics presentation error", @"Delegate doesn't respond to AMSURLSession:task:handleDialogRequest:completion:", 0);
-    (*(v6 + 2))(v6, 0, v10);
+    session2 = AMSError(6, @"Biometrics presentation error", @"Delegate doesn't respond to AMSURLSession:task:handleDialogRequest:completion:", 0);
+    (*(completionCopy + 2))(completionCopy, 0, session2);
   }
 }
 

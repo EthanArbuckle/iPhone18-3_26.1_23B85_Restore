@@ -1,89 +1,89 @@
 @interface IMCustomAcknowledgementMessagePipelineParameter
-- (IMCustomAcknowledgementMessagePipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4;
+- (IMCustomAcknowledgementMessagePipelineParameter)initWithBD:(id)d idsTrustedData:(id)data;
 - (id)description;
-- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)a3;
+- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)message;
 @end
 
 @implementation IMCustomAcknowledgementMessagePipelineParameter
 
-- (IMCustomAcknowledgementMessagePipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4
+- (IMCustomAcknowledgementMessagePipelineParameter)initWithBD:(id)d idsTrustedData:(id)data
 {
-  v6 = a3;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = IMCustomAcknowledgementMessagePipelineParameter;
-  v7 = [(IMBalloonPluginPipelineParameter *)&v18 initWithBD:v6 idsTrustedData:a4];
+  v7 = [(IMBalloonPluginPipelineParameter *)&v18 initWithBD:dCopy idsTrustedData:data];
   if (v7)
   {
-    v8 = [v6 messageSubType];
-    v9 = [v8 customAcknowledgement];
+    messageSubType = [dCopy messageSubType];
+    customAcknowledgement = [messageSubType customAcknowledgement];
 
-    -[IMBalloonPluginPipelineParameter setAssociatedMessageType:](v7, "setAssociatedMessageType:", [v9 associatedMessageType]);
-    v10 = [v9 associatedMessageGUID];
-    [(IMTextMessagePipelineParameter *)v7 setAssociatedMessageGUID:v10];
+    -[IMBalloonPluginPipelineParameter setAssociatedMessageType:](v7, "setAssociatedMessageType:", [customAcknowledgement associatedMessageType]);
+    associatedMessageGUID = [customAcknowledgement associatedMessageGUID];
+    [(IMTextMessagePipelineParameter *)v7 setAssociatedMessageGUID:associatedMessageGUID];
 
-    v11 = [v9 associatedMessageRange];
-    [(IMBalloonPluginPipelineParameter *)v7 setAssociatedMessageRange:v11, v12];
-    v13 = [v9 payload];
-    v14 = [v13 customAcknowledgement];
+    associatedMessageRange = [customAcknowledgement associatedMessageRange];
+    [(IMBalloonPluginPipelineParameter *)v7 setAssociatedMessageRange:associatedMessageRange, v12];
+    payload = [customAcknowledgement payload];
+    customAcknowledgement2 = [payload customAcknowledgement];
 
-    v15 = [v9 messageSummaryInfo];
-    v16 = [v15 pluginBundleID];
+    messageSummaryInfo = [customAcknowledgement messageSummaryInfo];
+    pluginBundleID = [messageSummaryInfo pluginBundleID];
 
-    [(IMBalloonPluginPipelineParameter *)v7 setBalloonPluginPayload:v14];
-    [(IMBalloonPluginPipelineParameter *)v7 setBalloonPluginBundleID:v16];
+    [(IMBalloonPluginPipelineParameter *)v7 setBalloonPluginPayload:customAcknowledgement2];
+    [(IMBalloonPluginPipelineParameter *)v7 setBalloonPluginBundleID:pluginBundleID];
   }
 
   return v7;
 }
 
-- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)a3
+- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v27.receiver = self;
   v27.super_class = IMCustomAcknowledgementMessagePipelineParameter;
-  v6 = [(IMTextMessagePipelineParameter *)&v27 messageSummaryInfoDictionaryWithBlastDoorMessage:v4];
+  v6 = [(IMTextMessagePipelineParameter *)&v27 messageSummaryInfoDictionaryWithBlastDoorMessage:messageCopy];
   [(__CFDictionary *)Mutable addEntriesFromDictionary:v6];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 messageSubType];
-  v9 = [v8 customAcknowledgement];
-  v10 = [v9 messageSummaryInfo];
-  v11 = [v7 numberWithInteger:{objc_msgSend(v10, "contentType")}];
+  messageSubType = [messageCopy messageSubType];
+  customAcknowledgement = [messageSubType customAcknowledgement];
+  messageSummaryInfo = [customAcknowledgement messageSummaryInfo];
+  v11 = [v7 numberWithInteger:{objc_msgSend(messageSummaryInfo, "contentType")}];
 
   if (v11)
   {
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1A008], v11);
   }
 
-  v12 = [v4 messageSubType];
-  v13 = [v12 customAcknowledgement];
-  v14 = [v13 messageSummaryInfo];
-  v15 = [v14 summary];
+  messageSubType2 = [messageCopy messageSubType];
+  customAcknowledgement2 = [messageSubType2 customAcknowledgement];
+  messageSummaryInfo2 = [customAcknowledgement2 messageSummaryInfo];
+  summary = [messageSummaryInfo2 summary];
 
-  if (v15)
+  if (summary)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], v15);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], summary);
   }
 
-  v16 = [v4 messageSubType];
-  v17 = [v16 customAcknowledgement];
-  v18 = [v17 messageSummaryInfo];
-  v19 = [v18 pluginBundleID];
+  messageSubType3 = [messageCopy messageSubType];
+  customAcknowledgement3 = [messageSubType3 customAcknowledgement];
+  messageSummaryInfo3 = [customAcknowledgement3 messageSummaryInfo];
+  pluginBundleID = [messageSummaryInfo3 pluginBundleID];
 
-  if (v19)
+  if (pluginBundleID)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A028], v19);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A028], pluginBundleID);
   }
 
-  v20 = [v4 messageSubType];
-  v21 = [v20 customAcknowledgement];
-  v22 = [v21 messageSummaryInfo];
-  v23 = [v22 pluginDisplayName];
+  messageSubType4 = [messageCopy messageSubType];
+  customAcknowledgement4 = [messageSubType4 customAcknowledgement];
+  messageSummaryInfo4 = [customAcknowledgement4 messageSummaryInfo];
+  pluginDisplayName = [messageSummaryInfo4 pluginDisplayName];
 
-  if (v23)
+  if (pluginDisplayName)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A030], v23);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A030], pluginDisplayName);
   }
 
   if ([(__CFDictionary *)Mutable count])
@@ -104,15 +104,15 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMTextMessagePipelineParameter *)self GUID];
-  v5 = [(IMBalloonPluginPipelineParameter *)self associatedMessageType];
-  v6 = [(IMTextMessagePipelineParameter *)self associatedMessageGUID];
-  v7 = [(IMTextMessagePipelineParameter *)self timestamp];
+  gUID = [(IMTextMessagePipelineParameter *)self GUID];
+  associatedMessageType = [(IMBalloonPluginPipelineParameter *)self associatedMessageType];
+  associatedMessageGUID = [(IMTextMessagePipelineParameter *)self associatedMessageGUID];
+  timestamp = [(IMTextMessagePipelineParameter *)self timestamp];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isFromStorage](self, "isFromStorage")}];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isLastFromStorage](self, "isLastFromStorage")}];
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isFromMe](self, "isFromMe")}];
-  v11 = [(IMTextMessagePipelineParameter *)self messageItems];
-  v12 = [v3 stringWithFormat:@"<IMCustomAcknowledgementMessagePipelineParameter %p> { guid: %@, associatedMessageType: %lld, associatedMessageGUID: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, isFromMe: %@, output messageItems: %lu}", self, v4, v5, v6, v7, v8, v9, v10, objc_msgSend(v11, "count")];
+  messageItems = [(IMTextMessagePipelineParameter *)self messageItems];
+  v12 = [v3 stringWithFormat:@"<IMCustomAcknowledgementMessagePipelineParameter %p> { guid: %@, associatedMessageType: %lld, associatedMessageGUID: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, isFromMe: %@, output messageItems: %lu}", self, gUID, associatedMessageType, associatedMessageGUID, timestamp, v8, v9, v10, objc_msgSend(messageItems, "count")];
 
   return v12;
 }

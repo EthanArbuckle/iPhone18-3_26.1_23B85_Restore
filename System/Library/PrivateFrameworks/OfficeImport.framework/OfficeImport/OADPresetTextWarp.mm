@@ -1,6 +1,6 @@
 @interface OADPresetTextWarp
-+ (id)stringWithPresetTextWarpType:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)stringWithPresetTextWarpType:(unsigned __int8)type;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -14,15 +14,15 @@
   return [(OADTextWarp *)&v4 hash]^ mPresetTextWarpType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (mPresetTextWarpType = self->mPresetTextWarpType, mPresetTextWarpType == [v4 presetTextWarpType]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (mPresetTextWarpType = self->mPresetTextWarpType, mPresetTextWarpType == [equalCopy presetTextWarpType]))
   {
     v8.receiver = self;
     v8.super_class = OADPresetTextWarp;
-    v6 = [(OADTextWarp *)&v8 isEqual:v4];
+    v6 = [(OADTextWarp *)&v8 isEqual:equalCopy];
   }
 
   else
@@ -33,16 +33,16 @@
   return v6;
 }
 
-+ (id)stringWithPresetTextWarpType:(unsigned __int8)a3
++ (id)stringWithPresetTextWarpType:(unsigned __int8)type
 {
-  if (a3 > 0x27u)
+  if (type > 0x27u)
   {
     return @"textPlain";
   }
 
   else
   {
-    return *(&off_2799C7F60 + a3);
+    return *(&off_2799C7F60 + type);
   }
 }
 

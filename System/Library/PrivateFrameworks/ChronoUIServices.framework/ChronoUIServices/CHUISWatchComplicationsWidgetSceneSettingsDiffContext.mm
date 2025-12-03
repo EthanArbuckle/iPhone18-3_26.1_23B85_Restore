@@ -1,14 +1,14 @@
 @interface CHUISWatchComplicationsWidgetSceneSettingsDiffContext
-- (CHUISWatchComplicationsWidgetSceneSettingsDiffContext)initWithPreviousSettings:(id)a3 currentSettings:(id)a4 transitionContext:(id)a5;
+- (CHUISWatchComplicationsWidgetSceneSettingsDiffContext)initWithPreviousSettings:(id)settings currentSettings:(id)currentSettings transitionContext:(id)context;
 @end
 
 @implementation CHUISWatchComplicationsWidgetSceneSettingsDiffContext
 
-- (CHUISWatchComplicationsWidgetSceneSettingsDiffContext)initWithPreviousSettings:(id)a3 currentSettings:(id)a4 transitionContext:(id)a5
+- (CHUISWatchComplicationsWidgetSceneSettingsDiffContext)initWithPreviousSettings:(id)settings currentSettings:(id)currentSettings transitionContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = CHUISWatchComplicationsWidgetSceneSettingsDiffContext;
-  return [(CHUISWidgetSceneSettingsDiffContext *)&v6 initWithPreviousSettings:a3 currentSettings:a4 transitionContext:a5];
+  return [(CHUISWidgetSceneSettingsDiffContext *)&v6 initWithPreviousSettings:settings currentSettings:currentSettings transitionContext:context];
 }
 
 @end

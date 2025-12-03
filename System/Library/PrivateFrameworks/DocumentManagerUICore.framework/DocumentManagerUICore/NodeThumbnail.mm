@@ -2,20 +2,20 @@
 - (BOOL)hasFinishedTryingToFetchCorrectThumbnail;
 - (BOOL)isLoading;
 - (BOOL)isRepresentativeIcon;
-- (BOOL)registerGenerationCompletionHandler:(id)a3;
+- (BOOL)registerGenerationCompletionHandler:(id)handler;
 - (UIImage)thumbnail;
 - (_TtC21DocumentManagerUICore13NodeThumbnail)init;
-- (id)averageColorInRect:(CGRect)a3;
-- (void)addListener:(id)a3;
-- (void)removeListener:(id)a3;
+- (id)averageColorInRect:(CGRect)rect;
+- (void)addListener:(id)listener;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation NodeThumbnail
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   NodeThumbnail.addListener(_:)();
   swift_unknownObjectRelease();
 }
@@ -23,7 +23,7 @@
 - (BOOL)isRepresentativeIcon
 {
   v2 = self + OBJC_IVAR____TtC21DocumentManagerUICore13NodeThumbnail_currentThumbnail;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   v4 = *(v2 + 1);
   v5 = *(v2 + 2);
@@ -37,7 +37,7 @@
 
 - (UIImage)thumbnail
 {
-  v2 = self;
+  selfCopy = self;
   NodeThumbnail.thumbnail.getter();
   v4 = v3;
 
@@ -47,7 +47,7 @@
 - (BOOL)isLoading
 {
   v2 = self + OBJC_IVAR____TtC21DocumentManagerUICore13NodeThumbnail_currentThumbnail;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   v5 = *(v2 + 1);
   v4 = *(v2 + 2);
@@ -76,21 +76,21 @@
   }
 }
 
-- (id)averageColorInRect:(CGRect)a3
+- (id)averageColorInRect:(CGRect)rect
 {
-  v3 = [objc_opt_self() whiteColor];
+  whiteColor = [objc_opt_self() whiteColor];
 
-  return v3;
+  return whiteColor;
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
   v5 = self + OBJC_IVAR____TtC21DocumentManagerUICore13NodeThumbnail_listeners;
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5);
   swift_unknownObjectRetain();
-  v6 = sub_249D01F88(v5 + 1, a3);
+  v6 = sub_249D01F88(v5 + 1, listener);
   swift_unknownObjectRelease();
   v7 = *(v5 + 1);
   if (v7 >> 62)
@@ -126,7 +126,7 @@ LABEL_3:
 - (BOOL)hasFinishedTryingToFetchCorrectThumbnail
 {
   v2 = self + OBJC_IVAR____TtC21DocumentManagerUICore13NodeThumbnail_currentThumbnail;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   v5 = *(v2 + 1);
   v4 = *(v2 + 2);
@@ -159,12 +159,12 @@ LABEL_3:
   return v6;
 }
 
-- (BOOL)registerGenerationCompletionHandler:(id)a3
+- (BOOL)registerGenerationCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   LOBYTE(self) = NodeThumbnail.registerGenerationCompletionHandler(_:)(sub_249D02D54, v5);
 
   return self & 1;

@@ -2,11 +2,11 @@
 - (HKPropertyAnimationApplier)init;
 - (void)_applyAnimations;
 - (void)_cleanupCompletedAnimations;
-- (void)_displayLinkFired:(id)a3;
+- (void)_displayLinkFired:(id)fired;
 - (void)_startDisplayLinkIfNecessary;
 - (void)_stopDisplayLinkIfNecessary;
-- (void)applyAnimation:(id)a3;
-- (void)cancelAnimationsForProperty:(id)a3;
+- (void)applyAnimation:(id)animation;
+- (void)cancelAnimationsForProperty:(id)property;
 @end
 
 @implementation HKPropertyAnimationApplier
@@ -26,29 +26,29 @@
   return v2;
 }
 
-- (void)applyAnimation:(id)a3
+- (void)applyAnimation:(id)animation
 {
-  v4 = a3;
-  [v4 _validate];
-  v8 = [v4 copy];
+  animationCopy = animation;
+  [animationCopy _validate];
+  v8 = [animationCopy copy];
 
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v8 setAppliedDate:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  [v8 setAppliedDate:date];
 
   animations = self->_animations;
-  v7 = [v8 property];
-  [(NSMutableDictionary *)animations setObject:v8 forKeyedSubscript:v7];
+  property = [v8 property];
+  [(NSMutableDictionary *)animations setObject:v8 forKeyedSubscript:property];
 
   [(HKPropertyAnimationApplier *)self _startDisplayLinkIfNecessary];
 }
 
-- (void)cancelAnimationsForProperty:(id)a3
+- (void)cancelAnimationsForProperty:(id)property
 {
   animations = self->_animations;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)animations objectForKey:v5];
+  propertyCopy = property;
+  v6 = [(NSMutableDictionary *)animations objectForKey:propertyCopy];
   [v6 _finishCancelled:1];
-  [(NSMutableDictionary *)self->_animations removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_animations removeObjectForKey:propertyCopy];
 
   [(HKPropertyAnimationApplier *)self _stopDisplayLinkIfNecessary];
 }
@@ -62,8 +62,8 @@
     self->_displayLink = v4;
 
     v6 = self->_displayLink;
-    v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 }
 
@@ -77,7 +77,7 @@
   }
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   [(HKPropertyAnimationApplier *)self _applyAnimations];
   [(HKPropertyAnimationApplier *)self _cleanupCompletedAnimations];
@@ -88,13 +88,13 @@
 - (void)_applyAnimations
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_animations allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_animations allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -106,14 +106,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) _applyWithCurrentDate:v3];
+        [*(*(&v9 + 1) + 8 * v8++) _applyWithCurrentDate:date];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -127,8 +127,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableDictionary *)self->_animations allValues];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_animations allValues];
+  v4 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -139,23 +139,23 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 _isCompleted])
         {
-          v9 = [MEMORY[0x1E695DF00] date];
-          [v8 _applyWithCurrentDate:v9];
+          date = [MEMORY[0x1E695DF00] date];
+          [v8 _applyWithCurrentDate:date];
 
           [v8 _finishCancelled:0];
           animations = self->_animations;
-          v11 = [v8 property];
-          [(NSMutableDictionary *)animations removeObjectForKey:v11];
+          property = [v8 property];
+          [(NSMutableDictionary *)animations removeObjectForKey:property];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

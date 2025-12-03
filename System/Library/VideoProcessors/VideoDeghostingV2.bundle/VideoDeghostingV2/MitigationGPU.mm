@@ -1,10 +1,10 @@
 @interface MitigationGPU
-- (MitigationGPU)initWithMetalToolBox:(id)a3 metalContext:(id)a4 imageDimensions:(id)a5;
+- (MitigationGPU)initWithMetalToolBox:(id)box metalContext:(id)context imageDimensions:(id)dimensions;
 - (int)_compileShaders;
-- (void)_encodeFuseYUVToCommandBuffer:(id)a3 inputTexture:(id)a4 temporalMitTexture:(id)a5 spatialMitTexture:(id)a6 outputTexture:(id)a7 metaBuf:(id)a8;
-- (void)_encodeSpatialTemporalRepairYUVToCommandBuffer:(__n128)a3 input:(__n128)a4 strongRepairSpatial:(__n128)a5 frRef0:(__n128)a6 frRef1:(__n128)a7 trRef0:(uint64_t)a8 trRef1:(void *)a9 hmgrphy0:(void *)a10 hmgrphy1:(void *)a11 spatialOutput:(void *)a12 temporalOutput:(void *)a13 strongTempOutput:(void *)a14 inputCopy:(id)a15 metaBuf:(id)a16 ref0MetaBuf:(id)a17 ref1MetaBuf:(id)a18;
+- (void)_encodeFuseYUVToCommandBuffer:(id)buffer inputTexture:(id)texture temporalMitTexture:(id)mitTexture spatialMitTexture:(id)spatialMitTexture outputTexture:(id)outputTexture metaBuf:(id)buf;
+- (void)_encodeSpatialTemporalRepairYUVToCommandBuffer:(__n128)buffer input:(__n128)input strongRepairSpatial:(__n128)spatial frRef0:(__n128)ref0 frRef1:(__n128)ref1 trRef0:(uint64_t)trRef0 trRef1:(void *)trRef1 hmgrphy0:(void *)self0 hmgrphy1:(void *)self1 spatialOutput:(void *)self2 temporalOutput:(void *)self3 strongTempOutput:(void *)self4 inputCopy:(id)self5 metaBuf:(id)self6 ref0MetaBuf:(id)self7 ref1MetaBuf:(id)self8;
 - (void)dealloc;
-- (void)spatialTemporalRepairThenFuseInplaceYUVInput:(double)a3 frRef0:(double)a4 frRef1:(double)a5 trRef0:(double)a6 trRef1:(double)a7 hmgrphy0:(uint64_t)a8 hmgrphy1:(void *)a9 metaBuf:(void *)a10 ref0MetaBuf:(void *)a11 ref1MetaBuf:(void *)a12 trInput:(void *)a13 waitForComplete:(void *)a14;
+- (void)spatialTemporalRepairThenFuseInplaceYUVInput:(double)input frRef0:(double)ref0 frRef1:(double)ref1 trRef0:(double)trRef0 trRef1:(double)trRef1 hmgrphy0:(uint64_t)hmgrphy0 hmgrphy1:(void *)hmgrphy1 metaBuf:(void *)self0 ref0MetaBuf:(void *)self1 ref1MetaBuf:(void *)self2 trInput:(void *)self3 waitForComplete:(void *)self4;
 @end
 
 @implementation MitigationGPU
@@ -65,127 +65,127 @@
   }
 }
 
-- (void)_encodeSpatialTemporalRepairYUVToCommandBuffer:(__n128)a3 input:(__n128)a4 strongRepairSpatial:(__n128)a5 frRef0:(__n128)a6 frRef1:(__n128)a7 trRef0:(uint64_t)a8 trRef1:(void *)a9 hmgrphy0:(void *)a10 hmgrphy1:(void *)a11 spatialOutput:(void *)a12 temporalOutput:(void *)a13 strongTempOutput:(void *)a14 inputCopy:(id)a15 metaBuf:(id)a16 ref0MetaBuf:(id)a17 ref1MetaBuf:(id)a18
+- (void)_encodeSpatialTemporalRepairYUVToCommandBuffer:(__n128)buffer input:(__n128)input strongRepairSpatial:(__n128)spatial frRef0:(__n128)ref0 frRef1:(__n128)ref1 trRef0:(uint64_t)trRef0 trRef1:(void *)trRef1 hmgrphy0:(void *)self0 hmgrphy1:(void *)self1 spatialOutput:(void *)self2 temporalOutput:(void *)self3 strongTempOutput:(void *)self4 inputCopy:(id)self5 metaBuf:(id)self6 ref0MetaBuf:(id)self7 ref1MetaBuf:(id)self8
 {
   v49[0] = a2;
-  v49[1] = a3;
-  v49[2] = a4;
-  v48[0] = a5;
-  v48[1] = a6;
-  v48[2] = a7;
+  v49[1] = buffer;
+  v49[2] = input;
+  v48[0] = spatial;
+  v48[1] = ref0;
+  v48[2] = ref1;
   v43 = a22;
   v25 = a21;
   v26 = a20;
   v41 = a19;
-  v42 = a18;
-  v40 = a17;
-  v27 = a16;
-  v28 = a15;
-  v29 = a14;
-  v30 = a13;
-  v31 = a12;
-  v32 = a11;
-  v33 = a10;
-  v34 = [a9 computeCommandEncoder];
-  [v34 setComputePipelineState:*(a1 + 40)];
-  [v34 setTexture:v33 atIndex:0];
+  ref1MetaBufCopy = ref1MetaBuf;
+  metaBufCopy = metaBuf;
+  bufCopy = buf;
+  copyCopy = copy;
+  tempOutputCopy = tempOutput;
+  temporalOutputCopy = temporalOutput;
+  outputCopy = output;
+  hmgrphy1Copy = hmgrphy1;
+  hmgrphy0Copy = hmgrphy0;
+  computeCommandEncoder = [trRef1 computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:*(self + 40)];
+  [computeCommandEncoder setTexture:hmgrphy0Copy atIndex:0];
 
-  [v34 setTexture:v32 atIndex:6];
-  [v34 setTexture:v31 atIndex:1];
+  [computeCommandEncoder setTexture:hmgrphy1Copy atIndex:6];
+  [computeCommandEncoder setTexture:outputCopy atIndex:1];
 
-  [v34 setTexture:v30 atIndex:2];
-  [v34 setTexture:v29 atIndex:17];
+  [computeCommandEncoder setTexture:temporalOutputCopy atIndex:2];
+  [computeCommandEncoder setTexture:tempOutputCopy atIndex:17];
 
-  [v34 setTexture:v28 atIndex:18];
-  [v34 setTexture:v27 atIndex:3];
+  [computeCommandEncoder setTexture:copyCopy atIndex:18];
+  [computeCommandEncoder setTexture:bufCopy atIndex:3];
 
-  [v34 setTexture:v40 atIndex:4];
-  [v34 setTexture:v41 atIndex:5];
+  [computeCommandEncoder setTexture:metaBufCopy atIndex:4];
+  [computeCommandEncoder setTexture:v41 atIndex:5];
 
-  [v34 setTexture:v42 atIndex:16];
-  [v34 setBuffer:v26 offset:0 atIndex:0];
-  [v34 setBuffer:v25 offset:0 atIndex:4];
+  [computeCommandEncoder setTexture:ref1MetaBufCopy atIndex:16];
+  [computeCommandEncoder setBuffer:v26 offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:v25 offset:0 atIndex:4];
 
-  [v34 setBuffer:v43 offset:0 atIndex:5];
-  [v34 setBytes:v49 length:48 atIndex:1];
-  [v34 setBytes:v48 length:48 atIndex:2];
-  [v34 setImageblockWidth:32 height:32];
-  v35 = [v26 contents];
+  [computeCommandEncoder setBuffer:v43 offset:0 atIndex:5];
+  [computeCommandEncoder setBytes:v49 length:48 atIndex:1];
+  [computeCommandEncoder setBytes:v48 length:48 atIndex:2];
+  [computeCommandEncoder setImageblockWidth:32 height:32];
+  contents = [v26 contents];
 
-  v46 = vshrq_n_u64(vaddw_s32(vdupq_n_s64(0x1FuLL), vadd_s32(*(v35 + 20), 0x8400000084)), 5uLL);
+  v46 = vshrq_n_u64(vaddw_s32(vdupq_n_s64(0x1FuLL), vadd_s32(*(contents + 20), 0x8400000084)), 5uLL);
   v47 = 1;
   v44 = vdupq_n_s64(0x20uLL);
   v45 = 1;
-  [v34 dispatchThreadgroups:&v46 threadsPerThreadgroup:&v44];
-  [v34 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v46 threadsPerThreadgroup:&v44];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)_encodeFuseYUVToCommandBuffer:(id)a3 inputTexture:(id)a4 temporalMitTexture:(id)a5 spatialMitTexture:(id)a6 outputTexture:(id)a7 metaBuf:(id)a8
+- (void)_encodeFuseYUVToCommandBuffer:(id)buffer inputTexture:(id)texture temporalMitTexture:(id)mitTexture spatialMitTexture:(id)spatialMitTexture outputTexture:(id)outputTexture metaBuf:(id)buf
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = [a3 computeCommandEncoder];
-  [v19 setComputePipelineState:self->_fuseYUV];
-  [v19 setBuffer:v14 offset:0 atIndex:0];
-  [v19 setTexture:v18 atIndex:0];
+  bufCopy = buf;
+  outputTextureCopy = outputTexture;
+  spatialMitTextureCopy = spatialMitTexture;
+  mitTextureCopy = mitTexture;
+  textureCopy = texture;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_fuseYUV];
+  [computeCommandEncoder setBuffer:bufCopy offset:0 atIndex:0];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v19 setTexture:v17 atIndex:2];
-  [v19 setTexture:v16 atIndex:3];
+  [computeCommandEncoder setTexture:mitTextureCopy atIndex:2];
+  [computeCommandEncoder setTexture:spatialMitTextureCopy atIndex:3];
 
-  [v19 setTexture:v15 atIndex:4];
-  [v19 setImageblockWidth:32 height:32];
-  v20 = [v14 contents];
+  [computeCommandEncoder setTexture:outputTextureCopy atIndex:4];
+  [computeCommandEncoder setImageblockWidth:32 height:32];
+  contents = [bufCopy contents];
 
-  v23 = vshrq_n_u64(vaddw_u32(vdupq_n_s64(0x1FuLL), vadd_s32(*(v20 + 20), 0x8400000084)), 5uLL);
+  v23 = vshrq_n_u64(vaddw_u32(vdupq_n_s64(0x1FuLL), vadd_s32(*(contents + 20), 0x8400000084)), 5uLL);
   v24 = 1;
   v21 = vdupq_n_s64(0x20uLL);
   v22 = 1;
-  [v19 dispatchThreadgroups:&v23 threadsPerThreadgroup:&v21];
-  [v19 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v23 threadsPerThreadgroup:&v21];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)spatialTemporalRepairThenFuseInplaceYUVInput:(double)a3 frRef0:(double)a4 frRef1:(double)a5 trRef0:(double)a6 trRef1:(double)a7 hmgrphy0:(uint64_t)a8 hmgrphy1:(void *)a9 metaBuf:(void *)a10 ref0MetaBuf:(void *)a11 ref1MetaBuf:(void *)a12 trInput:(void *)a13 waitForComplete:(void *)a14
+- (void)spatialTemporalRepairThenFuseInplaceYUVInput:(double)input frRef0:(double)ref0 frRef1:(double)ref1 trRef0:(double)trRef0 trRef1:(double)trRef1 hmgrphy0:(uint64_t)hmgrphy0 hmgrphy1:(void *)hmgrphy1 metaBuf:(void *)self0 ref0MetaBuf:(void *)self1 ref1MetaBuf:(void *)self2 trInput:(void *)self3 waitForComplete:(void *)self4
 {
-  v57 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = a13;
-  v28 = a14;
+  hmgrphy1Copy = hmgrphy1;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  ref1MetaBufCopy = ref1MetaBuf;
+  trInputCopy = trInput;
+  completeCopy = complete;
   v29 = a15;
   v30 = a16;
   v31 = a17;
-  v45 = v28;
-  v32 = [*(a1 + 8) generateMetaContainerArrayBufFromMetaContainerBuf:v28 imageRect:{0.0, 0.0, objc_msgSend(v57, "width"), objc_msgSend(v57, "height")}];
-  *(a1 + 106) = v32[240];
-  v33 = [*(a1 + 32) commandBuffer];
-  if (v33)
+  v45 = completeCopy;
+  v32 = [*(self + 8) generateMetaContainerArrayBufFromMetaContainerBuf:completeCopy imageRect:{0.0, 0.0, objc_msgSend(hmgrphy1Copy, "width"), objc_msgSend(hmgrphy1Copy, "height")}];
+  *(self + 106) = v32[240];
+  commandBuffer = [*(self + 32) commandBuffer];
+  if (commandBuffer)
   {
-    v55 = v25;
-    v56 = v24;
+    v55 = metaBufCopy;
+    v56 = bufCopy;
     v53 = v30;
     v54 = v29;
     v34 = v31;
     if (v32[240] >= 1)
     {
       v35 = 0;
-      v46 = v26;
+      v46 = ref1MetaBufCopy;
       do
       {
-        v36 = v27;
-        v38 = *(a1 + 56);
-        v37 = *(a1 + 64);
-        v39 = *(a1 + 72);
+        v36 = trInputCopy;
+        v38 = *(self + 56);
+        v37 = *(self + 64);
+        v39 = *(self + 72);
         v40 = *&v32[4 * v35];
         v43 = v37;
         v44 = v38;
-        v27 = v36;
-        v26 = v46;
-        [a1 _encodeSpatialTemporalRepairYUVToCommandBuffer:v33 input:v57 strongRepairSpatial:0 frRef0:v56 frRef1:v55 trRef0:v46 trRef1:a2 hmgrphy0:a3 hmgrphy1:a4 spatialOutput:a5 temporalOutput:a6 strongTempOutput:a7 inputCopy:v36 metaBuf:v43 ref0MetaBuf:v44 ref1MetaBuf:{v34, v39, v40, v54, v53}];
-        [a1 _encodeFuseYUVToCommandBuffer:v33 inputTexture:*(a1 + 72) temporalMitTexture:*(a1 + 56) spatialMitTexture:*(a1 + 64) outputTexture:v57 metaBuf:v40];
+        trInputCopy = v36;
+        ref1MetaBufCopy = v46;
+        [self _encodeSpatialTemporalRepairYUVToCommandBuffer:commandBuffer input:hmgrphy1Copy strongRepairSpatial:0 frRef0:v56 frRef1:v55 trRef0:v46 trRef1:a2 hmgrphy0:input hmgrphy1:ref0 spatialOutput:ref1 temporalOutput:trRef0 strongTempOutput:trRef1 inputCopy:v36 metaBuf:v43 ref0MetaBuf:v44 ref1MetaBuf:{v34, v39, v40, v54, v53}];
+        [self _encodeFuseYUVToCommandBuffer:commandBuffer inputTexture:*(self + 72) temporalMitTexture:*(self + 56) spatialMitTexture:*(self + 64) outputTexture:hmgrphy1Copy metaBuf:v40];
 
         ++v35;
       }
@@ -196,8 +196,8 @@
     v31 = v34;
     v30 = v53;
     v29 = v54;
-    v25 = v55;
-    v24 = v56;
+    metaBufCopy = v55;
+    bufCopy = v56;
     if (a18)
     {
       v41 = 1;
@@ -205,11 +205,11 @@
 
     else
     {
-      v41 = *(a1 + 105);
+      v41 = *(self + 105);
     }
 
     v42 = v45;
-    [a1 _commitCmdBuffer:v33 waitForComplete:v41 & 1];
+    [self _commitCmdBuffer:commandBuffer waitForComplete:v41 & 1];
   }
 
   else
@@ -219,19 +219,19 @@
   }
 }
 
-- (MitigationGPU)initWithMetalToolBox:(id)a3 metalContext:(id)a4 imageDimensions:(id)a5
+- (MitigationGPU)initWithMetalToolBox:(id)box metalContext:(id)context imageDimensions:(id)dimensions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8 || !v9)
+  boxCopy = box;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!boxCopy || !contextCopy)
   {
     fig_log_get_emitter();
     sub_B550();
 LABEL_16:
     FigDebugAssert3();
 LABEL_17:
-    v40 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -244,15 +244,15 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  objc_storeStrong(&v11->_metalToolbox, a3);
-  objc_storeStrong(&self->_metalContext, a4);
-  v12 = [v10 device];
+  objc_storeStrong(&v11->_metalToolbox, box);
+  objc_storeStrong(&self->_metalContext, context);
+  device = [v10 device];
   device = self->_device;
-  self->_device = v12;
+  self->_device = device;
 
-  v14 = [v10 commandQueue];
+  commandQueue = [v10 commandQueue];
   commandQueue = self->_commandQueue;
-  self->_commandQueue = v14;
+  self->_commandQueue = commandQueue;
 
   if ([(MitigationGPU *)self _compileShaders])
   {
@@ -308,10 +308,10 @@ LABEL_15:
 
   self->_roiClusterCnt = 0;
   self = self;
-  v40 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v40;
+  return selfCopy;
 }
 
 @end

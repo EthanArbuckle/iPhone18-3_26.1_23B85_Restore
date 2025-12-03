@@ -1,10 +1,10 @@
 @interface ComputeServiceUserVectorAggregateVectorProvider
-- (id)aggregateVectorForTags:(id)a3;
+- (id)aggregateVectorForTags:(id)tags;
 @end
 
 @implementation ComputeServiceUserVectorAggregateVectorProvider
 
-- (id)aggregateVectorForTags:(id)a3
+- (id)aggregateVectorForTags:(id)tags
 {
   v3 = sub_1C6D79780();
 

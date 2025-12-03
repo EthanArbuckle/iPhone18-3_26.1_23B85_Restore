@@ -1,25 +1,25 @@
 @interface PEGASUSSchemaPEGASUSVideoExecution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSVideoExecution)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSVideoExecution)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSVideoExecution)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSVideoExecution)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSVideoExecution
 
-- (PEGASUSSchemaPEGASUSVideoExecution)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSVideoExecution)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PEGASUSSchemaPEGASUSVideoExecution;
   v5 = [(PEGASUSSchemaPEGASUSVideoExecution *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"videoInteraction"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"videoInteraction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(PEGASUSSchemaPEGASUSVideoExecution *)v5 setVideoInteraction:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"videoExperienceProperty"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"videoExperienceProperty"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSVideoExecution)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSVideoExecution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSVideoExecution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSVideoExecution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSVideoExecution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_videoExperienceProperty)
   {
-    v4 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    videoExperienceProperty = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
+    dictionaryRepresentation = [videoExperienceProperty dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"videoExperienceProperty"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"videoExperienceProperty"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"videoExperienceProperty"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"videoExperienceProperty"];
     }
   }
 
   if (self->_videoInteraction)
   {
-    v7 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    videoInteraction = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
+    dictionaryRepresentation2 = [videoInteraction dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"videoInteraction"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"videoInteraction"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"videoInteraction"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"videoInteraction"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
-  v6 = [v4 videoInteraction];
-  if ((v5 != 0) == (v6 == 0))
+  videoInteraction = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
+  videoInteraction2 = [equalCopy videoInteraction];
+  if ((videoInteraction != 0) == (videoInteraction2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
-  if (v7)
+  videoInteraction3 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
+  if (videoInteraction3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
-    v10 = [v4 videoInteraction];
-    v11 = [v9 isEqual:v10];
+    v8 = videoInteraction3;
+    videoInteraction4 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
+    videoInteraction5 = [equalCopy videoInteraction];
+    v11 = [videoInteraction4 isEqual:videoInteraction5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
-  v6 = [v4 videoExperienceProperty];
-  if ((v5 != 0) != (v6 == 0))
+  videoInteraction = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
+  videoInteraction2 = [equalCopy videoExperienceProperty];
+  if ((videoInteraction != 0) != (videoInteraction2 == 0))
   {
-    v12 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
-    if (!v12)
+    videoExperienceProperty = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
+    if (!videoExperienceProperty)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
-    v15 = [v4 videoExperienceProperty];
-    v16 = [v14 isEqual:v15];
+    v13 = videoExperienceProperty;
+    videoExperienceProperty2 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
+    videoExperienceProperty3 = [equalCopy videoExperienceProperty];
+    v16 = [videoExperienceProperty2 isEqual:videoExperienceProperty3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
+  toCopy = to;
+  videoInteraction = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
 
-  if (v4)
+  if (videoInteraction)
   {
-    v5 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
+    videoInteraction2 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
+  videoExperienceProperty = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
 
-  if (v6)
+  if (videoExperienceProperty)
   {
-    v7 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
+    videoExperienceProperty2 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = PEGASUSSchemaPEGASUSVideoExecution;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  videoInteraction = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoInteraction];
+  v7 = [videoInteraction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PEGASUSSchemaPEGASUSVideoExecution *)self deleteVideoInteraction];
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  videoExperienceProperty = [(PEGASUSSchemaPEGASUSVideoExecution *)self videoExperienceProperty];
+  v10 = [videoExperienceProperty applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PEGASUSSchemaPEGASUSVideoExecution *)self deleteVideoExperienceProperty];
   }

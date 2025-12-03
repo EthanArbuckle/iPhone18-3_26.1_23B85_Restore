@@ -1,14 +1,14 @@
 @interface OCPPackageRelationshipCollection
-- (OCPPackageRelationshipCollection)initWithRelationshipsXml:(_xmlDoc *)a3 baseLocation:(id)a4;
-- (id)relationshipForIdentifier:(id)a3;
-- (id)relationshipsByType:(id)a3;
+- (OCPPackageRelationshipCollection)initWithRelationshipsXml:(_xmlDoc *)xml baseLocation:(id)location;
+- (id)relationshipForIdentifier:(id)identifier;
+- (id)relationshipsByType:(id)type;
 @end
 
 @implementation OCPPackageRelationshipCollection
 
-- (OCPPackageRelationshipCollection)initWithRelationshipsXml:(_xmlDoc *)a3 baseLocation:(id)a4
+- (OCPPackageRelationshipCollection)initWithRelationshipsXml:(_xmlDoc *)xml baseLocation:(id)location
 {
-  v6 = a4;
+  locationCopy = location;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   mIdentifierMap = self->mIdentifierMap;
   self->mIdentifierMap = v7;
@@ -17,15 +17,15 @@
   mTypeMap = self->mTypeMap;
   self->mTypeMap = v9;
 
-  if (a3)
+  if (xml)
   {
-    RootElement = xmlDocGetRootElement(a3);
+    RootElement = xmlDocGetRootElement(xml);
     if (!RootElement)
     {
       [OCPException raise:@"OCPPackageError" format:@"No relationship root element"];
     }
 
-    v12 = xmlSearchNsByHref(a3, RootElement, "http://schemas.openxmlformats.org/package/2006/relationships");
+    v12 = xmlSearchNsByHref(xml, RootElement, "http://schemas.openxmlformats.org/package/2006/relationships");
     if (!v12)
     {
       [OCPException raise:@"OCPPackageError" format:@"Could not find relationships namespace"];
@@ -40,11 +40,11 @@
     {
       if (i->type == XML_ELEMENT_NODE && xmlStrEqual(i->ns->href, v12->href) && xmlStrEqual(i->name, "Relationship"))
       {
-        v15 = [[OCPPackageRelationship alloc] initWithXmlElement:i baseLocation:v6];
-        v16 = [(OCPPackageRelationship *)v15 identifier];
-        [(NSMutableDictionary *)self->mIdentifierMap setObject:v15 forKey:v16];
-        v17 = [(OCPPackageRelationship *)v15 type];
-        v18 = [(NSMutableDictionary *)self->mTypeMap objectForKey:v17];
+        v15 = [[OCPPackageRelationship alloc] initWithXmlElement:i baseLocation:locationCopy];
+        identifier = [(OCPPackageRelationship *)v15 identifier];
+        [(NSMutableDictionary *)self->mIdentifierMap setObject:v15 forKey:identifier];
+        type = [(OCPPackageRelationship *)v15 type];
+        v18 = [(NSMutableDictionary *)self->mTypeMap objectForKey:type];
         if (!v18)
         {
           v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -59,16 +59,16 @@
   return self;
 }
 
-- (id)relationshipForIdentifier:(id)a3
+- (id)relationshipForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->mIdentifierMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mIdentifierMap objectForKey:identifier];
 
   return v3;
 }
 
-- (id)relationshipsByType:(id)a3
+- (id)relationshipsByType:(id)type
 {
-  v3 = [(NSMutableDictionary *)self->mTypeMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mTypeMap objectForKey:type];
 
   return v3;
 }

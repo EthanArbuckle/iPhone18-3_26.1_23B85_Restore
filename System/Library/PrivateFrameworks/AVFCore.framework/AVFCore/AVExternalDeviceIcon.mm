@@ -1,12 +1,12 @@
 @interface AVExternalDeviceIcon
-- (AVExternalDeviceIcon)initWithDictionary:(id)a3;
+- (AVExternalDeviceIcon)initWithDictionary:(id)dictionary;
 - (CGSize)pixelSize;
 - (void)dealloc;
 @end
 
 @implementation AVExternalDeviceIcon
 
-- (AVExternalDeviceIcon)initWithDictionary:(id)a3
+- (AVExternalDeviceIcon)initWithDictionary:(id)dictionary
 {
   v18.receiver = self;
   v18.super_class = AVExternalDeviceIcon;
@@ -17,7 +17,7 @@
     v4->_externalDeviceIcon = v5;
     if (v5)
     {
-      v6 = [a3 valueForKey:@"widthPixels"];
+      v6 = [dictionary valueForKey:@"widthPixels"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v8 = 0.0;
@@ -29,7 +29,7 @@
       }
 
       v4->_externalDeviceIcon->_size.width = v9;
-      v11 = [a3 valueForKey:@"heightPixels"];
+      v11 = [dictionary valueForKey:@"heightPixels"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -38,7 +38,7 @@
       }
 
       v4->_externalDeviceIcon->_size.height = v8;
-      v13 = [a3 valueForKey:@"imageData"];
+      v13 = [dictionary valueForKey:@"imageData"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -51,19 +51,19 @@
       }
 
       v4->_externalDeviceIcon->_data = v14;
-      v15 = [a3 valueForKey:@"prerendered"];
+      v15 = [dictionary valueForKey:@"prerendered"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v15 BOOLValue];
+        bOOLValue = [v15 BOOLValue];
       }
 
       else
       {
-        v16 = 1;
+        bOOLValue = 1;
       }
 
-      v4->_externalDeviceIcon->_prerendered = v16;
+      v4->_externalDeviceIcon->_prerendered = bOOLValue;
     }
 
     else

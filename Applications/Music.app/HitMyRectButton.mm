@@ -1,18 +1,18 @@
 @interface HitMyRectButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (_TtC11MusicCoreUI15HitMyRectButton)initWithCoder:(id)a3;
-- (_TtC11MusicCoreUI15HitMyRectButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC11MusicCoreUI15HitMyRectButton)initWithCoder:(id)coder;
+- (_TtC11MusicCoreUI15HitMyRectButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (unint64_t)accessibilityTraits;
-- (void)setAccessibilityTraits:(unint64_t)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
 @end
 
 @implementation HitMyRectButton
 
 - (CGRect)hitRect
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HitMyRectButton.hitRect()();
   v5 = v4;
   v7 = v6;
@@ -29,21 +29,21 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
   if (UIViewIgnoresTouchEvents())
   {
 
-    v8 = v7;
+    selfCopy = eventCopy;
   }
 
   else
   {
-    v9 = [(HitMyRectButton *)v8 pointInside:v7 withEvent:x, y];
+    v9 = [(HitMyRectButton *)selfCopy pointInside:eventCopy withEvent:x, y];
 
     if (v9)
     {
@@ -51,18 +51,18 @@
     }
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_5:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(HitMyRectButton *)v6 hitRect];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(HitMyRectButton *)selfCopy hitRect];
   v9.x = x;
   v9.y = y;
   v7 = CGRectContainsPoint(v10, v9);
@@ -75,10 +75,10 @@ LABEL_5:
   v7.receiver = self;
   v7.super_class = type metadata accessor for HitMyRectButton();
   v2 = v7.receiver;
-  v3 = [(HitMyRectButton *)&v7 accessibilityTraits];
+  accessibilityTraits = [(HitMyRectButton *)&v7 accessibilityTraits];
   v4 = UIAccessibilityTraitButton;
 
-  if ((v4 & ~v3) != 0)
+  if ((v4 & ~accessibilityTraits) != 0)
   {
     v5 = v4;
   }
@@ -88,22 +88,22 @@ LABEL_5:
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for HitMyRectButton();
-  [(HitMyRectButton *)&v4 setAccessibilityTraits:a3];
+  [(HitMyRectButton *)&v4 setAccessibilityTraits:traits];
 }
 
-- (_TtC11MusicCoreUI15HitMyRectButton)initWithFrame:(CGRect)a3
+- (_TtC11MusicCoreUI15HitMyRectButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC11MusicCoreUI15HitMyRectButton_hitRectAdjustment;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -113,7 +113,7 @@ LABEL_5:
   return [(HitMyRectButton *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC11MusicCoreUI15HitMyRectButton)initWithCoder:(id)a3
+- (_TtC11MusicCoreUI15HitMyRectButton)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC11MusicCoreUI15HitMyRectButton_hitRectAdjustment;
   *v4 = 0u;
@@ -121,8 +121,8 @@ LABEL_5:
   v4[32] = -1;
   v8.receiver = self;
   v8.super_class = type metadata accessor for HitMyRectButton();
-  v5 = a3;
-  v6 = [(HitMyRectButton *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(HitMyRectButton *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

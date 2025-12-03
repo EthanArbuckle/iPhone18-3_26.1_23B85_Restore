@@ -1,19 +1,19 @@
 @interface AntBlockPowerLimitPolicyClientSFBM
 - (id)constructXpcMessage;
 - (id)constructXpcMessagePolicyEntries;
-- (void)extractPolicyEntries:(id)a3;
-- (void)extractPolicyGlobalParam:(id)a3;
+- (void)extractPolicyEntries:(id)entries;
+- (void)extractPolicyGlobalParam:(id)param;
 @end
 
 @implementation AntBlockPowerLimitPolicyClientSFBM
 
-- (void)extractPolicyEntries:(id)a3
+- (void)extractPolicyEntries:(id)entries
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entriesCopy = entries;
+  v5 = entriesCopy;
+  if (entriesCopy)
   {
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Extracted %lu policies for client SFBM", [v4 count]);
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 3, @"Extracted %lu policies for client SFBM", [entriesCopy count]);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -36,11 +36,11 @@
           v11 = *(*(&v16 + 1) + 8 * i);
           v12 = objc_alloc_init(AntBlockPowerLimitCnvPolicy);
           [(AntBlockPowerLimitCnvPolicy *)v12 extractPolicy:v11];
-          v13 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+          mPolicy = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
 
           if (v12)
           {
-            v14 = v13 == 0;
+            v14 = mPolicy == 0;
           }
 
           else
@@ -50,8 +50,8 @@
 
           if (!v14)
           {
-            v15 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
-            [v15 addObject:v12];
+            mPolicy2 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+            [mPolicy2 addObject:v12];
           }
         }
 
@@ -75,8 +75,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mPolicy = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+  v5 = [mPolicy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -87,14 +87,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mPolicy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) constructXpcMessage];
-        xpc_array_append_value(v3, v9);
+        constructXpcMessage = [*(*(&v11 + 1) + 8 * i) constructXpcMessage];
+        xpc_array_append_value(v3, constructXpcMessage);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [mPolicy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -103,33 +103,33 @@
   return v3;
 }
 
-- (void)extractPolicyGlobalParam:(id)a3
+- (void)extractPolicyGlobalParam:(id)param
 {
-  v4 = a3;
+  paramCopy = param;
   v9.receiver = self;
   v9.super_class = AntBlockPowerLimitPolicyClientSFBM;
-  [(AntBlockPowerLimitPolicyClient *)&v9 extractPolicyGlobalParam:v4];
-  v5 = [v4 objectForKey:@"TX_Duty_Cycle_Threshold"];
+  [(AntBlockPowerLimitPolicyClient *)&v9 extractPolicyGlobalParam:paramCopy];
+  v5 = [paramCopy objectForKey:@"TX_Duty_Cycle_Threshold"];
 
   if (v5)
   {
-    v6 = [v4 objectForKey:@"TX_Duty_Cycle_Threshold"];
+    v6 = [paramCopy objectForKey:@"TX_Duty_Cycle_Threshold"];
     -[AntBlockPowerLimitPolicyClientSFBM setMTxDutyCycleThreshold:](self, "setMTxDutyCycleThreshold:", [v6 integerValue]);
   }
 
-  v7 = [v4 objectForKey:@"Window_Size"];
+  v7 = [paramCopy objectForKey:@"Window_Size"];
 
   if (v7)
   {
-    v8 = [v4 objectForKey:@"Window_Size"];
+    v8 = [paramCopy objectForKey:@"Window_Size"];
     -[AntBlockPowerLimitPolicyClientSFBM setMWindowSize:](self, "setMWindowSize:", [v8 integerValue]);
   }
 }
 
 - (id)constructXpcMessage
 {
-  v3 = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
-  v4 = [v3 count];
+  mPolicy = [(AntBlockPowerLimitPolicyClient *)self mPolicy];
+  v4 = [mPolicy count];
 
   if (v4)
   {
@@ -142,8 +142,8 @@
       xpc_dictionary_set_uint64(v5, "kWCMCellularSetAntBlocking_MitigationTimer", [(AntBlockPowerLimitPolicyClient *)self mMitigationTimer]);
       xpc_dictionary_set_uint64(v5, "kWCMCellularSetAntBlocking_TxDutyCycleThreshold", [(AntBlockPowerLimitPolicyClientSFBM *)self mTxDutyCycleThreshold]);
       xpc_dictionary_set_uint64(v5, "kWCMCellularSetAntBlocking_SFBMWindowSize", [(AntBlockPowerLimitPolicyClientSFBM *)self mWindowSize]);
-      v6 = [(AntBlockPowerLimitPolicyClientSFBM *)self constructXpcMessagePolicyEntries];
-      xpc_dictionary_set_value(v5, "kWCMCellularSetAntBlocking_PolicySet", v6);
+      constructXpcMessagePolicyEntries = [(AntBlockPowerLimitPolicyClientSFBM *)self constructXpcMessagePolicyEntries];
+      xpc_dictionary_set_value(v5, "kWCMCellularSetAntBlocking_PolicySet", constructXpcMessagePolicyEntries);
     }
   }
 

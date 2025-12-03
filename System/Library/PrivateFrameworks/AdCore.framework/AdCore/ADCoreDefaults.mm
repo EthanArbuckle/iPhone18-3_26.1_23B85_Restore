@@ -1,18 +1,18 @@
 @interface ADCoreDefaults
 + (id)factoryDefaults;
 + (id)sharedInstance;
-+ (void)addFactoryDefaults:(id)a3;
++ (void)addFactoryDefaults:(id)defaults;
 - (ADCoreDefaults)init;
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)defaultIsSetForKey:(id)a3;
-- (double)doubleForKey:(id)a3;
-- (id)_defaultValueForKey:(id)a3 valueClass:(Class)a4;
-- (id)arrayForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
-- (void)_setDefaultValue:(id)a3 forKey:(id)a4;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)defaultIsSetForKey:(id)key;
+- (double)doubleForKey:(id)key;
+- (id)_defaultValueForKey:(id)key valueClass:(Class)class;
+- (id)arrayForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
+- (void)_setDefaultValue:(id)value forKey:(id)key;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
 @end
 
 @implementation ADCoreDefaults
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __32__ADCoreDefaults_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -139,11 +139,11 @@ uint64_t __22__ADCoreDefaults_init__block_invoke(uint64_t a1)
   return CFPreferencesAppSynchronize(v1);
 }
 
-+ (void)addFactoryDefaults:(id)a3
++ (void)addFactoryDefaults:(id)defaults
 {
-  v3 = a3;
+  defaultsCopy = defaults;
   v4 = +[ADCoreDefaults sharedInstance];
-  [v4[1] addEntriesFromDictionary:v3];
+  [v4[1] addEntriesFromDictionary:defaultsCopy];
 }
 
 + (id)factoryDefaults
@@ -154,16 +154,16 @@ uint64_t __22__ADCoreDefaults_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_defaultValueForKey:(id)a3 valueClass:(Class)a4
+- (id)_defaultValueForKey:(id)key valueClass:(Class)class
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[ADCoreDefaults sharedInstance];
-  v6 = CFPreferencesCopyAppValue(v4, v5[2]);
+  v6 = CFPreferencesCopyAppValue(keyCopy, v5[2]);
 
   if (!v6)
   {
     v7 = +[ADCoreDefaults sharedInstance];
-    v6 = [v7[1] objectForKeyedSubscript:v4];
+    v6 = [v7[1] objectForKeyedSubscript:keyCopy];
   }
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -175,62 +175,62 @@ uint64_t __22__ADCoreDefaults_init__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_setDefaultValue:(id)a3 forKey:(id)a4
+- (void)_setDefaultValue:(id)value forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v7 = +[ADCoreDefaults sharedInstance];
-  CFPreferencesSetAppValue(v5, v6, v7[2]);
+  CFPreferencesSetAppValue(keyCopy, valueCopy, v7[2]);
 
   v8 = +[ADCoreDefaults sharedInstance];
   CFPreferencesAppSynchronize(v8[2]);
 }
 
-- (BOOL)defaultIsSetForKey:(id)a3
+- (BOOL)defaultIsSetForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ADCoreDefaults sharedInstance];
-  v5 = CFPreferencesCopyAppValue(v3, v4[2]);
+  v5 = CFPreferencesCopyAppValue(keyCopy, v4[2]);
 
   if (!v5)
   {
     v6 = +[ADCoreDefaults sharedInstance];
-    v5 = [v6[1] objectForKeyedSubscript:v3];
+    v5 = [v6[1] objectForKeyedSubscript:keyCopy];
   }
 
   return v5 != 0;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ADCoreDefaults *)self _defaultValueForKey:v4 valueClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(ADCoreDefaults *)self _defaultValueForKey:keyCopy valueClass:objc_opt_class()];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ADCoreDefaults *)self _defaultValueForKey:v4 valueClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(ADCoreDefaults *)self _defaultValueForKey:keyCopy valueClass:objc_opt_class()];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(ADCoreDefaults *)self _setDefaultValue:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:integer];
+  [(ADCoreDefaults *)self _setDefaultValue:v8 forKey:keyCopy];
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ADCoreDefaults *)self _defaultValueForKey:v4 valueClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(ADCoreDefaults *)self _defaultValueForKey:keyCopy valueClass:objc_opt_class()];
 
   [v5 doubleValue];
   v7 = v6;
@@ -238,26 +238,26 @@ uint64_t __22__ADCoreDefaults_init__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(ADCoreDefaults *)self _setDefaultValue:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:double];
+  [(ADCoreDefaults *)self _setDefaultValue:v8 forKey:keyCopy];
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ADCoreDefaults *)self _defaultValueForKey:v4 valueClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(ADCoreDefaults *)self _defaultValueForKey:keyCopy valueClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ADCoreDefaults *)self _defaultValueForKey:v4 valueClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(ADCoreDefaults *)self _defaultValueForKey:keyCopy valueClass:objc_opt_class()];
 
   return v5;
 }

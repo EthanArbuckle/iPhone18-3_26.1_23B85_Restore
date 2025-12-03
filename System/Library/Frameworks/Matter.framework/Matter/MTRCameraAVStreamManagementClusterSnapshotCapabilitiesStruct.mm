@@ -1,6 +1,6 @@
 @interface MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct
 - (MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct);
-  v5 = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self resolution];
-  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setResolution:v5];
+  resolution = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self resolution];
+  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setResolution:resolution];
 
-  v6 = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self maxFrameRate];
-  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setMaxFrameRate:v6];
+  maxFrameRate = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self maxFrameRate];
+  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setMaxFrameRate:maxFrameRate];
 
-  v7 = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self imageCodec];
-  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setImageCodec:v7];
+  imageCodec = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self imageCodec];
+  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setImageCodec:imageCodec];
 
-  v8 = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self requiresEncodedPixels];
-  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setRequiresEncodedPixels:v8];
+  requiresEncodedPixels = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self requiresEncodedPixels];
+  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setRequiresEncodedPixels:requiresEncodedPixels];
 
-  v9 = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self requiresHardwareEncoder];
-  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setRequiresHardwareEncoder:v9];
+  requiresHardwareEncoder = [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)self requiresHardwareEncoder];
+  [(MTRCameraAVStreamManagementClusterSnapshotCapabilitiesStruct *)v4 setRequiresHardwareEncoder:requiresHardwareEncoder];
 
   return v4;
 }

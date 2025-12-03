@@ -2,10 +2,10 @@
 - (CLLocation)location;
 - (id)_init;
 - (void)_queue_clearConnection;
-- (void)_queue_setLocation:(id)a3;
+- (void)_queue_setLocation:(id)location;
 - (void)_queue_setupConnection;
 - (void)dealloc;
-- (void)setLocation:(id)a3;
+- (void)setLocation:(id)location;
 @end
 
 @implementation REPipedLocationReceiver
@@ -14,15 +14,15 @@
 {
   v6.receiver = self;
   v6.super_class = REPipedLocationReceiver;
-  v2 = [(RESingleton *)&v6 _init];
-  if (v2)
+  _init = [(RESingleton *)&v6 _init];
+  if (_init)
   {
     v3 = dispatch_queue_create("com.apple.relevanceengine.REPipedLocationReceiver", 0);
-    v4 = v2[4];
-    v2[4] = v3;
+    v4 = _init[4];
+    _init[4] = v3;
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
@@ -33,34 +33,34 @@
   [(REPipedLocationReceiver *)&v3 dealloc];
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__REPipedLocationReceiver_setLocation___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = locationCopy;
+  v6 = locationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_setLocation:(id)a3
+- (void)_queue_setLocation:(id)location
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationCopy = location;
   v6 = RELogForDomain(5);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 description];
+    v7 = [locationCopy description];
     *buf = 136315138;
-    v19 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     _os_log_impl(&dword_22859F000, v6, OS_LOG_TYPE_INFO, "REPipedLocationReceiver preparing to set location to %s", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_location, a3);
+  objc_storeStrong(&self->_location, location);
   connection = self->_connection;
   if (!connection)
   {
@@ -76,10 +76,10 @@
     v11 = RELogForDomain(5);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v5 description];
-      v13 = [v12 UTF8String];
+      v12 = [locationCopy description];
+      uTF8String2 = [v12 UTF8String];
       *buf = 136315138;
-      v19 = v13;
+      uTF8String = uTF8String2;
       _os_log_impl(&dword_22859F000, v11, OS_LOG_TYPE_INFO, "REPipedLocationReceiver sent location to %s", buf, 0xCu);
     }
 

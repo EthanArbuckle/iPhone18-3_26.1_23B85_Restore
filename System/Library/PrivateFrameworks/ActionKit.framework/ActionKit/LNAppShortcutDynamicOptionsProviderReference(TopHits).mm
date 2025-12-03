@@ -7,18 +7,18 @@
 
 - (id)topHitSystemEntityCollectionIdentifier
 {
-  v2 = [a1 appShortcutsProviderMangledTypeName];
-  v3 = [v2 isEqualToString:@"25ShortcutsTopHitsExtension0abc3AppA8ProviderV"];
+  appShortcutsProviderMangledTypeName = [self appShortcutsProviderMangledTypeName];
+  v3 = [appShortcutsProviderMangledTypeName isEqualToString:@"25ShortcutsTopHitsExtension0abc3AppA8ProviderV"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277D23B28] appShortcutMapping];
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "appShortcutIndex")}];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    appShortcutMapping = [MEMORY[0x277D23B28] appShortcutMapping];
+    v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "appShortcutIndex")}];
+    v6 = [appShortcutMapping objectForKeyedSubscript:v5];
 
     if (v6)
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "optionsProviderIndex")}];
+      v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "optionsProviderIndex")}];
       v8 = [v6 objectForKeyedSubscript:v7];
     }
 

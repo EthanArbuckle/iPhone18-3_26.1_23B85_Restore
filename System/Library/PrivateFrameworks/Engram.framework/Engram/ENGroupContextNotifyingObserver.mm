@@ -1,70 +1,70 @@
 @interface ENGroupContextNotifyingObserver
-- (ENGroupContextNotifyingObserver)initWithQueue:(id)a3;
-- (void)groupContext:(id)a3 didCacheGroup:(id)a4;
-- (void)groupContext:(id)a3 didCreateGroup:(id)a4;
-- (void)groupContext:(id)a3 didUpdateGroup:(id)a4 withNewGroup:(id)a5;
+- (ENGroupContextNotifyingObserver)initWithQueue:(id)queue;
+- (void)groupContext:(id)context didCacheGroup:(id)group;
+- (void)groupContext:(id)context didCreateGroup:(id)group;
+- (void)groupContext:(id)context didUpdateGroup:(id)group withNewGroup:(id)newGroup;
 @end
 
 @implementation ENGroupContextNotifyingObserver
 
-- (ENGroupContextNotifyingObserver)initWithQueue:(id)a3
+- (ENGroupContextNotifyingObserver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ENGroupContextNotifyingObserver;
   v6 = [(ENGroupContextNotifyingObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)groupContext:(id)a3 didCreateGroup:(id)a4
+- (void)groupContext:(id)context didCreateGroup:(id)group
 {
-  v8 = a4;
-  v5 = [(ENGroupContextNotifyingObserver *)self queue];
-  dispatch_assert_queue_V2(v5);
+  groupCopy = group;
+  queue = [(ENGroupContextNotifyingObserver *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ENGroupContextNotifyingObserver *)self onGroupCreate];
+  onGroupCreate = [(ENGroupContextNotifyingObserver *)self onGroupCreate];
 
-  if (v6)
+  if (onGroupCreate)
   {
-    v7 = [(ENGroupContextNotifyingObserver *)self onGroupCreate];
-    (v7)[2](v7, v8);
+    onGroupCreate2 = [(ENGroupContextNotifyingObserver *)self onGroupCreate];
+    (onGroupCreate2)[2](onGroupCreate2, groupCopy);
   }
 }
 
-- (void)groupContext:(id)a3 didCacheGroup:(id)a4
+- (void)groupContext:(id)context didCacheGroup:(id)group
 {
-  v8 = a4;
-  v5 = [(ENGroupContextNotifyingObserver *)self queue];
-  dispatch_assert_queue_V2(v5);
+  groupCopy = group;
+  queue = [(ENGroupContextNotifyingObserver *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ENGroupContextNotifyingObserver *)self onGroupCache];
+  onGroupCache = [(ENGroupContextNotifyingObserver *)self onGroupCache];
 
-  if (v6)
+  if (onGroupCache)
   {
-    v7 = [(ENGroupContextNotifyingObserver *)self onGroupCache];
-    (v7)[2](v7, v8);
+    onGroupCache2 = [(ENGroupContextNotifyingObserver *)self onGroupCache];
+    (onGroupCache2)[2](onGroupCache2, groupCopy);
   }
 }
 
-- (void)groupContext:(id)a3 didUpdateGroup:(id)a4 withNewGroup:(id)a5
+- (void)groupContext:(id)context didUpdateGroup:(id)group withNewGroup:(id)newGroup
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(ENGroupContextNotifyingObserver *)self queue];
-  dispatch_assert_queue_V2(v8);
+  groupCopy = group;
+  newGroupCopy = newGroup;
+  queue = [(ENGroupContextNotifyingObserver *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(ENGroupContextNotifyingObserver *)self onGroupUpdate];
+  onGroupUpdate = [(ENGroupContextNotifyingObserver *)self onGroupUpdate];
 
-  if (v9)
+  if (onGroupUpdate)
   {
-    v10 = [(ENGroupContextNotifyingObserver *)self onGroupUpdate];
-    (v10)[2](v10, v11, v7);
+    onGroupUpdate2 = [(ENGroupContextNotifyingObserver *)self onGroupUpdate];
+    (onGroupUpdate2)[2](onGroupUpdate2, groupCopy, newGroupCopy);
   }
 }
 

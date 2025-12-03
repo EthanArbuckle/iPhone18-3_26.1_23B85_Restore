@@ -1,21 +1,21 @@
 @interface CRLCIKernelLoader
-+ (id)loadKernelWithMetalName:(id)a3 legacyName:(id)a4;
-+ (id)p_loadLegacyKernelWithName:(id)a3;
-+ (id)p_loadMetalKernelWithName:(id)a3;
++ (id)loadKernelWithMetalName:(id)name legacyName:(id)legacyName;
++ (id)p_loadLegacyKernelWithName:(id)name;
++ (id)p_loadMetalKernelWithName:(id)name;
 @end
 
 @implementation CRLCIKernelLoader
 
-+ (id)loadKernelWithMetalName:(id)a3 legacyName:(id)a4
++ (id)loadKernelWithMetalName:(id)name legacyName:(id)legacyName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  legacyNameCopy = legacyName;
   v8 = +[CRLCapabilities currentCapabilities];
   if (([v8 isMetalCapable] & 1) == 0)
   {
 
 LABEL_14:
-    v13 = [a1 p_loadLegacyKernelWithName:v7];
+    v13 = [self p_loadLegacyKernelWithName:legacyNameCopy];
     if (!v13)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -42,7 +42,7 @@ LABEL_14:
 
       v15 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLCIKernelLoader loadKernelWithMetalName:legacyName:]");
       v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCIKernelLoader.m"];
-      [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:30 isFatal:0 description:"Unable to load legacy CIKernel with name: %{public}@", v7];
+      [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:30 isFatal:0 description:"Unable to load legacy CIKernel with name: %{public}@", legacyNameCopy];
       goto LABEL_25;
     }
 
@@ -54,14 +54,14 @@ LABEL_15:
   v9 = +[CRLCapabilities currentCapabilities];
   v10 = sub_10016BB74();
   v11 = [v9 metalCapabilitiesForDevice:v10];
-  v12 = [v11 isCoreImageMetalCapable];
+  isCoreImageMetalCapable = [v11 isCoreImageMetalCapable];
 
-  if (!v12)
+  if (!isCoreImageMetalCapable)
   {
     goto LABEL_14;
   }
 
-  v13 = [a1 p_loadMetalKernelWithName:v6];
+  v13 = [self p_loadMetalKernelWithName:nameCopy];
   if (v13)
   {
     goto LABEL_15;
@@ -91,7 +91,7 @@ LABEL_15:
 
   v15 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLCIKernelLoader loadKernelWithMetalName:legacyName:]");
   v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCIKernelLoader.m"];
-  [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:27 isFatal:0 description:"Unable to load Metal CIKernel with name: %{public}@", v6];
+  [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:27 isFatal:0 description:"Unable to load Metal CIKernel with name: %{public}@", nameCopy];
 LABEL_25:
 
   v17 = 0;
@@ -100,9 +100,9 @@ LABEL_26:
   return v17;
 }
 
-+ (id)p_loadMetalKernelWithName:(id)a3
++ (id)p_loadMetalKernelWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   p_info = CRLiOSMultiSelectGestureRecognizer.info;
   v6 = &_s10Foundation9IndexPathVSHAAMc_ptr;
@@ -198,9 +198,9 @@ LABEL_26:
   }
 
   v39 = 0;
-  v15 = [CIKernel kernelWithFunctionName:v3 fromMetalLibraryData:v14 error:&v39];
+  v15 = [CIKernel kernelWithFunctionName:nameCopy fromMetalLibraryData:v14 error:&v39];
   v16 = v39;
-  v38 = v3;
+  v38 = nameCopy;
   if (!v15)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -232,7 +232,7 @@ LABEL_26:
     v6 = &_s10Foundation9IndexPathVSHAAMc_ptr;
     p_info = CRLiOSMultiSelectGestureRecognizer.info;
 
-    v3 = v38;
+    nameCopy = v38;
   }
 
   if (v16)
@@ -249,8 +249,8 @@ LABEL_26:
       v31 = v20;
       v32 = objc_opt_class();
       v33 = NSStringFromClass(v32);
-      v34 = [v16 domain];
-      v35 = [v16 code];
+      domain = [v16 domain];
+      code = [v16 code];
       *buf = 67111170;
       v41 = v37;
       v42 = 2082;
@@ -264,9 +264,9 @@ LABEL_26:
       v50 = 2114;
       v51 = v33;
       v52 = 2114;
-      v53 = v34;
+      v53 = domain;
       v54 = 2048;
-      v55 = v35;
+      v55 = code;
       v56 = 2112;
       v57 = v16;
 
@@ -290,10 +290,10 @@ LABEL_26:
     v24 = [v6[101] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCIKernelLoader.m"];
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
-    v27 = [v16 domain];
-    v36 = [v16 code];
+    domain2 = [v16 domain];
+    code2 = [v16 code];
     v28 = v22;
-    v3 = v38;
+    nameCopy = v38;
 
 LABEL_51:
   }
@@ -301,9 +301,9 @@ LABEL_51:
   return v15;
 }
 
-+ (id)p_loadLegacyKernelWithName:(id)a3
++ (id)p_loadLegacyKernelWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = &_s10Foundation9IndexPathVSHAAMc_ptr;
   if (!v4)
@@ -335,10 +335,10 @@ LABEL_51:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:60 isFatal:0 description:"invalid nil value for '%{public}s'", "tsdBundle"];
   }
 
-  v9 = [v4 URLForResource:v3 withExtension:@"cikernel"];
+  v9 = [v4 URLForResource:nameCopy withExtension:@"cikernel"];
   if (v9)
   {
-    v41 = v3;
+    v41 = nameCopy;
     v42 = 0;
     v10 = [NSString stringWithContentsOfURL:v9 encoding:4 error:&v42];
     v11 = v42;
@@ -388,8 +388,8 @@ LABEL_51:
         v35 = v16;
         v36 = objc_opt_class();
         v37 = NSStringFromClass(v36);
-        v38 = [v11 domain];
-        v39 = [v11 code];
+        domain = [v11 domain];
+        code = [v11 code];
         *buf = 67111170;
         v44 = v15;
         v45 = 2082;
@@ -400,13 +400,13 @@ LABEL_51:
         v49 = 1024;
         v50 = 67;
         v51 = 2112;
-        v52 = v3;
+        v52 = nameCopy;
         v53 = 2114;
         v54 = v37;
         v55 = 2114;
-        v56 = v38;
+        v56 = domain;
         v57 = 2048;
-        v58 = v39;
+        v58 = code;
         v59 = 2112;
         v60 = v11;
       }
@@ -465,9 +465,9 @@ LABEL_51:
         [CRLAssertionHandler handleFailureInFunction:v27 file:v28 lineNumber:74 isFatal:0 description:"expected equality between %{public}s and %{public}s", "kernelsFromString.count", "1U"];
       }
 
-      v29 = [v24 firstObject];
-      v3 = v41;
-      if (!v29)
+      firstObject = [v24 firstObject];
+      nameCopy = v41;
+      if (!firstObject)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -495,7 +495,7 @@ LABEL_51:
         v32 = [v5[101] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCIKernelLoader.m"];
         [CRLAssertionHandler handleFailureInFunction:v31 file:v32 lineNumber:76 isFatal:0 description:"invalid nil value for '%{public}s'", "kernelToReturn"];
 
-        v3 = v41;
+        nameCopy = v41;
       }
 
       v10 = v40;
@@ -503,8 +503,8 @@ LABEL_51:
 
     else
     {
-      v29 = 0;
-      v3 = v41;
+      firstObject = 0;
+      nameCopy = v41;
     }
   }
 
@@ -535,10 +535,10 @@ LABEL_51:
     v11 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLCIKernelLoader p_loadLegacyKernelWithName:]");
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCIKernelLoader.m"];
     [CRLAssertionHandler handleFailureInFunction:v11 file:v10 lineNumber:62 isFatal:0 description:"invalid nil value for '%{public}s'", "kernelURL"];
-    v29 = 0;
+    firstObject = 0;
   }
 
-  return v29;
+  return firstObject;
 }
 
 @end

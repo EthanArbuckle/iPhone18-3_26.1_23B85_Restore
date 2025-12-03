@@ -1,46 +1,46 @@
 @interface _NTKPigmentAddController
-- (_NTKPigmentAddController)initWithFace:(id)a3 faceView:(id)a4 slot:(id)a5 willExitHandler:(id)a6;
+- (_NTKPigmentAddController)initWithFace:(id)face faceView:(id)view slot:(id)slot willExitHandler:(id)handler;
 - (id)_collectionViewLayout;
-- (id)_pigmentForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_callWillExitHandlerWithChanges:(BOOL)a3;
-- (void)_dismissWithChanges:(BOOL)a3;
+- (id)_pigmentForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_callWillExitHandlerWithChanges:(BOOL)changes;
+- (void)_dismissWithChanges:(BOOL)changes;
 - (void)_donePressed;
 - (void)_handleOptionsChangedNotification;
 - (void)_setupPigments;
 - (void)_updateSelections;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _NTKPigmentAddController
 
-- (_NTKPigmentAddController)initWithFace:(id)a3 faceView:(id)a4 slot:(id)a5 willExitHandler:(id)a6
+- (_NTKPigmentAddController)initWithFace:(id)face faceView:(id)view slot:(id)slot willExitHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  faceCopy = face;
+  viewCopy = view;
+  slotCopy = slot;
+  handlerCopy = handler;
   v29.receiver = self;
   v29.super_class = _NTKPigmentAddController;
   v15 = [(_NTKPigmentAddController *)&v29 initWithNibName:0 bundle:0];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_face, a3);
-    objc_storeStrong(&v16->_faceView, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_face, face);
+    objc_storeStrong(&v16->_faceView, view);
+    v17 = [slotCopy copy];
     slot = v16->_slot;
     v16->_slot = v17;
 
-    v19 = _Block_copy(v14);
+    v19 = _Block_copy(handlerCopy);
     willExitHandler = v16->_willExitHandler;
     v16->_willExitHandler = v19;
 
@@ -53,17 +53,17 @@
     v16->_removedPigments = v23;
 
     v25 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v16 action:sel__donePressed];
-    v26 = [(_NTKPigmentAddController *)v16 navigationItem];
-    [v26 setRightBarButtonItem:v25];
+    navigationItem = [(_NTKPigmentAddController *)v16 navigationItem];
+    [navigationItem setRightBarButtonItem:v25];
 
     [(_NTKPigmentAddController *)v16 _setupPigments];
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v16 selector:sel__handleOptionsChangedNotification name:@"NTKColorEditOptionsChangedNotificationName" object:v16->_face];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__handleOptionsChangedNotification name:@"NTKColorEditOptionsChangedNotificationName" object:v16->_face];
   }
 
   else
   {
-    (*(v14 + 2))(v14, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   return v16;
@@ -74,7 +74,7 @@
   v22.receiver = self;
   v22.super_class = _NTKPigmentAddController;
   [(_NTKPigmentAddController *)&v22 viewDidLoad];
-  v3 = [(NTKFace *)self->_face device];
+  device = [(NTKFace *)self->_face device];
   if (_LayoutConstants_onceToken != -1)
   {
     [_NTKPigmentAddController viewDidLoad];
@@ -83,12 +83,12 @@
   v4 = *&_LayoutConstants__constants_3;
 
   v5 = BPSBackgroundColor();
-  v6 = [(_NTKPigmentAddController *)self view];
-  [v6 setBackgroundColor:v5];
+  view = [(_NTKPigmentAddController *)self view];
+  [view setBackgroundColor:v5];
 
-  v7 = [(_NTKPigmentAddController *)self _collectionViewLayout];
+  _collectionViewLayout = [(_NTKPigmentAddController *)self _collectionViewLayout];
   v8 = objc_alloc(MEMORY[0x277D752A0]);
-  v9 = [v8 initWithFrame:v7 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  v9 = [v8 initWithFrame:_collectionViewLayout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   collectionView = self->_collectionView;
   self->_collectionView = v9;
 
@@ -108,14 +108,14 @@
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setDataSource:self];
   [(UICollectionView *)self->_collectionView setContentInset:v4, 0.0, 0.0, 0.0];
-  v18 = [(_NTKPigmentAddController *)self view];
-  [v18 addSubview:self->_collectionView];
+  view2 = [(_NTKPigmentAddController *)self view];
+  [view2 addSubview:self->_collectionView];
 
   v20 = NTKCCustomizationLocalizedString(@"PIGMENT_EDIT_TITLE", @"Face Colors", v19);
   [(_NTKPigmentAddController *)self setTitle:v20];
 
-  v21 = [(_NTKPigmentAddController *)self navigationItem];
-  [v21 _setLargeTitleTwoLineMode:1];
+  navigationItem = [(_NTKPigmentAddController *)self navigationItem];
+  [navigationItem _setLargeTitleTwoLineMode:1];
 }
 
 - (void)viewDidLayoutSubviews
@@ -123,8 +123,8 @@
   v12.receiver = self;
   v12.super_class = _NTKPigmentAddController;
   [(_NTKPigmentAddController *)&v12 viewDidLayoutSubviews];
-  v3 = [(_NTKPigmentAddController *)self view];
-  [v3 bounds];
+  view = [(_NTKPigmentAddController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -133,11 +133,11 @@
   [(UICollectionView *)self->_collectionView setFrame:v5, v7, v9, v11];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _NTKPigmentAddController;
-  [(_NTKPigmentAddController *)&v4 viewWillAppear:a3];
+  [(_NTKPigmentAddController *)&v4 viewWillAppear:appear];
   [(UICollectionView *)self->_collectionView reloadData];
   [(_NTKPigmentAddController *)self _updateSelections];
 }
@@ -150,14 +150,14 @@
     do
     {
       v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:v3];
-      v5 = [v4 items];
+      items = [v4 items];
 
-      if ([v5 count])
+      if ([items count])
       {
         v6 = 0;
         do
         {
-          v7 = [v5 objectAtIndexedSubscript:v6];
+          v7 = [items objectAtIndexedSubscript:v6];
           if (([(NTKPigmentEditOptionArray *)self->_availablePigments containsPigment:v7]|| [(NTKPigmentEditOptionArray *)self->_addedPigments containsPigment:v7]) && ![(NTKPigmentEditOptionArray *)self->_removedPigments containsPigment:v7])
           {
             v8 = [MEMORY[0x277CCAA70] indexPathForItem:v6 inSection:v3];
@@ -167,7 +167,7 @@
           ++v6;
         }
 
-        while (v6 < [v5 count]);
+        while (v6 < [items count]);
       }
 
       ++v3;
@@ -177,37 +177,37 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _NTKPigmentAddController;
-  [(_NTKPigmentAddController *)&v4 viewDidAppear:a3];
+  [(_NTKPigmentAddController *)&v4 viewDidAppear:appear];
   [(UICollectionView *)self->_collectionView becomeFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = _NTKPigmentAddController;
-  [(_NTKPigmentAddController *)&v4 viewDidDisappear:a3];
+  [(_NTKPigmentAddController *)&v4 viewDidDisappear:disappear];
   [(UICollectionView *)self->_collectionView resignFirstResponder];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 items];
-  v6 = [v5 count];
+  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  items = [v4 items];
+  v6 = [items count];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   face = self->_face;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NTKFace *)face device];
+  pathCopy = path;
+  viewCopy = view;
+  device = [(NTKFace *)face device];
   if (_LayoutConstants_onceToken != -1)
   {
     [_NTKPigmentAddCell _updateCheck];
@@ -215,10 +215,10 @@
 
   v10 = *&_LayoutConstants__constants_0;
   v11 = +[_NTKPigmentAddCell reuseIdentifier];
-  v12 = [v8 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v7];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  [v12 setDevice:v9];
-  v13 = [(_NTKPigmentAddController *)self _pigmentForIndexPath:v7];
+  [v12 setDevice:device];
+  v13 = [(_NTKPigmentAddController *)self _pigmentForIndexPath:pathCopy];
 
   v14 = [(NTKFaceView *)self->_faceView swatchImageForColorOption:v13 size:v10, v10];
   [v12 setImage:v14];
@@ -229,25 +229,25 @@
   return v12;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
   v11 = +[_NTKPigmentAddHeaderView reuseIdentifier];
-  v12 = [v10 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v11 forIndexPath:v8];
+  v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  v13 = [v8 section];
-  v14 = [(NSArray *)self->_sections objectAtIndexedSubscript:v13];
-  v15 = [v14 name];
-  [v12 setName:v15];
+  section = [pathCopy section];
+  v14 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  name = [v14 name];
+  [v12 setName:name];
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = [(_NTKPigmentAddController *)self _pigmentForIndexPath:a4];
+  v6 = [(_NTKPigmentAddController *)self _pigmentForIndexPath:path];
   v5 = [(NTKPigmentEditOptionArray *)self->_removedPigments indexOfPigment:?];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -260,9 +260,9 @@
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v6 = [(_NTKPigmentAddController *)self _pigmentForIndexPath:a4];
+  v6 = [(_NTKPigmentAddController *)self _pigmentForIndexPath:path];
   v5 = [(NTKPigmentEditOptionArray *)self->_addedPigments indexOfPigment:?];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -278,7 +278,7 @@
 - (id)_collectionViewLayout
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v2 = [(NTKFace *)self->_face device];
+  device = [(NTKFace *)self->_face device];
   if (_LayoutConstants_onceToken != -1)
   {
     [_NTKPigmentAddCell _updateCheck];
@@ -337,9 +337,9 @@
   availablePigments = self->_availablePigments;
   self->_availablePigments = v3;
 
-  v5 = [(NTKFace *)self->_face pigmentOptionProvider];
-  v27 = self;
-  v6 = [v5 availableColorsForSlot:self->_slot];
+  pigmentOptionProvider = [(NTKFace *)self->_face pigmentOptionProvider];
+  selfCopy = self;
+  v6 = [pigmentOptionProvider availableColorsForSlot:self->_slot];
 
   v26 = objc_opt_new();
   v28 = 0u;
@@ -367,8 +367,8 @@
         v15 = *(*(&v28 + 1) + 8 * i);
         if ([v15 isAddable])
         {
-          v16 = [v15 collectionName];
-          if (([v16 isEqualToString:v11] & 1) == 0)
+          collectionName = [v15 collectionName];
+          if (([collectionName isEqualToString:v11] & 1) == 0)
           {
             if ([v12 count])
             {
@@ -378,13 +378,13 @@
               [(NSArray *)v26 addObject:v17];
             }
 
-            v18 = v16;
+            v18 = collectionName;
 
-            v19 = [v15 localizedCollectionName];
+            localizedCollectionName = [v15 localizedCollectionName];
 
             v20 = [NTKPigmentEditOptionArray arrayWithEquality:1];
 
-            v21 = v19;
+            v21 = localizedCollectionName;
             v11 = v18;
             v12 = v20;
             v10 = v21;
@@ -393,7 +393,7 @@
           [v12 addPigment:v15];
           if ([v15 isVisible])
           {
-            [(NTKPigmentEditOptionArray *)v27->_availablePigments addPigment:v15];
+            [(NTKPigmentEditOptionArray *)selfCopy->_availablePigments addPigment:v15];
           }
         }
       }
@@ -422,37 +422,37 @@
     v10 = v22;
   }
 
-  sections = v27->_sections;
-  v27->_sections = v26;
+  sections = selfCopy->_sections;
+  selfCopy->_sections = v26;
   v25 = v26;
 }
 
-- (id)_pigmentForIndexPath:(id)a3
+- (id)_pigmentForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 item];
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v7 = [(NSArray *)self->_sections objectAtIndexedSubscript:v5];
-  v8 = [v7 items];
-  v9 = [v8 objectAtIndexedSubscript:v6];
+  v7 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  items = [v7 items];
+  v9 = [items objectAtIndexedSubscript:item];
 
   return v9;
 }
 
-- (void)_dismissWithChanges:(BOOL)a3
+- (void)_dismissWithChanges:(BOOL)changes
 {
-  [(_NTKPigmentAddController *)self _callWillExitHandlerWithChanges:a3];
+  [(_NTKPigmentAddController *)self _callWillExitHandlerWithChanges:changes];
 
   [(_NTKPigmentAddController *)self dismissViewControllerAnimated:1 completion:&__block_literal_global_107];
 }
 
-- (void)_callWillExitHandlerWithChanges:(BOOL)a3
+- (void)_callWillExitHandlerWithChanges:(BOOL)changes
 {
   willExitHandler = self->_willExitHandler;
   if (willExitHandler)
   {
-    willExitHandler[2](willExitHandler, a3);
+    willExitHandler[2](willExitHandler, changes);
     v5 = self->_willExitHandler;
     self->_willExitHandler = 0;
   }

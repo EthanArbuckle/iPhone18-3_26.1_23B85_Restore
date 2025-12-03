@@ -1,14 +1,14 @@
 @interface SFUZipArchiveFileDataRepresentation
-- (BOOL)hasSameLocationAs:(id)a3;
-- (SFUZipArchiveFileDataRepresentation)initWithPath:(id)a3;
-- (id)bufferedInputStreamWithOffset:(int64_t)a3 length:(int64_t)a4;
-- (id)inputStreamWithOffset:(int64_t)a3 length:(int64_t)a4;
+- (BOOL)hasSameLocationAs:(id)as;
+- (SFUZipArchiveFileDataRepresentation)initWithPath:(id)path;
+- (id)bufferedInputStreamWithOffset:(int64_t)offset length:(int64_t)length;
+- (id)inputStreamWithOffset:(int64_t)offset length:(int64_t)length;
 - (void)dealloc;
 @end
 
 @implementation SFUZipArchiveFileDataRepresentation
 
-- (SFUZipArchiveFileDataRepresentation)initWithPath:(id)a3
+- (SFUZipArchiveFileDataRepresentation)initWithPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = SFUZipArchiveFileDataRepresentation;
@@ -17,16 +17,16 @@
   if (v4)
   {
     v4->mFd = -1;
-    v6 = SFUOpen(a3, 0, 0);
+    v6 = SFUOpen(path, 0, 0);
     v5->mFd = v6;
     if (v6 == -1 || pread(v6, 0, 0, 0) == -1)
     {
-      v7 = [[SFUFileDataRepresentation alloc] initWithPath:a3];
+      v7 = [[SFUFileDataRepresentation alloc] initWithPath:path];
     }
 
     else
     {
-      v7 = [[SFUFileDataRepresentation alloc] initWithPath:a3 sharedFileDescriptor:v5->mFd];
+      v7 = [[SFUFileDataRepresentation alloc] initWithPath:path sharedFileDescriptor:v5->mFd];
     }
 
     v5->mFileRepresentation = v7;
@@ -61,12 +61,12 @@
   [(SFUZipArchiveFileDataRepresentation *)&v6 dealloc];
 }
 
-- (BOOL)hasSameLocationAs:(id)a3
+- (BOOL)hasSameLocationAs:(id)as
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = *(a3 + 4);
+    as = *(as + 4);
   }
 
   else
@@ -78,21 +78,21 @@
     }
   }
 
-  if (!a3)
+  if (!as)
   {
     return 0;
   }
 
-  v5 = [(SFUFileDataRepresentation *)self->mFileRepresentation path];
-  v6 = [a3 path];
+  path = [(SFUFileDataRepresentation *)self->mFileRepresentation path];
+  path2 = [as path];
 
-  return [v5 isEqualToString:v6];
+  return [path isEqualToString:path2];
 }
 
-- (id)inputStreamWithOffset:(int64_t)a3 length:(int64_t)a4
+- (id)inputStreamWithOffset:(int64_t)offset length:(int64_t)length
 {
-  v7 = [(SFUFileDataRepresentation *)self->mFileRepresentation dataLength];
-  if ((a4 | a3) < 0 || (v7 >= a4 ? (v8 = v7 - a4 < a3) : (v8 = 1), v8))
+  dataLength = [(SFUFileDataRepresentation *)self->mFileRepresentation dataLength];
+  if ((length | offset) < 0 || (dataLength >= length ? (v8 = dataLength - length < offset) : (v8 = 1), v8))
   {
     [NSException raise:NSInvalidArgumentException format:@"Bad input stream range."];
   }
@@ -100,20 +100,20 @@
   mFd = self->mFd;
   if (mFd == -1 || pread(mFd, 0, 0, 0) == -1)
   {
-    v10 = [[SFUFileInputStream alloc] initWithPath:[(SFUFileDataRepresentation *)self->mFileRepresentation path] offset:a3 length:a4];
+    v10 = [[SFUFileInputStream alloc] initWithPath:[(SFUFileDataRepresentation *)self->mFileRepresentation path] offset:offset length:length];
   }
 
   else
   {
-    v10 = [[SFUFileInputStream alloc] initWithFileDescriptor:SFUDup(self->mFd) offset:a3 length:a4];
+    v10 = [[SFUFileInputStream alloc] initWithFileDescriptor:SFUDup(self->mFd) offset:offset length:length];
   }
 
   return v10;
 }
 
-- (id)bufferedInputStreamWithOffset:(int64_t)a3 length:(int64_t)a4
+- (id)bufferedInputStreamWithOffset:(int64_t)offset length:(int64_t)length
 {
-  v4 = [[SFUBufferedInputStream alloc] initWithStream:[(SFUZipArchiveFileDataRepresentation *)self inputStreamWithOffset:a3 length:?] dataLength:a4];
+  v4 = [[SFUBufferedInputStream alloc] initWithStream:[(SFUZipArchiveFileDataRepresentation *)self inputStreamWithOffset:offset length:?] dataLength:length];
 
   return v4;
 }

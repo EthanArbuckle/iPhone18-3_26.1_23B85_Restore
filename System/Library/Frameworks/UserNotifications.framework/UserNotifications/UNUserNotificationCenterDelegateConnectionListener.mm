@@ -1,17 +1,17 @@
 @interface UNUserNotificationCenterDelegateConnectionListener
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (UNUserNotificationCenterDelegateConnectionListener)init;
-- (void)_queue_didChangeSettings:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_queue_didOpenApplicationForResponse:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_queue_didReceiveNotificationResponse:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)_queue_ensureListenerForBundleIdentifier:(id)a3;
-- (void)_queue_invalidateListenerForBundleIdentifier:(id)a3;
-- (void)_queue_setDelegate:(id)a3 forBundleIdentifier:(id)a4;
-- (void)didChangeSettings:(id)a3 forBundleIdentifier:(id)a4;
-- (void)didOpenApplicationForResponse:(id)a3 forBundleIdentifier:(id)a4;
-- (void)didReceiveNotificationResponse:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)setDelegate:(id)a3 forBundleIdentifier:(id)a4;
+- (void)_queue_didChangeSettings:(id)settings forBundleIdentifier:(id)identifier;
+- (void)_queue_didOpenApplicationForResponse:(id)response forBundleIdentifier:(id)identifier;
+- (void)_queue_didReceiveNotificationResponse:(id)response forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)_queue_ensureListenerForBundleIdentifier:(id)identifier;
+- (void)_queue_invalidateListenerForBundleIdentifier:(id)identifier;
+- (void)_queue_setDelegate:(id)delegate forBundleIdentifier:(id)identifier;
+- (void)didChangeSettings:(id)settings forBundleIdentifier:(id)identifier;
+- (void)didOpenApplicationForResponse:(id)response forBundleIdentifier:(id)identifier;
+- (void)didReceiveNotificationResponse:(id)response forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setDelegate:(id)delegate forBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNUserNotificationCenterDelegateConnectionListener
@@ -64,87 +64,87 @@ uint64_t __68__UNUserNotificationCenterDelegateConnectionListener_sharedInstance
   return v2;
 }
 
-- (void)setDelegate:(id)a3 forBundleIdentifier:(id)a4
+- (void)setDelegate:(id)delegate forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__UNUserNotificationCenterDelegateConnectionListener_setDelegate_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFF870;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = delegateCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)didReceiveNotificationResponse:(id)response forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __127__UNUserNotificationCenterDelegateConnectionListener_didReceiveNotificationResponse_forBundleIdentifier_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E7CFF898;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = responseCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = responseCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)didChangeSettings:(id)a3 forBundleIdentifier:(id)a4
+- (void)didChangeSettings:(id)settings forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__UNUserNotificationCenterDelegateConnectionListener_didChangeSettings_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFF870;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = settingsCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = settingsCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didOpenApplicationForResponse:(id)a3 forBundleIdentifier:(id)a4
+- (void)didOpenApplicationForResponse:(id)response forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__UNUserNotificationCenterDelegateConnectionListener_didOpenApplicationForResponse_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E7CFF870;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = responseCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = responseCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[UNUserNotificationCenterDelegateService serverInterface];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 setInterruptionHandler:&__block_literal_global_6];
-  [v5 setInvalidationHandler:&__block_literal_global_9];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setInterruptionHandler:&__block_literal_global_6];
+  [connectionCopy setInvalidationHandler:&__block_literal_global_9];
+  [connectionCopy resume];
 
   return 1;
 }
@@ -169,111 +169,111 @@ void __89__UNUserNotificationCenterDelegateConnectionListener_listener_shouldAcc
   }
 }
 
-- (void)_queue_setDelegate:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_setDelegate:(id)delegate forBundleIdentifier:(id)identifier
 {
-  v9 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
-  v7 = a4;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
   delegateByBundleIdentifier = self->_delegateByBundleIdentifier;
-  if (v9)
+  if (delegateCopy)
   {
-    [(NSMutableDictionary *)delegateByBundleIdentifier setObject:v9 forKey:v7];
-    [(UNUserNotificationCenterDelegateConnectionListener *)self _queue_ensureListenerForBundleIdentifier:v7];
+    [(NSMutableDictionary *)delegateByBundleIdentifier setObject:delegateCopy forKey:identifierCopy];
+    [(UNUserNotificationCenterDelegateConnectionListener *)self _queue_ensureListenerForBundleIdentifier:identifierCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)delegateByBundleIdentifier removeObjectForKey:v7];
-    [(UNUserNotificationCenterDelegateConnectionListener *)self _queue_invalidateListenerForBundleIdentifier:v7];
+    [(NSMutableDictionary *)delegateByBundleIdentifier removeObjectForKey:identifierCopy];
+    [(UNUserNotificationCenterDelegateConnectionListener *)self _queue_invalidateListenerForBundleIdentifier:identifierCopy];
   }
 }
 
-- (void)_queue_ensureListenerForBundleIdentifier:(id)a3
+- (void)_queue_ensureListenerForBundleIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_listenerByBundleIdentifier objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_listenerByBundleIdentifier objectForKey:identifierCopy];
   if (!v5)
   {
     v6 = UNLogConnections;
     if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = identifierCopy;
       _os_log_impl(&dword_1B85E3000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Listening for connections to delegate", &v9, 0xCu);
     }
 
-    v7 = [UNUserNotificationCenterDelegateService serviceNameForBundleIdentifier:v4];
+    v7 = [UNUserNotificationCenterDelegateService serviceNameForBundleIdentifier:identifierCopy];
     v5 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v7];
     [v5 setDelegate:self];
-    [(NSMutableDictionary *)self->_listenerByBundleIdentifier setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_listenerByBundleIdentifier setObject:v5 forKey:identifierCopy];
     [v5 resume];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_invalidateListenerForBundleIdentifier:(id)a3
+- (void)_queue_invalidateListenerForBundleIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_listenerByBundleIdentifier objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_listenerByBundleIdentifier objectForKey:identifierCopy];
   if (v5)
   {
     v6 = UNLogConnections;
     if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = identifierCopy;
       _os_log_impl(&dword_1B85E3000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Invalidating listener for delegate", &v8, 0xCu);
     }
 
     [v5 invalidate];
-    [(NSMutableDictionary *)self->_listenerByBundleIdentifier removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_listenerByBundleIdentifier removeObjectForKey:identifierCopy];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_didReceiveNotificationResponse:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)_queue_didReceiveNotificationResponse:(id)response forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v11 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 actionIdentifier];
-    v14 = [v8 notification];
-    v15 = [v14 request];
-    v16 = [v15 identifier];
-    v17 = [v16 un_logDigest];
+    actionIdentifier = [responseCopy actionIdentifier];
+    notification = [responseCopy notification];
+    request = [notification request];
+    identifier = [request identifier];
+    un_logDigest = [identifier un_logDigest];
     *buf = 138543874;
-    v29 = v9;
+    v29 = identifierCopy;
     v30 = 2114;
-    v31 = v13;
+    v31 = actionIdentifier;
     v32 = 2114;
-    v33 = v17;
+    v33 = un_logDigest;
     _os_log_impl(&dword_1B85E3000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received action %{public}@ response for notification %{public}@", buf, 0x20u);
   }
 
-  v18 = [(NSMutableDictionary *)self->_delegateByBundleIdentifier objectForKey:v9];
+  v18 = [(NSMutableDictionary *)self->_delegateByBundleIdentifier objectForKey:identifierCopy];
   callOutQueue = self->_callOutQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __134__UNUserNotificationCenterDelegateConnectionListener__queue_didReceiveNotificationResponse_forBundleIdentifier_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CFF8E8;
   v25 = v18;
-  v26 = v8;
-  v27 = v10;
-  v20 = v10;
-  v21 = v8;
+  v26 = responseCopy;
+  v27 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = responseCopy;
   v22 = v18;
   dispatch_async(callOutQueue, block);
 
@@ -303,70 +303,70 @@ uint64_t __134__UNUserNotificationCenterDelegateConnectionListener__queue_didRec
   return result;
 }
 
-- (void)_queue_didChangeSettings:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_didChangeSettings:(id)settings forBundleIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = v7;
+    v18 = identifierCopy;
     v19 = 2114;
-    v20 = v6;
+    v20 = settingsCopy;
     _os_log_impl(&dword_1B85E3000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] changed settings %{public}@", buf, 0x16u);
   }
 
-  v9 = [(NSMutableDictionary *)self->_delegateByBundleIdentifier objectForKey:v7];
+  v9 = [(NSMutableDictionary *)self->_delegateByBundleIdentifier objectForKey:identifierCopy];
   callOutQueue = self->_callOutQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __99__UNUserNotificationCenterDelegateConnectionListener__queue_didChangeSettings_forBundleIdentifier___block_invoke;
   v14[3] = &unk_1E7CFF910;
   v15 = v9;
-  v16 = v6;
-  v11 = v6;
+  v16 = settingsCopy;
+  v11 = settingsCopy;
   v12 = v9;
   dispatch_async(callOutQueue, v14);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_didOpenApplicationForResponse:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_didOpenApplicationForResponse:(id)response forBundleIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   v8 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 actionIdentifier];
-    v11 = [v6 notification];
-    v12 = [v11 request];
-    v13 = [v12 identifier];
-    v14 = [v13 un_logDigest];
+    actionIdentifier = [responseCopy actionIdentifier];
+    notification = [responseCopy notification];
+    request = [notification request];
+    identifier = [request identifier];
+    un_logDigest = [identifier un_logDigest];
     *buf = 138543874;
-    v24 = v7;
+    v24 = identifierCopy;
     v25 = 2114;
-    v26 = v10;
+    v26 = actionIdentifier;
     v27 = 2114;
-    v28 = v14;
+    v28 = un_logDigest;
     _os_log_impl(&dword_1B85E3000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did open application for action %{public}@ response for notification %{public}@", buf, 0x20u);
   }
 
-  v15 = [(NSMutableDictionary *)self->_delegateByBundleIdentifier objectForKey:v7];
+  v15 = [(NSMutableDictionary *)self->_delegateByBundleIdentifier objectForKey:identifierCopy];
   callOutQueue = self->_callOutQueue;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __111__UNUserNotificationCenterDelegateConnectionListener__queue_didOpenApplicationForResponse_forBundleIdentifier___block_invoke;
   v20[3] = &unk_1E7CFF910;
   v21 = v15;
-  v22 = v6;
-  v17 = v6;
+  v22 = responseCopy;
+  v17 = responseCopy;
   v18 = v15;
   dispatch_async(callOutQueue, v20);
 

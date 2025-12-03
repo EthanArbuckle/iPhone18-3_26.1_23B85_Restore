@@ -1,11 +1,11 @@
 @interface CRLConnectionLineKnob.CRLConnectionLineKnobAnimatedLayer
 - (_TtCC8Freeform21CRLConnectionLineKnobP33_96EC3ACD086E6EEC09C8AECDD8231E3A34CRLConnectionLineKnobAnimatedLayer)init;
-- (_TtCC8Freeform21CRLConnectionLineKnobP33_96EC3ACD086E6EEC09C8AECDD8231E3A34CRLConnectionLineKnobAnimatedLayer)initWithLayer:(id)a3;
+- (_TtCC8Freeform21CRLConnectionLineKnobP33_96EC3ACD086E6EEC09C8AECDD8231E3A34CRLConnectionLineKnobAnimatedLayer)initWithLayer:(id)layer;
 @end
 
 @implementation CRLConnectionLineKnob.CRLConnectionLineKnobAnimatedLayer
 
-- (_TtCC8Freeform21CRLConnectionLineKnobP33_96EC3ACD086E6EEC09C8AECDD8231E3A34CRLConnectionLineKnobAnimatedLayer)initWithLayer:(id)a3
+- (_TtCC8Freeform21CRLConnectionLineKnobP33_96EC3ACD086E6EEC09C8AECDD8231E3A34CRLConnectionLineKnobAnimatedLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

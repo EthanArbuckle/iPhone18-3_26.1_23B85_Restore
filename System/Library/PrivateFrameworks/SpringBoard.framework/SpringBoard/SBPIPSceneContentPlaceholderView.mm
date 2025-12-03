@@ -1,19 +1,19 @@
 @interface SBPIPSceneContentPlaceholderView
-- (SBPIPSceneContentPlaceholderView)initWithImage:(id)a3;
+- (SBPIPSceneContentPlaceholderView)initWithImage:(id)image;
 - (void)layoutSubviews;
 @end
 
 @implementation SBPIPSceneContentPlaceholderView
 
-- (SBPIPSceneContentPlaceholderView)initWithImage:(id)a3
+- (SBPIPSceneContentPlaceholderView)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v10.receiver = self;
   v10.super_class = SBPIPSceneContentPlaceholderView;
   v5 = [(SBPIPSceneContentPlaceholderView *)&v10 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v4];
+    v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageCopy];
     [(UIImageView *)v6 setContentMode:2];
     imageView = v5->_imageView;
     v5->_imageView = v6;

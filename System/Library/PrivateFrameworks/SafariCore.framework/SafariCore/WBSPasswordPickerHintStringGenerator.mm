@@ -1,73 +1,73 @@
 @interface WBSPasswordPickerHintStringGenerator
-+ (void)getHintStringsForAppID:(id)a3 appNames:(id)a4 matchedSites:(id)a5 urlString:(id)a6 outServiceNameHintStrings:(id *)a7 outDomainHintStrings:(id *)a8;
++ (void)getHintStringsForAppID:(id)d appNames:(id)names matchedSites:(id)sites urlString:(id)string outServiceNameHintStrings:(id *)strings outDomainHintStrings:(id *)hintStrings;
 @end
 
 @implementation WBSPasswordPickerHintStringGenerator
 
-+ (void)getHintStringsForAppID:(id)a3 appNames:(id)a4 matchedSites:(id)a5 urlString:(id)a6 outServiceNameHintStrings:(id *)a7 outDomainHintStrings:(id *)a8
++ (void)getHintStringsForAppID:(id)d appNames:(id)names matchedSites:(id)sites urlString:(id)string outServiceNameHintStrings:(id *)strings outDomainHintStrings:(id *)hintStrings
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dCopy = d;
+  namesCopy = names;
+  sitesCopy = sites;
+  stringCopy = string;
   v17 = MEMORY[0x1E695E0F0];
-  v45 = a7;
-  *a7 = MEMORY[0x1E695E0F0];
-  *a8 = v17;
+  stringsCopy = strings;
+  *strings = MEMORY[0x1E695E0F0];
+  *hintStrings = v17;
   v18 = MEMORY[0x1E695DFF8];
-  v19 = [v16 safari_stringByTrimmingWhitespace];
-  v20 = [v19 dataUsingEncoding:5];
+  safari_stringByTrimmingWhitespace = [stringCopy safari_stringByTrimmingWhitespace];
+  v20 = [safari_stringByTrimmingWhitespace dataUsingEncoding:5];
   v21 = [v18 _lp_URLWithData:v20 baseURL:0];
-  v22 = [v21 host];
+  host = [v21 host];
 
-  if (v22)
+  if (host)
   {
-    v23 = v22;
+    host2 = host;
   }
 
   else
   {
-    v24 = [MEMORY[0x1E695DFF8] _lp_URLWithUserTypedString:v16 relativeToURL:0];
-    v23 = [v24 host];
+    v24 = [MEMORY[0x1E695DFF8] _lp_URLWithUserTypedString:stringCopy relativeToURL:0];
+    host2 = [v24 host];
   }
 
-  v25 = [v23 safari_highLevelDomainFromHost];
-  v26 = v25;
-  if (v25)
+  safari_highLevelDomainFromHost = [host2 safari_highLevelDomainFromHost];
+  v26 = safari_highLevelDomainFromHost;
+  if (safari_highLevelDomainFromHost)
   {
-    v51[0] = v25;
+    v51[0] = safari_highLevelDomainFromHost;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
 LABEL_6:
-    *a8 = v27;
+    *hintStrings = v27;
     goto LABEL_8;
   }
 
-  if (v23)
+  if (host2)
   {
     goto LABEL_8;
   }
 
-  if ([v15 count])
+  if ([sitesCopy count])
   {
-    v27 = [v15 safari_mapObjectsUsingBlock:&__block_literal_global_50];
+    v27 = [sitesCopy safari_mapObjectsUsingBlock:&__block_literal_global_50];
     goto LABEL_6;
   }
 
-  if (([v13 hasPrefix:@"com.apple."] & 1) == 0)
+  if (([dCopy hasPrefix:@"com.apple."] & 1) == 0)
   {
     v39 = 0;
     v40 = 0;
-    v41 = v22;
-    v42 = v16;
-    v43 = v15;
+    v41 = host;
+    v42 = stringCopy;
+    v43 = sitesCopy;
     v29 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v44 = v14;
-    v30 = v14;
+    v44 = namesCopy;
+    v30 = namesCopy;
     v31 = [v30 countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v31)
     {
@@ -86,9 +86,9 @@ LABEL_6:
           if ([v35 length])
           {
             [v29 addObject:v35];
-            v36 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-            v37 = [v36 invertedSet];
-            v38 = [v35 safari_stringByRemovingCharactersInSet:v37];
+            alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+            invertedSet = [alphanumericCharacterSet invertedSet];
+            v38 = [v35 safari_stringByRemovingCharactersInSet:invertedSet];
 
             if (([v35 isEqualToString:v38] & 1) == 0)
             {
@@ -103,13 +103,13 @@ LABEL_6:
       while (v32);
     }
 
-    *v45 = [v29 allObjects];
+    *stringsCopy = [v29 allObjects];
 
-    v14 = v44;
-    v16 = v42;
-    v15 = v43;
-    v23 = v40;
-    v22 = v41;
+    namesCopy = v44;
+    stringCopy = v42;
+    sitesCopy = v43;
+    host2 = v40;
+    host = v41;
     v26 = v39;
   }
 

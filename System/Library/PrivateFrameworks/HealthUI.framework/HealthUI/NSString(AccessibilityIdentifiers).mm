@@ -19,7 +19,7 @@
 + (id)hk_chartOverlayAccessibilityIdentifier:()AccessibilityIdentifiers
 {
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Overlay.%@", a3];
-  v5 = [a1 hk_chartAccessibilityIdentifier:v4];
+  v5 = [self hk_chartAccessibilityIdentifier:v4];
 
   return v5;
 }
@@ -27,7 +27,7 @@
 + (id)hk_chartOverlayCardioFitnessAccessibilityIdentifier:()AccessibilityIdentifiers
 {
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CardioFitnessLevel.%@", a3];
-  v5 = [a1 hk_chartOverlayAccessibilityIdentifier:v4];
+  v5 = [self hk_chartOverlayAccessibilityIdentifier:v4];
 
   return v5;
 }
@@ -35,7 +35,7 @@
 + (id)hk_chartLollipopAccessibilityIdentifier:()AccessibilityIdentifiers
 {
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"LollipopContainer.%@", a3];
-  v5 = [a1 hk_chartAccessibilityIdentifier:v4];
+  v5 = [self hk_chartAccessibilityIdentifier:v4];
 
   return v5;
 }
@@ -43,7 +43,7 @@
 + (id)hk_chartOverlayBloodPressureAccessibilityIdentifier:()AccessibilityIdentifiers
 {
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BloodPressureCategory.%@", a3];
-  v5 = [a1 hk_chartOverlayAccessibilityIdentifier:v4];
+  v5 = [self hk_chartOverlayAccessibilityIdentifier:v4];
 
   return v5;
 }

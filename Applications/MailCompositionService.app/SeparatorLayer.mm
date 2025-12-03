@@ -1,9 +1,9 @@
 @interface SeparatorLayer
 + (double)separatorHeight;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SeparatorLayer)initWithFrame:(CGRect)a3;
-- (void)setAxis:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SeparatorLayer)initWithFrame:(CGRect)frame;
+- (void)setAxis:(unint64_t)axis;
 @end
 
 @implementation SeparatorLayer
@@ -17,11 +17,11 @@
   return v4;
 }
 
-- (SeparatorLayer)initWithFrame:(CGRect)a3
+- (SeparatorLayer)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SeparatorLayer;
-  v3 = [(SeparatorLayer *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SeparatorLayer *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (void)setAxis:(unint64_t)a3
+- (void)setAxis:(unint64_t)axis
 {
-  self->_axis = a3;
-  v5 = a3 != 0;
-  v6 = a3 == 0;
+  self->_axis = axis;
+  v5 = axis != 0;
+  v6 = axis == 0;
   LODWORD(v3) = 1148846080;
   [(SeparatorLayer *)self setContentCompressionResistancePriority:v6 forAxis:v3];
   LODWORD(v7) = 1148846080;
@@ -51,10 +51,10 @@
   [(SeparatorLayer *)self invalidateIntrinsicContentSize];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   +[SeparatorLayer separatorHeight];
   v7 = v6;
   axis = self->_axis;

@@ -1,23 +1,23 @@
 @interface MIFilesystemScanner
-- (BOOL)_scanAppsDirectory:(id)a3 withError:(id *)a4;
-- (BOOL)_scanBundleContainersWithClass:(unint64_t)a3 withError:(id *)a4 ignoredErrorOccurredOnOneOrMoreItems:(BOOL *)a5;
-- (BOOL)_scanExtensionKitDirectory:(id)a3 withError:(id *)a4;
-- (BOOL)_scanExtensionKitLocations:(id)a3 withError:(id *)a4;
-- (BOOL)_scanFrameworkDirectory:(id)a3 withError:(id *)a4;
-- (BOOL)_scanFrameworksLocationsWithError:(id *)a3;
-- (BOOL)performScanWithError:(id *)a3;
+- (BOOL)_scanAppsDirectory:(id)directory withError:(id *)error;
+- (BOOL)_scanBundleContainersWithClass:(unint64_t)class withError:(id *)error ignoredErrorOccurredOnOneOrMoreItems:(BOOL *)items;
+- (BOOL)_scanExtensionKitDirectory:(id)directory withError:(id *)error;
+- (BOOL)_scanExtensionKitLocations:(id)locations withError:(id *)error;
+- (BOOL)_scanFrameworkDirectory:(id)directory withError:(id *)error;
+- (BOOL)_scanFrameworksLocationsWithError:(id *)error;
+- (BOOL)performScanWithError:(id *)error;
 - (MIFilesystemScanner)init;
-- (MIFilesystemScanner)initWithScanOptions:(unint64_t)a3;
-- (MIFilesystemScanner)initWithScanOptions:(unint64_t)a3 personaUniqueString:(id)a4;
+- (MIFilesystemScanner)initWithScanOptions:(unint64_t)options;
+- (MIFilesystemScanner)initWithScanOptions:(unint64_t)options personaUniqueString:(id)string;
 - (MIFilesystemScannerDelegate)delegate;
 - (id)builtInExtensionKitExtensionsDirectories;
 @end
 
 @implementation MIFilesystemScanner
 
-- (BOOL)_scanAppsDirectory:(id)a3 withError:(id *)a4
+- (BOOL)_scanAppsDirectory:(id)directory withError:(id *)error
 {
-  v6 = a3;
+  directoryCopy = directory;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -29,13 +29,13 @@
   v17[3] = &unk_1E7AE1AC0;
   v17[4] = self;
   v17[5] = v18;
-  v8 = [v7 enumerateURLsForItemsInDirectoryAtURL:v6 ignoreSymlinks:1 withBlock:v17];
+  v8 = [v7 enumerateURLsForItemsInDirectoryAtURL:directoryCopy ignoreSymlinks:1 withBlock:v17];
 
   if (!v8)
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
-      v16 = [v6 path];
+      path = [directoryCopy path];
       MOLogWrite();
     }
 
@@ -43,12 +43,12 @@
     goto LABEL_9;
   }
 
-  v9 = [v8 domain];
-  if ([v9 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v8 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v10 = [v8 code];
+    code = [v8 code];
 
-    if (v10 != 2)
+    if (code != 2)
     {
       goto LABEL_11;
     }
@@ -59,13 +59,13 @@ LABEL_9:
   }
 
 LABEL_11:
-  v13 = _CreateAndLogError("[MIFilesystemScanner _scanAppsDirectory:withError:]", 76, @"MIInstallerErrorDomain", 27, v8, 0, @"Failed to enumerate %@", v11, v6);
+  v13 = _CreateAndLogError("[MIFilesystemScanner _scanAppsDirectory:withError:]", 76, @"MIInstallerErrorDomain", 27, v8, 0, @"Failed to enumerate %@", v11, directoryCopy);
 
-  if (a4)
+  if (error)
   {
     v14 = v13;
     v12 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -150,9 +150,9 @@ LABEL_20:
   return 1;
 }
 
-- (BOOL)_scanFrameworkDirectory:(id)a3 withError:(id *)a4
+- (BOOL)_scanFrameworkDirectory:(id)directory withError:(id *)error
 {
-  v6 = a3;
+  directoryCopy = directory;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -164,13 +164,13 @@ LABEL_20:
   v17[3] = &unk_1E7AE1AC0;
   v17[4] = self;
   v17[5] = v18;
-  v8 = [v7 enumerateURLsForItemsInDirectoryAtURL:v6 ignoreSymlinks:1 withBlock:v17];
+  v8 = [v7 enumerateURLsForItemsInDirectoryAtURL:directoryCopy ignoreSymlinks:1 withBlock:v17];
 
   if (!v8)
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
-      v16 = [v6 path];
+      path = [directoryCopy path];
       MOLogWrite();
     }
 
@@ -178,12 +178,12 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  v9 = [v8 domain];
-  if ([v9 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v8 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v10 = [v8 code];
+    code = [v8 code];
 
-    if (v10 != 2)
+    if (code != 2)
     {
       goto LABEL_11;
     }
@@ -194,13 +194,13 @@ LABEL_9:
   }
 
 LABEL_11:
-  v13 = _CreateAndLogError("[MIFilesystemScanner _scanFrameworkDirectory:withError:]", 159, @"MIInstallerErrorDomain", 27, v8, 0, @"Failed to enumerate %@", v11, v6);
+  v13 = _CreateAndLogError("[MIFilesystemScanner _scanFrameworkDirectory:withError:]", 159, @"MIInstallerErrorDomain", 27, v8, 0, @"Failed to enumerate %@", v11, directoryCopy);
 
-  if (a4)
+  if (error)
   {
     v14 = v13;
     v12 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -299,17 +299,17 @@ LABEL_21:
   return 1;
 }
 
-- (BOOL)_scanFrameworksLocationsWithError:(id *)a3
+- (BOOL)_scanFrameworksLocationsWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = +[MIDaemonConfiguration sharedInstance];
-  v5 = [v4 allFrameworksDirectories];
+  allFrameworksDirectories = [v4 allFrameworksDirectories];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = allFrameworksDirectories;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -331,8 +331,8 @@ LABEL_21:
         v13 = v16;
         if (!v12)
         {
-          v14 = [(MIFilesystemScanner *)self delegate];
-          [v14 errorOccurred:v13];
+          delegate = [(MIFilesystemScanner *)self delegate];
+          [delegate errorOccurred:v13];
         }
 
         ++v10;
@@ -348,9 +348,9 @@ LABEL_21:
   return 1;
 }
 
-- (BOOL)_scanExtensionKitDirectory:(id)a3 withError:(id *)a4
+- (BOOL)_scanExtensionKitDirectory:(id)directory withError:(id *)error
 {
-  v6 = a3;
+  directoryCopy = directory;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -362,13 +362,13 @@ LABEL_21:
   v17[3] = &unk_1E7AE1AC0;
   v17[4] = self;
   v17[5] = v18;
-  v8 = [v7 enumerateURLsForItemsInDirectoryAtURL:v6 ignoreSymlinks:1 withBlock:v17];
+  v8 = [v7 enumerateURLsForItemsInDirectoryAtURL:directoryCopy ignoreSymlinks:1 withBlock:v17];
 
   if (!v8)
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
-      v16 = [v6 path];
+      path = [directoryCopy path];
       MOLogWrite();
     }
 
@@ -376,12 +376,12 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  v9 = [v8 domain];
-  if ([v9 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v8 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v10 = [v8 code];
+    code = [v8 code];
 
-    if (v10 != 2)
+    if (code != 2)
     {
       goto LABEL_11;
     }
@@ -392,13 +392,13 @@ LABEL_9:
   }
 
 LABEL_11:
-  v13 = _CreateAndLogError("[MIFilesystemScanner _scanExtensionKitDirectory:withError:]", 227, @"MIInstallerErrorDomain", 27, v8, 0, @"Failed to enumerate %@", v11, v6);
+  v13 = _CreateAndLogError("[MIFilesystemScanner _scanExtensionKitDirectory:withError:]", 227, @"MIInstallerErrorDomain", 27, v8, 0, @"Failed to enumerate %@", v11, directoryCopy);
 
-  if (a4)
+  if (error)
   {
     v14 = v13;
     v12 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -470,20 +470,20 @@ LABEL_10:
 - (id)builtInExtensionKitExtensionsDirectories
 {
   v2 = +[MIDaemonConfiguration sharedInstance];
-  v3 = [v2 builtInExtensionKitExtensionsDirectories];
+  builtInExtensionKitExtensionsDirectories = [v2 builtInExtensionKitExtensionsDirectories];
 
-  return v3;
+  return builtInExtensionKitExtensionsDirectories;
 }
 
-- (BOOL)_scanExtensionKitLocations:(id)a3 withError:(id *)a4
+- (BOOL)_scanExtensionKitLocations:(id)locations withError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  locationsCopy = locations;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [locationsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -495,7 +495,7 @@ LABEL_10:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(locationsCopy);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
@@ -504,15 +504,15 @@ LABEL_10:
         v12 = v15;
         if (!v11)
         {
-          v13 = [(MIFilesystemScanner *)self delegate];
-          [v13 errorOccurred:v12];
+          delegate = [(MIFilesystemScanner *)self delegate];
+          [delegate errorOccurred:v12];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [locationsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -521,37 +521,37 @@ LABEL_10:
   return 1;
 }
 
-- (BOOL)_scanBundleContainersWithClass:(unint64_t)a3 withError:(id *)a4 ignoredErrorOccurredOnOneOrMoreItems:(BOOL *)a5
+- (BOOL)_scanBundleContainersWithClass:(unint64_t)class withError:(id *)error ignoredErrorOccurredOnOneOrMoreItems:(BOOL *)items
 {
   v51 = *MEMORY[0x1E69E9840];
   v9 = objc_autoreleasePoolPush();
-  v40 = self;
-  v10 = [(MIFilesystemScanner *)self personaUniqueString];
-  if (v10)
+  selfCopy = self;
+  personaUniqueString = [(MIFilesystemScanner *)self personaUniqueString];
+  if (personaUniqueString)
   {
     v49 = 0;
     v11 = &v49;
-    v12 = [(MIContainer *)MIBundleContainer containersWithClass:a3 personaUniqueString:v10 error:&v49];
+    v12 = [(MIContainer *)MIBundleContainer containersWithClass:class personaUniqueString:personaUniqueString error:&v49];
   }
 
   else
   {
     v48 = 0;
     v11 = &v48;
-    v12 = [(MIContainer *)MIBundleContainer containersWithClass:a3 error:&v48];
+    v12 = [(MIContainer *)MIBundleContainer containersWithClass:class error:&v48];
   }
 
   v13 = v12;
   v15 = *v11;
   if (v13)
   {
-    v42 = [(MIFilesystemScanner *)v40 delegate];
-    if (!v42 && (!gLogHandle || *(gLogHandle + 44) >= 3))
+    delegate = [(MIFilesystemScanner *)selfCopy delegate];
+    if (!delegate && (!gLogHandle || *(gLogHandle + 44) >= 3))
     {
       MOLogWrite();
     }
 
-    v35 = v10;
+    v35 = personaUniqueString;
     context = v9;
     v37 = v13;
     v46 = 0u;
@@ -576,37 +576,37 @@ LABEL_10:
 
           v19 = *(*(&v44 + 1) + 8 * i);
           v20 = objc_autoreleasePoolPush();
-          v21 = [v19 bundle];
-          v22 = v21;
-          if (v21)
+          bundle = [v19 bundle];
+          v22 = bundle;
+          if (bundle)
           {
-            v23 = a5;
-            v24 = [v21 emergencyOffloadVersion];
-            if (v24 && (!gLogHandle || *(gLogHandle + 44) >= 3))
+            itemsCopy = items;
+            emergencyOffloadVersion = [bundle emergencyOffloadVersion];
+            if (emergencyOffloadVersion && (!gLogHandle || *(gLogHandle + 44) >= 3))
             {
-              v33 = [v22 identifier];
-              v34 = v24;
+              identifier = [v22 identifier];
+              v34 = emergencyOffloadVersion;
               MOLogWrite();
             }
 
-            v25 = [(MIFilesystemScanner *)v40 personaUniqueString:v33];
+            v25 = [(MIFilesystemScanner *)selfCopy personaUniqueString:identifier];
             v43 = v15;
-            v26 = [v42 scanExecutableBundle:v22 inContainer:v19 forPersona:v25 withError:&v43];
+            v26 = [delegate scanExecutableBundle:v22 inContainer:v19 forPersona:v25 withError:&v43];
             v27 = v43;
 
             if (v26)
             {
               ++v39;
               v15 = v27;
-              a5 = v23;
+              items = itemsCopy;
             }
 
             else
             {
-              a5 = v23;
-              if (v23)
+              items = itemsCopy;
+              if (itemsCopy)
               {
-                *v23 = 1;
+                *itemsCopy = 1;
               }
 
               v15 = v27;
@@ -615,14 +615,14 @@ LABEL_10:
 
           else
           {
-            if (a5)
+            if (items)
             {
-              *a5 = 1;
+              *items = 1;
             }
 
-            v24 = [v19 identifier];
-            v29 = _CreateAndLogError("[MIFilesystemScanner _scanBundleContainersWithClass:withError:ignoredErrorOccurredOnOneOrMoreItems:]", 289, @"MIInstallerErrorDomain", 36, 0, 0, @"No bundle found in container %@ skipping.", v28, v24);;
-            [v42 errorOccurred:v29];
+            emergencyOffloadVersion = [v19 identifier];
+            v29 = _CreateAndLogError("[MIFilesystemScanner _scanBundleContainersWithClass:withError:ignoredErrorOccurredOnOneOrMoreItems:]", 289, @"MIInstallerErrorDomain", 36, 0, 0, @"No bundle found in container %@ skipping.", v28, emergencyOffloadVersion);;
+            [delegate errorOccurred:v29];
           }
 
           objc_autoreleasePoolPop(v20);
@@ -645,13 +645,13 @@ LABEL_10:
 
   else
   {
-    v30 = _CreateAndLogError("[MIFilesystemScanner _scanBundleContainersWithClass:withError:ignoredErrorOccurredOnOneOrMoreItems:]", 275, @"MIInstallerErrorDomain", 4, v15, 0, @"Failed to scan for bundle containers of content class %ld", v14, a3);
+    v30 = _CreateAndLogError("[MIFilesystemScanner _scanBundleContainersWithClass:withError:ignoredErrorOccurredOnOneOrMoreItems:]", 275, @"MIInstallerErrorDomain", 4, v15, 0, @"Failed to scan for bundle containers of content class %ld", v14, class);
 
     objc_autoreleasePoolPop(v9);
-    if (a4)
+    if (error)
     {
       v31 = v30;
-      *a4 = v30;
+      *error = v30;
     }
 
     v15 = v30;
@@ -660,27 +660,27 @@ LABEL_10:
   return v13 != 0;
 }
 
-- (MIFilesystemScanner)initWithScanOptions:(unint64_t)a3 personaUniqueString:(id)a4
+- (MIFilesystemScanner)initWithScanOptions:(unint64_t)options personaUniqueString:(id)string
 {
-  v7 = a4;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = MIFilesystemScanner;
   v8 = [(MIFilesystemScanner *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_options = a3;
-    objc_storeStrong(&v8->_personaUniqueString, a4);
+    v8->_options = options;
+    objc_storeStrong(&v8->_personaUniqueString, string);
   }
 
   return v9;
 }
 
-- (MIFilesystemScanner)initWithScanOptions:(unint64_t)a3
+- (MIFilesystemScanner)initWithScanOptions:(unint64_t)options
 {
   v5 = +[MIDaemonConfiguration sharedInstance];
-  v6 = [v5 primaryPersonaString];
-  v7 = [(MIFilesystemScanner *)self initWithScanOptions:a3 personaUniqueString:v6];
+  primaryPersonaString = [v5 primaryPersonaString];
+  v7 = [(MIFilesystemScanner *)self initWithScanOptions:options personaUniqueString:primaryPersonaString];
 
   return v7;
 }
@@ -688,26 +688,26 @@ LABEL_10:
 - (MIFilesystemScanner)init
 {
   v3 = +[MIDaemonConfiguration sharedInstance];
-  v4 = [v3 primaryPersonaString];
-  v5 = [(MIFilesystemScanner *)self initWithScanOptions:8063 personaUniqueString:v4];
+  primaryPersonaString = [v3 primaryPersonaString];
+  v5 = [(MIFilesystemScanner *)self initWithScanOptions:8063 personaUniqueString:primaryPersonaString];
 
   return v5;
 }
 
-- (BOOL)performScanWithError:(id *)a3
+- (BOOL)performScanWithError:(id *)error
 {
   v139 = *MEMORY[0x1E69E9840];
   v4 = +[MIFileManager defaultManager];
-  v5 = [(MIFilesystemScanner *)self delegate];
-  v6 = [(MIFilesystemScanner *)self options];
-  if (v6)
+  delegate = [(MIFilesystemScanner *)self delegate];
+  options = [(MIFilesystemScanner *)self options];
+  if (options)
   {
     v130 = 0;
     v8 = [(MIFilesystemScanner *)self _scanBundleContainersWithClass:1 withError:&v130 ignoredErrorOccurredOnOneOrMoreItems:0];
     v7 = v130;
     if (!v8)
     {
-      [v5 errorOccurred:v7];
+      [delegate errorOccurred:v7];
     }
   }
 
@@ -717,7 +717,7 @@ LABEL_10:
   }
 
   v9 = +[ICLFeatureFlags appReferencesEnabled];
-  if ((v6 & 0x400) != 0 && v9)
+  if ((options & 0x400) != 0 && v9)
   {
     v129 = v7;
     v10 = [(MIFilesystemScanner *)self _scanBundleContainersWithClass:14 withError:&v129 ignoredErrorOccurredOnOneOrMoreItems:0];
@@ -725,7 +725,7 @@ LABEL_10:
 
     if (!v10)
     {
-      [v5 errorOccurred:v11];
+      [delegate errorOccurred:v11];
     }
   }
 
@@ -734,26 +734,26 @@ LABEL_10:
     v11 = v7;
   }
 
-  v102 = v5;
-  v103 = self;
-  if ((v6 & 2) == 0)
+  v102 = delegate;
+  selfCopy = self;
+  if ((options & 2) == 0)
   {
     v12 = v11;
-    if ((v6 & 0x20) != 0)
+    if ((options & 0x20) != 0)
     {
       goto LABEL_12;
     }
 
 LABEL_22:
     v16 = v12;
-    if ((v6 & 8) != 0)
+    if ((options & 8) != 0)
     {
       goto LABEL_18;
     }
 
 LABEL_23:
     v23 = v16;
-    if ((v6 & 0x40) == 0)
+    if ((options & 0x40) == 0)
     {
       goto LABEL_28;
     }
@@ -762,73 +762,73 @@ LABEL_23:
   }
 
   v17 = +[MIDaemonConfiguration sharedInstance];
-  v18 = [v17 systemAppsDirectory];
+  systemAppsDirectory = [v17 systemAppsDirectory];
   v128 = v11;
-  v19 = [(MIFilesystemScanner *)self _scanAppsDirectory:v18 withError:&v128];
+  v19 = [(MIFilesystemScanner *)self _scanAppsDirectory:systemAppsDirectory withError:&v128];
   v12 = v128;
 
   if (v19)
   {
-    v5 = v102;
+    delegate = v102;
   }
 
   else
   {
-    v5 = v102;
+    delegate = v102;
     [v102 errorOccurred:v12];
   }
 
-  if ((v6 & 0x20) == 0)
+  if ((options & 0x20) == 0)
   {
     goto LABEL_22;
   }
 
 LABEL_12:
   v13 = +[MIDaemonConfiguration sharedInstance];
-  v14 = [v13 coreServicesDirectory];
+  coreServicesDirectory = [v13 coreServicesDirectory];
   v127 = v12;
-  v15 = [(MIFilesystemScanner *)self _scanAppsDirectory:v14 withError:&v127];
+  v15 = [(MIFilesystemScanner *)self _scanAppsDirectory:coreServicesDirectory withError:&v127];
   v16 = v127;
 
   if (v15)
   {
-    v5 = v102;
+    delegate = v102;
   }
 
   else
   {
-    v5 = v102;
+    delegate = v102;
     [v102 errorOccurred:v16];
   }
 
-  if ((v6 & 8) == 0)
+  if ((options & 8) == 0)
   {
     goto LABEL_23;
   }
 
 LABEL_18:
   v20 = +[MIDaemonConfiguration sharedInstance];
-  v21 = [v20 internalAppsDirectory];
+  internalAppsDirectory = [v20 internalAppsDirectory];
   v126 = v16;
-  v22 = [(MIFilesystemScanner *)self _scanAppsDirectory:v21 withError:&v126];
+  v22 = [(MIFilesystemScanner *)self _scanAppsDirectory:internalAppsDirectory withError:&v126];
   v23 = v126;
 
   if (v22)
   {
-    v5 = v102;
+    delegate = v102;
   }
 
   else
   {
-    v5 = v102;
+    delegate = v102;
     [v102 errorOccurred:v23];
   }
 
-  if ((v6 & 0x40) == 0)
+  if ((options & 0x40) == 0)
   {
 LABEL_28:
     v27 = v23;
-    if ((v6 & 0x10) != 0)
+    if ((options & 0x10) != 0)
     {
       goto LABEL_29;
     }
@@ -838,23 +838,23 @@ LABEL_28:
 
 LABEL_24:
   v24 = +[MIDaemonConfiguration sharedInstance];
-  v25 = [v24 systemAppPlaceholdersDirectory];
+  systemAppPlaceholdersDirectory = [v24 systemAppPlaceholdersDirectory];
   v125 = v23;
-  v26 = [(MIFilesystemScanner *)self _scanAppsDirectory:v25 withError:&v125];
+  v26 = [(MIFilesystemScanner *)self _scanAppsDirectory:systemAppPlaceholdersDirectory withError:&v125];
   v27 = v125;
 
   if (v26)
   {
-    v5 = v102;
+    delegate = v102;
   }
 
   else
   {
-    v5 = v102;
+    delegate = v102;
     [v102 errorOccurred:v27];
   }
 
-  if ((v6 & 0x10) != 0)
+  if ((options & 0x10) != 0)
   {
 LABEL_29:
     v124 = v27;
@@ -863,10 +863,10 @@ LABEL_29:
 
     if (!v28)
     {
-      [v5 errorOccurred:v29];
+      [delegate errorOccurred:v29];
     }
 
-    if ((v6 & 0x800) == 0)
+    if ((options & 0x800) == 0)
     {
       goto LABEL_32;
     }
@@ -876,7 +876,7 @@ LABEL_29:
 
 LABEL_35:
   v29 = v27;
-  if ((v6 & 0x800) == 0)
+  if ((options & 0x800) == 0)
   {
 LABEL_32:
     v30 = v29;
@@ -884,23 +884,23 @@ LABEL_32:
   }
 
 LABEL_36:
-  v31 = [(MIFilesystemScanner *)self builtInExtensionKitExtensionsDirectories];
+  builtInExtensionKitExtensionsDirectories = [(MIFilesystemScanner *)self builtInExtensionKitExtensionsDirectories];
   v123 = v29;
-  v32 = [(MIFilesystemScanner *)self _scanExtensionKitLocations:v31 withError:&v123];
+  v32 = [(MIFilesystemScanner *)self _scanExtensionKitLocations:builtInExtensionKitExtensionsDirectories withError:&v123];
   v30 = v123;
 
   if (!v32)
   {
-    [v5 errorOccurred:v30];
+    [delegate errorOccurred:v30];
   }
 
 LABEL_38:
-  if ((v6 & 0x200) != 0)
+  if ((options & 0x200) != 0)
   {
     v33 = +[MIDaemonConfiguration sharedInstance];
-    v34 = [v33 cryptexAppsDirectory];
+    cryptexAppsDirectory = [v33 cryptexAppsDirectory];
     v122 = v30;
-    v35 = [v4 realPathForURL:v34 allowNonExistentPathComponents:0 isDirectory:1 error:&v122];
+    v35 = [v4 realPathForURL:cryptexAppsDirectory allowNonExistentPathComponents:0 isDirectory:1 error:&v122];
     v36 = v122;
 
     if (v35)
@@ -910,7 +910,7 @@ LABEL_38:
       v38 = v121;
 
       v36 = v38;
-      v5 = v102;
+      delegate = v102;
       if (v37)
       {
         goto LABEL_47;
@@ -919,13 +919,13 @@ LABEL_38:
 
     else
     {
-      v39 = [v36 domain];
-      v5 = v102;
-      if ([v39 isEqualToString:*MEMORY[0x1E696A798]])
+      domain = [v36 domain];
+      delegate = v102;
+      if ([domain isEqualToString:*MEMORY[0x1E696A798]])
       {
-        v40 = [v36 code];
+        code = [v36 code];
 
-        if (v40 == 2)
+        if (code == 2)
         {
           goto LABEL_47;
         }
@@ -936,26 +936,26 @@ LABEL_38:
       }
     }
 
-    [v5 errorOccurred:v36];
+    [delegate errorOccurred:v36];
 LABEL_47:
 
     v30 = v36;
   }
 
-  v100 = v6;
-  if ((v6 & 0x100) == 0)
+  v100 = options;
+  if ((options & 0x100) == 0)
   {
     goto LABEL_67;
   }
 
   v41 = +[MIDaemonConfiguration sharedInstance];
-  v42 = [v41 cryptexFrameworksDirectories];
+  cryptexFrameworksDirectories = [v41 cryptexFrameworksDirectories];
 
   v119 = 0u;
   v120 = 0u;
   v117 = 0u;
   v118 = 0u;
-  v43 = v42;
+  v43 = cryptexFrameworksDirectories;
   v44 = [v43 countByEnumeratingWithState:&v117 objects:v137 count:16];
   if (!v44)
   {
@@ -983,7 +983,7 @@ LABEL_47:
       if (v50)
       {
         v115 = v51;
-        v52 = [(MIFilesystemScanner *)v103 _scanAppsDirectory:v50 withError:&v115];
+        v52 = [(MIFilesystemScanner *)selfCopy _scanAppsDirectory:v50 withError:&v115];
         v53 = v115;
 
         v30 = v53;
@@ -995,8 +995,8 @@ LABEL_47:
 
       else
       {
-        v54 = [v51 domain];
-        if (([v54 isEqualToString:v47] & 1) == 0)
+        domain2 = [v51 domain];
+        if (([domain2 isEqualToString:v47] & 1) == 0)
         {
 
 LABEL_61:
@@ -1004,9 +1004,9 @@ LABEL_61:
           goto LABEL_62;
         }
 
-        v55 = [v30 code];
+        code2 = [v30 code];
 
-        if (v55 != 2)
+        if (code2 != 2)
         {
           goto LABEL_61;
         }
@@ -1023,23 +1023,23 @@ LABEL_64:
   v56 = v30;
 
   v57 = +[MIDaemonConfiguration sharedInstance];
-  v58 = [v57 cryptexExtensionKitExtensionsDirectories];
+  cryptexExtensionKitExtensionsDirectories = [v57 cryptexExtensionKitExtensionsDirectories];
   v114 = v30;
-  v59 = [(MIFilesystemScanner *)v103 _scanExtensionKitLocations:v58 withError:&v114];
+  v59 = [(MIFilesystemScanner *)selfCopy _scanExtensionKitLocations:cryptexExtensionKitExtensionsDirectories withError:&v114];
   v30 = v114;
 
-  v5 = v102;
+  delegate = v102;
   if (!v59)
   {
     [v102 errorOccurred:v30];
   }
 
-  v6 = v100;
+  options = v100;
 LABEL_67:
   v101 = v4;
-  if ((v6 & 4) != 0)
+  if ((options & 4) != 0)
   {
-    v60 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v61 = MIDiskImageManagerProxy();
     v62 = [v61 attachedContentPathsForEntityType:1];
 
@@ -1064,7 +1064,7 @@ LABEL_67:
 
           v68 = [MEMORY[0x1E695DFF8] fileURLWithPath:*(*(&v131 + 1) + 8 * j) isDirectory:1];
           v69 = [v68 URLByAppendingPathComponent:@"Applications" isDirectory:1];
-          [v60 addObject:v69];
+          [array addObject:v69];
         }
 
         v65 = [v63 countByEnumeratingWithState:&v131 objects:v138 count:16];
@@ -1075,11 +1075,11 @@ LABEL_67:
 
     if (gLogHandle && *(gLogHandle + 44) >= 7)
     {
-      v99 = v60;
+      v99 = array;
       MOLogWrite();
     }
 
-    v70 = [v60 copy];
+    v70 = [array copy];
 
     v110 = 0u;
     v111 = 0u;
@@ -1087,7 +1087,7 @@ LABEL_67:
     v113 = 0u;
     v71 = v70;
     v72 = [v71 countByEnumeratingWithState:&v110 objects:v136 count:16];
-    v5 = v102;
+    delegate = v102;
     if (v72)
     {
       v73 = v72;
@@ -1105,7 +1105,7 @@ LABEL_67:
 
           v77 = *(*(&v110 + 1) + 8 * v75);
           v109 = v76;
-          v78 = [(MIFilesystemScanner *)v103 _scanAppsDirectory:v77 withError:&v109];
+          v78 = [(MIFilesystemScanner *)selfCopy _scanAppsDirectory:v77 withError:&v109];
           v30 = v109;
 
           if (!v78)
@@ -1124,13 +1124,13 @@ LABEL_67:
       while (v73);
     }
 
-    v6 = v100;
+    options = v100;
     v4 = v101;
   }
 
-  if ((v6 & 0x1000) != 0)
+  if ((options & 0x1000) != 0)
   {
-    v79 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v80 = MIDiskImageManagerProxy();
     v81 = [v80 attachedContentPathsForEntityType:2];
 
@@ -1155,7 +1155,7 @@ LABEL_67:
 
           v87 = [MEMORY[0x1E695DFF8] fileURLWithPath:*(*(&v131 + 1) + 8 * k) isDirectory:1];
           v88 = [v87 URLByAppendingPathComponent:@"Applications" isDirectory:1];
-          [v79 addObject:v88];
+          [array2 addObject:v88];
         }
 
         v84 = [v82 countByEnumeratingWithState:&v131 objects:v138 count:16];
@@ -1166,11 +1166,11 @@ LABEL_67:
 
     if (gLogHandle && *(gLogHandle + 44) >= 7)
     {
-      v99 = v79;
+      v99 = array2;
       MOLogWrite();
     }
 
-    v89 = [v79 copy];
+    v89 = [array2 copy];
 
     v105 = 0u;
     v106 = 0u;
@@ -1178,7 +1178,7 @@ LABEL_67:
     v108 = 0u;
     v90 = v89;
     v91 = [v90 countByEnumeratingWithState:&v105 objects:v135 count:16];
-    v5 = v102;
+    delegate = v102;
     if (v91)
     {
       v92 = v91;
@@ -1196,7 +1196,7 @@ LABEL_67:
 
           v96 = *(*(&v105 + 1) + 8 * v94);
           v104 = v95;
-          v97 = [(MIFilesystemScanner *)v103 _scanAppsDirectory:v96 withError:&v104];
+          v97 = [(MIFilesystemScanner *)selfCopy _scanAppsDirectory:v96 withError:&v104];
           v30 = v104;
 
           if (!v97)

@@ -1,13 +1,13 @@
 @interface PPU16CountedSet
-- (BOOL)isEqual:(id)a3;
-- (PPU16CountedSet)initWithCapacity:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PPU16CountedSet)initWithCapacity:(unint64_t)capacity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionary;
 - (unint64_t)uniqueValueCount;
 - (void)_convertToDictionaryRepresentation;
 - (void)dealloc;
-- (void)enumerateValuesAndCountsUsingBlock:(id)a3;
+- (void)enumerateValuesAndCountsUsingBlock:(id)block;
 @end
 
 @implementation PPU16CountedSet
@@ -68,10 +68,10 @@
             [v3 appendString:{@", "}];
           }
 
-          v14 = [v13 intValue];
+          intValue = [v13 intValue];
           v15 = [(NSMutableDictionary *)self->_dictStorage objectForKeyedSubscript:v13];
-          v16 = [v15 intValue];
-          [v3 appendFormat:@"%u [%u]", v14, v16, v20];
+          intValue2 = [v15 intValue];
+          [v3 appendFormat:@"%u [%u]", intValue, intValue2, v20];
 
           v11 = 0;
         }
@@ -92,7 +92,7 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
@@ -168,7 +168,7 @@
       while (v7 != v8);
     }
 
-    v22 = [(NSMutableDictionary *)self->_dictStorage copyWithZone:a3];
+    v22 = [(NSMutableDictionary *)self->_dictStorage copyWithZone:zone];
     v23 = v5[2];
     v5[2] = v22;
   }
@@ -176,16 +176,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (self)
@@ -226,19 +226,19 @@
 
 - (void)_convertToDictionaryRepresentation
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 8) || *(a1 + 16))
+    if (!*(self + 8) || *(self + 16))
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:sel__convertToDictionaryRepresentation object:a1 file:@"PPCompactCountedSets.mm" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"_vectorStorage && !_dictStorage"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__convertToDictionaryRepresentation object:self file:@"PPCompactCountedSets.mm" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"_vectorStorage && !_dictStorage"}];
     }
 
-    v2 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:(*(*(a1 + 8) + 8) - **(a1 + 8)) >> 1];
-    v3 = *(a1 + 16);
-    *(a1 + 16) = v2;
+    v2 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:(*(*(self + 8) + 8) - **(self + 8)) >> 1];
+    v3 = *(self + 16);
+    *(self + 16) = v2;
 
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     v5 = *v4;
     v6 = v4[1];
     if (*v4 != v6)
@@ -247,7 +247,7 @@
       {
         v7 = objc_autoreleasePoolPush();
         v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v5[1]];
-        v9 = *(a1 + 16);
+        v9 = *(self + 16);
         v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*v5];
         [v9 setObject:v8 forKeyedSubscript:v10];
 
@@ -256,7 +256,7 @@
       }
 
       while (v5 != v6);
-      v4 = *(a1 + 8);
+      v4 = *(self + 8);
       v5 = *v4;
     }
 
@@ -266,25 +266,25 @@
       operator delete(v5);
     }
 
-    *(a1 + 8) = 0;
+    *(self + 8) = 0;
   }
 }
 
-- (void)enumerateValuesAndCountsUsingBlock:(id)a3
+- (void)enumerateValuesAndCountsUsingBlock:(id)block
 {
-  v5 = a3;
-  v15 = v5;
-  if (!v5)
+  blockCopy = block;
+  v15 = blockCopy;
+  if (!blockCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPCompactCountedSets.mm" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPCompactCountedSets.mm" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
-    v5 = 0;
+    blockCopy = 0;
   }
 
   if (self->_vectorStorage)
   {
-    v6 = v5;
+    v6 = blockCopy;
     vectorStorage = self->_vectorStorage;
     v8 = *vectorStorage;
     v9 = vectorStorage[1];
@@ -311,7 +311,7 @@
 
   else
   {
-    v12 = v5;
+    v12 = blockCopy;
     dictStorage = self->_dictStorage;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -376,7 +376,7 @@ void __59__PPU16CountedSet__dictEnumerateValuesAndCountsUsingBlock___block_invok
   [(PPU16CountedSet *)&v5 dealloc];
 }
 
-- (PPU16CountedSet)initWithCapacity:(unint64_t)a3
+- (PPU16CountedSet)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = PPU16CountedSet;
@@ -387,19 +387,19 @@ void __59__PPU16CountedSet__dictEnumerateValuesAndCountsUsingBlock___block_invok
     *&result->_vectorInlineStorage.__data[8] = 0;
     *&result->_vectorInlineStorage.__data[16] = 0;
     result->_vectorStorage = &result->_vectorInlineStorage;
-    if (a3)
+    if (capacity)
     {
-      if (a3 >= 0x80)
+      if (capacity >= 0x80)
       {
-        v5 = 128;
+        capacityCopy = 128;
       }
 
       else
       {
-        v5 = a3;
+        capacityCopy = capacity;
       }
 
-      std::__allocate_at_least[abi:ne200100]<std::allocator<std::pair<unsigned short,unsigned short>>>(v5);
+      std::__allocate_at_least[abi:ne200100]<std::allocator<std::pair<unsigned short,unsigned short>>>(capacityCopy);
     }
   }
 

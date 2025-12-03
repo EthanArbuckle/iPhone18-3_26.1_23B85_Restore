@@ -1,53 +1,53 @@
 @interface _UIContextMenuView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)kickstartActionScrubbingWithGesture:(id)a3;
-- (CGRect)_rectOfNodeParentElement:(id)a3;
-- (CGRect)activeSubmenuFrameInCoordinateSpace:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)kickstartActionScrubbingWithGesture:(id)gesture;
+- (CGRect)_rectOfNodeParentElement:(id)element;
+- (CGRect)activeSubmenuFrameInCoordinateSpace:(id)space;
 - (CGSize)maxContainerSize;
-- (CGSize)preferredContentSizeWithinContainerSize:(CGSize)a3;
+- (CGSize)preferredContentSizeWithinContainerSize:(CGSize)size;
 - (CGSize)visibleContentSize;
 - (NSArray)visibleMenus;
 - (_UIContextMenuListView)currentListView;
-- (_UIContextMenuView)initWithFrame:(CGRect)a3;
+- (_UIContextMenuView)initWithFrame:(CGRect)frame;
 - (_UIContextMenuViewDelegate)delegate;
-- (double)closestScrollTruncationDetentToHeight:(double)a3;
-- (id)_newListViewWithMenu:(id)a3 position:(unint64_t)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (double)closestScrollTruncationDetentToHeight:(double)height;
+- (id)_newListViewWithMenu:(id)menu position:(unint64_t)position;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)hoveredListView;
 - (id)keyCommands;
 - (id)preferredFocusEnvironments;
 - (id)rootListView;
 - (void)_clearAutoNavigationTimer;
 - (void)_clearHoverAutoExitTimer;
-- (void)_displayMenu:(id)a3 inPlaceOfMenu:(id)a4 updateType:(unint64_t)a5 alongsideAnimations:(id)a6;
-- (void)_handleEscapeKey:(id)a3;
-- (void)_handleHoverGestureRecognizer:(id)a3;
-- (void)_handleMenuPressGesture:(id)a3;
-- (void)_handleRightArrowKey:(id)a3;
-- (void)_handleSelectPressGesture:(id)a3;
-- (void)_handleSelectionForElement:(id)a3;
-- (void)_handleSelectionGesture:(id)a3;
-- (void)_performActionForElement:(id)a3;
+- (void)_displayMenu:(id)menu inPlaceOfMenu:(id)ofMenu updateType:(unint64_t)type alongsideAnimations:(id)animations;
+- (void)_handleEscapeKey:(id)key;
+- (void)_handleHoverGestureRecognizer:(id)recognizer;
+- (void)_handleMenuPressGesture:(id)gesture;
+- (void)_handleRightArrowKey:(id)key;
+- (void)_handleSelectPressGesture:(id)gesture;
+- (void)_handleSelectionForElement:(id)element;
+- (void)_handleSelectionGesture:(id)gesture;
+- (void)_performActionForElement:(id)element;
 - (void)_selectPreviousMenuIfPossible;
-- (void)_setAutoNavigationTimerIfNecessaryForElement:(id)a3 isTrackpadHover:(BOOL)a4;
-- (void)_setHighlightedIndexPath:(id)a3 playFeedback:(BOOL)a4 atLocation:(CGPoint)a5 allowAutoNavigation:(BOOL)a6;
+- (void)_setAutoNavigationTimerIfNecessaryForElement:(id)element isTrackpadHover:(BOOL)hover;
+- (void)_setHighlightedIndexPath:(id)path playFeedback:(BOOL)feedback atLocation:(CGPoint)location allowAutoNavigation:(BOOL)navigation;
 - (void)_setHoverAutoExitTimer;
 - (void)_testing_tapAnAction;
-- (void)_updateSelectionGestureAllowableMovementForGestureBeginningAtIndexPath:(id)a3;
+- (void)_updateSelectionGestureAllowableMovementForGestureBeginningAtIndexPath:(id)path;
 - (void)didCompleteMenuAppearanceAnimation;
 - (void)didMoveToWindow;
 - (void)disableTypeSelectIfNeeded;
 - (void)flashScrollIndicators;
 - (void)layoutSubviews;
 - (void)scrollToFirstSignificantAction;
-- (void)setHierarchyStyle:(unint64_t)a3;
-- (void)setPreferredMenuMaterial:(id)a3;
-- (void)setReversesActionOrder:(BOOL)a3;
-- (void)setShowsShadow:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setHierarchyStyle:(unint64_t)style;
+- (void)setPreferredMenuMaterial:(id)material;
+- (void)setReversesActionOrder:(BOOL)order;
+- (void)setShowsShadow:(BOOL)shadow;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation _UIContextMenuView
@@ -61,26 +61,26 @@
 
 - (NSArray)visibleMenus
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(_UIContextMenuView *)self submenus];
+  array = [MEMORY[0x1E695DF70] array];
+  submenus = [(_UIContextMenuView *)self submenus];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34___UIContextMenuView_visibleMenus__block_invoke;
   v7[3] = &unk_1E70F3FB0;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
-  [v4 enumerateNodes:v7];
+  [submenus enumerateNodes:v7];
 
   return v5;
 }
 
 - (_UIContextMenuListView)currentListView
 {
-  v2 = [(_UIContextMenuView *)self submenus];
-  v3 = [v2 current];
-  v4 = [v3 listView];
+  submenus = [(_UIContextMenuView *)self submenus];
+  current = [submenus current];
+  listView = [current listView];
 
-  return v4;
+  return listView;
 }
 
 - (void)layoutSubviews
@@ -88,10 +88,10 @@
   v5.receiver = self;
   v5.super_class = _UIContextMenuView;
   [(UIView *)&v5 layoutSubviews];
-  v3 = [(_UIContextMenuView *)self layout];
-  v4 = [(_UIContextMenuView *)self isComputingPreferredSize];
+  layout = [(_UIContextMenuView *)self layout];
+  isComputingPreferredSize = [(_UIContextMenuView *)self isComputingPreferredSize];
   [(_UIContextMenuView *)self maxContainerSize];
-  [v3 performLayoutForComputingPreferredContentSize:v4 withMaxContainerSize:?];
+  [layout performLayoutForComputingPreferredContentSize:isComputingPreferredSize withMaxContainerSize:?];
 
   if ([(_UIContextMenuView *)self isComputingPreferredSize])
   {
@@ -102,24 +102,24 @@
 - (void)didCompleteMenuAppearanceAnimation
 {
   [(_UIContextMenuView *)self flashScrollIndicators];
-  v3 = [(_UIContextMenuView *)self currentListView];
-  [v3 didCompleteMenuAppearanceAnimation];
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  [currentListView didCompleteMenuAppearanceAnimation];
 }
 
 - (id)rootListView
 {
-  v2 = [(_UIContextMenuView *)self submenus];
-  v3 = [v2 first];
-  v4 = [v3 listView];
+  submenus = [(_UIContextMenuView *)self submenus];
+  first = [submenus first];
+  listView = [first listView];
 
-  return v4;
+  return listView;
 }
 
 - (void)flashScrollIndicators
 {
-  v3 = [(_UIContextMenuView *)self currentListView];
-  v2 = [v3 collectionView];
-  [v2 flashScrollIndicators];
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  collectionView = [currentListView collectionView];
+  [collectionView flashScrollIndicators];
 }
 
 - (CGSize)visibleContentSize
@@ -138,8 +138,8 @@
   [(UIView *)&v4 didMoveToWindow];
   if ([(_UIContextMenuView *)self wantsFocusDeferralIfSupported])
   {
-    v3 = [(UIView *)self _focusSystem];
-    [v3 _startDeferringFocusIfSupported];
+    _focusSystem = [(UIView *)self _focusSystem];
+    [_focusSystem _startDeferringFocusIfSupported];
 
     [(_UIContextMenuView *)self setWantsFocusDeferralIfSupported:0];
   }
@@ -154,41 +154,41 @@
   return result;
 }
 
-- (_UIContextMenuView)initWithFrame:(CGRect)a3
+- (_UIContextMenuView)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = _UIContextMenuView;
-  v3 = [(UIView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(UIView *)v4 _setSafeAreaInsetsFrozen:1];
     v6 = [(UIGestureRecognizer *)[_UIContinuousSelectionGestureRecognizer alloc] initWithTarget:v4 action:sel__handleSelectionGesture_];
     [(_UIContextMenuView *)v4 setSelectionGestureRecognizer:v6];
 
-    v7 = [(_UIContextMenuView *)v4 selectionGestureRecognizer];
-    [v7 setName:@"com.apple.UIKit.ContextMenuActionsListSelection"];
+    selectionGestureRecognizer = [(_UIContextMenuView *)v4 selectionGestureRecognizer];
+    [selectionGestureRecognizer setName:@"com.apple.UIKit.ContextMenuActionsListSelection"];
 
-    v8 = [(_UIContextMenuView *)v4 selectionGestureRecognizer];
-    [v8 setDelegate:v4];
+    selectionGestureRecognizer2 = [(_UIContextMenuView *)v4 selectionGestureRecognizer];
+    [selectionGestureRecognizer2 setDelegate:v4];
 
-    v9 = [(_UIContextMenuView *)v4 selectionGestureRecognizer];
-    [(UIView *)v4 addGestureRecognizer:v9];
+    selectionGestureRecognizer3 = [(_UIContextMenuView *)v4 selectionGestureRecognizer];
+    [(UIView *)v4 addGestureRecognizer:selectionGestureRecognizer3];
 
     v10 = [(UIGestureRecognizer *)[_UIContextMenuSelectionDelayGestureRecognizer alloc] initWithTarget:0 action:0];
     [(_UIContextMenuView *)v4 setSelectionDelayGestureRecognizer:v10];
 
-    v11 = [(_UIContextMenuView *)v4 selectionDelayGestureRecognizer];
-    [v11 setName:@"com.apple.UIKit.ContextMenuActionsListSelectionDelay"];
+    selectionDelayGestureRecognizer = [(_UIContextMenuView *)v4 selectionDelayGestureRecognizer];
+    [selectionDelayGestureRecognizer setName:@"com.apple.UIKit.ContextMenuActionsListSelectionDelay"];
 
-    v12 = [(_UIContextMenuView *)v4 selectionDelayGestureRecognizer];
-    [v12 setDelegate:v4];
+    selectionDelayGestureRecognizer2 = [(_UIContextMenuView *)v4 selectionDelayGestureRecognizer];
+    [selectionDelayGestureRecognizer2 setDelegate:v4];
 
-    v13 = [(_UIContextMenuView *)v4 selectionDelayGestureRecognizer];
-    [(UIView *)v4 addGestureRecognizer:v13];
+    selectionDelayGestureRecognizer3 = [(_UIContextMenuView *)v4 selectionDelayGestureRecognizer];
+    [(UIView *)v4 addGestureRecognizer:selectionDelayGestureRecognizer3];
 
     v14 = [[UITapGestureRecognizer alloc] initWithTarget:v4 action:sel__handleSelectPressGesture_];
     v15 = MEMORY[0x1E695E0F0];
@@ -204,14 +204,14 @@
     v17 = [[UIHoverGestureRecognizer alloc] initWithTarget:v4 action:sel__handleHoverGestureRecognizer_];
     [(_UIContextMenuView *)v4 setHighlightHoverGestureRecognizer:v17];
 
-    v18 = [(_UIContextMenuView *)v4 highlightHoverGestureRecognizer];
-    [v18 setName:@"com.apple.UIKit.ContextMenuActionsListHover"];
+    highlightHoverGestureRecognizer = [(_UIContextMenuView *)v4 highlightHoverGestureRecognizer];
+    [highlightHoverGestureRecognizer setName:@"com.apple.UIKit.ContextMenuActionsListHover"];
 
-    v19 = [(_UIContextMenuView *)v4 highlightHoverGestureRecognizer];
-    [v19 setDelegate:v4];
+    highlightHoverGestureRecognizer2 = [(_UIContextMenuView *)v4 highlightHoverGestureRecognizer];
+    [highlightHoverGestureRecognizer2 setDelegate:v4];
 
-    v20 = [(_UIContextMenuView *)v4 highlightHoverGestureRecognizer];
-    [(UIView *)v4 addGestureRecognizer:v20];
+    highlightHoverGestureRecognizer3 = [(_UIContextMenuView *)v4 highlightHoverGestureRecognizer];
+    [(UIView *)v4 addGestureRecognizer:highlightHoverGestureRecognizer3];
 
     v21 = +[_UISelectionFeedbackGeneratorConfiguration defaultConfiguration];
     v22 = [v21 tweakedConfigurationForClass:objc_opt_class() usage:@"retarget"];
@@ -245,13 +245,13 @@
 
         if (byte_1EA95E0FC)
         {
-          v28 = [(UIView *)v4 layer];
-          [v28 setBorderWidth:1.0];
+          layer2 = [(UIView *)v4 layer];
+          [layer2 setBorderWidth:1.0];
 
           v29 = +[UIColor magentaColor];
-          v30 = [v29 CGColor];
-          v31 = [(UIView *)v4 layer];
-          [v31 setBorderColor:v30];
+          cGColor = [v29 CGColor];
+          layer3 = [(UIView *)v4 layer];
+          [layer3 setBorderColor:cGColor];
         }
       }
     }
@@ -262,25 +262,25 @@ LABEL_5:
   return v4;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = _UIContextMenuView;
   [(UIView *)&v7 setUserInteractionEnabled:?];
-  v5 = [(_UIContextMenuView *)self selectionGestureRecognizer];
-  [v5 setEnabled:v3];
+  selectionGestureRecognizer = [(_UIContextMenuView *)self selectionGestureRecognizer];
+  [selectionGestureRecognizer setEnabled:enabledCopy];
 
-  v6 = [(_UIContextMenuView *)self highlightHoverGestureRecognizer];
-  [v6 setEnabled:v3];
+  highlightHoverGestureRecognizer = [(_UIContextMenuView *)self highlightHoverGestureRecognizer];
+  [highlightHoverGestureRecognizer setEnabled:enabledCopy];
 }
 
-- (void)setShowsShadow:(BOOL)a3
+- (void)setShowsShadow:(BOOL)shadow
 {
-  if (self->_showsShadow != a3)
+  if (self->_showsShadow != shadow)
   {
-    self->_showsShadow = a3;
-    if (a3)
+    self->_showsShadow = shadow;
+    if (shadow)
     {
       v4 = 1.0;
     }
@@ -290,68 +290,68 @@ LABEL_5:
       v4 = 0.0;
     }
 
-    v5 = [(_UIContextMenuView *)self currentListView];
-    [v5 setShadowAlpha:v4];
+    currentListView = [(_UIContextMenuView *)self currentListView];
+    [currentListView setShadowAlpha:v4];
   }
 }
 
-- (void)setReversesActionOrder:(BOOL)a3
+- (void)setReversesActionOrder:(BOOL)order
 {
-  if (self->_reversesActionOrder != a3)
+  if (self->_reversesActionOrder != order)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_reversesActionOrder = a3;
-    v6 = [(_UIContextMenuView *)self submenus];
+    self->_reversesActionOrder = order;
+    submenus = [(_UIContextMenuView *)self submenus];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45___UIContextMenuView_setReversesActionOrder___block_invoke;
     v7[3] = &unk_1E70F3FB0;
     v7[4] = self;
-    [v6 enumerateNodes:v7];
+    [submenus enumerateNodes:v7];
   }
 }
 
-- (void)setHierarchyStyle:(unint64_t)a3
+- (void)setHierarchyStyle:(unint64_t)style
 {
-  if (self->_hierarchyStyle != a3)
+  if (self->_hierarchyStyle != style)
   {
-    self->_hierarchyStyle = a3;
+    self->_hierarchyStyle = style;
     v5 = [objc_alloc(objc_opt_class()) initWithMenuView:self];
     [(_UIContextMenuView *)self setLayout:v5];
   }
 }
 
-- (void)setPreferredMenuMaterial:(id)a3
+- (void)setPreferredMenuMaterial:(id)material
 {
-  v5 = a3;
-  if (self->_preferredMenuMaterial != v5)
+  materialCopy = material;
+  if (self->_preferredMenuMaterial != materialCopy)
   {
-    objc_storeStrong(&self->_preferredMenuMaterial, a3);
-    v6 = [(_UIContextMenuView *)self submenus];
+    objc_storeStrong(&self->_preferredMenuMaterial, material);
+    submenus = [(_UIContextMenuView *)self submenus];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __47___UIContextMenuView_setPreferredMenuMaterial___block_invoke;
     v7[3] = &unk_1E70F3FB0;
-    v8 = v5;
-    [v6 enumerateNodes:v7];
+    v8 = materialCopy;
+    [submenus enumerateNodes:v7];
   }
 }
 
-- (BOOL)kickstartActionScrubbingWithGesture:(id)a3
+- (BOOL)kickstartActionScrubbingWithGesture:(id)gesture
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIContextMenuView *)self selectionGestureRecognizer];
-  v6 = [v4 _activeEvents];
-  if ([v6 count])
+  gestureCopy = gesture;
+  selectionGestureRecognizer = [(_UIContextMenuView *)self selectionGestureRecognizer];
+  _activeEvents = [gestureCopy _activeEvents];
+  if ([_activeEvents count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(UIView *)self gestureRecognizers];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    gestureRecognizers = [(UIView *)self gestureRecognizers];
+    v8 = [gestureRecognizers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -362,51 +362,51 @@ LABEL_5:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && ![v12 state])
           {
-            [(UIGestureRecognizer *)v12 addTouchesFromGestureRecognizer:v4];
+            [(UIGestureRecognizer *)v12 addTouchesFromGestureRecognizer:gestureCopy];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [gestureRecognizers countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
     }
 
-    if (![v5 state])
+    if (![selectionGestureRecognizer state])
     {
-      [(UIGestureRecognizer *)v5 transferTouchesFromGestureRecognizer:v4];
+      [(UIGestureRecognizer *)selectionGestureRecognizer transferTouchesFromGestureRecognizer:gestureCopy];
     }
   }
 
-  v13 = [v5 state] > 0;
+  v13 = [selectionGestureRecognizer state] > 0;
 
   return v13;
 }
 
 - (void)scrollToFirstSignificantAction
 {
-  v2 = [(_UIContextMenuView *)self currentListView];
-  [v2 scrollToFirstSignificantAction];
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  [currentListView scrollToFirstSignificantAction];
 }
 
-- (CGRect)activeSubmenuFrameInCoordinateSpace:(id)a3
+- (CGRect)activeSubmenuFrameInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuView *)self currentListView];
-  [v5 frame];
+  spaceCopy = space;
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  [currentListView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  [(UIView *)self convertRect:v4 toCoordinateSpace:v7, v9, v11, v13];
+  [(UIView *)self convertRect:spaceCopy toCoordinateSpace:v7, v9, v11, v13];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -423,21 +423,21 @@ LABEL_5:
   return result;
 }
 
-- (CGSize)preferredContentSizeWithinContainerSize:(CGSize)a3
+- (CGSize)preferredContentSizeWithinContainerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(_UIContextMenuView *)self setMaxContainerSize:?];
-  v6 = [(_UIContextMenuView *)self submenus];
-  v7 = [v6 nodes];
-  v8 = [v7 count];
+  submenus = [(_UIContextMenuView *)self submenus];
+  nodes = [submenus nodes];
+  v8 = [nodes count];
 
   if (v8 == 1)
   {
-    v9 = [(_UIContextMenuView *)self currentListView];
-    [v9 preferredContentSizeWithinContainerSize:{width, height}];
-    [v9 setNativeContentSize:?];
-    [v9 nativeContentSize];
+    currentListView = [(_UIContextMenuView *)self currentListView];
+    [currentListView preferredContentSizeWithinContainerSize:{width, height}];
+    [currentListView setNativeContentSize:?];
+    [currentListView nativeContentSize];
   }
 
   else
@@ -446,8 +446,8 @@ LABEL_5:
     [(_UIContextMenuView *)self setVisibleContentSize:width, 44.0];
     [(UIView *)self setNeedsLayout];
     [(UIView *)self layoutIfNeeded];
-    v9 = [(_UIContextMenuView *)self layout];
-    [v9 encompassingSize];
+    currentListView = [(_UIContextMenuView *)self layout];
+    [currentListView encompassingSize];
   }
 
   v12 = v10;
@@ -460,13 +460,13 @@ LABEL_5:
   return result;
 }
 
-- (double)closestScrollTruncationDetentToHeight:(double)a3
+- (double)closestScrollTruncationDetentToHeight:(double)height
 {
   [(_UIContextMenuView *)self preferredScrollTruncationDetent];
   if (v5 <= 0.0)
   {
-    v7 = [(_UIContextMenuView *)self currentListView];
-    [v7 closestScrollTruncationDetentToHeight:a3];
+    currentListView = [(_UIContextMenuView *)self currentListView];
+    [currentListView closestScrollTruncationDetentToHeight:height];
     v9 = v8;
 
     [(_UIContextMenuView *)self setPreferredScrollTruncationDetent:v9];
@@ -484,50 +484,50 @@ LABEL_5:
 
 - (id)hoveredListView
 {
-  v2 = [(_UIContextMenuView *)self hoveredNode];
-  v3 = [v2 listView];
+  hoveredNode = [(_UIContextMenuView *)self hoveredNode];
+  listView = [hoveredNode listView];
 
-  return v3;
+  return listView;
 }
 
-- (void)_displayMenu:(id)a3 inPlaceOfMenu:(id)a4 updateType:(unint64_t)a5 alongsideAnimations:(id)a6
+- (void)_displayMenu:(id)menu inPlaceOfMenu:(id)ofMenu updateType:(unint64_t)type alongsideAnimations:(id)animations
 {
-  v10 = a3;
-  v73 = a6;
-  v11 = a4;
-  v12 = [(_UIContextMenuView *)self submenus];
-  v13 = v12;
-  if (v11)
+  menuCopy = menu;
+  animationsCopy = animations;
+  ofMenuCopy = ofMenu;
+  submenus = [(_UIContextMenuView *)self submenus];
+  v13 = submenus;
+  if (ofMenuCopy)
   {
-    v14 = v11;
+    v14 = ofMenuCopy;
   }
 
   else
   {
-    v14 = v10;
+    v14 = menuCopy;
   }
 
-  v15 = [v12 nodeForMenu:v14];
+  v15 = [submenus nodeForMenu:v14];
 
-  if (a5 == 3)
+  if (type == 3)
   {
     v16 = v15;
-    [v16 setMenu:v10];
-    v17 = 0;
+    [v16 setMenu:menuCopy];
+    popNode = 0;
     goto LABEL_6;
   }
 
-  v26 = [(_UIContextMenuView *)self departingNode];
-  v27 = [v26 menu];
-  v28 = v10;
+  departingNode = [(_UIContextMenuView *)self departingNode];
+  menu = [departingNode menu];
+  v28 = menuCopy;
   v19 = v28;
-  if (v27 == v28)
+  if (menu == v28)
   {
   }
 
   else
   {
-    if (!v28 || !v27)
+    if (!v28 || !menu)
     {
 
       if (v15)
@@ -538,7 +538,7 @@ LABEL_5:
       goto LABEL_47;
     }
 
-    v29 = [v27 isEqual:v28];
+    v29 = [menu isEqual:v28];
 
     if ((v29 & 1) == 0)
     {
@@ -546,26 +546,26 @@ LABEL_5:
       {
 LABEL_17:
         v16 = v15;
-        v30 = [(_UIContextMenuView *)self submenus];
-        v17 = [v30 popNode];
+        submenus2 = [(_UIContextMenuView *)self submenus];
+        popNode = [submenus2 popNode];
 
-        v31 = [(_UIContextMenuView *)self departingNode];
-        v32 = [v31 listView];
-        [v32 removeFromSuperview];
+        departingNode2 = [(_UIContextMenuView *)self departingNode];
+        listView = [departingNode2 listView];
+        [listView removeFromSuperview];
 
-        [(_UIContextMenuView *)self setDepartingNode:v17];
+        [(_UIContextMenuView *)self setDepartingNode:popNode];
         v72 = 0;
-        a5 = 2;
+        type = 2;
         goto LABEL_32;
       }
 
 LABEL_47:
-      v45 = [(_UIContextMenuView *)self submenus];
-      v17 = [v45 current];
+      submenus3 = [(_UIContextMenuView *)self submenus];
+      popNode = [submenus3 current];
 
-      v46 = [(_UIContextMenuView *)self departingNode];
-      v47 = [v46 listView];
-      [v47 removeFromSuperview];
+      departingNode3 = [(_UIContextMenuView *)self departingNode];
+      listView2 = [departingNode3 listView];
+      [listView2 removeFromSuperview];
 
       [(_UIContextMenuView *)self setDepartingNode:0];
       v16 = 0;
@@ -573,39 +573,39 @@ LABEL_47:
     }
   }
 
-  v33 = [(_UIContextMenuView *)self departingNode];
-  v34 = [(_UIContextMenuView *)self submenus];
-  v17 = [v34 current];
+  departingNode4 = [(_UIContextMenuView *)self departingNode];
+  submenus4 = [(_UIContextMenuView *)self submenus];
+  popNode = [submenus4 current];
 
   [(_UIContextMenuView *)self setDepartingNode:0];
   v16 = 0;
-  if (v33)
+  if (departingNode4)
   {
     v72 = 0;
-    v20 = a5;
-    v16 = v33;
+    typeCopy2 = type;
+    v16 = departingNode4;
 LABEL_30:
-    v39 = [(_UIContextMenuView *)self submenus];
-    [v39 addNode:v16];
+    submenus5 = [(_UIContextMenuView *)self submenus];
+    [submenus5 addNode:v16];
 
     goto LABEL_31;
   }
 
 LABEL_6:
-  v18 = [(_UIContextMenuView *)self delegate];
-  v19 = [v18 contextMenuView:self willDisplayMenu:v10];
+  delegate = [(_UIContextMenuView *)self delegate];
+  v19 = [delegate contextMenuView:self willDisplayMenu:menuCopy];
 
   if (v19)
   {
-    v20 = a5;
+    typeCopy2 = type;
     if (([v19 metadata] & 0x1000000) != 0)
     {
 LABEL_22:
       v72 = 0;
-      if (a5 == 3)
+      if (type == 3)
       {
 LABEL_31:
-        a5 = v20;
+        type = typeCopy2;
         goto LABEL_32;
       }
 
@@ -613,42 +613,42 @@ LABEL_31:
     }
   }
 
-  v21 = [(_UIContextMenuView *)self submenus];
-  v22 = [v21 first];
+  submenus6 = [(_UIContextMenuView *)self submenus];
+  first = [submenus6 first];
 
-  if (v15 == v22)
+  if (v15 == first)
   {
-    v20 = 5;
+    typeCopy2 = 5;
     goto LABEL_22;
   }
 
   if (!v15)
   {
 
-    v17 = 0;
+    popNode = 0;
     v72 = 0;
     goto LABEL_32;
   }
 
-  v23 = [(_UIContextMenuView *)self submenus];
-  v72 = [v23 removeNode:v15];
+  submenus7 = [(_UIContextMenuView *)self submenus];
+  v72 = [submenus7 removeNode:v15];
 
-  v24 = [(_UIContextMenuView *)self submenus];
-  v25 = [v24 current];
+  submenus8 = [(_UIContextMenuView *)self submenus];
+  current = [submenus8 current];
 
-  v17 = 0;
-  v20 = 4;
-  v16 = v25;
-  if (a5 != 3)
+  popNode = 0;
+  typeCopy2 = 4;
+  v16 = current;
+  if (type != 3)
   {
 LABEL_23:
     if (!v16)
     {
-      v35 = [(_UIContextMenuView *)self visibleMenus];
-      v36 = [v35 count];
+      visibleMenus = [(_UIContextMenuView *)self visibleMenus];
+      v36 = [visibleMenus count];
 
       v37 = 0;
-      if (v20 != 3 && v36)
+      if (typeCopy2 != 3 && v36)
       {
         if ([(_UIContextMenuView *)self hierarchyStyle]== 1)
         {
@@ -671,15 +671,15 @@ LABEL_23:
     goto LABEL_30;
   }
 
-  a5 = 4;
-  v16 = v25;
+  type = 4;
+  v16 = current;
 LABEL_32:
-  v40 = [v16 listView];
-  v41 = [v17 listView];
-  v42 = [(_UIContextMenuView *)self retainHighlightOnMenuNavigation];
-  [v41 setAllowsFocus:0];
-  [v40 setAllowsFocus:1];
-  if (a5 != 5 && v41 == v40)
+  listView3 = [v16 listView];
+  listView4 = [popNode listView];
+  retainHighlightOnMenuNavigation = [(_UIContextMenuView *)self retainHighlightOnMenuNavigation];
+  [listView4 setAllowsFocus:0];
+  [listView3 setAllowsFocus:1];
+  if (type != 5 && listView4 == listView3)
   {
     goto LABEL_58;
   }
@@ -689,20 +689,20 @@ LABEL_32:
     [(_UIContextMenuView *)self setPreferredScrollTruncationDetent:0.0];
   }
 
-  if (a5 > 2)
+  if (type > 2)
   {
-    if (a5 == 3)
+    if (type == 3)
     {
-      v69 = [v40 collectionView];
-      v51 = [v40 highlightedIndexPath];
-      v52 = [v40 elementAtIndexPath:v51];
+      collectionView = [listView3 collectionView];
+      highlightedIndexPath = [listView3 highlightedIndexPath];
+      v52 = [listView3 elementAtIndexPath:highlightedIndexPath];
 
-      [v40 willStartInPlaceMenuTransition];
+      [listView3 willStartInPlaceMenuTransition];
       v90[0] = MEMORY[0x1E69E9820];
       v90[1] = 3221225472;
       v90[2] = __80___UIContextMenuView__displayMenu_inPlaceOfMenu_updateType_alongsideAnimations___block_invoke_4;
       v90[3] = &unk_1E70F35B8;
-      v53 = v40;
+      v53 = listView3;
       v91 = v53;
       v92 = v19;
       [UIView _performWithoutRetargetingAnimations:v90];
@@ -720,10 +720,10 @@ LABEL_32:
       v85[2] = __80___UIContextMenuView__displayMenu_inPlaceOfMenu_updateType_alongsideAnimations___block_invoke_5;
       v85[3] = &unk_1E70F4028;
       v85[4] = self;
-      v88 = v73;
+      v88 = animationsCopy;
       v89 = 3;
       v86 = v53;
-      v55 = v69;
+      v55 = collectionView;
       v70 = v54;
       v56 = v55;
       v87 = v55;
@@ -741,11 +741,11 @@ LABEL_32:
 
     else
     {
-      if (a5 != 4)
+      if (type != 4)
       {
-        if (a5 == 5 && v73)
+        if (type == 5 && animationsCopy)
         {
-          (*(v73 + 2))(v73, 5);
+          (*(animationsCopy + 2))(animationsCopy, 5);
         }
 
         goto LABEL_58;
@@ -756,11 +756,11 @@ LABEL_32:
       v76[1] = 3221225472;
       v76[2] = __80___UIContextMenuView__displayMenu_inPlaceOfMenu_updateType_alongsideAnimations___block_invoke_9;
       v76[3] = &unk_1E70F4028;
-      v80 = v73;
+      v80 = animationsCopy;
       v81 = 4;
-      v77 = v40;
+      v77 = listView3;
       v78 = v72;
-      v79 = self;
+      selfCopy = self;
       v74[0] = MEMORY[0x1E69E9820];
       v74[1] = 3221225472;
       v74[2] = __80___UIContextMenuView__displayMenu_inPlaceOfMenu_updateType_alongsideAnimations___block_invoke_11;
@@ -776,14 +776,14 @@ LABEL_57:
     goto LABEL_58;
   }
 
-  switch(a5)
+  switch(type)
   {
     case 0uLL:
-      v48 = [(UIView *)self traitCollection];
-      [v16 setLeftOfParentWhenCascading:{objc_msgSend(v48, "layoutDirection") == 1}];
+      traitCollection = [(UIView *)self traitCollection];
+      [v16 setLeftOfParentWhenCascading:{objc_msgSend(traitCollection, "layoutDirection") == 1}];
 
-      [(UIView *)self addSubview:v40];
-      if (!v73)
+      [(UIView *)self addSubview:listView3];
+      if (!animationsCopy)
       {
         goto LABEL_58;
       }
@@ -793,15 +793,15 @@ LABEL_57:
       v94[1] = 3221225472;
       v94[2] = __80___UIContextMenuView__displayMenu_inPlaceOfMenu_updateType_alongsideAnimations___block_invoke;
       v94[3] = &unk_1E70F4178;
-      v95 = v73;
+      v95 = animationsCopy;
       v96 = 0;
       [UIView _animateUsingSpringBehavior:v49 tracking:1 animations:v94 completion:0];
 
       v50 = v95;
       goto LABEL_57;
     case 1uLL:
-      v43 = [(_UIContextMenuView *)self layout];
-      [v43 navigateDownFromNode:v17 toNode:v16 alongsideAnimations:v73 completion:0];
+      layout = [(_UIContextMenuView *)self layout];
+      [layout navigateDownFromNode:popNode toNode:v16 alongsideAnimations:animationsCopy completion:0];
       break;
     case 2uLL:
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -809,9 +809,9 @@ LABEL_57:
       aBlock[2] = __80___UIContextMenuView__displayMenu_inPlaceOfMenu_updateType_alongsideAnimations___block_invoke_3;
       aBlock[3] = &unk_1E70F3FD8;
       aBlock[4] = self;
-      v43 = _Block_copy(aBlock);
-      v44 = [(_UIContextMenuView *)self layout];
-      [v44 navigateUpFromNode:v17 toNode:v16 alongsideAnimations:v73 completion:v43];
+      layout = _Block_copy(aBlock);
+      layout2 = [(_UIContextMenuView *)self layout];
+      [layout2 navigateUpFromNode:popNode toNode:v16 alongsideAnimations:animationsCopy completion:layout];
 
       break;
     default:
@@ -819,18 +819,18 @@ LABEL_57:
   }
 
 LABEL_58:
-  v59 = [(_UIContextMenuView *)self submenus];
-  v60 = [v59 current];
+  submenus9 = [(_UIContextMenuView *)self submenus];
+  current2 = [submenus9 current];
 
-  if (v60)
+  if (current2)
   {
-    if (!v42)
+    if (!retainHighlightOnMenuNavigation)
     {
-      v61 = [(UIView *)self _focusSystem];
-      v62 = v61;
-      if (v61)
+      _focusSystem = [(UIView *)self _focusSystem];
+      v62 = _focusSystem;
+      if (_focusSystem)
       {
-        [v61 _startDeferringFocusIfSupported];
+        [_focusSystem _startDeferringFocusIfSupported];
       }
 
       else
@@ -839,31 +839,31 @@ LABEL_58:
       }
     }
 
-    v63 = [(UIView *)self _focusSystem];
-    [v63 setNeedsFocusUpdate];
+    _focusSystem2 = [(UIView *)self _focusSystem];
+    [_focusSystem2 setNeedsFocusUpdate];
 
     [(_UIContextMenuView *)self setRetainHighlightOnMenuNavigation:0];
     v64 = [MEMORY[0x1E695DF00] now];
     [(_UIContextMenuView *)self setAppearanceDate:v64];
   }
 
-  v65 = [(_UIContextMenuView *)self selectionGestureRecognizer];
-  v66 = [(UIGestureRecognizer *)v65 _isActive];
+  selectionGestureRecognizer = [(_UIContextMenuView *)self selectionGestureRecognizer];
+  _isActive = [(UIGestureRecognizer *)selectionGestureRecognizer _isActive];
 
-  if (v66)
+  if (_isActive)
   {
-    v67 = [UIApp _gestureEnvironment];
-    [(UIGestureEnvironment *)v67 _performTouchContinuationWithOverrideHitTestedView:?];
+    _gestureEnvironment = [UIApp _gestureEnvironment];
+    [(UIGestureEnvironment *)_gestureEnvironment _performTouchContinuationWithOverrideHitTestedView:?];
   }
 }
 
-- (id)_newListViewWithMenu:(id)a3 position:(unint64_t)a4
+- (id)_newListViewWithMenu:(id)menu position:(unint64_t)position
 {
-  v6 = a3;
-  v7 = ([v6 metadata] & 0x10000) != 0 && -[_UIContextMenuView hierarchyStyle](self, "hierarchyStyle") == 2;
-  v8 = [v6 metadata];
-  v9 = [v6 metadata];
-  if (([v6 options] & 0x100) != 0)
+  menuCopy = menu;
+  v7 = ([menuCopy metadata] & 0x10000) != 0 && -[_UIContextMenuView hierarchyStyle](self, "hierarchyStyle") == 2;
+  metadata = [menuCopy metadata];
+  metadata2 = [menuCopy metadata];
+  if (([menuCopy options] & 0x100) != 0)
   {
     if (_UIApplicationProcessIsSpringBoard() & 1) != 0 || (_UIApplicationProcessIsUIKitester())
     {
@@ -881,9 +881,9 @@ LABEL_58:
     IsOverlayUI = 0;
   }
 
-  v11 = [(UIView *)self traitCollection];
-  v12 = [v11 userInterfaceIdiom];
-  v13 = _UIContextMenuGetPlatformMetrics(v12);
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  v13 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v13 defaultMenuWidth];
   v15 = v14;
   if (IsOverlayUI)
@@ -892,12 +892,12 @@ LABEL_58:
     v15 = v15 + v16;
   }
 
-  v17 = [v13 leadingIndentationContributesToWidth];
+  leadingIndentationContributesToWidth = [v13 leadingIndentationContributesToWidth];
   v18 = 0.0;
   v19 = 0.0;
-  if ((v8 & 0x100) != 0 && v17)
+  if ((metadata & 0x100) != 0 && leadingIndentationContributesToWidth)
   {
-    v20 = _UIContextMenuGetPlatformMetrics(v12);
+    v20 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     [v20 leadingIndentationWidth];
     v19 = v21;
   }
@@ -905,36 +905,36 @@ LABEL_58:
   v22 = v15 + v19;
   if (v7)
   {
-    v23 = _UIContextMenuGetPlatformMetrics(v12);
+    v23 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     [v23 menuGutterWidth];
     v18 = v24;
   }
 
   v25 = v22 + v18;
-  if ((v9 & 0x100000000) != 0)
+  if ((metadata2 & 0x100000000) != 0)
   {
     [v13 largePaletteWidthExtension];
     v25 = v25 + v26;
   }
 
   v27 = [[_UIContextMenuListView alloc] initWithFrame:0.0, 0.0, v25, 44.0];
-  v28 = [(_UIContextMenuView *)self showsShadow];
+  showsShadow = [(_UIContextMenuView *)self showsShadow];
   v29 = 1.0;
-  if (!v28)
+  if (!showsShadow)
   {
     v29 = 0.0;
   }
 
   [(_UIContextMenuListView *)v27 setShadowAlpha:v29];
   [(_UIContextMenuListView *)v27 setParentHierarchyStyle:[(_UIContextMenuView *)self hierarchyStyle]];
-  [(_UIContextMenuListView *)v27 setPosition:a4];
+  [(_UIContextMenuListView *)v27 setPosition:position];
   [(_UIContextMenuListView *)v27 setReversesActionOrder:[(_UIContextMenuView *)self reversesActionOrder]];
   [(_UIContextMenuView *)self visibleContentSize];
   [(_UIContextMenuListView *)v27 setVisibleContentSize:?];
   [(UIView *)self anchorPoint];
   [(UIView *)v27 setAnchorPoint:?];
   [(_UIContextMenuListView *)v27 setAllowsKeyboardShortcuts:IsOverlayUI];
-  if (([v6 options] & 0x400) != 0)
+  if (([menuCopy options] & 0x400) != 0)
   {
     if (_UIApplicationProcessIsSpringBoard() & 1) != 0 || (_UIApplicationProcessIsUIKitester())
     {
@@ -953,11 +953,11 @@ LABEL_58:
   }
 
   [(_UIContextMenuListView *)v27 setAllowsAlternates:v30];
-  [(_UIContextMenuListView *)v27 setDisplayedMenu:v6];
+  [(_UIContextMenuListView *)v27 setDisplayedMenu:menuCopy];
   [(_UIContextMenuListView *)v27 setAllowsBackgroundViewInteraction:[(_UIContextMenuView *)self allowsBackgroundViewInteraction]];
   [(_UIContextMenuListView *)v27 setShouldEnableTypeSelect:[(_UIContextMenuView *)self shouldEnableTypeSelect]];
-  v31 = [(_UIContextMenuView *)self preferredMenuMaterial];
-  [(_UIContextMenuListView *)v27 setPreferredMenuMaterial:v31];
+  preferredMenuMaterial = [(_UIContextMenuView *)self preferredMenuMaterial];
+  [(_UIContextMenuListView *)v27 setPreferredMenuMaterial:preferredMenuMaterial];
 
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
@@ -982,13 +982,13 @@ LABEL_58:
 
       if (byte_1EA95E0FC)
       {
-        v35 = [(UIView *)v27 layer];
-        [v35 setBorderWidth:1.0];
+        layer = [(UIView *)v27 layer];
+        [layer setBorderWidth:1.0];
 
         v36 = +[UIColor blueColor];
-        v37 = [v36 CGColor];
-        v38 = [(UIView *)v27 layer];
-        [v38 setBorderColor:v37];
+        cGColor = [v36 CGColor];
+        layer2 = [(UIView *)v27 layer];
+        [layer2 setBorderColor:cGColor];
       }
     }
   }
@@ -998,41 +998,41 @@ LABEL_30:
   return v27;
 }
 
-- (void)_updateSelectionGestureAllowableMovementForGestureBeginningAtIndexPath:(id)a3
+- (void)_updateSelectionGestureAllowableMovementForGestureBeginningAtIndexPath:(id)path
 {
-  v10 = a3;
+  pathCopy = path;
   v4 = 10.0;
   v5 = 10.0;
   if ([(_UIContextMenuView *)self scrubbingEnabled])
   {
-    v6 = [(_UIContextMenuView *)self currentListView];
-    [v6 selectionGestureAllowableMovementForGestureBeginningAtIndexPath:v10];
+    currentListView = [(_UIContextMenuView *)self currentListView];
+    [currentListView selectionGestureAllowableMovementForGestureBeginningAtIndexPath:pathCopy];
     v4 = v7;
     v5 = v8;
   }
 
-  v9 = [(_UIContextMenuView *)self selectionGestureRecognizer];
-  [v9 setAllowableMovement:{v4, v5}];
+  selectionGestureRecognizer = [(_UIContextMenuView *)self selectionGestureRecognizer];
+  [selectionGestureRecognizer setAllowableMovement:{v4, v5}];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuView *)self selectionGestureRecognizer];
+  beginCopy = begin;
+  selectionGestureRecognizer = [(_UIContextMenuView *)self selectionGestureRecognizer];
 
   v12 = 1;
-  if (v5 == v4)
+  if (selectionGestureRecognizer == beginCopy)
   {
-    [v4 locationInView:self];
+    [beginCopy locationInView:self];
     v7 = v6;
     v9 = v8;
-    v10 = [(UIGestureRecognizer *)v4 _activeTouchesEvent];
-    v11 = [(_UIContextMenuView *)self hitTest:v10 withEvent:v7, v9];
+    _activeTouchesEvent = [(UIGestureRecognizer *)beginCopy _activeTouchesEvent];
+    v11 = [(_UIContextMenuView *)self hitTest:_activeTouchesEvent withEvent:v7, v9];
 
     objc_opt_class();
-    LOBYTE(v10) = objc_opt_isKindOfClass();
+    LOBYTE(_activeTouchesEvent) = objc_opt_isKindOfClass();
 
-    if (v10)
+    if (_activeTouchesEvent)
     {
       v12 = 0;
     }
@@ -1041,16 +1041,16 @@ LABEL_30:
   return v12;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIContextMenuView *)self selectionGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  selectionGestureRecognizer = [(_UIContextMenuView *)self selectionGestureRecognizer];
 
-  if (v8 == v7)
+  if (selectionGestureRecognizer == recognizerCopy)
   {
-    v10 = [v6 view];
-    v9 = [v10 isDescendantOfView:self];
+    view = [gestureRecognizerCopy view];
+    v9 = [view isDescendantOfView:self];
   }
 
   else
@@ -1061,36 +1061,36 @@ LABEL_30:
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIContextMenuView *)self selectionGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  selectionGestureRecognizer = [(_UIContextMenuView *)self selectionGestureRecognizer];
 
-  if (v8 == v7)
+  if (selectionGestureRecognizer == recognizerCopy)
   {
-    v10 = [(_UIContextMenuView *)self selectionDelayGestureRecognizer];
+    selectionDelayGestureRecognizer = [(_UIContextMenuView *)self selectionDelayGestureRecognizer];
 
-    if (v10 == v6)
+    if (selectionDelayGestureRecognizer == gestureRecognizerCopy)
     {
       LOBYTE(v9) = 1;
     }
 
     else
     {
-      v11 = [(_UIContextMenuView *)self currentListView];
-      v12 = [v11 collectionView];
+      currentListView = [(_UIContextMenuView *)self currentListView];
+      collectionView = [currentListView collectionView];
 
-      v13 = [v6 view];
-      v14 = v13;
-      if (v13 == v12 || ![v13 isDescendantOfView:v12])
+      view = [gestureRecognizerCopy view];
+      v14 = view;
+      if (view == collectionView || ![view isDescendantOfView:collectionView])
       {
         LOBYTE(v9) = 0;
       }
 
       else
       {
-        v9 = [v6 _isGestureType:9] ^ 1;
+        v9 = [gestureRecognizerCopy _isGestureType:9] ^ 1;
       }
     }
   }
@@ -1103,54 +1103,54 @@ LABEL_30:
   return v9;
 }
 
-- (void)_handleSelectionForElement:(id)a3
+- (void)_handleSelectionForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuView *)self currentListView];
-  v6 = [v5 displayedMenu];
-  v7 = [v4 isEqual:v6];
+  elementCopy = element;
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  displayedMenu = [currentListView displayedMenu];
+  v7 = [elementCopy isEqual:displayedMenu];
 
   if (v7)
   {
-    v8 = [(_UIContextMenuView *)self submenus];
-    v9 = [v8 current];
-    v10 = [v9 previous];
-    v11 = [v10 menu];
+    submenus = [(_UIContextMenuView *)self submenus];
+    current = [submenus current];
+    previous = [current previous];
+    menu = [previous menu];
 
-    v4 = v9;
+    elementCopy = current;
 LABEL_5:
 
-    v4 = v11;
+    elementCopy = menu;
     goto LABEL_6;
   }
 
-  if ([v5 allowsAlternates])
+  if ([currentListView allowsAlternates])
   {
-    v8 = +[_UIContextMenuModifierKeyService sharedService];
-    v11 = _UIMenuElementAlternateForModifierFlags(v4, [v8 currentModifierFlags]);
+    submenus = +[_UIContextMenuModifierKeyService sharedService];
+    menu = _UIMenuElementAlternateForModifierFlags(elementCopy, [submenus currentModifierFlags]);
     goto LABEL_5;
   }
 
 LABEL_6:
-  if ([v4 _canBeHighlighted])
+  if ([elementCopy _canBeHighlighted])
   {
-    [(_UIContextMenuView *)self _performActionForElement:v4];
-    if ([v4 _isLeaf])
+    [(_UIContextMenuView *)self _performActionForElement:elementCopy];
+    if ([elementCopy _isLeaf])
     {
-      if ([v4 keepsMenuPresented])
+      if ([elementCopy keepsMenuPresented])
       {
-        v12 = [(_UIContextMenuView *)self currentListView];
-        v13 = [v12 highlightedIndexPath];
+        currentListView2 = [(_UIContextMenuView *)self currentListView];
+        highlightedIndexPath = [currentListView2 highlightedIndexPath];
 
-        if (v13)
+        if (highlightedIndexPath)
         {
           v14 = MEMORY[0x1E695DFF0];
           v16 = MEMORY[0x1E69E9820];
           v17 = 3221225472;
           v18 = __49___UIContextMenuView__handleSelectionForElement___block_invoke;
           v19 = &unk_1E70F4050;
-          v20 = v5;
-          v21 = v13;
+          v20 = currentListView;
+          v21 = highlightedIndexPath;
           v15 = [v14 scheduledTimerWithTimeInterval:0 repeats:&v16 block:0.1];
           [(_UIContextMenuView *)self setAutoUnhighlightTimer:v15, v16, v17, v18, v19];
         }
@@ -1159,33 +1159,33 @@ LABEL_6:
   }
 }
 
-- (void)_handleSelectionGesture:(id)a3
+- (void)_handleSelectionGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuView *)self currentListView];
-  [v4 locationInView:v5];
-  v6 = [v5 indexPathForItemAtPoint:?];
-  v7 = [v4 state];
-  v8 = v7 != 1;
-  if (v7 == 1)
+  gestureCopy = gesture;
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  [gestureCopy locationInView:currentListView];
+  v6 = [currentListView indexPathForItemAtPoint:?];
+  state = [gestureCopy state];
+  v8 = state != 1;
+  if (state == 1)
   {
-    v9 = [(_UIContextMenuView *)self autoUnhighlightTimer];
-    [v9 invalidate];
+    autoUnhighlightTimer = [(_UIContextMenuView *)self autoUnhighlightTimer];
+    [autoUnhighlightTimer invalidate];
 
     [(_UIContextMenuView *)self setAutoUnhighlightTimer:0];
     [(_UIContextMenuView *)self _updateSelectionGestureAllowableMovementForGestureBeginningAtIndexPath:v6];
-    v10 = [(_UIContextMenuView *)self feedbackGenerator];
-    [v4 locationInView:v5];
-    [v10 userInteractionStartedAtLocation:?];
+    feedbackGenerator = [(_UIContextMenuView *)self feedbackGenerator];
+    [gestureCopy locationInView:currentListView];
+    [feedbackGenerator userInteractionStartedAtLocation:?];
   }
 
-  v11 = [v4 buttonMask];
-  v12 = [v5 highlightedIndexPath];
-  v13 = [v4 state];
-  if (v12)
+  buttonMask = [gestureCopy buttonMask];
+  highlightedIndexPath = [currentListView highlightedIndexPath];
+  state2 = [gestureCopy state];
+  if (highlightedIndexPath)
   {
-    v15 = v13 == 3 && v11 != 2;
-    if ([v4 state] > 2)
+    v15 = state2 == 3 && buttonMask != 2;
+    if ([gestureCopy state] > 2)
     {
       if (v15)
       {
@@ -1193,7 +1193,7 @@ LABEL_6:
         v15 = 1;
 LABEL_20:
         v23 = [(_UIContextMenuView *)self feedbackGenerator:v34];
-        [v4 locationInView:v5];
+        [gestureCopy locationInView:currentListView];
         [v23 userInteractionEndedAtLocation:?];
 
         [(_UIContextMenuView *)self setUnselectableIndexPath:0];
@@ -1202,7 +1202,7 @@ LABEL_20:
 
 LABEL_14:
 
-      if (v11 != 2)
+      if (buttonMask != 2)
       {
         v40 = 0;
         v41 = &v40;
@@ -1210,14 +1210,14 @@ LABEL_14:
         v43 = __Block_byref_object_copy__7;
         v44 = __Block_byref_object_dispose__7;
         v45 = 0;
-        v16 = [(_UIContextMenuView *)self submenus];
+        submenus = [(_UIContextMenuView *)self submenus];
         v34 = MEMORY[0x1E69E9820];
         v35 = 3221225472;
         v36 = __46___UIContextMenuView__handleSelectionGesture___block_invoke;
         v37 = &unk_1E70F4078;
-        v38 = v4;
+        v38 = gestureCopy;
         v39 = &v40;
-        [v16 reverseEnumerateNodes:&v34];
+        [submenus reverseEnumerateNodes:&v34];
 
         v17 = v41[5];
         if (v17)
@@ -1226,11 +1226,11 @@ LABEL_14:
 
           if (v17 != v18)
           {
-            v19 = [(_UIContextMenuView *)self submenus];
-            v20 = [v19 current];
-            v21 = [v20 previous];
-            v22 = [v21 menu];
-            [(_UIContextMenuView *)self _performActionForElement:v22];
+            submenus2 = [(_UIContextMenuView *)self submenus];
+            current = [submenus2 current];
+            previous = [current previous];
+            menu = [previous menu];
+            [(_UIContextMenuView *)self _performActionForElement:menu];
           }
         }
 
@@ -1245,7 +1245,7 @@ LABEL_14:
 
   else
   {
-    if (v13 > 2)
+    if (state2 > 2)
     {
       goto LABEL_14;
     }
@@ -1254,15 +1254,15 @@ LABEL_14:
   }
 
 LABEL_22:
-  v24 = [(_UIContextMenuView *)self currentListView];
+  currentListView2 = [(_UIContextMenuView *)self currentListView];
 
-  if (v5 == v24)
+  if (currentListView == currentListView2)
   {
-    v25 = [v4 _allActiveTouches];
-    v26 = [v25 anyObject];
-    v27 = [(_UIContextMenuView *)self _touchSupportsAutoNavigation:v26];
+    _allActiveTouches = [gestureCopy _allActiveTouches];
+    anyObject = [_allActiveTouches anyObject];
+    v27 = [(_UIContextMenuView *)self _touchSupportsAutoNavigation:anyObject];
 
-    [v4 locationInView:v5];
+    [gestureCopy locationInView:currentListView];
     [(_UIContextMenuView *)self _setHighlightedIndexPath:v6 playFeedback:v8 atLocation:v27 allowAutoNavigation:?];
     if (!v15)
     {
@@ -1275,18 +1275,18 @@ LABEL_22:
     goto LABEL_30;
   }
 
-  v28 = [v5 elementAtIndexPath:v12];
-  v29 = [(UIGestureRecognizer *)v4 _activeTouchesEvent];
-  if (v29)
+  v28 = [currentListView elementAtIndexPath:highlightedIndexPath];
+  _activeTouchesEvent = [(UIGestureRecognizer *)gestureCopy _activeTouchesEvent];
+  if (_activeTouchesEvent)
   {
-    v30 = v29;
+    v30 = _activeTouchesEvent;
     v31 = [v28 _acceptBoolMenuVisit:0 commandVisit:&__block_literal_global_14 actionVisit:&__block_literal_global_104];
 
     if (v31)
     {
-      v32 = [(UIGestureRecognizer *)v4 _activeTouchesEvent];
-      v33 = [v32 _authenticationMessage];
-      [UIPasteboard _attemptAuthenticationWithMessage:v33];
+      _activeTouchesEvent2 = [(UIGestureRecognizer *)gestureCopy _activeTouchesEvent];
+      _authenticationMessage = [_activeTouchesEvent2 _authenticationMessage];
+      [UIPasteboard _attemptAuthenticationWithMessage:_authenticationMessage];
     }
   }
 
@@ -1295,37 +1295,37 @@ LABEL_22:
 LABEL_30:
 }
 
-- (void)_handleHoverGestureRecognizer:(id)a3
+- (void)_handleHoverGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if ([v4 state] > 2)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [(_UIContextMenuView *)self autoUnhighlightTimer];
-    [v5 invalidate];
+    autoUnhighlightTimer = [(_UIContextMenuView *)self autoUnhighlightTimer];
+    [autoUnhighlightTimer invalidate];
 
     [(_UIContextMenuView *)self setAutoUnhighlightTimer:0];
-    v6 = [(_UIContextMenuView *)self currentListView];
-    [v4 locationInView:v6];
-    v7 = [v6 indexPathForItemAtPoint:?];
-    v8 = [(_UIContextMenuView *)self hoverVelocityIntegrator];
+    currentListView = [(_UIContextMenuView *)self currentListView];
+    [recognizerCopy locationInView:currentListView];
+    v7 = [currentListView indexPathForItemAtPoint:?];
+    hoverVelocityIntegrator = [(_UIContextMenuView *)self hoverVelocityIntegrator];
 
-    if (!v8)
+    if (!hoverVelocityIntegrator)
     {
       v9 = objc_opt_new();
       [(_UIContextMenuView *)self setHoverVelocityIntegrator:v9];
 
-      v10 = [(_UIContextMenuView *)self hoverVelocityIntegrator];
-      [v10 setMinimumRequiredMovement:1.0];
+      hoverVelocityIntegrator2 = [(_UIContextMenuView *)self hoverVelocityIntegrator];
+      [hoverVelocityIntegrator2 setMinimumRequiredMovement:1.0];
     }
 
-    v11 = [(_UIContextMenuView *)self hoverVelocityIntegrator];
-    [v4 locationInView:self];
-    [v11 addSample:?];
+    hoverVelocityIntegrator3 = [(_UIContextMenuView *)self hoverVelocityIntegrator];
+    [recognizerCopy locationInView:self];
+    [hoverVelocityIntegrator3 addSample:?];
   }
 
   if ([(_UIContextMenuView *)self hierarchyStyle]== 2)
@@ -1335,45 +1335,45 @@ LABEL_30:
     v17 = 3221225472;
     v18 = __52___UIContextMenuView__handleHoverGestureRecognizer___block_invoke;
     v19 = &unk_1E70F35B8;
-    v20 = v4;
-    v21 = self;
+    v20 = recognizerCopy;
+    selfCopy = self;
     [UIView _animateUsingSpringBehavior:v12 tracking:0 animations:&v16 completion:0];
   }
 
-  v13 = [v4 _allActiveTouches];
-  v14 = [v13 anyObject];
-  v15 = [(_UIContextMenuView *)self _touchSupportsAutoNavigation:v14];
+  _allActiveTouches = [recognizerCopy _allActiveTouches];
+  anyObject = [_allActiveTouches anyObject];
+  v15 = [(_UIContextMenuView *)self _touchSupportsAutoNavigation:anyObject];
 
-  [v4 locationInView:self];
+  [recognizerCopy locationInView:self];
   [(_UIContextMenuView *)self _setHighlightedIndexPath:v7 playFeedback:0 atLocation:v15 allowAutoNavigation:?];
 }
 
-- (void)_setHighlightedIndexPath:(id)a3 playFeedback:(BOOL)a4 atLocation:(CGPoint)a5 allowAutoNavigation:(BOOL)a6
+- (void)_setHighlightedIndexPath:(id)path playFeedback:(BOOL)feedback atLocation:(CGPoint)location allowAutoNavigation:(BOOL)navigation
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  navigationCopy = navigation;
+  y = location.y;
+  x = location.x;
+  feedbackCopy = feedback;
   v36 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = [(_UIContextMenuView *)self currentListView];
-  v13 = [v12 highlightedIndexPath];
-  v14 = [(_UIContextMenuView *)self selectionGestureRecognizer];
-  v15 = [v14 numberOfTouches];
+  pathCopy = path;
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  highlightedIndexPath = [currentListView highlightedIndexPath];
+  selectionGestureRecognizer = [(_UIContextMenuView *)self selectionGestureRecognizer];
+  numberOfTouches = [selectionGestureRecognizer numberOfTouches];
 
-  if ((((v15 != 0) ^ -[_UIContextMenuView hasTrackingTouch](self, "hasTrackingTouch")) & 1) != 0 || ([v11 isEqual:v13] & 1) == 0 && (-[_UIContextMenuView unselectableIndexPath](self, "unselectableIndexPath"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v11, "isEqual:", v17), v17, (v18 & 1) == 0))
+  if ((((numberOfTouches != 0) ^ -[_UIContextMenuView hasTrackingTouch](self, "hasTrackingTouch")) & 1) != 0 || ([pathCopy isEqual:highlightedIndexPath] & 1) == 0 && (-[_UIContextMenuView unselectableIndexPath](self, "unselectableIndexPath"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(pathCopy, "isEqual:", v17), v17, (v18 & 1) == 0))
   {
-    [(_UIContextMenuView *)self setHasTrackingTouch:v15 != 0];
+    [(_UIContextMenuView *)self setHasTrackingTouch:numberOfTouches != 0];
     [(_UIContextMenuView *)self _clearAutoNavigationTimer];
     [(_UIContextMenuView *)self setUnselectableIndexPath:0];
-    if (v13)
+    if (highlightedIndexPath)
     {
-      [v12 unHighlightItemAtIndexPath:v13];
+      [currentListView unHighlightItemAtIndexPath:highlightedIndexPath];
     }
 
-    if (v11)
+    if (pathCopy)
     {
-      v16 = [v12 elementAtIndexPath:v11];
+      v16 = [currentListView elementAtIndexPath:pathCopy];
     }
 
     else
@@ -1383,28 +1383,28 @@ LABEL_30:
 
     if ([v16 _canBeHighlighted])
     {
-      v30 = v9;
-      v19 = [v16 image];
-      v20 = _UIImageName(v19);
+      v30 = feedbackCopy;
+      image = [v16 image];
+      v20 = _UIImageName(image);
       v21 = [v20 isEqualToString:@"doc.on.clipboard"];
 
       if (v21)
       {
-        v22 = [(_UIContextMenuView *)self appearanceDate];
-        _UIPasteboardAnalyticsReportEvent(@"ContextMenu", v22);
+        appearanceDate = [(_UIContextMenuView *)self appearanceDate];
+        _UIPasteboardAnalyticsReportEvent(@"ContextMenu", appearanceDate);
       }
 
       v23 = v30;
-      if (v6 && (v15 || [(_UIContextMenuView *)self hierarchyStyle]== 2))
+      if (navigationCopy && (numberOfTouches || [(_UIContextMenuView *)self hierarchyStyle]== 2))
       {
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v24 = [(_UIContextMenuView *)self highlightHoverGestureRecognizer];
-        v25 = [v24 _allActiveTouches];
+        highlightHoverGestureRecognizer = [(_UIContextMenuView *)self highlightHoverGestureRecognizer];
+        _allActiveTouches = [highlightHoverGestureRecognizer _allActiveTouches];
 
-        v26 = [v25 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v26 = [_allActiveTouches countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v26)
         {
           v27 = *v32;
@@ -1414,7 +1414,7 @@ LABEL_30:
             {
               if (*v32 != v27)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(_allActiveTouches);
               }
 
               if ([*(*(&v31 + 1) + 8 * i) _isPointerTouch])
@@ -1424,7 +1424,7 @@ LABEL_30:
               }
             }
 
-            v26 = [v25 countByEnumeratingWithState:&v31 objects:v35 count:16];
+            v26 = [_allActiveTouches countByEnumeratingWithState:&v31 objects:v35 count:16];
             if (v26)
             {
               continue;
@@ -1440,21 +1440,21 @@ LABEL_26:
         [(_UIContextMenuView *)self _setAutoNavigationTimerIfNecessaryForElement:v16 isTrackpadHover:v26];
       }
 
-      [v12 highlightItemAtIndexPath:v11 forHover:v15 == 0 playFeedback:1];
+      [currentListView highlightItemAtIndexPath:pathCopy forHover:numberOfTouches == 0 playFeedback:1];
       if (v23)
       {
-        v29 = [(_UIContextMenuView *)self feedbackGenerator];
-        [v29 selectionChangedAtLocation:{x, y}];
+        feedbackGenerator = [(_UIContextMenuView *)self feedbackGenerator];
+        [feedbackGenerator selectionChangedAtLocation:{x, y}];
       }
     }
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1468,14 +1468,14 @@ LABEL_26:
   {
     v18.receiver = self;
     v18.super_class = _UIContextMenuView;
-    v8 = [(UIView *)&v18 hitTest:v7 withEvent:x, y];
+    v8 = [(UIView *)&v18 hitTest:eventCopy withEvent:x, y];
     v9 = v20[5];
     v20[5] = v8;
   }
 
   else
   {
-    v10 = [(_UIContextMenuView *)self submenus];
+    submenus = [(_UIContextMenuView *)self submenus];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __40___UIContextMenuView_hitTest_withEvent___block_invoke;
@@ -1484,8 +1484,8 @@ LABEL_26:
     v17 = y;
     v13[4] = self;
     v15 = &v19;
-    v14 = v7;
-    [v10 reverseEnumerateNodes:v13];
+    v14 = eventCopy;
+    [submenus reverseEnumerateNodes:v13];
   }
 
   v11 = v20[5];
@@ -1494,10 +1494,10 @@ LABEL_26:
   return v11;
 }
 
-- (void)_setAutoNavigationTimerIfNecessaryForElement:(id)a3 isTrackpadHover:(BOOL)a4
+- (void)_setAutoNavigationTimerIfNecessaryForElement:(id)element isTrackpadHover:(BOOL)hover
 {
-  v5 = a3;
-  if (([v5 _isLeaf] & 1) == 0)
+  elementCopy = element;
+  if (([elementCopy _isLeaf] & 1) == 0)
   {
     objc_initWeak(&location, self);
     if ([(_UIContextMenuView *)self hierarchyStyle]== 1)
@@ -1516,8 +1516,8 @@ LABEL_26:
     v11 = __83___UIContextMenuView__setAutoNavigationTimerIfNecessaryForElement_isTrackpadHover___block_invoke;
     v12 = &unk_1E70F4108;
     objc_copyWeak(&v15, &location);
-    v13 = v5;
-    v14 = self;
+    v13 = elementCopy;
+    selfCopy = self;
     v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:&v9 block:v6];
     [(_UIContextMenuView *)self setAutoNavigationTimer:v8, v9, v10, v11, v12];
 
@@ -1528,8 +1528,8 @@ LABEL_26:
 
 - (void)_clearAutoNavigationTimer
 {
-  v3 = [(_UIContextMenuView *)self autoNavigationTimer];
-  [v3 invalidate];
+  autoNavigationTimer = [(_UIContextMenuView *)self autoNavigationTimer];
+  [autoNavigationTimer invalidate];
 
   [(_UIContextMenuView *)self setAutoNavigationTimer:0];
 }
@@ -1537,9 +1537,9 @@ LABEL_26:
 - (void)_setHoverAutoExitTimer
 {
   objc_initWeak(&location, self);
-  v3 = [(_UIContextMenuView *)self hoverAutoExitTimer];
+  hoverAutoExitTimer = [(_UIContextMenuView *)self hoverAutoExitTimer];
 
-  if (!v3)
+  if (!hoverAutoExitTimer)
   {
     v4 = MEMORY[0x1E695DFF0];
     v6 = MEMORY[0x1E69E9820];
@@ -1558,8 +1558,8 @@ LABEL_26:
 
 - (void)_clearHoverAutoExitTimer
 {
-  v3 = [(_UIContextMenuView *)self hoverAutoExitTimer];
-  [v3 invalidate];
+  hoverAutoExitTimer = [(_UIContextMenuView *)self hoverAutoExitTimer];
+  [hoverAutoExitTimer invalidate];
 
   [(_UIContextMenuView *)self setHoverAutoExitTimer:0];
 }
@@ -1567,8 +1567,8 @@ LABEL_26:
 - (id)preferredFocusEnvironments
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(_UIContextMenuView *)self currentListView];
-  v5[0] = v2;
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  v5[0] = currentListView;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -1588,36 +1588,36 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel__handleLeftArrowKey_ == a3)
+  senderCopy = sender;
+  if (sel__handleLeftArrowKey_ == action)
   {
-    v8 = [(_UIContextMenuView *)self submenus];
-    v9 = [v8 current];
-    if ([v9 leftOfParentWhenCascading])
+    submenus = [(_UIContextMenuView *)self submenus];
+    current = [submenus current];
+    if ([current leftOfParentWhenCascading])
     {
       v7 = 0;
     }
 
     else
     {
-      v13 = [(_UIContextMenuView *)self submenus];
-      v14 = [v13 current];
-      v15 = [(_UIContextMenuView *)self submenus];
-      v16 = [v15 first];
-      v7 = v14 != v16;
+      submenus2 = [(_UIContextMenuView *)self submenus];
+      current2 = [submenus2 current];
+      submenus3 = [(_UIContextMenuView *)self submenus];
+      first = [submenus3 first];
+      v7 = current2 != first;
     }
 
     goto LABEL_16;
   }
 
-  if (sel__handleRightArrowKey_ == a3)
+  if (sel__handleRightArrowKey_ == action)
   {
-    v10 = [(_UIContextMenuView *)self currentListView];
-    v8 = [v10 highlightedIndexPath];
+    currentListView = [(_UIContextMenuView *)self currentListView];
+    submenus = [currentListView highlightedIndexPath];
 
-    if (!v8)
+    if (!submenus)
     {
       v7 = 0;
 LABEL_17:
@@ -1625,30 +1625,30 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v11 = [(_UIContextMenuView *)self currentListView];
-    v9 = [v11 elementAtIndexPath:v8];
+    currentListView2 = [(_UIContextMenuView *)self currentListView];
+    current = [currentListView2 elementAtIndexPath:submenus];
 
-    if ([v9 _isLeaf])
+    if ([current _isLeaf])
     {
       LOBYTE(v12) = 0;
     }
 
     else
     {
-      v17 = [(_UIContextMenuView *)self currentListView];
-      v18 = [v17 displayedMenu];
-      v12 = [v9 isEqual:v18] ^ 1;
+      currentListView3 = [(_UIContextMenuView *)self currentListView];
+      displayedMenu = [currentListView3 displayedMenu];
+      v12 = [current isEqual:displayedMenu] ^ 1;
     }
 
-    v19 = [(_UIContextMenuView *)self submenus];
-    v20 = [v19 current];
-    if ([v20 leftOfParentWhenCascading])
+    submenus4 = [(_UIContextMenuView *)self submenus];
+    current3 = [submenus4 current];
+    if ([current3 leftOfParentWhenCascading])
     {
-      v21 = [(_UIContextMenuView *)self submenus];
-      v22 = [v21 current];
-      v23 = [(_UIContextMenuView *)self submenus];
-      v24 = [v23 first];
-      v25 = v22 != v24;
+      submenus5 = [(_UIContextMenuView *)self submenus];
+      current4 = [submenus5 current];
+      submenus6 = [(_UIContextMenuView *)self submenus];
+      first2 = [submenus6 first];
+      v25 = current4 != first2;
     }
 
     else
@@ -1664,55 +1664,55 @@ LABEL_16:
 
   v27.receiver = self;
   v27.super_class = _UIContextMenuView;
-  v7 = [(UIView *)&v27 canPerformAction:a3 withSender:v6];
+  v7 = [(UIView *)&v27 canPerformAction:action withSender:senderCopy];
 LABEL_18:
 
   return v7 & 1;
 }
 
-- (void)_handleEscapeKey:(id)a3
+- (void)_handleEscapeKey:(id)key
 {
-  v4 = [(_UIContextMenuView *)self delegate];
-  [v4 didSelectCancelActionInContextMenuView:self];
+  delegate = [(_UIContextMenuView *)self delegate];
+  [delegate didSelectCancelActionInContextMenuView:self];
 }
 
 - (void)_selectPreviousMenuIfPossible
 {
-  v3 = [(_UIContextMenuView *)self submenus];
-  v4 = [v3 current];
-  v5 = [(_UIContextMenuView *)self submenus];
-  v6 = [v5 first];
+  submenus = [(_UIContextMenuView *)self submenus];
+  current = [submenus current];
+  submenus2 = [(_UIContextMenuView *)self submenus];
+  first = [submenus2 first];
 
-  if (v4 != v6)
+  if (current != first)
   {
-    v7 = [(_UIContextMenuView *)self submenus];
-    v8 = [v7 current];
-    v9 = [v8 previous];
-    v10 = [v9 menu];
+    submenus3 = [(_UIContextMenuView *)self submenus];
+    current2 = [submenus3 current];
+    previous = [current2 previous];
+    menu = [previous menu];
 
     [(_UIContextMenuView *)self setRetainHighlightOnMenuNavigation:1];
-    [(_UIContextMenuView *)self _handleSelectionForElement:v10];
+    [(_UIContextMenuView *)self _handleSelectionForElement:menu];
   }
 }
 
-- (void)_handleRightArrowKey:(id)a3
+- (void)_handleRightArrowKey:(id)key
 {
-  v4 = [(_UIContextMenuView *)self currentListView];
-  v16 = [v4 highlightedIndexPath];
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  highlightedIndexPath = [currentListView highlightedIndexPath];
 
-  v5 = v16;
-  if (v16)
+  v5 = highlightedIndexPath;
+  if (highlightedIndexPath)
   {
-    v6 = [(_UIContextMenuView *)self currentListView];
-    v7 = [v6 elementAtIndexPath:v16];
+    currentListView2 = [(_UIContextMenuView *)self currentListView];
+    v7 = [currentListView2 elementAtIndexPath:highlightedIndexPath];
 
     if ([v7 _isLeaf] & 1) != 0 || (-[_UIContextMenuView currentListView](self, "currentListView"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "displayedMenu"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v7, "isEqual:", v9), v9, v8, (v10))
     {
-      v11 = [(_UIContextMenuView *)self submenus];
-      v12 = [v11 current];
-      v13 = [v12 leftOfParentWhenCascading];
+      submenus = [(_UIContextMenuView *)self submenus];
+      current = [submenus current];
+      leftOfParentWhenCascading = [current leftOfParentWhenCascading];
 
-      if (v13)
+      if (leftOfParentWhenCascading)
       {
         [(_UIContextMenuView *)self _selectPreviousMenuIfPossible];
       }
@@ -1720,32 +1720,32 @@ LABEL_18:
 
     else
     {
-      v14 = [(_UIContextMenuView *)self currentListView];
-      v15 = [v14 elementAtIndexPath:v16];
+      currentListView3 = [(_UIContextMenuView *)self currentListView];
+      v15 = [currentListView3 elementAtIndexPath:highlightedIndexPath];
 
       [(_UIContextMenuView *)self setRetainHighlightOnMenuNavigation:1];
       [(_UIContextMenuView *)self _handleSelectionForElement:v15];
     }
 
-    v5 = v16;
+    v5 = highlightedIndexPath;
   }
 }
 
-- (void)_handleMenuPressGesture:(id)a3
+- (void)_handleMenuPressGesture:(id)gesture
 {
-  v4 = [(_UIContextMenuView *)self delegate];
-  [v4 didSelectCancelActionInContextMenuView:self];
+  delegate = [(_UIContextMenuView *)self delegate];
+  [delegate didSelectCancelActionInContextMenuView:self];
 }
 
-- (void)_handleSelectPressGesture:(id)a3
+- (void)_handleSelectPressGesture:(id)gesture
 {
-  v4 = [(_UIContextMenuView *)self currentListView];
-  v7 = [v4 highlightedIndexPath];
+  currentListView = [(_UIContextMenuView *)self currentListView];
+  highlightedIndexPath = [currentListView highlightedIndexPath];
 
-  if (v7)
+  if (highlightedIndexPath)
   {
-    v5 = [(_UIContextMenuView *)self currentListView];
-    v6 = [v5 elementAtIndexPath:v7];
+    currentListView2 = [(_UIContextMenuView *)self currentListView];
+    v6 = [currentListView2 elementAtIndexPath:highlightedIndexPath];
 
     [(_UIContextMenuView *)self setRetainHighlightOnMenuNavigation:1];
     [(_UIContextMenuView *)self _handleSelectionForElement:v6];
@@ -1754,35 +1754,35 @@ LABEL_18:
 
 - (void)disableTypeSelectIfNeeded
 {
-  v2 = [(_UIContextMenuView *)self submenus];
-  [v2 enumerateNodes:&__block_literal_global_126];
+  submenus = [(_UIContextMenuView *)self submenus];
+  [submenus enumerateNodes:&__block_literal_global_126];
 }
 
-- (void)_performActionForElement:(id)a3
+- (void)_performActionForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   [(_UIContextMenuView *)self _clearAutoNavigationTimer];
   [(_UIContextMenuView *)self setUnselectableIndexPath:0];
-  v5 = [(_UIContextMenuView *)self delegate];
-  [v5 contextMenuView:self didSelectElement:v4];
+  delegate = [(_UIContextMenuView *)self delegate];
+  [delegate contextMenuView:self didSelectElement:elementCopy];
 }
 
-- (CGRect)_rectOfNodeParentElement:(id)a3
+- (CGRect)_rectOfNodeParentElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 previous];
-  v6 = [v5 listView];
-  v7 = [v4 menu];
+  elementCopy = element;
+  previous = [elementCopy previous];
+  listView = [previous listView];
+  menu = [elementCopy menu];
 
-  v8 = [v6 cellForElement:v7];
+  v8 = [listView cellForElement:menu];
 
-  v9 = [v8 window];
+  window = [v8 window];
 
-  if (v9)
+  if (window)
   {
-    v10 = [v8 superview];
+    superview = [v8 superview];
     [v8 frame];
-    [v10 convertRect:self toView:?];
+    [superview convertRect:self toView:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -1810,9 +1810,9 @@ LABEL_18:
 
 - (void)_testing_tapAnAction
 {
-  v3 = [(_UIContextMenuView *)self currentListView];
+  currentListView = [(_UIContextMenuView *)self currentListView];
   v4 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-  v6 = [v3 elementAtIndexPath:v4];
+  v6 = [currentListView elementAtIndexPath:v4];
 
   v5 = v6;
   if (v6)

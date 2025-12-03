@@ -6,8 +6,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(MSTrackAccessibilityElement *)self accessibilityContainer];
-  [v2 accessibilityFrame];
+  accessibilityContainer = [(MSTrackAccessibilityElement *)self accessibilityContainer];
+  [accessibilityContainer accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

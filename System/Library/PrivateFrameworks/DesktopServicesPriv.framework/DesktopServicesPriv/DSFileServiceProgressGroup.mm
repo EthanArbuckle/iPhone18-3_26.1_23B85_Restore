@@ -1,18 +1,18 @@
 @interface DSFileServiceProgressGroup
 - (BOOL)hasOutstandingChildren;
-- (BOOL)registerChildProgress:(id)a3;
-- (DSFileServiceProgressGroup)initWithUUID:(id)a3 operationKind:(id)a4 groupCount:(int64_t)a5 publishingURL:(id)a6 firstChildName:(id)a7 dateStarted:(id)a8 utType:(id)a9;
+- (BOOL)registerChildProgress:(id)progress;
+- (DSFileServiceProgressGroup)initWithUUID:(id)d operationKind:(id)kind groupCount:(int64_t)count publishingURL:(id)l firstChildName:(id)name dateStarted:(id)started utType:(id)type;
 - (id).cxx_construct;
-- (id)_timeRemainingEstimateWithTimeElapsed:(double)a3 fractionDone:(double)a4;
+- (id)_timeRemainingEstimateWithTimeElapsed:(double)elapsed fractionDone:(double)done;
 - (id)addChildProgress:;
 - (uint64_t)addChildProgress:;
 - (void)addChildProgress:;
-- (void)addChildProgress:(id)a3;
+- (void)addChildProgress:(id)progress;
 - (void)cancel;
-- (void)completedUnitCountDidChange:(id)a3 forProgress:(id)a4;
+- (void)completedUnitCountDidChange:(id)change forProgress:(id)progress;
 - (void)dealloc;
 - (void)publish;
-- (void)removeChildProgress:(id)a3;
+- (void)removeChildProgress:(id)progress;
 - (void)setupBGTask;
 - (void)unpublish;
 - (void)updateProgressLocalizedStrings;
@@ -20,15 +20,15 @@
 
 @implementation DSFileServiceProgressGroup
 
-- (DSFileServiceProgressGroup)initWithUUID:(id)a3 operationKind:(id)a4 groupCount:(int64_t)a5 publishingURL:(id)a6 firstChildName:(id)a7 dateStarted:(id)a8 utType:(id)a9
+- (DSFileServiceProgressGroup)initWithUUID:(id)d operationKind:(id)kind groupCount:(int64_t)count publishingURL:(id)l firstChildName:(id)name dateStarted:(id)started utType:(id)type
 {
   v52[6] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v39 = a4;
-  v16 = a6;
-  v17 = a7;
-  v40 = a8;
-  v18 = a9;
+  dCopy = d;
+  kindCopy = kind;
+  lCopy = l;
+  nameCopy = name;
+  startedCopy = started;
+  typeCopy = type;
   v45.receiver = self;
   v45.super_class = DSFileServiceProgressGroup;
   v19 = [(DSFileServiceProgressGroup *)&v45 init];
@@ -37,32 +37,32 @@
     v20 = *MEMORY[0x1E696A880];
     v51[0] = *MEMORY[0x1E696A858];
     v51[1] = v20;
-    v52[0] = v39;
-    v52[1] = v16;
+    v52[0] = kindCopy;
+    v52[1] = lCopy;
     v51[2] = *MEMORY[0x1E696A8A0];
     v51[3] = @"DSFileOperationUUID";
     v52[2] = MEMORY[0x1E695E118];
-    v52[3] = v15;
-    v52[4] = v40;
+    v52[3] = dCopy;
+    v52[4] = startedCopy;
     v51[4] = @"DSFileOperationDateStarted";
     v51[5] = @"DSFileOperationIconUTTypeIdentifier";
-    v21 = [v18 identifier];
-    v52[5] = v21;
+    identifier = [typeCopy identifier];
+    v52[5] = identifier;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:6];
     v23 = [v22 mutableCopy];
 
-    if (a5 <= 1 && [v17 length])
+    if (count <= 1 && [nameCopy length])
     {
-      [v23 setObject:v17 forKeyedSubscript:*MEMORY[0x1E696A818]];
+      [v23 setObject:nameCopy forKeyedSubscript:*MEMORY[0x1E696A818]];
     }
 
     atomic_store(0, &v19->_hasRequestedBGTask);
     v24 = [objc_alloc(MEMORY[0x1E696AE38]) initWithParent:0 userInfo:v23];
-    [v24 setFileURL:v16];
+    [v24 setFileURL:lCopy];
     [v24 setKind:*MEMORY[0x1E696A888]];
     [v24 setTotalUnitCount:-1];
     [v24 setCompletedUnitCount:-1];
-    v25 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v25 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     [v24 setFileTotalCount:v25];
 
     [v24 setFileCompletedCount:&unk_1F5F4A3B8];
@@ -100,17 +100,17 @@
     [v24 setPausingHandler:v28];
 
     objc_destroyWeak(&v41);
-    v29 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v15);
+    v29 = Copy<NSMutableArray<FILocalAppContainerNode *>>(dCopy);
     uuid = v19->_uuid;
     v19->_uuid = v29;
 
     objc_storeStrong(&v19->_progress, v24);
-    objc_storeStrong(&v19->_dateStarted, a8);
-    v31 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v17);
+    objc_storeStrong(&v19->_dateStarted, started);
+    v31 = Copy<NSMutableArray<FILocalAppContainerNode *>>(nameCopy);
     firstChildName = v19->_firstChildName;
     v19->_firstChildName = v31;
 
-    v33 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v16);
+    v33 = Copy<NSMutableArray<FILocalAppContainerNode *>>(lCopy);
     publishingURL = v19->_publishingURL;
     v19->_publishingURL = v33;
 
@@ -128,27 +128,27 @@
 
 - (void)updateProgressLocalizedStrings
 {
-  v3 = [(NSProgress *)self->_progress fileTotalCount];
-  v4 = [v3 integerValue];
+  fileTotalCount = [(NSProgress *)self->_progress fileTotalCount];
+  integerValue = [fileTotalCount integerValue];
 
   v5 = MEMORY[0x1E696A880];
-  if (v4 > 1)
+  if (integerValue > 1)
   {
     v9 = 0;
   }
 
   else
   {
-    v6 = [(NSProgress *)self->_progress userInfo];
+    userInfo = [(NSProgress *)self->_progress userInfo];
     v7 = *v5;
-    v9 = [v6 objectForKey:*v5];
+    v9 = [userInfo objectForKey:*v5];
 
     [(NSProgress *)self->_progress setUserInfoObject:0 forKey:v7];
   }
 
   [(NSProgress *)self->_progress setLocalizedDescription:0];
-  v8 = [(NSProgress *)self->_progress localizedDescription];
-  [(NSProgress *)self->_progress setLocalizedDescription:v8];
+  localizedDescription = [(NSProgress *)self->_progress localizedDescription];
+  [(NSProgress *)self->_progress setLocalizedDescription:localizedDescription];
 
   if (v9)
   {
@@ -161,8 +161,8 @@
   std::__hash_table<std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::__unordered_map_hasher<NSProgress * {__strong},std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::hash<NSProgress * {__strong}>,std::equal_to<NSProgress * {__strong}>,true>,std::__unordered_map_equal<NSProgress * {__strong},std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::equal_to<NSProgress * {__strong}>,std::hash<NSProgress * {__strong}>,true>,std::allocator<std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>>>::clear(&self->_completedUnitCountObservers);
   if (GlobalCopyProgressEnabled())
   {
-    v3 = [(DSFileServiceProgressGroup *)self continuedUITask];
-    [v3 setTaskCompletedWithSuccess:1];
+    continuedUITask = [(DSFileServiceProgressGroup *)self continuedUITask];
+    [continuedUITask setTaskCompletedWithSuccess:1];
   }
 
   v4.receiver = self;
@@ -170,87 +170,87 @@
   [(DSFileServiceProgressGroup *)&v4 dealloc];
 }
 
-- (BOOL)registerChildProgress:(id)a3
+- (BOOL)registerChildProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"DSFileOperationChildProgressUUID"];
+  progressCopy = progress;
+  userInfo = [progressCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"DSFileOperationChildProgressUUID"];
   v7 = static_objc_cast<NSString,objc_object * {__strong}>(v6);
 
   v8 = [(NSMutableDictionary *)self->_childProgresses objectForKeyedSubscript:v7];
 
   if (!v8)
   {
-    [(NSMutableDictionary *)self->_childProgresses setObject:v4 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_childProgresses setObject:progressCopy forKeyedSubscript:v7];
     [(DSFileServiceProgressGroup *)self updateProgressLocalizedStrings];
   }
 
   return v8 == 0;
 }
 
-- (void)addChildProgress:(id)a3
+- (void)addChildProgress:(id)progress
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v33 = v4;
-  v5 = [v4 totalUnitCount];
-  v6 = [(DSFileServiceProgressGroup *)self progress];
-  v7 = [v6 totalUnitCount];
+  progressCopy = progress;
+  v33 = progressCopy;
+  totalUnitCount = [progressCopy totalUnitCount];
+  progress = [(DSFileServiceProgressGroup *)self progress];
+  totalUnitCount2 = [progress totalUnitCount];
 
-  v8 = [(DSFileServiceProgressGroup *)self progress];
-  [v8 setTotalUnitCount:(v7 & ~(v7 >> 63)) + v5];
+  progress2 = [(DSFileServiceProgressGroup *)self progress];
+  [progress2 setTotalUnitCount:(totalUnitCount2 & ~(totalUnitCount2 >> 63)) + totalUnitCount];
 
-  if (([v4 isIndeterminate] & 1) == 0)
+  if (([progressCopy isIndeterminate] & 1) == 0)
   {
-    v9 = [v4 completedUnitCount];
-    v10 = [(DSFileServiceProgressGroup *)self progress];
-    v11 = [v10 completedUnitCount];
+    completedUnitCount = [progressCopy completedUnitCount];
+    progress3 = [(DSFileServiceProgressGroup *)self progress];
+    completedUnitCount2 = [progress3 completedUnitCount];
 
-    v12 = [(DSFileServiceProgressGroup *)self progress];
-    [v12 setCompletedUnitCount:(v11 & ~(v11 >> 63)) + v9];
+    progress4 = [(DSFileServiceProgressGroup *)self progress];
+    [progress4 setCompletedUnitCount:(completedUnitCount2 & ~(completedUnitCount2 >> 63)) + completedUnitCount];
   }
 
   make_nsweak<FIRenameOperation>(self, &from);
   objc_copyWeak(&to, &from);
-  v31 = [v4 cancellationHandler];
+  cancellationHandler = [progressCopy cancellationHandler];
   v37 = MEMORY[0x1E69E9820];
   v38 = 3321888768;
   v39 = ___ZZ47__DSFileServiceProgressGroup_addChildProgress__ENK3__4cvU13block_pointerFvvEEv_block_invoke;
   v40 = &__block_descriptor_48_ea8_32c60_ZTSKZ47__DSFileServiceProgressGroup_addChildProgress__E3__4_e5_v8__0l;
   objc_copyWeak(&v41, &to);
-  v42 = MEMORY[0x1E692D6D0](v31);
+  v42 = MEMORY[0x1E692D6D0](cancellationHandler);
   v13 = MEMORY[0x1E692D6D0](&v37);
 
   objc_destroyWeak(&v41);
-  [v4 setCancellationHandler:v13];
+  [progressCopy setCancellationHandler:v13];
 
   objc_destroyWeak(&to);
   objc_copyWeak(&location, &from);
-  v29 = [v4 resumingHandler];
+  resumingHandler = [progressCopy resumingHandler];
   v37 = MEMORY[0x1E69E9820];
   v38 = 3321888768;
   v39 = ___ZZ47__DSFileServiceProgressGroup_addChildProgress__ENK3__5cvU13block_pointerFvvEEv_block_invoke;
   v40 = &__block_descriptor_48_ea8_32c60_ZTSKZ47__DSFileServiceProgressGroup_addChildProgress__E3__5_e5_v8__0l;
   objc_copyWeak(&v41, &location);
-  v42 = MEMORY[0x1E692D6D0](v29);
+  v42 = MEMORY[0x1E692D6D0](resumingHandler);
   v14 = MEMORY[0x1E692D6D0](&v37);
 
   objc_destroyWeak(&v41);
-  [v4 setResumingHandler:v14];
+  [progressCopy setResumingHandler:v14];
 
   objc_destroyWeak(&location);
   objc_copyWeak(&v26, &from);
-  v27 = [v4 pausingHandler];
+  pausingHandler = [progressCopy pausingHandler];
   v37 = MEMORY[0x1E69E9820];
   v38 = 3321888768;
   v39 = ___ZZ47__DSFileServiceProgressGroup_addChildProgress__ENK3__6cvU13block_pointerFvvEEv_block_invoke;
   v40 = &__block_descriptor_48_ea8_32c60_ZTSKZ47__DSFileServiceProgressGroup_addChildProgress__E3__6_e5_v8__0l;
   objc_copyWeak(&v41, &v26);
-  v42 = MEMORY[0x1E692D6D0](v27);
+  v42 = MEMORY[0x1E692D6D0](pausingHandler);
   v15 = MEMORY[0x1E692D6D0](&v37);
 
   objc_destroyWeak(&v41);
-  [v4 setPausingHandler:v15];
+  [progressCopy setPausingHandler:v15];
 
   objc_destroyWeak(&v26);
   v37 = &v33;
@@ -290,42 +290,42 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeChildProgress:(id)a3
+- (void)removeChildProgress:(id)progress
 {
-  v15 = a3;
-  v4 = [v15 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"DSFileOperationChildProgressUUID"];
+  progressCopy = progress;
+  userInfo = [progressCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"DSFileOperationChildProgressUUID"];
   v6 = static_objc_cast<NSString,objc_object * {__strong}>(v5);
 
-  v7 = [(DSFileServiceProgressGroup *)self childProgresses];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  childProgresses = [(DSFileServiceProgressGroup *)self childProgresses];
+  v8 = [childProgresses objectForKeyedSubscript:v6];
 
   if (v8)
   {
-    std::__hash_table<std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::__unordered_map_hasher<NSProgress * {__strong},std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::hash<NSProgress * {__strong}>,std::equal_to<NSProgress * {__strong}>,true>,std::__unordered_map_equal<NSProgress * {__strong},std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::equal_to<NSProgress * {__strong}>,std::hash<NSProgress * {__strong}>,true>,std::allocator<std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>>>::__erase_unique<NSProgress * {__strong}>(&self->_completedUnitCountObservers.__table_.__bucket_list_.__ptr_, &v15);
-    v9 = [(DSFileServiceProgressGroup *)self childProgresses];
-    [v9 setObject:0 forKeyedSubscript:v6];
+    std::__hash_table<std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::__unordered_map_hasher<NSProgress * {__strong},std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::hash<NSProgress * {__strong}>,std::equal_to<NSProgress * {__strong}>,true>,std::__unordered_map_equal<NSProgress * {__strong},std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>,std::equal_to<NSProgress * {__strong}>,std::hash<NSProgress * {__strong}>,true>,std::allocator<std::__hash_value_type<NSProgress * {__strong},TKeyValueObserver>>>::__erase_unique<NSProgress * {__strong}>(&self->_completedUnitCountObservers.__table_.__bucket_list_.__ptr_, &progressCopy);
+    childProgresses2 = [(DSFileServiceProgressGroup *)self childProgresses];
+    [childProgresses2 setObject:0 forKeyedSubscript:v6];
 
     v10 = MEMORY[0x1E696AD98];
-    v11 = [(DSFileServiceProgressGroup *)self progress];
-    v12 = [v11 fileCompletedCount];
-    v13 = [v10 numberWithInteger:{objc_msgSend(v12, "integerValue") + 1}];
-    v14 = [(DSFileServiceProgressGroup *)self progress];
-    [v14 setFileCompletedCount:v13];
+    progress = [(DSFileServiceProgressGroup *)self progress];
+    fileCompletedCount = [progress fileCompletedCount];
+    v13 = [v10 numberWithInteger:{objc_msgSend(fileCompletedCount, "integerValue") + 1}];
+    progress2 = [(DSFileServiceProgressGroup *)self progress];
+    [progress2 setFileCompletedCount:v13];
   }
 }
 
 - (BOOL)hasOutstandingChildren
 {
-  v2 = [(DSFileServiceProgressGroup *)self childProgresses];
-  v3 = [v2 count] != 0;
+  childProgresses = [(DSFileServiceProgressGroup *)self childProgresses];
+  v3 = [childProgresses count] != 0;
 
   return v3;
 }
 
-- (id)_timeRemainingEstimateWithTimeElapsed:(double)a3 fractionDone:(double)a4
+- (id)_timeRemainingEstimateWithTimeElapsed:(double)elapsed fractionDone:(double)done
 {
-  if (a3 == 0.0 || (v6 = a4 / a3, v6 == 0.0) || (COERCE__INT64(fabs((1.0 - a4) / v6)) - 0x10000000000000) >> 53 > 0x3FE)
+  if (elapsed == 0.0 || (v6 = done / elapsed, v6 == 0.0) || (COERCE__INT64(fabs((1.0 - done) / v6)) - 0x10000000000000) >> 53 > 0x3FE)
   {
     v7 = 0;
   }
@@ -338,82 +338,82 @@
   return v7;
 }
 
-- (void)completedUnitCountDidChange:(id)a3 forProgress:(id)a4
+- (void)completedUnitCountDidChange:(id)change forProgress:(id)progress
 {
-  v39 = a3;
-  if (a4)
+  changeCopy = change;
+  if (progress)
   {
-    v6 = [(DSFileServiceProgressGroup *)self progress];
-    v7 = [v6 completedUnitCount];
+    progress = [(DSFileServiceProgressGroup *)self progress];
+    completedUnitCount = [progress completedUnitCount];
 
-    v8 = [v39 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+    v8 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
     v9 = static_objc_cast<NSString,objc_object * {__strong}>(v8);
-    v10 = [v9 longLongValue];
+    longLongValue = [v9 longLongValue];
 
-    v11 = [v39 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     v12 = static_objc_cast<NSString,objc_object * {__strong}>(v11);
-    v13 = [v12 longLongValue];
+    longLongValue2 = [v12 longLongValue];
 
-    v14 = [(DSFileServiceProgressGroup *)self progress];
-    v15 = v14;
-    v16 = v13 - v10;
-    if (v13 <= 0 || v10 <= 0)
+    progress2 = [(DSFileServiceProgressGroup *)self progress];
+    v15 = progress2;
+    v16 = longLongValue2 - longLongValue;
+    if (longLongValue2 <= 0 || longLongValue <= 0)
     {
-      v16 = v13 & ~(v13 >> 63);
+      v16 = longLongValue2 & ~(longLongValue2 >> 63);
     }
 
-    v18 = v16 + v7;
-    if (v7 >= 0)
+    v18 = v16 + completedUnitCount;
+    if (completedUnitCount >= 0)
     {
       v19 = v18;
     }
 
     else
     {
-      v19 = v13;
+      v19 = longLongValue2;
     }
 
-    [v14 setCompletedUnitCount:v19];
+    [progress2 setCompletedUnitCount:v19];
 
-    v20 = [(DSFileServiceProgressGroup *)self dateStarted];
-    [v20 timeIntervalSinceNow];
+    dateStarted = [(DSFileServiceProgressGroup *)self dateStarted];
+    [dateStarted timeIntervalSinceNow];
     v22 = v21;
-    v23 = [(DSFileServiceProgressGroup *)self progress];
-    [v23 fractionCompleted];
+    progress3 = [(DSFileServiceProgressGroup *)self progress];
+    [progress3 fractionCompleted];
     v25 = [(DSFileServiceProgressGroup *)self _timeRemainingEstimateWithTimeElapsed:-v22 fractionDone:v24];
 
     if (v25)
     {
-      v26 = [(DSFileServiceProgressGroup *)self progress];
-      [v26 setEstimatedTimeRemaining:v25];
+      progress4 = [(DSFileServiceProgressGroup *)self progress];
+      [progress4 setEstimatedTimeRemaining:v25];
     }
 
     if (GlobalCopyProgressEnabled())
     {
-      v27 = [(DSFileServiceProgressGroup *)self continuedUITask];
-      v28 = v27;
-      if (v27)
+      continuedUITask = [(DSFileServiceProgressGroup *)self continuedUITask];
+      v28 = continuedUITask;
+      if (continuedUITask)
       {
-        v29 = [v27 progress];
-        [v29 setCancellable:1];
-        v30 = [(DSFileServiceProgressGroup *)self progress];
-        v31 = [v30 localizedDescription];
-        [v29 setLocalizedDescription:v31];
+        progress5 = [continuedUITask progress];
+        [progress5 setCancellable:1];
+        progress6 = [(DSFileServiceProgressGroup *)self progress];
+        localizedDescription = [progress6 localizedDescription];
+        [progress5 setLocalizedDescription:localizedDescription];
 
-        v32 = [(DSFileServiceProgressGroup *)self progress];
-        v33 = [v32 localizedAdditionalDescription];
-        [v29 setLocalizedAdditionalDescription:v33];
+        progress7 = [(DSFileServiceProgressGroup *)self progress];
+        localizedAdditionalDescription = [progress7 localizedAdditionalDescription];
+        [progress5 setLocalizedAdditionalDescription:localizedAdditionalDescription];
 
-        v34 = [(DSFileServiceProgressGroup *)self progress];
-        [v29 setTotalUnitCount:{objc_msgSend(v34, "totalUnitCount")}];
+        progress8 = [(DSFileServiceProgressGroup *)self progress];
+        [progress5 setTotalUnitCount:{objc_msgSend(progress8, "totalUnitCount")}];
 
-        v35 = [(DSFileServiceProgressGroup *)self progress];
-        [v29 setCompletedUnitCount:{objc_msgSend(v35, "completedUnitCount")}];
+        progress9 = [(DSFileServiceProgressGroup *)self progress];
+        [progress5 setCompletedUnitCount:{objc_msgSend(progress9, "completedUnitCount")}];
 
-        v36 = [(DSFileServiceProgressGroup *)self continuedUITask];
-        v37 = [v29 localizedDescription];
-        v38 = [v29 localizedAdditionalDescription];
-        [v36 updateTitle:v37 subtitle:v38];
+        continuedUITask2 = [(DSFileServiceProgressGroup *)self continuedUITask];
+        localizedDescription2 = [progress5 localizedDescription];
+        localizedAdditionalDescription2 = [progress5 localizedAdditionalDescription];
+        [continuedUITask2 updateTitle:localizedDescription2 subtitle:localizedAdditionalDescription2];
       }
 
       else
@@ -430,12 +430,12 @@
   {
     if (GlobalCopyProgressEnabled())
     {
-      v3 = [(DSFileServiceProgressGroup *)self requestBGTask];
+      requestBGTask = [(DSFileServiceProgressGroup *)self requestBGTask];
 
-      if (v3)
+      if (requestBGTask)
       {
-        v4 = [(DSFileServiceProgressGroup *)self requestBGTask];
-        v4[2]();
+        requestBGTask2 = [(DSFileServiceProgressGroup *)self requestBGTask];
+        requestBGTask2[2]();
 
         [(DSFileServiceProgressGroup *)self setRequestBGTask:0];
       }
@@ -445,20 +445,20 @@
 
 - (void)publish
 {
-  v2 = [(DSFileServiceProgressGroup *)self progress];
-  [v2 publish];
+  progress = [(DSFileServiceProgressGroup *)self progress];
+  [progress publish];
 }
 
 - (void)unpublish
 {
-  v2 = [(DSFileServiceProgressGroup *)self progress];
-  [v2 unpublish];
+  progress = [(DSFileServiceProgressGroup *)self progress];
+  [progress unpublish];
 }
 
 - (void)cancel
 {
-  v2 = [(DSFileServiceProgressGroup *)self progress];
-  [v2 cancel];
+  progress = [(DSFileServiceProgressGroup *)self progress];
+  [progress cancel];
 }
 
 - (id).cxx_construct
@@ -473,15 +473,15 @@
 - (void)addChildProgress:
 {
   v4 = *a2;
-  v3 = TNSWeakPtr<DSFileServiceProgressGroup>::Lock((a1 + 8));
-  [v3 completedUnitCountDidChange:v4 forProgress:*(a1 + 16)];
+  v3 = TNSWeakPtr<DSFileServiceProgressGroup>::Lock((self + 8));
+  [v3 completedUnitCountDidChange:v4 forProgress:*(self + 16)];
 }
 
 - (id)addChildProgress:
 {
   *a2 = &unk_1F5F41148;
-  objc_copyWeak((a2 + 8), (a1 + 8));
-  result = *(a1 + 16);
+  objc_copyWeak((a2 + 8), (self + 8));
+  result = *(self + 16);
   *(a2 + 16) = result;
   return result;
 }
@@ -489,7 +489,7 @@
 - (uint64_t)addChildProgress:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

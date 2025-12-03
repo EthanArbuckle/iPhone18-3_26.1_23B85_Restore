@@ -1,14 +1,14 @@
 @interface PXCPLLearnMoreClientVersionTooOldInformationActionPerformer
-- (void)_didOpenURL:(BOOL)a3;
+- (void)_didOpenURL:(BOOL)l;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXCPLLearnMoreClientVersionTooOldInformationActionPerformer
 
-- (void)_didOpenURL:(BOOL)a3
+- (void)_didOpenURL:(BOOL)l
 {
-  v3 = a3;
-  if (a3)
+  lCopy = l;
+  if (l)
   {
     v5 = PLUserStatusUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -31,7 +31,7 @@
     }
   }
 
-  [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:v3 error:v6];
+  [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:lCopy error:v6];
 }
 
 - (void)performBackgroundTask
@@ -45,13 +45,13 @@
 
   objc_initWeak(buf, self);
   v4 = [MEMORY[0x1E695DFF8] URLWithString:@"https://support.apple.com/ht212139?cid=mc-ols-icloudphotos-article_ht212139-ios_ui-01212021"];
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __84__PXCPLLearnMoreClientVersionTooOldInformationActionPerformer_performBackgroundTask__block_invoke;
   v6[3] = &unk_1E7747EB0;
   objc_copyWeak(&v7, buf);
-  [v5 openURL:v4 withCompletionHandler:v6];
+  [mEMORY[0x1E69DC668] openURL:v4 withCompletionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(buf);

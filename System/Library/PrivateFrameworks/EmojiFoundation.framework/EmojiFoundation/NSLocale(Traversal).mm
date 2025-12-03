@@ -8,9 +8,9 @@
 {
   v5 = a4;
   v6 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
-  v7 = [v6 languageIdentifier];
+  languageIdentifier = [v6 languageIdentifier];
 
-  v8 = v7;
+  v8 = languageIdentifier;
   v12 = 0;
   v9 = &stru_1F24C94E8;
   v10 = v8;

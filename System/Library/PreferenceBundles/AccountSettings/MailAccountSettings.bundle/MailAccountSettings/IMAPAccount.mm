@@ -1,15 +1,15 @@
 @interface IMAPAccount
-+ (id)advancedSpecifiersWithOptions:(unsigned int)a3;
++ (id)advancedSpecifiersWithOptions:(unsigned int)options;
 - (id)advancedSpecifiers;
 - (id)otherTopLevelSpecifiers;
 @end
 
 @implementation IMAPAccount
 
-+ (id)advancedSpecifiersWithOptions:(unsigned int)a3
++ (id)advancedSpecifiersWithOptions:(unsigned int)options
 {
-  v3 = *&a3;
-  v4 = a1;
+  optionsCopy = *&options;
+  selfCopy2 = self;
   if (!qword_D6440)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -58,15 +58,15 @@
     [v28 setUserInfo:v30];
 
     [qword_D6440 addObject:v28];
-    v3 = a3;
-    v4 = a1;
+    optionsCopy = options;
+    selfCopy2 = self;
   }
 
   v31 = +[NSMutableArray array];
   [v31 addObjectsFromArray:qword_D6440];
-  v36.receiver = v4;
+  v36.receiver = selfCopy2;
   v36.super_class = &OBJC_METACLASS___IMAPAccount;
-  v32 = objc_msgSendSuper2(&v36, "advancedSpecifiersWithOptions:", v3);
+  v32 = objc_msgSendSuper2(&v36, "advancedSpecifiersWithOptions:", optionsCopy);
   [v31 addObjectsFromArray:v32];
 
   return v31;
@@ -76,12 +76,12 @@
 {
   v32.receiver = self;
   v32.super_class = IMAPAccount;
-  v24 = [(IMAPAccount *)&v32 advancedSpecifiers];
-  v29 = [(IMAPAccount *)self deleteInPlaceForAllMailboxes];
-  v28 = [(IMAPAccount *)self mustArchiveSentMessages];
-  if (v29 & 1 | ((v28 & 1) == 0))
+  advancedSpecifiers = [(IMAPAccount *)&v32 advancedSpecifiers];
+  deleteInPlaceForAllMailboxes = [(IMAPAccount *)self deleteInPlaceForAllMailboxes];
+  mustArchiveSentMessages = [(IMAPAccount *)self mustArchiveSentMessages];
+  if (deleteInPlaceForAllMailboxes & 1 | ((mustArchiveSentMessages & 1) == 0))
   {
-    v3 = [v24 mutableCopy];
+    v3 = [advancedSpecifiers mutableCopy];
     v4 = [v3 count];
     if (v4)
     {
@@ -91,17 +91,17 @@
       v30 = v3;
       do
       {
-        v8 = [v3 objectAtIndex:{v6, v23}];
+        v8 = [v3 objectAtIndex:{v6, name3}];
         v9 = v8;
-        if (v29)
+        if (deleteInPlaceForAllMailboxes)
         {
-          v31 = [v8 name];
+          name = [v8 name];
           v10 = [NSBundle bundleForClass:objc_opt_class()];
           v11 = [v10 localizedStringForKey:@"DELETED_MESSAGES_GROUP" value:v7 table:@"AccountPreferences"];
-          if ([v31 isEqualToString:v11])
+          if ([name isEqualToString:v11])
           {
 
-            if (v28)
+            if (mustArchiveSentMessages)
             {
               goto LABEL_17;
             }
@@ -111,26 +111,26 @@
 
           else
           {
-            v27 = [v9 name];
+            name2 = [v9 name];
             v26 = [NSBundle bundleForClass:objc_opt_class()];
             v25 = [v26 localizedStringForKey:@"REMOVE_FROM_TRASH" value:v7 table:@"AccountPreferences"];
-            if ([v27 isEqualToString:?])
+            if ([name2 isEqualToString:?])
             {
               v12 = 1;
             }
 
             else
             {
-              v23 = [v9 name];
+              name3 = [v9 name];
               v13 = [NSBundle bundleForClass:objc_opt_class()];
               v14 = v7;
               v15 = [v13 localizedStringForKey:@"DELETED_MAILBOX" value:v7 table:@"AccountPreferences"];
-              v12 = [v23 isEqualToString:v15];
+              v12 = [name3 isEqualToString:v15];
 
               v7 = v14;
             }
 
-            if (v28)
+            if (mustArchiveSentMessages)
             {
               if (v12)
               {
@@ -144,7 +144,7 @@
 
         else
         {
-          if (v28)
+          if (mustArchiveSentMessages)
           {
             goto LABEL_15;
           }
@@ -152,15 +152,15 @@
           v12 = 0;
         }
 
-        v17 = [v9 name];
+        name4 = [v9 name];
         v18 = [NSBundle bundleForClass:objc_opt_class()];
         v19 = [v18 localizedStringForKey:@"SENT_MAILBOX" value:v7 table:@"AccountPreferences"];
-        v20 = v12 | [v17 isEqualToString:v19];
+        v20 = v12 | [name4 isEqualToString:v19];
 
         if (v20 == 1)
         {
 LABEL_17:
-          [v30 removeObjectAtIndex:{v6--, v23}];
+          [v30 removeObjectAtIndex:{v6--, name3}];
           v16 = v5 - 1;
           goto LABEL_18;
         }
@@ -181,7 +181,7 @@ LABEL_18:
 
   else
   {
-    v3 = v24;
+    v3 = advancedSpecifiers;
   }
 
   return v3;

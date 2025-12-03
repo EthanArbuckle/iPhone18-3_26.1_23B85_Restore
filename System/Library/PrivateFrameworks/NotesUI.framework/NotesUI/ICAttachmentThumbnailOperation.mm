@@ -1,28 +1,28 @@
 @interface ICAttachmentThumbnailOperation
-- (BOOL)isMatchingOperationForCacheKey:(id)a3 cache:(id)a4;
+- (BOOL)isMatchingOperationForCacheKey:(id)key cache:(id)cache;
 - (CGSize)minSize;
-- (ICAttachmentThumbnailOperation)initWithAttachment:(id)a3 size:(CGSize)a4 scale:(double)a5 appearanceInfo:(id)a6 cache:(id)a7 cacheKey:(id)a8 processingBlock:(id)a9 completionBlock:(id)a10 fallbackBlock:(id)a11 queue:(id)a12;
+- (ICAttachmentThumbnailOperation)initWithAttachment:(id)attachment size:(CGSize)size scale:(double)scale appearanceInfo:(id)info cache:(id)cache cacheKey:(id)key processingBlock:(id)block completionBlock:(id)self0 fallbackBlock:(id)self1 queue:(id)self2;
 - (ICAttachmentThumbnailOperationQueue)queue;
-- (void)addCompletionBlock:(id)a3;
-- (void)capturePropertiesFromAttachment:(id)a3;
+- (void)addCompletionBlock:(id)block;
+- (void)capturePropertiesFromAttachment:(id)attachment;
 - (void)main;
 - (void)requestThumbnail;
 @end
 
 @implementation ICAttachmentThumbnailOperation
 
-- (ICAttachmentThumbnailOperation)initWithAttachment:(id)a3 size:(CGSize)a4 scale:(double)a5 appearanceInfo:(id)a6 cache:(id)a7 cacheKey:(id)a8 processingBlock:(id)a9 completionBlock:(id)a10 fallbackBlock:(id)a11 queue:(id)a12
+- (ICAttachmentThumbnailOperation)initWithAttachment:(id)attachment size:(CGSize)size scale:(double)scale appearanceInfo:(id)info cache:(id)cache cacheKey:(id)key processingBlock:(id)block completionBlock:(id)self0 fallbackBlock:(id)self1 queue:(id)self2
 {
-  height = a4.height;
-  width = a4.width;
-  v21 = a3;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a9;
-  v26 = a10;
-  v27 = a11;
-  v28 = a12;
+  height = size.height;
+  width = size.width;
+  attachmentCopy = attachment;
+  infoCopy = info;
+  cacheCopy = cache;
+  keyCopy = key;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  fallbackBlockCopy = fallbackBlock;
+  queueCopy = queue;
   v41.receiver = self;
   v41.super_class = ICAttachmentThumbnailOperation;
   v29 = [(ICAttachmentThumbnailOperation *)&v41 init];
@@ -30,56 +30,56 @@
   if (v29)
   {
     [(ICAttachmentThumbnailOperation *)v29 setMinSize:width, height];
-    [(ICAttachmentThumbnailOperation *)v30 setScale:a5];
-    [(ICAttachmentThumbnailOperation *)v30 setAppearanceInfo:v22];
-    [(ICAttachmentThumbnailOperation *)v30 setCache:v23];
-    [(ICAttachmentThumbnailOperation *)v30 setCacheKey:v24];
-    [(ICAttachmentThumbnailOperation *)v30 setFallbackBlock:v27];
-    [(ICAttachmentThumbnailOperation *)v30 setProcessingBlock:v25];
-    v40 = v25;
-    v31 = v24;
-    v32 = v23;
-    v33 = v22;
+    [(ICAttachmentThumbnailOperation *)v30 setScale:scale];
+    [(ICAttachmentThumbnailOperation *)v30 setAppearanceInfo:infoCopy];
+    [(ICAttachmentThumbnailOperation *)v30 setCache:cacheCopy];
+    [(ICAttachmentThumbnailOperation *)v30 setCacheKey:keyCopy];
+    [(ICAttachmentThumbnailOperation *)v30 setFallbackBlock:fallbackBlockCopy];
+    [(ICAttachmentThumbnailOperation *)v30 setProcessingBlock:blockCopy];
+    v40 = blockCopy;
+    v31 = keyCopy;
+    v32 = cacheCopy;
+    v33 = infoCopy;
     v34 = MEMORY[0x1E695DF70];
-    v35 = [v26 copy];
+    v35 = [completionBlockCopy copy];
     v36 = [v34 arrayWithObject:v35];
     [(ICAttachmentThumbnailOperation *)v30 setCompletionBlocks:v36];
 
-    v22 = v33;
-    v23 = v32;
-    v24 = v31;
-    v25 = v40;
+    infoCopy = v33;
+    cacheCopy = v32;
+    keyCopy = v31;
+    blockCopy = v40;
 
-    [(ICAttachmentThumbnailOperation *)v30 setQueue:v28];
-    v37 = [v21 objectID];
-    [(ICAttachmentThumbnailOperation *)v30 setAttachmentID:v37];
+    [(ICAttachmentThumbnailOperation *)v30 setQueue:queueCopy];
+    objectID = [attachmentCopy objectID];
+    [(ICAttachmentThumbnailOperation *)v30 setAttachmentID:objectID];
 
-    v38 = [v21 note];
+    note = [attachmentCopy note];
 
-    if (!v38)
+    if (!note)
     {
-      [(ICAttachmentThumbnailOperation *)v30 capturePropertiesFromAttachment:v21];
+      [(ICAttachmentThumbnailOperation *)v30 capturePropertiesFromAttachment:attachmentCopy];
     }
   }
 
   return v30;
 }
 
-- (void)capturePropertiesFromAttachment:(id)a3
+- (void)capturePropertiesFromAttachment:(id)attachment
 {
-  v19 = a3;
-  v4 = [v19 attachmentModel];
-  v5 = [v4 hasPreviews];
+  attachmentCopy = attachment;
+  attachmentModel = [attachmentCopy attachmentModel];
+  hasPreviews = [attachmentModel hasPreviews];
 
-  if (v5)
+  if (hasPreviews)
   {
     [(ICAttachmentThumbnailOperation *)self minSize];
     v7 = v6;
     v9 = v8;
     [(ICAttachmentThumbnailOperation *)self scale];
     v11 = v10;
-    v12 = [(ICAttachmentThumbnailOperation *)self appearanceInfo];
-    v13 = [v19 attachmentPreviewImageWithMinSize:objc_msgSend(v12 scale:"type") appearanceType:1 requireAppearance:{v7, v9, v11}];
+    appearanceInfo = [(ICAttachmentThumbnailOperation *)self appearanceInfo];
+    v13 = [attachmentCopy attachmentPreviewImageWithMinSize:objc_msgSend(appearanceInfo scale:"type") appearanceType:1 requireAppearance:{v7, v9, v11}];
 
     v14 = [v13 newImageLoaderForUpdatingImageOnCompletion:1];
     [(ICAttachmentThumbnailOperation *)self setAttachmentPreviewImageLoader:v14];
@@ -89,45 +89,45 @@
 
   else
   {
-    v15 = [v19 media];
-    v16 = [v15 mediaURL];
-    [(ICAttachmentThumbnailOperation *)self setMediaURL:v16];
+    media = [attachmentCopy media];
+    mediaURL = [media mediaURL];
+    [(ICAttachmentThumbnailOperation *)self setMediaURL:mediaURL];
 
     [(ICAttachmentThumbnailOperation *)self setImageScaling:2];
     [(ICAttachmentThumbnailOperation *)self setShowAsFileIcon:1];
   }
 
-  v17 = [(ICAttachmentThumbnailOperation *)self attachmentPreviewImageLoader];
-  if (v17)
+  attachmentPreviewImageLoader = [(ICAttachmentThumbnailOperation *)self attachmentPreviewImageLoader];
+  if (attachmentPreviewImageLoader)
   {
   }
 
   else
   {
-    v18 = [(ICAttachmentThumbnailOperation *)self mediaURL];
+    mediaURL2 = [(ICAttachmentThumbnailOperation *)self mediaURL];
 
-    if (!v18)
+    if (!mediaURL2)
     {
       goto LABEL_8;
     }
   }
 
-  -[ICAttachmentThumbnailOperation setIsMovie:](self, "setIsMovie:", [v19 attachmentType] == 5);
+  -[ICAttachmentThumbnailOperation setIsMovie:](self, "setIsMovie:", [attachmentCopy attachmentType] == 5);
 LABEL_8:
   [(ICAttachmentThumbnailOperation *)self setAttachmentPropertiesCaptured:1];
 }
 
-- (BOOL)isMatchingOperationForCacheKey:(id)a3 cache:(id)a4
+- (BOOL)isMatchingOperationForCacheKey:(id)key cache:(id)cache
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICAttachmentThumbnailOperation *)self cacheKey];
-  v9 = [v7 isEqualToString:v8];
+  cacheCopy = cache;
+  keyCopy = key;
+  cacheKey = [(ICAttachmentThumbnailOperation *)self cacheKey];
+  v9 = [keyCopy isEqualToString:cacheKey];
 
   if (v9)
   {
-    v10 = [(ICAttachmentThumbnailOperation *)self cache];
-    v11 = v10 == v6;
+    cache = [(ICAttachmentThumbnailOperation *)self cache];
+    v11 = cache == cacheCopy;
   }
 
   else
@@ -138,9 +138,9 @@ LABEL_8:
   return v11;
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   v3 = v4;
   performBlockOnMainThreadAndWait();
 }
@@ -161,74 +161,74 @@ void __53__ICAttachmentThumbnailOperation_addCompletionBlock___block_invoke(uint
 
   else
   {
-    v4 = [MEMORY[0x1E69B7800] sharedContext];
-    v5 = [v4 workerManagedObjectContext];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __38__ICAttachmentThumbnailOperation_main__block_invoke;
     v22[3] = &unk_1E8468F80;
-    v3 = v5;
+    v3 = workerManagedObjectContext;
     v23 = v3;
-    v24 = self;
+    selfCopy = self;
     [v3 performBlockAndWait:v22];
   }
 
-  v6 = [(ICAttachmentThumbnailOperation *)self attachmentPreviewImageLoader];
-  v7 = [v6 canLoadImage];
+  attachmentPreviewImageLoader = [(ICAttachmentThumbnailOperation *)self attachmentPreviewImageLoader];
+  canLoadImage = [attachmentPreviewImageLoader canLoadImage];
 
-  if (v7)
+  if (canLoadImage)
   {
-    v8 = [(ICAttachmentThumbnailOperation *)self attachmentPreviewImageLoader];
-    v9 = [v8 loadOrientedImage];
+    attachmentPreviewImageLoader2 = [(ICAttachmentThumbnailOperation *)self attachmentPreviewImageLoader];
+    loadOrientedImage = [attachmentPreviewImageLoader2 loadOrientedImage];
   }
 
   else
   {
-    v17 = [(ICAttachmentThumbnailOperation *)self mediaURL];
+    mediaURL = [(ICAttachmentThumbnailOperation *)self mediaURL];
 
-    if (v17)
+    if (mediaURL)
     {
       [(ICAttachmentThumbnailOperation *)self requestThumbnail];
       goto LABEL_12;
     }
 
-    v18 = [(ICAttachmentThumbnailOperation *)self fallbackBlock];
+    fallbackBlock = [(ICAttachmentThumbnailOperation *)self fallbackBlock];
 
-    if (!v18)
+    if (!fallbackBlock)
     {
       goto LABEL_12;
     }
 
-    v8 = [(ICAttachmentThumbnailOperation *)self fallbackBlock];
+    attachmentPreviewImageLoader2 = [(ICAttachmentThumbnailOperation *)self fallbackBlock];
     [(ICAttachmentThumbnailOperation *)self scale];
-    v9 = v8[2](v8);
+    loadOrientedImage = attachmentPreviewImageLoader2[2](attachmentPreviewImageLoader2);
   }
 
-  v10 = v9;
+  v10 = loadOrientedImage;
 
   if (v10)
   {
-    v11 = [(ICAttachmentThumbnailOperation *)self processingBlock];
+    processingBlock = [(ICAttachmentThumbnailOperation *)self processingBlock];
 
-    if (v11)
+    if (processingBlock)
     {
-      v12 = [(ICAttachmentThumbnailOperation *)self processingBlock];
-      v13 = (v12)[2](v12, v10, [(ICAttachmentThumbnailOperation *)self imageScaling], [(ICAttachmentThumbnailOperation *)self showAsFileIcon], [(ICAttachmentThumbnailOperation *)self isMovie]);
+      processingBlock2 = [(ICAttachmentThumbnailOperation *)self processingBlock];
+      v13 = (processingBlock2)[2](processingBlock2, v10, [(ICAttachmentThumbnailOperation *)self imageScaling], [(ICAttachmentThumbnailOperation *)self showAsFileIcon], [(ICAttachmentThumbnailOperation *)self isMovie]);
 
       v10 = v13;
     }
   }
 
-  v14 = [v10 ic_decodeInBackground];
+  ic_decodeInBackground = [v10 ic_decodeInBackground];
 
-  v15 = [objc_alloc(MEMORY[0x1E69B7900]) initWithImage:v14 imageScaling:-[ICAttachmentThumbnailOperation imageScaling](self showAsFileIcon:"imageScaling") isMovie:{-[ICAttachmentThumbnailOperation showAsFileIcon](self, "showAsFileIcon"), -[ICAttachmentThumbnailOperation isMovie](self, "isMovie")}];
+  v15 = [objc_alloc(MEMORY[0x1E69B7900]) initWithImage:ic_decodeInBackground imageScaling:-[ICAttachmentThumbnailOperation imageScaling](self showAsFileIcon:"imageScaling") isMovie:{-[ICAttachmentThumbnailOperation showAsFileIcon](self, "showAsFileIcon"), -[ICAttachmentThumbnailOperation isMovie](self, "isMovie")}];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __38__ICAttachmentThumbnailOperation_main__block_invoke_12;
   v19[3] = &unk_1E8468F80;
   v20 = v15;
-  v21 = self;
+  selfCopy2 = self;
   v16 = v15;
   dispatch_async(MEMORY[0x1E69E96A0], v19);
 
@@ -322,15 +322,15 @@ void __38__ICAttachmentThumbnailOperation_main__block_invoke_12(uint64_t a1)
   v7 = v6;
   [(ICAttachmentThumbnailOperation *)self scale];
   v9 = v8;
-  v10 = [(ICAttachmentThumbnailOperation *)self appearanceInfo];
-  v11 = [(ICAttachmentThumbnailOperation *)self cache];
-  v12 = [(ICAttachmentThumbnailOperation *)self cacheKey];
-  v13 = [(ICAttachmentThumbnailOperation *)self processingBlock];
-  v14 = [(ICAttachmentThumbnailOperation *)self completionBlocks];
-  v15 = [(ICAttachmentThumbnailOperation *)self fallbackBlock];
-  v16 = [(ICAttachmentThumbnailPostProcessingOperation *)v3 initWithSize:v10 scale:v11 appearanceInfo:v12 cache:v13 cacheKey:v14 processingBlock:v15 completionBlocks:v5 fallbackBlock:v7, v9];
+  appearanceInfo = [(ICAttachmentThumbnailOperation *)self appearanceInfo];
+  cache = [(ICAttachmentThumbnailOperation *)self cache];
+  cacheKey = [(ICAttachmentThumbnailOperation *)self cacheKey];
+  processingBlock = [(ICAttachmentThumbnailOperation *)self processingBlock];
+  completionBlocks = [(ICAttachmentThumbnailOperation *)self completionBlocks];
+  fallbackBlock = [(ICAttachmentThumbnailOperation *)self fallbackBlock];
+  v16 = [(ICAttachmentThumbnailPostProcessingOperation *)v3 initWithSize:appearanceInfo scale:cache appearanceInfo:cacheKey cache:processingBlock cacheKey:completionBlocks processingBlock:fallbackBlock completionBlocks:v5 fallbackBlock:v7, v9];
 
-  v17 = [(ICAttachmentThumbnailOperation *)self mediaURL];
+  mediaURL = [(ICAttachmentThumbnailOperation *)self mediaURL];
   [(ICAttachmentThumbnailOperation *)self minSize];
   v19 = v18;
   v21 = v20;
@@ -343,17 +343,17 @@ void __38__ICAttachmentThumbnailOperation_main__block_invoke_12(uint64_t a1)
   v32 = v19;
   v33 = v21;
   v34 = v23;
-  v30 = v17;
+  v30 = mediaURL;
   v31 = v16;
   v24 = v16;
-  v25 = v17;
+  v25 = mediaURL;
   v26 = [v22 blockOperationWithBlock:v29];
   [(ICAttachmentThumbnailPostProcessingOperation *)v24 addDependency:v26];
-  v27 = [(ICAttachmentThumbnailOperation *)self queue];
-  [v27 addOperation:v26];
+  queue = [(ICAttachmentThumbnailOperation *)self queue];
+  [queue addOperation:v26];
 
-  v28 = [(ICAttachmentThumbnailOperation *)self queue];
-  [v28 addOperation:v24];
+  queue2 = [(ICAttachmentThumbnailOperation *)self queue];
+  [queue2 addOperation:v24];
 }
 
 void __50__ICAttachmentThumbnailOperation_requestThumbnail__block_invoke(uint64_t a1, double a2)

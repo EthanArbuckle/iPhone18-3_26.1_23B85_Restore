@@ -6,36 +6,36 @@
 
 - (id)getPreferredName
 {
-  v3 = [(RTAddress *)self areasOfInterest];
-  if (v3 && (v4 = v3, -[RTAddress areasOfInterest](self, "areasOfInterest"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  areasOfInterest = [(RTAddress *)self areasOfInterest];
+  if (areasOfInterest && (v4 = areasOfInterest, -[RTAddress areasOfInterest](self, "areasOfInterest"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
-    v7 = [(RTAddress *)self areasOfInterest];
-    v8 = [v7 firstObject];
+    areasOfInterest2 = [(RTAddress *)self areasOfInterest];
+    firstObject = [areasOfInterest2 firstObject];
   }
 
   else
   {
-    v9 = [(RTAddress *)self thoroughfare];
+    thoroughfare = [(RTAddress *)self thoroughfare];
 
-    v10 = [(RTAddress *)self locality];
-    v8 = v10;
-    if (v9)
+    locality = [(RTAddress *)self locality];
+    firstObject = locality;
+    if (thoroughfare)
     {
 
       [(RTAddress *)self thoroughfare];
-      if (v8)
+      if (firstObject)
         v11 = {;
-        v12 = [(RTAddress *)self locality];
-        v8 = [NSString stringWithFormat:@"%@, %@", v11, v12];
+        locality2 = [(RTAddress *)self locality];
+        firstObject = [NSString stringWithFormat:@"%@, %@", v11, locality2];
       }
 
       else
-        v8 = {;
+        firstObject = {;
       }
     }
   }
 
-  return v8;
+  return firstObject;
 }
 
 @end

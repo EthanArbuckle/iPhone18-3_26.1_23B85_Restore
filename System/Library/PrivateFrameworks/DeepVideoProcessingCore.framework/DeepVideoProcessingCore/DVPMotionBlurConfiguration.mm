@@ -1,12 +1,12 @@
 @interface DVPMotionBlurConfiguration
-+ (BOOL)isSupportedRevision:(int64_t)a3;
++ (BOOL)isSupportedRevision:(int64_t)revision;
 + (int64_t)defaultRevision;
-- (DVPMotionBlurConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 usePrecomputedFlow:(BOOL)a5 qualityPrioritization:(int64_t)a6 revision:(int64_t)a7;
+- (DVPMotionBlurConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision;
 @end
 
 @implementation DVPMotionBlurConfiguration
 
-- (DVPMotionBlurConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 usePrecomputedFlow:(BOOL)a5 qualityPrioritization:(int64_t)a6 revision:(int64_t)a7
+- (DVPMotionBlurConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision
 {
   v19.receiver = self;
   v19.super_class = DVPMotionBlurConfiguration;
@@ -19,17 +19,17 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (![DVPMotionBlurConfiguration isSupportedRevision:a7])
+  if (![DVPMotionBlurConfiguration isSupportedRevision:revision])
   {
-    NSLog(&cfstr_ErrorInvalidDv_3.isa, a7);
+    NSLog(&cfstr_ErrorInvalidDv_3.isa, revision);
     goto LABEL_7;
   }
 
-  v12->_usePrecomputedFlow = a5;
-  v12->_qualityPrioritization = a6;
-  v12->_frameWidth = a3;
-  v12->_frameHeight = a4;
-  v12->_revision = a7;
+  v12->_usePrecomputedFlow = flow;
+  v12->_qualityPrioritization = prioritization;
+  v12->_frameWidth = width;
+  v12->_frameHeight = height;
+  v12->_revision = revision;
   v13 = getFramePreferredPixelFormats();
   framePreferredPixelFormats = v12->_framePreferredPixelFormats;
   v12->_framePreferredPixelFormats = v13;
@@ -47,17 +47,17 @@ LABEL_4:
 + (int64_t)defaultRevision
 {
   v2 = +[DVPMotionBlurConfiguration supportedRevisions];
-  v3 = [v2 lastIndex];
+  lastIndex = [v2 lastIndex];
 
-  return v3;
+  return lastIndex;
 }
 
-+ (BOOL)isSupportedRevision:(int64_t)a3
++ (BOOL)isSupportedRevision:(int64_t)revision
 {
   v4 = +[DVPMotionBlurConfiguration supportedRevisions];
-  LOBYTE(a3) = [v4 containsIndex:a3];
+  LOBYTE(revision) = [v4 containsIndex:revision];
 
-  return a3;
+  return revision;
 }
 
 @end

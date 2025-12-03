@@ -1,129 +1,129 @@
 @interface WFReminderContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
 + (id)allLists;
 + (id)coercions;
-+ (id)contactRepresentationWithContact:(id)a3;
++ (id)contactRepresentationWithContact:(id)contact;
 + (id)contentCategories;
 + (id)defaultList;
-+ (id)itemWithReminder:(id)a3 fromReminderStore:(id)a4;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemWithReminder:(id)reminder fromReminderStore:(id)store;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
+- (BOOL)canGenerateRepresentationForType:(id)type;
 - (BOOL)flagged;
-- (BOOL)getListAltText:(id)a3;
+- (BOOL)getListAltText:(id)text;
 - (BOOL)hasAlarms;
 - (BOOL)hasSubtasks;
 - (REMReminder)reminder;
 - (id)URL;
 - (id)changeTransaction;
-- (id)defaultSourceForRepresentation:(id)a3;
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)defaultSourceForRepresentation:(id)representation;
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error;
 - (id)imageAttachments;
 - (id)parentReminder;
 - (id)subtasks;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
 @end
 
 @implementation WFReminderContentItem
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFReminderContentItem *)self reminder];
-  v6 = [v5 dueDateComponents];
+  textCopy = text;
+  reminder = [(WFReminderContentItem *)self reminder];
+  dueDateComponents = [reminder dueDateComponents];
 
-  if (v6)
+  if (dueDateComponents)
   {
-    v7 = [MEMORY[0x277CBEA80] currentCalendar];
-    v8 = [v7 dateFromComponents:v6];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v8 = [currentCalendar dateFromComponents:dueDateComponents];
 
     v9 = objc_opt_new();
     [v9 setDateStyle:1];
     [v9 setTimeStyle:1];
     [v9 setDoesRelativeDateFormatting:1];
-    if (v4)
+    if (textCopy)
     {
       v10 = [v9 stringFromDate:v8];
-      v4[2](v4, v10);
+      textCopy[2](textCopy, v10);
     }
   }
 
-  return v6 != 0;
+  return dueDateComponents != 0;
 }
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfType];
-  v6 = [v5 conformsToClass:getREMReminderClass()];
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v6 = [wfType conformsToClass:getREMReminderClass()];
 
   if (v6)
   {
-    v7 = [v4 object];
+    object = [representationCopy object];
 
-    v8 = [v7 account];
-    v9 = [(WFContentItem *)self cachingIdentifier];
-    v10 = WFMakeContentAttributionSetForRemindersAccount(v8, v9);
+    account = [object account];
+    cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+    v10 = WFMakeContentAttributionSetForRemindersAccount(account, cachingIdentifier);
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = WFReminderContentItem;
-    v10 = [(WFContentItem *)&v12 defaultSourceForRepresentation:v4];
+    v10 = [(WFContentItem *)&v12 defaultSourceForRepresentation:representationCopy];
   }
 
   return v10;
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()])
+  typeCopy = type;
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
-    v5 = [(WFReminderContentItem *)self reminder];
-    v6 = [v5 list];
-    v7 = [v6 color];
-    v8 = v7 != 0;
+    reminder = [(WFReminderContentItem *)self reminder];
+    list = [reminder list];
+    color = [list color];
+    v8 = color != 0;
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToClass:objc_opt_class()])
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
-    v5 = [(WFReminderContentItem *)self reminder];
-    v6 = [v5 startDateComponents];
-    if (v6)
+    reminder = [(WFReminderContentItem *)self reminder];
+    list = [reminder startDateComponents];
+    if (list)
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [(WFReminderContentItem *)self reminder];
-      v11 = [v10 dueDateComponents];
-      if (v11)
+      reminder2 = [(WFReminderContentItem *)self reminder];
+      dueDateComponents = [reminder2 dueDateComponents];
+      if (dueDateComponents)
       {
         v8 = 1;
       }
 
       else
       {
-        v12 = [(WFReminderContentItem *)self reminder];
-        v13 = [v12 completionDate];
-        v8 = v13 != 0;
+        reminder3 = [(WFReminderContentItem *)self reminder];
+        completionDate = [reminder3 completionDate];
+        v8 = completionDate != 0;
       }
     }
 
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToClass:objc_opt_class()])
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
     v9 = [(WFReminderContentItem *)self URL];
     v8 = v9 != 0;
@@ -133,7 +133,7 @@ LABEL_13:
   {
     v15.receiver = self;
     v15.super_class = WFReminderContentItem;
-    v8 = [(WFGenericFileContentItem *)&v15 canGenerateRepresentationForType:v4];
+    v8 = [(WFGenericFileContentItem *)&v15 canGenerateRepresentationForType:typeCopy];
   }
 
 LABEL_14:
@@ -141,98 +141,98 @@ LABEL_14:
   return v8;
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (objc_opt_class() == a5)
+  representationsCopy = representations;
+  if (objc_opt_class() == class)
   {
-    v9 = objc_opt_new();
-    v10 = [(WFReminderContentItem *)self reminder];
-    v11 = [v10 startDateComponents];
+    color = objc_opt_new();
+    reminder = [(WFReminderContentItem *)self reminder];
+    startDateComponents = [reminder startDateComponents];
 
-    if (v11)
+    if (startDateComponents)
     {
-      v12 = [MEMORY[0x277CBEA80] currentCalendar];
-      v13 = [(WFReminderContentItem *)self reminder];
-      v14 = [v13 startDateComponents];
-      v15 = [v12 dateFromComponents:v14];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      reminder2 = [(WFReminderContentItem *)self reminder];
+      startDateComponents2 = [reminder2 startDateComponents];
+      v15 = [currentCalendar dateFromComponents:startDateComponents2];
 
       v16 = WFLocalizedString(@"Reminder Start Date");
       v17 = [WFObjectRepresentation object:v15 named:v16];
-      [v9 addObject:v17];
+      [color addObject:v17];
     }
 
-    v18 = [(WFReminderContentItem *)self reminder];
-    v19 = [v18 dueDateComponents];
+    reminder3 = [(WFReminderContentItem *)self reminder];
+    dueDateComponents = [reminder3 dueDateComponents];
 
-    if (v19)
+    if (dueDateComponents)
     {
-      v20 = [MEMORY[0x277CBEA80] currentCalendar];
-      v21 = [(WFReminderContentItem *)self reminder];
-      v22 = [v21 dueDateComponents];
-      v23 = [v20 dateFromComponents:v22];
+      currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+      reminder4 = [(WFReminderContentItem *)self reminder];
+      dueDateComponents2 = [reminder4 dueDateComponents];
+      v23 = [currentCalendar2 dateFromComponents:dueDateComponents2];
 
       v24 = WFLocalizedString(@"Reminder Due Date");
       v25 = [WFObjectRepresentation object:v23 named:v24];
-      [v9 addObject:v25];
+      [color addObject:v25];
     }
 
-    v26 = [(WFReminderContentItem *)self reminder];
-    v27 = [v26 completionDate];
+    reminder5 = [(WFReminderContentItem *)self reminder];
+    completionDate = [reminder5 completionDate];
 
-    if (v27)
+    if (completionDate)
     {
-      v28 = [(WFReminderContentItem *)self reminder];
-      v29 = [v28 completionDate];
+      reminder6 = [(WFReminderContentItem *)self reminder];
+      completionDate2 = [reminder6 completionDate];
       v30 = WFLocalizedString(@"Reminder Completion Date");
-      v31 = [WFObjectRepresentation object:v29 named:v30];
-      [v9 addObject:v31];
+      v31 = [WFObjectRepresentation object:completionDate2 named:v30];
+      [color addObject:v31];
     }
 
-    v7[2](v7, v9, 0);
+    representationsCopy[2](representationsCopy, color, 0);
     goto LABEL_18;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
     v8 = [(WFReminderContentItem *)self URL];
     v32 = WFLocalizedStringWithKey(@"Show URL (Reminder Content Item)", @"Show URL");
     v33 = [WFObjectRepresentation object:v8 named:v32];
     v41[0] = v33;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
-    v7[2](v7, v34, 0);
+    representationsCopy[2](representationsCopy, v34, 0);
 
     goto LABEL_13;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
-    v35 = [(WFReminderContentItem *)self reminder];
-    v36 = [v35 list];
-    v9 = [v36 color];
+    reminder7 = [(WFReminderContentItem *)self reminder];
+    list = [reminder7 list];
+    color = [list color];
 
-    if (v9)
+    if (color)
     {
-      v37 = [MEMORY[0x277D79E20] colorWithRemindersColor:v9];
+      v37 = [MEMORY[0x277D79E20] colorWithRemindersColor:color];
       v38 = [WFObjectRepresentation object:v37];
       v40 = v38;
       v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
-      v7[2](v7, v39, 0);
+      representationsCopy[2](representationsCopy, v39, 0);
     }
 
     else
     {
-      v37 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-      (v7)[2](v7, 0, v37);
+      v37 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+      (representationsCopy)[2](representationsCopy, 0, v37);
     }
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  v8 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-  (v7)[2](v7, 0, v8);
+  v8 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+  (representationsCopy)[2](representationsCopy, 0, v8);
 LABEL_13:
 
 LABEL_19:
@@ -245,12 +245,12 @@ LABEL_19:
   return [(WFContentItem *)self objectForClass:REMReminderClass];
 }
 
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 conformsToString:@"com.apple.ical.ics"])
+  typeCopy = type;
+  optionsCopy = options;
+  if ([typeCopy conformsToString:@"com.apple.ical.ics"])
   {
     v21 = 0;
     v22 = &v21;
@@ -270,18 +270,18 @@ LABEL_19:
 
     v10 = v9;
     _Block_object_dispose(&v21, 8);
-    v11 = [(WFReminderContentItem *)self reminder];
-    v25[0] = v11;
+    reminder = [(WFReminderContentItem *)self reminder];
+    v25[0] = reminder;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
     v13 = [v9 exportICSCalendarFromReminders:v12];
 
     v14 = [v13 ICSStringWithOptions:0];
     v15 = [v14 dataUsingEncoding:4];
 
-    v16 = [(WFContentItem *)self name];
-    v17 = [WFFileRepresentation proposedFilenameForFile:v16 ofType:v7];
+    name = [(WFContentItem *)self name];
+    v17 = [WFFileRepresentation proposedFilenameForFile:name ofType:typeCopy];
 
-    v18 = [WFFileRepresentation fileWithData:v15 ofType:v7 proposedFilename:v17];
+    v18 = [WFFileRepresentation fileWithData:v15 ofType:typeCopy proposedFilename:v17];
   }
 
   else
@@ -294,10 +294,10 @@ LABEL_19:
 
 - (id)imageAttachments
 {
-  v2 = [(WFReminderContentItem *)self reminder];
-  v3 = [v2 attachmentContext];
-  v4 = [v3 imageAttachments];
-  v5 = [v4 if_map:&__block_literal_global_226];
+  reminder = [(WFReminderContentItem *)self reminder];
+  attachmentContext = [reminder attachmentContext];
+  imageAttachments = [attachmentContext imageAttachments];
+  v5 = [imageAttachments if_map:&__block_literal_global_226];
 
   return v5;
 }
@@ -312,29 +312,29 @@ id __41__WFReminderContentItem_imageAttachments__block_invoke(uint64_t a1, void 
 
 - (id)URL
 {
-  v2 = [(WFReminderContentItem *)self reminder];
-  v3 = [v2 attachmentContext];
-  v4 = [v3 urlAttachments];
-  v5 = [v4 firstObject];
-  v6 = [v5 url];
+  reminder = [(WFReminderContentItem *)self reminder];
+  attachmentContext = [reminder attachmentContext];
+  urlAttachments = [attachmentContext urlAttachments];
+  firstObject = [urlAttachments firstObject];
+  v6 = [firstObject url];
 
   return v6;
 }
 
 - (BOOL)flagged
 {
-  v2 = [(WFReminderContentItem *)self reminder];
-  v3 = [v2 flaggedContext];
-  v4 = [v3 flagged] > 0;
+  reminder = [(WFReminderContentItem *)self reminder];
+  flaggedContext = [reminder flaggedContext];
+  v4 = [flaggedContext flagged] > 0;
 
   return v4;
 }
 
 - (BOOL)hasAlarms
 {
-  v2 = [(WFReminderContentItem *)self reminder];
-  v3 = [v2 alarms];
-  v4 = [v3 count] != 0;
+  reminder = [(WFReminderContentItem *)self reminder];
+  alarms = [reminder alarms];
+  v4 = [alarms count] != 0;
 
   return v4;
 }
@@ -342,10 +342,10 @@ id __41__WFReminderContentItem_imageAttachments__block_invoke(uint64_t a1, void 
 - (id)subtasks
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(WFReminderContentItem *)self reminder];
-  v3 = [v2 subtaskContext];
+  reminder = [(WFReminderContentItem *)self reminder];
+  subtaskContext = [reminder subtaskContext];
   v8 = 0;
-  v4 = [v3 fetchRemindersWithError:&v8];
+  v4 = [subtaskContext fetchRemindersWithError:&v8];
   v5 = v8;
 
   if (!v4)
@@ -366,18 +366,18 @@ id __41__WFReminderContentItem_imageAttachments__block_invoke(uint64_t a1, void 
 
 - (BOOL)hasSubtasks
 {
-  v2 = [(WFReminderContentItem *)self subtasks];
-  v3 = [v2 count] != 0;
+  subtasks = [(WFReminderContentItem *)self subtasks];
+  v3 = [subtasks count] != 0;
 
   return v3;
 }
 
 - (id)parentReminder
 {
-  v2 = [(WFReminderContentItem *)self reminder];
-  v3 = [v2 parentReminder];
+  reminder = [(WFReminderContentItem *)self reminder];
+  parentReminder = [reminder parentReminder];
 
-  return v3;
+  return parentReminder;
 }
 
 - (id)changeTransaction
@@ -387,20 +387,20 @@ id __41__WFReminderContentItem_imageAttachments__block_invoke(uint64_t a1, void 
   return v2;
 }
 
-+ (id)contactRepresentationWithContact:(id)a3
++ (id)contactRepresentationWithContact:(id)contact
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  contactCopy = contact;
+  if (contactCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 contact];
-    if (v4)
+    contact = [contactCopy contact];
+    if (contact)
     {
-      v5 = v4;
-      v6 = [v4 phoneNumbers];
-      v7 = [v6 if_map:&__block_literal_global_301];
+      v5 = contact;
+      phoneNumbers = [contact phoneNumbers];
+      v7 = [phoneNumbers if_map:&__block_literal_global_301];
 
-      v8 = [v5 emailAddresses];
-      v9 = [v8 if_map:&__block_literal_global_303];
+      emailAddresses = [v5 emailAddresses];
+      v9 = [emailAddresses if_map:&__block_literal_global_303];
 
       v16 = 0;
       v17 = &v16;
@@ -428,7 +428,7 @@ id __41__WFReminderContentItem_imageAttachments__block_invoke(uint64_t a1, void 
       v12 = 0;
     }
 
-    v13 = v3;
+    v13 = contactCopy;
   }
 
   else
@@ -449,20 +449,20 @@ id __58__WFReminderContentItem_contactRepresentationWithContact___block_invoke(u
   return v3;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Reminders", @"Reminders");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Reminder (singular)", @"Reminder");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -497,19 +497,19 @@ id __58__WFReminderContentItem_contactRepresentationWithContact___block_invoke(u
   return v4;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "isEqualToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "isEqualToClass:", objc_opt_class()))
+  instanceCopy = instance;
+  if ([instanceCopy isEqualToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToClass:", objc_opt_class()))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFReminderContentItem;
-    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, instanceCopy);
   }
 
   return v5;
@@ -536,8 +536,8 @@ id __50__WFReminderContentItem_linkEntityCoercionHandler__block_invoke(uint64_t 
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = [WFObjectType typeWithClassName:@"LNEntity" frameworkName:@"LinkMetadata" location:1];
-  v4 = [a1 linkEntityCoercionHandler];
-  v5 = [WFCoercion coercionToType:v3 handler:v4];
+  linkEntityCoercionHandler = [self linkEntityCoercionHandler];
+  v5 = [WFCoercion coercionToType:v3 handler:linkEntityCoercionHandler];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
@@ -600,7 +600,7 @@ id __50__WFReminderContentItem_linkEntityCoercionHandler__block_invoke(uint64_t 
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Title"];
+  v2 = [self propertyForName:@"Title"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
@@ -717,13 +717,13 @@ id __50__WFReminderContentItem_linkEntityCoercionHandler__block_invoke(uint64_t 
   v128[1] = 3221225472;
   v128[2] = __41__WFReminderContentItem_propertyBuilders__block_invoke_11;
   v128[3] = &__block_descriptor_40_e14___NSArray_8__0l;
-  v128[4] = a1;
+  v128[4] = self;
   v69 = [v70 possibleValuesGetter:v128];
   v127[0] = MEMORY[0x277D85DD0];
   v127[1] = 3221225472;
   v127[2] = __41__WFReminderContentItem_propertyBuilders__block_invoke_12;
   v127[3] = &__block_descriptor_40_e61_v24__0__WFReminderContentItemChangeTransaction_8__NSString_16l;
-  v127[4] = a1;
+  v127[4] = self;
   v73 = [v69 setterBlock:v127];
   v133[10] = v73;
   v68 = WFLocalizedContentPropertyNameMarker(@"Tags");
@@ -1196,11 +1196,11 @@ void __41__WFReminderContentItem_propertyBuilders__block_invoke(uint64_t a1, voi
   [v9 setTitle:v10];
 }
 
-+ (id)itemWithReminder:(id)a3 fromReminderStore:(id)a4
++ (id)itemWithReminder:(id)reminder fromReminderStore:(id)store
 {
-  v6 = a4;
-  v7 = [a1 itemWithObject:a3 named:0];
-  [v7 setReminderStore:v6];
+  storeCopy = store;
+  v7 = [self itemWithObject:reminder named:0];
+  [v7 setReminderStore:storeCopy];
 
   return v7;
 }

@@ -1,8 +1,8 @@
 @interface PXStoryClipLayoutReuseIdentifier
-- (BOOL)hasResourceEqualTo:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasResourceEqualTo:(id)to;
+- (BOOL)isEqual:(id)equal;
 - (PXStoryClipLayoutReuseIdentifier)init;
-- (PXStoryClipLayoutReuseIdentifier)initWithClip:(id)a3;
+- (PXStoryClipLayoutReuseIdentifier)initWithClip:(id)clip;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -14,37 +14,37 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXStoryClipLayoutReuseIdentifier *)self clip];
-  v7 = [v6 identifier];
-  v8 = [(PXStoryClipLayoutReuseIdentifier *)self clip];
-  v9 = [v3 stringWithFormat:@"<%@:%p clipIdentifier:%ld clip:%@>", v5, self, v7, v8];;
+  clip = [(PXStoryClipLayoutReuseIdentifier *)self clip];
+  identifier = [clip identifier];
+  clip2 = [(PXStoryClipLayoutReuseIdentifier *)self clip];
+  v9 = [v3 stringWithFormat:@"<%@:%p clipIdentifier:%ld clip:%@>", v5, self, identifier, clip2];;
 
   return v9;
 }
 
-- (BOOL)hasResourceEqualTo:(id)a3
+- (BOOL)hasResourceEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PXStoryClipLayoutReuseIdentifier *)self clip];
-  v6 = [v5 resource];
+  toCopy = to;
+  clip = [(PXStoryClipLayoutReuseIdentifier *)self clip];
+  resource = [clip resource];
 
-  v7 = [v4 clip];
+  clip2 = [toCopy clip];
 
-  v8 = [v7 resource];
+  resource2 = [clip2 resource];
 
-  v9 = [v6 px_storyResourceKind];
-  if (v9 == [v8 px_storyResourceKind])
+  px_storyResourceKind = [resource px_storyResourceKind];
+  if (px_storyResourceKind == [resource2 px_storyResourceKind])
   {
-    v10 = [v6 px_storyResourceIdentifier];
-    v11 = [v8 px_storyResourceIdentifier];
-    if (v10 == v11)
+    px_storyResourceIdentifier = [resource px_storyResourceIdentifier];
+    px_storyResourceIdentifier2 = [resource2 px_storyResourceIdentifier];
+    if (px_storyResourceIdentifier == px_storyResourceIdentifier2)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = [v10 isEqual:v11];
+      v12 = [px_storyResourceIdentifier isEqual:px_storyResourceIdentifier2];
     }
   }
 
@@ -58,16 +58,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXStoryClipLayoutReuseIdentifier *)self clip];
-  v3 = [v2 hash];
+  clip = [(PXStoryClipLayoutReuseIdentifier *)self clip];
+  v3 = [clip hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -77,11 +77,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryClipLayoutReuseIdentifier *)self clip];
-      v7 = [(PXStoryClipLayoutReuseIdentifier *)v5 clip];
+      v5 = equalCopy;
+      clip = [(PXStoryClipLayoutReuseIdentifier *)self clip];
+      clip2 = [(PXStoryClipLayoutReuseIdentifier *)v5 clip];
 
-      v8 = [v6 isEqualToClip:v7];
+      v8 = [clip isEqualToClip:clip2];
     }
 
     else
@@ -93,16 +93,16 @@
   return v8;
 }
 
-- (PXStoryClipLayoutReuseIdentifier)initWithClip:(id)a3
+- (PXStoryClipLayoutReuseIdentifier)initWithClip:(id)clip
 {
-  v5 = a3;
+  clipCopy = clip;
   v9.receiver = self;
   v9.super_class = PXStoryClipLayoutReuseIdentifier;
   v6 = [(PXStoryClipLayoutReuseIdentifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clip, a3);
+    objc_storeStrong(&v6->_clip, clip);
   }
 
   return v7;
@@ -110,8 +110,8 @@
 
 - (PXStoryClipLayoutReuseIdentifier)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryClipLayoutReuseIdentifier.m" lineNumber:21 description:{@"%s is not available as initializer", "-[PXStoryClipLayoutReuseIdentifier init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryClipLayoutReuseIdentifier.m" lineNumber:21 description:{@"%s is not available as initializer", "-[PXStoryClipLayoutReuseIdentifier init]"}];
 
   abort();
 }

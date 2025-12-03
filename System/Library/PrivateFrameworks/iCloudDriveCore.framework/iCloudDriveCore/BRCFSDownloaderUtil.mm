@@ -1,13 +1,13 @@
 @interface BRCFSDownloaderUtil
 + (id)cancellableDownloadKinds;
-+ (int)downloadKindWithEtagIfLoser:(id)a3 options:(unint64_t)a4;
++ (int)downloadKindWithEtagIfLoser:(id)loser options:(unint64_t)options;
 @end
 
 @implementation BRCFSDownloaderUtil
 
-+ (int)downloadKindWithEtagIfLoser:(id)a3 options:(unint64_t)a4
++ (int)downloadKindWithEtagIfLoser:(id)loser options:(unint64_t)options
 {
-  if ((a4 & 0x20) != 0)
+  if ((options & 0x20) != 0)
   {
     v4 = 3;
   }
@@ -17,7 +17,7 @@
     v4 = 0;
   }
 
-  if ((a4 & 0x14) != 0)
+  if ((options & 0x14) != 0)
   {
     v5 = 1;
   }
@@ -27,7 +27,7 @@
     v5 = v4;
   }
 
-  if (a3)
+  if (loser)
   {
     return 2;
   }

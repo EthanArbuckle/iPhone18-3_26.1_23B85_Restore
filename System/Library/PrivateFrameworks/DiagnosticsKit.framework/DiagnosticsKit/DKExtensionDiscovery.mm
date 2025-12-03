@@ -1,36 +1,36 @@
 @interface DKExtensionDiscovery
-+ (id)discoveryUsingExtensionRegistry:(id)a3 services:(id)a4 bundleIdentifier:(id)a5;
-- (DKExtensionDiscovery)initWithExtensionRegistry:(id)a3 services:(id)a4 bundleIdentifier:(id)a5;
++ (id)discoveryUsingExtensionRegistry:(id)registry services:(id)services bundleIdentifier:(id)identifier;
+- (DKExtensionDiscovery)initWithExtensionRegistry:(id)registry services:(id)services bundleIdentifier:(id)identifier;
 - (void)_beginExtensionDiscovery;
-- (void)_registerExtensions:(id)a3 error:(id)a4;
+- (void)_registerExtensions:(id)extensions error:(id)error;
 - (void)waitUntilComplete;
 @end
 
 @implementation DKExtensionDiscovery
 
-+ (id)discoveryUsingExtensionRegistry:(id)a3 services:(id)a4 bundleIdentifier:(id)a5
++ (id)discoveryUsingExtensionRegistry:(id)registry services:(id)services bundleIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[DKExtensionDiscovery alloc] initWithExtensionRegistry:v9 services:v8 bundleIdentifier:v7];
+  identifierCopy = identifier;
+  servicesCopy = services;
+  registryCopy = registry;
+  v10 = [[DKExtensionDiscovery alloc] initWithExtensionRegistry:registryCopy services:servicesCopy bundleIdentifier:identifierCopy];
 
   return v10;
 }
 
-- (DKExtensionDiscovery)initWithExtensionRegistry:(id)a3 services:(id)a4 bundleIdentifier:(id)a5
+- (DKExtensionDiscovery)initWithExtensionRegistry:(id)registry services:(id)services bundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  registryCopy = registry;
+  servicesCopy = services;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = DKExtensionDiscovery;
   v12 = [(DKExtensionDiscovery *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_registry, a3);
-    objc_storeStrong(&v13->_bundleIdentifier, a5);
+    objc_storeStrong(&v12->_registry, registry);
+    objc_storeStrong(&v13->_bundleIdentifier, identifier);
     v14 = dispatch_queue_create("com.apple.DiagnosticsKit.discovery", MEMORY[0x277D85CD8]);
     discoveryQueue = v13->_discoveryQueue;
     v13->_discoveryQueue = v14;
@@ -40,7 +40,7 @@
     v13->_discoveryLock = v16;
 
     v13->_discoveryComplete = 0;
-    objc_storeStrong(&v13->_services, a4);
+    objc_storeStrong(&v13->_services, services);
     if (!v13->_bundleIdentifier)
     {
       objc_storeStrong(&v13->_bundleIdentifier, @"Default");
@@ -54,20 +54,20 @@
 
 - (void)_beginExtensionDiscovery
 {
-  v3 = [(DKExtensionDiscovery *)self discoveryLock];
-  [v3 lock];
+  discoveryLock = [(DKExtensionDiscovery *)self discoveryLock];
+  [discoveryLock lock];
 
   [(DKExtensionDiscovery *)self setDiscoveryComplete:0];
-  v4 = [(DKExtensionDiscovery *)self discoveryLock];
-  [v4 unlock];
+  discoveryLock2 = [(DKExtensionDiscovery *)self discoveryLock];
+  [discoveryLock2 unlock];
 
-  v5 = [(DKExtensionDiscovery *)self discoveryQueue];
+  discoveryQueue = [(DKExtensionDiscovery *)self discoveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__DKExtensionDiscovery__beginExtensionDiscovery__block_invoke;
   block[3] = &unk_278F6C050;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(discoveryQueue, block);
 }
 
 void __48__DKExtensionDiscovery__beginExtensionDiscovery__block_invoke(uint64_t a1)
@@ -163,44 +163,44 @@ void __48__DKExtensionDiscovery__beginExtensionDiscovery__block_invoke_2(uint64_
 
 - (void)waitUntilComplete
 {
-  v3 = [(DKExtensionDiscovery *)self discoveryLock];
-  [v3 lock];
+  discoveryLock = [(DKExtensionDiscovery *)self discoveryLock];
+  [discoveryLock lock];
 
   if (![(DKExtensionDiscovery *)self discoveryComplete])
   {
     do
     {
-      v4 = [(DKExtensionDiscovery *)self discoveryLock];
-      [v4 wait];
+      discoveryLock2 = [(DKExtensionDiscovery *)self discoveryLock];
+      [discoveryLock2 wait];
     }
 
     while (![(DKExtensionDiscovery *)self discoveryComplete]);
   }
 
-  v5 = [(DKExtensionDiscovery *)self discoveryLock];
-  [v5 unlock];
+  discoveryLock3 = [(DKExtensionDiscovery *)self discoveryLock];
+  [discoveryLock3 unlock];
 }
 
-- (void)_registerExtensions:(id)a3 error:(id)a4
+- (void)_registerExtensions:(id)extensions error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v22 = v6;
-  v23 = a4;
-  if (v6)
+  extensionsCopy = extensions;
+  v22 = extensionsCopy;
+  errorCopy = error;
+  if (extensionsCopy)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = v6;
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16, v6, v23];
-    if (v8)
+    v7 = extensionsCopy;
+    errorCopy = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16, extensionsCopy, errorCopy];
+    if (errorCopy)
     {
       v9 = *v27;
       do
       {
-        for (i = 0; i != v8; ++i)
+        for (i = 0; i != errorCopy; ++i)
         {
           if (*v27 != v9)
           {
@@ -208,8 +208,8 @@ void __48__DKExtensionDiscovery__beginExtensionDiscovery__block_invoke_2(uint64_
           }
 
           v11 = *(*(&v26 + 1) + 8 * i);
-          v12 = [(DKExtensionDiscovery *)self registry];
-          v13 = [objc_alloc(objc_msgSend(v12 "extensionClass"))];
+          registry = [(DKExtensionDiscovery *)self registry];
+          v13 = [objc_alloc(objc_msgSend(registry "extensionClass"))];
 
           if (!v13)
           {
@@ -222,34 +222,34 @@ void __48__DKExtensionDiscovery__beginExtensionDiscovery__block_invoke_2(uint64_
             goto LABEL_13;
           }
 
-          v14 = [v13 bundleIdentifier];
-          if (!v14)
+          bundleIdentifier = [v13 bundleIdentifier];
+          if (!bundleIdentifier)
           {
             goto LABEL_10;
           }
 
-          v15 = [v13 bundleIdentifier];
-          v16 = [(DKExtensionDiscovery *)self bundleIdentifier];
-          v17 = [v15 isEqual:v16];
+          bundleIdentifier2 = [v13 bundleIdentifier];
+          bundleIdentifier3 = [(DKExtensionDiscovery *)self bundleIdentifier];
+          v17 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
           if (v17)
           {
 LABEL_10:
             v18 = [DKExtensionAdapter extensionAdapterWithExtensionAttributes:v13];
-            v19 = [(DKExtensionDiscovery *)self registry];
-            objc_sync_enter(v19);
-            v20 = [(DKExtensionDiscovery *)self registry];
-            [v20 addExtensionAdapter:v18];
+            registry2 = [(DKExtensionDiscovery *)self registry];
+            objc_sync_enter(registry2);
+            registry3 = [(DKExtensionDiscovery *)self registry];
+            [registry3 addExtensionAdapter:v18];
 
-            objc_sync_exit(v19);
+            objc_sync_exit(registry2);
 LABEL_13:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        errorCopy = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
-      while (v8);
+      while (errorCopy);
     }
   }
 

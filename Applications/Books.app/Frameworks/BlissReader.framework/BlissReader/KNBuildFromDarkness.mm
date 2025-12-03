@@ -1,28 +1,28 @@
 @interface KNBuildFromDarkness
 + (id)customAttributes;
 + (id)defaultAttributes;
-+ (id)localizedMenuString:(int)a3;
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8;
-+ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 warning:(id *)a5 type:(int)a6 isFromClassic:(BOOL)a7 version:(unint64_t)a8;
-- (CATransform3D)p_transformForPercent:(SEL)a3 centerPoint:(double)a4;
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (KNBuildFromDarkness)initWithAnimationContext:(id)a3;
-- (void)metalAnimationHasBegunWithContext:(id)a3;
-- (void)metalAnimationWillBeginWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)metalRenderFrameWithContext:(id)a3;
-- (void)metalTeardownAnimationsWithContext:(id)a3;
-- (void)p_drawWithContext:(id)a3;
-- (void)p_metalSetupWithContext:(id)a3;
-- (void)p_setupAnimationWithContext:(id)a3;
-- (void)p_setupMetalAnimationWithContext:(id)a3 texturedRect:(id)a4;
-- (void)p_setupMetalEdgeDistanceTextureWithContext:(id)a3;
-- (void)p_setupMetalTransformWithContext:(id)a3 texturedRect:(id)a4;
++ (id)localizedMenuString:(int)string;
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version;
++ (void)upgradeAttributes:(id *)attributes animationName:(id)name warning:(id *)warning type:(int)type isFromClassic:(BOOL)classic version:(unint64_t)version;
+- (CATransform3D)p_transformForPercent:(SEL)percent centerPoint:(double)point;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (KNBuildFromDarkness)initWithAnimationContext:(id)context;
+- (void)metalAnimationHasBegunWithContext:(id)context;
+- (void)metalAnimationWillBeginWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)metalRenderFrameWithContext:(id)context;
+- (void)metalTeardownAnimationsWithContext:(id)context;
+- (void)p_drawWithContext:(id)context;
+- (void)p_metalSetupWithContext:(id)context;
+- (void)p_setupAnimationWithContext:(id)context;
+- (void)p_setupMetalAnimationWithContext:(id)context texturedRect:(id)rect;
+- (void)p_setupMetalEdgeDistanceTextureWithContext:(id)context;
+- (void)p_setupMetalTransformWithContext:(id)context texturedRect:(id)rect;
 @end
 
 @implementation KNBuildFromDarkness
 
-+ (id)localizedMenuString:(int)a3
++ (id)localizedMenuString:(int)string
 {
   v3 = KNBundle();
   v4 = [v3 localizedStringForKey:@"Fade and Scale" value:@"Fade and Scale" table:@"Keynote"];
@@ -79,37 +79,37 @@
   return v12;
 }
 
-+ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 warning:(id *)a5 type:(int)a6 isFromClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)upgradeAttributes:(id *)attributes animationName:(id)name warning:(id *)warning type:(int)type isFromClassic:(BOOL)classic version:(unint64_t)version
 {
-  v9 = [*a3 objectForKeyedSubscript:{@"KNBuildCustomAttributesShine", a4, a5, *&a6, a7, a8}];
-  if (!v9 || (v10 = v9, [*a3 objectForKeyedSubscript:@"KNBuildCustomAttributesScaleAmount"], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+  v9 = [*attributes objectForKeyedSubscript:{@"KNBuildCustomAttributesShine", name, warning, *&type, classic, version}];
+  if (!v9 || (v10 = v9, [*attributes objectForKeyedSubscript:@"KNBuildCustomAttributesScaleAmount"], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
   {
-    v13 = [*a3 mutableCopy];
+    v13 = [*attributes mutableCopy];
     [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:@"KNBuildCustomAttributesShine"];
     [v13 setObject:&off_49D4C8 forKeyedSubscript:@"KNBuildCustomAttributesScaleAmount"];
     v12 = v13;
-    *a3 = v13;
+    *attributes = v13;
   }
 }
 
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version
 {
-  if (a7)
+  if (classic)
   {
-    v8 = *&a6;
-    *a4 = @"apple:dissolve";
+    v8 = *&type;
+    *name = @"apple:dissolve";
     v13 = KNBundle();
     v11 = [v13 localizedStringForKey:@"%@ builds were exported as Dissolve." value:&stru_471858 table:@"Keynote"];
-    v12 = [a1 localizedMenuString:v8];
-    *a5 = [NSString stringWithFormat:v11, v12];
+    v12 = [self localizedMenuString:v8];
+    *warning = [NSString stringWithFormat:v11, v12];
   }
 }
 
-- (KNBuildFromDarkness)initWithAnimationContext:(id)a3
+- (KNBuildFromDarkness)initWithAnimationContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = KNBuildFromDarkness;
-  v3 = [(KNAnimationEffect *)&v9 initWithAnimationContext:a3];
+  v3 = [(KNAnimationEffect *)&v9 initWithAnimationContext:context];
   if (v3)
   {
     v4 = KNBundle();
@@ -123,10 +123,10 @@
   return v3;
 }
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  v4 = a3;
-  [v4 drawableFrame];
+  contextCopy = context;
+  [contextCopy drawableFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -135,10 +135,10 @@
   self->_drawableFrame.origin.y = v7;
   self->_drawableFrame.size.width = v9;
   self->_drawableFrame.size.height = v11;
-  v13 = [v4 animatedBuild];
+  animatedBuild = [contextCopy animatedBuild];
 
-  v14 = [v13 attributes];
-  v15 = [v14 objectForKeyedSubscript:@"KNBuildCustomAttributesScaleAmount"];
+  attributes = [animatedBuild attributes];
+  v15 = [attributes objectForKeyedSubscript:@"KNBuildCustomAttributesScaleAmount"];
   [v15 doubleValue];
   v17 = v16 / 100.0;
 
@@ -202,7 +202,7 @@
   return result;
 }
 
-- (CATransform3D)p_transformForPercent:(SEL)a3 centerPoint:(double)a4
+- (CATransform3D)p_transformForPercent:(SEL)percent centerPoint:(double)point
 {
   y = a5.y;
   x = a5.x;
@@ -290,24 +290,24 @@
   return result;
 }
 
-- (void)p_drawWithContext:(id)a3
+- (void)p_drawWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 textures];
-  v6 = [v4 animatedBuild];
-  [v4 percent];
+  contextCopy = context;
+  textures = [contextCopy textures];
+  animatedBuild = [contextCopy animatedBuild];
+  [contextCopy percent];
   v8 = v7;
-  [v6 duration];
-  v9 = [v4 animatedBuild];
+  [animatedBuild duration];
+  animatedBuild2 = [contextCopy animatedBuild];
 
-  LODWORD(v4) = [v9 isBuildOut];
-  if (v4)
+  LODWORD(contextCopy) = [animatedBuild2 isBuildOut];
+  if (contextCopy)
   {
     v8 = 1.0 - v8;
   }
 
-  v10 = [v5 lastObject];
-  [v10 size];
+  lastObject = [textures lastObject];
+  [lastObject size];
   TSDRectWithSize();
   TSDCenterOfRect();
   v12 = v11;
@@ -349,7 +349,7 @@
 
   [(KNAnimParameterGroup *)self->_parameterGroup valueForAnimationCurve:@"Opacity Timing" atPercent:v8];
   v22 = v21;
-  [v10 singleTextureOpacity];
+  [lastObject singleTextureOpacity];
   v24 = v22 * v23;
   if (LOBYTE(self->_scaleMin))
   {
@@ -380,7 +380,7 @@
     [(KNAnimParameterGroup *)self->_parameterGroup valueForAnimationCurve:@"Shine Move Timing" atPercent:v8];
     TSDMixFloats();
     v36 = v35;
-    [v10 size];
+    [lastObject size];
     *&v37 = v36 * v37;
     v53 = LODWORD(v37);
     TSDDeltaFromAngle();
@@ -431,23 +431,23 @@
   *&self->_edgeTextureName = v51;
 }
 
-- (void)p_setupMetalEdgeDistanceTextureWithContext:(id)a3
+- (void)p_setupMetalEdgeDistanceTextureWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (!self->_edgeDistanceTexture)
   {
-    v33 = v4;
-    v5 = [v4 metalContext];
-    v6 = [v33 textures];
-    if ([v6 count] != &dword_0 + 1)
+    v33 = contextCopy;
+    metalContext = [contextCopy metalContext];
+    textures = [v33 textures];
+    if ([textures count] != &dword_0 + 1)
     {
       v7 = +[TSUAssertionHandler currentHandler];
       v8 = [NSString stringWithUTF8String:"[KNBuildFromDarkness p_setupMetalEdgeDistanceTextureWithContext:]"];
       v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildFromDarkness.m"];
-      [v7 handleFailureInFunction:v8 file:v9 lineNumber:397 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(v6, "count")}];
+      [v7 handleFailureInFunction:v8 file:v9 lineNumber:397 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(textures, "count")}];
     }
 
-    v10 = [v6 lastObject];
+    lastObject = [textures lastObject];
     [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Bevel Size"];
     v12 = v11 / 100.0;
     [(KNAnimationContext *)self->super.mAnimationContext slideRect];
@@ -466,48 +466,48 @@
     v17 = v12 * v16;
     v18 = v12 * v16;
     *&self->_anon_200[19] = v18;
-    v19 = [v10 metalTextureWithContext:v5];
+    v19 = [lastObject metalTextureWithContext:metalContext];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 width];
-      v22 = [v20 height];
-      v32 = v5;
-      v23 = [v33 metalContext];
-      v24 = [(KNAnimationContext *)self->super.mAnimationContext capabilities];
-      v25 = [TSDMetalEdgeDistanceField distanceFieldTextureWithTexture:v20 textureSize:(v17 + v17) maxDistance:1 edgeInsets:0 downsampleScale:v23 floatTexture:v24 makeCPUReadable:v21 metalContext:v22 capabilities:TSDEdgeInsetsZero[0].f64[0], TSDEdgeInsetsZero[0].f64[1], TSDEdgeInsetsZero[1].f64[0], TSDEdgeInsetsZero[1].f64[1], 1.0];
-      v26 = [v25 name];
+      width = [v19 width];
+      height = [v20 height];
+      v32 = metalContext;
+      metalContext2 = [v33 metalContext];
+      capabilities = [(KNAnimationContext *)self->super.mAnimationContext capabilities];
+      v25 = [TSDMetalEdgeDistanceField distanceFieldTextureWithTexture:v20 textureSize:(v17 + v17) maxDistance:1 edgeInsets:0 downsampleScale:metalContext2 floatTexture:capabilities makeCPUReadable:width metalContext:height capabilities:TSDEdgeInsetsZero[0].f64[0], TSDEdgeInsetsZero[0].f64[1], TSDEdgeInsetsZero[1].f64[0], TSDEdgeInsetsZero[1].f64[1], 1.0];
+      name = [v25 name];
       edgeDistanceTexture = self->_edgeDistanceTexture;
-      self->_edgeDistanceTexture = v26;
+      self->_edgeDistanceTexture = name;
 
-      v5 = v32;
-      [v10 size];
+      metalContext = v32;
+      [lastObject size];
       v31 = v28;
-      [v10 size];
+      [lastObject size];
       v29.f64[0] = v31;
       v29.f64[1] = v30;
       *&self->_anon_200[7] = vcvt_f32_f64(v29);
     }
 
-    v4 = v33;
+    contextCopy = v33;
   }
 }
 
-- (void)p_setupMetalAnimationWithContext:(id)a3 texturedRect:(id)a4
+- (void)p_setupMetalAnimationWithContext:(id)context texturedRect:(id)rect
 {
-  v31 = a3;
-  v6 = a4;
-  v7 = [v31 metalContext];
-  v8 = [v7 device];
+  contextCopy = context;
+  rectCopy = rect;
+  metalContext = [contextCopy metalContext];
+  device = [metalContext device];
   v9 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  [v9 setPixelFormat:objc_msgSend(v7, "pixelFormat")];
+  [v9 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
   [v9 setBlendingEnabled:1];
   [v9 setDestinationRGBBlendFactor:5];
   [v9 setDestinationAlphaBlendFactor:5];
   if (BYTE1(self->_scaleMin) == 1)
   {
     v10 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-    [v10 setPixelFormat:objc_msgSend(v7, "pixelFormat")];
+    [v10 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
     v11 = [TSDMetalMotionBlurEffect alloc];
     [(KNAnimationContext *)self->super.mAnimationContext slideRect];
     v13 = v12;
@@ -515,8 +515,8 @@
     [(KNAnimationContext *)self->super.mAnimationContext slideRect];
     v17 = v16;
     v19 = v18;
-    v20 = [v31 randomGenerator];
-    v21 = [v11 initWithFramebufferSize:v20 slideSize:v7 randomGenerator:v13 metalContext:{v15, v17, v19}];
+    randomGenerator = [contextCopy randomGenerator];
+    v21 = [v11 initWithFramebufferSize:randomGenerator slideSize:metalContext randomGenerator:v13 metalContext:{v15, v17, v19}];
     metalMotionBlurEffect = self->_metalMotionBlurEffect;
     self->_metalMotionBlurEffect = v21;
 
@@ -548,25 +548,25 @@
 
     v25 = v23;
     v26 = v24;
-    v27 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:v26 fragmentShader:v25 device:v8 library:@"KeynoteMetalLibrary" colorAttachment:v9 velocityAttachment:v10];
+    v27 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:v26 fragmentShader:v25 device:device library:@"KeynoteMetalLibrary" colorAttachment:v9 velocityAttachment:v10];
   }
 
   else
   {
-    v27 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityMotionBlurShaderWithDevice:v8 colorAttachment:v9 velocityAttachment:v10 motionBlur:BYTE1(self->_scaleMin)];
+    v27 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityMotionBlurShaderWithDevice:device colorAttachment:v9 velocityAttachment:v10 motionBlur:BYTE1(self->_scaleMin)];
   }
 
   metalShader = self->_metalShader;
   self->_metalShader = v27;
 
-  [v6 size];
+  [rectCopy size];
   TSDRectWithSize();
-  v29 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:v8 device:?];
+  v29 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:device device:?];
   mtlDataBuffer = self->_mtlDataBuffer;
   self->_mtlDataBuffer = v29;
 }
 
-- (void)p_setupMetalTransformWithContext:(id)a3 texturedRect:(id)a4
+- (void)p_setupMetalTransformWithContext:(id)context texturedRect:(id)rect
 {
   v25 = 0u;
   v26 = 0u;
@@ -576,7 +576,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  [(KNAnimationEffect *)self mvpMatrixWithContext:a3, a4];
+  [(KNAnimationEffect *)self mvpMatrixWithContext:context, rect];
   if (BYTE1(self->_scaleMin) == 1)
   {
     metalMotionBlurEffect = self->_metalMotionBlurEffect;
@@ -629,30 +629,30 @@
   *&self->_baseTransform.m23 = v9;
 }
 
-- (void)p_setupAnimationWithContext:(id)a3
+- (void)p_setupAnimationWithContext:(id)context
 {
-  v19 = a3;
-  v4 = [v19 textures];
-  if ([v4 count] != &dword_0 + 1)
+  contextCopy = context;
+  textures = [contextCopy textures];
+  if ([textures count] != &dword_0 + 1)
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [NSString stringWithUTF8String:"[KNBuildFromDarkness p_setupAnimationWithContext:]"];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildFromDarkness.m"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:486 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(v4, "count")}];
+    [v5 handleFailureInFunction:v6 file:v7 lineNumber:486 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(textures, "count")}];
   }
 
-  v8 = [v4 lastObject];
-  [(KNBuildFromDarkness *)self p_setupMetalTransformWithContext:v19 texturedRect:v8];
-  v9 = [v19 animatedBuild];
-  v10 = [v9 attributes];
-  v11 = [v10 objectForKeyedSubscript:@"KNBuildCustomAttributesScaleAmount"];
+  lastObject = [textures lastObject];
+  [(KNBuildFromDarkness *)self p_setupMetalTransformWithContext:contextCopy texturedRect:lastObject];
+  animatedBuild = [contextCopy animatedBuild];
+  attributes = [animatedBuild attributes];
+  v11 = [attributes objectForKeyedSubscript:@"KNBuildCustomAttributesScaleAmount"];
   [v11 doubleValue];
   v13 = v12 / 100.0;
 
   BYTE2(self->_scaleMin) = 1;
   self->_scaleMax = 1.0;
   self[1].super.super.isa = 0x3FF0000000000000;
-  BYTE1(self->_scaleMin) = [v19 isMotionBlurred];
+  BYTE1(self->_scaleMin) = [contextCopy isMotionBlurred];
   if (fabs(v13 + -1.0) >= 0.01)
   {
     if (v13 >= 1.0)
@@ -679,27 +679,27 @@
     BYTE1(self->_scaleMin) = 0;
   }
 
-  v16 = [v19 animatedBuild];
-  v17 = [v16 attributes];
-  v18 = [v17 objectForKeyedSubscript:@"KNBuildCustomAttributesShine"];
+  animatedBuild2 = [contextCopy animatedBuild];
+  attributes2 = [animatedBuild2 attributes];
+  v18 = [attributes2 objectForKeyedSubscript:@"KNBuildCustomAttributesShine"];
   LOBYTE(self->_scaleMin) = [v18 BOOLValue];
 
-  [(KNBuildFromDarkness *)self p_setupMetalAnimationWithContext:v19 texturedRect:v8];
+  [(KNBuildFromDarkness *)self p_setupMetalAnimationWithContext:contextCopy texturedRect:lastObject];
 }
 
-- (void)p_metalSetupWithContext:(id)a3
+- (void)p_metalSetupWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (!self->_isMetalSetupComplete)
   {
-    [(KNBuildFromDarkness *)self p_setupAnimationWithContext:v4];
-    v5 = [v4 textures];
-    if ([v5 count] != &dword_0 + 1)
+    [(KNBuildFromDarkness *)self p_setupAnimationWithContext:contextCopy];
+    textures = [contextCopy textures];
+    if ([textures count] != &dword_0 + 1)
     {
       v6 = +[TSUAssertionHandler currentHandler];
       v7 = [NSString stringWithUTF8String:"[KNBuildFromDarkness p_metalSetupWithContext:]"];
       v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildFromDarkness.m"];
-      [v6 handleFailureInFunction:v7 file:v8 lineNumber:538 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(v5, "count")}];
+      [v6 handleFailureInFunction:v7 file:v8 lineNumber:538 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(textures, "count")}];
     }
 
     v29 = 0u;
@@ -710,7 +710,7 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    [(KNAnimationEffect *)self mvpMatrixWithContext:v4];
+    [(KNAnimationEffect *)self mvpMatrixWithContext:contextCopy];
     if (BYTE1(self->_scaleMin) == 1)
     {
       metalMotionBlurEffect = self->_metalMotionBlurEffect;
@@ -765,46 +765,46 @@
   }
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  v9 = a3;
-  v4 = [v9 animatedBuild];
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKeyedSubscript:@"KNBuildCustomAttributesShine"];
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  attributes = [animatedBuild attributes];
+  v6 = [attributes objectForKeyedSubscript:@"KNBuildCustomAttributesShine"];
   LOBYTE(self->_scaleMin) = [v6 BOOLValue];
 
-  [(KNBuildFromDarkness *)self p_metalSetupWithContext:v9];
-  if (LOBYTE(self->_scaleMin) != 1 || ([v9 animatedBuild], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isBuildIn"), v7, v8))
+  [(KNBuildFromDarkness *)self p_metalSetupWithContext:contextCopy];
+  if (LOBYTE(self->_scaleMin) != 1 || ([contextCopy animatedBuild], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isBuildIn"), v7, v8))
   {
-    [(KNBuildFromDarkness *)self p_setupMetalEdgeDistanceTextureWithContext:v9];
+    [(KNBuildFromDarkness *)self p_setupMetalEdgeDistanceTextureWithContext:contextCopy];
   }
 }
 
-- (void)metalAnimationWillBeginWithContext:(id)a3
+- (void)metalAnimationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  [(KNBuildFromDarkness *)self metalPrepareAnimationWithContext:v4];
-  [(KNBuildFromDarkness *)self metalAnimationHasBegunWithContext:v4];
+  contextCopy = context;
+  [(KNBuildFromDarkness *)self metalPrepareAnimationWithContext:contextCopy];
+  [(KNBuildFromDarkness *)self metalAnimationHasBegunWithContext:contextCopy];
 }
 
-- (void)metalAnimationHasBegunWithContext:(id)a3
+- (void)metalAnimationHasBegunWithContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 animatedBuild];
-  v5 = [v4 isBuildOut];
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  isBuildOut = [animatedBuild isBuildOut];
 
-  if (v5)
+  if (isBuildOut)
   {
-    [(KNBuildFromDarkness *)self p_setupMetalEdgeDistanceTextureWithContext:v6];
+    [(KNBuildFromDarkness *)self p_setupMetalEdgeDistanceTextureWithContext:contextCopy];
   }
 }
 
-- (void)metalRenderFrameWithContext:(id)a3
+- (void)metalRenderFrameWithContext:(id)context
 {
-  v18 = a3;
-  v4 = [v18 metalContext];
-  v5 = [v4 renderEncoder];
-  if (!v5)
+  contextCopy = context;
+  metalContext = [contextCopy metalContext];
+  renderEncoder = [metalContext renderEncoder];
+  if (!renderEncoder)
   {
     v6 = +[TSUAssertionHandler currentHandler];
     v7 = [NSString stringWithUTF8String:"[KNBuildFromDarkness metalRenderFrameWithContext:]"];
@@ -814,44 +814,44 @@
 
   if (BYTE1(self->_scaleMin) == 1)
   {
-    v9 = [(TSDMetalMotionBlurEffect *)self->_metalMotionBlurEffect bindColorAndVelocityWithMetalContext:v4 shouldFillBackground:0];
+    v9 = [(TSDMetalMotionBlurEffect *)self->_metalMotionBlurEffect bindColorAndVelocityWithMetalContext:metalContext shouldFillBackground:0];
 
-    v5 = v9;
+    renderEncoder = v9;
   }
 
-  v10 = [v18 textures];
-  v11 = [v10 lastObject];
-  v12 = [v11 metalTextureWithContext:v4];
+  textures = [contextCopy textures];
+  lastObject = [textures lastObject];
+  v12 = [lastObject metalTextureWithContext:metalContext];
 
   if (v12 && self->_edgeDistanceTexture)
   {
-    [(KNBuildFromDarkness *)self p_drawWithContext:v18];
+    [(KNBuildFromDarkness *)self p_drawWithContext:contextCopy];
     metalShader = self->_metalShader;
     if (LOBYTE(self->_scaleMin) == 1)
     {
       v14 = BYTE1(self->_scaleMin) ? &OBJC_IVAR___KNBuildFromDarkness__vertexInputMB : &OBJC_IVAR___KNBuildFromDarkness__vertexInput;
-      [(TSDMetalShader *)metalShader setPipelineStateWithEncoder:v5 vertexBytes:self + *v14 fragmentBytes:&self->_anon_200[7]];
-      [v5 setFragmentTexture:self->_edgeDistanceTexture atIndex:1];
+      [(TSDMetalShader *)metalShader setPipelineStateWithEncoder:renderEncoder vertexBytes:self + *v14 fragmentBytes:&self->_anon_200[7]];
+      [renderEncoder setFragmentTexture:self->_edgeDistanceTexture atIndex:1];
     }
 
     else
     {
       v15 = BYTE1(self->_scaleMin) ? 320 : 256;
-      [(TSDMetalShader *)metalShader setPipelineStateWithEncoder:v5 vertexBytes:self + v15 fragmentBytes:&self->_edgeTextureName];
+      [(TSDMetalShader *)metalShader setPipelineStateWithEncoder:renderEncoder vertexBytes:self + v15 fragmentBytes:&self->_edgeTextureName];
     }
 
-    [v5 setFragmentTexture:v12 atIndex:0];
-    [(TSDMTLDataBuffer *)self->_mtlDataBuffer drawWithEncoder:v5 atIndex:[(TSDMetalShader *)self->_metalShader bufferIndex]];
+    [renderEncoder setFragmentTexture:v12 atIndex:0];
+    [(TSDMTLDataBuffer *)self->_mtlDataBuffer drawWithEncoder:renderEncoder atIndex:[(TSDMetalShader *)self->_metalShader bufferIndex]];
     if (BYTE1(self->_scaleMin) == 1)
     {
       metalMotionBlurEffect = self->_metalMotionBlurEffect;
-      v17 = [v4 renderEncoder];
-      [(TSDMetalMotionBlurEffect *)metalMotionBlurEffect drawResultWithWorkingRenderEncoder:v5 destinationRenderEncoder:v17];
+      renderEncoder2 = [metalContext renderEncoder];
+      [(TSDMetalMotionBlurEffect *)metalMotionBlurEffect drawResultWithWorkingRenderEncoder:renderEncoder destinationRenderEncoder:renderEncoder2];
     }
   }
 }
 
-- (void)metalTeardownAnimationsWithContext:(id)a3
+- (void)metalTeardownAnimationsWithContext:(id)context
 {
   metalShader = self->_metalShader;
   self->_metalShader = 0;

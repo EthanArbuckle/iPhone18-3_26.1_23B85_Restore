@@ -1,5 +1,5 @@
 @interface TransitAlightBannerItem
-- (TransitAlightBannerItem)initWithGuidanceState:(id)a3;
+- (TransitAlightBannerItem)initWithGuidanceState:(id)state;
 - (TransitAlightMessage)alightMessage;
 - (id)artwork;
 - (id)subtitle;
@@ -10,45 +10,45 @@
 
 - (id)subtitle
 {
-  v2 = [(TransitAlightBannerItem *)self alightMessage];
-  v3 = [v2 detail];
+  alightMessage = [(TransitAlightBannerItem *)self alightMessage];
+  detail = [alightMessage detail];
 
-  return v3;
+  return detail;
 }
 
 - (id)title
 {
-  v2 = [(TransitAlightBannerItem *)self alightMessage];
-  v3 = [v2 title];
+  alightMessage = [(TransitAlightBannerItem *)self alightMessage];
+  title = [alightMessage title];
 
-  return v3;
+  return title;
 }
 
 - (id)artwork
 {
-  v2 = [(TransitAlightBannerItem *)self alightMessage];
-  v3 = [v2 artwork];
+  alightMessage = [(TransitAlightBannerItem *)self alightMessage];
+  artwork = [alightMessage artwork];
 
-  return v3;
+  return artwork;
 }
 
 - (TransitAlightMessage)alightMessage
 {
-  v2 = [(BannerItem *)self guidanceState];
-  v3 = [v2 alightMessage];
+  guidanceState = [(BannerItem *)self guidanceState];
+  alightMessage = [guidanceState alightMessage];
 
-  return v3;
+  return alightMessage;
 }
 
-- (TransitAlightBannerItem)initWithGuidanceState:(id)a3
+- (TransitAlightBannerItem)initWithGuidanceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = TransitAlightBannerItem;
-  v5 = [(BannerItem *)&v9 initWithGuidanceState:v4];
+  v5 = [(BannerItem *)&v9 initWithGuidanceState:stateCopy];
   if (v5)
   {
-    v6 = [v4 uniqueIdForBannerType:2];
+    v6 = [stateCopy uniqueIdForBannerType:2];
     uniqueId = v5->super._uniqueId;
     v5->super._uniqueId = v6;
   }

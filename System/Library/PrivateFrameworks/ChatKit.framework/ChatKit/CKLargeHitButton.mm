@@ -1,15 +1,15 @@
 @interface CKLargeHitButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)ck_hitTestInsets;
 @end
 
 @implementation CKLargeHitButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(CKLargeHitButton *)self ck_hitTestInsets];
   v9.f64[1] = v8;
   v11.f64[1] = v10;
@@ -17,7 +17,7 @@
   {
     v29.receiver = self;
     v29.super_class = CKLargeHitButton;
-    v26 = [(CKLargeHitButton *)&v29 pointInside:v7 withEvent:x, y];
+    v26 = [(CKLargeHitButton *)&v29 pointInside:eventCopy withEvent:x, y];
   }
 
   else

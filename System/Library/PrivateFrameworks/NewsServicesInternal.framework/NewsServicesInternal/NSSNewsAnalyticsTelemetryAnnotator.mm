@@ -1,7 +1,7 @@
 @interface NSSNewsAnalyticsTelemetryAnnotator
 - (NSSNewsAnalyticsTelemetryAnnotator)init;
-- (NSSNewsAnalyticsTelemetryAnnotator)initWithUserIDProvider:(id)a3;
-- (void)annotateTelemetry:(id)a3 withOptions:(unint64_t)a4;
+- (NSSNewsAnalyticsTelemetryAnnotator)initWithUserIDProvider:(id)provider;
+- (void)annotateTelemetry:(id)telemetry withOptions:(unint64_t)options;
 @end
 
 @implementation NSSNewsAnalyticsTelemetryAnnotator
@@ -32,32 +32,32 @@
   objc_exception_throw(v6);
 }
 
-- (NSSNewsAnalyticsTelemetryAnnotator)initWithUserIDProvider:(id)a3
+- (NSSNewsAnalyticsTelemetryAnnotator)initWithUserIDProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = NSSNewsAnalyticsTelemetryAnnotator;
   v6 = [(NSSNewsAnalyticsTelemetryAnnotator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userIDProvider, a3);
+    objc_storeStrong(&v6->_userIDProvider, provider);
   }
 
   return v7;
 }
 
-- (void)annotateTelemetry:(id)a3 withOptions:(unint64_t)a4
+- (void)annotateTelemetry:(id)telemetry withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  optionsCopy = options;
+  telemetryCopy = telemetry;
+  if (!telemetryCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSNewsAnalyticsTelemetryAnnotator annotateTelemetry:withOptions:];
-    if ((v4 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
 LABEL_4:
-      if ((v4 & 2) == 0)
+      if ((optionsCopy & 2) == 0)
       {
         goto LABEL_5;
       }
@@ -66,18 +66,18 @@ LABEL_4:
     }
   }
 
-  else if ((v4 & 1) == 0)
+  else if ((optionsCopy & 1) == 0)
   {
     goto LABEL_4;
   }
 
   v8 = NSSNTPBAnalyticsAppBuildNumberValue();
-  [v6 setAppBuildNumber:v8];
+  [telemetryCopy setAppBuildNumber:v8];
 
-  if ((v4 & 2) == 0)
+  if ((optionsCopy & 2) == 0)
   {
 LABEL_5:
-    if ((v4 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -87,12 +87,12 @@ LABEL_5:
 
 LABEL_18:
   v9 = NSSNTPBAnalyticsAppVersionValue();
-  [v6 setAppVersion:v9];
+  [telemetryCopy setAppVersion:v9];
 
-  if ((v4 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -101,11 +101,11 @@ LABEL_6:
   }
 
 LABEL_19:
-  [v6 setContentEnvironment:NSSNTPBAnalyticsContentEnvironmentValue()];
-  if ((v4 & 0x10) == 0)
+  [telemetryCopy setContentEnvironment:NSSNTPBAnalyticsContentEnvironmentValue()];
+  if ((optionsCopy & 0x10) == 0)
   {
 LABEL_7:
-    if ((v4 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -115,12 +115,12 @@ LABEL_7:
 
 LABEL_20:
   v10 = NSSNTPBAnalyticsCountryCodeValue();
-  [v6 setCountryCode:v10];
+  [telemetryCopy setCountryCode:v10];
 
-  if ((v4 & 0x20) == 0)
+  if ((optionsCopy & 0x20) == 0)
   {
 LABEL_8:
-    if ((v4 & 0x40) == 0)
+    if ((optionsCopy & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -130,12 +130,12 @@ LABEL_8:
 
 LABEL_21:
   v11 = NFDevicePlatform();
-  [v6 setDeviceModel:v11];
+  [telemetryCopy setDeviceModel:v11];
 
-  if ((v4 & 0x40) == 0)
+  if ((optionsCopy & 0x40) == 0)
   {
 LABEL_9:
-    if ((v4 & 0x80) == 0)
+    if ((optionsCopy & 0x80) == 0)
     {
       goto LABEL_10;
     }
@@ -145,12 +145,12 @@ LABEL_9:
 
 LABEL_22:
   v12 = NSSNTPBAnalyticsDevicePlatformValue();
-  [v6 setDevicePlatform:v12];
+  [telemetryCopy setDevicePlatform:v12];
 
-  if ((v4 & 0x80) == 0)
+  if ((optionsCopy & 0x80) == 0)
   {
 LABEL_10:
-    if ((v4 & 0x100) == 0)
+    if ((optionsCopy & 0x100) == 0)
     {
       goto LABEL_11;
     }
@@ -160,12 +160,12 @@ LABEL_10:
 
 LABEL_23:
   v13 = NSSNTPBAnalyticsLanguageCodeValue();
-  [v6 setLanguageCode:v13];
+  [telemetryCopy setLanguageCode:v13];
 
-  if ((v4 & 0x100) == 0)
+  if ((optionsCopy & 0x100) == 0)
   {
 LABEL_11:
-    if ((v4 & 0x200) == 0)
+    if ((optionsCopy & 0x200) == 0)
     {
       goto LABEL_12;
     }
@@ -184,21 +184,21 @@ LABEL_24:
     v14 = 2;
   }
 
-  [v6 setOsInstallVariant:v14];
-  if ((v4 & 0x200) == 0)
+  [telemetryCopy setOsInstallVariant:v14];
+  if ((optionsCopy & 0x200) == 0)
   {
 LABEL_12:
-    if ((v4 & 0x400) == 0)
+    if ((optionsCopy & 0x400) == 0)
     {
       goto LABEL_13;
     }
 
 LABEL_29:
-    v16 = [(NSSNewsAnalyticsTelemetryAnnotator *)self userIDProvider];
-    v17 = [v16 userID];
-    [v6 setUserId:v17];
+    userIDProvider = [(NSSNewsAnalyticsTelemetryAnnotator *)self userIDProvider];
+    userID = [userIDProvider userID];
+    [telemetryCopy setUserId:userID];
 
-    if ((v4 & 0x800) == 0)
+    if ((optionsCopy & 0x800) == 0)
     {
       goto LABEL_15;
     }
@@ -208,19 +208,19 @@ LABEL_29:
 
 LABEL_28:
   v15 = NSSNTPBAnalyticsOsVersionValue();
-  [v6 setOsVersion:v15];
+  [telemetryCopy setOsVersion:v15];
 
-  if ((v4 & 0x400) != 0)
+  if ((optionsCopy & 0x400) != 0)
   {
     goto LABEL_29;
   }
 
 LABEL_13:
-  if ((v4 & 0x800) != 0)
+  if ((optionsCopy & 0x800) != 0)
   {
 LABEL_14:
     v7 = NSSNTPBAnalyticsUserStorefrontIdValue();
-    [v6 setUserStorefrontId:v7];
+    [telemetryCopy setUserStorefrontId:v7];
   }
 
 LABEL_15:

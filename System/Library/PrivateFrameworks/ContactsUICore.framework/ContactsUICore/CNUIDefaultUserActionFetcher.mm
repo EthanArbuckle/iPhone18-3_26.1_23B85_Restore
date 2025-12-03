@@ -1,11 +1,11 @@
 @interface CNUIDefaultUserActionFetcher
-+ (BOOL)doesRecentContact:(id)a3 matchUserActionItem:(id)a4;
-+ (id)defaultActionItemForActionItem:(id)a3 recentContacts:(id)a4;
-+ (id)queryForUserActionItem:(id)a3;
-+ (id)recentContactsForUserActionItem:(id)a3 recentsLibrary:(id)a4 scheduler:(id)a5;
++ (BOOL)doesRecentContact:(id)contact matchUserActionItem:(id)item;
++ (id)defaultActionItemForActionItem:(id)item recentContacts:(id)contacts;
++ (id)queryForUserActionItem:(id)item;
++ (id)recentContactsForUserActionItem:(id)item recentsLibrary:(id)library scheduler:(id)scheduler;
 - (CNUIDefaultUserActionFetcher)init;
-- (CNUIDefaultUserActionFetcher)initWithRecentsLibrary:(id)a3;
-- (id)defaultActionItemForActionItems:(id)a3 schedulerProvider:(id)a4;
+- (CNUIDefaultUserActionFetcher)initWithRecentsLibrary:(id)library;
+- (id)defaultActionItemForActionItems:(id)items schedulerProvider:(id)provider;
 - (id)observableForDefaultActionsChanged;
 @end
 
@@ -13,22 +13,22 @@
 
 - (CNUIDefaultUserActionFetcher)init
 {
-  v3 = [MEMORY[0x1E6998FC8] defaultInstance];
-  v4 = [(CNUIDefaultUserActionFetcher *)self initWithRecentsLibrary:v3];
+  defaultInstance = [MEMORY[0x1E6998FC8] defaultInstance];
+  v4 = [(CNUIDefaultUserActionFetcher *)self initWithRecentsLibrary:defaultInstance];
 
   return v4;
 }
 
-- (CNUIDefaultUserActionFetcher)initWithRecentsLibrary:(id)a3
+- (CNUIDefaultUserActionFetcher)initWithRecentsLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v10.receiver = self;
   v10.super_class = CNUIDefaultUserActionFetcher;
   v6 = [(CNUIDefaultUserActionFetcher *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_library, a3);
+    objc_storeStrong(&v6->_library, library);
     v8 = v7;
   }
 
@@ -38,24 +38,24 @@
 - (id)observableForDefaultActionsChanged
 {
   v2 = MEMORY[0x1E6996798];
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  v4 = [v2 observableOnNotificationCenter:v3 withName:@"com.apple.contacts.ContactsUICore.CNUIUserActionRecentsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  v4 = [v2 observableOnNotificationCenter:defaultCenter withName:@"com.apple.contacts.ContactsUICore.CNUIUserActionRecentsChangedNotification" object:0];
 
   return v4;
 }
 
-- (id)defaultActionItemForActionItems:(id)a3 schedulerProvider:(id)a4
+- (id)defaultActionItemForActionItems:(id)items schedulerProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __82__CNUIDefaultUserActionFetcher_defaultActionItemForActionItems_schedulerProvider___block_invoke;
   v14 = &unk_1E76E9478;
-  v15 = self;
-  v16 = v6;
-  v7 = v6;
-  v8 = [a3 switchMap:&v11 schedulerProvider:v7];
-  v9 = [v8 doOnNext:{&__block_literal_global_7_3, v11, v12, v13, v14, v15}];
+  selfCopy = self;
+  v16 = providerCopy;
+  v7 = providerCopy;
+  v8 = [items switchMap:&v11 schedulerProvider:v7];
+  v9 = [v8 doOnNext:{&__block_literal_global_7_3, v11, v12, v13, v14, selfCopy}];
 
   return v9;
 }
@@ -101,23 +101,23 @@ void __82__CNUIDefaultUserActionFetcher_defaultActionItemForActionItems_schedule
   }
 }
 
-+ (id)recentContactsForUserActionItem:(id)a3 recentsLibrary:(id)a4 scheduler:(id)a5
++ (id)recentContactsForUserActionItem:(id)item recentsLibrary:(id)library scheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  libraryCopy = library;
+  schedulerCopy = scheduler;
   v11 = MEMORY[0x1E6996798];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __89__CNUIDefaultUserActionFetcher_recentContactsForUserActionItem_recentsLibrary_scheduler___block_invoke;
   v17[3] = &unk_1E76EA6B0;
-  v18 = v10;
-  v19 = v8;
-  v20 = v9;
-  v21 = a1;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v18 = schedulerCopy;
+  v19 = itemCopy;
+  v20 = libraryCopy;
+  selfCopy = self;
+  v12 = libraryCopy;
+  v13 = itemCopy;
+  v14 = schedulerCopy;
   v15 = [v11 observableWithBlock:v17];
 
   return v15;
@@ -203,12 +203,12 @@ void __89__CNUIDefaultUserActionFetcher_recentContactsForUserActionItem_recentsL
   [MEMORY[0x1E69967A0] sendArray:v5 error:v6 toObserver:*(a1 + 48) untilCanceled:*(a1 + 56)];
 }
 
-+ (id)queryForUserActionItem:(id)a3
++ (id)queryForUserActionItem:(id)item
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 sanitizedTargetHandle];
-  v5 = [v3 contactProperty];
+  itemCopy = item;
+  sanitizedTargetHandle = [itemCopy sanitizedTargetHandle];
+  contactProperty = [itemCopy contactProperty];
   v6 = @"CNUICRRecentsDomainContactDefaultAction";
   v7 = CNUIUserActionRecentsAddressKindForContactProperty();
   v19[0] = v7;
@@ -217,9 +217,9 @@ void __89__CNUIDefaultUserActionFetcher_recentContactsForUserActionItem_recentsL
   v9 = +[CNUICoreLogProvider actions_os_log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v5 key];
+    v12 = [contactProperty key];
     v13 = 138412802;
-    v14 = v3;
+    v14 = itemCopy;
     v15 = 2114;
     v16 = v12;
     v17 = 2114;
@@ -227,23 +227,23 @@ void __89__CNUIDefaultUserActionFetcher_recentContactsForUserActionItem_recentsL
     _os_log_debug_impl(&dword_1A31E6000, v9, OS_LOG_TYPE_DEBUG, "[DefaultAction] composed query for %@, key %{public}@, kind %{public}@", &v13, 0x20u);
   }
 
-  v10 = [MEMORY[0x1E6998FD8] searchQueryForSearchTerm:v4 preferredKinds:v8 sendingAddress:0 recentsDomain:v6];
+  v10 = [MEMORY[0x1E6998FD8] searchQueryForSearchTerm:sanitizedTargetHandle preferredKinds:v8 sendingAddress:0 recentsDomain:v6];
   [v10 setComparator:0];
 
   return v10;
 }
 
-+ (id)defaultActionItemForActionItem:(id)a3 recentContacts:(id)a4
++ (id)defaultActionItemForActionItem:(id)item recentContacts:(id)contacts
 {
-  v6 = a3;
+  itemCopy = item;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__CNUIDefaultUserActionFetcher_defaultActionItemForActionItem_recentContacts___block_invoke;
   v15[3] = &unk_1E76EA6D8;
-  v17 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = itemCopy;
   v16 = v7;
-  v8 = [a4 filter:v15];
+  v8 = [contacts filter:v15];
   v9 = [v8 take:1];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -256,18 +256,18 @@ void __89__CNUIDefaultUserActionFetcher_recentContactsForUserActionItem_recentsL
   return v11;
 }
 
-+ (BOOL)doesRecentContact:(id)a3 matchUserActionItem:(id)a4
++ (BOOL)doesRecentContact:(id)contact matchUserActionItem:(id)item
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 contactProperty];
-  v8 = [v7 identifier];
+  contactCopy = contact;
+  itemCopy = item;
+  contactProperty = [itemCopy contactProperty];
+  identifier = [contactProperty identifier];
 
-  v9 = [v5 metadata];
-  v10 = [v6 type];
-  v11 = [v9 valueForKey:v10];
-  v12 = [v11 valueForKey:v8];
+  metadata = [contactCopy metadata];
+  type = [itemCopy type];
+  v11 = [metadata valueForKey:type];
+  v12 = [v11 valueForKey:identifier];
 
   if (!v12)
   {
@@ -277,16 +277,16 @@ void __89__CNUIDefaultUserActionFetcher_recentContactsForUserActionItem_recentsL
   v13 = [v12 objectForKeyedSubscript:@"bundleIdentifier"];
   if (!v13)
   {
-    v10 = [v6 bundleIdentifier];
-    if (!v10)
+    type = [itemCopy bundleIdentifier];
+    if (!type)
     {
       goto LABEL_6;
     }
   }
 
   v14 = [v12 objectForKeyedSubscript:@"bundleIdentifier"];
-  v15 = [v6 bundleIdentifier];
-  v16 = [v14 isEqual:v15];
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  v16 = [v14 isEqual:bundleIdentifier];
 
   if (!v13)
   {
@@ -316,11 +316,11 @@ LABEL_6:
     v20 = [v19 dateWithTimeIntervalSinceReferenceDate:?];
     v26[0] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    [v5 setRecentDates:v21];
+    [contactCopy setRecentDates:v21];
   }
 
-  v22 = [v5 metadata];
-  [v6 associateWithRecentContactMetadata:v22];
+  metadata2 = [contactCopy metadata];
+  [itemCopy associateWithRecentContactMetadata:metadata2];
 
   v23 = +[CNUICoreLogProvider actions_os_log];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))

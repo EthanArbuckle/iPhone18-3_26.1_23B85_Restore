@@ -1,16 +1,16 @@
 @interface IDSGroupEncryptionControllerMember
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLightweight;
 - (NSString)description;
 - (_TtC17identityservicesd34IDSGroupEncryptionControllerMember)init;
-- (void)setIsLightweight:(BOOL)a3;
+- (void)setIsLightweight:(BOOL)lightweight;
 @end
 
 @implementation IDSGroupEncryptionControllerMember
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10071A474();
 
   v3 = sub_100936B28();
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100937098();
     swift_unknownObjectRelease();
@@ -31,7 +31,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10071A5B8(v8);
@@ -43,18 +43,18 @@
 - (BOOL)isLightweight
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x60);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return v2 & 1;
 }
 
-- (void)setIsLightweight:(BOOL)a3
+- (void)setIsLightweight:(BOOL)lightweight
 {
-  v3 = a3;
+  lightweightCopy = lightweight;
   v4 = *((swift_isaMask & self->super.isa) + 0x68);
-  v5 = self;
-  v4(v3);
+  selfCopy = self;
+  v4(lightweightCopy);
 }
 
 - (_TtC17identityservicesd34IDSGroupEncryptionControllerMember)init

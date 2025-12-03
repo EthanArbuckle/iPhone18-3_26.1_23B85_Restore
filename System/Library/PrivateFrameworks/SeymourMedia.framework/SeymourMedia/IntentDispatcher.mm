@@ -1,6 +1,6 @@
 @interface IntentDispatcher
 - (_TtC12SeymourMedia16IntentDispatcher)init;
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation IntentDispatcher
@@ -20,11 +20,11 @@
   return [(IntentDispatcher *)&v5 init];
 }
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = self;
-  IntentDispatcher.handler(for:)(v4, v13);
+  intentCopy = intent;
+  selfCopy = self;
+  IntentDispatcher.handler(for:)(intentCopy, v13);
 
   v6 = v14;
   if (v14)

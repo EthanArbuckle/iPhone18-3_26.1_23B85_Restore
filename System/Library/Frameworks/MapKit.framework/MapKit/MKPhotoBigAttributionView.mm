@@ -1,11 +1,11 @@
 @interface MKPhotoBigAttributionView
-+ (id)bigAttributionViewForMapItem:(id)a3 attributionType:(int64_t)a4 isFirstParty:(BOOL)a5 context:(int64_t)a6;
-- (MKPhotoBigAttributionView)initWithContext:(int64_t)a3;
++ (id)bigAttributionViewForMapItem:(id)item attributionType:(int64_t)type isFirstParty:(BOOL)party context:(int64_t)context;
+- (MKPhotoBigAttributionView)initWithContext:(int64_t)context;
 - (void)beginAnimatingActivityIndicator;
-- (void)endAnimatingActivityIndicatorWithError:(id)a3;
+- (void)endAnimatingActivityIndicatorWithError:(id)error;
 - (void)layoutSubviews;
-- (void)setMapItem:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)setMapItem:(id)item;
+- (void)setType:(int64_t)type;
 - (void)updateBackgroundIfNeeded;
 @end
 
@@ -28,16 +28,16 @@
     {
       self->_needsImageLoad = 0;
       v6 = [MKMapItemPhoto alloc];
-      v7 = [(MKPhotoBigAttributionView *)self mapItem];
-      v8 = [v7 _geoMapItem];
-      v9 = [v8 _photos];
-      v10 = [v9 firstObject];
-      v11 = [(MKMapItemPhoto *)v6 initWithGeoMapItemPhoto:v10];
+      mapItem = [(MKPhotoBigAttributionView *)self mapItem];
+      _geoMapItem = [mapItem _geoMapItem];
+      _photos = [_geoMapItem _photos];
+      firstObject = [_photos firstObject];
+      v11 = [(MKMapItemPhoto *)v6 initWithGeoMapItemPhoto:firstObject];
 
       [(UIImageView *)self->_imageView frame];
       Width = CGRectGetWidth(v16);
-      v13 = [(MKMapItemPhoto *)v11 urlForBestPhotoForSize:Width, Width];
-      if (v13)
+      width = [(MKMapItemPhoto *)v11 urlForBestPhotoForSize:Width, Width];
+      if (width)
       {
         v14 = +[MKAppImageManager sharedImageManager];
         v15[0] = MEMORY[0x1E69E9820];
@@ -45,7 +45,7 @@
         v15[2] = __53__MKPhotoBigAttributionView_updateBackgroundIfNeeded__block_invoke;
         v15[3] = &unk_1E76CC830;
         v15[4] = self;
-        [v14 loadAppImageAtURL:v13 completionHandler:v15];
+        [v14 loadAppImageAtURL:width completionHandler:v15];
       }
     }
   }
@@ -67,32 +67,32 @@ void __53__MKPhotoBigAttributionView_updateBackgroundIfNeeded__block_invoke(uint
   [v4 transitionWithView:v6 duration:5242880 options:v8 animations:0 completion:0.200000003];
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     [(MKPhotoBigAttributionView *)self didUpdateAttributionViewType];
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_mapItem != v5)
+  itemCopy = item;
+  if (self->_mapItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mapItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_mapItem, item);
     [(MKPhotoBigAttributionView *)self updateBackgroundIfNeeded];
     [(MKPhotoBigAttributionView *)self didUpdateMapItem];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)endAnimatingActivityIndicatorWithError:(id)a3
+- (void)endAnimatingActivityIndicatorWithError:(id)error
 {
-  v4 = [(MKPhotoBigAttributionView *)self spinner];
-  [v4 stopAnimating];
+  spinner = [(MKPhotoBigAttributionView *)self spinner];
+  [spinner stopAnimating];
 
   [(MKPhotoBigAttributionView *)self didEndAnimatingActivityIndicatorView];
 }
@@ -100,11 +100,11 @@ void __53__MKPhotoBigAttributionView_updateBackgroundIfNeeded__block_invoke(uint
 - (void)beginAnimatingActivityIndicator
 {
   [(MKPhotoBigAttributionView *)self willStartAnimatingActivityIndicatorView];
-  v3 = [(MKPhotoBigAttributionView *)self spinner];
-  [v3 startAnimating];
+  spinner = [(MKPhotoBigAttributionView *)self spinner];
+  [spinner startAnimating];
 }
 
-- (MKPhotoBigAttributionView)initWithContext:(int64_t)a3
+- (MKPhotoBigAttributionView)initWithContext:(int64_t)context
 {
   v59[2] = *MEMORY[0x1E69E9840];
   v57.receiver = self;
@@ -118,7 +118,7 @@ void __53__MKPhotoBigAttributionView_updateBackgroundIfNeeded__block_invoke(uint
   if (v8)
   {
     v8->_needsImageLoad = 1;
-    v8->_context = a3;
+    v8->_context = context;
     v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v4, v5, v6, v7}];
     [(MKPhotoBigAttributionView *)v9 setClipsToBounds:1];
     [(UIImageView *)v10 setClipsToBounds:1];
@@ -144,9 +144,9 @@ void __53__MKPhotoBigAttributionView_updateBackgroundIfNeeded__block_invoke(uint
     v54 = [v15 effectCombiningEffects:v16];
 
     v17 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v54];
-    v18 = [(UIView *)v17 contentView];
+    contentView = [(UIView *)v17 contentView];
     v19 = v9->_contentView;
-    v9->_contentView = v18;
+    v9->_contentView = contentView;
 
     backgroundView = v9->_backgroundView;
     v9->_backgroundView = v17;
@@ -160,44 +160,44 @@ void __53__MKPhotoBigAttributionView_updateBackgroundIfNeeded__block_invoke(uint
 
     [(UIActivityIndicatorView *)v9->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIActivityIndicatorView *)v9->_spinner setHidesWhenStopped:1];
-    v23 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIActivityIndicatorView *)v9->_spinner setColor:v23];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIActivityIndicatorView *)v9->_spinner setColor:whiteColor];
 
-    v24 = [(MKPhotoBigAttributionView *)v9 contentView];
-    [v24 addSubview:v9->_spinner];
+    contentView2 = [(MKPhotoBigAttributionView *)v9 contentView];
+    [contentView2 addSubview:v9->_spinner];
 
     v40 = MEMORY[0x1E696ACD8];
-    v52 = [(UIImageView *)v9->_imageView leadingAnchor];
-    v51 = [(MKPhotoBigAttributionView *)v9 leadingAnchor];
-    v49 = [v52 constraintEqualToAnchor:v51];
+    leadingAnchor = [(UIImageView *)v9->_imageView leadingAnchor];
+    leadingAnchor2 = [(MKPhotoBigAttributionView *)v9 leadingAnchor];
+    v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v58[0] = v49;
-    v48 = [(UIImageView *)v9->_imageView trailingAnchor];
-    v47 = [(MKPhotoBigAttributionView *)v9 trailingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    trailingAnchor = [(UIImageView *)v9->_imageView trailingAnchor];
+    trailingAnchor2 = [(MKPhotoBigAttributionView *)v9 trailingAnchor];
+    v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v58[1] = v46;
-    v45 = [(UIImageView *)v9->_imageView topAnchor];
-    v44 = [(MKPhotoBigAttributionView *)v9 topAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    topAnchor = [(UIImageView *)v9->_imageView topAnchor];
+    topAnchor2 = [(MKPhotoBigAttributionView *)v9 topAnchor];
+    v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v58[2] = v43;
-    v42 = [(UIImageView *)v9->_imageView bottomAnchor];
-    v41 = [(MKPhotoBigAttributionView *)v9 bottomAnchor];
-    v39 = [v42 constraintEqualToAnchor:v41];
+    bottomAnchor = [(UIImageView *)v9->_imageView bottomAnchor];
+    bottomAnchor2 = [(MKPhotoBigAttributionView *)v9 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v58[3] = v39;
-    v38 = [(UIView *)v9->_backgroundView leadingAnchor];
-    v37 = [(MKPhotoBigAttributionView *)v9 leadingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    leadingAnchor3 = [(UIView *)v9->_backgroundView leadingAnchor];
+    leadingAnchor4 = [(MKPhotoBigAttributionView *)v9 leadingAnchor];
+    v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v58[4] = v36;
-    v35 = [(UIView *)v9->_backgroundView trailingAnchor];
-    v25 = [(MKPhotoBigAttributionView *)v9 trailingAnchor];
-    v26 = [v35 constraintEqualToAnchor:v25];
+    trailingAnchor3 = [(UIView *)v9->_backgroundView trailingAnchor];
+    trailingAnchor4 = [(MKPhotoBigAttributionView *)v9 trailingAnchor];
+    v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v58[5] = v26;
-    v27 = [(UIView *)v9->_backgroundView topAnchor];
-    v28 = [(MKPhotoBigAttributionView *)v9 topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    topAnchor3 = [(UIView *)v9->_backgroundView topAnchor];
+    topAnchor4 = [(MKPhotoBigAttributionView *)v9 topAnchor];
+    v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v58[6] = v29;
-    v30 = [(UIView *)v9->_backgroundView bottomAnchor];
-    v31 = [(MKPhotoBigAttributionView *)v9 bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    bottomAnchor3 = [(UIView *)v9->_backgroundView bottomAnchor];
+    bottomAnchor4 = [(MKPhotoBigAttributionView *)v9 bottomAnchor];
+    v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v58[7] = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:8];
     [v40 activateConstraints:v33];
@@ -206,20 +206,20 @@ void __53__MKPhotoBigAttributionView_updateBackgroundIfNeeded__block_invoke(uint
   return v9;
 }
 
-+ (id)bigAttributionViewForMapItem:(id)a3 attributionType:(int64_t)a4 isFirstParty:(BOOL)a5 context:(int64_t)a6
++ (id)bigAttributionViewForMapItem:(id)item attributionType:(int64_t)type isFirstParty:(BOOL)party context:(int64_t)context
 {
   v8 = off_1E76C4658;
-  if (!a5)
+  if (!party)
   {
     v8 = off_1E76C4AD8;
   }
 
   v9 = *v8;
-  v10 = a3;
-  v11 = [[v9 alloc] initWithContext:a6];
-  [v11 setMapItem:v10];
+  itemCopy = item;
+  v11 = [[v9 alloc] initWithContext:context];
+  [v11 setMapItem:itemCopy];
 
-  [v11 setType:a4];
+  [v11 setType:type];
 
   return v11;
 }

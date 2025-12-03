@@ -1,14 +1,14 @@
 @interface BroadwayActivationFailedViewController
-- (void)handleDismissButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleDismissButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BroadwayActivationFailedViewController
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -17,9 +17,9 @@
   [self->super._mainController dismiss:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -27,12 +27,12 @@
 
   v5.receiver = self;
   v5.super_class = BroadwayActivationFailedViewController;
-  [(BroadwayActivationFailedViewController *)&v5 viewDidDisappear:v3];
+  [(BroadwayActivationFailedViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -40,9 +40,9 @@
 
   v19.receiver = self;
   v19.super_class = BroadwayActivationFailedViewController;
-  [(SVSBaseViewController *)&v19 viewWillAppear:v3];
-  v5 = [(SVSBaseViewController *)self containerView];
-  [v5 setSwipeDismissible:1];
+  [(SVSBaseViewController *)&v19 viewWillAppear:appearCopy];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 
   v6 = SFFontForTextStyleWithAdditionalSymbolicTraits();
   [*(&self->super._didReactivateContainerViewAfterLayingOut + 1) setFont:v6];
@@ -59,11 +59,11 @@
   v9 = [UIColor colorWithWhite:0.54 alpha:1.0];
   [*(&self->_subheadLabel + 1) setTextColor:v9];
 
-  v10 = [self->super._mainController physicalCard];
-  v11 = [v10 nameOnCard];
-  if (v11)
+  physicalCard = [self->super._mainController physicalCard];
+  nameOnCard = [physicalCard nameOnCard];
+  if (nameOnCard)
   {
-    [*(&self->_subheadLabel + 1) setText:v11];
+    [*(&self->_subheadLabel + 1) setText:nameOnCard];
   }
 
   else
@@ -78,14 +78,14 @@
     [*(&self->_cardNameLabel + 1) setConfiguration:v13];
   }
 
-  v14 = [(BroadwayActivationFailedViewController *)self failureResult];
+  failureResult = [(BroadwayActivationFailedViewController *)self failureResult];
   v15 = @"BROADWAY_ERROR_SERVICES_UNAVAILABLE";
-  if (v14 == 7)
+  if (failureResult == 7)
   {
     v15 = @"BROADWAY_ERROR_INCORRECT_ACTIVATION_CODE";
   }
 
-  if (v14 == 5)
+  if (failureResult == 5)
   {
     v16 = @"BROADWAY_ERROR_NOT_YET_SHIPPED";
   }

@@ -1,16 +1,16 @@
 @interface CalloutViewSpatialAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
-- (void)updateText:(int64_t)a3;
+- (void)updateText:(int64_t)text;
 @end
 
 @implementation CalloutViewSpatialAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.CalloutViewSpatial" hasInstanceMethod:@"updateText:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"Measure.CalloutViewSpatial" hasInstanceMethod:@"boxLayer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.CalloutViewSpatial" hasInstanceMethod:@"updateText:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"Measure.CalloutViewSpatial" hasInstanceMethod:@"boxLayer" withFullSignature:{"@", 0}];
 }
 
 - (CGRect)accessibilityFrame
@@ -28,15 +28,15 @@
 
   if (v12)
   {
-    v13 = [v12 path];
-    if (v13)
+    path = [v12 path];
+    if (path)
     {
-      v14 = v13;
+      v14 = path;
       objc_opt_class();
       v15 = __UIAccessibilityCastAsClass();
-      v16 = [v15 layer];
+      layer = [v15 layer];
       BoundingBox = CGPathGetBoundingBox(v14);
-      [v16 convertRect:v12 fromLayer:{BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height}];
+      [layer convertRect:v12 fromLayer:{BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height}];
 
       UIAccessibilityFrameForBounds();
       v4 = v17;
@@ -57,13 +57,13 @@
   return result;
 }
 
-- (void)updateText:(int64_t)a3
+- (void)updateText:(int64_t)text
 {
-  v5 = [(CalloutViewAccessibility *)self axCalloutText];
+  axCalloutText = [(CalloutViewAccessibility *)self axCalloutText];
   v6.receiver = self;
   v6.super_class = CalloutViewSpatialAccessibility;
-  [(CalloutViewSpatialAccessibility *)&v6 updateText:a3];
-  [(CalloutViewAccessibility *)self axDidUpdateFromPreviousCalloutText:v5];
+  [(CalloutViewSpatialAccessibility *)&v6 updateText:text];
+  [(CalloutViewAccessibility *)self axDidUpdateFromPreviousCalloutText:axCalloutText];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface CRLFreehandDrawingToolMarquee
-+ (id)dottedMarqueeRenderableAnimationWithOffsetDashes:(BOOL)a3 clockwise:(BOOL)a4;
-+ (id)dottedMarqueeRenderableOfColor:(id)a3 offsetDashes:(BOOL)a4;
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3;
-- (BOOL)handleMarqueeOrFingerTapOnMathResultStrokesInDrawingModeWithInput:(id)a3;
-- (BOOL)p_unlockedAncestorOfRepIsAlreadySelected:(id)a3;
-- (BOOL)wantsDragForTouchType:(int64_t)a3 atUnscaledPoint:(CGPoint)a4;
-- (CRLFreehandDrawingToolMarquee)initWithInteractiveCanvasController:(id)a3;
++ (id)dottedMarqueeRenderableAnimationWithOffsetDashes:(BOOL)dashes clockwise:(BOOL)clockwise;
++ (id)dottedMarqueeRenderableOfColor:(id)color offsetDashes:(BOOL)dashes;
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success;
+- (BOOL)handleMarqueeOrFingerTapOnMathResultStrokesInDrawingModeWithInput:(id)input;
+- (BOOL)p_unlockedAncestorOfRepIsAlreadySelected:(id)selected;
+- (BOOL)wantsDragForTouchType:(int64_t)type atUnscaledPoint:(CGPoint)point;
+- (CRLFreehandDrawingToolMarquee)initWithInteractiveCanvasController:(id)controller;
 - (NSArray)decoratorOverlayRenderables;
-- (id)p_allSelectableItemsToInteractWithFromLayouts:(id)a3;
-- (id)p_allSelectionIneligibleItemsWithinMarqueeSelectionAreaInParentContainerAtPoint:(CGPoint)a3;
-- (id)p_allSelectionIneligibleLayoutsWithinMarqueeSelectionAreaFromLayouts:(id)a3;
-- (id)p_infosToSelectFromHitRep:(id)a3 repForSelectingFromHitRep:(id)a4 selectedInfosBeforeTapping:(id)a5;
+- (id)p_allSelectableItemsToInteractWithFromLayouts:(id)layouts;
+- (id)p_allSelectionIneligibleItemsWithinMarqueeSelectionAreaInParentContainerAtPoint:(CGPoint)point;
+- (id)p_allSelectionIneligibleLayoutsWithinMarqueeSelectionAreaFromLayouts:(id)layouts;
+- (id)p_infosToSelectFromHitRep:(id)rep repForSelectingFromHitRep:(id)hitRep selectedInfosBeforeTapping:(id)tapping;
 - (void)doWorkBeforeCanvasLayout;
-- (void)handleMarqueeTapWithInput:(id)a3;
-- (void)p_deselectSmartSelectedDrawingShapeItemsFromInfosToSelect:(id)a3;
-- (void)p_handleMarqueeCircleSelectionWithMarqueePath:(id)a3;
+- (void)handleMarqueeTapWithInput:(id)input;
+- (void)p_deselectSmartSelectedDrawingShapeItemsFromInfosToSelect:(id)select;
+- (void)p_handleMarqueeCircleSelectionWithMarqueePath:(id)path;
 - (void)p_hideEditMenuForLassoSelection;
-- (void)p_prepareForHitTestingInBackgroundWithMarqueeSelectionEligibleInfos:(id)a3 marqueeSelectionIneligibleInfos:(id)a4 viewScale:(double)a5 visibleUnscaledRect:(CGRect)a6;
+- (void)p_prepareForHitTestingInBackgroundWithMarqueeSelectionEligibleInfos:(id)infos marqueeSelectionIneligibleInfos:(id)ineligibleInfos viewScale:(double)scale visibleUnscaledRect:(CGRect)rect;
 - (void)p_presentEditMenuForLassoSelection;
-- (void)p_updateDottedMarqueeDecoratorRenderable:(id)a3;
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5;
-- (void)updatePencilKitToolIfAppropriateFor:(id)a3;
+- (void)p_updateDottedMarqueeDecoratorRenderable:(id)renderable;
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint;
+- (void)updatePencilKitToolIfAppropriateFor:(id)for;
 @end
 
 @implementation CRLFreehandDrawingToolMarquee
 
-- (CRLFreehandDrawingToolMarquee)initWithInteractiveCanvasController:(id)a3
+- (CRLFreehandDrawingToolMarquee)initWithInteractiveCanvasController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = CRLFreehandDrawingToolMarquee;
-  v3 = [(CRLFreehandDrawingTool *)&v8 initWithInteractiveCanvasController:a3];
+  v3 = [(CRLFreehandDrawingTool *)&v8 initWithInteractiveCanvasController:controller];
   if (v3)
   {
     v4 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
@@ -43,39 +43,39 @@
   return v3;
 }
 
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  finalPointCopy = finalPoint;
+  initialPointCopy = initialPoint;
+  pointCopy = point;
   v70.receiver = self;
   v70.super_class = CRLFreehandDrawingToolMarquee;
-  [(CRLFreehandDrawingTool *)&v70 performActionWithInputPoint:v8 isInitialPoint:v6 isFinalPoint:v5];
+  [(CRLFreehandDrawingTool *)&v70 performActionWithInputPoint:pointCopy isInitialPoint:initialPointCopy isFinalPoint:finalPointCopy];
   v9 = [(CRLFreehandDrawingTool *)self icc];
-  [v8 unscaledPoint];
+  [pointCopy unscaledPoint];
   v12 = v10;
   v13 = v11;
   v14 = &OBJC_IVAR___CRLPdfTaggerTextStorageChunkContext__textStorageChunk;
-  if (v6)
+  if (initialPointCopy)
   {
     self->_initialUnscaledPoint.x = v10;
     self->_initialUnscaledPoint.y = v11;
-    [v8 time];
+    [pointCopy time];
     self->_initialTouchTime = v15;
     v16 = [(CRLFreehandDrawingTool *)self icc];
-    [v8 unscaledPoint];
+    [pointCopy unscaledPoint];
     v17 = [v16 parentForFreehandDrawingLayoutsAtPoint:?];
 
-    v18 = [v17 children];
-    v19 = [(CRLFreehandDrawingToolMarquee *)self p_allSelectableItemsToInteractWithFromLayouts:v18];
+    children = [v17 children];
+    v19 = [(CRLFreehandDrawingToolMarquee *)self p_allSelectableItemsToInteractWithFromLayouts:children];
 
     v20 = [(CRLFreehandDrawingTool *)self icc];
-    v21 = [v20 freehandDrawingToolkit];
-    v22 = [v21 isLassoAbleToSelectMixedType];
+    freehandDrawingToolkit = [v20 freehandDrawingToolkit];
+    isLassoAbleToSelectMixedType = [freehandDrawingToolkit isLassoAbleToSelectMixedType];
 
-    if (v22)
+    if (isLassoAbleToSelectMixedType)
     {
-      [v8 unscaledPoint];
+      [pointCopy unscaledPoint];
       [(CRLFreehandDrawingToolMarquee *)self p_allSelectionIneligibleItemsWithinMarqueeSelectionAreaInParentContainerAtPoint:?];
     }
 
@@ -117,7 +117,7 @@
 
     v39 = self->_pathCreator;
     [v9 viewScale];
-    -[CRLFreehandDrawingPathCreator beginDrawingWithViewScale:inputType:](v39, "beginDrawingWithViewScale:inputType:", [v8 inputType], v40);
+    -[CRLFreehandDrawingPathCreator beginDrawingWithViewScale:inputType:](v39, "beginDrawingWithViewScale:inputType:", [pointCopy inputType], v40);
     [v9 addDecorator:self];
     self->_didProvideDecoratorRenderable = 0;
     v41 = objc_alloc_init(CRLFreehandDrawingWindingCalculator);
@@ -127,7 +127,7 @@
     [(CRLFreehandDrawingWindingCalculator *)self->_windingCalculator addPoint:v12, v13];
   }
 
-  else if (([v8 isPredicted] & 1) == 0)
+  else if (([pointCopy isPredicted] & 1) == 0)
   {
     if (!self->_movedFarEnoughNotToBeTap)
     {
@@ -142,20 +142,20 @@
     [(CRLFreehandDrawingWindingCalculator *)self->_windingCalculator addPoint:v12, v13];
   }
 
-  if (([v8 isPredicted] & 1) == 0)
+  if (([pointCopy isPredicted] & 1) == 0)
   {
-    [v8 time];
+    [pointCopy time];
     self->_mostRecentTouchTime = v43;
   }
 
-  if (v6 || ([v8 wasAddedByTouchesEnded] & 1) == 0)
+  if (initialPointCopy || ([pointCopy wasAddedByTouchesEnded] & 1) == 0)
   {
     v44 = *(&self->super.super.isa + v14[111]);
-    [v8 time];
-    [v44 drawToPoint:objc_msgSend(v8 atTime:"isPredicted") predicted:{v12, v13, v45}];
+    [pointCopy time];
+    [v44 drawToPoint:objc_msgSend(pointCopy atTime:"isPredicted") predicted:{v12, v13, v45}];
   }
 
-  if ([v8 inputType] == 2 && (objc_msgSend(v8, "wasAddedByTouchesEnded") & 1) == 0)
+  if ([pointCopy inputType] == 2 && (objc_msgSend(pointCopy, "wasAddedByTouchesEnded") & 1) == 0)
   {
     v62 = 0;
     v60 = 0u;
@@ -166,18 +166,18 @@
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v46 = [v9 freehandDrawingToolkit];
-    v47 = v46;
-    if (v8)
+    freehandDrawingToolkit2 = [v9 freehandDrawingToolkit];
+    v47 = freehandDrawingToolkit2;
+    if (pointCopy)
     {
-      [v8 PKInputPoint];
+      [pointCopy PKInputPoint];
       if (v47)
       {
 LABEL_22:
         [v47 inputPointInPKCanvasViewFromUnscaledSpace:v52];
 LABEL_25:
 
-        v48 = [v9 freehandDrawingToolkit];
+        freehandDrawingToolkit3 = [v9 freehandDrawingToolkit];
         v50[6] = v60;
         v50[7] = v61;
         v51 = v62;
@@ -187,7 +187,7 @@ LABEL_25:
         v50[5] = v59;
         v50[0] = v54;
         v50[1] = v55;
-        [v48 updatePencilShadowWithInputPoint:v50];
+        [freehandDrawingToolkit3 updatePencilShadowWithInputPoint:v50];
 
         goto LABEL_26;
       }
@@ -197,7 +197,7 @@ LABEL_25:
     {
       v53 = 0;
       memset(v52, 0, sizeof(v52));
-      if (v46)
+      if (freehandDrawingToolkit2)
       {
         goto LABEL_22;
       }
@@ -224,11 +224,11 @@ LABEL_26:
   }
 }
 
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success
 {
   v21.receiver = self;
   v21.super_class = CRLFreehandDrawingToolMarquee;
-  v4 = [(CRLFreehandDrawingTool *)&v21 finalizeAndResetWithSuccess:a3];
+  v4 = [(CRLFreehandDrawingTool *)&v21 finalizeAndResetWithSuccess:success];
   v5 = [(CRLFreehandDrawingTool *)self icc];
   if ([v5 i_currentlySuppressingLayerUpdates])
   {
@@ -248,19 +248,19 @@ LABEL_26:
   {
     if (self->_movedFarEnoughNotToBeTap || self->_mostRecentTouchTime - self->_initialTouchTime > 0.75)
     {
-      v7 = [(CRLFreehandDrawingPathCreator *)self->_pathCreator copyOfEntirePath];
-      [(CRLFreehandDrawingToolMarquee *)self p_handleMarqueeCircleSelectionWithMarqueePath:v7];
+      copyOfEntirePath = [(CRLFreehandDrawingPathCreator *)self->_pathCreator copyOfEntirePath];
+      [(CRLFreehandDrawingToolMarquee *)self p_handleMarqueeCircleSelectionWithMarqueePath:copyOfEntirePath];
     }
 
     else
     {
       atomic_store(1u, &self->_cancelledBackgroundHitTesting);
-      v12 = [(CRLFreehandDrawingPathCreator *)self->_pathCreator copyOfEntirePath];
-      [v12 bounds];
+      copyOfEntirePath2 = [(CRLFreehandDrawingPathCreator *)self->_pathCreator copyOfEntirePath];
+      [copyOfEntirePath2 bounds];
       v17 = sub_100120414(v13, v14, v15, v16);
       v19 = v18;
 
-      v7 = [[CRLFreehandDrawingToolMarqueeInput alloc] initWithUnscaledTapPoint:[(CRLFreehandDrawingTool *)self currentInputType] inputType:v17, v19];
+      copyOfEntirePath = [[CRLFreehandDrawingToolMarqueeInput alloc] initWithUnscaledTapPoint:[(CRLFreehandDrawingTool *)self currentInputType] inputType:v17, v19];
       if ([CRLFeatureFlagsHelper isOSFeatureEnabled:9])
       {
         if (self->_isHandlingDoubleTapGesture)
@@ -270,13 +270,13 @@ LABEL_26:
 
         else
         {
-          [(CRLFreehandDrawingToolMarquee *)self performSelector:"handleMarqueeTapWithInput:" withObject:v7 afterDelay:0.3];
+          [(CRLFreehandDrawingToolMarquee *)self performSelector:"handleMarqueeTapWithInput:" withObject:copyOfEntirePath afterDelay:0.3];
         }
       }
 
       else
       {
-        [(CRLFreehandDrawingToolMarquee *)self handleMarqueeTapWithInput:v7];
+        [(CRLFreehandDrawingToolMarquee *)self handleMarqueeTapWithInput:copyOfEntirePath];
       }
     }
   }
@@ -308,28 +308,28 @@ LABEL_26:
   return v4;
 }
 
-- (void)updatePencilKitToolIfAppropriateFor:(id)a3
+- (void)updatePencilKitToolIfAppropriateFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = objc_alloc_init(PKLassoTool);
-  [v3 setTool:v4];
+  [forCopy setTool:v4];
 }
 
-+ (id)dottedMarqueeRenderableOfColor:(id)a3 offsetDashes:(BOOL)a4
++ (id)dottedMarqueeRenderableOfColor:(id)color offsetDashes:(BOOL)dashes
 {
-  v4 = a4;
-  v5 = a3;
+  dashesCopy = dashes;
+  colorCopy = color;
   v6 = +[CRLCanvasShapeRenderable renderable];
   [v6 setLineWidth:4.0];
   [v6 setLineDashPattern:&off_1018E1F20];
   [v6 setLineJoin:kCALineJoinRound];
   [v6 setLineCap:kCALineCapRound];
   [v6 setFillColor:0];
-  v7 = [v5 colorWithAlphaComponent:0.5];
+  v7 = [colorCopy colorWithAlphaComponent:0.5];
 
   [v6 setStrokeColor:{objc_msgSend(v7, "CGColor")}];
   v8 = 0.0;
-  if (v4)
+  if (dashesCopy)
   {
     v8 = 5.5;
   }
@@ -339,18 +339,18 @@ LABEL_26:
   return v6;
 }
 
-+ (id)dottedMarqueeRenderableAnimationWithOffsetDashes:(BOOL)a3 clockwise:(BOOL)a4
++ (id)dottedMarqueeRenderableAnimationWithOffsetDashes:(BOOL)dashes clockwise:(BOOL)clockwise
 {
-  v4 = a4;
-  v5 = a3;
+  clockwiseCopy = clockwise;
+  dashesCopy = dashes;
   v6 = [CABasicAnimation animationWithKeyPath:@"lineDashPhase"];
   v7 = 5.5;
-  if (!v5)
+  if (!dashesCopy)
   {
     v7 = 0.0;
   }
 
-  if (v4)
+  if (clockwiseCopy)
   {
     v8 = v7 + 11.0;
   }
@@ -360,7 +360,7 @@ LABEL_26:
     v8 = v7;
   }
 
-  if (v4)
+  if (clockwiseCopy)
   {
     v9 = v7;
   }
@@ -442,9 +442,9 @@ LABEL_26:
   }
 }
 
-- (void)p_updateDottedMarqueeDecoratorRenderable:(id)a3
+- (void)p_updateDottedMarqueeDecoratorRenderable:(id)renderable
 {
-  v4 = a3;
+  renderableCopy = renderable;
   if (!self->_pathCreator)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -479,22 +479,22 @@ LABEL_26:
   [v10 viewScale];
   v12 = v11;
 
-  v13 = [(CRLFreehandDrawingPathCreator *)self->_pathCreator copyOfEntirePath];
+  copyOfEntirePath = [(CRLFreehandDrawingPathCreator *)self->_pathCreator copyOfEntirePath];
   CGAffineTransformMakeScale(&v14, v12, v12);
-  [v13 transformUsingAffineTransform:&v14];
-  [v4 setPath:{objc_msgSend(v13, "CGPath")}];
+  [copyOfEntirePath transformUsingAffineTransform:&v14];
+  [renderableCopy setPath:{objc_msgSend(copyOfEntirePath, "CGPath")}];
 }
 
-- (void)p_prepareForHitTestingInBackgroundWithMarqueeSelectionEligibleInfos:(id)a3 marqueeSelectionIneligibleInfos:(id)a4 viewScale:(double)a5 visibleUnscaledRect:(CGRect)a6
+- (void)p_prepareForHitTestingInBackgroundWithMarqueeSelectionEligibleInfos:(id)infos marqueeSelectionIneligibleInfos:(id)ineligibleInfos viewScale:(double)scale visibleUnscaledRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  infosCopy = infos;
+  ineligibleInfosCopy = ineligibleInfos;
   v76 = [(CRLFreehandDrawingTool *)self icc];
-  v15 = ceil(10.0 / fmin(a5, 1.0));
+  v15 = ceil(10.0 / fmin(scale, 1.0));
   v16 = [[CRLBezierHitTester alloc] initWithBucketSize:v15];
   hitTester = self->_hitTester;
   self->_hitTester = v16;
@@ -512,13 +512,13 @@ LABEL_26:
   v23 = atomic_load(&self->_cancelledBackgroundHitTesting);
   if ((v23 & 1) == 0)
   {
-    v68 = v14;
-    v69 = v13;
+    v68 = ineligibleInfosCopy;
+    v69 = infosCopy;
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v24 = v14;
+    v24 = ineligibleInfosCopy;
     v25 = [v24 countByEnumeratingWithState:&v85 objects:v99 count:16];
     if (v25)
     {
@@ -545,8 +545,8 @@ LABEL_4:
 
         if (v32)
         {
-          v33 = [v32 i_wrapPath];
-          v34 = [v33 copy];
+          i_wrapPath = [v32 i_wrapPath];
+          v34 = [i_wrapPath copy];
 
           [v32 transformInRoot];
           [v34 transformUsingAffineTransform:buf];
@@ -605,8 +605,8 @@ LABEL_14:
         v65 = v66;
         if (v66)
         {
-          v67 = [v66 i_wrapPath];
-          v64 = [v67 copy];
+          i_wrapPath2 = [v66 i_wrapPath];
+          v64 = [i_wrapPath2 copy];
 
           [v65 transformInRoot];
           [v64 transformUsingAffineTransform:buf];
@@ -642,12 +642,12 @@ LABEL_46:
       v74 = v38;
       v41 = objc_opt_class();
       v73 = sub_100014370(v41, v39);
-      v42 = [v73 childInfos];
+      childInfos = [v73 childInfos];
       v77 = 0u;
       v78 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v75 = v42;
+      v75 = childInfos;
       v43 = [v75 countByEnumeratingWithState:&v77 objects:v89 count:16];
       if (v43)
       {
@@ -680,9 +680,9 @@ LABEL_21:
 
             if (v54)
             {
-              v55 = [v50 pathSource];
-              v56 = [v55 bezierPath];
-              v57 = [v56 copy];
+              pathSource = [v50 pathSource];
+              bezierPath = [pathSource bezierPath];
+              v57 = [bezierPath copy];
 
               [v54 transformInRoot];
               [v57 transformUsingAffineTransform:buf];
@@ -769,14 +769,14 @@ LABEL_21:
 
 LABEL_49:
 
-    v14 = v68;
-    v13 = v69;
+    ineligibleInfosCopy = v68;
+    infosCopy = v69;
   }
 }
 
-- (void)p_handleMarqueeCircleSelectionWithMarqueePath:(id)a3
+- (void)p_handleMarqueeCircleSelectionWithMarqueePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(CRLFreehandDrawingTool *)self icc];
   v6 = +[NSMutableSet set];
   v30 = 0;
@@ -792,7 +792,7 @@ LABEL_49:
   block[3] = &unk_101868EA0;
   v29 = &v30;
   block[4] = self;
-  v21 = v4;
+  v21 = pathCopy;
   v27 = v21;
   v8 = v6;
   v28 = v8;
@@ -803,8 +803,8 @@ LABEL_49:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = [(NSMapTable *)self->_selectionEligiblePathToInfoDictionary crl_allObjects];
-    v14 = [v13 countByEnumeratingWithState:&v22 objects:v36 count:16];
+    crl_allObjects = [(NSMapTable *)self->_selectionEligiblePathToInfoDictionary crl_allObjects];
+    v14 = [crl_allObjects countByEnumeratingWithState:&v22 objects:v36 count:16];
     if (v14)
     {
       v15 = *v23;
@@ -815,7 +815,7 @@ LABEL_49:
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(crl_allObjects);
           }
 
           v17 = *(*(&v22 + 1) + 8 * v16);
@@ -831,7 +831,7 @@ LABEL_49:
         }
 
         while (v14 != v16);
-        v14 = [v13 countByEnumeratingWithState:&v22 objects:v36 count:16];
+        v14 = [crl_allObjects countByEnumeratingWithState:&v22 objects:v36 count:16];
       }
 
       while (v14);
@@ -843,14 +843,14 @@ LABEL_49:
     [(CRLFreehandDrawingToolMarquee *)self p_deselectSmartSelectedDrawingShapeItemsFromInfosToSelect:v8];
   }
 
-  v9 = [v5 canvasEditor];
-  v10 = [v9 selectionPathWithInfos:v8];
+  canvasEditor = [v5 canvasEditor];
+  v10 = [canvasEditor selectionPathWithInfos:v8];
 
-  v11 = [v5 editorController];
-  [v11 setSelectionPath:v10];
+  editorController = [v5 editorController];
+  [editorController setSelectionPath:v10];
 
-  v12 = [(CRLFreehandDrawingTool *)self currentInputType];
-  if ([v8 count] && v12)
+  currentInputType = [(CRLFreehandDrawingTool *)self currentInputType];
+  if ([v8 count] && currentInputType)
   {
     [(CRLFreehandDrawingToolMarquee *)self p_presentEditMenuForLassoSelection];
   }
@@ -858,29 +858,29 @@ LABEL_49:
   _Block_object_dispose(&v30, 8);
 }
 
-- (void)handleMarqueeTapWithInput:(id)a3
+- (void)handleMarqueeTapWithInput:(id)input
 {
-  v71 = a3;
+  inputCopy = input;
   v4 = [(CRLFreehandDrawingTool *)self icc];
-  [v71 unscaledTapPoint];
+  [inputCopy unscaledTapPoint];
   v6 = v5;
   v8 = v7;
-  v9 = [v71 inputType];
-  v10 = [v4 freehandDrawingToolkit];
-  v63 = [v10 isLassoAbleToSelectMixedType];
+  inputType = [inputCopy inputType];
+  freehandDrawingToolkit = [v4 freehandDrawingToolkit];
+  isLassoAbleToSelectMixedType = [freehandDrawingToolkit isLassoAbleToSelectMixedType];
 
-  v11 = [v4 layerHost];
-  v12 = [v11 asiOSCVC];
+  layerHost = [v4 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
   v13 = objc_opt_class();
-  v14 = [v12 delegate];
-  v15 = [v14 currentDocumentMode];
-  v16 = sub_100014370(v13, v15);
+  delegate = [asiOSCVC delegate];
+  currentDocumentMode = [delegate currentDocumentMode];
+  v16 = sub_100014370(v13, currentDocumentMode);
 
   v67 = v16;
-  v66 = [v16 currentlyDisplayingLassoSelectionMenu];
-  v17 = [v4 hitRep:(v9 & 0xFFFFFFFFFFFFFFFDLL) == 0 withPrecision:{v6, v8}];
-  if (!v17 && (v9 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  currentlyDisplayingLassoSelectionMenu = [v16 currentlyDisplayingLassoSelectionMenu];
+  v17 = [v4 hitRep:(inputType & 0xFFFFFFFFFFFFFFFDLL) == 0 withPrecision:{v6, v8}];
+  if (!v17 && (inputType & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     v17 = [v4 hitRep:0 withPrecision:{v6, v8}];
   }
@@ -888,15 +888,15 @@ LABEL_49:
   if (v17)
   {
     v18 = [(CRLFreehandDrawingToolMarquee *)self p_unlockedAncestorOfRepIsAlreadySelected:v17];
-    v69 = [v4 infosForCurrentSelectionPath];
+    infosForCurrentSelectionPath = [v4 infosForCurrentSelectionPath];
     if (v18)
     {
-      v70 = [v17 repForSelecting];
-      v19 = [v4 canvasEditor];
-      v20 = [v19 selectionPathWithInfos:0];
+      repForSelecting = [v17 repForSelecting];
+      canvasEditor = [v4 canvasEditor];
+      v20 = [canvasEditor selectionPathWithInfos:0];
 
-      v21 = [v4 editorController];
-      [v21 setSelectionPath:v20];
+      editorController = [v4 editorController];
+      [editorController setSelectionPath:v20];
 
       [(CRLFreehandDrawingToolMarquee *)self p_hideEditMenuForLassoSelection];
       v68 = 1;
@@ -906,21 +906,21 @@ LABEL_49:
 
   else
   {
-    v69 = [v4 infosForCurrentSelectionPath];
+    infosForCurrentSelectionPath = [v4 infosForCurrentSelectionPath];
   }
 
   v68 = 0;
-  v70 = 0;
+  repForSelecting = 0;
 LABEL_9:
-  v22 = [v17 repForSelecting];
+  repForSelecting2 = [v17 repForSelecting];
 
-  [v12 setLastTapPoint:{v6, v8}];
-  if (v22)
+  [asiOSCVC setLastTapPoint:{v6, v8}];
+  if (repForSelecting2)
   {
-    if (([v22 handledLassoTapAtPoint:v9 withInputType:{v6, v8}] & 1) == 0)
+    if (([repForSelecting2 handledLassoTapAtPoint:inputType withInputType:{v6, v8}] & 1) == 0)
     {
       v23 = objc_opt_class();
-      v24 = sub_100014370(v23, v22);
+      v24 = sub_100014370(v23, repForSelecting2);
       v25 = v24;
       if (!v24 || ([v24 parentRep], v26 = objc_claimAutoreleasedReturnValue(), v26, !v26) || (v27 = objc_opt_class(), objc_msgSend(v25, "parentRep"), v28 = objc_claimAutoreleasedReturnValue(), sub_100014370(v27, v28), v29 = objc_claimAutoreleasedReturnValue(), v28, !v29))
       {
@@ -931,7 +931,7 @@ LABEL_21:
         goto LABEL_23;
       }
 
-      v30 = [v29 handledLassoTapAtPoint:v9 withInputType:{v6, v8}];
+      v30 = [v29 handledLassoTapAtPoint:inputType withInputType:{v6, v8}];
 
       if ((v30 & 1) == 0)
       {
@@ -947,7 +947,7 @@ LABEL_21:
   v33 = 1;
   if (v31 && v67)
   {
-    if (![(CRLFreehandDrawingToolMarquee *)self handleMarqueeOrFingerTapOnMathResultStrokesInDrawingModeWithInput:v71])
+    if (![(CRLFreehandDrawingToolMarquee *)self handleMarqueeOrFingerTapOnMathResultStrokesInDrawingModeWithInput:inputCopy])
     {
       v32 = 0;
       goto LABEL_23;
@@ -961,77 +961,77 @@ LABEL_19:
 LABEL_23:
   v65 = v32;
   v34 = +[NSSet set];
-  if (v22)
+  if (repForSelecting2)
   {
-    v35 = [v4 canvasEditor];
-    v36 = [v22 layout];
-    v37 = v9;
-    v38 = [v35 isLayoutSelectable:v36];
+    canvasEditor2 = [v4 canvasEditor];
+    layout = [repForSelecting2 layout];
+    v37 = inputType;
+    v38 = [canvasEditor2 isLayoutSelectable:layout];
 
     v39 = v33 & v38;
-    v9 = v37;
+    inputType = v37;
     if (v39 == 1)
     {
       v40 = objc_opt_class();
-      v41 = [v22 info];
-      v42 = sub_100014370(v40, v41);
+      info = [repForSelecting2 info];
+      v42 = sub_100014370(v40, info);
 
-      v43 = [v42 containingGroup];
-      if (!v43)
+      containingGroup = [v42 containingGroup];
+      if (!containingGroup)
       {
         v44 = objc_opt_class();
-        v43 = sub_100014370(v44, v42);
+        containingGroup = sub_100014370(v44, v42);
       }
 
-      if ((v63 & 1) == 0)
+      if ((isLassoAbleToSelectMixedType & 1) == 0)
       {
-        v55 = [v22 layout];
-        if (![v55 isInGroup])
+        layout2 = [repForSelecting2 layout];
+        if (![layout2 isInGroup])
         {
           goto LABEL_52;
         }
 
-        v59 = [v43 isFreehandDrawing];
+        isFreehandDrawing = [containingGroup isFreehandDrawing];
 
-        if (!v59)
+        if (!isFreehandDrawing)
         {
           goto LABEL_53;
         }
       }
 
-      v45 = sub_10012602C(v43);
-      if ([v22 isSelected] & 1) != 0 || (v45)
+      v45 = sub_10012602C(containingGroup);
+      if ([repForSelecting2 isSelected] & 1) != 0 || (v45)
       {
 
-        v9 = v37;
-        LOBYTE(v37) = v66;
+        inputType = v37;
+        LOBYTE(v37) = currentlyDisplayingLassoSelectionMenu;
 LABEL_57:
 
         goto LABEL_58;
       }
 
-      if (v63)
+      if (isLassoAbleToSelectMixedType)
       {
-        v46 = [v22 layout];
-        if ([v46 isInGroup] && v43)
+        layout3 = [repForSelecting2 layout];
+        if ([layout3 isInGroup] && containingGroup)
         {
-          v47 = [v43 isFreehandDrawing];
+          isFreehandDrawing2 = [containingGroup isFreehandDrawing];
 
-          if ((v47 & 1) == 0)
+          if ((isFreehandDrawing2 & 1) == 0)
           {
-            v64 = [v42 parentInfo];
+            parentInfo = [v42 parentInfo];
             v48 = objc_opt_class();
-            v54 = sub_1003038E0(v64, v48, 1, v49, v50, v51, v52, v53, &OBJC_PROTOCOL___CRLCanvasElementInfo);
-            v55 = sub_100125F34(v54);
+            v54 = sub_1003038E0(parentInfo, v48, 1, v49, v50, v51, v52, v53, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+            layout2 = sub_100125F34(v54);
 
-            v56 = [NSSet setWithObject:v55];
+            v56 = [NSSet setWithObject:layout2];
 
             v34 = v56;
 LABEL_52:
 
 LABEL_53:
-            v9 = v37;
-            LODWORD(v37) = v66;
+            inputType = v37;
+            LODWORD(v37) = currentlyDisplayingLassoSelectionMenu;
             goto LABEL_54;
           }
         }
@@ -1043,7 +1043,7 @@ LABEL_53:
 
       if (v68)
       {
-        [(CRLFreehandDrawingToolMarquee *)self p_infosToSelectFromHitRep:v22 repForSelectingFromHitRep:v70 selectedInfosBeforeTapping:v69];
+        [(CRLFreehandDrawingToolMarquee *)self p_infosToSelectFromHitRep:repForSelecting2 repForSelectingFromHitRep:repForSelecting selectedInfosBeforeTapping:infosForCurrentSelectionPath];
       }
 
       else
@@ -1051,12 +1051,12 @@ LABEL_53:
         [NSSet setWithObject:v42];
       }
 
-      v34 = v55 = v34;
+      v34 = layout2 = v34;
       goto LABEL_52;
     }
   }
 
-  if (v70)
+  if (repForSelecting)
   {
     v57 = v68;
   }
@@ -1068,37 +1068,37 @@ LABEL_53:
 
   if (v57 == 1)
   {
-    v58 = [CRLFreehandDrawingToolMarquee p_infosToSelectFromHitRep:"p_infosToSelectFromHitRep:repForSelectingFromHitRep:selectedInfosBeforeTapping:" repForSelectingFromHitRep:v22 selectedInfosBeforeTapping:?];
+    v58 = [CRLFreehandDrawingToolMarquee p_infosToSelectFromHitRep:"p_infosToSelectFromHitRep:repForSelectingFromHitRep:selectedInfosBeforeTapping:" repForSelectingFromHitRep:repForSelecting2 selectedInfosBeforeTapping:?];
 
     v34 = v58;
-    LODWORD(v37) = v66;
+    LODWORD(v37) = currentlyDisplayingLassoSelectionMenu;
     if ((v33 & 1) == 0)
     {
       goto LABEL_58;
     }
 
 LABEL_54:
-    v60 = [v4 canvasEditor];
-    v42 = [v60 selectionPathWithInfos:v34];
+    canvasEditor3 = [v4 canvasEditor];
+    v42 = [canvasEditor3 selectionPathWithInfos:v34];
 
     if ((v68 | v37 ^ 1) == 1)
     {
-      v61 = [v4 editorController];
-      [v61 setSelectionPath:v42];
+      editorController2 = [v4 editorController];
+      [editorController2 setSelectionPath:v42];
     }
 
     [(CRLFreehandDrawingToolMarquee *)self p_hideEditMenuForLassoSelection];
     goto LABEL_57;
   }
 
-  LODWORD(v37) = v66;
+  LODWORD(v37) = currentlyDisplayingLassoSelectionMenu;
   if (v33)
   {
     goto LABEL_54;
   }
 
 LABEL_58:
-  if (v9)
+  if (inputType)
   {
     v62 = v65;
   }
@@ -1122,23 +1122,23 @@ LABEL_58:
   }
 }
 
-- (BOOL)p_unlockedAncestorOfRepIsAlreadySelected:(id)a3
+- (BOOL)p_unlockedAncestorOfRepIsAlreadySelected:(id)selected
 {
-  v4 = [a3 parentRep];
-  if (!v4)
+  parentRep = [selected parentRep];
+  if (!parentRep)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = parentRep;
   while (![v5 isSelected] || objc_msgSend(v5, "isLocked"))
   {
-    v6 = [v5 info];
-    if (v6)
+    info = [v5 info];
+    if (info)
     {
       v7 = [(CRLFreehandDrawingTool *)self icc];
-      v8 = [v7 infosForCurrentSelectionPath];
-      v9 = [v8 containsObject:v6];
+      infosForCurrentSelectionPath = [v7 infosForCurrentSelectionPath];
+      v9 = [infosForCurrentSelectionPath containsObject:info];
 
       if (v9)
       {
@@ -1147,10 +1147,10 @@ LABEL_58:
       }
     }
 
-    v10 = [v5 parentRep];
+    parentRep2 = [v5 parentRep];
 
-    v5 = v10;
-    if (!v10)
+    v5 = parentRep2;
+    if (!parentRep2)
     {
       v11 = 0;
       goto LABEL_12;
@@ -1163,15 +1163,15 @@ LABEL_12:
   return v11;
 }
 
-- (id)p_infosToSelectFromHitRep:(id)a3 repForSelectingFromHitRep:(id)a4 selectedInfosBeforeTapping:(id)a5
+- (id)p_infosToSelectFromHitRep:(id)rep repForSelectingFromHitRep:(id)hitRep selectedInfosBeforeTapping:(id)tapping
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 count] < 2)
+  repCopy = rep;
+  hitRepCopy = hitRep;
+  tappingCopy = tapping;
+  if ([tappingCopy count] < 2)
   {
-    v11 = [v8 info];
-    v12 = sub_100125F34(v11);
+    info = [hitRepCopy info];
+    v12 = sub_100125F34(info);
 
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -1181,8 +1181,8 @@ LABEL_12:
     else
     {
       v13 = objc_opt_class();
-      v14 = [v7 info];
-      v15 = sub_100014370(v13, v14);
+      info2 = [repCopy info];
+      v15 = sub_100014370(v13, info2);
 
       if (v15)
       {
@@ -1199,25 +1199,25 @@ LABEL_12:
 
   else
   {
-    v10 = v9;
+    v10 = tappingCopy;
   }
 
   return v10;
 }
 
-- (void)p_deselectSmartSelectedDrawingShapeItemsFromInfosToSelect:(id)a3
+- (void)p_deselectSmartSelectedDrawingShapeItemsFromInfosToSelect:(id)select
 {
-  v4 = a3;
+  selectCopy = select;
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  v6 = [v5 layerHost];
-  v7 = [v6 asPencilGestureProvider];
+  layerHost = [v5 layerHost];
+  asPencilGestureProvider = [layerHost asPencilGestureProvider];
 
-  v8 = [v7 smartSelectionManager];
+  smartSelectionManager = [asPencilGestureProvider smartSelectionManager];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v4;
+  v9 = selectCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -1235,14 +1235,14 @@ LABEL_12:
 
         v14 = *(*(&v19 + 1) + 8 * v13);
         v15 = objc_opt_class();
-        v16 = sub_100014370(v15, v14);
-        if (!v16 || ![v8 doesCurrentSmartSelectedDrawingShapeItemsContainDrawingShapeItem:{v16, v19}])
+        editorController = sub_100014370(v15, v14);
+        if (!editorController || ![smartSelectionManager doesCurrentSmartSelectedDrawingShapeItemsContainDrawingShapeItem:{editorController, v19}])
         {
           v18 = v9;
           goto LABEL_12;
         }
 
-        [v8 removeSelectedShapeItemFromSmartSelectionBookkeeping:v16];
+        [smartSelectionManager removeSelectedShapeItemFromSmartSelectionBookkeeping:editorController];
 
         v13 = v13 + 1;
       }
@@ -1258,29 +1258,29 @@ LABEL_12:
     }
   }
 
-  v17 = [v5 canvasEditor];
-  v18 = [v17 selectionPathWithInfos:0];
+  canvasEditor = [v5 canvasEditor];
+  v18 = [canvasEditor selectionPathWithInfos:0];
 
-  v16 = [v5 editorController];
-  [v16 setSelectionPath:v18];
+  editorController = [v5 editorController];
+  [editorController setSelectionPath:v18];
 LABEL_12:
 }
 
-- (BOOL)handleMarqueeOrFingerTapOnMathResultStrokesInDrawingModeWithInput:(id)a3
+- (BOOL)handleMarqueeOrFingerTapOnMathResultStrokesInDrawingModeWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  [v4 unscaledTapPoint];
+  [inputCopy unscaledTapPoint];
   v7 = v6;
   v9 = v8;
-  v33 = [v4 inputType];
-  v10 = [v5 topLevelRepsForHitTesting];
+  inputType = [inputCopy inputType];
+  topLevelRepsForHitTesting = [v5 topLevelRepsForHitTesting];
   v11 = +[NSMutableSet set];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v10;
+  obj = topLevelRepsForHitTesting;
   v12 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v12)
   {
@@ -1297,9 +1297,9 @@ LABEL_12:
 
         v16 = *(*(&v35 + 1) + 8 * i);
         v17 = objc_opt_class();
-        v18 = [v16 info];
-        v19 = [v18 parentInfo];
-        v20 = sub_100014370(v17, v19);
+        info = [v16 info];
+        parentInfo = [info parentInfo];
+        v20 = sub_100014370(v17, parentInfo);
 
         v21 = objc_opt_class();
         v22 = [v5 repForInfo:v20];
@@ -1316,8 +1316,8 @@ LABEL_12:
 
   if ([v11 count])
   {
-    v24 = [v5 canvas];
-    if ((v33 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    canvas = [v5 canvas];
+    if ((inputType & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
       v25 = 20.0;
     }
@@ -1327,15 +1327,15 @@ LABEL_12:
       v25 = 2.0;
     }
 
-    v26 = [v11 allObjects];
-    v27 = [v24 hitRep:(v33 & 0xFFFFFFFFFFFFFFFDLL) == 0 withPrecision:v26 inTopLevelReps:0 smallRepOutset:0 unscaledPointTransformForRep:v7 passingTest:{v9, v25}];
+    allObjects = [v11 allObjects];
+    v27 = [canvas hitRep:(inputType & 0xFFFFFFFFFFFFFFFDLL) == 0 withPrecision:allObjects inTopLevelReps:0 smallRepOutset:0 unscaledPointTransformForRep:v7 passingTest:{v9, v25}];
 
     v28 = objc_opt_class();
     v29 = sub_100014370(v28, v27);
     v30 = v29;
     if (v29)
     {
-      v31 = [v29 handledLassoTapAtPoint:v33 withInputType:{v7, v9}];
+      v31 = [v29 handledLassoTapAtPoint:inputType withInputType:{v7, v9}];
     }
 
     else
@@ -1352,22 +1352,22 @@ LABEL_12:
   return v31;
 }
 
-- (BOOL)wantsDragForTouchType:(int64_t)a3 atUnscaledPoint:(CGPoint)a4
+- (BOOL)wantsDragForTouchType:(int64_t)type atUnscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = (a3 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  y = point.y;
+  x = point.x;
+  v7 = (type & 0xFFFFFFFFFFFFFFFELL) == 2;
   v8 = [(CRLFreehandDrawingTool *)self icc];
   v9 = [v8 hitRep:v7 withPrecision:{x, y}];
 
-  v10 = [v9 repForDragging];
+  repForDragging = [v9 repForDragging];
   v11 = [(CRLFreehandDrawingTool *)self icc];
-  v12 = [v11 freehandDrawingToolkit];
-  v13 = [v12 isLassoAbleToSelectMixedType];
+  freehandDrawingToolkit = [v11 freehandDrawingToolkit];
+  isLassoAbleToSelectMixedType = [freehandDrawingToolkit isLassoAbleToSelectMixedType];
 
-  if (!v10 || (v13 & 1) != 0)
+  if (!repForDragging || (isLassoAbleToSelectMixedType & 1) != 0)
   {
-    if (!v10)
+    if (!repForDragging)
     {
 LABEL_9:
       v20 = 0;
@@ -1378,20 +1378,20 @@ LABEL_9:
   else
   {
     v14 = objc_opt_class();
-    v15 = [v9 repForDragging];
-    v16 = sub_100014370(v14, v15);
+    repForDragging2 = [v9 repForDragging];
+    v16 = sub_100014370(v14, repForDragging2);
 
-    v17 = [v16 shapeInfo];
-    v18 = [v17 containingGroup];
-    v19 = [v18 isFreehandDrawing];
+    shapeInfo = [v16 shapeInfo];
+    containingGroup = [shapeInfo containingGroup];
+    isFreehandDrawing = [containingGroup isFreehandDrawing];
 
-    if ((v19 & 1) == 0)
+    if ((isFreehandDrawing & 1) == 0)
     {
       goto LABEL_9;
     }
   }
 
-  if (([v10 isLocked] & 1) != 0 || !objc_msgSend(v10, "isSelected"))
+  if (([repForDragging isLocked] & 1) != 0 || !objc_msgSend(repForDragging, "isSelected"))
   {
     goto LABEL_9;
   }
@@ -1403,25 +1403,25 @@ LABEL_10:
   return v20 & 1;
 }
 
-- (id)p_allSelectableItemsToInteractWithFromLayouts:(id)a3
+- (id)p_allSelectableItemsToInteractWithFromLayouts:(id)layouts
 {
-  v4 = a3;
-  v39 = self;
+  layoutsCopy = layouts;
+  selfCopy = self;
   v5 = [(CRLFreehandDrawingTool *)self icc];
-  v6 = [v5 freehandDrawingToolkit];
-  v7 = [v6 isLassoAbleToSelectMixedType];
+  freehandDrawingToolkit = [v5 freehandDrawingToolkit];
+  isLassoAbleToSelectMixedType = [freehandDrawingToolkit isLassoAbleToSelectMixedType];
 
-  v38 = v7;
+  v38 = isLassoAbleToSelectMixedType;
   objc_opt_class();
   v41 = +[NSMutableArray array];
-  if ([v4 count])
+  if ([layoutsCopy count])
   {
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v37 = v4;
-    obj = v4;
+    v37 = layoutsCopy;
+    obj = layoutsCopy;
     v44 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (!v44)
     {
@@ -1444,17 +1444,17 @@ LABEL_10:
         v11 = objc_opt_class();
         v12 = sub_100014370(v11, v10);
         v13 = objc_opt_class();
-        v14 = [v12 info];
-        v15 = sub_100013F00(v13, v14);
+        info = [v12 info];
+        v15 = sub_100013F00(v13, info);
 
         if (!v12 || ([v15 locked] & 1) == 0)
         {
           if ((objc_opt_isKindOfClass() & 1) != 0 && ([v10 isMemberOfClass:objc_opt_class()] & 1) == 0)
           {
-            [(CRLFreehandDrawingTool *)v39 icc];
+            [(CRLFreehandDrawingTool *)selfCopy icc];
             v28 = v27 = v15;
-            v29 = [v28 canvasEditor];
-            v30 = [v29 isLayoutSelectable:v10];
+            canvasEditor = [v28 canvasEditor];
+            v30 = [canvasEditor isLayoutSelectable:v10];
 
             v15 = v27;
             if (!v30)
@@ -1463,8 +1463,8 @@ LABEL_10:
             }
 
             v31 = objc_opt_class();
-            v32 = [v10 info];
-            v16 = sub_100014370(v31, v32);
+            info2 = [v10 info];
+            v16 = sub_100014370(v31, info2);
 
             if (v16)
             {
@@ -1484,12 +1484,12 @@ LABEL_10:
             v16 = objc_alloc_init(NSMutableArray);
             v17 = objc_alloc_init(NSMutableArray);
             v43 = v15;
-            v18 = [v15 allNestedNonGroupChildItemsTreatingFreehandDrawingAsLeafNode];
+            allNestedNonGroupChildItemsTreatingFreehandDrawingAsLeafNode = [v15 allNestedNonGroupChildItemsTreatingFreehandDrawingAsLeafNode];
             v45 = 0u;
             v46 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v19 = [v18 countByEnumeratingWithState:&v45 objects:v53 count:16];
+            v19 = [allNestedNonGroupChildItemsTreatingFreehandDrawingAsLeafNode countByEnumeratingWithState:&v45 objects:v53 count:16];
             if (v19)
             {
               v20 = v19;
@@ -1500,7 +1500,7 @@ LABEL_10:
                 {
                   if (*v46 != v21)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(allNestedNonGroupChildItemsTreatingFreehandDrawingAsLeafNode);
                   }
 
                   v23 = *(*(&v45 + 1) + 8 * i);
@@ -1518,7 +1518,7 @@ LABEL_10:
                   [v24 addObject:v23];
                 }
 
-                v20 = [v18 countByEnumeratingWithState:&v45 objects:v53 count:16];
+                v20 = [allNestedNonGroupChildItemsTreatingFreehandDrawingAsLeafNode countByEnumeratingWithState:&v45 objects:v53 count:16];
               }
 
               while (v20);
@@ -1530,8 +1530,8 @@ LABEL_10:
             {
               if (v25 || !v26)
               {
-                v33 = [v12 connectedLayouts];
-                v34 = ([v33 count] != 0) & v38;
+                connectedLayouts = [v12 connectedLayouts];
+                v34 = ([connectedLayouts count] != 0) & v38;
 
                 if (v34 != 1)
                 {
@@ -1576,7 +1576,7 @@ LABEL_31:
       {
 LABEL_40:
 
-        v4 = v37;
+        layoutsCopy = v37;
         break;
       }
     }
@@ -1585,30 +1585,30 @@ LABEL_40:
   return v41;
 }
 
-- (id)p_allSelectionIneligibleItemsWithinMarqueeSelectionAreaInParentContainerAtPoint:(CGPoint)a3
+- (id)p_allSelectionIneligibleItemsWithinMarqueeSelectionAreaInParentContainerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(CRLFreehandDrawingTool *)self icc];
   v7 = [v6 parentForFreehandDrawingLayoutsAtPoint:{x, y}];
 
-  v8 = [v7 children];
-  v9 = [(CRLFreehandDrawingToolMarquee *)self p_allSelectionIneligibleLayoutsWithinMarqueeSelectionAreaFromLayouts:v8];
+  children = [v7 children];
+  v9 = [(CRLFreehandDrawingToolMarquee *)self p_allSelectionIneligibleLayoutsWithinMarqueeSelectionAreaFromLayouts:children];
 
   v10 = [v9 crl_arrayByTransformingWithBlock:&stru_10186EE00];
 
   return v10;
 }
 
-- (id)p_allSelectionIneligibleLayoutsWithinMarqueeSelectionAreaFromLayouts:(id)a3
+- (id)p_allSelectionIneligibleLayoutsWithinMarqueeSelectionAreaFromLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   v5 = +[NSMutableArray array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v4;
+  v6 = layoutsCopy;
   v26 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v26)
   {
@@ -1628,8 +1628,8 @@ LABEL_40:
         v10 = objc_opt_class();
         v11 = sub_100014370(v10, v9);
         v12 = objc_opt_class();
-        v13 = [v11 info];
-        v14 = sub_100013F00(v12, v13);
+        info = [v11 info];
+        v14 = sub_100013F00(v12, info);
 
         if (!v11 || ([v14 locked] & 1) == 0)
         {
@@ -1638,8 +1638,8 @@ LABEL_40:
           {
             if (v11 && ([v14 isFreehandDrawing] & 1) == 0)
             {
-              v15 = [v11 children];
-              v16 = [(CRLFreehandDrawingToolMarquee *)self p_allSelectionIneligibleLayoutsWithinMarqueeSelectionAreaFromLayouts:v15];
+              children = [v11 children];
+              v16 = [(CRLFreehandDrawingToolMarquee *)self p_allSelectionIneligibleLayoutsWithinMarqueeSelectionAreaFromLayouts:children];
               [v5 addObjectsFromArray:v16];
             }
           }
@@ -1649,12 +1649,12 @@ LABEL_40:
             v17 = [(CRLFreehandDrawingTool *)self icc];
             [v17 canvasEditor];
             v18 = v6;
-            v19 = self;
+            selfCopy = self;
             v21 = v20 = v5;
             v22 = [v21 isLayoutSelectable:v9];
 
             v5 = v20;
-            self = v19;
+            self = selfCopy;
             v6 = v18;
             v7 = v25;
 
@@ -1682,14 +1682,14 @@ LABEL_40:
 - (void)p_presentEditMenuForLassoSelection
 {
   v9 = [(CRLFreehandDrawingTool *)self icc];
-  v2 = [v9 layerHost];
-  v3 = [v2 asiOSCVC];
+  layerHost = [v9 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v4 = [v3 delegate];
-  v5 = [v4 currentDocumentMode];
+  delegate = [asiOSCVC delegate];
+  currentDocumentMode = [delegate currentDocumentMode];
 
   v6 = objc_opt_class();
-  v7 = sub_100014370(v6, v5);
+  v7 = sub_100014370(v6, currentDocumentMode);
   v8 = v7;
   if (v7)
   {
@@ -1700,14 +1700,14 @@ LABEL_40:
 - (void)p_hideEditMenuForLassoSelection
 {
   v9 = [(CRLFreehandDrawingTool *)self icc];
-  v2 = [v9 layerHost];
-  v3 = [v2 asiOSCVC];
+  layerHost = [v9 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v4 = [v3 delegate];
-  v5 = [v4 currentDocumentMode];
+  delegate = [asiOSCVC delegate];
+  currentDocumentMode = [delegate currentDocumentMode];
 
   v6 = objc_opt_class();
-  v7 = sub_100014370(v6, v5);
+  v7 = sub_100014370(v6, currentDocumentMode);
   v8 = v7;
   if (v7)
   {

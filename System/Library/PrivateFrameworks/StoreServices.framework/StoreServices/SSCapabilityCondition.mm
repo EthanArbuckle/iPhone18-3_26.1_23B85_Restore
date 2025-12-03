@@ -1,10 +1,10 @@
 @interface SSCapabilityCondition
-- (BOOL)evaluateWithContext:(id)a3;
+- (BOOL)evaluateWithContext:(id)context;
 @end
 
 @implementation SSCapabilityCondition
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
   operator = self->super._operator;
   if (operator)

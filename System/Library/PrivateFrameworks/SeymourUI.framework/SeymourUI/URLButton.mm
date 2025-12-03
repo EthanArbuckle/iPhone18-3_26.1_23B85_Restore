@@ -1,6 +1,6 @@
 @interface URLButton
 - (void)layoutSubviews;
-- (void)textSizeChanged:(id)a3;
+- (void)textSizeChanged:(id)changed;
 - (void)tintColorDidChange;
 @end
 
@@ -8,22 +8,22 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7F2C44();
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7F2EE0();
 }
 
-- (void)textSizeChanged:(id)a3
+- (void)textSizeChanged:(id)changed
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C765E10);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v15 - v6;
-  if (a3)
+  if (changed)
   {
     sub_20C1325E4();
     v8 = sub_20C132614();
@@ -39,7 +39,7 @@
   v10 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI9URLButton_lastFont);
   v11 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI9URLButton_lastSymbolScale);
   v12 = *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI9URLButton_lastSymbolScale);
-  v13 = self;
+  selfCopy = self;
   v14 = v10;
   sub_20B7F30D8(v10, v11, v12);
 

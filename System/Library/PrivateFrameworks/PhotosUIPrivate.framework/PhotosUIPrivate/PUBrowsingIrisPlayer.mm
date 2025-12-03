@@ -7,18 +7,18 @@
 - (BOOL)isContentLoadingRequestInProgress;
 - (CGSize)_targetSize;
 - (PUBrowsingIrisPlayer)init;
-- (PUBrowsingIrisPlayer)initWithAsset:(id)a3 mediaProvider:(id)a4;
+- (PUBrowsingIrisPlayer)initWithAsset:(id)asset mediaProvider:(id)provider;
 - (PUBrowsingIrisPlayerChange)currentChange;
 - (float)playRate;
-- (id)_playerCreateIfNeeded:(BOOL)a3;
-- (id)addPeriodicTimeObserverForInterval:(id *)a3 queue:(id)a4 usingBlock:(id)a5;
+- (id)_playerCreateIfNeeded:(BOOL)needed;
+- (id)addPeriodicTimeObserverForInterval:(id *)interval queue:(id)queue usingBlock:(id)block;
 - (id)debugDetailedDescription;
 - (id)playerItem;
-- (id)wrappedVideoPlayerForPlayer:(id)a3;
+- (id)wrappedVideoPlayerForPlayer:(id)player;
 - (int64_t)playerStatus;
 - (void)_cancelAllRequests;
-- (void)_handleLivePhotoResult:(id)a3 info:(id)a4 requestID:(int)a5;
-- (void)_handlePeriodicObserverWithTime:(id *)a3;
+- (void)_handleLivePhotoResult:(id)result info:(id)info requestID:(int)d;
+- (void)_handlePeriodicObserverWithTime:(id *)time;
 - (void)_handlePlaybackStyleChanged;
 - (void)_updateIfNeeded;
 - (void)_updateLivePhotoIfNeeded;
@@ -31,70 +31,70 @@
 - (void)cancelPendingSeeks;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)playPreviewHintWhenReady;
-- (void)playerWillRelinquishVideoPlayer:(id)a3;
-- (void)registerChangeObserver:(id)a3;
-- (void)removeTimeObserver:(id)a3;
-- (void)setActivated:(BOOL)a3;
-- (void)setAsset:(id)a3;
-- (void)setCurrentlyDisplayedTimes:(id)a3;
-- (void)setImageLoadingEnabled:(BOOL)a3;
-- (void)setIsLivePhotoPlaybackAllowed:(BOOL)a3;
-- (void)setLivePhoto:(id)a3;
-- (void)setLivePhotoLoadingAllowed:(BOOL)a3;
-- (void)setLivePhotoLoadingDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setLivePhotoPlaybackDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setLoadingTarget:(int64_t)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setScrubbingPhotoTime:(id *)a3 completion:(id)a4;
-- (void)setVideoPlayer:(id)a3;
-- (void)setVitalityTransform:(float32x4_t)a3 limitingAllowed:(float32x4_t)a4;
+- (void)playerWillRelinquishVideoPlayer:(id)player;
+- (void)registerChangeObserver:(id)observer;
+- (void)removeTimeObserver:(id)observer;
+- (void)setActivated:(BOOL)activated;
+- (void)setAsset:(id)asset;
+- (void)setCurrentlyDisplayedTimes:(id)times;
+- (void)setImageLoadingEnabled:(BOOL)enabled;
+- (void)setIsLivePhotoPlaybackAllowed:(BOOL)allowed;
+- (void)setLivePhoto:(id)photo;
+- (void)setLivePhotoLoadingAllowed:(BOOL)allowed;
+- (void)setLivePhotoLoadingDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setLivePhotoPlaybackDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setLoadingTarget:(int64_t)target;
+- (void)setPlaying:(BOOL)playing;
+- (void)setScrubbingPhotoTime:(id *)time completion:(id)completion;
+- (void)setVideoPlayer:(id)player;
+- (void)setVitalityTransform:(float32x4_t)transform limitingAllowed:(float32x4_t)allowed;
 - (void)unloadLivePhoto;
-- (void)unregisterChangeObserver:(id)a3;
-- (void)videoScrubberController:(id)a3 seekToTime:(id *)a4 toleranceBefore:(id *)a5 toleranceAfter:(id *)a6 completionHandler:(id)a7;
+- (void)unregisterChangeObserver:(id)observer;
+- (void)videoScrubberController:(id)controller seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler;
 @end
 
 @implementation PUBrowsingIrisPlayer
 
 - (id)playerItem
 {
-  v2 = [(PUBrowsingIrisPlayer *)self videoPlayer];
-  v3 = [v2 currentItem];
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  currentItem = [videoPlayer currentItem];
 
-  return v3;
+  return currentItem;
 }
 
 - (int64_t)playerStatus
 {
-  v2 = [(PUBrowsingIrisPlayer *)self videoPlayer];
-  v3 = [v2 status];
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  status = [videoPlayer status];
 
-  return v3;
+  return status;
 }
 
-- (void)removeTimeObserver:(id)a3
+- (void)removeTimeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUBrowsingIrisPlayer *)self videoPlayer];
-  [v5 removeTimeObserver:v4];
+  observerCopy = observer;
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  [videoPlayer removeTimeObserver:observerCopy];
 }
 
-- (id)addPeriodicTimeObserverForInterval:(id *)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)addPeriodicTimeObserverForInterval:(id *)interval queue:(id)queue usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PUBrowsingIrisPlayer *)self videoPlayer];
-  v13 = *a3;
-  v11 = [v10 addPeriodicTimeObserverForInterval:&v13 queue:v9 usingBlock:v8];
+  blockCopy = block;
+  queueCopy = queue;
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  v13 = *interval;
+  v11 = [videoPlayer addPeriodicTimeObserverForInterval:&v13 queue:queueCopy usingBlock:blockCopy];
 
   return v11;
 }
 
 - (float)playRate
 {
-  v2 = [(PUBrowsingIrisPlayer *)self videoPlayer];
-  [v2 rate];
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  [videoPlayer rate];
   v4 = v3;
 
   return v4;
@@ -102,22 +102,22 @@
 
 - (void)cancelPendingSeeks
 {
-  v3 = [(PUBrowsingIrisPlayer *)self videoPlayer];
-  v2 = [v3 currentItem];
-  [v2 cancelPendingSeeks];
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  currentItem = [videoPlayer currentItem];
+  [currentItem cancelPendingSeeks];
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)playerCurrentTime
 {
-  v4 = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
   *&retstr->var1 = 0;
   retstr->var3 = 0;
   retstr->var0 = 0;
-  if (v4)
+  if (videoPlayer)
   {
-    v6 = v4;
-    [v4 currentTime];
-    v4 = v6;
+    v6 = videoPlayer;
+    [videoPlayer currentTime];
+    videoPlayer = v6;
   }
 
   return result;
@@ -125,31 +125,31 @@
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentItemDuration
 {
-  v4 = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
   *&retstr->var1 = 0;
   retstr->var3 = 0;
   retstr->var0 = 0;
-  if (v4)
+  if (videoPlayer)
   {
-    v6 = v4;
-    [v4 currentItemDuration];
-    v4 = v6;
+    v6 = videoPlayer;
+    [videoPlayer currentItemDuration];
+    videoPlayer = v6;
   }
 
   return result;
 }
 
-- (void)videoScrubberController:(id)a3 seekToTime:(id *)a4 toleranceBefore:(id *)a5 toleranceAfter:(id *)a6 completionHandler:(id)a7
+- (void)videoScrubberController:(id)controller seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler
 {
-  v9 = a7;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __108__PUBrowsingIrisPlayer_videoScrubberController_seekToTime_toleranceBefore_toleranceAfter_completionHandler___block_invoke;
   v11[3] = &unk_1E7B75CB8;
-  v13 = *a4;
+  v13 = *time;
   v11[4] = self;
-  v12 = v9;
-  v10 = v9;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(PUViewModel *)self performChanges:v11];
 }
 
@@ -162,96 +162,96 @@ uint64_t __108__PUBrowsingIrisPlayer_videoScrubberController_seekToTime_toleranc
   return [v2 setScrubbingPhotoTime:&v4 completion:v1];
 }
 
-- (void)playerWillRelinquishVideoPlayer:(id)a3
+- (void)playerWillRelinquishVideoPlayer:(id)player
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  playerCopy = player;
   v5 = PLVideoPlaybackGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = playerCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "%@ checking in player %@", &v7, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E69C3C70] sharedInstance];
-  [v6 checkInReusableWrappedPlayer:v4];
+  mEMORY[0x1E69C3C70] = [MEMORY[0x1E69C3C70] sharedInstance];
+  [mEMORY[0x1E69C3C70] checkInReusableWrappedPlayer:playerCopy];
 }
 
-- (id)wrappedVideoPlayerForPlayer:(id)a3
+- (id)wrappedVideoPlayerForPlayer:(id)player
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69C3C70] sharedInstance];
-  v5 = [v4 checkOutReusableWrappedPlayer];
+  mEMORY[0x1E69C3C70] = [MEMORY[0x1E69C3C70] sharedInstance];
+  checkOutReusableWrappedPlayer = [mEMORY[0x1E69C3C70] checkOutReusableWrappedPlayer];
 
   v6 = PLVideoPlaybackGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = checkOutReusableWrappedPlayer;
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEBUG, "%@ checking out player %@", &v8, 0x16u);
   }
 
-  return v5;
+  return checkOutReusableWrappedPlayer;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PULivePhotoPlayerObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PULivePhotoPlayerObservationContext == context)
   {
-    if ((v6 & 8) != 0)
+    if ((changeCopy & 8) != 0)
     {
       [(PUBrowsingIrisPlayer *)self _handlePlaybackStyleChanged];
     }
 
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
-      v15 = [(PUBrowsingIrisPlayer *)self player];
-      v16 = [v15 videoPlayer];
-      [(PUBrowsingIrisPlayer *)self setVideoPlayer:v16];
+      player = [(PUBrowsingIrisPlayer *)self player];
+      videoPlayer = [player videoPlayer];
+      [(PUBrowsingIrisPlayer *)self setVideoPlayer:videoPlayer];
     }
   }
 
-  else if (PUISWrappedAVPlayerObservationContext == a5)
+  else if (PUISWrappedAVPlayerObservationContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v9 = [(PUBrowsingIrisPlayer *)self statusChangeHandler];
+      statusChangeHandler = [(PUBrowsingIrisPlayer *)self statusChangeHandler];
 
-      if (v9)
+      if (statusChangeHandler)
       {
-        v10 = [(PUBrowsingIrisPlayer *)self statusChangeHandler];
-        v10[2]();
+        statusChangeHandler2 = [(PUBrowsingIrisPlayer *)self statusChangeHandler];
+        statusChangeHandler2[2]();
       }
     }
 
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
-      v11 = [(PUBrowsingIrisPlayer *)self playerItemChangeHandler];
+      playerItemChangeHandler = [(PUBrowsingIrisPlayer *)self playerItemChangeHandler];
 
-      if (v11)
+      if (playerItemChangeHandler)
       {
-        v12 = [(PUBrowsingIrisPlayer *)self playerItemChangeHandler];
-        v12[2]();
+        playerItemChangeHandler2 = [(PUBrowsingIrisPlayer *)self playerItemChangeHandler];
+        playerItemChangeHandler2[2]();
       }
 
       px_dispatch_on_main_queue();
     }
 
-    if ((v6 & 0x200) != 0)
+    if ((changeCopy & 0x200) != 0)
     {
-      v13 = [(PUBrowsingIrisPlayer *)self durationChangeHandler];
+      durationChangeHandler = [(PUBrowsingIrisPlayer *)self durationChangeHandler];
 
-      if (v13)
+      if (durationChangeHandler)
       {
-        v14 = [(PUBrowsingIrisPlayer *)self durationChangeHandler];
-        v14[2]();
+        durationChangeHandler2 = [(PUBrowsingIrisPlayer *)self durationChangeHandler];
+        durationChangeHandler2[2]();
       }
     }
   }
@@ -259,11 +259,11 @@ uint64_t __108__PUBrowsingIrisPlayer_videoScrubberController_seekToTime_toleranc
 
 - (id)debugDetailedDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PUBrowsingIrisPlayer *)self mediaProvider];
-  [v3 appendFormat:@"Media Provider: %@\n", v4];
+  string = [MEMORY[0x1E696AD60] string];
+  mediaProvider = [(PUBrowsingIrisPlayer *)self mediaProvider];
+  [string appendFormat:@"Media Provider: %@\n", mediaProvider];
 
-  [v3 appendFormat:@"Loading Target: %ld\n", -[PUBrowsingIrisPlayer loadingTarget](self, "loadingTarget")];
+  [string appendFormat:@"Loading Target: %ld\n", -[PUBrowsingIrisPlayer loadingTarget](self, "loadingTarget")];
   if ([(PUBrowsingIrisPlayer *)self isLivePhotoLoadingAllowed])
   {
     v5 = @"YES";
@@ -275,10 +275,10 @@ uint64_t __108__PUBrowsingIrisPlayer_videoScrubberController_seekToTime_toleranc
   }
 
   v6 = v5;
-  [v3 appendFormat:@"isLivePhotoLoadingAllowed: %@\n", v6];
+  [string appendFormat:@"isLivePhotoLoadingAllowed: %@\n", v6];
 
-  v7 = [(PUBrowsingIrisPlayer *)self livePhotoLoadingDisablingReasons];
-  [v3 appendFormat:@"livePhotoLoadingDisablingReasons: %@\n", v7];
+  livePhotoLoadingDisablingReasons = [(PUBrowsingIrisPlayer *)self livePhotoLoadingDisablingReasons];
+  [string appendFormat:@"livePhotoLoadingDisablingReasons: %@\n", livePhotoLoadingDisablingReasons];
 
   if ([(PUBrowsingIrisPlayer *)self isLivePhotoPlaybackAllowed])
   {
@@ -291,19 +291,19 @@ uint64_t __108__PUBrowsingIrisPlayer_videoScrubberController_seekToTime_toleranc
   }
 
   v9 = v8;
-  [v3 appendFormat:@"isLivePhotoPlaybackAllowed: %@\n", v9];
+  [string appendFormat:@"isLivePhotoPlaybackAllowed: %@\n", v9];
 
-  v10 = [(PUBrowsingIrisPlayer *)self livePhotoPlaybackDisablingReasons];
-  [v3 appendFormat:@"livePhotoPlaybackDisablingReasons: %@\n", v10];
+  livePhotoPlaybackDisablingReasons = [(PUBrowsingIrisPlayer *)self livePhotoPlaybackDisablingReasons];
+  [string appendFormat:@"livePhotoPlaybackDisablingReasons: %@\n", livePhotoPlaybackDisablingReasons];
 
-  v11 = [(PUBrowsingIrisPlayer *)self player];
-  [v3 appendFormat:@"Iris Player: %@\n", v11];
+  player = [(PUBrowsingIrisPlayer *)self player];
+  [string appendFormat:@"Iris Player: %@\n", player];
 
   v12 = MEMORY[0x1E696AEC0];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [v3 pu_stringByIndentingNewLines];
-  v16 = [v12 stringWithFormat:@"<%@ %p> {\n\t%@}", v14, self, v15];
+  pu_stringByIndentingNewLines = [string pu_stringByIndentingNewLines];
+  v16 = [v12 stringWithFormat:@"<%@ %p> {\n\t%@}", v14, self, pu_stringByIndentingNewLines];
 
   return v16;
 }
@@ -342,13 +342,13 @@ uint64_t __51__PUBrowsingIrisPlayer__handlePlaybackStyleChanged__block_invoke(ui
   return [v7 _invalidatePlaying];
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    self->_playing = a3;
-    v4 = [(PUBrowsingIrisPlayer *)self currentChange];
-    [v4 setPlayingDidChange:1];
+    self->_playing = playing;
+    currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+    [currentChange setPlayingDidChange:1];
   }
 }
 
@@ -357,19 +357,19 @@ uint64_t __51__PUBrowsingIrisPlayer__handlePlaybackStyleChanged__block_invoke(ui
   if (!self->_isValid.playing)
   {
     self->_isValid.playing = 1;
-    v4 = [(PUBrowsingIrisPlayer *)self player];
-    -[PUBrowsingIrisPlayer setPlaying:](self, "setPlaying:", ([v4 currentPlaybackStyle] - 1) < 2);
+    player = [(PUBrowsingIrisPlayer *)self player];
+    -[PUBrowsingIrisPlayer setPlaying:](self, "setPlaying:", ([player currentPlaybackStyle] - 1) < 2);
   }
 }
 
-- (void)_handlePeriodicObserverWithTime:(id *)a3
+- (void)_handlePeriodicObserverWithTime:(id *)time
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__PUBrowsingIrisPlayer__handlePeriodicObserverWithTime___block_invoke;
   v3[3] = &unk_1E7B7F720;
   v3[4] = self;
-  v4 = *a3;
+  v4 = *time;
   [(PUViewModel *)self performChanges:v3];
 }
 
@@ -405,18 +405,18 @@ void __56__PUBrowsingIrisPlayer__handlePeriodicObserverWithTime___block_invoke(u
   [v9 setCurrentlyDisplayedTimes:0];
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->_videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
     [(ISWrappedAVPlayer *)videoPlayer unregisterChangeObserver:self context:PUISWrappedAVPlayerObservationContext];
     [(ISWrappedAVPlayer *)self->_videoPlayer removeTimeObserver:self->_videoPeriodicObserver];
     videoPeriodicObserver = self->_videoPeriodicObserver;
     self->_videoPeriodicObserver = 0;
 
-    objc_storeStrong(&self->_videoPlayer, a3);
+    objc_storeStrong(&self->_videoPlayer, player);
     [(ISWrappedAVPlayer *)self->_videoPlayer registerChangeObserver:self context:PUISWrappedAVPlayerObservationContext];
     objc_initWeak(&location, self);
     v8 = self->_videoPlayer;
@@ -451,10 +451,10 @@ void __39__PUBrowsingIrisPlayer_setVideoPlayer___block_invoke(uint64_t a1, __int
   if (!self->_isValid.playerItemScrubbingPhotoTime)
   {
     self->_isValid.playerItemScrubbingPhotoTime = 1;
-    v3 = [(PUBrowsingIrisPlayer *)self player];
+    player = [(PUBrowsingIrisPlayer *)self player];
     [(PUBrowsingIrisPlayer *)self scrubbingPhotoTime];
-    v4 = [(PUBrowsingIrisPlayer *)self seekCompletionHandler];
-    [v3 setSeekTime:v5 completion:v4];
+    seekCompletionHandler = [(PUBrowsingIrisPlayer *)self seekCompletionHandler];
+    [player setSeekTime:v5 completion:seekCompletionHandler];
   }
 }
 
@@ -464,23 +464,23 @@ void __39__PUBrowsingIrisPlayer_setVideoPlayer___block_invoke(uint64_t a1, __int
   {
     self->_isValid.playerLoadingTarget = 1;
     v5 = [(PUBrowsingIrisPlayer *)self _playerCreateIfNeeded:0];
-    v4 = [v5 playerItem];
-    [v4 setLoadingTarget:{-[PUBrowsingIrisPlayer loadingTarget](self, "loadingTarget")}];
+    playerItem = [v5 playerItem];
+    [playerItem setLoadingTarget:{-[PUBrowsingIrisPlayer loadingTarget](self, "loadingTarget")}];
   }
 }
 
-- (void)setVitalityTransform:(float32x4_t)a3 limitingAllowed:(float32x4_t)a4
+- (void)setVitalityTransform:(float32x4_t)transform limitingAllowed:(float32x4_t)allowed
 {
-  v7 = vandq_s8(vandq_s8(vceqq_f32(a3, a1[17]), vceqq_f32(a2, a1[16])), vceqq_f32(a4, a1[18]));
+  v7 = vandq_s8(vandq_s8(vceqq_f32(transform, self[17]), vceqq_f32(a2, self[16])), vceqq_f32(allowed, self[18]));
   v7.i32[3] = v7.i32[2];
-  if ((vminvq_u32(v7) & 0x80000000) == 0 || a1[6].u8[5] != a6)
+  if ((vminvq_u32(v7) & 0x80000000) == 0 || self[6].u8[5] != a6)
   {
-    a1[6].i8[5] = a6;
-    a1[16] = a2;
-    a1[17] = a3;
-    a1[18] = a4;
-    v8 = [(float32x4_t *)a1 currentChange];
-    [v8 setVitalityTransformDidChange:1];
+    self[6].i8[5] = a6;
+    self[16] = a2;
+    self[17] = transform;
+    self[18] = allowed;
+    currentChange = [(float32x4_t *)self currentChange];
+    [currentChange setVitalityTransformDidChange:1];
   }
 }
 
@@ -509,15 +509,15 @@ uint64_t __48__PUBrowsingIrisPlayer__updateVitalityTransform__block_invoke(uint6
 - (void)_updateVitalityTransformProducer
 {
   v3 = [(PUBrowsingIrisPlayer *)self _playerCreateIfNeeded:0];
-  v4 = [v3 playerItem];
-  v5 = [v4 asset];
-  v6 = [v5 videoAsset];
-  [(PUVitalityTransformProducer *)self->_vitalityTransformProducer setVideoAsset:v6];
+  playerItem = [v3 playerItem];
+  asset = [playerItem asset];
+  videoAsset = [asset videoAsset];
+  [(PUVitalityTransformProducer *)self->_vitalityTransformProducer setVideoAsset:videoAsset];
 
-  v7 = [(PUBrowsingIrisPlayer *)self asset];
+  asset2 = [(PUBrowsingIrisPlayer *)self asset];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = asset2;
   }
 
   else
@@ -533,26 +533,26 @@ uint64_t __48__PUBrowsingIrisPlayer__updateVitalityTransform__block_invoke(uint6
   if (!self->_isValid.playerContent)
   {
     self->_isValid.playerContent = 1;
-    v3 = [(PUBrowsingIrisPlayer *)self livePhoto];
+    livePhoto = [(PUBrowsingIrisPlayer *)self livePhoto];
     v4 = [(PUBrowsingIrisPlayer *)self _playerCreateIfNeeded:0];
-    v5 = [v3 videoAsset];
-    if (v3)
+    videoAsset = [livePhoto videoAsset];
+    if (livePhoto)
     {
-      v6 = [v3 image];
-      [v6 imageOrientation];
+      image = [livePhoto image];
+      [image imageOrientation];
       v7 = PLExifOrientationFromImageOrientation();
-      [v3 photoTime];
+      [livePhoto photoTime];
       Seconds = 0.0;
       if ((v19 & 0x1D) == 1)
       {
-        [v3 photoTime];
+        [livePhoto photoTime];
         Seconds = CMTimeGetSeconds(&v18);
       }
 
-      v9 = [v3 hasPhotoColorAdjustments];
-      v10 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:v5 UIImage:v6 photoTime:v7 photoEXIFOrientation:v9 options:Seconds];
-      v11 = [(PUBrowsingIrisPlayer *)self asset];
-      [v11 aspectRatio];
+      hasPhotoColorAdjustments = [livePhoto hasPhotoColorAdjustments];
+      v10 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:videoAsset UIImage:image photoTime:v7 photoEXIFOrientation:hasPhotoColorAdjustments options:Seconds];
+      asset = [(PUBrowsingIrisPlayer *)self asset];
+      [asset aspectRatio];
       v13 = v12;
 
       if (v13 <= 0.0)
@@ -595,18 +595,18 @@ uint64_t __48__PUBrowsingIrisPlayer__updateVitalityTransform__block_invoke(uint6
     self->_isValid.livePhoto = 1;
     if ([(PUBrowsingIrisPlayer *)self isLivePhotoLoadingAllowed])
     {
-      v3 = [(PUBrowsingIrisPlayer *)self asset];
-      v4 = [v3 canPlayPhotoIris];
+      asset = [(PUBrowsingIrisPlayer *)self asset];
+      canPlayPhotoIris = [asset canPlayPhotoIris];
 
-      if (v4)
+      if (canPlayPhotoIris)
       {
         if ([(PUBrowsingIrisPlayer *)self livePhotoRequestState]!= 2)
         {
           [(PUBrowsingIrisPlayer *)self setLivePhotoRequestState:1];
         }
 
-        v5 = [(PUBrowsingIrisPlayer *)self mediaProvider];
-        v6 = [(PUBrowsingIrisPlayer *)self asset];
+        mediaProvider = [(PUBrowsingIrisPlayer *)self mediaProvider];
+        asset2 = [(PUBrowsingIrisPlayer *)self asset];
         objc_initWeak(&location, self);
         v16 = 0;
         v17 = &v16;
@@ -616,7 +616,7 @@ uint64_t __48__PUBrowsingIrisPlayer__updateVitalityTransform__block_invoke(uint6
         [(PUBrowsingIrisPlayer *)self _targetSize];
         v8 = v7;
         v10 = v9;
-        v11 = [(PUBrowsingIrisPlayer *)self _contentMode];
+        _contentMode = [(PUBrowsingIrisPlayer *)self _contentMode];
         v12 = objc_alloc_init(MEMORY[0x1E69788D8]);
         [v12 setNetworkAccessAllowed:1];
         [v12 setDeliveryMode:1];
@@ -629,7 +629,7 @@ uint64_t __48__PUBrowsingIrisPlayer__updateVitalityTransform__block_invoke(uint6
         v14[3] = &unk_1E7B75C90;
         objc_copyWeak(&v15, &location);
         v14[4] = &v16;
-        v13 = [v5 requestLivePhotoForAsset:v6 targetSize:v11 contentMode:v12 options:v14 resultHandler:{v8, v10}];
+        v13 = [mediaProvider requestLivePhotoForAsset:asset2 targetSize:_contentMode contentMode:v12 options:v14 resultHandler:{v8, v10}];
         *(v17 + 6) = v13;
         [(PUBrowsingIrisPlayer *)self setLivePhotoRequestID:v13];
         objc_destroyWeak(&v15);
@@ -677,56 +677,56 @@ void __48__PUBrowsingIrisPlayer__updateLivePhotoIfNeeded__block_invoke_2(uint64_
     [(PUBrowsingIrisPlayer *)self _updatePlayingIfNeeded];
     if ([(PUBrowsingIrisPlayer *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:444 description:{@"[%@] Update still needed after update pass", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:444 description:{@"[%@] Update still needed after update pass", self}];
     }
   }
 }
 
 - (BOOL)isContentLoadingRequestInProgress
 {
-  v3 = [(PUBrowsingIrisPlayer *)self livePhotoRequestState];
-  if (v3 != 1)
+  livePhotoRequestState = [(PUBrowsingIrisPlayer *)self livePhotoRequestState];
+  if (livePhotoRequestState != 1)
   {
-    LOBYTE(v3) = [(PUBrowsingIrisPlayer *)self livePhotoRequestState]== 2;
+    LOBYTE(livePhotoRequestState) = [(PUBrowsingIrisPlayer *)self livePhotoRequestState]== 2;
   }
 
-  return v3;
+  return livePhotoRequestState;
 }
 
 - (void)_cancelAllRequests
 {
-  v3 = [(PUBrowsingIrisPlayer *)self mediaProvider];
-  [v3 cancelImageRequest:{-[PUBrowsingIrisPlayer livePhotoRequestID](self, "livePhotoRequestID")}];
+  mediaProvider = [(PUBrowsingIrisPlayer *)self mediaProvider];
+  [mediaProvider cancelImageRequest:{-[PUBrowsingIrisPlayer livePhotoRequestID](self, "livePhotoRequestID")}];
 }
 
-- (void)_handleLivePhotoResult:(id)a3 info:(id)a4 requestID:(int)a5
+- (void)_handleLivePhotoResult:(id)result info:(id)info requestID:(int)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([(PUBrowsingIrisPlayer *)self livePhotoRequestID]== a5)
+  resultCopy = result;
+  infoCopy = info;
+  if ([(PUBrowsingIrisPlayer *)self livePhotoRequestID]== d)
   {
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
-    v11 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6978DE8]];
-    v12 = [v11 BOOLValue];
+    v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978DF0]];
+    v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978DE8]];
+    bOOLValue = [v11 BOOLValue];
 
-    v13 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
-    v14 = [v13 BOOLValue];
+    v13 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
+    bOOLValue2 = [v13 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
-      v15 = self;
+      selfCopy4 = self;
       v16 = 4;
 LABEL_4:
-      [(PUBrowsingIrisPlayer *)v15 setLivePhotoRequestState:v16];
+      [(PUBrowsingIrisPlayer *)selfCopy4 setLivePhotoRequestState:v16];
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v17 = v14 ^ 1;
-    if (!v8)
+    v17 = bOOLValue2 ^ 1;
+    if (!resultCopy)
     {
       v17 = 1;
     }
@@ -738,7 +738,7 @@ LABEL_18:
       v26[2] = __62__PUBrowsingIrisPlayer__handleLivePhotoResult_info_requestID___block_invoke;
       v26[3] = &unk_1E7B80C38;
       v26[4] = self;
-      v27 = v8;
+      v27 = resultCopy;
       [(PUViewModel *)self performChanges:v26];
       v18 = v27;
 LABEL_17:
@@ -746,16 +746,16 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v8 || !v10)
+    if (resultCopy || !v10)
     {
-      if (v8)
+      if (resultCopy)
       {
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __62__PUBrowsingIrisPlayer__handleLivePhotoResult_info_requestID___block_invoke_2;
         v23[3] = &unk_1E7B80C38;
         v23[4] = self;
-        v24 = v8;
+        v24 = resultCopy;
         [(PUViewModel *)self performChanges:v23];
         [(PUBrowsingIrisPlayer *)self setLivePhotoRequestState:5];
         v18 = v24;
@@ -768,13 +768,13 @@ LABEL_17:
       v19 = PLOneUpGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v20 = [(PUBrowsingIrisPlayer *)self asset];
+        asset = [(PUBrowsingIrisPlayer *)self asset];
         *buf = 138412802;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2112;
-        v31 = v20;
+        v31 = asset;
         v32 = 2112;
-        v33 = v9;
+        v33 = infoCopy;
         _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_DEBUG, "%@ Failed to load live photo for Iris asset %@: %@, will retry...", buf, 0x20u);
       }
 
@@ -791,17 +791,17 @@ LABEL_17:
     v21 = PLOneUpGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(PUBrowsingIrisPlayer *)self asset];
+      asset2 = [(PUBrowsingIrisPlayer *)self asset];
       *buf = 138412802;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2112;
-      v31 = v22;
+      v31 = asset2;
       v32 = 2112;
-      v33 = v9;
+      v33 = infoCopy;
       _os_log_impl(&dword_1B36F3000, v21, OS_LOG_TYPE_DEBUG, "%@ Failed to load live photo for Iris asset %@: %@", buf, 0x20u);
     }
 
-    v15 = self;
+    selfCopy4 = self;
     v16 = 3;
     goto LABEL_4;
   }
@@ -811,8 +811,8 @@ LABEL_19:
 
 - (CGSize)_targetSize
 {
-  v2 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v2 bounds];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -828,7 +828,7 @@ LABEL_19:
   return result;
 }
 
-- (id)_playerCreateIfNeeded:(BOOL)a3
+- (id)_playerCreateIfNeeded:(BOOL)needed
 {
   player = self->_player;
   if (player)
@@ -838,7 +838,7 @@ LABEL_19:
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -868,97 +868,97 @@ void __46__PUBrowsingIrisPlayer__playerCreateIfNeeded___block_invoke(uint64_t a1
   [v1 setPlayerDidChange:1];
 }
 
-- (void)setLoadingTarget:(int64_t)a3
+- (void)setLoadingTarget:(int64_t)target
 {
-  if (self->_loadingTarget != a3)
+  if (self->_loadingTarget != target)
   {
-    self->_loadingTarget = a3;
+    self->_loadingTarget = target;
     [(PUBrowsingIrisPlayer *)self _invalidatePlayerItemLoadingTarget];
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUBrowsingIrisPlayer;
-  [(PUViewModel *)&v3 unregisterChangeObserver:a3];
+  [(PUViewModel *)&v3 unregisterChangeObserver:observer];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUBrowsingIrisPlayer;
-  [(PUViewModel *)&v3 registerChangeObserver:a3];
+  [(PUViewModel *)&v3 registerChangeObserver:observer];
 }
 
 - (PUBrowsingIrisPlayerChange)currentChange
 {
   v4.receiver = self;
   v4.super_class = PUBrowsingIrisPlayer;
-  v2 = [(PUViewModel *)&v4 currentChange];
+  currentChange = [(PUViewModel *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
-- (void)setLivePhoto:(id)a3
+- (void)setLivePhoto:(id)photo
 {
-  v5 = a3;
-  if (self->_livePhoto != v5)
+  photoCopy = photo;
+  if (self->_livePhoto != photoCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_livePhoto, a3);
-    v6 = [(PUBrowsingIrisPlayer *)self currentChange];
-    [v6 setLivePhotoDidChange:1];
+    v7 = photoCopy;
+    objc_storeStrong(&self->_livePhoto, photo);
+    currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+    [currentChange setLivePhotoDidChange:1];
 
     [(PUBrowsingIrisPlayer *)self _invalidatePlayerContent];
-    v5 = v7;
+    photoCopy = v7;
   }
 }
 
-- (void)setImageLoadingEnabled:(BOOL)a3
+- (void)setImageLoadingEnabled:(BOOL)enabled
 {
-  if (self->_imageLoadingEnabled != a3)
+  if (self->_imageLoadingEnabled != enabled)
   {
-    self->_imageLoadingEnabled = a3;
+    self->_imageLoadingEnabled = enabled;
     [(PUBrowsingIrisPlayer *)self _invalidateLivePhoto];
-    v5 = [(PUBrowsingIrisPlayer *)self currentChange];
-    [v5 setImageLoadingEnabledDidChange:1];
+    currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+    [currentChange setImageLoadingEnabledDidChange:1];
   }
 }
 
-- (void)setActivated:(BOOL)a3
+- (void)setActivated:(BOOL)activated
 {
-  if (self->_activated != a3)
+  if (self->_activated != activated)
   {
     v10 = v3;
     v11 = v4;
-    self->_activated = a3;
-    if (!a3)
+    self->_activated = activated;
+    if (!activated)
     {
-      v6 = [(PUBrowsingIrisPlayer *)self player];
-      [v6 stopPlaybackAnimated:1];
+      player = [(PUBrowsingIrisPlayer *)self player];
+      [player stopPlaybackAnimated:1];
 
       v8 = *MEMORY[0x1E6960C70];
       v9 = *(MEMORY[0x1E6960C70] + 16);
       [(PUBrowsingIrisPlayer *)self setScrubbingPhotoTime:&v8 completion:0];
     }
 
-    v7 = [(PUBrowsingIrisPlayer *)self currentChange];
-    [v7 setActivatedDidChange:1];
+    currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+    [currentChange setActivatedDidChange:1];
   }
 }
 
-- (void)setLivePhotoLoadingAllowed:(BOOL)a3
+- (void)setLivePhotoLoadingAllowed:(BOOL)allowed
 {
-  if (self->_livePhotoLoadingAllowed != a3)
+  if (self->_livePhotoLoadingAllowed != allowed)
   {
-    v3 = a3;
-    self->_livePhotoLoadingAllowed = a3;
-    v5 = [(PUBrowsingIrisPlayer *)self currentChange];
-    [v5 setIsLivePhotoLoadingAllowedDidChange:1];
+    allowedCopy = allowed;
+    self->_livePhotoLoadingAllowed = allowed;
+    currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+    [currentChange setIsLivePhotoLoadingAllowedDidChange:1];
 
-    v6 = [(PUBrowsingIrisPlayer *)self livePhoto];
-    if (v6 || !v3)
+    livePhoto = [(PUBrowsingIrisPlayer *)self livePhoto];
+    if (livePhoto || !allowedCopy)
     {
     }
 
@@ -970,64 +970,64 @@ void __46__PUBrowsingIrisPlayer__playerCreateIfNeeded___block_invoke(uint64_t a1
   }
 }
 
-- (void)setLivePhotoLoadingDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setLivePhotoLoadingDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v10 = a4;
-  if (!v10)
+  disabledCopy = disabled;
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v7 = [(PUBrowsingIrisPlayer *)self livePhotoLoadingDisablingReasons];
-  v8 = v7;
-  if (v4)
+  livePhotoLoadingDisablingReasons = [(PUBrowsingIrisPlayer *)self livePhotoLoadingDisablingReasons];
+  v8 = livePhotoLoadingDisablingReasons;
+  if (disabledCopy)
   {
-    [v7 addObject:v10];
+    [livePhotoLoadingDisablingReasons addObject:reasonCopy];
   }
 
   else
   {
-    [v7 removeObject:v10];
+    [livePhotoLoadingDisablingReasons removeObject:reasonCopy];
   }
 
   -[PUBrowsingIrisPlayer setLivePhotoLoadingAllowed:](self, "setLivePhotoLoadingAllowed:", [v8 count] == 0);
 }
 
-- (void)setCurrentlyDisplayedTimes:(id)a3
+- (void)setCurrentlyDisplayedTimes:(id)times
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_currentlyDisplayedTimes != v4)
+  timesCopy = times;
+  v5 = timesCopy;
+  if (self->_currentlyDisplayedTimes != timesCopy)
   {
-    v9 = v4;
-    v4 = [(NSArray *)v4 isEqual:?];
+    v9 = timesCopy;
+    timesCopy = [(NSArray *)timesCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((timesCopy & 1) == 0)
     {
       v6 = [(NSArray *)v9 copy];
       currentlyDisplayedTimes = self->_currentlyDisplayedTimes;
       self->_currentlyDisplayedTimes = v6;
 
-      v8 = [(PUBrowsingIrisPlayer *)self currentChange];
-      [v8 setCurrentlyDisplayedTimesDidChange:1];
+      currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+      [currentChange setCurrentlyDisplayedTimesDidChange:1];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](timesCopy, v5);
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentVideoDuration
 {
-  v4 = [(PUBrowsingIrisPlayer *)self videoPlayer];
-  if (v4)
+  videoPlayer = [(PUBrowsingIrisPlayer *)self videoPlayer];
+  if (videoPlayer)
   {
-    v6 = v4;
-    [v4 currentItemDuration];
-    v4 = v6;
+    v6 = videoPlayer;
+    [videoPlayer currentItemDuration];
+    videoPlayer = v6;
   }
 
   else
@@ -1048,13 +1048,13 @@ void __46__PUBrowsingIrisPlayer__playerCreateIfNeeded___block_invoke(uint64_t a1
   result = [(PUBrowsingIrisPlayer *)self scrubbingPhotoTime];
   if ((retstr->var2 & 1) == 0)
   {
-    v6 = [(PUBrowsingIrisPlayer *)self player];
-    v7 = [v6 playerItem];
-    v8 = [v7 asset];
-    v9 = v8;
-    if (v8)
+    player = [(PUBrowsingIrisPlayer *)self player];
+    playerItem = [player playerItem];
+    asset = [playerItem asset];
+    v9 = asset;
+    if (asset)
     {
-      [v8 photoCMTime];
+      [asset photoCMTime];
     }
 
     else
@@ -1070,57 +1070,57 @@ void __46__PUBrowsingIrisPlayer__playerCreateIfNeeded___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setScrubbingPhotoTime:(id *)a3 completion:(id)a4
+- (void)setScrubbingPhotoTime:(id *)time completion:(id)completion
 {
-  v6 = a4;
-  time1 = *a3;
+  completionCopy = completion;
+  time1 = *time;
   scrubbingPhotoTime = self->_scrubbingPhotoTime;
   if (CMTimeCompare(&time1, &scrubbingPhotoTime))
   {
-    [(PUBrowsingIrisPlayer *)self setSeekCompletionHandler:v6];
-    v7 = *&a3->var0;
-    self->_scrubbingPhotoTime.epoch = a3->var3;
+    [(PUBrowsingIrisPlayer *)self setSeekCompletionHandler:completionCopy];
+    v7 = *&time->var0;
+    self->_scrubbingPhotoTime.epoch = time->var3;
     *&self->_scrubbingPhotoTime.value = v7;
     [(PUBrowsingIrisPlayer *)self _invalidatePlayerItemScrubbingPhotoTime];
-    v8 = [(PUBrowsingIrisPlayer *)self currentChange];
-    [v8 setScrubbingPhotoTimeDidChange:1];
+    currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+    [currentChange setScrubbingPhotoTimeDidChange:1];
   }
 }
 
-- (void)setIsLivePhotoPlaybackAllowed:(BOOL)a3
+- (void)setIsLivePhotoPlaybackAllowed:(BOOL)allowed
 {
-  if (self->_isLivePhotoPlaybackAllowed != a3)
+  if (self->_isLivePhotoPlaybackAllowed != allowed)
   {
-    v4 = a3;
-    self->_isLivePhotoPlaybackAllowed = a3;
-    v6 = [(PUBrowsingIrisPlayer *)self currentChange];
-    [v6 setIsLivePhotoPlaybackAllowedDidChange:1];
+    allowedCopy = allowed;
+    self->_isLivePhotoPlaybackAllowed = allowed;
+    currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+    [currentChange setIsLivePhotoPlaybackAllowedDidChange:1];
 
     v7 = [(PUBrowsingIrisPlayer *)self _playerCreateIfNeeded:0];
-    [v7 setPlaybackAllowed:v4];
+    [v7 setPlaybackAllowed:allowedCopy];
   }
 }
 
-- (void)setLivePhotoPlaybackDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setLivePhotoPlaybackDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v10 = a4;
-  if (!v10)
+  disabledCopy = disabled;
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v7 = [(PUBrowsingIrisPlayer *)self livePhotoPlaybackDisablingReasons];
-  v8 = v7;
-  if (v4)
+  livePhotoPlaybackDisablingReasons = [(PUBrowsingIrisPlayer *)self livePhotoPlaybackDisablingReasons];
+  v8 = livePhotoPlaybackDisablingReasons;
+  if (disabledCopy)
   {
-    [v7 addObject:v10];
+    [livePhotoPlaybackDisablingReasons addObject:reasonCopy];
   }
 
   else
   {
-    [v7 removeObject:v10];
+    [livePhotoPlaybackDisablingReasons removeObject:reasonCopy];
   }
 
   -[PUBrowsingIrisPlayer setIsLivePhotoPlaybackAllowed:](self, "setIsLivePhotoPlaybackAllowed:", [v8 count] == 0);
@@ -1151,15 +1151,15 @@ void __48__PUBrowsingIrisPlayer_playPreviewHintWhenReady__block_invoke(uint64_t 
   [v2 playHintWhenReady];
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
     v6 = [(PUBrowsingIrisPlayer *)self _playerCreateIfNeeded:0];
-    if (v5 && [(PUDisplayAsset *)self->_asset isPhotoIrisPlaceholder])
+    if (assetCopy && [(PUDisplayAsset *)self->_asset isPhotoIrisPlaceholder])
     {
-      v7 = [(PUDisplayAsset *)v5 isPhotoIrisPlaceholder]^ 1;
+      v7 = [(PUDisplayAsset *)assetCopy isPhotoIrisPlaceholder]^ 1;
     }
 
     else
@@ -1168,27 +1168,27 @@ void __48__PUBrowsingIrisPlayer_playPreviewHintWhenReady__block_invoke(uint64_t 
     }
 
     asset = self->_asset;
-    v9 = v5;
-    v10 = asset;
-    if (v10 == v9)
+    v9 = assetCopy;
+    assetCopy2 = asset;
+    if (assetCopy2 == v9)
     {
       v12 = 0;
     }
 
     else
     {
-      v11 = [(PUDisplayAsset *)v9 isContentEqualTo:v10];
+      v11 = [(PUDisplayAsset *)v9 isContentEqualTo:assetCopy2];
       if (!v11)
       {
-        v11 = [(PUDisplayAsset *)v10 isContentEqualTo:v9];
+        v11 = [(PUDisplayAsset *)assetCopy2 isContentEqualTo:v9];
       }
 
       v12 = v11 != 2;
     }
 
-    objc_storeStrong(&self->_asset, a3);
-    v13 = [(PUBrowsingIrisPlayer *)self currentChange];
-    [v13 setHasChanges];
+    objc_storeStrong(&self->_asset, asset);
+    currentChange = [(PUBrowsingIrisPlayer *)self currentChange];
+    [currentChange setHasChanges];
 
     if (v7 && (-[PUBrowsingIrisPlayer livePhotoRequestState](self, "livePhotoRequestState") != 5 || v6 && [v6 status] != 2))
     {
@@ -1243,22 +1243,22 @@ uint64_t __33__PUBrowsingIrisPlayer_setAsset___block_invoke(uint64_t a1)
   [(PUBrowsingIrisPlayer *)&v3 dealloc];
 }
 
-- (PUBrowsingIrisPlayer)initWithAsset:(id)a3 mediaProvider:(id)a4
+- (PUBrowsingIrisPlayer)initWithAsset:(id)asset mediaProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  providerCopy = provider;
   v26.receiver = self;
   v26.super_class = PUBrowsingIrisPlayer;
   v10 = [(PUViewModel *)&v26 init];
   if (v10)
   {
-    if (v8)
+    if (assetCopy)
     {
-      if (v9)
+      if (providerCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v10->_asset, a3);
-        objc_storeStrong(&v10->_mediaProvider, a4);
+        objc_storeStrong(&v10->_asset, asset);
+        objc_storeStrong(&v10->_mediaProvider, provider);
         v10->_loadingTarget = 0;
         v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         livePhotoLoadingDisablingReasons = v10->_livePhotoLoadingDisablingReasons;
@@ -1293,17 +1293,17 @@ LABEL_4:
 
     else
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:v10 file:@"PUBrowsingIrisPlayer.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PUBrowsingIrisPlayer.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
 
-      if (v9)
+      if (providerCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:v10 file:@"PUBrowsingIrisPlayer.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"PUBrowsingIrisPlayer.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
 
     goto LABEL_4;
   }
@@ -1321,16 +1321,16 @@ void __52__PUBrowsingIrisPlayer_initWithAsset_mediaProvider___block_invoke(uint6
 
 - (PUBrowsingIrisPlayer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:101 description:{@"%s is not available as initializer", "-[PUBrowsingIrisPlayer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:101 description:{@"%s is not available as initializer", "-[PUBrowsingIrisPlayer init]"}];
 
   abort();
 }
 
 + (PUBrowsingIrisPlayer)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PUBrowsingIrisPlayer.m" lineNumber:105 description:{@"%s is not available as initializer", "+[PUBrowsingIrisPlayer new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingIrisPlayer.m" lineNumber:105 description:{@"%s is not available as initializer", "+[PUBrowsingIrisPlayer new]"}];
 
   abort();
 }

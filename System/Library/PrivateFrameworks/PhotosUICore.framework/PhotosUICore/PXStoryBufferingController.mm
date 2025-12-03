@@ -1,24 +1,24 @@
 @interface PXStoryBufferingController
 - (NSDictionary)totalBufferingTimeIntervalsPerReason;
 - (NSIndexSet)bufferingReasons;
-- (PXStoryBufferingController)initWithModel:(id)a3;
-- (PXStoryBufferingController)initWithObservableModel:(id)a3;
+- (PXStoryBufferingController)initWithModel:(id)model;
+- (PXStoryBufferingController)initWithObservableModel:(id)model;
 - (PXStoryModel)model;
 - (double)lastCriticalBufferingDuration;
 - (double)lastNoncriticalBufferingDuration;
 - (double)noncriticalBufferingTimeout;
 - (double)totalBufferingTimeInterval;
-- (void)_accountForReason:(int64_t)a3 status:(int64_t)a4;
+- (void)_accountForReason:(int64_t)reason status:(int64_t)status;
 - (void)_invalidateModelProperties;
 - (void)_invalidateOverallReadinessStatus;
 - (void)_updateModelProperties;
 - (void)_updateOverallReadinessStatus;
-- (void)configureUpdater:(id)a3;
+- (void)configureUpdater:(id)updater;
 - (void)dealloc;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setIsBuffering:(BOOL)a3;
-- (void)setOverallReadinessStatus:(int64_t)a3;
+- (void)handleModelChange:(unint64_t)change;
+- (void)setIsActive:(BOOL)active;
+- (void)setIsBuffering:(BOOL)buffering;
+- (void)setOverallReadinessStatus:(int64_t)status;
 @end
 
 @implementation PXStoryBufferingController
@@ -32,26 +32,26 @@
 
 - (double)noncriticalBufferingTimeout
 {
-  v2 = [(PXStoryBufferingController *)self model];
-  v3 = [v2 configuration];
-  [v3 noncriticalBufferingTimeout];
+  model = [(PXStoryBufferingController *)self model];
+  configuration = [model configuration];
+  [configuration noncriticalBufferingTimeout];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setOverallReadinessStatus:(int64_t)a3
+- (void)setOverallReadinessStatus:(int64_t)status
 {
   v16 = *MEMORY[0x1E69E9840];
   overallReadinessStatus = self->_overallReadinessStatus;
-  if (overallReadinessStatus != a3)
+  if (overallReadinessStatus != status)
   {
-    self->_overallReadinessStatus = a3;
+    self->_overallReadinessStatus = status;
     [(PXStoryBufferingController *)self _invalidateModelProperties];
-    a3 = self->_overallReadinessStatus;
+    status = self->_overallReadinessStatus;
   }
 
-  if (a3 != 3)
+  if (status != 3)
   {
     if (!self->_overallBufferingDuration.currentStartTime)
     {
@@ -92,13 +92,13 @@
     objc_initWeak(&buf, self);
     [(PXStoryBufferingController *)self noncriticalBufferingTimeout];
     v8 = dispatch_time(0, (v7 * 1000000000.0));
-    v9 = [(PXStoryController *)self storyQueue];
+    storyQueue = [(PXStoryController *)self storyQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__PXStoryBufferingController_setOverallReadinessStatus___block_invoke_3;
     block[3] = &unk_1E774C318;
     objc_copyWeak(&v12, &buf);
-    dispatch_after(v8, v9, block);
+    dispatch_after(v8, storyQueue, block);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&buf);
@@ -156,27 +156,27 @@ void __56__PXStoryBufferingController_setOverallReadinessStatus___block_invoke_4
   [WeakRetained _invalidateOverallReadinessStatus];
 }
 
-- (void)setIsBuffering:(BOOL)a3
+- (void)setIsBuffering:(BOOL)buffering
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isBuffering != a3)
+  if (self->_isBuffering != buffering)
   {
-    self->_isBuffering = a3;
-    if (a3)
+    self->_isBuffering = buffering;
+    if (buffering)
     {
       v4 = [(PXStoryBufferingController *)self log];
-      v5 = [(PXStoryBufferingController *)self logContext];
+      logContext = [(PXStoryBufferingController *)self logContext];
       v6 = os_signpost_id_make_with_pointer(v4, self);
       v7 = v4;
       v8 = v7;
       if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
       {
         *buf = 134217984;
-        v19 = v5;
+        v19 = logContext;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PXStoryBufferingController.PlaybackBuffering", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
       }
 
-      v9 = [MEMORY[0x1E6991F28] startSignpost];
+      startSignpost = [MEMORY[0x1E6991F28] startSignpost];
       v10 = PLStoryGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
@@ -190,16 +190,16 @@ void __56__PXStoryBufferingController_setOverallReadinessStatus___block_invoke_4
       v13[3] = &unk_1E7749770;
       v14 = v8;
       v15 = v6;
-      v16 = v5;
-      v17 = v9;
+      v16 = logContext;
+      v17 = startSignpost;
       v11 = v8;
       [(PXStoryBufferingController *)self setOnBufferingEnd:v13];
     }
 
     else
     {
-      v12 = [(PXStoryBufferingController *)self onBufferingEnd];
-      v12[2]();
+      onBufferingEnd = [(PXStoryBufferingController *)self onBufferingEnd];
+      onBufferingEnd[2]();
 
       [(PXStoryBufferingController *)self setOnBufferingEnd:0];
     }
@@ -236,15 +236,15 @@ void __45__PXStoryBufferingController_setIsBuffering___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_accountForReason:(int64_t)a3 status:(int64_t)a4
+- (void)_accountForReason:(int64_t)reason status:(int64_t)status
 {
-  v7 = [(PXStoryBufferingController *)self bufferingReasonsStore];
-  v8 = v7;
-  if (a4 == 3)
+  bufferingReasonsStore = [(PXStoryBufferingController *)self bufferingReasonsStore];
+  v8 = bufferingReasonsStore;
+  if (status == 3)
   {
-    [v7 removeIndex:a3];
+    [bufferingReasonsStore removeIndex:reason];
 
-    v9 = &self->_bufferingDurationsPerReason[a3];
+    v9 = &self->_bufferingDurationsPerReason[reason];
     mach_absolute_time();
     if (v9->var1)
     {
@@ -257,11 +257,11 @@ void __45__PXStoryBufferingController_setIsBuffering___block_invoke(uint64_t a1)
 
   else
   {
-    [v7 addIndex:a3];
+    [bufferingReasonsStore addIndex:reason];
 
-    if (a4)
+    if (status)
     {
-      v10 = &self->_bufferingDurationsPerReason[a3];
+      v10 = &self->_bufferingDurationsPerReason[reason];
       var1 = v10->var1;
       p_var1 = &v10->var1;
       if (!var1)
@@ -274,13 +274,13 @@ void __45__PXStoryBufferingController_setIsBuffering___block_invoke(uint64_t a1)
 
 - (void)_updateModelProperties
 {
-  v3 = [(PXStoryBufferingController *)self model];
+  model = [(PXStoryBufferingController *)self model];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __52__PXStoryBufferingController__updateModelProperties__block_invoke;
   v4[3] = &unk_1E77485B0;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [model performChanges:v4];
 }
 
 void __52__PXStoryBufferingController__updateModelProperties__block_invoke(uint64_t a1, void *a2)
@@ -292,38 +292,38 @@ void __52__PXStoryBufferingController__updateModelProperties__block_invoke(uint6
 
 - (void)_invalidateModelProperties
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateModelProperties];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateModelProperties];
 }
 
 - (void)_updateOverallReadinessStatus
 {
   if ([(PXStoryBufferingController *)self isActive])
   {
-    v10 = [(PXStoryBufferingController *)self model];
-    v3 = [v10 isExporting];
-    v4 = [v10 contentReadinessStatus];
-    if (v3)
+    model = [(PXStoryBufferingController *)self model];
+    isExporting = [model isExporting];
+    contentReadinessStatus = [model contentReadinessStatus];
+    if (isExporting)
     {
-      v5 = [v10 activeSongResource];
+      activeSongResource = [model activeSongResource];
       v6 = 3;
-      if (v5)
+      if (activeSongResource)
       {
-        v7 = 3;
+        musicReadinessStatus = 3;
       }
 
       else
       {
-        v7 = 1;
+        musicReadinessStatus = 1;
       }
 
-      v8 = [v10 timelineAttributes] & 2 | 1;
+      v8 = [model timelineAttributes] & 2 | 1;
     }
 
     else
     {
       v8 = 3;
-      if ([v10 musicReadinessStatus])
+      if ([model musicReadinessStatus])
       {
         v6 = 3;
       }
@@ -333,18 +333,18 @@ void __52__PXStoryBufferingController__updateModelProperties__block_invoke(uint6
         v6 = 1;
       }
 
-      v7 = [v10 musicReadinessStatus];
-      if (([v10 timelineAttributes] & 1) == 0)
+      musicReadinessStatus = [model musicReadinessStatus];
+      if (([model timelineAttributes] & 1) == 0)
       {
         v8 = 1;
       }
     }
 
     [(PXStoryBufferingController *)self _accountForReason:0 status:v6];
-    [(PXStoryBufferingController *)self _accountForReason:1 status:v7];
+    [(PXStoryBufferingController *)self _accountForReason:1 status:musicReadinessStatus];
     [(PXStoryBufferingController *)self _accountForReason:3 status:v8];
-    [(PXStoryBufferingController *)self _accountForReason:2 status:v4];
-    v9 = PXStoryPlaybackReadinessStatusCombine(v4, v7);
+    [(PXStoryBufferingController *)self _accountForReason:2 status:contentReadinessStatus];
+    v9 = PXStoryPlaybackReadinessStatusCombine(contentReadinessStatus, musicReadinessStatus);
     PXStoryPlaybackReadinessStatusCombine(v9, v8);
     mach_absolute_time();
     PXTimebaseConversionFactor();
@@ -353,11 +353,11 @@ void __52__PXStoryBufferingController__updateModelProperties__block_invoke(uint6
 
 - (void)_invalidateOverallReadinessStatus
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateOverallReadinessStatus];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateOverallReadinessStatus];
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
   v6.receiver = self;
   v6.super_class = PXStoryBufferingController;
@@ -367,7 +367,7 @@ void __52__PXStoryBufferingController__updateModelProperties__block_invoke(uint6
   v5[2] = __48__PXStoryBufferingController_handleModelChange___block_invoke;
   v5[3] = &unk_1E773FEE8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = change;
   [(PXStoryController *)self performChanges:v5];
 }
 
@@ -411,8 +411,8 @@ uint64_t __48__PXStoryBufferingController_handleModelChange___block_invoke(uint6
 
 - (NSIndexSet)bufferingReasons
 {
-  v2 = [(PXStoryBufferingController *)self bufferingReasonsStore];
-  v3 = [v2 copy];
+  bufferingReasonsStore = [(PXStoryBufferingController *)self bufferingReasonsStore];
+  v3 = [bufferingReasonsStore copy];
 
   return v3;
 }
@@ -453,13 +453,13 @@ uint64_t __48__PXStoryBufferingController_handleModelChange___block_invoke(uint6
   return p_overallBufferingDuration->previousDuration + 0.0;
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
-    if (a3)
+    self->_isActive = active;
+    if (active)
     {
       v4 = [(PXStoryBufferingController *)self log];
       v5 = os_signpost_id_make_with_pointer(v4, self);
@@ -469,7 +469,7 @@ uint64_t __48__PXStoryBufferingController_handleModelChange___block_invoke(uint6
         if (os_signpost_enabled(v4))
         {
           v7 = 134217984;
-          v8 = [(PXStoryBufferingController *)self logContext];
+          logContext = [(PXStoryBufferingController *)self logContext];
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v4, OS_SIGNPOST_EVENT, v6, "PXStoryBufferingControllerIsActive", "Context=%{signpost.telemetry:string2}lu ", &v7, 0xCu);
         }
       }
@@ -481,14 +481,14 @@ uint64_t __48__PXStoryBufferingController_handleModelChange___block_invoke(uint6
   }
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStoryBufferingController;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateOverallReadinessStatus, v4.receiver, v4.super_class}];
-  [v3 addUpdateSelector:sel__updateModelProperties];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateOverallReadinessStatus, v4.receiver, v4.super_class}];
+  [updaterCopy addUpdateSelector:sel__updateModelProperties];
 }
 
 - (void)dealloc
@@ -499,16 +499,16 @@ uint64_t __48__PXStoryBufferingController_handleModelChange___block_invoke(uint6
   [(PXStoryBufferingController *)&v3 dealloc];
 }
 
-- (PXStoryBufferingController)initWithModel:(id)a3
+- (PXStoryBufferingController)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = PXStoryBufferingController;
-  v5 = [(PXStoryController *)&v15 initWithObservableModel:v4];
+  v5 = [(PXStoryController *)&v15 initWithObservableModel:modelCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_model, v4);
+    objc_storeWeak(&v5->_model, modelCopy);
     v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
     bufferingReasonsStore = v6->_bufferingReasonsStore;
     v6->_bufferingReasonsStore = v7;
@@ -536,11 +536,11 @@ uint64_t __48__PXStoryBufferingController_handleModelChange___block_invoke(uint6
   return v6;
 }
 
-- (PXStoryBufferingController)initWithObservableModel:(id)a3
+- (PXStoryBufferingController)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryBufferingController.m" lineNumber:89 description:{@"%s is not available as initializer", "-[PXStoryBufferingController initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryBufferingController.m" lineNumber:89 description:{@"%s is not available as initializer", "-[PXStoryBufferingController initWithObservableModel:]"}];
 
   abort();
 }

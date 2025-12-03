@@ -1,12 +1,12 @@
 @interface RMModelLegacyInteractiveProfileDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 profileURL:(id)a4 visibleName:(id)a5;
-+ (id)buildWithIdentifier:(id)a3 profileURL:(id)a4 visibleName:(id)a5;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier profileURL:(id)l visibleName:(id)name;
++ (id)buildWithIdentifier:(id)identifier profileURL:(id)l visibleName:(id)name;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelLegacyInteractiveProfileDeclaration
@@ -32,55 +32,55 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 profileURL:(id)a4 visibleName:(id)a5
++ (id)buildWithIdentifier:(id)identifier profileURL:(id)l visibleName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
+  lCopy = l;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.legacy.interactive"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadProfileURL:v9];
+  [v10 setPayloadProfileURL:lCopy];
 
-  [v10 setPayloadVisibleName:v8];
+  [v10 setPayloadVisibleName:nameCopy];
   [v10 updateServerToken];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 profileURL:(id)a4 visibleName:(id)a5
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier profileURL:(id)l visibleName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
+  lCopy = l;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.legacy.interactive"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadProfileURL:v9];
+  [v10 setPayloadProfileURL:lCopy];
 
-  [v10 setPayloadVisibleName:v8];
+  [v10 setPayloadVisibleName:nameCopy];
   [v10 updateServerToken];
 
   return v10;
@@ -124,12 +124,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelLegacyInteractiveProfileDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -137,9 +137,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ProfileURL" forKeyPath:@"payloadProfileURL" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ProfileURL" forKeyPath:@"payloadProfileURL" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:1 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:1 defaultValue:0 error:error];
   }
 
   else
@@ -150,25 +150,25 @@
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelLegacyInteractiveProfileDeclaration *)self payloadProfileURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ProfileURL" value:v5 isRequired:1 defaultValue:0];
+  payloadProfileURL = [(RMModelLegacyInteractiveProfileDeclaration *)self payloadProfileURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ProfileURL" value:payloadProfileURL isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelLegacyInteractiveProfileDeclaration *)self payloadVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleName" value:v6 isRequired:1 defaultValue:0];
+  payloadVisibleName = [(RMModelLegacyInteractiveProfileDeclaration *)self payloadVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleName" value:payloadVisibleName isRequired:1 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelLegacyInteractiveProfileDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadProfileURL copy];
   v6 = v4[6];
   v4[6] = v5;

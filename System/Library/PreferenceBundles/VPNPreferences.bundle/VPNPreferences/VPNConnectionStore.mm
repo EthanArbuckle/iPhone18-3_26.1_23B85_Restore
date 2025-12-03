@@ -1,74 +1,74 @@
 @interface VPNConnectionStore
-+ (__CFString)vpnTypeFromConnectionType:(unint64_t)a3;
-+ (id)applicationNameForConfiguration:(id)a3 withGrade:(unint64_t)a4;
++ (__CFString)vpnTypeFromConnectionType:(unint64_t)type;
++ (id)applicationNameForConfiguration:(id)configuration withGrade:(unint64_t)grade;
 + (id)sharedInstance;
-+ (unint64_t)connectionTypeFromVPNType:(__CFString *)a3;
-- (BOOL)alwaysOnToggleEnabledForServiceID:(id)a3;
-- (BOOL)configurationIsManaged:(id)a3;
-- (BOOL)createVPNWithOptions:(id)a3;
-- (BOOL)deleteVPNWithServiceID:(id)a3;
++ (unint64_t)connectionTypeFromVPNType:(__CFString *)type;
+- (BOOL)alwaysOnToggleEnabledForServiceID:(id)d;
+- (BOOL)configurationIsManaged:(id)managed;
+- (BOOL)createVPNWithOptions:(id)options;
+- (BOOL)deleteVPNWithServiceID:(id)d;
 - (BOOL)disableToggle;
-- (BOOL)gradePresent:(unint64_t)a3;
-- (BOOL)isActiveVPNID:(id)a3 withGrade:(unint64_t)a4;
-- (BOOL)isEnabledWithServiceID:(id)a3 withGrade:(unint64_t)a4;
-- (BOOL)isMDM:(id)a3;
-- (BOOL)isProfileBacked:(id)a3;
-- (BOOL)isTypeEnabledWithServiceID:(id)a3 withGrade:(unint64_t)a4 outProviderAvailable:(BOOL *)a5;
-- (BOOL)isUserCreatedVPN:(id)a3;
-- (BOOL)setOptions:(id)a3 toConfiguration:(id)a4;
-- (BOOL)uiToggleAllowedWithServiceID:(id)a3 withGrade:(unint64_t)a4;
-- (BOOL)updateVPNWithServiceID:(id)a3 withOptions:(id)a4;
+- (BOOL)gradePresent:(unint64_t)present;
+- (BOOL)isActiveVPNID:(id)d withGrade:(unint64_t)grade;
+- (BOOL)isEnabledWithServiceID:(id)d withGrade:(unint64_t)grade;
+- (BOOL)isMDM:(id)m;
+- (BOOL)isProfileBacked:(id)backed;
+- (BOOL)isTypeEnabledWithServiceID:(id)d withGrade:(unint64_t)grade outProviderAvailable:(BOOL *)available;
+- (BOOL)isUserCreatedVPN:(id)n;
+- (BOOL)setOptions:(id)options toConfiguration:(id)configuration;
+- (BOOL)uiToggleAllowedWithServiceID:(id)d withGrade:(unint64_t)grade;
+- (BOOL)updateVPNWithServiceID:(id)d withOptions:(id)options;
 - (VPNConnectionStore)init;
-- (id)_defaultDictForType:(unint64_t)a3;
-- (id)activeVPNIDWithGrade:(unint64_t)a3;
-- (id)activeVPNIDsWithGrade:(unint64_t)a3;
+- (id)_defaultDictForType:(unint64_t)type;
+- (id)activeVPNIDWithGrade:(unint64_t)grade;
+- (id)activeVPNIDsWithGrade:(unint64_t)grade;
 - (id)aggregateAlert;
 - (id)aggregateStatusText;
-- (id)aggregateStatusText:(unint64_t)a3;
-- (id)appNameForServiceID:(id)a3 withGrade:(unint64_t)a4;
-- (id)connectionWithServiceID:(id)a3 withGrade:(unint64_t)a4;
-- (id)copyActiveVPNIDsFromPrefsForGrade:(unint64_t)a3;
-- (id)currentConnection:(BOOL)a3 withGrade:(unint64_t)a4;
-- (id)currentConnectionWithGrade:(unint64_t)a3;
-- (id)currentConnectionsWithGrade:(unint64_t)a3;
-- (id)currentPerAppConnections:(BOOL)a3 withGrade:(unint64_t)a4;
-- (id)getProfileIDForServiceID:(id)a3;
-- (id)optionsForServiceID:(id)a3 withGrade:(unint64_t)a4;
-- (id)organizationForService:(__SCNetworkService *)a3;
-- (id)organizationForServiceID:(id)a3;
-- (id)vpnServiceCountWithGrade:(unint64_t)a3;
+- (id)aggregateStatusText:(unint64_t)text;
+- (id)appNameForServiceID:(id)d withGrade:(unint64_t)grade;
+- (id)connectionWithServiceID:(id)d withGrade:(unint64_t)grade;
+- (id)copyActiveVPNIDsFromPrefsForGrade:(unint64_t)grade;
+- (id)currentConnection:(BOOL)connection withGrade:(unint64_t)grade;
+- (id)currentConnectionWithGrade:(unint64_t)grade;
+- (id)currentConnectionsWithGrade:(unint64_t)grade;
+- (id)currentPerAppConnections:(BOOL)connections withGrade:(unint64_t)grade;
+- (id)getProfileIDForServiceID:(id)d;
+- (id)optionsForServiceID:(id)d withGrade:(unint64_t)grade;
+- (id)organizationForService:(__SCNetworkService *)service;
+- (id)organizationForServiceID:(id)d;
+- (id)vpnServiceCountWithGrade:(unint64_t)grade;
 - (id)vpnServiceTotalCount;
-- (id)vpnServicesForCurrentSetWithGrade:(unint64_t)a3 excludePerApp:(BOOL)a4;
+- (id)vpnServicesForCurrentSetWithGrade:(unint64_t)grade excludePerApp:(BOOL)app;
 - (unint64_t)aggregateStatus;
-- (unint64_t)aggregateStatus:(unint64_t)a3;
+- (unint64_t)aggregateStatus:(unint64_t)status;
 - (unint64_t)currentOnlyConnectionGrade;
 - (void)_configurationChanged;
 - (void)_connectionsChanged;
 - (void)dealloc;
-- (void)iterateContentFilterServicesWithBlock:(id)a3;
-- (void)iterateURLFilterServicesWithBlock:(id)a3;
-- (void)removeConnection:(id)a3 withGrade:(unint64_t)a4;
-- (void)setActiveVPNID:(id)a3 withGrade:(unint64_t)a4;
-- (void)triggerLocalAuthenticationForConfigurationIdentifier:(id)a3 requestedByApp:(id)a4;
+- (void)iterateContentFilterServicesWithBlock:(id)block;
+- (void)iterateURLFilterServicesWithBlock:(id)block;
+- (void)removeConnection:(id)connection withGrade:(unint64_t)grade;
+- (void)setActiveVPNID:(id)d withGrade:(unint64_t)grade;
+- (void)triggerLocalAuthenticationForConfigurationIdentifier:(id)identifier requestedByApp:(id)app;
 @end
 
 @implementation VPNConnectionStore
 
-+ (unint64_t)connectionTypeFromVPNType:(__CFString *)a3
++ (unint64_t)connectionTypeFromVPNType:(__CFString *)type
 {
-  v4 = CFStringCompare(a3, kSCEntNetL2TP, 1uLL) != kCFCompareEqualTo;
-  if (CFStringCompare(a3, kSCEntNetIPSec, 1uLL) == kCFCompareEqualTo)
+  v4 = CFStringCompare(type, kSCEntNetL2TP, 1uLL) != kCFCompareEqualTo;
+  if (CFStringCompare(type, kSCEntNetIPSec, 1uLL) == kCFCompareEqualTo)
   {
     return 2;
   }
 
-  if (CFStringCompare(a3, @"VPN", 1uLL) == kCFCompareEqualTo)
+  if (CFStringCompare(type, @"VPN", 1uLL) == kCFCompareEqualTo)
   {
     return 3;
   }
 
   v5 = 4 * v4;
-  if (CFStringCompare(a3, @"IKEv2", 1uLL))
+  if (CFStringCompare(type, @"IKEv2", 1uLL))
   {
     return v5;
   }
@@ -79,20 +79,20 @@
   }
 }
 
-+ (__CFString)vpnTypeFromConnectionType:(unint64_t)a3
++ (__CFString)vpnTypeFromConnectionType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return kSCEntNetL2TP;
   }
 
   v3 = @"IKEv2";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"IPsec";
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return @"VPN";
   }
@@ -269,25 +269,25 @@
             v12 = *(*(&v18 + 1) + 8 * i);
             if (v12)
             {
-              v13 = [v12 status];
-              if (v13 != v4)
+              status = [v12 status];
+              if (status != v4)
               {
-                if (v13 == (&dword_4 + 2))
+                if (status == (&dword_4 + 2))
                 {
                   v4 = 6;
                 }
 
                 else
                 {
-                  if (v13 == (&dword_0 + 3))
+                  if (status == (&dword_0 + 3))
                   {
                     v4 = 3;
                     goto LABEL_40;
                   }
 
-                  if (v13 != (&dword_0 + 2) || v4 == 6)
+                  if (status != (&dword_0 + 2) || v4 == 6)
                   {
-                    if (v4 != 2 && v4 != 6 && v13 == &dword_4)
+                    if (v4 != 2 && v4 != 6 && status == &dword_4)
                     {
                       v4 = 4;
                     }
@@ -322,13 +322,13 @@ LABEL_40:
   return v4;
 }
 
-- (unint64_t)aggregateStatus:(unint64_t)a3
+- (unint64_t)aggregateStatus:(unint64_t)status
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(VPNConnectionStore *)self currentConnectionsWithGrade:a3, 0];
+  v3 = [(VPNConnectionStore *)self currentConnectionsWithGrade:status, 0];
   v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
@@ -347,25 +347,25 @@ LABEL_40:
         v9 = *(*(&v15 + 1) + 8 * i);
         if (v9)
         {
-          v10 = [v9 status];
-          if (v10 != v7)
+          status = [v9 status];
+          if (status != v7)
           {
-            if (v10 == (&dword_4 + 2))
+            if (status == (&dword_4 + 2))
             {
               v7 = 6;
             }
 
             else
             {
-              if (v10 == (&dword_0 + 3))
+              if (status == (&dword_0 + 3))
               {
                 v7 = 3;
                 goto LABEL_30;
               }
 
-              if (v10 != (&dword_0 + 2) || v7 == 6)
+              if (status != (&dword_0 + 2) || v7 == 6)
               {
-                if (v7 != 2 && v7 != 6 && v10 == &dword_4)
+                if (v7 != 2 && v7 != 6 && status == &dword_4)
                 {
                   v7 = 4;
                 }
@@ -428,8 +428,8 @@ LABEL_30:
           v10 = *(*(&v13 + 1) + 8 * i);
           if (v10)
           {
-            v11 = [v10 alertText];
-            if ([(__CFString *)v11 length])
+            alertText = [v10 alertText];
+            if ([(__CFString *)alertText length])
             {
 
               goto LABEL_15;
@@ -452,52 +452,52 @@ LABEL_30:
   }
 
   while (v3 != 10);
-  v11 = &stru_411E8;
+  alertText = &stru_411E8;
 LABEL_15:
 
-  return v11;
+  return alertText;
 }
 
 - (id)aggregateStatusText
 {
-  v3 = [(VPNConnectionStore *)self aggregateStatus];
-  if (v3 == 1)
+  aggregateStatus = [(VPNConnectionStore *)self aggregateStatus];
+  if (aggregateStatus == 1)
   {
-    v4 = [(VPNConnectionStore *)self aggregateAlert];
-    if ([v4 length])
+    aggregateAlert = [(VPNConnectionStore *)self aggregateAlert];
+    if ([aggregateAlert length])
     {
       goto LABEL_5;
     }
   }
 
-  v4 = [VPNConnection statusTextForStatus:v3];
+  aggregateAlert = [VPNConnection statusTextForStatus:aggregateStatus];
 LABEL_5:
 
-  return v4;
+  return aggregateAlert;
 }
 
-- (id)aggregateStatusText:(unint64_t)a3
+- (id)aggregateStatusText:(unint64_t)text
 {
-  v4 = [(VPNConnectionStore *)self aggregateStatus:a3];
+  v4 = [(VPNConnectionStore *)self aggregateStatus:text];
   if (v4 == 1)
   {
-    v5 = [(VPNConnectionStore *)self aggregateAlert];
-    if ([v5 length])
+    aggregateAlert = [(VPNConnectionStore *)self aggregateAlert];
+    if ([aggregateAlert length])
     {
       goto LABEL_5;
     }
   }
 
-  v5 = [VPNConnection statusTextForStatus:v4];
+  aggregateAlert = [VPNConnection statusTextForStatus:v4];
 LABEL_5:
 
-  return v5;
+  return aggregateAlert;
 }
 
 - (unint64_t)currentOnlyConnectionGrade
 {
-  v3 = [(VPNConnectionStore *)self vpnServiceTotalCount];
-  if ([v3 intValue] == 1)
+  vpnServiceTotalCount = [(VPNConnectionStore *)self vpnServiceTotalCount];
+  if ([vpnServiceTotalCount intValue] == 1)
   {
     v4 = 0;
     while (1)
@@ -525,15 +525,15 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)isUserCreatedVPN:(id)a3
+- (BOOL)isUserCreatedVPN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [(VPNConnectionStore *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v6 = [configurations countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v6)
   {
     v7 = *v33;
@@ -543,14 +543,14 @@ LABEL_3:
     {
       if (*v33 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(configurations);
       }
 
       v9 = *(*(&v32 + 1) + 8 * v8);
       if ([v9 grade] != &dword_0 + 3)
       {
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:nCopy];
 
         if (v11)
         {
@@ -560,7 +560,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v6 = [configurations countByEnumeratingWithState:&v32 objects:v37 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -578,10 +578,10 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v15 = [v6 payloadInfo];
-    v16 = [v15 profileIdentifier];
+    payloadInfo = [v6 payloadInfo];
+    profileIdentifier = [payloadInfo profileIdentifier];
 
-    if (!v16)
+    if (!profileIdentifier)
     {
       v12 = 1;
       goto LABEL_15;
@@ -595,8 +595,8 @@ LABEL_3:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v5 = v18;
-    v19 = [v5 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    configurations = v18;
+    v19 = [configurations countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v19)
     {
       v20 = v19;
@@ -607,14 +607,14 @@ LABEL_3:
         {
           if (*v29 != v21)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(configurations);
           }
 
           v23 = *(*(&v28 + 1) + 8 * i);
-          v24 = [v6 payloadInfo];
-          v25 = [v24 profileIdentifier];
-          v26 = [v23 identifier];
-          v27 = [v25 isEqualToString:v26];
+          payloadInfo2 = [v6 payloadInfo];
+          profileIdentifier2 = [payloadInfo2 profileIdentifier];
+          identifier2 = [v23 identifier];
+          v27 = [profileIdentifier2 isEqualToString:identifier2];
 
           if (v27)
           {
@@ -623,7 +623,7 @@ LABEL_3:
           }
         }
 
-        v20 = [v5 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v20 = [configurations countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v20)
         {
           continue;
@@ -648,15 +648,15 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)isProfileBacked:(id)a3
+- (BOOL)isProfileBacked:(id)backed
 {
-  v4 = a3;
+  backedCopy = backed;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(VPNConnectionStore *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v6 = [configurations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = *v18;
@@ -666,14 +666,14 @@ LABEL_3:
     {
       if (*v18 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(configurations);
       }
 
       v9 = *(*(&v17 + 1) + 8 * v8);
       if ([v9 grade] != &dword_0 + 3)
       {
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:backedCopy];
 
         if (v11)
         {
@@ -683,7 +683,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [configurations countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -697,34 +697,34 @@ LABEL_3:
 
     if (!v6)
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(profileIdentifier) = 0;
       goto LABEL_16;
     }
 
-    v13 = [v6 payloadInfo];
-    v12 = [v13 profileIdentifier];
+    payloadInfo = [v6 payloadInfo];
+    profileIdentifier = [payloadInfo profileIdentifier];
 
-    if (!v12)
+    if (!profileIdentifier)
     {
       goto LABEL_16;
     }
 
-    v12 = +[MCProfileConnection sharedConnection];
-    v14 = [v6 payloadInfo];
-    v15 = [v14 profileIdentifier];
-    v5 = [v12 installedProfileWithIdentifier:v15];
+    profileIdentifier = +[MCProfileConnection sharedConnection];
+    payloadInfo2 = [v6 payloadInfo];
+    profileIdentifier2 = [payloadInfo2 profileIdentifier];
+    configurations = [profileIdentifier installedProfileWithIdentifier:profileIdentifier2];
 
-    LOBYTE(v12) = v5 != 0;
+    LOBYTE(profileIdentifier) = configurations != 0;
   }
 
   else
   {
 LABEL_10:
-    LOBYTE(v12) = 0;
+    LOBYTE(profileIdentifier) = 0;
   }
 
 LABEL_16:
-  return v12;
+  return profileIdentifier;
 }
 
 - (void)_connectionsChanged
@@ -733,75 +733,75 @@ LABEL_16:
   [v3 postNotificationName:@"VPNConnectionsChangedNotification" object:self];
 }
 
-- (void)removeConnection:(id)a3 withGrade:(unint64_t)a4
+- (void)removeConnection:(id)connection withGrade:(unint64_t)grade
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 != 2)
+  connectionCopy = connection;
+  v7 = connectionCopy;
+  if (grade != 2)
   {
     gradeCurrentConnection = self->_gradeCurrentConnection;
-    v9 = self->_gradeCurrentConnection[a4];
+    v9 = self->_gradeCurrentConnection[grade];
     v13 = v7;
     if (v9 == v7)
     {
       [(VPNConnection *)v9 disconnect];
-      v10 = gradeCurrentConnection[a4];
-      gradeCurrentConnection[a4] = 0;
+      v10 = gradeCurrentConnection[grade];
+      gradeCurrentConnection[grade] = 0;
 
       v7 = v13;
-      self->_gradeCurrentConnectionHasBeenSet[a4] = 0;
+      self->_gradeCurrentConnectionHasBeenSet[grade] = 0;
     }
 
-    v11 = self->_connectionDict[a4];
-    v12 = [(VPNConnection *)v7 serviceID];
-    [(NSMutableDictionary *)v11 removeObjectForKey:v12];
+    v11 = self->_connectionDict[grade];
+    serviceID = [(VPNConnection *)v7 serviceID];
+    [(NSMutableDictionary *)v11 removeObjectForKey:serviceID];
 
-    v6 = [(VPNConnectionStore *)self _connectionsChanged];
+    connectionCopy = [(VPNConnectionStore *)self _connectionsChanged];
     v7 = v13;
   }
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(connectionCopy, v7);
 }
 
-- (id)currentConnection:(BOOL)a3 withGrade:(unint64_t)a4
+- (id)currentConnection:(BOOL)connection withGrade:(unint64_t)grade
 {
-  if (a4 == 2)
+  if (grade == 2)
   {
     v5 = 0;
   }
 
   else
   {
-    if (a3 && !self->_gradeCurrentConnectionHasBeenSet[a4])
+    if (connection && !self->_gradeCurrentConnectionHasBeenSet[grade])
     {
       gradeCurrentConnection = self->_gradeCurrentConnection;
-      if (!self->_gradeCurrentConnection[a4])
+      if (!self->_gradeCurrentConnection[grade])
       {
-        v10 = [(VPNConnectionStore *)self activeVPNIDWithGrade:a4];
-        v11 = [(VPNConnectionStore *)self connectionWithServiceID:v10 withGrade:a4];
-        v12 = gradeCurrentConnection[a4];
-        gradeCurrentConnection[a4] = v11;
+        v10 = [(VPNConnectionStore *)self activeVPNIDWithGrade:grade];
+        v11 = [(VPNConnectionStore *)self connectionWithServiceID:v10 withGrade:grade];
+        v12 = gradeCurrentConnection[grade];
+        gradeCurrentConnection[grade] = v11;
 
-        self->_gradeCurrentConnectionHasBeenSet[a4] = 1;
+        self->_gradeCurrentConnectionHasBeenSet[grade] = 1;
       }
     }
 
-    v5 = self->_gradeCurrentConnection[a4];
+    v5 = self->_gradeCurrentConnection[grade];
   }
 
   return v5;
 }
 
-- (id)currentPerAppConnections:(BOOL)a3 withGrade:(unint64_t)a4
+- (id)currentPerAppConnections:(BOOL)connections withGrade:(unint64_t)grade
 {
-  if (a3 && !self->_gradeCurrentConnectionHasBeenSet[a4] && !self->_gradeCurrentConnection[a4])
+  if (connections && !self->_gradeCurrentConnectionHasBeenSet[grade] && !self->_gradeCurrentConnection[grade])
   {
     gradeCurrentConnection = self->_gradeCurrentConnection;
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(VPNConnectionStore *)self activeVPNIDsWithGrade:a4];
+    v6 = [(VPNConnectionStore *)self activeVPNIDsWithGrade:grade];
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -817,7 +817,7 @@ LABEL_16:
             objc_enumerationMutation(v6);
           }
 
-          v12 = [(VPNConnectionStore *)self connectionWithServiceID:*(*(&v18 + 1) + 8 * i) withGrade:a4];
+          v12 = [(VPNConnectionStore *)self connectionWithServiceID:*(*(&v18 + 1) + 8 * i) withGrade:grade];
           if (v12)
           {
             if (!v9)
@@ -840,39 +840,39 @@ LABEL_16:
       v9 = 0;
     }
 
-    v13 = gradeCurrentConnection[a4];
-    gradeCurrentConnection[a4] = v9;
+    v13 = gradeCurrentConnection[grade];
+    gradeCurrentConnection[grade] = v9;
     v14 = v9;
 
-    self->_gradeCurrentConnectionHasBeenSet[a4] = 1;
+    self->_gradeCurrentConnectionHasBeenSet[grade] = 1;
   }
 
-  v15 = self->_gradeCurrentConnection[a4];
+  v15 = self->_gradeCurrentConnection[grade];
 
   return v15;
 }
 
-- (id)currentConnectionWithGrade:(unint64_t)a3
+- (id)currentConnectionWithGrade:(unint64_t)grade
 {
   v6 = 0;
-  if (a3 != 2 && a3 != 8)
+  if (grade != 2 && grade != 8)
   {
-    v6 = [(VPNConnectionStore *)self currentConnection:1 withGrade:a3, v3];
+    v6 = [(VPNConnectionStore *)self currentConnection:1 withGrade:grade, v3];
   }
 
   return v6;
 }
 
-- (id)currentConnectionsWithGrade:(unint64_t)a3
+- (id)currentConnectionsWithGrade:(unint64_t)grade
 {
-  if (a3 == 8 || a3 == 2)
+  if (grade == 8 || grade == 2)
   {
-    v3 = [(VPNConnectionStore *)self currentPerAppConnections:1 withGrade:a3];
+    v3 = [(VPNConnectionStore *)self currentPerAppConnections:1 withGrade:grade];
   }
 
   else
   {
-    v4 = [(VPNConnectionStore *)self currentConnection:1 withGrade:a3];
+    v4 = [(VPNConnectionStore *)self currentConnection:1 withGrade:grade];
     v5 = v4;
     if (v4)
     {
@@ -889,12 +889,12 @@ LABEL_16:
   return v3;
 }
 
-- (id)_defaultDictForType:(unint64_t)a3
+- (id)_defaultDictForType:(unint64_t)type
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = v5;
-  if (!a3)
+  if (!type)
   {
     [v5 setValue:kSCPropNetIPSecSharedSecret forKey:@"AuthenticationMethod"];
   }
@@ -911,26 +911,26 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)setOptions:(id)a3 toConfiguration:(id)a4
+- (BOOL)setOptions:(id)options toConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"VPNGrade"];
-  v8 = [v7 unsignedIntegerValue];
+  optionsCopy = options;
+  configurationCopy = configuration;
+  v7 = [optionsCopy objectForKeyedSubscript:@"VPNGrade"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v5 objectForKeyedSubscript:@"VPNType"];
-  v10 = [v9 unsignedIntegerValue];
+  v9 = [optionsCopy objectForKeyedSubscript:@"VPNType"];
+  unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
-  if (v8 == &dword_0 + 2)
+  if (unsignedIntegerValue == &dword_0 + 2)
   {
-    v19 = [v5 objectForKeyedSubscript:@"VPNOnDemandEnabled"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"VPNOnDemandEnabled"];
 
     if (v19)
     {
-      v18 = [v5 objectForKeyedSubscript:@"VPNOnDemandEnabled"];
-      v24 = [v18 BOOLValue];
-      v25 = [v6 appVPN];
-      [v25 setOnDemandEnabled:v24];
+      proxySettings = [optionsCopy objectForKeyedSubscript:@"VPNOnDemandEnabled"];
+      bOOLValue = [proxySettings BOOLValue];
+      appVPN = [configurationCopy appVPN];
+      [appVPN setOnDemandEnabled:bOOLValue];
 
 LABEL_15:
       goto LABEL_16;
@@ -939,37 +939,37 @@ LABEL_15:
 
   else
   {
-    if (v8 != &dword_0 + 1)
+    if (unsignedIntegerValue != &dword_0 + 1)
     {
-      if (v8)
+      if (unsignedIntegerValue)
       {
 LABEL_62:
         LOBYTE(v19) = 0;
         goto LABEL_63;
       }
 
-      v11 = [v6 VPN];
+      v11 = [configurationCopy VPN];
 
       if (!v11)
       {
         v12 = objc_alloc_init(NEVPN);
-        [v6 setVPN:v12];
+        [configurationCopy setVPN:v12];
       }
 
-      v13 = [v5 objectForKeyedSubscript:@"VPNOnDemandEnabled"];
+      v13 = [optionsCopy objectForKeyedSubscript:@"VPNOnDemandEnabled"];
 
       if (v13)
       {
-        v14 = [v5 objectForKeyedSubscript:@"VPNOnDemandEnabled"];
-        v15 = [v14 BOOLValue];
+        v14 = [optionsCopy objectForKeyedSubscript:@"VPNOnDemandEnabled"];
+        bOOLValue2 = [v14 BOOLValue];
 
-        v16 = [v6 VPN];
-        v17 = [v16 onDemandRules];
+        v16 = [configurationCopy VPN];
+        onDemandRules = [v16 onDemandRules];
 
-        if (!v17)
+        if (!onDemandRules)
         {
-          v18 = sub_46D8();
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          proxySettings = sub_46D8();
+          if (os_log_type_enabled(proxySettings, OS_LOG_TYPE_ERROR))
           {
             sub_29CA8();
           }
@@ -978,23 +978,23 @@ LABEL_62:
         }
 
 LABEL_12:
-        v23 = [v6 VPN];
-        [v23 setOnDemandEnabled:v15];
+        v23 = [configurationCopy VPN];
+        [v23 setOnDemandEnabled:bOOLValue2];
 
 LABEL_16:
         LOBYTE(v19) = 1;
         goto LABEL_63;
       }
 
-      if (v10 == &dword_4)
+      if (unsignedIntegerValue2 == &dword_4)
       {
-        v38 = [v6 VPN];
-        v39 = [v38 protocol];
+        v38 = [configurationCopy VPN];
+        protocol = [v38 protocol];
 
-        if (v39)
+        if (protocol)
         {
-          v40 = [v6 VPN];
-          v41 = [v40 protocol];
+          v40 = [configurationCopy VPN];
+          protocol2 = [v40 protocol];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1008,355 +1008,355 @@ LABEL_16:
         {
           v55 = objc_alloc_init(NEVPNProtocolIKEv2);
           [v55 setDefaultsForUIConfiguration];
-          v56 = [v6 VPN];
+          v56 = [configurationCopy VPN];
           [v56 setProtocol:v55];
         }
 
-        v57 = [v6 VPN];
-        v53 = [v57 protocol];
+        v57 = [configurationCopy VPN];
+        protocol3 = [v57 protocol];
 
-        v58 = [v5 objectForKeyedSubscript:@"VPNLocalIdentifier"];
-        if (v58 && (v59 = v58, [v5 objectForKeyedSubscript:@"VPNLocalIdentifier"], v60 = objc_claimAutoreleasedReturnValue(), v61 = objc_msgSend(v60, "length"), v60, v59, v61))
+        v58 = [optionsCopy objectForKeyedSubscript:@"VPNLocalIdentifier"];
+        if (v58 && (v59 = v58, [optionsCopy objectForKeyedSubscript:@"VPNLocalIdentifier"], v60 = objc_claimAutoreleasedReturnValue(), v61 = objc_msgSend(v60, "length"), v60, v59, v61))
         {
-          v62 = [v5 objectForKeyedSubscript:@"VPNLocalIdentifier"];
-          [v53 setLocalIdentifier:v62];
+          v62 = [optionsCopy objectForKeyedSubscript:@"VPNLocalIdentifier"];
+          [protocol3 setLocalIdentifier:v62];
         }
 
         else
         {
-          [v53 setLocalIdentifier:0];
+          [protocol3 setLocalIdentifier:0];
         }
 
-        v63 = [v5 objectForKeyedSubscript:@"VPNRemoteIdentifier"];
-        if (v63 && (v64 = v63, [v5 objectForKeyedSubscript:@"VPNRemoteIdentifier"], v65 = objc_claimAutoreleasedReturnValue(), v66 = objc_msgSend(v65, "length"), v65, v64, v66))
+        v63 = [optionsCopy objectForKeyedSubscript:@"VPNRemoteIdentifier"];
+        if (v63 && (v64 = v63, [optionsCopy objectForKeyedSubscript:@"VPNRemoteIdentifier"], v65 = objc_claimAutoreleasedReturnValue(), v66 = objc_msgSend(v65, "length"), v65, v64, v66))
         {
-          v67 = [v5 objectForKeyedSubscript:@"VPNRemoteIdentifier"];
-          [v53 setRemoteIdentifier:v67];
+          v67 = [optionsCopy objectForKeyedSubscript:@"VPNRemoteIdentifier"];
+          [protocol3 setRemoteIdentifier:v67];
         }
 
         else
         {
-          [v53 setRemoteIdentifier:0];
+          [protocol3 setRemoteIdentifier:0];
         }
 
-        v68 = [v5 objectForKeyedSubscript:@"eapType"];
+        unsignedIntegerValue3 = [optionsCopy objectForKeyedSubscript:@"eapType"];
 
-        if (v68)
+        if (unsignedIntegerValue3)
         {
-          v69 = [v5 objectForKeyedSubscript:@"eapType"];
-          v68 = [v69 unsignedIntegerValue];
+          v69 = [optionsCopy objectForKeyedSubscript:@"eapType"];
+          unsignedIntegerValue3 = [v69 unsignedIntegerValue];
         }
 
-        v70 = [v5 objectForKeyedSubscript:@"authType"];
+        v70 = [optionsCopy objectForKeyedSubscript:@"authType"];
 
         if (v70)
         {
-          v70 = [v5 objectForKeyedSubscript:@"authType"];
-          v71 = [v70 unsignedIntegerValue];
+          v70 = [optionsCopy objectForKeyedSubscript:@"authType"];
+          unsignedIntegerValue4 = [v70 unsignedIntegerValue];
 
-          LODWORD(v70) = v71 == &dword_0 + 1;
+          LODWORD(v70) = unsignedIntegerValue4 == &dword_0 + 1;
         }
 
-        if (v68)
+        if (unsignedIntegerValue3)
         {
-          [v53 setUseExtendedAuthentication:1];
-          v49 = v68 != &dword_0 + 2;
+          [protocol3 setUseExtendedAuthentication:1];
+          v49 = unsignedIntegerValue3 != &dword_0 + 2;
         }
 
         else
         {
-          [v53 setUseExtendedAuthentication:0];
+          [protocol3 setUseExtendedAuthentication:0];
           v49 = 0;
         }
 
         if (v70)
         {
-          [v53 setAuthenticationMethod:1];
+          [protocol3 setAuthenticationMethod:1];
         }
 
         else
         {
-          [v53 setAuthenticationMethod:2];
-          v97 = [v5 objectForKeyedSubscript:@"secret"];
+          [protocol3 setAuthenticationMethod:2];
+          v97 = [optionsCopy objectForKeyedSubscript:@"secret"];
           if (v97)
           {
             v98 = v97;
-            v99 = [v5 objectForKeyedSubscript:@"secret"];
+            v99 = [optionsCopy objectForKeyedSubscript:@"secret"];
             v100 = [v99 length];
 
             if (v100)
             {
-              v101 = [v53 sharedSecretKeychainItem];
+              sharedSecretKeychainItem = [protocol3 sharedSecretKeychainItem];
 
-              if (v101)
+              if (sharedSecretKeychainItem)
               {
-                v102 = [v53 sharedSecretKeychainItem];
-                v103 = [v102 copyPassword];
-                v104 = [v5 objectForKeyedSubscript:@"secret"];
-                v105 = [v103 isEqualToString:v104];
+                sharedSecretKeychainItem2 = [protocol3 sharedSecretKeychainItem];
+                copyPassword = [sharedSecretKeychainItem2 copyPassword];
+                v104 = [optionsCopy objectForKeyedSubscript:@"secret"];
+                v105 = [copyPassword isEqualToString:v104];
 
                 if (v105)
                 {
 LABEL_103:
 
-                  v152 = [v5 objectForKeyedSubscript:@"dispName"];
+                  v152 = [optionsCopy objectForKeyedSubscript:@"dispName"];
                   if (v152)
                   {
                     v153 = v152;
-                    v154 = [v5 objectForKeyedSubscript:@"dispName"];
+                    v154 = [optionsCopy objectForKeyedSubscript:@"dispName"];
                     v155 = [v154 length];
 
                     if (v155)
                     {
-                      v156 = [v5 objectForKeyedSubscript:@"dispName"];
-                      [v6 setName:v156];
+                      v156 = [optionsCopy objectForKeyedSubscript:@"dispName"];
+                      [configurationCopy setName:v156];
                     }
                   }
 
-                  v157 = [v5 objectForKeyedSubscript:@"server"];
+                  v157 = [optionsCopy objectForKeyedSubscript:@"server"];
                   if (v157)
                   {
                     v158 = v157;
-                    v159 = [v5 objectForKeyedSubscript:@"server"];
+                    v159 = [optionsCopy objectForKeyedSubscript:@"server"];
                     v160 = [v159 length];
 
                     if (v160)
                     {
-                      v161 = [v5 objectForKeyedSubscript:@"server"];
-                      v162 = [v6 VPN];
-                      v163 = [v162 protocol];
-                      [v163 setServerAddress:v161];
+                      v161 = [optionsCopy objectForKeyedSubscript:@"server"];
+                      v162 = [configurationCopy VPN];
+                      protocol4 = [v162 protocol];
+                      [protocol4 setServerAddress:v161];
                     }
                   }
 
                   if (v49)
                   {
-                    v164 = [v5 objectForKeyedSubscript:@"authorization"];
-                    if (v164 && (v165 = v164, [v5 objectForKeyedSubscript:@"authorization"], v166 = objc_claimAutoreleasedReturnValue(), v167 = objc_msgSend(v166, "length"), v166, v165, v167))
+                    v164 = [optionsCopy objectForKeyedSubscript:@"authorization"];
+                    if (v164 && (v165 = v164, [optionsCopy objectForKeyedSubscript:@"authorization"], v166 = objc_claimAutoreleasedReturnValue(), v167 = objc_msgSend(v166, "length"), v166, v165, v167))
                     {
-                      v168 = [v5 objectForKeyedSubscript:@"authorization"];
-                      v169 = [v6 VPN];
-                      v170 = [v169 protocol];
-                      [v170 setUsername:v168];
+                      v168 = [optionsCopy objectForKeyedSubscript:@"authorization"];
+                      protocol6 = [configurationCopy VPN];
+                      protocol5 = [protocol6 protocol];
+                      [protocol5 setUsername:v168];
                     }
 
                     else
                     {
-                      v168 = [v6 VPN];
-                      v169 = [v168 protocol];
-                      [v169 setUsername:0];
+                      v168 = [configurationCopy VPN];
+                      protocol6 = [v168 protocol];
+                      [protocol6 setUsername:0];
                     }
 
-                    v173 = [v5 objectForKeyedSubscript:@"password"];
+                    v173 = [optionsCopy objectForKeyedSubscript:@"password"];
                     if (v173)
                     {
                       v174 = v173;
-                      v175 = [v5 objectForKeyedSubscript:@"password"];
+                      v175 = [optionsCopy objectForKeyedSubscript:@"password"];
                       v176 = [v175 length];
 
                       if (v176)
                       {
-                        v177 = [v6 VPN];
-                        v178 = [v177 protocol];
-                        v179 = [v178 passwordKeychainItem];
+                        v177 = [configurationCopy VPN];
+                        protocol7 = [v177 protocol];
+                        passwordKeychainItem = [protocol7 passwordKeychainItem];
 
-                        if (v179)
+                        if (passwordKeychainItem)
                         {
-                          v180 = [v6 VPN];
-                          v181 = [v180 protocol];
-                          v182 = [v181 passwordKeychainItem];
-                          v183 = [v182 copyPassword];
+                          v180 = [configurationCopy VPN];
+                          protocol8 = [v180 protocol];
+                          passwordKeychainItem2 = [protocol8 passwordKeychainItem];
+                          copyPassword2 = [passwordKeychainItem2 copyPassword];
 
-                          v184 = [v5 objectForKeyedSubscript:@"password"];
-                          LOBYTE(v181) = [v183 isEqualToString:v184];
+                          v184 = [optionsCopy objectForKeyedSubscript:@"password"];
+                          LOBYTE(protocol8) = [copyPassword2 isEqualToString:v184];
 
-                          if (v181)
+                          if (protocol8)
                           {
                             goto LABEL_123;
                           }
                         }
 
-                        v185 = [v6 VPN];
-                        v186 = [v185 protocol];
-                        v187 = [v186 passwordKeychainItem];
+                        v185 = [configurationCopy VPN];
+                        protocol9 = [v185 protocol];
+                        passwordKeychainItem3 = [protocol9 passwordKeychainItem];
 
-                        if (v187)
+                        if (passwordKeychainItem3)
                         {
-                          v188 = [v5 objectForKeyedSubscript:@"password"];
-                          v189 = [v6 VPN];
-                          v190 = [v189 protocol];
-                          v191 = [v190 passwordKeychainItem];
-                          [v191 setPassword:v188];
+                          v188 = [optionsCopy objectForKeyedSubscript:@"password"];
+                          protocol19 = [configurationCopy VPN];
+                          protocol10 = [protocol19 protocol];
+                          passwordKeychainItem4 = [protocol10 passwordKeychainItem];
+                          [passwordKeychainItem4 setPassword:v188];
                         }
 
                         else
                         {
                           v234 = [NEKeychainItem alloc];
-                          v188 = [v5 objectForKeyedSubscript:@"password"];
-                          v189 = [v234 initWithPassword:v188 domain:0];
-                          v190 = [v6 VPN];
-                          v191 = [v190 protocol];
-                          [v191 setPasswordKeychainItem:v189];
+                          v188 = [optionsCopy objectForKeyedSubscript:@"password"];
+                          protocol19 = [v234 initWithPassword:v188 domain:0];
+                          protocol10 = [configurationCopy VPN];
+                          passwordKeychainItem4 = [protocol10 protocol];
+                          [passwordKeychainItem4 setPasswordKeychainItem:protocol19];
                         }
 
 LABEL_122:
 LABEL_123:
-                        v192 = [v5 objectForKeyedSubscript:@"VPNCertificate"];
+                        v192 = [optionsCopy objectForKeyedSubscript:@"VPNCertificate"];
 
                         if (v192)
                         {
-                          v193 = [v5 objectForKeyedSubscript:@"VPNCertificate"];
-                          v194 = [v6 VPN];
-                          v195 = [v194 protocol];
-                          [v195 setIdentityReferenceInternal:v193];
+                          v193 = [optionsCopy objectForKeyedSubscript:@"VPNCertificate"];
+                          protocol12 = [configurationCopy VPN];
+                          protocol11 = [protocol12 protocol];
+                          [protocol11 setIdentityReferenceInternal:v193];
                         }
 
                         else
                         {
-                          v193 = [v6 VPN];
-                          v194 = [v193 protocol];
-                          [v194 setIdentityReferenceInternal:0];
+                          v193 = [configurationCopy VPN];
+                          protocol12 = [v193 protocol];
+                          [protocol12 setIdentityReferenceInternal:0];
                         }
 
-                        v196 = [v6 VPN];
-                        v197 = [v196 protocol];
-                        v18 = [v197 proxySettings];
+                        v196 = [configurationCopy VPN];
+                        protocol13 = [v196 protocol];
+                        proxySettings = [protocol13 proxySettings];
 
-                        v198 = [v5 objectForKeyedSubscript:@"VPNProxyType"];
+                        unsignedIntegerValue5 = [optionsCopy objectForKeyedSubscript:@"VPNProxyType"];
 
-                        if (v198)
+                        if (unsignedIntegerValue5)
                         {
-                          v199 = [v5 objectForKeyedSubscript:@"VPNProxyType"];
-                          v198 = [v199 unsignedIntegerValue];
+                          v199 = [optionsCopy objectForKeyedSubscript:@"VPNProxyType"];
+                          unsignedIntegerValue5 = [v199 unsignedIntegerValue];
 
-                          if (v198 == &dword_0 + 1)
+                          if (unsignedIntegerValue5 == &dword_0 + 1)
                           {
-                            if (!v18)
+                            if (!proxySettings)
                             {
                               v208 = objc_alloc_init(NEProxySettings);
-                              v209 = [v6 VPN];
-                              v210 = [v209 protocol];
-                              [v210 setProxySettings:v208];
+                              v209 = [configurationCopy VPN];
+                              protocol14 = [v209 protocol];
+                              [protocol14 setProxySettings:v208];
 
-                              v211 = [v6 VPN];
-                              v212 = [v211 protocol];
-                              v18 = [v212 proxySettings];
+                              v211 = [configurationCopy VPN];
+                              protocol15 = [v211 protocol];
+                              proxySettings = [protocol15 proxySettings];
                             }
 
-                            [v18 setAutoProxyConfigurationEnabled:0];
-                            [v18 setAutoProxyDiscovery:0];
-                            [v18 setHTTPEnabled:1];
-                            v205 = v18;
+                            [proxySettings setAutoProxyConfigurationEnabled:0];
+                            [proxySettings setAutoProxyDiscovery:0];
+                            [proxySettings setHTTPEnabled:1];
+                            v205 = proxySettings;
                             v206 = 1;
                             goto LABEL_138;
                           }
 
-                          if (v198 == &dword_0 + 2)
+                          if (unsignedIntegerValue5 == &dword_0 + 2)
                           {
-                            if (!v18)
+                            if (!proxySettings)
                             {
                               v200 = objc_alloc_init(NEProxySettings);
-                              v201 = [v6 VPN];
-                              v202 = [v201 protocol];
-                              [v202 setProxySettings:v200];
+                              v201 = [configurationCopy VPN];
+                              protocol16 = [v201 protocol];
+                              [protocol16 setProxySettings:v200];
 
-                              v203 = [v6 VPN];
-                              v204 = [v203 protocol];
-                              v18 = [v204 proxySettings];
+                              v203 = [configurationCopy VPN];
+                              protocol17 = [v203 protocol];
+                              proxySettings = [protocol17 proxySettings];
                             }
 
-                            [v18 setAutoProxyConfigurationEnabled:1];
-                            [v18 setAutoProxyDiscovery:1];
-                            [v18 setHTTPEnabled:0];
-                            v205 = v18;
+                            [proxySettings setAutoProxyConfigurationEnabled:1];
+                            [proxySettings setAutoProxyDiscovery:1];
+                            [proxySettings setHTTPEnabled:0];
+                            v205 = proxySettings;
                             v206 = 0;
 LABEL_138:
                             [v205 setHTTPSEnabled:v206];
-                            v207 = v18 != 0;
+                            v207 = proxySettings != 0;
 LABEL_139:
-                            v213 = [v5 objectForKeyedSubscript:@"VPNProxyPacFile"];
+                            v213 = [optionsCopy objectForKeyedSubscript:@"VPNProxyPacFile"];
                             v214 = [v213 length];
 
                             if (v214)
                             {
-                              if (v207 && [v18 autoProxyConfigurationEnabled]&& ([v18 HTTPEnabled]& 1) == 0)
+                              if (v207 && [proxySettings autoProxyConfigurationEnabled]&& ([proxySettings HTTPEnabled]& 1) == 0)
                               {
-                                v215 = [v5 objectForKeyedSubscript:@"VPNProxyPacFile"];
+                                v215 = [optionsCopy objectForKeyedSubscript:@"VPNProxyPacFile"];
                                 v216 = [NSURL URLWithString:v215];
-                                [v18 setProxyAutoConfigURL:v216];
+                                [proxySettings setProxyAutoConfigURL:v216];
 
-                                [v18 setAutoProxyDiscovery:0];
+                                [proxySettings setAutoProxyDiscovery:0];
                               }
                             }
 
                             else
                             {
-                              [v18 setProxyAutoConfigURL:0];
+                              [proxySettings setProxyAutoConfigURL:0];
                             }
 
-                            v217 = [v5 objectForKeyedSubscript:@"VPNProxyServer"];
-                            if (v217 && (v218 = v217, [v5 objectForKeyedSubscript:@"VPNProxyPort"], v219 = objc_claimAutoreleasedReturnValue(), v219, v218, v219))
+                            v217 = [optionsCopy objectForKeyedSubscript:@"VPNProxyServer"];
+                            if (v217 && (v218 = v217, [optionsCopy objectForKeyedSubscript:@"VPNProxyPort"], v219 = objc_claimAutoreleasedReturnValue(), v219, v218, v219))
                             {
-                              if (v207 && ([v18 autoProxyConfigurationEnabled]& 1) == 0 && [v18 HTTPEnabled])
+                              if (v207 && ([proxySettings autoProxyConfigurationEnabled]& 1) == 0 && [proxySettings HTTPEnabled])
                               {
                                 v220 = [NEProxyServer alloc];
-                                v221 = [v5 objectForKeyedSubscript:@"VPNProxyServer"];
-                                v222 = [v5 objectForKeyedSubscript:@"VPNProxyPort"];
+                                v221 = [optionsCopy objectForKeyedSubscript:@"VPNProxyServer"];
+                                v222 = [optionsCopy objectForKeyedSubscript:@"VPNProxyPort"];
                                 v223 = [v220 initWithType:1 address:v221 port:{objc_msgSend(v222, "intValue")}];
 
-                                v224 = [v5 objectForKeyedSubscript:@"VPNProxyAuthenticate"];
+                                v224 = [optionsCopy objectForKeyedSubscript:@"VPNProxyAuthenticate"];
                                 LODWORD(v222) = [v224 BOOLValue];
 
                                 if (v222)
                                 {
                                   [v223 setAuthenticationRequired:1];
-                                  v225 = [v5 objectForKeyedSubscript:@"VPNProxyUsername"];
+                                  v225 = [optionsCopy objectForKeyedSubscript:@"VPNProxyUsername"];
                                   [v223 setUsername:v225];
 
-                                  v226 = [v5 objectForKeyedSubscript:@"VPNProxyPassword"];
+                                  v226 = [optionsCopy objectForKeyedSubscript:@"VPNProxyPassword"];
                                   [v223 setPassword:v226];
                                 }
 
-                                [v18 setHTTPServer:v223];
+                                [proxySettings setHTTPServer:v223];
                                 v227 = [NEProxyServer alloc];
-                                v228 = [v5 objectForKeyedSubscript:@"VPNProxyServer"];
-                                v229 = [v5 objectForKeyedSubscript:@"VPNProxyPort"];
+                                v228 = [optionsCopy objectForKeyedSubscript:@"VPNProxyServer"];
+                                v229 = [optionsCopy objectForKeyedSubscript:@"VPNProxyPort"];
                                 v230 = [v227 initWithType:2 address:v228 port:{objc_msgSend(v229, "intValue")}];
 
-                                v231 = [v5 objectForKeyedSubscript:@"VPNProxyAuthenticate"];
+                                v231 = [optionsCopy objectForKeyedSubscript:@"VPNProxyAuthenticate"];
                                 LODWORD(v229) = [v231 BOOLValue];
 
                                 if (v229)
                                 {
                                   [v230 setAuthenticationRequired:1];
-                                  v232 = [v5 objectForKeyedSubscript:@"VPNProxyUsername"];
+                                  v232 = [optionsCopy objectForKeyedSubscript:@"VPNProxyUsername"];
                                   [v230 setUsername:v232];
 
-                                  v233 = [v5 objectForKeyedSubscript:@"VPNProxyPassword"];
+                                  v233 = [optionsCopy objectForKeyedSubscript:@"VPNProxyPassword"];
                                   [v230 setPassword:v233];
                                 }
 
-                                [v18 setHTTPSServer:v230];
+                                [proxySettings setHTTPSServer:v230];
                               }
                             }
 
                             else
                             {
-                              [v18 setHTTPServer:0];
-                              [v18 setHTTPSServer:0];
+                              [proxySettings setHTTPServer:0];
+                              [proxySettings setHTTPSServer:0];
                             }
 
                             goto LABEL_15;
                           }
                         }
 
-                        v207 = v18 != 0;
-                        if (!v198 && v18)
+                        v207 = proxySettings != 0;
+                        if (!unsignedIntegerValue5 && proxySettings)
                         {
-                          [v18 setAutoProxyConfigurationEnabled:0];
-                          [v18 setAutoProxyDiscovery:0];
-                          [v18 setHTTPEnabled:0];
-                          [v18 setHTTPSEnabled:0];
+                          [proxySettings setAutoProxyConfigurationEnabled:0];
+                          [proxySettings setAutoProxyDiscovery:0];
+                          [proxySettings setHTTPEnabled:0];
+                          [proxySettings setHTTPSEnabled:0];
                           v207 = 1;
                         }
 
@@ -1367,34 +1367,34 @@ LABEL_139:
 
                   else
                   {
-                    v171 = [v6 VPN];
-                    v172 = [v171 protocol];
-                    [v172 setUsername:0];
+                    v171 = [configurationCopy VPN];
+                    protocol18 = [v171 protocol];
+                    [protocol18 setUsername:0];
                   }
 
-                  v188 = [v6 VPN];
-                  v189 = [v188 protocol];
-                  v190 = [v189 passwordKeychainItem];
-                  [v190 setIdentifier:0];
+                  v188 = [configurationCopy VPN];
+                  protocol19 = [v188 protocol];
+                  protocol10 = [protocol19 passwordKeychainItem];
+                  [protocol10 setIdentifier:0];
                   goto LABEL_122;
                 }
               }
 
-              v106 = [v53 sharedSecretKeychainItem];
+              sharedSecretKeychainItem3 = [protocol3 sharedSecretKeychainItem];
 
-              if (v106)
+              if (sharedSecretKeychainItem3)
               {
-                v54 = [v5 objectForKeyedSubscript:@"secret"];
-                v107 = [v53 sharedSecretKeychainItem];
-                [v107 setPassword:v54];
+                sharedSecretKeychainItem5 = [optionsCopy objectForKeyedSubscript:@"secret"];
+                sharedSecretKeychainItem4 = [protocol3 sharedSecretKeychainItem];
+                [sharedSecretKeychainItem4 setPassword:sharedSecretKeychainItem5];
               }
 
               else
               {
                 v145 = [NEKeychainItem alloc];
-                v54 = [v5 objectForKeyedSubscript:@"secret"];
-                v107 = [v145 initWithPassword:v54 domain:0];
-                [v53 setSharedSecretKeychainItem:v107];
+                sharedSecretKeychainItem5 = [optionsCopy objectForKeyedSubscript:@"secret"];
+                sharedSecretKeychainItem4 = [v145 initWithPassword:sharedSecretKeychainItem5 domain:0];
+                [protocol3 setSharedSecretKeychainItem:sharedSecretKeychainItem4];
               }
 
               goto LABEL_102;
@@ -1402,22 +1402,22 @@ LABEL_139:
           }
         }
 
-        v54 = [v53 sharedSecretKeychainItem];
-        [v54 setIdentifier:0];
+        sharedSecretKeychainItem5 = [protocol3 sharedSecretKeychainItem];
+        [sharedSecretKeychainItem5 setIdentifier:0];
         goto LABEL_102;
       }
 
-      if (v10 != (&dword_0 + 2))
+      if (unsignedIntegerValue2 != (&dword_0 + 2))
       {
-        if (!v10)
+        if (!unsignedIntegerValue2)
         {
-          v26 = [v6 VPN];
-          v27 = [v26 protocol];
+          v26 = [configurationCopy VPN];
+          protocol20 = [v26 protocol];
 
-          if (v27)
+          if (protocol20)
           {
-            v28 = [v6 VPN];
-            v29 = [v28 protocol];
+            v28 = [configurationCopy VPN];
+            protocol21 = [v28 protocol];
             objc_opt_class();
             v30 = objc_opt_isKindOfClass();
 
@@ -1430,30 +1430,30 @@ LABEL_139:
           else
           {
             v72 = objc_alloc_init(NEVPNProtocolL2TP);
-            v73 = [v6 VPN];
+            v73 = [configurationCopy VPN];
             [v73 setProtocol:v72];
           }
 
-          v74 = [v5 objectForKeyedSubscript:@"secret"];
-          if (v74 && (v75 = v74, [v5 objectForKeyedSubscript:@"secret"], v76 = objc_claimAutoreleasedReturnValue(), v77 = objc_msgSend(v76, "length"), v76, v75, v77))
+          v74 = [optionsCopy objectForKeyedSubscript:@"secret"];
+          if (v74 && (v75 = v74, [optionsCopy objectForKeyedSubscript:@"secret"], v76 = objc_claimAutoreleasedReturnValue(), v77 = objc_msgSend(v76, "length"), v76, v75, v77))
           {
-            v78 = [v6 VPN];
-            v79 = [v78 protocol];
-            [v79 setMachineAuthenticationMethod:1];
+            v78 = [configurationCopy VPN];
+            protocol22 = [v78 protocol];
+            [protocol22 setMachineAuthenticationMethod:1];
 
-            v80 = [v6 VPN];
-            v81 = [v80 protocol];
-            v82 = [v81 sharedSecretKeychainItem];
+            v80 = [configurationCopy VPN];
+            protocol23 = [v80 protocol];
+            sharedSecretKeychainItem6 = [protocol23 sharedSecretKeychainItem];
 
-            if (v82)
+            if (sharedSecretKeychainItem6)
             {
-              v83 = [v6 VPN];
-              v84 = [v83 protocol];
-              v85 = [v84 sharedSecretKeychainItem];
+              v83 = [configurationCopy VPN];
+              protocol24 = [v83 protocol];
+              sharedSecretKeychainItem7 = [protocol24 sharedSecretKeychainItem];
 
-              v86 = [v85 copyPassword];
-              v87 = [v5 objectForKeyedSubscript:@"secret"];
-              v88 = [v86 isEqualToString:v87];
+              copyPassword3 = [sharedSecretKeychainItem7 copyPassword];
+              v87 = [optionsCopy objectForKeyedSubscript:@"secret"];
+              v88 = [copyPassword3 isEqualToString:v87];
 
               if (v88)
               {
@@ -1461,85 +1461,85 @@ LABEL_139:
               }
             }
 
-            v89 = [v6 VPN];
-            v90 = [v89 protocol];
-            v91 = [v90 sharedSecretKeychainItem];
+            v89 = [configurationCopy VPN];
+            protocol25 = [v89 protocol];
+            sharedSecretKeychainItem8 = [protocol25 sharedSecretKeychainItem];
 
-            if (v91)
+            if (sharedSecretKeychainItem8)
             {
-              v92 = [v5 objectForKeyedSubscript:@"secret"];
-              v93 = [v6 VPN];
-              v94 = [v93 protocol];
-              v95 = [v94 sharedSecretKeychainItem];
-              [v95 setPassword:v92];
+              v92 = [optionsCopy objectForKeyedSubscript:@"secret"];
+              protocol27 = [configurationCopy VPN];
+              protocol26 = [protocol27 protocol];
+              sharedSecretKeychainItem9 = [protocol26 sharedSecretKeychainItem];
+              [sharedSecretKeychainItem9 setPassword:v92];
             }
 
             else
             {
               v128 = [NEKeychainItem alloc];
-              v92 = [v5 objectForKeyedSubscript:@"secret"];
-              v93 = [v128 initWithPassword:v92 domain:0];
-              v94 = [v6 VPN];
-              v95 = [v94 protocol];
-              [v95 setSharedSecretKeychainItem:v93];
+              v92 = [optionsCopy objectForKeyedSubscript:@"secret"];
+              protocol27 = [v128 initWithPassword:v92 domain:0];
+              protocol26 = [configurationCopy VPN];
+              sharedSecretKeychainItem9 = [protocol26 protocol];
+              [sharedSecretKeychainItem9 setSharedSecretKeychainItem:protocol27];
             }
           }
 
           else
           {
-            v92 = [v6 VPN];
-            v93 = [v92 protocol];
-            v94 = [v93 sharedSecretKeychainItem];
-            [v94 setIdentifier:0];
+            v92 = [configurationCopy VPN];
+            protocol27 = [v92 protocol];
+            protocol26 = [protocol27 sharedSecretKeychainItem];
+            [protocol26 setIdentifier:0];
           }
 
 LABEL_84:
-          v129 = [v5 objectForKeyedSubscript:@"VPNSendAllTraffic"];
+          v129 = [optionsCopy objectForKeyedSubscript:@"VPNSendAllTraffic"];
 
           if (v129)
           {
-            v130 = [v6 VPN];
-            v131 = [v130 protocol];
-            v132 = [v131 IPv4Settings];
+            v130 = [configurationCopy VPN];
+            protocol28 = [v130 protocol];
+            iPv4Settings = [protocol28 IPv4Settings];
 
-            if (!v132)
+            if (!iPv4Settings)
             {
               v133 = objc_alloc_init(NEIPv4Settings);
-              v134 = [v6 VPN];
-              v135 = [v134 protocol];
-              [v135 setIPv4Settings:v133];
+              v134 = [configurationCopy VPN];
+              protocol29 = [v134 protocol];
+              [protocol29 setIPv4Settings:v133];
             }
 
-            v136 = [v5 objectForKeyedSubscript:@"VPNSendAllTraffic"];
-            v137 = [v136 BOOLValue];
-            v138 = [v6 VPN];
-            v139 = [v138 protocol];
-            v140 = [v139 IPv4Settings];
-            [v140 setOverridePrimary:v137];
+            v136 = [optionsCopy objectForKeyedSubscript:@"VPNSendAllTraffic"];
+            bOOLValue3 = [v136 BOOLValue];
+            v138 = [configurationCopy VPN];
+            protocol30 = [v138 protocol];
+            iPv4Settings2 = [protocol30 IPv4Settings];
+            [iPv4Settings2 setOverridePrimary:bOOLValue3];
           }
 
-          v141 = [v5 objectForKeyedSubscript:@"securID"];
+          v141 = [optionsCopy objectForKeyedSubscript:@"securID"];
           if (v141)
           {
             v142 = v141;
-            v143 = [v5 objectForKeyedSubscript:@"securID"];
-            v144 = [v143 BOOLValue];
+            v143 = [optionsCopy objectForKeyedSubscript:@"securID"];
+            bOOLValue4 = [v143 BOOLValue];
 
-            if (v144)
+            if (bOOLValue4)
             {
-              v53 = [v6 VPN];
-              v54 = [v53 protocol];
-              [v54 setAuthenticationMethod:2];
+              protocol3 = [configurationCopy VPN];
+              sharedSecretKeychainItem5 = [protocol3 protocol];
+              [sharedSecretKeychainItem5 setAuthenticationMethod:2];
 LABEL_101:
               v49 = 1;
               goto LABEL_102;
             }
           }
 
-          v53 = [v6 VPN];
-          v54 = [v53 protocol];
+          protocol3 = [configurationCopy VPN];
+          sharedSecretKeychainItem5 = [protocol3 protocol];
           v49 = 1;
-          [v54 setAuthenticationMethod:1];
+          [sharedSecretKeychainItem5 setAuthenticationMethod:1];
 LABEL_102:
 
           goto LABEL_103;
@@ -1554,25 +1554,25 @@ LABEL_102:
         goto LABEL_61;
       }
 
-      v32 = [v6 VPN];
-      v33 = [v32 protocol];
+      v32 = [configurationCopy VPN];
+      protocol31 = [v32 protocol];
 
-      if (!v33)
+      if (!protocol31)
       {
         v43 = objc_alloc_init(NEVPNProtocolIPSec);
-        v44 = [v6 VPN];
+        v44 = [configurationCopy VPN];
         [v44 setProtocol:v43];
 
         goto LABEL_35;
       }
 
-      v31 = [v6 VPN];
-      v34 = [v31 protocol];
+      v31 = [configurationCopy VPN];
+      protocol32 = [v31 protocol];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v35 = [v6 VPN];
-        v36 = [v35 protocol];
+        v35 = [configurationCopy VPN];
+        protocol33 = [v35 protocol];
         objc_opt_class();
         v37 = objc_opt_isKindOfClass();
 
@@ -1582,99 +1582,99 @@ LABEL_102:
         }
 
 LABEL_35:
-        v45 = [v5 objectForKeyedSubscript:@"VPNCertificate"];
+        v45 = [optionsCopy objectForKeyedSubscript:@"VPNCertificate"];
 
-        v46 = [v6 VPN];
-        v47 = [v46 protocol];
-        v48 = v47;
+        v46 = [configurationCopy VPN];
+        protocol34 = [v46 protocol];
+        v48 = protocol34;
         if (v45)
         {
           v49 = 1;
-          [v47 setAuthenticationMethod:1];
+          [protocol34 setAuthenticationMethod:1];
 
-          v50 = [v6 VPN];
-          v51 = [v50 protocol];
-          v52 = [v51 sharedSecretKeychainItem];
-          [v52 setIdentifier:0];
+          v50 = [configurationCopy VPN];
+          protocol35 = [v50 protocol];
+          sharedSecretKeychainItem10 = [protocol35 sharedSecretKeychainItem];
+          [sharedSecretKeychainItem10 setIdentifier:0];
 
-          v53 = [v6 VPN];
-          v54 = [v53 protocol];
-          [v54 setLocalIdentifier:0];
+          protocol3 = [configurationCopy VPN];
+          sharedSecretKeychainItem5 = [protocol3 protocol];
+          [sharedSecretKeychainItem5 setLocalIdentifier:0];
           goto LABEL_102;
         }
 
-        [v47 setAuthenticationMethod:2];
+        [protocol34 setAuthenticationMethod:2];
 
-        v108 = [v5 objectForKeyedSubscript:@"secret"];
-        if (v108 && (v109 = v108, [v5 objectForKeyedSubscript:@"secret"], v110 = objc_claimAutoreleasedReturnValue(), v111 = objc_msgSend(v110, "length"), v110, v109, v111))
+        v108 = [optionsCopy objectForKeyedSubscript:@"secret"];
+        if (v108 && (v109 = v108, [optionsCopy objectForKeyedSubscript:@"secret"], v110 = objc_claimAutoreleasedReturnValue(), v111 = objc_msgSend(v110, "length"), v110, v109, v111))
         {
-          v112 = [v6 VPN];
-          v113 = [v112 protocol];
-          v114 = [v113 sharedSecretKeychainItem];
+          v112 = [configurationCopy VPN];
+          protocol36 = [v112 protocol];
+          sharedSecretKeychainItem11 = [protocol36 sharedSecretKeychainItem];
 
-          if (v114)
+          if (sharedSecretKeychainItem11)
           {
-            v115 = [v6 VPN];
-            v116 = [v115 protocol];
-            v117 = [v116 sharedSecretKeychainItem];
+            v115 = [configurationCopy VPN];
+            protocol37 = [v115 protocol];
+            sharedSecretKeychainItem12 = [protocol37 sharedSecretKeychainItem];
 
-            v118 = [v117 copyPassword];
-            v119 = [v5 objectForKeyedSubscript:@"secret"];
-            v120 = [v118 isEqualToString:v119];
+            copyPassword4 = [sharedSecretKeychainItem12 copyPassword];
+            v119 = [optionsCopy objectForKeyedSubscript:@"secret"];
+            v120 = [copyPassword4 isEqualToString:v119];
 
             if (v120)
             {
 LABEL_97:
-              v147 = [v5 objectForKeyedSubscript:@"group"];
-              if (v147 && (v148 = v147, [v5 objectForKeyedSubscript:@"group"], v149 = objc_claimAutoreleasedReturnValue(), v150 = objc_msgSend(v149, "length"), v149, v148, v150))
+              v147 = [optionsCopy objectForKeyedSubscript:@"group"];
+              if (v147 && (v148 = v147, [optionsCopy objectForKeyedSubscript:@"group"], v149 = objc_claimAutoreleasedReturnValue(), v150 = objc_msgSend(v149, "length"), v149, v148, v150))
               {
-                v53 = [v5 objectForKeyedSubscript:@"group"];
-                v54 = [v6 VPN];
-                v151 = [v54 protocol];
-                [v151 setLocalIdentifier:v53];
+                protocol3 = [optionsCopy objectForKeyedSubscript:@"group"];
+                sharedSecretKeychainItem5 = [configurationCopy VPN];
+                protocol38 = [sharedSecretKeychainItem5 protocol];
+                [protocol38 setLocalIdentifier:protocol3];
               }
 
               else
               {
-                v53 = [v6 VPN];
-                v54 = [v53 protocol];
-                [v54 setLocalIdentifier:0];
+                protocol3 = [configurationCopy VPN];
+                sharedSecretKeychainItem5 = [protocol3 protocol];
+                [sharedSecretKeychainItem5 setLocalIdentifier:0];
               }
 
               goto LABEL_101;
             }
           }
 
-          v121 = [v6 VPN];
-          v122 = [v121 protocol];
-          v123 = [v122 sharedSecretKeychainItem];
+          v121 = [configurationCopy VPN];
+          protocol39 = [v121 protocol];
+          sharedSecretKeychainItem13 = [protocol39 sharedSecretKeychainItem];
 
-          if (v123)
+          if (sharedSecretKeychainItem13)
           {
-            v124 = [v5 objectForKeyedSubscript:@"secret"];
-            v125 = [v6 VPN];
-            v126 = [v125 protocol];
-            v127 = [v126 sharedSecretKeychainItem];
-            [v127 setPassword:v124];
+            v124 = [optionsCopy objectForKeyedSubscript:@"secret"];
+            protocol41 = [configurationCopy VPN];
+            protocol40 = [protocol41 protocol];
+            sharedSecretKeychainItem14 = [protocol40 sharedSecretKeychainItem];
+            [sharedSecretKeychainItem14 setPassword:v124];
           }
 
           else
           {
             v146 = [NEKeychainItem alloc];
-            v124 = [v5 objectForKeyedSubscript:@"secret"];
-            v125 = [v146 initWithPassword:v124 domain:0];
-            v126 = [v6 VPN];
-            v127 = [v126 protocol];
-            [v127 setSharedSecretKeychainItem:v125];
+            v124 = [optionsCopy objectForKeyedSubscript:@"secret"];
+            protocol41 = [v146 initWithPassword:v124 domain:0];
+            protocol40 = [configurationCopy VPN];
+            sharedSecretKeychainItem14 = [protocol40 protocol];
+            [sharedSecretKeychainItem14 setSharedSecretKeychainItem:protocol41];
           }
         }
 
         else
         {
-          v124 = [v6 VPN];
-          v125 = [v124 protocol];
-          v126 = [v125 sharedSecretKeychainItem];
-          [v126 setIdentifier:0];
+          v124 = [configurationCopy VPN];
+          protocol41 = [v124 protocol];
+          protocol40 = [protocol41 sharedSecretKeychainItem];
+          [protocol40 setIdentifier:0];
         }
 
         goto LABEL_97;
@@ -1684,17 +1684,17 @@ LABEL_61:
       goto LABEL_62;
     }
 
-    v19 = [v5 objectForKeyedSubscript:@"VPNOnDemandEnabled"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"VPNOnDemandEnabled"];
 
     if (v19)
     {
-      v20 = [v5 objectForKeyedSubscript:@"VPNOnDemandEnabled"];
-      v15 = [v20 BOOLValue];
+      v20 = [optionsCopy objectForKeyedSubscript:@"VPNOnDemandEnabled"];
+      bOOLValue2 = [v20 BOOLValue];
 
-      v21 = [v6 VPN];
-      v22 = [v21 onDemandRules];
+      v21 = [configurationCopy VPN];
+      onDemandRules2 = [v21 onDemandRules];
 
-      if (v22)
+      if (onDemandRules2)
       {
         goto LABEL_12;
       }
@@ -1714,29 +1714,29 @@ LABEL_63:
   return v19;
 }
 
-- (BOOL)createVPNWithOptions:(id)a3
+- (BOOL)createVPNWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"dispName"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"dispName"];
 
   if (v5)
   {
     v6 = [NEConfiguration alloc];
-    v7 = [v4 objectForKeyedSubscript:@"dispName"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"dispName"];
     v8 = [v6 initWithName:v7 grade:1];
 
-    v9 = [(VPNConnectionStore *)self setOptions:v4 toConfiguration:v8];
+    v9 = [(VPNConnectionStore *)self setOptions:optionsCopy toConfiguration:v8];
     if (v9)
     {
-      v10 = [(VPNConnectionStore *)self configurationManager];
-      v11 = [(VPNConnectionStore *)self storeQueue];
+      configurationManager = [(VPNConnectionStore *)self configurationManager];
+      storeQueue = [(VPNConnectionStore *)self storeQueue];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_B940;
       v13[3] = &unk_40F40;
       v14 = v8;
-      v15 = self;
-      [v10 saveConfiguration:v14 withCompletionQueue:v11 handler:v13];
+      selfCopy = self;
+      [configurationManager saveConfiguration:v14 withCompletionQueue:storeQueue handler:v13];
     }
   }
 
@@ -1748,16 +1748,16 @@ LABEL_63:
   return v9;
 }
 
-- (BOOL)updateVPNWithServiceID:(id)a3 withOptions:(id)a4
+- (BOOL)updateVPNWithServiceID:(id)d withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  optionsCopy = options;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(VPNConnectionStore *)self configurations];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v9 = [configurations countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = *v23;
@@ -1767,14 +1767,14 @@ LABEL_3:
     {
       if (*v23 != v10)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(configurations);
       }
 
       v12 = *(*(&v22 + 1) + 8 * v11);
       if ([v12 grade] != &dword_0 + 3)
       {
-        v13 = [v12 identifier];
-        v14 = [v13 isEqual:v6];
+        identifier = [v12 identifier];
+        v14 = [identifier isEqual:dCopy];
 
         if (v14)
         {
@@ -1784,7 +1784,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v9 = [configurations countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -1796,21 +1796,21 @@ LABEL_3:
 
     v9 = v12;
 
-    if (v9 && [(VPNConnectionStore *)self setOptions:v7 toConfiguration:v9])
+    if (v9 && [(VPNConnectionStore *)self setOptions:optionsCopy toConfiguration:v9])
     {
-      v16 = [(VPNConnectionStore *)self configurationManager];
-      v17 = [(VPNConnectionStore *)self storeQueue];
+      configurationManager = [(VPNConnectionStore *)self configurationManager];
+      storeQueue = [(VPNConnectionStore *)self storeQueue];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_BCAC;
       v19[3] = &unk_40F40;
       v9 = v9;
       v20 = v9;
-      v21 = self;
-      [v16 saveConfiguration:v9 withCompletionQueue:v17 handler:v19];
+      selfCopy = self;
+      [configurationManager saveConfiguration:v9 withCompletionQueue:storeQueue handler:v19];
 
       v15 = 1;
-      v8 = v20;
+      configurations = v20;
       goto LABEL_14;
     }
 
@@ -1827,15 +1827,15 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)deleteVPNWithServiceID:(id)a3
+- (BOOL)deleteVPNWithServiceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(VPNConnectionStore *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v6 = [configurations countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1846,14 +1846,14 @@ LABEL_3:
     {
       if (*v22 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(configurations);
       }
 
       v10 = *(*(&v21 + 1) + 8 * v9);
       if ([v10 grade] != &dword_0 + 3)
       {
-        v11 = [v10 identifier];
-        v12 = [v11 isEqual:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqual:dCopy];
 
         if (v12)
         {
@@ -1863,7 +1863,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v7 = [configurations countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1877,16 +1877,16 @@ LABEL_3:
 
     if (v14)
     {
-      v15 = [(VPNConnectionStore *)self configurationManager];
-      v16 = [(VPNConnectionStore *)self storeQueue];
+      configurationManager = [(VPNConnectionStore *)self configurationManager];
+      storeQueue = [(VPNConnectionStore *)self storeQueue];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_BFF4;
       v18[3] = &unk_40F40;
       v19 = v14;
-      v20 = self;
-      v5 = v14;
-      [v15 removeConfiguration:v5 withCompletionQueue:v16 handler:v18];
+      selfCopy = self;
+      configurations = v14;
+      [configurationManager removeConfiguration:configurations withCompletionQueue:storeQueue handler:v18];
 
       v13 = 1;
       goto LABEL_13;
@@ -1905,68 +1905,68 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)configurationIsManaged:(id)a3
+- (BOOL)configurationIsManaged:(id)managed
 {
-  v3 = a3;
-  v4 = [v3 payloadInfo];
+  managedCopy = managed;
+  payloadInfo = [managedCopy payloadInfo];
 
-  if (v4)
+  if (payloadInfo)
   {
-    v5 = [v3 payloadInfo];
-    v6 = [v5 profileSource];
+    payloadInfo2 = [managedCopy payloadInfo];
+    profileSource = [payloadInfo2 profileSource];
 
-    v7 = [v3 payloadInfo];
-    v8 = v7;
-    if (v6)
+    payloadInfo3 = [managedCopy payloadInfo];
+    v8 = payloadInfo3;
+    if (profileSource)
     {
-      v9 = [v7 profileSource] == &dword_0 + 2;
-      v10 = v8;
+      isManagedByMDM = [payloadInfo3 profileSource] == &dword_0 + 2;
+      profileIdentifier = v8;
     }
 
     else
     {
-      v10 = [v7 profileIdentifier];
+      profileIdentifier = [payloadInfo3 profileIdentifier];
 
-      if (v10)
+      if (profileIdentifier)
       {
         v11 = +[MCProfileConnection sharedConnection];
-        v12 = [v11 installedProfileWithIdentifier:v10];
+        v12 = [v11 installedProfileWithIdentifier:profileIdentifier];
 
         if (v12)
         {
-          v9 = [v12 isManagedByMDM];
+          isManagedByMDM = [v12 isManagedByMDM];
         }
 
         else
         {
-          v9 = 0;
+          isManagedByMDM = 0;
         }
       }
 
       else
       {
-        v9 = 0;
+        isManagedByMDM = 0;
       }
     }
   }
 
   else
   {
-    v9 = 0;
+    isManagedByMDM = 0;
   }
 
-  return v9;
+  return isManagedByMDM;
 }
 
-- (BOOL)isMDM:(id)a3
+- (BOOL)isMDM:(id)m
 {
-  v4 = a3;
+  mCopy = m;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(VPNConnectionStore *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v6 = [configurations countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1977,14 +1977,14 @@ LABEL_3:
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(configurations);
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
       if ([v10 grade] != &dword_0 + 3)
       {
-        v11 = [v10 identifier];
-        v12 = [v11 isEqual:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqual:mCopy];
 
         if (v12)
         {
@@ -1994,7 +1994,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [configurations countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -2009,7 +2009,7 @@ LABEL_3:
     if (v14)
     {
       v13 = [(VPNConnectionStore *)self configurationIsManaged:v14];
-      v5 = v14;
+      configurations = v14;
       goto LABEL_13;
     }
 
@@ -2026,15 +2026,15 @@ LABEL_13:
   return v13;
 }
 
-- (id)optionsForServiceID:(id)a3 withGrade:(unint64_t)a4
+- (id)optionsForServiceID:(id)d withGrade:(unint64_t)grade
 {
-  v6 = a3;
+  dCopy = d;
   v351 = 0u;
   v352 = 0u;
   v353 = 0u;
   v354 = 0u;
-  v7 = [(VPNConnectionStore *)self configurations];
-  v8 = [v7 countByEnumeratingWithState:&v351 objects:v359 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v8 = [configurations countByEnumeratingWithState:&v351 objects:v359 count:16];
   if (v8)
   {
     v9 = *v352;
@@ -2044,14 +2044,14 @@ LABEL_3:
     {
       if (*v352 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(configurations);
       }
 
       v11 = *(*(&v351 + 1) + 8 * v10);
       if ([v11 grade] != &dword_0 + 3)
       {
-        v12 = [v11 identifier];
-        v13 = [v12 isEqual:v6];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqual:dCopy];
 
         if (v13)
         {
@@ -2061,7 +2061,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v351 objects:v359 count:16];
+        v8 = [configurations countByEnumeratingWithState:&v351 objects:v359 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -2071,7 +2071,7 @@ LABEL_3:
       }
     }
 
-    v317 = self;
+    selfCopy = self;
     v14 = v11;
 
     if (!v14)
@@ -2081,19 +2081,19 @@ LABEL_3:
     }
 
     v8 = +[NSMutableDictionary dictionary];
-    v15 = [NSNumber numberWithUnsignedInteger:a4];
+    v15 = [NSNumber numberWithUnsignedInteger:grade];
     [v8 setValue:v15 forKey:@"VPNGrade"];
 
-    v333 = [v14 name];
-    v315 = [v14 applicationName];
-    v332 = [v14 applicationIdentifier];
+    name = [v14 name];
+    applicationName = [v14 applicationName];
+    applicationIdentifier = [v14 applicationIdentifier];
     v16 = +[NSMutableDictionary dictionary];
-    v316 = v6;
+    v316 = dCopy;
     v318 = v14;
-    if (a4 <= 1)
+    if (grade <= 1)
     {
       v17 = [v14 VPN];
-      v18 = [v17 protocol];
+      protocol = [v17 protocol];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2105,7 +2105,7 @@ LABEL_3:
       else
       {
         v50 = [v14 VPN];
-        v51 = [v50 protocol];
+        protocol2 = [v50 protocol];
         objc_opt_class();
         v52 = objc_opt_isKindOfClass();
 
@@ -2117,7 +2117,7 @@ LABEL_3:
         else
         {
           v56 = [v14 VPN];
-          v57 = [v56 protocol];
+          protocol3 = [v56 protocol];
           objc_opt_class();
           v58 = objc_opt_isKindOfClass();
 
@@ -2148,22 +2148,22 @@ LABEL_3:
       v331 = v60;
 
       v61 = [v14 VPN];
-      v62 = [v61 protocol];
-      v334 = [v62 serverAddress];
+      protocol4 = [v61 protocol];
+      serverAddress = [protocol4 serverAddress];
 
       v63 = [v14 VPN];
-      v64 = [v63 protocol];
-      v330 = [v64 username];
+      protocol5 = [v63 protocol];
+      username = [protocol5 username];
 
       v65 = [v14 VPN];
-      v66 = [v65 onDemandRules];
+      onDemandRules = [v65 onDemandRules];
 
-      if (v66)
+      if (onDemandRules)
       {
         v67 = [v14 VPN];
-        v68 = [v67 isOnDemandEnabled];
+        isOnDemandEnabled = [v67 isOnDemandEnabled];
 
-        if (v68)
+        if (isOnDemandEnabled)
         {
           v69 = &off_435A8;
         }
@@ -2175,9 +2175,9 @@ LABEL_3:
 
         v304 = v69;
         v70 = [v14 VPN];
-        v71 = [v70 isOnDemandUserOverrideDisabled];
+        isOnDemandUserOverrideDisabled = [v70 isOnDemandUserOverrideDisabled];
 
-        if (v71)
+        if (isOnDemandUserOverrideDisabled)
         {
           v72 = &off_435A8;
         }
@@ -2199,86 +2199,86 @@ LABEL_3:
       }
 
       v73 = [v14 VPN];
-      v74 = [v73 protocol];
-      v75 = [v74 passwordKeychainItem];
+      protocol6 = [v73 protocol];
+      passwordKeychainItem = [protocol6 passwordKeychainItem];
 
-      if (v75)
+      if (passwordKeychainItem)
       {
         v76 = [v14 VPN];
-        v77 = [v76 protocol];
-        v78 = [v77 passwordKeychainItem];
-        v329 = [v78 copyPassword];
+        protocol7 = [v76 protocol];
+        passwordKeychainItem2 = [protocol7 passwordKeychainItem];
+        copyPassword = [passwordKeychainItem2 copyPassword];
       }
 
       else
       {
-        v329 = 0;
+        copyPassword = 0;
       }
 
       v79 = [v14 VPN];
-      v80 = [v79 protocol];
+      protocol8 = [v79 protocol];
       objc_opt_class();
       v81 = objc_opt_isKindOfClass();
 
       v82 = [v14 VPN];
-      v83 = [v82 protocol];
+      protocol9 = [v82 protocol];
       if (v81)
       {
 
-        if ([v83 authenticationMethod] == &dword_0 + 1)
+        if ([protocol9 authenticationMethod] == &dword_0 + 1)
         {
-          v328 = 0;
+          copyPassword2 = 0;
           v84 = &off_43578;
         }
 
         else
         {
-          v93 = [v83 sharedSecretKeychainItem];
+          sharedSecretKeychainItem = [protocol9 sharedSecretKeychainItem];
 
-          if (v93)
+          if (sharedSecretKeychainItem)
           {
-            v94 = [v83 sharedSecretKeychainItem];
-            v328 = [v94 copyPassword];
+            sharedSecretKeychainItem2 = [protocol9 sharedSecretKeychainItem];
+            copyPassword2 = [sharedSecretKeychainItem2 copyPassword];
           }
 
           else
           {
-            v328 = 0;
+            copyPassword2 = 0;
           }
 
           v84 = &off_43590;
         }
 
         v310 = v84;
-        v325 = [v83 localIdentifier];
-        v324 = [v83 remoteIdentifier];
-        v169 = [v83 identityReferenceInternal];
+        localIdentifier = [protocol9 localIdentifier];
+        remoteIdentifier = [protocol9 remoteIdentifier];
+        identityReferenceInternal = [protocol9 identityReferenceInternal];
 
-        if (v169)
+        if (identityReferenceInternal)
         {
-          v170 = [v83 identityReferenceInternal];
+          identityReferenceInternal2 = [protocol9 identityReferenceInternal];
         }
 
         else
         {
-          v170 = 0;
+          identityReferenceInternal2 = 0;
         }
 
         v171 = &off_43590;
-        if ([v83 useExtendedAuthentication])
+        if ([protocol9 useExtendedAuthentication])
         {
-          v172 = [v83 username];
+          username2 = [protocol9 username];
 
-          if (v172)
+          if (username2)
           {
             v171 = &off_43578;
           }
 
           else
           {
-            v173 = [v83 identityReferenceInternal];
+            identityReferenceInternal3 = [protocol9 identityReferenceInternal];
 
-            if (v173)
+            if (identityReferenceInternal3)
             {
               v171 = &off_435D8;
             }
@@ -2286,9 +2286,9 @@ LABEL_3:
         }
 
         v307 = v171;
-        v326 = v170;
+        v326 = identityReferenceInternal2;
 
-        v327 = 0;
+        localIdentifier3 = 0;
         v305 = &off_43560;
         v306 = &off_43560;
         v312 = &off_43560;
@@ -2299,31 +2299,31 @@ LABEL_3:
       v85 = objc_opt_isKindOfClass();
 
       v86 = [v14 VPN];
-      v87 = [v86 protocol];
-      v88 = v87;
+      protocol10 = [v86 protocol];
+      v88 = protocol10;
       if (v85)
       {
-        v89 = [v87 sharedSecretKeychainItem];
+        sharedSecretKeychainItem3 = [protocol10 sharedSecretKeychainItem];
 
-        if (v89)
+        if (sharedSecretKeychainItem3)
         {
           v90 = [v14 VPN];
-          v91 = [v90 protocol];
-          v92 = [v91 sharedSecretKeychainItem];
-          v328 = [v92 copyPassword];
+          protocol11 = [v90 protocol];
+          sharedSecretKeychainItem4 = [protocol11 sharedSecretKeychainItem];
+          copyPassword2 = [sharedSecretKeychainItem4 copyPassword];
         }
 
         else
         {
-          v328 = 0;
+          copyPassword2 = 0;
         }
 
         v160 = [v14 VPN];
-        v161 = [v160 protocol];
-        v162 = [v161 IPv4Settings];
-        v163 = [v162 overridePrimary];
+        protocol12 = [v160 protocol];
+        iPv4Settings = [protocol12 IPv4Settings];
+        overridePrimary = [iPv4Settings overridePrimary];
 
-        if (v163)
+        if (overridePrimary)
         {
           v164 = &off_435A8;
         }
@@ -2335,14 +2335,14 @@ LABEL_3:
 
         v312 = v164;
         v165 = [v14 VPN];
-        v166 = [v165 protocol];
-        v167 = [v166 authenticationMethod];
+        protocol13 = [v165 protocol];
+        authenticationMethod = [protocol13 authenticationMethod];
 
         v326 = 0;
-        v327 = 0;
-        v324 = 0;
-        v325 = 0;
-        if (v167 == &dword_0 + 2)
+        localIdentifier3 = 0;
+        remoteIdentifier = 0;
+        localIdentifier = 0;
+        if (authenticationMethod == &dword_0 + 2)
         {
           v168 = &off_435A8;
         }
@@ -2363,10 +2363,10 @@ LABEL_3:
       if ((v95 & 1) == 0)
       {
         v326 = 0;
-        v327 = 0;
-        v324 = 0;
-        v325 = 0;
-        v328 = 0;
+        localIdentifier3 = 0;
+        remoteIdentifier = 0;
+        localIdentifier = 0;
+        copyPassword2 = 0;
         v306 = &off_43560;
 LABEL_117:
         v310 = &off_43590;
@@ -2374,18 +2374,18 @@ LABEL_117:
         v305 = &off_43560;
 LABEL_129:
         v174 = [v14 VPN];
-        v175 = [v174 protocol];
-        v44 = [v175 proxySettings];
+        protocol14 = [v174 protocol];
+        proxySettings = [protocol14 proxySettings];
 
         v46 = &off_43590;
-        if (v44)
+        if (proxySettings)
         {
           v176 = [v14 VPN];
-          v177 = [v176 protocol];
-          v178 = [v177 proxySettings];
-          v179 = [v178 autoProxyConfigurationEnabled];
+          protocol15 = [v176 protocol];
+          proxySettings2 = [protocol15 proxySettings];
+          autoProxyConfigurationEnabled = [proxySettings2 autoProxyConfigurationEnabled];
 
-          if (v179)
+          if (autoProxyConfigurationEnabled)
           {
             v180 = &off_435D8;
           }
@@ -2393,11 +2393,11 @@ LABEL_129:
           else
           {
             v181 = [v14 VPN];
-            v182 = [v181 protocol];
-            v183 = [v182 proxySettings];
-            v184 = [v183 HTTPEnabled];
+            protocol16 = [v181 protocol];
+            proxySettings3 = [protocol16 proxySettings];
+            hTTPEnabled = [proxySettings3 HTTPEnabled];
 
-            if (v184)
+            if (hTTPEnabled)
             {
               v180 = &off_43578;
             }
@@ -2409,55 +2409,55 @@ LABEL_129:
           }
 
           v185 = [v14 VPN];
-          v186 = [v185 protocol];
-          v187 = [v186 proxySettings];
-          v188 = [v187 proxyAutoConfigURL];
-          v323 = [v188 absoluteString];
+          protocol17 = [v185 protocol];
+          proxySettings4 = [protocol17 proxySettings];
+          proxyAutoConfigURL = [proxySettings4 proxyAutoConfigURL];
+          absoluteString = [proxyAutoConfigURL absoluteString];
 
           v189 = [v14 VPN];
-          v190 = [v189 protocol];
-          v191 = [v190 proxySettings];
-          v44 = [v191 HTTPServer];
+          protocol18 = [v189 protocol];
+          proxySettings5 = [protocol18 proxySettings];
+          proxySettings = [proxySettings5 HTTPServer];
 
-          if (v44)
+          if (proxySettings)
           {
             v192 = [v14 VPN];
-            v193 = [v192 protocol];
-            v194 = [v193 proxySettings];
-            v195 = [v194 HTTPServer];
-            v322 = [v195 address];
+            protocol19 = [v192 protocol];
+            proxySettings6 = [protocol19 proxySettings];
+            hTTPServer = [proxySettings6 HTTPServer];
+            address = [hTTPServer address];
 
             v196 = [v14 VPN];
-            v197 = [v196 protocol];
-            v198 = [v197 proxySettings];
-            v199 = [v198 HTTPServer];
-            v44 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v199 port]);
+            protocol20 = [v196 protocol];
+            proxySettings7 = [protocol20 proxySettings];
+            hTTPServer2 = [proxySettings7 HTTPServer];
+            proxySettings = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [hTTPServer2 port]);
 
             v200 = [v14 VPN];
-            v201 = [v200 protocol];
-            v202 = [v201 proxySettings];
-            v203 = [v202 HTTPServer];
-            LODWORD(v199) = [v203 authenticationRequired];
+            protocol21 = [v200 protocol];
+            proxySettings8 = [protocol21 proxySettings];
+            hTTPServer3 = [proxySettings8 HTTPServer];
+            LODWORD(hTTPServer2) = [hTTPServer3 authenticationRequired];
 
-            if (v199)
+            if (hTTPServer2)
             {
               v204 = [v14 VPN];
-              v205 = [v204 protocol];
-              v206 = [v205 proxySettings];
-              v207 = [v206 HTTPServer];
-              v208 = [v207 username];
+              protocol22 = [v204 protocol];
+              proxySettings9 = [protocol22 proxySettings];
+              hTTPServer4 = [proxySettings9 HTTPServer];
+              username3 = [hTTPServer4 username];
 
-              v45 = v208;
+              v45 = username3;
               v209 = [v14 VPN];
-              v210 = [v209 protocol];
-              v211 = [v210 proxySettings];
-              v212 = [v211 HTTPServer];
-              v319 = [v212 copyPassword];
+              protocol23 = [v209 protocol];
+              proxySettings10 = [protocol23 proxySettings];
+              hTTPServer5 = [proxySettings10 HTTPServer];
+              copyPassword3 = [hTTPServer5 copyPassword];
 
-              v311 = 0;
-              v320 = 0;
-              v321 = 0;
-              v308 = 0;
+              matchDomains11 = 0;
+              matchFQDNs = 0;
+              excludedDomains = 0;
+              excludedFQDNs = 0;
               v309 = 0;
               v47 = &off_435A8;
               v46 = &off_43590;
@@ -2466,11 +2466,11 @@ LABEL_129:
             else
             {
               v45 = 0;
-              v319 = 0;
-              v320 = 0;
-              v311 = 0;
-              v321 = 0;
-              v308 = 0;
+              copyPassword3 = 0;
+              matchFQDNs = 0;
+              matchDomains11 = 0;
+              excludedDomains = 0;
+              excludedFQDNs = 0;
               v309 = 0;
               v46 = &off_43590;
               v47 = &off_43560;
@@ -2481,13 +2481,13 @@ LABEL_129:
 
           else
           {
-            v321 = 0;
-            v322 = 0;
+            excludedDomains = 0;
+            address = 0;
             v45 = 0;
-            v319 = 0;
-            v320 = 0;
-            v311 = 0;
-            v308 = 0;
+            copyPassword3 = 0;
+            matchFQDNs = 0;
+            matchDomains11 = 0;
+            excludedFQDNs = 0;
             v309 = 0;
             v47 = &off_43560;
             v314 = &off_43560;
@@ -2501,14 +2501,14 @@ LABEL_129:
         }
 
         v43 = 0;
-        v322 = 0;
-        v323 = 0;
+        address = 0;
+        absoluteString = 0;
         v45 = 0;
-        v319 = 0;
-        v320 = 0;
-        v311 = 0;
-        v321 = 0;
-        v308 = 0;
+        copyPassword3 = 0;
+        matchFQDNs = 0;
+        matchDomains11 = 0;
+        excludedDomains = 0;
+        excludedFQDNs = 0;
         v309 = 0;
         v47 = &off_43560;
         v314 = &off_43560;
@@ -2516,36 +2516,36 @@ LABEL_129:
       }
 
       v96 = [v14 VPN];
-      v97 = [v96 protocol];
-      v98 = [v97 authenticationMethod];
+      protocol24 = [v96 protocol];
+      authenticationMethod2 = [protocol24 authenticationMethod];
 
       v99 = [v14 VPN];
-      v100 = [v99 protocol];
-      v101 = v100;
-      if (v98 == &dword_0 + 1)
+      protocol25 = [v99 protocol];
+      v101 = protocol25;
+      if (authenticationMethod2 == &dword_0 + 1)
       {
-        v102 = [v100 identityReferenceInternal];
+        identityReferenceInternal4 = [protocol25 identityReferenceInternal];
 
-        if (v102)
+        if (identityReferenceInternal4)
         {
           v103 = [v14 VPN];
-          v104 = [v103 protocol];
-          v105 = [v104 identityReferenceInternal];
-          v327 = 0;
-          v328 = 0;
+          protocol26 = [v103 protocol];
+          identityReferenceInternal5 = [protocol26 identityReferenceInternal];
+          localIdentifier3 = 0;
+          copyPassword2 = 0;
           v106 = &off_43578;
 LABEL_268:
           v310 = v106;
-          v326 = v105;
+          v326 = identityReferenceInternal5;
 
 LABEL_271:
           v297 = [v14 VPN];
-          v298 = [v297 protocol];
-          v299 = [v298 extendedAuthPasswordPrompt];
+          protocol27 = [v297 protocol];
+          extendedAuthPasswordPrompt = [protocol27 extendedAuthPasswordPrompt];
 
-          v324 = 0;
-          v325 = 0;
-          if (v299)
+          remoteIdentifier = 0;
+          localIdentifier = 0;
+          if (extendedAuthPasswordPrompt)
           {
             v300 = &off_435A8;
           }
@@ -2562,44 +2562,44 @@ LABEL_271:
         }
 
         v326 = 0;
-        v327 = 0;
-        v328 = 0;
+        localIdentifier3 = 0;
+        copyPassword2 = 0;
         v293 = &off_43578;
       }
 
       else
       {
-        v251 = [v100 sharedSecretKeychainItem];
+        sharedSecretKeychainItem5 = [protocol25 sharedSecretKeychainItem];
 
-        if (v251)
+        if (sharedSecretKeychainItem5)
         {
           v252 = [v14 VPN];
-          v253 = [v252 protocol];
-          v254 = [v253 sharedSecretKeychainItem];
-          v328 = [v254 copyPassword];
+          protocol28 = [v252 protocol];
+          sharedSecretKeychainItem6 = [protocol28 sharedSecretKeychainItem];
+          copyPassword2 = [sharedSecretKeychainItem6 copyPassword];
         }
 
         else
         {
-          v328 = 0;
+          copyPassword2 = 0;
         }
 
         v294 = [v14 VPN];
-        v295 = [v294 protocol];
-        v296 = [v295 localIdentifier];
+        protocol29 = [v294 protocol];
+        localIdentifier2 = [protocol29 localIdentifier];
 
-        if (v296)
+        if (localIdentifier2)
         {
           v103 = [v14 VPN];
-          v104 = [v103 protocol];
-          v327 = [v104 localIdentifier];
-          v105 = 0;
+          protocol26 = [v103 protocol];
+          localIdentifier3 = [protocol26 localIdentifier];
+          identityReferenceInternal5 = 0;
           v106 = &off_43590;
           goto LABEL_268;
         }
 
         v326 = 0;
-        v327 = 0;
+        localIdentifier3 = 0;
         v293 = &off_43590;
       }
 
@@ -2607,12 +2607,12 @@ LABEL_271:
       goto LABEL_271;
     }
 
-    if (a4 <= 3)
+    if (grade <= 3)
     {
-      if (a4 == 2)
+      if (grade == 2)
       {
-        v141 = [v14 appVPN];
-        v142 = [v141 protocol];
+        appVPN = [v14 appVPN];
+        protocol30 = [appVPN protocol];
         objc_opt_class();
         v143 = objc_opt_isKindOfClass();
 
@@ -2623,8 +2623,8 @@ LABEL_271:
 
         else
         {
-          v217 = [v14 appVPN];
-          v218 = [v217 protocol];
+          appVPN2 = [v14 appVPN];
+          protocol31 = [appVPN2 protocol];
           objc_opt_class();
           v219 = objc_opt_isKindOfClass();
 
@@ -2641,8 +2641,8 @@ LABEL_271:
 
         v302 = v8;
         [v8 setValue:v144 forKey:@"VPNType"];
-        v220 = [v14 appVPN];
-        if ([v220 isEnabled])
+        appVPN3 = [v14 appVPN];
+        if ([appVPN3 isEnabled])
         {
           v221 = &off_435A8;
         }
@@ -2654,18 +2654,18 @@ LABEL_271:
 
         v331 = v221;
 
-        v222 = [v14 appVPN];
-        v223 = [v222 protocol];
-        v334 = [v223 serverAddress];
+        appVPN4 = [v14 appVPN];
+        protocol32 = [appVPN4 protocol];
+        serverAddress = [protocol32 serverAddress];
 
-        v224 = [v14 appVPN];
-        v225 = [v224 protocol];
-        v330 = [v225 username];
+        appVPN5 = [v14 appVPN];
+        protocol33 = [appVPN5 protocol];
+        username = [protocol33 username];
 
-        v226 = [v14 appVPN];
-        LODWORD(v225) = [v226 isOnDemandEnabled];
+        appVPN6 = [v14 appVPN];
+        LODWORD(protocol33) = [appVPN6 isOnDemandEnabled];
 
-        if (v225)
+        if (protocol33)
         {
           v227 = &off_435A8;
         }
@@ -2676,10 +2676,10 @@ LABEL_271:
         }
 
         v304 = v227;
-        v228 = [v14 appVPN];
-        v229 = [v228 isOnDemandUserOverrideDisabled];
+        appVPN7 = [v14 appVPN];
+        isOnDemandUserOverrideDisabled2 = [appVPN7 isOnDemandUserOverrideDisabled];
 
-        if (v229)
+        if (isOnDemandUserOverrideDisabled2)
         {
           v230 = &off_435A8;
         }
@@ -2694,10 +2694,10 @@ LABEL_271:
         v350 = 0u;
         v347 = 0u;
         v348 = 0u;
-        v231 = [v14 appVPN];
-        v232 = [v231 appRules];
+        appVPN8 = [v14 appVPN];
+        appRules = [appVPN8 appRules];
 
-        v233 = [v232 countByEnumeratingWithState:&v347 objects:v358 count:16];
+        v233 = [appRules countByEnumeratingWithState:&v347 objects:v358 count:16];
         if (v233)
         {
           v234 = v233;
@@ -2708,78 +2708,78 @@ LABEL_271:
             {
               if (*v348 != v235)
               {
-                objc_enumerationMutation(v232);
+                objc_enumerationMutation(appRules);
               }
 
               v237 = *(*(&v347 + 1) + 8 * i);
-              v238 = [v237 matchSigningIdentifier];
-              if (v238)
+              matchSigningIdentifier = [v237 matchSigningIdentifier];
+              if (matchSigningIdentifier)
               {
-                v239 = v238;
-                v240 = [v237 matchSigningIdentifier];
-                v241 = [v16 objectForKeyedSubscript:v240];
+                v239 = matchSigningIdentifier;
+                matchSigningIdentifier2 = [v237 matchSigningIdentifier];
+                v241 = [v16 objectForKeyedSubscript:matchSigningIdentifier2];
 
                 if (!v241)
                 {
-                  v242 = [v237 matchDomains];
-                  if (v242 && (v243 = v242, [v237 matchDomains], v244 = objc_claimAutoreleasedReturnValue(), v245 = objc_msgSend(v244, "count"), v244, v243, v245))
+                  matchDomains = [v237 matchDomains];
+                  if (matchDomains && (v243 = matchDomains, [v237 matchDomains], v244 = objc_claimAutoreleasedReturnValue(), v245 = objc_msgSend(v244, "count"), v244, v243, v245))
                   {
-                    v246 = [v237 matchDomains];
-                    v247 = [v246 count];
+                    matchDomains2 = [v237 matchDomains];
+                    v247 = [matchDomains2 count];
 
                     if (v247 == &dword_0 + 1)
                     {
-                      v248 = [v237 matchDomains];
-                      [v248 objectAtIndexedSubscript:0];
+                      matchDomains3 = [v237 matchDomains];
+                      [matchDomains3 objectAtIndexedSubscript:0];
                     }
 
                     else
                     {
-                      v248 = [NSBundle bundleForClass:objc_opt_class()];
-                      [v248 localizedStringForKey:@"MULTIPLE_DOMAINS" value:&stru_411E8 table:@"MobileVPN"];
+                      matchDomains3 = [NSBundle bundleForClass:objc_opt_class()];
+                      [matchDomains3 localizedStringForKey:@"MULTIPLE_DOMAINS" value:&stru_411E8 table:@"MobileVPN"];
                     }
                     v249 = ;
-                    v250 = [v237 matchSigningIdentifier];
-                    [v16 setObject:v249 forKeyedSubscript:v250];
+                    matchSigningIdentifier3 = [v237 matchSigningIdentifier];
+                    [v16 setObject:v249 forKeyedSubscript:matchSigningIdentifier3];
                   }
 
                   else
                   {
-                    v248 = [v237 matchSigningIdentifier];
-                    [v16 setObject:&stru_411E8 forKeyedSubscript:v248];
+                    matchDomains3 = [v237 matchSigningIdentifier];
+                    [v16 setObject:&stru_411E8 forKeyedSubscript:matchDomains3];
                   }
                 }
               }
             }
 
-            v234 = [v232 countByEnumeratingWithState:&v347 objects:v358 count:16];
+            v234 = [appRules countByEnumeratingWithState:&v347 objects:v358 count:16];
           }
 
           while (v234);
         }
 
         v326 = 0;
-        v327 = 0;
-        v324 = 0;
-        v325 = 0;
-        v328 = 0;
-        v329 = 0;
+        localIdentifier3 = 0;
+        remoteIdentifier = 0;
+        localIdentifier = 0;
+        copyPassword2 = 0;
+        copyPassword = 0;
         v43 = 0;
-        v322 = 0;
-        v323 = 0;
-        v44 = 0;
+        address = 0;
+        absoluteString = 0;
+        proxySettings = 0;
         v45 = 0;
-        v319 = 0;
-        v320 = 0;
-        v321 = 0;
+        copyPassword3 = 0;
+        matchFQDNs = 0;
+        excludedDomains = 0;
         v309 = 0;
         v46 = &off_43590;
-        v311 = 0;
+        matchDomains11 = 0;
         v312 = &off_43560;
         v47 = &off_43560;
         v310 = &off_43590;
         v307 = &off_43590;
-        v308 = 0;
+        excludedFQDNs = 0;
         v305 = &off_43560;
         v306 = &off_43560;
         v314 = &off_43560;
@@ -2791,12 +2791,12 @@ LABEL_175:
         goto LABEL_194;
       }
 
-      if (a4 == 3)
+      if (grade == 3)
       {
-        v53 = [v14 alwaysOnVPN];
-        v54 = [v53 isEnabled];
+        alwaysOnVPN = [v14 alwaysOnVPN];
+        isEnabled = [alwaysOnVPN isEnabled];
         v55 = &off_435A8;
-        if (!v54)
+        if (!isEnabled)
         {
           v55 = &off_43560;
         }
@@ -2805,33 +2805,33 @@ LABEL_175:
 
         [v8 setValue:&off_435C0 forKey:@"VPNType"];
         v326 = 0;
-        v327 = 0;
-        v324 = 0;
-        v325 = 0;
-        v328 = 0;
-        v329 = 0;
+        localIdentifier3 = 0;
+        remoteIdentifier = 0;
+        localIdentifier = 0;
+        copyPassword2 = 0;
+        copyPassword = 0;
         v43 = 0;
-        v322 = 0;
-        v323 = 0;
-        v44 = 0;
+        address = 0;
+        absoluteString = 0;
+        proxySettings = 0;
         v45 = 0;
-        v319 = 0;
-        v320 = 0;
-        v321 = 0;
+        copyPassword3 = 0;
+        matchFQDNs = 0;
+        excludedDomains = 0;
         v309 = 0;
-        v334 = 0;
-        v330 = 0;
+        serverAddress = 0;
+        username = 0;
         v46 = &off_43590;
         v313 = &off_43560;
         v314 = &off_43560;
-        v311 = 0;
+        matchDomains11 = 0;
         v312 = &off_43560;
         v47 = &off_43560;
         v48 = &off_43560;
         v49 = &off_43560;
         v310 = &off_43590;
         v307 = &off_43590;
-        v308 = 0;
+        excludedFQDNs = 0;
         v305 = &off_43560;
         v306 = &off_43560;
         goto LABEL_194;
@@ -2840,44 +2840,44 @@ LABEL_175:
 
     else
     {
-      switch(a4)
+      switch(grade)
       {
         case 4uLL:
-          v107 = [v14 grade];
+          grade = [v14 grade];
           v108 = &off_435A8;
-          if (v107 != &dword_0 + 1)
+          if (grade != &dword_0 + 1)
           {
             v108 = &off_43560;
           }
 
           v314 = v108;
-          v109 = [v14 dnsSettings];
-          v110 = [v109 settings];
+          dnsSettings = [v14 dnsSettings];
+          settings = [dnsSettings settings];
           objc_opt_class();
           v111 = objc_opt_isKindOfClass();
 
-          v112 = [v14 dnsSettings];
-          v113 = [v112 settings];
-          v114 = v113;
+          dnsSettings2 = [v14 dnsSettings];
+          settings2 = [dnsSettings2 settings];
+          v114 = settings2;
           if (v111)
           {
-            v115 = [v113 serverURL];
-            v334 = [v115 absoluteString];
+            serverURL = [settings2 serverURL];
+            serverAddress = [serverURL absoluteString];
 
             v326 = 0;
-            v327 = 0;
-            v324 = 0;
-            v325 = 0;
-            v328 = 0;
-            v329 = 0;
+            localIdentifier3 = 0;
+            remoteIdentifier = 0;
+            localIdentifier = 0;
+            copyPassword2 = 0;
+            copyPassword = 0;
             v43 = 0;
-            v322 = 0;
-            v323 = 0;
-            v44 = 0;
+            address = 0;
+            absoluteString = 0;
+            proxySettings = 0;
             v45 = 0;
-            v319 = 0;
-            v320 = 0;
-            v321 = 0;
+            copyPassword3 = 0;
+            matchFQDNs = 0;
+            excludedDomains = 0;
             v309 = 0;
             v47 = &off_43560;
             v312 = &off_43560;
@@ -2885,12 +2885,12 @@ LABEL_175:
             v48 = &off_43560;
             v49 = &off_43560;
             v310 = &off_43590;
-            v311 = 0;
+            matchDomains11 = 0;
             v307 = &off_43590;
-            v308 = 0;
+            excludedFQDNs = 0;
             v305 = &off_43560;
             v306 = &off_43560;
-            v330 = 0;
+            username = 0;
             v331 = &off_43560;
             v46 = &off_435D8;
           }
@@ -2900,27 +2900,27 @@ LABEL_175:
             objc_opt_class();
             v213 = objc_opt_isKindOfClass();
 
-            v214 = [v14 dnsSettings];
-            v215 = [v214 settings];
-            v216 = v215;
+            dnsSettings3 = [v14 dnsSettings];
+            settings3 = [dnsSettings3 settings];
+            v216 = settings3;
             if (v213)
             {
-              v334 = [v215 serverName];
+              serverAddress = [settings3 serverName];
 
               v326 = 0;
-              v327 = 0;
-              v324 = 0;
-              v325 = 0;
-              v328 = 0;
-              v329 = 0;
+              localIdentifier3 = 0;
+              remoteIdentifier = 0;
+              localIdentifier = 0;
+              copyPassword2 = 0;
+              copyPassword = 0;
               v43 = 0;
-              v322 = 0;
-              v323 = 0;
-              v44 = 0;
+              address = 0;
+              absoluteString = 0;
+              proxySettings = 0;
               v45 = 0;
-              v319 = 0;
-              v320 = 0;
-              v321 = 0;
+              copyPassword3 = 0;
+              matchFQDNs = 0;
+              excludedDomains = 0;
               v309 = 0;
               v47 = &off_43560;
               v312 = &off_43560;
@@ -2928,35 +2928,35 @@ LABEL_175:
               v48 = &off_43560;
               v49 = &off_43560;
               v310 = &off_43590;
-              v311 = 0;
+              matchDomains11 = 0;
               v307 = &off_43590;
-              v308 = 0;
+              excludedFQDNs = 0;
               v305 = &off_43560;
               v306 = &off_43560;
-              v330 = 0;
+              username = 0;
               v331 = &off_43560;
               v46 = &off_43578;
             }
 
             else
             {
-              v255 = [v215 servers];
-              v334 = [v255 firstObject];
+              servers = [settings3 servers];
+              serverAddress = [servers firstObject];
 
               v326 = 0;
-              v327 = 0;
-              v324 = 0;
-              v325 = 0;
-              v328 = 0;
-              v329 = 0;
+              localIdentifier3 = 0;
+              remoteIdentifier = 0;
+              localIdentifier = 0;
+              copyPassword2 = 0;
+              copyPassword = 0;
               v43 = 0;
-              v322 = 0;
-              v323 = 0;
-              v44 = 0;
+              address = 0;
+              absoluteString = 0;
+              proxySettings = 0;
               v45 = 0;
-              v319 = 0;
-              v320 = 0;
-              v321 = 0;
+              copyPassword3 = 0;
+              matchFQDNs = 0;
+              excludedDomains = 0;
               v309 = 0;
               v46 = &off_43590;
               v47 = &off_43560;
@@ -2965,12 +2965,12 @@ LABEL_175:
               v48 = &off_43560;
               v49 = &off_43560;
               v310 = &off_43590;
-              v311 = 0;
+              matchDomains11 = 0;
               v307 = &off_43590;
-              v308 = 0;
+              excludedFQDNs = 0;
               v305 = &off_43560;
               v306 = &off_43560;
-              v330 = 0;
+              username = 0;
               v331 = &off_43560;
             }
           }
@@ -2979,12 +2979,12 @@ LABEL_175:
         case 5uLL:
           v301 = v8;
           v116 = +[MCProfileConnection sharedConnection];
-          v117 = [v116 isSupervised];
+          isSupervised = [v116 isSupervised];
 
           v118 = &off_435A8;
           v345 = 0u;
           v346 = 0u;
-          if (!v117)
+          if (!isSupervised)
           {
             v118 = &off_43560;
           }
@@ -2992,11 +2992,11 @@ LABEL_175:
           v314 = v118;
           v343 = 0uLL;
           v344 = 0uLL;
-          v119 = [v14 dnsProxy];
-          v120 = [v119 perApp];
-          v121 = [v120 appRules];
+          dnsProxy = [v14 dnsProxy];
+          perApp = [dnsProxy perApp];
+          appRules2 = [perApp appRules];
 
-          v122 = [v121 countByEnumeratingWithState:&v343 objects:v357 count:16];
+          v122 = [appRules2 countByEnumeratingWithState:&v343 objects:v357 count:16];
           if (v122)
           {
             v123 = v122;
@@ -3007,86 +3007,86 @@ LABEL_175:
               {
                 if (*v344 != v124)
                 {
-                  objc_enumerationMutation(v121);
+                  objc_enumerationMutation(appRules2);
                 }
 
                 v126 = *(*(&v343 + 1) + 8 * j);
-                v127 = [v126 matchSigningIdentifier];
-                if (v127)
+                matchSigningIdentifier4 = [v126 matchSigningIdentifier];
+                if (matchSigningIdentifier4)
                 {
-                  v128 = v127;
-                  v129 = [v126 matchSigningIdentifier];
-                  v130 = [v16 objectForKeyedSubscript:v129];
+                  v128 = matchSigningIdentifier4;
+                  matchSigningIdentifier5 = [v126 matchSigningIdentifier];
+                  v130 = [v16 objectForKeyedSubscript:matchSigningIdentifier5];
 
                   if (!v130)
                   {
-                    v131 = [v126 matchDomains];
-                    if (v131 && (v132 = v131, [v126 matchDomains], v133 = objc_claimAutoreleasedReturnValue(), v134 = objc_msgSend(v133, "count"), v133, v132, v134))
+                    matchDomains4 = [v126 matchDomains];
+                    if (matchDomains4 && (v132 = matchDomains4, [v126 matchDomains], v133 = objc_claimAutoreleasedReturnValue(), v134 = objc_msgSend(v133, "count"), v133, v132, v134))
                     {
-                      v135 = [v126 matchDomains];
-                      v136 = [v135 count];
+                      matchDomains5 = [v126 matchDomains];
+                      v136 = [matchDomains5 count];
 
                       if (v136 == &dword_0 + 1)
                       {
-                        v137 = [v126 matchDomains];
-                        [v137 objectAtIndexedSubscript:0];
+                        matchDomains6 = [v126 matchDomains];
+                        [matchDomains6 objectAtIndexedSubscript:0];
                       }
 
                       else
                       {
-                        v137 = [NSBundle bundleForClass:objc_opt_class()];
-                        [v137 localizedStringForKey:@"MULTIPLE_DOMAINS" value:&stru_411E8 table:@"MobileVPN"];
+                        matchDomains6 = [NSBundle bundleForClass:objc_opt_class()];
+                        [matchDomains6 localizedStringForKey:@"MULTIPLE_DOMAINS" value:&stru_411E8 table:@"MobileVPN"];
                       }
                       v138 = ;
-                      v139 = [v126 matchSigningIdentifier];
-                      [v16 setObject:v138 forKeyedSubscript:v139];
+                      matchSigningIdentifier6 = [v126 matchSigningIdentifier];
+                      [v16 setObject:v138 forKeyedSubscript:matchSigningIdentifier6];
                     }
 
                     else
                     {
-                      v137 = [v126 matchSigningIdentifier];
-                      [v16 setObject:&stru_411E8 forKeyedSubscript:v137];
+                      matchDomains6 = [v126 matchSigningIdentifier];
+                      [v16 setObject:&stru_411E8 forKeyedSubscript:matchDomains6];
                     }
                   }
                 }
               }
 
-              v123 = [v121 countByEnumeratingWithState:&v343 objects:v357 count:16];
+              v123 = [appRules2 countByEnumeratingWithState:&v343 objects:v357 count:16];
             }
 
             while (v123);
           }
 
-          v140 = [v318 externalIdentifier];
-          v309 = v140 != 0;
+          externalIdentifier = [v318 externalIdentifier];
+          v309 = externalIdentifier != 0;
 
           v326 = 0;
-          v327 = 0;
-          v324 = 0;
-          v325 = 0;
-          v328 = 0;
-          v329 = 0;
+          localIdentifier3 = 0;
+          remoteIdentifier = 0;
+          localIdentifier = 0;
+          copyPassword2 = 0;
+          copyPassword = 0;
           v43 = 0;
-          v322 = 0;
-          v323 = 0;
-          v44 = 0;
+          address = 0;
+          absoluteString = 0;
+          proxySettings = 0;
           v45 = 0;
-          v319 = 0;
-          v320 = 0;
-          v321 = 0;
-          v334 = 0;
+          copyPassword3 = 0;
+          matchFQDNs = 0;
+          excludedDomains = 0;
+          serverAddress = 0;
           v47 = &off_43560;
           v312 = &off_43560;
           v313 = &off_43560;
           v48 = &off_43560;
           v49 = &off_43560;
           v310 = &off_43590;
-          v311 = 0;
+          matchDomains11 = 0;
           v307 = &off_43590;
-          v308 = 0;
+          excludedFQDNs = 0;
           v305 = &off_43560;
           v306 = &off_43560;
-          v330 = 0;
+          username = 0;
           v331 = &off_43560;
           v46 = &off_435F0;
           goto LABEL_193;
@@ -3096,11 +3096,11 @@ LABEL_175:
           v342 = 0u;
           v339 = 0u;
           v340 = 0u;
-          v21 = [v14 contentFilter];
-          v22 = [v21 perApp];
-          v23 = [v22 appRules];
+          contentFilter = [v14 contentFilter];
+          perApp2 = [contentFilter perApp];
+          appRules3 = [perApp2 appRules];
 
-          v24 = [v23 countByEnumeratingWithState:&v339 objects:v356 count:16];
+          v24 = [appRules3 countByEnumeratingWithState:&v339 objects:v356 count:16];
           if (v24)
           {
             v25 = v24;
@@ -3111,76 +3111,76 @@ LABEL_175:
               {
                 if (*v340 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(appRules3);
                 }
 
                 v28 = *(*(&v339 + 1) + 8 * k);
-                v29 = [v28 matchSigningIdentifier];
-                if (v29)
+                matchSigningIdentifier7 = [v28 matchSigningIdentifier];
+                if (matchSigningIdentifier7)
                 {
-                  v30 = v29;
-                  v31 = [v28 matchSigningIdentifier];
-                  v32 = [v16 objectForKeyedSubscript:v31];
+                  v30 = matchSigningIdentifier7;
+                  matchSigningIdentifier8 = [v28 matchSigningIdentifier];
+                  v32 = [v16 objectForKeyedSubscript:matchSigningIdentifier8];
 
                   if (!v32)
                   {
-                    v33 = [v28 matchDomains];
-                    if (v33 && (v34 = v33, [v28 matchDomains], v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "count"), v35, v34, v36))
+                    matchDomains7 = [v28 matchDomains];
+                    if (matchDomains7 && (v34 = matchDomains7, [v28 matchDomains], v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "count"), v35, v34, v36))
                     {
-                      v37 = [v28 matchDomains];
-                      v38 = [v37 count];
+                      matchDomains8 = [v28 matchDomains];
+                      v38 = [matchDomains8 count];
 
                       if (v38 == &dword_0 + 1)
                       {
-                        v39 = [v28 matchDomains];
-                        [v39 objectAtIndexedSubscript:0];
+                        matchDomains9 = [v28 matchDomains];
+                        [matchDomains9 objectAtIndexedSubscript:0];
                       }
 
                       else
                       {
-                        v39 = [NSBundle bundleForClass:objc_opt_class()];
-                        [v39 localizedStringForKey:@"MULTIPLE_DOMAINS" value:&stru_411E8 table:@"MobileVPN"];
+                        matchDomains9 = [NSBundle bundleForClass:objc_opt_class()];
+                        [matchDomains9 localizedStringForKey:@"MULTIPLE_DOMAINS" value:&stru_411E8 table:@"MobileVPN"];
                       }
                       v40 = ;
-                      v41 = [v28 matchSigningIdentifier];
-                      [v16 setObject:v40 forKeyedSubscript:v41];
+                      matchSigningIdentifier9 = [v28 matchSigningIdentifier];
+                      [v16 setObject:v40 forKeyedSubscript:matchSigningIdentifier9];
                     }
 
                     else
                     {
-                      v39 = [v28 matchSigningIdentifier];
-                      [v16 setObject:&stru_411E8 forKeyedSubscript:v39];
+                      matchDomains9 = [v28 matchSigningIdentifier];
+                      [v16 setObject:&stru_411E8 forKeyedSubscript:matchDomains9];
                     }
                   }
                 }
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v339 objects:v356 count:16];
+              v25 = [appRules3 countByEnumeratingWithState:&v339 objects:v356 count:16];
             }
 
             while (v25);
           }
 
-          v42 = [v318 externalIdentifier];
-          v309 = v42 != 0;
+          externalIdentifier2 = [v318 externalIdentifier];
+          v309 = externalIdentifier2 != 0;
 
           v326 = 0;
-          v327 = 0;
-          v324 = 0;
-          v325 = 0;
-          v328 = 0;
-          v329 = 0;
+          localIdentifier3 = 0;
+          remoteIdentifier = 0;
+          localIdentifier = 0;
+          copyPassword2 = 0;
+          copyPassword = 0;
           v43 = 0;
-          v322 = 0;
-          v323 = 0;
-          v44 = 0;
+          address = 0;
+          absoluteString = 0;
+          proxySettings = 0;
           v45 = 0;
-          v319 = 0;
-          v320 = 0;
-          v321 = 0;
-          v334 = 0;
+          copyPassword3 = 0;
+          matchFQDNs = 0;
+          excludedDomains = 0;
+          serverAddress = 0;
           v46 = &off_43590;
-          v311 = 0;
+          matchDomains11 = 0;
           v312 = &off_43560;
           v47 = &off_43560;
           v313 = &off_43560;
@@ -3188,9 +3188,9 @@ LABEL_175:
           v49 = &off_43560;
           v310 = &off_43590;
           v307 = &off_43590;
-          v308 = 0;
+          excludedFQDNs = 0;
           v306 = &off_43560;
-          v330 = 0;
+          username = 0;
           v331 = &off_43560;
 LABEL_192:
           v314 = &off_43560;
@@ -3199,15 +3199,15 @@ LABEL_193:
           v8 = v301;
 LABEL_194:
           v275 = v49;
-          if ([v49 BOOLValue] && -[VPNConnectionStore configurationIsManaged:](v317, "configurationIsManaged:", v318))
+          if ([v49 BOOLValue] && -[VPNConnectionStore configurationIsManaged:](selfCopy, "configurationIsManaged:", v318))
           {
             [v8 setValue:v275 forKey:@"VPNOnDemandUserOverrideDisabled"];
           }
 
           [v8 setValue:v331 forKey:@"VPNEnabled"];
-          if (v330)
+          if (username)
           {
-            v276 = v330;
+            v276 = username;
           }
 
           else
@@ -3216,9 +3216,9 @@ LABEL_194:
           }
 
           [v8 setValue:v276 forKey:@"authorization"];
-          if (v334)
+          if (serverAddress)
           {
-            v277 = v334;
+            v277 = serverAddress;
           }
 
           else
@@ -3227,9 +3227,9 @@ LABEL_194:
           }
 
           [v8 setValue:v277 forKey:@"server"];
-          if (v333)
+          if (name)
           {
-            v278 = v333;
+            v278 = name;
           }
 
           else
@@ -3238,9 +3238,9 @@ LABEL_194:
           }
 
           [v8 setValue:v278 forKey:@"dispName"];
-          if (v328)
+          if (copyPassword2)
           {
-            v279 = v328;
+            v279 = copyPassword2;
           }
 
           else
@@ -3255,9 +3255,9 @@ LABEL_194:
           [v8 setValue:v46 forKey:@"dnsType"];
           [v8 setValue:v314 forKey:@"dnsProhibitDisablement"];
           [v8 setValue:v310 forKey:@"authType"];
-          if (v327)
+          if (localIdentifier3)
           {
-            v280 = v327;
+            v280 = localIdentifier3;
           }
 
           else
@@ -3266,9 +3266,9 @@ LABEL_194:
           }
 
           [v8 setValue:v280 forKey:@"group"];
-          if (v329)
+          if (copyPassword)
           {
-            v281 = v329;
+            v281 = copyPassword;
           }
 
           else
@@ -3295,9 +3295,9 @@ LABEL_194:
           }
 
           [v8 setValue:v282 forKey:@"VPNProxyType"];
-          if (v322)
+          if (address)
           {
-            v283 = v322;
+            v283 = address;
           }
 
           else
@@ -3306,9 +3306,9 @@ LABEL_194:
           }
 
           [v8 setValue:v283 forKey:@"VPNProxyServer"];
-          if (v44)
+          if (proxySettings)
           {
-            v284 = v44;
+            v284 = proxySettings;
           }
 
           else
@@ -3317,9 +3317,9 @@ LABEL_194:
           }
 
           [v8 setValue:v284 forKey:@"VPNProxyPort"];
-          if (v323)
+          if (absoluteString)
           {
-            v285 = v323;
+            v285 = absoluteString;
           }
 
           else
@@ -3342,9 +3342,9 @@ LABEL_194:
           [v8 setValue:v286 forKey:@"VPNProxyUsername"];
           [v8 setValue:v313 forKey:@"VPNOnDemandCapable"];
           [v8 setValue:v48 forKey:@"VPNOnDemandEnabled"];
-          if (v319)
+          if (copyPassword3)
           {
-            v287 = v319;
+            v287 = copyPassword3;
           }
 
           else
@@ -3354,9 +3354,9 @@ LABEL_194:
 
           [v8 setValue:v287 forKey:@"VPNProxyPassword"];
           [v8 setValue:&off_43560 forKey:@"VPNPasswordRequired"];
-          if (v315)
+          if (applicationName)
           {
-            v288 = v315;
+            v288 = applicationName;
           }
 
           else
@@ -3365,9 +3365,9 @@ LABEL_194:
           }
 
           [v8 setValue:v288 forKey:@"VPNApplicationName"];
-          if (v332)
+          if (applicationIdentifier)
           {
-            v289 = v332;
+            v289 = applicationIdentifier;
           }
 
           else
@@ -3376,9 +3376,9 @@ LABEL_194:
           }
 
           [v8 setValue:v289 forKey:@"VPNApplicationBundleID"];
-          if (v325)
+          if (localIdentifier)
           {
-            v290 = v325;
+            v290 = localIdentifier;
           }
 
           else
@@ -3387,9 +3387,9 @@ LABEL_194:
           }
 
           [v8 setValue:v290 forKey:@"VPNLocalIdentifier"];
-          if (v324)
+          if (remoteIdentifier)
           {
-            v291 = v324;
+            v291 = remoteIdentifier;
           }
 
           else
@@ -3403,58 +3403,58 @@ LABEL_194:
             [v8 setValue:&off_435A8 forKey:@"VPNIsPerApp"];
           }
 
-          v6 = v316;
-          v7 = v318;
+          dCopy = v316;
+          configurations = v318;
           if ([v16 count])
           {
             [v8 setValue:v16 forKey:@"VPNIncludedBundleIDs"];
           }
 
-          if ([v311 count])
+          if ([matchDomains11 count])
           {
-            [v8 setValue:v311 forKey:@"VPNMatchDomains"];
+            [v8 setValue:matchDomains11 forKey:@"VPNMatchDomains"];
           }
 
-          if ([v321 count])
+          if ([excludedDomains count])
           {
-            [v8 setValue:v321 forKey:@"VPNExcludeDomains"];
+            [v8 setValue:excludedDomains forKey:@"VPNExcludeDomains"];
           }
 
-          if ([v320 count])
+          if ([matchFQDNs count])
           {
-            [v8 setValue:v320 forKey:@"VPNMatchFQDNs"];
+            [v8 setValue:matchFQDNs forKey:@"VPNMatchFQDNs"];
           }
 
-          if ([v308 count])
+          if ([excludedFQDNs count])
           {
-            [v8 setValue:v308 forKey:@"VPNExcludeFQDNs"];
+            [v8 setValue:excludedFQDNs forKey:@"VPNExcludeFQDNs"];
           }
 
           goto LABEL_260;
       }
     }
 
-    if (a4 - 7 > 1)
+    if (grade - 7 > 1)
     {
       v326 = 0;
-      v327 = 0;
-      v324 = 0;
-      v325 = 0;
-      v328 = 0;
-      v329 = 0;
+      localIdentifier3 = 0;
+      remoteIdentifier = 0;
+      localIdentifier = 0;
+      copyPassword2 = 0;
+      copyPassword = 0;
       v43 = 0;
-      v322 = 0;
-      v323 = 0;
-      v44 = 0;
+      address = 0;
+      absoluteString = 0;
+      proxySettings = 0;
       v45 = 0;
-      v319 = 0;
-      v320 = 0;
-      v311 = 0;
+      copyPassword3 = 0;
+      matchFQDNs = 0;
+      matchDomains11 = 0;
       v312 = &off_43560;
-      v321 = 0;
+      excludedDomains = 0;
       v309 = 0;
-      v334 = 0;
-      v330 = 0;
+      serverAddress = 0;
+      username = 0;
       v331 = &off_43560;
       v46 = &off_43590;
       v47 = &off_43560;
@@ -3464,75 +3464,75 @@ LABEL_194:
       v49 = &off_43560;
       v310 = &off_43590;
       v307 = &off_43590;
-      v308 = 0;
+      excludedFQDNs = 0;
       v305 = &off_43560;
       v306 = &off_43560;
       goto LABEL_194;
     }
 
-    v145 = [v14 relay];
-    v146 = [v145 isEnabled];
+    relay = [v14 relay];
+    isEnabled2 = [relay isEnabled];
     v147 = &off_435A8;
-    if (!v146)
+    if (!isEnabled2)
     {
       v147 = &off_43560;
     }
 
     v331 = v147;
 
-    v148 = [v14 relay];
-    v149 = [v148 relays];
-    v150 = [v149 lastObject];
-    v151 = [v150 HTTP3RelayURL];
-    v152 = [v151 absoluteString];
+    relay2 = [v14 relay];
+    relays = [relay2 relays];
+    lastObject = [relays lastObject];
+    hTTP3RelayURL = [lastObject HTTP3RelayURL];
+    absoluteString2 = [hTTP3RelayURL absoluteString];
 
-    v334 = v152;
-    if (!v152)
+    serverAddress = absoluteString2;
+    if (!absoluteString2)
     {
-      v153 = [v14 relay];
-      v154 = [v153 relays];
-      v155 = [v154 lastObject];
-      v156 = [v155 HTTP2RelayURL];
-      v334 = [v156 absoluteString];
+      relay3 = [v14 relay];
+      relays2 = [relay3 relays];
+      lastObject2 = [relays2 lastObject];
+      hTTP2RelayURL = [lastObject2 HTTP2RelayURL];
+      serverAddress = [hTTP2RelayURL absoluteString];
     }
 
-    v157 = [v14 relay];
-    v158 = [v157 perApp];
-    v159 = [v158 appRules];
+    relay4 = [v14 relay];
+    perApp3 = [relay4 perApp];
+    appRules4 = [perApp3 appRules];
     v301 = v8;
-    if ([v159 count])
+    if ([appRules4 count])
     {
       v309 = 1;
     }
 
     else
     {
-      v256 = [v14 relay];
-      v257 = [v256 matchDomains];
-      v309 = [v257 count] != 0;
+      relay5 = [v14 relay];
+      matchDomains10 = [relay5 matchDomains];
+      v309 = [matchDomains10 count] != 0;
     }
 
-    v258 = [v14 relay];
-    v311 = [v258 matchDomains];
+    relay6 = [v14 relay];
+    matchDomains11 = [relay6 matchDomains];
 
-    v259 = [v14 relay];
-    v321 = [v259 excludedDomains];
+    relay7 = [v14 relay];
+    excludedDomains = [relay7 excludedDomains];
 
-    v260 = [v14 relay];
-    v320 = [v260 matchFQDNs];
+    relay8 = [v14 relay];
+    matchFQDNs = [relay8 matchFQDNs];
 
-    v261 = [v14 relay];
-    v308 = [v261 excludedFQDNs];
+    relay9 = [v14 relay];
+    excludedFQDNs = [relay9 excludedFQDNs];
 
     v337 = 0u;
     v338 = 0u;
     v335 = 0u;
     v336 = 0u;
-    v262 = [v14 relay];
-    v263 = [v262 perApp];
-    v264 = [v263 appRules];
+    relay10 = [v14 relay];
+    perApp4 = [relay10 perApp];
+    appRules5 = [perApp4 appRules];
 
-    v265 = [v264 countByEnumeratingWithState:&v335 objects:v355 count:16];
+    v265 = [appRules5 countByEnumeratingWithState:&v335 objects:v355 count:16];
     if (v265)
     {
       v266 = v265;
@@ -3543,44 +3543,44 @@ LABEL_194:
         {
           if (*v336 != v267)
           {
-            objc_enumerationMutation(v264);
+            objc_enumerationMutation(appRules5);
           }
 
           v269 = *(*(&v335 + 1) + 8 * m);
-          v270 = [v269 matchSigningIdentifier];
-          if (v270)
+          matchSigningIdentifier10 = [v269 matchSigningIdentifier];
+          if (matchSigningIdentifier10)
           {
-            v271 = v270;
-            v272 = [v269 matchSigningIdentifier];
-            v273 = [v16 objectForKeyedSubscript:v272];
+            v271 = matchSigningIdentifier10;
+            matchSigningIdentifier11 = [v269 matchSigningIdentifier];
+            v273 = [v16 objectForKeyedSubscript:matchSigningIdentifier11];
 
             if (!v273)
             {
-              v274 = [v269 matchSigningIdentifier];
-              [v16 setObject:&stru_411E8 forKeyedSubscript:v274];
+              matchSigningIdentifier12 = [v269 matchSigningIdentifier];
+              [v16 setObject:&stru_411E8 forKeyedSubscript:matchSigningIdentifier12];
             }
           }
         }
 
-        v266 = [v264 countByEnumeratingWithState:&v335 objects:v355 count:16];
+        v266 = [appRules5 countByEnumeratingWithState:&v335 objects:v355 count:16];
       }
 
       while (v266);
     }
 
     v326 = 0;
-    v327 = 0;
-    v324 = 0;
-    v325 = 0;
-    v328 = 0;
-    v329 = 0;
+    localIdentifier3 = 0;
+    remoteIdentifier = 0;
+    localIdentifier = 0;
+    copyPassword2 = 0;
+    copyPassword = 0;
     v43 = 0;
-    v322 = 0;
-    v323 = 0;
-    v44 = 0;
+    address = 0;
+    absoluteString = 0;
+    proxySettings = 0;
     v45 = 0;
-    v319 = 0;
-    v330 = 0;
+    copyPassword3 = 0;
+    username = 0;
     v46 = &off_43590;
     v312 = &off_43560;
     v313 = &off_43560;
@@ -3600,20 +3600,20 @@ LABEL_261:
   return v8;
 }
 
-- (void)setActiveVPNID:(id)a3 withGrade:(unint64_t)a4
+- (void)setActiveVPNID:(id)d withGrade:(unint64_t)grade
 {
-  v7 = a3;
-  if (a4 != 2)
+  dCopy = d;
+  if (grade != 2)
   {
-    v8 = (&self->super.isa + a4);
+    v8 = (&self->super.isa + grade);
     v9 = v8 + 13;
-    if (([v8[13] isEqual:v7] & 1) == 0)
+    if (([v8[13] isEqual:dCopy] & 1) == 0)
     {
-      if ([(VPNConnectionStore *)self saveActiveVPNIDToPreferences:v7 withGrade:a4])
+      if ([(VPNConnectionStore *)self saveActiveVPNIDToPreferences:dCopy withGrade:grade])
       {
         [v8[3] disconnect];
-        objc_storeStrong(v9, a3);
-        v10 = [(VPNConnectionStore *)self connectionWithServiceID:*v9 withGrade:a4];
+        objc_storeStrong(v9, d);
+        v10 = [(VPNConnectionStore *)self connectionWithServiceID:*v9 withGrade:grade];
         v11 = v8[3];
         v8[3] = v10;
 
@@ -3632,32 +3632,32 @@ LABEL_261:
   }
 }
 
-- (id)activeVPNIDsWithGrade:(unint64_t)a3
+- (id)activeVPNIDsWithGrade:(unint64_t)grade
 {
-  if (a3 == 8 || a3 == 2)
+  if (grade == 8 || grade == 2)
   {
-    if (!self->_gradeActiveVPNIDLoaded[a3])
+    if (!self->_gradeActiveVPNIDLoaded[grade])
     {
-      v5 = [(VPNConnectionStore *)self copyActiveVPNIDsFromPrefsForGrade:a3];
-      v6 = self->_gradeActiveVPNID[a3];
-      self->_gradeActiveVPNID[a3] = v5;
+      v5 = [(VPNConnectionStore *)self copyActiveVPNIDsFromPrefsForGrade:grade];
+      v6 = self->_gradeActiveVPNID[grade];
+      self->_gradeActiveVPNID[grade] = v5;
 
-      if (self->_gradeActiveVPNID[a3])
+      if (self->_gradeActiveVPNID[grade])
       {
         v7 = 1;
       }
 
       else
       {
-        self->_gradeActiveVPNID[a3] = &__NSArray0__struct;
+        self->_gradeActiveVPNID[grade] = &__NSArray0__struct;
 
         v7 = 0;
       }
 
-      self->_gradeActiveVPNIDLoaded[a3] = v7;
+      self->_gradeActiveVPNIDLoaded[grade] = v7;
     }
 
-    v8 = self->_gradeActiveVPNID[a3];
+    v8 = self->_gradeActiveVPNID[grade];
   }
 
   else
@@ -3668,9 +3668,9 @@ LABEL_261:
   return v8;
 }
 
-- (id)activeVPNIDWithGrade:(unint64_t)a3
+- (id)activeVPNIDWithGrade:(unint64_t)grade
 {
-  if (a3 == 2)
+  if (grade == 2)
   {
     v4 = 0;
   }
@@ -3678,44 +3678,44 @@ LABEL_261:
   else
   {
     gradeActiveVPNIDLoaded = self->_gradeActiveVPNIDLoaded;
-    if (!self->_gradeActiveVPNIDLoaded[a3])
+    if (!self->_gradeActiveVPNIDLoaded[grade])
     {
-      v9 = [(VPNConnectionStore *)self copyActiveVPNIDsFromPrefsForGrade:a3];
+      v9 = [(VPNConnectionStore *)self copyActiveVPNIDsFromPrefsForGrade:grade];
       gradeActiveVPNID = self->_gradeActiveVPNID;
-      v11 = self->_gradeActiveVPNID[a3];
-      self->_gradeActiveVPNID[a3] = 0;
+      v11 = self->_gradeActiveVPNID[grade];
+      self->_gradeActiveVPNID[grade] = 0;
 
       if (v9 && [v9 count])
       {
-        v12 = [v9 firstObject];
-        v13 = gradeActiveVPNID[a3];
-        gradeActiveVPNID[a3] = v12;
+        firstObject = [v9 firstObject];
+        v13 = gradeActiveVPNID[grade];
+        gradeActiveVPNID[grade] = firstObject;
       }
 
-      gradeActiveVPNIDLoaded[a3] = gradeActiveVPNID[a3] != 0;
+      gradeActiveVPNIDLoaded[grade] = gradeActiveVPNID[grade] != 0;
     }
 
-    v4 = self->_gradeActiveVPNID[a3];
+    v4 = self->_gradeActiveVPNID[grade];
   }
 
   return v4;
 }
 
-- (BOOL)isActiveVPNID:(id)a3 withGrade:(unint64_t)a4
+- (BOOL)isActiveVPNID:(id)d withGrade:(unint64_t)grade
 {
-  v6 = a3;
-  v7 = [(VPNConnectionStore *)self activeVPNIDWithGrade:a4];
-  LOBYTE(self) = [v7 isEqual:v6];
+  dCopy = d;
+  v7 = [(VPNConnectionStore *)self activeVPNIDWithGrade:grade];
+  LOBYTE(self) = [v7 isEqual:dCopy];
 
   return self;
 }
 
-- (id)connectionWithServiceID:(id)a3 withGrade:(unint64_t)a4
+- (id)connectionWithServiceID:(id)d withGrade:(unint64_t)grade
 {
-  v6 = a3;
-  if (a4 == 8 || a4 == 2)
+  dCopy = d;
+  if (grade == 8 || grade == 2)
   {
-    v7 = self->_gradeCurrentConnection[a4];
+    v7 = self->_gradeCurrentConnection[grade];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -3735,8 +3735,8 @@ LABEL_261:
           }
 
           v12 = *(*(&v25 + 1) + 8 * i);
-          v13 = [v12 serviceID];
-          v14 = [v13 isEqual:v6];
+          serviceID = [v12 serviceID];
+          v14 = [serviceID isEqual:dCopy];
 
           if (v14)
           {
@@ -3765,12 +3765,12 @@ LABEL_13:
 
   else
   {
-    v15 = [(VPNConnection *)self->_gradeCurrentConnection[a4] serviceID];
-    v16 = [v6 isEqual:v15];
+    serviceID2 = [(VPNConnection *)self->_gradeCurrentConnection[grade] serviceID];
+    v16 = [dCopy isEqual:serviceID2];
 
     if (v16)
     {
-      v9 = self->_gradeCurrentConnection[a4];
+      v9 = self->_gradeCurrentConnection[grade];
       if (v9)
       {
         goto LABEL_20;
@@ -3779,21 +3779,21 @@ LABEL_13:
   }
 
   connectionDict = self->_connectionDict;
-  v18 = self->_connectionDict[a4];
+  v18 = self->_connectionDict[grade];
   if (!v18)
   {
     v19 = objc_alloc_init(NSMutableDictionary);
-    v20 = connectionDict[a4];
-    connectionDict[a4] = v19;
+    v20 = connectionDict[grade];
+    connectionDict[grade] = v19;
 
-    v18 = connectionDict[a4];
+    v18 = connectionDict[grade];
   }
 
-  v9 = [(NSMutableDictionary *)v18 objectForKey:v6];
+  v9 = [(NSMutableDictionary *)v18 objectForKey:dCopy];
   if (!v9)
   {
-    v22 = [(VPNConnectionStore *)self optionsForServiceID:v6 withGrade:a4];
-    if (!v22 || (v23 = [[VPNConnection alloc] initWithServiceID:v6 options:v22]) == 0)
+    v22 = [(VPNConnectionStore *)self optionsForServiceID:dCopy withGrade:grade];
+    if (!v22 || (v23 = [[VPNConnection alloc] initWithServiceID:dCopy options:v22]) == 0)
     {
 
       v9 = 0;
@@ -3801,14 +3801,14 @@ LABEL_13:
     }
 
     v9 = v23;
-    [(NSMutableDictionary *)connectionDict[a4] setObject:v23 forKey:v6];
+    [(NSMutableDictionary *)connectionDict[grade] setObject:v23 forKey:dCopy];
   }
 
 LABEL_20:
   if ([(VPNConnection *)v9 vpnConnectionType]== &dword_0 + 3)
   {
     v24 = 0;
-    [(VPNConnectionStore *)self isTypeEnabledWithServiceID:v6 withGrade:a4 outProviderAvailable:&v24];
+    [(VPNConnectionStore *)self isTypeEnabledWithServiceID:dCopy withGrade:grade outProviderAvailable:&v24];
     [(VPNConnection *)v9 setIsProviderAvailable:v24];
   }
 
@@ -3817,15 +3817,15 @@ LABEL_22:
   return v9;
 }
 
-- (BOOL)alwaysOnToggleEnabledForServiceID:(id)a3
+- (BOOL)alwaysOnToggleEnabledForServiceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(VPNConnectionStore *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v6 = [configurations countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -3835,14 +3835,14 @@ LABEL_3:
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(configurations);
       }
 
       v9 = *(*(&v15 + 1) + 8 * v8);
       if ([v9 grade] != &dword_0 + 3)
       {
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:dCopy];
 
         if (v11)
         {
@@ -3852,7 +3852,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [configurations countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -3866,38 +3866,38 @@ LABEL_3:
 
     if (v6)
     {
-      v13 = [v6 alwaysOnVPN];
+      alwaysOnVPN = [v6 alwaysOnVPN];
 
-      if (v13)
+      if (alwaysOnVPN)
       {
-        v5 = [v6 alwaysOnVPN];
-        v12 = [v5 isToggleEnabled];
+        configurations = [v6 alwaysOnVPN];
+        isToggleEnabled = [configurations isToggleEnabled];
         goto LABEL_14;
       }
     }
 
-    v12 = 0;
+    isToggleEnabled = 0;
   }
 
   else
   {
 LABEL_10:
-    v12 = 0;
+    isToggleEnabled = 0;
 LABEL_14:
   }
 
-  return v12;
+  return isToggleEnabled;
 }
 
-- (id)organizationForServiceID:(id)a3
+- (id)organizationForServiceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(VPNConnectionStore *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v6 = [configurations countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3908,14 +3908,14 @@ LABEL_3:
     {
       if (*v29 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(configurations);
       }
 
       v10 = *(*(&v28 + 1) + 8 * v9);
       if ([v10 grade] != &dword_0 + 3)
       {
-        v11 = [v10 identifier];
-        v12 = [v11 isEqual:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqual:dCopy];
 
         if (v12)
         {
@@ -3925,7 +3925,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v7 = [configurations countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -3942,61 +3942,61 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v14 = [v13 payloadInfo];
-    if (v14)
+    payloadInfo = [v13 payloadInfo];
+    if (payloadInfo)
     {
-      v15 = v14;
-      v16 = [v13 payloadInfo];
-      v17 = [v16 payloadOrganization];
+      v15 = payloadInfo;
+      payloadInfo2 = [v13 payloadInfo];
+      payloadOrganization = [payloadInfo2 payloadOrganization];
 
-      if (v17)
+      if (payloadOrganization)
       {
-        v18 = [v13 payloadInfo];
-        v19 = [v18 payloadOrganization];
+        payloadInfo3 = [v13 payloadInfo];
+        payloadOrganization2 = [payloadInfo3 payloadOrganization];
 
         goto LABEL_17;
       }
     }
 
-    v22 = [v13 applicationName];
+    applicationName = [v13 applicationName];
 
-    if (v22)
+    if (applicationName)
     {
-      v20 = [v13 applicationName];
+      applicationName2 = [v13 applicationName];
     }
 
     else
     {
-      v23 = [v13 appVPN];
+      appVPN = [v13 appVPN];
 
-      if (v23)
+      if (appVPN)
       {
         v24 = 2;
       }
 
       else
       {
-        v25 = [v13 dnsProxy];
+        dnsProxy = [v13 dnsProxy];
 
-        if (v25)
+        if (dnsProxy)
         {
           v24 = 5;
         }
 
         else
         {
-          v26 = [v13 contentFilter];
+          contentFilter = [v13 contentFilter];
 
-          if (v26)
+          if (contentFilter)
           {
             v24 = 6;
           }
 
           else
           {
-            v27 = [v13 urlFilter];
+            urlFilter = [v13 urlFilter];
 
-            if (v27)
+            if (urlFilter)
             {
               v24 = 9;
             }
@@ -4009,7 +4009,7 @@ LABEL_3:
         }
       }
 
-      v20 = [VPNConnectionStore applicationNameForConfiguration:v13 withGrade:v24];
+      applicationName2 = [VPNConnectionStore applicationNameForConfiguration:v13 withGrade:v24];
     }
   }
 
@@ -4019,18 +4019,18 @@ LABEL_10:
 
 LABEL_15:
     v13 = [NSBundle bundleForClass:objc_opt_class()];
-    v20 = [v13 localizedStringForKey:@"CUSTOM" value:&stru_411E8 table:@"MobileVPN"];
+    applicationName2 = [v13 localizedStringForKey:@"CUSTOM" value:&stru_411E8 table:@"MobileVPN"];
   }
 
-  v19 = v20;
+  payloadOrganization2 = applicationName2;
 LABEL_17:
 
-  return v19;
+  return payloadOrganization2;
 }
 
-- (id)organizationForService:(__SCNetworkService *)a3
+- (id)organizationForService:(__SCNetworkService *)service
 {
-  v3 = SCNetworkServiceCopyProtocol(a3, @"com.apple.payload");
+  v3 = SCNetworkServiceCopyProtocol(service, @"com.apple.payload");
   if (v3)
   {
     v4 = v3;
@@ -4067,45 +4067,45 @@ LABEL_17:
   return v8;
 }
 
-- (id)getProfileIDForServiceID:(id)a3
+- (id)getProfileIDForServiceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(VPNConnectionStore *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  configurations = [(VPNConnectionStore *)self configurations];
+  profileIdentifier = [configurations countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (profileIdentifier)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != profileIdentifier; i = i + 1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(configurations);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 grade] != &dword_0 + 3)
         {
-          v10 = [v9 identifier];
-          v11 = [v10 isEqual:v4];
+          identifier = [v9 identifier];
+          v11 = [identifier isEqual:dCopy];
 
           if (v11)
           {
-            v12 = [v9 payloadInfo];
-            v6 = [v12 profileIdentifier];
+            payloadInfo = [v9 payloadInfo];
+            profileIdentifier = [payloadInfo profileIdentifier];
 
             goto LABEL_12;
           }
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      profileIdentifier = [configurations countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (profileIdentifier)
       {
         continue;
       }
@@ -4116,22 +4116,22 @@ LABEL_17:
 
 LABEL_12:
 
-  return v6;
+  return profileIdentifier;
 }
 
-- (id)vpnServicesForCurrentSetWithGrade:(unint64_t)a3 excludePerApp:(BOOL)a4
+- (id)vpnServicesForCurrentSetWithGrade:(unint64_t)grade excludePerApp:(BOOL)app
 {
-  v80 = a4;
+  appCopy = app;
   v6 = objc_alloc_init(NSMutableArray);
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [(VPNConnectionStore *)self configurations];
-  v9 = v8;
-  if (!v8)
+  configurations = [(VPNConnectionStore *)self configurations];
+  v9 = configurations;
+  if (!configurations)
   {
     goto LABEL_86;
   }
 
-  v10 = [v8 mutableCopy];
+  v10 = [configurations mutableCopy];
   if ([v10 count] <= 0x20)
   {
     v11 = sub_F970;
@@ -4144,7 +4144,7 @@ LABEL_12:
 
   [v10 sortUsingFunction:v11 context:0];
   v12 = 1;
-  if (a3)
+  if (grade)
   {
     v12 = 2;
   }
@@ -4153,9 +4153,9 @@ LABEL_12:
   v79 = v7;
   v82 = v6;
   v70 = v9;
-  v72 = self;
+  selfCopy = self;
   v73 = v10;
-  if (a3 != 4)
+  if (grade != 4)
   {
     v85 = 0uLL;
     v86 = 0uLL;
@@ -4163,7 +4163,7 @@ LABEL_12:
     v84 = 0uLL;
     v25 = v10;
     v26 = [v25 countByEnumeratingWithState:&v83 objects:v95 count:16];
-    v27 = v80;
+    v27 = appCopy;
     if (!v26)
     {
       goto LABEL_82;
@@ -4190,43 +4190,43 @@ LABEL_12:
 
         if (v27)
         {
-          v32 = [v31 externalIdentifier];
+          externalIdentifier = [v31 externalIdentifier];
 
-          if (v32)
+          if (externalIdentifier)
           {
             goto LABEL_59;
           }
         }
 
-        if (a3 <= 5)
+        if (grade <= 5)
         {
-          switch(a3)
+          switch(grade)
           {
             case 2uLL:
-              v39 = [v31 appVPN];
+              appVPN = [v31 appVPN];
 
-              if (!v39)
+              if (!appVPN)
               {
                 goto LABEL_59;
               }
 
-              v40 = [v31 appVPN];
-              v41 = [v40 isEnabled];
+              appVPN2 = [v31 appVPN];
+              isEnabled = [appVPN2 isEnabled];
 
-              v34 = [v31 identifier];
-              if (v41)
+              identifier = [v31 identifier];
+              if (isEnabled)
               {
                 goto LABEL_56;
               }
 
               v42 = v79;
 LABEL_57:
-              [v42 addObject:v34];
+              [v42 addObject:identifier];
               goto LABEL_58;
             case 3uLL:
-              v37 = [v31 alwaysOnVPN];
+              alwaysOnVPN = [v31 alwaysOnVPN];
 LABEL_54:
-              v50 = v37;
+              v50 = alwaysOnVPN;
 
               if (!v50)
               {
@@ -4234,12 +4234,12 @@ LABEL_54:
               }
 
 LABEL_55:
-              v34 = [v31 identifier];
+              identifier = [v31 identifier];
 LABEL_56:
               v42 = v82;
               goto LABEL_57;
             case 5uLL:
-              v37 = [v31 dnsProxy];
+              alwaysOnVPN = [v31 dnsProxy];
               goto LABEL_54;
           }
 
@@ -4248,9 +4248,9 @@ LABEL_46:
           if (v43)
           {
             v44 = v43;
-            v45 = [v31 grade];
+            grade = [v31 grade];
 
-            if (v45 == v78)
+            if (grade == v78)
             {
               goto LABEL_55;
             }
@@ -4259,15 +4259,15 @@ LABEL_46:
           goto LABEL_59;
         }
 
-        if (a3 > 7)
+        if (grade > 7)
         {
-          if (a3 != 8)
+          if (grade != 8)
           {
-            if (a3 == 9)
+            if (grade == 9)
             {
-              v38 = [v31 urlFilter];
+              urlFilter = [v31 urlFilter];
 
-              if (v38)
+              if (urlFilter)
               {
                 goto LABEL_55;
               }
@@ -4278,25 +4278,25 @@ LABEL_46:
             goto LABEL_46;
           }
 
-          v46 = [v31 relay];
-          if (!v46)
+          relay = [v31 relay];
+          if (!relay)
           {
             goto LABEL_59;
           }
 
-          v47 = v46;
-          v48 = [v31 relay];
-          v49 = [v48 matchDomains];
-          if ([v49 count])
+          v47 = relay;
+          relay2 = [v31 relay];
+          matchDomains = [relay2 matchDomains];
+          if ([matchDomains count])
           {
 
             v25 = v81;
 LABEL_62:
-            v53 = [v31 relay];
-            v54 = [v53 isEnabled];
+            relay3 = [v31 relay];
+            isEnabled2 = [relay3 isEnabled];
 
-            v34 = [v31 identifier];
-            if (v54)
+            identifier = [v31 identifier];
+            if (isEnabled2)
             {
               v55 = v82;
             }
@@ -4306,19 +4306,19 @@ LABEL_62:
               v55 = v79;
             }
 
-            [v55 addObject:v34];
-            v27 = v80;
+            [v55 addObject:identifier];
+            v27 = appCopy;
 LABEL_58:
 
             goto LABEL_59;
           }
 
-          v74 = [v31 relay];
-          v51 = [v74 perApp];
-          v52 = [v51 appRules];
-          v76 = [v52 count];
+          relay4 = [v31 relay];
+          perApp = [relay4 perApp];
+          appRules = [perApp appRules];
+          v76 = [appRules count];
 
-          v27 = v80;
+          v27 = appCopy;
           v25 = v81;
           if (v76)
           {
@@ -4328,34 +4328,34 @@ LABEL_58:
 
         else
         {
-          if (a3 == 6)
+          if (grade == 6)
           {
-            v37 = [v31 contentFilter];
+            alwaysOnVPN = [v31 contentFilter];
             goto LABEL_54;
           }
 
-          v33 = [v31 relay];
-          if (!v33)
+          relay5 = [v31 relay];
+          if (!relay5)
           {
             goto LABEL_59;
           }
 
-          v34 = v33;
-          v35 = [v31 relay];
-          v36 = [v35 matchDomains];
-          if ([v36 count])
+          identifier = relay5;
+          relay6 = [v31 relay];
+          matchDomains2 = [relay6 matchDomains];
+          if ([matchDomains2 count])
           {
 
             v25 = v81;
             goto LABEL_58;
           }
 
-          v75 = [v31 relay];
-          v56 = [v75 perApp];
-          v57 = [v56 appRules];
-          v77 = [v57 count];
+          relay7 = [v31 relay];
+          perApp2 = [relay7 perApp];
+          appRules2 = [perApp2 appRules];
+          v77 = [appRules2 count];
 
-          v27 = v80;
+          v27 = appCopy;
           v25 = v81;
           if (!v77)
           {
@@ -4404,16 +4404,16 @@ LABEL_59:
       v19 = *(*(&v91 + 1) + 8 * i);
       if ([v19 grade] != &dword_0 + 3)
       {
-        v20 = [v19 dnsSettings];
-        if (v20)
+        dnsSettings = [v19 dnsSettings];
+        if (dnsSettings)
         {
-          v21 = v20;
-          v22 = [v19 grade];
+          v21 = dnsSettings;
+          grade2 = [v19 grade];
 
-          if (v22 == &dword_0 + 1)
+          if (grade2 == &dword_0 + 1)
           {
-            v23 = [v19 identifier];
-            [v6 addObject:v23];
+            identifier2 = [v19 identifier];
+            [v6 addObject:identifier2];
 
             v16 = 1;
           }
@@ -4452,16 +4452,16 @@ LABEL_71:
           v64 = *(*(&v87 + 1) + 8 * j);
           if ([v64 grade] != &dword_0 + 3)
           {
-            v65 = [v64 dnsSettings];
-            if (v65)
+            dnsSettings2 = [v64 dnsSettings];
+            if (dnsSettings2)
             {
-              v66 = v65;
-              v67 = [v64 grade];
+              v66 = dnsSettings2;
+              grade3 = [v64 grade];
 
-              if (v67 == &dword_0 + 2)
+              if (grade3 == &dword_0 + 2)
               {
-                v68 = [v64 identifier];
-                [v6 addObject:v68];
+                identifier3 = [v64 identifier];
+                [v6 addObject:identifier3];
               }
             }
           }
@@ -4485,7 +4485,7 @@ LABEL_82:
     [v6 addObjectsFromArray:v79];
   }
 
-  objc_storeStrong(&v72->_gradeVPNServiceIDs[a3], v6);
+  objc_storeStrong(&selfCopy->_gradeVPNServiceIDs[grade], v6);
 
   v9 = v71;
 LABEL_86:
@@ -4493,9 +4493,9 @@ LABEL_86:
   return v6;
 }
 
-- (id)vpnServiceCountWithGrade:(unint64_t)a3
+- (id)vpnServiceCountWithGrade:(unint64_t)grade
 {
-  v3 = [(VPNConnectionStore *)self vpnServicesForCurrentSetWithGrade:a3];
+  v3 = [(VPNConnectionStore *)self vpnServicesForCurrentSetWithGrade:grade];
   v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 count]);
 
   return v4;
@@ -4530,31 +4530,31 @@ LABEL_86:
   return v15;
 }
 
-- (BOOL)gradePresent:(unint64_t)a3
+- (BOOL)gradePresent:(unint64_t)present
 {
   v5 = [(VPNConnectionStore *)self vpnServicesForCurrentSetWithGrade:3];
   v6 = [v5 count];
 
   if (v6)
   {
-    return a3 == 3;
+    return present == 3;
   }
 
-  v8 = [(VPNConnectionStore *)self vpnServicesForCurrentSetWithGrade:a3];
+  v8 = [(VPNConnectionStore *)self vpnServicesForCurrentSetWithGrade:present];
   v7 = [v8 count] != 0;
 
   return v7;
 }
 
-- (id)appNameForServiceID:(id)a3 withGrade:(unint64_t)a4
+- (id)appNameForServiceID:(id)d withGrade:(unint64_t)grade
 {
-  v6 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(VPNConnectionStore *)self configurations];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v8 = [configurations countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -4564,14 +4564,14 @@ LABEL_86:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(configurations);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 grade] != &dword_0 + 3)
         {
-          v12 = [v11 identifier];
-          v13 = [v12 isEqual:v6];
+          identifier = [v11 identifier];
+          v13 = [identifier isEqual:dCopy];
 
           if (v13)
           {
@@ -4581,7 +4581,7 @@ LABEL_86:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [configurations countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -4593,25 +4593,25 @@ LABEL_86:
 
 LABEL_12:
 
-  v14 = [VPNConnectionStore applicationNameForConfiguration:v8 withGrade:a4];
+  v14 = [VPNConnectionStore applicationNameForConfiguration:v8 withGrade:grade];
 
   return v14;
 }
 
-- (BOOL)isTypeEnabledWithServiceID:(id)a3 withGrade:(unint64_t)a4 outProviderAvailable:(BOOL *)a5
+- (BOOL)isTypeEnabledWithServiceID:(id)d withGrade:(unint64_t)grade outProviderAvailable:(BOOL *)available
 {
-  v8 = a3;
-  if (a5)
+  dCopy = d;
+  if (available)
   {
-    *a5 = 1;
+    *available = 1;
   }
 
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v9 = [(VPNConnectionStore *)self configurations];
-  v10 = [v9 countByEnumeratingWithState:&v59 objects:v64 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v10 = [configurations countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4622,14 +4622,14 @@ LABEL_5:
     {
       if (*v60 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(configurations);
       }
 
       v14 = *(*(&v59 + 1) + 8 * v13);
       if ([v14 grade] != &dword_0 + 3)
       {
-        v15 = [v14 identifier];
-        v16 = [v15 isEqual:v8];
+        identifier = [v14 identifier];
+        v16 = [identifier isEqual:dCopy];
 
         if (v16)
         {
@@ -4639,7 +4639,7 @@ LABEL_5:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v59 objects:v64 count:16];
+        v11 = [configurations countByEnumeratingWithState:&v59 objects:v64 count:16];
         if (v11)
         {
           goto LABEL_5;
@@ -4656,7 +4656,7 @@ LABEL_5:
       goto LABEL_49;
     }
 
-    if (a4 <= 1)
+    if (grade <= 1)
     {
       v18 = [v17 VPN];
 
@@ -4666,70 +4666,70 @@ LABEL_5:
       }
 
       v19 = [v17 VPN];
-      v20 = [v19 protocol];
+      protocol = [v19 protocol];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v22 = [v17 VPN];
+        appVPN3 = [v17 VPN];
         goto LABEL_18;
       }
 
       goto LABEL_48;
     }
 
-    switch(a4)
+    switch(grade)
     {
       case 4uLL:
-        v46 = [v17 dnsSettings];
+        dnsSettings = [v17 dnsSettings];
         break;
       case 3uLL:
-        v46 = [v17 alwaysOnVPN];
+        dnsSettings = [v17 alwaysOnVPN];
         break;
       case 2uLL:
-        v42 = [v17 appVPN];
+        appVPN = [v17 appVPN];
 
-        if (!v42)
+        if (!appVPN)
         {
           goto LABEL_49;
         }
 
-        v43 = [v17 appVPN];
-        v44 = [v43 protocol];
+        appVPN2 = [v17 appVPN];
+        protocol2 = [appVPN2 protocol];
         objc_opt_class();
         v45 = objc_opt_isKindOfClass();
 
         if (v45)
         {
-          v22 = [v17 appVPN];
+          appVPN3 = [v17 appVPN];
 LABEL_18:
-          v23 = v22;
-          v24 = [v22 protocol];
-          v25 = [v24 pluginType];
+          v23 = appVPN3;
+          protocol3 = [appVPN3 protocol];
+          pluginType = [protocol3 pluginType];
 
-          if (!v25)
+          if (!pluginType)
           {
             goto LABEL_50;
           }
 
-          v26 = [LSApplicationProxy applicationProxyForIdentifier:v25];
+          v26 = [LSApplicationProxy applicationProxyForIdentifier:pluginType];
           v27 = v26;
           if (v26)
           {
-            v28 = [v26 appState];
-            if (v28)
+            appState = [v26 appState];
+            if (appState)
             {
-              v29 = v28;
-              v30 = [v27 appState];
-              if ([v30 isInstalled])
+              v29 = appState;
+              appState2 = [v27 appState];
+              if ([appState2 isInstalled])
               {
-                v31 = [v27 appState];
-                v32 = [v31 isValid];
+                appState3 = [v27 appState];
+                isValid = [appState3 isValid];
 
-                if (v32)
+                if (isValid)
                 {
-                  if (!a5)
+                  if (!available)
                   {
                     v48 = 1;
                     goto LABEL_57;
@@ -4755,10 +4755,10 @@ LABEL_18:
                         }
 
                         v35 = *(*(&v55 + 1) + 8 * i);
-                        if (a4 > 1)
+                        if (grade > 1)
                         {
-                          v38 = [*(*(&v55 + 1) + 8 * i) protocol];
-                          if ([v38 isEqualToString:@"com.apple.networkextension.packet-tunnel"])
+                          protocol4 = [*(*(&v55 + 1) + 8 * i) protocol];
+                          if ([protocol4 isEqualToString:@"com.apple.networkextension.packet-tunnel"])
                           {
 
 LABEL_61:
@@ -4766,8 +4766,8 @@ LABEL_61:
                             goto LABEL_62;
                           }
 
-                          v39 = [v35 protocol];
-                          v40 = [v39 isEqualToString:@"com.apple.networkextension.app-proxy"];
+                          protocol5 = [v35 protocol];
+                          v40 = [protocol5 isEqualToString:@"com.apple.networkextension.app-proxy"];
 
                           if (v40)
                           {
@@ -4777,8 +4777,8 @@ LABEL_61:
 
                         else
                         {
-                          v36 = [*(*(&v55 + 1) + 8 * i) protocol];
-                          v37 = [v36 isEqualToString:@"com.apple.networkextension.packet-tunnel"];
+                          protocol6 = [*(*(&v55 + 1) + 8 * i) protocol];
+                          v37 = [protocol6 isEqualToString:@"com.apple.networkextension.packet-tunnel"];
 
                           if (v37)
                           {
@@ -4806,7 +4806,7 @@ LABEL_62:
                     v41 = 0;
                   }
 
-                  *a5 = v41;
+                  *available = v41;
                   v48 = 1;
 LABEL_56:
 
@@ -4821,7 +4821,7 @@ LABEL_57:
             }
           }
 
-          v33 = [NSString stringWithFormat:@"VPN-%@.plist", v25];
+          v33 = [NSString stringWithFormat:@"VPN-%@.plist", pluginType];
           v50 = SCPreferencesCreate(kCFAllocatorDefault, @"com.apple.mobilevpn", v33);
           if (v50)
           {
@@ -4833,27 +4833,27 @@ LABEL_57:
           else
           {
             v48 = 0;
-            *a5 = 0;
+            *available = 0;
           }
 
           goto LABEL_56;
         }
 
 LABEL_48:
-        v25 = 0;
+        pluginType = 0;
         v48 = 1;
         goto LABEL_51;
       default:
-        if (a4 - 7 > 1)
+        if (grade - 7 > 1)
         {
           goto LABEL_49;
         }
 
-        v46 = [v17 relay];
+        dnsSettings = [v17 relay];
         break;
     }
 
-    v47 = v46;
+    v47 = dnsSettings;
 
     if (!v47)
     {
@@ -4867,7 +4867,7 @@ LABEL_12:
 
   v17 = 0;
 LABEL_49:
-  v25 = 0;
+  pluginType = 0;
 LABEL_50:
   v48 = 0;
 LABEL_51:
@@ -4875,15 +4875,15 @@ LABEL_51:
   return v48;
 }
 
-- (BOOL)isEnabledWithServiceID:(id)a3 withGrade:(unint64_t)a4
+- (BOOL)isEnabledWithServiceID:(id)d withGrade:(unint64_t)grade
 {
-  v6 = a3;
+  dCopy = d;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(VPNConnectionStore *)self configurations];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v8 = [configurations countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = *v26;
@@ -4893,14 +4893,14 @@ LABEL_3:
     {
       if (*v26 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(configurations);
       }
 
       v11 = *(*(&v25 + 1) + 8 * v10);
       if ([v11 grade] != &dword_0 + 3)
       {
-        v12 = [v11 identifier];
-        v13 = [v12 isEqual:v6];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqual:dCopy];
 
         if (v13)
         {
@@ -4910,7 +4910,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v8 = [configurations countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -4927,31 +4927,31 @@ LABEL_3:
       goto LABEL_43;
     }
 
-    if (a4 > 2)
+    if (grade > 2)
     {
-      if (a4 <= 4)
+      if (grade <= 4)
       {
-        if (a4 == 3)
+        if (grade == 3)
         {
-          v20 = [v8 alwaysOnVPN];
+          alwaysOnVPN = [v8 alwaysOnVPN];
 
-          if (v20)
+          if (alwaysOnVPN)
           {
-            v16 = [v8 alwaysOnVPN];
+            alwaysOnVPN2 = [v8 alwaysOnVPN];
             goto LABEL_38;
           }
         }
 
         else
         {
-          v15 = [v8 dnsSettings];
+          dnsSettings = [v8 dnsSettings];
 
-          if (v15)
+          if (dnsSettings)
           {
-            v16 = [v8 dnsSettings];
+            alwaysOnVPN2 = [v8 dnsSettings];
 LABEL_38:
-            v7 = v16;
-            v14 = [v16 isEnabled];
+            configurations = alwaysOnVPN2;
+            isEnabled = [alwaysOnVPN2 isEnabled];
             goto LABEL_39;
           }
         }
@@ -4959,15 +4959,15 @@ LABEL_38:
         goto LABEL_43;
       }
 
-      if (a4 != 5)
+      if (grade != 5)
       {
-        if (a4 == 6)
+        if (grade == 6)
         {
-          v18 = [v8 contentFilter];
+          contentFilter = [v8 contentFilter];
 
-          if (v18)
+          if (contentFilter)
           {
-            v16 = [v8 contentFilter];
+            alwaysOnVPN2 = [v8 contentFilter];
             goto LABEL_38;
           }
 
@@ -4977,28 +4977,28 @@ LABEL_38:
         goto LABEL_28;
       }
 
-      v21 = [v8 dnsProxy];
+      dnsProxy = [v8 dnsProxy];
 
-      if (v21)
+      if (dnsProxy)
       {
-        v16 = [v8 dnsProxy];
+        alwaysOnVPN2 = [v8 dnsProxy];
         goto LABEL_38;
       }
 
       goto LABEL_43;
     }
 
-    if (a4)
+    if (grade)
     {
-      if (a4 != 1)
+      if (grade != 1)
       {
-        if (a4 == 2)
+        if (grade == 2)
         {
-          v17 = [v8 appVPN];
+          appVPN = [v8 appVPN];
 
-          if (v17)
+          if (appVPN)
           {
-            v16 = [v8 appVPN];
+            alwaysOnVPN2 = [v8 appVPN];
             goto LABEL_38;
           }
 
@@ -5006,15 +5006,15 @@ LABEL_38:
         }
 
 LABEL_28:
-        if (a4 - 7 > 1)
+        if (grade - 7 > 1)
         {
-          if (a4 == 9)
+          if (grade == 9)
           {
-            v23 = [v8 urlFilter];
+            urlFilter = [v8 urlFilter];
 
-            if (v23)
+            if (urlFilter)
             {
-              v16 = [v8 urlFilter];
+              alwaysOnVPN2 = [v8 urlFilter];
               goto LABEL_38;
             }
           }
@@ -5022,11 +5022,11 @@ LABEL_28:
 
         else
         {
-          v19 = [v8 relay];
+          relay = [v8 relay];
 
-          if (v19)
+          if (relay)
           {
-            v16 = [v8 relay];
+            alwaysOnVPN2 = [v8 relay];
             goto LABEL_38;
           }
         }
@@ -5037,7 +5037,7 @@ LABEL_28:
       if ([v8 grade] != &dword_0 + 2)
       {
 LABEL_43:
-        v14 = 0;
+        isEnabled = 0;
         goto LABEL_44;
       }
     }
@@ -5051,7 +5051,7 @@ LABEL_43:
 
     if (v22)
     {
-      v16 = [v8 VPN];
+      alwaysOnVPN2 = [v8 VPN];
       goto LABEL_38;
     }
 
@@ -5059,22 +5059,22 @@ LABEL_43:
   }
 
 LABEL_10:
-  v14 = 0;
+  isEnabled = 0;
 LABEL_39:
 
 LABEL_44:
-  return v14;
+  return isEnabled;
 }
 
-- (BOOL)uiToggleAllowedWithServiceID:(id)a3 withGrade:(unint64_t)a4
+- (BOOL)uiToggleAllowedWithServiceID:(id)d withGrade:(unint64_t)grade
 {
-  v6 = a3;
+  dCopy = d;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(VPNConnectionStore *)self configurations];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v8 = [configurations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = *v18;
@@ -5084,14 +5084,14 @@ LABEL_3:
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(configurations);
       }
 
       v11 = *(*(&v17 + 1) + 8 * v10);
       if ([v11 grade] != &dword_0 + 3)
       {
-        v12 = [v11 identifier];
-        v13 = [v12 isEqual:v6];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqual:dCopy];
 
         if (v13)
         {
@@ -5101,7 +5101,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [configurations countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -5113,64 +5113,64 @@ LABEL_3:
 
     v8 = v11;
 
-    v14 = 0;
-    if (a4 - 7 <= 1 && v8)
+    isUIToggleEnabled = 0;
+    if (grade - 7 <= 1 && v8)
     {
-      v15 = [v8 relay];
+      relay = [v8 relay];
 
-      if (v15)
+      if (relay)
       {
-        v7 = [v8 relay];
-        v14 = [v7 isUIToggleEnabled];
+        configurations = [v8 relay];
+        isUIToggleEnabled = [configurations isUIToggleEnabled];
         goto LABEL_15;
       }
 
-      v14 = 0;
+      isUIToggleEnabled = 0;
     }
   }
 
   else
   {
 LABEL_10:
-    v14 = 0;
+    isUIToggleEnabled = 0;
 LABEL_15:
   }
 
-  return v14;
+  return isUIToggleEnabled;
 }
 
-+ (id)applicationNameForConfiguration:(id)a3 withGrade:(unint64_t)a4
++ (id)applicationNameForConfiguration:(id)configuration withGrade:(unint64_t)grade
 {
-  v5 = a3;
-  v6 = [v5 applicationName];
-  v7 = v6;
-  if (v5 && !v6)
+  configurationCopy = configuration;
+  applicationName = [configurationCopy applicationName];
+  pluginType = applicationName;
+  if (configurationCopy && !applicationName)
   {
-    if (a4 <= 1)
+    if (grade <= 1)
     {
-      v8 = [v5 VPN];
-      v9 = [v8 protocol];
+      v8 = [configurationCopy VPN];
+      protocol = [v8 protocol];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v11 = [v5 VPN];
+        appVPN2 = [configurationCopy VPN];
         goto LABEL_6;
       }
 
 LABEL_32:
-      v7 = 0;
+      pluginType = 0;
       goto LABEL_33;
     }
 
-    v7 = 0;
-    if (a4 <= 5)
+    pluginType = 0;
+    if (grade <= 5)
     {
-      if (a4 == 2)
+      if (grade == 2)
       {
-        v24 = [v5 appVPN];
-        v25 = [v24 protocol];
+        appVPN = [configurationCopy appVPN];
+        protocol2 = [appVPN protocol];
         objc_opt_class();
         v26 = objc_opt_isKindOfClass();
 
@@ -5179,18 +5179,18 @@ LABEL_32:
           goto LABEL_32;
         }
 
-        v11 = [v5 appVPN];
+        appVPN2 = [configurationCopy appVPN];
       }
 
       else
       {
-        if (a4 != 5)
+        if (grade != 5)
         {
           goto LABEL_28;
         }
 
-        v14 = [v5 dnsProxy];
-        v15 = [v14 protocol];
+        dnsProxy = [configurationCopy dnsProxy];
+        protocol3 = [dnsProxy protocol];
         objc_opt_class();
         v16 = objc_opt_isKindOfClass();
 
@@ -5199,31 +5199,31 @@ LABEL_32:
           goto LABEL_32;
         }
 
-        v11 = [v5 dnsProxy];
+        appVPN2 = [configurationCopy dnsProxy];
       }
 
 LABEL_6:
-      v12 = v11;
-      v13 = [v11 protocol];
-      v7 = [v13 pluginType];
+      v12 = appVPN2;
+      protocol4 = [appVPN2 protocol];
+      pluginType = [protocol4 pluginType];
 
-      if (!v7)
+      if (!pluginType)
       {
         goto LABEL_28;
       }
 
 LABEL_16:
-      if ([v7 isEqualToString:@"com.cisco.anyconnect.applevpn.plugin"])
+      if ([pluginType isEqualToString:@"com.cisco.anyconnect.applevpn.plugin"])
       {
         v17 = @"com.cisco.Cisco-AnyConnect.vpnplugin";
       }
 
       else
       {
-        if (![v7 isEqualToString:@"net.juniper.sslvpn"])
+        if (![pluginType isEqualToString:@"net.juniper.sslvpn"])
         {
 LABEL_21:
-          v18 = [v7 componentsSeparatedByString:@"."];
+          v18 = [pluginType componentsSeparatedByString:@"."];
           if ([v18 count] >= 4 && (objc_msgSend(v18, "lastObject"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"vpnplugin"), v19, (v20 & 1) != 0))
           {
             v21 = -2;
@@ -5234,7 +5234,7 @@ LABEL_21:
             if ([v18 count] < 3)
             {
 LABEL_27:
-              v7 = v7;
+              pluginType = pluginType;
 
               goto LABEL_28;
             }
@@ -5244,7 +5244,7 @@ LABEL_27:
 
           v22 = [v18 objectAtIndexedSubscript:{objc_msgSend(v18, "count") + v21}];
 
-          v7 = [v22 stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+          pluginType = [v22 stringByReplacingOccurrencesOfString:@"-" withString:@" "];
 
           goto LABEL_27;
         }
@@ -5252,14 +5252,14 @@ LABEL_27:
         v17 = @"net.juniper.Junos-Pulse.vpnplugin";
       }
 
-      v7 = v17;
+      pluginType = v17;
       goto LABEL_21;
     }
 
-    if (a4 == 6 || a4 == 9)
+    if (grade == 6 || grade == 9)
     {
-      v7 = [v5 application];
-      if (v7)
+      pluginType = [configurationCopy application];
+      if (pluginType)
       {
         goto LABEL_16;
       }
@@ -5267,9 +5267,9 @@ LABEL_27:
   }
 
 LABEL_28:
-  if (v7)
+  if (pluginType)
   {
-    v23 = v7;
+    v23 = pluginType;
     goto LABEL_34;
   }
 
@@ -5282,28 +5282,28 @@ LABEL_34:
   return v23;
 }
 
-- (void)triggerLocalAuthenticationForConfigurationIdentifier:(id)a3 requestedByApp:(id)a4
+- (void)triggerLocalAuthenticationForConfigurationIdentifier:(id)identifier requestedByApp:(id)app
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NSUUID alloc] initWithUUIDString:v7];
+  appCopy = app;
+  identifierCopy = identifier;
+  v8 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
 
   if (v8)
   {
-    v9 = [(VPNConnectionStore *)self configurationManager];
-    v10 = [(VPNConnectionStore *)self storeQueue];
+    configurationManager = [(VPNConnectionStore *)self configurationManager];
+    storeQueue = [(VPNConnectionStore *)self storeQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_11098;
     v11[3] = &unk_40B38;
-    v12 = v6;
-    [v9 triggerLocalAuthenticationForConfigurationWithID:v8 withCompletionQueue:v10 handler:v11];
+    v12 = appCopy;
+    [configurationManager triggerLocalAuthenticationForConfigurationWithID:v8 withCompletionQueue:storeQueue handler:v11];
   }
 }
 
-- (void)iterateContentFilterServicesWithBlock:(id)a3
+- (void)iterateContentFilterServicesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(VPNConnectionStore *)self vpnServicesForCurrentSetWithGrade:6];
   if ([v5 count])
   {
@@ -5326,7 +5326,7 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        if (!v4[2](v4, *(*(&v11 + 1) + 8 * v10), 6))
+        if (!blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10), 6))
         {
           break;
         }
@@ -5346,9 +5346,9 @@ LABEL_4:
   }
 }
 
-- (void)iterateURLFilterServicesWithBlock:(id)a3
+- (void)iterateURLFilterServicesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(VPNConnectionStore *)self vpnServicesForCurrentSetWithGrade:9];
   if ([v5 count])
   {
@@ -5371,7 +5371,7 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        if (!v4[2](v4, *(*(&v11 + 1) + 8 * v10), 9))
+        if (!blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10), 9))
         {
           break;
         }
@@ -5391,13 +5391,13 @@ LABEL_4:
   }
 }
 
-- (id)copyActiveVPNIDsFromPrefsForGrade:(unint64_t)a3
+- (id)copyActiveVPNIDsFromPrefsForGrade:(unint64_t)grade
 {
   v5 = objc_alloc_init(NSMutableArray);
   v42 = 0u;
   v43 = 0u;
   v6 = 1;
-  if (a3)
+  if (grade)
   {
     v6 = 2;
   }
@@ -5406,8 +5406,8 @@ LABEL_4:
   v41 = v5;
   v44 = 0uLL;
   v45 = 0uLL;
-  v7 = [(VPNConnectionStore *)self configurations];
-  v8 = [v7 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  configurations = [(VPNConnectionStore *)self configurations];
+  v8 = [configurations countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v8)
   {
     goto LABEL_52;
@@ -5421,7 +5421,7 @@ LABEL_4:
     {
       if (*v43 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(configurations);
       }
 
       v12 = *(*(&v42 + 1) + 8 * i);
@@ -5430,20 +5430,20 @@ LABEL_4:
         continue;
       }
 
-      if (a3 <= 5)
+      if (grade <= 5)
       {
-        if (a3 <= 3)
+        if (grade <= 3)
         {
-          if (a3 == 2)
+          if (grade == 2)
           {
-            v20 = [v12 appVPN];
-            if (v20)
+            appVPN = [v12 appVPN];
+            if (appVPN)
             {
-              v21 = v20;
-              v22 = [v12 appVPN];
-              v23 = [v22 isEnabled];
+              v21 = appVPN;
+              appVPN2 = [v12 appVPN];
+              isEnabled = [appVPN2 isEnabled];
 
-              if (v23)
+              if (isEnabled)
               {
                 goto LABEL_46;
               }
@@ -5452,16 +5452,16 @@ LABEL_4:
             continue;
           }
 
-          if (a3 == 3)
+          if (grade == 3)
           {
-            v13 = [v12 alwaysOnVPN];
+            alwaysOnVPN = [v12 alwaysOnVPN];
             goto LABEL_32;
           }
 
           goto LABEL_38;
         }
 
-        if (a3 == 4)
+        if (grade == 4)
         {
           [v12 dnsSettings];
         }
@@ -5470,9 +5470,9 @@ LABEL_4:
         {
           [v12 dnsProxy];
         }
-        v13 = ;
+        alwaysOnVPN = ;
 LABEL_32:
-        v24 = v13;
+        v24 = alwaysOnVPN;
 
         if (v24)
         {
@@ -5482,32 +5482,32 @@ LABEL_32:
         continue;
       }
 
-      if (a3 <= 7)
+      if (grade <= 7)
       {
-        if (a3 == 6)
+        if (grade == 6)
         {
-          v13 = [v12 contentFilter];
+          alwaysOnVPN = [v12 contentFilter];
           goto LABEL_32;
         }
 
-        v14 = [v12 relay];
-        if (!v14)
+        relay = [v12 relay];
+        if (!relay)
         {
           continue;
         }
 
-        v15 = v14;
-        v16 = [v12 relay];
-        if ([v16 isEnabled])
+        identifier = relay;
+        relay2 = [v12 relay];
+        if ([relay2 isEnabled])
         {
-          v17 = [v12 relay];
-          v18 = [v17 matchDomains];
-          if (![v18 count])
+          relay3 = [v12 relay];
+          matchDomains = [relay3 matchDomains];
+          if (![matchDomains count])
           {
-            v37 = [v12 relay];
-            v35 = [v37 perApp];
-            v33 = [v35 appRules];
-            v39 = [v33 count];
+            relay4 = [v12 relay];
+            perApp = [relay4 perApp];
+            appRules = [perApp appRules];
+            v39 = [appRules count];
 
             if (v39)
             {
@@ -5515,8 +5515,8 @@ LABEL_32:
             }
 
 LABEL_46:
-            v15 = [v12 identifier];
-            [v41 addObject:v15];
+            identifier = [v12 identifier];
+            [v41 addObject:identifier];
 LABEL_47:
 
             continue;
@@ -5528,13 +5528,13 @@ LABEL_42:
         goto LABEL_47;
       }
 
-      if (a3 != 8)
+      if (grade != 8)
       {
-        if (a3 == 9)
+        if (grade == 9)
         {
-          v19 = [v12 urlFilter];
+          urlFilter = [v12 urlFilter];
 
-          if (v19)
+          if (urlFilter)
           {
             goto LABEL_51;
           }
@@ -5549,20 +5549,20 @@ LABEL_38:
           continue;
         }
 
-        v15 = v28;
-        v16 = [v12 VPN];
-        if (([v16 isEnabled] & 1) == 0)
+        identifier = v28;
+        relay2 = [v12 VPN];
+        if (([relay2 isEnabled] & 1) == 0)
         {
           goto LABEL_42;
         }
 
-        v29 = [v12 grade];
+        grade = [v12 grade];
 
-        if (v29 == v40)
+        if (grade == v40)
         {
 LABEL_51:
-          v30 = [v12 identifier];
-          [v41 addObject:v30];
+          identifier2 = [v12 identifier];
+          [v41 addObject:identifier2];
 
           goto LABEL_52;
         }
@@ -5570,31 +5570,31 @@ LABEL_51:
         continue;
       }
 
-      v25 = [v12 relay];
-      if (!v25)
+      relay5 = [v12 relay];
+      if (!relay5)
       {
         continue;
       }
 
-      v15 = v25;
-      v16 = [v12 relay];
-      if (([v16 isEnabled] & 1) == 0)
+      identifier = relay5;
+      relay2 = [v12 relay];
+      if (([relay2 isEnabled] & 1) == 0)
       {
         goto LABEL_42;
       }
 
-      v26 = [v12 relay];
-      v27 = [v26 matchDomains];
-      if ([v27 count])
+      relay6 = [v12 relay];
+      matchDomains2 = [relay6 matchDomains];
+      if ([matchDomains2 count])
       {
 
         goto LABEL_46;
       }
 
-      v36 = [v12 relay];
-      v34 = [v36 perApp];
-      v32 = [v34 appRules];
-      v38 = [v32 count];
+      relay7 = [v12 relay];
+      perApp2 = [relay7 perApp];
+      appRules2 = [perApp2 appRules];
+      v38 = [appRules2 count];
 
       if (v38)
       {
@@ -5602,7 +5602,7 @@ LABEL_51:
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    v9 = [configurations countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v9)
     {
       continue;

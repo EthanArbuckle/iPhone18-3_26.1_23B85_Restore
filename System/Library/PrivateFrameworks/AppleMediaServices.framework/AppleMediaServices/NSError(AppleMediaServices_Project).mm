@@ -9,17 +9,17 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 ams_hasDomain:@"AMSErrorDomain" code:15])
+  if ([self ams_hasDomain:@"AMSErrorDomain" code:15])
   {
     v10[0] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
-    v6 = [a1 ams_errorByAddingToMultipleUnderlyingErrors:v5];
+    v6 = [self ams_errorByAddingToMultipleUnderlyingErrors:v5];
   }
 
   else
   {
-    v9[0] = a1;
+    v9[0] = self;
     v9[1] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
 
@@ -33,8 +33,8 @@
 
 - (id)ams_multipleUnderlyingErrors
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A750]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

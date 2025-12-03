@@ -1,5 +1,5 @@
 @interface IMDeviceSupport
-+ (id)marketingNameForModel:(id)a3;
++ (id)marketingNameForModel:(id)model;
 + (id)sharedInstance;
 - (IMDeviceSupport)init;
 - (NSString)deviceInformationString;
@@ -178,25 +178,25 @@ LABEL_18:
   return v2;
 }
 
-+ (id)marketingNameForModel:(id)a3
++ (id)marketingNameForModel:(id)model
 {
-  v3 = a3;
-  if (objc_msgSend_rangeOfString_(v3, v4, @"iPod") == 0x7FFFFFFFFFFFFFFFLL)
+  modelCopy = model;
+  if (objc_msgSend_rangeOfString_(modelCopy, v4, @"iPod") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (objc_msgSend_rangeOfString_(v3, v5, @"iPad") == 0x7FFFFFFFFFFFFFFFLL)
+    if (objc_msgSend_rangeOfString_(modelCopy, v5, @"iPad") == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (objc_msgSend_rangeOfString_(v3, v6, @"iPhone") == 0x7FFFFFFFFFFFFFFFLL)
+      if (objc_msgSend_rangeOfString_(modelCopy, v6, @"iPhone") == 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = kIMDeviceTypeNameMac;
-        if (objc_msgSend_rangeOfString_(v3, v7, @"Mac") == 0x7FFFFFFFFFFFFFFFLL)
+        if (objc_msgSend_rangeOfString_(modelCopy, v7, @"Mac") == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if (objc_msgSend_rangeOfString_(v3, v8, @"AppleTV") == 0x7FFFFFFFFFFFFFFFLL)
+          if (objc_msgSend_rangeOfString_(modelCopy, v8, @"AppleTV") == 0x7FFFFFFFFFFFFFFFLL)
           {
-            if (objc_msgSend_rangeOfString_(v3, v10, @"Watch") == 0x7FFFFFFFFFFFFFFFLL)
+            if (objc_msgSend_rangeOfString_(modelCopy, v10, @"Watch") == 0x7FFFFFFFFFFFFFFFLL)
             {
-              if (objc_msgSend_rangeOfString_(v3, v11, @"AudioAccessory") == 0x7FFFFFFFFFFFFFFFLL)
+              if (objc_msgSend_rangeOfString_(modelCopy, v11, @"AudioAccessory") == 0x7FFFFFFFFFFFFFFFLL)
               {
-                if (objc_msgSend_rangeOfString_(v3, v12, @"Reality") != 0x7FFFFFFFFFFFFFFFLL)
+                if (objc_msgSend_rangeOfString_(modelCopy, v12, @"Reality") != 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v9 = kIMDeviceTypeNameReality;
                 }

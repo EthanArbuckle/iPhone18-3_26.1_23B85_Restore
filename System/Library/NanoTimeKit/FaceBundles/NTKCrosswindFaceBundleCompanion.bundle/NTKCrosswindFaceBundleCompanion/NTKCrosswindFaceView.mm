@@ -1,45 +1,45 @@
 @interface NTKCrosswindFaceView
-- (NTKCrosswindFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
+- (NTKCrosswindFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
 - (id)createFaceColorPalette;
 - (id)timeView;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateColors;
-- (void)_updateColorsWithPalette:(id)a3;
-- (void)_updateComplicationColorsWithPalette:(id)a3;
+- (void)_updateColorsWithPalette:(id)palette;
+- (void)_updateComplicationColorsWithPalette:(id)palette;
 - (void)_updateContentTransform;
 - (void)_updateFrameRate;
-- (void)_updateGradientColorsWithPalette:(id)a3;
+- (void)_updateGradientColorsWithPalette:(id)palette;
 - (void)_updateTimeViewColors;
-- (void)setDataMode:(int64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setDataMode:(int64_t)mode;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKCrosswindFaceView
 
-- (NTKCrosswindFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKCrosswindFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKCrosswindFaceView;
-  v9 = [(NTKCrosswindFaceView *)&v13 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKCrosswindFaceView *)&v13 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
-    [NTKCrosswindAnalogHandsView outerCircleRadiusForDevice:v8];
-    v11 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initWithFaceView:v9 dialDiameter:v8 device:v10 + v10];
+    [NTKCrosswindAnalogHandsView outerCircleRadiusForDevice:deviceCopy];
+    v11 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initWithFaceView:v9 dialDiameter:deviceCopy device:v10 + v10];
     [(NTKCrosswindFaceView *)v9 setComplicationFactory:v11];
   }
 
@@ -54,14 +54,14 @@
   self->_breathScaleModifier = 1.0;
   self->_rubberBandScaleModifier = 1.0;
   self->_lastAppliedTritiumProgress = -1.0;
-  v3 = [(NTKCrosswindFaceView *)self timeView];
-  v4 = [(NTKCrosswindFaceView *)self contentView];
+  timeView = [(NTKCrosswindFaceView *)self timeView];
+  contentView = [(NTKCrosswindFaceView *)self contentView];
   [(NTKCrosswindFaceView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKCrosswindFaceView *)self device];
+  device = [(NTKCrosswindFaceView *)self device];
   if (!self->_quadView)
   {
     v14 = [CLKUIQuadView quadViewWithFrame:@"Xwnd" identifier:0 options:2 colorSpace:v6, v8, v10, v12];
@@ -70,38 +70,38 @@
 
     [(CLKUIQuadView *)self->_quadView setOpaque:1];
     v16 = [NTKCrosswindQuad alloc];
-    [v13 screenScale];
+    [device screenScale];
     v18 = v17;
-    v19 = [v3 calendar];
-    v20 = [(NTKCrosswindQuad *)v16 initWithScreenScale:v19 calendar:v18];
+    calendar = [timeView calendar];
+    v20 = [(NTKCrosswindQuad *)v16 initWithScreenScale:calendar calendar:v18];
     quad = self->_quad;
     self->_quad = v20;
 
     v22 = self->_quad;
-    [v3 innerCircleRadius];
+    [timeView innerCircleRadius];
     [(NTKCrosswindQuad *)v22 setInnerCircleRadius:?];
     v23 = self->_quad;
-    [v3 middleCircleRadius];
+    [timeView middleCircleRadius];
     [(NTKCrosswindQuad *)v23 setMiddleCircleRadius:?];
     v24 = self->_quad;
-    [v3 outerCircleRadius];
+    [timeView outerCircleRadius];
     [(NTKCrosswindQuad *)v24 setOuterCircleRadius:?];
     [(NTKCrosswindQuad *)self->_quad setDelegate:self];
     [(CLKUIQuadView *)self->_quadView addQuad:self->_quad];
     [(CLKUIQuadView *)self->_quadView setDelegate:self];
-    [v4 addSubview:self->_quadView];
+    [contentView addSubview:self->_quadView];
   }
 
   if (!self->_cornerView)
   {
-    v25 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:v13 forDeviceCornerRadius:{v6, v8, v10, v12}];
+    v25 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:device forDeviceCornerRadius:{v6, v8, v10, v12}];
     cornerView = self->_cornerView;
     self->_cornerView = v25;
 
-    [v4 addSubview:self->_cornerView];
+    [contentView addSubview:self->_cornerView];
   }
 
-  [v3 setSecondHandDisabled:1];
+  [timeView setSecondHandDisabled:1];
   [(NTKCrosswindFaceView *)self _updateColors];
   [(NTKCrosswindFaceView *)self _updateFrameRate];
   [(NTKCrosswindFaceView *)self _updateTimeViewColors];
@@ -135,23 +135,23 @@
   [(NTKCrosswindFaceView *)self _updateFrameRate];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = NTKCrosswindFaceView;
-  [(NTKCrosswindFaceView *)&v4 setDataMode:a3];
+  [(NTKCrosswindFaceView *)&v4 setDataMode:mode];
   [(NTKCrosswindFaceView *)self _updateFrameRate];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = NTKCrosswindFaceView;
-  [(NTKCrosswindFaceView *)&v11 setOverrideDate:v6 duration:a4];
+  [(NTKCrosswindFaceView *)&v11 setOverrideDate:dateCopy duration:duration];
   v7 = NTKIdealizedDate();
 
-  if (v7 == v6)
+  if (v7 == dateCopy)
   {
     v8 = NTKCrosswindColorCompositionIdealized();
     v9 = v10;
@@ -163,23 +163,23 @@
     v9 = -1;
   }
 
-  [(NTKCrosswindQuad *)self->_quad setOverrideDate:v6 overrideComposition:v8 duration:v9, a4];
+  [(NTKCrosswindQuad *)self->_quad setOverrideDate:dateCopy overrideComposition:v8 duration:v9, duration];
 }
 
 - (id)timeView
 {
   v4.receiver = self;
   v4.super_class = NTKCrosswindFaceView;
-  v2 = [(NTKCrosswindFaceView *)&v4 timeView];
+  timeView = [(NTKCrosswindFaceView *)&v4 timeView];
 
-  return v2;
+  return timeView;
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v4.receiver = self;
   v4.super_class = NTKCrosswindFaceView;
-  [(NTKCrosswindFaceView *)&v4 _configureTimeView:a3];
+  [(NTKCrosswindFaceView *)&v4 _configureTimeView:view];
   [(NTKCrosswindFaceView *)self _updateTimeViewColors];
 }
 
@@ -201,7 +201,7 @@
   v16[3] = &unk_10438;
   v16[4] = self;
   v3 = objc_retainBlock(v16);
-  v4 = [(NTKCrosswindFaceView *)self device];
+  device = [(NTKCrosswindFaceView *)self device];
   NTKDefaultCornerComplicationScaleForFullscreenOpaqueFaceForDevice();
   v6 = v5;
 
@@ -228,16 +228,16 @@
   v10(v3, &v14, 2);
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v7.receiver = self;
   v7.super_class = NTKCrosswindFaceView;
-  [(NTKCrosswindFaceView *)&v7 _configureComplicationView:v6 forSlot:a4];
+  [(NTKCrosswindFaceView *)&v7 _configureComplicationView:viewCopy forSlot:slot];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 }
 
@@ -257,28 +257,28 @@
   [(NTKCrosswindFaceView *)self _updateFrameRate];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v13.receiver = self;
   v13.super_class = NTKCrosswindFaceView;
   [(NTKCrosswindFaceView *)&v13 _configureForEditMode:?];
-  v5 = [(NTKCrosswindFaceView *)self timeView];
-  [(NTKCrosswindFaceView *)self _timeAlphaForEditMode:a3];
-  [v5 setAlpha:?];
+  timeView = [(NTKCrosswindFaceView *)self timeView];
+  [(NTKCrosswindFaceView *)self _timeAlphaForEditMode:mode];
+  [timeView setAlpha:?];
 
-  v6 = [(NTKCrosswindFaceView *)self contentView];
-  [(NTKCrosswindFaceView *)self _contentAlphaForEditMode:a3];
-  [v6 setAlpha:?];
+  contentView = [(NTKCrosswindFaceView *)self contentView];
+  [(NTKCrosswindFaceView *)self _contentAlphaForEditMode:mode];
+  [contentView setAlpha:?];
 
   editingComplicationsPalette = self->_editingComplicationsPalette;
-  if (a3 == 1)
+  if (mode == 1)
   {
     if (!editingComplicationsPalette)
     {
-      v8 = [(NTKCrosswindFaceView *)self colorPalette];
-      v9 = [v8 copy];
+      colorPalette = [(NTKCrosswindFaceView *)self colorPalette];
+      v9 = [colorPalette copy];
       [v9 setIsEditingComplications:1];
-      v10 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:v8 toPalette:v9];
+      v10 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:colorPalette toPalette:v9];
       v11 = self->_editingComplicationsPalette;
       self->_editingComplicationsPalette = v10;
 
@@ -293,37 +293,37 @@
   {
     self->_editingComplicationsPalette = 0;
 
-    v12 = [(NTKCrosswindFaceView *)self colorPalette];
-    [(NTKCrosswindFaceView *)self _updateComplicationColorsWithPalette:v12];
+    colorPalette2 = [(NTKCrosswindFaceView *)self colorPalette];
+    [(NTKCrosswindFaceView *)self _updateComplicationColorsWithPalette:colorPalette2];
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v16.receiver = self;
   v16.super_class = NTKCrosswindFaceView;
   [NTKCrosswindFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  v8 = [(NTKCrosswindFaceView *)self timeView];
-  [(NTKCrosswindFaceView *)self _timeAlphaForEditMode:a4];
-  [(NTKCrosswindFaceView *)self _timeAlphaForEditMode:a5];
+  timeView = [(NTKCrosswindFaceView *)self timeView];
+  [(NTKCrosswindFaceView *)self _timeAlphaForEditMode:mode];
+  [(NTKCrosswindFaceView *)self _timeAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v8 setAlpha:?];
+  [timeView setAlpha:?];
 
-  v9 = [(NTKCrosswindFaceView *)self contentView];
-  [(NTKCrosswindFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKCrosswindFaceView *)self _contentAlphaForEditMode:a5];
+  contentView = [(NTKCrosswindFaceView *)self contentView];
+  [(NTKCrosswindFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKCrosswindFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v9 setAlpha:?];
+  [contentView setAlpha:?];
 
   editingComplicationsPalette = self->_editingComplicationsPalette;
-  if (a4 == 1 || a5 == 1)
+  if (mode == 1 || editMode == 1)
   {
     if (!editingComplicationsPalette)
     {
-      v12 = [(NTKCrosswindFaceView *)self colorPalette];
-      v13 = [v12 copy];
+      colorPalette = [(NTKCrosswindFaceView *)self colorPalette];
+      v13 = [colorPalette copy];
       [v13 setIsEditingComplications:1];
-      v14 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:v12 toPalette:v13];
+      v14 = [[NTKInterpolatedColorPalette alloc] initWithFromPalette:colorPalette toPalette:v13];
       v15 = self->_editingComplicationsPalette;
       self->_editingComplicationsPalette = v14;
     }
@@ -337,34 +337,34 @@
   {
     self->_editingComplicationsPalette = 0;
 
-    v11 = [(NTKCrosswindFaceView *)self colorPalette];
-    [(NTKCrosswindFaceView *)self _updateComplicationColorsWithPalette:v11];
+    colorPalette2 = [(NTKCrosswindFaceView *)self colorPalette];
+    [(NTKCrosswindFaceView *)self _updateComplicationColorsWithPalette:colorPalette2];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    [(NTKCrosswindFaceView *)self _updateColors:a3];
+    [(NTKCrosswindFaceView *)self _updateColors:option];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 10)
+  if (mode == 10)
   {
-    v9 = [(NTKCrosswindFaceView *)self interpolatedColorPalette:a4];
+    v9 = [(NTKCrosswindFaceView *)self interpolatedColorPalette:option];
     [(NTKCrosswindFaceView *)self _updateColorsWithPalette:v9];
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKCrosswindFaceView;
-  [(NTKCrosswindFaceView *)&v8 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKCrosswindFaceView *)&v8 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     self->_breathScaleModifier = v7;
@@ -372,12 +372,12 @@
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKCrosswindFaceView;
-  [(NTKCrosswindFaceView *)&v8 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKCrosswindFaceView *)&v8 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKScaleForRubberBandingFraction();
     self->_rubberBandScaleModifier = v7;
@@ -389,29 +389,29 @@
 
 - (void)_updateFrameRate
 {
-  v3 = [(NTKCrosswindFaceView *)self editing];
-  if (v3)
+  editing = [(NTKCrosswindFaceView *)self editing];
+  if (editing)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(NTKCrosswindFaceView *)self dataMode];
-    v6 = [(NTKCrosswindFaceView *)self isFrozen];
-    v8 = v5 != 3 && (v5 & 0xFFFFFFFFFFFFFFFBLL) != 1;
-    v4 = (v6 & 1) != 0 || v8;
+    dataMode = [(NTKCrosswindFaceView *)self dataMode];
+    isFrozen = [(NTKCrosswindFaceView *)self isFrozen];
+    v8 = dataMode != 3 && (dataMode & 0xFFFFFFFFFFFFFFFBLL) != 1;
+    v4 = (isFrozen & 1) != 0 || v8;
   }
 
   [(CLKUIQuadView *)self->_quadView setPaused:v4];
-  if ((v3 | [(NTKCrosswindQuad *)self->_quad isAnimatingOverrideDate]))
+  if ((editing | [(NTKCrosswindQuad *)self->_quad isAnimatingOverrideDate]))
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [(NTKCrosswindFaceView *)self device];
+    device = [(NTKCrosswindFaceView *)self device];
     v9 = CLKUIAnalogHandsDefaultPreferredFramesPerSecondForDevice();
   }
 
@@ -425,52 +425,52 @@
   v3 = self->_breathScaleModifier * self->_rubberBandScaleModifier;
   memset(&v8, 0, sizeof(v8));
   CGAffineTransformMakeScale(&v8, v3, v3);
-  v4 = [(NTKCrosswindFaceView *)self contentView];
+  contentView = [(NTKCrosswindFaceView *)self contentView];
   v7 = v8;
-  [v4 setTransform:&v7];
+  [contentView setTransform:&v7];
 
-  v5 = [(NTKCrosswindFaceView *)self timeView];
+  timeView = [(NTKCrosswindFaceView *)self timeView];
   v7 = v8;
-  [v5 setTransform:&v7];
+  [timeView setTransform:&v7];
 
-  v6 = [(NTKCrosswindFaceView *)self complicationContainerView];
+  complicationContainerView = [(NTKCrosswindFaceView *)self complicationContainerView];
   v7 = v8;
-  [v6 setTransform:&v7];
+  [complicationContainerView setTransform:&v7];
 }
 
 - (void)_updateColors
 {
-  v3 = [(NTKCrosswindFaceView *)self colorPalette];
-  [(NTKCrosswindFaceView *)self _updateColorsWithPalette:v3];
+  colorPalette = [(NTKCrosswindFaceView *)self colorPalette];
+  [(NTKCrosswindFaceView *)self _updateColorsWithPalette:colorPalette];
 }
 
-- (void)_updateColorsWithPalette:(id)a3
+- (void)_updateColorsWithPalette:(id)palette
 {
-  v4 = a3;
-  [(NTKCrosswindFaceView *)self _updateComplicationColorsWithPalette:v4];
-  [(NTKCrosswindFaceView *)self _updateGradientColorsWithPalette:v4];
+  paletteCopy = palette;
+  [(NTKCrosswindFaceView *)self _updateComplicationColorsWithPalette:paletteCopy];
+  [(NTKCrosswindFaceView *)self _updateGradientColorsWithPalette:paletteCopy];
 }
 
-- (void)_updateComplicationColorsWithPalette:(id)a3
+- (void)_updateComplicationColorsWithPalette:(id)palette
 {
-  v13 = a3;
-  v4 = [v13 resolvedComplicationColor];
-  [(NTKCrosswindFaceView *)self setAlternateComplicationColor:v4];
-  [(NTKCrosswindFaceView *)self setComplicationColor:v4];
-  [(NTKCrosswindFaceView *)self setInterpolatedComplicationColor:v4];
+  paletteCopy = palette;
+  resolvedComplicationColor = [paletteCopy resolvedComplicationColor];
+  [(NTKCrosswindFaceView *)self setAlternateComplicationColor:resolvedComplicationColor];
+  [(NTKCrosswindFaceView *)self setComplicationColor:resolvedComplicationColor];
+  [(NTKCrosswindFaceView *)self setInterpolatedComplicationColor:resolvedComplicationColor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v13;
-    v6 = [v5 toPalette];
-    if ([v6 isTritium])
+    v5 = paletteCopy;
+    toPalette = [v5 toPalette];
+    if ([toPalette isTritium])
     {
       [v5 transitionFraction];
       v8 = v7;
 
       if (v8 > 0.0)
       {
-        v9 = [v5 baseLayerBackground];
+        baseLayerBackground = [v5 baseLayerBackground];
         v10 = +[UIColor blackColor];
         v11 = CLKInterpolateBetweenColors();
 
@@ -486,93 +486,93 @@
     }
   }
 
-  v9 = [v13 baseLayerBackground];
-  [(NTKCrosswindFaceView *)self setComplicationBackgroundColor:v9];
+  baseLayerBackground = [paletteCopy baseLayerBackground];
+  [(NTKCrosswindFaceView *)self setComplicationBackgroundColor:baseLayerBackground];
 LABEL_7:
 
   [(NTKCrosswindFaceView *)self _updateComplicationsWithComplicationColor];
 }
 
-- (void)_updateGradientColorsWithPalette:(id)a3
+- (void)_updateGradientColorsWithPalette:(id)palette
 {
-  v4 = a3;
-  v35 = [(NTKCrosswindFaceView *)self quad];
-  v5 = [v4 baseLayerBackground];
-  v6 = [v4 baseLayerForeground];
-  [v35 setBaseLayerBackgroundColor:v5 baseLayerForegroundColor:v6];
+  paletteCopy = palette;
+  quad = [(NTKCrosswindFaceView *)self quad];
+  baseLayerBackground = [paletteCopy baseLayerBackground];
+  baseLayerForeground = [paletteCopy baseLayerForeground];
+  [quad setBaseLayerBackgroundColor:baseLayerBackground baseLayerForegroundColor:baseLayerForeground];
 
-  v7 = [v4 fromColor1];
-  v8 = [v4 midColor1];
-  v9 = [v4 toColor1];
-  [v35 setFromColor:v7 midColor:v8 toColor:v9 forGradientIndex:0];
+  fromColor1 = [paletteCopy fromColor1];
+  midColor1 = [paletteCopy midColor1];
+  toColor1 = [paletteCopy toColor1];
+  [quad setFromColor:fromColor1 midColor:midColor1 toColor:toColor1 forGradientIndex:0];
 
-  v10 = [v4 fromColor2];
-  v11 = [v4 midColor2];
-  v12 = [v4 toColor2];
-  [v35 setFromColor:v10 midColor:v11 toColor:v12 forGradientIndex:1];
+  fromColor2 = [paletteCopy fromColor2];
+  midColor2 = [paletteCopy midColor2];
+  toColor2 = [paletteCopy toColor2];
+  [quad setFromColor:fromColor2 midColor:midColor2 toColor:toColor2 forGradientIndex:1];
 
-  v13 = [v4 fromColor3];
-  v14 = [v4 midColor3];
-  v15 = [v4 toColor3];
-  [v35 setFromColor:v13 midColor:v14 toColor:v15 forGradientIndex:2];
+  fromColor3 = [paletteCopy fromColor3];
+  midColor3 = [paletteCopy midColor3];
+  toColor3 = [paletteCopy toColor3];
+  [quad setFromColor:fromColor3 midColor:midColor3 toColor:toColor3 forGradientIndex:2];
 
-  v16 = [v4 fromColor4];
-  v17 = [v4 midColor4];
-  v18 = [v4 toColor4];
-  [v35 setFromColor:v16 midColor:v17 toColor:v18 forGradientIndex:3];
+  fromColor4 = [paletteCopy fromColor4];
+  midColor4 = [paletteCopy midColor4];
+  toColor4 = [paletteCopy toColor4];
+  [quad setFromColor:fromColor4 midColor:midColor4 toColor:toColor4 forGradientIndex:3];
 
-  v19 = [v4 outermostFromColor1];
-  v20 = [v4 outermostMidColor1];
-  v21 = [v4 outermostToColor1];
-  [v35 setOutermostFromColor:v19 midColor:v20 toColor:v21 forGradientIndex:0];
+  outermostFromColor1 = [paletteCopy outermostFromColor1];
+  outermostMidColor1 = [paletteCopy outermostMidColor1];
+  outermostToColor1 = [paletteCopy outermostToColor1];
+  [quad setOutermostFromColor:outermostFromColor1 midColor:outermostMidColor1 toColor:outermostToColor1 forGradientIndex:0];
 
-  v22 = [v4 outermostFromColor2];
-  v23 = [v4 outermostMidColor2];
-  v24 = [v4 outermostToColor2];
-  [v35 setOutermostFromColor:v22 midColor:v23 toColor:v24 forGradientIndex:1];
+  outermostFromColor2 = [paletteCopy outermostFromColor2];
+  outermostMidColor2 = [paletteCopy outermostMidColor2];
+  outermostToColor2 = [paletteCopy outermostToColor2];
+  [quad setOutermostFromColor:outermostFromColor2 midColor:outermostMidColor2 toColor:outermostToColor2 forGradientIndex:1];
 
-  v25 = [v4 outermostFromColor3];
-  v26 = [v4 outermostMidColor3];
-  v27 = [v4 outermostToColor3];
-  [v35 setOutermostFromColor:v25 midColor:v26 toColor:v27 forGradientIndex:2];
+  outermostFromColor3 = [paletteCopy outermostFromColor3];
+  outermostMidColor3 = [paletteCopy outermostMidColor3];
+  outermostToColor3 = [paletteCopy outermostToColor3];
+  [quad setOutermostFromColor:outermostFromColor3 midColor:outermostMidColor3 toColor:outermostToColor3 forGradientIndex:2];
 
-  v28 = [v4 outermostFromColor4];
-  v29 = [v4 outermostMidColor4];
-  v30 = [v4 outermostToColor4];
-  [v35 setOutermostFromColor:v28 midColor:v29 toColor:v30 forGradientIndex:3];
+  outermostFromColor4 = [paletteCopy outermostFromColor4];
+  outermostMidColor4 = [paletteCopy outermostMidColor4];
+  outermostToColor4 = [paletteCopy outermostToColor4];
+  [quad setOutermostFromColor:outermostFromColor4 midColor:outermostMidColor4 toColor:outermostToColor4 forGradientIndex:3];
 
-  v31 = [v4 handInlay1];
-  [v35 setHandInlayColor:v31 forGradientIndex:0];
+  handInlay1 = [paletteCopy handInlay1];
+  [quad setHandInlayColor:handInlay1 forGradientIndex:0];
 
-  v32 = [v4 handInlay2];
-  [v35 setHandInlayColor:v32 forGradientIndex:1];
+  handInlay2 = [paletteCopy handInlay2];
+  [quad setHandInlayColor:handInlay2 forGradientIndex:1];
 
-  v33 = [v4 handInlay3];
-  [v35 setHandInlayColor:v33 forGradientIndex:2];
+  handInlay3 = [paletteCopy handInlay3];
+  [quad setHandInlayColor:handInlay3 forGradientIndex:2];
 
-  v34 = [v4 handInlay4];
+  handInlay4 = [paletteCopy handInlay4];
 
-  [v35 setHandInlayColor:v34 forGradientIndex:3];
+  [quad setHandInlayColor:handInlay4 forGradientIndex:3];
 }
 
 - (void)_updateTimeViewColors
 {
-  v9 = [(NTKCrosswindFaceView *)self quad];
-  v3 = [v9 minuteHandInlayColor];
-  v4 = [v9 hourHandInlayColor];
-  v5 = [v9 minuteHandDotColor];
-  v6 = [(NTKCrosswindFaceView *)self timeView];
-  v7 = [v6 minuteHandView];
-  v8 = [v6 hourHandView];
-  [v7 setInlayColor:v3];
-  [v8 setInlayColor:v4];
-  [v7 setHandDotColor:v5];
+  quad = [(NTKCrosswindFaceView *)self quad];
+  minuteHandInlayColor = [quad minuteHandInlayColor];
+  hourHandInlayColor = [quad hourHandInlayColor];
+  minuteHandDotColor = [quad minuteHandDotColor];
+  timeView = [(NTKCrosswindFaceView *)self timeView];
+  minuteHandView = [timeView minuteHandView];
+  hourHandView = [timeView hourHandView];
+  [minuteHandView setInlayColor:minuteHandInlayColor];
+  [hourHandView setInlayColor:hourHandInlayColor];
+  [minuteHandView setHandDotColor:minuteHandDotColor];
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }

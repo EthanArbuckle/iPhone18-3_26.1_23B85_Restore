@@ -1,6 +1,6 @@
 @interface FCAVAssetKeyFetchOperation
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)resetForRetry;
 @end
@@ -13,7 +13,7 @@
   v3 = FCOperationLog;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if (self)
     {
       keyURI = self->_keyURI;
@@ -25,11 +25,11 @@
     }
 
     v6 = keyURI;
-    v7 = [(NSURL *)v6 absoluteString];
+    absoluteString = [(NSURL *)v6 absoluteString];
     *buf = 138543618;
-    v24 = v4;
+    v24 = shortOperationDescription;
     v25 = 2114;
-    v26 = v7;
+    v26 = absoluteString;
     _os_log_impl(&dword_1B63EF000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ will fetch AV content key for %{public}@", buf, 0x16u);
   }
 
@@ -176,41 +176,41 @@ uint64_t __46__FCAVAssetKeyFetchOperation_performOperation__block_invoke_4(uint6
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     fetchCompletionHandler = self->_fetchCompletionHandler;
     if (fetchCompletionHandler)
     {
-      v6 = v4;
+      v6 = errorCopy;
       fetchCompletionHandler[2](fetchCompletionHandler, self->_resultCKCData);
-      v4 = v6;
+      errorCopy = v6;
     }
   }
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  if (![v6 isEqualToString:@"FCErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"FCErrorDomain"])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v5 code];
+  code = [errorCopy code];
 
-  if (v7 != 38)
+  if (code != 38)
   {
 LABEL_5:
     v8 = 0;
     goto LABEL_6;
   }
 
-  *a4 = objc_opt_new();
+  *after = objc_opt_new();
   v8 = 1;
 LABEL_6:
 

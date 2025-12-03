@@ -1,36 +1,36 @@
 @interface NMSMessageCenter
-- (BOOL)cancelMessageWithID:(id)a3 error:(id *)a4;
+- (BOOL)cancelMessageWithID:(id)d error:(id *)error;
 - (NMSMessageCenter)init;
-- (NMSMessageCenter)initWithIDSServiceIdentifier:(id)a3;
-- (NMSMessageCenter)initWithIDSServiceIdentifier:(id)a3 launchOnDemandNotification:(id)a4 cacheFolderPath:(id)a5;
+- (NMSMessageCenter)initWithIDSServiceIdentifier:(id)identifier;
+- (NMSMessageCenter)initWithIDSServiceIdentifier:(id)identifier launchOnDemandNotification:(id)notification cacheFolderPath:(id)path;
 - (NMSMessageCenterDelegate)delegate;
 - (NSString)description;
-- (id)_buildDataForRequest:(id)a3 options:(id *)a4;
-- (id)_buildDataForResponse:(id)a3 options:(id *)a4;
-- (id)_decodeIncomingRequestData:(id)a3 context:(id)a4;
-- (id)deviceIDFromDevice:(id)a3;
+- (id)_buildDataForRequest:(id)request options:(id *)options;
+- (id)_buildDataForResponse:(id)response options:(id *)options;
+- (id)_decodeIncomingRequestData:(id)data context:(id)context;
+- (id)deviceIDFromDevice:(id)device;
 - (void)_checkForSwitch;
 - (void)_expireMessages;
-- (void)_handleError:(id)a3 context:(id)a4 locked:(BOOL)a5;
+- (void)_handleError:(id)error context:(id)context locked:(BOOL)locked;
 - (void)_obliterate;
-- (void)_sendResponse:(id)a3;
+- (void)_sendResponse:(id)response;
 - (void)_setNextWindowTimeoutFireDate;
 - (void)_timeoutWindowedMessages;
-- (void)_updateExpireTimerWithDate:(id)a3;
+- (void)_updateExpireTimerWithDate:(id)date;
 - (void)dealloc;
 - (void)dropExtantMessages;
 - (void)resume;
-- (void)sendFile:(id)a3;
-- (void)sendRequest:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setEnableTransmissionWindow:(BOOL)a3;
+- (void)sendFile:(id)file;
+- (void)sendRequest:(id)request;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setEnableTransmissionWindow:(BOOL)window;
 @end
 
 @implementation NMSMessageCenter
@@ -40,8 +40,8 @@
   v14 = *MEMORY[0x1E69E9840];
   currentBytesInFlight = self->_currentBytesInFlight;
   v4 = currentBytesInFlight >= [(NMSMessageCenter *)self maxBytesInFlight]|| [(_NMSDispatchQueue *)self->_windowQueue isSuspended];
-  v5 = [(NMSWindowData *)self->_windowData expiredMessageIDs];
-  [(NMSWindowData *)self->_windowData removeAndReturnLengthOfMessagesWithIDs:v5];
+  expiredMessageIDs = [(NMSWindowData *)self->_windowData expiredMessageIDs];
+  [(NMSWindowData *)self->_windowData removeAndReturnLengthOfMessagesWithIDs:expiredMessageIDs];
   self->_currentBytesInFlight = 0;
   if (v4 && [(NMSMessageCenter *)self maxBytesInFlight])
   {
@@ -58,7 +58,7 @@
       v10 = 134218240;
       v11 = v7;
       v12 = 2048;
-      v13 = [(NMSMessageCenter *)self maxBytesInFlight];
+      maxBytesInFlight = [(NMSMessageCenter *)self maxBytesInFlight];
       _os_log_impl(&dword_1DF835000, v8, OS_LOG_TYPE_DEFAULT, "Opening window on message timeout: %lu bytes in flight, %lu max", &v10, 0x16u);
     }
 
@@ -73,11 +73,11 @@
 - (void)_setNextWindowTimeoutFireDate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(NMSWindowData *)self->_windowData dateOfNextMessageExpiry];
-  v4 = v3;
-  if (v3)
+  dateOfNextMessageExpiry = [(NMSWindowData *)self->_windowData dateOfNextMessageExpiry];
+  v4 = dateOfNextMessageExpiry;
+  if (dateOfNextMessageExpiry)
   {
-    [v3 timeIntervalSinceNow];
+    [dateOfNextMessageExpiry timeIntervalSinceNow];
     if (v5 > 0.0)
     {
       if (_sync_log_facilities_pred != -1)
@@ -117,31 +117,31 @@
   return 0;
 }
 
-- (NMSMessageCenter)initWithIDSServiceIdentifier:(id)a3 launchOnDemandNotification:(id)a4 cacheFolderPath:(id)a5
+- (NMSMessageCenter)initWithIDSServiceIdentifier:(id)identifier launchOnDemandNotification:(id)notification cacheFolderPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  notificationCopy = notification;
+  pathCopy = path;
   v62.receiver = self;
   v62.super_class = NMSMessageCenter;
   v11 = [(NMSMessageCenter *)&v62 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     serviceIdentifier = v11->_serviceIdentifier;
     v11->_serviceIdentifier = v12;
 
-    v61 = v9;
-    v14 = [v9 copy];
+    v61 = notificationCopy;
+    v14 = [notificationCopy copy];
     launchNotification = v11->_launchNotification;
     v11->_launchNotification = v14;
 
     v16 = v11;
-    v17 = v10;
+    v17 = pathCopy;
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NMSQ.%@", v11->_serviceIdentifier];
-    v19 = [v18 UTF8String];
+    uTF8String = [v18 UTF8String];
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v21 = dispatch_queue_create(v19, v20);
+    v21 = dispatch_queue_create(uTF8String, v20);
     queue = v16->_queue;
     v16->_queue = v21;
 
@@ -204,9 +204,9 @@
     if (v38)
     {
       v44 = [NMSWindowData alloc];
-      v45 = [v38 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v38 stringByDeletingLastPathComponent];
       v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-window", v11->_serviceIdentifier];
-      v47 = [v45 stringByAppendingPathComponent:v46];
+      v47 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v46];
       v48 = [(NMSWindowData *)v44 initWithPath:v47 logFacility:0];
       windowData = v16->_windowData;
       v16->_windowData = v48;
@@ -215,7 +215,7 @@
     else
     {
       v50 = [[NMSWindowData alloc] initWithSharedDBForServiceName:v11->_serviceIdentifier];
-      v45 = v16->_windowData;
+      stringByDeletingLastPathComponent = v16->_windowData;
       v16->_windowData = v50;
     }
 
@@ -274,29 +274,29 @@
     objc_destroyWeak(location);
 
     v59 = v16;
-    v9 = v61;
+    notificationCopy = v61;
   }
 
   return v11;
 }
 
-- (NMSMessageCenter)initWithIDSServiceIdentifier:(id)a3
+- (NMSMessageCenter)initWithIDSServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v45.receiver = self;
   v45.super_class = NMSMessageCenter;
   v5 = [(NMSMessageCenter *)&v45 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     serviceIdentifier = v5->_serviceIdentifier;
     v5->_serviceIdentifier = v6;
 
     v8 = v5;
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NMSQ.%@", v5->_serviceIdentifier];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     queue = v8->_queue;
     v8->_queue = v12;
 
@@ -451,15 +451,15 @@
   return v6;
 }
 
-- (void)setEnableTransmissionWindow:(BOOL)a3
+- (void)setEnableTransmissionWindow:(BOOL)window
 {
-  if (self->_enableTransmissionWindow != a3)
+  if (self->_enableTransmissionWindow != window)
   {
-    if (a3)
+    if (window)
     {
       if (self->_windowData)
       {
-        self->_enableTransmissionWindow = a3;
+        self->_enableTransmissionWindow = window;
         [(NMSMessageCenter *)self _setNextWindowTimeoutFireDate];
         windowTimeout = self->_windowTimeout;
 
@@ -492,18 +492,18 @@
   }
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v19 = a4;
+  queueCopy = queue;
   v7 = !self->_resumed;
-  v8 = a3;
+  delegateCopy = delegate;
   v9 = NSStringFromSelector(a2);
   _AssertState(v7, a2, @"Cannot use %@ after using -resume", v10, v11, v12, v13, v14, v9);
 
-  [(NMSMessageCenter *)self setDelegate:v8];
-  if (v19)
+  [(NMSMessageCenter *)self setDelegate:delegateCopy];
+  if (queueCopy)
   {
-    v15 = v19;
+    v15 = queueCopy;
     delegateQueue = self->_delegateQueue;
     self->_delegateQueue = v15;
   }
@@ -522,9 +522,9 @@
   v31 = *MEMORY[0x1E69E9840];
   self->_checkedForQWS = 1;
   v3 = +[SYDevice targetableDevice];
-  v4 = [v3 lastActiveDate];
+  lastActiveDate = [v3 lastActiveDate];
 
-  if (v4)
+  if (lastActiveDate)
   {
     v5 = objc_opt_new();
     [(NMSPersistentDictionary *)self->_persistentContextStore lock];
@@ -533,14 +533,14 @@
     v25[1] = 3221225472;
     v25[2] = __35__NMSMessageCenter__checkForSwitch__block_invoke;
     v25[3] = &unk_1E86CB438;
-    v26 = v4;
+    v26 = lastActiveDate;
     v7 = v5;
     v27 = v7;
     [(NMSPersistentDictionary *)persistentContextStore enumerateObjectsSortedByEnqueueDate:v25];
     [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
     if ([v7 count])
     {
-      v19 = v4;
+      v19 = lastActiveDate;
       v8 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"NMSErrorDomain" code:7 userInfo:0];
       v21 = 0u;
       v22 = 0u;
@@ -591,7 +591,7 @@
       }
 
       v7 = v18;
-      v4 = v19;
+      lastActiveDate = v19;
     }
   }
 
@@ -685,14 +685,14 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateExpireTimerWithDate:(id)a3
+- (void)_updateExpireTimerWithDate:(id)date
 {
-  v4 = a3;
-  v9 = v4;
-  if (!self->_nextExpireTimerFireDate || ([v4 earlierDate:?], v5 = objc_claimAutoreleasedReturnValue(), v5, v4 = v9, v5 == v9))
+  dateCopy = date;
+  v9 = dateCopy;
+  if (!self->_nextExpireTimerFireDate || ([dateCopy earlierDate:?], v5 = objc_claimAutoreleasedReturnValue(), v5, dateCopy = v9, v5 == v9))
   {
     expireTimer = self->_expireTimer;
-    [v4 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     if (v7 >= 0.0)
     {
       v8 = dispatch_walltime(0, (v7 * 1000000000.0));
@@ -704,14 +704,14 @@ LABEL_13:
     }
 
     dispatch_source_set_timer(expireTimer, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
-    v4 = v9;
+    dateCopy = v9;
   }
 }
 
 - (void)resume
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138543362;
   v5 = v2;
   _os_log_fault_impl(&dword_1DF835000, a2, OS_LOG_TYPE_FAULT, "[IDSService initWithService:%{public}@] returned nil!", &v4, 0xCu);
@@ -727,46 +727,46 @@ LABEL_13:
   [(NMSPersistentDictionary *)persistentContextStore unlock];
 }
 
-- (id)_buildDataForRequest:(id)a3 options:(id *)a4
+- (id)_buildDataForRequest:(id)request options:(id *)options
 {
-  v6 = a3;
-  v24 = [v6 messageID];
-  v25 = [v6 priority];
+  requestCopy = request;
+  messageID = [requestCopy messageID];
+  priority = [requestCopy priority];
   v7 = objc_alloc(MEMORY[0x1E695DF88]);
-  v8 = [v6 data];
-  v9 = [v7 initWithCapacity:{objc_msgSend(v8, "length") + 3}];
+  data = [requestCopy data];
+  v9 = [v7 initWithCapacity:{objc_msgSend(data, "length") + 3}];
 
-  [v9 appendBytes:&v24 length:3];
-  v10 = [v6 data];
-  v11 = [v10 length];
+  [v9 appendBytes:&messageID length:3];
+  data2 = [requestCopy data];
+  v11 = [data2 length];
 
   if (v11)
   {
-    v12 = [v6 data];
-    [v9 appendData:v12];
+    data3 = [requestCopy data];
+    [v9 appendData:data3];
   }
 
-  if (a4)
+  if (options)
   {
     v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
-    [v6 sendTimeout];
+    [requestCopy sendTimeout];
     if (v14 > 0.0)
     {
       v15 = MEMORY[0x1E696AD98];
-      [v6 sendTimeout];
+      [requestCopy sendTimeout];
       v16 = [v15 numberWithDouble:?];
       [v13 setObject:v16 forKeyedSubscript:*MEMORY[0x1E69A47D8]];
 
       [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69A4790]];
     }
 
-    if ([v6 shouldEncrypt])
+    if ([requestCopy shouldEncrypt])
     {
       [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69A4788]];
     }
 
     responseHandlers = self->_responseHandlers;
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v6, "messageID")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(requestCopy, "messageID")}];
     v19 = [(NSMutableDictionary *)responseHandlers objectForKeyedSubscript:v18];
 
     if (v19)
@@ -774,12 +774,12 @@ LABEL_13:
       [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69A4798]];
     }
 
-    v20 = [v6 extraIDSOptions];
+    extraIDSOptions = [requestCopy extraIDSOptions];
 
-    if (v20)
+    if (extraIDSOptions)
     {
-      v21 = [v6 extraIDSOptions];
-      [v13 addEntriesFromDictionary:v21];
+      extraIDSOptions2 = [requestCopy extraIDSOptions];
+      [v13 addEntriesFromDictionary:extraIDSOptions2];
     }
 
     if ([(NMSMessageCenter *)self enableTransmissionWindow])
@@ -788,52 +788,52 @@ LABEL_13:
     }
 
     v22 = v13;
-    *a4 = v13;
+    *options = v13;
   }
 
   return v9;
 }
 
-- (id)_buildDataForResponse:(id)a3 options:(id *)a4
+- (id)_buildDataForResponse:(id)response options:(id *)options
 {
-  v6 = a3;
-  v7 = [v6 request];
-  v23 = [v7 messageID];
+  responseCopy = response;
+  request = [responseCopy request];
+  messageID = [request messageID];
   v8 = objc_alloc(MEMORY[0x1E695DF88]);
-  v9 = [v6 data];
-  v10 = [v8 initWithCapacity:{objc_msgSend(v9, "length") + 2}];
+  data = [responseCopy data];
+  v10 = [v8 initWithCapacity:{objc_msgSend(data, "length") + 2}];
 
-  [v10 appendBytes:&v23 length:2];
-  v11 = [v6 data];
-  v12 = [v11 length];
+  [v10 appendBytes:&messageID length:2];
+  data2 = [responseCopy data];
+  v12 = [data2 length];
 
   if (v12)
   {
-    v13 = [v6 data];
-    [v10 appendData:v13];
+    data3 = [responseCopy data];
+    [v10 appendData:data3];
   }
 
-  if (a4)
+  if (options)
   {
     v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
-    [v6 sendTimeout];
+    [responseCopy sendTimeout];
     if (v15 > 0.0)
     {
       v16 = MEMORY[0x1E696AD98];
-      [v6 sendTimeout];
+      [responseCopy sendTimeout];
       v17 = [v16 numberWithDouble:?];
       [v14 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69A47D8]];
     }
 
-    v18 = [v7 idsIdentifier];
-    [v14 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69A47C8]];
+    idsIdentifier = [request idsIdentifier];
+    [v14 setObject:idsIdentifier forKeyedSubscript:*MEMORY[0x1E69A47C8]];
 
-    v19 = [v6 extraIDSOptions];
+    extraIDSOptions = [responseCopy extraIDSOptions];
 
-    if (v19)
+    if (extraIDSOptions)
     {
-      v20 = [v6 extraIDSOptions];
-      [v14 addEntriesFromDictionary:v20];
+      extraIDSOptions2 = [responseCopy extraIDSOptions];
+      [v14 addEntriesFromDictionary:extraIDSOptions2];
     }
 
     if ([(NMSMessageCenter *)self enableTransmissionWindow])
@@ -842,48 +842,48 @@ LABEL_13:
     }
 
     v21 = v14;
-    *a4 = v14;
+    *options = v14;
   }
 
   return v10;
 }
 
-- (id)_decodeIncomingRequestData:(id)a3 context:(id)a4
+- (id)_decodeIncomingRequestData:(id)data context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bytes];
-  v9 = *v8;
-  v10 = *(v8 + 2);
+  dataCopy = data;
+  contextCopy = context;
+  bytes = [dataCopy bytes];
+  v9 = *bytes;
+  v10 = *(bytes + 2);
   v11 = objc_alloc_init(NMSIncomingRequest);
   [(NMSIncomingRequest *)v11 setMessageCenter:self];
   [(NMSIncomingRequest *)v11 setMessageID:v9];
-  if ([v7 expectsPeerResponse])
+  if ([contextCopy expectsPeerResponse])
   {
-    v12 = [v7 outgoingResponseIdentifier];
-    if (!v12)
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    if (!outgoingResponseIdentifier)
     {
       [NMSMessageCenter _decodeIncomingRequestData:context:];
     }
   }
 
-  v13 = [v7 outgoingResponseIdentifier];
-  [(NMSIncomingRequest *)v11 setIdsIdentifier:v13];
+  outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
+  [(NMSIncomingRequest *)v11 setIdsIdentifier:outgoingResponseIdentifier2];
 
   [(NMSIncomingRequest *)v11 setPriority:v10];
-  -[NMSIncomingRequest setExpectsResponse:](v11, "setExpectsResponse:", [v7 expectsPeerResponse]);
-  v14 = [v6 subdataWithRange:{3, objc_msgSend(v6, "length") - 3}];
+  -[NMSIncomingRequest setExpectsResponse:](v11, "setExpectsResponse:", [contextCopy expectsPeerResponse]);
+  v14 = [dataCopy subdataWithRange:{3, objc_msgSend(dataCopy, "length") - 3}];
   [(NMSIncomingRequest *)v11 setData:v14];
 
-  [(NMSIncomingRequest *)v11 setIdsContext:v7];
+  [(NMSIncomingRequest *)v11 setIdsContext:contextCopy];
 
   return v11;
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  requestCopy = request;
   resumed = self->_resumed;
   v7 = NSStringFromSelector(a2);
   _AssertState(resumed, a2, @"Cannot use %@ until after -resume is sent", v8, v9, v10, v11, v12, v7);
@@ -900,12 +900,12 @@ LABEL_13:
     if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_INFO))
     {
       v15 = v14;
-      v16 = [v5 pbRequest];
+      pbRequest = [requestCopy pbRequest];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [(_NMSDispatchQueue *)self->_windowQueue isSuspended];
+      isSuspended = [(_NMSDispatchQueue *)self->_windowQueue isSuspended];
       v20 = "not ";
-      if (v19)
+      if (isSuspended)
       {
         v20 = "";
       }
@@ -924,7 +924,7 @@ LABEL_13:
     v23[2] = __32__NMSMessageCenter_sendRequest___block_invoke;
     v23[3] = &unk_1E86CA868;
     objc_copyWeak(&v26, buf);
-    v24 = v5;
+    v24 = requestCopy;
     v25 = v13;
     [(_NMSDispatchQueue *)windowQueue async:v23];
 
@@ -1158,9 +1158,9 @@ void __32__NMSMessageCenter_sendRequest___block_invoke_81(uint64_t a1)
   [v2 messageCenter:*(a1 + 32) didResolveIDSIdentifierForRequest:*(a1 + 40)];
 }
 
-- (void)sendFile:(id)a3
+- (void)sendFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   resumed = self->_resumed;
   v7 = NSStringFromSelector(a2);
   _AssertState(resumed, a2, @"Cannot use %@ until after -resume is sent", v8, v9, v10, v11, v12, v7);
@@ -1176,7 +1176,7 @@ void __32__NMSMessageCenter_sendRequest___block_invoke_81(uint64_t a1)
     v14 = qword_1EDE73428;
     if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEBUG))
     {
-      [(NMSMessageCenter *)v14 sendFile:v5, self];
+      [(NMSMessageCenter *)v14 sendFile:fileCopy, self];
     }
 
     objc_initWeak(&location, self);
@@ -1186,8 +1186,8 @@ void __32__NMSMessageCenter_sendRequest___block_invoke_81(uint64_t a1)
     v16[2] = __29__NMSMessageCenter_sendFile___block_invoke;
     v16[3] = &unk_1E86CB480;
     objc_copyWeak(&v20, &location);
-    v17 = v5;
-    v18 = self;
+    v17 = fileCopy;
+    selfCopy = self;
     v19 = v13;
     [(_NMSDispatchQueue *)windowQueue async:v16];
 
@@ -1477,19 +1477,19 @@ void __29__NMSMessageCenter_sendFile___block_invoke_86(uint64_t a1)
   [v2 messageCenter:*(a1 + 32) didResolveIDSIdentifier:*(a1 + 40) forFileTransfer:*(a1 + 48)];
 }
 
-- (void)_sendResponse:(id)a3
+- (void)_sendResponse:(id)response
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  responseCopy = response;
   resumed = self->_resumed;
   v7 = NSStringFromSelector(a2);
   _AssertState(resumed, a2, @"Cannot use %@ until after -resume is sent", v8, v9, v10, v11, v12, v7);
 
   v13 = self->_service;
-  v14 = [v5 request];
+  request = [responseCopy request];
   if (v13)
   {
-    [v5 setSent:1];
+    [responseCopy setSent:1];
     if (_sync_log_facilities_pred != -1)
     {
       [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1499,12 +1499,12 @@ void __29__NMSMessageCenter_sendFile___block_invoke_86(uint64_t a1)
     if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_INFO))
     {
       v16 = v15;
-      v17 = [v5 pbResponse];
+      pbResponse = [responseCopy pbResponse];
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v20 = [(_NMSDispatchQueue *)self->_windowQueue isSuspended];
+      isSuspended = [(_NMSDispatchQueue *)self->_windowQueue isSuspended];
       v21 = "not ";
-      if (v20)
+      if (isSuspended)
       {
         v21 = "";
       }
@@ -1523,8 +1523,8 @@ void __29__NMSMessageCenter_sendFile___block_invoke_86(uint64_t a1)
     v24[2] = __34__NMSMessageCenter__sendResponse___block_invoke;
     v24[3] = &unk_1E86CB480;
     objc_copyWeak(&v28, buf);
-    v25 = v5;
-    v26 = v14;
+    v25 = responseCopy;
+    v26 = request;
     v27 = v13;
     [(_NMSDispatchQueue *)windowQueue async:v24];
 
@@ -1776,45 +1776,45 @@ void __34__NMSMessageCenter__sendResponse___block_invoke_90(uint64_t a1)
   [v2 messageCenter:*(a1 + 32) didResolveIDSIdentifier:*(a1 + 40) forResponse:*(a1 + 48)];
 }
 
-- (void)_handleError:(id)a3 context:(id)a4 locked:(BOOL)a5
+- (void)_handleError:(id)error context:(id)context locked:(BOOL)locked
 {
-  v8 = a3;
-  v9 = a4;
+  errorCopy = error;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_queue);
-  v10 = [v9 idsIdentifier];
+  idsIdentifier = [contextCopy idsIdentifier];
 
-  if (v10)
+  if (idsIdentifier)
   {
-    if (!a5)
+    if (!locked)
     {
       [(NMSPersistentDictionary *)self->_persistentContextStore lock];
     }
 
     persistentContextStore = self->_persistentContextStore;
-    v12 = [v9 idsIdentifier];
-    [(NMSPersistentDictionary *)persistentContextStore removeObjectForKey:v12];
+    idsIdentifier2 = [contextCopy idsIdentifier];
+    [(NMSPersistentDictionary *)persistentContextStore removeObjectForKey:idsIdentifier2];
 
-    if (!a5)
+    if (!locked)
     {
       [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
     }
   }
 
-  v13 = [v8 userInfo];
-  v14 = [v13 mutableCopy];
+  userInfo = [errorCopy userInfo];
+  v14 = [userInfo mutableCopy];
 
   if (!v14)
   {
     v14 = objc_opt_new();
   }
 
-  [v14 setObject:v9 forKeyedSubscript:@"NMSContext"];
+  [v14 setObject:contextCopy forKeyedSubscript:@"NMSContext"];
   v15 = MEMORY[0x1E696ABC0];
-  v16 = [v8 domain];
-  v17 = [v15 errorWithDomain:v16 code:objc_msgSend(v8 userInfo:{"code"), v14}];
+  domain = [errorCopy domain];
+  v17 = [v15 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v14}];
 
   errorHandlers = self->_errorHandlers;
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v9, "messageID")}];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(contextCopy, "messageID")}];
   v20 = [(NSMutableDictionary *)errorHandlers objectForKeyedSubscript:v19];
 
   if (v20)
@@ -1835,7 +1835,7 @@ void __34__NMSMessageCenter__sendResponse___block_invoke_90(uint64_t a1)
       block[2] = __48__NMSMessageCenter__handleError_context_locked___block_invoke;
       block[3] = &unk_1E86CA0F8;
       block[4] = self;
-      v25 = v9;
+      v25 = contextCopy;
       v26 = v17;
       dispatch_sync(delegateQueue, block);
     }
@@ -1887,34 +1887,34 @@ void __48__NMSMessageCenter__handleError_context_locked___block_invoke(uint64_t 
   [(NMSWindowData *)self->_windowData removeAllMessages];
 }
 
-- (BOOL)cancelMessageWithID:(id)a3 error:(id *)a4
+- (BOOL)cancelMessageWithID:(id)d error:(id *)error
 {
   service = self->_service;
   if (service)
   {
-    LOBYTE(service) = [(IDSService *)service cancelIdentifier:a3 error:a4];
+    LOBYTE(service) = [(IDSService *)service cancelIdentifier:d error:error];
   }
 
   return service;
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_transportActivity, &state);
   [(NMSPersistentDictionary *)self->_persistentContextStore lock];
-  v16 = [(NMSPersistentDictionary *)self->_persistentContextStore objectForKey:v14];
+  v16 = [(NMSPersistentDictionary *)self->_persistentContextStore objectForKey:identifierCopy];
   [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
   if (!v16)
   {
-    if (a6)
+    if (success)
     {
       goto LABEL_31;
     }
@@ -1923,20 +1923,20 @@ void __48__NMSMessageCenter__handleError_context_locked___block_invoke(uint64_t 
   }
 
   [v16 setSendAcked:1];
-  if (!a6)
+  if (!success)
   {
-    if (!v15)
+    if (!errorCopy)
     {
-      v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NMSErrorDomain" code:3 userInfo:0];
+      errorCopy = [MEMORY[0x1E696ABC0] errorWithDomain:@"NMSErrorDomain" code:3 userInfo:0];
     }
 
-    [(NMSMessageCenter *)self _handleError:v15 context:v16];
+    [(NMSMessageCenter *)self _handleError:errorCopy context:v16];
 LABEL_16:
     if ([(NMSMessageCenter *)self enableTransmissionWindow])
     {
       currentBytesInFlight = self->_currentBytesInFlight;
       v27 = currentBytesInFlight >= [(NMSMessageCenter *)self maxBytesInFlight]|| [(_NMSDispatchQueue *)self->_windowQueue isSuspended];
-      [(NMSWindowData *)self->_windowData removeAndReturnLengthOfMessageWithID:v14];
+      [(NMSWindowData *)self->_windowData removeAndReturnLengthOfMessageWithID:identifierCopy];
       self->_currentBytesInFlight = 0;
       if (v27 && [(NMSMessageCenter *)self maxBytesInFlight])
       {
@@ -1949,11 +1949,11 @@ LABEL_16:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           v29 = self->_currentBytesInFlight;
-          v30 = [(NMSMessageCenter *)self maxBytesInFlight];
+          maxBytesInFlight = [(NMSMessageCenter *)self maxBytesInFlight];
           *buf = 134218240;
           v37 = v29;
           v38 = 2048;
-          v39 = v30;
+          v39 = maxBytesInFlight;
           _os_log_impl(&dword_1DF835000, v28, OS_LOG_TYPE_DEFAULT, "Opening window: %lu bytes in flight, %lu max", buf, 0x16u);
         }
 
@@ -1979,7 +1979,7 @@ LABEL_16:
       block[2] = __72__NMSMessageCenter_service_account_identifier_didSendWithSuccess_error___block_invoke;
       block[3] = &unk_1E86CA0F8;
       block[4] = self;
-      v33 = v14;
+      v33 = identifierCopy;
       v34 = v16;
       dispatch_sync(delegateQueue, block);
     }
@@ -1999,15 +1999,15 @@ LABEL_16:
   {
 LABEL_8:
     [(NMSPersistentDictionary *)self->_persistentContextStore lock];
-    v23 = [v16 idsOptions];
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x1E69A47E0]];
+    idsOptions = [v16 idsOptions];
+    v24 = [idsOptions objectForKeyedSubscript:*MEMORY[0x1E69A47E0]];
     if ([v24 BOOLValue])
     {
-      v25 = [v16 processAcked];
+      processAcked = [v16 processAcked];
 
-      if ((v25 & 1) == 0)
+      if ((processAcked & 1) == 0)
       {
-        [(NMSPersistentDictionary *)self->_persistentContextStore resetObject:v16 forKey:v14];
+        [(NMSPersistentDictionary *)self->_persistentContextStore resetObject:v16 forKey:identifierCopy];
 LABEL_30:
         [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
         goto LABEL_31;
@@ -2018,7 +2018,7 @@ LABEL_30:
     {
     }
 
-    [(NMSPersistentDictionary *)self->_persistentContextStore removeObjectForKey:v14];
+    [(NMSPersistentDictionary *)self->_persistentContextStore removeObjectForKey:identifierCopy];
     goto LABEL_30;
   }
 
@@ -2037,19 +2037,19 @@ void __72__NMSMessageCenter_service_account_identifier_didSendWithSuccess_error_
   [WeakRetained messageCenter:v2 didSuccessfullySendRequestWithIdentifier:v3 userInfo:v4];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_queue);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_transportActivity, &state);
   [(NMSPersistentDictionary *)self->_persistentContextStore lock];
-  v14 = [(NMSPersistentDictionary *)self->_persistentContextStore objectForKey:v12];
+  v14 = [(NMSPersistentDictionary *)self->_persistentContextStore objectForKey:identifierCopy];
   [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
   [v14 setProcessAcked:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2063,7 +2063,7 @@ void __72__NMSMessageCenter_service_account_identifier_didSendWithSuccess_error_
     block[2] = __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithContext___block_invoke;
     block[3] = &unk_1E86CA0F8;
     block[4] = self;
-    v30 = v12;
+    v30 = identifierCopy;
     v31 = v14;
     dispatch_sync(delegateQueue, block);
   }
@@ -2084,16 +2084,16 @@ void __72__NMSMessageCenter_service_account_identifier_didSendWithSuccess_error_
     {
 LABEL_6:
       [(NMSPersistentDictionary *)self->_persistentContextStore lock];
-      v21 = [v14 sendAcked];
+      sendAcked = [v14 sendAcked];
       persistentContextStore = self->_persistentContextStore;
-      if (v21)
+      if (sendAcked)
       {
-        [(NMSPersistentDictionary *)persistentContextStore removeObjectForKey:v12];
+        [(NMSPersistentDictionary *)persistentContextStore removeObjectForKey:identifierCopy];
       }
 
       else
       {
-        [(NMSPersistentDictionary *)persistentContextStore resetObject:v14 forKey:v12];
+        [(NMSPersistentDictionary *)persistentContextStore resetObject:v14 forKey:identifierCopy];
       }
 
       [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
@@ -2104,7 +2104,7 @@ LABEL_6:
   {
     currentBytesInFlight = self->_currentBytesInFlight;
     v24 = currentBytesInFlight >= [(NMSMessageCenter *)self maxBytesInFlight]|| [(_NMSDispatchQueue *)self->_windowQueue isSuspended];
-    [(NMSWindowData *)self->_windowData removeAndReturnLengthOfMessageWithID:v12];
+    [(NMSWindowData *)self->_windowData removeAndReturnLengthOfMessageWithID:identifierCopy];
     self->_currentBytesInFlight = 0;
     if (v24 && [(NMSMessageCenter *)self maxBytesInFlight])
     {
@@ -2117,11 +2117,11 @@ LABEL_6:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v26 = self->_currentBytesInFlight;
-        v27 = [(NMSMessageCenter *)self maxBytesInFlight];
+        maxBytesInFlight = [(NMSMessageCenter *)self maxBytesInFlight];
         *buf = 134218240;
         v34 = v26;
         v35 = 2048;
-        v36 = v27;
+        v36 = maxBytesInFlight;
         _os_log_impl(&dword_1DF835000, v25, OS_LOG_TYPE_DEFAULT, "Opening window: %lu bytes in flight, %lu max", buf, 0x16u);
       }
 
@@ -2144,14 +2144,14 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
   [WeakRetained messageCenter:v2 didSuccessfullyDeliverRequestWithIdentifier:v3 userInfo:v4];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v79 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v65 = a4;
-  v13 = a5;
-  v66 = a6;
-  v14 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_transportActivity, &state);
@@ -2163,23 +2163,23 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
   v15 = qword_1EDE73428;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v13 length];
-    v17 = _SYObfuscate(v12);
-    v18 = [v14 outgoingResponseIdentifier];
-    v19 = [v14 incomingResponseIdentifier];
+    v16 = [dataCopy length];
+    v17 = _SYObfuscate(serviceCopy);
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
     *buf = 134218754;
     v72 = v16;
     v73 = 2114;
     v74 = v17;
     v75 = 2114;
-    v76 = v18;
+    v76 = outgoingResponseIdentifier;
     v77 = 2114;
-    v78 = v19;
+    v78 = incomingResponseIdentifier;
     _os_log_impl(&dword_1DF835000, v15, OS_LOG_TYPE_DEFAULT, "Receiving %zu bytes of incoming data from service %{public}@. Identifier (in/out) = %{public}@ / %{public}@", buf, 0x2Au);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_service == v12)
+  if (self->_service == serviceCopy)
   {
     if (_sync_log_facilities_pred != -1)
     {
@@ -2193,21 +2193,21 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
     }
 
     v63 = os_transaction_create();
-    v21 = [v14 incomingResponseIdentifier];
-    v22 = v21 == 0;
+    incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+    v22 = incomingResponseIdentifier2 == 0;
 
     if (v22)
     {
-      if ([v13 length] >= 3)
+      if ([dataCopy length] >= 3)
       {
-        v64 = [(NMSMessageCenter *)self _decodeIncomingRequestData:v13 context:v14];
-        [v64 setSourceDeviceID:v66];
+        v64 = [(NMSMessageCenter *)self _decodeIncomingRequestData:dataCopy context:contextCopy];
+        [v64 setSourceDeviceID:dCopy];
         if ([v64 messageID] == 0x7FFF)
         {
-          v43 = [v64 pbRequest];
-          v44 = [v43 inReplyTo];
+          pbRequest = [v64 pbRequest];
+          inReplyTo = [pbRequest inReplyTo];
           [(NMSPersistentDictionary *)self->_persistentContextStore lock];
-          [(NMSPersistentDictionary *)self->_persistentContextStore removeObjectForKey:v44];
+          [(NMSPersistentDictionary *)self->_persistentContextStore removeObjectForKey:inReplyTo];
           [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
           if (_sync_log_facilities_pred != -1)
           {
@@ -2218,7 +2218,7 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
           if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v72 = v44;
+            v72 = inReplyTo;
             _os_log_impl(&dword_1DF835000, v45, OS_LOG_TYPE_DEFAULT, "Releasing timer for outgoing request %{public}@ due to incoming Version Rejection message triggered by that message ID.", buf, 0xCu);
           }
         }
@@ -2233,8 +2233,8 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
           v46 = qword_1EDE73428;
           if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
           {
-            v47 = [v64 CPObfuscatedDescriptionObject];
-            v48 = _SYObfuscate(v47);
+            cPObfuscatedDescriptionObject = [v64 CPObfuscatedDescriptionObject];
+            v48 = _SYObfuscate(cPObfuscatedDescriptionObject);
             *buf = 138543362;
             v72 = v48;
             _os_log_impl(&dword_1DF835000, v46, OS_LOG_TYPE_DEFAULT, "Received request: %{public}@", buf, 0xCu);
@@ -2275,16 +2275,16 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
 
           if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEBUG))
           {
-            if ([v13 length] > 0x64)
+            if ([dataCopy length] > 0x64)
             {
               v55 = objc_autoreleasePoolPush();
-              v54 = [v13 subdataWithRange:{0, 100}];
+              v54 = [dataCopy subdataWithRange:{0, 100}];
               objc_autoreleasePoolPop(v55);
             }
 
             else
             {
-              v54 = v13;
+              v54 = dataCopy;
             }
 
             if (_sync_log_facilities_pred != -1)
@@ -2295,7 +2295,7 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
             v56 = qword_1EDE73428;
             if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
             {
-              v57 = [v13 subdataWithRange:{0, 3}];
+              v57 = [dataCopy subdataWithRange:{0, 3}];
               [NMSMessageCenter service:v57 account:buf incomingData:v56 fromID:? context:?];
             }
 
@@ -2345,23 +2345,23 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
       }
     }
 
-    else if ([v13 length] >= 2)
+    else if ([dataCopy length] >= 2)
     {
-      v23 = v13;
-      v24 = *[v13 bytes];
-      v64 = [v13 subdataWithRange:{2, objc_msgSend(v13, "length") - 2}];
+      v23 = dataCopy;
+      v24 = *[dataCopy bytes];
+      v64 = [dataCopy subdataWithRange:{2, objc_msgSend(dataCopy, "length") - 2}];
       [(NMSPersistentDictionary *)self->_persistentContextStore lock];
       persistentContextStore = self->_persistentContextStore;
-      v26 = [v14 incomingResponseIdentifier];
-      v27 = [(NMSPersistentDictionary *)persistentContextStore objectForKey:v26];
+      incomingResponseIdentifier3 = [contextCopy incomingResponseIdentifier];
+      v27 = [(NMSPersistentDictionary *)persistentContextStore objectForKey:incomingResponseIdentifier3];
 
       [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
       if (v27)
       {
         [(NMSPersistentDictionary *)self->_persistentContextStore lock];
         v28 = self->_persistentContextStore;
-        v29 = [v14 incomingResponseIdentifier];
-        [(NMSPersistentDictionary *)v28 removeObjectForKey:v29];
+        incomingResponseIdentifier4 = [contextCopy incomingResponseIdentifier];
+        [(NMSPersistentDictionary *)v28 removeObjectForKey:incomingResponseIdentifier4];
 
         [(NMSPersistentDictionary *)self->_persistentContextStore unlock];
         if ([v27 messageID] == v24)
@@ -2377,20 +2377,20 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
               v33 = objc_opt_new();
               [v33 setMessageID:{objc_msgSend(v27, "messageID")}];
               [v33 setData:v64];
-              v34 = [v14 outgoingResponseIdentifier];
-              [v33 setIdsIdentifier:v34];
+              outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
+              [v33 setIdsIdentifier:outgoingResponseIdentifier2];
 
-              v35 = [v14 incomingResponseIdentifier];
-              [v33 setRequestIDSIdentifier:v35];
+              incomingResponseIdentifier5 = [contextCopy incomingResponseIdentifier];
+              [v33 setRequestIDSIdentifier:incomingResponseIdentifier5];
 
-              v36 = [v27 date];
-              [v33 setRequestSent:v36];
+              date = [v27 date];
+              [v33 setRequestSent:date];
 
-              v37 = [v27 userInfo];
-              [v33 setRequestPersistentUserInfo:v37];
+              userInfo = [v27 userInfo];
+              [v33 setRequestPersistentUserInfo:userInfo];
 
-              [v33 setSourceDeviceID:v66];
-              [v33 setIdsContext:v14];
+              [v33 setSourceDeviceID:dCopy];
+              [v33 setIdsContext:contextCopy];
               if (shouldLogTraffic())
               {
                 if (_sync_log_facilities_pred != -1)
@@ -2401,8 +2401,8 @@ void __75__NMSMessageCenter_service_account_identifier_hasBeenDeliveredWithConte
                 v38 = qword_1EDE73428;
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                 {
-                  v39 = [v33 CPObfuscatedDescriptionObject];
-                  v40 = _SYObfuscate(v39);
+                  cPObfuscatedDescriptionObject2 = [v33 CPObfuscatedDescriptionObject];
+                  v40 = _SYObfuscate(cPObfuscatedDescriptionObject2);
                   *buf = 138543362;
                   v72 = v40;
                   _os_log_impl(&dword_1DF835000, v38, OS_LOG_TYPE_DEFAULT, "Received response: %{public}@", buf, 0xCu);
@@ -2459,8 +2459,8 @@ LABEL_55:
       v32 = qword_1EDE73428;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v51 = [v14 incomingResponseIdentifier];
-        [NMSMessageCenter service:v51 account:v24 incomingData:buf fromID:v32 context:?];
+        incomingResponseIdentifier6 = [contextCopy incomingResponseIdentifier];
+        [NMSMessageCenter service:incomingResponseIdentifier6 account:v24 incomingData:buf fromID:v32 context:?];
       }
 
       goto LABEL_54;
@@ -2478,7 +2478,7 @@ LABEL_56:
 
   if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_ERROR))
   {
-    [NMSMessageCenter service:v12 account:&self->_service incomingData:? fromID:? context:?];
+    [NMSMessageCenter service:serviceCopy account:&self->_service incomingData:? fromID:? context:?];
   }
 
 LABEL_57:
@@ -2493,14 +2493,14 @@ void __64__NMSMessageCenter_service_account_incomingData_fromID_context___block_
   [WeakRetained messageCenter:*(a1 + 32) didReceiveUnknownRequest:*(a1 + 40)];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  serviceCopy = service;
+  accountCopy = account;
+  lCopy = l;
+  metadataCopy = metadata;
+  dCopy = d;
+  contextCopy = context;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_transportActivity, &state);
@@ -2523,14 +2523,14 @@ void __64__NMSMessageCenter_service_account_incomingData_fromID_context___block_
     v29 = os_transaction_create();
     v23 = objc_opt_new();
     [v23 setMessageCenter:self];
-    [v23 setIdsIdentifier:v18];
-    [v23 setFileURL:v16];
-    v24 = [v17 objectForKeyedSubscript:@"UserMetadata"];
+    [v23 setIdsIdentifier:dCopy];
+    [v23 setFileURL:lCopy];
+    v24 = [metadataCopy objectForKeyedSubscript:@"UserMetadata"];
     [v23 setMetadata:v24];
 
-    [v23 setSourceDeviceID:v18];
-    [v23 setIdsContext:v19];
-    v25 = [v17 objectForKeyedSubscript:@"HeaderData"];
+    [v23 setSourceDeviceID:dCopy];
+    [v23 setIdsContext:contextCopy];
+    v25 = [metadataCopy objectForKeyedSubscript:@"HeaderData"];
     if (v25)
     {
       v26 = [[SYFileTransferInfo alloc] initWithData:v25];
@@ -2570,12 +2570,12 @@ void __82__NMSMessageCenter_service_account_incomingResourceAtURL_metadata_fromI
   [WeakRetained messageCenter:*(a1 + 32) didReceiveIncomingFileTransfer:*(a1 + 40)];
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  deviceCopy = device;
+  blockCopy = block;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_transportActivity, &state);
@@ -2588,7 +2588,7 @@ void __82__NMSMessageCenter_service_account_incomingResourceAtURL_metadata_fromI
   if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v9;
+    v21 = deviceCopy;
     _os_log_impl(&dword_1DF835000, v11, OS_LOG_TYPE_DEFAULT, "IDS active device changed: %@", buf, 0xCu);
   }
 
@@ -2603,14 +2603,14 @@ void __82__NMSMessageCenter_service_account_incomingResourceAtURL_metadata_fromI
     block[2] = __77__NMSMessageCenter_service_didSwitchActivePairedDevice_acknowledgementBlock___block_invoke;
     block[3] = &unk_1E86CB1D0;
     block[4] = self;
-    v17 = v9;
-    v18 = v10;
+    v17 = deviceCopy;
+    v18 = blockCopy;
     dispatch_async(delegateQueue, block);
   }
 
   else
   {
-    v10[2](v10);
+    blockCopy[2](blockCopy);
   }
 
   os_activity_scope_leave(&state);
@@ -2624,10 +2624,10 @@ void __77__NMSMessageCenter_service_didSwitchActivePairedDevice_acknowledgementB
   [WeakRetained messageCenter:a1[4] activeDeviceChanged:a1[5] acknowledgement:a1[6]];
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_transportActivity, &state);
@@ -2640,18 +2640,18 @@ void __77__NMSMessageCenter_service_didSwitchActivePairedDevice_acknowledgementB
     block[2] = __49__NMSMessageCenter_service_nearbyDevicesChanged___block_invoke;
     block[3] = &unk_1E86CA0F8;
     v11 = WeakRetained;
-    v12 = self;
-    v13 = v7;
+    selfCopy = self;
+    v13 = changedCopy;
     dispatch_async(delegateQueue, block);
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_transportActivity, &state);
@@ -2664,8 +2664,8 @@ void __77__NMSMessageCenter_service_didSwitchActivePairedDevice_acknowledgementB
     block[2] = __52__NMSMessageCenter_service_connectedDevicesChanged___block_invoke;
     block[3] = &unk_1E86CA0F8;
     v11 = WeakRetained;
-    v12 = self;
-    v13 = v7;
+    selfCopy = self;
+    v13 = changedCopy;
     dispatch_async(delegateQueue, block);
   }
 
@@ -2679,9 +2679,9 @@ void __77__NMSMessageCenter_service_didSwitchActivePairedDevice_acknowledgementB
   return WeakRetained;
 }
 
-- (id)deviceIDFromDevice:(id)a3
+- (id)deviceIDFromDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
     v3 = IDSCopyIDForDevice();
   }

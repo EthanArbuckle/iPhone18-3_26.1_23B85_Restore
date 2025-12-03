@@ -1,12 +1,12 @@
 @interface HMDCHIPControllerACLDataSource
 + (id)logCategory;
-- (BOOL)removeValueForKey:(id)a3 completion:(id)a4;
-- (BOOL)setValue:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (HMDCHIPControllerACLDataSource)initWithHome:(id)a3;
+- (BOOL)removeValueForKey:(id)key completion:(id)completion;
+- (BOOL)setValue:(id)value forKey:(id)key completion:(id)completion;
+- (HMDCHIPControllerACLDataSource)initWithHome:(id)home;
 - (HMDHome)home;
 - (id)keyValueStore;
 - (id)logIdentifier;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 @end
 
 @implementation HMDCHIPControllerACLDataSource
@@ -20,23 +20,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCHIPControllerACLDataSource *)self home];
+  home = [(HMDCHIPControllerACLDataSource *)self home];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 logIdentifier];
-  v5 = [v2 fabric];
-  v6 = [v5 fabricID];
-  v7 = [v3 stringWithFormat:@"%@/%@", v4, v6];
+  logIdentifier = [home logIdentifier];
+  fabric = [home fabric];
+  fabricID = [fabric fabricID];
+  v7 = [v3 stringWithFormat:@"%@/%@", logIdentifier, fabricID];
 
   return v7;
 }
 
-- (BOOL)removeValueForKey:(id)a3 completion:(id)a4
+- (BOOL)removeValueForKey:(id)key completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -51,14 +51,14 @@
   return 0;
 }
 
-- (BOOL)setValue:(id)a3 forKey:(id)a4 completion:(id)a5
+- (BOOL)setValue:(id)value forKey:(id)key completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
@@ -73,12 +73,12 @@
   return 0;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -97,7 +97,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -112,12 +112,12 @@
   return 0;
 }
 
-- (HMDCHIPControllerACLDataSource)initWithHome:(id)a3
+- (HMDCHIPControllerACLDataSource)initWithHome:(id)home
 {
-  v4 = a3;
-  if (v4)
+  homeCopy = home;
+  if (homeCopy)
   {
-    v5 = v4;
+    v5 = homeCopy;
     v11.receiver = self;
     v11.super_class = HMDCHIPControllerACLDataSource;
     v6 = [(HMDCHIPControllerACLDataSource *)&v11 init];

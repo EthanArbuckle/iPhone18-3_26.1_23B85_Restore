@@ -1,28 +1,28 @@
 @interface AvatarPickerCoordinator
 - (_TtC22StickersUltraExtension23AvatarPickerCoordinator)init;
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4;
-- (void)dismissAvatarUIControllerWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4;
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record;
+- (void)dismissAvatarUIControllerWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation AvatarPickerCoordinator
 
-- (void)avatarPicker:(id)a3 didSelectAvatarRecord:(id)a4
+- (void)avatarPicker:(id)picker didSelectAvatarRecord:(id)record
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_10000C7F4(a4);
+  selfCopy = self;
+  sub_10000C7F4(record);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)presentAvatarUIController:(id)a3 animated:(BOOL)a4
+- (void)presentAvatarUIController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = *((swift_isaMask & self->super.isa) + 0x58);
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6(v14);
   if (v14[3])
   {
@@ -31,7 +31,7 @@
     v9 = v12;
     v10 = v13;
     sub_10000C9A4(v11, v12);
-    (*(v10 + 16))(v7, v4, v9, v10);
+    (*(v10 + 16))(controllerCopy, animatedCopy, v9, v10);
 
     sub_10000B5CC(v11);
   }
@@ -43,10 +43,10 @@
   }
 }
 
-- (void)dismissAvatarUIControllerWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)dismissAvatarUIControllerWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (identifier)
   {
     v6 = sub_10007D7D0();
     v8 = v7;
@@ -59,7 +59,7 @@
   }
 
   v9 = *((swift_isaMask & self->super.isa) + 0x58);
-  v10 = self;
+  selfCopy = self;
   v9(v16);
   if (v16[3])
   {
@@ -68,7 +68,7 @@
     v11 = v14;
     v12 = v15;
     sub_10000C9A4(v13, v14);
-    (*(v12 + 24))(v6, v8, v4, v11, v12);
+    (*(v12 + 24))(v6, v8, animatedCopy, v11, v12);
 
     sub_10000B5CC(v13);
   }

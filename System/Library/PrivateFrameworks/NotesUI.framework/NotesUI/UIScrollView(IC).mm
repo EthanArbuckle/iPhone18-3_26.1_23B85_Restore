@@ -8,23 +8,23 @@
 
 - (uint64_t)ic_shouldOptimizeForScrolling
 {
-  if ([a1 isDragging] & 1) != 0 || (objc_msgSend(a1, "isDecelerating"))
+  if ([self isDragging] & 1) != 0 || (objc_msgSend(self, "isDecelerating"))
   {
     return 1;
   }
 
-  return [a1 _isAnimatingScrollTest];
+  return [self _isAnimatingScrollTest];
 }
 
 - (uint64_t)ic_scrollRectToVisible:()IC animated:consideringInsets:
 {
   if (a8)
   {
-    [a1 bounds];
-    [a1 verticalScrollIndicatorInsets];
-    [a1 adjustedContentInset];
+    [self bounds];
+    [self verticalScrollIndicatorInsets];
+    [self adjustedContentInset];
     UIEdgeInsetsMax();
-    [a1 ic_visibleRectConsideringInsets:1];
+    [self ic_visibleRectConsideringInsets:1];
     v17.origin.x = a2;
     v17.origin.y = a3;
     v17.size.width = a4;
@@ -32,16 +32,16 @@
     result = CGRectContainsRect(v16, v17);
     if ((result & 1) == 0)
     {
-      [a1 contentOffset];
+      [self contentOffset];
 
-      return [a1 setContentOffset:a7 animated:?];
+      return [self setContentOffset:a7 animated:?];
     }
   }
 
   else
   {
 
-    return [a1 scrollRectToVisible:? animated:?];
+    return [self scrollRectToVisible:? animated:?];
   }
 
   return result;
@@ -49,13 +49,13 @@
 
 - (double)ic_visibleRectConsideringInsets:()IC
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v6 = v5;
-  [a1 bounds];
+  [self bounds];
   if (a3)
   {
-    [a1 verticalScrollIndicatorInsets];
-    [a1 adjustedContentInset];
+    [self verticalScrollIndicatorInsets];
+    [self adjustedContentInset];
     UIEdgeInsetsMax();
     return v6 + v7;
   }

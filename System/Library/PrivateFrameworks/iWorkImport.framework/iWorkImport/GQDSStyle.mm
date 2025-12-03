@@ -1,14 +1,14 @@
 @interface GQDSStyle
-+ (GQDSMap)defaultMapForStyleType:(int)a3;
-+ (id)createReplacementForMissingObject:(_xmlTextReader *)a3 processor:(id)a4;
-+ (int)styleTypeForNodeName:(const char *)a3;
++ (GQDSMap)defaultMapForStyleType:(int)type;
++ (id)createReplacementForMissingObject:(_xmlTextReader *)object processor:(id)processor;
++ (int)styleTypeForNodeName:(const char *)name;
 - (void)dealloc;
-- (void)setParent:(id)a3;
+- (void)setParent:(id)parent;
 @end
 
 @implementation GQDSStyle
 
-+ (GQDSMap)defaultMapForStyleType:(int)a3
++ (GQDSMap)defaultMapForStyleType:(int)type
 {
   v4 = qword_A40C8;
   if (!qword_A40C8)
@@ -129,12 +129,12 @@
     v4 = qword_A40C8;
   }
 
-  return CFDictionaryGetValue(v4, a3);
+  return CFDictionaryGetValue(v4, type);
 }
 
-+ (id)createReplacementForMissingObject:(_xmlTextReader *)a3 processor:(id)a4
++ (id)createReplacementForMissingObject:(_xmlTextReader *)object processor:(id)processor
 {
-  v7 = xmlTextReaderConstLocalName(a3);
+  v7 = xmlTextReaderConstLocalName(object);
   v8 = sub_41D7C(v7);
   if (!v8)
   {
@@ -142,18 +142,18 @@
   }
 
   v9 = v8;
-  v10 = [a1 createReplacementForMissingStyleOfType:{objc_msgSend(a1, "styleTypeForNodeName:", v8)}];
+  v10 = [self createReplacementForMissingStyleOfType:{objc_msgSend(self, "styleTypeForNodeName:", v8)}];
   free(v9);
   if (v10)
   {
-    AttributeNs = xmlTextReaderGetAttributeNs(a3, off_9D3E0, *(qword_A35E0 + 16));
-    [objc_msgSend(objc_msgSend(a4 "documentState")];
+    AttributeNs = xmlTextReaderGetAttributeNs(object, off_9D3E0, *(qword_A35E0 + 16));
+    [objc_msgSend(objc_msgSend(processor "documentState")];
   }
 
   return v10;
 }
 
-+ (int)styleTypeForNodeName:(const char *)a3
++ (int)styleTypeForNodeName:(const char *)name
 {
   v4 = qword_A40D0;
   if (!qword_A40D0)
@@ -181,7 +181,7 @@
     v4 = qword_A40D0;
   }
 
-  return CFDictionaryGetValue(v4, a3);
+  return CFDictionaryGetValue(v4, name);
 }
 
 - (void)dealloc
@@ -197,11 +197,11 @@
   [(GQDSStyle *)&v4 dealloc];
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v5 = a3;
+  parentCopy = parent;
 
-  self->mParent = a3;
+  self->mParent = parent;
 }
 
 @end

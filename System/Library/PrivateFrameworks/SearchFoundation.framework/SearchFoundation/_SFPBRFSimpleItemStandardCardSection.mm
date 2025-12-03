@@ -1,49 +1,49 @@
 @interface _SFPBRFSimpleItemStandardCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFSimpleItemStandardCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFSimpleItemStandardCardSection)initWithFacade:(id)a3;
-- (_SFPBRFSimpleItemStandardCardSection)initWithJSON:(id)a3;
+- (_SFPBRFSimpleItemStandardCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFSimpleItemStandardCardSection)initWithFacade:(id)facade;
+- (_SFPBRFSimpleItemStandardCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addText_3:(id)a3;
-- (void)addText_4:(id)a3;
-- (void)setText_3:(id)a3;
-- (void)setText_4:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addText_3:(id)text_3;
+- (void)addText_4:(id)text_4;
+- (void)setText_3:(id)text_3;
+- (void)setText_4:(id)text_4;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFSimpleItemStandardCardSection
 
-- (_SFPBRFSimpleItemStandardCardSection)initWithFacade:(id)a3
+- (_SFPBRFSimpleItemStandardCardSection)initWithFacade:(id)facade
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFSimpleItemStandardCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [_SFPBRFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:v8];
+      text2 = [facadeCopy text];
+      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:text2];
       [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_1:v9];
     }
 
-    v10 = [v4 text];
+    text3 = [facadeCopy text];
 
-    if (v10)
+    if (text3)
     {
       v11 = [_SFPBRFTextProperty alloc];
-      v12 = [v4 text];
-      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:v12];
+      text4 = [facadeCopy text];
+      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:text4];
       [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_2:v13];
     }
 
-    v14 = [v4 text];
-    if (v14)
+    text5 = [facadeCopy text];
+    if (text5)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -57,8 +57,8 @@
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v16 = [v4 text];
-    v17 = [v16 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    text6 = [facadeCopy text];
+    v17 = [text6 countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v17)
     {
       v18 = v17;
@@ -69,7 +69,7 @@
         {
           if (*v46 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(text6);
           }
 
           v21 = [[_SFPBRFTextProperty alloc] initWithFacade:*(*(&v45 + 1) + 8 * i)];
@@ -79,15 +79,15 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v45 objects:v50 count:16];
+        v18 = [text6 countByEnumeratingWithState:&v45 objects:v50 count:16];
       }
 
       while (v18);
     }
 
     [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_3s:v15];
-    v22 = [v4 text];
-    if (v22)
+    text7 = [facadeCopy text];
+    if (text7)
     {
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -101,8 +101,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v24 = [v4 text];
-    v25 = [v24 countByEnumeratingWithState:&v41 objects:v49 count:16];
+    text8 = [facadeCopy text];
+    v25 = [text8 countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v25)
     {
       v26 = v25;
@@ -113,7 +113,7 @@
         {
           if (*v42 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(text8);
           }
 
           v29 = [[_SFPBRFTextProperty alloc] initWithFacade:*(*(&v41 + 1) + 8 * j)];
@@ -123,30 +123,30 @@
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        v26 = [text8 countByEnumeratingWithState:&v41 objects:v49 count:16];
       }
 
       while (v26);
     }
 
     [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_4s:v23];
-    v30 = [v4 text];
+    text9 = [facadeCopy text];
 
-    if (v30)
+    if (text9)
     {
       v31 = [_SFPBRFTextProperty alloc];
-      v32 = [v4 text];
-      v33 = [(_SFPBRFTextProperty *)v31 initWithFacade:v32];
+      text10 = [facadeCopy text];
+      v33 = [(_SFPBRFTextProperty *)v31 initWithFacade:text10];
       [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_5:v33];
     }
 
-    v34 = [v4 text];
+    text11 = [facadeCopy text];
 
-    if (v34)
+    if (text11)
     {
       v35 = [_SFPBRFTextProperty alloc];
-      v36 = [v4 text];
-      v37 = [(_SFPBRFTextProperty *)v35 initWithFacade:v36];
+      text12 = [facadeCopy text];
+      v37 = [(_SFPBRFTextProperty *)v35 initWithFacade:text12];
       [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_6:v37];
     }
 
@@ -157,16 +157,16 @@
   return v5;
 }
 
-- (_SFPBRFSimpleItemStandardCardSection)initWithDictionary:(id)a3
+- (_SFPBRFSimpleItemStandardCardSection)initWithDictionary:(id)dictionary
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v43.receiver = self;
   v43.super_class = _SFPBRFSimpleItemStandardCardSection;
   v5 = [(_SFPBRFSimpleItemStandardCardSection *)&v43 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -174,7 +174,7 @@
       [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_1:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"text2"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"text2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -182,7 +182,7 @@
       [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_2:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"text3"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"text3"];
     objc_opt_class();
     v34 = v6;
     v33 = v10;
@@ -226,7 +226,7 @@
       v10 = v33;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"text4"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"text4"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -268,7 +268,7 @@
       v10 = v33;
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"text5"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"text5"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -276,7 +276,7 @@
       [(_SFPBRFSimpleItemStandardCardSection *)v5 setText_5:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"text6"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"text6"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -291,30 +291,30 @@
   return v5;
 }
 
-- (_SFPBRFSimpleItemStandardCardSection)initWithJSON:(id)a3
+- (_SFPBRFSimpleItemStandardCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFSimpleItemStandardCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFSimpleItemStandardCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFSimpleItemStandardCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -328,42 +328,42 @@
 - (id)dictionaryRepresentation
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_text_1)
   {
-    v4 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    text = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    dictionaryRepresentation = [text dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"text1"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"text1"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"text1"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"text1"];
     }
   }
 
   if (self->_text_2)
   {
-    v7 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    text2 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    dictionaryRepresentation2 = [text2 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"text2"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"text2"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"text2"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"text2"];
     }
   }
 
   if ([(NSArray *)self->_text_3s count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -383,16 +383,16 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v38 + 1) + 8 * i) dictionaryRepresentation];
-          if (v16)
+          dictionaryRepresentation3 = [*(*(&v38 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v10 addObject:v16];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFB0] null];
-            [v10 addObject:v17];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -402,12 +402,12 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"text3"];
+    [dictionary setObject:array forKeyedSubscript:@"text3"];
   }
 
   if ([(NSArray *)self->_text_4s count])
   {
-    v18 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -427,16 +427,16 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v34 + 1) + 8 * j) dictionaryRepresentation];
-          if (v24)
+          dictionaryRepresentation4 = [*(*(&v34 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v18 addObject:v24];
+            [array2 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v25 = [MEMORY[0x1E695DFB0] null];
-            [v18 addObject:v25];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null4];
           }
         }
 
@@ -446,44 +446,44 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"text4"];
+    [dictionary setObject:array2 forKeyedSubscript:@"text4"];
   }
 
   if (self->_text_5)
   {
-    v26 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    text3 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    dictionaryRepresentation5 = [text3 dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"text5"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"text5"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"text5"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"text5"];
     }
   }
 
   if (self->_text_6)
   {
-    v29 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    v30 = [v29 dictionaryRepresentation];
-    if (v30)
+    text4 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    dictionaryRepresentation6 = [text4 dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v30 forKeyedSubscript:@"text6"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"text6"];
     }
 
     else
     {
-      v31 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v31 forKeyedSubscript:@"text6"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"text6"];
     }
   }
 
   v32 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -496,28 +496,28 @@
   return v6 ^ v7 ^ [(_SFPBRFTextProperty *)self->_text_6 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  if (v7)
+  text3 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  if (text3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    v10 = [v4 text];
-    v11 = [v9 isEqual:v10];
+    v8 = text3;
+    text4 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    text5 = [equalCopy text];
+    v11 = [text4 isEqual:text5];
 
     if (!v11)
     {
@@ -529,20 +529,20 @@
   {
   }
 
-  v5 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  if (v12)
+  text6 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  if (text6)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    v15 = [v4 text];
-    v16 = [v14 isEqual:v15];
+    v13 = text6;
+    text7 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    text8 = [equalCopy text];
+    v16 = [text7 isEqual:text8];
 
     if (!v16)
     {
@@ -554,20 +554,20 @@
   {
   }
 
-  v5 = [(_SFPBRFSimpleItemStandardCardSection *)self text_3s];
-  v6 = [v4 text_3s];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFSimpleItemStandardCardSection *)self text_3s];
+  text2 = [equalCopy text_3s];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_SFPBRFSimpleItemStandardCardSection *)self text_3s];
-  if (v17)
+  text_3s = [(_SFPBRFSimpleItemStandardCardSection *)self text_3s];
+  if (text_3s)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFSimpleItemStandardCardSection *)self text_3s];
-    v20 = [v4 text_3s];
-    v21 = [v19 isEqual:v20];
+    v18 = text_3s;
+    text_3s2 = [(_SFPBRFSimpleItemStandardCardSection *)self text_3s];
+    text_3s3 = [equalCopy text_3s];
+    v21 = [text_3s2 isEqual:text_3s3];
 
     if (!v21)
     {
@@ -579,20 +579,20 @@
   {
   }
 
-  v5 = [(_SFPBRFSimpleItemStandardCardSection *)self text_4s];
-  v6 = [v4 text_4s];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFSimpleItemStandardCardSection *)self text_4s];
+  text2 = [equalCopy text_4s];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_SFPBRFSimpleItemStandardCardSection *)self text_4s];
-  if (v22)
+  text_4s = [(_SFPBRFSimpleItemStandardCardSection *)self text_4s];
+  if (text_4s)
   {
-    v23 = v22;
-    v24 = [(_SFPBRFSimpleItemStandardCardSection *)self text_4s];
-    v25 = [v4 text_4s];
-    v26 = [v24 isEqual:v25];
+    v23 = text_4s;
+    text_4s2 = [(_SFPBRFSimpleItemStandardCardSection *)self text_4s];
+    text_4s3 = [equalCopy text_4s];
+    v26 = [text_4s2 isEqual:text_4s3];
 
     if (!v26)
     {
@@ -604,20 +604,20 @@
   {
   }
 
-  v5 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  if (v27)
+  text9 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  if (text9)
   {
-    v28 = v27;
-    v29 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    v30 = [v4 text];
-    v31 = [v29 isEqual:v30];
+    v28 = text9;
+    text10 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    text11 = [equalCopy text];
+    v31 = [text10 isEqual:text11];
 
     if (!v31)
     {
@@ -629,12 +629,12 @@
   {
   }
 
-  v5 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) != (v6 == 0))
+  text = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) != (text2 == 0))
   {
-    v32 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    if (!v32)
+    text12 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    if (!text12)
     {
 
 LABEL_35:
@@ -642,10 +642,10 @@ LABEL_35:
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-    v35 = [v4 text];
-    v36 = [v34 isEqual:v35];
+    v33 = text12;
+    text13 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+    text14 = [equalCopy text];
+    v36 = [text13 isEqual:text14];
 
     if (v36)
     {
@@ -665,28 +665,28 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  if (v5)
+  toCopy = to;
+  text = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  if (v6)
+  text2 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  if (text2)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBRFSimpleItemStandardCardSection *)self text_3s];
+  text_3s = [(_SFPBRFSimpleItemStandardCardSection *)self text_3s];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v8 = [text_3s countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -698,7 +698,7 @@ LABEL_33:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(text_3s);
         }
 
         v12 = *(*(&v26 + 1) + 8 * v11);
@@ -707,18 +707,18 @@ LABEL_33:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v9 = [text_3s countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(_SFPBRFSimpleItemStandardCardSection *)self text_4s];
+  text_4s = [(_SFPBRFSimpleItemStandardCardSection *)self text_4s];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v14 = [text_4s countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -730,7 +730,7 @@ LABEL_33:
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(text_4s);
         }
 
         v18 = *(*(&v22 + 1) + 8 * v17);
@@ -739,20 +739,20 @@ LABEL_33:
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v15 = [text_4s countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  if (v19)
+  text3 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  if (text3)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
-  if (v20)
+  text4 = [(_SFPBRFSimpleItemStandardCardSection *)self text];
+  if (text4)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -760,54 +760,54 @@ LABEL_33:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addText_4:(id)a3
+- (void)addText_4:(id)text_4
 {
-  v4 = a3;
+  text_4Copy = text_4;
   text_4s = self->_text_4s;
-  v8 = v4;
+  v8 = text_4Copy;
   if (!text_4s)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_text_4s;
-    self->_text_4s = v6;
+    self->_text_4s = array;
 
-    v4 = v8;
+    text_4Copy = v8;
     text_4s = self->_text_4s;
   }
 
-  [(NSArray *)text_4s addObject:v4];
+  [(NSArray *)text_4s addObject:text_4Copy];
 }
 
-- (void)setText_4:(id)a3
+- (void)setText_4:(id)text_4
 {
-  v4 = [a3 copy];
+  v4 = [text_4 copy];
   text_4s = self->_text_4s;
   self->_text_4s = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addText_3:(id)a3
+- (void)addText_3:(id)text_3
 {
-  v4 = a3;
+  text_3Copy = text_3;
   text_3s = self->_text_3s;
-  v8 = v4;
+  v8 = text_3Copy;
   if (!text_3s)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_text_3s;
-    self->_text_3s = v6;
+    self->_text_3s = array;
 
-    v4 = v8;
+    text_3Copy = v8;
     text_3s = self->_text_3s;
   }
 
-  [(NSArray *)text_3s addObject:v4];
+  [(NSArray *)text_3s addObject:text_3Copy];
 }
 
-- (void)setText_3:(id)a3
+- (void)setText_3:(id)text_3
 {
-  v4 = [a3 copy];
+  v4 = [text_3 copy];
   text_3s = self->_text_3s;
   self->_text_3s = v4;
 

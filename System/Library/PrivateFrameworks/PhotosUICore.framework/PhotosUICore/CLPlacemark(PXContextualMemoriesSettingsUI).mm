@@ -9,7 +9,7 @@
 - (id)_px_dynamicLocationString
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -29,8 +29,8 @@ LABEL_3:
         objc_enumerationMutation(&unk_1F19103F0);
       }
 
-      v8 = [a1 valueForKey:*(*(&v13 + 1) + 8 * v7)];
-      v9 = v2;
+      v8 = [self valueForKey:*(*(&v13 + 1) + 8 * v7)];
+      v9 = string;
       v10 = v8;
       v11 = [v10 length];
       if (v11)
@@ -69,44 +69,44 @@ LABEL_3:
     }
   }
 
-  return v2;
+  return string;
 }
 
 - (id)px_subtitle
 {
-  v2 = [a1 areasOfInterest];
-  v3 = [v2 count];
+  areasOfInterest = [self areasOfInterest];
+  v3 = [areasOfInterest count];
 
   if (v3)
   {
-    v4 = [a1 _px_dynamicLocationString];
+    _px_dynamicLocationString = [self _px_dynamicLocationString];
   }
 
   else
   {
-    v4 = 0;
+    _px_dynamicLocationString = 0;
   }
 
-  return v4;
+  return _px_dynamicLocationString;
 }
 
 - (id)px_title
 {
-  v2 = [a1 areasOfInterest];
-  v3 = [v2 count];
+  areasOfInterest = [self areasOfInterest];
+  v3 = [areasOfInterest count];
 
   if (v3)
   {
-    v4 = [a1 areasOfInterest];
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    areasOfInterest2 = [self areasOfInterest];
+    _px_dynamicLocationString = [areasOfInterest2 componentsJoinedByString:{@", "}];
   }
 
   else
   {
-    v5 = [a1 _px_dynamicLocationString];
+    _px_dynamicLocationString = [self _px_dynamicLocationString];
   }
 
-  return v5;
+  return _px_dynamicLocationString;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface AWDSafariViewControllerTappedOnToolbarButtonEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsButton:(id)a3;
+- (int)StringAsButton:(id)button;
 - (int)button;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasButton:(BOOL)a3;
-- (void)setHasUsedLongTap:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasButton:(BOOL)button;
+- (void)setHasUsedLongTap:(BOOL)tap;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariViewControllerTappedOnToolbarButtonEvent
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasButton:(BOOL)a3
+- (void)setHasButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 2;
   }
@@ -43,39 +43,39 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsButton:(id)a3
+- (int)StringAsButton:(id)button
 {
-  if ([a3 isEqualToString:@"SFVC_BACK_BUTTON"])
+  if ([button isEqualToString:@"SFVC_BACK_BUTTON"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"SFVC_FORWARD_BUTTON"])
+  if ([button isEqualToString:@"SFVC_FORWARD_BUTTON"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"SFVC_SHARE_BUTTON"])
+  if ([button isEqualToString:@"SFVC_SHARE_BUTTON"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"SFVC_OPEN_IN_SAFARI_BUTTON"])
+  if ([button isEqualToString:@"SFVC_OPEN_IN_SAFARI_BUTTON"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"SFVC_RELOAD_BUTTON"])
+  if ([button isEqualToString:@"SFVC_RELOAD_BUTTON"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"SFVC_STOP_BUTTON"])
+  if ([button isEqualToString:@"SFVC_STOP_BUTTON"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"SFVC_FORMAT_MENU_BUTTON"])
+  if ([button isEqualToString:@"SFVC_FORMAT_MENU_BUTTON"])
   {
     return 6;
   }
@@ -83,9 +83,9 @@
   return 0;
 }
 
-- (void)setHasUsedLongTap:(BOOL)a3
+- (void)setHasUsedLongTap:(BOOL)tap
 {
-  if (a3)
+  if (tap)
   {
     v3 = 4;
   }
@@ -107,7 +107,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -128,16 +128,16 @@ LABEL_7:
       v7 = off_29EE33008[button];
     }
 
-    [v3 setObject:v7 forKey:@"button"];
+    [dictionary setObject:v7 forKey:@"button"];
     if ((*&self->_has & 4) != 0)
     {
       goto LABEL_4;
     }
 
-    return v3;
+    return dictionary;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -148,13 +148,13 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_usedLongTap), @"usedLongTap"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_usedLongTap), @"usedLongTap"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -195,13 +195,13 @@ LABEL_7:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 24) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 24) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -212,8 +212,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 20) = self->_usedLongTap;
-      *(a3 + 24) |= 4u;
+      *(to + 20) = self->_usedLongTap;
+      *(to + 24) |= 4u;
       return;
     }
   }
@@ -223,17 +223,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_button;
-  *(a3 + 24) |= 2u;
+  *(to + 4) = self->_button;
+  *(to + 24) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -270,41 +270,41 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 24) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
       goto LABEL_14;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 24) & 2) == 0 || self->_button != *(a3 + 4))
+      if ((*(equal + 24) & 2) == 0 || self->_button != *(equal + 4))
       {
         goto LABEL_14;
       }
     }
 
-    else if ((*(a3 + 24) & 2) != 0)
+    else if ((*(equal + 24) & 2) != 0)
     {
       goto LABEL_14;
     }
 
-    LOBYTE(v5) = (*(a3 + 24) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 24) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 24) & 4) == 0)
+      if ((*(equal + 24) & 4) == 0)
       {
 LABEL_14:
         LOBYTE(v5) = 0;
@@ -313,13 +313,13 @@ LABEL_14:
 
       if (self->_usedLongTap)
       {
-        if ((*(a3 + 20) & 1) == 0)
+        if ((*(equal + 20) & 1) == 0)
         {
           goto LABEL_14;
         }
       }
 
-      else if (*(a3 + 20))
+      else if (*(equal + 20))
       {
         goto LABEL_14;
       }
@@ -371,14 +371,14 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -388,20 +388,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_usedLongTap = *(a3 + 20);
+      self->_usedLongTap = *(from + 20);
       *&self->_has |= 4u;
       return;
     }
   }
 
-  else if ((*(a3 + 24) & 2) == 0)
+  else if ((*(from + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_button = *(a3 + 4);
+  self->_button = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 24) & 4) != 0)
+  if ((*(from + 24) & 4) != 0)
   {
     goto LABEL_7;
   }

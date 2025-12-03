@@ -1,15 +1,15 @@
 @interface BMDeviceBatteryLevel
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceBatteryLevel)initWithBatteryPercentage:(id)a3 fullyCharged:(id)a4;
-- (BMDeviceBatteryLevel)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceBatteryLevel)initWithBatteryPercentage:(id)percentage fullyCharged:(id)charged;
+- (BMDeviceBatteryLevel)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceBatteryLevel
@@ -28,13 +28,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMDeviceBatteryLevel hasBatteryPercentage](self, "hasBatteryPercentage") || [v5 hasBatteryPercentage])
     {
       if (![(BMDeviceBatteryLevel *)self hasBatteryPercentage])
@@ -64,8 +64,8 @@
 
     if (-[BMDeviceBatteryLevel hasFullyCharged](self, "hasFullyCharged") && [v5 hasFullyCharged])
     {
-      v9 = [(BMDeviceBatteryLevel *)self fullyCharged];
-      v10 = v9 ^ [v5 fullyCharged] ^ 1;
+      fullyCharged = [(BMDeviceBatteryLevel *)self fullyCharged];
+      v10 = fullyCharged ^ [v5 fullyCharged] ^ 1;
     }
 
     else
@@ -112,21 +112,21 @@ LABEL_15:
   }
 
   v12[0] = @"batteryPercentage";
-  v7 = v5;
+  null = v5;
   if (!v5)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v12[1] = @"fullyCharged";
-  v13[0] = v7;
-  v8 = v6;
+  v13[0] = null;
+  null2 = v6;
   if (!v6)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   if (v6)
   {
@@ -151,20 +151,20 @@ LABEL_14:
   return v9;
 }
 
-- (BMDeviceBatteryLevel)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceBatteryLevel)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"batteryPercentage"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"batteryPercentage"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_9;
       }
 
@@ -176,8 +176,8 @@ LABEL_14:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v16 = [v14 initWithDomain:v15 code:2 userInfo:v9];
       v8 = 0;
-      v11 = 0;
-      *a4 = v16;
+      selfCopy = 0;
+      *error = v16;
       goto LABEL_8;
     }
 
@@ -189,13 +189,13 @@ LABEL_14:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"fullyCharged"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"fullyCharged"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v17 = objc_alloc(MEMORY[0x1E696ABC0]);
         v18 = *MEMORY[0x1E698F240];
@@ -203,11 +203,11 @@ LABEL_14:
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"fullyCharged"];
         v22 = v19;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a4 = [v17 initWithDomain:v18 code:2 userInfo:v20];
+        *error = [v17 initWithDomain:v18 code:2 userInfo:v20];
       }
 
       v10 = 0;
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -220,45 +220,45 @@ LABEL_14:
   }
 
   self = [(BMDeviceBatteryLevel *)self initWithBatteryPercentage:v8 fullyCharged:v10];
-  v11 = self;
+  selfCopy = self;
 LABEL_8:
 
 LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMDeviceBatteryLevel *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_hasBatteryPercentage)
   {
     batteryPercentage = self->_batteryPercentage;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_hasFullyCharged)
   {
     fullyCharged = self->_fullyCharged;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28.receiver = self;
   v28.super_class = BMDeviceBatteryLevel;
   v5 = [(BMEventBase *)&v28 init];
@@ -267,12 +267,12 @@ LABEL_9:
     goto LABEL_41;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -283,18 +283,18 @@ LABEL_9:
       while (1)
       {
         LOBYTE(v29) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v29) & 0x7F) << v7;
@@ -312,9 +312,9 @@ LABEL_9:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -328,18 +328,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v29) = 0;
-          v20 = [v4 position] + 1;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 1;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (LOBYTE(v29) & 0x7F) << v17;
@@ -357,7 +357,7 @@ LABEL_16:
           }
         }
 
-        v23 = (v19 != 0) & ~[v4 hasError];
+        v23 = (v19 != 0) & ~[fromCopy hasError];
 LABEL_35:
         v5->_fullyCharged = v23;
       }
@@ -366,18 +366,18 @@ LABEL_35:
       {
         v5->_hasBatteryPercentage = 1;
         v29 = 0.0;
-        v15 = [v4 position] + 8;
-        if (v15 >= [v4 position] && (v16 = objc_msgSend(v4, "position") + 8, v16 <= objc_msgSend(v4, "length")))
+        v15 = [fromCopy position] + 8;
+        if (v15 >= [fromCopy position] && (v16 = objc_msgSend(fromCopy, "position") + 8, v16 <= objc_msgSend(fromCopy, "length")))
         {
-          v24 = [v4 data];
-          [v24 getBytes:&v29 range:{objc_msgSend(v4, "position"), 8}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_batteryPercentage = v29;
@@ -388,13 +388,13 @@ LABEL_35:
         goto LABEL_40;
       }
 
-      v25 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v25 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_40:
     v26 = 0;
@@ -421,20 +421,20 @@ LABEL_41:
   return v7;
 }
 
-- (BMDeviceBatteryLevel)initWithBatteryPercentage:(id)a3 fullyCharged:(id)a4
+- (BMDeviceBatteryLevel)initWithBatteryPercentage:(id)percentage fullyCharged:(id)charged
 {
-  v6 = a3;
-  v7 = a4;
+  percentageCopy = percentage;
+  chargedCopy = charged;
   v11.receiver = self;
   v11.super_class = BMDeviceBatteryLevel;
   v8 = [(BMEventBase *)&v11 init];
   if (v8)
   {
     v8->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v6)
+    if (percentageCopy)
     {
       v8->_hasBatteryPercentage = 1;
-      [v6 doubleValue];
+      [percentageCopy doubleValue];
     }
 
     else
@@ -444,10 +444,10 @@ LABEL_41:
     }
 
     v8->_batteryPercentage = v9;
-    if (v7)
+    if (chargedCopy)
     {
       v8->_hasFullyCharged = 1;
-      v8->_fullyCharged = [v7 BOOLValue];
+      v8->_fullyCharged = [chargedCopy BOOLValue];
     }
 
     else
@@ -474,9 +474,9 @@ LABEL_41:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -484,8 +484,8 @@ LABEL_41:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceBatteryLevel alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,36 +1,36 @@
 @interface WFAutomationListCollectionViewCell
 - (BOOL)showsSeparator;
-- (WFAutomationListCollectionViewCell)initWithFrame:(CGRect)a3;
+- (WFAutomationListCollectionViewCell)initWithFrame:(CGRect)frame;
 - (unint64_t)maskedCorners;
 - (void)prepareForReuse;
-- (void)setConfiguredTrigger:(id)a3 workflow:(id)a4;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setShowsSeparator:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setConfiguredTrigger:(id)trigger workflow:(id)workflow;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setShowsSeparator:(BOOL)separator;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateUI;
 @end
 
 @implementation WFAutomationListCollectionViewCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v14.receiver = self;
   v14.super_class = WFAutomationListCollectionViewCell;
-  v4 = a3;
-  [(WFAutomationListCollectionViewCell *)&v14 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WFAutomationListCollectionViewCell *)&v14 traitCollectionDidChange:changeCopy];
   v5 = [(WFAutomationListCollectionViewCell *)self traitCollection:v14.receiver];
   [v5 displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (v7 != v9)
   {
-    v10 = [(WFAutomationListCollectionViewCell *)self traitCollection];
-    [v10 displayScale];
+    traitCollection = [(WFAutomationListCollectionViewCell *)self traitCollection];
+    [traitCollection displayScale];
     v12 = 1.0 / v11;
-    v13 = [(WFAutomationListCollectionViewCell *)self separatorViewHeightConstraint];
-    [v13 setConstant:v12];
+    separatorViewHeightConstraint = [(WFAutomationListCollectionViewCell *)self separatorViewHeightConstraint];
+    [separatorViewHeightConstraint setConstant:v12];
   }
 }
 
@@ -46,50 +46,50 @@
 
 - (void)updateUI
 {
-  v3 = [(WFAutomationListCollectionViewCell *)self configuredTrigger];
+  configuredTrigger = [(WFAutomationListCollectionViewCell *)self configuredTrigger];
 
-  if (v3)
+  if (configuredTrigger)
   {
     [(WFAutomationListCollectionViewCell *)self setTintColor:0];
-    v4 = [(WFAutomationListCollectionViewCell *)self configuredTrigger];
-    v48 = [v4 trigger];
+    configuredTrigger2 = [(WFAutomationListCollectionViewCell *)self configuredTrigger];
+    trigger = [configuredTrigger2 trigger];
 
-    v5 = [v48 localizedDescriptionWithConfigurationSummary];
-    v6 = [(WFAutomationListCollectionViewCell *)self titleLabel];
-    [v6 setText:v5];
+    localizedDescriptionWithConfigurationSummary = [trigger localizedDescriptionWithConfigurationSummary];
+    titleLabel = [(WFAutomationListCollectionViewCell *)self titleLabel];
+    [titleLabel setText:localizedDescriptionWithConfigurationSummary];
 
-    v7 = [(WFAutomationListCollectionViewCell *)self configuredTrigger];
-    LODWORD(v6) = [v7 isEnabled];
+    configuredTrigger3 = [(WFAutomationListCollectionViewCell *)self configuredTrigger];
+    LODWORD(titleLabel) = [configuredTrigger3 isEnabled];
 
-    if (v6)
+    if (titleLabel)
     {
-      v8 = [(WFAutomationListCollectionViewCell *)self workflow];
-      v9 = [v8 actionsDescription];
-      v10 = [(WFAutomationListCollectionViewCell *)self descriptionLabel];
-      [v10 setText:v9];
+      workflow = [(WFAutomationListCollectionViewCell *)self workflow];
+      actionsDescription = [workflow actionsDescription];
+      descriptionLabel = [(WFAutomationListCollectionViewCell *)self descriptionLabel];
+      [descriptionLabel setText:actionsDescription];
     }
 
     else
     {
-      v8 = WFLocalizedString(@"Disabled");
-      v9 = [(WFAutomationListCollectionViewCell *)self descriptionLabel];
-      [v9 setText:v8];
+      workflow = WFLocalizedString(@"Disabled");
+      actionsDescription = [(WFAutomationListCollectionViewCell *)self descriptionLabel];
+      [actionsDescription setText:workflow];
     }
 
-    v29 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
-    v30 = [v48 displayGlyph];
-    v31 = [v30 UIImage];
-    v32 = [v48 displayGlyphTintColor];
-    v33 = [v32 UIColor];
-    v34 = [(WFAutomationListCollectionViewCell *)self configuredTrigger];
-    v35 = [v34 trigger];
-    [v29 setTriggerIcon:v31 tintColor:v33 withTrigger:v35];
+    summaryIconsView = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
+    displayGlyph = [trigger displayGlyph];
+    uIImage = [displayGlyph UIImage];
+    displayGlyphTintColor = [trigger displayGlyphTintColor];
+    uIColor = [displayGlyphTintColor UIColor];
+    configuredTrigger4 = [(WFAutomationListCollectionViewCell *)self configuredTrigger];
+    trigger2 = [configuredTrigger4 trigger];
+    [summaryIconsView setTriggerIcon:uIImage tintColor:uIColor withTrigger:trigger2];
 
-    v36 = [(WFAutomationListCollectionViewCell *)self workflow];
-    v37 = [v36 actions];
-    v38 = [(WFAutomationListCollectionViewCell *)self workflow];
-    v39 = [v38 actions];
-    v40 = [v39 count];
+    workflow2 = [(WFAutomationListCollectionViewCell *)self workflow];
+    actions = [workflow2 actions];
+    workflow3 = [(WFAutomationListCollectionViewCell *)self workflow];
+    actions2 = [workflow3 actions];
+    v40 = [actions2 count];
 
     if (v40 >= 6)
     {
@@ -101,118 +101,118 @@
       v41 = v40;
     }
 
-    v42 = [v37 subarrayWithRange:{0, v41}];
+    v42 = [actions subarrayWithRange:{0, v41}];
 
     v43 = [v42 if_compactMap:&__block_literal_global_4671];
-    v44 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
-    [v44 setActionIcons:v43];
+    summaryIconsView2 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
+    [summaryIconsView2 setActionIcons:v43];
   }
 
   else
   {
-    v11 = [(WFAutomationListCollectionViewCell *)self homeTrigger];
+    homeTrigger = [(WFAutomationListCollectionViewCell *)self homeTrigger];
 
-    if (v11)
+    if (homeTrigger)
     {
-      v12 = [MEMORY[0x277D75348] wf_homeTintColor];
-      [(WFAutomationListCollectionViewCell *)self setTintColor:v12];
+      wf_homeTintColor = [MEMORY[0x277D75348] wf_homeTintColor];
+      [(WFAutomationListCollectionViewCell *)self setTintColor:wf_homeTintColor];
 
       v13 = objc_alloc(getHFTriggerUISummaryClass_4673());
-      v14 = [(WFAutomationListCollectionViewCell *)self homeTrigger];
-      v15 = [v14 trigger];
-      v16 = [(WFAutomationListCollectionViewCell *)self homeTrigger];
-      v17 = [v16 home];
-      v48 = [v13 initWithTrigger:v15 inHome:v17 forceDisabled:0];
+      homeTrigger2 = [(WFAutomationListCollectionViewCell *)self homeTrigger];
+      trigger3 = [homeTrigger2 trigger];
+      homeTrigger3 = [(WFAutomationListCollectionViewCell *)self homeTrigger];
+      home = [homeTrigger3 home];
+      trigger = [v13 initWithTrigger:trigger3 inHome:home forceDisabled:0];
 
-      v18 = [v48 triggerDisplayTitle];
-      v19 = [(WFAutomationListCollectionViewCell *)self titleLabel];
-      [v19 setText:v18];
+      triggerDisplayTitle = [trigger triggerDisplayTitle];
+      titleLabel2 = [(WFAutomationListCollectionViewCell *)self titleLabel];
+      [titleLabel2 setText:triggerDisplayTitle];
 
-      v20 = [v48 triggerDescription];
-      v21 = [(WFAutomationListCollectionViewCell *)self descriptionLabel];
-      [v21 setText:v20];
+      triggerDescription = [trigger triggerDescription];
+      descriptionLabel2 = [(WFAutomationListCollectionViewCell *)self descriptionLabel];
+      [descriptionLabel2 setText:triggerDescription];
 
       HFTriggerIconFactoryClass_4674 = getHFTriggerIconFactoryClass_4674();
-      v23 = [(WFAutomationListCollectionViewCell *)self homeTrigger];
-      v24 = [v23 trigger];
-      v25 = [(objc_class *)HFTriggerIconFactoryClass_4674 iconDescriptorForTrigger:v24];
+      homeTrigger4 = [(WFAutomationListCollectionViewCell *)self homeTrigger];
+      trigger4 = [homeTrigger4 trigger];
+      v25 = [(objc_class *)HFTriggerIconFactoryClass_4674 iconDescriptorForTrigger:trigger4];
 
-      v26 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
-      [v26 setHomeTriggerIcon:v25];
+      summaryIconsView3 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
+      [summaryIconsView3 setHomeTriggerIcon:v25];
 
-      v27 = [v48 triggerSummaryIconDescriptors];
-      v28 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
-      [v28 setHomeActionIcons:v27];
+      triggerSummaryIconDescriptors = [trigger triggerSummaryIconDescriptors];
+      summaryIconsView4 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
+      [summaryIconsView4 setHomeActionIcons:triggerSummaryIconDescriptors];
     }
 
     else
     {
-      v45 = [(WFAutomationListCollectionViewCell *)self titleLabel];
-      [v45 setText:0];
+      titleLabel3 = [(WFAutomationListCollectionViewCell *)self titleLabel];
+      [titleLabel3 setText:0];
 
-      v46 = [(WFAutomationListCollectionViewCell *)self descriptionLabel];
-      [v46 setText:0];
+      descriptionLabel3 = [(WFAutomationListCollectionViewCell *)self descriptionLabel];
+      [descriptionLabel3 setText:0];
 
-      v47 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
-      [v47 setTriggerIcon:0 tintColor:0 withTrigger:0];
+      summaryIconsView5 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
+      [summaryIconsView5 setTriggerIcon:0 tintColor:0 withTrigger:0];
 
-      v48 = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
-      [v48 setActionIcons:MEMORY[0x277CBEBF8]];
+      trigger = [(WFAutomationListCollectionViewCell *)self summaryIconsView];
+      [trigger setActionIcons:MEMORY[0x277CBEBF8]];
     }
   }
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  v4 = [(WFAutomationListCollectionViewCell *)self layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(WFAutomationListCollectionViewCell *)self layer];
+  [layer setMaskedCorners:corners];
 }
 
 - (unint64_t)maskedCorners
 {
-  v2 = [(WFAutomationListCollectionViewCell *)self layer];
-  v3 = [v2 maskedCorners];
+  layer = [(WFAutomationListCollectionViewCell *)self layer];
+  maskedCorners = [layer maskedCorners];
 
-  return v3;
+  return maskedCorners;
 }
 
-- (void)setConfiguredTrigger:(id)a3 workflow:(id)a4
+- (void)setConfiguredTrigger:(id)trigger workflow:(id)workflow
 {
-  v6 = a4;
-  [(WFAutomationListCollectionViewCell *)self setConfiguredTrigger:a3];
-  [(WFAutomationListCollectionViewCell *)self setWorkflow:v6];
+  workflowCopy = workflow;
+  [(WFAutomationListCollectionViewCell *)self setConfiguredTrigger:trigger];
+  [(WFAutomationListCollectionViewCell *)self setWorkflow:workflowCopy];
 
   [(WFAutomationListCollectionViewCell *)self updateUI];
 }
 
-- (WFAutomationListCollectionViewCell)initWithFrame:(CGRect)a3
+- (WFAutomationListCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v89[2] = *MEMORY[0x277D85DE8];
   v87.receiver = self;
   v87.super_class = WFAutomationListCollectionViewCell;
-  v3 = [(WFAutomationListCollectionViewCell *)&v87 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFAutomationListCollectionViewCell *)&v87 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(WFAutomationListCollectionViewCell *)v3 layer];
-    [v5 setMasksToBounds:1];
+    layer = [(WFAutomationListCollectionViewCell *)v3 layer];
+    [layer setMasksToBounds:1];
 
     v6 = *MEMORY[0x277CDA138];
-    v7 = [(WFAutomationListCollectionViewCell *)v4 layer];
-    [v7 setCornerCurve:v6];
+    layer2 = [(WFAutomationListCollectionViewCell *)v4 layer];
+    [layer2 setCornerCurve:v6];
 
-    v8 = [(WFAutomationListCollectionViewCell *)v4 layer];
-    [v8 setCornerRadius:16.0];
+    layer3 = [(WFAutomationListCollectionViewCell *)v4 layer];
+    [layer3 setCornerRadius:16.0];
 
-    v9 = [(WFAutomationListCollectionViewCell *)v4 layer];
-    [v9 setMaskedCorners:0];
+    layer4 = [(WFAutomationListCollectionViewCell *)v4 layer];
+    [layer4 setMaskedCorners:0];
 
-    v10 = [(WFAutomationListCollectionViewCell *)v4 contentView];
-    [v10 setDirectionalLayoutMargins:{16.0, 18.0, 14.0, 8.0}];
+    contentView = [(WFAutomationListCollectionViewCell *)v4 contentView];
+    [contentView setDirectionalLayoutMargins:{16.0, 18.0, 14.0, 8.0}];
 
     v86 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v11 = [MEMORY[0x277D75348] wf_tableCellDefaultSelectionTintColor];
-    [v86 setBackgroundColor:v11];
+    wf_tableCellDefaultSelectionTintColor = [MEMORY[0x277D75348] wf_tableCellDefaultSelectionTintColor];
+    [v86 setBackgroundColor:wf_tableCellDefaultSelectionTintColor];
 
     [(WFAutomationListCollectionViewCell *)v4 setSelectedBackgroundView:v86];
     v12 = objc_alloc_init(MEMORY[0x277D75A68]);
@@ -256,20 +256,20 @@
     v27 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
     [(UILabel *)v4->_descriptionLabel setFont:v27];
 
-    v28 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v4->_descriptionLabel setTextColor:v28];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v4->_descriptionLabel setTextColor:secondaryLabelColor];
 
     LODWORD(v29) = 1148846080;
     [(UILabel *)v4->_descriptionLabel setContentCompressionResistancePriority:1 forAxis:v29];
     v84 = v12;
     [v12 addArrangedSubview:v4->_descriptionLabel];
     v30 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.right"];
-    v31 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    v32 = [v30 imageWithTintColor:v31];
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    v32 = [v30 imageWithTintColor:tertiaryLabelColor];
     v33 = [v32 imageWithRenderingMode:1];
-    v85 = [v33 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v33 imageFlippedForRightToLeftLayoutDirection];
 
-    v34 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v85];
+    v34 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageFlippedForRightToLeftLayoutDirection];
     LODWORD(v35) = 1148829696;
     [v34 setContentCompressionResistancePriority:0 forAxis:v35];
     LODWORD(v36) = 1148829696;
@@ -284,63 +284,63 @@
     [v39 setAxis:0];
     [v39 setSpacing:8.0];
     [v39 setAlignment:3];
-    v40 = [(WFAutomationListCollectionViewCell *)v4 contentView];
+    contentView2 = [(WFAutomationListCollectionViewCell *)v4 contentView];
     v83 = v39;
-    [v40 addSubview:v39];
+    [contentView2 addSubview:v39];
 
-    v41 = [(WFAutomationListCollectionViewCell *)v4 contentView];
-    v42 = [v41 layoutMarginsGuide];
-    v43 = [v39 wf_addConstraintsToFillLayoutGuide:v42];
+    contentView3 = [(WFAutomationListCollectionViewCell *)v4 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    v43 = [v39 wf_addConstraintsToFillLayoutGuide:layoutMarginsGuide];
 
-    v44 = [v34 trailingAnchor];
-    v45 = [(WFAutomationListCollectionViewCell *)v4 contentView];
-    v46 = [v45 layoutMarginsGuide];
-    v47 = [v46 trailingAnchor];
-    v48 = [v44 constraintEqualToAnchor:v47];
+    trailingAnchor = [v34 trailingAnchor];
+    contentView4 = [(WFAutomationListCollectionViewCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v48 setActive:1];
 
     v49 = objc_alloc_init(MEMORY[0x277D75D18]);
     separatorView = v4->_separatorView;
     v4->_separatorView = v49;
 
-    v51 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
-    [v51 setTranslatesAutoresizingMaskIntoConstraints:0];
+    separatorView = [(WFAutomationListCollectionViewCell *)v4 separatorView];
+    [separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v52 = [MEMORY[0x277D75348] separatorColor];
-    v53 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
-    [v53 setBackgroundColor:v52];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    separatorView2 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
+    [separatorView2 setBackgroundColor:separatorColor];
 
-    v54 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
-    v55 = [v54 heightAnchor];
-    v56 = [(WFAutomationListCollectionViewCell *)v4 traitCollection];
-    [v56 displayScale];
-    v58 = [v55 constraintEqualToConstant:1.0 / v57];
+    separatorView3 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
+    heightAnchor = [separatorView3 heightAnchor];
+    traitCollection = [(WFAutomationListCollectionViewCell *)v4 traitCollection];
+    [traitCollection displayScale];
+    v58 = [heightAnchor constraintEqualToConstant:1.0 / v57];
     separatorViewHeightConstraint = v4->_separatorViewHeightConstraint;
     v4->_separatorViewHeightConstraint = v58;
 
-    v60 = [(WFAutomationListCollectionViewCell *)v4 contentView];
-    v61 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
-    [v60 addSubview:v61];
+    contentView5 = [(WFAutomationListCollectionViewCell *)v4 contentView];
+    separatorView4 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
+    [contentView5 addSubview:separatorView4];
 
     v74 = MEMORY[0x277CCAAD0];
-    v81 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
-    v79 = [v81 leadingAnchor];
-    v80 = [(WFAutomationListCollectionViewCell *)v4 contentView];
-    v78 = [v80 layoutMarginsGuide];
-    v77 = [v78 leadingAnchor];
-    v76 = [v79 constraintEqualToAnchor:v77];
+    separatorView5 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
+    leadingAnchor = [separatorView5 leadingAnchor];
+    contentView6 = [(WFAutomationListCollectionViewCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView6 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+    v76 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v88[0] = v76;
-    v75 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
-    v72 = [v75 trailingAnchor];
-    v73 = [(WFAutomationListCollectionViewCell *)v4 contentView];
-    v62 = [v73 trailingAnchor];
-    v63 = [v72 constraintEqualToAnchor:v62];
+    separatorView6 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
+    trailingAnchor3 = [separatorView6 trailingAnchor];
+    contentView7 = [(WFAutomationListCollectionViewCell *)v4 contentView];
+    trailingAnchor4 = [contentView7 trailingAnchor];
+    v63 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v88[1] = v63;
-    v64 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
-    v65 = [v64 bottomAnchor];
-    v66 = [(WFAutomationListCollectionViewCell *)v4 contentView];
-    v67 = [v66 bottomAnchor];
-    v68 = [v65 constraintEqualToAnchor:v67];
+    separatorView7 = [(WFAutomationListCollectionViewCell *)v4 separatorView];
+    bottomAnchor = [separatorView7 bottomAnchor];
+    contentView8 = [(WFAutomationListCollectionViewCell *)v4 contentView];
+    bottomAnchor2 = [contentView8 bottomAnchor];
+    v68 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v88[2] = v68;
     v88[3] = v4->_separatorViewHeightConstraint;
     v69 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:4];
@@ -352,19 +352,19 @@
   return v4;
 }
 
-- (void)setShowsSeparator:(BOOL)a3
+- (void)setShowsSeparator:(BOOL)separator
 {
-  v3 = a3;
-  v4 = [(WFAutomationListCollectionViewCell *)self separatorView];
-  [v4 setHidden:!v3];
+  separatorCopy = separator;
+  separatorView = [(WFAutomationListCollectionViewCell *)self separatorView];
+  [separatorView setHidden:!separatorCopy];
 }
 
 - (BOOL)showsSeparator
 {
-  v2 = [(WFAutomationListCollectionViewCell *)self separatorView];
-  v3 = [v2 isHidden];
+  separatorView = [(WFAutomationListCollectionViewCell *)self separatorView];
+  isHidden = [separatorView isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
 @end

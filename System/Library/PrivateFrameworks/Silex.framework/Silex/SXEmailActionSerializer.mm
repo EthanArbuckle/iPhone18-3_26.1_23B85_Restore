@@ -1,30 +1,30 @@
 @interface SXEmailActionSerializer
-- (id)URLForAction:(id)a3 type:(int64_t)a4;
+- (id)URLForAction:(id)action type:(int64_t)type;
 @end
 
 @implementation SXEmailActionSerializer
 
-- (id)URLForAction:(id)a3 type:(int64_t)a4
+- (id)URLForAction:(id)action type:(int64_t)type
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  actionCopy = action;
+  if (actionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = [MEMORY[0x1E696AD60] stringWithFormat:@"mailto:"];
-    v6 = [v4 recipient];
+    recipient = [actionCopy recipient];
 
-    if (v6)
+    if (recipient)
     {
-      v7 = [v4 recipient];
-      [v5 appendString:v7];
+      recipient2 = [actionCopy recipient];
+      [v5 appendString:recipient2];
     }
 
-    v8 = [v4 subject];
+    subject = [actionCopy subject];
 
-    if (v8)
+    if (subject)
     {
-      v9 = [v4 subject];
-      v10 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-      v11 = [v9 stringByAddingPercentEncodingWithAllowedCharacters:v10];
+      subject2 = [actionCopy subject];
+      uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+      v11 = [subject2 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
       [v5 appendFormat:@"?subject=%@", v11];
     }

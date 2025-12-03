@@ -3,17 +3,17 @@
 - (BOOL)supportsMultipleAccounts;
 - (Class)accountClass;
 - (NSArray)accounts;
-- (WFAccountAccessResource)initWithDefinition:(id)a3;
-- (id)localizedErrorReasonForStatus:(unint64_t)a3;
-- (id)localizedImportErrorReasonForStatus:(unint64_t)a3;
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3;
+- (WFAccountAccessResource)initWithDefinition:(id)definition;
+- (id)localizedErrorReasonForStatus:(unint64_t)status;
+- (id)localizedImportErrorReasonForStatus:(unint64_t)status;
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context;
 - (id)name;
 - (id)resourceName;
 - (id)username;
 - (unint64_t)status;
 - (void)dealloc;
 - (void)logOut;
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4;
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFAccountAccessResource
@@ -25,8 +25,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(WFAccountAccessResource *)self accounts];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  accounts = [(WFAccountAccessResource *)self accounts];
+  v4 = [accounts countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -38,14 +38,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         [WFAccount deleteAccount:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -57,9 +57,9 @@
 
 - (BOOL)supportsMultipleAccounts
 {
-  v2 = [(WFAccountAccessResource *)self accountClass];
+  accountClass = [(WFAccountAccessResource *)self accountClass];
 
-  return [(objc_class *)v2 allowsMultipleAccounts];
+  return [(objc_class *)accountClass allowsMultipleAccounts];
 }
 
 - (id)username
@@ -69,8 +69,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(WFAccountAccessResource *)self accounts];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accounts = [(WFAccountAccessResource *)self accounts];
+  v4 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -81,66 +81,66 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         [*(*(&v13 + 1) + 8 * i) refreshWithCompletionHandler:0];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(WFAccountAccessResource *)self accounts];
-  v9 = [v8 firstObject];
-  v10 = [v9 localizedName];
+  accounts2 = [(WFAccountAccessResource *)self accounts];
+  firstObject = [accounts2 firstObject];
+  localizedName = [firstObject localizedName];
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return localizedName;
 }
 
 - (id)resourceName
 {
-  v2 = [(WFAccountAccessResource *)self accountClass];
+  accountClass = [(WFAccountAccessResource *)self accountClass];
 
-  return [(objc_class *)v2 localizedServiceName];
+  return [(objc_class *)accountClass localizedServiceName];
 }
 
 - (id)name
 {
-  v3 = [(WFAccessResource *)self associatedAppIdentifier];
+  associatedAppIdentifier = [(WFAccessResource *)self associatedAppIdentifier];
 
-  if (v3)
+  if (associatedAppIdentifier)
   {
     v6.receiver = self;
     v6.super_class = WFAccountAccessResource;
-    v4 = [(WFAccessResource *)&v6 name];
+    name = [(WFAccessResource *)&v6 name];
   }
 
   else
   {
-    v4 = [(WFAccountAccessResource *)self resourceName];
+    name = [(WFAccountAccessResource *)self resourceName];
   }
 
-  return v4;
+  return name;
 }
 
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  interfaceCopy = interface;
   v8 = NSStringFromClass([(WFAccountAccessResource *)self accountClass]);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__WFAccountAccessResource_makeAvailableWithRemoteInterface_completionHandler___block_invoke;
   v10[3] = &unk_278C1F558;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v7 authorizeWithAccountClassName:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [interfaceCopy authorizeWithAccountClassName:v8 completionHandler:v10];
 }
 
 void __78__WFAccountAccessResource_makeAvailableWithRemoteInterface_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -182,8 +182,8 @@ void __78__WFAccountAccessResource_makeAvailableWithRemoteInterface_completionHa
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(WFAccountAccessResource *)self accounts];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  accounts = [(WFAccountAccessResource *)self accounts];
+  v3 = [accounts countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -195,7 +195,7 @@ LABEL_3:
     {
       if (*v11 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(accounts);
       }
 
       if ([*(*(&v10 + 1) + 8 * v7) isValid])
@@ -205,7 +205,7 @@ LABEL_3:
 
       if (v4 == ++v7)
       {
-        v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [accounts countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -226,14 +226,14 @@ LABEL_9:
   return v6;
 }
 
-- (id)localizedImportErrorReasonForStatus:(unint64_t)a3
+- (id)localizedImportErrorReasonForStatus:(unint64_t)status
 {
-  if (a3 == 1)
+  if (status == 1)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = WFLocalizedString(@"In order to answer this question, Shortcuts needs access to your %@ account.");
-    v6 = [(objc_class *)[(WFAccountAccessResource *)self accountClass] serviceName];
-    v7 = [v4 stringWithFormat:v5, v6];
+    serviceName = [(objc_class *)[(WFAccountAccessResource *)self accountClass] serviceName];
+    v7 = [v4 stringWithFormat:v5, serviceName];
   }
 
   else
@@ -244,14 +244,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)localizedErrorReasonForStatus:(unint64_t)a3
+- (id)localizedErrorReasonForStatus:(unint64_t)status
 {
-  if (a3 == 1)
+  if (status == 1)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = WFLocalizedString(@"Shortcuts does not have access to your %@ account.");
-    v6 = [(objc_class *)[(WFAccountAccessResource *)self accountClass] serviceName];
-    v7 = [v4 localizedStringWithFormat:v5, v6];
+    serviceName = [(objc_class *)[(WFAccountAccessResource *)self accountClass] serviceName];
+    v7 = [v4 localizedStringWithFormat:v5, serviceName];
   }
 
   else
@@ -262,30 +262,30 @@ LABEL_9:
   return v7;
 }
 
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  contextCopy = context;
   v6 = WFLocalizedStringResourceWithKey(@"your %@ account", @"your %@ account");
-  v7 = [v5 localize:v6];
+  v7 = [contextCopy localize:v6];
 
-  v8 = [(objc_class *)[(WFAccountAccessResource *)self accountClass] serviceName];
-  v9 = [v4 localizedStringWithFormat:v7, v8];
+  serviceName = [(objc_class *)[(WFAccountAccessResource *)self accountClass] serviceName];
+  v9 = [v4 localizedStringWithFormat:v7, serviceName];
 
   return v9;
 }
 
 - (NSArray)accounts
 {
-  v2 = [(WFAccountAccessResource *)self accountClass];
+  accountClass = [(WFAccountAccessResource *)self accountClass];
 
-  return [(objc_class *)v2 accounts];
+  return [(objc_class *)accountClass accounts];
 }
 
 - (Class)accountClass
 {
-  v2 = [(WFResource *)self definition];
-  v3 = [v2 objectForKey:@"WFAccountClass"];
+  definition = [(WFResource *)self definition];
+  v3 = [definition objectForKey:@"WFAccountClass"];
   v4 = NSClassFromString(v3);
 
   return v4;
@@ -299,22 +299,22 @@ LABEL_9:
   [(WFAccessResource *)&v3 dealloc];
 }
 
-- (WFAccountAccessResource)initWithDefinition:(id)a3
+- (WFAccountAccessResource)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v14.receiver = self;
   v14.super_class = WFAccountAccessResource;
-  v5 = [(WFAccessResource *)&v14 initWithDefinition:v4];
+  v5 = [(WFAccessResource *)&v14 initWithDefinition:definitionCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
-    v6 = [(WFAccountAccessResource *)v5 accountClass];
+    accountClass = [(WFAccountAccessResource *)v5 accountClass];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __46__WFAccountAccessResource_initWithDefinition___block_invoke;
     v11[3] = &unk_278C1EEF0;
     objc_copyWeak(&v12, &location);
-    v7 = [(objc_class *)v6 addAccountObserver:v11];
+    v7 = [(objc_class *)accountClass addAccountObserver:v11];
     observer = v5->_observer;
     v5->_observer = v7;
 

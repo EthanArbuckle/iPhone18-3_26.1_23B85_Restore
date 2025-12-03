@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = __44__UIColor_MessageUI__mailQuoteColorLevelOne__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mailQuoteColorLevelOne_onceToken != -1)
   {
     dispatch_once(&mailQuoteColorLevelOne_onceToken, block);
@@ -77,7 +77,7 @@
   block[1] = 3221225472;
   block[2] = __44__UIColor_MessageUI__mailQuoteColorLevelTwo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mailQuoteColorLevelTwo_onceToken != -1)
   {
     dispatch_once(&mailQuoteColorLevelTwo_onceToken, block);
@@ -94,7 +94,7 @@
   block[1] = 3221225472;
   block[2] = __46__UIColor_MessageUI__mailQuoteColorLevelThree__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mailQuoteColorLevelThree_onceToken != -1)
   {
     dispatch_once(&mailQuoteColorLevelThree_onceToken, block);
@@ -130,23 +130,23 @@
       goto LABEL_7;
     }
 
-    v3 = [MEMORY[0x1E69DC888] mailQuoteColorLevelOneCorona];
-    v9[0] = v3;
-    v4 = [MEMORY[0x1E69DC888] mailQuoteColorLevelTwoCorona];
-    v9[1] = v4;
-    v5 = [MEMORY[0x1E69DC888] mailQuoteColorLevelThreeCorona];
-    v9[2] = v5;
+    mailQuoteColorLevelOneCorona = [MEMORY[0x1E69DC888] mailQuoteColorLevelOneCorona];
+    v9[0] = mailQuoteColorLevelOneCorona;
+    mailQuoteColorLevelTwoCorona = [MEMORY[0x1E69DC888] mailQuoteColorLevelTwoCorona];
+    v9[1] = mailQuoteColorLevelTwoCorona;
+    mailQuoteColorLevelThreeCorona = [MEMORY[0x1E69DC888] mailQuoteColorLevelThreeCorona];
+    v9[2] = mailQuoteColorLevelThreeCorona;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] mailQuoteColorLevelOne];
-    v10[0] = v3;
-    v4 = [MEMORY[0x1E69DC888] mailQuoteColorLevelTwo];
-    v10[1] = v4;
-    v5 = [MEMORY[0x1E69DC888] mailQuoteColorLevelThree];
-    v10[2] = v5;
+    mailQuoteColorLevelOneCorona = [MEMORY[0x1E69DC888] mailQuoteColorLevelOne];
+    v10[0] = mailQuoteColorLevelOneCorona;
+    mailQuoteColorLevelTwoCorona = [MEMORY[0x1E69DC888] mailQuoteColorLevelTwo];
+    v10[1] = mailQuoteColorLevelTwoCorona;
+    mailQuoteColorLevelThreeCorona = [MEMORY[0x1E69DC888] mailQuoteColorLevelThree];
+    v10[2] = mailQuoteColorLevelThreeCorona;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
   }
 
@@ -166,7 +166,7 @@ LABEL_7:
 
 - (double)mf_luminance
 {
-  v1 = [MEMORY[0x1E695F610] colorWithCGColor:{objc_msgSend(a1, "CGColor")}];
+  v1 = [MEMORY[0x1E695F610] colorWithCGColor:{objc_msgSend(self, "CGColor")}];
   [v1 red];
   if (v2 >= 0.03928)
   {
@@ -208,7 +208,7 @@ LABEL_7:
 - (double)mf_contrastRatioTo:()MessageUI
 {
   v4 = a3;
-  [a1 mf_luminance];
+  [self mf_luminance];
   v6 = v5;
   [v4 mf_luminance];
   if (v6 >= v7)

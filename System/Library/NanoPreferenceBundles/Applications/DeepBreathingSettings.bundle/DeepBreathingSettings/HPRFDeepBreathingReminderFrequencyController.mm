@@ -8,7 +8,7 @@
 - (id)localizedPaneTitle;
 - (id)specifiers;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -18,15 +18,15 @@
 {
   if (+[_HKBehavior activePairedWatchHasSmartFitnessCoaching])
   {
-    v3 = [a1 _selectedRemindersPerDay];
+    _selectedRemindersPerDay = [self _selectedRemindersPerDay];
   }
 
   else
   {
-    v3 = [a1 _selectedReminderFrequency];
+    _selectedRemindersPerDay = [self _selectedReminderFrequency];
   }
 
-  v4 = [NSNumber numberWithInteger:v3];
+  v4 = [NSNumber numberWithInteger:_selectedRemindersPerDay];
   v5 = [NSString stringWithFormat:@"%@", v4];
   v6 = sub_280C(v5, 1);
 
@@ -143,7 +143,7 @@
     [v6 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     [v5 addObject:v6];
     v24 = v3;
-    v25 = self;
+    selfCopy = self;
     v23 = v6;
     if ((+[_HKBehavior activePairedWatchHasSmartFitnessCoaching]& 1) != 0)
     {
@@ -187,39 +187,39 @@
       while (v8);
     }
 
-    objc_storeStrong(&v25->BPSNotificationAppController_opaque[v24], v5);
+    objc_storeStrong(&selfCopy->BPSNotificationAppController_opaque[v24], v5);
     v14 = +[_HKBehavior activePairedWatchHasSmartFitnessCoaching];
     v15 = objc_opt_class();
     if (v14)
     {
-      v16 = [v15 _selectedRemindersPerDay];
+      _selectedRemindersPerDay = [v15 _selectedRemindersPerDay];
     }
 
     else
     {
-      v16 = [v15 _selectedReminderFrequency];
+      _selectedRemindersPerDay = [v15 _selectedReminderFrequency];
     }
 
-    v17 = *&v25->BPSNotificationAppController_opaque[v24];
-    v18 = [NSNumber numberWithInteger:v16];
+    v17 = *&selfCopy->BPSNotificationAppController_opaque[v24];
+    v18 = [NSNumber numberWithInteger:_selectedRemindersPerDay];
     v19 = [NSString stringWithFormat:@"%@", v18];
     v20 = [v17 specifierForID:v19];
 
     [v23 setProperty:v20 forKey:PSRadioGroupCheckedSpecifierKey];
-    v21 = [(HPRFDeepBreathingReminderFrequencyController *)v25 localizedPaneTitle];
-    [(HPRFDeepBreathingReminderFrequencyController *)v25 setTitle:v21];
+    localizedPaneTitle = [(HPRFDeepBreathingReminderFrequencyController *)selfCopy localizedPaneTitle];
+    [(HPRFDeepBreathingReminderFrequencyController *)selfCopy setTitle:localizedPaneTitle];
 
-    v4 = *&v25->BPSNotificationAppController_opaque[v24];
+    v4 = *&selfCopy->BPSNotificationAppController_opaque[v24];
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HPRFDeepBreathingReminderFrequencyController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HPRFDeepBreathingReminderFrequencyController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   if (!+[_HKBehavior activePairedWatchHasSmartFitnessCoaching])
   {
@@ -232,9 +232,9 @@
     if (v19)
     {
       v20 = v19;
-      v34 = self;
-      v35 = v7;
-      v36 = v6;
+      selfCopy2 = self;
+      v35 = pathCopy;
+      v36 = viewCopy;
       v21 = *v40;
       while (2)
       {
@@ -247,8 +247,8 @@
 
           v14 = *(*(&v39 + 1) + 8 * i);
           v23 = [NSString stringWithFormat:@"%@", v14];
-          v24 = [v9 identifier];
-          v25 = [v23 isEqualToString:v24];
+          identifier = [v9 identifier];
+          v25 = [v23 isEqualToString:identifier];
 
           if (v25)
           {
@@ -290,9 +290,9 @@ LABEL_20:
   }
 
   v11 = v10;
-  v34 = self;
-  v35 = v7;
-  v36 = v6;
+  selfCopy2 = self;
+  v35 = pathCopy;
+  v36 = viewCopy;
   v12 = *v44;
   while (2)
   {
@@ -305,8 +305,8 @@ LABEL_20:
 
       v14 = *(*(&v43 + 1) + 8 * j);
       v15 = [NSString stringWithFormat:@"%@", v14];
-      v16 = [v9 identifier];
-      v17 = [v15 isEqualToString:v16];
+      identifier2 = [v9 identifier];
+      v17 = [v15 isEqualToString:identifier2];
 
       if (v17)
       {
@@ -329,9 +329,9 @@ LABEL_20:
 LABEL_19:
   v26 = 0;
 LABEL_24:
-  v7 = v35;
-  v6 = v36;
-  self = v34;
+  pathCopy = v35;
+  viewCopy = v36;
+  self = selfCopy2;
 LABEL_25:
 
   if ((v18 & 1) == 0)
@@ -347,12 +347,12 @@ LABEL_25:
 
   [(HPRFDeepBreathingReminderFrequencyController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v33 = [(HPRFDeepBreathingReminderFrequencyController *)self specifier];
-  [WeakRetained reloadSpecifier:v33];
+  specifier = [(HPRFDeepBreathingReminderFrequencyController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v38.receiver = self;
   v38.super_class = HPRFDeepBreathingReminderFrequencyController;
-  [(HPRFDeepBreathingReminderFrequencyController *)&v38 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(HPRFDeepBreathingReminderFrequencyController *)&v38 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -364,10 +364,10 @@ LABEL_25:
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFDeepBreathingReminderFrequencyController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFDeepBreathingReminderFrequencyController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

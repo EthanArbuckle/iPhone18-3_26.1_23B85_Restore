@@ -1,17 +1,17 @@
 @interface _IntArray2D
-+ (id)arrayWithISize:(unint64_t)a3 jSize:(unint64_t)a4;
-- (_IntArray2D)initWithISize:(unint64_t)a3 jSize:(unint64_t)a4;
++ (id)arrayWithISize:(unint64_t)size jSize:(unint64_t)jSize;
+- (_IntArray2D)initWithISize:(unint64_t)size jSize:(unint64_t)jSize;
 - (id)description;
-- (int64_t):(unint64_t)a3 :(unint64_t)a4 outOfBoundsReturnValue:(int64_t)a5;
-- (void)assertBoundsForIIndex:(unint64_t)a3 jIndex:(unint64_t)a4;
+- (int64_t):(unint64_t)a3 :(unint64_t)a4 outOfBoundsReturnValue:(int64_t)value;
+- (void)assertBoundsForIIndex:(unint64_t)index jIndex:(unint64_t)jIndex;
 - (void)dealloc;
 @end
 
 @implementation _IntArray2D
 
-+ (id)arrayWithISize:(unint64_t)a3 jSize:(unint64_t)a4
++ (id)arrayWithISize:(unint64_t)size jSize:(unint64_t)jSize
 {
-  v4 = [[_IntArray2D alloc] initWithISize:a3 jSize:a4];
+  v4 = [[_IntArray2D alloc] initWithISize:size jSize:jSize];
 
   return v4;
 }
@@ -65,7 +65,7 @@
   return v3;
 }
 
-- (_IntArray2D)initWithISize:(unint64_t)a3 jSize:(unint64_t)a4
+- (_IntArray2D)initWithISize:(unint64_t)size jSize:(unint64_t)jSize
 {
   v12.receiver = self;
   v12.super_class = _IntArray2D;
@@ -73,34 +73,34 @@
   v8 = v7;
   if (v7)
   {
-    v7->_iSize = a3;
-    v7->_jSize = a4;
-    v9 = malloc_type_calloc(a4 * a3, 8uLL, 0x100004000313F17uLL);
+    v7->_iSize = size;
+    v7->_jSize = jSize;
+    v9 = malloc_type_calloc(jSize * size, 8uLL, 0x100004000313F17uLL);
     v8->_arrayData = v9;
     if (!v9)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:v8 file:@"_IntArray2D.m" lineNumber:52 description:{@"IntArray2D : Not enough memory to allocate an array with size:%lu x %lu", a3, a4}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"_IntArray2D.m" lineNumber:52 description:{@"IntArray2D : Not enough memory to allocate an array with size:%lu x %lu", size, jSize}];
     }
   }
 
   return v8;
 }
 
-- (void)assertBoundsForIIndex:(unint64_t)a3 jIndex:(unint64_t)a4
+- (void)assertBoundsForIIndex:(unint64_t)index jIndex:(unint64_t)jIndex
 {
   if (self->_shouldBoundsCheck && ![_IntArray2D inBoundsForIIndex:"inBoundsForIIndex:jIndex:" jIndex:?])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_IntArray2D.m" lineNumber:73 description:{@"IntArray2D : Out of bounds with indices:%lu %lu on array size:%lu %lu", a3, a4, self->_iSize, self->_jSize}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_IntArray2D.m" lineNumber:73 description:{@"IntArray2D : Out of bounds with indices:%lu %lu on array size:%lu %lu", index, jIndex, self->_iSize, self->_jSize}];
   }
 }
 
-- (int64_t):(unint64_t)a3 :(unint64_t)a4 outOfBoundsReturnValue:(int64_t)a5
+- (int64_t):(unint64_t)a3 :(unint64_t)a4 outOfBoundsReturnValue:(int64_t)value
 {
   if (![_IntArray2D inBoundsForIIndex:"inBoundsForIIndex:jIndex:" jIndex:?])
   {
-    return a5;
+    return value;
   }
 
   return [(_IntArray2D *)self ];

@@ -1,40 +1,40 @@
 @interface fskitdExtensionInstance
-+ (id)dynamicCast:(id)a3;
-+ (id)newForBundle:(id)a3 user:(id)a4 instance:(id)a5;
-+ (id)newForBundle:(id)a3 user:(id)a4 instanceUUID:(id)a5 instanceID:(id)a6;
++ (id)dynamicCast:(id)cast;
++ (id)newForBundle:(id)bundle user:(id)user instance:(id)instance;
++ (id)newForBundle:(id)bundle user:(id)user instanceUUID:(id)d instanceID:(id)iD;
 - (id)errorFromStartingProc;
-- (id)initForBundle:(id)a3 user:(id)a4 instance:(id)a5;
-- (id)newXPCConnectionWithError:(id *)a3;
-- (void)addResourceID:(id)a3;
-- (void)addTaskID:(id)a3;
-- (void)addVolumeID:(id)a3;
+- (id)initForBundle:(id)bundle user:(id)user instance:(id)instance;
+- (id)newXPCConnectionWithError:(id *)error;
+- (void)addResourceID:(id)d;
+- (void)addTaskID:(id)d;
+- (void)addVolumeID:(id)d;
 - (void)dealloc;
-- (void)removeResourceID:(id)a3;
-- (void)removeTaskID:(id)a3;
-- (void)removeVolumeID:(id)a3;
+- (void)removeResourceID:(id)d;
+- (void)removeTaskID:(id)d;
+- (void)removeVolumeID:(id)d;
 - (void)terminate;
 - (void)weDied;
 @end
 
 @implementation fskitdExtensionInstance
 
-- (id)initForBundle:(id)a3 user:(id)a4 instance:(id)a5
+- (id)initForBundle:(id)bundle user:(id)user instance:(id)instance
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bundleCopy = bundle;
+  userCopy = user;
+  instanceCopy = instance;
   v25.receiver = self;
   v25.super_class = fskitdExtensionInstance;
   v11 = [(fskitdExtensionInstance *)&v25 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [bundleCopy copy];
     bundleID = v11->_bundleID;
     v11->_bundleID = v12;
 
     v11->_uid = getuid();
     v11->_ourUID = 1;
-    v14 = [v10 copy];
+    v14 = [instanceCopy copy];
     instanceID = v11->_instanceID;
     v11->_instanceID = v14;
 
@@ -55,33 +55,33 @@
     taskIDs = v11->_taskIDs;
     v11->_taskIDs = v22;
 
-    objc_storeStrong(&v11->_initiatorAuditToken, a4);
+    objc_storeStrong(&v11->_initiatorAuditToken, user);
   }
 
   return v11;
 }
 
-+ (id)newForBundle:(id)a3 user:(id)a4 instanceUUID:(id)a5 instanceID:(id)a6
++ (id)newForBundle:(id)bundle user:(id)user instanceUUID:(id)d instanceID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 alloc];
+  bundleCopy = bundle;
+  userCopy = user;
+  dCopy = d;
+  iDCopy = iD;
+  v14 = [self alloc];
   if (v14)
   {
-    v15 = [v14 initForBundle:v10 user:v11 instance:v12];
+    v15 = [v14 initForBundle:bundleCopy user:userCopy instance:dCopy];
     v16 = v15;
     if (v15)
     {
       if ([v15 isOurUID])
       {
-        v17 = [gFSModuleHost configurationForInstance:v13 ofBundle:v10];
+        v17 = [gFSModuleHost configurationForInstance:iDCopy ofBundle:bundleCopy];
         [v16 setInstanceConfig:v17];
 
-        v18 = [v16 instanceConfig];
+        instanceConfig = [v16 instanceConfig];
 
-        if (!v18)
+        if (!instanceConfig)
         {
           goto LABEL_9;
         }
@@ -89,8 +89,8 @@
 
       else
       {
-        [v16 setBundleID:v10];
-        [v16 setInstanceUUID:v12];
+        [v16 setBundleID:bundleCopy];
+        [v16 setInstanceUUID:dCopy];
       }
     }
   }
@@ -101,19 +101,19 @@
   }
 
   v16 = v16;
-  v18 = v16;
+  instanceConfig = v16;
 LABEL_9:
 
-  return v18;
+  return instanceConfig;
 }
 
-+ (id)newForBundle:(id)a3 user:(id)a4 instance:(id)a5
++ (id)newForBundle:(id)bundle user:(id)user instance:(id)instance
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_EXExtensionInstanceIdentifier alloc] initWithIdentifier:v8];
-  v12 = [a1 newForBundle:v10 user:v9 instanceUUID:v8 instanceID:v11];
+  instanceCopy = instance;
+  userCopy = user;
+  bundleCopy = bundle;
+  v11 = [[_EXExtensionInstanceIdentifier alloc] initWithIdentifier:instanceCopy];
+  v12 = [self newForBundle:bundleCopy user:userCopy instanceUUID:instanceCopy instanceID:v11];
 
   return v12;
 }
@@ -145,28 +145,28 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Boom!🤯 Instance %@ died", buf, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = v6->_taskIDs;
-  v8 = v6->_resourceIDs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = selfCopy->_taskIDs;
+  v8 = selfCopy->_resourceIDs;
   v9 = objc_opt_new();
-  taskIDs = v6->_taskIDs;
-  v6->_taskIDs = v9;
+  taskIDs = selfCopy->_taskIDs;
+  selfCopy->_taskIDs = v9;
 
   v11 = objc_opt_new();
-  resourceIDs = v6->_resourceIDs;
-  v6->_resourceIDs = v11;
+  resourceIDs = selfCopy->_resourceIDs;
+  selfCopy->_resourceIDs = v11;
 
-  instanceProc = v6->_instanceProc;
-  v6->_instanceProc = 0;
+  instanceProc = selfCopy->_instanceProc;
+  selfCopy->_instanceProc = 0;
   v14 = instanceProc;
 
-  v15 = v6->_instanceConnection;
-  instanceConnection = v6->_instanceConnection;
-  v6->_instanceConnection = 0;
+  v15 = selfCopy->_instanceConnection;
+  instanceConnection = selfCopy->_instanceConnection;
+  selfCopy->_instanceConnection = 0;
 
-  v6->_running = 0;
-  objc_sync_exit(v6);
+  selfCopy->_running = 0;
+  objc_sync_exit(selfCopy);
 
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
@@ -174,7 +174,7 @@ LABEL_9:
   v22 = &unk_100061138;
   v17 = v3;
   v23 = v17;
-  v24 = v6;
+  v24 = selfCopy;
   [(NSMutableArray *)v7 enumerateObjectsUsingBlock:&v19];
   [(NSMutableArray *)v8 enumerateObjectsUsingBlock:&stru_100061178, v19, v20, v21, v22];
 
@@ -190,7 +190,7 @@ LABEL_9:
     [(NSXPCConnection *)v15 invalidate];
   }
 
-  [gExtensionManager cleanUpInstance:v6];
+  [gExtensionManager cleanUpInstance:selfCopy];
 }
 
 - (id)errorFromStartingProc
@@ -201,12 +201,12 @@ LABEL_9:
   v43 = sub_10001180C;
   v44 = sub_10001181C;
   v45 = 0;
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_running)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_running)
   {
     v3 = 0;
-    v4 = 0;
+    attributes = 0;
     v5 = 0;
     v6 = 0;
 LABEL_3:
@@ -214,10 +214,10 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if ([(fskitdExtensionInstance *)v2 isOurUID])
+  if ([(fskitdExtensionInstance *)selfCopy isOurUID])
   {
-    objc_initWeak(&location, v2);
-    v5 = [(_EXHostConfiguration *)v2->_instanceConfig copy];
+    objc_initWeak(&location, selfCopy);
+    v5 = [(_EXHostConfiguration *)selfCopy->_instanceConfig copy];
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_100011824;
@@ -233,7 +233,7 @@ LABEL_3:
       v10 = fskit_std_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        containerID = v2->_containerID;
+        containerID = selfCopy->_containerID;
         v12 = v41[5];
         *buf = 138412546;
         *&buf[4] = containerID;
@@ -246,13 +246,13 @@ LABEL_3:
       objc_destroyWeak(&v39);
       objc_destroyWeak(&location);
       v3 = 0;
-      v4 = 0;
+      attributes = 0;
       goto LABEL_4;
     }
 
-    v20 = [v6 rbs_pid];
-    v23 = [(_EXHostConfiguration *)v2->_instanceConfig extensionIdentity];
-    v4 = [v23 attributes];
+    rbs_pid = [v6 rbs_pid];
+    extensionIdentity = [(_EXHostConfiguration *)selfCopy->_instanceConfig extensionIdentity];
+    attributes = [extensionIdentity attributes];
 
     if (v6)
     {
@@ -268,26 +268,26 @@ LABEL_3:
     objc_destroyWeak(&v39);
     objc_destroyWeak(&location);
 LABEL_23:
-    if (v2->_running)
+    if (selfCopy->_running)
     {
       goto LABEL_3;
     }
 
-    v2->_running = 1;
-    objc_storeStrong(&v2->_instanceProc, v6);
-    v2->_pid = v20;
-    objc_storeStrong(&v2->_attributes, v4);
-    objc_storeStrong(&v2->_instanceAuditToken, v3);
+    selfCopy->_running = 1;
+    objc_storeStrong(&selfCopy->_instanceProc, v6);
+    selfCopy->_pid = rbs_pid;
+    objc_storeStrong(&selfCopy->_attributes, attributes);
+    objc_storeStrong(&selfCopy->_instanceAuditToken, v3);
     v24 = fskit_std_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v20;
+      *&buf[4] = rbs_pid;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "About to grab assertion on pid %d", buf, 8u);
     }
 
     v25 = [BKSProcessAssertion alloc];
-    v26 = [v25 initWithPID:v20 flags:14 reason:13 name:@"com.apple.extension.session"];
+    v26 = [v25 initWithPID:rbs_pid flags:14 reason:13 name:@"com.apple.extension.session"];
 
     if (v26)
     {
@@ -304,8 +304,8 @@ LABEL_23:
       }
 
       v27 = v26;
-      instanceMemoryAssertion = v2->_instanceMemoryAssertion;
-      v2->_instanceMemoryAssertion = v27;
+      instanceMemoryAssertion = selfCopy->_instanceMemoryAssertion;
+      selfCopy->_instanceMemoryAssertion = v27;
     }
 
     else
@@ -333,9 +333,9 @@ LABEL_35:
   v34 = sub_10001180C;
   v35 = sub_10001181C;
   v36 = 0;
-  bundleID = v2->_bundleID;
-  instanceUUID = v2->_instanceUUID;
-  uid = v2->_uid;
+  bundleID = selfCopy->_bundleID;
+  instanceUUID = selfCopy->_instanceUUID;
+  uid = selfCopy->_uid;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100011868;
@@ -350,7 +350,7 @@ LABEL_35:
     v17 = fskit_std_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = v2->_containerID;
+      v18 = selfCopy->_containerID;
       v19 = v41[5];
       *v46 = 138412546;
       v47 = v18;
@@ -359,16 +359,16 @@ LABEL_35:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Failed to start instance %@: %@", v46, 0x16u);
     }
 
-    v20 = 0;
+    rbs_pid = 0;
     v3 = 0;
-    v4 = 0;
+    attributes = 0;
     v7 = v41[5];
   }
 
   else
   {
-    v20 = [p_location[5] pid];
-    v4 = [*(*&buf[8] + 40) attributes];
+    rbs_pid = [p_location[5] pid];
+    attributes = [*(*&buf[8] + 40) attributes];
     v7 = p_location[5];
     v3 = v7;
   }
@@ -386,20 +386,20 @@ LABEL_35:
   }
 
 LABEL_4:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   _Block_object_dispose(&v40, 8);
 
   return v7;
 }
 
-- (id)newXPCConnectionWithError:(id *)a3
+- (id)newXPCConnectionWithError:(id *)error
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_running)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_running)
   {
-    instanceConnection = v4->_instanceConnection;
+    instanceConnection = selfCopy->_instanceConnection;
     if (instanceConnection)
     {
 LABEL_17:
@@ -407,19 +407,19 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v4->_ourUID)
+    if (selfCopy->_ourUID)
     {
-      v6 = [(_EXExtensionProcess *)v4->_instanceProc newXPCConnectionWithError:a3];
-      v7 = v4->_instanceConnection;
-      v4->_instanceConnection = v6;
+      v6 = [(_EXExtensionProcess *)selfCopy->_instanceProc newXPCConnectionWithError:error];
+      v7 = selfCopy->_instanceConnection;
+      selfCopy->_instanceConnection = v6;
 
 LABEL_15:
-      instanceConnection = v4->_instanceConnection;
+      instanceConnection = selfCopy->_instanceConnection;
       if (instanceConnection)
       {
         v19 = instanceConnection;
         v20 = objc_opt_new();
-        [v20 setOurInstance:v4];
+        [v20 setOurInstance:selfCopy];
         v21 = +[FSKitConstants FSModuleExtensionXPCProtocol];
         [(NSXPCConnection *)v19 setRemoteObjectInterface:v21];
 
@@ -428,7 +428,7 @@ LABEL_15:
         [(NSXPCConnection *)v19 setExportedInterface:v22];
 
         [(NSXPCConnection *)v19 resume];
-        instanceConnection = v4->_instanceConnection;
+        instanceConnection = selfCopy->_instanceConnection;
       }
 
       goto LABEL_17;
@@ -446,9 +446,9 @@ LABEL_15:
     v28 = sub_10001180C;
     v29 = sub_10001181C;
     v30 = 0;
-    bundleID = v4->_bundleID;
-    instanceUUID = v4->_instanceUUID;
-    uid = v4->_uid;
+    bundleID = selfCopy->_bundleID;
+    instanceUUID = selfCopy->_instanceUUID;
+    uid = selfCopy->_uid;
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100011C7C;
@@ -459,10 +459,10 @@ LABEL_15:
     v12 = v26[5];
     if (v12)
     {
-      if (a3)
+      if (error)
       {
         v13 = v12;
-        *a3 = v12;
+        *error = v12;
       }
     }
 
@@ -470,13 +470,13 @@ LABEL_15:
     {
       v14 = [NSXPCConnection alloc];
       v15 = [v14 initWithListenerEndpoint:v32[5]];
-      v16 = v4->_instanceConnection;
-      v4->_instanceConnection = v15;
+      v16 = selfCopy->_instanceConnection;
+      selfCopy->_instanceConnection = v15;
 
       v17 = fskit_std_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = v4->_instanceConnection;
+        v18 = selfCopy->_instanceConnection;
         *buf = 138412290;
         v38 = v18;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "non-ours instance connection got %@", buf, 0xCu);
@@ -494,7 +494,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!error)
   {
 LABEL_14:
     v8 = 0;
@@ -502,31 +502,31 @@ LABEL_14:
   }
 
   fs_errorForPOSIXError();
-  *a3 = v8 = 0;
+  *error = v8 = 0;
 LABEL_18:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (void)terminate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [gSettings resourceManager];
-  objc_sync_enter(v3);
-  v4 = [(fskitdExtensionInstance *)v2 resourceIDs];
-  [v4 enumerateObjectsUsingBlock:&stru_100061208];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  resourceManager = [gSettings resourceManager];
+  objc_sync_enter(resourceManager);
+  resourceIDs = [(fskitdExtensionInstance *)selfCopy resourceIDs];
+  [resourceIDs enumerateObjectsUsingBlock:&stru_100061208];
 
-  objc_sync_exit(v3);
-  if (v2->_running)
+  objc_sync_exit(resourceManager);
+  if (selfCopy->_running)
   {
-    if (!v2->_ourUID)
+    if (!selfCopy->_ourUID)
     {
-      [gAgentManager stopExtension:v2->_bundleID instanceID:v2->_instanceUUID uid:v2->_uid replyHandler:&stru_100061248];
+      [gAgentManager stopExtension:selfCopy->_bundleID instanceID:selfCopy->_instanceUUID uid:selfCopy->_uid replyHandler:&stru_100061248];
     }
 
-    pid = v2->_pid;
+    pid = selfCopy->_pid;
     v6 = fskit_std_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -554,10 +554,10 @@ LABEL_18:
       }
     }
 
-    instanceProc = v2->_instanceProc;
-    v2->_instanceProc = 0;
+    instanceProc = selfCopy->_instanceProc;
+    selfCopy->_instanceProc = 0;
 
-    v2->_running = 0;
+    selfCopy->_running = 0;
     v16 = fskit_std_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
@@ -572,23 +572,23 @@ LABEL_18:
     v7 = 0;
   }
 
-  instanceConnection = v2->_instanceConnection;
+  instanceConnection = selfCopy->_instanceConnection;
   if (instanceConnection)
   {
     [(NSXPCConnection *)instanceConnection invalidate];
-    v18 = v2->_instanceConnection;
-    v2->_instanceConnection = 0;
+    v18 = selfCopy->_instanceConnection;
+    selfCopy->_instanceConnection = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-+ (id)dynamicCast:(id)a3
++ (id)dynamicCast:(id)cast
 {
-  v3 = a3;
+  castCopy = cast;
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = castCopy;
   }
 
   else
@@ -601,79 +601,79 @@ LABEL_18:
   return v4;
 }
 
-- (void)addResourceID:(id)a3
+- (void)addResourceID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = self->_resourceIDs;
   objc_sync_enter(v4);
-  if (([(NSMutableArray *)self->_resourceIDs containsObject:v5]& 1) == 0)
+  if (([(NSMutableArray *)self->_resourceIDs containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_resourceIDs addObject:v5];
+    [(NSMutableArray *)self->_resourceIDs addObject:dCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)removeResourceID:(id)a3
+- (void)removeResourceID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = self->_resourceIDs;
   objc_sync_enter(v4);
-  if ([(NSMutableArray *)self->_resourceIDs containsObject:v5])
+  if ([(NSMutableArray *)self->_resourceIDs containsObject:dCopy])
   {
-    [(NSMutableArray *)self->_resourceIDs removeObject:v5];
+    [(NSMutableArray *)self->_resourceIDs removeObject:dCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)addVolumeID:(id)a3
+- (void)addVolumeID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = self->_volumeIDs;
   objc_sync_enter(v4);
-  if (([(NSMutableArray *)self->_volumeIDs containsObject:v5]& 1) == 0)
+  if (([(NSMutableArray *)self->_volumeIDs containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_volumeIDs addObject:v5];
+    [(NSMutableArray *)self->_volumeIDs addObject:dCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)removeVolumeID:(id)a3
+- (void)removeVolumeID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = self->_volumeIDs;
   objc_sync_enter(v4);
-  if ([(NSMutableArray *)self->_volumeIDs containsObject:v5])
+  if ([(NSMutableArray *)self->_volumeIDs containsObject:dCopy])
   {
-    [(NSMutableArray *)self->_volumeIDs removeObject:v5];
+    [(NSMutableArray *)self->_volumeIDs removeObject:dCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)addTaskID:(id)a3
+- (void)addTaskID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = self->_taskIDs;
   objc_sync_enter(v4);
-  if (([(NSMutableArray *)self->_taskIDs containsObject:v5]& 1) == 0)
+  if (([(NSMutableArray *)self->_taskIDs containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_taskIDs addObject:v5];
+    [(NSMutableArray *)self->_taskIDs addObject:dCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)removeTaskID:(id)a3
+- (void)removeTaskID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = self->_taskIDs;
   objc_sync_enter(v4);
-  if ([(NSMutableArray *)self->_taskIDs containsObject:v5])
+  if ([(NSMutableArray *)self->_taskIDs containsObject:dCopy])
   {
-    [(NSMutableArray *)self->_taskIDs removeObject:v5];
+    [(NSMutableArray *)self->_taskIDs removeObject:dCopy];
   }
 
   objc_sync_exit(v4);

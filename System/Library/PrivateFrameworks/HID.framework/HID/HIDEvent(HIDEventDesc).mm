@@ -11,7 +11,7 @@
   {
     v3 = &hidEventFieldDescTable + 24 * i;
     v4 = *v3;
-    if (v4 == [a1 type])
+    if (v4 == [self type])
     {
       v5 = *(v3 + 2);
       if (!v5)
@@ -26,7 +26,7 @@
         do
         {
           v7 = (v5 + 16 * v6);
-          v8 = [a1 integerValueForField:*v7];
+          v8 = [self integerValueForField:*v7];
           for (j = (*(v7 + 1) + 8); ; j += 2)
           {
             result = *j;
@@ -66,10 +66,10 @@ LABEL_15:
   v6 = a3;
   if (v6)
   {
-    v4 = [a1 getEventFields];
-    if (v4)
+    getEventFields = [self getEventFields];
+    if (getEventFields)
     {
-      for (i = v4; *i || (*(i + 4) & 0x3F) != 0 || *(i + 8); i += 16)
+      for (i = getEventFields; *i || (*(i + 4) & 0x3F) != 0 || *(i + 8); i += 16)
       {
         v6[2](v6, i);
       }

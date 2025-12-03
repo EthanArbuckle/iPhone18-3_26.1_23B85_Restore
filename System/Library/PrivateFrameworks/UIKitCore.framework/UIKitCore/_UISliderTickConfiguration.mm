@@ -1,11 +1,11 @@
 @interface _UISliderTickConfiguration
-- (BOOL)adjustPositionForTargetPosition:(float)a3 adjustedPosition:(float *)a4 startPosition:(float *)a5 endPosition:(float *)a6;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)adjustPositionForTargetPosition:(float)position adjustedPosition:(float *)adjustedPosition startPosition:(float *)startPosition endPosition:(float *)endPosition;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)ticks;
 - (_UISliderTickConfiguration)init;
-- (_UISliderTickConfiguration)initWithNumberOfTicks:(int64_t)a3 behavior:(int64_t)a4;
-- (_UISliderTickConfiguration)initWithTicks:(id)a3 behavior:(int64_t)a4;
-- (id)copyWithZone:(void *)a3;
+- (_UISliderTickConfiguration)initWithNumberOfTicks:(int64_t)ticks behavior:(int64_t)behavior;
+- (_UISliderTickConfiguration)initWithTicks:(id)ticks behavior:(int64_t)behavior;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation _UISliderTickConfiguration
@@ -19,28 +19,28 @@
   return v2;
 }
 
-- (_UISliderTickConfiguration)initWithTicks:(id)a3 behavior:(int64_t)a4
+- (_UISliderTickConfiguration)initWithTicks:(id)ticks behavior:(int64_t)behavior
 {
   sub_188A34624(0, &unk_1EA92FD90);
   v5 = sub_18A4A7548();
-  return _UISliderTickConfiguration.init(ticks:behavior:)(v5, a4);
+  return _UISliderTickConfiguration.init(ticks:behavior:)(v5, behavior);
 }
 
-- (_UISliderTickConfiguration)initWithNumberOfTicks:(int64_t)a3 behavior:(int64_t)a4
+- (_UISliderTickConfiguration)initWithNumberOfTicks:(int64_t)ticks behavior:(int64_t)behavior
 {
-  sub_189017030(a3);
+  sub_189017030(ticks);
   sub_188A34624(0, &unk_1EA92FD90);
   v6 = sub_18A4A7518();
 
-  v7 = [(_UISliderTickConfiguration *)self initWithTicks:v6 behavior:a4];
+  v7 = [(_UISliderTickConfiguration *)self initWithTicks:v6 behavior:behavior];
 
   *(&v7->super.isa + OBJC_IVAR____UISliderTickConfiguration__ticksAreEvenlySpaced) = 1;
   return v7;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   _UISliderTickConfiguration.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -62,7 +62,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _UISliderTickConfiguration.isEqual(_:)(v8);
@@ -71,27 +71,27 @@
   return v6;
 }
 
-- (BOOL)adjustPositionForTargetPosition:(float)a3 adjustedPosition:(float *)a4 startPosition:(float *)a5 endPosition:(float *)a6
+- (BOOL)adjustPositionForTargetPosition:(float)position adjustedPosition:(float *)adjustedPosition startPosition:(float *)startPosition endPosition:(float *)endPosition
 {
-  v10 = self;
-  v11 = sub_1891CD000(a3);
+  selfCopy = self;
+  v11 = sub_1891CD000(position);
   if ((v12 & 0x100000000) == 0)
   {
-    if (!a4)
+    if (!adjustedPosition)
     {
       __break(1u);
       return v11;
     }
 
-    *a4 = v11;
-    if (a5)
+    *adjustedPosition = v11;
+    if (startPosition)
     {
-      *a5 = *(&v11 + 1);
+      *startPosition = *(&v11 + 1);
     }
 
-    if (a6)
+    if (endPosition)
     {
-      *a6 = v12;
+      *endPosition = v12;
     }
   }
 

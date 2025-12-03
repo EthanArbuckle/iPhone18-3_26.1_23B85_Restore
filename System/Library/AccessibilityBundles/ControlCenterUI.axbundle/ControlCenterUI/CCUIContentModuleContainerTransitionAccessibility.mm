@@ -1,30 +1,30 @@
 @interface CCUIContentModuleContainerTransitionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axElementToFocusForViewController:(id)a3;
-- (id)_axExpandedPlatterModalParentOfView:(id)a3;
-- (void)transitionDidEnd:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axElementToFocusForViewController:(id)controller;
+- (id)_axExpandedPlatterModalParentOfView:(id)view;
+- (void)transitionDidEnd:(BOOL)end;
 @end
 
 @implementation CCUIContentModuleContainerTransitionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIContentModuleContainerTransition" hasInstanceMethod:@"transitionDidEnd:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CCUIContentModuleContainerTransition" hasInstanceMethod:@"viewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIContentModuleContainerTransition" hasInstanceMethod:@"isAppearanceTransition" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_UIInteractiveHighlightContentView"];
-  [v3 validateClass:@"CCUIContentModuleContainerViewController"];
-  [v3 validateClass:@"CCUIContentModuleContainerViewController" hasInstanceMethod:@"moduleContentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIContentModuleContainerTransition" hasInstanceMethod:@"transitionDidEnd:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CCUIContentModuleContainerTransition" hasInstanceMethod:@"viewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIContentModuleContainerTransition" hasInstanceMethod:@"isAppearanceTransition" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_UIInteractiveHighlightContentView"];
+  [validationsCopy validateClass:@"CCUIContentModuleContainerViewController"];
+  [validationsCopy validateClass:@"CCUIContentModuleContainerViewController" hasInstanceMethod:@"moduleContentView" withFullSignature:{"@", 0}];
 }
 
-- (void)transitionDidEnd:(BOOL)a3
+- (void)transitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v10.receiver = self;
   v10.super_class = CCUIContentModuleContainerTransitionAccessibility;
   [(CCUIContentModuleContainerTransitionAccessibility *)&v10 transitionDidEnd:?];
-  if (v3)
+  if (endCopy)
   {
     objc_opt_class();
     v5 = [(CCUIContentModuleContainerTransitionAccessibility *)self safeValueForKey:@"viewController"];
@@ -38,9 +38,9 @@
   }
 }
 
-- (id)_axExpandedPlatterModalParentOfView:(id)a3
+- (id)_axExpandedPlatterModalParentOfView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = MEMORY[0x29C2D22C0](@"_UIInteractiveHighlightContentView");
   if (v4)
   {
@@ -49,7 +49,7 @@
     v7[2] = __89__CCUIContentModuleContainerTransitionAccessibility__axExpandedPlatterModalParentOfView___block_invoke;
     v7[3] = &__block_descriptor_40_e8_B16__0_8lu32l8;
     v7[4] = v4;
-    v5 = [v3 _accessibilityFindAncestor:v7 startWithSelf:0];
+    v5 = [viewCopy _accessibilityFindAncestor:v7 startWithSelf:0];
   }
 
   else
@@ -60,20 +60,20 @@
   return v5;
 }
 
-- (id)_axElementToFocusForViewController:(id)a3
+- (id)_axElementToFocusForViewController:(id)controller
 {
-  v3 = a3;
-  if ([v3 safeBoolForKey:@"expanded"])
+  controllerCopy = controller;
+  if ([controllerCopy safeBoolForKey:@"expanded"])
   {
-    v4 = [v3 safeValueForKey:@"moduleContentView"];
+    v4 = [controllerCopy safeValueForKey:@"moduleContentView"];
   }
 
   else
   {
-    v5 = [v3 safeValueForKey:@"contentViewController"];
+    v5 = [controllerCopy safeValueForKey:@"contentViewController"];
     if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 _accessibilityControlCenterElementToFocusAfterClose], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v4 = [v3 safeValueForKey:@"moduleContentView"];
+      v4 = [controllerCopy safeValueForKey:@"moduleContentView"];
     }
   }
 

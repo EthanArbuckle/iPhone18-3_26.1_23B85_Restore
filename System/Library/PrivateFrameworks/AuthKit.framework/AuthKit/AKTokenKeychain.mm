@@ -1,11 +1,11 @@
 @interface AKTokenKeychain
 - (AKTokenKeychain)init;
-- (BOOL)clearAllTokensForAltDSID:(id)a3 error:(id *)a4;
-- (BOOL)deleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)updateWithContext:(id)a3 error:(id *)a4;
-- (id)_tokenKeychainDescriptorForContext:(id)a3;
-- (id)_tokenKeychainDescriptorWithIdentifier:(id)a3 altDSID:(id)a4;
-- (id)fetchWithContext:(id)a3 error:(id *)a4;
+- (BOOL)clearAllTokensForAltDSID:(id)d error:(id *)error;
+- (BOOL)deleteWithContext:(id)context error:(id *)error;
+- (BOOL)updateWithContext:(id)context error:(id *)error;
+- (id)_tokenKeychainDescriptorForContext:(id)context;
+- (id)_tokenKeychainDescriptorWithIdentifier:(id)identifier altDSID:(id)d;
+- (id)fetchWithContext:(id)context error:(id *)error;
 @end
 
 @implementation AKTokenKeychain
@@ -32,33 +32,33 @@
   return v5;
 }
 
-- (id)fetchWithContext:(id)a3 error:(id *)a4
+- (id)fetchWithContext:(id)context error:(id *)error
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
-  v25 = [(AKTokenKeychain *)v28 _tokenKeychainDescriptorForContext:location[0]];
+  objc_storeStrong(location, context);
+  errorCopy = error;
+  v25 = [(AKTokenKeychain *)selfCopy _tokenKeychainDescriptorForContext:location[0]];
   v24 = 0;
-  keychainManager = v28->_keychainManager;
+  keychainManager = selfCopy->_keychainManager;
   v22 = 0;
   v12 = [(AAFKeychainManager *)keychainManager keychainItemForDescriptor:v25 error:&v22];
   objc_storeStrong(&v24, v22);
   v23 = v12;
-  v21 = [v12 value];
+  value = [v12 value];
   v19 = 0;
   v13 = 0;
   if ([v24 code] == -25300)
   {
-    v20 = [v24 domain];
+    domain = [v24 domain];
     v19 = 1;
-    v13 = [v20 isEqualToString:NSOSStatusErrorDomain];
+    v13 = [domain isEqualToString:NSOSStatusErrorDomain];
   }
 
   if (v19)
   {
-    _objc_release(v20);
+    _objc_release(domain);
   }
 
   if (v13)
@@ -72,10 +72,10 @@
     v17 = 0;
     v5 = objc_opt_class();
     obj = v17;
-    v10 = [NSKeyedUnarchiver unarchivedObjectOfClass:v5 fromData:v21 error:&obj];
+    v10 = [NSKeyedUnarchiver unarchivedObjectOfClass:v5 fromData:value error:&obj];
     objc_storeStrong(&v17, obj);
     v16 = v10;
-    if (v21)
+    if (value)
     {
       v29 = _objc_retain(v16);
       v18 = 1;
@@ -91,11 +91,11 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      if (v26)
+      if (errorCopy)
       {
         v9 = v17;
         v6 = v17;
-        *v26 = v9;
+        *errorCopy = v9;
       }
 
       v29 = 0;
@@ -106,7 +106,7 @@
     objc_storeStrong(&v17, 0);
   }
 
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&value, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
@@ -116,27 +116,27 @@
   return v7;
 }
 
-- (BOOL)updateWithContext:(id)a3 error:(id *)a4
+- (BOOL)updateWithContext:(id)context error:(id *)error
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, context);
+  errorCopy = error;
   v24 = 0;
-  v13 = [location[0] token];
+  token = [location[0] token];
   v22 = v24;
   v12 = [NSKeyedArchiver archivedDataWithRootObject:"archivedDataWithRootObject:requiringSecureCoding:error:" requiringSecureCoding:? error:?];
   objc_storeStrong(&v24, v22);
   v23 = v12;
-  _objc_release(v13);
+  _objc_release(token);
   if (v12)
   {
-    v18 = [(AKTokenKeychain *)v27 _tokenKeychainDescriptorForContext:location[0]];
+    v18 = [(AKTokenKeychain *)selfCopy _tokenKeychainDescriptorForContext:location[0]];
     v5 = [AAFKeychainItem alloc];
     v17 = [v5 initWithDescriptor:v18 value:v23];
     v16 = 0;
-    keychainManager = v27->_keychainManager;
+    keychainManager = selfCopy->_keychainManager;
     obj = 0;
     [(AAFKeychainManager *)keychainManager addOrUpdateKeychainItem:v17 error:&obj];
     objc_storeStrong(&v16, obj);
@@ -150,11 +150,11 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      if (v25)
+      if (errorCopy)
       {
         v9 = v16;
         v7 = v16;
-        *v25 = v9;
+        *errorCopy = v9;
       }
 
       v28 = 0;
@@ -183,11 +183,11 @@
     }
 
     objc_storeStrong(&v21, 0);
-    if (v25)
+    if (errorCopy)
     {
       v10 = v24;
       v4 = v24;
-      *v25 = v10;
+      *errorCopy = v10;
     }
 
     v28 = 0;
@@ -200,21 +200,21 @@
   return v28 & 1;
 }
 
-- (BOOL)deleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)deleteWithContext:(id)context error:(id *)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
-  v7 = [(AKTokenKeychain *)v10 _tokenKeychainDescriptorForContext:location[0]];
-  [(AAFKeychainManager *)v10->_keychainManager deleteKeychainItemsForDescriptor:v7 error:a4];
-  if (a4)
+  objc_storeStrong(location, context);
+  errorCopy = error;
+  v7 = [(AKTokenKeychain *)selfCopy _tokenKeychainDescriptorForContext:location[0]];
+  [(AAFKeychainManager *)selfCopy->_keychainManager deleteKeychainItemsForDescriptor:v7 error:error];
+  if (error)
   {
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000194D4(v12, *v8);
+      sub_1000194D4(v12, *errorCopy);
       _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "Token keychain delete failed with error: %@", v12, 0xCu);
     }
 
@@ -232,21 +232,21 @@
   return v11 & 1;
 }
 
-- (BOOL)clearAllTokensForAltDSID:(id)a3 error:(id *)a4
+- (BOOL)clearAllTokensForAltDSID:(id)d error:(id *)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
-  v7 = [(AKTokenKeychain *)v10 _tokenKeychainDescriptorWithIdentifier:0 altDSID:location[0]];
-  [(AAFKeychainManager *)v10->_keychainManager deleteKeychainItemsForDescriptor:v7 error:a4];
-  if (a4)
+  objc_storeStrong(location, d);
+  errorCopy = error;
+  v7 = [(AKTokenKeychain *)selfCopy _tokenKeychainDescriptorWithIdentifier:0 altDSID:location[0]];
+  [(AAFKeychainManager *)selfCopy->_keychainManager deleteKeychainItemsForDescriptor:v7 error:error];
+  if (error)
   {
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000194D4(v12, *v8);
+      sub_1000194D4(v12, *errorCopy);
       _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "Token keychain failed to clear all tokens with error: %@", v12, 0xCu);
     }
 
@@ -264,31 +264,31 @@
   return v11 & 1;
 }
 
-- (id)_tokenKeychainDescriptorForContext:(id)a3
+- (id)_tokenKeychainDescriptorForContext:(id)context
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v9;
-  v6 = [location[0] tokenIdentifier];
-  v5 = [location[0] altDSID];
-  v7 = [(AKTokenKeychain *)v4 _tokenKeychainDescriptorWithIdentifier:v6 altDSID:?];
-  _objc_release(v5);
-  _objc_release(v6);
+  objc_storeStrong(location, context);
+  v4 = selfCopy;
+  tokenIdentifier = [location[0] tokenIdentifier];
+  altDSID = [location[0] altDSID];
+  v7 = [(AKTokenKeychain *)v4 _tokenKeychainDescriptorWithIdentifier:tokenIdentifier altDSID:?];
+  _objc_release(altDSID);
+  _objc_release(tokenIdentifier);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-- (id)_tokenKeychainDescriptorWithIdentifier:(id)a3 altDSID:(id)a4
+- (id)_tokenKeychainDescriptorWithIdentifier:(id)identifier altDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, d);
   v11 = objc_alloc_init(AAFKeychainItemDescriptor);
   [v11 setItemClass:?];
   [v11 setItemAccessible:?];

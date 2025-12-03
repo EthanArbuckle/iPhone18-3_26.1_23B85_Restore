@@ -3,16 +3,16 @@
 - (AXHeardServerMessageDelegate)messageDelegate;
 - (BOOL)isConnected;
 - (HCServer)init;
-- (id)sendSynchronousMessageWithPayloadAndGetResponse:(id)a3 andIdentifier:(unint64_t)a4;
+- (id)sendSynchronousMessageWithPayloadAndGetResponse:(id)response andIdentifier:(unint64_t)identifier;
 - (id)setupServerIfNecessary;
 - (void)dealloc;
-- (void)handleMessageWithPayload:(id)a3 forIdentifier:(unint64_t)a4;
-- (void)handleReply:(id)a3;
+- (void)handleMessageWithPayload:(id)payload forIdentifier:(unint64_t)identifier;
+- (void)handleReply:(id)reply;
 - (void)resetConnection;
-- (void)sendMessageWithPayload:(id)a3 andIdentifier:(unint64_t)a4;
-- (void)sendMessageWithPayload:(id)a3 identifier:(unint64_t)a4 andResponseBlock:(id)a5;
-- (void)sendSynchronousMessageWithPayload:(id)a3 andIdentifier:(unint64_t)a4;
-- (void)terminateConnectionAndNotify:(BOOL)a3;
+- (void)sendMessageWithPayload:(id)payload andIdentifier:(unint64_t)identifier;
+- (void)sendMessageWithPayload:(id)payload identifier:(unint64_t)identifier andResponseBlock:(id)block;
+- (void)sendSynchronousMessageWithPayload:(id)payload andIdentifier:(unint64_t)identifier;
+- (void)terminateConnectionAndNotify:(BOOL)notify;
 @end
 
 @implementation HCServer
@@ -20,7 +20,7 @@
 - (id)setupServerIfNecessary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(HCServer *)self connectionQueue];
+  connectionQueue = [(HCServer *)self connectionQueue];
   mach_service = [(HCServer *)self xpcConnection];
   if (!mach_service)
   {
@@ -31,8 +31,8 @@
 
     else
     {
-      mach_service = xpc_connection_create_mach_service([@"com.apple.accessibility.heard" UTF8String], v3, 0);
-      xpc_connection_set_target_queue(mach_service, v3);
+      mach_service = xpc_connection_create_mach_service([@"com.apple.accessibility.heard" UTF8String], connectionQueue, 0);
+      xpc_connection_set_target_queue(mach_service, connectionQueue);
       objc_initWeak(&location, self);
       v8 = MEMORY[0x1E69E9820];
       v9 = 3221225472;
@@ -46,7 +46,7 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1D952C000, v5, OS_LOG_TYPE_DEFAULT, "Set new xpc connection: %@", buf, 0xCu);
       }
 
@@ -78,8 +78,8 @@ void __34__HCServer_setupServerIfNecessary__block_invoke(uint64_t a1, void *a2)
     v4 = dispatch_queue_create("heard_xpc_queue", v3);
 
     [(HCServer *)v2 setConnectionQueue:v4];
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [(HCServer *)v2 setResponseBlocks:v5];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(HCServer *)v2 setResponseBlocks:dictionary];
   }
 
   return v2;
@@ -93,25 +93,25 @@ void __34__HCServer_setupServerIfNecessary__block_invoke(uint64_t a1, void *a2)
   [(HCServer *)&v3 dealloc];
 }
 
-- (void)terminateConnectionAndNotify:(BOOL)a3
+- (void)terminateConnectionAndNotify:(BOOL)notify
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = HCLogHearingXPC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D952C000, v5, OS_LOG_TYPE_DEFAULT, "Connection terminated: %@", buf, 0xCu);
   }
 
-  v6 = [(HCServer *)self connectionQueue];
+  connectionQueue = [(HCServer *)self connectionQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__HCServer_terminateConnectionAndNotify___block_invoke;
   v8[3] = &unk_1E857EC88;
   v8[4] = self;
-  v9 = a3;
-  dispatch_async(v6, v8);
+  notifyCopy = notify;
+  dispatch_async(connectionQueue, v8);
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -144,7 +144,7 @@ void __41__HCServer_terminateConnectionAndNotify___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D952C000, v3, OS_LOG_TYPE_DEFAULT, "Connection reset: %@", &v5, 0xCu);
   }
 
@@ -154,15 +154,15 @@ void __41__HCServer_terminateConnectionAndNotify___block_invoke(uint64_t a1)
 
 - (BOOL)isConnected
 {
-  v2 = [(HCServer *)self xpcConnection];
-  v3 = v2 != 0;
+  xpcConnection = [(HCServer *)self xpcConnection];
+  v3 = xpcConnection != 0;
 
   return v3;
 }
 
-- (void)handleReply:(id)a3
+- (void)handleReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = MEMORY[0x1DA732070]();
   if (v5 == MEMORY[0x1E69E9E98])
   {
@@ -173,7 +173,7 @@ void __41__HCServer_terminateConnectionAndNotify___block_invoke(uint64_t a1)
     v22[4] = self;
     v9 = MEMORY[0x1DA731E20](v22);
     v10 = v9;
-    if (v4 == MEMORY[0x1E69E9E18])
+    if (replyCopy == MEMORY[0x1E69E9E18])
     {
       v11 = dispatch_get_global_queue(21, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -190,7 +190,7 @@ void __41__HCServer_terminateConnectionAndNotify___block_invoke(uint64_t a1)
       (*(v9 + 16))(v9, 1);
     }
 
-    if (v4 == MEMORY[0x1E69E9E20])
+    if (replyCopy == MEMORY[0x1E69E9E20])
     {
       v12 = HCLogHearingXPC();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -201,14 +201,14 @@ void __41__HCServer_terminateConnectionAndNotify___block_invoke(uint64_t a1)
       [(HCServer *)self setDeadConnection:1];
     }
 
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error in client connection event handler: %s", xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E28])];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error in client connection event handler: %s", xpc_dictionary_get_string(replyCopy, *MEMORY[0x1E69E9E28])];
     [(HCServer *)self handleMessageError:v13 destructive:1];
   }
 
   else if (v5 == MEMORY[0x1E69E9E80])
   {
     v19 = 0;
-    v6 = [MEMORY[0x1E6988810] dictionaryFromXPCMessage:v4 error:&v19];
+    v6 = [MEMORY[0x1E6988810] dictionaryFromXPCMessage:replyCopy error:&v19];
     v7 = v19;
     if (v7)
     {
@@ -223,9 +223,9 @@ void __41__HCServer_terminateConnectionAndNotify___block_invoke(uint64_t a1)
 
     v15 = v14;
     v16 = [v6 objectForKey:@"axha_messageID"];
-    v17 = [v16 unsignedLongLongValue];
+    unsignedLongLongValue = [v16 unsignedLongLongValue];
 
-    if (v17)
+    if (unsignedLongLongValue)
     {
       v8 = [v6 objectForKey:@"axha_payload"];
       v18 = [v6 objectForKey:@"axha_messageID"];
@@ -293,10 +293,10 @@ void __24__HCServer_handleReply___block_invoke_2(uint64_t a1, char a2)
   }
 }
 
-- (void)sendSynchronousMessageWithPayload:(id)a3 andIdentifier:(unint64_t)a4
+- (void)sendSynchronousMessageWithPayload:(id)payload andIdentifier:(unint64_t)identifier
 {
   v5 = MEMORY[0x1E6988810];
-  v6 = [HCUtilities messagePayloadFromDictionary:a3 andIdentifier:a4];
+  v6 = [HCUtilities messagePayloadFromDictionary:payload andIdentifier:identifier];
   v13 = 0;
   v7 = [v5 copyXPCMessageFromDictionary:v6 inReplyToXPCMessage:0 error:&v13];
   v8 = v13;
@@ -313,14 +313,14 @@ void __24__HCServer_handleReply___block_invoke_2(uint64_t a1, char a2)
 
   if (!v9)
   {
-    v10 = [(HCServer *)self connectionQueue];
+    connectionQueue = [(HCServer *)self connectionQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__HCServer_sendSynchronousMessageWithPayload_andIdentifier___block_invoke;
     block[3] = &unk_1E857ED78;
     block[4] = self;
     v12 = v7;
-    dispatch_async(v10, block);
+    dispatch_async(connectionQueue, block);
   }
 }
 
@@ -337,11 +337,11 @@ void __60__HCServer_sendSynchronousMessageWithPayload_andIdentifier___block_invo
   }
 }
 
-- (id)sendSynchronousMessageWithPayloadAndGetResponse:(id)a3 andIdentifier:(unint64_t)a4
+- (id)sendSynchronousMessageWithPayloadAndGetResponse:(id)response andIdentifier:(unint64_t)identifier
 {
-  v6 = a3;
+  responseCopy = response;
   v7 = MEMORY[0x1E6988810];
-  v8 = [HCUtilities messagePayloadFromDictionary:v6 andIdentifier:a4];
+  v8 = [HCUtilities messagePayloadFromDictionary:responseCopy andIdentifier:identifier];
   v24 = 0;
   v9 = [v7 copyXPCMessageFromDictionary:v8 inReplyToXPCMessage:0 error:&v24];
   v10 = v24;
@@ -355,7 +355,7 @@ void __60__HCServer_sendSynchronousMessageWithPayload_andIdentifier___block_invo
   v23 = 0;
   if (!v10 && v9)
   {
-    v12 = [(HCServer *)self connectionQueue];
+    connectionQueue = [(HCServer *)self connectionQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __74__HCServer_sendSynchronousMessageWithPayloadAndGetResponse_andIdentifier___block_invoke;
@@ -363,7 +363,7 @@ void __60__HCServer_sendSynchronousMessageWithPayload_andIdentifier___block_invo
     v15[4] = self;
     v16 = v9;
     v17 = &v18;
-    dispatch_sync(v12, v15);
+    dispatch_sync(connectionQueue, v15);
 
     v11 = v19[5];
   }
@@ -403,10 +403,10 @@ void __74__HCServer_sendSynchronousMessageWithPayloadAndGetResponse_andIdentifie
   }
 }
 
-- (void)sendMessageWithPayload:(id)a3 andIdentifier:(unint64_t)a4
+- (void)sendMessageWithPayload:(id)payload andIdentifier:(unint64_t)identifier
 {
   v5 = MEMORY[0x1E6988810];
-  v6 = [HCUtilities messagePayloadFromDictionary:a3 andIdentifier:a4];
+  v6 = [HCUtilities messagePayloadFromDictionary:payload andIdentifier:identifier];
   v13 = 0;
   v7 = [v5 copyXPCMessageFromDictionary:v6 inReplyToXPCMessage:0 error:&v13];
   v8 = v13;
@@ -423,14 +423,14 @@ void __74__HCServer_sendSynchronousMessageWithPayloadAndGetResponse_andIdentifie
 
   if (!v9)
   {
-    v10 = [(HCServer *)self connectionQueue];
+    connectionQueue = [(HCServer *)self connectionQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__HCServer_sendMessageWithPayload_andIdentifier___block_invoke;
     block[3] = &unk_1E857ED78;
     block[4] = self;
     v12 = v7;
-    dispatch_async(v10, block);
+    dispatch_async(connectionQueue, block);
   }
 }
 
@@ -445,22 +445,22 @@ void __49__HCServer_sendMessageWithPayload_andIdentifier___block_invoke(uint64_t
   }
 }
 
-- (void)sendMessageWithPayload:(id)a3 identifier:(unint64_t)a4 andResponseBlock:(id)a5
+- (void)sendMessageWithPayload:(id)payload identifier:(unint64_t)identifier andResponseBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HCServer *)self connectionQueue];
+  payloadCopy = payload;
+  blockCopy = block;
+  connectionQueue = [(HCServer *)self connectionQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__HCServer_sendMessageWithPayload_identifier_andResponseBlock___block_invoke;
   v13[3] = &unk_1E857EDC8;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = payloadCopy;
+  selfCopy = self;
+  v16 = blockCopy;
+  identifierCopy = identifier;
+  v11 = blockCopy;
+  v12 = payloadCopy;
+  dispatch_async(connectionQueue, v13);
 }
 
 void __63__HCServer_sendMessageWithPayload_identifier_andResponseBlock___block_invoke(uint64_t a1)
@@ -480,23 +480,23 @@ void __63__HCServer_sendMessageWithPayload_identifier_andResponseBlock___block_i
   [*(a1 + 40) sendMessageWithPayload:v6 andIdentifier:*(a1 + 56)];
 }
 
-- (void)handleMessageWithPayload:(id)a3 forIdentifier:(unint64_t)a4
+- (void)handleMessageWithPayload:(id)payload forIdentifier:(unint64_t)identifier
 {
-  v12 = a3;
-  v6 = [v12 valueForKey:@"HCMessageUUIDKey"];
-  v7 = [(HCServer *)self responseBlocks];
-  v8 = [v7 valueForKey:v6];
+  payloadCopy = payload;
+  v6 = [payloadCopy valueForKey:@"HCMessageUUIDKey"];
+  responseBlocks = [(HCServer *)self responseBlocks];
+  v8 = [responseBlocks valueForKey:v6];
 
   if (v8)
   {
-    (v8)[2](v8, v12);
-    v9 = [(HCServer *)self responseBlocks];
-    [v9 removeObjectForKey:v6];
+    (v8)[2](v8, payloadCopy);
+    responseBlocks2 = [(HCServer *)self responseBlocks];
+    [responseBlocks2 removeObjectForKey:v6];
   }
 
   else
   {
-    v10 = [(HCServer *)self messageDelegate];
+    messageDelegate = [(HCServer *)self messageDelegate];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -504,8 +504,8 @@ void __63__HCServer_sendMessageWithPayload_identifier_andResponseBlock___block_i
       goto LABEL_6;
     }
 
-    v9 = [(HCServer *)self messageDelegate];
-    [v9 handleMessageWithPayload:v12 forIdentifier:a4];
+    responseBlocks2 = [(HCServer *)self messageDelegate];
+    [responseBlocks2 handleMessageWithPayload:payloadCopy forIdentifier:identifier];
   }
 
 LABEL_6:

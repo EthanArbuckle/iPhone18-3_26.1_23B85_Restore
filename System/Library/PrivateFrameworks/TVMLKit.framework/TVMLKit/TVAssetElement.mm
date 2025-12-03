@@ -1,5 +1,5 @@
 @interface TVAssetElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSNumber)persistentID;
 - (NSNumber)rentalAdamID;
 - (NSString)actionParams;
@@ -14,79 +14,79 @@
 
 - (NSString)actionParams
 {
-  v2 = [(TVAssetElement *)self assetElement];
-  v3 = [v2 actionParams];
+  assetElement = [(TVAssetElement *)self assetElement];
+  actionParams = [assetElement actionParams];
 
-  return v3;
+  return actionParams;
 }
 
 - (NSString)adamID
 {
-  v2 = [(TVAssetElement *)self assetElement];
-  v3 = [v2 adamID];
+  assetElement = [(TVAssetElement *)self assetElement];
+  adamID = [assetElement adamID];
 
-  return v3;
+  return adamID;
 }
 
 - (NSURL)extrasURL
 {
-  v2 = [(TVAssetElement *)self assetElement];
-  v3 = [v2 extrasURL];
+  assetElement = [(TVAssetElement *)self assetElement];
+  extrasURL = [assetElement extrasURL];
 
-  return v3;
+  return extrasURL;
 }
 
 - (unint64_t)keyDelivery
 {
-  v2 = [(TVAssetElement *)self assetElement];
-  v3 = [v2 keyDelivery];
+  assetElement = [(TVAssetElement *)self assetElement];
+  keyDelivery = [assetElement keyDelivery];
 
-  return v3 == 1;
+  return keyDelivery == 1;
 }
 
 - (NSNumber)persistentID
 {
-  v2 = [(TVAssetElement *)self assetElement];
-  v3 = [v2 persistentID];
+  assetElement = [(TVAssetElement *)self assetElement];
+  persistentID = [assetElement persistentID];
 
-  return v3;
+  return persistentID;
 }
 
 - (NSNumber)rentalAdamID
 {
-  v2 = [(TVAssetElement *)self assetElement];
-  v3 = [v2 rentalAdamID];
+  assetElement = [(TVAssetElement *)self assetElement];
+  rentalAdamID = [assetElement rentalAdamID];
 
-  return v3;
+  return rentalAdamID;
 }
 
 - (unint64_t)type
 {
-  v2 = [(TVAssetElement *)self assetElement];
-  v3 = [v2 type];
+  assetElement = [(TVAssetElement *)self assetElement];
+  type = [assetElement type];
 
-  if (v3 == 1)
+  if (type == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (type == 2);
   }
 }
 
 - (NSURL)url
 {
-  v2 = [(TVAssetElement *)self assetElement];
-  v3 = [v2 url];
+  assetElement = [(TVAssetElement *)self assetElement];
+  v3 = [assetElement url];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -94,29 +94,29 @@
     goto LABEL_34;
   }
 
-  v5 = [(TVAssetElement *)self actionParams];
-  if (v5)
+  actionParams = [(TVAssetElement *)self actionParams];
+  if (actionParams)
   {
 
 LABEL_5:
-    v7 = [(TVAssetElement *)self actionParams];
-    v8 = [v4 actionParams];
-    v9 = [v7 isEqualToString:v8];
+    actionParams2 = [(TVAssetElement *)self actionParams];
+    actionParams3 = [equalCopy actionParams];
+    v9 = [actionParams2 isEqualToString:actionParams3];
 
     goto LABEL_6;
   }
 
-  v6 = [v4 actionParams];
+  actionParams4 = [equalCopy actionParams];
 
-  if (v6)
+  if (actionParams4)
   {
     goto LABEL_5;
   }
 
   v9 = 1;
 LABEL_6:
-  v10 = [(TVAssetElement *)self adamID];
-  if (v10)
+  adamID = [(TVAssetElement *)self adamID];
+  if (adamID)
   {
 
     if ((v9 & 1) == 0)
@@ -128,15 +128,15 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  v12 = [v4 adamID];
+  adamID2 = [equalCopy adamID];
 
-  v11 = (v12 == 0) & v9;
-  if (v12 && ((v9 ^ 1) & 1) == 0)
+  v11 = (adamID2 == 0) & v9;
+  if (adamID2 && ((v9 ^ 1) & 1) == 0)
   {
 LABEL_11:
-    v13 = [(TVAssetElement *)self adamID];
-    v14 = [v4 adamID];
-    v11 = [v13 isEqualToString:v14];
+    adamID3 = [(TVAssetElement *)self adamID];
+    adamID4 = [equalCopy adamID];
+    v11 = [adamID3 isEqualToString:adamID4];
   }
 
 LABEL_12:
@@ -153,20 +153,20 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v17 = [v4 url];
+  v17 = [equalCopy url];
 
   v16 = (v17 == 0) & v11;
   if (v17 && ((v11 ^ 1) & 1) == 0)
   {
 LABEL_17:
     v18 = [(TVAssetElement *)self url];
-    v19 = [v4 url];
+    v19 = [equalCopy url];
     v16 = [v18 isEqual:v19];
   }
 
 LABEL_18:
-  v20 = [(TVAssetElement *)self persistentID];
-  if (v20)
+  persistentID = [(TVAssetElement *)self persistentID];
+  if (persistentID)
   {
 
     if ((v16 & 1) == 0)
@@ -178,20 +178,20 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  v22 = [v4 persistentID];
+  persistentID2 = [equalCopy persistentID];
 
-  v21 = (v22 == 0) & v16;
-  if (v22 && ((v16 ^ 1) & 1) == 0)
+  v21 = (persistentID2 == 0) & v16;
+  if (persistentID2 && ((v16 ^ 1) & 1) == 0)
   {
 LABEL_23:
-    v23 = [(TVAssetElement *)self persistentID];
-    v24 = [v4 persistentID];
-    v21 = [v23 isEqual:v24];
+    persistentID3 = [(TVAssetElement *)self persistentID];
+    persistentID4 = [equalCopy persistentID];
+    v21 = [persistentID3 isEqual:persistentID4];
   }
 
 LABEL_24:
-  v25 = [(TVAssetElement *)self rentalAdamID];
-  if (v25)
+  rentalAdamID = [(TVAssetElement *)self rentalAdamID];
+  if (rentalAdamID)
   {
 
 LABEL_27:
@@ -200,9 +200,9 @@ LABEL_27:
       goto LABEL_34;
     }
 
-    v27 = [(TVAssetElement *)self rentalAdamID];
-    v28 = [v4 rentalAdamID];
-    v29 = [v27 isEqual:v28];
+    rentalAdamID2 = [(TVAssetElement *)self rentalAdamID];
+    rentalAdamID3 = [equalCopy rentalAdamID];
+    v29 = [rentalAdamID2 isEqual:rentalAdamID3];
 
     if ((v29 & 1) == 0)
     {
@@ -212,9 +212,9 @@ LABEL_27:
     goto LABEL_32;
   }
 
-  v26 = [v4 rentalAdamID];
+  rentalAdamID4 = [equalCopy rentalAdamID];
 
-  if (v26)
+  if (rentalAdamID4)
   {
     goto LABEL_27;
   }
@@ -227,14 +227,14 @@ LABEL_34:
   }
 
 LABEL_32:
-  v30 = [(TVAssetElement *)self keyDelivery];
-  if (v30 != [v4 keyDelivery])
+  keyDelivery = [(TVAssetElement *)self keyDelivery];
+  if (keyDelivery != [equalCopy keyDelivery])
   {
     goto LABEL_34;
   }
 
-  v31 = [(TVAssetElement *)self type];
-  v32 = v31 == [v4 type];
+  type = [(TVAssetElement *)self type];
+  v32 = type == [equalCopy type];
 LABEL_35:
 
   return v32;

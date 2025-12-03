@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && initialize_onceToken != -1)
+  if (objc_opt_class() == self && initialize_onceToken != -1)
   {
     +[VCLocaleFeatureFlags initialize];
   }

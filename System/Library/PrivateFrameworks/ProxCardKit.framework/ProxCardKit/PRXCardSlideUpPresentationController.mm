@@ -1,21 +1,21 @@
 @interface PRXCardSlideUpPresentationController
-- (PRXCardSlideUpPresentationController)initWithDimmingStyle:(int64_t)a3 presentedViewController:(id)a4 presentingViewController:(id)a5;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (PRXCardSlideUpPresentationController)initWithDimmingStyle:(int64_t)style presentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation PRXCardSlideUpPresentationController
 
-- (PRXCardSlideUpPresentationController)initWithDimmingStyle:(int64_t)a3 presentedViewController:(id)a4 presentingViewController:(id)a5
+- (PRXCardSlideUpPresentationController)initWithDimmingStyle:(int64_t)style presentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v15.receiver = self;
   v15.super_class = PRXCardSlideUpPresentationController;
-  v6 = [(PRXCardSlideUpPresentationController *)&v15 initWithPresentedViewController:a4 presentingViewController:a5];
+  v6 = [(PRXCardSlideUpPresentationController *)&v15 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v6)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       v7 = objc_alloc(MEMORY[0x277D75D68]);
       v8 = [MEMORY[0x277D75210] effectWithStyle:2];
@@ -44,21 +44,21 @@
 - (void)presentationTransitionWillBegin
 {
   [(UIView *)self->_dimmingView setAlpha:0.0];
-  v3 = [(PRXCardSlideUpPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(PRXCardSlideUpPresentationController *)self containerView];
+  [containerView bounds];
   [(UIView *)self->_dimmingView setFrame:?];
 
-  v4 = [(PRXCardSlideUpPresentationController *)self containerView];
-  [v4 addSubview:self->_dimmingView];
+  containerView2 = [(PRXCardSlideUpPresentationController *)self containerView];
+  [containerView2 addSubview:self->_dimmingView];
 
-  v5 = [(PRXCardSlideUpPresentationController *)self presentedViewController];
-  v6 = [v5 transitionCoordinator];
+  presentedViewController = [(PRXCardSlideUpPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__PRXCardSlideUpPresentationController_presentationTransitionWillBegin__block_invoke;
   v7[3] = &unk_279ACC2E0;
   v7[4] = self;
-  [v6 animateAlongsideTransition:v7 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v7 completion:0];
 }
 
 void __71__PRXCardSlideUpPresentationController_presentationTransitionWillBegin__block_invoke(uint64_t a1)
@@ -67,9 +67,9 @@ void __71__PRXCardSlideUpPresentationController_presentationTransitionWillBegin_
   [v1 setAlpha:1.0];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
     [(UIView *)self->_dimmingView removeFromSuperview];
     dimmingView = self->_dimmingView;
@@ -79,14 +79,14 @@ void __71__PRXCardSlideUpPresentationController_presentationTransitionWillBegin_
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(PRXCardSlideUpPresentationController *)self presentedViewController];
-  v4 = [v3 transitionCoordinator];
+  presentedViewController = [(PRXCardSlideUpPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __68__PRXCardSlideUpPresentationController_dismissalTransitionWillBegin__block_invoke;
   v5[3] = &unk_279ACC2E0;
   v5[4] = self;
-  [v4 animateAlongsideTransition:v5 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v5 completion:0];
 }
 
 void __68__PRXCardSlideUpPresentationController_dismissalTransitionWillBegin__block_invoke(uint64_t a1)
@@ -95,9 +95,9 @@ void __68__PRXCardSlideUpPresentationController_dismissalTransitionWillBegin__bl
   [v1 setAlpha:0.0];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     [(UIView *)self->_dimmingView removeFromSuperview];
     dimmingView = self->_dimmingView;

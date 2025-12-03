@@ -1,16 +1,16 @@
 @interface NSClassicHashTable
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)allObjects;
 - (id)copy;
 - (id)description;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)getItem:(const void *)a3;
-- (void)getKeys:(const void *)a3 count:(unint64_t *)a4;
-- (void)insertItem:(const void *)a3;
-- (void)insertKnownAbsentItem:(const void *)a3;
+- (void)getItem:(const void *)item;
+- (void)getKeys:(const void *)keys count:(unint64_t *)count;
+- (void)insertItem:(const void *)item;
+- (void)insertKnownAbsentItem:(const void *)item;
 - (void)removeAllItems;
-- (void)removeItem:(const void *)a3;
+- (void)removeItem:(const void *)item;
 @end
 
 @implementation NSClassicHashTable
@@ -33,19 +33,19 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      return CFBasicHashesAreEqual(self->_ht, *(a3 + 6)) != 0;
+      return CFBasicHashesAreEqual(self->_ht, *(equal + 6)) != 0;
     }
   }
 
@@ -70,14 +70,14 @@
   return v5;
 }
 
-- (void)getItem:(const void *)a3
+- (void)getItem:(const void *)item
 {
   v8 = *MEMORY[0x1E69E9840];
   v7 = 0;
   v5 = 0u;
   v6 = 0u;
   v4 = 0u;
-  CFBasicHashFindBucket(self->_ht, a3, &v4);
+  CFBasicHashFindBucket(self->_ht, item, &v4);
   if (*(&v6 + 1))
   {
     return *(&v5 + 1);
@@ -89,69 +89,69 @@
   }
 }
 
-- (void)insertItem:(const void *)a3
+- (void)insertItem:(const void *)item
 {
-  if (!a3)
+  if (!item)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"*** NSHashInsert(): attempt to insert NULL pointer" userInfo:{0, v3, v4}]);
   }
 
   ht = self->_ht;
 
-  CFBasicHashSetValue(ht, a3);
+  CFBasicHashSetValue(ht, item);
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"*** NSHashInsertKnownAbsent(): attempt to insert NULL pointer" userInfo:{0, v3, v4}]);
   }
 
   ht = self->_ht;
 
-  CFBasicHashAddValue(ht, a3);
+  CFBasicHashAddValue(ht, object);
 }
 
-- (void)insertKnownAbsentItem:(const void *)a3
+- (void)insertKnownAbsentItem:(const void *)item
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!item)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
-    v8 = @"*** NSHashInsertKnownAbsent(): attempt to insert NULL pointer";
+    item = @"*** NSHashInsertKnownAbsent(): attempt to insert NULL pointer";
     goto LABEL_8;
   }
 
   v11 = 0;
   v10 = 0u;
   memset(v9, 0, sizeof(v9));
-  CFBasicHashFindBucket(self->_ht, a3, v9);
+  CFBasicHashFindBucket(self->_ht, item, v9);
   if (*(&v10 + 1))
   {
-    v8 = [NSString stringWithFormat:@"*** NSHashInsertKnownAbsent(): item %p already in table", a3];
+    item = [NSString stringWithFormat:@"*** NSHashInsertKnownAbsent(): item %p already in table", item];
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
 LABEL_8:
-    objc_exception_throw([v6 exceptionWithName:v7 reason:v8 userInfo:0]);
+    objc_exception_throw([v6 exceptionWithName:v7 reason:item userInfo:0]);
   }
 
   ht = self->_ht;
 
-  CFBasicHashAddValue(ht, a3);
+  CFBasicHashAddValue(ht, item);
 }
 
-- (void)removeItem:(const void *)a3
+- (void)removeItem:(const void *)item
 {
-  if (!a3)
+  if (!item)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"*** NSHashRemove(): attempt to remove NULL pointer" userInfo:{0, v3, v4}]);
   }
 
   ht = self->_ht;
 
-  CFBasicHashRemoveValue(ht, a3);
+  CFBasicHashRemoveValue(ht, item);
 }
 
 - (id)description
@@ -269,13 +269,13 @@ uint64_t __32__NSClassicHashTable_allObjects__block_invoke(uint64_t a1, uint64_t
   return 1;
 }
 
-- (void)getKeys:(const void *)a3 count:(unint64_t *)a4
+- (void)getKeys:(const void *)keys count:(unint64_t *)count
 {
   v8[4] = *MEMORY[0x1E69E9840];
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
-  v8[3] = a3;
+  v8[3] = keys;
   ht = self->_ht;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -283,9 +283,9 @@ uint64_t __32__NSClassicHashTable_allObjects__block_invoke(uint64_t a1, uint64_t
   v7[3] = &unk_1E69F3E88;
   v7[4] = v8;
   CFBasicHashApply(ht, v7);
-  if (a4)
+  if (count)
   {
-    *a4 = CFBasicHashGetCount(self->_ht);
+    *count = CFBasicHashGetCount(self->_ht);
   }
 
   _Block_object_dispose(v8, 8);

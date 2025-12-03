@@ -1,34 +1,34 @@
 @interface SBReachabilityBackgroundView
-- (SBReachabilityBackgroundView)initWithFrame:(CGRect)a3 wallpaperVariant:(int64_t)a4;
-- (id)_newWallpaperViewForVariant:(int64_t)a3;
-- (void)_invertColorsChanged:(id)a3;
+- (SBReachabilityBackgroundView)initWithFrame:(CGRect)frame wallpaperVariant:(int64_t)variant;
+- (id)_newWallpaperViewForVariant:(int64_t)variant;
+- (void)_invertColorsChanged:(id)changed;
 - (void)_setupChevron;
 - (void)_setupColorInvertObservation;
-- (void)_setupCornerContentsImageForWallpaperView:(id)a3;
+- (void)_setupCornerContentsImageForWallpaperView:(id)view;
 - (void)_setupHitTestBlockerView;
 - (void)_setupHomeGrabberView;
-- (void)_updateChevronPathForUpFraction:(double)a3;
-- (void)_updateColorMatrixAlpha:(double)a3;
+- (void)_updateChevronPathForUpFraction:(double)fraction;
+- (void)_updateColorMatrixAlpha:(double)alpha;
 - (void)_updateColorMatrixFilters;
-- (void)_updateWallpaperViewAnimated:(BOOL)a3;
+- (void)_updateWallpaperViewAnimated:(BOOL)animated;
 - (void)_updateWallpaperViewFilters;
 - (void)layoutSubviews;
-- (void)setContainerViewYOffset:(double)a3;
-- (void)setHomeGrabberAdditionalOffset:(double)a3;
-- (void)setWallpaperVariant:(int64_t)a3;
+- (void)setContainerViewYOffset:(double)offset;
+- (void)setHomeGrabberAdditionalOffset:(double)offset;
+- (void)setWallpaperVariant:(int64_t)variant;
 @end
 
 @implementation SBReachabilityBackgroundView
 
-- (SBReachabilityBackgroundView)initWithFrame:(CGRect)a3 wallpaperVariant:(int64_t)a4
+- (SBReachabilityBackgroundView)initWithFrame:(CGRect)frame wallpaperVariant:(int64_t)variant
 {
   v11.receiver = self;
   v11.super_class = SBReachabilityBackgroundView;
-  v5 = [(SBReachabilityBackgroundView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SBReachabilityBackgroundView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_wallpaperVariant = a4;
+    v5->_wallpaperVariant = variant;
     [(SBReachabilityBackgroundView *)v5 _updateWallpaperViewAnimated:0];
     [(SBReachabilityBackgroundView *)v6 _setupChevron];
     [(SBReachabilityBackgroundView *)v6 _setupHomeGrabberView];
@@ -101,31 +101,31 @@
   }
 }
 
-- (void)setWallpaperVariant:(int64_t)a3
+- (void)setWallpaperVariant:(int64_t)variant
 {
-  if (self->_wallpaperVariant != a3)
+  if (self->_wallpaperVariant != variant)
   {
-    self->_wallpaperVariant = a3;
+    self->_wallpaperVariant = variant;
     [(SBReachabilityBackgroundView *)self _updateWallpaperViewAnimated:1];
   }
 }
 
-- (void)setContainerViewYOffset:(double)a3
+- (void)setContainerViewYOffset:(double)offset
 {
-  if (self->_containerViewYOffset != a3)
+  if (self->_containerViewYOffset != offset)
   {
-    self->_containerViewYOffset = a3;
+    self->_containerViewYOffset = offset;
     [(SBReachabilityBackgroundView *)self setNeedsLayout];
 
     [(SBReachabilityBackgroundView *)self layoutIfNeeded];
   }
 }
 
-- (void)setHomeGrabberAdditionalOffset:(double)a3
+- (void)setHomeGrabberAdditionalOffset:(double)offset
 {
-  if (self->_homeGrabberAdditionalOffset != a3)
+  if (self->_homeGrabberAdditionalOffset != offset)
   {
-    self->_homeGrabberAdditionalOffset = a3;
+    self->_homeGrabberAdditionalOffset = offset;
     [(SBHomeGrabberView *)self->_homeGrabberView setNeedsLayout];
     homeGrabberView = self->_homeGrabberView;
 
@@ -133,15 +133,15 @@
   }
 }
 
-- (id)_newWallpaperViewForVariant:(int64_t)a3
+- (id)_newWallpaperViewForVariant:(int64_t)variant
 {
   if (SBSIsSystemApertureAvailable())
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
     [(SBReachabilityBackgroundView *)self bounds];
     v5 = [v4 initWithFrame:?];
-    v6 = [MEMORY[0x277D75348] blackColor];
-    [(SBWallpaperEffectView *)v5 setBackgroundColor:v6];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SBWallpaperEffectView *)v5 setBackgroundColor:blackColor];
   }
 
   else
@@ -156,9 +156,9 @@
   return v5;
 }
 
-- (void)_updateWallpaperViewAnimated:(BOOL)a3
+- (void)_updateWallpaperViewAnimated:(BOOL)animated
 {
-  v22 = a3;
+  animatedCopy = animated;
   v31[1] = *MEMORY[0x277D85DE8];
   if (!self->_wallpaperContainerView)
   {
@@ -226,7 +226,7 @@
   v27[3] = &unk_2783A8C18;
   v27[4] = self;
   [MEMORY[0x277D75D18] _performWithoutRetargetingAnimations:v27];
-  if (v7 && v22)
+  if (v7 && animatedCopy)
   {
     [(UIView *)self->_topWallpaperView setAlpha:0.0];
     [(UIView *)self->_bottomWallpaperView setAlpha:0.0];
@@ -293,14 +293,14 @@ uint64_t __61__SBReachabilityBackgroundView__updateWallpaperViewAnimated___block
   return [v2 removeFromSuperview];
 }
 
-- (void)_setupCornerContentsImageForWallpaperView:(id)a3
+- (void)_setupCornerContentsImageForWallpaperView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(SBReachabilityBackgroundView *)self _displayCornerRadius];
   v6 = v5;
   if ((BSFloatIsZero() & 1) == 0)
   {
-    [v4 bounds];
+    [viewCopy bounds];
     v8 = v7;
     BSRectWithSize();
     v10 = v9;
@@ -308,8 +308,8 @@ uint64_t __61__SBReachabilityBackgroundView__updateWallpaperViewAnimated___block
     v14 = v13;
     v16 = v15;
     v17 = objc_alloc(MEMORY[0x277D75560]);
-    v18 = [MEMORY[0x277D75568] preferredFormat];
-    v19 = [v17 initWithBounds:v18 format:{v10, v12, v14, v16}];
+    preferredFormat = [MEMORY[0x277D75568] preferredFormat];
+    v19 = [v17 initWithBounds:preferredFormat format:{v10, v12, v14, v16}];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -321,14 +321,14 @@ uint64_t __61__SBReachabilityBackgroundView__updateWallpaperViewAnimated___block
     *&v24[7] = v16;
     v24[8] = v6;
     v20 = [v19 imageWithActions:v24];
-    v21 = [v4 layer];
-    [v21 setCornerRadius:v8 * 0.5];
+    layer = [viewCopy layer];
+    [layer setCornerRadius:v8 * 0.5];
 
-    v22 = [v4 layer];
-    [v22 setCornerContents:{objc_msgSend(v20, "CGImage")}];
+    layer2 = [viewCopy layer];
+    [layer2 setCornerContents:{objc_msgSend(v20, "CGImage")}];
 
-    v23 = [v4 layer];
-    [v23 setCornerCurve:*MEMORY[0x277CDA130]];
+    layer3 = [viewCopy layer];
+    [layer3 setCornerCurve:*MEMORY[0x277CDA130]];
   }
 }
 
@@ -369,18 +369,18 @@ void __74__SBReachabilityBackgroundView__setupCornerContentsImageForWallpaperVie
   -[CAShapeLayer setStrokeColor:](v5, "setStrokeColor:", [v6 CGColor]);
 
   v7 = self->_chevronLayer;
-  v8 = [MEMORY[0x277D75348] clearColor];
-  -[CAShapeLayer setFillColor:](v7, "setFillColor:", [v8 CGColor]);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  -[CAShapeLayer setFillColor:](v7, "setFillColor:", [clearColor CGColor]);
 
   [(CAShapeLayer *)self->_chevronLayer setLineWidth:5.0];
   [(CAShapeLayer *)self->_chevronLayer setLineCap:*MEMORY[0x277CDA780]];
   [(CAShapeLayer *)self->_chevronLayer setLineJoin:*MEMORY[0x277CDA7A0]];
   [(CAShapeLayer *)self->_chevronLayer setAllowsGroupBlending:0];
-  v9 = [(SBReachabilityBackgroundView *)self layer];
-  [v9 setAllowsGroupBlending:0];
+  layer = [(SBReachabilityBackgroundView *)self layer];
+  [layer setAllowsGroupBlending:0];
 
-  v10 = [(SBReachabilityBackgroundView *)self layer];
-  [v10 addSublayer:self->_chevronLayer];
+  layer2 = [(SBReachabilityBackgroundView *)self layer];
+  [layer2 addSublayer:self->_chevronLayer];
 
   objc_initWeak(&location, self);
   v11 = objc_alloc_init(MEMORY[0x277D75D38]);
@@ -418,9 +418,9 @@ void __45__SBReachabilityBackgroundView__setupChevron__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateChevronPathForUpFraction:(double)a3
+- (void)_updateChevronPathForUpFraction:(double)fraction
 {
-  v4 = a3 * 9.0;
+  v4 = fraction * 9.0;
   v7 = objc_alloc_init(MEMORY[0x277D75208]);
   [v7 moveToPoint:{-20.0, v4 * 0.5}];
   [v7 addCurveToPoint:20.0 controlPoint1:v4 * 0.5 controlPoint2:{6.66666667, v4 * -0.5, -6.66666667, v4 * -0.5}];
@@ -456,14 +456,14 @@ void __45__SBReachabilityBackgroundView__setupChevron__block_invoke(uint64_t a1)
   self->_hitTestBlockerView = v4;
 
   v6 = self->_hitTestBlockerView;
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v6 setBackgroundColor:clearColor];
 
-  v8 = [(UIView *)self->_hitTestBlockerView layer];
-  [v8 setHitTestsAsOpaque:1];
+  layer = [(UIView *)self->_hitTestBlockerView layer];
+  [layer setHitTestsAsOpaque:1];
 
-  v9 = [(UIView *)self->_hitTestBlockerView layer];
-  [v9 setAllowsHitTesting:1];
+  layer2 = [(UIView *)self->_hitTestBlockerView layer];
+  [layer2 setAllowsHitTesting:1];
 
   v10 = self->_hitTestBlockerView;
 
@@ -472,17 +472,17 @@ void __45__SBReachabilityBackgroundView__setupChevron__block_invoke(uint64_t a1)
 
 - (void)_setupColorInvertObservation
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__invertColorsChanged_ name:*MEMORY[0x277D76480] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__invertColorsChanged_ name:*MEMORY[0x277D76480] object:0];
 }
 
-- (void)_updateColorMatrixAlpha:(double)a3
+- (void)_updateColorMatrixAlpha:(double)alpha
 {
   if (SBSIsSystemApertureAvailable())
   {
     colorMatrixView = self->_colorMatrixView;
 
-    [(_SBAdaptiveColorMatrixView *)colorMatrixView setAlpha:a3];
+    [(_SBAdaptiveColorMatrixView *)colorMatrixView setAlpha:alpha];
   }
 }
 
@@ -498,11 +498,11 @@ void __45__SBReachabilityBackgroundView__setupChevron__block_invoke(uint64_t a1)
     v17 = 0u;
     v15 = 0u;
     v4 = +[SBReachabilityDomain rootSettings];
-    v5 = [v4 jindoTintColorMatrixSettings];
-    v6 = v5;
-    if (v5)
+    jindoTintColorMatrixSettings = [v4 jindoTintColorMatrixSettings];
+    v6 = jindoTintColorMatrixSettings;
+    if (jindoTintColorMatrixSettings)
     {
-      [v5 colorMatrix];
+      [jindoTintColorMatrixSettings colorMatrix];
     }
 
     else
@@ -534,11 +534,11 @@ void __45__SBReachabilityBackgroundView__setupChevron__block_invoke(uint64_t a1)
       v8 = v11;
     }
 
-    v12 = [(_SBAdaptiveColorMatrixView *)self->_colorMatrixView backdropLayer];
-    [v12 setAllowsInPlaceFiltering:1];
+    backdropLayer = [(_SBAdaptiveColorMatrixView *)self->_colorMatrixView backdropLayer];
+    [backdropLayer setAllowsInPlaceFiltering:1];
 
-    v13 = [(_SBAdaptiveColorMatrixView *)self->_colorMatrixView layer];
-    [v13 setFilters:v8];
+    layer = [(_SBAdaptiveColorMatrixView *)self->_colorMatrixView layer];
+    [layer setFilters:v8];
   }
 }
 
@@ -547,10 +547,10 @@ void __45__SBReachabilityBackgroundView__setupChevron__block_invoke(uint64_t a1)
   v15[1] = *MEMORY[0x277D85DE8];
   if (SBSIsSystemApertureAvailable())
   {
-    v3 = [(SBReachabilityBackgroundView *)self _invertColorsIsEnabled];
-    v4 = [(UIView *)self->_topWallpaperView layer];
-    v5 = v4;
-    if (v3)
+    _invertColorsIsEnabled = [(SBReachabilityBackgroundView *)self _invertColorsIsEnabled];
+    layer = [(UIView *)self->_topWallpaperView layer];
+    v5 = layer;
+    if (_invertColorsIsEnabled)
     {
       v6 = *MEMORY[0x277CDA2B0];
       v7 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2B0]];
@@ -558,25 +558,25 @@ void __45__SBReachabilityBackgroundView__setupChevron__block_invoke(uint64_t a1)
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
       [v5 setFilters:v8];
 
-      v9 = [(UIView *)self->_bottomWallpaperView layer];
+      layer2 = [(UIView *)self->_bottomWallpaperView layer];
       v10 = [MEMORY[0x277CD9EA0] filterWithType:v6];
       v14 = v10;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
-      [v9 setFilters:v11];
+      [layer2 setFilters:v11];
     }
 
     else
     {
       v12 = MEMORY[0x277CBEBF8];
-      [v4 setFilters:MEMORY[0x277CBEBF8]];
+      [layer setFilters:MEMORY[0x277CBEBF8]];
 
-      v13 = [(UIView *)self->_bottomWallpaperView layer];
-      [v13 setFilters:v12];
+      layer3 = [(UIView *)self->_bottomWallpaperView layer];
+      [layer3 setFilters:v12];
     }
   }
 }
 
-- (void)_invertColorsChanged:(id)a3
+- (void)_invertColorsChanged:(id)changed
 {
   [(SBReachabilityBackgroundView *)self _updateColorMatrixFilters];
 

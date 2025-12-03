@@ -25,8 +25,8 @@ void __50__PHAssetCreationDateProperties_propertiesToFetch__block_invoke()
 
 - (NSDate)creationDate
 {
-  v2 = [(PHBatchFetchedAssetPropertySet *)self knownKeysDictionary];
-  v3 = [v2 valueAtIndex:1];
+  knownKeysDictionary = [(PHBatchFetchedAssetPropertySet *)self knownKeysDictionary];
+  v3 = [knownKeysDictionary valueAtIndex:1];
 
   return v3;
 }

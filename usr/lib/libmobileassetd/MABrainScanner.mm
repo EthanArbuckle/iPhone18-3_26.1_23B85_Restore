@@ -1,6 +1,6 @@
 @interface MABrainScanner
 - (MABrainScanner)init;
-- (void)locateAvailableUpdateBrain:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)locateAvailableUpdateBrain:(id)brain options:(id)options completion:(id)completion;
 @end
 
 @implementation MABrainScanner
@@ -35,28 +35,28 @@
   return v2;
 }
 
-- (void)locateAvailableUpdateBrain:(id)a3 options:(id)a4 completion:(id)a5
+- (void)locateAvailableUpdateBrain:(id)brain options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKeyedSubscript:@"restoreVersion"];
+  brainCopy = brain;
+  optionsCopy = options;
+  completionCopy = completion;
+  v11 = [optionsCopy objectForKeyedSubscript:@"restoreVersion"];
   if (v11)
   {
-    v12 = v11;
+    restoreVersion = v11;
   }
 
   else
   {
     v13 = +[MABrainUpdater sharedInstance];
-    v14 = [v13 info];
-    v15 = [v14 objectForKeyedSubscript:@"MobileAssetProperties"];
-    v12 = [v15 objectForKeyedSubscript:@"RestoreVersion"];
+    info = [v13 info];
+    v15 = [info objectForKeyedSubscript:@"MobileAssetProperties"];
+    restoreVersion = [v15 objectForKeyedSubscript:@"RestoreVersion"];
 
-    if (!v12)
+    if (!restoreVersion)
     {
       v16 = +[SUCoreDevice sharedDevice];
-      v12 = [v16 restoreVersion];
+      restoreVersion = [v16 restoreVersion];
     }
   }
 
@@ -66,14 +66,14 @@
   block[2] = __64__MABrainScanner_locateAvailableUpdateBrain_options_completion___block_invoke;
   block[3] = &unk_4B3BD8;
   block[4] = self;
-  v23 = v12;
-  v25 = v8;
-  v26 = v10;
-  v24 = v9;
-  v18 = v8;
-  v19 = v10;
-  v20 = v9;
-  v21 = v12;
+  v23 = restoreVersion;
+  v25 = brainCopy;
+  v26 = completionCopy;
+  v24 = optionsCopy;
+  v18 = brainCopy;
+  v19 = completionCopy;
+  v20 = optionsCopy;
+  v21 = restoreVersion;
   dispatch_async(scanQueue, block);
 }
 

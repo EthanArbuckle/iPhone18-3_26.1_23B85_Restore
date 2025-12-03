@@ -1,62 +1,62 @@
 @interface ASCAlertOffer
-- (ASCAlertOffer)initWithCoder:(id)a3;
-- (ASCAlertOffer)initWithID:(id)a3 titles:(id)a4 subtitles:(id)a5 flags:(int64_t)a6 ageRating:(id)a7 metrics:(id)a8 alertTitle:(id)a9 alertMessage:(id)a10 alertButtonOffer:(id)a11 alertButtonTitle:(id)a12;
-- (ASCAlertOffer)offerWithMetrics:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCAlertOffer)initWithCoder:(id)coder;
+- (ASCAlertOffer)initWithID:(id)d titles:(id)titles subtitles:(id)subtitles flags:(int64_t)flags ageRating:(id)rating metrics:(id)metrics alertTitle:(id)title alertMessage:(id)self0 alertButtonOffer:(id)self1 alertButtonTitle:(id)self2;
+- (ASCAlertOffer)offerWithMetrics:(id)metrics;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCAlertOffer
 
-- (ASCAlertOffer)initWithID:(id)a3 titles:(id)a4 subtitles:(id)a5 flags:(int64_t)a6 ageRating:(id)a7 metrics:(id)a8 alertTitle:(id)a9 alertMessage:(id)a10 alertButtonOffer:(id)a11 alertButtonTitle:(id)a12
+- (ASCAlertOffer)initWithID:(id)d titles:(id)titles subtitles:(id)subtitles flags:(int64_t)flags ageRating:(id)rating metrics:(id)metrics alertTitle:(id)title alertMessage:(id)self0 alertButtonOffer:(id)self1 alertButtonTitle:(id)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v44 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
+  dCopy = d;
+  titlesCopy = titles;
+  subtitlesCopy = subtitles;
+  ratingCopy = rating;
+  metricsCopy = metrics;
+  titleCopy = title;
+  messageCopy = message;
+  offerCopy = offer;
+  buttonTitleCopy = buttonTitle;
   v45.receiver = self;
   v45.super_class = ASCAlertOffer;
   v25 = [(ASCAlertOffer *)&v45 init];
   if (v25)
   {
-    v26 = [v17 copy];
+    v26 = [dCopy copy];
     id = v25->_id;
     v25->_id = v26;
 
-    v28 = [v18 copy];
+    v28 = [titlesCopy copy];
     titles = v25->_titles;
     v25->_titles = v28;
 
-    v30 = [v19 copy];
+    v30 = [subtitlesCopy copy];
     subtitles = v25->_subtitles;
     v25->_subtitles = v30;
 
-    v25->_flags = a6;
-    objc_storeStrong(&v25->_ageRating, a7);
-    v32 = [v20 copy];
+    v25->_flags = flags;
+    objc_storeStrong(&v25->_ageRating, rating);
+    v32 = [metricsCopy copy];
     metrics = v25->_metrics;
     v25->_metrics = v32;
 
-    v34 = [v21 copy];
+    v34 = [titleCopy copy];
     alertTitle = v25->_alertTitle;
     v25->_alertTitle = v34;
 
-    v36 = [v22 copy];
+    v36 = [messageCopy copy];
     alertMessage = v25->_alertMessage;
     v25->_alertMessage = v36;
 
-    v38 = [v23 copyWithZone:0];
+    v38 = [offerCopy copyWithZone:0];
     alertButtonOffer = v25->_alertButtonOffer;
     v25->_alertButtonOffer = v38;
 
-    v40 = [v24 copy];
+    v40 = [buttonTitleCopy copy];
     alertButtonTitle = v25->_alertButtonTitle;
     v25->_alertButtonTitle = v40;
   }
@@ -64,32 +64,32 @@
   return v25;
 }
 
-- (ASCAlertOffer)initWithCoder:(id)a3
+- (ASCAlertOffer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
   if (v5)
   {
-    v6 = ASCOfferTitlesDecodeForKey(v4, @"titles");
+    v6 = ASCOfferTitlesDecodeForKey(coderCopy, @"titles");
     if (v6)
     {
-      v7 = ASCOfferTitlesDecodeForKey(v4, @"subtitles");
+      v7 = ASCOfferTitlesDecodeForKey(coderCopy, @"subtitles");
       if (v7)
       {
-        v8 = [v4 decodeIntegerForKey:@"flags"];
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
-        v10 = ASCMetricsDataDecodeArrayForKey(v4, @"metrics");
+        v8 = [coderCopy decodeIntegerForKey:@"flags"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
+        v10 = ASCMetricsDataDecodeArrayForKey(coderCopy, @"metrics");
         if (v10)
         {
           v49 = v9;
-          v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertTitle"];
-          v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertMessage"];
-          v11 = ASCOfferDecodeForKey(v4, @"alertButtonOffer");
-          v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertButtonTitle"];
+          v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertTitle"];
+          v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertMessage"];
+          v11 = ASCOfferDecodeForKey(coderCopy, @"alertButtonOffer");
+          v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertButtonTitle"];
           self = [(ASCAlertOffer *)self initWithID:v5 titles:v6 subtitles:v7 flags:v8 ageRating:v49 metrics:v10 alertTitle:v48 alertMessage:v47 alertButtonOffer:v11 alertButtonTitle:v12];
 
           v9 = v49;
-          v13 = self;
+          selfCopy = self;
         }
 
         else
@@ -100,7 +100,7 @@
             [(ASCAlertOffer *)v38 initWithCoder:v39, v40, v41, v42, v43, v44, v45];
           }
 
-          v13 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -112,7 +112,7 @@
           [(ASCAlertOffer *)v30 initWithCoder:v31, v32, v33, v34, v35, v36, v37];
         }
 
-        v13 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -124,7 +124,7 @@
         [(ASCAlertOffer *)v22 initWithCoder:v23, v24, v25, v26, v27, v28, v29];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -136,58 +136,58 @@
       [(ASCAlertOffer *)v14 initWithCoder:v15, v16, v17, v18, v19, v20, v21];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASCAlertOffer *)self id];
-  [v4 encodeObject:v5 forKey:@"id"];
+  [coderCopy encodeObject:v5 forKey:@"id"];
 
-  v6 = [(ASCAlertOffer *)self titles];
-  [v4 encodeObject:v6 forKey:@"titles"];
+  titles = [(ASCAlertOffer *)self titles];
+  [coderCopy encodeObject:titles forKey:@"titles"];
 
-  v7 = [(ASCAlertOffer *)self subtitles];
-  [v4 encodeObject:v7 forKey:@"subtitles"];
+  subtitles = [(ASCAlertOffer *)self subtitles];
+  [coderCopy encodeObject:subtitles forKey:@"subtitles"];
 
-  [v4 encodeInteger:-[ASCAlertOffer flags](self forKey:{"flags"), @"flags"}];
-  v8 = [(ASCAlertOffer *)self ageRating];
-  [v4 encodeObject:v8 forKey:@"ageRating"];
+  [coderCopy encodeInteger:-[ASCAlertOffer flags](self forKey:{"flags"), @"flags"}];
+  ageRating = [(ASCAlertOffer *)self ageRating];
+  [coderCopy encodeObject:ageRating forKey:@"ageRating"];
 
-  v9 = [(ASCAlertOffer *)self metrics];
-  [v4 encodeObject:v9 forKey:@"metrics"];
+  metrics = [(ASCAlertOffer *)self metrics];
+  [coderCopy encodeObject:metrics forKey:@"metrics"];
 
-  v10 = [(ASCAlertOffer *)self alertTitle];
-  [v4 encodeObject:v10 forKey:@"alertTitle"];
+  alertTitle = [(ASCAlertOffer *)self alertTitle];
+  [coderCopy encodeObject:alertTitle forKey:@"alertTitle"];
 
-  v11 = [(ASCAlertOffer *)self alertMessage];
-  [v4 encodeObject:v11 forKey:@"alertMessage"];
+  alertMessage = [(ASCAlertOffer *)self alertMessage];
+  [coderCopy encodeObject:alertMessage forKey:@"alertMessage"];
 
-  v12 = [(ASCAlertOffer *)self alertButtonOffer];
-  [v4 encodeObject:v12 forKey:@"alertButtonOffer"];
+  alertButtonOffer = [(ASCAlertOffer *)self alertButtonOffer];
+  [coderCopy encodeObject:alertButtonOffer forKey:@"alertButtonOffer"];
 
-  v13 = [(ASCAlertOffer *)self alertButtonTitle];
-  [v4 encodeObject:v13 forKey:@"alertButtonTitle"];
+  alertButtonTitle = [(ASCAlertOffer *)self alertButtonTitle];
+  [coderCopy encodeObject:alertButtonTitle forKey:@"alertButtonTitle"];
 }
 
-- (ASCAlertOffer)offerWithMetrics:(id)a3
+- (ASCAlertOffer)offerWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v16 = objc_alloc(objc_opt_class());
   v15 = [(ASCAlertOffer *)self id];
-  v5 = [(ASCAlertOffer *)self titles];
-  v6 = [(ASCAlertOffer *)self subtitles];
-  v7 = [(ASCAlertOffer *)self flags];
-  v8 = [(ASCAlertOffer *)self ageRating];
-  v9 = [(ASCAlertOffer *)self alertTitle];
-  v10 = [(ASCAlertOffer *)self alertMessage];
-  v11 = [(ASCAlertOffer *)self alertButtonOffer];
-  v12 = [(ASCAlertOffer *)self alertButtonTitle];
-  v13 = [v16 initWithID:v15 titles:v5 subtitles:v6 flags:v7 ageRating:v8 metrics:v4 alertTitle:v9 alertMessage:v10 alertButtonOffer:v11 alertButtonTitle:v12];
+  titles = [(ASCAlertOffer *)self titles];
+  subtitles = [(ASCAlertOffer *)self subtitles];
+  flags = [(ASCAlertOffer *)self flags];
+  ageRating = [(ASCAlertOffer *)self ageRating];
+  alertTitle = [(ASCAlertOffer *)self alertTitle];
+  alertMessage = [(ASCAlertOffer *)self alertMessage];
+  alertButtonOffer = [(ASCAlertOffer *)self alertButtonOffer];
+  alertButtonTitle = [(ASCAlertOffer *)self alertButtonTitle];
+  v13 = [v16 initWithID:v15 titles:titles subtitles:subtitles flags:flags ageRating:ageRating metrics:metricsCopy alertTitle:alertTitle alertMessage:alertMessage alertButtonOffer:alertButtonOffer alertButtonTitle:alertButtonTitle];
 
   return v13;
 }
@@ -198,40 +198,40 @@
   v4 = [(ASCAlertOffer *)self id];
   [(ASCHasher *)v3 combineObject:v4];
 
-  v5 = [(ASCAlertOffer *)self titles];
-  [(ASCHasher *)v3 combineObject:v5];
+  titles = [(ASCAlertOffer *)self titles];
+  [(ASCHasher *)v3 combineObject:titles];
 
-  v6 = [(ASCAlertOffer *)self subtitles];
-  [(ASCHasher *)v3 combineObject:v6];
+  subtitles = [(ASCAlertOffer *)self subtitles];
+  [(ASCHasher *)v3 combineObject:subtitles];
 
   [(ASCHasher *)v3 combineInteger:[(ASCAlertOffer *)self flags]];
-  v7 = [(ASCAlertOffer *)self ageRating];
-  [(ASCHasher *)v3 combineObject:v7];
+  ageRating = [(ASCAlertOffer *)self ageRating];
+  [(ASCHasher *)v3 combineObject:ageRating];
 
-  v8 = [(ASCAlertOffer *)self metrics];
-  [(ASCHasher *)v3 combineObject:v8];
+  metrics = [(ASCAlertOffer *)self metrics];
+  [(ASCHasher *)v3 combineObject:metrics];
 
-  v9 = [(ASCAlertOffer *)self alertTitle];
-  [(ASCHasher *)v3 combineObject:v9];
+  alertTitle = [(ASCAlertOffer *)self alertTitle];
+  [(ASCHasher *)v3 combineObject:alertTitle];
 
-  v10 = [(ASCAlertOffer *)self alertMessage];
-  [(ASCHasher *)v3 combineObject:v10];
+  alertMessage = [(ASCAlertOffer *)self alertMessage];
+  [(ASCHasher *)v3 combineObject:alertMessage];
 
-  v11 = [(ASCAlertOffer *)self alertButtonOffer];
-  [(ASCHasher *)v3 combineObject:v11];
+  alertButtonOffer = [(ASCAlertOffer *)self alertButtonOffer];
+  [(ASCHasher *)v3 combineObject:alertButtonOffer];
 
-  v12 = [(ASCAlertOffer *)self alertButtonTitle];
-  [(ASCHasher *)v3 combineObject:v12];
+  alertButtonTitle = [(ASCAlertOffer *)self alertButtonTitle];
+  [(ASCHasher *)v3 combineObject:alertButtonTitle];
 
-  v13 = [(ASCHasher *)v3 finalizeHash];
-  return v13;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -262,118 +262,118 @@
       if ([v8 isEqual:v9])
       {
 LABEL_10:
-        v11 = [(ASCAlertOffer *)self titles];
-        v12 = [v7 titles];
-        v13 = v12;
-        if (v11 && v12)
+        titles = [(ASCAlertOffer *)self titles];
+        titles2 = [v7 titles];
+        v13 = titles2;
+        if (titles && titles2)
         {
-          if ([v11 isEqual:v12])
+          if ([titles isEqual:titles2])
           {
 LABEL_13:
-            v14 = [(ASCAlertOffer *)self subtitles];
-            v15 = [v7 subtitles];
-            v16 = v15;
-            if (v14 && v15)
+            subtitles = [(ASCAlertOffer *)self subtitles];
+            subtitles2 = [v7 subtitles];
+            v16 = subtitles2;
+            if (subtitles && subtitles2)
             {
-              if (![v14 isEqual:v15])
+              if (![subtitles isEqual:subtitles2])
               {
                 goto LABEL_42;
               }
             }
 
-            else if (v14 != v15)
+            else if (subtitles != subtitles2)
             {
               goto LABEL_42;
             }
 
-            v18 = [(ASCAlertOffer *)self flags];
-            if (v18 == [v7 flags])
+            flags = [(ASCAlertOffer *)self flags];
+            if (flags == [v7 flags])
             {
-              v19 = [(ASCAlertOffer *)self ageRating];
-              v20 = [v7 ageRating];
-              v21 = v20;
-              v58 = v19;
-              if (v19 && v20)
+              ageRating = [(ASCAlertOffer *)self ageRating];
+              ageRating2 = [v7 ageRating];
+              v21 = ageRating2;
+              v58 = ageRating;
+              if (ageRating && ageRating2)
               {
-                v22 = v19;
+                v22 = ageRating;
                 v23 = v21;
                 v24 = [v22 isEqual:v21];
                 v21 = v23;
-                v19 = v58;
+                ageRating = v58;
                 if (v24)
                 {
 LABEL_27:
                   v56 = v21;
-                  v25 = [(ASCAlertOffer *)self metrics];
-                  v26 = [v7 metrics];
-                  v27 = v26;
-                  v57 = v25;
-                  if (v25 && v26)
+                  metrics = [(ASCAlertOffer *)self metrics];
+                  metrics2 = [v7 metrics];
+                  v27 = metrics2;
+                  v57 = metrics;
+                  if (metrics && metrics2)
                   {
-                    v28 = v26;
-                    v29 = [v57 isEqual:v26];
+                    v28 = metrics2;
+                    v29 = [v57 isEqual:metrics2];
                     v27 = v28;
                     if (v29)
                     {
 LABEL_30:
                       v54 = v27;
-                      v30 = [(ASCAlertOffer *)self alertTitle];
-                      v31 = [v7 alertTitle];
-                      v32 = v31;
-                      v55 = v30;
-                      if (v30 && v31)
+                      alertTitle = [(ASCAlertOffer *)self alertTitle];
+                      alertTitle2 = [v7 alertTitle];
+                      v32 = alertTitle2;
+                      v55 = alertTitle;
+                      if (alertTitle && alertTitle2)
                       {
-                        v33 = v31;
-                        v34 = [v55 isEqual:v31];
+                        v33 = alertTitle2;
+                        v34 = [v55 isEqual:alertTitle2];
                         v32 = v33;
                         if (v34)
                         {
 LABEL_33:
                           v52 = v32;
-                          v35 = [(ASCAlertOffer *)self alertMessage];
-                          v36 = [v7 alertMessage];
-                          v37 = v36;
-                          v53 = v35;
-                          if (v35 && v36)
+                          alertMessage = [(ASCAlertOffer *)self alertMessage];
+                          alertMessage2 = [v7 alertMessage];
+                          v37 = alertMessage2;
+                          v53 = alertMessage;
+                          if (alertMessage && alertMessage2)
                           {
-                            v38 = v36;
-                            v39 = [v53 isEqual:v36];
+                            v38 = alertMessage2;
+                            v39 = [v53 isEqual:alertMessage2];
                             v37 = v38;
                             if (v39)
                             {
 LABEL_36:
                               v50 = v37;
-                              v40 = [(ASCAlertOffer *)self alertButtonOffer];
-                              v41 = [v7 alertButtonOffer];
-                              v51 = v40;
-                              v49 = v41;
-                              if (v40 && v41)
+                              alertButtonOffer = [(ASCAlertOffer *)self alertButtonOffer];
+                              alertButtonOffer2 = [v7 alertButtonOffer];
+                              v51 = alertButtonOffer;
+                              v49 = alertButtonOffer2;
+                              if (alertButtonOffer && alertButtonOffer2)
                               {
-                                if ([v40 isEqual:v41])
+                                if ([alertButtonOffer isEqual:alertButtonOffer2])
                                 {
                                   goto LABEL_39;
                                 }
                               }
 
-                              else if (v40 == v41)
+                              else if (alertButtonOffer == alertButtonOffer2)
                               {
 LABEL_39:
-                                v42 = [(ASCAlertOffer *)self alertButtonTitle];
-                                v43 = [v7 alertButtonTitle];
-                                v44 = v43;
-                                if (v42 && v43)
+                                alertButtonTitle = [(ASCAlertOffer *)self alertButtonTitle];
+                                alertButtonTitle2 = [v7 alertButtonTitle];
+                                v44 = alertButtonTitle2;
+                                if (alertButtonTitle && alertButtonTitle2)
                                 {
-                                  v45 = v43;
-                                  v46 = [v42 isEqual:v43];
+                                  v45 = alertButtonTitle2;
+                                  v46 = [alertButtonTitle isEqual:alertButtonTitle2];
                                   v44 = v45;
-                                  v47 = v42;
+                                  v47 = alertButtonTitle;
                                   v17 = v46;
                                 }
 
                                 else
                                 {
-                                  v47 = v42;
-                                  v17 = v42 == v43;
+                                  v47 = alertButtonTitle;
+                                  v17 = alertButtonTitle == alertButtonTitle2;
                                 }
 
                                 goto LABEL_55;
@@ -387,7 +387,7 @@ LABEL_55:
                             }
                           }
 
-                          else if (v35 == v36)
+                          else if (alertMessage == alertMessage2)
                           {
                             goto LABEL_36;
                           }
@@ -400,7 +400,7 @@ LABEL_56:
                         }
                       }
 
-                      else if (v30 == v31)
+                      else if (alertTitle == alertTitle2)
                       {
                         goto LABEL_33;
                       }
@@ -413,7 +413,7 @@ LABEL_57:
                     }
                   }
 
-                  else if (v25 == v26)
+                  else if (metrics == metrics2)
                   {
                     goto LABEL_30;
                   }
@@ -422,12 +422,12 @@ LABEL_57:
 LABEL_58:
 
                   v21 = v56;
-                  v19 = v58;
+                  ageRating = v58;
                   goto LABEL_59;
                 }
               }
 
-              else if (v19 == v20)
+              else if (ageRating == ageRating2)
               {
                 goto LABEL_27;
               }
@@ -446,7 +446,7 @@ LABEL_60:
           }
         }
 
-        else if (v11 == v12)
+        else if (titles == titles2)
         {
           goto LABEL_13;
         }
@@ -481,36 +481,36 @@ LABEL_63:
   v4 = [(ASCAlertOffer *)self id];
   [(ASCDescriber *)v3 addObject:v4 withName:@"id"];
 
-  v5 = [(ASCAlertOffer *)self titles];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"titles"];
+  titles = [(ASCAlertOffer *)self titles];
+  [(ASCDescriber *)v3 addObject:titles withName:@"titles"];
 
-  v6 = [(ASCAlertOffer *)self subtitles];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"subtitles"];
+  subtitles = [(ASCAlertOffer *)self subtitles];
+  [(ASCDescriber *)v3 addObject:subtitles withName:@"subtitles"];
 
   v7 = ASCOfferFlagsGetDescription([(ASCAlertOffer *)self flags]);
   [(ASCDescriber *)v3 addObject:v7 withName:@"flags"];
 
-  v8 = [(ASCAlertOffer *)self ageRating];
-  [(ASCDescriber *)v3 addObject:v8 withName:@"ageRating"];
+  ageRating = [(ASCAlertOffer *)self ageRating];
+  [(ASCDescriber *)v3 addObject:ageRating withName:@"ageRating"];
 
-  v9 = [(ASCAlertOffer *)self metrics];
-  [(ASCDescriber *)v3 addSensitiveObject:v9 withName:@"metrics"];
+  metrics = [(ASCAlertOffer *)self metrics];
+  [(ASCDescriber *)v3 addSensitiveObject:metrics withName:@"metrics"];
 
-  v10 = [(ASCAlertOffer *)self alertTitle];
-  [(ASCDescriber *)v3 addObject:v10 withName:@"alertTitle"];
+  alertTitle = [(ASCAlertOffer *)self alertTitle];
+  [(ASCDescriber *)v3 addObject:alertTitle withName:@"alertTitle"];
 
-  v11 = [(ASCAlertOffer *)self alertMessage];
-  [(ASCDescriber *)v3 addObject:v11 withName:@"alertMessage"];
+  alertMessage = [(ASCAlertOffer *)self alertMessage];
+  [(ASCDescriber *)v3 addObject:alertMessage withName:@"alertMessage"];
 
-  v12 = [(ASCAlertOffer *)self alertButtonOffer];
-  [(ASCDescriber *)v3 addObject:v12 withName:@"alertButtonOffer"];
+  alertButtonOffer = [(ASCAlertOffer *)self alertButtonOffer];
+  [(ASCDescriber *)v3 addObject:alertButtonOffer withName:@"alertButtonOffer"];
 
-  v13 = [(ASCAlertOffer *)self alertButtonTitle];
-  [(ASCDescriber *)v3 addObject:v13 withName:@"alertButtonTitle"];
+  alertButtonTitle = [(ASCAlertOffer *)self alertButtonTitle];
+  [(ASCDescriber *)v3 addObject:alertButtonTitle withName:@"alertButtonTitle"];
 
-  v14 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v14;
+  return finalizeDescription;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface PXBookmarkUtilities
-+ (BOOL)canAddBookmarkForObject:(id)a3;
-+ (BOOL)hasBookmarkForObject:(id)a3;
-+ (id)suggestedObjectsForPhotoLibrary:(id)a3;
-+ (void)flushCachedBookmarksForPhotoLibrary:(id)a3;
++ (BOOL)canAddBookmarkForObject:(id)object;
++ (BOOL)hasBookmarkForObject:(id)object;
++ (id)suggestedObjectsForPhotoLibrary:(id)library;
++ (void)flushCachedBookmarksForPhotoLibrary:(id)library;
 - (PXBookmarkUtilities)init;
 @end
 
 @implementation PXBookmarkUtilities
 
-+ (id)suggestedObjectsForPhotoLibrary:(id)a3
++ (id)suggestedObjectsForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  sub_1A4114470(v3);
+  libraryCopy = library;
+  sub_1A4114470(libraryCopy);
 
   sub_1A3C52C70(0, &qword_1EB1265D0);
   v4 = sub_1A524CA14();
@@ -19,32 +19,32 @@
   return v4;
 }
 
-+ (void)flushCachedBookmarksForPhotoLibrary:(id)a3
++ (void)flushCachedBookmarksForPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   PHPhotoLibrary.flushBookmarksManager()();
 }
 
-+ (BOOL)hasBookmarkForObject:(id)a3
++ (BOOL)hasBookmarkForObject:(id)object
 {
-  v3 = a3;
-  v4 = sub_1A4114654(v3);
+  objectCopy = object;
+  v4 = sub_1A4114654(objectCopy);
 
   return v4 & 1;
 }
 
-+ (BOOL)canAddBookmarkForObject:(id)a3
++ (BOOL)canAddBookmarkForObject:(id)object
 {
   sub_1A3CA09D8(0, &qword_1EB125B40, sub_1A3FA099C);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v10 - v5;
-  v7 = a3;
-  sub_1A3F9E7D0(v7, v6);
+  objectCopy = object;
+  sub_1A3F9E7D0(objectCopy, v6);
 
   sub_1A3FA099C();
-  LOBYTE(v7) = (*(*(v8 - 8) + 48))(v6, 1, v8) != 1;
+  LOBYTE(objectCopy) = (*(*(v8 - 8) + 48))(v6, 1, v8) != 1;
   sub_1A3CA0A80(v6, &qword_1EB125B40, sub_1A3FA099C);
-  return v7;
+  return objectCopy;
 }
 
 - (PXBookmarkUtilities)init

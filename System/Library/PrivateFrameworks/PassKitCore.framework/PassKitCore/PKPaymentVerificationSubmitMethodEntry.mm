@@ -1,13 +1,13 @@
 @interface PKPaymentVerificationSubmitMethodEntry
-- (id)dictionaryRepresentationWithBuilder:(id)a3;
+- (id)dictionaryRepresentationWithBuilder:(id)builder;
 @end
 
 @implementation PKPaymentVerificationSubmitMethodEntry
 
-- (id)dictionaryRepresentationWithBuilder:(id)a3
+- (id)dictionaryRepresentationWithBuilder:(id)builder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:self->_methodGroupIdentifier forKeyedSubscript:@"methodGroupIdentifier"];
@@ -52,10 +52,10 @@
 
           v11 = *(*(&v26 + 1) + 8 * i);
           v12 = [(NSDictionary *)self->_encryptedPerFieldDynamicFieldParameters objectForKeyedSubscript:v11];
-          v13 = [v12 dataRepresentation];
-          v14 = [v12 encryptionScheme];
-          v15 = [v12 encryptionCertificates];
-          [v25 createEncryptedDictionaryWithData:v13 encryptedContentKey:@"encryptedData" scheme:v14 certificates:v15];
+          dataRepresentation = [v12 dataRepresentation];
+          encryptionScheme = [v12 encryptionScheme];
+          encryptionCertificates = [v12 encryptionCertificates];
+          [builderCopy createEncryptedDictionaryWithData:dataRepresentation encryptedContentKey:@"encryptedData" scheme:encryptionScheme certificates:encryptionCertificates];
           v17 = v16 = self;
           [v24 setObject:v17 forKeyedSubscript:v11];
 
@@ -74,8 +74,8 @@
     v5 = v21;
   }
 
-  v18 = [(PKPaymentTapToProvisionData *)self->_tapToProvisionData dictionaryRepresentation];
-  [v4 setObject:v18 forKeyedSubscript:@"tapToProvisionCardData"];
+  dictionaryRepresentation = [(PKPaymentTapToProvisionData *)self->_tapToProvisionData dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation forKeyedSubscript:@"tapToProvisionCardData"];
 
   v19 = [v4 copy];
 

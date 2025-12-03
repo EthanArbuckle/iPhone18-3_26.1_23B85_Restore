@@ -1,5 +1,5 @@
 @interface MTAAlarmCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axDeleteAlarm;
 - (BOOL)_axToggleSwitch;
 - (CGPoint)accessibilityActivationPoint;
@@ -14,17 +14,17 @@
 
 @implementation MTAAlarmCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"timeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"repeatLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"soundLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"enableSwitch" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAAlarmCollectionViewCell" hasInstanceVariable:@"_editing" withType:"B"];
-  [v3 validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"deleteTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"timeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"repeatLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"soundLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"enableSwitch" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewCell" hasInstanceVariable:@"_editing" withType:"B"];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"deleteTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmCollectionViewCell" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -50,16 +50,16 @@
   {
     v6.receiver = self;
     v6.super_class = MTAAlarmCollectionViewCellAccessibility;
-    v3 = [(MTAAlarmCollectionViewCellAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(MTAAlarmCollectionViewCellAccessibility *)&v6 accessibilityValue];
   }
 
   else
   {
     v4 = [(MTAAlarmCollectionViewCellAccessibility *)self safeValueForKey:@"enableSwitch"];
-    v3 = [v4 accessibilityValue];
+    accessibilityValue = [v4 accessibilityValue];
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
@@ -74,9 +74,9 @@
   else
   {
     v4 = [(MTAAlarmCollectionViewCellAccessibility *)self safeValueForKey:@"enableSwitch"];
-    v5 = [v4 accessibilityTraits];
+    accessibilityTraits = [v4 accessibilityTraits];
 
-    return v5;
+    return accessibilityTraits;
   }
 }
 
@@ -84,17 +84,17 @@
 {
   if ([(MTAAlarmCollectionViewCellAccessibility *)self _axIsEditing])
   {
-    v3 = accessibilityLocalizedString(@"alarm.edit.hint");
+    accessibilityHint = accessibilityLocalizedString(@"alarm.edit.hint");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MTAAlarmCollectionViewCellAccessibility;
-    v3 = [(MTAAlarmCollectionViewCellAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(MTAAlarmCollectionViewCellAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (CGPoint)accessibilityActivationPoint

@@ -1,54 +1,54 @@
 @interface UsageFeed
-- (BOOL)_rollUsageValuesFromDict:(id)a3 toDict:(id)a4 forKey:(id)a5 subscriberTag:(unsigned int)a6;
-- (BOOL)algosScoreToDateWithOptionsFor:(id)a3 nameKind:(id)a4 startTime:(id)a5 options:(id)a6 reply:(id)a7;
-- (BOOL)getNetworkDomainsOptions:(id)a3 reply:(id)a4;
-- (BOOL)getUsageOption:(id)a3 reply:(id)a4;
-- (BOOL)identifierForUUID:(id)a3 reply:(id)a4;
-- (BOOL)networkBitmapsToDateWithOptionsFor:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 options:(id)a6 reply:(id)a7;
-- (BOOL)networkDomainsToDateWithOptionsFor:(id)a3 nameKind:(id)a4 domainType:(unsigned __int16)a5 startTime:(id)a6 options:(id)a7 fetchProperties:(id)a8 reply:(id)a9;
-- (BOOL)networkDomainsToDateWithOptionsFor:(id)a3 nameKind:(id)a4 domainType:(unsigned __int16)a5 startTime:(id)a6 options:(id)a7 reply:(id)a8;
-- (BOOL)performNetworkDomainsActionWithOptions:(id)a3 reply:(id)a4;
-- (BOOL)resetUsageDataFor:(id)a3 nameKind:(id)a4 reply:(id)a5;
-- (BOOL)setNetworkDomainsOptions:(id)a3 reply:(id)a4;
-- (BOOL)setUsageOption:(id)a3 reply:(id)a4;
-- (BOOL)typicalUsageFor:(id)a3 nameKind:(id)a4 intervalKind:(unsigned int)a5 reply:(id)a6;
-- (BOOL)usageToDateFor:(id)a3 nameKind:(id)a4 reply:(id)a5;
-- (BOOL)usageToDateWithOptionsFor:(id)a3 nameKind:(id)a4 options:(id)a5 reply:(id)a6;
-- (UsageFeed)initWithWorkspace:(id)a3;
-- (id)_calendarUsagePresentation:(id)a3 nameKind:(id)a4 source:(id)a5;
-- (id)_composeLiveUsagePredicateWithNames:(id)a3 kind:(id)a4 isProcNameKey:(BOOL)a5 isSweep:(BOOL *)a6;
-- (id)_composePredicateLineWithName:(id)a3 keyPath:(id)a4 isSweep:(BOOL *)a5 wantGeneric:(BOOL)a6 gotGeneric:(BOOL *)a7;
-- (id)_getUsageKeyWithProcess:(id)a3 bundleID:(id)a4 extension:(id)a5 isProcNameKey:(BOOL)a6 showExtension:(BOOL)a7;
-- (id)_typicalUsagePresentation:(id)a3 nameKind:(id)a4 source:(id)a5;
-- (id)_usagePresentationWithProcess:(id)a3 bundleID:(id)a4 extension:(id)a5 source:(double *)a6 since:(id)a7;
-- (id)createEndpointEntryFrom:(id)a3 withKey:(id)a4 showDetails:(BOOL)a5;
-- (id)groupRecordsByBundleId:(id)a3;
-- (id)networkDomainInitiatedTypeString:(unsigned int)a3;
+- (BOOL)_rollUsageValuesFromDict:(id)dict toDict:(id)toDict forKey:(id)key subscriberTag:(unsigned int)tag;
+- (BOOL)algosScoreToDateWithOptionsFor:(id)for nameKind:(id)kind startTime:(id)time options:(id)options reply:(id)reply;
+- (BOOL)getNetworkDomainsOptions:(id)options reply:(id)reply;
+- (BOOL)getUsageOption:(id)option reply:(id)reply;
+- (BOOL)identifierForUUID:(id)d reply:(id)reply;
+- (BOOL)networkBitmapsToDateWithOptionsFor:(id)for startTime:(unint64_t)time endTime:(unint64_t)endTime options:(id)options reply:(id)reply;
+- (BOOL)networkDomainsToDateWithOptionsFor:(id)for nameKind:(id)kind domainType:(unsigned __int16)type startTime:(id)time options:(id)options fetchProperties:(id)properties reply:(id)reply;
+- (BOOL)networkDomainsToDateWithOptionsFor:(id)for nameKind:(id)kind domainType:(unsigned __int16)type startTime:(id)time options:(id)options reply:(id)reply;
+- (BOOL)performNetworkDomainsActionWithOptions:(id)options reply:(id)reply;
+- (BOOL)resetUsageDataFor:(id)for nameKind:(id)kind reply:(id)reply;
+- (BOOL)setNetworkDomainsOptions:(id)options reply:(id)reply;
+- (BOOL)setUsageOption:(id)option reply:(id)reply;
+- (BOOL)typicalUsageFor:(id)for nameKind:(id)kind intervalKind:(unsigned int)intervalKind reply:(id)reply;
+- (BOOL)usageToDateFor:(id)for nameKind:(id)kind reply:(id)reply;
+- (BOOL)usageToDateWithOptionsFor:(id)for nameKind:(id)kind options:(id)options reply:(id)reply;
+- (UsageFeed)initWithWorkspace:(id)workspace;
+- (id)_calendarUsagePresentation:(id)presentation nameKind:(id)kind source:(id)source;
+- (id)_composeLiveUsagePredicateWithNames:(id)names kind:(id)kind isProcNameKey:(BOOL)key isSweep:(BOOL *)sweep;
+- (id)_composePredicateLineWithName:(id)name keyPath:(id)path isSweep:(BOOL *)sweep wantGeneric:(BOOL)generic gotGeneric:(BOOL *)gotGeneric;
+- (id)_getUsageKeyWithProcess:(id)process bundleID:(id)d extension:(id)extension isProcNameKey:(BOOL)key showExtension:(BOOL)showExtension;
+- (id)_typicalUsagePresentation:(id)presentation nameKind:(id)kind source:(id)source;
+- (id)_usagePresentationWithProcess:(id)process bundleID:(id)d extension:(id)extension source:(double *)source since:(id)since;
+- (id)createEndpointEntryFrom:(id)from withKey:(id)key showDetails:(BOOL)details;
+- (id)groupRecordsByBundleId:(id)id;
+- (id)networkDomainInitiatedTypeString:(unsigned int)string;
 - (uint64_t)_batchFetchLimitForDatabase;
-- (void)__networkDomainsQueryDomains:(id)a3 entityName:(id)a4 unnamedDomainsOption:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 accumulatedResults:(id)a8 aggregateProperty:(id)a9 predicate:(id)a10 altAggregateProperty:(id)a11 altPredicate:(id)a12 ipAggregateProperty:(id)a13 replyProcessBlock:(id)a14 callbackBlock:(id)a15;
-- (void)__networkDomainsQuerySecondLevelViewDomains:(id)a3 entityName:(id)a4 unnamedDomainsOption:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 viewPredicate:(id)a8 callbackBlock:(id)a9;
-- (void)__networkDomainsQueryWebsites:(id)a3 entityName:(id)a4 verificationContext:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 viewPredicate:(id)a8 callbackBlock:(id)a9;
-- (void)_batchFetchCallbackWithResults:(id)a3 logPrefix:(const char *)a4 entityName:(id)a5 pred:(id)a6 service:(id)a7 limit:(unint64_t)a8 offset:(unint64_t)a9 container:(id)a10 actions:(id)a11 reply:(id)a12;
-- (void)_legacyNetworkDomainsQueryOnService:(id)a3 entityName:(id)a4 pred:(id)a5 limit:(unint64_t)a6 actions:(id)a7 options:(id)a8 postProcessingBlock:(id)a9;
-- (void)_networkDomainsQueryViewTypeApp:(id)a3 entityName:(id)a4 limit:(unint64_t)a5 actions:(id)a6 callbackBlock:(id)a7;
-- (void)_networkDomainsQueryViewTypeAppDomains:(id)a3 entityName:(id)a4 bundleIdentifier:(id)a5 unnamedDomainsOption:(int64_t)a6 limit:(unint64_t)a7 actions:(id)a8 callbackBlock:(id)a9;
-- (void)_networkDomainsQueryViewTypeAppDomainsOtherContent:(id)a3 entityName:(id)a4 bundleIdentifier:(id)a5 unnamedDomainsOption:(int64_t)a6 limit:(unint64_t)a7 actions:(id)a8 callbackBlock:(id)a9;
-- (void)_networkDomainsQueryViewTypeAppWebsites:(id)a3 entityName:(id)a4 bundleIdentifier:(id)a5 verificationContext:(int64_t)a6 limit:(unint64_t)a7 actions:(id)a8 callbackBlock:(id)a9;
-- (void)_networkDomainsQueryViewTypeDomain:(id)a3 entityName:(id)a4 unnamedDomainsOption:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8;
-- (void)_networkDomainsQueryViewTypeDomainApps:(id)a3 entityName:(id)a4 domain:(id)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8;
-- (void)_networkDomainsQueryViewTypeDomainWebsites:(id)a3 entityName:(id)a4 domain:(id)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8;
-- (void)_networkDomainsQueryViewTypeWebsite:(id)a3 entityName:(id)a4 verificationContext:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8;
-- (void)_networkDomainsQueryViewTypeWebsiteApps:(id)a3 entityName:(id)a4 website:(id)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8;
-- (void)_networkDomainsQueryViewTypeWebsiteDomains:(id)a3 entityName:(id)a4 website:(id)a5 unnamedDomainsOption:(int64_t)a6 limit:(unint64_t)a7 actions:(id)a8 callbackBlock:(id)a9;
-- (void)_networkDomainsQueryViewTypeWebsiteHits:(id)a3 entityName:(id)a4 website:(id)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8;
-- (void)_performNetDomainsQueryOnService:(id)a3 entityName:(id)a4 fetchProps:(id)a5 pred:(id)a6 sort:(id)a7 actions:(id)a8 queryTimer:(id)a9 replyProcessBlock:(id)a10 accumulatedResults:(id)a11 callbackBlock:(id)a12;
-- (void)_processLiveUsageWithPredicate:(id)a3 attributesBlock:(id)a4 outcomeBlock:(id)a5;
-- (void)_processLiveUsageWithUsages:(id)a3 attributesBlock:(id)a4 outcomeBlock:(id)a5;
-- (void)_rollValuesFrom:(id)a3 toDict:(id)a4;
-- (void)_triggerAutoBugCaptureForSubType:(id)a3 subtypeContext:(id)a4 events:(id)a5 replyBlock:(id)a6;
+- (void)__networkDomainsQueryDomains:(id)domains entityName:(id)name unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions accumulatedResults:(id)results aggregateProperty:(id)property predicate:(id)self0 altAggregateProperty:(id)self1 altPredicate:(id)self2 ipAggregateProperty:(id)self3 replyProcessBlock:(id)self4 callbackBlock:(id)self5;
+- (void)__networkDomainsQuerySecondLevelViewDomains:(id)domains entityName:(id)name unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions viewPredicate:(id)predicate callbackBlock:(id)block;
+- (void)__networkDomainsQueryWebsites:(id)websites entityName:(id)name verificationContext:(int64_t)context limit:(unint64_t)limit actions:(id)actions viewPredicate:(id)predicate callbackBlock:(id)block;
+- (void)_batchFetchCallbackWithResults:(id)results logPrefix:(const char *)prefix entityName:(id)name pred:(id)pred service:(id)service limit:(unint64_t)limit offset:(unint64_t)offset container:(id)self0 actions:(id)self1 reply:(id)self2;
+- (void)_legacyNetworkDomainsQueryOnService:(id)service entityName:(id)name pred:(id)pred limit:(unint64_t)limit actions:(id)actions options:(id)options postProcessingBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeApp:(id)app entityName:(id)name limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeAppDomains:(id)domains entityName:(id)name bundleIdentifier:(id)identifier unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeAppDomainsOtherContent:(id)content entityName:(id)name bundleIdentifier:(id)identifier unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeAppWebsites:(id)websites entityName:(id)name bundleIdentifier:(id)identifier verificationContext:(int64_t)context limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeDomain:(id)domain entityName:(id)name unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeDomainApps:(id)apps entityName:(id)name domain:(id)domain limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeDomainWebsites:(id)websites entityName:(id)name domain:(id)domain limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeWebsite:(id)website entityName:(id)name verificationContext:(int64_t)context limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeWebsiteApps:(id)apps entityName:(id)name website:(id)website limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeWebsiteDomains:(id)domains entityName:(id)name website:(id)website unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_networkDomainsQueryViewTypeWebsiteHits:(id)hits entityName:(id)name website:(id)website limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block;
+- (void)_performNetDomainsQueryOnService:(id)service entityName:(id)name fetchProps:(id)props pred:(id)pred sort:(id)sort actions:(id)actions queryTimer:(id)timer replyProcessBlock:(id)self0 accumulatedResults:(id)self1 callbackBlock:(id)self2;
+- (void)_processLiveUsageWithPredicate:(id)predicate attributesBlock:(id)block outcomeBlock:(id)outcomeBlock;
+- (void)_processLiveUsageWithUsages:(id)usages attributesBlock:(id)block outcomeBlock:(id)outcomeBlock;
+- (void)_rollValuesFrom:(id)from toDict:(id)dict;
+- (void)_triggerAutoBugCaptureForSubType:(id)type subtypeContext:(id)context events:(id)events replyBlock:(id)block;
 - (void)clearLoggingCounters;
 - (void)dealloc;
-- (void)displayLoggingCounters:(id)a3;
+- (void)displayLoggingCounters:(id)counters;
 @end
 
 @implementation UsageFeed
@@ -63,7 +63,7 @@
 - (uint64_t)_batchFetchLimitForDatabase
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v1 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.symptomframework.usagefeed"];
     v2 = v1;
@@ -73,46 +73,46 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [v3 unsignedIntegerValue];
+        unsignedIntegerValue = [v3 unsignedIntegerValue];
         v5 = usageLogHandle();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
           v8 = 134217984;
-          v9 = v4;
+          v9 = unsignedIntegerValue;
           _os_log_impl(&dword_1C85F9000, v5, OS_LOG_TYPE_DEFAULT, "++ Overriding database fetch limit to %ld", &v8, 0xCu);
         }
       }
 
       else
       {
-        v4 = 150;
+        unsignedIntegerValue = 150;
       }
     }
 
     else
     {
-      v4 = 150;
+      unsignedIntegerValue = 150;
     }
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (UsageFeed)initWithWorkspace:(id)a3
+- (UsageFeed)initWithWorkspace:(id)workspace
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  workspaceCopy = workspace;
   v5 = usageLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = workspaceCopy;
     _os_log_impl(&dword_1C85F9000, v5, OS_LOG_TYPE_DEBUG, "> initWithWorkspace:%@", buf, 0xCu);
   }
 
@@ -121,18 +121,18 @@
   v6 = [(UsageFeed *)&v13 init];
   if (v6)
   {
-    if (v4)
+    if (workspaceCopy)
     {
-      v7 = v4;
+      defaultWorkspace = workspaceCopy;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69D5130] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x1E69D5130] defaultWorkspace];
     }
 
     workspace = v6->workspace;
-    v6->workspace = v7;
+    v6->workspace = defaultWorkspace;
 
     v9 = [objc_alloc(MEMORY[0x1E69D5198]) initWithWorkspace:v6->workspace withCache:0];
     handleAnalytics = v6->handleAnalytics;
@@ -158,22 +158,22 @@
   [(UsageFeed *)&v4 dealloc];
 }
 
-- (void)_triggerAutoBugCaptureForSubType:(id)a3 subtypeContext:(id)a4 events:(id)a5 replyBlock:(id)a6
+- (void)_triggerAutoBugCaptureForSubType:(id)type subtypeContext:(id)context events:(id)events replyBlock:(id)block
 {
-  v18 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x1E696AE30] processInfo];
-  v13 = [v12 processName];
+  typeCopy = type;
+  contextCopy = context;
+  eventsCopy = events;
+  blockCopy = block;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
   v14 = objc_alloc_init(MEMORY[0x1E69D4F80]);
   v15 = v14;
   if (v14)
   {
-    if (v13)
+    if (processName)
     {
-      v16 = v13;
+      v16 = processName;
     }
 
     else
@@ -181,15 +181,15 @@
       v16 = &stru_1F483F350;
     }
 
-    v17 = [v14 signatureWithDomain:*MEMORY[0x1E69D4FC0] type:*MEMORY[0x1E69D50F8] subType:v18 subtypeContext:v9 detectedProcess:v16 triggerThresholdValues:0];
-    [v15 snapshotWithSignature:v17 delay:v10 events:0 payload:0 actions:v11 reply:0.0];
+    v17 = [v14 signatureWithDomain:*MEMORY[0x1E69D4FC0] type:*MEMORY[0x1E69D50F8] subType:typeCopy subtypeContext:contextCopy detectedProcess:v16 triggerThresholdValues:0];
+    [v15 snapshotWithSignature:v17 delay:eventsCopy events:0 payload:0 actions:blockCopy reply:0.0];
   }
 }
 
-- (void)displayLoggingCounters:(id)a3
+- (void)displayLoggingCounters:(id)counters
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  countersCopy = counters;
   v5 = usageLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -200,7 +200,7 @@
     numNewlyCreated = self->numNewlyCreated;
     numAppended = self->numAppended;
     v13 = 138413826;
-    v14 = v4;
+    v14 = countersCopy;
     v15 = 1024;
     v16 = lastSubscriberTag;
     v17 = 1024;
@@ -219,17 +219,17 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_rollUsageValuesFromDict:(id)a3 toDict:(id)a4 forKey:(id)a5 subscriberTag:(unsigned int)a6
+- (BOOL)_rollUsageValuesFromDict:(id)dict toDict:(id)toDict forKey:(id)key subscriberTag:(unsigned int)tag
 {
   v115 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v12)
+  dictCopy = dict;
+  toDictCopy = toDict;
+  keyCopy = key;
+  if (keyCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v14 = [v10 valueForKey:@"wifiIN"];
+    v14 = [dictCopy valueForKey:@"wifiIN"];
     objc_opt_class();
     v15 = objc_opt_isKindOfClass();
     v91 = 0.0;
@@ -241,7 +241,7 @@
 
     v78 = v16;
 
-    v17 = [v10 valueForKey:@"wifiOUT"];
+    v17 = [dictCopy valueForKey:@"wifiOUT"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -249,11 +249,11 @@
       v91 = v18;
     }
 
-    v19 = [v10 valueForKey:@"tag"];
+    v19 = [dictCopy valueForKey:@"tag"];
     v20 = v19;
-    if (!a6 || v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v20 unsignedIntValue]== a6)
+    if (!tag || v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v20 unsignedIntValue]== tag)
     {
-      v21 = [v10 valueForKey:{@"wwanIN", v78}];
+      v21 = [dictCopy valueForKey:{@"wwanIN", v78}];
       objc_opt_class();
       v83 = 0.0;
       v22 = 0.0;
@@ -263,7 +263,7 @@
         v22 = v23;
       }
 
-      v24 = [v10 valueForKey:@"wwanOUT"];
+      v24 = [dictCopy valueForKey:@"wwanOUT"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -279,7 +279,7 @@
       v84 = 0.0;
       if ((isKindOfClass & 1) == 0)
       {
-        v26 = [v10 valueForKey:@"wwanIN_exp"];
+        v26 = [dictCopy valueForKey:@"wwanIN_exp"];
         objc_opt_class();
         v27 = objc_opt_isKindOfClass();
         v86 = 0.0;
@@ -291,7 +291,7 @@
 
         v82 = v28;
 
-        v29 = [v10 valueForKey:@"wwanOUT_exp"];
+        v29 = [dictCopy valueForKey:@"wwanOUT_exp"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -299,7 +299,7 @@
           v86 = v30;
         }
 
-        v31 = [v10 valueForKey:@"xIN"];
+        v31 = [dictCopy valueForKey:@"xIN"];
         objc_opt_class();
         v32 = objc_opt_isKindOfClass();
         v85 = 0.0;
@@ -311,7 +311,7 @@
 
         v81 = v33;
 
-        v34 = [v10 valueForKey:@"xOUT"];
+        v34 = [dictCopy valueForKey:@"xOUT"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -319,7 +319,7 @@
           v85 = v35;
         }
 
-        v36 = [v10 valueForKey:@"xIN_exp"];
+        v36 = [dictCopy valueForKey:@"xIN_exp"];
         objc_opt_class();
         v37 = objc_opt_isKindOfClass();
         v84 = 0.0;
@@ -331,7 +331,7 @@
 
         v80 = v38;
 
-        v39 = [v10 valueForKey:@"xOUT_exp"];
+        v39 = [dictCopy valueForKey:@"xOUT_exp"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -358,7 +358,7 @@
     }
 
     v89 = 0.0;
-    self->lastSubscriberTag = a6;
+    self->lastSubscriberTag = tag;
     v93 = 0.0;
     v87 = 0.0;
     v42 = 0.0;
@@ -370,7 +370,7 @@
     v44 = 0.0;
     if ((isKindOfClass & 1) == 0)
     {
-      v45 = [v10 valueForKey:@"wifiIN_exp"];
+      v45 = [dictCopy valueForKey:@"wifiIN_exp"];
       objc_opt_class();
       v46 = objc_opt_isKindOfClass();
       v94 = 0.0;
@@ -382,7 +382,7 @@
 
       v90 = v47;
 
-      v48 = [v10 valueForKey:@"wifiOUT_exp"];
+      v48 = [dictCopy valueForKey:@"wifiOUT_exp"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -390,7 +390,7 @@
         v94 = v49;
       }
 
-      v50 = [v10 valueForKey:@"wiredIN"];
+      v50 = [dictCopy valueForKey:@"wiredIN"];
       objc_opt_class();
       v51 = objc_opt_isKindOfClass();
       v93 = 0.0;
@@ -402,7 +402,7 @@
 
       v89 = v52;
 
-      v53 = [v10 valueForKey:@"wiredOUT"];
+      v53 = [dictCopy valueForKey:@"wiredOUT"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -410,7 +410,7 @@
         v93 = v54;
       }
 
-      v55 = [v10 valueForKey:@"wiredIN_exp"];
+      v55 = [dictCopy valueForKey:@"wiredIN_exp"];
       objc_opt_class();
       v56 = objc_opt_isKindOfClass();
       v92 = 0.0;
@@ -422,7 +422,7 @@
 
       v88 = v57;
 
-      v58 = [v10 valueForKey:@"wiredOUT_exp"];
+      v58 = [dictCopy valueForKey:@"wiredOUT_exp"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -430,7 +430,7 @@
         v92 = v59;
       }
 
-      v60 = [v10 valueForKey:@"btIN"];
+      v60 = [dictCopy valueForKey:@"btIN"];
       objc_opt_class();
       v61 = objc_opt_isKindOfClass();
       v62 = 0.0;
@@ -441,7 +441,7 @@
 
       v87 = v62;
 
-      v63 = [v10 valueForKey:@"btOUT"];
+      v63 = [dictCopy valueForKey:@"btOUT"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -449,7 +449,7 @@
         v42 = v64;
       }
 
-      v65 = [v10 valueForKey:@"btIN_exp"];
+      v65 = [dictCopy valueForKey:@"btIN_exp"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -457,7 +457,7 @@
         v43 = v66;
       }
 
-      v67 = [v10 valueForKey:@"btOUT_exp"];
+      v67 = [dictCopy valueForKey:@"btOUT_exp"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -466,41 +466,41 @@
       }
     }
 
-    v69 = [v11 objectForKey:v12];
+    v69 = [toDictCopy objectForKey:keyCopy];
     v70 = v69;
     v41 = v69 == 0;
     if (v69)
     {
-      v71 = [v69 bytes];
+      bytes = [v69 bytes];
       v72.f64[0] = v79;
       v72.f64[1] = v91;
-      *v71 = vaddq_f64(v72, *v71);
-      *(v71 + 16) = v22 + *(v71 + 16);
+      *bytes = vaddq_f64(v72, *bytes);
+      *(bytes + 16) = v22 + *(bytes + 16);
       v73.f64[0] = v83;
       v72.f64[0] = v94;
       v72.f64[1] = v82;
-      *(v71 + 72) = vaddq_f64(v72, *(v71 + 72));
+      *(bytes + 72) = vaddq_f64(v72, *(bytes + 72));
       v73.f64[1] = v89;
-      *(v71 + 24) = vaddq_f64(v73, *(v71 + 24));
+      *(bytes + 24) = vaddq_f64(v73, *(bytes + 24));
       v73.f64[0] = v86;
       v73.f64[1] = v88;
-      *(v71 + 88) = vaddq_f64(v73, *(v71 + 88));
-      v74 = v43 + *(v71 + 144);
-      *(v71 + 136) = v42 + *(v71 + 136);
-      *(v71 + 144) = v74;
-      *(v71 + 152) = v44 + *(v71 + 152);
+      *(bytes + 88) = vaddq_f64(v73, *(bytes + 88));
+      v74 = v43 + *(bytes + 144);
+      *(bytes + 136) = v42 + *(bytes + 136);
+      *(bytes + 144) = v74;
+      *(bytes + 152) = v44 + *(bytes + 152);
       v72.f64[0] = v93;
       v72.f64[1] = v81;
-      *(v71 + 40) = vaddq_f64(v72, *(v71 + 40));
+      *(bytes + 40) = vaddq_f64(v72, *(bytes + 40));
       v72.f64[0] = v92;
       v72.f64[1] = v80;
-      *(v71 + 104) = vaddq_f64(v72, *(v71 + 104));
+      *(bytes + 104) = vaddq_f64(v72, *(bytes + 104));
       v73.f64[0] = v85;
       v73.f64[1] = v90;
-      *(v71 + 56) = vaddq_f64(v73, *(v71 + 56));
+      *(bytes + 56) = vaddq_f64(v73, *(bytes + 56));
       v73.f64[0] = v84;
       v73.f64[1] = v87;
-      *(v71 + 120) = vaddq_f64(v73, *(v71 + 120));
+      *(bytes + 120) = vaddq_f64(v73, *(bytes + 120));
       ++self->numAppended;
     }
 
@@ -527,7 +527,7 @@
       v109 = v80;
       v110 = v84;
       v75 = [MEMORY[0x1E695DEF0] dataWithBytes:buf length:160];
-      [v11 setObject:v75 forKey:v12];
+      [toDictCopy setObject:v75 forKey:keyCopy];
 
       ++self->numNewlyCreated;
     }
@@ -549,142 +549,142 @@
   return v41;
 }
 
-- (void)_rollValuesFrom:(id)a3 toDict:(id)a4
+- (void)_rollValuesFrom:(id)from toDict:(id)dict
 {
-  v29 = a3;
-  v6 = a4;
-  v7 = [v29 hasProcess];
-  v8 = [v7 bundleName];
-  v9 = [v29 hasProcess];
-  v10 = v9;
-  if (v8)
+  fromCopy = from;
+  dictCopy = dict;
+  hasProcess = [fromCopy hasProcess];
+  bundleName = [hasProcess bundleName];
+  hasProcess2 = [fromCopy hasProcess];
+  v10 = hasProcess2;
+  if (bundleName)
   {
-    [v9 bundleName];
+    [hasProcess2 bundleName];
   }
 
   else
   {
-    [v9 procName];
+    [hasProcess2 procName];
   }
   v11 = ;
 
   if (v11)
   {
-    v12 = [v6 objectForKey:v11];
-    if (!v12)
+    wifiIN = [dictCopy objectForKey:v11];
+    if (!wifiIN)
     {
       v13 = objc_alloc(MEMORY[0x1E695DF90]);
-      v14 = [v29 hasProcess];
-      v28 = [v14 procName];
-      v27 = [v29 hasProcess];
-      v15 = [v27 bundleName];
-      if (v15)
+      hasProcess3 = [fromCopy hasProcess];
+      procName = [hasProcess3 procName];
+      hasProcess4 = [fromCopy hasProcess];
+      bundleName2 = [hasProcess4 bundleName];
+      if (bundleName2)
       {
-        v16 = [v29 hasProcess];
-        v17 = [v16 bundleName];
+        hasProcess5 = [fromCopy hasProcess];
+        bundleName3 = [hasProcess5 bundleName];
       }
 
       else
       {
-        v17 = [MEMORY[0x1E695DFB0] null];
-        v16 = v17;
+        bundleName3 = [MEMORY[0x1E695DFB0] null];
+        hasProcess5 = bundleName3;
       }
 
-      v23 = [v29 hasProcess];
-      v24 = [v23 bundleName];
-      if (v24)
+      hasProcess6 = [fromCopy hasProcess];
+      bundleName4 = [hasProcess6 bundleName];
+      if (bundleName4)
       {
-        v12 = [v13 initWithObjectsAndKeys:{v28, @"procName", v17, @"bundleName", 0}];
+        wifiIN = [v13 initWithObjectsAndKeys:{procName, @"procName", bundleName3, @"bundleName", 0}];
       }
 
       else
       {
         [MEMORY[0x1E695DFB0] null];
-        v25 = v26 = v14;
-        v12 = [v13 initWithObjectsAndKeys:{v28, @"procName", v17, v25, 0}];
+        v25 = v26 = hasProcess3;
+        wifiIN = [v13 initWithObjectsAndKeys:{procName, @"procName", bundleName3, v25, 0}];
 
-        v14 = v26;
+        hasProcess3 = v26;
       }
 
-      if (v15)
+      if (bundleName2)
       {
       }
 
-      [v6 setObject:v12 forKey:v11];
+      [dictCopy setObject:wifiIN forKey:v11];
     }
 
-    [(UsageFeed *)self _rollUsageValuesFromDict:v29 toDict:v12 forKey:@"data" subscriberTag:0];
+    [(UsageFeed *)self _rollUsageValuesFromDict:fromCopy toDict:wifiIN forKey:@"data" subscriberTag:0];
   }
 
   else
   {
-    v12 = [v29 wifiIN];
-    v18 = [v29 wifiOUT];
-    v19 = [v29 wwanIN];
-    v20 = [v29 wwanOUT];
-    v21 = [v29 wiredIN];
-    v22 = [v29 wiredOUT];
-    NSLog(&cfstr_UnableToRollUp.isa, v12, v18, v19, v20, v21, v22);
+    wifiIN = [fromCopy wifiIN];
+    wifiOUT = [fromCopy wifiOUT];
+    wwanIN = [fromCopy wwanIN];
+    wwanOUT = [fromCopy wwanOUT];
+    wiredIN = [fromCopy wiredIN];
+    wiredOUT = [fromCopy wiredOUT];
+    NSLog(&cfstr_UnableToRollUp.isa, wifiIN, wifiOUT, wwanIN, wwanOUT, wiredIN, wiredOUT);
   }
 }
 
-- (id)_composePredicateLineWithName:(id)a3 keyPath:(id)a4 isSweep:(BOOL *)a5 wantGeneric:(BOOL)a6 gotGeneric:(BOOL *)a7
+- (id)_composePredicateLineWithName:(id)name keyPath:(id)path isSweep:(BOOL *)sweep wantGeneric:(BOOL)generic gotGeneric:(BOOL *)gotGeneric
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = [v11 count];
-  *a5 = 0;
-  *a7 = 0;
-  if (v11 && v13)
+  genericCopy = generic;
+  nameCopy = name;
+  pathCopy = path;
+  v13 = [nameCopy count];
+  *sweep = 0;
+  *gotGeneric = 0;
+  if (nameCopy && v13)
   {
     v14 = MEMORY[0x1E696AE18];
     if (v13 == 1)
     {
-      if (v8)
+      if (genericCopy)
       {
-        v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == $targetname", v12];
-        *a7 = 1;
+        pathCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == $targetname", pathCopy];
+        *gotGeneric = 1;
       }
 
       else
       {
-        v16 = [v11 anyObject];
-        v15 = [v14 predicateWithFormat:@"%K == %@", v12, v16];
+        anyObject = [nameCopy anyObject];
+        pathCopy = [v14 predicateWithFormat:@"%K == %@", pathCopy, anyObject];
       }
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", v12, v11];
+      pathCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", pathCopy, nameCopy];
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", v12];
-    *a5 = 1;
+    pathCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", pathCopy];
+    *sweep = 1;
   }
 
-  return v15;
+  return pathCopy;
 }
 
-- (id)_composeLiveUsagePredicateWithNames:(id)a3 kind:(id)a4 isProcNameKey:(BOOL)a5 isSweep:(BOOL *)a6
+- (id)_composeLiveUsagePredicateWithNames:(id)names kind:(id)kind isProcNameKey:(BOOL)key isSweep:(BOOL *)sweep
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasProcess.%@", a4];
-  if (v9 && [v9 count])
+  keyCopy = key;
+  namesCopy = names;
+  kind = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasProcess.%@", kind];
+  if (namesCopy && [namesCopy count])
   {
-    if (v7)
+    if (keyCopy)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasProcess.%@", @"bundleName"];
-      v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K IN %@) OR (%K IN %@)", v10, v9, v11, v9];
+      namesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K IN %@) OR (%K IN %@)", kind, namesCopy, v11, namesCopy];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", v10, v9];
+      namesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", kind, namesCopy];
     }
 
     v13 = 0;
@@ -692,86 +692,86 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", v10];
+    namesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", kind];
     v13 = 1;
   }
 
-  *a6 = v13;
+  *sweep = v13;
 
-  return v12;
+  return namesCopy;
 }
 
-- (id)_usagePresentationWithProcess:(id)a3 bundleID:(id)a4 extension:(id)a5 source:(double *)a6 since:(id)a7
+- (id)_usagePresentationWithProcess:(id)process bundleID:(id)d extension:(id)extension source:(double *)source since:(id)since
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  processCopy = process;
+  dCopy = d;
+  extensionCopy = extension;
+  sinceCopy = since;
   v29 = MEMORY[0x1E695DF20];
-  if (v11)
+  if (processCopy)
   {
-    v36 = @"procName";
-    v37 = v11;
-    if (v12)
+    null2 = @"procName";
+    null = processCopy;
+    if (dCopy)
     {
 LABEL_3:
-      v34 = @"bundleName";
-      v35 = v12;
+      null4 = @"bundleName";
+      null3 = dCopy;
       goto LABEL_6;
     }
   }
 
   else
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
-    v36 = [MEMORY[0x1E695DFB0] null];
-    if (v12)
+    null = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    if (dCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v35 = [MEMORY[0x1E695DFB0] null];
-  v34 = [MEMORY[0x1E695DFB0] null];
+  null3 = [MEMORY[0x1E695DFB0] null];
+  null4 = [MEMORY[0x1E695DFB0] null];
 LABEL_6:
-  v31 = v12;
-  v48 = v14;
-  v28 = v13;
-  if (v13)
+  v31 = dCopy;
+  v48 = sinceCopy;
+  v28 = extensionCopy;
+  if (extensionCopy)
   {
-    v32 = @"extensionName";
-    v33 = v13;
+    null6 = @"extensionName";
+    null5 = extensionCopy;
   }
 
   else
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = [MEMORY[0x1E696AD98] numberWithDouble:*a6];
-  v26 = [MEMORY[0x1E696AD98] numberWithDouble:a6[1]];
-  v47 = [MEMORY[0x1E696AD98] numberWithDouble:a6[8]];
-  v46 = [MEMORY[0x1E696AD98] numberWithDouble:a6[9]];
-  v45 = [MEMORY[0x1E696AD98] numberWithDouble:a6[16]];
-  v44 = [MEMORY[0x1E696AD98] numberWithDouble:a6[17]];
-  v43 = [MEMORY[0x1E696AD98] numberWithDouble:a6[2]];
-  v25 = [MEMORY[0x1E696AD98] numberWithDouble:a6[3]];
-  v42 = [MEMORY[0x1E696AD98] numberWithDouble:a6[10]];
-  v41 = [MEMORY[0x1E696AD98] numberWithDouble:a6[11]];
+  v27 = [MEMORY[0x1E696AD98] numberWithDouble:*source];
+  v26 = [MEMORY[0x1E696AD98] numberWithDouble:source[1]];
+  v47 = [MEMORY[0x1E696AD98] numberWithDouble:source[8]];
+  v46 = [MEMORY[0x1E696AD98] numberWithDouble:source[9]];
+  v45 = [MEMORY[0x1E696AD98] numberWithDouble:source[16]];
+  v44 = [MEMORY[0x1E696AD98] numberWithDouble:source[17]];
+  v43 = [MEMORY[0x1E696AD98] numberWithDouble:source[2]];
+  v25 = [MEMORY[0x1E696AD98] numberWithDouble:source[3]];
+  v42 = [MEMORY[0x1E696AD98] numberWithDouble:source[10]];
+  v41 = [MEMORY[0x1E696AD98] numberWithDouble:source[11]];
   v40 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v39 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v38 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
-  v24 = [MEMORY[0x1E696AD98] numberWithDouble:a6[4]];
-  v16 = [MEMORY[0x1E696AD98] numberWithDouble:a6[5]];
-  v17 = [MEMORY[0x1E696AD98] numberWithDouble:a6[12]];
-  v18 = [MEMORY[0x1E696AD98] numberWithDouble:a6[13]];
-  v19 = [MEMORY[0x1E696AD98] numberWithDouble:a6[6]];
-  v23 = [MEMORY[0x1E696AD98] numberWithDouble:a6[7]];
-  v20 = [MEMORY[0x1E696AD98] numberWithDouble:a6[14]];
-  v21 = [MEMORY[0x1E696AD98] numberWithDouble:a6[15]];
-  v30 = [v29 dictionaryWithObjectsAndKeys:{v37, v36, v35, v34, v33, v32, v27, @"wifiInBytes", v26, @"wifiOutBytes", v47, @"wifiExpInBytes", v46, @"wifiExpOutBytes", v45, @"btInBytes", v44, @"btOutBytes", v43, @"wwanInBytes", v25, @"wwanOutBytes", v42, @"wwanExpInBytes", v41, @"wwanExpOutBytes", v40, @"wiredInBytes", v39, @"wiredOutBytes", v38, @"wiredExpInBytes", v15, @"wiredExpOutBytes", v24, @"awdlInBytes", v16, @"awdlOutBytes", v17, @"awdlExpInBytes", v18, @"awdlExpOutBytes", v19, @"expensiveInBytes", v23, @"expensiveOutBytes", v20, @"expensiveExpInBytes", v21, @"expensiveExpOutBytes", v48, @"sinceTime", 0}];
+  v24 = [MEMORY[0x1E696AD98] numberWithDouble:source[4]];
+  v16 = [MEMORY[0x1E696AD98] numberWithDouble:source[5]];
+  v17 = [MEMORY[0x1E696AD98] numberWithDouble:source[12]];
+  v18 = [MEMORY[0x1E696AD98] numberWithDouble:source[13]];
+  v19 = [MEMORY[0x1E696AD98] numberWithDouble:source[6]];
+  v23 = [MEMORY[0x1E696AD98] numberWithDouble:source[7]];
+  v20 = [MEMORY[0x1E696AD98] numberWithDouble:source[14]];
+  v21 = [MEMORY[0x1E696AD98] numberWithDouble:source[15]];
+  v30 = [v29 dictionaryWithObjectsAndKeys:{null, null2, null3, null4, null5, null6, v27, @"wifiInBytes", v26, @"wifiOutBytes", v47, @"wifiExpInBytes", v46, @"wifiExpOutBytes", v45, @"btInBytes", v44, @"btOutBytes", v43, @"wwanInBytes", v25, @"wwanOutBytes", v42, @"wwanExpInBytes", v41, @"wwanExpOutBytes", v40, @"wiredInBytes", v39, @"wiredOutBytes", v38, @"wiredExpInBytes", v15, @"wiredExpOutBytes", v24, @"awdlInBytes", v16, @"awdlOutBytes", v17, @"awdlExpInBytes", v18, @"awdlExpOutBytes", v19, @"expensiveInBytes", v23, @"expensiveOutBytes", v20, @"expensiveExpInBytes", v21, @"expensiveExpOutBytes", v48, @"sinceTime", 0}];
 
   if (!v28)
   {
@@ -779,7 +779,7 @@ LABEL_6:
 
   if (v31)
   {
-    if (v11)
+    if (processCopy)
     {
       goto LABEL_13;
     }
@@ -788,7 +788,7 @@ LABEL_6:
   else
   {
 
-    if (v11)
+    if (processCopy)
     {
       goto LABEL_13;
     }
@@ -799,45 +799,45 @@ LABEL_13:
   return v30;
 }
 
-- (id)_getUsageKeyWithProcess:(id)a3 bundleID:(id)a4 extension:(id)a5 isProcNameKey:(BOOL)a6 showExtension:(BOOL)a7
+- (id)_getUsageKeyWithProcess:(id)process bundleID:(id)d extension:(id)extension isProcNameKey:(BOOL)key showExtension:(BOOL)showExtension
 {
-  v7 = a7;
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (v13)
+  showExtensionCopy = showExtension;
+  keyCopy = key;
+  processCopy = process;
+  dCopy = d;
+  extensionCopy = extension;
+  v14 = extensionCopy;
+  if (extensionCopy)
   {
-    v15 = v12;
+    v15 = dCopy;
   }
 
   else
   {
-    v15 = v11;
+    v15 = processCopy;
   }
 
-  if (!v8)
+  if (!keyCopy)
   {
-    v15 = v12;
+    v15 = dCopy;
   }
 
-  if (v13)
+  if (extensionCopy)
   {
-    v16 = v13;
+    v16 = extensionCopy;
   }
 
   else
   {
-    v16 = v12;
+    v16 = dCopy;
   }
 
-  if (v8)
+  if (keyCopy)
   {
-    v16 = v11;
+    v16 = processCopy;
   }
 
-  if (v7)
+  if (showExtensionCopy)
   {
     v17 = v16;
   }
@@ -852,16 +852,16 @@ LABEL_13:
   return v17;
 }
 
-- (void)_processLiveUsageWithUsages:(id)a3 attributesBlock:(id)a4 outcomeBlock:(id)a5
+- (void)_processLiveUsageWithUsages:(id)usages attributesBlock:(id)block outcomeBlock:(id)outcomeBlock
 {
   v27 = *MEMORY[0x1E69E9840];
-  obj = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7 && v8)
+  obj = usages;
+  blockCopy = block;
+  outcomeBlockCopy = outcomeBlock;
+  v9 = outcomeBlockCopy;
+  if (blockCopy && outcomeBlockCopy)
   {
-    v20 = v8;
+    v20 = outcomeBlockCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -885,7 +885,7 @@ LABEL_13:
           v16 = [v14 objectForKeyedSubscript:@"hasProcess.bundleName"];
           v17 = [v14 objectForKeyedSubscript:@"hasProcess.extensionName"];
           v18 = [v14 objectForKeyedSubscript:@"hasProcess.firstTimeStamp"];
-          v7[2](v7, v14, v15, v16, v17, v18);
+          blockCopy[2](blockCopy, v14, v15, v16, v17, v18);
         }
 
         v11 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -901,24 +901,24 @@ LABEL_13:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processLiveUsageWithPredicate:(id)a3 attributesBlock:(id)a4 outcomeBlock:(id)a5
+- (void)_processLiveUsageWithPredicate:(id)predicate attributesBlock:(id)block outcomeBlock:(id)outcomeBlock
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && v10)
+  predicateCopy = predicate;
+  blockCopy = block;
+  outcomeBlockCopy = outcomeBlock;
+  v11 = outcomeBlockCopy;
+  if (blockCopy && outcomeBlockCopy)
   {
-    v31 = v10;
+    v31 = outcomeBlockCopy;
     v12 = objc_alloc(MEMORY[0x1E69D5150]);
     workspace = self->workspace;
-    v14 = [MEMORY[0x1E69D5140] entityName];
-    v15 = [v12 initWithWorkspace:workspace entityName:v14 withCache:0];
+    entityName = [MEMORY[0x1E69D5140] entityName];
+    v15 = [v12 initWithWorkspace:workspace entityName:entityName withCache:0];
 
     v30 = v15;
-    v32 = v8;
-    v16 = [v15 fetchEntitiesFreeForm:v8 sortDesc:0];
+    v32 = predicateCopy;
+    v16 = [v15 fetchEntitiesFreeForm:predicateCopy sortDesc:0];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -938,19 +938,19 @@ LABEL_13:
           }
 
           v20 = *(*(&v34 + 1) + 8 * i);
-          v21 = [v20 hasProcess];
-          v22 = [v21 procName];
+          hasProcess = [v20 hasProcess];
+          procName = [hasProcess procName];
 
-          v23 = [v20 hasProcess];
-          v24 = [v23 bundleName];
+          hasProcess2 = [v20 hasProcess];
+          bundleName = [hasProcess2 bundleName];
 
-          v25 = [v20 hasProcess];
-          v26 = [v25 extensionName];
+          hasProcess3 = [v20 hasProcess];
+          extensionName = [hasProcess3 extensionName];
 
-          v27 = [v20 hasProcess];
-          v28 = [v27 firstTimeStamp];
+          hasProcess4 = [v20 hasProcess];
+          firstTimeStamp = [hasProcess4 firstTimeStamp];
 
-          v9[2](v9, v16, v22, v24, v26, v28);
+          blockCopy[2](blockCopy, v16, procName, bundleName, extensionName, firstTimeStamp);
         }
 
         v18 = [v16 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -962,96 +962,96 @@ LABEL_13:
     v11 = v31;
     v31[2](v31);
 
-    v8 = v32;
+    predicateCopy = v32;
   }
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_typicalUsagePresentation:(id)a3 nameKind:(id)a4 source:(id)a5
+- (id)_typicalUsagePresentation:(id)presentation nameKind:(id)kind source:(id)source
 {
   v28 = MEMORY[0x1E695DF20];
-  v7 = a5;
-  v27 = a4;
-  v26 = a3;
-  v25 = [v7 valueForKey:@"wifiIN"];
-  v24 = [v7 valueForKey:@"wifiIN_mean"];
-  v23 = [v7 valueForKey:@"wifiIN_var"];
-  v22 = [v7 valueForKey:@"wifiOUT"];
-  v51 = [v7 valueForKey:@"wifiOUT_mean"];
-  v21 = [v7 valueForKey:@"wifiOUT_var"];
-  v50 = [v7 valueForKey:@"btIN"];
-  v20 = [v7 valueForKey:@"btOUT"];
+  sourceCopy = source;
+  kindCopy = kind;
+  presentationCopy = presentation;
+  v25 = [sourceCopy valueForKey:@"wifiIN"];
+  v24 = [sourceCopy valueForKey:@"wifiIN_mean"];
+  v23 = [sourceCopy valueForKey:@"wifiIN_var"];
+  v22 = [sourceCopy valueForKey:@"wifiOUT"];
+  v51 = [sourceCopy valueForKey:@"wifiOUT_mean"];
+  v21 = [sourceCopy valueForKey:@"wifiOUT_var"];
+  v50 = [sourceCopy valueForKey:@"btIN"];
+  v20 = [sourceCopy valueForKey:@"btOUT"];
   v49 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v19 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v48 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v18 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v47 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v46 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
-  v45 = [v7 valueForKey:@"wiredIN"];
-  v44 = [v7 valueForKey:@"wiredIN_mean"];
-  v43 = [v7 valueForKey:@"wiredIN_var"];
-  v42 = [v7 valueForKey:@"wiredOUT"];
-  v41 = [v7 valueForKey:@"wiredOUT_mean"];
-  v40 = [v7 valueForKey:@"wiredOUT_var"];
-  v39 = [v7 valueForKey:@"wwanIN"];
-  v38 = [v7 valueForKey:@"wwanIN_mean"];
-  v37 = [v7 valueForKey:@"wwanIN_var"];
-  v36 = [v7 valueForKey:@"wwanOUT"];
-  v35 = [v7 valueForKey:@"wwanOUT_mean"];
-  v34 = [v7 valueForKey:@"wwanOUT_var"];
+  v45 = [sourceCopy valueForKey:@"wiredIN"];
+  v44 = [sourceCopy valueForKey:@"wiredIN_mean"];
+  v43 = [sourceCopy valueForKey:@"wiredIN_var"];
+  v42 = [sourceCopy valueForKey:@"wiredOUT"];
+  v41 = [sourceCopy valueForKey:@"wiredOUT_mean"];
+  v40 = [sourceCopy valueForKey:@"wiredOUT_var"];
+  v39 = [sourceCopy valueForKey:@"wwanIN"];
+  v38 = [sourceCopy valueForKey:@"wwanIN_mean"];
+  v37 = [sourceCopy valueForKey:@"wwanIN_var"];
+  v36 = [sourceCopy valueForKey:@"wwanOUT"];
+  v35 = [sourceCopy valueForKey:@"wwanOUT_mean"];
+  v34 = [sourceCopy valueForKey:@"wwanOUT_var"];
   v33 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v32 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v31 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v30 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
-  v17 = [v7 valueForKey:@"firstTimeStamp"];
-  v14 = [v7 valueForKey:@"timeStamp"];
-  v13 = [v7 valueForKey:@"wifiSampleCount"];
+  v17 = [sourceCopy valueForKey:@"firstTimeStamp"];
+  v14 = [sourceCopy valueForKey:@"timeStamp"];
+  v13 = [sourceCopy valueForKey:@"wifiSampleCount"];
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
-  v11 = [v7 valueForKey:@"wiredSampleCount"];
-  v10 = [v7 valueForKey:@"wwanSampleCount"];
+  v11 = [sourceCopy valueForKey:@"wiredSampleCount"];
+  v10 = [sourceCopy valueForKey:@"wwanSampleCount"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:0.0];
-  v29 = [v28 dictionaryWithObjectsAndKeys:{v26, v27, v25, @"wifiInBytes", v24, @"wifiInBytesMean", v23, @"wifiInBytesVar", v22, @"wifiOutBytes", v51, @"wifiOutBytesMean", v21, @"wifiOutBytesVar", v50, @"btInBytes", v20, @"btOutBytes", v49, @"wiredInBytes", v19, @"wiredInBytesMean", v48, @"wiredInBytesVar", v18, @"wiredOutBytes", v47, @"wiredOutBytesMean", v46, @"wiredOutBytesVar", v45, @"awdlInBytes", v44, @"awdlInBytesMean", v43, @"awdlInBytesVar", v42, @"awdlOutBytes", v41, @"awdlOutBytesMean", v40, @"awdlOutBytesVar", v39, @"wwanInBytes", v38, @"wwanInBytesMean", v37, @"wwanInBytesVar", v36, @"wwanOutBytes", v35, @"wwanOutBytesMean", v34, @"wwanOutBytesVar", v33, @"expensiveInBytes", v32, @"expensiveInBytesMean", v31, @"expensiveInBytesVar", v30}];
+  v29 = [v28 dictionaryWithObjectsAndKeys:{presentationCopy, kindCopy, v25, @"wifiInBytes", v24, @"wifiInBytesMean", v23, @"wifiInBytesVar", v22, @"wifiOutBytes", v51, @"wifiOutBytesMean", v21, @"wifiOutBytesVar", v50, @"btInBytes", v20, @"btOutBytes", v49, @"wiredInBytes", v19, @"wiredInBytesMean", v48, @"wiredInBytesVar", v18, @"wiredOutBytes", v47, @"wiredOutBytesMean", v46, @"wiredOutBytesVar", v45, @"awdlInBytes", v44, @"awdlInBytesMean", v43, @"awdlInBytesVar", v42, @"awdlOutBytes", v41, @"awdlOutBytesMean", v40, @"awdlOutBytesVar", v39, @"wwanInBytes", v38, @"wwanInBytesMean", v37, @"wwanInBytesVar", v36, @"wwanOutBytes", v35, @"wwanOutBytesMean", v34, @"wwanOutBytesVar", v33, @"expensiveInBytes", v32, @"expensiveInBytesMean", v31, @"expensiveInBytesVar", v30}];
 
   return v29;
 }
 
-- (id)_calendarUsagePresentation:(id)a3 nameKind:(id)a4 source:(id)a5
+- (id)_calendarUsagePresentation:(id)presentation nameKind:(id)kind source:(id)source
 {
   v20 = MEMORY[0x1E695DF20];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v19 = [v7 valueForKey:@"timeOfDaySlot"];
-  v18 = [v7 valueForKey:@"dayOfWeek"];
-  v10 = [v7 valueForKey:@"tier1"];
-  v17 = [v7 valueForKey:@"tier2"];
-  v11 = [v7 valueForKey:@"tier3"];
-  v12 = [v7 valueForKey:@"tier4"];
-  v13 = [v7 valueForKey:@"firstTimeStamp"];
-  v14 = [v7 valueForKey:@"timeStamp"];
+  sourceCopy = source;
+  kindCopy = kind;
+  presentationCopy = presentation;
+  v19 = [sourceCopy valueForKey:@"timeOfDaySlot"];
+  v18 = [sourceCopy valueForKey:@"dayOfWeek"];
+  v10 = [sourceCopy valueForKey:@"tier1"];
+  v17 = [sourceCopy valueForKey:@"tier2"];
+  v11 = [sourceCopy valueForKey:@"tier3"];
+  v12 = [sourceCopy valueForKey:@"tier4"];
+  v13 = [sourceCopy valueForKey:@"firstTimeStamp"];
+  v14 = [sourceCopy valueForKey:@"timeStamp"];
 
-  v15 = [v20 dictionaryWithObjectsAndKeys:{v9, v8, v19, @"daySlot", v18, @"weekSlot", v10, @"tier1", v17, @"tier2", v11, @"tier3", v12, @"tier4", v13, @"sinceTime", v14, @"lastTime", 0}];
+  v15 = [v20 dictionaryWithObjectsAndKeys:{presentationCopy, kindCopy, v19, @"daySlot", v18, @"weekSlot", v10, @"tier1", v17, @"tier2", v11, @"tier3", v12, @"tier4", v13, @"sinceTime", v14, @"lastTime", 0}];
 
   return v15;
 }
 
-- (void)_batchFetchCallbackWithResults:(id)a3 logPrefix:(const char *)a4 entityName:(id)a5 pred:(id)a6 service:(id)a7 limit:(unint64_t)a8 offset:(unint64_t)a9 container:(id)a10 actions:(id)a11 reply:(id)a12
+- (void)_batchFetchCallbackWithResults:(id)results logPrefix:(const char *)prefix entityName:(id)name pred:(id)pred service:(id)service limit:(unint64_t)limit offset:(unint64_t)offset container:(id)self0 actions:(id)self1 reply:(id)self2
 {
   v50 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  v31 = a11;
-  v22 = a12;
-  if (v17)
+  resultsCopy = results;
+  nameCopy = name;
+  predCopy = pred;
+  serviceCopy = service;
+  containerCopy = container;
+  actionsCopy = actions;
+  replyCopy = reply;
+  if (resultsCopy)
   {
-    [v21 addObjectsFromArray:v17];
+    [containerCopy addObjectsFromArray:resultsCopy];
   }
 
   else
@@ -1060,30 +1060,30 @@ LABEL_13:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v43 = a4;
+      prefixCopy4 = prefix;
       v44 = 2112;
-      v45 = v18;
+      v45 = nameCopy;
       _os_log_impl(&dword_1C85F9000, v23, OS_LOG_TYPE_DEFAULT, "%s: [%@] Received nil results array for the callback", buf, 0x16u);
     }
   }
 
-  if ([v17 count] >= a8)
+  if ([resultsCopy count] >= limit)
   {
-    v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a9 + a8];
-    [v31 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69D52A8]];
+    limit = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:offset + limit];
+    [actionsCopy setObject:limit forKeyedSubscript:*MEMORY[0x1E69D52A8]];
 
     v27 = usageLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v17 count];
+      v28 = [resultsCopy count];
       *buf = 136315906;
-      v43 = a4;
+      prefixCopy4 = prefix;
       v44 = 2112;
-      v45 = v18;
+      v45 = nameCopy;
       v46 = 2048;
       v47 = v28;
       v48 = 2048;
-      v49 = a9 + a8;
+      v49 = offset + limit;
       _os_log_impl(&dword_1C85F9000, v27, OS_LOG_TYPE_DEFAULT, "%s: [%@] Fetched records in this batch %lu, starting next batch from offset %lu", buf, 0x2Au);
     }
 
@@ -1092,15 +1092,15 @@ LABEL_13:
     v32[2] = __115__UsageFeed__batchFetchCallbackWithResults_logPrefix_entityName_pred_service_limit_offset_container_actions_reply___block_invoke;
     v32[3] = &unk_1E83193C8;
     v32[4] = self;
-    v39 = a4;
-    v33 = v18;
-    v34 = v19;
-    v35 = v20;
-    v40 = a8;
-    v41 = a9 + a8;
-    v36 = v21;
-    v37 = v31;
-    v38 = v22;
+    prefixCopy3 = prefix;
+    v33 = nameCopy;
+    v34 = predCopy;
+    v35 = serviceCopy;
+    limitCopy = limit;
+    v41 = offset + limit;
+    v36 = containerCopy;
+    v37 = actionsCopy;
+    v38 = replyCopy;
     [v35 performQueryOnEntity:v33 pred:v34 sort:0 actions:v37 reply:v32];
   }
 
@@ -1109,19 +1109,19 @@ LABEL_13:
     v24 = usageLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v17 count];
+      v25 = [resultsCopy count];
       *buf = 136315650;
-      v43 = a4;
+      prefixCopy4 = prefix;
       v44 = 2112;
-      v45 = v18;
+      v45 = nameCopy;
       v46 = 2048;
       v47 = v25;
       _os_log_impl(&dword_1C85F9000, v24, OS_LOG_TYPE_DEFAULT, "%s: [%@] Fetched records in last batch %lu, no more fetches left", buf, 0x20u);
     }
 
-    if (v22)
+    if (replyCopy)
     {
-      (*(v22 + 2))(v22, v21, 0);
+      (*(replyCopy + 2))(replyCopy, containerCopy, 0);
     }
   }
 
@@ -1152,41 +1152,41 @@ void __80__UsageFeed_prepProcessDataFractionWithTag_andMetadata_from_until_pollI
   }
 }
 
-- (BOOL)networkBitmapsToDateWithOptionsFor:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 options:(id)a6 reply:(id)a7
+- (BOOL)networkBitmapsToDateWithOptionsFor:(id)for startTime:(unint64_t)time endTime:(unint64_t)endTime options:(id)options reply:(id)reply
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  forCopy = for;
+  optionsCopy = options;
+  replyCopy = reply;
   v15 = usageLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = MEMORY[0x1CCA78840](v14);
+    v16 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138413314;
-    v30 = v12;
+    v30 = forCopy;
     v31 = 2048;
-    v32 = a4;
+    timeCopy2 = time;
     v33 = 2048;
-    v34 = a5;
+    endTimeCopy2 = endTime;
     v35 = 2112;
-    v36 = v13;
+    v36 = optionsCopy;
     v37 = 2048;
     v38 = v16;
     _os_log_impl(&dword_1C85F9000, v15, OS_LOG_TYPE_DEBUG, "> networkBitmapsToDateWithOptionsFor:%@ startTime:%llu endTime:%llu options:%@ reply:%p", buf, 0x34u);
   }
 
-  if (v14)
+  if (replyCopy)
   {
-    if (a4 == -1 || a5 > a4 && a5 - a4 > 7)
+    if (time == -1 || endTime > time && endTime - time > 7)
     {
-      v17 = [(AnalyticsWorkspace *)self->workspace connection];
+      connection = [(AnalyticsWorkspace *)self->workspace connection];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __80__UsageFeed_networkBitmapsToDateWithOptionsFor_startTime_endTime_options_reply___block_invoke;
       v27[3] = &unk_1E8318D20;
-      v18 = v14;
+      v18 = replyCopy;
       v28 = v18;
-      v19 = [v17 remoteObjectProxyWithErrorHandler:v27];
+      v19 = [connection remoteObjectProxyWithErrorHandler:v27];
 
       v20 = v19 != 0;
       if (v19)
@@ -1195,13 +1195,13 @@ void __80__UsageFeed_prepProcessDataFractionWithTag_andMetadata_from_until_pollI
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138413058;
-          v30 = v12;
+          v30 = forCopy;
           v31 = 2048;
-          v32 = a4;
+          timeCopy2 = time;
           v33 = 2048;
-          v34 = a5;
+          endTimeCopy2 = endTime;
           v35 = 2112;
-          v36 = v13;
+          v36 = optionsCopy;
           _os_log_impl(&dword_1C85F9000, v21, OS_LOG_TYPE_DEBUG, "getNetworkBitmapsWithNames:%@ startTime:%llu endTime:%llu options:%@", buf, 0x2Au);
         }
 
@@ -1210,7 +1210,7 @@ void __80__UsageFeed_prepProcessDataFractionWithTag_andMetadata_from_until_pollI
         v25[2] = __80__UsageFeed_networkBitmapsToDateWithOptionsFor_startTime_endTime_options_reply___block_invoke_406;
         v25[3] = &unk_1E8318D98;
         v26 = v18;
-        [v19 getNetworkBitmapsWithNames:v12 startTime:a4 endTime:a5 options:v13 reply:v25];
+        [v19 getNetworkBitmapsWithNames:forCopy startTime:time endTime:endTime options:optionsCopy reply:v25];
       }
 
       v22 = v28;
@@ -1219,7 +1219,7 @@ void __80__UsageFeed_prepProcessDataFractionWithTag_andMetadata_from_until_pollI
     else
     {
       v22 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-      (*(v14 + 2))(v14, 0, v22);
+      (*(replyCopy + 2))(replyCopy, 0, v22);
       v20 = 0;
     }
   }
@@ -1268,58 +1268,58 @@ void __80__UsageFeed_networkBitmapsToDateWithOptionsFor_startTime_endTime_option
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)usageToDateFor:(id)a3 nameKind:(id)a4 reply:(id)a5
+- (BOOL)usageToDateFor:(id)for nameKind:(id)kind reply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  kindCopy = kind;
+  replyCopy = reply;
   v11 = usageLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = MEMORY[0x1CCA78840](v10);
+    v12 = MEMORY[0x1CCA78840](replyCopy);
     v16 = 138412802;
-    v17 = v8;
+    v17 = forCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = kindCopy;
     v20 = 2048;
     v21 = v12;
     _os_log_impl(&dword_1C85F9000, v11, OS_LOG_TYPE_DEBUG, "> usageToDateFor:%@ nameKind:%@ reply:%p", &v16, 0x20u);
   }
 
-  v13 = [(UsageFeed *)self usageToDateWithOptionsFor:v8 nameKind:v9 options:0 reply:v10];
+  v13 = [(UsageFeed *)self usageToDateWithOptionsFor:forCopy nameKind:kindCopy options:0 reply:replyCopy];
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (BOOL)usageToDateWithOptionsFor:(id)a3 nameKind:(id)a4 options:(id)a5 reply:(id)a6
+- (BOOL)usageToDateWithOptionsFor:(id)for nameKind:(id)kind options:(id)options reply:(id)reply
 {
   v117 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  forCopy = for;
+  kindCopy = kind;
+  optionsCopy = options;
+  replyCopy = reply;
   v14 = usageLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = MEMORY[0x1CCA78840](v13);
+    v15 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138413058;
-    v110 = v10;
+    v110 = forCopy;
     v111 = 2112;
-    v112 = v11;
+    v112 = kindCopy;
     v113 = 2112;
-    v114 = v12;
+    v114 = optionsCopy;
     v115 = 2048;
     v116 = v15;
     _os_log_impl(&dword_1C85F9000, v14, OS_LOG_TYPE_DEBUG, "> usageToDateWithOptionsFor:%@ nameKind:%@ options:%@ reply:%p", buf, 0x2Au);
   }
 
-  v16 = [v11 isEqualToString:@"procName"];
-  v17 = [v11 isEqualToString:@"bundleName"];
+  v16 = [kindCopy isEqualToString:@"procName"];
+  v17 = [kindCopy isEqualToString:@"bundleName"];
   if ((v16 & 1) != 0 || v17)
   {
     v108 = 0;
-    v19 = [(UsageFeed *)self _composeLiveUsagePredicateWithNames:v10 kind:v11 isProcNameKey:v16 isSweep:&v108];
+    v19 = [(UsageFeed *)self _composeLiveUsagePredicateWithNames:forCopy kind:kindCopy isProcNameKey:v16 isSweep:&v108];
     v18 = v19 != 0;
     if (!v19)
     {
@@ -1329,54 +1329,54 @@ LABEL_36:
     }
 
     [(UsageFeed *)self clearLoggingCounters];
-    v72 = v13;
-    v73 = v10;
-    v70 = v12;
+    v72 = replyCopy;
+    v73 = forCopy;
+    v70 = optionsCopy;
     v68 = v19;
-    if (v12)
+    if (optionsCopy)
     {
-      v20 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69D53A8]];
+      v20 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D53A8]];
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 BOOLValue];
+        bOOLValue = [v20 BOOLValue];
       }
 
       else
       {
-        v22 = 0;
+        bOOLValue = 0;
       }
 
-      v23 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69D53B0]];
+      v23 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D53B0]];
       v24 = v23;
       if (v23)
       {
-        v65 = [v23 unsignedIntValue];
+        unsignedIntValue = [v23 unsignedIntValue];
       }
 
       else
       {
-        v65 = 0;
+        unsignedIntValue = 0;
       }
 
-      v25 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69D5298]];
+      v25 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5298]];
       v26 = v25;
       if (v25)
       {
-        v63 = [v25 BOOLValue];
+        bOOLValue2 = [v25 BOOLValue];
       }
 
       else
       {
-        v63 = 0;
+        bOOLValue2 = 0;
       }
     }
 
     else
     {
-      v65 = 0;
-      v63 = 0;
-      v22 = 0;
+      unsignedIntValue = 0;
+      bOOLValue2 = 0;
+      bOOLValue = 0;
     }
 
     v67 = v18;
@@ -1386,53 +1386,53 @@ LABEL_36:
     v29 = MEMORY[0x1E69D53B8];
     if (v108 == 1)
     {
-      v30 = *MEMORY[0x1E69D53B8];
+      null = *MEMORY[0x1E69D53B8];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       if ((v108 & 1) == 0)
       {
-        v31 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
         v32 = 0;
         goto LABEL_24;
       }
     }
 
-    v31 = *v29;
+    null2 = *v29;
     v32 = 1;
 LABEL_24:
     v33 = *v27;
-    if (v22)
+    if (bOOLValue)
     {
-      v69 = [v74 initWithObjectsAndKeys:{v33, @"hasProcess.firstTimeStamp", v33, @"hasProcess.procName", v33, @"hasProcess.bundleName", v33, @"hasProcess.extensionName", v30, v31, *MEMORY[0x1E69D53A8], *MEMORY[0x1E69D53A8], 0}];
+      v69 = [v74 initWithObjectsAndKeys:{v33, @"hasProcess.firstTimeStamp", v33, @"hasProcess.procName", v33, @"hasProcess.bundleName", v33, @"hasProcess.extensionName", null, null2, *MEMORY[0x1E69D53A8], *MEMORY[0x1E69D53A8], 0}];
     }
 
     else
     {
-      v34 = [MEMORY[0x1E695DFB0] null];
-      v35 = [MEMORY[0x1E695DFB0] null];
-      v69 = [v74 initWithObjectsAndKeys:{v33, @"hasProcess.firstTimeStamp", v33, @"hasProcess.procName", v33, @"hasProcess.bundleName", v33, @"hasProcess.extensionName", v30, v31, v34, v35, 0}];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      v69 = [v74 initWithObjectsAndKeys:{v33, @"hasProcess.firstTimeStamp", v33, @"hasProcess.procName", v33, @"hasProcess.bundleName", v33, @"hasProcess.extensionName", null, null2, null3, null4, 0}];
     }
 
     if ((v32 & 1) == 0)
     {
     }
 
-    v71 = v11;
+    v71 = kindCopy;
     if ((v28 & 1) == 0)
     {
     }
 
-    v36 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v106[0] = MEMORY[0x1E69E9820];
     v106[1] = 3221225472;
     v106[2] = __62__UsageFeed_usageToDateWithOptionsFor_nameKind_options_reply___block_invoke;
     v106[3] = &unk_1E8318D20;
     v37 = v72;
     v107 = v37;
-    v75 = [v36 remoteObjectProxyWithErrorHandler:v106];
+    v75 = [connection remoteObjectProxyWithErrorHandler:v106];
 
     v38 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v39 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1444,14 +1444,14 @@ LABEL_24:
     v95[3] = &unk_1E8319410;
     v95[4] = self;
     v104 = v16;
-    v105 = v63;
+    v105 = bOOLValue2;
     v96 = v73;
-    v97 = v11;
-    v12 = v70;
+    v97 = kindCopy;
+    optionsCopy = v70;
     v98 = v70;
     v42 = v38;
     v99 = v42;
-    v103 = v65;
+    v103 = unsignedIntValue;
     v43 = v41;
     v100 = v43;
     v44 = v39;
@@ -1465,12 +1465,12 @@ LABEL_24:
     v86[3] = &unk_1E8319460;
     v66 = v42;
     v87 = v66;
-    v88 = self;
-    v47 = self;
+    selfCopy = self;
+    selfCopy2 = self;
     v93 = v16;
     v48 = v44;
     v89 = v48;
-    v94 = v63;
+    v94 = bOOLValue2;
     v49 = v45;
     v90 = v49;
     v50 = v43;
@@ -1481,8 +1481,8 @@ LABEL_24:
     if (v75)
     {
       v62 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      LimitFor = [(UsageFeed *)v47 _batchFetchLimitForDatabase];
-      v56 = [MEMORY[0x1E69D5140] entityName];
+      LimitFor = [(UsageFeed *)selfCopy2 _batchFetchLimitForDatabase];
+      entityName = [MEMORY[0x1E69D5140] entityName];
       v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:LimitFor];
       [v69 setObject:v57 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
@@ -1503,8 +1503,8 @@ LABEL_24:
       v76[1] = 3221225472;
       v76[2] = __62__UsageFeed_usageToDateWithOptionsFor_nameKind_options_reply___block_invoke_449;
       v76[3] = &unk_1E83194B0;
-      v76[4] = v47;
-      v77 = v56;
+      v76[4] = selfCopy2;
+      v77 = entityName;
       v78 = v68;
       v84 = LimitFor;
       v85 = 0;
@@ -1514,12 +1514,12 @@ LABEL_24:
       v82 = v46;
       v83 = v51;
       v60 = v62;
-      v61 = v56;
+      v61 = entityName;
       [v79 performQueryOnEntity:v61 pred:v78 sort:0 actions:v81 reply:v76];
 
       v19 = v68;
-      v10 = v73;
-      v12 = v70;
+      forCopy = v73;
+      optionsCopy = v70;
     }
 
     else
@@ -1531,14 +1531,14 @@ LABEL_24:
         _os_log_impl(&dword_1C85F9000, v52, OS_LOG_TYPE_DEBUG, "nil XPC service (local query)", buf, 2u);
       }
 
-      [(UsageFeed *)v47 displayLoggingCounters:@"usageToDateWithOptionsFor: service was nil"];
+      [(UsageFeed *)selfCopy2 displayLoggingCounters:@"usageToDateWithOptionsFor: service was nil"];
       v19 = v68;
-      [(UsageFeed *)v47 _processLiveUsageWithPredicate:v68 attributesBlock:v46 outcomeBlock:v51];
-      v10 = v73;
+      [(UsageFeed *)selfCopy2 _processLiveUsageWithPredicate:v68 attributesBlock:v46 outcomeBlock:v51];
+      forCopy = v73;
     }
 
-    v11 = v71;
-    v13 = v72;
+    kindCopy = v71;
+    replyCopy = v72;
     v18 = v67;
 
     goto LABEL_36;
@@ -1886,37 +1886,37 @@ void __62__UsageFeed_usageToDateWithOptionsFor_nameKind_options_reply___block_in
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)typicalUsageFor:(id)a3 nameKind:(id)a4 intervalKind:(unsigned int)a5 reply:(id)a6
+- (BOOL)typicalUsageFor:(id)for nameKind:(id)kind intervalKind:(unsigned int)intervalKind reply:(id)reply
 {
   v88 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  forCopy = for;
+  kindCopy = kind;
+  replyCopy = reply;
   v13 = usageLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = MEMORY[0x1CCA78840](v12);
+    v14 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138413058;
-    v81 = v10;
+    v81 = forCopy;
     v82 = 2112;
-    v83 = v11;
+    v83 = kindCopy;
     v84 = 1024;
-    v85 = a5;
+    intervalKindCopy = intervalKind;
     v86 = 2048;
     v87 = v14;
     _os_log_impl(&dword_1C85F9000, v13, OS_LOG_TYPE_DEBUG, "> typicalUsageFor:%@ nameKind:%@ intervalKind:%d reply:%p", buf, 0x26u);
   }
 
   v78 = 0;
-  v15 = [v11 isEqualToString:@"bundleName"];
+  v15 = [kindCopy isEqualToString:@"bundleName"];
   v16 = 0;
-  if (!a5 && v15)
+  if (!intervalKind && v15)
   {
     [(UsageFeed *)self clearLoggingCounters];
     v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-    if (v10)
+    if (forCopy)
     {
-      v18 = [v10 count] == 1;
+      v18 = [forCopy count] == 1;
     }
 
     else
@@ -1926,7 +1926,7 @@ void __62__UsageFeed_usageToDateWithOptionsFor_nameKind_options_reply___block_in
 
     v77 = 0;
     v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %lu", @"intervalType", 0];
-    v20 = [(UsageFeed *)self _composePredicateLineWithName:v10 keyPath:@"hasApp.bundleName" isSweep:&v78 wantGeneric:v18 gotGeneric:&v77];
+    v20 = [(UsageFeed *)self _composePredicateLineWithName:forCopy keyPath:@"hasApp.bundleName" isSweep:&v78 wantGeneric:v18 gotGeneric:&v77];
     v21 = v20;
     if (v19)
     {
@@ -1947,8 +1947,8 @@ LABEL_43:
     }
 
     v63 = v16;
-    v65 = v11;
-    v68 = v10;
+    v65 = kindCopy;
+    v68 = forCopy;
     v62 = v19;
     [v17 addObject:v19];
     v61 = v21;
@@ -1959,28 +1959,28 @@ LABEL_43:
     v59 = MEMORY[0x1E695DF20];
     v24 = v78;
     v25 = MEMORY[0x1E69D53B8];
-    v67 = v12;
+    v67 = replyCopy;
     if (v78 == 1)
     {
-      v26 = *MEMORY[0x1E69D53B8];
+      null = *MEMORY[0x1E69D53B8];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       if ((v78 & 1) == 0)
       {
-        v27 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
         v28 = 0;
         goto LABEL_20;
       }
     }
 
-    v27 = *v25;
+    null2 = *v25;
     v28 = 1;
 LABEL_20:
     v29 = *v23;
-    v10 = v68;
+    forCopy = v68;
     if (v77 == 1)
     {
       [v68 anyObject];
@@ -1994,13 +1994,13 @@ LABEL_20:
     v31 = v30;
     if (v77 == 1)
     {
-      v32 = [v59 dictionaryWithObjectsAndKeys:{v29, @"hasApp.bundleName", v26, v27, v30, *MEMORY[0x1E69D5360], 0}];
+      v32 = [v59 dictionaryWithObjectsAndKeys:{v29, @"hasApp.bundleName", null, null2, v30, *MEMORY[0x1E69D5360], 0}];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      v32 = [v59 dictionaryWithObjectsAndKeys:{v29, @"hasApp.bundleName", v26, v27, v31, v33, 0}];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      v32 = [v59 dictionaryWithObjectsAndKeys:{v29, @"hasApp.bundleName", null, null2, v31, null3, 0}];
     }
 
     if ((v28 & 1) == 0)
@@ -2011,15 +2011,15 @@ LABEL_20:
     {
     }
 
-    v34 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v75[0] = MEMORY[0x1E69E9820];
     v75[1] = 3221225472;
     v75[2] = __57__UsageFeed_typicalUsageFor_nameKind_intervalKind_reply___block_invoke;
     v75[3] = &unk_1E8318D20;
-    v12 = v67;
+    replyCopy = v67;
     v35 = v67;
     v76 = v35;
-    v36 = [v34 remoteObjectProxyWithErrorHandler:v75];
+    v36 = [connection remoteObjectProxyWithErrorHandler:v75];
 
     if (v36)
     {
@@ -2031,7 +2031,7 @@ LABEL_20:
         _os_log_impl(&dword_1C85F9000, v37, OS_LOG_TYPE_DEBUG, "performQueryOnEntity:AppTypicalUsage pred:pred sort:nil actions:%@", buf, 0xCu);
       }
 
-      v38 = [MEMORY[0x1E69D5178] entityName];
+      entityName = [MEMORY[0x1E69D5178] entityName];
       v73[0] = MEMORY[0x1E69E9820];
       v73[1] = 3221225472;
       v73[2] = __57__UsageFeed_typicalUsageFor_nameKind_intervalKind_reply___block_invoke_470;
@@ -2039,10 +2039,10 @@ LABEL_20:
       v73[4] = self;
       v74 = v35;
       v39 = v66;
-      [v36 performQueryOnEntity:v38 pred:v66 sort:0 actions:v32 reply:v73];
+      [v36 performQueryOnEntity:entityName pred:v66 sort:0 actions:v32 reply:v73];
 
       v17 = v64;
-      v11 = v65;
+      kindCopy = v65;
       v16 = v63;
       v21 = v61;
       v19 = v62;
@@ -2054,8 +2054,8 @@ LABEL_20:
       v60 = v32;
       v40 = objc_alloc(MEMORY[0x1E69D5150]);
       workspace = self->workspace;
-      v42 = [MEMORY[0x1E69D5178] entityName];
-      v43 = [v40 initWithWorkspace:workspace entityName:v42 withCache:0];
+      entityName2 = [MEMORY[0x1E69D5178] entityName];
+      v43 = [v40 initWithWorkspace:workspace entityName:entityName2 withCache:0];
 
       v57 = v43;
       v44 = [v43 fetchEntitiesFreeForm:v66 sortDesc:0];
@@ -2080,9 +2080,9 @@ LABEL_20:
             }
 
             v51 = *(*(&v69 + 1) + 8 * i);
-            v52 = [v51 hasApp];
-            v53 = [v52 bundleName];
-            v54 = [(UsageFeed *)self _typicalUsagePresentation:v53 nameKind:@"bundleName" source:v51];
+            hasApp = [v51 hasApp];
+            bundleName = [hasApp bundleName];
+            v54 = [(UsageFeed *)self _typicalUsagePresentation:bundleName nameKind:@"bundleName" source:v51];
 
             [v45 addObject:v54];
           }
@@ -2096,10 +2096,10 @@ LABEL_20:
       [(UsageFeed *)self displayLoggingCounters:@"typicalUsageFor: service is nil"];
       v58[2](v58, v45);
 
-      v12 = v67;
-      v10 = v68;
+      replyCopy = v67;
+      forCopy = v68;
       v17 = v64;
-      v11 = v65;
+      kindCopy = v65;
       v16 = v63;
       v21 = v61;
       v19 = v62;
@@ -2442,37 +2442,37 @@ void __76__UsageFeed_calendarUsageFor_nameKind_dayResolution_daySlot_weekSlot_re
   [*(a1 + 40) addObject:v7];
 }
 
-- (BOOL)algosScoreToDateWithOptionsFor:(id)a3 nameKind:(id)a4 startTime:(id)a5 options:(id)a6 reply:(id)a7
+- (BOOL)algosScoreToDateWithOptionsFor:(id)for nameKind:(id)kind startTime:(id)time options:(id)options reply:(id)reply
 {
   v58 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  forCopy = for;
+  kindCopy = kind;
+  timeCopy = time;
+  optionsCopy = options;
+  replyCopy = reply;
   v17 = usageLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = MEMORY[0x1CCA78840](v16);
+    v18 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138413314;
-    v49 = v12;
+    v49 = forCopy;
     v50 = 2112;
-    v51 = v13;
+    v51 = kindCopy;
     v52 = 2112;
-    v53 = v14;
+    v53 = timeCopy;
     v54 = 2112;
-    v55 = v15;
+    v55 = optionsCopy;
     v56 = 2048;
     v57 = v18;
     _os_log_impl(&dword_1C85F9000, v17, OS_LOG_TYPE_DEBUG, "> algosScoreToDateWithOptionsFor:%@ nameKind:%@ startTime:%@ options:%@ reply:%p", buf, 0x34u);
   }
 
-  if (v16 && [v13 isEqualToString:@"bundleName"])
+  if (replyCopy && [kindCopy isEqualToString:@"bundleName"])
   {
     v47 = 0;
-    if (v12)
+    if (forCopy)
     {
-      v19 = [v12 count] == 1;
+      v19 = [forCopy count] == 1;
     }
 
     else
@@ -2481,7 +2481,7 @@ void __76__UsageFeed_calendarUsageFor_nameKind_dayResolution_daySlot_weekSlot_re
     }
 
     v46 = 0;
-    v21 = [(UsageFeed *)self _composePredicateLineWithName:v12 keyPath:@"hasApp.bundleName" isSweep:&v47 wantGeneric:v19 gotGeneric:&v46];
+    v21 = [(UsageFeed *)self _composePredicateLineWithName:forCopy keyPath:@"hasApp.bundleName" isSweep:&v47 wantGeneric:v19 gotGeneric:&v46];
     if (!v21)
     {
       v20 = 0;
@@ -2497,27 +2497,27 @@ LABEL_31:
     v37 = v47;
     if (v47 == 1)
     {
-      v38 = *MEMORY[0x1E69D53B8];
+      null = *MEMORY[0x1E69D53B8];
     }
 
     else
     {
-      v38 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       if ((v47 & 1) == 0)
       {
-        v24 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
         v36 = 0;
         goto LABEL_16;
       }
     }
 
-    v24 = *v23;
+    null2 = *v23;
     v36 = 1;
 LABEL_16:
     v25 = *v22;
     if (v46 == 1)
     {
-      [v12 anyObject];
+      [forCopy anyObject];
     }
 
     else
@@ -2528,13 +2528,13 @@ LABEL_16:
     v27 = v26;
     if (v46 == 1)
     {
-      v40 = [v39 dictionaryWithObjectsAndKeys:{v25, @"hasApp.bundleName", v38, v24, v26, *MEMORY[0x1E69D5360], 0}];
+      v40 = [v39 dictionaryWithObjectsAndKeys:{v25, @"hasApp.bundleName", null, null2, v26, *MEMORY[0x1E69D5360], 0}];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      v40 = [v39 dictionaryWithObjectsAndKeys:{v25, @"hasApp.bundleName", v38, v24, v27, v28, 0}];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      v40 = [v39 dictionaryWithObjectsAndKeys:{v25, @"hasApp.bundleName", null, null2, v27, null3, 0}];
     }
 
     if ((v36 & 1) == 0)
@@ -2545,14 +2545,14 @@ LABEL_16:
     {
     }
 
-    v29 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __77__UsageFeed_algosScoreToDateWithOptionsFor_nameKind_startTime_options_reply___block_invoke;
     v44[3] = &unk_1E8318D20;
-    v30 = v16;
+    v30 = replyCopy;
     v45 = v30;
-    v31 = [v29 remoteObjectProxyWithErrorHandler:v44];
+    v31 = [connection remoteObjectProxyWithErrorHandler:v44];
 
     v20 = v31 != 0;
     if (v31)
@@ -2567,13 +2567,13 @@ LABEL_16:
         _os_log_impl(&dword_1C85F9000, v32, OS_LOG_TYPE_DEBUG, "performQueryOnEntity:AppExperience pred:%@ sort:nil actions:%@", buf, 0x16u);
       }
 
-      v33 = [MEMORY[0x1E69D5170] entityName];
+      entityName = [MEMORY[0x1E69D5170] entityName];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __77__UsageFeed_algosScoreToDateWithOptionsFor_nameKind_startTime_options_reply___block_invoke_492;
       v42[3] = &unk_1E8319500;
       v43 = v30;
-      [v31 performQueryOnEntity:v33 pred:v41 sort:0 actions:v40 reply:v42];
+      [v31 performQueryOnEntity:entityName pred:v41 sort:0 actions:v40 reply:v42];
     }
 
     v21 = v41;
@@ -2730,30 +2730,30 @@ LABEL_26:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setUsageOption:(id)a3 reply:(id)a4
+- (BOOL)setUsageOption:(id)option reply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionCopy = option;
+  replyCopy = reply;
   v8 = usageLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v22 = v6;
+    v22 = optionCopy;
     v23 = 2048;
     v24 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> setUsageOption:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(AnalyticsWorkspace *)self->workspace connection];
+  connection = [(AnalyticsWorkspace *)self->workspace connection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __34__UsageFeed_setUsageOption_reply___block_invoke;
   v19[3] = &unk_1E8318D20;
-  v11 = v7;
+  v11 = replyCopy;
   v20 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v19];
+  v12 = [connection remoteObjectProxyWithErrorHandler:v19];
 
   if (v12)
   {
@@ -2762,7 +2762,7 @@ LABEL_26:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v22 = v6;
+      v22 = optionCopy;
       v23 = 2112;
       v24 = v13;
       _os_log_impl(&dword_1C85F9000, v14, OS_LOG_TYPE_DEBUG, "setOption:%@ inScopes:%@", buf, 0x16u);
@@ -2773,7 +2773,7 @@ LABEL_26:
     v17[2] = __34__UsageFeed_setUsageOption_reply___block_invoke_493;
     v17[3] = &unk_1E8319528;
     v18 = v11;
-    [v12 setOption:v6 inScopes:v13 reply:v17];
+    [v12 setOption:optionCopy inScopes:v13 reply:v17];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -2812,30 +2812,30 @@ void __34__UsageFeed_setUsageOption_reply___block_invoke_493(uint64_t a1, void *
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getUsageOption:(id)a3 reply:(id)a4
+- (BOOL)getUsageOption:(id)option reply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionCopy = option;
+  replyCopy = reply;
   v8 = usageLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v22 = v6;
+    v22 = optionCopy;
     v23 = 2048;
     v24 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> getUsageOption:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(AnalyticsWorkspace *)self->workspace connection];
+  connection = [(AnalyticsWorkspace *)self->workspace connection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __34__UsageFeed_getUsageOption_reply___block_invoke;
   v19[3] = &unk_1E8318D20;
-  v11 = v7;
+  v11 = replyCopy;
   v20 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v19];
+  v12 = [connection remoteObjectProxyWithErrorHandler:v19];
 
   if (v12)
   {
@@ -2844,7 +2844,7 @@ void __34__UsageFeed_setUsageOption_reply___block_invoke_493(uint64_t a1, void *
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v22 = v6;
+      v22 = optionCopy;
       v23 = 2112;
       v24 = v13;
       _os_log_impl(&dword_1C85F9000, v14, OS_LOG_TYPE_DEBUG, "getOption:%@ inScopes:%@", buf, 0x16u);
@@ -2855,7 +2855,7 @@ void __34__UsageFeed_setUsageOption_reply___block_invoke_493(uint64_t a1, void *
     v17[2] = __34__UsageFeed_getUsageOption_reply___block_invoke_494;
     v17[3] = &unk_1E8319528;
     v18 = v11;
-    [v12 getOption:v6 inScopes:v13 reply:v17];
+    [v12 getOption:optionCopy inScopes:v13 reply:v17];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -2894,45 +2894,45 @@ void __34__UsageFeed_getUsageOption_reply___block_invoke_494(uint64_t a1, void *
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)resetUsageDataFor:(id)a3 nameKind:(id)a4 reply:(id)a5
+- (BOOL)resetUsageDataFor:(id)for nameKind:(id)kind reply:(id)reply
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  kindCopy = kind;
+  replyCopy = reply;
   v11 = usageLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = MEMORY[0x1CCA78840](v10);
+    v12 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138478339;
-    v26 = v8;
+    v26 = forCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = kindCopy;
     v29 = 2048;
     v30 = v12;
     _os_log_impl(&dword_1C85F9000, v11, OS_LOG_TYPE_DEBUG, "> resetUsageDataFor:%{private}@ nameKind:%@ reply:%p", buf, 0x20u);
   }
 
-  v13 = [(AnalyticsWorkspace *)self->workspace connection];
+  connection = [(AnalyticsWorkspace *)self->workspace connection];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __46__UsageFeed_resetUsageDataFor_nameKind_reply___block_invoke;
   v23[3] = &unk_1E8318D20;
-  v14 = v10;
+  v14 = replyCopy;
   v24 = v14;
-  v15 = [v13 remoteObjectProxyWithErrorHandler:v23];
+  v15 = [connection remoteObjectProxyWithErrorHandler:v23];
 
   if (v15)
   {
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{*MEMORY[0x1E69D53C0], 0}];
-    v17 = [v8 allObjects];
+    allObjects = [forCopy allObjects];
     v18 = usageLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v26 = v17;
+      v26 = allObjects;
       v27 = 2112;
-      v28 = v9;
+      v28 = kindCopy;
       v29 = 2112;
       v30 = v16;
       _os_log_impl(&dword_1C85F9000, v18, OS_LOG_TYPE_DEBUG, "resetDataFor:%@ nameKind:%@ inScopes:%@", buf, 0x20u);
@@ -2943,7 +2943,7 @@ void __34__UsageFeed_getUsageOption_reply___block_invoke_494(uint64_t a1, void *
     v21[2] = __46__UsageFeed_resetUsageDataFor_nameKind_reply___block_invoke_495;
     v21[3] = &unk_1E8318D70;
     v22 = v14;
-    [v15 resetDataFor:v17 nameKind:v9 inScopes:v16 reply:v21];
+    [v15 resetDataFor:allObjects nameKind:kindCopy inScopes:v16 reply:v21];
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -2982,34 +2982,34 @@ uint64_t __46__UsageFeed_resetUsageDataFor_nameKind_reply___block_invoke_495(uin
   return result;
 }
 
-- (BOOL)identifierForUUID:(id)a3 reply:(id)a4
+- (BOOL)identifierForUUID:(id)d reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v8 = usageLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v23 = v6;
+    v23 = dCopy;
     v24 = 2048;
     v25 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> identifierForUUID:%@ reply:%p", buf, 0x16u);
   }
 
-  v10 = [(AnalyticsWorkspace *)self->workspace connection];
+  connection = [(AnalyticsWorkspace *)self->workspace connection];
 
-  if (v10)
+  if (connection)
   {
-    v11 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection2 = [(AnalyticsWorkspace *)self->workspace connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __37__UsageFeed_identifierForUUID_reply___block_invoke;
     v20[3] = &unk_1E8318D20;
-    v12 = v7;
+    v12 = replyCopy;
     v21 = v12;
-    v13 = [v11 remoteObjectProxyWithErrorHandler:v20];
+    v13 = [connection2 remoteObjectProxyWithErrorHandler:v20];
 
     v14 = v13 != 0;
     if (v13)
@@ -3018,7 +3018,7 @@ uint64_t __46__UsageFeed_resetUsageDataFor_nameKind_reply___block_invoke_495(uin
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v23 = v6;
+        v23 = dCopy;
         _os_log_impl(&dword_1C85F9000, v15, OS_LOG_TYPE_DEBUG, "identifierForUUID:%@", buf, 0xCu);
       }
 
@@ -3027,7 +3027,7 @@ uint64_t __46__UsageFeed_resetUsageDataFor_nameKind_reply___block_invoke_495(uin
       v18[2] = __37__UsageFeed_identifierForUUID_reply___block_invoke_497;
       v18[3] = &unk_1E8319550;
       v19 = v12;
-      [v13 identifierForUUID:v6 reply:v18];
+      [v13 identifierForUUID:dCopy reply:v18];
     }
   }
 
@@ -3069,18 +3069,18 @@ void __37__UsageFeed_identifierForUUID_reply___block_invoke_497(uint64_t a1, voi
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performNetDomainsQueryOnService:(id)a3 entityName:(id)a4 fetchProps:(id)a5 pred:(id)a6 sort:(id)a7 actions:(id)a8 queryTimer:(id)a9 replyProcessBlock:(id)a10 accumulatedResults:(id)a11 callbackBlock:(id)a12
+- (void)_performNetDomainsQueryOnService:(id)service entityName:(id)name fetchProps:(id)props pred:(id)pred sort:(id)sort actions:(id)actions queryTimer:(id)timer replyProcessBlock:(id)self0 accumulatedResults:(id)self1 callbackBlock:(id)self2
 {
   v63 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v37 = a10;
-  v22 = a11;
-  v23 = a12;
+  serviceCopy = service;
+  nameCopy = name;
+  propsCopy = props;
+  predCopy = pred;
+  sortCopy = sort;
+  actionsCopy = actions;
+  blockCopy = block;
+  resultsCopy = results;
+  callbackBlockCopy = callbackBlock;
   v51[0] = 0;
   v51[1] = v51;
   v51[2] = 0x3032000000;
@@ -3096,9 +3096,9 @@ void __37__UsageFeed_identifierForUUID_reply___block_invoke_497(uint64_t a1, voi
   handler[3] = &unk_1E8319578;
   v26 = v24;
   v47 = v26;
-  v27 = v17;
+  v27 = nameCopy;
   v48 = v27;
-  v28 = v19;
+  v28 = predCopy;
   v49 = v28;
   v50 = v51;
   dispatch_source_set_event_handler(v26, handler);
@@ -3117,13 +3117,13 @@ void __37__UsageFeed_identifierForUUID_reply___block_invoke_497(uint64_t a1, voi
     *buf = 138413314;
     v54 = v27;
     v55 = 2112;
-    v56 = v18;
+    v56 = propsCopy;
     v57 = 2112;
     v58 = v28;
     v59 = 2112;
-    v60 = v20;
+    v60 = sortCopy;
     v61 = 2112;
-    v62 = v21;
+    v62 = actionsCopy;
     _os_log_impl(&dword_1C85F9000, v30, OS_LOG_TYPE_DEBUG, "performQueryOnEntity:%@ fetchRequestProperties:%@ pred:%@ sort:%@ actions:%@", buf, 0x34u);
   }
 
@@ -3135,14 +3135,14 @@ void __37__UsageFeed_identifierForUUID_reply___block_invoke_497(uint64_t a1, voi
   v40 = v31;
   v32 = v27;
   v41 = v32;
-  v33 = v22;
+  v33 = resultsCopy;
   v42 = v33;
-  v34 = v37;
+  v34 = blockCopy;
   v43 = v34;
-  v35 = v23;
+  v35 = callbackBlockCopy;
   v44 = v35;
   v45 = v51;
-  [v38 performQueryOnEntity:v32 fetchRequestProperties:v18 pred:v28 sort:v20 actions:v21 reply:v39];
+  [serviceCopy performQueryOnEntity:v32 fetchRequestProperties:propsCopy pred:v28 sort:sortCopy actions:actionsCopy reply:v39];
 
   _Block_object_dispose(v51, 8);
   v36 = *MEMORY[0x1E69E9840];
@@ -3266,23 +3266,23 @@ void __164__UsageFeed_NetworkDomains___performNetDomainsQueryOnService_entityNam
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)networkDomainsToDateWithOptionsFor:(id)a3 nameKind:(id)a4 domainType:(unsigned __int16)a5 startTime:(id)a6 options:(id)a7 fetchProperties:(id)a8 reply:(id)a9
+- (BOOL)networkDomainsToDateWithOptionsFor:(id)for nameKind:(id)kind domainType:(unsigned __int16)type startTime:(id)time options:(id)options fetchProperties:(id)properties reply:(id)reply
 {
   v82 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v45 = a4;
-  v46 = a6;
-  v14 = a7;
-  v50 = a8;
-  v15 = a9;
+  forCopy = for;
+  kindCopy = kind;
+  timeCopy = time;
+  optionsCopy = options;
+  propertiesCopy = properties;
+  replyCopy = reply;
   v16 = usageLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = MEMORY[0x1CCA78840](v15);
+    v17 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412802;
-    v73 = v14;
+    v73 = optionsCopy;
     v74 = 2112;
-    v75 = v50;
+    v75 = propertiesCopy;
     v76 = 2048;
     v77 = v17;
     _os_log_impl(&dword_1C85F9000, v16, OS_LOG_TYPE_DEBUG, "> networkDomainsToDateWithOptionsFor:nameKind:domainType:startTime: options:%@ fetchProperties:%@ reply:%p", buf, 0x20u);
@@ -3299,23 +3299,23 @@ void __164__UsageFeed_NetworkDomains___performNetDomainsQueryOnService_entityNam
   v63[2] = __124__UsageFeed_NetworkDomains__networkDomainsToDateWithOptionsFor_nameKind_domainType_startTime_options_fetchProperties_reply___block_invoke;
   v63[3] = &unk_1E83195C8;
   v65 = &v66;
-  v47 = v15;
+  v47 = replyCopy;
   v64 = v47;
   v18 = MEMORY[0x1CCA78840](v63);
-  v19 = [(AnalyticsWorkspace *)self->workspace connection];
+  connection = [(AnalyticsWorkspace *)self->workspace connection];
   v61[0] = MEMORY[0x1E69E9820];
   v61[1] = 3221225472;
   v61[2] = __124__UsageFeed_NetworkDomains__networkDomainsToDateWithOptionsFor_nameKind_domainType_startTime_options_fetchProperties_reply___block_invoke_580;
   v61[3] = &unk_1E8318D20;
   v20 = v18;
   v62 = v20;
-  v21 = [v19 remoteObjectProxyWithErrorHandler:v61];
+  v21 = [connection remoteObjectProxyWithErrorHandler:v61];
 
   if (v21)
   {
-    v22 = [MEMORY[0x1E69D5160] entityName];
+    entityName = [MEMORY[0x1E69D5160] entityName];
     v23 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{*MEMORY[0x1E69D53B8], 0}];
-    v24 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5248]];
+    v24 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5248]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3327,7 +3327,7 @@ void __164__UsageFeed_NetworkDomains___performNetDomainsQueryOnService_entityNam
       v49 = 0;
     }
 
-    v25 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5240]];
+    v25 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5240]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3339,23 +3339,23 @@ void __164__UsageFeed_NetworkDomains___performNetDomainsQueryOnService_entityNam
       v48 = 0;
     }
 
-    v26 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5238]];
+    v26 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5238]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v27 = v24;
       v28 = v26;
-      v29 = [v28 integerValue];
+      integerValue = [v28 integerValue];
 
       v24 = v27;
     }
 
     else
     {
-      v29 = 0;
+      integerValue = 0;
     }
 
-    v30 = [MEMORY[0x1E696AD98] numberWithInteger:v29];
+    v30 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
     [v23 setObject:v30 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
     v43 = v24;
 
@@ -3378,7 +3378,7 @@ void __164__UsageFeed_NetworkDomains___performNetDomainsQueryOnService_entityNam
     handler[2] = __124__UsageFeed_NetworkDomains__networkDomainsToDateWithOptionsFor_nameKind_domainType_startTime_options_fetchProperties_reply___block_invoke_583;
     handler[3] = &unk_1E83195F0;
     v57 = &v66;
-    v36 = v22;
+    v36 = entityName;
     v56 = v36;
     v58 = v59;
     dispatch_source_set_event_handler(v35, handler);
@@ -3398,7 +3398,7 @@ void __164__UsageFeed_NetworkDomains___performNetDomainsQueryOnService_entityNam
       *buf = 138413314;
       v73 = v36;
       v74 = 2112;
-      v75 = v50;
+      v75 = propertiesCopy;
       v76 = 2112;
       v77 = v48;
       v78 = 2112;
@@ -3416,7 +3416,7 @@ void __164__UsageFeed_NetworkDomains___performNetDomainsQueryOnService_entityNam
     v40 = v36;
     v52 = v40;
     v54 = v59;
-    [v21 performQueryOnEntity:v40 fetchRequestProperties:v50 pred:v48 sort:v49 actions:v23 reply:v51];
+    [v21 performQueryOnEntity:v40 fetchRequestProperties:propertiesCopy pred:v48 sort:v49 actions:v23 reply:v51];
 
     _Block_object_dispose(v59, 8);
   }
@@ -3560,35 +3560,35 @@ void __124__UsageFeed_NetworkDomains__networkDomainsToDateWithOptionsFor_nameKin
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)networkDomainsToDateWithOptionsFor:(id)a3 nameKind:(id)a4 domainType:(unsigned __int16)a5 startTime:(id)a6 options:(id)a7 reply:(id)a8
+- (BOOL)networkDomainsToDateWithOptionsFor:(id)for nameKind:(id)kind domainType:(unsigned __int16)type startTime:(id)time options:(id)options reply:(id)reply
 {
   v78 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v56 = a6;
-  v14 = a7;
-  v15 = a8;
+  forCopy = for;
+  kindCopy = kind;
+  timeCopy = time;
+  optionsCopy = options;
+  replyCopy = reply;
   v16 = usageLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = MEMORY[0x1CCA78840](v15);
+    v17 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138413314;
-    *&buf[4] = v12;
+    *&buf[4] = forCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = kindCopy;
     *&buf[22] = 2112;
-    v76 = v56;
+    v76 = timeCopy;
     *v77 = 2112;
-    *&v77[2] = v14;
+    *&v77[2] = optionsCopy;
     *&v77[10] = 2048;
     *&v77[12] = v17;
     _os_log_impl(&dword_1C85F9000, v16, OS_LOG_TYPE_DEBUG, "> networkDomainsToDateWithOptionsFor:%@ nameKind:%@ domainType: startTime:%@ options:%@ reply:%p", buf, 0x34u);
   }
 
-  if (v15 && [v13 isEqualToString:@"bundleName"])
+  if (replyCopy && [kindCopy isEqualToString:@"bundleName"])
   {
     v70 = 0;
-    v54 = [(UsageFeed *)self _composePredicateLineWithName:v12 keyPath:@"bundleName" isSweep:&v70 + 1 wantGeneric:0 gotGeneric:&v70];
+    v54 = [(UsageFeed *)self _composePredicateLineWithName:forCopy keyPath:@"bundleName" isSweep:&v70 + 1 wantGeneric:0 gotGeneric:&v70];
     if (!v54)
     {
       v19 = 0;
@@ -3618,15 +3618,15 @@ LABEL_80:
     v58[3] = &unk_1E8319640;
     v60 = buf;
     v61 = v68;
-    v59 = v15;
+    v59 = replyCopy;
     v67 = MEMORY[0x1CCA78840](v58);
-    v18 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __108__UsageFeed_NetworkDomains__networkDomainsToDateWithOptionsFor_nameKind_domainType_startTime_options_reply___block_invoke_587;
     v57[3] = &unk_1E8319668;
     v57[4] = &v62;
-    v53 = [v18 remoteObjectProxyWithErrorHandler:v57];
+    v53 = [connection remoteObjectProxyWithErrorHandler:v57];
 
     v19 = v53 != 0;
     if (!v53)
@@ -3640,26 +3640,26 @@ LABEL_79:
       goto LABEL_80;
     }
 
-    v43 = [MEMORY[0x1E69D5160] entityName];
+    entityName = [MEMORY[0x1E69D5160] entityName];
     v20 = HIBYTE(v70);
     v21 = MEMORY[0x1E69D53B8];
     v49 = MEMORY[0x1E695DF90];
     if (HIBYTE(v70) == 1)
     {
-      v51 = *MEMORY[0x1E69D53B8];
+      null = *MEMORY[0x1E69D53B8];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       if ((v70 & 0x100) == 0)
       {
-        v22 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
         v47 = 0;
 LABEL_14:
         if (v70 == 1)
         {
-          [v12 anyObject];
+          [forCopy anyObject];
         }
 
         else
@@ -3670,15 +3670,15 @@ LABEL_14:
         v24 = v70;
         if (v70 == 1)
         {
-          v25 = *MEMORY[0x1E69D5360];
+          null3 = *MEMORY[0x1E69D5360];
         }
 
         else
         {
-          v25 = [MEMORY[0x1E695DFB0] null];
+          null3 = [MEMORY[0x1E695DFB0] null];
         }
 
-        v42 = [v49 dictionaryWithObjectsAndKeys:{*MEMORY[0x1E69D5208], @"bundleName", v51, v22, v23, v25, 0}];
+        v42 = [v49 dictionaryWithObjectsAndKeys:{*MEMORY[0x1E69D5208], @"bundleName", null, null2, v23, null3, 0}];
         if ((v24 & 1) == 0)
         {
         }
@@ -3692,33 +3692,33 @@ LABEL_14:
         {
         }
 
-        v52 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5258]];
+        v52 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5258]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v26 = v52;
-          v27 = [v26 integerValue];
+          integerValue = [v26 integerValue];
         }
 
         else
         {
-          v27 = 0;
+          integerValue = 0;
         }
 
-        v28 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5238]];
+        v28 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5238]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v29 = v28;
-          v41 = [v29 integerValue];
+          integerValue2 = [v29 integerValue];
         }
 
         else
         {
-          v41 = 0;
+          integerValue2 = 0;
         }
 
-        v50 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5220]];
+        v50 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5220]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -3730,7 +3730,7 @@ LABEL_14:
           v40 = 0;
         }
 
-        v48 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5230]];
+        v48 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5230]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -3742,7 +3742,7 @@ LABEL_14:
           v38 = 0;
         }
 
-        v46 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5260]];
+        v46 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5260]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -3754,108 +3754,108 @@ LABEL_14:
           v39 = 0;
         }
 
-        v45 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5228]];
+        v45 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5228]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v30 = [v45 integerValue];
+          integerValue3 = [v45 integerValue];
         }
 
         else
         {
-          v30 = 3;
+          integerValue3 = 3;
         }
 
-        v44 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69D5250]];
+        v44 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69D5250]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v31 = [v44 integerValue];
+          integerValue4 = [v44 integerValue];
         }
 
         else
         {
-          v31 = 0;
+          integerValue4 = 0;
         }
 
         v32 = usageLogHandle();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
           *v71 = 134218240;
-          v72 = v27;
+          v72 = integerValue;
           v73 = 2048;
-          v74 = v41;
+          v74 = integerValue2;
           _os_log_impl(&dword_1C85F9000, v32, OS_LOG_TYPE_INFO, "Processing request for view type: %ld with limit: %ld", v71, 0x16u);
         }
 
-        if (v27 > 5)
+        if (integerValue > 5)
         {
-          if (v27 <= 8)
+          if (integerValue <= 8)
           {
-            if (v27 == 6)
+            if (integerValue == 6)
             {
-              [(UsageFeed *)self _networkDomainsQueryViewTypeAppDomainsOtherContent:v53 entityName:v43 bundleIdentifier:v40 unnamedDomainsOption:v31 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeAppDomainsOtherContent:v53 entityName:entityName bundleIdentifier:v40 unnamedDomainsOption:integerValue4 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
             }
 
-            else if (v27 == 7)
+            else if (integerValue == 7)
             {
-              [(UsageFeed *)self _networkDomainsQueryViewTypeWebsiteHits:v53 entityName:v43 website:v39 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeWebsiteHits:v53 entityName:entityName website:v39 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
             }
 
             else
             {
-              [(UsageFeed *)self _networkDomainsQueryViewTypeWebsiteDomains:v53 entityName:v43 website:v39 unnamedDomainsOption:v31 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeWebsiteDomains:v53 entityName:entityName website:v39 unnamedDomainsOption:integerValue4 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
             }
 
             goto LABEL_78;
           }
 
-          switch(v27)
+          switch(integerValue)
           {
             case 9:
-              [(UsageFeed *)self _networkDomainsQueryViewTypeWebsiteApps:v53 entityName:v43 website:v39 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeWebsiteApps:v53 entityName:entityName website:v39 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
               goto LABEL_78;
             case 10:
-              [(UsageFeed *)self _networkDomainsQueryViewTypeDomainApps:v53 entityName:v43 domain:v38 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeDomainApps:v53 entityName:entityName domain:v38 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
               goto LABEL_78;
             case 11:
-              [(UsageFeed *)self _networkDomainsQueryViewTypeDomainWebsites:v53 entityName:v43 domain:v38 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeDomainWebsites:v53 entityName:entityName domain:v38 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
               goto LABEL_78;
           }
         }
 
         else
         {
-          if (v27 > 2)
+          if (integerValue > 2)
           {
-            if (v27 == 3)
+            if (integerValue == 3)
             {
-              [(UsageFeed *)self _networkDomainsQueryViewTypeDomain:v53 entityName:v43 unnamedDomainsOption:v31 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeDomain:v53 entityName:entityName unnamedDomainsOption:integerValue4 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
             }
 
-            else if (v27 == 4)
+            else if (integerValue == 4)
             {
-              [(UsageFeed *)self _networkDomainsQueryViewTypeAppDomains:v53 entityName:v43 bundleIdentifier:v40 unnamedDomainsOption:v31 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeAppDomains:v53 entityName:entityName bundleIdentifier:v40 unnamedDomainsOption:integerValue4 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
             }
 
             else
             {
-              [(UsageFeed *)self _networkDomainsQueryViewTypeAppWebsites:v53 entityName:v43 bundleIdentifier:v40 verificationContext:v30 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeAppWebsites:v53 entityName:entityName bundleIdentifier:v40 verificationContext:integerValue3 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
             }
 
             goto LABEL_78;
           }
 
-          switch(v27)
+          switch(integerValue)
           {
             case 0:
-              [(UsageFeed *)self _legacyNetworkDomainsQueryOnService:v53 entityName:v43 pred:v54 limit:150 actions:v42 options:v14 postProcessingBlock:v63[5]];
+              [(UsageFeed *)self _legacyNetworkDomainsQueryOnService:v53 entityName:entityName pred:v54 limit:150 actions:v42 options:optionsCopy postProcessingBlock:v63[5]];
               goto LABEL_78;
             case 1:
-              [(UsageFeed *)self _networkDomainsQueryViewTypeApp:v53 entityName:v43 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeApp:v53 entityName:entityName limit:integerValue2 actions:v42 callbackBlock:v63[5]];
               goto LABEL_78;
             case 2:
-              [(UsageFeed *)self _networkDomainsQueryViewTypeWebsite:v53 entityName:v43 verificationContext:v30 limit:v41 actions:v42 callbackBlock:v63[5]];
+              [(UsageFeed *)self _networkDomainsQueryViewTypeWebsite:v53 entityName:entityName verificationContext:integerValue3 limit:integerValue2 actions:v42 callbackBlock:v63[5]];
 LABEL_78:
 
               goto LABEL_79;
@@ -3866,7 +3866,7 @@ LABEL_78:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           *v71 = 134217984;
-          v72 = v27;
+          v72 = integerValue;
           _os_log_impl(&dword_1C85F9000, v33, OS_LOG_TYPE_ERROR, "Currently unable to process view type: %ld", v71, 0xCu);
         }
 
@@ -3882,7 +3882,7 @@ LABEL_78:
       }
     }
 
-    v22 = *v21;
+    null2 = *v21;
     v47 = 1;
     goto LABEL_14;
   }
@@ -3985,13 +3985,13 @@ void __108__UsageFeed_NetworkDomains__networkDomainsToDateWithOptionsFor_nameKin
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_networkDomainsQueryViewTypeApp:(id)a3 entityName:(id)a4 limit:(unint64_t)a5 actions:(id)a6 callbackBlock:(id)a7
+- (void)_networkDomainsQueryViewTypeApp:(id)app entityName:(id)name limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v30 = a7;
+  appCopy = app;
+  nameCopy = name;
+  actionsCopy = actions;
+  blockCopy = block;
   v32 = countOfDistinctKeyDescriptor();
   v14 = entityKeyPathForNameDescriptor();
   v15 = objc_alloc_init(MEMORY[0x1E69D5138]);
@@ -4007,27 +4007,27 @@ void __108__UsageFeed_NetworkDomains__networkDomainsToDateWithOptionsFor_nameKin
   v28 = [v17 andPredicateWithSubpredicates:v18];
 
   v19 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"count" ascending:0];
-  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  [v13 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v20 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __100__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeApp_entityName_limit_actions_callbackBlock___block_invoke;
   v33[3] = &unk_1E8319740;
-  v39 = v12;
-  v40 = a5;
+  v39 = nameCopy;
+  limitCopy = limit;
   v34 = v14;
   v35 = v16;
-  v36 = v13;
-  v37 = self;
-  v38 = v11;
-  v21 = v12;
-  v22 = v11;
-  v23 = v13;
+  v36 = actionsCopy;
+  selfCopy = self;
+  v38 = appCopy;
+  v21 = nameCopy;
+  v22 = appCopy;
+  v23 = actionsCopy;
   v24 = v16;
   v25 = v14;
   v26 = MEMORY[0x1CCA78840](v33);
-  [(UsageFeed *)self _performNetDomainsQueryOnService:v22 entityName:v21 fetchProps:v15 pred:v28 sort:v19 actions:v23 queryTimer:0 replyProcessBlock:v26 accumulatedResults:0 callbackBlock:v30];
+  [(UsageFeed *)self _performNetDomainsQueryOnService:v22 entityName:v21 fetchProps:v15 pred:v28 sort:v19 actions:v23 queryTimer:0 replyProcessBlock:v26 accumulatedResults:0 callbackBlock:blockCopy];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -4162,14 +4162,14 @@ uint64_t __100__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeApp_entity
   return 0;
 }
 
-- (void)__networkDomainsQueryWebsites:(id)a3 entityName:(id)a4 verificationContext:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 viewPredicate:(id)a8 callbackBlock:(id)a9
+- (void)__networkDomainsQueryWebsites:(id)websites entityName:(id)name verificationContext:(int64_t)context limit:(unint64_t)limit actions:(id)actions viewPredicate:(id)predicate callbackBlock:(id)block
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v32 = a8;
-  v13 = a9;
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
+  predicateCopy = predicate;
+  blockCopy = block;
+  actionsCopy = actions;
+  nameCopy = name;
+  websitesCopy = websites;
   v17 = countOfDistinctKeyDescriptor();
   v18 = *MEMORY[0x1E69D5280];
   v19 = functionOnKeyDescriptor();
@@ -4180,12 +4180,12 @@ uint64_t __100__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeApp_entity
   [v20 addGroupByProperty:@"context"];
   [v20 addFetchProperty:@"context"];
   v21 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:v18 ascending:0];
-  v22 = (*(predicateForVerificationContext + 2))(predicateForVerificationContext, a5, v20);
+  v22 = (*(predicateForVerificationContext + 2))(predicateForVerificationContext, context, v20);
   v23 = v22;
   if (v22)
   {
     v24 = MEMORY[0x1E696AB28];
-    v33[0] = v32;
+    v33[0] = predicateCopy;
     v33[1] = v22;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     v26 = [v24 andPredicateWithSubpredicates:v25];
@@ -4193,48 +4193,48 @@ uint64_t __100__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeApp_entity
 
   else
   {
-    v26 = v32;
+    v26 = predicateCopy;
   }
 
-  v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v14 setObject:v27 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v27 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
-  [(UsageFeed *)self _performNetDomainsQueryOnService:v16 entityName:v15 fetchProps:v20 pred:v26 sort:v21 actions:v14 queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:v13];
+  [(UsageFeed *)self _performNetDomainsQueryOnService:websitesCopy entityName:nameCopy fetchProps:v20 pred:v26 sort:v21 actions:actionsCopy queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:blockCopy];
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_networkDomainsQueryViewTypeWebsite:(id)a3 entityName:(id)a4 verificationContext:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8
+- (void)_networkDomainsQueryViewTypeWebsite:(id)website entityName:(id)name verificationContext:(int64_t)context limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v14 = MEMORY[0x1E696AE18];
-  v15 = a8;
-  v16 = a7;
-  v17 = a4;
-  v18 = a3;
+  blockCopy = block;
+  actionsCopy = actions;
+  nameCopy = name;
+  websiteCopy = website;
   v19 = [v14 predicateWithFormat:@"kind == %d AND context != ''", 2];
-  [(UsageFeed *)self __networkDomainsQueryWebsites:v18 entityName:v17 verificationContext:a5 limit:a6 actions:v16 viewPredicate:v19 callbackBlock:v15];
+  [(UsageFeed *)self __networkDomainsQueryWebsites:websiteCopy entityName:nameCopy verificationContext:context limit:limit actions:actionsCopy viewPredicate:v19 callbackBlock:blockCopy];
 }
 
-- (void)__networkDomainsQueryDomains:(id)a3 entityName:(id)a4 unnamedDomainsOption:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 accumulatedResults:(id)a8 aggregateProperty:(id)a9 predicate:(id)a10 altAggregateProperty:(id)a11 altPredicate:(id)a12 ipAggregateProperty:(id)a13 replyProcessBlock:(id)a14 callbackBlock:(id)a15
+- (void)__networkDomainsQueryDomains:(id)domains entityName:(id)name unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions accumulatedResults:(id)results aggregateProperty:(id)property predicate:(id)self0 altAggregateProperty:(id)self1 altPredicate:(id)self2 ipAggregateProperty:(id)self3 replyProcessBlock:(id)self4 callbackBlock:(id)self5
 {
   v72[2] = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v48 = a4;
-  v18 = a7;
-  v58 = a8;
-  v19 = a10;
-  v54 = a11;
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
+  domainsCopy = domains;
+  nameCopy = name;
+  actionsCopy = actions;
+  resultsCopy = results;
+  predicateCopy = predicate;
+  aggregatePropertyCopy = aggregateProperty;
+  altPredicateCopy = altPredicate;
+  ipAggregatePropertyCopy = ipAggregateProperty;
+  blockCopy = block;
   v23 = MEMORY[0x1E69D5138];
-  v55 = a15;
-  v24 = a9;
+  callbackBlockCopy = callbackBlock;
+  propertyCopy = property;
   v25 = objc_alloc_init(v23);
-  [v25 addAggregateProperty:v24];
+  [v25 addAggregateProperty:propertyCopy];
 
-  if (v21)
+  if (ipAggregatePropertyCopy)
   {
-    [v25 addAggregateProperty:v21];
+    [v25 addAggregateProperty:ipAggregatePropertyCopy];
   }
 
   else
@@ -4249,12 +4249,12 @@ uint64_t __100__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeApp_entity
   v45 = v25;
   [v25 addFetchProperty:@"domainType"];
   v43 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"count" ascending:0];
-  v26 = (*(predicateForUnnamedDomains + 2))(predicateForUnnamedDomains, a5);
+  v26 = (*(predicateForUnnamedDomains + 2))(predicateForUnnamedDomains, option);
   v27 = v26;
   if (v26)
   {
     v28 = MEMORY[0x1E696AB28];
-    v72[0] = v19;
+    v72[0] = predicateCopy;
     v72[1] = v26;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:2];
     v47 = [v28 andPredicateWithSubpredicates:v29];
@@ -4262,16 +4262,16 @@ uint64_t __100__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeApp_entity
 
   else
   {
-    v47 = v19;
+    v47 = predicateCopy;
   }
 
-  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v18 setObject:v30 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v30 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
-  v57 = v19;
-  if (v58)
+  v57 = predicateCopy;
+  if (resultsCopy)
   {
-    v31 = v58;
+    v31 = resultsCopy;
   }
 
   else
@@ -4285,31 +4285,31 @@ uint64_t __100__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeApp_entity
   v59[2] = __237__UsageFeed_NetworkDomains____networkDomainsQueryDomains_entityName_unnamedDomainsOption_limit_actions_accumulatedResults_aggregateProperty_predicate_altAggregateProperty_altPredicate_ipAggregateProperty_replyProcessBlock_callbackBlock___block_invoke;
   v59[3] = &unk_1E8319808;
   v60 = v31;
-  v61 = v54;
-  v62 = v21;
+  v61 = aggregatePropertyCopy;
+  v62 = ipAggregatePropertyCopy;
   v63 = v27;
-  v70 = v22;
-  v71 = a6;
-  v64 = v20;
-  v65 = v18;
-  v66 = self;
-  v67 = v50;
-  v33 = v21;
-  v34 = v20;
-  v68 = v48;
+  v70 = blockCopy;
+  limitCopy = limit;
+  v64 = altPredicateCopy;
+  v65 = actionsCopy;
+  selfCopy = self;
+  v67 = domainsCopy;
+  v33 = ipAggregatePropertyCopy;
+  v34 = altPredicateCopy;
+  v68 = nameCopy;
   v69 = v43;
   v42 = v43;
-  v35 = v48;
-  v36 = v50;
-  v37 = v18;
-  v53 = v22;
+  v35 = nameCopy;
+  v36 = domainsCopy;
+  v37 = actionsCopy;
+  v53 = blockCopy;
   v51 = v34;
   v49 = v27;
   v44 = v33;
-  v38 = v54;
+  v38 = aggregatePropertyCopy;
   v39 = v32;
   v40 = MEMORY[0x1CCA78840](v59);
-  [(UsageFeed *)self _performNetDomainsQueryOnService:v36 entityName:v35 fetchProps:v45 pred:v47 sort:v42 actions:v37 queryTimer:0 replyProcessBlock:v40 accumulatedResults:0 callbackBlock:v55];
+  [(UsageFeed *)self _performNetDomainsQueryOnService:v36 entityName:v35 fetchProps:v45 pred:v47 sort:v42 actions:v37 queryTimer:0 replyProcessBlock:v40 accumulatedResults:0 callbackBlock:callbackBlockCopy];
 
   v41 = *MEMORY[0x1E69E9840];
 }
@@ -4766,12 +4766,12 @@ void __237__UsageFeed_NetworkDomains____networkDomainsQueryDomains_entityName_un
   [v2 addObject:v3];
 }
 
-- (void)_networkDomainsQueryViewTypeDomain:(id)a3 entityName:(id)a4 unnamedDomainsOption:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8
+- (void)_networkDomainsQueryViewTypeDomain:(id)domain entityName:(id)name unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v37 = a7;
-  v40 = a8;
+  domainCopy = domain;
+  nameCopy = name;
+  actionsCopy = actions;
+  blockCopy = block;
   v15 = countOfDistinctKeyDescriptor();
   v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d", 1];
   v17 = countOfDistinctKeyDescriptor();
@@ -4782,12 +4782,12 @@ void __237__UsageFeed_NetworkDomains____networkDomainsQueryDomains_entityName_un
   v54[2] = __124__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeDomain_entityName_unnamedDomainsOption_limit_actions_callbackBlock___block_invoke;
   v54[3] = &unk_1E8319830;
   v54[4] = self;
-  v19 = v13;
+  v19 = domainCopy;
   v55 = v19;
-  v20 = v14;
+  v20 = nameCopy;
   v56 = v20;
-  v62 = a6;
-  v21 = v37;
+  limitCopy = limit;
+  v21 = actionsCopy;
   v57 = v21;
   v22 = v15;
   v58 = v22;
@@ -4804,11 +4804,11 @@ void __237__UsageFeed_NetworkDomains____networkDomainsQueryDomains_entityName_un
   v42[3] = &unk_1E8319858;
   v43 = v23;
   v44 = v25;
-  v38 = self;
-  v45 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v46 = v19;
-  v52 = a5;
-  v53 = a6;
+  optionCopy = option;
+  limitCopy2 = limit;
   v47 = v20;
   v48 = v21;
   v49 = v22;
@@ -4823,7 +4823,7 @@ void __237__UsageFeed_NetworkDomains____networkDomainsQueryDomains_entityName_un
   v32 = v25;
   v33 = v23;
   v34 = MEMORY[0x1CCA78840](v42);
-  if (a6 || a5 == 1)
+  if (limit || option == 1)
   {
     v35 = MEMORY[0x1CCA78840]();
   }
@@ -4833,7 +4833,7 @@ void __237__UsageFeed_NetworkDomains____networkDomainsQueryDomains_entityName_un
     v35 = 0;
   }
 
-  [(UsageFeed *)v38 __networkDomainsQueryDomains:v31 entityName:v30 unnamedDomainsOption:a5 limit:a6 actions:v29 accumulatedResults:v39 aggregateProperty:v36 predicate:v32 altAggregateProperty:v28 altPredicate:v33 ipAggregateProperty:0 replyProcessBlock:v35 callbackBlock:v40];
+  [(UsageFeed *)selfCopy __networkDomainsQueryDomains:v31 entityName:v30 unnamedDomainsOption:option limit:limit actions:v29 accumulatedResults:v39 aggregateProperty:v36 predicate:v32 altAggregateProperty:v28 altPredicate:v33 ipAggregateProperty:0 replyProcessBlock:v35 callbackBlock:blockCopy];
 }
 
 uint64_t __124__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeDomain_entityName_unnamedDomainsOption_limit_actions_callbackBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4, void *a5)
@@ -4915,15 +4915,15 @@ void __124__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeDomain_entityN
   [v2 addObject:v3];
 }
 
-- (void)__networkDomainsQuerySecondLevelViewDomains:(id)a3 entityName:(id)a4 unnamedDomainsOption:(int64_t)a5 limit:(unint64_t)a6 actions:(id)a7 viewPredicate:(id)a8 callbackBlock:(id)a9
+- (void)__networkDomainsQuerySecondLevelViewDomains:(id)domains entityName:(id)name unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions viewPredicate:(id)predicate callbackBlock:(id)block
 {
   v62[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v47 = a4;
-  v15 = a7;
-  v16 = a8;
+  domainsCopy = domains;
+  nameCopy = name;
+  actionsCopy = actions;
+  predicateCopy = predicate;
   v17 = *MEMORY[0x1E69D5280];
-  v50 = a9;
+  blockCopy = block;
   v18 = functionOnKeyDescriptor();
   v19 = *MEMORY[0x1E69D5210];
   v20 = functionOnKeyDescriptor();
@@ -4937,41 +4937,41 @@ void __124__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeDomain_entityN
   [v21 addGroupByProperty:@"domainType"];
   [v21 addFetchProperty:@"domainType"];
   v22 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:v17 ascending:0];
-  v23 = (*(predicateForUnnamedDomains + 2))(predicateForUnnamedDomains, a5);
+  v23 = (*(predicateForUnnamedDomains + 2))(predicateForUnnamedDomains, option);
   v46 = v23;
   if (v23)
   {
     v44 = MEMORY[0x1E696AB28];
-    v62[0] = v16;
+    v62[0] = predicateCopy;
     v62[1] = v23;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
     v24 = v22;
     v25 = v20;
-    v26 = v15;
+    v26 = actionsCopy;
     v27 = v18;
-    v28 = v16;
-    v29 = a5;
-    v30 = a6;
-    v32 = v31 = v14;
+    v28 = predicateCopy;
+    optionCopy = option;
+    limitCopy = limit;
+    v32 = v31 = domainsCopy;
     v45 = [v44 andPredicateWithSubpredicates:v32];
 
-    v14 = v31;
-    a6 = v30;
-    a5 = v29;
-    v16 = v28;
+    domainsCopy = v31;
+    limit = limitCopy;
+    option = optionCopy;
+    predicateCopy = v28;
     v18 = v27;
-    v15 = v26;
+    actionsCopy = v26;
     v20 = v25;
     v22 = v24;
   }
 
   else
   {
-    v45 = v16;
+    v45 = predicateCopy;
   }
 
-  v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v15 setObject:v33 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v33 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v51[0] = MEMORY[0x1E69E9820];
@@ -4980,24 +4980,24 @@ void __124__UsageFeed_NetworkDomains___networkDomainsQueryViewTypeDomain_entityN
   v51[3] = &unk_1E8319880;
   v52 = v18;
   v53 = v20;
-  v54 = v16;
-  v55 = self;
-  v56 = v14;
-  v57 = v47;
+  v54 = predicateCopy;
+  selfCopy = self;
+  v56 = domainsCopy;
+  v57 = nameCopy;
   v58 = v22;
-  v59 = v15;
+  v59 = actionsCopy;
   v60 = v34;
-  v61 = a5;
+  optionCopy2 = option;
   v35 = v34;
-  v36 = v15;
+  v36 = actionsCopy;
   v37 = v22;
-  v38 = v47;
-  v39 = v14;
-  v48 = v16;
+  v38 = nameCopy;
+  v39 = domainsCopy;
+  v48 = predicateCopy;
   v43 = v20;
   v40 = v18;
   v41 = MEMORY[0x1CCA78840](v51);
-  [(UsageFeed *)self _performNetDomainsQueryOnService:v39 entityName:v38 fetchProps:v21 pred:v45 sort:v37 actions:v36 queryTimer:0 replyProcessBlock:v41 accumulatedResults:v35 callbackBlock:v50];
+  [(UsageFeed *)self _performNetDomainsQueryOnService:v39 entityName:v38 fetchProps:v21 pred:v45 sort:v37 actions:v36 queryTimer:0 replyProcessBlock:v41 accumulatedResults:v35 callbackBlock:blockCopy];
 
   v42 = *MEMORY[0x1E69E9840];
 }
@@ -5030,79 +5030,79 @@ BOOL __147__UsageFeed_NetworkDomains____networkDomainsQuerySecondLevelViewDomain
   return result;
 }
 
-- (void)_networkDomainsQueryViewTypeAppDomains:(id)a3 entityName:(id)a4 bundleIdentifier:(id)a5 unnamedDomainsOption:(int64_t)a6 limit:(unint64_t)a7 actions:(id)a8 callbackBlock:(id)a9
+- (void)_networkDomainsQueryViewTypeAppDomains:(id)domains entityName:(id)name bundleIdentifier:(id)identifier unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v16 = MEMORY[0x1E696AE18];
-  v17 = a9;
-  v18 = a8;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v16 predicateWithFormat:@"kind == %d AND bundleName == %@", 1, a5];
-  [(UsageFeed *)self __networkDomainsQuerySecondLevelViewDomains:v20 entityName:v19 unnamedDomainsOption:a6 limit:a7 actions:v18 viewPredicate:v21 callbackBlock:v17];
+  blockCopy = block;
+  actionsCopy = actions;
+  nameCopy = name;
+  domainsCopy = domains;
+  identifier = [v16 predicateWithFormat:@"kind == %d AND bundleName == %@", 1, identifier];
+  [(UsageFeed *)self __networkDomainsQuerySecondLevelViewDomains:domainsCopy entityName:nameCopy unnamedDomainsOption:option limit:limit actions:actionsCopy viewPredicate:identifier callbackBlock:blockCopy];
 }
 
-- (void)_networkDomainsQueryViewTypeAppWebsites:(id)a3 entityName:(id)a4 bundleIdentifier:(id)a5 verificationContext:(int64_t)a6 limit:(unint64_t)a7 actions:(id)a8 callbackBlock:(id)a9
+- (void)_networkDomainsQueryViewTypeAppWebsites:(id)websites entityName:(id)name bundleIdentifier:(id)identifier verificationContext:(int64_t)context limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v16 = MEMORY[0x1E696AE18];
-  v17 = a9;
-  v18 = a8;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v16 predicateWithFormat:@"kind == %d AND context != '' AND bundleName == %@", 2, a5];
-  [(UsageFeed *)self __networkDomainsQueryWebsites:v20 entityName:v19 verificationContext:a6 limit:a7 actions:v18 viewPredicate:v21 callbackBlock:v17];
+  blockCopy = block;
+  actionsCopy = actions;
+  nameCopy = name;
+  websitesCopy = websites;
+  identifier = [v16 predicateWithFormat:@"kind == %d AND context != '' AND bundleName == %@", 2, identifier];
+  [(UsageFeed *)self __networkDomainsQueryWebsites:websitesCopy entityName:nameCopy verificationContext:context limit:limit actions:actionsCopy viewPredicate:identifier callbackBlock:blockCopy];
 }
 
-- (void)_networkDomainsQueryViewTypeAppDomainsOtherContent:(id)a3 entityName:(id)a4 bundleIdentifier:(id)a5 unnamedDomainsOption:(int64_t)a6 limit:(unint64_t)a7 actions:(id)a8 callbackBlock:(id)a9
+- (void)_networkDomainsQueryViewTypeAppDomainsOtherContent:(id)content entityName:(id)name bundleIdentifier:(id)identifier unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v16 = MEMORY[0x1E696AE18];
-  v17 = a9;
-  v18 = a8;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v16 predicateWithFormat:@"context == '' AND kind == %d AND bundleName == %@", 2, a5];
-  [(UsageFeed *)self __networkDomainsQuerySecondLevelViewDomains:v20 entityName:v19 unnamedDomainsOption:a6 limit:a7 actions:v18 viewPredicate:v21 callbackBlock:v17];
+  blockCopy = block;
+  actionsCopy = actions;
+  nameCopy = name;
+  contentCopy = content;
+  identifier = [v16 predicateWithFormat:@"context == '' AND kind == %d AND bundleName == %@", 2, identifier];
+  [(UsageFeed *)self __networkDomainsQuerySecondLevelViewDomains:contentCopy entityName:nameCopy unnamedDomainsOption:option limit:limit actions:actionsCopy viewPredicate:identifier callbackBlock:blockCopy];
 }
 
-- (void)_networkDomainsQueryViewTypeWebsiteHits:(id)a3 entityName:(id)a4 website:(id)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8
+- (void)_networkDomainsQueryViewTypeWebsiteHits:(id)hits entityName:(id)name website:(id)website limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v14 = *MEMORY[0x1E69D5280];
-  v15 = a8;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  blockCopy = block;
+  actionsCopy = actions;
+  websiteCopy = website;
+  nameCopy = name;
+  hitsCopy = hits;
   v24 = functionOnKeyDescriptor();
   v20 = objc_alloc_init(MEMORY[0x1E69D5138]);
   [v20 addAggregateProperty:v24];
   [v20 addGroupByProperty:@"context"];
-  v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"*.%@", v17];
-  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"context == %@ AND (domain == %@ OR domain LIKE %@)", v17, v17, v21];
+  websiteCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"*.%@", websiteCopy];
+  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"context == %@ AND (domain == %@ OR domain LIKE %@)", websiteCopy, websiteCopy, websiteCopy];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v16 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v23 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
-  [(UsageFeed *)self _performNetDomainsQueryOnService:v19 entityName:v18 fetchProps:v20 pred:v22 sort:0 actions:v16 queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:v15];
+  [(UsageFeed *)self _performNetDomainsQueryOnService:hitsCopy entityName:nameCopy fetchProps:v20 pred:v22 sort:0 actions:actionsCopy queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:blockCopy];
 }
 
-- (void)_networkDomainsQueryViewTypeWebsiteDomains:(id)a3 entityName:(id)a4 website:(id)a5 unnamedDomainsOption:(int64_t)a6 limit:(unint64_t)a7 actions:(id)a8 callbackBlock:(id)a9
+- (void)_networkDomainsQueryViewTypeWebsiteDomains:(id)domains entityName:(id)name website:(id)website unnamedDomainsOption:(int64_t)option limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v16 = MEMORY[0x1E696AE18];
-  v17 = a9;
-  v18 = a8;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v16 predicateWithFormat:@"context == %@", a5];
-  [(UsageFeed *)self __networkDomainsQuerySecondLevelViewDomains:v20 entityName:v19 unnamedDomainsOption:a6 limit:a7 actions:v18 viewPredicate:v21 callbackBlock:v17];
+  blockCopy = block;
+  actionsCopy = actions;
+  nameCopy = name;
+  domainsCopy = domains;
+  website = [v16 predicateWithFormat:@"context == %@", website];
+  [(UsageFeed *)self __networkDomainsQuerySecondLevelViewDomains:domainsCopy entityName:nameCopy unnamedDomainsOption:option limit:limit actions:actionsCopy viewPredicate:website callbackBlock:blockCopy];
 }
 
-- (void)_networkDomainsQueryViewTypeWebsiteApps:(id)a3 entityName:(id)a4 website:(id)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8
+- (void)_networkDomainsQueryViewTypeWebsiteApps:(id)apps entityName:(id)name website:(id)website limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v12 = *MEMORY[0x1E69D5218];
-  v13 = a8;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  blockCopy = block;
+  actionsCopy = actions;
+  websiteCopy = website;
+  nameCopy = name;
+  appsCopy = apps;
   v27 = functionOnKeyDescriptor();
   v18 = *MEMORY[0x1E69D5210];
   v19 = functionOnKeyDescriptor();
@@ -5112,69 +5112,69 @@ BOOL __147__UsageFeed_NetworkDomains____networkDomainsQuerySecondLevelViewDomain
   [v21 addAggregateProperty:v20];
   [v21 addAggregateProperty:v19];
   [v21 addGroupByProperty:@"bundleName"];
-  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"context == %@ AND bundleName != NULL", v15];
+  websiteCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"context == %@ AND bundleName != NULL", websiteCopy];
 
   v23 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:v12 ascending:0];
-  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v14 setObject:v24 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v24 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
-  [(UsageFeed *)self _performNetDomainsQueryOnService:v17 entityName:v16 fetchProps:v21 pred:v22 sort:v23 actions:v14 queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:v13];
+  [(UsageFeed *)self _performNetDomainsQueryOnService:appsCopy entityName:nameCopy fetchProps:v21 pred:websiteCopy sort:v23 actions:actionsCopy queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:blockCopy];
 }
 
-- (void)_networkDomainsQueryViewTypeDomainApps:(id)a3 entityName:(id)a4 domain:(id)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8
+- (void)_networkDomainsQueryViewTypeDomainApps:(id)apps entityName:(id)name domain:(id)domain limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v13 = *MEMORY[0x1E69D5210];
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  blockCopy = block;
+  actionsCopy = actions;
+  domainCopy = domain;
+  nameCopy = name;
+  appsCopy = apps;
   v25 = functionOnKeyDescriptor();
   v19 = entityKeyPathForNameDescriptor();
   v20 = objc_alloc_init(MEMORY[0x1E69D5138]);
   [v20 addAggregateProperty:v25];
   [v20 addAggregateProperty:v19];
   [v20 addGroupByProperty:@"bundleName"];
-  v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"domain == %@ AND bundleName != NULL AND kind == %d", v16, 1];
+  v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"domain == %@ AND bundleName != NULL AND kind == %d", domainCopy, 1];
 
   v22 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:v13 ascending:0];
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v15 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v23 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
-  [(UsageFeed *)self _performNetDomainsQueryOnService:v18 entityName:v17 fetchProps:v20 pred:v21 sort:v22 actions:v15 queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:v14];
+  [(UsageFeed *)self _performNetDomainsQueryOnService:appsCopy entityName:nameCopy fetchProps:v20 pred:v21 sort:v22 actions:actionsCopy queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:blockCopy];
 }
 
-- (void)_networkDomainsQueryViewTypeDomainWebsites:(id)a3 entityName:(id)a4 domain:(id)a5 limit:(unint64_t)a6 actions:(id)a7 callbackBlock:(id)a8
+- (void)_networkDomainsQueryViewTypeDomainWebsites:(id)websites entityName:(id)name domain:(id)domain limit:(unint64_t)limit actions:(id)actions callbackBlock:(id)block
 {
   v14 = *MEMORY[0x1E69D5210];
-  v15 = a8;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  blockCopy = block;
+  actionsCopy = actions;
+  domainCopy = domain;
+  nameCopy = name;
+  websitesCopy = websites;
   v24 = functionOnKeyDescriptor();
   v20 = objc_alloc_init(MEMORY[0x1E69D5138]);
   [v20 addAggregateProperty:v24];
   [v20 addGroupByProperty:@"context"];
   [v20 addFetchProperty:@"context"];
-  v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"domain == %@ AND context != '' AND kind == %d", v17, 2];
+  v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"domain == %@ AND context != '' AND kind == %d", domainCopy, 2];
 
   v22 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:v14 ascending:0];
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v16 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v23 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
-  [(UsageFeed *)self _performNetDomainsQueryOnService:v19 entityName:v18 fetchProps:v20 pred:v21 sort:v22 actions:v16 queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:v15];
+  [(UsageFeed *)self _performNetDomainsQueryOnService:websitesCopy entityName:nameCopy fetchProps:v20 pred:v21 sort:v22 actions:actionsCopy queryTimer:0 replyProcessBlock:0 accumulatedResults:0 callbackBlock:blockCopy];
 }
 
-- (void)_legacyNetworkDomainsQueryOnService:(id)a3 entityName:(id)a4 pred:(id)a5 limit:(unint64_t)a6 actions:(id)a7 options:(id)a8 postProcessingBlock:(id)a9
+- (void)_legacyNetworkDomainsQueryOnService:(id)service entityName:(id)name pred:(id)pred limit:(unint64_t)limit actions:(id)actions options:(id)options postProcessingBlock:(id)block
 {
   v70 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v39 = a8;
-  v18 = a9;
+  serviceCopy = service;
+  nameCopy = name;
+  predCopy = pred;
+  actionsCopy = actions;
+  optionsCopy = options;
+  blockCopy = block;
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -5187,7 +5187,7 @@ BOOL __147__UsageFeed_NetworkDomains____networkDomainsQuerySecondLevelViewDomain
   v56[2] = 0x3032000000;
   v56[3] = __Block_byref_object_copy__1;
   v56[4] = __Block_byref_object_dispose__1;
-  v57 = MEMORY[0x1CCA78840](v18);
+  v57 = MEMORY[0x1CCA78840](blockCopy);
   v20 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
   v21 = v59[5];
   v59[5] = v20;
@@ -5201,7 +5201,7 @@ BOOL __147__UsageFeed_NetworkDomains____networkDomainsQuerySecondLevelViewDomain
   handler[2] = __123__UsageFeed_NetworkDomains___legacyNetworkDomainsQueryOnService_entityName_pred_limit_actions_options_postProcessingBlock___block_invoke;
   handler[3] = &unk_1E83195F0;
   v54 = &v58;
-  v25 = v15;
+  v25 = nameCopy;
   v53 = v25;
   v55 = v56;
   dispatch_source_set_event_handler(v24, handler);
@@ -5215,11 +5215,11 @@ BOOL __147__UsageFeed_NetworkDomains____networkDomainsQuerySecondLevelViewDomain
   }
 
   dispatch_activate(v59[5]);
-  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v17 setObject:v28 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
+  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  [actionsCopy setObject:v28 forKeyedSubscript:*MEMORY[0x1E69D52A0]];
 
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:0];
-  [v17 setObject:v29 forKeyedSubscript:*MEMORY[0x1E69D52A8]];
+  [actionsCopy setObject:v29 forKeyedSubscript:*MEMORY[0x1E69D52A8]];
 
   v30 = usageLogHandle();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -5227,7 +5227,7 @@ BOOL __147__UsageFeed_NetworkDomains____networkDomainsQuerySecondLevelViewDomain
     *buf = 138412802;
     v65 = v25;
     v66 = 2048;
-    v67 = a6;
+    limitCopy = limit;
     v68 = 2048;
     v69 = 0;
     _os_log_impl(&dword_1C85F9000, v30, OS_LOG_TYPE_DEFAULT, "%@: Will fetch %lu records per batch, starting first batch from offset %lu", buf, 0x20u);
@@ -5240,18 +5240,18 @@ BOOL __147__UsageFeed_NetworkDomains____networkDomainsQuerySecondLevelViewDomain
   v48 = &v58;
   v31 = v25;
   v41 = v31;
-  v42 = self;
-  v32 = v16;
+  selfCopy = self;
+  v32 = predCopy;
   v43 = v32;
-  v33 = v38;
+  v33 = serviceCopy;
   v44 = v33;
-  v50 = a6;
+  limitCopy2 = limit;
   v51 = 0;
   v34 = v19;
   v45 = v34;
-  v35 = v17;
+  v35 = actionsCopy;
   v46 = v35;
-  v36 = v39;
+  v36 = optionsCopy;
   v47 = v36;
   v49 = v56;
   [v33 performQueryOnEntity:v31 pred:v32 sort:0 actions:v35 reply:v40];
@@ -5529,45 +5529,45 @@ void __123__UsageFeed_NetworkDomains___legacyNetworkDomainsQueryOnService_entity
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setNetworkDomainsOptions:(id)a3 reply:(id)a4
+- (BOOL)setNetworkDomainsOptions:(id)options reply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v8 = usageLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v25 = v6;
+    v25 = optionsCopy;
     v26 = 2048;
     v27 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> setNetworkDomainsOptions:%@ reply:%p", buf, 0x16u);
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v10 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __60__UsageFeed_NetworkDomains__setNetworkDomainsOptions_reply___block_invoke;
     v20[3] = &unk_1E8318D20;
-    v11 = v7;
+    v11 = replyCopy;
     v21 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v20];
+    v12 = [connection remoteObjectProxyWithErrorHandler:v20];
 
     if (v12)
     {
       v22 = *MEMORY[0x1E69D5388];
-      v13 = [MEMORY[0x1E695DFB0] null];
-      v23 = v13;
+      null = [MEMORY[0x1E695DFB0] null];
+      v23 = null;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
       v15 = usageLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v25 = v6;
+        v25 = optionsCopy;
         v26 = 2112;
         v27 = v14;
         _os_log_impl(&dword_1C85F9000, v15, OS_LOG_TYPE_DEBUG, "setOption:%@ inScopes:%@", buf, 0x16u);
@@ -5578,12 +5578,12 @@ void __123__UsageFeed_NetworkDomains___legacyNetworkDomainsQueryOnService_entity
       v18[2] = __60__UsageFeed_NetworkDomains__setNetworkDomainsOptions_reply___block_invoke_702;
       v18[3] = &unk_1E8319528;
       v19 = v11;
-      [v12 setOption:v6 inScopes:v14 reply:v18];
+      [v12 setOption:optionsCopy inScopes:v14 reply:v18];
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v7 != 0;
+  return replyCopy != 0;
 }
 
 void __60__UsageFeed_NetworkDomains__setNetworkDomainsOptions_reply___block_invoke(uint64_t a1, void *a2)
@@ -5618,45 +5618,45 @@ void __60__UsageFeed_NetworkDomains__setNetworkDomainsOptions_reply___block_invo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getNetworkDomainsOptions:(id)a3 reply:(id)a4
+- (BOOL)getNetworkDomainsOptions:(id)options reply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v8 = usageLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v25 = v6;
+    v25 = optionsCopy;
     v26 = 2048;
     v27 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> getNetworkDomainsOptions:%@ reply:%p", buf, 0x16u);
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v10 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __60__UsageFeed_NetworkDomains__getNetworkDomainsOptions_reply___block_invoke;
     v20[3] = &unk_1E8318D20;
-    v11 = v7;
+    v11 = replyCopy;
     v21 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v20];
+    v12 = [connection remoteObjectProxyWithErrorHandler:v20];
 
     if (v12)
     {
       v22 = *MEMORY[0x1E69D5388];
-      v13 = [MEMORY[0x1E695DFB0] null];
-      v23 = v13;
+      null = [MEMORY[0x1E695DFB0] null];
+      v23 = null;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
       v15 = usageLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v25 = v6;
+        v25 = optionsCopy;
         v26 = 2112;
         v27 = v14;
         _os_log_impl(&dword_1C85F9000, v15, OS_LOG_TYPE_DEBUG, "getOption:%@ inScopes:%@", buf, 0x16u);
@@ -5667,12 +5667,12 @@ void __60__UsageFeed_NetworkDomains__setNetworkDomainsOptions_reply___block_invo
       v18[2] = __60__UsageFeed_NetworkDomains__getNetworkDomainsOptions_reply___block_invoke_703;
       v18[3] = &unk_1E8319528;
       v19 = v11;
-      [v12 getOption:v6 inScopes:v14 reply:v18];
+      [v12 getOption:optionsCopy inScopes:v14 reply:v18];
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v7 != 0;
+  return replyCopy != 0;
 }
 
 void __60__UsageFeed_NetworkDomains__getNetworkDomainsOptions_reply___block_invoke(uint64_t a1, void *a2)
@@ -5707,45 +5707,45 @@ void __60__UsageFeed_NetworkDomains__getNetworkDomainsOptions_reply___block_invo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)performNetworkDomainsActionWithOptions:(id)a3 reply:(id)a4
+- (BOOL)performNetworkDomainsActionWithOptions:(id)options reply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v8 = usageLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = MEMORY[0x1CCA78840](v7);
+    v9 = MEMORY[0x1CCA78840](replyCopy);
     *buf = 138412546;
-    v25 = v6;
+    v25 = optionsCopy;
     v26 = 2048;
     v27 = v9;
     _os_log_impl(&dword_1C85F9000, v8, OS_LOG_TYPE_DEBUG, "> performNetworkDomainsActionWithOptions:%@ reply:%p", buf, 0x16u);
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v10 = [(AnalyticsWorkspace *)self->workspace connection];
+    connection = [(AnalyticsWorkspace *)self->workspace connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_reply___block_invoke;
     v20[3] = &unk_1E8318D20;
-    v11 = v7;
+    v11 = replyCopy;
     v21 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v20];
+    v12 = [connection remoteObjectProxyWithErrorHandler:v20];
 
     if (v12)
     {
       v22 = *MEMORY[0x1E69D5388];
-      v13 = [MEMORY[0x1E695DFB0] null];
-      v23 = v13;
+      null = [MEMORY[0x1E695DFB0] null];
+      v23 = null;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
       v15 = usageLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v25 = v6;
+        v25 = optionsCopy;
         v26 = 2112;
         v27 = v14;
         _os_log_impl(&dword_1C85F9000, v15, OS_LOG_TYPE_DEBUG, "performActionWithOptions:%@ inScopes:%@", buf, 0x16u);
@@ -5756,12 +5756,12 @@ void __60__UsageFeed_NetworkDomains__getNetworkDomainsOptions_reply___block_invo
       v18[2] = __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_reply___block_invoke_704;
       v18[3] = &unk_1E8318D98;
       v19 = v11;
-      [v12 performActionWithOptions:v6 inScopes:v14 reply:v18];
+      [v12 performActionWithOptions:optionsCopy inScopes:v14 reply:v18];
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v7 != 0;
+  return replyCopy != 0;
 }
 
 void __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_reply___block_invoke(uint64_t a1, void *a2)
@@ -5799,23 +5799,23 @@ void __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_repl
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createEndpointEntryFrom:(id)a3 withKey:(id)a4 showDetails:(BOOL)a5
+- (id)createEndpointEntryFrom:(id)from withKey:(id)key showDetails:(BOOL)details
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  fromCopy = from;
+  keyCopy = key;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = v9;
-  if (v7 && v8)
+  if (fromCopy && keyCopy)
   {
-    [v9 setObject:v8 forKeyedSubscript:@"domain"];
-    v11 = [v7 objectForKeyedSubscript:v8];
+    [v9 setObject:keyCopy forKeyedSubscript:@"domain"];
+    v11 = [fromCopy objectForKeyedSubscript:keyCopy];
     if (v11)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v5)
+        if (detailsCopy)
         {
           [v10 setObject:v11 forKeyedSubscript:@"hits"];
         }
@@ -5828,13 +5828,13 @@ void __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_repl
       }
     }
 
-    v13 = [v7 objectForKeyedSubscript:@"hasApp.bundleName"];
+    v13 = [fromCopy objectForKeyedSubscript:@"hasApp.bundleName"];
     [v10 setObject:v13 forKeyedSubscript:@"bundleID"];
 
-    v14 = [v7 objectForKeyedSubscript:@"timeStamp"];
+    v14 = [fromCopy objectForKeyedSubscript:@"timeStamp"];
     [v10 setObject:v14 forKeyedSubscript:@"timeStamp"];
 
-    v15 = [v7 objectForKeyedSubscript:@"firstTimeStamp"];
+    v15 = [fromCopy objectForKeyedSubscript:@"firstTimeStamp"];
     [v10 setObject:v15 forKeyedSubscript:@"firstTimeStamp"];
 
     [v10 setObject:&stru_1F483F350 forKeyedSubscript:@"domainOwner"];
@@ -5848,15 +5848,15 @@ void __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_repl
   return v10;
 }
 
-- (id)networkDomainInitiatedTypeString:(unsigned int)a3
+- (id)networkDomainInitiatedTypeString:(unsigned int)string
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"NonAppInitiated";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"AppInitiated";
   }
@@ -5867,16 +5867,16 @@ void __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_repl
   }
 }
 
-- (id)groupRecordsByBundleId:(id)a3
+- (id)groupRecordsByBundleId:(id)id
 {
   v115 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  idCopy = id;
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:10];
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  obj = v3;
+  obj = idCopy;
   v65 = [obj countByEnumeratingWithState:&v106 objects:v114 count:16];
   if (v65)
   {
@@ -5894,17 +5894,17 @@ void __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_repl
 
         v66 = v5;
         v6 = *(*(&v106 + 1) + 8 * v5);
-        v7 = [v6 allKeys];
+        allKeys = [v6 allKeys];
         v102 = 0u;
         v103 = 0u;
         v104 = 0u;
         v105 = 0u;
-        v74 = [v7 countByEnumeratingWithState:&v102 objects:v113 count:16];
+        v74 = [allKeys countByEnumeratingWithState:&v102 objects:v113 count:16];
         v8 = 0;
         if (v74)
         {
           v73 = *v103;
-          v68 = v7;
+          v68 = allKeys;
           do
           {
             v9 = 0;
@@ -5913,7 +5913,7 @@ void __74__UsageFeed_NetworkDomains__performNetworkDomainsActionWithOptions_repl
               if (*v103 != v73)
               {
                 v10 = v9;
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
                 v9 = v10;
               }
 
@@ -5967,39 +5967,39 @@ LABEL_16:
                   v82 = [v16 objectForKeyedSubscript:@"domain"];
                   v88 = [v6 objectForKeyedSubscript:@"domain"];
                   v17 = [v16 objectForKeyedSubscript:@"kind"];
-                  v18 = [v17 unsignedIntegerValue];
+                  unsignedIntegerValue = [v17 unsignedIntegerValue];
 
                   v19 = [v6 objectForKeyedSubscript:@"kind"];
-                  v20 = [v19 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v19 unsignedIntegerValue];
 
                   v21 = [v16 objectForKeyedSubscript:@"domainType"];
-                  v81 = [v21 unsignedIntegerValue];
+                  unsignedIntegerValue3 = [v21 unsignedIntegerValue];
 
                   v22 = [v6 objectForKeyedSubscript:@"domainType"];
-                  v23 = [v22 unsignedIntegerValue];
+                  unsignedIntegerValue4 = [v22 unsignedIntegerValue];
 
                   v86 = [v16 objectForKeyedSubscript:@"context"];
                   v84 = [v6 objectForKeyedSubscript:@"context"];
                   [v16 objectForKeyedSubscript:@"contextVerificationType"];
                   v25 = v24 = v6;
-                  v80 = [v25 integerValue];
+                  integerValue = [v25 integerValue];
 
                   v26 = [v24 objectForKeyedSubscript:@"contextVerificationType"];
-                  v79 = [v26 integerValue];
+                  integerValue2 = [v26 integerValue];
 
                   v27 = [v16 objectForKeyedSubscript:@"domainClassification"];
-                  v28 = [v27 integerValue];
+                  integerValue3 = [v27 integerValue];
 
                   v6 = v24;
                   v29 = [v24 objectForKeyedSubscript:@"domainClassification"];
-                  v30 = [v29 integerValue];
+                  integerValue4 = [v29 integerValue];
 
-                  if (v18 == v20)
+                  if (unsignedIntegerValue == unsignedIntegerValue2)
                   {
                     v31 = 1;
                     v33 = v84;
                     v32 = v86;
-                    if (v81 != v23)
+                    if (unsignedIntegerValue3 != unsignedIntegerValue4)
                     {
                       v14 = v77;
                       v34 = v82;
@@ -6009,13 +6009,13 @@ LABEL_16:
 
                     v34 = v82;
                     v35 = v88;
-                    if (!v88 || !v82 || ![v82 isEqualToString:v88] || !v84 || !v86 || !objc_msgSend(v86, "isEqualToString:", v84) || v80 != v79)
+                    if (!v88 || !v82 || ![v82 isEqualToString:v88] || !v84 || !v86 || !objc_msgSend(v86, "isEqualToString:", v84) || integerValue != integerValue2)
                     {
                       v14 = v77;
                       goto LABEL_37;
                     }
 
-                    v36 = v28 == v30;
+                    v36 = integerValue3 == integerValue4;
                     v14 = v77;
                     if (!v36)
                     {
@@ -6035,7 +6035,7 @@ LABEL_37:
 LABEL_42:
 
                           v4 = v67;
-                          v7 = v68;
+                          allKeys = v68;
                           v8 = v69;
                           if (v70)
                           {
@@ -6059,12 +6059,12 @@ LABEL_47:
                     }
 
                     v37 = [v16 objectForKeyedSubscript:@"hits"];
-                    v38 = [v37 unsignedIntegerValue];
+                    unsignedIntegerValue5 = [v37 unsignedIntegerValue];
 
                     v39 = [v6 objectForKeyedSubscript:@"hits"];
-                    v40 = [v39 unsignedIntegerValue];
+                    unsignedIntegerValue6 = [v39 unsignedIntegerValue];
 
-                    v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v40 + v38];
+                    v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue6 + unsignedIntegerValue5];
                     [v16 setObject:v41 forKeyedSubscript:@"hits"];
 
                     v42 = [v16 objectForKeyedSubscript:@"firstTimeStamp"];
@@ -6106,7 +6106,7 @@ LABEL_49:
             }
 
             while (v75 + 1 != v74);
-            v74 = [v7 countByEnumeratingWithState:&v102 objects:v113 count:16];
+            v74 = [allKeys countByEnumeratingWithState:&v102 objects:v113 count:16];
           }
 
           while (v74);

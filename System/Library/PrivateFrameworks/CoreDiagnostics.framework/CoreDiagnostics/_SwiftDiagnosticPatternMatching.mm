@@ -1,8 +1,8 @@
 @interface _SwiftDiagnosticPatternMatching
 - (BOOL)isPatternPayloadAvailable;
-- (BOOL)lookForPattern:(id)a3;
+- (BOOL)lookForPattern:(id)pattern;
 - (_SwiftDiagnosticPatternMatching)init;
-- (void)lookForPatternAsync:(id)a3 :(id)a4;
+- (void)lookForPatternAsync:(id)async :(id)a4;
 @end
 
 @implementation _SwiftDiagnosticPatternMatching
@@ -22,7 +22,7 @@
     MEMORY[0x1EEE9AC00](AssociatedTypeWitness);
     v9 = &v16[-1] - v8;
     v10 = *(v4 + 40);
-    v11 = self;
+    selfCopy = self;
     v10(v3, v4);
     AssociatedConformanceWitness = swift_getAssociatedConformanceWitness();
     v13 = (*(AssociatedConformanceWitness + 24))(AssociatedTypeWitness, AssociatedConformanceWitness);
@@ -40,22 +40,22 @@
   return v13 & 1;
 }
 
-- (BOOL)lookForPattern:(id)a3
+- (BOOL)lookForPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = DiagnosticPatternMatching.lookForPattern(report:)(v4);
+  patternCopy = pattern;
+  selfCopy = self;
+  LOBYTE(self) = DiagnosticPatternMatching.lookForPattern(report:)(patternCopy);
 
   return self & 1;
 }
 
-- (void)lookForPatternAsync:(id)a3 :(id)a4
+- (void)lookForPatternAsync:(id)async :(id)a4
 {
   v6 = _Block_copy(a4);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1D981ACA4(v7, v8, v6);
+  asyncCopy = async;
+  selfCopy = self;
+  sub_1D981ACA4(asyncCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

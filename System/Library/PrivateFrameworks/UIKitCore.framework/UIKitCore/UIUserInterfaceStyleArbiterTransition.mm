@@ -6,18 +6,18 @@
 
 - (id)description
 {
-  v3 = [(UIUserInterfaceStyleArbiterTransition *)self type];
-  if (v3 == 2)
+  type = [(UIUserInterfaceStyleArbiterTransition *)self type];
+  if (type == 2)
   {
     v4 = @"Sunset";
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
     v4 = @"Sunrise";
   }
 
-  else if (v3)
+  else if (type)
   {
     v4 = @"Unknown";
   }

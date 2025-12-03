@@ -1,33 +1,33 @@
 @interface SuggestionsDataProvider
 - (GEOObserverHashTable)observers;
 - (NSString)uniqueName;
-- (SuggestionsDataProvider)initWithViewMode:(int64_t)a3 filter:(id)a4 includePlaceholderShortcuts:(BOOL)a5;
-- (id)strippedData:(id)a3;
-- (void)_addressbookDidChange:(id)a3;
-- (void)_createMapsSuggestionEngineWithCallBack:(id)a3;
+- (SuggestionsDataProvider)initWithViewMode:(int64_t)mode filter:(id)filter includePlaceholderShortcuts:(BOOL)shortcuts;
+- (id)strippedData:(id)data;
+- (void)_addressbookDidChange:(id)change;
+- (void)_createMapsSuggestionEngineWithCallBack:(id)back;
 - (void)_fetchSuggestionsFromStorageFile;
-- (void)_fetchSuggestionsWithCompletion:(id)a3;
-- (void)_processTopSuggestions:(id)a3 error:(id)a4 wasFromStorageFile:(BOOL)a5;
+- (void)_fetchSuggestionsWithCompletion:(id)completion;
+- (void)_processTopSuggestions:(id)suggestions error:(id)error wasFromStorageFile:(BOOL)file;
 - (void)_saveMapsSuggestionsEngineStateIfNeeded;
 - (void)_scheduleFetch;
 - (void)_setNeedsSaveMapsSuggestionsEngineState;
-- (void)_startFetchingSuggestionsAndNotifyObservers:(BOOL)a3;
+- (void)_startFetchingSuggestionsAndNotifyObservers:(BOOL)observers;
 - (void)_startObservingAutoOptions;
-- (void)_startObservingTitlesForEntry:(id)a3;
-- (void)_startOrStopFetchingSuggestionsAsNeededAndNotifyObservers:(BOOL)a3;
-- (void)_stopFetchingSuggestionsAndNotifyObservers:(BOOL)a3;
+- (void)_startObservingTitlesForEntry:(id)entry;
+- (void)_startOrStopFetchingSuggestionsAsNeededAndNotifyObservers:(BOOL)observers;
+- (void)_stopFetchingSuggestionsAndNotifyObservers:(BOOL)observers;
 - (void)_stopObservingAutoOptions;
-- (void)_stopObservingTitlesForEntry:(id)a3;
-- (void)_updateAppConnectionSuggestionsEntriesIfNeeded:(id)a3;
-- (void)_updateObservedShortcutsWithShortcuts:(id)a3;
-- (void)_updateObservedSuggestionsWithSuggestions:(id)a3;
-- (void)_updateTitlesForEntry:(id)a3;
-- (void)_willEnterForeground:(id)a3;
-- (void)attachAndFetchFromStorageFile:(BOOL)a3;
+- (void)_stopObservingTitlesForEntry:(id)entry;
+- (void)_updateAppConnectionSuggestionsEntriesIfNeeded:(id)needed;
+- (void)_updateObservedShortcutsWithShortcuts:(id)shortcuts;
+- (void)_updateObservedSuggestionsWithSuggestions:(id)suggestions;
+- (void)_updateTitlesForEntry:(id)entry;
+- (void)_willEnterForeground:(id)foreground;
+- (void)attachAndFetchFromStorageFile:(BOOL)file;
 - (void)dealloc;
-- (void)invalidateForMapsSuggestionsManager:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActive:(BOOL)a3;
+- (void)invalidateForMapsSuggestionsManager:(id)manager;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation SuggestionsDataProvider
@@ -105,18 +105,18 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  if (off_10192A370 == a6)
+  if (off_10192A370 == context)
   {
     v13 = [DrivePreferences alloc];
     v14 = +[NSUserDefaults standardUserDefaults];
     v15 = [(DrivePreferences *)v13 initWithDefaults:v14];
-    v16 = [(DrivePreferences *)v15 automobileOptions];
+    automobileOptions = [(DrivePreferences *)v15 automobileOptions];
 
     msgQueue = self->_msgQueue;
     block[0] = _NSConcreteStackBlock;
@@ -125,8 +125,8 @@
     block[3] = &unk_101661340;
     v18 = &v26;
     objc_copyWeak(&v26, &location);
-    v25 = v16;
-    v19 = v16;
+    v25 = automobileOptions;
+    v19 = automobileOptions;
     dispatch_async(msgQueue, block);
 
 LABEL_6:
@@ -134,7 +134,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (off_10192A378 == a6)
+  if (off_10192A378 == context)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -142,7 +142,7 @@ LABEL_6:
     v21[3] = &unk_101661340;
     v18 = &v23;
     objc_copyWeak(&v23, &location);
-    v22 = v11;
+    v22 = objectCopy;
     dispatch_async(&_dispatch_main_q, v21);
     v19 = v22;
     goto LABEL_6;
@@ -150,12 +150,12 @@ LABEL_6:
 
   v20.receiver = self;
   v20.super_class = SuggestionsDataProvider;
-  [(SuggestionsDataProvider *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(SuggestionsDataProvider *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_addressbookDidChange:(id)a3
+- (void)_addressbookDidChange:(id)change
 {
   v5 = sub_1000410AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -217,9 +217,9 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_stopObservingTitlesForEntry:(id)a3
+- (void)_stopObservingTitlesForEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -231,17 +231,17 @@ LABEL_7:
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v5;
+    v15 = entryCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@ %@", &v10, 0x20u);
   }
 
-  [v5 removeObserver:self forKeyPath:@"title" context:off_10192A378];
-  [v5 removeObserver:self forKeyPath:@"subtitle" context:off_10192A378];
+  [entryCopy removeObserver:self forKeyPath:@"title" context:off_10192A378];
+  [entryCopy removeObserver:self forKeyPath:@"subtitle" context:off_10192A378];
 }
 
-- (void)_startObservingTitlesForEntry:(id)a3
+- (void)_startObservingTitlesForEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -253,17 +253,17 @@ LABEL_7:
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v5;
+    v15 = entryCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@ %@", &v10, 0x20u);
   }
 
-  [v5 addObserver:self forKeyPath:@"title" options:1 context:off_10192A378];
-  [v5 addObserver:self forKeyPath:@"subtitle" options:1 context:off_10192A378];
+  [entryCopy addObserver:self forKeyPath:@"title" options:1 context:off_10192A378];
+  [entryCopy addObserver:self forKeyPath:@"subtitle" options:1 context:off_10192A378];
 }
 
-- (void)_updateTitlesForEntry:(id)a3
+- (void)_updateTitlesForEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -275,23 +275,23 @@ LABEL_7:
     v29 = 2112;
     v30 = v9;
     v31 = 2112;
-    v32 = v5;
+    v32 = entryCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@ %@", &v27, 0x20u);
   }
 
-  v10 = [(NSArray *)self->_observedSuggestions indexOfObjectIdenticalTo:v5];
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL || (v11 = v10, -[NSArray objectAtIndexedSubscript:](self->_suggestions, "objectAtIndexedSubscript:", v10), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isEqualToEntry:v5], v12, (v13 & 1) != 0))
+  v10 = [(NSArray *)self->_observedSuggestions indexOfObjectIdenticalTo:entryCopy];
+  if (v10 == 0x7FFFFFFFFFFFFFFFLL || (v11 = v10, -[NSArray objectAtIndexedSubscript:](self->_suggestions, "objectAtIndexedSubscript:", v10), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isEqualToEntry:entryCopy], v12, (v13 & 1) != 0))
   {
-    v14 = 0;
+    attached = 0;
   }
 
   else
   {
-    v14 = [(SuggestionsDataProvider *)self attached];
-    if (v14)
+    attached = [(SuggestionsDataProvider *)self attached];
+    if (attached)
     {
       v15 = [NSMutableArray arrayWithArray:self->_suggestions];
-      v16 = [v5 copy];
+      v16 = [entryCopy copy];
       [v15 setObject:v16 atIndexedSubscript:v11];
 
       v17 = [v15 copy];
@@ -302,11 +302,11 @@ LABEL_7:
     [(SuggestionsDataProvider *)self _setNeedsSaveMapsSuggestionsEngineState];
   }
 
-  v19 = [(NSArray *)self->_observedShortcuts indexOfObjectIdenticalTo:v5];
+  v19 = [(NSArray *)self->_observedShortcuts indexOfObjectIdenticalTo:entryCopy];
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_10:
-    if ((v14 & 1) == 0)
+    if ((attached & 1) == 0)
     {
       goto LABEL_18;
     }
@@ -316,11 +316,11 @@ LABEL_10:
 
   v20 = v19;
   v21 = [(NSArray *)self->_shortcuts objectAtIndexedSubscript:v19];
-  v22 = [v21 isEqualToEntry:v5];
+  v22 = [v21 isEqualToEntry:entryCopy];
 
   if (v22)
   {
-    if (!v14)
+    if (!attached)
     {
       goto LABEL_18;
     }
@@ -335,7 +335,7 @@ LABEL_10:
     }
 
     v23 = [NSMutableArray arrayWithArray:self->_shortcuts];
-    v24 = [v5 copy];
+    v24 = [entryCopy copy];
     [v23 setObject:v24 atIndexedSubscript:v20];
 
     v25 = [v23 copy];
@@ -350,16 +350,16 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_updateObservedShortcutsWithShortcuts:(id)a3
+- (void)_updateObservedShortcutsWithShortcuts:(id)shortcuts
 {
-  v4 = a3;
+  shortcutsCopy = shortcuts;
   v5 = +[NSMutableArray array];
   v6 = [NSMutableArray arrayWithArray:self->_observedShortcuts];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v4;
+  v7 = shortcutsCopy;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v8)
   {
@@ -448,16 +448,16 @@ LABEL_18:
   self->_observedShortcuts = v7;
 }
 
-- (void)_updateObservedSuggestionsWithSuggestions:(id)a3
+- (void)_updateObservedSuggestionsWithSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = +[NSMutableArray array];
   v6 = [NSMutableArray arrayWithArray:self->_observedSuggestions];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v4;
+  v7 = suggestionsCopy;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v8)
   {
@@ -580,15 +580,15 @@ LABEL_18:
   }
 }
 
-- (void)_updateAppConnectionSuggestionsEntriesIfNeeded:(id)a3
+- (void)_updateAppConnectionSuggestionsEntriesIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  neededCopy = needed;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(neededCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = neededCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -606,9 +606,9 @@ LABEL_18:
         v11 = *(*(&v19 + 1) + 8 * i);
         if ([v11 type] == 12)
         {
-          v12 = [v11 geoMapItem];
+          geoMapItem = [v11 geoMapItem];
 
-          if (!v12)
+          if (!geoMapItem)
           {
             [v5 addObject:v11];
           }
@@ -636,19 +636,19 @@ LABEL_18:
   }
 }
 
-- (void)attachAndFetchFromStorageFile:(BOOL)a3
+- (void)attachAndFetchFromStorageFile:(BOOL)file
 {
-  v3 = a3;
+  fileCopy = file;
   self->_attached = 1;
   [(SuggestionsDataProvider *)self _startObservingAutoOptions];
   v5 = [DrivePreferences alloc];
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [(DrivePreferences *)v5 initWithDefaults:v6];
-  v8 = [(DrivePreferences *)v7 automobileOptions];
+  automobileOptions = [(DrivePreferences *)v7 automobileOptions];
 
-  [(MapsSuggestionsEngine *)self->_mapsSuggestionsEngine setAutomobileOptions:v8];
+  [(MapsSuggestionsEngine *)self->_mapsSuggestionsEngine setAutomobileOptions:automobileOptions];
   [(MapsSuggestionsEngine *)self->_mapsSuggestionsEngine attachSink:self];
-  if (v3)
+  if (fileCopy)
   {
     [(SuggestionsDataProvider *)self _fetchSuggestionsFromStorageFile];
   }
@@ -659,9 +659,9 @@ LABEL_18:
   }
 }
 
-- (void)_stopFetchingSuggestionsAndNotifyObservers:(BOOL)a3
+- (void)_stopFetchingSuggestionsAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -669,7 +669,7 @@ LABEL_18:
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
     v10 = @"NO";
-    if (v3)
+    if (observersCopy)
     {
       v10 = @"YES";
     }
@@ -696,9 +696,9 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)_startFetchingSuggestionsAndNotifyObservers:(BOOL)a3
+- (void)_startFetchingSuggestionsAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -706,7 +706,7 @@ LABEL_18:
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
     v10 = @"NO";
-    if (v3)
+    if (observersCopy)
     {
       v10 = @"YES";
     }
@@ -733,24 +733,24 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)_startOrStopFetchingSuggestionsAsNeededAndNotifyObservers:(BOOL)a3
+- (void)_startOrStopFetchingSuggestionsAsNeededAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v5 = +[UIApplication _maps_isAnySceneForeground];
   if (!self->_active || v5 == 0)
   {
 
-    [(SuggestionsDataProvider *)self _stopFetchingSuggestionsAndNotifyObservers:v3];
+    [(SuggestionsDataProvider *)self _stopFetchingSuggestionsAndNotifyObservers:observersCopy];
   }
 
   else
   {
 
-    [(SuggestionsDataProvider *)self _startFetchingSuggestionsAndNotifyObservers:v3];
+    [(SuggestionsDataProvider *)self _startFetchingSuggestionsAndNotifyObservers:observersCopy];
   }
 }
 
-- (void)_willEnterForeground:(id)a3
+- (void)_willEnterForeground:(id)foreground
 {
   if (self->_active)
   {
@@ -758,15 +758,15 @@ LABEL_18:
   }
 }
 
-- (id)strippedData:(id)a3
+- (id)strippedData:(id)data
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  dataCopy = data;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dataCopy count]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v3;
+  obj = dataCopy;
   v5 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -809,10 +809,10 @@ LABEL_18:
   return v4;
 }
 
-- (void)_processTopSuggestions:(id)a3 error:(id)a4 wasFromStorageFile:(BOOL)a5
+- (void)_processTopSuggestions:(id)suggestions error:(id)error wasFromStorageFile:(BOOL)file
 {
-  v9 = a3;
-  v10 = a4;
+  suggestionsCopy = suggestions;
+  errorCopy = error;
   if ([(SuggestionsDataProvider *)self attached])
   {
     v31[0] = 0;
@@ -864,10 +864,10 @@ LABEL_18:
     objc_copyWeak(v21, location);
     v19 = v31;
     v20 = &v25;
-    v22 = a5;
+    fileCopy = file;
     v21[1] = a2;
     v23 = v16;
-    v18 = v9;
+    v18 = suggestionsCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(v21);
@@ -878,9 +878,9 @@ LABEL_18:
   }
 }
 
-- (void)_fetchSuggestionsWithCompletion:(id)a3
+- (void)_fetchSuggestionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SuggestionsDataProvider *)self attached])
   {
     objc_initWeak(&location, self);
@@ -890,29 +890,29 @@ LABEL_18:
     v6[2] = sub_100707AB8;
     v6[3] = &unk_10165E308;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = completionCopy;
     [(MapsSuggestionsEngine *)mapsSuggestionsEngine topSuggestionsForSink:self count:99 transportType:4 callback:v6 onQueue:self->_msgQueue];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (void)_scheduleFetch
 {
-  v4 = [(MapsThrottler *)self->_fetchThrottler value];
-  v3 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 BOOLValue] ^ 1);
+  value = [(MapsThrottler *)self->_fetchThrottler value];
+  v3 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [value BOOLValue] ^ 1);
   [(MapsThrottler *)self->_fetchThrottler setValue:v3];
 }
 
-- (void)_createMapsSuggestionEngineWithCallBack:(id)a3
+- (void)_createMapsSuggestionEngineWithCallBack:(id)back
 {
-  v4 = a3;
+  backCopy = back;
   v5 = sub_1000410AC();
   v6 = os_signpost_id_generate(v5);
 
@@ -966,12 +966,12 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v20, OS_SIGNPOST_INTERVAL_END, v6, "CreateMapsSuggestionEngine", "", v21, 2u);
   }
 
-  v4[2](v4, v11);
+  backCopy[2](backCopy, v11);
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
 }
 
-- (void)invalidateForMapsSuggestionsManager:(id)a3
+- (void)invalidateForMapsSuggestionsManager:(id)manager
 {
   v5 = sub_1000410AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -998,15 +998,15 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v4 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v6 = +[NSNotificationCenter defaultCenter];
     v7 = v6;
-    if (v4)
+    if (activeCopy)
     {
       [v6 addObserver:self selector:"_addressbookDidChange:" name:@"AddressBookManagerDidUpdateAddressesNotification" object:0];
 
@@ -1046,9 +1046,9 @@ LABEL_18:
   [(SuggestionsDataProvider *)&v4 dealloc];
 }
 
-- (SuggestionsDataProvider)initWithViewMode:(int64_t)a3 filter:(id)a4 includePlaceholderShortcuts:(BOOL)a5
+- (SuggestionsDataProvider)initWithViewMode:(int64_t)mode filter:(id)filter includePlaceholderShortcuts:(BOOL)shortcuts
 {
-  v9 = a4;
+  filterCopy = filter;
   v26.receiver = self;
   v26.super_class = SuggestionsDataProvider;
   v10 = [(SuggestionsDataProvider *)&v26 init];
@@ -1059,9 +1059,9 @@ LABEL_18:
     msgQueue = v10->_msgQueue;
     v10->_msgQueue = v12;
 
-    v10->_viewMode = a3;
-    objc_storeStrong(&v10->_filter, a4);
-    v10->_includePlaceholderShortcuts = a5;
+    v10->_viewMode = mode;
+    objc_storeStrong(&v10->_filter, filter);
+    v10->_includePlaceholderShortcuts = shortcuts;
     suggestions = v10->_suggestions;
     v10->_suggestions = &__NSArray0__struct;
 

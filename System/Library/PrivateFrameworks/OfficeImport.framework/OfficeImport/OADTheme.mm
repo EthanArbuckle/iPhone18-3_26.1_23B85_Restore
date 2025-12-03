@@ -27,8 +27,8 @@
 
 - (void)validateTheme
 {
-  v3 = [(OADTheme *)self name];
-  v4 = [v3 length];
+  name = [(OADTheme *)self name];
+  v4 = [name length];
 
   if (!v4)
   {

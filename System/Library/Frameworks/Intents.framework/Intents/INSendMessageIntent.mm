@@ -1,5 +1,5 @@
 @interface INSendMessageIntent
-- (BOOL)_isValidSubProducer:(id)a3;
+- (BOOL)_isValidSubProducer:(id)producer;
 - (INOutgoingMessageType)outgoingMessageType;
 - (INPerson)sender;
 - (INSendMessageIntent)initWithRecipients:(NSArray *)recipients content:(NSString *)content groupName:(NSString *)groupName serviceName:(NSString *)serviceName sender:(INPerson *)sender;
@@ -20,44 +20,44 @@
 - (id)_metadata;
 - (id)_redactedDictionaryRepresentation;
 - (id)_typedBackingStore;
-- (id)_validParameterCombinationsWithSchema:(id)a3;
+- (id)_validParameterCombinationsWithSchema:(id)schema;
 - (int64_t)effect;
-- (void)_intents_resolveOutgoingMessageTypeWithCompletionHandler:(id)a3;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAlternativeConversationIdentifier:(id)a3;
-- (void)setAttachments:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setConversationIdentifier:(id)a3;
-- (void)setEffect:(int64_t)a3;
-- (void)setGroupName:(id)a3;
-- (void)setNotificationThreadIdentifier:(id)a3;
-- (void)setOutgoingMessageType:(int64_t)a3;
-- (void)setRecipients:(id)a3;
-- (void)setSender:(id)a3;
-- (void)setServiceName:(id)a3;
-- (void)setShouldHideSiriAttribution:(id)a3;
-- (void)setSpeakableGroupName:(id)a3;
+- (void)_intents_resolveOutgoingMessageTypeWithCompletionHandler:(id)handler;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAlternativeConversationIdentifier:(id)identifier;
+- (void)setAttachments:(id)attachments;
+- (void)setContent:(id)content;
+- (void)setConversationIdentifier:(id)identifier;
+- (void)setEffect:(int64_t)effect;
+- (void)setGroupName:(id)name;
+- (void)setNotificationThreadIdentifier:(id)identifier;
+- (void)setOutgoingMessageType:(int64_t)type;
+- (void)setRecipients:(id)recipients;
+- (void)setSender:(id)sender;
+- (void)setServiceName:(id)name;
+- (void)setShouldHideSiriAttribution:(id)attribution;
+- (void)setSpeakableGroupName:(id)name;
 @end
 
 @implementation INSendMessageIntent
 
 - (INSpeakableString)speakableGroupName
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 speakableGroupName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  speakableGroupName = [_typedBackingStore speakableGroupName];
+  v4 = INIntentSlotValueTransformFromDataString(speakableGroupName);
 
   return v4;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else
@@ -74,24 +74,24 @@
 {
   v29[8] = *MEMORY[0x1E69E9840];
   v28[0] = @"recipients";
-  v3 = [(INSendMessageIntent *)self recipients];
-  v4 = v3;
-  if (!v3)
+  recipients = [(INSendMessageIntent *)self recipients];
+  v4 = recipients;
+  if (!recipients)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    recipients = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v3;
-  v29[0] = v3;
+  v25 = recipients;
+  v29[0] = recipients;
   v28[1] = @"outgoingMessageType";
-  v5 = [(INSendMessageIntent *)self outgoingMessageType];
+  outgoingMessageType = [(INSendMessageIntent *)self outgoingMessageType];
   v6 = @"unknown";
-  if (v5 == INOutgoingMessageTypeOutgoingMessageAudio)
+  if (outgoingMessageType == INOutgoingMessageTypeOutgoingMessageAudio)
   {
     v6 = @"outgoingMessageAudio";
   }
 
-  if (v5 == INOutgoingMessageTypeOutgoingMessageText)
+  if (outgoingMessageType == INOutgoingMessageTypeOutgoingMessageText)
   {
     v6 = @"outgoingMessageText";
   }
@@ -99,72 +99,72 @@
   v26 = v6;
   v29[1] = v26;
   v28[2] = @"content";
-  v7 = [(INSendMessageIntent *)self content];
-  v8 = v7;
-  if (!v7)
+  content = [(INSendMessageIntent *)self content];
+  v8 = content;
+  if (!content)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    content = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v7;
-  v29[2] = v7;
+  v24 = content;
+  v29[2] = content;
   v28[3] = @"speakableGroupName";
-  v9 = [(INSendMessageIntent *)self speakableGroupName];
-  v10 = v9;
-  if (!v9)
+  speakableGroupName = [(INSendMessageIntent *)self speakableGroupName];
+  v10 = speakableGroupName;
+  if (!speakableGroupName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    speakableGroupName = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v9;
-  v29[3] = v9;
+  v23 = speakableGroupName;
+  v29[3] = speakableGroupName;
   v28[4] = @"conversationIdentifier";
-  v11 = [(INSendMessageIntent *)self conversationIdentifier];
-  v12 = v11;
-  if (!v11)
+  conversationIdentifier = [(INSendMessageIntent *)self conversationIdentifier];
+  v12 = conversationIdentifier;
+  if (!conversationIdentifier)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    conversationIdentifier = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v11;
+  v29[4] = conversationIdentifier;
   v28[5] = @"serviceName";
-  v13 = [(INSendMessageIntent *)self serviceName];
-  v14 = v13;
-  if (!v13)
+  serviceName = [(INSendMessageIntent *)self serviceName];
+  null = serviceName;
+  if (!serviceName)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v27 = v4;
-  v29[5] = v14;
+  v29[5] = null;
   v28[6] = @"sender";
-  v15 = [(INSendMessageIntent *)self sender];
-  v16 = v15;
-  if (!v15)
+  sender = [(INSendMessageIntent *)self sender];
+  null2 = sender;
+  if (!sender)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[6] = v16;
+  v29[6] = null2;
   v28[7] = @"attachments";
-  v17 = [(INSendMessageIntent *)self attachments];
-  v18 = v17;
-  if (!v17)
+  attachments = [(INSendMessageIntent *)self attachments];
+  null3 = attachments;
+  if (!attachments)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[7] = v18;
+  v29[7] = null3;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:8];
-  if (!v17)
+  if (!attachments)
   {
   }
 
-  if (!v15)
+  if (!sender)
   {
   }
 
-  if (!v13)
+  if (!serviceName)
   {
   }
 
@@ -191,39 +191,39 @@
 
 - (id)_metadata
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (NSArray)recipients
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 recipients];
-  v4 = INIntentSlotValueTransformFromContacts(v3);
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  recipients = [_typedBackingStore recipients];
+  v4 = INIntentSlotValueTransformFromContacts(recipients);
 
   return v4;
 }
 
 - (NSString)conversationIdentifier
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 conversationIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  conversationIdentifier = [_typedBackingStore conversationIdentifier];
+  v4 = [conversationIdentifier copy];
 
   return v4;
 }
 
 - (int64_t)effect
 {
-  v3 = [(INSendMessageIntent *)self _typedBackingStore];
-  v4 = [v3 hasEffect];
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
-  v6 = [v5 effect];
-  if (((v6 - 1 < 0xD) & v4) != 0)
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  hasEffect = [_typedBackingStore hasEffect];
+  _typedBackingStore2 = [(INSendMessageIntent *)self _typedBackingStore];
+  effect = [_typedBackingStore2 effect];
+  if (((effect - 1 < 0xD) & hasEffect) != 0)
   {
-    v7 = v6;
+    v7 = effect;
   }
 
   else
@@ -236,35 +236,35 @@
 
 - (NSString)notificationThreadIdentifier
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 notificationThreadIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  notificationThreadIdentifier = [_typedBackingStore notificationThreadIdentifier];
+  v4 = [notificationThreadIdentifier copy];
 
   return v4;
 }
 
 - (NSString)alternativeConversationIdentifier
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 alternativeConversationIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  alternativeConversationIdentifier = [_typedBackingStore alternativeConversationIdentifier];
+  v4 = [alternativeConversationIdentifier copy];
 
   return v4;
 }
 
 - (INOutgoingMessageType)outgoingMessageType
 {
-  v3 = [(INSendMessageIntent *)self _typedBackingStore];
-  v4 = [v3 hasOutgoingMessageType];
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
-  v6 = [v5 outgoingMessageType];
-  v7 = 2 * (v6 == 2);
-  if (v6 == 1)
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  hasOutgoingMessageType = [_typedBackingStore hasOutgoingMessageType];
+  _typedBackingStore2 = [(INSendMessageIntent *)self _typedBackingStore];
+  outgoingMessageType = [_typedBackingStore2 outgoingMessageType];
+  v7 = 2 * (outgoingMessageType == 2);
+  if (outgoingMessageType == 1)
   {
     v7 = 1;
   }
 
-  if (v4)
+  if (hasOutgoingMessageType)
   {
     v8 = v7;
   }
@@ -279,68 +279,68 @@
 
 - (NSString)content
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 content];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  content = [_typedBackingStore content];
+  v4 = INIntentSlotValueTransformFromString(content);
 
   return v4;
 }
 
 - (INPerson)sender
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 sender];
-  v4 = INIntentSlotValueTransformFromContact(v3);
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  sender = [_typedBackingStore sender];
+  v4 = INIntentSlotValueTransformFromContact(sender);
 
   return v4;
 }
 
 - (NSString)serviceName
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 serviceName];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  serviceName = [_typedBackingStore serviceName];
+  v4 = [serviceName copy];
 
   return v4;
 }
 
 - (NSArray)attachments
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 attachments];
-  v4 = INIntentSlotValueTransformFromSendMessageAttachments(v3);
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  attachments = [_typedBackingStore attachments];
+  v4 = INIntentSlotValueTransformFromSendMessageAttachments(attachments);
 
   return v4;
 }
 
 - (id)_redactedDictionaryRepresentation
 {
-  v2 = [(INSendMessageIntent *)self _dictionaryRepresentation];
-  v3 = [v2 mutableCopy];
+  _dictionaryRepresentation = [(INSendMessageIntent *)self _dictionaryRepresentation];
+  v3 = [_dictionaryRepresentation mutableCopy];
 
   [v3 setObject:@"<redacted>" forKey:@"content"];
 
   return v3;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
-  v7 = [[INSpeakableString alloc] initWithSpokenPhrase:v4];
+  nameCopy = name;
+  v7 = [[INSpeakableString alloc] initWithSpokenPhrase:nameCopy];
 
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
   v6 = INIntentSlotValueTransformToDataString(v7);
-  [v5 setSpeakableGroupName:v6];
+  [_typedBackingStore setSpeakableGroupName:v6];
 }
 
 - (NSString)groupName
 {
-  v2 = [(INSendMessageIntent *)self _typedBackingStore];
-  v3 = [v2 speakableGroupName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  speakableGroupName = [_typedBackingStore speakableGroupName];
+  v4 = INIntentSlotValueTransformFromDataString(speakableGroupName);
 
-  v5 = [v4 spokenPhrase];
-  v6 = [v5 copy];
+  spokenPhrase = [v4 spokenPhrase];
+  v6 = [spokenPhrase copy];
 
   return v6;
 }
@@ -367,66 +367,66 @@
   return v18;
 }
 
-- (BOOL)_isValidSubProducer:(id)a3
+- (BOOL)_isValidSubProducer:(id)producer
 {
-  v4 = a3;
-  v5 = [(INSendMessageIntent *)self sender];
-  v6 = [v4 isEqual:v5];
+  producerCopy = producer;
+  sender = [(INSendMessageIntent *)self sender];
+  v6 = [producerCopy isEqual:sender];
 
   return v6 ^ 1;
 }
 
 - (id)_currentParameterCombination
 {
-  v3 = [(INIntent *)self _nonNilParameters];
-  v4 = [v3 mutableCopy];
+  _nonNilParameters = [(INIntent *)self _nonNilParameters];
+  v4 = [_nonNilParameters mutableCopy];
 
   v5 = [MEMORY[0x1E695DFD8] setWithObjects:{@"serviceName", @"sender", @"effect", @"attachments", @"messageType", 0}];
   [v4 minusSet:v5];
 
-  v6 = [(INIntent *)self _nonNilParameters];
-  v7 = [v6 containsObject:@"conversationIdentifier"];
+  _nonNilParameters2 = [(INIntent *)self _nonNilParameters];
+  v7 = [_nonNilParameters2 containsObject:@"conversationIdentifier"];
 
   if (!v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [(INIntent *)self _parameterCombinations];
-  v9 = [v8 objectForKey:v4];
+  _parameterCombinations = [(INIntent *)self _parameterCombinations];
+  _currentParameterCombination = [_parameterCombinations objectForKey:v4];
 
-  if (!v9)
+  if (!_currentParameterCombination)
   {
     [v4 removeObject:@"conversationIdentifier"];
-    v10 = [(INIntent *)self _parameterCombinations];
-    v9 = [v10 objectForKey:v4];
+    _parameterCombinations2 = [(INIntent *)self _parameterCombinations];
+    _currentParameterCombination = [_parameterCombinations2 objectForKey:v4];
 
-    if (!v9)
+    if (!_currentParameterCombination)
     {
 LABEL_4:
       v12.receiver = self;
       v12.super_class = INSendMessageIntent;
-      v9 = [(INIntent *)&v12 _currentParameterCombination];
+      _currentParameterCombination = [(INIntent *)&v12 _currentParameterCombination];
     }
   }
 
-  return v9;
+  return _currentParameterCombination;
 }
 
-- (id)_validParameterCombinationsWithSchema:(id)a3
+- (id)_validParameterCombinationsWithSchema:(id)schema
 {
   v32 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = INSendMessageIntent;
-  v4 = [(INIntent *)&v28 _validParameterCombinationsWithSchema:a3];
-  v5 = [(INIntent *)self _nonNilParameters];
-  if ([v5 containsObject:@"speakableGroupName"] && objc_msgSend(v5, "containsObject:", @"recipients"))
+  v4 = [(INIntent *)&v28 _validParameterCombinationsWithSchema:schema];
+  _nonNilParameters = [(INIntent *)self _nonNilParameters];
+  if ([_nonNilParameters containsObject:@"speakableGroupName"] && objc_msgSend(_nonNilParameters, "containsObject:", @"recipients"))
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = v4;
     v8 = [v6 alloc];
-    v9 = [v7 allKeys];
-    v10 = [v8 initWithArray:v9];
+    allKeys = [v7 allKeys];
+    v10 = [v8 initWithArray:allKeys];
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -437,16 +437,16 @@ LABEL_4:
     v4 = INDictionaryWithObjectsForKeysPassingTest(v7, v29);
   }
 
-  if ([v5 containsObject:@"conversationIdentifier"] && ((objc_msgSend(v5, "containsObject:", @"speakableGroupName") & 1) != 0 || objc_msgSend(v5, "containsObject:", @"recipients")))
+  if ([_nonNilParameters containsObject:@"conversationIdentifier"] && ((objc_msgSend(_nonNilParameters, "containsObject:", @"speakableGroupName") & 1) != 0 || objc_msgSend(_nonNilParameters, "containsObject:", @"recipients")))
   {
-    v23 = v5;
+    v23 = _nonNilParameters;
     v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = [v4 allKeys];
-    v14 = [v13 countByEnumeratingWithState:&v24 objects:v31 count:16];
+    allKeys2 = [v4 allKeys];
+    v14 = [allKeys2 countByEnumeratingWithState:&v24 objects:v31 count:16];
     if (v14)
     {
       v15 = v14;
@@ -457,7 +457,7 @@ LABEL_4:
         {
           if (*v25 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys2);
           }
 
           v18 = *(*(&v24 + 1) + 8 * i);
@@ -469,13 +469,13 @@ LABEL_4:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v24 objects:v31 count:16];
+        v15 = [allKeys2 countByEnumeratingWithState:&v24 objects:v31 count:16];
       }
 
       while (v15);
     }
 
-    v5 = v23;
+    _nonNilParameters = v23;
   }
 
   else
@@ -490,59 +490,59 @@ LABEL_4:
 
 - (id)_keyCodableAttributes
 {
-  v2 = [(INIntent *)self _codableDescription];
+  _codableDescription = [(INIntent *)self _codableDescription];
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [v2 attributeByName:@"speakableGroupName"];
-  v5 = [v2 keyAttribute];
-  v6 = [v3 arrayWithObjects:{v4, v5, 0}];
+  v4 = [_codableDescription attributeByName:@"speakableGroupName"];
+  keyAttribute = [_codableDescription keyAttribute];
+  v6 = [v3 arrayWithObjects:{v4, keyAttribute, 0}];
 
   return v6;
 }
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSendMessageIntent *)self _typedBackingStore];
-  v15 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 recipients];
-  v10 = INIntentSlotValueRedactedContactsFromContacts(v9, a3, v15);
+  idCopy = id;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  v15 = idCopy;
+  v8 = [_typedBackingStore copy];
+  recipients = [_typedBackingStore recipients];
+  v10 = INIntentSlotValueRedactedContactsFromContacts(recipients, options, v15);
 
   [v8 setRecipients:v10];
-  v11 = [v7 content];
-  v12 = INIntentSlotValueRedactedStringFromString(v11, a3, v15);
+  content = [_typedBackingStore content];
+  v12 = INIntentSlotValueRedactedStringFromString(content, options, v15);
   [v8 setContent:v12];
 
-  v13 = [v7 sender];
-  v14 = INIntentSlotValueRedactedContactFromContact(v13, a3, v15);
+  sender = [_typedBackingStore sender];
+  v14 = INIntentSlotValueRedactedContactFromContact(sender, options, v15);
 
   [v8 setSender:v14];
   [(INIntent *)self setBackingStore:v8];
 }
 
-- (void)setShouldHideSiriAttribution:(id)a3
+- (void)setShouldHideSiriAttribution:(id)attribution
 {
-  v5 = a3;
-  v4 = [(INSendMessageIntent *)self _typedBackingStore];
-  if (v5)
+  attributionCopy = attribution;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  if (attributionCopy)
   {
-    [v4 setShouldHideSiriAttribution:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setShouldHideSiriAttribution:{objc_msgSend(attributionCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasShouldHideSiriAttribution:0];
+    [_typedBackingStore setHasShouldHideSiriAttribution:0];
   }
 }
 
 - (NSNumber)shouldHideSiriAttribution
 {
-  v3 = [(INSendMessageIntent *)self _typedBackingStore];
-  if ([v3 hasShouldHideSiriAttribution])
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasShouldHideSiriAttribution])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INSendMessageIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "shouldHideSiriAttribution")}];
+    _typedBackingStore2 = [(INSendMessageIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "shouldHideSiriAttribution")}];
   }
 
   else
@@ -553,89 +553,89 @@ LABEL_4:
   return v6;
 }
 
-- (void)setAlternativeConversationIdentifier:(id)a3
+- (void)setAlternativeConversationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
-  [v5 setAlternativeConversationIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  [_typedBackingStore setAlternativeConversationIdentifier:identifierCopy];
 }
 
-- (void)setNotificationThreadIdentifier:(id)a3
+- (void)setNotificationThreadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
-  [v5 setNotificationThreadIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  [_typedBackingStore setNotificationThreadIdentifier:identifierCopy];
 }
 
-- (void)setAttachments:(id)a3
+- (void)setAttachments:(id)attachments
 {
-  v4 = a3;
-  v6 = [(INSendMessageIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToSendMessageAttachments(v4);
+  attachmentsCopy = attachments;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToSendMessageAttachments(attachmentsCopy);
 
-  [v6 setAttachments:v5];
+  [_typedBackingStore setAttachments:v5];
 }
 
-- (void)setEffect:(int64_t)a3
+- (void)setEffect:(int64_t)effect
 {
-  v3 = a3 - 1;
-  v4 = [(INSendMessageIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = effect - 1;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 0xC)
   {
-    [v4 setHasEffect:0];
+    [_typedBackingStore setHasEffect:0];
   }
 
   else
   {
-    [v4 setEffect:?];
+    [_typedBackingStore setEffect:?];
   }
 }
 
-- (void)setSender:(id)a3
+- (void)setSender:(id)sender
 {
-  v4 = a3;
-  v6 = [(INSendMessageIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContact(v4);
+  senderCopy = sender;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContact(senderCopy);
 
-  [v6 setSender:v5];
+  [_typedBackingStore setSender:v5];
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
-  [v5 setServiceName:v4];
+  nameCopy = name;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  [_typedBackingStore setServiceName:nameCopy];
 }
 
-- (void)setConversationIdentifier:(id)a3
+- (void)setConversationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
-  [v5 setConversationIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  [_typedBackingStore setConversationIdentifier:identifierCopy];
 }
 
-- (void)setSpeakableGroupName:(id)a3
+- (void)setSpeakableGroupName:(id)name
 {
-  v4 = a3;
-  v6 = [(INSendMessageIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setSpeakableGroupName:v5];
+  [_typedBackingStore setSpeakableGroupName:v5];
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = a3;
-  v6 = [(INSendMessageIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToString(v4);
+  contentCopy = content;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToString(contentCopy);
 
-  [v6 setContent:v5];
+  [_typedBackingStore setContent:v5];
 }
 
-- (void)setOutgoingMessageType:(int64_t)a3
+- (void)setOutgoingMessageType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 1;
   }
@@ -645,7 +645,7 @@ LABEL_4:
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 2;
   }
@@ -655,26 +655,26 @@ LABEL_4:
     v4 = v3;
   }
 
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
-  v6 = v5;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  v6 = _typedBackingStore;
   if (v4 == 0x7FFFFFFF)
   {
-    [v5 setHasOutgoingMessageType:0];
+    [_typedBackingStore setHasOutgoingMessageType:0];
   }
 
   else
   {
-    [v5 setOutgoingMessageType:v4];
+    [_typedBackingStore setOutgoingMessageType:v4];
   }
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = a3;
-  v6 = [(INSendMessageIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContacts(v4);
+  recipientsCopy = recipients;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContacts(recipientsCopy);
 
-  [v6 setRecipients:v5];
+  [_typedBackingStore setRecipients:v5];
 }
 
 - (INSendMessageIntent)initWithRecipients:(NSArray *)recipients outgoingMessageType:(INOutgoingMessageType)outgoingMessageType content:(NSString *)content speakableGroupName:(INSpeakableString *)speakableGroupName conversationIdentifier:(NSString *)conversationIdentifier serviceName:(NSString *)serviceName sender:(INPerson *)sender attachments:(NSArray *)attachments
@@ -705,45 +705,45 @@ LABEL_4:
   return v24;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSendMessageIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSendMessageIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
-- (void)_intents_resolveOutgoingMessageTypeWithCompletionHandler:(id)a3
+- (void)_intents_resolveOutgoingMessageTypeWithCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v4 = [(INSendMessageIntent *)self outgoingMessageType];
-  if (v4 == INOutgoingMessageTypeOutgoingMessageAudio)
+  handlerCopy = handler;
+  outgoingMessageType = [(INSendMessageIntent *)self outgoingMessageType];
+  if (outgoingMessageType == INOutgoingMessageTypeOutgoingMessageAudio)
   {
     v6 = +[INIntentResolutionResult unsupported];
     goto LABEL_7;
   }
 
-  if (v4 == INOutgoingMessageTypeOutgoingMessageText)
+  if (outgoingMessageType == INOutgoingMessageTypeOutgoingMessageText)
   {
     v6 = [INOutgoingMessageTypeResolutionResult successWithResolvedOutgoingMessageType:1];
 LABEL_7:
     v7 = v6;
-    v8[2](v8, v6);
+    handlerCopy[2](handlerCopy, v6);
 
     goto LABEL_8;
   }
 
-  v5 = v8;
-  if (v4)
+  v5 = handlerCopy;
+  if (outgoingMessageType)
   {
     goto LABEL_9;
   }
 
-  v4 = (v8[2])(v8, 0);
+  outgoingMessageType = (handlerCopy[2])(handlerCopy, 0);
 LABEL_8:
-  v5 = v8;
+  v5 = handlerCopy;
 LABEL_9:
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](outgoingMessageType, v5);
 }
 
 @end

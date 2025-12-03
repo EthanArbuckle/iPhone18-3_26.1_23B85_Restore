@@ -1,16 +1,16 @@
 @interface NMAPIArtistResponseParser
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4;
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation NMAPIArtistResponseParser
 
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v5 objectForKey:@"data"];
-  v8 = NMAPIArrayWithObject(v7, @"data", a4);
+  v7 = [dictionaryCopy objectForKey:@"data"];
+  v8 = NMAPIArrayWithObject(v7, @"data", error);
 
   if (!v8)
   {
@@ -18,12 +18,12 @@
     goto LABEL_36;
   }
 
-  v9 = NMAPIDictionaryInSingleObjectArray(v8, @"section", a4);
+  v9 = NMAPIDictionaryInSingleObjectArray(v8, @"section", error);
   v10 = v9;
   if (v9)
   {
     v11 = [v9 objectForKey:@"id"];
-    v12 = NMAPIStringWithObject(v11, @"sectionIdentifier", a4);
+    v12 = NMAPIStringWithObject(v11, @"sectionIdentifier", error);
 
     if (!v12)
     {
@@ -35,13 +35,13 @@ LABEL_34:
 
     v48 = v8;
     v13 = [v10 valueForKeyPath:@"relationships.default-playable-content"];
-    v14 = NMAPIOptionalDictionaryWithObject(v13, @"defaultPlayableContent", a4);
+    v14 = NMAPIOptionalDictionaryWithObject(v13, @"defaultPlayableContent", error);
 
     v49 = v14;
     if (v14)
     {
       v15 = [v14 objectForKey:@"data"];
-      v16 = NMAPIArrayWithObject(v15, @"defaultPlayableContentData", a4);
+      v16 = NMAPIArrayWithObject(v15, @"defaultPlayableContentData", error);
 
       if (!v16)
       {
@@ -72,13 +72,13 @@ LABEL_33:
     }
 
     v23 = [v10 objectForKey:@"views"];
-    v24 = NMAPIDictionaryWithObject(v23, @"views", a4);
+    v24 = NMAPIDictionaryWithObject(v23, @"views", error);
 
     v25 = v24;
     if (v24)
     {
       v26 = [v10 valueForKeyPath:@"meta.views.order"];
-      v27 = NMAPIArrayWithObject(v26, @"viewsOrder", a4);
+      v27 = NMAPIArrayWithObject(v26, @"viewsOrder", error);
 
       if (v27)
       {
@@ -91,7 +91,7 @@ LABEL_33:
         if (v50)
         {
           v51 = *v53;
-          v45 = v5;
+          v45 = dictionaryCopy;
           v46 = v6;
           v43 = v27;
           v44 = v12;
@@ -105,7 +105,7 @@ LABEL_33:
               }
 
               v29 = [v25 objectForKey:*(*(&v52 + 1) + 8 * i)];
-              v30 = NMAPIDictionaryWithObject(v29, @"view", a4);
+              v30 = NMAPIDictionaryWithObject(v29, @"view", error);
 
               if (!v30)
               {
@@ -113,7 +113,7 @@ LABEL_33:
               }
 
               v31 = [v30 objectForKey:@"data"];
-              v32 = NMAPIArrayWithObject(v31, @"viewItems", a4);
+              v32 = NMAPIArrayWithObject(v31, @"viewItems", error);
 
               if (!v32)
               {
@@ -123,7 +123,7 @@ LABEL_33:
               if ([v32 count])
               {
                 v33 = [v30 valueForKeyPath:@"attributes.title"];
-                v34 = NMAPIStringWithObject(v33, @"viewTitle", a4);
+                v34 = NMAPIStringWithObject(v33, @"viewTitle", error);
 
                 if (!v34)
                 {
@@ -131,7 +131,7 @@ LABEL_29:
 
 LABEL_30:
                   v21 = 0;
-                  v5 = v45;
+                  dictionaryCopy = v45;
                   v6 = v46;
                   v27 = v43;
                   v12 = v44;
@@ -152,7 +152,7 @@ LABEL_30:
               }
             }
 
-            v5 = v45;
+            dictionaryCopy = v45;
             v6 = v46;
             v27 = v43;
             v12 = v44;

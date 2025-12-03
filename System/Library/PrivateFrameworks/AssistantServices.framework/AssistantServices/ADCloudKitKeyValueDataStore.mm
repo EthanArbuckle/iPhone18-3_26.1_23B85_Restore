@@ -2,55 +2,55 @@
 - (ADCloudKitKeyValueDataStore)init;
 - (BOOL)hasSetUpRecordZoneSubscription;
 - (CKServerChangeToken)serverChangeToken;
-- (void)_mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6;
-- (void)deleteUserData:(id)a3;
-- (void)fetchDeviceTypesForAllLanguages:(id)a3;
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4;
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6;
-- (void)setHasSetUpRecordZoneSubscription:(BOOL)a3;
-- (void)setServerChangeToken:(id)a3;
-- (void)synchronizeKeychainPreferencesWithCompletion:(id)a3;
-- (void)synchronizeUsingActivity:(id)a3 completion:(id)a4;
-- (void)synchronizeWithCompletion:(id)a3;
+- (void)_mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion;
+- (void)deleteUserData:(id)data;
+- (void)fetchDeviceTypesForAllLanguages:(id)languages;
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion;
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion;
+- (void)setHasSetUpRecordZoneSubscription:(BOOL)subscription;
+- (void)setServerChangeToken:(id)token;
+- (void)synchronizeKeychainPreferencesWithCompletion:(id)completion;
+- (void)synchronizeUsingActivity:(id)activity completion:(id)completion;
+- (void)synchronizeWithCompletion:(id)completion;
 - (void)updateSharedUserIdentifierPostCloudSync;
 @end
 
 @implementation ADCloudKitKeyValueDataStore
 
-- (void)synchronizeUsingActivity:(id)a3 completion:(id)a4
+- (void)synchronizeUsingActivity:(id)activity completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
-- (void)fetchDeviceTypesForAllLanguages:(id)a3
+- (void)fetchDeviceTypesForAllLanguages:(id)languages
 {
-  if (a3)
+  if (languages)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(languages + 2))(languages, 0, 0);
   }
 }
 
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)deleteUserData:(id)a3
+- (void)deleteUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v12 = 136315394;
     v13 = "[ADCloudKitKeyValueDataStore deleteUserData:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = dataCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s userId = %@", &v12, 0x16u);
   }
 
@@ -87,21 +87,21 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6
+- (void)_mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v178 = a4;
-  v177 = a6;
+  changesCopy = changes;
+  recordsCopy = records;
+  dsCopy = ds;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v10 count];
-    v13 = [v178 count];
+    v12 = [recordsCopy count];
+    v13 = [dsCopy count];
     v14 = @"partial";
     *buf = 136315906;
     v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
-    if (v7)
+    if (changesCopy)
     {
       v14 = @"full";
     }
@@ -119,13 +119,13 @@ LABEL_7:
   v187 = objc_opt_new();
   v184 = sub_10029A9C8();
   hasMergedAllRecords = self->_hasMergedAllRecords;
-  v176 = v7;
-  if (v7)
+  v176 = changesCopy;
+  if (changesCopy)
   {
-    v15 = [(NSMutableDictionary *)self->_localPreferenceCache allKeys];
-    if (v15)
+    allKeys = [(NSMutableDictionary *)self->_localPreferenceCache allKeys];
+    if (allKeys)
     {
-      v16 = [NSMutableSet setWithArray:v15];
+      v16 = [NSMutableSet setWithArray:allKeys];
     }
 
     else
@@ -135,11 +135,11 @@ LABEL_7:
 
     [v16 addObject:@"User Identifier"];
     [v16 addObject:@"Logging User Identifier"];
-    v17 = [(NSMutableDictionary *)self->_modificationDateCache allKeys];
+    allKeys2 = [(NSMutableDictionary *)self->_modificationDateCache allKeys];
 
-    if (v17)
+    if (allKeys2)
     {
-      v203 = [NSMutableSet setWithArray:v17];
+      v203 = [NSMutableSet setWithArray:allKeys2];
     }
 
     else
@@ -158,12 +158,12 @@ LABEL_7:
   }
 
   v191 = +[ADPreferences sharedPreferences];
-  v18 = [v191 isUsingDefaultLanguageSettings];
+  isUsingDefaultLanguageSettings = [v191 isUsingDefaultLanguageSettings];
   v225 = 0u;
   v226 = 0u;
   v227 = 0u;
   v228 = 0u;
-  obj = v10;
+  obj = recordsCopy;
   v19 = [obj countByEnumeratingWithState:&v225 objects:v249 count:16];
   if (v19)
   {
@@ -173,7 +173,7 @@ LABEL_7:
     v190 = 0;
     *&v183[8] = 0;
     v22 = *v226;
-    *v183 = v18 ^ 1;
+    *v183 = isUsingDefaultLanguageSettings ^ 1;
     v197 = 2;
     v192 = kAFOutputVoice;
     v185 = kAFSessionLanguage;
@@ -190,16 +190,16 @@ LABEL_7:
         }
 
         v24 = *(*(&v225 + 1) + 8 * v23);
-        v25 = [v24 recordType];
-        v26 = [(NSArray *)self->_supportedRecordTypes firstObject];
-        v27 = [v25 isEqualToString:v26];
+        recordType = [v24 recordType];
+        firstObject = [(NSArray *)self->_supportedRecordTypes firstObject];
+        v27 = [recordType isEqualToString:firstObject];
 
         if (v27)
         {
-          v28 = [v24 recordID];
-          v29 = [v28 recordName];
+          recordID = [v24 recordID];
+          recordName = [recordID recordName];
 
-          v30 = [v29 length];
+          v30 = [recordName length];
           v31 = AFSiriLogContextDaemon;
           v32 = os_log_type_enabled(v31, OS_LOG_TYPE_INFO);
           if (v30)
@@ -209,11 +209,11 @@ LABEL_7:
               *buf = 136315394;
               v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
               v238 = 2112;
-              v239 = v29;
+              v239 = recordName;
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "%s Merging record : (%@)", buf, 0x16u);
             }
 
-            v33 = v29;
+            v33 = recordName;
             if (qword_1005907B0 != -1)
             {
               dispatch_once(&qword_1005907B0, &stru_100519548);
@@ -223,18 +223,18 @@ LABEL_7:
             v35 = v34;
             if (v34)
             {
-              v36 = [v34 integerValue];
+              integerValue = [v34 integerValue];
             }
 
             else
             {
-              v36 = 2;
+              integerValue = 2;
             }
 
             v40 = v197;
-            if (v36 > v197)
+            if (integerValue > v197)
             {
-              v40 = v36;
+              v40 = integerValue;
             }
 
             v197 = v40;
@@ -251,7 +251,7 @@ LABEL_7:
               }
 
               v31 = v190;
-              v29 = v33;
+              recordName = v33;
               v190 = v24;
               goto LABEL_46;
             }
@@ -273,7 +273,7 @@ LABEL_44:
               }
 
 LABEL_45:
-              v29 = v33;
+              recordName = v33;
 LABEL_46:
 
               goto LABEL_47;
@@ -300,12 +300,12 @@ LABEL_46:
               *&v183[4] = v46;
             }
 
-            v29 = sub_10029A974(v33);
+            recordName = sub_10029A974(v33);
 
-            if ([v184 containsObject:v29])
+            if ([v184 containsObject:recordName])
             {
-              [v199 removeObject:v29];
-              [v203 removeObject:v29];
+              [v199 removeObject:recordName];
+              [v203 removeObject:recordName];
               v248[0] = objc_opt_class();
               v248[1] = objc_opt_class();
               v248[2] = objc_opt_class();
@@ -315,8 +315,8 @@ LABEL_46:
               v48 = [NSSet setWithArray:v47];
               v31 = [v24 _ad_dataOfClasses:v48];
 
-              v49 = [(NSMutableDictionary *)self->_modificationDateCache objectForKey:v29];
-              if (!((v49 == 0) | v183[0] & 1) && !hasMergedAllRecords && (([v29 isEqualToString:v192]& 1) != 0 || [v29 isEqualToString:v185]))
+              v49 = [(NSMutableDictionary *)self->_modificationDateCache objectForKey:recordName];
+              if (!((v49 == 0) | v183[0] & 1) && !hasMergedAllRecords && (([recordName isEqualToString:v192]& 1) != 0 || [recordName isEqualToString:v185]))
               {
                 v50 = AFSiriLogContextDaemon;
                 if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
@@ -324,7 +324,7 @@ LABEL_46:
                   *buf = 136315394;
                   v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
                   v238 = 2112;
-                  v239 = v29;
+                  v239 = recordName;
                   _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "%s Adjusting weight of record : (%@)", buf, 0x16u);
                 }
 
@@ -333,18 +333,18 @@ LABEL_46:
                 v49 = v51;
               }
 
-              if (([v29 isEqualToString:@"User Identifier"]& 1) != 0 || [v29 isEqualToString:@"Logging User Identifier"])
+              if (([recordName isEqualToString:@"User Identifier"]& 1) != 0 || [recordName isEqualToString:@"Logging User Identifier"])
               {
-                v188 = [(NSMutableDictionary *)self->_localKeychainPreferenceCache objectForKey:v29];
+                v188 = [(NSMutableDictionary *)self->_localKeychainPreferenceCache objectForKey:recordName];
                 if (v49)
                 {
-                  v52 = [v24 modificationDate];
+                  modificationDate = [v24 modificationDate];
 
-                  if (v52)
+                  if (modificationDate)
                   {
-                    v53 = [v24 modificationDate];
+                    modificationDate2 = [v24 modificationDate];
                     v180 = v49;
-                    v54 = [v53 compare:v49];
+                    v54 = [modificationDate2 compare:v49];
 
                     if (v54 == 1)
                     {
@@ -361,13 +361,13 @@ LABEL_46:
                           v55 = AFSiriLogContextDaemon;
                           if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
                           {
-                            v56 = [v24 modificationDate];
+                            modificationDate3 = [v24 modificationDate];
                             *buf = v175;
                             v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
                             v238 = 2112;
-                            v239 = v29;
+                            v239 = recordName;
                             v240 = 2112;
-                            v241 = v56;
+                            v241 = modificationDate3;
                             v242 = 2112;
                             v243 = v180;
                             v244 = 2112;
@@ -382,12 +382,12 @@ LABEL_46:
                           localKeychainPreferenceCache = self->_localKeychainPreferenceCache;
                           if (v31)
                           {
-                            [(NSMutableDictionary *)localKeychainPreferenceCache setObject:v31 forKey:v29];
+                            [(NSMutableDictionary *)localKeychainPreferenceCache setObject:v31 forKey:recordName];
                           }
 
                           else
                           {
-                            [(NSMutableDictionary *)localKeychainPreferenceCache removeObjectForKey:v29];
+                            [(NSMutableDictionary *)localKeychainPreferenceCache removeObjectForKey:recordName];
                           }
 
                           v179 = 1;
@@ -396,8 +396,8 @@ LABEL_46:
 
 LABEL_110:
                       modificationDateCache = self->_modificationDateCache;
-                      v69 = [v24 modificationDate];
-                      [(NSMutableDictionary *)modificationDateCache setObject:v69 forKey:v29];
+                      modificationDate4 = [v24 modificationDate];
+                      [(NSMutableDictionary *)modificationDateCache setObject:modificationDate4 forKey:recordName];
 
                       v195 = 1;
 LABEL_111:
@@ -431,13 +431,13 @@ LABEL_111:
 LABEL_103:
                   if (v59)
                   {
-                    [log setObject:v59 forKey:v29];
+                    [log setObject:v59 forKey:recordName];
                   }
 
                   else
                   {
                     v65 = +[NSNull null];
-                    [log setObject:v65 forKey:v29];
+                    [log setObject:v65 forKey:recordName];
                   }
 
                   goto LABEL_112;
@@ -449,7 +449,7 @@ LABEL_103:
                   *buf = 136315906;
                   v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
                   v238 = 2112;
-                  v239 = v29;
+                  v239 = recordName;
                   v240 = 2112;
                   v241 = v31;
                   v242 = 2112;
@@ -463,17 +463,17 @@ LABEL_103:
                   v60 = self->_localKeychainPreferenceCache;
                   if (v31)
                   {
-                    [(NSMutableDictionary *)v60 setObject:v31 forKey:v29];
+                    [(NSMutableDictionary *)v60 setObject:v31 forKey:recordName];
                   }
 
                   else
                   {
-                    [(NSMutableDictionary *)v60 removeObjectForKey:v29];
+                    [(NSMutableDictionary *)v60 removeObjectForKey:recordName];
                   }
 
                   v66 = self->_modificationDateCache;
-                  v67 = [v24 modificationDate];
-                  [(NSMutableDictionary *)v66 setObject:v67 forKey:v29];
+                  modificationDate5 = [v24 modificationDate];
+                  [(NSMutableDictionary *)v66 setObject:modificationDate5 forKey:recordName];
 
                   v195 = 1;
                   v179 = 1;
@@ -485,7 +485,7 @@ LABEL_112:
                 goto LABEL_46;
               }
 
-              v188 = [(NSMutableDictionary *)self->_localPreferenceCache objectForKey:v29];
+              v188 = [(NSMutableDictionary *)self->_localPreferenceCache objectForKey:recordName];
               if (!v49)
               {
                 v64 = AFSiriLogContextDaemon;
@@ -494,22 +494,22 @@ LABEL_112:
                   *buf = 136315394;
                   v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
                   v238 = 2112;
-                  v239 = v29;
+                  v239 = recordName;
                   _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "%s Record is missing a local modification date : (%@)", buf, 0x16u);
                 }
 
                 v59 = v188;
-                if (v31 != v188 && (sub_10029A61C(v31, v188, v29) & 1) == 0)
+                if (v31 != v188 && (sub_10029A61C(v31, v188, recordName) & 1) == 0)
                 {
                   if (v31)
                   {
-                    [v187 setObject:v31 forKey:v29];
+                    [v187 setObject:v31 forKey:recordName];
                   }
 
                   else
                   {
                     v70 = +[NSNull null];
-                    [v187 setObject:v70 forKey:v29];
+                    [v187 setObject:v70 forKey:recordName];
                   }
 
                   goto LABEL_110;
@@ -518,36 +518,36 @@ LABEL_112:
                 goto LABEL_112;
               }
 
-              v61 = [v24 modificationDate];
+              modificationDate6 = [v24 modificationDate];
 
-              if (v61)
+              if (modificationDate6)
               {
-                v62 = [v24 modificationDate];
+                modificationDate7 = [v24 modificationDate];
                 v181 = v49;
-                v63 = [v62 compare:v49];
+                v63 = [modificationDate7 compare:v49];
 
                 if (v63 == 1)
                 {
                   v49 = v181;
-                  if (v31 != v188 && (sub_10029A61C(v31, v188, v29) & 1) == 0)
+                  if (v31 != v188 && (sub_10029A61C(v31, v188, recordName) & 1) == 0)
                   {
                     if (v31)
                     {
-                      [v187 setObject:v31 forKey:v29];
+                      [v187 setObject:v31 forKey:recordName];
                     }
 
                     else
                     {
                       v71 = +[NSNull null];
-                      [v187 setObject:v71 forKey:v29];
+                      [v187 setObject:v71 forKey:recordName];
                     }
                   }
 
                   v72 = self->_modificationDateCache;
-                  v73 = [v24 modificationDate];
+                  modificationDate8 = [v24 modificationDate];
                   v74 = v72;
                   v59 = v188;
-                  [(NSMutableDictionary *)v74 setObject:v73 forKey:v29];
+                  [(NSMutableDictionary *)v74 setObject:modificationDate8 forKey:recordName];
 
                   v195 = 1;
                   goto LABEL_112;
@@ -570,7 +570,7 @@ LABEL_112:
                 }
               }
 
-              if (sub_10029A61C(v31, v59, v29))
+              if (sub_10029A61C(v31, v59, recordName))
               {
                 goto LABEL_112;
               }
@@ -587,7 +587,7 @@ LABEL_112:
             *buf = 136315394;
             v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
             v238 = 2112;
-            v239 = v29;
+            v239 = recordName;
             v38 = v31;
             v39 = "%s Ignoring disallowed key : (%@)";
           }
@@ -611,15 +611,15 @@ LABEL_112:
           goto LABEL_46;
         }
 
-        v29 = AFSiriLogContextDaemon;
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+        recordName = AFSiriLogContextDaemon;
+        if (os_log_type_enabled(recordName, OS_LOG_TYPE_INFO))
         {
-          v37 = [v24 recordType];
+          recordType2 = [v24 recordType];
           *buf = 136315394;
           v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
           v238 = 2112;
-          v239 = v37;
-          _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%s Unsupported record type : (%@)", buf, 0x16u);
+          v239 = recordType2;
+          _os_log_impl(&_mh_execute_header, recordName, OS_LOG_TYPE_INFO, "%s Unsupported record type : (%@)", buf, 0x16u);
         }
 
 LABEL_47:
@@ -644,7 +644,7 @@ LABEL_47:
   v197 = 2;
 LABEL_119:
 
-  if ([v178 count])
+  if ([dsCopy count])
   {
     v200 = +[NSDate date];
   }
@@ -659,7 +659,7 @@ LABEL_119:
   v224 = 0u;
   v221 = 0u;
   v222 = 0u;
-  v193 = v178;
+  v193 = dsCopy;
   v77 = [v193 countByEnumeratingWithState:&v221 objects:v235 count:16];
   if (v77)
   {
@@ -676,26 +676,26 @@ LABEL_119:
         }
 
         v81 = *(*(&v221 + 1) + 8 * v80);
-        v82 = [v81 recordName];
-        if ([v82 length])
+        recordName2 = [v81 recordName];
+        if ([recordName2 length])
         {
-          [v199 removeObject:v82];
-          [v203 removeObject:v82];
-          if (([v82 isEqualToString:@"User Identifier"] & 1) != 0 || objc_msgSend(v82, "isEqualToString:", @"Logging User Identifier"))
+          [v199 removeObject:recordName2];
+          [v203 removeObject:recordName2];
+          if (([recordName2 isEqualToString:@"User Identifier"] & 1) != 0 || objc_msgSend(recordName2, "isEqualToString:", @"Logging User Identifier"))
           {
-            [(NSMutableDictionary *)self->_localKeychainPreferenceCache removeObjectForKey:v82];
+            [(NSMutableDictionary *)self->_localKeychainPreferenceCache removeObjectForKey:recordName2];
 LABEL_131:
-            [(NSMutableDictionary *)self->_modificationDateCache setObject:v200 forKey:v82];
+            [(NSMutableDictionary *)self->_modificationDateCache setObject:v200 forKey:recordName2];
             v195 = 1;
             goto LABEL_135;
           }
 
-          v84 = [(NSMutableDictionary *)self->_localPreferenceCache objectForKey:v82];
+          v84 = [(NSMutableDictionary *)self->_localPreferenceCache objectForKey:recordName2];
 
           if (v84)
           {
             v85 = +[NSNull null];
-            [v187 setObject:v85 forKey:v82];
+            [v187 setObject:v85 forKey:recordName2];
 
             goto LABEL_131;
           }
@@ -779,7 +779,7 @@ LABEL_135:
         v97 = *(*(&v217 + 1) + 8 * i);
         if ([v97 isEqualToString:@"User Identifier"])
         {
-          v98 = [v191 sharedUserIdentifier];
+          sharedUserIdentifier = [v191 sharedUserIdentifier];
         }
 
         else
@@ -790,11 +790,11 @@ LABEL_135:
             goto LABEL_157;
           }
 
-          v98 = [v191 loggingSharedUserIdentifier];
+          sharedUserIdentifier = [v191 loggingSharedUserIdentifier];
         }
 
-        v99 = v98;
-        if (!v98)
+        v99 = sharedUserIdentifier;
+        if (!sharedUserIdentifier)
         {
           v100 = +[NSNull null];
           [log setObject:v100 forKey:v97];
@@ -950,8 +950,8 @@ LABEL_184:
     }
 
     v117 = sub_100298580(v119);
-    v122 = [v117 dictionaryRepresentation];
-    [v187 setObject:v122 forKey:v114];
+    dictionaryRepresentation = [v117 dictionaryRepresentation];
+    [v187 setObject:dictionaryRepresentation forKey:v114];
   }
 
   else
@@ -1018,8 +1018,8 @@ LABEL_202:
 
   [(NSMutableDictionary *)self->_localPreferenceCache setObject:v112 forKey:v108];
   localPreferenceCache = self->_localPreferenceCache;
-  v132 = [v117 dictionaryRepresentation];
-  [(NSMutableDictionary *)localPreferenceCache setObject:v132 forKey:v114];
+  dictionaryRepresentation2 = [v117 dictionaryRepresentation];
+  [(NSMutableDictionary *)localPreferenceCache setObject:dictionaryRepresentation2 forKey:v114];
 
   [v187 removeObjectForKey:v108];
   [v187 removeObjectForKey:v114];
@@ -1190,20 +1190,20 @@ LABEL_217:
 
   if (v152)
   {
-    v169 = [v152 dictionaryRepresentation];
-    [v76 setObject:v169 forKey:v155];
+    dictionaryRepresentation3 = [v152 dictionaryRepresentation];
+    [v76 setObject:dictionaryRepresentation3 forKey:v155];
   }
 
   if ([v76 count])
   {
-    v170 = [v76 allKeys];
+    allKeys3 = [v76 allKeys];
     v171 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(v171, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v237 = "[ADCloudKitKeyValueDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
       v238 = 2112;
-      v239 = v170;
+      v239 = allKeys3;
       _os_log_impl(&_mh_execute_header, v171, OS_LOG_TYPE_INFO, "%s Saving keys: %@", buf, 0x16u);
     }
 
@@ -1212,32 +1212,32 @@ LABEL_217:
     v204[1] = 3221225472;
     v204[2] = sub_10030FFAC;
     v204[3] = &unk_10051BA48;
-    v173 = v170;
+    v173 = allKeys3;
     v205 = v173;
-    v206 = self;
+    selfCopy = self;
     v207 = v76;
-    v208 = v177;
-    v174 = v177;
+    v208 = completionCopy;
+    v174 = completionCopy;
     [v172 saveKeyValueRecordsWithDictionary:v207 mirror:0 completion:v204];
   }
 
   else
   {
 LABEL_244:
-    v174 = v177;
-    if (v177)
+    v174 = completionCopy;
+    if (completionCopy)
     {
-      (*(v177 + 2))(v177, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  changesCopy = changes;
+  recordsCopy = records;
+  dsCopy = ds;
+  completionCopy = completion;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1246,12 +1246,12 @@ LABEL_244:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s ", &v14, 0xCu);
   }
 
-  [(ADCloudKitKeyValueDataStore *)self _mergeDataWithModifiedRecords:v10 deletedRecordIDs:v11 containsAllChanges:v7 completion:v12];
+  [(ADCloudKitKeyValueDataStore *)self _mergeDataWithModifiedRecords:recordsCopy deletedRecordIDs:dsCopy containsAllChanges:changesCopy completion:completionCopy];
 }
 
-- (void)synchronizeKeychainPreferencesWithCompletion:(id)a3
+- (void)synchronizeKeychainPreferencesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1269,17 +1269,17 @@ LABEL_244:
   if ([v9 containsObject:@"User Identifier"])
   {
     v10 = +[ADPreferences sharedPreferences];
-    v11 = [v10 sharedUserIdentifier];
+    sharedUserIdentifier = [v10 sharedUserIdentifier];
 
     v12 = [(NSMutableDictionary *)self->_localKeychainPreferenceCache objectForKey:@"User Identifier"];
-    v13 = [v11 isEqual:v12];
+    v13 = [sharedUserIdentifier isEqual:v12];
 
     if ((v13 & 1) == 0)
     {
-      if (v11)
+      if (sharedUserIdentifier)
       {
-        [(NSMutableDictionary *)self->_localKeychainPreferenceCache setObject:v11 forKey:@"User Identifier"];
-        [v6 setObject:v11 forKey:@"User Identifier"];
+        [(NSMutableDictionary *)self->_localKeychainPreferenceCache setObject:sharedUserIdentifier forKey:@"User Identifier"];
+        [v6 setObject:sharedUserIdentifier forKey:@"User Identifier"];
       }
 
       else
@@ -1298,17 +1298,17 @@ LABEL_244:
   if ([v9 containsObject:@"Logging User Identifier"])
   {
     v17 = +[ADPreferences sharedPreferences];
-    v18 = [v17 loggingSharedUserIdentifier];
+    loggingSharedUserIdentifier = [v17 loggingSharedUserIdentifier];
 
     v19 = [(NSMutableDictionary *)self->_localKeychainPreferenceCache objectForKey:@"Logging User Identifier"];
-    v20 = [v18 isEqual:v19];
+    v20 = [loggingSharedUserIdentifier isEqual:v19];
 
     if ((v20 & 1) == 0)
     {
-      if (v18)
+      if (loggingSharedUserIdentifier)
       {
-        [(NSMutableDictionary *)self->_localKeychainPreferenceCache setObject:v18 forKey:@"Logging User Identifier"];
-        [v6 setObject:v18 forKey:@"Logging User Identifier"];
+        [(NSMutableDictionary *)self->_localKeychainPreferenceCache setObject:loggingSharedUserIdentifier forKey:@"Logging User Identifier"];
+        [v6 setObject:loggingSharedUserIdentifier forKey:@"Logging User Identifier"];
       }
 
       else
@@ -1328,14 +1328,14 @@ LABEL_244:
   {
     sub_10029A7B0(self->_modificationDateCache, kAFModificationDates);
     AFBackedUpPreferencesSynchronize();
-    v24 = [v6 allKeys];
+    allKeys = [v6 allKeys];
     v25 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v33 = "[ADCloudKitKeyValueDataStore synchronizeKeychainPreferencesWithCompletion:]";
       v34 = 2112;
-      v35 = v24;
+      v35 = allKeys;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s Saving keys: %@", buf, 0x16u);
     }
 
@@ -1344,22 +1344,22 @@ LABEL_244:
     v28[1] = 3221225472;
     v28[2] = sub_100310828;
     v28[3] = &unk_10051BA20;
-    v29 = v24;
-    v30 = self;
+    v29 = allKeys;
+    selfCopy = self;
     v31 = v6;
-    v27 = v24;
+    v27 = allKeys;
     [v26 saveKeyValueRecordsWithDictionary:v31 mirror:0 completion:v28];
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)synchronizeWithCompletion:(id)a3
+- (void)synchronizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1376,11 +1376,11 @@ LABEL_244:
 
   v99 = +[NSDate date];
   v100 = objc_opt_new();
-  v9 = [(NSMutableDictionary *)self->_localPreferenceCache allKeys];
-  v97 = v9;
-  if (v9)
+  allKeys = [(NSMutableDictionary *)self->_localPreferenceCache allKeys];
+  v97 = allKeys;
+  if (allKeys)
   {
-    v10 = [NSMutableSet setWithArray:v9];
+    v10 = [NSMutableSet setWithArray:allKeys];
   }
 
   else
@@ -1388,7 +1388,7 @@ LABEL_244:
     v10 = 0;
   }
 
-  v98 = v4;
+  v98 = completionCopy;
   v115 = 0u;
   v116 = 0u;
   v113 = 0u;
@@ -1566,10 +1566,10 @@ LABEL_46:
 
     v93 = v41;
     v44 = sub_100298580(v42);
-    v45 = [v44 dictionaryRepresentation];
+    dictionaryRepresentation = [v44 dictionaryRepresentation];
     v46 = @"Output Voice v14";
-    v47 = v45;
-    [v100 setObject:v45 forKey:@"Output Voice v14"];
+    v47 = dictionaryRepresentation;
+    [v100 setObject:dictionaryRepresentation forKey:@"Output Voice v14"];
 
     if (sub_100298670(v44, v40))
     {
@@ -1589,11 +1589,11 @@ LABEL_46:
           _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "%s Synching default voice for version 1 sync clients (%@) : %@", buf, 0x20u);
         }
 
-        v51 = [v49 dictionaryRepresentation];
-        [v100 setObject:v51 forKey:v96];
+        dictionaryRepresentation2 = [v49 dictionaryRepresentation];
+        [v100 setObject:dictionaryRepresentation2 forKey:v96];
 
         v43 = v48;
-        v47 = v45;
+        v47 = dictionaryRepresentation;
         if ((sub_100299798(v44, v40) & 1) == 0)
         {
           goto LABEL_71;
@@ -1615,8 +1615,8 @@ LABEL_60:
           _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "%s Synching default voice for version 2 sync clients (%@) : %@", buf, 0x20u);
         }
 
-        v58 = [v56 dictionaryRepresentation];
-        [v100 setObject:v58 forKey:@"Output Voice v2"];
+        dictionaryRepresentation3 = [v56 dictionaryRepresentation];
+        [v100 setObject:dictionaryRepresentation3 forKey:@"Output Voice v2"];
 
         v39 = v55;
         v47 = v54;
@@ -1638,8 +1638,8 @@ LABEL_75:
             _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_INFO, "%s Synching default voice for version 3 sync clients (%@) : %@", buf, 0x20u);
           }
 
-          v66 = [v64 dictionaryRepresentation];
-          [v100 setObject:v66 forKey:@"Output Voice v3"];
+          dictionaryRepresentation4 = [v64 dictionaryRepresentation];
+          [v100 setObject:dictionaryRepresentation4 forKey:@"Output Voice v3"];
 
           v39 = v63;
           v47 = v62;
@@ -1664,8 +1664,8 @@ LABEL_83:
             _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "%s Synching default voice for version 4 sync clients (%@) : %@", buf, 0x20u);
           }
 
-          v72 = [v70 dictionaryRepresentation];
-          [v100 setObject:v72 forKey:@"Output Voice v4"];
+          dictionaryRepresentation5 = [v70 dictionaryRepresentation];
+          [v100 setObject:dictionaryRepresentation5 forKey:@"Output Voice completionCopy"];
 
           v39 = v69;
           v47 = v68;
@@ -1732,7 +1732,7 @@ LABEL_67:
         _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_INFO, "%s Synching voice for version 1 sync clients as well (%@) : %@", buf, 0x20u);
       }
 
-      [v100 setObject:v45 forKey:{v96, v93}];
+      [v100 setObject:dictionaryRepresentation forKey:{v96, v93}];
       if (sub_100299798(v44, v40))
       {
         if (v95)
@@ -1821,7 +1821,7 @@ LABEL_90:
         _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_INFO, "%s Skipping sync of version 4 voice for language (%@) : %@", buf, 0x20u);
       }
 
-      [v100 removeObjectForKey:@"Output Voice v4"];
+      [v100 removeObjectForKey:@"Output Voice completionCopy"];
       if (sub_100298A54(v44, v40))
       {
         goto LABEL_104;
@@ -1843,7 +1843,7 @@ LABEL_94:
       _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_INFO, "%s Synching voice for version 4 sync clients as well (%@) : %@", buf, 0x20u);
     }
 
-    [v100 setObject:v47 forKey:@"Output Voice v4"];
+    [v100 setObject:v47 forKey:@"Output Voice completionCopy"];
     if (sub_100298A54(v44, v40))
     {
       if (v95)
@@ -1864,8 +1864,8 @@ LABEL_98:
           _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_INFO, "%s Synching default voice for version 5 sync clients (%@) : %@", buf, 0x20u);
         }
 
-        v80 = [v78 dictionaryRepresentation];
-        [v100 setObject:v80 forKey:@"Output Voice v5"];
+        dictionaryRepresentation6 = [v78 dictionaryRepresentation];
+        [v100 setObject:dictionaryRepresentation6 forKey:@"Output Voice v5"];
 
         v43 = v77;
         v47 = v76;
@@ -1927,7 +1927,7 @@ LABEL_109:
   v23 = v100;
   if (self->_hasMergedAllRecords && [v100 count])
   {
-    v83 = [v100 allKeys];
+    allKeys2 = [v100 allKeys];
     v84 = AFSiriLogContextDaemon;
     v85 = v98;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1935,23 +1935,23 @@ LABEL_109:
       *buf = 136315394;
       v119 = "[ADCloudKitKeyValueDataStore synchronizeWithCompletion:]";
       v120 = 2112;
-      v121 = v83;
+      v121 = allKeys2;
       _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_INFO, "%s Saving keys: %@", buf, 0x16u);
     }
 
-    v86 = [(ADCloudKitKeyValueDataStore *)self isMirroredDataStore];
+    isMirroredDataStore = [(ADCloudKitKeyValueDataStore *)self isMirroredDataStore];
     v87 = +[ADCloudKitManager sharedManager];
-    if (v86)
+    if (isMirroredDataStore)
     {
       v102[0] = _NSConcreteStackBlock;
       v102[1] = 3221225472;
       v102[2] = sub_100311ED8;
       v102[3] = &unk_10051D600;
       v88 = &v103;
-      v103 = v83;
+      v103 = allKeys2;
       v89 = &v104;
       v104 = v98;
-      v90 = v83;
+      v90 = allKeys2;
       [v87 saveKeyValueRecordsWithDictionary:v100 mirror:1 completion:v102];
     }
 
@@ -1962,13 +1962,13 @@ LABEL_109:
       v105[2] = sub_100311CAC;
       v105[3] = &unk_10051BA48;
       v88 = v106;
-      v106[0] = v83;
+      v106[0] = allKeys2;
       v89 = &v108;
       v108 = v98;
       v106[1] = self;
       v91 = v100;
       v107 = v91;
-      v92 = v83;
+      v92 = allKeys2;
       [v87 saveKeyValueRecordsWithDictionary:v91 mirror:0 completion:v105];
     }
 
@@ -1996,14 +1996,14 @@ LABEL_119:
   }
 
   v3 = +[ADPreferences sharedPreferences];
-  v4 = [v3 sharedUserIdentifier];
+  sharedUserIdentifier = [v3 sharedUserIdentifier];
 
   v5 = +[ADPreferences sharedPreferences];
-  v6 = [v5 loggingSharedUserIdentifier];
+  loggingSharedUserIdentifier = [v5 loggingSharedUserIdentifier];
 
-  if (v4)
+  if (sharedUserIdentifier)
   {
-    v7 = v6 == 0;
+    v7 = loggingSharedUserIdentifier == 0;
   }
 
   else
@@ -2024,31 +2024,31 @@ LABEL_119:
     goto LABEL_16;
   }
 
-  if (!v4)
+  if (!sharedUserIdentifier)
   {
     v12 = +[NSUUID UUID];
-    v4 = [v12 UUIDString];
+    sharedUserIdentifier = [v12 UUIDString];
 
-    if (v6)
+    if (loggingSharedUserIdentifier)
     {
       goto LABEL_13;
     }
 
 LABEL_18:
     v13 = +[NSUUID UUID];
-    v6 = [v13 UUIDString];
+    loggingSharedUserIdentifier = [v13 UUIDString];
 
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!loggingSharedUserIdentifier)
   {
     goto LABEL_18;
   }
 
 LABEL_13:
   v9 = +[ADPreferences sharedPreferences];
-  [v9 setSharedUserIdentifier:v4 loggingSharedUserIdentifier:v6];
+  [v9 setSharedUserIdentifier:sharedUserIdentifier loggingSharedUserIdentifier:loggingSharedUserIdentifier];
 
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2056,9 +2056,9 @@ LABEL_13:
     v14 = 136315651;
     v15 = "[ADCloudKitKeyValueDataStore updateSharedUserIdentifierPostCloudSync]";
     v16 = 2113;
-    v17 = v4;
+    v17 = sharedUserIdentifier;
     v18 = 2112;
-    v19 = v6;
+    v19 = loggingSharedUserIdentifier;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Created new sharedUserIds %{private}@ %@", &v14, 0x20u);
   }
 
@@ -2068,14 +2068,14 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)setServerChangeToken:(id)a3
+- (void)setServerChangeToken:(id)token
 {
-  v8 = a3;
+  tokenCopy = token;
   if (![(ADCloudKitKeyValueDataStore *)self isMirroredDataStore])
   {
-    if (v8)
+    if (tokenCopy)
     {
-      v4 = [v8 ad_archiveTokenToDataWithExceptionBlock:&stru_10051B9F8];
+      v4 = [tokenCopy ad_archiveTokenToDataWithExceptionBlock:&stru_10051B9F8];
       if (!v4)
       {
         goto LABEL_7;
@@ -2111,19 +2111,19 @@ LABEL_7:
   else
   {
     v3 = +[ADPreferences sharedPreferences];
-    v4 = [v3 keyValueServerChangeToken];
+    keyValueServerChangeToken = [v3 keyValueServerChangeToken];
 
-    v2 = [CKServerChangeToken ad_unarchiveTokenFromData:v4 withExceptionBlock:&stru_10051B9D8];
+    v2 = [CKServerChangeToken ad_unarchiveTokenFromData:keyValueServerChangeToken withExceptionBlock:&stru_10051B9D8];
   }
 
   return v2;
 }
 
-- (void)setHasSetUpRecordZoneSubscription:(BOOL)a3
+- (void)setHasSetUpRecordZoneSubscription:(BOOL)subscription
 {
-  v3 = a3;
+  subscriptionCopy = subscription;
   v4 = +[ADPreferences sharedPreferences];
-  [v4 setHasSetUpKeyValueRecordZoneSubscription:v3];
+  [v4 setHasSetUpKeyValueRecordZoneSubscription:subscriptionCopy];
 
   v5 = +[ADPreferences sharedPreferences];
   [v5 synchronize];
@@ -2132,9 +2132,9 @@ LABEL_7:
 - (BOOL)hasSetUpRecordZoneSubscription
 {
   v2 = +[ADPreferences sharedPreferences];
-  v3 = [v2 hasSetUpKeyValueRecordZoneSubscription];
+  hasSetUpKeyValueRecordZoneSubscription = [v2 hasSetUpKeyValueRecordZoneSubscription];
 
-  return v3;
+  return hasSetUpKeyValueRecordZoneSubscription;
 }
 
 - (ADCloudKitKeyValueDataStore)init
@@ -2163,8 +2163,8 @@ LABEL_7:
     v2->_modificationDateCache = v9;
 
     v11 = +[AFPreferences sharedPreferences];
-    v12 = [(ADCloudKitKeyValueDataStore *)v2 serverChangeToken];
-    v2->_hasMergedAllRecords = v12 != 0;
+    serverChangeToken = [(ADCloudKitKeyValueDataStore *)v2 serverChangeToken];
+    v2->_hasMergedAllRecords = serverChangeToken != 0;
 
     v13 = +[ADPreferences sharedPreferences];
     [v13 clearLegacyKeyValueServerChangeTokens];

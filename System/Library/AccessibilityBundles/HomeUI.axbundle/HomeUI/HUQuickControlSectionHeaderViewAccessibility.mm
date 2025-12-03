@@ -1,17 +1,17 @@
 @interface HUQuickControlSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 @end
 
 @implementation HUQuickControlSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlSectionHeaderView" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSectionHeaderView" hasInstanceMethod:@"attributedTitleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSectionHeaderView" hasInstanceMethod:@"accessoryButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlSectionHeaderView" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSectionHeaderView" hasInstanceMethod:@"attributedTitleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSectionHeaderView" hasInstanceMethod:@"accessoryButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -20,16 +20,16 @@
   v3 = [(HUQuickControlSectionHeaderViewAccessibility *)self safeValueForKey:@"attributedTitleText"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 string];
+  string = [v4 string];
 
-  if (![v5 length])
+  if (![string length])
   {
     v6 = [(HUQuickControlSectionHeaderViewAccessibility *)self _accessibilityStringForLabelKeyValues:@"titleText"];
 
-    v5 = v6;
+    string = v6;
   }
 
-  return v5;
+  return string;
 }
 
 - (id)_accessibilitySupplementaryFooterViews

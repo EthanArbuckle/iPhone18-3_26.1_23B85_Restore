@@ -1,29 +1,29 @@
 @interface DODMLASRSchemaDODMLASRUtteranceInfo
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRUtteranceInfo)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRUtteranceInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRUtteranceInfo)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRUtteranceInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addResults:(id)a3;
-- (void)setHasEndTimeInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addResults:(id)results;
+- (void)setHasEndTimeInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRUtteranceInfo
 
-- (DODMLASRSchemaDODMLASRUtteranceInfo)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRUtteranceInfo)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = DODMLASRSchemaDODMLASRUtteranceInfo;
   v5 = [(DODMLASRSchemaDODMLASRUtteranceInfo *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"results"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"results"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,14 +67,14 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"startTimeInNs", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"startTimeInNs", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRUtteranceInfo setStartTimeInNs:](v5, "setStartTimeInNs:", [v15 unsignedLongLongValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"endTimeInNs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"endTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,30 +87,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRUtteranceInfo)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRUtteranceInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,16 +124,16 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRUtteranceInfo endTimeInNs](self, "endTimeInNs")}];
-    [v3 setObject:v4 forKeyedSubscript:@"endTimeInNs"];
+    [dictionary setObject:v4 forKeyedSubscript:@"endTimeInNs"];
   }
 
   if ([(NSArray *)self->_results count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -153,16 +153,16 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          if (v11)
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v5 addObject:v11];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v12 = [MEMORY[0x1E695DFB0] null];
-            [v5 addObject:v12];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -172,18 +172,18 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"results"];
+    [dictionary setObject:array forKeyedSubscript:@"results"];
   }
 
   if (*&self->_has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRUtteranceInfo startTimeInNs](self, "startTimeInNs")}];
-    [v3 setObject:v13 forKeyedSubscript:@"startTimeInNs"];
+    [dictionary setObject:v13 forKeyedSubscript:@"startTimeInNs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -213,30 +213,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self results];
-  v6 = [v4 results];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  results = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self results];
+  results2 = [equalCopy results];
+  v7 = results2;
+  if ((results != 0) == (results2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self results];
-  if (v8)
+  results3 = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self results];
+  if (results3)
   {
-    v9 = v8;
-    v10 = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self results];
-    v11 = [v4 results];
-    v12 = [v10 isEqual:v11];
+    v9 = results3;
+    results4 = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self results];
+    results5 = [equalCopy results];
+    v12 = [results4 isEqual:results5];
 
     if (!v12)
     {
@@ -249,7 +249,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[32];
+  v14 = equalCopy[32];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -260,10 +260,10 @@ LABEL_16:
   if (*&has)
   {
     startTimeInNs = self->_startTimeInNs;
-    if (startTimeInNs == [v4 startTimeInNs])
+    if (startTimeInNs == [equalCopy startTimeInNs])
     {
       has = self->_has;
-      v14 = v4[32];
+      v14 = equalCopy[32];
       goto LABEL_12;
     }
 
@@ -280,7 +280,7 @@ LABEL_12:
   if (v16)
   {
     endTimeInNs = self->_endTimeInNs;
-    if (endTimeInNs != [v4 endTimeInNs])
+    if (endTimeInNs != [equalCopy endTimeInNs])
     {
       goto LABEL_16;
     }
@@ -292,10 +292,10 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -337,9 +337,9 @@ LABEL_17:
   }
 }
 
-- (void)setHasEndTimeInNs:(BOOL)a3
+- (void)setHasEndTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }
@@ -352,32 +352,32 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DODMLASRSchemaDODMLASRUtteranceInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DODMLASRSchemaDODMLASRUtteranceInfo *)self results:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(DODMLASRSchemaDODMLASRUtteranceInfo *)self setResults:v7];
 

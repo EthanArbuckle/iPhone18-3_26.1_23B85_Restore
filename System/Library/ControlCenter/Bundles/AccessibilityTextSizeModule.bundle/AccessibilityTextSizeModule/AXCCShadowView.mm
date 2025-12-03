@@ -1,38 +1,38 @@
 @interface AXCCShadowView
-- (AXCCShadowView)initWithFrame:(CGRect)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (AXCCShadowView)initWithFrame:(CGRect)frame;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation AXCCShadowView
 
-- (AXCCShadowView)initWithFrame:(CGRect)a3
+- (AXCCShadowView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = AXCCShadowView;
-  v3 = [(AXCCShadowView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXCCShadowView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(AXCCShadowView *)v3 layer];
-    [v5 setShadowPathIsBounds:1];
+    layer = [(AXCCShadowView *)v3 layer];
+    [layer setShadowPathIsBounds:1];
   }
 
   return v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = AXCCShadowView;
-  if ([(AXCCShadowView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(AXCCShadowView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 hasPrefix:@"shadow"];
+    v5 = [keyCopy hasPrefix:@"shadow"];
   }
 
   return v5;

@@ -1,15 +1,15 @@
 @interface FTCServiceAvailabilityCenter
 + (id)sharedInstance;
-- (BOOL)addListenerID:(id)a3 forService:(int64_t)a4;
-- (BOOL)hasListenerID:(id)a3 forService:(int64_t)a4;
-- (BOOL)removeListenerID:(id)a3 forService:(int64_t)a4;
+- (BOOL)addListenerID:(id)d forService:(int64_t)service;
+- (BOOL)hasListenerID:(id)d forService:(int64_t)service;
+- (BOOL)removeListenerID:(id)d forService:(int64_t)service;
 - (FTCServiceAvailabilityCenter)init;
-- (id)containerForService:(int64_t)a3 create:(BOOL)a4;
-- (int64_t)availabilityForListenerID:(id)a3 forService:(int64_t)a4;
-- (void)_handleServiceMonitorNotification:(id)a3;
-- (void)_postNotificationForService:(int64_t)a3 availability:(int64_t)a4;
-- (void)_startListeningToMonitor:(id)a3;
-- (void)_stopListeningToMonitor:(id)a3;
+- (id)containerForService:(int64_t)service create:(BOOL)create;
+- (int64_t)availabilityForListenerID:(id)d forService:(int64_t)service;
+- (void)_handleServiceMonitorNotification:(id)notification;
+- (void)_postNotificationForService:(int64_t)service availability:(int64_t)availability;
+- (void)_startListeningToMonitor:(id)monitor;
+- (void)_stopListeningToMonitor:(id)monitor;
 - (void)dealloc;
 @end
 
@@ -47,72 +47,72 @@
   [(FTCServiceAvailabilityCenter *)&v3 dealloc];
 }
 
-- (void)_postNotificationForService:(int64_t)a3 availability:(int64_t)a4
+- (void)_postNotificationForService:(int64_t)service availability:(int64_t)availability
 {
   v24 = *MEMORY[0x277D85DE8];
   v7 = OSLogHandleForRegistrationCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = FTCServiceNameForServiceType(a3);
+    v21 = FTCServiceNameForServiceType(service);
     v22 = 2048;
-    v23 = a4;
+    availabilityCopy = availability;
     _os_log_impl(&dword_24A9AC000, v7, OS_LOG_TYPE_DEFAULT, "%@ posting availability change notification (%@) - available: %ld", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && MarcoShouldLogRegistration())
   {
-    FTCServiceNameForServiceType(a3);
+    FTCServiceNameForServiceType(service);
     sub_24A9ACE54(@"ServiceAvailability", @"%@ posting availability change notification (%@) - available: %ld", v8, v9, v10, v11, v12, v13, self);
   }
 
-  v14 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a4];
-  v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v14 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:availability];
+  v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:service];
   v16 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v14, @"availability", v15, @"servicetype", 0}];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleServiceMonitorNotification:(id)a3
+- (void)_handleServiceMonitorNotification:(id)notification
 {
-  v5 = [a3 object];
-  v6 = [objc_msgSend(a3 "userInfo")];
-  [v5 serviceType];
+  object = [notification object];
+  v6 = [objc_msgSend(notification "userInfo")];
+  [object serviceType];
   [v6 integerValue];
 
   MEMORY[0x2821F9670](self, sel__postNotificationForService_availability_);
 }
 
-- (void)_startListeningToMonitor:(id)a3
+- (void)_startListeningToMonitor:(id)monitor
 {
-  if (a3)
+  if (monitor)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    MEMORY[0x2821F9670](v3, sel_addObserver_selector_name_object_);
+    MEMORY[0x2821F9670](defaultCenter, sel_addObserver_selector_name_object_);
   }
 }
 
-- (void)_stopListeningToMonitor:(id)a3
+- (void)_stopListeningToMonitor:(id)monitor
 {
-  if (a3)
+  if (monitor)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v5 removeObserver:self name:@"__kFTCServiceMonitorAvailabilityDidChangeNotification" object:a3];
+    [defaultCenter removeObserver:self name:@"__kFTCServiceMonitorAvailabilityDidChangeNotification" object:monitor];
   }
 }
 
-- (id)containerForService:(int64_t)a3 create:(BOOL)a4
+- (id)containerForService:(int64_t)service create:(BOOL)create
 {
-  v4 = a4;
+  createCopy = create;
   v25 = *MEMORY[0x277D85DE8];
   if ([(FTCServiceAvailabilityCenter *)self _isValidServiceType:?])
   {
-    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+    v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:service];
     v8 = [(NSMutableDictionary *)self->_availabilityHandlers objectForKey:v7];
     if (v8)
     {
@@ -121,7 +121,7 @@
 
     else
     {
-      v9 = !v4;
+      v9 = !createCopy;
     }
 
     if (!v9)
@@ -130,19 +130,19 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
-        v24 = FTCServiceNameForServiceType(a3);
+        v24 = FTCServiceNameForServiceType(service);
         _os_log_impl(&dword_24A9AC000, v10, OS_LOG_TYPE_DEFAULT, "%@ creating monitor for service: %@", buf, 0x16u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && MarcoShouldLogRegistration())
       {
-        FTCServiceNameForServiceType(a3);
+        FTCServiceNameForServiceType(service);
         sub_24A9ACE54(@"ServiceAvailability", @"%@ creating monitor for service: %@", v11, v12, v13, v14, v15, v16, self);
       }
 
-      v17 = [[FTCServiceContainer alloc] initWithServiceType:a3];
+      v17 = [[FTCServiceContainer alloc] initWithServiceType:service];
       v18 = v17;
       if (v17)
       {
@@ -163,50 +163,50 @@
   return v8;
 }
 
-- (BOOL)hasListenerID:(id)a3 forService:(int64_t)a4
+- (BOOL)hasListenerID:(id)d forService:(int64_t)service
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
 
-  v5 = [(FTCServiceAvailabilityCenter *)self containerForService:a4 create:0];
+  v5 = [(FTCServiceAvailabilityCenter *)self containerForService:service create:0];
   if (!v5)
   {
     return 0;
   }
 
-  return [v5 hasListenerID:a3];
+  return [v5 hasListenerID:d];
 }
 
-- (BOOL)addListenerID:(id)a3 forService:(int64_t)a4
+- (BOOL)addListenerID:(id)d forService:(int64_t)service
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
-    v7 = [a3 length];
+    v7 = [d length];
     if (v7)
     {
       v8 = OSLogHandleForRegistrationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
-        v20 = a3;
+        dCopy = d;
         v21 = 2112;
-        v22 = FTCServiceNameForServiceType(a4);
+        v22 = FTCServiceNameForServiceType(service);
       }
 
       if (os_log_shim_legacy_logging_enabled() && MarcoShouldLogRegistration())
       {
-        FTCServiceNameForServiceType(a4);
+        FTCServiceNameForServiceType(service);
       }
 
-      v7 = [(FTCServiceAvailabilityCenter *)self containerForService:a4 create:1];
+      v7 = [(FTCServiceAvailabilityCenter *)self containerForService:service create:1];
       if (v7)
       {
-        LOBYTE(v7) = [v7 addListenerID:a3];
+        LOBYTE(v7) = [v7 addListenerID:d];
       }
     }
   }
@@ -220,85 +220,85 @@
   return v7;
 }
 
-- (BOOL)removeListenerID:(id)a3 forService:(int64_t)a4
+- (BOOL)removeListenerID:(id)d forService:(int64_t)service
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
     v7 = OSLogHandleForRegistrationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2112;
-      v30 = a3;
+      dCopy = d;
       v31 = 2112;
-      v32 = FTCServiceNameForServiceType(a4);
+      v32 = FTCServiceNameForServiceType(service);
     }
 
     if (os_log_shim_legacy_logging_enabled() && MarcoShouldLogRegistration())
     {
-      FTCServiceNameForServiceType(a4);
+      FTCServiceNameForServiceType(service);
     }
 
-    v14 = [(FTCServiceAvailabilityCenter *)self containerForService:a4 create:0];
+    v14 = [(FTCServiceAvailabilityCenter *)self containerForService:service create:0];
     v15 = v14;
     if (v14)
     {
-      [v14 removeListenerID:a3];
+      [v14 removeListenerID:d];
       if (![objc_msgSend(v15 "listeners")])
       {
         v16 = OSLogHandleForRegistrationCategory();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = FTCServiceNameForServiceType(a4);
+          v17 = FTCServiceNameForServiceType(service);
           *buf = 138412546;
-          v28 = self;
+          selfCopy2 = self;
           v29 = 2112;
-          v30 = v17;
+          dCopy = v17;
           _os_log_impl(&dword_24A9AC000, v16, OS_LOG_TYPE_DEFAULT, "%@ no more listeners for service: %@", buf, 0x16u);
         }
 
         if (os_log_shim_legacy_logging_enabled() && MarcoShouldLogRegistration())
         {
-          FTCServiceNameForServiceType(a4);
+          FTCServiceNameForServiceType(service);
           sub_24A9ACE54(@"ServiceAvailability", @"%@ no more listeners for service: %@", v18, v19, v20, v21, v22, v23, self);
         }
 
         -[FTCServiceAvailabilityCenter _stopListeningToMonitor:](self, "_stopListeningToMonitor:", [v15 monitor]);
-        v24 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a4];
+        v24 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:service];
         [(NSMutableDictionary *)self->_availabilityHandlers removeObjectForKey:v24];
       }
     }
   }
 
-  result = a3 != 0;
+  result = d != 0;
   v26 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int64_t)availabilityForListenerID:(id)a3 forService:(int64_t)a4
+- (int64_t)availabilityForListenerID:(id)d forService:(int64_t)service
 {
-  if (!a3)
+  if (!d)
   {
     return -2;
   }
 
-  v5 = [(FTCServiceAvailabilityCenter *)self containerForService:a4 create:0];
+  v5 = [(FTCServiceAvailabilityCenter *)self containerForService:service create:0];
   if (!v5)
   {
     return -2;
   }
 
   v6 = v5;
-  if (![v5 hasListenerID:a3])
+  if (![v5 hasListenerID:d])
   {
     return -2;
   }
 
-  v7 = [v6 monitor];
+  monitor = [v6 monitor];
 
-  return MEMORY[0x2821F9670](v7, sel_serviceAvailability);
+  return MEMORY[0x2821F9670](monitor, sel_serviceAvailability);
 }
 
 @end

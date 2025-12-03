@@ -1,12 +1,12 @@
 @interface HUPinCodeDetailsViewController
 - (BOOL)_codeLabelHasChanged;
 - (BOOL)_codeValueHasChanged;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)textFieldShouldEndEditing:(id)a3;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUPinCodeDetailsItemManager)pinCodeItemManager;
-- (HUPinCodeDetailsViewController)initWithItem:(id)a3 pinCodeManager:(id)a4 home:(id)a5;
-- (HUPinCodeDetailsViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
+- (HUPinCodeDetailsViewController)initWithItem:(id)item pinCodeManager:(id)manager home:(id)home;
+- (HUPinCodeDetailsViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
 - (HUPinCodeDetailsViewDelegate)delegate;
 - (HUPresentationDelegate)presentationDelegate;
 - (id)_allTextFields;
@@ -14,32 +14,32 @@
 - (id)commitAccessoryChanges;
 - (id)commitNewPinCode;
 - (id)commitPinCodeChanges;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)_presentPinCodeErrorDialog;
 - (void)_resignFirstResponderForAllTextFields;
 - (void)_updateSaveEnabled;
 - (void)hideSpinner;
-- (void)itemManagerDidFinishUpdate:(id)a3;
-- (void)personalPinCodeViewController:(id)a3 pinCodeDidChange:(id)a4;
-- (void)pinCodeManagerFetchDidComplete:(id)a3;
+- (void)itemManagerDidFinishUpdate:(id)update;
+- (void)personalPinCodeViewController:(id)controller pinCodeDidChange:(id)change;
+- (void)pinCodeManagerFetchDidComplete:(id)complete;
 - (void)showSpinner;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5;
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item;
+- (void)textFieldDidEndEditing:(id)editing item:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUPinCodeDetailsViewController
 
-- (HUPinCodeDetailsViewController)initWithItem:(id)a3 pinCodeManager:(id)a4 home:(id)a5
+- (HUPinCodeDetailsViewController)initWithItem:(id)item pinCodeManager:(id)manager home:(id)home
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  itemCopy = item;
+  managerCopy = manager;
+  homeCopy = home;
+  if (itemCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -47,20 +47,20 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        NSLog(&cfstr_SuppliedItemIs.isa, v8);
+        NSLog(&cfstr_SuppliedItemIs.isa, itemCopy);
       }
     }
   }
 
-  v11 = [v8 copy];
-  v12 = [[HUPinCodeDetailsItemManager alloc] initWithDelegate:self sourceItem:v11 pinCodeManager:v9 home:v10];
+  v11 = [itemCopy copy];
+  v12 = [[HUPinCodeDetailsItemManager alloc] initWithDelegate:self sourceItem:v11 pinCodeManager:managerCopy home:homeCopy];
   v44.receiver = self;
   v44.super_class = HUPinCodeDetailsViewController;
   v13 = [(HUItemTableViewController *)&v44 initWithItemManager:v12 tableViewStyle:1];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_pinCodeManager, a4);
+    objc_storeStrong(&v13->_pinCodeManager, manager);
     objc_storeWeak(&v14->_pinCodeItemManager, v12);
     v14->_isClosing = 0;
     [(HUItemTableViewController *)v14 setAutomaticallyUpdatesViewControllerTitle:0];
@@ -78,34 +78,34 @@
 
     v17 = v16;
 
-    if (v8)
+    if (itemCopy)
     {
-      v18 = [v17 accessories];
-      v19 = [v18 copy];
+      accessories = [v17 accessories];
+      v19 = [accessories copy];
       [(HUPinCodeDetailsViewController *)v14 setPinAccessories:v19];
 
-      v20 = [(HUPinCodeDetailsViewController *)v14 pinAccessories];
-      v21 = [v20 mutableCopy];
+      pinAccessories = [(HUPinCodeDetailsViewController *)v14 pinAccessories];
+      v21 = [pinAccessories mutableCopy];
       [(HUPinCodeDetailsViewController *)v14 setAccessoriesToEdit:v21];
 
-      v22 = [(HUPinCodeDetailsViewController *)v14 pinCodeItemManager];
-      v23 = [v22 sourceItem];
-      [v23 latestResults];
-      v41 = v8;
+      pinCodeItemManager = [(HUPinCodeDetailsViewController *)v14 pinCodeItemManager];
+      sourceItem = [pinCodeItemManager sourceItem];
+      [sourceItem latestResults];
+      v41 = itemCopy;
       v24 = v12;
       v25 = v11;
-      v26 = v10;
-      v27 = v9;
+      v26 = homeCopy;
+      v27 = managerCopy;
       v29 = v28 = v17;
       v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
       [(HUPinCodeDetailsViewController *)v14 setTitle:v30];
 
       v17 = v28;
-      v9 = v27;
-      v10 = v26;
+      managerCopy = v27;
+      homeCopy = v26;
       v11 = v25;
       v12 = v24;
-      v8 = v41;
+      itemCopy = v41;
     }
 
     else
@@ -115,19 +115,19 @@
 
       [(HUPinCodeDetailsViewController *)v14 setCreatingNewPinCode:1];
       [(HUPinCodeDetailsViewController *)v14 setPinAccessories:MEMORY[0x277CBEBF8]];
-      v32 = [v10 hf_accessoriesSupportingAccessCodes];
-      v33 = [v32 mutableCopy];
+      hf_accessoriesSupportingAccessCodes = [homeCopy hf_accessoriesSupportingAccessCodes];
+      v33 = [hf_accessoriesSupportingAccessCodes mutableCopy];
       [(HUPinCodeDetailsViewController *)v14 setAccessoriesToEdit:v33];
 
-      v34 = [v9 generateNewCodeValue];
+      generateNewCodeValue = [managerCopy generateNewCodeValue];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __67__HUPinCodeDetailsViewController_initWithItem_pinCodeManager_home___block_invoke;
       v42[3] = &unk_277DC2600;
       v43 = v14;
-      v35 = [v34 addSuccessBlock:v42];
+      v35 = [generateNewCodeValue addSuccessBlock:v42];
 
-      v22 = v43;
+      pinCodeItemManager = v43;
     }
 
     v36 = objc_opt_new();
@@ -158,43 +158,43 @@ void __67__HUPinCodeDetailsViewController_initWithItem_pinCodeManager_home___blo
   }
 }
 
-- (HUPinCodeDetailsViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUPinCodeDetailsViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithItem_pinCodeManager_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUPinCodeDetailsViewController.m" lineNumber:140 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeDetailsViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPinCodeDetailsViewController.m" lineNumber:140 description:{@"%s is unavailable; use %@ instead", "-[HUPinCodeDetailsViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(HUPinCodeDetailsViewController *)self setIsClosing:1];
-  v5 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
-  [v5 removeObserver:self];
+  pinCodeManager = [(HUPinCodeDetailsViewController *)self pinCodeManager];
+  [pinCodeManager removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = HUPinCodeDetailsViewController;
-  [(HUItemTableViewController *)&v6 viewWillDisappear:v3];
+  [(HUItemTableViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = HUPinCodeDetailsViewController;
-  [(HUItemTableViewController *)&v10 viewDidAppear:a3];
-  v4 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
-  [v4 addObserver:self];
+  [(HUItemTableViewController *)&v10 viewDidAppear:appear];
+  pinCodeManager = [(HUPinCodeDetailsViewController *)self pinCodeManager];
+  [pinCodeManager addObserver:self];
 
-  v5 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v6 = [v5 pinCodeLabelItem];
-  v7 = [(HUItemTableViewController *)self textFieldForVisibleItem:v6];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeLabelItem = [pinCodeItemManager pinCodeLabelItem];
+  v7 = [(HUItemTableViewController *)self textFieldForVisibleItem:pinCodeLabelItem];
 
-  v8 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v9 = [v8 sourceItem];
+  pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem = [pinCodeItemManager2 sourceItem];
 
-  if (!v9 && v7)
+  if (!sourceItem && v7)
   {
     [v7 becomeFirstResponder];
   }
@@ -203,48 +203,48 @@ void __67__HUPinCodeDetailsViewController_initWithItem_pinCodeManager_home___blo
 - (void)showSpinner
 {
   v16 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-  v4 = [(HUPinCodeDetailsViewController *)self delegate];
+  delegate = [(HUPinCodeDetailsViewController *)self delegate];
 
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v16];
-  if (v4)
+  if (delegate)
   {
-    v6 = [(HUPinCodeDetailsViewController *)self delegate];
-    [v6 setAddButtonItem:v5];
+    delegate2 = [(HUPinCodeDetailsViewController *)self delegate];
+    [delegate2 setAddButtonItem:v5];
   }
 
   else
   {
-    v6 = [(HUPinCodeDetailsViewController *)self navigationItem];
-    [v6 setRightBarButtonItem:v5];
+    delegate2 = [(HUPinCodeDetailsViewController *)self navigationItem];
+    [delegate2 setRightBarButtonItem:v5];
   }
 
   [v16 startAnimating];
-  v7 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  [v7 setOperationInProgress:1];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  [pinCodeItemManager setOperationInProgress:1];
 
-  v8 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v11 = [v10 deleteGuestPINCodeItem];
-  v12 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v13 = [v12 pinCodeRestoreAccessItem];
-  v14 = [v9 setWithObjects:{v11, v13, 0}];
-  v15 = [v8 updateResultsForItems:v14 senderSelector:a2];
+  pinCodeItemManager3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  deleteGuestPINCodeItem = [pinCodeItemManager3 deleteGuestPINCodeItem];
+  pinCodeItemManager4 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeRestoreAccessItem = [pinCodeItemManager4 pinCodeRestoreAccessItem];
+  v14 = [v9 setWithObjects:{deleteGuestPINCodeItem, pinCodeRestoreAccessItem, 0}];
+  v15 = [pinCodeItemManager2 updateResultsForItems:v14 senderSelector:a2];
 }
 
 - (void)hideSpinner
 {
-  v4 = [(HUPinCodeDetailsViewController *)self delegate];
+  delegate = [(HUPinCodeDetailsViewController *)self delegate];
 
   objc_opt_class();
-  if (v4)
+  if (delegate)
   {
-    v5 = [(HUPinCodeDetailsViewController *)self delegate];
-    v6 = [v5 addButtonItem];
-    v7 = [v6 customView];
+    delegate2 = [(HUPinCodeDetailsViewController *)self delegate];
+    addButtonItem = [delegate2 addButtonItem];
+    customView = [addButtonItem customView];
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = customView;
     }
 
     else
@@ -254,18 +254,18 @@ void __67__HUPinCodeDetailsViewController_initWithItem_pinCodeManager_home___blo
 
     v23 = v8;
 
-    v9 = [(HUPinCodeDetailsViewController *)self delegate];
-    [v9 setAddButtonItem:0];
+    delegate3 = [(HUPinCodeDetailsViewController *)self delegate];
+    [delegate3 setAddButtonItem:0];
   }
 
   else
   {
-    v10 = [(HUPinCodeDetailsViewController *)self navigationItem];
-    v11 = [v10 rightBarButtonItem];
-    v12 = [v11 customView];
+    navigationItem = [(HUPinCodeDetailsViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    customView2 = [rightBarButtonItem customView];
     if (objc_opt_isKindOfClass())
     {
-      v13 = v12;
+      v13 = customView2;
     }
 
     else
@@ -275,41 +275,41 @@ void __67__HUPinCodeDetailsViewController_initWithItem_pinCodeManager_home___blo
 
     v23 = v13;
 
-    v9 = [(HUPinCodeDetailsViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:0];
+    delegate3 = [(HUPinCodeDetailsViewController *)self navigationItem];
+    [delegate3 setRightBarButtonItem:0];
   }
 
   [v23 stopAnimating];
-  v14 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  [v14 setOperationInProgress:0];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  [pinCodeItemManager setOperationInProgress:0];
 
-  v15 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
   v16 = MEMORY[0x277CBEB98];
-  v17 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v18 = [v17 deleteGuestPINCodeItem];
-  v19 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v20 = [v19 pinCodeRestoreAccessItem];
-  v21 = [v16 setWithObjects:{v18, v20, 0}];
-  v22 = [v15 updateResultsForItems:v21 senderSelector:a2];
+  pinCodeItemManager3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  deleteGuestPINCodeItem = [pinCodeItemManager3 deleteGuestPINCodeItem];
+  pinCodeItemManager4 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeRestoreAccessItem = [pinCodeItemManager4 pinCodeRestoreAccessItem];
+  v21 = [v16 setWithObjects:{deleteGuestPINCodeItem, pinCodeRestoreAccessItem, 0}];
+  v22 = [pinCodeItemManager2 updateResultsForItems:v21 senderSelector:a2];
 }
 
 - (id)commitAccessoryChanges
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(HUPinCodeDetailsViewController *)self creatingNewPinCode])
   {
-    v4 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
     [(HUPinCodeDetailsViewController *)self showSpinner];
     objc_opt_class();
-    v5 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v6 = [v5 sourceItem];
+    pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    sourceItem = [pinCodeItemManager sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = sourceItem;
     }
 
     else
@@ -319,38 +319,38 @@ void __67__HUPinCodeDetailsViewController_initWithItem_pinCodeManager_home___blo
 
     v8 = v7;
 
-    v9 = [(HUPinCodeDetailsViewController *)self accessoriesToEdit];
-    v10 = [(HUPinCodeDetailsViewController *)self pinAccessories];
-    v11 = [v9 differenceFromArray:v10];
+    accessoriesToEdit = [(HUPinCodeDetailsViewController *)self accessoriesToEdit];
+    pinAccessories = [(HUPinCodeDetailsViewController *)self pinAccessories];
+    v11 = [accessoriesToEdit differenceFromArray:pinAccessories];
 
-    v12 = [v11 insertions];
-    v13 = [v12 count];
+    insertions = [v11 insertions];
+    v13 = [insertions count];
 
     if (v13)
     {
-      v14 = [v11 insertions];
-      v15 = [v14 na_map:&__block_literal_global_235];
+      insertions2 = [v11 insertions];
+      v15 = [insertions2 na_map:&__block_literal_global_235];
 
-      v16 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
-      v17 = [v16 setPinCodeWithItem:v8 enabled:1 onAccessories:v15];
-      [v3 addObject:v17];
+      pinCodeManager = [(HUPinCodeDetailsViewController *)self pinCodeManager];
+      v17 = [pinCodeManager setPinCodeWithItem:v8 enabled:1 onAccessories:v15];
+      [array addObject:v17];
     }
 
-    v18 = [v11 removals];
-    v19 = [v18 count];
+    removals = [v11 removals];
+    v19 = [removals count];
 
     if (v19)
     {
-      v20 = [v11 removals];
-      v21 = [v20 na_map:&__block_literal_global_29_2];
+      removals2 = [v11 removals];
+      v21 = [removals2 na_map:&__block_literal_global_29_2];
 
-      v22 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
-      v23 = [v22 setPinCodeWithItem:v8 enabled:0 onAccessories:v21];
-      [v3 addObject:v23];
+      pinCodeManager2 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
+      v23 = [pinCodeManager2 setPinCodeWithItem:v8 enabled:0 onAccessories:v21];
+      [array addObject:v23];
     }
 
-    v24 = [(HUPinCodeDetailsViewController *)self accessoriesToEdit];
-    v25 = [v24 copy];
+    accessoriesToEdit2 = [(HUPinCodeDetailsViewController *)self accessoriesToEdit];
+    v25 = [accessoriesToEdit2 copy];
 
     objc_initWeak(&location, self);
     v26 = MEMORY[0x277D2C900];
@@ -362,25 +362,25 @@ void __67__HUPinCodeDetailsViewController_initWithItem_pinCodeManager_home___blo
     v27 = v25;
     v34 = v27;
     v28 = [v26 futureWithBlock:v33];
-    [v3 addObject:v28];
+    [array addObject:v28];
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(&location);
 
     objc_initWeak(&location, self);
-    v29 = [MEMORY[0x277D2C900] chainFutures:v3];
+    v29 = [MEMORY[0x277D2C900] chainFutures:array];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __56__HUPinCodeDetailsViewController_commitAccessoryChanges__block_invoke_4;
     v31[3] = &unk_277DB8CA8;
     objc_copyWeak(&v32, &location);
-    v4 = [v29 addCompletionBlock:v31];
+    futureWithNoResult = [v29 addCompletionBlock:v31];
     objc_destroyWeak(&v32);
 
     objc_destroyWeak(&location);
   }
 
-  return v4;
+  return futureWithNoResult;
 }
 
 void __56__HUPinCodeDetailsViewController_commitAccessoryChanges__block_invoke_3(uint64_t a1, void *a2)
@@ -406,11 +406,11 @@ void __56__HUPinCodeDetailsViewController_commitAccessoryChanges__block_invoke_4
 - (id)commitPinCodeChanges
 {
   objc_opt_class();
-  v4 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v5 = [v4 sourceItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem = [pinCodeItemManager sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = sourceItem;
   }
 
   else
@@ -422,7 +422,7 @@ void __56__HUPinCodeDetailsViewController_commitAccessoryChanges__block_invoke_4
 
   if ([(HUPinCodeDetailsViewController *)self creatingNewPinCode])
   {
-    v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -431,14 +431,14 @@ void __56__HUPinCodeDetailsViewController_commitAccessoryChanges__block_invoke_4
     {
       [(HUPinCodeDetailsViewController *)self showSpinner];
       objc_initWeak(&location, self);
-      v11 = [(HUPinCodeDetailsViewController *)self _validatePinCodeLabel];
+      _validatePinCodeLabel = [(HUPinCodeDetailsViewController *)self _validatePinCodeLabel];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __54__HUPinCodeDetailsViewController_commitPinCodeChanges__block_invoke;
       v17[3] = &unk_277DC2648;
       objc_copyWeak(&v19, &location);
       v18 = v7;
-      v12 = [v11 flatMap:v17];
+      futureWithNoResult2 = [_validatePinCodeLabel flatMap:v17];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
@@ -446,7 +446,7 @@ void __56__HUPinCodeDetailsViewController_commitAccessoryChanges__block_invoke_4
 
     else
     {
-      v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult2 = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     objc_initWeak(&location, self);
@@ -457,13 +457,13 @@ void __56__HUPinCodeDetailsViewController_commitAccessoryChanges__block_invoke_4
     objc_copyWeak(v16, &location);
     v15 = v7;
     v16[1] = a2;
-    v8 = [v12 addCompletionBlock:v14];
+    futureWithNoResult = [futureWithNoResult2 addCompletionBlock:v14];
 
     objc_destroyWeak(v16);
     objc_destroyWeak(&location);
   }
 
-  return v8;
+  return futureWithNoResult;
 }
 
 id __54__HUPinCodeDetailsViewController_commitPinCodeChanges__block_invoke(uint64_t a1)
@@ -536,22 +536,22 @@ void __54__HUPinCodeDetailsViewController_commitPinCodeChanges__block_invoke_3(u
 - (id)commitNewPinCode
 {
   [(HUPinCodeDetailsViewController *)self showSpinner];
-  v3 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   if ([(HUPinCodeDetailsViewController *)self creatingNewPinCode])
   {
     [(HUPinCodeDetailsViewController *)self _resignFirstResponderForAllTextFields];
     objc_initWeak(&location, self);
-    v4 = [(HUPinCodeDetailsViewController *)self _validatePinCodeLabel];
+    _validatePinCodeLabel = [(HUPinCodeDetailsViewController *)self _validatePinCodeLabel];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __50__HUPinCodeDetailsViewController_commitNewPinCode__block_invoke;
     v14[3] = &unk_277DBD948;
     objc_copyWeak(&v15, &location);
-    v5 = [v4 flatMap:v14];
+    v5 = [_validatePinCodeLabel flatMap:v14];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
-    v3 = v5;
+    futureWithNoResult = v5;
   }
 
   else
@@ -559,8 +559,8 @@ void __54__HUPinCodeDetailsViewController_commitPinCodeChanges__block_invoke_3(u
     NSLog(&cfstr_Commitnewpinco.isa);
   }
 
-  v6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v7 = [v6 home];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  home = [pinCodeItemManager home];
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
@@ -568,9 +568,9 @@ void __54__HUPinCodeDetailsViewController_commitPinCodeChanges__block_invoke_3(u
   v11[2] = __50__HUPinCodeDetailsViewController_commitNewPinCode__block_invoke_2;
   v11[3] = &unk_277DC2670;
   objc_copyWeak(&v13, &location);
-  v8 = v7;
+  v8 = home;
   v12 = v8;
-  v9 = [v3 addCompletionBlock:v11];
+  v9 = [futureWithNoResult addCompletionBlock:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -745,75 +745,75 @@ void __50__HUPinCodeDetailsViewController_commitNewPinCode__block_invoke_70(uint
   }
 }
 
-- (void)pinCodeManagerFetchDidComplete:(id)a3
+- (void)pinCodeManagerFetchDidComplete:(id)complete
 {
-  v5 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v6 = [v5 sourceItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem = [pinCodeItemManager sourceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v8 = [v9 reloadAndUpdateAllItemsFromSenderSelector:a2];
+    pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    v8 = [pinCodeItemManager2 reloadAndUpdateAllItemsFromSenderSelector:a2];
   }
 }
 
-- (void)itemManagerDidFinishUpdate:(id)a3
+- (void)itemManagerDidFinishUpdate:(id)update
 {
   v9.receiver = self;
   v9.super_class = HUPinCodeDetailsViewController;
-  [(HUItemTableViewController *)&v9 itemManagerDidFinishUpdate:a3];
-  v4 = [(HUPinCodeDetailsViewController *)self title];
+  [(HUItemTableViewController *)&v9 itemManagerDidFinishUpdate:update];
+  title = [(HUPinCodeDetailsViewController *)self title];
 
-  if (!v4)
+  if (!title)
   {
-    v5 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v6 = [v5 sourceItem];
-    v7 = [v6 latestResults];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    sourceItem = [pinCodeItemManager sourceItem];
+    latestResults = [sourceItem latestResults];
+    v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     [(HUPinCodeDetailsViewController *)self setTitle:v8];
   }
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v7 = [v6 addOrShowHomeKeyItem];
-  if ([v5 isEqual:v7])
+  itemCopy = item;
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  addOrShowHomeKeyItem = [pinCodeItemManager addOrShowHomeKeyItem];
+  if ([itemCopy isEqual:addOrShowHomeKeyItem])
   {
     goto LABEL_17;
   }
 
-  v8 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v9 = [v8 restoreHomeKeyAccessItem];
+  pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  restoreHomeKeyAccessItem = [pinCodeItemManager2 restoreHomeKeyAccessItem];
 
-  if (v9 == v5)
+  if (restoreHomeKeyAccessItem == itemCopy)
   {
     goto LABEL_18;
   }
 
-  v6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v7 = [v6 deleteGuestPINCodeItem];
-  if (v7 == v5)
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  addOrShowHomeKeyItem = [pinCodeItemManager deleteGuestPINCodeItem];
+  if (addOrShowHomeKeyItem == itemCopy)
   {
     goto LABEL_17;
   }
 
-  v10 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v11 = [v10 pinCodeRestoreAccessItem];
-  v12 = v11;
-  if (v11 == v5)
+  pinCodeItemManager3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeRestoreAccessItem = [pinCodeItemManager3 pinCodeRestoreAccessItem];
+  v12 = pinCodeRestoreAccessItem;
+  if (pinCodeRestoreAccessItem == itemCopy)
   {
 
 LABEL_17:
     goto LABEL_18;
   }
 
-  v13 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v14 = [v13 pinCodeChangeItem];
-  v15 = [v5 isEqual:v14];
+  pinCodeItemManager4 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeChangeItem = [pinCodeItemManager4 pinCodeChangeItem];
+  v15 = [itemCopy isEqual:pinCodeChangeItem];
 
   if (v15)
   {
@@ -822,40 +822,40 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v16 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v17 = [v16 transformedLocksItemProvider];
-  v18 = [v17 items];
-  v19 = [v18 containsObject:v5];
+  pinCodeItemManager5 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  transformedLocksItemProvider = [pinCodeItemManager5 transformedLocksItemProvider];
+  items = [transformedLocksItemProvider items];
+  v19 = [items containsObject:itemCopy];
 
   if (!v19)
   {
-    v34 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v35 = [v34 pinCodeLabelItem];
-    v36 = [v5 isEqual:v35];
+    pinCodeItemManager6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    pinCodeLabelItem = [pinCodeItemManager6 pinCodeLabelItem];
+    v36 = [itemCopy isEqual:pinCodeLabelItem];
 
     if (v36)
     {
       goto LABEL_18;
     }
 
-    v6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v7 = [v6 pinCodeValueItem];
-    if (![v5 isEqual:v7])
+    pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    addOrShowHomeKeyItem = [pinCodeItemManager pinCodeValueItem];
+    if (![itemCopy isEqual:addOrShowHomeKeyItem])
     {
-      v37 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-      v38 = [v37 personalPINCodeItem];
-      [v5 isEqual:v38];
+      pinCodeItemManager7 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+      personalPINCodeItem = [pinCodeItemManager7 personalPINCodeItem];
+      [itemCopy isEqual:personalPINCodeItem];
     }
 
     goto LABEL_17;
   }
 
   objc_opt_class();
-  v20 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v21 = [v20 sourceItem];
+  pinCodeItemManager8 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem = [pinCodeItemManager8 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v22 = v21;
+    v22 = sourceItem;
   }
 
   else
@@ -866,11 +866,11 @@ LABEL_18:
   v23 = v22;
 
   objc_opt_class();
-  v24 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v25 = [v24 sourceItem];
+  pinCodeItemManager9 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem2 = [pinCodeItemManager9 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v26 = v25;
+    v26 = sourceItem2;
   }
 
   else
@@ -880,27 +880,27 @@ LABEL_18:
 
   v27 = v26;
 
-  v28 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v29 = [v28 home];
+  pinCodeItemManager10 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  home = [pinCodeItemManager10 home];
 
-  v30 = [v27 user];
+  user = [v27 user];
 
-  if (v30)
+  if (user)
   {
-    v31 = v30;
+    user2 = user;
   }
 
   else
   {
-    v31 = [v23 user];
+    user2 = [v23 user];
   }
 
-  v39 = v31;
+  v39 = user2;
 
-  if (![v29 hf_currentUserIsAdministrator] || (objc_msgSend(v29, "hf_userIsRestrictedGuest:", v39) & 1) == 0)
+  if (![home hf_currentUserIsAdministrator] || (objc_msgSend(home, "hf_userIsRestrictedGuest:", v39) & 1) == 0)
   {
-    v40 = [v23 user];
-    if (v40 | v27)
+    user3 = [v23 user];
+    if (user3 | v27)
     {
     }
 
@@ -917,44 +917,44 @@ LABEL_19:
   return v32;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v82.receiver = self;
   v82.super_class = HUPinCodeDetailsViewController;
-  [(HUItemTableViewController *)&v82 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
-  v12 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v13 = [v12 deleteGuestPINCodeItem];
+  [(HUItemTableViewController *)&v82 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  deleteGuestPINCodeItem = [pinCodeItemManager deleteGuestPINCodeItem];
 
-  if (v13 == v11)
+  if (deleteGuestPINCodeItem == itemCopy)
   {
-    v31 = v10;
+    v31 = cellCopy;
     [v31 setDestructive:1];
-    v32 = [v11 latestResults];
-    v20 = [v32 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    latestResults = [itemCopy latestResults];
+    valueCellConfiguration2 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
 
-    v33 = [v20 BOOLValue];
-    v21 = [v31 textLabel];
+    bOOLValue = [valueCellConfiguration2 BOOLValue];
+    textLabel = [v31 textLabel];
 
-    [v21 setEnabled:v33 ^ 1u];
+    [textLabel setEnabled:bOOLValue ^ 1u];
   }
 
   else
   {
-    v14 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v15 = [v14 pinCodeRestoreAccessItem];
+    pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    pinCodeRestoreAccessItem = [pinCodeItemManager2 pinCodeRestoreAccessItem];
 
-    if (v15 != v11)
+    if (pinCodeRestoreAccessItem != itemCopy)
     {
-      v16 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-      v17 = [v16 pinCodeLabelItem];
+      pinCodeItemManager3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+      pinCodeLabelItem = [pinCodeItemManager3 pinCodeLabelItem];
 
-      if (v17 == v11)
+      if (pinCodeLabelItem == itemCopy)
       {
         objc_opt_class();
-        v38 = v10;
+        v38 = cellCopy;
         if (objc_opt_isKindOfClass())
         {
           v39 = v38;
@@ -965,42 +965,42 @@ LABEL_19:
           v39 = 0;
         }
 
-        v20 = v39;
+        valueCellConfiguration2 = v39;
 
-        v40 = [v11 latestResults];
-        v41 = [v40 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-        v42 = [v20 textField];
-        [v42 setText:v41];
+        latestResults2 = [itemCopy latestResults];
+        v41 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+        textField = [valueCellConfiguration2 textField];
+        [textField setText:v41];
 
-        v43 = [v11 latestResults];
-        v44 = [v43 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-        v45 = [v20 textField];
-        [v45 setAccessibilityIdentifier:v44];
+        latestResults3 = [itemCopy latestResults];
+        v44 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+        textField2 = [valueCellConfiguration2 textField];
+        [textField2 setAccessibilityIdentifier:v44];
 
         v46 = _HULocalizedStringWithDefaultValue(@"HUAddPersonPinGuestNamePlaceholder", @"HUAddPersonPinGuestNamePlaceholder", 1);
-        v47 = [v20 textField];
-        [v47 setPlaceholder:v46];
+        textField3 = [valueCellConfiguration2 textField];
+        [textField3 setPlaceholder:v46];
 
-        v48 = [v20 textField];
-        [v48 setClearButtonMode:3];
+        textField4 = [valueCellConfiguration2 textField];
+        [textField4 setClearButtonMode:3];
 
-        v49 = [v20 textField];
-        [v49 setKeyboardType:1];
+        textField5 = [valueCellConfiguration2 textField];
+        [textField5 setKeyboardType:1];
 
-        v50 = [v11 latestResults];
-        v21 = [v50 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+        latestResults4 = [itemCopy latestResults];
+        textLabel = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
 
-        [v20 setDisabled:{objc_msgSend(v21, "BOOLValue")}];
-        v51 = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
+        [valueCellConfiguration2 setDisabled:{objc_msgSend(textLabel, "BOOLValue")}];
+        editedPinCodeLabel = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
 
-        if (!v51)
+        if (!editedPinCodeLabel)
         {
           goto LABEL_23;
         }
 
-        v25 = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
-        v29 = [v20 textField];
-        [v29 setText:v25];
+        editedPinCodeLabel2 = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
+        textField6 = [valueCellConfiguration2 textField];
+        [textField6 setText:editedPinCodeLabel2];
         goto LABEL_21;
       }
 
@@ -1008,7 +1008,7 @@ LABEL_19:
       if (objc_opt_isKindOfClass())
       {
         objc_opt_class();
-        v18 = v10;
+        v18 = cellCopy;
         if (objc_opt_isKindOfClass())
         {
           v19 = v18;
@@ -1019,13 +1019,13 @@ LABEL_19:
           v19 = 0;
         }
 
-        v20 = v19;
+        valueCellConfiguration2 = v19;
 
-        [v20 setDelegate:self];
-        v21 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:v11];
+        [valueCellConfiguration2 setDelegate:self];
+        textLabel = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:itemCopy];
         objc_opt_class();
-        v22 = [v11 latestResults];
-        v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277D13F58]];
+        latestResults5 = [itemCopy latestResults];
+        v23 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D13F58]];
         if (objc_opt_isKindOfClass())
         {
           v24 = v23;
@@ -1036,22 +1036,22 @@ LABEL_19:
           v24 = 0;
         }
 
-        v25 = v24;
+        editedPinCodeLabel2 = v24;
 
-        if (v25)
+        if (editedPinCodeLabel2)
         {
-          v26 = [v21 imageProperties];
-          [v26 setTintColor:v25];
+          imageProperties = [textLabel imageProperties];
+          [imageProperties setTintColor:editedPinCodeLabel2];
         }
 
         v27 = [MEMORY[0x277D755D0] configurationWithPointSize:26.0];
-        v28 = [v21 imageProperties];
-        [v28 setPreferredSymbolConfiguration:v27];
+        imageProperties2 = [textLabel imageProperties];
+        [imageProperties2 setPreferredSymbolConfiguration:v27];
 
-        [v20 setContentConfiguration:v21];
-        v29 = [v11 latestResults];
-        v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-        [v20 setAccessibilityIdentifier:v30];
+        [valueCellConfiguration2 setContentConfiguration:textLabel];
+        textField6 = [itemCopy latestResults];
+        v30 = [textField6 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+        [valueCellConfiguration2 setAccessibilityIdentifier:v30];
 
 LABEL_21:
 LABEL_22:
@@ -1059,68 +1059,68 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v52 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-      v53 = [v52 pinCodeValueItem];
-      v54 = [v11 isEqual:v53];
+      pinCodeItemManager4 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+      pinCodeValueItem = [pinCodeItemManager4 pinCodeValueItem];
+      v54 = [itemCopy isEqual:pinCodeValueItem];
 
       if (v54)
       {
-        v55 = [MEMORY[0x277D756E0] valueCellConfiguration];
-        v20 = [HUListContentConfigurationUtilities labelConfiguration:v55 forItem:v11];
+        valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+        valueCellConfiguration2 = [HUListContentConfigurationUtilities labelConfiguration:valueCellConfiguration forItem:itemCopy];
 
-        v56 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
+        editedPinCodeValue = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
 
-        if (v56)
+        if (editedPinCodeValue)
         {
-          v57 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
-          [v20 setSecondaryText:v57];
+          editedPinCodeValue2 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
+          [valueCellConfiguration2 setSecondaryText:editedPinCodeValue2];
         }
 
-        [v10 setContentConfiguration:v20];
-        v58 = [v11 latestResults];
-        v59 = [v58 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-        [v10 setAccessibilityIdentifier:v59];
+        [cellCopy setContentConfiguration:valueCellConfiguration2];
+        latestResults6 = [itemCopy latestResults];
+        v59 = [latestResults6 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+        [cellCopy setAccessibilityIdentifier:v59];
 
-        v21 = [v10 layer];
-        [v21 setDisableUpdateMask:16];
+        textLabel = [cellCopy layer];
+        [textLabel setDisableUpdateMask:16];
         goto LABEL_23;
       }
 
-      v60 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-      v61 = [v60 personalPINCodeItem];
-      v62 = [v11 isEqual:v61];
+      pinCodeItemManager5 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+      personalPINCodeItem = [pinCodeItemManager5 personalPINCodeItem];
+      v62 = [itemCopy isEqual:personalPINCodeItem];
 
       if (v62)
       {
-        v63 = [MEMORY[0x277D756E0] cellConfiguration];
-        v20 = [HUListContentConfigurationUtilities labelConfiguration:v63 forItem:v11];
+        cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+        valueCellConfiguration2 = [HUListContentConfigurationUtilities labelConfiguration:cellConfiguration forItem:itemCopy];
 
-        [v10 setContentConfiguration:v20];
-        [v10 setAccessoryType:1];
+        [cellCopy setContentConfiguration:valueCellConfiguration2];
+        [cellCopy setAccessoryType:1];
       }
 
       else
       {
-        v64 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-        v65 = [v64 addOrShowHomeKeyItem];
-        v66 = [v11 isEqual:v65];
+        pinCodeItemManager6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+        addOrShowHomeKeyItem = [pinCodeItemManager6 addOrShowHomeKeyItem];
+        v66 = [itemCopy isEqual:addOrShowHomeKeyItem];
 
         if (!v66)
         {
-          v72 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-          v73 = [v72 transformedLocksItemProvider];
-          v74 = [v73 items];
-          v75 = [v74 containsObject:v11];
+          pinCodeItemManager7 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+          transformedLocksItemProvider = [pinCodeItemManager7 transformedLocksItemProvider];
+          items = [transformedLocksItemProvider items];
+          v75 = [items containsObject:itemCopy];
 
           if (!v75)
           {
             goto LABEL_24;
           }
 
-          v20 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:v11];
+          valueCellConfiguration2 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:itemCopy];
           objc_opt_class();
-          v76 = [v11 latestResults];
-          v77 = [v76 objectForKeyedSubscript:*MEMORY[0x277D13F58]];
+          latestResults7 = [itemCopy latestResults];
+          v77 = [latestResults7 objectForKeyedSubscript:*MEMORY[0x277D13F58]];
           if (objc_opt_isKindOfClass())
           {
             v78 = v77;
@@ -1131,56 +1131,56 @@ LABEL_22:
             v78 = 0;
           }
 
-          v21 = v78;
+          textLabel = v78;
 
-          if (v21)
+          if (textLabel)
           {
-            v79 = [v20 imageProperties];
-            [v79 setTintColor:v21];
+            imageProperties3 = [valueCellConfiguration2 imageProperties];
+            [imageProperties3 setTintColor:textLabel];
           }
 
           v80 = [MEMORY[0x277D755D0] configurationWithPointSize:26.0];
-          v81 = [v20 imageProperties];
-          [v81 setPreferredSymbolConfiguration:v80];
+          imageProperties4 = [valueCellConfiguration2 imageProperties];
+          [imageProperties4 setPreferredSymbolConfiguration:v80];
 
-          [v10 setContentConfiguration:v20];
-          v25 = [v11 latestResults];
-          v29 = [v25 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-          [v10 setAccessibilityIdentifier:v29];
+          [cellCopy setContentConfiguration:valueCellConfiguration2];
+          editedPinCodeLabel2 = [itemCopy latestResults];
+          textField6 = [editedPinCodeLabel2 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+          [cellCopy setAccessibilityIdentifier:textField6];
           goto LABEL_21;
         }
 
-        v20 = [MEMORY[0x277D756E0] valueCellConfiguration];
-        v67 = [v11 latestResults];
-        v68 = [v67 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-        [v20 setText:v68];
+        valueCellConfiguration2 = [MEMORY[0x277D756E0] valueCellConfiguration];
+        latestResults8 = [itemCopy latestResults];
+        v68 = [latestResults8 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+        [valueCellConfiguration2 setText:v68];
 
-        v69 = [MEMORY[0x277D75348] hf_keyColor];
-        v70 = [v20 textProperties];
-        [v70 setColor:v69];
+        hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+        textProperties = [valueCellConfiguration2 textProperties];
+        [textProperties setColor:hf_keyColor];
 
-        v71 = [MEMORY[0x277D755B8] hu_walletAppIconImage];
-        [v20 setImage:v71];
+        hu_walletAppIconImage = [MEMORY[0x277D755B8] hu_walletAppIconImage];
+        [valueCellConfiguration2 setImage:hu_walletAppIconImage];
 
-        [v10 setContentConfiguration:v20];
+        [cellCopy setContentConfiguration:valueCellConfiguration2];
       }
 
-      v21 = [v11 latestResults];
-      v25 = [v21 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-      [v10 setAccessibilityIdentifier:v25];
+      textLabel = [itemCopy latestResults];
+      editedPinCodeLabel2 = [textLabel objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+      [cellCopy setAccessibilityIdentifier:editedPinCodeLabel2];
       goto LABEL_22;
     }
 
-    v34 = v10;
-    v35 = [v11 latestResults];
-    v20 = [v35 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    v34 = cellCopy;
+    latestResults9 = [itemCopy latestResults];
+    valueCellConfiguration2 = [latestResults9 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
 
-    LODWORD(v35) = [v20 BOOLValue];
-    v36 = [v34 textLabel];
-    [v36 setEnabled:v35 ^ 1];
+    LODWORD(latestResults9) = [valueCellConfiguration2 BOOLValue];
+    textLabel2 = [v34 textLabel];
+    [textLabel2 setEnabled:latestResults9 ^ 1];
 
-    v21 = [v11 latestResults];
-    v37 = [v21 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+    textLabel = [itemCopy latestResults];
+    v37 = [textLabel objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
     [v34 setAccessibilityIdentifier:v37];
   }
 
@@ -1189,47 +1189,47 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item
 {
-  v10 = a3;
-  v7 = a5;
-  v8 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v9 = [v8 pinCodeLabelItem];
+  changeCopy = change;
+  itemCopy = item;
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeLabelItem = [pinCodeItemManager pinCodeLabelItem];
 
-  if (v9 == v7)
+  if (pinCodeLabelItem == itemCopy)
   {
-    [(HUPinCodeDetailsViewController *)self setEditedPinCodeLabel:v10];
+    [(HUPinCodeDetailsViewController *)self setEditedPinCodeLabel:changeCopy];
   }
 
   [(HUPinCodeDetailsViewController *)self _updateSaveEnabled];
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
-  v4 = [a3 text];
-  if ([v4 length] || -[HUPinCodeDetailsViewController creatingNewPinCode](self, "creatingNewPinCode"))
+  text = [editing text];
+  if ([text length] || -[HUPinCodeDetailsViewController creatingNewPinCode](self, "creatingNewPinCode"))
   {
 
     return 1;
   }
 
-  v6 = [(HUPinCodeDetailsViewController *)self isClosing];
+  isClosing = [(HUPinCodeDetailsViewController *)self isClosing];
 
-  return v6;
+  return isClosing;
 }
 
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4
+- (void)textFieldDidEndEditing:(id)editing item:(id)item
 {
-  v5 = a3;
-  v6 = [(HUPinCodeDetailsViewController *)self commitPinCodeChanges];
+  editingCopy = editing;
+  commitPinCodeChanges = [(HUPinCodeDetailsViewController *)self commitPinCodeChanges];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_invoke;
   v9[3] = &unk_277DB7E90;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
-  v8 = [v6 addFailureBlock:v9];
+  v10 = editingCopy;
+  v7 = editingCopy;
+  v8 = [commitPinCodeChanges addFailureBlock:v9];
 }
 
 void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_invoke(uint64_t a1, void *a2)
@@ -1264,40 +1264,40 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 displayedItemAtIndexPath:v5];
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v8 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v9 = [v8 sourceItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem = [pinCodeItemManager sourceItem];
 
-  if (v9)
+  if (sourceItem)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v12 = [v11 pinCodeValueItem];
-    v10 = v12 != v7;
+    pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    pinCodeValueItem = [pinCodeItemManager2 pinCodeValueItem];
+    v10 = pinCodeValueItem != v7;
   }
 
   return v10;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 displayedItemAtIndexPath:v5];
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v8 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v9 = [v8 transformedLocksItemProvider];
-  v10 = [v9 items];
-  v11 = [v10 containsObject:v7];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  transformedLocksItemProvider = [pinCodeItemManager transformedLocksItemProvider];
+  items = [transformedLocksItemProvider items];
+  v11 = [items containsObject:v7];
 
   if (v11)
   {
@@ -1306,23 +1306,23 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
 
   else
   {
-    v12 = v5;
+    v12 = pathCopy;
   }
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v137 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v130.receiver = self;
   v130.super_class = HUPinCodeDetailsViewController;
-  [(HUItemTableViewController *)&v130 tableView:v6 didSelectRowAtIndexPath:v7];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v130 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1335,11 +1335,11 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
   }
 
   objc_opt_class();
-  v11 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v12 = [v11 sourceItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem = [pinCodeItemManager sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = sourceItem;
   }
 
   else
@@ -1349,17 +1349,17 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
 
   v104 = v13;
 
-  v14 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v15 = [v14 deleteGuestPINCodeItem];
-  v16 = v9 == v15;
+  pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  deleteGuestPINCodeItem = [pinCodeItemManager2 deleteGuestPINCodeItem];
+  v16 = v9 == deleteGuestPINCodeItem;
 
-  v17 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v18 = v17;
+  pinCodeItemManager3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  v18 = pinCodeItemManager3;
   if (v16)
   {
-    v28 = [v17 operationInProgress];
+    operationInProgress = [pinCodeItemManager3 operationInProgress];
 
-    if (v28)
+    if (operationInProgress)
     {
       goto LABEL_46;
     }
@@ -1375,16 +1375,16 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
     v30 = _Block_copy(aBlock);
     if ([v29 isUnknownGuestFromMatter])
     {
-      v31 = [v29 latestResults];
-      v102 = [v31 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      latestResults = [v29 latestResults];
+      v102 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
 
       v101 = HULocalizedStringWithFormat(@"HUUsersRemovePersonAlertTitle", @"%@", v32, v33, v34, v35, v36, v37, v102);
-      v38 = [(HUItemTableViewController *)self itemManager];
-      v39 = [v38 home];
-      v100 = [v39 name];
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      home = [itemManager2 home];
+      name = [home name];
       v46 = HULocalizedStringWithFormat(@"HUUsersRemovePersonConfirmationMessage", @"%@%@", v40, v41, v42, v43, v44, v45, v102);
 
-      v47 = [(UITableViewController *)self hu_actionSheetWithTitle:v101 message:v46 indexPath:v7];
+      v47 = [(UITableViewController *)self hu_actionSheetWithTitle:v101 message:v46 indexPath:pathCopy];
       v48 = MEMORY[0x277D750F8];
       v49 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
       v50 = [v48 actionWithTitle:v49 style:1 handler:&__block_literal_global_116_2];
@@ -1409,13 +1409,13 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
 
   else
   {
-    v19 = [v17 pinCodeChangeItem];
-    v20 = [v9 isEqual:v19];
+    pinCodeChangeItem = [pinCodeItemManager3 pinCodeChangeItem];
+    v20 = [v9 isEqual:pinCodeChangeItem];
 
     if (v20)
     {
-      v21 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
-      v22 = [v21 hasValidConstraints];
+      pinCodeManager = [(HUPinCodeDetailsViewController *)self pinCodeManager];
+      hasValidConstraints = [pinCodeManager hasValidConstraints];
 
       objc_initWeak(buf, self);
       v125[0] = MEMORY[0x277D85DD0];
@@ -1423,21 +1423,21 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
       v125[2] = __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke_120;
       v125[3] = &unk_277DC26C0;
       objc_copyWeak(&v126, buf);
-      v23 = [v22 addSuccessBlock:v125];
+      v23 = [hasValidConstraints addSuccessBlock:v125];
       v123[0] = MEMORY[0x277D85DD0];
       v123[1] = 3221225472;
       v123[2] = __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke_3;
       v123[3] = &unk_277DB94D0;
       objc_copyWeak(&v124, buf);
-      v24 = [v22 addFailureBlock:v123];
-      v25 = [MEMORY[0x277D2C938] mainThreadScheduler];
+      v24 = [hasValidConstraints addFailureBlock:v123];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
       v121[0] = MEMORY[0x277D85DD0];
       v121[1] = 3221225472;
       v121[2] = __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke_125;
       v121[3] = &unk_277DB8488;
-      v26 = v22;
+      v26 = hasValidConstraints;
       v122 = v26;
-      v27 = [v25 afterDelay:v121 performBlock:1.0];
+      v27 = [mainThreadScheduler afterDelay:v121 performBlock:1.0];
 
       objc_destroyWeak(&v124);
       objc_destroyWeak(&v126);
@@ -1446,30 +1446,30 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
       goto LABEL_33;
     }
 
-    v54 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v55 = [v54 pinCodeRestoreAccessItem];
-    v56 = v9 == v55;
+    pinCodeItemManager4 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    pinCodeRestoreAccessItem = [pinCodeItemManager4 pinCodeRestoreAccessItem];
+    v56 = v9 == pinCodeRestoreAccessItem;
 
-    v57 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v58 = v57;
+    pinCodeItemManager5 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    v58 = pinCodeItemManager5;
     if (v56)
     {
-      v70 = [v57 operationInProgress];
+      operationInProgress2 = [pinCodeItemManager5 operationInProgress];
 
-      if (v70)
+      if (operationInProgress2)
       {
         goto LABEL_46;
       }
 
       [(HUPinCodeDetailsViewController *)self showSpinner];
-      v71 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
-      v72 = [v71 restoreFullAccessForUserWithItem:v104];
+      pinCodeManager2 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
+      v72 = [pinCodeManager2 restoreFullAccessForUserWithItem:v104];
       v117[0] = MEMORY[0x277D85DD0];
       v117[1] = 3221225472;
       v117[2] = __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke_2_127;
       v117[3] = &unk_277DC26E8;
       v118 = v104;
-      v119 = self;
+      selfCopy = self;
       v120 = a2;
       v73 = [v72 addCompletionBlock:v117];
       v74 = [v73 addFailureBlock:&__block_literal_global_130_2];
@@ -1477,18 +1477,18 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
       goto LABEL_33;
     }
 
-    v59 = [v57 personalPINCodeItem];
-    v60 = [v9 isEqual:v59];
+    personalPINCodeItem = [pinCodeItemManager5 personalPINCodeItem];
+    v60 = [v9 isEqual:personalPINCodeItem];
 
     if (v60)
     {
       [(HUPinCodeDetailsViewController *)self _resignFirstResponderForAllTextFields];
       objc_opt_class();
-      v61 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-      v62 = [v61 sourceItem];
+      pinCodeItemManager6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+      sourceItem2 = [pinCodeItemManager6 sourceItem];
       if (objc_opt_isKindOfClass())
       {
-        v63 = v62;
+        v63 = sourceItem2;
       }
 
       else
@@ -1529,8 +1529,8 @@ void __62__HUPinCodeDetailsViewController_textFieldDidEndEditing_item___block_in
 
       else
       {
-        v76 = [v68 domain];
-        if ([v76 isEqualToString:*MEMORY[0x277CD4770]])
+        domain = [v68 domain];
+        if ([domain isEqualToString:*MEMORY[0x277CD4770]])
         {
           v77 = [v69 code] == -5;
 
@@ -1567,15 +1567,15 @@ LABEL_32:
   }
 
 LABEL_33:
-  v78 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v79 = [v78 addOrShowHomeKeyItem];
-  v80 = [v9 isEqual:v79];
+  pinCodeItemManager7 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  addOrShowHomeKeyItem = [pinCodeItemManager7 addOrShowHomeKeyItem];
+  v80 = [v9 isEqual:addOrShowHomeKeyItem];
 
   if (v80)
   {
     [(HUPinCodeDetailsViewController *)self _resignFirstResponderForAllTextFields];
-    v81 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v82 = [v81 home];
+    pinCodeItemManager8 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    home2 = [pinCodeItemManager8 home];
 
     v83 = HFLogForCategory();
     if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
@@ -1585,11 +1585,11 @@ LABEL_33:
       v133 = 2112;
       v134 = v9;
       v135 = 2112;
-      v136 = v82;
+      v136 = home2;
       _os_log_impl(&dword_20CEB6000, v83, OS_LOG_TYPE_DEFAULT, "(%s) user tapped %@ in home %@", buf, 0x20u);
     }
 
-    v84 = [v6 cellForRowAtIndexPath:v7];
+    v84 = [viewCopy cellForRowAtIndexPath:pathCopy];
     objc_opt_class();
     v85 = v84;
     if (objc_opt_isKindOfClass())
@@ -1605,7 +1605,7 @@ LABEL_33:
     v87 = v86;
 
     [v87 setShowSpinner:1];
-    v88 = [MEMORY[0x277D14D08] handleAddOrShowHomeKeyButtonTapForHome:v82];
+    v88 = [MEMORY[0x277D14D08] handleAddOrShowHomeKeyButtonTapForHome:home2];
     v108[0] = MEMORY[0x277D85DD0];
     v108[1] = 3221225472;
     v108[2] = __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke_138;
@@ -1617,18 +1617,18 @@ LABEL_33:
     goto LABEL_45;
   }
 
-  v91 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v92 = [v91 restoreHomeKeyAccessItem];
-  v93 = [v9 isEqual:v92];
+  pinCodeItemManager9 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  restoreHomeKeyAccessItem = [pinCodeItemManager9 restoreHomeKeyAccessItem];
+  v93 = [v9 isEqual:restoreHomeKeyAccessItem];
 
   if (v93)
   {
-    v94 = [v6 cellForRowAtIndexPath:v7];
+    v94 = [viewCopy cellForRowAtIndexPath:pathCopy];
     objc_opt_class();
-    v82 = v94;
+    home2 = v94;
     if (objc_opt_isKindOfClass())
     {
-      v95 = v82;
+      v95 = home2;
     }
 
     else
@@ -1639,8 +1639,8 @@ LABEL_33:
     v96 = v95;
 
     [v96 setShowSpinner:1];
-    v97 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-    v98 = [v97 restoreFuture];
+    pinCodeItemManager10 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+    restoreFuture = [pinCodeItemManager10 restoreFuture];
     v105[0] = MEMORY[0x277D85DD0];
     v105[1] = 3221225472;
     v105[2] = __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke_2_139;
@@ -1649,7 +1649,7 @@ LABEL_33:
     v107 = a2;
     v105[4] = self;
     v85 = v96;
-    v99 = [v98 addSuccessBlock:v105];
+    v99 = [restoreFuture addSuccessBlock:v105];
 
 LABEL_45:
   }
@@ -1917,16 +1917,16 @@ uint64_t __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath_
   return [v7 setShowSpinner:0];
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v48 = a4;
+  onCopy = on;
   v75 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUPinCodeDetailsViewController *)self tableView];
-  v7 = [v6 indexPathForCell:v5];
+  cellCopy = cell;
+  tableView = [(HUPinCodeDetailsViewController *)self tableView];
+  v7 = [tableView indexPathForCell:cellCopy];
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:v7];
 
   objc_opt_class();
   objc_opt_class();
@@ -1943,10 +1943,10 @@ uint64_t __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath_
 
   v12 = v11;
 
-  v13 = [v12 sourceItem];
+  sourceItem = [v12 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = sourceItem;
   }
 
   else
@@ -1959,24 +1959,24 @@ uint64_t __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath_
   v15 = HFLogForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v5 text];
+    text = [cellCopy text];
     *buf = 136315906;
     v68 = "[HUPinCodeDetailsViewController switchCell:didTurnOn:]";
     v69 = 2112;
-    v70 = v16;
+    v70 = text;
     v71 = 1024;
-    v72 = v48;
+    v72 = onCopy;
     v73 = 2112;
     v74 = v10;
     _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "(%s) User tapped switch cell: %@ | isOn = %{BOOL}d | item = %@", buf, 0x26u);
   }
 
   objc_opt_class();
-  v17 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v18 = [v17 sourceItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem2 = [pinCodeItemManager sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v19 = v18;
+    v19 = sourceItem2;
   }
 
   else
@@ -1987,11 +1987,11 @@ uint64_t __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath_
   v45 = v19;
 
   objc_opt_class();
-  v20 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v21 = [v20 sourceItem];
+  pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem3 = [pinCodeItemManager2 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v22 = v21;
+    v22 = sourceItem3;
   }
 
   else
@@ -2002,38 +2002,38 @@ uint64_t __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath_
   v23 = v22;
 
   v24 = v23;
-  v25 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v26 = [v25 home];
+  pinCodeItemManager3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  home = [pinCodeItemManager3 home];
 
-  v27 = [v23 user];
-  v28 = v27;
-  if (v27)
+  user = [v23 user];
+  v28 = user;
+  if (user)
   {
-    v46 = v27;
+    user2 = user;
   }
 
   else
   {
-    v46 = [v45 user];
+    user2 = [v45 user];
   }
 
-  if ([v26 hf_currentUserIsAdministrator] && objc_msgSend(v26, "hf_userIsRestrictedGuest:", v46))
+  if ([home hf_currentUserIsAdministrator] && objc_msgSend(home, "hf_userIsRestrictedGuest:", user2))
   {
-    v29 = [v47 accessory];
+    accessory = [v47 accessory];
     objc_initWeak(buf, self);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke;
     aBlock[3] = &unk_277DC2788;
     objc_copyWeak(&v65, buf);
-    v44 = v26;
+    v44 = home;
     v61 = v44;
-    v43 = v46;
+    v43 = user2;
     v62 = v43;
-    v66 = v48;
-    v30 = v29;
+    v66 = onCopy;
+    v30 = accessory;
     v63 = v30;
-    v31 = v5;
+    v31 = cellCopy;
     v64 = v31;
     v32 = _Block_copy(aBlock);
     v55[0] = MEMORY[0x277D85DD0];
@@ -2043,22 +2043,22 @@ uint64_t __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath_
     objc_copyWeak(&v58, buf);
     v33 = v30;
     v56 = v33;
-    v59 = v48;
+    v59 = onCopy;
     v42 = v32;
     v57 = v42;
     v34 = _Block_copy(v55);
     v35 = v7;
-    v36 = v5;
+    v36 = cellCopy;
     v37 = MEMORY[0x277D75D28];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_157;
     v52[3] = &unk_277DB7EE0;
     v53 = v31;
-    v54 = v48;
+    v54 = onCopy;
     [v37 hu_presentingLockLimitAlertIfNeededFromViewController:self home:v44 user:v43 accessory:v33 include:v52 continueActionBlock:? cancelActionBlock:?];
 
-    v5 = v36;
+    cellCopy = v36;
     v7 = v35;
 
     objc_destroyWeak(&v58);
@@ -2068,27 +2068,27 @@ uint64_t __68__HUPinCodeDetailsViewController_tableView_didSelectRowAtIndexPath_
 
   else
   {
-    v38 = [(HUPinCodeDetailsViewController *)self accessoriesToEdit];
-    v39 = [v47 accessory];
-    if (v48)
+    accessoriesToEdit = [(HUPinCodeDetailsViewController *)self accessoriesToEdit];
+    accessory2 = [v47 accessory];
+    if (onCopy)
     {
-      [v38 addObject:v39];
+      [accessoriesToEdit addObject:accessory2];
     }
 
     else
     {
-      [v38 removeObject:v39];
+      [accessoriesToEdit removeObject:accessory2];
     }
 
     [(HUPinCodeDetailsViewController *)self _updateSaveEnabled];
-    v40 = [(HUPinCodeDetailsViewController *)self commitAccessoryChanges];
+    commitAccessoryChanges = [(HUPinCodeDetailsViewController *)self commitAccessoryChanges];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_158;
     v49[3] = &unk_277DBC098;
-    v50 = v5;
-    v51 = v48;
-    v41 = [v40 addFailureBlock:v49];
+    v50 = cellCopy;
+    v51 = onCopy;
+    v41 = [commitAccessoryChanges addFailureBlock:v49];
 
     v33 = v50;
   }
@@ -2330,16 +2330,16 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
   [v5 handleError:v4 operationType:v6 options:0 retryBlock:0 cancelBlock:v7];
 }
 
-- (void)personalPinCodeViewController:(id)a3 pinCodeDidChange:(id)a4
+- (void)personalPinCodeViewController:(id)controller pinCodeDidChange:(id)change
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  changeCopy = change;
   objc_opt_class();
-  v6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v7 = [v6 sourceItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem = [pinCodeItemManager sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = sourceItem;
   }
 
   else
@@ -2350,11 +2350,11 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
   v9 = v8;
 
   objc_opt_class();
-  v10 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v11 = [v10 sourceItem];
+  pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  sourceItem2 = [pinCodeItemManager2 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = sourceItem2;
   }
 
   else
@@ -2362,25 +2362,25 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
     v12 = 0;
   }
 
-  v13 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v14 = [v13 home];
+  pinCodeItemManager3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  home = [pinCodeItemManager3 home];
 
-  if (v5 && v9)
+  if (changeCopy && v9)
   {
-    [v9 updateFromPinCode:v5];
+    [v9 updateFromPinCode:changeCopy];
   }
 
   else
   {
-    v15 = [v9 user];
+    user = [v9 user];
 
-    if (v5 || !v15)
+    if (changeCopy || !user)
     {
-      if (v5 && v12)
+      if (changeCopy && v12)
       {
-        v20 = [objc_alloc(MEMORY[0x277D14920]) initWithPinCode:v5 inHome:v14 onAccessory:0];
-        v21 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-        [v21 setSourceItem:v20];
+        v20 = [objc_alloc(MEMORY[0x277D14920]) initWithPinCode:changeCopy inHome:home onAccessory:0];
+        pinCodeItemManager4 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+        [pinCodeItemManager4 setSourceItem:v20];
       }
 
       else
@@ -2393,7 +2393,7 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
           v25 = 2112;
           v26 = v9;
           v27 = 2112;
-          v28 = v5;
+          v28 = changeCopy;
           _os_log_error_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_ERROR, "(%s): Unexpected state. pinCodeItem: %@ newPinCode: %@", &v23, 0x20u);
         }
       }
@@ -2402,15 +2402,15 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
     else
     {
       v16 = objc_alloc(MEMORY[0x277D14C98]);
-      v17 = [v9 user];
-      v18 = [v16 initWithHome:v14 user:v17 nameStyle:0];
-      v19 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-      [v19 setSourceItem:v18];
+      user2 = [v9 user];
+      v18 = [v16 initWithHome:home user:user2 nameStyle:0];
+      pinCodeItemManager5 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+      [pinCodeItemManager5 setSourceItem:v18];
     }
   }
 
-  v22 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  [v22 resetItemProvidersAndModules];
+  pinCodeItemManager6 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  [pinCodeItemManager6 resetItemProvidersAndModules];
 }
 
 - (id)_allTextFields
@@ -2421,10 +2421,10 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(HUPinCodeDetailsViewController *)self tableView];
-  v5 = [v4 visibleCells];
+  tableView = [(HUPinCodeDetailsViewController *)self tableView];
+  visibleCells = [tableView visibleCells];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2435,7 +2435,7 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -2452,12 +2452,12 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
 
         v13 = v12;
 
-        v14 = [v13 textField];
+        textField = [v13 textField];
 
-        [v3 na_safeAddObject:v14];
+        [v3 na_safeAddObject:textField];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -2473,8 +2473,8 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(HUPinCodeDetailsViewController *)self _allTextFields];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _allTextFields = [(HUPinCodeDetailsViewController *)self _allTextFields];
+  v3 = [_allTextFields countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2486,14 +2486,14 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_allTextFields);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) resignFirstResponder];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [_allTextFields countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -2502,16 +2502,16 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
 
 - (BOOL)_codeValueHasChanged
 {
-  v3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v4 = [v3 pinCodeValueItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeValueItem = [pinCodeItemManager pinCodeValueItem];
 
-  v5 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
-  if (v5)
+  editedPinCodeValue = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
+  if (editedPinCodeValue)
   {
-    v6 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
-    v7 = [v4 latestResults];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
-    v9 = [v6 isEqualToString:v8] ^ 1;
+    editedPinCodeValue2 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
+    latestResults = [pinCodeValueItem latestResults];
+    v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+    v9 = [editedPinCodeValue2 isEqualToString:v8] ^ 1;
   }
 
   else
@@ -2524,16 +2524,16 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
 
 - (BOOL)_codeLabelHasChanged
 {
-  v3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v4 = [v3 pinCodeLabelItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeLabelItem = [pinCodeItemManager pinCodeLabelItem];
 
-  v5 = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
-  if (v5)
+  editedPinCodeLabel = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
+  if (editedPinCodeLabel)
   {
-    v6 = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
-    v7 = [v4 latestResults];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    v9 = [v6 isEqualToString:v8] ^ 1;
+    editedPinCodeLabel2 = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
+    latestResults = [pinCodeLabelItem latestResults];
+    v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    v9 = [editedPinCodeLabel2 isEqualToString:v8] ^ 1;
   }
 
   else
@@ -2546,54 +2546,54 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
 
 - (void)_updateSaveEnabled
 {
-  v3 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v24 = [v3 pinCodeLabelItem];
+  pinCodeItemManager = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeLabelItem = [pinCodeItemManager pinCodeLabelItem];
 
-  v4 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
-  v5 = [v4 pinCodeValueItem];
+  pinCodeItemManager2 = [(HUPinCodeDetailsViewController *)self pinCodeItemManager];
+  pinCodeValueItem = [pinCodeItemManager2 pinCodeValueItem];
 
-  v6 = [v24 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
-  v8 = [v7 BOOLValue];
+  latestResults = [pinCodeLabelItem latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [(HUPinCodeDetailsViewController *)self _codeValueHasChanged];
-  v10 = v9;
-  if (v8)
+  _codeValueHasChanged = [(HUPinCodeDetailsViewController *)self _codeValueHasChanged];
+  accessoriesToEdit = _codeValueHasChanged;
+  if (bOOLValue)
   {
-    v11 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
-    v12 = [v11 length] == 0;
+    editedPinCodeValue = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
+    v12 = [editedPinCodeValue length] == 0;
   }
 
   else
   {
-    v10 = v9 || [(HUPinCodeDetailsViewController *)self _codeLabelHasChanged];
-    v13 = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
-    v14 = v13;
-    if (v13)
+    accessoriesToEdit = _codeValueHasChanged || [(HUPinCodeDetailsViewController *)self _codeLabelHasChanged];
+    editedPinCodeLabel = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
+    v14 = editedPinCodeLabel;
+    if (editedPinCodeLabel)
     {
-      v11 = v13;
+      editedPinCodeValue = editedPinCodeLabel;
     }
 
     else
     {
-      v15 = [v24 latestResults];
-      v11 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      latestResults2 = [pinCodeLabelItem latestResults];
+      editedPinCodeValue = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     }
 
-    v16 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
-    v17 = v16;
-    if (v16)
+    editedPinCodeValue2 = [(HUPinCodeDetailsViewController *)self editedPinCodeValue];
+    v17 = editedPinCodeValue2;
+    if (editedPinCodeValue2)
     {
-      v18 = v16;
+      v18 = editedPinCodeValue2;
     }
 
     else
     {
-      v19 = [v5 latestResults];
-      v18 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+      latestResults3 = [pinCodeValueItem latestResults];
+      v18 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
     }
 
-    if ([v11 length])
+    if ([editedPinCodeValue length])
     {
       v12 = [v18 length] == 0;
     }
@@ -2604,7 +2604,7 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
     }
   }
 
-  v20 = v10 ^ 1 | v12;
+  v20 = accessoriesToEdit ^ 1 | v12;
   if (v20)
   {
     v21 = 0;
@@ -2612,8 +2612,8 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
 
   else
   {
-    v10 = [(HUPinCodeDetailsViewController *)self accessoriesToEdit];
-    if ([v10 count])
+    accessoriesToEdit = [(HUPinCodeDetailsViewController *)self accessoriesToEdit];
+    if ([accessoriesToEdit count])
     {
       v21 = 1;
     }
@@ -2624,9 +2624,9 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
     }
   }
 
-  v22 = [(HUPinCodeDetailsViewController *)self delegate];
-  v23 = [v22 addButtonItem];
-  [v23 setEnabled:v21];
+  delegate = [(HUPinCodeDetailsViewController *)self delegate];
+  addButtonItem = [delegate addButtonItem];
+  [addButtonItem setEnabled:v21];
 
   if ((v20 & 1) == 0)
   {
@@ -2637,24 +2637,24 @@ void __55__HUPinCodeDetailsViewController_switchCell_didTurnOn___block_invoke_2_
 {
   if ([(HUPinCodeDetailsViewController *)self creatingNewPinCode]|| [(HUPinCodeDetailsViewController *)self _codeLabelHasChanged])
   {
-    v3 = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
-    v4 = [(HUPinCodeDetailsViewController *)self pinCodeManager];
-    v5 = [v4 guestPinCodes];
+    editedPinCodeLabel = [(HUPinCodeDetailsViewController *)self editedPinCodeLabel];
+    pinCodeManager = [(HUPinCodeDetailsViewController *)self pinCodeManager];
+    guestPinCodes = [pinCodeManager guestPinCodes];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __55__HUPinCodeDetailsViewController__validatePinCodeLabel__block_invoke;
     v9[3] = &unk_277DB7A90;
-    v10 = v3;
-    v6 = v3;
-    v7 = [v5 flatMap:v9];
+    v10 = editedPinCodeLabel;
+    v6 = editedPinCodeLabel;
+    futureWithNoResult = [guestPinCodes flatMap:v9];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v7;
+  return futureWithNoResult;
 }
 
 id __55__HUPinCodeDetailsViewController__validatePinCodeLabel__block_invoke(uint64_t a1, void *a2)

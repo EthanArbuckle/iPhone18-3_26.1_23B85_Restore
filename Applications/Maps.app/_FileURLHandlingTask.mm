@@ -8,8 +8,8 @@
 {
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
   v3 = [(URLHandlingTask *)self url];
-  v4 = [v3 pathExtension];
-  v5 = [v4 isEqual:@"navtrace"];
+  pathExtension = [v3 pathExtension];
+  v5 = [pathExtension isEqual:@"navtrace"];
 
   if (!v5)
   {
@@ -30,9 +30,9 @@ LABEL_11:
   }
 
   v6 = +[UIApplication sharedMapsDelegate];
-  v7 = [v6 canPlayTrace];
+  canPlayTrace = [v6 canPlayTrace];
 
-  if (!v7)
+  if (!canPlayTrace)
   {
     v12 = sub_100005610();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -48,8 +48,8 @@ LABEL_11:
 
   v8 = [OpenTraceAction alloc];
   v9 = [(URLHandlingTask *)self url];
-  v10 = [v9 path];
-  v15 = [(OpenTraceAction *)v8 initWithFilePath:v10];
+  path = [v9 path];
+  v15 = [(OpenTraceAction *)v8 initWithFilePath:path];
 
   v11 = [[RichMapsActivity alloc] initWithMapsAction:v15];
   [(RichMapsActivityCreatingTaskImpl *)self taskFinished:v11];

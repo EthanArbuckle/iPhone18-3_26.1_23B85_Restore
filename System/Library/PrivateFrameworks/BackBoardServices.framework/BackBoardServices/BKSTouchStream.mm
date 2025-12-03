@@ -1,7 +1,7 @@
 @interface BKSTouchStream
-- (BKSTouchStream)initWithContextID:(unsigned int)a3 displayUUID:(id)a4 identifier:(unsigned __int8)a5 policy:(id)a6;
+- (BKSTouchStream)initWithContextID:(unsigned int)d displayUUID:(id)iD identifier:(unsigned __int8)identifier policy:(id)policy;
 - (void)invalidate;
-- (void)setEventDispatchMode:(unsigned __int8)a3 ambiguityRecommendation:(unsigned __int8)a4 lastTouchTimestamp:(double)a5;
+- (void)setEventDispatchMode:(unsigned __int8)mode ambiguityRecommendation:(unsigned __int8)recommendation lastTouchTimestamp:(double)timestamp;
 @end
 
 @implementation BKSTouchStream
@@ -9,25 +9,25 @@
 - (void)invalidate
 {
   v3 = _BKSServerPortHelper("com.apple.backboard.hid.services", BKSHIDServerPort, &BKSHIDServerMachPort, _InvalidateHIDServicesPort);
-  v4 = [(BKSTouchStream *)self reference];
+  reference = [(BKSTouchStream *)self reference];
 
-  _BKSHIDTouchStreamInvalidate(v3, v4);
+  _BKSHIDTouchStreamInvalidate(v3, reference);
 }
 
-- (void)setEventDispatchMode:(unsigned __int8)a3 ambiguityRecommendation:(unsigned __int8)a4 lastTouchTimestamp:(double)a5
+- (void)setEventDispatchMode:(unsigned __int8)mode ambiguityRecommendation:(unsigned __int8)recommendation lastTouchTimestamp:(double)timestamp
 {
   v9 = _BKSServerPortHelper("com.apple.backboard.hid.services", BKSHIDServerPort, &BKSHIDServerMachPort, _InvalidateHIDServicesPort);
-  v10 = [(BKSTouchStream *)self reference];
+  reference = [(BKSTouchStream *)self reference];
 
-  _BKSHIDTouchStreamSetEventDispatchMode(v9, v10, a3, a4, a5);
+  _BKSHIDTouchStreamSetEventDispatchMode(v9, reference, mode, recommendation, timestamp);
 }
 
-- (BKSTouchStream)initWithContextID:(unsigned int)a3 displayUUID:(id)a4 identifier:(unsigned __int8)a5 policy:(id)a6
+- (BKSTouchStream)initWithContextID:(unsigned int)d displayUUID:(id)iD identifier:(unsigned __int8)identifier policy:(id)policy
 {
-  v7 = a5;
+  identifierCopy = identifier;
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  iDCopy = iD;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = BKSTouchStream;
   v12 = [(BKSTouchStream *)&v19 init];
@@ -38,9 +38,9 @@
 
   v54 = 0u;
   v55 = 0u;
-  if (!v10)
+  if (!iDCopy)
   {
-    v10 = &stru_1EF552F68;
+    iDCopy = &stru_1EF552F68;
   }
 
   v52 = 0uLL;
@@ -73,10 +73,10 @@
   v27 = 0uLL;
   *buffer = 0uLL;
   v25 = 0uLL;
-  if (CFStringGetCString(v10, buffer, 1024, 0x8000100u))
+  if (CFStringGetCString(iDCopy, buffer, 1024, 0x8000100u))
   {
     v13 = _BKSServerPortHelper("com.apple.backboard.hid.services", BKSHIDServerPort, &BKSHIDServerMachPort, _InvalidateHIDServicesPort);
-    v14 = _BKSHIDTouchStreamCreate(v13, a3, buffer, v7, [v11 shouldSendAmbiguityRecommendations], &v12->_reference);
+    v14 = _BKSHIDTouchStreamCreate(v13, d, buffer, identifierCopy, [policyCopy shouldSendAmbiguityRecommendations], &v12->_reference);
     if (!v14)
     {
 LABEL_6:

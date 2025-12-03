@@ -1,21 +1,21 @@
 @interface BDRegistrationStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation BDRegistrationStatus
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BDRegistrationStatus *)self service];
-    if (v6 == [v5 service])
+    v5 = equalCopy;
+    service = [(BDRegistrationStatus *)self service];
+    if (service == [v5 service])
     {
-      v8 = [(BDRegistrationStatus *)self roaming];
-      v7 = v8 ^ [v5 roaming] ^ 1;
+      roaming = [(BDRegistrationStatus *)self roaming];
+      v7 = roaming ^ [v5 roaming] ^ 1;
     }
 
     else

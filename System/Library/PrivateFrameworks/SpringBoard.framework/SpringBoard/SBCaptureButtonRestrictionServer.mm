@@ -1,21 +1,21 @@
 @interface SBCaptureButtonRestrictionServer
-- (SBCaptureButtonRestrictionServer)initWithDelegate:(id)a3;
+- (SBCaptureButtonRestrictionServer)initWithDelegate:(id)delegate;
 - (id)_authorizedClientBundleIdentifiers;
-- (uint64_t)_remoteProcessIsAuthorizedClient:(uint64_t)a1;
-- (void)_addCaptureButtonInhibitActionAssertionForConnection:(uint64_t)a3 options:;
-- (void)_removeCaptureButtonInhibitActionAssertionForConnection:(uint64_t)a1;
-- (void)_removeCaptureButtonInhibitActionAssertionForVersionedPID:(void *)a3 reason:;
+- (uint64_t)_remoteProcessIsAuthorizedClient:(uint64_t)client;
+- (void)_addCaptureButtonInhibitActionAssertionForConnection:(uint64_t)connection options:;
+- (void)_removeCaptureButtonInhibitActionAssertionForConnection:(uint64_t)connection;
+- (void)_removeCaptureButtonInhibitActionAssertionForVersionedPID:(void *)d reason:;
 - (void)dealloc;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setCaptureButtonActionInhibited:(id)a3 options:(id)a4;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setCaptureButtonActionInhibited:(id)inhibited options:(id)options;
 @end
 
 @implementation SBCaptureButtonRestrictionServer
 
-- (SBCaptureButtonRestrictionServer)initWithDelegate:(id)a3
+- (SBCaptureButtonRestrictionServer)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = SBCaptureButtonRestrictionServer;
   v5 = [(SBCaptureButtonRestrictionServer *)&v18 init];
@@ -23,7 +23,7 @@
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
     v5->_isValid = 1;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v5->_clientServiceCollectionLock._os_unfair_lock_opaque = 0;
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     connections = v5->_connections;
@@ -66,7 +66,7 @@ void __53__SBCaptureButtonRestrictionServer_initWithDelegate___block_invoke(uint
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"must -invalidate before dealloc"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -99,8 +99,8 @@ void __53__SBCaptureButtonRestrictionServer_initWithDelegate___block_invoke(uint
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(NSMutableDictionary *)self->_versionedPIDToRemoteAssertion allValues];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allValues = [(NSMutableDictionary *)self->_versionedPIDToRemoteAssertion allValues];
+    v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = v4;
@@ -112,17 +112,17 @@ void __53__SBCaptureButtonRestrictionServer_initWithDelegate___block_invoke(uint
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
-          v8 = [*(*(&v10 + 1) + 8 * v7) wrappedAssertion];
-          [v8 invalidate];
+          wrappedAssertion = [*(*(&v10 + 1) + 8 * v7) wrappedAssertion];
+          [wrappedAssertion invalidate];
 
           ++v7;
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v5);
@@ -142,26 +142,26 @@ void __70__SBCaptureButtonRestrictionServer__authorizedClientBundleIdentifiers__
   _MergedGlobals = v0;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogCameraCaptureRestriction();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v6;
+    v13 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "SBCaptureButtonRestrictionServer received connection %{public}@", buf, 0xCu);
   }
 
-  v8 = [v6 remoteProcess];
-  v9 = [v8 auditToken];
-  v10 = [v9 versionedPID];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  versionedPID = [auditToken versionedPID];
 
-  LODWORD(v9) = [v8 pid];
-  if (v9 == getpid() || ![(SBCaptureButtonRestrictionServer *)self _remoteProcessIsAuthorizedClient:v8])
+  LODWORD(auditToken) = [remoteProcess pid];
+  if (auditToken == getpid() || ![(SBCaptureButtonRestrictionServer *)self _remoteProcessIsAuthorizedClient:remoteProcess])
   {
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 
   else
@@ -171,12 +171,12 @@ void __70__SBCaptureButtonRestrictionServer__authorizedClientBundleIdentifiers__
     v11[2] = __78__SBCaptureButtonRestrictionServer_listener_didReceiveConnection_withContext___block_invoke;
     v11[3] = &unk_2783BF760;
     v11[4] = self;
-    v11[5] = v10;
-    [v6 configureConnection:v11];
+    v11[5] = versionedPID;
+    [connectionCopy configureConnection:v11];
     os_unfair_lock_lock(&self->_clientServiceCollectionLock);
-    [(NSMutableSet *)self->_connections addObject:v6];
+    [(NSMutableSet *)self->_connections addObject:connectionCopy];
     os_unfair_lock_unlock(&self->_clientServiceCollectionLock);
-    [v6 activate];
+    [connectionCopy activate];
   }
 }
 
@@ -250,16 +250,16 @@ void __78__SBCaptureButtonRestrictionServer_listener_didReceiveConnection_withCo
   }
 }
 
-- (void)setCaptureButtonActionInhibited:(id)a3 options:(id)a4
+- (void)setCaptureButtonActionInhibited:(id)inhibited options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CF3280] currentContext];
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
-  v10 = v5;
+  inhibitedCopy = inhibited;
+  optionsCopy = options;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v11 = inhibitedCopy;
+  v12 = optionsCopy;
+  v8 = optionsCopy;
+  v9 = currentContext;
+  v10 = inhibitedCopy;
   BSDispatchMain();
 }
 
@@ -286,35 +286,35 @@ void __76__SBCaptureButtonRestrictionServer_setCaptureButtonActionInhibited_opti
 
 - (id)_authorizedClientBundleIdentifiers
 {
-  if (a1)
+  if (self)
   {
     if (qword_281250818 != -1)
     {
       dispatch_once(&qword_281250818, &__block_literal_global_340);
     }
 
-    a1 = _MergedGlobals;
+    self = _MergedGlobals;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_remoteProcessIsAuthorizedClient:(uint64_t)a1
+- (uint64_t)_remoteProcessIsAuthorizedClient:(uint64_t)client
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (client)
   {
-    v5 = [v3 auditToken];
-    if (([v5 hasEntitlement:@"com.apple.springboard.capture-button-restriction"] & 1) != 0 || objc_msgSend(v5, "hasEntitlement:", @"com.apple.springboard.126E27E0-D025-4A46-B2F1-AF49D4E0B105"))
+    auditToken = [v3 auditToken];
+    if (([auditToken hasEntitlement:@"com.apple.springboard.capture-button-restriction"] & 1) != 0 || objc_msgSend(auditToken, "hasEntitlement:", @"com.apple.springboard.126E27E0-D025-4A46-B2F1-AF49D4E0B105"))
     {
-      v6 = [v4 bundleIdentifier];
-      v9 = [(SBCaptureButtonRestrictionServer *)a1 _authorizedClientBundleIdentifiers];
-      a1 = [v9 containsObject:v6];
+      bundleIdentifier = [v4 bundleIdentifier];
+      _authorizedClientBundleIdentifiers = [(SBCaptureButtonRestrictionServer *)client _authorizedClientBundleIdentifiers];
+      client = [_authorizedClientBundleIdentifiers containsObject:bundleIdentifier];
 
-      if ((a1 & 1) == 0)
+      if ((client & 1) == 0)
       {
         v10 = SBLogCameraCaptureRestriction();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -322,7 +322,7 @@ void __76__SBCaptureButtonRestrictionServer_setCaptureButtonActionInhibited_opti
           v11 = 138543618;
           v12 = v4;
           v13 = 2114;
-          v14 = v6;
+          v14 = bundleIdentifier;
           _os_log_error_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_ERROR, "SBCaptureButtonRestrictionServer: process is not authorized to suppress the capture button %{public}@ -- %{public}@", &v11, 0x16u);
         }
       }
@@ -330,18 +330,18 @@ void __76__SBCaptureButtonRestrictionServer_setCaptureButtonActionInhibited_opti
       goto LABEL_12;
     }
 
-    if (([v5 hasEntitlement:@"com.apple.springboard.capture-button-restriction-internal"] & 1) != 0 || objc_msgSend(v5, "hasEntitlement:", @"com.apple.springboard.8CFFD00F-D62F-43B2-AA10-427657A783F4"))
+    if (([auditToken hasEntitlement:@"com.apple.springboard.capture-button-restriction-internal"] & 1) != 0 || objc_msgSend(auditToken, "hasEntitlement:", @"com.apple.springboard.8CFFD00F-D62F-43B2-AA10-427657A783F4"))
     {
       if (os_variant_has_internal_content())
       {
-        a1 = 1;
+        client = 1;
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v6 = SBLogCameraCaptureRestriction();
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      bundleIdentifier = SBLogCameraCaptureRestriction();
+      if (!os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_11;
       }
@@ -353,11 +353,11 @@ LABEL_13:
 
     else
     {
-      v6 = SBLogCameraCaptureRestriction();
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      bundleIdentifier = SBLogCameraCaptureRestriction();
+      if (!os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
       {
 LABEL_11:
-        a1 = 0;
+        client = 0;
 LABEL_12:
 
         goto LABEL_13;
@@ -368,23 +368,23 @@ LABEL_12:
       v7 = "SBCaptureButtonRestrictionServer: process is missing required entitlement %{public}@";
     }
 
-    _os_log_error_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_ERROR, v7, &v11, 0xCu);
+    _os_log_error_impl(&dword_21ED4E000, bundleIdentifier, OS_LOG_TYPE_ERROR, v7, &v11, 0xCu);
     goto LABEL_11;
   }
 
 LABEL_14:
 
-  return a1;
+  return client;
 }
 
-- (void)_removeCaptureButtonInhibitActionAssertionForVersionedPID:(void *)a3 reason:
+- (void)_removeCaptureButtonInhibitActionAssertionForVersionedPID:(void *)d reason:
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithLongLong:a2];
-    v7 = [*(a1 + 24) objectForKey:v6];
+    v7 = [*(self + 24) objectForKey:v6];
     if (v7)
     {
       v8 = SBLogCameraCaptureRestriction();
@@ -394,57 +394,57 @@ LABEL_14:
         v11 = 138543618;
         v12 = v9;
         v13 = 2114;
-        v14 = v5;
+        v14 = dCopy;
         _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SBCaptureButtonRestrictionServer invalidate remote assertion for %{public}@ for reason %{public}@", &v11, 0x16u);
       }
 
-      v10 = [v7 wrappedAssertion];
-      [v10 invalidate];
+      wrappedAssertion = [v7 wrappedAssertion];
+      [wrappedAssertion invalidate];
 
-      [*(a1 + 24) removeObjectForKey:v6];
+      [*(self + 24) removeObjectForKey:v6];
     }
   }
 }
 
-- (void)_removeCaptureButtonInhibitActionAssertionForConnection:(uint64_t)a1
+- (void)_removeCaptureButtonInhibitActionAssertionForConnection:(uint64_t)connection
 {
-  if (a1)
+  if (connection)
   {
-    v3 = [a2 remoteProcess];
-    v4 = [v3 auditToken];
+    remoteProcess = [a2 remoteProcess];
+    auditToken = [remoteProcess auditToken];
 
-    -[SBCaptureButtonRestrictionServer _removeCaptureButtonInhibitActionAssertionForVersionedPID:reason:](a1, [v4 versionedPID], @"remote request");
+    -[SBCaptureButtonRestrictionServer _removeCaptureButtonInhibitActionAssertionForVersionedPID:reason:](connection, [auditToken versionedPID], @"remote request");
   }
 }
 
-- (void)_addCaptureButtonInhibitActionAssertionForConnection:(uint64_t)a3 options:
+- (void)_addCaptureButtonInhibitActionAssertionForConnection:(uint64_t)connection options:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [v5 remoteProcess];
-    v18 = [v6 auditToken];
+    remoteProcess = [v5 remoteProcess];
+    auditToken = [remoteProcess auditToken];
 
-    v7 = [v18 versionedPID];
-    v8 = [MEMORY[0x277CCABB0] numberWithLongLong:v7];
+    versionedPID = [auditToken versionedPID];
+    v8 = [MEMORY[0x277CCABB0] numberWithLongLong:versionedPID];
     v9 = objc_alloc_init(_SBCaptureButtonRestrictionServerAssertionWrapper);
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    WeakRetained = objc_loadWeakRetained((self + 48));
     v11 = MEMORY[0x277CCACA8];
     v12 = NSStringFromBSVersionedPID();
     v13 = [v11 stringWithFormat:@"request from process %@", v12];
 
-    v14 = [WeakRetained inhibitCaptureButtonActionAssertionWithReason:v13 options:a3];
+    v14 = [WeakRetained inhibitCaptureButtonActionAssertionWithReason:v13 options:connection];
     [(_SBCaptureButtonRestrictionServerAssertionWrapper *)v9 setWrappedAssertion:v14];
     [(_SBCaptureButtonRestrictionServerAssertionWrapper *)v9 setAssociatedConnection:v5];
 
-    v15 = *(a1 + 24);
+    v15 = *(self + 24);
     if (!v15)
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v17 = *(a1 + 24);
-      *(a1 + 24) = v16;
+      v17 = *(self + 24);
+      *(self + 24) = v16;
 
-      v15 = *(a1 + 24);
+      v15 = *(self + 24);
     }
 
     [v15 setObject:v9 forKey:v8];

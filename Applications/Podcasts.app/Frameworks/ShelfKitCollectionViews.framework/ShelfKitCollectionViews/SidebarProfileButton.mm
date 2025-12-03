@@ -1,8 +1,8 @@
 @interface SidebarProfileButton
-- (_TtC23ShelfKitCollectionViews20SidebarProfileButton)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews20SidebarProfileButton)initWithFrame:(CGRect)frame;
 - (void)accountDidChange;
 - (void)dealloc;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewTapped;
 @end
 
@@ -12,39 +12,39 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5 name:ACDAccountStoreDidChangeNotification object:0];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:ACDAccountStoreDidChangeNotification object:0];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(SidebarProfileButton *)&v7 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(SidebarProfileButton *)&v6 traitCollectionDidChange:v4];
+  [(SidebarProfileButton *)&v6 traitCollectionDidChange:changeCopy];
   [v5 invalidateIntrinsicContentSize];
   [v5 setNeedsUpdateConstraints];
 }
 
 - (void)viewTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_2CCD58();
 }
 
 - (void)accountDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_2CC4F4();
 }
 
-- (_TtC23ShelfKitCollectionViews20SidebarProfileButton)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews20SidebarProfileButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

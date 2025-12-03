@@ -1,23 +1,23 @@
 @interface VGFaceCaptureData
 - (__n128)chromaticAdaptationMatrix;
 - (__n128)depthIntrinsics;
-- (__n128)setChromaticAdaptationMatrix:(__n128)a3;
-- (__n128)setDepthIntrinsics:(__n128)a3;
-- (__n128)setVideoIntrinsics:(__n128)a3;
+- (__n128)setChromaticAdaptationMatrix:(__n128)matrix;
+- (__n128)setDepthIntrinsics:(__n128)intrinsics;
+- (__n128)setVideoIntrinsics:(__n128)intrinsics;
 - (__n128)videoIntrinsics;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)saveAtPath:(id)a3;
-- (void)setDepth:(__CVBuffer *)a3;
-- (void)setTimestamp:(id *)a3;
-- (void)setYuvRectified:(__CVBuffer *)a3;
+- (void)saveAtPath:(id)path;
+- (void)setDepth:(__CVBuffer *)depth;
+- (void)setTimestamp:(id *)timestamp;
+- (void)setYuvRectified:(__CVBuffer *)rectified;
 @end
 
 @implementation VGFaceCaptureData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [v4 setVideoIntrinsics:{*self->_anon_40, *&self->_anon_40[16], *&self->_anon_40[32]}];
   [v4 setDepthIntrinsics:{*self->_anon_70, *&self->_anon_70[16], *&self->_anon_70[32]}];
   [v4 setChromaticAdaptationMatrix:{*&self[1].super.isa, *&self[1]._depth, *&self[1]._allFaces}];
@@ -48,18 +48,18 @@
   return v11;
 }
 
-- (void)saveAtPath:(id)a3
+- (void)saveAtPath:(id)path
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v4 isDirectory:0];
+  pathCopy = path;
+  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:pathCopy isDirectory:0];
   v6 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:self->_yuvRectified];
   v7 = objc_alloc(MEMORY[0x277CBF740]);
   v8 = [v7 initWithOptions:MEMORY[0x277CBEC10]];
-  v9 = [v6 colorSpace];
+  colorSpace = [v6 colorSpace];
   v10 = *MEMORY[0x277CBF9C8];
   v15 = 0;
-  [v8 writePNGRepresentationOfImage:v6 toURL:v5 format:v10 colorSpace:v9 options:MEMORY[0x277CBEC10] error:&v15];
+  [v8 writePNGRepresentationOfImage:v6 toURL:v5 format:v10 colorSpace:colorSpace options:MEMORY[0x277CBEC10] error:&v15];
   v11 = v15;
   v12 = __VGLogSharedInstance();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -83,20 +83,20 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setYuvRectified:(__CVBuffer *)a3
+- (void)setYuvRectified:(__CVBuffer *)rectified
 {
   CVPixelBufferRelease(self->_yuvRectified);
-  self->_yuvRectified = a3;
+  self->_yuvRectified = rectified;
 
-  CVPixelBufferRetain(a3);
+  CVPixelBufferRetain(rectified);
 }
 
-- (void)setDepth:(__CVBuffer *)a3
+- (void)setDepth:(__CVBuffer *)depth
 {
   CVPixelBufferRelease(self->_depth);
-  self->_depth = a3;
+  self->_depth = depth;
 
-  CVPixelBufferRetain(a3);
+  CVPixelBufferRetain(depth);
 }
 
 - (void)dealloc
@@ -110,56 +110,56 @@
 
 - (__n128)videoIntrinsics
 {
-  result = *(a1 + 64);
-  v2 = *(a1 + 80);
-  v3 = *(a1 + 96);
+  result = *(self + 64);
+  v2 = *(self + 80);
+  v3 = *(self + 96);
   return result;
 }
 
-- (__n128)setVideoIntrinsics:(__n128)a3
+- (__n128)setVideoIntrinsics:(__n128)intrinsics
 {
   result[4] = a2;
-  result[5] = a3;
+  result[5] = intrinsics;
   result[6] = a4;
   return result;
 }
 
 - (__n128)depthIntrinsics
 {
-  result = *(a1 + 112);
-  v2 = *(a1 + 128);
-  v3 = *(a1 + 144);
+  result = *(self + 112);
+  v2 = *(self + 128);
+  v3 = *(self + 144);
   return result;
 }
 
-- (__n128)setDepthIntrinsics:(__n128)a3
+- (__n128)setDepthIntrinsics:(__n128)intrinsics
 {
   result[7] = a2;
-  result[8] = a3;
+  result[8] = intrinsics;
   result[9] = a4;
   return result;
 }
 
 - (__n128)chromaticAdaptationMatrix
 {
-  result = *(a1 + 160);
-  v2 = *(a1 + 176);
-  v3 = *(a1 + 192);
+  result = *(self + 160);
+  v2 = *(self + 176);
+  v3 = *(self + 192);
   return result;
 }
 
-- (__n128)setChromaticAdaptationMatrix:(__n128)a3
+- (__n128)setChromaticAdaptationMatrix:(__n128)matrix
 {
   result[10] = a2;
-  result[11] = a3;
+  result[11] = matrix;
   result[12] = a4;
   return result;
 }
 
-- (void)setTimestamp:(id *)a3
+- (void)setTimestamp:(id *)timestamp
 {
-  v3 = *&a3->var0;
-  self->_timestamp.epoch = a3->var3;
+  v3 = *&timestamp->var0;
+  self->_timestamp.epoch = timestamp->var3;
   *&self->_timestamp.value = v3;
 }
 

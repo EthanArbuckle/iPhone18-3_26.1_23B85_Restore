@@ -1,17 +1,17 @@
 @interface TUIStateAndActionBuilder
 - (id)finalizeAnimationGroups;
 - (id)finalizeTriggers;
-- (void)addAnimationGroup:(id)a3 withName:(id)a4;
-- (void)addModel:(id)a3 forState:(id)a4;
-- (void)addTrigger:(id)a3 withBehavior:(id)a4;
+- (void)addAnimationGroup:(id)group withName:(id)name;
+- (void)addModel:(id)model forState:(id)state;
+- (void)addTrigger:(id)trigger withBehavior:(id)behavior;
 @end
 
 @implementation TUIStateAndActionBuilder
 
-- (void)addTrigger:(id)a3 withBehavior:(id)a4
+- (void)addTrigger:(id)trigger withBehavior:(id)behavior
 {
-  v10 = a3;
-  v6 = a4;
+  triggerCopy = trigger;
+  behaviorCopy = behavior;
   actionsMap = self->_actionsMap;
   if (!actionsMap)
   {
@@ -22,7 +22,7 @@
     actionsMap = self->_actionsMap;
   }
 
-  [(NSMutableDictionary *)actionsMap setObject:v6 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)actionsMap setObject:behaviorCopy forKeyedSubscript:triggerCopy];
 }
 
 - (id)finalizeTriggers
@@ -32,10 +32,10 @@
   return v2;
 }
 
-- (void)addModel:(id)a3 forState:(id)a4
+- (void)addModel:(id)model forState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  stateCopy = state;
   if (!self->_states)
   {
     v8 = objc_opt_new();
@@ -44,18 +44,18 @@
   }
 
   v10 = objc_alloc_init(TUIStateModel);
-  [(TUIStateModel *)v10 setState:v7];
-  v12 = v6;
+  [(TUIStateModel *)v10 setState:stateCopy];
+  v12 = modelCopy;
   v11 = [NSArray arrayWithObjects:&v12 count:1];
   [(TUISingleModelContainer *)v10 updateModelChildren:v11];
 
-  [(NSMutableDictionary *)self->_states setObject:v10 forKey:v7];
+  [(NSMutableDictionary *)self->_states setObject:v10 forKey:stateCopy];
 }
 
-- (void)addAnimationGroup:(id)a3 withName:(id)a4
+- (void)addAnimationGroup:(id)group withName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  groupCopy = group;
+  nameCopy = name;
   animations = self->_animations;
   if (!animations)
   {
@@ -66,7 +66,7 @@
     animations = self->_animations;
   }
 
-  [(NSMutableDictionary *)animations setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)animations setObject:groupCopy forKeyedSubscript:nameCopy];
 }
 
 - (id)finalizeAnimationGroups

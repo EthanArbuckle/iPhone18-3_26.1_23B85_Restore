@@ -1,20 +1,20 @@
 @interface FCFeedTransformationEndOfArticle
-- (id)transformItems:(id)a3 isPaidBlock:(id)a4 sourceChannelIDProvider:(id)a5;
+- (id)transformItems:(id)items isPaidBlock:(id)block sourceChannelIDProvider:(id)provider;
 @end
 
 @implementation FCFeedTransformationEndOfArticle
 
-- (id)transformItems:(id)a3 isPaidBlock:(id)a4 sourceChannelIDProvider:(id)a5
+- (id)transformItems:(id)items isPaidBlock:(id)block sourceChannelIDProvider:(id)provider
 {
   v123 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v74 = a4;
-  v73 = a5;
+  itemsCopy = items;
+  blockCopy = block;
+  providerCopy = provider;
   v9 = FCDefaultLog;
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = itemsCopy;
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "Transforming items: %@", &buf, 0xCu);
   }
 
@@ -23,8 +23,8 @@
   v119 = 0x3032000000;
   v120 = __Block_byref_object_copy__36;
   v121 = __Block_byref_object_dispose__36;
-  v72 = v8;
-  v122 = [v8 mutableCopy];
+  v72 = itemsCopy;
+  v122 = [itemsCopy mutableCopy];
   v10 = [*(*(&buf + 1) + 40) count];
   if (v10 > [(FCFeedTransformationEndOfArticle *)self minimumResultHeadlineCount])
   {
@@ -35,20 +35,20 @@
     v116 = __Block_byref_object_dispose__36;
     v117 = 0;
     v11 = *(*(&buf + 1) + 40);
-    v12 = [(FCFeedTransformationEndOfArticle *)self minimumResultHeadlineCount];
+    minimumResultHeadlineCount = [(FCFeedTransformationEndOfArticle *)self minimumResultHeadlineCount];
     v108[0] = MEMORY[0x1E69E9820];
     v108[1] = 3221225472;
     v108[2] = __87__FCFeedTransformationEndOfArticle_transformItems_isPaidBlock_sourceChannelIDProvider___block_invoke;
     v108[3] = &unk_1E7C3B658;
     v108[4] = &buf;
     v108[5] = &v113;
-    [v11 fc_subarrayWithCount:v12 result:v108];
+    [v11 fc_subarrayWithCount:minimumResultHeadlineCount result:v108];
     [(FCFeedTransformationEndOfArticle *)self paidHeadlineRatio];
     if (v13 != 0.0)
     {
-      v14 = [(FCFeedTransformationEndOfArticle *)self minimumResultHeadlineCount];
+      minimumResultHeadlineCount2 = [(FCFeedTransformationEndOfArticle *)self minimumResultHeadlineCount];
       [(FCFeedTransformationEndOfArticle *)self paidHeadlineRatio];
-      v16 = floor(v15 * v14);
+      v16 = floor(v15 * minimumResultHeadlineCount2);
       if (v16 < 1.0)
       {
         v16 = 1.0;
@@ -62,7 +62,7 @@
         v106[1] = 3221225472;
         v106[2] = __87__FCFeedTransformationEndOfArticle_transformItems_isPaidBlock_sourceChannelIDProvider___block_invoke_2;
         v106[3] = &unk_1E7C40740;
-        v19 = v74;
+        v19 = blockCopy;
         v107 = v19;
         v20 = [v18 fc_countOfObjectsPassingTest:v106];
         v21 = v17 > v20;
@@ -153,9 +153,9 @@ LABEL_22:
               v37 = [*(*(&buf + 1) + 40) objectAtIndex:{objc_msgSend(v36, "unsignedIntegerValue")}];
               [*(*(&v113 + 1) + 40) insertObject:v37 atIndex:0];
               v38 = *(*(&buf + 1) + 40);
-              v39 = [v36 unsignedIntegerValue];
-              v40 = [v32 firstObject];
-              [v38 replaceObjectAtIndex:v39 withObject:v40];
+              unsignedIntegerValue = [v36 unsignedIntegerValue];
+              firstObject = [v32 firstObject];
+              [v38 replaceObjectAtIndex:unsignedIntegerValue withObject:firstObject];
 
               [v32 removeObjectAtIndex:0];
               if (v33 == ++v35)
@@ -176,12 +176,12 @@ LABEL_22:
 
     if ([(FCFeedTransformationEndOfArticle *)self isPaywallAvailable])
     {
-      v41 = [(FCFeedTransformationEndOfArticle *)self maxiumInaccessibleHeadlineCount];
+      maxiumInaccessibleHeadlineCount = [(FCFeedTransformationEndOfArticle *)self maxiumInaccessibleHeadlineCount];
     }
 
     else
     {
-      v41 = 0;
+      maxiumInaccessibleHeadlineCount = 0;
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -189,8 +189,8 @@ LABEL_22:
     aBlock[2] = __87__FCFeedTransformationEndOfArticle_transformItems_isPaidBlock_sourceChannelIDProvider___block_invoke_4;
     aBlock[3] = &unk_1E7C40790;
     aBlock[4] = self;
-    v91 = v74;
-    v92 = v73;
+    v91 = blockCopy;
+    v92 = providerCopy;
     v42 = _Block_copy(aBlock);
     v88[0] = MEMORY[0x1E69E9820];
     v88[1] = 3221225472;
@@ -200,8 +200,8 @@ LABEL_22:
     v89 = v43;
     obja = _Block_copy(v88);
     v44 = [*(*(&buf + 1) + 40) fc_countOfObjectsPassingTest:obja];
-    v45 = v44 - v41;
-    if (v44 > v41)
+    v45 = v44 - maxiumInaccessibleHeadlineCount;
+    if (v44 > maxiumInaccessibleHeadlineCount)
     {
       v46 = objc_opt_new();
       v86 = 0u;
@@ -280,11 +280,11 @@ LABEL_36:
             if ([v46 count])
             {
               v60 = *(*(&buf + 1) + 40);
-              v61 = [v59 unsignedIntegerValue];
-              v62 = [v46 firstObject];
-              [v60 replaceObjectAtIndex:v61 withObject:v62];
+              unsignedIntegerValue2 = [v59 unsignedIntegerValue];
+              firstObject2 = [v46 firstObject];
+              [v60 replaceObjectAtIndex:unsignedIntegerValue2 withObject:firstObject2];
 
-              v63 = 0;
+              unsignedIntegerValue3 = 0;
               v64 = v46;
             }
 
@@ -296,10 +296,10 @@ LABEL_36:
               }
 
               v64 = *(*(&buf + 1) + 40);
-              v63 = [v59 unsignedIntegerValue];
+              unsignedIntegerValue3 = [v59 unsignedIntegerValue];
             }
 
-            [v64 removeObjectAtIndex:v63];
+            [v64 removeObjectAtIndex:unsignedIntegerValue3];
           }
 
           v56 = [v55 countByEnumeratingWithState:&v75 objects:v109 count:16];

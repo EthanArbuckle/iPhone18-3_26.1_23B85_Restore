@@ -1,30 +1,30 @@
 @interface SFPrivacyReportMeterBar
 - (CGSize)intrinsicContentSize;
-- (SFPrivacyReportMeterBar)initWithFrame:(CGRect)a3;
+- (SFPrivacyReportMeterBar)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation SFPrivacyReportMeterBar
 
-- (SFPrivacyReportMeterBar)initWithFrame:(CGRect)a3
+- (SFPrivacyReportMeterBar)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = SFPrivacyReportMeterBar;
-  v3 = [(SFPrivacyReportMeterBar *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPrivacyReportMeterBar *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SFPrivacyReportMeterBar *)v3 tintColor];
-    [(SFPrivacyReportMeterBar *)v4 setBackgroundColor:v5];
+    tintColor = [(SFPrivacyReportMeterBar *)v3 tintColor];
+    [(SFPrivacyReportMeterBar *)v4 setBackgroundColor:tintColor];
 
     v6 = *MEMORY[0x1E69796E0];
-    v7 = [(SFPrivacyReportMeterBar *)v4 layer];
-    [v7 setCornerCurve:v6];
+    layer = [(SFPrivacyReportMeterBar *)v4 layer];
+    [layer setCornerCurve:v6];
 
-    v8 = [(SFPrivacyReportMeterBar *)v4 widthAnchor];
-    v9 = [(SFPrivacyReportMeterBar *)v4 heightAnchor];
-    v10 = [v8 constraintGreaterThanOrEqualToAnchor:v9];
+    widthAnchor = [(SFPrivacyReportMeterBar *)v4 widthAnchor];
+    heightAnchor = [(SFPrivacyReportMeterBar *)v4 heightAnchor];
+    v10 = [widthAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor];
     [v10 setActive:1];
 
     v11 = v4;
@@ -38,8 +38,8 @@
   v4.receiver = self;
   v4.super_class = SFPrivacyReportMeterBar;
   [(SFPrivacyReportMeterBar *)&v4 tintColorDidChange];
-  v3 = [(SFPrivacyReportMeterBar *)self tintColor];
-  [(SFPrivacyReportMeterBar *)self setBackgroundColor:v3];
+  tintColor = [(SFPrivacyReportMeterBar *)self tintColor];
+  [(SFPrivacyReportMeterBar *)self setBackgroundColor:tintColor];
 }
 
 - (void)layoutSubviews
@@ -49,8 +49,8 @@
   [(SFPrivacyReportMeterBar *)&v5 layoutSubviews];
   [(SFPrivacyReportMeterBar *)self bounds];
   v3 = CGRectGetHeight(v6) * 0.5;
-  v4 = [(SFPrivacyReportMeterBar *)self layer];
-  [v4 setCornerRadius:v3];
+  layer = [(SFPrivacyReportMeterBar *)self layer];
+  [layer setCornerRadius:v3];
 }
 
 - (CGSize)intrinsicContentSize

@@ -1,25 +1,25 @@
 @interface PFAIDocOrientationState
-- (id)initWitContentNodeBody:(id)a3 presentationType:(id)a4 readerState:(id)a5;
-- (id)pageAtRelativeIndex:(unint64_t)a3;
+- (id)initWitContentNodeBody:(id)body presentationType:(id)type readerState:(id)state;
+- (id)pageAtRelativeIndex:(unint64_t)index;
 - (void)clearIDsForTemporaryTableCellStorage;
 - (void)dealloc;
 - (void)invalidateLineHints;
 - (void)popHint;
-- (void)setCurrentPageIndex:(int64_t)a3;
+- (void)setCurrentPageIndex:(int64_t)index;
 @end
 
 @implementation PFAIDocOrientationState
 
-- (id)initWitContentNodeBody:(id)a3 presentationType:(id)a4 readerState:(id)a5
+- (id)initWitContentNodeBody:(id)body presentationType:(id)type readerState:(id)state
 {
-  v9 = [a3 bodyStorage];
+  bodyStorage = [body bodyStorage];
   v12.receiver = self;
   v12.super_class = PFAIDocOrientationState;
-  v10 = [(PFXHtmlDocMediaState *)&v12 initWithStorage:v9 readerState:a5 defaultParagraphStyleIdentifier:kTSWPDefaultContentParagraphStyleIdentifier];
+  v10 = [(PFXHtmlDocMediaState *)&v12 initWithStorage:bodyStorage readerState:state defaultParagraphStyleIdentifier:kTSWPDefaultContentParagraphStyleIdentifier];
   if (v10)
   {
-    v10->mContentNodeBody = a3;
-    v10->mPresentationType = a4;
+    v10->mContentNodeBody = body;
+    v10->mPresentationType = type;
     v10->mPageDrawableMaps = objc_alloc_init(NSMutableArray);
     v10->mHintsExhausted = 0;
   }
@@ -68,9 +68,9 @@
   self->mHintLocations = 0;
 }
 
-- (void)setCurrentPageIndex:(int64_t)a3
+- (void)setCurrentPageIndex:(int64_t)index
 {
-  self->mCurrentPageIndex = a3;
+  self->mCurrentPageIndex = index;
   while ([(NSMutableArray *)self->mPageDrawableMaps count]<= self->mCurrentPageIndex)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
@@ -78,24 +78,24 @@
   }
 }
 
-- (id)pageAtRelativeIndex:(unint64_t)a3
+- (id)pageAtRelativeIndex:(unint64_t)index
 {
-  if ([(NSArray *)[(THModelContentNodeBody *)self->mContentNodeBody pages] count]<= a3)
+  if ([(NSArray *)[(THModelContentNodeBody *)self->mContentNodeBody pages] count]<= index)
   {
     return 0;
   }
 
-  v5 = [(THModelContentNodeBody *)self->mContentNodeBody pages];
+  pages = [(THModelContentNodeBody *)self->mContentNodeBody pages];
 
-  return [(NSArray *)v5 objectAtIndex:a3];
+  return [(NSArray *)pages objectAtIndex:index];
 }
 
 - (void)clearIDsForTemporaryTableCellStorage
 {
   mContentNodeBody = self->mContentNodeBody;
-  v3 = [(PFXHtmlDocMediaState *)self temporaryTableCellStorage];
+  temporaryTableCellStorage = [(PFXHtmlDocMediaState *)self temporaryTableCellStorage];
 
-  [(THModelContentNodeBody *)mContentNodeBody clearNodeUniqueIDForInfo:v3];
+  [(THModelContentNodeBody *)mContentNodeBody clearNodeUniqueIDForInfo:temporaryTableCellStorage];
 }
 
 @end

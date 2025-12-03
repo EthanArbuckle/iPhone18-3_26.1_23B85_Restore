@@ -1,9 +1,9 @@
 @interface HMDOutgoingHomeInvitationModel
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)dependentUUIDs;
-- (id)rgSettingsFromOutgoingInvitation:(id)a3;
+- (id)rgSettingsFromOutgoingInvitation:(id)invitation;
 @end
 
 @implementation HMDOutgoingHomeInvitationModel
@@ -12,29 +12,29 @@
 {
   v38 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
-  v6 = [(HMDOutgoingHomeInvitationModel *)self pendingUserUUID];
+  pendingUserUUID = [(HMDOutgoingHomeInvitationModel *)self pendingUserUUID];
 
-  if (v6)
+  if (pendingUserUUID)
   {
-    v7 = [(HMDOutgoingHomeInvitationModel *)self pendingUserUUID];
-    [v3 addObject:v7];
+    pendingUserUUID2 = [(HMDOutgoingHomeInvitationModel *)self pendingUserUUID];
+    [v3 addObject:pendingUserUUID2];
   }
 
-  v8 = [(HMDOutgoingHomeInvitationModel *)self uuidsOfAllowedAccessories];
-  v9 = [v8 count];
+  uuidsOfAllowedAccessories = [(HMDOutgoingHomeInvitationModel *)self uuidsOfAllowedAccessories];
+  v9 = [uuidsOfAllowedAccessories count];
 
   if (v9)
   {
-    v10 = [(HMDOutgoingHomeInvitationModel *)self uuidsOfAllowedAccessories];
-    [v3 addObjectsFromArray:v10];
+    uuidsOfAllowedAccessories2 = [(HMDOutgoingHomeInvitationModel *)self uuidsOfAllowedAccessories];
+    [v3 addObjectsFromArray:uuidsOfAllowedAccessories2];
   }
 
   v35 = 0u;
@@ -199,38 +199,38 @@ void __44__HMDOutgoingHomeInvitationModel_properties__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)rgSettingsFromOutgoingInvitation:(id)a3
+- (id)rgSettingsFromOutgoingInvitation:(id)invitation
 {
-  v3 = a3;
+  invitationCopy = invitation;
   v4 = [HMDRestrictedGuestHomeAccessSettings alloc];
-  v5 = [v3 allowedAccessoryUUIDs];
-  v6 = [v3 restrictedGuestSchedule];
+  allowedAccessoryUUIDs = [invitationCopy allowedAccessoryUUIDs];
+  restrictedGuestSchedule = [invitationCopy restrictedGuestSchedule];
 
-  v7 = [(HMDRestrictedGuestHomeAccessSettings *)v4 initWithAllowedAccessories:v5 schedule:v6];
+  v7 = [(HMDRestrictedGuestHomeAccessSettings *)v4 initWithAllowedAccessories:allowedAccessoryUUIDs schedule:restrictedGuestSchedule];
 
   return v7;
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"privilege"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"privilege"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"user"])
     {
-      v11 = [(HMDOutgoingHomeInvitationModel *)self user];
+      user = [(HMDOutgoingHomeInvitationModel *)self user];
 
-      if (v11)
+      if (user)
       {
-        v12 = [(HMDOutgoingHomeInvitationModel *)self user];
-        v13 = [HMDUser userWithDictionary:v12];
+        user2 = [(HMDOutgoingHomeInvitationModel *)self user];
+        v13 = [HMDUser userWithDictionary:user2];
 
         v14 = MEMORY[0x277CCABB0];
-        v15 = [v13 privilege];
+        privilege = [v13 privilege];
 LABEL_13:
-        v20 = [v14 numberWithUnsignedInteger:v15];
+        v20 = [v14 numberWithUnsignedInteger:privilege];
 LABEL_14:
         v21 = v20;
 LABEL_15:
@@ -244,19 +244,19 @@ LABEL_15:
     goto LABEL_43;
   }
 
-  if ([v9 isEqualToString:@"announceAccessLevel"])
+  if ([fieldCopy isEqualToString:@"announceAccessLevel"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"user"])
     {
-      v16 = [(HMDOutgoingHomeInvitationModel *)self user];
+      user3 = [(HMDOutgoingHomeInvitationModel *)self user];
 
-      if (v16)
+      if (user3)
       {
-        v17 = [(HMDOutgoingHomeInvitationModel *)self user];
-        v13 = [HMDUser userWithDictionary:v17];
+        user4 = [(HMDOutgoingHomeInvitationModel *)self user];
+        v13 = [HMDUser userWithDictionary:user4];
 
         v14 = MEMORY[0x277CCABB0];
-        v15 = [v13 announceAccessLevel];
+        privilege = [v13 announceAccessLevel];
         goto LABEL_13;
       }
 
@@ -266,24 +266,24 @@ LABEL_15:
     goto LABEL_43;
   }
 
-  if (![v9 isEqualToString:@"cameraAccessLevel"])
+  if (![fieldCopy isEqualToString:@"cameraAccessLevel"])
   {
-    if ([v9 isEqualToString:@"inviteeUserID"])
+    if ([fieldCopy isEqualToString:@"inviteeUserID"])
     {
       if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"user"])
       {
         goto LABEL_43;
       }
 
-      v22 = [(HMDOutgoingHomeInvitationModel *)self user];
+      user5 = [(HMDOutgoingHomeInvitationModel *)self user];
 
-      if (v22)
+      if (user5)
       {
-        v23 = [(HMDOutgoingHomeInvitationModel *)self user];
-        v13 = [HMDUser userWithDictionary:v23];
+        user6 = [(HMDOutgoingHomeInvitationModel *)self user];
+        v13 = [HMDUser userWithDictionary:user6];
 
-        v24 = [v13 accountHandle];
-        v21 = [HMDUser userIDForAccountHandle:v24];
+        accountHandle = [v13 accountHandle];
+        v21 = [HMDUser userIDForAccountHandle:accountHandle];
 
         goto LABEL_15;
       }
@@ -291,18 +291,18 @@ LABEL_15:
 
     else
     {
-      if (![v9 isEqualToString:@"remoteAccessAllowed"])
+      if (![fieldCopy isEqualToString:@"remoteAccessAllowed"])
       {
-        if ([v9 isEqualToString:@"idsIdentifier"])
+        if ([fieldCopy isEqualToString:@"idsIdentifier"])
         {
           if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"idsInvitationUUID"])
           {
-            v28 = [(HMDOutgoingHomeInvitationModel *)self idsInvitationUUID];
-            v13 = v28;
+            idsInvitationUUID = [(HMDOutgoingHomeInvitationModel *)self idsInvitationUUID];
+            v13 = idsInvitationUUID;
             v29 = *MEMORY[0x277CBEEE8];
-            if (v28)
+            if (idsInvitationUUID)
             {
-              v29 = v28;
+              v29 = idsInvitationUUID;
             }
 
             v20 = v29;
@@ -312,7 +312,7 @@ LABEL_15:
           goto LABEL_43;
         }
 
-        if ([v9 isEqualToString:@"shareToken"])
+        if ([fieldCopy isEqualToString:@"shareToken"])
         {
           if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"shareToken"])
           {
@@ -320,8 +320,8 @@ LABEL_15:
           }
 
           v30 = objc_opt_class();
-          v31 = [(HMDOutgoingHomeInvitationModel *)self shareToken];
-          v32 = [v30 shareTokenFromKeyedArchiveData:v31];
+          shareToken = [(HMDOutgoingHomeInvitationModel *)self shareToken];
+          v32 = [v30 shareTokenFromKeyedArchiveData:shareToken];
           v33 = v32;
           v34 = *MEMORY[0x277CBEEE8];
           if (v32)
@@ -334,13 +334,13 @@ LABEL_15:
 
         else
         {
-          if (![v9 isEqualToString:@"pendingUser"])
+          if (![fieldCopy isEqualToString:@"pendingUser"])
           {
-            if (![v9 isEqualToString:@"allowedAccessories_"])
+            if (![fieldCopy isEqualToString:@"allowedAccessories_"])
             {
               v40.receiver = self;
               v40.super_class = HMDOutgoingHomeInvitationModel;
-              v27 = [(HMDBackingStoreModelObject *)&v40 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+              null = [(HMDBackingStoreModelObject *)&v40 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
               goto LABEL_25;
             }
 
@@ -352,16 +352,16 @@ LABEL_15:
               v45 = __Block_byref_object_copy__99442;
               v46 = __Block_byref_object_dispose__99443;
               v36 = MEMORY[0x277CBEB58];
-              v37 = [(HMDOutgoingHomeInvitationModel *)self uuidsOfAllowedAccessories];
-              v47 = [v36 setWithCapacity:{objc_msgSend(v37, "count")}];
+              uuidsOfAllowedAccessories = [(HMDOutgoingHomeInvitationModel *)self uuidsOfAllowedAccessories];
+              v47 = [v36 setWithCapacity:{objc_msgSend(uuidsOfAllowedAccessories, "count")}];
 
-              v38 = [(HMDOutgoingHomeInvitationModel *)self uuidsOfAllowedAccessories];
+              uuidsOfAllowedAccessories2 = [(HMDOutgoingHomeInvitationModel *)self uuidsOfAllowedAccessories];
               v41[0] = MEMORY[0x277D85DD0];
               v41[1] = 3221225472;
               v41[2] = __99__HMDOutgoingHomeInvitationModel_CoreData__cd_generateValueForProperty_managedObjectField_context___block_invoke;
               v41[3] = &unk_27867D970;
               v41[4] = &v42;
-              [v38 hmf_enumerateWithAutoreleasePoolUsingBlock:v41];
+              [uuidsOfAllowedAccessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v41];
 
               v21 = v43[5];
               _Block_object_dispose(&v42, 8);
@@ -378,8 +378,8 @@ LABEL_15:
           }
 
           v35 = objc_opt_class();
-          v31 = [(HMDOutgoingHomeInvitationModel *)self pendingUserUUID];
-          v21 = [v35 cd_getMKFUserFromUUID:v31];
+          shareToken = [(HMDOutgoingHomeInvitationModel *)self pendingUserUUID];
+          v21 = [v35 cd_getMKFUserFromUUID:shareToken];
         }
 
         goto LABEL_44;
@@ -390,12 +390,12 @@ LABEL_15:
         goto LABEL_43;
       }
 
-      v25 = [(HMDOutgoingHomeInvitationModel *)self user];
+      user7 = [(HMDOutgoingHomeInvitationModel *)self user];
 
-      if (v25)
+      if (user7)
       {
-        v26 = [(HMDOutgoingHomeInvitationModel *)self user];
-        v13 = [HMDUser userWithDictionary:v26];
+        user8 = [(HMDOutgoingHomeInvitationModel *)self user];
+        v13 = [HMDUser userWithDictionary:user8];
 
         v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v13, "isRemoteAccessAllowed")}];
         goto LABEL_14;
@@ -403,23 +403,23 @@ LABEL_15:
     }
 
 LABEL_24:
-    v27 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 LABEL_25:
-    v21 = v27;
+    v21 = null;
     goto LABEL_44;
   }
 
   if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"user"])
   {
-    v18 = [(HMDOutgoingHomeInvitationModel *)self user];
+    user9 = [(HMDOutgoingHomeInvitationModel *)self user];
 
-    if (v18)
+    if (user9)
     {
-      v19 = [(HMDOutgoingHomeInvitationModel *)self user];
-      v13 = [HMDUser userWithDictionary:v19];
+      user10 = [(HMDOutgoingHomeInvitationModel *)self user];
+      v13 = [HMDUser userWithDictionary:user10];
 
       v14 = MEMORY[0x277CCABB0];
-      v15 = [v13 camerasAccessLevel];
+      privilege = [v13 camerasAccessLevel];
       goto LABEL_13;
     }
 
@@ -446,41 +446,41 @@ void __99__HMDOutgoingHomeInvitationModel_CoreData__cd_generateValueForProperty_
   }
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"user"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"user"])
   {
-    v11 = [v8 inviteeUserID];
-    [v8 privilege];
-    v12 = v37 = v9;
-    v35 = [v12 unsignedIntegerValue];
-    v13 = [v8 remoteAccessAllowed];
-    v14 = [v13 BOOLValue];
-    [v8 cameraAccessLevel];
-    v15 = v36 = v10;
-    v16 = [v15 unsignedIntegerValue];
-    v17 = [v8 announceAccessLevel];
-    v18 = [v17 unsignedIntegerValue];
-    v19 = [(HMDOutgoingHomeInvitationModel *)self rgSettingsFromOutgoingInvitation:v8];
-    v20 = [HMDUser userDictionaryWithUserID:v11 privilege:v35 remoteAccessAllowed:v14 cameraAccessLevel:v16 announceAccessAllowed:0 announceAccessLevel:v18 audioAnalysisUserDropInAccessLevel:0 restrictedGuestAccessSettings:v19];
+    inviteeUserID = [objectCopy inviteeUserID];
+    [objectCopy privilege];
+    v12 = v37 = fieldCopy;
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
+    remoteAccessAllowed = [objectCopy remoteAccessAllowed];
+    bOOLValue = [remoteAccessAllowed BOOLValue];
+    [objectCopy cameraAccessLevel];
+    v15 = v36 = infoCopy;
+    unsignedIntegerValue2 = [v15 unsignedIntegerValue];
+    announceAccessLevel = [objectCopy announceAccessLevel];
+    unsignedIntegerValue3 = [announceAccessLevel unsignedIntegerValue];
+    v19 = [(HMDOutgoingHomeInvitationModel *)self rgSettingsFromOutgoingInvitation:objectCopy];
+    v20 = [HMDUser userDictionaryWithUserID:inviteeUserID privilege:unsignedIntegerValue remoteAccessAllowed:bOOLValue cameraAccessLevel:unsignedIntegerValue2 announceAccessAllowed:0 announceAccessLevel:unsignedIntegerValue3 audioAnalysisUserDropInAccessLevel:0 restrictedGuestAccessSettings:v19];
 
-    v10 = v36;
-    v9 = v37;
+    infoCopy = v36;
+    fieldCopy = v37;
 
     goto LABEL_14;
   }
 
-  if ([v9 isEqualToString:@"idsInvitationUUID"])
+  if ([fieldCopy isEqualToString:@"idsInvitationUUID"])
   {
-    v21 = [v8 idsIdentifier];
-    v22 = v21;
+    idsIdentifier = [objectCopy idsIdentifier];
+    pendingUser = idsIdentifier;
     v23 = *MEMORY[0x277CBEEE8];
-    if (v21)
+    if (idsIdentifier)
     {
-      v23 = v21;
+      v23 = idsIdentifier;
     }
 
     v20 = v23;
@@ -489,16 +489,16 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  if ([v9 isEqualToString:@"messageIdentifier"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"responseReceived") & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"inviteeDestinationAddress") & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"operations") & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"operationIdentifiers"))
+  if ([fieldCopy isEqualToString:@"messageIdentifier"] & 1) != 0 || (objc_msgSend(fieldCopy, "isEqualToString:", @"responseReceived") & 1) != 0 || (objc_msgSend(fieldCopy, "isEqualToString:", @"inviteeDestinationAddress") & 1) != 0 || (objc_msgSend(fieldCopy, "isEqualToString:", @"operations") & 1) != 0 || (objc_msgSend(fieldCopy, "isEqualToString:", @"operationIdentifiers"))
   {
     v20 = 0;
   }
 
-  else if ([v9 isEqualToString:@"shareToken"])
+  else if ([fieldCopy isEqualToString:@"shareToken"])
   {
     v25 = objc_opt_class();
-    v26 = [v8 shareToken];
-    v27 = [v25 keyedArchiveToken:v26];
+    shareToken = [objectCopy shareToken];
+    v27 = [v25 keyedArchiveToken:shareToken];
     v28 = v27;
     v29 = *MEMORY[0x277CBEEE8];
     if (v27)
@@ -511,15 +511,15 @@ LABEL_7:
 
   else
   {
-    if ([v9 isEqualToString:@"pendingUserUUID"])
+    if ([fieldCopy isEqualToString:@"pendingUserUUID"])
     {
-      v22 = [v8 pendingUser];
-      v30 = [v22 modelID];
-      v31 = v30;
+      pendingUser = [objectCopy pendingUser];
+      modelID = [pendingUser modelID];
+      v31 = modelID;
       v32 = *MEMORY[0x277CBEEE8];
-      if (v30)
+      if (modelID)
       {
-        v32 = v30;
+        v32 = modelID;
       }
 
       v20 = v32;
@@ -527,13 +527,13 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    if ([v9 isEqualToString:@"uuidsOfAllowedAccessories"])
+    if ([fieldCopy isEqualToString:@"uuidsOfAllowedAccessories"])
     {
-      v33 = [v8 allowedAccessories];
+      allowedAccessories = [objectCopy allowedAccessories];
 
-      if (v33)
+      if (allowedAccessories)
       {
-        [v8 allowedAccessoryUUIDs];
+        [objectCopy allowedAccessoryUUIDs];
       }
 
       else
@@ -547,7 +547,7 @@ LABEL_7:
     {
       v38.receiver = self;
       v38.super_class = HMDOutgoingHomeInvitationModel;
-      v34 = [(HMDBackingStoreModelObject *)&v38 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+      v34 = [(HMDBackingStoreModelObject *)&v38 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
     }
 
     v20 = v34;

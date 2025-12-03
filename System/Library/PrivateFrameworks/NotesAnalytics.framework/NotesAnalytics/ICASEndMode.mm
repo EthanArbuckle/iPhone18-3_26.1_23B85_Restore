@@ -1,33 +1,33 @@
 @interface ICASEndMode
-- (ICASEndMode)initWithEndMode:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASEndMode)initWithEndMode:(int64_t)mode;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASEndMode
 
-- (ICASEndMode)initWithEndMode:(int64_t)a3
+- (ICASEndMode)initWithEndMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = ICASEndMode;
   result = [(ICASEndMode *)&v5 init];
   if (result)
   {
-    result->_endMode = a3;
+    result->_endMode = mode;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASEndMode *)self endMode];
+  endMode = [(ICASEndMode *)self endMode];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (endMode == 1)
   {
     v4 = @"v1";
   }
 
-  if (v3 == 2)
+  if (endMode == 2)
   {
     return @"v2";
   }

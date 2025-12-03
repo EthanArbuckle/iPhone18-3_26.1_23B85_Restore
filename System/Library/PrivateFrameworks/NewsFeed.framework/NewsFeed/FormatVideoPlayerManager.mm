@@ -1,19 +1,19 @@
 @interface FormatVideoPlayerManager
 - (_TtC8NewsFeed24FormatVideoPlayerManager)init;
-- (id)videoAdForVideoPlayerViewController:(id)a3;
-- (id)videoForVideoPlayerViewController:(id)a3;
+- (id)videoAdForVideoPlayerViewController:(id)controller;
+- (id)videoForVideoPlayerViewController:(id)controller;
 - (void)startPictureInPictureIfPossible;
-- (void)videoPlayerViewController:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4;
-- (void)videoPlayerViewControllerDidExitFullscreen:(id)a3;
-- (void)videoPlayerViewControllerDidStopPictureInPicture:(id)a3;
-- (void)videoPlayerViewControllerWillStartPictureInPicture:(id)a3;
+- (void)videoPlayerViewController:(id)controller restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler;
+- (void)videoPlayerViewControllerDidExitFullscreen:(id)fullscreen;
+- (void)videoPlayerViewControllerDidStopPictureInPicture:(id)picture;
+- (void)videoPlayerViewControllerWillStartPictureInPicture:(id)picture;
 @end
 
 @implementation FormatVideoPlayerManager
 
 - (void)startPictureInPictureIfPossible
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6AF16CC();
 }
 
@@ -24,51 +24,51 @@
   return result;
 }
 
-- (void)videoPlayerViewControllerWillStartPictureInPicture:(id)a3
+- (void)videoPlayerViewControllerWillStartPictureInPicture:(id)picture
 {
-  v4 = a3;
-  v5 = self;
+  pictureCopy = picture;
+  selfCopy = self;
   sub_1D6AF452C();
 }
 
-- (void)videoPlayerViewControllerDidStopPictureInPicture:(id)a3
+- (void)videoPlayerViewControllerDidStopPictureInPicture:(id)picture
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6AF2E58(v4);
+  pictureCopy = picture;
+  selfCopy = self;
+  sub_1D6AF2E58(pictureCopy);
 }
 
-- (void)videoPlayerViewController:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4
+- (void)videoPlayerViewController:(id)controller restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1D6AF4AC8(v7, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1D6AF4AC8(controllerCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)videoPlayerViewControllerDidExitFullscreen:(id)a3
+- (void)videoPlayerViewControllerDidExitFullscreen:(id)fullscreen
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6AF360C(v4);
+  fullscreenCopy = fullscreen;
+  selfCopy = self;
+  sub_1D6AF360C(fullscreenCopy);
 }
 
-- (id)videoAdForVideoPlayerViewController:(id)a3
+- (id)videoAdForVideoPlayerViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1D6AF3B5C(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_1D6AF3B5C(controllerCopy);
 
   return v6;
 }
 
-- (id)videoForVideoPlayerViewController:(id)a3
+- (id)videoForVideoPlayerViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_1D6AF4C88();
 
   return v6;

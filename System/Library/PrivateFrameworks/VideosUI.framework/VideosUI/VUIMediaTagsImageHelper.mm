@@ -1,5 +1,5 @@
 @interface VUIMediaTagsImageHelper
-+ (id)imageWithName:(id)a3 flatten:(BOOL)a4 accessibilityDescription:(id)a5;
++ (id)imageWithName:(id)name flatten:(BOOL)flatten accessibilityDescription:(id)description;
 + (void)initialize;
 @end
 
@@ -25,26 +25,26 @@ uint64_t __37__VUIMediaTagsImageHelper_initialize__block_invoke()
   return [v2 setName:@"MediaTagsImageHelperCache"];
 }
 
-+ (id)imageWithName:(id)a3 flatten:(BOOL)a4 accessibilityDescription:(id)a5
++ (id)imageWithName:(id)name flatten:(BOOL)flatten accessibilityDescription:(id)description
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [imageCache objectForKey:v7];
+  flattenCopy = flatten;
+  nameCopy = name;
+  descriptionCopy = description;
+  v9 = [imageCache objectForKey:nameCopy];
   if (!v9)
   {
-    v10 = [MEMORY[0x1E69DF6D0] imageForResource:v7 accessibilityDescription:v8];
+    v10 = [MEMORY[0x1E69DF6D0] imageForResource:nameCopy accessibilityDescription:descriptionCopy];
     v9 = v10;
     if (v10)
     {
-      if (v6)
+      if (flattenCopy)
       {
-        v11 = [v10 vuiTemplateImage];
+        vuiTemplateImage = [v10 vuiTemplateImage];
 
-        v9 = v11;
+        v9 = vuiTemplateImage;
       }
 
-      [imageCache setObject:v9 forKey:v7];
+      [imageCache setObject:v9 forKey:nameCopy];
     }
   }
 

@@ -2,21 +2,21 @@
 - (CGPoint)jitterOffset;
 - (CGPoint)motionVectorScale;
 - (CGPoint)previousJitterOffset;
-- (_MFXTemporalScalingEffectV4)initWithDevice:(id)a3 descriptor:(id)a4 history:(id)a5;
+- (_MFXTemporalScalingEffectV4)initWithDevice:(id)device descriptor:(id)descriptor history:(id)history;
 - (__n128)currentViewToClipMatrix;
 - (__n128)currentWorldToViewMatrix;
 - (__n128)previousViewToClipMatrix;
 - (__n128)previousWorldToViewMatrix;
-- (__n128)setCurrentViewToClipMatrix:(__n128)a3;
-- (__n128)setCurrentWorldToViewMatrix:(__n128)a3;
-- (__n128)setPreviousViewToClipMatrix:(__n128)a3;
-- (__n128)setPreviousWorldToViewMatrix:(__n128)a3;
+- (__n128)setCurrentViewToClipMatrix:(__n128)matrix;
+- (__n128)setCurrentWorldToViewMatrix:(__n128)matrix;
+- (__n128)setPreviousViewToClipMatrix:(__n128)matrix;
+- (__n128)setPreviousWorldToViewMatrix:(__n128)matrix;
 - (float)jitterOffsetX;
 - (float)motionVectorScaleX;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3;
-- (void)encodeToCommandQueue:(id)a3;
+- (void)encodeToCommandBuffer:(id)buffer;
+- (void)encodeToCommandQueue:(id)queue;
 @end
 
 @implementation _MFXTemporalScalingEffectV4
@@ -53,24 +53,24 @@
   return result;
 }
 
-- (_MFXTemporalScalingEffectV4)initWithDevice:(id)a3 descriptor:(id)a4 history:(id)a5
+- (_MFXTemporalScalingEffectV4)initWithDevice:(id)device descriptor:(id)descriptor history:(id)history
 {
-  v101 = a3;
-  v9 = a4;
-  obj = a5;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  obj = history;
   v111.receiver = self;
   v111.super_class = _MFXTemporalScalingEffectV4;
   v10 = [(_MTLFXEffectBase *)&v111 init];
-  objc_storeStrong(v10 + 6, a3);
-  *(v10 + 14) = [v9 colorTextureFormat];
-  *(v10 + 15) = [v9 depthTextureFormat];
-  *(v10 + 16) = [v9 motionTextureFormat];
-  *(v10 + 104) = [v9 outputTextureFormat];
-  *(v10 + 17) = [v9 reactiveMaskTextureFormat];
-  *(v10 + 7) = [v9 inputWidth];
-  *(v10 + 8) = [v9 inputHeight];
-  *(v10 + 9) = [v9 outputWidth];
-  *(v10 + 10) = [v9 outputHeight];
+  objc_storeStrong(v10 + 6, device);
+  *(v10 + 14) = [descriptorCopy colorTextureFormat];
+  *(v10 + 15) = [descriptorCopy depthTextureFormat];
+  *(v10 + 16) = [descriptorCopy motionTextureFormat];
+  *(v10 + 104) = [descriptorCopy outputTextureFormat];
+  *(v10 + 17) = [descriptorCopy reactiveMaskTextureFormat];
+  *(v10 + 7) = [descriptorCopy inputWidth];
+  *(v10 + 8) = [descriptorCopy inputHeight];
+  *(v10 + 9) = [descriptorCopy outputWidth];
+  *(v10 + 10) = [descriptorCopy outputHeight];
   v10[62] = 1065353216;
   *(v10 + 288) = 1;
   v11 = *(v10 + 7);
@@ -81,7 +81,7 @@
   *(v10 + 33) = v12;
   *(v10 + 289) = 1;
   *(v10 + 291) = 1;
-  *(v10 + 293) = [v9 isReactiveMaskTextureEnabled];
+  *(v10 + 293) = [descriptorCopy isReactiveMaskTextureEnabled];
   *(v10 + 292) = 1;
   *(v10 + 294) = 1;
   getFeatureConfiguration();
@@ -147,7 +147,7 @@
   v96 = [v97 pathForResource:@"default" ofType:@"metallib"];
   v18 = [MEMORY[0x277CBEBC0] URLWithString:v96];
   v110 = 0;
-  v98 = [v101 newLibraryWithURL:v18 error:&v110];
+  v98 = [deviceCopy newLibraryWithURL:v18 error:&v110];
   v95 = v110;
 
   v100 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:*(v10 + 9) height:*(v10 + 10) mipmapped:0];
@@ -187,7 +187,7 @@
 
   *(v10 + 11) = *(v10 + 7);
   *(v10 + 12) = *(v10 + 8);
-  *(v10 + 290) = [v9 isAutoExposureEnabled];
+  *(v10 + 290) = [descriptorCopy isAutoExposureEnabled];
   v26 = getenv("MTLFX_FORCE_AUTO_EXPOSURE");
   if (!v26)
   {
@@ -199,11 +199,11 @@
     *(v10 + 290) = 1;
   }
 
-  if ([v9 isInputContentPropertiesEnabled])
+  if ([descriptorCopy isInputContentPropertiesEnabled])
   {
-    [v9 inputContentMinScale];
+    [descriptorCopy inputContentMinScale];
     v10[26] = v27;
-    [v9 inputContentMaxScale];
+    [descriptorCopy inputContentMaxScale];
     *(v10 + 27) = v28;
     v29 = *(v10 + 26);
     v30 = v28;
@@ -235,7 +235,7 @@
       v44 = v10[20];
     }
 
-    else if ([v9 isInputContentPropertiesEnabled])
+    else if ([descriptorCopy isInputContentPropertiesEnabled])
     {
       v40 = *(v10 + 27);
       v41 = ceilf(*(v10 + 9) / v40);
@@ -269,37 +269,37 @@
       v49 = *(v10 + 56);
       *(v10 + 56) = v48;
 
-      v50 = [*(v10 + 6) newEvent];
+      newEvent = [*(v10 + 6) newEvent];
       v51 = *(v10 + 57);
-      *(v10 + 57) = v50;
+      *(v10 + 57) = newEvent;
 
-      v52 = [*(v10 + 6) newEvent];
+      newEvent2 = [*(v10 + 6) newEvent];
       v53 = *(v10 + 58);
-      *(v10 + 58) = v52;
+      *(v10 + 58) = newEvent2;
 
-      v54 = [*(v10 + 6) newEvent];
+      newEvent3 = [*(v10 + 6) newEvent];
       v55 = *(v10 + 59);
-      *(v10 + 59) = v54;
+      *(v10 + 59) = newEvent3;
 
-      v56 = [*(v10 + 6) newEvent];
+      newEvent4 = [*(v10 + 6) newEvent];
       v57 = *(v10 + 60);
-      *(v10 + 60) = v56;
+      *(v10 + 60) = newEvent4;
 
-      v58 = [*(v10 + 6) newSharedEvent];
+      newSharedEvent = [*(v10 + 6) newSharedEvent];
       v59 = *(v10 + 61);
-      *(v10 + 61) = v58;
+      *(v10 + 61) = newSharedEvent;
 
-      v60 = [*(v10 + 6) newSharedEvent];
+      newSharedEvent2 = [*(v10 + 6) newSharedEvent];
       v61 = *(v10 + 62);
-      *(v10 + 62) = v60;
+      *(v10 + 62) = newSharedEvent2;
 
       v62 = *(v10 + 58);
       if (objc_opt_respondsToSelector())
       {
         [*(v10 + 58) setEnableBarrier:0];
-        v63 = [*(v10 + 6) newFence];
+        newFence = [*(v10 + 6) newFence];
         v64 = *(v10 + 63);
-        *(v10 + 63) = v63;
+        *(v10 + 63) = newFence;
       }
 
       v65 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -319,7 +319,7 @@
 
       [(MPSGraphCompilationDescriptor *)v45 setAllowedComputeDevices:7];
       [(MPSGraphCompilationDescriptor *)v45 setPreferredDevice:2];
-      if ([v101 supportsFamily:1008])
+      if ([deviceCopy supportsFamily:1008])
       {
         v70 = 3;
       }
@@ -405,7 +405,7 @@
 
       if (*(v10 + 55))
       {
-        v105 = v101;
+        v105 = deviceCopy;
         v106 = 0uLL;
         operator new();
       }
@@ -437,21 +437,21 @@ LABEL_37:
   [(_MFXTemporalScalingEffectV4 *)&v2 dealloc];
 }
 
-- (void)encodeToCommandQueue:(id)a3
+- (void)encodeToCommandQueue:(id)queue
 {
-  v4 = [a3 commandBuffer];
+  commandBuffer = [queue commandBuffer];
   [(_MFXTemporalScalingEffectV4 *)self encodeToCommandBuffer:?];
-  [v4 commit];
+  [commandBuffer commit];
 }
 
-- (void)encodeToCommandBuffer:(id)a3
+- (void)encodeToCommandBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   v37 = self->_device;
   memset(v38, 0, 24);
   [(_MTLFXEffectBase *)self _beginEncode];
   *(self->_filter + 136) = *(self->_filter + 136) == 0;
-  v5 = v4;
+  v5 = bufferCopy;
   {
     MetalFXHUDInstanceV3(void)::v3 = WEAK_HUDServiceV3();
   }
@@ -580,17 +580,17 @@ LABEL_37:
 
 - (__n128)currentWorldToViewMatrix
 {
-  result = *(a1 + 560);
-  v2 = *(a1 + 576);
-  v3 = *(a1 + 592);
-  v4 = *(a1 + 608);
+  result = *(self + 560);
+  v2 = *(self + 576);
+  v3 = *(self + 592);
+  v4 = *(self + 608);
   return result;
 }
 
-- (__n128)setCurrentWorldToViewMatrix:(__n128)a3
+- (__n128)setCurrentWorldToViewMatrix:(__n128)matrix
 {
   result[35] = a2;
-  result[36] = a3;
+  result[36] = matrix;
   result[37] = a4;
   result[38] = a5;
   return result;
@@ -598,17 +598,17 @@ LABEL_37:
 
 - (__n128)currentViewToClipMatrix
 {
-  result = *(a1 + 624);
-  v2 = *(a1 + 640);
-  v3 = *(a1 + 656);
-  v4 = *(a1 + 672);
+  result = *(self + 624);
+  v2 = *(self + 640);
+  v3 = *(self + 656);
+  v4 = *(self + 672);
   return result;
 }
 
-- (__n128)setCurrentViewToClipMatrix:(__n128)a3
+- (__n128)setCurrentViewToClipMatrix:(__n128)matrix
 {
   result[39] = a2;
-  result[40] = a3;
+  result[40] = matrix;
   result[41] = a4;
   result[42] = a5;
   return result;
@@ -616,17 +616,17 @@ LABEL_37:
 
 - (__n128)previousWorldToViewMatrix
 {
-  result = *(a1 + 688);
-  v2 = *(a1 + 704);
-  v3 = *(a1 + 720);
-  v4 = *(a1 + 736);
+  result = *(self + 688);
+  v2 = *(self + 704);
+  v3 = *(self + 720);
+  v4 = *(self + 736);
   return result;
 }
 
-- (__n128)setPreviousWorldToViewMatrix:(__n128)a3
+- (__n128)setPreviousWorldToViewMatrix:(__n128)matrix
 {
   result[43] = a2;
-  result[44] = a3;
+  result[44] = matrix;
   result[45] = a4;
   result[46] = a5;
   return result;
@@ -634,17 +634,17 @@ LABEL_37:
 
 - (__n128)previousViewToClipMatrix
 {
-  result = *(a1 + 752);
-  v2 = *(a1 + 768);
-  v3 = *(a1 + 784);
-  v4 = *(a1 + 800);
+  result = *(self + 752);
+  v2 = *(self + 768);
+  v3 = *(self + 784);
+  v4 = *(self + 800);
   return result;
 }
 
-- (__n128)setPreviousViewToClipMatrix:(__n128)a3
+- (__n128)setPreviousViewToClipMatrix:(__n128)matrix
 {
   result[47] = a2;
-  result[48] = a3;
+  result[48] = matrix;
   result[49] = a4;
   result[50] = a5;
   return result;

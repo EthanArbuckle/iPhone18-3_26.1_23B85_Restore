@@ -1,77 +1,77 @@
 @interface ASDatabaseClient
-- (ASDatabaseClient)initWithHealthStore:(id)a3;
-- (ASDatabaseClient)initWithHealthStore:(id)a3 profile:(id)a4;
-- (ASDatabaseClient)initWithProfile:(id)a3;
-- (BOOL)deleteDataObjectsOfType:(id)a3 predicate:(id)a4 limit:(unint64_t)a5 deletedSampleCount:(unint64_t *)a6 notifyObservers:(BOOL)a7 generateDeletedObjects:(BOOL)a8 error:(id *)a9;
-- (BOOL)enumerateActivitySharingAchievementsWithPredicate:(id)a3 anchor:(id *)a4 error:(id *)a5 handler:(id)a6;
-- (BOOL)enumerateActivitySharingSnapshotsWithPredicate:(id)a3 anchor:(id *)a4 error:(id *)a5 handler:(id)a6;
-- (BOOL)enumerateActivitySharingWorkoutsWithPredicate:(id)a3 anchor:(id *)a4 error:(id *)a5 handler:(id)a6;
-- (BOOL)enumerateAllActivitySharingSamplesWithPredicate:(id)a3 error:(id *)a4 handler:(id)a5;
-- (BOOL)insertDataObjects:(id)a3 error:(id *)a4;
+- (ASDatabaseClient)initWithHealthStore:(id)store;
+- (ASDatabaseClient)initWithHealthStore:(id)store profile:(id)profile;
+- (ASDatabaseClient)initWithProfile:(id)profile;
+- (BOOL)deleteDataObjectsOfType:(id)type predicate:(id)predicate limit:(unint64_t)limit deletedSampleCount:(unint64_t *)count notifyObservers:(BOOL)observers generateDeletedObjects:(BOOL)objects error:(id *)error;
+- (BOOL)enumerateActivitySharingAchievementsWithPredicate:(id)predicate anchor:(id *)anchor error:(id *)error handler:(id)handler;
+- (BOOL)enumerateActivitySharingSnapshotsWithPredicate:(id)predicate anchor:(id *)anchor error:(id *)error handler:(id)handler;
+- (BOOL)enumerateActivitySharingWorkoutsWithPredicate:(id)predicate anchor:(id *)anchor error:(id *)error handler:(id)handler;
+- (BOOL)enumerateAllActivitySharingSamplesWithPredicate:(id)predicate error:(id *)error handler:(id)handler;
+- (BOOL)insertDataObjects:(id)objects error:(id *)error;
 - (BOOL)isDataProtectedByFirstUnlockAvailable;
 - (BOOL)isProtectedDataAvailable;
-- (BOOL)performDatabaseCompetitionWriteTransactionBlock:(id)a3 error:(id *)a4;
-- (BOOL)removeAllCodableDatabaseCompetitionListsWithError:(id *)a3;
-- (BOOL)removeAllCodableDatabaseCompetitionsWithError:(id *)a3;
-- (BOOL)removeCodableDatabaseCompetitionsWithFriendUUID:(id)a3 type:(int64_t)a4 error:(id *)a5;
-- (BOOL)saveCodableDatabaseCompetitionListEntry:(id)a3 error:(id *)a4;
-- (BOOL)saveCodableDatabaseCompetitions:(id)a3 error:(id *)a4;
-- (id)activeDeviceUUIDWithError:(id *)a3;
-- (id)allCodableDatabaseCompetitionListEntriesWithError:(id *)a3;
-- (id)allCodableDatabaseCompetitionsWithError:(id *)a3;
-- (id)deletedHealthKitWorkoutsWithinLastNumberOfDays:(unint64_t)a3 maxBatchSize:(unint64_t)a4 anchor:(id *)a5 error:(id *)a6;
-- (id)healthKitWorkoutsWithPredicate:(id)a3 anchor:(id *)a4 error:(id *)a5;
-- (id)localSourceUUIDWithError:(id *)a3;
-- (id)makeASKeyValueDomainWithDomainName:(id)a3 category:(int64_t)a4;
+- (BOOL)performDatabaseCompetitionWriteTransactionBlock:(id)block error:(id *)error;
+- (BOOL)removeAllCodableDatabaseCompetitionListsWithError:(id *)error;
+- (BOOL)removeAllCodableDatabaseCompetitionsWithError:(id *)error;
+- (BOOL)removeCodableDatabaseCompetitionsWithFriendUUID:(id)d type:(int64_t)type error:(id *)error;
+- (BOOL)saveCodableDatabaseCompetitionListEntry:(id)entry error:(id *)error;
+- (BOOL)saveCodableDatabaseCompetitions:(id)competitions error:(id *)error;
+- (id)activeDeviceUUIDWithError:(id *)error;
+- (id)allCodableDatabaseCompetitionListEntriesWithError:(id *)error;
+- (id)allCodableDatabaseCompetitionsWithError:(id *)error;
+- (id)deletedHealthKitWorkoutsWithinLastNumberOfDays:(unint64_t)days maxBatchSize:(unint64_t)size anchor:(id *)anchor error:(id *)error;
+- (id)healthKitWorkoutsWithPredicate:(id)predicate anchor:(id *)anchor error:(id *)error;
+- (id)localSourceUUIDWithError:(id *)error;
+- (id)makeASKeyValueDomainWithDomainName:(id)name category:(int64_t)category;
 - (id)todayActivitySummary;
 - (id)yesterdayActivitySummary;
-- (void)_handleCurrentActivitySummary:(id)a3;
-- (void)_handleNanoAlertSuppressionInvalidatedNotification:(id)a3;
-- (void)_handleProtectedDataAvailabilityDidChangeNotification:(id)a3;
+- (void)_handleCurrentActivitySummary:(id)summary;
+- (void)_handleNanoAlertSuppressionInvalidatedNotification:(id)notification;
+- (void)_handleProtectedDataAvailabilityDidChangeNotification:(id)notification;
 - (void)_observerQueue_handleYesterdayActivitySummaryUpdate;
-- (void)addActivitySummaryObserver:(id)a3;
-- (void)addNanoAlertSuppressionObserver:(id)a3;
-- (void)addProtectedDataObserver:(id)a3;
-- (void)addSampleObserver:(id)a3 sampleTypes:(id)a4;
-- (void)daemonReady:(id)a3;
+- (void)addActivitySummaryObserver:(id)observer;
+- (void)addNanoAlertSuppressionObserver:(id)observer;
+- (void)addProtectedDataObserver:(id)observer;
+- (void)addSampleObserver:(id)observer sampleTypes:(id)types;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)isActivityAlertSuppressionEnabledWithCompletion:(id)a3;
-- (void)performWhenDaemonReady:(id)a3;
-- (void)performWhenDataProtectedByFirstUnlockIsAvailable:(id)a3;
+- (void)isActivityAlertSuppressionEnabledWithCompletion:(id)completion;
+- (void)performWhenDaemonReady:(id)ready;
+- (void)performWhenDataProtectedByFirstUnlockIsAvailable:(id)available;
 - (void)registerFitnessAppBadgeProvider;
-- (void)removeActivitySummaryObserver:(id)a3;
-- (void)removeNanoAlertSuppressionObserver:(id)a3;
-- (void)removeProtectedDataObserver:(id)a3;
-- (void)removeSampleObserver:(id)a3 sampleTypes:(id)a4;
-- (void)updateFitnessAppBadgeCount:(unint64_t)a3;
+- (void)removeActivitySummaryObserver:(id)observer;
+- (void)removeNanoAlertSuppressionObserver:(id)observer;
+- (void)removeProtectedDataObserver:(id)observer;
+- (void)removeSampleObserver:(id)observer sampleTypes:(id)types;
+- (void)updateFitnessAppBadgeCount:(unint64_t)count;
 @end
 
 @implementation ASDatabaseClient
 
-- (ASDatabaseClient)initWithHealthStore:(id)a3
+- (ASDatabaseClient)initWithHealthStore:(id)store
 {
-  v4 = a3;
-  v5 = [(ASDatabaseClient *)self initWithHealthStore:v4 profile:0];
+  storeCopy = store;
+  v5 = [(ASDatabaseClient *)self initWithHealthStore:storeCopy profile:0];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCDAA0]);
     v7 = ASDatabaseServerTaskIdentifier();
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v9 = [v6 initWithHealthStore:storeCopy taskIdentifier:v7 exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     protectedDataAvailableObservers = v5->_protectedDataAvailableObservers;
-    v5->_protectedDataAvailableObservers = v11;
+    v5->_protectedDataAvailableObservers = weakObjectsHashTable;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     activitySummaryObservers = v5->_activitySummaryObservers;
-    v5->_activitySummaryObservers = v13;
+    v5->_activitySummaryObservers = weakObjectsHashTable2;
 
-    v15 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     nanoAlertSuppressionObservers = v5->_nanoAlertSuppressionObservers;
-    v5->_nanoAlertSuppressionObservers = v15;
+    v5->_nanoAlertSuppressionObservers = weakObjectsHashTable3;
 
     objc_initWeak(&location, v5);
     v17 = objc_alloc(MEMORY[0x277CCDD58]);
@@ -84,18 +84,18 @@
     currentActivitySummaryQuery = v5->_currentActivitySummaryQuery;
     v5->_currentActivitySummaryQuery = v18;
 
-    [v4 executeQuery:v5->_currentActivitySummaryQuery];
+    [storeCopy executeQuery:v5->_currentActivitySummaryQuery];
     v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
     observerAnchoredObjectQueryMap = v5->_observerAnchoredObjectQueryMap;
     v5->_observerAnchoredObjectQueryMap = v20;
 
-    v22 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v22 addObserver:v5 selector:sel__handleProtectedDataAvailabilityDidChangeNotification_ name:*MEMORY[0x277CE92B0] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleProtectedDataAvailabilityDidChangeNotification_ name:*MEMORY[0x277CE92B0] object:0];
 
-    v23 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v23 addObserver:v5 selector:sel__handleNanoAlertSuppressionInvalidatedNotification_ name:*MEMORY[0x277D095F8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__handleNanoAlertSuppressionInvalidatedNotification_ name:*MEMORY[0x277D095F8] object:0];
 
-    v24 = [*MEMORY[0x277CE9188] UTF8String];
+    uTF8String = [*MEMORY[0x277CE9188] UTF8String];
     observerQueue = v5->_observerQueue;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -103,7 +103,7 @@
     v27[3] = &unk_278C4B138;
     v28 = v5;
     objc_copyWeak(&v29, &location);
-    notify_register_dispatch(v24, &v5->_yesterdaySummaryDidUpdateToken, observerQueue, v27);
+    notify_register_dispatch(uTF8String, &v5->_yesterdaySummaryDidUpdateToken, observerQueue, v27);
     objc_destroyWeak(&v29);
 
     objc_destroyWeak(&v31);
@@ -142,31 +142,31 @@ void __40__ASDatabaseClient_initWithHealthStore___block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (ASDatabaseClient)initWithProfile:(id)a3
+- (ASDatabaseClient)initWithProfile:(id)profile
 {
-  v3 = [(ASDatabaseClient *)self initWithHealthStore:0 profile:a3];
+  v3 = [(ASDatabaseClient *)self initWithHealthStore:0 profile:profile];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HDProfile *)v3->_profile daemon];
-    [v5 registerDaemonReadyObserver:v4 queue:v4->_queue];
+    daemon = [(HDProfile *)v3->_profile daemon];
+    [daemon registerDaemonReadyObserver:v4 queue:v4->_queue];
   }
 
   return v4;
 }
 
-- (ASDatabaseClient)initWithHealthStore:(id)a3 profile:(id)a4
+- (ASDatabaseClient)initWithHealthStore:(id)store profile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  profileCopy = profile;
   v20.receiver = self;
   v20.super_class = ASDatabaseClient;
   v9 = [(ASDatabaseClient *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_healthStore, a3);
-    objc_storeStrong(&v10->_profile, a4);
+    objc_storeStrong(&v9->_healthStore, store);
+    objc_storeStrong(&v10->_profile, profile);
     v10->_isDaemonReady = 0;
     v10->_fitnessAppBadgeCount = 0;
     v11 = HKCreateSerialDispatchQueue();
@@ -197,8 +197,8 @@ void __40__ASDatabaseClient_initWithHealthStore___block_invoke_2(uint64_t a1)
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_observerAnchoredObjectQueryMap allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_observerAnchoredObjectQueryMap allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -210,14 +210,14 @@ void __40__ASDatabaseClient_initWithHealthStore___block_invoke_2(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [(HKHealthStore *)self->_healthStore stopQuery:*(*(&v10 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -234,10 +234,10 @@ void __40__ASDatabaseClient_initWithHealthStore___block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWhenDaemonReady:(id)a3
+- (void)performWhenDaemonReady:(id)ready
 {
-  v4 = a3;
-  v5 = v4;
+  readyCopy = ready;
+  v5 = readyCopy;
   if (self->_profile)
   {
     queue = self->_queue;
@@ -246,7 +246,7 @@ void __40__ASDatabaseClient_initWithHealthStore___block_invoke_2(uint64_t a1)
     v9[2] = __43__ASDatabaseClient_performWhenDaemonReady___block_invoke_317;
     v9[3] = &unk_278C4B1B0;
     v9[4] = self;
-    v10 = v4;
+    v10 = readyCopy;
     dispatch_async(queue, v9);
     v7 = v10;
   }
@@ -258,7 +258,7 @@ void __40__ASDatabaseClient_initWithHealthStore___block_invoke_2(uint64_t a1)
     v12[1] = 3221225472;
     v12[2] = __43__ASDatabaseClient_performWhenDaemonReady___block_invoke;
     v12[3] = &unk_278C4B160;
-    v13 = v4;
+    v13 = readyCopy;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __43__ASDatabaseClient_performWhenDaemonReady___block_invoke_2;
@@ -302,10 +302,10 @@ void __43__ASDatabaseClient_performWhenDaemonReady___block_invoke_317(uint64_t a
 {
   if (self->_profile)
   {
-    v2 = [(HDProfile *)self->_profile database];
-    v3 = [v2 isDataProtectedByFirstUnlockAvailable];
+    database = [(HDProfile *)self->_profile database];
+    isDataProtectedByFirstUnlockAvailable = [database isDataProtectedByFirstUnlockAvailable];
 
-    return v3;
+    return isDataProtectedByFirstUnlockAvailable;
   }
 
   else
@@ -353,20 +353,20 @@ void __57__ASDatabaseClient_isDataProtectedByFirstUnlockAvailable__block_invoke_
   }
 }
 
-- (void)performWhenDataProtectedByFirstUnlockIsAvailable:(id)a3
+- (void)performWhenDataProtectedByFirstUnlockIsAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile database];
+    database = [(HDProfile *)profile database];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__ASDatabaseClient_performWhenDataProtectedByFirstUnlockIsAvailable___block_invoke_320;
     v9[3] = &unk_278C4B228;
     v7 = &v10;
-    v10 = v4;
-    [v6 performWhenDataProtectedByFirstUnlockIsAvailable:v9];
+    v10 = availableCopy;
+    [database performWhenDataProtectedByFirstUnlockIsAvailable:v9];
   }
 
   else
@@ -377,7 +377,7 @@ void __57__ASDatabaseClient_isDataProtectedByFirstUnlockAvailable__block_invoke_
     v12[2] = __69__ASDatabaseClient_performWhenDataProtectedByFirstUnlockIsAvailable___block_invoke;
     v12[3] = &unk_278C4B160;
     v7 = &v13;
-    v13 = v4;
+    v13 = availableCopy;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __69__ASDatabaseClient_performWhenDataProtectedByFirstUnlockIsAvailable___block_invoke_2;
@@ -402,10 +402,10 @@ void __69__ASDatabaseClient_performWhenDataProtectedByFirstUnlockIsAvailable___b
 {
   if (self->_profile)
   {
-    v2 = [(HDProfile *)self->_profile database];
-    v3 = [v2 isProtectedDataAvailable];
+    database = [(HDProfile *)self->_profile database];
+    isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-    return v3;
+    return isProtectedDataAvailable;
   }
 
   else
@@ -453,14 +453,14 @@ void __44__ASDatabaseClient_isProtectedDataAvailable__block_invoke_3(uint64_t a1
   }
 }
 
-- (void)addProtectedDataObserver:(id)a3
+- (void)addProtectedDataObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile database];
-    [v6 addProtectedDataObserver:v4];
+    database = [(HDProfile *)profile database];
+    [database addProtectedDataObserver:observerCopy];
   }
 
   else
@@ -471,19 +471,19 @@ void __44__ASDatabaseClient_isProtectedDataAvailable__block_invoke_3(uint64_t a1
     v8[2] = __45__ASDatabaseClient_addProtectedDataObserver___block_invoke;
     v8[3] = &unk_278C4B250;
     v8[4] = self;
-    v9 = v4;
+    v9 = observerCopy;
     dispatch_async(observerQueue, v8);
   }
 }
 
-- (void)removeProtectedDataObserver:(id)a3
+- (void)removeProtectedDataObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile database];
-    [v6 removeProtectedDataObserver:v4];
+    database = [(HDProfile *)profile database];
+    [database removeProtectedDataObserver:observerCopy];
   }
 
   else
@@ -494,18 +494,18 @@ void __44__ASDatabaseClient_isProtectedDataAvailable__block_invoke_3(uint64_t a1
     v8[2] = __48__ASDatabaseClient_removeProtectedDataObserver___block_invoke;
     v8[3] = &unk_278C4B250;
     v8[4] = self;
-    v9 = v4;
+    v9 = observerCopy;
     dispatch_async(observerQueue, v8);
   }
 }
 
-- (void)_handleProtectedDataAvailabilityDidChangeNotification:(id)a3
+- (void)_handleProtectedDataAvailabilityDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CE92B8]];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE92B8]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -522,7 +522,7 @@ void __44__ASDatabaseClient_isProtectedDataAvailable__block_invoke_3(uint64_t a1
   v9[2] = __74__ASDatabaseClient__handleProtectedDataAvailabilityDidChangeNotification___block_invoke_2;
   v9[3] = &unk_278C4B2A0;
   v9[4] = self;
-  v10 = v6;
+  v10 = bOOLValue;
   dispatch_async(observerQueue, v9);
 }
 
@@ -605,8 +605,8 @@ void __74__ASDatabaseClient__handleProtectedDataAvailabilityDidChangeNotificatio
 {
   if (self->_profile)
   {
-    v2 = [(HDProfile *)self->_profile currentActivitySummaryHelper];
-    v3 = [v2 yesterdayActivitySummary];
+    currentActivitySummaryHelper = [(HDProfile *)self->_profile currentActivitySummaryHelper];
+    yesterdayActivitySummary = [currentActivitySummaryHelper yesterdayActivitySummary];
   }
 
   else
@@ -629,11 +629,11 @@ void __74__ASDatabaseClient__handleProtectedDataAvailabilityDidChangeNotificatio
     v6[3] = &unk_278C4B188;
     v6[4] = self;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v7 errorHandler:v6];
-    v3 = v9[5];
+    yesterdayActivitySummary = v9[5];
     _Block_object_dispose(&v8, 8);
   }
 
-  return v3;
+  return yesterdayActivitySummary;
 }
 
 uint64_t __44__ASDatabaseClient_yesterdayActivitySummary__block_invoke(uint64_t a1, void *a2)
@@ -661,8 +661,8 @@ void __44__ASDatabaseClient_yesterdayActivitySummary__block_invoke_3(uint64_t a1
 {
   if (self->_profile)
   {
-    v2 = [(HDProfile *)self->_profile currentActivitySummaryHelper];
-    v3 = [v2 todayActivitySummary];
+    currentActivitySummaryHelper = [(HDProfile *)self->_profile currentActivitySummaryHelper];
+    todayActivitySummary = [currentActivitySummaryHelper todayActivitySummary];
   }
 
   else
@@ -685,11 +685,11 @@ void __44__ASDatabaseClient_yesterdayActivitySummary__block_invoke_3(uint64_t a1
     v6[3] = &unk_278C4B188;
     v6[4] = self;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v7 errorHandler:v6];
-    v3 = v9[5];
+    todayActivitySummary = v9[5];
     _Block_object_dispose(&v8, 8);
   }
 
-  return v3;
+  return todayActivitySummary;
 }
 
 uint64_t __40__ASDatabaseClient_todayActivitySummary__block_invoke(uint64_t a1, void *a2)
@@ -713,23 +713,23 @@ void __40__ASDatabaseClient_todayActivitySummary__block_invoke_3(uint64_t a1, vo
   }
 }
 
-- (void)addActivitySummaryObserver:(id)a3
+- (void)addActivitySummaryObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile currentActivitySummaryHelper];
-    [v6 addObserver:v4];
+    currentActivitySummaryHelper = [(HDProfile *)profile currentActivitySummaryHelper];
+    [currentActivitySummaryHelper addObserver:observerCopy];
   }
 
   else
   {
-    v7 = [(ASDatabaseClient *)self todayActivitySummary];
-    [v4 currentActivitySummaryHelper:0 didUpdateTodayActivitySummary:v7 changedFields:-1];
+    todayActivitySummary = [(ASDatabaseClient *)self todayActivitySummary];
+    [observerCopy currentActivitySummaryHelper:0 didUpdateTodayActivitySummary:todayActivitySummary changedFields:-1];
 
-    v8 = [(ASDatabaseClient *)self yesterdayActivitySummary];
-    [v4 currentActivitySummaryHelper:0 didUpdateYesterdayActivitySummary:v8 changedFields:-1];
+    yesterdayActivitySummary = [(ASDatabaseClient *)self yesterdayActivitySummary];
+    [observerCopy currentActivitySummaryHelper:0 didUpdateYesterdayActivitySummary:yesterdayActivitySummary changedFields:-1];
 
     observerQueue = self->_observerQueue;
     v10[0] = MEMORY[0x277D85DD0];
@@ -737,19 +737,19 @@ void __40__ASDatabaseClient_todayActivitySummary__block_invoke_3(uint64_t a1, vo
     v10[2] = __47__ASDatabaseClient_addActivitySummaryObserver___block_invoke;
     v10[3] = &unk_278C4B250;
     v10[4] = self;
-    v11 = v4;
+    v11 = observerCopy;
     dispatch_async(observerQueue, v10);
   }
 }
 
-- (void)removeActivitySummaryObserver:(id)a3
+- (void)removeActivitySummaryObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile currentActivitySummaryHelper];
-    [v6 removeObserver:v4];
+    currentActivitySummaryHelper = [(HDProfile *)profile currentActivitySummaryHelper];
+    [currentActivitySummaryHelper removeObserver:observerCopy];
   }
 
   else
@@ -760,22 +760,22 @@ void __40__ASDatabaseClient_todayActivitySummary__block_invoke_3(uint64_t a1, vo
     v8[2] = __50__ASDatabaseClient_removeActivitySummaryObserver___block_invoke;
     v8[3] = &unk_278C4B250;
     v8[4] = self;
-    v9 = v4;
+    v9 = observerCopy;
     dispatch_async(observerQueue, v8);
   }
 }
 
-- (void)_handleCurrentActivitySummary:(id)a3
+- (void)_handleCurrentActivitySummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = summaryCopy;
+  v6 = summaryCopy;
   dispatch_async(observerQueue, v7);
 }
 
@@ -819,7 +819,7 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
 {
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_observerQueue);
-  v3 = [(ASDatabaseClient *)self yesterdayActivitySummary];
+  yesterdayActivitySummary = [(ASDatabaseClient *)self yesterdayActivitySummary];
   ASLoggingInitialize();
   v4 = *MEMORY[0x277CE8FE8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT))
@@ -830,7 +830,7 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
     *buf = 138543618;
     v20 = v7;
     v21 = 2112;
-    v22 = v3;
+    v22 = yesterdayActivitySummary;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Notifying observers of yesterday summary update: %@", buf, 0x16u);
   }
 
@@ -854,7 +854,7 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v14 + 1) + 8 * v12++) currentActivitySummaryHelper:0 didUpdateYesterdayActivitySummary:v3 changedFields:{-1, v14}];
+        [*(*(&v14 + 1) + 8 * v12++) currentActivitySummaryHelper:0 didUpdateYesterdayActivitySummary:yesterdayActivitySummary changedFields:{-1, v14}];
       }
 
       while (v10 != v12);
@@ -867,31 +867,31 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)healthKitWorkoutsWithPredicate:(id)a3 anchor:(id *)a4 error:(id *)a5
+- (id)healthKitWorkoutsWithPredicate:(id)predicate anchor:(id *)anchor error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   if (self->_profile)
   {
     v8 = MEMORY[0x277D10980];
     v9 = MEMORY[0x277CCD720];
-    v10 = a3;
-    v11 = [v9 workoutType];
+    predicateCopy = predicate;
+    workoutType = [v9 workoutType];
     profile = self->_profile;
-    v13 = [v10 healthDaemonPredicate];
+    healthDaemonPredicate = [predicateCopy healthDaemonPredicate];
 
-    v14 = [v8 samplesWithType:v11 profile:profile encodingOptions:0 predicate:v13 limit:0 anchor:a4 error:a5];
+    v14 = [v8 samplesWithType:workoutType profile:profile encodingOptions:0 predicate:healthDaemonPredicate limit:0 anchor:anchor error:error];
   }
 
   else
   {
     v15 = MEMORY[0x277CCD8D8];
-    v16 = a3;
-    v11 = [v15 workoutType];
-    v20[0] = v11;
-    v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-    v17 = [v16 healthKitPredicate];
+    predicateCopy2 = predicate;
+    workoutType = [v15 workoutType];
+    v20[0] = workoutType;
+    healthDaemonPredicate = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
+    healthKitPredicate = [predicateCopy2 healthKitPredicate];
 
-    v14 = [ASDatabaseSampleEntity samplesOfTypes:v13 predicate:v17 healthStore:self->_healthStore anchor:a4 error:a5];
+    v14 = [ASDatabaseSampleEntity samplesOfTypes:healthDaemonPredicate predicate:healthKitPredicate healthStore:self->_healthStore anchor:anchor error:error];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -899,14 +899,14 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
   return v14;
 }
 
-- (id)deletedHealthKitWorkoutsWithinLastNumberOfDays:(unint64_t)a3 maxBatchSize:(unint64_t)a4 anchor:(id *)a5 error:(id *)a6
+- (id)deletedHealthKitWorkoutsWithinLastNumberOfDays:(unint64_t)days maxBatchSize:(unint64_t)size anchor:(id *)anchor error:(id *)error
 {
   v51[2] = *MEMORY[0x277D85DE8];
   if (self->_profile)
   {
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [v11 dateByAddingUnit:16 value:-a3 toDate:v12 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
+    v13 = [currentCalendar dateByAddingUnit:16 value:-days toDate:date options:0];
 
     v14 = [MEMORY[0x277D10B18] predicateWithProperty:*MEMORY[0x277D10408] greaterThanOrEqualToValue:v13];
     v15 = HDDataEntityPredicateForType();
@@ -917,12 +917,12 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
     v18 = [v16 predicateMatchingAllPredicates:v17];
 
     v19 = MEMORY[0x277D10848];
-    v20 = [MEMORY[0x277CCD720] workoutType];
-    v21 = [v19 entityEnumeratorWithType:v20 profile:self->_profile];
+    workoutType = [MEMORY[0x277CCD720] workoutType];
+    v21 = [v19 entityEnumeratorWithType:workoutType profile:self->_profile];
 
     [v21 setPredicate:v18];
-    [v21 setAnchor:*a5];
-    [v21 setLimitCount:a4];
+    [v21 setAnchor:*anchor];
+    [v21 setLimitCount:size];
     v45 = 0;
     v46 = &v45;
     v47 = 0x3032000000;
@@ -932,7 +932,7 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
     v39 = 0;
     v40 = &v39;
     v41 = 0x2020000000;
-    v42 = [*a5 longValue];
+    longValue = [*anchor longValue];
     v29[5] = &v39;
     v30 = 0;
     v29[0] = MEMORY[0x277D85DD0];
@@ -942,9 +942,9 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
     v29[4] = &v45;
     [v21 enumerateIncludingDeletedObjects:1 error:&v30 handler:v29];
     v22 = v30;
-    *a5 = [MEMORY[0x277CCABB0] numberWithLongLong:v40[3]];
+    *anchor = [MEMORY[0x277CCABB0] numberWithLongLong:v40[3]];
     v23 = v22;
-    *a6 = v22;
+    *error = v22;
     v24 = v46[5];
 
     _Block_object_dispose(&v39, 8);
@@ -962,11 +962,11 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
     v39 = 0;
     v40 = &v39;
     v41 = 0x3032000000;
-    v42 = __Block_byref_object_copy_;
+    longValue = __Block_byref_object_copy_;
     v43 = __Block_byref_object_dispose_;
-    if (a5)
+    if (anchor)
     {
-      v25 = *a5;
+      v25 = *anchor;
     }
 
     else
@@ -986,8 +986,8 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
     v32[1] = 3221225472;
     v32[2] = __93__ASDatabaseClient_deletedHealthKitWorkoutsWithinLastNumberOfDays_maxBatchSize_anchor_error___block_invoke;
     v32[3] = &unk_278C4B318;
-    v32[7] = a3;
-    v32[8] = a4;
+    v32[7] = days;
+    v32[8] = size;
     v32[4] = &v39;
     v32[5] = &v45;
     v32[6] = &v33;
@@ -998,12 +998,12 @@ void __50__ASDatabaseClient__handleCurrentActivitySummary___block_invoke(uint64_
     v31[4] = self;
     v31[5] = &v33;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v32 errorHandler:v31];
-    if (a5)
+    if (anchor)
     {
-      *a5 = v40[5];
+      *anchor = v40[5];
     }
 
-    *a6 = v34[5];
+    *error = v34[5];
     v24 = v46[5];
     _Block_object_dispose(&v33, 8);
 
@@ -1084,153 +1084,153 @@ uint64_t __93__ASDatabaseClient_deletedHealthKitWorkoutsWithinLastNumberOfDays_m
   return 1;
 }
 
-- (BOOL)enumerateActivitySharingSnapshotsWithPredicate:(id)a3 anchor:(id *)a4 error:(id *)a5 handler:(id)a6
+- (BOOL)enumerateActivitySharingSnapshotsWithPredicate:(id)predicate anchor:(id *)anchor error:(id *)error handler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  handlerCopy = handler;
   if (self->_profile)
   {
     v11 = MEMORY[0x277D10700];
-    v12 = a3;
-    v13 = [v12 healthDaemonPredicate];
+    predicateCopy = predicate;
+    healthDaemonPredicate = [predicateCopy healthDaemonPredicate];
 
-    v14 = [v11 enumerateSnapshotsWithPredicate:v13 anchor:a4 profile:self->_profile error:a5 handler:v10];
+    v14 = [v11 enumerateSnapshotsWithPredicate:healthDaemonPredicate anchor:anchor profile:self->_profile error:error handler:handlerCopy];
   }
 
   else
   {
     v15 = MEMORY[0x277CCD8D8];
-    v16 = a3;
-    v17 = [v15 fitnessFriendActivitySnapshotType];
-    v25[0] = v17;
+    predicateCopy2 = predicate;
+    fitnessFriendActivitySnapshotType = [v15 fitnessFriendActivitySnapshotType];
+    v25[0] = fitnessFriendActivitySnapshotType;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-    v19 = [v16 healthKitPredicate];
+    healthKitPredicate = [predicateCopy2 healthKitPredicate];
 
     healthStore = self->_healthStore;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __88__ASDatabaseClient_enumerateActivitySharingSnapshotsWithPredicate_anchor_error_handler___block_invoke;
     v23[3] = &unk_278C4B390;
-    v24 = v10;
-    v14 = [ASDatabaseSampleEntity enumerateSamplesOfTypes:v18 predicate:v19 healthStore:healthStore anchor:a4 error:a5 handler:v23];
+    v24 = handlerCopy;
+    v14 = [ASDatabaseSampleEntity enumerateSamplesOfTypes:v18 predicate:healthKitPredicate healthStore:healthStore anchor:anchor error:error handler:v23];
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (BOOL)enumerateActivitySharingWorkoutsWithPredicate:(id)a3 anchor:(id *)a4 error:(id *)a5 handler:(id)a6
+- (BOOL)enumerateActivitySharingWorkoutsWithPredicate:(id)predicate anchor:(id *)anchor error:(id *)error handler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  handlerCopy = handler;
   if (self->_profile)
   {
     v11 = MEMORY[0x277D10708];
-    v12 = a3;
-    v13 = [v12 healthDaemonPredicate];
+    predicateCopy = predicate;
+    healthDaemonPredicate = [predicateCopy healthDaemonPredicate];
 
-    v14 = [v11 enumerateWorkoutsWithPredicate:v13 anchor:a4 profile:self->_profile error:a5 handler:v10];
+    v14 = [v11 enumerateWorkoutsWithPredicate:healthDaemonPredicate anchor:anchor profile:self->_profile error:error handler:handlerCopy];
   }
 
   else
   {
     v15 = MEMORY[0x277CCD8D8];
-    v16 = a3;
-    v17 = [v15 fitnessFriendWorkoutType];
-    v25[0] = v17;
+    predicateCopy2 = predicate;
+    fitnessFriendWorkoutType = [v15 fitnessFriendWorkoutType];
+    v25[0] = fitnessFriendWorkoutType;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-    v19 = [v16 healthKitPredicate];
+    healthKitPredicate = [predicateCopy2 healthKitPredicate];
 
     healthStore = self->_healthStore;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __87__ASDatabaseClient_enumerateActivitySharingWorkoutsWithPredicate_anchor_error_handler___block_invoke;
     v23[3] = &unk_278C4B3B8;
-    v24 = v10;
-    v14 = [ASDatabaseSampleEntity enumerateSamplesOfTypes:v18 predicate:v19 healthStore:healthStore anchor:a4 error:a5 handler:v23];
+    v24 = handlerCopy;
+    v14 = [ASDatabaseSampleEntity enumerateSamplesOfTypes:v18 predicate:healthKitPredicate healthStore:healthStore anchor:anchor error:error handler:v23];
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (BOOL)enumerateActivitySharingAchievementsWithPredicate:(id)a3 anchor:(id *)a4 error:(id *)a5 handler:(id)a6
+- (BOOL)enumerateActivitySharingAchievementsWithPredicate:(id)predicate anchor:(id *)anchor error:(id *)error handler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  handlerCopy = handler;
   if (self->_profile)
   {
     v11 = MEMORY[0x277D106F8];
-    v12 = a3;
-    v13 = [v12 healthDaemonPredicate];
+    predicateCopy = predicate;
+    healthDaemonPredicate = [predicateCopy healthDaemonPredicate];
 
-    v14 = [v11 enumerateAchievementsWithPredicate:v13 anchor:a4 profile:self->_profile error:a5 handler:v10];
+    v14 = [v11 enumerateAchievementsWithPredicate:healthDaemonPredicate anchor:anchor profile:self->_profile error:error handler:handlerCopy];
   }
 
   else
   {
     v15 = MEMORY[0x277CCD8D8];
-    v16 = a3;
-    v17 = [v15 fitnessFriendAchievementType];
-    v25[0] = v17;
+    predicateCopy2 = predicate;
+    fitnessFriendAchievementType = [v15 fitnessFriendAchievementType];
+    v25[0] = fitnessFriendAchievementType;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-    v19 = [v16 healthKitPredicate];
+    healthKitPredicate = [predicateCopy2 healthKitPredicate];
 
     healthStore = self->_healthStore;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __91__ASDatabaseClient_enumerateActivitySharingAchievementsWithPredicate_anchor_error_handler___block_invoke;
     v23[3] = &unk_278C4B3E0;
-    v24 = v10;
-    v14 = [ASDatabaseSampleEntity enumerateSamplesOfTypes:v18 predicate:v19 healthStore:healthStore anchor:a4 error:a5 handler:v23];
+    v24 = handlerCopy;
+    v14 = [ASDatabaseSampleEntity enumerateSamplesOfTypes:v18 predicate:healthKitPredicate healthStore:healthStore anchor:anchor error:error handler:v23];
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (BOOL)enumerateAllActivitySharingSamplesWithPredicate:(id)a3 error:(id *)a4 handler:(id)a5
+- (BOOL)enumerateAllActivitySharingSamplesWithPredicate:(id)predicate error:(id *)error handler:(id)handler
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCD8D8];
-  v10 = a3;
-  v11 = [v9 fitnessFriendActivitySnapshotType];
-  v22[0] = v11;
-  v12 = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
-  v22[1] = v12;
-  v13 = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
-  v22[2] = v13;
+  predicateCopy = predicate;
+  fitnessFriendActivitySnapshotType = [v9 fitnessFriendActivitySnapshotType];
+  v22[0] = fitnessFriendActivitySnapshotType;
+  fitnessFriendWorkoutType = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
+  v22[1] = fitnessFriendWorkoutType;
+  fitnessFriendAchievementType = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
+  v22[2] = fitnessFriendAchievementType;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
 
-  v15 = [v10 healthKitPredicate];
+  healthKitPredicate = [predicateCopy healthKitPredicate];
 
   healthStore = self->_healthStore;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __82__ASDatabaseClient_enumerateAllActivitySharingSamplesWithPredicate_error_handler___block_invoke;
   v20[3] = &unk_278C4B408;
-  v21 = v8;
-  v17 = v8;
-  LOBYTE(a4) = [ASDatabaseSampleEntity enumerateSamplesOfTypes:v14 predicate:v15 healthStore:healthStore anchor:0 error:a4 handler:v20];
+  v21 = handlerCopy;
+  v17 = handlerCopy;
+  LOBYTE(error) = [ASDatabaseSampleEntity enumerateSamplesOfTypes:v14 predicate:healthKitPredicate healthStore:healthStore anchor:0 error:error handler:v20];
 
   v18 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (void)addSampleObserver:(id)a3 sampleTypes:(id)a4
+- (void)addSampleObserver:(id)observer sampleTypes:(id)types
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  observerCopy = observer;
+  typesCopy = types;
+  v8 = typesCopy;
   if (self->_profile)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [v7 countByEnumeratingWithState:&v26 objects:v35 count:16];
+    v9 = [typesCopy countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v9)
     {
       v10 = *v27;
@@ -1244,8 +1244,8 @@ uint64_t __93__ASDatabaseClient_deletedHealthKitWorkoutsWithinLastNumberOfDays_m
           }
 
           v12 = *(*(&v26 + 1) + 8 * i);
-          v13 = [(HDProfile *)self->_profile dataManager];
-          [v13 addObserver:v6 forDataType:v12];
+          dataManager = [(HDProfile *)self->_profile dataManager];
+          [dataManager addObserver:observerCopy forDataType:v12];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v26 objects:v35 count:16];
@@ -1258,7 +1258,7 @@ uint64_t __93__ASDatabaseClient_deletedHealthKitWorkoutsWithinLastNumberOfDays_m
   else
   {
     observerAnchoredObjectQueryMap = self->_observerAnchoredObjectQueryMap;
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "hash")}];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(observerCopy, "hash")}];
     v16 = [(NSMutableDictionary *)observerAnchoredObjectQueryMap objectForKeyedSubscript:v15];
 
     [(HKHealthStore *)self->_healthStore stopQuery:v16];
@@ -1269,13 +1269,13 @@ uint64_t __93__ASDatabaseClient_deletedHealthKitWorkoutsWithinLastNumberOfDays_m
     v30[2] = __50__ASDatabaseClient_addSampleObserver_sampleTypes___block_invoke_2;
     v30[3] = &unk_278C4B478;
     objc_copyWeak(&v33, &location);
-    v18 = v6;
+    v18 = observerCopy;
     v31 = v18;
     v32 = v8;
     v19 = MEMORY[0x23EF0EB00](v30);
     v20 = objc_alloc(MEMORY[0x277CCCFF0]);
-    v21 = [MEMORY[0x277CCD840] latestAnchor];
-    v22 = [v20 initWithQueryDescriptors:v17 anchor:v21 limit:0 resultsHandler:v19];
+    latestAnchor = [MEMORY[0x277CCD840] latestAnchor];
+    v22 = [v20 initWithQueryDescriptors:v17 anchor:latestAnchor limit:0 resultsHandler:v19];
 
     [v22 setUpdateHandler:v19];
     [(HKHealthStore *)self->_healthStore executeQuery:v22];
@@ -1388,19 +1388,19 @@ void __50__ASDatabaseClient_addSampleObserver_sampleTypes___block_invoke_346(uin
   [v1 addObject:v2];
 }
 
-- (void)removeSampleObserver:(id)a3 sampleTypes:(id)a4
+- (void)removeSampleObserver:(id)observer sampleTypes:(id)types
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  observerCopy = observer;
+  typesCopy = types;
+  v8 = typesCopy;
   if (self->_profile)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v9 = [typesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1415,8 +1415,8 @@ void __50__ASDatabaseClient_addSampleObserver_sampleTypes___block_invoke_346(uin
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [(HDProfile *)self->_profile dataManager];
-          [v14 removeObserver:v6 forDataType:v13];
+          dataManager = [(HDProfile *)self->_profile dataManager];
+          [dataManager removeObserver:observerCopy forDataType:v13];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1429,28 +1429,28 @@ void __50__ASDatabaseClient_addSampleObserver_sampleTypes___block_invoke_346(uin
   else
   {
     observerAnchoredObjectQueryMap = self->_observerAnchoredObjectQueryMap;
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "hash")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(observerCopy, "hash")}];
     v17 = [(NSMutableDictionary *)observerAnchoredObjectQueryMap objectForKeyedSubscript:v16];
 
     [(HKHealthStore *)self->_healthStore stopQuery:v17];
     v18 = self->_observerAnchoredObjectQueryMap;
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "hash")}];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(observerCopy, "hash")}];
     [(NSMutableDictionary *)v18 setObject:0 forKeyedSubscript:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)insertDataObjects:(id)a3 error:(id *)a4
+- (BOOL)insertDataObjects:(id)objects error:(id *)error
 {
-  v6 = a3;
+  objectsCopy = objects;
   profile = self->_profile;
   if (profile)
   {
-    v8 = [(HDProfile *)profile dataManager];
-    v9 = [(HDProfile *)self->_profile dataProvenanceManager];
-    v10 = [v9 defaultLocalDataProvenance];
-    v11 = [v8 insertDataObjects:v6 withProvenance:v10 creationDate:1 skipInsertionFilter:a4 error:CFAbsoluteTimeGetCurrent()];
+    dataManager = [(HDProfile *)profile dataManager];
+    dataProvenanceManager = [(HDProfile *)self->_profile dataProvenanceManager];
+    defaultLocalDataProvenance = [dataProvenanceManager defaultLocalDataProvenance];
+    v11 = [dataManager insertDataObjects:objectsCopy withProvenance:defaultLocalDataProvenance creationDate:1 skipInsertionFilter:error error:CFAbsoluteTimeGetCurrent()];
   }
 
   else
@@ -1470,7 +1470,7 @@ void __50__ASDatabaseClient_addSampleObserver_sampleTypes___block_invoke_346(uin
     v15[1] = 3221225472;
     v15[2] = __44__ASDatabaseClient_insertDataObjects_error___block_invoke;
     v15[3] = &unk_278C4B4C8;
-    v16 = v6;
+    v16 = objectsCopy;
     v17 = &v25;
     v18 = &v19;
     v14[0] = MEMORY[0x277D85DD0];
@@ -1480,7 +1480,7 @@ void __50__ASDatabaseClient_addSampleObserver_sampleTypes___block_invoke_346(uin
     v14[4] = self;
     v14[5] = &v19;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v15 errorHandler:v14];
-    *a4 = v20[5];
+    *error = v20[5];
     v11 = *(v26 + 24);
 
     _Block_object_dispose(&v19, 8);
@@ -1516,55 +1516,55 @@ void __44__ASDatabaseClient_insertDataObjects_error___block_invoke_3(uint64_t a1
   *(v5 + 40) = v3;
 }
 
-- (BOOL)deleteDataObjectsOfType:(id)a3 predicate:(id)a4 limit:(unint64_t)a5 deletedSampleCount:(unint64_t *)a6 notifyObservers:(BOOL)a7 generateDeletedObjects:(BOOL)a8 error:(id *)a9
+- (BOOL)deleteDataObjectsOfType:(id)type predicate:(id)predicate limit:(unint64_t)limit deletedSampleCount:(unint64_t *)count notifyObservers:(BOOL)observers generateDeletedObjects:(BOOL)objects error:(id *)error
 {
-  v9 = a8;
-  v10 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = v16;
+  objectsCopy = objects;
+  observersCopy = observers;
+  typeCopy = type;
+  predicateCopy = predicate;
+  v17 = predicateCopy;
   if (!self->_profile)
   {
-    v28 = [v16 healthKitPredicate];
-    v27 = [ASDatabaseSampleEntity deleteSamplesOfType:v15 predicate:v28 healthStore:self->_healthStore deletedSampleCount:a6 error:a9];
+    healthKitPredicate = [predicateCopy healthKitPredicate];
+    v27 = [ASDatabaseSampleEntity deleteSamplesOfType:typeCopy predicate:healthKitPredicate healthStore:self->_healthStore deletedSampleCount:count error:error];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v34 = v9;
-  v18 = [v15 identifier];
-  v19 = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
-  v20 = [v19 identifier];
+  v34 = objectsCopy;
+  identifier = [typeCopy identifier];
+  fitnessFriendAchievementType = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
+  identifier2 = [fitnessFriendAchievementType identifier];
 
-  if (v18 == v20)
+  if (identifier == identifier2)
   {
     v29 = 0x277D106F8;
 LABEL_10:
     v30 = *v29;
     v31 = objc_opt_class();
-    v28 = [(HDProfile *)self->_profile dataManager];
-    v32 = [v17 healthDaemonPredicate];
-    v27 = [v28 deleteDataObjectsOfClass:v31 predicate:v32 limit:a5 deletedSampleCount:a6 notifyObservers:v10 generateDeletedObjects:v34 recursiveDeleteAuthorizationBlock:0 error:a9];
+    healthKitPredicate = [(HDProfile *)self->_profile dataManager];
+    healthDaemonPredicate = [v17 healthDaemonPredicate];
+    v27 = [healthKitPredicate deleteDataObjectsOfClass:v31 predicate:healthDaemonPredicate limit:limit deletedSampleCount:count notifyObservers:observersCopy generateDeletedObjects:v34 recursiveDeleteAuthorizationBlock:0 error:error];
 
     goto LABEL_11;
   }
 
-  v21 = [v15 identifier];
-  v22 = [MEMORY[0x277CCD8D8] fitnessFriendActivitySnapshotType];
-  v23 = [v22 identifier];
+  identifier3 = [typeCopy identifier];
+  fitnessFriendActivitySnapshotType = [MEMORY[0x277CCD8D8] fitnessFriendActivitySnapshotType];
+  identifier4 = [fitnessFriendActivitySnapshotType identifier];
 
-  if (v21 == v23)
+  if (identifier3 == identifier4)
   {
     v29 = 0x277D10700;
     goto LABEL_10;
   }
 
-  v24 = [v15 identifier];
-  v25 = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
-  v26 = [v25 identifier];
+  identifier5 = [typeCopy identifier];
+  fitnessFriendWorkoutType = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
+  identifier6 = [fitnessFriendWorkoutType identifier];
 
-  if (v24 == v26)
+  if (identifier5 == identifier6)
   {
     v29 = 0x277D10708;
     goto LABEL_10;
@@ -1576,12 +1576,12 @@ LABEL_12:
   return v27;
 }
 
-- (id)allCodableDatabaseCompetitionsWithError:(id *)a3
+- (id)allCodableDatabaseCompetitionsWithError:(id *)error
 {
   profile = self->_profile;
   if (profile)
   {
-    v5 = [ASDatabaseCompetitionEntity allDatabaseCompetitionsWithProfile:profile withError:a3];
+    v5 = [ASDatabaseCompetitionEntity allDatabaseCompetitionsWithProfile:profile withError:error];
   }
 
   else
@@ -1612,7 +1612,7 @@ LABEL_12:
     v8[4] = self;
     v8[5] = &v10;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v9 errorHandler:v8];
-    *a3 = v11[5];
+    *error = v11[5];
     v5 = v17[5];
     _Block_object_dispose(&v10, 8);
 
@@ -1661,14 +1661,14 @@ void __60__ASDatabaseClient_allCodableDatabaseCompetitionsWithError___block_invo
   *(v5 + 40) = v3;
 }
 
-- (BOOL)saveCodableDatabaseCompetitions:(id)a3 error:(id *)a4
+- (BOOL)saveCodableDatabaseCompetitions:(id)competitions error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  competitionsCopy = competitions;
+  v7 = competitionsCopy;
   profile = self->_profile;
   if (profile)
   {
-    v9 = [ASDatabaseCompetitionEntity saveCompetitions:v6 profile:profile withError:a4];
+    v9 = [ASDatabaseCompetitionEntity saveCompetitions:competitionsCopy profile:profile withError:error];
   }
 
   else
@@ -1688,7 +1688,7 @@ void __60__ASDatabaseClient_allCodableDatabaseCompetitionsWithError___block_invo
     v13[1] = 3221225472;
     v13[2] = __58__ASDatabaseClient_saveCodableDatabaseCompetitions_error___block_invoke;
     v13[3] = &unk_278C4B4C8;
-    v14 = v6;
+    v14 = competitionsCopy;
     v15 = &v23;
     v16 = &v17;
     v12[0] = MEMORY[0x277D85DD0];
@@ -1698,7 +1698,7 @@ void __60__ASDatabaseClient_allCodableDatabaseCompetitionsWithError___block_invo
     v12[4] = self;
     v12[5] = &v17;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v13 errorHandler:v12];
-    *a4 = v18[5];
+    *error = v18[5];
     v9 = *(v24 + 24);
 
     _Block_object_dispose(&v17, 8);
@@ -1734,14 +1734,14 @@ void __58__ASDatabaseClient_saveCodableDatabaseCompetitions_error___block_invoke
   *(v5 + 40) = v3;
 }
 
-- (BOOL)removeCodableDatabaseCompetitionsWithFriendUUID:(id)a3 type:(int64_t)a4 error:(id *)a5
+- (BOOL)removeCodableDatabaseCompetitionsWithFriendUUID:(id)d type:(int64_t)type error:(id *)error
 {
-  v8 = a3;
-  v9 = v8;
+  dCopy = d;
+  v9 = dCopy;
   profile = self->_profile;
   if (profile)
   {
-    v11 = [ASDatabaseCompetitionEntity removeCompetitionsForFriendUUID:v8 type:a4 profile:profile withError:a5];
+    v11 = [ASDatabaseCompetitionEntity removeCompetitionsForFriendUUID:dCopy type:type profile:profile withError:error];
   }
 
   else
@@ -1761,10 +1761,10 @@ void __58__ASDatabaseClient_saveCodableDatabaseCompetitions_error___block_invoke
     v15[1] = 3221225472;
     v15[2] = __79__ASDatabaseClient_removeCodableDatabaseCompetitionsWithFriendUUID_type_error___block_invoke;
     v15[3] = &unk_278C4B540;
-    v16 = v8;
+    v16 = dCopy;
     v17 = &v26;
     v18 = &v20;
-    v19 = a4;
+    typeCopy = type;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __79__ASDatabaseClient_removeCodableDatabaseCompetitionsWithFriendUUID_type_error___block_invoke_3;
@@ -1772,7 +1772,7 @@ void __58__ASDatabaseClient_saveCodableDatabaseCompetitions_error___block_invoke
     v14[4] = self;
     v14[5] = &v20;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v15 errorHandler:v14];
-    *a5 = v21[5];
+    *error = v21[5];
     v11 = *(v27 + 24);
 
     _Block_object_dispose(&v20, 8);
@@ -1809,7 +1809,7 @@ void __79__ASDatabaseClient_removeCodableDatabaseCompetitionsWithFriendUUID_type
   *(v5 + 40) = v3;
 }
 
-- (BOOL)removeAllCodableDatabaseCompetitionsWithError:(id *)a3
+- (BOOL)removeAllCodableDatabaseCompetitionsWithError:(id *)error
 {
   if (self->_profile)
   {
@@ -1843,7 +1843,7 @@ void __79__ASDatabaseClient_removeCodableDatabaseCompetitionsWithFriendUUID_type
     v7[4] = self;
     v7[5] = &v9;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v8 errorHandler:v7];
-    *a3 = v10[5];
+    *error = v10[5];
     v6 = *(v16 + 24);
     _Block_object_dispose(&v9, 8);
 
@@ -1877,35 +1877,35 @@ void __66__ASDatabaseClient_removeAllCodableDatabaseCompetitionsWithError___bloc
   *(v5 + 40) = v3;
 }
 
-- (BOOL)performDatabaseCompetitionWriteTransactionBlock:(id)a3 error:(id *)a4
+- (BOOL)performDatabaseCompetitionWriteTransactionBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   profile = self->_profile;
   if (profile)
   {
-    v8 = [(HDProfile *)profile database];
+    database = [(HDProfile *)profile database];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __74__ASDatabaseClient_performDatabaseCompetitionWriteTransactionBlock_error___block_invoke;
     v13[3] = &unk_278C4B568;
-    v14 = v6;
+    v14 = blockCopy;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __74__ASDatabaseClient_performDatabaseCompetitionWriteTransactionBlock_error___block_invoke_2;
     v11[3] = &unk_278C4B590;
     v12 = v14;
-    v9 = [(HDHealthEntity *)ASDatabaseCompetitionEntity performWriteTransactionWithHealthDatabase:v8 error:a4 block:v13 inaccessibilityHandler:v11];
+    v9 = [(HDHealthEntity *)ASDatabaseCompetitionEntity performWriteTransactionWithHealthDatabase:database error:error block:v13 inaccessibilityHandler:v11];
   }
 
   else
   {
-    v9 = (*(v6 + 2))(v6, a4);
+    v9 = (*(blockCopy + 2))(blockCopy, error);
   }
 
   return v9;
 }
 
-- (id)allCodableDatabaseCompetitionListEntriesWithError:(id *)a3
+- (id)allCodableDatabaseCompetitionListEntriesWithError:(id *)error
 {
   if (self->_profile)
   {
@@ -1917,7 +1917,7 @@ void __66__ASDatabaseClient_removeAllCodableDatabaseCompetitionsWithError___bloc
     v11[3] = &unk_278C4B5B8;
     v7 = v5;
     v12 = v7;
-    [ASDatabaseCompetitionListEntryEntity enumerateAllCompetitionListsWithProfile:profile error:a3 handler:v11];
+    [ASDatabaseCompetitionListEntryEntity enumerateAllCompetitionListsWithProfile:profile error:error handler:v11];
     v8 = v12;
   }
 
@@ -1949,7 +1949,7 @@ void __66__ASDatabaseClient_removeAllCodableDatabaseCompetitionsWithError___bloc
     v13[4] = self;
     v13[5] = &v15;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v14 errorHandler:v13];
-    *a3 = v16[5];
+    *error = v16[5];
     v7 = v22[5];
     _Block_object_dispose(&v15, 8);
 
@@ -1999,14 +1999,14 @@ void __70__ASDatabaseClient_allCodableDatabaseCompetitionListEntriesWithError___
   *(v5 + 40) = v3;
 }
 
-- (BOOL)saveCodableDatabaseCompetitionListEntry:(id)a3 error:(id *)a4
+- (BOOL)saveCodableDatabaseCompetitionListEntry:(id)entry error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  entryCopy = entry;
+  v7 = entryCopy;
   profile = self->_profile;
   if (profile)
   {
-    v9 = [ASDatabaseCompetitionListEntryEntity saveCompetitionList:v6 profile:profile withError:a4];
+    v9 = [ASDatabaseCompetitionListEntryEntity saveCompetitionList:entryCopy profile:profile withError:error];
   }
 
   else
@@ -2026,7 +2026,7 @@ void __70__ASDatabaseClient_allCodableDatabaseCompetitionListEntriesWithError___
     v13[1] = 3221225472;
     v13[2] = __66__ASDatabaseClient_saveCodableDatabaseCompetitionListEntry_error___block_invoke;
     v13[3] = &unk_278C4B4C8;
-    v14 = v6;
+    v14 = entryCopy;
     v15 = &v23;
     v16 = &v17;
     v12[0] = MEMORY[0x277D85DD0];
@@ -2036,7 +2036,7 @@ void __70__ASDatabaseClient_allCodableDatabaseCompetitionListEntriesWithError___
     v12[4] = self;
     v12[5] = &v17;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v13 errorHandler:v12];
-    *a4 = v18[5];
+    *error = v18[5];
     v9 = *(v24 + 24);
 
     _Block_object_dispose(&v17, 8);
@@ -2072,7 +2072,7 @@ void __66__ASDatabaseClient_saveCodableDatabaseCompetitionListEntry_error___bloc
   *(v5 + 40) = v3;
 }
 
-- (BOOL)removeAllCodableDatabaseCompetitionListsWithError:(id *)a3
+- (BOOL)removeAllCodableDatabaseCompetitionListsWithError:(id *)error
 {
   if (self->_profile)
   {
@@ -2106,7 +2106,7 @@ void __66__ASDatabaseClient_saveCodableDatabaseCompetitionListEntry_error___bloc
     v7[4] = self;
     v7[5] = &v9;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v8 errorHandler:v7];
-    *a3 = v10[5];
+    *error = v10[5];
     v6 = *(v16 + 24);
     _Block_object_dispose(&v9, 8);
 
@@ -2140,15 +2140,15 @@ void __70__ASDatabaseClient_removeAllCodableDatabaseCompetitionListsWithError___
   *(v5 + 40) = v3;
 }
 
-- (id)localSourceUUIDWithError:(id *)a3
+- (id)localSourceUUIDWithError:(id *)error
 {
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile sourceManager];
-    v7 = [v6 localDeviceSourceWithError:a3];
+    sourceManager = [(HDProfile *)profile sourceManager];
+    v7 = [sourceManager localDeviceSourceWithError:error];
 
-    v8 = [v7 sourceUUIDWithProfile:self->_profile error:a3];
+    v8 = [v7 sourceUUIDWithProfile:self->_profile error:error];
   }
 
   else
@@ -2179,7 +2179,7 @@ void __70__ASDatabaseClient_removeAllCodableDatabaseCompetitionListsWithError___
     v11[4] = self;
     v11[5] = &v13;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v12 errorHandler:v11];
-    *a3 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
     _Block_object_dispose(&v13, 8);
 
@@ -2228,18 +2228,18 @@ void __45__ASDatabaseClient_localSourceUUIDWithError___block_invoke_3(uint64_t a
   *(v5 + 40) = v3;
 }
 
-- (id)activeDeviceUUIDWithError:(id *)a3
+- (id)activeDeviceUUIDWithError:(id *)error
 {
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile nanoSyncManager];
-    v7 = [v6 pairedDevicesSnapshot];
-    v8 = [v7 activeDeviceInfo];
-    v9 = [v8 sourceBundleIdentifier];
+    nanoSyncManager = [(HDProfile *)profile nanoSyncManager];
+    pairedDevicesSnapshot = [nanoSyncManager pairedDevicesSnapshot];
+    activeDeviceInfo = [pairedDevicesSnapshot activeDeviceInfo];
+    sourceBundleIdentifier = [activeDeviceInfo sourceBundleIdentifier];
 
-    v10 = [(HDProfile *)self->_profile sourceManager];
-    v11 = [v10 sourceUUIDForBundleIdentifier:v9 error:a3];
+    sourceManager = [(HDProfile *)self->_profile sourceManager];
+    v11 = [sourceManager sourceUUIDForBundleIdentifier:sourceBundleIdentifier error:error];
   }
 
   else
@@ -2270,7 +2270,7 @@ void __45__ASDatabaseClient_localSourceUUIDWithError___block_invoke_3(uint64_t a
     v14[4] = self;
     v14[5] = &v16;
     [(HKProxyProvider *)proxyProvider getSynchronousProxyWithHandler:v15 errorHandler:v14];
-    *a3 = v17[5];
+    *error = v17[5];
     v11 = v23[5];
     _Block_object_dispose(&v16, 8);
 
@@ -2319,15 +2319,15 @@ void __46__ASDatabaseClient_activeDeviceUUIDWithError___block_invoke_3(uint64_t 
   *(v5 + 40) = v3;
 }
 
-- (void)isActivityAlertSuppressionEnabledWithCompletion:(id)a3
+- (void)isActivityAlertSuppressionEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile daemon];
-    v7 = [v6 alertSuppressionService];
-    [v7 fetchActivityAlertSuppressionStateWithCompletion:v4];
+    daemon = [(HDProfile *)profile daemon];
+    alertSuppressionService = [daemon alertSuppressionService];
+    [alertSuppressionService fetchActivityAlertSuppressionStateWithCompletion:completionCopy];
   }
 
   else
@@ -2337,7 +2337,7 @@ void __46__ASDatabaseClient_activeDeviceUUIDWithError___block_invoke_3(uint64_t 
     v10[1] = 3221225472;
     v10[2] = __68__ASDatabaseClient_isActivityAlertSuppressionEnabledWithCompletion___block_invoke;
     v10[3] = &unk_278C4B160;
-    v11 = v4;
+    v11 = completionCopy;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __68__ASDatabaseClient_isActivityAlertSuppressionEnabledWithCompletion___block_invoke_2;
@@ -2358,15 +2358,15 @@ void __68__ASDatabaseClient_isActivityAlertSuppressionEnabledWithCompletion___bl
   }
 }
 
-- (void)addNanoAlertSuppressionObserver:(id)a3
+- (void)addNanoAlertSuppressionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile daemon];
-    v7 = [v6 alertSuppressionService];
-    [v7 registerAlertSuppressionObserver:v4];
+    daemon = [(HDProfile *)profile daemon];
+    alertSuppressionService = [daemon alertSuppressionService];
+    [alertSuppressionService registerAlertSuppressionObserver:observerCopy];
   }
 
   else
@@ -2377,20 +2377,20 @@ void __68__ASDatabaseClient_isActivityAlertSuppressionEnabledWithCompletion___bl
     v9[2] = __52__ASDatabaseClient_addNanoAlertSuppressionObserver___block_invoke;
     v9[3] = &unk_278C4B250;
     v9[4] = self;
-    v10 = v4;
+    v10 = observerCopy;
     dispatch_async(observerQueue, v9);
   }
 }
 
-- (void)removeNanoAlertSuppressionObserver:(id)a3
+- (void)removeNanoAlertSuppressionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   profile = self->_profile;
   if (profile)
   {
-    v6 = [(HDProfile *)profile daemon];
-    v7 = [v6 alertSuppressionService];
-    [v7 unregisterAlertSuppressionObserver:v4];
+    daemon = [(HDProfile *)profile daemon];
+    alertSuppressionService = [daemon alertSuppressionService];
+    [alertSuppressionService unregisterAlertSuppressionObserver:observerCopy];
   }
 
   else
@@ -2401,21 +2401,21 @@ void __68__ASDatabaseClient_isActivityAlertSuppressionEnabledWithCompletion___bl
     v9[2] = __55__ASDatabaseClient_removeNanoAlertSuppressionObserver___block_invoke;
     v9[3] = &unk_278C4B250;
     v9[4] = self;
-    v10 = v4;
+    v10 = observerCopy;
     dispatch_async(observerQueue, v9);
   }
 }
 
-- (void)_handleNanoAlertSuppressionInvalidatedNotification:(id)a3
+- (void)_handleNanoAlertSuppressionInvalidatedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D09608]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D09608]];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D09600]];
-  v9 = [v8 intValue];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D09600]];
+  intValue = [v8 intValue];
 
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2424,7 +2424,7 @@ void __68__ASDatabaseClient_isActivityAlertSuppressionEnabledWithCompletion___bl
   block[3] = &unk_278C4B608;
   block[4] = self;
   v13 = v6;
-  v14 = v9;
+  v14 = intValue;
   v11 = v6;
   dispatch_async(observerQueue, block);
 }
@@ -2496,11 +2496,11 @@ void __51__ASDatabaseClient_registerFitnessAppBadgeProvider__block_invoke_2(uint
   }
 }
 
-- (void)updateFitnessAppBadgeCount:(unint64_t)a3
+- (void)updateFitnessAppBadgeCount:(unint64_t)count
 {
   if (self->_profile)
   {
-    self->_fitnessAppBadgeCount = a3;
+    self->_fitnessAppBadgeCount = count;
     v4 = CHProfileExtensionForProfile();
     [v4 requestFitnessAppBadgeCountUpdate];
   }
@@ -2512,7 +2512,7 @@ void __51__ASDatabaseClient_registerFitnessAppBadgeProvider__block_invoke_2(uint
     v6[1] = 3221225472;
     v6[2] = __47__ASDatabaseClient_updateFitnessAppBadgeCount___block_invoke;
     v6[3] = &__block_descriptor_40_e37_v16__0___ASDatabaseServerInterface__8l;
-    v6[4] = a3;
+    v6[4] = count;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __47__ASDatabaseClient_updateFitnessAppBadgeCount___block_invoke_2;
@@ -2533,16 +2533,16 @@ void __47__ASDatabaseClient_updateFitnessAppBadgeCount___block_invoke_2(uint64_t
   }
 }
 
-- (id)makeASKeyValueDomainWithDomainName:(id)a3 category:(int64_t)a4
+- (id)makeASKeyValueDomainWithDomainName:(id)name category:(int64_t)category
 {
   if (self->_profile)
   {
-    v5 = [objc_alloc(MEMORY[0x277D10718]) initWithCategory:a4 == 4 domainName:a3 profile:self->_profile];
+    v5 = [objc_alloc(MEMORY[0x277D10718]) initWithCategory:category == 4 domainName:name profile:self->_profile];
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x277CCD570]) initWithCategory:a4 domainName:a3 healthStore:self->_healthStore];
+    v5 = [objc_alloc(MEMORY[0x277CCD570]) initWithCategory:category domainName:name healthStore:self->_healthStore];
   }
 
   v6 = v5;
@@ -2550,7 +2550,7 @@ void __47__ASDatabaseClient_updateFitnessAppBadgeCount___block_invoke_2(uint64_t
   return v6;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);

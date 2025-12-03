@@ -1,68 +1,68 @@
 @interface TBFetchedTile
-+ (id)fetchedTileWithKey:(unint64_t)a3 etag:(id)a4 created:(id)a5;
-- (BOOL)_isEqualToFetchedTile:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)fetchedTileWithKey:(unint64_t)key etag:(id)etag created:(id)created;
+- (BOOL)_isEqualToFetchedTile:(id)tile;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (TBFetchedTile)initWithKey:(unint64_t)a3 etag:(id)a4 created:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TBFetchedTile)initWithKey:(unint64_t)key etag:(id)etag created:(id)created;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TBFetchedTile
 
-+ (id)fetchedTileWithKey:(unint64_t)a3 etag:(id)a4 created:(id)a5
++ (id)fetchedTileWithKey:(unint64_t)key etag:(id)etag created:(id)created
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithKey:a3 etag:v9 created:v8];
+  createdCopy = created;
+  etagCopy = etag;
+  v10 = [[self alloc] initWithKey:key etag:etagCopy created:createdCopy];
 
   return v10;
 }
 
-- (TBFetchedTile)initWithKey:(unint64_t)a3 etag:(id)a4 created:(id)a5
+- (TBFetchedTile)initWithKey:(unint64_t)key etag:(id)etag created:(id)created
 {
-  v8 = a4;
-  v9 = a5;
+  etagCopy = etag;
+  createdCopy = created;
   v15.receiver = self;
   v15.super_class = TBFetchedTile;
   v10 = [(TBFetchedTile *)&v15 init];
   etag = v10->_etag;
-  v10->_key = a3;
-  v10->_etag = v8;
-  v12 = v8;
+  v10->_key = key;
+  v10->_etag = etagCopy;
+  v12 = etagCopy;
 
   created = v10->_created;
-  v10->_created = v9;
+  v10->_created = createdCopy;
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setKey:{-[TBFetchedTile key](self, "key")}];
-  v5 = [(TBFetchedTile *)self etag];
-  [v4 setEtag:v5];
+  etag = [(TBFetchedTile *)self etag];
+  [v4 setEtag:etag];
 
-  v6 = [(TBFetchedTile *)self created];
-  [v4 setCreated:v6];
+  created = [(TBFetchedTile *)self created];
+  [v4 setCreated:created];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TBFetchedTile *)self _isEqualToFetchedTile:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TBFetchedTile *)self _isEqualToFetchedTile:equalCopy];
 
   return v5;
 }
 
-- (BOOL)_isEqualToFetchedTile:(id)a3
+- (BOOL)_isEqualToFetchedTile:(id)tile
 {
-  v4 = a3;
+  tileCopy = tile;
   v5 = [(TBFetchedTile *)self key];
-  v6 = [v4 key];
+  v6 = [tileCopy key];
 
   return v5 == v6;
 }

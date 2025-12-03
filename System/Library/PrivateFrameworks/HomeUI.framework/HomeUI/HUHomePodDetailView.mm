@@ -1,16 +1,16 @@
 @interface HUHomePodDetailView
 - (HFStringGenerator)unitName;
-- (HUHomePodDetailView)initWithRole:(unint64_t)a3 variant:(unint64_t)a4;
+- (HUHomePodDetailView)initWithRole:(unint64_t)role variant:(unint64_t)variant;
 - (HUHomePodDetailViewDelegate)delegate;
 - (void)_setupConstraints;
 - (void)_speakerTapped;
 - (void)_updateImagesForRole;
-- (void)setUnitName:(id)a3;
+- (void)setUnitName:(id)name;
 @end
 
 @implementation HUHomePodDetailView
 
-- (HUHomePodDetailView)initWithRole:(unint64_t)a3 variant:(unint64_t)a4
+- (HUHomePodDetailView)initWithRole:(unint64_t)role variant:(unint64_t)variant
 {
   v43[1] = *MEMORY[0x277D85DE8];
   v40.receiver = self;
@@ -19,18 +19,18 @@
   v7 = v6;
   if (v6)
   {
-    v6->_mediaSystemRole = a3;
+    v6->_mediaSystemRole = role;
     v8 = objc_opt_new();
     unitNameLabel = v7->_unitNameLabel;
     v7->_unitNameLabel = v8;
 
-    v10 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v7->_unitNameLabel setTextColor:v10];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v7->_unitNameLabel setTextColor:systemGrayColor];
 
     [(UILabel *)v7->_unitNameLabel setNumberOfLines:0];
     v11 = MEMORY[0x277D755D0];
-    v12 = [MEMORY[0x277D75348] systemGrayColor];
-    v43[0] = v12;
+    systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+    v43[0] = systemGrayColor2;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
     v14 = [v11 _configurationWithHierarchicalColors:v13];
 
@@ -40,7 +40,7 @@
 
     v18 = [v17 configurationByApplyingConfiguration:v14];
     v19 = objc_alloc(MEMORY[0x277D755E8]);
-    if (a4 == 2)
+    if (variant == 2)
     {
       v20 = @"homepodmini.fill";
     }
@@ -61,8 +61,8 @@
     unitBadgeLabel = v7->_unitBadgeLabel;
     v7->_unitBadgeLabel = v24;
 
-    v26 = [MEMORY[0x277D75348] systemLightGrayColor];
-    [(UIImageView *)v7->_unitBadgeLabel setTintColor:v26];
+    systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+    [(UIImageView *)v7->_unitBadgeLabel setTintColor:systemLightGrayColor];
 
     [(HUHomePodDetailView *)v7 _updateImagesForRole];
     v38 = 0u;
@@ -101,8 +101,8 @@
     [(HUHomePodDetailView *)v7 _setupConstraints];
     v33 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v7 action:sel__speakerTapped];
     [(HUHomePodDetailView *)v7 addGestureRecognizer:v33];
-    v34 = [MEMORY[0x277D755A8] automaticStyle];
-    [(HUHomePodDetailView *)v7 setHoverStyle:v34];
+    automaticStyle = [MEMORY[0x277D755A8] automaticStyle];
+    [(HUHomePodDetailView *)v7 setHoverStyle:automaticStyle];
   }
 
   return v7;
@@ -111,84 +111,84 @@
 - (void)_setupConstraints
 {
   v68[16] = *MEMORY[0x277D85DE8];
-  v3 = [(HUHomePodDetailView *)self layoutMarginsGuide];
-  v4 = [v3 topAnchor];
-  v5 = [(HUHomePodDetailView *)self unitBadgeLabel];
-  v6 = [v5 topAnchor];
-  v64 = [v4 constraintEqualToAnchor:v6 constant:-14.0];
+  layoutMarginsGuide = [(HUHomePodDetailView *)self layoutMarginsGuide];
+  topAnchor = [layoutMarginsGuide topAnchor];
+  unitBadgeLabel = [(HUHomePodDetailView *)self unitBadgeLabel];
+  topAnchor2 = [unitBadgeLabel topAnchor];
+  v64 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-14.0];
 
-  v7 = [(HUHomePodDetailView *)self unitBadgeLabel];
-  v8 = [v7 bottomAnchor];
-  v9 = [(HUHomePodDetailView *)self unitImageView];
-  v10 = [v9 topAnchor];
-  v67 = [v8 constraintEqualToAnchor:v10 constant:-8.0];
+  unitBadgeLabel2 = [(HUHomePodDetailView *)self unitBadgeLabel];
+  bottomAnchor = [unitBadgeLabel2 bottomAnchor];
+  unitImageView = [(HUHomePodDetailView *)self unitImageView];
+  topAnchor3 = [unitImageView topAnchor];
+  v67 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-8.0];
 
-  v11 = [(HUHomePodDetailView *)self unitImageView];
-  v12 = [v11 bottomAnchor];
-  v13 = [(HUHomePodDetailView *)self unitNameLabel];
-  v14 = [v13 topAnchor];
-  v66 = [v12 constraintEqualToAnchor:v14 constant:-11.0];
+  unitImageView2 = [(HUHomePodDetailView *)self unitImageView];
+  bottomAnchor2 = [unitImageView2 bottomAnchor];
+  unitNameLabel = [(HUHomePodDetailView *)self unitNameLabel];
+  topAnchor4 = [unitNameLabel topAnchor];
+  v66 = [bottomAnchor2 constraintEqualToAnchor:topAnchor4 constant:-11.0];
 
-  v15 = [(HUHomePodDetailView *)self unitNameLabel];
-  v16 = [v15 lastBaselineAnchor];
-  v17 = [(HUHomePodDetailView *)self bottomAnchor];
-  v65 = [v16 constraintEqualToAnchor:v17 constant:-17.0];
+  unitNameLabel2 = [(HUHomePodDetailView *)self unitNameLabel];
+  lastBaselineAnchor = [unitNameLabel2 lastBaselineAnchor];
+  bottomAnchor3 = [(HUHomePodDetailView *)self bottomAnchor];
+  v65 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor3 constant:-17.0];
 
-  v18 = [(HUHomePodDetailView *)self unitBadgeLabel];
-  v19 = [v18 centerXAnchor];
-  v20 = [(HUHomePodDetailView *)self centerXAnchor];
-  v63 = [v19 constraintEqualToAnchor:v20];
+  unitBadgeLabel3 = [(HUHomePodDetailView *)self unitBadgeLabel];
+  centerXAnchor = [unitBadgeLabel3 centerXAnchor];
+  centerXAnchor2 = [(HUHomePodDetailView *)self centerXAnchor];
+  v63 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v21 = [(HUHomePodDetailView *)self unitImageView];
-  v22 = [v21 centerXAnchor];
-  v23 = [(HUHomePodDetailView *)self centerXAnchor];
-  v61 = [v22 constraintEqualToAnchor:v23];
+  unitImageView3 = [(HUHomePodDetailView *)self unitImageView];
+  centerXAnchor3 = [unitImageView3 centerXAnchor];
+  centerXAnchor4 = [(HUHomePodDetailView *)self centerXAnchor];
+  v61 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
-  v24 = [(HUHomePodDetailView *)self unitNameLabel];
-  v25 = [v24 centerXAnchor];
-  v26 = [(HUHomePodDetailView *)self centerXAnchor];
-  v62 = [v25 constraintEqualToAnchor:v26];
+  unitNameLabel3 = [(HUHomePodDetailView *)self unitNameLabel];
+  centerXAnchor5 = [unitNameLabel3 centerXAnchor];
+  centerXAnchor6 = [(HUHomePodDetailView *)self centerXAnchor];
+  v62 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
 
-  v27 = [(HUHomePodDetailView *)self unitBadgeLabel];
-  v28 = [v27 leadingAnchor];
-  v29 = [(HUHomePodDetailView *)self leadingAnchor];
-  v60 = [v28 constraintGreaterThanOrEqualToAnchor:v29];
+  unitBadgeLabel4 = [(HUHomePodDetailView *)self unitBadgeLabel];
+  leadingAnchor = [unitBadgeLabel4 leadingAnchor];
+  leadingAnchor2 = [(HUHomePodDetailView *)self leadingAnchor];
+  v60 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
 
-  v30 = [(HUHomePodDetailView *)self unitImageView];
-  v31 = [v30 leadingAnchor];
-  v32 = [(HUHomePodDetailView *)self leadingAnchor];
-  v59 = [v31 constraintGreaterThanOrEqualToAnchor:v32];
+  unitImageView4 = [(HUHomePodDetailView *)self unitImageView];
+  leadingAnchor3 = [unitImageView4 leadingAnchor];
+  leadingAnchor4 = [(HUHomePodDetailView *)self leadingAnchor];
+  v59 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
 
-  v33 = [(HUHomePodDetailView *)self unitBadgeLabel];
-  v34 = [v33 trailingAnchor];
-  v35 = [(HUHomePodDetailView *)self trailingAnchor];
-  v58 = [v34 constraintLessThanOrEqualToAnchor:v35];
+  unitBadgeLabel5 = [(HUHomePodDetailView *)self unitBadgeLabel];
+  trailingAnchor = [unitBadgeLabel5 trailingAnchor];
+  trailingAnchor2 = [(HUHomePodDetailView *)self trailingAnchor];
+  v58 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
 
-  v36 = [(HUHomePodDetailView *)self unitImageView];
-  v37 = [v36 trailingAnchor];
-  v38 = [(HUHomePodDetailView *)self trailingAnchor];
-  v57 = [v37 constraintLessThanOrEqualToAnchor:v38];
+  unitImageView5 = [(HUHomePodDetailView *)self unitImageView];
+  trailingAnchor3 = [unitImageView5 trailingAnchor];
+  trailingAnchor4 = [(HUHomePodDetailView *)self trailingAnchor];
+  v57 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
 
-  v39 = [(HUHomePodDetailView *)self unitImageView];
-  v40 = [v39 heightAnchor];
-  v56 = [v40 constraintGreaterThanOrEqualToConstant:72.0];
+  unitImageView6 = [(HUHomePodDetailView *)self unitImageView];
+  heightAnchor = [unitImageView6 heightAnchor];
+  v56 = [heightAnchor constraintGreaterThanOrEqualToConstant:72.0];
 
-  v41 = [(HUHomePodDetailView *)self unitNameLabel];
-  v42 = [v41 centerYAnchor];
-  v43 = [(HUHomePodDetailView *)self centerYAnchor];
-  v55 = [v42 constraintGreaterThanOrEqualToAnchor:v43];
+  unitNameLabel4 = [(HUHomePodDetailView *)self unitNameLabel];
+  centerYAnchor = [unitNameLabel4 centerYAnchor];
+  centerYAnchor2 = [(HUHomePodDetailView *)self centerYAnchor];
+  v55 = [centerYAnchor constraintGreaterThanOrEqualToAnchor:centerYAnchor2];
 
-  v44 = [(HUHomePodDetailView *)self unitNameLabel];
-  v45 = [v44 widthAnchor];
-  v46 = [v45 constraintEqualToConstant:140.0];
+  unitNameLabel5 = [(HUHomePodDetailView *)self unitNameLabel];
+  widthAnchor = [unitNameLabel5 widthAnchor];
+  v46 = [widthAnchor constraintEqualToConstant:140.0];
 
-  v47 = [(HUHomePodDetailView *)self unitBadgeLabel];
-  v48 = [v47 widthAnchor];
-  v49 = [v48 constraintGreaterThanOrEqualToConstant:19.0];
+  unitBadgeLabel6 = [(HUHomePodDetailView *)self unitBadgeLabel];
+  widthAnchor2 = [unitBadgeLabel6 widthAnchor];
+  v49 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:19.0];
 
-  v50 = [(HUHomePodDetailView *)self unitBadgeLabel];
-  v51 = [v50 heightAnchor];
-  v52 = [v51 constraintGreaterThanOrEqualToConstant:19.0];
+  unitBadgeLabel7 = [(HUHomePodDetailView *)self unitBadgeLabel];
+  heightAnchor2 = [unitBadgeLabel7 heightAnchor];
+  v52 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:19.0];
 
   v53 = MEMORY[0x277CCAAD0];
   v68[0] = v64;
@@ -213,44 +213,44 @@
 
 - (void)_updateImagesForRole
 {
-  v3 = [(HUHomePodDetailView *)self mediaSystemRole];
-  if (v3 == 2)
+  mediaSystemRole = [(HUHomePodDetailView *)self mediaSystemRole];
+  if (mediaSystemRole == 2)
   {
     v4 = MEMORY[0x277D755B8];
     v5 = @"r.circle.fill";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (mediaSystemRole == 1)
   {
     v4 = MEMORY[0x277D755B8];
     v5 = @"l.circle.fill";
 LABEL_5:
-    v6 = [v4 systemImageNamed:v5];
-    v7 = [v6 imageWithRenderingMode:2];
-    v8 = [(HUHomePodDetailView *)self unitBadgeLabel];
-    [v8 setImage:v7];
+    unitBadgeLabel2 = [v4 systemImageNamed:v5];
+    v7 = [unitBadgeLabel2 imageWithRenderingMode:2];
+    unitBadgeLabel = [(HUHomePodDetailView *)self unitBadgeLabel];
+    [unitBadgeLabel setImage:v7];
 
     goto LABEL_7;
   }
 
-  v6 = [(HUHomePodDetailView *)self unitBadgeLabel];
-  [v6 setHidden:1];
+  unitBadgeLabel2 = [(HUHomePodDetailView *)self unitBadgeLabel];
+  [unitBadgeLabel2 setHidden:1];
 LABEL_7:
 
   [(HUHomePodDetailView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setUnitName:(id)a3
+- (void)setUnitName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __35__HUHomePodDetailView_setUnitName___block_invoke;
   aBlock[3] = &unk_277DB7558;
   aBlock[4] = self;
-  v27 = v4;
-  v5 = v4;
+  v27 = nameCopy;
+  v5 = nameCopy;
   v6 = _Block_copy(aBlock);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -262,15 +262,15 @@ LABEL_7:
   v19 = 3221225472;
   v20 = __35__HUHomePodDetailView_setUnitName___block_invoke_4;
   v21 = &unk_277DBB850;
-  v22 = self;
+  selfCopy = self;
   v8 = v6;
   v23 = v8;
   v24 = v7;
   v9 = v7;
   v10 = _Block_copy(&v18);
   v11 = [(HUHomePodDetailView *)self unitNameLabel:v18];
-  v12 = [v11 attributedText];
-  if (!v12)
+  attributedText = [v11 attributedText];
+  if (!attributedText)
   {
 
 LABEL_5:
@@ -278,10 +278,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v13 = v12;
-  v14 = [(HUHomePodDetailView *)self unitNameLabel];
-  v15 = [v14 attributedText];
-  v16 = [v15 length];
+  v13 = attributedText;
+  unitNameLabel = [(HUHomePodDetailView *)self unitNameLabel];
+  attributedText2 = [unitNameLabel attributedText];
+  v16 = [attributedText2 length];
 
   v17 = v10;
   if (!v16)
@@ -368,28 +368,28 @@ uint64_t __35__HUHomePodDetailView_setUnitName___block_invoke_6(uint64_t a1)
 
 - (HFStringGenerator)unitName
 {
-  v2 = [(HUHomePodDetailView *)self unitNameLabel];
-  v3 = [v2 attributedText];
+  unitNameLabel = [(HUHomePodDetailView *)self unitNameLabel];
+  attributedText = [unitNameLabel attributedText];
 
-  return v3;
+  return attributedText;
 }
 
 - (void)_speakerTapped
 {
   if (![(HUHomePodDetailView *)self isAnimatingPop])
   {
-    v3 = [(HUHomePodDetailView *)self delegate];
+    delegate = [(HUHomePodDetailView *)self delegate];
 
-    if (v3)
+    if (delegate)
     {
       [(HUHomePodDetailView *)self setIsAnimatingPop:1];
-      v4 = [(HUHomePodDetailView *)self unitImageView];
+      unitImageView = [(HUHomePodDetailView *)self unitImageView];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __37__HUHomePodDetailView__speakerTapped__block_invoke;
       v10[3] = &unk_277DB8488;
       v10[4] = self;
-      [HUAnimationUtilities schedulePopAnimation:v4 scaleFactor:v10 beginDuration:0.8 endDuration:0.2 completion:0.4];
+      [HUAnimationUtilities schedulePopAnimation:unitImageView scaleFactor:v10 beginDuration:0.8 endDuration:0.2 completion:0.4];
 
       v5 = [MEMORY[0x277CD9FA0] animationWithKeyPath:@"transform.scale"];
       [v5 setFromValue:&unk_2824933E0];
@@ -397,17 +397,17 @@ uint64_t __35__HUHomePodDetailView_setUnitName___block_invoke_6(uint64_t a1)
       [v5 setDamping:20.0];
       [v5 setStiffness:200.0];
       [v5 setBeginTime:CACurrentMediaTime() + 0.2];
-      v6 = [(HUHomePodDetailView *)self unitBadgeLabel];
-      v7 = [v6 layer];
-      [v7 addAnimation:v5 forKey:0];
+      unitBadgeLabel = [(HUHomePodDetailView *)self unitBadgeLabel];
+      layer = [unitBadgeLabel layer];
+      [layer addAnimation:v5 forKey:0];
 
-      v8 = [(HUHomePodDetailView *)self delegate];
-      LOBYTE(v7) = objc_opt_respondsToSelector();
+      delegate2 = [(HUHomePodDetailView *)self delegate];
+      LOBYTE(layer) = objc_opt_respondsToSelector();
 
-      if (v7)
+      if (layer)
       {
-        v9 = [(HUHomePodDetailView *)self delegate];
-        [v9 didTapSpeaker:self];
+        delegate3 = [(HUHomePodDetailView *)self delegate];
+        [delegate3 didTapSpeaker:self];
       }
     }
   }

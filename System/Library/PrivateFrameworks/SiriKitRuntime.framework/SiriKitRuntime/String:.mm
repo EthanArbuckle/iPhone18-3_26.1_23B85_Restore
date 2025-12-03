@@ -26,13 +26,13 @@
 - (unint64_t)Bool
 {
   result = _sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_SbTt0g5Tf4g_n(MEMORY[0x1E69E7CC0]);
-  *a1 = result;
+  *self = result;
   return result;
 }
 
 - (uint64_t)NSNumber
 {
-  v4 = *__swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  v4 = *__swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a3)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&_ss5Error_pMd, &_ss5Error_pMR);
@@ -68,13 +68,13 @@
 - (uint64_t)Set<String>
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sSDySSShySSGGMd, &_sSDySSShySSGGMR);
-  (*(*(v4 - 8) + 16))(a2, a1, v4);
+  (*(*(v4 - 8) + 16))(a2, self, v4);
   return a2;
 }
 
 - (uint64_t)SAPerson
 {
-  v4 = *__swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  v4 = *__swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a3)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&_ss5Error_pMd, &_ss5Error_pMR);

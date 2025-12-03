@@ -1,10 +1,10 @@
 @interface VKRasterTileOverlayProviderData
-- (VKRasterTileOverlayProviderData)initWithProviderID:(unsigned int)a3 tileSize:(unsigned int)a4 minimumZ:(unsigned int)a5 maximumZ:(unsigned int)a6 keyframesCount:(unsigned __int16)a7 duration:(double)a8 crossfadeKeyframes:(BOOL)a9;
+- (VKRasterTileOverlayProviderData)initWithProviderID:(unsigned int)d tileSize:(unsigned int)size minimumZ:(unsigned int)z maximumZ:(unsigned int)maximumZ keyframesCount:(unsigned __int16)count duration:(double)duration crossfadeKeyframes:(BOOL)keyframes;
 - (VKRasterTileOverlayProviderDelegate)delegate;
 - (void)dealloc;
-- (void)setAlpha:(double)a3;
-- (void)setColorMap:(CGImage *)a3;
-- (void)setKeyframeIndexOverride:(int)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setColorMap:(CGImage *)map;
+- (void)setKeyframeIndexOverride:(int)override;
 @end
 
 @implementation VKRasterTileOverlayProviderData
@@ -16,31 +16,31 @@
   return WeakRetained;
 }
 
-- (void)setKeyframeIndexOverride:(int)a3
+- (void)setKeyframeIndexOverride:(int)override
 {
-  if (self->_keyframeIndexOverride != a3)
+  if (self->_keyframeIndexOverride != override)
   {
-    self->_keyframeIndexOverride = a3;
+    self->_keyframeIndexOverride = override;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained rasterTileOverlayNeedsDisplay:self];
   }
 }
 
-- (void)setColorMap:(CGImage *)a3
+- (void)setColorMap:(CGImage *)map
 {
   colorMap = self->_colorMap;
-  if (colorMap != a3)
+  if (colorMap != map)
   {
     CGImageRelease(colorMap);
-    self->_colorMap = CGImageRetain(a3);
-    v6 = [(VKRasterTileOverlayProviderData *)self delegate];
-    [v6 rasterTileOverlayNeedsInvalidate:self];
+    self->_colorMap = CGImageRetain(map);
+    delegate = [(VKRasterTileOverlayProviderData *)self delegate];
+    [delegate rasterTileOverlayNeedsInvalidate:self];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  self->_alpha = a3;
+  self->_alpha = alpha;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained rasterTileOverlayDidChangeAlpha:self];
 }
@@ -53,7 +53,7 @@
   [(VKRasterTileOverlayProviderData *)&v3 dealloc];
 }
 
-- (VKRasterTileOverlayProviderData)initWithProviderID:(unsigned int)a3 tileSize:(unsigned int)a4 minimumZ:(unsigned int)a5 maximumZ:(unsigned int)a6 keyframesCount:(unsigned __int16)a7 duration:(double)a8 crossfadeKeyframes:(BOOL)a9
+- (VKRasterTileOverlayProviderData)initWithProviderID:(unsigned int)d tileSize:(unsigned int)size minimumZ:(unsigned int)z maximumZ:(unsigned int)maximumZ keyframesCount:(unsigned __int16)count duration:(double)duration crossfadeKeyframes:(BOOL)keyframes
 {
   v20.receiver = self;
   v20.super_class = VKRasterTileOverlayProviderData;
@@ -61,13 +61,13 @@
   v17 = v16;
   if (v16)
   {
-    *(v16 + 6) = a3;
-    *(v16 + 7) = a4;
-    *(v16 + 8) = a5;
-    *(v16 + 9) = a6;
-    *(v16 + 20) = a7;
-    *(v16 + 6) = a8;
-    v16[56] = a9;
+    *(v16 + 6) = d;
+    *(v16 + 7) = size;
+    *(v16 + 8) = z;
+    *(v16 + 9) = maximumZ;
+    *(v16 + 20) = count;
+    *(v16 + 6) = duration;
+    v16[56] = keyframes;
     *(v16 + 60) = 0xFFFFFFFFLL;
     *(v16 + 2) = 0x3FF0000000000000;
     *(v16 + 12) = 0;

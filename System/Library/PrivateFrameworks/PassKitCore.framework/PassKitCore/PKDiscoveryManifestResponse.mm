@@ -1,27 +1,27 @@
 @interface PKDiscoveryManifestResponse
-- (PKDiscoveryManifestResponse)initWithData:(id)a3;
-- (PKDiscoveryManifestResponse)initWithManifest:(id)a3;
+- (PKDiscoveryManifestResponse)initWithData:(id)data;
+- (PKDiscoveryManifestResponse)initWithManifest:(id)manifest;
 @end
 
 @implementation PKDiscoveryManifestResponse
 
-- (PKDiscoveryManifestResponse)initWithData:(id)a3
+- (PKDiscoveryManifestResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKDiscoveryManifestResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[PKDiscoveryManifest alloc] initWithDictionary:v5];
+    v6 = [[PKDiscoveryManifest alloc] initWithDictionary:jSONObject];
     manifest = v4->_manifest;
     v4->_manifest = v6;
 
@@ -50,16 +50,16 @@ LABEL_8:
   return v8;
 }
 
-- (PKDiscoveryManifestResponse)initWithManifest:(id)a3
+- (PKDiscoveryManifestResponse)initWithManifest:(id)manifest
 {
-  v5 = a3;
+  manifestCopy = manifest;
   v9.receiver = self;
   v9.super_class = PKDiscoveryManifestResponse;
   v6 = [(PKDiscoveryManifestResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manifest, a3);
+    objc_storeStrong(&v6->_manifest, manifest);
   }
 
   return v7;

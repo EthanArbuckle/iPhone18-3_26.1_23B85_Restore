@@ -1,42 +1,42 @@
 @interface SDAirDropHandlerVoiceMemos
-+ (void)importMemosForItems:(id)a3 completion:(id)a4;
++ (void)importMemosForItems:(id)items completion:(id)completion;
 - (BOOL)canHandleTransfer;
 - (BOOL)canHandleTransferRegardlessOfBundleID;
-- (SDAirDropHandlerVoiceMemos)initWithTransfer:(id)a3;
+- (SDAirDropHandlerVoiceMemos)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
-- (void)importMemosWithCompletion:(id)a3;
-- (void)performImportWithCompletedURLs:(id)a3 completion:(id)a4;
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4;
+- (void)importMemosWithCompletion:(id)completion;
+- (void)performImportWithCompletedURLs:(id)ls completion:(id)completion;
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion;
 - (void)triggerImport;
 - (void)updatePossibleActions;
 @end
 
 @implementation SDAirDropHandlerVoiceMemos
 
-- (SDAirDropHandlerVoiceMemos)initWithTransfer:(id)a3
+- (SDAirDropHandlerVoiceMemos)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerVoiceMemos;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.VoiceMemos"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.VoiceMemos"];
 }
 
 - (BOOL)canHandleTransferRegardlessOfBundleID
 {
-  v3 = [(SDAirDropHandler *)self isJustFiles];
+  isJustFiles = [(SDAirDropHandler *)self isJustFiles];
   v4 = SFVoiceMemosAppAvailable();
   v5 = 0;
-  if (v3 && v4)
+  if (isJustFiles && v4)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(SDAirDropHandler *)self transfer];
-    v7 = [v6 metaData];
-    v8 = [v7 items];
+    transfer = [(SDAirDropHandler *)self transfer];
+    metaData = [transfer metaData];
+    items = [metaData items];
 
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v9 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -47,10 +47,10 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(items);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) type];
+          type = [*(*(&v16 + 1) + 8 * i) type];
           v14 = SFIsVoiceMemo();
 
           if (!v14)
@@ -60,7 +60,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           continue;
@@ -79,10 +79,10 @@ LABEL_13:
 
 - (BOOL)canHandleTransfer
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 senderBundleID];
-  v6 = [v5 isEqual:@"com.apple.VoiceMemos"];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  senderBundleID = [metaData senderBundleID];
+  v6 = [senderBundleID isEqual:@"com.apple.VoiceMemos"];
 
   return v6 & [(SDAirDropHandlerVoiceMemos *)self canHandleTransferRegardlessOfBundleID];
 }
@@ -96,10 +96,10 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
   v13 = @"VOICE_MEMO";
-  v5 = [NSNumber numberWithUnsignedInteger:v4];
+  v5 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
   v14 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v15 = v6;
@@ -110,12 +110,12 @@ LABEL_13:
   v9 = SFLocalizedStringForKey();
   if (v6)
   {
-    [NSString localizedStringWithFormat:v9, v4, v12];
+    [NSString localizedStringWithFormat:v9, totalSharedItemsCount, v12];
   }
 
   else
   {
-    [NSString localizedStringWithFormat:v9, v3, v4];
+    [NSString localizedStringWithFormat:v9, senderName, totalSharedItemsCount];
   }
   v10 = ;
 
@@ -127,24 +127,24 @@ LABEL_13:
   v20.receiver = self;
   v20.super_class = SDAirDropHandlerVoiceMemos;
   [(SDAirDropHandler *)&v20 updatePossibleActions];
-  v3 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v3)
+  if (bundleProxy)
   {
-    v4 = [(SDAirDropHandler *)self bundleProxy];
-    v5 = [(SDAirDropHandler *)self defaultActionForBundleProxy:v4];
+    bundleProxy2 = [(SDAirDropHandler *)self bundleProxy];
+    v5 = [(SDAirDropHandler *)self defaultActionForBundleProxy:bundleProxy2];
   }
 
   else
   {
     v6 = [SFAirDropAction alloc];
-    v4 = [(SDAirDropHandler *)self transfer];
-    v7 = [v4 identifier];
+    bundleProxy2 = [(SDAirDropHandler *)self transfer];
+    identifier = [bundleProxy2 identifier];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [(SDAirDropHandler *)self singleItemActionTitle];
-    v11 = [(SDAirDropHandler *)self singleItemActionTitle];
-    v5 = [v6 initWithTransferIdentifier:v7 actionIdentifier:v9 title:v10 singleItemTitle:v11 type:1];
+    singleItemActionTitle = [(SDAirDropHandler *)self singleItemActionTitle];
+    singleItemActionTitle2 = [(SDAirDropHandler *)self singleItemActionTitle];
+    v5 = [v6 initWithTransferIdentifier:identifier actionIdentifier:v9 title:singleItemActionTitle singleItemTitle:singleItemActionTitle2 type:1];
   }
 
   objc_initWeak(&location, self);
@@ -156,8 +156,8 @@ LABEL_13:
   [v5 setActionHandler:&v14];
   v21 = v5;
   v12 = [NSArray arrayWithObjects:&v21 count:1, v14, v15, v16, v17];
-  v13 = [(SDAirDropHandler *)self transfer];
-  [v13 setPossibleActions:v12];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setPossibleActions:v12];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -176,25 +176,25 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)importMemosWithCompletion:(id)a3
+- (void)importMemosWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SDAirDropHandler *)self transfer];
-  v6 = [v5 completedURLs];
+  completionCopy = completion;
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10012232C;
   v8[3] = &unk_1008D0F88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [SDAirDropHandlerVoiceMemos importMemosForItems:v6 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [SDAirDropHandlerVoiceMemos importMemosForItems:completedURLs completion:v8];
 }
 
-+ (void)importMemosForItems:(id)a3 completion:(id)a4
++ (void)importMemosForItems:(id)items completion:(id)completion
 {
-  v5 = a3;
-  v21 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x3032000000;
@@ -202,12 +202,12 @@ LABEL_13:
   v33[4] = sub_100122714;
   v34 = +[NSMutableArray array];
   v6 = dispatch_group_create();
-  for (i = 0; [v5 count] > i; ++i)
+  for (i = 0; [itemsCopy count] > i; ++i)
   {
     dispatch_group_enter(v6);
-    v8 = [v5 objectAtIndexedSubscript:i];
-    v9 = [v8 URLByDeletingPathExtension];
-    v10 = [v9 lastPathComponent];
+    v8 = [itemsCopy objectAtIndexedSubscript:i];
+    uRLByDeletingPathExtension = [v8 URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
     v11 = objc_opt_new();
     v12 = airdrop_log();
@@ -224,12 +224,12 @@ LABEL_13:
     block[2] = sub_10012271C;
     block[3] = &unk_1008D0FD8;
     v28 = v8;
-    v29 = v10;
+    v29 = lastPathComponent;
     v30 = v11;
     v32 = v33;
     v31 = v6;
     v14 = v11;
-    v15 = v10;
+    v15 = lastPathComponent;
     v16 = v8;
     dispatch_async(v13, block);
   }
@@ -240,37 +240,37 @@ LABEL_13:
   v22[2] = sub_1001229D0;
   v22[3] = &unk_1008D1000;
   v23 = v6;
-  v24 = v5;
+  v24 = itemsCopy;
   v26 = v33;
-  v25 = v21;
-  v18 = v21;
-  v19 = v5;
+  v25 = completionCopy;
+  v18 = completionCopy;
+  v19 = itemsCopy;
   v20 = v6;
   dispatch_async(v17, v22);
 
   _Block_object_dispose(v33, 8);
 }
 
-- (void)performImportWithCompletedURLs:(id)a3 completion:(id)a4
+- (void)performImportWithCompletedURLs:(id)ls completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100122B58;
   v6[3] = &unk_1008D1028;
-  v7 = a4;
-  v5 = v7;
+  completionCopy = completion;
+  v5 = completionCopy;
   [(SDAirDropHandlerVoiceMemos *)self importMemosWithCompletion:v6];
 }
 
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion
 {
-  v9 = a4;
-  v5 = [(SDAirDropHandlerVoiceMemos *)self openAppURLs];
-  v6 = [(SDAirDropHandler *)self bundleProxy];
-  v7 = [v6 bundleIdentifier];
-  v8 = [(SDAirDropHandler *)self openURLs:v5 bundleIdentifier:v7];
+  completionCopy = completion;
+  openAppURLs = [(SDAirDropHandlerVoiceMemos *)self openAppURLs];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
+  bundleIdentifier = [bundleProxy bundleIdentifier];
+  v8 = [(SDAirDropHandler *)self openURLs:openAppURLs bundleIdentifier:bundleIdentifier];
 
-  v9[2](v9, v8, 0);
+  completionCopy[2](completionCopy, v8, 0);
 }
 
 @end

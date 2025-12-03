@@ -1,16 +1,16 @@
 @interface AWDMETRICSKCellularPowerLogPLMNSearchHistMBin
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBinId:(id)a3;
+- (int)StringAsBinId:(id)id;
 - (int)binId;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasSearchDurationBinIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasSearchDurationBinIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogPLMNSearchHistMBin
@@ -28,190 +28,190 @@
   }
 }
 
-- (int)StringAsBinId:(id)a3
+- (int)StringAsBinId:(id)id
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NO_SEARCH"])
+  idCopy = id;
+  if ([idCopy isEqualToString:@"NO_SEARCH"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SLS_GSM"])
+  else if ([idCopy isEqualToString:@"SLS_GSM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DBS_GSM"])
+  else if ([idCopy isEqualToString:@"DBS_GSM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DBS_MCC_GSM"])
+  else if ([idCopy isEqualToString:@"DBS_MCC_GSM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RBS_GSM"])
+  else if ([idCopy isEqualToString:@"RBS_GSM"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SBS_GSM"])
+  else if ([idCopy isEqualToString:@"SBS_GSM"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FBS_GSM"])
+  else if ([idCopy isEqualToString:@"FBS_GSM"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SLS_DBS_GSM"])
+  else if ([idCopy isEqualToString:@"SLS_DBS_GSM"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ESLS_GSM"])
+  else if ([idCopy isEqualToString:@"ESLS_GSM"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"EARLY_MCC_SLS_GSM"])
+  else if ([idCopy isEqualToString:@"EARLY_MCC_SLS_GSM"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SLS_UMTS"])
+  else if ([idCopy isEqualToString:@"SLS_UMTS"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"DBS_UMTS"])
+  else if ([idCopy isEqualToString:@"DBS_UMTS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"DBS_MCC_UMTS"])
+  else if ([idCopy isEqualToString:@"DBS_MCC_UMTS"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"RBS_UMTS"])
+  else if ([idCopy isEqualToString:@"RBS_UMTS"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SBS_UMTS"])
+  else if ([idCopy isEqualToString:@"SBS_UMTS"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"FBS_UMTS"])
+  else if ([idCopy isEqualToString:@"FBS_UMTS"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SLS_DBS_UMTS"])
+  else if ([idCopy isEqualToString:@"SLS_DBS_UMTS"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"ESLS_UMTS"])
+  else if ([idCopy isEqualToString:@"ESLS_UMTS"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"EARLY_MCC_SLS_UMTS"])
+  else if ([idCopy isEqualToString:@"EARLY_MCC_SLS_UMTS"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SLS_LTE"])
+  else if ([idCopy isEqualToString:@"SLS_LTE"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"DBS_LTE"])
+  else if ([idCopy isEqualToString:@"DBS_LTE"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"DBS_MCC_LTE"])
+  else if ([idCopy isEqualToString:@"DBS_MCC_LTE"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"RBS_LTE"])
+  else if ([idCopy isEqualToString:@"RBS_LTE"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"SBS_LTE"])
+  else if ([idCopy isEqualToString:@"SBS_LTE"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"FBS_LTE"])
+  else if ([idCopy isEqualToString:@"FBS_LTE"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"SLS_DBS_LTE"])
+  else if ([idCopy isEqualToString:@"SLS_DBS_LTE"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"ESLS_LTE"])
+  else if ([idCopy isEqualToString:@"ESLS_LTE"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"EARLY_MCC_SLS_LTE"])
+  else if ([idCopy isEqualToString:@"EARLY_MCC_SLS_LTE"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"SLS_NR"])
+  else if ([idCopy isEqualToString:@"SLS_NR"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"DBS_NR"])
+  else if ([idCopy isEqualToString:@"DBS_NR"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"DBS_MCC_NR"])
+  else if ([idCopy isEqualToString:@"DBS_MCC_NR"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"RBS_NR"])
+  else if ([idCopy isEqualToString:@"RBS_NR"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"SBS_NR"])
+  else if ([idCopy isEqualToString:@"SBS_NR"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"FBS_NR"])
+  else if ([idCopy isEqualToString:@"FBS_NR"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"SLS_DBS_NR"])
+  else if ([idCopy isEqualToString:@"SLS_DBS_NR"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"ESLS_NR"])
+  else if ([idCopy isEqualToString:@"ESLS_NR"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"EARLY_MCC_SLS_NR"])
+  else if ([idCopy isEqualToString:@"EARLY_MCC_SLS_NR"])
   {
     v4 = 36;
   }
@@ -224,9 +224,9 @@
   return v4;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -239,9 +239,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSearchDurationBinIndex:(BOOL)a3
+- (void)setHasSearchDurationBinIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }
@@ -260,15 +260,15 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogPLMNSearchHistMBin;
   v4 = [(AWDMETRICSKCellularPowerLogPLMNSearchHistMBin *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogPLMNSearchHistMBin *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogPLMNSearchHistMBin *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
@@ -283,7 +283,7 @@
       v6 = off_278262608[binId];
     }
 
-    [v3 setObject:v6 forKey:@"bin_id"];
+    [dictionary setObject:v6 forKey:@"bin_id"];
 
     has = self->_has;
   }
@@ -291,7 +291,7 @@
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-    [v3 setObject:v7 forKey:@"duration"];
+    [dictionary setObject:v7 forKey:@"duration"];
 
     has = self->_has;
   }
@@ -299,22 +299,22 @@
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_searchDurationBinIndex];
-    [v3 setObject:v8 forKey:@"search_duration_bin_index"];
+    [dictionary setObject:v8 forKey:@"search_duration_bin_index"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     binId = self->_binId;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -335,26 +335,26 @@ LABEL_3:
 
   duration = self->_duration;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     searchDurationBinIndex = self->_searchDurationBinIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_binId;
-    *(v4 + 20) |= 1u;
+    toCopy[2] = self->_binId;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -373,21 +373,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_duration;
-  *(v4 + 20) |= 2u;
+  toCopy[3] = self->_duration;
+  *(toCopy + 20) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[4] = self->_searchDurationBinIndex;
-    *(v4 + 20) |= 4u;
+    toCopy[4] = self->_searchDurationBinIndex;
+    *(toCopy + 20) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -424,23 +424,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_binId != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_binId != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_16:
     v5 = 0;
@@ -449,21 +449,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_duration != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_duration != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 4) == 0;
+  v5 = (*(equalCopy + 20) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_searchDurationBinIndex != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_searchDurationBinIndex != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
@@ -516,15 +516,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_binId = *(v4 + 2);
+    self->_binId = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -537,17 +537,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 2) == 0)
+  else if ((*(fromCopy + 20) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_duration = *(v4 + 3);
+  self->_duration = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 20) & 4) != 0)
+  if ((*(fromCopy + 20) & 4) != 0)
   {
 LABEL_4:
-    self->_searchDurationBinIndex = *(v4 + 4);
+    self->_searchDurationBinIndex = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

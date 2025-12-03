@@ -1,23 +1,23 @@
 @interface NPKPrecursorPassUpgradeRequestController
-- (NPKPrecursorPassUpgradeRequestController)initWithPass:(id)a3;
+- (NPKPrecursorPassUpgradeRequestController)initWithPass:(id)pass;
 - (NPKPrecursorPassUpgradeRequestControllerDelegate)delegate;
 - (PKPrecursorPassUpgradeController)upgradeController;
-- (void)fetchUpgradeRequestsWithCompletion:(id)a3;
+- (void)fetchUpgradeRequestsWithCompletion:(id)completion;
 - (void)precursorPassUpgradeRequestDidChange;
 @end
 
 @implementation NPKPrecursorPassUpgradeRequestController
 
-- (NPKPrecursorPassUpgradeRequestController)initWithPass:(id)a3
+- (NPKPrecursorPassUpgradeRequestController)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v9.receiver = self;
   v9.super_class = NPKPrecursorPassUpgradeRequestController;
   v6 = [(NPKPrecursorPassUpgradeRequestController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
   }
 
   return v7;
@@ -30,8 +30,8 @@
   {
     v4 = objc_alloc(MEMORY[0x277D38218]);
     pass = self->_pass;
-    v6 = [MEMORY[0x277D38170] sharedService];
-    v7 = [v4 initWithPass:pass webService:v6];
+    mEMORY[0x277D38170] = [MEMORY[0x277D38170] sharedService];
+    v7 = [v4 initWithPass:pass webService:mEMORY[0x277D38170]];
     v8 = self->_upgradeController;
     self->_upgradeController = v7;
 
@@ -42,22 +42,22 @@
   return upgradeController;
 }
 
-- (void)fetchUpgradeRequestsWithCompletion:(id)a3
+- (void)fetchUpgradeRequestsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPKPrecursorPassUpgradeRequestController *)self upgradeController];
-  v6 = [v5 devicePrimaryPrecursorRequest];
+  completionCopy = completion;
+  upgradeController = [(NPKPrecursorPassUpgradeRequestController *)self upgradeController];
+  devicePrimaryPrecursorRequest = [upgradeController devicePrimaryPrecursorRequest];
 
   objc_initWeak(&location, self);
-  v7 = [(NPKPrecursorPassUpgradeRequestController *)self upgradeController];
+  upgradeController2 = [(NPKPrecursorPassUpgradeRequestController *)self upgradeController];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__NPKPrecursorPassUpgradeRequestController_fetchUpgradeRequestsWithCompletion___block_invoke;
   v9[3] = &unk_2799473E8;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
-  [v7 requestDescriptionFor:v6 completion:v9];
+  [upgradeController2 requestDescriptionFor:devicePrimaryPrecursorRequest completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

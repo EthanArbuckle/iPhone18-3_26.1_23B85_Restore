@@ -1,11 +1,11 @@
 @interface BMMemoryMapping
-- (BMMemoryMapping)initWithSize:(unint64_t)a3 protection:(int)a4 advice:(int)a5 offset:(int64_t)a6;
-- (BOOL)atomicUpdateOffset:(unint64_t)a3 withValue:(id)a4 shouldReplace:(id)a5;
-- (BOOL)isValidReadFromOffset:(unint64_t)a3 withLength:(unint64_t)a4;
-- (BOOL)isValidReadFromOffsetV2:(unint64_t)a3 withLength:(unint64_t)a4 currentFrameCount:(unsigned int)a5;
-- (BOOL)mapWithFileHandle:(id)a3 fileSize:(unint64_t)a4;
-- (id)dataAtOffset:(unint64_t)a3 withLength:(unint64_t)a4 makeCopy:(BOOL)a5;
-- (uint64_t)isValidWriteToDestinationOffset:(uint64_t)a3 withLength:(uint64_t)a4 bytes:;
+- (BMMemoryMapping)initWithSize:(unint64_t)size protection:(int)protection advice:(int)advice offset:(int64_t)offset;
+- (BOOL)atomicUpdateOffset:(unint64_t)offset withValue:(id)value shouldReplace:(id)replace;
+- (BOOL)isValidReadFromOffset:(unint64_t)offset withLength:(unint64_t)length;
+- (BOOL)isValidReadFromOffsetV2:(unint64_t)v2 withLength:(unint64_t)length currentFrameCount:(unsigned int)count;
+- (BOOL)mapWithFileHandle:(id)handle fileSize:(unint64_t)size;
+- (id)dataAtOffset:(unint64_t)offset withLength:(unint64_t)length makeCopy:(BOOL)copy;
+- (uint64_t)isValidWriteToDestinationOffset:(uint64_t)offset withLength:(uint64_t)length bytes:;
 - (uint64_t)mappedAddress;
 - (uint64_t)offsetSpace;
 - (uint64_t)pageAlignedSize;
@@ -15,15 +15,15 @@
 - (uint64_t)setPageAlignedSize:(uint64_t)result;
 - (uint64_t)setSize:(uint64_t)result;
 - (uint64_t)setStart:(uint64_t)result;
-- (unsigned)atomicReadAtOffset:(unint64_t)a3 value:(id *)a4;
-- (unsigned)atomicWriteEightBytes:(unint64_t)a3 toOffset:(unint64_t)a4 expected:(unint64_t *)a5;
-- (unsigned)atomicWriteFourBytes:(unsigned int)a3 toOffset:(unint64_t)a4 expected:(unsigned int *)a5;
-- (unsigned)atomicWriteSixteenBytes:(BMMemoryMapping *)self toOffset:(SEL)a2 expected:;
+- (unsigned)atomicReadAtOffset:(unint64_t)offset value:(id *)value;
+- (unsigned)atomicWriteEightBytes:(unint64_t)bytes toOffset:(unint64_t)offset expected:(unint64_t *)expected;
+- (unsigned)atomicWriteFourBytes:(unsigned int)bytes toOffset:(unint64_t)offset expected:(unsigned int *)expected;
+- (unsigned)atomicWriteSixteenBytes:(BMMemoryMapping *)self toOffset:(SEL)offset expected:;
 - (void)dealloc;
 - (void)sync;
 - (void)unmap;
-- (void)updateToMaxOfCurrentWriteOffsetAnd:(unint64_t)a3;
-- (void)writeBytes:(const void *)a3 toOffset:(unint64_t)a4 length:(unint64_t)a5;
+- (void)updateToMaxOfCurrentWriteOffsetAnd:(unint64_t)and;
+- (void)writeBytes:(const void *)bytes toOffset:(unint64_t)offset length:(unint64_t)length;
 @end
 
 @implementation BMMemoryMapping
@@ -39,7 +39,7 @@
 - (void)unmap
 {
   v9 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   v8 = *__error();
   OUTLINED_FUNCTION_0_1();
   _os_log_fault_impl(v1, v2, v3, v4, v5, 0x1Cu);
@@ -52,58 +52,58 @@
   v2 = *__error();
   v4[0] = 67240192;
   v4[1] = v2;
-  _os_log_error_impl(&dword_1C928A000, a1, OS_LOG_TYPE_ERROR, "Failed to msync because %{public, darwin.errno}d", v4, 8u);
+  _os_log_error_impl(&dword_1C928A000, self, OS_LOG_TYPE_ERROR, "Failed to msync because %{public, darwin.errno}d", v4, 8u);
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BMMemoryMapping)initWithSize:(unint64_t)a3 protection:(int)a4 advice:(int)a5 offset:(int64_t)a6
+- (BMMemoryMapping)initWithSize:(unint64_t)size protection:(int)protection advice:(int)advice offset:(int64_t)offset
 {
   v11.receiver = self;
   v11.super_class = BMMemoryMapping;
   result = [(BMMemoryMapping *)&v11 init];
   if (result)
   {
-    result->_protection = a4;
-    result->_advice = a5;
-    result->_size = a3;
-    result->_offset = a6;
+    result->_protection = protection;
+    result->_advice = advice;
+    result->_size = size;
+    result->_offset = offset;
     atomic_store(0, &result->_currentWriteOffset);
   }
 
   return result;
 }
 
-- (BOOL)mapWithFileHandle:(id)a3 fileSize:(unint64_t)a4
+- (BOOL)mapWithFileHandle:(id)handle fileSize:(unint64_t)size
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(BMMemoryMapping *)self offset];
-  if ((v7 & 0x8000000000000000) != 0)
+  handleCopy = handle;
+  offset = [(BMMemoryMapping *)self offset];
+  if ((offset & 0x8000000000000000) != 0)
   {
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [BMMemoryMapping mapWithFileHandle:v6 fileSize:?];
+      [BMMemoryMapping mapWithFileHandle:handleCopy fileSize:?];
     }
 
     goto LABEL_20;
   }
 
-  v8 = v7;
-  if (v7 > a4)
+  v8 = offset;
+  if (offset > size)
   {
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       size = self->_size;
       v11 = MEMORY[0x1E698E9C8];
-      v12 = [v6 attributes];
-      v13 = [v12 path];
-      v14 = [v11 privacyPathname:v13];
+      attributes = [handleCopy attributes];
+      path = [attributes path];
+      v14 = [v11 privacyPathname:path];
       v40 = 134218754;
-      v41 = size;
+      sizeCopy = size;
       v42 = 2048;
-      *v43 = a4;
+      *v43 = size;
       *&v43[8] = 2048;
       *&v43[10] = v8;
       *&v43[18] = 2114;
@@ -117,7 +117,7 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  v15 = NSRoundDownToMultipleOfPageSize(v7);
+  v15 = NSRoundDownToMultipleOfPageSize(offset);
   self->_offsetSpace = v8 - v15;
   v16 = NSRoundUpToMultipleOfPageSize(self->_size + v8 - v15);
   if (!v16)
@@ -128,11 +128,11 @@ LABEL_17:
       v28 = self->_size;
       offset = self->_offset;
       v30 = MEMORY[0x1E698E9C8];
-      v31 = [v6 attributes];
-      v32 = [v31 path];
-      v14 = [v30 privacyPathname:v32];
+      attributes2 = [handleCopy attributes];
+      path2 = [attributes2 path];
+      v14 = [v30 privacyPathname:path2];
       v40 = 134218498;
-      v41 = v28;
+      sizeCopy = v28;
       v42 = 2048;
       *v43 = offset;
       *&v43[8] = 2114;
@@ -148,19 +148,19 @@ LABEL_20:
   }
 
   v17 = v16;
-  v18 = mmap(0, v16, self->_protection, 1, [v6 fd], v15);
+  v18 = mmap(0, v16, self->_protection, 1, [handleCopy fd], v15);
   if (v18 == -1)
   {
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       v35 = MEMORY[0x1E698E9C8];
-      v36 = [v6 attributes];
-      v37 = [v36 path];
-      v38 = [v35 privacyPathname:v37];
+      attributes3 = [handleCopy attributes];
+      path3 = [attributes3 path];
+      v38 = [v35 privacyPathname:path3];
       v39 = *__error();
       v40 = 138544130;
-      v41 = v38;
+      sizeCopy = v38;
       v42 = 1026;
       *v43 = v39;
       *&v43[4] = 2048;
@@ -192,13 +192,13 @@ LABEL_20:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v22 = MEMORY[0x1E698E9C8];
-    v23 = [v6 attributes];
-    v24 = [v23 path];
-    v25 = [v22 privacyPathname:v24];
+    attributes4 = [handleCopy attributes];
+    path4 = [attributes4 path];
+    v25 = [v22 privacyPathname:path4];
     v27 = self->_size;
     v26 = self->_offset;
     v40 = 138544131;
-    v41 = v25;
+    sizeCopy = v25;
     v42 = 2049;
     *v43 = v19;
     *&v43[8] = 2048;
@@ -215,21 +215,21 @@ LABEL_21:
   return v21;
 }
 
-- (id)dataAtOffset:(unint64_t)a3 withLength:(unint64_t)a4 makeCopy:(BOOL)a5
+- (id)dataAtOffset:(unint64_t)offset withLength:(unint64_t)length makeCopy:(BOOL)copy
 {
-  v5 = a5;
+  copyCopy = copy;
   v20 = *MEMORY[0x1E69E9840];
   if ([BMMemoryMapping isValidReadFromOffset:"isValidReadFromOffset:withLength:" withLength:?])
   {
-    v9 = [(BMMemoryMapping *)self start]+ a3;
-    if (v5)
+    v9 = [(BMMemoryMapping *)self start]+ offset;
+    if (copyCopy)
     {
-      [MEMORY[0x1E695DEF0] dataWithBytes:v9 length:a4];
+      [MEMORY[0x1E695DEF0] dataWithBytes:v9 length:length];
     }
 
     else
     {
-      [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v9 length:a4 freeWhenDone:0];
+      [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v9 length:length freeWhenDone:0];
     }
     v10 = ;
   }
@@ -240,9 +240,9 @@ LABEL_21:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 134218496;
-      v15 = a3;
+      offsetCopy = offset;
       v16 = 2048;
-      v17 = a4;
+      lengthCopy = length;
       v18 = 2048;
       v19 = [(BMMemoryMapping *)self size];
       _os_log_error_impl(&dword_1C928A000, v11, OS_LOG_TYPE_ERROR, "Cannot read data from offset: %lld with length: %lld. Size (%lld) too small", &v14, 0x20u);
@@ -256,14 +256,14 @@ LABEL_21:
   return v10;
 }
 
-- (unsigned)atomicReadAtOffset:(unint64_t)a3 value:(id *)a4
+- (unsigned)atomicReadAtOffset:(unint64_t)offset value:(id *)value
 {
-  if ([(BMMemoryMapping *)self canAtomicallyAccessOffset:a3 byteCount:8])
+  if ([(BMMemoryMapping *)self canAtomicallyAccessOffset:offset byteCount:8])
   {
-    if ([(BMMemoryMapping *)self isValidReadFromOffset:a3 withLength:8])
+    if ([(BMMemoryMapping *)self isValidReadFromOffset:offset withLength:8])
     {
-      v7 = atomic_load(([(BMMemoryMapping *)self start]+ a3));
-      a4->var0 = v7;
+      v7 = atomic_load(([(BMMemoryMapping *)self start]+ offset));
+      value->var0 = v7;
       return 1;
     }
 
@@ -272,7 +272,7 @@ LABEL_21:
       v10 = __biome_log_for_category();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [BMMemoryMapping atomicReadAtOffset:a3 value:?];
+        [BMMemoryMapping atomicReadAtOffset:offset value:?];
       }
 
       return 0;
@@ -284,37 +284,37 @@ LABEL_21:
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [BMMemoryMapping atomicReadAtOffset:a3 value:v9];
+      [BMMemoryMapping atomicReadAtOffset:offset value:v9];
     }
 
     return 3;
   }
 }
 
-- (BOOL)atomicUpdateOffset:(unint64_t)a3 withValue:(id)a4 shouldReplace:(id)a5
+- (BOOL)atomicUpdateOffset:(unint64_t)offset withValue:(id)value shouldReplace:(id)replace
 {
-  v8 = a5;
-  if (![(BMMemoryMapping *)self canAtomicallyAccessOffset:a3 byteCount:8])
+  replaceCopy = replace;
+  if (![(BMMemoryMapping *)self canAtomicallyAccessOffset:offset byteCount:8])
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [BMMemoryMapping atomicReadAtOffset:a3 value:v11];
+      [BMMemoryMapping atomicReadAtOffset:offset value:v11];
     }
 
     goto LABEL_14;
   }
 
-  if (!self || ![(BMMemoryMapping *)self isWritable]|| ![(BMMemoryMapping *)self isValidReadFromOffset:a3 withLength:8])
+  if (!self || ![(BMMemoryMapping *)self isWritable]|| ![(BMMemoryMapping *)self isValidReadFromOffset:offset withLength:8])
   {
-    [BMMemoryMapping atomicUpdateOffset:a3 withValue:? shouldReplace:?];
+    [BMMemoryMapping atomicUpdateOffset:offset withValue:? shouldReplace:?];
 LABEL_14:
     v10 = 0;
     goto LABEL_15;
   }
 
   v14 = 0;
-  if ([(BMMemoryMapping *)self atomicReadAtOffset:a3 value:&v14]!= 1 || !v8[2](v8, v14, a4.var0))
+  if ([(BMMemoryMapping *)self atomicReadAtOffset:offset value:&v14]!= 1 || !replaceCopy[2](replaceCopy, v14, value.var0))
   {
     goto LABEL_14;
   }
@@ -322,7 +322,7 @@ LABEL_14:
   v13 = v14;
   do
   {
-    v9 = [(BMMemoryMapping *)self atomicWriteEightBytes:a4.var0 toOffset:a3 expected:&v13];
+    v9 = [(BMMemoryMapping *)self atomicWriteEightBytes:value.var0 toOffset:offset expected:&v13];
     v10 = v9 == 1;
     if (v9 == 1)
     {
@@ -332,43 +332,43 @@ LABEL_14:
     v14 = v13;
   }
 
-  while (((v8[2])(v8) & 1) != 0);
+  while (((replaceCopy[2])(replaceCopy) & 1) != 0);
 LABEL_15:
 
   return v10;
 }
 
-- (void)updateToMaxOfCurrentWriteOffsetAnd:(unint64_t)a3
+- (void)updateToMaxOfCurrentWriteOffsetAnd:(unint64_t)and
 {
-  v3 = a3;
+  andCopy = and;
   p_size = &self->_size;
-  if (self->_size < a3)
+  if (self->_size < and)
   {
     v6 = __biome_log_for_category();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(BMMemoryMapping *)p_size updateToMaxOfCurrentWriteOffsetAnd:v3, v6];
+      [(BMMemoryMapping *)p_size updateToMaxOfCurrentWriteOffsetAnd:andCopy, v6];
     }
 
-    v3 = *p_size;
+    andCopy = *p_size;
   }
 
-  v7 = [(BMMemoryMapping *)self currentWriteOffset];
-  if (v7 < v3)
+  currentWriteOffset = [(BMMemoryMapping *)self currentWriteOffset];
+  if (currentWriteOffset < andCopy)
   {
-    v8 = v7;
+    v8 = currentWriteOffset;
     do
     {
-      atomic_compare_exchange_strong(&self->_currentWriteOffset, &v8, v3);
-      if (v8 == v7)
+      atomic_compare_exchange_strong(&self->_currentWriteOffset, &v8, andCopy);
+      if (v8 == currentWriteOffset)
       {
         break;
       }
 
-      v7 = v8;
+      currentWriteOffset = v8;
     }
 
-    while (v8 < v3);
+    while (v8 < andCopy);
   }
 }
 
@@ -432,41 +432,41 @@ LABEL_15:
   return result;
 }
 
-- (uint64_t)isValidWriteToDestinationOffset:(uint64_t)a3 withLength:(uint64_t)a4 bytes:
+- (uint64_t)isValidWriteToDestinationOffset:(uint64_t)offset withLength:(uint64_t)length bytes:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8 = [a1 isWritable];
-  if (!a4 || !v8)
+  isWritable = [self isWritable];
+  if (!length || !isWritable)
   {
     return 0;
   }
 
-  return [a1 isValidReadFromOffset:a2 withLength:a3];
+  return [self isValidReadFromOffset:a2 withLength:offset];
 }
 
-- (BOOL)isValidReadFromOffset:(unint64_t)a3 withLength:(unint64_t)a4
+- (BOOL)isValidReadFromOffset:(unint64_t)offset withLength:(unint64_t)length
 {
   if (self)
   {
-    v4 = self;
-    LOBYTE(self) = self->_mappedAddress && [(BMMemoryMapping *)self size]> a3 && [(BMMemoryMapping *)v4 size]- a3 >= a4;
+    selfCopy = self;
+    LOBYTE(self) = self->_mappedAddress && [(BMMemoryMapping *)self size]> offset && [(BMMemoryMapping *)selfCopy size]- offset >= length;
   }
 
   return self;
 }
 
-- (BOOL)isValidReadFromOffsetV2:(unint64_t)a3 withLength:(unint64_t)a4 currentFrameCount:(unsigned int)a5
+- (BOOL)isValidReadFromOffsetV2:(unint64_t)v2 withLength:(unint64_t)length currentFrameCount:(unsigned int)count
 {
   if (self)
   {
     if (self->_mappedAddress)
     {
-      v7 = [(BMMemoryMapping *)self size]- 16 * a5;
-      LOBYTE(self) = v7 >= 1 && v7 > a3 && a3 + a4 + 24 <= v7;
+      v7 = [(BMMemoryMapping *)self size]- 16 * count;
+      LOBYTE(self) = v7 >= 1 && v7 > v2 && v2 + length + 24 <= v7;
     }
 
     else
@@ -478,32 +478,32 @@ LABEL_15:
   return self;
 }
 
-- (unsigned)atomicWriteEightBytes:(unint64_t)a3 toOffset:(unint64_t)a4 expected:(unint64_t *)a5
+- (unsigned)atomicWriteEightBytes:(unint64_t)bytes toOffset:(unint64_t)offset expected:(unint64_t *)expected
 {
   OUTLINED_FUNCTION_2_3();
   if ([v9 canAtomicallyAccessOffset:v10 byteCount:8])
   {
     if (v8)
     {
-      v11 = [v8 isWritable];
-      if (v11)
+      isWritable = [v8 isWritable];
+      if (isWritable)
       {
-        v11 = [v8 isValidReadFromOffset:v7 withLength:8];
-        if (v11)
+        isWritable = [v8 isValidReadFromOffset:v7 withLength:8];
+        if (isWritable)
         {
-          v12 = [v8 start];
+          start = [v8 start];
           v13 = *v5;
           v14 = *v5;
-          atomic_compare_exchange_strong((v12 + v7), &v14, v6);
+          atomic_compare_exchange_strong((start + v7), &v14, v6);
           if (v14 == v13)
           {
-            LOBYTE(v11) = 1;
+            LOBYTE(isWritable) = 1;
           }
 
           else
           {
             *v5 = v14;
-            LOBYTE(v11) = 2;
+            LOBYTE(isWritable) = 2;
           }
         }
       }
@@ -511,19 +511,19 @@ LABEL_15:
 
     else
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(isWritable) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v11) = 3;
+    LOBYTE(isWritable) = 3;
   }
 
-  return v11;
+  return isWritable;
 }
 
-- (unsigned)atomicWriteSixteenBytes:(BMMemoryMapping *)self toOffset:(SEL)a2 expected:
+- (unsigned)atomicWriteSixteenBytes:(BMMemoryMapping *)self toOffset:(SEL)offset expected:
 {
   v5 = v4;
   v6 = v3;
@@ -582,31 +582,31 @@ LABEL_15:
   return _X0;
 }
 
-- (unsigned)atomicWriteFourBytes:(unsigned int)a3 toOffset:(unint64_t)a4 expected:(unsigned int *)a5
+- (unsigned)atomicWriteFourBytes:(unsigned int)bytes toOffset:(unint64_t)offset expected:(unsigned int *)expected
 {
-  if ([(BMMemoryMapping *)self canAtomicallyAccessOffset:a4 byteCount:4])
+  if ([(BMMemoryMapping *)self canAtomicallyAccessOffset:offset byteCount:4])
   {
     if (self)
     {
-      v9 = [(BMMemoryMapping *)self isWritable];
-      if (v9)
+      isWritable = [(BMMemoryMapping *)self isWritable];
+      if (isWritable)
       {
-        v9 = [(BMMemoryMapping *)self isValidReadFromOffset:a4 withLength:4];
-        if (v9)
+        isWritable = [(BMMemoryMapping *)self isValidReadFromOffset:offset withLength:4];
+        if (isWritable)
         {
-          v10 = [(BMMemoryMapping *)self start];
-          v11 = *a5;
-          v12 = *a5;
-          atomic_compare_exchange_strong(&v10[a4], &v12, a3);
+          start = [(BMMemoryMapping *)self start];
+          v11 = *expected;
+          v12 = *expected;
+          atomic_compare_exchange_strong(&start[offset], &v12, bytes);
           if (v12 == v11)
           {
-            LOBYTE(v9) = 1;
+            LOBYTE(isWritable) = 1;
           }
 
           else
           {
-            *a5 = v12;
-            LOBYTE(v9) = 2;
+            *expected = v12;
+            LOBYTE(isWritable) = 2;
           }
         }
       }
@@ -614,27 +614,27 @@ LABEL_15:
 
     else
     {
-      LOBYTE(v9) = 0;
+      LOBYTE(isWritable) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v9) = 3;
+    LOBYTE(isWritable) = 3;
   }
 
-  return v9;
+  return isWritable;
 }
 
-- (void)writeBytes:(const void *)a3 toOffset:(unint64_t)a4 length:(unint64_t)a5
+- (void)writeBytes:(const void *)bytes toOffset:(unint64_t)offset length:(unint64_t)length
 {
   if (self)
   {
     OUTLINED_FUNCTION_2_3();
-    v10 = [v9 isWritable];
+    isWritable = [v9 isWritable];
     if (v6)
     {
-      if (v10 && [v8 isValidReadFromOffset:v7 withLength:v5])
+      if (isWritable && [v8 isValidReadFromOffset:v7 withLength:v5])
       {
         v11 = ([v8 start] + v7);
 

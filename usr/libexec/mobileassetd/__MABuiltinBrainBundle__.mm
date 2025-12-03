@@ -1,26 +1,26 @@
 @interface __MABuiltinBrainBundle__
-+ (BOOL)destageCurrent:(id *)a3;
-+ (BOOL)destageProposed:(id *)a3;
-+ (BOOL)stageProposed:(id)a3 error:(id *)a4;
++ (BOOL)destageCurrent:(id *)current;
++ (BOOL)destageProposed:(id *)proposed;
++ (BOOL)stageProposed:(id)proposed error:(id *)error;
 + (void)garbageCollect;
-- (BOOL)graft:(id *)a3;
+- (BOOL)graft:(id *)graft;
 - (BOOL)hasValidCurrentBootOnlyTicket;
 - (BOOL)isGrafted;
-- (BOOL)isGraftedPath:(id)a3;
+- (BOOL)isGraftedPath:(id)path;
 - (BOOL)isPersonalized;
-- (BOOL)stageCurrent:(id *)a3;
-- (BOOL)ungraft:(id *)a3;
+- (BOOL)stageCurrent:(id *)current;
+- (BOOL)ungraft:(id *)ungraft;
 - (NSDictionary)brainInfo;
 - (NSString)brainPath;
 - (NSString)currentBootOnlyTicketPath;
 - (NSString)ticketPath;
-- (__MABuiltinBrainBundle__)initWithPath:(id)a3;
+- (__MABuiltinBrainBundle__)initWithPath:(id)path;
 - (unsigned)graftdmgType;
 @end
 
 @implementation __MABuiltinBrainBundle__
 
-+ (BOOL)destageCurrent:(id *)a3
++ (BOOL)destageCurrent:(id *)current
 {
   v4 = objc_claimAutoreleasedReturnValue([@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:@".current"]);
   v5 = objc_claimAutoreleasedReturnValue(+[__MABuiltinBrainBundle__ currentTargetPath]);
@@ -28,7 +28,7 @@
   if (v5)
   {
     v6 = objc_claimAutoreleasedReturnValue(+[NSFileManager defaultManager]);
-    v7 = [v6 removeItemAtPath:v4 error:a3];
+    v7 = [v6 removeItemAtPath:v4 error:current];
   }
 
   else
@@ -39,7 +39,7 @@
   return v7;
 }
 
-+ (BOOL)destageProposed:(id *)a3
++ (BOOL)destageProposed:(id *)proposed
 {
   v4 = objc_claimAutoreleasedReturnValue([@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:@".proposed"]);
   v5 = objc_claimAutoreleasedReturnValue(+[__MABuiltinBrainBundle__ proposedTargetPath]);
@@ -47,7 +47,7 @@
   if (v5)
   {
     v6 = objc_claimAutoreleasedReturnValue(+[NSFileManager defaultManager]);
-    v7 = [v6 removeItemAtPath:v4 error:a3];
+    v7 = [v6 removeItemAtPath:v4 error:proposed];
   }
 
   else
@@ -58,11 +58,11 @@
   return v7;
 }
 
-+ (BOOL)stageProposed:(id)a3 error:(id *)a4
++ (BOOL)stageProposed:(id)proposed error:(id *)error
 {
-  v4 = a3;
+  proposedCopy = proposed;
   v5 = objc_claimAutoreleasedReturnValue([@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:@".proposed"]);
-  v6 = objc_claimAutoreleasedReturnValue([v4 lastPathComponent]);
+  v6 = objc_claimAutoreleasedReturnValue([proposedCopy lastPathComponent]);
   v7 = sub_1000010A4(v6, v5);
 
   if ((v7 & 1) == 0)
@@ -71,7 +71,7 @@
     v9 = objc_claimAutoreleasedReturnValue(v8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = objc_claimAutoreleasedReturnValue([v4 lastPathComponent]);
+      v10 = objc_claimAutoreleasedReturnValue([proposedCopy lastPathComponent]);
       v12 = 138412546;
       v13 = v10;
       v14 = 2112;
@@ -157,16 +157,16 @@ LABEL_7:
   sub_1000016C8(@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain", 0, v21);
 }
 
-- (__MABuiltinBrainBundle__)initWithPath:(id)a3
+- (__MABuiltinBrainBundle__)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = __MABuiltinBrainBundle__;
   v6 = [(__MABuiltinBrainBundle__ *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundlePath, a3);
+    objc_storeStrong(&v6->_bundlePath, path);
   }
 
   return v7;
@@ -174,22 +174,22 @@ LABEL_7:
 
 - (BOOL)isGrafted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_claimAutoreleasedReturnValue([(__MABuiltinBrainBundle__ *)self graftPath]);
-  LOBYTE(v2) = [(__MABuiltinBrainBundle__ *)v2 isGraftedPath:v3];
+  LOBYTE(selfCopy) = [(__MABuiltinBrainBundle__ *)selfCopy isGraftedPath:v3];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isGraftedPath:(id)a3
+- (BOOL)isGraftedPath:(id)path
 {
   v6[0] = 0;
   v6[1] = 0;
-  v3 = fsctl([a3 fileSystemRepresentation], 0xC0104A66uLL, v6, 1u);
+  v3 = fsctl([path fileSystemRepresentation], 0xC0104A66uLL, v6, 1u);
   return BYTE4(v6[0]) && v3 == 0;
 }
 
-- (BOOL)stageCurrent:(id *)a3
+- (BOOL)stageCurrent:(id *)current
 {
   v4 = objc_claimAutoreleasedReturnValue([@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:@".current"]);
   v5 = objc_claimAutoreleasedReturnValue([(__MABuiltinBrainBundle__ *)self bundleId]);
@@ -211,7 +211,7 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)graft:(id *)a3
+- (BOOL)graft:(id *)graft
 {
   v5 = objc_claimAutoreleasedReturnValue(+[NSMutableDictionary dictionary]);
   v6 = objc_claimAutoreleasedReturnValue([(__MABuiltinBrainBundle__ *)self graftPath]);
@@ -297,7 +297,7 @@ LABEL_8:
     goto LABEL_26;
   }
 
-  v57 = a3;
+  graftCopy = graft;
   v19 = v5;
   v20 = objc_claimAutoreleasedReturnValue(+[NSFileManager defaultManager]);
   v21 = [v20 fileExistsAtPath:v6 isDirectory:&v64];
@@ -346,16 +346,16 @@ LABEL_23:
     v10 = v35;
 LABEL_16:
     v5 = v19;
-    a3 = v57;
+    graft = graftCopy;
     if (lstat([v6 fileSystemRepresentation], &v63))
     {
       v24 = sub_100000D90(@"Brain");
       v25 = objc_claimAutoreleasedReturnValue(v24);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v6 fileSystemRepresentation];
+        fileSystemRepresentation = [v6 fileSystemRepresentation];
         *buf = 136315138;
-        v68 = v26;
+        v68 = fileSystemRepresentation;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "[MAB] Could not lstat %s", buf, 0xCu);
       }
 
@@ -394,12 +394,12 @@ LABEL_45:
         v48 = objc_claimAutoreleasedReturnValue(v47);
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
-          v49 = [v7 fileSystemRepresentation];
-          v50 = [v6 fileSystemRepresentation];
+          fileSystemRepresentation2 = [v7 fileSystemRepresentation];
+          fileSystemRepresentation3 = [v6 fileSystemRepresentation];
           *buf = 136315394;
-          v68 = v49;
+          v68 = fileSystemRepresentation2;
           v69 = 2080;
-          v70 = v50;
+          v70 = fileSystemRepresentation3;
           _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "[MAB] Could not graft %s to %s", buf, 0x16u);
         }
 
@@ -510,7 +510,7 @@ LABEL_45:
       v11 = 1;
 LABEL_9:
 
-      if (a3)
+      if (graft)
       {
         goto LABEL_10;
       }
@@ -527,8 +527,8 @@ LABEL_25:
   v10 = v35;
 LABEL_24:
   v5 = v19;
-  a3 = v57;
-  if (!v57)
+  graft = graftCopy;
+  if (!graftCopy)
   {
     goto LABEL_25;
   }
@@ -538,7 +538,7 @@ LABEL_10:
   if (v10)
   {
     v18 = v10;
-    *a3 = v10;
+    *graft = v10;
   }
 
 LABEL_26:
@@ -546,7 +546,7 @@ LABEL_26:
   return v11;
 }
 
-- (BOOL)ungraft:(id *)a3
+- (BOOL)ungraft:(id *)ungraft
 {
   v5 = objc_claimAutoreleasedReturnValue(+[NSMutableDictionary dictionary]);
   v6 = objc_claimAutoreleasedReturnValue([(__MABuiltinBrainBundle__ *)self graftPath]);
@@ -586,9 +586,9 @@ LABEL_26:
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v17 = [v6 fileSystemRepresentation];
+          fileSystemRepresentation = [v6 fileSystemRepresentation];
           *buf = 136315138;
-          v26 = v17;
+          v26 = fileSystemRepresentation;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "[MAB] Could not ungraft %s", buf, 0xCu);
         }
 
@@ -642,11 +642,11 @@ LABEL_17:
   v20 = objc_claimAutoreleasedReturnValue([NSError errorWithDomain:@"MobileAssetBrainErrorDomain" code:v10 userInfo:v11]);
 
   v21 = 0;
-  if (a3 && v20)
+  if (ungraft && v20)
   {
     v22 = v20;
     v21 = 0;
-    *a3 = v20;
+    *ungraft = v20;
   }
 
 LABEL_24:
@@ -708,11 +708,11 @@ LABEL_24:
 
 - (unsigned)graftdmgType
 {
-  v2 = [(__MABuiltinBrainBundle__ *)self hasValidCurrentBootOnlyTicket];
+  hasValidCurrentBootOnlyTicket = [(__MABuiltinBrainBundle__ *)self hasValidCurrentBootOnlyTicket];
   v3 = sub_100000D90(@"Brain");
   v4 = objc_claimAutoreleasedReturnValue(v3);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v2)
+  if (hasValidCurrentBootOnlyTicket)
   {
     if (v5)
     {

@@ -1,26 +1,26 @@
 @interface AXSDKShotNSRecordingControllerImplementation
 - (AXSDDetectorManager)detectorManager;
-- (BOOL)kickoffMLTrainingOfDetector:(id)a3 error:(id *)a4;
+- (BOOL)kickoffMLTrainingOfDetector:(id)detector error:(id *)error;
 - (BOOL)listenEngineShouldResumeAfterAudioSessionInterruption;
-- (BOOL)retrainModelWithIdentifier:(id)a3;
+- (BOOL)retrainModelWithIdentifier:(id)identifier;
 - (NSSet)currentDetectionTypes;
-- (void)addWithListenType:(id)a3;
+- (void)addWithListenType:(id)type;
 - (void)assetsReadyAndDetectorsAdded;
-- (void)deregisterWithListener:(id)a3;
-- (void)hearingMLHelperService:(id)a3 eventOccurred:(int64_t)a4;
-- (void)listenEngineDidStartWithInputFormat:(id)a3;
-- (void)listenEngineFailedToStartWithError:(id)a3;
-- (void)receivedBuffer:(id)a3 atTime:(id)a4;
-- (void)receivedCompletion:(id)a3;
-- (void)receivedError:(id)a3 fromDetector:(id)a4;
-- (void)receivedObservation:(id)a3 forDetector:(id)a4;
-- (void)registerWithListener:(id)a3 forRecordingUpdates:(id)a4;
+- (void)deregisterWithListener:(id)listener;
+- (void)hearingMLHelperService:(id)service eventOccurred:(int64_t)occurred;
+- (void)listenEngineDidStartWithInputFormat:(id)format;
+- (void)listenEngineFailedToStartWithError:(id)error;
+- (void)receivedBuffer:(id)buffer atTime:(id)time;
+- (void)receivedCompletion:(id)completion;
+- (void)receivedError:(id)error fromDetector:(id)detector;
+- (void)receivedObservation:(id)observation forDetector:(id)detector;
+- (void)registerWithListener:(id)listener forRecordingUpdates:(id)updates;
 - (void)removeAllListenTypes;
-- (void)removeWithListenType:(id)a3;
-- (void)savedTrainingRecordingForDetector:(id)a3;
-- (void)setDetectorManager:(id)a3;
+- (void)removeWithListenType:(id)type;
+- (void)savedTrainingRecordingForDetector:(id)detector;
+- (void)setDetectorManager:(id)manager;
 - (void)startListening;
-- (void)startListeningToTrainDetector:(id)a3;
+- (void)startListeningToTrainDetector:(id)detector;
 - (void)stopListening;
 @end
 
@@ -33,13 +33,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDetectorManager:(id)a3
+- (void)setDetectorManager:(id)manager
 {
   v5 = OBJC_IVAR____TtC18AXSoundDetectionUI44AXSDKShotNSRecordingControllerImplementation_detectorManager;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = manager;
+  managerCopy = manager;
 }
 
 - (NSSet)currentDetectionTypes
@@ -47,8 +47,8 @@
   v3 = OBJC_IVAR____TtC18AXSoundDetectionUI44AXSDKShotNSRecordingControllerImplementation_detectorManager;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
-  v6 = [v4 currentDetectors];
+  selfCopy = self;
+  currentDetectors = [v4 currentDetectors];
   type metadata accessor for AXSDSoundDetectionType();
   v7 = sub_23D685980();
 
@@ -62,152 +62,152 @@
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D65AACC();
 }
 
-- (void)startListeningToTrainDetector:(id)a3
+- (void)startListeningToTrainDetector:(id)detector
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D65AB44(v4);
+  detectorCopy = detector;
+  selfCopy = self;
+  sub_23D65AB44(detectorCopy);
 }
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D65AF18();
 }
 
-- (void)registerWithListener:(id)a3 forRecordingUpdates:(id)a4
+- (void)registerWithListener:(id)listener forRecordingUpdates:(id)updates
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(updates);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_23D65B460(v8, sub_23D662DDC, v7);
+  listenerCopy = listener;
+  selfCopy = self;
+  sub_23D65B460(listenerCopy, sub_23D662DDC, v7);
 }
 
-- (void)deregisterWithListener:(id)a3
+- (void)deregisterWithListener:(id)listener
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D65BA90(v4);
+  listenerCopy = listener;
+  selfCopy = self;
+  sub_23D65BA90(listenerCopy);
 }
 
-- (BOOL)retrainModelWithIdentifier:(id)a3
+- (BOOL)retrainModelWithIdentifier:(id)identifier
 {
   v4 = _sSo22AXSDSoundDetectionTypea07AXSoundB2UIE11descriptionSSvg_0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_23D65C048(v4, v6);
 
   return v4 & 1;
 }
 
-- (void)addWithListenType:(id)a3
+- (void)addWithListenType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D65C504(v4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_23D65C504(typeCopy);
 }
 
-- (void)removeWithListenType:(id)a3
+- (void)removeWithListenType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D65C580(v4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_23D65C580(typeCopy);
 }
 
 - (void)removeAllListenTypes
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D65C808();
 }
 
-- (BOOL)kickoffMLTrainingOfDetector:(id)a3 error:(id *)a4
+- (BOOL)kickoffMLTrainingOfDetector:(id)detector error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_23D65E7FC(v5);
+  detectorCopy = detector;
+  selfCopy = self;
+  sub_23D65E7FC(detectorCopy);
 
   return 1;
 }
 
-- (void)listenEngineFailedToStartWithError:(id)a3
+- (void)listenEngineFailedToStartWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  AXSDKShotNSRecordingControllerImplementation.listenEngineFailedToStartWithError(_:)(a3);
+  selfCopy = self;
+  errorCopy = error;
+  AXSDKShotNSRecordingControllerImplementation.listenEngineFailedToStartWithError(_:)(error);
 }
 
-- (void)listenEngineDidStartWithInputFormat:(id)a3
+- (void)listenEngineDidStartWithInputFormat:(id)format
 {
-  v5 = a3;
-  v6 = self;
-  AXSDKShotNSRecordingControllerImplementation.listenEngineDidStart(withInputFormat:)(a3);
+  formatCopy = format;
+  selfCopy = self;
+  AXSDKShotNSRecordingControllerImplementation.listenEngineDidStart(withInputFormat:)(format);
 }
 
-- (void)receivedBuffer:(id)a3 atTime:(id)a4
+- (void)receivedBuffer:(id)buffer atTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = self;
-  v8.super.super.isa = v6;
-  v8.super._impl = v7;
-  AXSDKShotNSRecordingControllerImplementation.receivedBuffer(_:at:)(v8, v9);
+  bufferCopy = buffer;
+  timeCopy = time;
+  selfCopy = self;
+  v8.super.super.isa = bufferCopy;
+  v8.super._impl = timeCopy;
+  AXSDKShotNSRecordingControllerImplementation.receivedBuffer(_:at:)(v8, selfCopy);
 }
 
 - (BOOL)listenEngineShouldResumeAfterAudioSessionInterruption
 {
-  v2 = [objc_opt_self() sharedInstance];
-  v3 = [v2 shouldBeListeningForSoundRecognitionCustomSounds];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  shouldBeListeningForSoundRecognitionCustomSounds = [sharedInstance shouldBeListeningForSoundRecognitionCustomSounds];
 
-  return v3;
+  return shouldBeListeningForSoundRecognitionCustomSounds;
 }
 
-- (void)receivedObservation:(id)a3 forDetector:(id)a4
+- (void)receivedObservation:(id)observation forDetector:(id)detector
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  AXSDKShotNSRecordingControllerImplementation.receivedObservation(_:forDetector:)(v6, v7);
+  observationCopy = observation;
+  detectorCopy = detector;
+  selfCopy = self;
+  AXSDKShotNSRecordingControllerImplementation.receivedObservation(_:forDetector:)(observationCopy, detectorCopy);
 }
 
-- (void)receivedCompletion:(id)a3
+- (void)receivedCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  AXSDKShotNSRecordingControllerImplementation.receivedCompletion(_:)(v4);
+  completionCopy = completion;
+  selfCopy = self;
+  AXSDKShotNSRecordingControllerImplementation.receivedCompletion(_:)(completionCopy);
 }
 
-- (void)receivedError:(id)a3 fromDetector:(id)a4
+- (void)receivedError:(id)error fromDetector:(id)detector
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  AXSDKShotNSRecordingControllerImplementation.receivedError(_:fromDetector:)(v8, v6);
+  errorCopy = error;
+  detectorCopy = detector;
+  selfCopy = self;
+  AXSDKShotNSRecordingControllerImplementation.receivedError(_:fromDetector:)(errorCopy, detectorCopy);
 }
 
 - (void)assetsReadyAndDetectorsAdded
 {
-  v2 = self;
+  selfCopy = self;
   AXSDKShotNSRecordingControllerImplementation.assetsReadyAndDetectorsAdded()();
 }
 
-- (void)savedTrainingRecordingForDetector:(id)a3
+- (void)savedTrainingRecordingForDetector:(id)detector
 {
-  v5 = a3;
-  v6 = self;
-  AXSDKShotNSRecordingControllerImplementation.savedTrainingRecording(for:)(a3);
+  detectorCopy = detector;
+  selfCopy = self;
+  AXSDKShotNSRecordingControllerImplementation.savedTrainingRecording(for:)(detector);
 }
 
-- (void)hearingMLHelperService:(id)a3 eventOccurred:(int64_t)a4
+- (void)hearingMLHelperService:(id)service eventOccurred:(int64_t)occurred
 {
-  v6 = a3;
-  v7 = self;
-  sub_23D6623C8(a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_23D6623C8(occurred);
 }
 
 @end

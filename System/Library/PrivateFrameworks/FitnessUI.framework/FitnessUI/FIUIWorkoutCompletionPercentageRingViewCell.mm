@@ -1,9 +1,9 @@
 @interface FIUIWorkoutCompletionPercentageRingViewCell
-+ (double)rowHeightForWorkout:(id)a3 width:(double)a4;
-- (FIUIWorkoutCompletionPercentageRingViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 ringsViewRenderer:(id)a5;
-- (void)animateRingWithCompletion:(id)a3;
++ (double)rowHeightForWorkout:(id)workout width:(double)width;
+- (FIUIWorkoutCompletionPercentageRingViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier ringsViewRenderer:(id)renderer;
+- (void)animateRingWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setWorkout:(id)a3 fillRing:(BOOL)a4;
+- (void)setWorkout:(id)workout fillRing:(BOOL)ring;
 @end
 
 @implementation FIUIWorkoutCompletionPercentageRingViewCell
@@ -13,8 +13,8 @@
   v96.receiver = self;
   v96.super_class = FIUIWorkoutCompletionPercentageRingViewCell;
   [(FIUIWorkoutCompletionPercentageRingViewCell *)&v96 layoutSubviews];
-  v3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -37,31 +37,31 @@
   v18 = v93;
   v20 = v94;
   v19 = v95;
-  v21 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
-  [v21 setFrame:{v17, v18, v20, v19}];
+  ringsView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
+  [ringsView setFrame:{v17, v18, v20, v19}];
 
   v22 = *&v92;
   v23 = v93;
   v24 = v94;
   v25 = v95;
-  v26 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self gradientBackgroundImageView];
-  [v26 setFrame:{v22, v23, v24, v25}];
+  gradientBackgroundImageView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self gradientBackgroundImageView];
+  [gradientBackgroundImageView setFrame:{v22, v23, v24, v25}];
 
-  v27 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
-  [v27 sizeToFit];
+  iconImageView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
+  [iconImageView sizeToFit];
 
-  v28 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
-  [v28 center];
+  ringsView2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
+  [ringsView2 center];
   v30 = v29;
   v32 = v31;
-  v33 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
-  [v33 setCenter:{v30, v32}];
+  iconImageView2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
+  [iconImageView2 setCenter:{v30, v32}];
 
   if (FIUILocaleIsRightToLeft())
   {
     CGAffineTransformMakeScale(&v91, -1.0, 1.0);
-    v34 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
-    v35 = v34;
+    iconImageView3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
+    v35 = iconImageView3;
     v88 = *&v91.a;
     v89 = *&v91.c;
     v36 = *&v91.tx;
@@ -69,8 +69,8 @@
 
   else
   {
-    v34 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
-    v35 = v34;
+    iconImageView3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
+    v35 = iconImageView3;
     v37 = *(MEMORY[0x1E695EFD0] + 16);
     v88 = *MEMORY[0x1E695EFD0];
     v89 = v37;
@@ -78,64 +78,64 @@
   }
 
   v90 = v36;
-  [v34 setTransform:&v88];
+  [iconImageView3 setTransform:&v88];
 
-  v38 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
-  [v38 sizeThatFits:{v9 + 5.5 * -2.0, 1.79769313e308}];
+  typeLabel = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
+  [typeLabel sizeThatFits:{v9 + 5.5 * -2.0, 1.79769313e308}];
   v40 = v39;
 
-  v41 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
-  [v41 setFrame:{5.5, 0.0, v9 + 5.5 * -2.0, v40}];
+  typeLabel2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
+  [typeLabel2 setFrame:{5.5, 0.0, v9 + 5.5 * -2.0, v40}];
 
-  v42 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
-  [v42 frame];
+  ringsView3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
+  [ringsView3 frame];
   MaxY = CGRectGetMaxY(v97);
-  v44 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
-  v45 = [v44 font];
+  typeLabel3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
+  font = [typeLabel3 font];
   [objc_opt_class() _ringToTypeSpacing];
-  [v45 _scaledValueForValue:?];
+  [font _scaledValueForValue:?];
   v47 = MaxY + v46;
-  v48 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
-  [v48 _setFirstLineBaselineFrameOriginY:v47];
+  typeLabel4 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
+  [typeLabel4 _setFirstLineBaselineFrameOriginY:v47];
 
-  v49 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
-  [v49 frame];
-  v50 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self contentView];
-  v51 = FIUIRoundFrameToViewScale(v50);
+  typeLabel5 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
+  [typeLabel5 frame];
+  contentView2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self contentView];
+  v51 = FIUIRoundFrameToViewScale(contentView2);
   v53 = v52;
   v55 = v54;
   v57 = v56;
-  v58 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
-  [v58 setFrame:{v51, v53, v55, v57}];
+  typeLabel6 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
+  [typeLabel6 setFrame:{v51, v53, v55, v57}];
 
-  v59 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-  [v59 sizeThatFits:{v9 + 5.5 * -2.0, 1.79769313e308}];
+  secondaryLabel = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+  [secondaryLabel sizeThatFits:{v9 + 5.5 * -2.0, 1.79769313e308}];
   v61 = v60;
 
-  v62 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-  [v62 setFrame:{5.5, 0.0, v9 + 5.5 * -2.0, v61}];
+  secondaryLabel2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+  [secondaryLabel2 setFrame:{5.5, 0.0, v9 + 5.5 * -2.0, v61}];
 
-  v63 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
-  [v63 _lastLineBaselineFrameOriginY];
+  typeLabel7 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
+  [typeLabel7 _lastLineBaselineFrameOriginY];
   v65 = v64;
   [objc_opt_class() _typeToSecondaryLabelSpacing];
   v67 = v65 + v66;
-  v68 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-  [v68 _setFirstLineBaselineFrameOriginY:v67];
+  secondaryLabel3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+  [secondaryLabel3 _setFirstLineBaselineFrameOriginY:v67];
 
-  v69 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-  [v69 frame];
-  v70 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self contentView];
-  v71 = FIUIRoundFrameToViewScale(v70);
+  secondaryLabel4 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+  [secondaryLabel4 frame];
+  contentView3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self contentView];
+  v71 = FIUIRoundFrameToViewScale(contentView3);
   v73 = v72;
   v75 = v74;
   v77 = v76;
-  v78 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-  [v78 setFrame:{v71, v73, v75, v77}];
+  secondaryLabel5 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+  [secondaryLabel5 setFrame:{v71, v73, v75, v77}];
 
   v79 = v9 + 5.5 * -2.0;
-  v80 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self separatorView];
-  [v80 sizeThatFits:{v79, 1.79769313e308}];
+  separatorView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self separatorView];
+  [separatorView sizeThatFits:{v79, 1.79769313e308}];
   v82 = v81;
 
   v98.origin.y = v86;
@@ -143,39 +143,39 @@
   v98.size.width = v9;
   v98.size.height = rect;
   v83 = CGRectGetMaxY(v98) - v82;
-  v84 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self separatorView];
-  [v84 setFrame:{5.5, v83, v79, v82}];
+  separatorView2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self separatorView];
+  [separatorView2 setFrame:{5.5, v83, v79, v82}];
 }
 
-+ (double)rowHeightForWorkout:(id)a3 width:(double)a4
++ (double)rowHeightForWorkout:(id)workout width:(double)width
 {
   v6 = MEMORY[0x1E69DB878];
   v7 = *MEMORY[0x1E69DDCF8];
-  v8 = a3;
+  workoutCopy = workout;
   v9 = [v6 defaultFontForTextStyle:v7];
-  [a1 _ringTopPadding];
+  [self _ringTopPadding];
   v11 = v10;
-  [a1 _ringDiameter];
+  [self _ringDiameter];
   v13 = v11 + v12;
   v14 = _TypeLabel();
-  v15 = [v8 fiui_activityType];
+  fiui_activityType = [workoutCopy fiui_activityType];
 
-  v16 = [v15 localizedName];
-  [v14 setText:v16];
+  localizedName = [fiui_activityType localizedName];
+  [v14 setText:localizedName];
 
-  [v14 sizeThatFits:{a4 + 5.5 * -2.0, 1.79769313e308}];
+  [v14 sizeThatFits:{width + 5.5 * -2.0, 1.79769313e308}];
   [v14 frame];
   [v14 setFrame:?];
-  v17 = [v14 font];
-  [a1 _ringToTypeSpacing];
-  [v17 _scaledValueForValue:?];
+  font = [v14 font];
+  [self _ringToTypeSpacing];
+  [font _scaledValueForValue:?];
   [v14 _setFirstLineBaselineFrameOriginY:v13 + v18];
 
   [v14 _lastLineBaselineFrameOriginY];
   v20 = v19;
-  [a1 _typeToSecondaryLabelSpacing];
+  [self _typeToSecondaryLabelSpacing];
   v22 = v21;
-  [a1 _secondaryLabelToSeparatorSpacing];
+  [self _secondaryLabelToSeparatorSpacing];
   [v9 _scaledValueForValue:?];
   v24 = v23;
   if (FIUIOnePixel_onceToken_0 != -1)
@@ -188,12 +188,12 @@
   return v25;
 }
 
-- (FIUIWorkoutCompletionPercentageRingViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 ringsViewRenderer:(id)a5
+- (FIUIWorkoutCompletionPercentageRingViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier ringsViewRenderer:(id)renderer
 {
-  v8 = a5;
+  rendererCopy = renderer;
   v42.receiver = self;
   v42.super_class = FIUIWorkoutCompletionPercentageRingViewCell;
-  v9 = [(FIUIWorkoutCompletionPercentageRingViewCell *)&v42 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(FIUIWorkoutCompletionPercentageRingViewCell *)&v42 initWithStyle:style reuseIdentifier:identifier];
   if (v9)
   {
     v10 = [objc_alloc(MEMORY[0x1E6989B38]) initWithNumberOfRings:1];
@@ -203,7 +203,7 @@
     HIDWORD(v12) = 1075052544;
     *&v12 = 5.0;
     [v10 setRingThickness:v12];
-    v13 = [objc_alloc(MEMORY[0x1E6989B48]) initWithRingGroupController:v10 renderer:v8];
+    v13 = [objc_alloc(MEMORY[0x1E6989B48]) initWithRingGroupController:v10 renderer:rendererCopy];
     ringsView = v9->_ringsView;
     v9->_ringsView = v13;
 
@@ -226,8 +226,8 @@
     v9->_iconImageView = v24;
 
     v26 = v9->_ringsView;
-    v27 = [MEMORY[0x1E69DC888] clearColor];
-    [(ARUIRingsView *)v26 setBackgroundColor:v27];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(ARUIRingsView *)v26 setBackgroundColor:clearColor];
 
     [(ARUIRingsView *)v9->_ringsView setOpaque:0];
     [(ARUIRingsView *)v9->_ringsView setMaskView:0];
@@ -246,133 +246,133 @@
     separatorView = v9->_separatorView;
     v9->_separatorView = v33;
 
-    v35 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
-    [v35 addSubview:v9->_ringsView];
+    contentView = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
+    [contentView addSubview:v9->_ringsView];
 
-    v36 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
-    [v36 addSubview:v9->_gradientBackgroundImageView];
+    contentView2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
+    [contentView2 addSubview:v9->_gradientBackgroundImageView];
 
-    v37 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
-    [v37 addSubview:v9->_iconImageView];
+    contentView3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
+    [contentView3 addSubview:v9->_iconImageView];
 
-    v38 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
-    [v38 addSubview:v9->_typeLabel];
+    contentView4 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
+    [contentView4 addSubview:v9->_typeLabel];
 
-    v39 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
-    [v39 addSubview:v9->_secondaryLabel];
+    contentView5 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
+    [contentView5 addSubview:v9->_secondaryLabel];
 
-    v40 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
-    [v40 addSubview:v9->_separatorView];
+    contentView6 = [(FIUIWorkoutCompletionPercentageRingViewCell *)v9 contentView];
+    [contentView6 addSubview:v9->_separatorView];
   }
 
   return v9;
 }
 
-- (void)setWorkout:(id)a3 fillRing:(BOOL)a4
+- (void)setWorkout:(id)workout fillRing:(BOOL)ring
 {
-  v4 = a4;
-  v47 = a3;
-  objc_storeStrong(&self->_workout, a3);
-  v7 = [(HKWorkout *)self->_workout _goalType];
-  v8 = v7 != 0;
-  v9 = v7 == 0;
-  v10 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
-  [v10 setHidden:v9];
+  ringCopy = ring;
+  workoutCopy = workout;
+  objc_storeStrong(&self->_workout, workout);
+  _goalType = [(HKWorkout *)self->_workout _goalType];
+  v8 = _goalType != 0;
+  v9 = _goalType == 0;
+  ringsView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
+  [ringsView setHidden:v9];
 
-  v11 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self gradientBackgroundImageView];
-  [v11 setHidden:v8];
+  gradientBackgroundImageView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self gradientBackgroundImageView];
+  [gradientBackgroundImageView setHidden:v8];
 
   v12 = [MEMORY[0x1E6989B18] metricColorsForGoalTypeIdentifier:{-[HKWorkout _goalType](self->_workout, "_goalType")}];
-  v13 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
-  v14 = [v13 ringGroupController];
-  v15 = [v12 gradientDarkColor];
-  v16 = [v12 gradientLightColor];
-  [v14 setTopColor:v15 bottomColor:v16 ofRingAtIndex:0];
+  ringsView2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
+  ringGroupController = [ringsView2 ringGroupController];
+  gradientDarkColor = [v12 gradientDarkColor];
+  gradientLightColor = [v12 gradientLightColor];
+  [ringGroupController setTopColor:gradientDarkColor bottomColor:gradientLightColor ofRingAtIndex:0];
 
-  if (v4)
+  if (ringCopy)
   {
-    v17 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
-    [v17 fiui_completionFactor];
+    workout = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
+    [workout fiui_completionFactor];
     [(FIUIWorkoutCompletionPercentageRingViewCell *)self setCurrentCompletionFactor:?];
 
-    v18 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
-    v19 = [v18 ringGroupController];
-    v20 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
-    [v20 fiui_completionFactor];
-    [v19 setPercentage:0 ofRingAtIndex:0 animated:?];
+    ringsView3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
+    ringGroupController2 = [ringsView3 ringGroupController];
+    workout2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
+    [workout2 fiui_completionFactor];
+    [ringGroupController2 setPercentage:0 ofRingAtIndex:0 animated:?];
   }
 
-  v21 = [(HKWorkout *)self->_workout fiui_connectedGymBrandName];
-  if (v21)
+  fiui_connectedGymBrandName = [(HKWorkout *)self->_workout fiui_connectedGymBrandName];
+  if (fiui_connectedGymBrandName)
   {
-    v22 = [MEMORY[0x1E69DC888] grayColor];
-    v23 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-    [v23 setTextColor:v22];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    secondaryLabel = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+    [secondaryLabel setTextColor:grayColor];
 
-    v24 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-    [v24 setText:v21];
+    secondaryLabel2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+    [secondaryLabel2 setText:fiui_connectedGymBrandName];
   }
 
   else
   {
-    v25 = [v12 nonGradientTextColor];
-    v26 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-    [v26 setTextColor:v25];
+    nonGradientTextColor = [v12 nonGradientTextColor];
+    secondaryLabel3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+    [secondaryLabel3 setTextColor:nonGradientTextColor];
 
-    if ([v47 _goalType])
+    if ([workoutCopy _goalType])
     {
-      v27 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
-      [v27 fiui_completionFactor];
+      workout3 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
+      [workout3 fiui_completionFactor];
       v29 = v28;
 
       v30 = MEMORY[0x1E696AEC0];
-      v24 = FIUIBundle();
-      v31 = [v24 localizedStringForKey:@"%@_PERCENTAGE_COMPLETE_FORMAT" value:&stru_1F5F88F90 table:@"Localizable"];
+      secondaryLabel2 = FIUIBundle();
+      v31 = [secondaryLabel2 localizedStringForKey:@"%@_PERCENTAGE_COMPLETE_FORMAT" value:&stru_1F5F88F90 table:@"Localizable"];
       v32 = [MEMORY[0x1E696AD98] numberWithDouble:round(v29 * 100.0) / 100.0];
       v33 = [FIUIFormattingManager percentStringWithNumber:v32];
       v34 = [v30 stringWithFormat:v31, v33];
-      v35 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-      [v35 setText:v34];
+      secondaryLabel4 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+      [secondaryLabel4 setText:v34];
     }
 
     else
     {
-      v24 = FIUIBundle();
-      v31 = [v24 localizedStringForKey:@"WORKOUT_OPEN_GOAL" value:&stru_1F5F88F90 table:@"Localizable"];
-      v36 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
-      [v36 setText:v31];
+      secondaryLabel2 = FIUIBundle();
+      v31 = [secondaryLabel2 localizedStringForKey:@"WORKOUT_OPEN_GOAL" value:&stru_1F5F88F90 table:@"Localizable"];
+      secondaryLabel5 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self secondaryLabel];
+      [secondaryLabel5 setText:v31];
     }
   }
 
-  v37 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
-  v38 = [v37 fiui_activityType];
-  v39 = [v38 localizedName];
-  v40 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
-  [v40 setText:v39];
+  workout4 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
+  fiui_activityType = [workout4 fiui_activityType];
+  localizedName = [fiui_activityType localizedName];
+  typeLabel = [(FIUIWorkoutCompletionPercentageRingViewCell *)self typeLabel];
+  [typeLabel setText:localizedName];
 
   v41 = [FIUIWorkoutActivityType activityTypeWithWorkout:self->_workout];
   v42 = FIUIStaticWorkoutIconImage(v41, 4);
   v43 = [v42 imageWithRenderingMode:2];
-  v44 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
-  [v44 setImage:v43];
+  iconImageView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
+  [iconImageView setImage:v43];
 
-  v45 = [v12 nonGradientTextColor];
-  v46 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
-  [v46 setTintColor:v45];
+  nonGradientTextColor2 = [v12 nonGradientTextColor];
+  iconImageView2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self iconImageView];
+  [iconImageView2 setTintColor:nonGradientTextColor2];
 
   [(FIUIWorkoutCompletionPercentageRingViewCell *)self setNeedsLayout];
 }
 
-- (void)animateRingWithCompletion:(id)a3
+- (void)animateRingWithCompletion:(id)completion
 {
-  v4 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
-  [v4 setPaused:0];
+  ringsView = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
+  [ringsView setPaused:0];
 
-  v7 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
-  v5 = [v7 ringGroupController];
-  v6 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
-  [v6 fiui_completionFactor];
-  [v5 setPercentage:0 ofRingAtIndex:0 animated:?];
+  ringsView2 = [(FIUIWorkoutCompletionPercentageRingViewCell *)self ringsView];
+  ringGroupController = [ringsView2 ringGroupController];
+  workout = [(FIUIWorkoutCompletionPercentageRingViewCell *)self workout];
+  [workout fiui_completionFactor];
+  [ringGroupController setPercentage:0 ofRingAtIndex:0 animated:?];
 }
 
 @end

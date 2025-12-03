@@ -1,6 +1,6 @@
 @interface MPSCNNCrossChannelNormalizationGradientNode
 + (MPSCNNCrossChannelNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelSize:(NSUInteger)kernelSize;
-- (MPSCNNCrossChannelNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNCrossChannelNormalizationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNCrossChannelNormalizationGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelSize:(NSUInteger)kernelSize;
 @end
 
@@ -8,7 +8,7 @@
 
 + (MPSCNNCrossChannelNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelSize:(NSUInteger)kernelSize
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_kernelSize_(v10, v11, sourceGradient, sourceImage, gradientState, kernelSize, v12, v13);
 
   return v14;
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (MPSCNNCrossChannelNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNCrossChannelNormalizationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -41,10 +41,10 @@
   {
     v9.receiver = self;
     v9.super_class = MPSCNNCrossChannelNormalizationGradientNode;
-    result = [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:a3 forwardFilter:a4];
+    result = [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:images forwardFilter:filter];
     if (result)
     {
-      result->_kernelSize = *(a4 + 9);
+      result->_kernelSize = *(filter + 9);
     }
   }
 

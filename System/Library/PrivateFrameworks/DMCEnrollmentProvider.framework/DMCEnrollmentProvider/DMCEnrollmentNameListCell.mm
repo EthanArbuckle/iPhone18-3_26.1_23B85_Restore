@@ -1,18 +1,18 @@
 @interface DMCEnrollmentNameListCell
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (DMCEnrollmentNameListCell)initWithNames:(id)a3 numberOfColumns:(unint64_t)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (DMCEnrollmentNameListCell)initWithNames:(id)names numberOfColumns:(unint64_t)columns;
 - (double)cellHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)layoutSubviews;
 @end
 
 @implementation DMCEnrollmentNameListCell
 
-- (DMCEnrollmentNameListCell)initWithNames:(id)a3 numberOfColumns:(unint64_t)a4
+- (DMCEnrollmentNameListCell)initWithNames:(id)names numberOfColumns:(unint64_t)columns
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  namesCopy = names;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v28.receiver = self;
@@ -23,14 +23,14 @@
   {
     [(DMCEnrollmentNameListCell *)v9 setSelectionStyle:0];
     [(DMCEnrollmentNameListCell *)v9 setUserInteractionEnabled:0];
-    v10 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [(DMCEnrollmentNameListCell *)v9 setBackgroundColor:v10];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [(DMCEnrollmentNameListCell *)v9 setBackgroundColor:secondarySystemBackgroundColor];
 
-    v11 = [v6 copy];
+    v11 = [namesCopy copy];
     names = v9->_names;
     v9->_names = v11;
 
-    v9->_numberOfColumns = a4;
+    v9->_numberOfColumns = columns;
     v13 = objc_alloc_init(MEMORY[0x277D752F0]);
     v14 = objc_alloc(MEMORY[0x277D752A0]);
     v15 = [v14 initWithFrame:v13 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -39,19 +39,19 @@
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v15 setScrollEnabled:0];
     [v15 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"DMCEnrollmentNameItemCell"];
-    v16 = [(DMCEnrollmentNameListCell *)v9 contentView];
-    [v16 addSubview:v15];
+    contentView = [(DMCEnrollmentNameListCell *)v9 contentView];
+    [contentView addSubview:v15];
 
     v30 = @"collectionView";
     v31[0] = v15;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     v18 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"|-0-[collectionView]-0-|" options:0 metrics:0 views:v17];
     v19 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-0-[collectionView]-0-|" options:0 metrics:0 views:v17];
-    v20 = [(DMCEnrollmentNameListCell *)v9 contentView];
-    [v20 addConstraints:v18];
+    contentView2 = [(DMCEnrollmentNameListCell *)v9 contentView];
+    [contentView2 addConstraints:v18];
 
-    v21 = [(DMCEnrollmentNameListCell *)v9 contentView];
-    [v21 addConstraints:v19];
+    contentView3 = [(DMCEnrollmentNameListCell *)v9 contentView];
+    [contentView3 addConstraints:v19];
 
     objc_storeStrong(&v9->_collectionView, v15);
     objc_initWeak(&location, v9);
@@ -83,48 +83,48 @@ void __59__DMCEnrollmentNameListCell_initWithNames_numberOfColumns___block_invok
   v4.receiver = self;
   v4.super_class = DMCEnrollmentNameListCell;
   [(DMCEnrollmentNameListCell *)&v4 layoutSubviews];
-  v3 = [(DMCEnrollmentNameListCell *)self collectionView];
-  [v3 sizeToFit];
+  collectionView = [(DMCEnrollmentNameListCell *)self collectionView];
+  [collectionView sizeToFit];
 
   [(DMCEnrollmentNameListCell *)self bounds];
   [(DMCEnrollmentNameListCell *)self setSeparatorInset:0.0, CGRectGetWidth(v5), 0.0, 0.0];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"DMCEnrollmentNameItemCell" forIndexPath:v6];
-  v8 = [(DMCEnrollmentNameListCell *)self names];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"DMCEnrollmentNameItemCell" forIndexPath:pathCopy];
+  names = [(DMCEnrollmentNameListCell *)self names];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
-  v11 = [v7 textLabel];
-  [v11 setText:v10];
+  v10 = [names objectAtIndexedSubscript:v9];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v10];
 
-  v12 = [v7 textLabel];
-  [v12 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 sizeThatFits:{1.79769313e308, 1.79769313e308}];
   [(DMCEnrollmentNameListCell *)self setCellHeight:v13];
 
   return v7;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(DMCEnrollmentNameListCell *)self names:a3];
+  v4 = [(DMCEnrollmentNameListCell *)self names:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a3;
-  v9 = [(DMCEnrollmentNameListCell *)self names];
-  v10 = [v7 row];
+  pathCopy = path;
+  viewCopy = view;
+  names = [(DMCEnrollmentNameListCell *)self names];
+  v10 = [pathCopy row];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
+  v11 = [names objectAtIndexedSubscript:v10];
   v30 = *MEMORY[0x277D740A8];
   v12 = +[DMCEnrollmentNameItemCell _titleFont];
   v31[0] = v12;
@@ -132,9 +132,9 @@ void __59__DMCEnrollmentNameListCell_initWithNames_numberOfColumns___block_invok
   [v11 boundingRectWithSize:0 options:v13 attributes:0 context:{1.79769313e308, 1.79769313e308}];
   v15 = v14;
 
-  v16 = [(DMCEnrollmentNameListCell *)self names];
-  v17 = [v16 count];
-  [v8 frame];
+  names2 = [(DMCEnrollmentNameListCell *)self names];
+  v17 = [names2 count];
+  [viewCopy frame];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -161,8 +161,8 @@ void __59__DMCEnrollmentNameListCell_initWithNames_numberOfColumns___block_invok
 - (double)cellHeight
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [(DMCEnrollmentNameListCell *)self names];
-  v4 = [v3 count];
+  names = [(DMCEnrollmentNameListCell *)self names];
+  v4 = [names count];
 
   if (!v4)
   {
@@ -175,8 +175,8 @@ void __59__DMCEnrollmentNameListCell_initWithNames_numberOfColumns___block_invok
   v8 = 0.0;
   do
   {
-    v9 = [(DMCEnrollmentNameListCell *)self names];
-    v10 = [v9 objectAtIndexedSubscript:v5];
+    names2 = [(DMCEnrollmentNameListCell *)self names];
+    v10 = [names2 objectAtIndexedSubscript:v5];
     v17 = v7;
     v11 = +[DMCEnrollmentNameItemCell _titleFont];
     v18[0] = v11;
@@ -191,8 +191,8 @@ void __59__DMCEnrollmentNameListCell_initWithNames_numberOfColumns___block_invok
 
     v6 += [(DMCEnrollmentNameListCell *)self numberOfColumns];
     v5 = v6;
-    v14 = [(DMCEnrollmentNameListCell *)self names];
-    v15 = [v14 count];
+    names3 = [(DMCEnrollmentNameListCell *)self names];
+    v15 = [names3 count];
   }
 
   while (v15 > v6);

@@ -3,16 +3,16 @@
 + (id)lastNotificationDateAccessor;
 + (id)lastSeenSuggestionsDateAccessor;
 + (id)mostRecentUserSeenAddedDateAccessor;
-- (BOOL)isAssetUnread:(id)a3;
+- (BOOL)isAssetUnread:(id)unread;
 - (NSDate)notificationDate;
 - (NSDate)priorityDate;
 - (PHAssetCollection)sharingSuggestionsSmartAlbum;
 - (PHFetchResult)mostRecentAssetFetchResult;
 - (PXSharedLibrarySharingSuggestionsCountsManager)init;
-- (PXSharedLibrarySharingSuggestionsCountsManager)initWithPhotoLibrary:(id)a3;
-- (id)prepareForPhotoLibraryChange:(id)a3;
+- (PXSharedLibrarySharingSuggestionsCountsManager)initWithPhotoLibrary:(id)library;
+- (id)prepareForPhotoLibraryChange:(id)change;
 - (void)_fetchUnreadAssetsAfterDate;
-- (void)_handleUnreadSuggestedAssetsFetchResult:(id)a3 forDate:(id)a4;
+- (void)_handleUnreadSuggestedAssetsFetchResult:(id)result forDate:(id)date;
 - (void)_invalidateDetailedUnreadCounts;
 - (void)_invalidateHasAnySuggestions;
 - (void)_invalidateIsSuggestionsEnabled;
@@ -21,7 +21,7 @@
 - (void)_invalidateMostRecentSuggestedAssetFetchResult;
 - (void)_invalidateNeedsParticipantSetup;
 - (void)_invalidateShouldShowBanner;
-- (void)_queue_fetchUnreadAssetsAfterDate:(id)a3;
+- (void)_queue_fetchUnreadAssetsAfterDate:(id)date;
 - (void)_updateDetailedUnreadCounts;
 - (void)_updateHasAnySuggestions;
 - (void)_updateIsSuggestionsEnabled;
@@ -34,68 +34,68 @@
 - (void)didPerformChanges;
 - (void)markAllSuggestionsAsRead;
 - (void)markAnyNotificationsAsRead;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
 - (void)preferencesDidChange;
-- (void)setDetailedUnreadCounts:(id *)a3;
-- (void)setHasAnySuggestions:(BOOL)a3;
-- (void)setIsSuggestionsEnabled:(BOOL)a3;
-- (void)setMostRecentAssetFetchResult:(id)a3;
-- (void)setMostRecentSuggestedAssetFetchResult:(id)a3;
-- (void)setMostRecentUserSeenAddedDate:(id)a3;
-- (void)setNeedsParticipantSetup:(BOOL)a3;
-- (void)setShouldShowNotificationBanner:(BOOL)a3;
-- (void)setUnreadSuggestedAssetsFetchResult:(id)a3;
+- (void)setDetailedUnreadCounts:(id *)counts;
+- (void)setHasAnySuggestions:(BOOL)suggestions;
+- (void)setIsSuggestionsEnabled:(BOOL)enabled;
+- (void)setMostRecentAssetFetchResult:(id)result;
+- (void)setMostRecentSuggestedAssetFetchResult:(id)result;
+- (void)setMostRecentUserSeenAddedDate:(id)date;
+- (void)setNeedsParticipantSetup:(BOOL)setup;
+- (void)setShouldShowNotificationBanner:(BOOL)banner;
+- (void)setUnreadSuggestedAssetsFetchResult:(id)result;
 @end
 
 @implementation PXSharedLibrarySharingSuggestionsCountsManager
 
 - (void)_invalidateIsSuggestionsEnabled
 {
-  v2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsSuggestionsEnabled];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsSuggestionsEnabled];
 }
 
 - (void)_invalidateMostRecentSuggestedAssetFetchResult
 {
-  v2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMostRecentSuggestedAssetFetchResult];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMostRecentSuggestedAssetFetchResult];
 }
 
 - (void)_invalidateHasAnySuggestions
 {
-  v2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateHasAnySuggestions];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateHasAnySuggestions];
 }
 
 - (void)_invalidateNeedsParticipantSetup
 {
-  v2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateNeedsParticipantSetup];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateNeedsParticipantSetup];
 }
 
 - (void)_invalidateMostRecentAddedDateEverSeen
 {
-  v2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMostRecentAddedDateEverSeen];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMostRecentAddedDateEverSeen];
 }
 
 - (void)_invalidateMostRecentSeenSuggestedAssetAddedDate
 {
-  v2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMostRecentSeenSuggestedAssetAddedDate];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMostRecentSeenSuggestedAssetAddedDate];
 }
 
 - (void)_invalidateDetailedUnreadCounts
 {
-  v2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDetailedUnreadCounts];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDetailedUnreadCounts];
 }
 
 - (void)_invalidateShouldShowBanner
 {
-  v2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldShowBanner];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldShowBanner];
 }
 
 - (void)didPerformChanges
@@ -103,16 +103,16 @@
   v4.receiver = self;
   v4.super_class = PXSharedLibrarySharingSuggestionsCountsManager;
   [(PXSharedLibrarySharingSuggestionsCountsManager *)&v4 didPerformChanges];
-  v3 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXSharedLibrarySharingSuggestionsCountsManager *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)_updateIsSuggestionsEnabled
 {
-  v3 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self libraryStatusProvider];
-  v4 = [v3 hasSharedLibrary];
+  libraryStatusProvider = [(PXSharedLibrarySharingSuggestionsCountsManager *)self libraryStatusProvider];
+  hasSharedLibrary = [libraryStatusProvider hasSharedLibrary];
 
-  if (v4)
+  if (hasSharedLibrary)
   {
     v5 = PLIsSharedLibrarySuggestionsEnabled();
   }
@@ -128,41 +128,41 @@
 - (void)_updateMostRecentSuggestedAssetFetchResult
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentSuggestedAssetFetchResult];
-  if (v3)
+  mostRecentSuggestedAssetFetchResult = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentSuggestedAssetFetchResult];
+  if (mostRecentSuggestedAssetFetchResult)
   {
   }
 
   else if ([(PXSharedLibrarySharingSuggestionsCountsManager *)self isSuggestionsEnabled])
   {
-    v4 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self photoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    photoLibrary = [(PXSharedLibrarySharingSuggestionsCountsManager *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v5 setFetchLimit:1];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v16[0] = *MEMORY[0x1E6978C20];
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    [v5 setFetchPropertySets:v6];
+    [librarySpecificFetchOptions setFetchPropertySets:v6];
 
     v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:0];
     v15 = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-    [v5 setInternalSortDescriptors:v8];
+    [librarySpecificFetchOptions setInternalSortDescriptors:v8];
 
     v9 = MEMORY[0x1E6978630];
-    v10 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self sharingSuggestionsSmartAlbum];
-    v11 = [v9 fetchAssetsInAssetCollection:v10 options:v5];
+    sharingSuggestionsSmartAlbum = [(PXSharedLibrarySharingSuggestionsCountsManager *)self sharingSuggestionsSmartAlbum];
+    v11 = [v9 fetchAssetsInAssetCollection:sharingSuggestionsSmartAlbum options:librarySpecificFetchOptions];
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self setMostRecentSuggestedAssetFetchResult:v11];
 
     return;
   }
 
-  v12 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentSuggestedAssetFetchResult];
-  if (v12)
+  mostRecentSuggestedAssetFetchResult2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentSuggestedAssetFetchResult];
+  if (mostRecentSuggestedAssetFetchResult2)
   {
-    v13 = v12;
-    v14 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self isSuggestionsEnabled];
+    v13 = mostRecentSuggestedAssetFetchResult2;
+    isSuggestionsEnabled = [(PXSharedLibrarySharingSuggestionsCountsManager *)self isSuggestionsEnabled];
 
-    if (!v14)
+    if (!isSuggestionsEnabled)
     {
 
       [(PXSharedLibrarySharingSuggestionsCountsManager *)self setMostRecentSuggestedAssetFetchResult:0];
@@ -172,27 +172,27 @@
 
 - (void)_updateHasAnySuggestions
 {
-  v3 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentSuggestedAssetFetchResult];
-  -[PXSharedLibrarySharingSuggestionsCountsManager setHasAnySuggestions:](self, "setHasAnySuggestions:", [v3 count] != 0);
+  mostRecentSuggestedAssetFetchResult = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentSuggestedAssetFetchResult];
+  -[PXSharedLibrarySharingSuggestionsCountsManager setHasAnySuggestions:](self, "setHasAnySuggestions:", [mostRecentSuggestedAssetFetchResult count] != 0);
 }
 
 - (void)_updateNeedsParticipantSetup
 {
   if ([(PXSharedLibrarySharingSuggestionsCountsManager *)self isSuggestionsEnabled]&& ![(PXSharedLibrarySharingSuggestionsCountsManager *)self hasAnySuggestions])
   {
-    v4 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self libraryStatusProvider];
-    v5 = [v4 sharedLibrary];
-    v6 = [v5 rule];
+    libraryStatusProvider = [(PXSharedLibrarySharingSuggestionsCountsManager *)self libraryStatusProvider];
+    sharedLibrary = [libraryStatusProvider sharedLibrary];
+    rule = [sharedLibrary rule];
 
-    if ([v6 autoSharePolicy] == 1)
+    if ([rule autoSharePolicy] == 1)
     {
       v3 = 0;
     }
 
     else
     {
-      v7 = [v6 personUUIDs];
-      v3 = [v7 count] == 0;
+      personUUIDs = [rule personUUIDs];
+      v3 = [personUUIDs count] == 0;
     }
   }
 
@@ -206,22 +206,22 @@
 
 - (void)_updateMostRecentAddedDateEverSeen
 {
-  v9 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentAddedDateEverSeen];
-  v3 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentSuggestedAssetFetchResult];
-  v4 = [v3 firstObject];
-  v5 = [v4 curationProperties];
-  v6 = [v5 addedDate];
+  mostRecentAddedDateEverSeen = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentAddedDateEverSeen];
+  mostRecentSuggestedAssetFetchResult = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentSuggestedAssetFetchResult];
+  firstObject = [mostRecentSuggestedAssetFetchResult firstObject];
+  curationProperties = [firstObject curationProperties];
+  addedDate = [curationProperties addedDate];
 
-  if (v6)
+  if (addedDate)
   {
-    if (v9)
+    if (mostRecentAddedDateEverSeen)
     {
-      v7 = [v9 laterDate:v6];
+      v7 = [mostRecentAddedDateEverSeen laterDate:addedDate];
     }
 
     else
     {
-      v7 = v6;
+      v7 = addedDate;
     }
 
     v8 = v7;
@@ -233,40 +233,40 @@
 {
   if ([(PXSharedLibrarySharingSuggestionsCountsManager *)self isSuggestionsEnabled])
   {
-    v3 = [objc_opt_class() mostRecentUserSeenAddedDateAccessor];
-    v4 = [v3 currentValueIfLoaded];
+    mostRecentUserSeenAddedDateAccessor = [objc_opt_class() mostRecentUserSeenAddedDateAccessor];
+    currentValueIfLoaded = [mostRecentUserSeenAddedDateAccessor currentValueIfLoaded];
   }
 
   else
   {
-    v4 = 0;
+    currentValueIfLoaded = 0;
   }
 
-  [(PXSharedLibrarySharingSuggestionsCountsManager *)self setMostRecentUserSeenAddedDate:v4];
+  [(PXSharedLibrarySharingSuggestionsCountsManager *)self setMostRecentUserSeenAddedDate:currentValueIfLoaded];
 }
 
 - (void)_updateDetailedUnreadCounts
 {
-  v3 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
+  unreadSuggestedAssetsFetchResult = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
 
-  if (v3)
+  if (unreadSuggestedAssetsFetchResult)
   {
-    v4 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
-    v8[0] = [v4 countOfAssetsWithMediaType:1];
-    v8[1] = [v4 countOfAssetsWithMediaType:2];
-    v8[2] = [v4 countOfAssetsWithMediaType:3];
+    unreadSuggestedAssetsFetchResult2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
+    v8[0] = [unreadSuggestedAssetsFetchResult2 countOfAssetsWithMediaType:1];
+    v8[1] = [unreadSuggestedAssetsFetchResult2 countOfAssetsWithMediaType:2];
+    v8[2] = [unreadSuggestedAssetsFetchResult2 countOfAssetsWithMediaType:3];
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self setDetailedUnreadCounts:v8];
   }
 
   else
   {
-    v5 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentUserSeenAddedDate];
-    if (v5)
+    mostRecentUserSeenAddedDate = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentUserSeenAddedDate];
+    if (mostRecentUserSeenAddedDate)
     {
-      v6 = v5;
-      v7 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self hasAnySuggestions];
+      v6 = mostRecentUserSeenAddedDate;
+      hasAnySuggestions = [(PXSharedLibrarySharingSuggestionsCountsManager *)self hasAnySuggestions];
 
-      if (v7)
+      if (hasAnySuggestions)
       {
 
         [(PXSharedLibrarySharingSuggestionsCountsManager *)self _fetchUnreadAssetsAfterDate];
@@ -298,13 +298,13 @@
       v7 = v30 + *keyExistsAndHasValidFormat + v31;
     }
 
-    v8 = [objc_opt_class() lastNotificationDateAccessor];
-    v9 = [v8 currentValueIfLoaded];
+    lastNotificationDateAccessor = [objc_opt_class() lastNotificationDateAccessor];
+    currentValueIfLoaded = [lastNotificationDateAccessor currentValueIfLoaded];
 
-    v10 = [objc_opt_class() lastSeenSuggestionsDateAccessor];
-    v11 = [v10 currentValueIfLoaded];
+    lastSeenSuggestionsDateAccessor = [objc_opt_class() lastSeenSuggestionsDateAccessor];
+    currentValueIfLoaded2 = [lastSeenSuggestionsDateAccessor currentValueIfLoaded];
 
-    if (v9 && v11 && ([v9 timeIntervalSinceDate:v11], v12 > 0.0) && v7 > 0)
+    if (currentValueIfLoaded && currentValueIfLoaded2 && ([currentValueIfLoaded timeIntervalSinceDate:currentValueIfLoaded2], v12 > 0.0) && v7 > 0)
     {
       v13 = 1;
     }
@@ -312,19 +312,19 @@
     else
     {
       v14 = +[PXSharedLibrarySettings sharedInstance];
-      v15 = [v14 sharingSuggestionsBannerUnreadCountThreshold];
+      sharingSuggestionsBannerUnreadCountThreshold = [v14 sharingSuggestionsBannerUnreadCountThreshold];
 
       v16 = +[PXSharedLibrarySettings sharedInstance];
       [v16 sharingSuggestionsMinimumTimeSinceLastBannerDismiss];
       v18 = v17;
 
-      v19 = [objc_opt_class() lastBannerDismissDateAccessor];
-      v20 = [v19 currentValueIfLoaded];
+      lastBannerDismissDateAccessor = [objc_opt_class() lastBannerDismissDateAccessor];
+      currentValueIfLoaded3 = [lastBannerDismissDateAccessor currentValueIfLoaded];
 
       v13 = 0;
-      if ((v15 & 0x8000000000000000) == 0 && v7 >= v15)
+      if ((sharingSuggestionsBannerUnreadCountThreshold & 0x8000000000000000) == 0 && v7 >= sharingSuggestionsBannerUnreadCountThreshold)
       {
-        if (v20 && ([v20 timeIntervalSinceNow], fabs(v21) < v18))
+        if (currentValueIfLoaded3 && ([currentValueIfLoaded3 timeIntervalSinceNow], fabs(v21) < v18))
         {
           v13 = 0;
         }
@@ -335,14 +335,14 @@
           [v22 sharingSuggestionsMinimumTimeSinceLastAsset];
           v24 = v23;
 
-          v25 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentAssetFetchResult];
-          v26 = [v25 firstObject];
-          v27 = [v26 creationDate];
+          mostRecentAssetFetchResult = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentAssetFetchResult];
+          firstObject = [mostRecentAssetFetchResult firstObject];
+          creationDate = [firstObject creationDate];
 
           v13 = 1;
-          if (v27)
+          if (creationDate)
           {
-            [v27 timeIntervalSinceNow];
+            [creationDate timeIntervalSinceNow];
             if (fabs(v28) < v24)
             {
               v13 = 0;
@@ -492,13 +492,13 @@ void __79__PXSharedLibrarySharingSuggestionsCountsManager_lastBannerDismissDateA
   [v4 postNotificationName:@"PFSharedLibrarySuggestionsLastBannerDismissDateDidChangeNotification" object:0 userInfo:v5];
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  infoCopy = info;
   if (self->_mostRecentSuggestedAssetFetchResult)
   {
-    v8 = [v6 changeDetailsForFetchResult:?];
+    v8 = [queueCopy changeDetailsForFetchResult:?];
   }
 
   else
@@ -506,11 +506,11 @@ void __79__PXSharedLibrarySharingSuggestionsCountsManager_lastBannerDismissDateA
     v8 = 0;
   }
 
-  v9 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
-  if (v9)
+  unreadSuggestedAssetsFetchResult = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
+  if (unreadSuggestedAssetsFetchResult)
   {
-    v10 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
-    v11 = [v6 changeDetailsForFetchResult:v10];
+    unreadSuggestedAssetsFetchResult2 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
+    v11 = [queueCopy changeDetailsForFetchResult:unreadSuggestedAssetsFetchResult2];
   }
 
   else
@@ -520,7 +520,7 @@ void __79__PXSharedLibrarySharingSuggestionsCountsManager_lastBannerDismissDateA
 
   if (self->_mostRecentAssetFetchResult)
   {
-    v12 = [v6 changeDetailsForFetchResult:?];
+    v12 = [queueCopy changeDetailsForFetchResult:?];
     if (v8)
     {
       goto LABEL_13;
@@ -538,7 +538,7 @@ LABEL_13:
       v13[2] = __100__PXSharedLibrarySharingSuggestionsCountsManager_photoLibraryDidChangeOnMainQueue_withPreparedInfo___block_invoke;
       v13[3] = &unk_1E773A8B8;
       v14 = v8;
-      v15 = self;
+      selfCopy = self;
       v16 = v11;
       v17 = v12;
       [(PXSharedLibrarySharingSuggestionsCountsManager *)self performChanges:v13];
@@ -580,35 +580,35 @@ void __100__PXSharedLibrarySharingSuggestionsCountsManager_photoLibraryDidChange
   }
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
-  if (v5)
+  changeCopy = change;
+  unreadSuggestedAssetsFetchResult = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
+  if (unreadSuggestedAssetsFetchResult)
   {
-    v6 = [v4 changeDetailsForFetchResult:v5];
-    v7 = [v6 fetchResultAfterChanges];
+    v6 = [changeCopy changeDetailsForFetchResult:unreadSuggestedAssetsFetchResult];
+    fetchResultAfterChanges = [v6 fetchResultAfterChanges];
 
-    [v7 countOfAssetsWithMediaType:1];
+    [fetchResultAfterChanges countOfAssetsWithMediaType:1];
   }
 
   return 0;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSharedLibraryStatusProviderObservationContext_111653 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryStatusProviderObservationContext_111653 != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySharingSuggestionsCountsManager.m" lineNumber:587 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySharingSuggestionsCountsManager.m" lineNumber:587 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if ((v6 & 2) != 0)
+  v10 = observableCopy;
+  if ((changeCopy & 2) != 0)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -618,7 +618,7 @@ void __100__PXSharedLibrarySharingSuggestionsCountsManager_photoLibraryDidChange
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self performChanges:v13];
   }
 
-  if ((v6 & 0x10) != 0)
+  if ((changeCopy & 0x10) != 0)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -647,12 +647,12 @@ uint64_t __70__PXSharedLibrarySharingSuggestionsCountsManager_preferencesDidChan
   return [v2 _invalidateShouldShowBanner];
 }
 
-- (void)setUnreadSuggestedAssetsFetchResult:(id)a3
+- (void)setUnreadSuggestedAssetsFetchResult:(id)result
 {
-  v8 = a3;
+  resultCopy = result;
   v5 = self->_unreadSuggestedAssetsFetchResult;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == resultCopy)
   {
   }
 
@@ -662,18 +662,18 @@ uint64_t __70__PXSharedLibrarySharingSuggestionsCountsManager_preferencesDidChan
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_unreadSuggestedAssetsFetchResult, a3);
+      objc_storeStrong(&self->_unreadSuggestedAssetsFetchResult, result);
       [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateDetailedUnreadCounts];
     }
   }
 }
 
-- (void)setMostRecentSuggestedAssetFetchResult:(id)a3
+- (void)setMostRecentSuggestedAssetFetchResult:(id)result
 {
-  v8 = a3;
+  resultCopy = result;
   v5 = self->_mostRecentSuggestedAssetFetchResult;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == resultCopy)
   {
   }
 
@@ -683,7 +683,7 @@ uint64_t __70__PXSharedLibrarySharingSuggestionsCountsManager_preferencesDidChan
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_mostRecentSuggestedAssetFetchResult, a3);
+      objc_storeStrong(&self->_mostRecentSuggestedAssetFetchResult, result);
       [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateHasAnySuggestions];
       [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateMostRecentAddedDateEverSeen];
     }
@@ -695,14 +695,14 @@ uint64_t __70__PXSharedLibrarySharingSuggestionsCountsManager_preferencesDidChan
   sharingSuggestionsSmartAlbum = self->_sharingSuggestionsSmartAlbum;
   if (!sharingSuggestionsSmartAlbum)
   {
-    v4 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self photoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    photoLibrary = [(PXSharedLibrarySharingSuggestionsCountsManager *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v5 setIncludeSharedLibrarySharingSuggestionsSmartAlbum:1];
-    v6 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000214 options:v5];
-    v7 = [v6 firstObject];
+    [librarySpecificFetchOptions setIncludeSharedLibrarySharingSuggestionsSmartAlbum:1];
+    v6 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000214 options:librarySpecificFetchOptions];
+    firstObject = [v6 firstObject];
     v8 = self->_sharingSuggestionsSmartAlbum;
-    self->_sharingSuggestionsSmartAlbum = v7;
+    self->_sharingSuggestionsSmartAlbum = firstObject;
 
     sharingSuggestionsSmartAlbum = self->_sharingSuggestionsSmartAlbum;
   }
@@ -754,28 +754,28 @@ uint64_t __84__PXSharedLibrarySharingSuggestionsCountsManager__handleLastSeenAdd
   return [v1 performChanges:v3];
 }
 
-- (void)_handleUnreadSuggestedAssetsFetchResult:(id)a3 forDate:(id)a4
+- (void)_handleUnreadSuggestedAssetsFetchResult:(id)result forDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  dateCopy = date;
   [(PXSharedLibrarySharingSuggestionsCountsManager *)self setIsFetchingUnreadSuggestedAssetsFetchResult:0];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __98__PXSharedLibrarySharingSuggestionsCountsManager__handleUnreadSuggestedAssetsFetchResult_forDate___block_invoke;
   v15 = &unk_1E77498F8;
-  v16 = self;
-  v17 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v17 = resultCopy;
+  v8 = resultCopy;
   [(PXSharedLibrarySharingSuggestionsCountsManager *)self performChanges:&v12];
   v9 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentUserSeenAddedDate:v12];
   v10 = v9;
-  if (v9 == v7)
+  if (v9 == dateCopy)
   {
   }
 
   else
   {
-    v11 = [v9 isEqual:v7];
+    v11 = [v9 isEqual:dateCopy];
 
     if ((v11 & 1) == 0)
     {
@@ -784,18 +784,18 @@ uint64_t __84__PXSharedLibrarySharingSuggestionsCountsManager__handleLastSeenAdd
   }
 }
 
-- (void)_queue_fetchUnreadAssetsAfterDate:(id)a3
+- (void)_queue_fetchUnreadAssetsAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self queue];
+  dateCopy = date;
+  queue = [(PXSharedLibrarySharingSuggestionsCountsManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__PXSharedLibrarySharingSuggestionsCountsManager__queue_fetchUnreadAssetsAfterDate___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dateCopy;
+  v6 = dateCopy;
+  dispatch_async(queue, v7);
 }
 
 void __84__PXSharedLibrarySharingSuggestionsCountsManager__queue_fetchUnreadAssetsAfterDate___block_invoke(uint64_t a1)
@@ -838,21 +838,21 @@ void __84__PXSharedLibrarySharingSuggestionsCountsManager__queue_fetchUnreadAsse
   if (![(PXSharedLibrarySharingSuggestionsCountsManager *)self isFetchingUnreadSuggestedAssetsFetchResult])
   {
     objc_initWeak(&location, self);
-    v3 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentUserSeenAddedDate];
-    if (!v3)
+    mostRecentUserSeenAddedDate = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentUserSeenAddedDate];
+    if (!mostRecentUserSeenAddedDate)
     {
       PXAssertGetLog();
     }
 
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self setIsFetchingUnreadSuggestedAssetsFetchResult:1];
-    v4 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self queue];
+    queue = [(PXSharedLibrarySharingSuggestionsCountsManager *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfterDate__block_invoke;
     block[3] = &unk_1E774B248;
     objc_copyWeak(&v7, &location);
-    v6 = v3;
-    dispatch_async(v4, block);
+    v6 = mostRecentUserSeenAddedDate;
+    dispatch_async(queue, block);
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -865,12 +865,12 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
   [WeakRetained _queue_fetchUnreadAssetsAfterDate:*(a1 + 32)];
 }
 
-- (void)setMostRecentAssetFetchResult:(id)a3
+- (void)setMostRecentAssetFetchResult:(id)result
 {
-  v8 = a3;
+  resultCopy = result;
   v5 = self->_mostRecentAssetFetchResult;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == resultCopy)
   {
   }
 
@@ -880,7 +880,7 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_mostRecentAssetFetchResult, a3);
+      objc_storeStrong(&self->_mostRecentAssetFetchResult, result);
       [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateShouldShowBanner];
     }
   }
@@ -892,16 +892,16 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
   mostRecentAssetFetchResult = self->_mostRecentAssetFetchResult;
   if (!mostRecentAssetFetchResult)
   {
-    v4 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self photoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    photoLibrary = [(PXSharedLibrarySharingSuggestionsCountsManager *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v5 setFetchLimit:1];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
     v11[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v5 setSortDescriptors:v7];
+    [librarySpecificFetchOptions setSortDescriptors:v7];
 
-    v8 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v5];
+    v8 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
     v9 = self->_mostRecentAssetFetchResult;
     self->_mostRecentAssetFetchResult = v8;
 
@@ -911,18 +911,18 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
   return mostRecentAssetFetchResult;
 }
 
-- (BOOL)isAssetUnread:(id)a3
+- (BOOL)isAssetUnread:(id)unread
 {
-  v4 = a3;
+  unreadCopy = unread;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 curationProperties];
-    v6 = [v5 addedDate];
+    curationProperties = [unreadCopy curationProperties];
+    addedDate = [curationProperties addedDate];
 
-    v7 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentUserSeenAddedDate];
-    v8 = [v7 laterDate:v6];
-    v9 = [v8 isEqualToDate:v6];
+    mostRecentUserSeenAddedDate = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentUserSeenAddedDate];
+    v8 = [mostRecentUserSeenAddedDate laterDate:addedDate];
+    v9 = [v8 isEqualToDate:addedDate];
   }
 
   else
@@ -935,64 +935,64 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
 
 - (NSDate)notificationDate
 {
-  v2 = [objc_opt_class() lastNotificationDateAccessor];
-  v3 = [v2 currentValue];
+  lastNotificationDateAccessor = [objc_opt_class() lastNotificationDateAccessor];
+  currentValue = [lastNotificationDateAccessor currentValue];
 
-  return v3;
+  return currentValue;
 }
 
 - (NSDate)priorityDate
 {
   if ([(PXSharedLibrarySharingSuggestionsCountsManager *)self shouldShowNotificationBanner])
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
   else
   {
-    v4 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentAddedDateEverSeen];
-    v5 = [objc_opt_class() lastNotificationDateAccessor];
-    v6 = [v5 currentValue];
+    mostRecentAddedDateEverSeen = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentAddedDateEverSeen];
+    lastNotificationDateAccessor = [objc_opt_class() lastNotificationDateAccessor];
+    currentValue = [lastNotificationDateAccessor currentValue];
 
-    if (v4)
+    if (mostRecentAddedDateEverSeen)
     {
-      v7 = [v6 laterDate:v4];
+      v7 = [currentValue laterDate:mostRecentAddedDateEverSeen];
     }
 
     else
     {
-      v7 = v6;
+      v7 = currentValue;
     }
 
-    v3 = v7;
+    date = v7;
   }
 
-  return v3;
+  return date;
 }
 
-- (void)setMostRecentUserSeenAddedDate:(id)a3
+- (void)setMostRecentUserSeenAddedDate:(id)date
 {
-  v9 = a3;
+  dateCopy = date;
   v5 = self->_mostRecentUserSeenAddedDate;
   v6 = v5;
-  if (v5 == v9)
+  if (v5 == dateCopy)
   {
   }
 
   else
   {
-    v7 = [(NSDate *)v5 isEqual:v9];
+    v7 = [(NSDate *)v5 isEqual:dateCopy];
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_mostRecentUserSeenAddedDate, a3);
+      objc_storeStrong(&self->_mostRecentUserSeenAddedDate, date);
       [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateDetailedUnreadCounts];
       [(PXSharedLibrarySharingSuggestionsCountsManager *)self signalChange:4];
-      if (v9)
+      if (dateCopy)
       {
-        v8 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
+        unreadSuggestedAssetsFetchResult = [(PXSharedLibrarySharingSuggestionsCountsManager *)self unreadSuggestedAssetsFetchResult];
 
-        if (v8)
+        if (unreadSuggestedAssetsFetchResult)
         {
           [(PXSharedLibrarySharingSuggestionsCountsManager *)self _fetchUnreadAssetsAfterDate];
         }
@@ -1001,21 +1001,21 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
   }
 }
 
-- (void)setShouldShowNotificationBanner:(BOOL)a3
+- (void)setShouldShowNotificationBanner:(BOOL)banner
 {
-  if (self->_shouldShowNotificationBanner != a3)
+  if (self->_shouldShowNotificationBanner != banner)
   {
-    self->_shouldShowNotificationBanner = a3;
+    self->_shouldShowNotificationBanner = banner;
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self signalChange:8];
   }
 }
 
-- (void)setDetailedUnreadCounts:(id *)a3
+- (void)setDetailedUnreadCounts:(id *)counts
 {
-  if (self->_detailedUnreadCounts.photosCount != a3->var0 || self->_detailedUnreadCounts.videosCount != a3->var1 || self->_detailedUnreadCounts.othersCount != a3->var2)
+  if (self->_detailedUnreadCounts.photosCount != counts->var0 || self->_detailedUnreadCounts.videosCount != counts->var1 || self->_detailedUnreadCounts.othersCount != counts->var2)
   {
-    v7 = *&a3->var0;
-    self->_detailedUnreadCounts.othersCount = a3->var2;
+    v7 = *&counts->var0;
+    self->_detailedUnreadCounts.othersCount = counts->var2;
     *&self->_detailedUnreadCounts.photosCount = v7;
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self signalChange:2];
 
@@ -1023,20 +1023,20 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
   }
 }
 
-- (void)setNeedsParticipantSetup:(BOOL)a3
+- (void)setNeedsParticipantSetup:(BOOL)setup
 {
-  if (self->_needsParticipantSetup != a3)
+  if (self->_needsParticipantSetup != setup)
   {
-    self->_needsParticipantSetup = a3;
+    self->_needsParticipantSetup = setup;
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self signalChange:16];
   }
 }
 
-- (void)setHasAnySuggestions:(BOOL)a3
+- (void)setHasAnySuggestions:(BOOL)suggestions
 {
-  if (self->_hasAnySuggestions != a3)
+  if (self->_hasAnySuggestions != suggestions)
   {
-    self->_hasAnySuggestions = a3;
+    self->_hasAnySuggestions = suggestions;
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self signalChange:1];
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateShouldShowBanner];
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateDetailedUnreadCounts];
@@ -1045,11 +1045,11 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
   }
 }
 
-- (void)setIsSuggestionsEnabled:(BOOL)a3
+- (void)setIsSuggestionsEnabled:(BOOL)enabled
 {
-  if (self->_isSuggestionsEnabled != a3)
+  if (self->_isSuggestionsEnabled != enabled)
   {
-    self->_isSuggestionsEnabled = a3;
+    self->_isSuggestionsEnabled = enabled;
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateMostRecentSeenSuggestedAssetAddedDate];
     [(PXSharedLibrarySharingSuggestionsCountsManager *)self _invalidateMostRecentSuggestedAssetFetchResult];
 
@@ -1059,21 +1059,21 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
 
 - (void)clearStoredDates
 {
-  v2 = [MEMORY[0x1E695DF00] distantPast];
-  v3 = [objc_opt_class() mostRecentUserSeenAddedDateAccessor];
-  [v3 setCurrentValue:v2];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  mostRecentUserSeenAddedDateAccessor = [objc_opt_class() mostRecentUserSeenAddedDateAccessor];
+  [mostRecentUserSeenAddedDateAccessor setCurrentValue:distantPast];
 
-  v4 = [MEMORY[0x1E695DF00] distantPast];
-  v5 = [objc_opt_class() lastSeenSuggestionsDateAccessor];
-  [v5 setCurrentValue:v4];
+  distantPast2 = [MEMORY[0x1E695DF00] distantPast];
+  lastSeenSuggestionsDateAccessor = [objc_opt_class() lastSeenSuggestionsDateAccessor];
+  [lastSeenSuggestionsDateAccessor setCurrentValue:distantPast2];
 
-  v6 = [MEMORY[0x1E695DF00] distantPast];
-  v7 = [objc_opt_class() lastNotificationDateAccessor];
-  [v7 setCurrentValue:v6];
+  distantPast3 = [MEMORY[0x1E695DF00] distantPast];
+  lastNotificationDateAccessor = [objc_opt_class() lastNotificationDateAccessor];
+  [lastNotificationDateAccessor setCurrentValue:distantPast3];
 
-  v9 = [MEMORY[0x1E695DF00] distantPast];
-  v8 = [objc_opt_class() lastBannerDismissDateAccessor];
-  [v8 setCurrentValue:v9];
+  distantPast4 = [MEMORY[0x1E695DF00] distantPast];
+  lastBannerDismissDateAccessor = [objc_opt_class() lastBannerDismissDateAccessor];
+  [lastBannerDismissDateAccessor setCurrentValue:distantPast4];
 }
 
 - (void)markAnyNotificationsAsRead
@@ -1092,13 +1092,13 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "%@ %@", buf, 0x16u);
   }
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = [objc_opt_class() lastSeenSuggestionsDateAccessor];
-  [v9 setCurrentValue:v8];
+  date = [MEMORY[0x1E695DF00] date];
+  lastSeenSuggestionsDateAccessor = [objc_opt_class() lastSeenSuggestionsDateAccessor];
+  [lastSeenSuggestionsDateAccessor setCurrentValue:date];
 
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [objc_opt_class() lastBannerDismissDateAccessor];
-  [v11 setCurrentValue:v10];
+  date2 = [MEMORY[0x1E695DF00] date];
+  lastBannerDismissDateAccessor = [objc_opt_class() lastBannerDismissDateAccessor];
+  [lastBannerDismissDateAccessor setCurrentValue:date2];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1111,7 +1111,7 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
 - (void)markAllSuggestionsAsRead
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentAddedDateEverSeen];
+  mostRecentAddedDateEverSeen = [(PXSharedLibrarySharingSuggestionsCountsManager *)self mostRecentAddedDateEverSeen];
   v4 = PLSharedLibraryGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1123,26 +1123,26 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
     v17 = 2112;
     v18 = v7;
     v19 = 2112;
-    v20 = v3;
+    v20 = mostRecentAddedDateEverSeen;
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "%@ %@ mostRecentAddedDate:%@", &v15, 0x20u);
   }
 
-  if (v3)
+  if (mostRecentAddedDateEverSeen)
   {
     v8 = PLSharedLibraryGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v3;
+      v16 = mostRecentAddedDateEverSeen;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "Updating PFSharedLibrarySuggestionsMostRecentUserSeenAddedDateKey with date:%@", &v15, 0xCu);
     }
 
-    v9 = [objc_opt_class() mostRecentUserSeenAddedDateAccessor];
-    v10 = [v9 currentValue];
-    v11 = v10;
-    if (v10 != v3 && ([v10 isEqual:v3] & 1) == 0)
+    mostRecentUserSeenAddedDateAccessor = [objc_opt_class() mostRecentUserSeenAddedDateAccessor];
+    currentValue = [mostRecentUserSeenAddedDateAccessor currentValue];
+    v11 = currentValue;
+    if (currentValue != mostRecentAddedDateEverSeen && ([currentValue isEqual:mostRecentAddedDateEverSeen] & 1) == 0)
     {
-      if (v11 && ([v11 laterDate:v3], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToDate:", v11), v12, v13))
+      if (v11 && ([v11 laterDate:mostRecentAddedDateEverSeen], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToDate:", v11), v12, v13))
       {
         v14 = PLSharedLibraryGetLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1150,22 +1150,22 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
           v15 = 138412546;
           v16 = v11;
           v17 = 2112;
-          v18 = v3;
+          v18 = mostRecentAddedDateEverSeen;
           _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_DEFAULT, "Exisitng PFSharedLibrarySuggestionsMostRecentUserSeenAddedDateKey %@ is newer or the same as the one being set %@, ignoring.", &v15, 0x16u);
         }
       }
 
       else
       {
-        [v9 setCurrentValue:v3];
+        [mostRecentUserSeenAddedDateAccessor setCurrentValue:mostRecentAddedDateEverSeen];
       }
     }
   }
 }
 
-- (PXSharedLibrarySharingSuggestionsCountsManager)initWithPhotoLibrary:(id)a3
+- (PXSharedLibrarySharingSuggestionsCountsManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v25.receiver = self;
   v25.super_class = PXSharedLibrarySharingSuggestionsCountsManager;
   v6 = [(PXSharedLibrarySharingSuggestionsCountsManager *)&v25 init];
@@ -1188,26 +1188,26 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
     v11 = *(v6 + 22);
     *(v6 + 22) = v10;
 
-    objc_storeStrong(v6 + 18, a3);
-    [v5 px_registerChangeObserver:v6];
-    v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v5];
+    objc_storeStrong(v6 + 18, library);
+    [libraryCopy px_registerChangeObserver:v6];
+    v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:libraryCopy];
     v13 = *(v6 + 17);
     *(v6 + 17) = v12;
 
     [*(v6 + 17) registerChangeObserver:v6 context:PXSharedLibraryStatusProviderObservationContext_111653];
     *(v6 + 184) = *off_1E7721F70;
     *(v6 + 25) = *(off_1E7721F70 + 2);
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v6 selector:sel__handleLastSeenAddedDateDidChange_ name:@"PFSharedLibrarySuggestionsMostRecentUserSeenAddedDateDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__handleLastSeenAddedDateDidChange_ name:@"PFSharedLibrarySuggestionsMostRecentUserSeenAddedDateDidChangeNotification" object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v6 selector:sel__handleLastNotificationDateDidChange_ name:@"PFSharedLibrarySuggestionsLastNotificationDateDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__handleLastNotificationDateDidChange_ name:@"PFSharedLibrarySuggestionsLastNotificationDateDidChangeNotification" object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v6 selector:sel__handleLastSeenSuggestionsDateDidChange_ name:@"PFSharedLibrarySuggestionsLastSeenSuggestionsDateDidChangeNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__handleLastSeenSuggestionsDateDidChange_ name:@"PFSharedLibrarySuggestionsLastSeenSuggestionsDateDidChangeNotification" object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v6 selector:sel__handleLastBannerDismissDateDidChange_ name:@"PFSharedLibrarySuggestionsLastBannerDismissDateDidChangeNotification" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v6 selector:sel__handleLastBannerDismissDateDidChange_ name:@"PFSharedLibrarySuggestionsLastBannerDismissDateDidChangeNotification" object:0];
 
     PXRegisterPreferencesObserver(v6);
     v23[0] = MEMORY[0x1E69E9820];
@@ -1216,17 +1216,17 @@ void __77__PXSharedLibrarySharingSuggestionsCountsManager__fetchUnreadAssetsAfte
     v23[3] = &unk_1E774C5F8;
     v24 = v6;
     [v24 performChanges:v23];
-    v18 = [objc_opt_class() mostRecentUserSeenAddedDateAccessor];
-    [v18 loadValueAsyncIfNeeded];
+    mostRecentUserSeenAddedDateAccessor = [objc_opt_class() mostRecentUserSeenAddedDateAccessor];
+    [mostRecentUserSeenAddedDateAccessor loadValueAsyncIfNeeded];
 
-    v19 = [objc_opt_class() lastNotificationDateAccessor];
-    [v19 loadValueAsyncIfNeeded];
+    lastNotificationDateAccessor = [objc_opt_class() lastNotificationDateAccessor];
+    [lastNotificationDateAccessor loadValueAsyncIfNeeded];
 
-    v20 = [objc_opt_class() lastSeenSuggestionsDateAccessor];
-    [v20 loadValueAsyncIfNeeded];
+    lastSeenSuggestionsDateAccessor = [objc_opt_class() lastSeenSuggestionsDateAccessor];
+    [lastSeenSuggestionsDateAccessor loadValueAsyncIfNeeded];
 
-    v21 = [objc_opt_class() lastBannerDismissDateAccessor];
-    [v21 loadValueAsyncIfNeeded];
+    lastBannerDismissDateAccessor = [objc_opt_class() lastBannerDismissDateAccessor];
+    [lastBannerDismissDateAccessor loadValueAsyncIfNeeded];
   }
 
   return v6;
@@ -1248,8 +1248,8 @@ uint64_t __71__PXSharedLibrarySharingSuggestionsCountsManager_initWithPhotoLibra
 
 - (PXSharedLibrarySharingSuggestionsCountsManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySharingSuggestionsCountsManager.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXSharedLibrarySharingSuggestionsCountsManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySharingSuggestionsCountsManager.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXSharedLibrarySharingSuggestionsCountsManager init]"}];
 
   abort();
 }

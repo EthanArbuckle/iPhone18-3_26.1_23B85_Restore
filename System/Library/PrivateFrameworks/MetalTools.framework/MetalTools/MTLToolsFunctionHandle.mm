@@ -1,7 +1,7 @@
 @interface MTLToolsFunctionHandle
 - (MTLResourceID)gpuResourceID;
-- (MTLToolsFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 binaryFunction:(id)a5;
-- (MTLToolsFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 function:(id)a5;
+- (MTLToolsFunctionHandle)initWithBaseObject:(id)object parent:(id)parent binaryFunction:(id)function;
+- (MTLToolsFunctionHandle)initWithBaseObject:(id)object parent:(id)parent function:(id)function;
 - (NSString)name;
 - (unint64_t)functionType;
 - (unint64_t)resourceIndex;
@@ -19,27 +19,27 @@
   [(MTLToolsObject *)&v3 dealloc];
 }
 
-- (MTLToolsFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 function:(id)a5
+- (MTLToolsFunctionHandle)initWithBaseObject:(id)object parent:(id)parent function:(id)function
 {
   v8.receiver = self;
   v8.super_class = MTLToolsFunctionHandle;
-  v6 = [(MTLToolsObject *)&v8 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTLToolsObject *)&v8 initWithBaseObject:object parent:parent];
   if (v6)
   {
-    v6->_function = a5;
+    v6->_function = function;
   }
 
   return v6;
 }
 
-- (MTLToolsFunctionHandle)initWithBaseObject:(id)a3 parent:(id)a4 binaryFunction:(id)a5
+- (MTLToolsFunctionHandle)initWithBaseObject:(id)object parent:(id)parent binaryFunction:(id)function
 {
   v8.receiver = self;
   v8.super_class = MTLToolsFunctionHandle;
-  v6 = [(MTLToolsObject *)&v8 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTLToolsObject *)&v8 initWithBaseObject:object parent:parent];
   if (v6)
   {
-    v6->_binaryFunction = a5;
+    v6->_binaryFunction = function;
   }
 
   return v6;
@@ -47,30 +47,30 @@
 
 - (unint64_t)functionType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 functionType];
+  return [baseObject functionType];
 }
 
 - (NSString)name
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 name];
+  return [baseObject name];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 @end

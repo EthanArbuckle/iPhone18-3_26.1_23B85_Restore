@@ -1,9 +1,9 @@
 @interface MEDecodedMessageBanner
-- (BOOL)isEqual:(id)a3;
-- (MEDecodedMessageBanner)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MEDecodedMessageBanner)initWithCoder:(id)coder;
 - (MEDecodedMessageBanner)initWithTitle:(NSString *)title primaryActionTitle:(NSString *)primaryActionTitle dismissable:(BOOL)dismissable;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEDecodedMessageBanner
@@ -26,42 +26,42 @@
   return v12;
 }
 
-- (MEDecodedMessageBanner)initWithCoder:(id)a3
+- (MEDecodedMessageBanner)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_primaryActionTitle"];
-  v7 = -[MEDecodedMessageBanner initWithTitle:primaryActionTitle:dismissable:](self, "initWithTitle:primaryActionTitle:dismissable:", v5, v6, [v4 decodeBoolForKey:@"EFPropertyKey_dismissable"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_primaryActionTitle"];
+  v7 = -[MEDecodedMessageBanner initWithTitle:primaryActionTitle:dismissable:](self, "initWithTitle:primaryActionTitle:dismissable:", v5, v6, [coderCopy decodeBoolForKey:@"EFPropertyKey_dismissable"]);
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MEDecodedMessageBanner *)self title];
-  [v6 encodeObject:v4 forKey:@"EFPropertyKey_title"];
+  coderCopy = coder;
+  title = [(MEDecodedMessageBanner *)self title];
+  [coderCopy encodeObject:title forKey:@"EFPropertyKey_title"];
 
-  v5 = [(MEDecodedMessageBanner *)self primaryActionTitle];
-  [v6 encodeObject:v5 forKey:@"EFPropertyKey_primaryActionTitle"];
+  primaryActionTitle = [(MEDecodedMessageBanner *)self primaryActionTitle];
+  [coderCopy encodeObject:primaryActionTitle forKey:@"EFPropertyKey_primaryActionTitle"];
 
-  [v6 encodeBool:-[MEDecodedMessageBanner isDismissable](self forKey:{"isDismissable"), @"EFPropertyKey_dismissable"}];
+  [coderCopy encodeBool:-[MEDecodedMessageBanner isDismissable](self forKey:{"isDismissable"), @"EFPropertyKey_dismissable"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(MEDecodedMessageBanner *)self title];
-    v8 = [v6 title];
-    if ([v7 isEqual:v8])
+    v6 = equalCopy;
+    title = [(MEDecodedMessageBanner *)self title];
+    title2 = [v6 title];
+    if ([title isEqual:title2])
     {
-      v9 = [(MEDecodedMessageBanner *)self primaryActionTitle];
-      v10 = [v6 primaryActionTitle];
-      v11 = [v9 isEqual:v10];
+      primaryActionTitle = [(MEDecodedMessageBanner *)self primaryActionTitle];
+      primaryActionTitle2 = [v6 primaryActionTitle];
+      v11 = [primaryActionTitle isEqual:primaryActionTitle2];
     }
 
     else
@@ -80,8 +80,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MEDecodedMessageBanner *)self title];
-  v4 = [v3 hash];
+  title = [(MEDecodedMessageBanner *)self title];
+  v4 = [title hash];
 
   return 33 * v4 + [(MEDecodedMessageBanner *)self isDismissable]+ 5859909;
 }

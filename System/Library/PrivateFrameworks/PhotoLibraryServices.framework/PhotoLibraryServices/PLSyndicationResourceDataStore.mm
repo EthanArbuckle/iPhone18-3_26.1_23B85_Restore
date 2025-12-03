@@ -1,49 +1,49 @@
 @interface PLSyndicationResourceDataStore
-+ (BOOL)_markSyndicationResourceAsLocallyAvailableWithURL:(id)a3 resource:(id)a4 inode:(unint64_t)a5 error:(id *)a6;
-+ (BOOL)_safeCopyItemAtURL:(id)a3 toURLAndReplaceIfNeeded:(id)a4 error:(id *)a5;
-+ (BOOL)_unpackPVTBundleAtURL:(id)a3 primaryURL:(id *)a4 secondaryURL:(id *)a5 error:(id *)a6;
-+ (BOOL)readInodeAndMarkResource:(id)a3 locallyAvailableWithFileURL:(id)a4 error:(id *)a5;
-+ (unsigned)keyLengthWithDataPreview:(unsigned __int8)a3;
-+ (void)_addTemporaryURL:(id)a3 itemIdentifier:(id)a4 error:(id)a5 toResults:(id)a6 andFileHandles:(id)a7;
-+ (void)_provideFileURLAndUnwrapLivePhotoIfNeededForBundleID:(id)a3 syndicationIdentifier:(id)a4 typeIdentifier:(id)a5 isLivePhoto:(BOOL)a6 options:(int64_t)a7 completionHandler:(id)a8;
-+ (void)_provideFileURLForBundleID:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-+ (void)_provideFileURLsForBundleID:(id)a3 itemIdentifiers:(id)a4 typeIdentifier:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-+ (void)_provideTemporaryFileURLFromDataForBundleID:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-+ (void)provideFileURLAndUnwrapLivePhotoIfNeededForItemIdentifiersWithBundleIDs:(id)a3 destURLs:(id)a4 options:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7;
-- (BOOL)_copyAndMarkAsLocallyAvailablePairedLivePhotoResourceForRequestedResource:(id)a3 requestedVideoComplement:(BOOL)a4 sourceURL:(id)a5 error:(id *)a6;
-- (BOOL)_copyItemAtURL:(id)a3 withPathManager:(id)a4 destFileIdentifier:(id)a5 inode:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)canStoreExternalResource:(id)a3;
-- (BOOL)storeExternalResource:(id)a3 forAsset:(id)a4 options:(id)a5 error:(id *)a6 resultingResource:(id *)a7;
-- (id)_errorForUnderlyingError:(id)a3;
-- (id)_getDestinationURLAndFixLocalAvailabilityIfNeededForResource:(id)a3 fileIdentifier:(id *)a4 isLocallyAvailable:(BOOL *)a5 error:(id *)a6;
-- (id)_requestLocalAvailabilityChangeForSyndicationOriginalResource:(id)a3 options:(id)a4 completion:(id)a5;
-- (id)descriptionForSubtype:(int64_t)a3;
-- (id)expectedFileURLForResource:(id)a3 asset:(id)a4;
-- (id)imageConversionClientForResourceGenerator:(id)a3;
-- (id)keyFromKeyStruct:(const void *)a3;
-- (id)metadataForResourceGenerator:(id)a3 fromFileURL:(id)a4;
-- (id)requestLocalAvailabilityChange:(signed __int16)a3 forResource:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)resourceDataForKey:(id)a3 assetID:(id)a4;
-- (id)resourceURLForKey:(id)a3 assetID:(id)a4;
-- (id)videoConversionClientForResourceGenerator:(id)a3;
++ (BOOL)_markSyndicationResourceAsLocallyAvailableWithURL:(id)l resource:(id)resource inode:(unint64_t)inode error:(id *)error;
++ (BOOL)_safeCopyItemAtURL:(id)l toURLAndReplaceIfNeeded:(id)needed error:(id *)error;
++ (BOOL)_unpackPVTBundleAtURL:(id)l primaryURL:(id *)rL secondaryURL:(id *)uRL error:(id *)error;
++ (BOOL)readInodeAndMarkResource:(id)resource locallyAvailableWithFileURL:(id)l error:(id *)error;
++ (unsigned)keyLengthWithDataPreview:(unsigned __int8)preview;
++ (void)_addTemporaryURL:(id)l itemIdentifier:(id)identifier error:(id)error toResults:(id)results andFileHandles:(id)handles;
++ (void)_provideFileURLAndUnwrapLivePhotoIfNeededForBundleID:(id)d syndicationIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier isLivePhoto:(BOOL)photo options:(int64_t)options completionHandler:(id)handler;
++ (void)_provideFileURLForBundleID:(id)d itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
++ (void)_provideFileURLsForBundleID:(id)d itemIdentifiers:(id)identifiers typeIdentifier:(id)identifier options:(int64_t)options completionHandler:(id)handler;
++ (void)_provideTemporaryFileURLFromDataForBundleID:(id)d itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
++ (void)provideFileURLAndUnwrapLivePhotoIfNeededForItemIdentifiersWithBundleIDs:(id)ds destURLs:(id)ls options:(id)options resultHandler:(id)handler completionHandler:(id)completionHandler;
+- (BOOL)_copyAndMarkAsLocallyAvailablePairedLivePhotoResourceForRequestedResource:(id)resource requestedVideoComplement:(BOOL)complement sourceURL:(id)l error:(id *)error;
+- (BOOL)_copyItemAtURL:(id)l withPathManager:(id)manager destFileIdentifier:(id)identifier inode:(unint64_t *)inode error:(id *)error;
+- (BOOL)canStoreExternalResource:(id)resource;
+- (BOOL)storeExternalResource:(id)resource forAsset:(id)asset options:(id)options error:(id *)error resultingResource:(id *)resultingResource;
+- (id)_errorForUnderlyingError:(id)error;
+- (id)_getDestinationURLAndFixLocalAvailabilityIfNeededForResource:(id)resource fileIdentifier:(id *)identifier isLocallyAvailable:(BOOL *)available error:(id *)error;
+- (id)_requestLocalAvailabilityChangeForSyndicationOriginalResource:(id)resource options:(id)options completion:(id)completion;
+- (id)descriptionForSubtype:(int64_t)subtype;
+- (id)expectedFileURLForResource:(id)resource asset:(id)asset;
+- (id)imageConversionClientForResourceGenerator:(id)generator;
+- (id)keyFromKeyStruct:(const void *)struct;
+- (id)metadataForResourceGenerator:(id)generator fromFileURL:(id)l;
+- (id)requestLocalAvailabilityChange:(signed __int16)change forResource:(id)resource options:(id)options completion:(id)completion;
+- (id)resourceDataForKey:(id)key assetID:(id)d;
+- (id)resourceURLForKey:(id)key assetID:(id)d;
+- (id)videoConversionClientForResourceGenerator:(id)generator;
 @end
 
 @implementation PLSyndicationResourceDataStore
 
-+ (unsigned)keyLengthWithDataPreview:(unsigned __int8)a3
++ (unsigned)keyLengthWithDataPreview:(unsigned __int8)preview
 {
-  v3 = a3;
-  if (a3 >= 0x10u)
+  previewCopy = preview;
+  if (preview >= 0x10u)
   {
-    v4 = 16;
+    previewCopy2 = 16;
   }
 
   else
   {
-    v4 = a3;
+    previewCopy2 = preview;
   }
 
-  if (v4 == 3 || v4 == 4 || v4 == 16)
+  if (previewCopy2 == 3 || previewCopy2 == 4 || previewCopy2 == 16)
   {
     v5 = objc_opt_class();
   }
@@ -55,24 +55,24 @@
 
   v6 = v5;
 
-  return [v6 keyLengthWithDataPreview:v3];
+  return [v6 keyLengthWithDataPreview:previewCopy];
 }
 
-+ (BOOL)readInodeAndMarkResource:(id)a3 locallyAvailableWithFileURL:(id)a4 error:(id *)a5
++ (BOOL)readInodeAndMarkResource:(id)resource locallyAvailableWithFileURL:(id)l error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  resourceCopy = resource;
+  lCopy = l;
   v16 = 0;
   v17 = 0;
-  v10 = [PLCacheDeleteSupport readInodeAtURL:v9 outInode:&v17 error:&v16];
+  v10 = [PLCacheDeleteSupport readInodeAtURL:lCopy outInode:&v17 error:&v16];
   v11 = v16;
   if (!v10)
   {
     v12 = PLSyndicationGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v9];
+      v13 = [MEMORY[0x1E69BF220] descriptionWithFileURL:lCopy];
       *buf = 138412546;
       v19 = v13;
       v20 = 2112;
@@ -81,25 +81,25 @@
     }
   }
 
-  v14 = [a1 _markSyndicationResourceAsLocallyAvailableWithURL:v9 resource:v8 inode:v17 error:a5];
+  v14 = [self _markSyndicationResourceAsLocallyAvailableWithURL:lCopy resource:resourceCopy inode:v17 error:error];
 
   return v14;
 }
 
-+ (void)provideFileURLAndUnwrapLivePhotoIfNeededForItemIdentifiersWithBundleIDs:(id)a3 destURLs:(id)a4 options:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7
++ (void)provideFileURLAndUnwrapLivePhotoIfNeededForItemIdentifiersWithBundleIDs:(id)ds destURLs:(id)ls options:(id)options resultHandler:(id)handler completionHandler:(id)completionHandler
 {
   v69 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v38 = a4;
-  v39 = a5;
-  v37 = a6;
-  v36 = a7;
+  dsCopy = ds;
+  lsCopy = ls;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v12;
+  obj = dsCopy;
   v14 = [obj countByEnumeratingWithState:&v57 objects:v68 count:16];
   if (v14)
   {
@@ -159,7 +159,7 @@
         v25 = *(*(&v51 + 1) + 8 * j);
         dispatch_group_enter(v20);
         v26 = [v21 objectForKeyedSubscript:v25];
-        v27 = PLSyndicationCSProvideOptionsFromRequestOptions(v39, v25);
+        v27 = PLSyndicationCSProvideOptionsFromRequestOptions(optionsCopy, v25);
         v28 = PLSyndicationGetLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
@@ -180,12 +180,12 @@
         v44[4] = v25;
         v30 = v26;
         v45 = v30;
-        v46 = v38;
-        v50 = a1;
-        v48 = v37;
+        v46 = lsCopy;
+        selfCopy = self;
+        v48 = handlerCopy;
         v49 = v55;
         v47 = v20;
-        [a1 _provideFileURLsForBundleID:v25 itemIdentifiers:v30 typeIdentifier:&stru_1F0F06D80 options:v27 completionHandler:v44];
+        [self _provideFileURLsForBundleID:v25 itemIdentifiers:v30 typeIdentifier:&stru_1F0F06D80 options:v27 completionHandler:v44];
       }
 
       v22 = [v21 countByEnumeratingWithState:&v51 objects:v67 count:16];
@@ -203,9 +203,9 @@
   block[1] = 3221225472;
   block[2] = __155__PLSyndicationResourceDataStore_provideFileURLAndUnwrapLivePhotoIfNeededForItemIdentifiersWithBundleIDs_destURLs_options_resultHandler_completionHandler___block_invoke_154;
   block[3] = &unk_1E7573998;
-  v42 = v36;
+  v42 = completionHandlerCopy;
   v43 = v55;
-  v35 = v36;
+  v35 = completionHandlerCopy;
   dispatch_group_notify(v20, v34, block);
 
   _Block_object_dispose(v55, 8);
@@ -496,14 +496,14 @@ LABEL_54:
   dispatch_group_leave(*(a1 + 56));
 }
 
-+ (BOOL)_safeCopyItemAtURL:(id)a3 toURLAndReplaceIfNeeded:(id)a4 error:(id *)a5
++ (BOOL)_safeCopyItemAtURL:(id)l toURLAndReplaceIfNeeded:(id)needed error:(id *)error
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 pathComponents];
-  v10 = v9;
-  if (!v8 || [v9 count] < 6)
+  lCopy = l;
+  neededCopy = needed;
+  pathComponents = [neededCopy pathComponents];
+  v10 = pathComponents;
+  if (!neededCopy || [pathComponents count] < 6)
   {
     goto LABEL_12;
   }
@@ -531,21 +531,21 @@ LABEL_12:
     v21 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E69BFF70];
     v42 = *MEMORY[0x1E696A278];
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid url for syndication data store: %@", v8];
-    v43 = v23;
+    neededCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid url for syndication data store: %@", neededCopy];
+    v43 = neededCopy;
     v24 = MEMORY[0x1E695DF20];
     v25 = &v43;
     v26 = &v42;
     goto LABEL_13;
   }
 
-  if (!v7 || ([MEMORY[0x1E696AC08] defaultManager], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "path"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "fileExistsAtPath:", v16), v16, v15, !v17))
+  if (!lCopy || ([MEMORY[0x1E696AC08] defaultManager], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(lCopy, "path"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "fileExistsAtPath:", v16), v16, v15, !v17))
   {
     v21 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E69BFF70];
     v44 = *MEMORY[0x1E696A278];
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid copy from url: %@", v7];
-    v45 = v23;
+    neededCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid copy from url: %@", lCopy];
+    v45 = neededCopy;
     v24 = MEMORY[0x1E695DF20];
     v25 = &v45;
     v26 = &v44;
@@ -553,17 +553,17 @@ LABEL_12:
   }
 
   v41 = 0;
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
-  v19 = [v8 path];
-  v20 = [v18 fileExistsAtPath:v19 isDirectory:&v41];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [neededCopy path];
+  v20 = [defaultManager fileExistsAtPath:path isDirectory:&v41];
 
   if (v41)
   {
     v21 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E69BFF70];
     v46 = *MEMORY[0x1E696A278];
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"copy to url is a directory: %@", v8];
-    v47[0] = v23;
+    neededCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"copy to url is a directory: %@", neededCopy];
+    v47[0] = neededCopy;
     v24 = MEMORY[0x1E695DF20];
     v25 = v47;
     v26 = &v46;
@@ -576,20 +576,20 @@ LABEL_13:
 
   if (v20)
   {
-    v32 = [MEMORY[0x1E696AC08] defaultManager];
-    [v32 removeItemAtURL:v8 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtURL:neededCopy error:0];
   }
 
-  v33 = [v8 URLByDeletingLastPathComponent];
-  v34 = [MEMORY[0x1E696AC08] defaultManager];
+  uRLByDeletingLastPathComponent = [neededCopy URLByDeletingLastPathComponent];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
   v40 = 0;
-  v35 = [v34 createDirectoryAtURL:v33 withIntermediateDirectories:1 attributes:0 error:&v40];
+  v35 = [defaultManager3 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v40];
   v28 = v40;
 
   if (v35)
   {
     v39 = 0;
-    v36 = [MEMORY[0x1E69BF238] copyItemAtURL:v7 toURL:v8 error:&v39];
+    v36 = [MEMORY[0x1E69BF238] copyItemAtURL:lCopy toURL:neededCopy error:&v39];
     v37 = v39;
     v38 = v37;
     if (v36)
@@ -607,10 +607,10 @@ LABEL_13:
   }
 
 LABEL_14:
-  if (a5)
+  if (error)
   {
     v29 = v28;
-    *a5 = v28;
+    *error = v28;
   }
 
   v30 = 0;
@@ -619,25 +619,25 @@ LABEL_17:
   return v30;
 }
 
-+ (void)_provideTemporaryFileURLFromDataForBundleID:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
++ (void)_provideTemporaryFileURLFromDataForBundleID:(id)d itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  dCopy = d;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __134__PLSyndicationResourceDataStore__provideTemporaryFileURLFromDataForBundleID_itemIdentifier_typeIdentifier_options_completionHandler___block_invoke;
   v19[3] = &unk_1E7573808;
-  v20 = v12;
-  v21 = v11;
-  v22 = v13;
-  v23 = v14;
-  v24 = a6;
-  v15 = v13;
-  v16 = v14;
-  v17 = v11;
-  v18 = v12;
+  v20 = identifierCopy;
+  v21 = dCopy;
+  v22 = typeIdentifierCopy;
+  v23 = handlerCopy;
+  optionsCopy = options;
+  v15 = typeIdentifierCopy;
+  v16 = handlerCopy;
+  v17 = dCopy;
+  v18 = identifierCopy;
   PLUTIAndSizeFromCSSearchableItemIdentifier(v18, v17, v19);
 }
 
@@ -897,17 +897,17 @@ void __134__PLSyndicationResourceDataStore__provideTemporaryFileURLFromDataForBu
   }
 }
 
-+ (void)_provideFileURLsForBundleID:(id)a3 itemIdentifiers:(id)a4 typeIdentifier:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
++ (void)_provideFileURLsForBundleID:(id)d itemIdentifiers:(id)identifiers typeIdentifier:(id)identifier options:(int64_t)options completionHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if ([a1 _shouldUseDataInterfaceForBundleID:v12])
+  dCopy = d;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([self _shouldUseDataInterfaceForBundleID:dCopy])
   {
-    v30 = v15;
-    v34 = v12;
+    v30 = handlerCopy;
+    v34 = dCopy;
     context = objc_autoreleasePoolPush();
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -919,8 +919,8 @@ void __134__PLSyndicationResourceDataStore__provideTemporaryFileURLFromDataForBu
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v31 = v13;
-    obj = v13;
+    v31 = identifiersCopy;
+    obj = identifiersCopy;
     v20 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v20)
     {
@@ -943,12 +943,12 @@ void __134__PLSyndicationResourceDataStore__provideTemporaryFileURLFromDataForBu
           v40[3] = &unk_1E7577BB8;
           v41 = v18;
           v25 = queue;
-          v46 = a1;
+          selfCopy = self;
           v42 = v25;
           v43 = v24;
           v44 = v16;
           v45 = v19;
-          [a1 _provideTemporaryFileURLFromDataForBundleID:v34 itemIdentifier:v24 typeIdentifier:v14 options:a6 completionHandler:v40];
+          [self _provideTemporaryFileURLFromDataForBundleID:v34 itemIdentifier:v24 typeIdentifier:identifierCopy options:options completionHandler:v40];
         }
 
         v21 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
@@ -961,7 +961,7 @@ void __134__PLSyndicationResourceDataStore__provideTemporaryFileURLFromDataForBu
     block[1] = 3221225472;
     block[2] = __119__PLSyndicationResourceDataStore__provideFileURLsForBundleID_itemIdentifiers_typeIdentifier_options_completionHandler___block_invoke_3;
     block[3] = &unk_1E7573C00;
-    v15 = v30;
+    handlerCopy = v30;
     v39 = v30;
     v36 = v16;
     v37 = v19;
@@ -971,14 +971,14 @@ void __134__PLSyndicationResourceDataStore__provideTemporaryFileURLFromDataForBu
     dispatch_group_notify(v18, queue, block);
 
     objc_autoreleasePoolPop(context);
-    v12 = v34;
-    v13 = v31;
+    dCopy = v34;
+    identifiersCopy = v31;
   }
 
   else
   {
-    v28 = [MEMORY[0x1E6964E78] defaultSearchableIndex];
-    [v28 provideFileURLsForBundle:v12 itemIdentifiers:v13 typeIdentifier:v14 options:a6 completionHandler:v15];
+    defaultSearchableIndex = [MEMORY[0x1E6964E78] defaultSearchableIndex];
+    [defaultSearchableIndex provideFileURLsForBundle:dCopy itemIdentifiers:identifiersCopy typeIdentifier:identifierCopy options:options completionHandler:handlerCopy];
   }
 }
 
@@ -1058,21 +1058,21 @@ LABEL_10:
   }
 }
 
-+ (void)_addTemporaryURL:(id)a3 itemIdentifier:(id)a4 error:(id)a5 toResults:(id)a6 andFileHandles:(id)a7
++ (void)_addTemporaryURL:(id)l itemIdentifier:(id)identifier error:(id)error toResults:(id)results andFileHandles:(id)handles
 {
   v41 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  lCopy = l;
+  identifierCopy = identifier;
+  errorCopy = error;
+  resultsCopy = results;
+  handlesCopy = handles;
+  if (identifierCopy)
   {
-    if (v13)
+    if (lCopy)
     {
 LABEL_3:
-      v18 = [v13 path];
-      v19 = open([v18 fileSystemRepresentation], 0);
+      path = [lCopy path];
+      v19 = open([path fileSystemRepresentation], 0);
 
       if ((v19 & 0x80000000) != 0)
       {
@@ -1080,84 +1080,84 @@ LABEL_3:
         v22 = PLSyndicationGetLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v13 path];
+          path2 = [lCopy path];
           *buf = 67109378;
           v38 = v21;
           v39 = 2112;
-          v40 = v23;
+          v40 = path2;
           _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "open failed with errno %d for file at path %@", buf, 0x12u);
         }
 
-        if (!v15)
+        if (!errorCopy)
         {
           v24 = v21;
           v25 = MEMORY[0x1E696ABC0];
           v26 = *MEMORY[0x1E696A798];
           v35 = *MEMORY[0x1E696A998];
-          v36 = v13;
+          v36 = lCopy;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-          v15 = [v25 errorWithDomain:v26 code:v24 userInfo:v27];
+          errorCopy = [v25 errorWithDomain:v26 code:v24 userInfo:v27];
         }
       }
 
       else
       {
         v20 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v19 closeOnDealloc:1];
-        [v17 addObject:v20];
+        [handlesCopy addObject:v20];
       }
 
-      v28 = [objc_alloc(MEMORY[0x1E6964E18]) initWithFileURL:v13 andError:v15];
+      v28 = [objc_alloc(MEMORY[0x1E6964E18]) initWithFileURL:lCopy andError:errorCopy];
       goto LABEL_14;
     }
   }
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"PLSyndicationResourceDataStore.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"itemIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"itemIdentifier"}];
 
-    if (v13)
+    if (lCopy)
     {
       goto LABEL_3;
     }
   }
 
-  if (!v15)
+  if (!errorCopy)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"PLSyndicationResourceDataStore.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
   }
 
   v30 = objc_alloc(MEMORY[0x1E6964E18]);
   v31 = MEMORY[0x1E695DFF8];
   v32 = NSTemporaryDirectory();
   v33 = [v31 fileURLWithPath:v32];
-  v28 = [v30 initWithFileURL:v33 andError:v15];
+  v28 = [v30 initWithFileURL:v33 andError:errorCopy];
 
 LABEL_14:
-  [v16 setObject:v28 forKeyedSubscript:v14];
+  [resultsCopy setObject:v28 forKeyedSubscript:identifierCopy];
 }
 
-+ (void)_provideFileURLForBundleID:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
++ (void)_provideFileURLForBundleID:(id)d itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if ([a1 _shouldUseDataInterfaceForBundleID:v12])
+  dCopy = d;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  handlerCopy = handler;
+  if ([self _shouldUseDataInterfaceForBundleID:dCopy])
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __117__PLSyndicationResourceDataStore__provideFileURLForBundleID_itemIdentifier_typeIdentifier_options_completionHandler___block_invoke;
     v17[3] = &unk_1E75737B8;
-    v18 = v15;
-    [a1 _provideTemporaryFileURLFromDataForBundleID:v12 itemIdentifier:v13 typeIdentifier:v14 options:a6 completionHandler:v17];
+    v18 = handlerCopy;
+    [self _provideTemporaryFileURLFromDataForBundleID:dCopy itemIdentifier:identifierCopy typeIdentifier:typeIdentifierCopy options:options completionHandler:v17];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E6964E78] defaultSearchableIndex];
-    [v16 provideFileURLForBundle:v12 itemIdentifier:v13 typeIdentifier:v14 options:a6 completionHandler:v15];
+    defaultSearchableIndex = [MEMORY[0x1E6964E78] defaultSearchableIndex];
+    [defaultSearchableIndex provideFileURLForBundle:dCopy itemIdentifier:identifierCopy typeIdentifier:typeIdentifierCopy options:options completionHandler:handlerCopy];
   }
 }
 
@@ -1171,22 +1171,22 @@ void __117__PLSyndicationResourceDataStore__provideFileURLForBundleID_itemIdenti
   }
 }
 
-+ (void)_provideFileURLAndUnwrapLivePhotoIfNeededForBundleID:(id)a3 syndicationIdentifier:(id)a4 typeIdentifier:(id)a5 isLivePhoto:(BOOL)a6 options:(int64_t)a7 completionHandler:(id)a8
++ (void)_provideFileURLAndUnwrapLivePhotoIfNeededForBundleID:(id)d syndicationIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier isLivePhoto:(BOOL)photo options:(int64_t)options completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
-  v16 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  typeIdentifierCopy = typeIdentifier;
   v17 = PLSyndicationGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v27 = v13;
+    v27 = dCopy;
     v28 = 2114;
-    v29 = v14;
+    v29 = identifierCopy;
     v30 = 2048;
-    v31 = a7;
+    optionsCopy = options;
     _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "[resource] making file provider request with bundleID: %{public}@, syndicationID: %{public}@, options: %lu", buf, 0x20u);
   }
 
@@ -1194,14 +1194,14 @@ void __117__PLSyndicationResourceDataStore__provideFileURLForBundleID_itemIdenti
   v21[1] = 3221225472;
   v21[2] = __162__PLSyndicationResourceDataStore__provideFileURLAndUnwrapLivePhotoIfNeededForBundleID_syndicationIdentifier_typeIdentifier_isLivePhoto_options_completionHandler___block_invoke;
   v21[3] = &unk_1E7573790;
-  v24 = v15;
-  v25 = a1;
-  v22 = v13;
-  v23 = v14;
-  v18 = v14;
-  v19 = v13;
-  v20 = v15;
-  [a1 _provideFileURLForBundleID:v19 itemIdentifier:v18 typeIdentifier:v16 options:a7 completionHandler:v21];
+  v24 = handlerCopy;
+  selfCopy = self;
+  v22 = dCopy;
+  v23 = identifierCopy;
+  v18 = identifierCopy;
+  v19 = dCopy;
+  v20 = handlerCopy;
+  [self _provideFileURLForBundleID:v19 itemIdentifier:v18 typeIdentifier:typeIdentifierCopy options:options completionHandler:v21];
 }
 
 void __162__PLSyndicationResourceDataStore__provideFileURLAndUnwrapLivePhotoIfNeededForBundleID_syndicationIdentifier_typeIdentifier_isLivePhoto_options_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1310,12 +1310,12 @@ uint64_t __162__PLSyndicationResourceDataStore__provideFileURLAndUnwrapLivePhoto
   return result;
 }
 
-+ (BOOL)_unpackPVTBundleAtURL:(id)a3 primaryURL:(id *)a4 secondaryURL:(id *)a5 error:(id *)a6
++ (BOOL)_unpackPVTBundleAtURL:(id)l primaryURL:(id *)rL secondaryURL:(id *)uRL error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E69C0918];
-  v10 = a3;
-  v11 = [[v9 alloc] initWithBundleAtURL:v10];
+  lCopy = l;
+  v11 = [[v9 alloc] initWithBundleAtURL:lCopy];
 
   if (v11 && ([v11 imagePath], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v11, "videoPath"), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
   {
@@ -1327,12 +1327,12 @@ uint64_t __162__PLSyndicationResourceDataStore__provideFileURLAndUnwrapLivePhoto
     }
 
     v16 = MEMORY[0x1E695DFF8];
-    v17 = [v11 imagePath];
-    v18 = [v16 fileURLWithPath:v17 isDirectory:0];
+    imagePath = [v11 imagePath];
+    v18 = [v16 fileURLWithPath:imagePath isDirectory:0];
 
     v19 = MEMORY[0x1E695DFF8];
-    v20 = [v11 videoPath];
-    v21 = [v19 fileURLWithPath:v20 isDirectory:0];
+    videoPath = [v11 videoPath];
+    v21 = [v19 fileURLWithPath:videoPath isDirectory:0];
     v22 = 0;
     v23 = 1;
   }
@@ -1350,26 +1350,26 @@ uint64_t __162__PLSyndicationResourceDataStore__provideFileURLAndUnwrapLivePhoto
     v26 = *MEMORY[0x1E69BFF70];
     v33 = *MEMORY[0x1E696A278];
     v34[0] = @"Unable to unpack live photo bundle";
-    v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v22 = [v25 errorWithDomain:v26 code:4 userInfo:v20];
+    videoPath = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
+    v22 = [v25 errorWithDomain:v26 code:4 userInfo:videoPath];
     v23 = 0;
     v21 = 0;
     v18 = 0;
   }
 
-  if (a4)
+  if (rL)
   {
     v27 = v18;
-    *a4 = v18;
+    *rL = v18;
   }
 
-  if (a5)
+  if (uRL)
   {
     v28 = v21;
-    *a5 = v21;
+    *uRL = v21;
   }
 
-  if (a6)
+  if (error)
   {
     v29 = v23;
   }
@@ -1382,21 +1382,21 @@ uint64_t __162__PLSyndicationResourceDataStore__provideFileURLAndUnwrapLivePhoto
   if ((v29 & 1) == 0)
   {
     v30 = v22;
-    *a6 = v22;
+    *error = v22;
   }
 
   return v23;
 }
 
-+ (BOOL)_markSyndicationResourceAsLocallyAvailableWithURL:(id)a3 resource:(id)a4 inode:(unint64_t)a5 error:(id *)a6
++ (BOOL)_markSyndicationResourceAsLocallyAvailableWithURL:(id)l resource:(id)resource inode:(unint64_t)inode error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (v11)
+  lCopy = l;
+  resourceCopy = resource;
+  v13 = resourceCopy;
+  if (lCopy)
   {
-    if (v12)
+    if (resourceCopy)
     {
       goto LABEL_3;
     }
@@ -1404,13 +1404,13 @@ uint64_t __162__PLSyndicationResourceDataStore__provideFileURLAndUnwrapLivePhoto
 
   else
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:a1 file:@"PLSyndicationResourceDataStore.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"url"}];
 
     if (v13)
     {
 LABEL_3:
-      if (!a5)
+      if (!inode)
       {
         goto LABEL_5;
       }
@@ -1419,45 +1419,45 @@ LABEL_3:
     }
   }
 
-  v37 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v37 handleFailureInMethod:a2 object:a1 file:@"PLSyndicationResourceDataStore.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
 
-  if (a5)
+  if (inode)
   {
 LABEL_4:
-    [v13 setFileID:a5];
+    [v13 setFileID:inode];
   }
 
 LABEL_5:
-  v14 = [v13 resourceType];
-  v15 = [v13 version];
-  v16 = [v13 recipeID];
-  v17 = [v13 uniformTypeIdentifier];
-  v18 = [PLResourceInstaller generatedValidatedExternalSyndicationResourceOfType:v14 version:v15 recipeID:v16 fileURL:v11 requireFileToBePresent:1 uniformTypeIdentifier:v17];
+  resourceType = [v13 resourceType];
+  version = [v13 version];
+  recipeID = [v13 recipeID];
+  uniformTypeIdentifier = [v13 uniformTypeIdentifier];
+  v18 = [PLResourceInstaller generatedValidatedExternalSyndicationResourceOfType:resourceType version:version recipeID:recipeID fileURL:lCopy requireFileToBePresent:1 uniformTypeIdentifier:uniformTypeIdentifier];
 
   if (v18)
   {
     v19 = [PLPrimaryResourceDataStoreKey alloc];
-    v20 = [v13 asset];
-    v21 = [(PLPrimaryResourceDataStoreKey *)v19 initFromExistingLocationOfExternalResource:v18 asset:v20];
+    asset = [v13 asset];
+    v21 = [(PLPrimaryResourceDataStoreKey *)v19 initFromExistingLocationOfExternalResource:v18 asset:asset];
 
-    v22 = [v21 keyData];
-    [v13 setDataStoreKeyData:v22];
+    keyData = [v21 keyData];
+    [v13 setDataStoreKeyData:keyData];
 
     [v13 setDataLength:{objc_msgSend(v18, "dataLength")}];
     [v13 setSyndicationLocalAvailabilityWithAvailable:1];
-    v23 = [v13 fileURL];
-    v24 = v23;
-    if (v23)
+    fileURL = [v13 fileURL];
+    v24 = fileURL;
+    if (fileURL)
     {
-      if (([(__CFString *)v23 isEqual:v11]& 1) != 0)
+      if (([(__CFString *)fileURL isEqual:lCopy]& 1) != 0)
       {
         v25 = PLSyndicationGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v13 singleLineDescription];
+          singleLineDescription = [v13 singleLineDescription];
           *buf = 138412290;
-          v39 = v26;
+          v39 = singleLineDescription;
           _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEFAULT, "[resource] marked resource as locally available: %@", buf, 0xCu);
         }
 
@@ -1465,15 +1465,15 @@ LABEL_5:
         goto LABEL_21;
       }
 
-      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Resource data store key url: (%@) does not match initial syndication resource url: (%@)", v24, v11];
+      lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Resource data store key url: (%@) does not match initial syndication resource url: (%@)", v24, lCopy];
     }
 
     else
     {
-      v28 = @"Failed to store syndication resource data store key data, url is nil";
+      lCopy = @"Failed to store syndication resource data store key data, url is nil";
     }
 
-    v24 = v28;
+    v24 = lCopy;
   }
 
   else
@@ -1487,9 +1487,9 @@ LABEL_5:
   v31 = PLSyndicationGetLog();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
-    v32 = [v13 singleLineDescription];
+    singleLineDescription2 = [v13 singleLineDescription];
     *buf = 138412546;
-    v39 = v32;
+    v39 = singleLineDescription2;
     v40 = 2112;
     v41 = v30;
     _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "[resource] failed to mark resource (%@) as locally available with error: %@", buf, 0x16u);
@@ -1497,11 +1497,11 @@ LABEL_5:
 
   v33 = v30;
   v25 = v33;
-  if (a6)
+  if (error)
   {
     v34 = v33;
     v27 = 0;
-    *a6 = v25;
+    *error = v25;
   }
 
   else
@@ -1515,201 +1515,201 @@ LABEL_21:
   return v27;
 }
 
-- (id)metadataForResourceGenerator:(id)a3 fromFileURL:(id)a4
+- (id)metadataForResourceGenerator:(id)generator fromFileURL:(id)l
 {
   v5 = MEMORY[0x1E69C0718];
-  v6 = a4;
+  lCopy = l;
   v7 = [v5 alloc];
-  v8 = [(PLPhotoLibraryBundle *)self->_libraryBundle timeZoneLookup];
-  v9 = [v7 initWithImageURL:v6 contentType:0 options:13 timeZoneLookup:v8 cacheImageSource:1 cacheImageData:1];
+  timeZoneLookup = [(PLPhotoLibraryBundle *)self->_libraryBundle timeZoneLookup];
+  v9 = [v7 initWithImageURL:lCopy contentType:0 options:13 timeZoneLookup:timeZoneLookup cacheImageSource:1 cacheImageData:1];
 
   return v9;
 }
 
-- (id)videoConversionClientForResourceGenerator:(id)a3
+- (id)videoConversionClientForResourceGenerator:(id)generator
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_videoConversionServiceClient)
+  generatorCopy = generator;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_videoConversionServiceClient)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69AE888]);
-    videoConversionServiceClient = v5->_videoConversionServiceClient;
-    v5->_videoConversionServiceClient = v6;
+    videoConversionServiceClient = selfCopy->_videoConversionServiceClient;
+    selfCopy->_videoConversionServiceClient = v6;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v8 = v5->_videoConversionServiceClient;
+  v8 = selfCopy->_videoConversionServiceClient;
   v9 = v8;
 
   return v8;
 }
 
-- (id)imageConversionClientForResourceGenerator:(id)a3
+- (id)imageConversionClientForResourceGenerator:(id)generator
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_imageConversionServiceClient)
+  generatorCopy = generator;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_imageConversionServiceClient)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69AE870]);
-    imageConversionServiceClient = v5->_imageConversionServiceClient;
-    v5->_imageConversionServiceClient = v6;
+    imageConversionServiceClient = selfCopy->_imageConversionServiceClient;
+    selfCopy->_imageConversionServiceClient = v6;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v8 = v5->_imageConversionServiceClient;
+  v8 = selfCopy->_imageConversionServiceClient;
   v9 = v8;
 
   return v8;
 }
 
-- (id)requestLocalAvailabilityChange:(signed __int16)a3 forResource:(id)a4 options:(id)a5 completion:(id)a6
+- (id)requestLocalAvailabilityChange:(signed __int16)change forResource:(id)resource options:(id)options completion:(id)completion
 {
   v144[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (!v9)
+  resourceCopy = resource;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!resourceCopy)
   {
     v30 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E69BFF70];
     v143 = *MEMORY[0x1E696A278];
     v144[0] = @"nil resource";
-    v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v144 forKeys:&v143 count:1];
-    v32 = [v30 errorWithDomain:v31 code:4 userInfo:v15];
-    (*(v11 + 2))(v11, v32, 0, 0);
+    asset = [MEMORY[0x1E695DF20] dictionaryWithObjects:v144 forKeys:&v143 count:1];
+    v32 = [v30 errorWithDomain:v31 code:4 userInfo:asset];
+    (*(completionCopy + 2))(completionCopy, v32, 0, 0);
 
     goto LABEL_58;
   }
 
   if (!self->_libraryBundle)
   {
-    v12 = [v9 photoLibrary];
-    v13 = [v12 libraryBundle];
+    photoLibrary = [resourceCopy photoLibrary];
+    libraryBundle = [photoLibrary libraryBundle];
     libraryBundle = self->_libraryBundle;
-    self->_libraryBundle = v13;
+    self->_libraryBundle = libraryBundle;
   }
 
-  v15 = [v9 asset];
-  v16 = [v15 uniformTypeIdentifier];
+  asset = [resourceCopy asset];
+  uniformTypeIdentifier = [asset uniformTypeIdentifier];
 
-  if (v16)
+  if (uniformTypeIdentifier)
   {
     goto LABEL_5;
   }
 
-  v33 = [v15 kind];
-  if (v33 - 2 < 2)
+  kind = [asset kind];
+  if (kind - 2 < 2)
   {
     v52 = PLSyndicationGetLog();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
-      v53 = v10;
-      v54 = [v10 taskIdentifier];
-      v55 = [v15 uuid];
-      v56 = [v15 kind];
-      if (v56 > 3)
+      v53 = optionsCopy;
+      taskIdentifier = [optionsCopy taskIdentifier];
+      uuid = [asset uuid];
+      kind2 = [asset kind];
+      if (kind2 > 3)
       {
         v57 = 0;
       }
 
       else
       {
-        v57 = off_1E7567AF8[v56];
+        v57 = off_1E7567AF8[kind2];
       }
 
       v63 = v57;
       *buf = 138543874;
-      v138 = v54;
+      v138 = taskIdentifier;
       v139 = 2114;
-      v140 = v55;
+      v140 = uuid;
       v141 = 2114;
       v142 = v63;
       _os_log_impl(&dword_19BF1F000, v52, OS_LOG_TYPE_ERROR, "[resource] %{public}@ asset (%{public}@) of type %{public}@ missing UTI, request will fail", buf, 0x20u);
 
-      v10 = v53;
+      optionsCopy = v53;
     }
 
     goto LABEL_39;
   }
 
-  if (v33 > 1)
+  if (kind > 1)
   {
 LABEL_39:
-    v116 = v10;
+    v116 = optionsCopy;
     v64 = MEMORY[0x1E696ABC0];
     v65 = *MEMORY[0x1E69BFF70];
     v135 = *MEMORY[0x1E696A278];
     v66 = MEMORY[0x1E696AEC0];
-    v67 = [v15 uuid];
-    v68 = [v15 kind];
-    if (v68 > 3)
+    uuid2 = [asset uuid];
+    kind3 = [asset kind];
+    if (kind3 > 3)
     {
       v69 = 0;
     }
 
     else
     {
-      v69 = off_1E7567AF8[v68];
+      v69 = off_1E7567AF8[kind3];
     }
 
     v70 = v69;
-    v71 = [v66 stringWithFormat:@"asset %@ missing UTI and invalid type %@", v67, v70];
+    v71 = [v66 stringWithFormat:@"asset %@ missing UTI and invalid type %@", uuid2, v70];
     v136 = v71;
     v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v136 forKeys:&v135 count:1];
     v73 = [v64 errorWithDomain:v65 code:4 userInfo:v72];
-    (*(v11 + 2))(v11, v73, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v73, 0, 0);
 
-    v10 = v116;
+    optionsCopy = v116;
     goto LABEL_58;
   }
 
   v34 = PLSyndicationGetLog();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
-    v35 = v10;
-    v36 = [v10 taskIdentifier];
-    v37 = [v15 uuid];
-    v38 = [v15 kind];
-    if (v38 > 3)
+    v35 = optionsCopy;
+    taskIdentifier2 = [optionsCopy taskIdentifier];
+    uuid3 = [asset uuid];
+    kind4 = [asset kind];
+    if (kind4 > 3)
     {
       v39 = 0;
     }
 
     else
     {
-      v39 = off_1E7567AF8[v38];
+      v39 = off_1E7567AF8[kind4];
     }
 
     v62 = v39;
     *buf = 138543874;
-    v138 = v36;
+    v138 = taskIdentifier2;
     v139 = 2114;
-    v140 = v37;
+    v140 = uuid3;
     v141 = 2114;
     v142 = v62;
     _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_ERROR, "[resource] %{public}@ asset (%{public}@) of type %{public}@ missing UTI, request will attempt to continue", buf, 0x20u);
 
-    v10 = v35;
+    optionsCopy = v35;
   }
 
 LABEL_5:
-  if (PLSyndicationAssetRequiresBlastDoorToAccessOriginals(v15))
+  if (PLSyndicationAssetRequiresBlastDoorToAccessOriginals(asset))
   {
-    v17 = [v15 uniformTypeIdentifier];
-    if (v17)
+    uniformTypeIdentifier2 = [asset uniformTypeIdentifier];
+    if (uniformTypeIdentifier2)
     {
-      v18 = v17;
+      v18 = uniformTypeIdentifier2;
       v19 = MEMORY[0x1E6982C40];
-      [v15 uniformTypeIdentifier];
-      v21 = v20 = v10;
+      [asset uniformTypeIdentifier];
+      v21 = v20 = optionsCopy;
       v22 = [v19 typeWithIdentifier:v21];
       v23 = [v22 conformsToType:*MEMORY[0x1E6982F88]];
 
-      v10 = v20;
+      optionsCopy = v20;
       if (v23)
       {
         v24 = MEMORY[0x1E696ABC0];
@@ -1722,35 +1722,35 @@ LABEL_5:
 LABEL_32:
         v60 = [v26 dictionaryWithObjects:v27 forKeys:v28 count:1];
         v61 = [v24 errorWithDomain:v25 code:4 userInfo:v60];
-        (*(v11 + 2))(v11, v61, 0, 0);
+        (*(completionCopy + 2))(completionCopy, v61, 0, 0);
 
-        v10 = v20;
+        optionsCopy = v20;
         goto LABEL_58;
       }
     }
   }
 
-  if ([v9 dataStoreSubtype] == 1 || objc_msgSend(v9, "dataStoreSubtype") == 18)
+  if ([resourceCopy dataStoreSubtype] == 1 || objc_msgSend(resourceCopy, "dataStoreSubtype") == 18)
   {
-    v29 = [(PLSyndicationResourceDataStore *)self _requestLocalAvailabilityChangeForSyndicationOriginalResource:v9 options:v10 completion:v11];
+    v29 = [(PLSyndicationResourceDataStore *)self _requestLocalAvailabilityChangeForSyndicationOriginalResource:resourceCopy options:optionsCopy completion:completionCopy];
   }
 
   else
   {
-    v40 = [v9 dataStoreSubtype];
+    dataStoreSubtype = [resourceCopy dataStoreSubtype];
     v41 = PLSyndicationGetLog();
     v42 = v41;
-    if (v40 != 4)
+    if (dataStoreSubtype != 4)
     {
-      v20 = v10;
+      v20 = optionsCopy;
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
-        v58 = [v10 taskIdentifier];
-        v59 = [v9 singleLineDescription];
+        taskIdentifier3 = [optionsCopy taskIdentifier];
+        singleLineDescription = [resourceCopy singleLineDescription];
         *buf = 138543618;
-        v138 = v58;
+        v138 = taskIdentifier3;
         v139 = 2112;
-        v140 = v59;
+        v140 = singleLineDescription;
         _os_log_impl(&dword_19BF1F000, v42, OS_LOG_TYPE_ERROR, "[resource] %{public}@ resource (%@) unsupported by syndication data store", buf, 0x16u);
       }
 
@@ -1766,22 +1766,22 @@ LABEL_32:
 
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
-      v43 = [v10 taskIdentifier];
-      [v15 uuid];
-      v45 = v44 = v10;
+      taskIdentifier4 = [optionsCopy taskIdentifier];
+      [asset uuid];
+      v45 = v44 = optionsCopy;
       *buf = 138543618;
-      v138 = v43;
+      v138 = taskIdentifier4;
       v139 = 2114;
       v140 = v45;
       _os_log_impl(&dword_19BF1F000, v42, OS_LOG_TYPE_DEFAULT, "[resource] %{public}@ on demand request for derivative image for asset: %{public}@", buf, 0x16u);
 
-      v10 = v44;
+      optionsCopy = v44;
     }
 
     v128 = 0;
     v126 = 0;
     v127 = 0;
-    v46 = [(PLSyndicationResourceDataStore *)self _getDestinationURLAndFixLocalAvailabilityIfNeededForResource:v9 fileIdentifier:&v127 isLocallyAvailable:&v128 error:&v126];
+    v46 = [(PLSyndicationResourceDataStore *)self _getDestinationURLAndFixLocalAvailabilityIfNeededForResource:resourceCopy fileIdentifier:&v127 isLocallyAvailable:&v128 error:&v126];
     v47 = v127;
     v48 = v126;
     v49 = v48;
@@ -1792,39 +1792,39 @@ LABEL_32:
         v50 = PLSyndicationGetLog();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
         {
-          v51 = [v10 taskIdentifier];
+          taskIdentifier5 = [optionsCopy taskIdentifier];
           *buf = 138543618;
-          v138 = v51;
+          v138 = taskIdentifier5;
           v139 = 2112;
           v140 = v46;
           _os_log_impl(&dword_19BF1F000, v50, OS_LOG_TYPE_DEFAULT, "[resource] %{public}@ resource is already local at url: %@", buf, 0x16u);
         }
 
-        (*(v11 + 2))(v11, 0, 0, v46);
+        (*(completionCopy + 2))(completionCopy, 0, 0, v46);
       }
 
       else
       {
         v113 = v48;
-        v83 = [v9 asset];
-        v84 = [v83 syndicationOriginalResource];
+        asset2 = [resourceCopy asset];
+        syndicationOriginalResource = [asset2 syndicationOriginalResource];
 
-        v112 = v84;
-        if (v84)
+        v112 = syndicationOriginalResource;
+        if (syndicationOriginalResource)
         {
           v109 = v46;
           v115 = v47;
-          v117 = v10;
-          v111 = [v84 objectID];
-          v110 = [v84 photoLibrary];
-          v85 = [v9 asset];
-          v86 = [v9 resourceType];
-          v87 = [v9 version];
-          v88 = [v9 recipeID];
-          v89 = [v9 uniformTypeIdentifier];
-          v90 = [v89 identifier];
+          v117 = optionsCopy;
+          objectID = [syndicationOriginalResource objectID];
+          photoLibrary2 = [syndicationOriginalResource photoLibrary];
+          asset3 = [resourceCopy asset];
+          resourceType = [resourceCopy resourceType];
+          version = [resourceCopy version];
+          recipeID = [resourceCopy recipeID];
+          uniformTypeIdentifier3 = [resourceCopy uniformTypeIdentifier];
+          identifier = [uniformTypeIdentifier3 identifier];
           v125 = 0;
-          v91 = [v85 syndicationResourceURLForResourceType:v86 version:v87 recipeID:v88 utiString:v90 error:&v125];
+          v91 = [asset3 syndicationResourceURLForResourceType:resourceType version:version recipeID:recipeID utiString:identifier error:&v125];
           v92 = v125;
 
           v108 = v92;
@@ -1834,12 +1834,12 @@ LABEL_32:
             v118[1] = 3221225472;
             v118[2] = __96__PLSyndicationResourceDataStore_requestLocalAvailabilityChange_forResource_options_completion___block_invoke;
             v118[3] = &unk_1E7573920;
-            v10 = v117;
+            optionsCopy = v117;
             v119 = v117;
-            v120 = v110;
-            v121 = v111;
-            v122 = self;
-            v124 = v11;
+            v120 = photoLibrary2;
+            v121 = objectID;
+            selfCopy = self;
+            v124 = completionCopy;
             v123 = v91;
             v93 = v112;
             v94 = [(PLSyndicationResourceDataStore *)self _requestLocalAvailabilityChangeForSyndicationOriginalResource:v112 options:v119 completion:v118];
@@ -1852,22 +1852,22 @@ LABEL_32:
             v93 = v112;
             v95 = objc_alloc_init(MEMORY[0x1E695DF90]);
             [v95 setObject:@"missing destination url" forKeyedSubscript:*MEMORY[0x1E696A278]];
-            v10 = v117;
+            optionsCopy = v117;
             if (v92)
             {
               [v95 setObject:v92 forKeyedSubscript:*MEMORY[0x1E696AA08]];
             }
 
             v106 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF70] code:4 userInfo:v95];
-            (*(v11 + 2))(v11, v106, 0, 0);
+            (*(completionCopy + 2))(completionCopy, v106, 0, 0);
           }
 
           v49 = v113;
           v47 = v115;
 
           v46 = v109;
-          v105 = v110;
-          v104 = v111;
+          v105 = photoLibrary2;
+          v104 = objectID;
         }
 
         else
@@ -1876,8 +1876,8 @@ LABEL_32:
           v49 = v113;
           if (os_log_type_enabled(v96, OS_LOG_TYPE_FAULT))
           {
-            v97 = [v9 asset];
-            [v97 syndicationDescription];
+            asset4 = [resourceCopy asset];
+            [asset4 syndicationDescription];
             v99 = v98 = v46;
             *buf = 138543362;
             v138 = v99;
@@ -1895,7 +1895,7 @@ LABEL_32:
           v103 = v100;
           v104 = v102;
           v105 = [v103 errorWithDomain:v101 code:4 userInfo:v102];
-          (*(v11 + 2))(v11, v105, 0, 0);
+          (*(completionCopy + 2))(completionCopy, v105, 0, 0);
           v93 = 0;
         }
       }
@@ -1907,26 +1907,26 @@ LABEL_32:
       v74 = PLSyndicationGetLog();
       if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
       {
-        v75 = [v10 taskIdentifier];
-        v76 = [v15 uuid];
-        v77 = [v9 singleLineDescription];
+        taskIdentifier6 = [optionsCopy taskIdentifier];
+        uuid4 = [asset uuid];
+        singleLineDescription2 = [resourceCopy singleLineDescription];
         *buf = 138543874;
-        v138 = v75;
+        v138 = taskIdentifier6;
         v139 = 2114;
-        v140 = v76;
+        v140 = uuid4;
         v141 = 2112;
-        v142 = v77;
+        v142 = singleLineDescription2;
         _os_log_impl(&dword_19BF1F000, v74, OS_LOG_TYPE_ERROR, "[resource] %{public}@ unable to resolve destination url for asset %{public}@, resource: %@", buf, 0x20u);
 
         v46 = 0;
       }
 
       v78 = MEMORY[0x1E696AEC0];
-      v79 = [v15 uuid];
-      v80 = [v9 singleLineDescription];
-      v81 = [v78 stringWithFormat:@"Unable to resolve destination url for syndication asset: %@, resource: %@", v79, v80];
+      uuid5 = [asset uuid];
+      singleLineDescription3 = [resourceCopy singleLineDescription];
+      v81 = [v78 stringWithFormat:@"Unable to resolve destination url for syndication asset: %@, resource: %@", uuid5, singleLineDescription3];
       v82 = PLResourceDataStoreErrorCreate();
-      (*(v11 + 2))(v11, v82, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v82, 0, 0);
 
       v47 = v114;
     }
@@ -2116,23 +2116,23 @@ void __96__PLSyndicationResourceDataStore_requestLocalAvailabilityChange_forReso
   v17();
 }
 
-- (id)_requestLocalAvailabilityChangeForSyndicationOriginalResource:(id)a3 options:(id)a4 completion:(id)a5
+- (id)_requestLocalAvailabilityChangeForSyndicationOriginalResource:(id)resource options:(id)options completion:(id)completion
 {
   v63 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v41 = a4;
-  v42 = a5;
-  v9 = [v8 asset];
-  v38 = [v9 pathManager];
-  v40 = [v9 uuid];
-  v10 = [v9 filename];
-  v11 = v10 == 0;
+  resourceCopy = resource;
+  optionsCopy = options;
+  completionCopy = completion;
+  asset = [resourceCopy asset];
+  pathManager = [asset pathManager];
+  uuid = [asset uuid];
+  filename = [asset filename];
+  v11 = filename == 0;
 
-  v37 = [v8 objectID];
+  objectID = [resourceCopy objectID];
   v60 = 0;
   v58 = 0;
   v59 = 0;
-  v12 = [(PLSyndicationResourceDataStore *)self _getDestinationURLAndFixLocalAvailabilityIfNeededForResource:v8 fileIdentifier:&v59 isLocallyAvailable:&v60 error:&v58];
+  v12 = [(PLSyndicationResourceDataStore *)self _getDestinationURLAndFixLocalAvailabilityIfNeededForResource:resourceCopy fileIdentifier:&v59 isLocallyAvailable:&v60 error:&v58];
   v36 = v59;
   v39 = v58;
   if (v12)
@@ -2142,59 +2142,59 @@ void __96__PLSyndicationResourceDataStore_requestLocalAvailabilityChange_forReso
       v13 = PLSyndicationGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v41 taskIdentifier];
+        taskIdentifier = [optionsCopy taskIdentifier];
         *buf = 138543874;
-        *&buf[4] = v14;
+        *&buf[4] = taskIdentifier;
         *&buf[12] = 2114;
-        *&buf[14] = v40;
+        *&buf[14] = uuid;
         *&buf[22] = 2112;
         v62 = v12;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "[resource] %{public}@ original resource for asset %{public}@ is already local at url: %@", buf, 0x20u);
       }
 
-      (*(v42 + 2))(v42, 0, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v12);
     }
 
     else
     {
-      v23 = [v9 kind] == 0;
+      v23 = [asset kind] == 0;
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
-      LOBYTE(v62) = [v9 kindSubtype] == 2;
-      v24 = [v8 resourceType] == 3;
-      v25 = [v9 additionalAttributes];
-      v34 = [v25 syndicationIdentifier];
+      LOBYTE(v62) = [asset kindSubtype] == 2;
+      v24 = [resourceCopy resourceType] == 3;
+      additionalAttributes = [asset additionalAttributes];
+      syndicationIdentifier = [additionalAttributes syndicationIdentifier];
 
-      v26 = [v9 additionalAttributes];
-      v35 = [v26 importedByBundleIdentifier];
+      additionalAttributes2 = [asset additionalAttributes];
+      importedByBundleIdentifier = [additionalAttributes2 importedByBundleIdentifier];
 
-      v27 = [v8 photoLibrary];
-      LOBYTE(v26) = v24;
-      v33 = PLSyndicationCSProvideOptionsFromRequestOptions(v41, v35);
+      photoLibrary = [resourceCopy photoLibrary];
+      LOBYTE(additionalAttributes2) = v24;
+      v33 = PLSyndicationCSProvideOptionsFromRequestOptions(optionsCopy, importedByBundleIdentifier);
       v32 = objc_opt_class();
-      v28 = [v9 uniformTypeIdentifier];
+      uniformTypeIdentifier = [asset uniformTypeIdentifier];
       v29 = *(*&buf[8] + 24);
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __115__PLSyndicationResourceDataStore__requestLocalAvailabilityChangeForSyndicationOriginalResource_options_completion___block_invoke;
       v43[3] = &unk_1E75738A8;
       v55 = v11;
-      v30 = v27;
+      v30 = photoLibrary;
       v44 = v30;
-      v45 = v9;
+      v45 = asset;
       v54 = buf;
-      v46 = v41;
-      v47 = self;
-      v56 = v26;
-      v48 = v38;
+      v46 = optionsCopy;
+      selfCopy = self;
+      v56 = additionalAttributes2;
+      v48 = pathManager;
       v49 = v36;
-      v50 = v37;
+      v50 = objectID;
       v51 = v12;
       v57 = v23;
-      v52 = v40;
-      v53 = v42;
-      [v32 _provideFileURLAndUnwrapLivePhotoIfNeededForBundleID:v35 syndicationIdentifier:v34 typeIdentifier:v28 isLivePhoto:v29 options:v33 completionHandler:v43];
+      v52 = uuid;
+      v53 = completionCopy;
+      [v32 _provideFileURLAndUnwrapLivePhotoIfNeededForBundleID:importedByBundleIdentifier syndicationIdentifier:syndicationIdentifier typeIdentifier:uniformTypeIdentifier isLivePhoto:v29 options:v33 completionHandler:v43];
 
       _Block_object_dispose(buf, 8);
     }
@@ -2205,23 +2205,23 @@ void __96__PLSyndicationResourceDataStore_requestLocalAvailabilityChange_forReso
     v15 = PLSyndicationGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v41 taskIdentifier];
-      v17 = [v8 singleLineDescription];
+      taskIdentifier2 = [optionsCopy taskIdentifier];
+      singleLineDescription = [resourceCopy singleLineDescription];
       *buf = 138543874;
-      *&buf[4] = v16;
+      *&buf[4] = taskIdentifier2;
       *&buf[12] = 2114;
-      *&buf[14] = v40;
+      *&buf[14] = uuid;
       *&buf[22] = 2112;
-      v62 = v17;
+      v62 = singleLineDescription;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "[resource] %{public}@ unable to resolve destination url for asset %{public}@, resource: %@", buf, 0x20u);
     }
 
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [v9 uuid];
-    v20 = [v8 singleLineDescription];
-    v21 = [v18 stringWithFormat:@"Unable to resolve destination url for syndication asset: %@, resource: %@", v19, v20];
+    uuid2 = [asset uuid];
+    singleLineDescription2 = [resourceCopy singleLineDescription];
+    v21 = [v18 stringWithFormat:@"Unable to resolve destination url for syndication asset: %@, resource: %@", uuid2, singleLineDescription2];
     v22 = PLResourceDataStoreErrorCreate();
-    (*(v42 + 2))(v42, v22, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v22, 0, 0);
   }
 
   return 0;
@@ -2515,15 +2515,15 @@ LABEL_13:
   }
 }
 
-- (BOOL)storeExternalResource:(id)a3 forAsset:(id)a4 options:(id)a5 error:(id *)a6 resultingResource:(id *)a7
+- (BOOL)storeExternalResource:(id)resource forAsset:(id)asset options:(id)options error:(id *)error resultingResource:(id *)resultingResource
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (v13)
+  resourceCopy = resource;
+  assetCopy = asset;
+  optionsCopy = options;
+  if (resourceCopy)
   {
-    if (v14)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
@@ -2531,50 +2531,50 @@ LABEL_13:
 
   else
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v55 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:800 description:{@"Invalid parameter not satisfying: %@", @"externalResource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:800 description:{@"Invalid parameter not satisfying: %@", @"externalResource"}];
 
-    if (v14)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v56 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v56 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:801 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:801 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
 LABEL_3:
-  v16 = [v14 managedObjectContext];
-  if (v16)
+  managedObjectContext = [assetCopy managedObjectContext];
+  if (managedObjectContext)
   {
-    v17 = [v13 uniformTypeIdentifier];
+    uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
 
-    if (!v17)
+    if (!uniformTypeIdentifier)
     {
-      v18 = -[PLResourceDataStore guessUTIForExternalResource:forAssetKind:](self, "guessUTIForExternalResource:forAssetKind:", v13, [v14 kind]);
-      [v13 setUniformTypeIdentifier:v18];
+      v18 = -[PLResourceDataStore guessUTIForExternalResource:forAssetKind:](self, "guessUTIForExternalResource:forAssetKind:", resourceCopy, [assetCopy kind]);
+      [resourceCopy setUniformTypeIdentifier:v18];
 
       v19 = PLImageManagerGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v14 uuid];
+        uuid = [assetCopy uuid];
         *buf = 138543618;
-        v58 = v13;
+        v58 = resourceCopy;
         v59 = 2114;
-        v60 = v20;
+        v60 = uuid;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "[RM] guessed UTI for external resource: %{public}@ for asset uuid: %{public}@", buf, 0x16u);
       }
     }
 
-    if ([v15 assumeNoExistingResources])
+    if ([optionsCopy assumeNoExistingResources])
     {
-      v21 = [v14 objectID];
-      v22 = [PLInternalResource insertResourceForAssetObjectID:v21 resourceIdentity:v13 inManagedObjectContext:v16];
+      objectID = [assetCopy objectID];
+      v22 = [PLInternalResource insertResourceForAssetObjectID:objectID resourceIdentity:resourceCopy inManagedObjectContext:managedObjectContext];
     }
 
     else
     {
-      v22 = [v14 fetchOrCreateResourceWithIdentity:v13];
+      v22 = [assetCopy fetchOrCreateResourceWithIdentity:resourceCopy];
     }
 
     if ([v22 isInserted])
@@ -2582,61 +2582,61 @@ LABEL_3:
       [v22 ensureInitialValuesForSyndication];
     }
 
-    v31 = [v13 codecFourCharCode];
+    codecFourCharCode = [resourceCopy codecFourCharCode];
 
-    if (v31)
+    if (codecFourCharCode)
     {
-      v32 = [v13 codecFourCharCode];
-      [v22 setCodecFourCharCodeName:v32];
+      codecFourCharCode2 = [resourceCopy codecFourCharCode];
+      [v22 setCodecFourCharCodeName:codecFourCharCode2];
     }
 
-    [v22 setUnorientedWidth:{objc_msgSend(v13, "unorientedWidth")}];
-    [v22 setUnorientedHeight:{objc_msgSend(v13, "unorientedHeight")}];
-    [v22 setDataLength:{objc_msgSend(v13, "dataLength")}];
-    v33 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v34 = [v33 BOOLForKey:@"PADisablePhotosBlastDoorProcessing"];
+    [v22 setUnorientedWidth:{objc_msgSend(resourceCopy, "unorientedWidth")}];
+    [v22 setUnorientedHeight:{objc_msgSend(resourceCopy, "unorientedHeight")}];
+    [v22 setDataLength:{objc_msgSend(resourceCopy, "dataLength")}];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v34 = [standardUserDefaults BOOLForKey:@"PADisablePhotosBlastDoorProcessing"];
 
-    if ((v34 & 1) != 0 || [v13 version])
+    if ((v34 & 1) != 0 || [resourceCopy version])
     {
       v35 = 1;
     }
 
     else
     {
-      v35 = [v13 recipeID] & 1;
+      v35 = [resourceCopy recipeID] & 1;
     }
 
-    v36 = [v13 fileURL];
+    fileURL = [resourceCopy fileURL];
 
     v28 = 0;
     v37 = 1;
-    if (v36 && v35)
+    if (fileURL && v35)
     {
-      v38 = [MEMORY[0x1E696AC08] defaultManager];
-      v39 = [v13 fileURL];
-      v40 = [v39 path];
-      v41 = [v38 fileExistsAtPath:v40];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      fileURL2 = [resourceCopy fileURL];
+      path = [fileURL2 path];
+      v41 = [defaultManager fileExistsAtPath:path];
 
       if (v41)
       {
-        v28 = [[PLPrimaryResourceDataStoreKey alloc] initFromExistingLocationOfExternalResource:v13 asset:v14];
+        v28 = [[PLPrimaryResourceDataStoreKey alloc] initFromExistingLocationOfExternalResource:resourceCopy asset:assetCopy];
         if (v28)
         {
-          v42 = [v22 dataStoreKey];
-          if (v42)
+          dataStoreKey = [v22 dataStoreKey];
+          if (dataStoreKey)
           {
-            v43 = v42;
-            v44 = [v22 dataStoreKey];
-            v45 = [v28 isEqualToKey:v44];
+            v43 = dataStoreKey;
+            dataStoreKey2 = [v22 dataStoreKey];
+            v45 = [v28 isEqualToKey:dataStoreKey2];
 
             if ((v45 & 1) == 0)
             {
-              v46 = [v22 dataStoreKey];
-              v47 = [v14 assetID];
-              v48 = [v46 fileURLForAssetID:v47];
+              dataStoreKey3 = [v22 dataStoreKey];
+              assetID = [assetCopy assetID];
+              v48 = [dataStoreKey3 fileURLForAssetID:assetID];
 
-              v49 = [v14 assetID];
-              v50 = [v28 fileURLForAssetID:v49];
+              assetID2 = [assetCopy assetID];
+              v50 = [v28 fileURLForAssetID:assetID2];
 
               if (([MEMORY[0x1E69BF238] fileURL:v48 isEqualToFileURL:v50] & 1) == 0)
               {
@@ -2660,13 +2660,13 @@ LABEL_3:
     }
 
 LABEL_34:
-    v52 = [v28 keyData];
-    [v22 setDataStoreKeyData:v52];
+    keyData = [v28 keyData];
+    [v22 setDataStoreKeyData:keyData];
 
     if (v37)
     {
       [v22 setSyndicationLocalAvailabilityWithAvailable:0];
-      if (!a7)
+      if (!resultingResource)
       {
         goto LABEL_39;
       }
@@ -2676,7 +2676,7 @@ LABEL_34:
     {
       [v22 setSyndicationLocalAvailabilityWithAvailable:1];
       [v22 setLocalAvailabilityTarget:0];
-      if (!a7)
+      if (!resultingResource)
       {
 LABEL_39:
         v30 = v22 != 0;
@@ -2685,16 +2685,16 @@ LABEL_39:
     }
 
     v53 = v22;
-    *a7 = v22;
+    *resultingResource = v22;
     goto LABEL_39;
   }
 
   v23 = PLSyndicationGetLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    v24 = [v14 uuid];
+    uuid2 = [assetCopy uuid];
     *buf = 138543362;
-    v58 = v24;
+    v58 = uuid2;
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "asset %{public}@ managed object context is nil, cannot complete storing external resource", buf, 0xCu);
   }
 
@@ -2705,11 +2705,11 @@ LABEL_39:
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:&v61 count:1];
   v27 = [v25 errorWithDomain:v26 code:47001 userInfo:v22];
   v28 = v27;
-  if (a6)
+  if (error)
   {
     v29 = v27;
     v30 = 0;
-    *a6 = v28;
+    *error = v28;
   }
 
   else
@@ -2722,36 +2722,36 @@ LABEL_40:
   return v30;
 }
 
-- (BOOL)canStoreExternalResource:(id)a3
+- (BOOL)canStoreExternalResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)expectedFileURLForResource:(id)a3 asset:(id)a4
+- (id)expectedFileURLForResource:(id)resource asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 bundleScope] == 3)
+  resourceCopy = resource;
+  assetCopy = asset;
+  if ([assetCopy bundleScope] == 3)
   {
     v22 = objc_alloc(MEMORY[0x1E69BF298]);
-    v8 = [v7 uuid];
-    v20 = [v7 bundleScope];
-    v9 = [v6 uniformTypeIdentifier];
-    v10 = [v9 identifier];
-    v11 = [v6 version];
-    v12 = [v6 resourceType];
-    v21 = self;
-    v13 = [v6 recipeID];
-    v14 = [v7 originalFilename];
-    v15 = [v6 customSuffix];
-    v16 = [v22 initWithAssetUuid:v8 bundleScope:v20 uti:v10 resourceVersion:v11 resourceType:v12 recipeID:v13 originalFilename:v14 customSuffix:v15];
+    uuid = [assetCopy uuid];
+    bundleScope = [assetCopy bundleScope];
+    uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+    identifier = [uniformTypeIdentifier identifier];
+    version = [resourceCopy version];
+    resourceType = [resourceCopy resourceType];
+    selfCopy = self;
+    recipeID = [resourceCopy recipeID];
+    originalFilename = [assetCopy originalFilename];
+    customSuffix = [resourceCopy customSuffix];
+    v16 = [v22 initWithAssetUuid:uuid bundleScope:bundleScope uti:identifier resourceVersion:version resourceType:resourceType recipeID:recipeID originalFilename:originalFilename customSuffix:customSuffix];
 
-    v17 = [(PLResourceDataStore *)v21 pathManager];
-    v18 = [v17 readOnlyUrlWithIdentifier:v16];
+    pathManager = [(PLResourceDataStore *)selfCopy pathManager];
+    v18 = [pathManager readOnlyUrlWithIdentifier:v16];
   }
 
   else
@@ -2762,27 +2762,27 @@ LABEL_40:
   return v18;
 }
 
-- (id)resourceURLForKey:(id)a3 assetID:(id)a4
+- (id)resourceURLForKey:(id)key assetID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  keyCopy = key;
+  dCopy = d;
+  if (!keyCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:758 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:758 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
-  v9 = [v7 fileURLForAssetID:v8];
+  v9 = [keyCopy fileURLForAssetID:dCopy];
 
   return v9;
 }
 
-- (id)resourceDataForKey:(id)a3 assetID:(id)a4
+- (id)resourceDataForKey:(id)key assetID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dCopy = d;
   v7 = MEMORY[0x1E695DEF0];
-  v8 = [(PLSyndicationResourceDataStore *)self resourceURLForKey:a3 assetID:v6];
+  v8 = [(PLSyndicationResourceDataStore *)self resourceURLForKey:key assetID:dCopy];
   v14 = 0;
   v9 = [v7 dataWithContentsOfURL:v8 options:2 error:&v14];
   v10 = v14;
@@ -2792,9 +2792,9 @@ LABEL_40:
     v11 = PLSyndicationGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v6 uuid];
+      uuid = [dCopy uuid];
       *buf = 138543618;
-      v16 = v12;
+      v16 = uuid;
       v17 = 2112;
       v18 = v10;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "[resource] failed to read data for resource with asset: %{public}@, error: %@", buf, 0x16u);
@@ -2804,40 +2804,40 @@ LABEL_40:
   return v9;
 }
 
-- (id)keyFromKeyStruct:(const void *)a3
+- (id)keyFromKeyStruct:(const void *)struct
 {
-  v3 = [[PLPrimaryResourceDataStoreKey alloc] initWithKeyStruct:a3];
+  v3 = [[PLPrimaryResourceDataStoreKey alloc] initWithKeyStruct:struct];
 
   return v3;
 }
 
-- (id)descriptionForSubtype:(int64_t)a3
+- (id)descriptionForSubtype:(int64_t)subtype
 {
   v3 = @"medium image derivative";
   v4 = @"original video complement";
-  if (a3 != 18)
+  if (subtype != 18)
   {
     v4 = 0;
   }
 
-  if (a3 != 4)
+  if (subtype != 4)
   {
     v3 = v4;
   }
 
   v5 = @"unknown";
   v6 = @"original resource";
-  if (a3 != 1)
+  if (subtype != 1)
   {
     v6 = 0;
   }
 
-  if (a3)
+  if (subtype)
   {
     v5 = v6;
   }
 
-  if (a3 <= 3)
+  if (subtype <= 3)
   {
     return v5;
   }
@@ -2848,19 +2848,19 @@ LABEL_40:
   }
 }
 
-- (id)_errorForUnderlyingError:(id)a3
+- (id)_errorForUnderlyingError:(id)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  errorCopy = error;
   v4 = *MEMORY[0x1E69BFF70];
-  if (PLUnderlyingErrorIsSyndicationMessagesNeedsDownload(v3))
+  if (PLUnderlyingErrorIsSyndicationMessagesNeedsDownload(errorCopy))
   {
     v5 = 6;
-    if (v3)
+    if (errorCopy)
     {
 LABEL_3:
       v9 = *MEMORY[0x1E696AA08];
-      v10[0] = v3;
+      v10[0] = errorCopy;
       v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
       goto LABEL_9;
     }
@@ -2868,7 +2868,7 @@ LABEL_3:
 
   else
   {
-    if (PLUnderlyingErrorIsSyndicationMessagesDownloadTimeout(v3))
+    if (PLUnderlyingErrorIsSyndicationMessagesDownloadTimeout(errorCopy))
     {
       v5 = 9;
     }
@@ -2878,7 +2878,7 @@ LABEL_3:
       v5 = 4;
     }
 
-    if (v3)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -2891,26 +2891,26 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)_copyAndMarkAsLocallyAvailablePairedLivePhotoResourceForRequestedResource:(id)a3 requestedVideoComplement:(BOOL)a4 sourceURL:(id)a5 error:(id *)a6
+- (BOOL)_copyAndMarkAsLocallyAvailablePairedLivePhotoResourceForRequestedResource:(id)resource requestedVideoComplement:(BOOL)complement sourceURL:(id)l error:(id *)error
 {
-  v8 = a4;
+  complementCopy = complement;
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 asset];
-  v45 = [v12 pathManager];
+  resourceCopy = resource;
+  lCopy = l;
+  asset = [resourceCopy asset];
+  pathManager = [asset pathManager];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __149__PLSyndicationResourceDataStore__copyAndMarkAsLocallyAvailablePairedLivePhotoResourceForRequestedResource_requestedVideoComplement_sourceURL_error___block_invoke;
   v51[3] = &__block_descriptor_33_e28_B16__0__PLInternalResource_8l;
-  v52 = v8;
-  v13 = [v12 firstPersistedResourceMatching:v51];
+  v52 = complementCopy;
+  v13 = [asset firstPersistedResourceMatching:v51];
   if (!v13)
   {
     v21 = PLSyndicationGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      if (v8)
+      if (complementCopy)
       {
         v22 = @"image";
       }
@@ -2920,22 +2920,22 @@ LABEL_9:
         v22 = @"video complement";
       }
 
-      [v12 uuid];
-      v24 = v23 = v11;
+      [asset uuid];
+      v24 = v23 = lCopy;
       *buf = 138543618;
       v54 = v22;
       v55 = 2114;
       v56 = v24;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "[resource] unable to find paired %{public}@ resource for live photo to copy for asset: %{public}@", buf, 0x16u);
 
-      v11 = v23;
+      lCopy = v23;
     }
 
     v25 = 0;
     v14 = 0;
     v16 = 0;
     v17 = 0;
-    if (a6)
+    if (error)
     {
       goto LABEL_18;
     }
@@ -2957,8 +2957,8 @@ LABEL_9:
     {
       v47 = v15;
       v48 = 0;
-      v43 = v11;
-      v30 = [(PLSyndicationResourceDataStore *)self _copyItemAtURL:v11 withPathManager:v45 destFileIdentifier:v44 inode:&v48 error:&v47];
+      v43 = lCopy;
+      v30 = [(PLSyndicationResourceDataStore *)self _copyItemAtURL:lCopy withPathManager:pathManager destFileIdentifier:v44 inode:&v48 error:&v47];
       v31 = v47;
 
       if (v30)
@@ -2973,7 +2973,7 @@ LABEL_9:
         {
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
           {
-            if (v8)
+            if (complementCopy)
             {
               v36 = @"image";
             }
@@ -2983,11 +2983,11 @@ LABEL_9:
               v36 = @"video complement";
             }
 
-            v37 = [v12 uuid];
+            uuid = [asset uuid];
             *buf = 138543618;
             v54 = v36;
             v55 = 2114;
-            v56 = v37;
+            v56 = uuid;
             _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEFAULT, "[resource] marked paired %{public}@ resource as locally available for asset: %{public}@", buf, 0x16u);
           }
 
@@ -2998,7 +2998,7 @@ LABEL_9:
         {
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
-            if (v8)
+            if (complementCopy)
             {
               v40 = @"image";
             }
@@ -3008,11 +3008,11 @@ LABEL_9:
               v40 = @"video complement";
             }
 
-            v41 = [v12 uuid];
+            uuid2 = [asset uuid];
             *buf = 138543618;
             v54 = v40;
             v55 = 2114;
-            v56 = v41;
+            v56 = uuid2;
             _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "[resource] unable to mark paired %{public}@ resource as locally available for asset: %{public}@", buf, 0x16u);
           }
 
@@ -3027,7 +3027,7 @@ LABEL_9:
         v35 = PLSyndicationGetLog();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
-          if (v8)
+          if (complementCopy)
           {
             v38 = @"image";
           }
@@ -3037,11 +3037,11 @@ LABEL_9:
             v38 = @"video complement";
           }
 
-          v39 = [v12 uuid];
+          uuid3 = [asset uuid];
           *buf = 138543618;
           v54 = v38;
           v55 = 2114;
-          v56 = v39;
+          v56 = uuid3;
           _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "[resource] unable to copy paired %{public}@ url for asset: %{public}@", buf, 0x16u);
         }
 
@@ -3051,8 +3051,8 @@ LABEL_9:
       v25 = v44;
 
       v16 = v31;
-      v11 = v43;
-      if (a6)
+      lCopy = v43;
+      if (error)
       {
         goto LABEL_18;
       }
@@ -3060,13 +3060,13 @@ LABEL_9:
       goto LABEL_19;
     }
 
-    v42 = a6;
-    v18 = v11;
+    errorCopy2 = error;
+    v18 = lCopy;
     v19 = PLSyndicationGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = @"video complement";
-      if (v8)
+      if (complementCopy)
       {
         v20 = @"image";
       }
@@ -3079,29 +3079,29 @@ LABEL_9:
 
   else
   {
-    v42 = a6;
-    v18 = v11;
+    errorCopy2 = error;
+    v18 = lCopy;
     v19 = PLSyndicationGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v12 uuid];
-      v27 = [v10 singleLineDescription];
+      uuid4 = [asset uuid];
+      singleLineDescription = [resourceCopy singleLineDescription];
       *buf = 138543618;
-      v54 = v26;
+      v54 = uuid4;
       v55 = 2112;
-      v56 = v27;
+      v56 = singleLineDescription;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "[resource] unable to resolve destination url for asset %{public}@, resource: %@", buf, 0x16u);
     }
   }
 
-  v11 = v18;
-  a6 = v42;
+  lCopy = v18;
+  error = errorCopy2;
   v25 = v44;
-  if (v42)
+  if (errorCopy2)
   {
 LABEL_18:
     v28 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
 LABEL_19:
@@ -3140,23 +3140,23 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_copyItemAtURL:(id)a3 withPathManager:(id)a4 destFileIdentifier:(id)a5 inode:(unint64_t *)a6 error:(id *)a7
+- (BOOL)_copyItemAtURL:(id)l withPathManager:(id)manager destFileIdentifier:(id)identifier inode:(unint64_t *)inode error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (v13)
+  lCopy = l;
+  managerCopy = manager;
+  identifierCopy = identifier;
+  if (lCopy)
   {
-    if (v14)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:435 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:435 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    if (v15)
+    if (identifierCopy)
     {
       goto LABEL_4;
     }
@@ -3164,23 +3164,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:434 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:434 description:{@"Invalid parameter not satisfying: %@", @"url"}];
 
-  if (!v14)
+  if (!managerCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v15)
+  if (identifierCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:436 description:{@"Invalid parameter not satisfying: %@", @"destFileIdentifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:436 description:{@"Invalid parameter not satisfying: %@", @"destFileIdentifier"}];
 
 LABEL_4:
   v39 = 0;
@@ -3201,22 +3201,22 @@ LABEL_4:
   v23[1] = 3221225472;
   v23[2] = __96__PLSyndicationResourceDataStore__copyItemAtURL_withPathManager_destFileIdentifier_inode_error___block_invoke;
   v23[3] = &unk_1E7573830;
-  v16 = v13;
+  v16 = lCopy;
   v24 = v16;
   v26 = &v39;
   v27 = &v33;
   v28 = &v29;
-  v17 = v15;
+  v17 = identifierCopy;
   v25 = v17;
-  [v14 obtainAccessAndWaitWithFileWithIdentifier:v17 mode:2 toURLWithHandler:v23];
-  if (a6)
+  [managerCopy obtainAccessAndWaitWithFileWithIdentifier:v17 mode:2 toURLWithHandler:v23];
+  if (inode)
   {
-    *a6 = v30[3];
+    *inode = v30[3];
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v34[5];
+    *error = v34[5];
   }
 
   v18 = *(v40 + 24);
@@ -3328,23 +3328,23 @@ void __96__PLSyndicationResourceDataStore__copyItemAtURL_withPathManager_destFil
   }
 }
 
-- (id)_getDestinationURLAndFixLocalAvailabilityIfNeededForResource:(id)a3 fileIdentifier:(id *)a4 isLocallyAvailable:(BOOL *)a5 error:(id *)a6
+- (id)_getDestinationURLAndFixLocalAvailabilityIfNeededForResource:(id)resource fileIdentifier:(id *)identifier isLocallyAvailable:(BOOL *)available error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!v10)
+  resourceCopy = resource;
+  if (!resourceCopy)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSyndicationResourceDataStore.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
   }
 
-  v11 = [v10 asset];
-  v12 = [v10 resourceType];
-  v13 = [v10 version];
-  v14 = [v10 recipeID];
-  v15 = [v10 uniformTypeIdentifier];
-  v16 = [v15 identifier];
-  v17 = [v11 syndicationFileIdentifierForResourceType:v12 version:v13 recipeID:v14 utiString:v16];
+  asset = [resourceCopy asset];
+  resourceType = [resourceCopy resourceType];
+  version = [resourceCopy version];
+  recipeID = [resourceCopy recipeID];
+  uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
+  v17 = [asset syndicationFileIdentifierForResourceType:resourceType version:version recipeID:recipeID utiString:identifier];
 
   v57 = 0;
   v58 = &v57;
@@ -3362,7 +3362,7 @@ void __96__PLSyndicationResourceDataStore__copyItemAtURL_withPathManager_destFil
   v50 = __Block_byref_object_copy__90025;
   v51 = __Block_byref_object_dispose__90026;
   v52 = 0;
-  v18 = [v11 pathManager];
+  pathManager = [asset pathManager];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __135__PLSyndicationResourceDataStore__getDestinationURLAndFixLocalAvailabilityIfNeededForResource_fileIdentifier_isLocallyAvailable_error___block_invoke;
@@ -3372,17 +3372,17 @@ void __96__PLSyndicationResourceDataStore__copyItemAtURL_withPathManager_destFil
   v46 = &v53;
   v19 = v17;
   v43 = v19;
-  [v18 obtainAccessAndWaitWithFileWithIdentifier:v19 mode:1 toURLWithHandler:v42];
+  [pathManager obtainAccessAndWaitWithFileWithIdentifier:v19 mode:1 toURLWithHandler:v42];
 
-  if (*(v54 + 24) == 1 && ([v10 isLocallyAvailable] & 1) == 0)
+  if (*(v54 + 24) == 1 && ([resourceCopy isLocallyAvailable] & 1) == 0)
   {
     v20 = PLSyndicationGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v10 singleLineDescription];
+      singleLineDescription = [resourceCopy singleLineDescription];
       v22 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v58[5]];
       *buf = 138543618;
-      v64 = v21;
+      v64 = singleLineDescription;
       v65 = 2112;
       v66 = v22;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "[resource] fixing model for resource (%{public}@), file exists but is not marked locally available at URL: %@", buf, 0x16u);
@@ -3406,15 +3406,15 @@ void __96__PLSyndicationResourceDataStore__copyItemAtURL_withPathManager_destFil
       }
     }
 
-    [objc_opt_class() _markSyndicationResourceAsLocallyAvailableWithURL:v58[5] resource:v10 inode:v41 error:0];
-    v27 = [v10 managedObjectContext];
-    v28 = [v27 hasChanges];
+    [objc_opt_class() _markSyndicationResourceAsLocallyAvailableWithURL:v58[5] resource:resourceCopy inode:v41 error:0];
+    managedObjectContext = [resourceCopy managedObjectContext];
+    hasChanges = [managedObjectContext hasChanges];
 
-    if (v28)
+    if (hasChanges)
     {
-      v29 = [v10 managedObjectContext];
+      managedObjectContext2 = [resourceCopy managedObjectContext];
       v39 = 0;
-      v30 = [v29 save:&v39];
+      v30 = [managedObjectContext2 save:&v39];
       v31 = v39;
 
       if ((v30 & 1) == 0)
@@ -3422,29 +3422,29 @@ void __96__PLSyndicationResourceDataStore__copyItemAtURL_withPathManager_destFil
         v32 = PLSyndicationGetLog();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          v33 = [v10 singleLineDescription];
+          singleLineDescription2 = [resourceCopy singleLineDescription];
           *buf = 138543362;
-          v64 = v33;
+          v64 = singleLineDescription2;
           _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "[resource] failed to save changes to fix local availability for resource: %{public}@", buf, 0xCu);
         }
       }
     }
   }
 
-  if (a4)
+  if (identifier)
   {
     v34 = v19;
-    *a4 = v19;
+    *identifier = v19;
   }
 
-  if (a5)
+  if (available)
   {
-    *a5 = *(v54 + 24);
+    *available = *(v54 + 24);
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v48[5];
+    *error = v48[5];
   }
 
   v35 = v58[5];

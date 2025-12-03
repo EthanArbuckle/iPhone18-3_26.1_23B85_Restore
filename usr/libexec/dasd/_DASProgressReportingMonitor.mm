@@ -1,12 +1,12 @@
 @interface _DASProgressReportingMonitor
 + (id)sharedMonitor;
 - (_DASProgressReportingMonitor)init;
-- (id)trackerForActivity:(id)a3;
-- (id)trackerForUUID:(id)a3;
-- (id)trackersForPID:(int)a3;
-- (void)beginTrackingActivity:(id)a3;
-- (void)endTrackingActivity:(id)a3;
-- (void)submitProgressUpdate:(id)a3 forActivity:(id)a4;
+- (id)trackerForActivity:(id)activity;
+- (id)trackerForUUID:(id)d;
+- (id)trackersForPID:(int)d;
+- (void)beginTrackingActivity:(id)activity;
+- (void)endTrackingActivity:(id)activity;
+- (void)submitProgressUpdate:(id)update forActivity:(id)activity;
 @end
 
 @implementation _DASProgressReportingMonitor
@@ -42,12 +42,12 @@
   return v2;
 }
 
-- (void)beginTrackingActivity:(id)a3
+- (void)beginTrackingActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = self->_trackers;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_trackers objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_trackers objectForKeyedSubscript:activityCopy];
 
   if (v6)
   {
@@ -58,45 +58,45 @@
   {
     v7 = [_DASProgressTracker alloc];
     v8 = +[NSProgress indeterminateProgress];
-    v9 = [(_DASProgressTracker *)v7 initWithActivity:v4 startingProgress:v8];
+    v9 = [(_DASProgressTracker *)v7 initWithActivity:activityCopy startingProgress:v8];
 
-    [(NSMutableDictionary *)self->_trackers setObject:v9 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_trackers setObject:v9 forKeyedSubscript:activityCopy];
     objc_sync_exit(v5);
 
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = activityCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "[%@] Beginning progress monitoring", &v11, 0xCu);
     }
   }
 }
 
-- (void)endTrackingActivity:(id)a3
+- (void)endTrackingActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = self->_trackers;
   objc_sync_enter(v5);
-  [(NSMutableDictionary *)self->_trackers removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_trackers removeObjectForKey:activityCopy];
   objc_sync_exit(v5);
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = activityCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "[%@] Ending progress monitoring", &v7, 0xCu);
   }
 }
 
-- (void)submitProgressUpdate:(id)a3 forActivity:(id)a4
+- (void)submitProgressUpdate:(id)update forActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  activityCopy = activity;
   v8 = self->_trackers;
   objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)self->_trackers objectForKeyedSubscript:v7];
+  v9 = [(NSMutableDictionary *)self->_trackers objectForKeyedSubscript:activityCopy];
   objc_sync_exit(v8);
 
   log = self->_log;
@@ -104,30 +104,30 @@
   {
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
-      sub_100120034(v7, v6, log);
+      sub_100120034(activityCopy, updateCopy, log);
     }
 
-    [v9 processUpdate:v6];
+    [v9 processUpdate:updateCopy];
   }
 
   else if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
-    sub_1001200BC(v7, log);
+    sub_1001200BC(activityCopy, log);
   }
 }
 
-- (id)trackerForActivity:(id)a3
+- (id)trackerForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = self->_trackers;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_trackers objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_trackers objectForKeyedSubscript:activityCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (id)trackersForPID:(int)a3
+- (id)trackersForPID:(int)d
 {
   v5 = +[NSMutableSet set];
   v6 = self->_trackers;
@@ -137,7 +137,7 @@
   v10[1] = 3221225472;
   v10[2] = sub_10005AE54;
   v10[3] = &unk_1001B6940;
-  v12 = a3;
+  dCopy = d;
   v8 = v5;
   v11 = v8;
   [(NSMutableDictionary *)trackers enumerateKeysAndObjectsUsingBlock:v10];
@@ -147,17 +147,17 @@
   return v8;
 }
 
-- (id)trackerForUUID:(id)a3
+- (id)trackerForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_trackers;
   objc_sync_enter(v5);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMutableDictionary *)self->_trackers allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [(NSMutableDictionary *)self->_trackers allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -167,12 +167,12 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v4];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqual:dCopy];
 
         if (v12)
         {
@@ -181,7 +181,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

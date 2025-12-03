@@ -1,14 +1,14 @@
 @interface RBSCPUAccessGrant
 + (id)grant;
 + (id)grantUserInitiated;
-+ (id)grantWithRole:(unsigned __int8)a3;
++ (id)grantWithRole:(unsigned __int8)role;
 + (id)grantWithUserInteractivity;
 + (id)grantWithUserInteractivityAndFocus;
-- (BOOL)isEqual:(id)a3;
-- (RBSCPUAccessGrant)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBSCPUAccessGrant)initWithRBSXPCCoder:(id)coder;
 - (id)_initWithRole:(id)result;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSCPUAccessGrant
@@ -44,24 +44,24 @@
   return v2;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSCPUAccessGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeInt64:self->_role forKey:{@"role", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:self->_role forKey:{@"role", v5.receiver, v5.super_class}];
 }
 
-- (RBSCPUAccessGrant)initWithRBSXPCCoder:(id)a3
+- (RBSCPUAccessGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = RBSCPUAccessGrant;
-  v5 = [(RBSAttribute *)&v8 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v8 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeInt64ForKey:@"role"];
+    v6 = [coderCopy decodeInt64ForKey:@"role"];
     if (v6 < 9u)
     {
       if (v6)
@@ -84,14 +84,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSCPUAccessGrant;
-  if ([(RBSAttribute *)&v7 isEqual:v4])
+  if ([(RBSAttribute *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_role == v4[8];
+    v5 = self->_role == equalCopy[8];
   }
 
   else
@@ -110,8 +110,8 @@
     v3 = result;
     if ((a2 - 9) <= 0xFFFFFFF7)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel__initWithRole_ object:v3 file:@"RBSCPUAccessGrant.m" lineNumber:96 description:@"initialized with invalid role"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithRole_ object:v3 file:@"RBSCPUAccessGrant.m" lineNumber:96 description:@"initialized with invalid role"];
     }
 
     v4 = rbs_assertion_log();
@@ -142,9 +142,9 @@
   return v2;
 }
 
-+ (id)grantWithRole:(unsigned __int8)a3
++ (id)grantWithRole:(unsigned __int8)role
 {
-  v3 = [[RBSCPUAccessGrant alloc] _initWithRole:a3];
+  v3 = [[RBSCPUAccessGrant alloc] _initWithRole:role];
 
   return v3;
 }

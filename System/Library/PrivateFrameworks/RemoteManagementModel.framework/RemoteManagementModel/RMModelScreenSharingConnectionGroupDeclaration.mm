@@ -1,12 +1,12 @@
 @interface RMModelScreenSharingConnectionGroupDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 connectionGroupUUID:(id)a4 groupName:(id)a5 members:(id)a6;
-+ (id)buildWithIdentifier:(id)a3 connectionGroupUUID:(id)a4 groupName:(id)a5 members:(id)a6;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier connectionGroupUUID:(id)d groupName:(id)name members:(id)members;
++ (id)buildWithIdentifier:(id)identifier connectionGroupUUID:(id)d groupName:(id)name members:(id)members;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelScreenSharingConnectionGroupDeclaration
@@ -33,60 +33,60 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 connectionGroupUUID:(id)a4 groupName:(id)a5 members:(id)a6
++ (id)buildWithIdentifier:(id)identifier connectionGroupUUID:(id)d groupName:(id)name members:(id)members
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  identifierCopy = identifier;
+  membersCopy = members;
+  nameCopy = name;
+  dCopy = d;
   v13 = objc_opt_new();
   [v13 setDeclarationType:@"com.apple.configuration.screensharing.connection.group"];
-  if (v9)
+  if (identifierCopy)
   {
-    [v13 setDeclarationIdentifier:v9];
+    [v13 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [v13 setDeclarationIdentifier:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v13 setDeclarationIdentifier:uUIDString];
   }
 
-  [v13 setPayloadConnectionGroupUUID:v12];
+  [v13 setPayloadConnectionGroupUUID:dCopy];
 
-  [v13 setPayloadGroupName:v11];
-  [v13 setPayloadMembers:v10];
+  [v13 setPayloadGroupName:nameCopy];
+  [v13 setPayloadMembers:membersCopy];
 
   [v13 updateServerToken];
 
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 connectionGroupUUID:(id)a4 groupName:(id)a5 members:(id)a6
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier connectionGroupUUID:(id)d groupName:(id)name members:(id)members
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  identifierCopy = identifier;
+  membersCopy = members;
+  nameCopy = name;
+  dCopy = d;
   v13 = objc_opt_new();
   [v13 setDeclarationType:@"com.apple.configuration.screensharing.connection.group"];
-  if (v9)
+  if (identifierCopy)
   {
-    [v13 setDeclarationIdentifier:v9];
+    [v13 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [v13 setDeclarationIdentifier:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v13 setDeclarationIdentifier:uUIDString];
   }
 
-  [v13 setPayloadConnectionGroupUUID:v12];
+  [v13 setPayloadConnectionGroupUUID:dCopy];
 
-  [v13 setPayloadGroupName:v11];
-  [v13 setPayloadMembers:v10];
+  [v13 setPayloadGroupName:nameCopy];
+  [v13 setPayloadMembers:membersCopy];
 
   [v13 updateServerToken];
 
@@ -110,12 +110,12 @@
   return v5;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelScreenSharingConnectionGroupDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -123,7 +123,7 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ConnectionGroupUUID" forKeyPath:@"payloadConnectionGroupUUID" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"GroupName" forKeyPath:@"payloadGroupName" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"Members" forKeyPath:@"payloadMembers" validator:&__block_literal_global_17 isRequired:1 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ConnectionGroupUUID" forKeyPath:@"payloadConnectionGroupUUID" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"GroupName" forKeyPath:@"payloadGroupName" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"Members" forKeyPath:@"payloadMembers" validator:&__block_literal_global_17 isRequired:1 defaultValue:0 error:error];
   return v13;
 }
 
@@ -136,28 +136,28 @@ uint64_t __100__RMModelScreenSharingConnectionGroupDeclaration_loadPayloadFromDi
   return isKindOfClass & 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelScreenSharingConnectionGroupDeclaration *)self payloadConnectionGroupUUID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ConnectionGroupUUID" value:v5 isRequired:1 defaultValue:0];
+  payloadConnectionGroupUUID = [(RMModelScreenSharingConnectionGroupDeclaration *)self payloadConnectionGroupUUID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ConnectionGroupUUID" value:payloadConnectionGroupUUID isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelScreenSharingConnectionGroupDeclaration *)self payloadGroupName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"GroupName" value:v6 isRequired:1 defaultValue:0];
+  payloadGroupName = [(RMModelScreenSharingConnectionGroupDeclaration *)self payloadGroupName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"GroupName" value:payloadGroupName isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelScreenSharingConnectionGroupDeclaration *)self payloadMembers];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"Members" value:v7 itemSerializer:&__block_literal_global_42 isRequired:1 defaultValue:0];
+  payloadMembers = [(RMModelScreenSharingConnectionGroupDeclaration *)self payloadMembers];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"Members" value:payloadMembers itemSerializer:&__block_literal_global_42 isRequired:1 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelScreenSharingConnectionGroupDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadConnectionGroupUUID copy];
   v6 = v4[6];
   v4[6] = v5;

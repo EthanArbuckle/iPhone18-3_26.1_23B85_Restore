@@ -1,5 +1,5 @@
 @interface TIKeyboardInputManagerConfig
-+ (id)configurationForInputMode:(id)a3;
++ (id)configurationForInputMode:(id)mode;
 - (id)propertyList;
 @end
 
@@ -9,26 +9,26 @@
 {
   v45[24] = *MEMORY[0x277D85DE8];
   v44[0] = @"normalizedInputMode";
-  v43 = [(TIKeyboardInputManagerConfig *)self inputMode];
-  if (v43)
+  inputMode = [(TIKeyboardInputManagerConfig *)self inputMode];
+  if (inputMode)
   {
-    v27 = [(TIKeyboardInputManagerConfig *)self inputMode];
-    v3 = [v27 normalizedIdentifier];
+    inputMode2 = [(TIKeyboardInputManagerConfig *)self inputMode];
+    normalizedIdentifier = [inputMode2 normalizedIdentifier];
   }
 
   else
   {
-    v3 = &stru_283FDFAF8;
+    normalizedIdentifier = &stru_283FDFAF8;
   }
 
-  v28 = v3;
-  v45[0] = v3;
+  v28 = normalizedIdentifier;
+  v45[0] = normalizedIdentifier;
   v44[1] = @"staticDictionaryPath";
-  v4 = [(TIKeyboardInputManagerConfig *)self staticDictionaryPath];
-  v42 = v4;
-  if (v4)
+  staticDictionaryPath = [(TIKeyboardInputManagerConfig *)self staticDictionaryPath];
+  v42 = staticDictionaryPath;
+  if (staticDictionaryPath)
   {
-    v5 = v4;
+    v5 = staticDictionaryPath;
   }
 
   else
@@ -38,11 +38,11 @@
 
   v45[1] = v5;
   v44[2] = @"dynamicResourcePath";
-  v6 = [(TIKeyboardInputManagerConfig *)self dynamicResourcePath];
-  v41 = v6;
-  if (v6)
+  dynamicResourcePath = [(TIKeyboardInputManagerConfig *)self dynamicResourcePath];
+  v41 = dynamicResourcePath;
+  if (dynamicResourcePath)
   {
-    v7 = v6;
+    v7 = dynamicResourcePath;
   }
 
   else
@@ -52,11 +52,11 @@
 
   v45[2] = v7;
   v44[3] = @"ngramModelPath";
-  v8 = [(TIKeyboardInputManagerConfig *)self ngramModelPath];
-  v40 = v8;
-  if (v8)
+  ngramModelPath = [(TIKeyboardInputManagerConfig *)self ngramModelPath];
+  v40 = ngramModelPath;
+  if (ngramModelPath)
   {
-    v9 = v8;
+    v9 = ngramModelPath;
   }
 
   else
@@ -110,12 +110,12 @@
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[TIKeyboardInputManagerConfig continuousPathDetectPause](self, "continuousPathDetectPause")}];
   v45[17] = v14;
   v44[18] = @"continuousPathParameters";
-  v15 = [(TIKeyboardInputManagerConfig *)self continuousPathParams];
-  v16 = v15;
+  continuousPathParams = [(TIKeyboardInputManagerConfig *)self continuousPathParams];
+  v16 = continuousPathParams;
   v17 = MEMORY[0x277CBEC10];
-  if (v15)
+  if (continuousPathParams)
   {
-    v17 = v15;
+    v17 = continuousPathParams;
   }
 
   v45[18] = v17;
@@ -132,18 +132,18 @@
   v21 = [MEMORY[0x277CCABB0] numberWithBool:{-[TIKeyboardInputManagerConfig usesDODMLLogging](self, "usesDODMLLogging")}];
   v45[22] = v21;
   v44[23] = @"shapeStoreResourceDir";
-  v22 = [(TIKeyboardInputManagerConfig *)self shapeStoreResourceDir];
-  v23 = v22;
+  shapeStoreResourceDir = [(TIKeyboardInputManagerConfig *)self shapeStoreResourceDir];
+  v23 = shapeStoreResourceDir;
   v24 = &stru_283FDFAF8;
-  if (v22)
+  if (shapeStoreResourceDir)
   {
-    v24 = v22;
+    v24 = shapeStoreResourceDir;
   }
 
   v45[23] = v24;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:24];
 
-  if (v43)
+  if (inputMode)
   {
   }
 
@@ -152,20 +152,20 @@
   return v29;
 }
 
-+ (id)configurationForInputMode:(id)a3
++ (id)configurationForInputMode:(id)mode
 {
   v4 = MEMORY[0x277D6F470];
-  v5 = a3;
-  v6 = [v4 sharedPreferencesController];
-  v7 = objc_alloc_init(a1);
-  [v7 setInputMode:v5];
-  v8 = [v7 inputMode];
-  [v7 setAllowsSpaceCorrections:{objc_msgSend(v8, "spaceAutocorrectionEnabled")}];
+  modeCopy = mode;
+  sharedPreferencesController = [v4 sharedPreferencesController];
+  v7 = objc_alloc_init(self);
+  [v7 setInputMode:modeCopy];
+  inputMode = [v7 inputMode];
+  [v7 setAllowsSpaceCorrections:{objc_msgSend(inputMode, "spaceAutocorrectionEnabled")}];
 
-  v9 = [v7 inputMode];
-  [v7 setUsesETSRescoring:{objc_msgSend(v9, "typedStringLMRankingEnabled")}];
+  inputMode2 = [v7 inputMode];
+  [v7 setUsesETSRescoring:{objc_msgSend(inputMode2, "typedStringLMRankingEnabled")}];
 
-  v10 = [v5 normalizedIdentifier];
+  normalizedIdentifier = [modeCopy normalizedIdentifier];
 
   v11 = TIGetInputModeProperties();
 
@@ -177,8 +177,8 @@
     dispatch_once(&TIGetKeyboardRetrocorrectionDisabledValue_onceToken, &__block_literal_global_19140);
   }
 
-  v13 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v14 = [v13 valueForPreferenceKey:@"KeyboardRetrocorrectionDisabled"];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v14 = [mEMORY[0x277D6F470] valueForPreferenceKey:@"KeyboardRetrocorrectionDisabled"];
 
   [v7 setUsesRetrocorrection:{objc_msgSend(v14, "BOOLValue") ^ 1}];
   if (TIGetKeyboardWordNgramModelValue_onceToken != -1)
@@ -186,8 +186,8 @@
     dispatch_once(&TIGetKeyboardWordNgramModelValue_onceToken, &__block_literal_global_354);
   }
 
-  v15 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v16 = [v15 valueForPreferenceKey:@"KeyboardWordNgramModel"];
+  mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v16 = [mEMORY[0x277D6F470]2 valueForPreferenceKey:@"KeyboardWordNgramModel"];
 
   if ([v16 BOOLValue])
   {
@@ -205,8 +205,8 @@
     dispatch_once(&TIGetKeyboardWordNgramModelAdaptationValue_onceToken, &__block_literal_global_359);
   }
 
-  v18 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v19 = [v18 valueForPreferenceKey:@"KeyboardWordNgramModelAdaptation"];
+  mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v19 = [mEMORY[0x277D6F470]3 valueForPreferenceKey:@"KeyboardWordNgramModelAdaptation"];
 
   [v7 setUsesAdaptation:{objc_msgSend(v19, "BOOLValue")}];
   if (TIGetKeyboardMaxWordsPerPredictionValue_onceToken != -1)
@@ -214,8 +214,8 @@
     dispatch_once(&TIGetKeyboardMaxWordsPerPredictionValue_onceToken, &__block_literal_global_364);
   }
 
-  v20 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v21 = [v20 valueForPreferenceKey:@"KeyboardMaxWordsPerPrediction"];
+  mEMORY[0x277D6F470]4 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v21 = [mEMORY[0x277D6F470]4 valueForPreferenceKey:@"KeyboardMaxWordsPerPrediction"];
 
   [v7 setMaxWordsPerPrediction:{objc_msgSend(v21, "integerValue")}];
   if (TIGetKeyboardCompletionsShouldSharePrefixValue_onceToken != -1)
@@ -223,14 +223,14 @@
     dispatch_once(&TIGetKeyboardCompletionsShouldSharePrefixValue_onceToken, &__block_literal_global_372);
   }
 
-  v22 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v23 = [v22 valueForPreferenceKey:@"KeyboardCompletionsShouldSharePrefix"];
+  mEMORY[0x277D6F470]5 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v23 = [mEMORY[0x277D6F470]5 valueForPreferenceKey:@"KeyboardCompletionsShouldSharePrefix"];
 
   [v7 setCompletionsShouldSharePrefix:{objc_msgSend(v23, "BOOLValue")}];
   v24 = [v11 objectForKey:*MEMORY[0x277D6F770]];
   [v7 setUsesStemSuffixCorrectionFactor:{objc_msgSend(v24, "BOOLValue")}];
 
-  v25 = [v6 valueForPreferenceKey:*MEMORY[0x277D6F870]];
+  v25 = [sharedPreferencesController valueForPreferenceKey:*MEMORY[0x277D6F870]];
   [v7 setShouldIgnoreCPRequirements:{objc_msgSend(v25, "BOOLValue")}];
 
   v26 = [v11 objectForKey:*MEMORY[0x277D6F680]];
@@ -238,38 +238,38 @@
 
   if (([v7 languageAllowsCP] & 1) != 0 || objc_msgSend(v7, "shouldIgnoreCPRequirements"))
   {
-    [v7 setUsesContinuousPath:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F848])}];
+    [v7 setUsesContinuousPath:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F848])}];
     [v7 setUsesContinuousPathForAccessibility:_AXSAccessibilityKeyboardContinuousPathEnabled() != 0];
     v27 = [v11 objectForKey:*MEMORY[0x277D6F6B0]];
     [v7 setContinuousPathParams:v27];
   }
 
-  v28 = [v6 valueForPreferenceKey:*MEMORY[0x277D6F7D0]];
+  v28 = [sharedPreferencesController valueForPreferenceKey:*MEMORY[0x277D6F7D0]];
   [v7 setUsesCJContinuousPath:{objc_msgSend(v28, "BOOLValue")}];
 
-  v29 = [v6 valueForPreferenceKey:*MEMORY[0x277D6F828]];
+  v29 = [sharedPreferencesController valueForPreferenceKey:*MEMORY[0x277D6F828]];
   [v7 setContinuousPathCompletesWords:{objc_msgSend(v29, "BOOLValue")}];
 
-  v30 = [v6 valueForPreferenceKey:*MEMORY[0x277D6F850]];
+  v30 = [sharedPreferencesController valueForPreferenceKey:*MEMORY[0x277D6F850]];
   [v30 doubleValue];
   [v7 setContinuousPathLanguageWeight:?];
 
-  [v7 setContinuousPathDeleteWholeWord:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F830])}];
-  [v7 setContinuousPathDetectPause:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F838])}];
-  [v7 setInsertsSpaceAfterPredictiveInput:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F898])}];
-  v31 = [v6 valueForPreferenceKey:*MEMORY[0x277D6F840]];
+  [v7 setContinuousPathDeleteWholeWord:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F830])}];
+  [v7 setContinuousPathDetectPause:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F838])}];
+  [v7 setInsertsSpaceAfterPredictiveInput:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F898])}];
+  v31 = [sharedPreferencesController valueForPreferenceKey:*MEMORY[0x277D6F840]];
   [v7 setContinuousPathEnabledAlgorithms:{objc_msgSend(v31, "integerValue")}];
 
-  [v7 setUsesContinuousPathRetrocorrection:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F860])}];
-  [v7 setUsesContinuousPathProgressiveCandidates:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F858])}];
-  [v7 setUsesDODMLLogging:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F868])}];
-  [v7 setSensorKitEnabled:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F990])}];
-  v32 = [v6 valueForPreferenceKey:*MEMORY[0x277D6F988]];
+  [v7 setUsesContinuousPathRetrocorrection:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F860])}];
+  [v7 setUsesContinuousPathProgressiveCandidates:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F858])}];
+  [v7 setUsesDODMLLogging:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F868])}];
+  [v7 setSensorKitEnabled:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F990])}];
+  v32 = [sharedPreferencesController valueForPreferenceKey:*MEMORY[0x277D6F988]];
   [v7 setSensorKitWordsThreshold:{objc_msgSend(v32, "integerValue")}];
 
-  [v7 setUsesUserModelLogging:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F9D8])}];
-  [v7 setAllowRelaxedOVSPolicy:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F7A8])}];
-  v33 = [v6 valueForPreferenceKey:*MEMORY[0x277D6F7D8]];
+  [v7 setUsesUserModelLogging:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F9D8])}];
+  [v7 setAllowRelaxedOVSPolicy:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F7A8])}];
+  v33 = [sharedPreferencesController valueForPreferenceKey:*MEMORY[0x277D6F7D8]];
   v34 = v33;
   if (!v33)
   {
@@ -278,31 +278,31 @@
 
   [v7 setCpCandidatesCount:{objc_msgSend(v33, "integerValue")}];
 
-  [v7 setSkipCandidateQualityFilter:{objc_msgSend(v6, "BOOLForPreferenceKey:", *MEMORY[0x277D6F9A8])}];
-  v35 = [v7 inputMode];
-  v36 = [v35 isSiriMode];
+  [v7 setSkipCandidateQualityFilter:{objc_msgSend(sharedPreferencesController, "BOOLForPreferenceKey:", *MEMORY[0x277D6F9A8])}];
+  inputMode3 = [v7 inputMode];
+  isSiriMode = [inputMode3 isSiriMode];
 
-  v37 = [v7 inputMode];
-  v38 = v37;
-  if (v36)
+  inputMode4 = [v7 inputMode];
+  v38 = inputMode4;
+  if (isSiriMode)
   {
-    v39 = UIKeyboardUnigramLexiconPathForInputMode(v37);
+    v39 = UIKeyboardUnigramLexiconPathForInputMode(inputMode4);
   }
 
   else
   {
-    v40 = [v37 normalizedIdentifier];
+    normalizedIdentifier2 = [inputMode4 normalizedIdentifier];
     IsTransliteration = TIInputModeIsTransliteration();
-    v42 = [v7 inputMode];
-    v43 = v42;
+    inputMode5 = [v7 inputMode];
+    v43 = inputMode5;
     if (IsTransliteration)
     {
-      [v42 normalizedIdentifier];
+      [inputMode5 normalizedIdentifier];
     }
 
     else
     {
-      [v42 languageWithRegion];
+      [inputMode5 languageWithRegion];
     }
     v44 = ;
 
@@ -312,8 +312,8 @@
 
   [v7 setStaticDictionaryPath:v39];
 
-  v45 = [v7 inputMode];
-  v46 = [v45 languageWithRegion];
+  inputMode6 = [v7 inputMode];
+  languageWithRegion = [inputMode6 languageWithRegion];
   v47 = TINgramModelPathForInputMode();
   [v7 setNgramModelPath:v47];
 
@@ -323,7 +323,7 @@
   v49 = UIKeyboardUserDirectory();
   [v7 setShapeStoreResourceDir:v49];
 
-  v50 = [v6 valueForPreferenceKey:*MEMORY[0x277D6F7E0]];
+  v50 = [sharedPreferencesController valueForPreferenceKey:*MEMORY[0x277D6F7E0]];
   [v7 setCpConfidenceModelType:{objc_msgSend(v50, "integerValue")}];
 
   v51 = [v11 objectForKey:*MEMORY[0x277D6F6E0]];

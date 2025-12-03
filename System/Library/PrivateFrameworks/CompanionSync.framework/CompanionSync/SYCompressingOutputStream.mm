@@ -1,29 +1,29 @@
 @interface SYCompressingOutputStream
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (SYCompressingOutputStream)initWithDestinationStream:(id)a3;
-- (id)initToBuffer:(char *)a3 capacity:(unint64_t)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (SYCompressingOutputStream)initWithDestinationStream:(id)stream;
+- (id)initToBuffer:(char *)buffer capacity:(unint64_t)capacity;
 - (id)initToMemory;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (int)_handlePendingInput;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
-- (void)_dispatchMyEvent:(unint64_t)a3;
-- (void)_postEventToDelegate:(unint64_t)a3;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
+- (void)_dispatchMyEvent:(unint64_t)event;
+- (void)_postEventToDelegate:(unint64_t)delegate;
 - (void)close;
 - (void)dealloc;
 - (void)open;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)setCompressionLevel:(int64_t)a3;
-- (void)setInputBufferSize:(unint64_t)a3;
-- (void)setOutputBufferSize:(unint64_t)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)setCompressionLevel:(int64_t)level;
+- (void)setInputBufferSize:(unint64_t)size;
+- (void)setOutputBufferSize:(unint64_t)size;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation SYCompressingOutputStream
 
-- (SYCompressingOutputStream)initWithDestinationStream:(id)a3
+- (SYCompressingOutputStream)initWithDestinationStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v11.receiver = self;
   v11.super_class = SYCompressingOutputStream;
   v6 = [(SYCompressingOutputStream *)&v11 init];
@@ -33,7 +33,7 @@
     internal = v6->_internal;
     v6->_internal = v7;
 
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
     [(NSOutputStream *)v6->_stream setDelegate:v6];
     objc_storeWeak(&v6->_internal->super._delegate, v6);
     v6->_level = -1;
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (id)initToBuffer:(char *)a3 capacity:(unint64_t)a4
+- (id)initToBuffer:(char *)buffer capacity:(unint64_t)capacity
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DFC0]) initToBuffer:a3 capacity:a4];
+  v5 = [objc_alloc(MEMORY[0x1E695DFC0]) initToBuffer:buffer capacity:capacity];
   v6 = [(SYCompressingOutputStream *)self initWithDestinationStream:v5];
 
   return v6;
@@ -53,8 +53,8 @@
 
 - (id)initToMemory
 {
-  v3 = [objc_alloc(MEMORY[0x1E695DFC0]) initToMemory];
-  v4 = [(SYCompressingOutputStream *)self initWithDestinationStream:v3];
+  initToMemory = [objc_alloc(MEMORY[0x1E695DFC0]) initToMemory];
+  v4 = [(SYCompressingOutputStream *)self initWithDestinationStream:initToMemory];
 
   return v4;
 }
@@ -67,29 +67,29 @@
   [(SYCompressingOutputStream *)&v3 dealloc];
 }
 
-- (void)setCompressionLevel:(int64_t)a3
+- (void)setCompressionLevel:(int64_t)level
 {
   if (!self->_internal->super._status)
   {
-    self->_level = a3;
+    self->_level = level;
   }
 }
 
-- (void)setInputBufferSize:(unint64_t)a3
+- (void)setInputBufferSize:(unint64_t)size
 {
   internal = self->_internal;
   if (!internal->super._status)
   {
-    internal->_inputSize = a3;
+    internal->_inputSize = size;
   }
 }
 
-- (void)setOutputBufferSize:(unint64_t)a3
+- (void)setOutputBufferSize:(unint64_t)size
 {
   internal = self->_internal;
   if (!internal->super._status)
   {
-    internal->_outputSize = a3;
+    internal->_outputSize = size;
   }
 }
 
@@ -135,10 +135,10 @@
   }
 }
 
-- (void)_postEventToDelegate:(unint64_t)a3
+- (void)_postEventToDelegate:(unint64_t)delegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_internal->super._delegate);
-  [WeakRetained stream:self handleEvent:a3];
+  [WeakRetained stream:self handleEvent:delegate];
 }
 
 - (int)_handlePendingInput
@@ -188,18 +188,18 @@ uint64_t __48__SYCompressingOutputStream__handlePendingInput__block_invoke(uint6
   return result;
 }
 
-- (void)_dispatchMyEvent:(unint64_t)a3
+- (void)_dispatchMyEvent:(unint64_t)event
 {
-  if (a3 <= 3)
+  if (event <= 3)
   {
-    if (a3 == 1)
+    if (event == 1)
     {
       v4 = 152;
     }
 
     else
     {
-      if (a3 != 2)
+      if (event != 2)
       {
         return;
       }
@@ -210,7 +210,7 @@ uint64_t __48__SYCompressingOutputStream__handlePendingInput__block_invoke(uint6
 
   else
   {
-    switch(a3)
+    switch(event)
     {
       case 4uLL:
         v4 = 168;
@@ -233,29 +233,29 @@ uint64_t __48__SYCompressingOutputStream__handlePendingInput__block_invoke(uint6
   }
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (v6 == self)
+  streamCopy = stream;
+  if (streamCopy == self)
   {
-    v22 = v6;
-    stream = [(SYCompressingOutputStream *)self _dispatchMyEvent:a4];
+    v22 = streamCopy;
+    stream = [(SYCompressingOutputStream *)self _dispatchMyEvent:event];
 LABEL_13:
-    v6 = v22;
+    streamCopy = v22;
     goto LABEL_14;
   }
 
   stream = self->_stream;
-  if (stream != v6)
+  if (stream != streamCopy)
   {
     goto LABEL_14;
   }
 
-  if (a4 > 7)
+  if (event > 7)
   {
-    if (a4 != 8)
+    if (event != 8)
     {
-      if (a4 != 16)
+      if (event != 16)
       {
         goto LABEL_14;
       }
@@ -263,11 +263,11 @@ LABEL_13:
       goto LABEL_27;
     }
 
-    v22 = v6;
-    v14 = [stream streamError];
+    v22 = streamCopy;
+    streamError = [stream streamError];
     internal = self->_internal;
     error = internal->super._error;
-    internal->super._error = v14;
+    internal->super._error = streamError;
 
     self->_internal->super._status = 7;
     [(NSOutputStream *)self->_stream close];
@@ -276,9 +276,9 @@ LABEL_13:
     goto LABEL_37;
   }
 
-  if (a4 == 1)
+  if (event == 1)
   {
-    v22 = v6;
+    v22 = streamCopy;
     v11 = self->_internal;
     if (v11->super._status == 1)
     {
@@ -297,7 +297,7 @@ LABEL_13:
     v11->super._status = 2;
     [(_SYStreamGuts *)self->_internal postStreamEvent:1 forStream:self];
     stream = [(_SYZlibStreamInternal *)self->_internal inputRoom];
-    v6 = v22;
+    streamCopy = v22;
     if (stream < 1)
     {
       goto LABEL_14;
@@ -306,36 +306,36 @@ LABEL_13:
     v17 = self->_internal;
     v18 = 4;
 LABEL_37:
-    v20 = self;
+    selfCopy2 = self;
 LABEL_38:
-    stream = [(_SYStreamGuts *)v17 postStreamEvent:v18 forStream:v20];
+    stream = [(_SYStreamGuts *)v17 postStreamEvent:v18 forStream:selfCopy2];
     goto LABEL_13;
   }
 
-  if (a4 == 4)
+  if (event == 4)
   {
-    v21 = v6;
-    if ([(_SYZlibStreamInternal *)self->_internal outputAvailable]|| !self->_internal->_zStream.avail_in || (stream = [(SYCompressingOutputStream *)self _handlePendingInput], v6 = v21, (stream & 0x80000000) == 0))
+    v21 = streamCopy;
+    if ([(_SYZlibStreamInternal *)self->_internal outputAvailable]|| !self->_internal->_zStream.avail_in || (stream = [(SYCompressingOutputStream *)self _handlePendingInput], streamCopy = v21, (stream & 0x80000000) == 0))
     {
       while (1)
       {
-        v8 = [(_SYZlibStreamInternal *)self->_internal outputAvailable];
+        outputAvailable = [(_SYZlibStreamInternal *)self->_internal outputAvailable];
         v9 = self->_internal;
-        if (v8 < 1)
+        if (outputAvailable < 1)
         {
           break;
         }
 
         [(_SYZlibStreamInternal *)v9 readOutputToStream:self->_stream];
-        v10 = [(NSOutputStream *)self->_stream hasSpaceAvailable];
+        hasSpaceAvailable = [(NSOutputStream *)self->_stream hasSpaceAvailable];
         v9 = self->_internal;
-        if (!v10 || !v9->_zStream.avail_in)
+        if (!hasSpaceAvailable || !v9->_zStream.avail_in)
         {
           break;
         }
 
         stream = [(SYCompressingOutputStream *)self _handlePendingInput];
-        v6 = v21;
+        streamCopy = v21;
         if ((stream & 0x80000000) != 0)
         {
           goto LABEL_14;
@@ -348,7 +348,7 @@ LABEL_38:
         stream = [(_SYStreamGuts *)self->_internal postStreamEvent:4 forStream:self];
       }
 
-      v6 = v21;
+      streamCopy = v21;
 LABEL_27:
       v19 = self->_internal;
       if (v19->super._status == 5 || v19->_zStream.total_out || v19->_zStream.avail_in)
@@ -359,31 +359,31 @@ LABEL_27:
       v19->super._status = 5;
       v17 = self->_internal;
       v18 = 16;
-      v20 = self;
-      v22 = v6;
+      selfCopy2 = self;
+      v22 = streamCopy;
       goto LABEL_38;
     }
   }
 
 LABEL_14:
 
-  MEMORY[0x1EEE66BB8](stream, v6);
+  MEMORY[0x1EEE66BB8](stream, streamCopy);
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  v13 = a3;
-  v6 = a4;
-  [(NSOutputStream *)self->_stream scheduleInRunLoop:v13 forMode:v6];
+  loopCopy = loop;
+  modeCopy = mode;
+  [(NSOutputStream *)self->_stream scheduleInRunLoop:loopCopy forMode:modeCopy];
   internal = self->_internal;
   if (!internal->super._runloopSource)
   {
     [(_SYStreamGuts *)internal createRunloopSourceForStream:self];
   }
 
-  v8 = [v13 getCFRunLoop];
+  getCFRunLoop = [loopCopy getCFRunLoop];
   runloopSource = self->_internal->super._runloopSource;
-  v10 = [(__CFString *)v6 isEqualToString:*MEMORY[0x1E695D918]];
+  v10 = [(__CFString *)modeCopy isEqualToString:*MEMORY[0x1E695D918]];
   v11 = *MEMORY[0x1E695E8E0];
   if (v10)
   {
@@ -392,22 +392,22 @@ LABEL_14:
 
   else
   {
-    v12 = v6;
+    v12 = modeCopy;
   }
 
-  CFRunLoopAddSource(v8, runloopSource, v12);
+  CFRunLoopAddSource(getCFRunLoop, runloopSource, v12);
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  v12 = a3;
-  v6 = a4;
-  [(NSOutputStream *)self->_stream removeFromRunLoop:v12 forMode:v6];
+  loopCopy = loop;
+  modeCopy = mode;
+  [(NSOutputStream *)self->_stream removeFromRunLoop:loopCopy forMode:modeCopy];
   if (self->_internal->super._runloopSource)
   {
-    v7 = [v12 getCFRunLoop];
+    getCFRunLoop = [loopCopy getCFRunLoop];
     runloopSource = self->_internal->super._runloopSource;
-    v9 = [(__CFString *)v6 isEqualToString:*MEMORY[0x1E695D918]];
+    v9 = [(__CFString *)modeCopy isEqualToString:*MEMORY[0x1E695D918]];
     v10 = *MEMORY[0x1E695E8E0];
     if (v9)
     {
@@ -416,14 +416,14 @@ LABEL_14:
 
     else
     {
-      v11 = v6;
+      v11 = modeCopy;
     }
 
-    CFRunLoopRemoveSource(v7, runloopSource, v11);
+    CFRunLoopRemoveSource(getCFRunLoop, runloopSource, v11);
   }
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
   if (![(_SYZlibStreamInternal *)self->_internal inputRoom])
   {
@@ -437,7 +437,7 @@ LABEL_14:
   }
 
   internal->super._status = 4;
-  v8 = [(_SYZlibStreamInternal *)self->_internal writeInputFromBuffer:a3 length:a4];
+  v8 = [(_SYZlibStreamInternal *)self->_internal writeInputFromBuffer:write length:length];
   self->_internal->super._status = 2;
   if ([(NSOutputStream *)self->_stream hasSpaceAvailable])
   {
@@ -457,25 +457,25 @@ LABEL_14:
   return v8;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSOutputStream *)self->_stream propertyForKey:v4];
+  keyCopy = key;
+  v5 = [(NSOutputStream *)self->_stream propertyForKey:keyCopy];
   if (!v5)
   {
-    v5 = [(_SYStreamGuts *)self->_internal propertyForKey:v4];
+    v5 = [(_SYStreamGuts *)self->_internal propertyForKey:keyCopy];
   }
 
   return v5;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (([(NSOutputStream *)self->_stream setProperty:v6 forKey:v7]& 1) == 0)
+  propertyCopy = property;
+  keyCopy = key;
+  if (([(NSOutputStream *)self->_stream setProperty:propertyCopy forKey:keyCopy]& 1) == 0)
   {
-    [(_SYStreamGuts *)self->_internal storeProperty:v6 forKey:v7];
+    [(_SYStreamGuts *)self->_internal storeProperty:propertyCopy forKey:keyCopy];
   }
 
   return 1;

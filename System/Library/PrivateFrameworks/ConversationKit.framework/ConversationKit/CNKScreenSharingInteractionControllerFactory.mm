@@ -6,7 +6,7 @@
 
 - (CNKScreenSharingInteractionControllerProtocol)sharedController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = static ScreenSharingInteractionController.shared.getter();
 
   return v3;

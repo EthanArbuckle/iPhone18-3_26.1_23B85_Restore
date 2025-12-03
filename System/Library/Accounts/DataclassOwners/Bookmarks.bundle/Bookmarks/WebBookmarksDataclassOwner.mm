@@ -1,12 +1,12 @@
 @interface WebBookmarksDataclassOwner
 + (id)dataclasses;
 - (BOOL)_isLocalSourceEmpty;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass;
 - (WebBookmarksDataclassOwner)init;
 - (id)_bookmarkCollection;
 - (id)_tabCollection;
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
 - (void)_resetCloudHistoryData;
 @end
 
@@ -35,18 +35,18 @@
   return v2;
 }
 
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v5 = [a3 accountType];
-  v6 = [v5 identifier];
-  if ([v6 isEqualToString:ACAccountTypeIdentifierAppleAccount])
+  accountType = [account accountType];
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:ACAccountTypeIdentifierAppleAccount])
   {
   }
 
   else
   {
-    v7 = [v5 identifier];
-    v8 = [v7 isEqualToString:ACAccountTypeIdentifierBookmarkDAV];
+    identifier2 = [accountType identifier];
+    v8 = [identifier2 isEqualToString:ACAccountTypeIdentifierBookmarkDAV];
 
     if (!v8)
     {
@@ -68,9 +68,9 @@
     v10 = [NSMutableArray arrayWithObject:v11];
 
     v12 = +[WBFeatureManager sharedFeatureManager];
-    v13 = [v12 accessLevel];
+    accessLevel = [v12 accessLevel];
 
-    if (v13 == &dword_0 + 2)
+    if (accessLevel == &dword_0 + 2)
     {
       goto LABEL_10;
     }
@@ -84,19 +84,19 @@ LABEL_10:
   return v10;
 }
 
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v4 = [a3 accountType];
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:ACAccountTypeIdentifierAppleAccount])
+  accountType = [account accountType];
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:ACAccountTypeIdentifierAppleAccount])
   {
 
 LABEL_4:
     v8 = +[NSMutableArray array];
     v9 = +[WBFeatureManager sharedFeatureManager];
-    v10 = [v9 accessLevel];
+    accessLevel = [v9 accessLevel];
 
-    if (v10 == &dword_0 + 2)
+    if (accessLevel == &dword_0 + 2)
     {
       v11 = 2;
     }
@@ -118,8 +118,8 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v6 = [v4 identifier];
-  v7 = [v6 isEqualToString:ACAccountTypeIdentifierBookmarkDAV];
+  identifier2 = [accountType identifier];
+  v7 = [identifier2 isEqualToString:ACAccountTypeIdentifierBookmarkDAV];
 
   if (v7)
   {
@@ -132,26 +132,26 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  actionCopy = action;
+  accountCopy = account;
+  childrenCopy = children;
+  dataclassCopy = dataclass;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 1;
-  v14 = [v10 type];
-  v15 = [v11 accountType];
-  v16 = [v15 identifier];
+  type = [actionCopy type];
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
 
-  v17 = [v16 isEqualToString:ACAccountTypeIdentifierAppleAccount];
-  if ((v17 | [v16 isEqualToString:ACAccountTypeIdentifierBookmarkDAV]))
+  v17 = [identifier isEqualToString:ACAccountTypeIdentifierAppleAccount];
+  if ((v17 | [identifier isEqualToString:ACAccountTypeIdentifierBookmarkDAV]))
   {
-    if ((v14 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((type & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
-      if (v14 == 2)
+      if (type == 2)
       {
         queue = self->_queue;
         block[0] = _NSConcreteStackBlock;
@@ -164,7 +164,7 @@ LABEL_9:
 
       else
       {
-        if (v14 != 3)
+        if (type != 3)
         {
           goto LABEL_9;
         }
@@ -187,7 +187,7 @@ LABEL_9:
   }
 
 LABEL_9:
-  if (v17 && [(WebBookmarksDataclassOwner *)self _actionTypeRepresentsDataClassEnabledTransition:v14])
+  if (v17 && [(WebBookmarksDataclassOwner *)self _actionTypeRepresentsDataClassEnabledTransition:type])
   {
     [(WebBookmarksDataclassOwner *)self _resetCloudHistoryData];
   }

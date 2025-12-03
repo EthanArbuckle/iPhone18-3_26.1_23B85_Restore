@@ -1,89 +1,89 @@
 @interface _UISlideriOSVisualElement
 + ($8D73A32B3079A4343D49B0A1BE7BFAC4)drawingMetricsForPlatform;
-+ (id)_modernThumbImageWithTraitCollection:(id)a3 tintColor:(id)a4;
-- (BOOL)_shouldBeginTrackingAtPoint:(CGPoint)a3 pointInKnob:(CGPoint *)a4 inKnob:(BOOL *)a5;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (id)_modernThumbImageWithTraitCollection:(id)collection tintColor:(id)color;
+- (BOOL)_shouldBeginTrackingAtPoint:(CGPoint)point pointInKnob:(CGPoint *)knob inKnob:(BOOL *)inKnob;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)cancelMouseTracking;
 - (BOOL)cancelTouchTracking;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (CGRect)valueTextRectForBounds:(CGRect)a3;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (CGRect)valueTextRectForBounds:(CGRect)bounds;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIEdgeInsets)thumbHitEdgeInsets;
 - (UISlider)slider;
-- (_UISlideriOSVisualElement)initWithFrame:(CGRect)a3;
-- (double)_cornerRadiusForRect:(CGRect)a3;
+- (_UISlideriOSVisualElement)initWithFrame:(CGRect)frame;
+- (double)_cornerRadiusForRect:(CGRect)rect;
 - (id)createThumbView;
 - (id)createThumbViewNeue;
 - (id)currentMaximumTrackImage;
 - (id)currentMinimumTrackImage;
 - (id)currentThumbImage;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (unint64_t)state;
 - (void)_bounceMinMaxValueImageViewsIfNeeded;
 - (void)_buildTrackArtwork;
-- (void)_controlTouchBegan:(id)a3 withEvent:(id)a4;
+- (void)_controlTouchBegan:(id)began withEvent:(id)event;
 - (void)_initImages;
 - (void)_initSubviews;
-- (void)_layoutSubviewsForBoundsChange:(BOOL)a3;
+- (void)_layoutSubviewsForBoundsChange:(BOOL)change;
 - (void)_listenForContentSizeCategoryChangesIfNecessary;
-- (void)_rebuildControlThumb:(BOOL)a3 track:(BOOL)a4;
+- (void)_rebuildControlThumb:(BOOL)thumb track:(BOOL)track;
 - (void)_setSliderNeedsLayout;
-- (void)_setValue:(float)a3 andSendAction:(BOOL)a4;
+- (void)_setValue:(float)value andSendAction:(BOOL)action;
 - (void)_setupFeedback;
-- (void)_sliderAnimationDidStop:(BOOL)a3;
-- (void)_traitCollectionDidChangeInternal:(const _UITraitCollectionChangeDescription *)a3;
-- (void)_updateAppearanceForEnabled:(BOOL)a3;
-- (void)_updateMaxTrackColorForInitialization:(BOOL)a3;
+- (void)_sliderAnimationDidStop:(BOOL)stop;
+- (void)_traitCollectionDidChangeInternal:(const _UITraitCollectionChangeDescription *)internal;
+- (void)_updateAppearanceForEnabled:(BOOL)enabled;
+- (void)_updateMaxTrackColorForInitialization:(BOOL)initialization;
 - (void)_updateMinimumTrackTintColor;
 - (void)dealloc;
-- (void)didChangeMinimumTrackVisibleWithDuration:(double)a3;
+- (void)didChangeMinimumTrackVisibleWithDuration:(double)duration;
 - (void)didPerformLayout;
 - (void)didSetEnabled;
-- (void)didSetMaximumTrackImageForState:(unint64_t)a3;
+- (void)didSetMaximumTrackImageForState:(unint64_t)state;
 - (void)didSetMaximumTrackImageForStates;
 - (void)didSetMaximumTrackTintColor;
 - (void)didSetMaximumValueImage;
-- (void)didSetMinimumTrackImageForState:(unint64_t)a3;
+- (void)didSetMinimumTrackImageForState:(unint64_t)state;
 - (void)didSetMinimumTrackImageForStates;
 - (void)didSetMinimumTrackTintColor;
 - (void)didSetMinimumValueImage;
 - (void)didSetThumbEnabled;
-- (void)didSetThumbImageForState:(unint64_t)a3;
+- (void)didSetThumbImageForState:(unint64_t)state;
 - (void)didSetThumbImageForStates;
 - (void)didSetThumbTintColor;
 - (void)didUpdateConfiguration;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setData:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSlider:(id)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)setBounds:(CGRect)bounds;
+- (void)setData:(id)data;
+- (void)setFrame:(CGRect)frame;
+- (void)setSlider:(id)slider;
+- (void)setValue:(float)value animated:(BOOL)animated;
 - (void)showValueDidChange;
 - (void)tintColorDidChange;
 @end
 
 @implementation _UISlideriOSVisualElement
 
-- (_UISlideriOSVisualElement)initWithFrame:(CGRect)a3
+- (_UISlideriOSVisualElement)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = _UISlideriOSVisualElement;
-  v3 = [(UIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UIView *)v3 setAlpha:1.0];
     [(UIView *)v4 setOpaque:0];
-    v5 = [(UIView *)v4 layer];
-    [v5 setAllowsGroupOpacity:1];
+    layer = [(UIView *)v4 layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(UIView *)v4 _setTouchInsets:-12.5, -12.5, -12.5, -12.5];
     [(_UISlideriOSVisualElement *)v4 _listenForContentSizeCategoryChangesIfNecessary];
@@ -103,26 +103,26 @@
   return v4;
 }
 
-- (void)setSlider:(id)a3
+- (void)setSlider:(id)slider
 {
-  obj = a3;
+  obj = slider;
   WeakRetained = objc_loadWeakRetained(&self->_slider);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
-    v6 = [(UISliderDataModel *)self->_data edgeFeedbackGenerator];
+    edgeFeedbackGenerator = [(UISliderDataModel *)self->_data edgeFeedbackGenerator];
 
-    if (v6)
+    if (edgeFeedbackGenerator)
     {
-      v7 = [(_UISlideriOSVisualElement *)self slider];
-      v8 = [(UISliderDataModel *)self->_data edgeFeedbackGenerator];
-      [v7 removeInteraction:v8];
+      slider = [(_UISlideriOSVisualElement *)self slider];
+      edgeFeedbackGenerator2 = [(UISliderDataModel *)self->_data edgeFeedbackGenerator];
+      [slider removeInteraction:edgeFeedbackGenerator2];
 
       if (obj)
       {
-        v9 = [(UISliderDataModel *)self->_data edgeFeedbackGenerator];
-        [obj addInteraction:v9];
+        edgeFeedbackGenerator3 = [(UISliderDataModel *)self->_data edgeFeedbackGenerator];
+        [obj addInteraction:edgeFeedbackGenerator3];
       }
     }
 
@@ -132,10 +132,10 @@
   }
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v9 = a3;
-  objc_storeStrong(&self->_data, a3);
+  dataCopy = data;
+  objc_storeStrong(&self->_data, data);
   [(_UISlideriOSVisualElement *)self _setupFeedback];
   self->_trackIsArtworkBased = 0;
   self->_thumbIsArtworkBased = 0;
@@ -163,31 +163,31 @@
 {
   if (dyld_program_sdk_at_least())
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:self selector:sel__contentSizeCategoryChanged_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__contentSizeCategoryChanged_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
   }
 }
 
 - (void)_setupFeedback
 {
-  v3 = [(UISliderDataModel *)self->_data edgeFeedbackGenerator];
+  edgeFeedbackGenerator = [(UISliderDataModel *)self->_data edgeFeedbackGenerator];
 
-  if (!v3)
+  if (!edgeFeedbackGenerator)
   {
     v4 = +[_UIEdgeFeedbackGeneratorConfiguration sliderConfiguration];
     v8 = [v4 tweakedConfigurationForClass:objc_opt_class() usage:@"edgeImpact"];
 
     v5 = [_UIEdgeFeedbackGenerator alloc];
-    v6 = [(_UISlideriOSVisualElement *)self slider];
-    v7 = [(_UIEdgeFeedbackGenerator *)v5 initWithConfiguration:v8 view:v6];
+    slider = [(_UISlideriOSVisualElement *)self slider];
+    v7 = [(_UIEdgeFeedbackGenerator *)v5 initWithConfiguration:v8 view:slider];
     [(UISliderDataModel *)self->_data setEdgeFeedbackGenerator:v7];
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v10 = 0;
-  [a4 location];
+  [request location];
   [(_UISlideriOSVisualElement *)self _shouldBeginTrackingAtPoint:0 pointInKnob:&v10 inKnob:?];
   if (v10 == 1)
   {
@@ -212,13 +212,13 @@
   return v8;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   +[_UISlideriOSVisualElement drawingMetricsForPlatform];
   v6 = [UIBezierPath bezierPathWithOvalInRect:v16, v17, v18, v19];
-  v7 = [v5 identifier];
-  v8 = [v7 isEqual:@"UISliderKnob"];
+  identifier = [regionCopy identifier];
+  v8 = [identifier isEqual:@"UISliderKnob"];
 
   if (v8)
   {
@@ -241,8 +241,8 @@
     goto LABEL_8;
   }
 
-  v12 = [v5 identifier];
-  v13 = [v12 isEqual:@"UISliderTrack"];
+  identifier2 = [regionCopy identifier];
+  v13 = [identifier2 isEqual:@"UISliderTrack"];
 
   if (v13)
   {
@@ -265,56 +265,56 @@ LABEL_10:
 
 - (void)_bounceMinMaxValueImageViewsIfNeeded
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 _allowsSymbolAnimations];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  _allowsSymbolAnimations = [slider _allowsSymbolAnimations];
 
-  if (v4)
+  if (_allowsSymbolAnimations)
   {
-    v5 = [(_UISlideriOSVisualElement *)self slider];
-    [v5 maximumValue];
+    slider2 = [(_UISlideriOSVisualElement *)self slider];
+    [slider2 maximumValue];
     v7 = v6;
 
-    v8 = [(_UISlideriOSVisualElement *)self slider];
-    [v8 minimumValue];
+    slider3 = [(_UISlideriOSVisualElement *)self slider];
+    [slider3 minimumValue];
     v10 = v9;
 
     if (v7 > v10)
     {
       if (self->_minValueImageView)
       {
-        v11 = [(_UISlideriOSVisualElement *)self slider];
-        [v11 value];
+        slider4 = [(_UISlideriOSVisualElement *)self slider];
+        [slider4 value];
         v13 = v12;
 
         if (v13 <= v10)
         {
           minValueImageView = self->_minValueImageView;
-          v15 = [MEMORY[0x1E6982248] effect];
-          [(UIImageView *)minValueImageView addSymbolEffect:v15];
+          effect = [MEMORY[0x1E6982248] effect];
+          [(UIImageView *)minValueImageView addSymbolEffect:effect];
         }
       }
 
       if (self->_maxValueImageView)
       {
-        v16 = [(_UISlideriOSVisualElement *)self slider];
-        [v16 value];
+        slider5 = [(_UISlideriOSVisualElement *)self slider];
+        [slider5 value];
         v18 = v17;
 
         if (v18 >= v7)
         {
           maxValueImageView = self->_maxValueImageView;
-          v20 = [MEMORY[0x1E6982248] effect];
-          [(UIImageView *)maxValueImageView addSymbolEffect:v20];
+          effect2 = [MEMORY[0x1E6982248] effect];
+          [(UIImageView *)maxValueImageView addSymbolEffect:effect2];
         }
       }
     }
   }
 }
 
-+ (id)_modernThumbImageWithTraitCollection:(id)a3 tintColor:(id)a4
++ (id)_modernThumbImageWithTraitCollection:(id)collection tintColor:(id)color
 {
-  v5 = a3;
-  v6 = a4;
+  collectionCopy = collection;
+  colorCopy = color;
   if (qword_1ED49B1F8 != -1)
   {
     dispatch_once(&qword_1ED49B1F8, &__block_literal_global_423);
@@ -333,10 +333,10 @@ LABEL_10:
   v21[2] = __76___UISlideriOSVisualElement__modernThumbImageWithTraitCollection_tintColor___block_invoke_2;
   v21[3] = &unk_1E71053E8;
   v23 = &v29;
-  v7 = v6;
+  v7 = colorCopy;
   v22 = v7;
   v24 = &v25;
-  [UITraitCollection _performWithCurrentTraitCollection:v5 usingBlock:v21];
+  [UITraitCollection _performWithCurrentTraitCollection:collectionCopy usingBlock:v21];
   v8 = [_UICGColorCacheKey alloc];
   v9 = [(_UICGColorCacheKey *)v8 initWithColors:v30[3], v26[3], 0];
   v10 = [_MergedGlobals_19_6 objectForKey:v9];
@@ -349,7 +349,7 @@ LABEL_10:
     v15[1] = 3221225472;
     v15[2] = __76___UISlideriOSVisualElement__modernThumbImageWithTraitCollection_tintColor___block_invoke_3;
     v15[3] = &unk_1E7118EF8;
-    v16 = v5;
+    v16 = collectionCopy;
     v17 = &v25;
     v18 = &v29;
     v13 = [(UIGraphicsImageRenderer *)v12 imageWithActions:v15];
@@ -383,31 +383,31 @@ LABEL_10:
   v21 = v20;
   v23 = v22;
 
-  v24 = [(_UISlideriOSVisualElement *)self thumbTintColor];
+  thumbTintColor = [(_UISlideriOSVisualElement *)self thumbTintColor];
   if (dyld_program_sdk_at_least())
   {
     v25 = objc_opt_class();
-    v26 = [(UIView *)self traitCollection];
-    v27 = [v25 _modernThumbImageWithTraitCollection:v26 tintColor:v24];
+    traitCollection = [(UIView *)self traitCollection];
+    v27 = [v25 _modernThumbImageWithTraitCollection:traitCollection tintColor:thumbTintColor];
   }
 
   else
   {
     v28 = _UIImageWithName(@"UISliderKnob");
-    v26 = v28;
-    if (!v24)
+    traitCollection = v28;
+    if (!thumbTintColor)
     {
       goto LABEL_6;
     }
 
-    v27 = [v28 _flatImageWithColor:v24];
+    v27 = [v28 _flatImageWithColor:thumbTintColor];
   }
 
   v29 = v27;
 
-  v26 = v29;
+  traitCollection = v29;
 LABEL_6:
-  v30 = [[UIImageView alloc] initWithImage:v26];
+  v30 = [[UIImageView alloc] initWithImage:traitCollection];
   innerThumbView = self->_innerThumbView;
   self->_innerThumbView = v30;
 
@@ -443,8 +443,8 @@ LABEL_6:
 - (void)_initImages
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 minimumTrackImageForState:0];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v4 = [slider minimumTrackImageForState:0];
 
   if (!v4)
   {
@@ -460,11 +460,11 @@ LABEL_6:
 
     else
     {
-      v8 = [(UIView *)self traitCollection];
+      traitCollection = [(UIView *)self traitCollection];
       v9 = +[UIColor blackColor];
       v22[0] = v9;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-      v11 = [UIProgressViewModernVisualElement _tintedImageWithTraitCollection:v8 forHeight:v10 andColors:5 roundingRectCorners:v7];
+      v11 = [UIProgressViewModernVisualElement _tintedImageWithTraitCollection:traitCollection forHeight:v10 andColors:5 roundingRectCorners:v7];
       v12 = [v11 imageWithRenderingMode:2];
     }
 
@@ -472,7 +472,7 @@ LABEL_6:
     v17 = 3221225472;
     v18 = __40___UISlideriOSVisualElement__initImages__block_invoke;
     v19 = &unk_1E70F35B8;
-    v20 = self;
+    selfCopy = self;
     v21 = v12;
     v13 = v12;
     [UIView _performSystemAppearanceModifications:&v16];
@@ -491,8 +491,8 @@ LABEL_6:
 {
   [(_UISlideriOSVisualElement *)self _buildTrackArtwork];
   thumbIsArtworkBased = self->_thumbIsArtworkBased;
-  v4 = [(_UISlideriOSVisualElement *)self slider];
-  v5 = [v4 createThumbView];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  createThumbView = [slider createThumbView];
   v6 = 6;
   if (thumbIsArtworkBased)
   {
@@ -501,23 +501,23 @@ LABEL_6:
 
   v7 = OBJC_IVAR____UISlideriOSVisualElement__sliderFlags[v6];
   v8 = *(&self->super.super.super.isa + v7);
-  *(&self->super.super.super.isa + v7) = v5;
+  *(&self->super.super.super.isa + v7) = createThumbView;
 
   v9 = *(&self->super.super.super.isa + v7);
 
   [(UIView *)self addSubview:v9];
 }
 
-- (double)_cornerRadiusForRect:(CGRect)a3
+- (double)_cornerRadiusForRect:(CGRect)rect
 {
-  if (a3.size.height <= a3.size.width)
+  if (rect.size.height <= rect.size.width)
   {
-    height = a3.size.height;
+    height = rect.size.height;
   }
 
   else
   {
-    height = a3.size.width;
+    height = rect.size.width;
   }
 
   return height * 0.5;
@@ -592,14 +592,14 @@ LABEL_6:
   [(UIView *)v30 addSubview:v31];
 }
 
-- (void)_rebuildControlThumb:(BOOL)a3 track:(BOOL)a4
+- (void)_rebuildControlThumb:(BOOL)thumb track:(BOOL)track
 {
-  v4 = a4;
+  trackCopy = track;
   p_thumbView = &self->_thumbView;
   thumbView = self->_thumbView;
   if (thumbView || self->_thumbViewNeue)
   {
-    if (a3)
+    if (thumb)
     {
       [(UIView *)thumbView removeFromSuperview];
       v8 = *p_thumbView;
@@ -611,19 +611,19 @@ LABEL_6:
 
       thumbIsArtworkBased = self->_thumbIsArtworkBased;
       WeakRetained = objc_loadWeakRetained(&self->_slider);
-      v12 = [WeakRetained createThumbView];
+      createThumbView = [WeakRetained createThumbView];
       if (!thumbIsArtworkBased)
       {
         p_thumbView = &self->_thumbViewNeue;
       }
 
       v13 = *p_thumbView;
-      *p_thumbView = v12;
+      *p_thumbView = createThumbView;
 
       [(UIView *)self addSubview:*p_thumbView];
     }
 
-    if (v4)
+    if (trackCopy)
     {
       [(UIView *)self->_minTrackView removeFromSuperview];
       minTrackView = self->_minTrackView;
@@ -650,55 +650,55 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIContentSizeCategoryDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UISlideriOSVisualElement;
   [(UIView *)&v4 dealloc];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_slider);
-  v6 = [WeakRetained isTracking];
+  isTracking = [WeakRetained isTracking];
 
-  if (v6)
+  if (isTracking)
   {
     v7 = 0;
     goto LABEL_19;
   }
 
-  [v4 locationInView:self];
+  [beginCopy locationInView:self];
   if (![(_UISlideriOSVisualElement *)self _shouldBeginTrackingAtPoint:0 pointInKnob:0 inKnob:?])
   {
     goto LABEL_18;
   }
 
-  v8 = [v4 view];
-  v9 = v8;
-  if (v8 == self)
+  view = [beginCopy view];
+  v9 = view;
+  if (view == self)
   {
 
     goto LABEL_18;
   }
 
-  v10 = [v4 view];
+  view2 = [beginCopy view];
   v11 = objc_loadWeakRetained(&self->_slider);
 
-  if (v10 == v11)
+  if (view2 == v11)
   {
 LABEL_18:
     v7 = 1;
     goto LABEL_19;
   }
 
-  if (![v4 _isGestureType:10] || objc_msgSend(v4, "numberOfTouchesRequired") != 1)
+  if (![beginCopy _isGestureType:10] || objc_msgSend(beginCopy, "numberOfTouchesRequired") != 1)
   {
-    if ([v4 _isGestureType:8] && objc_msgSend(v4, "minimumNumberOfTouches") <= 1)
+    if ([beginCopy _isGestureType:8] && objc_msgSend(beginCopy, "minimumNumberOfTouches") <= 1)
     {
-      [v4 translationInView:self];
+      [beginCopy translationInView:self];
       v7 = fabs(v22) <= fabs(v23);
       goto LABEL_19;
     }
@@ -706,31 +706,31 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v12 = [v4 view];
-  [(UIView *)self convertPoint:v12 toView:10.0, 10.0];
+  view3 = [beginCopy view];
+  [(UIView *)self convertPoint:view3 toView:10.0, 10.0];
   v14 = v13;
   v16 = v15;
 
-  v17 = [v4 view];
-  [(UIView *)self convertPoint:v17 toView:20.0, 10.0];
+  view4 = [beginCopy view];
+  [(UIView *)self convertPoint:view4 toView:20.0, 10.0];
   v19 = v18;
   v21 = v20;
 
-  if (([v4 direction] & 3) == 0 || (v7 = 0, v14 >= v19) && v14 <= v19)
+  if (([beginCopy direction] & 3) == 0 || (v7 = 0, v14 >= v19) && v14 <= v19)
   {
-    v7 = ([v4 direction] & 0xC) == 0 || v16 == v21;
+    v7 = ([beginCopy direction] & 0xC) == 0 || v16 == v21;
   }
 
 LABEL_19:
-  v24 = [v4 _isGestureType:16] ^ 1;
+  v24 = [beginCopy _isGestureType:16] ^ 1;
 
   return v7 & v24;
 }
 
-- (void)didSetThumbImageForState:(unint64_t)a3
+- (void)didSetThumbImageForState:(unint64_t)state
 {
-  v5 = [(_UISlideriOSVisualElement *)self slider];
-  v7 = [v5 thumbImageForState:a3];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v7 = [slider thumbImageForState:state];
 
   if (!self->_thumbIsArtworkBased)
   {
@@ -743,7 +743,7 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  if (!a3 && !v7)
+  if (!state && !v7)
   {
     v6 = 0;
 LABEL_7:
@@ -764,16 +764,16 @@ LABEL_8:
   [(_UISlideriOSVisualElement *)self _rebuildControlThumb:1 track:0];
 }
 
-- (void)didSetMinimumTrackImageForState:(unint64_t)a3
+- (void)didSetMinimumTrackImageForState:(unint64_t)state
 {
   v5 = [(UISliderDataModel *)self->_data minimumTrackImageForState:?];
   v8 = v5;
-  if (a3 || v5)
+  if (state || v5)
   {
-    if (!a3)
+    if (!state)
     {
-      v6 = [(_UISlideriOSVisualElement *)self slider];
-      v7 = [v6 maximumTrackImageForState:0];
+      slider = [(_UISlideriOSVisualElement *)self slider];
+      v7 = [slider maximumTrackImageForState:0];
 
       if (!self->_trackIsArtworkBased && v7)
       {
@@ -803,11 +803,11 @@ LABEL_8:
   [WeakRetained trackRectForBounds:?];
   v5 = v4;
 
-  v6 = [(UISliderDataModel *)self->_data minimumTrackTintColor];
-  v7 = v6;
-  if (v6)
+  minimumTrackTintColor = [(UISliderDataModel *)self->_data minimumTrackTintColor];
+  v7 = minimumTrackTintColor;
+  if (minimumTrackTintColor)
   {
-    v8 = v6;
+    v8 = minimumTrackTintColor;
     v9 = 1;
   }
 
@@ -817,10 +817,10 @@ LABEL_8:
     v9 = 2;
   }
 
-  v10 = [(UIView *)self traitCollection];
+  traitCollection = [(UIView *)self traitCollection];
   v14[0] = v8;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v12 = [UIProgressViewModernVisualElement _tintedImageWithTraitCollection:v10 forHeight:v11 andColors:5 roundingRectCorners:v5];
+  v12 = [UIProgressViewModernVisualElement _tintedImageWithTraitCollection:traitCollection forHeight:v11 andColors:5 roundingRectCorners:v5];
   v13 = [v12 imageWithRenderingMode:v9];
 
   [(UISliderDataModel *)self->_data setMinimumTrackImage:v13 forStates:0];
@@ -833,14 +833,14 @@ LABEL_8:
   [(_UISlideriOSVisualElement *)self _setSliderNeedsLayout];
 }
 
-- (void)didSetMaximumTrackImageForState:(unint64_t)a3
+- (void)didSetMaximumTrackImageForState:(unint64_t)state
 {
-  v5 = [(_UISlideriOSVisualElement *)self slider];
-  v8 = [v5 maximumTrackImageForState:a3];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v8 = [slider maximumTrackImageForState:state];
 
-  if (a3 || v8)
+  if (state || v8)
   {
-    if (!a3)
+    if (!state)
     {
       v6 = [(UISliderDataModel *)self->_data minimumTrackImageForState:0];
       v7 = v6;
@@ -872,20 +872,20 @@ LABEL_8:
 
 - (void)didSetMinimumValueImage
 {
-  v3 = [(UISliderDataModel *)self->_data minimumValueImage];
+  minimumValueImage = [(UISliderDataModel *)self->_data minimumValueImage];
   minValueImageView = self->_minValueImageView;
-  v8 = v3;
-  if (v3)
+  v8 = minimumValueImage;
+  if (minimumValueImage)
   {
     if (minValueImageView)
     {
-      [(UIImageView *)minValueImageView setImage:v3];
+      [(UIImageView *)minValueImageView setImage:minimumValueImage];
       [(UIView *)self->_minValueImageView sizeToFit];
     }
 
     else
     {
-      v6 = [[UIImageView alloc] initWithImage:v3];
+      v6 = [[UIImageView alloc] initWithImage:minimumValueImage];
       v7 = self->_minValueImageView;
       self->_minValueImageView = v6;
 
@@ -906,20 +906,20 @@ LABEL_8:
 
 - (void)didSetMaximumValueImage
 {
-  v3 = [(UISliderDataModel *)self->_data maximumValueImage];
+  maximumValueImage = [(UISliderDataModel *)self->_data maximumValueImage];
   maxValueImageView = self->_maxValueImageView;
-  v8 = v3;
-  if (v3)
+  v8 = maximumValueImage;
+  if (maximumValueImage)
   {
     if (maxValueImageView)
     {
-      [(UIImageView *)maxValueImageView setImage:v3];
+      [(UIImageView *)maxValueImageView setImage:maximumValueImage];
       [(UIView *)self->_maxValueImageView sizeToFit];
     }
 
     else
     {
-      v6 = [[UIImageView alloc] initWithImage:v3];
+      v6 = [[UIImageView alloc] initWithImage:maximumValueImage];
       v7 = self->_maxValueImageView;
       self->_maxValueImageView = v6;
 
@@ -948,24 +948,24 @@ LABEL_8:
 
 - (id)currentThumbImage
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 thumbImageForState:{-[_UISlideriOSVisualElement state](self, "state")}];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v4 = [slider thumbImageForState:{-[_UISlideriOSVisualElement state](self, "state")}];
 
   return v4;
 }
 
 - (id)currentMinimumTrackImage
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 minimumTrackImageForState:{-[_UISlideriOSVisualElement state](self, "state")}];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v4 = [slider minimumTrackImageForState:{-[_UISlideriOSVisualElement state](self, "state")}];
 
   return v4;
 }
 
 - (id)currentMaximumTrackImage
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 maximumTrackImageForState:{-[_UISlideriOSVisualElement state](self, "state")}];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v4 = [slider maximumTrackImageForState:{-[_UISlideriOSVisualElement state](self, "state")}];
 
   return v4;
 }
@@ -1010,17 +1010,17 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
 {
   minValueImageView = self->_minValueImageView;
   if (minValueImageView)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v9 = [(UIImageView *)minValueImageView image];
-    [v9 size];
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    image = [(UIImageView *)minValueImageView image];
+    [image size];
     v11 = v10;
     v13 = v12;
 
@@ -1050,17 +1050,17 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds
 {
   maxValueImageView = self->_maxValueImageView;
   if (maxValueImageView)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v9 = [(UIImageView *)maxValueImageView image];
-    [v9 size];
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    image = [(UIImageView *)maxValueImageView image];
+    [image size];
     v11 = v10;
     v13 = v12;
 
@@ -1090,14 +1090,14 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(_UISlideriOSVisualElement *)self slider];
-  v8 = [v7 maximumTrackImageForState:0];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v8 = [slider maximumTrackImageForState:0];
   [v8 size];
   v10 = v9;
 
@@ -1209,30 +1209,30 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(UISliderDataModel *)self->_data minimumValue:a3.origin.x];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(UISliderDataModel *)self->_data minimumValue:bounds.origin.x];
   v11 = v10;
   [(UISliderDataModel *)self->_data maximumValue];
   v13 = 0.0;
   if (v12 != v11)
   {
-    v14 = a5;
-    if (v11 > a5)
+    valueCopy = value;
+    if (v11 > value)
     {
-      v14 = v11;
+      valueCopy = v11;
     }
 
-    if (v14 > v12)
+    if (valueCopy > v12)
     {
-      v14 = v12;
+      valueCopy = v12;
     }
 
-    v13 = (v14 - v11) / (v12 - v11);
+    v13 = (valueCopy - v11) / (v12 - v11);
   }
 
   if (dyld_program_sdk_at_least())
@@ -1256,8 +1256,8 @@ LABEL_8:
   v19 = v33.size.height;
   if (self->_thumbIsArtworkBased)
   {
-    v20 = [(_UISlideriOSVisualElement *)self currentThumbImage];
-    [v20 size];
+    currentThumbImage = [(_UISlideriOSVisualElement *)self currentThumbImage];
+    [currentThumbImage size];
     v22 = v21;
     v24 = v23;
   }
@@ -1287,14 +1287,14 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
-  [_UISlideriOSVisualElement drawingMetricsForPlatform:a3.width];
-  v7 = [(_UISlideriOSVisualElement *)self slider];
-  v8 = [v7 minimumTrackImageForState:0];
+  [_UISlideriOSVisualElement drawingMetricsForPlatform:size.width];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v8 = [slider minimumTrackImageForState:0];
 
   if (v8)
   {
@@ -1322,8 +1322,8 @@ LABEL_8:
     }
   }
 
-  v14 = [(_UISlideriOSVisualElement *)self slider];
-  v15 = [v14 maximumTrackImageForState:0];
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
+  v15 = [slider2 maximumTrackImageForState:0];
 
   if (v15)
   {
@@ -1358,8 +1358,8 @@ LABEL_8:
 
   if (self->_thumbIsArtworkBased)
   {
-    v20 = [(_UISlideriOSVisualElement *)self slider];
-    v21 = [v20 thumbImageForState:0];
+    slider3 = [(_UISlideriOSVisualElement *)self slider];
+    v21 = [slider3 thumbImageForState:0];
 
     if (v21)
     {
@@ -1399,12 +1399,12 @@ LABEL_8:
     }
   }
 
-  v27 = [(_UISlideriOSVisualElement *)self slider];
-  v28 = [v27 minimumValueImage];
+  slider4 = [(_UISlideriOSVisualElement *)self slider];
+  minimumValueImage = [slider4 minimumValueImage];
 
-  if (v28)
+  if (minimumValueImage)
   {
-    [v28 size];
+    [minimumValueImage size];
     v5 = v5 + v30 + 11.0;
     if (v29 > v19)
     {
@@ -1412,12 +1412,12 @@ LABEL_8:
     }
   }
 
-  v31 = [(_UISlideriOSVisualElement *)self slider];
-  v32 = [v31 maximumValueImage];
+  slider5 = [(_UISlideriOSVisualElement *)self slider];
+  maximumValueImage = [slider5 maximumValueImage];
 
-  if (v32)
+  if (maximumValueImage)
   {
-    [v32 size];
+    [maximumValueImage size];
     v5 = v5 + v34 + 11.0;
     if (v33 > v19)
     {
@@ -1444,11 +1444,11 @@ LABEL_8:
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 thumbImageForState:0];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  v4 = [slider thumbImageForState:0];
 
-  v5 = [(_UISlideriOSVisualElement *)self slider];
-  v6 = [v5 minimumTrackImageForState:0];
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
+  v6 = [slider2 minimumTrackImageForState:0];
 
   if (!v4 || ([v4 alignmentRectInsets], v10 = v7, v11 = v9, v12 = 1, v13 == 0.0) && v8 == 0.0 && v7 == 0.0 && v9 == 0.0)
   {
@@ -1492,12 +1492,12 @@ LABEL_8:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -1508,12 +1508,12 @@ LABEL_8:
   [(_UISlideriOSVisualElement *)self _layoutSubviewsForBoundsChange:v12];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1541,14 +1541,14 @@ LABEL_8:
   [WeakRetained setNeedsLayout];
 }
 
-- (void)_traitCollectionDidChangeInternal:(const _UITraitCollectionChangeDescription *)a3
+- (void)_traitCollectionDidChangeInternal:(const _UITraitCollectionChangeDescription *)internal
 {
   v7.receiver = self;
   v7.super_class = _UISlideriOSVisualElement;
   [(UIView *)&v7 _traitCollectionDidChangeInternal:?];
   if (dyld_program_sdk_at_least())
   {
-    if (a3->var4.var2 || (v5 = _UIGetTraitTokenValue(&unk_1EFE325A8), _UITraitTokenSetContains(&a3->var2, v5)))
+    if (internal->var4.var2 || (v5 = _UIGetTraitTokenValue(&unk_1EFE325A8), _UITraitTokenSetContains(&internal->var2, v5)))
     {
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -1560,14 +1560,14 @@ LABEL_8:
   }
 }
 
-- (void)_updateMaxTrackColorForInitialization:(BOOL)a3
+- (void)_updateMaxTrackColorForInitialization:(BOOL)initialization
 {
-  v3 = a3;
+  initializationCopy = initialization;
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = [(_UISlideriOSVisualElement *)self slider];
-  v6 = [v5 maximumTrackTintColor];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  maximumTrackTintColor = [slider maximumTrackTintColor];
 
-  if (!v6)
+  if (!maximumTrackTintColor)
   {
     if (dyld_program_sdk_at_least())
     {
@@ -1578,7 +1578,7 @@ LABEL_8:
     {
       [UIColor colorWithRed:0.72265625 green:0.72265625 blue:0.72265625 alpha:1.0];
     }
-    v6 = ;
+    maximumTrackTintColor = ;
   }
 
   v15 = 0.0;
@@ -1587,14 +1587,14 @@ LABEL_8:
   v14 = 0.0;
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    if (v6)
+    if (maximumTrackTintColor)
     {
-      v8 = [v6 getRed:&v16 green:&v15 blue:&v14 alpha:&v13];
+      v8 = [maximumTrackTintColor getRed:&v16 green:&v15 blue:&v14 alpha:&v13];
       if ((dyld_program_sdk_at_least() & 1) == 0 && v8)
       {
         v9 = [UIColor colorWithRed:v16 * 0.978378378 green:v15 * 0.978378378 blue:v14 * 0.978378378 alpha:v13];
         v18[0] = v9;
-        v18[1] = v6;
+        v18[1] = maximumTrackTintColor;
         v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
 
         goto LABEL_14;
@@ -1606,7 +1606,7 @@ LABEL_8:
       dyld_program_sdk_at_least();
     }
 
-    v17 = v6;
+    v17 = maximumTrackTintColor;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
 LABEL_14:
     if (([(NSArray *)self->_trackColors isEqual:v7]& 1) != 0)
@@ -1617,7 +1617,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v19[0] = v6;
+  v19[0] = maximumTrackTintColor;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
 LABEL_15:
   objc_storeStrong(&self->_trackColors, v7);
@@ -1628,7 +1628,7 @@ LABEL_15:
   v12[4] = self;
   v10 = _Block_copy(v12);
   v11 = v10;
-  if (v3)
+  if (initializationCopy)
   {
     [UIView _performSystemAppearanceModifications:v10];
   }
@@ -1642,9 +1642,9 @@ LABEL_15:
 LABEL_19:
 }
 
-- (void)_layoutSubviewsForBoundsChange:(BOOL)a3
+- (void)_layoutSubviewsForBoundsChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   [(UIView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -1672,8 +1672,8 @@ LABEL_19:
   }
 
   v26 = objc_loadWeakRetained(&self->_slider);
-  v27 = [(_UISlideriOSVisualElement *)self slider];
-  [v27 value];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  [slider value];
   LODWORD(v113) = v28;
   [v26 thumbRectForBounds:v6 trackRect:v8 value:{v10, v12, v15, v17, v19, v21, v113}];
   v126 = v29;
@@ -1683,32 +1683,32 @@ LABEL_19:
 
   memset(&slice, 0, sizeof(slice));
   memset(&remainder, 0, sizeof(remainder));
-  v33 = [(_UISlideriOSVisualElement *)self slider];
-  v131 = [v33 currentMinimumTrackImage];
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
+  currentMinimumTrackImage = [slider2 currentMinimumTrackImage];
 
-  v34 = [(_UISlideriOSVisualElement *)self slider];
-  v35 = [v34 currentMaximumTrackImage];
+  slider3 = [(_UISlideriOSVisualElement *)self slider];
+  currentMaximumTrackImage = [slider3 currentMaximumTrackImage];
 
-  v36 = [(_UISlideriOSVisualElement *)self slider];
-  v37 = [v36 _edgeFeedbackGenerator];
+  slider4 = [(_UISlideriOSVisualElement *)self slider];
+  _edgeFeedbackGenerator = [slider4 _edgeFeedbackGenerator];
 
-  if (v37 && v3)
+  if (_edgeFeedbackGenerator && changeCopy)
   {
     v135.origin.x = v6;
     v135.origin.y = v8;
     v135.size.width = v10;
     v135.size.height = v12;
     Width = CGRectGetWidth(v135);
-    v39 = [(_UISlideriOSVisualElement *)self slider];
-    v40 = [v39 _edgeFeedbackGenerator];
-    [v40 setDistance:Width];
+    slider5 = [(_UISlideriOSVisualElement *)self slider];
+    _edgeFeedbackGenerator2 = [slider5 _edgeFeedbackGenerator];
+    [_edgeFeedbackGenerator2 setDistance:Width];
   }
 
-  v41 = [(_UISlideriOSVisualElement *)self slider];
-  v42 = [v41 _isThumbEnabled];
+  slider6 = [(_UISlideriOSVisualElement *)self slider];
+  _isThumbEnabled = [slider6 _isThumbEnabled];
 
   v130 = v10;
-  if (v42)
+  if (_isThumbEnabled)
   {
     v136.origin.x = v15;
     v136.origin.y = v17;
@@ -1716,7 +1716,7 @@ LABEL_19:
     v136.size.height = v21;
     CGRectDivide(v136, &slice, &remainder, v126 + round(v128 * 0.5) - v15, CGRectMinXEdge);
     v43 = slice.size.width;
-    [v131 capInsets];
+    [currentMinimumTrackImage capInsets];
     if (v43 <= v44)
     {
       slice.origin.x = v15;
@@ -1732,7 +1732,7 @@ LABEL_19:
     else
     {
       v45 = slice.size.width;
-      [v35 capInsets];
+      [currentMaximumTrackImage capInsets];
       if (v45 >= v19 - v46)
       {
         slice.origin.x = v15;
@@ -1754,13 +1754,13 @@ LABEL_19:
 
     if ((*&self->_sliderFlags & 2) != 0)
     {
-      v48 = [(_UISlideriOSVisualElement *)self slider];
-      v49 = [v48 currentMinimumTrackImage];
-      v50 = ([v49 leftCapWidth] + 1);
+      slider7 = [(_UISlideriOSVisualElement *)self slider];
+      currentMinimumTrackImage2 = [slider7 currentMinimumTrackImage];
+      v50 = ([currentMinimumTrackImage2 leftCapWidth] + 1);
 
-      v51 = [(_UISlideriOSVisualElement *)self slider];
-      v52 = [v51 currentMaximumTrackImage];
-      v53 = ([v52 leftCapWidth] + 1);
+      slider8 = [(_UISlideriOSVisualElement *)self slider];
+      currentMaximumTrackImage2 = [slider8 currentMaximumTrackImage];
+      v53 = ([currentMaximumTrackImage2 leftCapWidth] + 1);
 
       v54 = slice.size.width;
       if (slice.size.width >= v50)
@@ -1790,7 +1790,7 @@ LABEL_19:
     v10 = v130;
     if ([(UISliderDataModel *)self->_data isMinimumTrackVisible])
     {
-      v58 = v35;
+      v58 = currentMaximumTrackImage;
       v59 = remainder.size.width;
       height = remainder.size.height;
       x = remainder.origin.x;
@@ -1806,7 +1806,7 @@ LABEL_19:
     slice.size = v47;
   }
 
-  v58 = v35;
+  v58 = currentMaximumTrackImage;
   remainder.origin.x = v15;
   remainder.origin.y = v17;
   x = v15;
@@ -1862,7 +1862,7 @@ LABEL_21:
   }
 
   [(UIView *)self->_minTrackClipView setFrame:x, y, v59, height];
-  [(UIImageView *)self->_minTrackView setImage:v131];
+  [(UIImageView *)self->_minTrackView setImage:currentMinimumTrackImage];
   [(UIView *)self->_minTrackClipView convertRect:self fromView:v15, v17, v19, v21];
   [(UIImageView *)self->_minTrackView setFrame:?];
   [(UIView *)self->_maxTrackClipView setFrame:p_slice->origin.x, *p_y, p_size->width, *p_height];
@@ -1882,13 +1882,13 @@ LABEL_21:
 
   if (self->_thumbIsArtworkBased)
   {
-    v72 = [(_UISlideriOSVisualElement *)self currentThumbImage];
-    v73 = [(UIImageView *)self->_thumbView image];
+    currentThumbImage = [(_UISlideriOSVisualElement *)self currentThumbImage];
+    image = [(UIImageView *)self->_thumbView image];
 
-    if (v73 != v72)
+    if (image != currentThumbImage)
     {
-      [(UIImageView *)self->_thumbView setImage:v72];
-      if ([v72 leftCapWidth] || objc_msgSend(v72, "topCapHeight"))
+      [(UIImageView *)self->_thumbView setImage:currentThumbImage];
+      if ([currentThumbImage leftCapWidth] || objc_msgSend(currentThumbImage, "topCapHeight"))
       {
         v74 = 0;
       }
@@ -2001,15 +2001,15 @@ LABEL_21:
   {
     if (v98)
     {
-      if (!v3)
+      if (!changeCopy)
       {
 LABEL_58:
         v99 = MEMORY[0x1E696AEC0];
-        v100 = [(_UISlideriOSVisualElement *)self slider];
-        [v100 maximumValue];
+        slider9 = [(_UISlideriOSVisualElement *)self slider];
+        [slider9 maximumValue];
         v102 = v101;
-        v103 = [(_UISlideriOSVisualElement *)self slider];
-        [v103 minimumValue];
+        slider10 = [(_UISlideriOSVisualElement *)self slider];
+        [slider10 minimumValue];
         if ((v102 - v104) < 10.0)
         {
           v105 = @"%.2f";
@@ -2020,10 +2020,10 @@ LABEL_58:
           v105 = @"%.1f";
         }
 
-        v106 = [(_UISlideriOSVisualElement *)self slider];
-        [v106 value];
-        v108 = [v99 stringWithFormat:v105, v107];
-        [(UILabel *)v98 setText:v108];
+        slider11 = [(_UISlideriOSVisualElement *)self slider];
+        [slider11 value];
+        v107 = [v99 stringWithFormat:v105, v107];
+        [(UILabel *)v98 setText:v107];
 
         goto LABEL_64;
       }
@@ -2045,7 +2045,7 @@ LABEL_58:
       [(UILabel *)v98 setLineBreakMode:2];
       [(UIView *)v98 setOpaque:0];
       [(UIView *)self addSubview:v98];
-      if (!v3)
+      if (!changeCopy)
       {
         goto LABEL_58;
       }
@@ -2062,14 +2062,14 @@ LABEL_58:
 LABEL_64:
   }
 
-  v109 = [(_UISlideriOSVisualElement *)self slider];
-  -[_UISlideriOSVisualElement _updateAppearanceForEnabled:](self, "_updateAppearanceForEnabled:", [v109 isEnabled]);
+  slider12 = [(_UISlideriOSVisualElement *)self slider];
+  -[_UISlideriOSVisualElement _updateAppearanceForEnabled:](self, "_updateAppearanceForEnabled:", [slider12 isEnabled]);
 }
 
-- (void)_updateAppearanceForEnabled:(BOOL)a3
+- (void)_updateAppearanceForEnabled:(BOOL)enabled
 {
   v3 = 0.5;
-  if (a3)
+  if (enabled)
   {
     v3 = 1.0;
   }
@@ -2077,37 +2077,37 @@ LABEL_64:
   [(UIView *)self setAlpha:v3];
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(_UISlideriOSVisualElement *)self slider];
-  [v7 value];
+  animatedCopy = animated;
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  [slider value];
   v9 = v8;
 
-  if (v9 != a3)
+  if (v9 != value)
   {
-    if (v4)
+    if (animatedCopy)
     {
-      v11 = [(_UISlideriOSVisualElement *)self slider];
-      [v11 maximumValue];
+      slider2 = [(_UISlideriOSVisualElement *)self slider];
+      [slider2 maximumValue];
       v13 = v12;
-      v14 = [(_UISlideriOSVisualElement *)self slider];
-      [v14 minimumValue];
+      slider3 = [(_UISlideriOSVisualElement *)self slider];
+      [slider3 minimumValue];
       v16 = v15;
 
-      if (v16 >= a3)
+      if (v16 >= value)
       {
-        a3 = v16;
+        value = v16;
       }
 
-      if (v13 <= a3)
+      if (v13 <= value)
       {
-        v17 = v13;
+        valueCopy = v13;
       }
 
       else
       {
-        v17 = a3;
+        valueCopy = value;
       }
 
       *&self->_sliderFlags |= 2u;
@@ -2125,13 +2125,13 @@ LABEL_64:
       v30 = v29;
       v32 = v31;
 
-      v33 = [(UIView *)self->_thumbView layer];
-      v34 = [v33 presentationLayer];
-      [v34 frame];
+      layer = [(UIView *)self->_thumbView layer];
+      presentationLayer = [layer presentationLayer];
+      [presentationLayer frame];
       v36 = v35;
 
       v37 = objc_loadWeakRetained(&self->_slider);
-      *&v44 = v17;
+      *&v44 = valueCopy;
       [v37 thumbRectForBounds:v19 trackRect:v21 value:{v23, v25, v46, v45, v30, v32, v44}];
       v39 = v38;
 
@@ -2155,7 +2155,7 @@ LABEL_64:
       v48[2] = __47___UISlideriOSVisualElement_setValue_animated___block_invoke;
       v48[3] = &unk_1E7102030;
       v48[4] = self;
-      v49 = v17;
+      v49 = valueCopy;
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __47___UISlideriOSVisualElement_setValue_animated___block_invoke_2;
@@ -2165,52 +2165,52 @@ LABEL_64:
 
     else
     {
-      *&v10 = a3;
+      *&v10 = value;
 
       [(_UISlideriOSVisualElement *)self _setValue:0 andSendAction:v10];
     }
   }
 }
 
-- (void)_setValue:(float)a3 andSendAction:(BOOL)a4
+- (void)_setValue:(float)value andSendAction:(BOOL)action
 {
-  v4 = a4;
-  v8 = [(_UISlideriOSVisualElement *)self slider];
-  [v8 minimumValue];
+  actionCopy = action;
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  [slider minimumValue];
   v10 = v9;
 
-  v11 = [(_UISlideriOSVisualElement *)self slider];
-  [v11 maximumValue];
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
+  [slider2 maximumValue];
   v13 = v12;
 
   if (v10 > v13)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UISlideriOSVisualElement.m" lineNumber:1480 description:{@"Attempting to set a slider's minimumValue (%f) to be larger than the maximumValue (%f)", v10, v13}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISlideriOSVisualElement.m" lineNumber:1480 description:{@"Attempting to set a slider's minimumValue (%f) to be larger than the maximumValue (%f)", v10, v13}];
   }
 
-  if (v10 >= a3)
+  if (v10 >= value)
   {
-    v14 = v10;
+    valueCopy = v10;
   }
 
   else
   {
-    v14 = a3;
+    valueCopy = value;
   }
 
-  if (v13 <= v14)
+  if (v13 <= valueCopy)
   {
     v15 = v13;
   }
 
   else
   {
-    v15 = v14;
+    v15 = valueCopy;
   }
 
-  v16 = [(_UISlideriOSVisualElement *)self slider];
-  [v16 value];
+  slider3 = [(_UISlideriOSVisualElement *)self slider];
+  [slider3 value];
   v18 = v17;
 
   if (v15 != v18)
@@ -2231,10 +2231,10 @@ LABEL_64:
       [(_UISlideriOSVisualElement *)self _setSliderNeedsLayout];
     }
 
-    v20 = [(_UISlideriOSVisualElement *)self slider];
-    v21 = [v20 isTracking];
+    slider4 = [(_UISlideriOSVisualElement *)self slider];
+    isTracking = [slider4 isTracking];
 
-    if (v21)
+    if (isTracking)
     {
       [(_UISlideriOSVisualElement *)self _bounceMinMaxValueImageViewsIfNeeded];
     }
@@ -2247,27 +2247,27 @@ LABEL_64:
     }
   }
 
-  if (v4)
+  if (actionCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_slider);
     [WeakRetained _sendActionsForEvents:4096 withEvent:0];
   }
 }
 
-- (void)_sliderAnimationDidStop:(BOOL)a3
+- (void)_sliderAnimationDidStop:(BOOL)stop
 {
-  if (a3)
+  if (stop)
   {
     *&self->_sliderFlags &= 0xFCu;
     [(_UISlideriOSVisualElement *)self _layoutSubviewsForBoundsChange:0];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = _UISlideriOSVisualElement;
-  v5 = [(UIView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -2286,13 +2286,13 @@ LABEL_64:
 
 - (BOOL)cancelMouseTracking
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 isHighlighted];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  isHighlighted = [slider isHighlighted];
 
-  if (v4)
+  if (isHighlighted)
   {
-    v5 = [(_UISlideriOSVisualElement *)self slider];
-    [v5 setHighlighted:0];
+    slider2 = [(_UISlideriOSVisualElement *)self slider];
+    [slider2 setHighlighted:0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_slider);
@@ -2301,7 +2301,7 @@ LABEL_64:
   return 1;
 }
 
-- (BOOL)_shouldBeginTrackingAtPoint:(CGPoint)a3 pointInKnob:(CGPoint *)a4 inKnob:(BOOL *)a5
+- (BOOL)_shouldBeginTrackingAtPoint:(CGPoint)point pointInKnob:(CGPoint *)knob inKnob:(BOOL *)inKnob
 {
   v8 = 6;
   if (self->_thumbIsArtworkBased)
@@ -2310,7 +2310,7 @@ LABEL_64:
   }
 
   v9 = OBJC_IVAR____UISlideriOSVisualElement__sliderFlags[v8];
-  [*(&self->super.super.super.isa + v9) convertPoint:self fromView:{a3.x, a3.y}];
+  [*(&self->super.super.super.isa + v9) convertPoint:self fromView:{point.x, point.y}];
   v11 = v10;
   v13 = v12;
   [*(&self->super.super.super.isa + v9) bounds];
@@ -2328,15 +2328,15 @@ LABEL_64:
   v32.x = v11;
   v32.y = v13;
   v28 = CGRectContainsPoint(v33, v32);
-  if (a4)
+  if (knob)
   {
-    a4->x = v11;
-    a4->y = v13;
+    knob->x = v11;
+    knob->y = v13;
   }
 
-  if (a5)
+  if (inKnob)
   {
-    *a5 = v28;
+    *inKnob = v28;
   }
 
   if (v28)
@@ -2349,18 +2349,18 @@ LABEL_64:
   return [(UISliderDataModel *)data isTrackEnabled];
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   p_beginPoint = &self->_beginPoint;
-  v6 = a3;
-  [v6 locationInView:self];
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   p_beginPoint->x = v7;
   p_beginPoint->y = v8;
   v34[0] = 0.0;
   v34[1] = 0.0;
   v33 = 0;
   v9 = [(_UISlideriOSVisualElement *)self _shouldBeginTrackingAtPoint:v34 pointInKnob:&v33 inKnob:?];
-  v10 = [v6 _isPointerTouch];
+  _isPointerTouch = [touchCopy _isPointerTouch];
 
   if (v33 == 1)
   {
@@ -2376,36 +2376,36 @@ LABEL_64:
 
     [*(&self->super.super.super.isa + v11) frame];
     self->_hitOffset = round(v19 * 0.5 - v34[0]);
-    v20 = [(_UISlideriOSVisualElement *)self slider];
-    [v20 minimumValue];
+    slider = [(_UISlideriOSVisualElement *)self slider];
+    [slider minimumValue];
     v22 = v21;
-    v23 = [(_UISlideriOSVisualElement *)self slider];
-    [v23 maximumValue];
+    slider2 = [(_UISlideriOSVisualElement *)self slider];
+    [slider2 maximumValue];
     v25 = ValueForPoint(self, (*(&self->super._viewFlags + 2) >> 22) & 1, p_beginPoint->x, p_beginPoint->y, p_beginPoint->x, p_beginPoint->y, v22, v24);
 
     WeakRetained = objc_loadWeakRetained(&self->_slider);
     *&v27 = v25;
     [WeakRetained setValue:0 animated:v27];
 
-    v28 = [(_UISlideriOSVisualElement *)self slider];
-    v29 = [v28 _edgeFeedbackGenerator];
-    [v29 userInteractionStarted];
+    slider3 = [(_UISlideriOSVisualElement *)self slider];
+    _edgeFeedbackGenerator = [slider3 _edgeFeedbackGenerator];
+    [_edgeFeedbackGenerator userInteractionStarted];
 
-    v30 = [(_UISlideriOSVisualElement *)self slider];
-    v31 = [v30 _modulationFeedbackGenerator];
-    [v31 activateWithCompletionBlock:0];
+    slider4 = [(_UISlideriOSVisualElement *)self slider];
+    _modulationFeedbackGenerator = [slider4 _modulationFeedbackGenerator];
+    [_modulationFeedbackGenerator activateWithCompletionBlock:0];
 
     return 1;
   }
 
-  else if (([(UISliderDataModel *)self->_data isTrackEnabled]| v10))
+  else if (([(UISliderDataModel *)self->_data isTrackEnabled]| _isPointerTouch))
   {
     v12 = objc_loadWeakRetained(&self->_slider);
-    v13 = [(_UISlideriOSVisualElement *)self slider];
-    [v13 minimumValue];
+    slider5 = [(_UISlideriOSVisualElement *)self slider];
+    [slider5 minimumValue];
     v15 = v14;
-    v16 = [(_UISlideriOSVisualElement *)self slider];
-    [v16 maximumValue];
+    slider6 = [(_UISlideriOSVisualElement *)self slider];
+    [slider6 maximumValue];
     *&v18 = ValueForPoint(self, (*(&self->super._viewFlags + 2) >> 22) & 1, p_beginPoint->x, p_beginPoint->y, p_beginPoint->x, p_beginPoint->y, v15, v17);
     v9 = 1;
     [v12 setValue:1 animated:v18];
@@ -2416,18 +2416,18 @@ LABEL_64:
   return v9;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  [a3 locationInView:self];
+  eventCopy = event;
+  [touch locationInView:self];
   v8 = v7;
   v10 = v9;
-  v11 = [(_UISlideriOSVisualElement *)self slider];
-  [v11 maximumValue];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  [slider maximumValue];
   v13 = v12;
 
-  v14 = [(_UISlideriOSVisualElement *)self slider];
-  [v14 minimumValue];
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
+  [slider2 minimumValue];
   v16 = v15;
 
   v17 = ValueForPoint(self, (*(&self->super._viewFlags + 2) >> 22) & 1, self->_beginPoint.x, self->_beginPoint.y, v8, v10, v16, v13);
@@ -2438,75 +2438,75 @@ LABEL_64:
   if (v13 > v16)
   {
     v20 = ((v17 - v16) / (v13 - v16));
-    v21 = [(_UISlideriOSVisualElement *)self slider];
-    v22 = [v21 _edgeFeedbackGenerator];
-    [v22 distance];
+    slider3 = [(_UISlideriOSVisualElement *)self slider];
+    _edgeFeedbackGenerator = [slider3 _edgeFeedbackGenerator];
+    [_edgeFeedbackGenerator distance];
     v24 = v23 * v20;
 
-    v25 = [(_UISlideriOSVisualElement *)self slider];
-    v26 = [v25 _edgeFeedbackGenerator];
-    [v26 positionUpdated:v24 atLocation:{v8, v10}];
+    slider4 = [(_UISlideriOSVisualElement *)self slider];
+    _edgeFeedbackGenerator2 = [slider4 _edgeFeedbackGenerator];
+    [_edgeFeedbackGenerator2 positionUpdated:v24 atLocation:{v8, v10}];
 
-    v27 = [(_UISlideriOSVisualElement *)self slider];
-    v28 = [v27 _modulationFeedbackGenerator];
-    [v28 valueUpdated:v20];
+    slider5 = [(_UISlideriOSVisualElement *)self slider];
+    _modulationFeedbackGenerator = [slider5 _modulationFeedbackGenerator];
+    [_modulationFeedbackGenerator valueUpdated:v20];
   }
 
-  v29 = [(_UISlideriOSVisualElement *)self slider];
-  v30 = [v29 isContinuous];
+  slider6 = [(_UISlideriOSVisualElement *)self slider];
+  isContinuous = [slider6 isContinuous];
 
-  if (v30)
+  if (isContinuous)
   {
     v31 = objc_loadWeakRetained(&self->_slider);
-    [v31 _sendActionsForEvents:4096 withEvent:v6];
+    [v31 _sendActionsForEvents:4096 withEvent:eventCopy];
   }
 
-  v32 = [(_UISlideriOSVisualElement *)self slider];
-  [v32 setHighlighted:1];
+  slider7 = [(_UISlideriOSVisualElement *)self slider];
+  [slider7 setHighlighted:1];
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v13 = a4;
-  v6 = [(_UISlideriOSVisualElement *)self slider];
-  [v6 setTracking:0];
+  eventCopy = event;
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  [slider setTracking:0];
 
-  if (a3)
+  if (touch)
   {
     WeakRetained = objc_loadWeakRetained(&self->_slider);
-    [WeakRetained _sendActionsForEvents:4096 withEvent:v13];
+    [WeakRetained _sendActionsForEvents:4096 withEvent:eventCopy];
   }
 
-  v8 = [(_UISlideriOSVisualElement *)self slider];
-  [v8 setHighlighted:0];
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
+  [slider2 setHighlighted:0];
 
-  v9 = [(_UISlideriOSVisualElement *)self slider];
-  v10 = [v9 _edgeFeedbackGenerator];
-  [v10 userInteractionEnded];
+  slider3 = [(_UISlideriOSVisualElement *)self slider];
+  _edgeFeedbackGenerator = [slider3 _edgeFeedbackGenerator];
+  [_edgeFeedbackGenerator userInteractionEnded];
 
-  v11 = [(_UISlideriOSVisualElement *)self slider];
-  v12 = [v11 _modulationFeedbackGenerator];
-  [v12 deactivate];
+  slider4 = [(_UISlideriOSVisualElement *)self slider];
+  _modulationFeedbackGenerator = [slider4 _modulationFeedbackGenerator];
+  [_modulationFeedbackGenerator deactivate];
 }
 
-- (void)_controlTouchBegan:(id)a3 withEvent:(id)a4
+- (void)_controlTouchBegan:(id)began withEvent:(id)event
 {
-  v8 = a4;
+  eventCopy = event;
   WeakRetained = [(_UISlideriOSVisualElement *)self slider];
   if ([WeakRetained isTracking])
   {
-    v6 = [(_UISlideriOSVisualElement *)self slider];
-    v7 = [v6 isContinuous];
+    slider = [(_UISlideriOSVisualElement *)self slider];
+    isContinuous = [slider isContinuous];
 
-    if (!v7)
+    if (!isContinuous)
     {
       goto LABEL_5;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_slider);
-    [WeakRetained _sendActionsForEvents:4096 withEvent:v8];
+    [WeakRetained _sendActionsForEvents:4096 withEvent:eventCopy];
   }
 
 LABEL_5:
@@ -2514,21 +2514,21 @@ LABEL_5:
 
 - (BOOL)cancelTouchTracking
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 isTracking];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  isTracking = [slider isTracking];
 
-  if (v4)
+  if (isTracking)
   {
     [(_UISlideriOSVisualElement *)self endTrackingWithTouch:0 withEvent:0];
   }
 
-  v5 = [(_UISlideriOSVisualElement *)self slider];
-  v6 = [v5 isHighlighted];
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
+  isHighlighted = [slider2 isHighlighted];
 
-  if (v6)
+  if (isHighlighted)
   {
-    v7 = [(_UISlideriOSVisualElement *)self slider];
-    [v7 setHighlighted:0];
+    slider3 = [(_UISlideriOSVisualElement *)self slider];
+    [slider3 setHighlighted:0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_slider);
@@ -2544,12 +2544,12 @@ LABEL_5:
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (CGRect)valueTextRectForBounds:(CGRect)a3
+- (CGRect)valueTextRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if ([(UISliderDataModel *)self->_data showValue:a3.origin.x])
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if ([(UISliderDataModel *)self->_data showValue:bounds.origin.x])
   {
     v6 = x + width + -23.0;
     +[_UISlideriOSVisualElement drawingMetricsForPlatform];
@@ -2592,9 +2592,9 @@ LABEL_5:
     v21 = v20;
     v23 = v22;
 
-    v24 = [(UIImageView *)[UISliderImageView alloc] initWithFrame:v17, v19, v21, v23];
-    [(UIView *)v24 setUserInteractionEnabled:0];
-    [(UIView *)v24 setOpaque:0];
+    createThumbViewNeue = [(UIImageView *)[UISliderImageView alloc] initWithFrame:v17, v19, v21, v23];
+    [(UIView *)createThumbViewNeue setUserInteractionEnabled:0];
+    [(UIView *)createThumbViewNeue setOpaque:0];
     v25 = v21 + -44.0;
     if (v21 + -44.0 > 0.0)
     {
@@ -2608,15 +2608,15 @@ LABEL_5:
       v27 = 0.0;
     }
 
-    [(UIView *)v24 _setTouchInsets:v27 * 0.5, v26, v27 * 0.5, v26];
+    [(UIView *)createThumbViewNeue _setTouchInsets:v27 * 0.5, v26, v27 * 0.5, v26];
   }
 
   else
   {
-    v24 = [(_UISlideriOSVisualElement *)self createThumbViewNeue];
+    createThumbViewNeue = [(_UISlideriOSVisualElement *)self createThumbViewNeue];
   }
 
-  return v24;
+  return createThumbViewNeue;
 }
 
 - (void)didSetThumbImageForStates
@@ -2642,14 +2642,14 @@ LABEL_5:
 
 - (void)didSetThumbEnabled
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v4 = [v3 _isThumbEnabled];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  _isThumbEnabled = [slider _isThumbEnabled];
 
-  if (v4)
+  if (_isThumbEnabled)
   {
-    v5 = [(_UISlideriOSVisualElement *)self slider];
+    slider2 = [(_UISlideriOSVisualElement *)self slider];
     p_thumbView = &self->_thumbView;
-    -[UIImageView setHidden:](self->_thumbView, "setHidden:", [v5 isEnabled] ^ 1);
+    -[UIImageView setHidden:](self->_thumbView, "setHidden:", [slider2 isEnabled] ^ 1);
   }
 
   else
@@ -2659,12 +2659,12 @@ LABEL_5:
   }
 
   [(_UISlideriOSVisualElement *)self _layoutSubviewsForBoundsChange:0];
-  if (v4 != [(UISliderDataModel *)self->_data isMinimumTrackVisible])
+  if (_isThumbEnabled != [(UISliderDataModel *)self->_data isMinimumTrackVisible])
   {
     v7 = *p_thumbView;
-    v8 = [*p_thumbView isHidden];
+    isHidden = [*p_thumbView isHidden];
     v9 = 1.0;
-    if (v8)
+    if (isHidden)
     {
       v9 = 0.0;
     }
@@ -2673,31 +2673,31 @@ LABEL_5:
   }
 }
 
-- (void)didChangeMinimumTrackVisibleWithDuration:(double)a3
+- (void)didChangeMinimumTrackVisibleWithDuration:(double)duration
 {
   [(_UISlideriOSVisualElement *)self _layoutSubviewsForBoundsChange:0];
-  v5 = [(UISliderDataModel *)self->_data isMinimumTrackVisible];
+  isMinimumTrackVisible = [(UISliderDataModel *)self->_data isMinimumTrackVisible];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70___UISlideriOSVisualElement_didChangeMinimumTrackVisibleWithDuration___block_invoke;
   v8[3] = &__block_descriptor_40_e24_v24__0___v___8___v__B_16l;
-  *&v8[4] = a3;
+  *&v8[4] = duration;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70___UISlideriOSVisualElement_didChangeMinimumTrackVisibleWithDuration___block_invoke_2;
   v6[3] = &unk_1E70F35E0;
   v6[4] = self;
-  v7 = v5;
-  [UIView conditionallyAnimate:a3 > 0.0 withAnimation:v8 layout:v6 completion:0];
+  v7 = isMinimumTrackVisible;
+  [UIView conditionallyAnimate:duration > 0.0 withAnimation:v8 layout:v6 completion:0];
 }
 
 - (void)didUpdateConfiguration
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  v7 = [v3 _sliderConfiguration];
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  _sliderConfiguration = [slider _sliderConfiguration];
 
-  v4 = v7;
-  if (v7 && (v5 = objc_opt_respondsToSelector(), v4 = v7, (v5 & 1) != 0))
+  v4 = _sliderConfiguration;
+  if (_sliderConfiguration && (v5 = objc_opt_respondsToSelector(), v4 = _sliderConfiguration, (v5 & 1) != 0))
   {
     v6 = *&self->_sliderFlags | 8;
   }
@@ -2744,11 +2744,11 @@ LABEL_5:
 
 - (void)didSetEnabled
 {
-  v3 = [(_UISlideriOSVisualElement *)self slider];
-  -[UIView setUserInteractionEnabled:](self, "setUserInteractionEnabled:", [v3 isEnabled]);
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  -[UIView setUserInteractionEnabled:](self, "setUserInteractionEnabled:", [slider isEnabled]);
 
-  v4 = [(_UISlideriOSVisualElement *)self slider];
-  -[_UISlideriOSVisualElement _updateAppearanceForEnabled:](self, "_updateAppearanceForEnabled:", [v4 isEnabled]);
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
+  -[_UISlideriOSVisualElement _updateAppearanceForEnabled:](self, "_updateAppearanceForEnabled:", [slider2 isEnabled]);
 }
 
 - (UISlider)slider

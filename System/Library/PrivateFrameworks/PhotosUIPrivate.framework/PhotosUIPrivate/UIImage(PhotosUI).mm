@@ -15,8 +15,8 @@
   v21 = a5;
   if (!v21)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"UIImage+PhotosUI.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImage+PhotosUI.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v22 = objc_alloc_init(PUImageExtraction);
@@ -37,7 +37,7 @@
   v42 = a6;
   v43 = a7;
   v38 = v26;
-  v39 = a1;
+  selfCopy = self;
   v44 = a8;
   v45 = a9;
   v46 = a10;
@@ -73,15 +73,15 @@
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
   v6 = a3;
-  [a1 size];
+  [self size];
   v8 = v7;
   v10 = v9;
-  [a1 scale];
+  [self scale];
   v12 = v11;
   v16.width = v8;
   v16.height = v10;
   UIGraphicsBeginImageContextWithOptions(v16, 0, v12);
-  [a1 drawAtPoint:17 blendMode:*MEMORY[0x1E695EFF8] alpha:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
+  [self drawAtPoint:17 blendMode:*MEMORY[0x1E695EFF8] alpha:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
   [v6 setFill];
 
   v17.origin.x = v4;
@@ -100,15 +100,15 @@
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
   v6 = a3;
-  [a1 size];
+  [self size];
   v8 = v7;
   v10 = v9;
-  [a1 scale];
+  [self scale];
   v12 = v11;
   v16.width = v8;
   v16.height = v10;
   UIGraphicsBeginImageContextWithOptions(v16, 0, v12);
-  [a1 drawAtPoint:17 blendMode:*MEMORY[0x1E695EFF8] alpha:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
+  [self drawAtPoint:17 blendMode:*MEMORY[0x1E695EFF8] alpha:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
   [v6 setFill];
 
   v17.origin.x = v4;
@@ -126,8 +126,8 @@
 {
   v3 = MEMORY[0x1E696AAE8];
   v4 = a3;
-  v5 = [v3 pu_PhotosUIFrameworkBundle];
-  v6 = [MEMORY[0x1E69DCAB8] imageNamed:v4 inBundle:v5];
+  pu_PhotosUIFrameworkBundle = [v3 pu_PhotosUIFrameworkBundle];
+  v6 = [MEMORY[0x1E69DCAB8] imageNamed:v4 inBundle:pu_PhotosUIFrameworkBundle];
 
   return v6;
 }
@@ -136,12 +136,12 @@
 {
   v9 = a5;
   v10 = a6;
-  v11 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{a1, a2}];
+  v11 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{self, a2}];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __63__UIImage_PhotosUI__pu_centeredImage_withBackgroundColor_size___block_invoke;
   v16[3] = &unk_1E7B80AF8;
-  v19 = a1;
+  selfCopy = self;
   v20 = a2;
   v17 = v10;
   v18 = v9;
@@ -159,9 +159,9 @@
   v12.width = v6;
   v12.height = v7;
   UIGraphicsBeginImageContextWithOptions(v12, a4, 0.0);
-  v8 = [v5 layer];
+  layer = [v5 layer];
 
-  [v8 renderInContext:UIGraphicsGetCurrentContext()];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
   v9 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
@@ -246,7 +246,7 @@
   v66 = v44;
   v57 = v22;
   v58 = v23;
-  v67 = a1;
+  selfCopy = self;
   v68 = v54;
   v59 = v20;
   v60 = v19;

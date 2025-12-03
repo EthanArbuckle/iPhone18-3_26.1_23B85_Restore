@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneCodecsTermVectorsWriter
-- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)a3;
-- (void)addProxWithInt:(int)a3 withOrgApacheLuceneStoreDataInput:(id)a4 withOrgApacheLuceneStoreDataInput:(id)a5;
+- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)state;
+- (void)addProxWithInt:(int)int withOrgApacheLuceneStoreDataInput:(id)input withOrgApacheLuceneStoreDataInput:(id)dataInput;
 @end
 
 @implementation OrgApacheLuceneCodecsTermVectorsWriter
 
-- (void)addProxWithInt:(int)a3 withOrgApacheLuceneStoreDataInput:(id)a4 withOrgApacheLuceneStoreDataInput:(id)a5
+- (void)addProxWithInt:(int)int withOrgApacheLuceneStoreDataInput:(id)input withOrgApacheLuceneStoreDataInput:(id)dataInput
 {
-  if (a3 >= 1)
+  if (int >= 1)
   {
-    v7 = a3;
+    intCopy = int;
     LODWORD(v9) = 0;
     v10 = 0;
     v11 = 0;
     do
     {
-      if (a4)
+      if (input)
       {
-        v12 = [a4 readVInt];
-        v9 = v9 + (v12 >> 1);
-        if (v12)
+        readVInt = [input readVInt];
+        v9 = v9 + (readVInt >> 1);
+        if (readVInt)
         {
-          v14 = [a4 readVInt];
+          readVInt2 = [input readVInt];
           if (!v11)
           {
             v11 = new_OrgApacheLuceneUtilBytesRefBuilder_init();
@@ -31,11 +31,11 @@
             }
           }
 
-          [(OrgApacheLuceneUtilBytesRefBuilder *)v11 growWithInt:v14];
-          [a4 readBytesWithByteArray:-[OrgApacheLuceneUtilBytesRefBuilder bytes](v11 withInt:"bytes") withInt:{0, v14}];
-          [(OrgApacheLuceneUtilBytesRefBuilder *)v11 setLengthWithInt:v14];
+          [(OrgApacheLuceneUtilBytesRefBuilder *)v11 growWithInt:readVInt2];
+          [input readBytesWithByteArray:-[OrgApacheLuceneUtilBytesRefBuilder bytes](v11 withInt:"bytes") withInt:{0, readVInt2}];
+          [(OrgApacheLuceneUtilBytesRefBuilder *)v11 setLengthWithInt:readVInt2];
           [(OrgApacheLuceneUtilBytesRefBuilder *)v11 get];
-          if (!a5)
+          if (!dataInput)
           {
 LABEL_12:
             v13 = 0xFFFFFFFFLL;
@@ -43,7 +43,7 @@ LABEL_12:
           }
         }
 
-        else if (!a5)
+        else if (!dataInput)
         {
           goto LABEL_12;
         }
@@ -52,31 +52,31 @@ LABEL_12:
       else
       {
         v9 = 0xFFFFFFFFLL;
-        if (!a5)
+        if (!dataInput)
         {
           goto LABEL_12;
         }
       }
 
-      v13 = [a5 readVInt] + v10;
-      v10 = v13 + [a5 readVInt];
+      v13 = [dataInput readVInt] + v10;
+      v10 = v13 + [dataInput readVInt];
 LABEL_13:
       [OrgApacheLuceneCodecsTermVectorsWriter addPositionWithInt:"addPositionWithInt:withInt:withInt:withOrgApacheLuceneUtilBytesRef:" withInt:v9 withInt:v13 withOrgApacheLuceneUtilBytesRef:?];
-      --v7;
+      --intCopy;
     }
 
-    while (v7);
+    while (intCopy);
   }
 }
 
-- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)a3
+- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)state
 {
-  if (!a3)
+  if (!state)
   {
     goto LABEL_28;
   }
 
-  v4 = *(a3 + 12);
+  v4 = *(state + 12);
   if (!v4)
   {
     goto LABEL_28;
@@ -89,14 +89,14 @@ LABEL_13:
     v8 = 0;
     while (1)
     {
-      v9 = *(a3 + 12);
+      v9 = *(state + 12);
       v10 = *(v9 + 8);
       if (v7 >= v10)
       {
         IOSArray_throwOutOfBoundsWithMsg(v10, v7);
       }
 
-      v11 = *(a3 + 8);
+      v11 = *(state + 8);
       if (!v11)
       {
         break;
@@ -109,7 +109,7 @@ LABEL_13:
         IOSArray_throwOutOfBoundsWithMsg(v13, v7);
       }
 
-      v14 = *(a3 + 4);
+      v14 = *(state + 4);
       if (!v14)
       {
         break;
@@ -146,7 +146,7 @@ LABEL_13:
               v20 = 0;
             }
 
-            sub_100049900(self, v20, a3);
+            sub_100049900(self, v20, state);
             v8 = (v8 + 1);
           }
 
@@ -168,7 +168,7 @@ LABEL_28:
 
   v8 = 0;
 LABEL_27:
-  [(OrgApacheLuceneCodecsTermVectorsWriter *)self finishWithOrgApacheLuceneIndexFieldInfos:*(a3 + 2) withInt:v8];
+  [(OrgApacheLuceneCodecsTermVectorsWriter *)self finishWithOrgApacheLuceneIndexFieldInfos:*(state + 2) withInt:v8];
   return v8;
 }
 

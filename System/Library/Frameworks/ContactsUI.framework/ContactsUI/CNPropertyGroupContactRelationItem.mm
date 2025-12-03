@@ -7,18 +7,18 @@
 
 - (id)normalizedValue
 {
-  v2 = [(CNPropertyGroupContactRelationItem *)self contactRelation];
-  v3 = [v2 name];
+  contactRelation = [(CNPropertyGroupContactRelationItem *)self contactRelation];
+  name = [contactRelation name];
 
-  return v3;
+  return name;
 }
 
 - (CNContactRelation)contactRelation
 {
-  v2 = [(CNPropertyGroupItem *)self labeledValue];
-  v3 = [v2 value];
+  labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+  value = [labeledValue value];
 
-  return v3;
+  return value;
 }
 
 @end

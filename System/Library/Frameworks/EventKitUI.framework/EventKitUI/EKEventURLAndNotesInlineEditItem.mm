@@ -1,14 +1,14 @@
 @interface EKEventURLAndNotesInlineEditItem
 - (BOOL)isSaveable;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (EKEventURLAndNotesInlineEditItem)init;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)reset;
-- (void)setCalendarItem:(id)a3 store:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setSelectedResponder:(id)a3;
+- (void)setCalendarItem:(id)item store:(id)store;
+- (void)setDelegate:(id)delegate;
+- (void)setSelectedResponder:(id)responder;
 @end
 
 @implementation EKEventURLAndNotesInlineEditItem
@@ -28,8 +28,8 @@
     notesEditItem = v2->_notesEditItem;
     v2->_notesEditItem = v5;
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel__contentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__contentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v2;
@@ -37,8 +37,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = EKEventURLAndNotesInlineEditItem;
@@ -53,59 +53,59 @@
   [(EKEventNotesInlineEditItem *)notesEditItem reset];
 }
 
-- (void)setCalendarItem:(id)a3 store:(id)a4
+- (void)setCalendarItem:(id)item store:(id)store
 {
   v8.receiver = self;
   v8.super_class = EKEventURLAndNotesInlineEditItem;
-  v6 = a4;
-  v7 = a3;
-  [(EKEventEditItem *)&v8 setCalendarItem:v7 store:v6];
-  [(EKEventEditItem *)self->_urlEditItem setCalendarItem:v7 store:v6, v8.receiver, v8.super_class];
-  [(EKEventEditItem *)self->_notesEditItem setCalendarItem:v7 store:v6];
+  storeCopy = store;
+  itemCopy = item;
+  [(EKEventEditItem *)&v8 setCalendarItem:itemCopy store:storeCopy];
+  [(EKEventEditItem *)self->_urlEditItem setCalendarItem:itemCopy store:storeCopy, v8.receiver, v8.super_class];
+  [(EKEventEditItem *)self->_notesEditItem setCalendarItem:itemCopy store:storeCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = EKEventURLAndNotesInlineEditItem;
-  v4 = a3;
-  [(EKCalendarItemEditItem *)&v5 setDelegate:v4];
-  [(EKCalendarItemEditItem *)self->_urlEditItem setDelegate:v4, v5.receiver, v5.super_class];
-  [(EKCalendarItemEditItem *)self->_notesEditItem setDelegate:v4];
+  delegateCopy = delegate;
+  [(EKCalendarItemEditItem *)&v5 setDelegate:delegateCopy];
+  [(EKCalendarItemEditItem *)self->_urlEditItem setDelegate:delegateCopy, v5.receiver, v5.super_class];
+  [(EKCalendarItemEditItem *)self->_notesEditItem setDelegate:delegateCopy];
 }
 
-- (void)setSelectedResponder:(id)a3
+- (void)setSelectedResponder:(id)responder
 {
   v5.receiver = self;
   v5.super_class = EKEventURLAndNotesInlineEditItem;
-  v4 = a3;
-  [(EKCalendarItemEditItem *)&v5 setSelectedResponder:v4];
-  [(EKCalendarItemEditItem *)self->_urlEditItem setSelectedResponder:v4, v5.receiver, v5.super_class];
-  [(EKCalendarItemEditItem *)self->_notesEditItem setSelectedResponder:v4];
+  responderCopy = responder;
+  [(EKCalendarItemEditItem *)&v5 setSelectedResponder:responderCopy];
+  [(EKCalendarItemEditItem *)self->_urlEditItem setSelectedResponder:responderCopy, v5.receiver, v5.super_class];
+  [(EKCalendarItemEditItem *)self->_notesEditItem setSelectedResponder:responderCopy];
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
-  if (!a3)
+  if (!index)
   {
     v4 = &OBJC_IVAR___EKEventURLAndNotesInlineEditItem__urlEditItem;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v4 = &OBJC_IVAR___EKEventURLAndNotesInlineEditItem__notesEditItem;
 LABEL_5:
-    [*(&self->super.super.super.isa + *v4) defaultCellHeightForSubitemAtIndex:0 forWidth:a4];
+    [*(&self->super.super.super.isa + *v4) defaultCellHeightForSubitemAtIndex:0 forWidth:width];
     return result;
   }
 
   return 0.0;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!index)
   {
     v5 = &OBJC_IVAR___EKEventURLAndNotesInlineEditItem__urlEditItem;
 LABEL_5:
@@ -114,7 +114,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v5 = &OBJC_IVAR___EKEventURLAndNotesInlineEditItem__notesEditItem;
     goto LABEL_5;
@@ -125,11 +125,11 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   v5 = [(EKEventURLInlineEditItem *)self->_urlEditItem saveAndDismissWithForce:?];
-  return v5 | [(EKEventNotesInlineEditItem *)self->_notesEditItem saveAndDismissWithForce:v3];
+  return v5 | [(EKEventNotesInlineEditItem *)self->_notesEditItem saveAndDismissWithForce:forceCopy];
 }
 
 - (BOOL)isSaveable

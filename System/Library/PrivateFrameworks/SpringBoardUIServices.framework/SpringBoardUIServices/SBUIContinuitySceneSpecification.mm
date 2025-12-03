@@ -10,11 +10,11 @@
   v10[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = SBUIContinuitySceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v9 defaultExtensions];
-  v3 = v2;
-  if (v2)
+  defaultExtensions = [(UIApplicationSceneSpecification *)&v9 defaultExtensions];
+  v3 = defaultExtensions;
+  if (defaultExtensions)
   {
-    v4 = v2;
+    v4 = defaultExtensions;
   }
 
   else
@@ -36,8 +36,8 @@
 {
   v6.receiver = self;
   v6.super_class = SBUIContinuitySceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v6 baseSceneComponentClassDictionary];
-  v3 = [v2 mutableCopy];
+  baseSceneComponentClassDictionary = [(UIApplicationSceneSpecification *)&v6 baseSceneComponentClassDictionary];
+  v3 = [baseSceneComponentClassDictionary mutableCopy];
 
   v4 = NSClassFromString(&cfstr_Sbwindowscenes.isa);
   if (v4)

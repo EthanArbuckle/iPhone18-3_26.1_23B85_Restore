@@ -1,6 +1,6 @@
 @interface WFGetSettingsOperation
 - (NSOperationQueue)keychainQueue;
-- (WFGetSettingsOperation)initWithSSID:(id)a3 interfaceName:(id)a4;
+- (WFGetSettingsOperation)initWithSSID:(id)d interfaceName:(id)name;
 - (void)dealloc;
 - (void)start;
 @end
@@ -24,7 +24,7 @@
 - (void)start
 {
   v4 = OSLogForWFLogLevel(3uLL);
-  if (WFCurrentLogLevel() >= 3 && (a1 & 1) != 0 && os_log_type_enabled(a2, v4))
+  if (WFCurrentLogLevel() >= 3 && (self & 1) != 0 && os_log_type_enabled(a2, v4))
   {
     *v5 = 0;
     _os_log_impl(&dword_273ECD000, a2, v4, "No custom settings exist in WiFiManager", v5, 2u);
@@ -48,11 +48,11 @@
   return keychainQueue;
 }
 
-- (WFGetSettingsOperation)initWithSSID:(id)a3 interfaceName:(id)a4
+- (WFGetSettingsOperation)initWithSSID:(id)d interfaceName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = WFGetSettingsOperation;
   v8 = [(WFGetSettingsOperation *)&v21 init];
@@ -62,7 +62,7 @@
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     v18 = WFLogForCategory(0);
     v19 = OSLogForWFLogLevel(1uLL);
@@ -77,11 +77,11 @@
     goto LABEL_16;
   }
 
-  v9 = [v6 copy];
+  v9 = [dCopy copy];
   ssid = v8->_ssid;
   v8->_ssid = v9;
 
-  if (!v7)
+  if (!nameCopy)
   {
     v18 = WFLogForCategory(0);
     v19 = OSLogForWFLogLevel(1uLL);
@@ -100,7 +100,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v11 = [v7 copy];
+  v11 = [nameCopy copy];
   interfaceName = v8->_interfaceName;
   v8->_interfaceName = v11;
 

@@ -1,21 +1,21 @@
 @interface _TVInfoHeaderView
-+ (id)infoHeaderViewWithElement:(id)a3 existingView:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)impressionableElementsContainedInDocument:(id)a3;
++ (id)infoHeaderViewWithElement:(id)element existingView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (void)layoutSubviews;
-- (void)setHeaderView:(id)a3;
+- (void)setHeaderView:(id)view;
 @end
 
 @implementation _TVInfoHeaderView
 
-+ (id)infoHeaderViewWithElement:(id)a3 existingView:(id)a4
++ (id)infoHeaderViewWithElement:(id)element existingView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = viewCopy;
   }
 
   else
@@ -26,26 +26,26 @@
 
   v9 = v7;
   v10 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v11 = [v6 children];
+  children = [elementCopy children];
 
-  v12 = [v11 firstObject];
-  v13 = [(_TVInfoHeaderView *)v9 headerView];
-  v14 = [v10 _viewFromElement:v12 existingView:v13];
+  firstObject = [children firstObject];
+  headerView = [(_TVInfoHeaderView *)v9 headerView];
+  v14 = [v10 _viewFromElement:firstObject existingView:headerView];
 
   [(_TVInfoHeaderView *)v9 setHeaderView:v14];
 
   return v9;
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  v7 = v5;
-  if (headerView != v5)
+  v7 = viewCopy;
+  if (headerView != viewCopy)
   {
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     if (self->_headerView)
     {
       [(_TVInfoHeaderView *)self addSubview:?];
@@ -55,10 +55,10 @@
   [(_TVInfoHeaderView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIView *)self tv_padding:a3.width];
+  width = fits.width;
+  [(UIView *)self tv_padding:fits.width];
   v8 = v7;
   v10 = v9;
   headerView = self->_headerView;
@@ -94,17 +94,17 @@
   [(UIView *)headerView setFrame:v7, v5, v9, v10];
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
-  v4 = a3;
-  v5 = [self tv_associatedIKViewElement];
-  v6 = [v5 appDocument];
-  v7 = [v6 isEqual:v4];
+  documentCopy = document;
+  tv_associatedIKViewElement = [self tv_associatedIKViewElement];
+  appDocument = [tv_associatedIKViewElement appDocument];
+  v7 = [appDocument isEqual:documentCopy];
 
   if (v7)
   {
-    v8 = [(_TVInfoHeaderView *)self headerView];
-    v9 = [v8 tv_impressionableElementsForDocument:v4];
+    headerView = [(_TVInfoHeaderView *)self headerView];
+    v9 = [headerView tv_impressionableElementsForDocument:documentCopy];
 
     if ([v9 count])
     {

@@ -1,10 +1,10 @@
 @interface ASDArcadeSubscriptionManager
-- (void)entitlementsDidChange:(id)a3;
+- (void)entitlementsDidChange:(id)change;
 @end
 
 @implementation ASDArcadeSubscriptionManager
 
-- (void)entitlementsDidChange:(id)a3
+- (void)entitlementsDidChange:(id)change
 {
   v3 = sub_22261AC60();
   v4 = *(v3 - 8);

@@ -1,15 +1,15 @@
 @interface REMComplicationDataViewFetchModelInvocationResult
 - (REMComplicationDataViewFetchModelInvocationResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMComplicationDataViewFetchModelInvocationResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  REMComplicationDataView.FetchModelInvocation.Result.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  REMComplicationDataView.FetchModelInvocation.Result.encode(with:)(coderCopy);
 }
 
 - (REMComplicationDataViewFetchModelInvocationResult)init

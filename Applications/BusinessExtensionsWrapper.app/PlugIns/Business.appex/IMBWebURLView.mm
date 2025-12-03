@@ -1,16 +1,16 @@
 @interface IMBWebURLView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC8Business13IMBWebURLView)initWithCoder:(id)a3;
-- (_TtC8Business13IMBWebURLView)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)toolTipInteraction:(id)a3 configurationAtPoint:(CGPoint)a4;
-- (void)copy:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC8Business13IMBWebURLView)initWithCoder:(id)coder;
+- (_TtC8Business13IMBWebURLView)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)toolTipInteraction:(id)interaction configurationAtPoint:(CGPoint)point;
+- (void)copy:(id)copy;
 - (void)handleLongPress;
 @end
 
 @implementation IMBWebURLView
 
-- (_TtC8Business13IMBWebURLView)initWithCoder:(id)a3
+- (_TtC8Business13IMBWebURLView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8Business13IMBWebURLView_domainLabel;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -27,18 +27,18 @@
 - (void)handleLongPress
 {
   v3 = objc_opt_self();
-  v5 = self;
-  v4 = [v3 sharedMenuController];
-  [(IMBWebURLView *)v5 becomeFirstResponder];
-  [(IMBWebURLView *)v5 bounds];
-  [v4 showMenuFromView:v5 rect:?];
+  selfCopy = self;
+  sharedMenuController = [v3 sharedMenuController];
+  [(IMBWebURLView *)selfCopy becomeFirstResponder];
+  [(IMBWebURLView *)selfCopy bounds];
+  [sharedMenuController showMenuFromView:selfCopy rect:?];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  if (a3)
+  if (copy)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1000AC47C();
     swift_unknownObjectRelease();
@@ -47,7 +47,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10007E664();
@@ -55,17 +55,17 @@
   sub_10000E784(v6, &unk_1000F1DF0, &qword_1000B18F0);
 }
 
-- (_TtC8Business13IMBWebURLView)initWithFrame:(CGRect)a3
+- (_TtC8Business13IMBWebURLView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a3;
-  v6 = self;
+  recognizerCopy = recognizer;
+  selfCopy = self;
   if (sub_10002CE60() == 2)
   {
 
@@ -75,30 +75,30 @@
 
   else
   {
-    v8 = [objc_opt_self() sharedMenuController];
-    v7 = [(IMBWebURLView *)v6 canPerformAction:"copy:" withSender:v8];
+    sharedMenuController = [objc_opt_self() sharedMenuController];
+    v7 = [(IMBWebURLView *)selfCopy canPerformAction:"copy:" withSender:sharedMenuController];
 
-    v5 = v6;
+    recognizerCopy = selfCopy;
   }
 
   return v7;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   sub_100005A24(0, &qword_1000F29F0, UIContextMenuConfiguration_ptr);
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  v6 = self;
+  selfCopy = self;
   v7 = sub_10007ED84(0, 0, 0, sub_10007F340, v5);
 
   return v7;
 }
 
-- (id)toolTipInteraction:(id)a3 configurationAtPoint:(CGPoint)a4
+- (id)toolTipInteraction:(id)interaction configurationAtPoint:(CGPoint)point
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = sub_10007F0FC();
 
   return v7;

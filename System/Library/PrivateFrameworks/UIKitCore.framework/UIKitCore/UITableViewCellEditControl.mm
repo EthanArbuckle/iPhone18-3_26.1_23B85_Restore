@@ -1,7 +1,7 @@
 @interface UITableViewCellEditControl
 - (CGSize)defaultSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UITableViewCellEditControl)initWithTableViewCell:(id)a3 editingStyle:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UITableViewCellEditControl)initWithTableViewCell:(id)cell editingStyle:(int64_t)style;
 - (id)_currentImage;
 - (id)_deleteImage;
 - (id)_insertImage;
@@ -14,12 +14,12 @@
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_toggleRotateAnimationDidStop;
 - (void)_updateImageView;
-- (void)adjustLayoutForFocalRect:(CGRect)a3;
+- (void)adjustLayoutForFocalRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRotated:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRotated:(BOOL)rotated animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UITableViewCellEditControl
@@ -27,8 +27,8 @@
 - (id)_deleteImage
 {
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v3 = [WeakRetained _constants];
-  v4 = [v3 defaultDeleteImageForCell:WeakRetained];
+  _constants = [WeakRetained _constants];
+  v4 = [_constants defaultDeleteImageForCell:WeakRetained];
 
   return v4;
 }
@@ -36,8 +36,8 @@
 - (id)_insertImage
 {
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v3 = [WeakRetained _constants];
-  v4 = [v3 defaultInsertImageForCell:WeakRetained];
+  _constants = [WeakRetained _constants];
+  v4 = [_constants defaultInsertImageForCell:WeakRetained];
 
   return v4;
 }
@@ -45,12 +45,12 @@
 - (id)_multiSelectNotSelectedImage
 {
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v3 = [WeakRetained _constants];
-  v4 = [WeakRetained _cellStyle];
-  v5 = [WeakRetained traitCollection];
-  v6 = [WeakRetained _tableView];
-  v7 = [v6 _accessoryBaseColor];
-  v8 = [v3 defaultMultiSelectNotSelectedImageForCellStyle:v4 traitCollection:v5 accessoryBaseColor:v7];
+  _constants = [WeakRetained _constants];
+  _cellStyle = [WeakRetained _cellStyle];
+  traitCollection = [WeakRetained traitCollection];
+  _tableView = [WeakRetained _tableView];
+  _accessoryBaseColor = [_tableView _accessoryBaseColor];
+  v8 = [_constants defaultMultiSelectNotSelectedImageForCellStyle:_cellStyle traitCollection:traitCollection accessoryBaseColor:_accessoryBaseColor];
 
   return v8;
 }
@@ -58,43 +58,43 @@
 - (id)_multiSelectSelectedImage
 {
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v4 = [WeakRetained _tableView];
-  v5 = [v4 _multiselectCheckmarkColor];
-  v6 = v5;
-  if (v5)
+  _tableView = [WeakRetained _tableView];
+  _multiselectCheckmarkColor = [_tableView _multiselectCheckmarkColor];
+  v6 = _multiselectCheckmarkColor;
+  if (_multiselectCheckmarkColor)
   {
-    v7 = v5;
+    accessoryTintColor = _multiselectCheckmarkColor;
   }
 
   else
   {
-    v7 = [(UITableViewCellEditControl *)self accessoryTintColor];
+    accessoryTintColor = [(UITableViewCellEditControl *)self accessoryTintColor];
   }
 
-  v8 = v7;
+  v8 = accessoryTintColor;
 
-  v9 = [WeakRetained _constants];
-  v10 = [WeakRetained _cellStyle];
-  v11 = [WeakRetained traitCollection];
-  v12 = [(UITableViewCellEditControl *)self accessoryBackgroundColor];
-  v13 = [v9 defaultMultiSelectSelectedImageForCellStyle:v10 traitCollection:v11 checkmarkColor:v8 backgroundColor:v12];
+  _constants = [WeakRetained _constants];
+  _cellStyle = [WeakRetained _cellStyle];
+  traitCollection = [WeakRetained traitCollection];
+  accessoryBackgroundColor = [(UITableViewCellEditControl *)self accessoryBackgroundColor];
+  v13 = [_constants defaultMultiSelectSelectedImageForCellStyle:_cellStyle traitCollection:traitCollection checkmarkColor:v8 backgroundColor:accessoryBackgroundColor];
 
   return v13;
 }
 
 - (void)_updateImageView
 {
-  v5 = [(UITableViewCellEditControl *)self _currentImage];
+  _currentImage = [(UITableViewCellEditControl *)self _currentImage];
   if (!_UISolariumEnabled() || (~*(self + 496) & 3) != 0)
   {
-    [(UIImageView *)self->_imageView setImage:v5];
+    [(UIImageView *)self->_imageView setImage:_currentImage];
   }
 
   else
   {
     imageView = self->_imageView;
-    v4 = [(UIControl *)self isHighlighted]|| [(UIControl *)self isSelected];
-    _UICollectionTableSetImageForMultiselectAccessoryImageViewWithAnimation(imageView, v5, v4);
+    isSelected = [(UIControl *)self isHighlighted]|| [(UIControl *)self isSelected];
+    _UICollectionTableSetImageForMultiselectAccessoryImageViewWithAnimation(imageView, _currentImage, isSelected);
   }
 }
 
@@ -104,39 +104,39 @@
   {
     if ((*(self + 496) & 3) == 2)
     {
-      v3 = [(UITableViewCellEditControl *)self _insertImage];
+      _insertImage = [(UITableViewCellEditControl *)self _insertImage];
     }
 
     else if ([(UIControl *)self isHighlighted]|| [(UIControl *)self isSelected])
     {
-      v3 = [(UITableViewCellEditControl *)self _multiSelectSelectedImage];
+      _insertImage = [(UITableViewCellEditControl *)self _multiSelectSelectedImage];
     }
 
     else
     {
-      v3 = [(UITableViewCellEditControl *)self _multiSelectNotSelectedImage];
+      _insertImage = [(UITableViewCellEditControl *)self _multiSelectNotSelectedImage];
     }
   }
 
   else if ((*(self + 496) & 3) != 0)
   {
-    v3 = [(UITableViewCellEditControl *)self _deleteImage];
+    _insertImage = [(UITableViewCellEditControl *)self _deleteImage];
   }
 
   else
   {
-    v3 = 0;
+    _insertImage = 0;
   }
 
-  return v3;
+  return _insertImage;
 }
 
 - (CGSize)defaultSize
 {
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v3 = [WeakRetained _constants];
-  v4 = [WeakRetained _tableView];
-  [v3 defaultEditControlSizeForCell:WeakRetained inTableView:v4];
+  _constants = [WeakRetained _constants];
+  _tableView = [WeakRetained _tableView];
+  [_constants defaultEditControlSizeForCell:WeakRetained inTableView:_tableView];
   v6 = v5;
   v8 = v7;
 
@@ -147,16 +147,16 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v5 = [WeakRetained _usesModernAccessoriesLayout];
+  _usesModernAccessoriesLayout = [WeakRetained _usesModernAccessoriesLayout];
 
-  if (v5)
+  if (_usesModernAccessoriesLayout)
   {
     [(UITableViewCellEditControl *)self _createImageViewIfNecessary];
-    v6 = [(UIImageView *)self->_imageView _currentImage];
-    [v6 size];
+    _currentImage = [(UIImageView *)self->_imageView _currentImage];
+    [_currentImage size];
     v8 = v7;
     v10 = v9;
 
@@ -175,9 +175,9 @@
   return result;
 }
 
-- (UITableViewCellEditControl)initWithTableViewCell:(id)a3 editingStyle:(int64_t)a4
+- (UITableViewCellEditControl)initWithTableViewCell:(id)cell editingStyle:(int64_t)style
 {
-  v6 = a3;
+  cellCopy = cell;
   [(UITableViewCellEditControl *)self defaultSize];
   v13.receiver = self;
   v13.super_class = UITableViewCellEditControl;
@@ -188,20 +188,20 @@
     [(UIView *)v9 setAlpha:1.0];
     [(UIView *)v10 setOpaque:0];
     [(UIControl *)v10 setRequiresDisplayOnTracking:1];
-    objc_storeWeak(&v10->_cell, v6);
-    *(v10 + 496) = *(v10 + 496) & 0xFC | a4 & 3;
+    objc_storeWeak(&v10->_cell, cellCopy);
+    *(v10 + 496) = *(v10 + 496) & 0xFC | style & 3;
     if (v10->_imageView)
     {
-      v11 = [(UITableViewCellEditControl *)v10 _currentImage];
-      [(UIImageView *)v10->_imageView setImage:v11];
+      _currentImage = [(UITableViewCellEditControl *)v10 _currentImage];
+      [(UIImageView *)v10->_imageView setImage:_currentImage];
     }
 
-    if (!a4 || a4 == 3)
+    if (!style || style == 3)
     {
       [(UIView *)v10 setUserInteractionEnabled:0];
     }
 
-    else if (a4 == 1)
+    else if (style == 1)
     {
       [(UIControl *)v10 addTarget:v10 action:sel__toggleRotate forControlEvents:64];
     }
@@ -213,11 +213,11 @@
   return v10;
 }
 
-- (void)adjustLayoutForFocalRect:(CGRect)a3
+- (void)adjustLayoutForFocalRect:(CGRect)rect
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  IsEmpty = CGRectIsEmpty(a3);
+  height = rect.size.height;
+  y = rect.origin.y;
+  IsEmpty = CGRectIsEmpty(rect);
   v7 = NAN;
   if (IsEmpty)
   {
@@ -283,28 +283,28 @@
   v5 = v4 + v3 * 0.5;
   imageView = self->_imageView;
   [(UITableViewCellEditControl *)self _createImageViewIfNecessary];
-  v7 = [(UIImageView *)self->_imageView _currentImage];
-  [v7 size];
+  _currentImage = [(UIImageView *)self->_imageView _currentImage];
+  [_currentImage size];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UIView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v14 = [WeakRetained _usesModernAccessoriesLayout];
+  _usesModernAccessoriesLayout = [WeakRetained _usesModernAccessoriesLayout];
 
   v15 = 3.0;
-  if (v14)
+  if (_usesModernAccessoriesLayout)
   {
     v15 = 0.0;
   }
 
   v16 = -0.0;
-  if (!v14)
+  if (!_usesModernAccessoriesLayout)
   {
     v16 = -3.0;
   }
 
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v15 = v16;
   }
@@ -333,15 +333,15 @@
     [UIView performWithoutAnimation:v28];
   }
 
-  v22 = [(UITableViewCellEditControl *)self wantsImageShadow];
+  wantsImageShadow = [(UITableViewCellEditControl *)self wantsImageShadow];
   shadowView = self->_shadowView;
-  if (v22)
+  if (wantsImageShadow)
   {
     if (!shadowView)
     {
       v24 = [UIImageView alloc];
-      v25 = [(UITableViewCellEditControl *)self _shadowImage];
-      v26 = [(UIImageView *)v24 initWithImage:v25];
+      _shadowImage = [(UITableViewCellEditControl *)self _shadowImage];
+      v26 = [(UIImageView *)v24 initWithImage:_shadowImage];
       v27 = self->_shadowView;
       self->_shadowView = v26;
 
@@ -358,40 +358,40 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = UITableViewCellEditControl;
-  [(UIControl *)&v4 setHighlighted:a3];
+  [(UIControl *)&v4 setHighlighted:highlighted];
   [(UITableViewCellEditControl *)self _updateImageView];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = UITableViewCellEditControl;
-  [(UIControl *)&v4 setSelected:a3];
+  [(UIControl *)&v4 setSelected:selected];
   [(UITableViewCellEditControl *)self _updateImageView];
 }
 
-- (void)setRotated:(BOOL)a3 animated:(BOOL)a4
+- (void)setRotated:(BOOL)rotated animated:(BOOL)animated
 {
-  if (((((*(self + 496) & 4) == 0) ^ a3) & 1) == 0)
+  if (((((*(self + 496) & 4) == 0) ^ rotated) & 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __50__UITableViewCellEditControl_setRotated_animated___block_invoke_2;
     v6[3] = &unk_1E70F8A10;
     v6[4] = self;
-    v7 = a3;
-    v8 = a4;
+    rotatedCopy = rotated;
+    animatedCopy = animated;
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __50__UITableViewCellEditControl_setRotated_animated___block_invoke_3;
     v4[3] = &unk_1E70FA0F0;
-    v5 = a4;
+    animatedCopy2 = animated;
     v4[4] = self;
-    [UIView conditionallyAnimate:a4 withAnimation:&__block_literal_global_556 layout:v6 completion:v4];
+    [UIView conditionallyAnimate:animated withAnimation:&__block_literal_global_556 layout:v6 completion:v4];
   }
 }
 
@@ -435,16 +435,16 @@ uint64_t __50__UITableViewCellEditControl_setRotated_animated___block_invoke_3(u
   [(UITableViewCellEditControl *)self _updateImageView];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = UITableViewCellEditControl;
-  [(UIView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(UIView *)self traitCollection];
-  v6 = _UITableConstantsForTraitCollection(v5);
-  v7 = [(UIView *)self traitCollection];
-  v8 = [v6 defaultListCellAccessoryImageSymbolConfigurationForTraitCollection:v7 accessoryType:qword_18A682868[*(self + 496) & 3]];
+  [(UIView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = _UITableConstantsForTraitCollection(traitCollection);
+  traitCollection2 = [(UIView *)self traitCollection];
+  v8 = [v6 defaultListCellAccessoryImageSymbolConfigurationForTraitCollection:traitCollection2 accessoryType:qword_18A682868[*(self + 496) & 3]];
   [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:v8];
 
   [(UIView *)self setNeedsLayout];
@@ -474,15 +474,15 @@ uint64_t __50__UITableViewCellEditControl_setRotated_animated___block_invoke_3(u
   }
 
   v3 = [UIImageView alloc];
-  v4 = [(UITableViewCellEditControl *)self _currentImage];
-  v5 = [(UIImageView *)v3 initWithImage:v4];
+  _currentImage = [(UITableViewCellEditControl *)self _currentImage];
+  v5 = [(UIImageView *)v3 initWithImage:_currentImage];
   imageView = self->_imageView;
   self->_imageView = v5;
 
-  v7 = [(UIView *)self traitCollection];
-  v8 = _UITableConstantsForTraitCollection(v7);
-  v9 = [(UIView *)self traitCollection];
-  v10 = [v8 defaultListCellAccessoryImageSymbolConfigurationForTraitCollection:v9 accessoryType:qword_18A682868[*(self + 496) & 3]];
+  traitCollection = [(UIView *)self traitCollection];
+  v8 = _UITableConstantsForTraitCollection(traitCollection);
+  traitCollection2 = [(UIView *)self traitCollection];
+  v10 = [v8 defaultListCellAccessoryImageSymbolConfigurationForTraitCollection:traitCollection2 accessoryType:qword_18A682868[*(self + 496) & 3]];
   [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:v10];
 
   v11 = *(self + 496) & 3;

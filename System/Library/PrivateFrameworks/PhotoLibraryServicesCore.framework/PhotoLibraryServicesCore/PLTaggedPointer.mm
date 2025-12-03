@@ -1,10 +1,10 @@
 @interface PLTaggedPointer
-+ (id)newInstanceWithPayload:(unint64_t)a3;
-+ (id)newInstanceWithSignedPayload:(int64_t)a3;
++ (id)newInstanceWithPayload:(unint64_t)payload;
++ (id)newInstanceWithSignedPayload:(int64_t)payload;
 + (unsigned)tag;
-- (BOOL)isEqual:(id)a3;
-- (PLTaggedPointer)initWithPayload:(unint64_t)a3;
-- (PLTaggedPointer)initWithSignedPayload:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (PLTaggedPointer)initWithPayload:(unint64_t)payload;
+- (PLTaggedPointer)initWithSignedPayload:(int64_t)payload;
 - (int64_t)signedPayload;
 - (unint64_t)payload;
 @end
@@ -22,7 +22,7 @@
   objc_sync_enter(v3);
   if (PFObjc_implementsClassMethod())
   {
-    LOWORD(v4) = [a1 tag];
+    LOWORD(v4) = [self tag];
     objc_sync_exit(v3);
 
     return v4;
@@ -46,7 +46,7 @@
   v11[3] = &__block_descriptor_34_e8_S16__0_8l;
   v12 = v4;
   v5 = MEMORY[0x1AC5925C0](v11);
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   v7 = MEMORY[0x1AC5925C0](v5);
   v8 = imp_implementationWithBlock(v7);
   class_addMethod(Class, "tag", v8, 0);
@@ -55,7 +55,7 @@
   if (!v4)
   {
 LABEL_8:
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     _PFAssertContinueHandler();
 
     LOWORD(v4) = 0;
@@ -87,14 +87,14 @@ LABEL_8:
   return v4 & (v3 >> 3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(PLTaggedPointer *)self payload];
-    v6 = v7 == [v4 payload];
+    payload = [(PLTaggedPointer *)self payload];
+    v6 = payload == [equalCopy payload];
   }
 
   else
@@ -133,45 +133,45 @@ LABEL_8:
   }
 }
 
-- (PLTaggedPointer)initWithSignedPayload:(int64_t)a3
+- (PLTaggedPointer)initWithSignedPayload:(int64_t)payload
 {
   v5.receiver = self;
   v5.super_class = PLTaggedPointer;
   result = [(PLTaggedPointer *)&v5 init];
   if (result)
   {
-    result->_payload.unsignedPayload = a3;
+    result->_payload.unsignedPayload = payload;
   }
 
   return result;
 }
 
-- (PLTaggedPointer)initWithPayload:(unint64_t)a3
+- (PLTaggedPointer)initWithPayload:(unint64_t)payload
 {
   v5.receiver = self;
   v5.super_class = PLTaggedPointer;
   result = [(PLTaggedPointer *)&v5 init];
   if (result)
   {
-    result->_payload.unsignedPayload = a3;
+    result->_payload.unsignedPayload = payload;
   }
 
   return result;
 }
 
-+ (id)newInstanceWithSignedPayload:(int64_t)a3
++ (id)newInstanceWithSignedPayload:(int64_t)payload
 {
-  v5 = [a1 tag];
+  v5 = [self tag];
   if (v5)
   {
     if (v5 > 6)
     {
-      v6 = (((8 * (a3 & 0xFFFFFFFFFFFFFLL)) | (v5 << 55)) + 0x7C00000000000000) | 0x8000000000000007;
+      v6 = (((8 * (payload & 0xFFFFFFFFFFFFFLL)) | (v5 << 55)) + 0x7C00000000000000) | 0x8000000000000007;
     }
 
     else
     {
-      v6 = v5 | (8 * a3) | 0x8000000000000000;
+      v6 = v5 | (8 * payload) | 0x8000000000000000;
     }
 
     v7 = *MEMORY[0x1E69E5910] ^ v6;
@@ -181,7 +181,7 @@ LABEL_8:
     }
 
     v8 = v6;
-    if ([v8 signedPayload] == a3)
+    if ([v8 signedPayload] == payload)
     {
       if (v6)
       {
@@ -194,24 +194,24 @@ LABEL_8:
     }
   }
 
-  v10 = [a1 alloc];
+  v10 = [self alloc];
 
-  return [v10 initWithPayload:a3];
+  return [v10 initWithPayload:payload];
 }
 
-+ (id)newInstanceWithPayload:(unint64_t)a3
++ (id)newInstanceWithPayload:(unint64_t)payload
 {
-  v5 = [a1 tag];
+  v5 = [self tag];
   if (v5)
   {
     if (v5 > 6)
     {
-      v6 = (((8 * (a3 & 0xFFFFFFFFFFFFFLL)) | (v5 << 55)) + 0x7C00000000000000) | 0x8000000000000007;
+      v6 = (((8 * (payload & 0xFFFFFFFFFFFFFLL)) | (v5 << 55)) + 0x7C00000000000000) | 0x8000000000000007;
     }
 
     else
     {
-      v6 = v5 | (8 * a3) | 0x8000000000000000;
+      v6 = v5 | (8 * payload) | 0x8000000000000000;
     }
 
     v7 = *MEMORY[0x1E69E5910] ^ v6;
@@ -221,7 +221,7 @@ LABEL_8:
     }
 
     v8 = v6;
-    if ([v8 payload] == a3)
+    if ([v8 payload] == payload)
     {
       if (v6)
       {
@@ -234,9 +234,9 @@ LABEL_8:
     }
   }
 
-  v10 = [a1 alloc];
+  v10 = [self alloc];
 
-  return [v10 initWithPayload:a3];
+  return [v10 initWithPayload:payload];
 }
 
 @end

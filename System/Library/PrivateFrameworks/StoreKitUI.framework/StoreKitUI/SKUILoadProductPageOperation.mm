@@ -1,12 +1,12 @@
 @interface SKUILoadProductPageOperation
-- (SKUILoadProductPageOperation)initWithItemIdentifier:(int64_t)a3 clientContext:(id)a4;
-- (SKUILoadProductPageOperation)initWithProductPageURLRequest:(id)a3 clientContext:(id)a4;
+- (SKUILoadProductPageOperation)initWithItemIdentifier:(int64_t)identifier clientContext:(id)context;
+- (SKUILoadProductPageOperation)initWithProductPageURLRequest:(id)request clientContext:(id)context;
 - (SSMetricsPageEvent)metricsPageEvent;
 - (id)_initSKUILoadProductPageOperation;
 - (id)outputBlock;
 - (void)_initSKUILoadProductPageOperation;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SKUILoadProductPageOperation
@@ -31,30 +31,30 @@
   return v3;
 }
 
-- (SKUILoadProductPageOperation)initWithItemIdentifier:(int64_t)a3 clientContext:(id)a4
+- (SKUILoadProductPageOperation)initWithItemIdentifier:(int64_t)identifier clientContext:(id)context
 {
-  v7 = a4;
-  v8 = [(SKUILoadProductPageOperation *)self _initSKUILoadProductPageOperation];
-  v9 = v8;
-  if (v8)
+  contextCopy = context;
+  _initSKUILoadProductPageOperation = [(SKUILoadProductPageOperation *)self _initSKUILoadProductPageOperation];
+  v9 = _initSKUILoadProductPageOperation;
+  if (_initSKUILoadProductPageOperation)
   {
-    objc_storeStrong(v8 + 31, a4);
-    v9->_itemID = a3;
+    objc_storeStrong(_initSKUILoadProductPageOperation + 31, context);
+    v9->_itemID = identifier;
   }
 
   return v9;
 }
 
-- (SKUILoadProductPageOperation)initWithProductPageURLRequest:(id)a3 clientContext:(id)a4
+- (SKUILoadProductPageOperation)initWithProductPageURLRequest:(id)request clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUILoadProductPageOperation *)self _initSKUILoadProductPageOperation];
-  v9 = v8;
-  if (v8)
+  requestCopy = request;
+  contextCopy = context;
+  _initSKUILoadProductPageOperation = [(SKUILoadProductPageOperation *)self _initSKUILoadProductPageOperation];
+  v9 = _initSKUILoadProductPageOperation;
+  if (_initSKUILoadProductPageOperation)
   {
-    objc_storeStrong(v8 + 31, a4);
-    v10 = [v6 copy];
+    objc_storeStrong(_initSKUILoadProductPageOperation + 31, context);
+    v10 = [requestCopy copy];
     urlRequest = v9->_urlRequest;
     v9->_urlRequest = v10;
   }
@@ -116,17 +116,17 @@ uint64_t __43__SKUILoadProductPageOperation_outputBlock__block_invoke(uint64_t a
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SKUILoadProductPageOperation_setOutputBlock___block_invoke;
   v7[3] = &unk_2781F98F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -200,11 +200,11 @@ void *__47__SKUILoadProductPageOperation_setOutputBlock___block_invoke(uint64_t 
     objc_autoreleasePoolPop(v11);
   }
 
-  v18 = [(SKUILoadProductPageOperation *)self outputBlock];
-  v19 = v18;
-  if (v18)
+  outputBlock = [(SKUILoadProductPageOperation *)self outputBlock];
+  v19 = outputBlock;
+  if (outputBlock)
   {
-    (*(v18 + 16))(v18, v34[5], v40[5]);
+    (*(outputBlock + 16))(outputBlock, v34[5], v40[5]);
   }
 
   _Block_object_dispose(&v27, 8);

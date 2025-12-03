@@ -1,42 +1,42 @@
 @interface HKStringDrawing
-+ (id)stringDrawingWithText:(id)a3 inRect:(CGRect)a4 withAttributes:(id)a5;
-+ (void)drawStrings:(id)a3 outlineWidth:(double)a4 outlineColor:(id)a5 context:(CGContext *)a6;
++ (id)stringDrawingWithText:(id)text inRect:(CGRect)rect withAttributes:(id)attributes;
++ (void)drawStrings:(id)strings outlineWidth:(double)width outlineColor:(id)color context:(CGContext *)context;
 - (CGRect)rect;
-- (HKStringDrawing)initWithText:(id)a3 inRect:(CGRect)a4 withAttributes:(id)a5;
+- (HKStringDrawing)initWithText:(id)text inRect:(CGRect)rect withAttributes:(id)attributes;
 - (void)draw;
 @end
 
 @implementation HKStringDrawing
 
-+ (id)stringDrawingWithText:(id)a3 inRect:(CGRect)a4 withAttributes:(id)a5
++ (id)stringDrawingWithText:(id)text inRect:(CGRect)rect withAttributes:(id)attributes
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[HKStringDrawing alloc] initWithText:v11 inRect:v10 withAttributes:x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  attributesCopy = attributes;
+  textCopy = text;
+  height = [[HKStringDrawing alloc] initWithText:textCopy inRect:attributesCopy withAttributes:x, y, width, height];
 
-  return v12;
+  return height;
 }
 
-- (HKStringDrawing)initWithText:(id)a3 inRect:(CGRect)a4 withAttributes:(id)a5
+- (HKStringDrawing)initWithText:(id)text inRect:(CGRect)rect withAttributes:(id)attributes
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  textCopy = text;
+  attributesCopy = attributes;
   v17.receiver = self;
   v17.super_class = HKStringDrawing;
   v13 = [(HKStringDrawing *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    [(HKStringDrawing *)v13 setText:v11];
-    [(HKStringDrawing *)v14 setAttributes:v12];
+    [(HKStringDrawing *)v13 setText:textCopy];
+    [(HKStringDrawing *)v14 setAttributes:attributesCopy];
     v14->_rect.origin.x = x;
     v14->_rect.origin.y = y;
     v14->_rect.size.width = width;
@@ -50,28 +50,28 @@
 
 - (void)draw
 {
-  v12 = [(HKStringDrawing *)self text];
+  text = [(HKStringDrawing *)self text];
   [(HKStringDrawing *)self rect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HKStringDrawing *)self attributes];
-  [v12 drawInRect:v11 withAttributes:{v4, v6, v8, v10}];
+  attributes = [(HKStringDrawing *)self attributes];
+  [text drawInRect:attributes withAttributes:{v4, v6, v8, v10}];
 }
 
-+ (void)drawStrings:(id)a3 outlineWidth:(double)a4 outlineColor:(id)a5 context:(CGContext *)a6
++ (void)drawStrings:(id)strings outlineWidth:(double)width outlineColor:(id)color context:(CGContext *)context
 {
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (a4 <= 0.0)
+  stringsCopy = strings;
+  colorCopy = color;
+  if (width <= 0.0)
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v30 = [v9 countByEnumeratingWithState:&v44 objects:v50 count:16];
+    v30 = [stringsCopy countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v30)
     {
       v31 = v30;
@@ -82,13 +82,13 @@
         {
           if (*v45 != v32)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(stringsCopy);
           }
 
           [*(*(&v44 + 1) + 8 * i) draw];
         }
 
-        v31 = [v9 countByEnumeratingWithState:&v44 objects:v50 count:16];
+        v31 = [stringsCopy countByEnumeratingWithState:&v44 objects:v50 count:16];
       }
 
       while (v31);
@@ -97,32 +97,32 @@
 
   else
   {
-    CGContextSaveGState(a6);
-    v11 = v10;
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    v13 = [v11 isEqual:v12];
+    CGContextSaveGState(context);
+    v11 = colorCopy;
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v13 = [v11 isEqual:clearColor];
 
-    v35 = v10;
+    v35 = colorCopy;
     if (v13)
     {
-      v14 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
 
-      CGContextSetBlendMode(a6, kCGBlendModeClear);
-      v11 = v14;
+      CGContextSetBlendMode(context, kCGBlendModeClear);
+      v11 = blackColor;
     }
 
-    CGContextSetFillColorWithColor(a6, [v11 CGColor]);
-    CGContextSetStrokeColorWithColor(a6, [v11 CGColor]);
-    CGContextSetLineWidth(a6, fabs(a4));
-    CGContextSetLineCap(a6, kCGLineCapRound);
-    CGContextSetLineJoin(a6, kCGLineJoinRound);
-    c = a6;
-    CGContextSetTextDrawingMode(a6, kCGTextFillStroke);
+    CGContextSetFillColorWithColor(context, [v11 CGColor]);
+    CGContextSetStrokeColorWithColor(context, [v11 CGColor]);
+    CGContextSetLineWidth(context, fabs(width));
+    CGContextSetLineCap(context, kCGLineCapRound);
+    CGContextSetLineJoin(context, kCGLineJoinRound);
+    c = context;
+    CGContextSetTextDrawingMode(context, kCGTextFillStroke);
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v15 = v9;
+    v15 = stringsCopy;
     v16 = [v15 countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v16)
     {
@@ -139,13 +139,13 @@
           }
 
           v21 = *(*(&v40 + 1) + 8 * j);
-          v22 = [v21 attributes];
-          v23 = [v22 mutableCopy];
+          attributes = [v21 attributes];
+          v23 = [attributes mutableCopy];
 
           [v23 setValue:v11 forKey:v19];
-          v24 = [v21 text];
+          text = [v21 text];
           [v21 rect];
-          [v24 drawInRect:v23 withAttributes:?];
+          [text drawInRect:v23 withAttributes:?];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -161,7 +161,7 @@
     v37 = 0u;
     v25 = v15;
     v26 = [v25 countByEnumeratingWithState:&v36 objects:v48 count:16];
-    v10 = v35;
+    colorCopy = v35;
     if (v26)
     {
       v27 = v26;

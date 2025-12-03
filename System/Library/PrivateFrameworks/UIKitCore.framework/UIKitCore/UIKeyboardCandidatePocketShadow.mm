@@ -1,24 +1,24 @@
 @interface UIKeyboardCandidatePocketShadow
-+ (double)widthWithShadow:(BOOL)a3;
++ (double)widthWithShadow:(BOOL)shadow;
 + (id)leftShadowImage;
-- (UIKeyboardCandidatePocketShadow)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setDrawsShadow:(BOOL)a3;
+- (UIKeyboardCandidatePocketShadow)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)drawRect:(CGRect)rect;
+- (void)setDrawsShadow:(BOOL)shadow;
 @end
 
 @implementation UIKeyboardCandidatePocketShadow
 
-+ (double)widthWithShadow:(BOOL)a3
++ (double)widthWithShadow:(BOOL)shadow
 {
   v3 = 1.0;
-  if (a3)
+  if (shadow)
   {
     v3 = 1.5;
     if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v5 = [a1 leftShadowImage];
-      [v5 size];
+      leftShadowImage = [self leftShadowImage];
+      [leftShadowImage size];
       v3 = v6;
     }
   }
@@ -41,20 +41,20 @@
   return v2;
 }
 
-- (void)setDrawsShadow:(BOOL)a3
+- (void)setDrawsShadow:(BOOL)shadow
 {
-  if (self->_drawsShadow != a3)
+  if (self->_drawsShadow != shadow)
   {
-    self->_drawsShadow = a3;
+    self->_drawsShadow = shadow;
     [(UIView *)self setNeedsDisplay];
   }
 }
 
-- (UIKeyboardCandidatePocketShadow)initWithFrame:(CGRect)a3
+- (UIKeyboardCandidatePocketShadow)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIKeyboardCandidatePocketShadow;
-  v3 = [(UICollectionReusableView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -66,11 +66,11 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v44.receiver = self;
   v44.super_class = UIKeyboardCandidatePocketShadow;
-  [(UIView *)&v44 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v44 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {
@@ -104,21 +104,21 @@
     CGImageRelease(v14);
   }
 
-  v15 = [(UIView *)self _inheritedRenderConfig];
-  v16 = [v15 whiteText];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  whiteText = [_inheritedRenderConfig whiteText];
 
   if (![(UIKeyboardCandidatePocketShadow *)self drawsShadow])
   {
-    if ([(UIKeyboardCandidatePocketShadow *)self showsInDarkBackground]|| (((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1) & v16) != 0)
+    if ([(UIKeyboardCandidatePocketShadow *)self showsInDarkBackground]|| (((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1) & whiteText) != 0)
     {
       v26 = +[UIColor grayColor];
       v27 = [v26 colorWithAlphaComponent:0.3];
-      v28 = [v27 CGColor];
+      cGColor = [v27 CGColor];
     }
 
     else
     {
-      v28 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha11");
+      cGColor = UIKBGetNamedColor(@"UIKBColorBlack_Alpha11");
     }
 
     v59.origin.x = v7;
@@ -136,34 +136,34 @@
     v61.size.width = v11;
     v61.size.height = v13;
     Height = CGRectGetHeight(v61);
-    CGContextSetFillColorWithColor(v5, v28);
+    CGContextSetFillColorWithColor(v5, cGColor);
     v40 = 1.0;
     goto LABEL_18;
   }
 
-  if (((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1) | v16 & 1)
+  if (((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1) | whiteText & 1)
   {
     CGContextSetAlpha(v5, 0.7);
-    if ((((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1) & v16) == 1)
+    if ((((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1) & whiteText) == 1)
     {
       v17 = +[UIColor grayColor];
       v18 = [v17 colorWithAlphaComponent:0.05];
-      v19 = [v18 CGColor];
+      cGColor2 = [v18 CGColor];
 
       v20 = +[UIColor grayColor];
       v21 = [v20 colorWithAlphaComponent:0.11];
-      v22 = [v21 CGColor];
+      cGColor3 = [v21 CGColor];
 
       v23 = +[UIColor grayColor];
       v24 = [v23 colorWithAlphaComponent:0.31];
-      v25 = [v24 CGColor];
+      cGColor4 = [v24 CGColor];
     }
 
     else
     {
-      v19 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha5");
-      v22 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha11");
-      v25 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha31");
+      cGColor2 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha5");
+      cGColor3 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha11");
+      cGColor4 = UIKBGetNamedColor(@"UIKBColorBlack_Alpha31");
     }
 
     v48.origin.x = v7;
@@ -181,7 +181,7 @@
     v50.size.width = v11;
     v50.size.height = v13;
     v33 = CGRectGetHeight(v50);
-    CGContextSetFillColorWithColor(v5, v19);
+    CGContextSetFillColorWithColor(v5, cGColor2);
     v51.size.width = 0.5;
     v51.origin.x = v31;
     v51.origin.y = v32;
@@ -202,7 +202,7 @@
     v54.size.width = v11;
     v54.size.height = v13;
     v36 = CGRectGetHeight(v54);
-    CGContextSetFillColorWithColor(v5, v22);
+    CGContextSetFillColorWithColor(v5, cGColor3);
     v55.size.width = 0.5;
     v55.origin.x = v34;
     v55.origin.y = v35;
@@ -223,7 +223,7 @@
     v58.size.width = v11;
     v58.size.height = v13;
     Height = CGRectGetHeight(v58);
-    CGContextSetFillColorWithColor(v5, v25);
+    CGContextSetFillColorWithColor(v5, cGColor4);
     v40 = 0.5;
 LABEL_18:
     v41 = v37;
@@ -233,25 +233,25 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v29 = [objc_opt_class() leftShadowImage];
-  v30 = [v29 CGImage];
+  leftShadowImage = [objc_opt_class() leftShadowImage];
+  cGImage = [leftShadowImage CGImage];
   v47.origin.x = v7;
   v47.origin.y = v9;
   v47.size.width = v11;
   v47.size.height = v13;
-  CGContextDrawImage(v5, v47, v30);
+  CGContextDrawImage(v5, v47, cGImage);
 
 LABEL_19:
   CGContextRestoreGState(v5);
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    -[UIKeyboardCandidatePocketShadow setDrawsShadow:](self, "setDrawsShadow:", [v4 drawsShadow]);
+    -[UIKeyboardCandidatePocketShadow setDrawsShadow:](self, "setDrawsShadow:", [attributesCopy drawsShadow]);
   }
 }
 

@@ -2,7 +2,7 @@
 - (SharedTripCapabilityBadgeView)init;
 - (void)_setAccessibilityIdentifier;
 - (void)_updateImage;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SharedTripCapabilityBadgeView
@@ -27,16 +27,16 @@
 
 - (void)_updateImage
 {
-  v3 = [(SharedTripCapabilityBadgeView *)self traitCollection];
-  [v3 userInterfaceIdiom];
+  traitCollection = [(SharedTripCapabilityBadgeView *)self traitCollection];
+  [traitCollection userInterfaceIdiom];
 
   UIRoundToViewScale();
   [(NSLayoutConstraint *)self->_heightConstraint setConstant:?];
   capabilityType = self->_capabilityType;
   if (capabilityType - 2 < 2)
   {
-    v5 = [(SharedTripCapabilityBadgeView *)self traitCollection];
-    [v5 displayScale];
+    traitCollection2 = [(SharedTripCapabilityBadgeView *)self traitCollection];
+    [traitCollection2 displayScale];
     v6 = @"com.apple.MobileSMS";
 LABEL_5:
     v8 = [UIImage _applicationIconImageForBundleIdentifier:v6 format:0 scale:?];
@@ -47,8 +47,8 @@ LABEL_5:
   if (capabilityType == 4)
   {
     v7 = MapsAppBundleId;
-    v5 = [(SharedTripCapabilityBadgeView *)self traitCollection];
-    [v5 displayScale];
+    traitCollection2 = [(SharedTripCapabilityBadgeView *)self traitCollection];
+    [traitCollection2 displayScale];
     v6 = v7;
     goto LABEL_5;
   }
@@ -60,21 +60,21 @@ LABEL_7:
   [(SharedTripCapabilityBadgeView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = SharedTripCapabilityBadgeView;
-  [(SharedTripCapabilityBadgeView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(SharedTripCapabilityBadgeView *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
-  if (v6 == [v4 userInterfaceIdiom])
+  [(SharedTripCapabilityBadgeView *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SharedTripCapabilityBadgeView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  if (userInterfaceIdiom == [changeCopy userInterfaceIdiom])
   {
-    v7 = [(SharedTripCapabilityBadgeView *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
-    v9 = [v4 userInterfaceStyle];
+    traitCollection2 = [(SharedTripCapabilityBadgeView *)self traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
+    userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-    if (v8 == v9)
+    if (userInterfaceStyle == userInterfaceStyle2)
     {
       goto LABEL_6;
     }
@@ -95,12 +95,12 @@ LABEL_6:
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v5 = [(SharedTripCapabilityBadgeView *)&v27 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v7 = v5;
-  if (v5)
+  height = [(SharedTripCapabilityBadgeView *)&v27 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v7 = height;
+  if (height)
   {
     LODWORD(v6) = 1144750080;
-    [(SharedTripCapabilityBadgeView *)v5 setContentCompressionResistancePriority:1 forAxis:v6];
+    [(SharedTripCapabilityBadgeView *)height setContentCompressionResistancePriority:1 forAxis:v6];
     LODWORD(v8) = 1144750080;
     [(SharedTripCapabilityBadgeView *)v7 setContentCompressionResistancePriority:0 forAxis:v8];
     LODWORD(v9) = 1148846080;
@@ -108,15 +108,15 @@ LABEL_6:
     LODWORD(v10) = 1148846080;
     [(SharedTripCapabilityBadgeView *)v7 setContentHuggingPriority:1 forAxis:v10];
     v7->_capabilityType = 0;
-    v11 = [[AutolayoutImageView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[AutolayoutImageView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     imageView = v7->_imageView;
-    v7->_imageView = &v11->super;
+    v7->_imageView = &height2->super;
 
     [(UIImageView *)v7->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v7->_imageView setContentMode:1];
     [(SharedTripCapabilityBadgeView *)v7 addSubview:v7->_imageView];
-    v13 = [(SharedTripCapabilityBadgeView *)v7 heightAnchor];
-    v14 = [v13 constraintEqualToConstant:22.0];
+    heightAnchor = [(SharedTripCapabilityBadgeView *)v7 heightAnchor];
+    v14 = [heightAnchor constraintEqualToConstant:22.0];
     heightConstraint = v7->_heightConstraint;
     v7->_heightConstraint = v14;
 
@@ -126,23 +126,23 @@ LABEL_6:
     [v16 addObjectsFromArray:v17];
 
     [NSLayoutConstraint activateConstraints:v16];
-    v18 = [(SharedTripCapabilityBadgeView *)v7 layer];
-    [v18 setMasksToBounds:0];
+    layer = [(SharedTripCapabilityBadgeView *)v7 layer];
+    [layer setMasksToBounds:0];
 
-    v19 = [(SharedTripCapabilityBadgeView *)v7 layer];
-    [v19 setShadowOffset:{0.0, 2.0}];
+    layer2 = [(SharedTripCapabilityBadgeView *)v7 layer];
+    [layer2 setShadowOffset:{0.0, 2.0}];
 
     v20 = +[UIColor systemBlackColor];
-    v21 = [v20 CGColor];
-    v22 = [(SharedTripCapabilityBadgeView *)v7 layer];
-    [v22 setShadowColor:v21];
+    cGColor = [v20 CGColor];
+    layer3 = [(SharedTripCapabilityBadgeView *)v7 layer];
+    [layer3 setShadowColor:cGColor];
 
-    v23 = [(SharedTripCapabilityBadgeView *)v7 layer];
+    layer4 = [(SharedTripCapabilityBadgeView *)v7 layer];
     LODWORD(v24) = 1036831949;
-    [v23 setShadowOpacity:v24];
+    [layer4 setShadowOpacity:v24];
 
-    v25 = [(SharedTripCapabilityBadgeView *)v7 layer];
-    [v25 setShadowRadius:5.0];
+    layer5 = [(SharedTripCapabilityBadgeView *)v7 layer];
+    [layer5 setShadowRadius:5.0];
 
     [(SharedTripCapabilityBadgeView *)v7 _updateImage];
   }

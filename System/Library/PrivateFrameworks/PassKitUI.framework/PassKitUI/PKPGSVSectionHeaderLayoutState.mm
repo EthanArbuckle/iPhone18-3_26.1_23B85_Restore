@@ -1,16 +1,16 @@
 @interface PKPGSVSectionHeaderLayoutState
-- (void)initWithContext:(void *)a1;
+- (void)initWithContext:(void *)context;
 @end
 
 @implementation PKPGSVSectionHeaderLayoutState
 
-- (void)initWithContext:(void *)a1
+- (void)initWithContext:(void *)context
 {
   v4 = a2;
   v5 = v4;
-  if (a1 && v4)
+  if (context && v4)
   {
-    v14.receiver = a1;
+    v14.receiver = context;
     v14.super_class = PKPGSVSectionHeaderLayoutState;
     v6 = objc_msgSendSuper2(&v14, sel_init);
     v7 = v6;
@@ -27,16 +27,16 @@
       }
     }
 
-    a1 = v7;
-    v12 = a1;
+    context = v7;
+    contextCopy = context;
   }
 
   else
   {
-    v12 = 0;
+    contextCopy = 0;
   }
 
-  return v12;
+  return contextCopy;
 }
 
 PKPGSVSectionSubheaderLayoutState *__50__PKPGSVSectionHeaderLayoutState_initWithContext___block_invoke(uint64_t a1, void *a2)

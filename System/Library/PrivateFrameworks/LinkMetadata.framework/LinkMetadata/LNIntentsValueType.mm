@@ -16,14 +16,14 @@
 + (LNIntentsValueType)timerValueType;
 + (id)objectClassesForCoding;
 + (id)supportedClassesByTypeIdentifier;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)objectClass;
-- (LNIntentsValueType)initWithCoder:(id)a3;
-- (LNIntentsValueType)initWithTypeIdentifier:(int64_t)a3 contentType:(id)a4;
+- (LNIntentsValueType)initWithCoder:(id)coder;
+- (LNIntentsValueType)initWithTypeIdentifier:(int64_t)identifier contentType:(id)type;
 - (NSString)typeIdentifierAsString;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNIntentsValueType
@@ -135,10 +135,10 @@ uint64_t __42__LNIntentsValueType_applicationValueType__block_invoke()
 
 + (id)objectClassesForCoding
 {
-  v2 = [a1 supportedClassesByTypeIdentifier];
-  v3 = [v2 allValues];
+  supportedClassesByTypeIdentifier = [self supportedClassesByTypeIdentifier];
+  allValues = [supportedClassesByTypeIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 + (id)supportedClassesByTypeIdentifier
@@ -182,24 +182,24 @@ uint64_t __42__LNIntentsValueType_applicationValueType__block_invoke()
 
 - (Class)objectClass
 {
-  v3 = [objc_opt_class() supportedClassesByTypeIdentifier];
+  supportedClassesByTypeIdentifier = [objc_opt_class() supportedClassesByTypeIdentifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[LNIntentsValueType typeIdentifier](self, "typeIdentifier")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [supportedClassesByTypeIdentifier objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -216,28 +216,28 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(LNIntentsValueType *)self typeIdentifier];
-  v8 = v7 == [(LNIntentsValueType *)v6 typeIdentifier];
+  typeIdentifier = [(LNIntentsValueType *)self typeIdentifier];
+  v8 = typeIdentifier == [(LNIntentsValueType *)v6 typeIdentifier];
 LABEL_8:
 
 LABEL_10:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = LNIntentsValueType;
-  v4 = a3;
-  [(LNValueType *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[LNIntentsValueType typeIdentifier](self forKey:{"typeIdentifier", v5.receiver, v5.super_class), @"typeIdentifier"}];
+  coderCopy = coder;
+  [(LNValueType *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[LNIntentsValueType typeIdentifier](self forKey:{"typeIdentifier", v5.receiver, v5.super_class), @"typeIdentifier"}];
 }
 
-- (LNIntentsValueType)initWithCoder:(id)a3
+- (LNIntentsValueType)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
-  v6 = [v4 decodeIntegerForKey:@"typeIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
+  v6 = [coderCopy decodeIntegerForKey:@"typeIdentifier"];
 
   v7 = [(LNIntentsValueType *)self initWithTypeIdentifier:v6 contentType:v5];
   return v7;
@@ -245,41 +245,41 @@ LABEL_10:
 
 - (id)description
 {
-  v2 = [(LNIntentsValueType *)self typeIdentifier];
-  if ((v2 - 1) > 0xD)
+  typeIdentifier = [(LNIntentsValueType *)self typeIdentifier];
+  if ((typeIdentifier - 1) > 0xD)
   {
     return @"Application";
   }
 
   else
   {
-    return off_1E72B0DE8[v2 - 1];
+    return off_1E72B0DE8[typeIdentifier - 1];
   }
 }
 
 - (NSString)typeIdentifierAsString
 {
-  v2 = [(LNIntentsValueType *)self typeIdentifier];
-  if ((v2 - 1) > 0xD)
+  typeIdentifier = [(LNIntentsValueType *)self typeIdentifier];
+  if ((typeIdentifier - 1) > 0xD)
   {
     return @"Application";
   }
 
   else
   {
-    return &off_1E72B0DE8[v2 - 1]->isa;
+    return &off_1E72B0DE8[typeIdentifier - 1]->isa;
   }
 }
 
-- (LNIntentsValueType)initWithTypeIdentifier:(int64_t)a3 contentType:(id)a4
+- (LNIntentsValueType)initWithTypeIdentifier:(int64_t)identifier contentType:(id)type
 {
   v9.receiver = self;
   v9.super_class = LNIntentsValueType;
-  v5 = [(LNValueType *)&v9 initWithContentType:a4];
+  v5 = [(LNValueType *)&v9 initWithContentType:type];
   v6 = v5;
   if (v5)
   {
-    v5->_typeIdentifier = a3;
+    v5->_typeIdentifier = identifier;
     v7 = v5;
   }
 

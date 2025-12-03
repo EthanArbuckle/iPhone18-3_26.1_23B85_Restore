@@ -1,8 +1,8 @@
 @interface BatchedMapEntry
 + (id)descriptor;
 - (id)diagnosticsJsonDictionary;
-- (unint64_t)verifyWithError:(id *)a3;
-- (void)setMetadataValue:(id)a3 key:(id)a4;
+- (unint64_t)verifyWithError:(id *)error;
+- (void)setMetadataValue:(id)value key:(id)key;
 @end
 
 @implementation BatchedMapEntry
@@ -21,21 +21,21 @@
   return v2;
 }
 
-- (void)setMetadataValue:(id)a3 key:(id)a4
+- (void)setMetadataValue:(id)value key:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  if (valueCopy)
   {
-    v7 = [(BatchedMapEntry *)self metadata];
-    v8 = [v7 mutableCopy];
+    metadata = [(BatchedMapEntry *)self metadata];
+    v8 = [metadata mutableCopy];
 
     if (!v8)
     {
       v8 = objc_alloc_init(NSMutableDictionary);
     }
 
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    [v8 setObject:valueCopy forKeyedSubscript:keyCopy];
     [(BatchedMapEntry *)self setMetadata:v8];
   }
 }
@@ -43,21 +43,21 @@
 - (id)diagnosticsJsonDictionary
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(BatchedMapEntry *)self index];
-  v5 = [v4 kt_hexString];
-  [v3 setObject:v5 forKeyedSubscript:@"index"];
+  index = [(BatchedMapEntry *)self index];
+  kt_hexString = [index kt_hexString];
+  [v3 setObject:kt_hexString forKeyedSubscript:@"index"];
 
-  v6 = [(BatchedMapEntry *)self mapLeaf];
-  v7 = [v6 kt_hexString];
-  [v3 setObject:v7 forKeyedSubscript:@"mapLeaf"];
+  mapLeaf = [(BatchedMapEntry *)self mapLeaf];
+  kt_hexString2 = [mapLeaf kt_hexString];
+  [v3 setObject:kt_hexString2 forKeyedSubscript:@"mapLeaf"];
 
   v8 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(BatchedMapEntry *)self hashesOfPeersInPathToRootArray];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  hashesOfPeersInPathToRootArray = [(BatchedMapEntry *)self hashesOfPeersInPathToRootArray];
+  v10 = [hashesOfPeersInPathToRootArray countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -68,14 +68,14 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(hashesOfPeersInPathToRootArray);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) kt_hexString];
-        [v8 addObject:v14];
+        kt_hexString3 = [*(*(&v16 + 1) + 8 * i) kt_hexString];
+        [v8 addObject:kt_hexString3];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [hashesOfPeersInPathToRootArray countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -86,13 +86,13 @@
   return v3;
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
-  v5 = [(BatchedMapEntry *)self mapLeaf];
-  if (!v5 || (v6 = v5, -[BatchedMapEntry mapLeaf](self, "mapLeaf"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, !v8))
+  mapLeaf = [(BatchedMapEntry *)self mapLeaf];
+  if (!mapLeaf || (v6 = mapLeaf, -[BatchedMapEntry mapLeaf](self, "mapLeaf"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, !v8))
   {
     v22 = -16;
-    if (!a3)
+    if (!error)
     {
 LABEL_9:
       if (qword_10039CA98 != -1)
@@ -115,15 +115,15 @@ LABEL_9:
     }
 
 LABEL_8:
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v22 description:@"map entry data required for verification"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v22 description:@"map entry data required for verification"];
     goto LABEL_9;
   }
 
-  v9 = [(BatchedMapEntry *)self hashesOfPeersInPathToRootArray];
-  if (!v9 || (v10 = v9, v11 = [(BatchedMapEntry *)self hashesOfPeersInPathToRootArray_Count], v10, !v11))
+  hashesOfPeersInPathToRootArray = [(BatchedMapEntry *)self hashesOfPeersInPathToRootArray];
+  if (!hashesOfPeersInPathToRootArray || (v10 = hashesOfPeersInPathToRootArray, v11 = [(BatchedMapEntry *)self hashesOfPeersInPathToRootArray_Count], v10, !v11))
   {
     v22 = -17;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -131,27 +131,27 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v12 = [(BatchedMapEntry *)self verifier];
-  v13 = [(BatchedMapEntry *)self mapLeaf];
-  v29 = [(BatchedMapEntry *)self verifier];
-  v14 = [v29 entryPosition];
+  verifier = [(BatchedMapEntry *)self verifier];
+  mapLeaf2 = [(BatchedMapEntry *)self mapLeaf];
+  verifier2 = [(BatchedMapEntry *)self verifier];
+  entryPosition = [verifier2 entryPosition];
   v28 = [(BatchedMapEntry *)self smh];
-  v15 = [v28 parsedMapHead];
-  v16 = [v15 mapHeadHash];
+  parsedMapHead = [v28 parsedMapHead];
+  mapHeadHash = [parsedMapHead mapHeadHash];
   v17 = [(BatchedMapEntry *)self smh];
-  v18 = [v17 parsedMapHead];
-  v19 = [v18 treeId];
-  v20 = [(BatchedMapEntry *)self hashesOfPeersInPathToRootArray];
-  LOBYTE(v19) = [v12 verifyInclusionOfMapLeaf:v13 position:v14 treeHead:v16 treeId:v19 hashPath:v20 error:a3];
+  parsedMapHead2 = [v17 parsedMapHead];
+  treeId = [parsedMapHead2 treeId];
+  hashesOfPeersInPathToRootArray2 = [(BatchedMapEntry *)self hashesOfPeersInPathToRootArray];
+  LOBYTE(treeId) = [verifier verifyInclusionOfMapLeaf:mapLeaf2 position:entryPosition treeHead:mapHeadHash treeId:treeId hashPath:hashesOfPeersInPathToRootArray2 error:error];
 
-  if (v19)
+  if (treeId)
   {
     return 1;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-43 underlyingError:*a3 description:@"failed to verify inclusion proof for map leaf in mapHeadHash"];
+    *error = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-43 underlyingError:*error description:@"failed to verify inclusion proof for map leaf in mapHeadHash"];
   }
 
   if (qword_10039CA98 != -1)

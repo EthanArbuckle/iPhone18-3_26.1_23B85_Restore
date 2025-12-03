@@ -2,16 +2,16 @@
 + (BOOL)afterFirstUnlock;
 + (id)strictStore;
 - (NSString)accountMetricID;
-- (void)forceSync:(id)a3;
-- (void)handleKVSStoreChange:(id)a3;
-- (void)processChangedKeys:(id)a3;
+- (void)forceSync:(id)sync;
+- (void)handleKVSStoreChange:(id)change;
+- (void)processChangedKeys:(id)keys;
 @end
 
 @implementation KTKVSStore
 
-- (void)processChangedKeys:(id)a3
+- (void)processChangedKeys:(id)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -33,7 +33,7 @@
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = [KTOptInManagerServer optInKeyForApplication:v9, v13];
-        if ([v3 containsObject:v10])
+        if ([keysCopy containsObject:v10])
         {
           v11 = [KTOptInManagerServer notificationKeyForApplication:v9];
           if (v11)
@@ -51,22 +51,22 @@
   }
 }
 
-- (void)handleKVSStoreChange:(id)a3
+- (void)handleKVSStoreChange:(id)change
 {
-  v9 = [a3 userInfo];
-  v4 = [v9 objectForKey:NSUbiquitousKeyValueStoreChangeReasonKey];
-  v5 = [v9 objectForKey:NSUbiquitousKeyValueStoreChangedKeysKey];
-  v6 = [v4 integerValue];
-  if (v6 < 2)
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangeReasonKey];
+  v5 = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangedKeysKey];
+  integerValue = [v4 integerValue];
+  if (integerValue < 2)
   {
 LABEL_4:
     [(KTKVSStore *)self processChangedKeys:v5];
     goto LABEL_6;
   }
 
-  if (v6 != 2)
+  if (integerValue != 2)
   {
-    if (v6 != 3)
+    if (integerValue != 3)
     {
       goto LABEL_6;
     }
@@ -122,18 +122,18 @@ LABEL_6:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v4 = +[NSUUID UUID];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
 
-    [(KTKVSStore *)self setObject:v5 forKey:@"accountMetricID"];
-    v3 = v5;
+    [(KTKVSStore *)self setObject:uUIDString forKey:@"accountMetricID"];
+    v3 = uUIDString;
   }
 
   return v3;
 }
 
-- (void)forceSync:(id)a3
+- (void)forceSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   if (qword_10039CB80 != -1)
   {
     sub_10025D734();
@@ -150,8 +150,8 @@ LABEL_6:
   v7[1] = 3221225472;
   v7[2] = sub_1001F74E4;
   v7[3] = &unk_10031A768;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   [(KTKVSStore *)self synchronizeWithCompletionHandler:v7];
 }
 

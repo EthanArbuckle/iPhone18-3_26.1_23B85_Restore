@@ -1,30 +1,30 @@
 @interface MFFragmentedMessage
-- (void)initWithUIDAndSize:(void *)a3 mainFile:(void *)a4 existingParts:;
+- (void)initWithUIDAndSize:(void *)size mainFile:(void *)file existingParts:;
 @end
 
 @implementation MFFragmentedMessage
 
-- (void)initWithUIDAndSize:(void *)a3 mainFile:(void *)a4 existingParts:
+- (void)initWithUIDAndSize:(void *)size mainFile:(void *)file existingParts:
 {
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  sizeCopy = size;
+  fileCopy = file;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = MFFragmentedMessage;
     v10 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       v12 = *a2;
       *(v10 + 5) = *(a2 + 2);
       *(v10 + 24) = v12;
-      objc_storeStrong(v10 + 1, a3);
-      -[MFFragmentedMessage initWithUIDAndSize:mainFile:existingParts:].cold.1([v9 copy], a1);
+      objc_storeStrong(v10 + 1, size);
+      -[MFFragmentedMessage initWithUIDAndSize:mainFile:existingParts:].cold.1([fileCopy copy], self);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)initWithUIDAndSize:(void *)a1 mainFile:(uint64_t)a2 existingParts:.cold.1(void *a1, uint64_t a2)

@@ -1,20 +1,20 @@
 @interface CarDataChannel
-- (CarDataChannel)initWithChannel:(id)a3 priority:(unint64_t)a4;
+- (CarDataChannel)initWithChannel:(id)channel priority:(unint64_t)priority;
 - (CarDataChannelDelegate)channelDelegate;
 - (NSString)description;
 - (void)_startConnection;
 - (void)_stopConnection;
-- (void)channel:(id)a3 didReceiveMessage:(id)a4;
-- (void)didCloseChannel:(id)a3;
+- (void)channel:(id)channel didReceiveMessage:(id)message;
+- (void)didCloseChannel:(id)channel;
 - (void)invalidate;
-- (void)sendToPluginID:(id)a3 payload:(id)a4 withCompletion:(id)a5;
+- (void)sendToPluginID:(id)d payload:(id)payload withCompletion:(id)completion;
 @end
 
 @implementation CarDataChannel
 
-- (CarDataChannel)initWithChannel:(id)a3 priority:(unint64_t)a4
+- (CarDataChannel)initWithChannel:(id)channel priority:(unint64_t)priority
 {
-  v7 = a3;
+  channelCopy = channel;
   v16.receiver = self;
   v16.super_class = CarDataChannel;
   v8 = [(CarDataChannel *)&v16 init];
@@ -32,32 +32,32 @@
     v8->_inputQueue = v13;
 
     v8->_isOpened = 0;
-    v8->_priority = a4;
-    objc_storeStrong(&v8->_channel, a3);
+    v8->_priority = priority;
+    objc_storeStrong(&v8->_channel, channel);
     [(CARSessionChannelProviding *)v8->_channel setChannelDelegate:v8];
   }
 
   return v8;
 }
 
-- (void)sendToPluginID:(id)a3 payload:(id)a4 withCompletion:(id)a5
+- (void)sendToPluginID:(id)d payload:(id)payload withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CarDataChannel *)self outputQueue];
+  dCopy = d;
+  payloadCopy = payload;
+  completionCopy = completion;
+  outputQueue = [(CarDataChannel *)self outputQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __56__CarDataChannel_sendToPluginID_payload_withCompletion___block_invoke;
   v15[3] = &unk_1000555D0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = payloadCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = payloadCopy;
+  v14 = dCopy;
+  dispatch_async(outputQueue, v15);
 }
 
 void __56__CarDataChannel_sendToPluginID_payload_withCompletion___block_invoke(uint64_t a1)
@@ -108,7 +108,7 @@ void __56__CarDataChannel_sendToPluginID_payload_withCompletion___block_invoke(u
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CarDataChannel *)self priority];
+  priority = [(CarDataChannel *)self priority];
   if ([(CarDataChannel *)self isOpened])
   {
     v6 = @"YES";
@@ -119,9 +119,9 @@ void __56__CarDataChannel_sendToPluginID_payload_withCompletion___block_invoke(u
     v6 = @"NO";
   }
 
-  v7 = [(CarDataChannel *)self channel];
-  v8 = [(CarDataChannel *)self channel];
-  if ([v8 isOpened])
+  channel = [(CarDataChannel *)self channel];
+  channel2 = [(CarDataChannel *)self channel];
+  if ([channel2 isOpened])
   {
     v9 = @"YES";
   }
@@ -131,7 +131,7 @@ void __56__CarDataChannel_sendToPluginID_payload_withCompletion___block_invoke(u
     v9 = @"NO";
   }
 
-  v10 = [NSString stringWithFormat:@"<%@: %p priority=%lu isOpened=%@ channel=%p channel.isOpened=%@>", v4, self, v5, v6, v7, v9];
+  v10 = [NSString stringWithFormat:@"<%@: %p priority=%lu isOpened=%@ channel=%p channel.isOpened=%@>", v4, self, priority, v6, channel, v9];
 
   return v10;
 }
@@ -145,13 +145,13 @@ void __56__CarDataChannel_sendToPluginID_payload_withCompletion___block_invoke(u
 
 - (void)_startConnection
 {
-  v3 = [(CarDataChannel *)self inputQueue];
+  inputQueue = [(CarDataChannel *)self inputQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __34__CarDataChannel__startConnection__block_invoke;
   block[3] = &unk_100055470;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(inputQueue, block);
 }
 
 void __34__CarDataChannel__startConnection__block_invoke(uint64_t a1)
@@ -217,13 +217,13 @@ void __34__CarDataChannel__startConnection__block_invoke_38(uint64_t a1)
   }
 
   [(CarDataChannel *)self setIsOpened:0];
-  v10 = [(CarDataChannel *)self inputQueue];
+  inputQueue = [(CarDataChannel *)self inputQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __33__CarDataChannel__stopConnection__block_invoke;
   block[3] = &unk_100055470;
   block[4] = self;
-  dispatch_sync(v10, block);
+  dispatch_sync(inputQueue, block);
 }
 
 id __33__CarDataChannel__stopConnection__block_invoke(uint64_t a1)
@@ -246,18 +246,18 @@ id __33__CarDataChannel__stopConnection__block_invoke(uint64_t a1)
   return [*(a1 + 32) setReconnectTimer:0];
 }
 
-- (void)channel:(id)a3 didReceiveMessage:(id)a4
+- (void)channel:(id)channel didReceiveMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(CarDataChannel *)self inputQueue];
+  messageCopy = message;
+  inputQueue = [(CarDataChannel *)self inputQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __44__CarDataChannel_channel_didReceiveMessage___block_invoke;
   v8[3] = &unk_100055368;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = messageCopy;
+  selfCopy = self;
+  v7 = messageCopy;
+  dispatch_async(inputQueue, v8);
 }
 
 void __44__CarDataChannel_channel_didReceiveMessage___block_invoke(uint64_t a1)
@@ -330,7 +330,7 @@ void __44__CarDataChannel_channel_didReceiveMessage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didCloseChannel:(id)a3
+- (void)didCloseChannel:(id)channel
 {
   v4 = CAFDChannelLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -339,13 +339,13 @@ void __44__CarDataChannel_channel_didReceiveMessage___block_invoke(uint64_t a1)
   }
 
   [(CarDataChannel *)self setIsOpened:0];
-  v11 = [(CarDataChannel *)self inputQueue];
+  inputQueue = [(CarDataChannel *)self inputQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __34__CarDataChannel_didCloseChannel___block_invoke;
   block[3] = &unk_100055470;
   block[4] = self;
-  dispatch_async(v11, block);
+  dispatch_async(inputQueue, block);
 }
 
 void __34__CarDataChannel_didCloseChannel___block_invoke(uint64_t a1)

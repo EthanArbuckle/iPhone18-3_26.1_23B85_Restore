@@ -1,16 +1,16 @@
 @interface BWPipelineStage
-+ (BWPipelineStage)pipelineStageWithName:(id)a3 priority:(unsigned int)a4;
-+ (BWPipelineStage)pipelineStageWithName:(id)a3 priority:(unsigned int)a4 discardsLateSampleData:(BOOL)a5;
-+ (BWPipelineStage)pipelineStageWithName:(id)a3 priority:(unsigned int)a4 workgroup:(id)a5;
-+ (BWPipelineStage)pipelineStageWithName:(id)a3 priority:(unsigned int)a4 workgroup:(id)a5 discardsLateSampleData:(BOOL)a6;
-+ (uint64_t)_setCurrentPipelineStage:(uint64_t)a1;
++ (BWPipelineStage)pipelineStageWithName:(id)name priority:(unsigned int)priority;
++ (BWPipelineStage)pipelineStageWithName:(id)name priority:(unsigned int)priority discardsLateSampleData:(BOOL)data;
++ (BWPipelineStage)pipelineStageWithName:(id)name priority:(unsigned int)priority workgroup:(id)workgroup;
++ (BWPipelineStage)pipelineStageWithName:(id)name priority:(unsigned int)priority workgroup:(id)workgroup discardsLateSampleData:(BOOL)data;
++ (uint64_t)_setCurrentPipelineStage:(uint64_t)stage;
 + (void)_currentPipelineStage;
 - (id)_serviceQueuedMessages;
 - (id)description;
-- (void)_initWithName:(int)a3 priority:(OS_os_workgroup *)a4 workgroup:(int)a5 discardsLateSampleData:;
+- (void)_initWithName:(int)name priority:(OS_os_workgroup *)priority workgroup:(int)workgroup discardsLateSampleData:;
 - (void)dealloc;
-- (void)sendMessage:(id)a3 toInput:(id)a4;
-- (void)sendMessagesToInput:(id)a3 messageProvider:(id)a4;
+- (void)sendMessage:(id)message toInput:(id)input;
+- (void)sendMessagesToInput:(id)input messageProvider:(id)provider;
 @end
 
 @implementation BWPipelineStage
@@ -56,9 +56,9 @@
   [(BWPipelineStage *)&v3 dealloc];
 }
 
-+ (BWPipelineStage)pipelineStageWithName:(id)a3 priority:(unsigned int)a4
++ (BWPipelineStage)pipelineStageWithName:(id)name priority:(unsigned int)priority
 {
-  v4 = [[BWPipelineStage alloc] _initWithName:a3 priority:a4 workgroup:0 discardsLateSampleData:0];
+  v4 = [[BWPipelineStage alloc] _initWithName:name priority:priority workgroup:0 discardsLateSampleData:0];
 
   return v4;
 }
@@ -70,9 +70,9 @@
   return [v3 stringWithFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, self->_name];
 }
 
-- (void)sendMessage:(id)a3 toInput:(id)a4
+- (void)sendMessage:(id)message toInput:(id)input
 {
-  if (!a4)
+  if (!input)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -80,7 +80,7 @@
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!message)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -91,26 +91,26 @@ LABEL_16:
 
   if (self && +[BWPipelineStage _currentPipelineStage]== self)
   {
-    [(NSMutableArray *)self->_queuedMessages addObject:a3];
+    [(NSMutableArray *)self->_queuedMessages addObject:message];
     inputsForQueuedMessages = self->_inputsForQueuedMessages;
 
-    [(NSMutableArray *)inputsForQueuedMessages addObject:a4];
+    [(NSMutableArray *)inputsForQueuedMessages addObject:input];
   }
 
-  else if (([BWPipelineStage sendMessage:a3 toInput:self]& 1) != 0)
+  else if (([BWPipelineStage sendMessage:message toInput:self]& 1) != 0)
   {
     v14[0] = 0;
     v14[1] = v14;
     v14[2] = 0x3052000000;
     v14[3] = __Block_byref_object_copy__9;
     v14[4] = __Block_byref_object_dispose__9;
-    v14[5] = a3;
+    v14[5] = message;
     v13[0] = 0;
     v13[1] = v13;
     v13[2] = 0x3052000000;
     v13[3] = __Block_byref_object_copy__9;
     v13[4] = __Block_byref_object_dispose__9;
-    v13[5] = a4;
+    v13[5] = input;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __39__BWPipelineStage_sendMessage_toInput___block_invoke;
@@ -144,9 +144,9 @@ id *__39__BWPipelineStage_sendMessage_toInput___block_invoke(void *a1)
   return [(BWPipelineStage *)v2 _serviceQueuedMessages];
 }
 
-- (void)sendMessagesToInput:(id)a3 messageProvider:(id)a4
+- (void)sendMessagesToInput:(id)input messageProvider:(id)provider
 {
-  if (!a3)
+  if (!input)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -154,7 +154,7 @@ id *__39__BWPipelineStage_sendMessage_toInput___block_invoke(void *a1)
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!provider)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -176,13 +176,13 @@ LABEL_12:
   v12[2] = 0x3052000000;
   v12[3] = __Block_byref_object_copy__9;
   v12[4] = __Block_byref_object_dispose__9;
-  v12[5] = a3;
+  v12[5] = input;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__BWPipelineStage_sendMessagesToInput_messageProvider___block_invoke;
   block[3] = &unk_1E7990C90;
   block[4] = self;
-  block[5] = a4;
+  block[5] = provider;
   block[6] = v12;
   executionGroup = self->_executionGroup;
   if (executionGroup)
@@ -198,7 +198,7 @@ LABEL_12:
   _Block_object_dispose(v12, 8);
 }
 
-+ (uint64_t)_setCurrentPipelineStage:(uint64_t)a1
++ (uint64_t)_setCurrentPipelineStage:(uint64_t)stage
 {
   objc_opt_self();
   if (_getCurrentPipelineStageKey_onceToken != -1)
@@ -211,9 +211,9 @@ LABEL_12:
   return pthread_setspecific(v3, a2);
 }
 
-- (void)_initWithName:(int)a3 priority:(OS_os_workgroup *)a4 workgroup:(int)a5 discardsLateSampleData:
+- (void)_initWithName:(int)name priority:(OS_os_workgroup *)priority workgroup:(int)workgroup discardsLateSampleData:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -224,21 +224,21 @@ LABEL_12:
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = BWPipelineStage;
   v9 = objc_msgSendSuper2(&v14, sel_init);
   if (v9)
   {
     v9[5] = [a2 copy];
-    *(v9 + 12) = a3;
+    *(v9 + 12) = name;
     v10 = [a2 cStringUsingEncoding:4];
     v11 = v10;
-    if (a4)
+    if (priority)
     {
       inactive = dispatch_workloop_create_inactive(v10);
       FigThreadGetMachThreadPriorityValue();
       dispatch_workloop_set_scheduler_priority();
-      dispatch_workloop_set_os_workgroup(inactive, a4);
+      dispatch_workloop_set_os_workgroup(inactive, priority);
       dispatch_activate(inactive);
       v9[1] = dispatch_queue_create_with_target_V2(v11, 0, inactive);
       dispatch_release(inactive);
@@ -251,7 +251,7 @@ LABEL_12:
 
     v9[3] = objc_alloc_init(MEMORY[0x1E695DF70]);
     v9[4] = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a5)
+    if (workgroup)
     {
       v9[2] = dispatch_group_create();
     }
@@ -260,23 +260,23 @@ LABEL_12:
   return v9;
 }
 
-+ (BWPipelineStage)pipelineStageWithName:(id)a3 priority:(unsigned int)a4 discardsLateSampleData:(BOOL)a5
++ (BWPipelineStage)pipelineStageWithName:(id)name priority:(unsigned int)priority discardsLateSampleData:(BOOL)data
 {
-  v5 = [[BWPipelineStage alloc] _initWithName:a3 priority:a4 workgroup:0 discardsLateSampleData:a5];
+  v5 = [[BWPipelineStage alloc] _initWithName:name priority:priority workgroup:0 discardsLateSampleData:data];
 
   return v5;
 }
 
-+ (BWPipelineStage)pipelineStageWithName:(id)a3 priority:(unsigned int)a4 workgroup:(id)a5
++ (BWPipelineStage)pipelineStageWithName:(id)name priority:(unsigned int)priority workgroup:(id)workgroup
 {
-  v5 = [[BWPipelineStage alloc] _initWithName:a3 priority:a4 workgroup:a5 discardsLateSampleData:0];
+  v5 = [[BWPipelineStage alloc] _initWithName:name priority:priority workgroup:workgroup discardsLateSampleData:0];
 
   return v5;
 }
 
-+ (BWPipelineStage)pipelineStageWithName:(id)a3 priority:(unsigned int)a4 workgroup:(id)a5 discardsLateSampleData:(BOOL)a6
++ (BWPipelineStage)pipelineStageWithName:(id)name priority:(unsigned int)priority workgroup:(id)workgroup discardsLateSampleData:(BOOL)data
 {
-  v6 = [[BWPipelineStage alloc] _initWithName:a3 priority:a4 workgroup:a5 discardsLateSampleData:a6];
+  v6 = [[BWPipelineStage alloc] _initWithName:name priority:priority workgroup:workgroup discardsLateSampleData:data];
 
   return v6;
 }

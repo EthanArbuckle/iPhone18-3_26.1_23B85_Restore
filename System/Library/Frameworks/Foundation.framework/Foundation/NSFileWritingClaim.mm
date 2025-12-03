@@ -1,15 +1,15 @@
 @interface NSFileWritingClaim
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4;
-- (NSFileWritingClaim)initWithCoder:(id)a3;
-- (NSFileWritingClaim)initWithPurposeID:(id)a3 url:(id)a4 options:(unint64_t)a5 claimer:(id)a6;
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability;
+- (NSFileWritingClaim)initWithCoder:(id)coder;
+- (NSFileWritingClaim)initWithPurposeID:(id)d url:(id)url options:(unint64_t)options claimer:(id)claimer;
 - (void)dealloc;
 - (void)devalueSelf;
-- (void)encodeWithCoder:(id)a3;
-- (void)forwardUsingConnection:(id)a3 crashHandler:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)forwardUsingConnection:(id)connection crashHandler:(id)handler;
 - (void)granted;
 - (void)invokeClaimer;
-- (void)itemAtLocation:(id)a3 wasReplacedByItemAtLocation:(id)a4;
-- (void)resolveURLsThenContinueInvokingClaimer:(id)a3;
+- (void)itemAtLocation:(id)location wasReplacedByItemAtLocation:(id)atLocation;
+- (void)resolveURLsThenContinueInvokingClaimer:(id)claimer;
 @end
 
 @implementation NSFileWritingClaim
@@ -44,7 +44,7 @@ id __29__NSFileWritingClaim_granted__block_invoke(uint64_t a1, uint64_t a2, uint
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v21 = [(NSFileAccessClaim *)self claimID];
+        claimID = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v4, OS_LOG_TYPE_DEFAULT, "Claim %{public}@ granted in server", buf, 0xCu);
       }
     }
@@ -82,7 +82,7 @@ id __29__NSFileWritingClaim_granted__block_invoke(uint64_t a1, uint64_t a2, uint
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v21 = [(NSFileAccessClaim *)self claimID];
+      claimID = [(NSFileAccessClaim *)self claimID];
       _os_log_error_impl(&dword_18075C000, v9, OS_LOG_TYPE_ERROR, "Claim %{public}@ can't be granted in daemon", buf, 0xCu);
     }
   }
@@ -96,7 +96,7 @@ id __29__NSFileWritingClaim_granted__block_invoke(uint64_t a1, uint64_t a2, uint
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v21 = [(NSFileAccessClaim *)self claimID];
+        claimID = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v11, OS_LOG_TYPE_DEFAULT, "Claim %{public}@ granted in client", buf, 0xCu);
       }
     }
@@ -209,20 +209,20 @@ uint64_t __29__NSFileWritingClaim_granted__block_invoke_4(uint64_t a1)
   return [v2 observeEndOfWriteAtLocation:v3 forAccessClaim:?];
 }
 
-- (NSFileWritingClaim)initWithPurposeID:(id)a3 url:(id)a4 options:(unint64_t)a5 claimer:(id)a6
+- (NSFileWritingClaim)initWithPurposeID:(id)d url:(id)url options:(unint64_t)options claimer:(id)claimer
 {
-  v9 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:a3];
+  v9 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:d];
   if (v9)
   {
-    v9->_url = [a4 copy];
-    v9->_options = a5;
-    v9->super._claimerOrNil = [a6 copy];
+    v9->_url = [url copy];
+    v9->_options = options;
+    v9->super._claimerOrNil = [claimer copy];
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -230,14 +230,14 @@ uint64_t __29__NSFileWritingClaim_granted__block_invoke_4(uint64_t a1)
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_url), @"NSURLPairKey"}];
-  [a3 encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_options), @"NSURLOptionsKey"}];
+  [coder encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_url), @"NSURLPairKey"}];
+  [coder encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_options), @"NSURLOptionsKey"}];
   v5.receiver = self;
   v5.super_class = NSFileWritingClaim;
-  [(NSFileAccessClaim *)&v5 encodeWithCoder:a3];
+  [(NSFileAccessClaim *)&v5 encodeWithCoder:coder];
 }
 
-- (NSFileWritingClaim)initWithCoder:(id)a3
+- (NSFileWritingClaim)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -251,21 +251,21 @@ uint64_t __29__NSFileWritingClaim_granted__block_invoke_4(uint64_t a1)
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be decoded by XPC" userInfo:0]);
     }
 
-    v4->_url = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSURLPairKey", "URL"}];
-    v4->_options = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSURLOptionsKey", "unsignedIntegerValue"}];
+    v4->_url = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSURLPairKey", "URL"}];
+    v4->_options = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSURLOptionsKey", "unsignedIntegerValue"}];
   }
 
   return v4;
 }
 
-- (void)forwardUsingConnection:(id)a3 crashHandler:(id)a4
+- (void)forwardUsingConnection:(id)connection crashHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = _NSFCClaimsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v12 = [(NSFileAccessClaim *)self claimID];
+    claimID = [(NSFileAccessClaim *)self claimID];
     _os_log_debug_impl(&dword_18075C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ blocked pending grantAccessClaim", buf, 0xCu);
   }
 
@@ -275,8 +275,8 @@ uint64_t __29__NSFileWritingClaim_granted__block_invoke_4(uint64_t a1)
   v10[2] = __58__NSFileWritingClaim_forwardUsingConnection_crashHandler___block_invoke;
   v10[3] = &unk_1E69F61A0;
   v10[4] = self;
-  v10[5] = a4;
-  v8 = [a3 remoteObjectProxyWithErrorHandler:v10];
+  v10[5] = handler;
+  v8 = [connection remoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__NSFileWritingClaim_forwardUsingConnection_crashHandler___block_invoke_387;
@@ -358,11 +358,11 @@ LABEL_3:
   return [*(a1 + 32) unblock];
 }
 
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability
 {
-  v4 = a4;
+  subarbitrabilityCopy = subarbitrability;
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 descendantForFileURL:self->_url];
+  v6 = [node descendantForFileURL:self->_url];
   if (!v6)
   {
     return 1;
@@ -370,7 +370,7 @@ LABEL_3:
 
   v7 = v6;
   v12 = 0;
-  if (v4 && ![(NSFileAccessNode *)v6 itemIsSubarbitrable])
+  if (subarbitrabilityCopy && ![(NSFileAccessNode *)v6 itemIsSubarbitrable])
   {
     v9 = 0;
   }
@@ -426,15 +426,15 @@ uint64_t __29__NSFileWritingClaim_granted__block_invoke_3(uint64_t a1, int a2)
   return [v3 makeObjectsPerformSelector:*v2];
 }
 
-- (void)resolveURLsThenContinueInvokingClaimer:(id)a3
+- (void)resolveURLsThenContinueInvokingClaimer:(id)claimer
 {
   v11[6] = *MEMORY[0x1E69E9840];
   if ([(NSFileAccessClaim *)self didWait])
   {
-    v5 = [(NSFileAccessNode *)self->_location standardizedURL];
-    if (v5)
+    standardizedURL = [(NSFileAccessNode *)self->_location standardizedURL];
+    if (standardizedURL)
     {
-      v6 = v5;
+      v6 = standardizedURL;
 
       self->_url = [v6 copy];
       self->_urlDidChange = 1;
@@ -443,23 +443,23 @@ uint64_t __29__NSFileWritingClaim_granted__block_invoke_3(uint64_t a1, int a2)
 
   if ([(NSFileAccessClaim *)self claimerError])
   {
-    v7 = *(a3 + 2);
+    v7 = *(claimer + 2);
 
-    v7(a3, 0);
+    v7(claimer, 0);
   }
 
   else
   {
     location = self->_location;
-    v9 = [(NSFileAccessClaim *)self purposeID];
+    purposeID = [(NSFileAccessClaim *)self purposeID];
     options = self->_options;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __61__NSFileWritingClaim_resolveURLsThenContinueInvokingClaimer___block_invoke;
     v11[3] = &unk_1E69F8528;
     v11[4] = self;
-    v11[5] = a3;
-    [(NSFileAccessClaim *)self makeProviderOfItemAtLocation:location provideOrAttachPhysicalURLIfNecessaryForPurposeID:v9 writingOptions:options thenContinue:v11];
+    v11[5] = claimer;
+    [(NSFileAccessClaim *)self makeProviderOfItemAtLocation:location provideOrAttachPhysicalURLIfNecessaryForPurposeID:purposeID writingOptions:options thenContinue:v11];
   }
 }
 
@@ -483,13 +483,13 @@ uint64_t __61__NSFileWritingClaim_resolveURLsThenContinueInvokingClaimer___block
   return (*(v3 + 16))(v3, a2);
 }
 
-- (void)itemAtLocation:(id)a3 wasReplacedByItemAtLocation:(id)a4
+- (void)itemAtLocation:(id)location wasReplacedByItemAtLocation:(id)atLocation
 {
-  if (self->_location == a3)
+  if (self->_location == location)
   {
-    [a4 addAccessClaim:self];
-    [a3 removeAccessClaim:self];
-    self->_location = a4;
+    [atLocation addAccessClaim:self];
+    [location removeAccessClaim:self];
+    self->_location = atLocation;
   }
 }
 

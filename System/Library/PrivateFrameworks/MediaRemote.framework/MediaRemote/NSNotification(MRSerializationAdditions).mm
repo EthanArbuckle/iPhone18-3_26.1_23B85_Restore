@@ -10,40 +10,40 @@
 
 - (id)playerPath
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"kMRNowPlayingPlayerPathUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"kMRNowPlayingPlayerPathUserInfoKey"];
 
   return v2;
 }
 
 - (id)mr_origin
 {
-  v1 = [a1 userInfo];
-  v2 = MRGetOriginFromUserInfo(v1);
+  userInfo = [self userInfo];
+  v2 = MRGetOriginFromUserInfo(userInfo);
 
   return v2;
 }
 
 - (id)mr_playbackQueue
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"kMRPlaybackQueueUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"kMRPlaybackQueueUserInfoKey"];
 
   return v2;
 }
 
 - (id)mr_deviceInfo
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"kMRPairedDeviceUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"kMRPairedDeviceUserInfoKey"];
 
   return v2;
 }
 
 - (id)mr_previousDeviceInfo
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"kMRPreviousPairedDeviceUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"kMRPreviousPairedDeviceUserInfoKey"];
 
   return v2;
 }

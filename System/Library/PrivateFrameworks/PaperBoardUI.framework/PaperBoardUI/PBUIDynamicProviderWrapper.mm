@@ -1,14 +1,14 @@
 @interface PBUIDynamicProviderWrapper
-- (PBUIDynamicProviderWrapper)initWithRootObject:(id)a3 portalProvider:(id)a4 snapshotProvider:(id)a5;
+- (PBUIDynamicProviderWrapper)initWithRootObject:(id)object portalProvider:(id)provider snapshotProvider:(id)snapshotProvider;
 - (id)_portalProvider;
 - (id)_snapshotProvider;
-- (id)portalSourceForReplicaView:(id)a3;
-- (id)registerPortalSourceObserver:(id)a3;
-- (id)registerSnapshotSourceObserver:(id)a3;
-- (id)snapshotSourceForObserver:(id)a3;
+- (id)portalSourceForReplicaView:(id)view;
+- (id)registerPortalSourceObserver:(id)observer;
+- (id)registerSnapshotSourceObserver:(id)observer;
+- (id)snapshotSourceForObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setRootObject:(id)a3;
+- (void)setRootObject:(id)object;
 @end
 
 @implementation PBUIDynamicProviderWrapper
@@ -33,23 +33,23 @@
   return makeSnapshotProvider;
 }
 
-- (PBUIDynamicProviderWrapper)initWithRootObject:(id)a3 portalProvider:(id)a4 snapshotProvider:(id)a5
+- (PBUIDynamicProviderWrapper)initWithRootObject:(id)object portalProvider:(id)provider snapshotProvider:(id)snapshotProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  providerCopy = provider;
+  snapshotProviderCopy = snapshotProvider;
   v23.receiver = self;
   v23.super_class = PBUIDynamicProviderWrapper;
   v12 = [(PBUIDynamicProviderWrapper *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_rootObject, a3);
-    v14 = MEMORY[0x223D62EE0](v10);
+    objc_storeStrong(&v12->_rootObject, object);
+    v14 = MEMORY[0x223D62EE0](providerCopy);
     makePortalProvider = v13->_makePortalProvider;
     v13->_makePortalProvider = v14;
 
-    v16 = MEMORY[0x223D62EE0](v11);
+    v16 = MEMORY[0x223D62EE0](snapshotProviderCopy);
     makeSnapshotProvider = v13->_makeSnapshotProvider;
     v13->_makeSnapshotProvider = v16;
 
@@ -73,18 +73,18 @@
   [(PBUIDynamicProviderWrapper *)&v3 dealloc];
 }
 
-- (void)setRootObject:(id)a3
+- (void)setRootObject:(id)object
 {
-  v13 = a3;
+  objectCopy = object;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_rootObject, a3);
+    objc_storeStrong(&self->_rootObject, object);
     portalObserver = self->_portalObserver;
     if (portalObserver)
     {
       [(BSInvalidatable *)portalObserver invalidate];
-      v6 = [(PBUIDynamicProviderWrapper *)self _portalProvider];
-      v7 = [v6 registerPortalSourceObserver:self->_portalObservers];
+      _portalProvider = [(PBUIDynamicProviderWrapper *)self _portalProvider];
+      v7 = [_portalProvider registerPortalSourceObserver:self->_portalObservers];
       v8 = self->_portalObserver;
       self->_portalObserver = v7;
 
@@ -95,8 +95,8 @@
     if (snapshotObserver)
     {
       [(BSInvalidatable *)snapshotObserver invalidate];
-      v10 = [(PBUIDynamicProviderWrapper *)self _snapshotProvider];
-      v11 = [v10 registerSnapshotSourceObserver:self->_snapshotObservers];
+      _snapshotProvider = [(PBUIDynamicProviderWrapper *)self _snapshotProvider];
+      v11 = [_snapshotProvider registerSnapshotSourceObserver:self->_snapshotObservers];
       v12 = self->_snapshotObserver;
       self->_snapshotObserver = v11;
 
@@ -125,52 +125,52 @@
   return makePortalProvider;
 }
 
-- (id)registerSnapshotSourceObserver:(id)a3
+- (id)registerSnapshotSourceObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (!self->_snapshotObserver)
   {
-    v5 = [(PBUIDynamicProviderWrapper *)self _snapshotProvider];
-    v6 = [v5 registerSnapshotSourceObserver:self->_snapshotObservers];
+    _snapshotProvider = [(PBUIDynamicProviderWrapper *)self _snapshotProvider];
+    v6 = [_snapshotProvider registerSnapshotSourceObserver:self->_snapshotObservers];
     snapshotObserver = self->_snapshotObserver;
     self->_snapshotObserver = v6;
   }
 
-  v8 = [(PBUIReplicaSourceObserverBox *)self->_snapshotObservers registerSourceObserver:v4];
+  v8 = [(PBUIReplicaSourceObserverBox *)self->_snapshotObservers registerSourceObserver:observerCopy];
 
   return v8;
 }
 
-- (id)registerPortalSourceObserver:(id)a3
+- (id)registerPortalSourceObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (!self->_portalObserver)
   {
-    v5 = [(PBUIDynamicProviderWrapper *)self _portalProvider];
-    v6 = [v5 registerPortalSourceObserver:self->_portalObservers];
+    _portalProvider = [(PBUIDynamicProviderWrapper *)self _portalProvider];
+    v6 = [_portalProvider registerPortalSourceObserver:self->_portalObservers];
     portalObserver = self->_portalObserver;
     self->_portalObserver = v6;
   }
 
-  v8 = [(PBUIReplicaSourceObserverBox *)self->_portalObservers registerSourceObserver:v4];
+  v8 = [(PBUIReplicaSourceObserverBox *)self->_portalObservers registerSourceObserver:observerCopy];
 
   return v8;
 }
 
-- (id)portalSourceForReplicaView:(id)a3
+- (id)portalSourceForReplicaView:(id)view
 {
-  v4 = a3;
-  v5 = [(PBUIDynamicProviderWrapper *)self _portalProvider];
-  v6 = [v5 portalSourceForReplicaView:v4];
+  viewCopy = view;
+  _portalProvider = [(PBUIDynamicProviderWrapper *)self _portalProvider];
+  v6 = [_portalProvider portalSourceForReplicaView:viewCopy];
 
   return v6;
 }
 
-- (id)snapshotSourceForObserver:(id)a3
+- (id)snapshotSourceForObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PBUIDynamicProviderWrapper *)self _snapshotProvider];
-  v6 = [v5 snapshotSourceForObserver:v4];
+  observerCopy = observer;
+  _snapshotProvider = [(PBUIDynamicProviderWrapper *)self _snapshotProvider];
+  v6 = [_snapshotProvider snapshotSourceForObserver:observerCopy];
 
   return v6;
 }

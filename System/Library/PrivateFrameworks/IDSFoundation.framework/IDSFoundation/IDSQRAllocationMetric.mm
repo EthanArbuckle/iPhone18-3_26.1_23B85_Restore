@@ -1,5 +1,5 @@
 @interface IDSQRAllocationMetric
-- (IDSQRAllocationMetric)initWithDuration:(unint64_t)a3 result:(unsigned int)a4 hasRecipientAccepted:(unsigned int)a5 payloadSize:(unsigned int)a6 topic:(id)a7 service:(id)a8;
+- (IDSQRAllocationMetric)initWithDuration:(unint64_t)duration result:(unsigned int)result hasRecipientAccepted:(unsigned int)accepted payloadSize:(unsigned int)size topic:(id)topic service:(id)service;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -32,37 +32,37 @@
     CFDictionarySetValue(v3, @"payloadSize", v7);
   }
 
-  v8 = [(IDSQRAllocationMetric *)self topic];
-  if (v8)
+  topic = [(IDSQRAllocationMetric *)self topic];
+  if (topic)
   {
-    CFDictionarySetValue(v3, @"topic", v8);
+    CFDictionarySetValue(v3, @"topic", topic);
   }
 
-  v9 = [(IDSQRAllocationMetric *)self service];
-  if (v9)
+  service = [(IDSQRAllocationMetric *)self service];
+  if (service)
   {
-    CFDictionarySetValue(v3, @"service", v9);
+    CFDictionarySetValue(v3, @"service", service);
   }
 
   return v3;
 }
 
-- (IDSQRAllocationMetric)initWithDuration:(unint64_t)a3 result:(unsigned int)a4 hasRecipientAccepted:(unsigned int)a5 payloadSize:(unsigned int)a6 topic:(id)a7 service:(id)a8
+- (IDSQRAllocationMetric)initWithDuration:(unint64_t)duration result:(unsigned int)result hasRecipientAccepted:(unsigned int)accepted payloadSize:(unsigned int)size topic:(id)topic service:(id)service
 {
-  v15 = a7;
-  v16 = a8;
+  topicCopy = topic;
+  serviceCopy = service;
   v20.receiver = self;
   v20.super_class = IDSQRAllocationMetric;
   v17 = [(IDSQRAllocationMetric *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_duration = a3;
-    v17->_result = a4;
-    v17->_hasRecipientAccepted = a5;
-    v17->_payloadSize = a6;
-    objc_storeStrong(&v17->_topic, a7);
-    objc_storeStrong(&v18->_service, a8);
+    v17->_duration = duration;
+    v17->_result = result;
+    v17->_hasRecipientAccepted = accepted;
+    v17->_payloadSize = size;
+    objc_storeStrong(&v17->_topic, topic);
+    objc_storeStrong(&v18->_service, service);
   }
 
   return v18;

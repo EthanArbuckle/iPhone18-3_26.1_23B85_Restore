@@ -1,16 +1,16 @@
 @interface AMSUIDDynamicImpressionMetricsIdentifier
-- (AMSUIDDynamicImpressionMetricsIdentifier)initWithParent:(id)a3 element:(id)a4 index:(int64_t)a5;
+- (AMSUIDDynamicImpressionMetricsIdentifier)initWithParent:(id)parent element:(id)element index:(int64_t)index;
 - (NSString)element;
 - (NSString)parent;
-- (void)setElement:(id)a3;
-- (void)setParent:(id)a3;
+- (void)setElement:(id)element;
+- (void)setParent:(id)parent;
 @end
 
 @implementation AMSUIDDynamicImpressionMetricsIdentifier
 
-- (AMSUIDDynamicImpressionMetricsIdentifier)initWithParent:(id)a3 element:(id)a4 index:(int64_t)a5
+- (AMSUIDDynamicImpressionMetricsIdentifier)initWithParent:(id)parent element:(id)element index:(int64_t)index
 {
-  if (a3)
+  if (parent)
   {
     v6 = sub_1CA19C118();
     v8 = v7;
@@ -23,7 +23,7 @@
   }
 
   v9 = sub_1CA19C118();
-  return DynamicImpressionMetricsIdentifier.init(parent:element:index:)(v6, v8, v9, v10, a5);
+  return DynamicImpressionMetricsIdentifier.init(parent:element:index:)(v6, v8, v9, v10, index);
 }
 
 - (NSString)element
@@ -34,11 +34,11 @@
   return v2;
 }
 
-- (void)setElement:(id)a3
+- (void)setElement:(id)element
 {
   v4 = sub_1CA19C118();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   DynamicImpressionMetricsIdentifier.element.setter(v4, v6);
 }
 
@@ -58,9 +58,9 @@
   return v3;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (a3)
+  if (parent)
   {
     v4 = sub_1CA19C118();
     v6 = v5;
@@ -72,7 +72,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   DynamicImpressionMetricsIdentifier.parent.setter(v4, v6);
 }
 

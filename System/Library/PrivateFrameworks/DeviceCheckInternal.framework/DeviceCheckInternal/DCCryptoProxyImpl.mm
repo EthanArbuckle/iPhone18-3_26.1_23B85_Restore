@@ -1,17 +1,17 @@
 @interface DCCryptoProxyImpl
-- (void)_fetchPublicKey:(id)a3;
-- (void)baaSignatureForData:(id)a3 completion:(id)a4;
-- (void)baaSignaturesForData:(id)a3 completion:(id)a4;
-- (void)fetchOpaqueBlobWithContext:(id)a3 completion:(id)a4;
+- (void)_fetchPublicKey:(id)key;
+- (void)baaSignatureForData:(id)data completion:(id)completion;
+- (void)baaSignaturesForData:(id)data completion:(id)completion;
+- (void)fetchOpaqueBlobWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation DCCryptoProxyImpl
 
-- (void)fetchOpaqueBlobWithContext:(id)a3 completion:(id)a4
+- (void)fetchOpaqueBlobWithContext:(id)context completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (DCInternalLogSystem_onceToken_3 != -1)
   {
     [DCCryptoProxyImpl fetchOpaqueBlobWithContext:completion:];
@@ -49,13 +49,13 @@
       v14 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/DeviceCheckInternal/Source/Interfaces/DCCryptoProxyImpl.m";
     }
 
-    v15 = [v6 clientAppID];
+    clientAppID = [contextCopy clientAppID];
     *buf = 136315650;
     v23 = v14;
     v24 = 1024;
     v25 = 22;
     v26 = 2112;
-    v27 = v15;
+    v27 = clientAppID;
     _os_log_impl(&dword_2488FB000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Generating encrypted certificate. { clientAppID=%@ }", buf, 0x1Cu);
   }
 
@@ -63,10 +63,10 @@
   v19[1] = 3221225472;
   v19[2] = __59__DCCryptoProxyImpl_fetchOpaqueBlobWithContext_completion___block_invoke;
   v19[3] = &unk_278F59CB0;
-  v20 = v6;
-  v21 = v7;
-  v16 = v7;
-  v17 = v6;
+  v20 = contextCopy;
+  v21 = completionCopy;
+  v16 = completionCopy;
+  v17 = contextCopy;
   [(DCCryptoProxyImpl *)self _fetchPublicKey:v19];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -80,16 +80,16 @@ void __59__DCCryptoProxyImpl_fetchOpaqueBlobWithContext_completion___block_invok
   [(DCCertificateGenerator *)v4 generateEncryptedCertificateChainWithCompletion:*(a1 + 40)];
 }
 
-- (void)_fetchPublicKey:(id)a3
+- (void)_fetchPublicKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[DCAssetFetcher sharedFetcher];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__DCCryptoProxyImpl__fetchPublicKey___block_invoke;
   v6[3] = &unk_278F59CD8;
-  v7 = v3;
-  v5 = v3;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [v4 fetchPublicKeyAssetWithCompletion:v6];
 }
 
@@ -213,11 +213,11 @@ void __37__DCCryptoProxyImpl__fetchPublicKey___block_invoke(uint64_t a1, void *a
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)baaSignatureForData:(id)a3 completion:(id)a4
+- (void)baaSignatureForData:(id)data completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (DCInternalLogSystem_onceToken_3 != -1)
   {
     [DCCryptoProxyImpl fetchOpaqueBlobWithContext:completion:];
@@ -263,16 +263,16 @@ void __37__DCCryptoProxyImpl__fetchPublicKey___block_invoke(uint64_t a1, void *a
   }
 
   v14 = +[DCBAASigner sharedSigner];
-  [v14 signatureForData:v5 completion:v6];
+  [v14 signatureForData:dataCopy completion:completionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)baaSignaturesForData:(id)a3 completion:(id)a4
+- (void)baaSignaturesForData:(id)data completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (DCInternalLogSystem_onceToken_3 != -1)
   {
     [DCCryptoProxyImpl fetchOpaqueBlobWithContext:completion:];
@@ -318,7 +318,7 @@ void __37__DCCryptoProxyImpl__fetchPublicKey___block_invoke(uint64_t a1, void *a
   }
 
   v14 = +[DCBAASigner sharedSigner];
-  [v14 signaturesForData:v5 completion:v6];
+  [v14 signaturesForData:dataCopy completion:completionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }

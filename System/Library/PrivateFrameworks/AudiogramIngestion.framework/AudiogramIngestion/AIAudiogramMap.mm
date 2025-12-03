@@ -1,28 +1,28 @@
 @interface AIAudiogramMap
-- (AIAudiogramMap)initWithFrequencies:(id)a3 hearingLevels:(id)a4;
-- (CGPoint)_adjustedPointForSlopeWithPoint:(CGPoint)a3;
-- (CGPoint)_intersectionOfLinesWithSlope:(double)a3 intercept:(double)a4 slope2:(double)a5 intercept2:(double)a6;
-- (id)_valueOfPoint:(CGPoint)a3 betweenObject:(id)a4 andObject:(id)a5 onAxis:(unint64_t)a6;
+- (AIAudiogramMap)initWithFrequencies:(id)frequencies hearingLevels:(id)levels;
+- (CGPoint)_adjustedPointForSlopeWithPoint:(CGPoint)point;
+- (CGPoint)_intersectionOfLinesWithSlope:(double)slope intercept:(double)intercept slope2:(double)slope2 intercept2:(double)intercept2;
+- (id)_valueOfPoint:(CGPoint)point betweenObject:(id)object andObject:(id)andObject onAxis:(unint64_t)axis;
 - (id)description;
-- (id)frequencyAtPoint:(CGPoint)a3;
-- (id)hearingLevelAtPoint:(CGPoint)a3;
-- (void)_calculateAxisSlopeAndInterceptForAxisType:(unint64_t)a3;
+- (id)frequencyAtPoint:(CGPoint)point;
+- (id)hearingLevelAtPoint:(CGPoint)point;
+- (void)_calculateAxisSlopeAndInterceptForAxisType:(unint64_t)type;
 @end
 
 @implementation AIAudiogramMap
 
-- (AIAudiogramMap)initWithFrequencies:(id)a3 hearingLevels:(id)a4
+- (AIAudiogramMap)initWithFrequencies:(id)frequencies hearingLevels:(id)levels
 {
-  v6 = a3;
-  v7 = a4;
+  frequenciesCopy = frequencies;
+  levelsCopy = levels;
   v11.receiver = self;
   v11.super_class = AIAudiogramMap;
   v8 = [(AIAudiogramMap *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(AIAudiogramMap *)v8 setFrequencies:v6];
-    [(AIAudiogramMap *)v9 setHearingLevels:v7];
+    [(AIAudiogramMap *)v8 setFrequencies:frequenciesCopy];
+    [(AIAudiogramMap *)v9 setHearingLevels:levelsCopy];
     [(AIAudiogramMap *)v9 _calculateAxisSlopeAndInterceptForAxisType:0];
     [(AIAudiogramMap *)v9 _calculateAxisSlopeAndInterceptForAxisType:1];
   }
@@ -30,14 +30,14 @@
   return v9;
 }
 
-- (id)frequencyAtPoint:(CGPoint)a3
+- (id)frequencyAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v51 = *MEMORY[0x277D85DE8];
-  v6 = [(AIAudiogramMap *)self frequencies];
-  v7 = [v6 values];
-  v8 = [v7 count];
+  frequencies = [(AIAudiogramMap *)self frequencies];
+  values = [frequencies values];
+  v8 = [values count];
 
   if (v8 > 1)
   {
@@ -69,8 +69,8 @@
     v48 = __Block_byref_object_copy__6;
     v49 = __Block_byref_object_dispose__6;
     v50 = 0;
-    v19 = [(AIAudiogramMap *)self frequencies];
-    v20 = [v19 values];
+    frequencies2 = [(AIAudiogramMap *)self frequencies];
+    values2 = [frequencies2 values];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __35__AIAudiogramMap_frequencyAtPoint___block_invoke;
@@ -79,7 +79,7 @@
     *&v42[7] = v15;
     v42[4] = self;
     v42[5] = buf;
-    [v20 enumerateObjectsUsingBlock:v42];
+    [values2 enumerateObjectsUsingBlock:v42];
 
     v21 = *(*&buf[8] + 40);
     if (!v21)
@@ -90,22 +90,22 @@
         v55.x = v14;
         v55.y = v15;
         v23 = NSStringFromCGPoint(v55);
-        v24 = [(AIAudiogramMap *)self frequencies];
-        v25 = [v24 maxValue];
+        frequencies3 = [(AIAudiogramMap *)self frequencies];
+        maxValue = [frequencies3 maxValue];
         *v43 = 138412546;
         v44 = v23;
         v45 = 2112;
-        v46 = v25;
+        v46 = maxValue;
         _os_log_impl(&dword_24179B000, v22, OS_LOG_TYPE_INFO, "Point %@ was after end of frequency range %@", v43, 0x16u);
       }
 
-      v26 = [(AIAudiogramMap *)self frequencies];
-      v27 = [v26 values];
-      v28 = [v27 objectAtIndex:(v8 - 1)];
+      frequencies4 = [(AIAudiogramMap *)self frequencies];
+      values3 = [frequencies4 values];
+      v28 = [values3 objectAtIndex:(v8 - 1)];
 
-      v29 = [(AIAudiogramMap *)self frequencies];
-      v30 = [v29 values];
-      v31 = [v30 objectAtIndex:(v8 - 2)];
+      frequencies5 = [(AIAudiogramMap *)self frequencies];
+      values4 = [frequencies5 values];
+      v31 = [values4 objectAtIndex:(v8 - 2)];
 
       v32 = [(AIAudiogramMap *)self _valueOfPoint:v28 betweenObject:v31 andObject:0 onAxis:v14, v15];
       v33 = *(*&buf[8] + 40);
@@ -134,18 +134,18 @@
       _os_log_impl(&dword_24179B000, v38, OS_LOG_TYPE_INFO, "Returning frequency of %@ from point %@", v43, 0x16u);
     }
 
-    v11 = *(*&buf[8] + 40);
+    numericalValue = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
   }
 
   else
   {
-    v9 = [(AIAudiogramMap *)self frequencies];
-    v10 = [v9 minValue];
-    v11 = [v10 numericalValue];
+    frequencies6 = [(AIAudiogramMap *)self frequencies];
+    minValue = [frequencies6 minValue];
+    numericalValue = [minValue numericalValue];
   }
 
-  return v11;
+  return numericalValue;
 }
 
 void __35__AIAudiogramMap_frequencyAtPoint___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -194,14 +194,14 @@ void __35__AIAudiogramMap_frequencyAtPoint___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (id)hearingLevelAtPoint:(CGPoint)a3
+- (id)hearingLevelAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v52 = *MEMORY[0x277D85DE8];
-  v6 = [(AIAudiogramMap *)self hearingLevels];
-  v7 = [v6 values];
-  v8 = [v7 count];
+  hearingLevels = [(AIAudiogramMap *)self hearingLevels];
+  values = [hearingLevels values];
+  v8 = [values count];
 
   if (v8 > 1)
   {
@@ -214,8 +214,8 @@ void __35__AIAudiogramMap_frequencyAtPoint___block_invoke(uint64_t a1, void *a2,
     v45 = __Block_byref_object_copy__6;
     v46 = __Block_byref_object_dispose__6;
     v47 = 0;
-    v16 = [(AIAudiogramMap *)self hearingLevels];
-    v17 = [v16 values];
+    hearingLevels2 = [(AIAudiogramMap *)self hearingLevels];
+    values2 = [hearingLevels2 values];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __38__AIAudiogramMap_hearingLevelAtPoint___block_invoke;
@@ -224,7 +224,7 @@ void __35__AIAudiogramMap_frequencyAtPoint___block_invoke(uint64_t a1, void *a2,
     *&v41[7] = v15;
     v41[4] = self;
     v41[5] = &v42;
-    [v17 enumerateObjectsUsingBlock:v41];
+    [values2 enumerateObjectsUsingBlock:v41];
 
     if (!v43[5])
     {
@@ -234,22 +234,22 @@ void __35__AIAudiogramMap_frequencyAtPoint___block_invoke(uint64_t a1, void *a2,
         v54.x = v13;
         v54.y = v15;
         v19 = NSStringFromCGPoint(v54);
-        v20 = [(AIAudiogramMap *)self hearingLevels];
-        v21 = [v20 maxValue];
+        hearingLevels3 = [(AIAudiogramMap *)self hearingLevels];
+        maxValue = [hearingLevels3 maxValue];
         *buf = 138412546;
         v49 = v19;
         v50 = 2112;
-        v51 = v21;
+        v51 = maxValue;
         _os_log_impl(&dword_24179B000, v18, OS_LOG_TYPE_INFO, "Point %@ was after end of hearing level range %@", buf, 0x16u);
       }
 
-      v22 = [(AIAudiogramMap *)self hearingLevels];
-      v23 = [v22 values];
-      v24 = [v23 objectAtIndex:(v8 - 1)];
+      hearingLevels4 = [(AIAudiogramMap *)self hearingLevels];
+      values3 = [hearingLevels4 values];
+      v24 = [values3 objectAtIndex:(v8 - 1)];
 
-      v25 = [(AIAudiogramMap *)self hearingLevels];
-      v26 = [v25 values];
-      v27 = [v26 objectAtIndex:(v8 - 2)];
+      hearingLevels5 = [(AIAudiogramMap *)self hearingLevels];
+      values4 = [hearingLevels5 values];
+      v27 = [values4 objectAtIndex:(v8 - 2)];
 
       v28 = [(AIAudiogramMap *)self _valueOfPoint:v24 betweenObject:v27 andObject:1 onAxis:v13, v15];
       v29 = v43[5];
@@ -290,18 +290,18 @@ void __35__AIAudiogramMap_frequencyAtPoint___block_invoke(uint64_t a1, void *a2,
       _os_log_impl(&dword_24179B000, v37, OS_LOG_TYPE_INFO, "Returning hearing level of %@ from point %@", buf, 0x16u);
     }
 
-    v11 = v43[5];
+    numericalValue = v43[5];
     _Block_object_dispose(&v42, 8);
   }
 
   else
   {
-    v9 = [(AIAudiogramMap *)self hearingLevels];
-    v10 = [v9 minValue];
-    v11 = [v10 numericalValue];
+    hearingLevels6 = [(AIAudiogramMap *)self hearingLevels];
+    minValue = [hearingLevels6 minValue];
+    numericalValue = [minValue numericalValue];
   }
 
-  return v11;
+  return numericalValue;
 }
 
 void __38__AIAudiogramMap_hearingLevelAtPoint___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -350,40 +350,40 @@ void __38__AIAudiogramMap_hearingLevelAtPoint___block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)_valueOfPoint:(CGPoint)a3 betweenObject:(id)a4 andObject:(id)a5 onAxis:(unint64_t)a6
+- (id)_valueOfPoint:(CGPoint)point betweenObject:(id)object andObject:(id)andObject onAxis:(unint64_t)axis
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v59 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (a6)
+  objectCopy = object;
+  andObjectCopy = andObject;
+  v12 = andObjectCopy;
+  if (axis)
   {
-    [v11 center];
+    [andObjectCopy center];
     v14 = v13;
-    [v10 center];
+    [objectCopy center];
     v16 = v15;
     [v12 center];
     v18 = MEMORY[0x277CCABB0];
     v19 = (y - v14) / (v16 - v17);
-    v20 = [v10 numericalValue];
-    [v20 doubleValue];
+    numericalValue = [objectCopy numericalValue];
+    [numericalValue doubleValue];
     v22 = v21;
-    v23 = [v12 numericalValue];
-    [v23 doubleValue];
+    numericalValue2 = [v12 numericalValue];
+    [numericalValue2 doubleValue];
     v25 = v22 - v24;
-    v26 = [v12 numericalValue];
-    [v26 doubleValue];
-    v28 = [v18 numberWithDouble:v27 + v25 * v19];
+    numericalValue3 = [v12 numericalValue];
+    [numericalValue3 doubleValue];
+    numericalValue9 = [v18 numberWithDouble:v27 + v25 * v19];
 
 LABEL_3:
     goto LABEL_15;
   }
 
-  [v11 center];
+  [andObjectCopy center];
   v30 = x - v29;
-  [v10 center];
+  [objectCopy center];
   v32 = v31;
   [v12 center];
   v34 = v30 / (v32 - v33);
@@ -409,9 +409,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v38 = [v12 numericalValue];
+    numericalValue4 = [v12 numericalValue];
     *v58 = 138412290;
-    *&v58[4] = v38;
+    *&v58[4] = numericalValue4;
     v39 = "Snapped frequency value down to known value %@";
 LABEL_12:
     _os_log_impl(&dword_24179B000, v37, OS_LOG_TYPE_INFO, v39, v58, 0xCu);
@@ -446,33 +446,33 @@ LABEL_12:
         }
       }
 
-      v47 = [v10 numericalValue];
-      [v47 doubleValue];
+      numericalValue5 = [objectCopy numericalValue];
+      [numericalValue5 doubleValue];
       v49 = v48;
-      v50 = [v12 numericalValue];
-      [v50 doubleValue];
+      numericalValue6 = [v12 numericalValue];
+      [numericalValue6 doubleValue];
       v52 = v49 / v51;
 
       v53 = MEMORY[0x277CCABB0];
-      v54 = [v12 numericalValue];
-      [v54 doubleValue];
-      v28 = [v53 numberWithDouble:{(pow(v52, v34) * v55)}];
+      numericalValue7 = [v12 numericalValue];
+      [numericalValue7 doubleValue];
+      numericalValue9 = [v53 numberWithDouble:{(pow(v52, v34) * v55)}];
 
-      v20 = snapToValidFrequency(v28);
-      if (v20)
+      numericalValue = snapToValidFrequency(numericalValue9);
+      if (numericalValue)
       {
         v56 = AXLogAudiogram();
         if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
         {
           *v58 = 138412546;
-          *&v58[4] = v28;
+          *&v58[4] = numericalValue9;
           *&v58[12] = 2112;
-          *&v58[14] = v20;
+          *&v58[14] = numericalValue;
           _os_log_impl(&dword_24179B000, v56, OS_LOG_TYPE_INFO, "Snapped frequency value to further validate. %@ -> %@", v58, 0x16u);
         }
 
-        v57 = v20;
-        v28 = v57;
+        v57 = numericalValue;
+        numericalValue9 = v57;
       }
 
       goto LABEL_3;
@@ -484,9 +484,9 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v38 = [v10 numericalValue];
+    numericalValue4 = [objectCopy numericalValue];
     *v58 = 138412290;
-    *&v58[4] = v38;
+    *&v58[4] = numericalValue4;
     v39 = "Snapped frequency value up to known value %@";
     goto LABEL_12;
   }
@@ -494,52 +494,52 @@ LABEL_12:
   v42 = AXLogAudiogram();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
   {
-    v43 = [v10 numericalValue];
+    numericalValue8 = [objectCopy numericalValue];
     *v58 = 138412290;
-    *&v58[4] = v43;
+    *&v58[4] = numericalValue8;
     _os_log_impl(&dword_24179B000, v42, OS_LOG_TYPE_INFO, "Snapped frequency value up to known value %@", v58, 0xCu);
   }
 
 LABEL_7:
-  v36 = v10;
+  v36 = objectCopy;
 LABEL_14:
-  v28 = [v36 numericalValue];
+  numericalValue9 = [v36 numericalValue];
 LABEL_15:
 
-  return v28;
+  return numericalValue9;
 }
 
-- (void)_calculateAxisSlopeAndInterceptForAxisType:(unint64_t)a3
+- (void)_calculateAxisSlopeAndInterceptForAxisType:(unint64_t)type
 {
   v37 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (type)
   {
-    v5 = [(AIAudiogramMap *)self hearingLevels];
-    v6 = [v5 values];
+    hearingLevels = [(AIAudiogramMap *)self hearingLevels];
+    values = [hearingLevels values];
   }
 
   else
   {
-    v7 = [(AIAudiogramMap *)self frequencies];
-    v8 = [v7 values];
+    frequencies = [(AIAudiogramMap *)self frequencies];
+    values2 = [frequencies values];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block_invoke;
     v29[3] = &unk_278CECDD8;
     v30 = &unk_2853659B0;
-    v6 = [v8 ax_filteredArrayUsingBlock:v29];
+    values = [values2 ax_filteredArrayUsingBlock:v29];
   }
 
-  if ([v6 count] > 1)
+  if ([values count] > 1)
   {
-    v14 = [v6 firstObject];
-    [v14 center];
+    firstObject = [values firstObject];
+    [firstObject center];
     v16 = v15;
     v18 = v17;
 
-    v19 = [v6 lastObject];
-    [v19 center];
+    lastObject = [values lastObject];
+    [lastObject center];
     v21 = v20;
     v23 = v22;
 
@@ -569,12 +569,12 @@ LABEL_15:
         v33 = 2048;
         v34 = v26;
         v35 = 2048;
-        v36 = a3;
+        typeCopy = type;
         _os_log_impl(&dword_24179B000, v27, OS_LOG_TYPE_DEFAULT, "Calculated slope %f, intercept %f for axis %lu", buf, 0x20u);
       }
 
       v28 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
-      if (a3)
+      if (type)
       {
         [(AIAudiogramMap *)self setHearingLevelSlope:v28];
 
@@ -597,7 +597,7 @@ LABEL_15:
     v9 = AXLogAudiogram();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 count];
+      v10 = [values count];
       *buf = 134217984;
       v32 = *&v10;
       v11 = "Not enough points (%lu) to calculate slope";
@@ -618,15 +618,15 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
   return v2 ^ 1;
 }
 
-- (CGPoint)_adjustedPointForSlopeWithPoint:(CGPoint)a3
+- (CGPoint)_adjustedPointForSlopeWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AIAudiogramMap *)self hearingLevelSlope];
-  if (v6)
+  y = point.y;
+  x = point.x;
+  hearingLevelSlope = [(AIAudiogramMap *)self hearingLevelSlope];
+  if (hearingLevelSlope)
   {
-    v7 = [(AIAudiogramMap *)self hearingLevelSlope];
-    [v7 doubleValue];
+    hearingLevelSlope2 = [(AIAudiogramMap *)self hearingLevelSlope];
+    [hearingLevelSlope2 doubleValue];
     v9 = fabs(fabs(atan(v8)) * 180.0 / 3.14159265 + -90.0);
   }
 
@@ -635,8 +635,8 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
     v9 = 0.0;
   }
 
-  v10 = [(AIAudiogramMap *)self frequencySlope];
-  [v10 doubleValue];
+  frequencySlope = [(AIAudiogramMap *)self frequencySlope];
+  [frequencySlope doubleValue];
   v12 = fabs(atan(v11)) * 180.0 / 3.14159265;
 
   v13 = fmax(v9, v12) > 1.0;
@@ -644,26 +644,26 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
   {
     v97 = x;
     v98 = y;
-    v17 = [(AIAudiogramMap *)self frequencies];
-    v18 = [v17 minValue];
-    [v18 center];
+    frequencies = [(AIAudiogramMap *)self frequencies];
+    minValue = [frequencies minValue];
+    [minValue center];
     v20 = v19;
     v95 = v21;
 
-    v22 = [(AIAudiogramMap *)self frequencies];
-    v23 = [v22 maxValue];
-    [v23 center];
+    frequencies2 = [(AIAudiogramMap *)self frequencies];
+    maxValue = [frequencies2 maxValue];
+    [maxValue center];
     v25 = v24;
 
-    v26 = [(AIAudiogramMap *)self hearingLevels];
-    v27 = [v26 minValue];
-    [v27 center];
+    hearingLevels = [(AIAudiogramMap *)self hearingLevels];
+    minValue2 = [hearingLevels minValue];
+    [minValue2 center];
     v96 = v28;
     v30 = v29;
 
-    v31 = [(AIAudiogramMap *)self hearingLevels];
-    v32 = [v31 maxValue];
-    [v32 center];
+    hearingLevels2 = [(AIAudiogramMap *)self hearingLevels];
+    maxValue2 = [hearingLevels2 maxValue];
+    [maxValue2 center];
     v94 = v33;
     v35 = v34;
 
@@ -673,41 +673,41 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
       {
         if (v13)
         {
-          v48 = [(AIAudiogramMap *)self frequencySlope];
+          frequencySlope2 = [(AIAudiogramMap *)self frequencySlope];
           x = v97;
           y = v98;
-          if (v48)
+          if (frequencySlope2)
           {
-            v49 = v48;
-            v50 = [(AIAudiogramMap *)self hearingLevelSlope];
+            v49 = frequencySlope2;
+            hearingLevelSlope3 = [(AIAudiogramMap *)self hearingLevelSlope];
 
-            if (v50)
+            if (hearingLevelSlope3)
             {
-              v51 = [(AIAudiogramMap *)self hearingLevelSlope];
-              [v51 doubleValue];
+              hearingLevelSlope4 = [(AIAudiogramMap *)self hearingLevelSlope];
+              [hearingLevelSlope4 doubleValue];
               v53 = v52;
 
               [(AIAudiogramMap *)self _interceptForLineThroughPoint:v97 withSlope:v98, v53];
               v55 = v54;
-              v56 = [(AIAudiogramMap *)self frequencySlope];
-              [v56 doubleValue];
+              frequencySlope3 = [(AIAudiogramMap *)self frequencySlope];
+              [frequencySlope3 doubleValue];
               v58 = v57;
-              v59 = [(AIAudiogramMap *)self frequencyIntercept];
-              [v59 doubleValue];
+              frequencyIntercept = [(AIAudiogramMap *)self frequencyIntercept];
+              [frequencyIntercept doubleValue];
               [(AIAudiogramMap *)self _intersectionOfLinesWithSlope:v58 intercept:v60 slope2:v53 intercept2:v55];
               v62 = v61;
 
-              v63 = [(AIAudiogramMap *)self frequencySlope];
-              [v63 doubleValue];
+              frequencySlope4 = [(AIAudiogramMap *)self frequencySlope];
+              [frequencySlope4 doubleValue];
               v65 = v64;
 
               [(AIAudiogramMap *)self _interceptForLineThroughPoint:v97 withSlope:v98, v65];
               v67 = v66;
-              v68 = [(AIAudiogramMap *)self hearingLevelSlope];
-              [v68 doubleValue];
+              hearingLevelSlope5 = [(AIAudiogramMap *)self hearingLevelSlope];
+              [hearingLevelSlope5 doubleValue];
               v70 = v69;
-              v71 = [(AIAudiogramMap *)self hearingLevelIntercept];
-              [v71 doubleValue];
+              hearingLevelIntercept = [(AIAudiogramMap *)self hearingLevelIntercept];
+              [hearingLevelIntercept doubleValue];
               [(AIAudiogramMap *)self _intersectionOfLinesWithSlope:v70 intercept:v72 slope2:v65 intercept2:v67];
               y = v73;
 
@@ -725,14 +725,14 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
 
       else
       {
-        v42 = [(AIAudiogramMap *)self frequencySlope];
-        [v42 doubleValue];
+        frequencySlope5 = [(AIAudiogramMap *)self frequencySlope];
+        [frequencySlope5 doubleValue];
         v44 = v43;
         if (vabdd_f64(v95, v30) < vabdd_f64(v95, v35))
         {
 
-          v45 = [(AIAudiogramMap *)self frequencySlope];
-          [v45 doubleValue];
+          frequencySlope6 = [(AIAudiogramMap *)self frequencySlope];
+          [frequencySlope6 doubleValue];
           v47 = -v88;
         }
 
@@ -740,8 +740,8 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
         {
           v44 = -v43;
 
-          v45 = [(AIAudiogramMap *)self frequencySlope];
-          [v45 doubleValue];
+          frequencySlope6 = [(AIAudiogramMap *)self frequencySlope];
+          [frequencySlope6 doubleValue];
           v47 = v46;
         }
 
@@ -766,15 +766,15 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
 
     else
     {
-      v36 = [(AIAudiogramMap *)self hearingLevelSlope];
-      [v36 doubleValue];
+      hearingLevelSlope6 = [(AIAudiogramMap *)self hearingLevelSlope];
+      [hearingLevelSlope6 doubleValue];
       v38 = v37;
       x = v97;
       if (vabdd_f64(v96, v20) < vabdd_f64(v96, v25))
       {
 
-        v39 = [(AIAudiogramMap *)self hearingLevelSlope];
-        [v39 doubleValue];
+        hearingLevelSlope7 = [(AIAudiogramMap *)self hearingLevelSlope];
+        [hearingLevelSlope7 doubleValue];
         v41 = -v74;
       }
 
@@ -782,8 +782,8 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
       {
         v38 = -v37;
 
-        v39 = [(AIAudiogramMap *)self hearingLevelSlope];
-        [v39 doubleValue];
+        hearingLevelSlope7 = [(AIAudiogramMap *)self hearingLevelSlope];
+        [hearingLevelSlope7 doubleValue];
         v41 = v40;
       }
 
@@ -807,11 +807,11 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
         y = v98;
         [(AIAudiogramMap *)self _interceptForLineThroughPoint:v97 withSlope:v98, v79];
         v81 = v80;
-        v82 = [(AIAudiogramMap *)self frequencySlope];
-        [v82 doubleValue];
+        frequencySlope7 = [(AIAudiogramMap *)self frequencySlope];
+        [frequencySlope7 doubleValue];
         v84 = v83;
-        v85 = [(AIAudiogramMap *)self frequencyIntercept];
-        [v85 doubleValue];
+        frequencyIntercept2 = [(AIAudiogramMap *)self frequencyIntercept];
+        [frequencyIntercept2 doubleValue];
         [(AIAudiogramMap *)self _intersectionOfLinesWithSlope:v84 intercept:v86 slope2:v79 intercept2:v81];
         x = v87;
       }
@@ -830,10 +830,10 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
   return result;
 }
 
-- (CGPoint)_intersectionOfLinesWithSlope:(double)a3 intercept:(double)a4 slope2:(double)a5 intercept2:(double)a6
+- (CGPoint)_intersectionOfLinesWithSlope:(double)slope intercept:(double)intercept slope2:(double)slope2 intercept2:(double)intercept2
 {
-  v6 = (a4 - a6) / (a5 - a3);
-  v7 = a4 + a3 * v6;
+  v6 = (intercept - intercept2) / (slope2 - slope);
+  v7 = intercept + slope * v6;
   v8 = v6;
   result.y = v7;
   result.x = v8;
@@ -846,19 +846,19 @@ uint64_t __61__AIAudiogramMap__calculateAxisSlopeAndInterceptForAxisType___block
   v19.receiver = self;
   v19.super_class = AIAudiogramMap;
   v14 = [(AIAudiogramMap *)&v19 description];
-  v18 = [(AIAudiogramMap *)self frequencies];
-  v17 = [v18 minValue];
-  v3 = [v17 numericalValue];
-  v16 = [(AIAudiogramMap *)self frequencies];
-  v4 = [v16 maxValue];
-  v5 = [v4 numericalValue];
-  v6 = [(AIAudiogramMap *)self hearingLevels];
-  v7 = [v6 minValue];
-  v8 = [v7 numericalValue];
-  v9 = [(AIAudiogramMap *)self hearingLevels];
-  v10 = [v9 maxValue];
-  v11 = [v10 numericalValue];
-  v12 = [v15 stringWithFormat:@"%@ Frequency: %@Hz to %@Hz, Hearing Level: %@dB to %@dB", v14, v3, v5, v8, v11];
+  frequencies = [(AIAudiogramMap *)self frequencies];
+  minValue = [frequencies minValue];
+  numericalValue = [minValue numericalValue];
+  frequencies2 = [(AIAudiogramMap *)self frequencies];
+  maxValue = [frequencies2 maxValue];
+  numericalValue2 = [maxValue numericalValue];
+  hearingLevels = [(AIAudiogramMap *)self hearingLevels];
+  minValue2 = [hearingLevels minValue];
+  numericalValue3 = [minValue2 numericalValue];
+  hearingLevels2 = [(AIAudiogramMap *)self hearingLevels];
+  maxValue2 = [hearingLevels2 maxValue];
+  numericalValue4 = [maxValue2 numericalValue];
+  v12 = [v15 stringWithFormat:@"%@ Frequency: %@Hz to %@Hz, Hearing Level: %@dB to %@dB", v14, numericalValue, numericalValue2, numericalValue3, numericalValue4];
 
   return v12;
 }

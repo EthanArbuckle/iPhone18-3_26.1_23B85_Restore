@@ -4,25 +4,25 @@
 - (void)configureViewHierarchy;
 - (void)recalculateHeights;
 - (void)setupViews;
-- (void)updateLayoutWithProgress:(double)a3;
-- (void)updateWith:(id)a3 expansionStatus:(int64_t)a4;
+- (void)updateLayoutWithProgress:(double)progress;
+- (void)updateWith:(id)with expansionStatus:(int64_t)status;
 @end
 
 @implementation ExpandableConversationSenderHeaderView
 
-- (void)updateWith:(id)a3 expansionStatus:(int64_t)a4
+- (void)updateWith:(id)with expansionStatus:(int64_t)status
 {
-  _objc_retain(a3);
+  _objc_retain(with);
   _objc_retain(self);
-  sub_1002D6BBC(a3, a4);
+  sub_1002D6BBC(with, status);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(with);
 }
 
-- (void)updateLayoutWithProgress:(double)a3
+- (void)updateLayoutWithProgress:(double)progress
 {
   _objc_retain(self);
-  sub_1002D5628(a3);
+  sub_1002D5628(progress);
   _objc_release(self);
 }
 

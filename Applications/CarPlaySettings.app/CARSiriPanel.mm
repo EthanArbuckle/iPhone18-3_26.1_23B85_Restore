@@ -1,30 +1,30 @@
 @interface CARSiriPanel
 - (CARSettingsSwitchCellSpecifier)autoSendMessagesSpecifier;
 - (CARSettingsSwitchCellSpecifier)showAppsBehindSiriSpecifier;
-- (CARSiriPanel)initWithPanelController:(id)a3;
+- (CARSiriPanel)initWithPanelController:(id)controller;
 - (CRSSiriPreferences)siriPreferences;
 - (id)cellSpecifier;
 - (id)specifierSections;
 - (void)invalidate;
-- (void)preferences:(id)a3 autoSendInCarPlayEnabledChanged:(BOOL)a4;
-- (void)preferences:(id)a3 autoSendInHeadphonesEnabledChanged:(BOOL)a4;
-- (void)preferences:(id)a3 mainAutoSendEnabledChanged:(BOOL)a4;
-- (void)preferences:(id)a3 showAppsBehindSiriInCarPlayEnabledChanged:(BOOL)a4;
-- (void)setAutoSendMessagesSpecifierVisible:(BOOL)a3;
+- (void)preferences:(id)preferences autoSendInCarPlayEnabledChanged:(BOOL)changed;
+- (void)preferences:(id)preferences autoSendInHeadphonesEnabledChanged:(BOOL)changed;
+- (void)preferences:(id)preferences mainAutoSendEnabledChanged:(BOOL)changed;
+- (void)preferences:(id)preferences showAppsBehindSiriInCarPlayEnabledChanged:(BOOL)changed;
+- (void)setAutoSendMessagesSpecifierVisible:(BOOL)visible;
 @end
 
 @implementation CARSiriPanel
 
-- (CARSiriPanel)initWithPanelController:(id)a3
+- (CARSiriPanel)initWithPanelController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = CARSiriPanel;
-  v3 = [(CARSettingsPanel *)&v7 initWithPanelController:a3];
+  v3 = [(CARSettingsPanel *)&v7 initWithPanelController:controller];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CARSettingsPanel *)v3 panelController];
-    [v5 addSiriPreferencesObserver:v4];
+    panelController = [(CARSettingsPanel *)v3 panelController];
+    [panelController addSiriPreferencesObserver:v4];
   }
 
   return v4;
@@ -35,22 +35,22 @@
   v3 = [NSMutableArray arrayWithCapacity:3];
   v4 = [CARSettingsCellSpecifierSection alloc];
   v5 = [CARDashboardSuggestionsSpecifier alloc];
-  v6 = [(CARSiriPanel *)self traitCollection];
-  v7 = [(CARDashboardSuggestionsSpecifier *)v5 initWithTraitCollection:v6];
+  traitCollection = [(CARSiriPanel *)self traitCollection];
+  v7 = [(CARDashboardSuggestionsSpecifier *)v5 initWithTraitCollection:traitCollection];
   v33 = v7;
   v8 = [NSArray arrayWithObjects:&v33 count:1];
   v9 = [(CARSettingsCellSpecifierSection *)v4 initWithSpecifiers:v8];
 
-  v10 = [(CARSettingsCellSpecifierSection *)v9 specifiers];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  specifiers = [(CARSettingsCellSpecifierSection *)v9 specifiers];
+  v11 = [specifiers objectAtIndexedSubscript:0];
   [v11 setAccessibilityIdentifier:@"CPSettingsDashboardSuggestionsToggle"];
 
   [v3 addObject:v9];
   if (_os_feature_enabled_impl())
   {
     v12 = [CARSettingsCellSpecifierSection alloc];
-    v13 = [(CARSiriPanel *)self siriPreferences];
-    if ([v13 autoSendInCarPlayEnabled])
+    siriPreferences = [(CARSiriPanel *)self siriPreferences];
+    if ([siriPreferences autoSendInCarPlayEnabled])
     {
       v14 = @"AUTO_SEND_MESSAGES_ENABLED_FOOTER";
     }
@@ -61,15 +61,15 @@
     }
 
     v15 = sub_10001C80C(v14);
-    v16 = [(CARSiriPanel *)self autoSendMessagesSpecifier];
-    v32 = v16;
+    autoSendMessagesSpecifier = [(CARSiriPanel *)self autoSendMessagesSpecifier];
+    v32 = autoSendMessagesSpecifier;
     v17 = [NSArray arrayWithObjects:&v32 count:1];
     v18 = [(CARSettingsCellSpecifierSection *)v12 initWithFooter:v15 specifiers:v17];
 
-    v19 = [(CARSiriPanel *)self autoSendMessagesSpecifier];
-    v20 = [(CARSiriPanel *)self siriPreferences];
-    v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v20 autoSendInCarPlayEnabled]);
-    [v19 setCellValue:v21];
+    autoSendMessagesSpecifier2 = [(CARSiriPanel *)self autoSendMessagesSpecifier];
+    siriPreferences2 = [(CARSiriPanel *)self siriPreferences];
+    v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [siriPreferences2 autoSendInCarPlayEnabled]);
+    [autoSendMessagesSpecifier2 setCellValue:v21];
 
     [v3 addObject:v18];
   }
@@ -78,15 +78,15 @@
   {
     v22 = [CARSettingsCellSpecifierSection alloc];
     v23 = sub_10001C80C(@"SHOW_APPS_BEHIND_SIRI_FOOTER");
-    v24 = [(CARSiriPanel *)self showAppsBehindSiriSpecifier];
-    v31 = v24;
+    showAppsBehindSiriSpecifier = [(CARSiriPanel *)self showAppsBehindSiriSpecifier];
+    v31 = showAppsBehindSiriSpecifier;
     v25 = [NSArray arrayWithObjects:&v31 count:1];
     v26 = [(CARSettingsCellSpecifierSection *)v22 initWithFooter:v23 specifiers:v25];
 
-    v27 = [(CARSiriPanel *)self showAppsBehindSiriSpecifier];
-    v28 = [(CARSiriPanel *)self siriPreferences];
-    v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v28 showAppsBehindSiriInCarPlayEnabled]);
-    [v27 setCellValue:v29];
+    showAppsBehindSiriSpecifier2 = [(CARSiriPanel *)self showAppsBehindSiriSpecifier];
+    siriPreferences3 = [(CARSiriPanel *)self siriPreferences];
+    v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [siriPreferences3 showAppsBehindSiriInCarPlayEnabled]);
+    [showAppsBehindSiriSpecifier2 setCellValue:v29];
 
     [v3 addObject:v26];
   }
@@ -146,10 +146,10 @@
 
 - (CRSSiriPreferences)siriPreferences
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 siriPreferences];
+  panelController = [(CARSettingsPanel *)self panelController];
+  siriPreferences = [panelController siriPreferences];
 
-  return v3;
+  return siriPreferences;
 }
 
 - (CARSettingsSwitchCellSpecifier)autoSendMessagesSpecifier
@@ -181,13 +181,13 @@
   return v8;
 }
 
-- (void)setAutoSendMessagesSpecifierVisible:(BOOL)a3
+- (void)setAutoSendMessagesSpecifierVisible:(BOOL)visible
 {
-  if (self->_autoSendMessagesSpecifierVisible != a3)
+  if (self->_autoSendMessagesSpecifierVisible != visible)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_autoSendMessagesSpecifierVisible = a3;
+    self->_autoSendMessagesSpecifierVisible = visible;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001B6B4;
@@ -227,7 +227,7 @@
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
 }
 
-- (void)preferences:(id)a3 autoSendInCarPlayEnabledChanged:(BOOL)a4
+- (void)preferences:(id)preferences autoSendInCarPlayEnabledChanged:(BOOL)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -237,7 +237,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)preferences:(id)a3 mainAutoSendEnabledChanged:(BOOL)a4
+- (void)preferences:(id)preferences mainAutoSendEnabledChanged:(BOOL)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -247,7 +247,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)preferences:(id)a3 autoSendInHeadphonesEnabledChanged:(BOOL)a4
+- (void)preferences:(id)preferences autoSendInHeadphonesEnabledChanged:(BOOL)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -257,7 +257,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)preferences:(id)a3 showAppsBehindSiriInCarPlayEnabledChanged:(BOOL)a4
+- (void)preferences:(id)preferences showAppsBehindSiriInCarPlayEnabledChanged:(BOOL)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

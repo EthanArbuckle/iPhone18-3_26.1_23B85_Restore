@@ -1,32 +1,32 @@
 @interface CRSUICAPackageView
-- (BOOL)setState:(id)a3 animated:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CRSUICAPackageView)initWithPackage:(id)a3 state:(id)a4 dynamicStateProvider:(id)a5;
+- (BOOL)setState:(id)state animated:(BOOL)animated;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CRSUICAPackageView)initWithPackage:(id)package state:(id)state dynamicStateProvider:(id)provider;
 - (double)playbackTime;
 - (void)layoutSubviews;
 - (void)pause;
 - (void)play;
-- (void)setPlaybackTime:(double)a3;
+- (void)setPlaybackTime:(double)time;
 - (void)stop;
 - (void)userInterfaceStyleChanged;
 @end
 
 @implementation CRSUICAPackageView
 
-- (CRSUICAPackageView)initWithPackage:(id)a3 state:(id)a4 dynamicStateProvider:(id)a5
+- (CRSUICAPackageView)initWithPackage:(id)package state:(id)state dynamicStateProvider:(id)provider
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 rootLayer];
-  if (!v11)
+  packageCopy = package;
+  stateCopy = state;
+  providerCopy = provider;
+  rootLayer = [packageCopy rootLayer];
+  if (!rootLayer)
   {
     [CRSUICAPackageView initWithPackage:state:dynamicStateProvider:];
   }
 
-  v12 = v11;
-  [v11 frame];
+  v12 = rootLayer;
+  [rootLayer frame];
   v32.receiver = self;
   v32.super_class = CRSUICAPackageView;
   v13 = [(CRSUICAPackageView *)&v32 initWithFrame:?];
@@ -35,15 +35,15 @@
   {
     objc_storeStrong(&v13->_rootLayer, v12);
     v15 = objc_alloc(MEMORY[0x277CD9FB8]);
-    v16 = [v8 rootLayer];
-    v17 = [v15 initWithLayer:v16];
+    rootLayer2 = [packageCopy rootLayer];
+    v17 = [v15 initWithLayer:rootLayer2];
     stateController = v14->_stateController;
     v14->_stateController = v17;
 
     [v12 frame];
     v14->_packageSize.width = v19;
     v14->_packageSize.height = v20;
-    v21 = MEMORY[0x245D2CF20](v10);
+    v21 = MEMORY[0x245D2CF20](providerCopy);
     dynamicStateProvider = v14->_dynamicStateProvider;
     v14->_dynamicStateProvider = v21;
 
@@ -51,24 +51,24 @@
     v14->_documentDuration = v23;
     [(CALayer *)v14->_rootLayer setDuration:INFINITY];
     [(CALayer *)v14->_rootLayer setSpeed:0.0];
-    v24 = [v8 rootLayer];
-    [v24 setGeometryFlipped:{objc_msgSend(v8, "isGeometryFlipped")}];
+    rootLayer3 = [packageCopy rootLayer];
+    [rootLayer3 setGeometryFlipped:{objc_msgSend(packageCopy, "isGeometryFlipped")}];
 
-    v25 = [(CRSUICAPackageView *)v14 layer];
-    [v25 addSublayer:v12];
+    layer = [(CRSUICAPackageView *)v14 layer];
+    [layer addSublayer:v12];
 
-    if (!v9 && v10)
+    if (!stateCopy && providerCopy)
     {
-      v26 = [(CRSUICAPackageView *)v14 traitCollection];
-      v9 = v10[2](v10, v26);
+      traitCollection = [(CRSUICAPackageView *)v14 traitCollection];
+      stateCopy = providerCopy[2](providerCopy, traitCollection);
     }
 
-    if (v9)
+    if (stateCopy)
     {
-      [(CRSUICAPackageView *)v14 setState:v9 animated:0];
+      [(CRSUICAPackageView *)v14 setState:stateCopy animated:0];
     }
 
-    if (v10)
+    if (providerCopy)
     {
       v27 = objc_opt_self();
       v33[0] = v27;
@@ -81,20 +81,20 @@
   return v14;
 }
 
-- (BOOL)setState:(id)a3 animated:(BOOL)a4
+- (BOOL)setState:(id)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CALayer *)self->_rootLayer stateWithName:v6];
+  animatedCopy = animated;
+  stateCopy = state;
+  v7 = [(CALayer *)self->_rootLayer stateWithName:stateCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stateCopy copy];
     state = self->_state;
     self->_state = v8;
 
     stateController = self->_stateController;
     rootLayer = self->_rootLayer;
-    if (v4)
+    if (animatedCopy)
     {
       LODWORD(v10) = 1.0;
       [(CAStateController *)stateController setState:v7 ofLayer:rootLayer transitionSpeed:v10];
@@ -109,7 +109,7 @@
   return v7 != 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_packageSize.width;
   height = self->_packageSize.height;
@@ -181,8 +181,8 @@ LABEL_12:
   dynamicStateProvider = self->_dynamicStateProvider;
   if (dynamicStateProvider)
   {
-    v5 = [(CRSUICAPackageView *)self traitCollection];
-    v4 = dynamicStateProvider[2](dynamicStateProvider, v5);
+    traitCollection = [(CRSUICAPackageView *)self traitCollection];
+    v4 = dynamicStateProvider[2](dynamicStateProvider, traitCollection);
     [(CRSUICAPackageView *)self setState:v4 animated:0];
   }
 }
@@ -248,20 +248,20 @@ LABEL_12:
   return result;
 }
 
-- (void)setPlaybackTime:(double)a3
+- (void)setPlaybackTime:(double)time
 {
-  v5 = [(CRSUICAPackageView *)self isPlaying];
+  isPlaying = [(CRSUICAPackageView *)self isPlaying];
   v6 = 0.0;
-  if (v5)
+  if (isPlaying)
   {
-    v6 = CACurrentMediaTime() - a3;
-    a3 = 0.0;
+    v6 = CACurrentMediaTime() - time;
+    time = 0.0;
   }
 
   [(CALayer *)self->_rootLayer setBeginTime:v6];
   rootLayer = self->_rootLayer;
 
-  [(CALayer *)rootLayer setTimeOffset:a3];
+  [(CALayer *)rootLayer setTimeOffset:time];
 }
 
 @end

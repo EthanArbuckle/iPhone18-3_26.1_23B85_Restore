@@ -1,16 +1,16 @@
 @interface PGDefaultCollectionTitleGenerator
-- (PGDefaultCollectionTitleGenerator)initWithCollection:(id)a3 keyAsset:(id)a4 curatedAssetCollection:(id)a5 titleGenerationContext:(id)a6;
-- (void)_generateTitleAndSubtitleWithManager:(id)a3 curationContext:(id)a4 result:(id)a5;
+- (PGDefaultCollectionTitleGenerator)initWithCollection:(id)collection keyAsset:(id)asset curatedAssetCollection:(id)assetCollection titleGenerationContext:(id)context;
+- (void)_generateTitleAndSubtitleWithManager:(id)manager curationContext:(id)context result:(id)result;
 @end
 
 @implementation PGDefaultCollectionTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithManager:(id)a3 curationContext:(id)a4 result:(id)a5
+- (void)_generateTitleAndSubtitleWithManager:(id)manager curationContext:(id)context result:(id)result
 {
-  v30 = a3;
-  v8 = a4;
-  v9 = a5;
-  v29 = v8;
+  managerCopy = manager;
+  contextCopy = context;
+  resultCopy = result;
+  v29 = contextCopy;
   if (self->_forDiagnostics)
   {
     v10 = 0;
@@ -21,8 +21,8 @@ LABEL_3:
   }
 
   collection = self->_collection;
-  v14 = [v30 photoLibrary];
-  v10 = [(PGEventEnrichment *)collection fetchAssetCollectionInPhotoLibrary:v14];
+  photoLibrary = [managerCopy photoLibrary];
+  v10 = [(PGEventEnrichment *)collection fetchAssetCollectionInPhotoLibrary:photoLibrary];
 
   curatedAssetCollection = self->_curatedAssetCollection;
   if (curatedAssetCollection)
@@ -39,18 +39,18 @@ LABEL_3:
     }
 
     v16 = +[PGCurationOptions defaultOptions];
-    v17 = [(PGTitleGenerator *)self momentNodes];
-    [v16 setIncludesAllFaces:{objc_msgSend(v17, "count") == 1}];
+    momentNodes = [(PGTitleGenerator *)self momentNodes];
+    [v16 setIncludesAllFaces:{objc_msgSend(momentNodes, "count") == 1}];
 
-    v18 = [v30 curationManager];
-    v19 = [v18 curatedAssetsForAssetCollection:v10 options:v16 curationContext:v8 progressBlock:0];
+    curationManager = [managerCopy curationManager];
+    v19 = [curationManager curatedAssetsForAssetCollection:v10 options:v16 curationContext:contextCopy progressBlock:0];
 
     if (v19)
     {
       v12 = [MEMORY[0x277CD97B8] transientAssetCollectionWithAssets:v19 title:0];
-      v20 = [v30 curationManager];
-      v21 = [(PGEventEnrichment *)self->_collection uuid];
-      v11 = [v20 curatedKeyAssetForCollectionUUID:v21 curatedAssetCollection:v12 options:0 criteria:0 curationContext:v8];
+      curationManager2 = [managerCopy curationManager];
+      uuid = [(PGEventEnrichment *)self->_collection uuid];
+      v11 = [curationManager2 curatedKeyAssetForCollectionUUID:uuid curatedAssetCollection:v12 options:0 criteria:0 curationContext:contextCopy];
     }
 
     else
@@ -61,41 +61,41 @@ LABEL_3:
   }
 
 LABEL_11:
-  v22 = [(PGTitleGenerator *)self momentNodes];
+  momentNodes2 = [(PGTitleGenerator *)self momentNodes];
   v23 = [PGTitleGenerator alloc];
-  v24 = [(PGTitleGenerator *)self titleGenerationContext];
-  v25 = [(PGTitleGenerator *)v23 initWithMomentNodes:v22 referenceDateInterval:0 keyAsset:v11 curatedAssetCollection:v12 assetCollection:v10 type:0 titleGenerationContext:v24];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  v25 = [(PGTitleGenerator *)v23 initWithMomentNodes:momentNodes2 referenceDateInterval:0 keyAsset:v11 curatedAssetCollection:v12 assetCollection:v10 type:0 titleGenerationContext:titleGenerationContext];
 
-  v26 = [(PGTitleGenerator *)v25 title];
-  v27 = [(PGTitleGenerator *)v25 subtitle];
-  v28 = [(PGTitleGenerator *)v25 usedLocationNodes];
-  [(PGTitleGenerator *)self setUsedLocationNodes:v28];
+  title = [(PGTitleGenerator *)v25 title];
+  subtitle = [(PGTitleGenerator *)v25 subtitle];
+  usedLocationNodes = [(PGTitleGenerator *)v25 usedLocationNodes];
+  [(PGTitleGenerator *)self setUsedLocationNodes:usedLocationNodes];
 
-  if (v9)
+  if (resultCopy)
   {
-    v9[2](v9, v26, v27);
+    resultCopy[2](resultCopy, title, subtitle);
   }
 }
 
-- (PGDefaultCollectionTitleGenerator)initWithCollection:(id)a3 keyAsset:(id)a4 curatedAssetCollection:(id)a5 titleGenerationContext:(id)a6
+- (PGDefaultCollectionTitleGenerator)initWithCollection:(id)collection keyAsset:(id)asset curatedAssetCollection:(id)assetCollection titleGenerationContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 eventEnrichmentMomentNodes];
-  v16 = [v15 temporarySet];
+  collectionCopy = collection;
+  assetCopy = asset;
+  assetCollectionCopy = assetCollection;
+  contextCopy = context;
+  eventEnrichmentMomentNodes = [collectionCopy eventEnrichmentMomentNodes];
+  temporarySet = [eventEnrichmentMomentNodes temporarySet];
 
   v19.receiver = self;
   v19.super_class = PGDefaultCollectionTitleGenerator;
-  v17 = [(PGTitleGenerator *)&v19 initWithMomentNodes:v16 type:0 titleGenerationContext:v14];
+  v17 = [(PGTitleGenerator *)&v19 initWithMomentNodes:temporarySet type:0 titleGenerationContext:contextCopy];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_collection, a3);
+    objc_storeStrong(&v17->_collection, collection);
     v17->_debug = 0;
-    objc_storeStrong(&v17->_keyAsset, a4);
-    objc_storeStrong(&v17->_curatedAssetCollection, a5);
+    objc_storeStrong(&v17->_keyAsset, asset);
+    objc_storeStrong(&v17->_curatedAssetCollection, assetCollection);
   }
 
   return v17;

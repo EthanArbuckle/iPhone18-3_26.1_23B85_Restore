@@ -1,16 +1,16 @@
 @interface CTClientDelegate
-- (void)carrierBundleChange:(id)a3;
+- (void)carrierBundleChange:(id)change;
 - (void)defaultBundleChange;
 - (void)dualSimCapabilityDidChange;
-- (void)operatorBundleChange:(id)a3;
-- (void)preferredDataSimChanged:(id)a3;
+- (void)operatorBundleChange:(id)change;
+- (void)preferredDataSimChanged:(id)changed;
 @end
 
 @implementation CTClientDelegate
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -24,9 +24,9 @@
   (*(self->_fCarrierBundleChangeCb + 2))();
 }
 
-- (void)operatorBundleChange:(id)a3
+- (void)operatorBundleChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -55,9 +55,9 @@
   (*(self->_fDefaultBundleChangeCb + 2))();
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {

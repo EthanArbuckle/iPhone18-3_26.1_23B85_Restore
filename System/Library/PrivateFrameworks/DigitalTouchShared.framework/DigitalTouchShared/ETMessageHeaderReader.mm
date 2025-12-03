@@ -1,20 +1,20 @@
 @interface ETMessageHeaderReader
-+ (double)sendTimeInArchive:(id)a3;
-+ (id)identifierInArchive:(id)a3;
-+ (unsigned)messageTypeInArchive:(id)a3;
-+ (void)getSendTime:(double *)a3 type:(unsigned __int16 *)a4 inArchive:(id)a5;
++ (double)sendTimeInArchive:(id)archive;
++ (id)identifierInArchive:(id)archive;
++ (unsigned)messageTypeInArchive:(id)archive;
++ (void)getSendTime:(double *)time type:(unsigned __int16 *)type inArchive:(id)archive;
 @end
 
 @implementation ETMessageHeaderReader
 
-+ (id)identifierInArchive:(id)a3
++ (id)identifierInArchive:(id)archive
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277D43170]) initWithData:v3];
+  archiveCopy = archive;
+  v4 = [objc_alloc(MEMORY[0x277D43170]) initWithData:archiveCopy];
   for (i = v4; ; v4 = i)
   {
-    v6 = [v4 position];
-    if (v6 >= [i length] || (objc_msgSend(i, "hasError") & 1) != 0)
+    position = [v4 position];
+    if (position >= [i length] || (objc_msgSend(i, "hasError") & 1) != 0)
     {
       break;
     }
@@ -28,8 +28,8 @@
       v10 = [i position] + 1;
       if (v10 >= [i position] && (v11 = objc_msgSend(i, "position") + 1, v11 <= objc_msgSend(i, "length")))
       {
-        v12 = [i data];
-        [v12 getBytes:&v16 range:{objc_msgSend(i, "position"), 1}];
+        data = [i data];
+        [data getBytes:&v16 range:{objc_msgSend(i, "position"), 1}];
 
         [i setPosition:{objc_msgSend(i, "position") + 1}];
       }
@@ -86,14 +86,14 @@ LABEL_23:
   return v14;
 }
 
-+ (unsigned)messageTypeInArchive:(id)a3
++ (unsigned)messageTypeInArchive:(id)archive
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277D43170]) initWithData:v3];
+  archiveCopy = archive;
+  v4 = [objc_alloc(MEMORY[0x277D43170]) initWithData:archiveCopy];
   for (i = v4; ; v4 = i)
   {
-    v6 = [v4 position];
-    if (v6 >= [i length] || (objc_msgSend(i, "hasError") & 1) != 0)
+    position = [v4 position];
+    if (position >= [i length] || (objc_msgSend(i, "hasError") & 1) != 0)
     {
       v14 = -1;
       goto LABEL_35;
@@ -108,8 +108,8 @@ LABEL_23:
       v10 = [i position] + 1;
       if (v10 >= [i position] && (v11 = objc_msgSend(i, "position") + 1, v11 <= objc_msgSend(i, "length")))
       {
-        v12 = [i data];
-        [v12 getBytes:&v23 range:{objc_msgSend(i, "position"), 1}];
+        data = [i data];
+        [data getBytes:&v23 range:{objc_msgSend(i, "position"), 1}];
 
         [i setPosition:{objc_msgSend(i, "position") + 1}];
       }
@@ -170,8 +170,8 @@ LABEL_33:
     v18 = [i position] + 1;
     if (v18 >= [i position] && (v19 = objc_msgSend(i, "position") + 1, v19 <= objc_msgSend(i, "length")))
     {
-      v20 = [i data];
-      [v20 getBytes:&v24 range:{objc_msgSend(i, "position"), 1}];
+      data2 = [i data];
+      [data2 getBytes:&v24 range:{objc_msgSend(i, "position"), 1}];
 
       [i setPosition:{objc_msgSend(i, "position") + 1}];
     }
@@ -218,18 +218,18 @@ LABEL_35:
   return v14;
 }
 
-+ (void)getSendTime:(double *)a3 type:(unsigned __int16 *)a4 inArchive:(id)a5
++ (void)getSendTime:(double *)time type:(unsigned __int16 *)type inArchive:(id)archive
 {
-  v7 = a5;
-  *a4 = -1;
-  *a3 = 0.0;
-  v8 = [objc_alloc(MEMORY[0x277D43170]) initWithData:v7];
+  archiveCopy = archive;
+  *type = -1;
+  *time = 0.0;
+  v8 = [objc_alloc(MEMORY[0x277D43170]) initWithData:archiveCopy];
   v9 = 0;
   v10 = 0;
   while (1)
   {
-    v11 = [v8 position];
-    if (v11 >= [v8 length] || (objc_msgSend(v8, "hasError") & 1) != 0)
+    position = [v8 position];
+    if (position >= [v8 length] || (objc_msgSend(v8, "hasError") & 1) != 0)
     {
       break;
     }
@@ -243,8 +243,8 @@ LABEL_35:
       v15 = [v8 position] + 1;
       if (v15 >= [v8 position] && (v16 = objc_msgSend(v8, "position") + 1, v16 <= objc_msgSend(v8, "length")))
       {
-        v17 = [v8 data];
-        [v17 getBytes:&v33 range:{objc_msgSend(v8, "position"), 1}];
+        data = [v8 data];
+        [data getBytes:&v33 range:{objc_msgSend(v8, "position"), 1}];
 
         [v8 setPosition:{objc_msgSend(v8, "position") + 1}];
       }
@@ -283,8 +283,8 @@ LABEL_16:
       v28 = [v8 position] + 8;
       if (v28 >= [v8 position] && (v29 = objc_msgSend(v8, "position") + 8, v29 <= objc_msgSend(v8, "length")))
       {
-        v30 = [v8 data];
-        [v30 getBytes:&v32 range:{objc_msgSend(v8, "position"), 8}];
+        data2 = [v8 data];
+        [data2 getBytes:&v32 range:{objc_msgSend(v8, "position"), 8}];
 
         [v8 setPosition:{objc_msgSend(v8, "position") + 8}];
       }
@@ -297,7 +297,7 @@ LABEL_16:
       v31 = v32;
       if (([v8 hasError] & 1) == 0)
       {
-        *a3 = v31 / 1000.0;
+        *time = v31 / 1000.0;
       }
 
       v10 = 1;
@@ -324,8 +324,8 @@ LABEL_46:
           v24 = [v8 position] + 1;
           if (v24 >= [v8 position] && (v25 = objc_msgSend(v8, "position") + 1, v25 <= objc_msgSend(v8, "length")))
           {
-            v26 = [v8 data];
-            [v26 getBytes:&v34 range:{objc_msgSend(v8, "position"), 1}];
+            data3 = [v8 data];
+            [data3 getBytes:&v34 range:{objc_msgSend(v8, "position"), 1}];
 
             [v8 setPosition:{objc_msgSend(v8, "position") + 1}];
           }
@@ -363,7 +363,7 @@ LABEL_46:
 LABEL_37:
         if (([v8 hasError] & 1) == 0)
         {
-          *a4 = messageTypeFromETPMessageType(v27);
+          *type = messageTypeFromETPMessageType(v27);
         }
 
         v9 = 1;
@@ -382,14 +382,14 @@ LABEL_37:
   }
 }
 
-+ (double)sendTimeInArchive:(id)a3
++ (double)sendTimeInArchive:(id)archive
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277D43170]) initWithData:v3];
-  v5 = [v4 position];
+  archiveCopy = archive;
+  v4 = [objc_alloc(MEMORY[0x277D43170]) initWithData:archiveCopy];
+  position = [v4 position];
   v6 = [v4 length];
   v7 = 0.0;
-  while (v5 < v6 && ([v4 hasError] & 1) == 0)
+  while (position < v6 && ([v4 hasError] & 1) == 0)
   {
     v8 = 0;
     v9 = 0;
@@ -400,8 +400,8 @@ LABEL_37:
       v11 = [v4 position] + 1;
       if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
       {
-        v13 = [v4 data];
-        [v13 getBytes:&v22 range:{objc_msgSend(v4, "position"), 1}];
+        data = [v4 data];
+        [data getBytes:&v22 range:{objc_msgSend(v4, "position"), 1}];
 
         [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
       }
@@ -438,8 +438,8 @@ LABEL_16:
       v16 = [v4 position] + 8;
       if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
       {
-        v18 = [v4 data];
-        [v18 getBytes:&v21 range:{objc_msgSend(v4, "position"), 8}];
+        data2 = [v4 data];
+        [data2 getBytes:&v21 range:{objc_msgSend(v4, "position"), 8}];
 
         [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
       }
@@ -462,7 +462,7 @@ LABEL_16:
       break;
     }
 
-    v5 = [v4 position];
+    position = [v4 position];
     v6 = [v4 length];
   }
 

@@ -1,43 +1,43 @@
 @interface _PSDeferredUpdates
-+ (id)deferredInvalidationUpdatesWithEntries:(id)a3;
-+ (id)deferredUpdatesWithEntries:(id)a3 specifierUpdates:(id)a4;
-- (_PSDeferredUpdates)initWithSearchEntries:(id)a3 specifierUpdates:(id)a4 invalidatedSpecifiers:(BOOL)a5;
++ (id)deferredInvalidationUpdatesWithEntries:(id)entries;
++ (id)deferredUpdatesWithEntries:(id)entries specifierUpdates:(id)updates;
+- (_PSDeferredUpdates)initWithSearchEntries:(id)entries specifierUpdates:(id)updates invalidatedSpecifiers:(BOOL)specifiers;
 @end
 
 @implementation _PSDeferredUpdates
 
-+ (id)deferredUpdatesWithEntries:(id)a3 specifierUpdates:(id)a4
++ (id)deferredUpdatesWithEntries:(id)entries specifierUpdates:(id)updates
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSearchEntries:v7 specifierUpdates:v6 invalidatedSpecifiers:0];
+  updatesCopy = updates;
+  entriesCopy = entries;
+  v8 = [[self alloc] initWithSearchEntries:entriesCopy specifierUpdates:updatesCopy invalidatedSpecifiers:0];
 
   return v8;
 }
 
-+ (id)deferredInvalidationUpdatesWithEntries:(id)a3
++ (id)deferredInvalidationUpdatesWithEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSearchEntries:v4 specifierUpdates:0 invalidatedSpecifiers:1];
+  entriesCopy = entries;
+  v5 = [[self alloc] initWithSearchEntries:entriesCopy specifierUpdates:0 invalidatedSpecifiers:1];
 
   return v5;
 }
 
-- (_PSDeferredUpdates)initWithSearchEntries:(id)a3 specifierUpdates:(id)a4 invalidatedSpecifiers:(BOOL)a5
+- (_PSDeferredUpdates)initWithSearchEntries:(id)entries specifierUpdates:(id)updates invalidatedSpecifiers:(BOOL)specifiers
 {
-  v8 = a3;
-  v9 = a4;
+  entriesCopy = entries;
+  updatesCopy = updates;
   v14.receiver = self;
   v14.super_class = _PSDeferredUpdates;
   v10 = [(_PSDeferredUpdates *)&v14 init];
   if (v10)
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v8];
+    v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:entriesCopy];
     searchEntries = v10->_searchEntries;
     v10->_searchEntries = v11;
 
-    objc_storeStrong(&v10->_specifierUpdates, a4);
-    v10->_invalidatedSpecifiers = a5;
+    objc_storeStrong(&v10->_specifierUpdates, updates);
+    v10->_invalidatedSpecifiers = specifiers;
   }
 
   return v10;

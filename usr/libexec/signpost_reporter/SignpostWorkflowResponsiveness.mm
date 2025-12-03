@@ -1,28 +1,28 @@
 @interface SignpostWorkflowResponsiveness
 + (id)allWorkflows;
-+ (id)workflowWithName:(id)a3;
-- (BOOL)signpostInAllowList:(id)a3;
-- (SignpostWorkflowResponsiveness)initWithWorkflowEventTracker:(id)a3;
++ (id)workflowWithName:(id)name;
+- (BOOL)signpostInAllowList:(id)list;
+- (SignpostWorkflowResponsiveness)initWithWorkflowEventTracker:(id)tracker;
 - (id)newConfiguredExtractor;
-- (void)addSubsystemCategoriesOfInterestToAllowlist:(id)a3;
+- (void)addSubsystemCategoriesOfInterestToAllowlist:(id)allowlist;
 - (void)handleDeviceReboot;
-- (void)handleSignpostEmitEvent:(id)a3;
-- (void)handleSignpostInterval:(id)a3;
-- (void)handleSignpostIntervalBegin:(id)a3;
+- (void)handleSignpostEmitEvent:(id)event;
+- (void)handleSignpostInterval:(id)interval;
+- (void)handleSignpostIntervalBegin:(id)begin;
 @end
 
 @implementation SignpostWorkflowResponsiveness
 
-- (SignpostWorkflowResponsiveness)initWithWorkflowEventTracker:(id)a3
+- (SignpostWorkflowResponsiveness)initWithWorkflowEventTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = SignpostWorkflowResponsiveness;
   v6 = [(SignpostWorkflowResponsiveness *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workflowEventTracker, a3);
+    objc_storeStrong(&v6->_workflowEventTracker, tracker);
   }
 
   return v7;
@@ -80,9 +80,9 @@
   return v11;
 }
 
-+ (id)workflowWithName:(id)a3
++ (id)workflowWithName:(id)name
 {
-  v3 = [WRWorkflow workflowWithName:a3];
+  v3 = [WRWorkflow workflowWithName:name];
   if (v3)
   {
     v4 = [[WRWorkflowEventTracker alloc] initForReadbackWithWorkflow:v3 eventCompletionCallback:&stru_100014640];
@@ -97,71 +97,71 @@
   return v5;
 }
 
-- (void)addSubsystemCategoriesOfInterestToAllowlist:(id)a3
+- (void)addSubsystemCategoriesOfInterestToAllowlist:(id)allowlist
 {
-  v4 = a3;
-  v7 = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
-  v5 = [v7 workflow];
-  v6 = [v5 allowListForAllSignposts];
-  [v4 addAllowlist:v6];
+  allowlistCopy = allowlist;
+  workflowEventTracker = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
+  workflow = [workflowEventTracker workflow];
+  allowListForAllSignposts = [workflow allowListForAllSignposts];
+  [allowlistCopy addAllowlist:allowListForAllSignposts];
 }
 
-- (BOOL)signpostInAllowList:(id)a3
+- (BOOL)signpostInAllowList:(id)list
 {
-  v4 = a3;
-  v5 = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
-  v6 = [v5 workflow];
-  v7 = [v6 allowListForAllSignposts];
-  v8 = [v4 subsystem];
-  v9 = [v4 category];
+  listCopy = list;
+  workflowEventTracker = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
+  workflow = [workflowEventTracker workflow];
+  allowListForAllSignposts = [workflow allowListForAllSignposts];
+  subsystem = [listCopy subsystem];
+  category = [listCopy category];
 
-  LOBYTE(v4) = [v7 passesSubsystem:v8 category:v9];
-  return v4;
+  LOBYTE(listCopy) = [allowListForAllSignposts passesSubsystem:subsystem category:category];
+  return listCopy;
 }
 
 - (void)handleDeviceReboot
 {
-  v2 = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
-  [v2 reset];
+  workflowEventTracker = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
+  [workflowEventTracker reset];
 }
 
-- (void)handleSignpostIntervalBegin:(id)a3
+- (void)handleSignpostIntervalBegin:(id)begin
 {
-  v5 = a3;
+  beginCopy = begin;
   if ([(SignpostWorkflowResponsiveness *)self signpostInAllowList:?])
   {
-    v4 = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
-    [v4 handleSignpost:v5];
+    workflowEventTracker = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
+    [workflowEventTracker handleSignpost:beginCopy];
   }
 }
 
-- (void)handleSignpostEmitEvent:(id)a3
+- (void)handleSignpostEmitEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   if ([(SignpostWorkflowResponsiveness *)self signpostInAllowList:?])
   {
-    v4 = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
-    [v4 handleSignpost:v5];
+    workflowEventTracker = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
+    [workflowEventTracker handleSignpost:eventCopy];
   }
 }
 
-- (void)handleSignpostInterval:(id)a3
+- (void)handleSignpostInterval:(id)interval
 {
-  v5 = a3;
+  intervalCopy = interval;
   if ([(SignpostWorkflowResponsiveness *)self signpostInAllowList:?])
   {
-    v4 = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
-    [v4 handleSignpost:v5];
+    workflowEventTracker = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
+    [workflowEventTracker handleSignpost:intervalCopy];
   }
 }
 
 - (id)newConfiguredExtractor
 {
   v3 = objc_alloc_init(SignpostSupportObjectExtractor);
-  v4 = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
-  v5 = [v4 workflow];
-  v6 = [v5 allowListForAllSignposts];
-  [v3 setSubsystemCategoryFilter:v6];
+  workflowEventTracker = [(SignpostWorkflowResponsiveness *)self workflowEventTracker];
+  workflow = [workflowEventTracker workflow];
+  allowListForAllSignposts = [workflow allowListForAllSignposts];
+  [v3 setSubsystemCategoryFilter:allowListForAllSignposts];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;

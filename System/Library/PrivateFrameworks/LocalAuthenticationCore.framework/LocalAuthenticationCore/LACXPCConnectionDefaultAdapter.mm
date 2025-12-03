@@ -1,45 +1,45 @@
 @interface LACXPCConnectionDefaultAdapter
-- (BOOL)hasEntitlement:(id)a3;
-- (LACXPCConnectionDefaultAdapter)initWithConnection:(id)a3;
-- (LACXPCConnectionDefaultAdapter)initWithListenerEndpoint:(id)a3;
-- (LACXPCConnectionDefaultAdapter)initWithMachServiceName:(id)a3 options:(unint64_t)a4;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (LACXPCConnectionDefaultAdapter)initWithConnection:(id)connection;
+- (LACXPCConnectionDefaultAdapter)initWithListenerEndpoint:(id)endpoint;
+- (LACXPCConnectionDefaultAdapter)initWithMachServiceName:(id)name options:(unint64_t)options;
 - (LACXPCConnectionDelegate)delegate;
 - (void)activate;
-- (void)configureWithConfiguration:(id)a3;
+- (void)configureWithConfiguration:(id)configuration;
 @end
 
 @implementation LACXPCConnectionDefaultAdapter
 
-- (LACXPCConnectionDefaultAdapter)initWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (LACXPCConnectionDefaultAdapter)initWithMachServiceName:(id)name options:(unint64_t)options
 {
   v6 = MEMORY[0x1E696B0B8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithMachServiceName:v7 options:a4];
+  nameCopy = name;
+  v8 = [[v6 alloc] initWithMachServiceName:nameCopy options:options];
 
   v9 = [(LACXPCConnectionDefaultAdapter *)self initWithConnection:v8];
   return v9;
 }
 
-- (LACXPCConnectionDefaultAdapter)initWithListenerEndpoint:(id)a3
+- (LACXPCConnectionDefaultAdapter)initWithListenerEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x1E696B0B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithListenerEndpoint:v5];
+  endpointCopy = endpoint;
+  v6 = [[v4 alloc] initWithListenerEndpoint:endpointCopy];
 
   v7 = [(LACXPCConnectionDefaultAdapter *)self initWithConnection:v6];
   return v7;
 }
 
-- (LACXPCConnectionDefaultAdapter)initWithConnection:(id)a3
+- (LACXPCConnectionDefaultAdapter)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = LACXPCConnectionDefaultAdapter;
   v6 = [(LACXPCConnectionDefaultAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -48,32 +48,32 @@
 - (void)activate
 {
   [(NSXPCConnection *)self->_connection activate];
-  v3 = [(LACXPCConnectionDefaultAdapter *)self delegate];
+  delegate = [(LACXPCConnectionDefaultAdapter *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(LACXPCConnectionDefaultAdapter *)self delegate];
-    [v5 connectionDidActivate:self];
+    delegate2 = [(LACXPCConnectionDefaultAdapter *)self delegate];
+    [delegate2 connectionDidActivate:self];
   }
 }
 
-- (void)configureWithConfiguration:(id)a3
+- (void)configureWithConfiguration:(id)configuration
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 remoteObjectInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v6];
+    v5 = configurationCopy;
+    remoteObjectInterface = [v5 remoteObjectInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:remoteObjectInterface];
 
-    v7 = [v5 exportedInterface];
-    [(NSXPCConnection *)self->_connection setExportedInterface:v7];
+    exportedInterface = [v5 exportedInterface];
+    [(NSXPCConnection *)self->_connection setExportedInterface:exportedInterface];
 
-    v8 = [v5 exportedObject];
-    [(NSXPCConnection *)self->_connection setExportedObject:v8];
+    exportedObject = [v5 exportedObject];
+    [(NSXPCConnection *)self->_connection setExportedObject:exportedObject];
 
     objc_initWeak(&location, self);
     v22[0] = MEMORY[0x1E69E9820];
@@ -88,13 +88,13 @@
     v20[3] = &unk_1E7A95380;
     objc_copyWeak(&v21, &location);
     [(NSXPCConnection *)self->_connection setInvalidationHandler:v20];
-    v9 = [v5 connectionUID];
-    LOBYTE(v8) = v9 == 0;
+    connectionUID = [v5 connectionUID];
+    LOBYTE(exportedObject) = connectionUID == 0;
 
-    if ((v8 & 1) == 0)
+    if ((exportedObject & 1) == 0)
     {
-      v10 = [v5 connectionUID];
-      v11 = [v10 intValue];
+      connectionUID2 = [v5 connectionUID];
+      intValue = [connectionUID2 intValue];
 
       v12 = LACLogXPC();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -103,22 +103,22 @@
         *buf = 138412546;
         v26 = connection;
         v27 = 1024;
-        v28 = v11;
+        v28 = intValue;
         _os_log_impl(&dword_1B0233000, v12, OS_LOG_TYPE_DEFAULT, "%@ XPC target UID: %u (UI)", buf, 0x12u);
       }
 
-      v14 = [(NSXPCConnection *)self->_connection _xpcConnection];
+      _xpcConnection = [(NSXPCConnection *)self->_connection _xpcConnection];
       xpc_connection_set_target_uid();
     }
 
-    v15 = [v5 replyQueue];
-    v16 = v15 == 0;
+    replyQueue = [v5 replyQueue];
+    v16 = replyQueue == 0;
 
     if (!v16)
     {
       v17 = self->_connection;
-      v18 = [v5 replyQueue];
-      [(NSXPCConnection *)v17 _setQueue:v18];
+      replyQueue2 = [v5 replyQueue];
+      [(NSXPCConnection *)v17 _setQueue:replyQueue2];
     }
 
     objc_destroyWeak(&v21);
@@ -131,7 +131,7 @@
     v5 = LACLogXPC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(LACXPCConnectionDefaultAdapter *)self configureWithConfiguration:v4, v5];
+      [(LACXPCConnectionDefaultAdapter *)self configureWithConfiguration:configurationCopy, v5];
     }
   }
 
@@ -194,12 +194,12 @@ void __61__LACXPCConnectionDefaultAdapter_configureWithConfiguration___block_inv
   }
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:entitlement];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (LACXPCConnectionDelegate)delegate

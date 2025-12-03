@@ -1,5 +1,5 @@
 @interface MUExpandableBlurbView
-- (MUExpandableBlurbView)initWithFrame:(CGRect)a3;
+- (MUExpandableBlurbView)initWithFrame:(CGRect)frame;
 - (void)_contentSizeDidChange;
 - (void)_expand;
 - (void)_setupLabel;
@@ -61,9 +61,9 @@
   v11 = [v10 _mapkit_fontWithWeight:*MEMORY[0x1E69DB980]];
   [(MUExpandingLabel *)self->_expandingLabel setShowMoreFont:v11];
 
-  v12 = [(MUExpandingLabel *)self->_expandingLabel showMoreText];
-  v13 = [v12 localizedUppercaseString];
-  [(MUExpandingLabel *)self->_expandingLabel setShowMoreText:v13];
+  showMoreText = [(MUExpandingLabel *)self->_expandingLabel showMoreText];
+  localizedUppercaseString = [showMoreText localizedUppercaseString];
+  [(MUExpandingLabel *)self->_expandingLabel setShowMoreText:localizedUppercaseString];
 
   [(MUExpandingLabel *)self->_expandingLabel setNumberOfLinesWhenCollapsed:5];
   objc_initWeak(&location, self);
@@ -77,8 +77,8 @@
   [(MUExpandableBlurbView *)self addSubview:self->_expandingLabel, v23, v24, v25, v26];
   v15 = [MUEdgeLayout alloc];
   v16 = self->_expandingLabel;
-  v17 = [(MUExpandableBlurbView *)self layoutMarginsGuide];
-  v18 = [(MUEdgeLayout *)v15 initWithItem:v16 container:v17];
+  layoutMarginsGuide = [(MUExpandableBlurbView *)self layoutMarginsGuide];
+  v18 = [(MUEdgeLayout *)v15 initWithItem:v16 container:layoutMarginsGuide];
 
   v19 = MEMORY[0x1E696ACD8];
   v29[0] = v18;
@@ -86,8 +86,8 @@
   [v19 _mapsui_activateLayouts:v20];
 
   [(UIView *)self _mapsui_addSelectGestureRecognizerWithTarget:self action:sel__expand];
-  v21 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v21 addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -121,11 +121,11 @@ uint64_t __36__MUExpandableBlurbView__setupLabel__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](WeakRetained, v2);
 }
 
-- (MUExpandableBlurbView)initWithFrame:(CGRect)a3
+- (MUExpandableBlurbView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUExpandableBlurbView;
-  v3 = [(MUExpandableBlurbView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUExpandableBlurbView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

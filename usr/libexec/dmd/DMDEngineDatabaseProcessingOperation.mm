@@ -1,17 +1,17 @@
 @interface DMDEngineDatabaseProcessingOperation
-- (BOOL)preprocessDatabaseInContext:(id)a3 forOrganization:(id)a4 error:(id *)a5;
-- (BOOL)updateActiveRestrictionsInContext:(id)a3 error:(id *)a4;
+- (BOOL)preprocessDatabaseInContext:(id)context forOrganization:(id)organization error:(id *)error;
+- (BOOL)updateActiveRestrictionsInContext:(id)context error:(id *)error;
 - (DMDEngineDatabaseProcessingOperationDelegate)delegate;
-- (id)processCommandPayloadsInContext:(id)a3 forOrganization:(id)a4 enqueuedOperations:(id)a5 assetResolver:(id)a6 error:(id *)a7;
-- (id)processDeclarationPayloadsInContext:(id)a3 forOrganization:(id)a4 enqueuedOperations:(id)a5 assetResolver:(id)a6 error:(id *)a7;
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3;
+- (id)processCommandPayloadsInContext:(id)context forOrganization:(id)organization enqueuedOperations:(id)operations assetResolver:(id)resolver error:(id *)error;
+- (id)processDeclarationPayloadsInContext:(id)context forOrganization:(id)organization enqueuedOperations:(id)operations assetResolver:(id)resolver error:(id *)error;
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context;
 @end
 
 @implementation DMDEngineDatabaseProcessingOperation
 
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
   v6 = +[DMDConfigurationOrganization fetchRequest];
   v57 = 0;
@@ -41,7 +41,7 @@
     v11 = &selRef_arbitratePolicyForPrioritizedPolicies_;
     *&v9 = 138412290;
     v41 = v9;
-    v48 = v4;
+    v48 = contextCopy;
     v42 = v7;
     v43 = v6;
     while (2)
@@ -61,7 +61,7 @@
         if (([v15 active] & 1) != 0 || (objc_msgSend(v15, "payloadMetadatas"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), v16, v17))
         {
           v52 = v8;
-          v18 = [(DMDEngineDatabaseProcessingOperation *)self preprocessDatabaseInContext:v4 forOrganization:v15 error:&v52];
+          v18 = [(DMDEngineDatabaseProcessingOperation *)self preprocessDatabaseInContext:contextCopy forOrganization:v15 error:&v52];
           v19 = v52;
 
           if ((v18 & 1) == 0)
@@ -76,17 +76,17 @@
             goto LABEL_33;
           }
 
-          v20 = [(DMDEngineDatabaseProcessingOperation *)self delegate];
+          delegate = [(DMDEngineDatabaseProcessingOperation *)self delegate];
           v21 = objc_opt_respondsToSelector();
 
           if (v21)
           {
-            v22 = [(DMDEngineDatabaseProcessingOperation *)self delegate];
-            v23 = [v15 identifier];
-            v24 = [v22 engineProcessingOperation:self enqueuedOperationsForOrganizationWithIdentifier:v23];
+            delegate2 = [(DMDEngineDatabaseProcessingOperation *)self delegate];
+            identifier = [v15 identifier];
+            v24 = [delegate2 engineProcessingOperation:self enqueuedOperationsForOrganizationWithIdentifier:identifier];
             v25 = [NSMutableArray arrayWithArray:v24];
 
-            v4 = v48;
+            contextCopy = v48;
           }
 
           else
@@ -94,14 +94,14 @@
             v25 = 0;
           }
 
-          v26 = [(DMDEngineDatabaseProcessingOperation *)self delegate];
+          delegate3 = [(DMDEngineDatabaseProcessingOperation *)self delegate];
           v27 = objc_opt_respondsToSelector();
 
           if (v27)
           {
-            v28 = [(DMDEngineDatabaseProcessingOperation *)self delegate];
-            v29 = [v15 identifier];
-            v30 = [v28 engineProcessingOperation:self assetResolverForOrganizationWithIdentifier:v29];
+            delegate4 = [(DMDEngineDatabaseProcessingOperation *)self delegate];
+            identifier2 = [v15 identifier];
+            v30 = [delegate4 engineProcessingOperation:self assetResolverForOrganizationWithIdentifier:identifier2];
           }
 
           else
@@ -110,8 +110,8 @@
           }
 
           v51 = v19;
-          v31 = [(DMDEngineDatabaseProcessingOperation *)self processCommandPayloadsInContext:v4 forOrganization:v15 enqueuedOperations:v25 assetResolver:v30 error:&v51];
-          v32 = v4;
+          v31 = [(DMDEngineDatabaseProcessingOperation *)self processCommandPayloadsInContext:contextCopy forOrganization:v15 enqueuedOperations:v25 assetResolver:v30 error:&v51];
+          v32 = contextCopy;
           v33 = v51;
 
           if (!v31)
@@ -132,7 +132,7 @@ LABEL_32:
             [(DMDEngineDatabaseProcessingOperation *)self setError:v33];
 
             v19 = v33;
-            v4 = v48;
+            contextCopy = v48;
 LABEL_33:
             v7 = v42;
             v6 = v43;
@@ -144,7 +144,7 @@ LABEL_33:
 
           [v14 addObjectsFromArray:v34];
 
-          v4 = v48;
+          contextCopy = v48;
         }
 
         else
@@ -157,7 +157,7 @@ LABEL_33:
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Deleting deactivated organization %@", buf, 0xCu);
           }
 
-          [v4 deleteObject:v15];
+          [contextCopy deleteObject:v15];
           v5 = v14;
         }
 
@@ -183,7 +183,7 @@ LABEL_33:
   v37 = v8;
 
   v49 = v8;
-  v38 = [v4 save:&v49];
+  v38 = [contextCopy save:&v49];
   v8 = v49;
 
   if (!v38)
@@ -204,17 +204,17 @@ LABEL_36:
 LABEL_37:
 }
 
-- (BOOL)preprocessDatabaseInContext:(id)a3 forOrganization:(id)a4 error:(id *)a5
+- (BOOL)preprocessDatabaseInContext:(id)context forOrganization:(id)organization error:(id *)error
 {
-  v7 = a3;
-  v53 = a4;
-  v8 = [v53 identifier];
-  v9 = [DMDDeclarationPayloadMetadata fetchRequestForDeclarationsFromOrganizationWithIdentifier:v8];
+  contextCopy = context;
+  organizationCopy = organization;
+  identifier = [organizationCopy identifier];
+  v9 = [DMDDeclarationPayloadMetadata fetchRequestForDeclarationsFromOrganizationWithIdentifier:identifier];
 
   v65 = 0;
-  v54 = v7;
+  v54 = contextCopy;
   v43 = v9;
-  v10 = [v7 executeFetchRequest:v9 error:&v65];
+  v10 = [contextCopy executeFetchRequest:v9 error:&v65];
   v11 = v65;
   v42 = v10;
   if (v10)
@@ -247,10 +247,10 @@ LABEL_37:
           if (objc_opt_isKindOfClass())
           {
             v50 = v17;
-            v49 = [v16 payload];
-            v18 = [v49 payloadDictionary];
+            payload = [v16 payload];
+            payloadDictionary = [payload payloadDictionary];
             v60 = v11;
-            v19 = [CEMConfigurationBase declarationForPayload:v18 error:&v60];
+            v19 = [CEMConfigurationBase declarationForPayload:payloadDictionary error:&v60];
             v20 = v60;
 
             v48 = v19;
@@ -258,12 +258,12 @@ LABEL_37:
             {
               log = [v16 mutableSetValueForKey:@"outgoingPayloadMetadataReferences"];
               [log removeAllObjects];
-              v21 = [v19 assetReferences];
+              assetReferences = [v19 assetReferences];
               v56 = 0u;
               v57 = 0u;
               v58 = 0u;
               v59 = 0u;
-              v51 = v21;
+              v51 = assetReferences;
               v22 = [v51 countByEnumeratingWithState:&v56 objects:v67 count:16];
               if (v22)
               {
@@ -282,11 +282,11 @@ LABEL_37:
                     }
 
                     v27 = *(*(&v56 + 1) + 8 * v25);
-                    v28 = [v53 identifier];
-                    v29 = [v27 identifier];
-                    v66 = v29;
+                    identifier2 = [organizationCopy identifier];
+                    identifier3 = [v27 identifier];
+                    v66 = identifier3;
                     v30 = [NSArray arrayWithObjects:&v66 count:1];
-                    v31 = [(DMDDeclarationPayloadMetadata *)DMDAssetPayloadMetadata fetchRequestForActiveDeclarationsFromOrganizationWithIdentifier:v28 withIdentifiers:v30];
+                    v31 = [(DMDDeclarationPayloadMetadata *)DMDAssetPayloadMetadata fetchRequestForActiveDeclarationsFromOrganizationWithIdentifier:identifier2 withIdentifiers:v30];
 
                     v55 = v26;
                     v32 = [v54 executeFetchRequest:v31 error:&v55];
@@ -297,12 +297,12 @@ LABEL_37:
                       v34 = DMFConfigurationEngineLog();
                       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                       {
-                        v35 = [v27 identifier];
-                        v36 = [v20 verboseDescription];
+                        identifier4 = [v27 identifier];
+                        verboseDescription = [v20 verboseDescription];
                         *buf = 138543618;
-                        v69 = v35;
+                        v69 = identifier4;
                         v70 = 2114;
-                        v71 = v36;
+                        v71 = verboseDescription;
                         _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Failed to fetch asset with identifier (%{public}@): %{public}@", buf, 0x16u);
                       }
 
@@ -310,10 +310,10 @@ LABEL_37:
                       goto LABEL_23;
                     }
 
-                    v33 = [v32 firstObject];
-                    if (v33)
+                    firstObject = [v32 firstObject];
+                    if (firstObject)
                     {
-                      [log addObject:v33];
+                      [log addObject:firstObject];
                     }
 
                     v25 = v25 + 1;
@@ -343,12 +343,12 @@ LABEL_23:
               log = DMFConfigurationEngineLog();
               if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
               {
-                v37 = [v16 identifier];
-                v38 = [v20 verboseDescription];
+                identifier5 = [v16 identifier];
+                verboseDescription2 = [v20 verboseDescription];
                 *buf = 138543618;
-                v69 = v37;
+                v69 = identifier5;
                 v70 = 2114;
-                v71 = v38;
+                v71 = verboseDescription2;
                 _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "%{public}@: Failed to deserialize configuration engine model: %{public}@", buf, 0x16u);
               }
             }
@@ -378,17 +378,17 @@ LABEL_23:
       sub_10008320C(v11);
     }
 
-    if (a5)
+    if (error)
     {
       v40 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
   return v42 != 0;
 }
 
-- (BOOL)updateActiveRestrictionsInContext:(id)a3 error:(id *)a4
+- (BOOL)updateActiveRestrictionsInContext:(id)context error:(id *)error
 {
   v4 = +[DMDConfigurationPayloadMetadata fetchRequest];
   v5 = [NSPredicate predicateWithFormat:@"%K = %@", @"installed", &__kCFBooleanTrue];
@@ -402,8 +402,8 @@ LABEL_23:
   v56[0] = v9;
   v10 = [NSPredicate predicateWithFormat:@"%K = %@", @"failed", &__kCFBooleanFalse];
   v56[1] = v10;
-  v11 = [NSPredicate predicateWithFormat:@"SUBQUERY(incomingPayloadMetadataReferences, $ref, ($ref.available == YES) && ($ref.predicatePayloadMetadata.%K.BOOLValue == YES)).@count > 0", DMFDeclarationStatePredicateLastEvaluationValueKey];
-  v56[2] = v11;
+  dMFDeclarationStatePredicateLastEvaluationValueKey = [NSPredicate predicateWithFormat:@"SUBQUERY(incomingPayloadMetadataReferences, $ref, ($ref.available == YES) && ($ref.predicatePayloadMetadata.%K.BOOLValue == YES)).@count > 0", DMFDeclarationStatePredicateLastEvaluationValueKey];
+  v56[2] = dMFDeclarationStatePredicateLastEvaluationValueKey;
   v12 = [NSArray arrayWithObjects:v56 count:3];
   v13 = [NSCompoundPredicate andPredicateWithSubpredicates:v12];
 
@@ -445,10 +445,10 @@ LABEL_23:
           }
 
           v24 = *(*(&v47 + 1) + 8 * i);
-          v25 = [v24 type];
-          v26 = [v25 substringFromIndex:24];
-          v27 = [v24 identifier];
-          v28 = [NSString stringWithFormat:@"%@.%@-restrictions", v26, v27];
+          type = [v24 type];
+          v26 = [type substringFromIndex:24];
+          identifier = [v24 identifier];
+          v28 = [NSString stringWithFormat:@"%@.%@-restrictions", v26, identifier];
 
           [v45 addObject:v28];
         }
@@ -497,10 +497,10 @@ LABEL_23:
           sub_100083298();
         }
 
-        if (a4)
+        if (error)
         {
           v37 = v18;
-          *a4 = v18;
+          *error = v18;
         }
       }
     }
@@ -528,11 +528,11 @@ LABEL_23:
       sub_1000833A0();
     }
 
-    if (a4)
+    if (error)
     {
       v35 = v18;
       v32 = 0;
-      *a4 = v18;
+      *error = v18;
     }
 
     else
@@ -544,14 +544,14 @@ LABEL_23:
   return v32;
 }
 
-- (id)processCommandPayloadsInContext:(id)a3 forOrganization:(id)a4 enqueuedOperations:(id)a5 assetResolver:(id)a6 error:(id *)a7
+- (id)processCommandPayloadsInContext:(id)context forOrganization:(id)organization enqueuedOperations:(id)operations assetResolver:(id)resolver error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v119 = a7;
-  if (!a7)
+  contextCopy = context;
+  organizationCopy = organization;
+  operationsCopy = operations;
+  resolverCopy = resolver;
+  errorCopy = error;
+  if (!error)
   {
     sub_10008343C(a2, self);
   }
@@ -563,7 +563,7 @@ LABEL_23:
   v156 = 0u;
   v157 = 0u;
   v158 = 0u;
-  obj = v15;
+  obj = operationsCopy;
   v17 = [obj countByEnumeratingWithState:&v155 objects:v170 count:16];
   if (v17)
   {
@@ -582,11 +582,11 @@ LABEL_23:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [v21 payloadMetadataObjectID];
-          [v125 setObject:v21 forKeyedSubscript:v22];
+          payloadMetadataObjectID = [v21 payloadMetadataObjectID];
+          [v125 setObject:v21 forKeyedSubscript:payloadMetadataObjectID];
 
-          v23 = [v21 payloadIdentifier];
-          [v126 setObject:v21 forKeyedSubscript:v23];
+          payloadIdentifier = [v21 payloadIdentifier];
+          [v126 setObject:v21 forKeyedSubscript:payloadIdentifier];
         }
       }
 
@@ -596,17 +596,17 @@ LABEL_23:
     while (v18);
   }
 
-  v24 = [v14 identifier];
-  v25 = [DMDCommandPayloadMetadata fetchRequestForCommandsPendingExecutionFromOrganizationWithIdentifier:v24];
+  identifier = [organizationCopy identifier];
+  v25 = [DMDCommandPayloadMetadata fetchRequestForCommandsPendingExecutionFromOrganizationWithIdentifier:identifier];
 
-  v26 = [v25 execute:v119];
+  v26 = [v25 execute:errorCopy];
   v122 = v26;
   if (!v26)
   {
     v47 = DMFConfigurationEngineLog();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
-      sub_1000836D4(v119);
+      sub_1000836D4(errorCopy);
     }
 
     v111 = 0;
@@ -614,9 +614,9 @@ LABEL_23:
   }
 
   v115 = v25;
-  v116 = v16;
-  v117 = v13;
-  v118 = v14;
+  v116 = resolverCopy;
+  v117 = contextCopy;
+  v118 = organizationCopy;
   v153 = 0u;
   v154 = 0u;
   v151 = 0u;
@@ -639,8 +639,8 @@ LABEL_23:
       }
 
       v31 = *(*(&v151 + 1) + 8 * j);
-      v32 = [v31 identifier];
-      v33 = [v126 objectForKeyedSubscript:v32];
+      identifier2 = [v31 identifier];
+      v33 = [v126 objectForKeyedSubscript:identifier2];
 
       if (v33)
       {
@@ -653,11 +653,11 @@ LABEL_23:
         v34 = DMFConfigurationEngineLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
-          v35 = [v31 identifier];
+          identifier3 = [v31 identifier];
           v36 = objc_opt_class();
           v37 = NSStringFromClass(v36);
           *buf = 138543618;
-          v166 = v35;
+          v166 = identifier3;
           v167 = 2114;
           v168 = v37;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "%{public}@: Cancelling enqueued %{public}@ so we can enqueue an execute command operation", buf, 0x16u);
@@ -667,25 +667,25 @@ LABEL_23:
       }
 
       v38 = [DMDCommandExecuteOperation alloc];
-      v39 = [(DMDEngineDatabaseOperation *)self database];
-      v40 = [v31 objectID];
-      v41 = [v31 identifier];
-      v33 = [(DMDPayloadActionOperation *)v38 initWithDatabase:v39 payloadMetadataObjectID:v40 payloadIdentifier:v41];
+      database = [(DMDEngineDatabaseOperation *)self database];
+      objectID = [v31 objectID];
+      identifier4 = [v31 identifier];
+      v33 = [(DMDPayloadActionOperation *)v38 initWithDatabase:database payloadMetadataObjectID:objectID payloadIdentifier:identifier4];
 
       -[DMDPayloadActionOperation setRequiresNetworkTether:](v33, "setRequiresNetworkTether:", [v31 requiresNetworkTether]);
       -[DMDPayloadActionOperation setRequiresUnlockedKeychain:](v33, "setRequiresUnlockedKeychain:", [v31 requiresUnlockedKeychain]);
-      v42 = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
-      [(DMDPayloadActionOperation *)v33 setDeviceStateProvider:v42];
+      deviceStateProvider = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
+      [(DMDPayloadActionOperation *)v33 setDeviceStateProvider:deviceStateProvider];
 
-      v43 = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
-      [(DMDPayloadActionOperation *)v33 setTaskOperationProvider:v43];
+      taskOperationProvider = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
+      [(DMDPayloadActionOperation *)v33 setTaskOperationProvider:taskOperationProvider];
 
       [v124 addObject:v33];
-      v44 = [v31 objectID];
-      [v125 setObject:v33 forKeyedSubscript:v44];
+      objectID2 = [v31 objectID];
+      [v125 setObject:v33 forKeyedSubscript:objectID2];
 
-      v45 = [v31 identifier];
-      [v126 setObject:v33 forKeyedSubscript:v45];
+      identifier5 = [v31 identifier];
+      [v126 setObject:v33 forKeyedSubscript:identifier5];
 
 LABEL_24:
     }
@@ -695,11 +695,11 @@ LABEL_24:
 
   while (v28);
 LABEL_26:
-  v14 = v118;
-  v46 = [v118 identifier];
-  v47 = [DMDCommandPayloadMetadata fetchRequestForCommandsPendingRemovalFromOrganizationWithIdentifier:v46];
+  organizationCopy = v118;
+  identifier6 = [v118 identifier];
+  v47 = [DMDCommandPayloadMetadata fetchRequestForCommandsPendingRemovalFromOrganizationWithIdentifier:identifier6];
 
-  v48 = [v47 execute:v119];
+  v48 = [v47 execute:errorCopy];
   v121 = v48;
   if (v48)
   {
@@ -726,8 +726,8 @@ LABEL_26:
         }
 
         v53 = *(*(&v147 + 1) + 8 * k);
-        v54 = [v53 identifier];
-        v55 = [v126 objectForKeyedSubscript:v54];
+        identifier7 = [v53 identifier];
+        v55 = [v126 objectForKeyedSubscript:identifier7];
 
         if (v55)
         {
@@ -740,11 +740,11 @@ LABEL_26:
           v56 = DMFConfigurationEngineLog();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
           {
-            v57 = [v53 identifier];
+            identifier8 = [v53 identifier];
             v58 = objc_opt_class();
             v59 = NSStringFromClass(v58);
             *buf = 138543618;
-            v166 = v57;
+            v166 = identifier8;
             v167 = 2114;
             v168 = v59;
             _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "%{public}@: Cancelling enqueued %{public}@ so we can enqueue an remove command operation", buf, 0x16u);
@@ -754,25 +754,25 @@ LABEL_26:
         }
 
         v60 = [DMDCommandRemoveOperation alloc];
-        v61 = [(DMDEngineDatabaseOperation *)self database];
-        v62 = [v53 objectID];
-        v63 = [v53 identifier];
-        v55 = [(DMDPayloadActionOperation *)v60 initWithDatabase:v61 payloadMetadataObjectID:v62 payloadIdentifier:v63];
+        database2 = [(DMDEngineDatabaseOperation *)self database];
+        objectID3 = [v53 objectID];
+        identifier9 = [v53 identifier];
+        v55 = [(DMDPayloadActionOperation *)v60 initWithDatabase:database2 payloadMetadataObjectID:objectID3 payloadIdentifier:identifier9];
 
         -[DMDPayloadActionOperation setRequiresNetworkTether:](v55, "setRequiresNetworkTether:", [v53 requiresNetworkTether]);
         -[DMDPayloadActionOperation setRequiresUnlockedKeychain:](v55, "setRequiresUnlockedKeychain:", [v53 requiresUnlockedKeychain]);
-        v64 = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
-        [(DMDPayloadActionOperation *)v55 setDeviceStateProvider:v64];
+        deviceStateProvider2 = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
+        [(DMDPayloadActionOperation *)v55 setDeviceStateProvider:deviceStateProvider2];
 
-        v65 = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
-        [(DMDPayloadActionOperation *)v55 setTaskOperationProvider:v65];
+        taskOperationProvider2 = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
+        [(DMDPayloadActionOperation *)v55 setTaskOperationProvider:taskOperationProvider2];
 
         [v124 addObject:v55];
-        v66 = [v53 objectID];
-        [v125 setObject:v55 forKeyedSubscript:v66];
+        objectID4 = [v53 objectID];
+        [v125 setObject:v55 forKeyedSubscript:objectID4];
 
-        v67 = [v53 identifier];
-        [v126 setObject:v55 forKeyedSubscript:v67];
+        identifier10 = [v53 identifier];
+        [v126 setObject:v55 forKeyedSubscript:identifier10];
 
 LABEL_38:
       }
@@ -781,11 +781,11 @@ LABEL_38:
       if (!v50)
       {
 LABEL_40:
-        v14 = v118;
-        v68 = [v118 identifier];
-        v69 = [DMDCommandPayloadMetadata fetchRequestForCommandsPendingDeleteFromOrganizationWithIdentifier:v68];
+        organizationCopy = v118;
+        identifier11 = [v118 identifier];
+        v69 = [DMDCommandPayloadMetadata fetchRequestForCommandsPendingDeleteFromOrganizationWithIdentifier:identifier11];
 
-        v70 = [v69 execute:v119];
+        v70 = [v69 execute:errorCopy];
         v71 = v70;
         if (v70)
         {
@@ -794,8 +794,8 @@ LABEL_40:
           v143 = 0u;
           v144 = 0u;
           v72 = [v70 countByEnumeratingWithState:&v143 objects:v163 count:16];
-          v16 = v116;
-          v13 = v117;
+          resolverCopy = v116;
+          contextCopy = v117;
           v47 = v114;
           v25 = v115;
           if (v72)
@@ -961,7 +961,7 @@ LABEL_40:
             v128 = 0u;
             v103 = v124;
             v104 = [v103 countByEnumeratingWithState:&v127 objects:v159 count:16];
-            v13 = v117;
+            contextCopy = v117;
             if (v104)
             {
               v105 = v104;
@@ -997,10 +997,10 @@ LABEL_40:
               sub_100083588();
             }
 
-            v14 = v118;
+            organizationCopy = v118;
             v69 = v120;
             v25 = v115;
-            v16 = v116;
+            resolverCopy = v116;
             v47 = v114;
           }
 
@@ -1010,13 +1010,13 @@ LABEL_40:
         else
         {
           v112 = DMFConfigurationEngineLog();
-          v16 = v116;
-          v13 = v117;
+          resolverCopy = v116;
+          contextCopy = v117;
           v47 = v114;
           v25 = v115;
           if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
           {
-            sub_1000835BC(v119);
+            sub_1000835BC(errorCopy);
           }
 
           v111 = 0;
@@ -1030,12 +1030,12 @@ LABEL_40:
   v69 = DMFConfigurationEngineLog();
   if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
   {
-    sub_100083648(v119);
+    sub_100083648(errorCopy);
   }
 
   v111 = 0;
-  v16 = v116;
-  v13 = v117;
+  resolverCopy = v116;
+  contextCopy = v117;
   v25 = v115;
 LABEL_107:
 
@@ -1044,45 +1044,45 @@ LABEL_108:
   return v111;
 }
 
-- (id)processDeclarationPayloadsInContext:(id)a3 forOrganization:(id)a4 enqueuedOperations:(id)a5 assetResolver:(id)a6 error:(id *)a7
+- (id)processDeclarationPayloadsInContext:(id)context forOrganization:(id)organization enqueuedOperations:(id)operations assetResolver:(id)resolver error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v234 = a5;
-  v248 = a6;
-  if (!a7)
+  contextCopy = context;
+  organizationCopy = organization;
+  operationsCopy = operations;
+  resolverCopy = resolver;
+  if (!error)
   {
     sub_100083760(a2, self);
   }
 
-  v240 = v13;
-  v14 = [v13 identifier];
-  v15 = [DMDActivationPayloadMetadata fetchRequestForActivationsFromOrganizationWithIdentifier:v14];
+  v240 = organizationCopy;
+  identifier = [organizationCopy identifier];
+  v15 = [DMDActivationPayloadMetadata fetchRequestForActivationsFromOrganizationWithIdentifier:identifier];
 
   v233 = v15;
-  v16 = [v15 execute:a7];
+  v16 = [v15 execute:error];
   v232 = v16;
   if (!v16)
   {
     v250 = DMFConfigurationEngineLog();
     if (os_log_type_enabled(v250, OS_LOG_TYPE_ERROR))
     {
-      sub_100083A50(a7);
+      sub_100083A50(error);
     }
 
     v223 = 0;
-    v224 = v13;
+    v224 = organizationCopy;
     goto LABEL_206;
   }
 
-  v231 = v12;
+  v231 = contextCopy;
   v304 = 0u;
   v305 = 0u;
   v302 = 0u;
   v303 = 0u;
   v17 = v16;
   v18 = [v17 countByEnumeratingWithState:&v302 objects:v336 count:16];
-  v241 = a7;
+  errorCopy = error;
   if (!v18)
   {
     goto LABEL_54;
@@ -1104,29 +1104,29 @@ LABEL_108:
 
       v22 = *(*(&v302 + 1) + 8 * i);
       v23 = v20[310];
-      v24 = [v22 payload];
-      v25 = [v24 payloadDictionary];
-      v26 = [v23 declarationForPayload:v25 error:a7];
+      payload = [v22 payload];
+      payloadDictionary = [payload payloadDictionary];
+      v26 = [v23 declarationForPayload:payloadDictionary error:error];
 
       if (!v26)
       {
         v32 = DMFConfigurationEngineLog();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          v58 = [v22 identifier];
-          v59 = [*a7 verboseDescription];
+          identifier2 = [v22 identifier];
+          verboseDescription = [*error verboseDescription];
           *buf = 138543618;
-          v323 = v58;
+          v323 = identifier2;
           v324 = 2114;
-          v325 = v59;
+          v325 = verboseDescription;
           _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Failed to parse activation payload (%{public}@): %{public}@", buf, 0x16u);
 
           v20 = &CATGetCatalystQueue_ptr;
         }
 
-        v33 = [(DMDEngineDatabaseProcessingOperation *)self activationPredicateObserverManager];
-        v34 = [v22 uniqueIdentifier];
-        [v33 removeActivationPredicateObserverWithUniqueIdentifier:v34];
+        activationPredicateObserverManager = [(DMDEngineDatabaseProcessingOperation *)self activationPredicateObserverManager];
+        uniqueIdentifier = [v22 uniqueIdentifier];
+        [activationPredicateObserverManager removeActivationPredicateObserverWithUniqueIdentifier:uniqueIdentifier];
 
         [v22 setFailed:1];
         v334 = v255;
@@ -1141,10 +1141,10 @@ LABEL_108:
       {
         if ([v22 available])
         {
-          v27 = [v240 identifier];
-          v28 = [DMDConfigurationPayloadMetadata fetchRequestForAvailableConfigurationsFromOrganizationWithIdentifier:v27];
+          identifier3 = [v240 identifier];
+          v28 = [DMDConfigurationPayloadMetadata fetchRequestForAvailableConfigurationsFromOrganizationWithIdentifier:identifier3];
 
-          v29 = [v28 execute:a7];
+          v29 = [v28 execute:error];
           if (v29)
           {
             v332 = v255;
@@ -1164,16 +1164,16 @@ LABEL_108:
             v55 = DMFConfigurationEngineLog();
             if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
             {
-              v72 = [v240 identifier];
-              v73 = [*v241 verboseDescription];
+              identifier4 = [v240 identifier];
+              verboseDescription2 = [*errorCopy verboseDescription];
               *buf = 138543618;
-              v323 = v72;
+              v323 = identifier4;
               v324 = 2114;
-              v325 = v73;
+              v325 = verboseDescription2;
               _os_log_error_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "Failed to fetch available configurations for organization (%{public}@): %{public}@", buf, 0x16u);
 
               v17 = v249;
-              a7 = v241;
+              error = errorCopy;
             }
 
             [v22 setFailed:1];
@@ -1202,9 +1202,9 @@ LABEL_28:
       {
         if (![v22 available])
         {
-          v52 = [(DMDEngineDatabaseProcessingOperation *)self activationPredicateObserverManager];
-          v53 = [v22 uniqueIdentifier];
-          [v52 removeActivationPredicateObserverWithUniqueIdentifier:v53];
+          activationPredicateObserverManager2 = [(DMDEngineDatabaseProcessingOperation *)self activationPredicateObserverManager];
+          uniqueIdentifier2 = [v22 uniqueIdentifier];
+          [activationPredicateObserverManager2 removeActivationPredicateObserverWithUniqueIdentifier:uniqueIdentifier2];
 
           v318 = v255;
           v319 = &__kCFBooleanFalse;
@@ -1214,45 +1214,45 @@ LABEL_28:
         }
 
         v37 = v26;
-        v38 = [v22 predicatePayloadMetadata];
-        v39 = [v38 objectForKeyedSubscript:v255];
-        v40 = [v39 BOOLValue];
+        predicatePayloadMetadata = [v22 predicatePayloadMetadata];
+        v39 = [predicatePayloadMetadata objectForKeyedSubscript:v255];
+        bOOLValue = [v39 BOOLValue];
 
-        v41 = [v37 payloadPredicate];
+        payloadPredicate = [v37 payloadPredicate];
 
-        if (v41)
+        if (payloadPredicate)
         {
-          obj = v40;
-          v42 = [(DMDEngineDatabaseProcessingOperation *)self activationPredicateObserverManager];
+          obj = bOOLValue;
+          activationPredicateObserverManager3 = [(DMDEngineDatabaseProcessingOperation *)self activationPredicateObserverManager];
           v43 = v37;
-          v44 = [v37 payloadPredicate];
-          v45 = [v22 uniqueIdentifier];
-          v46 = [v42 addActivationPredicateObserverForPredicate:v44 withUniqueIdentifier:v45];
+          payloadPredicate2 = [v37 payloadPredicate];
+          uniqueIdentifier3 = [v22 uniqueIdentifier];
+          v46 = [activationPredicateObserverManager3 addActivationPredicateObserverForPredicate:payloadPredicate2 withUniqueIdentifier:uniqueIdentifier3];
 
           if (v46)
           {
-            v47 = [v46 evaluatePredicateWithError:a7];
+            v47 = [v46 evaluatePredicateWithError:error];
             v48 = v47;
             if (v47)
             {
               obj = [v47 BOOLValue];
-              v49 = [v46 metadata];
+              metadata = [v46 metadata];
               goto LABEL_42;
             }
 
             v62 = DMFConfigurationEngineLog();
             if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
             {
-              v243 = [v22 uniqueIdentifier];
-              v74 = [v240 identifier];
-              v75 = [*v241 verboseDescription];
+              uniqueIdentifier4 = [v22 uniqueIdentifier];
+              identifier5 = [v240 identifier];
+              verboseDescription3 = [*errorCopy verboseDescription];
               *buf = 138544130;
-              v323 = v243;
+              v323 = uniqueIdentifier4;
               v324 = 2114;
-              v325 = v74;
+              v325 = identifier5;
               v326 = 2114;
-              v327 = v75;
-              v76 = v75;
+              v327 = verboseDescription3;
+              v76 = verboseDescription3;
               v328 = 1024;
               v329 = obj;
               _os_log_error_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "Failed to evaluate activation predicate with unique identifier %{public}@ for organization (%{public}@): %{public}@ using last predicate evaluation %d", buf, 0x26u);
@@ -1264,19 +1264,19 @@ LABEL_28:
             v48 = DMFConfigurationEngineLog();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
             {
-              v60 = [v22 uniqueIdentifier];
-              v61 = [v240 identifier];
+              uniqueIdentifier5 = [v22 uniqueIdentifier];
+              identifier6 = [v240 identifier];
               *buf = 138543874;
-              v323 = v60;
+              v323 = uniqueIdentifier5;
               v324 = 2114;
-              v325 = v61;
+              v325 = identifier6;
               v326 = 1024;
               LODWORD(v327) = obj;
               _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Failed to create activation predicate observer with unique identifier %{public}@ for organization (%{public}@) using last predicate evaluation %d", buf, 0x1Cu);
             }
           }
 
-          v49 = 0;
+          metadata = 0;
 LABEL_42:
         }
 
@@ -1286,38 +1286,38 @@ LABEL_42:
           v46 = DMFConfigurationEngineLog();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
           {
-            v56 = [v22 uniqueIdentifier];
-            v57 = [v240 identifier];
+            uniqueIdentifier6 = [v22 uniqueIdentifier];
+            identifier7 = [v240 identifier];
             *buf = 138543618;
-            v323 = v56;
+            v323 = uniqueIdentifier6;
             v324 = 2114;
-            v325 = v57;
+            v325 = identifier7;
             _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Activation predicate with unique identifier %{public}@ for organization (%{public}@) is nil", buf, 0x16u);
           }
 
-          v49 = 0;
+          metadata = 0;
           obj = 1;
         }
 
         v63 = [NSMutableArray alloc];
-        v64 = [v43 payloadStandardConfigurations];
-        v65 = [v63 initWithArray:v64];
+        payloadStandardConfigurations = [v43 payloadStandardConfigurations];
+        v65 = [v63 initWithArray:payloadStandardConfigurations];
 
-        v66 = [v240 identifier];
-        v67 = [DMDConfigurationPayloadMetadata fetchRequestForAvailableConfigurationsFromOrganizationWithIdentifier:v66 payloadIdentifiers:v65];
+        identifier8 = [v240 identifier];
+        v67 = [DMDConfigurationPayloadMetadata fetchRequestForAvailableConfigurationsFromOrganizationWithIdentifier:identifier8 payloadIdentifiers:v65];
 
-        v68 = [v67 execute:v241];
+        v68 = [v67 execute:errorCopy];
         if (v68)
         {
-          if (!v49)
+          if (!metadata)
           {
             v320 = v255;
             v69 = [NSNumber numberWithBool:obj];
             v321 = v69;
-            v49 = [NSDictionary dictionaryWithObjects:&v321 forKeys:&v320 count:1];
+            metadata = [NSDictionary dictionaryWithObjects:&v321 forKeys:&v320 count:1];
           }
 
-          [v22 setPredicatePayloadMetadata:v49];
+          [v22 setPredicatePayloadMetadata:metadata];
           [v22 setInstalled:1];
           v70 = [NSSet setWithArray:v68];
           [v22 setOutgoingPayloadMetadataReferences:v70];
@@ -1331,18 +1331,18 @@ LABEL_42:
           if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
           {
             objc = [v240 identifier];
-            v242 = [*v241 verboseDescription];
+            verboseDescription4 = [*errorCopy verboseDescription];
             *buf = 138543618;
             v323 = objc;
             v324 = 2114;
-            v325 = v242;
+            v325 = verboseDescription4;
             _os_log_error_impl(&_mh_execute_header, v71, OS_LOG_TYPE_ERROR, "Failed to fetch available configurations for organization (%{public}@): %{public}@", buf, 0x16u);
           }
 
           [v22 setFailed:1];
         }
 
-        a7 = v241;
+        error = errorCopy;
         v17 = v249;
         goto LABEL_51;
       }
@@ -1350,9 +1350,9 @@ LABEL_42:
       v50 = DMFConfigurationEngineLog();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
-        v51 = [v22 type];
+        type = [v22 type];
         *buf = 138543362;
-        v323 = v51;
+        v323 = type;
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Unknown activation type: %{public}@", buf, 0xCu);
       }
 
@@ -1365,8 +1365,8 @@ LABEL_52:
   while (v19);
 LABEL_54:
 
-  v12 = v231;
-  if ([(DMDEngineDatabaseProcessingOperation *)self updateActiveRestrictionsInContext:v231 error:a7])
+  contextCopy = v231;
+  if ([(DMDEngineDatabaseProcessingOperation *)self updateActiveRestrictionsInContext:v231 error:error])
   {
     v250 = objc_opt_new();
     v256 = objc_opt_new();
@@ -1375,7 +1375,7 @@ LABEL_54:
     v299 = 0u;
     v300 = 0u;
     v301 = 0u;
-    obja = v234;
+    obja = operationsCopy;
     v77 = [obja countByEnumeratingWithState:&v298 objects:v317 count:16];
     if (v77)
     {
@@ -1394,11 +1394,11 @@ LABEL_54:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v82 = [v81 payloadMetadataObjectID];
-            [v256 setObject:v81 forKeyedSubscript:v82];
+            payloadMetadataObjectID = [v81 payloadMetadataObjectID];
+            [v256 setObject:v81 forKeyedSubscript:payloadMetadataObjectID];
 
-            v83 = [v81 payloadIdentifier];
-            [v244 setObject:v81 forKeyedSubscript:v83];
+            payloadIdentifier = [v81 payloadIdentifier];
+            [v244 setObject:v81 forKeyedSubscript:payloadIdentifier];
           }
         }
 
@@ -1408,10 +1408,10 @@ LABEL_54:
       while (v78);
     }
 
-    v84 = [v240 identifier];
-    v85 = [DMDConfigurationPayloadMetadata fetchRequestForConfigurationsPendingRemoveFromOrganizationWithIdentifier:v84];
+    identifier9 = [v240 identifier];
+    v85 = [DMDConfigurationPayloadMetadata fetchRequestForConfigurationsPendingRemoveFromOrganizationWithIdentifier:identifier9];
 
-    v86 = [v85 execute:a7];
+    v86 = [v85 execute:error];
     v87 = [v86 mutableCopy];
 
     if (v87)
@@ -1442,8 +1442,8 @@ LABEL_54:
             }
 
             v93 = *(*(&v294 + 1) + 8 * v92);
-            v94 = [v93 identifier];
-            v95 = [v244 objectForKeyedSubscript:v94];
+            identifier10 = [v93 identifier];
+            v95 = [v244 objectForKeyedSubscript:identifier10];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -1451,9 +1451,9 @@ LABEL_54:
               v96 = DMFConfigurationEngineLog();
               if (os_log_type_enabled(v96, OS_LOG_TYPE_INFO))
               {
-                v97 = [v93 identifier];
+                identifier11 = [v93 identifier];
                 *buf = 138543362;
-                v323 = v97;
+                v323 = identifier11;
                 _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_INFO, "Remove %{public}@: Declaration remove operation already enqueued, skipping", buf, 0xCu);
               }
             }
@@ -1465,11 +1465,11 @@ LABEL_54:
                 v98 = DMFConfigurationEngineLog();
                 if (os_log_type_enabled(v98, OS_LOG_TYPE_INFO))
                 {
-                  v99 = [v93 identifier];
+                  identifier12 = [v93 identifier];
                   v100 = objc_opt_class();
                   v101 = NSStringFromClass(v100);
                   *buf = 138543618;
-                  v323 = v99;
+                  v323 = identifier12;
                   v324 = 2114;
                   v325 = v101;
                   _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_INFO, "Remove %{public}@: Cancelling enqueued %{public}@ so we can enqueue a remove operation", buf, 0x16u);
@@ -1480,25 +1480,25 @@ LABEL_54:
 
               v102 = p_superclass;
               v103 = objc_alloc((p_superclass + 409));
-              v104 = [(DMDEngineDatabaseOperation *)self database];
-              v105 = [v93 objectID];
-              v106 = [v93 identifier];
-              v96 = [v103 initWithDatabase:v104 payloadMetadataObjectID:v105 payloadIdentifier:v106];
+              database = [(DMDEngineDatabaseOperation *)self database];
+              objectID = [v93 objectID];
+              identifier13 = [v93 identifier];
+              v96 = [v103 initWithDatabase:database payloadMetadataObjectID:objectID payloadIdentifier:identifier13];
 
-              v107 = [v93 identifier];
-              [v96 setName:v107];
+              identifier14 = [v93 identifier];
+              [v96 setName:identifier14];
 
               -[NSObject setRequiresNetworkTether:](v96, "setRequiresNetworkTether:", [v93 requiresNetworkTether]);
               -[NSObject setRequiresUnlockedKeychain:](v96, "setRequiresUnlockedKeychain:", [v93 requiresUnlockedKeychain]);
-              v108 = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
-              [v96 setDeviceStateProvider:v108];
+              deviceStateProvider = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
+              [v96 setDeviceStateProvider:deviceStateProvider];
 
-              v109 = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
-              [v96 setTaskOperationProvider:v109];
+              taskOperationProvider = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
+              [v96 setTaskOperationProvider:taskOperationProvider];
 
               [v250 addObject:v96];
-              v110 = [v93 objectID];
-              [v256 setObject:v96 forKeyedSubscript:v110];
+              objectID2 = [v93 objectID];
+              [v256 setObject:v96 forKeyedSubscript:objectID2];
 
               v111 = DMFConfigurationEngineLog();
               if (os_log_type_enabled(v111, OS_LOG_TYPE_INFO))
@@ -1523,12 +1523,12 @@ LABEL_54:
         while (v89);
       }
 
-      v112 = [v240 identifier];
-      v113 = [DMDConfigurationPayloadMetadata fetchRequestForConfigurationsPendingInstallFromOrganizationWithIdentifier:v112];
+      identifier15 = [v240 identifier];
+      v113 = [DMDConfigurationPayloadMetadata fetchRequestForConfigurationsPendingInstallFromOrganizationWithIdentifier:identifier15];
 
       v230 = v113;
-      v114 = v241;
-      v115 = [v113 execute:v241];
+      v114 = errorCopy;
+      v115 = [v113 execute:errorCopy];
       v116 = [v115 mutableCopy];
 
       v228 = v116;
@@ -1559,8 +1559,8 @@ LABEL_54:
               }
 
               v123 = *(*(&v290 + 1) + 8 * v122);
-              v124 = [v123 identifier];
-              v125 = [v244 objectForKeyedSubscript:v124];
+              identifier16 = [v123 identifier];
+              v125 = [v244 objectForKeyedSubscript:identifier16];
 
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1570,11 +1570,11 @@ LABEL_54:
                   v128 = DMFConfigurationEngineLog();
                   if (os_log_type_enabled(v128, OS_LOG_TYPE_INFO))
                   {
-                    v129 = [v123 identifier];
+                    identifier17 = [v123 identifier];
                     v130 = objc_opt_class();
                     v131 = NSStringFromClass(v130);
                     *buf = 138543618;
-                    v323 = v129;
+                    v323 = identifier17;
                     v324 = 2114;
                     v325 = v131;
                     _os_log_impl(&_mh_execute_header, v128, OS_LOG_TYPE_INFO, "Install %{public}@: Cancelling enqueued %{public}@ so we can enqueue an install operation", buf, 0x16u);
@@ -1586,25 +1586,25 @@ LABEL_54:
                 v238 = v125;
                 v239 = v122;
                 v132 = objc_alloc((v121 + 369));
-                v133 = [(DMDEngineDatabaseOperation *)self database];
-                v134 = [v123 objectID];
-                v135 = [v123 identifier];
-                v136 = [v132 initWithDatabase:v133 payloadMetadataObjectID:v134 payloadIdentifier:v135];
+                database2 = [(DMDEngineDatabaseOperation *)self database];
+                objectID3 = [v123 objectID];
+                identifier18 = [v123 identifier];
+                v136 = [v132 initWithDatabase:database2 payloadMetadataObjectID:objectID3 payloadIdentifier:identifier18];
 
-                v137 = [v123 identifier];
-                [v136 setName:v137];
+                identifier19 = [v123 identifier];
+                [v136 setName:identifier19];
 
                 -[NSObject setRequiresNetworkTether:](v136, "setRequiresNetworkTether:", [v123 requiresNetworkTether]);
                 -[NSObject setRequiresUnlockedKeychain:](v136, "setRequiresUnlockedKeychain:", [v123 requiresUnlockedKeychain]);
-                v138 = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
-                [v136 setDeviceStateProvider:v138];
+                deviceStateProvider2 = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
+                [v136 setDeviceStateProvider:deviceStateProvider2];
 
-                v139 = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
-                [v136 setTaskOperationProvider:v139];
+                taskOperationProvider2 = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
+                [v136 setTaskOperationProvider:taskOperationProvider2];
 
                 [v250 addObject:v136];
-                v140 = [v123 objectID];
-                [v118 setObject:v136 forKeyedSubscript:v140];
+                objectID4 = [v123 objectID];
+                [v118 setObject:v136 forKeyedSubscript:objectID4];
 
                 [obja addObject:v136];
                 v141 = DMFConfigurationEngineLog();
@@ -1619,8 +1619,8 @@ LABEL_54:
                 v289 = 0u;
                 v286 = 0u;
                 v287 = 0u;
-                v142 = [v123 outgoingPayloadMetadataReferences];
-                v143 = [v142 countByEnumeratingWithState:&v286 objects:v314 count:16];
+                outgoingPayloadMetadataReferences = [v123 outgoingPayloadMetadataReferences];
+                v143 = [outgoingPayloadMetadataReferences countByEnumeratingWithState:&v286 objects:v314 count:16];
                 v261 = v136;
                 if (!v143)
                 {
@@ -1642,15 +1642,15 @@ LABEL_118:
 LABEL_100:
                   if (*v287 != v145)
                   {
-                    objc_enumerationMutation(v142);
+                    objc_enumerationMutation(outgoingPayloadMetadataReferences);
                   }
 
                   v147 = *(*(&v286 + 1) + 8 * v146);
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v147 installed] & 1) == 0)
                   {
-                    v148 = [v147 objectID];
-                    v149 = [v118 objectForKeyedSubscript:v148];
+                    objectID5 = [v147 objectID];
+                    v149 = [v118 objectForKeyedSubscript:objectID5];
 
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
@@ -1666,11 +1666,11 @@ LABEL_100:
                       v150 = DMFConfigurationEngineLog();
                       if (os_log_type_enabled(v150, OS_LOG_TYPE_INFO))
                       {
-                        v151 = [v147 identifier];
+                        identifier20 = [v147 identifier];
                         v152 = objc_opt_class();
                         v153 = NSStringFromClass(v152);
                         *buf = 138543618;
-                        v323 = v151;
+                        v323 = identifier20;
                         v324 = 2114;
                         v325 = v153;
                         _os_log_impl(&_mh_execute_header, v150, OS_LOG_TYPE_INFO, "Install %{public}@: Cancelling enqueued %{public}@ so we can enqueue an asset install operation", buf, 0x16u);
@@ -1679,27 +1679,27 @@ LABEL_100:
                       [(DMDAssetInstallOperation *)v149 cancel];
 LABEL_110:
                       v154 = [DMDAssetInstallOperation alloc];
-                      v155 = [(DMDEngineDatabaseOperation *)self database];
-                      v156 = [v147 objectID];
-                      v157 = [v147 identifier];
-                      v158 = [(DMDPayloadActionOperation *)v154 initWithDatabase:v155 payloadMetadataObjectID:v156 payloadIdentifier:v157];
+                      database3 = [(DMDEngineDatabaseOperation *)self database];
+                      objectID6 = [v147 objectID];
+                      identifier21 = [v147 identifier];
+                      v158 = [(DMDPayloadActionOperation *)v154 initWithDatabase:database3 payloadMetadataObjectID:objectID6 payloadIdentifier:identifier21];
 
-                      v159 = [v147 identifier];
-                      [(DMDAssetInstallOperation *)v158 setName:v159];
+                      identifier22 = [v147 identifier];
+                      [(DMDAssetInstallOperation *)v158 setName:identifier22];
 
                       -[DMDPayloadActionOperation setRequiresNetworkTether:](v158, "setRequiresNetworkTether:", [v147 requiresNetworkTether]);
                       -[DMDPayloadActionOperation setRequiresUnlockedKeychain:](v158, "setRequiresUnlockedKeychain:", [v147 requiresUnlockedKeychain]);
-                      v160 = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
-                      [(DMDPayloadActionOperation *)v158 setDeviceStateProvider:v160];
+                      deviceStateProvider3 = [(DMDEngineDatabaseProcessingOperation *)self deviceStateProvider];
+                      [(DMDPayloadActionOperation *)v158 setDeviceStateProvider:deviceStateProvider3];
 
                       v118 = v256;
-                      v161 = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
-                      [(DMDPayloadActionOperation *)v158 setTaskOperationProvider:v161];
+                      taskOperationProvider3 = [(DMDEngineDatabaseProcessingOperation *)self taskOperationProvider];
+                      [(DMDPayloadActionOperation *)v158 setTaskOperationProvider:taskOperationProvider3];
 
-                      [(DMDAssetInstallOperation *)v158 setAssetResolver:v248];
+                      [(DMDAssetInstallOperation *)v158 setAssetResolver:resolverCopy];
                       [v250 addObject:v158];
-                      v162 = [v147 objectID];
-                      [v256 setObject:v158 forKeyedSubscript:v162];
+                      objectID7 = [v147 objectID];
+                      [v256 setObject:v158 forKeyedSubscript:objectID7];
 
                       [obja addObject:v158];
                       v149 = v158;
@@ -1712,8 +1712,8 @@ LABEL_110:
                       }
                     }
 
-                    v164 = [v261 dependencies];
-                    v165 = [v164 containsObject:v149];
+                    dependencies = [v261 dependencies];
+                    v165 = [dependencies containsObject:v149];
 
                     if ((v165 & 1) == 0)
                     {
@@ -1723,7 +1723,7 @@ LABEL_110:
 
                   if (v144 == ++v146)
                   {
-                    v144 = [v142 countByEnumeratingWithState:&v286 objects:v314 count:16];
+                    v144 = [outgoingPayloadMetadataReferences countByEnumeratingWithState:&v286 objects:v314 count:16];
                     if (!v144)
                     {
                       goto LABEL_118;
@@ -1740,16 +1740,16 @@ LABEL_110:
               v261 = v126;
               if (os_log_type_enabled(v126, OS_LOG_TYPE_INFO))
               {
-                v127 = [v123 identifier];
+                identifier23 = [v123 identifier];
                 *buf = 138543362;
-                v323 = v127;
+                v323 = identifier23;
                 _os_log_impl(&_mh_execute_header, v126, OS_LOG_TYPE_INFO, "Install %{public}@: Declaration install operation already enqueued, skipping", buf, 0xCu);
               }
 
 LABEL_119:
 
               v122 = v122 + 1;
-              v114 = v241;
+              v114 = errorCopy;
             }
 
             while (v122 != v119);
@@ -1759,8 +1759,8 @@ LABEL_119:
           while (v119);
         }
 
-        v166 = [v240 identifier];
-        v167 = [DMDConfigurationPayloadMetadata fetchRequestForConfigurationsPendingInactiveFromOrganizationWithIdentifier:v166];
+        identifier24 = [v240 identifier];
+        v167 = [DMDConfigurationPayloadMetadata fetchRequestForConfigurationsPendingInactiveFromOrganizationWithIdentifier:identifier24];
 
         v168 = [v167 execute:v114];
         v169 = v168;
@@ -1801,10 +1801,10 @@ LABEL_119:
             while (v172);
           }
 
-          v179 = [v240 identifier];
-          v180 = [DMDDeclarationPayloadMetadata fetchRequestForDeclarationsPendingDeleteFromOrganizationWithIdentifier:v179];
+          identifier25 = [v240 identifier];
+          v180 = [DMDDeclarationPayloadMetadata fetchRequestForDeclarationsPendingDeleteFromOrganizationWithIdentifier:identifier25];
 
-          v181 = [v180 execute:v241];
+          v181 = [v180 execute:errorCopy];
           v182 = v181;
           if (v181)
           {
@@ -1814,7 +1814,7 @@ LABEL_119:
             v279 = 0u;
             v183 = v181;
             v184 = [v183 countByEnumeratingWithState:&v278 objects:v310 count:16];
-            v12 = v231;
+            contextCopy = v231;
             v118 = v256;
             if (v184)
             {
@@ -2016,7 +2016,7 @@ LABEL_119:
                 sub_100083588();
               }
 
-              v12 = v231;
+              contextCopy = v231;
               v180 = objb;
               v118 = v256;
             }
@@ -2029,12 +2029,12 @@ LABEL_119:
           else
           {
             v225 = DMFConfigurationEngineLog();
-            v12 = v231;
+            contextCopy = v231;
             v118 = v256;
             v87 = v229;
             if (os_log_type_enabled(v225, OS_LOG_TYPE_ERROR))
             {
-              sub_1000838AC(v241);
+              sub_1000838AC(errorCopy);
             }
 
             v223 = 0;
@@ -2055,7 +2055,7 @@ LABEL_119:
           }
 
           v223 = 0;
-          v12 = v231;
+          contextCopy = v231;
         }
       }
 
@@ -2065,11 +2065,11 @@ LABEL_119:
         v118 = v256;
         if (os_log_type_enabled(v167, OS_LOG_TYPE_ERROR))
         {
-          sub_100083938(v241);
+          sub_100083938(errorCopy);
         }
 
         v223 = 0;
-        v12 = v231;
+        contextCopy = v231;
         v85 = v227;
         v87 = v229;
       }
@@ -2082,7 +2082,7 @@ LABEL_119:
       v230 = DMFConfigurationEngineLog();
       if (os_log_type_enabled(v230, OS_LOG_TYPE_ERROR))
       {
-        sub_1000839C4(a7);
+        sub_1000839C4(error);
       }
 
       v223 = 0;

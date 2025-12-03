@@ -1,22 +1,22 @@
 @interface LBFExperimentEventsHolder
 - (BOOL)dumpFetchedEvents;
-- (LBFExperimentEventsHolder)initWithExperimentOrTaskId:(id)a3;
-- (id)ensureDeploymentEventsHolder:(id)a3;
+- (LBFExperimentEventsHolder)initWithExperimentOrTaskId:(id)id;
+- (id)ensureDeploymentEventsHolder:(id)holder;
 - (id)fetchedEventsInDictionaries;
 @end
 
 @implementation LBFExperimentEventsHolder
 
-- (LBFExperimentEventsHolder)initWithExperimentOrTaskId:(id)a3
+- (LBFExperimentEventsHolder)initWithExperimentOrTaskId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v10.receiver = self;
   v10.super_class = LBFExperimentEventsHolder;
   v6 = [(LBFExperimentEventsHolder *)&v10 init];
   if (v6)
   {
     LBFLoggingUtilsInit();
-    objc_storeStrong(&v6->_experimentOrTaskId, a3);
+    objc_storeStrong(&v6->_experimentOrTaskId, id);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     deploymentEventsHolders = v6->_deploymentEventsHolders;
     v6->_deploymentEventsHolders = v7;
@@ -25,15 +25,15 @@
   return v6;
 }
 
-- (id)ensureDeploymentEventsHolder:(id)a3
+- (id)ensureDeploymentEventsHolder:(id)holder
 {
-  v4 = a3;
-  v8 = objc_msgSend_objectForKey_(self->_deploymentEventsHolders, v5, v4, v6, v7);
+  holderCopy = holder;
+  v8 = objc_msgSend_objectForKey_(self->_deploymentEventsHolders, v5, holderCopy, v6, v7);
   if (!v8)
   {
     v9 = [LBFDeploymentEventsHolder alloc];
-    v8 = objc_msgSend_initWithExperimentOrTaskId_deploymentId_(v9, v10, self->_experimentOrTaskId, v4, v11);
-    objc_msgSend_setValue_forKey_(self->_deploymentEventsHolders, v12, v8, v4, v13);
+    v8 = objc_msgSend_initWithExperimentOrTaskId_deploymentId_(v9, v10, self->_experimentOrTaskId, holderCopy, v11);
+    objc_msgSend_setValue_forKey_(self->_deploymentEventsHolders, v12, v8, holderCopy, v13);
   }
 
   v14 = v8;

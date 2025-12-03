@@ -1,20 +1,20 @@
 @interface SUUITracklistColumn
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setPreferredWidthForAttributedStrings:(id)a3;
+- (void)setPreferredWidthForAttributedStrings:(id)strings;
 @end
 
 @implementation SUUITracklistColumn
 
-- (void)setPreferredWidthForAttributedStrings:(id)a3
+- (void)setPreferredWidthForAttributedStrings:(id)strings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [stringsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   v6 = 0.0;
   if (v5)
   {
@@ -27,7 +27,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stringsCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -48,7 +48,7 @@
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [stringsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -78,9 +78,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setColumnIdentifier:self->_columnIdentifier];
   [v4 setContentAlignment:self->_contentAlignment];
   [v4 setHeaderAlignment:self->_headerAlignment];

@@ -1,27 +1,27 @@
 @interface SHMultipleConcurrentMatcher
-- (BOOL)session:(id)a3 shouldAttemptToMatchSignature:(id)a4;
+- (BOOL)session:(id)session shouldAttemptToMatchSignature:(id)signature;
 - (SHMatcherDelegate)delegate;
-- (SHMultipleConcurrentMatcher)initWithMatchers:(id)a3 audioRecordingManager:(id)a4;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
-- (void)startRecognitionForRequest:(id)a3;
+- (SHMultipleConcurrentMatcher)initWithMatchers:(id)matchers audioRecordingManager:(id)manager;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
+- (void)startRecognitionForRequest:(id)request;
 - (void)stopRecognition;
-- (void)stopRecognitionForRequestID:(id)a3;
+- (void)stopRecognitionForRequestID:(id)d;
 @end
 
 @implementation SHMultipleConcurrentMatcher
 
-- (SHMultipleConcurrentMatcher)initWithMatchers:(id)a3 audioRecordingManager:(id)a4
+- (SHMultipleConcurrentMatcher)initWithMatchers:(id)matchers audioRecordingManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  matchersCopy = matchers;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = SHMultipleConcurrentMatcher;
   v9 = [(SHMultipleConcurrentMatcher *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_matchers, a3);
-    objc_storeStrong(&v10->_audioRecordingManager, a4);
+    objc_storeStrong(&v9->_matchers, matchers);
+    objc_storeStrong(&v10->_audioRecordingManager, manager);
     v11 = objc_alloc_init(NSRecursiveLock);
     lock = v10->_lock;
     v10->_lock = v11;
@@ -30,7 +30,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v13 = v7;
+    v13 = matchersCopy;
     v14 = [v13 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v14)
     {
@@ -61,18 +61,18 @@
   return v10;
 }
 
-- (void)startRecognitionForRequest:(id)a3
+- (void)startRecognitionForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SHMultipleConcurrentMatcher *)self lock];
-  [v5 lock];
+  requestCopy = request;
+  lock = [(SHMultipleConcurrentMatcher *)self lock];
+  [lock lock];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(SHMultipleConcurrentMatcher *)self matchers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  matchers = [(SHMultipleConcurrentMatcher *)self matchers];
+  v7 = [matchers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -83,7 +83,7 @@ LABEL_3:
     {
       if (*v14 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(matchers);
       }
 
       v11 = *(*(&v13 + 1) + 8 * v10);
@@ -92,10 +92,10 @@ LABEL_3:
         break;
       }
 
-      [v11 startRecognitionForRequest:v4];
+      [v11 startRecognitionForRequest:requestCopy];
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [matchers countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -106,23 +106,23 @@ LABEL_3:
     }
   }
 
-  v12 = [(SHMultipleConcurrentMatcher *)self lock];
-  [v12 unlock];
+  lock2 = [(SHMultipleConcurrentMatcher *)self lock];
+  [lock2 unlock];
 }
 
-- (void)stopRecognitionForRequestID:(id)a3
+- (void)stopRecognitionForRequestID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHMultipleConcurrentMatcher *)self lock];
-  [v5 lock];
+  dCopy = d;
+  lock = [(SHMultipleConcurrentMatcher *)self lock];
+  [lock lock];
 
   [(SHMultipleConcurrentMatcher *)self setRecognitionHasStopped:1];
   v6 = sh_log_object();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(SHMultipleConcurrentMatcher *)self matchers];
+    matchers = [(SHMultipleConcurrentMatcher *)self matchers];
     *buf = 138412290;
-    v20 = v7;
+    v20 = matchers;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "SHMultipleConcurrentMatcher Calling stop on child matchers %@", buf, 0xCu);
   }
 
@@ -130,8 +130,8 @@ LABEL_3:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(SHMultipleConcurrentMatcher *)self matchers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  matchers2 = [(SHMultipleConcurrentMatcher *)self matchers];
+  v9 = [matchers2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -143,36 +143,36 @@ LABEL_3:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(matchers2);
         }
 
-        [*(*(&v14 + 1) + 8 * v12) stopRecognitionForRequestID:v4];
+        [*(*(&v14 + 1) + 8 * v12) stopRecognitionForRequestID:dCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [matchers2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(SHMultipleConcurrentMatcher *)self lock];
-  [v13 unlock];
+  lock2 = [(SHMultipleConcurrentMatcher *)self lock];
+  [lock2 unlock];
 }
 
 - (void)stopRecognition
 {
-  v3 = [(SHMultipleConcurrentMatcher *)self lock];
-  [v3 lock];
+  lock = [(SHMultipleConcurrentMatcher *)self lock];
+  [lock lock];
 
   [(SHMultipleConcurrentMatcher *)self setRecognitionHasStopped:1];
   v4 = sh_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(SHMultipleConcurrentMatcher *)self matchers];
+    matchers = [(SHMultipleConcurrentMatcher *)self matchers];
     *buf = 138412290;
-    v18 = v5;
+    v18 = matchers;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "SHMultipleConcurrentMatcher Calling stop on child matchers %@", buf, 0xCu);
   }
 
@@ -180,8 +180,8 @@ LABEL_3:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(SHMultipleConcurrentMatcher *)self matchers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  matchers2 = [(SHMultipleConcurrentMatcher *)self matchers];
+  v7 = [matchers2 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -193,7 +193,7 @@ LABEL_3:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(matchers2);
         }
 
         [*(*(&v12 + 1) + 8 * v10) stopRecognition];
@@ -201,64 +201,64 @@ LABEL_3:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [matchers2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(SHMultipleConcurrentMatcher *)self lock];
-  [v11 unlock];
+  lock2 = [(SHMultipleConcurrentMatcher *)self lock];
+  [lock2 unlock];
 }
 
-- (BOOL)session:(id)a3 shouldAttemptToMatchSignature:(id)a4
+- (BOOL)session:(id)session shouldAttemptToMatchSignature:(id)signature
 {
-  v5 = a4;
-  v6 = [v5 metrics];
-  v7 = [v6 recordingSource];
-  v8 = [(SHMultipleConcurrentMatcher *)self audioRecordingManager];
-  v9 = [v8 suggestedAudioRecordingSource];
+  signatureCopy = signature;
+  metrics = [signatureCopy metrics];
+  recordingSource = [metrics recordingSource];
+  audioRecordingManager = [(SHMultipleConcurrentMatcher *)self audioRecordingManager];
+  suggestedAudioRecordingSource = [audioRecordingManager suggestedAudioRecordingSource];
 
   v10 = sh_log_object();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(SHMultipleConcurrentMatcher *)self audioRecordingManager];
-    v12 = [v11 suggestedAudioRecordingSource];
-    v13 = [v5 metrics];
+    audioRecordingManager2 = [(SHMultipleConcurrentMatcher *)self audioRecordingManager];
+    suggestedAudioRecordingSource2 = [audioRecordingManager2 suggestedAudioRecordingSource];
+    metrics2 = [signatureCopy metrics];
     v15 = 134218496;
-    v16 = v12;
+    v16 = suggestedAudioRecordingSource2;
     v17 = 2048;
-    v18 = [v13 recordingSource];
+    recordingSource2 = [metrics2 recordingSource];
     v19 = 1024;
-    v20 = v7 == v9;
+    v20 = recordingSource == suggestedAudioRecordingSource;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Suggested audio recording source %li signature source %li shouldAttempt %i", &v15, 0x1Cu);
   }
 
-  return v7 == v9;
+  return recordingSource == suggestedAudioRecordingSource;
 }
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(SHMultipleConcurrentMatcher *)self matchers];
-  if ([v7 count] <= 1)
+  matcherCopy = matcher;
+  responseCopy = response;
+  matchers = [(SHMultipleConcurrentMatcher *)self matchers];
+  if ([matchers count] <= 1)
   {
 
     goto LABEL_5;
   }
 
-  v8 = [v6 signature];
-  v9 = [v8 metrics];
-  v10 = [v9 recordingSource];
-  v11 = [(SHMultipleConcurrentMatcher *)self audioRecordingManager];
-  v12 = [v11 suggestedAudioRecordingSource];
+  signature = [responseCopy signature];
+  metrics = [signature metrics];
+  recordingSource = [metrics recordingSource];
+  audioRecordingManager = [(SHMultipleConcurrentMatcher *)self audioRecordingManager];
+  suggestedAudioRecordingSource = [audioRecordingManager suggestedAudioRecordingSource];
 
-  if (v10 == v12)
+  if (recordingSource == suggestedAudioRecordingSource)
   {
 LABEL_5:
-    v13 = [(SHMultipleConcurrentMatcher *)self delegate];
-    [v13 matcher:v14 didProduceResponse:v6];
+    delegate = [(SHMultipleConcurrentMatcher *)self delegate];
+    [delegate matcher:matcherCopy didProduceResponse:responseCopy];
   }
 }
 

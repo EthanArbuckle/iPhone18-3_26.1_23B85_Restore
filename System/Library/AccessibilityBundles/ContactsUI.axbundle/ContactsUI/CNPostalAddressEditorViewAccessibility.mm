@@ -1,17 +1,17 @@
 @interface CNPostalAddressEditorViewAccessibility
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation CNPostalAddressEditorViewAccessibility
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v27 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v25.receiver = self;
   v25.super_class = CNPostalAddressEditorViewAccessibility;
-  v8 = [(CNPostalAddressEditorViewAccessibility *)&v25 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(CNPostalAddressEditorViewAccessibility *)&v25 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   v24 = 0;
   objc_opt_class();
   v9 = [v8 safeValueForKey:@"textFields"];
@@ -45,10 +45,10 @@
         }
 
         v17 = v16;
-        v18 = [v16 placeholder];
-        if (v18)
+        placeholder = [v16 placeholder];
+        if (placeholder)
         {
-          [v17 setAccessibilityLabel:v18];
+          [v17 setAccessibilityLabel:placeholder];
         }
       }
 

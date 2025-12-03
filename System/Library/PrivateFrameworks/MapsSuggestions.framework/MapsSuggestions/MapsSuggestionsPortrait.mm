@@ -1,25 +1,25 @@
 @interface MapsSuggestionsPortrait
-- (BOOL)currentTripsWithHandler:(id)a3;
-- (BOOL)fetchConnectionEntriesWithHandler:(id)a3;
-- (BOOL)fetchLocationEntriesForTray:(BOOL)a3 currentLocation:(id)a4 queue:(id)a5 handler:(id)a6;
-- (BOOL)futureTripsWithHandler:(id)a3;
-- (MapsSuggestionsPortrait)initWithPortraitConnector:(id)a3 networkRequester:(id)a4 contacts:(id)a5;
+- (BOOL)currentTripsWithHandler:(id)handler;
+- (BOOL)fetchConnectionEntriesWithHandler:(id)handler;
+- (BOOL)fetchLocationEntriesForTray:(BOOL)tray currentLocation:(id)location queue:(id)queue handler:(id)handler;
+- (BOOL)futureTripsWithHandler:(id)handler;
+- (MapsSuggestionsPortrait)initWithPortraitConnector:(id)connector networkRequester:(id)requester contacts:(id)contacts;
 - (NSString)uniqueName;
-- (id)_appConnectionEntryFromLocation:(uint64_t)a1;
-- (id)_entryFromLocationValue:(uint64_t)a1;
-- (id)fetchNamedEntitiesFromDate:(id)a3;
-- (id)initFromResourceDepot:(id)a3;
-- (void)_geoMapItemsFromMapsSuggestionsEntry:(void *)a3 handle:;
+- (id)_appConnectionEntryFromLocation:(uint64_t)location;
+- (id)_entryFromLocationValue:(uint64_t)value;
+- (id)fetchNamedEntitiesFromDate:(id)date;
+- (id)initFromResourceDepot:(id)depot;
+- (void)_geoMapItemsFromMapsSuggestionsEntry:(void *)entry handle:;
 - (void)_populateFutureAndCurrentTrips;
-- (void)sendFeedbackforClientID:(id)a3 storeType:(int64_t)a4 explicitlyEngagedStrings:(id)a5 explicitlyRejectedStrings:(id)a6 implicitlyEngagedStrings:(id)a7 implicitlyRejectedStrings:(id)a8;
+- (void)sendFeedbackforClientID:(id)d storeType:(int64_t)type explicitlyEngagedStrings:(id)strings explicitlyRejectedStrings:(id)rejectedStrings implicitlyEngagedStrings:(id)engagedStrings implicitlyRejectedStrings:(id)implicitlyRejectedStrings;
 @end
 
 @implementation MapsSuggestionsPortrait
 
 - (void)_populateFutureAndCurrentTrips
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_opt_new();
     v3 = MapsSuggestionsNowWithOffset(-604800.0);
@@ -40,7 +40,7 @@
     v17 = __Block_byref_object_copy__6;
     v18 = __Block_byref_object_dispose__6;
     v19 = objc_opt_new();
-    v5 = v1[1];
+    v5 = selfCopy[1];
     v12[5] = &v14;
     v13 = 0;
     v12[0] = MEMORY[0x1E69E9820];
@@ -51,20 +51,20 @@
     [v5 iterScoredEventsWithQuery:v2 error:&v13 block:v12];
     v6 = v13;
     v7 = [v21[5] copy];
-    v8 = v1[8];
-    v1[8] = v7;
+    v8 = selfCopy[8];
+    selfCopy[8] = v7;
 
     v9 = [v15[5] copy];
-    v10 = v1[9];
-    v1[9] = v9;
+    v10 = selfCopy[9];
+    selfCopy[9] = v9;
 
-    v1 = v6;
+    selfCopy = v6;
     _Block_object_dispose(&v14, 8);
 
     _Block_object_dispose(&v20, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (NSString)uniqueName
@@ -74,12 +74,12 @@
   return [v2 description];
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -101,9 +101,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v6 = [v4 onePortraitConnector];
+  onePortraitConnector = [depotCopy onePortraitConnector];
 
-  if (!v6)
+  if (!onePortraitConnector)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -123,9 +123,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v7 = [v5 oneNetworkRequester];
+  oneNetworkRequester = [v5 oneNetworkRequester];
 
-  if (!v7)
+  if (!oneNetworkRequester)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -145,9 +145,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v8 = [v5 oneContacts];
+  oneContacts = [v5 oneContacts];
 
-  if (!v8)
+  if (!oneContacts)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -166,28 +166,28 @@ LABEL_14:
 
 LABEL_15:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
-  v9 = [v5 onePortraitConnector];
-  v10 = [v5 oneNetworkRequester];
-  v11 = [v5 oneContacts];
-  self = [(MapsSuggestionsPortrait *)self initWithPortraitConnector:v9 networkRequester:v10 contacts:v11];
+  onePortraitConnector2 = [v5 onePortraitConnector];
+  oneNetworkRequester2 = [v5 oneNetworkRequester];
+  oneContacts2 = [v5 oneContacts];
+  self = [(MapsSuggestionsPortrait *)self initWithPortraitConnector:onePortraitConnector2 networkRequester:oneNetworkRequester2 contacts:oneContacts2];
 
-  v12 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v12;
+  return selfCopy;
 }
 
-- (MapsSuggestionsPortrait)initWithPortraitConnector:(id)a3 networkRequester:(id)a4 contacts:(id)a5
+- (MapsSuggestionsPortrait)initWithPortraitConnector:(id)connector networkRequester:(id)requester contacts:(id)contacts
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  connectorCopy = connector;
+  requesterCopy = requester;
+  contactsCopy = contacts;
+  if (!connectorCopy)
   {
     v25 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -207,11 +207,11 @@ LABEL_10:
 
 LABEL_11:
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!requesterCopy)
   {
     v25 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -241,12 +241,12 @@ LABEL_11:
     queue = v12->_queue;
     v12->_queue = v14;
 
-    objc_storeStrong(&v12->_connector, a3);
-    objc_storeStrong(&v12->_networkRequester, a4);
+    objc_storeStrong(&v12->_connector, connector);
+    objc_storeStrong(&v12->_networkRequester, requester);
     v16 = objc_alloc(MEMORY[0x1E69BDC60]);
-    v17 = [MEMORY[0x1E696AAE8] mainBundle];
-    v18 = [v17 bundleIdentifier];
-    v19 = [v16 initWithLocationField:1 bundleIdentifier:v18];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v19 = [v16 initWithLocationField:1 bundleIdentifier:bundleIdentifier];
     criteria = v12->_criteria;
     v12->_criteria = v19;
 
@@ -259,30 +259,30 @@ LABEL_11:
     cachedMapItemOrigin = v12->_cachedMapItemOrigin;
     v12->_cachedMapItemOrigin = 0;
 
-    objc_storeStrong(&v12->_contacts, a5);
+    objc_storeStrong(&v12->_contacts, contacts);
   }
 
   self = v12;
-  v24 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v24;
+  return selfCopy;
 }
 
-- (BOOL)fetchLocationEntriesForTray:(BOOL)a3 currentLocation:(id)a4 queue:(id)a5 handler:(id)a6
+- (BOOL)fetchLocationEntriesForTray:(BOOL)tray currentLocation:(id)location queue:(id)queue handler:(id)handler
 {
-  v8 = a3;
+  trayCopy = tray;
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  locationCopy = location;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (+[MapsSuggestionsSiri isEnabled])
     {
       GEOConfigGetDouble();
       v14 = MapsSuggestionsNowWithOffset(-v13);
-      if (v8)
+      if (trayCopy)
       {
         v15 = 1;
       }
@@ -319,8 +319,8 @@ LABEL_12:
       objc_copyWeak(&v37, &buf);
       v21 = v16;
       v34 = v21;
-      v35 = v10;
-      v38 = v8;
+      v35 = locationCopy;
+      v38 = trayCopy;
       [(MapsSuggestionsPortraitConnector *)connector iterRankedLocationsWithQuery:v27 error:&v39 block:v32];
       v22 = v39;
       block[0] = MEMORY[0x1E69E9820];
@@ -328,11 +328,11 @@ LABEL_12:
       block[2] = __85__MapsSuggestionsPortrait_fetchLocationEntriesForTray_currentLocation_queue_handler___block_invoke_253;
       block[3] = &unk_1E81F65C0;
       v30 = v22;
-      v31 = v12;
+      v31 = handlerCopy;
       v29 = v20;
       v23 = v22;
       v24 = v20;
-      dispatch_group_notify(v21, v11, block);
+      dispatch_group_notify(v21, queueCopy, block);
 
       objc_destroyWeak(&v37);
       objc_destroyWeak(&buf);
@@ -352,8 +352,8 @@ LABEL_12:
       v41[1] = 3221225472;
       v41[2] = __85__MapsSuggestionsPortrait_fetchLocationEntriesForTray_currentLocation_queue_handler___block_invoke;
       v41[3] = &unk_1E81F5C38;
-      v42 = v12;
-      dispatch_async(v11, v41);
+      v42 = handlerCopy;
+      dispatch_async(queueCopy, v41);
       v14 = v42;
     }
   }
@@ -375,7 +375,7 @@ LABEL_12:
     }
   }
 
-  return v12 != 0;
+  return handlerCopy != 0;
 }
 
 void __85__MapsSuggestionsPortrait_fetchLocationEntriesForTray_currentLocation_queue_handler___block_invoke_243(uint64_t a1, void *a2)
@@ -925,49 +925,49 @@ LABEL_71:
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)currentTripsWithHandler:(id)a3
+- (BOOL)currentTripsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_currentTrips;
   objc_sync_enter(v5);
   currentTrips = self->_currentTrips;
   if (currentTrips)
   {
-    v7 = 0;
+    _populateFutureAndCurrentTrips = 0;
   }
 
   else
   {
-    v7 = [(MapsSuggestionsPortrait *)self _populateFutureAndCurrentTrips];
+    _populateFutureAndCurrentTrips = [(MapsSuggestionsPortrait *)self _populateFutureAndCurrentTrips];
     currentTrips = self->_currentTrips;
   }
 
   v8 = [(NSArray *)currentTrips copy];
-  v4[2](v4, v8, v7);
+  handlerCopy[2](handlerCopy, v8, _populateFutureAndCurrentTrips);
 
   objc_sync_exit(v5);
   return 1;
 }
 
-- (BOOL)futureTripsWithHandler:(id)a3
+- (BOOL)futureTripsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_futureTrips;
   objc_sync_enter(v5);
   futureTrips = self->_futureTrips;
   if (futureTrips)
   {
-    v7 = 0;
+    _populateFutureAndCurrentTrips = 0;
   }
 
   else
   {
-    v7 = [(MapsSuggestionsPortrait *)self _populateFutureAndCurrentTrips];
+    _populateFutureAndCurrentTrips = [(MapsSuggestionsPortrait *)self _populateFutureAndCurrentTrips];
     futureTrips = self->_futureTrips;
   }
 
   v8 = [(NSArray *)futureTrips copy];
-  v4[2](v4, v8, v7);
+  handlerCopy[2](handlerCopy, v8, _populateFutureAndCurrentTrips);
 
   objc_sync_exit(v5);
   return 1;
@@ -1100,32 +1100,32 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)sendFeedbackforClientID:(id)a3 storeType:(int64_t)a4 explicitlyEngagedStrings:(id)a5 explicitlyRejectedStrings:(id)a6 implicitlyEngagedStrings:(id)a7 implicitlyRejectedStrings:(id)a8
+- (void)sendFeedbackforClientID:(id)d storeType:(int64_t)type explicitlyEngagedStrings:(id)strings explicitlyRejectedStrings:(id)rejectedStrings implicitlyEngagedStrings:(id)engagedStrings implicitlyRejectedStrings:(id)implicitlyRejectedStrings
 {
-  v20 = a3;
+  dCopy = d;
   v14 = MEMORY[0x1E69BDC88];
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = [[v14 alloc] initWithExplicitlyEngagedStrings:v18 explicitlyRejectedStrings:v17 implicitlyEngagedStrings:v16 implicitlyRejectedStrings:v15];
+  implicitlyRejectedStringsCopy = implicitlyRejectedStrings;
+  engagedStringsCopy = engagedStrings;
+  rejectedStringsCopy = rejectedStrings;
+  stringsCopy = strings;
+  v19 = [[v14 alloc] initWithExplicitlyEngagedStrings:stringsCopy explicitlyRejectedStrings:rejectedStringsCopy implicitlyEngagedStrings:engagedStringsCopy implicitlyRejectedStrings:implicitlyRejectedStringsCopy];
 
-  if (a4)
+  if (type)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
-      [(MapsSuggestionsPortraitConnector *)self->_connector connectionsStore_registerFeedback:v19 clientIdentifier:v20 completion:&__block_literal_global_260];
+      [(MapsSuggestionsPortraitConnector *)self->_connector connectionsStore_registerFeedback:v19 clientIdentifier:dCopy completion:&__block_literal_global_260];
     }
 
-    else if (a4 == 1)
+    else if (type == 1)
     {
-      [(MapsSuggestionsPortraitConnector *)self->_connector locationStore_registerFeedback:v19 clientIdentifier:v20 completion:&__block_literal_global_12];
+      [(MapsSuggestionsPortraitConnector *)self->_connector locationStore_registerFeedback:v19 clientIdentifier:dCopy completion:&__block_literal_global_12];
     }
   }
 
   else
   {
-    [(MapsSuggestionsPortraitConnector *)self->_connector namedEntityStore_registerFeedback:v19 clientIdentifier:v20 completion:&__block_literal_global_263];
+    [(MapsSuggestionsPortraitConnector *)self->_connector namedEntityStore_registerFeedback:v19 clientIdentifier:dCopy completion:&__block_literal_global_263];
   }
 }
 
@@ -1177,17 +1177,17 @@ void __163__MapsSuggestionsPortrait_sendFeedbackforClientID_storeType_explicitly
   }
 }
 
-- (BOOL)fetchConnectionEntriesWithHandler:(id)a3
+- (BOOL)fetchConnectionEntriesWithHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsPortrait *)self uniqueName];
+    uniqueName = [(MapsSuggestionsPortrait *)self uniqueName];
     *buf = 138412546;
-    v24 = v6;
+    v24 = uniqueName;
     v25 = 2080;
     v26 = "fetchConnectionEntriesWithHandler";
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1210,8 +1210,8 @@ void __163__MapsSuggestionsPortrait_sendFeedbackforClientID_storeType_explicitly
     v9 = &v18;
     objc_copyWeak(&v18, &location);
     v10 = &v17;
-    v17 = v4;
-    v11 = v4;
+    v17 = handlerCopy;
+    v11 = handlerCopy;
     v12 = v16;
   }
 
@@ -1232,8 +1232,8 @@ void __163__MapsSuggestionsPortrait_sendFeedbackforClientID_storeType_explicitly
     v9 = &v21;
     objc_copyWeak(&v21, &location);
     v10 = &v20;
-    v20 = v4;
-    v14 = v4;
+    v20 = handlerCopy;
+    v14 = handlerCopy;
     v12 = block;
   }
 
@@ -1731,15 +1731,15 @@ void __61__MapsSuggestionsPortrait_fetchConnectionEntriesWithHandler___block_inv
   }
 }
 
-- (void)_geoMapItemsFromMapsSuggestionsEntry:(void *)a3 handle:
+- (void)_geoMapItemsFromMapsSuggestionsEntry:(void *)entry handle:
 {
   v34 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  entryCopy = entry;
+  v7 = entryCopy;
+  if (self)
   {
-    v8 = v6 == 0;
+    v8 = entryCopy == 0;
     v9 = GEOFindOrCreateLog();
     v10 = v9;
     if (v8)
@@ -1751,9 +1751,9 @@ void __61__MapsSuggestionsPortrait_fetchConnectionEntriesWithHandler___block_inv
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [a1 uniqueName];
+        uniqueName = [self uniqueName];
         *buf = 138412546;
-        v31 = v11;
+        v31 = uniqueName;
         v32 = 2080;
         v33 = "_geoMapItemsFromMapsSuggestionsEntry";
         _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1766,8 +1766,8 @@ void __61__MapsSuggestionsPortrait_fetchConnectionEntriesWithHandler___block_inv
         _os_signpost_emit_with_name_impl(&dword_1C5126000, v12, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_geoMapItemsFromMapsSuggestionsEntry", "", buf, 2u);
       }
 
-      objc_initWeak(&location, a1);
-      v13 = a1[2];
+      objc_initWeak(&location, self);
+      v13 = self[2];
       v22 = MEMORY[0x1E69E9820];
       v23 = 3221225472;
       v24 = __71__MapsSuggestionsPortrait__geoMapItemsFromMapsSuggestionsEntry_handle___block_invoke;
@@ -1778,14 +1778,14 @@ void __61__MapsSuggestionsPortrait_fetchConnectionEntriesWithHandler___block_inv
       v27 = v14;
       if ((GEOMapItemsFromMapsSuggestionsEntry(v26, v13, 1, &v22) & 1) == 0)
       {
-        v15 = a1[5];
-        a1[5] = 0;
+        v15 = self[5];
+        self[5] = 0;
 
-        v16 = a1[4];
-        a1[4] = 0;
+        v16 = self[4];
+        self[4] = 0;
 
-        v17 = a1[6];
-        a1[6] = 0;
+        v17 = self[6];
+        self[6] = 0;
 
         v18 = [MEMORY[0x1E696ABC0] GEOErrorWithCode:-12 reason:{@"The input was wrong", v22, v23, v24, v25, v26}];
         (*(v14 + 2))(v14, 0, v18);
@@ -1793,9 +1793,9 @@ void __61__MapsSuggestionsPortrait_fetchConnectionEntriesWithHandler___block_inv
         v19 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [a1 uniqueName];
+          uniqueName2 = [self uniqueName];
           *buf = 138412546;
-          v31 = v20;
+          v31 = uniqueName2;
           v32 = 2080;
           v33 = "_geoMapItemsFromMapsSuggestionsEntry";
           _os_log_impl(&dword_1C5126000, v19, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -2076,10 +2076,10 @@ LABEL_36:
 LABEL_43:
 }
 
-- (id)fetchNamedEntitiesFromDate:(id)a3
+- (id)fetchNamedEntitiesFromDate:(id)date
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = [(MapsSuggestionsPortraitConnector *)self->_connector namedEntityQuery:0x7FFFFFFFFFFFFFFFLL fromDate:a3 consumerType:3];
+  v4 = [(MapsSuggestionsPortraitConnector *)self->_connector namedEntityQuery:0x7FFFFFFFFFFFFFFFLL fromDate:date consumerType:3];
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2087,26 +2087,26 @@ LABEL_43:
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "Calling Portrait SPI", buf, 2u);
   }
 
-  v6 = [MEMORY[0x1E69A22C8] sharedManager];
-  v7 = [v6 isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_PortraitCall"];
+  mEMORY[0x1E69A22C8] = [MEMORY[0x1E69A22C8] sharedManager];
+  v7 = [mEMORY[0x1E69A22C8] isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_PortraitCall"];
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"MSGPPTTest_Insights_ACRanking_PortraitCallBEGIN" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MSGPPTTest_Insights_ACRanking_PortraitCallBEGIN" object:0];
   }
 
   connector = self->_connector;
   v48 = 0;
   v10 = [(MapsSuggestionsPortraitConnector *)connector rankedNamedEntitiesWihQuery:v4 error:&v48];
   v11 = v48;
-  v12 = [MEMORY[0x1E69A22C8] sharedManager];
-  v13 = [v12 isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_PortraitCall"];
+  mEMORY[0x1E69A22C8]2 = [MEMORY[0x1E69A22C8] sharedManager];
+  v13 = [mEMORY[0x1E69A22C8]2 isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_PortraitCall"];
 
   if (v13)
   {
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 postNotificationName:@"MSGPPTTest_Insights_ACRanking_PortraitCallEND" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"MSGPPTTest_Insights_ACRanking_PortraitCallEND" object:0];
   }
 
   if (v11)
@@ -2179,30 +2179,30 @@ LABEL_10:
         }
 
         v26 = *(*(&v44 + 1) + 8 * i);
-        v27 = [v26 item];
-        v28 = [v27 mostRelevantRecord];
-        v29 = [v28 source];
-        v30 = [v29 date];
+        item = [v26 item];
+        mostRelevantRecord = [item mostRelevantRecord];
+        source = [mostRelevantRecord source];
+        date = [source date];
 
         if (MapsSuggestionsLoggingIsVerbose())
         {
           v31 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
           {
-            v32 = [v26 item];
-            v33 = [v32 name];
+            item2 = [v26 item];
+            name = [item2 name];
             *buf = 138412546;
-            v50 = v33;
+            v50 = name;
             v51 = 2112;
-            v52 = v30;
+            v52 = date;
             _os_log_impl(&dword_1C5126000, v31, OS_LOG_TYPE_DEBUG, "Name & Date: %@ %@", buf, 0x16u);
           }
         }
 
         v34 = [MapsSuggestionsPortraitData alloc];
-        v35 = [v26 item];
-        v36 = [v35 name];
-        v37 = [(MapsSuggestionsPortraitData *)v34 initWithName:v36 lastInteractionTime:v30];
+        item3 = [v26 item];
+        name2 = [item3 name];
+        v37 = [(MapsSuggestionsPortraitData *)v34 initWithName:name2 lastInteractionTime:date];
 
         [v15 addObject:v37];
       }
@@ -2230,14 +2230,14 @@ LABEL_31:
   return v20;
 }
 
-- (id)_appConnectionEntryFromLocation:(uint64_t)a1
+- (id)_appConnectionEntryFromLocation:(uint64_t)location
 {
   v161 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (location)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(MapsSuggestionsPortrait *)a1 _entryFromLocationValue:v3];
+    v5 = [(MapsSuggestionsPortrait *)location _entryFromLocationValue:v3];
     if (v5)
     {
 LABEL_26:
@@ -2245,34 +2245,34 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v6 = [v3 mapItemURL];
+    mapItemURL = [v3 mapItemURL];
 
     v7 = MEMORY[0x1E69A1B08];
-    if (!v6)
+    if (!mapItemURL)
     {
-      v8 = GEOFindOrCreateLog();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      mapItemURL2 = GEOFindOrCreateLog();
+      if (os_log_type_enabled(mapItemURL2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
-        OUTLINED_FUNCTION_5_2(&dword_1C5126000, v8, v18, "Missing mapItemURL in PPConnectionsLocation, returning nil.", buf);
+        OUTLINED_FUNCTION_5_2(&dword_1C5126000, mapItemURL2, v18, "Missing mapItemURL in PPConnectionsLocation, returning nil.", buf);
       }
 
       v5 = 0;
       goto LABEL_25;
     }
 
-    v8 = [v3 mapItemURL];
+    mapItemURL2 = [v3 mapItemURL];
     v9 = GEOFindOrCreateLog();
     if (OUTLINED_FUNCTION_2_4(v9))
     {
-      [v8 absoluteString];
+      [mapItemURL2 absoluteString];
       *&buf[4] = *buf = 138412290;
       OUTLINED_FUNCTION_0_1();
       _os_log_impl(v10, v11, v12, v13, v14, 0xCu);
     }
 
-    v15 = [v3 originatingBundleID];
-    if ([v15 caseInsensitiveCompare:MapsSuggestionsMessagesAppBundleID])
+    originatingBundleID = [v3 originatingBundleID];
+    if ([originatingBundleID caseInsensitiveCompare:MapsSuggestionsMessagesAppBundleID])
     {
       v16 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -2284,28 +2284,28 @@ LABEL_26:
       goto LABEL_23;
     }
 
-    v19 = [v3 originatingBundleID];
-    v16 = v19;
-    if (v19)
+    originatingBundleID2 = [v3 originatingBundleID];
+    v16 = originatingBundleID2;
+    if (originatingBundleID2)
     {
-      if ([v19 caseInsensitiveCompare:@"com.apple.Maps"])
+      if ([originatingBundleID2 caseInsensitiveCompare:@"com.apple.Maps"])
       {
-        v147 = v15;
+        v147 = originatingBundleID;
 
-        v16 = [objc_alloc(MEMORY[0x1E69A2220]) initWithURL:v8];
+        v16 = [objc_alloc(MEMORY[0x1E69A2220]) initWithURL:mapItemURL2];
         [v16 parseIncludingCustomParameters:1];
         v20 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v16 transportType];
-          if (v21 >= 7)
+          transportType = [v16 transportType];
+          if (transportType >= 7)
           {
-            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v21];
+            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", transportType];
           }
 
           else
           {
-            v22 = off_1E81F67B0[v21];
+            v22 = off_1E81F67B0[transportType];
           }
 
           *buf = 138412290;
@@ -2318,14 +2318,14 @@ LABEL_26:
         v155[0] = @"MapsSuggestionsAppConnectionValueKey";
         v155[1] = &stru_1F444C108;
         v154[2] = @"MapsSuggestionsAppConnectionOriginatingURLString";
-        v146 = [v8 absoluteString];
-        v155[2] = v146;
+        absoluteString = [mapItemURL2 absoluteString];
+        v155[2] = absoluteString;
         v154[3] = @"MapsSuggestionsOriginBundleIDKey";
-        v27 = [v3 originatingBundleID];
-        v145 = v27;
-        if (v27)
+        originatingBundleID3 = [v3 originatingBundleID];
+        v145 = originatingBundleID3;
+        if (originatingBundleID3)
         {
-          v28 = v27;
+          v28 = originatingBundleID3;
         }
 
         else
@@ -2335,19 +2335,19 @@ LABEL_26:
 
         v155[3] = v28;
         v154[4] = @"MapsSuggestionsAppConnectionIdentifierKey";
-        v144 = [v3 identifier];
-        v155[4] = v144;
+        identifier = [v3 identifier];
+        v155[4] = identifier;
         v154[5] = @"MapsSuggestionsAppConnectionOriginatingWebsiteName";
-        v29 = [v3 originatingWebsiteURL];
-        v30 = v29;
-        v148 = v8;
-        if (v29)
+        originatingWebsiteURL = [v3 originatingWebsiteURL];
+        v30 = originatingWebsiteURL;
+        v148 = mapItemURL2;
+        if (originatingWebsiteURL)
         {
-          v31 = [v29 host];
-          v32 = v31;
-          if (v31)
+          host = [originatingWebsiteURL host];
+          v32 = host;
+          if (host)
           {
-            v33 = v31;
+            v33 = host;
             v149 = 0u;
             v150 = 0u;
             v151 = 0u;
@@ -2416,14 +2416,14 @@ LABEL_48:
 
         v155[5] = v40;
         v154[6] = @"MapsSuggestionsOriginatingAppName";
-        v41 = [v3 originatingBundleID];
-        if (v41)
+        originatingBundleID4 = [v3 originatingBundleID];
+        if (originatingBundleID4)
         {
           v42 = objc_alloc(MEMORY[0x1E69635F8]);
           *buf = 0;
-          v43 = [v42 initWithBundleIdentifier:v41 allowPlaceholder:0 error:buf];
+          v43 = [v42 initWithBundleIdentifier:originatingBundleID4 allowPlaceholder:0 error:buf];
           v44 = *buf;
-          v45 = [v43 localizedName];
+          localizedName = [v43 localizedName];
         }
 
         else
@@ -2442,12 +2442,12 @@ LABEL_48:
             _os_log_impl(&dword_1C5126000, v43, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an appId", buf, 0x26u);
           }
 
-          v45 = 0;
+          localizedName = 0;
         }
 
-        if (v45)
+        if (localizedName)
         {
-          v46 = v45;
+          v46 = localizedName;
         }
 
         else
@@ -2459,54 +2459,54 @@ LABEL_48:
         v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v155 forKeys:v154 count:7];
         v48 = [v47 mutableCopy];
 
-        v49 = [v3 originatingBundleID];
+        originatingBundleID5 = [v3 originatingBundleID];
 
-        if (v49)
+        if (originatingBundleID5)
         {
           v50 = objc_alloc(MEMORY[0x1E695DFD8]);
-          v51 = [v3 originatingBundleID];
-          v153 = v51;
+          originatingBundleID6 = [v3 originatingBundleID];
+          v153 = originatingBundleID6;
           v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v153 count:1];
-          v49 = [v50 initWithArray:v52];
+          originatingBundleID5 = [v50 initWithArray:v52];
 
-          [0 setSet:v49 forKey:@"MapsSuggestionsAssociatedBundleIDsKey"];
+          [0 setSet:originatingBundleID5 forKey:@"MapsSuggestionsAssociatedBundleIDsKey"];
         }
 
-        v53 = [v49 numberWithInt:{objc_msgSend(OUTLINED_FUNCTION_4_1(), "transportType")}];
+        v53 = [originatingBundleID5 numberWithInt:{objc_msgSend(OUTLINED_FUNCTION_4_1(), "transportType")}];
         v54 = v48;
         [v48 setObject:v53 forKey:@"MapsSuggestionsTransportTypeKey"];
 
-        v55 = [v16 addressString];
-        v56 = v55 != 0;
+        addressString = [v16 addressString];
+        v56 = addressString != 0;
 
-        v8 = v148;
-        if (v55)
+        mapItemURL2 = v148;
+        if (addressString)
         {
-          v57 = [v16 addressString];
+          addressString2 = [v16 addressString];
           OUTLINED_FUNCTION_3_1();
 
           v58 = GEOFindOrCreateLog();
           if (OUTLINED_FUNCTION_2_4(v58))
           {
-            v59 = [v16 addressString];
-            OUTLINED_FUNCTION_1_1(v59, 5.7779e-34);
+            addressString3 = [v16 addressString];
+            OUTLINED_FUNCTION_1_1(addressString3, 5.7779e-34);
             OUTLINED_FUNCTION_0_1();
             _os_log_impl(v60, v61, v62, v63, v64, 0xCu);
           }
         }
 
-        v65 = [v16 directionsDestinationAddressString];
+        directionsDestinationAddressString = [v16 directionsDestinationAddressString];
 
-        if (v65)
+        if (directionsDestinationAddressString)
         {
-          v65 = [v16 directionsDestinationAddressString];
+          directionsDestinationAddressString = [v16 directionsDestinationAddressString];
           OUTLINED_FUNCTION_3_1();
 
           v66 = GEOFindOrCreateLog();
           if (OUTLINED_FUNCTION_2_4(v66))
           {
-            v67 = [v16 directionsDestinationAddressString];
-            OUTLINED_FUNCTION_1_1(v67, 5.7779e-34);
+            directionsDestinationAddressString2 = [v16 directionsDestinationAddressString];
+            OUTLINED_FUNCTION_1_1(directionsDestinationAddressString2, 5.7779e-34);
             OUTLINED_FUNCTION_0_1();
             _os_log_impl(v68, v69, v70, v71, v72, 0xCu);
           }
@@ -2518,11 +2518,11 @@ LABEL_48:
         if (fabs(v74) <= 180.0 && fabs(v73) <= 90.0)
         {
           [OUTLINED_FUNCTION_4_1() centerCoordinate];
-          v75 = [v65 numberWithDouble:?];
+          v75 = [directionsDestinationAddressString numberWithDouble:?];
           OUTLINED_FUNCTION_3_1();
 
           [OUTLINED_FUNCTION_4_1() centerCoordinate];
-          v65 = [v75 numberWithDouble:v76];
+          directionsDestinationAddressString = [v75 numberWithDouble:v76];
           OUTLINED_FUNCTION_3_1();
 
           v77 = GEOFindOrCreateLog();
@@ -2542,23 +2542,23 @@ LABEL_48:
           if (!v56)
           {
             [v54 setObject:MEMORY[0x1E695E118] forKey:@"MapsSuggestionsAppConnectionIsCoordinateOnlyURL"];
-            v86 = [v3 contactHandles];
-            if ([v86 count] == 1)
+            contactHandles = [v3 contactHandles];
+            if ([contactHandles count] == 1)
             {
               v87 = GEOFindOrCreateLog();
               if (OUTLINED_FUNCTION_2_4(v87))
               {
                 *buf = 138412290;
-                *&buf[4] = v86;
+                *&buf[4] = contactHandles;
                 OUTLINED_FUNCTION_0_1();
                 _os_log_impl(v88, v89, v90, v91, v92, 0xCu);
               }
 
-              v93 = *(a1 + 56);
-              v94 = [v86 objectAtIndexedSubscript:0];
-              v65 = [v93 contactNameForIdentifier:v94];
+              v93 = *(location + 56);
+              v94 = [contactHandles objectAtIndexedSubscript:0];
+              directionsDestinationAddressString = [v93 contactNameForIdentifier:v94];
 
-              if (v65)
+              if (directionsDestinationAddressString)
               {
                 OUTLINED_FUNCTION_3_1();
               }
@@ -2570,7 +2570,7 @@ LABEL_48:
 
         if ([v16 searchUID])
         {
-          v95 = [v65 numberWithUnsignedLongLong:{objc_msgSend(OUTLINED_FUNCTION_4_1(), "searchUID")}];
+          v95 = [directionsDestinationAddressString numberWithUnsignedLongLong:{objc_msgSend(OUTLINED_FUNCTION_4_1(), "searchUID")}];
           OUTLINED_FUNCTION_3_1();
 
           v96 = GEOFindOrCreateLog();
@@ -2587,25 +2587,25 @@ LABEL_48:
           v103 = GEOFindOrCreateLog();
           if (OUTLINED_FUNCTION_2_4(v103))
           {
-            v104 = [v16 searchProviderID];
+            searchProviderID = [v16 searchProviderID];
             *buf = 67109120;
-            *&buf[4] = v104;
+            *&buf[4] = searchProviderID;
             OUTLINED_FUNCTION_0_1();
             _os_log_impl(v105, v106, v107, v108, v109, 8u);
           }
 
-          v110 = [v16 searchQuery];
+          searchQuery = [v16 searchQuery];
 
-          if (v110)
+          if (searchQuery)
           {
-            v111 = [v16 searchQuery];
+            searchQuery2 = [v16 searchQuery];
             OUTLINED_FUNCTION_3_1();
 
             v112 = GEOFindOrCreateLog();
             if (OUTLINED_FUNCTION_2_4(v112))
             {
-              v113 = [v16 searchQuery];
-              OUTLINED_FUNCTION_1_1(v113, 5.7779e-34);
+              searchQuery3 = [v16 searchQuery];
+              OUTLINED_FUNCTION_1_1(searchQuery3, 5.7779e-34);
               OUTLINED_FUNCTION_0_1();
               _os_log_impl(v114, v115, v116, v117, v118, 0xCu);
             }
@@ -2626,11 +2626,11 @@ LABEL_48:
           goto LABEL_106;
         }
 
-        v119 = [v3 createdAt];
-        v120 = v119;
-        if (v119)
+        createdAt = [v3 createdAt];
+        v120 = createdAt;
+        if (createdAt)
         {
-          v121 = v119;
+          v121 = createdAt;
         }
 
         else
@@ -2640,8 +2640,8 @@ LABEL_48:
 
         v122 = v121;
 
-        v123 = [v3 lifetime];
-        [v123 doubleValue];
+        lifetime = [v3 lifetime];
+        [lifetime doubleValue];
         v125 = v124;
 
         if (v125 == 0.0)
@@ -2663,11 +2663,11 @@ LABEL_48:
         GEOConfigGetDouble();
         v135 = v134;
         v136 = [MapsSuggestionsEntry alloc];
-        v137 = [v16 searchQuery];
-        v138 = v137;
-        if (v137)
+        searchQuery4 = [v16 searchQuery];
+        v138 = searchQuery4;
+        if (searchQuery4)
         {
-          v139 = v137;
+          v139 = searchQuery4;
         }
 
         else
@@ -2680,7 +2680,7 @@ LABEL_48:
         v141 = v140;
         v5 = v141;
 LABEL_106:
-        v15 = v147;
+        originatingBundleID = v147;
 
         goto LABEL_24;
       }
@@ -2720,15 +2720,15 @@ LABEL_27:
   return v5;
 }
 
-- (id)_entryFromLocationValue:(uint64_t)a1
+- (id)_entryFromLocationValue:(uint64_t)value
 {
   v76 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (value)
   {
-    v5 = [v3 name];
-    if (!v5)
+    name = [v3 name];
+    if (!name)
     {
       v30 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -2743,9 +2743,9 @@ LABEL_27:
 
     GEOConfigGetDouble();
     v7 = v6;
-    v8 = [v4 createdAt];
-    v9 = [v4 lifetime];
-    [v9 doubleValue];
+    createdAt = [v4 createdAt];
+    lifetime = [v4 lifetime];
+    [lifetime doubleValue];
     v11 = v10;
 
     if (v11 == 0.0)
@@ -2754,13 +2754,13 @@ LABEL_27:
       v11 = v12;
     }
 
-    v61 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeInterval:v8 sinceDate:v11];
+    v61 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeInterval:createdAt sinceDate:v11];
     v67[0] = @"MapsSuggestionsOriginBundleIDKey";
-    v13 = [v4 originatingBundleID];
-    v60 = v13;
-    if (v13)
+    originatingBundleID = [v4 originatingBundleID];
+    v60 = originatingBundleID;
+    if (originatingBundleID)
     {
-      v14 = v13;
+      v14 = originatingBundleID;
     }
 
     else
@@ -2770,23 +2770,23 @@ LABEL_27:
 
     v68[0] = v14;
     v67[1] = @"MapsSuggestionsAppConnectionValueKey";
-    v15 = [v4 value];
-    v16 = v15;
-    if (!v15)
+    value = [v4 value];
+    v16 = value;
+    if (!value)
     {
-      v56 = [MEMORY[0x1E696AFB0] UUID];
-      v15 = [v56 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      value = [uUID UUIDString];
     }
 
-    v62 = v8;
-    v57 = v15;
-    v68[1] = v15;
+    v62 = createdAt;
+    v57 = value;
+    v68[1] = value;
     v67[2] = @"MapsSuggestionsDestinationAddressKey";
-    v17 = [v4 value];
-    v18 = v17;
-    if (v17)
+    value2 = [v4 value];
+    v18 = value2;
+    if (value2)
     {
-      v19 = v17;
+      v19 = value2;
     }
 
     else
@@ -2798,19 +2798,19 @@ LABEL_27:
     v68[3] = @"MapsSuggestionsAppConnectionValueKey";
     v67[3] = @"MapsSuggestionsPrimaryKey";
     v67[4] = @"MapsSuggestionsAppConnectionIdentifierKey";
-    v58 = [v4 identifier];
-    v68[4] = v58;
+    identifier = [v4 identifier];
+    v68[4] = identifier;
     v67[5] = @"MapsSuggestionsAppConnectionOriginatingWebsiteName";
-    v20 = [v4 originatingWebsiteURL];
-    v21 = v20;
+    originatingWebsiteURL = [v4 originatingWebsiteURL];
+    v21 = originatingWebsiteURL;
     v59 = v18;
-    if (v20)
+    if (originatingWebsiteURL)
     {
-      v22 = [v20 host];
-      v23 = v22;
-      if (v22)
+      host = [originatingWebsiteURL host];
+      v23 = host;
+      if (host)
       {
-        v24 = v22;
+        v24 = host;
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
@@ -2819,8 +2819,8 @@ LABEL_27:
         if (v25)
         {
           v26 = v25;
-          v54 = a1;
-          v55 = v5;
+          valueCopy = value;
+          v55 = name;
           v27 = *v64;
           while (2)
           {
@@ -2851,8 +2851,8 @@ LABEL_27:
           }
 
 LABEL_29:
-          a1 = v54;
-          v5 = v55;
+          value = valueCopy;
+          name = v55;
         }
       }
 
@@ -2879,14 +2879,14 @@ LABEL_29:
 
     v68[5] = v34;
     v67[6] = @"MapsSuggestionsOriginatingAppName";
-    v35 = [v4 originatingBundleID];
-    if (v35)
+    originatingBundleID2 = [v4 originatingBundleID];
+    if (originatingBundleID2)
     {
       v36 = objc_alloc(MEMORY[0x1E69635F8]);
       *buf = 0;
-      v37 = [v36 initWithBundleIdentifier:v35 allowPlaceholder:0 error:buf];
+      v37 = [v36 initWithBundleIdentifier:originatingBundleID2 allowPlaceholder:0 error:buf];
       v38 = *buf;
-      v39 = [v37 localizedName];
+      localizedName = [v37 localizedName];
     }
 
     else
@@ -2905,12 +2905,12 @@ LABEL_29:
         _os_log_impl(&dword_1C5126000, v37, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an appId", buf, 0x26u);
       }
 
-      v39 = 0;
+      localizedName = 0;
     }
 
-    if (v39)
+    if (localizedName)
     {
-      v40 = v39;
+      v40 = localizedName;
     }
 
     else
@@ -2926,11 +2926,11 @@ LABEL_29:
     {
     }
 
-    v43 = [v4 contactHandles];
-    if ([v43 count])
+    contactHandles = [v4 contactHandles];
+    if ([contactHandles count])
     {
-      v44 = *(a1 + 56);
-      v45 = [v43 objectAtIndexedSubscript:0];
+      v44 = *(value + 56);
+      v45 = [contactHandles objectAtIndexedSubscript:0];
       v46 = [v44 contactNameForIdentifier:v45];
     }
 
@@ -2939,8 +2939,8 @@ LABEL_29:
       v46 = 0;
     }
 
-    v47 = [v4 originatingBundleID];
-    if ([v47 isEqualToString:MapsSuggestionsMessagesAppBundleID])
+    originatingBundleID3 = [v4 originatingBundleID];
+    if ([originatingBundleID3 isEqualToString:MapsSuggestionsMessagesAppBundleID])
     {
       if (!v46)
       {
@@ -2982,15 +2982,15 @@ LABEL_63:
       _os_log_impl(&dword_1C5126000, v49, OS_LOG_TYPE_DEBUG, "Received a message from %@", buf, 0xCu);
     }
 
-    v50 = [v4 mapItemURL];
+    mapItemURL = [v4 mapItemURL];
 
-    if (v50)
+    if (mapItemURL)
     {
-      v51 = [v4 mapItemURL];
-      [v42 setObject:v51 forKeyedSubscript:@"MapsSuggestionsAppConnectionMapItemURL"];
+      mapItemURL2 = [v4 mapItemURL];
+      [v42 setObject:mapItemURL2 forKeyedSubscript:@"MapsSuggestionsAppConnectionMapItemURL"];
     }
 
-    v32 = [MapsSuggestionsEntry entryWithType:12 title:v5 subtitle:0 weight:v61 expires:v42 sourceSpecificInfo:v7];
+    v32 = [MapsSuggestionsEntry entryWithType:12 title:name subtitle:0 weight:v61 expires:v42 sourceSpecificInfo:v7];
     goto LABEL_62;
   }
 

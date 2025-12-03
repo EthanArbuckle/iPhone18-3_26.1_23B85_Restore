@@ -1,29 +1,29 @@
 @interface HKEmergencyCardPrimaryLanguageTableItem
 - (BOOL)hasPresentableData;
-- (BOOL)shouldHighlightRowAtIndex:(int64_t)a3;
+- (BOOL)shouldHighlightRowAtIndex:(int64_t)index;
 - (HKEmergencyCardPrimaryLanguageUpdateDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index;
 - (id)_createEditableCell;
 - (id)attributedStringForCurrentLanguage;
-- (id)initInEditMode:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)initInEditMode:(BOOL)mode;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)title;
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3;
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index;
 - (void)didCancelLanguageSelection;
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (void)didSelectCellWithLanguage:(id)a3;
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (void)didSelectCellWithLanguage:(id)language;
 - (void)presentSpokenLanguageController;
-- (void)setCurrentLanguage:(BOOL)a3;
+- (void)setCurrentLanguage:(BOOL)language;
 @end
 
 @implementation HKEmergencyCardPrimaryLanguageTableItem
 
 - (BOOL)hasPresentableData
 {
-  v2 = [(HKEmergencyCardTableItem *)self data];
-  v3 = [v2 primaryLanguageCode];
-  v4 = v3 != 0;
+  data = [(HKEmergencyCardTableItem *)self data];
+  primaryLanguageCode = [data primaryLanguageCode];
+  v4 = primaryLanguageCode != 0;
 
   return v4;
 }
@@ -36,15 +36,15 @@
   return v3;
 }
 
-- (id)initInEditMode:(BOOL)a3
+- (id)initInEditMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v17.receiver = self;
   v17.super_class = HKEmergencyCardPrimaryLanguageTableItem;
   v4 = [(HKEmergencyCardTableItem *)&v17 initInEditMode:?];
   if (v4)
   {
-    v5 = !v3;
+    v5 = !modeCopy;
   }
 
   else
@@ -55,16 +55,16 @@
   if (!v5)
   {
     v6 = MEMORY[0x1E695DF58];
-    v7 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v8 = [v6 spokenLanguagesForLanguages:v7 includeLanguagesForRegion:1];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    v8 = [v6 spokenLanguagesForLanguages:preferredLanguages includeLanguagesForRegion:1];
     v9 = [v8 hk_map:&__block_literal_global_88];
     v10 = v4[8];
     v4[8] = v9;
 
-    v11 = [MEMORY[0x1E695DF58] availableSpokenLanguages];
-    v12 = [v11 hk_map:&__block_literal_global_311];
-    v13 = [v12 allObjects];
-    v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_314];
+    availableSpokenLanguages = [MEMORY[0x1E695DF58] availableSpokenLanguages];
+    v12 = [availableSpokenLanguages hk_map:&__block_literal_global_311];
+    allObjects = [v12 allObjects];
+    v14 = [allObjects sortedArrayUsingComparator:&__block_literal_global_314];
     v15 = v4[9];
     v4[9] = v14;
   }
@@ -101,8 +101,8 @@ uint64_t __58__HKEmergencyCardPrimaryLanguageTableItem_initInEditMode___block_in
 - (id)_createEditableCell
 {
   v3 = [(HKMedicalIDEditorCell *)[HKMedicalIDEditorLanguageCell alloc] initWithStyle:0 reuseIdentifier:@"kPreferredLanguageTableItemCellIdentifier"];
-  v4 = [(HKEmergencyCardPrimaryLanguageTableItem *)self title];
-  [(HKMedicalIDEditorCell *)v3 setLabel:v4];
+  title = [(HKEmergencyCardPrimaryLanguageTableItem *)self title];
+  [(HKMedicalIDEditorCell *)v3 setLabel:title];
 
   [(HKMedicalIDEditorCell *)v3 setMinimumLabelWidth:87.0];
   [(HKMedicalIDEditorCell *)v3 setEditDelegate:self];
@@ -126,48 +126,48 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
   [WeakRetained presentSpokenLanguageController];
 }
 
-- (void)setCurrentLanguage:(BOOL)a3
+- (void)setCurrentLanguage:(BOOL)language
 {
-  v3 = a3;
+  languageCopy = language;
   if (!self->_currentLanguage || (-[HKEmergencyCardTableItem data](self, "data"), v5 = objc_claimAutoreleasedReturnValue(), [v5 primaryLanguageCode], v6 = objc_claimAutoreleasedReturnValue(), -[HKSpokenLanguage identifier](self->_currentLanguage, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v6 != v7))
   {
-    v8 = [(HKEmergencyCardTableItem *)self data];
-    v9 = [v8 primaryLanguageCode];
+    data = [(HKEmergencyCardTableItem *)self data];
+    primaryLanguageCode = [data primaryLanguageCode];
 
-    if (!v9 && v3)
+    if (!primaryLanguageCode && languageCopy)
     {
       v10 = MEMORY[0x1E695DF58];
-      v11 = [MEMORY[0x1E695DF58] preferredLanguages];
-      v12 = [v10 spokenLanguagesForLanguages:v11 includeLanguagesForRegion:1];
-      v13 = [v12 firstObject];
-      v14 = [(HKEmergencyCardTableItem *)self data];
-      [v14 setPrimaryLanguageCode:v13];
+      preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+      v12 = [v10 spokenLanguagesForLanguages:preferredLanguages includeLanguagesForRegion:1];
+      firstObject = [v12 firstObject];
+      data2 = [(HKEmergencyCardTableItem *)self data];
+      [data2 setPrimaryLanguageCode:firstObject];
     }
 
     v15 = [HKSpokenLanguage alloc];
-    v19 = [(HKEmergencyCardTableItem *)self data];
-    v16 = [v19 primaryLanguageCode];
-    v17 = [(HKSpokenLanguage *)v15 initWithLanguageIdentifier:v16 forCategory:0];
+    data3 = [(HKEmergencyCardTableItem *)self data];
+    primaryLanguageCode2 = [data3 primaryLanguageCode];
+    v17 = [(HKSpokenLanguage *)v15 initWithLanguageIdentifier:primaryLanguageCode2 forCategory:0];
     currentLanguage = self->_currentLanguage;
     self->_currentLanguage = v17;
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
+  viewCopy = view;
   [(HKEmergencyCardPrimaryLanguageTableItem *)self setCurrentLanguage:0];
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
     if (self->_isEditing || (-[HKEmergencyCardTableItem data](self, "data"), v6 = objc_claimAutoreleasedReturnValue(), [v6 primaryLanguageCode], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
     {
-      v8 = [v5 dequeueReusableCellWithIdentifier:@"kPreferredLanguageTableItemCellIdentifier"];
-      if (!v8)
+      _createEditableCell = [viewCopy dequeueReusableCellWithIdentifier:@"kPreferredLanguageTableItemCellIdentifier"];
+      if (!_createEditableCell)
       {
-        v8 = [(HKEmergencyCardPrimaryLanguageTableItem *)self _createEditableCell];
+        _createEditableCell = [(HKEmergencyCardPrimaryLanguageTableItem *)self _createEditableCell];
       }
 
-      v9 = v8;
+      v9 = _createEditableCell;
       editableCell = self->_editableCell;
       self->_editableCell = v9;
     }
@@ -176,22 +176,22 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
     {
       editableCell = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v16 = [editableCell localizedStringForKey:@"add_primary_language" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      v9 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:v5 withTitle:v16];
+      v9 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:viewCopy withTitle:v16];
     }
   }
 
   else
   {
     v11 = +[_HKMedicalIDMultilineStringCell defaultReuseIdentifier];
-    v9 = [v5 dequeueReusableCellWithIdentifier:v11];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v11];
 
-    v12 = [(HKEmergencyCardPrimaryLanguageTableItem *)self title];
-    v13 = [(HKMedicalIDEditorLanguageCell *)v9 titleLabel];
-    [v13 setText:v12];
+    title = [(HKEmergencyCardPrimaryLanguageTableItem *)self title];
+    titleLabel = [(HKMedicalIDEditorLanguageCell *)v9 titleLabel];
+    [titleLabel setText:title];
 
     editableCell = [(HKEmergencyCardPrimaryLanguageTableItem *)self attributedStringForCurrentLanguage];
-    v14 = [(HKMedicalIDEditorLanguageCell *)v9 detailLabel];
-    [v14 setAttributedText:editableCell];
+    detailLabel = [(HKMedicalIDEditorLanguageCell *)v9 detailLabel];
+    [detailLabel setAttributedText:editableCell];
   }
 
   return v9;
@@ -201,23 +201,23 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E696AD40]);
-  v4 = [(HKSpokenLanguage *)self->_currentLanguage languageInCurrentLocale];
+  languageInCurrentLocale = [(HKSpokenLanguage *)self->_currentLanguage languageInCurrentLocale];
   v5 = *MEMORY[0x1E69DB648];
   v21 = *MEMORY[0x1E69DB648];
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v22[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  v8 = [v3 initWithString:v4 attributes:v7];
+  v8 = [v3 initWithString:languageInCurrentLocale attributes:v7];
 
-  v9 = [(HKSpokenLanguage *)self->_currentLanguage languageInCurrentLocale];
-  v10 = [(HKSpokenLanguage *)self->_currentLanguage languageInLanguageLocale];
+  languageInCurrentLocale2 = [(HKSpokenLanguage *)self->_currentLanguage languageInCurrentLocale];
+  languageInLanguageLocale = [(HKSpokenLanguage *)self->_currentLanguage languageInLanguageLocale];
 
-  if (v9 != v10)
+  if (languageInCurrentLocale2 != languageInLanguageLocale)
   {
     v11 = objc_alloc(MEMORY[0x1E696AAB0]);
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(HKSpokenLanguage *)self->_currentLanguage languageInLanguageLocale];
-    v14 = [v12 stringWithFormat:@"\n%@", v13];
+    languageInLanguageLocale2 = [(HKSpokenLanguage *)self->_currentLanguage languageInLanguageLocale];
+    v14 = [v12 stringWithFormat:@"\n%@", languageInLanguageLocale2];
     v19 = v5;
     v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
     v20 = v15;
@@ -229,14 +229,14 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
     v10.receiver = self;
     v10.super_class = HKEmergencyCardPrimaryLanguageTableItem;
-    [(HKEmergencyCardTableItem *)&v10 tableView:v6 heightForRowAtIndex:a4];
+    [(HKEmergencyCardTableItem *)&v10 tableView:viewCopy heightForRowAtIndex:index];
     v8 = v7;
   }
 
@@ -248,7 +248,7 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
   return v8;
 }
 
-- (BOOL)shouldHighlightRowAtIndex:(int64_t)a3
+- (BOOL)shouldHighlightRowAtIndex:(int64_t)index
 {
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
@@ -264,21 +264,21 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
   v5 = [[HKSpokenLanguagesViewController alloc] initWithCurrentLanguage:self->_currentLanguage preferredLanguages:self->_mostLikelyLanguages andAllSpokenLanguages:self->_allSpokenLanguages];
   [(HKSpokenLanguagesViewController *)v5 setPickerDelegate:self];
   v3 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
-  v4 = [(HKEmergencyCardTableItem *)self owningViewController];
-  [v4 presentViewController:v3 animated:1 completion:0];
+  owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+  [owningViewController presentViewController:v3 animated:1 completion:0];
 }
 
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index
 {
   if (self->_isEditing)
   {
     return 1;
   }
 
-  v4 = [(HKEmergencyCardTableItem *)self data];
-  v5 = [v4 primaryLanguageCode];
+  data = [(HKEmergencyCardTableItem *)self data];
+  primaryLanguageCode = [data primaryLanguageCode];
 
-  if (v5)
+  if (primaryLanguageCode)
   {
     return 1;
   }
@@ -289,9 +289,9 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
   }
 }
 
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v5 = [(HKEmergencyCardTableItem *)self data:1];
     [v5 setPrimaryLanguageCode:0];
@@ -308,24 +308,24 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
   return 2;
 }
 
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 2 && self->_isEditing)
+  if (style == 2 && self->_isEditing)
   {
     [(HKMedicalIDEditorLanguageCell *)self->_editableCell beginEditing];
   }
 }
 
-- (void)didSelectCellWithLanguage:(id)a3
+- (void)didSelectCellWithLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(HKSpokenLanguage *)v4 identifier];
-  v6 = [(HKEmergencyCardTableItem *)self data];
-  [v6 setPrimaryLanguageCode:v5];
+  languageCopy = language;
+  identifier = [(HKSpokenLanguage *)languageCopy identifier];
+  data = [(HKEmergencyCardTableItem *)self data];
+  [data setPrimaryLanguageCode:identifier];
 
   currentLanguage = self->_currentLanguage;
-  self->_currentLanguage = v4;
-  v8 = v4;
+  self->_currentLanguage = languageCopy;
+  v8 = languageCopy;
 
   [(HKMedicalIDEditorLanguageCell *)self->_editableCell setValueLanguageText:self->_currentLanguage];
 }
@@ -335,8 +335,8 @@ void __62__HKEmergencyCardPrimaryLanguageTableItem__createEditableCell__block_in
   if (![(HKEmergencyCardPrimaryLanguageTableItem *)self hasPresentableData])
   {
     [(HKEmergencyCardPrimaryLanguageTableItem *)self commitEditingStyle:1 forRowAtIndex:0];
-    v3 = [(HKEmergencyCardPrimaryLanguageTableItem *)self delegate];
-    [v3 updatePrimaryLanguageTableItem];
+    delegate = [(HKEmergencyCardPrimaryLanguageTableItem *)self delegate];
+    [delegate updatePrimaryLanguageTableItem];
   }
 }
 

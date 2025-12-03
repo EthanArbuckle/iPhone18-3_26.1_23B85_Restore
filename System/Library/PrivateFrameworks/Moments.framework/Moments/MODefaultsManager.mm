@@ -1,29 +1,29 @@
 @interface MODefaultsManager
-+ (BOOL)isExtendedLogEnabled:(id)a3 forDetaultsManager:(id)a4;
++ (BOOL)isExtendedLogEnabled:(id)enabled forDetaultsManager:(id)manager;
 + (id)momentsDaemonDefaults;
-+ (id)onboardingDateKey:(id)a3;
-- (MODefaultsManager)initWithSuiteName:(id)a3;
-- (MODefaultsManager)initWithUniverse:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyWithoutLog:(id)a3;
-- (id)onboardingDateFor:(id)a3;
-- (void)deleteObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObjectWithoutLog:(id)a3 forKey:(id)a4;
++ (id)onboardingDateKey:(id)key;
+- (MODefaultsManager)initWithSuiteName:(id)name;
+- (MODefaultsManager)initWithUniverse:(id)universe;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyWithoutLog:(id)log;
+- (id)onboardingDateFor:(id)for;
+- (void)deleteObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObjectWithoutLog:(id)log forKey:(id)key;
 @end
 
 @implementation MODefaultsManager
 
-+ (id)onboardingDateKey:(id)a3
++ (id)onboardingDateKey:(id)key
 {
   v3 = onboardingDateKey__onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     +[MODefaultsManager(MOEventBundleSourceType) onboardingDateKey:];
   }
 
-  v5 = [onboardingDateKey__mapping objectForKeyedSubscript:v4];
+  v5 = [onboardingDateKey__mapping objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -54,9 +54,9 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)onboardingDateFor:(id)a3
+- (id)onboardingDateFor:(id)for
 {
-  v4 = [MODefaultsManager onboardingDateKey:a3];
+  v4 = [MODefaultsManager onboardingDateKey:for];
   if (v4)
   {
     v5 = [(MODefaultsManager *)self objectForKey:v4];
@@ -70,31 +70,31 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
   return v5;
 }
 
-- (MODefaultsManager)initWithUniverse:(id)a3
+- (MODefaultsManager)initWithUniverse:(id)universe
 {
   v7.receiver = self;
   v7.super_class = MODefaultsManager;
   v3 = [(MODefaultsManager *)&v7 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     userDefaults = v3->_userDefaults;
-    v3->_userDefaults = v4;
+    v3->_userDefaults = standardUserDefaults;
   }
 
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v5 = a3;
-  if (v5)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v6 = [(NSUserDefaults *)self->_userDefaults objectForKey:v5];
+    v6 = [(NSUserDefaults *)self->_userDefaults objectForKey:keyCopy];
     v7 = _mo_log_facility_get_os_log(MOLogFacilityDefaults);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(MODefaultsManager *)v5 objectForKey:v6, v7];
+      [(MODefaultsManager *)keyCopy objectForKey:v6, v7];
     }
   }
 
@@ -106,8 +106,8 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
       [MODefaultsManager objectForKey:];
     }
 
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:32 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager objectForKey:]", 32}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:32 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager objectForKey:]", 32}];
 
     v7 = _mo_log_facility_get_os_log(MOLogFacilityDefaults);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -121,9 +121,9 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
   return v6;
 }
 
-- (id)objectForKeyWithoutLog:(id)a3
+- (id)objectForKeyWithoutLog:(id)log
 {
-  if (a3)
+  if (log)
   {
     v4 = [(NSUserDefaults *)self->_userDefaults objectForKey:?];
   }
@@ -136,8 +136,8 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
       [MODefaultsManager objectForKeyWithoutLog:];
     }
 
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:52 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager objectForKeyWithoutLog:]", 52}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:52 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager objectForKeyWithoutLog:]", 52}];
 
     v8 = _mo_log_facility_get_os_log(MOLogFacilityDefaults);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -151,11 +151,11 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
   return v4;
 }
 
-- (void)deleteObjectForKey:(id)a3
+- (void)deleteObjectForKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  keyCopy = key;
+  if (keyCopy)
   {
     v6 = _mo_log_facility_get_os_log(MOLogFacilityDefaults);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -163,11 +163,11 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
       *buf = 136315394;
       v11 = "[MODefaultsManager deleteObjectForKey:]";
       v12 = 2112;
-      v13 = v5;
+      v13 = keyCopy;
       _os_log_impl(&dword_22D8C5000, v6, OS_LOG_TYPE_INFO, "%s, deleting key, %@", buf, 0x16u);
     }
 
-    [(NSUserDefaults *)self->_userDefaults removeObjectForKey:v5];
+    [(NSUserDefaults *)self->_userDefaults removeObjectForKey:keyCopy];
   }
 
   else
@@ -178,19 +178,19 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
       [MODefaultsManager deleteObjectForKey:];
     }
 
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:66 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager deleteObjectForKey:]", 66}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:66 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager deleteObjectForKey:]", 66}];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  if (keyCopy)
   {
     v9 = _mo_log_facility_get_os_log(MOLogFacilityDefaults);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -198,13 +198,13 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
       *buf = 136315650;
       v14 = "[MODefaultsManager setObject:forKey:]";
       v15 = 2112;
-      v16 = v8;
+      v16 = keyCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = objectCopy;
       _os_log_impl(&dword_22D8C5000, v9, OS_LOG_TYPE_INFO, "%s, key, %@, value, %@", buf, 0x20u);
     }
 
-    [(NSUserDefaults *)self->_userDefaults setObject:v7 forKey:v8];
+    [(NSUserDefaults *)self->_userDefaults setObject:objectCopy forKey:keyCopy];
   }
 
   else
@@ -215,20 +215,20 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
       [MODefaultsManager setObject:forKey:];
     }
 
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:80 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager setObject:forKey:]", 80}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:80 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager setObject:forKey:]", 80}];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObjectWithoutLog:(id)a3 forKey:(id)a4
+- (void)setObjectWithoutLog:(id)log forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     userDefaults = self->_userDefaults;
 
-    [(NSUserDefaults *)userDefaults setObject:a3 forKey:?];
+    [(NSUserDefaults *)userDefaults setObject:log forKey:?];
   }
 
   else
@@ -239,20 +239,20 @@ void __64__MODefaultsManager_MOEventBundleSourceType__onboardingDateKey___block_
       [MODefaultsManager setObjectWithoutLog:forKey:];
     }
 
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:97 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager setObjectWithoutLog:forKey:]", 97}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MODefaultsManager.m" lineNumber:97 description:{@"Invalid parameter not satisfying: key (in %s:%d)", "-[MODefaultsManager setObjectWithoutLog:forKey:]", 97}];
   }
 }
 
-- (MODefaultsManager)initWithSuiteName:(id)a3
+- (MODefaultsManager)initWithSuiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = MODefaultsManager;
   v5 = [(MODefaultsManager *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
     userDefaults = v5->_userDefaults;
     v5->_userDefaults = v6;
   }
@@ -293,21 +293,21 @@ void __42__MODefaultsManager_momentsDaemonDefaults__block_invoke()
   momentsDaemonDefaults_shared = v2;
 }
 
-+ (BOOL)isExtendedLogEnabled:(id)a3 forDetaultsManager:(id)a4
++ (BOOL)isExtendedLogEnabled:(id)enabled forDetaultsManager:(id)manager
 {
-  v4 = [a4 objectForKey:a3];
+  v4 = [manager objectForKey:enabled];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)objectForKey:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

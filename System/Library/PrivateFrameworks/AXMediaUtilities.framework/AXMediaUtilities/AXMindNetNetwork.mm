@@ -1,33 +1,33 @@
 @interface AXMindNetNetwork
-+ (id)networkWithModelPath:(id)a3 configuration:(id)a4 modelType:(int64_t)a5;
-- (AXMindNetNetwork)initWithModelPath:(id)a3 configuration:(id)a4 modelType:(int64_t)a5;
++ (id)networkWithModelPath:(id)path configuration:(id)configuration modelType:(int64_t)type;
+- (AXMindNetNetwork)initWithModelPath:(id)path configuration:(id)configuration modelType:(int64_t)type;
 - (id).cxx_construct;
-- (id)processCIImage:(id)a3;
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
-- (id)resizeAndProcessVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
+- (id)processCIImage:(id)image;
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r;
+- (id)resizeAndProcessVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r;
 @end
 
 @implementation AXMindNetNetwork
 
-+ (id)networkWithModelPath:(id)a3 configuration:(id)a4 modelType:(int64_t)a5
++ (id)networkWithModelPath:(id)path configuration:(id)configuration modelType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithModelPath:v8 configuration:v9 modelType:a5];
+  pathCopy = path;
+  configurationCopy = configuration;
+  v10 = [[self alloc] initWithModelPath:pathCopy configuration:configurationCopy modelType:type];
 
   return v10;
 }
 
-- (AXMindNetNetwork)initWithModelPath:(id)a3 configuration:(id)a4 modelType:(int64_t)a5
+- (AXMindNetNetwork)initWithModelPath:(id)path configuration:(id)configuration modelType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  configurationCopy = configuration;
   v56.receiver = self;
   v56.super_class = AXMindNetNetwork;
   v10 = [(AXMindNetNetwork *)&v56 init];
   if (v10)
   {
-    v11 = [MEMORY[0x1E695DFF8] URLWithString:v8];
+    v11 = [MEMORY[0x1E695DFF8] URLWithString:pathCopy];
     v55 = 0;
     v12 = [MEMORY[0x1E695FE90] compileModelAtURL:v11 error:&v55];
     v13 = v55;
@@ -65,19 +65,19 @@
       mindNetModel = v10->_mindNetModel;
       v10->_mindNetModel = v18;
 
-      v10->_modelType = a5;
+      v10->_modelType = type;
       *&v10->_keep_aspect_ratio = 257;
       v10->_input_height = 488.0;
-      v20 = [v9 filterThresholds];
-      v10->_num_pos_classes = [v20 count];
+      filterThresholds = [configurationCopy filterThresholds];
+      v10->_num_pos_classes = [filterThresholds count];
 
-      v21 = [v9 nmsThreshold];
-      [v21 floatValue];
+      nmsThreshold = [configurationCopy nmsThreshold];
+      [nmsThreshold floatValue];
       v10->_nmsThreshold = v22;
 
-      v23 = [v9 filterThresholds];
+      filterThresholds2 = [configurationCopy filterThresholds];
       filterThresholds = v10->_filterThresholds;
-      v10->_filterThresholds = v23;
+      v10->_filterThresholds = filterThresholds2;
 
       p_begin = &v10->_important_classes.__begin_;
       begin = v10->_important_classes.__begin_;
@@ -105,8 +105,8 @@
       std::vector<NSString * {__strong}>::__destroy_vector::operator()[abi:ne200100](&v57);
       for (i = 1; ; ++i)
       {
-        v29 = [v9 filterThresholds];
-        v30 = [v29 count];
+        filterThresholds3 = [configurationCopy filterThresholds];
+        v30 = [filterThresholds3 count];
 
         if (v30 <= i - 1)
         {
@@ -251,7 +251,7 @@
   return v15;
 }
 
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r
 {
   v122[1] = *MEMORY[0x1E69E9840];
   v103 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -264,18 +264,18 @@
     __cxa_throw(exception, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
   }
 
-  width = a3->width;
-  data = a3->data;
-  height = a3->height;
-  rowBytes = a3->rowBytes;
+  width = image->width;
+  data = image->data;
+  height = image->height;
+  rowBytes = image->rowBytes;
   texture = 0;
   CVPixelBufferCreateWithBytes(*MEMORY[0x1E695E480], width, height, 0x42475241u, data, rowBytes, 0, 0, 0, &texture);
   if (texture)
   {
-    v11 = [(MLModel *)self->_mindNetModel modelDescription];
-    v12 = [v11 inputDescriptionsByName];
-    v13 = [v12 allKeys];
-    v99 = [v13 objectAtIndexedSubscript:0];
+    modelDescription = [(MLModel *)self->_mindNetModel modelDescription];
+    inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+    allKeys = [inputDescriptionsByName allKeys];
+    v99 = [allKeys objectAtIndexedSubscript:0];
 
     v14 = objc_alloc(MEMORY[0x1E695FE48]);
     v121 = v99;
@@ -311,15 +311,15 @@
     {
       v106 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v22 = [v98 featureValueForName:@"decoded_1"];
-      v97 = [v22 multiArrayValue];
+      multiArrayValue = [v22 multiArrayValue];
 
       if (self->_modelType == 1)
       {
         [(AXMindNetNetwork *)self nmsThreshold];
         v24 = v23;
-        v25 = [(AXMindNetNetwork *)self filterThresholds];
+        filterThresholds = [(AXMindNetNetwork *)self filterThresholds];
         LODWORD(v26) = v24;
-        v27 = [_TtC16AXMediaUtilities13AXBoundingBox postComputeClickabilityWithDecoded:v97 nmsThreshold:v25 filterThresholds:v26];
+        v27 = [_TtC16AXMediaUtilities13AXBoundingBox postComputeClickabilityWithDecoded:multiArrayValue nmsThreshold:filterThresholds filterThresholds:v26];
 
         v114 = 0u;
         v115 = 0u;
@@ -361,13 +361,13 @@
                   v49 = v48;
                   begin = self->_important_classes.__begin_;
                   end = self->_important_classes.__end_;
-                  v52 = [v31 resultLabel];
-                  v53 = [v31 resultLabelName];
+                  resultLabel = [v31 resultLabel];
+                  resultLabelName = [v31 resultLabelName];
                   v54 = v49;
                   *&pixelBufferAttributes = v54;
-                  v55 = [(AXElementDetection *)v32 initWithBox:0 defaultBox:(end - begin) > 4 confidence:v52 scale:v53 hasLabel:v104 label:v35 labelName:v37, v39, v41, v43, v45, v47, pixelBufferAttributes];
+                  pixelBufferAttributes = [(AXElementDetection *)v32 initWithBox:0 defaultBox:(end - begin) > 4 confidence:resultLabel scale:resultLabelName hasLabel:v104 label:v35 labelName:v37, v39, v41, v43, v45, v47, pixelBufferAttributes];
 
-                  [v106 addObject:v55];
+                  [v106 addObject:pixelBufferAttributes];
                 }
               }
             }
@@ -383,9 +383,9 @@
       {
         [(AXMindNetNetwork *)self nmsThreshold];
         v57 = v56;
-        v58 = [(AXMindNetNetwork *)self filterThresholds];
+        filterThresholds2 = [(AXMindNetNetwork *)self filterThresholds];
         LODWORD(v59) = v57;
-        v60 = [_TtC16AXMediaUtilities13AXBoundingBox postComputeWithDecoded:v97 nmsThreshold:v58 filterThresholds:v59];
+        v60 = [_TtC16AXMediaUtilities13AXBoundingBox postComputeWithDecoded:multiArrayValue nmsThreshold:filterThresholds2 filterThresholds:v59];
 
         v110 = 0u;
         v111 = 0u;
@@ -421,13 +421,13 @@
               v82 = v81;
               v84 = self->_important_classes.__begin_;
               v83 = self->_important_classes.__end_;
-              v85 = [v64 resultLabel];
-              v86 = [v64 resultLabelName];
+              resultLabel2 = [v64 resultLabel];
+              resultLabelName2 = [v64 resultLabelName];
               v87 = v82;
               *&pixelBufferAttributes = v87;
-              v88 = [(AXElementDetection *)v65 initWithBox:0 defaultBox:(v83 - v84) > 4 confidence:v85 scale:v86 hasLabel:v107 label:v68 labelName:v70, v72, v74, v76, v78, v80, pixelBufferAttributes];
+              pixelBufferAttributes2 = [(AXElementDetection *)v65 initWithBox:0 defaultBox:(v83 - v84) > 4 confidence:resultLabel2 scale:resultLabelName2 hasLabel:v107 label:v68 labelName:v70, v72, v74, v76, v78, v80, pixelBufferAttributes];
 
-              [v106 addObject:v88];
+              [v106 addObject:pixelBufferAttributes2];
             }
 
             v61 = [obj countByEnumeratingWithState:&v108 objects:v119 count:16];
@@ -462,11 +462,11 @@
   return v103;
 }
 
-- (id)resizeAndProcessVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (id)resizeAndProcessVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r
 {
   v80 = *MEMORY[0x1E69E9840];
-  height = a3->height;
-  width = a3->width;
+  height = image->height;
+  width = image->width;
   if (width)
   {
     v6 = height == 0;
@@ -484,7 +484,7 @@
     __cxa_throw(exception, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
   }
 
-  v7 = a4;
+  rCopy = r;
   v10 = width;
   v11 = height;
   if (self->_can_rotate && v11 > v10)
@@ -497,7 +497,7 @@
       __cxa_throw(v67, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
     }
 
-    vImageRotate90_ARGB8888(a3, &dest, 1u, &backColor, 0);
+    vImageRotate90_ARGB8888(image, &dest, 1u, &backColor, 0);
     v10 = dest.width;
     v11 = dest.height;
     v12 = 1;
@@ -506,8 +506,8 @@
   else
   {
     v12 = 0;
-    v13 = *&a3->width;
-    *&dest.data = *&a3->data;
+    v13 = *&image->width;
+    *&dest.data = *&image->data;
     *&dest.width = v13;
   }
 
@@ -575,10 +575,10 @@
   else
   {
     v74 = v76;
-    v21 = [(AXMindNetNetwork *)self processVImage:&v74 inputIsBGR:v7];
+    v21 = [(AXMindNetNetwork *)self processVImage:&v74 inputIsBGR:rCopy];
     v69 = v21;
     [v21 objectForKeyedSubscript:@"boxes"];
-    v68 = self;
+    selfCopy = self;
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
@@ -618,8 +618,8 @@
             goto LABEL_30;
           }
 
-          screenshot_width = v68->_screenshot_width;
-          screenshot_height = v68->_screenshot_height;
+          screenshot_width = selfCopy->_screenshot_width;
+          screenshot_height = selfCopy->_screenshot_height;
           if (screenshot_width < screenshot_height)
           {
             v42 = (v42 + -0.5) * screenshot_height / screenshot_width + 0.5;
@@ -696,10 +696,10 @@ LABEL_34:
   return v21;
 }
 
-- (id)processCIImage:(id)a3
+- (id)processCIImage:(id)image
 {
-  v4 = a3;
-  [v4 extent];
+  imageCopy = image;
+  [imageCopy extent];
   v7 = v6;
   if (v7 == 0.0 || (v8 = v5, v8 == 0.0))
   {
@@ -710,7 +710,7 @@ LABEL_34:
 
   if (!AXDeviceIsPad())
   {
-    v29 = v4;
+    v29 = imageCopy;
     goto LABEL_23;
   }
 
@@ -817,7 +817,7 @@ LABEL_33:
 
   v22 = v21;
   _Block_object_dispose(&v41, 8);
-  v23 = [v21 imageWithCIImage:v4];
+  v23 = [v21 imageWithCIImage:imageCopy];
   [v23 drawInRect:0 blendMode:x alpha:{y, width, height, 1.0}];
 
   v24 = MEMORY[0x1E695F658];

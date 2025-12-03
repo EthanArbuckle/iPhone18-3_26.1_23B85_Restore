@@ -3,42 +3,42 @@
 - (BOOL)_siriHintEnabled;
 - (BOOL)_volumeHintEnabled;
 - (BOOL)hasPresentedContent;
-- (CGAffineTransform)_gylphTransformForOrientation:(SEL)a3;
-- (CGRect)_frameForUserIntentButtonPresented:(BOOL)a3;
-- (CGRect)_frameForVolumeButtonsPresented:(BOOL)a3;
+- (CGAffineTransform)_gylphTransformForOrientation:(SEL)orientation;
+- (CGRect)_frameForUserIntentButtonPresented:(BOOL)presented;
+- (CGRect)_frameForVolumeButtonsPresented:(BOOL)presented;
 - (CGRect)tipSourceRect;
 - (TVRUIHintsViewController)init;
 - (int64_t)currentInterfaceOrientation;
-- (unint64_t)_permittedArrowDirectionsForDevice:(id)a3;
+- (unint64_t)_permittedArrowDirectionsForDevice:(id)device;
 - (unint64_t)permittedArrowDirections;
-- (void)_applyTransformForOrientation:(int64_t)a3;
+- (void)_applyTransformForOrientation:(int64_t)orientation;
 - (void)_cleanupHints;
-- (void)_dismissHintsWithCompletion:(id)a3;
-- (void)_largeTextEnabledStatusChanged:(id)a3;
-- (void)_presentVolumeButtonPressWithPresentation:(unint64_t)a3;
-- (void)_presentVolumeButtonPressWithPresentation:(unint64_t)a3 volumeImage:(id)a4;
+- (void)_dismissHintsWithCompletion:(id)completion;
+- (void)_largeTextEnabledStatusChanged:(id)changed;
+- (void)_presentVolumeButtonPressWithPresentation:(unint64_t)presentation;
+- (void)_presentVolumeButtonPressWithPresentation:(unint64_t)presentation volumeImage:(id)image;
 - (void)_setupDebugUIIfEnabled;
 - (void)_setupTipsControllerIfNeeded;
-- (void)_setupUserIntentButtonHintWithPresentation:(unint64_t)a3;
-- (void)_setupVolumeButtonsHintWithPresentation:(unint64_t)a3 volumeImage:(id)a4;
-- (void)_siriActivated:(id)a3;
-- (void)_siriDeactivated:(id)a3;
-- (void)_updateUserIntentButtonHintFrameForPresentation:(unint64_t)a3;
-- (void)_updateVolumeButtonsHintFrameWithPresentation:(unint64_t)a3 volumeImage:(id)a4;
-- (void)_volumeDownButtonPressed:(id)a3;
-- (void)_volumeUpButtonPressed:(id)a3;
+- (void)_setupUserIntentButtonHintWithPresentation:(unint64_t)presentation;
+- (void)_setupVolumeButtonsHintWithPresentation:(unint64_t)presentation volumeImage:(id)image;
+- (void)_siriActivated:(id)activated;
+- (void)_siriDeactivated:(id)deactivated;
+- (void)_updateUserIntentButtonHintFrameForPresentation:(unint64_t)presentation;
+- (void)_updateVolumeButtonsHintFrameWithPresentation:(unint64_t)presentation volumeImage:(id)image;
+- (void)_volumeDownButtonPressed:(id)pressed;
+- (void)_volumeUpButtonPressed:(id)pressed;
 - (void)dealloc;
-- (void)device:(id)a3 supportsSiri:(BOOL)a4 volume:(BOOL)a5;
-- (void)device:(id)a3 supportsVolume:(BOOL)a4;
+- (void)device:(id)device supportsSiri:(BOOL)siri volume:(BOOL)volume;
+- (void)device:(id)device supportsVolume:(BOOL)volume;
 - (void)dismissHints;
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion;
 - (void)remoteWillBeDismissed;
 - (void)replayHints;
-- (void)requestHintsForSiri:(BOOL)a3 volumeMode:(unint64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)requestHintsForSiri:(BOOL)siri volumeMode:(unint64_t)mode;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TVRUIHintsViewController
@@ -52,14 +52,14 @@
   v3 = v2;
   if (v2)
   {
-    v4 = 1;
+    currentInterfaceOrientation = 1;
     v2->_allowSiriHint = 1;
     v2->_allowVolumeHint = 1;
     v2->_allowTips = 1;
     v5 = +[TVRUIDeviceInfo currentDeviceInfo];
     if ([v5 isPad])
     {
-      v4 = [(TVRUIHintsViewController *)v3 currentInterfaceOrientation];
+      currentInterfaceOrientation = [(TVRUIHintsViewController *)v3 currentInterfaceOrientation];
     }
 
     v6 = +[TVRUIHintsStyle styleProviderForUserInterfaceIdiom:hasHomeButton:](TVRUIHintsStyle, "styleProviderForUserInterfaceIdiom:hasHomeButton:", [v5 isPad], objc_msgSend(v5, "hasHomeButton"));
@@ -75,14 +75,14 @@
       _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "Style provider: %@", buf, 0xCu);
     }
 
-    v10 = [v5 hardwareInfoForOrientation:v4];
+    v10 = [v5 hardwareInfoForOrientation:currentInterfaceOrientation];
     [(TVRUIHintsViewController *)v3 setHardwareInfo:v10];
 
     v11 = _TVRUIHintsLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(TVRUIHintsViewController *)v3 hardwareInfo];
-      v13 = [v12 description];
+      hardwareInfo = [(TVRUIHintsViewController *)v3 hardwareInfo];
+      v13 = [hardwareInfo description];
       *buf = 138412290;
       v17 = v13;
       _os_log_impl(&dword_26CFEB000, v11, OS_LOG_TYPE_DEFAULT, "Current hardwareInfo for device: %@", buf, 0xCu);
@@ -99,52 +99,52 @@
   v9.receiver = self;
   v9.super_class = TVRUIHintsViewController;
   [(TVRUIHintsViewController *)&v9 viewDidLoad];
-  v3 = [(TVRUIHintsViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(TVRUIHintsViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   [(TVRUIHintsViewController *)self setDefinesPresentationContext:1];
   [(TVRUIHintsViewController *)self _applyTransformForOrientation:[(TVRUIHintsViewController *)self currentInterfaceOrientation]];
   [(TVRUIHintsViewController *)self _setupDebugUIIfEnabled];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__largeTextEnabledStatusChanged_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__largeTextEnabledStatusChanged_ name:*MEMORY[0x277D76810] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__siriActivated_ name:@"TVRUISiriManagerSiriActivated" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__siriActivated_ name:@"TVRUISiriManagerSiriActivated" object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__siriDeactivated_ name:@"TVRUISiriManagerSiriDeactivated" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__siriDeactivated_ name:@"TVRUISiriManagerSiriDeactivated" object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__volumeUpButtonPressed_ name:@"TVRUIVolumeUpEventGenerated" object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__volumeUpButtonPressed_ name:@"TVRUIVolumeUpEventGenerated" object:0];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel__volumeDownButtonPressed_ name:@"TVRUIVolumeDownEventGenerated" object:0];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__volumeDownButtonPressed_ name:@"TVRUIVolumeDownEventGenerated" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TVRUIHintsViewController;
-  [(TVRUIHintsViewController *)&v4 viewWillAppear:a3];
+  [(TVRUIHintsViewController *)&v4 viewWillAppear:appear];
   [(TVRUIHintsViewController *)self _applyTransformForOrientation:[(TVRUIHintsViewController *)self currentInterfaceOrientation]];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TVRUIHintsViewController;
-  [(TVRUIHintsViewController *)&v4 viewDidAppear:a3];
+  [(TVRUIHintsViewController *)&v4 viewDidAppear:appear];
   if (+[TVRUIFeatures persistHintsUIEnabled])
   {
     [(TVRUIHintsViewController *)self requestHintsForSiri:1 volume:1];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = TVRUIHintsViewController;
-  [(TVRUIHintsViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(TVRUIHintsViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(TVRUIHintsViewController *)self dismissHints];
   [(TVRUIHintsViewController *)self dismissPresentedContentAnimated:0 completion:0];
   [(TVRUIHintsViewController *)self _applyTransformForOrientation:[(TVRUIHintsViewController *)self currentInterfaceOrientation]];
@@ -158,38 +158,38 @@
   [(TVRUIHintsViewController *)&v3 dealloc];
 }
 
-- (void)device:(id)a3 supportsSiri:(BOOL)a4 volume:(BOOL)a5
+- (void)device:(id)device supportsSiri:(BOOL)siri volume:(BOOL)volume
 {
-  v5 = a5;
-  v6 = a4;
+  volumeCopy = volume;
+  siriCopy = siri;
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  [(TVRUIHintsViewController *)self setSupportsSiri:v6];
-  [(TVRUIHintsViewController *)self setSupportsVolume:v5];
-  v9 = [v8 name];
+  deviceCopy = device;
+  [(TVRUIHintsViewController *)self setSupportsSiri:siriCopy];
+  [(TVRUIHintsViewController *)self setSupportsVolume:volumeCopy];
+  name = [deviceCopy name];
 
   v10 = _TVRUIHintsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = v9;
+    v12 = name;
     v13 = 1024;
-    v14 = v6;
+    v14 = siriCopy;
     v15 = 1024;
-    v16 = v5;
+    v16 = volumeCopy;
     _os_log_impl(&dword_26CFEB000, v10, OS_LOG_TYPE_DEFAULT, "TVRUIRemoteViewControllerDelegate callback deviceName='%@', supportsSiri=%{BOOL}d, supportsVolume=%{BOOL}d", &v11, 0x18u);
   }
 
   [(TVRUIHintsViewController *)self _setupTipsControllerIfNeeded];
-  [(TVRUIHintsViewController *)self requestHintsForSiri:v6 volume:v5];
+  [(TVRUIHintsViewController *)self requestHintsForSiri:siriCopy volume:volumeCopy];
 }
 
-- (void)device:(id)a3 supportsVolume:(BOOL)a4
+- (void)device:(id)device supportsVolume:(BOOL)volume
 {
-  v4 = a4;
+  volumeCopy = volume;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(TVRUIHintsViewController *)self setSupportsVolume:v4];
+  deviceCopy = device;
+  [(TVRUIHintsViewController *)self setSupportsVolume:volumeCopy];
   v7 = CACurrentMediaTime();
   [(TVRUIHintsViewController *)self lastAnimatedTimeInterval];
   v8 = 0.0;
@@ -207,14 +207,14 @@
     _os_log_impl(&dword_26CFEB000, v11, OS_LOG_TYPE_DEFAULT, "Elapsed time: %f", &v14, 0xCu);
   }
 
-  if (v4 && v8 > 1.0)
+  if (volumeCopy && v8 > 1.0)
   {
     v12 = _TVRUIHintsLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 name];
+      name = [deviceCopy name];
       v14 = 138412546;
-      v15 = *&v13;
+      v15 = *&name;
       v16 = 1024;
       v17 = 1;
       _os_log_impl(&dword_26CFEB000, v12, OS_LOG_TYPE_DEFAULT, "TVRUIRemoteViewControllerDelegate callback deviceName='%@', supportsVolume=%{BOOL}d", &v14, 0x12u);
@@ -224,18 +224,18 @@
   }
 }
 
-- (void)requestHintsForSiri:(BOOL)a3 volumeMode:(unint64_t)a4
+- (void)requestHintsForSiri:(BOOL)siri volumeMode:(unint64_t)mode
 {
-  v7 = [(TVRUIHintsViewController *)self styleProvider];
-  [v7 animationPresentationDelay];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  [styleProvider animationPresentationDelay];
   v9 = dispatch_time(0, (v8 * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invoke;
   block[3] = &unk_279D88958;
-  v11 = a3;
+  siriCopy = siri;
   block[4] = self;
-  block[5] = a4;
+  block[5] = mode;
   dispatch_after(v9, MEMORY[0x277D85CD0], block);
 }
 
@@ -504,9 +504,9 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
   }
 
   [(TVRUIHintsViewController *)self dismissPresentedContentAnimated:0 completion:0];
-  v4 = [(TVRUIHintsViewController *)self siriTipManager];
+  siriTipManager = [(TVRUIHintsViewController *)self siriTipManager];
 
-  if (v4)
+  if (siriTipManager)
   {
     v5 = _TVRUITipsLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -514,8 +514,8 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
       [TVRUIHintsViewController remoteWillBeDismissed];
     }
 
-    v6 = [(TVRUIHintsViewController *)self siriTipManager];
-    [v6 invalidate:0 didPerformAction:0 completion:0];
+    siriTipManager2 = [(TVRUIHintsViewController *)self siriTipManager];
+    [siriTipManager2 invalidate:0 didPerformAction:0 completion:0];
   }
 
   [(TVRUIHintsViewController *)self setLastAnimatedTimeInterval:0.0];
@@ -523,34 +523,34 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
 
 - (void)replayHints
 {
-  v3 = [(TVRUIHintsViewController *)self supportsSiri];
-  v4 = [(TVRUIHintsViewController *)self supportsVolume];
+  supportsSiri = [(TVRUIHintsViewController *)self supportsSiri];
+  supportsVolume = [(TVRUIHintsViewController *)self supportsVolume];
 
-  [(TVRUIHintsViewController *)self requestHintsForSiri:v3 volume:v4];
+  [(TVRUIHintsViewController *)self requestHintsForSiri:supportsSiri volume:supportsVolume];
 }
 
-- (void)_updateUserIntentButtonHintFrameForPresentation:(unint64_t)a3
+- (void)_updateUserIntentButtonHintFrameForPresentation:(unint64_t)presentation
 {
-  v5 = [(TVRUIHintsViewController *)self userIntentButtonHint];
+  userIntentButtonHint = [(TVRUIHintsViewController *)self userIntentButtonHint];
 
-  if (v5)
+  if (userIntentButtonHint)
   {
-    v6 = [(TVRUIHintsViewController *)self userIntentButtonHint];
-    [v6 setPresentation:a3];
+    userIntentButtonHint2 = [(TVRUIHintsViewController *)self userIntentButtonHint];
+    [userIntentButtonHint2 setPresentation:presentation];
   }
 
   else
   {
 
-    [(TVRUIHintsViewController *)self _setupUserIntentButtonHintWithPresentation:a3];
+    [(TVRUIHintsViewController *)self _setupUserIntentButtonHintWithPresentation:presentation];
   }
 }
 
-- (void)_setupUserIntentButtonHintWithPresentation:(unint64_t)a3
+- (void)_setupUserIntentButtonHintWithPresentation:(unint64_t)presentation
 {
-  v5 = [(TVRUIHintsViewController *)self userIntentButtonHint];
+  userIntentButtonHint = [(TVRUIHintsViewController *)self userIntentButtonHint];
 
-  if (!v5)
+  if (!userIntentButtonHint)
   {
     v6 = _TVRUIHintsLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -559,8 +559,8 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Setting up UserIntent button hint", v24, 2u);
     }
 
-    v7 = [(TVRUIHintsViewController *)self hardwareInfo];
-    [v7 userIntentButtonRect];
+    hardwareInfo = [(TVRUIHintsViewController *)self hardwareInfo];
+    [hardwareInfo userIntentButtonRect];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -572,83 +572,83 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
     v25.size.height = v15;
     if (CGRectEqualToRect(v25, *MEMORY[0x277CBF3A0]))
     {
-      v16 = _TVRUIHintsLog();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      view = _TVRUIHintsLog();
+      if (os_log_type_enabled(view, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v24[0]) = 0;
-        _os_log_impl(&dword_26CFEB000, v16, OS_LOG_TYPE_DEFAULT, "userIntentButtonRect is CGRectZero", v24, 2u);
+        _os_log_impl(&dword_26CFEB000, view, OS_LOG_TYPE_DEFAULT, "userIntentButtonRect is CGRectZero", v24, 2u);
       }
     }
 
     else
     {
       v17 = [TVRUIHintsUserIntentButtonView alloc];
-      v18 = [(TVRUIHintsViewController *)self styleProvider];
-      v19 = [(TVRUIHintsViewController *)self hardwareInfo];
-      v20 = -[TVRUIHintsUserIntentButtonView initWithPresentation:styleProvider:buttonEdge:](v17, "initWithPresentation:styleProvider:buttonEdge:", a3, v18, [v19 userIntentButtonEdge]);
+      styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+      hardwareInfo2 = [(TVRUIHintsViewController *)self hardwareInfo];
+      v20 = -[TVRUIHintsUserIntentButtonView initWithPresentation:styleProvider:buttonEdge:](v17, "initWithPresentation:styleProvider:buttonEdge:", presentation, styleProvider, [hardwareInfo2 userIntentButtonEdge]);
       [(TVRUIHintsViewController *)self setUserIntentButtonHint:v20];
 
       [(TVRUIHintsViewController *)self _gylphTransformForOrientation:[(TVRUIHintsViewController *)self currentInterfaceOrientation]];
-      v21 = [(TVRUIHintsViewController *)self userIntentButtonHint];
-      v22 = [v21 glyphView];
+      userIntentButtonHint2 = [(TVRUIHintsViewController *)self userIntentButtonHint];
+      glyphView = [userIntentButtonHint2 glyphView];
       v24[0] = v24[3];
       v24[1] = v24[4];
       v24[2] = v24[5];
-      [v22 setTransform:v24];
+      [glyphView setTransform:v24];
 
-      v16 = [(TVRUIHintsViewController *)self view];
-      v23 = [(TVRUIHintsViewController *)self userIntentButtonHint];
-      [v16 addSubview:v23];
+      view = [(TVRUIHintsViewController *)self view];
+      userIntentButtonHint3 = [(TVRUIHintsViewController *)self userIntentButtonHint];
+      [view addSubview:userIntentButtonHint3];
     }
   }
 }
 
-- (void)_updateVolumeButtonsHintFrameWithPresentation:(unint64_t)a3 volumeImage:(id)a4
+- (void)_updateVolumeButtonsHintFrameWithPresentation:(unint64_t)presentation volumeImage:(id)image
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+  imageCopy = image;
+  volumeButtonsHint = [(TVRUIHintsViewController *)self volumeButtonsHint];
 
-  if (v7)
+  if (volumeButtonsHint)
   {
-    v8 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-    [v8 updateGlyphImage:v6];
+    volumeButtonsHint2 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+    [volumeButtonsHint2 updateGlyphImage:imageCopy];
 
-    v9 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-    [v9 setPresentation:a3];
+    volumeButtonsHint3 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+    [volumeButtonsHint3 setPresentation:presentation];
   }
 
   else
   {
-    [(TVRUIHintsViewController *)self _setupVolumeButtonsHintWithPresentation:a3 volumeImage:v6];
+    [(TVRUIHintsViewController *)self _setupVolumeButtonsHintWithPresentation:presentation volumeImage:imageCopy];
   }
 
-  v10 = [(TVRUIHintsViewController *)self hardwareInfo];
-  v11 = [v10 volumeButtonsEdge];
+  hardwareInfo = [(TVRUIHintsViewController *)self hardwareInfo];
+  volumeButtonsEdge = [hardwareInfo volumeButtonsEdge];
 
-  if (v11 == 1)
+  if (volumeButtonsEdge == 1)
   {
-    v14 = [(TVRUIHintsViewController *)self hardwareInfo];
-    [v14 volumeUpButtonRect];
+    hardwareInfo2 = [(TVRUIHintsViewController *)self hardwareInfo];
+    [hardwareInfo2 volumeUpButtonRect];
     MinY = CGRectGetMinY(v28);
     v15 = 0.0;
   }
 
-  else if (v11 == 2)
+  else if (volumeButtonsEdge == 2)
   {
-    v12 = [(TVRUIHintsViewController *)self view];
-    [v12 bounds];
+    view = [(TVRUIHintsViewController *)self view];
+    [view bounds];
     MinY = CGRectGetWidth(v26);
 
-    v14 = [(TVRUIHintsViewController *)self hardwareInfo];
-    [v14 volumeUpButtonRect];
+    hardwareInfo2 = [(TVRUIHintsViewController *)self hardwareInfo];
+    [hardwareInfo2 volumeUpButtonRect];
     v15 = CGRectGetMinY(v27);
   }
 
   else
   {
-    v14 = [(TVRUIHintsViewController *)self hardwareInfo];
-    [v14 volumeUpButtonRect];
+    hardwareInfo2 = [(TVRUIHintsViewController *)self hardwareInfo];
+    [hardwareInfo2 volumeUpButtonRect];
     v15 = CGRectGetMinY(v29);
     MinY = 0.0;
   }
@@ -657,38 +657,38 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v24[0] = 67109120;
-    v24[1] = v11;
+    v24[1] = volumeButtonsEdge;
     _os_log_impl(&dword_26CFEB000, v16, OS_LOG_TYPE_DEFAULT, "Volume button hints presenting edge: %u", v24, 8u);
   }
 
-  v17 = [(TVRUIHintsViewController *)self styleProvider];
-  [v17 volumeHintContainerWidth];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  [styleProvider volumeHintContainerWidth];
   v19 = v18;
 
-  v20 = [(TVRUIHintsViewController *)self hardwareInfo];
-  [v20 totalHeight];
+  hardwareInfo3 = [(TVRUIHintsViewController *)self hardwareInfo];
+  [hardwareInfo3 totalHeight];
   v22 = v21;
-  v23 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-  [v23 setFrame:{MinY, v15, v19, v22}];
+  volumeButtonsHint4 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+  [volumeButtonsHint4 setFrame:{MinY, v15, v19, v22}];
 }
 
-- (void)_setupVolumeButtonsHintWithPresentation:(unint64_t)a3 volumeImage:(id)a4
+- (void)_setupVolumeButtonsHintWithPresentation:(unint64_t)presentation volumeImage:(id)image
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  imageCopy = image;
   v7 = _TVRUIHintsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *&buf[4] = "[TVRUIHintsViewController _setupVolumeButtonsHintWithPresentation:volumeImage:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = presentation;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "%s, presentation=%ld", buf, 0x16u);
   }
 
-  v8 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+  volumeButtonsHint = [(TVRUIHintsViewController *)self volumeButtonsHint];
 
-  if (!v8)
+  if (!volumeButtonsHint)
   {
     v9 = _TVRUIHintsLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -697,33 +697,33 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
       _os_log_impl(&dword_26CFEB000, v9, OS_LOG_TYPE_DEFAULT, "Setting up volume buttons hint", buf, 2u);
     }
 
-    v10 = [(TVRUIHintsViewController *)self hardwareInfo];
-    [v10 volumeUpButtonRect];
+    hardwareInfo = [(TVRUIHintsViewController *)self hardwareInfo];
+    [hardwareInfo volumeUpButtonRect];
     Height = CGRectGetHeight(v27);
 
-    v12 = [(TVRUIHintsViewController *)self hardwareInfo];
-    v13 = [v12 volumeButtonsEdge];
+    hardwareInfo2 = [(TVRUIHintsViewController *)self hardwareInfo];
+    volumeButtonsEdge = [hardwareInfo2 volumeButtonsEdge];
 
     v14 = [TVRUIHintsVolumeButtonsView alloc];
-    v15 = [(TVRUIHintsViewController *)self styleProvider];
-    v16 = [(TVRUIHintsVolumeButtonsView *)v14 initWithPresentation:a3 image:v6 styleProvider:v15 buttonEdge:v13 buttonHeight:Height];
+    styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+    v16 = [(TVRUIHintsVolumeButtonsView *)v14 initWithPresentation:presentation image:imageCopy styleProvider:styleProvider buttonEdge:volumeButtonsEdge buttonHeight:Height];
     [(TVRUIHintsViewController *)self setVolumeButtonsHint:v16];
 
     [(TVRUIHintsViewController *)self _gylphTransformForOrientation:[(TVRUIHintsViewController *)self currentInterfaceOrientation]];
-    v17 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-    v18 = [v17 glyphView];
+    volumeButtonsHint2 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+    glyphView = [volumeButtonsHint2 glyphView];
     *buf = v21;
     *&buf[16] = v22;
     v25 = v23;
-    [v18 setTransform:buf];
+    [glyphView setTransform:buf];
 
-    v19 = [(TVRUIHintsViewController *)self view];
-    v20 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-    [v19 addSubview:v20];
+    view = [(TVRUIHintsViewController *)self view];
+    volumeButtonsHint3 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+    [view addSubview:volumeButtonsHint3];
   }
 }
 
-- (void)_volumeUpButtonPressed:(id)a3
+- (void)_volumeUpButtonPressed:(id)pressed
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = _TVRUIHintsLog();
@@ -738,7 +738,7 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
   [(TVRUIHintsViewController *)self _presentVolumeButtonPressWithPresentation:1];
 }
 
-- (void)_volumeDownButtonPressed:(id)a3
+- (void)_volumeDownButtonPressed:(id)pressed
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = _TVRUIHintsLog();
@@ -753,24 +753,24 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
   [(TVRUIHintsViewController *)self _presentVolumeButtonPressWithPresentation:2];
 }
 
-- (void)_presentVolumeButtonPressWithPresentation:(unint64_t)a3
+- (void)_presentVolumeButtonPressWithPresentation:(unint64_t)presentation
 {
-  v6 = [(TVRUIHintsViewController *)self styleProvider];
-  v5 = [v6 volumeImage];
-  [(TVRUIHintsViewController *)self _presentVolumeButtonPressWithPresentation:a3 volumeImage:v5];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  volumeImage = [styleProvider volumeImage];
+  [(TVRUIHintsViewController *)self _presentVolumeButtonPressWithPresentation:presentation volumeImage:volumeImage];
 }
 
-- (void)_presentVolumeButtonPressWithPresentation:(unint64_t)a3 volumeImage:(id)a4
+- (void)_presentVolumeButtonPressWithPresentation:(unint64_t)presentation volumeImage:(id)image
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  imageCopy = image;
   v7 = _TVRUIHintsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v72 = "[TVRUIHintsViewController _presentVolumeButtonPressWithPresentation:volumeImage:]";
     v73 = 2048;
-    v74 = a3;
+    presentationCopy = presentation;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "%s, presentation=%ld", buf, 0x16u);
   }
 
@@ -787,53 +787,53 @@ void __59__TVRUIHintsViewController_requestHintsForSiri_volumeMode___block_invok
     goto LABEL_24;
   }
 
-  v8 = [(TVRUIHintsViewController *)self view];
-  v9 = [v8 window];
-  if ([v9 interfaceOrientation] != 3)
+  view = [(TVRUIHintsViewController *)self view];
+  window = [view window];
+  if ([window interfaceOrientation] != 3)
   {
 
     goto LABEL_13;
   }
 
   v10 = +[TVRUIDeviceInfo currentDeviceInfo];
-  v11 = [v10 isPad];
+  isPad = [v10 isPad];
 
-  v12 = a3;
-  if (v11)
+  presentationCopy3 = presentation;
+  if (isPad)
   {
-    if (a3 == 1)
+    if (presentation == 1)
     {
-      v12 = 2;
+      presentationCopy3 = 2;
       goto LABEL_14;
     }
 
-    if (a3 == 2)
+    if (presentation == 2)
     {
-      v12 = 1;
+      presentationCopy3 = 1;
       goto LABEL_14;
     }
 
 LABEL_13:
-    v12 = a3;
+    presentationCopy3 = presentation;
   }
 
 LABEL_14:
-  [(TVRUIHintsViewController *)self _updateVolumeButtonsHintFrameWithPresentation:v12 volumeImage:v6];
-  v14 = [(TVRUIHintsViewController *)self styleProvider];
-  [v14 activationAnimationDismissalDelay];
+  [(TVRUIHintsViewController *)self _updateVolumeButtonsHintFrameWithPresentation:presentationCopy3 volumeImage:imageCopy];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  [styleProvider activationAnimationDismissalDelay];
   v16 = v15;
 
-  v17 = [(TVRUIHintsViewController *)self styleProvider];
-  v18 = [v17 supportsSBHints];
+  styleProvider2 = [(TVRUIHintsViewController *)self styleProvider];
+  supportsSBHints = [styleProvider2 supportsSBHints];
 
-  if (v18)
+  if (supportsSBHints)
   {
-    if (a3)
+    if (presentation)
     {
-      if (a3 == 2)
+      if (presentation == 2)
       {
-        v19 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-        v20 = [v19 volumeDownButtonView];
+        volumeButtonsHint = [(TVRUIHintsViewController *)self volumeButtonsHint];
+        volumeDownButtonView = [volumeButtonsHint volumeDownButtonView];
         v44 = SBSUIRegisterHardwareButtonHintView();
         volumeHintVisibilityController = self->_volumeHintVisibilityController;
         self->_volumeHintVisibilityController = v44;
@@ -841,7 +841,7 @@ LABEL_14:
 
       else
       {
-        if (a3 != 1)
+        if (presentation != 1)
         {
 LABEL_23:
           [(TVRUIHintsViewController *)self _frameForVolumeButtonsPresented:1];
@@ -849,11 +849,11 @@ LABEL_23:
           v50 = v49;
           v52 = v51;
           v54 = v53;
-          v55 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-          [v55 setFrame:{v48, v50, v52, v54}];
+          volumeButtonsHint2 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+          [volumeButtonsHint2 setFrame:{v48, v50, v52, v54}];
 
-          v56 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-          [v56 setHidden:0];
+          volumeButtonsHint3 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+          [volumeButtonsHint3 setHidden:0];
 
           [(SBSHardwareButtonHintViewContentVisibilityControlling *)self->_volumeHintVisibilityController setContentVisibility:1 animationSettings:0];
           objc_initWeak(buf, self);
@@ -869,8 +869,8 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v19 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-        v20 = [v19 volumeUpButtonView];
+        volumeButtonsHint = [(TVRUIHintsViewController *)self volumeButtonsHint];
+        volumeDownButtonView = [volumeButtonsHint volumeUpButtonView];
         v21 = SBSUIRegisterHardwareButtonHintView();
         v22 = self->_volumeHintVisibilityController;
         self->_volumeHintVisibilityController = v21;
@@ -879,32 +879,32 @@ LABEL_23:
 
     else
     {
-      v19 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+      volumeButtonsHint = [(TVRUIHintsViewController *)self volumeButtonsHint];
       v46 = SBSUIRegisterHardwareButtonHintView();
-      v20 = self->_volumeHintVisibilityController;
+      volumeDownButtonView = self->_volumeHintVisibilityController;
       self->_volumeHintVisibilityController = v46;
     }
 
     goto LABEL_23;
   }
 
-  v23 = [(TVRUIHintsViewController *)self styleProvider];
-  [v23 activationAnimationDuration];
+  styleProvider3 = [(TVRUIHintsViewController *)self styleProvider];
+  [styleProvider3 activationAnimationDuration];
   v25 = v24;
 
-  v26 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-  [v26 setHidden:0];
+  volumeButtonsHint4 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+  [volumeButtonsHint4 setHidden:0];
 
-  v27 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-  [v27 setAlpha:1.0];
+  volumeButtonsHint5 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+  [volumeButtonsHint5 setAlpha:1.0];
 
   [(TVRUIHintsViewController *)self _frameForVolumeButtonsPresented:0];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v36 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-  [v36 setFrame:{v29, v31, v33, v35}];
+  volumeButtonsHint6 = [(TVRUIHintsViewController *)self volumeButtonsHint];
+  [volumeButtonsHint6 setFrame:{v29, v31, v33, v35}];
 
   objc_initWeak(buf, self);
   v37 = objc_alloc(MEMORY[0x277D75D40]);
@@ -925,22 +925,22 @@ LABEL_23:
   v40 = [v39 initWithDuration:2 curve:v65 animations:v25];
   [(TVRUIHintsViewController *)self setDismissalAnimator:v40];
 
-  v41 = [(TVRUIHintsViewController *)self dismissalAnimator];
+  dismissalAnimator = [(TVRUIHintsViewController *)self dismissalAnimator];
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __82__TVRUIHintsViewController__presentVolumeButtonPressWithPresentation_volumeImage___block_invoke_4;
   v63[3] = &unk_279D88980;
   objc_copyWeak(&v64, buf);
-  [v41 addCompletion:v63];
+  [dismissalAnimator addCompletion:v63];
 
-  v42 = [(TVRUIHintsViewController *)self presentationAnimator];
+  presentationAnimator = [(TVRUIHintsViewController *)self presentationAnimator];
   v58 = MEMORY[0x277D85DD0];
   v59 = 3221225472;
   v60 = __82__TVRUIHintsViewController__presentVolumeButtonPressWithPresentation_volumeImage___block_invoke_5;
   v61 = &unk_279D88930;
   objc_copyWeak(v62, buf);
   v62[1] = v16;
-  [v42 addCompletion:&v58];
+  [presentationAnimator addCompletion:&v58];
 
   v43 = [(TVRUIHintsViewController *)self presentationAnimator:v58];
   [v43 startAnimation];
@@ -1019,10 +1019,10 @@ void __82__TVRUIHintsViewController__presentVolumeButtonPressWithPresentation_vo
   }
 }
 
-- (void)_siriActivated:(id)a3
+- (void)_siriActivated:(id)activated
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activatedCopy = activated;
   v5 = _TVRUIHintsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1057,16 +1057,16 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v6 = [(TVRUIHintsViewController *)self styleProvider];
-  v7 = [v6 supportsSBHints];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  supportsSBHints = [styleProvider supportsSBHints];
 
-  if (v7)
+  if (supportsSBHints)
   {
     [(TVRUIHintsViewController *)self _updateUserIntentButtonHintFrameForPresentation:1];
-    v8 = [(TVRUIHintsViewController *)self userIntentButtonHint];
-    [v8 setHidden:0];
+    userIntentButtonHint = [(TVRUIHintsViewController *)self userIntentButtonHint];
+    [userIntentButtonHint setHidden:0];
 
-    v9 = [(TVRUIHintsViewController *)self userIntentButtonHint];
+    userIntentButtonHint2 = [(TVRUIHintsViewController *)self userIntentButtonHint];
     v10 = SBSUIRegisterHardwareButtonHintView();
     siriHintVisibilityController = self->_siriHintVisibilityController;
     self->_siriHintVisibilityController = v10;
@@ -1143,10 +1143,10 @@ void __43__TVRUIHintsViewController__siriActivated___block_invoke_2(uint64_t a1)
   [v9 setFrame:{v2, v4, v6, v8}];
 }
 
-- (void)_siriDeactivated:(id)a3
+- (void)_siriDeactivated:(id)deactivated
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deactivatedCopy = deactivated;
   v5 = _TVRUIHintsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1155,18 +1155,18 @@ void __43__TVRUIHintsViewController__siriActivated___block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(TVRUIHintsViewController *)self styleProvider];
-  v7 = [v6 supportsSBHints];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  supportsSBHints = [styleProvider supportsSBHints];
 
-  if (v7)
+  if (supportsSBHints)
   {
     [(TVRUIHintsViewController *)self _cleanupHints];
   }
 
   else
   {
-    v8 = [(TVRUIHintsViewController *)self styleProvider];
-    [v8 activationAnimationDuration];
+    styleProvider2 = [(TVRUIHintsViewController *)self styleProvider];
+    [styleProvider2 activationAnimationDuration];
     v10 = v9;
 
     objc_initWeak(buf, self);
@@ -1179,13 +1179,13 @@ void __43__TVRUIHintsViewController__siriActivated___block_invoke_2(uint64_t a1)
     v12 = [v11 initWithDuration:2 curve:v20 animations:v10];
     [(TVRUIHintsViewController *)self setDismissalAnimator:v12];
 
-    v13 = [(TVRUIHintsViewController *)self dismissalAnimator];
+    dismissalAnimator = [(TVRUIHintsViewController *)self dismissalAnimator];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __45__TVRUIHintsViewController__siriDeactivated___block_invoke_2;
     v18 = &unk_279D88980;
     objc_copyWeak(&v19, buf);
-    [v13 addCompletion:&v15];
+    [dismissalAnimator addCompletion:&v15];
 
     v14 = [(TVRUIHintsViewController *)self dismissalAnimator:v15];
     [v14 startAnimation];
@@ -1220,40 +1220,40 @@ void __45__TVRUIHintsViewController__siriDeactivated___block_invoke_2(uint64_t a
   }
 }
 
-- (void)_largeTextEnabledStatusChanged:(id)a3
+- (void)_largeTextEnabledStatusChanged:(id)changed
 {
-  v4 = [(TVRUIHintsViewController *)self styleProvider];
-  v5 = [v4 siriImage];
-  v6 = [(TVRUIHintsViewController *)self siriGlyphView];
-  v7 = [v6 imageView];
-  [v7 setImage:v5];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  siriImage = [styleProvider siriImage];
+  siriGlyphView = [(TVRUIHintsViewController *)self siriGlyphView];
+  imageView = [siriGlyphView imageView];
+  [imageView setImage:siriImage];
 
-  v11 = [(TVRUIHintsViewController *)self styleProvider];
-  v8 = [v11 volumeImage];
-  v9 = [(TVRUIHintsViewController *)self volumeGlyphView];
-  v10 = [v9 imageView];
-  [v10 setImage:v8];
+  styleProvider2 = [(TVRUIHintsViewController *)self styleProvider];
+  volumeImage = [styleProvider2 volumeImage];
+  volumeGlyphView = [(TVRUIHintsViewController *)self volumeGlyphView];
+  imageView2 = [volumeGlyphView imageView];
+  [imageView2 setImage:volumeImage];
 }
 
-- (void)_applyTransformForOrientation:(int64_t)a3
+- (void)_applyTransformForOrientation:(int64_t)orientation
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = +[TVRUIDeviceInfo currentDeviceInfo];
-  v6 = [v5 isPad];
+  isPad = [v5 isPad];
 
-  if (!v6)
+  if (!isPad)
   {
     return;
   }
 
-  v7 = [(TVRUIHintsViewController *)self view];
-  [v7 bounds];
+  view = [(TVRUIHintsViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v19);
-  v9 = [(TVRUIHintsViewController *)self view];
-  [v9 bounds];
+  view2 = [(TVRUIHintsViewController *)self view];
+  [view2 bounds];
   Height = CGRectGetHeight(v20);
 
-  if (a3 == 2)
+  if (orientation == 2)
   {
     v11 = 3.14159265;
 LABEL_10:
@@ -1261,13 +1261,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (orientation == 3)
   {
     v11 = -1.57079633;
     goto LABEL_7;
   }
 
-  if (a3 != 4)
+  if (orientation != 4)
   {
     v11 = 0.0;
     goto LABEL_10;
@@ -1282,22 +1282,22 @@ LABEL_11:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.a) = 134218240;
-    *(&buf.a + 4) = a3;
+    *(&buf.a + 4) = orientation;
     WORD2(buf.b) = 2048;
     *(&buf.b + 6) = v11;
     _os_log_impl(&dword_26CFEB000, v13, OS_LOG_TYPE_DEFAULT, "Applying transform if needed for orientation=%ld, angle=%0.2frad", &buf, 0x16u);
   }
 
   CGAffineTransformMakeRotation(&v16, v11);
-  v14 = [(TVRUIHintsViewController *)self view];
+  view3 = [(TVRUIHintsViewController *)self view];
   buf = v16;
-  [v14 setTransform:&buf];
+  [view3 setTransform:&buf];
 
-  v15 = [(TVRUIHintsViewController *)self view];
-  [v15 setBounds:{0.0, 0.0, Width, v12}];
+  view4 = [(TVRUIHintsViewController *)self view];
+  [view4 setBounds:{0.0, 0.0, Width, v12}];
 }
 
-- (CGAffineTransform)_gylphTransformForOrientation:(SEL)a3
+- (CGAffineTransform)_gylphTransformForOrientation:(SEL)orientation
 {
   v4 = 0.0;
   if ((a4 - 2) <= 2)
@@ -1308,10 +1308,10 @@ LABEL_11:
   return CGAffineTransformMakeRotation(retstr, v4);
 }
 
-- (void)_dismissHintsWithCompletion:(id)a3
+- (void)_dismissHintsWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[TVRUIFeatures persistHintsUIEnabled];
   v6 = _TVRUIHintsLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -1324,9 +1324,9 @@ LABEL_11:
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "%s, persistHintsUIEnabled is on so hints will not be dismissed", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1340,8 +1340,8 @@ LABEL_11:
     }
 
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__dismissHintsWithCompletion_ object:0];
-    v8 = [(TVRUIHintsViewController *)self styleProvider];
-    [v8 activationAnimationDuration];
+    styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+    [styleProvider activationAnimationDuration];
     v10 = v9;
 
     objc_initWeak(buf, self);
@@ -1354,17 +1354,17 @@ LABEL_11:
     v12 = [v11 initWithDuration:2 curve:v18 animations:v10];
     [(TVRUIHintsViewController *)self setDismissalAnimator:v12];
 
-    v13 = [(TVRUIHintsViewController *)self dismissalAnimator];
+    dismissalAnimator = [(TVRUIHintsViewController *)self dismissalAnimator];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __56__TVRUIHintsViewController__dismissHintsWithCompletion___block_invoke_2;
     v15[3] = &unk_279D889A8;
     objc_copyWeak(&v17, buf);
-    v16 = v4;
-    [v13 addCompletion:v15];
+    v16 = completionCopy;
+    [dismissalAnimator addCompletion:v15];
 
-    v14 = [(TVRUIHintsViewController *)self dismissalAnimator];
-    [v14 startAnimation];
+    dismissalAnimator2 = [(TVRUIHintsViewController *)self dismissalAnimator];
+    [dismissalAnimator2 startAnimation];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v19);
@@ -1439,40 +1439,40 @@ uint64_t __56__TVRUIHintsViewController__dismissHintsWithCompletion___block_invo
 - (void)_cleanupHints
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__dismissHintsWithCompletion_ object:0];
-  v3 = [(TVRUIHintsViewController *)self presentationAnimator];
-  [v3 stopAnimation:1];
+  presentationAnimator = [(TVRUIHintsViewController *)self presentationAnimator];
+  [presentationAnimator stopAnimation:1];
 
-  v4 = [(TVRUIHintsViewController *)self dismissalAnimator];
-  [v4 stopAnimation:1];
+  dismissalAnimator = [(TVRUIHintsViewController *)self dismissalAnimator];
+  [dismissalAnimator stopAnimation:1];
 
-  v5 = [(TVRUIHintsViewController *)self siriHintVisibilityController];
-  [v5 invalidate];
+  siriHintVisibilityController = [(TVRUIHintsViewController *)self siriHintVisibilityController];
+  [siriHintVisibilityController invalidate];
 
   [(TVRUIHintsViewController *)self setSiriHintVisibilityController:0];
-  v6 = [(TVRUIHintsViewController *)self volumeHintVisibilityController];
-  [v6 invalidate];
+  volumeHintVisibilityController = [(TVRUIHintsViewController *)self volumeHintVisibilityController];
+  [volumeHintVisibilityController invalidate];
 
   [(TVRUIHintsViewController *)self setVolumeHintVisibilityController:0];
-  v7 = [(TVRUIHintsViewController *)self volumeButtonsHint];
-  [v7 setHidden:1];
+  volumeButtonsHint = [(TVRUIHintsViewController *)self volumeButtonsHint];
+  [volumeButtonsHint setHidden:1];
 
-  v8 = [(TVRUIHintsViewController *)self userIntentButtonHint];
-  [v8 setHidden:1];
+  userIntentButtonHint = [(TVRUIHintsViewController *)self userIntentButtonHint];
+  [userIntentButtonHint setHidden:1];
 }
 
 - (int64_t)currentInterfaceOrientation
 {
-  v2 = [(TVRUIHintsViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 _windowInterfaceOrientation];
+  view = [(TVRUIHintsViewController *)self view];
+  window = [view window];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
 
-  return v4;
+  return _windowInterfaceOrientation;
 }
 
-- (CGRect)_frameForUserIntentButtonPresented:(BOOL)a3
+- (CGRect)_frameForUserIntentButtonPresented:(BOOL)presented
 {
-  v5 = [(TVRUIHintsViewController *)self hardwareInfo];
-  [v5 userIntentButtonRect];
+  hardwareInfo = [(TVRUIHintsViewController *)self hardwareInfo];
+  [hardwareInfo userIntentButtonRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1495,25 +1495,25 @@ uint64_t __56__TVRUIHintsViewController__dismissHintsWithCompletion___block_invo
     goto LABEL_21;
   }
 
-  v18 = [(TVRUIHintsViewController *)self styleProvider];
-  [v18 siriHintContainerWidth];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  [styleProvider siriHintContainerWidth];
   v32 = v19;
 
   v33 = *MEMORY[0x277CBF3A8];
   v34 = *(MEMORY[0x277CBF3A8] + 8);
-  v20 = [(TVRUIHintsViewController *)self hardwareInfo];
-  v21 = [v20 userIntentButtonEdge];
+  hardwareInfo2 = [(TVRUIHintsViewController *)self hardwareInfo];
+  userIntentButtonEdge = [hardwareInfo2 userIntentButtonEdge];
 
-  if (v21 > 1)
+  if (userIntentButtonEdge > 1)
   {
-    if (v21 == 3)
+    if (userIntentButtonEdge == 3)
     {
       v25 = +[TVRUIDeviceInfo currentDeviceInfo];
-      v26 = [v25 hasHomeButton];
+      hasHomeButton = [v25 hasHomeButton];
 
       v27 = _TVRUIHintsLog();
       v24 = v27;
-      if (v26)
+      if (hasHomeButton)
       {
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
@@ -1530,7 +1530,7 @@ uint64_t __56__TVRUIHintsViewController__dismissHintsWithCompletion___block_invo
       goto LABEL_18;
     }
 
-    if (v21 == 2)
+    if (userIntentButtonEdge == 2)
     {
       width = v32;
       x = v7 - v32;
@@ -1544,7 +1544,7 @@ uint64_t __56__TVRUIHintsViewController__dismissHintsWithCompletion___block_invo
 
   else
   {
-    if (!v21)
+    if (!userIntentButtonEdge)
     {
       v24 = _TVRUIHintsLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -1555,7 +1555,7 @@ uint64_t __56__TVRUIHintsViewController__dismissHintsWithCompletion___block_invo
       goto LABEL_18;
     }
 
-    if (v21 == 1)
+    if (userIntentButtonEdge == 1)
     {
       height = v32;
       v22 = -v32;
@@ -1578,7 +1578,7 @@ LABEL_18:
   v23 = v33;
   v22 = v34;
 LABEL_19:
-  if (!a3)
+  if (!presented)
   {
     v37.origin.x = x;
     v37.origin.y = y;
@@ -1603,34 +1603,34 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)_frameForVolumeButtonsPresented:(BOOL)a3
+- (CGRect)_frameForVolumeButtonsPresented:(BOOL)presented
 {
-  v5 = [(TVRUIHintsViewController *)self styleProvider];
-  [v5 volumeHintContainerWidth];
+  styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+  [styleProvider volumeHintContainerWidth];
   v7 = v6;
 
-  v8 = [(TVRUIHintsViewController *)self hardwareInfo];
-  [v8 volumeUpButtonRect];
+  hardwareInfo = [(TVRUIHintsViewController *)self hardwareInfo];
+  [hardwareInfo volumeUpButtonRect];
   MinY = CGRectGetMinY(v27);
 
-  v10 = [(TVRUIHintsViewController *)self hardwareInfo];
-  [v10 totalHeight];
+  hardwareInfo2 = [(TVRUIHintsViewController *)self hardwareInfo];
+  [hardwareInfo2 totalHeight];
   height = v11;
 
-  v13 = [(TVRUIHintsViewController *)self hardwareInfo];
-  v14 = [v13 volumeButtonsEdge];
+  hardwareInfo3 = [(TVRUIHintsViewController *)self hardwareInfo];
+  volumeButtonsEdge = [hardwareInfo3 volumeButtonsEdge];
 
-  if (v14 != 1)
+  if (volumeButtonsEdge != 1)
   {
-    if (v14 == 2)
+    if (volumeButtonsEdge == 2)
     {
-      v15 = [(TVRUIHintsViewController *)self view];
-      [v15 bounds];
+      view = [(TVRUIHintsViewController *)self view];
+      [view bounds];
       Width = CGRectGetWidth(v28);
 
       v17 = 0.0;
       v18 = v7;
-      if (a3)
+      if (presented)
       {
         goto LABEL_7;
       }
@@ -1641,7 +1641,7 @@ LABEL_21:
       v18 = -v7;
       v17 = 0.0;
       Width = 0.0;
-      if (a3)
+      if (presented)
       {
         goto LABEL_7;
       }
@@ -1650,12 +1650,12 @@ LABEL_21:
     goto LABEL_6;
   }
 
-  v19 = [(TVRUIHintsViewController *)self hardwareInfo];
-  [v19 volumeUpButtonRect];
+  hardwareInfo4 = [(TVRUIHintsViewController *)self hardwareInfo];
+  [hardwareInfo4 volumeUpButtonRect];
   Width = CGRectGetMinX(v29);
 
-  v20 = [(TVRUIHintsViewController *)self hardwareInfo];
-  [v20 totalHeight];
+  hardwareInfo5 = [(TVRUIHintsViewController *)self hardwareInfo];
+  [hardwareInfo5 totalHeight];
   v22 = v21;
 
   v17 = -v7;
@@ -1663,7 +1663,7 @@ LABEL_21:
   height = 0.0;
   v7 = v22;
   MinY = 0.0;
-  if (!a3)
+  if (!presented)
   {
 LABEL_6:
     v30.origin.x = Width;
@@ -1707,8 +1707,8 @@ LABEL_7:
     v31[1] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
 
-    v7 = [(TVRUIHintsViewController *)self view];
-    [v7 bounds];
+    view = [(TVRUIHintsViewController *)self view];
+    [view bounds];
     v8 = (CGRectGetHeight(v32) / 10.0);
 
     v9 = [v6 count];
@@ -1716,20 +1716,20 @@ LABEL_7:
     {
       v10 = v9;
       v11 = 0;
-      v28 = self;
+      selfCopy = self;
       v29 = v9;
       do
       {
-        v12 = [(TVRUIHintsViewController *)self view];
-        [v12 bounds];
+        view2 = [(TVRUIHintsViewController *)self view];
+        [view2 bounds];
         Width = CGRectGetWidth(v33);
 
         v14 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, v11 * 10.0, Width, 10.0}];
         v15 = [v6 objectAtIndexedSubscript:v11 % v10];
         [v14 setBackgroundColor:v15];
 
-        v16 = [(TVRUIHintsViewController *)self view];
-        [v16 addSubview:v14];
+        view3 = [(TVRUIHintsViewController *)self view];
+        [view3 addSubview:v14];
 
         if ((v11 & 1) == 0)
         {
@@ -1746,8 +1746,8 @@ LABEL_7:
           v22 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
           [v19 setFont:v22];
 
-          v23 = [MEMORY[0x277D75348] whiteColor];
-          [v19 setTextColor:v23];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          [v19 setTextColor:whiteColor];
 
           [v14 addSubview:v19];
           v24 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{10.0, 0.0, v17, Height}];
@@ -1759,12 +1759,12 @@ LABEL_7:
           v26 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
           [v24 setFont:v26];
 
-          v27 = [MEMORY[0x277D75348] whiteColor];
-          [v24 setTextColor:v27];
+          whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+          [v24 setTextColor:whiteColor2];
 
           [v14 addSubview:v24];
           v8 = v20;
-          self = v28;
+          self = selfCopy;
           v10 = v29;
         }
 
@@ -1776,10 +1776,10 @@ LABEL_7:
   }
 }
 
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = _TVRUITipsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1788,11 +1788,11 @@ LABEL_7:
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "%s", &v11, 0xCu);
   }
 
-  v7 = [(TVRUIHintsViewController *)self siriTipManager];
+  siriTipManager = [(TVRUIHintsViewController *)self siriTipManager];
 
   v8 = _TVRUITipsLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (siriTipManager)
   {
     if (v9)
     {
@@ -1800,8 +1800,8 @@ LABEL_7:
       _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "Invalidating Siri tip", &v11, 2u);
     }
 
-    v10 = [(TVRUIHintsViewController *)self siriTipManager];
-    [v10 invalidate:1 didPerformAction:0 completion:v5];
+    siriTipManager2 = [(TVRUIHintsViewController *)self siriTipManager];
+    [siriTipManager2 invalidate:1 didPerformAction:0 completion:completionCopy];
   }
 
   else
@@ -1812,9 +1812,9 @@ LABEL_7:
       _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "No siri tip manager, calling completion block", &v11, 2u);
     }
 
-    if (v5)
+    if (completionCopy)
     {
-      v5[2](v5);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1825,28 +1825,28 @@ LABEL_7:
   v3 = _TVRUITipsLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRUIHintsViewController *)self siriTipManager];
+    siriTipManager = [(TVRUIHintsViewController *)self siriTipManager];
     v8 = 136315394;
     v9 = "[TVRUIHintsViewController hasPresentedContent]";
     v10 = 1024;
-    v11 = [v4 isPresentingTip];
+    isPresentingTip = [siriTipManager isPresentingTip];
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %d", &v8, 0x12u);
   }
 
-  v5 = [(TVRUIHintsViewController *)self siriTipManager];
-  v6 = [v5 isPresentingTip];
+  siriTipManager2 = [(TVRUIHintsViewController *)self siriTipManager];
+  isPresentingTip2 = [siriTipManager2 isPresentingTip];
 
-  return v6;
+  return isPresentingTip2;
 }
 
 - (BOOL)_shouldAllowHintsToPresent
 {
   if ([(TVRUIHintsViewController *)self _volumeHintEnabled])
   {
-    v3 = [(TVRUIHintsViewController *)self presentationAnimator];
-    v4 = [v3 isRunning];
+    presentationAnimator = [(TVRUIHintsViewController *)self presentationAnimator];
+    isRunning = [presentationAnimator isRunning];
 
-    if (v4)
+    if (isRunning)
     {
       v5 = _TVRUIHintsLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1896,13 +1896,13 @@ LABEL_7:
 {
   if ([(TVRUIHintsViewController *)self allowSiriHint])
   {
-    v3 = [(TVRUIHintsViewController *)self styleProvider];
-    v4 = [v3 shouldShowSiriHint];
+    styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+    shouldShowSiriHint = [styleProvider shouldShowSiriHint];
   }
 
   else
   {
-    v4 = 0;
+    shouldShowSiriHint = 0;
   }
 
   if (+[TVRUIFeatures persistHintsUIEnabled])
@@ -1917,7 +1917,7 @@ LABEL_7:
     return 1;
   }
 
-  return v4;
+  return shouldShowSiriHint;
 }
 
 - (BOOL)_volumeHintEnabled
@@ -1931,22 +1931,22 @@ LABEL_7:
       _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "persistHintsUIEnabled is enabled so hints will always show", v8, 2u);
     }
 
-    LOBYTE(v4) = 1;
+    LOBYTE(allowVolumeHint) = 1;
   }
 
   else
   {
-    v4 = [(TVRUIHintsViewController *)self allowVolumeHint];
-    if (v4)
+    allowVolumeHint = [(TVRUIHintsViewController *)self allowVolumeHint];
+    if (allowVolumeHint)
     {
-      v5 = [(TVRUIHintsViewController *)self styleProvider];
-      v6 = [v5 shouldShowVolumeHint];
+      styleProvider = [(TVRUIHintsViewController *)self styleProvider];
+      shouldShowVolumeHint = [styleProvider shouldShowVolumeHint];
 
-      LOBYTE(v4) = v6;
+      LOBYTE(allowVolumeHint) = shouldShowVolumeHint;
     }
   }
 
-  return v4;
+  return allowVolumeHint;
 }
 
 - (void)_setupTipsControllerIfNeeded
@@ -1956,25 +1956,25 @@ LABEL_7:
   {
     if ([(TVRUIHintsViewController *)self allowSiriHint])
     {
-      v3 = [(TVRUIHintsViewController *)self siriTipManager];
+      siriTipManager = [(TVRUIHintsViewController *)self siriTipManager];
 
-      if (!v3)
+      if (!siriTipManager)
       {
         v4 = _TVRUITipsLog();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
         {
-          v5 = [MEMORY[0x277CCA8D8] mainBundle];
-          v6 = [v5 bundleIdentifier];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          bundleIdentifier = [mainBundle bundleIdentifier];
           v9 = 138412290;
-          v10 = v6;
+          v10 = bundleIdentifier;
           _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Creating Siri Tip Manager for: %@", &v9, 0xCu);
         }
 
         v7 = [[TVRUITipManager alloc] initWithTipSourceViewProvider:self tipType:1];
         [(TVRUIHintsViewController *)self setSiriTipManager:v7];
 
-        v8 = [(TVRUIHintsViewController *)self siriTipManager];
-        [v8 activate];
+        siriTipManager2 = [(TVRUIHintsViewController *)self siriTipManager];
+        [siriTipManager2 activate];
       }
     }
   }
@@ -1982,8 +1982,8 @@ LABEL_7:
 
 - (CGRect)tipSourceRect
 {
-  v2 = [(TVRUIHintsViewController *)self hardwareInfo];
-  [v2 userIntentButtonRect];
+  hardwareInfo = [(TVRUIHintsViewController *)self hardwareInfo];
+  [hardwareInfo userIntentButtonRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2000,9 +2000,9 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)_permittedArrowDirectionsForDevice:(id)a3
+- (unint64_t)_permittedArrowDirectionsForDevice:(id)device
 {
-  if ([a3 isPad])
+  if ([device isPad])
   {
     return 15;
   }

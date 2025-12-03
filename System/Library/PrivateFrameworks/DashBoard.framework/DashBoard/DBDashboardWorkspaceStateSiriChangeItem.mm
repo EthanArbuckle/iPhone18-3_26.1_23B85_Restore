@@ -1,6 +1,6 @@
 @interface DBDashboardWorkspaceStateSiriChangeItem
 - (DBDashboardWorkspaceStateSiriChangeItem)init;
-- (id)_newEntityFromChangeItemWithPolicyProvider:(id)a3;
+- (id)_newEntityFromChangeItemWithPolicyProvider:(id)provider;
 @end
 
 @implementation DBDashboardWorkspaceStateSiriChangeItem
@@ -12,7 +12,7 @@
   return [(DBDashboardWorkspaceStateChangeItem *)&v3 _init];
 }
 
-- (id)_newEntityFromChangeItemWithPolicyProvider:(id)a3
+- (id)_newEntityFromChangeItemWithPolicyProvider:(id)provider
 {
   v4 = +[DBDashboardSiriEntity entity];
   [v4 setFloating:{-[DBDashboardWorkspaceStateSiriChangeItem isFloating](self, "isFloating")}];

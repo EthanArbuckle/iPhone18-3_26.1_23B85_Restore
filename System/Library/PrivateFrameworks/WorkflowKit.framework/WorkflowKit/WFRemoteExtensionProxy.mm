@@ -1,32 +1,32 @@
 @interface WFRemoteExtensionProxy
-- (WFRemoteExtensionProxy)initWithConnection:(id)a3 andDevice:(id)a4;
-- (void)confirmIntentWithCompletionHandler:(id)a3;
-- (void)handleIntentRemotelyWithRemoteOperation:(id)a3 completion:(id)a4;
-- (void)handleIntentWithCompletionHandler:(id)a3;
-- (void)resolveIntentSlotKeyPaths:(id)a3 completionHandler:(id)a4;
+- (WFRemoteExtensionProxy)initWithConnection:(id)connection andDevice:(id)device;
+- (void)confirmIntentWithCompletionHandler:(id)handler;
+- (void)handleIntentRemotelyWithRemoteOperation:(id)operation completion:(id)completion;
+- (void)handleIntentWithCompletionHandler:(id)handler;
+- (void)resolveIntentSlotKeyPaths:(id)paths completionHandler:(id)handler;
 @end
 
 @implementation WFRemoteExtensionProxy
 
-- (void)resolveIntentSlotKeyPaths:(id)a3 completionHandler:(id)a4
+- (void)resolveIntentSlotKeyPaths:(id)paths completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = [(WFRemoteExtensionProxy *)self connection];
-  v7 = [v8 intent];
-  (*(a4 + 2))(v6, 1, v7, 0);
+  handlerCopy = handler;
+  connection = [(WFRemoteExtensionProxy *)self connection];
+  intent = [connection intent];
+  (*(handler + 2))(handlerCopy, 1, intent, 0);
 }
 
-- (void)handleIntentWithCompletionHandler:(id)a3
+- (void)handleIntentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   kdebug_trace();
   v5 = objc_alloc_init(MEMORY[0x1E69C7848]);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__WFRemoteExtensionProxy_handleIntentWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E837BCD0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WFRemoteExtensionProxy *)self handleIntentRemotelyWithRemoteOperation:v5 completion:v7];
 }
 
@@ -37,17 +37,17 @@ uint64_t __60__WFRemoteExtensionProxy_handleIntentWithCompletionHandler___block_
   return kdebug_trace();
 }
 
-- (void)confirmIntentWithCompletionHandler:(id)a3
+- (void)confirmIntentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   kdebug_trace();
   v5 = objc_alloc_init(MEMORY[0x1E69C7840]);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__WFRemoteExtensionProxy_confirmIntentWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E837BCD0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WFRemoteExtensionProxy *)self handleIntentRemotelyWithRemoteOperation:v5 completion:v7];
 }
 
@@ -58,17 +58,17 @@ uint64_t __61__WFRemoteExtensionProxy_confirmIntentWithCompletionHandler___block
   return kdebug_trace();
 }
 
-- (void)handleIntentRemotelyWithRemoteOperation:(id)a3 completion:(id)a4
+- (void)handleIntentRemotelyWithRemoteOperation:(id)operation completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFRemoteExtensionProxy *)self connection];
-  v9 = [v8 intent];
+  operationCopy = operation;
+  completionCopy = completion;
+  connection = [(WFRemoteExtensionProxy *)self connection];
+  intent = [connection intent];
 
-  if ([v9 _executionContext] == 2)
+  if ([intent _executionContext] == 2)
   {
-    [v9 _setExecutionContext:9];
+    [intent _setExecutionContext:9];
   }
 
   v10 = getWFIntentExecutionLogObject();
@@ -87,12 +87,12 @@ uint64_t __61__WFRemoteExtensionProxy_confirmIntentWithCompletionHandler___block
   v16[1] = 3221225472;
   v16[2] = __77__WFRemoteExtensionProxy_handleIntentRemotelyWithRemoteOperation_completion___block_invoke_2;
   v16[3] = &unk_1E837BCA8;
-  v17 = v6;
-  v18 = self;
-  v19 = v7;
-  v13 = v7;
-  v14 = v6;
-  [v9 _injectProxiesForImages:&__block_literal_global_54465 completion:v16];
+  v17 = operationCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = operationCopy;
+  [intent _injectProxiesForImages:&__block_literal_global_54465 completion:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -183,14 +183,14 @@ void __77__WFRemoteExtensionProxy_handleIntentRemotelyWithRemoteOperation_comple
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (WFRemoteExtensionProxy)initWithConnection:(id)a3 andDevice:(id)a4
+- (WFRemoteExtensionProxy)initWithConnection:(id)connection andDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  connectionCopy = connection;
+  deviceCopy = device;
+  if (!connectionCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFRemoteExtensionProxy.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExtensionProxy.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
   }
 
   v17.receiver = self;
@@ -199,8 +199,8 @@ void __77__WFRemoteExtensionProxy_handleIntentRemotelyWithRemoteOperation_comple
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_connection, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_connection, connection);
+    v12 = [deviceCopy copy];
     remoteDevice = v11->_remoteDevice;
     v11->_remoteDevice = v12;
 

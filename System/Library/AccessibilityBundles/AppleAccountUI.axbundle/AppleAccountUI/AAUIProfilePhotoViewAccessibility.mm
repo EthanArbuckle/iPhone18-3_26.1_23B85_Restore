@@ -1,5 +1,5 @@
 @interface AAUIProfilePhotoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -8,43 +8,43 @@
 
 @implementation AAUIProfilePhotoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AAUIProfilePhotoView" hasInstanceVariable:@"_editButton" withType:"UIButton"];
-  [v3 validateClass:@"AAUIProfilePhotoView" hasInstanceVariable:@"_photoView" withType:"UIImageView"];
-  [v3 validateClass:@"AAUIProfilePhotoView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AAUIProfilePhotoView" hasInstanceVariable:@"_editButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"AAUIProfilePhotoView" hasInstanceVariable:@"_photoView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"AAUIProfilePhotoView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(AAUIProfilePhotoViewAccessibility *)self _accessibilityPhotoView];
-  v3 = [v2 accessibilityLabel];
+  _accessibilityPhotoView = [(AAUIProfilePhotoViewAccessibility *)self _accessibilityPhotoView];
+  accessibilityLabel = [_accessibilityPhotoView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
   if ([(AAUIProfilePhotoViewAccessibility *)self _accessibilityIsEditing])
   {
-    v3 = accessibilityLocalizedString(@"editablePhoto.hint");
+    accessibilityHint = accessibilityLocalizedString(@"editablePhoto.hint");
   }
 
   else
   {
-    v4 = [(AAUIProfilePhotoViewAccessibility *)self _accessibilityPhotoView];
-    v3 = [v4 accessibilityHint];
+    _accessibilityPhotoView = [(AAUIProfilePhotoViewAccessibility *)self _accessibilityPhotoView];
+    accessibilityHint = [_accessibilityPhotoView accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(AAUIProfilePhotoViewAccessibility *)self _accessibilityIsEditing];
+  _accessibilityIsEditing = [(AAUIProfilePhotoViewAccessibility *)self _accessibilityIsEditing];
   v3 = *MEMORY[0x29EDC7F70];
-  if (!v2)
+  if (!_accessibilityIsEditing)
   {
     v3 = 0;
   }

@@ -1,6 +1,6 @@
 @interface PXPhotosSectionHeaderLayoutSpec
 - (CGSize)chevronSize;
-- (PXPhotosSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXPhotosSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 - (UIEdgeInsets)padding;
 @end
 
@@ -28,12 +28,12 @@
   return result;
 }
 
-- (PXPhotosSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXPhotosSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v6 = a3;
+  collectionCopy = collection;
   v60.receiver = self;
   v60.super_class = PXPhotosSectionHeaderLayoutSpec;
-  v7 = [(PXPhotosSectionHeaderLayoutSpec *)&v60 initWithExtendedTraitCollection:v6 options:a4];
+  v7 = [(PXPhotosSectionHeaderLayoutSpec *)&v60 initWithExtendedTraitCollection:collectionCopy options:options];
   if (v7)
   {
     v8 = PXSystemFontOfSizeAndWeight();
@@ -52,23 +52,23 @@
     buttonFont = v7->_buttonFont;
     v7->_buttonFont = v14;
 
-    v16 = a4 & 4;
+    v16 = options & 4;
     v17 = 32.0;
-    if ((a4 & 4) == 0)
+    if ((options & 4) == 0)
     {
       v17 = 26.0;
     }
 
     v7->_minimumHeaderContentHeight = v17;
     v18 = 35.0;
-    if ((a4 & 4) == 0)
+    if ((options & 4) == 0)
     {
       v18 = 11.0;
     }
 
     v7->_titleHorizontalInset = v18;
     v7->_titleSubtitleHorizontalSpacing = 5.0;
-    v19 = (a4 & 4) == 0;
+    v19 = (options & 4) == 0;
     v7->_dividerBaselineToTextBaselineSpacing = 20.0;
     v7->_chevronSpacing = 5.0;
     v7->_chevronSize = xmmword_21AC7D590;
@@ -85,22 +85,22 @@
     v7->_minimizeTitleBottomPadding = v16 >> 2;
     v7->_filterButtonLayoutForSearch = v16 >> 2;
     v7->_titleShouldFadeOnScroll = v19;
-    v24 = [v6 traitCollection];
-    v25 = [MEMORY[0x277D75348] quaternaryLabelColor];
-    v26 = v25;
-    if (v24)
+    traitCollection = [collectionCopy traitCollection];
+    quaternaryLabelColor = [MEMORY[0x277D75348] quaternaryLabelColor];
+    v26 = quaternaryLabelColor;
+    if (traitCollection)
     {
-      v27 = [(UIColor *)v25 resolvedColorWithTraitCollection:v24];
+      v27 = [(UIColor *)quaternaryLabelColor resolvedColorWithTraitCollection:traitCollection];
       dividerColor = v7->_dividerColor;
       v7->_dividerColor = v27;
 
-      v29 = [MEMORY[0x277D75348] labelColor];
-      v30 = [v29 resolvedColorWithTraitCollection:v24];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      v30 = [labelColor resolvedColorWithTraitCollection:traitCollection];
       titleColor = v7->_titleColor;
       v7->_titleColor = v30;
 
-      v32 = [MEMORY[0x277D75348] secondaryLabelColor];
-      v33 = [v32 resolvedColorWithTraitCollection:v24];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      v33 = [secondaryLabelColor resolvedColorWithTraitCollection:traitCollection];
       subtitleColor = v7->_subtitleColor;
       v7->_subtitleColor = v33;
     }
@@ -108,15 +108,15 @@
     else
     {
       v35 = v7->_dividerColor;
-      v7->_dividerColor = v25;
+      v7->_dividerColor = quaternaryLabelColor;
 
-      v36 = [MEMORY[0x277D75348] labelColor];
+      labelColor2 = [MEMORY[0x277D75348] labelColor];
       v37 = v7->_titleColor;
-      v7->_titleColor = v36;
+      v7->_titleColor = labelColor2;
 
-      v38 = [MEMORY[0x277D75348] secondaryLabelColor];
-      v32 = v7->_subtitleColor;
-      v7->_subtitleColor = v38;
+      secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+      secondaryLabelColor = v7->_subtitleColor;
+      v7->_subtitleColor = secondaryLabelColor2;
     }
 
     v39 = [MEMORY[0x277D75348] colorWithRed:0.2 green:0.47 blue:0.96 alpha:1.0];
@@ -129,7 +129,7 @@
 
     if (v16)
     {
-      [v6 userInterfaceIdiom];
+      [collectionCopy userInterfaceIdiom];
     }
 
     PXEdgeInsetsMake();
@@ -137,10 +137,10 @@
     v7->_padding.left = v44;
     v7->_padding.bottom = v45;
     v7->_padding.right = v46;
-    v47 = [v6 userInterfaceStyle];
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
     v48 = objc_alloc(MEMORY[0x277D3CD38]);
     v49 = PXPhotosUIFoundationBundle();
-    if (v47 == 2)
+    if (userInterfaceStyle == 2)
     {
       v50 = @"PXLeadingChevronWhite";
     }
@@ -150,7 +150,7 @@
       v50 = @"PXLeadingChevron";
     }
 
-    v51 = dbl_21AC7D5A0[v47 == 2];
+    v51 = dbl_21AC7D5A0[userInterfaceStyle == 2];
     v52 = [v48 initWithImageName:v50 inBundle:v49];
     chevronImageConfiguration = v7->_chevronImageConfiguration;
     v7->_chevronImageConfiguration = v52;
@@ -162,7 +162,7 @@
     legibilityGradientImageConfiguration = v7->_legibilityGradientImageConfiguration;
     v7->_legibilityGradientImageConfiguration = v56;
 
-    [v6 contentSizeCategory];
+    [collectionCopy contentSizeCategory];
     if (PXPreferredContentSizeCategoryIsAccessibility())
     {
       v58 = 0x4041000000000000;

@@ -1,32 +1,32 @@
 @interface BWIrisMovieGenerator
-+ (uint64_t)_addNewMetadataTrackToAssetWriter:(uint64_t)a3 forTrackTimeScale:(unsigned int *)a4 yieldingTrackID:;
++ (uint64_t)_addNewMetadataTrackToAssetWriter:(uint64_t)writer forTrackTimeScale:(unsigned int *)scale yieldingTrackID:;
 + (void)initialize;
 - (BOOL)flush;
 - (BOOL)flushAsync;
 - (BOOL)suspended;
-- (char)initWithReadableByteStream:(uint64_t)a3 metadataByteStream:(char)a4 forFrontFacingCamera:(char)a5 forExternalCamera:(char)a6 clientExpectsCameraMountedInLandscapeOrientation:(char)a7 sampleReferenceMoviesEnabled:(void *)a8 movieGenerationQueue:(void *)a9 irisStillImageMovieMetadataCache:(void *)a10 videoOrientationTimeMachine:;
-- (double)_findIrisShortestTrackDuration:(CMTime *)a3 audioTrackDuration:(char)a4 flush:(double)result;
+- (char)initWithReadableByteStream:(uint64_t)stream metadataByteStream:(char)byteStream forFrontFacingCamera:(char)camera forExternalCamera:(char)externalCamera clientExpectsCameraMountedInLandscapeOrientation:(char)orientation sampleReferenceMoviesEnabled:(void *)enabled movieGenerationQueue:(void *)queue irisStillImageMovieMetadataCache:(void *)self0 videoOrientationTimeMachine:;
+- (double)_findIrisShortestTrackDuration:(CMTime *)duration audioTrackDuration:(char)trackDuration flush:(double)result;
 - (uint64_t)_cancelAllPendingIrisMoviesWithError:(uint64_t)result;
-- (uint64_t)_completedMovieInfoAndCallbacksForShortestTrackDuration:(__int128 *)a3 audioTrackDuration:(char)a4 flush:;
-- (uint64_t)_doIrisMovieParsing:(uint64_t)a1;
+- (uint64_t)_completedMovieInfoAndCallbacksForShortestTrackDuration:(__int128 *)duration audioTrackDuration:(char)trackDuration flush:;
+- (uint64_t)_doIrisMovieParsing:(uint64_t)parsing;
 - (uint64_t)_generateCompletedIrisMovies:(uint64_t)result;
-- (uint64_t)_generateIrisMovies:(uint64_t)a1;
-- (uint64_t)_generateRefMovieForInfo:(uint64_t)a3 movieLevelMetadata:(int)a4 generateMetadataMovie:;
-- (void)_getAdjustedRefMovieEndTime:(uint64_t)a3@<X8>;
-- (void)_getAdjustedRefMovieStartTime:(uint64_t)a3@<X8>;
+- (uint64_t)_generateIrisMovies:(uint64_t)movies;
+- (uint64_t)_generateRefMovieForInfo:(uint64_t)info movieLevelMetadata:(int)metadata generateMetadataMovie:;
+- (void)_getAdjustedRefMovieEndTime:(uint64_t)time@<X8>;
+- (void)_getAdjustedRefMovieStartTime:(uint64_t)time@<X8>;
 - (void)dealloc;
 - (void)parseAdditionalFragments;
-- (void)setActualMovieStartTime:(id *)a3;
-- (void)setSuspended:(BOOL)a3;
-- (void)updateOverCaptureQualityScoresForMoviesEndingBefore:(id *)a3 fromMetadataRingBuffer:(id)a4;
-- (void)writeMovieWithInfo:(id)a3 completionHandler:(id)a4;
+- (void)setActualMovieStartTime:(id *)time;
+- (void)setSuspended:(BOOL)suspended;
+- (void)updateOverCaptureQualityScoresForMoviesEndingBefore:(id *)before fromMetadataRingBuffer:(id)buffer;
+- (void)writeMovieWithInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation BWIrisMovieGenerator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -67,16 +67,16 @@
   [(BWIrisMovieGenerator *)&v6 dealloc];
 }
 
-- (void)writeMovieWithInfo:(id)a3 completionHandler:(id)a4
+- (void)writeMovieWithInfo:(id)info completionHandler:(id)handler
 {
   FigSimpleMutexLock();
   v7 = [-[NSMutableArray lastObject](self->_movieInfoAndCallbacks "lastObject")];
   if (v7)
   {
     [v7 movieTrimEndTime];
-    if (a3)
+    if (info)
     {
-      [a3 movieTrimEndTime];
+      [info movieTrimEndTime];
     }
 
     else
@@ -87,19 +87,19 @@
     CMTimeCompare(&time1, &v10);
   }
 
-  v8 = [BWIrisMovieInfoAndCallback movieInfoAndCallbackWithMovieInfo:a3 callback:a4, v10.value, *&v10.timescale, v10.epoch];
+  v8 = [BWIrisMovieInfoAndCallback movieInfoAndCallbackWithMovieInfo:info callback:handler, v10.value, *&v10.timescale, v10.epoch];
   [(NSMutableArray *)self->_movieInfoAndCallbacks addObject:v8];
   if ([[(BWIrisMovieInfoAndCallback *)v8 info] numberOfRequestedVariants]< 2)
   {
-    v9 = 1;
+    numberOfRequestedVariants = 1;
   }
 
   else
   {
-    v9 = [[(BWIrisMovieInfoAndCallback *)v8 info] numberOfRequestedVariants];
+    numberOfRequestedVariants = [[(BWIrisMovieInfoAndCallback *)v8 info] numberOfRequestedVariants];
   }
 
-  self->_numberOfPendingReferenceMovies += v9;
+  self->_numberOfPendingReferenceMovies += numberOfRequestedVariants;
   FigSimpleMutexUnlock();
 }
 
@@ -158,7 +158,7 @@
   return v4;
 }
 
-- (void)updateOverCaptureQualityScoresForMoviesEndingBefore:(id *)a3 fromMetadataRingBuffer:(id)a4
+- (void)updateOverCaptureQualityScoresForMoviesEndingBefore:(id *)before fromMetadataRingBuffer:(id)buffer
 {
   FigSimpleMutexLock();
   v5 = [(NSMutableArray *)self->_movieInfoAndCallbacks count];
@@ -184,10 +184,10 @@ uint64_t __99__BWIrisMovieGenerator_updateOverCaptureQualityScoresForMoviesEndin
   return result;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
   FigSimpleMutexLock();
-  self->_suspended = a3;
+  self->_suspended = suspended;
 
   FigSimpleMutexUnlock();
 }
@@ -290,17 +290,17 @@ LABEL_17:
   return result;
 }
 
-- (void)_getAdjustedRefMovieStartTime:(uint64_t)a3@<X8>
+- (void)_getAdjustedRefMovieStartTime:(uint64_t)time@<X8>
 {
-  if (a1)
+  if (self)
   {
-    *a3 = *&a2->value;
-    *(a3 + 16) = a2->epoch;
+    *time = *&a2->value;
+    *(time + 16) = a2->epoch;
     v22 = 0;
     v20 = 0;
     v21 = 0;
     cf = 0;
-    v5 = *(a1 + 48);
+    v5 = *(self + 48);
     v6 = *(*(CMBaseObjectGetVTable() + 16) + 64);
     if (!v6 || v6(v5, 0, 1986618469, &v21, &v22))
     {
@@ -339,9 +339,9 @@ LABEL_17:
           if (v12 && !v12(v11, &v15) && (BYTE12(v15) & 1) != 0)
           {
             v13 = v15;
-            *a3 = v15;
+            *time = v15;
             v14 = v16;
-            *(a3 + 16) = v16;
+            *(time + 16) = v16;
             *&rhs.value = v13;
             rhs.epoch = v14;
             lhs = *a2;
@@ -374,18 +374,18 @@ LABEL_17:
 
   else
   {
-    *a3 = 0;
-    *(a3 + 8) = 0;
-    *(a3 + 16) = 0;
+    *time = 0;
+    *(time + 8) = 0;
+    *(time + 16) = 0;
   }
 }
 
-- (void)_getAdjustedRefMovieEndTime:(uint64_t)a3@<X8>
+- (void)_getAdjustedRefMovieEndTime:(uint64_t)time@<X8>
 {
-  if (a1)
+  if (self)
   {
-    *a3 = *&a2->value;
-    *(a3 + 16) = a2->epoch;
+    *time = *&a2->value;
+    *(time + 16) = a2->epoch;
     v24 = 0;
     v22 = 0;
     v23 = 0;
@@ -393,7 +393,7 @@ LABEL_17:
     v20 = **&MEMORY[0x1E6960C70];
     v19 = v20;
     v18 = v20;
-    v5 = *(a1 + 48);
+    v5 = *(self + 48);
     v6 = *(*(CMBaseObjectGetVTable() + 16) + 64);
     if (!v6 || v6(v5, 0, 1986618469, &v23, &v24))
     {
@@ -429,9 +429,9 @@ LABEL_17:
             rhs = v18;
             CMTimeAdd(&v19, &lhs, &rhs);
             v15 = *&v19.value;
-            *a3 = *&v19.value;
+            *time = *&v19.value;
             epoch = v19.epoch;
-            *(a3 + 16) = v19.epoch;
+            *(time + 16) = v19.epoch;
             *&lhs.value = v15;
             lhs.epoch = epoch;
             rhs = *a2;
@@ -464,13 +464,13 @@ LABEL_17:
 
   else
   {
-    *a3 = 0;
-    *(a3 + 8) = 0;
-    *(a3 + 16) = 0;
+    *time = 0;
+    *(time + 8) = 0;
+    *(time + 16) = 0;
   }
 }
 
-+ (uint64_t)_addNewMetadataTrackToAssetWriter:(uint64_t)a3 forTrackTimeScale:(unsigned int *)a4 yieldingTrackID:
++ (uint64_t)_addNewMetadataTrackToAssetWriter:(uint64_t)writer forTrackTimeScale:(unsigned int *)scale yieldingTrackID:
 {
   objc_opt_self();
   v14 = 0;
@@ -482,7 +482,7 @@ LABEL_17:
   }
 
   v8 = v14;
-  v9 = [MEMORY[0x1E696AD98] numberWithInt:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithInt:writer];
   v10 = *(*(CMBaseObjectGetVTable() + 16) + 64);
   if (!v10 || v10(a2, v8, *MEMORY[0x1E6971D78], v9))
   {
@@ -498,49 +498,49 @@ LABEL_17:
     return 0;
   }
 
-  if (a4)
+  if (scale)
   {
-    *a4 = v14;
+    *scale = v14;
   }
 
   return 1;
 }
 
-- (void)setActualMovieStartTime:(id *)a3
+- (void)setActualMovieStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_actualMovieStartTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_actualMovieStartTime.epoch = time->var3;
   *&self->_actualMovieStartTime.value = v3;
 }
 
-- (char)initWithReadableByteStream:(uint64_t)a3 metadataByteStream:(char)a4 forFrontFacingCamera:(char)a5 forExternalCamera:(char)a6 clientExpectsCameraMountedInLandscapeOrientation:(char)a7 sampleReferenceMoviesEnabled:(void *)a8 movieGenerationQueue:(void *)a9 irisStillImageMovieMetadataCache:(void *)a10 videoOrientationTimeMachine:
+- (char)initWithReadableByteStream:(uint64_t)stream metadataByteStream:(char)byteStream forFrontFacingCamera:(char)camera forExternalCamera:(char)externalCamera clientExpectsCameraMountedInLandscapeOrientation:(char)orientation sampleReferenceMoviesEnabled:(void *)enabled movieGenerationQueue:(void *)queue irisStillImageMovieMetadataCache:(void *)self0 videoOrientationTimeMachine:
 {
-  v10 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a2 && a8)
+    if (a2 && enabled)
     {
-      v22.receiver = a1;
+      v22.receiver = self;
       v22.super_class = BWIrisMovieGenerator;
       v17 = objc_msgSendSuper2(&v22, sel_init);
-      v10 = v17;
+      selfCopy = v17;
       if (v17)
       {
-        v17[8] = a4;
-        v17[9] = a5;
-        v17[10] = a6;
-        v17[11] = a7;
+        v17[8] = byteStream;
+        v17[9] = camera;
+        v17[10] = externalCamera;
+        v17[11] = orientation;
         *(v17 + 5) = CFRetain(a2);
-        *(v10 + 12) = FigSimpleMutexCreate();
-        *(v10 + 13) = objc_alloc_init(MEMORY[0x1E695DF70]);
-        *(v10 + 15) = a8;
+        *(selfCopy + 12) = FigSimpleMutexCreate();
+        *(selfCopy + 13) = objc_alloc_init(MEMORY[0x1E695DF70]);
+        *(selfCopy + 15) = enabled;
         v18 = MEMORY[0x1E6960C70];
-        *(v10 + 72) = *MEMORY[0x1E6960C70];
-        *(v10 + 11) = *(v18 + 16);
-        *(v10 + 17) = a9;
-        *(v10 + 18) = a10;
+        *(selfCopy + 72) = *MEMORY[0x1E6960C70];
+        *(selfCopy + 11) = *(v18 + 16);
+        *(selfCopy + 17) = queue;
+        *(selfCopy + 18) = cache;
         v19 = [BWLimitedGMErrorLogger alloc];
-        *(v10 + 19) = -[BWLimitedGMErrorLogger initWithName:maxLoggingCount:](v19, "initWithName:maxLoggingCount:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%p Live Photo Movie Generator", v10], 10);
+        *(selfCopy + 19) = -[BWLimitedGMErrorLogger initWithName:maxLoggingCount:](v19, "initWithName:maxLoggingCount:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%p Live Photo Movie Generator", selfCopy], 10);
         FigAtomicIncrement32();
         if (dword_1EB58DEC0)
         {
@@ -560,15 +560,15 @@ LABEL_17:
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (uint64_t)_generateIrisMovies:(uint64_t)a1
+- (uint64_t)_generateIrisMovies:(uint64_t)movies
 {
-  v2 = a1;
-  if (!a1)
+  moviesCopy = movies;
+  if (!movies)
   {
-    return v2;
+    return moviesCopy;
   }
 
   v4 = MEMORY[0x1E695FF58];
@@ -578,12 +578,12 @@ LABEL_17:
     kdebug_trace();
   }
 
-  if (*(v2 + 57) == 1)
+  if (*(moviesCopy + 57) == 1)
   {
-    [(BWIrisMovieGenerator *)v2 _cancelAllPendingIrisMoviesWithError:?];
-    v5 = [v2 suspended];
+    [(BWIrisMovieGenerator *)moviesCopy _cancelAllPendingIrisMoviesWithError:?];
+    suspended = [moviesCopy suspended];
 LABEL_10:
-    v2 = v5;
+    moviesCopy = suspended;
     goto LABEL_11;
   }
 
@@ -593,17 +593,17 @@ LABEL_10:
     FigDebugAssert3();
   }
 
-  if (![(BWIrisMovieGenerator *)v2 _doIrisMovieParsing:a2])
+  if (![(BWIrisMovieGenerator *)moviesCopy _doIrisMovieParsing:a2])
   {
     v6 = OUTLINED_FUNCTION_46_0();
     [(BWIrisMovieGenerator *)v6 _findIrisShortestTrackDuration:v7 audioTrackDuration:v8 flush:v9, v10];
     v11 = OUTLINED_FUNCTION_46_0();
     v15 = [(BWIrisMovieGenerator *)v11 _completedMovieInfoAndCallbacksForShortestTrackDuration:v12 audioTrackDuration:v13 flush:v14];
-    v5 = [(BWIrisMovieGenerator *)v2 _generateCompletedIrisMovies:v15];
+    suspended = [(BWIrisMovieGenerator *)moviesCopy _generateCompletedIrisMovies:v15];
     goto LABEL_10;
   }
 
-  v2 = 0;
+  moviesCopy = 0;
 LABEL_11:
   if (*v4 == 1)
   {
@@ -611,7 +611,7 @@ LABEL_11:
     kdebug_trace();
   }
 
-  return v2;
+  return moviesCopy;
 }
 
 void __29__BWIrisMovieGenerator_flush__block_invoke(uint64_t a1)
@@ -662,8 +662,8 @@ void __29__BWIrisMovieGenerator_flush__block_invoke(uint64_t a1)
           }
 
           *(v3 + 112) = v14;
-          v15 = [v9 callback];
-          (*(v15 + 16))(v15, [v9 info], a2);
+          callback = [v9 callback];
+          (*(callback + 16))(callback, [v9 info], a2);
           objc_autoreleasePoolPop(v10);
         }
 
@@ -681,15 +681,15 @@ void __29__BWIrisMovieGenerator_flush__block_invoke(uint64_t a1)
   return result;
 }
 
-- (uint64_t)_doIrisMovieParsing:(uint64_t)a1
+- (uint64_t)_doIrisMovieParsing:(uint64_t)parsing
 {
-  if (!a1)
+  if (!parsing)
   {
     return 0;
   }
 
-  v4 = (a1 + 48);
-  if (!*(a1 + 48))
+  v4 = (parsing + 48);
+  if (!*(parsing + 48))
   {
     v12 = *MEMORY[0x1E6971A20];
     v13 = MEMORY[0x1E695E118];
@@ -703,7 +703,7 @@ void __29__BWIrisMovieGenerator_flush__block_invoke(uint64_t a1)
     }
   }
 
-  if (*(a1 + 56))
+  if (*(parsing + 56))
   {
     return 0;
   }
@@ -740,31 +740,31 @@ LABEL_18:
 
   if ((v11 & 4) != 0)
   {
-    *(a1 + 56) = 1;
+    *(parsing + 56) = 1;
   }
 
   return v6;
 }
 
-- (double)_findIrisShortestTrackDuration:(CMTime *)a3 audioTrackDuration:(char)a4 flush:(double)result
+- (double)_findIrisShortestTrackDuration:(CMTime *)duration audioTrackDuration:(char)trackDuration flush:(double)result
 {
-  if (a1)
+  if (self)
   {
     v20 = **&MEMORY[0x1E6960C88];
     v7 = *MEMORY[0x1E6960C70];
     *&v19.value = *MEMORY[0x1E6960C70];
     v8 = *(MEMORY[0x1E6960C70] + 16);
     v19.epoch = v8;
-    if (a4)
+    if (trackDuration)
     {
 LABEL_28:
       *a2 = v19;
       result = *&v20.value;
-      *a3 = v20;
+      *duration = v20;
       return result;
     }
 
-    v9 = *(a1 + 48);
+    v9 = *(self + 48);
     *&v18.value = v7;
     v18.epoch = v8;
     v26 = 0;
@@ -860,26 +860,26 @@ LABEL_25:
   return result;
 }
 
-- (uint64_t)_completedMovieInfoAndCallbacksForShortestTrackDuration:(__int128 *)a3 audioTrackDuration:(char)a4 flush:
+- (uint64_t)_completedMovieInfoAndCallbacksForShortestTrackDuration:(__int128 *)duration audioTrackDuration:(char)trackDuration flush:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   FigSimpleMutexLock();
-  v8 = *(a1 + 104);
+  v8 = *(self + 104);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __105__BWIrisMovieGenerator__completedMovieInfoAndCallbacksForShortestTrackDuration_audioTrackDuration_flush___block_invoke;
   v11[3] = &unk_1E798FB48;
-  v16 = a4;
-  v11[4] = a1;
-  v12 = *a3;
-  v13 = *(a3 + 2);
+  trackDurationCopy = trackDuration;
+  v11[4] = self;
+  v12 = *duration;
+  v13 = *(duration + 2);
   v14 = *a2;
   v15 = *(a2 + 2);
-  v9 = [*(a1 + 104) objectsAtIndexes:{objc_msgSend(v8, "indexesOfObjectsPassingTest:", v11)}];
+  v9 = [*(self + 104) objectsAtIndexes:{objc_msgSend(v8, "indexesOfObjectsPassingTest:", v11)}];
   FigSimpleMutexUnlock();
   return v9;
 }
@@ -914,41 +914,41 @@ LABEL_25:
 
           [v8 setProcessed:1];
           v10 = v8;
-          v11 = [v8 info];
-          v12 = [objc_msgSend(v11 "settings")];
+          info = [v8 info];
+          v12 = [objc_msgSend(info "settings")];
           v13 = v12;
           if (*(v3 + 136))
           {
             v13 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithVitalityDisabledIfRequired(v12);
           }
 
-          if ([v11 isVitalityScoreValid])
+          if ([info isVitalityScoreValid])
           {
-            [v11 vitalityScore];
-            v13 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithVitalityScore(v13, [v11 vitalityScoringVersion], v14);
+            [info vitalityScore];
+            v13 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithVitalityScore(v13, [info vitalityScoringVersion], v14);
           }
 
-          if ([v11 limitStillImageTransformDuringVitalityPlayback])
+          if ([info limitStillImageTransformDuringVitalityPlayback])
           {
             v13 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithLimitStillImageTransformFlagIfRequired(v13);
           }
 
-          if ([objc_msgSend(v11 "subjectRelightingResult")])
+          if ([objc_msgSend(info "subjectRelightingResult")])
           {
-            [objc_msgSend(v11 "subjectRelightingResult")];
+            [objc_msgSend(info "subjectRelightingResult")];
             v13 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithSubjectRelightingAppliedCurveParameter(v13, v15);
           }
 
-          if ([objc_msgSend(v11 "stillImageRequestSettings")])
+          if ([objc_msgSend(info "stillImageRequestSettings")])
           {
-            v13 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithSmartStyleMetadata(v13, [objc_msgSend(v11 "stillImageRequestSettings")], objc_msgSend(objc_msgSend(v11, "settings"), "smartStyleRenderingBypassed"));
+            v13 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithSmartStyleMetadata(v13, [objc_msgSend(info "stillImageRequestSettings")], objc_msgSend(objc_msgSend(info, "settings"), "smartStyleRenderingBypassed"));
           }
 
           [v8 overCaptureQualityScore];
           [v8 overCaptureQualityScore];
           v17 = v16;
           v18 = FigCaptureMetadataUtilitiesCreateMovieLevelMetadataWithSpatialOverCaptureQualityScore(v13, [v8 overCaptureQualityScoringVersion], v17);
-          v19 = [(BWIrisMovieGenerator *)v3 _generateRefMovieForInfo:v11 movieLevelMetadata:v18 generateMetadataMovie:0];
+          v19 = [(BWIrisMovieGenerator *)v3 _generateRefMovieForInfo:info movieLevelMetadata:v18 generateMetadataMovie:0];
           FigSimpleMutexLock();
           if ([objc_msgSend(v8 "info")] < 2)
           {
@@ -970,8 +970,8 @@ LABEL_25:
 
           *(v3 + 112) = v23;
           FigSimpleMutexUnlock();
-          v24 = [v8 callback];
-          (*(v24 + 16))(v24, v11, v19);
+          callback = [v8 callback];
+          (*(callback + 16))(callback, info, v19);
           FigSimpleMutexLock();
           [*(v3 + 104) removeObjectIdenticalTo:v8];
           FigSimpleMutexUnlock();
@@ -995,14 +995,14 @@ LABEL_25:
   return result;
 }
 
-- (uint64_t)_generateRefMovieForInfo:(uint64_t)a3 movieLevelMetadata:(int)a4 generateMetadataMovie:
+- (uint64_t)_generateRefMovieForInfo:(uint64_t)info movieLevelMetadata:(int)metadata generateMetadataMovie:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8 = a1;
+  selfCopy = self;
   if (*MEMORY[0x1E695FF58] == 1)
   {
     if (a2)
@@ -1051,10 +1051,10 @@ LABEL_25:
   v397 = 0;
   v394 = 0;
   v395 = 0;
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v318 = [MEMORY[0x1E695DF90] dictionary];
-  v320 = [MEMORY[0x1E695DF70] array];
-  v309 = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   *v284 = *MEMORY[0x1E6960C88];
   *&v393.value = *MEMORY[0x1E6960C88];
   v282 = *(MEMORY[0x1E6960C88] + 16);
@@ -1076,17 +1076,17 @@ LABEL_25:
     LODWORD(v256) = 0;
     FigDebugAssert3();
     SampleBuffer = FigSignalErrorAtGM();
-    [*(v8 + 152) logErrorNumber:SampleBuffer errorString:{v256, v4}];
+    [*(selfCopy + 152) logErrorNumber:SampleBuffer errorString:{v256, v4}];
     goto LABEL_120;
   }
 
   v386 = 0uLL;
   v387 = 0;
   v286 = v4;
-  if (*(v8 + 84))
+  if (*(selfCopy + 84))
   {
-    v386 = *(v8 + 72);
-    v387 = *(v8 + 88);
+    v386 = *(selfCopy + 72);
+    v387 = *(selfCopy + 88);
   }
 
   else
@@ -1101,8 +1101,8 @@ LABEL_25:
   [OUTLINED_FUNCTION_18_3() masterMovieStartTime];
   OUTLINED_FUNCTION_41_0();
   v19 = OUTLINED_FUNCTION_21_1();
-  v322 = v12;
-  v330 = v8;
+  v322 = dictionary;
+  v330 = selfCopy;
   if (CMTimeCompare(v19, v20))
   {
     OUTLINED_FUNCTION_38_1();
@@ -1140,15 +1140,15 @@ LABEL_25:
 
   if ([a2 temporaryMovieURL])
   {
-    v24 = [a2 temporaryMovieURL];
+    temporaryMovieURL = [a2 temporaryMovieURL];
   }
 
   else
   {
-    v24 = [a2 outputMovieURL];
+    temporaryMovieURL = [a2 outputMovieURL];
   }
 
-  v25 = v24;
+  v25 = temporaryMovieURL;
   [OUTLINED_FUNCTION_18_3() movieTrimStartTime];
   [OUTLINED_FUNCTION_23() masterMovieStartTime];
   v26 = OUTLINED_FUNCTION_21_1();
@@ -1165,21 +1165,21 @@ LABEL_25:
   v35 = OUTLINED_FUNCTION_40_0(0);
   [(BWIrisMovieGenerator *)v35 _getAdjustedRefMovieEndTime:v36, v37];
   v379 = rhs;
-  v38 = *(v8 + 48);
+  v38 = *(selfCopy + 48);
   SampleBuffer = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{MEMORY[0x1E695E118], *MEMORY[0x1E6971330], 0}];
   [a2 masterMovieURL];
   TrackCount = FigAssetReaderCreateWithURLAndFormatReader();
-  if (TrackCount || (v257 = *MEMORY[0x1E6971580], v260 = 0, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:MEMORY[0x1E695E118]], TrackCount = FigAssetWriterCreateWithURL(), TrackCount) || (CMNotificationCenterGetDefaultLocalCenter(), OUTLINED_FUNCTION_20_2(), TrackCount = CMNotificationCenterAddListener(), TrackCount) || a3 && (TrackCount = FigAssetWriterSetFormatWriterProperty(v396, *MEMORY[0x1E6971C00], a3), TrackCount) || (TrackCount = FigFormatReaderGetTrackCount(v38, &v394), TrackCount))
+  if (TrackCount || (v257 = *MEMORY[0x1E6971580], v260 = 0, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:MEMORY[0x1E695E118]], TrackCount = FigAssetWriterCreateWithURL(), TrackCount) || (CMNotificationCenterGetDefaultLocalCenter(), OUTLINED_FUNCTION_20_2(), TrackCount = CMNotificationCenterAddListener(), TrackCount) || info && (TrackCount = FigAssetWriterSetFormatWriterProperty(v396, *MEMORY[0x1E6971C00], info), TrackCount) || (TrackCount = FigFormatReaderGetTrackCount(v38, &v394), TrackCount))
   {
     SampleBuffer = TrackCount;
     OUTLINED_FUNCTION_0_14();
     FigDebugAssert3();
-    v90 = *(v8 + 152);
+    v90 = *(selfCopy + 152);
     goto LABEL_119;
   }
 
   v40 = v394;
-  if (a4 && v394 != 1)
+  if (metadata && v394 != 1)
   {
     OUTLINED_FUNCTION_3_6();
     FigDebugAssert3();
@@ -1188,7 +1188,7 @@ LABEL_25:
     goto LABEL_121;
   }
 
-  *(v8 + 64) = -1;
+  *(selfCopy + 64) = -1;
   if (v40 >= 1)
   {
     v294 = v25;
@@ -1239,7 +1239,7 @@ LABEL_117:
       }
 
       v46 = type.value;
-      if (!a4)
+      if (!metadata)
       {
         break;
       }
@@ -1292,7 +1292,7 @@ LABEL_94:
       }
     }
 
-    if (*(v8 + 11) == 1)
+    if (*(selfCopy + 11) == 1)
     {
       if (FigAssetReaderEnableOriginalSampleReferenceExtractionFromTrack(v397, LODWORD(v370.value), &v368))
       {
@@ -1321,7 +1321,7 @@ LABEL_119:
 
     else if (LODWORD(type.value) == 1936684398)
     {
-      *(v8 + 64) = SLODWORD(v368.value);
+      *(selfCopy + 64) = SLODWORD(v368.value);
     }
 
     if (FigAssetWriterAddNativeTrack(v396, v48, &v367))
@@ -1333,7 +1333,7 @@ LABEL_119:
 
     v324 = v42;
     v49 = [MEMORY[0x1E696AD98] numberWithLong:v328];
-    [v318 setObject:v49 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", LODWORD(v367.value))}];
+    [dictionary2 setObject:v49 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", LODWORD(v367.value))}];
     v315 = v41;
     if (LODWORD(type.value) != 1635088502)
     {
@@ -1372,7 +1372,7 @@ LABEL_119:
           OUTLINED_FUNCTION_37_3();
           if (v47)
           {
-            [v309 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", LODWORD(v367.value))}];
+            [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", LODWORD(v367.value))}];
             v50 = HIDWORD(v305);
             if (!HIDWORD(v305))
             {
@@ -1389,15 +1389,15 @@ LABEL_119:
       LODWORD(v311) = v367.value;
     }
 
-    v8 = v13;
+    selfCopy = v13;
     v51 = FigFormatReaderCopyTrackByID(v38, LODWORD(v370.value), &v395);
-    if (v51 || (v52 = [a2 settings], v53 = objc_msgSend(v52, "videoRotationDegrees"), v54 = objc_msgSend(v52, "videoMirrored"), rhs.value = 0, v51 = FigTrackReaderCopyProperty(v395, v290, v8, &rhs), v51))
+    if (v51 || (v52 = [a2 settings], v53 = objc_msgSend(v52, "videoRotationDegrees"), v54 = objc_msgSend(v52, "videoMirrored"), rhs.value = 0, v51 = FigTrackReaderCopyProperty(v395, v290, selfCopy, &rhs), v51))
     {
 LABEL_298:
       SampleBuffer = v51;
       OUTLINED_FUNCTION_0_14();
       FigDebugAssert3();
-      v8 = v330;
+      selfCopy = v330;
       goto LABEL_120;
     }
 
@@ -1419,14 +1419,14 @@ LABEL_298:
 
     LODWORD(v305) = [objc_msgSend(objc_msgSend(objc_msgSend(v52 "videoSettings")];
     lhs.value = 0;
-    v13 = v8;
+    v13 = selfCopy;
     v51 = FigMetadataCopyTrackQuickTimeMetadata();
     if (v51)
     {
       goto LABEL_298;
     }
 
-    v8 = v330;
+    selfCopy = v330;
     if (lhs.value)
     {
       Mutable = CFDictionaryCreateMutable(v13, 2, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -1452,16 +1452,16 @@ LABEL_298:
 
     if (v385.value)
     {
-      v63 = [MEMORY[0x1E695DF90] dictionary];
-      [v63 setObject:v270 forKeyedSubscript:v298];
-      [v63 setObject:v385.value forKeyedSubscript:key];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary3 setObject:v270 forKeyedSubscript:v298];
+      [dictionary3 setObject:v385.value forKeyedSubscript:key];
       if (v385.value)
       {
         CFRelease(v385.value);
       }
 
       v64 = OUTLINED_FUNCTION_31_1();
-      v62 = FigAssetWriterSetFormatWriterTrackProperty(v64, v65, v296, v63);
+      v62 = FigAssetWriterSetFormatWriterTrackProperty(v64, v65, v296, dictionary3);
       if (v62)
       {
 LABEL_301:
@@ -1493,7 +1493,7 @@ LABEL_90:
       goto LABEL_118;
     }
 
-    if (*(v8 + 11) == 1)
+    if (*(selfCopy + 11) == 1)
     {
       [objc_msgSend(v294 "URLByDeletingLastPathComponent")];
       v76 = OUTLINED_FUNCTION_31_1();
@@ -1522,28 +1522,28 @@ LABEL_90:
   LODWORD(v311) = 0;
   v41 = 0;
 LABEL_97:
-  v8 = v13;
+  selfCopy = v13;
   [a2 stillImageCaptureTime];
-  if ((v378 & 1) != 0 && (a4 & 1) == 0 && [BWIrisMovieGenerator _addNewMetadataTrackToAssetWriter:v396 forTrackTimeScale:v41 yieldingTrackID:&v391 + 1])
+  if ((v378 & 1) != 0 && (metadata & 1) == 0 && [BWIrisMovieGenerator _addNewMetadataTrackToAssetWriter:v396 forTrackTimeScale:v41 yieldingTrackID:&v391 + 1])
   {
-    [v309 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", HIDWORD(v391))}];
+    [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", HIDWORD(v391))}];
   }
 
-  SampleBuffer = v309;
+  SampleBuffer = array2;
   v80 = v322;
   if ([objc_msgSend(a2 "settings")] && *(v330 + 144) && +[BWIrisMovieGenerator _addNewMetadataTrackToAssetWriter:forTrackTimeScale:yieldingTrackID:](BWIrisMovieGenerator, v396, v41, &v391))
   {
-    [v309 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v391)}];
+    [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v391)}];
   }
 
-  v81 = [v322 allKeys];
-  v82 = qtrmg_setupMetadataTrackReferences(v396, v311, v309);
+  allKeys = [v322 allKeys];
+  v82 = qtrmg_setupMetadataTrackReferences(v396, v311, array2);
   if (v82)
   {
     SampleBuffer = v82;
     OUTLINED_FUNCTION_0_14();
     FigDebugAssert3();
-    v8 = v330;
+    selfCopy = v330;
     v90 = *(v330 + 152);
     goto LABEL_119;
   }
@@ -1601,7 +1601,7 @@ LABEL_114:
     goto LABEL_114;
   }
 
-  keya = v81;
+  keya = allKeys;
   if (v328 <= 0)
   {
     OUTLINED_FUNCTION_3_6();
@@ -1645,7 +1645,7 @@ LABEL_114:
       SampleBuffer = v101;
       OUTLINED_FUNCTION_0_14();
       FigDebugAssert3();
-      v8 = v330;
+      selfCopy = v330;
       v182 = *(v330 + 152);
 LABEL_248:
       [v182 logErrorNumber:SampleBuffer errorString:?];
@@ -1655,7 +1655,7 @@ LABEL_280:
     }
 
     v102 = v373;
-    v103 = [v373 intValue];
+    intValue = [v373 intValue];
     if ([v80 objectForKeyedSubscript:v102])
     {
       break;
@@ -1668,9 +1668,9 @@ LABEL_144:
 LABEL_229:
       i = 0x1E696A000uLL;
       v168 = v328;
-      v8 = v330;
+      selfCopy = v330;
       v169 = HIDWORD(v313);
-      if (![v309 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", HIDWORD(v391))}])
+      if (![array2 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", HIDWORD(v391))}])
       {
         goto LABEL_249;
       }
@@ -1680,34 +1680,34 @@ LABEL_229:
       [a2 masterMovieStartTime];
       v170 = OUTLINED_FUNCTION_52_1();
       CMTimeSubtract(v172, v170, v171);
-      v173 = *(v330 + 136);
-      if (v173)
+      data = *(v330 + 136);
+      if (data)
       {
-        v174 = [v173 copyAndClearStillImageTransformDataForSettingsID:{objc_msgSend(a2, "livePhotoMetadataStillImageKeyFrameSettingsID")}];
+        v174 = [data copyAndClearStillImageTransformDataForSettingsID:{objc_msgSend(a2, "livePhotoMetadataStillImageKeyFrameSettingsID")}];
         if (v174)
         {
-          v173 = v174;
+          data = v174;
         }
 
         else
         {
-          v173 = [MEMORY[0x1E695DEF0] data];
-          if (!v173)
+          data = [MEMORY[0x1E695DEF0] data];
+          if (!data)
           {
             goto LABEL_245;
           }
         }
 
-        v178 = [a2 settings];
-        [objc_msgSend(objc_msgSend(v178 "videoSettings")];
-        [objc_msgSend(objc_msgSend(v178 "videoSettings")];
+        settings = [a2 settings];
+        [objc_msgSend(objc_msgSend(settings "videoSettings")];
+        [objc_msgSend(objc_msgSend(settings "videoSettings")];
         v169 = HIDWORD(v313);
         i = 0x1E696A000;
       }
 
 LABEL_245:
       OUTLINED_FUNCTION_12_3();
-      SampleBuffer = qtrmg_writeStillImageTimeMetadataSample(v179, v180, &lhs.value, v173, v181, v169);
+      SampleBuffer = qtrmg_writeStillImageTimeMetadataSample(v179, v180, &lhs.value, data, v181, v169);
       if (SampleBuffer)
       {
         [MEMORY[0x1E696AEC0] stringWithFormat:@"write still image metadata to track %d", HIDWORD(v391)];
@@ -1718,7 +1718,7 @@ LABEL_247:
 
 LABEL_249:
       v91 = v304;
-      if (![v309 containsObject:{objc_msgSend(*(i + 3480), "numberWithInt:", v391)}])
+      if (![array2 containsObject:{objc_msgSend(*(i + 3480), "numberWithInt:", v391)}])
       {
 LABEL_256:
         OUTLINED_FUNCTION_5_11();
@@ -1735,7 +1735,7 @@ LABEL_256:
         OUTLINED_FUNCTION_10_3();
         v189 = OUTLINED_FUNCTION_21_1();
         v192 = CMTimeSubtract(v191, v189, v190);
-        v200 = OUTLINED_FUNCTION_53_2(v192, v193, v194, v195, v196, v197, v198, v199, v257, v260, v262, v264, v266, v268, v270, value, v274, v276, v278[0], v278[1], v280, v282, v284[0], v284[1], v286, v288, v290, v292, v294, v296, v298, keya, v304, v305, v307, v309, v311, v313, value_low, v318, v320, v322, v325[0], v325[1], v328, v330, v331, v333, v335, v337, v339, v341, v343, v345, v347, v349, v351, v353, v355, v357, v359, v361, 0);
+        v200 = OUTLINED_FUNCTION_53_2(v192, v193, v194, v195, v196, v197, v198, v199, v257, v260, v262, v264, v266, v268, v270, value, v274, v276, v278[0], v278[1], v280, v282, v284[0], v284[1], v286, v288, v290, v292, v294, v296, v298, keya, v304, v305, v307, array2, v311, v313, value_low, dictionary2, array, v322, v325[0], v325[1], v328, v330, v331, v333, v335, v337, v339, v341, v343, v345, v347, v349, v351, v353, v355, v357, v359, v361, 0);
         v201 = MEMORY[0x1E6971CE0];
         if (v200)
         {
@@ -1859,7 +1859,7 @@ LABEL_256:
           SampleBuffer = v229;
           OUTLINED_FUNCTION_0_14();
           FigDebugAssert3();
-          v188 = *(v8 + 152);
+          v188 = *(selfCopy + 152);
           goto LABEL_259;
         }
 
@@ -2019,7 +2019,7 @@ LABEL_256:
         SampleBuffer = 0;
         v91 = v304;
 LABEL_320:
-        v8 = v330;
+        selfCopy = v330;
         goto LABEL_121;
       }
 
@@ -2054,14 +2054,14 @@ LABEL_255:
 
   v104 = [objc_msgSend(v80 objectForKeyedSubscript:{v102), "intValue"}];
   v372 = 0;
-  if (FigAssetWriterIsTrackQueueAboveHighWaterLevel(v396, v103))
+  if (FigAssetWriterIsTrackQueueAboveHighWaterLevel(v396, intValue))
   {
 LABEL_141:
     SampleBuffer = 0;
 LABEL_142:
     v80 = v322;
-    [v322 removeObjectsForKeys:v320];
-    [v320 removeAllObjects];
+    [v322 removeObjectsForKeys:array];
+    [array removeAllObjects];
     goto LABEL_144;
   }
 
@@ -2105,7 +2105,7 @@ LABEL_153:
       goto LABEL_153;
     }
 
-    OUTLINED_FUNCTION_36_1(0, v107, v108, v109, v110, v111, v112, v113, v257, v260, v262, v264, v266, v268, v270, value, v274, v276, v278[0], v278[1], v280, v282, v284[0], v284[1], v286, v288, v290, v292, v294, v296, v298, keya, v304, v305, v307, v309, v311, v313, value_low, v318, v320, v322, v114);
+    OUTLINED_FUNCTION_36_1(0, v107, v108, v109, v110, v111, v112, v113, v257, v260, v262, v264, v266, v268, v270, value, v274, v276, v278[0], v278[1], v280, v282, v284[0], v284[1], v286, v288, v290, v292, v294, v296, v298, keya, v304, v305, v307, array2, v311, v313, value_low, dictionary2, array, v322, v114);
 LABEL_155:
     OUTLINED_FUNCTION_12_3();
     OUTLINED_FUNCTION_38_1();
@@ -2192,7 +2192,7 @@ LABEL_160:
           sbuf = 0;
         }
 
-        *&v370.value = OUTLINED_FUNCTION_36_1(v129, v120, v121, v122, v123, v124, v125, v126, v257, v260, v262, v264, v266, v268, v270, value, v274, v276, v278[0], v278[1], v280, v282, v284[0], v284[1], v286, v288, v290, v292, v294, v296, v298, keya, v304, v305, v307, v309, v311, v313, value_low, v318, v320, v322, v128);
+        *&v370.value = OUTLINED_FUNCTION_36_1(v129, v120, v121, v122, v123, v124, v125, v126, v257, v260, v262, v264, v266, v268, v270, value, v274, v276, v278[0], v278[1], v280, v282, v284[0], v284[1], v286, v288, v290, v292, v294, v296, v298, keya, v304, v305, v307, array2, v311, v313, value_low, dictionary2, array, v322, v128);
         v370.epoch = v97;
         *&type.value = *&v370.value;
         type.epoch = v97;
@@ -2259,7 +2259,7 @@ LABEL_185:
       goto LABEL_185;
     }
 
-    if (v103 >= SHIDWORD(v305))
+    if (intValue >= SHIDWORD(v305))
     {
       *&v368.value = *&rhs.value;
       OUTLINED_FUNCTION_4_16(rhs.epoch);
@@ -2274,10 +2274,10 @@ LABEL_186:
         }
 
         v372 = 1;
-        OUTLINED_FUNCTION_36_1(v145, v137, v138, v139, v140, v141, v142, v143, v257, v260, v262, v264, v266, v268, v270, value, v274, v276, v278[0], v278[1], v280, v282, v284[0], v284[1], v286, v288, v290, v292, v294, v296, v298, keya, v304, v305, v307, v309, v311, v313, value_low, v318, v320, v322, v144);
+        OUTLINED_FUNCTION_36_1(v145, v137, v138, v139, v140, v141, v142, v143, v257, v260, v262, v264, v266, v268, v270, value, v274, v276, v278[0], v278[1], v280, v282, v284[0], v284[1], v286, v288, v290, v292, v294, v296, v298, keya, v304, v305, v307, array2, v311, v313, value_low, dictionary2, array, v322, v144);
 LABEL_189:
-        FigAssetWriterMarkEndOfDataForTrack(v396, v103);
-        [v320 addObject:v373];
+        FigAssetWriterMarkEndOfDataForTrack(v396, intValue);
+        [array addObject:v373];
         goto LABEL_190;
       }
     }
@@ -2309,7 +2309,7 @@ LABEL_190:
       goto LABEL_206;
     }
 
-    v146 = FigAssetWriterAddSampleBuffer(v396, v103, sbuf);
+    v146 = FigAssetWriterAddSampleBuffer(v396, intValue, sbuf);
     if (v146)
     {
       break;
@@ -2342,12 +2342,12 @@ LABEL_190:
 
       if ((v370.flags & 1) == 0)
       {
-        v257 = v103;
+        v257 = intValue;
         [MEMORY[0x1E696AEC0] stringWithFormat:@"wrote sample with no duration to track %d"];
         [OUTLINED_FUNCTION_24_0() logErrorNumber:0 errorString:?];
       }
 
-      v152 = v304 + 24 * [objc_msgSend(v318 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v103)), "integerValue"}];
+      v152 = v304 + 24 * [objc_msgSend(dictionary2 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", intValue)), "integerValue"}];
       v365.value = *v152;
       v365.timescale = *(v152 + 8);
       v153 = *(v152 + 12);
@@ -2366,28 +2366,28 @@ LABEL_207:
       goto LABEL_142;
     }
 
-    if (FigAssetWriterIsTrackQueueAboveHighWaterLevel(v396, v103))
+    if (FigAssetWriterIsTrackQueueAboveHighWaterLevel(v396, intValue))
     {
       goto LABEL_141;
     }
   }
 
   SampleBuffer = v146;
-  v175 = CMCopyDictionaryOfAttachments(v8, sbuf, 1u);
+  v175 = CMCopyDictionaryOfAttachments(selfCopy, sbuf, 1u);
   if (v175)
   {
     CFRelease(v175);
   }
 
-  v176 = CMCopyDictionaryOfAttachments(v8, sbuf, 0);
+  v176 = CMCopyDictionaryOfAttachments(selfCopy, sbuf, 0);
   v91 = v304;
   if (v176)
   {
     CFRelease(v176);
   }
 
-  v8 = v330;
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"add sample buffer to track %d", v103];
+  selfCopy = v330;
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"add sample buffer to track %d", intValue];
 LABEL_258:
   v188 = OUTLINED_FUNCTION_24_0();
 LABEL_259:
@@ -2404,7 +2404,7 @@ LABEL_121:
   if (v92)
   {
     v93 = v92;
-    [*(v8 + 152) logErrorNumber:v92 errorString:@"remove queue level callbacks"];
+    [*(selfCopy + 152) logErrorNumber:v92 errorString:@"remove queue level callbacks"];
     if (SampleBuffer)
     {
       SampleBuffer = SampleBuffer;

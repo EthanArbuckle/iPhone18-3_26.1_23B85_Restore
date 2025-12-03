@@ -13,8 +13,8 @@
   {
     [(DDRoundedImage *)self bounds];
     v4 = v3 * 0.5;
-    v5 = [(DDRoundedImage *)self layer];
-    [v5 setCornerRadius:v4];
+    layer = [(DDRoundedImage *)self layer];
+    [layer setCornerRadius:v4];
   }
 }
 

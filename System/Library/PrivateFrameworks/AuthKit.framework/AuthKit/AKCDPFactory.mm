@@ -1,38 +1,38 @@
 @interface AKCDPFactory
-+ (BOOL)cdpAccountIsHSA2EnabledForAltDSID:(id)a3;
-+ (BOOL)cdpAccountIsICDPEnabledForDSID:(id)a3;
-+ (BOOL)cdpAccountIsOTEnabledForAltDSID:(id)a3;
++ (BOOL)cdpAccountIsHSA2EnabledForAltDSID:(id)d;
++ (BOOL)cdpAccountIsICDPEnabledForDSID:(id)d;
++ (BOOL)cdpAccountIsOTEnabledForAltDSID:(id)d;
 + (BOOL)isEligibleToArmDeviceForPCSAuth;
-+ (id)accountRecoveryControllerWithPresentingViewController:(id)a3;
++ (id)accountRecoveryControllerWithPresentingViewController:(id)controller;
 + (id)cdpErrorDomain;
 + (id)cdpIDMSRecordMIDKey;
 + (id)cdpIDMSRecordPRKKey;
-+ (id)cdpUIControllerWithPresentingViewController:(id)a3;
-+ (id)contextForAltDSID:(id)a3;
-+ (id)contextWithAuthResults:(id)a3;
++ (id)cdpUIControllerWithPresentingViewController:(id)controller;
++ (id)contextForAltDSID:(id)d;
++ (id)contextWithAuthResults:(id)results;
 + (id)followUpController;
 + (id)followUpRepairContext;
-+ (id)recoveryControllerWithContext:(id)a3;
-+ (id)stateControllerWithContext:(id)a3;
++ (id)recoveryControllerWithContext:(id)context;
++ (id)stateControllerWithContext:(id)context;
 + (id)walrusStatusLiveValue;
-+ (id)webAccessChangeControllerForTargetStatus:(unint64_t)a3;
++ (id)webAccessChangeControllerForTargetStatus:(unint64_t)status;
 + (id)webAccessStatusLiveValue;
 + (unint64_t)walrusStatus;
 + (unint64_t)webAccessStatus;
-- (BOOL)isCDPEnabledForDSID:(id)a3;
-- (BOOL)isHSA2EnabledForAltDSID:(id)a3;
+- (BOOL)isCDPEnabledForDSID:(id)d;
+- (BOOL)isHSA2EnabledForAltDSID:(id)d;
 - (BOOL)isManateeAvailable;
 - (BOOL)isUserVisibleKeychainSyncEnabled;
 @end
 
 @implementation AKCDPFactory
 
-+ (id)contextForAltDSID:(id)a3
++ (id)contextForAltDSID:(id)d
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   if (CoreCDPLibraryCore(0))
   {
     CDPContextClass = getCDPContextClass();
@@ -49,12 +49,12 @@
   return v4;
 }
 
-+ (id)contextWithAuthResults:(id)a3
++ (id)contextWithAuthResults:(id)results
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   if (CoreCDPLibraryCore(0))
   {
     v3 = objc_alloc(getCDPContextClass());
@@ -71,12 +71,12 @@
   return v5;
 }
 
-+ (id)stateControllerWithContext:(id)a3
++ (id)stateControllerWithContext:(id)context
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   if (CoreCDPLibraryCore(0))
   {
     v3 = objc_alloc(getCDPStateControllerClass());
@@ -93,12 +93,12 @@
   return v5;
 }
 
-+ (id)recoveryControllerWithContext:(id)a3
++ (id)recoveryControllerWithContext:(id)context
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   if (CoreCDPLibraryCore(0))
   {
     v3 = objc_alloc_init(getCDPContextClass());
@@ -110,36 +110,36 @@
   }
 
   v18 = v3;
-  v8 = [location[0] authContext];
-  v7 = [v8 altDSID];
+  authContext = [location[0] authContext];
+  altDSID = [authContext altDSID];
   [v18 setAltDSID:?];
-  MEMORY[0x1E69E5920](v7);
-  MEMORY[0x1E69E5920](v8);
+  MEMORY[0x1E69E5920](altDSID);
+  MEMORY[0x1E69E5920](authContext);
   v9 = MEMORY[0x1E696AD98];
-  v12 = [location[0] authContext];
-  v11 = [v12 DSID];
-  v10 = [v9 numberWithLongLong:{objc_msgSend(v11, "longLongValue")}];
+  authContext2 = [location[0] authContext];
+  dSID = [authContext2 DSID];
+  v10 = [v9 numberWithLongLong:{objc_msgSend(dSID, "longLongValue")}];
   [v18 setDsid:?];
   MEMORY[0x1E69E5920](v10);
-  MEMORY[0x1E69E5920](v11);
-  MEMORY[0x1E69E5920](v12);
-  v14 = [location[0] authContext];
-  v13 = [v14 username];
+  MEMORY[0x1E69E5920](dSID);
+  MEMORY[0x1E69E5920](authContext2);
+  authContext3 = [location[0] authContext];
+  username = [authContext3 username];
   [v18 setAppleID:?];
-  MEMORY[0x1E69E5920](v13);
-  MEMORY[0x1E69E5920](v14);
-  v15 = [location[0] decodedRecoveryPETString];
+  MEMORY[0x1E69E5920](username);
+  MEMORY[0x1E69E5920](authContext3);
+  decodedRecoveryPETString = [location[0] decodedRecoveryPETString];
   [v18 setPasswordEquivToken:?];
-  MEMORY[0x1E69E5920](v15);
+  MEMORY[0x1E69E5920](decodedRecoveryPETString);
   [v18 setIdmsMasterKeyRecovery:{objc_msgSend(location[0], "supportsMasterKeyRecovery")}];
   [v18 setMandatesRecoveryKey:{objc_msgSend(location[0], "mandatesRecoveryKey")}];
   [v18 setIdmsRecovery:{objc_msgSend(v18, "idmsMasterKeyRecovery") ^ 1}];
   [v18 setGuestMode:1];
-  v17 = [location[0] authContext];
-  v16 = [v17 telemetryFlowID];
+  authContext4 = [location[0] authContext];
+  telemetryFlowID = [authContext4 telemetryFlowID];
   [v18 setTelemetryFlowID:?];
-  MEMORY[0x1E69E5920](v16);
-  MEMORY[0x1E69E5920](v17);
+  MEMORY[0x1E69E5920](telemetryFlowID);
+  MEMORY[0x1E69E5920](authContext4);
   if (CoreCDPLibraryCore(0))
   {
     v4 = objc_alloc(getCDPRecoveryControllerClass());
@@ -187,12 +187,12 @@
   return v2;
 }
 
-+ (BOOL)cdpAccountIsICDPEnabledForDSID:(id)a3
++ (BOOL)cdpAccountIsICDPEnabledForDSID:(id)d
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   if (CoreCDPLibraryCore(0))
   {
     CDPAccountClass = getCDPAccountClass();
@@ -208,12 +208,12 @@
   return v4;
 }
 
-+ (BOOL)cdpAccountIsHSA2EnabledForAltDSID:(id)a3
++ (BOOL)cdpAccountIsHSA2EnabledForAltDSID:(id)d
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   if (CoreCDPLibraryCore(0))
   {
     CDPAccountClass = getCDPAccountClass();
@@ -229,12 +229,12 @@
   return v4;
 }
 
-+ (BOOL)cdpAccountIsOTEnabledForAltDSID:(id)a3
++ (BOOL)cdpAccountIsOTEnabledForAltDSID:(id)d
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   if (CoreCDPLibraryCore(0))
   {
     CDPAccountClass = getCDPAccountClass();
@@ -245,9 +245,9 @@
     CDPAccountClass = 0;
   }
 
-  v6 = [CDPAccountClass sharedInstance];
+  cDPAccountClass = [CDPAccountClass sharedInstance];
   v7 = objc_opt_respondsToSelector();
-  MEMORY[0x1E69E5920](v6);
+  MEMORY[0x1E69E5920](cDPAccountClass);
   if (v7)
   {
     v9 = [AKCDPFactory contextForAltDSID:location[0]];
@@ -263,9 +263,9 @@
         v5 = 0;
       }
 
-      v4 = [v5 sharedInstance];
-      v11 = [v4 isOTEnabledForContext:v9] & 1;
-      MEMORY[0x1E69E5920](v4);
+      sharedInstance = [v5 sharedInstance];
+      v11 = [sharedInstance isOTEnabledForContext:v9] & 1;
+      MEMORY[0x1E69E5920](sharedInstance);
     }
 
     else
@@ -312,7 +312,7 @@
 + (unint64_t)walrusStatus
 {
   v13 = *MEMORY[0x1E69E9840];
-  v8[2] = a1;
+  v8[2] = self;
   v8[1] = a2;
   v11 = &walrusStatus_once;
   location = 0;
@@ -532,7 +532,7 @@ void __37__AKCDPFactory_walrusStatusLiveValue__block_invoke_57(uint64_t a1, void
 + (unint64_t)webAccessStatus
 {
   v14 = *MEMORY[0x1E69E9840];
-  v11[2] = a1;
+  v11[2] = self;
   v11[1] = a2;
   if (!webAccessStatus_stateController)
   {
@@ -742,23 +742,23 @@ void __40__AKCDPFactory_webAccessStatusLiveValue__block_invoke_64(uint64_t a1, v
 
 + (BOOL)isEligibleToArmDeviceForPCSAuth
 {
-  v3 = 0;
-  if ([a1 isWalrusEnabled])
+  isWebAccessEnabled = 0;
+  if ([self isWalrusEnabled])
   {
-    v3 = [a1 isWebAccessEnabled];
+    isWebAccessEnabled = [self isWebAccessEnabled];
   }
 
-  return v3 & 1;
+  return isWebAccessEnabled & 1;
 }
 
-+ (id)webAccessChangeControllerForTargetStatus:(unint64_t)a3
++ (id)webAccessChangeControllerForTargetStatus:(unint64_t)status
 {
-  location[3] = a1;
+  location[3] = self;
   location[2] = a2;
-  location[1] = a3;
-  if (a3)
+  location[1] = status;
+  if (status)
   {
-    if (a3 == 1)
+    if (status == 1)
     {
       if (CoreCDPUILibraryCore(0))
       {
@@ -773,7 +773,7 @@ void __40__AKCDPFactory_webAccessStatusLiveValue__block_invoke_64(uint64_t a1, v
       v13 = [v6 controllerWithTargetWebAccessStatus:1];
     }
 
-    else if (a3 == 2)
+    else if (status == 2)
     {
       if (CoreCDPUILibraryCore(0))
       {
@@ -868,12 +868,12 @@ void __40__AKCDPFactory_webAccessStatusLiveValue__block_invoke_64(uint64_t a1, v
   return v6;
 }
 
-+ (id)accountRecoveryControllerWithPresentingViewController:(id)a3
++ (id)accountRecoveryControllerWithPresentingViewController:(id)controller
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   if (CoreCDPUILibraryCore(0))
   {
     v3 = objc_alloc(getCDPUIAccountRecoveryControllerClass());
@@ -890,12 +890,12 @@ void __40__AKCDPFactory_webAccessStatusLiveValue__block_invoke_64(uint64_t a1, v
   return v5;
 }
 
-+ (id)cdpUIControllerWithPresentingViewController:(id)a3
++ (id)cdpUIControllerWithPresentingViewController:(id)controller
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   if (CoreCDPUILibraryCore(0))
   {
     v3 = objc_alloc(getCDPUIControllerClass());
@@ -927,12 +927,12 @@ void __40__AKCDPFactory_webAccessStatusLiveValue__block_invoke_64(uint64_t a1, v
   return ([CDPKeychainSyncClass isUserVisibleKeychainSyncEnabled] & 1) != 0;
 }
 
-- (BOOL)isCDPEnabledForDSID:(id)a3
+- (BOOL)isCDPEnabledForDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v4 = [AKCDPFactory cdpAccountIsICDPEnabledForDSID:location[0]];
   objc_storeStrong(location, 0);
   return v4;
@@ -978,12 +978,12 @@ void __40__AKCDPFactory_webAccessStatusLiveValue__block_invoke_64(uint64_t a1, v
   return v4 & 1;
 }
 
-- (BOOL)isHSA2EnabledForAltDSID:(id)a3
+- (BOOL)isHSA2EnabledForAltDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v4 = [AKCDPFactory cdpAccountIsHSA2EnabledForAltDSID:location[0]];
   objc_storeStrong(location, 0);
   return v4;

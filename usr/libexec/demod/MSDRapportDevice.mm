@@ -1,39 +1,39 @@
 @interface MSDRapportDevice
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRPCompanionLinkDevice:(id)a3;
-- (MSDRapportDevice)initWithIncomingOptions:(id)a3;
-- (MSDRapportDevice)initWithRPCompanionLinkDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRPCompanionLinkDevice:(id)device;
+- (MSDRapportDevice)initWithIncomingOptions:(id)options;
+- (MSDRapportDevice)initWithRPCompanionLinkDevice:(id)device;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation MSDRapportDevice
 
-- (MSDRapportDevice)initWithRPCompanionLinkDevice:(id)a3
+- (MSDRapportDevice)initWithRPCompanionLinkDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = MSDRapportDevice;
   v5 = [(MSDRapportDevice *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(MSDRapportDevice *)v5 setRpDevice:v4];
-    -[MSDRapportDevice setPairingMode:](v6, "setPairingMode:", ([v4 statusFlags] >> 31) & 1);
-    -[MSDRapportDevice setAuthenticated:](v6, "setAuthenticated:", ([v4 statusFlags] >> 15) & 1);
-    v7 = [v4 name];
-    [(MSDRapportDevice *)v6 setDeviceName:v7];
+    [(MSDRapportDevice *)v5 setRpDevice:deviceCopy];
+    -[MSDRapportDevice setPairingMode:](v6, "setPairingMode:", ([deviceCopy statusFlags] >> 31) & 1);
+    -[MSDRapportDevice setAuthenticated:](v6, "setAuthenticated:", ([deviceCopy statusFlags] >> 15) & 1);
+    name = [deviceCopy name];
+    [(MSDRapportDevice *)v6 setDeviceName:name];
 
-    v8 = [v4 idsDeviceIdentifier];
+    idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
 
-    if (v8)
+    if (idsDeviceIdentifier)
     {
-      [v4 idsDeviceIdentifier];
+      [deviceCopy idsDeviceIdentifier];
     }
 
     else
     {
-      [v4 publicIdentifier];
+      [deviceCopy publicIdentifier];
     }
     v9 = ;
     [(MSDRapportDevice *)v6 setIdentifier:v9];
@@ -44,9 +44,9 @@
   return v6;
 }
 
-- (MSDRapportDevice)initWithIncomingOptions:(id)a3
+- (MSDRapportDevice)initWithIncomingOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = MSDRapportDevice;
   v5 = [(MSDRapportDevice *)&v13 init];
@@ -54,53 +54,53 @@
   {
     v6 = objc_alloc_init(RPCompanionLinkDevice);
     v7 = RPOptionSenderIDSDeviceID;
-    v8 = [v4 objectForKeyedSubscript:RPOptionSenderIDSDeviceID];
+    v8 = [optionsCopy objectForKeyedSubscript:RPOptionSenderIDSDeviceID];
     [v6 setIdentifier:v8];
 
     Int64 = CFDictionaryGetInt64();
     [(MSDRapportDevice *)v5 setRpDevice:v6];
     [(MSDRapportDevice *)v5 setPairingMode:(Int64 >> 31) & 1];
     [(MSDRapportDevice *)v5 setAuthenticated:(Int64 >> 15) & 1];
-    v10 = [v4 objectForKeyedSubscript:@"senderDeviceName"];
+    v10 = [optionsCopy objectForKeyedSubscript:@"senderDeviceName"];
     [(MSDRapportDevice *)v5 setDeviceName:v10];
 
-    v11 = [v4 objectForKeyedSubscript:v7];
+    v11 = [optionsCopy objectForKeyedSubscript:v7];
     [(MSDRapportDevice *)v5 setIdentifier:v11];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToRPCompanionLinkDevice:(id)a3
+- (BOOL)isEqualToRPCompanionLinkDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 idsDeviceIdentifier];
+  deviceCopy = device;
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
 
-  v6 = [(MSDRapportDevice *)self identifier];
-  if (v5)
+  identifier = [(MSDRapportDevice *)self identifier];
+  if (idsDeviceIdentifier)
   {
-    [v4 idsDeviceIdentifier];
+    [deviceCopy idsDeviceIdentifier];
   }
 
   else
   {
-    [v4 publicIdentifier];
+    [deviceCopy publicIdentifier];
   }
   v7 = ;
 
-  v8 = [v6 isEqualToString:v7];
+  v8 = [identifier isEqualToString:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(MSDRapportDevice *)self identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [equalCopy identifier];
+    identifier2 = [(MSDRapportDevice *)self identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -113,8 +113,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MSDRapportDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MSDRapportDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -123,9 +123,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MSDRapportDevice *)self identifier];
-  v6 = [(MSDRapportDevice *)self deviceName];
-  v7 = [NSString stringWithFormat:@"<%@[%p]: Identifier=%@ DeviceName=%@ PairingMode=%d Authenticated=%d>", v4, self, v5, v6, [(MSDRapportDevice *)self pairingMode], [(MSDRapportDevice *)self authenticated]];
+  identifier = [(MSDRapportDevice *)self identifier];
+  deviceName = [(MSDRapportDevice *)self deviceName];
+  v7 = [NSString stringWithFormat:@"<%@[%p]: Identifier=%@ DeviceName=%@ PairingMode=%d Authenticated=%d>", v4, self, identifier, deviceName, [(MSDRapportDevice *)self pairingMode], [(MSDRapportDevice *)self authenticated]];
 
   return v7;
 }

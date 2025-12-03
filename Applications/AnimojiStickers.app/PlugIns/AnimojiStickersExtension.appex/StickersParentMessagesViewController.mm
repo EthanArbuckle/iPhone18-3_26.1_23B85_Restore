@@ -1,12 +1,12 @@
 @interface StickersParentMessagesViewController
 - (BOOL)automaticallyDisplaysLandscapeRotationOverlay;
 - (StickersMessagesViewController)childStickersMessagesViewController;
-- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)a3;
+- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)context;
 - (id)landscapeOverlayMessage;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
 - (void)requestExpandedPresentation;
 - (void)viewDidLoad;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation StickersParentMessagesViewController
@@ -18,14 +18,14 @@
   [(BaseMessagesViewController *)&v7 viewDidLoad];
   v3 = [(StickersParentMessagesViewController *)self defaultMessagesChildViewControllerForPresentationContext:[(StickersParentMessagesViewController *)self presentationContext]];
   [(StickersParentMessagesViewController *)self addChildViewController:v3];
-  v4 = [v3 view];
-  v5 = [(StickersParentMessagesViewController *)self view];
-  [v5 bounds];
-  [v4 setFrame:?];
+  view = [v3 view];
+  view2 = [(StickersParentMessagesViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v4 setAutoresizingMask:18];
-  v6 = [(StickersParentMessagesViewController *)self view];
-  [v6 addSubview:v4];
+  [view setAutoresizingMask:18];
+  view3 = [(StickersParentMessagesViewController *)self view];
+  [view3 addSubview:view];
 
   [v3 didMoveToParentViewController:self];
   [(BaseMessagesViewController *)self setBaseMessagesViewController:v3];
@@ -60,27 +60,27 @@
   objc_destroyWeak(&location);
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = StickersParentMessagesViewController;
   [(BaseMessagesViewController *)&v6 willTransitionToPresentationStyle:?];
-  v5 = [(StickersParentMessagesViewController *)self childStickersMessagesViewController];
-  [v5 willTransitionToPresentationStyle:a3];
+  childStickersMessagesViewController = [(StickersParentMessagesViewController *)self childStickersMessagesViewController];
+  [childStickersMessagesViewController willTransitionToPresentationStyle:style];
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = StickersParentMessagesViewController;
   [(BaseMessagesViewController *)&v6 didTransitionToPresentationStyle:?];
-  v5 = [(StickersParentMessagesViewController *)self childStickersMessagesViewController];
-  [v5 didTransitionToPresentationStyle:a3];
+  childStickersMessagesViewController = [(StickersParentMessagesViewController *)self childStickersMessagesViewController];
+  [childStickersMessagesViewController didTransitionToPresentationStyle:style];
 
   [(StickersParentMessagesViewController *)self setWaitingOnPresentationStyleChange:0];
 }
 
-- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)a3
+- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)context
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -113,9 +113,9 @@
 
     else
     {
-      v6 = [(StickersParentMessagesViewController *)self childStickersMessagesViewController];
-      v7 = [v6 editorViewController];
-      if (v7)
+      childStickersMessagesViewController = [(StickersParentMessagesViewController *)self childStickersMessagesViewController];
+      editorViewController = [childStickersMessagesViewController editorViewController];
+      if (editorViewController)
       {
         v4 = 1;
       }
@@ -123,8 +123,8 @@
       else
       {
         v8 = +[AVTUIControllerPresentation pendingGlobalPresentation];
-        v9 = [v8 modalMessagesController];
-        v4 = v9 != 0;
+        modalMessagesController = [v8 modalMessagesController];
+        v4 = modalMessagesController != 0;
       }
     }
   }

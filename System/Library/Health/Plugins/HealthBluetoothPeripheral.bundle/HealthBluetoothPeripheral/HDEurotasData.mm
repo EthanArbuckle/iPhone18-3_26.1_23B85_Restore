@@ -1,7 +1,7 @@
 @interface HDEurotasData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)getBinaryValueWithError:(id *)a3;
+- (id)getBinaryValueWithError:(id *)error;
 - (id)initForWriting;
 @end
 
@@ -14,10 +14,10 @@
   return [(HDHealthServiceCharacteristic *)&v3 _init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -27,13 +27,13 @@
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v6 = 0;
-    if (v4 && (isKindOfClass & 1) != 0)
+    if (equalCopy && (isKindOfClass & 1) != 0)
     {
       hasHeartRate = self->_hasHeartRate;
-      if (hasHeartRate == [(HDEurotasData *)v4 hasHeartRate]&& (heartRate = self->_heartRate, heartRate == [(HDEurotasData *)v4 heartRate]) && (hasActiveEnergy = self->_hasActiveEnergy, hasActiveEnergy == [(HDEurotasData *)v4 hasActiveEnergy]) && (activeEnergy = self->_activeEnergy, activeEnergy == [(HDEurotasData *)v4 activeEnergy]) && (hasTotalEnergy = self->_hasTotalEnergy, hasTotalEnergy == [(HDEurotasData *)v4 hasTotalEnergy]) && (totalEnergy = self->_totalEnergy, totalEnergy == [(HDEurotasData *)v4 totalEnergy]) && (hasAverageHeartRate = self->_hasAverageHeartRate, hasAverageHeartRate == [(HDEurotasData *)v4 hasAverageHeartRate]))
+      if (hasHeartRate == [(HDEurotasData *)equalCopy hasHeartRate]&& (heartRate = self->_heartRate, heartRate == [(HDEurotasData *)equalCopy heartRate]) && (hasActiveEnergy = self->_hasActiveEnergy, hasActiveEnergy == [(HDEurotasData *)equalCopy hasActiveEnergy]) && (activeEnergy = self->_activeEnergy, activeEnergy == [(HDEurotasData *)equalCopy activeEnergy]) && (hasTotalEnergy = self->_hasTotalEnergy, hasTotalEnergy == [(HDEurotasData *)equalCopy hasTotalEnergy]) && (totalEnergy = self->_totalEnergy, totalEnergy == [(HDEurotasData *)equalCopy totalEnergy]) && (hasAverageHeartRate = self->_hasAverageHeartRate, hasAverageHeartRate == [(HDEurotasData *)equalCopy hasAverageHeartRate]))
       {
         averageHeartRate = self->_averageHeartRate;
-        v6 = averageHeartRate == [(HDEurotasData *)v4 averageHeartRate];
+        v6 = averageHeartRate == [(HDEurotasData *)equalCopy averageHeartRate];
       }
 
       else
@@ -121,7 +121,7 @@ LABEL_18:
   return v10;
 }
 
-- (id)getBinaryValueWithError:(id *)a3
+- (id)getBinaryValueWithError:(id *)error
 {
   v10 = v11;
   if ([objc_opt_class() uint8:0 toData:&v10 before:&v12])
@@ -161,10 +161,10 @@ LABEL_18:
     v7 = [NSError hk_error:303 description:v6];
     if (v7)
     {
-      if (a3)
+      if (error)
       {
         v8 = v7;
-        *a3 = v7;
+        *error = v7;
       }
 
       else

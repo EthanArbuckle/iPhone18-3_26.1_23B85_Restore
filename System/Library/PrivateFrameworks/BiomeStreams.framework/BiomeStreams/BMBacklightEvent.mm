@@ -1,9 +1,9 @@
 @interface BMBacklightEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMBacklightEvent)initWithAbsoluteTimestamp:(double)a3 backlightLevel:(unint64_t)a4;
-- (BMBacklightEvent)initWithProto:(id)a3;
-- (BMBacklightEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMBacklightEvent)initWithAbsoluteTimestamp:(double)timestamp backlightLevel:(unint64_t)level;
+- (BMBacklightEvent)initWithProto:(id)proto;
+- (BMBacklightEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -11,15 +11,15 @@
 
 @implementation BMBacklightEvent
 
-- (BMBacklightEvent)initWithAbsoluteTimestamp:(double)a3 backlightLevel:(unint64_t)a4
+- (BMBacklightEvent)initWithAbsoluteTimestamp:(double)timestamp backlightLevel:(unint64_t)level
 {
   v7.receiver = self;
   v7.super_class = BMBacklightEvent;
   result = [(BMEventBase *)&v7 init];
   if (result)
   {
-    result->_absoluteTimestamp = a3;
-    result->_backlightLevel = a4;
+    result->_absoluteTimestamp = timestamp;
+    result->_backlightLevel = level;
   }
 
   return result;
@@ -32,29 +32,29 @@
   return v2;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMBacklightEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMBacklightEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMBacklightEvent)initWithProto:(id)a3
+- (BMBacklightEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -70,35 +70,35 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   [v5 absoluteTimestamp];
   v7 = v6;
-  v8 = [v5 backlightLevel];
+  backlightLevel = [v5 backlightLevel];
 
-  self = [(BMBacklightEvent *)self initWithAbsoluteTimestamp:v8 backlightLevel:v7];
-  v9 = self;
+  self = [(BMBacklightEvent *)self initWithAbsoluteTimestamp:backlightLevel backlightLevel:v7];
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
-- (BMBacklightEvent)initWithProtoData:(id)a3
+- (BMBacklightEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBBacklightEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBBacklightEvent alloc] initWithData:dataCopy];
 
     self = [(BMBacklightEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -110,13 +110,13 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     absoluteTimestamp = self->_absoluteTimestamp;
     [v5 absoluteTimestamp];
     if (absoluteTimestamp == v7)

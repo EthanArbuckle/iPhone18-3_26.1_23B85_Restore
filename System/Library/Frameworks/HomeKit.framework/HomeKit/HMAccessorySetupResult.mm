@@ -1,12 +1,12 @@
 @interface HMAccessorySetupResult
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessorySetupResult)initWithCoder:(id)a3;
-- (HMAccessorySetupResult)initWithHomeUniqueIdentifier:(id)a3 accessoryUniqueIdentifiers:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessorySetupResult)initWithCoder:(id)coder;
+- (HMAccessorySetupResult)initWithHomeUniqueIdentifier:(id)identifier accessoryUniqueIdentifiers:(id)identifiers;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessorySetupResult
@@ -15,12 +15,12 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessorySetupResult *)self homeUniqueIdentifier];
-  v5 = [v3 initWithName:@"Home ID" value:v4];
+  homeUniqueIdentifier = [(HMAccessorySetupResult *)self homeUniqueIdentifier];
+  v5 = [v3 initWithName:@"Home ID" value:homeUniqueIdentifier];
   v13[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMAccessorySetupResult *)self accessoryUniqueIdentifiers];
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  accessoryUniqueIdentifiers = [(HMAccessorySetupResult *)self accessoryUniqueIdentifiers];
+  v8 = [accessoryUniqueIdentifiers componentsJoinedByString:{@", "}];
   v9 = [v6 initWithName:@"Accessory IDs" value:v8];
   v13[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
@@ -37,28 +37,28 @@
   return [v2 shortDescription];
 }
 
-- (HMAccessorySetupResult)initWithCoder:(id)a3
+- (HMAccessorySetupResult)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.homeUniqueIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMASR.ck.homeUniqueIdentifier"];
   v6 = MEMORY[0x1E695DFD8];
   v23[0] = objc_opt_class();
   v23[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"HMASR.ck.accessoryUniqueIdentifiers"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"HMASR.ck.accessoryUniqueIdentifiers"];
 
   if (v5 && v9)
   {
-    v10 = [(HMAccessorySetupResult *)self initWithHomeUniqueIdentifier:v5 accessoryUniqueIdentifiers:v9];
-    v11 = v10;
+    selfCopy = [(HMAccessorySetupResult *)self initWithHomeUniqueIdentifier:v5 accessoryUniqueIdentifiers:v9];
+    v11 = selfCopy;
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -80,34 +80,34 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessorySetupResult *)self homeUniqueIdentifier];
-  [v4 encodeObject:v5 forKey:@"HMASR.ck.homeUniqueIdentifier"];
+  coderCopy = coder;
+  homeUniqueIdentifier = [(HMAccessorySetupResult *)self homeUniqueIdentifier];
+  [coderCopy encodeObject:homeUniqueIdentifier forKey:@"HMASR.ck.homeUniqueIdentifier"];
 
-  v6 = [(HMAccessorySetupResult *)self accessoryUniqueIdentifiers];
-  [v4 encodeObject:v6 forKey:@"HMASR.ck.accessoryUniqueIdentifiers"];
+  accessoryUniqueIdentifiers = [(HMAccessorySetupResult *)self accessoryUniqueIdentifiers];
+  [coderCopy encodeObject:accessoryUniqueIdentifiers forKey:@"HMASR.ck.accessoryUniqueIdentifiers"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessorySetupResult *)self homeUniqueIdentifier];
-  v4 = [v3 hash];
+  homeUniqueIdentifier = [(HMAccessorySetupResult *)self homeUniqueIdentifier];
+  v4 = [homeUniqueIdentifier hash];
 
-  v5 = [(HMAccessorySetupResult *)self accessoryUniqueIdentifiers];
-  v6 = [v5 hash];
+  accessoryUniqueIdentifiers = [(HMAccessorySetupResult *)self accessoryUniqueIdentifiers];
+  v6 = [accessoryUniqueIdentifiers hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -118,13 +118,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMAccessorySetupResult *)self homeUniqueIdentifier];
-    v8 = [v6 homeUniqueIdentifier];
-    if ([v7 isEqual:v8])
+    homeUniqueIdentifier = [(HMAccessorySetupResult *)self homeUniqueIdentifier];
+    homeUniqueIdentifier2 = [v6 homeUniqueIdentifier];
+    if ([homeUniqueIdentifier isEqual:homeUniqueIdentifier2])
     {
-      v9 = [(HMAccessorySetupResult *)self accessoryUniqueIdentifiers];
-      v10 = [v6 accessoryUniqueIdentifiers];
-      v11 = [v9 isEqual:v10];
+      accessoryUniqueIdentifiers = [(HMAccessorySetupResult *)self accessoryUniqueIdentifiers];
+      accessoryUniqueIdentifiers2 = [v6 accessoryUniqueIdentifiers];
+      v11 = [accessoryUniqueIdentifiers isEqual:accessoryUniqueIdentifiers2];
     }
 
     else
@@ -141,18 +141,18 @@
   return v11;
 }
 
-- (HMAccessorySetupResult)initWithHomeUniqueIdentifier:(id)a3 accessoryUniqueIdentifiers:(id)a4
+- (HMAccessorySetupResult)initWithHomeUniqueIdentifier:(id)identifier accessoryUniqueIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (![v8 count])
+  v9 = identifiersCopy;
+  if (![identifiersCopy count])
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -165,8 +165,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_homeUniqueIdentifier, a3);
-    objc_storeStrong(&v11->_accessoryUniqueIdentifiers, a4);
+    objc_storeStrong(&v10->_homeUniqueIdentifier, identifier);
+    objc_storeStrong(&v11->_accessoryUniqueIdentifiers, identifiers);
   }
 
   return v11;

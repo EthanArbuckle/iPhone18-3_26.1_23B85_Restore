@@ -1,11 +1,11 @@
 @interface ARGeoTrackingLocationRequestHandler
 - (ARGeoTrackingLocationRequestHandler)init;
 - (int)waitForAuthorizationStatus;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)requestLocationWithCompletionHandler:(id)a3;
-- (void)setLocationManager:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)requestLocationWithCompletionHandler:(id)handler;
+- (void)setLocationManager:(id)manager;
 @end
 
 @implementation ARGeoTrackingLocationRequestHandler
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (void)setLocationManager:(id)a3
+- (void)setLocationManager:(id)manager
 {
-  v4 = a3;
-  objc_storeWeak(&self->_locationManager, v4);
+  managerCopy = manager;
+  objc_storeWeak(&self->_locationManager, managerCopy);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  locationsCopy = locations;
+  managerCopy = manager;
   v8 = _ARLogGeneral_24();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -48,27 +48,27 @@
     v14 = 138543618;
     v15 = v10;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Received location", &v14, 0x16u);
   }
 
-  [v7 stopUpdatingLocation];
-  v11 = [v6 lastObject];
+  [managerCopy stopUpdatingLocation];
+  lastObject = [locationsCopy lastObject];
 
   locationCompletionHandler = self->_locationCompletionHandler;
   if (locationCompletionHandler)
   {
-    locationCompletionHandler[2](locationCompletionHandler, v11, 0);
+    locationCompletionHandler[2](locationCompletionHandler, lastObject, 0);
     v13 = self->_locationCompletionHandler;
     self->_locationCompletionHandler = 0;
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   if (ARShouldUseLogTypeError_onceToken_33 != -1)
   {
     [ARGeoTrackingLocationRequestHandler locationManager:didFailWithError:];
@@ -86,9 +86,9 @@
       v19 = 138543874;
       v20 = v12;
       v21 = 2048;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
-      v24 = v7;
+      v24 = errorCopy;
       v13 = "%{public}@ <%p>: Location request handler failed: %@";
       v14 = v10;
       v15 = OS_LOG_TYPE_ERROR;
@@ -104,36 +104,36 @@ LABEL_8:
     v19 = 138543874;
     v20 = v12;
     v21 = 2048;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2112;
-    v24 = v7;
+    v24 = errorCopy;
     v13 = "Error: %{public}@ <%p>: Location request handler failed: %@";
     v14 = v10;
     v15 = OS_LOG_TYPE_INFO;
     goto LABEL_8;
   }
 
-  if ([v7 code])
+  if ([errorCopy code])
   {
     locationCompletionHandler = self->_locationCompletionHandler;
     if (locationCompletionHandler)
     {
-      locationCompletionHandler[2](locationCompletionHandler, 0, v7);
+      locationCompletionHandler[2](locationCompletionHandler, 0, errorCopy);
       v18 = self->_locationCompletionHandler;
       self->_locationCompletionHandler = 0;
     }
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v16 = *MEMORY[0x1E69E9840];
   authorizationCondition = self->_authorizationCondition;
-  v5 = a3;
+  authorizationCopy = authorization;
   [(NSCondition *)authorizationCondition lock];
-  v6 = [v5 authorizationStatus];
+  authorizationStatus = [authorizationCopy authorizationStatus];
 
-  self->_authorizationStatus = v6;
+  self->_authorizationStatus = authorizationStatus;
   [(NSCondition *)self->_authorizationCondition broadcast];
   [(NSCondition *)self->_authorizationCondition unlock];
   v7 = _ARLogGeneral_24();
@@ -144,9 +144,9 @@ LABEL_8:
     v10 = 138543874;
     v11 = v9;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
-    v15 = v6;
+    v15 = authorizationStatus;
     _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: User has set location authorization status: %d", &v10, 0x1Cu);
   }
 }
@@ -162,7 +162,7 @@ LABEL_8:
     v8 = 138543618;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Waiting for location authorization from user", &v8, 0x16u);
   }
 
@@ -182,10 +182,10 @@ LABEL_8:
   return authorizationStatus;
 }
 
-- (void)requestLocationWithCompletionHandler:(id)a3
+- (void)requestLocationWithCompletionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _ARLogGeneral_24();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -194,11 +194,11 @@ LABEL_8:
     v9 = 138543618;
     v10 = v7;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Waiting for location for availability check", &v9, 0x16u);
   }
 
-  [(ARGeoTrackingLocationRequestHandler *)self setLocationCompletionHandler:v4];
+  [(ARGeoTrackingLocationRequestHandler *)self setLocationCompletionHandler:handlerCopy];
   WeakRetained = objc_loadWeakRetained(&self->_locationManager);
   [WeakRetained startUpdatingLocation];
 }

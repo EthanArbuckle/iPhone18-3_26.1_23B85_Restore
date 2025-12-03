@@ -1,34 +1,34 @@
 @interface SearchResultsPageRenderer
 - (CGRect)overviewRect;
-- (SearchResultsPageRenderer)initWithSearchResults:(id)a3 title:(id)a4 subTitle:(id)a5 mapView:(id)a6;
-- (double)_zoomLevelForCoordinateRegion:(id *)a3 clampTo:(double)a4;
+- (SearchResultsPageRenderer)initWithSearchResults:(id)results title:(id)title subTitle:(id)subTitle mapView:(id)view;
+- (double)_zoomLevelForCoordinateRegion:(id *)region clampTo:(double)to;
 - (id)computeCurrentPrintInfo;
 - (int64_t)numberOfPages;
-- (void)_drawPinsInRect:(CGRect)a3 zoomLevel:(double)a4;
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)drawTopContentInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
-- (void)prepareForDrawingPages:(_NSRange)a3;
+- (void)_drawPinsInRect:(CGRect)rect zoomLevel:(double)level;
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)drawTopContentInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
+- (void)prepareForDrawingPages:(_NSRange)pages;
 @end
 
 @implementation SearchResultsPageRenderer
 
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = objc_alloc_init(NSMutableArray);
   [v10 addObject:self];
-  v40 = self;
-  v11 = [(MapCachedPageRenderer *)self currentPrintInfo];
-  v12 = [v11 searchResultCells];
+  selfCopy = self;
+  currentPrintInfo = [(MapCachedPageRenderer *)self currentPrintInfo];
+  searchResultCells = [currentPrintInfo searchResultCells];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v13 = v12;
+  v13 = searchResultCells;
   v14 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v14)
   {
@@ -44,7 +44,7 @@
         }
 
         v18 = *(*(&v45 + 1) + 8 * i);
-        if ([v18 page] == a3)
+        if ([v18 page] == index)
         {
           [v10 addObject:v18];
         }
@@ -62,11 +62,11 @@
   while ([v10 count])
   {
     v20 = [v10 objectAtIndexedSubscript:0];
-    v21 = [v20 snapshotBlock];
-    v22 = v21;
-    if (v21)
+    snapshotBlock = [v20 snapshotBlock];
+    v22 = snapshotBlock;
+    if (snapshotBlock)
     {
-      (*(v21 + 16))(v21);
+      (*(snapshotBlock + 16))(snapshotBlock);
       v23 = +[NSDate date];
       if (([v20 hasSnapshot] & 1) == 0)
       {
@@ -93,19 +93,19 @@
   }
 
   v30 = +[UIPrintInteractionController sharedPrintController];
-  v31 = [v30 printPageRenderer];
+  printPageRenderer = [v30 printPageRenderer];
 
-  if (v31)
+  if (printPageRenderer)
   {
     v32 = +[UIPrintInteractionController sharedPrintController];
     [v32 _enableManualPrintPage:0];
 
-    [(MapPageRenderer *)v40 drawOverview];
-    v33 = [[MapScaleCell alloc] initWithDistanceInMeters:MKMetersBetweenMapPoints(v40->_mlMapPoint, v40->_mrMapPoint)];
-    [(SearchResultsPageRenderer *)v40 overviewRect];
+    [(MapPageRenderer *)selfCopy drawOverview];
+    v33 = [[MapScaleCell alloc] initWithDistanceInMeters:MKMetersBetweenMapPoints(selfCopy->_mlMapPoint, selfCopy->_mrMapPoint)];
+    [(SearchResultsPageRenderer *)selfCopy overviewRect];
     [(MapScaleCell *)v33 drawInRect:?];
-    [(SearchResultsPageRenderer *)v40 _drawPinsInRect:x zoomLevel:y, width, height, v40->super.super._zoomLevel];
-    [(SearchResultsPageRenderer *)v40 drawTopContentInRect:a3 forPageAtIndex:x, y, width, height];
+    [(SearchResultsPageRenderer *)selfCopy _drawPinsInRect:x zoomLevel:y, width, height, selfCopy->super.super._zoomLevel];
+    [(SearchResultsPageRenderer *)selfCopy drawTopContentInRect:index forPageAtIndex:x, y, width, height];
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -126,7 +126,7 @@
           }
 
           v39 = *(*(&v41 + 1) + 8 * j);
-          if ([v39 page] == a3)
+          if ([v39 page] == index)
           {
             [v39 drawInRect:{x, y, width, height}];
           }
@@ -140,9 +140,9 @@
   }
 }
 
-- (void)_drawPinsInRect:(CGRect)a3 zoomLevel:(double)a4
+- (void)_drawPinsInRect:(CGRect)rect zoomLevel:(double)level
 {
-  [(SearchResultsPageRenderer *)self overviewRect:a3.origin.x];
+  [(SearchResultsPageRenderer *)self overviewRect:rect.origin.x];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -174,15 +174,15 @@
   CGAffineTransformScale(&v46, &v45, v14, v14);
   v47 = v46;
   [(UIColor *)self->super.super._calloutTextColor set];
-  v19 = [(MapCachedPageRenderer *)self currentPrintInfo];
-  v20 = [v19 searchResultCells];
+  currentPrintInfo = [(MapCachedPageRenderer *)self currentPrintInfo];
+  searchResultCells = [currentPrintInfo searchResultCells];
 
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_10073088C;
   v43[3] = &unk_101627AC0;
   v44 = v47;
-  [v20 sortedArrayUsingComparator:v43];
+  [searchResultCells sortedArrayUsingComparator:v43];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -225,17 +225,17 @@
   }
 }
 
-- (void)drawTopContentInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawTopContentInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
   self->super.super._topContentIconType = 7;
   v4.receiver = self;
   v4.super_class = SearchResultsPageRenderer;
-  [(MapPageRenderer *)&v4 drawTopContentInRect:a4 forPageAtIndex:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MapPageRenderer *)&v4 drawTopContentInRect:index forPageAtIndex:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
-- (void)prepareForDrawingPages:(_NSRange)a3
+- (void)prepareForDrawingPages:(_NSRange)pages
 {
-  v4 = malloc_type_malloc(16 * [(NSArray *)self->_searchResults count:a3.location], 0x1000040451B5BE8uLL);
+  v4 = malloc_type_malloc(16 * [(NSArray *)self->_searchResults count:pages.location], 0x1000040451B5BE8uLL);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -328,19 +328,19 @@
 
 - (int64_t)numberOfPages
 {
-  v2 = [(MapCachedPageRenderer *)self currentPrintInfo];
-  v3 = [v2 numberOfPages];
+  currentPrintInfo = [(MapCachedPageRenderer *)self currentPrintInfo];
+  numberOfPages = [currentPrintInfo numberOfPages];
 
-  return v3;
+  return numberOfPages;
 }
 
 - (id)computeCurrentPrintInfo
 {
-  v3 = [(SearchResultsPageRenderer *)self searchResultsPerPage];
-  if (v3 >= 2)
+  searchResultsPerPage = [(SearchResultsPageRenderer *)self searchResultsPerPage];
+  if (searchResultsPerPage >= 2)
   {
-    v40 = v3;
-    v44 = vcvtps_s32_f32([(NSArray *)self->_searchResults count]/ v3);
+    v40 = searchResultsPerPage;
+    v44 = vcvtps_s32_f32([(NSArray *)self->_searchResults count]/ searchResultsPerPage);
     v45 = objc_alloc_init(NSMutableArray);
     [(SearchResultsPageRenderer *)self paperRect];
     v42 = v6;
@@ -405,8 +405,8 @@
           }
 
           v28 = *(*(&v46 + 1) + 8 * i);
-          v29 = [(MapPageRenderer *)self mapView];
-          v30 = +[SearchResultCell cellWithSearchResult:order:mapType:](SearchResultCell, "cellWithSearchResult:order:mapType:", v28, v26, [v29 mapType]);
+          mapView = [(MapPageRenderer *)self mapView];
+          v30 = +[SearchResultCell cellWithSearchResult:order:mapType:](SearchResultCell, "cellWithSearchResult:order:mapType:", v28, v26, [mapView mapType]);
 
           [v30 setFrame:{MinX, 0.0, v20, 81.5}];
           [v45 addObject:v30];
@@ -470,28 +470,28 @@
   return v4;
 }
 
-- (SearchResultsPageRenderer)initWithSearchResults:(id)a3 title:(id)a4 subTitle:(id)a5 mapView:(id)a6
+- (SearchResultsPageRenderer)initWithSearchResults:(id)results title:(id)title subTitle:(id)subTitle mapView:(id)view
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  resultsCopy = results;
+  titleCopy = title;
+  subTitleCopy = subTitle;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = SearchResultsPageRenderer;
   v15 = [(MapCachedPageRenderer *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_searchResults, a3);
-    [(MapPageRenderer *)v16 setTitle:v12];
-    [(MapPageRenderer *)v16 setSubTitle:v13];
-    [(MapPageRenderer *)v16 setMapView:v14];
+    objc_storeStrong(&v15->_searchResults, results);
+    [(MapPageRenderer *)v16 setTitle:titleCopy];
+    [(MapPageRenderer *)v16 setSubTitle:subTitleCopy];
+    [(MapPageRenderer *)v16 setMapView:viewCopy];
   }
 
   return v16;
 }
 
-- (double)_zoomLevelForCoordinateRegion:(id *)a3 clampTo:(double)a4
+- (double)_zoomLevelForCoordinateRegion:(id *)region clampTo:(double)to
 {
   v7 = v6;
   v38 = v4;

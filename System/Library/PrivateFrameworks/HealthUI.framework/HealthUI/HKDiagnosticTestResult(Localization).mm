@@ -6,9 +6,9 @@
 
 - (id)sortDateTitle
 {
-  v2 = [a1 sortDate];
-  v3 = [v2 keyPath];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E696B9B0]];
+  sortDate = [self sortDate];
+  keyPath = [sortDate keyPath];
+  v4 = [keyPath isEqualToString:*MEMORY[0x1E696B9B0]];
 
   if (v4)
   {
@@ -20,9 +20,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [a1 sortDate];
-  v7 = [v6 keyPath];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E696B7B0]];
+  sortDate2 = [self sortDate];
+  keyPath2 = [sortDate2 keyPath];
+  v8 = [keyPath2 isEqualToString:*MEMORY[0x1E696B7B0]];
 
   if (v8)
   {
@@ -30,9 +30,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [a1 sortDate];
-  v10 = [v9 keyPath];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E696B7A0]];
+  sortDate3 = [self sortDate];
+  keyPath3 = [sortDate3 keyPath];
+  v11 = [keyPath3 isEqualToString:*MEMORY[0x1E696B7A0]];
 
   if (v11)
   {
@@ -40,9 +40,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v12 = [a1 sortDate];
-  v13 = [v12 keyPath];
-  v14 = [v13 isEqualToString:*MEMORY[0x1E696B7A8]];
+  sortDate4 = [self sortDate];
+  keyPath4 = [sortDate4 keyPath];
+  v14 = [keyPath4 isEqualToString:*MEMORY[0x1E696B7A8]];
 
   if (v14)
   {

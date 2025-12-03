@@ -1,17 +1,17 @@
 @interface SKUIShareSheetActivityViewElement
 - (SKUILabelViewElement)message;
 - (SKUILabelViewElement)title;
-- (SKUIShareSheetActivityViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIShareSheetActivityViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIShareSheetActivityViewElement
 
-- (SKUIShareSheetActivityViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIShareSheetActivityViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIShareSheetActivityViewElement initWithDOMElement:parent:elementFactory:];
@@ -19,14 +19,14 @@
 
   v18.receiver = self;
   v18.super_class = SKUIShareSheetActivityViewElement;
-  v11 = [(SKUIViewElement *)&v18 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v18 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"type"];
+    v12 = [elementCopy getAttribute:@"type"];
     activityType = v11->_activityType;
     v11->_activityType = v12;
 
-    v14 = [v8 getAttribute:@"src"];
+    v14 = [elementCopy getAttribute:@"src"];
     if ([v14 length])
     {
       v15 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v14];
@@ -98,22 +98,22 @@ void __42__SKUIShareSheetActivityViewElement_title__block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = SKUIShareSheetActivityViewElement;
-  v5 = [(SKUIViewElement *)&v12 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v12 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SKUIShareSheetActivityViewElement *)v4 activityType];
+    activityType = [(SKUIShareSheetActivityViewElement *)elementCopy activityType];
     activityType = self->_activityType;
-    self->_activityType = v7;
+    self->_activityType = activityType;
 
-    v9 = [(SKUIShareSheetActivityViewElement *)v4 contentSourceURL];
+    contentSourceURL = [(SKUIShareSheetActivityViewElement *)elementCopy contentSourceURL];
     contentSourceURL = self->_contentSourceURL;
-    self->_contentSourceURL = v9;
+    self->_contentSourceURL = contentSourceURL;
   }
 
   return v6;

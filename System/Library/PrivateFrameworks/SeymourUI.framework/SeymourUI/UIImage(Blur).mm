@@ -10,21 +10,21 @@
   v83 = *MEMORY[0x277D85DE8];
   v9 = a5;
   v10 = a6;
-  [a1 size];
-  if (v11 < 1.0 || ([a1 size], v12 < 1.0))
+  [self size];
+  if (v11 < 1.0 || ([self size], v12 < 1.0))
   {
-    [a1 size];
+    [self size];
     v14 = v13;
-    [a1 size];
-    NSLog(&cfstr_ErrorInvalidSi.isa, v14, v15, a1);
+    [self size];
+    NSLog(&cfstr_ErrorInvalidSi.isa, v14, v15, self);
 LABEL_4:
     v16 = 0;
     goto LABEL_5;
   }
 
-  if (![a1 CGImage])
+  if (![self CGImage])
   {
-    NSLog(&cfstr_ErrorImageMust.isa, a1);
+    NSLog(&cfstr_ErrorImageMust.isa, self);
     goto LABEL_4;
   }
 
@@ -36,19 +36,19 @@ LABEL_4:
 
   v18 = *MEMORY[0x277CBF348];
   v19 = *(MEMORY[0x277CBF348] + 8);
-  [a1 size];
+  [self size];
   v21 = v20;
   v23 = v22;
-  v24 = a1;
-  v25 = v24;
+  selfCopy = self;
+  v25 = selfCopy;
   v26 = fabs(v68.n128_f64[0] + -1.0);
   if (a2 > 0.00000011920929 || v26 > 0.00000011920929)
   {
-    [v24 size];
+    [selfCopy size];
     v29 = v28;
     v31 = v30;
-    v32 = [MEMORY[0x277D759A0] mainScreen];
-    [v32 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v34 = v33;
     v85.width = v29;
     v85.height = v31;
@@ -58,12 +58,12 @@ LABEL_4:
     CGContextScaleCTM(CurrentContext, 1.0, -1.0);
     [v25 size];
     CGContextTranslateCTM(CurrentContext, 0.0, -v36);
-    v37 = [v25 CGImage];
+    cGImage = [v25 CGImage];
     v88.origin.x = v18;
     v88.origin.y = v19;
     v88.size.width = v21;
     v88.size.height = v23;
-    CGContextDrawImage(CurrentContext, v88, v37);
+    CGContextDrawImage(CurrentContext, v88, cGImage);
     src.data = CGBitmapContextGetData(CurrentContext);
     src.width = CGBitmapContextGetWidth(CurrentContext);
     src.height = CGBitmapContextGetHeight(CurrentContext);
@@ -71,8 +71,8 @@ LABEL_4:
     [v25 size];
     v39 = v38;
     v41 = v40;
-    v42 = [MEMORY[0x277D759A0] mainScreen];
-    [v42 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v44 = v43;
     v86.width = v39;
     v86.height = v41;
@@ -85,14 +85,14 @@ LABEL_4:
     dest.rowBytes = CGBitmapContextGetBytesPerRow(v45);
     if (a2 > 0.00000011920929)
     {
-      v46 = [MEMORY[0x277D759A0] mainScreen];
-      [v46 scale];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 scale];
       v48 = v47 * a2;
 
-      LODWORD(v46) = vcvtmd_u64_f64(v48 * 3.0 * 2.50662827 * 0.25 + 0.5);
-      vImageBoxConvolve_ARGB8888(&src, &dest, 0, 0, 0, v46 | 1, v46 | 1, 0, 8u);
-      vImageBoxConvolve_ARGB8888(&dest, &src, 0, 0, 0, v46 | 1, v46 | 1, 0, 8u);
-      vImageBoxConvolve_ARGB8888(&src, &dest, 0, 0, 0, v46 | 1, v46 | 1, 0, 8u);
+      LODWORD(mainScreen3) = vcvtmd_u64_f64(v48 * 3.0 * 2.50662827 * 0.25 + 0.5);
+      vImageBoxConvolve_ARGB8888(&src, &dest, 0, 0, 0, mainScreen3 | 1, mainScreen3 | 1, 0, 8u);
+      vImageBoxConvolve_ARGB8888(&dest, &src, 0, 0, 0, mainScreen3 | 1, mainScreen3 | 1, 0, 8u);
+      vImageBoxConvolve_ARGB8888(&src, &dest, 0, 0, 0, mainScreen3 | 1, mainScreen3 | 1, 0, 8u);
     }
 
     if (v26 > 0.00000011920929)
@@ -143,13 +143,13 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v27 = v24;
+  v27 = selfCopy;
 LABEL_27:
   [v25 size];
   v56 = v55;
   v58 = v57;
-  v59 = [MEMORY[0x277D759A0] mainScreen];
-  [v59 scale];
+  mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen4 scale];
   v61 = v60;
   v87.width = v56;
   v87.height = v58;
@@ -159,31 +159,31 @@ LABEL_27:
   CGContextScaleCTM(v62, 1.0, -1.0);
   [v25 size];
   CGContextTranslateCTM(v62, 0.0, -v63);
-  v64 = [v25 CGImage];
+  cGImage2 = [v25 CGImage];
   v89.origin.x = v18;
   v89.origin.y = v19;
   v89.size.width = v21;
   v89.size.height = v23;
-  CGContextDrawImage(v62, v89, v64);
+  CGContextDrawImage(v62, v89, cGImage2);
   if (a2 > 0.00000011920929)
   {
     CGContextSaveGState(v62);
     if (v10)
     {
-      v65 = [v10 CGImage];
+      cGImage3 = [v10 CGImage];
       v90.origin.x = v18;
       v90.origin.y = v19;
       v90.size.width = v21;
       v90.size.height = v23;
-      CGContextClipToMask(v62, v90, v65);
+      CGContextClipToMask(v62, v90, cGImage3);
     }
 
-    v66 = [v27 CGImage];
+    cGImage4 = [v27 CGImage];
     v91.origin.x = v18;
     v91.origin.y = v19;
     v91.size.width = v21;
     v91.size.height = v23;
-    CGContextDrawImage(v62, v91, v66);
+    CGContextDrawImage(v62, v91, cGImage4);
     CGContextRestoreGState(v62);
   }
 

@@ -1,15 +1,15 @@
 @interface ATXMPBDonationRatioTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActionType:(id)a3;
+- (int)StringAsActionType:(id)type;
 - (int)actionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBDonationRatioTracker
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasActionType:(BOOL)a3
+- (void)setHasActionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,17 +42,17 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsActionType:(id)a3
+- (int)StringAsActionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NSUA"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"NSUA"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Intent"];
+    v4 = [typeCopy isEqualToString:@"Intent"];
   }
 
   return v4;
@@ -64,15 +64,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBDonationRatioTracker;
   v4 = [(ATXMPBDonationRatioTracker *)&v8 description];
-  v5 = [(ATXMPBDonationRatioTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBDonationRatioTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -95,7 +95,7 @@
       v6 = @"NSUA";
     }
 
-    [v3 setObject:v6 forKey:@"actionType"];
+    [dictionary setObject:v6 forKey:@"actionType"];
 
     has = self->_has;
   }
@@ -103,28 +103,28 @@
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ratio];
-    [v3 setObject:v7 forKey:@"ratio"];
+    [dictionary setObject:v7 forKey:@"ratio"];
   }
 
   abGroup = self->_abGroup;
   if (abGroup)
   {
-    [v3 setObject:abGroup forKey:@"abGroup"];
+    [dictionary setObject:abGroup forKey:@"abGroup"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     actionType = self->_actionType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -132,44 +132,44 @@
   {
     ratio = self->_ratio;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[6] = self->_actionType;
-    *(v4 + 28) |= 2u;
+    toCopy[6] = self->_actionType;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_ratio;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = *&self->_ratio;
+    *(toCopy + 28) |= 1u;
   }
 
   if (self->_abGroup)
   {
-    v6 = v4;
-    [v4 setAbGroup:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setAbGroup:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -185,31 +185,31 @@
     *(v5 + 28) |= 1u;
   }
 
-  v8 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v8 = [(NSString *)self->_abGroup copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_actionType != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_actionType != *(equalCopy + 6))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
 LABEL_14:
     v7 = 0;
@@ -218,19 +218,19 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_ratio != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_ratio != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_14;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 2))
+  if (abGroup | *(equalCopy + 2))
   {
     v7 = [(NSString *)abGroup isEqual:?];
   }
@@ -295,28 +295,28 @@ LABEL_3:
   return v12 ^ v8 ^ [(NSString *)self->_abGroup hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_actionType = *(v4 + 6);
+    self->_actionType = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if (v5)
   {
-    self->_ratio = *(v4 + 1);
+    self->_ratio = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ATXMPBDonationRatioTracker *)self setAbGroup:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

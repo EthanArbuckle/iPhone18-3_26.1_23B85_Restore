@@ -1,40 +1,40 @@
 @interface BMSiriRequestContext
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriRequestContext)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriRequestContext)initWithSessionID:(id)a3 requestID:(id)a4 inputOrigin:(id)a5 responseMode:(id)a6 isEyesFree:(id)a7 isMultiUser:(id)a8 isVoiceTriggerEnabled:(id)a9 isTextToSpeechEnabled:(id)a10 isTriggerlessFollowup:(id)a11 deviceRestrictions:(id)a12 bargeInModes:(id)a13 identifiedUser:(id)a14 encodedLocation:(id)a15 countryCode:(id)a16 siriLocale:(id)a17 contentRestrictions:(id)a18 uiScale:(id)a19 temperatureUnit:(id)a20 allowUserGeneratedContent:(id)a21 censorSpeech:(id)a22 meCard:(id)a23 deviceIdiom:(int)a24 didPSCFire:(id)a25;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriRequestContext)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriRequestContext)initWithSessionID:(id)d requestID:(id)iD inputOrigin:(id)origin responseMode:(id)mode isEyesFree:(id)free isMultiUser:(id)user isVoiceTriggerEnabled:(id)enabled isTextToSpeechEnabled:(id)self0 isTriggerlessFollowup:(id)self1 deviceRestrictions:(id)self2 bargeInModes:(id)self3 identifiedUser:(id)self4 encodedLocation:(id)self5 countryCode:(id)self6 siriLocale:(id)self7 contentRestrictions:(id)self8 uiScale:(id)self9 temperatureUnit:(id)unit allowUserGeneratedContent:(id)content censorSpeech:(id)speech meCard:(id)card deviceIdiom:(int)idiom didPSCFire:(id)fire;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_bargeInModesJSONArray;
 - (id)_deviceRestrictionsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriRequestContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriRequestContext *)self sessionID];
-    v7 = [v5 sessionID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    sessionID = [(BMSiriRequestContext *)self sessionID];
+    sessionID2 = [v5 sessionID];
+    v8 = sessionID2;
+    if (sessionID == sessionID2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriRequestContext *)self sessionID];
-      v10 = [v5 sessionID];
-      v11 = [v9 isEqual:v10];
+      sessionID3 = [(BMSiriRequestContext *)self sessionID];
+      sessionID4 = [v5 sessionID];
+      v11 = [sessionID3 isEqual:sessionID4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMSiriRequestContext *)self requestID];
-    v14 = [v5 requestID];
-    v15 = v14;
-    if (v13 == v14)
+    requestID = [(BMSiriRequestContext *)self requestID];
+    requestID2 = [v5 requestID];
+    v15 = requestID2;
+    if (requestID == requestID2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriRequestContext *)self requestID];
-      v17 = [v5 requestID];
-      v18 = [v16 isEqual:v17];
+      requestID3 = [(BMSiriRequestContext *)self requestID];
+      requestID4 = [v5 requestID];
+      v18 = [requestID3 isEqual:requestID4];
 
       if (!v18)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v19 = [(BMSiriRequestContext *)self inputOrigin];
-    v20 = [v5 inputOrigin];
-    v21 = v20;
-    if (v19 == v20)
+    inputOrigin = [(BMSiriRequestContext *)self inputOrigin];
+    inputOrigin2 = [v5 inputOrigin];
+    v21 = inputOrigin2;
+    if (inputOrigin == inputOrigin2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriRequestContext *)self inputOrigin];
-      v23 = [v5 inputOrigin];
-      v24 = [v22 isEqual:v23];
+      inputOrigin3 = [(BMSiriRequestContext *)self inputOrigin];
+      inputOrigin4 = [v5 inputOrigin];
+      v24 = [inputOrigin3 isEqual:inputOrigin4];
 
       if (!v24)
       {
@@ -80,18 +80,18 @@
       }
     }
 
-    v25 = [(BMSiriRequestContext *)self responseMode];
-    v26 = [v5 responseMode];
-    v27 = v26;
-    if (v25 == v26)
+    responseMode = [(BMSiriRequestContext *)self responseMode];
+    responseMode2 = [v5 responseMode];
+    v27 = responseMode2;
+    if (responseMode == responseMode2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriRequestContext *)self responseMode];
-      v29 = [v5 responseMode];
-      v30 = [v28 isEqual:v29];
+      responseMode3 = [(BMSiriRequestContext *)self responseMode];
+      responseMode4 = [v5 responseMode];
+      v30 = [responseMode3 isEqual:responseMode4];
 
       if (!v30)
       {
@@ -111,8 +111,8 @@
         goto LABEL_101;
       }
 
-      v31 = [(BMSiriRequestContext *)self isEyesFree];
-      if (v31 != [v5 isEyesFree])
+      isEyesFree = [(BMSiriRequestContext *)self isEyesFree];
+      if (isEyesFree != [v5 isEyesFree])
       {
         goto LABEL_101;
       }
@@ -130,8 +130,8 @@
         goto LABEL_101;
       }
 
-      v32 = [(BMSiriRequestContext *)self isMultiUser];
-      if (v32 != [v5 isMultiUser])
+      isMultiUser = [(BMSiriRequestContext *)self isMultiUser];
+      if (isMultiUser != [v5 isMultiUser])
       {
         goto LABEL_101;
       }
@@ -149,8 +149,8 @@
         goto LABEL_101;
       }
 
-      v33 = [(BMSiriRequestContext *)self isVoiceTriggerEnabled];
-      if (v33 != [v5 isVoiceTriggerEnabled])
+      isVoiceTriggerEnabled = [(BMSiriRequestContext *)self isVoiceTriggerEnabled];
+      if (isVoiceTriggerEnabled != [v5 isVoiceTriggerEnabled])
       {
         goto LABEL_101;
       }
@@ -168,8 +168,8 @@
         goto LABEL_101;
       }
 
-      v34 = [(BMSiriRequestContext *)self isTextToSpeechEnabled];
-      if (v34 != [v5 isTextToSpeechEnabled])
+      isTextToSpeechEnabled = [(BMSiriRequestContext *)self isTextToSpeechEnabled];
+      if (isTextToSpeechEnabled != [v5 isTextToSpeechEnabled])
       {
         goto LABEL_101;
       }
@@ -187,25 +187,25 @@
         goto LABEL_101;
       }
 
-      v35 = [(BMSiriRequestContext *)self isTriggerlessFollowup];
-      if (v35 != [v5 isTriggerlessFollowup])
+      isTriggerlessFollowup = [(BMSiriRequestContext *)self isTriggerlessFollowup];
+      if (isTriggerlessFollowup != [v5 isTriggerlessFollowup])
       {
         goto LABEL_101;
       }
     }
 
-    v36 = [(BMSiriRequestContext *)self deviceRestrictions];
-    v37 = [v5 deviceRestrictions];
-    v38 = v37;
-    if (v36 == v37)
+    deviceRestrictions = [(BMSiriRequestContext *)self deviceRestrictions];
+    deviceRestrictions2 = [v5 deviceRestrictions];
+    v38 = deviceRestrictions2;
+    if (deviceRestrictions == deviceRestrictions2)
     {
     }
 
     else
     {
-      v39 = [(BMSiriRequestContext *)self deviceRestrictions];
-      v40 = [v5 deviceRestrictions];
-      v41 = [v39 isEqual:v40];
+      deviceRestrictions3 = [(BMSiriRequestContext *)self deviceRestrictions];
+      deviceRestrictions4 = [v5 deviceRestrictions];
+      v41 = [deviceRestrictions3 isEqual:deviceRestrictions4];
 
       if (!v41)
       {
@@ -213,18 +213,18 @@
       }
     }
 
-    v42 = [(BMSiriRequestContext *)self bargeInModes];
-    v43 = [v5 bargeInModes];
-    v44 = v43;
-    if (v42 == v43)
+    bargeInModes = [(BMSiriRequestContext *)self bargeInModes];
+    bargeInModes2 = [v5 bargeInModes];
+    v44 = bargeInModes2;
+    if (bargeInModes == bargeInModes2)
     {
     }
 
     else
     {
-      v45 = [(BMSiriRequestContext *)self bargeInModes];
-      v46 = [v5 bargeInModes];
-      v47 = [v45 isEqual:v46];
+      bargeInModes3 = [(BMSiriRequestContext *)self bargeInModes];
+      bargeInModes4 = [v5 bargeInModes];
+      v47 = [bargeInModes3 isEqual:bargeInModes4];
 
       if (!v47)
       {
@@ -232,18 +232,18 @@
       }
     }
 
-    v48 = [(BMSiriRequestContext *)self identifiedUser];
-    v49 = [v5 identifiedUser];
-    v50 = v49;
-    if (v48 == v49)
+    identifiedUser = [(BMSiriRequestContext *)self identifiedUser];
+    identifiedUser2 = [v5 identifiedUser];
+    v50 = identifiedUser2;
+    if (identifiedUser == identifiedUser2)
     {
     }
 
     else
     {
-      v51 = [(BMSiriRequestContext *)self identifiedUser];
-      v52 = [v5 identifiedUser];
-      v53 = [v51 isEqual:v52];
+      identifiedUser3 = [(BMSiriRequestContext *)self identifiedUser];
+      identifiedUser4 = [v5 identifiedUser];
+      v53 = [identifiedUser3 isEqual:identifiedUser4];
 
       if (!v53)
       {
@@ -251,18 +251,18 @@
       }
     }
 
-    v54 = [(BMSiriRequestContext *)self encodedLocation];
-    v55 = [v5 encodedLocation];
-    v56 = v55;
-    if (v54 == v55)
+    encodedLocation = [(BMSiriRequestContext *)self encodedLocation];
+    encodedLocation2 = [v5 encodedLocation];
+    v56 = encodedLocation2;
+    if (encodedLocation == encodedLocation2)
     {
     }
 
     else
     {
-      v57 = [(BMSiriRequestContext *)self encodedLocation];
-      v58 = [v5 encodedLocation];
-      v59 = [v57 isEqual:v58];
+      encodedLocation3 = [(BMSiriRequestContext *)self encodedLocation];
+      encodedLocation4 = [v5 encodedLocation];
+      v59 = [encodedLocation3 isEqual:encodedLocation4];
 
       if (!v59)
       {
@@ -270,18 +270,18 @@
       }
     }
 
-    v60 = [(BMSiriRequestContext *)self countryCode];
-    v61 = [v5 countryCode];
-    v62 = v61;
-    if (v60 == v61)
+    countryCode = [(BMSiriRequestContext *)self countryCode];
+    countryCode2 = [v5 countryCode];
+    v62 = countryCode2;
+    if (countryCode == countryCode2)
     {
     }
 
     else
     {
-      v63 = [(BMSiriRequestContext *)self countryCode];
-      v64 = [v5 countryCode];
-      v65 = [v63 isEqual:v64];
+      countryCode3 = [(BMSiriRequestContext *)self countryCode];
+      countryCode4 = [v5 countryCode];
+      v65 = [countryCode3 isEqual:countryCode4];
 
       if (!v65)
       {
@@ -289,18 +289,18 @@
       }
     }
 
-    v66 = [(BMSiriRequestContext *)self siriLocale];
-    v67 = [v5 siriLocale];
-    v68 = v67;
-    if (v66 == v67)
+    siriLocale = [(BMSiriRequestContext *)self siriLocale];
+    siriLocale2 = [v5 siriLocale];
+    v68 = siriLocale2;
+    if (siriLocale == siriLocale2)
     {
     }
 
     else
     {
-      v69 = [(BMSiriRequestContext *)self siriLocale];
-      v70 = [v5 siriLocale];
-      v71 = [v69 isEqual:v70];
+      siriLocale3 = [(BMSiriRequestContext *)self siriLocale];
+      siriLocale4 = [v5 siriLocale];
+      v71 = [siriLocale3 isEqual:siriLocale4];
 
       if (!v71)
       {
@@ -308,18 +308,18 @@
       }
     }
 
-    v72 = [(BMSiriRequestContext *)self contentRestrictions];
-    v73 = [v5 contentRestrictions];
-    v74 = v73;
-    if (v72 == v73)
+    contentRestrictions = [(BMSiriRequestContext *)self contentRestrictions];
+    contentRestrictions2 = [v5 contentRestrictions];
+    v74 = contentRestrictions2;
+    if (contentRestrictions == contentRestrictions2)
     {
     }
 
     else
     {
-      v75 = [(BMSiriRequestContext *)self contentRestrictions];
-      v76 = [v5 contentRestrictions];
-      v77 = [v75 isEqual:v76];
+      contentRestrictions3 = [(BMSiriRequestContext *)self contentRestrictions];
+      contentRestrictions4 = [v5 contentRestrictions];
+      v77 = [contentRestrictions3 isEqual:contentRestrictions4];
 
       if (!v77)
       {
@@ -348,18 +348,18 @@
       }
     }
 
-    v81 = [(BMSiriRequestContext *)self temperatureUnit];
-    v82 = [v5 temperatureUnit];
-    v83 = v82;
-    if (v81 == v82)
+    temperatureUnit = [(BMSiriRequestContext *)self temperatureUnit];
+    temperatureUnit2 = [v5 temperatureUnit];
+    v83 = temperatureUnit2;
+    if (temperatureUnit == temperatureUnit2)
     {
     }
 
     else
     {
-      v84 = [(BMSiriRequestContext *)self temperatureUnit];
-      v85 = [v5 temperatureUnit];
-      v86 = [v84 isEqual:v85];
+      temperatureUnit3 = [(BMSiriRequestContext *)self temperatureUnit];
+      temperatureUnit4 = [v5 temperatureUnit];
+      v86 = [temperatureUnit3 isEqual:temperatureUnit4];
 
       if (!v86)
       {
@@ -379,8 +379,8 @@
         goto LABEL_101;
       }
 
-      v87 = [(BMSiriRequestContext *)self allowUserGeneratedContent];
-      if (v87 != [v5 allowUserGeneratedContent])
+      allowUserGeneratedContent = [(BMSiriRequestContext *)self allowUserGeneratedContent];
+      if (allowUserGeneratedContent != [v5 allowUserGeneratedContent])
       {
         goto LABEL_101;
       }
@@ -398,25 +398,25 @@
         goto LABEL_101;
       }
 
-      v88 = [(BMSiriRequestContext *)self censorSpeech];
-      if (v88 != [v5 censorSpeech])
+      censorSpeech = [(BMSiriRequestContext *)self censorSpeech];
+      if (censorSpeech != [v5 censorSpeech])
       {
         goto LABEL_101;
       }
     }
 
-    v89 = [(BMSiriRequestContext *)self meCard];
-    v90 = [v5 meCard];
-    v91 = v90;
-    if (v89 == v90)
+    meCard = [(BMSiriRequestContext *)self meCard];
+    meCard2 = [v5 meCard];
+    v91 = meCard2;
+    if (meCard == meCard2)
     {
     }
 
     else
     {
-      v92 = [(BMSiriRequestContext *)self meCard];
-      v93 = [v5 meCard];
-      v94 = [v92 isEqual:v93];
+      meCard3 = [(BMSiriRequestContext *)self meCard];
+      meCard4 = [v5 meCard];
+      v94 = [meCard3 isEqual:meCard4];
 
       if (!v94)
       {
@@ -424,8 +424,8 @@
       }
     }
 
-    v95 = [(BMSiriRequestContext *)self deviceIdiom];
-    if (v95 == [v5 deviceIdiom])
+    deviceIdiom = [(BMSiriRequestContext *)self deviceIdiom];
+    if (deviceIdiom == [v5 deviceIdiom])
     {
       if (!-[BMSiriRequestContext hasDidPSCFire](self, "hasDidPSCFire") && ![v5 hasDidPSCFire])
       {
@@ -435,8 +435,8 @@
 
       if (-[BMSiriRequestContext hasDidPSCFire](self, "hasDidPSCFire") && [v5 hasDidPSCFire])
       {
-        v96 = [(BMSiriRequestContext *)self didPSCFire];
-        v12 = v96 ^ [v5 didPSCFire] ^ 1;
+        didPSCFire = [(BMSiriRequestContext *)self didPSCFire];
+        v12 = didPSCFire ^ [v5 didPSCFire] ^ 1;
 LABEL_102:
 
         goto LABEL_103;
@@ -457,10 +457,10 @@ LABEL_103:
 - (id)jsonDictionary
 {
   v87[23] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriRequestContext *)self sessionID];
-  v4 = [(BMSiriRequestContext *)self requestID];
-  v5 = [(BMSiriRequestContext *)self inputOrigin];
-  v6 = [(BMSiriRequestContext *)self responseMode];
+  sessionID = [(BMSiriRequestContext *)self sessionID];
+  requestID = [(BMSiriRequestContext *)self requestID];
+  inputOrigin = [(BMSiriRequestContext *)self inputOrigin];
+  responseMode = [(BMSiriRequestContext *)self responseMode];
   if ([(BMSiriRequestContext *)self hasIsEyesFree])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext isEyesFree](self, "isEyesFree")}];
@@ -511,18 +511,18 @@ LABEL_103:
     v84 = 0;
   }
 
-  v83 = [(BMSiriRequestContext *)self _deviceRestrictionsJSONArray];
-  v82 = [(BMSiriRequestContext *)self _bargeInModesJSONArray];
-  v10 = [(BMSiriRequestContext *)self identifiedUser];
-  v81 = [v10 jsonDictionary];
+  _deviceRestrictionsJSONArray = [(BMSiriRequestContext *)self _deviceRestrictionsJSONArray];
+  _bargeInModesJSONArray = [(BMSiriRequestContext *)self _bargeInModesJSONArray];
+  identifiedUser = [(BMSiriRequestContext *)self identifiedUser];
+  jsonDictionary = [identifiedUser jsonDictionary];
 
-  v11 = [(BMSiriRequestContext *)self encodedLocation];
-  v80 = [v11 base64EncodedStringWithOptions:0];
+  encodedLocation = [(BMSiriRequestContext *)self encodedLocation];
+  v80 = [encodedLocation base64EncodedStringWithOptions:0];
 
-  v79 = [(BMSiriRequestContext *)self countryCode];
-  v78 = [(BMSiriRequestContext *)self siriLocale];
-  v12 = [(BMSiriRequestContext *)self contentRestrictions];
-  v77 = [v12 jsonDictionary];
+  countryCode = [(BMSiriRequestContext *)self countryCode];
+  siriLocale = [(BMSiriRequestContext *)self siriLocale];
+  contentRestrictions = [(BMSiriRequestContext *)self contentRestrictions];
+  jsonDictionary2 = [contentRestrictions jsonDictionary];
 
   if (![(BMSiriRequestContext *)self hasUiScale]|| ([(BMSiriRequestContext *)self uiScale], fabs(v13) == INFINITY))
   {
@@ -537,7 +537,7 @@ LABEL_103:
     v76 = [v14 numberWithDouble:?];
   }
 
-  v75 = [(BMSiriRequestContext *)self temperatureUnit];
+  temperatureUnit = [(BMSiriRequestContext *)self temperatureUnit];
   if ([(BMSiriRequestContext *)self hasAllowUserGeneratedContent])
   {
     v74 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext allowUserGeneratedContent](self, "allowUserGeneratedContent")}];
@@ -558,8 +558,8 @@ LABEL_103:
     v73 = 0;
   }
 
-  v15 = [(BMSiriRequestContext *)self meCard];
-  v72 = [v15 jsonDictionary];
+  meCard = [(BMSiriRequestContext *)self meCard];
+  jsonDictionary3 = [meCard jsonDictionary];
 
   v71 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriRequestContext deviceIdiom](self, "deviceIdiom")}];
   if ([(BMSiriRequestContext *)self hasDidPSCFire])
@@ -573,216 +573,216 @@ LABEL_103:
   }
 
   v86[0] = @"sessionID";
-  v17 = v3;
-  if (!v3)
+  null = sessionID;
+  if (!sessionID)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v60 = v17;
-  v87[0] = v17;
+  v60 = null;
+  v87[0] = null;
   v86[1] = @"requestID";
-  v18 = v4;
-  if (!v4)
+  null2 = requestID;
+  if (!requestID)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59 = v18;
-  v87[1] = v18;
+  v59 = null2;
+  v87[1] = null2;
   v86[2] = @"inputOrigin";
-  v19 = v5;
-  if (!v5)
+  null3 = inputOrigin;
+  if (!inputOrigin)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58 = v19;
-  v87[2] = v19;
+  v58 = null3;
+  v87[2] = null3;
   v86[3] = @"responseMode";
-  v20 = v6;
-  if (!v6)
+  null4 = responseMode;
+  if (!responseMode)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57 = v20;
-  v87[3] = v20;
+  v57 = null4;
+  v87[3] = null4;
   v86[4] = @"isEyesFree";
-  v21 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56 = v21;
-  v87[4] = v21;
+  v56 = null5;
+  v87[4] = null5;
   v86[5] = @"isMultiUser";
-  v22 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55 = v22;
-  v87[5] = v22;
+  v55 = null6;
+  v87[5] = null6;
   v86[6] = @"isVoiceTriggerEnabled";
-  v23 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54 = v23;
-  v87[6] = v23;
+  v54 = null7;
+  v87[6] = null7;
   v86[7] = @"isTextToSpeechEnabled";
-  v24 = v85;
+  null8 = v85;
   if (!v85)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v87[7] = v24;
+  v87[7] = null8;
   v86[8] = @"isTriggerlessFollowup";
-  v25 = v84;
+  null9 = v84;
   if (!v84)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v87[8] = v25;
+  v87[8] = null9;
   v86[9] = @"deviceRestrictions";
-  v26 = v83;
-  if (!v83)
+  null10 = _deviceRestrictionsJSONArray;
+  if (!_deviceRestrictionsJSONArray)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v64 = v26;
-  v87[9] = v26;
+  v64 = null10;
+  v87[9] = null10;
   v86[10] = @"bargeInModes";
-  v27 = v82;
-  if (!v82)
+  null11 = _bargeInModesJSONArray;
+  if (!_bargeInModesJSONArray)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v63 = v27;
-  v87[10] = v27;
+  v63 = null11;
+  v87[10] = null11;
   v86[11] = @"identifiedUser";
-  v28 = v81;
-  if (!v81)
+  null12 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v68 = v4;
-  v87[11] = v28;
+  v68 = requestID;
+  v87[11] = null12;
   v86[12] = @"encodedLocation";
-  v29 = v80;
-  v30 = v28;
+  null13 = v80;
+  v30 = null12;
   if (!v80)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
   v66 = v7;
-  v87[12] = v29;
+  v87[12] = null13;
   v86[13] = @"countryCode";
-  v31 = v79;
-  v32 = v29;
-  if (!v79)
+  null14 = countryCode;
+  v32 = null13;
+  if (!countryCode)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
   v70 = v16;
-  v87[13] = v31;
+  v87[13] = null14;
   v86[14] = @"siriLocale";
-  v33 = v78;
-  v34 = v31;
-  if (!v78)
+  null15 = siriLocale;
+  v34 = null14;
+  if (!siriLocale)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v67 = v5;
-  v87[14] = v33;
+  v67 = inputOrigin;
+  v87[14] = null15;
   v86[15] = @"contentRestrictions";
-  v35 = v77;
-  v36 = v33;
-  if (!v77)
+  null16 = jsonDictionary2;
+  v36 = null15;
+  if (!jsonDictionary2)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v69 = v3;
-  v62 = v35;
-  v87[15] = v35;
+  v69 = sessionID;
+  v62 = null16;
+  v87[15] = null16;
   v86[16] = @"uiScale";
-  v37 = v76;
+  null17 = v76;
   if (!v76)
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
   v65 = v8;
-  v48 = v37;
-  v87[16] = v37;
+  v48 = null17;
+  v87[16] = null17;
   v86[17] = @"temperatureUnit";
-  v38 = v75;
-  if (!v75)
+  null18 = temperatureUnit;
+  if (!temperatureUnit)
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
   v51 = v30;
-  v53 = v24;
-  v87[17] = v38;
+  v53 = null8;
+  v87[17] = null18;
   v86[18] = @"allowUserGeneratedContent";
-  v39 = v74;
+  null19 = v74;
   if (!v74)
   {
-    v39 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v6;
-  v87[18] = v39;
+  v40 = responseMode;
+  v87[18] = null19;
   v86[19] = @"censorSpeech";
-  v41 = v73;
+  null20 = v73;
   if (!v73)
   {
-    v41 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
   v50 = v36;
-  v52 = v25;
-  v87[19] = v41;
+  v52 = null9;
+  v87[19] = null20;
   v86[20] = @"meCard";
-  v42 = v72;
-  if (!v72)
+  null21 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
   v43 = v34;
-  v87[20] = v42;
+  v87[20] = null21;
   v86[21] = @"deviceIdiom";
-  v44 = v71;
+  null22 = v71;
   if (!v71)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v87[21] = v44;
+  v87[21] = null22;
   v86[22] = @"didPSCFire";
-  v45 = v70;
+  null23 = v70;
   if (!v70)
   {
-    v45 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v87[22] = v45;
+  v87[22] = null23;
   v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:v86 count:{23, v48}];
   if (!v70)
   {
@@ -792,7 +792,7 @@ LABEL_103:
   {
   }
 
-  if (!v72)
+  if (!jsonDictionary3)
   {
   }
 
@@ -804,7 +804,7 @@ LABEL_103:
   {
   }
 
-  if (!v75)
+  if (!temperatureUnit)
   {
   }
 
@@ -812,15 +812,15 @@ LABEL_103:
   {
   }
 
-  if (!v77)
+  if (!jsonDictionary2)
   {
   }
 
-  if (!v78)
+  if (!siriLocale)
   {
   }
 
-  if (!v79)
+  if (!countryCode)
   {
   }
 
@@ -828,15 +828,15 @@ LABEL_103:
   {
   }
 
-  if (!v81)
+  if (!jsonDictionary)
   {
   }
 
-  if (!v82)
+  if (!_bargeInModesJSONArray)
   {
   }
 
-  if (!v83)
+  if (!_deviceRestrictionsJSONArray)
   {
   }
 
@@ -953,8 +953,8 @@ LABEL_113:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMSiriRequestContext *)self bargeInModes];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  bargeInModes = [(BMSiriRequestContext *)self bargeInModes];
+  v5 = [bargeInModes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -965,13 +965,13 @@ LABEL_113:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bargeInModes);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [bargeInModes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -990,8 +990,8 @@ LABEL_113:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMSiriRequestContext *)self deviceRestrictions];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  deviceRestrictions = [(BMSiriRequestContext *)self deviceRestrictions];
+  v5 = [deviceRestrictions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1002,13 +1002,13 @@ LABEL_113:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(deviceRestrictions);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [deviceRestrictions countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1019,19 +1019,19 @@ LABEL_113:
   return v3;
 }
 
-- (BMSiriRequestContext)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriRequestContext)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v409[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v340 = [v6 objectForKeyedSubscript:@"sessionID"];
+  dictionaryCopy = dictionary;
+  v340 = [dictionaryCopy objectForKeyedSubscript:@"sessionID"];
   if (v340 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
-        v28 = self;
+        selfCopy = self;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
         v30 = *MEMORY[0x1E698F240];
         v408 = *MEMORY[0x1E696A578];
@@ -1039,15 +1039,15 @@ LABEL_113:
         v409[0] = v9;
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v409 forKeys:&v408 count:1];
         v31 = v29;
-        self = v28;
-        v32 = 0;
-        *a4 = [v31 initWithDomain:v30 code:2 userInfo:v8];
+        self = selfCopy;
+        selfCopy17 = 0;
+        *error = [v31 initWithDomain:v30 code:2 userInfo:v8];
         v7 = 0;
         goto LABEL_263;
       }
 
       v7 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       goto LABEL_264;
     }
 
@@ -1059,15 +1059,15 @@ LABEL_113:
     v7 = 0;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"requestID"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"requestID"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
-        v33 = self;
+        selfCopy2 = self;
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v35 = *MEMORY[0x1E698F240];
         v406 = *MEMORY[0x1E696A578];
@@ -1075,17 +1075,17 @@ LABEL_113:
         v407 = v36;
         v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v407 forKeys:&v406 count:1];
         v38 = v34;
-        self = v33;
+        self = selfCopy2;
         v337 = v37;
         v39 = [v38 initWithDomain:v35 code:2 userInfo:?];
         v9 = 0;
-        v32 = 0;
-        *a4 = v39;
+        selfCopy17 = 0;
+        *error = v39;
         goto LABEL_262;
       }
 
       v9 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       goto LABEL_263;
     }
 
@@ -1097,17 +1097,17 @@ LABEL_113:
     v9 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"inputOrigin"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"inputOrigin"];
   v337 = v10;
   if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v40 = v9;
-        v41 = self;
+        selfCopy3 = self;
         v42 = objc_alloc(MEMORY[0x1E696ABC0]);
         v43 = *MEMORY[0x1E698F240];
         v404 = *MEMORY[0x1E696A578];
@@ -1120,18 +1120,18 @@ LABEL_113:
         v405 = v47;
         v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v405 forKeys:&v404 count:1];
         v49 = v42;
-        self = v41;
+        self = selfCopy3;
         v9 = v40;
         v335 = v48;
         v50 = [v49 initWithDomain:v43 code:2 userInfo:?];
         v36 = 0;
-        v32 = 0;
-        *a4 = v50;
+        selfCopy17 = 0;
+        *error = v50;
         goto LABEL_261;
       }
 
       v36 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       goto LABEL_262;
     }
 
@@ -1143,19 +1143,19 @@ LABEL_113:
     v333 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"responseMode"];
-  v334 = a4;
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"responseMode"];
+  errorCopy = error;
   v335 = v12;
   if (v12 && (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v324 = self;
-      if (!a4)
+      selfCopy5 = self;
+      if (!error)
       {
         v47 = 0;
-        v32 = 0;
+        selfCopy17 = 0;
         v36 = v333;
         goto LABEL_261;
       }
@@ -1175,8 +1175,8 @@ LABEL_113:
       v60 = v58;
       v61 = [v59 initWithDomain:v53 code:2 userInfo:v58];
       v47 = 0;
-      v32 = 0;
-      *v334 = v61;
+      selfCopy17 = 0;
+      *errorCopy = v61;
       v36 = v333;
       goto LABEL_110;
     }
@@ -1189,7 +1189,7 @@ LABEL_113:
     v330 = 0;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"isEyesFree"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"isEyesFree"];
   if (v14)
   {
     objc_opt_class();
@@ -1203,8 +1203,8 @@ LABEL_113:
         goto LABEL_16;
       }
 
-      v324 = self;
-      if (v334)
+      selfCopy5 = self;
+      if (errorCopy)
       {
         v62 = objc_alloc(MEMORY[0x1E696ABC0]);
         v63 = *MEMORY[0x1E698F240];
@@ -1221,21 +1221,21 @@ LABEL_113:
         v60 = v14;
         v69 = [v68 initWithDomain:v63 code:2 userInfo:v67];
         v57 = 0;
-        v32 = 0;
-        *v334 = v69;
+        selfCopy17 = 0;
+        *errorCopy = v69;
         v70 = v67;
         v47 = v330;
         v36 = v333;
         goto LABEL_259;
       }
 
-      v32 = 0;
+      selfCopy17 = 0;
       v47 = v330;
       v36 = v333;
       v60 = v14;
       v57 = 0;
 LABEL_110:
-      self = v324;
+      self = selfCopy5;
       goto LABEL_260;
     }
   }
@@ -1243,14 +1243,14 @@ LABEL_110:
   v326 = v14;
   v328 = 0;
 LABEL_16:
-  v15 = [v6 objectForKeyedSubscript:@"isMultiUser"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"isMultiUser"];
   v327 = v15;
   if (v15 && (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v334)
+      if (errorCopy)
       {
         v71 = objc_alloc(MEMORY[0x1E696ABC0]);
         v72 = *MEMORY[0x1E698F240];
@@ -1265,8 +1265,8 @@ LABEL_16:
         v322 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v399 forKeys:&v398 count:1];
         v77 = [v71 initWithDomain:v72 code:2 userInfo:?];
         v329 = 0;
-        v32 = 0;
-        *v334 = v77;
+        selfCopy17 = 0;
+        *errorCopy = v77;
         v78 = v76;
         v47 = v330;
         v36 = v333;
@@ -1275,7 +1275,7 @@ LABEL_16:
       }
 
       v329 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       v47 = v330;
       v36 = v333;
       v60 = v326;
@@ -1292,7 +1292,7 @@ LABEL_16:
     v329 = 0;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"isVoiceTriggerEnabled"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"isVoiceTriggerEnabled"];
   v319 = v7;
   v320 = v9;
   v322 = v17;
@@ -1301,17 +1301,17 @@ LABEL_16:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v78 = v334;
-      if (!v334)
+      v78 = errorCopy;
+      if (!errorCopy)
       {
-        v32 = 0;
+        selfCopy17 = 0;
         v47 = v330;
         v36 = v333;
         v60 = v326;
         goto LABEL_258;
       }
 
-      v79 = self;
+      selfCopy6 = self;
       v80 = objc_alloc(MEMORY[0x1E696ABC0]);
       v81 = *MEMORY[0x1E698F240];
       v396 = *MEMORY[0x1E696A578];
@@ -1324,11 +1324,11 @@ LABEL_16:
       v397 = v85;
       v86 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v397 forKeys:&v396 count:1];
       v87 = v80;
-      self = v79;
+      self = selfCopy6;
       v88 = [v87 initWithDomain:v81 code:2 userInfo:v86];
       v318 = 0;
-      v32 = 0;
-      *v334 = v88;
+      selfCopy17 = 0;
+      *errorCopy = v88;
       v20 = v85;
       v19 = v86;
       goto LABEL_120;
@@ -1342,8 +1342,8 @@ LABEL_16:
     v318 = 0;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"isTextToSpeechEnabled"];
-  v20 = v334;
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"isTextToSpeechEnabled"];
+  v20 = errorCopy;
   if (v19)
   {
     objc_opt_class();
@@ -1357,9 +1357,9 @@ LABEL_16:
         goto LABEL_25;
       }
 
-      if (v334)
+      if (errorCopy)
       {
-        v89 = self;
+        selfCopy7 = self;
         v90 = objc_alloc(MEMORY[0x1E696ABC0]);
         v91 = *MEMORY[0x1E698F240];
         v394 = *MEMORY[0x1E696A578];
@@ -1372,11 +1372,11 @@ LABEL_16:
         v395 = v317;
         v95 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v395 forKeys:&v394 count:1];
         v96 = v90;
-        self = v89;
+        self = selfCopy7;
         v316 = v95;
         v97 = [v96 initWithDomain:v91 code:2 userInfo:?];
-        v32 = 0;
-        *v334 = v97;
+        selfCopy17 = 0;
+        *errorCopy = v97;
         v20 = 0;
         v47 = v330;
         v36 = v333;
@@ -1384,7 +1384,7 @@ LABEL_16:
         goto LABEL_256;
       }
 
-      v32 = 0;
+      selfCopy17 = 0;
 LABEL_120:
       v47 = v330;
       v36 = v333;
@@ -1396,24 +1396,24 @@ LABEL_120:
   v314 = 0;
   v315 = v19;
 LABEL_25:
-  v21 = [v6 objectForKeyedSubscript:@"isTriggerlessFollowup"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"isTriggerlessFollowup"];
   v316 = v21;
   if (v21 && (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v334)
+      if (errorCopy)
       {
         v116 = objc_alloc(MEMORY[0x1E696ABC0]);
         v117 = v8;
         v118 = *MEMORY[0x1E698F240];
         v392 = *MEMORY[0x1E696A578];
-        v119 = self;
+        selfCopy8 = self;
         v120 = objc_alloc(MEMORY[0x1E696AEC0]);
         v272 = objc_opt_class();
         v121 = v120;
-        self = v119;
+        self = selfCopy8;
         obj = [v121 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v272, @"isTriggerlessFollowup"];
         v393 = obj;
         v122 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v393 forKeys:&v392 count:1];
@@ -1422,8 +1422,8 @@ LABEL_25:
         v339 = v122;
         v124 = [v116 initWithDomain:v123 code:2 userInfo:?];
         v317 = 0;
-        v32 = 0;
-        *v334 = v124;
+        selfCopy17 = 0;
+        *errorCopy = v124;
         v47 = v330;
         v36 = v333;
         v60 = v326;
@@ -1434,7 +1434,7 @@ LABEL_25:
       }
 
       v317 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       v47 = v330;
       v36 = v333;
       v60 = v326;
@@ -1443,30 +1443,30 @@ LABEL_25:
       goto LABEL_256;
     }
 
-    v23 = self;
+    selfCopy10 = self;
     v24 = v8;
     v317 = v22;
   }
 
   else
   {
-    v23 = self;
+    selfCopy10 = self;
     v24 = v8;
     v317 = 0;
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"deviceRestrictions"];
-  v26 = [MEMORY[0x1E695DFB0] null];
-  v27 = [v25 isEqual:v26];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"deviceRestrictions"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v27 = [v25 isEqual:null];
 
   if (v27)
   {
-    v323 = v23;
+    v323 = selfCopy10;
   }
 
   else
   {
-    self = v23;
+    self = selfCopy10;
     if (v25)
     {
       objc_opt_class();
@@ -1474,9 +1474,9 @@ LABEL_25:
       v8 = v24;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v334)
+        if (!errorCopy)
         {
-          v32 = 0;
+          selfCopy17 = 0;
           v9 = v320;
           v47 = v330;
           v36 = v333;
@@ -1496,17 +1496,17 @@ LABEL_25:
         v8 = v24;
         v139 = v136;
         v105 = v137;
-        v32 = 0;
-        *v334 = [v138 initWithDomain:v139 code:2 userInfo:v137];
+        selfCopy17 = 0;
+        *errorCopy = [v138 initWithDomain:v139 code:2 userInfo:v137];
         goto LABEL_108;
       }
 
-      v323 = v23;
+      v323 = selfCopy10;
       v51 = v25;
       goto LABEL_72;
     }
 
-    v323 = v23;
+    v323 = selfCopy10;
   }
 
   v51 = 0;
@@ -1541,8 +1541,8 @@ LABEL_72:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v108 = v334;
-        if (v334)
+        v108 = errorCopy;
+        if (errorCopy)
         {
           v109 = objc_alloc(MEMORY[0x1E696ABC0]);
           v110 = *MEMORY[0x1E698F240];
@@ -1556,7 +1556,7 @@ LABEL_72:
         }
 
 LABEL_88:
-        v32 = 0;
+        selfCopy17 = 0;
         v105 = obj;
         self = v323;
         v8 = v311;
@@ -1572,8 +1572,8 @@ LABEL_108:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v108 = v334;
-        if (!v334)
+        v108 = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_88;
         }
@@ -1591,7 +1591,7 @@ LABEL_87:
         v47 = v330;
         v36 = v333;
         v60 = v326;
-        v32 = 0;
+        selfCopy17 = 0;
         *v108 = [v112 initWithDomain:v113 code:2 userInfo:?];
         v105 = obj;
         self = v323;
@@ -1614,9 +1614,9 @@ LABEL_128:
   while (v100);
 LABEL_81:
 
-  v105 = [v6 objectForKeyedSubscript:@"bargeInModes"];
-  v106 = [MEMORY[0x1E695DFB0] null];
-  v107 = [v105 isEqual:v106];
+  v105 = [dictionaryCopy objectForKeyedSubscript:@"bargeInModes"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v107 = [v105 isEqual:null2];
 
   if (v107)
   {
@@ -1630,9 +1630,9 @@ LABEL_81:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!v334)
+      if (!errorCopy)
       {
-        v32 = 0;
+        selfCopy17 = 0;
         self = v323;
         goto LABEL_108;
       }
@@ -1643,8 +1643,8 @@ LABEL_81:
       v321 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"bargeInModes"];
       v384 = v321;
       v310 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v384 forKeys:&v383 count:1];
-      v32 = 0;
-      *v334 = [v147 initWithDomain:v148 code:2 userInfo:?];
+      selfCopy17 = 0;
+      *errorCopy = [v147 initWithDomain:v148 code:2 userInfo:?];
       self = v323;
       goto LABEL_126;
     }
@@ -1680,8 +1680,8 @@ LABEL_94:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v140 = v334;
-        if (v334)
+        v140 = errorCopy;
+        if (errorCopy)
         {
           v141 = objc_alloc(MEMORY[0x1E696ABC0]);
           v142 = *MEMORY[0x1E698F240];
@@ -1699,7 +1699,7 @@ LABEL_117:
           v36 = v333;
           v60 = v326;
           v105 = v313;
-          v32 = 0;
+          selfCopy17 = 0;
           *v140 = v146;
           v310 = v313;
           self = v323;
@@ -1712,8 +1712,8 @@ LABEL_117:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v140 = v334;
-        if (v334)
+        v140 = errorCopy;
+        if (errorCopy)
         {
           v141 = objc_alloc(MEMORY[0x1E696ABC0]);
           v142 = *MEMORY[0x1E698F240];
@@ -1727,7 +1727,7 @@ LABEL_117:
         }
 
 LABEL_122:
-        v32 = 0;
+        selfCopy17 = 0;
         v105 = v313;
         v310 = v313;
         self = v323;
@@ -1762,7 +1762,7 @@ LABEL_126:
 LABEL_103:
   v105 = v313;
 
-  v132 = [v6 objectForKeyedSubscript:@"identifiedUser"];
+  v132 = [dictionaryCopy objectForKeyedSubscript:@"identifiedUser"];
   v310 = v132;
   if (!v132)
   {
@@ -1793,19 +1793,19 @@ LABEL_103:
       }
 
       self = v323;
-      if (v334)
+      if (errorCopy)
       {
         v172 = v172;
-        *v334 = v172;
+        *errorCopy = v172;
       }
 
-      v32 = 0;
+      selfCopy17 = 0;
       v309 = v170;
       v310 = v170;
       goto LABEL_174;
     }
 
-    if (v334)
+    if (errorCopy)
     {
       v174 = objc_alloc(MEMORY[0x1E696ABC0]);
       v175 = *MEMORY[0x1E698F240];
@@ -1819,8 +1819,8 @@ LABEL_103:
       v308 = [v178 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v273, @"identifiedUser"];
       v377 = v308;
       v309 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v377 forKeys:&v376 count:1];
-      v32 = 0;
-      *v334 = [v174 initWithDomain:v175 code:2 userInfo:?];
+      selfCopy17 = 0;
+      *errorCopy = [v174 initWithDomain:v175 code:2 userInfo:?];
       self = v323;
 LABEL_174:
       v36 = v333;
@@ -1831,7 +1831,7 @@ LABEL_118:
       goto LABEL_251;
     }
 
-    v32 = 0;
+    selfCopy17 = 0;
     self = v323;
     v36 = v333;
 LABEL_127:
@@ -1841,7 +1841,7 @@ LABEL_127:
 
   v308 = 0;
 LABEL_130:
-  v149 = [v6 objectForKeyedSubscript:@"encodedLocation"];
+  v149 = [dictionaryCopy objectForKeyedSubscript:@"encodedLocation"];
   v328 = v134;
   v306 = v149;
   if (v149)
@@ -1866,8 +1866,8 @@ LABEL_130:
           goto LABEL_133;
         }
 
-        v182 = v334;
-        if (v334)
+        v182 = errorCopy;
+        if (errorCopy)
         {
           v183 = objc_alloc(MEMORY[0x1E696ABC0]);
           v184 = *MEMORY[0x1E698F240];
@@ -1880,7 +1880,7 @@ LABEL_130:
 LABEL_204:
           v305 = [v185 dictionaryWithObjects:v186 forKeys:v187 count:1];
           v309 = 0;
-          v32 = 0;
+          selfCopy17 = 0;
           *v182 = [v183 initWithDomain:v184 code:2 userInfo:?];
           goto LABEL_219;
         }
@@ -1888,8 +1888,8 @@ LABEL_204:
 
       else
       {
-        v182 = v334;
-        if (v334)
+        v182 = errorCopy;
+        if (errorCopy)
         {
           v183 = objc_alloc(MEMORY[0x1E696ABC0]);
           v184 = *MEMORY[0x1E698F240];
@@ -1909,7 +1909,7 @@ LABEL_204:
       }
 
       v309 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       self = v323;
       v60 = v326;
       v36 = v333;
@@ -1921,7 +1921,7 @@ LABEL_204:
 
   v309 = 0;
 LABEL_133:
-  v151 = [v6 objectForKeyedSubscript:@"countryCode"];
+  v151 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
   v305 = v151;
   if (v151)
   {
@@ -1936,7 +1936,7 @@ LABEL_133:
         goto LABEL_136;
       }
 
-      if (v334)
+      if (errorCopy)
       {
         v188 = objc_alloc(MEMORY[0x1E696ABC0]);
         v189 = *MEMORY[0x1E698F240];
@@ -1950,15 +1950,15 @@ LABEL_133:
         v371 = v304;
         v303 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v371 forKeys:&v370 count:1];
         v307 = 0;
-        v32 = 0;
-        *v334 = [v188 initWithDomain:v189 code:2 userInfo:?];
+        selfCopy17 = 0;
+        *errorCopy = [v188 initWithDomain:v189 code:2 userInfo:?];
         self = v323;
         v36 = v333;
         goto LABEL_223;
       }
 
       v307 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
 LABEL_219:
       self = v323;
       v60 = v326;
@@ -1972,7 +1972,7 @@ LABEL_219:
   v307 = 0;
 LABEL_136:
   self = v323;
-  v153 = [v6 objectForKeyedSubscript:@"siriLocale"];
+  v153 = [dictionaryCopy objectForKeyedSubscript:@"siriLocale"];
   v154 = v319;
   v303 = v153;
   if (v153)
@@ -1990,7 +1990,7 @@ LABEL_136:
         goto LABEL_139;
       }
 
-      if (v334)
+      if (errorCopy)
       {
         v194 = objc_alloc(MEMORY[0x1E696ABC0]);
         v195 = *MEMORY[0x1E698F240];
@@ -2004,13 +2004,13 @@ LABEL_136:
         v369 = v302;
         v325 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v369 forKeys:&v368 count:1];
         v304 = 0;
-        v32 = 0;
-        *v334 = [v194 initWithDomain:v195 code:2 userInfo:?];
+        selfCopy17 = 0;
+        *errorCopy = [v194 initWithDomain:v195 code:2 userInfo:?];
         goto LABEL_196;
       }
 
       v304 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       v36 = v333;
 LABEL_223:
       v60 = v326;
@@ -2022,7 +2022,7 @@ LABEL_223:
 
   v304 = 0;
 LABEL_139:
-  v156 = [v6 objectForKeyedSubscript:@"contentRestrictions"];
+  v156 = [dictionaryCopy objectForKeyedSubscript:@"contentRestrictions"];
   v302 = v156;
   if (v156)
   {
@@ -2049,22 +2049,22 @@ LABEL_139:
         }
 
         v60 = v326;
-        if (v334)
+        if (errorCopy)
         {
           v181 = v181;
-          *v334 = v181;
+          *errorCopy = v181;
         }
 
-        v32 = 0;
+        selfCopy17 = 0;
         v302 = v179;
         v47 = v331;
         v36 = v333;
         goto LABEL_197;
       }
 
-      if (!v334)
+      if (!errorCopy)
       {
-        v32 = 0;
+        selfCopy17 = 0;
         v36 = v333;
         v60 = v326;
         v20 = v314;
@@ -2083,9 +2083,9 @@ LABEL_139:
       v325 = [v202 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v276, @"contentRestrictions"];
       v367 = v325;
       v203 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v367 forKeys:&v366 count:1];
-      *v334 = [v301 initWithDomain:v199 code:2 userInfo:v203];
+      *errorCopy = [v301 initWithDomain:v199 code:2 userInfo:v203];
 
-      v32 = 0;
+      selfCopy17 = 0;
 LABEL_196:
       self = v173;
       v47 = v331;
@@ -2100,7 +2100,7 @@ LABEL_197:
 
   v325 = 0;
 LABEL_142:
-  v158 = [v6 objectForKeyedSubscript:@"uiScale"];
+  v158 = [dictionaryCopy objectForKeyedSubscript:@"uiScale"];
   v298 = v158;
   if (v158)
   {
@@ -2115,10 +2115,10 @@ LABEL_142:
         goto LABEL_145;
       }
 
-      if (!v334)
+      if (!errorCopy)
       {
         v300 = 0;
-        v32 = 0;
+        selfCopy17 = 0;
         v36 = v333;
         v60 = v326;
         v20 = v314;
@@ -2127,7 +2127,7 @@ LABEL_142:
       }
 
       v211 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v212 = self;
+      selfCopy11 = self;
       v213 = *MEMORY[0x1E698F240];
       v364 = *MEMORY[0x1E696A578];
       v214 = v47;
@@ -2141,11 +2141,11 @@ LABEL_142:
       v365 = v299;
       v218 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v365 forKeys:&v364 count:1];
       v219 = v213;
-      self = v212;
+      self = selfCopy11;
       v297 = v218;
       v300 = 0;
-      v32 = 0;
-      *v334 = [v211 initWithDomain:v219 code:2 userInfo:?];
+      selfCopy17 = 0;
+      *errorCopy = [v211 initWithDomain:v219 code:2 userInfo:?];
       v36 = v333;
       goto LABEL_272;
     }
@@ -2153,7 +2153,7 @@ LABEL_142:
 
   v300 = 0;
 LABEL_145:
-  v160 = [v6 objectForKeyedSubscript:@"temperatureUnit"];
+  v160 = [dictionaryCopy objectForKeyedSubscript:@"temperatureUnit"];
   v297 = v160;
   if (v160)
   {
@@ -2161,7 +2161,7 @@ LABEL_145:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v193 = self;
+      selfCopy12 = self;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -2169,7 +2169,7 @@ LABEL_145:
         goto LABEL_148;
       }
 
-      if (v334)
+      if (errorCopy)
       {
         v220 = objc_alloc(MEMORY[0x1E696ABC0]);
         v221 = *MEMORY[0x1E698F240];
@@ -2183,15 +2183,15 @@ LABEL_145:
         v363 = v296;
         v295 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v363 forKeys:&v362 count:1];
         v299 = 0;
-        v32 = 0;
-        *v334 = [v220 initWithDomain:v221 code:2 userInfo:?];
-        self = v193;
+        selfCopy17 = 0;
+        *errorCopy = [v220 initWithDomain:v221 code:2 userInfo:?];
+        self = selfCopy12;
         v36 = v333;
         goto LABEL_274;
       }
 
       v299 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       v36 = v333;
 LABEL_272:
       v60 = v326;
@@ -2203,7 +2203,7 @@ LABEL_272:
 
   v299 = 0;
 LABEL_148:
-  v162 = [v6 objectForKeyedSubscript:@"allowUserGeneratedContent"];
+  v162 = [dictionaryCopy objectForKeyedSubscript:@"allowUserGeneratedContent"];
   v295 = v162;
   if (v162)
   {
@@ -2218,10 +2218,10 @@ LABEL_148:
         goto LABEL_151;
       }
 
-      if (v334)
+      if (errorCopy)
       {
         v225 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v226 = self;
+        selfCopy13 = self;
         v227 = *MEMORY[0x1E698F240];
         v360 = *MEMORY[0x1E696A578];
         v228 = v47;
@@ -2235,16 +2235,16 @@ LABEL_148:
         v361 = v294;
         v232 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v361 forKeys:&v360 count:1];
         v233 = v227;
-        self = v226;
+        self = selfCopy13;
         v293 = v232;
         v296 = 0;
-        v32 = 0;
-        *v334 = [v225 initWithDomain:v233 code:2 userInfo:?];
+        selfCopy17 = 0;
+        *errorCopy = [v225 initWithDomain:v233 code:2 userInfo:?];
         goto LABEL_276;
       }
 
       v296 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
       v36 = v333;
 LABEL_274:
       v60 = v326;
@@ -2256,7 +2256,7 @@ LABEL_274:
 
   v296 = 0;
 LABEL_151:
-  v164 = [v6 objectForKeyedSubscript:@"censorSpeech"];
+  v164 = [dictionaryCopy objectForKeyedSubscript:@"censorSpeech"];
   v293 = v164;
   if (v164)
   {
@@ -2271,10 +2271,10 @@ LABEL_151:
         goto LABEL_154;
       }
 
-      if (v334)
+      if (errorCopy)
       {
         v234 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v235 = self;
+        selfCopy14 = self;
         v236 = *MEMORY[0x1E698F240];
         v358 = *MEMORY[0x1E696A578];
         v237 = v47;
@@ -2288,17 +2288,17 @@ LABEL_151:
         v359 = v290;
         v241 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v359 forKeys:&v358 count:1];
         v242 = v236;
-        self = v235;
+        self = selfCopy14;
         v292 = v241;
         v294 = 0;
-        v32 = 0;
-        *v334 = [v234 initWithDomain:v242 code:2 userInfo:?];
+        selfCopy17 = 0;
+        *errorCopy = [v234 initWithDomain:v242 code:2 userInfo:?];
         v36 = v333;
         goto LABEL_227;
       }
 
       v294 = 0;
-      v32 = 0;
+      selfCopy17 = 0;
 LABEL_276:
       v36 = v333;
       v60 = v326;
@@ -2310,7 +2310,7 @@ LABEL_276:
 
   v294 = 0;
 LABEL_154:
-  v166 = [v6 objectForKeyedSubscript:@"meCard"];
+  v166 = [dictionaryCopy objectForKeyedSubscript:@"meCard"];
   v288 = v166;
   if (v166)
   {
@@ -2318,7 +2318,7 @@ LABEL_154:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v207 = self;
+      selfCopy15 = self;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -2334,21 +2334,21 @@ LABEL_154:
         }
 
         v60 = v326;
-        if (v334)
+        if (errorCopy)
         {
           v210 = v210;
-          *v334 = v210;
+          *errorCopy = v210;
         }
 
         v290 = v208;
-        v32 = 0;
+        selfCopy17 = 0;
         v36 = v333;
         goto LABEL_228;
       }
 
-      if (!v334)
+      if (!errorCopy)
       {
-        v32 = 0;
+        selfCopy17 = 0;
         v36 = v333;
         v60 = v326;
         v20 = v314;
@@ -2363,11 +2363,11 @@ LABEL_154:
       v292 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"meCard"];
       v357 = v292;
       v244 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v357 forKeys:&v356 count:1];
-      *v334 = [v291 initWithDomain:v243 code:2 userInfo:v244];
+      *errorCopy = [v291 initWithDomain:v243 code:2 userInfo:v244];
 
-      v32 = 0;
+      selfCopy17 = 0;
       v290 = v288;
-      self = v207;
+      self = selfCopy15;
       v36 = v333;
 LABEL_227:
       v60 = v326;
@@ -2380,7 +2380,7 @@ LABEL_228:
 
   v292 = 0;
 LABEL_157:
-  v168 = [v6 objectForKeyedSubscript:@"deviceIdiom"];
+  v168 = [dictionaryCopy objectForKeyedSubscript:@"deviceIdiom"];
   v287 = v168;
   if (v168)
   {
@@ -2400,10 +2400,10 @@ LABEL_157:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v334)
+          if (!errorCopy)
           {
             v289 = 0;
-            v32 = 0;
+            selfCopy17 = 0;
             v36 = v333;
             v60 = v326;
             v20 = v314;
@@ -2423,8 +2423,8 @@ LABEL_157:
           v355 = v285;
           v286 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v355 forKeys:&v354 count:1];
           v289 = 0;
-          v32 = 0;
-          *v334 = [v261 initWithDomain:v262 code:2 userInfo:?];
+          selfCopy17 = 0;
+          *errorCopy = [v261 initWithDomain:v262 code:2 userInfo:?];
           v47 = v332;
           v36 = v333;
           v60 = v326;
@@ -2444,7 +2444,7 @@ LABEL_281:
 
   v289 = 0;
 LABEL_234:
-  v246 = [v6 objectForKeyedSubscript:@"didPSCFire"];
+  v246 = [dictionaryCopy objectForKeyedSubscript:@"didPSCFire"];
   v286 = v246;
   if (!v246 || (v247 = v246, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -2461,10 +2461,10 @@ LABEL_234:
   v60 = v326;
   if ((isKindOfClass & 1) == 0)
   {
-    if (v334)
+    if (errorCopy)
     {
       v254 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v255 = self;
+      selfCopy16 = self;
       v256 = *MEMORY[0x1E698F240];
       v352 = *MEMORY[0x1E696A578];
       v312 = v8;
@@ -2473,16 +2473,16 @@ LABEL_234:
       v258 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v353 forKeys:&v352 count:1];
       v259 = v254;
       v260 = v256;
-      self = v255;
+      self = selfCopy16;
       v105 = v313;
       v36 = v333;
-      *v334 = [v259 initWithDomain:v260 code:2 userInfo:v258];
+      *errorCopy = [v259 initWithDomain:v260 code:2 userInfo:v258];
 
       v8 = v312;
     }
 
     v285 = 0;
-    v32 = 0;
+    selfCopy17 = 0;
     goto LABEL_281;
   }
 
@@ -2493,7 +2493,7 @@ LABEL_237:
   LODWORD(v283) = [v289 intValue];
   v20 = v314;
   self = [(BMSiriRequestContext *)self initWithSessionID:v154 requestID:v320 inputOrigin:v36 responseMode:v47 isEyesFree:v328 isMultiUser:v329 isVoiceTriggerEnabled:v318 isTextToSpeechEnabled:v314 isTriggerlessFollowup:v317 deviceRestrictions:v338 bargeInModes:v321 identifiedUser:v308 encodedLocation:v309 countryCode:v307 siriLocale:v304 contentRestrictions:v325 uiScale:v300 temperatureUnit:v299 allowUserGeneratedContent:v296 censorSpeech:v294 meCard:v292 deviceIdiom:v283 didPSCFire:v284];
-  v32 = self;
+  selfCopy17 = self;
   v19 = v315;
 LABEL_238:
 
@@ -2544,22 +2544,22 @@ LABEL_263:
 
 LABEL_264:
   v250 = *MEMORY[0x1E69E9840];
-  return v32;
+  return selfCopy17;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriRequestContext *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_sessionID)
   {
     PBDataWriterWriteStringField();
@@ -2671,7 +2671,7 @@ LABEL_264:
   if (self->_identifiedUser)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriRequestContextUser *)self->_identifiedUser writeTo:v4];
+    [(BMSiriRequestContextUser *)self->_identifiedUser writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -2693,7 +2693,7 @@ LABEL_264:
   if (self->_contentRestrictions)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriRequestContextContentRestriction *)self->_contentRestrictions writeTo:v4];
+    [(BMSiriRequestContextContentRestriction *)self->_contentRestrictions writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -2723,7 +2723,7 @@ LABEL_264:
   if (self->_meCard)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriRequestContextMeCard *)self->_meCard writeTo:v4];
+    [(BMSiriRequestContextMeCard *)self->_meCard writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -2738,9 +2738,9 @@ LABEL_264:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v95.receiver = self;
   v95.super_class = BMSiriRequestContext;
   v5 = [(BMEventBase *)&v95 init];
@@ -2751,12 +2751,12 @@ LABEL_264:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -2767,18 +2767,18 @@ LABEL_264:
       while (1)
       {
         LOBYTE(v96) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (LOBYTE(v96) & 0x7F) << v9;
@@ -2796,9 +2796,9 @@ LABEL_264:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -2829,18 +2829,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v96) = 0;
-            v26 = [v4 position] + 1;
-            if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+            v26 = [fromCopy position] + 1;
+            if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
             {
-              v28 = [v4 data];
-              [v28 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v25 |= (LOBYTE(v96) & 0x7F) << v23;
@@ -2858,7 +2858,7 @@ LABEL_16:
             }
           }
 
-          v29 = (v25 != 0) & ~[v4 hasError];
+          v29 = (v25 != 0) & ~[fromCopy hasError];
 LABEL_130:
           v85 = 16;
           goto LABEL_149;
@@ -2870,18 +2870,18 @@ LABEL_130:
           while (1)
           {
             LOBYTE(v96) = 0;
-            v43 = [v4 position] + 1;
-            if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+            v43 = [fromCopy position] + 1;
+            if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
             {
-              v45 = [v4 data];
-              [v45 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 |= (LOBYTE(v96) & 0x7F) << v40;
@@ -2899,7 +2899,7 @@ LABEL_130:
             }
           }
 
-          v29 = (v42 != 0) & ~[v4 hasError];
+          v29 = (v42 != 0) & ~[fromCopy hasError];
 LABEL_134:
           v85 = 18;
           goto LABEL_149;
@@ -2911,18 +2911,18 @@ LABEL_134:
           while (1)
           {
             LOBYTE(v96) = 0;
-            v57 = [v4 position] + 1;
-            if (v57 >= [v4 position] && (v58 = objc_msgSend(v4, "position") + 1, v58 <= objc_msgSend(v4, "length")))
+            v57 = [fromCopy position] + 1;
+            if (v57 >= [fromCopy position] && (v58 = objc_msgSend(fromCopy, "position") + 1, v58 <= objc_msgSend(fromCopy, "length")))
             {
-              v59 = [v4 data];
-              [v59 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v56 |= (LOBYTE(v96) & 0x7F) << v54;
@@ -2940,7 +2940,7 @@ LABEL_134:
             }
           }
 
-          v29 = (v56 != 0) & ~[v4 hasError];
+          v29 = (v56 != 0) & ~[fromCopy hasError];
 LABEL_140:
           v85 = 20;
           goto LABEL_149;
@@ -2952,18 +2952,18 @@ LABEL_140:
           while (1)
           {
             LOBYTE(v96) = 0;
-            v36 = [v4 position] + 1;
-            if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+            v36 = [fromCopy position] + 1;
+            if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
             {
-              v38 = [v4 data];
-              [v38 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v35 |= (LOBYTE(v96) & 0x7F) << v33;
@@ -2981,7 +2981,7 @@ LABEL_140:
             }
           }
 
-          v29 = (v35 != 0) & ~[v4 hasError];
+          v29 = (v35 != 0) & ~[fromCopy hasError];
 LABEL_132:
           v85 = 22;
           goto LABEL_149;
@@ -2993,18 +2993,18 @@ LABEL_132:
           while (1)
           {
             LOBYTE(v96) = 0;
-            v70 = [v4 position] + 1;
-            if (v70 >= [v4 position] && (v71 = objc_msgSend(v4, "position") + 1, v71 <= objc_msgSend(v4, "length")))
+            v70 = [fromCopy position] + 1;
+            if (v70 >= [fromCopy position] && (v71 = objc_msgSend(fromCopy, "position") + 1, v71 <= objc_msgSend(fromCopy, "length")))
             {
-              v72 = [v4 data];
-              [v72 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v69 |= (LOBYTE(v96) & 0x7F) << v67;
@@ -3022,7 +3022,7 @@ LABEL_132:
             }
           }
 
-          v29 = (v69 != 0) & ~[v4 hasError];
+          v29 = (v69 != 0) & ~[fromCopy hasError];
 LABEL_144:
           v85 = 24;
           goto LABEL_149;
@@ -3057,7 +3057,7 @@ LABEL_99:
             goto LABEL_158;
           }
 
-          v21 = [[BMSiriRequestContextUser alloc] initByReadFrom:v4];
+          v21 = [[BMSiriRequestContextUser alloc] initByReadFrom:fromCopy];
           if (!v21)
           {
             goto LABEL_158;
@@ -3085,7 +3085,7 @@ LABEL_99:
             goto LABEL_158;
           }
 
-          v21 = [[BMSiriRequestContextContentRestriction alloc] initByReadFrom:v4];
+          v21 = [[BMSiriRequestContextContentRestriction alloc] initByReadFrom:fromCopy];
           if (!v21)
           {
             goto LABEL_158;
@@ -3096,18 +3096,18 @@ LABEL_99:
         case 0x11u:
           v5->_hasUiScale = 1;
           v96 = 0.0;
-          v19 = [v4 position] + 8;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 8, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 8;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 8, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v87 = [v4 data];
-            [v87 getBytes:&v96 range:{objc_msgSend(v4, "position"), 8}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_uiScale = v96;
@@ -3128,18 +3128,18 @@ LABEL_78:
           while (1)
           {
             LOBYTE(v96) = 0;
-            v63 = [v4 position] + 1;
-            if (v63 >= [v4 position] && (v64 = objc_msgSend(v4, "position") + 1, v64 <= objc_msgSend(v4, "length")))
+            v63 = [fromCopy position] + 1;
+            if (v63 >= [fromCopy position] && (v64 = objc_msgSend(fromCopy, "position") + 1, v64 <= objc_msgSend(fromCopy, "length")))
             {
-              v65 = [v4 data];
-              [v65 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v62 |= (LOBYTE(v96) & 0x7F) << v60;
@@ -3157,7 +3157,7 @@ LABEL_78:
             }
           }
 
-          v29 = (v62 != 0) & ~[v4 hasError];
+          v29 = (v62 != 0) & ~[fromCopy hasError];
 LABEL_142:
           v85 = 27;
           goto LABEL_149;
@@ -3169,18 +3169,18 @@ LABEL_142:
           while (1)
           {
             LOBYTE(v96) = 0;
-            v82 = [v4 position] + 1;
-            if (v82 >= [v4 position] && (v83 = objc_msgSend(v4, "position") + 1, v83 <= objc_msgSend(v4, "length")))
+            v82 = [fromCopy position] + 1;
+            if (v82 >= [fromCopy position] && (v83 = objc_msgSend(fromCopy, "position") + 1, v83 <= objc_msgSend(fromCopy, "length")))
             {
-              v84 = [v4 data];
-              [v84 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+              data9 = [fromCopy data];
+              [data9 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v81 |= (LOBYTE(v96) & 0x7F) << v79;
@@ -3198,7 +3198,7 @@ LABEL_142:
             }
           }
 
-          v29 = (v81 != 0) & ~[v4 hasError];
+          v29 = (v81 != 0) & ~[fromCopy hasError];
 LABEL_148:
           v85 = 29;
           goto LABEL_149;
@@ -3210,7 +3210,7 @@ LABEL_148:
             goto LABEL_158;
           }
 
-          v21 = [[BMSiriRequestContextMeCard alloc] initByReadFrom:v4];
+          v21 = [[BMSiriRequestContextMeCard alloc] initByReadFrom:fromCopy];
           if (!v21)
           {
             goto LABEL_158;
@@ -3230,18 +3230,18 @@ LABEL_58:
           while (1)
           {
             LOBYTE(v96) = 0;
-            v49 = [v4 position] + 1;
-            if (v49 >= [v4 position] && (v50 = objc_msgSend(v4, "position") + 1, v50 <= objc_msgSend(v4, "length")))
+            v49 = [fromCopy position] + 1;
+            if (v49 >= [fromCopy position] && (v50 = objc_msgSend(fromCopy, "position") + 1, v50 <= objc_msgSend(fromCopy, "length")))
             {
-              v51 = [v4 data];
-              [v51 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+              data10 = [fromCopy data];
+              [data10 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v48 |= (LOBYTE(v96) & 0x7F) << v46;
@@ -3257,7 +3257,7 @@ LABEL_58:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v48 > 0xA)
+          if (([fromCopy hasError] & 1) != 0 || v48 > 0xA)
           {
 LABEL_137:
             LODWORD(v48) = 0;
@@ -3285,18 +3285,18 @@ LABEL_158:
       while (1)
       {
         LOBYTE(v96) = 0;
-        v76 = [v4 position] + 1;
-        if (v76 >= [v4 position] && (v77 = objc_msgSend(v4, "position") + 1, v77 <= objc_msgSend(v4, "length")))
+        v76 = [fromCopy position] + 1;
+        if (v76 >= [fromCopy position] && (v77 = objc_msgSend(fromCopy, "position") + 1, v77 <= objc_msgSend(fromCopy, "length")))
         {
-          v78 = [v4 data];
-          [v78 getBytes:&v96 range:{objc_msgSend(v4, "position"), 1}];
+          data11 = [fromCopy data];
+          [data11 getBytes:&v96 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v75 |= (LOBYTE(v96) & 0x7F) << v73;
@@ -3314,16 +3314,16 @@ LABEL_158:
         }
       }
 
-      v29 = (v75 != 0) & ~[v4 hasError];
+      v29 = (v75 != 0) & ~[fromCopy hasError];
 LABEL_146:
       v85 = 31;
 LABEL_149:
       *(&v5->super.super.isa + v85) = v29;
 LABEL_150:
-      v86 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v86 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v88 = [v6 copy];
@@ -3334,8 +3334,8 @@ LABEL_150:
   bargeInModes = v5->_bargeInModes;
   v5->_bargeInModes = v90;
 
-  v92 = [v4 hasError];
-  if (v92)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_155:
     v93 = 0;
@@ -3353,74 +3353,74 @@ LABEL_156:
 - (NSString)description
 {
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v29 = [(BMSiriRequestContext *)self sessionID];
-  v28 = [(BMSiriRequestContext *)self requestID];
-  v27 = [(BMSiriRequestContext *)self inputOrigin];
-  v26 = [(BMSiriRequestContext *)self responseMode];
+  sessionID = [(BMSiriRequestContext *)self sessionID];
+  requestID = [(BMSiriRequestContext *)self requestID];
+  inputOrigin = [(BMSiriRequestContext *)self inputOrigin];
+  responseMode = [(BMSiriRequestContext *)self responseMode];
   v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext isEyesFree](self, "isEyesFree")}];
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext isMultiUser](self, "isMultiUser")}];
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext isVoiceTriggerEnabled](self, "isVoiceTriggerEnabled")}];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext isTextToSpeechEnabled](self, "isTextToSpeechEnabled")}];
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext isTriggerlessFollowup](self, "isTriggerlessFollowup")}];
-  v22 = [(BMSiriRequestContext *)self deviceRestrictions];
-  v21 = [(BMSiriRequestContext *)self bargeInModes];
-  v15 = [(BMSiriRequestContext *)self identifiedUser];
-  v14 = [(BMSiriRequestContext *)self encodedLocation];
-  v20 = [(BMSiriRequestContext *)self countryCode];
-  v13 = [(BMSiriRequestContext *)self siriLocale];
-  v12 = [(BMSiriRequestContext *)self contentRestrictions];
+  deviceRestrictions = [(BMSiriRequestContext *)self deviceRestrictions];
+  bargeInModes = [(BMSiriRequestContext *)self bargeInModes];
+  identifiedUser = [(BMSiriRequestContext *)self identifiedUser];
+  encodedLocation = [(BMSiriRequestContext *)self encodedLocation];
+  countryCode = [(BMSiriRequestContext *)self countryCode];
+  siriLocale = [(BMSiriRequestContext *)self siriLocale];
+  contentRestrictions = [(BMSiriRequestContext *)self contentRestrictions];
   v3 = MEMORY[0x1E696AD98];
   [(BMSiriRequestContext *)self uiScale];
   v4 = [v3 numberWithDouble:?];
-  v5 = [(BMSiriRequestContext *)self temperatureUnit];
+  temperatureUnit = [(BMSiriRequestContext *)self temperatureUnit];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext allowUserGeneratedContent](self, "allowUserGeneratedContent")}];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext censorSpeech](self, "censorSpeech")}];
-  v7 = [(BMSiriRequestContext *)self meCard];
+  meCard = [(BMSiriRequestContext *)self meCard];
   v8 = BMSiriRequestContextDeviceIdiomAsString([(BMSiriRequestContext *)self deviceIdiom]);
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContext didPSCFire](self, "didPSCFire")}];
-  v19 = [v18 initWithFormat:@"BMSiriRequestContext with sessionID: %@, requestID: %@, inputOrigin: %@, responseMode: %@, isEyesFree: %@, isMultiUser: %@, isVoiceTriggerEnabled: %@, isTextToSpeechEnabled: %@, isTriggerlessFollowup: %@, deviceRestrictions: %@, bargeInModes: %@, identifiedUser: %@, encodedLocation: %@, countryCode: %@, siriLocale: %@, contentRestrictions: %@, uiScale: %@, temperatureUnit: %@, allowUserGeneratedContent: %@, censorSpeech: %@, meCard: %@, deviceIdiom: %@, didPSCFire: %@", v29, v28, v27, v26, v25, v17, v24, v16, v23, v22, v21, v15, v14, v20, v13, v12, v4, v5, v11, v6, v7, v8, v9];
+  v19 = [v18 initWithFormat:@"BMSiriRequestContext with sessionID: %@, requestID: %@, inputOrigin: %@, responseMode: %@, isEyesFree: %@, isMultiUser: %@, isVoiceTriggerEnabled: %@, isTextToSpeechEnabled: %@, isTriggerlessFollowup: %@, deviceRestrictions: %@, bargeInModes: %@, identifiedUser: %@, encodedLocation: %@, countryCode: %@, siriLocale: %@, contentRestrictions: %@, uiScale: %@, temperatureUnit: %@, allowUserGeneratedContent: %@, censorSpeech: %@, meCard: %@, deviceIdiom: %@, didPSCFire: %@", sessionID, requestID, inputOrigin, responseMode, v25, v17, v24, v16, v23, deviceRestrictions, bargeInModes, identifiedUser, encodedLocation, countryCode, siriLocale, contentRestrictions, v4, temperatureUnit, v11, v6, meCard, v8, v9];
 
   return v19;
 }
 
-- (BMSiriRequestContext)initWithSessionID:(id)a3 requestID:(id)a4 inputOrigin:(id)a5 responseMode:(id)a6 isEyesFree:(id)a7 isMultiUser:(id)a8 isVoiceTriggerEnabled:(id)a9 isTextToSpeechEnabled:(id)a10 isTriggerlessFollowup:(id)a11 deviceRestrictions:(id)a12 bargeInModes:(id)a13 identifiedUser:(id)a14 encodedLocation:(id)a15 countryCode:(id)a16 siriLocale:(id)a17 contentRestrictions:(id)a18 uiScale:(id)a19 temperatureUnit:(id)a20 allowUserGeneratedContent:(id)a21 censorSpeech:(id)a22 meCard:(id)a23 deviceIdiom:(int)a24 didPSCFire:(id)a25
+- (BMSiriRequestContext)initWithSessionID:(id)d requestID:(id)iD inputOrigin:(id)origin responseMode:(id)mode isEyesFree:(id)free isMultiUser:(id)user isVoiceTriggerEnabled:(id)enabled isTextToSpeechEnabled:(id)self0 isTriggerlessFollowup:(id)self1 deviceRestrictions:(id)self2 bargeInModes:(id)self3 identifiedUser:(id)self4 encodedLocation:(id)self5 countryCode:(id)self6 siriLocale:(id)self7 contentRestrictions:(id)self8 uiScale:(id)self9 temperatureUnit:(id)unit allowUserGeneratedContent:(id)content censorSpeech:(id)speech meCard:(id)card deviceIdiom:(int)idiom didPSCFire:(id)fire
 {
-  v57 = a3;
-  v42 = a4;
-  v56 = a4;
-  v43 = a5;
-  v55 = a5;
-  v44 = a6;
-  v54 = a6;
-  v29 = a7;
-  v60 = a8;
-  v30 = a9;
-  v31 = a10;
-  v58 = a11;
-  v53 = a12;
-  v52 = a13;
-  v51 = a14;
-  v50 = a15;
-  v49 = a16;
-  v48 = a17;
-  v47 = a18;
-  v32 = a19;
-  v46 = a20;
-  v33 = v29;
-  v34 = a21;
-  v35 = a22;
-  v36 = a23;
-  v37 = a25;
+  dCopy = d;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  originCopy = origin;
+  originCopy2 = origin;
+  modeCopy = mode;
+  modeCopy2 = mode;
+  freeCopy = free;
+  userCopy = user;
+  enabledCopy = enabled;
+  speechEnabledCopy = speechEnabled;
+  followupCopy = followup;
+  restrictionsCopy = restrictions;
+  modesCopy = modes;
+  identifiedUserCopy = identifiedUser;
+  locationCopy = location;
+  codeCopy = code;
+  localeCopy = locale;
+  contentRestrictionsCopy = contentRestrictions;
+  scaleCopy = scale;
+  unitCopy = unit;
+  v33 = freeCopy;
+  contentCopy = content;
+  speechCopy = speech;
+  cardCopy = card;
+  fireCopy = fire;
   v61.receiver = self;
   v61.super_class = BMSiriRequestContext;
   v38 = [(BMEventBase *)&v61 init];
   if (v38)
   {
     v38->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v38->_sessionID, a3);
-    objc_storeStrong(&v38->_requestID, v42);
-    objc_storeStrong(&v38->_inputOrigin, v43);
-    objc_storeStrong(&v38->_responseMode, v44);
+    objc_storeStrong(&v38->_sessionID, d);
+    objc_storeStrong(&v38->_requestID, iDCopy);
+    objc_storeStrong(&v38->_inputOrigin, originCopy);
+    objc_storeStrong(&v38->_responseMode, modeCopy);
     if (v33)
     {
       v38->_hasIsEyesFree = 1;
@@ -3433,10 +3433,10 @@ LABEL_156:
       v38->_isEyesFree = 0;
     }
 
-    if (v60)
+    if (userCopy)
     {
       v38->_hasIsMultiUser = 1;
-      v38->_isMultiUser = [v60 BOOLValue];
+      v38->_isMultiUser = [userCopy BOOLValue];
     }
 
     else
@@ -3445,10 +3445,10 @@ LABEL_156:
       v38->_isMultiUser = 0;
     }
 
-    if (v30)
+    if (enabledCopy)
     {
       v38->_hasIsVoiceTriggerEnabled = 1;
-      v38->_isVoiceTriggerEnabled = [v30 BOOLValue];
+      v38->_isVoiceTriggerEnabled = [enabledCopy BOOLValue];
     }
 
     else
@@ -3457,10 +3457,10 @@ LABEL_156:
       v38->_isVoiceTriggerEnabled = 0;
     }
 
-    if (v31)
+    if (speechEnabledCopy)
     {
       v38->_hasIsTextToSpeechEnabled = 1;
-      v38->_isTextToSpeechEnabled = [v31 BOOLValue];
+      v38->_isTextToSpeechEnabled = [speechEnabledCopy BOOLValue];
     }
 
     else
@@ -3469,10 +3469,10 @@ LABEL_156:
       v38->_isTextToSpeechEnabled = 0;
     }
 
-    if (v58)
+    if (followupCopy)
     {
       v38->_hasIsTriggerlessFollowup = 1;
-      v38->_isTriggerlessFollowup = [v58 BOOLValue];
+      v38->_isTriggerlessFollowup = [followupCopy BOOLValue];
     }
 
     else
@@ -3481,17 +3481,17 @@ LABEL_156:
       v38->_isTriggerlessFollowup = 0;
     }
 
-    objc_storeStrong(&v38->_deviceRestrictions, a12);
-    objc_storeStrong(&v38->_bargeInModes, a13);
-    objc_storeStrong(&v38->_identifiedUser, a14);
-    objc_storeStrong(&v38->_encodedLocation, a15);
-    objc_storeStrong(&v38->_countryCode, a16);
-    objc_storeStrong(&v38->_siriLocale, a17);
-    objc_storeStrong(&v38->_contentRestrictions, a18);
-    if (v32)
+    objc_storeStrong(&v38->_deviceRestrictions, restrictions);
+    objc_storeStrong(&v38->_bargeInModes, modes);
+    objc_storeStrong(&v38->_identifiedUser, identifiedUser);
+    objc_storeStrong(&v38->_encodedLocation, location);
+    objc_storeStrong(&v38->_countryCode, code);
+    objc_storeStrong(&v38->_siriLocale, locale);
+    objc_storeStrong(&v38->_contentRestrictions, contentRestrictions);
+    if (scaleCopy)
     {
       v38->_hasUiScale = 1;
-      [v32 doubleValue];
+      [scaleCopy doubleValue];
     }
 
     else
@@ -3501,11 +3501,11 @@ LABEL_156:
     }
 
     v38->_uiScale = v39;
-    objc_storeStrong(&v38->_temperatureUnit, a20);
-    if (v34)
+    objc_storeStrong(&v38->_temperatureUnit, unit);
+    if (contentCopy)
     {
       v38->_hasAllowUserGeneratedContent = 1;
-      v38->_allowUserGeneratedContent = [v34 BOOLValue];
+      v38->_allowUserGeneratedContent = [contentCopy BOOLValue];
     }
 
     else
@@ -3514,10 +3514,10 @@ LABEL_156:
       v38->_allowUserGeneratedContent = 0;
     }
 
-    if (v35)
+    if (speechCopy)
     {
       v38->_hasCensorSpeech = 1;
-      v38->_censorSpeech = [v35 BOOLValue];
+      v38->_censorSpeech = [speechCopy BOOLValue];
     }
 
     else
@@ -3526,12 +3526,12 @@ LABEL_156:
       v38->_censorSpeech = 0;
     }
 
-    objc_storeStrong(&v38->_meCard, a23);
-    v38->_deviceIdiom = a24;
-    if (v37)
+    objc_storeStrong(&v38->_meCard, card);
+    v38->_deviceIdiom = idiom;
+    if (fireCopy)
     {
       v38->_hasDidPSCFire = 1;
-      v38->_didPSCFire = [v37 BOOLValue];
+      v38->_didPSCFire = [fireCopy BOOLValue];
     }
 
     else
@@ -3704,9 +3704,9 @@ id __31__BMSiriRequestContext_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -3714,8 +3714,8 @@ id __31__BMSiriRequestContext_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriRequestContext alloc] initByReadFrom:v7];
     v4 = v8;

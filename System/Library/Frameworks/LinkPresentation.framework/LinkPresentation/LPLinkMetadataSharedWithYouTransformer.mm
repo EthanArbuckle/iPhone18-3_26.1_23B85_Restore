@@ -1,22 +1,22 @@
 @interface LPLinkMetadataSharedWithYouTransformer
 - (BOOL)shouldDonateToSharedWithYou;
-- (LPLinkMetadataSharedWithYouTransformer)initWithMetadata:(id)a3 URL:(id)a4;
+- (LPLinkMetadataSharedWithYouTransformer)initWithMetadata:(id)metadata URL:(id)l;
 @end
 
 @implementation LPLinkMetadataSharedWithYouTransformer
 
-- (LPLinkMetadataSharedWithYouTransformer)initWithMetadata:(id)a3 URL:(id)a4
+- (LPLinkMetadataSharedWithYouTransformer)initWithMetadata:(id)metadata URL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = LPLinkMetadataSharedWithYouTransformer;
   v9 = [(LPLinkMetadataSharedWithYouTransformer *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metadata, a3);
-    objc_storeStrong(&v10->_URL, a4);
+    objc_storeStrong(&v9->_metadata, metadata);
+    objc_storeStrong(&v10->_URL, l);
     v11 = v10;
   }
 
@@ -25,25 +25,25 @@
 
 - (BOOL)shouldDonateToSharedWithYou
 {
-  v3 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (v3)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (specialization)
   {
-    v4 = v3;
-    v5 = [(LPLinkMetadata *)self->_metadata specialization];
-    if (([v5 conformsToProtocol:&unk_1F24975F0] & 1) == 0)
+    specialization4 = specialization;
+    specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+    if (([specialization2 conformsToProtocol:&unk_1F24975F0] & 1) == 0)
     {
 
       v8 = 1;
       goto LABEL_7;
     }
 
-    v6 = [(LPLinkMetadata *)self->_metadata specialization];
+    specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v4 = [(LPLinkMetadata *)self->_metadata specialization];
-      v8 = [v4 shouldDonateToSharedWithYouForTransformer:self];
+      specialization4 = [(LPLinkMetadata *)self->_metadata specialization];
+      v8 = [specialization4 shouldDonateToSharedWithYouForTransformer:self];
 LABEL_7:
 
       return v8;

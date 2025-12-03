@@ -1,22 +1,22 @@
 @interface ASCompetitionGraphViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateGraphElements;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation ASCompetitionGraphViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASCompetitionGraphView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"ASCompetitionGraphView" hasInstanceVariable:@"_competition" withType:"ASCompetition"];
-  [v3 validateClass:@"ASCompetitionGraphView" hasInstanceMethod:@"drawRect:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"ASCompetition" hasInstanceMethod:@"startDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASCompetition" hasInstanceMethod:@"durationDateComponents" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASCompetition" hasInstanceMethod:@"scores" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASCompetition" hasInstanceMethod:@"opponentScores" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASCompetitionGraphView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"ASCompetitionGraphView" hasInstanceVariable:@"_competition" withType:"ASCompetition"];
+  [validationsCopy validateClass:@"ASCompetitionGraphView" hasInstanceMethod:@"drawRect:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"ASCompetition" hasInstanceMethod:@"startDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASCompetition" hasInstanceMethod:@"durationDateComponents" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASCompetition" hasInstanceMethod:@"scores" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASCompetition" hasInstanceMethod:@"opponentScores" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,11 +27,11 @@
   [(ASCompetitionGraphViewAccessibility *)self _axAnnotateGraphElements];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4.receiver = self;
   v4.super_class = ASCompetitionGraphViewAccessibility;
-  [(ASCompetitionGraphViewAccessibility *)&v4 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ASCompetitionGraphViewAccessibility *)&v4 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(ASCompetitionGraphViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -68,7 +68,7 @@
     }
 
     v30 = v13;
-    v34 = self;
+    selfCopy = self;
     v33 = +[NSMutableArray array];
     v15 = [v3 safeArrayForKey:@"scores"];
     v31 = v3;
@@ -97,7 +97,7 @@
           [v20 unsignedIntegerValue];
         }
 
-        v21 = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:v34];
+        v21 = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:selfCopy];
         v22 = AXDateStringForFormat();
         [v21 setAccessibilityLabel:v22];
 
@@ -120,7 +120,7 @@
       while (v32 != v17);
     }
 
-    [(ASCompetitionGraphViewAccessibility *)v34 setAccessibilityElements:v33];
+    [(ASCompetitionGraphViewAccessibility *)selfCopy setAccessibilityElements:v33];
 
     v5 = v29;
     v3 = v31;

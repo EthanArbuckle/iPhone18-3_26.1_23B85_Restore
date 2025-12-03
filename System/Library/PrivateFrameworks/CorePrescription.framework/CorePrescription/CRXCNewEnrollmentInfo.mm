@@ -1,10 +1,10 @@
 @interface CRXCNewEnrollmentInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCNewEnrollmentInfo)init;
-- (CRXCNewEnrollmentInfo)initWithUuid:(id)a3 lensCalibrationStatus:(int64_t)a4;
+- (CRXCNewEnrollmentInfo)initWithUuid:(id)uuid lensCalibrationStatus:(int64_t)status;
 - (NSString)description;
 - (NSString)uuid;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCNewEnrollmentInfo
@@ -19,23 +19,23 @@
   return v4;
 }
 
-- (CRXCNewEnrollmentInfo)initWithUuid:(id)a3 lensCalibrationStatus:(int64_t)a4
+- (CRXCNewEnrollmentInfo)initWithUuid:(id)uuid lensCalibrationStatus:(int64_t)status
 {
   v6 = sub_247365C64();
   v7 = (self + OBJC_IVAR___CRXCNewEnrollmentInfo_uuid);
   *v7 = v6;
   v7[1] = v8;
-  *(self + OBJC_IVAR___CRXCNewEnrollmentInfo_lensCalibrationStatus) = a4;
+  *(self + OBJC_IVAR___CRXCNewEnrollmentInfo_lensCalibrationStatus) = status;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CRXCNewEnrollmentInfo();
   return [(CRXCNewEnrollmentInfo *)&v10 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_247365DC4();
     swift_unknownObjectRelease();
@@ -44,7 +44,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_24735690C(v8);
@@ -55,7 +55,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_247356AB8();
 
   v3 = sub_247365C44();
@@ -63,19 +63,19 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(self + OBJC_IVAR___CRXCNewEnrollmentInfo_uuid);
   v5 = *(self + OBJC_IVAR___CRXCNewEnrollmentInfo_uuid + 8);
-  v6 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v8 = sub_247365C44();
   v9 = sub_247365C44();
-  [v6 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
 
-  v10 = *(v7 + OBJC_IVAR___CRXCNewEnrollmentInfo_lensCalibrationStatus);
+  v10 = *(selfCopy + OBJC_IVAR___CRXCNewEnrollmentInfo_lensCalibrationStatus);
   v11 = sub_247365C44();
-  [v6 encodeInteger:v10 forKey:v11];
+  [coderCopy encodeInteger:v10 forKey:v11];
 }
 
 - (CRXCNewEnrollmentInfo)init

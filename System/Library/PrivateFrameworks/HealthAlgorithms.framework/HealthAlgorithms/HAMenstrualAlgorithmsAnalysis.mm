@@ -1,7 +1,7 @@
 @interface HAMenstrualAlgorithmsAnalysis
 - (HAMenstrualAlgorithmsAnalysis)init;
-- (HAMenstrualAlgorithmsAnalysis)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HAMenstrualAlgorithmsAnalysis)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HAMenstrualAlgorithmsAnalysis
@@ -35,10 +35,10 @@
   return v3;
 }
 
-- (HAMenstrualAlgorithmsAnalysis)initWithCoder:(id)a3
+- (HAMenstrualAlgorithmsAnalysis)initWithCoder:(id)coder
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HAMenstrualAlgorithmsAnalysis *)self init];
   if (v5)
   {
@@ -49,29 +49,29 @@
     v8 = [v6 setWithArray:v7];
 
     v9 = NSStringFromSelector(sel_menstruationPredictions);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     menstruationPredictions = v5->_menstruationPredictions;
     v5->_menstruationPredictions = v10;
 
     v12 = NSStringFromSelector(sel_fertilityPredictions);
-    v13 = [v4 decodeObjectOfClasses:v8 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClasses:v8 forKey:v12];
     fertilityPredictions = v5->_fertilityPredictions;
     v5->_fertilityPredictions = v13;
 
     v15 = objc_opt_class();
     v16 = NSStringFromSelector(sel_stats);
-    v17 = [v4 decodeObjectOfClass:v15 forKey:v16];
+    v17 = [coderCopy decodeObjectOfClass:v15 forKey:v16];
     stats = v5->_stats;
     v5->_stats = v17;
 
     v19 = objc_opt_class();
     v20 = NSStringFromSelector(sel_deviationAnalysis);
-    v21 = [v4 decodeObjectOfClass:v19 forKey:v20];
+    v21 = [coderCopy decodeObjectOfClass:v19 forKey:v20];
     deviationAnalysis = v5->_deviationAnalysis;
     v5->_deviationAnalysis = v21;
 
     v23 = NSStringFromSelector(sel_isUserInactive);
-    v5->_isUserInactive = [v4 decodeBoolForKey:v23];
+    v5->_isUserInactive = [coderCopy decodeBoolForKey:v23];
 
     v24 = v5;
   }
@@ -80,28 +80,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
+  coderCopy = coder;
   menstruationPredictions = self->_menstruationPredictions;
   v5 = NSStringFromSelector(sel_menstruationPredictions);
-  [v14 encodeObject:menstruationPredictions forKey:v5];
+  [coderCopy encodeObject:menstruationPredictions forKey:v5];
 
   fertilityPredictions = self->_fertilityPredictions;
   v7 = NSStringFromSelector(sel_fertilityPredictions);
-  [v14 encodeObject:fertilityPredictions forKey:v7];
+  [coderCopy encodeObject:fertilityPredictions forKey:v7];
 
   stats = self->_stats;
   v9 = NSStringFromSelector(sel_stats);
-  [v14 encodeObject:stats forKey:v9];
+  [coderCopy encodeObject:stats forKey:v9];
 
   deviationAnalysis = self->_deviationAnalysis;
   v11 = NSStringFromSelector(sel_deviationAnalysis);
-  [v14 encodeObject:deviationAnalysis forKey:v11];
+  [coderCopy encodeObject:deviationAnalysis forKey:v11];
 
   isUserInactive = self->_isUserInactive;
   v13 = NSStringFromSelector(sel_isUserInactive);
-  [v14 encodeBool:isUserInactive forKey:v13];
+  [coderCopy encodeBool:isUserInactive forKey:v13];
 }
 
 @end

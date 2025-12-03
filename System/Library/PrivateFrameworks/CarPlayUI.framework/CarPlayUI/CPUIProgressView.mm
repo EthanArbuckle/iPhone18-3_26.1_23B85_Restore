@@ -1,35 +1,35 @@
 @interface CPUIProgressView
 - ($04B05C73ED6AEEF31C5815932084562D)durationSnapshot;
 - (CGSize)intrinsicContentSize;
-- (CPUIProgressView)initWithFrame:(CGRect)a3 progressBarHeight:(double)a4 labelHeight:(double)a5 labelStyle:(unint64_t)a6;
-- (void)_displayLinkTick:(id)a3;
+- (CPUIProgressView)initWithFrame:(CGRect)frame progressBarHeight:(double)height labelHeight:(double)labelHeight labelStyle:(unint64_t)style;
+- (void)_displayLinkTick:(id)tick;
 - (void)_updateCompositingFilter;
-- (void)_updateLabelsForElapsedTime:(double)a3 duration:(double)a4;
-- (void)_updateProgressForElapsedTime:(double)a3 duration:(double)a4;
+- (void)_updateLabelsForElapsedTime:(double)time duration:(double)duration;
+- (void)_updateProgressForElapsedTime:(double)time duration:(double)duration;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)pauseDisplayLinkIfNeeded;
 - (void)runUntilNextDisplayLinkEvent;
-- (void)setDurationSnapshot:(id *)a3;
-- (void)setShowsProgressLabels:(BOOL)a3;
+- (void)setDurationSnapshot:(id *)snapshot;
+- (void)setShowsProgressLabels:(BOOL)labels;
 - (void)setupConstraints;
-- (void)updateLocalizedDurationString:(id)a3;
+- (void)updateLocalizedDurationString:(id)string;
 @end
 
 @implementation CPUIProgressView
 
-- (CPUIProgressView)initWithFrame:(CGRect)a3 progressBarHeight:(double)a4 labelHeight:(double)a5 labelStyle:(unint64_t)a6
+- (CPUIProgressView)initWithFrame:(CGRect)frame progressBarHeight:(double)height labelHeight:(double)labelHeight labelStyle:(unint64_t)style
 {
   v33[1] = *MEMORY[0x277D85DE8];
   v32.receiver = self;
   v32.super_class = CPUIProgressView;
-  v9 = [(CPUIProgressView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(CPUIProgressView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (v9)
   {
-    v9->_labelStyle = a6;
-    v9->_progressBarViewHeight = a4;
-    v9->_progressLabelHeight = a5;
+    v9->_labelStyle = style;
+    v9->_progressBarViewHeight = height;
+    v9->_progressLabelHeight = labelHeight;
     v11 = [CPUIProgressBarView alloc];
     v12 = *MEMORY[0x277CBF3A0];
     v13 = *(MEMORY[0x277CBF3A0] + 8);
@@ -62,8 +62,8 @@
 
     [(UILabel *)v10->_liveLabel setTextAlignment:1];
     v22 = v10->_liveLabel;
-    v23 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v22 setTextColor:v23];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v22 setTextColor:labelColor];
 
     [(UILabel *)v10->_liveLabel setHidden:1];
     [(UILabel *)v10->_liveLabel setAccessibilityIdentifier:@"CPNowPlayingProgressBarLive"];
@@ -76,11 +76,11 @@
     [(_CPUILiveTrackView *)v10->_liveTrackView setHidden:1];
     [(_CPUILiveTrackView *)v10->_liveTrackView setAccessibilityIdentifier:@"CPNowPlayingProgressBarLiveTrackView"];
     [(CPUIProgressView *)v10 addSubview:v10->_liveTrackView];
-    v26 = [(CPUIProgressView *)v10 layer];
-    [v26 setCreatesCompositingGroup:1];
+    layer = [(CPUIProgressView *)v10 layer];
+    [layer setCreatesCompositingGroup:1];
 
-    v27 = [(CPUIProgressView *)v10 layer];
-    [v27 setAllowsGroupBlending:1];
+    layer2 = [(CPUIProgressView *)v10 layer];
+    [layer2 setAllowsGroupBlending:1];
 
     [(CPUIProgressView *)v10 setShowsProgressLabels:1];
     v28 = objc_opt_self();
@@ -96,10 +96,10 @@
 
 - (void)_updateCompositingFilter
 {
-  v3 = [(CPUIProgressView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(CPUIProgressView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v5 = MEMORY[0x277CDA5D8];
-  if (v4 != 1)
+  if (userInterfaceStyle != 1)
   {
     v5 = MEMORY[0x277CDA5E8];
   }
@@ -108,13 +108,13 @@
 
   v8 = [MEMORY[0x277CD9EA0] filterWithType:v6];
 
-  v7 = [(CPUIProgressView *)self layer];
-  [v7 setCompositingFilter:v8];
+  layer = [(CPUIProgressView *)self layer];
+  [layer setCompositingFilter:v8];
 }
 
-- (void)setShowsProgressLabels:(BOOL)a3
+- (void)setShowsProgressLabels:(BOOL)labels
 {
-  if (self->_showsProgressLabels != a3)
+  if (self->_showsProgressLabels != labels)
   {
     v29 = v10;
     v30 = v9;
@@ -124,8 +124,8 @@
     v34 = v5;
     v35 = v4;
     v36 = v3;
-    self->_showsProgressLabels = a3;
-    if (a3)
+    self->_showsProgressLabels = labels;
+    if (labels)
     {
       labelStyle = self->_labelStyle;
       v15 = [MEMORY[0x277D74300] monospacedDigitSystemFontOfSize:self->_progressLabelHeight weight:*MEMORY[0x277D74418]];
@@ -226,19 +226,19 @@
   v11.receiver = self;
   v11.super_class = CPUIProgressView;
   [(CPUIProgressView *)&v11 didMoveToWindow];
-  v3 = [(CPUIProgressView *)self window];
+  window = [(CPUIProgressView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(CPUIProgressView *)self window];
-    v5 = [v4 screen];
-    v6 = [v5 displayLinkWithTarget:self selector:sel__displayLinkTick_];
+    window2 = [(CPUIProgressView *)self window];
+    screen = [window2 screen];
+    v6 = [screen displayLinkWithTarget:self selector:sel__displayLinkTick_];
     displayLink = self->_displayLink;
     self->_displayLink = v6;
 
     v8 = self->_displayLink;
-    v9 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)v8 addToRunLoop:v9 forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)v8 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
     [(CADisplayLink *)self->_displayLink setPreferredFramesPerSecond:15];
   }
@@ -260,52 +260,52 @@
   }
 
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(CPUIProgressBarView *)self->_progressBarView heightAnchor];
-  v5 = [v4 constraintEqualToConstant:self->_progressBarViewHeight];
+  heightAnchor = [(CPUIProgressBarView *)self->_progressBarView heightAnchor];
+  v5 = [heightAnchor constraintEqualToConstant:self->_progressBarViewHeight];
   v74 = [v3 arrayWithObject:v5];
 
-  v72 = [(_CPUILiveTrackView *)self->_liveTrackView leadingAnchor];
-  v69 = [(CPUIProgressView *)self leadingAnchor];
-  v66 = [v72 constraintEqualToAnchor:v69];
+  leadingAnchor = [(_CPUILiveTrackView *)self->_liveTrackView leadingAnchor];
+  leadingAnchor2 = [(CPUIProgressView *)self leadingAnchor];
+  v66 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v83[0] = v66;
-  v63 = [(_CPUILiveTrackView *)self->_liveTrackView trailingAnchor];
-  v60 = [(CPUIProgressView *)self trailingAnchor];
-  v57 = [v63 constraintEqualToAnchor:v60];
+  trailingAnchor = [(_CPUILiveTrackView *)self->_liveTrackView trailingAnchor];
+  trailingAnchor2 = [(CPUIProgressView *)self trailingAnchor];
+  v57 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v83[1] = v57;
-  v54 = [(_CPUILiveTrackView *)self->_liveTrackView centerYAnchor];
-  v52 = [(CPUIProgressView *)self centerYAnchor];
-  v50 = [v54 constraintEqualToAnchor:v52];
+  centerYAnchor = [(_CPUILiveTrackView *)self->_liveTrackView centerYAnchor];
+  centerYAnchor2 = [(CPUIProgressView *)self centerYAnchor];
+  v50 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v83[2] = v50;
-  v6 = [(_CPUILiveTrackView *)self->_liveTrackView heightAnchor];
-  v7 = v6;
+  heightAnchor2 = [(_CPUILiveTrackView *)self->_liveTrackView heightAnchor];
+  v7 = heightAnchor2;
   v8 = 6.0;
   if (self->_labelStyle == 1)
   {
     v8 = 11.0;
   }
 
-  v9 = [v6 constraintEqualToConstant:v8];
+  v9 = [heightAnchor2 constraintEqualToConstant:v8];
   v83[3] = v9;
-  v10 = [(UILabel *)self->_liveLabel centerYAnchor];
-  v11 = [(CPUIProgressView *)self centerYAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerYAnchor3 = [(UILabel *)self->_liveLabel centerYAnchor];
+  centerYAnchor4 = [(CPUIProgressView *)self centerYAnchor];
+  v12 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v83[4] = v12;
-  v13 = [(UILabel *)self->_liveLabel centerXAnchor];
-  v14 = [(CPUIProgressView *)self centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerXAnchor = [(UILabel *)self->_liveLabel centerXAnchor];
+  centerXAnchor2 = [(CPUIProgressView *)self centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v83[5] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:6];
   [v74 addObjectsFromArray:v16];
 
   if ([(CPUIProgressView *)self showsProgressLabels])
   {
-    v17 = [(UILabel *)self->_timeLabel leftAnchor];
-    v18 = [(CPUIProgressView *)self leftAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    leftAnchor = [(UILabel *)self->_timeLabel leftAnchor];
+    leftAnchor2 = [(CPUIProgressView *)self leftAnchor];
+    v19 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v82[0] = v19;
-    v20 = [(UILabel *)self->_timeRemainingLabel rightAnchor];
-    v21 = [(CPUIProgressView *)self rightAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    rightAnchor = [(UILabel *)self->_timeRemainingLabel rightAnchor];
+    rightAnchor2 = [(CPUIProgressView *)self rightAnchor];
+    v22 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v82[1] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:2];
     [v74 addObjectsFromArray:v23];
@@ -313,98 +313,98 @@
     timeLabel = self->_timeLabel;
     if (self->_labelStyle)
     {
-      v58 = [(UILabel *)timeLabel topAnchor];
-      v70 = [(CPUIProgressBarView *)self->_progressBarView bottomAnchor];
-      v64 = [v58 constraintEqualToAnchor:v70 constant:6.0];
+      topAnchor = [(UILabel *)timeLabel topAnchor];
+      bottomAnchor = [(CPUIProgressBarView *)self->_progressBarView bottomAnchor];
+      v64 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:6.0];
       v76[0] = v64;
-      v67 = [(UILabel *)self->_timeLabel leftAnchor];
-      v61 = [(CPUIProgressView *)self leftAnchor];
-      v55 = [v67 constraintEqualToAnchor:v61];
+      leftAnchor3 = [(UILabel *)self->_timeLabel leftAnchor];
+      leftAnchor4 = [(CPUIProgressView *)self leftAnchor];
+      v55 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
       v76[1] = v55;
-      v49 = [(UILabel *)self->_timeRemainingLabel topAnchor];
-      v73 = [(CPUIProgressBarView *)self->_progressBarView bottomAnchor];
-      v25 = [v49 constraintEqualToAnchor:6.0 constant:?];
+      topAnchor2 = [(UILabel *)self->_timeRemainingLabel topAnchor];
+      bottomAnchor2 = [(CPUIProgressBarView *)self->_progressBarView bottomAnchor];
+      v25 = [topAnchor2 constraintEqualToAnchor:6.0 constant:?];
       v76[2] = v25;
-      v26 = [(CPUIProgressBarView *)self->_progressBarView topAnchor];
-      v53 = [(CPUIProgressView *)self topAnchor];
-      v51 = [v26 constraintEqualToAnchor:v53];
+      topAnchor3 = [(CPUIProgressBarView *)self->_progressBarView topAnchor];
+      topAnchor4 = [(CPUIProgressView *)self topAnchor];
+      v51 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v76[3] = v51;
-      v27 = [(CPUIProgressBarView *)self->_progressBarView leftAnchor];
-      v28 = [(CPUIProgressView *)self leftAnchor];
-      v29 = [v27 constraintEqualToAnchor:v28];
+      leftAnchor5 = [(CPUIProgressBarView *)self->_progressBarView leftAnchor];
+      leftAnchor6 = [(CPUIProgressView *)self leftAnchor];
+      v29 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
       v76[4] = v29;
-      v30 = [(CPUIProgressBarView *)self->_progressBarView rightAnchor];
-      v31 = [(CPUIProgressView *)self rightAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
+      rightAnchor3 = [(CPUIProgressBarView *)self->_progressBarView rightAnchor];
+      rightAnchor4 = [(CPUIProgressView *)self rightAnchor];
+      v32 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
       v76[5] = v32;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:6];
       [v74 addObjectsFromArray:v33];
 
-      v34 = v49;
+      centerYAnchor10 = topAnchor2;
       v35 = v55;
 
       v36 = v64;
-      v37 = v58;
+      centerYAnchor5 = topAnchor;
 
-      v38 = v70;
-      v39 = v61;
+      leadingAnchor3 = bottomAnchor;
+      trailingAnchor4 = leftAnchor4;
 
-      v40 = v67;
-      v41 = v53;
+      trailingAnchor3 = leftAnchor3;
+      v41 = topAnchor4;
     }
 
     else
     {
-      v37 = [(UILabel *)timeLabel centerYAnchor];
-      v71 = [(CPUIProgressView *)self centerYAnchor];
-      v65 = [v37 constraintEqualToAnchor:v71];
+      centerYAnchor5 = [(UILabel *)timeLabel centerYAnchor];
+      centerYAnchor6 = [(CPUIProgressView *)self centerYAnchor];
+      v65 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
       v77 = v65;
-      v68 = [(UILabel *)self->_timeRemainingLabel centerYAnchor];
-      v62 = [(UILabel *)self->_timeLabel centerYAnchor];
-      v78 = [v68 constraintEqualToAnchor:v62];
-      v42 = [(CPUIProgressBarView *)self->_progressBarView centerYAnchor];
-      v73 = [(UILabel *)self->_timeLabel centerYAnchor];
-      v25 = [v42 constraintEqualToAnchor:0.5 constant:?];
+      centerYAnchor7 = [(UILabel *)self->_timeRemainingLabel centerYAnchor];
+      centerYAnchor8 = [(UILabel *)self->_timeLabel centerYAnchor];
+      v78 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
+      centerYAnchor9 = [(CPUIProgressBarView *)self->_progressBarView centerYAnchor];
+      bottomAnchor2 = [(UILabel *)self->_timeLabel centerYAnchor];
+      v25 = [centerYAnchor9 constraintEqualToAnchor:0.5 constant:?];
       v79 = v25;
-      v26 = [(CPUIProgressBarView *)self->_progressBarView leftAnchor];
-      v34 = v42;
-      v59 = [(UILabel *)self->_timeLabel rightAnchor];
-      v56 = [v26 constraintEqualToAnchor:v59 constant:4.0];
+      topAnchor3 = [(CPUIProgressBarView *)self->_progressBarView leftAnchor];
+      centerYAnchor10 = centerYAnchor9;
+      rightAnchor5 = [(UILabel *)self->_timeLabel rightAnchor];
+      v56 = [topAnchor3 constraintEqualToAnchor:rightAnchor5 constant:4.0];
       v80 = v56;
-      v43 = [(CPUIProgressBarView *)self->_progressBarView rightAnchor];
+      rightAnchor6 = [(CPUIProgressBarView *)self->_progressBarView rightAnchor];
       v35 = v78;
-      v44 = [(UILabel *)self->_timeRemainingLabel leftAnchor];
-      v45 = [v43 constraintEqualToAnchor:v44 constant:-4.0];
+      leftAnchor7 = [(UILabel *)self->_timeRemainingLabel leftAnchor];
+      v45 = [rightAnchor6 constraintEqualToAnchor:leftAnchor7 constant:-4.0];
       v81 = v45;
       v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v77 count:5];
       [v74 addObjectsFromArray:v46];
 
       v36 = v65;
-      v38 = v71;
+      leadingAnchor3 = centerYAnchor6;
 
-      v39 = v62;
-      v40 = v68;
+      trailingAnchor4 = centerYAnchor8;
+      trailingAnchor3 = centerYAnchor7;
 
-      v41 = v59;
+      v41 = rightAnchor5;
     }
   }
 
   else
   {
-    v37 = [(CPUIProgressBarView *)self->_progressBarView leadingAnchor];
-    v38 = [(CPUIProgressView *)self leadingAnchor];
-    v36 = [v37 constraintEqualToAnchor:v38];
+    centerYAnchor5 = [(CPUIProgressBarView *)self->_progressBarView leadingAnchor];
+    leadingAnchor3 = [(CPUIProgressView *)self leadingAnchor];
+    v36 = [centerYAnchor5 constraintEqualToAnchor:leadingAnchor3];
     v75[0] = v36;
-    v40 = [(CPUIProgressBarView *)self->_progressBarView trailingAnchor];
-    v39 = [(CPUIProgressView *)self trailingAnchor];
-    v35 = [v40 constraintEqualToAnchor:v39];
+    trailingAnchor3 = [(CPUIProgressBarView *)self->_progressBarView trailingAnchor];
+    trailingAnchor4 = [(CPUIProgressView *)self trailingAnchor];
+    v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v75[1] = v35;
-    v34 = [(CPUIProgressBarView *)self->_progressBarView centerYAnchor];
-    v73 = [(CPUIProgressView *)self centerYAnchor];
-    v25 = [v34 constraintEqualToAnchor:?];
+    centerYAnchor10 = [(CPUIProgressBarView *)self->_progressBarView centerYAnchor];
+    bottomAnchor2 = [(CPUIProgressView *)self centerYAnchor];
+    v25 = [centerYAnchor10 constraintEqualToAnchor:?];
     v75[2] = v25;
-    v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:3];
-    [v74 addObjectsFromArray:v26];
+    topAnchor3 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:3];
+    [v74 addObjectsFromArray:topAnchor3];
   }
 
   v47 = [MEMORY[0x277CBEA60] arrayWithArray:v74];
@@ -424,8 +424,8 @@
   [(UILabel *)self->_liveLabel invalidateIntrinsicContentSize];
   [(_CPUILiveTrackView *)self->_liveTrackView bounds];
   v3 = CGRectGetHeight(v8) * 0.5;
-  v4 = [(_CPUILiveTrackView *)self->_liveTrackView layer];
-  [v4 setCornerRadius:v3];
+  layer = [(_CPUILiveTrackView *)self->_liveTrackView layer];
+  [layer setCornerRadius:v3];
 
   [(UILabel *)self->_liveLabel bounds];
   v5 = CGRectGetWidth(v9) + 8.0;
@@ -439,13 +439,13 @@
   [(_CPUILiveTrackView *)self->_liveTrackView setErasedPercentage:v5 / Width];
 }
 
-- (void)updateLocalizedDurationString:(id)a3
+- (void)updateLocalizedDurationString:(id)string
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  stringCopy = string;
+  v9 = stringCopy;
+  if (stringCopy)
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   else
@@ -455,18 +455,18 @@
 
   v6 = v5;
   liveLabel = self->_liveLabel;
-  v8 = [v5 localizedUppercaseString];
-  [(UILabel *)liveLabel setText:v8];
+  localizedUppercaseString = [v5 localizedUppercaseString];
+  [(UILabel *)liveLabel setText:localizedUppercaseString];
 }
 
-- (void)setDurationSnapshot:(id *)a3
+- (void)setDurationSnapshot:(id *)snapshot
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = CarPlayUIGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    var3 = a3->var3;
-    var4 = a3->var4;
+    var3 = snapshot->var3;
+    var4 = snapshot->var4;
     v17 = 134218240;
     v18 = var3;
     v19 = 2048;
@@ -474,14 +474,14 @@
     _os_log_impl(&dword_243134000, v5, OS_LOG_TYPE_DEFAULT, "Progress view set duration: %f, with elapsed duration: %f", &v17, 0x16u);
   }
 
-  v9 = *&a3->var2;
-  v8 = *&a3->var4;
-  v10 = *&a3->var0;
-  *&self->_durationSnapshot.isLiveContent = *&a3->var7;
+  v9 = *&snapshot->var2;
+  v8 = *&snapshot->var4;
+  v10 = *&snapshot->var0;
+  *&self->_durationSnapshot.isLiveContent = *&snapshot->var7;
   *&self->_durationSnapshot.endTime = v9;
   *&self->_durationSnapshot.elapsedDuration = v8;
   *&self->_durationSnapshot.snapshotTime = v10;
-  var7 = a3->var7;
+  var7 = snapshot->var7;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   duration = self->_durationSnapshot.elapsedDuration + (v12 - self->_durationSnapshot.snapshotTime) * self->_durationSnapshot.rate;
   if (duration >= self->_durationSnapshot.duration)
@@ -496,9 +496,9 @@
   }
 
   [(CPUIProgressView *)self _updateProgressForElapsedTime:v14 duration:self->_durationSnapshot.duration];
-  v15 = [(CPUIProgressView *)self showsProgressLabels];
-  v16 = var7 | ~v15;
-  [(UILabel *)self->_timeLabel setHidden:var7 || (v15 & 1) == 0];
+  showsProgressLabels = [(CPUIProgressView *)self showsProgressLabels];
+  v16 = var7 | ~showsProgressLabels;
+  [(UILabel *)self->_timeLabel setHidden:var7 || (showsProgressLabels & 1) == 0];
   [(UILabel *)self->_timeRemainingLabel setHidden:v16];
   [(CPUIProgressBarView *)self->_progressBarView setHidden:var7];
   [(UILabel *)self->_liveLabel setHidden:var7 ^ 1];
@@ -507,7 +507,7 @@
   [(CPUIProgressView *)self runUntilNextDisplayLinkEvent];
 }
 
-- (void)_displayLinkTick:(id)a3
+- (void)_displayLinkTick:(id)tick
 {
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v5 = v4;
@@ -545,9 +545,9 @@
   [(CPUIProgressView *)self pauseDisplayLinkIfNeeded];
 }
 
-- (void)_updateLabelsForElapsedTime:(double)a3 duration:(double)a4
+- (void)_updateLabelsForElapsedTime:(double)time duration:(double)duration
 {
-  if (a4 <= 1.17549435e-38)
+  if (duration <= 1.17549435e-38)
   {
     v6 = &stru_2855CA368;
     v14 = &stru_2855CA368;
@@ -556,11 +556,11 @@
 
   else
   {
-    v8 = a3;
-    v14 = CPUITimeDurationForSeconds(v8);
-    if (a4 - a3 >= 0.0)
+    timeCopy = time;
+    v14 = CPUITimeDurationForSeconds(timeCopy);
+    if (duration - time >= 0.0)
     {
-      v9 = a4 - a3;
+      v9 = duration - time;
     }
 
     else
@@ -580,9 +580,9 @@
   [(UILabel *)self->_timeRemainingLabel setText:v6];
 }
 
-- (void)_updateProgressForElapsedTime:(double)a3 duration:(double)a4
+- (void)_updateProgressForElapsedTime:(double)time duration:(double)duration
 {
-  if (fabs(a4) <= 0.00000011920929)
+  if (fabs(duration) <= 0.00000011920929)
   {
     progressBarView = self->_progressBarView;
     v6 = 0.0;
@@ -590,7 +590,7 @@
 
   else
   {
-    v4 = a3 / a4;
+    v4 = time / duration;
     progressBarView = self->_progressBarView;
     if (v4 < 0.0)
     {

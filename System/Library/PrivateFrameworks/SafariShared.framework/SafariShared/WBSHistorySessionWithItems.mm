@@ -1,18 +1,18 @@
 @interface WBSHistorySessionWithItems
-- (WBSHistorySessionWithItems)initWithSessionStartDate:(id)a3 items:(id)a4;
+- (WBSHistorySessionWithItems)initWithSessionStartDate:(id)date items:(id)items;
 @end
 
 @implementation WBSHistorySessionWithItems
 
-- (WBSHistorySessionWithItems)initWithSessionStartDate:(id)a3 items:(id)a4
+- (WBSHistorySessionWithItems)initWithSessionStartDate:(id)date items:(id)items
 {
-  v6 = a4;
+  itemsCopy = items;
   v12.receiver = self;
   v12.super_class = WBSHistorySessionWithItems;
-  v7 = [(WBSHistorySession *)&v12 initWithSessionStartDate:a3];
+  v7 = [(WBSHistorySession *)&v12 initWithSessionStartDate:date];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [itemsCopy copy];
     items = v7->_items;
     v7->_items = v8;
 

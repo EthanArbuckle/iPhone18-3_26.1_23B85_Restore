@@ -1,16 +1,16 @@
 @interface AAUITrustedContactsImageProvider
 + (id)addContactImage;
 + (id)iCloudDataRecoveryServiceImage;
-+ (id)imageForLocalContact:(id)a3;
++ (id)imageForLocalContact:(id)contact;
 @end
 
 @implementation AAUITrustedContactsImageProvider
 
-+ (id)imageForLocalContact:(id)a3
++ (id)imageForLocalContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_opt_new();
-  v5 = [v4 profilePictureForLocalContact:v3];
+  v5 = [v4 profilePictureForLocalContact:contactCopy];
 
   v6 = [v5 imageByPreparingThumbnailOfSize:{35.0, 35.0}];
 

@@ -1,21 +1,21 @@
 @interface AWDWiFiMetricsManagerBlacklistingInstanceInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBlacklistingReason:(BOOL)a3;
-- (void)setHasReservedInfo:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBlacklistingReason:(BOOL)reason;
+- (void)setHasReservedInfo:(BOOL)info;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerBlacklistingInstanceInfo
 
-- (void)setHasBlacklistingReason:(BOOL)a3
+- (void)setHasBlacklistingReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasReservedInfo:(BOOL)a3
+- (void)setHasReservedInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 4;
   }
@@ -52,7 +52,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -62,16 +62,16 @@
     }
 
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_blacklistingTimestamp), @"blacklistingTimestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_blacklistingTimestamp), @"blacklistingTimestamp"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_4;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_blacklistingReason), @"blacklistingReason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_blacklistingReason), @"blacklistingReason"}];
   has = self->_has;
   if (has)
   {
@@ -82,13 +82,13 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_reservedInfo), @"reservedInfo"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_reservedInfo), @"reservedInfo"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) == 0)
@@ -129,13 +129,13 @@ LABEL_7:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_blacklistingReason;
-    *(a3 + 24) |= 2u;
+    *(to + 4) = self->_blacklistingReason;
+    *(to + 24) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -146,8 +146,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 5) = self->_reservedInfo;
-      *(a3 + 24) |= 4u;
+      *(to + 5) = self->_reservedInfo;
+      *(to + 24) |= 4u;
       return;
     }
   }
@@ -157,17 +157,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 1) = self->_blacklistingTimestamp;
-  *(a3 + 24) |= 1u;
+  *(to + 1) = self->_blacklistingTimestamp;
+  *(to + 24) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -204,20 +204,20 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 24) & 2) == 0 || self->_blacklistingReason != *(a3 + 4))
+      if ((*(equal + 24) & 2) == 0 || self->_blacklistingReason != *(equal + 4))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 24) & 2) != 0)
+    else if ((*(equal + 24) & 2) != 0)
     {
 LABEL_16:
       LOBYTE(v5) = 0;
@@ -226,21 +226,21 @@ LABEL_16:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_blacklistingTimestamp != *(a3 + 1))
+      if ((*(equal + 24) & 1) == 0 || self->_blacklistingTimestamp != *(equal + 1))
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
       goto LABEL_16;
     }
 
-    LOBYTE(v5) = (*(a3 + 24) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 24) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 24) & 4) == 0 || self->_reservedInfo != *(a3 + 5))
+      if ((*(equal + 24) & 4) == 0 || self->_reservedInfo != *(equal + 5))
       {
         goto LABEL_16;
       }
@@ -292,14 +292,14 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 2) != 0)
   {
-    self->_blacklistingReason = *(a3 + 4);
+    self->_blacklistingReason = *(from + 4);
     *&self->_has |= 2u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
     if ((v3 & 1) == 0)
     {
 LABEL_3:
@@ -309,20 +309,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_reservedInfo = *(a3 + 5);
+      self->_reservedInfo = *(from + 5);
       *&self->_has |= 4u;
       return;
     }
   }
 
-  else if ((*(a3 + 24) & 1) == 0)
+  else if ((*(from + 24) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_blacklistingTimestamp = *(a3 + 1);
+  self->_blacklistingTimestamp = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 24) & 4) != 0)
+  if ((*(from + 24) & 4) != 0)
   {
     goto LABEL_7;
   }

@@ -1,22 +1,22 @@
 @interface CMAnomalyManager
 + (BOOL)isAnomalyDetectionAvailable;
-+ (int64_t)getAnomalyFeatureEnablingStrategyForUserAge:(id)a3;
++ (int64_t)getAnomalyFeatureEnablingStrategyForUserAge:(id)age;
 - (CMAnomalyManager)init;
-- (void)_registerForAnomalyDetection:(BOOL)a3;
-- (void)_sendRegistrationForAnomalyEvent:(id)a3;
-- (void)ackAnomalyEvent:(id)a3 withResolution:(int64_t)a4;
+- (void)_registerForAnomalyDetection:(BOOL)detection;
+- (void)_sendRegistrationForAnomalyEvent:(id)event;
+- (void)ackAnomalyEvent:(id)event withResolution:(int64_t)resolution;
 - (void)dealloc;
-- (void)resolveAnomalyEvent:(id)a3 withResolution:(int64_t)a4;
-- (void)respondToAnomalyEvent:(id)a3 withResponse:(int64_t)a4;
-- (void)setDelegate:(id)a3;
+- (void)resolveAnomalyEvent:(id)event withResolution:(int64_t)resolution;
+- (void)respondToAnomalyEvent:(id)event withResponse:(int64_t)response;
+- (void)setDelegate:(id)delegate;
 - (void)startAnomalyDetection;
 - (void)stopAnomalyDetection;
-- (void)updateAnomalyEventSOSCallState:(id)a3 withSOSSCallState:(int64_t)a4;
+- (void)updateAnomalyEventSOSCallState:(id)state withSOSSCallState:(int64_t)callState;
 @end
 
 @implementation CMAnomalyManager
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_delegate)
@@ -41,8 +41,8 @@
 
   self->fLastReceivedEvent = objc_alloc_init(CMAnomalyEvent);
   self->fLastDispatchedEvent = objc_alloc_init(CMAnomalyEvent);
-  self->_delegate = a3;
-  if (a3)
+  self->_delegate = delegate;
+  if (delegate)
   {
     if (qword_1EAFE29A8 != -1)
     {
@@ -234,9 +234,9 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerForAnomalyDetection:(BOOL)a3
+- (void)_registerForAnomalyDetection:(BOOL)detection
 {
-  v3 = a3;
+  detectionCopy = detection;
   v13 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE29A8 != -1)
   {
@@ -251,16 +251,16 @@
     v9 = 2082;
     v10 = "";
     v11 = 1026;
-    v12 = v3;
+    v12 = detectionCopy;
     _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:CMAnomalyManager: registering for anomaly detection, registerFlag:%{public}hhd}", v8, 0x18u);
   }
 
-  self->fRegisteredForNotification = v3;
+  self->fRegisteredForNotification = detectionCopy;
   objc_msgSend__sendRegistrationForAnomalyEvent_(self, v6, self->fLastReceivedEvent);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ackAnomalyEvent:(id)a3 withResolution:(int64_t)a4
+- (void)ackAnomalyEvent:(id)event withResolution:(int64_t)resolution
 {
   v11 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE29A8 != -1)
@@ -295,10 +295,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendRegistrationForAnomalyEvent:(id)a3
+- (void)_sendRegistrationForAnomalyEvent:(id)event
 {
   v56 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_identifier(a3, a2, a3))
+  if (objc_msgSend_identifier(event, a2, event))
   {
     if (qword_1EAFE29A8 != -1)
     {
@@ -309,10 +309,10 @@
     if (os_log_type_enabled(qword_1EAFE29B0, OS_LOG_TYPE_DEBUG))
     {
       fRegisteredForNotification = self->fRegisteredForNotification;
-      v9 = objc_msgSend_identifier(a3, v6, v7);
-      objc_msgSend_absoluteTimestamp(a3, v10, v11);
+      v9 = objc_msgSend_identifier(event, v6, v7);
+      objc_msgSend_absoluteTimestamp(event, v10, v11);
       v13 = v12;
-      objc_msgSend_updateTimestamp(a3, v14, v15);
+      objc_msgSend_updateTimestamp(event, v14, v15);
       *buf = 68291075;
       v38 = 2082;
       v39 = "";
@@ -325,13 +325,13 @@
       v46 = 2049;
       v47 = v24;
       v48 = 2049;
-      v49 = objc_msgSend_state(a3, v16, v17);
+      v49 = objc_msgSend_state(event, v16, v17);
       v50 = 2049;
-      v51 = objc_msgSend_response(a3, v18, v19);
+      v51 = objc_msgSend_response(event, v18, v19);
       v52 = 2049;
-      v53 = objc_msgSend_resolution(a3, v20, v21);
+      v53 = objc_msgSend_resolution(event, v20, v21);
       v54 = 2049;
-      v55 = objc_msgSend_sosState(a3, v22, v23);
+      v55 = objc_msgSend_sosState(event, v22, v23);
       v25 = "{msg%{public}.0s:CMAnomalyManager: sendRegistrationForAnomalyEvent with event, registerFlag:%{public}hhd, identifier:%{public}llu, anomaly timestamp:%{private}f, update timestamp:%{private}f, state:%{private}ld, response:%{private}ld, resolution:%{private}ld, sosState:%{private}ld}";
       v26 = v5;
       v27 = 94;
@@ -364,7 +364,7 @@ LABEL_10:
     }
   }
 
-  v30 = objc_msgSend_copy(a3, v6, v7);
+  v30 = objc_msgSend_copy(event, v6, v7);
   Current = CFAbsoluteTimeGetCurrent();
   objc_msgSend_setUpdateTimestamp_(v30, v32, v33, Current);
   fPrivateQueue = self->fPrivateQueue;
@@ -379,11 +379,11 @@ LABEL_10:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-+ (int64_t)getAnomalyFeatureEnablingStrategyForUserAge:(id)a3
++ (int64_t)getAnomalyFeatureEnablingStrategyForUserAge:(id)age
 {
-  objc_msgSend_doubleValue(a3, a2, a3);
+  objc_msgSend_doubleValue(age, a2, age);
   result = 0;
-  if (a3 && v4 >= 0.0)
+  if (age && v4 >= 0.0)
   {
     if (v4 >= 18.0)
     {
@@ -415,34 +415,34 @@ LABEL_10:
   return result;
 }
 
-- (void)respondToAnomalyEvent:(id)a3 withResponse:(int64_t)a4
+- (void)respondToAnomalyEvent:(id)event withResponse:(int64_t)response
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!event)
   {
     v19 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v19, v20, a2, self, @"CMAnomalyManager.mm", 246, @"Invalid parameter not satisfying: %@", @"event");
   }
 
-  if (objc_msgSend_response(a3, a2, a3) && objc_msgSend_response(a3, v8, v9) != a4)
+  if (objc_msgSend_response(event, a2, event) && objc_msgSend_response(event, v8, v9) != response)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CMAnomalyManager.mm", 248, @"Invalid parameter not satisfying: %@", @"event.response == CMAnomalyEventResponseNone || event.response == response");
   }
 
-  if (!objc_msgSend_identifier(a3, v8, v9))
+  if (!objc_msgSend_identifier(event, v8, v9))
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CMAnomalyManager.mm", 250, @"Invalid parameter not satisfying: %@", @"event.identifier != 0");
   }
 
-  if (a4 <= 0)
+  if (response <= 0)
   {
     v23 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v23, v24, a2, self, @"CMAnomalyManager.mm", 252, @"Invalid parameter not satisfying: %@", @"response > CMAnomalyEventResponseNone");
   }
 
-  else if (a4 >= 6)
+  else if (response >= 6)
   {
     v17 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CMAnomalyManager.mm", 254, @"Invalid parameter not satisfying: %@", @"response <= CMAnomalyEventResponseAutomaticActionRequested");
@@ -461,45 +461,45 @@ LABEL_10:
     v29 = 2082;
     v30 = "";
     v31 = 2050;
-    v32 = objc_msgSend_identifier(a3, v13, v14);
+    v32 = objc_msgSend_identifier(event, v13, v14);
     v33 = 2049;
-    v34 = a4;
+    responseCopy = response;
     _os_log_impl(&dword_19B41C000, v12, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:CMAnomalyManager: respondToAnomalyEvent, identifier:%{public}llu, response:%{private}ld}", buf, 0x26u);
   }
 
-  objc_msgSend_setResponse_(a3, v13, a4);
-  objc_msgSend__sendRegistrationForAnomalyEvent_(self, v15, a3);
+  objc_msgSend_setResponse_(event, v13, response);
+  objc_msgSend__sendRegistrationForAnomalyEvent_(self, v15, event);
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveAnomalyEvent:(id)a3 withResolution:(int64_t)a4
+- (void)resolveAnomalyEvent:(id)event withResolution:(int64_t)resolution
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!event)
   {
     v19 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v19, v20, a2, self, @"CMAnomalyManager.mm", 268, @"Invalid parameter not satisfying: %@", @"event");
   }
 
-  if (objc_msgSend_resolution(a3, a2, a3) && objc_msgSend_resolution(a3, v8, v9) != a4)
+  if (objc_msgSend_resolution(event, a2, event) && objc_msgSend_resolution(event, v8, v9) != resolution)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CMAnomalyManager.mm", 270, @"Invalid parameter not satisfying: %@", @"event.resolution == CMAnomalyEventResolutionNone || event.resolution == resolution");
   }
 
-  if (!objc_msgSend_identifier(a3, v8, v9))
+  if (!objc_msgSend_identifier(event, v8, v9))
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CMAnomalyManager.mm", 272, @"Invalid parameter not satisfying: %@", @"event.identifier != 0");
   }
 
-  if (a4 <= 0)
+  if (resolution <= 0)
   {
     v23 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v23, v24, a2, self, @"CMAnomalyManager.mm", 274, @"Invalid parameter not satisfying: %@", @"resolution > CMAnomalyEventResolutionNone");
   }
 
-  else if (a4 >= 3)
+  else if (resolution >= 3)
   {
     v17 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CMAnomalyManager.mm", 276, @"Invalid parameter not satisfying: %@", @"resolution <= CMAnomalyEventResolutionCanceled");
@@ -518,60 +518,60 @@ LABEL_10:
     v29 = 2082;
     v30 = "";
     v31 = 2050;
-    v32 = objc_msgSend_identifier(a3, v13, v14);
+    v32 = objc_msgSend_identifier(event, v13, v14);
     v33 = 2049;
-    v34 = a4;
+    resolutionCopy = resolution;
     _os_log_impl(&dword_19B41C000, v12, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:CMAnomalyManager: resolveAnomalyEvent, identifier:%{public}llu, resolution:%{private}ld}", buf, 0x26u);
   }
 
-  objc_msgSend_setResolution_(a3, v13, a4);
-  objc_msgSend__sendRegistrationForAnomalyEvent_(self, v15, a3);
+  objc_msgSend_setResolution_(event, v13, resolution);
+  objc_msgSend__sendRegistrationForAnomalyEvent_(self, v15, event);
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAnomalyEventSOSCallState:(id)a3 withSOSSCallState:(int64_t)a4
+- (void)updateAnomalyEventSOSCallState:(id)state withSOSSCallState:(int64_t)callState
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!state)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CMAnomalyManager.mm", 288, @"Invalid parameter not satisfying: %@", @"event");
   }
 
-  if (!objc_msgSend_identifier(a3, a2, a3))
+  if (!objc_msgSend_identifier(state, a2, state))
   {
     v27 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CMAnomalyManager.mm", 291, @"Invalid parameter not satisfying: %@", @"event.identifier != 0");
   }
 
-  if ((a4 - 5) <= 0xFFFFFFFFFFFFFFFBLL)
+  if ((callState - 5) <= 0xFFFFFFFFFFFFFFFBLL)
   {
     v29 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v29, v30, a2, self, @"CMAnomalyManager.mm", 295, @"Invalid parameter not satisfying: %@", @"(sosCallState >= CMAnomalyEventResponseSOSCallInitiated) && (sosCallState <= CMAnomalyEventResponseSOSCallFailed)");
   }
 
-  if (objc_msgSend_resolution(a3, v8, v9) != 1)
+  if (objc_msgSend_resolution(state, v8, v9) != 1)
   {
     v31 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v32, a2, self, @"CMAnomalyManager.mm", 298, @"Invalid parameter not satisfying: %@", @"event.resolution == CMAnomalyEventResolutionCompleted");
   }
 
-  if (objc_msgSend_response(a3, v10, v11) != 1 && objc_msgSend_response(a3, v12, v13) != 5)
+  if (objc_msgSend_response(state, v10, v11) != 1 && objc_msgSend_response(state, v12, v13) != 5)
   {
     v33 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v12, v13);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v33, v34, a2, self, @"CMAnomalyManager.mm", 302, @"Invalid parameter not satisfying: %@", @"(event.response == CMAnomalyEventResponseConfirmedActionRequested) || (event.response == CMAnomalyEventResponseAutomaticActionRequested)");
   }
 
-  if ((a4 - 2) >= 3)
+  if ((callState - 2) >= 3)
   {
-    if (a4 == 1 && objc_msgSend_sosState(a3, v12, v13))
+    if (callState == 1 && objc_msgSend_sosState(state, v12, v13))
     {
       v35 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v18, v19);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v35, v36, a2, self, @"CMAnomalyManager.mm", 313, @"Invalid parameter not satisfying: %@", @"event.sosState == CMAnomalyEventResponseSOSCallNone");
     }
   }
 
-  else if (objc_msgSend_sosState(a3, v12, v13) != 1)
+  else if (objc_msgSend_sosState(state, v12, v13) != 1)
   {
     v16 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v14, v15);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v16, v17, a2, self, @"CMAnomalyManager.mm", 308, @"Invalid parameter not satisfying: %@", @"event.sosState == CMAnomalyEventResponseSOSCallInitiated");
@@ -590,14 +590,14 @@ LABEL_10:
     v39 = 2082;
     v40 = "";
     v41 = 2050;
-    v42 = objc_msgSend_identifier(a3, v21, v22);
+    v42 = objc_msgSend_identifier(state, v21, v22);
     v43 = 2049;
-    v44 = a4;
+    callStateCopy = callState;
     _os_log_impl(&dword_19B41C000, v20, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:CMAnomalyManager: updateAnomalyEventSOSCallState, identifier:%{public}llu, sosCallState:%{private}ld}", buf, 0x26u);
   }
 
-  objc_msgSend_setSosState_(a3, v21, a4);
-  objc_msgSend__sendRegistrationForAnomalyEvent_(self, v23, a3);
+  objc_msgSend_setSosState_(state, v21, callState);
+  objc_msgSend__sendRegistrationForAnomalyEvent_(self, v23, state);
   v24 = *MEMORY[0x1E69E9840];
 }
 

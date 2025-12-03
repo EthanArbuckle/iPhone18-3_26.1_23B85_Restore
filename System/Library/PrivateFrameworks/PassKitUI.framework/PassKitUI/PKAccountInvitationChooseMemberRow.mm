@@ -1,26 +1,26 @@
 @interface PKAccountInvitationChooseMemberRow
-- (BOOL)isEqual:(id)a3;
-- (PKAccountInvitationChooseMemberRow)initWithFamilyMember:(id)a3 photoImage:(id)a4 eligibility:(BOOL)a5;
-- (id)cellForTableView:(id)a3 atIndexPath:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountInvitationChooseMemberRow)initWithFamilyMember:(id)member photoImage:(id)image eligibility:(BOOL)eligibility;
+- (id)cellForTableView:(id)view atIndexPath:(id)path;
 - (unint64_t)hash;
-- (void)_updateConfiguration:(id)a3;
+- (void)_updateConfiguration:(id)configuration;
 @end
 
 @implementation PKAccountInvitationChooseMemberRow
 
-- (PKAccountInvitationChooseMemberRow)initWithFamilyMember:(id)a3 photoImage:(id)a4 eligibility:(BOOL)a5
+- (PKAccountInvitationChooseMemberRow)initWithFamilyMember:(id)member photoImage:(id)image eligibility:(BOOL)eligibility
 {
-  v9 = a3;
-  v10 = a4;
+  memberCopy = member;
+  imageCopy = image;
   v18.receiver = self;
   v18.super_class = PKAccountInvitationChooseMemberRow;
   v11 = [(PKAccountInvitationChooseMemberRow *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_familyMember, a3);
-    v12->_eligible = a5;
-    objc_storeStrong(&v12->_photoImage, a4);
+    objc_storeStrong(&v11->_familyMember, member);
+    v12->_eligible = eligibility;
+    objc_storeStrong(&v12->_photoImage, image);
     v13 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     nameFormatter = v12->_nameFormatter;
     v12->_nameFormatter = v13;
@@ -37,17 +37,17 @@
   return v12;
 }
 
-- (id)cellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)cellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"FamilyMemberCellReuseIdentifier" forIndexPath:a4];
-  v6 = [v5 defaultContentConfiguration];
-  [(PKAccountInvitationChooseMemberRow *)self _updateConfiguration:v6];
-  [v5 setContentConfiguration:v6];
-  v7 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
-  v8 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-  [v7 setBackgroundColor:v8];
+  v5 = [view dequeueReusableCellWithIdentifier:@"FamilyMemberCellReuseIdentifier" forIndexPath:path];
+  defaultContentConfiguration = [v5 defaultContentConfiguration];
+  [(PKAccountInvitationChooseMemberRow *)self _updateConfiguration:defaultContentConfiguration];
+  [v5 setContentConfiguration:defaultContentConfiguration];
+  listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+  secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+  [listCellConfiguration setBackgroundColor:secondarySystemFillColor];
 
-  [v5 setBackgroundConfiguration:v7];
+  [v5 setBackgroundConfiguration:listCellConfiguration];
   if (self->_eligible)
   {
     v9 = 3;
@@ -65,16 +65,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (PKEqualObjects())
@@ -106,51 +106,51 @@
   return v4;
 }
 
-- (void)_updateConfiguration:(id)a3
+- (void)_updateConfiguration:(id)configuration
 {
-  v26 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v5 = [(PKFamilyMember *)self->_familyMember firstName];
-  [v4 setGivenName:v5];
+  firstName = [(PKFamilyMember *)self->_familyMember firstName];
+  [v4 setGivenName:firstName];
 
-  v6 = [(PKFamilyMember *)self->_familyMember lastName];
-  [v4 setFamilyName:v6];
+  lastName = [(PKFamilyMember *)self->_familyMember lastName];
+  [v4 setFamilyName:lastName];
 
   v7 = [(NSPersonNameComponentsFormatter *)self->_nameFormatter stringFromPersonNameComponents:v4];
   if ([v7 length])
   {
-    [v26 setText:v7];
+    [configurationCopy setText:v7];
   }
 
   else
   {
-    v8 = [(PKFamilyMember *)self->_familyMember inviteEmail];
-    if (v8)
+    inviteEmail = [(PKFamilyMember *)self->_familyMember inviteEmail];
+    if (inviteEmail)
     {
-      [v26 setText:v8];
+      [configurationCopy setText:inviteEmail];
     }
 
     else
     {
-      v9 = [(PKFamilyMember *)self->_familyMember appleID];
-      [v26 setText:v9];
+      appleID = [(PKFamilyMember *)self->_familyMember appleID];
+      [configurationCopy setText:appleID];
     }
   }
 
-  v10 = [v26 textProperties];
+  textProperties = [configurationCopy textProperties];
   v11 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0, 2, 0);
-  [v10 setFont:v11];
+  [textProperties setFont:v11];
 
   if (!self->_eligible)
   {
-    v12 = [v26 textProperties];
-    v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v12 setColor:v13];
+    textProperties2 = [configurationCopy textProperties];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [textProperties2 setColor:secondaryLabelColor];
   }
 
-  v14 = [(PKFamilyMember *)self->_familyMember memberType];
-  v15 = [(PKFamilyMember *)self->_familyMember status];
-  switch(v15)
+  memberType = [(PKFamilyMember *)self->_familyMember memberType];
+  status = [(PKFamilyMember *)self->_familyMember status];
+  switch(status)
   {
     case 2:
       goto LABEL_21;
@@ -158,7 +158,7 @@
       goto LABEL_19;
     case 0:
 LABEL_21:
-      if (![(PKFamilyMember *)self->_familyMember isOrganizer]&& ![(PKFamilyMember *)self->_familyMember isParent]&& v14)
+      if (![(PKFamilyMember *)self->_familyMember isOrganizer]&& ![(PKFamilyMember *)self->_familyMember isParent]&& memberType)
       {
         v16 = [(PKFamilyMember *)self->_familyMember age];
         if (v16)
@@ -171,7 +171,7 @@ LABEL_21:
           goto LABEL_23;
         }
 
-        if (v14 != 2 && v14 != 1)
+        if (memberType != 2 && memberType != 1)
         {
           break;
         }
@@ -184,18 +184,18 @@ LABEL_19:
 
   v19 = 0;
 LABEL_23:
-  [v26 setSecondaryText:{v19, v25}];
-  v20 = [v26 secondaryTextProperties];
-  v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v20 setColor:v21];
+  [configurationCopy setSecondaryText:{v19, v25}];
+  secondaryTextProperties = [configurationCopy secondaryTextProperties];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor2];
 
-  v22 = [v26 secondaryTextProperties];
+  secondaryTextProperties2 = [configurationCopy secondaryTextProperties];
   v23 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], 0);
-  [v22 setFont:v23];
+  [secondaryTextProperties2 setFont:v23];
 
-  [v26 setImage:self->_photoImage];
-  v24 = [v26 imageProperties];
-  [v24 setMaximumSize:{50.0, 50.0}];
+  [configurationCopy setImage:self->_photoImage];
+  imageProperties = [configurationCopy imageProperties];
+  [imageProperties setMaximumSize:{50.0, 50.0}];
 }
 
 @end

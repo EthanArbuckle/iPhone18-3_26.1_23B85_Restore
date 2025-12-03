@@ -1,36 +1,36 @@
 @interface TRIFullMAAssetId
-+ (id)identWithType:(id)a3 specifier:(id)a4 version:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIdent:(id)a3;
-- (TRIFullMAAssetId)initWithCoder:(id)a3;
-- (TRIFullMAAssetId)initWithType:(id)a3 specifier:(id)a4 version:(id)a5;
-- (id)copyWithReplacementSpecifier:(id)a3;
-- (id)copyWithReplacementType:(id)a3;
-- (id)copyWithReplacementVersion:(id)a3;
++ (id)identWithType:(id)type specifier:(id)specifier version:(id)version;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIdent:(id)ident;
+- (TRIFullMAAssetId)initWithCoder:(id)coder;
+- (TRIFullMAAssetId)initWithType:(id)type specifier:(id)specifier version:(id)version;
+- (id)copyWithReplacementSpecifier:(id)specifier;
+- (id)copyWithReplacementType:(id)type;
+- (id)copyWithReplacementVersion:(id)version;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIFullMAAssetId
 
-- (TRIFullMAAssetId)initWithType:(id)a3 specifier:(id)a4 version:(id)a5
+- (TRIFullMAAssetId)initWithType:(id)type specifier:(id)specifier version:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  typeCopy = type;
+  specifierCopy = specifier;
+  versionCopy = version;
+  if (typeCopy)
   {
-    if (v11)
+    if (specifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2594 description:{@"Invalid parameter not satisfying: %@", @"specifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2594 description:{@"Invalid parameter not satisfying: %@", @"specifier != nil"}];
 
-    if (v12)
+    if (versionCopy)
     {
       goto LABEL_4;
     }
@@ -38,23 +38,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2593 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2593 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
 
-  if (!v11)
+  if (!specifierCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (versionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2595 description:{@"Invalid parameter not satisfying: %@", @"version != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:2595 description:{@"Invalid parameter not satisfying: %@", @"version != nil"}];
 
 LABEL_4:
   v19.receiver = self;
@@ -63,60 +63,60 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_type, a3);
-    objc_storeStrong(&v14->_specifier, a4);
-    objc_storeStrong(&v14->_version, a5);
+    objc_storeStrong(&v13->_type, type);
+    objc_storeStrong(&v14->_specifier, specifier);
+    objc_storeStrong(&v14->_version, version);
   }
 
   return v14;
 }
 
-+ (id)identWithType:(id)a3 specifier:(id)a4 version:(id)a5
++ (id)identWithType:(id)type specifier:(id)specifier version:(id)version
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithType:v10 specifier:v9 version:v8];
+  versionCopy = version;
+  specifierCopy = specifier;
+  typeCopy = type;
+  v11 = [[self alloc] initWithType:typeCopy specifier:specifierCopy version:versionCopy];
 
   return v11;
 }
 
-- (id)copyWithReplacementType:(id)a3
+- (id)copyWithReplacementType:(id)type
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:v4 specifier:self->_specifier version:self->_version];
+  typeCopy = type;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:typeCopy specifier:self->_specifier version:self->_version];
 
   return v5;
 }
 
-- (id)copyWithReplacementSpecifier:(id)a3
+- (id)copyWithReplacementSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type specifier:v4 version:self->_version];
+  specifierCopy = specifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type specifier:specifierCopy version:self->_version];
 
   return v5;
 }
 
-- (id)copyWithReplacementVersion:(id)a3
+- (id)copyWithReplacementVersion:(id)version
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type specifier:self->_specifier version:v4];
+  versionCopy = version;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type specifier:self->_specifier version:versionCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToIdent:(id)a3
+- (BOOL)isEqualToIdent:(id)ident
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  identCopy = ident;
+  v5 = identCopy;
+  if (!identCopy)
   {
     goto LABEL_11;
   }
 
   v6 = self->_type == 0;
-  v7 = [v4 type];
-  v8 = v7 != 0;
+  type = [identCopy type];
+  v8 = type != 0;
 
   if (v6 == v8)
   {
@@ -126,8 +126,8 @@ LABEL_4:
   type = self->_type;
   if (type)
   {
-    v10 = [v5 type];
-    v11 = [(NSString *)type isEqual:v10];
+    type2 = [v5 type];
+    v11 = [(NSString *)type isEqual:type2];
 
     if (!v11)
     {
@@ -136,8 +136,8 @@ LABEL_4:
   }
 
   v12 = self->_specifier == 0;
-  v13 = [v5 specifier];
-  v14 = v13 != 0;
+  specifier = [v5 specifier];
+  v14 = specifier != 0;
 
   if (v12 == v14)
   {
@@ -147,8 +147,8 @@ LABEL_4:
   specifier = self->_specifier;
   if (specifier)
   {
-    v16 = [v5 specifier];
-    v17 = [(NSString *)specifier isEqual:v16];
+    specifier2 = [v5 specifier];
+    v17 = [(NSString *)specifier isEqual:specifier2];
 
     if (!v17)
     {
@@ -157,8 +157,8 @@ LABEL_4:
   }
 
   v18 = self->_version == 0;
-  v19 = [v5 version];
-  v20 = v19 != 0;
+  version = [v5 version];
+  v20 = version != 0;
 
   if (v18 == v20)
   {
@@ -171,8 +171,8 @@ LABEL_11:
     version = self->_version;
     if (version)
     {
-      v22 = [v5 version];
-      v23 = [(NSString *)version isEqual:v22];
+      version2 = [v5 version];
+      v23 = [(NSString *)version isEqual:version2];
     }
 
     else
@@ -184,18 +184,18 @@ LABEL_11:
   return v23 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIFullMAAssetId *)self isEqualToIdent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIFullMAAssetId *)self isEqualToIdent:v5];
   }
 
   return v6;
@@ -208,11 +208,11 @@ LABEL_11:
   return [(NSString *)self->_version hash]- v4 + 32 * v4;
 }
 
-- (TRIFullMAAssetId)initWithCoder:(id)a3
+- (TRIFullMAAssetId)initWithCoder:(id)coder
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   if (v5)
   {
     objc_opt_class();
@@ -220,15 +220,15 @@ LABEL_11:
     v7 = objc_opt_class();
     if (isKindOfClass)
     {
-      v8 = [v4 decodeObjectOfClass:v7 forKey:@"specifier"];
+      v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"specifier"];
       if (!v8)
       {
-        v20 = [v4 error];
+        error = [coderCopy error];
 
-        if (v20)
+        if (error)
         {
           v9 = 0;
-          v14 = 0;
+          selfCopy = 0;
 LABEL_24:
 
           goto LABEL_25;
@@ -238,7 +238,7 @@ LABEL_24:
         v39 = @"Retrieved nil serialized value for nonnull TRIFullMAAssetId.specifier";
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
         v23 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIFullMAAssetIdOCNTErrorDomain" code:2 userInfo:v13];
-        [v4 failWithError:v23];
+        [coderCopy failWithError:v23];
 
         v9 = 0;
         goto LABEL_22;
@@ -250,18 +250,18 @@ LABEL_24:
       v11 = objc_opt_class();
       if (v10)
       {
-        v12 = [v4 decodeObjectOfClass:v11 forKey:@"version"];
+        v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"version"];
         if (!v12)
         {
-          v24 = [v4 error];
+          error2 = [coderCopy error];
 
-          if (!v24)
+          if (!error2)
           {
             v34 = *MEMORY[0x277CCA450];
             v35 = @"Retrieved nil serialized value for nonnull TRIFullMAAssetId.version";
             v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
             v26 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIFullMAAssetIdOCNTErrorDomain" code:2 userInfo:v25];
-            [v4 failWithError:v26];
+            [coderCopy failWithError:v26];
           }
 
           v13 = 0;
@@ -273,7 +273,7 @@ LABEL_24:
         if (objc_opt_isKindOfClass())
         {
           self = [(TRIFullMAAssetId *)self initWithType:v5 specifier:v9 version:v13];
-          v14 = self;
+          selfCopy = self;
 LABEL_23:
 
           goto LABEL_24;
@@ -288,7 +288,7 @@ LABEL_23:
         v33 = v19;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
         v29 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIFullMAAssetIdOCNTErrorDomain" code:3 userInfo:v22];
-        [v4 failWithError:v29];
+        [coderCopy failWithError:v29];
       }
 
       else
@@ -301,7 +301,7 @@ LABEL_23:
         v37 = v18;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
         v22 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIFullMAAssetIdOCNTErrorDomain" code:3 userInfo:v19];
-        [v4 failWithError:v22];
+        [coderCopy failWithError:v22];
       }
     }
 
@@ -315,56 +315,56 @@ LABEL_23:
       v41 = v17;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
       v19 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIFullMAAssetIdOCNTErrorDomain" code:3 userInfo:v18];
-      [v4 failWithError:v19];
+      [coderCopy failWithError:v19];
     }
 
 LABEL_22:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_23;
   }
 
-  v15 = [v4 error];
+  error3 = [coderCopy error];
 
-  if (!v15)
+  if (!error3)
   {
     v42 = *MEMORY[0x277CCA450];
     v43[0] = @"Retrieved nil serialized value for nonnull TRIFullMAAssetId.type";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
     v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIFullMAAssetIdOCNTErrorDomain" code:2 userInfo:v9];
-    [v4 failWithError:v13];
+    [coderCopy failWithError:v13];
     goto LABEL_22;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_25:
 
   v30 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   type = self->_type;
-  v8 = v4;
+  v8 = coderCopy;
   if (type)
   {
-    [v4 encodeObject:type forKey:@"type"];
-    v4 = v8;
+    [coderCopy encodeObject:type forKey:@"type"];
+    coderCopy = v8;
   }
 
   specifier = self->_specifier;
   if (specifier)
   {
     [v8 encodeObject:specifier forKey:@"specifier"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   version = self->_version;
   if (version)
   {
     [v8 encodeObject:version forKey:@"version"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 

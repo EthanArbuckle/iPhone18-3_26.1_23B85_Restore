@@ -1,10 +1,10 @@
 @interface CycleTrackingFinishSetupTileCell
-- (_TtC24MenstrualCyclesAppPlugin32CycleTrackingFinishSetupTileCell)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin32CycleTrackingFinishSetupTileCell)initWithCoder:(id)coder;
 @end
 
 @implementation CycleTrackingFinishSetupTileCell
 
-- (_TtC24MenstrualCyclesAppPlugin32CycleTrackingFinishSetupTileCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin32CycleTrackingFinishSetupTileCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin32CycleTrackingFinishSetupTileCell_parentViewController) = 0;
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin32CycleTrackingFinishSetupTileCell_item;

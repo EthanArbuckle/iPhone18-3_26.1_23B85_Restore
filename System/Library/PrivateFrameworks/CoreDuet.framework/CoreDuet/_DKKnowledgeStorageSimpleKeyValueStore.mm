@@ -1,27 +1,27 @@
 @interface _DKKnowledgeStorageSimpleKeyValueStore
-- (id)initWithStorage:(void *)a3 domain:;
+- (id)initWithStorage:(void *)storage domain:;
 @end
 
 @implementation _DKKnowledgeStorageSimpleKeyValueStore
 
-- (id)initWithStorage:(void *)a3 domain:
+- (id)initWithStorage:(void *)storage domain:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  storageCopy = storage;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = _DKKnowledgeStorageSimpleKeyValueStore;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, storage);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

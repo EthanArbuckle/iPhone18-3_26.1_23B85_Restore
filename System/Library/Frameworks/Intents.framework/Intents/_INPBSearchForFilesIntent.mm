@@ -1,18 +1,18 @@
 @interface _INPBSearchForFilesIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForFilesIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForFilesIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsEntityType:(id)a3;
-- (int)StringAsScope:(id)a3;
+- (int)StringAsEntityType:(id)type;
+- (int)StringAsScope:(id)scope;
 - (unint64_t)hash;
-- (void)addProperties:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEntityType:(int)a3;
-- (void)setHasScope:(BOOL)a3;
-- (void)setProperties:(id)a3;
-- (void)setScope:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addProperties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEntityType:(int)type;
+- (void)setHasScope:(BOOL)scope;
+- (void)setProperties:(id)properties;
+- (void)setScope:(int)scope;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForFilesIntent
@@ -20,38 +20,38 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSearchForFilesIntent *)self appId];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"appId"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  appId = [(_INPBSearchForFilesIntent *)self appId];
+  dictionaryRepresentation = [appId dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appId"];
 
-  v6 = [(_INPBSearchForFilesIntent *)self entityName];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"entityName"];
+  entityName = [(_INPBSearchForFilesIntent *)self entityName];
+  dictionaryRepresentation2 = [entityName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"entityName"];
 
   if ([(_INPBSearchForFilesIntent *)self hasEntityType])
   {
-    v8 = [(_INPBSearchForFilesIntent *)self entityType];
-    if (v8 >= 4)
+    entityType = [(_INPBSearchForFilesIntent *)self entityType];
+    if (entityType >= 4)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", entityType];
     }
 
     else
     {
-      v9 = off_1E727EFA8[v8];
+      v9 = off_1E727EFA8[entityType];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"entityType"];
+    [dictionary setObject:v9 forKeyedSubscript:@"entityType"];
   }
 
-  v10 = [(_INPBSearchForFilesIntent *)self intentMetadata];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSearchForFilesIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
   if ([(NSArray *)self->_properties count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -71,8 +71,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation4 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation4];
         }
 
         v15 = [(NSArray *)v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -81,32 +81,32 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"properties"];
+    [dictionary setObject:array forKeyedSubscript:@"properties"];
   }
 
   if ([(_INPBSearchForFilesIntent *)self hasScope])
   {
-    v19 = [(_INPBSearchForFilesIntent *)self scope];
-    if (v19 >= 3)
+    scope = [(_INPBSearchForFilesIntent *)self scope];
+    if (scope >= 3)
     {
-      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v19];
+      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", scope];
     }
 
     else
     {
-      v20 = off_1E727EFC8[v19];
+      v20 = off_1E727EFC8[scope];
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"scope"];
+    [dictionary setObject:v20 forKeyedSubscript:@"scope"];
   }
 
-  v21 = [(_INPBSearchForFilesIntent *)self scopeEntityName];
-  v22 = [v21 dictionaryRepresentation];
-  [v3 setObject:v22 forKeyedSubscript:@"scopeEntityName"];
+  scopeEntityName = [(_INPBSearchForFilesIntent *)self scopeEntityName];
+  dictionaryRepresentation5 = [scopeEntityName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"scopeEntityName"];
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -138,28 +138,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(_INPBString *)self->_scopeEntityName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = [(_INPBSearchForFilesIntent *)self appId];
-  v6 = [v4 appId];
-  if ((v5 != 0) == (v6 == 0))
+  appId = [(_INPBSearchForFilesIntent *)self appId];
+  appId2 = [equalCopy appId];
+  if ((appId != 0) == (appId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v7 = [(_INPBSearchForFilesIntent *)self appId];
-  if (v7)
+  appId3 = [(_INPBSearchForFilesIntent *)self appId];
+  if (appId3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchForFilesIntent *)self appId];
-    v10 = [v4 appId];
-    v11 = [v9 isEqual:v10];
+    v8 = appId3;
+    appId4 = [(_INPBSearchForFilesIntent *)self appId];
+    appId5 = [equalCopy appId];
+    v11 = [appId4 isEqual:appId5];
 
     if (!v11)
     {
@@ -171,20 +171,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForFilesIntent *)self entityName];
-  v6 = [v4 entityName];
-  if ((v5 != 0) == (v6 == 0))
+  appId = [(_INPBSearchForFilesIntent *)self entityName];
+  appId2 = [equalCopy entityName];
+  if ((appId != 0) == (appId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v12 = [(_INPBSearchForFilesIntent *)self entityName];
-  if (v12)
+  entityName = [(_INPBSearchForFilesIntent *)self entityName];
+  if (entityName)
   {
-    v13 = v12;
-    v14 = [(_INPBSearchForFilesIntent *)self entityName];
-    v15 = [v4 entityName];
-    v16 = [v14 isEqual:v15];
+    v13 = entityName;
+    entityName2 = [(_INPBSearchForFilesIntent *)self entityName];
+    entityName3 = [equalCopy entityName];
+    v16 = [entityName2 isEqual:entityName3];
 
     if (!v16)
     {
@@ -196,38 +196,38 @@
   {
   }
 
-  v17 = [(_INPBSearchForFilesIntent *)self hasEntityType];
-  if (v17 != [v4 hasEntityType])
+  hasEntityType = [(_INPBSearchForFilesIntent *)self hasEntityType];
+  if (hasEntityType != [equalCopy hasEntityType])
   {
     goto LABEL_35;
   }
 
   if ([(_INPBSearchForFilesIntent *)self hasEntityType])
   {
-    if ([v4 hasEntityType])
+    if ([equalCopy hasEntityType])
     {
       entityType = self->_entityType;
-      if (entityType != [v4 entityType])
+      if (entityType != [equalCopy entityType])
       {
         goto LABEL_35;
       }
     }
   }
 
-  v5 = [(_INPBSearchForFilesIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  appId = [(_INPBSearchForFilesIntent *)self intentMetadata];
+  appId2 = [equalCopy intentMetadata];
+  if ((appId != 0) == (appId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v19 = [(_INPBSearchForFilesIntent *)self intentMetadata];
-  if (v19)
+  intentMetadata = [(_INPBSearchForFilesIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v20 = v19;
-    v21 = [(_INPBSearchForFilesIntent *)self intentMetadata];
-    v22 = [v4 intentMetadata];
-    v23 = [v21 isEqual:v22];
+    v20 = intentMetadata;
+    intentMetadata2 = [(_INPBSearchForFilesIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v23 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v23)
     {
@@ -239,20 +239,20 @@
   {
   }
 
-  v5 = [(_INPBSearchForFilesIntent *)self properties];
-  v6 = [v4 properties];
-  if ((v5 != 0) == (v6 == 0))
+  appId = [(_INPBSearchForFilesIntent *)self properties];
+  appId2 = [equalCopy properties];
+  if ((appId != 0) == (appId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v24 = [(_INPBSearchForFilesIntent *)self properties];
-  if (v24)
+  properties = [(_INPBSearchForFilesIntent *)self properties];
+  if (properties)
   {
-    v25 = v24;
-    v26 = [(_INPBSearchForFilesIntent *)self properties];
-    v27 = [v4 properties];
-    v28 = [v26 isEqual:v27];
+    v25 = properties;
+    properties2 = [(_INPBSearchForFilesIntent *)self properties];
+    properties3 = [equalCopy properties];
+    v28 = [properties2 isEqual:properties3];
 
     if (!v28)
     {
@@ -264,30 +264,30 @@
   {
   }
 
-  v29 = [(_INPBSearchForFilesIntent *)self hasScope];
-  if (v29 != [v4 hasScope])
+  hasScope = [(_INPBSearchForFilesIntent *)self hasScope];
+  if (hasScope != [equalCopy hasScope])
   {
     goto LABEL_35;
   }
 
   if ([(_INPBSearchForFilesIntent *)self hasScope])
   {
-    if ([v4 hasScope])
+    if ([equalCopy hasScope])
     {
       scope = self->_scope;
-      if (scope != [v4 scope])
+      if (scope != [equalCopy scope])
       {
         goto LABEL_35;
       }
     }
   }
 
-  v5 = [(_INPBSearchForFilesIntent *)self scopeEntityName];
-  v6 = [v4 scopeEntityName];
-  if ((v5 != 0) != (v6 == 0))
+  appId = [(_INPBSearchForFilesIntent *)self scopeEntityName];
+  appId2 = [equalCopy scopeEntityName];
+  if ((appId != 0) != (appId2 == 0))
   {
-    v31 = [(_INPBSearchForFilesIntent *)self scopeEntityName];
-    if (!v31)
+    scopeEntityName = [(_INPBSearchForFilesIntent *)self scopeEntityName];
+    if (!scopeEntityName)
     {
 
 LABEL_38:
@@ -295,10 +295,10 @@ LABEL_38:
       goto LABEL_36;
     }
 
-    v32 = v31;
-    v33 = [(_INPBSearchForFilesIntent *)self scopeEntityName];
-    v34 = [v4 scopeEntityName];
-    v35 = [v33 isEqual:v34];
+    v32 = scopeEntityName;
+    scopeEntityName2 = [(_INPBSearchForFilesIntent *)self scopeEntityName];
+    scopeEntityName3 = [equalCopy scopeEntityName];
+    v35 = [scopeEntityName2 isEqual:scopeEntityName3];
 
     if (v35)
     {
@@ -318,13 +318,13 @@ LABEL_36:
   return v36;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForFilesIntent allocWithZone:](_INPBSearchForFilesIntent init];
-  v6 = [(_INPBString *)self->_appId copyWithZone:a3];
+  v6 = [(_INPBString *)self->_appId copyWithZone:zone];
   [(_INPBSearchForFilesIntent *)v5 setAppId:v6];
 
-  v7 = [(_INPBString *)self->_entityName copyWithZone:a3];
+  v7 = [(_INPBString *)self->_entityName copyWithZone:zone];
   [(_INPBSearchForFilesIntent *)v5 setEntityName:v7];
 
   if ([(_INPBSearchForFilesIntent *)self hasEntityType])
@@ -332,10 +332,10 @@ LABEL_36:
     [(_INPBSearchForFilesIntent *)v5 setEntityType:[(_INPBSearchForFilesIntent *)self entityType]];
   }
 
-  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSearchForFilesIntent *)v5 setIntentMetadata:v8];
 
-  v9 = [(NSArray *)self->_properties copyWithZone:a3];
+  v9 = [(NSArray *)self->_properties copyWithZone:zone];
   [(_INPBSearchForFilesIntent *)v5 setProperties:v9];
 
   if ([(_INPBSearchForFilesIntent *)self hasScope])
@@ -343,53 +343,53 @@ LABEL_36:
     [(_INPBSearchForFilesIntent *)v5 setScope:[(_INPBSearchForFilesIntent *)self scope]];
   }
 
-  v10 = [(_INPBString *)self->_scopeEntityName copyWithZone:a3];
+  v10 = [(_INPBString *)self->_scopeEntityName copyWithZone:zone];
   [(_INPBSearchForFilesIntent *)v5 setScopeEntityName:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForFilesIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForFilesIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForFilesIntent)initWithCoder:(id)a3
+- (_INPBSearchForFilesIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForFilesIntent *)self initWithData:v6];
+    self = [(_INPBSearchForFilesIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBSearchForFilesIntent *)self appId];
+  toCopy = to;
+  appId = [(_INPBSearchForFilesIntent *)self appId];
 
-  if (v5)
+  if (appId)
   {
-    v6 = [(_INPBSearchForFilesIntent *)self appId];
+    appId2 = [(_INPBSearchForFilesIntent *)self appId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBSearchForFilesIntent *)self entityName];
+  entityName = [(_INPBSearchForFilesIntent *)self entityName];
 
-  if (v7)
+  if (entityName)
   {
-    v8 = [(_INPBSearchForFilesIntent *)self entityName];
+    entityName2 = [(_INPBSearchForFilesIntent *)self entityName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -399,11 +399,11 @@ LABEL_36:
     PBDataWriterWriteInt32Field();
   }
 
-  v10 = [(_INPBSearchForFilesIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSearchForFilesIntent *)self intentMetadata];
 
-  if (v10)
+  if (intentMetadata)
   {
-    v11 = [(_INPBSearchForFilesIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSearchForFilesIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -445,31 +445,31 @@ LABEL_36:
     PBDataWriterWriteInt32Field();
   }
 
-  v19 = [(_INPBSearchForFilesIntent *)self scopeEntityName];
+  scopeEntityName = [(_INPBSearchForFilesIntent *)self scopeEntityName];
 
-  if (v19)
+  if (scopeEntityName)
   {
-    v20 = [(_INPBSearchForFilesIntent *)self scopeEntityName];
+    scopeEntityName2 = [(_INPBSearchForFilesIntent *)self scopeEntityName];
     PBDataWriterWriteSubmessage();
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsScope:(id)a3
+- (int)StringAsScope:(id)scope
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DIRECTORY"])
+  scopeCopy = scope;
+  if ([scopeCopy isEqualToString:@"DIRECTORY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VOLUME"])
+  else if ([scopeCopy isEqualToString:@"VOLUME"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"COMPUTER"])
+  else if ([scopeCopy isEqualToString:@"COMPUTER"])
   {
     v4 = 2;
   }
@@ -482,9 +482,9 @@ LABEL_36:
   return v4;
 }
 
-- (void)setHasScope:(BOOL)a3
+- (void)setHasScope:(BOOL)scope
 {
-  if (a3)
+  if (scope)
   {
     v3 = 2;
   }
@@ -497,10 +497,10 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setScope:(int)a3
+- (void)setScope:(int)scope
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (scope == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -508,56 +508,56 @@ LABEL_36:
   else
   {
     *&self->_has = has | 2;
-    self->_scope = a3;
+    self->_scope = scope;
   }
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   properties = self->_properties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!properties)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_properties;
-    self->_properties = v6;
+    self->_properties = array;
 
-    v4 = v8;
+    propertiesCopy = v8;
     properties = self->_properties;
   }
 
-  [(NSArray *)properties addObject:v4];
+  [(NSArray *)properties addObject:propertiesCopy];
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
-  v4 = [a3 mutableCopy];
+  v4 = [properties mutableCopy];
   properties = self->_properties;
   self->_properties = v4;
 
   MEMORY[0x1EEE66BB8](v4, properties);
 }
 
-- (int)StringAsEntityType:(id)a3
+- (int)StringAsEntityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FILE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"FILE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FOLDER"])
+  else if ([typeCopy isEqualToString:@"FOLDER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REFERENCE"])
+  else if ([typeCopy isEqualToString:@"REFERENCE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([typeCopy isEqualToString:@"URL"])
   {
     v4 = 3;
   }
@@ -570,10 +570,10 @@ LABEL_36:
   return v4;
 }
 
-- (void)setEntityType:(int)a3
+- (void)setEntityType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -581,7 +581,7 @@ LABEL_36:
   else
   {
     *&self->_has = has | 1;
-    self->_entityType = a3;
+    self->_entityType = type;
   }
 }
 

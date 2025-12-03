@@ -1,12 +1,12 @@
 @interface PUITrackersController
 - (BOOL)canChangeAllowAsk;
 - (PUITrackersController)init;
-- (id)allowAsk:(id)a3;
+- (id)allowAsk:(id)ask;
 - (id)specifiers;
 - (void)disableTCCForAllApps;
 - (void)headerLinkWasTapped;
 - (void)provideNavigationDonations;
-- (void)setAllowAsk:(id)a3 specifier:(id)a4;
+- (void)setAllowAsk:(id)ask specifier:(id)specifier;
 - (void)specifiers;
 @end
 
@@ -30,15 +30,15 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"TRACKERS" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"TRACKERS" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -55,13 +55,13 @@
   v5 = *(&self->super.super.super.super.super.super.isa + v4);
   if (!v5)
   {
-    v6 = [(PUITrackersController *)self canChangeAllowAsk];
+    canChangeAllowAsk = [(PUITrackersController *)self canChangeAllowAsk];
     v7 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"HEADER_GROUP"];
     v8 = PUI_LocalizedStringForPrivacy(@"APP_TRACKING_HEADER_TEXT");
     v9 = PUI_LocalizedStringForPrivacy(@"APP_TRACKING_LINK_TEXT");
     v29 = v8;
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v8, v9];
-    if (v6)
+    if (canChangeAllowAsk)
     {
 LABEL_19:
       v16 = objc_opt_class();
@@ -84,29 +84,29 @@ LABEL_19:
 
       [v22 setIdentifier:@"ALLOW_ASK"];
       [v22 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
-      v23 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+      v23 = [MEMORY[0x277CCABB0] numberWithBool:canChangeAllowAsk];
       [v22 setObject:v23 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
       [v3 addObject:v22];
       v30.receiver = self;
       v30.super_class = PUITrackersController;
-      v24 = [(PUITCCAccessController *)&v30 specifiers];
-      [(PUITrackersController *)self setAppSpecifiers:v24];
+      specifiers = [(PUITCCAccessController *)&v30 specifiers];
+      [(PUITrackersController *)self setAppSpecifiers:specifiers];
 
-      v25 = [(PUITrackersController *)self appSpecifiers];
-      [v3 addObjectsFromArray:v25];
+      appSpecifiers = [(PUITrackersController *)self appSpecifiers];
+      [v3 addObjectsFromArray:appSpecifiers];
 
       objc_storeStrong((&self->super.super.super.super.super.super.isa + v4), v3);
       v5 = *(&self->super.super.super.super.super.super.isa + v4);
       goto LABEL_20;
     }
 
-    v11 = [(PUITrackersController *)self adTrackingTransparency];
-    v12 = [v11 crossAppTrackingAllowedSwitchDisabledReason];
+    adTrackingTransparency = [(PUITrackersController *)self adTrackingTransparency];
+    crossAppTrackingAllowedSwitchDisabledReason = [adTrackingTransparency crossAppTrackingAllowedSwitchDisabledReason];
 
-    if (v12 > 3)
+    if (crossAppTrackingAllowedSwitchDisabledReason > 3)
     {
-      switch(v12)
+      switch(crossAppTrackingAllowedSwitchDisabledReason)
       {
         case 4:
           v13 = @"APP_TRACKING_DISABLED_REASON_EDU_ACCOUNT";
@@ -122,7 +122,7 @@ LABEL_19:
 
     else
     {
-      if ((v12 - 1) < 2)
+      if ((crossAppTrackingAllowedSwitchDisabledReason - 1) < 2)
       {
         v13 = @"APP_TRACKING_DISABLED_REASON_AGE";
 LABEL_17:
@@ -134,7 +134,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if (v12 == 3)
+      if (crossAppTrackingAllowedSwitchDisabledReason == 3)
       {
         v13 = @"APP_TRACKING_DISABLED_REASON_EDU_MODE";
         goto LABEL_17;
@@ -145,7 +145,7 @@ LABEL_18:
     v28 = _PUILoggingFacility();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [(PUITrackersController *)v12 specifiers];
+      [(PUITrackersController *)crossAppTrackingAllowedSwitchDisabledReason specifiers];
     }
 
     goto LABEL_18;
@@ -165,19 +165,19 @@ LABEL_20:
 
 - (BOOL)canChangeAllowAsk
 {
-  v2 = [(PUITrackersController *)self adTrackingTransparency];
-  v3 = [v2 crossAppTrackingAllowedSwitchEnabled];
+  adTrackingTransparency = [(PUITrackersController *)self adTrackingTransparency];
+  crossAppTrackingAllowedSwitchEnabled = [adTrackingTransparency crossAppTrackingAllowedSwitchEnabled];
 
-  return v3;
+  return crossAppTrackingAllowedSwitchEnabled;
 }
 
-- (void)setAllowAsk:(id)a3 specifier:(id)a4
+- (void)setAllowAsk:(id)ask specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([ask BOOLValue])
   {
     [MEMORY[0x277D4D8F0] trackingStateOfRequest:1 askAppsToStopTracking:0];
-    v5 = [(PUITrackersController *)self adTrackingTransparency];
-    [v5 setCrossAppTrackingAllowed:1];
+    adTrackingTransparency = [(PUITrackersController *)self adTrackingTransparency];
+    [adTrackingTransparency setCrossAppTrackingAllowed:1];
   }
 
   else
@@ -190,8 +190,8 @@ LABEL_20:
     {
       v9 = MEMORY[0x277D75110];
       v10 = PUI_LocalizedStringForPrivacy(@"DISABLE_ALLOW_ASK_MESSAGE");
-      v11 = [MEMORY[0x277D75418] currentDevice];
-      v12 = [v9 alertControllerWithTitle:0 message:v10 preferredStyle:{objc_msgSend(v11, "sf_isiPad")}];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      v12 = [v9 alertControllerWithTitle:0 message:v10 preferredStyle:{objc_msgSend(currentDevice, "sf_isiPad")}];
 
       v13 = MEMORY[0x277D750F8];
       v14 = PUI_LocalizedStringForPrivacy(@"DISABLE_ALLOW_ASK_CANCEL");
@@ -228,14 +228,14 @@ LABEL_20:
     }
 
     [MEMORY[0x277D4D8F0] trackingStateOfRequest:0 askAppsToStopTracking:0];
-    v22 = [(PUITrackersController *)self adTrackingTransparency];
-    [v22 setCrossAppTrackingAllowed:0];
+    adTrackingTransparency2 = [(PUITrackersController *)self adTrackingTransparency];
+    [adTrackingTransparency2 setCrossAppTrackingAllowed:0];
 
     PUIResetIDFAIfNeeded();
   }
 
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v23 postNotificationName:@"com.apple.PrivacySettingsUI.TrackingStateChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.PrivacySettingsUI.TrackingStateChanged" object:0];
 }
 
 void __47__PUITrackersController_setAllowAsk_specifier___block_invoke_2(uint64_t a1)
@@ -306,11 +306,11 @@ void __47__PUITrackersController_setAllowAsk_specifier___block_invoke_3(uint64_t
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allowAsk:(id)a3
+- (id)allowAsk:(id)ask
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PUITrackersController *)self adTrackingTransparency];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "crossAppTrackingAllowed")}];
+  adTrackingTransparency = [(PUITrackersController *)self adTrackingTransparency];
+  v5 = [v3 numberWithBool:{objc_msgSend(adTrackingTransparency, "crossAppTrackingAllowed")}];
 
   return v5;
 }
@@ -321,7 +321,7 @@ void __47__PUITrackersController_setAllowAsk_specifier___block_invoke_3(uint64_t
   v3 = 136315394;
   v4 = "[PUITrackersController specifiers]";
   v5 = 2048;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2657FE000, a2, OS_LOG_TYPE_ERROR, "%s: Unexpected crossAppTrackingAllowedSwitchDisabledReason code: %ld", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

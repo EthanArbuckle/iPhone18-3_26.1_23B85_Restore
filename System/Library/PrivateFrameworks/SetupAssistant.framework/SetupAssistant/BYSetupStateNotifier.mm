@@ -6,14 +6,14 @@
 - (void)_endObservingState;
 - (void)_noLongerExclusiveNotificationFired;
 - (void)_shouldRemainAliveNotificationFired;
-- (void)_stateChangedTo:(unint64_t)a3;
-- (void)addObserverWhenSetupIsNoLongerExclusiveWithNotificationBlock:(id)a3;
-- (void)addRelaunchStateChangeObserver:(id)a3;
-- (void)addStateChangeObserver:(id)a3;
-- (void)addStateCompletionObserver:(id)a3 forState:(unint64_t)a4;
+- (void)_stateChangedTo:(unint64_t)to;
+- (void)addObserverWhenSetupIsNoLongerExclusiveWithNotificationBlock:(id)block;
+- (void)addRelaunchStateChangeObserver:(id)observer;
+- (void)addStateChangeObserver:(id)observer;
+- (void)addStateCompletionObserver:(id)observer forState:(unint64_t)state;
 - (void)dealloc;
 - (void)notifySetupShouldRemainAlive;
-- (void)notifyStateChangedTo:(unint64_t)a3;
+- (void)notifyStateChangedTo:(unint64_t)to;
 @end
 
 @implementation BYSetupStateNotifier
@@ -36,14 +36,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(BYSetupStateNotifier *)self notificationQueue];
+  notificationQueue = [(BYSetupStateNotifier *)self notificationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__BYSetupStateNotifier_currentState__block_invoke;
   v6[3] = &unk_1E7D03C78;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(notificationQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -107,18 +107,18 @@ uint64_t __38__BYSetupStateNotifier_sharedNotifier__block_invoke()
   [(BYSetupStateNotifier *)&v3 dealloc];
 }
 
-- (void)addStateChangeObserver:(id)a3
+- (void)addStateChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(BYSetupStateNotifier *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(BYSetupStateNotifier *)self notificationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__BYSetupStateNotifier_addStateChangeObserver___block_invoke;
   v7[3] = &unk_1E7D02F28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(notificationQueue, v7);
 }
 
 void __47__BYSetupStateNotifier_addStateChangeObserver___block_invoke(uint64_t a1)
@@ -150,19 +150,19 @@ uint64_t __47__BYSetupStateNotifier_addStateChangeObserver___block_invoke_2(uint
   return v3(v1, 0, v2);
 }
 
-- (void)addStateCompletionObserver:(id)a3 forState:(unint64_t)a4
+- (void)addStateCompletionObserver:(id)observer forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(BYSetupStateNotifier *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(BYSetupStateNotifier *)self notificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__BYSetupStateNotifier_addStateCompletionObserver_forState___block_invoke;
   block[3] = &unk_1E7D03CC8;
-  v10 = v6;
-  v11 = a4;
+  v10 = observerCopy;
+  stateCopy = state;
   block[4] = self;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v8 = observerCopy;
+  dispatch_sync(notificationQueue, block);
 }
 
 void __60__BYSetupStateNotifier_addStateCompletionObserver_forState___block_invoke(uint64_t a1)
@@ -195,18 +195,18 @@ void __60__BYSetupStateNotifier_addStateCompletionObserver_forState___block_invo
   [v7 setObject:v5 forKeyedSubscript:v8];
 }
 
-- (void)addObserverWhenSetupIsNoLongerExclusiveWithNotificationBlock:(id)a3
+- (void)addObserverWhenSetupIsNoLongerExclusiveWithNotificationBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(BYSetupStateNotifier *)self notificationQueue];
+  blockCopy = block;
+  notificationQueue = [(BYSetupStateNotifier *)self notificationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__BYSetupStateNotifier_addObserverWhenSetupIsNoLongerExclusiveWithNotificationBlock___block_invoke;
   v7[3] = &unk_1E7D02F28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_sync(notificationQueue, v7);
 }
 
 void __85__BYSetupStateNotifier_addObserverWhenSetupIsNoLongerExclusiveWithNotificationBlock___block_invoke(uint64_t a1)
@@ -216,18 +216,18 @@ void __85__BYSetupStateNotifier_addObserverWhenSetupIsNoLongerExclusiveWithNotif
   [v3 addObject:v2];
 }
 
-- (void)addRelaunchStateChangeObserver:(id)a3
+- (void)addRelaunchStateChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(BYSetupStateNotifier *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(BYSetupStateNotifier *)self notificationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__BYSetupStateNotifier_addRelaunchStateChangeObserver___block_invoke;
   v7[3] = &unk_1E7D02F28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(notificationQueue, v7);
 }
 
 void __55__BYSetupStateNotifier_addRelaunchStateChangeObserver___block_invoke(uint64_t a1)
@@ -256,11 +256,11 @@ uint64_t __55__BYSetupStateNotifier_addRelaunchStateChangeObserver___block_invok
   return v3(v1, v2);
 }
 
-- (void)notifyStateChangedTo:(unint64_t)a3
+- (void)notifyStateChangedTo:(unint64_t)to
 {
-  if (a3 - 1 <= 2)
+  if (to - 1 <= 2)
   {
-    v5 = (&off_1E7D03D38)[a3 - 1];
+    v5 = (&off_1E7D03D38)[to - 1];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, *v5, 0, 0, 0);
   }
@@ -280,17 +280,17 @@ uint64_t __55__BYSetupStateNotifier_addRelaunchStateChangeObserver___block_invok
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(BYSetupStateNotifier *)a3 notifyStateChangedTo:v9];
+    [(BYSetupStateNotifier *)to notifyStateChangedTo:v9];
   }
 
-  v10 = notify_set_state([(BYSetupStateNotifier *)self stateNotificationToken], a3);
+  v10 = notify_set_state([(BYSetupStateNotifier *)self stateNotificationToken], to);
   if (v10)
   {
     v11 = v10;
     v12 = _BYLoggingFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(BYSetupStateNotifier *)a3 notifyStateChangedTo:v11, v12];
+      [(BYSetupStateNotifier *)to notifyStateChangedTo:v11, v12];
     }
   }
 
@@ -358,16 +358,16 @@ uint64_t __44__BYSetupStateNotifier__beginObservingState__block_invoke_10(uint64
   [(BYSetupStateNotifier *)self setExclusiveNotificationToken:0xFFFFFFFFLL];
 }
 
-- (void)_stateChangedTo:(unint64_t)a3
+- (void)_stateChangedTo:(unint64_t)to
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [(BYSetupStateNotifier *)self notificationQueue];
-  dispatch_assert_queue_V2(v5);
+  notificationQueue = [(BYSetupStateNotifier *)self notificationQueue];
+  dispatch_assert_queue_V2(notificationQueue);
 
-  if ([(BYSetupStateNotifier *)self state]!= a3)
+  if ([(BYSetupStateNotifier *)self state]!= to)
   {
-    v6 = [(BYSetupStateNotifier *)self state];
-    [(BYSetupStateNotifier *)self setState:a3];
+    state = [(BYSetupStateNotifier *)self state];
+    [(BYSetupStateNotifier *)self setState:to];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -395,7 +395,7 @@ uint64_t __44__BYSetupStateNotifier__beginObservingState__block_invoke_10(uint64
           block[2] = __40__BYSetupStateNotifier__stateChangedTo___block_invoke;
           block[3] = &unk_1E7D03CF0;
           block[5] = v11;
-          block[6] = v6;
+          block[6] = state;
           block[4] = self;
           dispatch_async(v12, block);
 
@@ -409,9 +409,9 @@ uint64_t __44__BYSetupStateNotifier__beginObservingState__block_invoke_10(uint64
       while (v8);
     }
 
-    v13 = [(BYSetupStateNotifier *)self specificStateNotificationBlocks];
+    specificStateNotificationBlocks = [(BYSetupStateNotifier *)self specificStateNotificationBlocks];
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BYSetupStateNotifier state](self, "state")}];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    v15 = [specificStateNotificationBlocks objectForKeyedSubscript:v14];
 
     v28 = 0u;
     v29 = 0u;
@@ -473,8 +473,8 @@ uint64_t __40__BYSetupStateNotifier__stateChangedTo___block_invoke(uint64_t a1)
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(BYSetupStateNotifier *)self exclusiveNotificationBlocks];
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  exclusiveNotificationBlocks = [(BYSetupStateNotifier *)self exclusiveNotificationBlocks];
+  v4 = [exclusiveNotificationBlocks countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -486,7 +486,7 @@ uint64_t __40__BYSetupStateNotifier__stateChangedTo___block_invoke(uint64_t a1)
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(exclusiveNotificationBlocks);
         }
 
         v8 = *(*(&v26 + 1) + 8 * v7);
@@ -502,20 +502,20 @@ uint64_t __40__BYSetupStateNotifier__stateChangedTo___block_invoke(uint64_t a1)
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v5 = [exclusiveNotificationBlocks countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v5);
   }
 
   [(BYSetupStateNotifier *)self setShouldRelaunchSetup:0];
-  v10 = [(BYSetupStateNotifier *)self shouldRelaunchSetup];
+  shouldRelaunchSetup = [(BYSetupStateNotifier *)self shouldRelaunchSetup];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [(BYSetupStateNotifier *)self relaunchStateNotificationBlocks];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v30 count:16];
+  relaunchStateNotificationBlocks = [(BYSetupStateNotifier *)self relaunchStateNotificationBlocks];
+  v12 = [relaunchStateNotificationBlocks countByEnumeratingWithState:&v21 objects:v30 count:16];
   if (v12)
   {
     v13 = v12;
@@ -527,7 +527,7 @@ uint64_t __40__BYSetupStateNotifier__stateChangedTo___block_invoke(uint64_t a1)
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(relaunchStateNotificationBlocks);
         }
 
         v16 = *(*(&v21 + 1) + 8 * v15);
@@ -537,14 +537,14 @@ uint64_t __40__BYSetupStateNotifier__stateChangedTo___block_invoke(uint64_t a1)
         v19[2] = __59__BYSetupStateNotifier__noLongerExclusiveNotificationFired__block_invoke_2;
         v19[3] = &unk_1E7D03D18;
         v19[4] = v16;
-        v20 = v10;
+        v20 = shouldRelaunchSetup;
         dispatch_async(v17, v19);
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      v13 = [relaunchStateNotificationBlocks countByEnumeratingWithState:&v21 objects:v30 count:16];
     }
 
     while (v13);

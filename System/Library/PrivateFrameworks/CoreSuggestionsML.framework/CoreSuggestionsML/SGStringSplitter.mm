@@ -1,13 +1,13 @@
 @interface SGStringSplitter
-+ (id)splitString:(id)a3 withCharacterSet:(id)a4;
++ (id)splitString:(id)string withCharacterSet:(id)set;
 @end
 
 @implementation SGStringSplitter
 
-+ (id)splitString:(id)a3 withCharacterSet:(id)a4
++ (id)splitString:(id)string withCharacterSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  setCopy = set;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -27,9 +27,9 @@
   v18 = 0x2020000000;
   v19 = 0;
   v13 = MEMORY[0x277D85DD0];
-  v7 = v6;
+  v7 = setCopy;
   v14 = v7;
-  v8 = v5;
+  v8 = stringCopy;
   v15 = v8;
   _PASIterateLongChars();
   if (*(v21 + 24) == 1)

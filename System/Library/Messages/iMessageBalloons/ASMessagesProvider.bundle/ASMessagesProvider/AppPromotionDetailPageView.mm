@@ -1,6 +1,6 @@
 @interface AppPromotionDetailPageView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC18ASMessagesProvider26AppPromotionDetailPageView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC18ASMessagesProvider26AppPromotionDetailPageView)initWithFrame:(CGRect)frame;
 - (_TtC18ASMessagesProvider9VideoView)accessibilityVideoView;
 - (void)didTapCloseButton;
 - (void)dismissTapGestureRecognized;
@@ -11,13 +11,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_425864();
 }
 
 - (void)didTapCloseButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_268E5C();
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -28,7 +28,7 @@
 
 - (void)dismissTapGestureRecognized
 {
-  v2 = self;
+  selfCopy = self;
   sub_268E5C();
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -38,12 +38,12 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_428384(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_428384(recognizerCopy, touchCopy);
 
   return v9 & 1;
 }
@@ -55,7 +55,7 @@
   return Strong;
 }
 
-- (_TtC18ASMessagesProvider26AppPromotionDetailPageView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider26AppPromotionDetailPageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

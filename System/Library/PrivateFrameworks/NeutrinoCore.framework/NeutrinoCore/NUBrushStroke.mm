@@ -1,33 +1,33 @@
 @interface NUBrushStroke
-+ (id)brushStrokeFromDictionary:(id)a3;
-+ (id)dictionaryFromBrushStroke:(id)a3;
++ (id)brushStrokeFromDictionary:(id)dictionary;
++ (id)dictionaryFromBrushStroke:(id)stroke;
 - ($41299696D20B6C925B74A5D5E4D5CC87)clipRect;
 - ($41299696D20B6C925B74A5D5E4D5CC87)extent;
-- ($E2C29196C7A5C696474C6955C5A9CE06)pointAtIndex:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBrushStroke:(id)a3;
-- (NUBrushStroke)initWithDictionary:(id)a3;
-- (id)_createDataFromPointArray:(id)a3;
-- (id)_createPointArrayFromData:(id)a3;
-- (id)ciImageTiled:(BOOL)a3 closed:(BOOL)a4 pressureMode:(int64_t)a5 filled:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- ($E2C29196C7A5C696474C6955C5A9CE06)pointAtIndex:(int64_t)index;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBrushStroke:(id)stroke;
+- (NUBrushStroke)initWithDictionary:(id)dictionary;
+- (id)_createDataFromPointArray:(id)array;
+- (id)_createPointArrayFromData:(id)data;
+- (id)ciImageTiled:(BOOL)tiled closed:(BOOL)closed pressureMode:(int64_t)mode filled:(BOOL)filled;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_initializeWithRadius:(float)a3 softness:(float)a4 opacity:(float)a5 extent:(id *)a6 clipRect:(id *)a7 data:(id)a8 pressureMode:(int64_t)a9;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_initializeWithRadius:(float)radius softness:(float)softness opacity:(float)opacity extent:(id *)extent clipRect:(id *)rect data:(id)data pressureMode:(int64_t)mode;
 - (void)_updateExtent;
-- (void)nu_updateDigest:(id)a3;
-- (void)writeToTIFFAtPath:(id)a3 closed:(BOOL)a4 pressureMode:(int64_t)a5;
+- (void)nu_updateDigest:(id)digest;
+- (void)writeToTIFFAtPath:(id)path closed:(BOOL)closed pressureMode:(int64_t)mode;
 @end
 
 @implementation NUBrushStroke
 
-- (BOOL)isEqualToBrushStroke:(id)a3
+- (BOOL)isEqualToBrushStroke:(id)stroke
 {
-  v4 = a3;
-  [v4 radius];
-  if (v5 == self->_radius && ([v4 softness], v6 == self->_softness) && (objc_msgSend(v4, "opacity"), v7 == self->_opacity) && (!v4 ? (v12 = 0, v10 = 0, v11 = 0, v16 = 0u, v17 = 0u) : (objc_msgSend(v4, "extent"), v10 = *(&v16 + 1), v11 = v16, v12 = v17), self->_extent.origin.x == v11 && self->_extent.origin.y == v10 && *&self->_extent.size == __PAIR128__(*(&v17 + 1), v12) && (!v4 ? (v15 = 0, v13 = 0, v14 = 0, v17 = 0u) : (objc_msgSend(v4, "clipRect"), v13 = *(&v16 + 1), v14 = v16, v15 = v17), self->_clipRect.origin.x == v14 && self->_clipRect.origin.y == v13 && *&self->_clipRect.size == __PAIR128__(*(&v17 + 1), v15))))
+  strokeCopy = stroke;
+  [strokeCopy radius];
+  if (v5 == self->_radius && ([strokeCopy softness], v6 == self->_softness) && (objc_msgSend(strokeCopy, "opacity"), v7 == self->_opacity) && (!strokeCopy ? (v12 = 0, v10 = 0, v11 = 0, v16 = 0u, v17 = 0u) : (objc_msgSend(strokeCopy, "extent"), v10 = *(&v16 + 1), v11 = v16, v12 = v17), self->_extent.origin.x == v11 && self->_extent.origin.y == v10 && *&self->_extent.size == __PAIR128__(*(&v17 + 1), v12) && (!strokeCopy ? (v15 = 0, v13 = 0, v14 = 0, v17 = 0u) : (objc_msgSend(strokeCopy, "clipRect"), v13 = *(&v16 + 1), v14 = v16, v15 = v17), self->_clipRect.origin.x == v14 && self->_clipRect.origin.y == v13 && *&self->_clipRect.size == __PAIR128__(*(&v17 + 1), v15))))
   {
-    v8 = [v4[12] isEqualToData:self->_data];
+    v8 = [strokeCopy[12] isEqualToData:self->_data];
   }
 
   else
@@ -38,13 +38,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqualToBrushStroke:self];
+    v5 = [equalCopy isEqualToBrushStroke:self];
   }
 
   else
@@ -55,23 +55,23 @@
   return v5;
 }
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
-  v4 = a3;
-  [v4 addString:@"NUBrushStroke{"];
-  [v4 addBytes:&self->_radius length:4];
-  [v4 addBytes:&self->_softness length:4];
-  [v4 addBytes:&self->_opacity length:4];
-  [v4 addBytes:&self->_extent length:32];
-  [v4 addBytes:&self->_clipRect length:32];
-  [v4 addBytes:-[NSMutableData bytes](self->_data length:{"bytes"), -[NSMutableData length](self->_data, "length")}];
-  [v4 addString:@"}"];
+  digestCopy = digest;
+  [digestCopy addString:@"NUBrushStroke{"];
+  [digestCopy addBytes:&self->_radius length:4];
+  [digestCopy addBytes:&self->_softness length:4];
+  [digestCopy addBytes:&self->_opacity length:4];
+  [digestCopy addBytes:&self->_extent length:32];
+  [digestCopy addBytes:&self->_clipRect length:32];
+  [digestCopy addBytes:-[NSMutableData bytes](self->_data length:{"bytes"), -[NSMutableData length](self->_data, "length")}];
+  [digestCopy addString:@"}"];
 }
 
 - (void)_updateExtent
 {
-  v3 = [(NUBrushStroke *)self pointCount];
-  if (v3 < 1)
+  pointCount = [(NUBrushStroke *)self pointCount];
+  if (pointCount < 1)
   {
     v15 = NUPixelRectNull;
     v16 = unk_1C03C4308;
@@ -79,20 +79,20 @@
 
   else
   {
-    v4 = v3;
+    v4 = pointCount;
     x = *MEMORY[0x1E695F050];
     y = *(MEMORY[0x1E695F050] + 8);
     width = *(MEMORY[0x1E695F050] + 16);
     height = *(MEMORY[0x1E695F050] + 24);
     v9 = ((self->_radius * 2.0) + 1.0);
-    v10 = [(NSMutableData *)self->_data bytes];
-    v11 = &v10[3 * v4];
+    bytes = [(NSMutableData *)self->_data bytes];
+    v11 = &bytes[3 * v4];
     do
     {
       radius = self->_radius;
-      v13 = *v10;
-      v14 = v10[1];
-      v10 += 3;
+      v13 = *bytes;
+      v14 = bytes[1];
+      bytes += 3;
       v21.origin.x = (v13 - radius);
       v21.origin.y = (v14 - radius);
       v19.origin.x = x;
@@ -108,7 +108,7 @@
       height = v20.size.height;
     }
 
-    while (v10 != v11);
+    while (bytes != v11);
     v18 = v20;
     NU::RectT<long>::RectT(v17, &v18, 0);
     v15 = v17[0];
@@ -119,19 +119,19 @@
   self->_extent.size = v16;
 }
 
-- (id)_createDataFromPointArray:(id)a3
+- (id)_createDataFromPointArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   v20 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:12 * v4];
-  v5 = [v20 mutableBytes];
+  mutableBytes = [v20 mutableBytes];
   if (v4)
   {
     v6 = 0;
-    v7 = (v5 + 8);
+    v7 = (mutableBytes + 8);
     do
     {
-      v8 = [v3 objectAtIndex:v6];
+      v8 = [arrayCopy objectAtIndex:v6];
       v9 = v8;
       if (v8)
       {
@@ -185,16 +185,16 @@
   return v20;
 }
 
-- (id)_createPointArrayFromData:(id)a3
+- (id)_createPointArrayFromData:(id)data
 {
-  v18 = a3;
-  v3 = [v18 length];
+  dataCopy = data;
+  v3 = [dataCopy length];
   v4 = v3 / 0xC;
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v3 / 0xC];
-  v6 = [v18 bytes];
+  bytes = [dataCopy bytes];
   if (v3 >= 0xC)
   {
-    v8 = (v6 + 8);
+    v8 = (bytes + 8);
     do
     {
       LODWORD(v7) = *(v8 - 2);
@@ -224,7 +224,7 @@
   radius = self->_radius;
   softness = self->_softness;
   opacity = self->_opacity;
-  v7 = [(NUBrushStroke *)self pointCount];
+  pointCount = [(NUBrushStroke *)self pointCount];
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{origin={%ld, %ld} size={%ld, %ld}}]", self->_extent.origin.x, self->_extent.origin.y, self->_extent.size.width, self->_extent.size.height];
   origin = self->_clipRect.origin;
   size = self->_clipRect.size;
@@ -244,7 +244,7 @@
   }
 
   v14 = vaddvq_s32(vbicq_s8(xmmword_1C03C2790, v12));
-  v15 = [v3 stringWithFormat:@"<%@: radius=%f, softness=%f, opacity=%f, pointCount=%lu, extent=%@, clipRect=%@>", @"NUBrushStroke", radius, softness, opacity, v7, v8, v13];
+  v15 = [v3 stringWithFormat:@"<%@: radius=%f, softness=%f, opacity=%f, pointCount=%lu, extent=%@, clipRect=%@>", @"NUBrushStroke", radius, softness, opacity, pointCount, v8, v13];
   if ((v14 & 0xF) != 0)
   {
   }
@@ -268,17 +268,17 @@
   return self;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)pointAtIndex:(int64_t)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)pointAtIndex:(int64_t)index
 {
-  v5 = [(NUBrushStroke *)self pointCount];
-  if (a3 < 0 || v5 <= a3)
+  pointCount = [(NUBrushStroke *)self pointCount];
+  if (index < 0 || pointCount <= index)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:@"Point index out of bounds"];
   }
 
   else
   {
-    v6 = ([(NSMutableData *)self->_data bytes]+ 12 * a3);
+    v6 = ([(NSMutableData *)self->_data bytes]+ 12 * index);
     v7 = *v6;
     v8 = v6[1];
     v9 = v6[2];
@@ -290,7 +290,7 @@
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[NUMutableBrushStroke allocWithZone:?]];
   v5 = [(NSMutableData *)self->_data mutableCopy];
@@ -312,11 +312,11 @@
   return v4;
 }
 
-+ (id)dictionaryFromBrushStroke:(id)a3
++ (id)dictionaryFromBrushStroke:(id)stroke
 {
   v21[7] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3[3];
+  strokeCopy = stroke;
+  v4 = strokeCopy[3];
   v5 = @"none";
   if (v4 == 2)
   {
@@ -334,19 +334,19 @@
   }
 
   v7 = v6;
-  v8 = [v3 _createPointArrayFromData:v3[12]];
+  v8 = [strokeCopy _createPointArrayFromData:strokeCopy[12]];
   v21[0] = &unk_1F3F82398;
   v20[0] = @"version";
   v20[1] = @"radius";
-  LODWORD(v9) = *(v3 + 2);
+  LODWORD(v9) = *(strokeCopy + 2);
   v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
   v21[1] = v10;
   v20[2] = @"softness";
-  LODWORD(v11) = *(v3 + 3);
+  LODWORD(v11) = *(strokeCopy + 3);
   v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
   v21[2] = v12;
   v20[3] = @"opacity";
-  LODWORD(v13) = *(v3 + 4);
+  LODWORD(v13) = *(strokeCopy + 4);
   v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
   v21[3] = v14;
   v21[4] = v8;
@@ -354,8 +354,8 @@
   v20[5] = @"pressureMode";
   v21[5] = v7;
   v20[6] = @"clipRect";
-  v15 = *(v3 + 5);
-  v19[0] = *(v3 + 4);
+  v15 = *(strokeCopy + 5);
+  v19[0] = *(strokeCopy + 4);
   v19[1] = v15;
   v16 = NSArrayFromNUPixelRect(v19);
   v21[6] = v16;
@@ -364,15 +364,15 @@
   return v17;
 }
 
-+ (id)brushStrokeFromDictionary:(id)a3
++ (id)brushStrokeFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NUBrushStroke allocWithZone:?]];
   *&v5 = self->_radius;
@@ -393,34 +393,34 @@
   return v4;
 }
 
-- (void)_initializeWithRadius:(float)a3 softness:(float)a4 opacity:(float)a5 extent:(id *)a6 clipRect:(id *)a7 data:(id)a8 pressureMode:(int64_t)a9
+- (void)_initializeWithRadius:(float)radius softness:(float)softness opacity:(float)opacity extent:(id *)extent clipRect:(id *)rect data:(id)data pressureMode:(int64_t)mode
 {
-  self->_radius = a3;
-  self->_softness = a4;
-  self->_opacity = a5;
-  var1 = a6->var1;
-  self->_extent.origin = a6->var0;
+  self->_radius = radius;
+  self->_softness = softness;
+  self->_opacity = opacity;
+  var1 = extent->var1;
+  self->_extent.origin = extent->var0;
   self->_extent.size = var1;
-  v12 = a7->var1;
-  self->_clipRect.origin = a7->var0;
+  v12 = rect->var1;
+  self->_clipRect.origin = rect->var0;
   self->_clipRect.size = v12;
-  objc_storeStrong(&self->_data, a8);
-  self->_pressureMode = a9;
+  objc_storeStrong(&self->_data, data);
+  self->_pressureMode = mode;
 }
 
-- (NUBrushStroke)initWithDictionary:(id)a3
+- (NUBrushStroke)initWithDictionary:(id)dictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"version"];
-  v6 = [v5 integerValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"version"];
+  integerValue = [v5 integerValue];
 
-  if (v6 != 1)
+  if (integerValue != 1)
   {
     v24 = NUAssertLogger();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown brush stroke version. %ld", v6];
+      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown brush stroke version. %ld", integerValue];
       *buf = 138543362;
       *&buf[4] = v25;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -434,8 +434,8 @@
       if (v28)
       {
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v31;
         *&buf[12] = 2114;
@@ -446,31 +446,31 @@
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    _NUAssertFailHandler("[NUBrushStroke initWithDictionary:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Mask/NUBrushStroke.mm", 75, @"Unknown brush stroke version. %ld", v34, v35, v36, v37, v6);
+    _NUAssertFailHandler("[NUBrushStroke initWithDictionary:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Mask/NUBrushStroke.mm", 75, @"Unknown brush stroke version. %ld", v34, v35, v36, v37, integerValue);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"radius"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"radius"];
   [v7 floatValue];
   v9 = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"softness"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"softness"];
   [v10 floatValue];
   v12 = v11;
 
-  v13 = [v4 objectForKeyedSubscript:@"opacity"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"opacity"];
   [v13 floatValue];
   v15 = v14;
 
-  v16 = [v4 objectForKeyedSubscript:@"points"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"points"];
   v17 = [(NUBrushStroke *)self _createDataFromPointArray:v16];
-  v18 = [v4 objectForKeyedSubscript:@"pressureMode"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"pressureMode"];
   if ([v18 isEqualToString:@"radius"])
   {
     v19 = 1;
@@ -487,7 +487,7 @@
   }
 
   memset(buf, 0, 32);
-  v20 = [v4 objectForKeyedSubscript:@"clipRect"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"clipRect"];
   NUPixelRectFromArray(v20, buf);
 
   v40.receiver = self;
@@ -503,11 +503,11 @@
   return v21;
 }
 
-- (void)writeToTIFFAtPath:(id)a3 closed:(BOOL)a4 pressureMode:(int64_t)a5
+- (void)writeToTIFFAtPath:(id)path closed:(BOOL)closed pressureMode:(int64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(NUBrushStroke *)self ciImageTiled:1 closed:v6 pressureMode:a5];
+  closedCopy = closed;
+  pathCopy = path;
+  v9 = [(NUBrushStroke *)self ciImageTiled:1 closed:closedCopy pressureMode:mode];
   [v9 extent];
   x = v18.origin.x;
   y = v18.origin.y;
@@ -522,10 +522,10 @@
   CGAffineTransformMakeTranslation(&v17, v14, -MinY);
   v16 = [v9 imageByApplyingTransform:&v17];
 
-  [v16 writeToTIFF:v8];
+  [v16 writeToTIFF:pathCopy];
 }
 
-- (id)ciImageTiled:(BOOL)a3 closed:(BOOL)a4 pressureMode:(int64_t)a5 filled:(BOOL)a6
+- (id)ciImageTiled:(BOOL)tiled closed:(BOOL)closed pressureMode:(int64_t)mode filled:(BOOL)filled
 {
   [(NUBrushStroke *)self extent];
 

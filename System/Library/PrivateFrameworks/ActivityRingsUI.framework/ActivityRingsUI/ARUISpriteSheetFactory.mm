@@ -2,10 +2,10 @@
 + (id)defaultSpriteSheet;
 + (id)sharedInstance;
 + (id)sharingSpriteSheet;
-+ (id)spriteSheetForRingType:(int64_t)a3;
++ (id)spriteSheetForRingType:(int64_t)type;
 + (id)wheelchairSharingSpriteSheet;
 + (id)wheelchairSpriteSheet;
-+ (id)wheelchairSpriteSheetForRingType:(int64_t)a3;
++ (id)wheelchairSpriteSheetForRingType:(int64_t)type;
 - (id)defaultSpriteTexture;
 - (id)sharingSpriteTexture;
 - (id)wheelchairSharingSpriteTexture;
@@ -63,20 +63,20 @@ uint64_t __40__ARUISpriteSheetFactory_sharedInstance__block_invoke()
 + (id)defaultSpriteSheet
 {
   v2 = +[ARUISpriteSheetFactory sharedInstance];
-  v3 = [v2 defaultSpriteTexture];
+  defaultSpriteTexture = [v2 defaultSpriteTexture];
 
   v4 = [ARUIGridSpriteGenerator generatorWithSpriteCount:3 framesPerSprite:121 rowsPerSprite:4 columnsPerSprite:32];
   v5 = [ARUISpriteSheet alloc];
-  v6 = [v4 generateSprites];
-  v7 = [(ARUISpriteSheet *)v5 initWithTexture:v3 sprites:v6];
+  generateSprites = [v4 generateSprites];
+  v7 = [(ARUISpriteSheet *)v5 initWithTexture:defaultSpriteTexture sprites:generateSprites];
 
   return v7;
 }
 
-+ (id)spriteSheetForRingType:(int64_t)a3
++ (id)spriteSheetForRingType:(int64_t)type
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 3)
+  if (type == 3)
   {
     v3 = +[ARUISpriteSheetFactory defaultSpriteSheet];
   }
@@ -84,15 +84,15 @@ uint64_t __40__ARUISpriteSheetFactory_sharedInstance__block_invoke()
   else
   {
     v5 = +[ARUISpriteSheetFactory sharedInstance];
-    v6 = [v5 defaultSpriteTexture];
+    defaultSpriteTexture = [v5 defaultSpriteTexture];
 
     v7 = [ARUIGridSpriteGenerator generatorWithSpriteCount:3 framesPerSprite:121 rowsPerSprite:4 columnsPerSprite:32];
-    v8 = [v7 generateSprites];
-    v9 = [v8 objectAtIndex:a3];
+    generateSprites = [v7 generateSprites];
+    v9 = [generateSprites objectAtIndex:type];
     v10 = [ARUISpriteSheet alloc];
     v13[0] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    v3 = [(ARUISpriteSheet *)v10 initWithTexture:v6 sprites:v11];
+    v3 = [(ARUISpriteSheet *)v10 initWithTexture:defaultSpriteTexture sprites:v11];
   }
 
   return v3;
@@ -126,20 +126,20 @@ uint64_t __40__ARUISpriteSheetFactory_sharedInstance__block_invoke()
 + (id)wheelchairSpriteSheet
 {
   v2 = +[ARUISpriteSheetFactory sharedInstance];
-  v3 = [v2 wheelchairSpriteTexture];
+  wheelchairSpriteTexture = [v2 wheelchairSpriteTexture];
 
   v4 = [ARUIGridSpriteGenerator generatorWithSpriteCount:3 framesPerSprite:121 rowsPerSprite:4 columnsPerSprite:32];
   v5 = [ARUISpriteSheet alloc];
-  v6 = [v4 generateSprites];
-  v7 = [(ARUISpriteSheet *)v5 initWithTexture:v3 sprites:v6];
+  generateSprites = [v4 generateSprites];
+  v7 = [(ARUISpriteSheet *)v5 initWithTexture:wheelchairSpriteTexture sprites:generateSprites];
 
   return v7;
 }
 
-+ (id)wheelchairSpriteSheetForRingType:(int64_t)a3
++ (id)wheelchairSpriteSheetForRingType:(int64_t)type
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 3)
+  if (type == 3)
   {
     v3 = +[ARUISpriteSheetFactory wheelchairSpriteSheet];
   }
@@ -147,15 +147,15 @@ uint64_t __40__ARUISpriteSheetFactory_sharedInstance__block_invoke()
   else
   {
     v5 = +[ARUISpriteSheetFactory sharedInstance];
-    v6 = [v5 wheelchairSpriteTexture];
+    wheelchairSpriteTexture = [v5 wheelchairSpriteTexture];
 
     v7 = [ARUIGridSpriteGenerator generatorWithSpriteCount:3 framesPerSprite:121 rowsPerSprite:4 columnsPerSprite:32];
-    v8 = [v7 generateSprites];
-    v9 = [v8 objectAtIndex:a3];
+    generateSprites = [v7 generateSprites];
+    v9 = [generateSprites objectAtIndex:type];
     v10 = [ARUISpriteSheet alloc];
     v13[0] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    v3 = [(ARUISpriteSheet *)v10 initWithTexture:v6 sprites:v11];
+    v3 = [(ARUISpriteSheet *)v10 initWithTexture:wheelchairSpriteTexture sprites:v11];
   }
 
   return v3;
@@ -190,12 +190,12 @@ uint64_t __40__ARUISpriteSheetFactory_sharedInstance__block_invoke()
 + (id)sharingSpriteSheet
 {
   v2 = +[ARUISpriteSheetFactory sharedInstance];
-  v3 = [v2 sharingSpriteTexture];
+  sharingSpriteTexture = [v2 sharingSpriteTexture];
 
   v4 = [ARUIGridSpriteGenerator generatorWithSpriteCount:3 framesPerSprite:1 rowsPerSprite:1 columnsPerSprite:1];
   v5 = [ARUISpriteSheet alloc];
-  v6 = [v4 generateSprites];
-  v7 = [(ARUISpriteSheet *)v5 initWithTexture:v3 sprites:v6];
+  generateSprites = [v4 generateSprites];
+  v7 = [(ARUISpriteSheet *)v5 initWithTexture:sharingSpriteTexture sprites:generateSprites];
 
   return v7;
 }
@@ -229,12 +229,12 @@ uint64_t __40__ARUISpriteSheetFactory_sharedInstance__block_invoke()
 + (id)wheelchairSharingSpriteSheet
 {
   v2 = +[ARUISpriteSheetFactory sharedInstance];
-  v3 = [v2 wheelchairSharingSpriteTexture];
+  wheelchairSharingSpriteTexture = [v2 wheelchairSharingSpriteTexture];
 
   v4 = [ARUIGridSpriteGenerator generatorWithSpriteCount:3 framesPerSprite:1 rowsPerSprite:1 columnsPerSprite:1];
   v5 = [ARUISpriteSheet alloc];
-  v6 = [v4 generateSprites];
-  v7 = [(ARUISpriteSheet *)v5 initWithTexture:v3 sprites:v6];
+  generateSprites = [v4 generateSprites];
+  v7 = [(ARUISpriteSheet *)v5 initWithTexture:wheelchairSharingSpriteTexture sprites:generateSprites];
 
   return v7;
 }

@@ -1,12 +1,12 @@
 @interface CPUIFocusEffectView.RingView
-- (_TtCE9CarPlayUICSo19CPUIFocusEffectViewP33_59948616FF201015BD314B4BA8C542B48RingView)initWithCoder:(id)a3;
-- (_TtCE9CarPlayUICSo19CPUIFocusEffectViewP33_59948616FF201015BD314B4BA8C542B48RingView)initWithFrame:(CGRect)a3;
+- (_TtCE9CarPlayUICSo19CPUIFocusEffectViewP33_59948616FF201015BD314B4BA8C542B48RingView)initWithCoder:(id)coder;
+- (_TtCE9CarPlayUICSo19CPUIFocusEffectViewP33_59948616FF201015BD314B4BA8C542B48RingView)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
 @implementation CPUIFocusEffectView.RingView
 
-- (_TtCE9CarPlayUICSo19CPUIFocusEffectViewP33_59948616FF201015BD314B4BA8C542B48RingView)initWithCoder:(id)a3
+- (_TtCE9CarPlayUICSo19CPUIFocusEffectViewP33_59948616FF201015BD314B4BA8C542B48RingView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -15,15 +15,15 @@
 
 - (void)tintColorDidChange
 {
-  v6 = self;
-  v2 = [(CPUIFocusEffectView.RingView *)v6 layer];
-  v3 = [(CPUIFocusEffectView.RingView *)v6 tintColor];
-  if (v3)
+  selfCopy = self;
+  layer = [(CPUIFocusEffectView.RingView *)selfCopy layer];
+  tintColor = [(CPUIFocusEffectView.RingView *)selfCopy tintColor];
+  if (tintColor)
   {
-    v4 = v3;
-    v5 = [v3 CGColor];
+    v4 = tintColor;
+    cGColor = [tintColor CGColor];
 
-    [v2 setBorderColor_];
+    [layer setBorderColor_];
   }
 
   else
@@ -32,7 +32,7 @@
   }
 }
 
-- (_TtCE9CarPlayUICSo19CPUIFocusEffectViewP33_59948616FF201015BD314B4BA8C542B48RingView)initWithFrame:(CGRect)a3
+- (_TtCE9CarPlayUICSo19CPUIFocusEffectViewP33_59948616FF201015BD314B4BA8C542B48RingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

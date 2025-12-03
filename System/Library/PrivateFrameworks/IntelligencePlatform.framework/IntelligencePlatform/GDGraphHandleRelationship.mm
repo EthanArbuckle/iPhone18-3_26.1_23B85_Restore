@@ -1,25 +1,25 @@
 @interface GDGraphHandleRelationship
-- (GDGraphHandleRelationship)initWithLabelField:(id)a3 emailAddressesField:(id)a4 phoneNumbersField:(id)a5 allLabelField:(id)a6;
+- (GDGraphHandleRelationship)initWithLabelField:(id)field emailAddressesField:(id)addressesField phoneNumbersField:(id)numbersField allLabelField:(id)labelField;
 @end
 
 @implementation GDGraphHandleRelationship
 
-- (GDGraphHandleRelationship)initWithLabelField:(id)a3 emailAddressesField:(id)a4 phoneNumbersField:(id)a5 allLabelField:(id)a6
+- (GDGraphHandleRelationship)initWithLabelField:(id)field emailAddressesField:(id)addressesField phoneNumbersField:(id)numbersField allLabelField:(id)labelField
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  fieldCopy = field;
+  addressesFieldCopy = addressesField;
+  numbersFieldCopy = numbersField;
+  labelFieldCopy = labelField;
   v18.receiver = self;
   v18.super_class = GDGraphHandleRelationship;
   v15 = [(GDGraphHandleRelationship *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_label, a3);
-    objc_storeStrong(&v16->_emailAddresses, a4);
-    objc_storeStrong(&v16->_phoneNumbers, a5);
-    objc_storeStrong(&v16->_allLabel, a6);
+    objc_storeStrong(&v15->_label, field);
+    objc_storeStrong(&v16->_emailAddresses, addressesField);
+    objc_storeStrong(&v16->_phoneNumbers, numbersField);
+    objc_storeStrong(&v16->_allLabel, labelField);
   }
 
   return v16;

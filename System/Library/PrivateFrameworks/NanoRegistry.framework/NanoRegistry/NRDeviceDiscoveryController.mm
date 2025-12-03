@@ -4,7 +4,7 @@
 - (NSArray)devices;
 - (void)begin;
 - (void)end;
-- (void)overrideSignalStrengthLimit:(int64_t)a3;
+- (void)overrideSignalStrengthLimit:(int64_t)limit;
 @end
 
 @implementation NRDeviceDiscoveryController
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __45__NRDeviceDiscoveryController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6F0A48 != -1)
   {
     dispatch_once(&qword_1ED6F0A48, block);
@@ -42,10 +42,10 @@ uint64_t __45__NRDeviceDiscoveryController_sharedInstance__block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (void)overrideSignalStrengthLimit:(int64_t)a3
+- (void)overrideSignalStrengthLimit:(int64_t)limit
 {
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  [v4 overrideSignalStrengthLimit:a3];
+  [v4 overrideSignalStrengthLimit:limit];
 }
 
 - (void)begin
@@ -63,15 +63,15 @@ uint64_t __45__NRDeviceDiscoveryController_sharedInstance__block_invoke(uint64_t
 - (NSArray)devices
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v4 = [v3 getAllDevices];
+  getAllDevices = [v3 getAllDevices];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = getAllDevices;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -91,7 +91,7 @@ uint64_t __45__NRDeviceDiscoveryController_sharedInstance__block_invoke(uint64_t
         v12 = [v10 valueForProperty:@"isActive"];
         if (([v11 BOOLValue] & 1) == 0 && (objc_msgSend(v12, "BOOLValue") & 1) == 0)
         {
-          [v2 insertObject:v10 atIndex:{objc_msgSend(v2, "indexOfObject:inSortedRange:options:usingComparator:", v10, 0, objc_msgSend(v2, "count"), 1024, &__block_literal_global_620)}];
+          [array insertObject:v10 atIndex:{objc_msgSend(array, "indexOfObject:inSortedRange:options:usingComparator:", v10, 0, objc_msgSend(array, "count"), 1024, &__block_literal_global_620)}];
         }
       }
 
@@ -103,7 +103,7 @@ uint64_t __45__NRDeviceDiscoveryController_sharedInstance__block_invoke(uint64_t
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return array;
 }
 
 uint64_t __38__NRDeviceDiscoveryController_devices__block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,31 +1,31 @@
 @interface _MTL4CommandBuffer
-- (_MTL4CommandBuffer)initWithDevice:(id)a3;
+- (_MTL4CommandBuffer)initWithDevice:(id)device;
 - (id)machineLearningCommandEncoder;
-- (void)beginCommandBufferWithAllocator:(id)a3;
-- (void)beginCommandBufferWithAllocator:(id)a3 options:(id)a4;
+- (void)beginCommandBufferWithAllocator:(id)allocator;
+- (void)beginCommandBufferWithAllocator:(id)allocator options:(id)options;
 - (void)dealloc;
-- (void)registerMLEncoder:(id)a3;
+- (void)registerMLEncoder:(id)encoder;
 - (void)resetCommandBuffer;
-- (void)setUpPrivateData:(id)a3;
-- (void)setupShaderLoggingWithLogState:(id)a3 allocator:(id)a4;
+- (void)setUpPrivateData:(id)data;
+- (void)setupShaderLoggingWithLogState:(id)state allocator:(id)allocator;
 @end
 
 @implementation _MTL4CommandBuffer
 
-- (_MTL4CommandBuffer)initWithDevice:(id)a3
+- (_MTL4CommandBuffer)initWithDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = _MTL4CommandBuffer;
   v4 = [(_MTLObjectWithLabel *)&v6 init];
   if (v4)
   {
-    v4->_device = a3;
+    v4->_device = device;
     v4->_privateData = 0;
     v4->_privateDataOffset = 0;
     v4->_logState = 0;
-    if (*(a3 + 45))
+    if (*(device + 45))
     {
-      [a3 initDefaultLogState];
+      [device initDefaultLogState];
     }
   }
 
@@ -43,37 +43,37 @@
   [(_MTLObjectWithLabel *)&v3 dealloc];
 }
 
-- (void)setUpPrivateData:(id)a3
+- (void)setUpPrivateData:(id)data
 {
   if (!self->_privateData)
   {
-    [a3 getPrivateDataAndOffset:&self->_privateData privateDataOffset:&self->_privateDataOffset];
+    [data getPrivateDataAndOffset:&self->_privateData privateDataOffset:&self->_privateDataOffset];
   }
 }
 
-- (void)beginCommandBufferWithAllocator:(id)a3
+- (void)beginCommandBufferWithAllocator:(id)allocator
 {
-  [(_MTL4CommandBuffer *)self setupShaderLoggingWithLogState:0 allocator:a3];
+  [(_MTL4CommandBuffer *)self setupShaderLoggingWithLogState:0 allocator:allocator];
   if (MTLGPUDebugEnabled())
   {
-    [(_MTL4CommandBuffer *)self setUpPrivateData:a3];
+    [(_MTL4CommandBuffer *)self setUpPrivateData:allocator];
   }
 
   ++self->_currentGeneration;
 }
 
-- (void)beginCommandBufferWithAllocator:(id)a3 options:(id)a4
+- (void)beginCommandBufferWithAllocator:(id)allocator options:(id)options
 {
-  -[_MTL4CommandBuffer setupShaderLoggingWithLogState:allocator:](self, "setupShaderLoggingWithLogState:allocator:", [a4 logState], a3);
+  -[_MTL4CommandBuffer setupShaderLoggingWithLogState:allocator:](self, "setupShaderLoggingWithLogState:allocator:", [options logState], allocator);
   if (MTLGPUDebugEnabled())
   {
-    [(_MTL4CommandBuffer *)self setUpPrivateData:a3];
+    [(_MTL4CommandBuffer *)self setUpPrivateData:allocator];
   }
 
   ++self->_currentGeneration;
 }
 
-- (void)setupShaderLoggingWithLogState:(id)a3 allocator:(id)a4
+- (void)setupShaderLoggingWithLogState:(id)state allocator:(id)allocator
 {
   logState = self->_logState;
   if (logState)
@@ -82,20 +82,20 @@
     self->_logState = 0;
   }
 
-  v8 = [(_MTL4CommandBuffer *)self device];
-  v9 = [(MTLDevice *)v8 defaultLogState];
-  if (a3 || (a3 = v9) != 0)
+  device = [(_MTL4CommandBuffer *)self device];
+  defaultLogState = [(MTLDevice *)device defaultLogState];
+  if (state || (state = defaultLogState) != 0)
   {
-    self->_logState = a3;
-    [(_MTL4CommandBuffer *)self setUpPrivateData:a4];
-    [a4 setPrivateData:self->_privateData privateDataOffset:self->_privateDataOffset logState:self->_logState];
-    v10 = [(MTLDevice *)v8 internalLogBufferResidencySet];
+    self->_logState = state;
+    [(_MTL4CommandBuffer *)self setUpPrivateData:allocator];
+    [allocator setPrivateData:self->_privateData privateDataOffset:self->_privateDataOffset logState:self->_logState];
+    internalLogBufferResidencySet = [(MTLDevice *)device internalLogBufferResidencySet];
 
-    [(_MTL4CommandBuffer *)self useInternalResidencySet:v10];
+    [(_MTL4CommandBuffer *)self useInternalResidencySet:internalLogBufferResidencySet];
   }
 }
 
-- (void)registerMLEncoder:(id)a3
+- (void)registerMLEncoder:(id)encoder
 {
   mlCommandEncoders = self->_mlCommandEncoders;
   if (!mlCommandEncoders)
@@ -104,16 +104,16 @@
     self->_mlCommandEncoders = mlCommandEncoders;
   }
 
-  [(NSMutableArray *)mlCommandEncoders addObject:a3];
+  [(NSMutableArray *)mlCommandEncoders addObject:encoder];
 }
 
 - (id)machineLearningCommandEncoder
 {
   v3 = [[_MTL4MachineLearningCommandEncoder alloc] initWithDevice:self->_device];
   [(_MTL4CommandBuffer *)self registerMLEncoder:v3];
-  v4 = [(_MTL4MachineLearningCommandEncoder *)v3 event];
-  [(_MTL4CommandBuffer *)self encodeSignalEvent:v4 value:[(_MTL4MachineLearningCommandEncoder *)v3 startEventValue]];
-  [(_MTL4CommandBuffer *)self encodeWaitForEvent:v4 value:[(_MTL4MachineLearningCommandEncoder *)v3 endEventValue]];
+  event = [(_MTL4MachineLearningCommandEncoder *)v3 event];
+  [(_MTL4CommandBuffer *)self encodeSignalEvent:event value:[(_MTL4MachineLearningCommandEncoder *)v3 startEventValue]];
+  [(_MTL4CommandBuffer *)self encodeWaitForEvent:event value:[(_MTL4MachineLearningCommandEncoder *)v3 endEventValue]];
   return v3;
 }
 

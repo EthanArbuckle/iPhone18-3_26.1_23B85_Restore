@@ -16,11 +16,11 @@
 
 + (id)frameworkDirectoryPath
 {
-  v0 = [MEMORY[0x277CCAA00] frameworkBundle];
-  v1 = [v0 bundleURL];
-  v2 = [v1 absoluteString];
+  frameworkBundle = [MEMORY[0x277CCAA00] frameworkBundle];
+  bundleURL = [frameworkBundle bundleURL];
+  absoluteString = [bundleURL absoluteString];
 
-  return v2;
+  return absoluteString;
 }
 
 + (id)userCacheDirectoryPath
@@ -28,31 +28,31 @@
   v0 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
   if ([v0 count])
   {
-    v1 = [v0 firstObject];
+    firstObject = [v0 firstObject];
   }
 
   else
   {
-    v1 = 0;
+    firstObject = 0;
   }
 
-  return v1;
+  return firstObject;
 }
 
 + (NSObject)routineCacheDirectoryPath
 {
   v17 = *MEMORY[0x277D85DE8];
-  v1 = [a1 userCacheDirectoryPath];
-  if (v1)
+  userCacheDirectoryPath = [self userCacheDirectoryPath];
+  if (userCacheDirectoryPath)
   {
-    v2 = v1;
-    v3 = [MEMORY[0x277CCAA00] defaultsDomain];
-    v4 = [v2 stringByAppendingPathComponent:v3];
+    v2 = userCacheDirectoryPath;
+    defaultsDomain = [MEMORY[0x277CCAA00] defaultsDomain];
+    v4 = [v2 stringByAppendingPathComponent:defaultsDomain];
 
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    LOBYTE(v3) = [v5 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    LOBYTE(defaultsDomain) = [defaultManager fileExistsAtPath:v4];
 
-    if ((v3 & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v6 = objc_claimAutoreleasedReturnValue(), v12 = 0, v7 = objc_msgSend(v6, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v4, 1, 0, &v12), v8 = v12, v6, v7) && !v8)
+    if ((defaultsDomain & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v6 = objc_claimAutoreleasedReturnValue(), v12 = 0, v7 = objc_msgSend(v6, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v4, 1, 0, &v12), v8 = v12, v6, v7) && !v8)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -112,20 +112,20 @@ LABEL_13:
     }
   }
 
-  v5 = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
-  v6 = v5;
+  routineCacheDirectoryPath = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
+  v6 = routineCacheDirectoryPath;
   if (v3)
   {
-    if (v5)
+    if (routineCacheDirectoryPath)
     {
       v7 = MEMORY[0x277CBEBC0];
-      v8 = [v5 stringByAppendingPathComponent:v3];
+      v8 = [routineCacheDirectoryPath stringByAppendingPathComponent:v3];
       v9 = [v7 fileURLWithPath:v8];
 
-      v10 = [v9 standardizedURL];
-      v11 = [v9 absoluteString];
-      v12 = [v10 absoluteString];
-      v13 = [v11 isEqualToString:v12];
+      standardizedURL = [v9 standardizedURL];
+      absoluteString = [v9 absoluteString];
+      absoluteString2 = [standardizedURL absoluteString];
+      v13 = [absoluteString isEqualToString:absoluteString2];
 
       if (v13)
       {
@@ -134,19 +134,19 @@ LABEL_13:
           v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [v10 path];
+            path = [standardizedURL path];
             v22 = 138412290;
-            v23 = v21;
+            v23 = path;
             _os_log_debug_impl(&dword_2304B3000, v14, OS_LOG_TYPE_DEBUG, "path in cache directory, %@", &v22, 0xCu);
           }
         }
 
-        v15 = [v10 path];
+        path2 = [standardizedURL path];
       }
 
       else
       {
-        v15 = 0;
+        path2 = 0;
       }
     }
 
@@ -169,13 +169,13 @@ LABEL_13:
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Cache path was nil", &v22, 2u);
       }
 
-      v15 = 0;
+      path2 = 0;
     }
   }
 
   else
   {
-    if (!v5)
+    if (!routineCacheDirectoryPath)
     {
       v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -195,10 +195,10 @@ LABEL_13:
       }
     }
 
-    v15 = v6;
+    path2 = v6;
   }
 
-  return v15;
+  return path2;
 }
 
 + (id)userLibraryPath
@@ -206,24 +206,24 @@ LABEL_13:
   v0 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   if ([v0 count])
   {
-    v1 = [v0 firstObject];
+    firstObject = [v0 firstObject];
   }
 
   else
   {
-    v1 = 0;
+    firstObject = 0;
   }
 
-  return v1;
+  return firstObject;
 }
 
 + (id)userPreferencesPath
 {
-  v1 = [a1 userLibraryPath];
-  v2 = v1;
-  if (v1)
+  userLibraryPath = [self userLibraryPath];
+  v2 = userLibraryPath;
+  if (userLibraryPath)
   {
-    v3 = [v1 stringByAppendingPathComponent:@"Preferences"];
+    v3 = [userLibraryPath stringByAppendingPathComponent:@"Preferences"];
   }
 
   else
@@ -236,11 +236,11 @@ LABEL_13:
 
 + (id)routinePreferencesPath
 {
-  v2 = [a1 userPreferencesPath];
-  if (v2)
+  userPreferencesPath = [self userPreferencesPath];
+  if (userPreferencesPath)
   {
-    v3 = [a1 defaultsDomain];
-    v4 = [v2 stringByAppendingPathComponent:v3];
+    defaultsDomain = [self defaultsDomain];
+    v4 = [userPreferencesPath stringByAppendingPathComponent:defaultsDomain];
     v5 = [v4 stringByAppendingPathExtension:@"plist"];
   }
 
@@ -254,11 +254,11 @@ LABEL_13:
 
 + (id)routineBluePOIQueryPath
 {
-  v1 = [a1 userLibraryPath];
-  v2 = v1;
-  if (v1)
+  userLibraryPath = [self userLibraryPath];
+  v2 = userLibraryPath;
+  if (userLibraryPath)
   {
-    v3 = [v1 stringByAppendingPathComponent:@"BluePOIQueries"];
+    v3 = [userLibraryPath stringByAppendingPathComponent:@"BluePOIQueries"];
     v4 = [v3 stringByAppendingPathExtension:@"json"];
   }
 
@@ -272,11 +272,11 @@ LABEL_13:
 
 + (id)crashReporterPath
 {
-  v1 = [a1 userLibraryPath];
-  if (v1)
+  userLibraryPath = [self userLibraryPath];
+  if (userLibraryPath)
   {
     v2 = [&unk_2845A0B90 componentsJoinedByString:@"/"];
-    v3 = [v1 stringByAppendingPathComponent:v2];
+    v3 = [userLibraryPath stringByAppendingPathComponent:v2];
   }
 
   else
@@ -292,9 +292,9 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v9 = [v8 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:0 options:3 error:&v15];
+  v9 = [defaultManager contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:0 options:3 error:&v15];
   v10 = v15;
 
   if (!v10)
@@ -302,7 +302,7 @@ LABEL_13:
     v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"pathExtension", v7];
     v13 = [v9 filteredArrayUsingPredicate:v11];
 
-    v12 = [a1 sortFilesByName:v13];
+    v12 = [self sortFilesByName:v13];
     v9 = v13;
 LABEL_7:
 
@@ -336,8 +336,8 @@ LABEL_9:
   aSelector = a2;
   v30 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 subpathsOfDirectoryAtPath:v3 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager subpathsOfDirectoryAtPath:v3 error:0];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -360,9 +360,9 @@ LABEL_9:
 
         v11 = [v3 stringByAppendingPathComponent:{*(*(&v19 + 1) + 8 * i), aSelector}];
         buf[0] = 0;
-        if ([v4 fileExistsAtPath:v11 isDirectory:buf] && (buf[0] & 1) == 0)
+        if ([defaultManager fileExistsAtPath:v11 isDirectory:buf] && (buf[0] & 1) == 0)
         {
-          v12 = [v4 attributesOfItemAtPath:v11 error:0];
+          v12 = [defaultManager attributesOfItemAtPath:v11 error:0];
           v13 = [v12 objectForKeyedSubscript:v18];
           v8 += [v13 unsignedIntegerValue];
         }

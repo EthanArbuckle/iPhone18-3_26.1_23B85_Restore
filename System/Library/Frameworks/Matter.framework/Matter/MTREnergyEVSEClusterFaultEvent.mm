@@ -1,6 +1,6 @@
 @interface MTREnergyEVSEClusterFaultEvent
 - (MTREnergyEVSEClusterFaultEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterFaultEvent);
-  v5 = [(MTREnergyEVSEClusterFaultEvent *)self sessionID];
-  [(MTREnergyEVSEClusterFaultEvent *)v4 setSessionID:v5];
+  sessionID = [(MTREnergyEVSEClusterFaultEvent *)self sessionID];
+  [(MTREnergyEVSEClusterFaultEvent *)v4 setSessionID:sessionID];
 
-  v6 = [(MTREnergyEVSEClusterFaultEvent *)self state];
-  [(MTREnergyEVSEClusterFaultEvent *)v4 setState:v6];
+  state = [(MTREnergyEVSEClusterFaultEvent *)self state];
+  [(MTREnergyEVSEClusterFaultEvent *)v4 setState:state];
 
-  v7 = [(MTREnergyEVSEClusterFaultEvent *)self faultStatePreviousState];
-  [(MTREnergyEVSEClusterFaultEvent *)v4 setFaultStatePreviousState:v7];
+  faultStatePreviousState = [(MTREnergyEVSEClusterFaultEvent *)self faultStatePreviousState];
+  [(MTREnergyEVSEClusterFaultEvent *)v4 setFaultStatePreviousState:faultStatePreviousState];
 
-  v8 = [(MTREnergyEVSEClusterFaultEvent *)self faultStateCurrentState];
-  [(MTREnergyEVSEClusterFaultEvent *)v4 setFaultStateCurrentState:v8];
+  faultStateCurrentState = [(MTREnergyEVSEClusterFaultEvent *)self faultStateCurrentState];
+  [(MTREnergyEVSEClusterFaultEvent *)v4 setFaultStateCurrentState:faultStateCurrentState];
 
   return v4;
 }

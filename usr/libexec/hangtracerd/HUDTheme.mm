@@ -1,30 +1,30 @@
 @interface HUDTheme
 + (id)darkModeTheme;
 + (id)lightModeTheme;
-- (CGColor)currentHangTextColorForStatus:(int64_t)a3;
-- (CGColor)previousHangTextColorForStatus:(int64_t)a3;
-- (HUDTheme)initWithPreviousHangTextColor:(CGColor *)a3 currentHangTextColor:(CGColor *)a4 currentHangSevereTextColor:(CGColor *)a5 previousHangSevereTextColor:(CGColor *)a6 currentHangCriticalTextColor:(CGColor *)a7 previousHangCriticalTextColor:(CGColor *)a8 backgroundColor:(CGColor *)a9 currentProcessExitTextColor:(CGColor *)a10 processExitReasonNamespaceTextColor:(CGColor *)a11;
+- (CGColor)currentHangTextColorForStatus:(int64_t)status;
+- (CGColor)previousHangTextColorForStatus:(int64_t)status;
+- (HUDTheme)initWithPreviousHangTextColor:(CGColor *)color currentHangTextColor:(CGColor *)textColor currentHangSevereTextColor:(CGColor *)severeTextColor previousHangSevereTextColor:(CGColor *)hangSevereTextColor currentHangCriticalTextColor:(CGColor *)criticalTextColor previousHangCriticalTextColor:(CGColor *)hangCriticalTextColor backgroundColor:(CGColor *)backgroundColor currentProcessExitTextColor:(CGColor *)self0 processExitReasonNamespaceTextColor:(CGColor *)self1;
 - (void)dealloc;
 @end
 
 @implementation HUDTheme
 
-- (HUDTheme)initWithPreviousHangTextColor:(CGColor *)a3 currentHangTextColor:(CGColor *)a4 currentHangSevereTextColor:(CGColor *)a5 previousHangSevereTextColor:(CGColor *)a6 currentHangCriticalTextColor:(CGColor *)a7 previousHangCriticalTextColor:(CGColor *)a8 backgroundColor:(CGColor *)a9 currentProcessExitTextColor:(CGColor *)a10 processExitReasonNamespaceTextColor:(CGColor *)a11
+- (HUDTheme)initWithPreviousHangTextColor:(CGColor *)color currentHangTextColor:(CGColor *)textColor currentHangSevereTextColor:(CGColor *)severeTextColor previousHangSevereTextColor:(CGColor *)hangSevereTextColor currentHangCriticalTextColor:(CGColor *)criticalTextColor previousHangCriticalTextColor:(CGColor *)hangCriticalTextColor backgroundColor:(CGColor *)backgroundColor currentProcessExitTextColor:(CGColor *)self0 processExitReasonNamespaceTextColor:(CGColor *)self1
 {
   v19.receiver = self;
   v19.super_class = HUDTheme;
   v17 = [(HUDTheme *)&v19 init];
   if (v17)
   {
-    v17->_previousHangTextColor = CGColorRetain(a3);
-    v17->_currentHangTextColor = CGColorRetain(a4);
-    v17->_currentHangSevereTextColor = CGColorRetain(a5);
-    v17->_previousHangSevereTextColor = CGColorRetain(a6);
-    v17->_currentHangCriticalTextColor = CGColorRetain(a7);
-    v17->_previousHangCriticalTextColor = CGColorRetain(a8);
-    v17->_backgroundColor = CGColorRetain(a9);
-    v17->_currentProcessExitTextColor = CGColorRetain(a10);
-    v17->_processExitReasonNamespaceTextColor = CGColorRetain(a11);
+    v17->_previousHangTextColor = CGColorRetain(color);
+    v17->_currentHangTextColor = CGColorRetain(textColor);
+    v17->_currentHangSevereTextColor = CGColorRetain(severeTextColor);
+    v17->_previousHangSevereTextColor = CGColorRetain(hangSevereTextColor);
+    v17->_currentHangCriticalTextColor = CGColorRetain(criticalTextColor);
+    v17->_previousHangCriticalTextColor = CGColorRetain(hangCriticalTextColor);
+    v17->_backgroundColor = CGColorRetain(backgroundColor);
+    v17->_currentProcessExitTextColor = CGColorRetain(exitTextColor);
+    v17->_processExitReasonNamespaceTextColor = CGColorRetain(namespaceTextColor);
   }
 
   return v17;
@@ -70,21 +70,21 @@
   return v3;
 }
 
-- (CGColor)currentHangTextColorForStatus:(int64_t)a3
+- (CGColor)currentHangTextColorForStatus:(int64_t)status
 {
-  if (a3 <= 3)
+  if (status <= 3)
   {
-    return *(&self->super.isa + qword_10003DAB0[a3]);
+    return *(&self->super.isa + qword_10003DAB0[status]);
   }
 
   return v3;
 }
 
-- (CGColor)previousHangTextColorForStatus:(int64_t)a3
+- (CGColor)previousHangTextColorForStatus:(int64_t)status
 {
-  if (a3 <= 3)
+  if (status <= 3)
   {
-    return *(&self->super.isa + qword_10003DAD0[a3]);
+    return *(&self->super.isa + qword_10003DAD0[status]);
   }
 
   return v3;

@@ -1,17 +1,17 @@
 @interface NCNotificationsSettingsMailTopicDetailController
 - (NCNotificationsSettingsMailTopicDetailControllerDelegate)delegate;
-- (id)_alertSettingSpecifierForSectionInfo:(id)a3;
-- (id)_alertSettingsGroupSpecifierForSectionInfo:(id)a3;
-- (id)_badgesSettingSpecifierForSectionInfo:(id)a3;
-- (id)_soundSettingSpecifierForSectionInfo:(id)a3;
-- (id)allowNotifications:(id)a3;
-- (id)badges:(id)a3;
+- (id)_alertSettingSpecifierForSectionInfo:(id)info;
+- (id)_alertSettingsGroupSpecifierForSectionInfo:(id)info;
+- (id)_badgesSettingSpecifierForSectionInfo:(id)info;
+- (id)_soundSettingSpecifierForSectionInfo:(id)info;
+- (id)allowNotifications:(id)notifications;
+- (id)badges:(id)badges;
 - (id)specifiers;
-- (void)_updateAllowedStateForSectionInfo:(id)a3 animated:(BOOL)a4 forSpecifiers:(id)a5;
+- (void)_updateAllowedStateForSectionInfo:(id)info animated:(BOOL)animated forSpecifiers:(id)specifiers;
 - (void)reloadSpecifiers;
-- (void)setAllowNotifications:(id)a3 specifier:(id)a4;
-- (void)setBadges:(id)a3 specifier:(id)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setAllowNotifications:(id)notifications specifier:(id)specifier;
+- (void)setBadges:(id)badges specifier:(id)specifier;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation NCNotificationsSettingsMailTopicDetailController
@@ -49,28 +49,28 @@
 
 - (NCNotificationsSettingsMailTopicDetailControllerDelegate)delegate
 {
-  v2 = [(NCNotificationsSettingsMailTopicDetailController *)self specifier];
-  v3 = [v2 propertyForKey:kNotificationsSettingsDetailControllerDelegate];
+  specifier = [(NCNotificationsSettingsMailTopicDetailController *)self specifier];
+  v3 = [specifier propertyForKey:kNotificationsSettingsDetailControllerDelegate];
 
   return v3;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = NCNotificationsSettingsMailTopicDetailController;
-  [(NCNotificationsSettingsMailTopicDetailController *)&v5 viewWillDisappear:a3];
-  v4 = [(NCNotificationsSettingsMailTopicDetailController *)self delegate];
-  [v4 mailTopicDetailControllerWillDisappear:self];
+  [(NCNotificationsSettingsMailTopicDetailController *)&v5 viewWillDisappear:disappear];
+  delegate = [(NCNotificationsSettingsMailTopicDetailController *)self delegate];
+  [delegate mailTopicDetailControllerWillDisappear:self];
 }
 
-- (id)_alertSettingsGroupSpecifierForSectionInfo:(id)a3
+- (id)_alertSettingsGroupSpecifierForSectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[NSMutableArray array];
-  v6 = [(NCNotificationsSettingsMailTopicDetailController *)self _alertSettingSpecifierForSectionInfo:v4];
-  v7 = [(NCNotificationsSettingsMailTopicDetailController *)self _soundSettingSpecifierForSectionInfo:v4];
-  v8 = [(NCNotificationsSettingsMailTopicDetailController *)self _badgesSettingSpecifierForSectionInfo:v4];
+  v6 = [(NCNotificationsSettingsMailTopicDetailController *)self _alertSettingSpecifierForSectionInfo:infoCopy];
+  v7 = [(NCNotificationsSettingsMailTopicDetailController *)self _soundSettingSpecifierForSectionInfo:infoCopy];
+  v8 = [(NCNotificationsSettingsMailTopicDetailController *)self _badgesSettingSpecifierForSectionInfo:infoCopy];
 
   v9 = [PSSpecifier groupSpecifierWithID:@"ALERT_SETTINGS_GROUP_ID"];
   [v5 bs_safeAddObject:v9];
@@ -81,54 +81,54 @@
   return v5;
 }
 
-- (id)_alertSettingSpecifierForSectionInfo:(id)a3
+- (id)_alertSettingSpecifierForSectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
   v6 = [v5 localizedStringForKey:@"ALERTS" value:&stru_4E3F0 table:@"NotificationsSettings"];
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"setAllowNotifications:specifier:" get:"allowNotifications:" detail:0 cell:6 edit:0];
 
   [v7 setIdentifier:@"ALERTS_ID"];
-  [v7 setProperty:v4 forKey:@"BBSECTION_INFO_KEY"];
+  [v7 setProperty:infoCopy forKey:@"BBSECTION_INFO_KEY"];
 
   [v7 setProperty:objc_opt_class() forKey:PSCellClassKey];
 
   return v7;
 }
 
-- (id)_soundSettingSpecifierForSectionInfo:(id)a3
+- (id)_soundSettingSpecifierForSectionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 sectionID];
-  [TLAlert bb_toneLibraryAlertTypeForSectionID:v5];
+  infoCopy = info;
+  sectionID = [infoCopy sectionID];
+  [TLAlert bb_toneLibraryAlertTypeForSectionID:sectionID];
 
   v6 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
   v7 = [v6 localizedStringForKey:@"SOUNDS" value:&stru_4E3F0 table:@"NotificationsSettings"];
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:"detailTextForToneWithSpecifier:" detail:objc_opt_class() cell:2 edit:0];
 
   [v8 setIdentifier:@"SOUND_ID"];
-  [v8 setProperty:v4 forKey:@"BBSECTION_INFO_KEY"];
+  [v8 setProperty:infoCopy forKey:@"BBSECTION_INFO_KEY"];
   v9 = NSStringFromTLAlertType();
   [v8 setProperty:v9 forKey:@"alertType"];
 
-  v10 = [v4 subsectionID];
+  subsectionID = [infoCopy subsectionID];
 
-  [v8 setProperty:v10 forKey:@"accountIdentifier"];
+  [v8 setProperty:subsectionID forKey:@"accountIdentifier"];
 
   return v8;
 }
 
-- (id)_badgesSettingSpecifierForSectionInfo:(id)a3
+- (id)_badgesSettingSpecifierForSectionInfo:(id)info
 {
-  v4 = a3;
-  if (([v4 suppressedSettings] & 0x2000) == 0 && (objc_msgSend(v4, "pushSettings") & 1) != 0 && (objc_msgSend(v4, "parentSection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "pushSettings"), v5, (v6 & 8) != 0))
+  infoCopy = info;
+  if (([infoCopy suppressedSettings] & 0x2000) == 0 && (objc_msgSend(infoCopy, "pushSettings") & 1) != 0 && (objc_msgSend(infoCopy, "parentSection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "pushSettings"), v5, (v6 & 8) != 0))
   {
     v9 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v10 = [v9 localizedStringForKey:@"BADGES" value:&stru_4E3F0 table:@"NotificationsSettings"];
     v7 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:"setBadges:specifier:" get:"badges:" detail:0 cell:6 edit:0];
 
     [v7 setIdentifier:@"BADGES"];
-    [v7 setProperty:v4 forKey:@"BBSECTION_INFO_KEY"];
+    [v7 setProperty:infoCopy forKey:@"BBSECTION_INFO_KEY"];
   }
 
   else
@@ -139,22 +139,22 @@
   return v7;
 }
 
-- (id)allowNotifications:(id)a3
+- (id)allowNotifications:(id)notifications
 {
-  v3 = [a3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  v3 = [notifications propertyForKey:@"BBSECTION_INFO_KEY"];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowsNotifications]);
 
   return v4;
 }
 
-- (void)setAllowNotifications:(id)a3 specifier:(id)a4
+- (void)setAllowNotifications:(id)notifications specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [v6 propertyForKey:@"BBSECTION_INFO_KEY"];
-  v8 = [v7 BOOLValue];
+  specifierCopy = specifier;
+  notificationsCopy = notifications;
+  v12 = [specifierCopy propertyForKey:@"BBSECTION_INFO_KEY"];
+  bOOLValue = [notificationsCopy BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 2;
   }
@@ -165,51 +165,51 @@
   }
 
   [v12 setAuthorizationStatus:v9];
-  [v6 setProperty:v12 forKey:@"BBSECTION_INFO_KEY"];
+  [specifierCopy setProperty:v12 forKey:@"BBSECTION_INFO_KEY"];
 
   v10 = +[NCSettingsGatewayController sharedInstance];
-  v11 = [v12 sectionID];
-  [v10 setSectionInfo:v12 forSectionID:v11];
+  sectionID = [v12 sectionID];
+  [v10 setSectionInfo:v12 forSectionID:sectionID];
 
   [(NCNotificationsSettingsMailTopicDetailController *)self _updateAllowedStateForSectionInfo:v12 animated:1];
 }
 
-- (id)badges:(id)a3
+- (id)badges:(id)badges
 {
-  v3 = [a3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  v3 = [badges propertyForKey:@"BBSECTION_INFO_KEY"];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", ([v3 pushSettings] >> 3) & 1);
 
   return v4;
 }
 
-- (void)setBadges:(id)a3 specifier:(id)a4
+- (void)setBadges:(id)badges specifier:(id)specifier
 {
-  v5 = a3;
-  v11 = [a4 propertyForKey:@"BBSECTION_INFO_KEY"];
-  v6 = [v11 pushSettings];
-  v7 = [v5 BOOLValue];
+  badgesCopy = badges;
+  v11 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
+  pushSettings = [v11 pushSettings];
+  bOOLValue = [badgesCopy BOOLValue];
 
   v8 = 8;
-  if (!v7)
+  if (!bOOLValue)
   {
     v8 = 0;
   }
 
-  [v11 setPushSettings:v8 | v6 & 0xFFFFFFFFFFFFFFF7];
+  [v11 setPushSettings:v8 | pushSettings & 0xFFFFFFFFFFFFFFF7];
   v9 = +[NCSettingsGatewayController sharedInstance];
-  v10 = [v11 sectionID];
-  [v9 setSectionInfo:v11 forSectionID:v10];
+  sectionID = [v11 sectionID];
+  [v9 setSectionInfo:v11 forSectionID:sectionID];
 }
 
-- (void)_updateAllowedStateForSectionInfo:(id)a3 animated:(BOOL)a4 forSpecifiers:(id)a5
+- (void)_updateAllowedStateForSectionInfo:(id)info animated:(BOOL)animated forSpecifiers:(id)specifiers
 {
-  v5 = a4;
-  v22 = a5;
-  v8 = a3;
-  v9 = [v8 authorizationStatus];
-  v10 = [v8 allowsNotifications];
+  animatedCopy = animated;
+  specifiersCopy = specifiers;
+  infoCopy = info;
+  authorizationStatus = [infoCopy authorizationStatus];
+  allowsNotifications = [infoCopy allowsNotifications];
 
-  if (v9)
+  if (authorizationStatus)
   {
     v11 = self->_hiddenSoundSpecifier != 0;
   }
@@ -219,9 +219,9 @@
     v11 = 1;
   }
 
-  v12 = v10 ^ v11;
-  v13 = v22;
-  if (!v22)
+  v12 = allowsNotifications ^ v11;
+  v13 = specifiersCopy;
+  if (!specifiersCopy)
   {
     v13 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   }
@@ -252,16 +252,16 @@
       [v15 removeSpecifierAtIndex:v17];
     }
 
-    if (v22)
+    if (specifiersCopy)
     {
-      v20 = [v15 currentSpecifiers];
-      [v22 setArray:v20];
+      currentSpecifiers = [v15 currentSpecifiers];
+      [specifiersCopy setArray:currentSpecifiers];
     }
 
     else
     {
-      v21 = [v15 context];
-      [v21 setAnimated:v5];
+      context = [v15 context];
+      [context setAnimated:animatedCopy];
 
       [(NCNotificationsSettingsMailTopicDetailController *)self performSpecifierUpdates:v15];
     }

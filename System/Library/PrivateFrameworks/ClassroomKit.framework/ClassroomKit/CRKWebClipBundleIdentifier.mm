@@ -1,30 +1,30 @@
 @interface CRKWebClipBundleIdentifier
-+ (id)bundleIdentifierByLocatingWebClipBundleIdentifierInString:(id)a3;
++ (id)bundleIdentifierByLocatingWebClipBundleIdentifierInString:(id)string;
 + (id)specificWebClipPrefix;
-+ (id)webClipBundleIdentifierInString:(id)a3;
++ (id)webClipBundleIdentifierInString:(id)string;
 - (BOOL)isSpecificWebClip;
 - (BOOL)isWebClipHostApplication;
-- (CRKWebClipBundleIdentifier)initWithString:(id)a3;
+- (CRKWebClipBundleIdentifier)initWithString:(id)string;
 @end
 
 @implementation CRKWebClipBundleIdentifier
 
-+ (id)bundleIdentifierByLocatingWebClipBundleIdentifierInString:(id)a3
++ (id)bundleIdentifierByLocatingWebClipBundleIdentifierInString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [a1 webClipBundleIdentifierInString:v4];
+  stringCopy = string;
+  v5 = [self alloc];
+  v6 = [self webClipBundleIdentifierInString:stringCopy];
 
   v7 = [v5 initWithString:v6];
 
   return v7;
 }
 
-+ (id)webClipBundleIdentifierInString:(id)a3
++ (id)webClipBundleIdentifierInString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 webClipHostApplicationBundleIdentifier];
-  v6 = [v4 rangeOfString:v5];
+  stringCopy = string;
+  webClipHostApplicationBundleIdentifier = [self webClipHostApplicationBundleIdentifier];
+  v6 = [stringCopy rangeOfString:webClipHostApplicationBundleIdentifier];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -33,21 +33,21 @@
 
   else
   {
-    v7 = [v4 substringFromIndex:v6];
+    v7 = [stringCopy substringFromIndex:v6];
   }
 
   return v7;
 }
 
-- (CRKWebClipBundleIdentifier)initWithString:(id)a3
+- (CRKWebClipBundleIdentifier)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = CRKWebClipBundleIdentifier;
   v5 = [(CRKWebClipBundleIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
   }
@@ -57,26 +57,26 @@
 
 - (BOOL)isWebClipHostApplication
 {
-  v2 = [(CRKWebClipBundleIdentifier *)self stringValue];
-  v3 = [objc_opt_class() webClipHostApplicationBundleIdentifier];
-  v4 = [v2 isEqualToString:v3];
+  stringValue = [(CRKWebClipBundleIdentifier *)self stringValue];
+  webClipHostApplicationBundleIdentifier = [objc_opt_class() webClipHostApplicationBundleIdentifier];
+  v4 = [stringValue isEqualToString:webClipHostApplicationBundleIdentifier];
 
   return v4;
 }
 
 - (BOOL)isSpecificWebClip
 {
-  v2 = [(CRKWebClipBundleIdentifier *)self stringValue];
-  v3 = [objc_opt_class() specificWebClipPrefix];
-  v4 = [v2 hasPrefix:v3];
+  stringValue = [(CRKWebClipBundleIdentifier *)self stringValue];
+  specificWebClipPrefix = [objc_opt_class() specificWebClipPrefix];
+  v4 = [stringValue hasPrefix:specificWebClipPrefix];
 
   return v4;
 }
 
 + (id)specificWebClipPrefix
 {
-  v2 = [a1 webClipHostApplicationBundleIdentifier];
-  v3 = [v2 stringByAppendingString:@"-"];
+  webClipHostApplicationBundleIdentifier = [self webClipHostApplicationBundleIdentifier];
+  v3 = [webClipHostApplicationBundleIdentifier stringByAppendingString:@"-"];
 
   return v3;
 }

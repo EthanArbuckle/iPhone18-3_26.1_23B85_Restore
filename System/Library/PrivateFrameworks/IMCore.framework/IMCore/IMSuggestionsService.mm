@@ -1,17 +1,17 @@
 @interface IMSuggestionsService
 + (id)sharedInstance;
 - (IMSuggestionsService)init;
-- (id)_contactForSGContactMatch:(id)a3;
-- (id)fetchCNContactForSuggestedHandle:(id)a3;
-- (id)personNameComponentsForHandle:(id)a3;
-- (id)suggestedNameFromCache:(id)a3 wasFound:(BOOL *)a4;
-- (void)_startRequestForDisplayName:(id)a3 messageUID:(id)a4 queue:(id)a5;
-- (void)_startRequestForDisplayNameCallbackWithSuggestedName:(id)a3 displayName:(id)a4 queue:(id)a5;
+- (id)_contactForSGContactMatch:(id)match;
+- (id)fetchCNContactForSuggestedHandle:(id)handle;
+- (id)personNameComponentsForHandle:(id)handle;
+- (id)suggestedNameFromCache:(id)cache wasFound:(BOOL *)found;
+- (void)_startRequestForDisplayName:(id)name messageUID:(id)d queue:(id)queue;
+- (void)_startRequestForDisplayNameCallbackWithSuggestedName:(id)name displayName:(id)displayName queue:(id)queue;
 - (void)dealloc;
-- (void)fetchSuggestedRealNameForDisplayName:(id)a3 messageUID:(id)a4 queue:(id)a5 block:(id)a6;
-- (void)fetchUncachedSuggestedRealNameForDisplayName:(id)a3 prependMaybe:(BOOL)a4 queue:(id)a5 block:(id)a6;
-- (void)scheduleFetchIfNecessaryForHandle:(id)a3;
-- (void)startUsingLocalLookupsWithTable:(id)a3;
+- (void)fetchSuggestedRealNameForDisplayName:(id)name messageUID:(id)d queue:(id)queue block:(id)block;
+- (void)fetchUncachedSuggestedRealNameForDisplayName:(id)name prependMaybe:(BOOL)maybe queue:(id)queue block:(id)block;
+- (void)scheduleFetchIfNecessaryForHandle:(id)handle;
+- (void)startUsingLocalLookupsWithTable:(id)table;
 - (void)stopUsingLocalLookups;
 @end
 
@@ -121,17 +121,17 @@
   [(IMSuggestionsService *)&v3 dealloc];
 }
 
-- (void)startUsingLocalLookupsWithTable:(id)a3
+- (void)startUsingLocalLookupsWithTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1A828727C;
   v7[3] = &unk_1E7810140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tableCopy;
+  v6 = tableCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -146,12 +146,12 @@
   dispatch_sync(queue, block);
 }
 
-- (id)suggestedNameFromCache:(id)a3 wasFound:(BOOL *)a4
+- (id)suggestedNameFromCache:(id)cache wasFound:(BOOL *)found
 {
-  v7 = a3;
-  if (v7)
+  cacheCopy = cache;
+  if (cacheCopy)
   {
-    v10 = objc_msgSend_objectForKey_(self->_cache, v6, v7);
+    v10 = objc_msgSend_objectForKey_(self->_cache, v6, cacheCopy);
     v11 = v10 != 0;
     if (!v10 || (objc_msgSend_null(MEMORY[0x1E695DFB0], v8, v9), v12 = objc_claimAutoreleasedReturnValue(), v12, v10 == v12))
     {
@@ -163,7 +163,7 @@
       v13 = v10;
     }
 
-    if (a4)
+    if (found)
     {
       goto LABEL_7;
     }
@@ -173,24 +173,24 @@
   {
     v13 = 0;
     v11 = 0;
-    if (a4)
+    if (found)
     {
 LABEL_7:
-      *a4 = v11;
+      *found = v11;
     }
   }
 
   return v13;
 }
 
-- (void)fetchUncachedSuggestedRealNameForDisplayName:(id)a3 prependMaybe:(BOOL)a4 queue:(id)a5 block:(id)a6
+- (void)fetchUncachedSuggestedRealNameForDisplayName:(id)name prependMaybe:(BOOL)maybe queue:(id)queue block:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v13 = a6;
-  if (v13 && self->_connection)
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
+  if (blockCopy && self->_connection)
   {
-    if (v10 && ((objc_msgSend__maybePhoneNumber_(self, v12, v10) & 1) != 0 || (objc_msgSend__maybeEmailAddress_(self, v14, v10) & 1) != 0 || (objc_msgSend_isBusiness_(self, v15, v10) & 1) != 0))
+    if (nameCopy && ((objc_msgSend__maybePhoneNumber_(self, v12, nameCopy) & 1) != 0 || (objc_msgSend__maybeEmailAddress_(self, v14, nameCopy) & 1) != 0 || (objc_msgSend_isBusiness_(self, v15, nameCopy) & 1) != 0))
     {
       queue = self->_queue;
       v19[0] = MEMORY[0x1E69E9820];
@@ -198,10 +198,10 @@ LABEL_7:
       v19[2] = sub_1A8287664;
       v19[3] = &unk_1E78105B0;
       v19[4] = self;
-      v20 = v10;
-      v23 = a4;
-      v21 = v11;
-      v22 = v13;
+      v20 = nameCopy;
+      maybeCopy = maybe;
+      v21 = queueCopy;
+      v22 = blockCopy;
       dispatch_async(queue, v19);
 
       v17 = v20;
@@ -213,8 +213,8 @@ LABEL_7:
       block[1] = 3221225472;
       block[2] = sub_1A8287650;
       block[3] = &unk_1E780FE90;
-      v25 = v13;
-      dispatch_async(v11, block);
+      v25 = blockCopy;
+      dispatch_async(queueCopy, block);
       v17 = v25;
     }
   }
@@ -230,26 +230,26 @@ LABEL_7:
   }
 }
 
-- (void)fetchSuggestedRealNameForDisplayName:(id)a3 messageUID:(id)a4 queue:(id)a5 block:(id)a6
+- (void)fetchSuggestedRealNameForDisplayName:(id)name messageUID:(id)d queue:(id)queue block:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v14 = a6;
-  if (v14 && self->_connection)
+  nameCopy = name;
+  dCopy = d;
+  queueCopy = queue;
+  blockCopy = block;
+  if (blockCopy && self->_connection)
   {
-    if (v10 && ((objc_msgSend__maybePhoneNumber_(self, v13, v10) & 1) != 0 || (objc_msgSend__maybeEmailAddress_(self, v15, v10) & 1) != 0 || (objc_msgSend_isBusiness_(self, v15, v10) & 1) != 0))
+    if (nameCopy && ((objc_msgSend__maybePhoneNumber_(self, v13, nameCopy) & 1) != 0 || (objc_msgSend__maybeEmailAddress_(self, v15, nameCopy) & 1) != 0 || (objc_msgSend_isBusiness_(self, v15, nameCopy) & 1) != 0))
     {
-      v16 = objc_msgSend_objectForKey_(self->_cache, v15, v10);
+      v16 = objc_msgSend_objectForKey_(self->_cache, v15, nameCopy);
       if (v16)
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = sub_1A8287C54;
         block[3] = &unk_1E7810230;
-        v26 = v14;
+        v26 = blockCopy;
         v25 = v16;
-        dispatch_async(v12, block);
+        dispatch_async(queueCopy, block);
 
         v17 = v26;
       }
@@ -262,10 +262,10 @@ LABEL_7:
         v19[2] = sub_1A8287CD4;
         v19[3] = &unk_1E78105D8;
         v19[4] = self;
-        v20 = v10;
-        v21 = v12;
-        v23 = v14;
-        v22 = v11;
+        v20 = nameCopy;
+        v21 = queueCopy;
+        v23 = blockCopy;
+        v22 = dCopy;
         dispatch_async(queue, v19);
 
         v17 = v20;
@@ -279,8 +279,8 @@ LABEL_15:
     v27[1] = 3221225472;
     v27[2] = sub_1A8287C40;
     v27[3] = &unk_1E780FE90;
-    v28 = v14;
-    dispatch_async(v12, v27);
+    v28 = blockCopy;
+    dispatch_async(queueCopy, v27);
   }
 
   else if (IMOSLoggingEnabled())
@@ -298,21 +298,21 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_startRequestForDisplayName:(id)a3 messageUID:(id)a4 queue:(id)a5
+- (void)_startRequestForDisplayName:(id)name messageUID:(id)d queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  dCopy = d;
+  queueCopy = queue;
+  if (nameCopy)
   {
     connection = self->_connection;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1A8288028;
     v14[3] = &unk_1E7810600;
-    v15 = v8;
-    v16 = self;
-    v17 = v10;
+    v15 = nameCopy;
+    selfCopy = self;
+    v17 = queueCopy;
     objc_msgSend_namesForDetail_limitTo_prependMaybe_withCompletion_(connection, v12, v15, 1, 1, v14);
   }
 
@@ -327,29 +327,29 @@ LABEL_16:
   }
 }
 
-- (void)_startRequestForDisplayNameCallbackWithSuggestedName:(id)a3 displayName:(id)a4 queue:(id)a5
+- (void)_startRequestForDisplayNameCallbackWithSuggestedName:(id)name displayName:(id)displayName queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  queueCopy = queue;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1A82882BC;
   v15[3] = &unk_1E78101E0;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = displayNameCopy;
+  v17 = nameCopy;
+  v18 = queueCopy;
+  v12 = queueCopy;
+  v13 = nameCopy;
+  v14 = displayNameCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)scheduleFetchIfNecessaryForHandle:(id)a3
+- (void)scheduleFetchIfNecessaryForHandle:(id)handle
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, handle);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1A8288574;
@@ -361,9 +361,9 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (id)_contactForSGContactMatch:(id)a3
+- (id)_contactForSGContactMatch:(id)match
 {
-  v3 = objc_msgSend_sortedArrayUsingComparator_(a3, a2, &unk_1F1B6DDE0);
+  v3 = objc_msgSend_sortedArrayUsingComparator_(match, a2, &unk_1F1B6DDE0);
   v6 = objc_msgSend_firstObject(v3, v4, v5);
   v7 = MEMORY[0x1E695CD58];
   v10 = objc_msgSend_contact(v6, v8, v9);
@@ -372,12 +372,12 @@ LABEL_16:
   return v12;
 }
 
-- (id)fetchCNContactForSuggestedHandle:(id)a3
+- (id)fetchCNContactForSuggestedHandle:(id)handle
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = v4;
-  if (!v4 || !objc_msgSend_length(v4, v5, v6))
+  handleCopy = handle;
+  v7 = handleCopy;
+  if (!handleCopy || !objc_msgSend_length(handleCopy, v5, v6))
   {
     v19 = 0;
     goto LABEL_22;
@@ -451,9 +451,9 @@ LABEL_22:
   return v19;
 }
 
-- (id)personNameComponentsForHandle:(id)a3
+- (id)personNameComponentsForHandle:(id)handle
 {
-  v4 = objc_msgSend_displayID(a3, a2, a3);
+  v4 = objc_msgSend_displayID(handle, a2, handle);
   v6 = objc_msgSend_fetchCNContactForSuggestedHandle_(self, v5, v4);
 
   v8 = objc_msgSend_firstNameForCNContact_(MEMORY[0x1E69A7FD0], v7, v6);

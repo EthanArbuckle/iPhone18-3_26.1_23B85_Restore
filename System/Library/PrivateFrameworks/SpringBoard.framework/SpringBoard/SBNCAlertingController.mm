@@ -1,22 +1,22 @@
 @interface SBNCAlertingController
-- (BOOL)_activeAlertDestinationsInRequestDestinations:(id)a3;
-- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)a3;
-- (BOOL)_isBundleIdentifierBlockedForScreenTimeExpiration:(id)a3;
+- (BOOL)_activeAlertDestinationsInRequestDestinations:(id)destinations;
+- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)policy;
+- (BOOL)_isBundleIdentifierBlockedForScreenTimeExpiration:(id)expiration;
 - (BOOL)_shouldRealert;
-- (BOOL)_shouldScreenTimeSuppressNotificationRequest:(id)a3;
-- (BOOL)_shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)a3;
+- (BOOL)_shouldScreenTimeSuppressNotificationRequest:(id)request;
+- (BOOL)_shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)identifier;
 - (SBNCAlertingController)init;
-- (SBNCAlertingController)initWithSoundController:(id)a3 screenController:(id)a4 lockScreenManager:(id)a5 communicationPolicyManager:(id)a6;
-- (void)_alertNowForNotificationRequest:(id)a3 presentingDestination:(id)a4;
-- (void)_killRealertsForNotificationRequest:(id)a3;
+- (SBNCAlertingController)initWithSoundController:(id)controller screenController:(id)screenController lockScreenManager:(id)manager communicationPolicyManager:(id)policyManager;
+- (void)_alertNowForNotificationRequest:(id)request presentingDestination:(id)destination;
+- (void)_killRealertsForNotificationRequest:(id)request;
 - (void)_lockStateChanged;
-- (void)_realertTimerFired:(id)a3;
-- (void)_scheduleRealertsForNotificationRequest:(id)a3;
-- (void)alertOnPostForNotificationRequest:(id)a3 forRequestDestinations:(id)a4;
-- (void)alertOnPresentationForNotificationRequest:(id)a3 presentingDestination:(id)a4;
-- (void)killAlertsForNotificationRequest:(id)a3;
+- (void)_realertTimerFired:(id)fired;
+- (void)_scheduleRealertsForNotificationRequest:(id)request;
+- (void)alertOnPostForNotificationRequest:(id)request forRequestDestinations:(id)destinations;
+- (void)alertOnPresentationForNotificationRequest:(id)request presentingDestination:(id)destination;
+- (void)killAlertsForNotificationRequest:(id)request;
 - (void)killRealerts;
-- (void)resetAutomaticLockStateForNotificationRequest:(id)a3;
+- (void)resetAutomaticLockStateForNotificationRequest:(id)request;
 @end
 
 @implementation SBNCAlertingController
@@ -24,27 +24,27 @@
 - (void)killRealerts
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SBNCAlertingController *)self activeRequestWithRealerts];
+  activeRequestWithRealerts = [(SBNCAlertingController *)self activeRequestWithRealerts];
 
-  if (v3)
+  if (activeRequestWithRealerts)
   {
     v4 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(SBNCAlertingController *)self activeRequestWithRealerts];
-      v7 = [v6 notificationIdentifier];
-      v8 = [v7 un_logDigest];
+      activeRequestWithRealerts2 = [(SBNCAlertingController *)self activeRequestWithRealerts];
+      notificationIdentifier = [activeRequestWithRealerts2 notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v11 = 138543362;
-      v12 = v8;
+      v12 = un_logDigest;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Killing realerts for request %{public}@", &v11, 0xCu);
     }
 
-    v9 = [(SBNCAlertingController *)self realertTimers];
-    [v9 makeObjectsPerformSelector:sel_invalidate];
+    realertTimers = [(SBNCAlertingController *)self realertTimers];
+    [realertTimers makeObjectsPerformSelector:sel_invalidate];
 
-    v10 = [(SBNCAlertingController *)self realertTimers];
-    [v10 removeAllObjects];
+    realertTimers2 = [(SBNCAlertingController *)self realertTimers];
+    [realertTimers2 removeAllObjects];
 
     [(SBNCAlertingController *)self setActiveRequestWithRealerts:0];
   }
@@ -52,10 +52,10 @@
 
 - (void)_lockStateChanged
 {
-  v3 = [(SBNCAlertingController *)self lockScreenManager];
-  v4 = [v3 isUILocked];
+  lockScreenManager = [(SBNCAlertingController *)self lockScreenManager];
+  isUILocked = [lockScreenManager isUILocked];
 
-  if ((v4 & 1) == 0)
+  if ((isUILocked & 1) == 0)
   {
 
     [(SBNCAlertingController *)self killRealerts];
@@ -69,77 +69,77 @@
   return 0;
 }
 
-- (SBNCAlertingController)initWithSoundController:(id)a3 screenController:(id)a4 lockScreenManager:(id)a5 communicationPolicyManager:(id)a6
+- (SBNCAlertingController)initWithSoundController:(id)controller screenController:(id)screenController lockScreenManager:(id)manager communicationPolicyManager:(id)policyManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  screenControllerCopy = screenController;
+  managerCopy = manager;
+  policyManagerCopy = policyManager;
   v22.receiver = self;
   v22.super_class = SBNCAlertingController;
   v15 = [(SBNCAlertingController *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_soundController, a3);
-    objc_storeStrong(&v16->_screenController, a4);
-    objc_storeStrong(&v16->_lockScreenManager, a5);
-    objc_storeStrong(&v16->_communicationPolicyManager, a6);
+    objc_storeStrong(&v15->_soundController, controller);
+    objc_storeStrong(&v16->_screenController, screenController);
+    objc_storeStrong(&v16->_lockScreenManager, manager);
+    objc_storeStrong(&v16->_communicationPolicyManager, policyManager);
     v17 = objc_opt_new();
     realertTimers = v16->_realertTimers;
     v16->_realertTimers = v17;
 
-    v19 = [MEMORY[0x277D3A178] sharedInstance];
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D67AB0] object:0];
-    [v20 addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D679D8] object:0];
-    [v20 addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D67A80] object:0];
-    [v20 addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D67A88] object:0];
-    [v20 addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D67AF0] object:0];
-    [v20 addObserver:v16 selector:sel__lockStateChanged name:@"SBAggregateLockStateDidChangeNotification" object:0];
+    mEMORY[0x277D3A178] = [MEMORY[0x277D3A178] sharedInstance];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D67AB0] object:0];
+    [defaultCenter addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D679D8] object:0];
+    [defaultCenter addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D67A80] object:0];
+    [defaultCenter addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D67A88] object:0];
+    [defaultCenter addObserver:v16 selector:sel__hardwareButtonPressed_ name:*MEMORY[0x277D67AF0] object:0];
+    [defaultCenter addObserver:v16 selector:sel__lockStateChanged name:@"SBAggregateLockStateDidChangeNotification" object:0];
   }
 
   return v16;
 }
 
-- (void)alertOnPostForNotificationRequest:(id)a3 forRequestDestinations:(id)a4
+- (void)alertOnPostForNotificationRequest:(id)request forRequestDestinations:(id)destinations
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBNCAlertingController *)self lockScreenManager];
-  v9 = [v8 isUILocked];
+  requestCopy = request;
+  destinationsCopy = destinations;
+  lockScreenManager = [(SBNCAlertingController *)self lockScreenManager];
+  isUILocked = [lockScreenManager isUILocked];
 
-  v10 = [SBApp notificationDispatcher];
-  v11 = [v10 isCarDestinationActive];
+  notificationDispatcher = [SBApp notificationDispatcher];
+  isCarDestinationActive = [notificationDispatcher isCarDestinationActive];
 
-  v12 = [(SBNCAlertingController *)self _activeAlertDestinationsInRequestDestinations:v7];
-  v13 = [v6 sb_shouldSuppressAlert];
-  v14 = [(SBNCAlertingController *)self _shouldScreenTimeSuppressNotificationRequest:v6];
-  v15 = (v9 | (v12 | v13) ^ 1) & ((v11 | v14) ^ 1);
+  v12 = [(SBNCAlertingController *)self _activeAlertDestinationsInRequestDestinations:destinationsCopy];
+  sb_shouldSuppressAlert = [requestCopy sb_shouldSuppressAlert];
+  v14 = [(SBNCAlertingController *)self _shouldScreenTimeSuppressNotificationRequest:requestCopy];
+  v15 = (isUILocked | (v12 | sb_shouldSuppressAlert) ^ 1) & ((isCarDestinationActive | v14) ^ 1);
   v16 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v17 = @"Not alerting";
-    if ((v9 | (v12 | v13) ^ 1) & ((v11 | v14) ^ 1))
+    if ((isUILocked | (v12 | sb_shouldSuppressAlert) ^ 1) & ((isCarDestinationActive | v14) ^ 1))
     {
       v17 = @"Alerting";
     }
 
     v21 = v17;
     v18 = v16;
-    v19 = [v6 notificationIdentifier];
-    v20 = [v19 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138544642;
     v23 = v21;
     v24 = 2114;
-    v25 = v20;
+    v25 = un_logDigest;
     v26 = 1024;
-    v27 = v9;
+    v27 = isUILocked;
     v28 = 1024;
     v29 = v12;
     v30 = 1024;
-    v31 = v13 & 1;
+    v31 = sb_shouldSuppressAlert & 1;
     v32 = 1024;
     v33 = v14;
     _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ on post for request %{public}@. uiLocked=%d activeAlertDestinations=%d suppressAlertForContext=%d shouldSuppressForScreenTime=%d", buf, 0x2Eu);
@@ -147,127 +147,127 @@
 
   if (v15)
   {
-    [(SBNCAlertingController *)self _alertNowForNotificationRequest:v6];
-    [(SBNCAlertingController *)self _scheduleRealertsForNotificationRequest:v6];
+    [(SBNCAlertingController *)self _alertNowForNotificationRequest:requestCopy];
+    [(SBNCAlertingController *)self _scheduleRealertsForNotificationRequest:requestCopy];
   }
 }
 
-- (void)alertOnPresentationForNotificationRequest:(id)a3 presentingDestination:(id)a4
+- (void)alertOnPresentationForNotificationRequest:(id)request presentingDestination:(id)destination
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  destinationCopy = destination;
   v8 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 notificationIdentifier];
-    v11 = [v10 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v12 = 138543362;
-    v13 = v11;
+    v13 = un_logDigest;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Alerting on presentation for request %{public}@", &v12, 0xCu);
   }
 
-  [(SBNCAlertingController *)self _alertNowForNotificationRequest:v6 presentingDestination:v7];
+  [(SBNCAlertingController *)self _alertNowForNotificationRequest:requestCopy presentingDestination:destinationCopy];
 }
 
-- (void)killAlertsForNotificationRequest:(id)a3
+- (void)killAlertsForNotificationRequest:(id)request
 {
-  v5 = a3;
-  v4 = [(SBNCAlertingController *)self soundController];
-  [v4 stopSoundForNotificationRequest:v5];
+  requestCopy = request;
+  soundController = [(SBNCAlertingController *)self soundController];
+  [soundController stopSoundForNotificationRequest:requestCopy];
 
-  [(SBNCAlertingController *)self _killRealertsForNotificationRequest:v5];
+  [(SBNCAlertingController *)self _killRealertsForNotificationRequest:requestCopy];
 }
 
-- (void)resetAutomaticLockStateForNotificationRequest:(id)a3
+- (void)resetAutomaticLockStateForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBNCAlertingController *)self screenController];
-  [v5 resetAutomaticLockStateForNotificationRequest:v4];
+  requestCopy = request;
+  screenController = [(SBNCAlertingController *)self screenController];
+  [screenController resetAutomaticLockStateForNotificationRequest:requestCopy];
 }
 
-- (void)_alertNowForNotificationRequest:(id)a3 presentingDestination:(id)a4
+- (void)_alertNowForNotificationRequest:(id)request presentingDestination:(id)destination
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBNCAlertingController *)self soundController];
-  [v8 playSoundAndReadOutForNotificationRequest:v7 presentingDestination:v6];
+  destinationCopy = destination;
+  requestCopy = request;
+  soundController = [(SBNCAlertingController *)self soundController];
+  [soundController playSoundAndReadOutForNotificationRequest:requestCopy presentingDestination:destinationCopy];
 
-  v9 = [(SBNCAlertingController *)self screenController];
-  [v9 turnOnScreenIfPossibleForNotificationRequest:v7];
+  screenController = [(SBNCAlertingController *)self screenController];
+  [screenController turnOnScreenIfPossibleForNotificationRequest:requestCopy];
 }
 
-- (BOOL)_activeAlertDestinationsInRequestDestinations:(id)a3
+- (BOOL)_activeAlertDestinationsInRequestDestinations:(id)destinations
 {
-  v3 = a3;
-  if ([v3 containsObject:*MEMORY[0x277D77FC8]])
+  destinationsCopy = destinations;
+  if ([destinationsCopy containsObject:*MEMORY[0x277D77FC8]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsObject:*MEMORY[0x277D77FD0]];
+    v4 = [destinationsCopy containsObject:*MEMORY[0x277D77FD0]];
   }
 
   return v4;
 }
 
-- (BOOL)_shouldScreenTimeSuppressNotificationRequest:(id)a3
+- (BOOL)_shouldScreenTimeSuppressNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 options];
-  if ([v5 overridesDowntime])
+  requestCopy = request;
+  options = [requestCopy options];
+  if ([options overridesDowntime])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 sectionIdentifier];
-    v6 = [(SBNCAlertingController *)self _shouldScreenTimeSuppressNotificationsForBundleIdentifier:v7];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    v6 = [(SBNCAlertingController *)self _shouldScreenTimeSuppressNotificationsForBundleIdentifier:sectionIdentifier];
   }
 
   return v6;
 }
 
-- (BOOL)_shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)a3
+- (BOOL)_shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBNCAlertingController *)self _isBundleIdentifierBlockedForScreenTimeExpiration:v4]|| [(SBNCAlertingController *)self _isBundleIdentifierBlockedForCommunicationPolicy:v4];
+  identifierCopy = identifier;
+  v5 = [(SBNCAlertingController *)self _isBundleIdentifierBlockedForScreenTimeExpiration:identifierCopy]|| [(SBNCAlertingController *)self _isBundleIdentifierBlockedForCommunicationPolicy:identifierCopy];
 
   return v5;
 }
 
-- (BOOL)_isBundleIdentifierBlockedForScreenTimeExpiration:(id)a3
+- (BOOL)_isBundleIdentifierBlockedForScreenTimeExpiration:(id)expiration
 {
-  v3 = a3;
+  expirationCopy = expiration;
   v4 = +[SBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:expirationCopy];
 
-  v6 = [v5 info];
-  LOBYTE(v3) = [v6 isBlockedForScreenTimeExpiration];
+  info = [v5 info];
+  LOBYTE(expirationCopy) = [info isBlockedForScreenTimeExpiration];
 
-  return v3;
+  return expirationCopy;
 }
 
-- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)a3
+- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = +[SBCommunicationPolicyManager sharedInstance];
-  v5 = [v4 shouldScreenTimeSuppressNotificationsForBundleIdentifier:v3];
+  v5 = [v4 shouldScreenTimeSuppressNotificationsForBundleIdentifier:policyCopy];
 
   return v5;
 }
 
 - (BOOL)_shouldRealert
 {
-  v3 = [(SBNCAlertingController *)self lockScreenManager];
-  if ([v3 isUILocked])
+  lockScreenManager = [(SBNCAlertingController *)self lockScreenManager];
+  if ([lockScreenManager isUILocked])
   {
-    v4 = [(SBNCAlertingController *)self lockScreenManager];
-    v5 = [v4 isInLostMode] ^ 1;
+    lockScreenManager2 = [(SBNCAlertingController *)self lockScreenManager];
+    v5 = [lockScreenManager2 isInLostMode] ^ 1;
   }
 
   else
@@ -278,80 +278,80 @@
   return v5;
 }
 
-- (void)_killRealertsForNotificationRequest:(id)a3
+- (void)_killRealertsForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBNCAlertingController *)self activeRequestWithRealerts];
-  v6 = [v5 notificationIdentifier];
-  v7 = [v4 notificationIdentifier];
+  requestCopy = request;
+  activeRequestWithRealerts = [(SBNCAlertingController *)self activeRequestWithRealerts];
+  notificationIdentifier = [activeRequestWithRealerts notificationIdentifier];
+  notificationIdentifier2 = [requestCopy notificationIdentifier];
 
-  LODWORD(v4) = [v6 isEqualToString:v7];
-  if (v4)
+  LODWORD(requestCopy) = [notificationIdentifier isEqualToString:notificationIdentifier2];
+  if (requestCopy)
   {
 
     [(SBNCAlertingController *)self killRealerts];
   }
 }
 
-- (void)_realertTimerFired:(id)a3
+- (void)_realertTimerFired:(id)fired
 {
-  v7 = a3;
+  firedCopy = fired;
   if ([(SBNCAlertingController *)self _shouldRealert])
   {
-    v4 = [(SBNCAlertingController *)self realertTimers];
-    if ([v4 containsObject:v7])
+    realertTimers = [(SBNCAlertingController *)self realertTimers];
+    if ([realertTimers containsObject:firedCopy])
     {
-      v5 = [(SBNCAlertingController *)self activeRequestWithRealerts];
+      activeRequestWithRealerts = [(SBNCAlertingController *)self activeRequestWithRealerts];
 
-      if (!v5)
+      if (!activeRequestWithRealerts)
       {
         goto LABEL_6;
       }
 
-      v4 = [(SBNCAlertingController *)self activeRequestWithRealerts];
-      [(SBNCAlertingController *)self _alertNowForNotificationRequest:v4];
+      realertTimers = [(SBNCAlertingController *)self activeRequestWithRealerts];
+      [(SBNCAlertingController *)self _alertNowForNotificationRequest:realertTimers];
     }
   }
 
 LABEL_6:
-  v6 = [(SBNCAlertingController *)self realertTimers];
-  [v6 removeObject:v7];
+  realertTimers2 = [(SBNCAlertingController *)self realertTimers];
+  [realertTimers2 removeObject:firedCopy];
 }
 
-- (void)_scheduleRealertsForNotificationRequest:(id)a3
+- (void)_scheduleRealertsForNotificationRequest:(id)request
 {
-  v15 = a3;
-  v4 = [v15 options];
-  v5 = [v4 realertCount];
+  requestCopy = request;
+  options = [requestCopy options];
+  realertCount = [options realertCount];
 
-  v6 = [(SBNCAlertingController *)self _shouldRealert];
-  if (v15 && v6 && v5)
+  _shouldRealert = [(SBNCAlertingController *)self _shouldRealert];
+  if (requestCopy && _shouldRealert && realertCount)
   {
     [(SBNCAlertingController *)self killRealerts];
-    [(SBNCAlertingController *)self setActiveRequestWithRealerts:v15];
+    [(SBNCAlertingController *)self setActiveRequestWithRealerts:requestCopy];
     v7 = 120;
     v8 = 1;
     do
     {
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.springboard.alertingcontroller.realert-%ld", v8];
       v10 = objc_alloc(MEMORY[0x277D3A180]);
-      v11 = [v15 notificationIdentifier];
-      v12 = [v10 initWithTimeInterval:v9 serviceIdentifier:self target:sel__realertTimerFired_ selector:v11 userInfo:v7];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      v12 = [v10 initWithTimeInterval:v9 serviceIdentifier:self target:sel__realertTimerFired_ selector:notificationIdentifier userInfo:v7];
 
       [v12 setUserVisible:1];
       [v12 setMinimumEarlyFireProportion:1.0];
-      v13 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v12 scheduleInRunLoop:v13];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [v12 scheduleInRunLoop:currentRunLoop];
 
-      v14 = [(SBNCAlertingController *)self realertTimers];
-      [v14 addObject:v12];
+      realertTimers = [(SBNCAlertingController *)self realertTimers];
+      [realertTimers addObject:v12];
 
       v7 += 120;
       ++v8;
-      --v5;
+      --realertCount;
     }
 
-    while (v5);
+    while (realertCount);
   }
 }
 

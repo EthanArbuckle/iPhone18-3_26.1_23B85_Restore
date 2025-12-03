@@ -1,13 +1,13 @@
 @interface AirTagMapViewController
-- (_TtC21FindMyRemoteUIService23AirTagMapViewController)initWithCoder:(id)a3;
-- (_TtC21FindMyRemoteUIService23AirTagMapViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (_TtC21FindMyRemoteUIService23AirTagMapViewController)initWithCoder:(id)coder;
+- (_TtC21FindMyRemoteUIService23AirTagMapViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (void)loadView;
 @end
 
 @implementation AirTagMapViewController
 
-- (_TtC21FindMyRemoteUIService23AirTagMapViewController)initWithCoder:(id)a3
+- (_TtC21FindMyRemoteUIService23AirTagMapViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC21FindMyRemoteUIService23AirTagMapViewController_mapView;
   v5 = [objc_allocWithZone(MKMapView) init];
@@ -20,23 +20,23 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000161D4();
 }
 
-- (_TtC21FindMyRemoteUIService23AirTagMapViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21FindMyRemoteUIService23AirTagMapViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_10001656C(v5);
+  selfCopy = self;
+  v7 = sub_10001656C(viewCopy);
 
   swift_unknownObjectRelease();
 

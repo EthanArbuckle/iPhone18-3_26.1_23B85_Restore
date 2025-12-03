@@ -2,37 +2,37 @@
 - (SUUIMenuBarViewElementConfigurationDelegate)delegate;
 - (SUUIMenuItemViewElement)selectedMenuItemViewElement;
 - (_SUUIMenuBarViewElementConfigurationReloadDelegate)_reloadDelegate;
-- (id)_initWithMenuBarDocument:(id)a3;
-- (id)documentForEntityUniqueIdentifier:(id)a3;
-- (id)documentForMenuItemAtIndex:(unint64_t)a3;
-- (id)documentOptionsForEntityUniqueIdentifier:(id)a3;
-- (id)documentOptionsForMenuItemAtIndex:(unint64_t)a3;
-- (unint64_t)indexOfMenuItemViewElement:(id)a3;
+- (id)_initWithMenuBarDocument:(id)document;
+- (id)documentForEntityUniqueIdentifier:(id)identifier;
+- (id)documentForMenuItemAtIndex:(unint64_t)index;
+- (id)documentOptionsForEntityUniqueIdentifier:(id)identifier;
+- (id)documentOptionsForMenuItemAtIndex:(unint64_t)index;
+- (unint64_t)indexOfMenuItemViewElement:(id)element;
 - (unint64_t)numberOfMenuItems;
 - (void)_ensureDataLoaded;
-- (void)_reloadWithMenuBarStyle:(int64_t)a3 menuItemViewElements:(id)a4 scrollEnabled:(BOOL)a5;
-- (void)contentWillAppearForMenuItemAtIndex:(unint64_t)a3 withEntityValueProvider:(id)a4 clientContext:(id)a5;
-- (void)menuBarDocument:(id)a3 didReplaceDocumentForEntityWithUniqueIdentifier:(id)a4;
-- (void)menuBarDocument:(id)a3 didReplaceDocumentForMenuItem:(id)a4;
-- (void)menuBarDocument:(id)a3 didSelectMenuItem:(id)a4 animated:(BOOL)a5;
+- (void)_reloadWithMenuBarStyle:(int64_t)style menuItemViewElements:(id)elements scrollEnabled:(BOOL)enabled;
+- (void)contentWillAppearForMenuItemAtIndex:(unint64_t)index withEntityValueProvider:(id)provider clientContext:(id)context;
+- (void)menuBarDocument:(id)document didReplaceDocumentForEntityWithUniqueIdentifier:(id)identifier;
+- (void)menuBarDocument:(id)document didReplaceDocumentForMenuItem:(id)item;
+- (void)menuBarDocument:(id)document didSelectMenuItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation SUUIMenuBarViewElementConfiguration
 
-- (id)_initWithMenuBarDocument:(id)a3
+- (id)_initWithMenuBarDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   v11.receiver = self;
   v11.super_class = SUUIMenuBarViewElementConfiguration;
   v6 = [(SUUIMenuBarViewElementConfiguration *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_menuBarDocument, a3);
+    objc_storeStrong(&v6->_menuBarDocument, document);
     [(IKAppMenuBarDocument *)v7->_menuBarDocument setDelegate:v7];
-    v8 = [(IKAppMenuBarDocument *)v7->_menuBarDocument selectedMenuItem];
+    selectedMenuItem = [(IKAppMenuBarDocument *)v7->_menuBarDocument selectedMenuItem];
     selectedMenuItemViewElement = v7->_selectedMenuItemViewElement;
-    v7->_selectedMenuItemViewElement = v8;
+    v7->_selectedMenuItemViewElement = selectedMenuItem;
 
     v7->_needsReload = 1;
   }
@@ -40,45 +40,45 @@
   return v7;
 }
 
-- (void)menuBarDocument:(id)a3 didReplaceDocumentForEntityWithUniqueIdentifier:(id)a4
+- (void)menuBarDocument:(id)document didReplaceDocumentForEntityWithUniqueIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   [(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded];
-  v5 = [(SUUIMenuBarViewElementConfiguration *)self delegate];
+  delegate = [(SUUIMenuBarViewElementConfiguration *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 menuBarViewElementConfiguration:self didReplaceDocumentForEntityUniqueIdentifier:v6];
+    [delegate menuBarViewElementConfiguration:self didReplaceDocumentForEntityUniqueIdentifier:identifierCopy];
   }
 }
 
-- (void)menuBarDocument:(id)a3 didReplaceDocumentForMenuItem:(id)a4
+- (void)menuBarDocument:(id)document didReplaceDocumentForMenuItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   [(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded];
-  v6 = [(NSArray *)self->_menuItemViewElements indexOfObject:v5];
+  v6 = [(NSArray *)self->_menuItemViewElements indexOfObject:itemCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(SUUIMenuBarViewElementConfiguration *)self delegate];
+    delegate = [(SUUIMenuBarViewElementConfiguration *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 menuBarViewElementConfiguration:self didReplaceDocumentForMenuItemAtIndex:v6];
+      [delegate menuBarViewElementConfiguration:self didReplaceDocumentForMenuItemAtIndex:v6];
     }
   }
 }
 
-- (void)menuBarDocument:(id)a3 didSelectMenuItem:(id)a4 animated:(BOOL)a5
+- (void)menuBarDocument:(id)document didSelectMenuItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = a4;
+  animatedCopy = animated;
+  itemCopy = item;
   [(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded];
-  if ([(NSArray *)self->_menuItemViewElements containsObject:v9])
+  if ([(NSArray *)self->_menuItemViewElements containsObject:itemCopy])
   {
-    objc_storeStrong(&self->_selectedMenuItemViewElement, a4);
-    v8 = [(SUUIMenuBarViewElementConfiguration *)self delegate];
+    objc_storeStrong(&self->_selectedMenuItemViewElement, item);
+    delegate = [(SUUIMenuBarViewElementConfiguration *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 menuBarViewElementConfiguration:self selectMenuItemViewElement:self->_selectedMenuItemViewElement animated:v5];
+      [delegate menuBarViewElementConfiguration:self selectMenuItemViewElement:self->_selectedMenuItemViewElement animated:animatedCopy];
     }
   }
 }
@@ -122,48 +122,48 @@
   return v5;
 }
 
-- (id)documentForEntityUniqueIdentifier:(id)a3
+- (id)documentForEntityUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded];
-  v5 = [(IKAppMenuBarDocument *)self->_menuBarDocument documentForEntityUniqueIdentifier:v4];
+  v5 = [(IKAppMenuBarDocument *)self->_menuBarDocument documentForEntityUniqueIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)documentForMenuItemAtIndex:(unint64_t)a3
+- (id)documentForMenuItemAtIndex:(unint64_t)index
 {
   [(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded];
-  v5 = [(NSArray *)self->_menuItemViewElements objectAtIndex:a3];
+  v5 = [(NSArray *)self->_menuItemViewElements objectAtIndex:index];
   v6 = [(IKAppMenuBarDocument *)self->_menuBarDocument documentForMenuItem:v5];
 
   return v6;
 }
 
-- (id)documentOptionsForEntityUniqueIdentifier:(id)a3
+- (id)documentOptionsForEntityUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded];
-  v5 = [(IKAppMenuBarDocument *)self->_menuBarDocument documentOptionsForEntityUniqueIdentifier:v4];
+  v5 = [(IKAppMenuBarDocument *)self->_menuBarDocument documentOptionsForEntityUniqueIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)documentOptionsForMenuItemAtIndex:(unint64_t)a3
+- (id)documentOptionsForMenuItemAtIndex:(unint64_t)index
 {
   [(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded];
-  v5 = [(NSArray *)self->_menuItemViewElements objectAtIndex:a3];
+  v5 = [(NSArray *)self->_menuItemViewElements objectAtIndex:index];
   v6 = [(IKAppMenuBarDocument *)self->_menuBarDocument documentOptionsForMenuItem:v5];
 
   return v6;
 }
 
-- (unint64_t)indexOfMenuItemViewElement:(id)a3
+- (unint64_t)indexOfMenuItemViewElement:(id)element
 {
-  v4 = a3;
-  if (v4 && ([(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded], (menuItemViewElements = self->_menuItemViewElements) != 0))
+  elementCopy = element;
+  if (elementCopy && ([(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded], (menuItemViewElements = self->_menuItemViewElements) != 0))
   {
-    v6 = [(NSArray *)menuItemViewElements indexOfObject:v4];
+    v6 = [(NSArray *)menuItemViewElements indexOfObject:elementCopy];
   }
 
   else
@@ -174,28 +174,28 @@
   return v6;
 }
 
-- (void)contentWillAppearForMenuItemAtIndex:(unint64_t)a3 withEntityValueProvider:(id)a4 clientContext:(id)a5
+- (void)contentWillAppearForMenuItemAtIndex:(unint64_t)index withEntityValueProvider:(id)provider clientContext:(id)context
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  contextCopy = context;
   [(SUUIMenuBarViewElementConfiguration *)self _ensureDataLoaded];
-  v10 = [(NSArray *)self->_menuItemViewElements objectAtIndex:a3];
+  v10 = [(NSArray *)self->_menuItemViewElements objectAtIndex:index];
   menuBarDocument = self->_menuBarDocument;
-  if (v8)
+  if (providerCopy)
   {
-    v12 = [v8 entityUniqueIdentifier];
-    v13 = [(IKAppMenuBarDocument *)menuBarDocument documentForEntityUniqueIdentifier:v12];
+    entityUniqueIdentifier = [providerCopy entityUniqueIdentifier];
+    v13 = [(IKAppMenuBarDocument *)menuBarDocument documentForEntityUniqueIdentifier:entityUniqueIdentifier];
 
     if (!v13)
     {
       v14 = objc_alloc(MEMORY[0x277D1B0A8]);
-      v15 = [v9 _scriptAppContext];
-      v16 = [v14 initWithAppContext:v15];
+      _scriptAppContext = [contextCopy _scriptAppContext];
+      v16 = [v14 initWithAppContext:_scriptAppContext];
 
       if (v16)
       {
-        [v16 setEntityValueProvider:v8];
+        [v16 setEntityValueProvider:providerCopy];
         v19 = @"entityValueProvider";
         v20[0] = v16;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
@@ -242,14 +242,14 @@ LABEL_11:
   }
 }
 
-- (void)_reloadWithMenuBarStyle:(int64_t)a3 menuItemViewElements:(id)a4 scrollEnabled:(BOOL)a5
+- (void)_reloadWithMenuBarStyle:(int64_t)style menuItemViewElements:(id)elements scrollEnabled:(BOOL)enabled
 {
-  self->_menuBarStyle = a3;
-  v7 = [a4 copy];
+  self->_menuBarStyle = style;
+  v7 = [elements copy];
   menuItemViewElements = self->_menuItemViewElements;
   self->_menuItemViewElements = v7;
 
-  self->_scrollEnabled = a5;
+  self->_scrollEnabled = enabled;
 }
 
 - (SUUIMenuBarViewElementConfigurationDelegate)delegate

@@ -1,16 +1,16 @@
 @interface FKPrivacySettingsController
-- (FKPrivacySettingsController)initWithBundleIdentifier:(id)a3;
+- (FKPrivacySettingsController)initWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation FKPrivacySettingsController
 
-- (FKPrivacySettingsController)initWithBundleIdentifier:(id)a3
+- (FKPrivacySettingsController)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(FKPrivacySettingsController *)self init];
   if (v5)
   {
-    v6 = [[_TtC10FinanceKit36BankConnectPrivacySettingsController alloc] initWithBundleID:v4];
+    v6 = [[_TtC10FinanceKit36BankConnectPrivacySettingsController alloc] initWithBundleID:identifierCopy];
     wrappedController = v5->_wrappedController;
     v5->_wrappedController = v6;
   }

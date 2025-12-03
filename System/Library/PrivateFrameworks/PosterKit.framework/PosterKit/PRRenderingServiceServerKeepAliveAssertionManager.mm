@@ -1,17 +1,17 @@
 @interface PRRenderingServiceServerKeepAliveAssertionManager
 + (id)sharedInstance;
 - (PRRenderingServiceServerKeepAliveAssertionManager)init;
-- (id)_queue_acquireRenderingServiceServerKeepAliveAssertionForReason:(id)a3;
-- (id)acquireRenderingServiceServerKeepAliveAssertionForReason:(id)a3;
-- (void)_notifyObserversDidActivateRenderingServiceServer:(id)a3;
+- (id)_queue_acquireRenderingServiceServerKeepAliveAssertionForReason:(id)reason;
+- (id)acquireRenderingServiceServerKeepAliveAssertionForReason:(id)reason;
+- (void)_notifyObserversDidActivateRenderingServiceServer:(id)server;
 - (void)_notifyObserversDidInvalidateRenderingServiceServer;
-- (void)_queue_addObserver:(id)a3;
-- (void)_queue_notifyObserversDidActivateRenderingServiceServer:(id)a3;
+- (void)_queue_addObserver:(id)observer;
+- (void)_queue_notifyObserversDidActivateRenderingServiceServer:(id)server;
 - (void)_queue_notifyObserversDidInvalidateRenderingServiceServer;
-- (void)_queue_removeObserver:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_queue_removeObserver:(id)observer;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PRRenderingServiceServerKeepAliveAssertionManager
@@ -75,9 +75,9 @@ uint64_t __67__PRRenderingServiceServerKeepAliveAssertionManager_sharedInstance_
   [(PRRenderingServiceServerKeepAliveAssertionManager *)&v5 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -85,8 +85,8 @@ uint64_t __67__PRRenderingServiceServerKeepAliveAssertionManager_sharedInstance_
   block[2] = __65__PRRenderingServiceServerKeepAliveAssertionManager_addObserver___block_invoke;
   block[3] = &unk_1E7843AD0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -104,9 +104,9 @@ void __65__PRRenderingServiceServerKeepAliveAssertionManager_addObserver___block
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -114,8 +114,8 @@ void __65__PRRenderingServiceServerKeepAliveAssertionManager_addObserver___block
   block[2] = __68__PRRenderingServiceServerKeepAliveAssertionManager_removeObserver___block_invoke;
   block[3] = &unk_1E7843AD0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -133,47 +133,47 @@ void __68__PRRenderingServiceServerKeepAliveAssertionManager_removeObserver___bl
   }
 }
 
-- (void)_queue_addObserver:(id)a3
+- (void)_queue_addObserver:(id)observer
 {
-  v9 = a3;
+  observerCopy = observer;
   v4 = BSDispatchQueueAssert();
-  v5 = v9;
-  if (v9)
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     if (!observers)
     {
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v8 = self->_observers;
-      self->_observers = v7;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v9];
-    v5 = v9;
+    v4 = [(NSHashTable *)observers addObject:observerCopy];
+    v5 = observerCopy;
   }
 
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)_queue_removeObserver:(id)a3
+- (void)_queue_removeObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   v4 = BSDispatchQueueAssert();
-  v5 = v6;
-  if (v6)
+  v5 = observerCopy;
+  if (observerCopy)
   {
     v4 = [(NSHashTable *)self->_observers count];
-    v5 = v6;
+    v5 = observerCopy;
     if (v4)
     {
-      v4 = [(NSHashTable *)self->_observers containsObject:v6];
-      v5 = v6;
+      v4 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+      v5 = observerCopy;
       if (v4)
       {
-        v4 = [(NSHashTable *)self->_observers removeObject:v6];
-        v5 = v6;
+        v4 = [(NSHashTable *)self->_observers removeObject:observerCopy];
+        v5 = observerCopy;
       }
     }
   }
@@ -181,9 +181,9 @@ void __68__PRRenderingServiceServerKeepAliveAssertionManager_removeObserver___bl
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)_notifyObserversDidActivateRenderingServiceServer:(id)a3
+- (void)_notifyObserversDidActivateRenderingServiceServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   objc_initWeak(&location, self);
   notifyQueue = self->_notifyQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -191,8 +191,8 @@ void __68__PRRenderingServiceServerKeepAliveAssertionManager_removeObserver___bl
   block[2] = __103__PRRenderingServiceServerKeepAliveAssertionManager__notifyObserversDidActivateRenderingServiceServer___block_invoke;
   block[3] = &unk_1E7843AD0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = serverCopy;
+  v6 = serverCopy;
   dispatch_async(notifyQueue, block);
 
   objc_destroyWeak(&v9);
@@ -205,10 +205,10 @@ void __103__PRRenderingServiceServerKeepAliveAssertionManager__notifyObserversDi
   [WeakRetained _queue_notifyObserversDidActivateRenderingServiceServer:*(a1 + 32)];
 }
 
-- (void)_queue_notifyObserversDidActivateRenderingServiceServer:(id)a3
+- (void)_queue_notifyObserversDidActivateRenderingServiceServer:(id)server
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serverCopy = server;
   BSDispatchQueueAssert();
   v16 = 0;
   v17 = &v16;
@@ -228,8 +228,8 @@ void __103__PRRenderingServiceServerKeepAliveAssertionManager__notifyObserversDi
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [v17[5] allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v22 count:16];
+  allObjects = [v17[5] allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v11 objects:v22 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -240,20 +240,20 @@ void __103__PRRenderingServiceServerKeepAliveAssertionManager__notifyObserversDi
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 renderingServiceServerKeepAliveAssertionManager:self didActivateRenderingServiceServer:v4];
+          [v10 renderingServiceServerKeepAliveAssertionManager:self didActivateRenderingServiceServer:serverCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v22 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v11 objects:v22 count:16];
     }
 
     while (v7);
@@ -314,8 +314,8 @@ void __104__PRRenderingServiceServerKeepAliveAssertionManager__notifyObserversDi
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [v15[5] allObjects];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v20 count:16];
+  allObjects = [v15[5] allObjects];
+  v5 = [allObjects countByEnumeratingWithState:&v9 objects:v20 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -326,7 +326,7 @@ void __104__PRRenderingServiceServerKeepAliveAssertionManager__notifyObserversDi
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -339,7 +339,7 @@ void __104__PRRenderingServiceServerKeepAliveAssertionManager__notifyObserversDi
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v20 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v20 count:16];
     }
 
     while (v5);
@@ -358,9 +358,9 @@ uint64_t __110__PRRenderingServiceServerKeepAliveAssertionManager__queue_notifyO
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)acquireRenderingServiceServerKeepAliveAssertionForReason:(id)a3
+- (id)acquireRenderingServiceServerKeepAliveAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -374,9 +374,9 @@ uint64_t __110__PRRenderingServiceServerKeepAliveAssertionManager__queue_notifyO
   v9[2] = __110__PRRenderingServiceServerKeepAliveAssertionManager_acquireRenderingServiceServerKeepAliveAssertionForReason___block_invoke;
   v9[3] = &unk_1E7843B48;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
+  v10 = reasonCopy;
   v11 = &v14;
-  v6 = v4;
+  v6 = reasonCopy;
   dispatch_sync(assertionQueue, v9);
   v7 = v15[5];
 
@@ -396,9 +396,9 @@ void __110__PRRenderingServiceServerKeepAliveAssertionManager_acquireRenderingSe
   *(v3 + 40) = v2;
 }
 
-- (id)_queue_acquireRenderingServiceServerKeepAliveAssertionForReason:(id)a3
+- (id)_queue_acquireRenderingServiceServerKeepAliveAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssert();
   serverKeepAliveAssertions = self->_serverKeepAliveAssertions;
   if (!serverKeepAliveAssertions)
@@ -419,7 +419,7 @@ void __110__PRRenderingServiceServerKeepAliveAssertionManager_acquireRenderingSe
     serverKeepAliveAssertions = self->_serverKeepAliveAssertions;
   }
 
-  v9 = [(BSCompoundAssertion *)serverKeepAliveAssertions acquireForReason:v4, v11, v12, v13, v14];
+  v9 = [(BSCompoundAssertion *)serverKeepAliveAssertions acquireForReason:reasonCopy, v11, v12, v13, v14];
 
   return v9;
 }

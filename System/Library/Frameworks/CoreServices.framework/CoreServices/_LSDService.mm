@@ -2,14 +2,14 @@
 + (Class)clientClass;
 + (id)XPCConnectionToService;
 + (id)XPCInterface;
-+ (id)XPCProxyWithErrorHandler:(uint64_t)a1;
-+ (id)synchronousXPCProxyWithErrorHandler:(uint64_t)a1;
++ (id)XPCProxyWithErrorHandler:(uint64_t)handler;
++ (id)synchronousXPCProxyWithErrorHandler:(uint64_t)handler;
 + (unsigned)connectionType;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (_LSDService)initWithXPCListener:(id)a3;
-- (id)clientForConnection:(id)a3;
-- (void)clientBorn:(id)a3 forNewConnection:(id)a4;
-- (void)connectionWasInvalidated:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (_LSDService)initWithXPCListener:(id)listener;
+- (id)clientForConnection:(id)connection;
+- (void)clientBorn:(id)born forNewConnection:(id)connection;
+- (void)connectionWasInvalidated:(id)invalidated;
 @end
 
 @implementation _LSDService
@@ -19,7 +19,7 @@
   if ([__LSDefaultsGetSharedInstance() isInXCTestRigInsecure])
   {
     v3 = +[_LSDServiceDomain defaultServiceDomain];
-    v4 = _LSDServiceGetXPCConnection(a1, v3);
+    v4 = _LSDServiceGetXPCConnection(self, v3);
   }
 
   else
@@ -36,7 +36,7 @@
   return v4;
 }
 
-+ (id)XPCProxyWithErrorHandler:(uint64_t)a1
++ (id)XPCProxyWithErrorHandler:(uint64_t)handler
 {
   v3 = objc_opt_self();
   v4 = +[_LSDServiceDomain defaultServiceDomain];
@@ -45,7 +45,7 @@
   return v5;
 }
 
-+ (id)synchronousXPCProxyWithErrorHandler:(uint64_t)a1
++ (id)synchronousXPCProxyWithErrorHandler:(uint64_t)handler
 {
   v3 = objc_opt_self();
   v4 = +[_LSDServiceDomain defaultServiceDomain];
@@ -54,7 +54,7 @@
   return v5;
 }
 
-- (_LSDService)initWithXPCListener:(id)a3
+- (_LSDService)initWithXPCListener:(id)listener
 {
   v9.receiver = self;
   v9.super_class = _LSDService;
@@ -62,60 +62,60 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_listener, a3);
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeWeak(&v4->_listener, listener);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clientMap = v5->_clientMap;
-    v5->_clientMap = v6;
+    v5->_clientMap = strongToStrongObjectsMapTable;
   }
 
   return v5;
 }
 
-- (void)clientBorn:(id)a3 forNewConnection:(id)a4
+- (void)clientBorn:(id)born forNewConnection:(id)connection
 {
   os_unfair_lock_lock(&self->_clientMapMutex);
-  [(NSMapTable *)self->_clientMap setObject:a3 forKey:a4];
+  [(NSMapTable *)self->_clientMap setObject:born forKey:connection];
 
   os_unfair_lock_unlock(&self->_clientMapMutex);
 }
 
-- (void)connectionWasInvalidated:(id)a3
+- (void)connectionWasInvalidated:(id)invalidated
 {
   os_unfair_lock_lock(&self->_clientMapMutex);
-  [(NSMapTable *)self->_clientMap removeObjectForKey:a3];
+  [(NSMapTable *)self->_clientMap removeObjectForKey:invalidated];
 
   os_unfair_lock_unlock(&self->_clientMapMutex);
 }
 
-- (id)clientForConnection:(id)a3
+- (id)clientForConnection:(id)connection
 {
   os_unfair_lock_lock(&self->_clientMapMutex);
-  v5 = [(NSMapTable *)self->_clientMap objectForKey:a3];
+  v5 = [(NSMapTable *)self->_clientMap objectForKey:connection];
   os_unfair_lock_unlock(&self->_clientMapMutex);
 
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = [objc_opt_class() clientClass];
-  v7 = [objc_opt_class() XPCInterface];
-  if (v6 && ((v8 = [(objc_class *)v6 isSubclassOfClass:objc_opt_class()], v7) ? (v9 = v8) : (v9 = 0), v9 == 1))
+  clientClass = [objc_opt_class() clientClass];
+  xPCInterface = [objc_opt_class() XPCInterface];
+  if (clientClass && ((v8 = [(objc_class *)clientClass isSubclassOfClass:objc_opt_class()], xPCInterface) ? (v9 = v8) : (v9 = 0), v9 == 1))
   {
-    v10 = [objc_opt_class() dispatchQueue];
-    v11 = [[v6 alloc] initWithXPCConnection:a4];
+    dispatchQueue = [objc_opt_class() dispatchQueue];
+    v11 = [[clientClass alloc] initWithXPCConnection:connection];
     v12 = v11 != 0;
     if (v11)
     {
-      [a4 setExportedInterface:v7];
-      [a4 setExportedObject:v11];
-      [a4 setDelegate:self];
-      if (v10)
+      [connection setExportedInterface:xPCInterface];
+      [connection setExportedObject:v11];
+      [connection setDelegate:self];
+      if (dispatchQueue)
       {
-        [a4 _setQueue:v10];
+        [connection _setQueue:dispatchQueue];
       }
 
-      objc_initWeak(&location, a4);
+      objc_initWeak(&location, connection);
       objc_initWeak(&from, self);
       v14 = MEMORY[0x1E69E9820];
       v15 = 3221225472;
@@ -123,9 +123,9 @@
       v17 = &unk_1E6A1C9A8;
       objc_copyWeak(&v18, &from);
       objc_copyWeak(&v19, &location);
-      [a4 setInvalidationHandler:&v14];
-      [(_LSDService *)self clientBorn:v11 forNewConnection:a4, v14, v15, v16, v17];
-      [a4 resume];
+      [connection setInvalidationHandler:&v14];
+      [(_LSDService *)self clientBorn:v11 forNewConnection:connection, v14, v15, v16, v17];
+      [connection resume];
       objc_destroyWeak(&v19);
       objc_destroyWeak(&v18);
       objc_destroyWeak(&from);

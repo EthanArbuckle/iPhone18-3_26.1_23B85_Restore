@@ -7,40 +7,40 @@
 - (id)accessibilityLabel
 {
   v2 = __UIAccessibilitySafeClass();
-  v3 = [v2 activeEnergyBurnedGoal];
-  v4 = [MEMORY[0x29EDBAE50] kilocalorieUnit];
-  [v3 doubleValueForUnit:v4];
+  activeEnergyBurnedGoal = [v2 activeEnergyBurnedGoal];
+  kilocalorieUnit = [MEMORY[0x29EDBAE50] kilocalorieUnit];
+  [activeEnergyBurnedGoal doubleValueForUnit:kilocalorieUnit];
   v6 = v5;
 
   if (v6 > 0.0)
   {
-    v7 = [v2 activeEnergyBurned];
-    v8 = [MEMORY[0x29EDBAE50] kilocalorieUnit];
-    [v7 doubleValueForUnit:v8];
+    activeEnergyBurned = [v2 activeEnergyBurned];
+    kilocalorieUnit2 = [MEMORY[0x29EDBAE50] kilocalorieUnit];
+    [activeEnergyBurned doubleValueForUnit:kilocalorieUnit2];
   }
 
-  v9 = [v2 appleExerciseTimeGoal];
-  v10 = [MEMORY[0x29EDBAE50] minuteUnit];
-  [v9 doubleValueForUnit:v10];
+  appleExerciseTimeGoal = [v2 appleExerciseTimeGoal];
+  minuteUnit = [MEMORY[0x29EDBAE50] minuteUnit];
+  [appleExerciseTimeGoal doubleValueForUnit:minuteUnit];
   v12 = v11;
 
   if (v12 > 0.0)
   {
-    v13 = [v2 appleExerciseTime];
-    v14 = [MEMORY[0x29EDBAE50] minuteUnit];
-    [v13 doubleValueForUnit:v14];
+    appleExerciseTime = [v2 appleExerciseTime];
+    minuteUnit2 = [MEMORY[0x29EDBAE50] minuteUnit];
+    [appleExerciseTime doubleValueForUnit:minuteUnit2];
   }
 
-  v15 = [v2 appleStandHoursGoal];
-  v16 = [MEMORY[0x29EDBAE50] countUnit];
-  [v15 doubleValueForUnit:v16];
+  appleStandHoursGoal = [v2 appleStandHoursGoal];
+  countUnit = [MEMORY[0x29EDBAE50] countUnit];
+  [appleStandHoursGoal doubleValueForUnit:countUnit];
   v18 = v17;
 
   if (v18 > 0.0)
   {
-    v19 = [v2 appleStandHours];
-    v20 = [MEMORY[0x29EDBAE50] countUnit];
-    [v19 doubleValueForUnit:v20];
+    appleStandHours = [v2 appleStandHours];
+    countUnit2 = [MEMORY[0x29EDBAE50] countUnit];
+    [appleStandHours doubleValueForUnit:countUnit2];
   }
 
   v35 = v2;

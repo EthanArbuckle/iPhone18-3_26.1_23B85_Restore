@@ -1,12 +1,12 @@
 @interface WCAFetchBeaconDBParameters
-- (void)fetchWithCompletion:(id)a3;
+- (void)fetchWithCompletion:(id)completion;
 @end
 
 @implementation WCAFetchBeaconDBParameters
 
-- (void)fetchWithCompletion:(id)a3
+- (void)fetchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(WCAFetchSQLiteRequest);
   [(WCAFetchSQLiteRequest *)v5 setTableName:@"prof_clean"];
   [(WCAFetchSQLiteRequest *)v5 setColumnNames:&unk_2848BAF70];
@@ -21,68 +21,68 @@
     [v6 setValue:v9 forKey:@"wlan-tim-dtim_period"];
   }
 
-  v10 = [(WCAFetchBeaconDBParameters *)self wlanHTCapabilities];
+  wlanHTCapabilities = [(WCAFetchBeaconDBParameters *)self wlanHTCapabilities];
 
-  if (v10)
+  if (wlanHTCapabilities)
   {
-    v11 = [(WCAFetchBeaconDBParameters *)self wlanHTCapabilities];
-    [v6 setValue:v11 forKey:@"wlan-ht-capabilities"];
+    wlanHTCapabilities2 = [(WCAFetchBeaconDBParameters *)self wlanHTCapabilities];
+    [v6 setValue:wlanHTCapabilities2 forKey:@"wlan-ht-capabilities"];
   }
 
-  v12 = [(WCAFetchBeaconDBParameters *)self wlanWfaIeWmeQosInfo];
+  wlanWfaIeWmeQosInfo = [(WCAFetchBeaconDBParameters *)self wlanWfaIeWmeQosInfo];
 
-  if (v12)
+  if (wlanWfaIeWmeQosInfo)
   {
-    v13 = [(WCAFetchBeaconDBParameters *)self wlanWfaIeWmeQosInfo];
-    [v6 setValue:v13 forKey:@"wlan-wfa-ie-wme-qos_info"];
+    wlanWfaIeWmeQosInfo2 = [(WCAFetchBeaconDBParameters *)self wlanWfaIeWmeQosInfo];
+    [v6 setValue:wlanWfaIeWmeQosInfo2 forKey:@"wlan-wfa-ie-wme-qos_info"];
   }
 
-  v14 = [(WCAFetchBeaconDBParameters *)self wlanHtexCapabilities];
+  wlanHtexCapabilities = [(WCAFetchBeaconDBParameters *)self wlanHtexCapabilities];
 
-  if (v14)
+  if (wlanHtexCapabilities)
   {
-    v15 = [(WCAFetchBeaconDBParameters *)self wlanHtexCapabilities];
-    [v6 setValue:v15 forKey:@"wlan-htex-capabilities"];
+    wlanHtexCapabilities2 = [(WCAFetchBeaconDBParameters *)self wlanHtexCapabilities];
+    [v6 setValue:wlanHtexCapabilities2 forKey:@"wlan-htex-capabilities"];
   }
 
-  v16 = [(WCAFetchBeaconDBParameters *)self wlanHTAmpduparam];
+  wlanHTAmpduparam = [(WCAFetchBeaconDBParameters *)self wlanHTAmpduparam];
 
-  if (v16)
+  if (wlanHTAmpduparam)
   {
-    v17 = [(WCAFetchBeaconDBParameters *)self wlanHTAmpduparam];
-    [v6 setValue:v17 forKey:@"wlan-ht-ampduparam"];
+    wlanHTAmpduparam2 = [(WCAFetchBeaconDBParameters *)self wlanHTAmpduparam];
+    [v6 setValue:wlanHTAmpduparam2 forKey:@"wlan-ht-ampduparam"];
   }
 
-  v18 = [(WCAFetchBeaconDBParameters *)self wlanVhtCapabilities];
+  wlanVhtCapabilities = [(WCAFetchBeaconDBParameters *)self wlanVhtCapabilities];
 
-  if (v18)
+  if (wlanVhtCapabilities)
   {
-    v19 = [(WCAFetchBeaconDBParameters *)self wlanVhtCapabilities];
-    [v6 setValue:v19 forKey:@"wlan-vht-capabilities"];
+    wlanVhtCapabilities2 = [(WCAFetchBeaconDBParameters *)self wlanVhtCapabilities];
+    [v6 setValue:wlanVhtCapabilities2 forKey:@"wlan-vht-capabilities"];
   }
 
-  v20 = [(WCAFetchBeaconDBParameters *)self wlanTxbf];
+  wlanTxbf = [(WCAFetchBeaconDBParameters *)self wlanTxbf];
 
-  if (v20)
+  if (wlanTxbf)
   {
-    v21 = [(WCAFetchBeaconDBParameters *)self wlanTxbf];
-    [v6 setValue:v21 forKey:@"wlan-txbf"];
+    wlanTxbf2 = [(WCAFetchBeaconDBParameters *)self wlanTxbf];
+    [v6 setValue:wlanTxbf2 forKey:@"wlan-txbf"];
   }
 
-  v22 = [(WCAFetchBeaconDBParameters *)self wlanAsel];
+  wlanAsel = [(WCAFetchBeaconDBParameters *)self wlanAsel];
 
-  if (v22)
+  if (wlanAsel)
   {
-    v23 = [(WCAFetchBeaconDBParameters *)self wlanAsel];
-    [v6 setValue:v23 forKey:@"wlan-asel"];
+    wlanAsel2 = [(WCAFetchBeaconDBParameters *)self wlanAsel];
+    [v6 setValue:wlanAsel2 forKey:@"wlan-asel"];
   }
 
-  v24 = [(WCAFetchBeaconDBParameters *)self wlanFixedCapabilities];
+  wlanFixedCapabilities = [(WCAFetchBeaconDBParameters *)self wlanFixedCapabilities];
 
-  if (v24)
+  if (wlanFixedCapabilities)
   {
-    v25 = [(WCAFetchBeaconDBParameters *)self wlanFixedCapabilities];
-    [v6 setValue:v25 forKey:@"wlan-fixed-capabilities"];
+    wlanFixedCapabilities2 = [(WCAFetchBeaconDBParameters *)self wlanFixedCapabilities];
+    [v6 setValue:wlanFixedCapabilities2 forKey:@"wlan-fixed-capabilities"];
   }
 
   if ([(WCAFetchBeaconDBParameters *)self beaconInterval])
@@ -118,12 +118,12 @@
     [v6 setValue:v32 forKey:@"11c_antennas"];
   }
 
-  v33 = [(WCAFetchBeaconDBParameters *)self antennas11n];
+  antennas11n = [(WCAFetchBeaconDBParameters *)self antennas11n];
 
-  if (v33)
+  if (antennas11n)
   {
-    v34 = [(WCAFetchBeaconDBParameters *)self antennas11n];
-    [v6 setValue:v34 forKey:@"11n_antennas"];
+    antennas11n2 = [(WCAFetchBeaconDBParameters *)self antennas11n];
+    [v6 setValue:antennas11n2 forKey:@"11n_antennas"];
   }
 
   [(WCAFetchBeaconDBParameters *)self max_rates];
@@ -143,8 +143,8 @@
   v41[1] = 3221225472;
   v41[2] = __50__WCAFetchBeaconDBParameters_fetchWithCompletion___block_invoke;
   v41[3] = &unk_2789C81A8;
-  v42 = v4;
-  v39 = v4;
+  v42 = completionCopy;
+  v39 = completionCopy;
   [(WCAFetchRequest *)v5 setCompletionHandler:v41];
   v40 = +[WCAClient sharedClient];
   [v40 executeFetchRequest:v5];

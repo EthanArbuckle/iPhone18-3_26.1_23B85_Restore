@@ -1,11 +1,11 @@
 @interface GQDTDurationFormat
-- (GQDTDurationFormat)initWithFormatString:(__CFString *)a3;
+- (GQDTDurationFormat)initWithFormatString:(__CFString *)string;
 - (void)dealloc;
 @end
 
 @implementation GQDTDurationFormat
 
-- (GQDTDurationFormat)initWithFormatString:(__CFString *)a3
+- (GQDTDurationFormat)initWithFormatString:(__CFString *)string
 {
   v7.receiver = self;
   v7.super_class = GQDTDurationFormat;
@@ -13,10 +13,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->mFormatString = a3;
-    if (a3)
+    v4->mFormatString = string;
+    if (string)
     {
-      CFRetain(a3);
+      CFRetain(string);
     }
   }
 

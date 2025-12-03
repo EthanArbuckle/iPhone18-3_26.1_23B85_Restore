@@ -8,7 +8,7 @@
 {
   v14 = a7;
   v15 = a8;
-  [a1 vImage];
+  [self vImage];
   if ([GeometricCutTools derotateContentsOf:v15 inImage:v19 andOutputTo:v20 withPadding:a2 networkInputSize:a3, a4, a5])
   {
     v16 = objc_alloc(MEMORY[0x277D70088]);

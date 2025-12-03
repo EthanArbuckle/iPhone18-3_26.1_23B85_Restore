@@ -1,15 +1,15 @@
 @interface SBMutableWindowingItemViewModel
-+ (id)viewModelWithItem:(id)a3 fromViewModel:(id)a4;
-- (SBMutableWindowingItemViewModel)initWithItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)viewModelWithItem:(id)item fromViewModel:(id)model;
+- (SBMutableWindowingItemViewModel)initWithItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBMutableWindowingItemViewModel
 
-- (SBMutableWindowingItemViewModel)initWithItem:(id)a3
+- (SBMutableWindowingItemViewModel)initWithItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     [(SBMutableWindowingItemViewModel *)a2 initWithItem:?];
   }
@@ -20,25 +20,25 @@
   v7 = v6;
   if (v6)
   {
-    [(SBWindowingItemViewModel *)v6 setItem:v5];
+    [(SBWindowingItemViewModel *)v6 setItem:itemCopy];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(SBWindowingItemViewModel *)self item];
-  v5 = [SBWindowingItemViewModel viewModelWithItem:v4 fromViewModel:self];
+  item = [(SBWindowingItemViewModel *)self item];
+  v5 = [SBWindowingItemViewModel viewModelWithItem:item fromViewModel:self];
 
   return v5;
 }
 
-+ (id)viewModelWithItem:(id)a3 fromViewModel:(id)a4
++ (id)viewModelWithItem:(id)item fromViewModel:(id)model
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___SBMutableWindowingItemViewModel;
-  v4 = objc_msgSendSuper2(&v6, sel_viewModelWithItem_fromViewModel_, a3, a4);
+  v4 = objc_msgSendSuper2(&v6, sel_viewModelWithItem_fromViewModel_, item, model);
 
   return v4;
 }

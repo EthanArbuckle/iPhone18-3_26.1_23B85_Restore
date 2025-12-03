@@ -1,15 +1,15 @@
 @interface MTMediaTimeTracker
-- (MTMediaTimeTracker)initWithPosition:(unint64_t)a3 playbackRate:(float)a4;
+- (MTMediaTimeTracker)initWithPosition:(unint64_t)position playbackRate:(float)rate;
 - (float)playbackRate;
-- (id)estimatedTimeAtPastPosition:(unint64_t)a3;
-- (id)estimatedTimeAtPosition:(unint64_t)a3;
-- (void)updatePosition:(unint64_t)a3;
-- (void)updatePosition:(unint64_t)a3 playbackRate:(float)a4;
+- (id)estimatedTimeAtPastPosition:(unint64_t)position;
+- (id)estimatedTimeAtPosition:(unint64_t)position;
+- (void)updatePosition:(unint64_t)position;
+- (void)updatePosition:(unint64_t)position playbackRate:(float)rate;
 @end
 
 @implementation MTMediaTimeTracker
 
-- (MTMediaTimeTracker)initWithPosition:(unint64_t)a3 playbackRate:(float)a4
+- (MTMediaTimeTracker)initWithPosition:(unint64_t)position playbackRate:(float)rate
 {
   v10.receiver = self;
   v10.super_class = MTMediaTimeTracker;
@@ -17,30 +17,30 @@
   v8 = v6;
   if (v6)
   {
-    *&v7 = a4;
-    [(MTMediaTimeTracker *)v6 updatePosition:a3 playbackRate:v7];
+    *&v7 = rate;
+    [(MTMediaTimeTracker *)v6 updatePosition:position playbackRate:v7];
   }
 
   return v8;
 }
 
-- (void)updatePosition:(unint64_t)a3
+- (void)updatePosition:(unint64_t)position
 {
   v5 = +[MTFrameworkEnvironment sharedEnvironment];
-  v6 = [v5 date];
-  [(MTMediaTimeTracker *)self setDate:v6];
+  date = [v5 date];
+  [(MTMediaTimeTracker *)self setDate:date];
 
-  [(MTMediaTimeTracker *)self setPosition:a3];
+  [(MTMediaTimeTracker *)self setPosition:position];
 }
 
-- (void)updatePosition:(unint64_t)a3 playbackRate:(float)a4
+- (void)updatePosition:(unint64_t)position playbackRate:(float)rate
 {
   v7 = +[MTFrameworkEnvironment sharedEnvironment];
-  v8 = [v7 date];
-  [(MTMediaTimeTracker *)self setDate:v8];
+  date = [v7 date];
+  [(MTMediaTimeTracker *)self setDate:date];
 
-  [(MTMediaTimeTracker *)self setPosition:a3];
-  *&v9 = a4;
+  [(MTMediaTimeTracker *)self setPosition:position];
+  *&v9 = rate;
 
   [(MTMediaTimeTracker *)self setPlaybackRate:v9];
 }
@@ -56,30 +56,30 @@
   return result;
 }
 
-- (id)estimatedTimeAtPosition:(unint64_t)a3
+- (id)estimatedTimeAtPosition:(unint64_t)position
 {
-  v4 = (a3 - [(MTMediaTimeTracker *)self position]) / 1000.0;
-  v5 = [(MTMediaTimeTracker *)self date];
+  v4 = (position - [(MTMediaTimeTracker *)self position]) / 1000.0;
+  date = [(MTMediaTimeTracker *)self date];
   [(MTMediaTimeTracker *)self playbackRate];
-  v7 = [v5 dateByAddingTimeInterval:v4 / v6];
+  v7 = [date dateByAddingTimeInterval:v4 / v6];
 
   return v7;
 }
 
-- (id)estimatedTimeAtPastPosition:(unint64_t)a3
+- (id)estimatedTimeAtPastPosition:(unint64_t)position
 {
-  v3 = [(MTMediaTimeTracker *)self estimatedTimeAtPosition:a3];
+  v3 = [(MTMediaTimeTracker *)self estimatedTimeAtPosition:position];
   v4 = +[MTFrameworkEnvironment sharedEnvironment];
-  v5 = [v4 date];
+  date = [v4 date];
 
-  if ([v3 compare:v5] == -1)
+  if ([v3 compare:date] == -1)
   {
     v6 = v3;
   }
 
   else
   {
-    v6 = v5;
+    v6 = date;
   }
 
   v7 = v6;

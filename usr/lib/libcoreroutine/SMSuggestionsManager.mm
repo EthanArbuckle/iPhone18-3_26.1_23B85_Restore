@@ -1,104 +1,104 @@
 @interface SMSuggestionsManager
-- (BOOL)_checkInitiatorEligibilityWithError:(id *)a3;
-- (BOOL)_checkReceiverEligibilityForHandle:(id)a3 error:(id *)a4;
-- (BOOL)_deleteProactiveNotificationUponNavigationDestination:(id)a3 error:(id *)a4;
-- (BOOL)_deleteProactiveNotificationWithDestinationLocation:(id)a3 error:(id *)a4;
-- (BOOL)_deleteProactiveNotificationWithError:(id *)a3;
-- (BOOL)_didInteractInPastWithHandle:(id)a3 timeInterval:(double)a4 error:(id *)a5;
+- (BOOL)_checkInitiatorEligibilityWithError:(id *)error;
+- (BOOL)_checkReceiverEligibilityForHandle:(id)handle error:(id *)error;
+- (BOOL)_deleteProactiveNotificationUponNavigationDestination:(id)destination error:(id *)error;
+- (BOOL)_deleteProactiveNotificationWithDestinationLocation:(id)location error:(id *)error;
+- (BOOL)_deleteProactiveNotificationWithError:(id *)error;
+- (BOOL)_didInteractInPastWithHandle:(id)handle timeInterval:(double)interval error:(id *)error;
 - (BOOL)_isEffectivePairedDeviceNearby;
-- (BOOL)_isFirstTimeUserOfZelkovaWithError:(id *)a3;
-- (BOOL)_isSessionConfigurationSimilarToTheSuggestion:(id)a3 sessionConfiguration:(id)a4 error:(id *)a5;
-- (BOOL)_isUserInActiveSessionWithError:(id *)a3;
-- (BOOL)_isWalkingBoutDetectedByAppendingPedometerData:(id)a3;
-- (BOOL)_reRegisterForPedometerNotificationsForLearnedLocationOfInterest:(id)a3 startDate:(id)a4 error:(id *)a5;
-- (BOOL)_refreshCurrentLocationWithError:(id *)a3;
-- (BOOL)_registerForPedometerNotificationsForLearnedLocationOfInterest:(id)a3 startDate:(id)a4 error:(id *)a5;
+- (BOOL)_isFirstTimeUserOfZelkovaWithError:(id *)error;
+- (BOOL)_isSessionConfigurationSimilarToTheSuggestion:(id)suggestion sessionConfiguration:(id)configuration error:(id *)error;
+- (BOOL)_isUserInActiveSessionWithError:(id *)error;
+- (BOOL)_isWalkingBoutDetectedByAppendingPedometerData:(id)data;
+- (BOOL)_reRegisterForPedometerNotificationsForLearnedLocationOfInterest:(id)interest startDate:(id)date error:(id *)error;
+- (BOOL)_refreshCurrentLocationWithError:(id *)error;
+- (BOOL)_registerForPedometerNotificationsForLearnedLocationOfInterest:(id)interest startDate:(id)date error:(id *)error;
 - (BOOL)_resetStatesForPedometerData;
 - (BOOL)_setupPedometerDataHandler;
-- (BOOL)_setupPedometerNotificationsIfExists:(id *)a3;
+- (BOOL)_setupPedometerNotificationsIfExists:(id *)exists;
 - (BOOL)_shouldShowProactiveSuggestions;
-- (BOOL)_showSuggestionsDetectionUIWithSuggestion:(id)a3 error:(id *)a4;
-- (BOOL)_unregisterForPedometerNotificationsWithError:(id *)a3;
-- (BOOL)isZelkovaSuggestionsFeatureEnabledWithError:(id *)a3;
-- (BOOL)suggestionEnabledForUserType:(unint64_t)a3;
-- (SMSuggestionsManager)initWithAuthorizationManager:(id)a3 contactsManager:(id)a4 defaultsManager:(id)a5 deviceLocationPredictor:(id)a6 distanceCalculator:(id)a7 healthKitManager:(id)a8 learnedLocationStore:(id)a9 learnedLocationManager:(id)a10 locationManager:(id)a11 mapServiceManager:(id)a12 messagingService:(id)a13 motionActivityManager:(id)a14 navigationManager:(id)a15 platform:(id)a16 visitManager:(id)a17 visitConsolidator:(id)a18 sessionStore:(id)a19 suggestionsStore:(id)a20 suggestionsHelper:(id)a21 appDeletionManager:(id)a22 trialManager:(id)a23;
-- (id)_generatePersonalizedSuggestionForFirstTimeUserFromContext:(id)a3 error:(id *)a4;
-- (id)_generatePersonalizedSuggestionForOccasionalUserFromContext:(id)a3 error:(id *)a4;
-- (id)_generatePersonalizedSuggestionForRegularUserFromContext:(id)a3 error:(id *)a4;
-- (id)_generatePersonalizedSuggestionForWorkoutUserFromContext:(id)a3 error:(id *)a4;
-- (id)_generatePersonalizedSuggestionFromContext:(id)a3 error:(id *)a4;
-- (id)_getCurrentDateFromContext:(id)a3 error:(id *)a4;
-- (id)_getFirstEligibleHandleFromSessionConfigurations:(id)a3 error:(id *)a4;
-- (id)_getMessagesURLFromSessionConfig:(id)a3 payloadType:(int64_t)a4 error:(id *)a5;
-- (id)_getNPLOIsToHomeWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 error:(id *)a6;
-- (id)_getNPLOIsWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 error:(id *)a6;
-- (id)_getNotificationExpirationDateForSuggestion:(id)a3 error:(id *)a4;
-- (id)_getSessionConfigurationsWithOptions:(id)a3 error:(id *)a4;
-- (id)_getSourceLocationFromContext:(id)a3 error:(id *)a4;
-- (id)_getSuggestionBodyWithPlaceInference:(id)a3;
-- (id)_getSuggestionTitleWithHandle:(id)a3 error:(id *)a4;
-- (id)_getSuggestionsFooter:(id)a3;
-- (id)_getSunriseDateAtLocation:(id)a3 date:(id)a4 error:(id *)a5;
-- (id)_getSunsetDateAtLocation:(id)a3 date:(id)a4 error:(id *)a5;
+- (BOOL)_showSuggestionsDetectionUIWithSuggestion:(id)suggestion error:(id *)error;
+- (BOOL)_unregisterForPedometerNotificationsWithError:(id *)error;
+- (BOOL)isZelkovaSuggestionsFeatureEnabledWithError:(id *)error;
+- (BOOL)suggestionEnabledForUserType:(unint64_t)type;
+- (SMSuggestionsManager)initWithAuthorizationManager:(id)manager contactsManager:(id)contactsManager defaultsManager:(id)defaultsManager deviceLocationPredictor:(id)predictor distanceCalculator:(id)calculator healthKitManager:(id)kitManager learnedLocationStore:(id)store learnedLocationManager:(id)self0 locationManager:(id)self1 mapServiceManager:(id)self2 messagingService:(id)self3 motionActivityManager:(id)self4 navigationManager:(id)self5 platform:(id)self6 visitManager:(id)self7 visitConsolidator:(id)self8 sessionStore:(id)self9 suggestionsStore:(id)suggestionsStore suggestionsHelper:(id)helper appDeletionManager:(id)deletionManager trialManager:(id)trialManager;
+- (id)_generatePersonalizedSuggestionForFirstTimeUserFromContext:(id)context error:(id *)error;
+- (id)_generatePersonalizedSuggestionForOccasionalUserFromContext:(id)context error:(id *)error;
+- (id)_generatePersonalizedSuggestionForRegularUserFromContext:(id)context error:(id *)error;
+- (id)_generatePersonalizedSuggestionForWorkoutUserFromContext:(id)context error:(id *)error;
+- (id)_generatePersonalizedSuggestionFromContext:(id)context error:(id *)error;
+- (id)_getCurrentDateFromContext:(id)context error:(id *)error;
+- (id)_getFirstEligibleHandleFromSessionConfigurations:(id)configurations error:(id *)error;
+- (id)_getMessagesURLFromSessionConfig:(id)config payloadType:(int64_t)type error:(id *)error;
+- (id)_getNPLOIsToHomeWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date error:(id *)error;
+- (id)_getNPLOIsWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date error:(id *)error;
+- (id)_getNotificationExpirationDateForSuggestion:(id)suggestion error:(id *)error;
+- (id)_getSessionConfigurationsWithOptions:(id)options error:(id *)error;
+- (id)_getSourceLocationFromContext:(id)context error:(id *)error;
+- (id)_getSuggestionBodyWithPlaceInference:(id)inference;
+- (id)_getSuggestionTitleWithHandle:(id)handle error:(id *)error;
+- (id)_getSuggestionsFooter:(id)footer;
+- (id)_getSunriseDateAtLocation:(id)location date:(id)date error:(id *)error;
+- (id)_getSunsetDateAtLocation:(id)location date:(id)date error:(id *)error;
 - (id)_getSystemVersionUpdateDate;
-- (id)_getValuesFromDefaultsIfExists:(id)a3 error:(id *)a4;
-- (id)_runProactiveSuggestionsEngineWithContext:(id)a3 shouldStoreSuggestions:(BOOL)a4 error:(id *)a5;
-- (unint64_t)_getSuggestionTriggerFromContext:(id)a3 error:(id *)a4;
-- (unint64_t)_suppressSuggestion:(id)a3 context:(id)a4 error:(id *)a5;
-- (void)_changeWidgetVisibilityForMessagesInstallationState:(BOOL)a3;
-- (void)_considerShowingAlwaysOnPromptWithConfiguration:(id)a3;
-- (void)_fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler:(id)a3;
-- (void)_fetchSuggestedSessionConfigurationWithHandler:(id)a3;
-- (void)_generateSuggestionFromCurrentHealthKitWorkoutSnapshot:(id)a3;
-- (void)_launchSessionInitiationUIWithConfiguration:(id)a3 handler:(id)a4;
+- (id)_getValuesFromDefaultsIfExists:(id)exists error:(id *)error;
+- (id)_runProactiveSuggestionsEngineWithContext:(id)context shouldStoreSuggestions:(BOOL)suggestions error:(id *)error;
+- (unint64_t)_getSuggestionTriggerFromContext:(id)context error:(id *)error;
+- (unint64_t)_suppressSuggestion:(id)suggestion context:(id)context error:(id *)error;
+- (void)_changeWidgetVisibilityForMessagesInstallationState:(BOOL)state;
+- (void)_considerShowingAlwaysOnPromptWithConfiguration:(id)configuration;
+- (void)_fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler:(id)handler;
+- (void)_fetchSuggestedSessionConfigurationWithHandler:(id)handler;
+- (void)_generateSuggestionFromCurrentHealthKitWorkoutSnapshot:(id)snapshot;
+- (void)_launchSessionInitiationUIWithConfiguration:(id)configuration handler:(id)handler;
 - (void)_logStatesForPedometerData;
-- (void)_onAuthorizationNotification:(id)a3;
-- (void)_onHealthKitNotification:(id)a3;
-- (void)_onLearnedLocationManagerNotification:(id)a3;
-- (void)_onNavigationNotification:(id)a3;
-- (void)_onSessionStartedWithConfiguration:(id)a3;
-- (void)_onSessionStateChanged:(id)a3 forActiveDevice:(BOOL)a4;
-- (void)_onVehicleConnectedNotification:(id)a3;
-- (void)_onVisitManagerNotification:(id)a3;
+- (void)_onAuthorizationNotification:(id)notification;
+- (void)_onHealthKitNotification:(id)notification;
+- (void)_onLearnedLocationManagerNotification:(id)notification;
+- (void)_onNavigationNotification:(id)notification;
+- (void)_onSessionStartedWithConfiguration:(id)configuration;
+- (void)_onSessionStateChanged:(id)changed forActiveDevice:(BOOL)device;
+- (void)_onVehicleConnectedNotification:(id)notification;
+- (void)_onVisitManagerNotification:(id)notification;
 - (void)_sendTipsSignal;
 - (void)_setup;
-- (void)_shouldShowKeyboardSuggestionsForInitiator:(id)a3 receiver:(id)a4 handler:(id)a5;
-- (void)_shouldShowTipKitSuggestionsForInitiator:(id)a3 receiver:(id)a4 handler:(id)a5;
-- (void)_triggerCheckInWorkoutURLUpdateWithShouldGenerateURL:(BOOL)a3;
+- (void)_shouldShowKeyboardSuggestionsForInitiator:(id)initiator receiver:(id)receiver handler:(id)handler;
+- (void)_shouldShowTipKitSuggestionsForInitiator:(id)initiator receiver:(id)receiver handler:(id)handler;
+- (void)_triggerCheckInWorkoutURLUpdateWithShouldGenerateURL:(BOOL)l;
 - (void)_updateSafetyMonitorWorkoutSuggestionWidget;
 - (void)_updateSystemVersionInDefaults;
-- (void)fetchShouldShowProactiveSuggestionsWithHandler:(id)a3;
-- (void)fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler:(id)a3;
-- (void)fetchSuggestedSessionConfigurationWithHandler:(id)a3;
-- (void)launchSessionInitiationUIWithConfiguration:(id)a3 handler:(id)a4;
-- (void)onAuthorizationNotification:(id)a3;
-- (void)onHealthKitNotification:(id)a3;
-- (void)onLearnedLocationManagerNotification:(id)a3;
+- (void)fetchShouldShowProactiveSuggestionsWithHandler:(id)handler;
+- (void)fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler:(id)handler;
+- (void)fetchSuggestedSessionConfigurationWithHandler:(id)handler;
+- (void)launchSessionInitiationUIWithConfiguration:(id)configuration handler:(id)handler;
+- (void)onAuthorizationNotification:(id)notification;
+- (void)onHealthKitNotification:(id)notification;
+- (void)onLearnedLocationManagerNotification:(id)notification;
 - (void)onMessagesAppInstalled;
 - (void)onMessagesAppUninstalled;
-- (void)onNavigationNotification:(id)a3;
-- (void)onSessionEndedForActiveDevice:(BOOL)a3;
-- (void)onSessionStartedWithConfiguration:(id)a3;
-- (void)onSessionStateChanged:(id)a3 forActiveDevice:(BOOL)a4;
-- (void)onVehicleConnectedNotification:(id)a3;
-- (void)onVisitManagerNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)quickReplySuggestionURLWithCompletionHandler:(id)a3;
-- (void)runProactiveSuggestionsEngineWithContext:(id)a3 shouldStoreSuggestions:(BOOL)a4 handler:(id)a5;
-- (void)shouldShowKeyboardSuggestionsForInitiator:(id)a3 receiver:(id)a4 handler:(id)a5;
-- (void)shouldShowTipKitSuggestionsForInitiator:(id)a3 receiver:(id)a4 handler:(id)a5;
-- (void)showAlwaysOnPromptWithConfiguration:(id)a3 handler:(id)a4;
-- (void)showSuggestionsDetectionUIWithSuggestion:(id)a3 handler:(id)a4;
+- (void)onNavigationNotification:(id)notification;
+- (void)onSessionEndedForActiveDevice:(BOOL)device;
+- (void)onSessionStartedWithConfiguration:(id)configuration;
+- (void)onSessionStateChanged:(id)changed forActiveDevice:(BOOL)device;
+- (void)onVehicleConnectedNotification:(id)notification;
+- (void)onVisitManagerNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)quickReplySuggestionURLWithCompletionHandler:(id)handler;
+- (void)runProactiveSuggestionsEngineWithContext:(id)context shouldStoreSuggestions:(BOOL)suggestions handler:(id)handler;
+- (void)shouldShowKeyboardSuggestionsForInitiator:(id)initiator receiver:(id)receiver handler:(id)handler;
+- (void)shouldShowTipKitSuggestionsForInitiator:(id)initiator receiver:(id)receiver handler:(id)handler;
+- (void)showAlwaysOnPromptWithConfiguration:(id)configuration handler:(id)handler;
+- (void)showSuggestionsDetectionUIWithSuggestion:(id)suggestion handler:(id)handler;
 @end
 
 @implementation SMSuggestionsManager
 
-- (void)quickReplySuggestionURLWithCompletionHandler:(id)a3
+- (void)quickReplySuggestionURLWithCompletionHandler:(id)handler
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DB57188);
   MEMORY[0x28223BE20]();
   v6 = &v13 - v5;
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(handler);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   *(v8 + 24) = self;
@@ -114,7 +114,7 @@
   v11[3] = 0;
   v11[4] = &unk_230AFD8F8;
   v11[5] = v10;
-  v12 = self;
+  selfCopy = self;
   sub_2304C6B18(0, 0, v6, &unk_230AFD908, v11);
 }
 
@@ -142,49 +142,49 @@
     MEMORY[0x23191C0C0](v3, -1, -1);
   }
 
-  v5 = [BiomeLibrary() Discoverability];
+  discoverability = [BiomeLibrary() Discoverability];
   swift_unknownObjectRelease();
-  v6 = [v5 Signals];
+  signals = [discoverability Signals];
   swift_unknownObjectRelease();
-  v7 = [v6 source];
+  source = [signals source];
 
   v8 = objc_allocWithZone(MEMORY[0x277CF1168]);
   v9 = sub_230ACA5DC();
   v10 = [v8 initWithContentIdentifier:v9 context:0 osBuild:0 userInfo:0];
 
-  [v7 sendEvent_];
+  [source sendEvent_];
 }
 
-- (SMSuggestionsManager)initWithAuthorizationManager:(id)a3 contactsManager:(id)a4 defaultsManager:(id)a5 deviceLocationPredictor:(id)a6 distanceCalculator:(id)a7 healthKitManager:(id)a8 learnedLocationStore:(id)a9 learnedLocationManager:(id)a10 locationManager:(id)a11 mapServiceManager:(id)a12 messagingService:(id)a13 motionActivityManager:(id)a14 navigationManager:(id)a15 platform:(id)a16 visitManager:(id)a17 visitConsolidator:(id)a18 sessionStore:(id)a19 suggestionsStore:(id)a20 suggestionsHelper:(id)a21 appDeletionManager:(id)a22 trialManager:(id)a23
+- (SMSuggestionsManager)initWithAuthorizationManager:(id)manager contactsManager:(id)contactsManager defaultsManager:(id)defaultsManager deviceLocationPredictor:(id)predictor distanceCalculator:(id)calculator healthKitManager:(id)kitManager learnedLocationStore:(id)store learnedLocationManager:(id)self0 locationManager:(id)self1 mapServiceManager:(id)self2 messagingService:(id)self3 motionActivityManager:(id)self4 navigationManager:(id)self5 platform:(id)self6 visitManager:(id)self7 visitConsolidator:(id)self8 sessionStore:(id)self9 suggestionsStore:(id)suggestionsStore suggestionsHelper:(id)helper appDeletionManager:(id)deletionManager trialManager:(id)trialManager
 {
-  v86 = a3;
-  v62 = a4;
-  v28 = a4;
-  v63 = a5;
-  v66 = a5;
-  v67 = a6;
-  v64 = a7;
-  v71 = a7;
-  v68 = a8;
-  v85 = a9;
-  v84 = a10;
+  managerCopy = manager;
+  contactsManagerCopy = contactsManager;
+  contactsManagerCopy2 = contactsManager;
+  defaultsManagerCopy = defaultsManager;
+  defaultsManagerCopy2 = defaultsManager;
+  predictorCopy = predictor;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  kitManagerCopy = kitManager;
+  storeCopy = store;
+  locationManagerCopy = locationManager;
   v83 = a11;
-  v82 = a12;
-  v65 = a13;
-  v70 = a14;
-  v81 = a15;
-  v80 = a16;
-  v79 = a17;
-  v78 = a18;
-  v77 = a19;
-  v76 = a20;
-  v75 = a21;
-  v74 = a22;
-  v29 = a23;
-  v69 = v29;
-  if (!v86)
+  serviceManagerCopy = serviceManager;
+  serviceCopy = service;
+  activityManagerCopy = activityManager;
+  navigationManagerCopy = navigationManager;
+  platformCopy = platform;
+  visitManagerCopy = visitManager;
+  consolidatorCopy = consolidator;
+  sessionStoreCopy = sessionStore;
+  suggestionsStoreCopy = suggestionsStore;
+  helperCopy = helper;
+  deletionManagerCopy = deletionManager;
+  trialManagerCopy = trialManager;
+  v69 = trialManagerCopy;
+  if (!managerCopy)
   {
-    v30 = v28;
+    v30 = contactsManagerCopy2;
     v50 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
@@ -194,15 +194,15 @@
 
     v49 = 0;
     v51 = 0;
-    v31 = v66;
+    v31 = defaultsManagerCopy2;
     goto LABEL_29;
   }
 
-  v30 = v28;
-  if (!v28)
+  v30 = contactsManagerCopy2;
+  if (!contactsManagerCopy2)
   {
     v52 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v31 = v66;
+    v31 = defaultsManagerCopy2;
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -210,22 +210,22 @@
     }
 
     v49 = 0;
-    v51 = v86;
+    v51 = managerCopy;
 LABEL_29:
-    v32 = v67;
+    v32 = predictorCopy;
 LABEL_30:
-    v33 = v71;
-    v34 = v68;
-    v54 = v84;
-    v53 = v85;
+    v33 = calculatorCopy2;
+    v34 = kitManagerCopy;
+    v54 = locationManagerCopy;
+    v53 = storeCopy;
     goto LABEL_31;
   }
 
-  v31 = v66;
-  if (!v66)
+  v31 = defaultsManagerCopy2;
+  if (!defaultsManagerCopy2)
   {
     v57 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v32 = v67;
+    v32 = predictorCopy;
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -233,44 +233,44 @@ LABEL_30:
     }
 
     v49 = 0;
-    v51 = v86;
+    v51 = managerCopy;
     goto LABEL_30;
   }
 
-  v32 = v67;
-  if (v67)
+  v32 = predictorCopy;
+  if (predictorCopy)
   {
-    v33 = v71;
-    v34 = v68;
-    if (v71)
+    v33 = calculatorCopy2;
+    v34 = kitManagerCopy;
+    if (calculatorCopy2)
     {
-      if (v68)
+      if (kitManagerCopy)
       {
-        if (v85)
+        if (storeCopy)
         {
-          if (v84)
+          if (locationManagerCopy)
           {
             if (v83)
             {
-              if (v82)
+              if (serviceManagerCopy)
               {
-                if (v81)
+                if (navigationManagerCopy)
                 {
-                  if (v80)
+                  if (platformCopy)
                   {
-                    if (v79)
+                    if (visitManagerCopy)
                     {
-                      if (v78)
+                      if (consolidatorCopy)
                       {
-                        if (v77)
+                        if (sessionStoreCopy)
                         {
-                          if (v76)
+                          if (suggestionsStoreCopy)
                           {
-                            if (v75)
+                            if (helperCopy)
                             {
-                              if (v74)
+                              if (deletionManagerCopy)
                               {
-                                if (v29)
+                                if (trialManagerCopy)
                                 {
                                   v87.receiver = self;
                                   v87.super_class = SMSuggestionsManager;
@@ -278,37 +278,37 @@ LABEL_30:
                                   v36 = v35;
                                   if (v35)
                                   {
-                                    objc_storeStrong(&v35->_authorizationManager, a3);
-                                    objc_storeStrong(&v36->_contactsManager, v62);
-                                    objc_storeStrong(&v36->_defaultsManager, v63);
-                                    objc_storeStrong(&v36->_deviceLocationPredictor, a6);
-                                    objc_storeStrong(&v36->_distanceCalculator, v64);
-                                    objc_storeStrong(&v36->_healthKitManager, a8);
-                                    objc_storeStrong(&v36->_learnedLocationStore, a9);
-                                    objc_storeStrong(&v36->_learnedLocationManager, a10);
+                                    objc_storeStrong(&v35->_authorizationManager, manager);
+                                    objc_storeStrong(&v36->_contactsManager, contactsManagerCopy);
+                                    objc_storeStrong(&v36->_defaultsManager, defaultsManagerCopy);
+                                    objc_storeStrong(&v36->_deviceLocationPredictor, predictor);
+                                    objc_storeStrong(&v36->_distanceCalculator, calculatorCopy);
+                                    objc_storeStrong(&v36->_healthKitManager, kitManager);
+                                    objc_storeStrong(&v36->_learnedLocationStore, store);
+                                    objc_storeStrong(&v36->_learnedLocationManager, locationManager);
                                     objc_storeStrong(&v36->_locationManager, a11);
-                                    objc_storeStrong(&v36->_mapServiceManager, a12);
-                                    objc_storeStrong(&v36->_messagingService, a13);
-                                    objc_storeStrong(&v36->_motionActivityManager, a14);
-                                    objc_storeStrong(&v36->_navigationManager, a15);
+                                    objc_storeStrong(&v36->_mapServiceManager, serviceManager);
+                                    objc_storeStrong(&v36->_messagingService, service);
+                                    objc_storeStrong(&v36->_motionActivityManager, activityManager);
+                                    objc_storeStrong(&v36->_navigationManager, navigationManager);
                                     v37 = objc_opt_new();
                                     notificationHelper = v36->_notificationHelper;
                                     v36->_notificationHelper = v37;
 
-                                    objc_storeStrong(&v36->_platform, a16);
+                                    objc_storeStrong(&v36->_platform, platform);
                                     v73 = objc_alloc(MEMORY[0x277D4AAC0]);
                                     v39 = dispatch_queue_create("com.apple.CoreRoutine.SuggestionsManager.EligibilityChecker", 0);
                                     v40 = [v73 initWithQueue:v39];
                                     eligibilityChecker = v36->_eligibilityChecker;
                                     v36->_eligibilityChecker = v40;
 
-                                    objc_storeStrong(&v36->_sessionStore, a19);
-                                    objc_storeStrong(&v36->_suggestionsStore, a20);
-                                    objc_storeStrong(&v36->_visitManager, a17);
-                                    objc_storeStrong(&v36->_visitConsolidator, a18);
-                                    objc_storeStrong(&v36->_suggestionsHelper, a21);
-                                    objc_storeStrong(&v36->_appDeletionManager, a22);
-                                    objc_storeStrong(&v36->_trialManager, a23);
+                                    objc_storeStrong(&v36->_sessionStore, sessionStore);
+                                    objc_storeStrong(&v36->_suggestionsStore, suggestionsStore);
+                                    objc_storeStrong(&v36->_visitManager, visitManager);
+                                    objc_storeStrong(&v36->_visitConsolidator, consolidator);
+                                    objc_storeStrong(&v36->_suggestionsHelper, helper);
+                                    objc_storeStrong(&v36->_appDeletionManager, deletionManager);
+                                    objc_storeStrong(&v36->_trialManager, trialManager);
                                     latestLocationOfTheDevice = v36->_latestLocationOfTheDevice;
                                     v36->_latestLocationOfTheDevice = 0;
 
@@ -323,7 +323,7 @@ LABEL_30:
                                     v36->_currentLOI = 0;
 
                                     v36->_isPedometerNotificationsSetupAfterRoutineStarted = 0;
-                                    v47 = [[SMSuggestionsMetricsManager alloc] initWithDefaultsManager:v66 deviceLocationPredictor:v67 sessionStore:v77 suggestionsStore:v76];
+                                    v47 = [[SMSuggestionsMetricsManager alloc] initWithDefaultsManager:defaultsManagerCopy2 deviceLocationPredictor:predictorCopy sessionStore:sessionStoreCopy suggestionsStore:suggestionsStoreCopy];
                                     suggestionsMetricsManager = v36->_suggestionsMetricsManager;
                                     v36->_suggestionsMetricsManager = v47;
 
@@ -347,10 +347,10 @@ LABEL_70:
 
                                 v49 = 0;
 LABEL_71:
-                                v53 = v85;
-                                v51 = v86;
-                                v55 = v65;
-                                v54 = v84;
+                                v53 = storeCopy;
+                                v51 = managerCopy;
+                                v55 = serviceCopy;
+                                v54 = locationManagerCopy;
                                 goto LABEL_32;
                               }
 
@@ -538,10 +538,10 @@ LABEL_69:
   }
 
   v58 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  v33 = v71;
-  v34 = v68;
-  v54 = v84;
-  v53 = v85;
+  v33 = calculatorCopy2;
+  v34 = kitManagerCopy;
+  v54 = locationManagerCopy;
+  v53 = storeCopy;
   if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
@@ -549,9 +549,9 @@ LABEL_69:
   }
 
   v49 = 0;
-  v51 = v86;
+  v51 = managerCopy;
 LABEL_31:
-  v55 = v65;
+  v55 = serviceCopy;
 LABEL_32:
 
   return v49;
@@ -561,60 +561,60 @@ LABEL_32:
 {
   if ([(SMSuggestionsManager *)self isZelkovaSuggestionsFeatureEnabledWithError:0])
   {
-    v3 = [(SMSuggestionsManager *)self authorizationManager];
+    authorizationManager = [(SMSuggestionsManager *)self authorizationManager];
     v4 = +[(RTNotification *)RTAuthorizationManagerNotificationRoutineEnabled];
-    [v3 addObserver:self selector:sel_onAuthorizationNotification_ name:v4];
+    [authorizationManager addObserver:self selector:sel_onAuthorizationNotification_ name:v4];
 
-    v5 = [(SMSuggestionsManager *)self visitManager];
+    visitManager = [(SMSuggestionsManager *)self visitManager];
     v6 = +[(RTNotification *)RTVisitManagerLowConfidenceVisitIncidentNotification];
-    [v5 addObserver:self selector:sel_onVisitManagerNotification_ name:v6];
+    [visitManager addObserver:self selector:sel_onVisitManagerNotification_ name:v6];
 
-    v7 = [(SMSuggestionsManager *)self healthKitManager];
+    healthKitManager = [(SMSuggestionsManager *)self healthKitManager];
     v8 = +[(RTNotification *)RTHealthKitManagerWorkoutOngoingChangedNotification];
-    [v7 addObserver:self selector:sel_onHealthKitNotification_ name:v8];
+    [healthKitManager addObserver:self selector:sel_onHealthKitNotification_ name:v8];
 
-    v9 = [(SMSuggestionsManager *)self healthKitManager];
+    healthKitManager2 = [(SMSuggestionsManager *)self healthKitManager];
     v10 = +[(RTNotification *)RTHealthKitManagerNewWorkoutForSMSuggestionsNotification];
-    [v9 addObserver:self selector:sel_onHealthKitNotification_ name:v10];
+    [healthKitManager2 addObserver:self selector:sel_onHealthKitNotification_ name:v10];
 
-    v11 = [(SMSuggestionsManager *)self navigationManager];
+    navigationManager = [(SMSuggestionsManager *)self navigationManager];
     v12 = +[(RTNotification *)RTNavigationManagerRouteSummaryNotification];
-    [v11 addObserver:self selector:sel_onNavigationNotification_ name:v12];
+    [navigationManager addObserver:self selector:sel_onNavigationNotification_ name:v12];
 
-    v13 = [(SMSuggestionsManager *)self motionActivityManager];
+    motionActivityManager = [(SMSuggestionsManager *)self motionActivityManager];
     v14 = +[(RTNotification *)RTMotionActivityManagerNotificationVehicleConnected];
-    [v13 addObserver:self selector:sel_onVehicleConnectedNotification_ name:v14];
+    [motionActivityManager addObserver:self selector:sel_onVehicleConnectedNotification_ name:v14];
 
-    v15 = [(SMSuggestionsManager *)self learnedLocationManager];
+    learnedLocationManager = [(SMSuggestionsManager *)self learnedLocationManager];
     v16 = +[(RTNotification *)RTLearnedLocationManagerNotificationAvailabilityDidChange];
-    [v15 addObserver:self selector:sel_onLearnedLocationManagerNotification_ name:v16];
+    [learnedLocationManager addObserver:self selector:sel_onLearnedLocationManagerNotification_ name:v16];
 
     [(SMSuggestionsManager *)self _setupPedometerDataHandler];
     [(SMSuggestionsManager *)self _updateSystemVersionInDefaults];
-    v17 = [(SMSuggestionsManager *)self appDeletionManager];
-    [v17 addObserver:self];
+    appDeletionManager = [(SMSuggestionsManager *)self appDeletionManager];
+    [appDeletionManager addObserver:self];
   }
 }
 
 - (void)_updateSystemVersionInDefaults
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = [(SMSuggestionsManager *)self defaultsManager];
-  v5 = [v4 objectForKey:@"RTDefaultsSuggestionsManagerSystemVersion"];
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  v5 = [defaultsManager objectForKey:@"RTDefaultsSuggestionsManagerSystemVersion"];
 
-  v6 = [(SMSuggestionsManager *)self defaultsManager];
-  v7 = [v6 objectForKey:@"RTDefaultsSuggestionsManagerSystemVersionUpdateDate"];
+  defaultsManager2 = [(SMSuggestionsManager *)self defaultsManager];
+  v7 = [defaultsManager2 objectForKey:@"RTDefaultsSuggestionsManagerSystemVersionUpdateDate"];
 
-  v8 = [(SMSuggestionsManager *)self platform];
-  v9 = [v8 systemVersion];
-  v10 = [v5 isEqualToString:v9];
+  platform = [(SMSuggestionsManager *)self platform];
+  systemVersion = [platform systemVersion];
+  v10 = [v5 isEqualToString:systemVersion];
 
   if (v10 && v7)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v16 = v7;
-      v17 = v5;
+      date = v7;
+      systemVersion2 = v5;
       goto LABEL_12;
     }
 
@@ -624,7 +624,7 @@ LABEL_32:
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = NSStringFromSelector(a2);
-      v15 = [v7 stringFromDate];
+      stringFromDate = [v7 stringFromDate];
       v25 = 138413058;
       v26 = v13;
       v27 = 2112;
@@ -632,25 +632,25 @@ LABEL_32:
       v29 = 2112;
       v30 = v5;
       v31 = 2112;
-      v32 = v15;
+      v32 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, %@, skipping version update - current values, systemVersion, %@, systemVersionUpdateDate, %@", &v25, 0x2Au);
     }
 
-    v16 = v7;
-    v17 = v5;
+    date = v7;
+    systemVersion2 = v5;
     goto LABEL_10;
   }
 
-  v18 = [(SMSuggestionsManager *)self platform];
-  v17 = [v18 systemVersion];
+  platform2 = [(SMSuggestionsManager *)self platform];
+  systemVersion2 = [platform2 systemVersion];
 
-  v19 = [(SMSuggestionsManager *)self defaultsManager];
-  [v19 setObject:v17 forKey:@"RTDefaultsSuggestionsManagerSystemVersion"];
+  defaultsManager3 = [(SMSuggestionsManager *)self defaultsManager];
+  [defaultsManager3 setObject:systemVersion2 forKey:@"RTDefaultsSuggestionsManagerSystemVersion"];
 
-  v16 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
 
-  v20 = [(SMSuggestionsManager *)self defaultsManager];
-  [v20 setObject:v16 forKey:@"RTDefaultsSuggestionsManagerSystemVersionUpdateDate"];
+  defaultsManager4 = [(SMSuggestionsManager *)self defaultsManager];
+  [defaultsManager4 setObject:date forKey:@"RTDefaultsSuggestionsManagerSystemVersionUpdateDate"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -660,15 +660,15 @@ LABEL_32:
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
       v23 = NSStringFromSelector(a2);
-      v24 = [v16 stringFromDate];
+      stringFromDate2 = [date stringFromDate];
       v25 = 138413058;
       v26 = v22;
       v27 = 2112;
       v28 = v23;
       v29 = 2112;
-      v30 = v17;
+      v30 = systemVersion2;
       v31 = 2112;
-      v32 = v24;
+      v32 = stringFromDate2;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, %@, setting RTDefaultsSuggestionsManagerSystemVersion, %@, RTDefaultsSuggestionsManagerSystemVersionUpdateDate, %@", &v25, 0x2Au);
     }
 
@@ -681,8 +681,8 @@ LABEL_12:
 - (id)_getSystemVersionUpdateDate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSuggestionsManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsSuggestionsManagerSystemVersionUpdateDate"];
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsSuggestionsManagerSystemVersionUpdateDate"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -692,13 +692,13 @@ LABEL_12:
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
       v8 = NSStringFromSelector(a2);
-      v9 = [v4 stringFromDate];
+      stringFromDate = [v4 stringFromDate];
       v11 = 138412802;
       v12 = v7;
       v13 = 2112;
       v14 = v8;
       v15 = 2112;
-      v16 = v9;
+      v16 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%@, %@, RTDefaultsSuggestionsManagerSystemVersionUpdateDate, %@", &v11, 0x20u);
     }
   }
@@ -706,39 +706,39 @@ LABEL_12:
   return v4;
 }
 
-- (void)onAuthorizationNotification:(id)a3
+- (void)onAuthorizationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SMSuggestionsManager_onAuthorizationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onAuthorizationNotification:(id)a3
+- (void)_onAuthorizationNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTAuthorizationManagerNotificationRoutineEnabled];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    -[SMSuggestionsManager setRoutineEnabled:](self, "setRoutineEnabled:", [v5 enabled]);
+    -[SMSuggestionsManager setRoutineEnabled:](self, "setRoutineEnabled:", [notificationCopy enabled]);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(SMSuggestionsManager *)self routineEnabled];
+        routineEnabled = [(SMSuggestionsManager *)self routineEnabled];
         v11 = @"NO";
-        if (v10)
+        if (routineEnabled)
         {
           v11 = @"YES";
         }
@@ -758,11 +758,11 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v12 = NSStringFromSelector(a2);
-      v13 = [v5 name];
+      name2 = [notificationCopy name];
       v14 = 138412546;
       v15 = v12;
       v16 = 2112;
-      v17 = v13;
+      v17 = name2;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, unhandled notification, %@", &v14, 0x16u);
     }
 
@@ -770,31 +770,31 @@ LABEL_10:
   }
 }
 
-- (void)onLearnedLocationManagerNotification:(id)a3
+- (void)onLearnedLocationManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__SMSuggestionsManager_onLearnedLocationManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onLearnedLocationManagerNotification:(id)a3
+- (void)_onLearnedLocationManagerNotification:(id)notification
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTLearnedLocationManagerNotificationAvailabilityDidChange];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    v9 = v5;
+    v9 = notificationCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -849,7 +849,7 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v18 = v5;
+      v18 = notificationCopy;
       v19 = 2080;
       v20 = "[SMSuggestionsManager _onLearnedLocationManagerNotification:]";
       v21 = 1024;
@@ -859,32 +859,32 @@ LABEL_10:
   }
 }
 
-- (void)onVisitManagerNotification:(id)a3
+- (void)onVisitManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SMSuggestionsManager_onVisitManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onVisitManagerNotification:(id)a3
+- (void)_onVisitManagerNotification:(id)notification
 {
   v98[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTVisitManagerLowConfidenceVisitIncidentNotification];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    v9 = v5;
-    v10 = [v9 visitIncident];
+    v9 = notificationCopy;
+    visitIncident = [v9 visitIncident];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -898,16 +898,16 @@ LABEL_10:
         *&buf[12] = 2112;
         *&buf[14] = v14;
         *&buf[22] = 2117;
-        v96 = v10;
+        v96 = visitIncident;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, %@, received visit notification, %{sensitive}@", buf, 0x20u);
       }
     }
 
-    if ([v10 type] == 1)
+    if ([visitIncident type] == 1)
     {
-      v15 = [v10 location];
+      location = [visitIncident location];
       v87 = 0;
-      v16 = [(SMSuggestionsManager *)self _deleteProactiveNotificationWithDestinationLocation:v15 error:&v87];
+      v16 = [(SMSuggestionsManager *)self _deleteProactiveNotificationWithDestinationLocation:location error:&v87];
       v17 = v87;
 
       if (v17)
@@ -952,9 +952,9 @@ LABEL_10:
       v84 = __Block_byref_object_copy__119;
       v85 = __Block_byref_object_dispose__119;
       v86 = 0;
-      v37 = [(SMSuggestionsManager *)self learnedLocationManager];
-      v38 = [v10 placeInference];
-      v39 = [v38 loiIdentifier];
+      learnedLocationManager = [(SMSuggestionsManager *)self learnedLocationManager];
+      placeInference = [visitIncident placeInference];
+      loiIdentifier = [placeInference loiIdentifier];
       v77[0] = MEMORY[0x277D85DD0];
       v77[1] = 3221225472;
       v77[2] = __52__SMSuggestionsManager__onVisitManagerNotification___block_invoke;
@@ -963,7 +963,7 @@ LABEL_10:
       v80 = &v81;
       v40 = v36;
       v78 = v40;
-      [v37 fetchLocationOfInterestWithIdentifier:v39 handler:v77];
+      [learnedLocationManager fetchLocationOfInterestWithIdentifier:loiIdentifier handler:v77];
 
       v18 = v40;
       v73 = [MEMORY[0x277CBEAA8] now];
@@ -975,11 +975,11 @@ LABEL_10:
         v43 = v42;
         v71 = objc_opt_new();
         v44 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-        v45 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v46 = [v45 filteredArrayUsingPredicate:v44];
-        v47 = [v46 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v46 = [callStackSymbols filteredArrayUsingPredicate:v44];
+        firstObject = [v46 firstObject];
 
-        [v71 submitToCoreAnalytics:v47 type:1 duration:v43];
+        [v71 submitToCoreAnalytics:firstObject type:1 duration:v43];
         v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
         {
@@ -1075,16 +1075,16 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    if ([v10 type] != 3)
+    if ([visitIncident type] != 3)
     {
 LABEL_45:
 
       goto LABEL_46;
     }
 
-    v24 = [v10 exit];
-    v25 = [v10 entry];
-    [v24 timeIntervalSinceDate:v25];
+    exit = [visitIncident exit];
+    entry = [visitIncident entry];
+    [exit timeIntervalSinceDate:entry];
     v27 = v26;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1110,7 +1110,7 @@ LABEL_45:
     if (v27 >= 900.0)
     {
       v75 = 0;
-      v32 = [(SMSuggestionsManager *)self _runProactiveSuggestionsEngineWithContext:v10 shouldStoreSuggestions:1 error:&v75];
+      v32 = [(SMSuggestionsManager *)self _runProactiveSuggestionsEngineWithContext:visitIncident shouldStoreSuggestions:1 error:&v75];
       v18 = v75;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1168,7 +1168,7 @@ LABEL_43:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    *&buf[4] = v5;
+    *&buf[4] = notificationCopy;
     *&buf[12] = 2080;
     *&buf[14] = "[SMSuggestionsManager _onVisitManagerNotification:]";
     *&buf[22] = 1024;
@@ -1196,37 +1196,37 @@ void __52__SMSuggestionsManager__onVisitManagerNotification___block_invoke(uint6
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)onHealthKitNotification:(id)a3
+- (void)onHealthKitNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SMSuggestionsManager_onHealthKitNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onHealthKitNotification:(id)a3
+- (void)_onHealthKitNotification:(id)notification
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTHealthKitManagerNewWorkoutForSMSuggestionsNotification];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    v9 = [(SMSuggestionsManager *)self healthKitManager];
-    v10 = [(SMSuggestionsManager *)self healthKitManager];
-    v11 = [v10 _getWorkoutDefaultStartDateForRaceRoute];
-    v12 = [(SMSuggestionsManager *)self healthKitManager];
-    v13 = [v12 _getRTWorkoutDefaultTypesForSMSuggestions];
+    healthKitManager = [(SMSuggestionsManager *)self healthKitManager];
+    healthKitManager2 = [(SMSuggestionsManager *)self healthKitManager];
+    _getWorkoutDefaultStartDateForRaceRoute = [healthKitManager2 _getWorkoutDefaultStartDateForRaceRoute];
+    healthKitManager3 = [(SMSuggestionsManager *)self healthKitManager];
+    _getRTWorkoutDefaultTypesForSMSuggestions = [healthKitManager3 _getRTWorkoutDefaultTypesForSMSuggestions];
     v34 = 0;
-    v14 = [v9 getLatestWorkoutWithStartDate:v11 nearLocation:0 distanceThreshold:0 onlySourcedFromFitnessApp:0 includePastureModeRoutes:v13 workoutTypes:&v34 error:1.79769313e308];
+    v14 = [healthKitManager getLatestWorkoutWithStartDate:_getWorkoutDefaultStartDateForRaceRoute nearLocation:0 distanceThreshold:0 onlySourcedFromFitnessApp:0 includePastureModeRoutes:_getRTWorkoutDefaultTypesForSMSuggestions workoutTypes:&v34 error:1.79769313e308];
     v15 = v34;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1274,17 +1274,17 @@ void __52__SMSuggestionsManager__onVisitManagerNotification___block_invoke(uint6
 
   else
   {
-    v26 = [v5 name];
+    name2 = [notificationCopy name];
     v27 = +[(RTNotification *)RTHealthKitManagerWorkoutOngoingChangedNotification];
-    v28 = [v26 isEqualToString:v27];
+    v28 = [name2 isEqualToString:v27];
 
     if (v28)
     {
-      v29 = [(SMSuggestionsManager *)self defaultsManager];
-      v30 = [v29 objectForKey:@"RTDefaultsWorkoutOngoing"];
-      v31 = [v30 BOOLValue];
+      defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+      v30 = [defaultsManager objectForKey:@"RTDefaultsWorkoutOngoing"];
+      bOOLValue = [v30 BOOLValue];
 
-      [(SMSuggestionsManager *)self _triggerCheckInWorkoutURLUpdateWithShouldGenerateURL:v31];
+      [(SMSuggestionsManager *)self _triggerCheckInWorkoutURLUpdateWithShouldGenerateURL:bOOLValue];
     }
 
     else
@@ -1293,7 +1293,7 @@ void __52__SMSuggestionsManager__onVisitManagerNotification___block_invoke(uint6
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v36 = v5;
+        v36 = notificationCopy;
         v37 = 2080;
         v38 = "[SMSuggestionsManager _onHealthKitNotification:]";
         v39 = 1024;
@@ -1304,9 +1304,9 @@ void __52__SMSuggestionsManager__onVisitManagerNotification___block_invoke(uint6
   }
 }
 
-- (void)_triggerCheckInWorkoutURLUpdateWithShouldGenerateURL:(BOOL)a3
+- (void)_triggerCheckInWorkoutURLUpdateWithShouldGenerateURL:(BOOL)l
 {
-  v3 = a3;
+  lCopy = l;
   v18 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1321,20 +1321,20 @@ void __52__SMSuggestionsManager__onVisitManagerNotification___block_invoke(uint6
       v14 = 2112;
       v15 = v9;
       v16 = 1024;
-      v17 = v3;
+      v17 = lCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, %@, shouldGenerateURL: %{Bool}d", buf, 0x1Cu);
     }
   }
 
-  if (v3)
+  if (lCopy)
   {
-    v10 = [(SMSuggestionsManager *)self healthKitManager];
+    healthKitManager = [(SMSuggestionsManager *)self healthKitManager];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGenerateURL___block_invoke;
     v11[3] = &unk_2788CE708;
     v11[4] = self;
-    [v10 fetchCurrentWorkoutSnapshotWithHandler:v11];
+    [healthKitManager fetchCurrentWorkoutSnapshotWithHandler:v11];
   }
 
   else
@@ -1365,14 +1365,14 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
   return [v2 _updateSafetyMonitorWorkoutSuggestionWidget];
 }
 
-- (void)_generateSuggestionFromCurrentHealthKitWorkoutSnapshot:(id)a3
+- (void)_generateSuggestionFromCurrentHealthKitWorkoutSnapshot:(id)snapshot
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  snapshotCopy = snapshot;
+  if (snapshotCopy)
   {
     v12 = 0;
-    v6 = [(SMSuggestionsManager *)self _runProactiveSuggestionsEngineWithContext:v5 shouldStoreSuggestions:1 error:&v12];
+    v6 = [(SMSuggestionsManager *)self _runProactiveSuggestionsEngineWithContext:snapshotCopy shouldStoreSuggestions:1 error:&v12];
     v7 = v12;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1402,31 +1402,31 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
   }
 }
 
-- (void)onNavigationNotification:(id)a3
+- (void)onNavigationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SMSuggestionsManager_onNavigationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onNavigationNotification:(id)a3
+- (void)_onNavigationNotification:(id)notification
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTNavigationManagerRouteSummaryNotification];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    v9 = v5;
+    v9 = notificationCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1450,8 +1450,8 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
     v16 = v15;
     [(__CFString *)v9 destinationLongitude];
     v18 = v17;
-    v19 = [MEMORY[0x277CBEAA8] date];
-    v20 = [v14 initWithLatitude:v19 longitude:v16 horizontalUncertainty:v18 date:0.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v20 = [v14 initWithLatitude:date longitude:v16 horizontalUncertainty:v18 date:0.0];
 
     v29 = 0;
     v21 = [(SMSuggestionsManager *)self _deleteProactiveNotificationUponNavigationDestination:v20 error:&v29];
@@ -1488,7 +1488,7 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v31 = v5;
+      v31 = notificationCopy;
       v32 = 2080;
       v33 = "[SMSuggestionsManager _onNavigationNotification:]";
       v34 = 1024;
@@ -1498,31 +1498,31 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
   }
 }
 
-- (void)onVehicleConnectedNotification:(id)a3
+- (void)onVehicleConnectedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SMSuggestionsManager_onVehicleConnectedNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onVehicleConnectedNotification:(id)a3
+- (void)_onVehicleConnectedNotification:(id)notification
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTMotionActivityManagerNotificationVehicleConnected];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    v9 = v5;
+    v9 = notificationCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1572,7 +1572,7 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v23 = v5;
+      v23 = notificationCopy;
       v24 = 2080;
       v25 = "[SMSuggestionsManager _onVehicleConnectedNotification:]";
       v26 = 1024;
@@ -1582,21 +1582,21 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
   }
 }
 
-- (void)onSessionStartedWithConfiguration:(id)a3
+- (void)onSessionStartedWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  configurationCopy = configuration;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__SMSuggestionsManager_onSessionStartedWithConfiguration___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onSessionStartedWithConfiguration:(id)a3
+- (void)_onSessionStartedWithConfiguration:(id)configuration
 {
   v4 = 0;
   [(SMSuggestionsManager *)self _deleteProactiveNotificationWithError:&v4];
@@ -1604,43 +1604,43 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
   [(SMSuggestionsManager *)self _sendTipsSignal];
 }
 
-- (void)onSessionEndedForActiveDevice:(BOOL)a3
+- (void)onSessionEndedForActiveDevice:(BOOL)device
 {
-  v5 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__SMSuggestionsManager_onSessionEndedForActiveDevice___block_invoke;
   v6[3] = &unk_2788C5070;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  deviceCopy = device;
+  dispatch_async(queue, v6);
 }
 
-- (void)onSessionStateChanged:(id)a3 forActiveDevice:(BOOL)a4
+- (void)onSessionStateChanged:(id)changed forActiveDevice:(BOOL)device
 {
-  v6 = a3;
-  v7 = [(RTNotifier *)self queue];
+  changedCopy = changed;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SMSuggestionsManager_onSessionStateChanged_forActiveDevice___block_invoke;
   block[3] = &unk_2788C53C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = changedCopy;
+  deviceCopy = device;
+  v8 = changedCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_onSessionStateChanged:(id)a3 forActiveDevice:(BOOL)a4
+- (void)_onSessionStateChanged:(id)changed forActiveDevice:(BOOL)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (v4)
+  changedCopy = changed;
+  v8 = changedCopy;
+  if (deviceCopy)
   {
-    v9 = [v7 configuration];
-    if ([v9 sessionType] == 4)
+    configuration = [changedCopy configuration];
+    if ([configuration sessionType] == 4)
     {
       if ([v8 sessionState] == 1)
       {
@@ -1648,9 +1648,9 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
 
       else
       {
-        v10 = [v8 sessionState];
+        sessionState = [v8 sessionState];
 
-        if (v10 != 12)
+        if (sessionState != 12)
         {
           goto LABEL_12;
         }
@@ -1672,8 +1672,8 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
         }
       }
 
-      v15 = [v8 configuration];
-      [(SMSuggestionsManager *)self _considerShowingAlwaysOnPromptWithConfiguration:v15];
+      configuration2 = [v8 configuration];
+      [(SMSuggestionsManager *)self _considerShowingAlwaysOnPromptWithConfiguration:configuration2];
     }
 
     else
@@ -1684,11 +1684,11 @@ uint64_t __77__SMSuggestionsManager__triggerCheckInWorkoutURLUpdateWithShouldGen
 LABEL_12:
 }
 
-- (BOOL)_deleteProactiveNotificationWithError:(id *)a3
+- (BOOL)_deleteProactiveNotificationWithError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [(SMSuggestionsManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsSuggestionsManagerLastSuggestionNotificationUUID"];
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsSuggestionsManagerLastSuggestionNotificationUUID"];
 
   if (v6)
   {
@@ -1731,7 +1731,7 @@ LABEL_12:
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v10 = 0;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -1755,11 +1755,11 @@ LABEL_12:
     v10 = 0;
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_13:
     v20 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
 LABEL_14:
@@ -1767,18 +1767,18 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)_deleteProactiveNotificationWithDestinationLocation:(id)a3 error:(id *)a4
+- (BOOL)_deleteProactiveNotificationWithDestinationLocation:(id)location error:(id *)error
 {
   v102[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v72 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v6 = objc_alloc(MEMORY[0x277D4AC18]);
     v7 = objc_alloc(MEMORY[0x277CCA970]);
-    v8 = [v72 dateByAddingTimeInterval:-600.0];
+    v8 = [date dateByAddingTimeInterval:-600.0];
     v9 = *MEMORY[0x277D4AF10];
-    v10 = [v7 initWithStartDate:v8 endDate:v72];
+    v10 = [v7 initWithStartDate:v8 endDate:date];
     v11 = [v6 initWithBatchSize:v9 fetchLimit:1 offset:v9 includeSuppressed:0 sortByCreationDate:1 ascending:0 dateInterval:v10 filteredToSuggestionTriggers:0 filteredToSuggestionUserTypes:0 filteredToSessionTypes:0];
 
     v85 = 0;
@@ -1794,7 +1794,7 @@ LABEL_14:
     v83 = __Block_byref_object_dispose__119;
     v84 = 0;
     v12 = dispatch_semaphore_create(0);
-    v13 = [(SMSuggestionsManager *)self suggestionsStore];
+    suggestionsStore = [(SMSuggestionsManager *)self suggestionsStore];
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __82__SMSuggestionsManager__deleteProactiveNotificationWithDestinationLocation_error___block_invoke;
@@ -1803,7 +1803,7 @@ LABEL_14:
     v78 = &v79;
     v14 = v12;
     v76 = v14;
-    [v13 fetchSuggestionsWithOptions:v11 handler:v75];
+    [suggestionsStore fetchSuggestionsWithOptions:v11 handler:v75];
     v70 = v11;
 
     v15 = v14;
@@ -1816,11 +1816,11 @@ LABEL_14:
       v20 = v19;
       v21 = objc_opt_new();
       v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v24 = [v23 filteredArrayUsingPredicate:v22];
-      v25 = [v24 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+      firstObject = [v24 firstObject];
 
-      [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+      [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
       v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
       {
@@ -1847,7 +1847,7 @@ LABEL_14:
 
     v33 = v29;
     v34 = v33;
-    if (a4 && v33)
+    if (error && v33)
     {
       v35 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -1869,7 +1869,7 @@ LABEL_14:
       goto LABEL_43;
     }
 
-    if (a4 && *(v80 + 5))
+    if (error && *(v80 + 5))
     {
       v37 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -1915,16 +1915,16 @@ LABEL_14:
         goto LABEL_44;
       }
 
-      v43 = [(SMSuggestionsManager *)self distanceCalculator];
-      v44 = [v86[5] firstObject];
-      v45 = [v44 destinationLocation];
+      distanceCalculator = [(SMSuggestionsManager *)self distanceCalculator];
+      firstObject2 = [v86[5] firstObject];
+      destinationLocation = [firstObject2 destinationLocation];
       v46 = (v80 + 5);
       obj = *(v80 + 5);
-      [v43 distanceFromLocation:v45 toLocation:v5 error:&obj];
+      [distanceCalculator distanceFromLocation:destinationLocation toLocation:locationCopy error:&obj];
       v48 = v47;
       objc_storeStrong(v46, obj);
 
-      if (!a4 || !*(v80 + 5))
+      if (!error || !*(v80 + 5))
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -1934,8 +1934,8 @@ LABEL_14:
             v51 = objc_opt_class();
             v52 = NSStringFromClass(v51);
             v53 = NSStringFromSelector(a2);
-            v54 = [v86[5] firstObject];
-            v55 = [v54 destinationLocation];
+            firstObject3 = [v86[5] firstObject];
+            destinationLocation2 = [firstObject3 destinationLocation];
             *buf = 138413571;
             *&buf[4] = v52;
             v92 = 2112;
@@ -1945,9 +1945,9 @@ LABEL_14:
             v96 = 2048;
             v97 = 0x408F400000000000;
             v98 = 2117;
-            v99 = v55;
+            v99 = destinationLocation2;
             v100 = 2117;
-            v101 = v5;
+            v101 = locationCopy;
             _os_log_impl(&dword_2304B3000, v50, OS_LOG_TYPE_INFO, "%@, %@, distance, %.3f, kSMSuggestionMinimimDistanceBetweenSourceAndDestination, %.3f, suggestion location, %{sensitive}@, destinationLocation, %{sensitive}@", buf, 0x3Eu);
           }
         }
@@ -1961,7 +1961,7 @@ LABEL_14:
           objc_storeStrong(v56, v73);
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_44;
         }
@@ -1990,7 +1990,7 @@ LABEL_14:
 LABEL_42:
     v36 = *(v80 + 5);
 LABEL_43:
-    *a4 = v36;
+    *error = v36;
 LABEL_44:
 
     _Block_object_dispose(&v79, 8);
@@ -2006,10 +2006,10 @@ LABEL_44:
     _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: destinationLocation", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"destinationLocation");
-    *a4 = v32 = 0;
+    *error = v32 = 0;
   }
 
   else
@@ -2039,11 +2039,11 @@ void __82__SMSuggestionsManager__deleteProactiveNotificationWithDestinationLocat
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_deleteProactiveNotificationUponNavigationDestination:(id)a3 error:(id *)a4
+- (BOOL)_deleteProactiveNotificationUponNavigationDestination:(id)destination error:(id *)error
 {
   v123[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  destinationCopy = destination;
+  if (destinationCopy)
   {
     aSelector = a2;
     v106 = 0;
@@ -2055,7 +2055,7 @@ void __82__SMSuggestionsManager__deleteProactiveNotificationWithDestinationLocat
     obj = 0;
     [(SMSuggestionsManager *)self _refreshCurrentLocationWithError:&obj];
     objc_storeStrong(&v111, obj);
-    if (a4 && *(v107 + 5))
+    if (error && *(v107 + 5))
     {
       v8 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2074,20 +2074,20 @@ void __82__SMSuggestionsManager__deleteProactiveNotificationWithDestinationLocat
       }
 
       v9 = 0;
-      *a4 = *(v107 + 5);
+      *error = *(v107 + 5);
       goto LABEL_65;
     }
 
-    v91 = [MEMORY[0x277CBEAA8] date];
-    v10 = [(SMSuggestionsManager *)self distanceCalculator];
-    v11 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+    date = [MEMORY[0x277CBEAA8] date];
+    distanceCalculator = [(SMSuggestionsManager *)self distanceCalculator];
+    latestLocationOfTheDevice = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
     v12 = (v107 + 5);
     v104 = *(v107 + 5);
-    [v10 distanceFromLocation:v11 toLocation:v7 error:&v104];
+    [distanceCalculator distanceFromLocation:latestLocationOfTheDevice toLocation:destinationCopy error:&v104];
     v14 = v13;
     objc_storeStrong(v12, v104);
 
-    if (a4 && *(v107 + 5))
+    if (error && *(v107 + 5))
     {
       v15 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2106,7 +2106,7 @@ void __82__SMSuggestionsManager__deleteProactiveNotificationWithDestinationLocat
       }
 
       v9 = 0;
-      *a4 = *(v107 + 5);
+      *error = *(v107 + 5);
       goto LABEL_64;
     }
 
@@ -2118,7 +2118,7 @@ void __82__SMSuggestionsManager__deleteProactiveNotificationWithDestinationLocat
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         v20 = NSStringFromSelector(aSelector);
-        v21 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+        latestLocationOfTheDevice2 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
         *buf = 138413571;
         *&buf[4] = v19;
         v113 = 2112;
@@ -2128,9 +2128,9 @@ void __82__SMSuggestionsManager__deleteProactiveNotificationWithDestinationLocat
         v117 = 2048;
         v118 = 0x407F400000000000;
         v119 = 2117;
-        v120 = v21;
+        v120 = latestLocationOfTheDevice2;
         v121 = 2117;
-        v122 = v7;
+        v122 = destinationCopy;
         _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@, %@, distanceBetweenCurrentLocationAndNavigationDestination, %.3f, kSMSuggestionProactiveNotificationTearDownDistanceCloseBy, %.3f, latestLocationOfTheDevice, %{sensitive}@, navigationDestination, %{sensitive}@", buf, 0x3Eu);
       }
     }
@@ -2148,8 +2148,8 @@ LABEL_65:
 
     v22 = objc_alloc(MEMORY[0x277D4AC18]);
     v23 = objc_alloc(MEMORY[0x277CCA970]);
-    v24 = [v91 dateByAddingTimeInterval:-600.0];
-    v25 = [v23 initWithStartDate:v24 endDate:v91];
+    v24 = [date dateByAddingTimeInterval:-600.0];
+    v25 = [v23 initWithStartDate:v24 endDate:date];
     v88 = [v22 initWithBatchSize:*MEMORY[0x277D4AF10] fetchLimit:1 offset:*MEMORY[0x277D4AF10] includeSuppressed:0 sortByCreationDate:1 ascending:0 dateInterval:v25 filteredToSuggestionTriggers:0 filteredToSuggestionUserTypes:0 filteredToSessionTypes:0];
 
     v98 = 0;
@@ -2159,7 +2159,7 @@ LABEL_65:
     v102 = __Block_byref_object_dispose__119;
     v103 = 0;
     v26 = dispatch_semaphore_create(0);
-    v27 = [(SMSuggestionsManager *)self suggestionsStore];
+    suggestionsStore = [(SMSuggestionsManager *)self suggestionsStore];
     v94[0] = MEMORY[0x277D85DD0];
     v94[1] = 3221225472;
     v94[2] = __84__SMSuggestionsManager__deleteProactiveNotificationUponNavigationDestination_error___block_invoke;
@@ -2168,7 +2168,7 @@ LABEL_65:
     v97 = &v106;
     v28 = v26;
     v95 = v28;
-    [v27 fetchSuggestionsWithOptions:v88 handler:v94];
+    [suggestionsStore fetchSuggestionsWithOptions:v88 handler:v94];
 
     dsema = v28;
     v29 = [MEMORY[0x277CBEAA8] now];
@@ -2180,11 +2180,11 @@ LABEL_65:
       v33 = v32;
       v34 = objc_opt_new();
       v35 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v36 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v37 = [v36 filteredArrayUsingPredicate:v35];
-      v38 = [v37 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v37 = [callStackSymbols filteredArrayUsingPredicate:v35];
+      firstObject = [v37 firstObject];
 
-      [v34 submitToCoreAnalytics:v38 type:1 duration:v33];
+      [v34 submitToCoreAnalytics:firstObject type:1 duration:v33];
       v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
       {
@@ -2210,7 +2210,7 @@ LABEL_65:
     }
 
     v44 = COERCE_DOUBLE(v42);
-    if (v44 != 0.0 && a4 != 0)
+    if (v44 != 0.0 && error != 0)
     {
       v46 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -2232,7 +2232,7 @@ LABEL_65:
       goto LABEL_62;
     }
 
-    if (a4 && *(v107 + 5))
+    if (error && *(v107 + 5))
     {
       v48 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -2281,16 +2281,16 @@ LABEL_63:
         goto LABEL_64;
       }
 
-      v54 = [(SMSuggestionsManager *)self distanceCalculator];
-      v55 = [v99[5] firstObject];
-      v56 = [v55 destinationLocation];
+      distanceCalculator2 = [(SMSuggestionsManager *)self distanceCalculator];
+      firstObject2 = [v99[5] firstObject];
+      destinationLocation = [firstObject2 destinationLocation];
       v57 = (v107 + 5);
       v93 = *(v107 + 5);
-      [v54 distanceFromLocation:v56 toLocation:v7 error:&v93];
+      [distanceCalculator2 distanceFromLocation:destinationLocation toLocation:destinationCopy error:&v93];
       v59 = v58;
       objc_storeStrong(v57, v93);
 
-      if (!a4 || !*(v107 + 5))
+      if (!error || !*(v107 + 5))
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -2300,8 +2300,8 @@ LABEL_63:
             v66 = objc_opt_class();
             v67 = NSStringFromClass(v66);
             v68 = NSStringFromSelector(aSelector);
-            v69 = [v99[5] firstObject];
-            v70 = [v69 destinationLocation];
+            firstObject3 = [v99[5] firstObject];
+            destinationLocation2 = [firstObject3 destinationLocation];
             *buf = 138413571;
             *&buf[4] = v67;
             v113 = 2112;
@@ -2311,9 +2311,9 @@ LABEL_63:
             v117 = 2048;
             v118 = 0x407F400000000000;
             v119 = 2117;
-            v120 = v70;
+            v120 = destinationLocation2;
             v121 = 2117;
-            v122 = v7;
+            v122 = destinationCopy;
             _os_log_impl(&dword_2304B3000, v65, OS_LOG_TYPE_INFO, "%@, %@, distanceBetweenDestinations, %.3f, kSMSuggestionProactiveNotificationTearDownDistanceFromNavigationDestination, %.3f, suggestion location, %{sensitive}@, navigationDestination, %{sensitive}@", buf, 0x3Eu);
           }
         }
@@ -2331,7 +2331,7 @@ LABEL_63:
           objc_storeStrong(v71, v92);
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_63;
         }
@@ -2360,7 +2360,7 @@ LABEL_63:
 LABEL_61:
     v47 = v107[5];
 LABEL_62:
-    *a4 = *&v47;
+    *error = *&v47;
     goto LABEL_63;
   }
 
@@ -2371,10 +2371,10 @@ LABEL_62:
     _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: navigationDestination", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"navigationDestination");
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -2424,7 +2424,7 @@ void __84__SMSuggestionsManager__deleteProactiveNotificationUponNavigationDestin
   }
 }
 
-- (void)_changeWidgetVisibilityForMessagesInstallationState:(BOOL)a3
+- (void)_changeWidgetVisibilityForMessagesInstallationState:(BOOL)state
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2446,32 +2446,32 @@ void __84__SMSuggestionsManager__deleteProactiveNotificationUponNavigationDestin
 
 - (void)onMessagesAppInstalled
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SMSuggestionsManager_onMessagesAppInstalled__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)onMessagesAppUninstalled
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SMSuggestionsManager_onMessagesAppUninstalled__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (BOOL)_setupPedometerDataHandler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
 
-  if (!v4)
+  if (!queue)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2613,11 +2613,11 @@ void __50__SMSuggestionsManager__setupPedometerDataHandler__block_invoke_2(uint6
   }
 }
 
-- (BOOL)_setupPedometerNotificationsIfExists:(id *)a3
+- (BOOL)_setupPedometerNotificationsIfExists:(id *)exists
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = [(SMSuggestionsManager *)self defaultsManager];
-  v7 = [v6 objectForKey:@"RTDefaultsSuggestionLastDateWalkingBoutTriggerIsScheduled"];
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  v7 = [defaultsManager objectForKey:@"RTDefaultsSuggestionLastDateWalkingBoutTriggerIsScheduled"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -2627,13 +2627,13 @@ void __50__SMSuggestionsManager__setupPedometerDataHandler__block_invoke_2(uint6
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = NSStringFromSelector(a2);
-      v12 = [v7 stringFromDate];
+      stringFromDate = [v7 stringFromDate];
       *buf = 138412802;
       v25 = v10;
       v26 = 2112;
       v27 = v11;
       v28 = 2112;
-      v29 = v12;
+      v29 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, %@, walkingBoutTriggerScheduledDate, %@,", buf, 0x20u);
     }
   }
@@ -2668,20 +2668,20 @@ void __50__SMSuggestionsManager__setupPedometerDataHandler__block_invoke_2(uint6
     }
   }
 
-  if (a3)
+  if (exists)
   {
     v21 = v14;
-    *a3 = v14;
+    *exists = v14;
   }
 
   return v13;
 }
 
-- (BOOL)_reRegisterForPedometerNotificationsForLearnedLocationOfInterest:(id)a3 startDate:(id)a4 error:(id *)a5
+- (BOOL)_reRegisterForPedometerNotificationsForLearnedLocationOfInterest:(id)interest startDate:(id)date error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  interestCopy = interest;
+  dateCopy = date;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -2690,15 +2690,15 @@ void __50__SMSuggestionsManager__setupPedometerDataHandler__block_invoke_2(uint6
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = NSStringFromSelector(a2);
-      v15 = [v10 stringFromDate];
+      stringFromDate = [dateCopy stringFromDate];
       *buf = 138413058;
       v29 = v13;
       v30 = 2112;
       v31 = v14;
       v32 = 2112;
-      v33 = v15;
+      v33 = stringFromDate;
       v34 = 2112;
-      v35 = v9;
+      v35 = interestCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, %@, reRegistering for pedometer data, startDate, %@, locationOfInterest, %@", buf, 0x2Au);
     }
   }
@@ -2707,7 +2707,7 @@ void __50__SMSuggestionsManager__setupPedometerDataHandler__block_invoke_2(uint6
   v16 = [(SMSuggestionsManager *)self _unregisterForPedometerNotificationsWithError:&v27];
   v17 = v27;
   v18 = v17;
-  if (a5 && v17)
+  if (error && v17)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -2729,27 +2729,27 @@ void __50__SMSuggestionsManager__setupPedometerDataHandler__block_invoke_2(uint6
   }
 
   v26 = v17;
-  v16 = [(SMSuggestionsManager *)self _registerForPedometerNotificationsForLearnedLocationOfInterest:v9 startDate:v10 error:&v26];
+  v16 = [(SMSuggestionsManager *)self _registerForPedometerNotificationsForLearnedLocationOfInterest:interestCopy startDate:dateCopy error:&v26];
   v20 = v26;
 
   v18 = v20;
-  if (a5)
+  if (error)
   {
 LABEL_11:
     v21 = v18;
-    *a5 = v18;
+    *error = v18;
   }
 
   return v16;
 }
 
-- (BOOL)_registerForPedometerNotificationsForLearnedLocationOfInterest:(id)a3 startDate:(id)a4 error:(id *)a5
+- (BOOL)_registerForPedometerNotificationsForLearnedLocationOfInterest:(id)interest startDate:(id)date error:(id *)error
 {
   v119[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v94 = v7;
-  if (!v8)
+  interestCopy = interest;
+  dateCopy = date;
+  v94 = interestCopy;
+  if (!dateCopy)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -2758,10 +2758,10 @@ LABEL_11:
       _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"startDate");
-      *a5 = v38 = 0;
+      *error = v38 = 0;
       goto LABEL_59;
     }
 
@@ -2771,16 +2771,16 @@ LABEL_58:
   }
 
   [(SMSuggestionsManager *)self _resetStatesForPedometerData];
-  if (v7)
+  if (interestCopy)
   {
-    [(SMSuggestionsManager *)self setCurrentLOI:v7];
+    [(SMSuggestionsManager *)self setCurrentLOI:interestCopy];
     goto LABEL_4;
   }
 
   v110 = 0;
   [(SMSuggestionsManager *)self _refreshCurrentLocationWithError:&v110];
   v40 = v110;
-  if (a5 && v40)
+  if (error && v40)
   {
     v41 = v40;
     v42 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -2799,7 +2799,7 @@ LABEL_58:
     }
 
     v43 = v41;
-    *a5 = v41;
+    *error = v41;
 
     goto LABEL_58;
   }
@@ -2813,16 +2813,16 @@ LABEL_58:
       v50 = objc_opt_class();
       v51 = NSStringFromClass(v50);
       v52 = NSStringFromSelector(a2);
-      v53 = [v8 stringFromDate];
-      v54 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+      stringFromDate = [dateCopy stringFromDate];
+      latestLocationOfTheDevice = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
       *buf = 138413059;
       *&buf[4] = v51;
       *&buf[12] = 2112;
       *&buf[14] = v52;
       *&buf[22] = 2112;
-      v112 = v53;
+      v112 = stringFromDate;
       *v113 = 2117;
-      *&v113[2] = v54;
+      *&v113[2] = latestLocationOfTheDevice;
       _os_log_impl(&dword_2304B3000, v49, OS_LOG_TYPE_INFO, "%@, %@, registering for pedometer notifications using startDate, %@, location, %{sensitive}@", buf, 0x2Au);
     }
   }
@@ -2840,8 +2840,8 @@ LABEL_58:
   v107 = __Block_byref_object_copy__119;
   v108 = __Block_byref_object_dispose__119;
   v109 = 0;
-  v56 = [(SMSuggestionsManager *)self learnedLocationManager];
-  v57 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+  learnedLocationManager = [(SMSuggestionsManager *)self learnedLocationManager];
+  latestLocationOfTheDevice2 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
   v100[0] = MEMORY[0x277D85DD0];
   v100[1] = 3221225472;
   v100[2] = __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLocationOfInterest_startDate_error___block_invoke;
@@ -2850,7 +2850,7 @@ LABEL_58:
   v103 = &location;
   v58 = v55;
   v101 = v58;
-  [v56 fetchLocationOfInterestAtLocation:v57 handler:v100];
+  [learnedLocationManager fetchLocationOfInterestAtLocation:latestLocationOfTheDevice2 handler:v100];
 
   v59 = v58;
   v92 = [MEMORY[0x277CBEAA8] now];
@@ -2862,11 +2862,11 @@ LABEL_58:
     v63 = v62;
     v64 = objc_opt_new();
     v65 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v66 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v67 = [v66 filteredArrayUsingPredicate:v65];
-    v68 = [v67 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v67 = [callStackSymbols filteredArrayUsingPredicate:v65];
+    firstObject = [v67 firstObject];
 
-    [v64 submitToCoreAnalytics:v68 type:1 duration:v63];
+    [v64 submitToCoreAnalytics:firstObject type:1 duration:v63];
     v69 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v69, OS_LOG_TYPE_FAULT))
     {
@@ -2894,7 +2894,7 @@ LABEL_58:
   v74 = v72;
   if (v74)
   {
-    v75 = a5 != 0;
+    v75 = error != 0;
   }
 
   else
@@ -2922,11 +2922,11 @@ LABEL_58:
     v77 = v74;
 LABEL_55:
     v79 = 0;
-    *a5 = v77;
+    *error = v77;
     goto LABEL_57;
   }
 
-  if (a5 && p_location[5])
+  if (error && p_location[5])
   {
     v78 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
@@ -2961,8 +2961,8 @@ LABEL_57:
   }
 
 LABEL_4:
-  v9 = [(SMSuggestionsManager *)self currentLOI];
-  v10 = v9 == 0;
+  currentLOI = [(SMSuggestionsManager *)self currentLOI];
+  v10 = currentLOI == 0;
 
   v11 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
   if (v10)
@@ -2975,13 +2975,13 @@ LABEL_4:
         v45 = objc_opt_class();
         v46 = NSStringFromClass(v45);
         v47 = NSStringFromSelector(a2);
-        v48 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+        latestLocationOfTheDevice3 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
         *buf = 138412803;
         *&buf[4] = v46;
         *&buf[12] = 2112;
         *&buf[14] = v47;
         *&buf[22] = 2117;
-        v112 = v48;
+        v112 = latestLocationOfTheDevice3;
         _os_log_impl(&dword_2304B3000, v44, OS_LOG_TYPE_INFO, "%@, %@, no corresponding LOI at this location, %{sensitive}@", buf, 0x20u);
       }
     }
@@ -2997,48 +2997,48 @@ LABEL_4:
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       v15 = NSStringFromSelector(a2);
-      v16 = [v8 stringFromDate];
-      v17 = [(SMSuggestionsManager *)self currentLOI];
+      stringFromDate2 = [dateCopy stringFromDate];
+      currentLOI2 = [(SMSuggestionsManager *)self currentLOI];
       *buf = 138413059;
       *&buf[4] = v14;
       *&buf[12] = 2112;
       *&buf[14] = v15;
       *&buf[22] = 2112;
-      v112 = v16;
+      v112 = stringFromDate2;
       *v113 = 2117;
-      *&v113[2] = v17;
+      *&v113[2] = currentLOI2;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%@, %@, registering for pedometer data, startDate, %@, current LOI, %{sensitive}@", buf, 0x2Au);
     }
   }
 
   [(SMSuggestionsManager *)self _logStatesForPedometerData];
-  v18 = [(SMSuggestionsManager *)self walkingTriggerAlarm];
+  walkingTriggerAlarm = [(SMSuggestionsManager *)self walkingTriggerAlarm];
 
-  if (v18)
+  if (walkingTriggerAlarm)
   {
-    v19 = [(SMSuggestionsManager *)self walkingTriggerAlarm];
-    [v19 invalidate];
+    walkingTriggerAlarm2 = [(SMSuggestionsManager *)self walkingTriggerAlarm];
+    [walkingTriggerAlarm2 invalidate];
   }
 
   objc_initWeak(&location, self);
   v20 = [RTXPCTimerAlarm alloc];
-  v21 = [MEMORY[0x277CCAD78] UUID];
-  v22 = [v21 UUIDString];
-  v23 = [(RTNotifier *)self queue];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  queue = [(RTNotifier *)self queue];
   v97[0] = MEMORY[0x277D85DD0];
   v97[1] = 3221225472;
   v97[2] = __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLocationOfInterest_startDate_error___block_invoke_412;
   v97[3] = &unk_2788CE758;
   objc_copyWeak(v99, &location);
-  v24 = v8;
+  v24 = dateCopy;
   v98 = v24;
   v99[1] = a2;
-  v25 = [(RTXPCTimerAlarm *)v20 initWithIdentifier:v22 queue:v23 handler:v97];
+  v25 = [(RTXPCTimerAlarm *)v20 initWithIdentifier:uUIDString queue:queue handler:v97];
   [(SMSuggestionsManager *)self setWalkingTriggerAlarm:v25];
 
-  v26 = [(SMSuggestionsManager *)self walkingTriggerAlarm];
+  walkingTriggerAlarm3 = [(SMSuggestionsManager *)self walkingTriggerAlarm];
   v96 = 0;
-  v27 = [v26 fireWithDate:v24 error:&v96];
+  v27 = [walkingTriggerAlarm3 fireWithDate:v24 error:&v96];
   v28 = v96;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3049,8 +3049,8 @@ LABEL_4:
       v30 = objc_opt_class();
       v31 = NSStringFromClass(v30);
       v32 = NSStringFromSelector(a2);
-      v33 = [v24 stringFromDate];
-      v34 = v33;
+      stringFromDate3 = [v24 stringFromDate];
+      v34 = stringFromDate3;
       v35 = @"NO";
       *buf = 138413314;
       *&buf[4] = v31;
@@ -3062,7 +3062,7 @@ LABEL_4:
 
       *&buf[14] = v32;
       *&buf[22] = 2112;
-      v112 = v33;
+      v112 = stringFromDate3;
       *v113 = 2112;
       *&v113[2] = v35;
       *&v113[10] = 2112;
@@ -3071,13 +3071,13 @@ LABEL_4:
     }
   }
 
-  v36 = [(SMSuggestionsManager *)self defaultsManager];
-  [v36 setObject:v24 forKey:@"RTDefaultsSuggestionLastDateWalkingBoutTriggerIsScheduled"];
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  [defaultsManager setObject:v24 forKey:@"RTDefaultsSuggestionLastDateWalkingBoutTriggerIsScheduled"];
 
-  if (a5)
+  if (error)
   {
     v37 = v28;
-    *a5 = v28;
+    *error = v28;
   }
 
   v38 = v28 == 0;
@@ -3135,7 +3135,7 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
   }
 }
 
-- (BOOL)_unregisterForPedometerNotificationsWithError:(id *)a3
+- (BOOL)_unregisterForPedometerNotificationsWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3146,13 +3146,13 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
       v8 = NSStringFromSelector(a2);
-      v9 = [(SMSuggestionsManager *)self pedometerUUIDs];
+      pedometerUUIDs = [(SMSuggestionsManager *)self pedometerUUIDs];
       *buf = 138412802;
       v27 = v7;
       v28 = 2112;
       v29 = v8;
       v30 = 2112;
-      v31 = v9;
+      v31 = pedometerUUIDs;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%@, %@, unregistering for pedometer data for pedometer uuids, %@", buf, 0x20u);
     }
   }
@@ -3161,8 +3161,8 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(SMSuggestionsManager *)self pedometerUUIDs];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  pedometerUUIDs2 = [(SMSuggestionsManager *)self pedometerUUIDs];
+  v11 = [pedometerUUIDs2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -3174,29 +3174,29 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(pedometerUUIDs2);
         }
 
         v15 = *(*(&v21 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        v17 = [(SMSuggestionsManager *)self motionActivityManager];
-        [v17 unsubscribeForPedometerData:v15];
+        motionActivityManager = [(SMSuggestionsManager *)self motionActivityManager];
+        [motionActivityManager unsubscribeForPedometerData:v15];
 
         objc_autoreleasePoolPop(v16);
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [pedometerUUIDs2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
   }
 
   [(SMSuggestionsManager *)self _resetStatesForPedometerData];
-  v18 = [(SMSuggestionsManager *)self defaultsManager];
-  v19 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v18 setObject:v19 forKey:@"RTDefaultsSuggestionLastDateWalkingBoutTriggerIsScheduled"];
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [defaultsManager setObject:distantFuture forKey:@"RTDefaultsSuggestionLastDateWalkingBoutTriggerIsScheduled"];
 
   return 1;
 }
@@ -3240,29 +3240,29 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
       v7 = NSStringFromSelector(a2);
-      v8 = [(SMSuggestionsManager *)self currentLOI];
-      v9 = [(SMSuggestionsManager *)self previousPedometerData];
+      currentLOI = [(SMSuggestionsManager *)self currentLOI];
+      previousPedometerData = [(SMSuggestionsManager *)self previousPedometerData];
       v10 = 138413059;
       v11 = v6;
       v12 = 2112;
       v13 = v7;
       v14 = 2117;
-      v15 = v8;
+      v15 = currentLOI;
       v16 = 2112;
-      v17 = v9;
+      v17 = previousPedometerData;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%@, %@, states for pedometer data, currentLOI, %{sensitive}@, previousPedometerDataEndDate, %@,", &v10, 0x2Au);
     }
   }
 }
 
-- (BOOL)_isWalkingBoutDetectedByAppendingPedometerData:(id)a3
+- (BOOL)_isWalkingBoutDetectedByAppendingPedometerData:(id)data
 {
   v93 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMSuggestionsManager *)self currentLOI];
-  v6 = [v5 location];
-  v7 = [v6 location];
-  [v7 horizontalUncertainty];
+  dataCopy = data;
+  currentLOI = [(SMSuggestionsManager *)self currentLOI];
+  location = [currentLOI location];
+  v6Location = [location location];
+  [v6Location horizontalUncertainty];
   v9 = v8 * 2.0 + 40.0;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3273,23 +3273,23 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
-      v64 = [v4 dateInterval];
-      v63 = [v64 startDate];
-      v14 = [v63 stringFromDate];
+      dateInterval = [dataCopy dateInterval];
+      startDate = [dateInterval startDate];
+      stringFromDate = [startDate stringFromDate];
       [(SMSuggestionsManager *)self previousPedometerData];
-      v15 = v65 = v4;
-      v16 = [(SMSuggestionsManager *)self currentLOI];
-      v17 = [v16 location];
-      v18 = [v17 location];
-      [v18 horizontalUncertainty];
+      v15 = v65 = dataCopy;
+      currentLOI2 = [(SMSuggestionsManager *)self currentLOI];
+      location2 = [currentLOI2 location];
+      v17Location = [location2 location];
+      [v17Location horizontalUncertainty];
       v20 = v19;
-      v21 = [(SMSuggestionsManager *)self currentLOI];
+      currentLOI3 = [(SMSuggestionsManager *)self currentLOI];
       *buf = 138415107;
       v70 = v12;
       v71 = 2112;
       v72 = v13;
       v73 = 2112;
-      v74 = v14;
+      v74 = stringFromDate;
       v75 = 2048;
       v76 = 0x4044000000000000;
       v77 = 2048;
@@ -3307,25 +3307,25 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
       v89 = 2112;
       v90 = v65;
       v91 = 2117;
-      v92 = v21;
+      v92 = currentLOI3;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, %@, startDate, %@, kSMWalkingBoutMaxBreakTime, %.3f, kSMWalkingBoutMultiplierForLOIUncertainty, %.3f, previousPedometerData, %@, loi uncertainty, %.3f, multiplier, %.3f, sigma, %.3f, threshold, %.3f, pedometerData, %@, currentLOI, %{sensitive}@", buf, 0x7Au);
 
-      v4 = v65;
+      dataCopy = v65;
     }
   }
 
-  v22 = [(SMSuggestionsManager *)self previousPedometerData];
-  v23 = [v22 dateInterval];
-  v24 = [v23 endDate];
-  if (v24)
+  previousPedometerData = [(SMSuggestionsManager *)self previousPedometerData];
+  dateInterval2 = [previousPedometerData dateInterval];
+  endDate = [dateInterval2 endDate];
+  if (endDate)
   {
-    v25 = v24;
-    v26 = [v4 dateInterval];
-    v27 = [v26 endDate];
-    v28 = [(SMSuggestionsManager *)self previousPedometerData];
-    v29 = [v28 dateInterval];
-    v30 = [v29 endDate];
-    [v27 timeIntervalSinceDate:v30];
+    v25 = endDate;
+    dateInterval3 = [dataCopy dateInterval];
+    endDate2 = [dateInterval3 endDate];
+    previousPedometerData2 = [(SMSuggestionsManager *)self previousPedometerData];
+    dateInterval4 = [previousPedometerData2 dateInterval];
+    endDate3 = [dateInterval4 endDate];
+    [endDate2 timeIntervalSinceDate:endDate3];
     v32 = v31;
 
     if (v32 > 40.0)
@@ -3336,27 +3336,27 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
         v51 = objc_opt_class();
         v52 = NSStringFromClass(v51);
         v53 = NSStringFromSelector(a2);
-        v66 = [v4 dateInterval];
-        v54 = [v66 startDate];
-        v55 = [v54 stringFromDate];
-        v56 = [v4 dateInterval];
-        v57 = [v56 endDate];
-        v58 = [v57 stringFromDate];
+        dateInterval5 = [dataCopy dateInterval];
+        startDate2 = [dateInterval5 startDate];
+        stringFromDate2 = [startDate2 stringFromDate];
+        dateInterval6 = [dataCopy dateInterval];
+        endDate4 = [dateInterval6 endDate];
+        stringFromDate3 = [endDate4 stringFromDate];
         *buf = 138413058;
         v70 = v52;
         v71 = 2112;
         v72 = v53;
         v73 = 2112;
-        v74 = v55;
+        v74 = stringFromDate2;
         v75 = 2112;
-        v76 = v58;
+        v76 = stringFromDate3;
         _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "%@, %@, max gap threshold exceeded for pedometer data, startDate, %@, endDate, %@", buf, 0x2Au);
       }
 
-      v34 = [MEMORY[0x277CBEAA8] date];
-      v35 = [(SMSuggestionsManager *)self currentLOI];
+      date = [MEMORY[0x277CBEAA8] date];
+      currentLOI4 = [(SMSuggestionsManager *)self currentLOI];
       v68 = 0;
-      [(SMSuggestionsManager *)self _reRegisterForPedometerNotificationsForLearnedLocationOfInterest:v35 startDate:v34 error:&v68];
+      [(SMSuggestionsManager *)self _reRegisterForPedometerNotificationsForLearnedLocationOfInterest:currentLOI4 startDate:date error:&v68];
       v36 = v68;
 
       v37 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -3365,13 +3365,13 @@ void __103__SMSuggestionsManager__registerForPedometerNotificationsForLearnedLoc
         v59 = objc_opt_class();
         v60 = NSStringFromClass(v59);
         v61 = NSStringFromSelector(a2);
-        v62 = [v34 stringFromDate];
+        stringFromDate4 = [date stringFromDate];
         *buf = 138413058;
         v70 = v60;
         v71 = 2112;
         v72 = v61;
         v73 = 2112;
-        v74 = v62;
+        v74 = stringFromDate4;
         v75 = 2112;
         v76 = v36;
         _os_log_error_impl(&dword_2304B3000, v37, OS_LOG_TYPE_ERROR, "%@, %@, reRegistered again for pedometer data, startDate, %@, error, %@", buf, 0x2Au);
@@ -3387,20 +3387,20 @@ LABEL_19:
   {
   }
 
-  v38 = [(SMSuggestionsManager *)self previousPedometerData];
-  if (!v38 || (v39 = v38, [v4 distance], v41 = v40, -[SMSuggestionsManager previousPedometerData](self, "previousPedometerData"), v42 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v42, "distance"), v44 = v43, v42, v39, v41 != v44))
+  previousPedometerData3 = [(SMSuggestionsManager *)self previousPedometerData];
+  if (!previousPedometerData3 || (v39 = previousPedometerData3, [dataCopy distance], v41 = v40, -[SMSuggestionsManager previousPedometerData](self, "previousPedometerData"), v42 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v42, "distance"), v44 = v43, v42, v39, v41 != v44))
   {
-    [(SMSuggestionsManager *)self setPreviousPedometerData:v4];
+    [(SMSuggestionsManager *)self setPreviousPedometerData:dataCopy];
   }
 
-  v45 = [(SMSuggestionsManager *)self currentLOI];
-  if (!v45)
+  currentLOI5 = [(SMSuggestionsManager *)self currentLOI];
+  if (!currentLOI5)
   {
     goto LABEL_19;
   }
 
-  v46 = v45;
-  [v4 distance];
+  v46 = currentLOI5;
+  [dataCopy distance];
   v48 = v47;
 
   if (v48 <= v9)
@@ -3414,22 +3414,22 @@ LABEL_20:
   return v49;
 }
 
-- (void)runProactiveSuggestionsEngineWithContext:(id)a3 shouldStoreSuggestions:(BOOL)a4 handler:(id)a5
+- (void)runProactiveSuggestionsEngineWithContext:(id)context shouldStoreSuggestions:(BOOL)suggestions handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  contextCopy = context;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __96__SMSuggestionsManager_runProactiveSuggestionsEngineWithContext_shouldStoreSuggestions_handler___block_invoke;
   v13[3] = &unk_2788C4690;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = contextCopy;
+  suggestionsCopy = suggestions;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = contextCopy;
+  dispatch_async(queue, v13);
 }
 
 void __96__SMSuggestionsManager_runProactiveSuggestionsEngineWithContext_shouldStoreSuggestions_handler___block_invoke(uint64_t a1)
@@ -3455,12 +3455,12 @@ void __96__SMSuggestionsManager_runProactiveSuggestionsEngineWithContext_shouldS
   }
 }
 
-- (id)_runProactiveSuggestionsEngineWithContext:(id)a3 shouldStoreSuggestions:(BOOL)a4 error:(id *)a5
+- (id)_runProactiveSuggestionsEngineWithContext:(id)context shouldStoreSuggestions:(BOOL)suggestions error:(id *)error
 {
-  v6 = a4;
+  suggestionsCopy = suggestions;
   v126[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (v9)
+  contextCopy = context;
+  if (contextCopy)
   {
     *v114 = 0;
     v115 = v114;
@@ -3469,9 +3469,9 @@ void __96__SMSuggestionsManager_runProactiveSuggestionsEngineWithContext_shouldS
     v118 = __Block_byref_object_dispose__119;
     v119 = 0;
     obj = 0;
-    v10 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:v9 error:&obj];
+    v10 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:contextCopy error:&obj];
     objc_storeStrong(&v119, obj);
-    if (a5 && *(v115 + 5))
+    if (error && *(v115 + 5))
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3493,7 +3493,7 @@ void __96__SMSuggestionsManager_runProactiveSuggestionsEngineWithContext_shouldS
 LABEL_13:
       v16 = 0;
       v17 = 0;
-      *a5 = v12;
+      *error = v12;
 LABEL_34:
 
       _Block_object_dispose(v114, 8);
@@ -3506,7 +3506,7 @@ LABEL_34:
       v112 = *(v115 + 5);
       v14 = [(SMSuggestionsManager *)self _checkInitiatorEligibilityWithError:&v112];
       objc_storeStrong(v13, v112);
-      if (a5 && *(v115 + 5))
+      if (error && *(v115 + 5))
       {
         v15 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -3532,9 +3532,9 @@ LABEL_34:
       {
         v19 = (v115 + 40);
         v111 = *(v115 + 5);
-        v16 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionFromContext:v9 error:&v111];
+        v16 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionFromContext:contextCopy error:&v111];
         objc_storeStrong(v19, v111);
-        if (a5 && *(v115 + 5))
+        if (error && *(v115 + 5))
         {
           v20 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -3560,9 +3560,9 @@ LABEL_34:
         {
           v31 = (v115 + 40);
           v110 = *(v115 + 5);
-          v32 = [(SMSuggestionsManager *)self _suppressSuggestion:v16 context:v9 error:&v110];
+          v32 = [(SMSuggestionsManager *)self _suppressSuggestion:v16 context:contextCopy error:&v110];
           objc_storeStrong(v31, v110);
-          if (a5 && *(v115 + 5))
+          if (error && *(v115 + 5))
           {
             v33 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -3593,12 +3593,12 @@ LABEL_34:
               v35 = objc_opt_class();
               v36 = NSStringFromClass(v35);
               v37 = NSStringFromSelector(a2);
-              v38 = [(__CFString *)v16 isSuppressed];
+              isSuppressed = [(__CFString *)v16 isSuppressed];
               v39 = @"NO";
               *buf = 138412802;
               *&buf[4] = v36;
               v122 = 2112;
-              if (v38)
+              if (isSuppressed)
               {
                 v39 = @"YES";
               }
@@ -3610,10 +3610,10 @@ LABEL_34:
             }
           }
 
-          if (v6)
+          if (suggestionsCopy)
           {
             v40 = dispatch_semaphore_create(0);
-            v41 = [(SMSuggestionsManager *)self suggestionsStore];
+            suggestionsStore = [(SMSuggestionsManager *)self suggestionsStore];
             v120 = v16;
             v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v120 count:1];
             v107[0] = MEMORY[0x277D85DD0];
@@ -3623,7 +3623,7 @@ LABEL_34:
             v109 = v114;
             v43 = v40;
             v108 = v43;
-            [v41 storeSuggestions:v42 handler:v107];
+            [suggestionsStore storeSuggestions:v42 handler:v107];
 
             v44 = v43;
             v104 = [MEMORY[0x277CBEAA8] now];
@@ -3635,11 +3635,11 @@ LABEL_34:
               v47 = v46;
               v100 = objc_opt_new();
               v101 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-              v48 = [MEMORY[0x277CCACC8] callStackSymbols];
-              v49 = [v48 filteredArrayUsingPredicate:v101];
-              v50 = [v49 firstObject];
+              callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+              v49 = [callStackSymbols filteredArrayUsingPredicate:v101];
+              firstObject = [v49 firstObject];
 
-              [v100 submitToCoreAnalytics:v50 type:1 duration:v47];
+              [v100 submitToCoreAnalytics:firstObject type:1 duration:v47];
               v51 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (os_log_type_enabled(v51, OS_LOG_TYPE_FAULT))
               {
@@ -3665,7 +3665,7 @@ LABEL_34:
             }
 
             v68 = v54;
-            v69 = !v68 || a5 == 0;
+            v69 = !v68 || error == 0;
             if (v69)
             {
               v17 = 0;
@@ -3690,7 +3690,7 @@ LABEL_34:
               }
 
               v71 = v68;
-              *a5 = v68;
+              *error = v68;
               v17 = v16;
             }
 
@@ -3700,9 +3700,9 @@ LABEL_34:
             }
           }
 
-          v72 = [(__CFString *)v16 isSuppressed];
+          isSuppressed2 = [(__CFString *)v16 isSuppressed];
           v73 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-          if (v72)
+          if (isSuppressed2)
           {
             if (v73)
             {
@@ -3722,8 +3722,8 @@ LABEL_34:
               }
             }
 
-            v78 = [(SMSuggestionsManager *)self suggestionsMetricsManager];
-            [v78 sendSuggestionsConversionEventForSuggestion:v16 selected:0 sessionStarted:0];
+            suggestionsMetricsManager = [(SMSuggestionsManager *)self suggestionsMetricsManager];
+            [suggestionsMetricsManager sendSuggestionsConversionEventForSuggestion:v16 selected:0 sessionStarted:0];
           }
 
           else
@@ -3755,8 +3755,8 @@ LABEL_34:
               goto LABEL_86;
             }
 
-            v78 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-            if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
+            suggestionsMetricsManager = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+            if (os_log_type_enabled(suggestionsMetricsManager, OS_LOG_TYPE_INFO))
             {
               v85 = objc_opt_class();
               v86 = NSStringFromClass(v85);
@@ -3774,12 +3774,12 @@ LABEL_34:
               v123 = v87;
               v124 = 2112;
               v125 = v89;
-              _os_log_impl(&dword_2304B3000, v78, OS_LOG_TYPE_INFO, "%@, %@, displaying suggestion status, %@", buf, 0x20u);
+              _os_log_impl(&dword_2304B3000, suggestionsMetricsManager, OS_LOG_TYPE_INFO, "%@, %@, displaying suggestion status, %@", buf, 0x20u);
             }
           }
 
 LABEL_86:
-          if (!a5)
+          if (!error)
           {
 LABEL_89:
             v16 = v16;
@@ -3789,7 +3789,7 @@ LABEL_89:
 
           v21 = *(v115 + 5);
 LABEL_88:
-          *a5 = v21;
+          *error = v21;
           goto LABEL_89;
         }
 
@@ -3855,10 +3855,10 @@ LABEL_88:
     _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", v114, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"context");
-    *a5 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -3878,17 +3878,17 @@ void __95__SMSuggestionsManager__runProactiveSuggestionsEngineWithContext_should
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_generatePersonalizedSuggestionFromContext:(id)a3 error:(id *)a4
+- (id)_generatePersonalizedSuggestionFromContext:(id)context error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  contextCopy = context;
+  if (contextCopy)
   {
     v40 = 0;
-    v8 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:v7 error:&v40];
+    v8 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:contextCopy error:&v40];
     v9 = v40;
     v10 = v9;
-    if (a4 && v9)
+    if (error && v9)
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3933,10 +3933,10 @@ void __95__SMSuggestionsManager__runProactiveSuggestionsEngineWithContext_should
     }
 
     v39 = v9;
-    v13 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionForWorkoutUserFromContext:v7 error:&v39];
+    v13 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionForWorkoutUserFromContext:contextCopy error:&v39];
     v15 = v39;
 
-    if (a4 && v15)
+    if (error && v15)
     {
       v16 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3944,7 +3944,7 @@ void __95__SMSuggestionsManager__runProactiveSuggestionsEngineWithContext_should
 LABEL_16:
 
         v17 = v15;
-        *a4 = v15;
+        *error = v15;
 LABEL_24:
         v10 = v15;
         goto LABEL_25;
@@ -3971,10 +3971,10 @@ LABEL_40:
     }
 
     v38 = v15;
-    v13 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionForRegularUserFromContext:v7 error:&v38];
+    v13 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionForRegularUserFromContext:contextCopy error:&v38];
     v10 = v38;
 
-    if (a4 && v10)
+    if (error && v10)
     {
       v23 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -4001,10 +4001,10 @@ LABEL_40:
       }
 
       v37 = v10;
-      v13 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionForOccasionalUserFromContext:v7 error:&v37];
+      v13 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionForOccasionalUserFromContext:contextCopy error:&v37];
       v15 = v37;
 
-      if (a4 && v15)
+      if (error && v15)
       {
         v16 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
         if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -4030,12 +4030,12 @@ LABEL_40:
       }
 
       v36 = v15;
-      v13 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionForFirstTimeUserFromContext:v7 error:&v36];
+      v13 = [(SMSuggestionsManager *)self _generatePersonalizedSuggestionForFirstTimeUserFromContext:contextCopy error:&v36];
       v10 = v36;
 
-      if (!a4 || !v10)
+      if (!error || !v10)
       {
-        if (!a4 || v13)
+        if (!error || v13)
         {
           goto LABEL_25;
         }
@@ -4051,7 +4051,7 @@ LABEL_32:
 LABEL_33:
         v24 = v10;
 LABEL_7:
-        *a4 = v10;
+        *error = v10;
 LABEL_25:
 
         goto LABEL_26;
@@ -4080,10 +4080,10 @@ LABEL_25:
     _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"context");
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -4096,12 +4096,12 @@ LABEL_26:
   return v13;
 }
 
-- (id)_generatePersonalizedSuggestionForRegularUserFromContext:(id)a3 error:(id *)a4
+- (id)_generatePersonalizedSuggestionForRegularUserFromContext:(id)context error:(id *)error
 {
   v251[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v204 = v6;
-  if (v6)
+  contextCopy = context;
+  v204 = contextCopy;
+  if (contextCopy)
   {
     aSelector = a2;
     v232 = 0;
@@ -4111,9 +4111,9 @@ LABEL_26:
     v236 = __Block_byref_object_dispose__119;
     v237 = 0;
     obj = 0;
-    v203 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:v6 error:&obj];
+    v203 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:contextCopy error:&obj];
     objc_storeStrong(&v237, obj);
-    if (a4 && v233[5])
+    if (error && v233[5])
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -4132,7 +4132,7 @@ LABEL_26:
       }
 
       v8 = 0;
-      *a4 = v233[5];
+      *error = v233[5];
       goto LABEL_142;
     }
 
@@ -4163,7 +4163,7 @@ LABEL_26:
     v201 = [(SMSuggestionsManager *)self _getSourceLocationFromContext:v204 error:&v230];
     objc_storeStrong(v9, v230);
     v10 = v233 + 5;
-    if (a4 && v233[5])
+    if (error && v233[5])
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -4182,7 +4182,7 @@ LABEL_26:
       }
 
       v8 = 0;
-      *a4 = v233[5];
+      *error = v233[5];
       goto LABEL_141;
     }
 
@@ -4190,7 +4190,7 @@ LABEL_26:
     v200 = [(SMSuggestionsManager *)self _getCurrentDateFromContext:v204 error:&v229];
     objc_storeStrong(v10, v229);
     v13 = v233 + 5;
-    if (a4 && v233[5])
+    if (error && v233[5])
     {
       v14 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -4209,14 +4209,14 @@ LABEL_26:
       }
 
       v8 = 0;
-      *a4 = v233[5];
+      *error = v233[5];
       goto LABEL_140;
     }
 
     v228 = v233[5];
     v192 = [(SMSuggestionsManager *)self _getNPLOIsWithOnlyHighConfidence:1 location:v201 date:v200 error:&v228];
     objc_storeStrong(v13, v228);
-    if (a4 && v233[5])
+    if (error && v233[5])
     {
       v19 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -4235,7 +4235,7 @@ LABEL_26:
       }
 
       v8 = 0;
-      *a4 = v233[5];
+      *error = v233[5];
       goto LABEL_138;
     }
 
@@ -4282,7 +4282,7 @@ LABEL_138:
     v227 = v233[5];
     v190 = [(SMSuggestionsManager *)self _getValuesFromDefaultsIfExists:@"RTDefaultsSuggestionTimeIntervalBuffer" error:&v227];
     objc_storeStrong(v21, v227);
-    if (a4 && v233[5])
+    if (error && v233[5])
     {
       v22 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -4301,7 +4301,7 @@ LABEL_138:
       }
 
       v8 = 0;
-      *a4 = v233[5];
+      *error = v233[5];
       goto LABEL_137;
     }
 
@@ -4333,7 +4333,7 @@ LABEL_138:
     v225 = __Block_byref_object_dispose__119;
     v226 = 0;
     v38 = v233 + 5;
-    if (a4 && v233[5])
+    if (error && v233[5])
     {
       v39 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -4352,14 +4352,14 @@ LABEL_138:
       }
 
       v8 = 0;
-      *a4 = v233[5];
+      *error = v233[5];
       goto LABEL_136;
     }
 
     v220 = v233[5];
     v188 = [(SMSuggestionsManager *)self _getValuesFromDefaultsIfExists:@"RTDefaultsSuggestionBoundingBoxRadius" error:&v220];
     objc_storeStrong(v38, v220);
-    if (a4 && v233[5])
+    if (error && v233[5])
     {
       v40 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -4442,14 +4442,14 @@ LABEL_65:
           v62 = [v60 initWithStartDate:v61 duration:2419200.0];
           v63 = [objc_alloc(MEMORY[0x277CE41F8]) initWithRTLocation:v201];
           v64 = objc_alloc(MEMORY[0x277CE41F8]);
-          v65 = [v197 locationOfInterest];
-          v66 = [v65 location];
-          v67 = [v64 initWithRTLocation:v66];
+          locationOfInterest = [v197 locationOfInterest];
+          location = [locationOfInterest location];
+          v67 = [v64 initWithRTLocation:location];
           LOBYTE(v181) = 1;
           v195 = [v56 initWithBatchSize:v186 fetchLimit:v186 sortBySessionStartDate:1 ascending:0 sessionTypes:&unk_2845A1400 timeInADayInterval:v59 pickOneConfigInTimeInADayInterval:v181 dateInterval:v62 startBoundingBoxLocation:v63 destinationBoundingBoxLocation:v67 boundingBoxRadius:v188 sessionIdentifier:0];
 
           v68 = dispatch_semaphore_create(0);
-          v69 = [(SMSuggestionsManager *)self sessionStore];
+          sessionStore = [(SMSuggestionsManager *)self sessionStore];
           v212[0] = MEMORY[0x277D85DD0];
           v212[1] = 3221225472;
           v212[2] = __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFromContext_error___block_invoke;
@@ -4458,7 +4458,7 @@ LABEL_65:
           v215 = &v232;
           v70 = v68;
           v213 = v70;
-          [v69 fetchSessionConfigurationsWithOptions:v195 handler:v212];
+          [sessionStore fetchSessionConfigurationsWithOptions:v195 handler:v212];
 
           v71 = v70;
           v72 = [MEMORY[0x277CBEAA8] now];
@@ -4471,11 +4471,11 @@ LABEL_65:
             v77 = v76;
             v78 = objc_opt_new();
             v79 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-            v80 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v81 = [v80 filteredArrayUsingPredicate:v79];
-            v82 = [v81 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v81 = [callStackSymbols filteredArrayUsingPredicate:v79];
+            firstObject = [v81 firstObject];
 
-            [v78 submitToCoreAnalytics:v82 type:1 duration:v77];
+            [v78 submitToCoreAnalytics:firstObject type:1 duration:v77];
             v83 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v83, OS_LOG_TYPE_FAULT))
             {
@@ -4567,7 +4567,7 @@ LABEL_65:
       v194 = v53;
       v196 = v52;
 
-      if (!a4 || !v233[5])
+      if (!error || !v233[5])
       {
         v104 = v222[5];
         if (v104 && [v104 count] > 2)
@@ -4622,7 +4622,7 @@ LABEL_65:
           v207 = v233[5];
           v199 = [(SMSuggestionsManager *)self _getFirstEligibleHandleFromSessionConfigurations:v121 error:&v207];
           objc_storeStrong(v122, v207);
-          if (a4 && v233[5])
+          if (error && v233[5])
           {
             v123 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v123, OS_LOG_TYPE_ERROR))
@@ -4641,7 +4641,7 @@ LABEL_65:
             }
 
             v8 = 0;
-            *a4 = v233[5];
+            *error = v233[5];
           }
 
           else
@@ -4658,39 +4658,39 @@ LABEL_65:
                   v127 = objc_opt_class();
                   v128 = NSStringFromClass(v127);
                   v129 = NSStringFromSelector(aSelector);
-                  v130 = [v222[5] firstObject];
+                  firstObject2 = [v222[5] firstObject];
                   *buf = 138412802;
                   *&buf[4] = v128;
                   v240 = 2112;
                   v241 = v129;
                   v242 = 2112;
-                  v243 = v130;
+                  v243 = firstObject2;
                   _os_log_impl(&dword_2304B3000, v126, OS_LOG_TYPE_INFO, "%@, %@, first obj session info, %@", buf, 0x20u);
                 }
               }
 
-              v131 = [v222[5] firstObject];
-              v132 = [v131 destination];
-              [v132 radius];
+              firstObject3 = [v222[5] firstObject];
+              destination = [firstObject3 destination];
+              [destination radius];
               v134 = v133;
-              v135 = [v196 locationOfInterest];
-              v136 = [v135 location];
+              locationOfInterest2 = [v196 locationOfInterest];
+              location2 = [locationOfInterest2 location];
               v206 = 0;
-              v137 = [SMSuggestionsHelper createMasqueradingReferenceLocationFromFenceRadius:v136 location:&v206 error:v134];
+              v137 = [SMSuggestionsHelper createMasqueradingReferenceLocationFromFenceRadius:location2 location:&v206 error:v134];
               v138 = v206;
 
               v139 = v137;
               v140 = v139;
-              if (v138 || (v141 = v139) == 0)
+              if (v138 || (location3 = v139) == 0)
               {
-                v142 = [v196 locationOfInterest];
-                v141 = [v142 location];
+                locationOfInterest3 = [v196 locationOfInterest];
+                location3 = [locationOfInterest3 location];
               }
 
               v143 = objc_alloc(MEMORY[0x277D4AC10]);
               v144 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v200 duration:3600.0];
-              v145 = [v196 locationOfInterest];
-              v146 = [v143 initWithSuggestionTrigger:v203 suggestionUserType:1 suppressionReason:1 sessionType:2 sourceLocation:v201 destinationLocation:v141 buddy:v124 dateInterval:v144 creationDate:v200 locationOfInterest:v145];
+              locationOfInterest4 = [v196 locationOfInterest];
+              v146 = [v143 initWithSuggestionTrigger:v203 suggestionUserType:1 suppressionReason:1 sessionType:2 sourceLocation:v201 destinationLocation:location3 buddy:v124 dateInterval:v144 creationDate:v200 locationOfInterest:locationOfInterest4];
 
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
@@ -4710,10 +4710,10 @@ LABEL_65:
                 }
               }
 
-              if (a4)
+              if (error)
               {
                 v151 = v138;
-                *a4 = v138;
+                *error = v138;
               }
 
               v8 = v146;
@@ -4729,10 +4729,10 @@ LABEL_65:
                   v161 = objc_opt_class();
                   v162 = NSStringFromClass(v161);
                   v163 = NSStringFromSelector(aSelector);
-                  v164 = [v222[5] firstObject];
-                  v165 = [v164 conversation];
-                  v166 = [v165 receiverHandles];
-                  v167 = [v166 firstObject];
+                  firstObject4 = [v222[5] firstObject];
+                  conversation = [firstObject4 conversation];
+                  receiverHandles = [conversation receiverHandles];
+                  firstObject5 = [receiverHandles firstObject];
                   *buf = 138413058;
                   *&buf[4] = v162;
                   v240 = 2112;
@@ -4740,7 +4740,7 @@ LABEL_65:
                   v242 = 2112;
                   v243 = 0;
                   v244 = 2112;
-                  v245 = v167;
+                  v245 = firstObject5;
                   _os_log_impl(&dword_2304B3000, v160, OS_LOG_TYPE_INFO, "%@, %@, invalid contact information, %@, handle, %@", buf, 0x2Au);
                 }
               }
@@ -4802,7 +4802,7 @@ LABEL_65:
     }
 
     v8 = 0;
-    *a4 = v41;
+    *error = v41;
 LABEL_135:
 
 LABEL_136:
@@ -4819,10 +4819,10 @@ LABEL_137:
     _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"context");
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -4852,12 +4852,12 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_generatePersonalizedSuggestionForOccasionalUserFromContext:(id)a3 error:(id *)a4
+- (id)_generatePersonalizedSuggestionForOccasionalUserFromContext:(id)context error:(id *)error
 {
   v215[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v174 = v5;
-  if (v5)
+  contextCopy = context;
+  v174 = contextCopy;
+  if (contextCopy)
   {
     v197 = 0;
     v198 = &v197;
@@ -4866,10 +4866,10 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
     v201 = __Block_byref_object_dispose__119;
     v202 = 0;
     obj = 0;
-    v173 = self;
-    v171 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:v5 error:&obj];
+    selfCopy = self;
+    v171 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:contextCopy error:&obj];
     objc_storeStrong(&v202, obj);
-    if (a4 && v198[5])
+    if (error && v198[5])
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -4888,7 +4888,7 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
       }
 
       v7 = 0;
-      *a4 = v198[5];
+      *error = v198[5];
       goto LABEL_112;
     }
 
@@ -4916,12 +4916,12 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
 
     v8 = v198 + 5;
     v195 = v198[5];
-    v170 = [(SMSuggestionsManager *)v173 _getSourceLocationFromContext:v174 error:&v195];
+    v170 = [(SMSuggestionsManager *)selfCopy _getSourceLocationFromContext:v174 error:&v195];
     objc_storeStrong(v8, v195);
     v9 = v198 + 5;
-    if (a4)
+    if (error)
     {
-      v10 = v173;
+      v10 = selfCopy;
       if (v198[5])
       {
         v11 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -4941,7 +4941,7 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
         }
 
         v7 = 0;
-        *a4 = v198[5];
+        *error = v198[5];
         goto LABEL_111;
       }
 
@@ -4950,7 +4950,7 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
 
     else
     {
-      v10 = v173;
+      v10 = selfCopy;
       v17 = v174;
     }
 
@@ -4958,9 +4958,9 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
     v169 = [(SMSuggestionsManager *)v10 _getCurrentDateFromContext:v17 error:&v194];
     objc_storeStrong(v9, v194);
     v18 = v198 + 5;
-    if (a4)
+    if (error)
     {
-      v19 = v173;
+      v19 = selfCopy;
       if (v198[5])
       {
         v20 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
@@ -4980,20 +4980,20 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
         }
 
         v7 = 0;
-        *a4 = v198[5];
+        *error = v198[5];
         goto LABEL_110;
       }
     }
 
     else
     {
-      v19 = v173;
+      v19 = selfCopy;
     }
 
     v193 = v198[5];
     v165 = [(SMSuggestionsManager *)v19 _getNPLOIsWithOnlyHighConfidence:1 location:v170 date:v169 error:&v193];
     objc_storeStrong(v18, v193);
-    if (a4 && v198[5])
+    if (error && v198[5])
     {
       v21 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -5012,7 +5012,7 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForRegularUserFro
       }
 
       v7 = 0;
-      *a4 = v198[5];
+      *error = v198[5];
       goto LABEL_108;
     }
 
@@ -5057,9 +5057,9 @@ LABEL_108:
 
     v23 = v198 + 5;
     v192 = v198[5];
-    v164 = [(SMSuggestionsManager *)v173 _getValuesFromDefaultsIfExists:@"RTDefaultsSuggestionTimeIntervalBuffer" error:&v192];
+    v164 = [(SMSuggestionsManager *)selfCopy _getValuesFromDefaultsIfExists:@"RTDefaultsSuggestionTimeIntervalBuffer" error:&v192];
     objc_storeStrong(v23, v192);
-    if (a4 && v198[5])
+    if (error && v198[5])
     {
       v24 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -5078,11 +5078,11 @@ LABEL_108:
       }
 
       v7 = 0;
-      *a4 = v198[5];
+      *error = v198[5];
       goto LABEL_107;
     }
 
-    v34 = v173;
+    v34 = selfCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v35 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -5101,7 +5101,7 @@ LABEL_108:
         _os_log_impl(&dword_2304B3000, v35, OS_LOG_TYPE_INFO, "%@, %@, using time interval buffer, %.3f", buf, 0x20u);
       }
 
-      v34 = v173;
+      v34 = selfCopy;
     }
 
     [v164 doubleValue];
@@ -5116,7 +5116,7 @@ LABEL_108:
     v185 = v198[5];
     v163 = [(SMSuggestionsManager *)v34 _getValuesFromDefaultsIfExists:@"RTDefaultsSuggestionBoundingBoxRadius" error:&v185];
     objc_storeStrong(v41, v185);
-    if (a4 && v198[5])
+    if (error && v198[5])
     {
       v42 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -5199,14 +5199,14 @@ LABEL_63:
           v61 = [v169 dateByAddingTimeInterval:-604800.0];
           v62 = [v60 initWithStartDate:v61 duration:604800.0];
           v63 = objc_alloc(MEMORY[0x277CE41F8]);
-          v64 = [v168 locationOfInterest];
-          v65 = [v64 location];
-          v66 = [v63 initWithRTLocation:v65];
+          locationOfInterest = [v168 locationOfInterest];
+          location = [locationOfInterest location];
+          v66 = [v63 initWithRTLocation:location];
           LOBYTE(v155) = 1;
           v67 = [v56 initWithBatchSize:v160 fetchLimit:v160 sortBySessionStartDate:1 ascending:0 sessionTypes:&unk_2845A1418 timeInADayInterval:v59 pickOneConfigInTimeInADayInterval:v155 dateInterval:v62 startBoundingBoxLocation:0 destinationBoundingBoxLocation:v66 boundingBoxRadius:v163 sessionIdentifier:0];
 
           v68 = dispatch_semaphore_create(0);
-          v69 = [(SMSuggestionsManager *)v173 sessionStore];
+          sessionStore = [(SMSuggestionsManager *)selfCopy sessionStore];
           v177[0] = MEMORY[0x277D85DD0];
           v177[1] = 3221225472;
           v177[2] = __90__SMSuggestionsManager__generatePersonalizedSuggestionForOccasionalUserFromContext_error___block_invoke;
@@ -5215,7 +5215,7 @@ LABEL_63:
           v180 = &v197;
           v70 = v68;
           v178 = v70;
-          [v69 fetchSessionConfigurationsWithOptions:v67 handler:v177];
+          [sessionStore fetchSessionConfigurationsWithOptions:v67 handler:v177];
 
           v71 = v70;
           v72 = [MEMORY[0x277CBEAA8] now];
@@ -5228,11 +5228,11 @@ LABEL_63:
             v77 = v76;
             v78 = objc_opt_new();
             v79 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-            v80 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v81 = [v80 filteredArrayUsingPredicate:v79];
-            v82 = [v81 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v81 = [callStackSymbols filteredArrayUsingPredicate:v79];
+            firstObject = [v81 firstObject];
 
-            [v78 submitToCoreAnalytics:v82 type:1 duration:v77];
+            [v78 submitToCoreAnalytics:firstObject type:1 duration:v77];
             v83 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v83, OS_LOG_TYPE_FAULT))
             {
@@ -5316,7 +5316,7 @@ LABEL_63:
         }
       }
 
-      if (!a4 || !v198[5])
+      if (!error || !v198[5])
       {
         v100 = v187[5];
         if (v100 && [v100 count])
@@ -5325,19 +5325,19 @@ LABEL_63:
           v102 = v187[5];
           v187[5] = v101;
 
-          v103 = [v187[5] firstObject];
-          v104 = [v103 destination];
-          [v104 radius];
+          firstObject2 = [v187[5] firstObject];
+          destination = [firstObject2 destination];
+          [destination radius];
           v106 = v105;
-          v107 = [v44 locationOfInterest];
-          v108 = [v107 location];
+          locationOfInterest2 = [v44 locationOfInterest];
+          location2 = [locationOfInterest2 location];
           v176 = 0;
-          v109 = [SMSuggestionsHelper createMasqueradingReferenceLocationFromFenceRadius:v108 location:&v176 error:v106];
+          v109 = [SMSuggestionsHelper createMasqueradingReferenceLocationFromFenceRadius:location2 location:&v176 error:v106];
           v110 = v176;
 
           v111 = v109;
           v112 = v111;
-          if (v110 || (v113 = v111) == 0)
+          if (v110 || (location3 = v111) == 0)
           {
             v114 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
             if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
@@ -5356,14 +5356,14 @@ LABEL_63:
               _os_log_error_impl(&dword_2304B3000, v114, OS_LOG_TYPE_ERROR, "%@, %@, masqueradingLocation, %{sensitive}@, error, %@", buf, 0x2Au);
             }
 
-            v115 = [v44 locationOfInterest];
-            v113 = [v115 location];
+            locationOfInterest3 = [v44 locationOfInterest];
+            location3 = [locationOfInterest3 location];
           }
 
           v116 = objc_alloc(MEMORY[0x277D4AC10]);
           v117 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v169 duration:3600.0];
-          v118 = [v44 locationOfInterest];
-          v119 = [v116 initWithSuggestionTrigger:v171 suggestionUserType:2 suppressionReason:1 sessionType:2 sourceLocation:v170 destinationLocation:v113 buddy:0 dateInterval:v117 creationDate:v169 locationOfInterest:v118];
+          locationOfInterest4 = [v44 locationOfInterest];
+          v119 = [v116 initWithSuggestionTrigger:v171 suggestionUserType:2 suppressionReason:1 sessionType:2 sourceLocation:v170 destinationLocation:location3 buddy:0 dateInterval:v117 creationDate:v169 locationOfInterest:locationOfInterest4];
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -5383,10 +5383,10 @@ LABEL_63:
             }
           }
 
-          if (a4)
+          if (error)
           {
             v124 = v110;
-            *a4 = v110;
+            *error = v110;
           }
 
           v7 = v119;
@@ -5444,7 +5444,7 @@ LABEL_63:
     }
 
     v7 = 0;
-    *a4 = v43;
+    *error = v43;
 LABEL_106:
 
     _Block_object_dispose(&v186, 8);
@@ -5460,10 +5460,10 @@ LABEL_107:
     _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"context");
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -5493,17 +5493,17 @@ void __90__SMSuggestionsManager__generatePersonalizedSuggestionForOccasionalUser
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_generatePersonalizedSuggestionForFirstTimeUserFromContext:(id)a3 error:(id *)a4
+- (id)_generatePersonalizedSuggestionForFirstTimeUserFromContext:(id)context error:(id *)error
 {
   v134 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  contextCopy = context;
+  if (contextCopy)
   {
     v123 = 0;
-    v8 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:v7 error:&v123];
+    v8 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:contextCopy error:&v123];
     v9 = v123;
     v10 = *&v9;
-    if (a4 && *&v9 != 0.0)
+    if (error && *&v9 != 0.0)
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -5522,7 +5522,7 @@ void __90__SMSuggestionsManager__generatePersonalizedSuggestionForOccasionalUser
 
       v12 = *&v10;
       v13 = 0;
-      *a4 = v10;
+      *error = v10;
       goto LABEL_56;
     }
 
@@ -5549,10 +5549,10 @@ void __90__SMSuggestionsManager__generatePersonalizedSuggestionForOccasionalUser
     }
 
     v122 = v9;
-    v15 = [(SMSuggestionsManager *)self _getSourceLocationFromContext:v7 error:&v122];
+    v15 = [(SMSuggestionsManager *)self _getSourceLocationFromContext:contextCopy error:&v122];
     v16 = COERCE_DOUBLE(v122);
 
-    if (a4 && v16 != 0.0)
+    if (error && v16 != 0.0)
     {
       v17 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -5571,15 +5571,15 @@ void __90__SMSuggestionsManager__generatePersonalizedSuggestionForOccasionalUser
 
       v18 = *&v16;
       v13 = 0;
-      *a4 = v16;
+      *error = v16;
       goto LABEL_55;
     }
 
     v121 = v16;
-    v23 = [(SMSuggestionsManager *)self _getCurrentDateFromContext:v7 error:&v121];
+    v23 = [(SMSuggestionsManager *)self _getCurrentDateFromContext:contextCopy error:&v121];
     v24 = COERCE_DOUBLE(*&v121);
 
-    if (a4 && v24 != 0.0)
+    if (error && v24 != 0.0)
     {
       v25 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -5598,12 +5598,12 @@ void __90__SMSuggestionsManager__generatePersonalizedSuggestionForOccasionalUser
 
       v26 = *&v24;
       v13 = 0;
-      *a4 = v24;
+      *error = v24;
       goto LABEL_54;
     }
 
-    v27 = [(SMSuggestionsManager *)self _getSystemVersionUpdateDate];
-    [v23 timeIntervalSinceDate:v27];
+    _getSystemVersionUpdateDate = [(SMSuggestionsManager *)self _getSystemVersionUpdateDate];
+    [v23 timeIntervalSinceDate:_getSystemVersionUpdateDate];
     v29 = v28;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -5612,7 +5612,7 @@ void __90__SMSuggestionsManager__generatePersonalizedSuggestionForOccasionalUser
       {
         v31 = objc_opt_class();
         NSStringFromClass(v31);
-        v32 = v117 = v27;
+        v32 = v117 = _getSystemVersionUpdateDate;
         NSStringFromSelector(a2);
         v33 = v112 = v23;
         [v117 stringFromDate];
@@ -5633,12 +5633,12 @@ void __90__SMSuggestionsManager__generatePersonalizedSuggestionForOccasionalUser
         v15 = v114;
         v23 = v112;
 
-        v27 = v117;
+        _getSystemVersionUpdateDate = v117;
       }
     }
 
     v13 = 0;
-    if (!v27 || v29 < 604800.0)
+    if (!_getSystemVersionUpdateDate || v29 < 604800.0)
     {
 LABEL_53:
 
@@ -5652,13 +5652,13 @@ LABEL_56:
       goto LABEL_57;
     }
 
-    v118 = v27;
+    v118 = _getSystemVersionUpdateDate;
     v120 = v24;
     v35 = [(SMSuggestionsManager *)self _getNPLOIsToHomeWithOnlyHighConfidence:1 location:v15 date:v23 error:&v120];
     v36 = COERCE_DOUBLE(*&v120);
 
     v116 = v35;
-    if (!a4 || v36 == 0.0)
+    if (!error || v36 == 0.0)
     {
       if (v35 && [v35 count])
       {
@@ -5666,24 +5666,24 @@ LABEL_56:
         v42 = [(SMSuggestionsManager *)self _isFirstTimeUserOfZelkovaWithError:&v119];
         v24 = COERCE_DOUBLE(*&v119);
 
-        if (!a4 || v24 == 0.0)
+        if (!error || v24 == 0.0)
         {
-          v27 = v118;
+          _getSystemVersionUpdateDate = v118;
           if (v42)
           {
             v115 = v15;
             v59 = objc_alloc_init(MEMORY[0x277CCA968]);
             [v59 setDateFormat:@"HH.mm"];
             v60 = [v59 stringFromDate:v23];
-            v61 = [(SMSuggestionsManager *)self trialManager];
-            [v61 refresh];
+            trialManager = [(SMSuggestionsManager *)self trialManager];
+            [trialManager refresh];
 
-            v62 = [(SMSuggestionsManager *)self trialManager];
-            [v62 doubleValueForFactor:*MEMORY[0x277D4AEA8]];
+            trialManager2 = [(SMSuggestionsManager *)self trialManager];
+            [trialManager2 doubleValueForFactor:*MEMORY[0x277D4AEA8]];
             v64 = v63;
 
-            v65 = [(SMSuggestionsManager *)self trialManager];
-            [v65 doubleValueForFactor:*MEMORY[0x277D4AEA0]];
+            trialManager3 = [(SMSuggestionsManager *)self trialManager];
+            [trialManager3 doubleValueForFactor:*MEMORY[0x277D4AEA0]];
             v67 = v66;
 
             v111 = v60;
@@ -5710,7 +5710,7 @@ LABEL_56:
                 _os_log_debug_impl(&dword_2304B3000, v68, OS_LOG_TYPE_DEBUG, "%{public}@, %{public}@, time of the day logged from user context, %f, suppressing suggestion between %{public}f to %{public}f", buf, 0x34u);
 
                 v23 = v104;
-                v27 = v118;
+                _getSystemVersionUpdateDate = v118;
               }
 
               v60 = v111;
@@ -5720,17 +5720,17 @@ LABEL_56:
             if (v64 >= v69 || ([v60 floatValue], v67 <= v70))
             {
               v107 = objc_alloc(MEMORY[0x277D4AC10]);
-              v109 = [v116 firstObject];
-              v108 = [v109 locationOfInterest];
-              v83 = [v108 location];
+              firstObject = [v116 firstObject];
+              locationOfInterest = [firstObject locationOfInterest];
+              location = [locationOfInterest location];
               v110 = v59;
               v84 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v23 duration:3600.0];
-              v85 = [v116 firstObject];
-              v86 = [v85 locationOfInterest];
+              firstObject2 = [v116 firstObject];
+              locationOfInterest2 = [firstObject2 locationOfInterest];
               v113 = v23;
-              v87 = COERCE_DOUBLE([v107 initWithSuggestionTrigger:v8 suggestionUserType:3 suppressionReason:1 sessionType:2 sourceLocation:v115 destinationLocation:v83 buddy:0 dateInterval:v84 creationDate:v23 locationOfInterest:v86]);
+              v87 = COERCE_DOUBLE([v107 initWithSuggestionTrigger:v8 suggestionUserType:3 suppressionReason:1 sessionType:2 sourceLocation:v115 destinationLocation:location buddy:0 dateInterval:v84 creationDate:v23 locationOfInterest:locationOfInterest2]);
 
-              v27 = v118;
+              _getSystemVersionUpdateDate = v118;
               v59 = v110;
 
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -5782,7 +5782,7 @@ LABEL_56:
                   _os_log_impl(&dword_2304B3000, v71, OS_LOG_TYPE_INFO, "%{public}@, %{public}@, date check failed, current date, %@, suggestion skipped because time of day is between %{public}f to %{public}f", buf, 0x34u);
 
                   v23 = v75;
-                  v27 = v118;
+                  _getSystemVersionUpdateDate = v118;
                 }
               }
 
@@ -5811,7 +5811,7 @@ LABEL_56:
 
                 v23 = v81;
                 v15 = v79;
-                v27 = v118;
+                _getSystemVersionUpdateDate = v118;
               }
             }
 
@@ -5822,7 +5822,7 @@ LABEL_56:
         else
         {
           v43 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
-          v27 = v118;
+          _getSystemVersionUpdateDate = v118;
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
           {
             v97 = objc_opt_class();
@@ -5840,12 +5840,12 @@ LABEL_56:
 
             v23 = v100;
             v15 = v98;
-            v27 = v118;
+            _getSystemVersionUpdateDate = v118;
           }
 
           v44 = *&v24;
           v13 = 0;
-          *a4 = v24;
+          *error = v24;
         }
 
         goto LABEL_52;
@@ -5903,11 +5903,11 @@ LABEL_56:
 
       v38 = *&v36;
       v13 = 0;
-      *a4 = v36;
+      *error = v36;
     }
 
     v24 = v36;
-    v27 = v118;
+    _getSystemVersionUpdateDate = v118;
 LABEL_52:
 
     goto LABEL_53;
@@ -5920,10 +5920,10 @@ LABEL_52:
     _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"context");
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -5936,27 +5936,27 @@ LABEL_57:
   return v13;
 }
 
-- (BOOL)suggestionEnabledForUserType:(unint64_t)a3
+- (BOOL)suggestionEnabledForUserType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 0;
   }
 
-  v3 = off_2788CE8D8[a3 - 1];
-  v4 = [(SMSuggestionsManager *)self defaultsManager];
-  v5 = [v4 objectForKey:v3 value:MEMORY[0x277CBEC38]];
-  v6 = [v5 BOOLValue];
+  v3 = off_2788CE8D8[type - 1];
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  v5 = [defaultsManager objectForKey:v3 value:MEMORY[0x277CBEC38]];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)_generatePersonalizedSuggestionForWorkoutUserFromContext:(id)a3 error:(id *)a4
+- (id)_generatePersonalizedSuggestionForWorkoutUserFromContext:(id)context error:(id *)error
 {
   v164[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v122 = v5;
-  if (!v5)
+  contextCopy = context;
+  v122 = contextCopy;
+  if (!contextCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -5965,10 +5965,10 @@ LABEL_57:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"context");
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -5986,10 +5986,10 @@ LABEL_57:
   v151 = __Block_byref_object_dispose__119;
   v152 = 0;
   obj = 0;
-  v124 = self;
-  v6 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:v5 error:&obj];
+  selfCopy = self;
+  v6 = [(SMSuggestionsManager *)self _getSuggestionTriggerFromContext:contextCopy error:&obj];
   objc_storeStrong(&v152, obj);
-  if (a4 && v148[5])
+  if (error && v148[5])
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -6008,7 +6008,7 @@ LABEL_57:
     }
 
     v8 = 0;
-    *a4 = v148[5];
+    *error = v148[5];
     goto LABEL_101;
   }
 
@@ -6036,9 +6036,9 @@ LABEL_57:
 
   v9 = (v148 + 5);
   v145 = v148[5];
-  v116 = [(SMSuggestionsManager *)v124 _getCurrentDateFromContext:v122 error:&v145];
+  v116 = [(SMSuggestionsManager *)selfCopy _getCurrentDateFromContext:v122 error:&v145];
   objc_storeStrong(v9, v145);
-  if (a4 && v148[5])
+  if (error && v148[5])
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -6057,7 +6057,7 @@ LABEL_57:
     }
 
     v8 = 0;
-    *a4 = v148[5];
+    *error = v148[5];
     goto LABEL_100;
   }
 
@@ -6075,7 +6075,7 @@ LABEL_57:
   LOBYTE(v112) = 0;
   v115 = [v17 initWithBatchSize:*MEMORY[0x277D4AF00] fetchLimit:*MEMORY[0x277D4AF00] sortBySessionStartDate:1 ascending:0 sessionTypes:&unk_2845A1430 timeInADayInterval:0 pickOneConfigInTimeInADayInterval:v112 dateInterval:v20 startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
 
-  v21 = [(SMSuggestionsManager *)v124 sessionStore];
+  sessionStore = [(SMSuggestionsManager *)selfCopy sessionStore];
   v135[0] = MEMORY[0x277D85DD0];
   v135[1] = 3221225472;
   v135[2] = __87__SMSuggestionsManager__generatePersonalizedSuggestionForWorkoutUserFromContext_error___block_invoke;
@@ -6084,7 +6084,7 @@ LABEL_57:
   v138 = &v147;
   v22 = v16;
   v136 = v22;
-  [v21 fetchSessionConfigurationsWithOptions:v115 handler:v135];
+  [sessionStore fetchSessionConfigurationsWithOptions:v115 handler:v135];
 
   dsema = v22;
   v23 = [MEMORY[0x277CBEAA8] now];
@@ -6096,11 +6096,11 @@ LABEL_57:
     v27 = v26;
     v28 = objc_opt_new();
     v29 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v30 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v31 = [v30 filteredArrayUsingPredicate:v29];
-    v32 = [v31 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v31 = [callStackSymbols filteredArrayUsingPredicate:v29];
+    firstObject = [v31 firstObject];
 
-    [v28 submitToCoreAnalytics:v32 type:1 duration:v27];
+    [v28 submitToCoreAnalytics:firstObject type:1 duration:v27];
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
     {
@@ -6126,7 +6126,7 @@ LABEL_57:
   }
 
   v114 = v36;
-  if (a4 && v148[5])
+  if (error && v148[5])
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -6145,7 +6145,7 @@ LABEL_57:
     }
 
     v8 = 0;
-    *a4 = v148[5];
+    *error = v148[5];
     goto LABEL_99;
   }
 
@@ -6175,29 +6175,29 @@ LABEL_57:
       }
 
       v47 = *(*(&v131 + 1) + 8 * i);
-      v48 = [v47 sessionID];
+      sessionID = [v47 sessionID];
 
-      if (v48)
+      if (sessionID)
       {
-        v49 = [v47 sessionID];
-        [v40 addObject:v49];
+        sessionID2 = [v47 sessionID];
+        [v40 addObject:sessionID2];
       }
 
-      v50 = [v47 conversation];
-      if (([v50 isGroup] & 1) == 0)
+      conversation = [v47 conversation];
+      if (([conversation isGroup] & 1) == 0)
       {
-        v51 = [v47 conversation];
-        v52 = [v51 receiverHandles];
-        v53 = v52 == 0;
+        conversation2 = [v47 conversation];
+        receiverHandles = [conversation2 receiverHandles];
+        v53 = receiverHandles == 0;
 
         if (v53)
         {
           continue;
         }
 
-        v50 = [v47 conversation];
-        v54 = [v50 receiverHandles];
-        [v42 addObjectsFromArray:v54];
+        conversation = [v47 conversation];
+        receiverHandles2 = [conversation receiverHandles];
+        [v42 addObjectsFromArray:receiverHandles2];
       }
     }
 
@@ -6258,7 +6258,7 @@ LABEL_50:
 
         v65 = (v148 + 5);
         v126 = v148[5];
-        v66 = [(SMSuggestionsManager *)v124 _checkReceiverEligibilityForHandle:v59 error:&v126];
+        v66 = [(SMSuggestionsManager *)selfCopy _checkReceiverEligibilityForHandle:v59 error:&v126];
         objc_storeStrong(v65, v126);
         v67 = (v148 + 5);
         v68 = v148[5] == 0 && v66;
@@ -6275,7 +6275,7 @@ LABEL_50:
         if (v68)
         {
           v125 = 0;
-          v70 = [(SMSuggestionsManager *)v124 _didInteractInPastWithHandle:v59 timeInterval:&v125 error:604800.0];
+          v70 = [(SMSuggestionsManager *)selfCopy _didInteractInPastWithHandle:v59 timeInterval:&v125 error:604800.0];
           objc_storeStrong(v67, v125);
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -6373,7 +6373,7 @@ LABEL_50:
     }
   }
 
-  if (a4 && v148[5])
+  if (error && v148[5])
   {
     v91 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
@@ -6392,7 +6392,7 @@ LABEL_50:
     }
 
     v8 = 0;
-    *a4 = v148[5];
+    *error = v148[5];
   }
 
   else
@@ -6451,24 +6451,24 @@ void __87__SMSuggestionsManager__generatePersonalizedSuggestionForWorkoutUserFro
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_showSuggestionsDetectionUIWithSuggestion:(id)a3 error:(id *)a4
+- (BOOL)_showSuggestionsDetectionUIWithSuggestion:(id)suggestion error:(id *)error
 {
   v314[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  suggestionCopy = suggestion;
+  if (suggestionCopy)
   {
     aSelector = a2;
-    v8 = [(SMSuggestionsManager *)self platform];
-    if ([v8 iPhoneDevice])
+    platform = [(SMSuggestionsManager *)self platform];
+    if ([platform iPhoneDevice])
     {
 
       goto LABEL_9;
     }
 
-    v11 = [(SMSuggestionsManager *)self platform];
-    v12 = [v11 watchPlatform];
+    platform2 = [(SMSuggestionsManager *)self platform];
+    watchPlatform = [platform2 watchPlatform];
 
-    if (v12)
+    if (watchPlatform)
     {
 LABEL_9:
       if ([(SMSuggestionsManager *)self _shouldShowProactiveSuggestions])
@@ -6486,7 +6486,7 @@ LABEL_9:
             *&buf[12] = 2112;
             *&buf[14] = v16;
             *&buf[22] = 2112;
-            v311 = v7;
+            v311 = suggestionCopy;
             _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%@, %@, trying to show suggestion detection UI, suggestion, %@", buf, 0x20u);
           }
         }
@@ -6497,31 +6497,31 @@ LABEL_9:
         v311 = __Block_byref_object_copy__119;
         v312 = __Block_byref_object_dispose__119;
         v313 = 0;
-        v17 = [v7 buddy];
-        v18 = [v17 email];
+        buddy = [suggestionCopy buddy];
+        email = [buddy email];
 
-        if (v18)
+        if (email)
         {
           v19 = objc_alloc(MEMORY[0x277D4AAE8]);
-          v20 = [v7 buddy];
-          v21 = [v20 email];
-          v268 = [v19 initWithPrimaryHandle:v21 secondaryHandles:MEMORY[0x277CBEBF8]];
+          buddy2 = [suggestionCopy buddy];
+          email2 = [buddy2 email];
+          v268 = [v19 initWithPrimaryHandle:email2 secondaryHandles:MEMORY[0x277CBEBF8]];
         }
 
         else
         {
-          v26 = [v7 buddy];
-          v27 = [v26 phoneNumber];
+          buddy3 = [suggestionCopy buddy];
+          phoneNumber = [buddy3 phoneNumber];
 
-          if (!v27)
+          if (!phoneNumber)
           {
             goto LABEL_29;
           }
 
           v28 = objc_alloc(MEMORY[0x277D4AAE8]);
-          v20 = [v7 buddy];
-          v21 = [v20 phoneNumber];
-          v268 = [v28 initWithPrimaryHandle:v21 secondaryHandles:MEMORY[0x277CBEBF8]];
+          buddy2 = [suggestionCopy buddy];
+          email2 = [buddy2 phoneNumber];
+          v268 = [v28 initWithPrimaryHandle:email2 secondaryHandles:MEMORY[0x277CBEBF8]];
         }
 
         if (v268)
@@ -6530,7 +6530,7 @@ LABEL_9:
           obj = *(*&buf[8] + 40);
           v10 = [(SMSuggestionsManager *)self _checkReceiverEligibilityForHandle:v268 error:&obj];
           objc_storeStrong((v29 + 40), obj);
-          if (a4 && *(*&buf[8] + 40))
+          if (error && *(*&buf[8] + 40))
           {
             v30 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -6560,14 +6560,14 @@ LABEL_9:
             v75 = objc_opt_class();
             v76 = NSStringFromClass(v75);
             v77 = NSStringFromSelector(aSelector);
-            v78 = [v74 stringWithFormat:@"%@, %@, suggestion has buddy handle that is not an eligible receiver, %@", v76, v77, v268];
-            v309 = v78;
+            v268 = [v74 stringWithFormat:@"%@, %@, suggestion has buddy handle that is not an eligible receiver, %@", v76, v77, v268];
+            v309 = v268;
             v79 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v309 forKeys:&v308 count:1];
             v80 = [v73 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v79];
             v81 = *(*&buf[8] + 40);
             *(*&buf[8] + 40) = v80;
 
-            if (!a4)
+            if (!error)
             {
               v10 = 0;
               goto LABEL_168;
@@ -6576,7 +6576,7 @@ LABEL_9:
             v31 = *(*&buf[8] + 40);
             v10 = 0;
 LABEL_48:
-            *a4 = v31;
+            *error = v31;
 LABEL_168:
             _Block_object_dispose(buf, 8);
 
@@ -6591,15 +6591,15 @@ LABEL_32:
           v305 = __Block_byref_object_copy__119;
           v306 = __Block_byref_object_dispose__119;
           v307 = 0;
-          v32 = [v7 locationOfInterest];
-          if (v32)
+          locationOfInterest = [suggestionCopy locationOfInterest];
+          if (locationOfInterest)
           {
           }
 
           else
           {
-            v53 = [v7 destinationLocation];
-            v54 = v53 == 0;
+            destinationLocation = [suggestionCopy destinationLocation];
+            v54 = destinationLocation == 0;
 
             if (!v54)
             {
@@ -6610,8 +6610,8 @@ LABEL_32:
               v302 = __Block_byref_object_copy__119;
               *&v303 = __Block_byref_object_dispose__119;
               *(&v303 + 1) = 0;
-              v56 = [(SMSuggestionsManager *)self learnedLocationManager];
-              v57 = [v7 destinationLocation];
+              learnedLocationManager = [(SMSuggestionsManager *)self learnedLocationManager];
+              destinationLocation2 = [suggestionCopy destinationLocation];
               v282[0] = MEMORY[0x277D85DD0];
               v282[1] = 3221225472;
               v282[2] = __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error___block_invoke;
@@ -6620,7 +6620,7 @@ LABEL_32:
               v285 = v301;
               v58 = v55;
               v283 = v58;
-              [v56 fetchLocationOfInterestAtLocation:v57 handler:v282];
+              [learnedLocationManager fetchLocationOfInterestAtLocation:destinationLocation2 handler:v282];
 
               dsema = v58;
               v59 = [MEMORY[0x277CBEAA8] now];
@@ -6632,11 +6632,11 @@ LABEL_32:
                 v63 = v62;
                 v64 = objc_opt_new();
                 v65 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-                v66 = [MEMORY[0x277CCACC8] callStackSymbols];
-                v67 = [v66 filteredArrayUsingPredicate:v65];
-                v68 = [v67 firstObject];
+                callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+                v67 = [callStackSymbols filteredArrayUsingPredicate:v65];
+                firstObject = [v67 firstObject];
 
-                [v64 submitToCoreAnalytics:v68 type:1 duration:v63];
+                [v64 submitToCoreAnalytics:firstObject type:1 duration:v63];
                 v69 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                 if (os_log_type_enabled(v69, OS_LOG_TYPE_FAULT))
                 {
@@ -6648,22 +6648,22 @@ LABEL_32:
                 *v292 = *MEMORY[0x277CCA450];
                 *v297 = @"semaphore wait timeout";
                 v71 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v297 forKeys:v292 count:1];
-                v4 = [v70 errorWithDomain:*MEMORY[0x277D01448] code:15 userInfo:v71];
+                v100Location = [v70 errorWithDomain:*MEMORY[0x277D01448] code:15 userInfo:v71];
 
-                if (v4)
+                if (v100Location)
                 {
-                  v72 = v4;
+                  v72 = v100Location;
                 }
               }
 
               else
               {
-                v4 = 0;
+                v100Location = 0;
               }
 
-              v87 = v4;
+              v87 = v100Location;
               v88 = v87;
-              if (a4 && v87)
+              if (error && v87)
               {
                 v89 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
                 if (os_log_type_enabled(v89, OS_LOG_TYPE_ERROR))
@@ -6685,7 +6685,7 @@ LABEL_32:
 
               else
               {
-                if (!a4 || !*(*&v301[8] + 40))
+                if (!error || !*(*&v301[8] + 40))
                 {
 
                   _Block_object_dispose(v301, 8);
@@ -6711,16 +6711,16 @@ LABEL_32:
                 v90 = *(*&v301[8] + 40);
               }
 
-              *a4 = v90;
+              *error = v90;
 
               _Block_object_dispose(v301, 8);
               goto LABEL_75;
             }
           }
 
-          v33 = [v7 locationOfInterest];
+          locationOfInterest2 = [suggestionCopy locationOfInterest];
 
-          if (!v33)
+          if (!locationOfInterest2)
           {
 LABEL_78:
             v92 = *(*&v304[8] + 40);
@@ -6732,41 +6732,41 @@ LABEL_78:
             else
             {
               dsemaa = objc_alloc(MEMORY[0x277D011D8]);
-              v260 = [*(*&v304[8] + 40) place];
-              v257 = [v260 mapItem];
-              v96 = [*(*&v304[8] + 40) place];
-              v97 = +[RTPlaceInferenceManager userSpecificPlaceTypeFromLearnedPlaceType:](RTPlaceInferenceManager, "userSpecificPlaceTypeFromLearnedPlaceType:", [v96 type]);
-              v98 = [*(*&v304[8] + 40) place];
-              v99 = +[RTPlaceInferenceManager userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:](RTPlaceInferenceManager, "userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:", [v98 typeSource]);
-              v100 = [*(*&v304[8] + 40) location];
-              v4 = [v100 location];
-              v101 = [*(*&v304[8] + 40) location];
-              [v101 confidence];
+              place = [*(*&v304[8] + 40) place];
+              mapItem = [place mapItem];
+              place2 = [*(*&v304[8] + 40) place];
+              v97 = +[RTPlaceInferenceManager userSpecificPlaceTypeFromLearnedPlaceType:](RTPlaceInferenceManager, "userSpecificPlaceTypeFromLearnedPlaceType:", [place2 type]);
+              place3 = [*(*&v304[8] + 40) place];
+              v99 = +[RTPlaceInferenceManager userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:](RTPlaceInferenceManager, "userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:", [place3 typeSource]);
+              location = [*(*&v304[8] + 40) location];
+              v100Location = [location location];
+              location2 = [*(*&v304[8] + 40) location];
+              [location2 confidence];
               v103 = v102;
-              v104 = [*(*&v304[8] + 40) identifier];
-              dsema = [dsemaa initWithMapItem:v257 userType:v97 userTypeSource:v99 placeType:0 referenceLocation:v4 confidence:v104 loiIdentifier:v103];
+              identifier = [*(*&v304[8] + 40) identifier];
+              dsema = [dsemaa initWithMapItem:mapItem userType:v97 userTypeSource:v99 placeType:0 referenceLocation:v100Location confidence:identifier loiIdentifier:v103];
             }
 
-            v105 = [v7 destinationLocation];
+            destinationLocation3 = [suggestionCopy destinationLocation];
 
-            if (!v105)
+            if (!destinationLocation3)
             {
               v108 = MEMORY[0x277CCA9B8];
               v288 = *MEMORY[0x277CCA450];
               v109 = MEMORY[0x277CCACA8];
-              v110 = [v7 destinationLocation];
-              v111 = [v109 stringWithFormat:@"suggestion has invalid destination information, %@", v110];
-              v289 = v111;
+              destinationLocation4 = [suggestionCopy destinationLocation];
+              v110 = [v109 stringWithFormat:@"suggestion has invalid destination information, %@", destinationLocation4];
+              v289 = v110;
               v112 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v289 forKeys:&v288 count:1];
               v113 = [v108 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v112];
               v114 = *(*&buf[8] + 40);
               *(*&buf[8] + 40) = v113;
 
-              if (a4)
+              if (error)
               {
                 v115 = 0;
                 v10 = 0;
-                *a4 = *(*&buf[8] + 40);
+                *error = *(*&buf[8] + 40);
 LABEL_166:
 
                 goto LABEL_167;
@@ -6778,17 +6778,17 @@ LABEL_120:
               goto LABEL_166;
             }
 
-            v106 = [*(*&v304[8] + 40) place];
-            v107 = [v106 type];
+            place4 = [*(*&v304[8] + 40) place];
+            type = [place4 type];
 
-            if (v107 >= 5)
+            if (type >= 5)
             {
               v258 = 0;
             }
 
             else
             {
-              v258 = qword_230B013D8[v107];
+              v258 = qword_230B013D8[type];
             }
 
             *v301 = 0;
@@ -6797,9 +6797,9 @@ LABEL_120:
             v302 = __Block_byref_object_copy__119;
             *&v303 = __Block_byref_object_dispose__119;
             *(&v303 + 1) = 0;
-            v116 = [*(*&v304[8] + 40) place];
-            v117 = [v116 mapItem];
-            v118 = v117 == 0;
+            place5 = [*(*&v304[8] + 40) place];
+            mapItem2 = [place5 mapItem];
+            v118 = mapItem2 == 0;
 
             if (!v118)
             {
@@ -6818,8 +6818,8 @@ LABEL_120:
             v131 = NSStringFromClass(v130);
             v255 = [v129 initWithUseBackgroundTraits:1 analyticsIdentifier:v131 clientIdentifier:*MEMORY[0x277D4AE78]];
 
-            v132 = [(SMSuggestionsManager *)self mapServiceManager];
-            v133 = [v7 destinationLocation];
+            mapServiceManager = [(SMSuggestionsManager *)self mapServiceManager];
+            destinationLocation5 = [suggestionCopy destinationLocation];
             v274[0] = MEMORY[0x277D85DD0];
             v274[1] = 3221225472;
             v274[2] = __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error___block_invoke_470;
@@ -6828,7 +6828,7 @@ LABEL_120:
             v277 = v297;
             v134 = v128;
             v275 = v134;
-            [v132 fetchMapItemsFromLocation:v133 options:v255 handler:v274];
+            [mapServiceManager fetchMapItemsFromLocation:destinationLocation5 options:v255 handler:v274];
 
             v261 = v134;
             v135 = [MEMORY[0x277CBEAA8] now];
@@ -6840,11 +6840,11 @@ LABEL_120:
               v139 = v138;
               v140 = objc_opt_new();
               v141 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-              v142 = [MEMORY[0x277CCACC8] callStackSymbols];
-              v143 = [v142 filteredArrayUsingPredicate:v141];
-              v144 = [v143 firstObject];
+              callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+              v143 = [callStackSymbols2 filteredArrayUsingPredicate:v141];
+              firstObject2 = [v143 firstObject];
 
-              [v140 submitToCoreAnalytics:v144 type:1 duration:v139];
+              [v140 submitToCoreAnalytics:firstObject2 type:1 duration:v139];
               v145 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (os_log_type_enabled(v145, OS_LOG_TYPE_FAULT))
               {
@@ -6856,22 +6856,22 @@ LABEL_120:
               v314[0] = *MEMORY[0x277CCA450];
               *v292 = @"semaphore wait timeout";
               v147 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v292 forKeys:v314 count:1];
-              v4 = [v146 errorWithDomain:*MEMORY[0x277D01448] code:15 userInfo:v147];
+              v100Location = [v146 errorWithDomain:*MEMORY[0x277D01448] code:15 userInfo:v147];
 
-              if (v4)
+              if (v100Location)
               {
-                v148 = v4;
+                v148 = v100Location;
               }
             }
 
             else
             {
-              v4 = 0;
+              v100Location = 0;
             }
 
-            v150 = v4;
+            v150 = v100Location;
             v151 = v150;
-            if (a4 && v150)
+            if (error && v150)
             {
               v152 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
               if (os_log_type_enabled(v152, OS_LOG_TYPE_ERROR))
@@ -6898,14 +6898,14 @@ LABEL_120:
                 goto LABEL_144;
               }
 
-              v4 = MEMORY[0x277CCA9B8];
+              v100Location = MEMORY[0x277CCA9B8];
               v290 = *MEMORY[0x277CCA450];
               v154 = MEMORY[0x277CCACA8];
-              v155 = [v7 destinationLocation];
-              v156 = [v154 stringWithFormat:@"Failed to reverse geocode for the location, %{sensitive}@, reverseGeocodedMapItem, %@, reverseGeocodeError, %@", v155, *(*&v301[8] + 40), *(*&v297[8] + 40)];
+              destinationLocation6 = [suggestionCopy destinationLocation];
+              v156 = [v154 stringWithFormat:@"Failed to reverse geocode for the location, %{sensitive}@, reverseGeocodedMapItem, %@, reverseGeocodeError, %@", destinationLocation6, *(*&v301[8] + 40), *(*&v297[8] + 40)];
               v291 = v156;
               v157 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v291 forKeys:&v290 count:1];
-              v158 = [v4 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v157];
+              v158 = [v100Location errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v157];
               v159 = *(*&buf[8] + 40);
               *(*&buf[8] + 40) = v158;
 
@@ -6925,34 +6925,34 @@ LABEL_120:
                 _os_log_error_impl(&dword_2304B3000, v160, OS_LOG_TYPE_ERROR, "%@, %@, error, %@", v292, 0x20u);
               }
 
-              if (!a4 || !*(*&buf[8] + 40))
+              if (!error || !*(*&buf[8] + 40))
               {
 LABEL_144:
 
                 _Block_object_dispose(v297, 8);
 LABEL_89:
                 v119 = objc_alloc(MEMORY[0x277D4AB88]);
-                v120 = [v7 destinationLocation];
-                v121 = [v7 destinationLocation];
-                [v121 horizontalUncertainty];
+                destinationLocation7 = [suggestionCopy destinationLocation];
+                destinationLocation8 = [suggestionCopy destinationLocation];
+                [destinationLocation8 horizontalUncertainty];
                 v123 = v122;
-                v124 = [*(*&v304[8] + 40) place];
-                v125 = [v124 mapItem];
-                if (v125)
+                place6 = [*(*&v304[8] + 40) place];
+                mapItem3 = [place6 mapItem];
+                if (mapItem3)
                 {
-                  v126 = [*(*&v304[8] + 40) place];
-                  v4 = [v126 mapItem];
-                  v127 = [v4 geoMapItemHandle];
+                  place7 = [*(*&v304[8] + 40) place];
+                  v100Location = [place7 mapItem];
+                  geoMapItemHandle = [v100Location geoMapItemHandle];
                 }
 
                 else
                 {
-                  v127 = [*(*&v301[8] + 40) geoMapItemHandle];
-                  v126 = v127;
+                  geoMapItemHandle = [*(*&v301[8] + 40) geoMapItemHandle];
+                  place7 = geoMapItemHandle;
                 }
 
-                v115 = [v119 initWithLocation:v120 eta:0 radius:v258 destinationType:v127 destinationMapItem:v123];
-                if (v125)
+                v115 = [v119 initWithLocation:destinationLocation7 eta:0 radius:v258 destinationType:geoMapItemHandle destinationMapItem:v123];
+                if (mapItem3)
                 {
                 }
 
@@ -6976,11 +6976,11 @@ LABEL_117:
                   }
 
                   v165 = objc_alloc(MEMORY[0x277D4AB78]);
-                  v166 = [MEMORY[0x277CCAD78] UUID];
-                  v167 = [v7 dateInterval];
-                  v168 = [v167 startDate];
+                  uUID = [MEMORY[0x277CCAD78] UUID];
+                  dateInterval = [suggestionCopy dateInterval];
+                  startDate = [dateInterval startDate];
                   LOBYTE(v250) = [MEMORY[0x277D4AAE0] zelkovaHandoffEnabled];
-                  v264 = [v165 initWithConversation:v162 sessionID:v166 sessionStartDate:v168 sessionType:2 time:0 destination:v115 userResponseSafeDate:0 sessionSupportsHandoff:v250 sosReceivers:v162 sessionWorkoutIdentifier:0 sessionWorkoutType:0 sessionWorkoutMirrorType:0];
+                  v264 = [v165 initWithConversation:v162 sessionID:uUID sessionStartDate:startDate sessionType:2 time:0 destination:v115 userResponseSafeDate:0 sessionSupportsHandoff:v250 sosReceivers:v162 sessionWorkoutIdentifier:0 sessionWorkoutType:0 sessionWorkoutMirrorType:0];
 
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                   {
@@ -7004,7 +7004,7 @@ LABEL_117:
                   v273 = *(*&buf[8] + 40);
                   v262 = [(SMSuggestionsManager *)self _getMessagesURLFromSessionConfig:v264 payloadType:2 error:&v273];
                   objc_storeStrong((v173 + 40), v273);
-                  if (a4 && *(*&buf[8] + 40))
+                  if (error && *(*&buf[8] + 40))
                   {
                     v174 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
                     if (os_log_type_enabled(v174, OS_LOG_TYPE_ERROR))
@@ -7023,20 +7023,20 @@ LABEL_117:
                     }
 
                     v10 = 0;
-                    *a4 = *(*&buf[8] + 40);
+                    *error = *(*&buf[8] + 40);
                   }
 
                   else
                   {
-                    v175 = [v264 conversation];
-                    v176 = [v175 receiverHandles];
-                    v177 = [v176 firstObject];
+                    conversation = [v264 conversation];
+                    receiverHandles = [conversation receiverHandles];
+                    firstObject3 = [receiverHandles firstObject];
                     v178 = (*&buf[8] + 40);
                     v272 = *(*&buf[8] + 40);
-                    v259 = [(SMSuggestionsManager *)self _getSuggestionTitleWithHandle:v177 error:&v272];
+                    v259 = [(SMSuggestionsManager *)self _getSuggestionTitleWithHandle:firstObject3 error:&v272];
                     objc_storeStrong(v178, v272);
 
-                    if (a4 && *(*&buf[8] + 40))
+                    if (error && *(*&buf[8] + 40))
                     {
                       v179 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
                       if (os_log_type_enabled(v179, OS_LOG_TYPE_ERROR))
@@ -7055,14 +7055,14 @@ LABEL_117:
                       }
 
                       v10 = 0;
-                      *a4 = *(*&buf[8] + 40);
+                      *error = *(*&buf[8] + 40);
                     }
 
                     else
                     {
                       v254 = [(SMSuggestionsManager *)self _getSuggestionBodyWithPlaceInference:dsema];
-                      v256 = [(SMSuggestionsManager *)self _getSuggestionsFooter:v7];
-                      if ([v7 suggestionUserType] == 1)
+                      v256 = [(SMSuggestionsManager *)self _getSuggestionsFooter:suggestionCopy];
+                      if ([suggestionCopy suggestionUserType] == 1)
                       {
                         v180 = 2;
                       }
@@ -7072,7 +7072,7 @@ LABEL_117:
                         v180 = 1;
                       }
 
-                      if (a4 && *(*&buf[8] + 40))
+                      if (error && *(*&buf[8] + 40))
                       {
                         v181 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
                         if (os_log_type_enabled(v181, OS_LOG_TYPE_ERROR))
@@ -7091,7 +7091,7 @@ LABEL_117:
                         }
 
                         v10 = 0;
-                        *a4 = *(*&buf[8] + 40);
+                        *error = *(*&buf[8] + 40);
                       }
 
                       else
@@ -7118,7 +7118,7 @@ LABEL_117:
 
                         v187 = *&buf[8];
                         v271 = *(*&buf[8] + 40);
-                        v253 = [(SMSuggestionsManager *)self _getNotificationExpirationDateForSuggestion:v7 error:&v271];
+                        v253 = [(SMSuggestionsManager *)self _getNotificationExpirationDateForSuggestion:suggestionCopy error:&v271];
                         objc_storeStrong((v187 + 40), v271);
                         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                         {
@@ -7128,14 +7128,14 @@ LABEL_117:
                             v189 = objc_opt_class();
                             v190 = NSStringFromClass(v189);
                             v191 = NSStringFromSelector(aSelector);
-                            v192 = [v253 stringFromDate];
+                            stringFromDate = [v253 stringFromDate];
                             v193 = *(*&buf[8] + 40);
                             *v301 = 138413058;
                             *&v301[4] = v190;
                             *&v301[12] = 2112;
                             *&v301[14] = v191;
                             *&v301[22] = 2112;
-                            v302 = v192;
+                            v302 = stringFromDate;
                             LOWORD(v303) = 2112;
                             *(&v303 + 2) = v193;
                             _os_log_impl(&dword_2304B3000, v188, OS_LOG_TYPE_INFO, "%@, %@, notificationExpirationDate, %@, error, %@", v301, 0x2Au);
@@ -7145,18 +7145,18 @@ LABEL_117:
                         v194 = *(*&buf[8] + 40);
                         *(*&buf[8] + 40) = 0;
 
-                        v195 = [(SMSuggestionsManager *)self defaultsManager];
-                        v196 = [v195 objectForKey:@"RTDefaultsSuggestionsManagerLastSuggestionNotificationUUID"];
+                        defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+                        v196 = [defaultsManager objectForKey:@"RTDefaultsSuggestionsManagerLastSuggestionNotificationUUID"];
 
                         if (v196)
                         {
-                          v197 = v196;
+                          uUIDString = v196;
                         }
 
                         else
                         {
-                          v205 = [MEMORY[0x277CCAD78] UUID];
-                          v197 = [v205 UUIDString];
+                          uUID2 = [MEMORY[0x277CCAD78] UUID];
+                          uUIDString = [uUID2 UUIDString];
                         }
 
                         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -7174,14 +7174,14 @@ LABEL_117:
                             *&v301[22] = 2112;
                             v302 = v196;
                             LOWORD(v303) = 2112;
-                            *(&v303 + 2) = v197;
+                            *(&v303 + 2) = uUIDString;
                             _os_log_impl(&dword_2304B3000, v206, OS_LOG_TYPE_INFO, "%@, %@, notificationUUIDStringFromDefaults, %@, notificationUUIDString, %@", v301, 0x2Au);
                           }
                         }
 
                         v210 = [RTUserNotification alloc];
-                        v211 = [(RTUserNotification *)v210 initWithBundleIdentifier:*MEMORY[0x277D4AD38] notificationUUIDString:v197];
-                        v212 = [v262 absoluteString];
+                        v211 = [(RTUserNotification *)v210 initWithBundleIdentifier:*MEMORY[0x277D4AD38] notificationUUIDString:uUIDString];
+                        absoluteString = [v262 absoluteString];
                         v213 = *MEMORY[0x277D4AE78];
                         v270[0] = MEMORY[0x277D85DD0];
                         v270[1] = 3221225472;
@@ -7191,14 +7191,14 @@ LABEL_117:
                         v270[5] = buf;
                         v270[6] = aSelector;
                         LOWORD(v251) = 256;
-                        [(RTUserNotification *)v211 postNotificationWithTitle:v259 subtitle:0 body:v254 footer:v256 defaultActionUrl:v212 categoryIdentifier:v213 interruptionLevel:v252 destination:7 actions:MEMORY[0x277CBEBF8] suppressDismissActionInCarPlay:v251 preventAutomaticRemoval:v253 expirationDate:0 userInfo:v270 handler:?];
+                        [(RTUserNotification *)v211 postNotificationWithTitle:v259 subtitle:0 body:v254 footer:v256 defaultActionUrl:absoluteString categoryIdentifier:v213 interruptionLevel:v252 destination:7 actions:MEMORY[0x277CBEBF8] suppressDismissActionInCarPlay:v251 preventAutomaticRemoval:v253 expirationDate:0 userInfo:v270 handler:?];
 
-                        v214 = [(SMSuggestionsManager *)self defaultsManager];
-                        [v214 setObject:v197 forKey:@"RTDefaultsSuggestionsManagerLastSuggestionNotificationUUID"];
+                        defaultsManager2 = [(SMSuggestionsManager *)self defaultsManager];
+                        [defaultsManager2 setObject:uUIDString forKey:@"RTDefaultsSuggestionsManagerLastSuggestionNotificationUUID"];
 
-                        if (a4)
+                        if (error)
                         {
-                          *a4 = *(*&buf[8] + 40);
+                          *error = *(*&buf[8] + 40);
                         }
 
                         v10 = *(*&buf[8] + 40) == 0;
@@ -7231,7 +7231,7 @@ LABEL_117:
               v153 = *(*&buf[8] + 40);
             }
 
-            *a4 = v153;
+            *error = v153;
 
             _Block_object_dispose(v297, 8);
             v115 = 0;
@@ -7246,9 +7246,9 @@ LABEL_117:
           v302 = __Block_byref_object_copy__119;
           *&v303 = __Block_byref_object_dispose__119;
           *(&v303 + 1) = 0;
-          v35 = [(SMSuggestionsManager *)self learnedLocationManager];
-          v36 = [v7 locationOfInterest];
-          v37 = [v36 identifier];
+          learnedLocationManager2 = [(SMSuggestionsManager *)self learnedLocationManager];
+          locationOfInterest3 = [suggestionCopy locationOfInterest];
+          identifier2 = [locationOfInterest3 identifier];
           v278[0] = MEMORY[0x277D85DD0];
           v278[1] = 3221225472;
           v278[2] = __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error___block_invoke_466;
@@ -7257,7 +7257,7 @@ LABEL_117:
           v281 = v301;
           v38 = v34;
           v279 = v38;
-          [v35 fetchLocationOfInterestWithIdentifier:v37 handler:v278];
+          [learnedLocationManager2 fetchLocationOfInterestWithIdentifier:identifier2 handler:v278];
 
           dsema = v38;
           v39 = [MEMORY[0x277CBEAA8] now];
@@ -7269,11 +7269,11 @@ LABEL_117:
             v43 = v42;
             v44 = objc_opt_new();
             v45 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-            v46 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v47 = [v46 filteredArrayUsingPredicate:v45];
-            v48 = [v47 firstObject];
+            callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+            v47 = [callStackSymbols3 filteredArrayUsingPredicate:v45];
+            firstObject4 = [v47 firstObject];
 
-            [v44 submitToCoreAnalytics:v48 type:1 duration:v43];
+            [v44 submitToCoreAnalytics:firstObject4 type:1 duration:v43];
             v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v49, OS_LOG_TYPE_FAULT))
             {
@@ -7285,22 +7285,22 @@ LABEL_117:
             *v292 = *MEMORY[0x277CCA450];
             *v297 = @"semaphore wait timeout";
             v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v297 forKeys:v292 count:1];
-            v4 = [v50 errorWithDomain:*MEMORY[0x277D01448] code:15 userInfo:v51];
+            v100Location = [v50 errorWithDomain:*MEMORY[0x277D01448] code:15 userInfo:v51];
 
-            if (v4)
+            if (v100Location)
             {
-              v52 = v4;
+              v52 = v100Location;
             }
           }
 
           else
           {
-            v4 = 0;
+            v100Location = 0;
           }
 
-          v82 = v4;
+          v82 = v100Location;
           v83 = v82;
-          if (a4 && v82)
+          if (error && v82)
           {
             v84 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
@@ -7319,7 +7319,7 @@ LABEL_117:
 
             v85 = v83;
 LABEL_60:
-            *a4 = v85;
+            *error = v85;
 
             _Block_object_dispose(v301, 8);
 LABEL_75:
@@ -7330,7 +7330,7 @@ LABEL_167:
             goto LABEL_168;
           }
 
-          if (a4 && *(*&v301[8] + 40))
+          if (error && *(*&v301[8] + 40))
           {
             v86 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
             if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
@@ -7395,13 +7395,13 @@ LABEL_20:
     _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: suggestion", buf, 2u);
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_20;
   }
 
   _RTErrorInvalidParameterCreate(@"suggestion");
-  *a4 = v10 = 0;
+  *error = v10 = 0;
 LABEL_169:
 
   return v10;
@@ -7503,10 +7503,10 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
   }
 }
 
-- (id)_getNotificationExpirationDateForSuggestion:(id)a3 error:(id *)a4
+- (id)_getNotificationExpirationDateForSuggestion:(id)suggestion error:(id *)error
 {
   v93[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  suggestionCopy = suggestion;
   v77 = 0;
   v62 = [(SMSuggestionsManager *)self _getValuesFromDefaultsIfExists:@"RTDefaultsSuggestionNotificationExpirationTimeInterval" error:&v77];
   v7 = v77;
@@ -7515,7 +7515,7 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
   {
     v10 = 600.0;
     v58 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:600.0];
-    if (!v6)
+    if (!suggestionCopy)
     {
       v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -7524,16 +7524,16 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
         _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: suggestion", buf, 2u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = _RTErrorInvalidParameterCreate(@"suggestion");
+        *error = _RTErrorInvalidParameterCreate(@"suggestion");
       }
 
       v9 = v58;
       goto LABEL_30;
     }
 
-    v56 = a4;
+    errorCopy = error;
     v73 = 0;
     v74 = &v73;
     v75 = 0x2020000000;
@@ -7547,11 +7547,11 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
     v11 = dispatch_semaphore_create(0);
     v57 = dispatch_queue_create("SMSuggestionsManager-ETA-Queue", 0);
     v12 = objc_alloc(MEMORY[0x277CE41F8]);
-    v13 = [v6 destinationLocation];
-    v14 = [v12 initWithRTLocation:v13];
-    v15 = [(SMSuggestionsManager *)self locationManager];
-    v16 = [(SMSuggestionsManager *)self defaultsManager];
-    v17 = [(SMSuggestionsManager *)self distanceCalculator];
+    destinationLocation = [suggestionCopy destinationLocation];
+    v14 = [v12 initWithRTLocation:destinationLocation];
+    locationManager = [(SMSuggestionsManager *)self locationManager];
+    defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+    distanceCalculator = [(SMSuggestionsManager *)self distanceCalculator];
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = __74__SMSuggestionsManager__getNotificationExpirationDateForSuggestion_error___block_invoke;
@@ -7560,7 +7560,7 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
     v66 = &v67;
     v18 = v11;
     v64 = v18;
-    [SMTriggerDestination estimateEtaToDestination:v14 transportType:1 locationManager:v15 defaultsManager:v16 distanceCalculator:v17 queue:v57 handler:v63];
+    [SMTriggerDestination estimateEtaToDestination:v14 transportType:1 locationManager:locationManager defaultsManager:defaultsManager distanceCalculator:distanceCalculator queue:v57 handler:v63];
 
     dsema = v18;
     v19 = [MEMORY[0x277CBEAA8] now];
@@ -7572,11 +7572,11 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
       v23 = v22;
       v24 = objc_opt_new();
       v25 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v26 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v27 = [v26 filteredArrayUsingPredicate:v25];
-      v28 = [v27 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v27 = [callStackSymbols filteredArrayUsingPredicate:v25];
+      firstObject = [v27 firstObject];
 
-      [v24 submitToCoreAnalytics:v28 type:1 duration:v23];
+      [v24 submitToCoreAnalytics:firstObject type:1 duration:v23];
       v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
       {
@@ -7603,7 +7603,7 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
 
     v35 = v32;
     v36 = v35;
-    if (v56 && v35)
+    if (errorCopy && v35)
     {
       v37 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -7621,12 +7621,12 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
       }
 
       v38 = v36;
-      *v56 = v36;
+      *errorCopy = v36;
     }
 
     else
     {
-      if (!v56 || !v68[5])
+      if (!errorCopy || !v68[5])
       {
         v42 = fmin(v74[3] * 0.25, 7200.0);
         if (v42 >= 600.0)
@@ -7645,7 +7645,7 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
             v45 = NSStringFromClass(v44);
             v46 = NSStringFromSelector(a2);
             v47 = *(v74 + 3);
-            v48 = [v40 stringFromDate];
+            stringFromDate = [v40 stringFromDate];
             *buf = 138414082;
             *&buf[4] = v45;
             v79 = 2112;
@@ -7661,7 +7661,7 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
             v89 = 2048;
             v90 = v10;
             v91 = 2112;
-            v92 = v48;
+            v92 = stringFromDate;
             _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "%@, %@, eta to destination, %.3f, kSMSuggestionNotificationETAFactor, %.3f, kSMSuggestionNotificationExpirationTimeInterval, %.3f, kSMSuggestionTimeIntervalBuffer, %.3f, notificationExpirationTimeInterval, %.3f, notificationExpirationDate, %@", buf, 0x52u);
           }
         }
@@ -7685,7 +7685,7 @@ void __72__SMSuggestionsManager__showSuggestionsDetectionUIWithSuggestion_error_
         _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
       }
 
-      *v56 = v68[5];
+      *errorCopy = v68[5];
     }
 
     v40 = v58;
@@ -7699,9 +7699,9 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v8 = MEMORY[0x277CBEAA8];
@@ -7720,12 +7720,12 @@ void __74__SMSuggestionsManager__getNotificationExpirationDateForSuggestion_erro
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (unint64_t)_suppressSuggestion:(id)a3 context:(id)a4 error:(id *)a5
+- (unint64_t)_suppressSuggestion:(id)suggestion context:(id)context error:(id *)error
 {
   v314 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v262 = a4;
-  if (!v8)
+  suggestionCopy = suggestion;
+  contextCopy = context;
+  if (!suggestionCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -7734,10 +7734,10 @@ void __74__SMSuggestionsManager__getNotificationExpirationDateForSuggestion_erro
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: suggestion", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"suggestion");
-      *a5 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -7770,7 +7770,7 @@ void __74__SMSuggestionsManager__getNotificationExpirationDateForSuggestion_erro
     goto LABEL_205;
   }
 
-  if (!-[SMSuggestionsManager suggestionEnabledForUserType:](self, "suggestionEnabledForUserType:", [v8 suggestionUserType]))
+  if (!-[SMSuggestionsManager suggestionEnabledForUserType:](self, "suggestionEnabledForUserType:", [suggestionCopy suggestionUserType]))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -7785,7 +7785,7 @@ void __74__SMSuggestionsManager__getNotificationExpirationDateForSuggestion_erro
         *&buf[12] = 2114;
         *&buf[14] = v20;
         *&buf[22] = 2050;
-        v300 = [v8 suggestionUserType];
+        suggestionUserType = [suggestionCopy suggestionUserType];
         _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%{public}@, %{public}@, suggestionUserType, %{public}lu, suggestion disabled", buf, 0x20u);
       }
     }
@@ -7801,9 +7801,9 @@ void __74__SMSuggestionsManager__getNotificationExpirationDateForSuggestion_erro
   v291 = __Block_byref_object_dispose__119;
   v292 = 0;
   obj = 0;
-  v260 = [(SMSuggestionsManager *)self _getCurrentDateFromContext:v262 error:&obj];
+  v260 = [(SMSuggestionsManager *)self _getCurrentDateFromContext:contextCopy error:&obj];
   objc_storeStrong(&v292, obj);
-  if (a5 && v288[5])
+  if (error && v288[5])
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -7817,21 +7817,21 @@ void __74__SMSuggestionsManager__getNotificationExpirationDateForSuggestion_erro
       *&buf[12] = 2112;
       *&buf[14] = v107;
       *&buf[22] = 2112;
-      v300 = v108;
+      suggestionUserType = v108;
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
     v10 = v288[5];
 LABEL_9:
     v11 = 0;
-    *a5 = v10;
+    *error = v10;
     goto LABEL_204;
   }
 
-  v21 = [(SMSuggestionsManager *)self platform];
-  v22 = [v21 watchPlatform];
+  platform = [(SMSuggestionsManager *)self platform];
+  watchPlatform = [platform watchPlatform];
 
-  if (v22 && [v8 suggestionUserType] != 4 && -[SMSuggestionsManager _isEffectivePairedDeviceNearby](self, "_isEffectivePairedDeviceNearby"))
+  if (watchPlatform && [suggestionCopy suggestionUserType] != 4 && -[SMSuggestionsManager _isEffectivePairedDeviceNearby](self, "_isEffectivePairedDeviceNearby"))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -7853,32 +7853,32 @@ LABEL_9:
     goto LABEL_204;
   }
 
-  v27 = [v8 buddy];
+  buddy = [suggestionCopy buddy];
 
-  if (v27)
+  if (buddy)
   {
-    v28 = [v8 buddy];
-    v29 = [v28 email];
-    v30 = [v8 buddy];
-    if (v29)
+    buddy2 = [suggestionCopy buddy];
+    email = [buddy2 email];
+    buddy3 = [suggestionCopy buddy];
+    if (email)
     {
-      [v30 email];
+      [buddy3 email];
     }
 
     else
     {
-      [v30 phoneNumber];
+      [buddy3 phoneNumber];
     }
     v254 = ;
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
-    v300 = __Block_byref_object_copy__119;
+    suggestionUserType = __Block_byref_object_copy__119;
     *v301 = __Block_byref_object_dispose__119;
     *&v301[8] = 0;
     v31 = dispatch_semaphore_create(0);
-    v32 = [(SMSuggestionsManager *)self contactsManager];
+    contactsManager = [(SMSuggestionsManager *)self contactsManager];
     v282[0] = MEMORY[0x277D85DD0];
     v282[1] = 3221225472;
     v282[2] = __58__SMSuggestionsManager__suppressSuggestion_context_error___block_invoke;
@@ -7887,7 +7887,7 @@ LABEL_9:
     v285 = &v287;
     v33 = v31;
     v283 = v33;
-    [v32 fetchContactsFromEmailOrPhoneNumberString:v254 handler:v282];
+    [contactsManager fetchContactsFromEmailOrPhoneNumberString:v254 handler:v282];
 
     dsema = v33;
     v34 = [MEMORY[0x277CBEAA8] now];
@@ -7899,11 +7899,11 @@ LABEL_9:
       v38 = v37;
       v39 = objc_opt_new();
       v40 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v41 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v42 = [v41 filteredArrayUsingPredicate:v40];
-      v43 = [v42 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v42 = [callStackSymbols filteredArrayUsingPredicate:v40];
+      firstObject = [v42 firstObject];
 
-      [v39 submitToCoreAnalytics:v43 type:1 duration:v38];
+      [v39 submitToCoreAnalytics:firstObject type:1 duration:v38];
       v44 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
       {
@@ -7931,7 +7931,7 @@ LABEL_9:
     v49 = v47;
     if (v49)
     {
-      v50 = a5 != 0;
+      v50 = error != 0;
     }
 
     else
@@ -7959,7 +7959,7 @@ LABEL_9:
       v52 = v49;
       v53 = 0;
       v11 = 0;
-      *a5 = v49;
+      *error = v49;
 LABEL_66:
 
       _Block_object_dispose(buf, 8);
@@ -7971,7 +7971,7 @@ LABEL_66:
       goto LABEL_67;
     }
 
-    if (a5 && v288[5])
+    if (error && v288[5])
     {
       v54 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -8001,13 +8001,13 @@ LABEL_66:
         goto LABEL_66;
       }
 
-      v56 = [v8 buddy];
+      buddy4 = [suggestionCopy buddy];
       v57 = v288 + 5;
       v281 = v288[5];
-      v58 = [SMSuggestionsHelper isContactBlocked:v56 error:&v281];
+      v58 = [SMSuggestionsHelper isContactBlocked:buddy4 error:&v281];
       objc_storeStrong(v57, v281);
 
-      if (!a5 || !v288[5])
+      if (!error || !v288[5])
       {
         v53 = !v58;
         if (v58)
@@ -8044,23 +8044,23 @@ LABEL_66:
 
     v53 = 0;
     v11 = 0;
-    *a5 = v55;
+    *error = v55;
     goto LABEL_66;
   }
 
 LABEL_67:
-  if ([v8 suggestionTrigger] != 4)
+  if ([suggestionCopy suggestionTrigger] != 4)
   {
-    v78 = [(SMSuggestionsManager *)self distanceCalculator];
-    v79 = [v8 sourceLocation];
-    v80 = [v8 destinationLocation];
+    distanceCalculator = [(SMSuggestionsManager *)self distanceCalculator];
+    sourceLocation = [suggestionCopy sourceLocation];
+    destinationLocation = [suggestionCopy destinationLocation];
     v81 = v288 + 5;
     v280 = v288[5];
-    [v78 distanceFromLocation:v79 toLocation:v80 error:&v280];
+    [distanceCalculator distanceFromLocation:sourceLocation toLocation:destinationLocation error:&v280];
     v83 = v82;
     objc_storeStrong(v81, v280);
 
-    if (a5 && v288[5])
+    if (error && v288[5])
     {
       v84 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
@@ -8074,7 +8074,7 @@ LABEL_67:
         *&buf[12] = 2112;
         *&buf[14] = v167;
         *&buf[22] = 2112;
-        v300 = v168;
+        suggestionUserType = v168;
         _os_log_error_impl(&dword_2304B3000, v84, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
       }
 
@@ -8095,7 +8095,7 @@ LABEL_67:
         *&buf[12] = 2112;
         *&buf[14] = v88;
         *&buf[22] = 2048;
-        v300 = *&v83;
+        suggestionUserType = *&v83;
         _os_log_impl(&dword_2304B3000, v85, OS_LOG_TYPE_INFO, "%@, %@, distance between source and destination locations, %.5f", buf, 0x20u);
       }
     }
@@ -8121,7 +8121,7 @@ LABEL_67:
   v310 = __Block_byref_object_dispose__119;
   v311 = 0;
   v60 = dispatch_semaphore_create(0);
-  v61 = [(SMSuggestionsManager *)self suggestionsStore];
+  suggestionsStore = [(SMSuggestionsManager *)self suggestionsStore];
   v276[0] = MEMORY[0x277D85DD0];
   v276[1] = 3221225472;
   v276[2] = __58__SMSuggestionsManager__suppressSuggestion_context_error___block_invoke_492;
@@ -8130,7 +8130,7 @@ LABEL_67:
   v279 = &v287;
   v62 = v60;
   v277 = v62;
-  [v61 fetchSuggestionsWithOptions:v255 handler:v276];
+  [suggestionsStore fetchSuggestionsWithOptions:v255 handler:v276];
 
   dsemaa = v62;
   v63 = [MEMORY[0x277CBEAA8] now];
@@ -8142,11 +8142,11 @@ LABEL_67:
     v67 = v66;
     v68 = objc_opt_new();
     v69 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v70 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v71 = [v70 filteredArrayUsingPredicate:v69];
-    v72 = [v71 firstObject];
+    callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v71 = [callStackSymbols2 filteredArrayUsingPredicate:v69];
+    firstObject2 = [v71 firstObject];
 
-    [v68 submitToCoreAnalytics:v72 type:1 duration:v67];
+    [v68 submitToCoreAnalytics:firstObject2 type:1 duration:v67];
     v73 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v73, OS_LOG_TYPE_FAULT))
     {
@@ -8174,7 +8174,7 @@ LABEL_67:
   v89 = v76;
   if (v89)
   {
-    v90 = a5 != 0;
+    v90 = error != 0;
   }
 
   else
@@ -8195,17 +8195,17 @@ LABEL_67:
       *&buf[12] = 2112;
       *&buf[14] = v135;
       *&buf[22] = 2112;
-      v300 = v89;
+      suggestionUserType = v89;
       _os_log_error_impl(&dword_2304B3000, v91, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
     v92 = v89;
     v11 = 0;
-    *a5 = v89;
+    *error = v89;
     goto LABEL_203;
   }
 
-  if (a5 && v288[5])
+  if (error && v288[5])
   {
     v93 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
@@ -8219,17 +8219,17 @@ LABEL_67:
       *&buf[12] = 2112;
       *&buf[14] = v190;
       *&buf[22] = 2112;
-      v300 = v191;
+      suggestionUserType = v191;
       _os_log_error_impl(&dword_2304B3000, v93, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
     v11 = 0;
-    *a5 = v288[5];
+    *error = v288[5];
     goto LABEL_203;
   }
 
-  v94 = [v8 creationDate];
-  [v94 timeIntervalSinceDate:*(*&v308[8] + 40)];
+  creationDate = [suggestionCopy creationDate];
+  [creationDate timeIntervalSinceDate:*(*&v308[8] + 40)];
   v96 = v95;
 
   v97 = v96;
@@ -8241,16 +8241,16 @@ LABEL_67:
       v99 = objc_opt_class();
       v100 = NSStringFromClass(v99);
       v101 = NSStringFromSelector(a2);
-      v102 = [v8 suggestionUserType];
-      v103 = [*(*&v308[8] + 40) stringFromDate];
+      suggestionUserType2 = [suggestionCopy suggestionUserType];
+      stringFromDate = [*(*&v308[8] + 40) stringFromDate];
       *buf = 138414082;
       *&buf[4] = v100;
       *&buf[12] = 2112;
       *&buf[14] = v101;
       *&buf[22] = 2048;
-      v300 = v102;
+      suggestionUserType = suggestionUserType2;
       *v301 = 2112;
-      *&v301[2] = v103;
+      *&v301[2] = stringFromDate;
       *&v301[10] = 2048;
       *&v301[12] = v96;
       v302 = 2048;
@@ -8268,12 +8268,12 @@ LABEL_67:
     goto LABEL_115;
   }
 
-  v104 = [v8 suggestionUserType];
-  if (v104 > 2)
+  suggestionUserType3 = [suggestionCopy suggestionUserType];
+  if (suggestionUserType3 > 2)
   {
-    if (v104 != 4)
+    if (suggestionUserType3 != 4)
     {
-      if (v104 == 3 && v97 < 0x93A80)
+      if (suggestionUserType3 == 3 && v97 < 0x93A80)
       {
         v11 = 5;
         goto LABEL_203;
@@ -8283,9 +8283,9 @@ LABEL_67:
     }
   }
 
-  else if (v104 >= 2)
+  else if (suggestionUserType3 >= 2)
   {
-    if (v104 != 2 || v97 >> 8 >= 0x2A3)
+    if (suggestionUserType3 != 2 || v97 >> 8 >= 0x2A3)
     {
       goto LABEL_115;
     }
@@ -8325,7 +8325,7 @@ LABEL_115:
 
       *&buf[14] = v114;
       *&buf[22] = 2112;
-      v300 = v116;
+      suggestionUserType = v116;
       _os_log_impl(&dword_2304B3000, v111, OS_LOG_TYPE_INFO, "%@, %@, isUserInActiveSession, %@", buf, 0x20u);
     }
   }
@@ -8344,18 +8344,18 @@ LABEL_115:
       v118 = objc_opt_class();
       v119 = NSStringFromClass(v118);
       v120 = NSStringFromSelector(a2);
-      v121 = [MEMORY[0x277D4AC10] stringFromSMSuggestionUserType:{objc_msgSend(v8, "suggestionUserType")}];
+      v121 = [MEMORY[0x277D4AC10] stringFromSMSuggestionUserType:{objc_msgSend(suggestionCopy, "suggestionUserType")}];
       *buf = 138412802;
       *&buf[4] = v119;
       *&buf[12] = 2112;
       *&buf[14] = v120;
       *&buf[22] = 2112;
-      v300 = v121;
+      suggestionUserType = v121;
       _os_log_impl(&dword_2304B3000, v117, OS_LOG_TYPE_INFO, "%@, %@, suggestion user type, %@,", buf, 0x20u);
     }
   }
 
-  if ([v8 suggestionTrigger] == 4)
+  if ([suggestionCopy suggestionTrigger] == 4)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -8365,13 +8365,13 @@ LABEL_115:
         v123 = objc_opt_class();
         v124 = NSStringFromClass(v123);
         v125 = NSStringFromSelector(a2);
-        v126 = [MEMORY[0x277D4AC10] stringFromSMSuggestionTrigger:{objc_msgSend(v8, "suggestionTrigger")}];
+        v126 = [MEMORY[0x277D4AC10] stringFromSMSuggestionTrigger:{objc_msgSend(suggestionCopy, "suggestionTrigger")}];
         *buf = 138412802;
         *&buf[4] = v124;
         *&buf[12] = 2112;
         *&buf[14] = v125;
         *&buf[22] = 2112;
-        v300 = v126;
+        suggestionUserType = v126;
         _os_log_impl(&dword_2304B3000, v122, OS_LOG_TYPE_INFO, "%@, %@, suggestion.suggestionTrigger, %@, suprressed for notification output", buf, 0x20u);
       }
     }
@@ -8380,9 +8380,9 @@ LABEL_115:
     goto LABEL_203;
   }
 
-  if ([v8 suggestionUserType] != 1 && objc_msgSend(v8, "suggestionUserType") != 2)
+  if ([suggestionCopy suggestionUserType] != 1 && objc_msgSend(suggestionCopy, "suggestionUserType") != 2)
   {
-    if ([v8 suggestionUserType] == 3)
+    if ([suggestionCopy suggestionUserType] == 3)
     {
       v173 = v288 + 5;
       v263 = v288[5];
@@ -8396,13 +8396,13 @@ LABEL_115:
           v176 = objc_opt_class();
           v177 = NSStringFromClass(v176);
           v178 = NSStringFromSelector(a2);
-          v179 = [v174 unsignedIntegerValue];
+          unsignedIntegerValue = [v174 unsignedIntegerValue];
           *buf = 138412802;
           *&buf[4] = v177;
           *&buf[12] = 2112;
           *&buf[14] = v178;
           *&buf[22] = 2048;
-          v300 = v179;
+          suggestionUserType = unsignedIntegerValue;
           _os_log_impl(&dword_2304B3000, v175, OS_LOG_TYPE_INFO, "%@, %@, fetched displayed suggestion count, %lu", buf, 0x20u);
         }
       }
@@ -8426,9 +8426,9 @@ LABEL_115:
     goto LABEL_203;
   }
 
-  v127 = [v8 suggestionUserType];
+  suggestionUserType4 = [suggestionCopy suggestionUserType];
   v128 = v288 + 5;
-  if (v127 == 1)
+  if (suggestionUserType4 == 1)
   {
     v274 = v288[5];
     v129 = &v274;
@@ -8444,12 +8444,12 @@ LABEL_115:
 
   objc_storeStrong(v128, *v129);
   v136 = objc_alloc(MEMORY[0x277D4AC18]);
-  v137 = [v253 unsignedIntValue];
+  unsignedIntValue = [v253 unsignedIntValue];
   v138 = objc_alloc(MEMORY[0x277CCA970]);
   v139 = [v260 dateByAddingTimeInterval:-604800.0];
   v140 = [v138 initWithStartDate:v139 duration:604800.0];
   v246 = *MEMORY[0x277D4AF10];
-  v249 = [v136 initWithBatchSize:*MEMORY[0x277D4AF10] fetchLimit:v137 offset:*MEMORY[0x277D4AF10] includeSuppressed:0 sortByCreationDate:1 ascending:0 dateInterval:v140 filteredToSuggestionTriggers:0 filteredToSuggestionUserTypes:0 filteredToSessionTypes:0];
+  v249 = [v136 initWithBatchSize:*MEMORY[0x277D4AF10] fetchLimit:unsignedIntValue offset:*MEMORY[0x277D4AF10] includeSuppressed:0 sortByCreationDate:1 ascending:0 dateInterval:v140 filteredToSuggestionTriggers:0 filteredToSuggestionUserTypes:0 filteredToSessionTypes:0];
 
   v141 = *(*&v308[8] + 40);
   *(*&v308[8] + 40) = 0;
@@ -8462,7 +8462,7 @@ LABEL_115:
   v298 = 0;
   v142 = dispatch_semaphore_create(0);
 
-  v143 = [(SMSuggestionsManager *)self suggestionsStore];
+  suggestionsStore2 = [(SMSuggestionsManager *)self suggestionsStore];
   v269[0] = MEMORY[0x277D85DD0];
   v269[1] = 3221225472;
   v269[2] = __58__SMSuggestionsManager__suppressSuggestion_context_error___block_invoke_499;
@@ -8471,7 +8471,7 @@ LABEL_115:
   v272 = &v287;
   v144 = v142;
   v270 = v144;
-  [v143 fetchSuggestionsWithOptions:v249 handler:v269];
+  [suggestionsStore2 fetchSuggestionsWithOptions:v249 handler:v269];
 
   dsemaa = v144;
   v145 = [MEMORY[0x277CBEAA8] now];
@@ -8484,11 +8484,11 @@ LABEL_115:
     v149 = v148;
     v150 = objc_opt_new();
     v151 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v152 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v153 = [v152 filteredArrayUsingPredicate:v151];
-    v154 = [v153 firstObject];
+    callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v153 = [callStackSymbols3 filteredArrayUsingPredicate:v151];
+    firstObject3 = [v153 firstObject];
 
-    [v150 submitToCoreAnalytics:v154 type:1 duration:v149];
+    [v150 submitToCoreAnalytics:firstObject3 type:1 duration:v149];
     v155 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v155, OS_LOG_TYPE_FAULT))
     {
@@ -8514,7 +8514,7 @@ LABEL_115:
   v251 = v147;
   if (v251)
   {
-    v160 = a5 != 0;
+    v160 = error != 0;
   }
 
   else
@@ -8535,17 +8535,17 @@ LABEL_115:
       *&buf[12] = 2112;
       *&buf[14] = v233;
       *&buf[22] = 2112;
-      v300 = v251;
+      suggestionUserType = v251;
       _os_log_error_impl(&dword_2304B3000, v161, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
     v162 = v251;
     v11 = 0;
-    *a5 = v251;
+    *error = v251;
     goto LABEL_202;
   }
 
-  if (a5 && v288[5])
+  if (error && v288[5])
   {
     v163 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v163, OS_LOG_TYPE_ERROR))
@@ -8559,7 +8559,7 @@ LABEL_115:
       *&buf[12] = 2112;
       *&buf[14] = v236;
       *&buf[22] = 2112;
-      v300 = v237;
+      suggestionUserType = v237;
       _os_log_error_impl(&dword_2304B3000, v163, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
@@ -8576,18 +8576,18 @@ LABEL_115:
       v182 = NSStringFromClass(v181);
       v183 = NSStringFromSelector(a2);
       v184 = [v294[5] count];
-      v185 = [MEMORY[0x277D4AC10] stringFromSMSuggestionUserType:{objc_msgSend(v8, "suggestionUserType")}];
-      v186 = [v253 unsignedIntValue];
+      v185 = [MEMORY[0x277D4AC10] stringFromSMSuggestionUserType:{objc_msgSend(suggestionCopy, "suggestionUserType")}];
+      unsignedIntValue2 = [v253 unsignedIntValue];
       *buf = 138413314;
       *&buf[4] = v182;
       *&buf[12] = 2112;
       *&buf[14] = v183;
       *&buf[22] = 2048;
-      v300 = v184;
+      suggestionUserType = v184;
       *v301 = 2112;
       *&v301[2] = v185;
       *&v301[10] = 2048;
-      *&v301[12] = v186;
+      *&v301[12] = unsignedIntValue2;
       _os_log_impl(&dword_2304B3000, v180, OS_LOG_TYPE_INFO, "%@, %@, previous suggestion count, %lu, suggestion user type, %@, suggestionUserSuppressionSessionConfigurationCount, %lu", buf, 0x34u);
     }
   }
@@ -8621,18 +8621,18 @@ LABEL_115:
     v198 = objc_alloc(MEMORY[0x277D4AB80]);
     v199 = objc_alloc(MEMORY[0x277CCA970]);
     v200 = [v294[5] objectAtIndexedSubscript:v196];
-    v201 = [v200 creationDate];
-    v202 = [v199 initWithStartDate:v201 duration:7200.0];
+    creationDate2 = [v200 creationDate];
+    v202 = [v199 initWithStartDate:creationDate2 duration:7200.0];
     LOBYTE(v242) = 0;
     v252 = [v198 initWithBatchSize:v246 fetchLimit:1 sortBySessionStartDate:1 ascending:1 sessionTypes:&unk_2845A1448 timeInADayInterval:0 pickOneConfigInTimeInADayInterval:v242 dateInterval:v202 startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
-    v300 = __Block_byref_object_copy__119;
+    suggestionUserType = __Block_byref_object_copy__119;
     *v301 = __Block_byref_object_dispose__119;
     *&v301[8] = 0;
-    v203 = [(SMSuggestionsManager *)self sessionStore];
+    sessionStore = [(SMSuggestionsManager *)self sessionStore];
     v265[0] = MEMORY[0x277D85DD0];
     v265[1] = 3221225472;
     v265[2] = __58__SMSuggestionsManager__suppressSuggestion_context_error___block_invoke_503;
@@ -8641,7 +8641,7 @@ LABEL_115:
     v268 = &v287;
     v204 = v197;
     v266 = v204;
-    [v203 fetchSessionConfigurationsWithOptions:v252 handler:v265];
+    [sessionStore fetchSessionConfigurationsWithOptions:v252 handler:v265];
 
     v205 = v204;
     v206 = [MEMORY[0x277CBEAA8] now];
@@ -8653,11 +8653,11 @@ LABEL_115:
       v209 = v208;
       v247 = objc_opt_new();
       v210 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v211 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v212 = [v211 filteredArrayUsingPredicate:v210];
-      v213 = [v212 firstObject];
+      callStackSymbols4 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v212 = [callStackSymbols4 filteredArrayUsingPredicate:v210];
+      firstObject4 = [v212 firstObject];
 
-      [v247 submitToCoreAnalytics:v213 type:1 duration:v209];
+      [v247 submitToCoreAnalytics:firstObject4 type:1 duration:v209];
       v214 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v214, OS_LOG_TYPE_FAULT))
       {
@@ -8693,7 +8693,7 @@ LABEL_115:
     {
       v222 = *(*&buf[8] + 40);
       v264 = 0;
-      v243 = [(SMSuggestionsManager *)self _isSessionConfigurationSimilarToTheSuggestion:v8 sessionConfiguration:v222 error:&v264];
+      v243 = [(SMSuggestionsManager *)self _isSessionConfigurationSimilarToTheSuggestion:suggestionCopy sessionConfiguration:v222 error:&v264];
       objc_storeStrong(v220 + 5, v264);
       v221 = v288[5] == 0 && !v243;
       goto LABEL_184;
@@ -8708,7 +8708,7 @@ LABEL_184:
   }
 
   while (v221);
-  if (a5 && v288[5])
+  if (error && v288[5])
   {
     v223 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v223, OS_LOG_TYPE_ERROR))
@@ -8722,14 +8722,14 @@ LABEL_184:
       *&buf[12] = 2112;
       *&buf[14] = v240;
       *&buf[22] = 2112;
-      v300 = v241;
+      suggestionUserType = v241;
       _os_log_error_impl(&dword_2304B3000, v223, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
     v164 = v288[5];
 LABEL_192:
     v11 = 0;
-    *a5 = v164;
+    *error = v164;
   }
 
   else
@@ -8754,7 +8754,7 @@ LABEL_192:
 
         *&buf[14] = v227;
         *&buf[22] = 2112;
-        v300 = v229;
+        suggestionUserType = v229;
         _os_log_impl(&dword_2304B3000, v224, OS_LOG_TYPE_INFO, "%@, %@, atleast one previous suggestions is used, %@, ", buf, 0x20u);
       }
     }
@@ -8852,13 +8852,13 @@ void __58__SMSuggestionsManager__suppressSuggestion_context_error___block_invoke
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_isSessionConfigurationSimilarToTheSuggestion:(id)a3 sessionConfiguration:(id)a4 error:(id *)a5
+- (BOOL)_isSessionConfigurationSimilarToTheSuggestion:(id)suggestion sessionConfiguration:(id)configuration error:(id *)error
 {
   v92 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  suggestionCopy = suggestion;
+  configurationCopy = configuration;
+  v11 = configurationCopy;
+  if (!suggestionCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -8873,7 +8873,7 @@ LABEL_18:
     goto LABEL_43;
   }
 
-  if (!v10)
+  if (!configurationCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -8886,12 +8886,12 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v12 = [(SMSuggestionsManager *)self distanceCalculator];
-  v13 = [v9 destinationLocation];
-  v14 = [v11 destination];
-  v15 = [v14 location];
+  distanceCalculator = [(SMSuggestionsManager *)self distanceCalculator];
+  destinationLocation = [suggestionCopy destinationLocation];
+  destination = [v11 destination];
+  location = [destination location];
   v79 = 0;
-  [v12 distanceFromLocation:v13 toLocation:v15 error:&v79];
+  [distanceCalculator distanceFromLocation:destinationLocation toLocation:location error:&v79];
   v17 = v16;
   v18 = v79;
 
@@ -8905,7 +8905,7 @@ LABEL_18:
         v45 = objc_opt_class();
         v46 = NSStringFromClass(v45);
         v47 = NSStringFromSelector(a2);
-        v73 = a5;
+        errorCopy = error;
         if (v17 == 1.79769313e308)
         {
           v48 = @"DBL_MAX";
@@ -8916,9 +8916,9 @@ LABEL_18:
           v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.3f", *&v17];
         }
 
-        v57 = [v9 destinationLocation];
-        v58 = [v11 destination];
-        v59 = [v58 location];
+        destinationLocation2 = [suggestionCopy destinationLocation];
+        destination2 = [v11 destination];
+        location2 = [destination2 location];
         *buf = 138413571;
         v81 = v46;
         v82 = 2112;
@@ -8926,9 +8926,9 @@ LABEL_18:
         v84 = 2112;
         v85 = *&v48;
         v86 = 2117;
-        v87 = v57;
+        v87 = destinationLocation2;
         v88 = 2117;
-        v89 = v59;
+        v89 = location2;
         v90 = 2112;
         v91 = v18;
         _os_log_impl(&dword_2304B3000, v44, OS_LOG_TYPE_INFO, "%@, %@, distance, %@, suggestion.destinationLocation, %{sensitive}@, sessionConfiguration.destination.location, %{sensitive}@, error, %@", buf, 0x3Eu);
@@ -8937,15 +8937,15 @@ LABEL_18:
         {
         }
 
-        a5 = v73;
+        error = errorCopy;
       }
     }
 
-    if (a5)
+    if (error)
     {
       v60 = v18;
       v42 = 0;
-      *a5 = v18;
+      *error = v18;
       goto LABEL_44;
     }
 
@@ -8956,33 +8956,33 @@ LABEL_43:
 
   aSelector = a2;
   v19 = MEMORY[0x277D1A968];
-  v20 = [v9 buddy];
-  v21 = [v20 phoneNumber];
-  v22 = [v19 validateAndCleanupID:v21];
+  buddy = [suggestionCopy buddy];
+  phoneNumber = [buddy phoneNumber];
+  v22 = [v19 validateAndCleanupID:phoneNumber];
   v23 = MEMORY[0x277D1A968];
-  v77 = [v11 conversation];
-  v76 = [v77 receiverHandles];
-  v75 = [v76 firstObject];
-  v24 = [v75 primaryHandle];
-  v25 = [v23 validateAndCleanupID:v24];
+  conversation = [v11 conversation];
+  receiverHandles = [conversation receiverHandles];
+  firstObject = [receiverHandles firstObject];
+  primaryHandle = [firstObject primaryHandle];
+  v25 = [v23 validateAndCleanupID:primaryHandle];
   v74 = @"YES";
   if (([v22 isEqualToString:v25] & 1) == 0)
   {
-    v70 = v20;
+    v70 = buddy;
     v26 = MEMORY[0x277D1A968];
-    v67 = [v9 buddy];
-    v66 = [v67 email];
-    [v26 validateAndCleanupID:v66];
+    buddy2 = [suggestionCopy buddy];
+    email = [buddy2 email];
+    [v26 validateAndCleanupID:email];
     v27 = v65 = self;
-    v69 = v21;
+    v69 = phoneNumber;
     v28 = MEMORY[0x277D1A968];
     [v11 conversation];
     v29 = v68 = v22;
-    v30 = [v29 receiverHandles];
-    [v30 firstObject];
-    v31 = v72 = a5;
-    v32 = [v31 primaryHandle];
-    v33 = [v28 validateAndCleanupID:v32];
+    receiverHandles2 = [v29 receiverHandles];
+    [receiverHandles2 firstObject];
+    v31 = v72 = error;
+    primaryHandle2 = [v31 primaryHandle];
+    v33 = [v28 validateAndCleanupID:primaryHandle2];
     v34 = [v27 isEqualToString:v33];
     v35 = @"NO";
     if (v34)
@@ -8992,22 +8992,22 @@ LABEL_43:
 
     v74 = v35;
 
-    v21 = v69;
-    a5 = v72;
+    phoneNumber = v69;
+    error = v72;
 
-    v20 = v70;
+    buddy = v70;
     v22 = v68;
 
     self = v65;
   }
 
-  v36 = [v9 sessionType];
-  v37 = [v11 sessionType];
+  sessionType = [suggestionCopy sessionType];
+  sessionType2 = [v11 sessionType];
   v78 = 0;
   v38 = [(SMSuggestionsManager *)self _getValuesFromDefaultsIfExists:@"RTDefaultsSuggestionDestinationSimilarityRadiusToSessionConfiguration" error:&v78];
   v39 = v78;
   v18 = v39;
-  if (a5 && v39)
+  if (error && v39)
   {
     v40 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -9026,7 +9026,7 @@ LABEL_43:
 
     v41 = v18;
     v42 = 0;
-    *a5 = v18;
+    *error = v18;
   }
 
   else
@@ -9043,7 +9043,7 @@ LABEL_43:
         *buf = 138413570;
         v54 = @"NO";
         v81 = v51;
-        if (v36 == v37)
+        if (sessionType == sessionType2)
         {
           v54 = @"YES";
         }
@@ -9063,7 +9063,7 @@ LABEL_43:
     }
 
     [v38 doubleValue];
-    v42 = v17 <= v55 && v36 == v37;
+    v42 = v17 <= v55 && sessionType == sessionType2;
   }
 
 LABEL_44:
@@ -9081,49 +9081,49 @@ LABEL_44:
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = NSStringFromSelector(a2);
-      v12 = [(SMSuggestionsManager *)self messagingService];
-      v13 = [v12 effectivePairedDevice];
+      messagingService = [(SMSuggestionsManager *)self messagingService];
+      effectivePairedDevice = [messagingService effectivePairedDevice];
       v14 = 138412802;
       v15 = v10;
       v16 = 2112;
       v17 = v11;
       v18 = 1024;
-      v19 = [v13 isNearby];
+      isNearby = [effectivePairedDevice isNearby];
       _os_log_debug_impl(&dword_2304B3000, v4, OS_LOG_TYPE_DEBUG, "%@, %@, self.messagingService.effectivePairedDevice.nearby %d", &v14, 0x1Cu);
     }
   }
 
-  v5 = [(SMSuggestionsManager *)self messagingService];
-  v6 = [v5 effectivePairedDevice];
-  v7 = [v6 isNearby];
+  messagingService2 = [(SMSuggestionsManager *)self messagingService];
+  effectivePairedDevice2 = [messagingService2 effectivePairedDevice];
+  isNearby2 = [effectivePairedDevice2 isNearby];
 
-  return v7;
+  return isNearby2;
 }
 
-- (void)fetchSuggestedSessionConfigurationWithHandler:(id)a3
+- (void)fetchSuggestedSessionConfigurationWithHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v10 = 0;
     v5 = [(SMSuggestionsManager *)self isZelkovaSuggestionsFeatureEnabledWithError:&v10];
     v6 = v10;
     if (v5)
     {
-      v7 = [(RTNotifier *)self queue];
+      queue = [(RTNotifier *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __70__SMSuggestionsManager_fetchSuggestedSessionConfigurationWithHandler___block_invoke;
       block[3] = &unk_2788C4938;
       block[4] = self;
-      v9 = v4;
-      dispatch_async(v7, block);
+      v9 = handlerCopy;
+      dispatch_async(queue, block);
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0, v6);
+      (*(handlerCopy + 2))(handlerCopy, 0, v6);
     }
   }
 
@@ -9141,11 +9141,11 @@ LABEL_44:
   }
 }
 
-- (void)_fetchSuggestedSessionConfigurationWithHandler:(id)a3
+- (void)_fetchSuggestedSessionConfigurationWithHandler:(id)handler
 {
   v195[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v173 = 0;
     v174 = &v173;
@@ -9159,8 +9159,8 @@ LABEL_44:
     v6 = (v174 + 5);
     if (v174[5])
     {
-      v5[2](v5, 0);
-      v7 = 0;
+      handlerCopy[2](handlerCopy, 0);
+      firstObject = 0;
 LABEL_53:
       _Block_object_dispose(&v173, 8);
 
@@ -9172,8 +9172,8 @@ LABEL_53:
     objc_storeStrong(v6, v171);
     if (v174[5])
     {
-      v5[2](v5, 0);
-      v7 = 0;
+      handlerCopy[2](handlerCopy, 0);
+      firstObject = 0;
 LABEL_52:
 
       goto LABEL_53;
@@ -9198,9 +9198,9 @@ LABEL_52:
       }
     }
 
-    v146 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     [v8 doubleValue];
-    v145 = [v146 dateByAddingTimeInterval:-v14];
+    v145 = [date dateByAddingTimeInterval:-v14];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -9209,20 +9209,20 @@ LABEL_52:
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
         v18 = NSStringFromSelector(a2);
-        v19 = [v145 stringFromDate];
+        stringFromDate = [v145 stringFromDate];
         [v8 doubleValue];
         v21 = v20;
-        v22 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+        latestLocationOfTheDevice = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
         *buf = 138413315;
         *&buf[4] = v17;
         *&buf[12] = 2112;
         *&buf[14] = v18;
         *&buf[22] = 2112;
-        v193 = v19;
+        v193 = stringFromDate;
         *v194 = 2048;
         *&v194[2] = v21 + v21;
         *&v194[10] = 2117;
-        *&v194[12] = v22;
+        *&v194[12] = latestLocationOfTheDevice;
         _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, %@, fetching config from last session around currentDateMinusBufferTime, %@, timeIntervalWindow, %.3f, location, %{sensitive}@", buf, 0x34u);
       }
     }
@@ -9233,8 +9233,8 @@ LABEL_52:
     objc_storeStrong(v23, v170);
     if (v174[5])
     {
-      v5[2](v5, 0);
-      v7 = 0;
+      handlerCopy[2](handlerCopy, 0);
+      firstObject = 0;
 LABEL_51:
 
       goto LABEL_52;
@@ -9264,8 +9264,8 @@ LABEL_51:
     [v8 doubleValue];
     v33 = [v31 initWithStartDate:v145 duration:v32 + v32];
     v34 = objc_alloc(MEMORY[0x277CE41F8]);
-    v35 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
-    v36 = [v34 initWithRTLocation:v35];
+    latestLocationOfTheDevice2 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+    v36 = [v34 initWithRTLocation:latestLocationOfTheDevice2];
     LOBYTE(v127) = 1;
     v144 = [v30 initWithBatchSize:*MEMORY[0x277D4AF00] fetchLimit:1 sortBySessionStartDate:1 ascending:0 sessionTypes:0 timeInADayInterval:v33 pickOneConfigInTimeInADayInterval:v127 dateInterval:0 startBoundingBoxLocation:v36 destinationBoundingBoxLocation:0 boundingBoxRadius:v24 sessionIdentifier:0];
 
@@ -9275,8 +9275,8 @@ LABEL_51:
     objc_storeStrong(v37, v169);
     if (v174[5])
     {
-      v5[2](v5, 0);
-      v7 = 0;
+      handlerCopy[2](handlerCopy, 0);
+      firstObject = 0;
 LABEL_50:
 
       goto LABEL_51;
@@ -9303,7 +9303,7 @@ LABEL_50:
 
     if ([v143 count])
     {
-      v7 = [v143 firstObject];
+      firstObject = [v143 firstObject];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v43 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -9317,12 +9317,12 @@ LABEL_50:
           *&buf[12] = 2112;
           *&buf[14] = v46;
           *&buf[22] = 2112;
-          v193 = v7;
+          v193 = firstObject;
           _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "%@, %@, suggested config, %@", buf, 0x20u);
         }
       }
 
-      (v5[2])(v5, v7, 0);
+      (handlerCopy[2])(handlerCopy, firstObject, 0);
       goto LABEL_50;
     }
 
@@ -9359,7 +9359,7 @@ LABEL_50:
     v162[1] = v162;
     v162[2] = 0x2020000000;
     v162[3] = 0;
-    v52 = [(SMSuggestionsManager *)self suggestionsHelper];
+    suggestionsHelper = [(SMSuggestionsManager *)self suggestionsHelper];
     v156[0] = MEMORY[0x277D85DD0];
     v156[1] = 3221225472;
     v156[2] = __71__SMSuggestionsManager__fetchSuggestedSessionConfigurationWithHandler___block_invoke;
@@ -9370,7 +9370,7 @@ LABEL_50:
     v161 = &v173;
     v53 = v51;
     v157 = v53;
-    [v52 fetchMostLikelySessionDestinationsWithHandler:v156];
+    [suggestionsHelper fetchMostLikelySessionDestinationsWithHandler:v156];
 
     dsema = v53;
     v54 = [MEMORY[0x277CBEAA8] now];
@@ -9382,11 +9382,11 @@ LABEL_50:
       v57 = v56;
       v131 = objc_opt_new();
       v134 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v58 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v59 = [v58 filteredArrayUsingPredicate:v134];
-      v60 = [v59 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v59 = [callStackSymbols filteredArrayUsingPredicate:v134];
+      firstObject2 = [v59 firstObject];
 
-      [v131 submitToCoreAnalytics:v60 type:1 duration:v57];
+      [v131 submitToCoreAnalytics:firstObject2 type:1 duration:v57];
       v61 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v61, OS_LOG_TYPE_FAULT))
       {
@@ -9415,9 +9415,9 @@ LABEL_50:
     if (v66)
     {
       v67 = v66;
-      (v5[2])(v5, 0, v66);
+      (handlerCopy[2])(handlerCopy, 0, v66);
 LABEL_48:
-      v7 = 0;
+      firstObject = 0;
 LABEL_49:
 
       _Block_object_dispose(v162, 8);
@@ -9429,7 +9429,7 @@ LABEL_49:
 
     if (v174[5])
     {
-      v5[2](v5, 0);
+      handlerCopy[2](handlerCopy, 0);
       v67 = 0;
       goto LABEL_48;
     }
@@ -9461,7 +9461,7 @@ LABEL_49:
     v189 = __Block_byref_object_copy__119;
     v190 = __Block_byref_object_dispose__119;
     v191 = 0;
-    v74 = [(SMSuggestionsManager *)self suggestionsHelper];
+    suggestionsHelper2 = [(SMSuggestionsManager *)self suggestionsHelper];
     v152[0] = MEMORY[0x277D85DD0];
     v152[1] = 3221225472;
     v152[2] = __71__SMSuggestionsManager__fetchSuggestedSessionConfigurationWithHandler___block_invoke_515;
@@ -9470,7 +9470,7 @@ LABEL_49:
     v155 = &v173;
     v75 = v73;
     v153 = v75;
-    [v74 fetchMostLikelyReceiverHandlesWithHandler:v152];
+    [suggestionsHelper2 fetchMostLikelyReceiverHandlesWithHandler:v152];
 
     dsema = v75;
     v76 = [MEMORY[0x277CBEAA8] now];
@@ -9482,11 +9482,11 @@ LABEL_49:
       v79 = v78;
       v132 = objc_opt_new();
       v135 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v80 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v81 = [v80 filteredArrayUsingPredicate:v135];
-      v82 = [v81 firstObject];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v81 = [callStackSymbols2 filteredArrayUsingPredicate:v135];
+      firstObject3 = [v81 firstObject];
 
-      [v132 submitToCoreAnalytics:v82 type:1 duration:v79];
+      [v132 submitToCoreAnalytics:firstObject3 type:1 duration:v79];
       v83 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v83, OS_LOG_TYPE_FAULT))
       {
@@ -9515,8 +9515,8 @@ LABEL_49:
     v133 = v88;
     if (v88 || (v88 = v174[5]) != 0)
     {
-      (v5[2])(v5, 0, v88);
-      v7 = 0;
+      (handlerCopy[2])(handlerCopy, 0, v88);
+      firstObject = 0;
 LABEL_68:
 
       _Block_object_dispose(v188, 8);
@@ -9571,7 +9571,7 @@ LABEL_75:
         objc_storeStrong(v98, v147);
         if (v174[5])
         {
-          v5[2](v5, 0);
+          handlerCopy[2](handlerCopy, 0);
           v100 = 0;
           v99 = 1;
         }
@@ -9610,7 +9610,7 @@ LABEL_75:
 
       if (v99 != 6 && v99)
       {
-        v7 = 0;
+        firstObject = 0;
         goto LABEL_110;
       }
     }
@@ -9623,7 +9623,7 @@ LABEL_91:
 
     if (v129 && [v164[5] count])
     {
-      v102 = [v164[5] firstObject];
+      firstObject4 = [v164[5] firstObject];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v103 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -9632,7 +9632,7 @@ LABEL_91:
           v104 = objc_opt_class();
           v105 = NSStringFromClass(v104);
           v106 = NSStringFromSelector(a2);
-          v107 = [v102 referenceLocation];
+          referenceLocation = [firstObject4 referenceLocation];
           *v180 = 138413059;
           *&v180[4] = v105;
           v181 = 2112;
@@ -9640,19 +9640,19 @@ LABEL_91:
           v183 = 2112;
           v184 = v129;
           v185 = 2117;
-          v186 = v107;
+          v186 = referenceLocation;
           _os_log_impl(&dword_2304B3000, v103, OS_LOG_TYPE_INFO, "%@, %@, creating session config using handle, %@, destination location, %{sensitive}@", v180, 0x2Au);
         }
       }
 
       v108 = objc_alloc(MEMORY[0x277CE41F8]);
-      v109 = [v102 referenceLocation];
-      v141 = [v108 initWithRTLocation:v109];
+      referenceLocation2 = [firstObject4 referenceLocation];
+      v141 = [v108 initWithRTLocation:referenceLocation2];
 
       v110 = objc_alloc(MEMORY[0x277D4AB88]);
-      v111 = [v102 mapItem];
-      v112 = [v111 geoMapItemHandle];
-      v137 = [v110 initWithCLLocation:v141 eta:0 radius:0 destinationType:v112 destinationMapItem:-1.0];
+      mapItem = [firstObject4 mapItem];
+      geoMapItemHandle = [mapItem geoMapItemHandle];
+      v137 = [v110 initWithCLLocation:v141 eta:0 radius:0 destinationType:geoMapItemHandle destinationMapItem:-1.0];
 
       v113 = objc_alloc(MEMORY[0x277D4AA98]);
       v179 = v129;
@@ -9660,16 +9660,16 @@ LABEL_91:
       v115 = [v113 initWithReceiverHandles:v114 identifier:0 displayName:0];
 
       v116 = objc_alloc(MEMORY[0x277D4AB78]);
-      v117 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       LOBYTE(v128) = [MEMORY[0x277D4AAE0] zelkovaHandoffEnabled];
-      v7 = [v116 initWithConversation:v115 sessionID:v117 sessionStartDate:0 sessionType:2 time:0 destination:v137 userResponseSafeDate:0 sessionSupportsHandoff:v128 sosReceivers:v115 sessionWorkoutIdentifier:0 sessionWorkoutType:0 sessionWorkoutMirrorType:0];
+      firstObject = [v116 initWithConversation:v115 sessionID:uUID sessionStartDate:0 sessionType:2 time:0 destination:v137 userResponseSafeDate:0 sessionSupportsHandoff:v128 sosReceivers:v115 sessionWorkoutIdentifier:0 sessionWorkoutType:0 sessionWorkoutMirrorType:0];
     }
 
     else
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
-        v7 = 0;
+        firstObject = 0;
 LABEL_105:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -9684,19 +9684,19 @@ LABEL_105:
             v181 = 2112;
             v182 = v126;
             v183 = 2112;
-            v184 = v7;
+            v184 = firstObject;
             _os_log_impl(&dword_2304B3000, v123, OS_LOG_TYPE_INFO, "%@, %@, suggested config, %@", v180, 0x20u);
           }
         }
 
-        (v5[2])(v5, v7, 0);
+        (handlerCopy[2])(handlerCopy, firstObject, 0);
 LABEL_110:
 
         goto LABEL_68;
       }
 
-      v102 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-      if (os_log_type_enabled(v102, OS_LOG_TYPE_INFO))
+      firstObject4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+      if (os_log_type_enabled(firstObject4, OS_LOG_TYPE_INFO))
       {
         v118 = objc_opt_class();
         v119 = NSStringFromClass(v118);
@@ -9711,23 +9711,23 @@ LABEL_110:
         v184 = v121;
         v185 = 2048;
         v186 = v122;
-        _os_log_impl(&dword_2304B3000, v102, OS_LOG_TYPE_INFO, "%@, %@, session config could not be created, likely handles count, %lu, likely destinations count, %lu", v180, 0x2Au);
+        _os_log_impl(&dword_2304B3000, firstObject4, OS_LOG_TYPE_INFO, "%@, %@, session config could not be created, likely handles count, %lu, likely destinations count, %lu", v180, 0x2Au);
       }
 
-      v7 = 0;
+      firstObject = 0;
     }
 
     goto LABEL_105;
   }
 
-  v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  firstObject = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     *&buf[4] = "[SMSuggestionsManager _fetchSuggestedSessionConfigurationWithHandler:]";
     *&buf[12] = 1024;
     *&buf[14] = 2936;
-    _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
+    _os_log_error_impl(&dword_2304B3000, firstObject, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
   }
 
 LABEL_54:
@@ -9774,11 +9774,11 @@ void __71__SMSuggestionsManager__fetchSuggestedSessionConfigurationWithHandler__
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler:(id)a3
+- (void)fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -9799,9 +9799,9 @@ void __71__SMSuggestionsManager__fetchSuggestedSessionConfigurationWithHandler__
     v8 = *MEMORY[0x277D4ACD0];
     v16 = *MEMORY[0x277CCA450];
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277D4AAE0] zelkovaWorkoutEnabled];
+    zelkovaWorkoutEnabled = [MEMORY[0x277D4AAE0] zelkovaWorkoutEnabled];
     v11 = @"NO";
-    if (v10)
+    if (zelkovaWorkoutEnabled)
     {
       v11 = @"YES";
     }
@@ -9811,33 +9811,33 @@ void __71__SMSuggestionsManager__fetchSuggestedSessionConfigurationWithHandler__
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v6 = [v7 errorWithDomain:v8 code:13 userInfo:v13];
 
-    v4[2](v4, 0, v6);
+    handlerCopy[2](handlerCopy, 0, v6);
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v5 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__SMSuggestionsManager_fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler___block_invoke;
   block[3] = &unk_2788C4938;
   block[4] = self;
-  v15 = v4;
-  dispatch_async(v5, block);
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 
 LABEL_10:
 }
 
-- (void)_fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler:(id)a3
+- (void)_fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler:(id)handler
 {
   v94 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMSuggestionsManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsWorkoutOngoing"];
-  v7 = [v6 BOOLValue];
+  handlerCopy = handler;
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsWorkoutOngoing"];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v11 = MEMORY[0x277CCA9B8];
     v90 = *MEMORY[0x277CCA450];
@@ -9845,7 +9845,7 @@ LABEL_10:
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
     v10 = [v11 errorWithDomain:*MEMORY[0x277D4ACD0] code:11 userInfo:v12];
 
-    v4[2](v4, 0, v10);
+    handlerCopy[2](handlerCopy, 0, v10);
     goto LABEL_18;
   }
 
@@ -9862,7 +9862,7 @@ LABEL_10:
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
       v15 = [v13 errorWithDomain:*MEMORY[0x277D4ACD0] code:11 userInfo:v14];
 
-      v4[2](v4, 0, v15);
+      handlerCopy[2](handlerCopy, 0, v15);
 LABEL_17:
       v10 = 0;
       goto LABEL_18;
@@ -9870,8 +9870,8 @@ LABEL_17:
 
     v16 = objc_alloc(MEMORY[0x277D4AC18]);
     v17 = objc_alloc(MEMORY[0x277CCA970]);
-    v18 = [MEMORY[0x277CBEAA8] date];
-    v19 = [v18 dateByAddingTimeInterval:-604800.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v19 = [date dateByAddingTimeInterval:-604800.0];
     v20 = [v17 initWithStartDate:v19 duration:604800.0];
     v62 = [v16 initWithBatchSize:*MEMORY[0x277D4AF10] fetchLimit:1 offset:*MEMORY[0x277D4AF10] includeSuppressed:1 sortByCreationDate:1 ascending:0 dateInterval:v20 filteredToSuggestionTriggers:&unk_2845A1460 filteredToSuggestionUserTypes:&unk_2845A1478 filteredToSessionTypes:0];
 
@@ -9888,7 +9888,7 @@ LABEL_17:
     v76 = __Block_byref_object_dispose__119;
     v77 = 0;
     v21 = dispatch_semaphore_create(0);
-    v22 = [(SMSuggestionsManager *)self suggestionsStore];
+    suggestionsStore = [(SMSuggestionsManager *)self suggestionsStore];
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __81__SMSuggestionsManager__fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler___block_invoke;
@@ -9897,7 +9897,7 @@ LABEL_17:
     v71 = &v72;
     v23 = v21;
     v69 = v23;
-    [v22 fetchSuggestionsWithOptions:v62 handler:v68];
+    [suggestionsStore fetchSuggestionsWithOptions:v62 handler:v68];
 
     v24 = v23;
     v25 = [MEMORY[0x277CBEAA8] now];
@@ -9909,11 +9909,11 @@ LABEL_17:
       v29 = v28;
       v30 = objc_opt_new();
       v31 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v32 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v33 = [v32 filteredArrayUsingPredicate:v31];
-      v34 = [v33 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v33 = [callStackSymbols filteredArrayUsingPredicate:v31];
+      firstObject = [v33 firstObject];
 
-      [v30 submitToCoreAnalytics:v34 type:1 duration:v29];
+      [v30 submitToCoreAnalytics:firstObject type:1 duration:v29];
       v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
       {
@@ -9942,7 +9942,7 @@ LABEL_17:
     v41 = v40;
     if (v40 || (v41 = v73[5]) != 0)
     {
-      v4[2](v4, 0, v41);
+      handlerCopy[2](handlerCopy, 0, v41);
 LABEL_16:
 
       _Block_object_dispose(&v72, 8);
@@ -9951,60 +9951,60 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v42 = [v79[5] firstObject];
-    if ([v42 isSuppressed] && objc_msgSend(v42, "suppressionReason") != 12 && objc_msgSend(v42, "suppressionReason") != 11)
+    firstObject2 = [v79[5] firstObject];
+    if ([firstObject2 isSuppressed] && objc_msgSend(firstObject2, "suppressionReason") != 12 && objc_msgSend(firstObject2, "suppressionReason") != 11)
     {
       v57 = MEMORY[0x277CCA9B8];
       v86 = *MEMORY[0x277CCA450];
       v58 = MEMORY[0x277CCACA8];
-      v59 = [MEMORY[0x277D4AC10] stringFromSMSuggestionSuppressionReason:{objc_msgSend(v42, "suppressionReason")}];
+      v59 = [MEMORY[0x277D4AC10] stringFromSMSuggestionSuppressionReason:{objc_msgSend(firstObject2, "suppressionReason")}];
       v60 = [v58 stringWithFormat:@"Suggestion is not eligible to be shown due to %@", v59];
       v87 = v60;
       v61 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-      v50 = [v57 errorWithDomain:*MEMORY[0x277D4ACD0] code:1 userInfo:v61];
+      phoneNumber = [v57 errorWithDomain:*MEMORY[0x277D4ACD0] code:1 userInfo:v61];
 
-      v4[2](v4, 0, v50);
+      handlerCopy[2](handlerCopy, 0, phoneNumber);
       goto LABEL_30;
     }
 
-    v43 = [v42 buddy];
-    v44 = [v43 email];
+    buddy = [firstObject2 buddy];
+    email = [buddy email];
 
-    if (v44)
+    if (email)
     {
       v45 = objc_alloc(MEMORY[0x277D4AAE8]);
-      v46 = [v42 buddy];
-      v47 = [v46 email];
-      v48 = [v45 initWithPrimaryHandle:v47 secondaryHandles:MEMORY[0x277CBEBF8]];
+      buddy2 = [firstObject2 buddy];
+      email2 = [buddy2 email];
+      v48 = [v45 initWithPrimaryHandle:email2 secondaryHandles:MEMORY[0x277CBEBF8]];
     }
 
     else
     {
-      v49 = [v42 buddy];
-      v50 = [v49 phoneNumber];
+      buddy3 = [firstObject2 buddy];
+      phoneNumber = [buddy3 phoneNumber];
 
-      if (!v50)
+      if (!phoneNumber)
       {
         goto LABEL_28;
       }
 
       v51 = objc_alloc(MEMORY[0x277D4AAE8]);
-      v46 = [v42 buddy];
-      v47 = [v46 phoneNumber];
-      v48 = [v51 initWithPrimaryHandle:v47 secondaryHandles:MEMORY[0x277CBEBF8]];
+      buddy2 = [firstObject2 buddy];
+      email2 = [buddy2 phoneNumber];
+      v48 = [v51 initWithPrimaryHandle:email2 secondaryHandles:MEMORY[0x277CBEBF8]];
     }
 
-    v50 = v48;
+    phoneNumber = v48;
 
-    if (v50)
+    if (phoneNumber)
     {
       v52 = objc_alloc(MEMORY[0x277D4AA98]);
-      v85 = v50;
+      v85 = phoneNumber;
       v53 = [MEMORY[0x277CBEA60] arrayWithObjects:&v85 count:1];
       v54 = [v52 initWithReceiverHandles:v53 identifier:0 displayName:0];
 
 LABEL_29:
-      v55 = [(SMSuggestionsManager *)self healthKitManager];
+      healthKitManager = [(SMSuggestionsManager *)self healthKitManager];
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = 3221225472;
       v63[2] = __81__SMSuggestionsManager__fetchSuggestedCheckInURLForWorkoutSuggestionWithHandler___block_invoke_2;
@@ -10012,10 +10012,10 @@ LABEL_29:
       v63[4] = self;
       v56 = v54;
       v64 = v56;
-      v65 = v42;
+      v65 = firstObject2;
       v67 = &v72;
-      v66 = v4;
-      [v55 fetchMostRecentWorkoutInfoWithHandler:v63];
+      v66 = handlerCopy;
+      [healthKitManager fetchMostRecentWorkoutInfoWithHandler:v63];
 
 LABEL_30:
       goto LABEL_16;
@@ -10027,7 +10027,7 @@ LABEL_28:
   }
 
   v10 = v9;
-  v4[2](v4, 0, v9);
+  handlerCopy[2](handlerCopy, 0, v9);
 LABEL_18:
 }
 
@@ -10087,15 +10087,15 @@ void __81__SMSuggestionsManager__fetchSuggestedCheckInURLForWorkoutSuggestionWit
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)launchSessionInitiationUIWithConfiguration:(id)a3 handler:(id)a4
+- (void)launchSessionInitiationUIWithConfiguration:(id)configuration handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (configurationCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
 LABEL_3:
       v16 = 0;
@@ -10103,15 +10103,15 @@ LABEL_3:
       v10 = v16;
       if (v9)
       {
-        v11 = [(RTNotifier *)self queue];
+        queue = [(RTNotifier *)self queue];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __75__SMSuggestionsManager_launchSessionInitiationUIWithConfiguration_handler___block_invoke;
         v13[3] = &unk_2788C4500;
         v13[4] = self;
-        v14 = v6;
+        v14 = configurationCopy;
         v15 = v8;
-        dispatch_async(v11, v13);
+        dispatch_async(queue, v13);
       }
 
       else
@@ -10154,12 +10154,12 @@ LABEL_3:
 LABEL_11:
 }
 
-- (void)_launchSessionInitiationUIWithConfiguration:(id)a3 handler:(id)a4
+- (void)_launchSessionInitiationUIWithConfiguration:(id)configuration handler:(id)handler
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -10174,25 +10174,25 @@ LABEL_11:
         v51 = 2112;
         v52 = v12;
         v53 = 2117;
-        v54 = v7;
+        v54 = configurationCopy;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, %@, launching message extension with configuration, %{sensitive}@", buf, 0x20u);
       }
     }
 
     v13 = dispatch_semaphore_create(0);
     v49 = 0;
-    v14 = [(SMSuggestionsManager *)self _getMessagesURLFromSessionConfig:v7 payloadType:2 error:&v49];
+    v14 = [(SMSuggestionsManager *)self _getMessagesURLFromSessionConfig:configurationCopy payloadType:2 error:&v49];
     v15 = v49;
     if (v15)
     {
-      v8[2](v8, v15);
+      handlerCopy[2](handlerCopy, v15);
     }
 
     else
     {
-      v16 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v45 = v14;
-      v17 = [v16 operationToOpenResource:v14 usingApplication:*MEMORY[0x277D4AD98] userInfo:0];
+      v17 = [defaultWorkspace operationToOpenResource:v14 usingApplication:*MEMORY[0x277D4AD98] userInfo:0];
 
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
@@ -10216,12 +10216,12 @@ LABEL_11:
         v23 = v22;
         v24 = objc_opt_new();
         v25 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-        v26 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v27 = [v26 filteredArrayUsingPredicate:v25];
-        v28 = [v27 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v27 = [callStackSymbols filteredArrayUsingPredicate:v25];
+        firstObject = [v27 firstObject];
 
         v40 = v24;
-        [v24 submitToCoreAnalytics:v28 type:1 duration:v23];
+        [v24 submitToCoreAnalytics:firstObject type:1 duration:v23];
         v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
         {
@@ -10256,7 +10256,7 @@ LABEL_11:
       v35 = v33;
       if (v35)
       {
-        v8[2](v8, v35);
+        handlerCopy[2](handlerCopy, v35);
       }
 
       else
@@ -10277,7 +10277,7 @@ LABEL_11:
           }
         }
 
-        v8[2](v8, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
   }
@@ -10296,18 +10296,18 @@ LABEL_11:
   }
 }
 
-- (void)fetchShouldShowProactiveSuggestionsWithHandler:(id)a3
+- (void)fetchShouldShowProactiveSuggestionsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SMSuggestionsManager_fetchShouldShowProactiveSuggestionsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __71__SMSuggestionsManager_fetchShouldShowProactiveSuggestionsWithHandler___block_invoke(uint64_t a1)
@@ -10368,11 +10368,11 @@ LABEL_11:
   return v3;
 }
 
-- (void)showSuggestionsDetectionUIWithSuggestion:(id)a3 handler:(id)a4
+- (void)showSuggestionsDetectionUIWithSuggestion:(id)suggestion handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  suggestionCopy = suggestion;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -10385,21 +10385,21 @@ LABEL_11:
     objc_storeStrong(&v20, obj);
     if (v8)
     {
-      v9 = [(RTNotifier *)self queue];
+      queue = [(RTNotifier *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __73__SMSuggestionsManager_showSuggestionsDetectionUIWithSuggestion_handler___block_invoke;
       block[3] = &unk_2788CE260;
       block[4] = self;
-      v11 = v6;
+      v11 = suggestionCopy;
       v13 = &v15;
-      v12 = v7;
-      dispatch_async(v9, block);
+      v12 = handlerCopy;
+      dispatch_async(queue, block);
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, v16[5]);
+      (*(handlerCopy + 2))(handlerCopy, 0, v16[5]);
     }
 
     _Block_object_dispose(&v15, 8);
@@ -10417,15 +10417,15 @@ uint64_t __73__SMSuggestionsManager_showSuggestionsDetectionUIWithSuggestion_han
   return (*(a1[6] + 16))();
 }
 
-- (void)shouldShowKeyboardSuggestionsForInitiator:(id)a3 receiver:(id)a4 handler:(id)a5
+- (void)shouldShowKeyboardSuggestionsForInitiator:(id)initiator receiver:(id)receiver handler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  initiatorCopy = initiator;
+  receiverCopy = receiver;
+  handlerCopy = handler;
+  if (initiatorCopy)
   {
-    if (v9)
+    if (receiverCopy)
     {
       goto LABEL_3;
     }
@@ -10443,10 +10443,10 @@ uint64_t __73__SMSuggestionsManager_showSuggestionsDetectionUIWithSuggestion_han
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: initiator (in %s:%d)", buf, 0x12u);
     }
 
-    if (v9)
+    if (receiverCopy)
     {
 LABEL_3:
-      if (v10)
+      if (handlerCopy)
       {
         goto LABEL_14;
       }
@@ -10465,7 +10465,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: receiver (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
 LABEL_11:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -10485,33 +10485,33 @@ LABEL_14:
   v15 = v21;
   if (v14)
   {
-    v16 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__SMSuggestionsManager_shouldShowKeyboardSuggestionsForInitiator_receiver_handler___block_invoke;
     block[3] = &unk_2788C5530;
     block[4] = self;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
-    dispatch_async(v16, block);
+    v18 = initiatorCopy;
+    v19 = receiverCopy;
+    v20 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 
-- (void)_shouldShowKeyboardSuggestionsForInitiator:(id)a3 receiver:(id)a4 handler:(id)a5
+- (void)_shouldShowKeyboardSuggestionsForInitiator:(id)initiator receiver:(id)receiver handler:(id)handler
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  initiatorCopy = initiator;
+  receiverCopy = receiver;
+  handlerCopy = handler;
+  if (initiatorCopy)
   {
-    if (v10)
+    if (receiverCopy)
     {
       goto LABEL_3;
     }
@@ -10529,10 +10529,10 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: initiator (in %s:%d)", buf, 0x12u);
     }
 
-    if (v10)
+    if (receiverCopy)
     {
 LABEL_3:
-      if (v11)
+      if (handlerCopy)
       {
         goto LABEL_4;
       }
@@ -10551,16 +10551,16 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: receiver (in %s:%d)", buf, 0x12u);
   }
 
-  if (v11)
+  if (handlerCopy)
   {
 LABEL_4:
-    if (v9 && ([v9 primaryHandle], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if (initiatorCopy && ([initiatorCopy primaryHandle], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
-      if (v10)
+      if (receiverCopy)
       {
-        v13 = [v10 primaryHandle];
+        primaryHandle = [receiverCopy primaryHandle];
 
-        if (v13)
+        if (primaryHandle)
         {
           v33 = 0;
           v14 = [(SMSuggestionsManager *)self _checkInitiatorEligibilityWithError:&v33];
@@ -10568,7 +10568,7 @@ LABEL_4:
           if (!v15 && v14)
           {
             v32 = 0;
-            v16 = [(SMSuggestionsManager *)self _checkReceiverEligibilityForHandle:v10 error:&v32];
+            v16 = [(SMSuggestionsManager *)self _checkReceiverEligibilityForHandle:receiverCopy error:&v32];
             v15 = v32;
             if (!v15 && v16)
             {
@@ -10577,7 +10577,7 @@ LABEL_4:
               v15 = v31;
               if (!v15 && !v17)
               {
-                v11[2](v11, 1, 0);
+                handlerCopy[2](handlerCopy, 1, 0);
                 goto LABEL_28;
               }
 
@@ -10599,7 +10599,7 @@ LABEL_4:
             }
           }
 
-          (v11)[2](v11, 0, v15);
+          (handlerCopy)[2](handlerCopy, 0, v15);
 LABEL_27:
 
           goto LABEL_28;
@@ -10628,7 +10628,7 @@ LABEL_27:
 
     v15 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:1];
     v26 = [v18 errorWithDomain:v19 code:7 userInfo:v15];
-    (v11)[2](v11, 0, v26);
+    (handlerCopy)[2](handlerCopy, 0, v26);
 
     goto LABEL_27;
   }
@@ -10647,15 +10647,15 @@ LABEL_22:
 LABEL_28:
 }
 
-- (void)shouldShowTipKitSuggestionsForInitiator:(id)a3 receiver:(id)a4 handler:(id)a5
+- (void)shouldShowTipKitSuggestionsForInitiator:(id)initiator receiver:(id)receiver handler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  initiatorCopy = initiator;
+  receiverCopy = receiver;
+  handlerCopy = handler;
+  if (initiatorCopy)
   {
-    if (v9)
+    if (receiverCopy)
     {
       goto LABEL_3;
     }
@@ -10673,10 +10673,10 @@ LABEL_28:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: initiator (in %s:%d)", buf, 0x12u);
     }
 
-    if (v9)
+    if (receiverCopy)
     {
 LABEL_3:
-      if (v10)
+      if (handlerCopy)
       {
         goto LABEL_14;
       }
@@ -10695,7 +10695,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: receiver (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
 LABEL_11:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -10715,31 +10715,31 @@ LABEL_14:
   v15 = v21;
   if (v14)
   {
-    v16 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__SMSuggestionsManager_shouldShowTipKitSuggestionsForInitiator_receiver_handler___block_invoke;
     block[3] = &unk_2788C5530;
     block[4] = self;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
-    dispatch_async(v16, block);
+    v18 = initiatorCopy;
+    v19 = receiverCopy;
+    v20 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 
-- (void)_shouldShowTipKitSuggestionsForInitiator:(id)a3 receiver:(id)a4 handler:(id)a5
+- (void)_shouldShowTipKitSuggestionsForInitiator:(id)initiator receiver:(id)receiver handler:(id)handler
 {
   v173[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  initiatorCopy = initiator;
+  receiverCopy = receiver;
+  handlerCopy = handler;
+  if (!initiatorCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -10752,7 +10752,7 @@ LABEL_14:
     }
   }
 
-  if (!v8)
+  if (!receiverCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -10765,7 +10765,7 @@ LABEL_14:
     }
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -10780,26 +10780,26 @@ LABEL_14:
     goto LABEL_34;
   }
 
-  if (!v7 || ([v7 primaryHandle], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, v13))
+  if (!initiatorCopy || ([initiatorCopy primaryHandle], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == 0, v12, v13))
   {
     v36 = MEMORY[0x277CCA9B8];
     v171 = *MEMORY[0x277CCA450];
     v172 = @"initiator handle is required";
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v172 forKeys:&v171 count:1];
     v38 = [v36 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v37];
-    v9[2](v9, 0, v38);
+    handlerCopy[2](handlerCopy, 0, v38);
 
     goto LABEL_34;
   }
 
-  if (!v8 || ([v8 primaryHandle], v14 = objc_claimAutoreleasedReturnValue(), v15 = v14 == 0, v14, v15))
+  if (!receiverCopy || ([receiverCopy primaryHandle], v14 = objc_claimAutoreleasedReturnValue(), v15 = v14 == 0, v14, v15))
   {
     v40 = MEMORY[0x277CCA9B8];
     v169 = *MEMORY[0x277CCA450];
     v170 = @"receiver handle is required";
     v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v170 forKeys:&v169 count:1];
     v42 = [v40 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v41];
-    v9[2](v9, 0, v42);
+    handlerCopy[2](handlerCopy, 0, v42);
 
     goto LABEL_34;
   }
@@ -10816,16 +10816,16 @@ LABEL_14:
   v17 = (v152 + 5);
   if (v152[5] != 0 || !v16)
   {
-    (v9[2])(v9, 0);
+    (handlerCopy[2])(handlerCopy, 0);
     goto LABEL_33;
   }
 
   v149 = 0;
-  v18 = [(SMSuggestionsManager *)self _checkReceiverEligibilityForHandle:v8 error:&v149];
+  v18 = [(SMSuggestionsManager *)self _checkReceiverEligibilityForHandle:receiverCopy error:&v149];
   objc_storeStrong(v17, v149);
   if (v152[5] != 0 || !v18)
   {
-    (v9[2])(v9, 0);
+    (handlerCopy[2])(handlerCopy, 0);
     goto LABEL_33;
   }
 
@@ -10836,7 +10836,7 @@ LABEL_14:
   v147 = __Block_byref_object_dispose__119;
   v148 = 0;
   v19 = dispatch_semaphore_create(0);
-  v20 = [(SMSuggestionsManager *)self suggestionsHelper];
+  suggestionsHelper = [(SMSuggestionsManager *)self suggestionsHelper];
   v139[0] = MEMORY[0x277D85DD0];
   v139[1] = 3221225472;
   v139[2] = __82__SMSuggestionsManager__shouldShowTipKitSuggestionsForInitiator_receiver_handler___block_invoke;
@@ -10845,7 +10845,7 @@ LABEL_14:
   v142 = &v151;
   v21 = v19;
   v140 = v21;
-  [v20 fetchMostLikelyReceiverHandlesWithHandler:v139];
+  [suggestionsHelper fetchMostLikelyReceiverHandlesWithHandler:v139];
 
   dsema = v21;
   v22 = [MEMORY[0x277CBEAA8] now];
@@ -10857,11 +10857,11 @@ LABEL_14:
     v25 = v24;
     v26 = objc_opt_new();
     v27 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v28 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v29 = [v28 filteredArrayUsingPredicate:v27];
-    v30 = [v29 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v29 = [callStackSymbols filteredArrayUsingPredicate:v27];
+    firstObject = [v29 firstObject];
 
-    [v26 submitToCoreAnalytics:v30 type:1 duration:v25];
+    [v26 submitToCoreAnalytics:firstObject type:1 duration:v25];
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
     {
@@ -10891,7 +10891,7 @@ LABEL_14:
   if (v43 || (v44 = v152[5]) != 0)
   {
 LABEL_31:
-    v9[2](v9, 0, v44);
+    handlerCopy[2](handlerCopy, 0, v44);
     goto LABEL_32;
   }
 
@@ -10947,26 +10947,26 @@ LABEL_31:
           v54 = objc_opt_class();
           v55 = NSStringFromClass(v54);
           v56 = NSStringFromSelector(a2);
-          v57 = [v52 primaryHandle];
-          v58 = [v8 primaryHandle];
+          primaryHandle = [v52 primaryHandle];
+          primaryHandle2 = [receiverCopy primaryHandle];
           *buf = 138413058;
           *&buf[4] = v55;
           v158 = 2112;
           v159 = v56;
           v160 = 2112;
-          v161 = v57;
+          v161 = primaryHandle;
           v162 = 2112;
-          v163 = v58;
+          v163 = primaryHandle2;
           _os_log_impl(&dword_2304B3000, v53, OS_LOG_TYPE_INFO, "%@, %@, likelyReceiver.primaryHandle, %@, receiver.primaryHandle, %@", buf, 0x2Au);
         }
       }
 
       v59 = MEMORY[0x277D1A968];
-      v60 = [v52 primaryHandle];
-      v61 = [v59 validateAndCleanupID:v60];
+      primaryHandle3 = [v52 primaryHandle];
+      v61 = [v59 validateAndCleanupID:primaryHandle3];
       v62 = MEMORY[0x277D1A968];
-      v63 = [v8 primaryHandle];
-      v64 = [v62 validateAndCleanupID:v63];
+      primaryHandle4 = [receiverCopy primaryHandle];
+      v64 = [v62 validateAndCleanupID:primaryHandle4];
       LOBYTE(v62) = [v61 isEqualToString:v64];
 
       objc_autoreleasePoolPop(contexta);
@@ -10984,37 +10984,37 @@ LABEL_31:
           goto LABEL_31;
         }
 
-        v70 = [MEMORY[0x277CBEAA8] date];
-        v71 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+        date = [MEMORY[0x277CBEAA8] date];
+        latestLocationOfTheDevice = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
         v72 = (v152 + 5);
         v133 = v152[5];
-        v73 = [(SMSuggestionsManager *)self _getSunriseDateAtLocation:v71 date:v70 error:&v133];
+        v73 = [(SMSuggestionsManager *)self _getSunriseDateAtLocation:latestLocationOfTheDevice date:date error:&v133];
         objc_storeStrong(v72, v133);
 
         if (v152[5])
         {
-          (v9[2])(v9, 0);
+          (handlerCopy[2])(handlerCopy, 0);
 LABEL_104:
 
           v43 = 0;
           goto LABEL_32;
         }
 
-        v74 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+        latestLocationOfTheDevice2 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
         v75 = (v152 + 5);
         v132 = v152[5];
-        v76 = [(SMSuggestionsManager *)self _getSunsetDateAtLocation:v74 date:v70 error:&v132];
+        v76 = [(SMSuggestionsManager *)self _getSunsetDateAtLocation:latestLocationOfTheDevice2 date:date error:&v132];
         objc_storeStrong(v75, v132);
 
         if (v152[5])
         {
-          (v9[2])(v9, 0);
+          (handlerCopy[2])(handlerCopy, 0);
 LABEL_103:
 
           goto LABEL_104;
         }
 
-        if ([v76 compare:v70] == 1 && objc_msgSend(v70, "compare:", v73) == 1)
+        if ([v76 compare:date] == 1 && objc_msgSend(date, "compare:", v73) == 1)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -11025,36 +11025,36 @@ LABEL_103:
               contextc = NSStringFromClass(v78);
               v128 = NSStringFromSelector(a2);
               aSelectorb = [MEMORY[0x277CBEAA8] date];
-              v79 = [aSelectorb stringFromDate];
-              v80 = [v73 stringFromDate];
-              v81 = [v76 stringFromDate];
+              stringFromDate = [aSelectorb stringFromDate];
+              stringFromDate2 = [v73 stringFromDate];
+              stringFromDate3 = [v76 stringFromDate];
               *buf = 138413314;
               *&buf[4] = contextc;
               v158 = 2112;
               v159 = v128;
               v160 = 2112;
-              v161 = v79;
+              v161 = stringFromDate;
               v162 = 2112;
-              v163 = v80;
+              v163 = stringFromDate2;
               v164 = 2112;
-              v165 = v81;
+              v165 = stringFromDate3;
               _os_log_impl(&dword_2304B3000, v77, OS_LOG_TYPE_INFO, "%@, %@, time is not after sunset or before sunrise, current time, %@, sunrise time, %@, sunset time, %@", buf, 0x34u);
             }
           }
 
-          v9[2](v9, 0, 0);
+          handlerCopy[2](handlerCopy, 0, 0);
           goto LABEL_103;
         }
 
-        v82 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+        latestLocationOfTheDevice3 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
         v83 = (v152 + 5);
         v131 = v152[5];
-        contextb = [(SMSuggestionsManager *)self _getNPLOIsToHomeWithOnlyHighConfidence:0 location:v82 date:v70 error:&v131];
+        contextb = [(SMSuggestionsManager *)self _getNPLOIsToHomeWithOnlyHighConfidence:0 location:latestLocationOfTheDevice3 date:date error:&v131];
         objc_storeStrong(v83, v131);
 
         if (v152[5])
         {
-          (v9[2])(v9, 0);
+          (handlerCopy[2])(handlerCopy, 0);
 LABEL_102:
 
           goto LABEL_103;
@@ -11078,18 +11078,18 @@ LABEL_102:
             }
           }
 
-          v9[2](v9, 0, v152[5]);
+          handlerCopy[2](handlerCopy, 0, v152[5]);
           goto LABEL_102;
         }
 
-        v114 = [(SMSuggestionsManager *)self distanceCalculator];
+        distanceCalculator = [(SMSuggestionsManager *)self distanceCalculator];
         oslogb = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
-        v84 = [contextb firstObject];
-        v85 = [v84 locationOfInterest];
-        v86 = [v85 location];
+        firstObject2 = [contextb firstObject];
+        locationOfInterest = [firstObject2 locationOfInterest];
+        location = [locationOfInterest location];
         v87 = (v152 + 5);
         v130 = v152[5];
-        [v114 distanceFromLocation:oslogb toLocation:v86 error:&v130];
+        [distanceCalculator distanceFromLocation:oslogb toLocation:location error:&v130];
         v89 = v88;
         objc_storeStrong(v87, v130);
 
@@ -11115,10 +11115,10 @@ LABEL_102:
                 v112 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.3f", *&v89];
               }
 
-              v106 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
-              v107 = [contextb firstObject];
-              v108 = [v107 locationOfInterest];
-              v109 = [v108 location];
+              latestLocationOfTheDevice4 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+              firstObject3 = [contextb firstObject];
+              locationOfInterest2 = [firstObject3 locationOfInterest];
+              location2 = [locationOfInterest2 location];
               v110 = v152[5];
               *buf = 138413571;
               *&buf[4] = v115;
@@ -11127,9 +11127,9 @@ LABEL_102:
               v160 = 2112;
               v161 = v112;
               v162 = 2117;
-              v163 = v106;
+              v163 = latestLocationOfTheDevice4;
               v164 = 2117;
-              v165 = v109;
+              v165 = location2;
               v166 = 2112;
               v167 = v110;
               _os_log_impl(&dword_2304B3000, osloga, OS_LOG_TYPE_INFO, "%@, %@, distance, %@, latestLocationOfTheDevice, %{sensitive}@, nploisToHome.firstObject.locationOfInterest.location, %{sensitive}@, error, %@", buf, 0x3Eu);
@@ -11152,7 +11152,7 @@ LABEL_102:
             objc_storeStrong(v91, v129);
             if (v152[5])
             {
-              (v9[2])(v9, 0);
+              (handlerCopy[2])(handlerCopy, 0);
             }
 
             else
@@ -11180,7 +11180,7 @@ LABEL_102:
                 v105 = v152[5];
               }
 
-              v9[2](v9, v92, v105);
+              handlerCopy[2](handlerCopy, v92, v105);
             }
 
             goto LABEL_102;
@@ -11211,7 +11211,7 @@ LABEL_100:
         }
 
 LABEL_101:
-        v9[2](v9, 0, v90);
+        handlerCopy[2](handlerCopy, 0, v90);
         goto LABEL_102;
       }
 
@@ -11246,7 +11246,7 @@ LABEL_51:
     }
   }
 
-  v9[2](v9, 0, 0);
+  handlerCopy[2](handlerCopy, 0, 0);
   v43 = 0;
 LABEL_32:
 
@@ -11274,7 +11274,7 @@ void __82__SMSuggestionsManager__shouldShowTipKitSuggestionsForInitiator_receive
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)showAlwaysOnPromptWithConfiguration:(id)a3 handler:(id)a4
+- (void)showAlwaysOnPromptWithConfiguration:(id)configuration handler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
@@ -11282,17 +11282,17 @@ void __82__SMSuggestionsManager__shouldShowTipKitSuggestionsForInitiator_receive
   v11 = *MEMORY[0x277CCA450];
   v12[0] = @"Only supported on watchOS";
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a4;
+  handlerCopy = handler;
   v9 = [v7 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v10 = [v5 errorWithDomain:v6 code:1 userInfo:v9];
-  (*(a4 + 2))(v8, v10);
+  (*(handler + 2))(handlerCopy, v10);
 }
 
-- (void)_considerShowingAlwaysOnPromptWithConfiguration:(id)a3
+- (void)_considerShowingAlwaysOnPromptWithConfiguration:(id)configuration
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -11333,13 +11333,13 @@ LABEL_12:
 
     else
     {
-      v12 = [(SMSuggestionsManager *)self appDeletionManager];
-      v13 = [v12 isMessagesAppInstalled];
+      appDeletionManager = [(SMSuggestionsManager *)self appDeletionManager];
+      isMessagesAppInstalled = [appDeletionManager isMessagesAppInstalled];
 
-      if (v13)
+      if (isMessagesAppInstalled)
       {
-        v14 = [(SMSuggestionsManager *)self defaultsManager];
-        v6 = [v14 objectForKey:@"RTDefaultsSuggestionLastEndedWorkoutSessionID"];
+        defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+        v6 = [defaultsManager objectForKey:@"RTDefaultsSuggestionLastEndedWorkoutSessionID"];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -11349,7 +11349,7 @@ LABEL_12:
             v16 = objc_opt_class();
             v17 = NSStringFromClass(v16);
             v18 = NSStringFromSelector(a2);
-            v19 = [v5 sessionID];
+            sessionID = [configurationCopy sessionID];
             v36 = 138413058;
             v37 = v17;
             v38 = 2112;
@@ -11357,24 +11357,24 @@ LABEL_12:
             v40 = 2112;
             v41 = v6;
             v42 = 2112;
-            v43 = v19;
+            v43 = sessionID;
             _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, %@, lastEndedWorkoutSessionID (%@), configuration.sessionID (%@)", &v36, 0x2Au);
           }
         }
 
-        if (!v6 || ([v5 sessionID], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "UUIDString"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqual:", v6), v21, v20, (v22 & 1) == 0))
+        if (!v6 || ([configurationCopy sessionID], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "UUIDString"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqual:", v6), v21, v20, (v22 & 1) == 0))
         {
-          v23 = [(SMSuggestionsManager *)self defaultsManager];
-          v24 = [v5 sessionID];
-          v25 = [v24 UUIDString];
-          [v23 setObject:v25 forKey:@"RTDefaultsSuggestionLastEndedWorkoutSessionID"];
+          defaultsManager2 = [(SMSuggestionsManager *)self defaultsManager];
+          sessionID2 = [configurationCopy sessionID];
+          uUIDString = [sessionID2 UUIDString];
+          [defaultsManager2 setObject:uUIDString forKey:@"RTDefaultsSuggestionLastEndedWorkoutSessionID"];
 
-          v26 = [(SMSuggestionsManager *)self defaultsManager];
-          v27 = [v26 objectForKey:@"RTDefaultsSuggestionAlwaysOnPromptMaxCount"];
-          v28 = [v27 integerValue];
-          if (v28)
+          defaultsManager3 = [(SMSuggestionsManager *)self defaultsManager];
+          v27 = [defaultsManager3 objectForKey:@"RTDefaultsSuggestionAlwaysOnPromptMaxCount"];
+          integerValue = [v27 integerValue];
+          if (integerValue)
           {
-            v29 = v28;
+            v29 = integerValue;
           }
 
           else
@@ -11382,7 +11382,7 @@ LABEL_12:
             v29 = *MEMORY[0x277D4AC50];
           }
 
-          v30 = [MEMORY[0x277D4AB40] alwaysOnPromptCount];
+          alwaysOnPromptCount = [MEMORY[0x277D4AB40] alwaysOnPromptCount];
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v31 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -11396,14 +11396,14 @@ LABEL_12:
               v38 = 2112;
               v39 = v34;
               v40 = 2048;
-              v41 = v30;
+              v41 = alwaysOnPromptCount;
               v42 = 2048;
               v43 = v29;
               _os_log_impl(&dword_2304B3000, v31, OS_LOG_TYPE_INFO, "%@, %@, promptConsideredCount: %ld, promptConsideredMaxCount: %ld", &v36, 0x2Au);
             }
           }
 
-          [MEMORY[0x277D4AB40] setAlwaysOnPromptCount:v30 + 1];
+          [MEMORY[0x277D4AB40] setAlwaysOnPromptCount:alwaysOnPromptCount + 1];
         }
 
         goto LABEL_31;
@@ -11450,11 +11450,11 @@ LABEL_31:
   }
 }
 
-- (BOOL)_didInteractInPastWithHandle:(id)a3 timeInterval:(double)a4 error:(id *)a5
+- (BOOL)_didInteractInPastWithHandle:(id)handle timeInterval:(double)interval error:(id *)error
 {
   v178[1] = *MEMORY[0x277D85DE8];
-  v126 = a3;
-  if (v126)
+  handleCopy = handle;
+  if (handleCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -11464,18 +11464,18 @@ LABEL_31:
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = NSStringFromSelector(a2);
-        v10 = [v126 primaryHandle];
+        primaryHandle = [handleCopy primaryHandle];
         *buf = 138412802;
         *&buf[4] = v8;
         *&buf[12] = 2112;
         *&buf[14] = v9;
         *&buf[22] = 2112;
-        v165 = v10;
+        v165 = primaryHandle;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, %@, handle, %@,", buf, 0x20u);
       }
     }
 
-    v11 = [v126 primaryHandle];
+    primaryHandle2 = [handleCopy primaryHandle];
     v12 = IMSPIGetAllChatsContainingParticipantWithHandle();
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -11518,16 +11518,16 @@ LABEL_31:
 
           v22 = *(*(&v160 + 1) + 8 * i);
           v23 = objc_autoreleasePoolPush();
-          v24 = [v22 chatGUID];
-          if (v24)
+          chatGUID = [v22 chatGUID];
+          if (chatGUID)
           {
-            v25 = [v22 participants];
-            v26 = [v25 count] == 1;
+            participants = [v22 participants];
+            v26 = [participants count] == 1;
 
             if (v26)
             {
-              v27 = [v22 chatGUID];
-              [v18 addObject:v27];
+              chatGUID2 = [v22 chatGUID];
+              [v18 addObject:chatGUID2];
             }
           }
 
@@ -11608,11 +11608,11 @@ LABEL_26:
           v38 = v37;
           v39 = objc_opt_new();
           v40 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-          v41 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v42 = [v41 filteredArrayUsingPredicate:v40];
-          v43 = [v42 firstObject];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+          v42 = [callStackSymbols filteredArrayUsingPredicate:v40];
+          firstObject = [v42 firstObject];
 
-          [v39 submitToCoreAnalytics:v43 type:1 duration:v38];
+          [v39 submitToCoreAnalytics:firstObject type:1 duration:v38];
           v44 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
           {
@@ -11668,7 +11668,7 @@ LABEL_26:
       _Block_object_dispose(buf, 8);
       objc_autoreleasePoolPop(v30);
 
-      if (!a5)
+      if (!error)
       {
         v51 = 0;
         goto LABEL_51;
@@ -11691,7 +11691,7 @@ LABEL_26:
 
       v53 = v50;
       v54 = 0;
-      *a5 = v50;
+      *error = v50;
     }
 
     else
@@ -11699,7 +11699,7 @@ LABEL_26:
 LABEL_41:
 
       v50 = 0;
-      v51 = a5 != 0;
+      v51 = error != 0;
 LABEL_51:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -11728,13 +11728,13 @@ LABEL_51:
       v174 = __Block_byref_object_dispose__119;
       v175 = 0;
       v57 = dispatch_semaphore_create(0);
-      v58 = [v134 allObjects];
+      allObjects = [v134 allObjects];
       v59 = MEMORY[0x277D85CD0];
       v142 = MEMORY[0x277D85DD0];
       v143 = 3221225472;
       v144 = __72__SMSuggestionsManager__didInteractInPastWithHandle_timeInterval_error___block_invoke_557;
       v145 = &unk_2788CE820;
-      v146 = self;
+      selfCopy = self;
       v148 = v170;
       v149 = a2;
       v60 = v57;
@@ -11757,11 +11757,11 @@ LABEL_51:
         v67 = v66;
         v68 = objc_opt_new();
         v69 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-        v70 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v71 = [v70 filteredArrayUsingPredicate:v69];
-        v72 = [v71 firstObject];
+        callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v71 = [callStackSymbols2 filteredArrayUsingPredicate:v69];
+        firstObject2 = [v71 firstObject];
 
-        [v68 submitToCoreAnalytics:v72 type:1 duration:v67];
+        [v68 submitToCoreAnalytics:firstObject2 type:1 duration:v67];
         v73 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v73, OS_LOG_TYPE_FAULT))
         {
@@ -11814,7 +11814,7 @@ LABEL_51:
 
         v80 = v130;
         v54 = 0;
-        *a5 = v130;
+        *error = v130;
       }
 
       else
@@ -11859,8 +11859,8 @@ LABEL_51:
 
               v89 = *(*(&v138 + 1) + 8 * j);
               v90 = objc_autoreleasePoolPush();
-              v91 = [v89 date];
-              v92 = v91 == 0;
+              date = [v89 date];
+              v92 = date == 0;
 
               if (v92)
               {
@@ -11875,7 +11875,7 @@ LABEL_51:
                   *&buf[12] = 2112;
                   *&buf[14] = v108;
                   *&buf[22] = 2112;
-                  v165 = v126;
+                  v165 = handleCopy;
                   *v166 = 2112;
                   *&v166[2] = v89;
                   _os_log_error_impl(&dword_2304B3000, v105, OS_LOG_TYPE_ERROR, "%@, %@, handle, %@, no message date for message, %@", buf, 0x2Au);
@@ -11887,11 +11887,11 @@ LABEL_51:
               else
               {
                 v93 = [MEMORY[0x277CBEAA8] now];
-                v94 = [v89 date];
-                [v93 timeIntervalSinceDate:v94];
+                date2 = [v89 date];
+                [v93 timeIntervalSinceDate:date2];
                 v96 = v95;
 
-                v97 = v96 <= a4 && v96 >= 0.0;
+                v97 = v96 <= interval && v96 >= 0.0;
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                 {
                   v98 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -11900,8 +11900,8 @@ LABEL_51:
                     v99 = objc_opt_class();
                     v100 = NSStringFromClass(v99);
                     v101 = NSStringFromSelector(a2);
-                    v102 = [v89 chatIdentifier];
-                    v103 = v102;
+                    chatIdentifier = [v89 chatIdentifier];
+                    v103 = chatIdentifier;
                     *buf = 138413570;
                     v104 = @"NO";
                     if (v97)
@@ -11913,9 +11913,9 @@ LABEL_51:
                     *&buf[12] = 2112;
                     *&buf[14] = v101;
                     *&buf[22] = 2112;
-                    v165 = v126;
+                    v165 = handleCopy;
                     *v166 = 2112;
-                    *&v166[2] = v102;
+                    *&v166[2] = chatIdentifier;
                     *&v166[10] = 2048;
                     *&v166[12] = v96;
                     v167 = 2112;
@@ -11964,10 +11964,10 @@ LABEL_99:
       _os_log_error_impl(&dword_2304B3000, v55, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handle", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"handle");
-      *a5 = v54 = 0;
+      *error = v54 = 0;
     }
 
     else
@@ -12017,17 +12017,17 @@ void __72__SMSuggestionsManager__didInteractInPastWithHandle_timeInterval_error_
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)_getValuesFromDefaultsIfExists:(id)a3 error:(id *)a4
+- (id)_getValuesFromDefaultsIfExists:(id)exists error:(id *)error
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  existsCopy = exists;
+  v8 = existsCopy;
+  if (existsCopy)
   {
-    if ([v7 isEqualToString:@"RTDefaultsSuggestionTimeIntervalBuffer"])
+    if ([existsCopy isEqualToString:@"RTDefaultsSuggestionTimeIntervalBuffer"])
     {
-      v9 = [(SMSuggestionsManager *)self defaultsManager];
-      v10 = [v9 objectForKey:v8];
+      defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+      v10 = [defaultsManager objectForKey:v8];
 
       v11 = 0;
       v12 = &unk_2845A1E18;
@@ -12035,8 +12035,8 @@ void __72__SMSuggestionsManager__didInteractInPastWithHandle_timeInterval_error_
 
     else if ([v8 isEqualToString:@"RTDefaultsSuggestionRegularUserSuppressionSessionConfigurationCount"])
     {
-      v15 = [(SMSuggestionsManager *)self defaultsManager];
-      v10 = [v15 objectForKey:v8];
+      defaultsManager2 = [(SMSuggestionsManager *)self defaultsManager];
+      v10 = [defaultsManager2 objectForKey:v8];
 
       v11 = 0;
       v12 = &unk_28459EF88;
@@ -12044,8 +12044,8 @@ void __72__SMSuggestionsManager__didInteractInPastWithHandle_timeInterval_error_
 
     else if ([v8 isEqualToString:@"RTDefaultsSuggestionOccasionalUserSuppressionSessionConfigurationCount"])
     {
-      v16 = [(SMSuggestionsManager *)self defaultsManager];
-      v10 = [v16 objectForKey:v8];
+      defaultsManager3 = [(SMSuggestionsManager *)self defaultsManager];
+      v10 = [defaultsManager3 objectForKey:v8];
 
       v11 = 0;
       v12 = &unk_28459EFA0;
@@ -12057,8 +12057,8 @@ void __72__SMSuggestionsManager__didInteractInPastWithHandle_timeInterval_error_
       {
         if ([v8 isEqualToString:@"RTDefaultsSuggestionNotificationExpirationTimeInterval"] || objc_msgSend(v8, "isEqualToString:", @"RTDefaultsSuggestionShowTriggerTypeAsFooter") || objc_msgSend(v8, "isEqualToString:", @"RTDefaultsSuggestionDisplayedCount"))
         {
-          v20 = [(SMSuggestionsManager *)self defaultsManager];
-          v14 = [v20 objectForKey:v8];
+          defaultsManager4 = [(SMSuggestionsManager *)self defaultsManager];
+          v14 = [defaultsManager4 objectForKey:v8];
 
           v11 = 0;
         }
@@ -12083,8 +12083,8 @@ void __72__SMSuggestionsManager__didInteractInPastWithHandle_timeInterval_error_
         goto LABEL_19;
       }
 
-      v17 = [(SMSuggestionsManager *)self defaultsManager];
-      v10 = [v17 objectForKey:v8];
+      defaultsManager5 = [(SMSuggestionsManager *)self defaultsManager];
+      v10 = [defaultsManager5 objectForKey:v8];
 
       v11 = 0;
       v12 = &unk_2845A1E28;
@@ -12101,10 +12101,10 @@ void __72__SMSuggestionsManager__didInteractInPastWithHandle_timeInterval_error_
     }
 
 LABEL_19:
-    if (a4)
+    if (error)
     {
       v18 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     goto LABEL_22;
@@ -12117,10 +12117,10 @@ LABEL_19:
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: string", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"string");
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -12133,7 +12133,7 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)isZelkovaSuggestionsFeatureEnabledWithError:(id *)a3
+- (BOOL)isZelkovaSuggestionsFeatureEnabledWithError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl() && (_os_feature_enabled_impl() & 1) != 0)
@@ -12183,28 +12183,28 @@ LABEL_22:
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v14 = [v7 errorWithDomain:v8 code:7 userInfo:v13];
 
-  if (a3)
+  if (error)
   {
     v15 = v14;
-    *a3 = v14;
+    *error = v14;
   }
 
   return 0;
 }
 
-- (unint64_t)_getSuggestionTriggerFromContext:(id)a3 error:(id *)a4
+- (unint64_t)_getSuggestionTriggerFromContext:(id)context error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v6 type] == 3)
+      if ([contextCopy type] == 3)
       {
         v7 = 1;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_34;
         }
@@ -12224,7 +12224,7 @@ LABEL_25:
 
 LABEL_26:
         v7 = 0;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_34;
         }
@@ -12235,7 +12235,7 @@ LABEL_26:
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
-      v14 = [MEMORY[0x277D01428] stringFromVisitIncidentType:{objc_msgSend(v6, "type")}];
+      v14 = [MEMORY[0x277D01428] stringFromVisitIncidentType:{objc_msgSend(contextCopy, "type")}];
       v15 = [MEMORY[0x277D4AC10] stringFromSMSuggestionTrigger:0];
       v19 = 138413058;
       v20 = v12;
@@ -12255,10 +12255,10 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v6 vehicleConnectedState] == 2)
+      if ([contextCopy vehicleConnectedState] == 2)
       {
         v7 = 2;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_34;
         }
@@ -12280,7 +12280,7 @@ LABEL_24:
       v17 = objc_opt_class();
       v12 = NSStringFromClass(v17);
       v13 = NSStringFromSelector(a2);
-      v14 = +[RTMotionActivityManager motionActivityVehicleConnectedStateToString:](RTMotionActivityManager, "motionActivityVehicleConnectedStateToString:", [v6 vehicleConnectedState]);
+      v14 = +[RTMotionActivityManager motionActivityVehicleConnectedStateToString:](RTMotionActivityManager, "motionActivityVehicleConnectedStateToString:", [contextCopy vehicleConnectedState]);
       v15 = [MEMORY[0x277D4AC10] stringFromSMSuggestionTrigger:0];
       v19 = 138413058;
       v20 = v12;
@@ -12298,7 +12298,7 @@ LABEL_24:
     if (objc_opt_isKindOfClass())
     {
       v7 = 3;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_34;
       }
@@ -12317,7 +12317,7 @@ LABEL_24:
       v7 = 0;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_32:
       v9 = 0;
@@ -12334,12 +12334,12 @@ LABEL_32:
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", &v19, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v9 = _RTErrorInvalidParameterCreate(@"context");
       v7 = 0;
 LABEL_33:
-      *a4 = v9;
+      *error = v9;
       goto LABEL_34;
     }
 
@@ -12351,20 +12351,20 @@ LABEL_34:
   return v7;
 }
 
-- (id)_getSourceLocationFromContext:(id)a3 error:(id *)a4
+- (id)_getSourceLocationFromContext:(id)context error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 type] == 3)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [contextCopy type] == 3)
     {
-      v8 = [v7 location];
+      location = [contextCopy location];
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v13 = 0;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_14;
         }
@@ -12383,7 +12383,7 @@ LABEL_34:
         v23 = 2112;
         v24 = v12;
         v25 = 2117;
-        v26 = v8;
+        v26 = location;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, %@, source location is set to visit exit location, %{sensitive}@", buf, 0x20u);
       }
 
@@ -12395,7 +12395,7 @@ LABEL_34:
       v20 = 0;
       [(SMSuggestionsManager *)self _refreshCurrentLocationWithError:&v20];
       v13 = v20;
-      v8 = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
+      location = [(SMSuggestionsManager *)self latestLocationOfTheDevice];
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         goto LABEL_12;
@@ -12412,13 +12412,13 @@ LABEL_34:
         v23 = 2112;
         v24 = v16;
         v25 = 2112;
-        v26 = v8;
+        v26 = location;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, %@, source location is set to latest location of the device, %@", buf, 0x20u);
       }
     }
 
 LABEL_12:
-    if (!a4)
+    if (!error)
     {
 LABEL_14:
 
@@ -12427,7 +12427,7 @@ LABEL_14:
 
 LABEL_13:
     v17 = v13;
-    *a4 = v13;
+    *error = v13;
     goto LABEL_14;
   }
 
@@ -12438,32 +12438,32 @@ LABEL_13:
     _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"context");
-    *a4 = v8 = 0;
+    *error = location = 0;
   }
 
   else
   {
-    v8 = 0;
+    location = 0;
   }
 
 LABEL_20:
 
-  return v8;
+  return location;
 }
 
-- (id)_getCurrentDateFromContext:(id)a3 error:(id *)a4
+- (id)_getCurrentDateFromContext:(id)context error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 type] == 3)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [contextCopy type] == 3)
     {
-      v7 = [v6 date];
+      date = [contextCopy date];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -12472,13 +12472,13 @@ LABEL_20:
           v9 = objc_opt_class();
           v10 = NSStringFromClass(v9);
           v11 = NSStringFromSelector(a2);
-          v12 = [v7 stringFromDate];
+          stringFromDate = [date stringFromDate];
           v18 = 138412802;
           v19 = v10;
           v20 = 2112;
           v21 = v11;
           v22 = 2112;
-          v23 = v12;
+          v23 = stringFromDate;
           v13 = "%@, %@, current date is set to visit exit date, %@";
 LABEL_10:
           _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, v13, &v18, 0x20u);
@@ -12492,7 +12492,7 @@ LABEL_10:
 
     else
     {
-      v7 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -12501,13 +12501,13 @@ LABEL_10:
           v14 = objc_opt_class();
           v10 = NSStringFromClass(v14);
           v11 = NSStringFromSelector(a2);
-          v12 = [v7 stringFromDate];
+          stringFromDate = [date stringFromDate];
           v18 = 138412802;
           v19 = v10;
           v20 = 2112;
           v21 = v11;
           v22 = 2112;
-          v23 = v12;
+          v23 = stringFromDate;
           v13 = "%@, %@, current date is set to present date of the device, %@";
           goto LABEL_10;
         }
@@ -12516,7 +12516,7 @@ LABEL_11:
       }
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -12532,22 +12532,22 @@ LABEL_11:
     _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", &v18, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     v15 = _RTErrorInvalidParameterCreate(@"context");
-    v7 = 0;
+    date = 0;
 LABEL_18:
-    *a4 = v15;
+    *error = v15;
     goto LABEL_19;
   }
 
-  v7 = 0;
+  date = 0;
 LABEL_19:
 
-  return v7;
+  return date;
 }
 
-- (BOOL)_isUserInActiveSessionWithError:(id *)a3
+- (BOOL)_isUserInActiveSessionWithError:(id *)error
 {
   v72[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277D4ABF0]);
@@ -12565,7 +12565,7 @@ LABEL_19:
   v56 = __Block_byref_object_copy__119;
   v57 = __Block_byref_object_dispose__119;
   v58 = 0;
-  v8 = [(SMSuggestionsManager *)self sessionStore];
+  sessionStore = [(SMSuggestionsManager *)self sessionStore];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke;
@@ -12574,7 +12574,7 @@ LABEL_19:
   v52 = &v53;
   v9 = v7;
   v50 = v9;
-  [v8 fetchSessionManagerStatesWithOptions:v6 handler:v49];
+  [sessionStore fetchSessionManagerStatesWithOptions:v6 handler:v49];
   v48 = v6;
 
   v10 = v9;
@@ -12587,11 +12587,11 @@ LABEL_19:
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -12618,7 +12618,7 @@ LABEL_19:
 
   v26 = v24;
   v27 = v26;
-  if (a3 && v26)
+  if (error && v26)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -12637,12 +12637,12 @@ LABEL_19:
 
     v29 = v27;
 LABEL_17:
-    *a3 = v29;
-    v31 = 1;
+    *error = v29;
+    isActiveState2 = 1;
     goto LABEL_27;
   }
 
-  if (a3 && v54[5])
+  if (error && v54[5])
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -12672,10 +12672,10 @@ LABEL_17:
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
       v35 = NSStringFromSelector(a2);
-      v36 = [v60[5] isActiveState];
+      isActiveState = [v60[5] isActiveState];
       v37 = @"NO";
       v38 = v60[5];
-      if (v36)
+      if (isActiveState)
       {
         v37 = @"YES";
       }
@@ -12692,18 +12692,18 @@ LABEL_17:
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v54[5];
+    *error = v54[5];
   }
 
-  v31 = [v60[5] isActiveState];
+  isActiveState2 = [v60[5] isActiveState];
 LABEL_27:
 
   _Block_object_dispose(&v53, 8);
   _Block_object_dispose(&v59, 8);
 
-  return v31;
+  return isActiveState2;
 }
 
 void __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -12722,7 +12722,7 @@ void __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_isFirstTimeUserOfZelkovaWithError:(id *)a3
+- (BOOL)_isFirstTimeUserOfZelkovaWithError:(id *)error
 {
   v73[1] = *MEMORY[0x277D85DE8];
   v60 = 0;
@@ -12739,7 +12739,7 @@ void __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke(u
   v59 = 0;
   v5 = objc_alloc_init(MEMORY[0x277D4ABF0]);
   v6 = dispatch_semaphore_create(0);
-  v7 = [(SMSuggestionsManager *)self sessionStore];
+  sessionStore = [(SMSuggestionsManager *)self sessionStore];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invoke;
@@ -12748,7 +12748,7 @@ void __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke(u
   v53 = &v54;
   v8 = v6;
   v51 = v8;
-  [v7 fetchSessionManagerStatesWithOptions:v5 handler:v50];
+  [sessionStore fetchSessionManagerStatesWithOptions:v5 handler:v50];
   v49 = v5;
 
   v9 = v8;
@@ -12761,11 +12761,11 @@ void __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke(u
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -12792,7 +12792,7 @@ void __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke(u
 
   v25 = v23;
   v26 = v25;
-  if (a3 && v25)
+  if (error && v25)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -12814,7 +12814,7 @@ void __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke(u
     goto LABEL_28;
   }
 
-  if (a3 && v55[5])
+  if (error && v55[5])
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -12836,7 +12836,7 @@ void __56__SMSuggestionsManager__isUserInActiveSessionWithError___block_invoke(u
 LABEL_27:
     v28 = v55[5];
 LABEL_28:
-    *a3 = v28;
+    *error = v28;
     goto LABEL_29;
   }
 
@@ -12884,7 +12884,7 @@ LABEL_28:
     }
   }
 
-  if (a3)
+  if (error)
   {
     goto LABEL_27;
   }
@@ -12914,13 +12914,13 @@ void __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invok
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getSuggestionTitleWithHandle:(id)a3 error:(id *)a4
+- (id)_getSuggestionTitleWithHandle:(id)handle error:(id *)error
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  handleCopy = handle;
+  if (!handleCopy)
   {
-    v28 = [MEMORY[0x277D4AB70] getSuggestionTitleWithoutContactName];
+    getSuggestionTitleWithoutContactName = [MEMORY[0x277D4AB70] getSuggestionTitleWithoutContactName];
     goto LABEL_25;
   }
 
@@ -12938,8 +12938,8 @@ void __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invok
   v59 = __Block_byref_object_dispose__119;
   v60 = 0;
   v8 = dispatch_semaphore_create(0);
-  v9 = [(SMSuggestionsManager *)self contactsManager];
-  v10 = [v7 primaryHandle];
+  contactsManager = [(SMSuggestionsManager *)self contactsManager];
+  primaryHandle = [handleCopy primaryHandle];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __60__SMSuggestionsManager__getSuggestionTitleWithHandle_error___block_invoke;
@@ -12948,7 +12948,7 @@ void __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invok
   v54 = &v55;
   v11 = v8;
   v52 = v11;
-  [v9 fetchContactsFromEmailOrPhoneNumberString:v10 handler:v51];
+  [contactsManager fetchContactsFromEmailOrPhoneNumberString:primaryHandle handler:v51];
 
   v12 = v11;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -12960,11 +12960,11 @@ void __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invok
     v17 = v16;
     v18 = objc_opt_new();
     v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
-    v22 = [v21 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+    firstObject = [v21 firstObject];
 
-    [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+    [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
@@ -12991,7 +12991,7 @@ void __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invok
 
   v29 = v26;
   v30 = v29;
-  if (a4 && v29)
+  if (error && v29)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -13009,12 +13009,12 @@ void __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invok
     }
 
     v32 = v30;
-    v28 = 0;
-    *a4 = v30;
+    getSuggestionTitleWithoutContactName = 0;
+    *error = v30;
     goto LABEL_24;
   }
 
-  if (a4 && v56[5])
+  if (error && v56[5])
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -13032,8 +13032,8 @@ void __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invok
       _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
-    v28 = 0;
-    *a4 = v56[5];
+    getSuggestionTitleWithoutContactName = 0;
+    *error = v56[5];
     goto LABEL_24;
   }
 
@@ -13042,28 +13042,28 @@ void __59__SMSuggestionsManager__isFirstTimeUserOfZelkovaWithError___block_invok
     goto LABEL_23;
   }
 
-  v34 = [MEMORY[0x277CCAC00] sharedNameComponents];
-  v35 = [v62[5] firstObject];
-  v36 = [v35 givenName];
-  [v34 setGivenName:v36];
+  mEMORY[0x277CCAC00] = [MEMORY[0x277CCAC00] sharedNameComponents];
+  firstObject2 = [v62[5] firstObject];
+  givenName = [firstObject2 givenName];
+  [mEMORY[0x277CCAC00] setGivenName:givenName];
 
-  v37 = [v62[5] firstObject];
-  v38 = [v37 familyName];
-  [v34 setFamilyName:v38];
+  firstObject3 = [v62[5] firstObject];
+  familyName = [firstObject3 familyName];
+  [mEMORY[0x277CCAC00] setFamilyName:familyName];
 
-  v39 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v34 style:1 options:0];
+  v39 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:mEMORY[0x277CCAC00] style:1 options:0];
   if (![v39 length])
   {
 
 LABEL_23:
     v40 = MEMORY[0x277D4AB70];
-    v41 = [v7 primaryHandle];
-    v28 = [v40 getSuggestionTitleWithContactName:v41];
+    primaryHandle2 = [handleCopy primaryHandle];
+    getSuggestionTitleWithoutContactName = [v40 getSuggestionTitleWithContactName:primaryHandle2];
 
     goto LABEL_24;
   }
 
-  v28 = [MEMORY[0x277D4AB70] getSuggestionTitleWithContactName:v39];
+  getSuggestionTitleWithoutContactName = [MEMORY[0x277D4AB70] getSuggestionTitleWithContactName:v39];
 
 LABEL_24:
   _Block_object_dispose(&v55, 8);
@@ -13071,7 +13071,7 @@ LABEL_24:
   _Block_object_dispose(&v61, 8);
 LABEL_25:
 
-  return v28;
+  return getSuggestionTitleWithoutContactName;
 }
 
 void __60__SMSuggestionsManager__getSuggestionTitleWithHandle_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -13091,38 +13091,38 @@ void __60__SMSuggestionsManager__getSuggestionTitleWithHandle_error___block_invo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getSuggestionBodyWithPlaceInference:(id)a3
+- (id)_getSuggestionBodyWithPlaceInference:(id)inference
 {
   v3 = MEMORY[0x277D4AB70];
-  v4 = [a3 preferredName];
-  v5 = [v3 getSuggestionBodyWithPlaceInference:v4];
+  preferredName = [inference preferredName];
+  v5 = [v3 getSuggestionBodyWithPlaceInference:preferredName];
 
   return v5;
 }
 
-- (id)_getSuggestionsFooter:(id)a3
+- (id)_getSuggestionsFooter:(id)footer
 {
-  v4 = a3;
+  footerCopy = footer;
   v14 = 0;
   v5 = [(SMSuggestionsManager *)self _getValuesFromDefaultsIfExists:@"RTDefaultsSuggestionShowTriggerTypeAsFooter" error:&v14];
   v6 = v5;
   if (v5 && ((v7 = v14, [v5 unsignedIntValue] == 1) ? (v8 = v7 == 0) : (v8 = 0), v8))
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [MEMORY[0x277D4AC10] stringFromSMSuggestionTrigger:{objc_msgSend(v4, "suggestionTrigger")}];
-    v12 = [MEMORY[0x277D4AC10] stringFromSMSuggestionUserType:{objc_msgSend(v4, "suggestionUserType")}];
-    v9 = [v10 stringWithFormat:@"Trigger: %@, User: %@", v11, v12];
+    v11 = [MEMORY[0x277D4AC10] stringFromSMSuggestionTrigger:{objc_msgSend(footerCopy, "suggestionTrigger")}];
+    v12 = [MEMORY[0x277D4AC10] stringFromSMSuggestionUserType:{objc_msgSend(footerCopy, "suggestionUserType")}];
+    getSuggestionFooter = [v10 stringWithFormat:@"Trigger: %@, User: %@", v11, v12];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D4AB70] getSuggestionFooter];
+    getSuggestionFooter = [MEMORY[0x277D4AB70] getSuggestionFooter];
   }
 
-  return v9;
+  return getSuggestionFooter;
 }
 
-- (BOOL)_checkInitiatorEligibilityWithError:(id *)a3
+- (BOOL)_checkInitiatorEligibilityWithError:(id *)error
 {
   v59[1] = *MEMORY[0x277D85DE8];
   v50 = 0;
@@ -13137,12 +13137,12 @@ void __60__SMSuggestionsManager__getSuggestionTitleWithHandle_error___block_invo
   v49 = 0;
   v4 = dispatch_semaphore_create(0);
   v5 = dispatch_queue_create("com.apple.CoreRoutine.SuggestionsManager.InitiatorEligibilityChecker", 0);
-  v6 = [(SMSuggestionsManager *)self authorizationManager];
-  v7 = [(SMSuggestionsManager *)self messagingService];
-  v8 = [v7 effectivePairedDevice];
-  v9 = [(SMSuggestionsManager *)self defaultsManager];
-  v10 = [(SMSuggestionsManager *)self platform];
-  v11 = [(SMSuggestionsManager *)self appDeletionManager];
+  authorizationManager = [(SMSuggestionsManager *)self authorizationManager];
+  messagingService = [(SMSuggestionsManager *)self messagingService];
+  effectivePairedDevice = [messagingService effectivePairedDevice];
+  defaultsManager = [(SMSuggestionsManager *)self defaultsManager];
+  platform = [(SMSuggestionsManager *)self platform];
+  appDeletionManager = [(SMSuggestionsManager *)self appDeletionManager];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __60__SMSuggestionsManager__checkInitiatorEligibilityWithError___block_invoke;
@@ -13151,7 +13151,7 @@ void __60__SMSuggestionsManager__getSuggestionTitleWithHandle_error___block_invo
   v43 = &v44;
   v12 = v4;
   v41 = v12;
-  [SMInitiatorEligibility checkInitiatorEligibilityWithQueue:v5 authorizationManager:v6 effectivePairedDevice:v8 handoffType:0 defaultsManager:v9 platform:v10 appDeletionManager:v11 handler:v40];
+  [SMInitiatorEligibility checkInitiatorEligibilityWithQueue:v5 authorizationManager:authorizationManager effectivePairedDevice:effectivePairedDevice handoffType:0 defaultsManager:defaultsManager platform:platform appDeletionManager:appDeletionManager handler:v40];
 
   v13 = v12;
   v14 = [MEMORY[0x277CBEAA8] now];
@@ -13163,11 +13163,11 @@ void __60__SMSuggestionsManager__getSuggestionTitleWithHandle_error___block_invo
     v18 = v17;
     v19 = objc_opt_new();
     v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v22 = [v21 filteredArrayUsingPredicate:v20];
-    v23 = [v22 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+    firstObject = [v22 firstObject];
 
-    [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+    [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
@@ -13194,7 +13194,7 @@ void __60__SMSuggestionsManager__getSuggestionTitleWithHandle_error___block_invo
 
   v29 = v27;
   v30 = v29;
-  if (a3 && v29)
+  if (error && v29)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -13215,11 +13215,11 @@ void __60__SMSuggestionsManager__getSuggestionTitleWithHandle_error___block_invo
     goto LABEL_14;
   }
 
-  if (a3)
+  if (error)
   {
     v32 = v45[5];
 LABEL_14:
-    *a3 = v32;
+    *error = v32;
   }
 
   v33 = *(v51 + 24);
@@ -13245,18 +13245,18 @@ void __60__SMSuggestionsManager__checkInitiatorEligibilityWithError___block_invo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_checkReceiverEligibilityForHandle:(id)a3 error:(id *)a4
+- (BOOL)_checkReceiverEligibilityForHandle:(id)handle error:(id *)error
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  handleCopy = handle;
+  if (handleCopy)
   {
     aSelector = a2;
     v49 = 0;
     v50 = &v49;
     v51 = 0x2020000000;
     v52 = 0;
-    v8 = self;
+    selfCopy = self;
     *v43 = 0;
     v44 = v43;
     v45 = 0x3032000000;
@@ -13264,7 +13264,7 @@ void __60__SMSuggestionsManager__checkInitiatorEligibilityWithError___block_invo
     v47 = __Block_byref_object_dispose__119;
     v48 = 0;
     v9 = dispatch_semaphore_create(0);
-    v10 = [(SMSuggestionsManager *)v8 eligibilityChecker];
+    eligibilityChecker = [(SMSuggestionsManager *)selfCopy eligibilityChecker];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __65__SMSuggestionsManager__checkReceiverEligibilityForHandle_error___block_invoke;
@@ -13273,7 +13273,7 @@ void __60__SMSuggestionsManager__checkInitiatorEligibilityWithError___block_invo
     v11 = v9;
     v40 = v11;
     v42 = v43;
-    [v10 checkReceiverEligibility:v7 handler:v39];
+    [eligibilityChecker checkReceiverEligibility:handleCopy handler:v39];
 
     v12 = v11;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -13285,11 +13285,11 @@ void __60__SMSuggestionsManager__checkInitiatorEligibilityWithError___block_invo
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -13316,7 +13316,7 @@ void __60__SMSuggestionsManager__checkInitiatorEligibilityWithError___block_invo
 
     v30 = v26;
     v31 = v30;
-    if (a4 && v30)
+    if (error && v30)
     {
       v32 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -13338,7 +13338,7 @@ void __60__SMSuggestionsManager__checkInitiatorEligibilityWithError___block_invo
 
     else
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_20:
         v29 = *(v50 + 24);
@@ -13351,7 +13351,7 @@ LABEL_20:
       v33 = *(v44 + 5);
     }
 
-    *a4 = v33;
+    *error = v33;
     goto LABEL_20;
   }
 
@@ -13362,10 +13362,10 @@ LABEL_20:
     _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handle", v43, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"handle");
-    *a4 = v29 = 0;
+    *error = v29 = 0;
   }
 
   else
@@ -13392,11 +13392,11 @@ void __65__SMSuggestionsManager__checkReceiverEligibilityForHandle_error___block
   *(v7 + 40) = v6;
 }
 
-- (id)_getFirstEligibleHandleFromSessionConfigurations:(id)a3 error:(id *)a4
+- (id)_getFirstEligibleHandleFromSessionConfigurations:(id)configurations error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  configurationsCopy = configurations;
+  if (!configurationsCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -13405,10 +13405,10 @@ void __65__SMSuggestionsManager__checkReceiverEligibilityForHandle_error___block
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sessionConfigurations", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"sessionConfigurations");
-      *a4 = v27 = 0;
+      *error = v27 = 0;
     }
 
     else
@@ -13424,19 +13424,19 @@ void __65__SMSuggestionsManager__checkReceiverEligibilityForHandle_error___block
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v5;
+  obj = configurationsCopy;
   v7 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   v35 = v6;
   if (!v7)
   {
-    v25 = 0;
+    firstObject3 = 0;
     v24 = 0;
     goto LABEL_23;
   }
 
   v8 = v7;
-  v32 = a4;
-  v33 = v5;
+  errorCopy = error;
+  v33 = configurationsCopy;
   v9 = *v39;
   while (2)
   {
@@ -13449,31 +13449,31 @@ void __65__SMSuggestionsManager__checkReceiverEligibilityForHandle_error___block
 
       v11 = *(*(&v38 + 1) + 8 * i);
       v12 = objc_autoreleasePoolPush();
-      v13 = [v11 conversation];
-      v14 = [v13 receiverHandles];
-      v15 = [v14 count];
+      conversation = [v11 conversation];
+      receiverHandles = [conversation receiverHandles];
+      v15 = [receiverHandles count];
 
       if (v15 <= 1)
       {
-        v16 = [v11 conversation];
-        v17 = [v16 receiverHandles];
-        v18 = [v17 firstObject];
-        v19 = [v6 containsObject:v18];
+        conversation2 = [v11 conversation];
+        receiverHandles2 = [conversation2 receiverHandles];
+        firstObject = [receiverHandles2 firstObject];
+        v19 = [v6 containsObject:firstObject];
 
         if ((v19 & 1) == 0)
         {
-          v20 = [v11 conversation];
-          v21 = [v20 receiverHandles];
-          v22 = [v21 firstObject];
+          conversation3 = [v11 conversation];
+          receiverHandles3 = [conversation3 receiverHandles];
+          firstObject2 = [receiverHandles3 firstObject];
           v37 = 0;
-          v23 = [(SMSuggestionsManager *)self _checkReceiverEligibilityForHandle:v22 error:&v37];
+          v23 = [(SMSuggestionsManager *)self _checkReceiverEligibilityForHandle:firstObject2 error:&v37];
           v24 = v37;
 
           if (v23)
           {
-            v28 = [v11 conversation];
-            v29 = [v28 receiverHandles];
-            v25 = [v29 firstObject];
+            conversation4 = [v11 conversation];
+            receiverHandles4 = [conversation4 receiverHandles];
+            firstObject3 = [receiverHandles4 firstObject];
           }
 
           else
@@ -13484,7 +13484,7 @@ void __65__SMSuggestionsManager__checkReceiverEligibilityForHandle_error___block
               goto LABEL_11;
             }
 
-            v25 = 0;
+            firstObject3 = 0;
           }
 
           objc_autoreleasePoolPop(v12);
@@ -13505,59 +13505,59 @@ LABEL_11:
     break;
   }
 
-  v25 = 0;
+  firstObject3 = 0;
   v24 = 0;
 LABEL_22:
-  a4 = v32;
-  v5 = v33;
+  error = errorCopy;
+  configurationsCopy = v33;
 LABEL_23:
 
-  if (a4)
+  if (error)
   {
     v30 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
-  v27 = v25;
+  v27 = firstObject3;
 
 LABEL_26:
 
   return v27;
 }
 
-- (id)_getMessagesURLFromSessionConfig:(id)a3 payloadType:(int64_t)a4 error:(id *)a5
+- (id)_getMessagesURLFromSessionConfig:(id)config payloadType:(int64_t)type error:(id *)error
 {
   v97 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  configCopy = config;
+  v9 = configCopy;
+  if (configCopy)
   {
     aSelector = a2;
-    v80 = self;
-    v10 = [v8 conversation];
-    if (!v10)
+    selfCopy = self;
+    conversation = [configCopy conversation];
+    if (!conversation)
     {
       goto LABEL_5;
     }
 
-    v11 = [v9 conversation];
-    v12 = [v11 receiverHandles];
-    v13 = [v12 firstObject];
-    if (v13)
+    conversation2 = [v9 conversation];
+    receiverHandles = [conversation2 receiverHandles];
+    firstObject = [receiverHandles firstObject];
+    if (firstObject)
     {
-      v14 = [v9 conversation];
-      v15 = [v14 receiverHandles];
-      v16 = [v15 firstObject];
-      v17 = [v16 primaryHandle];
+      conversation3 = [v9 conversation];
+      receiverHandles2 = [conversation3 receiverHandles];
+      firstObject2 = [receiverHandles2 firstObject];
+      primaryHandle = [firstObject2 primaryHandle];
 
-      if (v17)
+      if (primaryHandle)
       {
 LABEL_5:
         v88 = 0;
         v81 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v88];
         v18 = v88;
         v19 = v18;
-        if (a5 && v18)
+        if (error && v18)
         {
           v20 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -13576,16 +13576,16 @@ LABEL_5:
 
           v21 = v19;
           v22 = 0;
-          *a5 = v19;
+          *error = v19;
         }
 
         else
         {
           v78 = [v81 base64EncodedStringWithOptions:0];
-          v24 = [v9 conversation];
-          v25 = [v24 receiverHandles];
-          v26 = [v25 firstObject];
-          v77 = [v26 primaryHandle];
+          conversation4 = [v9 conversation];
+          receiverHandles3 = [conversation4 receiverHandles];
+          firstObject3 = [receiverHandles3 firstObject];
+          primaryHandle2 = [firstObject3 primaryHandle];
 
           if ([v9 sessionType] == 4 && objc_msgSend(v9, "sessionWorkoutType") && (objc_msgSend(v9, "conversation"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "receiverHandles"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "firstObject"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "primaryHandle"), v30 = objc_claimAutoreleasedReturnValue(), v31 = v30 == 0, v30, v29, v28, v27, !v31))
           {
@@ -13602,11 +13602,11 @@ LABEL_5:
             v86[4] = __Block_byref_object_dispose__119;
             v87 = 0;
             v32 = dispatch_semaphore_create(0);
-            v33 = [(SMSuggestionsManager *)v80 contactsManager];
-            v34 = [v9 conversation];
-            v35 = [v34 receiverHandles];
-            v36 = [v35 firstObject];
-            v37 = [v36 primaryHandle];
+            contactsManager = [(SMSuggestionsManager *)selfCopy contactsManager];
+            conversation5 = [v9 conversation];
+            receiverHandles4 = [conversation5 receiverHandles];
+            firstObject4 = [receiverHandles4 firstObject];
+            primaryHandle3 = [firstObject4 primaryHandle];
             v82[0] = MEMORY[0x277D85DD0];
             v82[1] = 3221225472;
             v82[2] = __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_error___block_invoke;
@@ -13615,7 +13615,7 @@ LABEL_5:
             v85 = v86;
             v38 = v32;
             v83 = v38;
-            [v33 fetchContactsFromEmailOrPhoneNumberString:v37 handler:v82];
+            [contactsManager fetchContactsFromEmailOrPhoneNumberString:primaryHandle3 handler:v82];
 
             v39 = v38;
             v40 = [MEMORY[0x277CBEAA8] now];
@@ -13627,11 +13627,11 @@ LABEL_5:
               v44 = v43;
               v75 = objc_opt_new();
               v76 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-              v45 = [MEMORY[0x277CCACC8] callStackSymbols];
-              v46 = [v45 filteredArrayUsingPredicate:v76];
-              v47 = [v46 firstObject];
+              callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+              v46 = [callStackSymbols filteredArrayUsingPredicate:v76];
+              firstObject5 = [v46 firstObject];
 
-              [v75 submitToCoreAnalytics:v47 type:1 duration:v44];
+              [v75 submitToCoreAnalytics:firstObject5 type:1 duration:v44];
               v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
               {
@@ -13659,13 +13659,13 @@ LABEL_5:
             v70 = v51;
             if ([*(*&buf[8] + 40) count])
             {
-              v71 = [*(*&buf[8] + 40) firstObject];
-              v53 = [v71 givenName];
+              firstObject6 = [*(*&buf[8] + 40) firstObject];
+              givenName = [firstObject6 givenName];
             }
 
             else
             {
-              v53 = 0;
+              givenName = 0;
             }
 
             _Block_object_dispose(v86, 8);
@@ -13674,7 +13674,7 @@ LABEL_5:
 
           else
           {
-            v53 = 0;
+            givenName = 0;
           }
 
           if ([v9 sessionType] == 4)
@@ -13687,7 +13687,7 @@ LABEL_5:
             v54 = 2;
           }
 
-          v22 = [MEMORY[0x277D4AAA8] createURLForSuggestionsWithRecipientHandle:v77 appPayloadDataString:v78 givenName:v53 payloadType:2 sessionStartEntryType:v54];
+          v22 = [MEMORY[0x277D4AAA8] createURLForSuggestionsWithRecipientHandle:primaryHandle2 appPayloadDataString:v78 givenName:givenName payloadType:2 sessionStartEntryType:v54];
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v55 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -13696,20 +13696,20 @@ LABEL_5:
               v56 = objc_opt_class();
               v57 = NSStringFromClass(v56);
               v58 = NSStringFromSelector(aSelector);
-              v59 = [v22 absoluteString];
+              absoluteString = [v22 absoluteString];
               *buf = 138412802;
               *&buf[4] = v57;
               *&buf[12] = 2112;
               *&buf[14] = v58;
               *&buf[22] = 2112;
-              v90 = v59;
+              v90 = absoluteString;
               _os_log_impl(&dword_2304B3000, v55, OS_LOG_TYPE_INFO, "%@, %@, url, %@", buf, 0x20u);
             }
           }
 
-          if (a5)
+          if (error)
           {
-            *a5 = 0;
+            *error = 0;
           }
         }
 
@@ -13725,19 +13725,19 @@ LABEL_5:
     v61 = MEMORY[0x277CCA9B8];
     v93 = *MEMORY[0x277CCA450];
     v62 = MEMORY[0x277CCACA8];
-    v63 = [v9 conversation];
-    v64 = [v63 receiverHandles];
-    v65 = [v64 firstObject];
-    v66 = [v62 stringWithFormat:@"config has invalid handle information, %@", v65];
+    conversation6 = [v9 conversation];
+    receiverHandles5 = [conversation6 receiverHandles];
+    firstObject7 = [receiverHandles5 firstObject];
+    v66 = [v62 stringWithFormat:@"config has invalid handle information, %@", firstObject7];
     v94 = v66;
     v67 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
     v60 = [v61 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v67];
 
-    if (a5)
+    if (error)
     {
       v68 = v60;
       v22 = 0;
-      *a5 = v60;
+      *error = v60;
     }
 
     else
@@ -13757,10 +13757,10 @@ LABEL_39:
     _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sessionConfig", buf, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"sessionConfig");
-    *a5 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -13790,11 +13790,11 @@ void __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_err
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getSessionConfigurationsWithOptions:(id)a3 error:(id *)a4
+- (id)_getSessionConfigurationsWithOptions:(id)options error:(id *)error
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  optionsCopy = options;
+  if (optionsCopy)
   {
     aSelector = a2;
     v55 = 0;
@@ -13810,7 +13810,7 @@ void __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_err
     v53 = __Block_byref_object_dispose__119;
     v54 = 0;
     v8 = dispatch_semaphore_create(0);
-    v9 = [(SMSuggestionsManager *)self suggestionsHelper];
+    suggestionsHelper = [(SMSuggestionsManager *)self suggestionsHelper];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __67__SMSuggestionsManager__getSessionConfigurationsWithOptions_error___block_invoke;
@@ -13819,7 +13819,7 @@ void __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_err
     v48 = &v49;
     v10 = v8;
     v46 = v10;
-    [v9 getSessionConfigurationsWithOptions:v7 handler:v45];
+    [suggestionsHelper getSessionConfigurationsWithOptions:optionsCopy handler:v45];
 
     v11 = v10;
     v12 = [MEMORY[0x277CBEAA8] now];
@@ -13831,11 +13831,11 @@ void __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_err
       v16 = v15;
       v17 = objc_opt_new();
       v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-      v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v20 = [v19 filteredArrayUsingPredicate:v18];
-      v21 = [v20 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+      firstObject = [v20 firstObject];
 
-      [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+      [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
       v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
@@ -13877,7 +13877,7 @@ void __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_err
         v62 = 2112;
         v63 = v33;
         v64 = 2112;
-        v65 = v7;
+        v65 = optionsCopy;
         v66 = 2048;
         v67 = v34;
         v68 = 2117;
@@ -13888,7 +13888,7 @@ void __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_err
       }
     }
 
-    if (a4 && v29)
+    if (error && v29)
     {
       v37 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -13906,21 +13906,21 @@ void __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_err
       }
 
       v38 = v29;
-      *a4 = v29;
-      v39 = [MEMORY[0x277CBEA60] array];
+      *error = v29;
+      array = [MEMORY[0x277CBEA60] array];
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v50[5];
+        *error = v50[5];
       }
 
-      v39 = v56[5];
+      array = v56[5];
     }
 
-    v28 = v39;
+    array2 = array;
 
     _Block_object_dispose(&v49, 8);
     _Block_object_dispose(&v55, 8);
@@ -13938,10 +13938,10 @@ void __75__SMSuggestionsManager__getMessagesURLFromSessionConfig_payloadType_err
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options (in %s:%d)", buf, 0x12u);
     }
 
-    v28 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
   }
 
-  return v28;
+  return array2;
 }
 
 void __67__SMSuggestionsManager__getSessionConfigurationsWithOptions_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -13961,7 +13961,7 @@ void __67__SMSuggestionsManager__getSessionConfigurationsWithOptions_error___blo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_refreshCurrentLocationWithError:(id *)a3
+- (BOOL)_refreshCurrentLocationWithError:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
   v38 = 0;
@@ -13978,7 +13978,7 @@ void __67__SMSuggestionsManager__getSessionConfigurationsWithOptions_error___blo
   v36 = __Block_byref_object_dispose__119;
   v37 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(SMSuggestionsManager *)self suggestionsHelper];
+  suggestionsHelper = [(SMSuggestionsManager *)self suggestionsHelper];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __57__SMSuggestionsManager__refreshCurrentLocationWithError___block_invoke;
@@ -13987,7 +13987,7 @@ void __67__SMSuggestionsManager__getSessionConfigurationsWithOptions_error___blo
   v31 = &v32;
   v7 = v5;
   v29 = v7;
-  [v6 refreshCurrentLocationWithHandler:v28];
+  [suggestionsHelper refreshCurrentLocationWithHandler:v28];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -13999,11 +13999,11 @@ void __67__SMSuggestionsManager__getSessionConfigurationsWithOptions_error___blo
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -14038,9 +14038,9 @@ void __67__SMSuggestionsManager__getSessionConfigurationsWithOptions_error___blo
     objc_storeStrong(v39 + 5, v22);
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v39[5];
+    *error = v39[5];
   }
 
   v25 = v39[5] == 0;
@@ -14062,14 +14062,14 @@ void __57__SMSuggestionsManager__refreshCurrentLocationWithError___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getNPLOIsToHomeWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 error:(id *)a6
+- (id)_getNPLOIsToHomeWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v22 = 0;
-  v8 = [(SMSuggestionsManager *)self _getNPLOIsWithOnlyHighConfidence:a3 location:a4 date:a5 error:&v22];
+  v8 = [(SMSuggestionsManager *)self _getNPLOIsWithOnlyHighConfidence:confidence location:location date:date error:&v22];
   v9 = v22;
   v10 = v9;
-  if (a6 && v9)
+  if (error && v9)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -14087,8 +14087,8 @@ void __57__SMSuggestionsManager__refreshCurrentLocationWithError___block_invoke(
     }
 
     v12 = v10;
-    *a6 = v10;
-    v13 = [MEMORY[0x277CBEA60] array];
+    *error = v10;
+    array = [MEMORY[0x277CBEA60] array];
   }
 
   else
@@ -14096,17 +14096,17 @@ void __57__SMSuggestionsManager__refreshCurrentLocationWithError___block_invoke(
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_610];
     v15 = [v8 filteredArrayUsingPredicate:v14];
 
-    if (a6)
+    if (error)
     {
       v16 = v10;
-      *a6 = v10;
+      *error = v10;
     }
 
-    v13 = v15;
-    v8 = v13;
+    array = v15;
+    v8 = array;
   }
 
-  v17 = v13;
+  v17 = array;
 
   return v17;
 }
@@ -14119,12 +14119,12 @@ BOOL __83__SMSuggestionsManager__getNPLOIsToHomeWithOnlyHighConfidence_location_
   return v3;
 }
 
-- (id)_getNPLOIsWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 error:(id *)a6
+- (id)_getNPLOIsWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date error:(id *)error
 {
-  v57 = a3;
+  confidenceCopy = confidence;
   v90[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v59 = a5;
+  locationCopy = location;
+  dateCopy = date;
   v71 = 0;
   v72 = &v71;
   v73 = 0x3032000000;
@@ -14137,8 +14137,8 @@ BOOL __83__SMSuggestionsManager__getNPLOIsToHomeWithOnlyHighConfidence_location_
   v67 = 0x3032000000;
   v68 = __Block_byref_object_copy__119;
   v69 = __Block_byref_object_dispose__119;
-  v70 = [MEMORY[0x277CBEA60] array];
-  v10 = [(SMSuggestionsManager *)self deviceLocationPredictor];
+  array = [MEMORY[0x277CBEA60] array];
+  deviceLocationPredictor = [(SMSuggestionsManager *)self deviceLocationPredictor];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_date_error___block_invoke;
@@ -14147,8 +14147,8 @@ BOOL __83__SMSuggestionsManager__getNPLOIsToHomeWithOnlyHighConfidence_location_
   v64 = &v71;
   v11 = v9;
   v62 = v11;
-  [v10 fetchNextPredictedLocationsOfInterestFromLocation:v8 startDate:v59 timeInterval:v61 handler:3600.0];
-  v58 = v8;
+  [deviceLocationPredictor fetchNextPredictedLocationsOfInterestFromLocation:locationCopy startDate:dateCopy timeInterval:v61 handler:3600.0];
+  v58 = locationCopy;
 
   v12 = v11;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -14160,11 +14160,11 @@ BOOL __83__SMSuggestionsManager__getNPLOIsToHomeWithOnlyHighConfidence_location_
     v17 = v16;
     v18 = objc_opt_new();
     v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_979];
-    v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
-    v22 = [v21 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+    firstObject = [v21 firstObject];
 
-    [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+    [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
@@ -14191,7 +14191,7 @@ BOOL __83__SMSuggestionsManager__getNPLOIsToHomeWithOnlyHighConfidence_location_
 
   v28 = v26;
   v29 = v28;
-  if (a6)
+  if (error)
   {
     if (v72[5])
     {
@@ -14213,8 +14213,8 @@ BOOL __83__SMSuggestionsManager__getNPLOIsToHomeWithOnlyHighConfidence_location_
 
       v31 = v72[5];
 LABEL_16:
-      *a6 = v31;
-      v33 = [MEMORY[0x277CBEA60] array];
+      *error = v31;
+      array2 = [MEMORY[0x277CBEA60] array];
       goto LABEL_29;
     }
 
@@ -14262,7 +14262,7 @@ LABEL_16:
       *buf = 138413827;
       *&buf[4] = v41;
       v78 = 2112;
-      if (v57)
+      if (confidenceCopy)
       {
         v46 = @"YES";
       }
@@ -14282,7 +14282,7 @@ LABEL_16:
     }
   }
 
-  if (v57)
+  if (confidenceCopy)
   {
     v47 = v38;
   }
@@ -14292,19 +14292,19 @@ LABEL_16:
     v47 = v36;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v72[5];
+    *error = v72[5];
   }
 
-  v33 = v47;
+  array2 = v47;
 
 LABEL_29:
   _Block_object_dispose(&v65, 8);
 
   _Block_object_dispose(&v71, 8);
 
-  return v33;
+  return array2;
 }
 
 void __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_date_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -14344,12 +14344,12 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
   return v6 & 1;
 }
 
-- (id)_getSunriseDateAtLocation:(id)a3 date:(id)a4 error:(id *)a5
+- (id)_getSunriseDateAtLocation:(id)location date:(id)date error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  locationCopy = location;
+  dateCopy = date;
+  if (!locationCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -14358,26 +14358,26 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = _RTErrorInvalidParameterCreate(@"location");
+      *error = _RTErrorInvalidParameterCreate(@"location");
     }
   }
 
   v10 = objc_autoreleasePoolPush();
   v11 = objc_alloc_init(MEMORY[0x277D0EAB0]);
-  [v7 latitude];
+  [locationCopy latitude];
   v13 = v12;
-  [v7 longitude];
+  [locationCopy longitude];
   v15 = v14;
-  v16 = [MEMORY[0x277CBEA80] currentCalendar];
-  v17 = [v16 components:60 fromDate:v8];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v17 = [currentCalendar components:60 fromDate:dateCopy];
   [v17 setHour:3];
-  v18 = [v16 dateFromComponents:v17];
+  v18 = [currentCalendar dateFromComponents:v17];
   [v18 timeIntervalSinceReferenceDate];
   [v11 calculateAstronomicalTimeForLocation:v13 time:{v15, v19}];
-  v20 = [v11 sunrise];
-  v21 = [v20 copy];
+  sunrise = [v11 sunrise];
+  v21 = [sunrise copy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -14387,8 +14387,8 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       NSStringFromSelector(a2);
-      v25 = v29 = v8;
-      v26 = [v18 stringFromDate];
+      v25 = v29 = dateCopy;
+      stringFromDate = [v18 stringFromDate];
       [v21 stringFromDate];
       v27 = aSelectora = v10;
       *buf = 138413315;
@@ -14396,15 +14396,15 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
       v34 = 2112;
       v35 = v25;
       v36 = 2117;
-      v37 = v7;
+      v37 = locationCopy;
       v38 = 2112;
-      v39 = v26;
+      v39 = stringFromDate;
       v40 = 2112;
       v41 = v27;
       _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "%@, %@, location, %{sensitive}@, third hour of today, %@, sunrise date, %@", buf, 0x34u);
 
       v10 = aSelectora;
-      v8 = v29;
+      dateCopy = v29;
     }
   }
 
@@ -14413,12 +14413,12 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
   return v21;
 }
 
-- (id)_getSunsetDateAtLocation:(id)a3 date:(id)a4 error:(id *)a5
+- (id)_getSunsetDateAtLocation:(id)location date:(id)date error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  locationCopy = location;
+  dateCopy = date;
+  if (!locationCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -14427,26 +14427,26 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = _RTErrorInvalidParameterCreate(@"location");
+      *error = _RTErrorInvalidParameterCreate(@"location");
     }
   }
 
   v10 = objc_autoreleasePoolPush();
   v11 = objc_alloc_init(MEMORY[0x277D0EAB0]);
-  [v7 latitude];
+  [locationCopy latitude];
   v13 = v12;
-  [v7 longitude];
+  [locationCopy longitude];
   v15 = v14;
-  v16 = [MEMORY[0x277CBEA80] currentCalendar];
-  v17 = [v16 components:60 fromDate:v8];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v17 = [currentCalendar components:60 fromDate:dateCopy];
   [v17 setHour:5];
-  v18 = [v16 dateFromComponents:v17];
+  v18 = [currentCalendar dateFromComponents:v17];
   [v18 timeIntervalSinceReferenceDate];
   [v11 calculateAstronomicalTimeForLocation:v13 time:{v15, v19}];
-  v20 = [v11 sunset];
-  v21 = [v20 copy];
+  sunset = [v11 sunset];
+  v21 = [sunset copy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -14456,8 +14456,8 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       NSStringFromSelector(a2);
-      v25 = v29 = v8;
-      v26 = [v18 stringFromDate];
+      v25 = v29 = dateCopy;
+      stringFromDate = [v18 stringFromDate];
       [v21 stringFromDate];
       v27 = aSelectora = v10;
       *buf = 138413315;
@@ -14465,15 +14465,15 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
       v34 = 2112;
       v35 = v25;
       v36 = 2117;
-      v37 = v7;
+      v37 = locationCopy;
       v38 = 2112;
-      v39 = v26;
+      v39 = stringFromDate;
       v40 = 2112;
       v41 = v27;
       _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "%@, %@, location, %{sensitive}@, fifth hour of today, %@, sunset date, %@", buf, 0x34u);
 
       v10 = aSelectora;
-      v8 = v29;
+      dateCopy = v29;
     }
   }
 
@@ -14482,22 +14482,22 @@ uint64_t __77__SMSuggestionsManager__getNPLOIsWithOnlyHighConfidence_location_da
   return v21;
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__SMSuggestionsManager_performPurgeOfType_referenceDate_completion___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = dateCopy;
+  dispatch_async(queue, v13);
 }
 
 void __68__SMSuggestionsManager_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)

@@ -1,43 +1,43 @@
 @interface CHTextSynthesizerDataChunk
-- (BOOL)isEqual:(id)a3;
-- (CHTextSynthesizerDataChunk)initWithChunkValueForSynthesis:(id)a3 originalValue:(id)a4 range:(_NSRange)a5 isNotDef:(BOOL)a6 synthesisSuggestion:(int64_t)a7;
-- (CHTextSynthesizerDataChunk)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHTextSynthesizerDataChunk)initWithChunkValueForSynthesis:(id)synthesis originalValue:(id)value range:(_NSRange)range isNotDef:(BOOL)def synthesisSuggestion:(int64_t)suggestion;
+- (CHTextSynthesizerDataChunk)initWithCoder:(id)coder;
 - (_NSRange)rangeInOriginalString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compareByRangeWithDataChunk:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compareByRangeWithDataChunk:(id)chunk;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHTextSynthesizerDataChunk
 
-- (CHTextSynthesizerDataChunk)initWithChunkValueForSynthesis:(id)a3 originalValue:(id)a4 range:(_NSRange)a5 isNotDef:(BOOL)a6 synthesisSuggestion:(int64_t)a7
+- (CHTextSynthesizerDataChunk)initWithChunkValueForSynthesis:(id)synthesis originalValue:(id)value range:(_NSRange)range isNotDef:(BOOL)def synthesisSuggestion:(int64_t)suggestion
 {
-  length = a5.length;
-  location = a5.location;
-  v14 = a3;
-  v15 = a4;
+  length = range.length;
+  location = range.location;
+  synthesisCopy = synthesis;
+  valueCopy = value;
   v19.receiver = self;
   v19.super_class = CHTextSynthesizerDataChunk;
   v16 = [(CHTextSynthesizerDataChunk *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_chunkValueForSynthesis, a3);
-    objc_storeStrong(&v17->_chunkValueOriginal, a4);
+    objc_storeStrong(&v16->_chunkValueForSynthesis, synthesis);
+    objc_storeStrong(&v17->_chunkValueOriginal, value);
     v17->_rangeInOriginalString.location = location;
     v17->_rangeInOriginalString.length = length;
-    v17->_isNotDef = a6;
-    v17->_synthesisSuggestion = a7;
+    v17->_isNotDef = def;
+    v17->_synthesisSuggestion = suggestion;
   }
 
   return v17;
 }
 
-- (int64_t)compareByRangeWithDataChunk:(id)a3
+- (int64_t)compareByRangeWithDataChunk:(id)chunk
 {
   location = self->_rangeInOriginalString.location;
-  v7 = objc_msgSend_rangeInOriginalString(a3, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_rangeInOriginalString(chunk, a2, chunk, v3, v4, v5);
   if (location < v7)
   {
     return -1;
@@ -49,13 +49,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = objc_msgSend_chunkValueOriginal(self, v6, v7, v8, v9, v10);
     v17 = objc_msgSend_chunkValueOriginal(v5, v12, v13, v14, v15, v16);
     if (!objc_msgSend_isEqualToString_(v11, v18, v17, v19, v20, v21))
@@ -128,7 +128,7 @@ LABEL_12:
   return v39;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHTextSynthesizerDataChunk alloc];
   chunkValueOriginal = self->_chunkValueOriginal;
@@ -141,30 +141,30 @@ LABEL_12:
   return objc_msgSend_initWithChunkValueForSynthesis_originalValue_range_isNotDef_synthesisSuggestion_(v4, v5, chunkValueForSynthesis, chunkValueOriginal, location, length, isNotDef, synthesisSuggestion);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
-  objc_msgSend_encodeObject_forKey_(v20, v4, self->_chunkValueForSynthesis, @"synthesis_value", v5, v6);
-  objc_msgSend_encodeObject_forKey_(v20, v7, self->_chunkValueOriginal, @"original_value", v8, v9);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_chunkValueForSynthesis, @"synthesis_value", v5, v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_chunkValueOriginal, @"original_value", v8, v9);
   v10 = NSStringFromRange(self->_rangeInOriginalString);
-  objc_msgSend_encodeObject_forKey_(v20, v11, v10, @"range", v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, v10, @"range", v12, v13);
 
-  objc_msgSend_encodeBool_forKey_(v20, v14, self->_isNotDef, @"isNotDef", v15, v16);
-  objc_msgSend_encodeInt_forKey_(v20, v17, LODWORD(self->_synthesisSuggestion), @"suggestion", v18, v19);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v14, self->_isNotDef, @"isNotDef", v15, v16);
+  objc_msgSend_encodeInt_forKey_(coderCopy, v17, LODWORD(self->_synthesisSuggestion), @"suggestion", v18, v19);
 }
 
-- (CHTextSynthesizerDataChunk)initWithCoder:(id)a3
+- (CHTextSynthesizerDataChunk)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"synthesis_value", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"synthesis_value", v7, v8);
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"original_value", v12, v13);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"original_value", v12, v13);
   v15 = objc_opt_class();
-  v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"range", v17, v18);
+  v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"range", v17, v18);
   v20 = NSRangeFromString(v19);
-  v24 = objc_msgSend_decodeBoolForKey_(v4, v20.length, @"isNotDef", v21, v22, v23);
-  v29 = objc_msgSend_decodeIntForKey_(v4, v25, @"suggestion", v26, v27, v28);
+  v24 = objc_msgSend_decodeBoolForKey_(coderCopy, v20.length, @"isNotDef", v21, v22, v23);
+  v29 = objc_msgSend_decodeIntForKey_(coderCopy, v25, @"suggestion", v26, v27, v28);
   isNotDef_synthesisSuggestion = objc_msgSend_initWithChunkValueForSynthesis_originalValue_range_isNotDef_synthesisSuggestion_(self, v30, v9, v14, v20.location, v20.length, v24, v29);
 
   return isNotDef_synthesisSuggestion;

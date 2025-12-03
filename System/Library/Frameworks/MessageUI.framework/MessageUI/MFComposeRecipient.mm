@@ -2,18 +2,18 @@
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
 + (id)_requiredKeyDescriptors;
-+ (id)composeRecipientWithAutocompleteResult:(id)a3;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (id)recipientWithProperty:(int)a3 address:(id)a4;
-+ (id)recipientWithRecord:(void *)a3 property:(int)a4 identifier:(int)a5;
-+ (id)recipientWithRecord:(void *)a3 recordID:(int)a4 property:(int)a5 identifier:(int)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)composeRecipientWithAutocompleteResult:(id)result;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (id)recipientWithProperty:(int)property address:(id)address;
++ (id)recipientWithRecord:(void *)record property:(int)property identifier:(int)identifier;
++ (id)recipientWithRecord:(void *)record recordID:(int)d property:(int)property identifier:(int)identifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)showsAccessoryButton;
 - (BOOL)wasCompleteMatch;
 - (CNContact)contact;
-- (MFComposeRecipient)initWithCoder:(id)a3;
-- (MFComposeRecipient)initWithContact:(id)a3 address:(id)a4 kind:(unint64_t)a5;
-- (MFComposeRecipient)initWithRecord:(void *)a3 recordID:(int)a4 property:(int)a5 identifier:(int)a6 address:(id)a7;
+- (MFComposeRecipient)initWithCoder:(id)coder;
+- (MFComposeRecipient)initWithContact:(id)contact address:(id)address kind:(unint64_t)kind;
+- (MFComposeRecipient)initWithRecord:(void *)record recordID:(int)d property:(int)property identifier:(int)identifier address:(id)address;
 - (NSString)address;
 - (NSString)commentedAddress;
 - (NSString)compositeName;
@@ -28,12 +28,12 @@
 - (id)_unformattedAddress;
 - (id)completelyMatchedAttributedStrings;
 - (id)labeledValueIdentifier;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAddress:(id)a3;
-- (void)setIdentifier:(int)a3;
-- (void)setRecord:(void *)a3 recordID:(int)a4 identifier:(int)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAddress:(id)address;
+- (void)setIdentifier:(int)identifier;
+- (void)setRecord:(void *)record recordID:(int)d identifier:(int)identifier;
 @end
 
 @implementation MFComposeRecipient
@@ -47,17 +47,17 @@
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isEqualToString:@"com.apple.mobilemail.recipient"])
+  dataCopy = data;
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.mobilemail.recipient"])
   {
-    v10 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v8 error:0];
-    v11 = [[a1 alloc] initWithCoder:v10];
+    v10 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:0];
+    v11 = [[self alloc] initWithCoder:v10];
     [v10 finishDecoding];
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -66,7 +66,7 @@
   else
   {
     v11 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -74,7 +74,7 @@
 
   if (!v11)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
   }
 
 LABEL_7:
@@ -84,27 +84,27 @@ LABEL_7:
 
 + (NSArray)writableTypeIdentifiersForItemProvider
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  [v2 addObject:@"com.apple.mobilemail.recipient"];
-  v3 = [*MEMORY[0x1E6983078] identifier];
-  [v2 addObject:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"com.apple.mobilemail.recipient"];
+  identifier = [*MEMORY[0x1E6983078] identifier];
+  [array addObject:identifier];
 
-  v4 = [MEMORY[0x1E696AEC0] writableTypeIdentifiersForItemProvider];
-  [v2 addObjectsFromArray:v4];
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x1E696AEC0] writableTypeIdentifiersForItemProvider];
+  [array addObjectsFromArray:writableTypeIdentifiersForItemProvider];
 
-  return v2;
+  return array;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E6982C40] typeWithIdentifier:v6];
-  if ([v6 isEqualToString:@"com.apple.mobilemail.recipient"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = [MEMORY[0x1E6982C40] typeWithIdentifier:identifierCopy];
+  if ([identifierCopy isEqualToString:@"com.apple.mobilemail.recipient"])
   {
     v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-    v7[2](v7, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
 
 LABEL_3:
     v10 = 0;
@@ -113,26 +113,26 @@ LABEL_3:
 
   if ([v8 conformsToType:*MEMORY[0x1E6982F40]])
   {
-    v11 = [(MFComposeRecipient *)self commentedAddress];
-    v10 = [v11 loadDataWithTypeIdentifier:v6 forItemProviderCompletionHandler:v7];
+    commentedAddress = [(MFComposeRecipient *)self commentedAddress];
+    v10 = [commentedAddress loadDataWithTypeIdentifier:identifierCopy forItemProviderCompletionHandler:handlerCopy];
   }
 
   else
   {
     if ([v8 conformsToType:*MEMORY[0x1E6983078]])
     {
-      v12 = [(MFComposeRecipient *)self contact];
-      v13 = v12;
-      if (v12)
+      contact = [(MFComposeRecipient *)self contact];
+      v13 = contact;
+      if (contact)
       {
-        v14 = v12;
+        v14 = contact;
       }
 
       else
       {
         v16 = MEMORY[0x1E695CD58];
-        v17 = [(MFComposeRecipient *)self commentedAddress];
-        v14 = [v16 em_contactFromEmailAddress:v17];
+        commentedAddress2 = [(MFComposeRecipient *)self commentedAddress];
+        v14 = [v16 em_contactFromEmailAddress:commentedAddress2];
       }
 
       v18 = MEMORY[0x1E695CE30];
@@ -142,11 +142,11 @@ LABEL_3:
       v20 = [v18 dataWithContacts:v19 error:&v22];
       v21 = v22;
 
-      (v7)[2](v7, v20, v21);
+      (handlerCopy)[2](handlerCopy, v20, v21);
       goto LABEL_3;
     }
 
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
     v10 = 0;
   }
 
@@ -155,36 +155,36 @@ LABEL_10:
   return v10;
 }
 
-- (MFComposeRecipient)initWithContact:(id)a3 address:(id)a4 kind:(unint64_t)a5
+- (MFComposeRecipient)initWithContact:(id)contact address:(id)address kind:(unint64_t)kind
 {
-  v9 = a3;
-  v10 = a4;
+  contactCopy = contact;
+  addressCopy = address;
   v16.receiver = self;
   v16.super_class = MFComposeRecipient;
   v11 = [(MFComposeRecipient *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_contact, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_contact, contact);
+    v13 = [addressCopy copy];
     address = v12->_address;
     v12->_address = v13;
 
-    v12->_kind = a5;
+    v12->_kind = kind;
   }
 
   return v12;
 }
 
-+ (id)composeRecipientWithAutocompleteResult:(id)a3
++ (id)composeRecipientWithAutocompleteResult:(id)result
 {
-  v3 = a3;
-  if ([v3 resultType])
+  resultCopy = result;
+  if ([resultCopy resultType])
   {
-    if ([v3 resultType] == 1)
+    if ([resultCopy resultType] == 1)
     {
       v4 = [[MFComposeRecipientGroup alloc] initWithChildren:0 displayString:0];
-      [(MFComposeRecipient *)v4 setAutocompleteResult:v3];
+      [(MFComposeRecipient *)v4 setAutocompleteResult:resultCopy];
     }
 
     else
@@ -195,40 +195,40 @@ LABEL_10:
     goto LABEL_24;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 addressType];
+  value = [resultCopy value];
+  addressType = [value addressType];
 
-  if ((v6 - 1) >= 3)
+  if ((addressType - 1) >= 3)
   {
     v7 = 5;
   }
 
   else
   {
-    v7 = v6 - 1;
+    v7 = addressType - 1;
   }
 
-  v8 = [v3 value];
-  v9 = [v8 address];
+  value2 = [resultCopy value];
+  address = [value2 address];
 
-  if (v9 && ([v9 ea_isLegalEmailAddress] & 1) == 0)
+  if (address && ([address ea_isLegalEmailAddress] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
-    v11 = [v10 scheme];
-    if ([v11 length])
+    v10 = [MEMORY[0x1E695DFF8] URLWithString:address];
+    scheme = [v10 scheme];
+    if ([scheme length])
     {
-      if ([@"mailto" isEqualToString:v11])
+      if ([@"mailto" isEqualToString:scheme])
       {
-        v12 = [v10 resourceSpecifier];
+        resourceSpecifier = [v10 resourceSpecifier];
 
         v7 = 0;
       }
 
       else
       {
-        if (![@"tel" isEqualToString:v11])
+        if (![@"tel" isEqualToString:scheme])
         {
-          if ([@"urn" isEqualToString:v11])
+          if ([@"urn" isEqualToString:scheme])
           {
             v7 = 4;
           }
@@ -236,39 +236,39 @@ LABEL_10:
           goto LABEL_18;
         }
 
-        v12 = [v10 resourceSpecifier];
+        resourceSpecifier = [v10 resourceSpecifier];
 
         v7 = 1;
       }
 
-      v9 = v12;
+      address = resourceSpecifier;
     }
 
 LABEL_18:
   }
 
-  if ([v9 length])
+  if ([address length])
   {
-    v4 = [[MFComposeRecipient alloc] initWithContact:0 address:v9 kind:v7];
-    [(MFComposeRecipient *)v4 setAutocompleteResult:v3];
-    v13 = [v3 displayName];
-    [(MFComposeRecipient *)v4 setDisplayString:v13];
+    v4 = [[MFComposeRecipient alloc] initWithContact:0 address:address kind:v7];
+    [(MFComposeRecipient *)v4 setAutocompleteResult:resultCopy];
+    displayName = [resultCopy displayName];
+    [(MFComposeRecipient *)v4 setDisplayString:displayName];
 
-    v14 = [v3 value];
-    v15 = [v14 identifier];
-    [(MFComposeRecipient *)v4 setValueIdentifier:v15];
+    value3 = [resultCopy value];
+    identifier = [value3 identifier];
+    [(MFComposeRecipient *)v4 setValueIdentifier:identifier];
 
-    v16 = [v3 value];
-    v17 = [v16 label];
-    [(MFComposeRecipient *)v4 setUnlocalizedLabel:v17];
+    value4 = [resultCopy value];
+    label = [value4 label];
+    [(MFComposeRecipient *)v4 setUnlocalizedLabel:label];
 
-    -[MFComposeRecipient setSourceType:](v4, "setSourceType:", [v3 sourceType]);
-    v18 = [v3 identifier];
+    -[MFComposeRecipient setSourceType:](v4, "setSourceType:", [resultCopy sourceType]);
+    identifier2 = [resultCopy identifier];
 
-    if (v18)
+    if (identifier2)
     {
-      v19 = [v3 identifier];
-      [(MFComposeRecipient *)v4 setContactIdentifier:v19];
+      identifier3 = [resultCopy identifier];
+      [(MFComposeRecipient *)v4 setContactIdentifier:identifier3];
     }
   }
 
@@ -282,34 +282,34 @@ LABEL_24:
   return v4;
 }
 
-- (MFComposeRecipient)initWithCoder:(id)a3
+- (MFComposeRecipient)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"property"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"property"];
   v19 = -1431655766;
   [v6 getValue:&v19 size:4];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
-  v8 = [v4 decodeObjectForKey:@"address"];
-  v9 = [v4 decodeIntegerForKey:@"kind"];
-  if (v5 || ![v4 containsValueForKey:@"recordID"])
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+  v8 = [coderCopy decodeObjectForKey:@"address"];
+  v9 = [coderCopy decodeIntegerForKey:@"kind"];
+  if (v5 || ![coderCopy containsValueForKey:@"recordID"])
   {
     self = [(MFComposeRecipient *)self initWithContact:v5 address:v8 kind:v9];
   }
 
   else
   {
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordID"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
     v11 = +[MFAddressBookManager sharedManager];
-    v12 = [v11 addressBook];
+    addressBook = [v11 addressBook];
 
     recordID = -1431655766;
     [v16 getValue:&recordID size:4];
     v17 = -1431655766;
     [v15 getValue:&v17 size:4];
-    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(v12, recordID);
+    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(addressBook, recordID);
     if (PersonWithRecordID)
     {
       self = [(MFComposeRecipient *)self initWithRecord:PersonWithRecordID recordID:recordID property:v19 identifier:v17 address:v10];
@@ -321,58 +321,58 @@ LABEL_24:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   if (*&self->_contact == 0)
   {
     if (self->_record)
     {
       v6 = [MEMORY[0x1E696B098] valueWithBytes:&self->_property objCType:"i"];
-      [v9 encodeObject:v6 forKey:@"property"];
+      [coderCopy encodeObject:v6 forKey:@"property"];
       if (self->_recordID)
       {
         v7 = [MEMORY[0x1E696B098] valueWithBytes:&self->_recordID objCType:"i"];
-        [v9 encodeObject:v7 forKey:@"recordID"];
+        [coderCopy encodeObject:v7 forKey:@"recordID"];
         v8 = [MEMORY[0x1E696B098] valueWithBytes:&self->_identifier objCType:"i"];
-        [v9 encodeObject:v8 forKey:@"identifier"];
+        [coderCopy encodeObject:v8 forKey:@"identifier"];
       }
     }
   }
 
   else
   {
-    [v9 encodeObject:? forKey:?];
+    [coderCopy encodeObject:? forKey:?];
   }
 
   address = self->_address;
   if (address)
   {
-    [v9 encodeObject:address forKey:@"address"];
+    [coderCopy encodeObject:address forKey:@"address"];
   }
 
   kind = self->_kind;
   if (kind)
   {
-    [v9 encodeInteger:kind forKey:@"kind"];
+    [coderCopy encodeInteger:kind forKey:@"kind"];
   }
 }
 
-- (MFComposeRecipient)initWithRecord:(void *)a3 recordID:(int)a4 property:(int)a5 identifier:(int)a6 address:(id)a7
+- (MFComposeRecipient)initWithRecord:(void *)record recordID:(int)d property:(int)property identifier:(int)identifier address:(id)address
 {
-  v13 = a7;
+  addressCopy = address;
   v14 = *MEMORY[0x1E698A548];
-  if (*MEMORY[0x1E698A548] == a5)
+  if (*MEMORY[0x1E698A548] == property)
   {
     v15 = 1;
   }
 
-  else if (*MEMORY[0x1E698A340] == a5)
+  else if (*MEMORY[0x1E698A340] == property)
   {
     v15 = 0;
   }
 
-  else if (*MEMORY[0x1E698A3C8] == a5)
+  else if (*MEMORY[0x1E698A3C8] == property)
   {
     v15 = 2;
   }
@@ -382,29 +382,29 @@ LABEL_24:
     v15 = 5;
   }
 
-  v16 = [(MFComposeRecipient *)self initWithContact:0 address:v13 kind:v15];
+  v16 = [(MFComposeRecipient *)self initWithContact:0 address:addressCopy kind:v15];
   if (v16)
   {
-    if (a3)
+    if (record)
     {
-      v16->_record = CFRetain(a3);
-      v16->_recordID = a4;
+      v16->_record = CFRetain(record);
+      v16->_recordID = d;
     }
 
     else
     {
-      a6 = -1;
+      identifier = -1;
     }
 
-    v16->_identifier = a6;
-    objc_storeStrong(&v16->_address, a7);
-    v16->_property = a5;
-    if (v14 == a5)
+    v16->_identifier = identifier;
+    objc_storeStrong(&v16->_address, address);
+    v16->_property = property;
+    if (v14 == property)
     {
       v17 = 1;
     }
 
-    else if (*MEMORY[0x1E698A340] == a5)
+    else if (*MEMORY[0x1E698A340] == property)
     {
       v17 = 0;
     }
@@ -412,7 +412,7 @@ LABEL_24:
     else
     {
       v17 = 5;
-      if (*MEMORY[0x1E698A3C8] == a5)
+      if (*MEMORY[0x1E698A3C8] == property)
       {
         v17 = 2;
       }
@@ -424,55 +424,55 @@ LABEL_24:
   return v16;
 }
 
-+ (id)recipientWithRecord:(void *)a3 recordID:(int)a4 property:(int)a5 identifier:(int)a6
++ (id)recipientWithRecord:(void *)record recordID:(int)d property:(int)property identifier:(int)identifier
 {
-  v6 = [[a1 alloc] initWithRecord:a3 recordID:*&a4 property:*&a5 identifier:*&a6 address:0];
+  v6 = [[self alloc] initWithRecord:record recordID:*&d property:*&property identifier:*&identifier address:0];
 
   return v6;
 }
 
-+ (id)recipientWithRecord:(void *)a3 property:(int)a4 identifier:(int)a5
++ (id)recipientWithRecord:(void *)record property:(int)property identifier:(int)identifier
 {
-  v5 = [[a1 alloc] initWithRecord:a3 recordID:0xFFFFFFFFLL property:*&a4 identifier:*&a5 address:0];
+  v5 = [[self alloc] initWithRecord:record recordID:0xFFFFFFFFLL property:*&property identifier:*&identifier address:0];
 
   return v5;
 }
 
-+ (id)recipientWithProperty:(int)a3 address:(id)a4
++ (id)recipientWithProperty:(int)property address:(id)address
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [[a1 alloc] initWithRecord:0 recordID:0xFFFFFFFFLL property:v4 identifier:0xFFFFFFFFLL address:v6];
+  v4 = *&property;
+  addressCopy = address;
+  v7 = [[self alloc] initWithRecord:0 recordID:0xFFFFFFFFLL property:v4 identifier:0xFFFFFFFFLL address:addressCopy];
 
   return v7;
 }
 
-- (void)setRecord:(void *)a3 recordID:(int)a4 identifier:(int)a5
+- (void)setRecord:(void *)record recordID:(int)d identifier:(int)identifier
 {
-  if (a3 && !self->_record)
+  if (record && !self->_record)
   {
-    self->_record = CFRetain(a3);
-    self->_recordID = a4;
-    self->_identifier = a5;
+    self->_record = CFRetain(record);
+    self->_recordID = d;
+    self->_identifier = identifier;
     label = self->_label;
     self->_label = 0;
   }
 }
 
-- (void)setIdentifier:(int)a3
+- (void)setIdentifier:(int)identifier
 {
-  if (self->_identifier != a3)
+  if (self->_identifier != identifier)
   {
-    v5 = [(MFComposeRecipient *)self record];
-    if (v5)
+    record = [(MFComposeRecipient *)self record];
+    if (record)
     {
-      v6 = ABRecordCopyValue(v5, self->_property);
+      v6 = ABRecordCopyValue(record, self->_property);
       if (v6)
       {
         v7 = v6;
-        if (ABMultiValueGetCount(v6) >= 1 && ABMultiValueGetIndexForIdentifier(v7, a3) != -1)
+        if (ABMultiValueGetCount(v6) >= 1 && ABMultiValueGetIndexForIdentifier(v7, identifier) != -1)
         {
-          self->_identifier = a3;
+          self->_identifier = identifier;
           label = self->_label;
           self->_label = 0;
         }
@@ -486,8 +486,8 @@ LABEL_24:
 + (id)_requiredKeyDescriptors
 {
   v5[3] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
-  v5[2] = v2;
+  descriptorForRequiredKeys = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
+  v5[2] = descriptorForRequiredKeys;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:3];
 
   return v3;
@@ -541,11 +541,11 @@ LABEL_6:
     v16 = MFLogGeneral();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 134218242;
-      v22 = self;
+      selfCopy = self;
       v23 = 2112;
-      v24 = v17;
+      v24 = localizedDescription;
       _os_log_impl(&dword_1BE819000, v16, OS_LOG_TYPE_DEFAULT, "#Warning Error fetching contact for recipient: %p, %@", buf, 0x16u);
     }
   }
@@ -569,11 +569,11 @@ LABEL_13:
 - (BOOL)wasCompleteMatch
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MFComposeRecipientOriginContext *)self->_originContext searchTerm];
+  searchTerm = [(MFComposeRecipientOriginContext *)self->_originContext searchTerm];
   v8[0] = self;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v7 = 0;
-  v5 = _fastCountOfCompleteMatches(v3, v4, &v7) != 0;
+  v5 = _fastCountOfCompleteMatches(searchTerm, v4, &v7) != 0;
 
   return v5;
 }
@@ -584,12 +584,12 @@ LABEL_13:
   cachedMatchedStrings = self->_cachedMatchedStrings;
   if (!cachedMatchedStrings)
   {
-    v4 = [(MFComposeRecipientOriginContext *)self->_originContext searchTerm];
+    searchTerm = [(MFComposeRecipientOriginContext *)self->_originContext searchTerm];
     v14[0] = self;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     v12 = 0;
     v13 = 0;
-    v6 = _sortedArrayByRelevancy(v4, v5, &v13, &v12);
+    v6 = _sortedArrayByRelevancy(searchTerm, v5, &v13, &v12);
     v7 = v13;
     v8 = v12;
 
@@ -605,9 +605,9 @@ LABEL_13:
 
 - (NSString)address
 {
-  v3 = [(MFComposeRecipient *)self uncommentedAddress];
+  uncommentedAddress = [(MFComposeRecipient *)self uncommentedAddress];
   kind = self->_kind;
-  v5 = v3;
+  v5 = uncommentedAddress;
   v6 = v5;
   v7 = v5;
   if (v5)
@@ -630,10 +630,10 @@ LABEL_13:
   return v7;
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  addressCopy = address;
+  v4 = [addressCopy copy];
   address = self->_address;
   self->_address = v4;
 
@@ -643,9 +643,9 @@ LABEL_13:
 
 - (NSString)normalizedAddress
 {
-  v3 = [(MFComposeRecipient *)self uncommentedAddress];
+  uncommentedAddress = [(MFComposeRecipient *)self uncommentedAddress];
   kind = self->_kind;
-  v5 = v3;
+  v5 = uncommentedAddress;
   v6 = v5;
   v7 = v5;
   if (!v5)
@@ -711,43 +711,43 @@ LABEL_15:
 {
   if (self->_kind)
   {
-    v3 = [(MFComposeRecipient *)self address];
+    address = [(MFComposeRecipient *)self address];
   }
 
   else
   {
-    v4 = [(MFComposeRecipient *)self uncommentedAddress];
-    v5 = [(MFComposeRecipient *)self compositeName];
-    v6 = v5;
-    if (v4 && v5)
+    uncommentedAddress = [(MFComposeRecipient *)self uncommentedAddress];
+    compositeName = [(MFComposeRecipient *)self compositeName];
+    v6 = compositeName;
+    if (uncommentedAddress && compositeName)
     {
-      v7 = [MEMORY[0x1E699AFC0] formattedAddressWithName:v5 email:v4 useQuotes:1];
+      v7 = [MEMORY[0x1E699AFC0] formattedAddressWithName:compositeName email:uncommentedAddress useQuotes:1];
     }
 
     else
     {
-      v7 = v4;
+      v7 = uncommentedAddress;
     }
 
-    v3 = v7;
+    address = v7;
     if (!v7)
     {
       address = self->_address;
       if (address)
       {
-        v9 = [(NSString *)address ea_uncommentedAddress];
-        v10 = [(NSString *)self->_address ea_addressComment];
-        v3 = [MEMORY[0x1E699AFC0] formattedAddressWithName:v10 email:v9 useQuotes:1];
+        ea_uncommentedAddress = [(NSString *)address ea_uncommentedAddress];
+        ea_addressComment = [(NSString *)self->_address ea_addressComment];
+        address = [MEMORY[0x1E699AFC0] formattedAddressWithName:ea_addressComment email:ea_uncommentedAddress useQuotes:1];
       }
 
       else
       {
-        v3 = 0;
+        address = 0;
       }
     }
   }
 
-  return v3;
+  return address;
 }
 
 - (NSString)label
@@ -755,19 +755,19 @@ LABEL_15:
   label = self->_label;
   if (!label)
   {
-    v4 = [(MFComposeRecipient *)self unlocalizedLabel];
-    if (v4)
+    unlocalizedLabel = [(MFComposeRecipient *)self unlocalizedLabel];
+    if (unlocalizedLabel)
     {
-      v5 = [(MFComposeRecipient *)self contact];
+      contact = [(MFComposeRecipient *)self contact];
 
-      if (v5)
+      if (contact)
       {
-        v6 = [MEMORY[0x1E695CEE0] localizedStringForLabel:v4];
+        v6 = [MEMORY[0x1E695CEE0] localizedStringForLabel:unlocalizedLabel];
       }
 
       else
       {
-        v6 = ABAddressBookCopyLocalizedLabel(v4);
+        v6 = ABAddressBookCopyLocalizedLabel(unlocalizedLabel);
       }
 
       v7 = self->_label;
@@ -782,9 +782,9 @@ LABEL_15:
 
 - (NSString)unlocalizedLabel
 {
-  v3 = [(MFComposeRecipient *)self contact];
+  contact = [(MFComposeRecipient *)self contact];
 
-  if (v3)
+  if (contact)
   {
     v4 = self->_unlocalizedLabel;
   }
@@ -817,13 +817,13 @@ LABEL_15:
   compositeName = self->_compositeName;
   if (!compositeName)
   {
-    v4 = [(MFComposeRecipient *)self contact];
+    contact = [(MFComposeRecipient *)self contact];
 
-    if (v4)
+    if (contact)
     {
       v5 = MEMORY[0x1E695CD80];
-      v6 = [(MFComposeRecipient *)self contact];
-      v7 = [v5 stringFromContact:v6 style:0];
+      contact2 = [(MFComposeRecipient *)self contact];
+      v7 = [v5 stringFromContact:contact2 style:0];
 
       if (!v7)
       {
@@ -841,8 +841,8 @@ LABEL_7:
 
       else
       {
-        v8 = [(NSString *)self->_address ea_addressComment];
-        v9 = [v8 copy];
+        ea_addressComment = [(NSString *)self->_address ea_addressComment];
+        v9 = [ea_addressComment copy];
 
         if (v9 == self->_address)
         {
@@ -867,15 +867,15 @@ LABEL_7:
 
 - (NSString)shortName
 {
-  v3 = [(MFComposeRecipient *)self compositeName];
-  v4 = v3;
-  if (!v3 || ([v3 ea_personNameComponents], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_alloc_init(MEMORY[0x1E696ADF8]), objc_msgSend(v6, "setStyle:", 1), objc_msgSend(v6, "stringFromPersonNameComponents:", v5), v7 = objc_claimAutoreleasedReturnValue(), v6, v5, !v7))
+  compositeName = [(MFComposeRecipient *)self compositeName];
+  v4 = compositeName;
+  if (!compositeName || ([compositeName ea_personNameComponents], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_alloc_init(MEMORY[0x1E696ADF8]), objc_msgSend(v6, "setStyle:", 1), objc_msgSend(v6, "stringFromPersonNameComponents:", v5), v7 = objc_claimAutoreleasedReturnValue(), v6, v5, !v7))
   {
-    v8 = [(MFComposeRecipient *)self address];
-    v9 = v8;
-    if (v8)
+    address = [(MFComposeRecipient *)self address];
+    v9 = address;
+    if (address)
     {
-      if ([v8 ea_isLegalEmailAddress])
+      if ([address ea_isLegalEmailAddress])
       {
         v10 = [v9 substringToIndex:{objc_msgSend(MEMORY[0x1E699AFD0], "rangeOfAddressDomainFromAddress:", v9) - 1}];
       }
@@ -899,31 +899,31 @@ LABEL_7:
 
 - (NSString)displayString
 {
-  v3 = self->_displayString;
-  if (![(NSString *)v3 length])
+  address = self->_displayString;
+  if (![(NSString *)address length])
   {
-    v4 = [(MFComposeRecipient *)self compositeName];
+    compositeName = [(MFComposeRecipient *)self compositeName];
 
-    v3 = v4;
-    if (!v4)
+    address = compositeName;
+    if (!compositeName)
     {
-      v3 = [(MFComposeRecipient *)self address];
-      if (!v3)
+      address = [(MFComposeRecipient *)self address];
+      if (!address)
       {
-        v3 = [(MFComposeRecipient *)self placeholderName];
+        address = [(MFComposeRecipient *)self placeholderName];
       }
     }
   }
 
-  return v3;
+  return address;
 }
 
 - (NSString)placeholderName
 {
-  v2 = [(MFComposeRecipient *)self sourceType];
+  sourceType = [(MFComposeRecipient *)self sourceType];
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2 == 1)
+  if (sourceType == 1)
   {
     [v3 localizedStringForKey:@"RECENT_PLACEHOLDER_NAME" value:&stru_1F3CF3758 table:@"Main"];
   }
@@ -945,26 +945,26 @@ LABEL_7:
   {
     if (self->_kind)
     {
-      v4 = address;
+      ea_uncommentedAddress = address;
     }
 
     else
     {
-      v4 = [(NSString *)address ea_uncommentedAddress];
+      ea_uncommentedAddress = [(NSString *)address ea_uncommentedAddress];
     }
 
-    v8 = v4;
+    stringValue = ea_uncommentedAddress;
     goto LABEL_17;
   }
 
-  v5 = [(MFComposeRecipient *)self contact];
+  contact = [(MFComposeRecipient *)self contact];
 
-  if (!v5)
+  if (!contact)
   {
-    v15 = [(MFComposeRecipient *)self record];
-    if (!v15 || (v16 = ABRecordCopyValue(v15, self->_property), (v17 = v16) == 0))
+    record = [(MFComposeRecipient *)self record];
+    if (!record || (v16 = ABRecordCopyValue(record, self->_property), (v17 = v16) == 0))
     {
-      v8 = 0;
+      stringValue = 0;
       goto LABEL_17;
     }
 
@@ -985,14 +985,14 @@ LABEL_7:
       if (IndexForIdentifier == -1)
       {
 LABEL_25:
-        v8 = 0;
+        stringValue = 0;
 LABEL_42:
         CFRelease(v17);
         goto LABEL_17;
       }
     }
 
-    v8 = ABMultiValueCopyValueAtIndex(v17, IndexForIdentifier);
+    stringValue = ABMultiValueCopyValueAtIndex(v17, IndexForIdentifier);
     goto LABEL_42;
   }
 
@@ -1002,37 +1002,37 @@ LABEL_42:
     v35 = 0uLL;
     v32 = 0uLL;
     v33 = 0uLL;
-    v6 = [(MFComposeRecipient *)self contact];
-    v7 = [v6 phoneNumbers];
+    contact2 = [(MFComposeRecipient *)self contact];
+    phoneNumbers = [contact2 phoneNumbers];
 
-    v8 = [v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
-    if (v8)
+    stringValue = [phoneNumbers countByEnumeratingWithState:&v32 objects:v37 count:16];
+    if (stringValue)
     {
       v9 = *v33;
       while (2)
       {
-        for (i = 0; i != v8; i = i + 1)
+        for (i = 0; i != stringValue; i = i + 1)
         {
           if (*v33 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(phoneNumbers);
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [v12 isEqualToString:self->_valueIdentifier];
+          identifier = [v11 identifier];
+          v13 = [identifier isEqualToString:self->_valueIdentifier];
 
           if (v13)
           {
-            v27 = [v11 value];
-            v8 = [v27 stringValue];
+            value = [v11 value];
+            stringValue = [value stringValue];
 
             goto LABEL_37;
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
-        if (v8)
+        stringValue = [phoneNumbers countByEnumeratingWithState:&v32 objects:v37 count:16];
+        if (stringValue)
         {
           continue;
         }
@@ -1050,35 +1050,35 @@ LABEL_37:
     v31 = 0uLL;
     *(&v28 + 1) = 0;
     v29 = 0uLL;
-    v20 = [(MFComposeRecipient *)self contact];
-    v21 = [v20 emailAddresses];
+    contact3 = [(MFComposeRecipient *)self contact];
+    emailAddresses = [contact3 emailAddresses];
 
-    v8 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
-    if (v8)
+    stringValue = [emailAddresses countByEnumeratingWithState:&v28 objects:v36 count:16];
+    if (stringValue)
     {
       v22 = *v29;
       while (2)
       {
-        for (j = 0; j != v8; j = j + 1)
+        for (j = 0; j != stringValue; j = j + 1)
         {
           if (*v29 != v22)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(emailAddresses);
           }
 
           v24 = *(*(&v28 + 1) + 8 * j);
-          v25 = [v24 identifier];
-          v26 = [v25 isEqualToString:self->_valueIdentifier];
+          identifier2 = [v24 identifier];
+          v26 = [identifier2 isEqualToString:self->_valueIdentifier];
 
           if (v26)
           {
-            v8 = [v24 value];
+            stringValue = [v24 value];
             goto LABEL_39;
           }
         }
 
-        v8 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
-        if (v8)
+        stringValue = [emailAddresses countByEnumeratingWithState:&v28 objects:v36 count:16];
+        if (stringValue)
         {
           continue;
         }
@@ -1092,20 +1092,20 @@ LABEL_39:
 
 LABEL_17:
 
-  return v8;
+  return stringValue;
 }
 
 - (id)_unformattedAddress
 {
-  v3 = [(MFComposeRecipient *)self uncommentedAddress];
+  uncommentedAddress = [(MFComposeRecipient *)self uncommentedAddress];
   if (self->_kind == 1)
   {
     v4 = UIUnformattedPhoneNumberFromString();
 
-    v3 = v4;
+    uncommentedAddress = v4;
   }
 
-  return v3;
+  return uncommentedAddress;
 }
 
 - (id)labeledValueIdentifier
@@ -1116,22 +1116,22 @@ LABEL_17:
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
   v15 = 0;
-  v3 = [(MFComposeRecipient *)self contact];
-  if (v3)
+  contact = [(MFComposeRecipient *)self contact];
+  if (contact)
   {
     address = self->_address;
 
     if (address)
     {
-      v5 = [(MFComposeRecipient *)self contact];
-      v6 = [v5 emailAddresses];
+      contact2 = [(MFComposeRecipient *)self contact];
+      emailAddresses = [contact2 emailAddresses];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __44__MFComposeRecipient_labeledValueIdentifier__block_invoke;
       v9[3] = &unk_1E806CF70;
       v9[4] = self;
       v9[5] = &v10;
-      [v6 enumerateObjectsUsingBlock:v9];
+      [emailAddresses enumerateObjectsUsingBlock:v9];
     }
   }
 
@@ -1158,10 +1158,10 @@ void __44__MFComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -1170,14 +1170,14 @@ void __44__MFComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
   {
     if (self->_kind == 1)
     {
-      v5 = [(MFComposeRecipient *)self _unformattedAddress];
-      [v5 UTF8String];
+      _unformattedAddress = [(MFComposeRecipient *)self _unformattedAddress];
+      [_unformattedAddress UTF8String];
 
-      v6 = [(MFComposeRecipient *)v4 _unformattedAddress];
-      [v6 UTF8String];
+      _unformattedAddress2 = [(MFComposeRecipient *)equalCopy _unformattedAddress];
+      [_unformattedAddress2 UTF8String];
 
-      v7 = [(MFComposeRecipient *)self countryCode];
-      if (!v7)
+      countryCode = [(MFComposeRecipient *)self countryCode];
+      if (!countryCode)
       {
         active = CPPhoneNumberCopyActiveCountryCode();
         CFAutorelease(active);
@@ -1188,16 +1188,16 @@ void __44__MFComposeRecipient_labeledValueIdentifier__block_invoke(uint64_t a1, 
 
     else
     {
-      v10 = [(MFComposeRecipient *)self address];
-      if (!v10 || ([(MFComposeRecipient *)v4 address], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+      address = [(MFComposeRecipient *)self address];
+      if (!address || ([(MFComposeRecipient *)equalCopy address], v11 = objc_claimAutoreleasedReturnValue(), v11, address, !v11))
       {
         v9 = 0;
         goto LABEL_12;
       }
 
-      v7 = [(MFComposeRecipient *)v4 address];
-      v12 = [(MFComposeRecipient *)self address];
-      v9 = [v12 ea_isEqualToEmailAddress:v7];
+      countryCode = [(MFComposeRecipient *)equalCopy address];
+      address2 = [(MFComposeRecipient *)self address];
+      v9 = [address2 ea_isEqualToEmailAddress:countryCode];
     }
   }
 
@@ -1210,8 +1210,8 @@ LABEL_12:
 {
   if ([(MFComposeRecipient *)self record]&& *MEMORY[0x1E698A548] == self->_property)
   {
-    v3 = [(MFComposeRecipient *)self _unformattedAddress];
-    if (v3)
+    _unformattedAddress = [(MFComposeRecipient *)self _unformattedAddress];
+    if (_unformattedAddress)
     {
       v8 = 0;
       CPPhoneNumberGetLastFour();
@@ -1221,12 +1221,12 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v5 = [(MFComposeRecipient *)self address];
+  address = [(MFComposeRecipient *)self address];
 
-  if (v5)
+  if (address)
   {
-    v3 = [(MFComposeRecipient *)self address];
-    v4 = [v3 hash];
+    _unformattedAddress = [(MFComposeRecipient *)self address];
+    v4 = [_unformattedAddress hash];
 LABEL_10:
 
     return v4;
@@ -1239,44 +1239,44 @@ LABEL_10:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (([(MFComposeRecipient *)self sourceType]& 2) != 0)
   {
-    [v3 addObject:@"Contact"];
+    [array addObject:@"Contact"];
   }
 
   if (([(MFComposeRecipient *)self sourceType]& 0x10) != 0)
   {
-    [v3 addObject:@"Prediction"];
+    [array addObject:@"Prediction"];
   }
 
   if (([(MFComposeRecipient *)self sourceType]& 1) != 0)
   {
-    [v3 addObject:@"Recent"];
+    [array addObject:@"Recent"];
   }
 
   if (([(MFComposeRecipient *)self sourceType]& 0x48) != 0)
   {
-    [v3 addObject:@"Server"];
+    [array addObject:@"Server"];
   }
 
   if (([(MFComposeRecipient *)self sourceType]& 4) != 0)
   {
-    [v3 addObject:@"Suggestion"];
+    [array addObject:@"Suggestion"];
   }
 
   if (![(MFComposeRecipient *)self sourceType])
   {
-    [v3 addObject:@"<undefined>"];
+    [array addObject:@"<undefined>"];
   }
 
-  v4 = [v3 componentsJoinedByString:@"+"];
+  v4 = [array componentsJoinedByString:@"+"];
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(MFComposeRecipient *)self displayString];
-  v9 = [(MFComposeRecipient *)self address];
-  v10 = [v5 stringWithFormat:@"<%@: %p displayString: %@; address: %@; autocompleteSource: %@>", v7, self, v8, v9, v4];;
+  displayString = [(MFComposeRecipient *)self displayString];
+  address = [(MFComposeRecipient *)self address];
+  v10 = [v5 stringWithFormat:@"<%@: %p displayString: %@; address: %@; autocompleteSource: %@>", v7, self, displayString, address, v4];;
 
   return v10;
 }

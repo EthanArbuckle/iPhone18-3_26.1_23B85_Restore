@@ -1,45 +1,45 @@
 @interface RETimeIntervalContentProvider
-+ (id)timeIntervalContentProviderWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (RETimeIntervalContentProvider)initWithCoder:(id)a3;
-- (RETimeIntervalContentProvider)initWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5;
++ (id)timeIntervalContentProviderWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone;
+- (BOOL)isEqual:(id)equal;
+- (RETimeIntervalContentProvider)initWithCoder:(id)coder;
+- (RETimeIntervalContentProvider)initWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone;
 - (id)attributedStringRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RETimeIntervalContentProvider
 
-+ (id)timeIntervalContentProviderWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5
++ (id)timeIntervalContentProviderWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithStartDate:v10 endDate:v9 timeZone:v8];
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v11 = [[self alloc] initWithStartDate:dateCopy endDate:endDateCopy timeZone:zoneCopy];
 
   return v11;
 }
 
-- (RETimeIntervalContentProvider)initWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5
+- (RETimeIntervalContentProvider)initWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
   v19.receiver = self;
   v19.super_class = RETimeIntervalContentProvider;
   v11 = [(RETimeIntervalContentProvider *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dateCopy copy];
     startDate = v11->_startDate;
     v11->_startDate = v12;
 
-    v14 = [v9 copy];
+    v14 = [endDateCopy copy];
     endDate = v11->_endDate;
     v11->_endDate = v14;
 
-    v16 = [v10 copy];
+    v16 = [zoneCopy copy];
     timeZone = v11->_timeZone;
     v11->_timeZone = v16;
   }
@@ -63,9 +63,9 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   startDate = self->_startDate;
   endDate = self->_endDate;
   timeZone = self->_timeZone;
@@ -80,31 +80,31 @@
   return v4 ^ [(NSTimeZone *)self->_timeZone hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 startDate];
-    v7 = v6;
-    if (v6 == self->_startDate || [(NSDate *)v6 isEqual:?])
+    v5 = equalCopy;
+    startDate = [v5 startDate];
+    v7 = startDate;
+    if (startDate == self->_startDate || [(NSDate *)startDate isEqual:?])
     {
-      v8 = [v5 endDate];
-      v9 = v8;
-      if (v8 == self->_endDate || [(NSDate *)v8 isEqual:?])
+      endDate = [v5 endDate];
+      v9 = endDate;
+      if (endDate == self->_endDate || [(NSDate *)endDate isEqual:?])
       {
-        v10 = [v5 timeZone];
-        v11 = v10;
-        if (v10 == self->_timeZone)
+        timeZone = [v5 timeZone];
+        v11 = timeZone;
+        if (timeZone == self->_timeZone)
         {
           v12 = 1;
         }
 
         else
         {
-          v12 = [(NSTimeZone *)v10 isEqual:?];
+          v12 = [(NSTimeZone *)timeZone isEqual:?];
         }
       }
 
@@ -128,21 +128,21 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeObject:self->_timeZone forKey:@"timeZone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
 }
 
-- (RETimeIntervalContentProvider)initWithCoder:(id)a3
+- (RETimeIntervalContentProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
 
   v8 = [(RETimeIntervalContentProvider *)self initWithStartDate:v5 endDate:v6 timeZone:v7];
   return v8;

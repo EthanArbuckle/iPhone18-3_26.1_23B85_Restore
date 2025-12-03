@@ -1,36 +1,36 @@
 @interface MTMediaActivityTracker
-- (MTMediaActivityTracker)initWithVPAFKit:(id)a3 playlist:(id)a4 eventData:(id)a5;
+- (MTMediaActivityTracker)initWithVPAFKit:(id)kit playlist:(id)playlist eventData:(id)data;
 - (MTVPAFKit)vpafKit;
 - (NSMutableArray)eventData;
-- (id)combineEventData:(id)a3 withPlaylistDataForItem:(id)a4;
-- (id)startActivity:(int64_t)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7;
-- (void)generatePlaylistTransitionsIfNecessary:(unint64_t)a3;
-- (void)playStartedWithPlaybackRate:(float)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7;
-- (void)playStoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6;
-- (void)playTransitionedAtOverallPosition:(unint64_t)a3 eventData:(id)a4;
-- (void)resetEventData:(id)a3;
-- (void)stopActivity:(int64_t)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7;
-- (void)synchronizeAtOverallPosition:(unint64_t)a3;
-- (void)synchronizePlaybackRate:(float)a3 overallPosition:(unint64_t)a4;
-- (void)updateEventData:(id)a3;
+- (id)combineEventData:(id)data withPlaylistDataForItem:(id)item;
+- (id)startActivity:(int64_t)activity overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
+- (void)generatePlaylistTransitionsIfNecessary:(unint64_t)necessary;
+- (void)playStartedWithPlaybackRate:(float)rate overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
+- (void)playStoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
+- (void)playTransitionedAtOverallPosition:(unint64_t)position eventData:(id)data;
+- (void)resetEventData:(id)data;
+- (void)stopActivity:(int64_t)activity overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
+- (void)synchronizeAtOverallPosition:(unint64_t)position;
+- (void)synchronizePlaybackRate:(float)rate overallPosition:(unint64_t)position;
+- (void)updateEventData:(id)data;
 @end
 
 @implementation MTMediaActivityTracker
 
-- (MTMediaActivityTracker)initWithVPAFKit:(id)a3 playlist:(id)a4 eventData:(id)a5
+- (MTMediaActivityTracker)initWithVPAFKit:(id)kit playlist:(id)playlist eventData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  kitCopy = kit;
+  playlistCopy = playlist;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = MTMediaActivityTracker;
   v11 = [(MTMediaActivityTracker *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(MTMediaActivityTracker *)v11 setVpafKit:v8];
-    [(MTMediaActivityTracker *)v12 setPlaylist:v9];
-    v13 = [v10 mutableCopy];
+    [(MTMediaActivityTracker *)v11 setVpafKit:kitCopy];
+    [(MTMediaActivityTracker *)v12 setPlaylist:playlistCopy];
+    v13 = [dataCopy mutableCopy];
     [(MTMediaActivityTracker *)v12 setEventData:v13];
 
     [(MTMediaActivityTracker *)v12 setShouldGenerateTransitions:1];
@@ -39,58 +39,58 @@
   return v12;
 }
 
-- (void)playStartedWithPlaybackRate:(float)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7
+- (void)playStartedWithPlaybackRate:(float)rate overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v10 = [(MTMediaActivityTracker *)self startActivity:0 overallPosition:a4 type:a5 reason:a6 eventData:a7];
+  v10 = [(MTMediaActivityTracker *)self startActivity:0 overallPosition:position type:type reason:reason eventData:data];
   if ([(MTMediaActivityTracker *)self shouldGenerateTransitions])
   {
     v11 = [MTMediaTimeTracker alloc];
-    *&v12 = a3;
-    v13 = [(MTMediaTimeTracker *)v11 initWithPosition:a4 playbackRate:v12];
+    *&v12 = rate;
+    v13 = [(MTMediaTimeTracker *)v11 initWithPosition:position playbackRate:v12];
     [(MTMediaActivityTracker *)self setTimeTracker:v13];
   }
 }
 
-- (void)playStoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6
+- (void)playStoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  [(MTMediaActivityTracker *)self generatePlaylistTransitionsIfNecessary:a3];
-  [(MTMediaActivityTracker *)self stopActivity:0 overallPosition:a3 type:v12 reason:v11 eventData:v10];
+  dataCopy = data;
+  reasonCopy = reason;
+  typeCopy = type;
+  [(MTMediaActivityTracker *)self generatePlaylistTransitionsIfNecessary:position];
+  [(MTMediaActivityTracker *)self stopActivity:0 overallPosition:position type:typeCopy reason:reasonCopy eventData:dataCopy];
 
   [(MTMediaActivityTracker *)self setTimeTracker:0];
 }
 
-- (void)playTransitionedAtOverallPosition:(unint64_t)a3 eventData:(id)a4
+- (void)playTransitionedAtOverallPosition:(unint64_t)position eventData:(id)data
 {
-  v7 = a4;
-  [(MTMediaActivityTracker *)self stopActivity:0 overallPosition:a3 type:@"automatic" reason:@"transition" eventData:v7];
-  v6 = [(MTMediaActivityTracker *)self startActivity:0 overallPosition:a3 type:@"automatic" reason:@"transition" eventData:v7];
+  dataCopy = data;
+  [(MTMediaActivityTracker *)self stopActivity:0 overallPosition:position type:@"automatic" reason:@"transition" eventData:dataCopy];
+  v6 = [(MTMediaActivityTracker *)self startActivity:0 overallPosition:position type:@"automatic" reason:@"transition" eventData:dataCopy];
 }
 
-- (void)synchronizePlaybackRate:(float)a3 overallPosition:(unint64_t)a4
+- (void)synchronizePlaybackRate:(float)rate overallPosition:(unint64_t)position
 {
-  v7 = [(MTMediaActivityTracker *)self playActivity];
-  v22 = v7;
-  if (!v7 || [v7 type])
+  playActivity = [(MTMediaActivityTracker *)self playActivity];
+  v22 = playActivity;
+  if (!playActivity || [playActivity type])
   {
-    v14 = a3 <= 0.0;
+    v14 = rate <= 0.0;
     goto LABEL_4;
   }
 
-  v14 = a3 <= 0.0;
-  v17 = [v22 isStopped];
-  if ((v17 & 1) != 0 || a3 <= 0.0)
+  v14 = rate <= 0.0;
+  isStopped = [v22 isStopped];
+  if ((isStopped & 1) != 0 || rate <= 0.0)
   {
-    if (a3 > 0.0)
+    if (rate > 0.0)
     {
       v20 = 1;
     }
 
     else
     {
-      v20 = v17;
+      v20 = isStopped;
     }
 
     if ((v20 & 1) == 0)
@@ -101,7 +101,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    if (((v17 ^ 1) & 1) == 0)
+    if (((isStopped ^ 1) & 1) == 0)
     {
 LABEL_4:
       if (v14)
@@ -116,10 +116,10 @@ LABEL_4:
 
   else
   {
-    [(MTMediaActivityTracker *)self generatePlaylistTransitionsIfNecessary:a4];
-    v18 = [(MTMediaActivityTracker *)self timeTracker];
-    *&v19 = a3;
-    [v18 updatePosition:a4 playbackRate:v19];
+    [(MTMediaActivityTracker *)self generatePlaylistTransitionsIfNecessary:position];
+    timeTracker = [(MTMediaActivityTracker *)self timeTracker];
+    *&v19 = rate;
+    [timeTracker updatePosition:position playbackRate:v19];
   }
 
 LABEL_7:
@@ -127,34 +127,34 @@ LABEL_7:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)synchronizeAtOverallPosition:(unint64_t)a3
+- (void)synchronizeAtOverallPosition:(unint64_t)position
 {
-  v5 = [(MTMediaActivityTracker *)self timeTracker];
-  [v5 playbackRate];
-  [(MTMediaActivityTracker *)self synchronizePlaybackRate:a3 overallPosition:?];
+  timeTracker = [(MTMediaActivityTracker *)self timeTracker];
+  [timeTracker playbackRate];
+  [(MTMediaActivityTracker *)self synchronizePlaybackRate:position overallPosition:?];
 }
 
-- (void)updateEventData:(id)a3
+- (void)updateEventData:(id)data
 {
-  v4 = a3;
-  v5 = [(MTMediaActivityTracker *)self eventData];
-  [v5 addObjectsFromArray:v4];
+  dataCopy = data;
+  eventData = [(MTMediaActivityTracker *)self eventData];
+  [eventData addObjectsFromArray:dataCopy];
 }
 
-- (void)resetEventData:(id)a3
+- (void)resetEventData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [a3 mutableCopy];
+    array = [data mutableCopy];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   eventData = self->_eventData;
-  self->_eventData = v4;
+  self->_eventData = array;
 
   MEMORY[0x2821F96F8]();
 }
@@ -164,9 +164,9 @@ LABEL_7:
   eventData = self->_eventData;
   if (!eventData)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_eventData;
-    self->_eventData = v4;
+    self->_eventData = array;
 
     eventData = self->_eventData;
   }
@@ -174,27 +174,27 @@ LABEL_7:
   return eventData;
 }
 
-- (id)combineEventData:(id)a3 withPlaylistDataForItem:(id)a4
+- (id)combineEventData:(id)data withPlaylistDataForItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(MTMediaActivityTracker *)self playlist];
+  dataCopy = data;
+  itemCopy = item;
+  array = [MEMORY[0x277CBEB18] array];
+  playlist = [(MTMediaActivityTracker *)self playlist];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(MTMediaActivityTracker *)self playlist];
-    v11 = [v10 eventData];
+    playlist2 = [(MTMediaActivityTracker *)self playlist];
+    eventData = [playlist2 eventData];
   }
 
   else
   {
-    v11 = 0;
+    eventData = 0;
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v12 = 0;
-    if (!v11)
+    eventData2 = 0;
+    if (!eventData)
     {
       goto LABEL_9;
     }
@@ -202,53 +202,53 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [v7 eventData];
-  if (v11)
+  eventData2 = [itemCopy eventData];
+  if (eventData)
   {
 LABEL_8:
-    [v8 addObjectsFromArray:v11];
+    [array addObjectsFromArray:eventData];
   }
 
 LABEL_9:
-  if (v12)
+  if (eventData2)
   {
-    [v8 addObjectsFromArray:v12];
+    [array addObjectsFromArray:eventData2];
   }
 
-  v13 = [(MTMediaActivityTracker *)self eventData];
-  [v8 addObjectsFromArray:v13];
+  eventData3 = [(MTMediaActivityTracker *)self eventData];
+  [array addObjectsFromArray:eventData3];
 
-  if (v6)
+  if (dataCopy)
   {
-    [v8 addObjectsFromArray:v6];
+    [array addObjectsFromArray:dataCopy];
   }
 
-  v14 = [v8 copy];
+  v14 = [array copy];
 
   return v14;
 }
 
-- (id)startActivity:(int64_t)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7
+- (id)startActivity:(int64_t)activity overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = [(MTMediaActivityTracker *)self playlist];
-  v16 = [v15 itemAtOverallPosition:a4 rangeOptions:1];
+  dataCopy = data;
+  reasonCopy = reason;
+  typeCopy = type;
+  playlist = [(MTMediaActivityTracker *)self playlist];
+  v16 = [playlist itemAtOverallPosition:position rangeOptions:1];
 
   v17 = [MTMediaActivity alloc];
-  v18 = [(MTMediaActivityTracker *)self vpafKit];
-  v19 = [(MTMediaActivity *)v17 initWithType:a3 playlistItem:v16 pafKit:v18];
+  vpafKit = [(MTMediaActivityTracker *)self vpafKit];
+  v19 = [(MTMediaActivity *)v17 initWithType:activity playlistItem:v16 pafKit:vpafKit];
 
-  v20 = [(MTMediaActivityTracker *)self combineEventData:v12 withPlaylistDataForItem:v16];
+  v20 = [(MTMediaActivityTracker *)self combineEventData:dataCopy withPlaylistDataForItem:v16];
 
-  [(MTMediaActivity *)v19 startedAtOverallPosition:a4 type:v14 reason:v13 eventData:v20];
-  if (a3 == 1)
+  [(MTMediaActivity *)v19 startedAtOverallPosition:position type:typeCopy reason:reasonCopy eventData:v20];
+  if (activity == 1)
   {
     [(MTMediaActivityTracker *)self setSeekActivity:v19];
   }
 
-  else if (!a3)
+  else if (!activity)
   {
     [(MTMediaActivityTracker *)self setPlayActivity:v19];
   }
@@ -256,20 +256,20 @@ LABEL_9:
   return v19;
 }
 
-- (void)stopActivity:(int64_t)a3 overallPosition:(unint64_t)a4 type:(id)a5 reason:(id)a6 eventData:(id)a7
+- (void)stopActivity:(int64_t)activity overallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v26 = a5;
-  v12 = a6;
-  v19 = a7;
-  if (a3 == 1)
+  typeCopy = type;
+  reasonCopy = reason;
+  dataCopy = data;
+  if (activity == 1)
   {
-    v20 = [(MTMediaActivityTracker *)self seekActivity];
+    seekActivity = [(MTMediaActivityTracker *)self seekActivity];
     [(MTMediaActivityTracker *)self setSeekActivity:0];
-    v21 = [(MTMediaActivityTracker *)self playlist];
-    v22 = [v21 itemAtOverallPosition:a4 rangeOptions:2];
-    [v20 setPlaylistItem:v22];
+    playlist = [(MTMediaActivityTracker *)self playlist];
+    v22 = [playlist itemAtOverallPosition:position rangeOptions:2];
+    [seekActivity setPlaylistItem:v22];
 
-    if (!v20)
+    if (!seekActivity)
     {
       goto LABEL_9;
     }
@@ -277,53 +277,53 @@ LABEL_9:
 
   else
   {
-    if (a3)
+    if (activity)
     {
-      v20 = 0;
+      seekActivity = 0;
       goto LABEL_9;
     }
 
-    v20 = [(MTMediaActivityTracker *)self playActivity];
+    seekActivity = [(MTMediaActivityTracker *)self playActivity];
     [(MTMediaActivityTracker *)self setPlayActivity:0];
-    if (!v20)
+    if (!seekActivity)
     {
       goto LABEL_9;
     }
   }
 
-  if (![v20 isStopped])
+  if (![seekActivity isStopped])
   {
-    v23 = [v20 playlistItem];
-    v24 = [(MTMediaActivityTracker *)self combineEventData:v19 withPlaylistDataForItem:v23];
-    [v20 stoppedAtOverallPosition:a4 type:v26 reason:v12 eventData:v24];
+    playlistItem = [seekActivity playlistItem];
+    v24 = [(MTMediaActivityTracker *)self combineEventData:dataCopy withPlaylistDataForItem:playlistItem];
+    [seekActivity stoppedAtOverallPosition:position type:typeCopy reason:reasonCopy eventData:v24];
 
     goto LABEL_10;
   }
 
 LABEL_9:
-  v25 = MTConfigurationError(110, @"There is no %@ activity to stop.", v13, v14, v15, v16, v17, v18, a3);
+  v25 = MTConfigurationError(110, @"There is no %@ activity to stop.", v13, v14, v15, v16, v17, v18, activity);
 LABEL_10:
 }
 
-- (void)generatePlaylistTransitionsIfNecessary:(unint64_t)a3
+- (void)generatePlaylistTransitionsIfNecessary:(unint64_t)necessary
 {
   v30[2] = *MEMORY[0x277D85DE8];
   if ([(MTMediaActivityTracker *)self shouldGenerateTransitions])
   {
-    v5 = [(MTMediaActivityTracker *)self playActivity];
-    v6 = v5;
-    if (v5 && ![v5 type] && (objc_msgSend(v6, "isStopped") & 1) == 0)
+    playActivity = [(MTMediaActivityTracker *)self playActivity];
+    v6 = playActivity;
+    if (playActivity && ![playActivity type] && (objc_msgSend(v6, "isStopped") & 1) == 0)
     {
-      v26 = [v6 eventDataForTransitioningEvents];
-      v7 = [(MTMediaActivityTracker *)self playlist];
-      v8 = [v6 playlistItem];
-      v9 = [v7 itemsBetweenStartOverallPosition:+[MTMediaActivity startOverallPositionForItem:](MTMediaActivity endOverallPosition:{"startOverallPositionForItem:", v8), a3}];
+      eventDataForTransitioningEvents = [v6 eventDataForTransitioningEvents];
+      playlist = [(MTMediaActivityTracker *)self playlist];
+      playlistItem = [v6 playlistItem];
+      v9 = [playlist itemsBetweenStartOverallPosition:+[MTMediaActivity startOverallPositionForItem:](MTMediaActivity endOverallPosition:{"startOverallPositionForItem:", playlistItem), necessary}];
 
-      v10 = [(MTMediaActivityTracker *)self playlist];
+      playlist2 = [(MTMediaActivityTracker *)self playlist];
       objc_opt_class();
-      LOBYTE(v8) = objc_opt_isKindOfClass();
+      LOBYTE(playlistItem) = objc_opt_isKindOfClass();
 
-      if (v8)
+      if (playlistItem)
       {
         v11 = v9;
       }
@@ -340,35 +340,35 @@ LABEL_10:
         {
           v14 = [v11 objectAtIndexedSubscript:i];
           v15 = [MTMediaActivity startOverallPositionForItem:v14];
-          v16 = [v6 playlistItem];
-          v17 = [MTMediaActivity startOverallPositionForItem:v16];
+          playlistItem2 = [v6 playlistItem];
+          v17 = [MTMediaActivity startOverallPositionForItem:playlistItem2];
 
           if (v15 > v17)
           {
-            if (v15 >= a3)
+            if (v15 >= necessary)
             {
 
               break;
             }
 
-            v18 = [(MTMediaActivityTracker *)self timeTracker];
-            v27 = [v18 estimatedTimeAtPosition:v15];
+            timeTracker = [(MTMediaActivityTracker *)self timeTracker];
+            v27 = [timeTracker estimatedTimeAtPosition:v15];
 
             v28 = @"eventTime";
-            v19 = [v27 mt_millisecondsSince1970];
-            v29 = v19;
+            mt_millisecondsSince1970 = [v27 mt_millisecondsSince1970];
+            v29 = mt_millisecondsSince1970;
             [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
             v21 = v20 = v11;
             v30[0] = v21;
-            v30[1] = v26;
+            v30[1] = eventDataForTransitioningEvents;
             [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
-            v23 = v22 = a3;
+            v23 = v22 = necessary;
 
             v11 = v20;
             [(MTMediaActivityTracker *)self stopActivity:0 overallPosition:v15 type:@"automatic" reason:@"transition" eventData:v23];
             v24 = [(MTMediaActivityTracker *)self startActivity:0 overallPosition:v15 type:@"automatic" reason:@"transition" eventData:v23];
 
-            a3 = v22;
+            necessary = v22;
             v6 = v24;
           }
         }

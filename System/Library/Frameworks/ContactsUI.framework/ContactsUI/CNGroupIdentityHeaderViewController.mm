@@ -1,41 +1,41 @@
 @interface CNGroupIdentityHeaderViewController
 + (id)descriptorForRequiredKeys;
 + (id)log;
-- (BOOL)groupContactIsSameAsCurrentContact:(id)a3;
+- (BOOL)groupContactIsSameAsCurrentContact:(id)contact;
 - (BOOL)preferredContentSizeCategoryIsXL;
 - (BOOL)shouldShowActionButton;
 - (BOOL)shouldShowActionsView;
 - (BOOL)shouldShowSharedProfileBannerView;
-- (BOOL)shouldUseTitleLabelWrappedFontGivenBoundingRect:(CGRect)a3;
-- (CGRect)titleLabelBoundingRectForFont:(id)a3 text:(id)a4 maxWidth:(double)a5 context:(id)a6;
+- (BOOL)shouldUseTitleLabelWrappedFontGivenBoundingRect:(CGRect)rect;
+- (CGRect)titleLabelBoundingRectForFont:(id)font text:(id)text maxWidth:(double)width context:(id)context;
 - (CGSize)previousSize;
-- (CGSize)sizeForLayoutInContainerSize:(CGSize)a3;
-- (CNGroupIdentityHeaderViewController)initWithGroupIdentity:(id)a3 actionsViewConfiguration:(id)a4 avatarViewControllerSettings:(id)a5;
+- (CGSize)sizeForLayoutInContainerSize:(CGSize)size;
+- (CNGroupIdentityHeaderViewController)initWithGroupIdentity:(id)identity actionsViewConfiguration:(id)configuration avatarViewControllerSettings:(id)settings;
 - (CNGroupIdentityHeaderViewControllerDelegate)delegate;
 - (UIFont)titleLabelFont;
 - (UIFont)titleLabelWrappedFont;
 - (double)titleLabelBaselineOffset;
 - (id)displayNameForGroupIdentity;
-- (id)viewForActionAtIndex:(unint64_t)a3;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (id)viewForActionAtIndex:(unint64_t)index;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)didTapActionButton;
-- (void)groupIdentityDidUpdate:(id)a3;
-- (void)groupIdentityInlineActionsViewController:(id)a3 didPerformActionOfType:(id)a4 fromDisambiguation:(BOOL)a5;
-- (void)groupIdentityInlineActionsViewController:(id)a3 willPresentDisambiguationUIForActionType:(id)a4;
+- (void)groupIdentityDidUpdate:(id)update;
+- (void)groupIdentityInlineActionsViewController:(id)controller didPerformActionOfType:(id)type fromDisambiguation:(BOOL)disambiguation;
+- (void)groupIdentityInlineActionsViewController:(id)controller willPresentDisambiguationUIForActionType:(id)type;
 - (void)hideSharedProfileBannerViewForDismiss;
 - (void)loadView;
-- (void)performAnimationToNewContact:(id)a3 withCompletion:(id)a4;
-- (void)setActionButtonTitle:(id)a3;
-- (void)setAvatarBadgeImage:(id)a3;
-- (void)setAvatarBadgeStyleSettings:(id)a3;
-- (void)setCustomSubtitleLabel:(id)a3;
-- (void)setIsMarkedForSyndication:(BOOL)a3;
-- (void)setMediaContextBadge:(id)a3;
-- (void)setSharedProfileBannerStyle:(id)a3;
-- (void)setSharedProfileStateOracle:(id)a3;
-- (void)setShouldHideTitleLabel:(BOOL)a3;
-- (void)setShouldShowContactBusy:(BOOL)a3;
-- (void)setShouldShowStaticKeyBadge:(BOOL)a3;
+- (void)performAnimationToNewContact:(id)contact withCompletion:(id)completion;
+- (void)setActionButtonTitle:(id)title;
+- (void)setAvatarBadgeImage:(id)image;
+- (void)setAvatarBadgeStyleSettings:(id)settings;
+- (void)setCustomSubtitleLabel:(id)label;
+- (void)setIsMarkedForSyndication:(BOOL)syndication;
+- (void)setMediaContextBadge:(id)badge;
+- (void)setSharedProfileBannerStyle:(id)style;
+- (void)setSharedProfileStateOracle:(id)oracle;
+- (void)setShouldHideTitleLabel:(BOOL)label;
+- (void)setShouldShowContactBusy:(BOOL)busy;
+- (void)setShouldShowStaticKeyBadge:(BOOL)badge;
 - (void)setupActionButton;
 - (void)setupActionsView;
 - (void)setupAvatarView;
@@ -44,11 +44,11 @@
 - (void)setupPopulatedActionsView;
 - (void)setupSharedProfileBannerView;
 - (void)setupTitleLabel;
-- (void)sharedProfileBannerView:(id)a3 didDismissWithUpdatedContact:(id)a4 forAction:(unint64_t)a5;
-- (void)sharedProfileBannerView:(id)a3 didUpdateContact:(id)a4 forAction:(unint64_t)a5;
+- (void)sharedProfileBannerView:(id)view didDismissWithUpdatedContact:(id)contact forAction:(unint64_t)action;
+- (void)sharedProfileBannerView:(id)view didUpdateContact:(id)contact forAction:(unint64_t)action;
 - (void)updateActionButton;
 - (void)updateActionButtonFont;
-- (void)updateGroupWithContact:(id)a3;
+- (void)updateGroupWithContact:(id)contact;
 - (void)updateTitleLabel;
 - (void)updateTitleLabelFont;
 - (void)viewDidLayoutSubviews;
@@ -73,33 +73,33 @@
   return WeakRetained;
 }
 
-- (void)sharedProfileBannerView:(id)a3 didDismissWithUpdatedContact:(id)a4 forAction:(unint64_t)a5
+- (void)sharedProfileBannerView:(id)view didDismissWithUpdatedContact:(id)contact forAction:(unint64_t)action
 {
-  v10 = a4;
+  contactCopy = contact;
   [(CNGroupIdentityHeaderViewController *)self setTappedSharedProfileBannerAction:0];
-  [(CNGroupIdentityHeaderViewController *)self updateGroupWithContact:v10];
+  [(CNGroupIdentityHeaderViewController *)self updateGroupWithContact:contactCopy];
   [(CNGroupIdentityHeaderViewController *)self hideSharedProfileBannerViewForDismiss];
-  v7 = [(CNGroupIdentityHeaderViewController *)self delegate];
+  delegate = [(CNGroupIdentityHeaderViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNGroupIdentityHeaderViewController *)self delegate];
-    [v9 groupIdentityHeaderViewController:self didDismissSharedProfileBannerWithUpdatedContact:v10 forAction:a5];
+    delegate2 = [(CNGroupIdentityHeaderViewController *)self delegate];
+    [delegate2 groupIdentityHeaderViewController:self didDismissSharedProfileBannerWithUpdatedContact:contactCopy forAction:action];
   }
 }
 
-- (void)sharedProfileBannerView:(id)a3 didUpdateContact:(id)a4 forAction:(unint64_t)a5
+- (void)sharedProfileBannerView:(id)view didUpdateContact:(id)contact forAction:(unint64_t)action
 {
-  v7 = a4;
+  contactCopy = contact;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUpdateContact_forAction___block_invoke;
   v9[3] = &unk_1E74E6DF8;
   v9[4] = self;
-  v10 = v7;
-  v11 = a5;
-  v8 = v7;
+  v10 = contactCopy;
+  actionCopy = action;
+  v8 = contactCopy;
   [(CNGroupIdentityHeaderViewController *)self performAnimationToNewContact:v8 withCompletion:v9];
 }
 
@@ -121,52 +121,52 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
   return [v5 updateGroupWithContact:v6];
 }
 
-- (void)groupIdentityInlineActionsViewController:(id)a3 willPresentDisambiguationUIForActionType:(id)a4
+- (void)groupIdentityInlineActionsViewController:(id)controller willPresentDisambiguationUIForActionType:(id)type
 {
-  v8 = a4;
-  v5 = [(CNGroupIdentityHeaderViewController *)self delegate];
+  typeCopy = type;
+  delegate = [(CNGroupIdentityHeaderViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNGroupIdentityHeaderViewController *)self delegate];
-    [v7 groupIdentityHeaderViewController:self willPresentDisambiguationUIForActionType:v8];
+    delegate2 = [(CNGroupIdentityHeaderViewController *)self delegate];
+    [delegate2 groupIdentityHeaderViewController:self willPresentDisambiguationUIForActionType:typeCopy];
   }
 }
 
-- (void)groupIdentityInlineActionsViewController:(id)a3 didPerformActionOfType:(id)a4 fromDisambiguation:(BOOL)a5
+- (void)groupIdentityInlineActionsViewController:(id)controller didPerformActionOfType:(id)type fromDisambiguation:(BOOL)disambiguation
 {
-  v5 = a5;
-  v10 = a4;
-  v7 = [(CNGroupIdentityHeaderViewController *)self delegate];
+  disambiguationCopy = disambiguation;
+  typeCopy = type;
+  delegate = [(CNGroupIdentityHeaderViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNGroupIdentityHeaderViewController *)self delegate];
-    [v9 groupIdentityHeaderViewController:self didPerformActionOfType:v10 fromDisambiguation:v5];
+    delegate2 = [(CNGroupIdentityHeaderViewController *)self delegate];
+    [delegate2 groupIdentityHeaderViewController:self didPerformActionOfType:typeCopy fromDisambiguation:disambiguationCopy];
   }
 }
 
 - (id)displayNameForGroupIdentity
 {
-  v3 = [(CNGroupIdentityHeaderViewController *)self contactFormatter];
-  v4 = [(CNGroupIdentityHeaderViewController *)self group];
-  v5 = [v3 stringFromGroupIdentity:v4];
+  contactFormatter = [(CNGroupIdentityHeaderViewController *)self contactFormatter];
+  group = [(CNGroupIdentityHeaderViewController *)self group];
+  v5 = [contactFormatter stringFromGroupIdentity:group];
 
   return v5;
 }
 
-- (CGSize)sizeForLayoutInContainerSize:(CGSize)a3
+- (CGSize)sizeForLayoutInContainerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v57 = *MEMORY[0x1E69E9840];
-  v6 = [(CNGroupIdentityHeaderViewController *)self displayNameForGroupIdentity];
+  displayNameForGroupIdentity = [(CNGroupIdentityHeaderViewController *)self displayNameForGroupIdentity];
   v7 = objc_alloc_init(MEMORY[0x1E69DB7E0]);
   [v7 setMaximumNumberOfLines:2];
-  v8 = [(CNGroupIdentityHeaderViewController *)self titleLabelFont];
-  [(CNGroupIdentityHeaderViewController *)self titleLabelBoundingRectForFont:v8 text:v6 maxWidth:v7 context:width];
+  titleLabelFont = [(CNGroupIdentityHeaderViewController *)self titleLabelFont];
+  [(CNGroupIdentityHeaderViewController *)self titleLabelBoundingRectForFont:titleLabelFont text:displayNameForGroupIdentity maxWidth:v7 context:width];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -174,8 +174,8 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
 
   if (([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] & 1) == 0 && -[CNGroupIdentityHeaderViewController shouldUseTitleLabelWrappedFontGivenBoundingRect:](self, "shouldUseTitleLabelWrappedFontGivenBoundingRect:", v10, v12, v14, v16))
   {
-    v17 = [(CNGroupIdentityHeaderViewController *)self titleLabelWrappedFont];
-    [(CNGroupIdentityHeaderViewController *)self titleLabelBoundingRectForFont:v17 text:v6 maxWidth:v7 context:width];
+    titleLabelWrappedFont = [(CNGroupIdentityHeaderViewController *)self titleLabelWrappedFont];
+    [(CNGroupIdentityHeaderViewController *)self titleLabelBoundingRectForFont:titleLabelWrappedFont text:displayNameForGroupIdentity maxWidth:v7 context:width];
     v16 = v18;
   }
 
@@ -184,10 +184,10 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v20 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
-  v21 = [v20 arrangedSubviews];
+  titleLabelStackView = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
+  arrangedSubviews = [titleLabelStackView arrangedSubviews];
 
-  v22 = [v21 countByEnumeratingWithState:&v50 objects:v56 count:16];
+  v22 = [arrangedSubviews countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v22)
   {
     v23 = v22;
@@ -199,7 +199,7 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
       {
         if (*v51 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v26 = *(*(&v50 + 1) + 8 * v25);
@@ -228,7 +228,7 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v50 objects:v56 count:16];
+      v23 = [arrangedSubviews countByEnumeratingWithState:&v50 objects:v56 count:16];
     }
 
     while (v23);
@@ -236,17 +236,17 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
 
   if ([(CNGroupIdentityHeaderViewController *)self shouldShowActionButton])
   {
-    v31 = [(CNGroupIdentityHeaderViewController *)self actionButton];
-    v32 = [(CNGroupIdentityHeaderViewController *)self actionButtonTitle];
-    [v31 setTitle:v32 forState:0];
+    actionButton = [(CNGroupIdentityHeaderViewController *)self actionButton];
+    actionButtonTitle = [(CNGroupIdentityHeaderViewController *)self actionButtonTitle];
+    [actionButton setTitle:actionButtonTitle forState:0];
 
     [v7 setMaximumNumberOfLines:2];
-    v33 = [(CNGroupIdentityHeaderViewController *)self actionButtonTitle];
+    actionButtonTitle2 = [(CNGroupIdentityHeaderViewController *)self actionButtonTitle];
     v54 = *MEMORY[0x1E69DB648];
     v34 = +[CNUIFontRepository groupHeaderActionButtonFont];
     v55 = v34;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-    [v33 boundingRectWithSize:33 options:v35 attributes:v7 context:{width, height}];
+    [actionButtonTitle2 boundingRectWithSize:33 options:v35 attributes:v7 context:{width, height}];
     v37 = v36;
 
     v38 = v19 + v37 + -2.0;
@@ -265,8 +265,8 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
   {
     [(CNGroupIdentityHeaderViewController *)self actionsViewTopMargin];
     v40 = v19 + v39;
-    v41 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
-    [v41 actionsViewHeightThatFits:{width, height}];
+    actionsViewController = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
+    [actionsViewController actionsViewHeightThatFits:{width, height}];
     v43 = v42;
 
     v19 = v40 + v43;
@@ -275,8 +275,8 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
   v44 = v19 + 10.0;
   if ([(CNGroupIdentityHeaderViewController *)self shouldShowSharedProfileBannerView])
   {
-    v45 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerView];
-    [v45 estimatedHeightForWidth:width];
+    sharedProfileBannerView = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerView];
+    [sharedProfileBannerView estimatedHeightForWidth:width];
     v47 = v44 + v46 + 10.0;
 
     v44 = v47 + -5.0;
@@ -294,49 +294,49 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
   return result;
 }
 
-- (id)viewForActionAtIndex:(unint64_t)a3
+- (id)viewForActionAtIndex:(unint64_t)index
 {
-  v4 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
-  v5 = [v4 viewForActionAtIndex:a3];
+  actionsViewController = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
+  v5 = [actionsViewController viewForActionAtIndex:index];
 
   return v5;
 }
 
-- (void)performAnimationToNewContact:(id)a3 withCompletion:(id)a4
+- (void)performAnimationToNewContact:(id)contact withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [v8 primaryAvatarSize];
+  completionCopy = completion;
+  contactCopy = contact;
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [groupAvatarViewController primaryAvatarSize];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(CNGroupIdentityHeaderViewController *)self traitCollection];
-  v14 = [v13 layoutDirection] == 1;
+  traitCollection = [(CNGroupIdentityHeaderViewController *)self traitCollection];
+  v14 = [traitCollection layoutDirection] == 1;
 
   v16 = objc_alloc_init(CNSharedProfileAnimationGenerator);
-  v15 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [(CNSharedProfileAnimationGenerator *)v16 performCoinFlipAnimationForAnimatingAvatarView:v15 toContact:v7 rightToLeft:v14 avatarSize:v6 completionHandler:v10, v12];
+  groupAvatarViewController2 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [(CNSharedProfileAnimationGenerator *)v16 performCoinFlipAnimationForAnimatingAvatarView:groupAvatarViewController2 toContact:contactCopy rightToLeft:v14 avatarSize:completionCopy completionHandler:v10, v12];
 }
 
 - (void)hideSharedProfileBannerViewForDismiss
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
+  sharedProfileBannerContainerView = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
 
-  if (v3)
+  if (sharedProfileBannerContainerView)
   {
-    v4 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
-    [v4 removeFromSuperview];
+    sharedProfileBannerContainerView2 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
+    [sharedProfileBannerContainerView2 removeFromSuperview];
   }
 
-  v5 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
+  actionsViewBottomConstraint = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
 
-  if (v5)
+  if (actionsViewBottomConstraint)
   {
     v6 = MEMORY[0x1E696ACD8];
-    v7 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
-    v9[0] = v7;
+    actionsViewBottomConstraint2 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
+    v9[0] = actionsViewBottomConstraint2;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     [v6 activateConstraints:v8];
   }
@@ -345,158 +345,158 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
 - (void)setupSharedProfileBannerView
 {
   v72[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
+  sharedProfileBannerContainerView = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
 
-  if (v3)
+  if (sharedProfileBannerContainerView)
   {
-    v4 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
-    [v4 removeFromSuperview];
+    sharedProfileBannerContainerView2 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
+    [sharedProfileBannerContainerView2 removeFromSuperview];
   }
 
   if ([(CNGroupIdentityHeaderViewController *)self shouldShowSharedProfileBannerView])
   {
-    v5 = objc_alloc_init(CNSharedProfileBannerView);
-    [(CNSharedProfileBannerView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(CNSharedProfileBannerView *)v5 setDelegate:self];
-    v6 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
-    [(CNSharedProfileBannerView *)v5 setStyle:v6];
+    actionsViewBottomConstraint4 = objc_alloc_init(CNSharedProfileBannerView);
+    [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 setDelegate:self];
+    sharedProfileBannerStyle = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
+    [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 setStyle:sharedProfileBannerStyle];
 
-    v7 = [(CNGroupIdentityHeaderViewController *)self sharedProfileStateOracle];
-    [(CNSharedProfileBannerView *)v5 setUpWithSharedProfileStateOracle:v7 tappedAction:[(CNGroupIdentityHeaderViewController *)self tappedSharedProfileBannerAction] hasPerformedAnimation:[(CNGroupIdentityHeaderViewController *)self hasPerformedSharedProfileBannerAnimation]];
+    sharedProfileStateOracle = [(CNGroupIdentityHeaderViewController *)self sharedProfileStateOracle];
+    [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 setUpWithSharedProfileStateOracle:sharedProfileStateOracle tappedAction:[(CNGroupIdentityHeaderViewController *)self tappedSharedProfileBannerAction] hasPerformedAnimation:[(CNGroupIdentityHeaderViewController *)self hasPerformedSharedProfileBannerAnimation]];
 
     [(CNGroupIdentityHeaderViewController *)self setHasPerformedSharedProfileBannerAnimation:1];
     v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
-    v10 = [v9 backgroundColor];
-    [v8 setBackgroundColor:v10];
+    sharedProfileBannerStyle2 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
+    backgroundColor = [sharedProfileBannerStyle2 backgroundColor];
+    [v8 setBackgroundColor:backgroundColor];
 
-    v11 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v12 = [v11 featureFlags];
-    v13 = [v12 isFeatureEnabled:29];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v13 = [featureFlags isFeatureEnabled:29];
 
-    v14 = [v8 layer];
-    v15 = v14;
+    layer = [v8 layer];
+    v15 = layer;
     v16 = 12.0;
     if (v13)
     {
       v16 = 26.0;
     }
 
-    [v14 setCornerRadius:v16];
+    [layer setCornerRadius:v16];
 
-    v17 = [(CNGroupIdentityHeaderViewController *)self view];
-    [v17 addSubview:v8];
+    view = [(CNGroupIdentityHeaderViewController *)self view];
+    [view addSubview:v8];
 
-    [v8 addSubview:v5];
-    v18 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
-    v19 = [v18 backgroundVisualEffectView];
+    [v8 addSubview:actionsViewBottomConstraint4];
+    sharedProfileBannerStyle3 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
+    backgroundVisualEffectView = [sharedProfileBannerStyle3 backgroundVisualEffectView];
 
-    if (v19)
+    if (backgroundVisualEffectView)
     {
-      v20 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
-      v21 = [v20 backgroundVisualEffectView];
-      [v8 addBackgroundVisualEffectView:v21 withCornerRadius:12.0];
+      sharedProfileBannerStyle4 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
+      backgroundVisualEffectView2 = [sharedProfileBannerStyle4 backgroundVisualEffectView];
+      [v8 addBackgroundVisualEffectView:backgroundVisualEffectView2 withCornerRadius:12.0];
     }
 
-    v22 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
+    actionsViewBottomConstraint = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
 
-    if (v22)
+    if (actionsViewBottomConstraint)
     {
       v23 = MEMORY[0x1E696ACD8];
-      v24 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
-      v71 = v24;
+      actionsViewBottomConstraint2 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
+      v71 = actionsViewBottomConstraint2;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
       [v23 deactivateConstraints:v25];
     }
 
-    v26 = [(CNGroupIdentityHeaderViewController *)self shouldShowActionsView];
-    v27 = [v8 topAnchor];
-    if (v26)
+    shouldShowActionsView = [(CNGroupIdentityHeaderViewController *)self shouldShowActionsView];
+    topAnchor = [v8 topAnchor];
+    if (shouldShowActionsView)
     {
-      v28 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
-      v29 = [v28 view];
-      v30 = [v29 bottomAnchor];
-      v31 = [v27 constraintEqualToAnchor:v30 constant:10.0];
+      actionsViewController = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
+      view2 = [actionsViewController view];
+      bottomAnchor = [view2 bottomAnchor];
+      v31 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:10.0];
     }
 
     else
     {
-      v28 = [(CNGroupIdentityHeaderViewController *)self actionButton];
-      v29 = [v28 bottomAnchor];
-      v31 = [v27 constraintEqualToAnchor:v29 constant:10.0];
+      actionsViewController = [(CNGroupIdentityHeaderViewController *)self actionButton];
+      view2 = [actionsViewController bottomAnchor];
+      v31 = [topAnchor constraintEqualToAnchor:view2 constant:10.0];
     }
 
     v60 = v31;
 
-    v34 = [v8 leadingAnchor];
-    v35 = [(CNGroupIdentityHeaderViewController *)self view];
-    v36 = [v35 leadingAnchor];
-    v37 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
-    [v37 leadingTrailingInset];
-    v38 = [v34 constraintEqualToAnchor:v36 constant:?];
+    leadingAnchor = [v8 leadingAnchor];
+    view3 = [(CNGroupIdentityHeaderViewController *)self view];
+    leadingAnchor2 = [view3 leadingAnchor];
+    sharedProfileBannerStyle5 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
+    [sharedProfileBannerStyle5 leadingTrailingInset];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     [(CNGroupIdentityHeaderViewController *)self setSharedProfileBannerContainerLeadingConstraint:v38];
 
-    v39 = [v8 trailingAnchor];
-    v40 = [(CNGroupIdentityHeaderViewController *)self view];
-    v41 = [v40 trailingAnchor];
-    v42 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
-    [v42 leadingTrailingInset];
-    v44 = [v39 constraintEqualToAnchor:v41 constant:-v43];
+    trailingAnchor = [v8 trailingAnchor];
+    view4 = [(CNGroupIdentityHeaderViewController *)self view];
+    trailingAnchor2 = [view4 trailingAnchor];
+    sharedProfileBannerStyle6 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerStyle];
+    [sharedProfileBannerStyle6 leadingTrailingInset];
+    v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v43];
     [(CNGroupIdentityHeaderViewController *)self setSharedProfileBannerContainerTrailingConstraint:v44];
 
     v59 = MEMORY[0x1E696ACD8];
     v70[0] = v31;
-    v69 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerLeadingConstraint];
-    v70[1] = v69;
-    v68 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerTrailingConstraint];
-    v70[2] = v68;
-    v66 = [v8 bottomAnchor];
-    v67 = [(CNGroupIdentityHeaderViewController *)self view];
-    v65 = [v67 bottomAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    sharedProfileBannerContainerLeadingConstraint = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerLeadingConstraint];
+    v70[1] = sharedProfileBannerContainerLeadingConstraint;
+    sharedProfileBannerContainerTrailingConstraint = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerTrailingConstraint];
+    v70[2] = sharedProfileBannerContainerTrailingConstraint;
+    bottomAnchor2 = [v8 bottomAnchor];
+    view5 = [(CNGroupIdentityHeaderViewController *)self view];
+    bottomAnchor3 = [view5 bottomAnchor];
+    v64 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v70[3] = v64;
-    v63 = [(CNSharedProfileBannerView *)v5 topAnchor];
-    v62 = [v8 topAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    topAnchor2 = [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 topAnchor];
+    topAnchor3 = [v8 topAnchor];
+    v61 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v70[4] = v61;
-    v57 = [(CNSharedProfileBannerView *)v5 leadingAnchor];
-    v58 = [v8 layoutMarginsGuide];
-    v56 = [v58 leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    leadingAnchor3 = [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 leadingAnchor];
+    layoutMarginsGuide = [v8 layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v70[5] = v55;
-    v53 = [(CNSharedProfileBannerView *)v5 trailingAnchor];
-    v54 = [v8 layoutMarginsGuide];
-    v52 = [v54 trailingAnchor];
-    v45 = [v53 constraintEqualToAnchor:v52];
+    trailingAnchor3 = [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 trailingAnchor];
+    layoutMarginsGuide2 = [v8 layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+    v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v70[6] = v45;
-    v46 = [(CNSharedProfileBannerView *)v5 bottomAnchor];
-    v47 = [v8 bottomAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    bottomAnchor4 = [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 bottomAnchor];
+    bottomAnchor5 = [v8 bottomAnchor];
+    v48 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v70[7] = v48;
-    v49 = [(CNSharedProfileBannerView *)v5 heightAnchor];
-    [(CNSharedProfileBannerView *)v5 estimatedHeight];
-    v50 = [v49 constraintGreaterThanOrEqualToConstant:?];
+    heightAnchor = [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 heightAnchor];
+    [(CNSharedProfileBannerView *)actionsViewBottomConstraint4 estimatedHeight];
+    v50 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
     v70[8] = v50;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:9];
     [v59 activateConstraints:v51];
 
     [(CNGroupIdentityHeaderViewController *)self setSharedProfileBannerContainerView:v8];
-    [(CNGroupIdentityHeaderViewController *)self setSharedProfileBannerView:v5];
+    [(CNGroupIdentityHeaderViewController *)self setSharedProfileBannerView:actionsViewBottomConstraint4];
   }
 
   else
   {
-    v32 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
+    actionsViewBottomConstraint3 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
 
-    if (!v32)
+    if (!actionsViewBottomConstraint3)
     {
       return;
     }
 
     v33 = MEMORY[0x1E696ACD8];
-    v5 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
-    v72[0] = v5;
+    actionsViewBottomConstraint4 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
+    v72[0] = actionsViewBottomConstraint4;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:1];
     [v33 activateConstraints:v8];
   }
@@ -504,35 +504,35 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
 
 - (BOOL)shouldShowSharedProfileBannerView
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:28];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:28];
 
   if (!v5)
   {
     return 0;
   }
 
-  v6 = [(CNGroupIdentityHeaderViewController *)self sharedProfileStateOracle];
+  sharedProfileStateOracle = [(CNGroupIdentityHeaderViewController *)self sharedProfileStateOracle];
 
-  if (!v6)
+  if (!sharedProfileStateOracle)
   {
     return 0;
   }
 
-  v7 = [(CNGroupIdentityHeaderViewController *)self group];
-  v8 = [v7 contacts];
-  v9 = [v8 count];
+  group = [(CNGroupIdentityHeaderViewController *)self group];
+  contacts = [group contacts];
+  v9 = [contacts count];
 
   if (v9 != 1)
   {
     return 0;
   }
 
-  v10 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerView];
-  v11 = [v10 isIgnored];
+  sharedProfileBannerView = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerView];
+  isIgnored = [sharedProfileBannerView isIgnored];
 
-  if (v11)
+  if (isIgnored)
   {
     v12 = [objc_opt_class() log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -544,8 +544,8 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
     return 0;
   }
 
-  v15 = [(CNGroupIdentityHeaderViewController *)self sharedProfileStateOracle];
-  if ([v15 bannerActionTypeForEffectiveState])
+  sharedProfileStateOracle2 = [(CNGroupIdentityHeaderViewController *)self sharedProfileStateOracle];
+  if ([sharedProfileStateOracle2 bannerActionTypeForEffectiveState])
   {
     v13 = 1;
   }
@@ -558,144 +558,144 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
   return v13;
 }
 
-- (void)setSharedProfileBannerStyle:(id)a3
+- (void)setSharedProfileBannerStyle:(id)style
 {
-  v17 = a3;
-  if (self->_sharedProfileBannerStyle != v17)
+  styleCopy = style;
+  if (self->_sharedProfileBannerStyle != styleCopy)
   {
-    objc_storeStrong(&self->_sharedProfileBannerStyle, a3);
-    v5 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerView];
-    [v5 setStyle:v17];
+    objc_storeStrong(&self->_sharedProfileBannerStyle, style);
+    sharedProfileBannerView = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerView];
+    [sharedProfileBannerView setStyle:styleCopy];
 
-    v6 = [(CNSharedProfileBannerStyle *)v17 backgroundColor];
-    v7 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
-    [v7 setBackgroundColor:v6];
+    backgroundColor = [(CNSharedProfileBannerStyle *)styleCopy backgroundColor];
+    sharedProfileBannerContainerView = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
+    [sharedProfileBannerContainerView setBackgroundColor:backgroundColor];
 
-    v8 = [(CNSharedProfileBannerStyle *)v17 backgroundVisualEffectView];
+    backgroundVisualEffectView = [(CNSharedProfileBannerStyle *)styleCopy backgroundVisualEffectView];
 
-    if (v8)
+    if (backgroundVisualEffectView)
     {
-      v9 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
-      v10 = [(CNSharedProfileBannerStyle *)v17 backgroundVisualEffectView];
-      [v9 addBackgroundVisualEffectView:v10 withCornerRadius:12.0];
+      sharedProfileBannerContainerView2 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerView];
+      backgroundVisualEffectView2 = [(CNSharedProfileBannerStyle *)styleCopy backgroundVisualEffectView];
+      [sharedProfileBannerContainerView2 addBackgroundVisualEffectView:backgroundVisualEffectView2 withCornerRadius:12.0];
     }
 
-    [(CNSharedProfileBannerStyle *)v17 leadingTrailingInset];
+    [(CNSharedProfileBannerStyle *)styleCopy leadingTrailingInset];
     v12 = v11;
-    v13 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerLeadingConstraint];
-    [v13 setConstant:v12];
+    sharedProfileBannerContainerLeadingConstraint = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerLeadingConstraint];
+    [sharedProfileBannerContainerLeadingConstraint setConstant:v12];
 
-    [(CNSharedProfileBannerStyle *)v17 leadingTrailingInset];
+    [(CNSharedProfileBannerStyle *)styleCopy leadingTrailingInset];
     v15 = -v14;
-    v16 = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerTrailingConstraint];
-    [v16 setConstant:v15];
+    sharedProfileBannerContainerTrailingConstraint = [(CNGroupIdentityHeaderViewController *)self sharedProfileBannerContainerTrailingConstraint];
+    [sharedProfileBannerContainerTrailingConstraint setConstant:v15];
   }
 }
 
-- (void)setSharedProfileStateOracle:(id)a3
+- (void)setSharedProfileStateOracle:(id)oracle
 {
-  v5 = a3;
-  if (self->_sharedProfileStateOracle != v5)
+  oracleCopy = oracle;
+  if (self->_sharedProfileStateOracle != oracleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_sharedProfileStateOracle, a3);
+    v7 = oracleCopy;
+    objc_storeStrong(&self->_sharedProfileStateOracle, oracle);
     [(CNGroupIdentityHeaderViewController *)self setupSharedProfileBannerView];
-    v6 = [(CNGroupIdentityHeaderViewController *)self view];
-    [v6 setNeedsUpdateConstraints];
+    view = [(CNGroupIdentityHeaderViewController *)self view];
+    [view setNeedsUpdateConstraints];
 
-    v5 = v7;
+    oracleCopy = v7;
   }
 }
 
-- (void)setMediaContextBadge:(id)a3
+- (void)setMediaContextBadge:(id)badge
 {
-  objc_storeStrong(&self->_mediaContextBadge, a3);
-  v5 = a3;
-  v6 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [v6 setMediaContextBadge:v5];
+  objc_storeStrong(&self->_mediaContextBadge, badge);
+  badgeCopy = badge;
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [groupAvatarViewController setMediaContextBadge:badgeCopy];
 }
 
-- (void)setShouldShowContactBusy:(BOOL)a3
+- (void)setShouldShowContactBusy:(BOOL)busy
 {
-  v3 = a3;
-  self->_shouldShowContactBusy = a3;
-  v4 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [v4 setIsDoNotDisturb:v3];
+  busyCopy = busy;
+  self->_shouldShowContactBusy = busy;
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [groupAvatarViewController setIsDoNotDisturb:busyCopy];
 }
 
-- (void)setIsMarkedForSyndication:(BOOL)a3
+- (void)setIsMarkedForSyndication:(BOOL)syndication
 {
-  v3 = a3;
-  self->_isMarkedForSyndication = a3;
-  v4 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [v4 setIsMarkedForSyndication:v3];
+  syndicationCopy = syndication;
+  self->_isMarkedForSyndication = syndication;
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [groupAvatarViewController setIsMarkedForSyndication:syndicationCopy];
 }
 
-- (void)setAvatarBadgeStyleSettings:(id)a3
+- (void)setAvatarBadgeStyleSettings:(id)settings
 {
-  objc_storeStrong(&self->_avatarBadgeStyleSettings, a3);
-  v5 = a3;
-  v6 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [v6 setBadgeStyleSettings:v5];
+  objc_storeStrong(&self->_avatarBadgeStyleSettings, settings);
+  settingsCopy = settings;
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [groupAvatarViewController setBadgeStyleSettings:settingsCopy];
 }
 
-- (void)setAvatarBadgeImage:(id)a3
+- (void)setAvatarBadgeImage:(id)image
 {
-  objc_storeStrong(&self->_avatarBadgeImage, a3);
-  v5 = a3;
-  v6 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [v6 setBadgeImage:v5];
+  objc_storeStrong(&self->_avatarBadgeImage, image);
+  imageCopy = image;
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [groupAvatarViewController setBadgeImage:imageCopy];
 }
 
 - (void)setupCustomSubtitleLabel
 {
-  v3 = [(CNGroupIdentityHeaderViewController *)self customSubtitleLabel];
+  customSubtitleLabel = [(CNGroupIdentityHeaderViewController *)self customSubtitleLabel];
 
-  if (v3)
+  if (customSubtitleLabel)
   {
-    v5 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
-    v4 = [(CNGroupIdentityHeaderViewController *)self customSubtitleLabel];
-    [v5 addArrangedSubview:v4];
+    titleLabelStackView = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
+    customSubtitleLabel2 = [(CNGroupIdentityHeaderViewController *)self customSubtitleLabel];
+    [titleLabelStackView addArrangedSubview:customSubtitleLabel2];
   }
 }
 
-- (void)setCustomSubtitleLabel:(id)a3
+- (void)setCustomSubtitleLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   customSubtitleLabel = self->_customSubtitleLabel;
-  if (customSubtitleLabel != v5)
+  if (customSubtitleLabel != labelCopy)
   {
-    v7 = v5;
+    v7 = labelCopy;
     [(UILabel *)customSubtitleLabel removeFromSuperview];
-    objc_storeStrong(&self->_customSubtitleLabel, a3);
+    objc_storeStrong(&self->_customSubtitleLabel, label);
     customSubtitleLabel = [(CNGroupIdentityHeaderViewController *)self setupCustomSubtitleLabel];
-    v5 = v7;
+    labelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](customSubtitleLabel, v5);
+  MEMORY[0x1EEE66BB8](customSubtitleLabel, labelCopy);
 }
 
 - (void)didTapActionButton
 {
-  v3 = [(CNGroupIdentityHeaderViewController *)self delegate];
+  delegate = [(CNGroupIdentityHeaderViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNGroupIdentityHeaderViewController *)self delegate];
-    [v5 headerViewControllerDidTapActionButton:self];
+    delegate2 = [(CNGroupIdentityHeaderViewController *)self delegate];
+    [delegate2 headerViewControllerDidTapActionButton:self];
   }
 }
 
-- (BOOL)groupContactIsSameAsCurrentContact:(id)a3
+- (BOOL)groupContactIsSameAsCurrentContact:(id)contact
 {
-  v4 = a3;
-  v5 = [v4 contacts];
-  if ([v5 count] == 1)
+  contactCopy = contact;
+  contacts = [contactCopy contacts];
+  if ([contacts count] == 1)
   {
-    v6 = [(CNGroupIdentityHeaderViewController *)self group];
-    v7 = [v6 contacts];
-    v8 = [v7 count];
+    group = [(CNGroupIdentityHeaderViewController *)self group];
+    contacts2 = [group contacts];
+    v8 = [contacts2 count];
 
     if (v8 != 1)
     {
@@ -703,16 +703,16 @@ uint64_t __90__CNGroupIdentityHeaderViewController_sharedProfileBannerView_didUp
       goto LABEL_7;
     }
 
-    v9 = [(CNGroupIdentityHeaderViewController *)self group];
-    v10 = [v9 contacts];
-    v5 = [v10 firstObject];
+    group2 = [(CNGroupIdentityHeaderViewController *)self group];
+    contacts3 = [group2 contacts];
+    contacts = [contacts3 firstObject];
 
-    v11 = [v4 contacts];
-    v12 = [v11 firstObject];
+    contacts4 = [contactCopy contacts];
+    firstObject = [contacts4 firstObject];
 
-    v13 = [v5 identifier];
-    v14 = [v12 identifier];
-    v15 = [v13 isEqualToString:v14];
+    identifier = [contacts identifier];
+    identifier2 = [firstObject identifier];
+    v15 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -724,109 +724,109 @@ LABEL_7:
   return v15;
 }
 
-- (void)groupIdentityDidUpdate:(id)a3
+- (void)groupIdentityDidUpdate:(id)update
 {
-  v4 = a3;
-  if (![(CNGroupIdentityHeaderViewController *)self groupContactIsSameAsCurrentContact:v4])
+  updateCopy = update;
+  if (![(CNGroupIdentityHeaderViewController *)self groupContactIsSameAsCurrentContact:updateCopy])
   {
     [(CNGroupIdentityHeaderViewController *)self setTappedSharedProfileBannerAction:0];
     [(CNGroupIdentityHeaderViewController *)self setHasPerformedSharedProfileBannerAnimation:0];
     [(CNGroupIdentityHeaderViewController *)self setSharedProfileStateOracle:0];
   }
 
-  [(CNGroupIdentityHeaderViewController *)self setGroup:v4];
-  v5 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v6 = [(CNGroupIdentityHeaderViewController *)self sharedProfileStateOracle];
-  [v5 setSharedProfileStateOracle:v6];
+  [(CNGroupIdentityHeaderViewController *)self setGroup:updateCopy];
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  sharedProfileStateOracle = [(CNGroupIdentityHeaderViewController *)self sharedProfileStateOracle];
+  [groupAvatarViewController setSharedProfileStateOracle:sharedProfileStateOracle];
 
-  v7 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [v7 groupIdentityDidUpdate:v4];
+  groupAvatarViewController2 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [groupAvatarViewController2 groupIdentityDidUpdate:updateCopy];
 
   [(CNGroupIdentityHeaderViewController *)self updateTitleLabel];
-  v8 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
-  [v8 setGroup:v4];
+  actionsViewController = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
+  [actionsViewController setGroup:updateCopy];
 }
 
-- (void)updateGroupWithContact:(id)a3
+- (void)updateGroupWithContact:(id)contact
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNGroupIdentityHeaderViewController *)self group];
-  v6 = [v5 copy];
+  contactCopy = contact;
+  group = [(CNGroupIdentityHeaderViewController *)self group];
+  v6 = [group copy];
 
-  v8[0] = v4;
+  v8[0] = contactCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 
   [v6 updateContacts:v7];
   [(CNGroupIdentityHeaderViewController *)self groupIdentityDidUpdate:v6];
 }
 
-- (void)setShouldShowStaticKeyBadge:(BOOL)a3
+- (void)setShouldShowStaticKeyBadge:(BOOL)badge
 {
-  if (a3)
+  if (badge)
   {
     v4 = +[CNStaticIdentityBadgeView sealLockImage];
-    v5 = [(CNGroupIdentityHeaderViewController *)self staticIdentityBadge];
-    [v5 setImage:v4];
+    staticIdentityBadge = [(CNGroupIdentityHeaderViewController *)self staticIdentityBadge];
+    [staticIdentityBadge setImage:v4];
 
-    v6 = [(CNGroupIdentityHeaderViewController *)self titleBadgeStackView];
-    v7 = [(CNGroupIdentityHeaderViewController *)self staticIdentityBadge];
-    [v6 addArrangedSubview:v7];
+    titleBadgeStackView = [(CNGroupIdentityHeaderViewController *)self titleBadgeStackView];
+    staticIdentityBadge2 = [(CNGroupIdentityHeaderViewController *)self staticIdentityBadge];
+    [titleBadgeStackView addArrangedSubview:staticIdentityBadge2];
 
     v8 = MEMORY[0x1E696ACD8];
-    v12 = [(CNGroupIdentityHeaderViewController *)self horizontalTitleLabelConstraints];
+    horizontalTitleLabelConstraints = [(CNGroupIdentityHeaderViewController *)self horizontalTitleLabelConstraints];
     [v8 deactivateConstraints:?];
   }
 
   else
   {
-    v9 = [(CNGroupIdentityHeaderViewController *)self staticIdentityBadge];
-    [v9 setImage:0];
+    staticIdentityBadge3 = [(CNGroupIdentityHeaderViewController *)self staticIdentityBadge];
+    [staticIdentityBadge3 setImage:0];
 
-    v10 = [(CNGroupIdentityHeaderViewController *)self staticIdentityBadge];
-    [v10 removeFromSuperview];
+    staticIdentityBadge4 = [(CNGroupIdentityHeaderViewController *)self staticIdentityBadge];
+    [staticIdentityBadge4 removeFromSuperview];
 
     v11 = MEMORY[0x1E696ACD8];
-    v12 = [(CNGroupIdentityHeaderViewController *)self horizontalTitleLabelConstraints];
+    horizontalTitleLabelConstraints = [(CNGroupIdentityHeaderViewController *)self horizontalTitleLabelConstraints];
     [v11 activateConstraints:?];
   }
 }
 
-- (void)setShouldHideTitleLabel:(BOOL)a3
+- (void)setShouldHideTitleLabel:(BOOL)label
 {
-  v3 = a3;
-  v5 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-  v6 = [v5 isHidden];
+  labelCopy = label;
+  titleLabel = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+  isHidden = [titleLabel isHidden];
 
-  if (v6 != v3)
+  if (isHidden != labelCopy)
   {
-    v7 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-    [v7 setHidden:v3];
+    titleLabel2 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+    [titleLabel2 setHidden:labelCopy];
   }
 }
 
-- (BOOL)shouldUseTitleLabelWrappedFontGivenBoundingRect:(CGRect)a3
+- (BOOL)shouldUseTitleLabelWrappedFontGivenBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  v4 = [(CNGroupIdentityHeaderViewController *)self titleLabelFont:a3.origin.x];
+  height = rect.size.height;
+  v4 = [(CNGroupIdentityHeaderViewController *)self titleLabelFont:rect.origin.x];
   [v4 lineHeight];
   v6 = ceil(height / v5) > 1.0;
 
   return v6;
 }
 
-- (CGRect)titleLabelBoundingRectForFont:(id)a3 text:(id)a4 maxWidth:(double)a5 context:(id)a6
+- (CGRect)titleLabelBoundingRectForFont:(id)font text:(id)text maxWidth:(double)width context:(id)context
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v26 = *MEMORY[0x1E69DB648];
-  v27[0] = a3;
+  v27[0] = font;
   v9 = MEMORY[0x1E695DF20];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  contextCopy = context;
+  textCopy = text;
+  fontCopy = font;
   v13 = [v9 dictionaryWithObjects:v27 forKeys:&v26 count:1];
 
-  [v11 boundingRectWithSize:33 options:v13 attributes:v10 context:{a5, 1.79769313e308}];
+  [textCopy boundingRectWithSize:33 options:v13 attributes:contextCopy context:{width, 1.79769313e308}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -845,8 +845,8 @@ LABEL_7:
 
 - (void)updateTitleLabelFont
 {
-  v3 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-  [v3 frame];
+  titleLabel = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+  [titleLabel frame];
   v5 = v4;
   v7 = v6;
   v8 = *MEMORY[0x1E695F060];
@@ -854,56 +854,56 @@ LABEL_7:
 
   if (v5 == v8 && v7 == v9)
   {
-    v11 = [(CNGroupIdentityHeaderViewController *)self view];
-    [v11 bounds];
+    view = [(CNGroupIdentityHeaderViewController *)self view];
+    [view bounds];
   }
 
   else
   {
-    v11 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-    [v11 frame];
+    view = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+    [view frame];
   }
 
   v13 = v12;
 
-  v14 = [(CNGroupIdentityHeaderViewController *)self titleLabelFont];
-  v15 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-  v16 = [v15 text];
-  [(CNGroupIdentityHeaderViewController *)self titleLabelBoundingRectForFont:v14 text:v16 maxWidth:0 context:v13];
+  titleLabelFont = [(CNGroupIdentityHeaderViewController *)self titleLabelFont];
+  titleLabel2 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+  text = [titleLabel2 text];
+  [(CNGroupIdentityHeaderViewController *)self titleLabelBoundingRectForFont:titleLabelFont text:text maxWidth:0 context:v13];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  v30 = [(CNGroupIdentityHeaderViewController *)self titleLabelFont];
+  titleLabelFont2 = [(CNGroupIdentityHeaderViewController *)self titleLabelFont];
   if ([(CNGroupIdentityHeaderViewController *)self shouldUseTitleLabelWrappedFontGivenBoundingRect:v18, v20, v22, v24])
   {
-    v25 = [(CNGroupIdentityHeaderViewController *)self titleLabelWrappedFont];
+    titleLabelWrappedFont = [(CNGroupIdentityHeaderViewController *)self titleLabelWrappedFont];
 
-    v30 = v25;
+    titleLabelFont2 = titleLabelWrappedFont;
   }
 
-  v26 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-  v27 = [v26 font];
+  titleLabel3 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+  font = [titleLabel3 font];
 
-  v28 = v30;
-  if (v27 != v30)
+  v28 = titleLabelFont2;
+  if (font != titleLabelFont2)
   {
-    v29 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-    [v29 setFont:v30];
+    titleLabel4 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+    [titleLabel4 setFont:titleLabelFont2];
 
-    v28 = v30;
+    v28 = titleLabelFont2;
   }
 }
 
 - (void)updateTitleLabel
 {
-  v17 = [(CNGroupIdentityHeaderViewController *)self displayNameForGroupIdentity];
-  if (!v17)
+  displayNameForGroupIdentity = [(CNGroupIdentityHeaderViewController *)self displayNameForGroupIdentity];
+  if (!displayNameForGroupIdentity)
   {
-    v2 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-    v3 = [v2 text];
-    if (!v3)
+    titleLabel = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+    text = [titleLabel text];
+    if (!text)
     {
       v7 = 0;
 LABEL_6:
@@ -912,23 +912,23 @@ LABEL_6:
     }
   }
 
-  v5 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-  v6 = [v5 text];
-  v7 = [v17 isEqual:v6] ^ 1;
+  titleLabel2 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+  text2 = [titleLabel2 text];
+  v7 = [displayNameForGroupIdentity isEqual:text2] ^ 1;
 
-  if (!v17)
+  if (!displayNameForGroupIdentity)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  v8 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-  [v8 setText:v17];
+  titleLabel3 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+  [titleLabel3 setText:displayNameForGroupIdentity];
 
   if (v7)
   {
-    v9 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-    [v9 frame];
+    titleLabel4 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+    [titleLabel4 frame];
     v11 = v10;
     v13 = v12;
     v14 = *MEMORY[0x1E695F060];
@@ -943,10 +943,10 @@ LABEL_7:
 
 - (void)updateActionButton
 {
-  v3 = [(CNGroupIdentityHeaderViewController *)self shouldShowActionButton];
-  v4 = [(CNGroupIdentityHeaderViewController *)self actionButtonZeroHeightConstraint];
-  v5 = v4;
-  if (v3)
+  shouldShowActionButton = [(CNGroupIdentityHeaderViewController *)self shouldShowActionButton];
+  actionButtonZeroHeightConstraint = [(CNGroupIdentityHeaderViewController *)self actionButtonZeroHeightConstraint];
+  v5 = actionButtonZeroHeightConstraint;
+  if (shouldShowActionButton)
   {
     v6 = 0;
   }
@@ -956,42 +956,42 @@ LABEL_7:
 
     if (!v5)
     {
-      v7 = [(CNGroupIdentityHeaderViewController *)self actionButton];
-      v8 = [v7 heightAnchor];
-      v9 = [v8 constraintEqualToConstant:0.0];
+      actionButton = [(CNGroupIdentityHeaderViewController *)self actionButton];
+      heightAnchor = [actionButton heightAnchor];
+      v9 = [heightAnchor constraintEqualToConstant:0.0];
       [(CNGroupIdentityHeaderViewController *)self setActionButtonZeroHeightConstraint:v9];
     }
 
-    v4 = [(CNGroupIdentityHeaderViewController *)self actionButtonZeroHeightConstraint];
-    v5 = v4;
+    actionButtonZeroHeightConstraint = [(CNGroupIdentityHeaderViewController *)self actionButtonZeroHeightConstraint];
+    v5 = actionButtonZeroHeightConstraint;
     v6 = 1;
   }
 
-  [v4 setActive:v6];
+  [actionButtonZeroHeightConstraint setActive:v6];
 
-  v11 = [(CNGroupIdentityHeaderViewController *)self actionButton];
-  v10 = [(CNGroupIdentityHeaderViewController *)self actionButtonTitle];
-  [v11 setTitle:v10 forState:0];
+  actionButton2 = [(CNGroupIdentityHeaderViewController *)self actionButton];
+  actionButtonTitle = [(CNGroupIdentityHeaderViewController *)self actionButtonTitle];
+  [actionButton2 setTitle:actionButtonTitle forState:0];
 }
 
 - (BOOL)shouldShowActionButton
 {
   v2 = *MEMORY[0x1E6996570];
-  v3 = [(CNGroupIdentityHeaderViewController *)self actionButtonTitle];
-  LOBYTE(v2) = (*(v2 + 16))(v2, v3);
+  actionButtonTitle = [(CNGroupIdentityHeaderViewController *)self actionButtonTitle];
+  LOBYTE(v2) = (*(v2 + 16))(v2, actionButtonTitle);
 
   return v2;
 }
 
-- (void)setActionButtonTitle:(id)a3
+- (void)setActionButtonTitle:(id)title
 {
-  v5 = a3;
-  if (self->_actionButtonTitle != v5)
+  titleCopy = title;
+  if (self->_actionButtonTitle != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_actionButtonTitle, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_actionButtonTitle, title);
     [(CNGroupIdentityHeaderViewController *)self updateActionButton];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
@@ -999,43 +999,43 @@ LABEL_7:
 {
   v61[7] = *MEMORY[0x1E69E9840];
   v3 = [CNGroupIdentityInlineActionsViewController alloc];
-  v4 = [(CNGroupIdentityHeaderViewController *)self group];
-  v5 = [(CNGroupIdentityHeaderViewController *)self actionsViewConfiguration];
-  v6 = [(CNGroupIdentityInlineActionsViewController *)v3 initWithGroupIdentity:v4 actionsViewConfiguration:v5];
+  group = [(CNGroupIdentityHeaderViewController *)self group];
+  actionsViewConfiguration = [(CNGroupIdentityHeaderViewController *)self actionsViewConfiguration];
+  v6 = [(CNGroupIdentityInlineActionsViewController *)v3 initWithGroupIdentity:group actionsViewConfiguration:actionsViewConfiguration];
 
   [(CNGroupIdentityInlineActionsViewController *)v6 setDelegate:self];
-  v7 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(CNGroupIdentityHeaderViewController *)self view];
-  [v8 bounds];
+  view2 = [(CNGroupIdentityHeaderViewController *)self view];
+  [view2 bounds];
   [(CNGroupIdentityInlineActionsViewController *)v6 actionsViewHeightThatFits:v9, v10];
   v12 = v11;
 
   [(CNGroupIdentityHeaderViewController *)self addChildViewController:v6];
-  v13 = [(CNGroupIdentityHeaderViewController *)self view];
-  v14 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  [v13 addSubview:v14];
+  view3 = [(CNGroupIdentityHeaderViewController *)self view];
+  view4 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  [view3 addSubview:view4];
 
   [(CNGroupIdentityInlineActionsViewController *)v6 didMoveToParentViewController:self];
-  v15 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  v16 = [v15 widthAnchor];
-  v60 = [v16 constraintLessThanOrEqualToConstant:454.0];
+  view5 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  widthAnchor = [view5 widthAnchor];
+  v60 = [widthAnchor constraintLessThanOrEqualToConstant:454.0];
 
   LODWORD(v17) = 1148846080;
   [v60 setPriority:v17];
   [(CNGroupIdentityInlineActionsViewController *)v6 style];
-  v18 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  v19 = [v18 leadingAnchor];
-  v20 = [(CNGroupIdentityHeaderViewController *)self view];
-  v21 = [v20 leadingAnchor];
-  v22 = [v19 constraintGreaterThanOrEqualToAnchor:v21];
+  view6 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  leadingAnchor = [view6 leadingAnchor];
+  view7 = [(CNGroupIdentityHeaderViewController *)self view];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v22 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
 
-  v23 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  v24 = [v23 trailingAnchor];
-  v25 = [(CNGroupIdentityHeaderViewController *)self view];
-  v26 = [v25 trailingAnchor];
-  v27 = [v24 constraintGreaterThanOrEqualToAnchor:v26];
+  view8 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  trailingAnchor = [view8 trailingAnchor];
+  view9 = [(CNGroupIdentityHeaderViewController *)self view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v27 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
 
   v28 = v22;
   v59 = v22;
@@ -1044,8 +1044,8 @@ LABEL_7:
   v58 = v27;
   LODWORD(v30) = 1144766464;
   [v27 setPriority:v30];
-  v31 = [(CNGroupIdentityHeaderViewController *)self view];
-  [v31 bounds];
+  view10 = [(CNGroupIdentityHeaderViewController *)self view];
+  [view10 bounds];
   v32 = 22.0;
   if (v33 > 896.0)
   {
@@ -1054,44 +1054,44 @@ LABEL_7:
 
   [(CNGroupIdentityHeaderViewController *)self setActionsViewTopMargin:v32];
 
-  v34 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  v35 = [v34 topAnchor];
-  v36 = [(CNGroupIdentityHeaderViewController *)self actionButton];
-  v37 = [v36 bottomAnchor];
+  view11 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  topAnchor = [view11 topAnchor];
+  actionButton = [(CNGroupIdentityHeaderViewController *)self actionButton];
+  bottomAnchor = [actionButton bottomAnchor];
   [(CNGroupIdentityHeaderViewController *)self actionsViewTopMargin];
-  v38 = [v35 constraintEqualToAnchor:v37 constant:?];
+  v38 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
 
   LODWORD(v39) = 1148829696;
   v57 = v38;
   [v38 setPriority:v39];
-  v40 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  v41 = [v40 bottomAnchor];
-  v42 = [(CNGroupIdentityHeaderViewController *)self view];
-  v43 = [v42 bottomAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43 constant:-5.0];
+  view12 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  bottomAnchor2 = [view12 bottomAnchor];
+  view13 = [(CNGroupIdentityHeaderViewController *)self view];
+  bottomAnchor3 = [view13 bottomAnchor];
+  v44 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-5.0];
   [(CNGroupIdentityHeaderViewController *)self setActionsViewBottomConstraint:v44];
 
   v61[0] = v38;
   v61[1] = v28;
   v61[2] = v27;
-  v56 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  v55 = [v56 centerXAnchor];
-  v45 = [(CNGroupIdentityHeaderViewController *)self view];
-  v46 = [v45 centerXAnchor];
-  v47 = [v55 constraintEqualToAnchor:v46];
+  view14 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  centerXAnchor = [view14 centerXAnchor];
+  view15 = [(CNGroupIdentityHeaderViewController *)self view];
+  centerXAnchor2 = [view15 centerXAnchor];
+  v47 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v61[3] = v47;
-  v48 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
-  v49 = [v48 heightAnchor];
-  v50 = [v49 constraintEqualToConstant:v12];
+  view16 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  heightAnchor = [view16 heightAnchor];
+  v50 = [heightAnchor constraintEqualToConstant:v12];
   v61[4] = v50;
   v61[5] = v60;
-  v51 = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
-  v61[6] = v51;
+  actionsViewBottomConstraint = [(CNGroupIdentityHeaderViewController *)self actionsViewBottomConstraint];
+  v61[6] = actionsViewBottomConstraint;
   v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:7];
 
-  v53 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
+  view17 = [(CNGroupIdentityInlineActionsViewController *)v6 view];
   LODWORD(v54) = 1144750080;
-  [v53 setContentHuggingPriority:1 forAxis:v54];
+  [view17 setContentHuggingPriority:1 forAxis:v54];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v52];
   [(CNGroupIdentityHeaderViewController *)self setActionsViewController:v6];
@@ -1101,11 +1101,11 @@ LABEL_7:
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(CNGroupIdentityHeaderViewController *)self actionButton];
-  v5 = [v4 bottomAnchor];
-  v6 = [(CNGroupIdentityHeaderViewController *)self view];
-  v7 = [v6 bottomAnchor];
-  v8 = [v5 constraintLessThanOrEqualToAnchor:v7 constant:-5.0];
+  actionButton = [(CNGroupIdentityHeaderViewController *)self actionButton];
+  bottomAnchor = [actionButton bottomAnchor];
+  view = [(CNGroupIdentityHeaderViewController *)self view];
+  bottomAnchor2 = [view bottomAnchor];
+  v8 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-5.0];
   v10[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   [v3 activateConstraints:v9];
@@ -1114,9 +1114,9 @@ LABEL_7:
 - (BOOL)shouldShowActionsView
 {
   v2 = *MEMORY[0x1E6996530];
-  v3 = [(CNGroupIdentityHeaderViewController *)self actionsViewConfiguration];
-  v4 = [v3 supportedActionTypes];
-  LOBYTE(v2) = (*(v2 + 16))(v2, v4);
+  actionsViewConfiguration = [(CNGroupIdentityHeaderViewController *)self actionsViewConfiguration];
+  supportedActionTypes = [actionsViewConfiguration supportedActionTypes];
+  LOBYTE(v2) = (*(v2 + 16))(v2, supportedActionTypes);
 
   return v2 ^ 1;
 }
@@ -1148,9 +1148,9 @@ LABEL_7:
     +[CNUIFontRepository groupHeaderActionButtonFont];
   }
   v5 = ;
-  v3 = [(CNGroupIdentityHeaderViewController *)self actionButton];
-  v4 = [v3 titleLabel];
-  [v4 setFont:v5];
+  actionButton = [(CNGroupIdentityHeaderViewController *)self actionButton];
+  titleLabel = [actionButton titleLabel];
+  [titleLabel setFont:v5];
 }
 
 - (void)setupActionButton
@@ -1160,42 +1160,42 @@ LABEL_7:
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 setContentEdgeInsets:{1.0, 0.0, 1.0, 0.0}];
-  v5 = [(CNGroupIdentityHeaderViewController *)self view];
-  v6 = [v5 tintColor];
-  [v4 setTitleColor:v6 forState:0];
+  view = [(CNGroupIdentityHeaderViewController *)self view];
+  tintColor = [view tintColor];
+  [v4 setTitleColor:tintColor forState:0];
 
-  v7 = [v4 titleLabel];
-  [v7 setAdjustsFontForContentSizeCategory:1];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setAdjustsFontForContentSizeCategory:1];
 
-  v8 = [v4 titleLabel];
-  [v8 setNumberOfLines:2];
+  titleLabel2 = [v4 titleLabel];
+  [titleLabel2 setNumberOfLines:2];
 
-  v9 = [v4 titleLabel];
-  [v9 setTextAlignment:1];
+  titleLabel3 = [v4 titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
   [v4 addTarget:self action:sel_didTapActionButton forControlEvents:64];
-  v10 = [(CNGroupIdentityHeaderViewController *)self view];
-  [v10 addSubview:v4];
+  view2 = [(CNGroupIdentityHeaderViewController *)self view];
+  [view2 addSubview:v4];
 
-  v27 = [v4 topAnchor];
-  v28 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
-  v26 = [v28 bottomAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:2.0];
+  topAnchor = [v4 topAnchor];
+  titleLabelStackView = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
+  bottomAnchor = [titleLabelStackView bottomAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:2.0];
   v29[0] = v25;
-  v23 = [v4 leadingAnchor];
-  v24 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
-  v22 = [v24 leadingAnchor];
-  v21 = [v23 constraintGreaterThanOrEqualToAnchor:v22];
+  leadingAnchor = [v4 leadingAnchor];
+  titleLabelStackView2 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
+  leadingAnchor2 = [titleLabelStackView2 leadingAnchor];
+  v21 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v29[1] = v21;
-  v11 = [v4 trailingAnchor];
-  v12 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintGreaterThanOrEqualToAnchor:v13];
+  trailingAnchor = [v4 trailingAnchor];
+  titleLabelStackView3 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
+  trailingAnchor2 = [titleLabelStackView3 trailingAnchor];
+  v14 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   v29[2] = v14;
-  v15 = [v4 centerXAnchor];
-  v16 = [(CNGroupIdentityHeaderViewController *)self view];
-  v17 = [v16 centerXAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  centerXAnchor = [v4 centerXAnchor];
+  view3 = [(CNGroupIdentityHeaderViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v29[3] = v18;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
 
@@ -1209,15 +1209,15 @@ LABEL_7:
 
 - (double)titleLabelBaselineOffset
 {
-  v3 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
-  [v3 frame];
+  titleLabelStackView = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
+  [titleLabelStackView frame];
   v5 = v4;
-  v6 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
-  [v6 frame];
+  titleLabelStackView2 = [(CNGroupIdentityHeaderViewController *)self titleLabelStackView];
+  [titleLabelStackView2 frame];
   v8 = v5 + v7;
-  v9 = [(CNGroupIdentityHeaderViewController *)self titleLabel];
-  v10 = [v9 font];
-  [v10 descender];
+  titleLabel = [(CNGroupIdentityHeaderViewController *)self titleLabel];
+  font = [titleLabel font];
+  [font descender];
   v12 = v8 + v11;
 
   return v12;
@@ -1238,8 +1238,8 @@ LABEL_7:
   [v5 setNumberOfLines:2];
   [v5 setMinimumScaleFactor:0.8];
   [v5 setAdjustsFontForContentSizeCategory:1];
-  v6 = [(CNGroupIdentityHeaderViewController *)self titleLabelFont];
-  [v5 setFont:v6];
+  titleLabelFont = [(CNGroupIdentityHeaderViewController *)self titleLabelFont];
+  [v5 setFont:titleLabelFont];
 
   [v5 setTextAlignment:1];
   [v5 sizeToFit];
@@ -1256,14 +1256,14 @@ LABEL_7:
   [(CNGroupIdentityHeaderViewController *)self setTitleBadgeStackView:v9];
   v45 = v9;
   [v3 addArrangedSubview:v9];
-  v10 = [(CNGroupIdentityHeaderViewController *)self view];
-  [v10 addSubview:v3];
+  view = [(CNGroupIdentityHeaderViewController *)self view];
+  [view addSubview:v3];
 
-  v11 = [v3 topAnchor];
-  v12 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v13 = [v12 view];
-  v14 = [v13 bottomAnchor];
-  v15 = [v11 constraintEqualToAnchor:v14 constant:-4.0];
+  topAnchor = [v3 topAnchor];
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view2 = [groupAvatarViewController view];
+  bottomAnchor = [view2 bottomAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:-4.0];
 
   if (![(CNGroupIdentityHeaderViewController *)self preferredContentSizeCategoryIsXL])
   {
@@ -1271,35 +1271,35 @@ LABEL_7:
     [v15 setPriority:v16];
   }
 
-  v17 = [v5 leadingAnchor];
-  v18 = [v3 leadingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  leadingAnchor = [v5 leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[0] = v19;
-  v20 = [v5 trailingAnchor];
+  trailingAnchor = [v5 trailingAnchor];
   [v3 trailingAnchor];
   v21 = v43 = v5;
-  [v20 constraintEqualToAnchor:v21];
+  [trailingAnchor constraintEqualToAnchor:v21];
   v22 = v44 = v15;
   v47[1] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
   [(CNGroupIdentityHeaderViewController *)self setHorizontalTitleLabelConstraints:v23];
 
   v46[0] = v15;
-  v41 = [v3 leadingAnchor];
-  v42 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v40 = [v42 view];
-  v39 = [v40 leadingAnchor];
-  v24 = [v41 constraintEqualToAnchor:v39];
+  leadingAnchor3 = [v3 leadingAnchor];
+  groupAvatarViewController2 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view3 = [groupAvatarViewController2 view];
+  leadingAnchor4 = [view3 leadingAnchor];
+  v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v46[1] = v24;
-  v25 = [v3 trailingAnchor];
-  v26 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v27 = [v26 view];
-  v28 = [v27 trailingAnchor];
-  v29 = [v25 constraintEqualToAnchor:v28];
+  trailingAnchor2 = [v3 trailingAnchor];
+  groupAvatarViewController3 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view4 = [groupAvatarViewController3 view];
+  trailingAnchor3 = [view4 trailingAnchor];
+  v29 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v46[2] = v29;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:3];
-  v31 = [(CNGroupIdentityHeaderViewController *)self horizontalTitleLabelConstraints];
-  [v30 arrayByAddingObjectsFromArray:v31];
+  horizontalTitleLabelConstraints = [(CNGroupIdentityHeaderViewController *)self horizontalTitleLabelConstraints];
+  [v30 arrayByAddingObjectsFromArray:horizontalTitleLabelConstraints];
   v32 = v38 = v3;
 
   [MEMORY[0x1E696ACD8] activateConstraints:v32];
@@ -1322,15 +1322,15 @@ LABEL_7:
 
 - (BOOL)preferredContentSizeCategoryIsXL
 {
-  v2 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  if ([v2 isEqualToString:*MEMORY[0x1E69DDC30]] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", *MEMORY[0x1E69DDC28]))
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC30]] & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC28]))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:*MEMORY[0x1E69DDC20]];
+    v3 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC20]];
   }
 
   return v3;
@@ -1385,54 +1385,54 @@ id __53__CNGroupIdentityHeaderViewController_titleLabelFont__block_invoke(uint64
 - (void)setupAvatarView
 {
   v40[5] = *MEMORY[0x1E69E9840];
-  v3 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v4 = [v3 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  groupAvatarViewController = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view = [groupAvatarViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  [(CNGroupIdentityHeaderViewController *)self addChildViewController:v5];
+  groupAvatarViewController2 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  [(CNGroupIdentityHeaderViewController *)self addChildViewController:groupAvatarViewController2];
 
-  v6 = [(CNGroupIdentityHeaderViewController *)self view];
-  v7 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v8 = [v7 view];
-  [v6 addSubview:v8];
+  view2 = [(CNGroupIdentityHeaderViewController *)self view];
+  groupAvatarViewController3 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view3 = [groupAvatarViewController3 view];
+  [view2 addSubview:view3];
 
-  v9 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v10 = [v9 view];
-  v11 = [v10 heightAnchor];
-  v39 = [v11 constraintLessThanOrEqualToConstant:106.0];
+  groupAvatarViewController4 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view4 = [groupAvatarViewController4 view];
+  heightAnchor = [view4 heightAnchor];
+  v39 = [heightAnchor constraintLessThanOrEqualToConstant:106.0];
 
   LODWORD(v12) = 1148846080;
   [v39 setPriority:v12];
-  v13 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v14 = [v13 view];
-  v15 = [v14 heightAnchor];
-  v16 = [(CNGroupIdentityHeaderViewController *)self view];
-  v17 = [v16 heightAnchor];
-  v38 = [v15 constraintGreaterThanOrEqualToAnchor:v17 multiplier:0.3];
+  groupAvatarViewController5 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view5 = [groupAvatarViewController5 view];
+  heightAnchor2 = [view5 heightAnchor];
+  view6 = [(CNGroupIdentityHeaderViewController *)self view];
+  heightAnchor3 = [view6 heightAnchor];
+  v38 = [heightAnchor2 constraintGreaterThanOrEqualToAnchor:heightAnchor3 multiplier:0.3];
 
   LODWORD(v18) = 1148829696;
   [v38 setPriority:v18];
-  v37 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v36 = [v37 view];
-  v34 = [v36 topAnchor];
-  v35 = [(CNGroupIdentityHeaderViewController *)self view];
-  v33 = [v35 topAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:5.0];
+  groupAvatarViewController6 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view7 = [groupAvatarViewController6 view];
+  topAnchor = [view7 topAnchor];
+  view8 = [(CNGroupIdentityHeaderViewController *)self view];
+  topAnchor2 = [view8 topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v40[0] = v32;
-  v31 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v30 = [v31 view];
-  v29 = [v30 leadingAnchor];
-  v19 = [(CNGroupIdentityHeaderViewController *)self view];
-  v20 = [v19 leadingAnchor];
-  v21 = [v29 constraintEqualToAnchor:v20 constant:0.0];
+  groupAvatarViewController7 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view9 = [groupAvatarViewController7 view];
+  leadingAnchor = [view9 leadingAnchor];
+  view10 = [(CNGroupIdentityHeaderViewController *)self view];
+  leadingAnchor2 = [view10 leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v40[1] = v21;
-  v22 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
-  v23 = [v22 view];
-  v24 = [v23 trailingAnchor];
-  v25 = [(CNGroupIdentityHeaderViewController *)self view];
-  v26 = [v25 trailingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:-0.0];
+  groupAvatarViewController8 = [(CNGroupIdentityHeaderViewController *)self groupAvatarViewController];
+  view11 = [groupAvatarViewController8 view];
+  trailingAnchor = [view11 trailingAnchor];
+  view12 = [(CNGroupIdentityHeaderViewController *)self view];
+  trailingAnchor2 = [view12 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-0.0];
   v40[2] = v27;
   v40[3] = v38;
   v40[4] = v39;
@@ -1441,17 +1441,17 @@ id __53__CNGroupIdentityHeaderViewController_titleLabelFont__block_invoke(uint64
   [MEMORY[0x1E696ACD8] activateConstraints:v28];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
-  [v4 willMoveToParentViewController:0];
+  actionsViewController = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
+  [actionsViewController willMoveToParentViewController:0];
 
-  v5 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
-  v6 = [v5 view];
-  [v6 removeFromSuperview];
+  actionsViewController2 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
+  view = [actionsViewController2 view];
+  [view removeFromSuperview];
 
-  v7 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
-  [v7 removeFromParentViewController];
+  actionsViewController3 = [(CNGroupIdentityHeaderViewController *)self actionsViewController];
+  [actionsViewController3 removeFromParentViewController];
 
   [(CNGroupIdentityHeaderViewController *)self updateActionButtonFont];
   if ([(CNGroupIdentityHeaderViewController *)self shouldShowActionsView])
@@ -1459,8 +1459,8 @@ id __53__CNGroupIdentityHeaderViewController_titleLabelFont__block_invoke(uint64
     [(CNGroupIdentityHeaderViewController *)self setupPopulatedActionsView];
   }
 
-  v8 = [(CNGroupIdentityHeaderViewController *)self view];
-  [v8 invalidateIntrinsicContentSize];
+  view2 = [(CNGroupIdentityHeaderViewController *)self view];
+  [view2 invalidateIntrinsicContentSize];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1468,8 +1468,8 @@ id __53__CNGroupIdentityHeaderViewController_titleLabelFont__block_invoke(uint64
   v11.receiver = self;
   v11.super_class = CNGroupIdentityHeaderViewController;
   [(CNGroupIdentityHeaderViewController *)&v11 viewDidLayoutSubviews];
-  v3 = [(CNGroupIdentityHeaderViewController *)self view];
-  [v3 frame];
+  view = [(CNGroupIdentityHeaderViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
@@ -1493,31 +1493,31 @@ id __53__CNGroupIdentityHeaderViewController_titleLabelFont__block_invoke(uint64
 - (void)loadView
 {
   v3 = [CNGroupIdentityHeaderContainerView alloc];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = [(CNGroupIdentityHeaderContainerView *)v3 initWithFrame:?];
 
   [(CNGroupIdentityHeaderContainerView *)v5 setDelegate:self];
   [(CNGroupIdentityHeaderViewController *)self setView:v5];
 }
 
-- (CNGroupIdentityHeaderViewController)initWithGroupIdentity:(id)a3 actionsViewConfiguration:(id)a4 avatarViewControllerSettings:(id)a5
+- (CNGroupIdentityHeaderViewController)initWithGroupIdentity:(id)identity actionsViewConfiguration:(id)configuration avatarViewControllerSettings:(id)settings
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  configurationCopy = configuration;
+  settingsCopy = settings;
   v23.receiver = self;
   v23.super_class = CNGroupIdentityHeaderViewController;
   v12 = [(CNGroupIdentityHeaderViewController *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_group, a3);
-    v14 = [[CNGroupAvatarViewController alloc] initWithGroup:v9 avatarViewControllerSettings:v11];
+    objc_storeStrong(&v12->_group, identity);
+    v14 = [[CNGroupAvatarViewController alloc] initWithGroup:identityCopy avatarViewControllerSettings:settingsCopy];
     groupAvatarViewController = v13->_groupAvatarViewController;
     v13->_groupAvatarViewController = v14;
 
-    objc_storeStrong(&v13->_actionsViewConfiguration, a4);
+    objc_storeStrong(&v13->_actionsViewConfiguration, configuration);
     v16 = objc_alloc_init(MEMORY[0x1E695CD80]);
     contactFormatter = v13->_contactFormatter;
     v13->_contactFormatter = v16;
@@ -1531,8 +1531,8 @@ id __53__CNGroupIdentityHeaderViewController_titleLabelFont__block_invoke(uint64
     [(CNGroupIdentityHeaderViewController *)v13 setupActionButton];
     [(CNGroupIdentityHeaderViewController *)v13 setupActionsView];
     [(CNGroupIdentityHeaderViewController *)v13 setupSharedProfileBannerView];
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v13 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
     v21 = v13;
   }

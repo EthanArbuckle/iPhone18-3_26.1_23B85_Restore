@@ -1,8 +1,8 @@
 @interface HFLightbulbServiceItem
 + (id)supportedServiceTypes;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
-- (id)currentStateActionBuildersForHome:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
+- (id)currentStateActionBuildersForHome:(id)home;
 - (id)lightProfile;
 @end
 
@@ -27,47 +27,47 @@ void __47__HFLightbulbServiceItem_supportedServiceTypes__block_invoke_2()
   qword_280E03B70 = v0;
 }
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_opt_new();
-  v6 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
   v7 = [HFPowerStateControlItem alloc];
   v27 = @"title";
   v8 = _HFLocalizedStringWithDefaultValue(@"HFControlShortTitlePower", @"HFControlShortTitlePower", 1);
   v28[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-  v10 = [(HFPowerStateControlItem *)v7 initWithValueSource:v6 displayResults:v9];
+  v10 = [(HFPowerStateControlItem *)v7 initWithValueSource:controlItemValueSourceForPrimaryService displayResults:v9];
 
   [v5 na_safeAddObject:v10];
   v25[0] = @"title";
-  v11 = HFItemOptionalLocalizedString(@"HFControlShortTitleColor", v4);
+  v11 = HFItemOptionalLocalizedString(@"HFControlShortTitleColor", optionsCopy);
   v25[1] = @"controlItemPurpose";
   v26[0] = v11;
   v26[1] = &unk_282524F18;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
 
-  v13 = [[HFColorControlItem alloc] initWithValueSource:v6 displayResults:v12];
+  v13 = [[HFColorControlItem alloc] initWithValueSource:controlItemValueSourceForPrimaryService displayResults:v12];
   v14 = MEMORY[0x277CBEB38];
-  v15 = HFItemOptionalLocalizedString(@"HFControlShortTitleBrightness", v4);
+  v15 = HFItemOptionalLocalizedString(@"HFControlShortTitleBrightness", optionsCopy);
 
   v16 = [v14 dictionaryWithObject:v15 forKey:@"title"];
 
-  v17 = [(HFControlItem *)v13 characteristicOptions];
-  v18 = [v17 allCharacteristicTypes];
-  v19 = [v18 count];
+  characteristicOptions = [(HFControlItem *)v13 characteristicOptions];
+  allCharacteristicTypes = [characteristicOptions allCharacteristicTypes];
+  v19 = [allCharacteristicTypes count];
 
   if (v19)
   {
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [v16 setObject:v20 forKeyedSubscript:@"tintColor"];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v16 setObject:clearColor forKeyedSubscript:@"tintColor"];
 
     [v5 na_safeAddObject:v13];
   }
 
   v21 = [HFLightbulbControlItem alloc];
-  v22 = [(HFIncrementalStateControlItem *)v21 initWithValueSource:v6 primaryStateControlItem:v10 incrementalCharacteristicType:*MEMORY[0x277CCF788] displayResults:v16];
+  v22 = [(HFIncrementalStateControlItem *)v21 initWithValueSource:controlItemValueSourceForPrimaryService primaryStateControlItem:v10 incrementalCharacteristicType:*MEMORY[0x277CCF788] displayResults:v16];
   [v5 na_safeAddObject:v22];
 
   v23 = *MEMORY[0x277D85DE8];
@@ -75,16 +75,16 @@ void __47__HFLightbulbServiceItem_supportedServiceTypes__block_invoke_2()
   return v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (qword_280E03B78 != -1)
   {
     dispatch_once(&qword_280E03B78, &__block_literal_global_25_14);
   }
 
   v5 = qword_280E03B80;
-  v6 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v5 options:v4];
+  v6 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v5 options:optionsCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -242,22 +242,22 @@ LABEL_25:
   return v32;
 }
 
-- (id)currentStateActionBuildersForHome:(id)a3
+- (id)currentStateActionBuildersForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v16.receiver = self;
   v16.super_class = HFLightbulbServiceItem;
-  v5 = [(HFServiceItem *)&v16 currentStateActionBuildersForHome:v4];
-  v6 = [(HFLightbulbServiceItem *)self lightProfile];
-  v7 = [v6 settings];
-  v8 = [v7 supportedFeatures];
+  v5 = [(HFServiceItem *)&v16 currentStateActionBuildersForHome:homeCopy];
+  lightProfile = [(HFLightbulbServiceItem *)self lightProfile];
+  settings = [lightProfile settings];
+  supportedFeatures = [settings supportedFeatures];
 
-  if (v8)
+  if (supportedFeatures)
   {
-    v9 = [(HFItemBuilder *)[HFNaturalLightingActionBuilder alloc] initWithHome:v4];
-    [(HFNaturalLightingActionBuilder *)v9 setLightProfile:v6];
-    v10 = [v6 settings];
-    -[HFNaturalLightingActionBuilder setNaturalLightEnabled:](v9, "setNaturalLightEnabled:", [v10 isNaturalLightingEnabled]);
+    v9 = [(HFItemBuilder *)[HFNaturalLightingActionBuilder alloc] initWithHome:homeCopy];
+    [(HFNaturalLightingActionBuilder *)v9 setLightProfile:lightProfile];
+    settings2 = [lightProfile settings];
+    -[HFNaturalLightingActionBuilder setNaturalLightEnabled:](v9, "setNaturalLightEnabled:", [settings2 isNaturalLightingEnabled]);
   }
 
   else
@@ -287,17 +287,17 @@ id __60__HFLightbulbServiceItem_currentStateActionBuildersForHome___block_invoke
 
 - (id)lightProfile
 {
-  v2 = [(HFServiceItem *)self service];
-  v3 = [v2 hf_lightProfiles];
+  service = [(HFServiceItem *)self service];
+  hf_lightProfiles = [service hf_lightProfiles];
 
-  if ([v3 count] >= 2)
+  if ([hf_lightProfiles count] >= 2)
   {
-    NSLog(&cfstr_OnlyExpectedOn.isa, v3);
+    NSLog(&cfstr_OnlyExpectedOn.isa, hf_lightProfiles);
   }
 
-  v4 = [v3 anyObject];
+  anyObject = [hf_lightProfiles anyObject];
 
-  return v4;
+  return anyObject;
 }
 
 @end

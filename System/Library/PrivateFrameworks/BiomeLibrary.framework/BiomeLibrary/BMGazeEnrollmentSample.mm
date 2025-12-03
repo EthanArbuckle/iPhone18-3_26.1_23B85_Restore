@@ -1,40 +1,40 @@
 @interface BMGazeEnrollmentSample
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMGazeEnrollmentSample)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMGazeEnrollmentSample)initWithUserProfileId:(id)a3 eyeSide:(int)a4 isOffline:(id)a5 enrollmentResidual75thPercentile:(id)a6 enrollmentResidual95thPercentile:(id)a7 enrollmentResidualMedian:(id)a8 dominantEye:(int)a9 monocularQuality:(int)a10 enrollmentFailureReasons:(id)a11 binocQuality:(int)a12 fixationCount:(id)a13 fixationCountLowBrightness:(id)a14 fixationCountMediumBrightness:(id)a15 fixationCountHighBrightness:(id)a16 stimulusCount:(id)a17 stimulusCountLowBrightness:(id)a18 stimulusCountMediumBrightness:(id)a19 stimulusCountHighBrightness:(id)a20 accessibilityMode:(int)a21 eyeboxStatus:(int)a22 centralStimulusSignedResidualYaw:(id)a23 brightness1topStimulusSignedResidualYaw:(id)a24 brightness1topRightStimulusSignedResidualYaw:(id)a25 brightness1bottomRightStimulusSignedResidualYaw:(id)a26 brightness1bottomStimulusSignedResidualYaw:(id)a27 brightness1bottomLeftStimulusSignedResidualYaw:(id)a28 brightness1topLeftStimulusSignedResidualYaw:(id)a29 brightness2topStimulusSignedResidualYaw:(id)a30 brightness2topRightStimulusSignedResidualYaw:(id)a31 brightness2bottomRightStimulusSignedResidualYaw:(id)a32 brightness2bottomStimulusSignedResidualYaw:(id)a33 brightness2bottomLeftStimulusSignedResidualYaw:(id)a34 brightness2topLeftStimulusSignedResidualYaw:(id)a35 brightness3topStimulusSignedResidualYaw:(id)a36 brightness3topRightStimulusSignedResidualYaw:(id)a37 brightness3bottomRightStimulusSignedResidualYaw:(id)a38 brightness3bottomStimulusSignedResidualYaw:(id)a39 brightness3bottomLeftStimulusSignedResidualYaw:(id)a40 brightness3topLeftStimulusSignedResidualYaw:(id)a41 centralStimulusSignedResidualPitch:(id)a42 brightness1topStimulusSignedResidualPitch:(id)a43 brightness1topRightStimulusSignedResidualPitch:(id)a44 brightness1bottomRightStimulusSignedResidualPitch:(id)a45 brightness1bottomStimulusSignedResidualPitch:(id)a46 brightness1bottomLeftStimulusSignedResidualPitch:(id)a47 brightness1topLeftStimulusSignedResidualPitch:(id)a48 brightness2topStimulusSignedResidualPitch:(id)a49 brightness2topRightStimulusSignedResidualPitch:(id)a50 brightness2bottomRightStimulusSignedResidualPitch:(id)a51 brightness2bottomStimulusSignedResidualPitch:(id)a52 brightness2bottomLeftStimulusSignedResidualPitch:(id)a53 brightness2topLeftStimulusSignedResidualPitch:(id)a54 brightness3topStimulusSignedResidualPitch:(id)a55 brightness3topRightStimulusSignedResidualPitch:(id)a56 brightness3bottomRightStimulusSignedResidualPitch:(id)a57 brightness3bottomStimulusSignedResidualPitch:(id)a58 brightness3bottomLeftStimulusSignedResidualPitch:(id)a59 brightness3topLeftStimulusSignedResidualPitch:(id)a60 rxuuid:(id)a61 enrollmentReason:(int)a62;
-- (BMGazeEnrollmentSample)initWithUserProfileId:(id)a3 eyeSide:(int)a4 isOffline:(id)a5 enrollmentResidual75thPercentile:(id)a6 enrollmentResidual95thPercentile:(id)a7 enrollmentResidualMedian:(id)a8 dominantEye:(int)a9 monocularQuality:(int)a10 enrollmentFailureReasons:(id)a11 binocQuality:(int)a12 fixationCount:(id)a13 fixationCountLowBrightness:(id)a14 fixationCountMediumBrightness:(id)a15 fixationCountHighBrightness:(id)a16 stimulusCount:(id)a17 stimulusCountLowBrightness:(id)a18 stimulusCountMediumBrightness:(id)a19 stimulusCountHighBrightness:(id)a20 accessibilityMode:(int)a21 eyeboxStatus:(int)a22 centralStimulusSignedResidualYaw:(id)a23 brightness1topStimulusSignedResidualYaw:(id)a24 brightness1topRightStimulusSignedResidualYaw:(id)a25 brightness1bottomRightStimulusSignedResidualYaw:(id)a26 brightness1bottomStimulusSignedResidualYaw:(id)a27 brightness1bottomLeftStimulusSignedResidualYaw:(id)a28 brightness1topLeftStimulusSignedResidualYaw:(id)a29 brightness2topStimulusSignedResidualYaw:(id)a30 brightness2topRightStimulusSignedResidualYaw:(id)a31 brightness2bottomRightStimulusSignedResidualYaw:(id)a32 brightness2bottomStimulusSignedResidualYaw:(id)a33 brightness2bottomLeftStimulusSignedResidualYaw:(id)a34 brightness2topLeftStimulusSignedResidualYaw:(id)a35 brightness3topStimulusSignedResidualYaw:(id)a36 brightness3topRightStimulusSignedResidualYaw:(id)a37 brightness3bottomRightStimulusSignedResidualYaw:(id)a38 brightness3bottomStimulusSignedResidualYaw:(id)a39 brightness3bottomLeftStimulusSignedResidualYaw:(id)a40 brightness3topLeftStimulusSignedResidualYaw:(id)a41 centralStimulusSignedResidualPitch:(id)a42 brightness1topStimulusSignedResidualPitch:(id)a43 brightness1topRightStimulusSignedResidualPitch:(id)a44 brightness1bottomRightStimulusSignedResidualPitch:(id)a45 brightness1bottomStimulusSignedResidualPitch:(id)a46 brightness1bottomLeftStimulusSignedResidualPitch:(id)a47 brightness1topLeftStimulusSignedResidualPitch:(id)a48 brightness2topStimulusSignedResidualPitch:(id)a49 brightness2topRightStimulusSignedResidualPitch:(id)a50 brightness2bottomRightStimulusSignedResidualPitch:(id)a51 brightness2bottomStimulusSignedResidualPitch:(id)a52 brightness2bottomLeftStimulusSignedResidualPitch:(id)a53 brightness2topLeftStimulusSignedResidualPitch:(id)a54 brightness3topStimulusSignedResidualPitch:(id)a55 brightness3topRightStimulusSignedResidualPitch:(id)a56 brightness3bottomRightStimulusSignedResidualPitch:(id)a57 brightness3bottomStimulusSignedResidualPitch:(id)a58 brightness3bottomLeftStimulusSignedResidualPitch:(id)a59 brightness3topLeftStimulusSignedResidualPitch:(id)a60 rxuuid:(id)a61 enrollmentReason:(int)a62 enrollmentDeviceType:(int)a63;
-- (BOOL)isEqual:(id)a3;
+- (BMGazeEnrollmentSample)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMGazeEnrollmentSample)initWithUserProfileId:(id)id eyeSide:(int)side isOffline:(id)offline enrollmentResidual75thPercentile:(id)percentile enrollmentResidual95thPercentile:(id)residual95thPercentile enrollmentResidualMedian:(id)median dominantEye:(int)eye monocularQuality:(int)self0 enrollmentFailureReasons:(id)self1 binocQuality:(int)self2 fixationCount:(id)self3 fixationCountLowBrightness:(id)self4 fixationCountMediumBrightness:(id)self5 fixationCountHighBrightness:(id)self6 stimulusCount:(id)self7 stimulusCountLowBrightness:(id)self8 stimulusCountMediumBrightness:(id)self9 stimulusCountHighBrightness:(id)countHighBrightness accessibilityMode:(int)mode eyeboxStatus:(int)status centralStimulusSignedResidualYaw:(id)yaw brightness1topStimulusSignedResidualYaw:(id)residualYaw brightness1topRightStimulusSignedResidualYaw:(id)signedResidualYaw brightness1bottomRightStimulusSignedResidualYaw:(id)stimulusSignedResidualYaw brightness1bottomStimulusSignedResidualYaw:(id)brightness1bottomStimulusSignedResidualYaw brightness1bottomLeftStimulusSignedResidualYaw:(id)leftStimulusSignedResidualYaw brightness1topLeftStimulusSignedResidualYaw:(id)brightness1topLeftStimulusSignedResidualYaw brightness2topStimulusSignedResidualYaw:(id)id0 brightness2topRightStimulusSignedResidualYaw:(id)id1 brightness2bottomRightStimulusSignedResidualYaw:(id)id2 brightness2bottomStimulusSignedResidualYaw:(id)id3 brightness2bottomLeftStimulusSignedResidualYaw:(id)id4 brightness2topLeftStimulusSignedResidualYaw:(id)id5 brightness3topStimulusSignedResidualYaw:(id)id6 brightness3topRightStimulusSignedResidualYaw:(id)id7 brightness3bottomRightStimulusSignedResidualYaw:(id)id8 brightness3bottomStimulusSignedResidualYaw:(id)id9 brightness3bottomLeftStimulusSignedResidualYaw:(id)side0 brightness3topLeftStimulusSignedResidualYaw:(id)side1 centralStimulusSignedResidualPitch:(id)side2 brightness1topStimulusSignedResidualPitch:(id)side3 brightness1topRightStimulusSignedResidualPitch:(id)side4 brightness1bottomRightStimulusSignedResidualPitch:(id)side5 brightness1bottomStimulusSignedResidualPitch:(id)side6 brightness1bottomLeftStimulusSignedResidualPitch:(id)side7 brightness1topLeftStimulusSignedResidualPitch:(id)side8 brightness2topStimulusSignedResidualPitch:(id)side9 brightness2topRightStimulusSignedResidualPitch:(id)offline0 brightness2bottomRightStimulusSignedResidualPitch:(id)offline1 brightness2bottomStimulusSignedResidualPitch:(id)offline2 brightness2bottomLeftStimulusSignedResidualPitch:(id)offline3 brightness2topLeftStimulusSignedResidualPitch:(id)offline4 brightness3topStimulusSignedResidualPitch:(id)offline5 brightness3topRightStimulusSignedResidualPitch:(id)offline6 brightness3bottomRightStimulusSignedResidualPitch:(id)offline7 brightness3bottomStimulusSignedResidualPitch:(id)offline8 brightness3bottomLeftStimulusSignedResidualPitch:(id)offline9 brightness3topLeftStimulusSignedResidualPitch:(id)percentile0 rxuuid:(id)percentile1 enrollmentReason:(int)percentile2;
+- (BMGazeEnrollmentSample)initWithUserProfileId:(id)id eyeSide:(int)side isOffline:(id)offline enrollmentResidual75thPercentile:(id)percentile enrollmentResidual95thPercentile:(id)residual95thPercentile enrollmentResidualMedian:(id)median dominantEye:(int)eye monocularQuality:(int)self0 enrollmentFailureReasons:(id)self1 binocQuality:(int)self2 fixationCount:(id)self3 fixationCountLowBrightness:(id)self4 fixationCountMediumBrightness:(id)self5 fixationCountHighBrightness:(id)self6 stimulusCount:(id)self7 stimulusCountLowBrightness:(id)self8 stimulusCountMediumBrightness:(id)self9 stimulusCountHighBrightness:(id)countHighBrightness accessibilityMode:(int)mode eyeboxStatus:(int)status centralStimulusSignedResidualYaw:(id)yaw brightness1topStimulusSignedResidualYaw:(id)residualYaw brightness1topRightStimulusSignedResidualYaw:(id)signedResidualYaw brightness1bottomRightStimulusSignedResidualYaw:(id)stimulusSignedResidualYaw brightness1bottomStimulusSignedResidualYaw:(id)brightness1bottomStimulusSignedResidualYaw brightness1bottomLeftStimulusSignedResidualYaw:(id)leftStimulusSignedResidualYaw brightness1topLeftStimulusSignedResidualYaw:(id)brightness1topLeftStimulusSignedResidualYaw brightness2topStimulusSignedResidualYaw:(id)id0 brightness2topRightStimulusSignedResidualYaw:(id)id1 brightness2bottomRightStimulusSignedResidualYaw:(id)id2 brightness2bottomStimulusSignedResidualYaw:(id)id3 brightness2bottomLeftStimulusSignedResidualYaw:(id)id4 brightness2topLeftStimulusSignedResidualYaw:(id)id5 brightness3topStimulusSignedResidualYaw:(id)id6 brightness3topRightStimulusSignedResidualYaw:(id)id7 brightness3bottomRightStimulusSignedResidualYaw:(id)id8 brightness3bottomStimulusSignedResidualYaw:(id)id9 brightness3bottomLeftStimulusSignedResidualYaw:(id)side0 brightness3topLeftStimulusSignedResidualYaw:(id)side1 centralStimulusSignedResidualPitch:(id)side2 brightness1topStimulusSignedResidualPitch:(id)side3 brightness1topRightStimulusSignedResidualPitch:(id)side4 brightness1bottomRightStimulusSignedResidualPitch:(id)side5 brightness1bottomStimulusSignedResidualPitch:(id)side6 brightness1bottomLeftStimulusSignedResidualPitch:(id)side7 brightness1topLeftStimulusSignedResidualPitch:(id)side8 brightness2topStimulusSignedResidualPitch:(id)side9 brightness2topRightStimulusSignedResidualPitch:(id)offline0 brightness2bottomRightStimulusSignedResidualPitch:(id)offline1 brightness2bottomStimulusSignedResidualPitch:(id)offline2 brightness2bottomLeftStimulusSignedResidualPitch:(id)offline3 brightness2topLeftStimulusSignedResidualPitch:(id)offline4 brightness3topStimulusSignedResidualPitch:(id)offline5 brightness3topRightStimulusSignedResidualPitch:(id)offline6 brightness3bottomRightStimulusSignedResidualPitch:(id)offline7 brightness3bottomStimulusSignedResidualPitch:(id)offline8 brightness3bottomLeftStimulusSignedResidualPitch:(id)offline9 brightness3topLeftStimulusSignedResidualPitch:(id)percentile0 rxuuid:(id)percentile1 enrollmentReason:(int)percentile2 enrollmentDeviceType:(int)percentile3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_enrollmentFailureReasonsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMGazeEnrollmentSample
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMGazeEnrollmentSample *)self userProfileId];
-    v7 = [v5 userProfileId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    userProfileId = [(BMGazeEnrollmentSample *)self userProfileId];
+    userProfileId2 = [v5 userProfileId];
+    v8 = userProfileId2;
+    if (userProfileId == userProfileId2)
     {
     }
 
     else
     {
-      v9 = [(BMGazeEnrollmentSample *)self userProfileId];
-      v10 = [v5 userProfileId];
-      v11 = [v9 isEqual:v10];
+      userProfileId3 = [(BMGazeEnrollmentSample *)self userProfileId];
+      userProfileId4 = [v5 userProfileId];
+      v11 = [userProfileId3 isEqual:userProfileId4];
 
       if (!v11)
       {
@@ -42,8 +42,8 @@
       }
     }
 
-    v13 = [(BMGazeEnrollmentSample *)self eyeSide];
-    if (v13 != [v5 eyeSide])
+    eyeSide = [(BMGazeEnrollmentSample *)self eyeSide];
+    if (eyeSide != [v5 eyeSide])
     {
       goto LABEL_273;
     }
@@ -60,8 +60,8 @@
         goto LABEL_273;
       }
 
-      v14 = [(BMGazeEnrollmentSample *)self isOffline];
-      if (v14 != [v5 isOffline])
+      isOffline = [(BMGazeEnrollmentSample *)self isOffline];
+      if (isOffline != [v5 isOffline])
       {
         goto LABEL_273;
       }
@@ -130,30 +130,30 @@
       }
     }
 
-    v24 = [(BMGazeEnrollmentSample *)self dominantEye];
-    if (v24 != [v5 dominantEye])
+    dominantEye = [(BMGazeEnrollmentSample *)self dominantEye];
+    if (dominantEye != [v5 dominantEye])
     {
       goto LABEL_273;
     }
 
-    v25 = [(BMGazeEnrollmentSample *)self monocularQuality];
-    if (v25 != [v5 monocularQuality])
+    monocularQuality = [(BMGazeEnrollmentSample *)self monocularQuality];
+    if (monocularQuality != [v5 monocularQuality])
     {
       goto LABEL_273;
     }
 
-    v26 = [(BMGazeEnrollmentSample *)self enrollmentFailureReasons];
-    v27 = [v5 enrollmentFailureReasons];
-    v28 = v27;
-    if (v26 == v27)
+    enrollmentFailureReasons = [(BMGazeEnrollmentSample *)self enrollmentFailureReasons];
+    enrollmentFailureReasons2 = [v5 enrollmentFailureReasons];
+    v28 = enrollmentFailureReasons2;
+    if (enrollmentFailureReasons == enrollmentFailureReasons2)
     {
     }
 
     else
     {
-      v29 = [(BMGazeEnrollmentSample *)self enrollmentFailureReasons];
-      v30 = [v5 enrollmentFailureReasons];
-      v31 = [v29 isEqual:v30];
+      enrollmentFailureReasons3 = [(BMGazeEnrollmentSample *)self enrollmentFailureReasons];
+      enrollmentFailureReasons4 = [v5 enrollmentFailureReasons];
+      v31 = [enrollmentFailureReasons3 isEqual:enrollmentFailureReasons4];
 
       if (!v31)
       {
@@ -161,8 +161,8 @@
       }
     }
 
-    v32 = [(BMGazeEnrollmentSample *)self binocQuality];
-    if (v32 != [v5 binocQuality])
+    binocQuality = [(BMGazeEnrollmentSample *)self binocQuality];
+    if (binocQuality != [v5 binocQuality])
     {
       goto LABEL_273;
     }
@@ -179,8 +179,8 @@
         goto LABEL_273;
       }
 
-      v33 = [(BMGazeEnrollmentSample *)self fixationCount];
-      if (v33 != [v5 fixationCount])
+      fixationCount = [(BMGazeEnrollmentSample *)self fixationCount];
+      if (fixationCount != [v5 fixationCount])
       {
         goto LABEL_273;
       }
@@ -198,8 +198,8 @@
         goto LABEL_273;
       }
 
-      v34 = [(BMGazeEnrollmentSample *)self fixationCountLowBrightness];
-      if (v34 != [v5 fixationCountLowBrightness])
+      fixationCountLowBrightness = [(BMGazeEnrollmentSample *)self fixationCountLowBrightness];
+      if (fixationCountLowBrightness != [v5 fixationCountLowBrightness])
       {
         goto LABEL_273;
       }
@@ -217,8 +217,8 @@
         goto LABEL_273;
       }
 
-      v35 = [(BMGazeEnrollmentSample *)self fixationCountMediumBrightness];
-      if (v35 != [v5 fixationCountMediumBrightness])
+      fixationCountMediumBrightness = [(BMGazeEnrollmentSample *)self fixationCountMediumBrightness];
+      if (fixationCountMediumBrightness != [v5 fixationCountMediumBrightness])
       {
         goto LABEL_273;
       }
@@ -236,8 +236,8 @@
         goto LABEL_273;
       }
 
-      v36 = [(BMGazeEnrollmentSample *)self fixationCountHighBrightness];
-      if (v36 != [v5 fixationCountHighBrightness])
+      fixationCountHighBrightness = [(BMGazeEnrollmentSample *)self fixationCountHighBrightness];
+      if (fixationCountHighBrightness != [v5 fixationCountHighBrightness])
       {
         goto LABEL_273;
       }
@@ -255,8 +255,8 @@
         goto LABEL_273;
       }
 
-      v37 = [(BMGazeEnrollmentSample *)self stimulusCount];
-      if (v37 != [v5 stimulusCount])
+      stimulusCount = [(BMGazeEnrollmentSample *)self stimulusCount];
+      if (stimulusCount != [v5 stimulusCount])
       {
         goto LABEL_273;
       }
@@ -274,8 +274,8 @@
         goto LABEL_273;
       }
 
-      v38 = [(BMGazeEnrollmentSample *)self stimulusCountLowBrightness];
-      if (v38 != [v5 stimulusCountLowBrightness])
+      stimulusCountLowBrightness = [(BMGazeEnrollmentSample *)self stimulusCountLowBrightness];
+      if (stimulusCountLowBrightness != [v5 stimulusCountLowBrightness])
       {
         goto LABEL_273;
       }
@@ -293,8 +293,8 @@
         goto LABEL_273;
       }
 
-      v39 = [(BMGazeEnrollmentSample *)self stimulusCountMediumBrightness];
-      if (v39 != [v5 stimulusCountMediumBrightness])
+      stimulusCountMediumBrightness = [(BMGazeEnrollmentSample *)self stimulusCountMediumBrightness];
+      if (stimulusCountMediumBrightness != [v5 stimulusCountMediumBrightness])
       {
         goto LABEL_273;
       }
@@ -312,21 +312,21 @@
         goto LABEL_273;
       }
 
-      v40 = [(BMGazeEnrollmentSample *)self stimulusCountHighBrightness];
-      if (v40 != [v5 stimulusCountHighBrightness])
+      stimulusCountHighBrightness = [(BMGazeEnrollmentSample *)self stimulusCountHighBrightness];
+      if (stimulusCountHighBrightness != [v5 stimulusCountHighBrightness])
       {
         goto LABEL_273;
       }
     }
 
-    v41 = [(BMGazeEnrollmentSample *)self accessibilityMode];
-    if (v41 != [v5 accessibilityMode])
+    accessibilityMode = [(BMGazeEnrollmentSample *)self accessibilityMode];
+    if (accessibilityMode != [v5 accessibilityMode])
     {
       goto LABEL_273;
     }
 
-    v42 = [(BMGazeEnrollmentSample *)self eyeboxStatus];
-    if (v42 != [v5 eyeboxStatus])
+    eyeboxStatus = [(BMGazeEnrollmentSample *)self eyeboxStatus];
+    if (eyeboxStatus != [v5 eyeboxStatus])
     {
       goto LABEL_273;
     }
@@ -1129,18 +1129,18 @@
       }
     }
 
-    v157 = [(BMGazeEnrollmentSample *)self rxuuid];
-    v158 = [v5 rxuuid];
-    v159 = v158;
-    if (v157 == v158)
+    rxuuid = [(BMGazeEnrollmentSample *)self rxuuid];
+    rxuuid2 = [v5 rxuuid];
+    v159 = rxuuid2;
+    if (rxuuid == rxuuid2)
     {
     }
 
     else
     {
-      v160 = [(BMGazeEnrollmentSample *)self rxuuid];
-      v161 = [v5 rxuuid];
-      v162 = [v160 isEqual:v161];
+      rxuuid3 = [(BMGazeEnrollmentSample *)self rxuuid];
+      rxuuid4 = [v5 rxuuid];
+      v162 = [rxuuid3 isEqual:rxuuid4];
 
       if (!v162)
       {
@@ -1148,11 +1148,11 @@
       }
     }
 
-    v163 = [(BMGazeEnrollmentSample *)self enrollmentReason];
-    if (v163 == [v5 enrollmentReason])
+    enrollmentReason = [(BMGazeEnrollmentSample *)self enrollmentReason];
+    if (enrollmentReason == [v5 enrollmentReason])
     {
-      v164 = [(BMGazeEnrollmentSample *)self enrollmentDeviceType];
-      v12 = v164 == [v5 enrollmentDeviceType];
+      enrollmentDeviceType = [(BMGazeEnrollmentSample *)self enrollmentDeviceType];
+      v12 = enrollmentDeviceType == [v5 enrollmentDeviceType];
 LABEL_274:
 
       goto LABEL_275;
@@ -1172,7 +1172,7 @@ LABEL_275:
 - (id)jsonDictionary
 {
   v274[61] = *MEMORY[0x1E69E9840];
-  v219 = [(BMGazeEnrollmentSample *)self userProfileId];
+  userProfileId = [(BMGazeEnrollmentSample *)self userProfileId];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGazeEnrollmentSample eyeSide](self, "eyeSide")}];
   if ([(BMGazeEnrollmentSample *)self hasIsOffline])
   {
@@ -1225,7 +1225,7 @@ LABEL_275:
 
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGazeEnrollmentSample dominantEye](self, "dominantEye")}];
   v272 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGazeEnrollmentSample monocularQuality](self, "monocularQuality")}];
-  v271 = [(BMGazeEnrollmentSample *)self _enrollmentFailureReasonsJSONArray];
+  _enrollmentFailureReasonsJSONArray = [(BMGazeEnrollmentSample *)self _enrollmentFailureReasonsJSONArray];
   v270 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGazeEnrollmentSample binocQuality](self, "binocQuality")}];
   if ([(BMGazeEnrollmentSample *)self hasFixationCount])
   {
@@ -1803,558 +1803,558 @@ LABEL_275:
     v222 = [v90 numberWithFloat:?];
   }
 
-  v221 = [(BMGazeEnrollmentSample *)self rxuuid];
+  rxuuid = [(BMGazeEnrollmentSample *)self rxuuid];
   v220 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGazeEnrollmentSample enrollmentReason](self, "enrollmentReason")}];
   v91 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGazeEnrollmentSample enrollmentDeviceType](self, "enrollmentDeviceType")}];
   v273[0] = @"userProfileId";
-  v92 = v219;
-  if (!v219)
+  null = userProfileId;
+  if (!userProfileId)
   {
-    v92 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v211 = v92;
-  v274[0] = v92;
+  v211 = null;
+  v274[0] = null;
   v273[1] = @"eyeSide";
-  v93 = v3;
+  null2 = v3;
   if (!v3)
   {
-    v93 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v210 = v93;
-  v274[1] = v93;
+  v210 = null2;
+  v274[1] = null2;
   v273[2] = @"isOffline";
-  v94 = v4;
+  null3 = v4;
   if (!v4)
   {
-    v94 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v209 = v94;
-  v274[2] = v94;
+  v209 = null3;
+  v274[2] = null3;
   v273[3] = @"enrollmentResidual75thPercentile";
-  v95 = v7;
+  null4 = v7;
   if (!v7)
   {
-    v95 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v208 = v95;
-  v274[3] = v95;
+  v208 = null4;
+  v274[3] = null4;
   v273[4] = @"enrollmentResidual95thPercentile";
-  v96 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v96 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v207 = v96;
-  v274[4] = v96;
+  v207 = null5;
+  v274[4] = null5;
   v273[5] = @"enrollmentResidualMedian";
-  v97 = v13;
+  null6 = v13;
   if (!v13)
   {
-    v97 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v206 = v97;
-  v274[5] = v97;
+  v206 = null6;
+  v274[5] = null6;
   v273[6] = @"dominantEye";
-  v98 = v14;
+  null7 = v14;
   if (!v14)
   {
-    v98 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v205 = v98;
-  v274[6] = v98;
+  v205 = null7;
+  v274[6] = null7;
   v273[7] = @"monocularQuality";
-  v99 = v272;
+  null8 = v272;
   if (!v272)
   {
-    v99 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v274[7] = v99;
+  v274[7] = null8;
   v273[8] = @"enrollmentFailureReasons";
-  v100 = v271;
-  if (!v271)
+  null9 = _enrollmentFailureReasonsJSONArray;
+  if (!_enrollmentFailureReasonsJSONArray)
   {
-    v100 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v274[8] = v100;
+  v274[8] = null9;
   v273[9] = @"binocQuality";
-  v101 = v270;
+  null10 = v270;
   if (!v270)
   {
-    v101 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v214 = v101;
-  v274[9] = v101;
+  v214 = null10;
+  v274[9] = null10;
   v273[10] = @"fixationCount";
-  v102 = v269;
+  null11 = v269;
   if (!v269)
   {
-    v102 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v202 = v102;
-  v274[10] = v102;
+  v202 = null11;
+  v274[10] = null11;
   v273[11] = @"fixationCountLowBrightness";
-  v103 = v268;
+  null12 = v268;
   if (!v268)
   {
-    v103 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v213 = v103;
-  v274[11] = v103;
+  v213 = null12;
+  v274[11] = null12;
   v273[12] = @"fixationCountMediumBrightness";
-  v104 = v267;
+  null13 = v267;
   if (!v267)
   {
-    v104 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105 = v104;
-  v274[12] = v104;
+  v105 = null13;
+  v274[12] = null13;
   v273[13] = @"fixationCountHighBrightness";
-  v106 = v266;
+  null14 = v266;
   if (!v266)
   {
-    v106 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v201 = v106;
-  v274[13] = v106;
+  v201 = null14;
+  v274[13] = null14;
   v273[14] = @"stimulusCount";
-  v107 = v265;
+  null15 = v265;
   if (!v265)
   {
-    v107 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v200 = v107;
-  v274[14] = v107;
+  v200 = null15;
+  v274[14] = null15;
   v273[15] = @"stimulusCountLowBrightness";
-  v108 = v264;
+  null16 = v264;
   if (!v264)
   {
-    v108 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v199 = v108;
-  v274[15] = v108;
+  v199 = null16;
+  v274[15] = null16;
   v273[16] = @"stimulusCountMediumBrightness";
-  v109 = v263;
+  null17 = v263;
   if (!v263)
   {
-    v109 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v198 = v109;
-  v274[16] = v109;
+  v198 = null17;
+  v274[16] = null17;
   v273[17] = @"stimulusCountHighBrightness";
-  v110 = v262;
+  null18 = v262;
   if (!v262)
   {
-    v110 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v197 = v110;
-  v274[17] = v110;
+  v197 = null18;
+  v274[17] = null18;
   v273[18] = @"accessibilityMode";
-  v111 = v261;
+  null19 = v261;
   if (!v261)
   {
-    v111 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v196 = v111;
-  v274[18] = v111;
+  v196 = null19;
+  v274[18] = null19;
   v273[19] = @"eyeboxStatus";
-  v112 = v260;
+  null20 = v260;
   if (!v260)
   {
-    v112 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v195 = v112;
-  v274[19] = v112;
+  v195 = null20;
+  v274[19] = null20;
   v273[20] = @"centralStimulusSignedResidualYaw";
-  v113 = v259;
+  null21 = v259;
   if (!v259)
   {
-    v113 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v194 = v113;
-  v274[20] = v113;
+  v194 = null21;
+  v274[20] = null21;
   v273[21] = @"brightness1topStimulusSignedResidualYaw";
-  v114 = v258;
+  null22 = v258;
   if (!v258)
   {
-    v114 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v193 = v114;
-  v274[21] = v114;
+  v193 = null22;
+  v274[21] = null22;
   v273[22] = @"brightness1topRightStimulusSignedResidualYaw";
-  v115 = v257;
+  null23 = v257;
   if (!v257)
   {
-    v115 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v192 = v115;
-  v274[22] = v115;
+  v192 = null23;
+  v274[22] = null23;
   v273[23] = @"brightness1bottomRightStimulusSignedResidualYaw";
-  v116 = v256;
+  null24 = v256;
   if (!v256)
   {
-    v116 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v191 = v116;
-  v274[23] = v116;
+  v191 = null24;
+  v274[23] = null24;
   v273[24] = @"brightness1bottomStimulusSignedResidualYaw";
-  v117 = v255;
+  null25 = v255;
   if (!v255)
   {
-    v117 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v190 = v117;
-  v274[24] = v117;
+  v190 = null25;
+  v274[24] = null25;
   v273[25] = @"brightness1bottomLeftStimulusSignedResidualYaw";
-  v118 = v254;
+  null26 = v254;
   if (!v254)
   {
-    v118 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v189 = v118;
-  v274[25] = v118;
+  v189 = null26;
+  v274[25] = null26;
   v273[26] = @"brightness1topLeftStimulusSignedResidualYaw";
-  v119 = v253;
+  null27 = v253;
   if (!v253)
   {
-    v119 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v188 = v119;
-  v274[26] = v119;
+  v188 = null27;
+  v274[26] = null27;
   v273[27] = @"brightness2topStimulusSignedResidualYaw";
-  v120 = v252;
+  null28 = v252;
   if (!v252)
   {
-    v120 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v187 = v120;
-  v274[27] = v120;
+  v187 = null28;
+  v274[27] = null28;
   v273[28] = @"brightness2topRightStimulusSignedResidualYaw";
-  v121 = v251;
+  null29 = v251;
   if (!v251)
   {
-    v121 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v186 = v121;
-  v274[28] = v121;
+  v186 = null29;
+  v274[28] = null29;
   v273[29] = @"brightness2bottomRightStimulusSignedResidualYaw";
-  v122 = v250;
+  null30 = v250;
   if (!v250)
   {
-    v122 = [MEMORY[0x1E695DFB0] null];
+    null30 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v185 = v122;
-  v274[29] = v122;
+  v185 = null30;
+  v274[29] = null30;
   v273[30] = @"brightness2bottomStimulusSignedResidualYaw";
-  v123 = v249;
+  null31 = v249;
   if (!v249)
   {
-    v123 = [MEMORY[0x1E695DFB0] null];
+    null31 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v184 = v123;
-  v274[30] = v123;
+  v184 = null31;
+  v274[30] = null31;
   v273[31] = @"brightness2bottomLeftStimulusSignedResidualYaw";
-  v124 = v248;
+  null32 = v248;
   if (!v248)
   {
-    v124 = [MEMORY[0x1E695DFB0] null];
+    null32 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v183 = v124;
-  v274[31] = v124;
+  v183 = null32;
+  v274[31] = null32;
   v273[32] = @"brightness2topLeftStimulusSignedResidualYaw";
-  v125 = v247;
+  null33 = v247;
   if (!v247)
   {
-    v125 = [MEMORY[0x1E695DFB0] null];
+    null33 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v182 = v125;
-  v274[32] = v125;
+  v182 = null33;
+  v274[32] = null33;
   v273[33] = @"brightness3topStimulusSignedResidualYaw";
-  v126 = v246;
+  null34 = v246;
   if (!v246)
   {
-    v126 = [MEMORY[0x1E695DFB0] null];
+    null34 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v181 = v126;
-  v274[33] = v126;
+  v181 = null34;
+  v274[33] = null34;
   v273[34] = @"brightness3topRightStimulusSignedResidualYaw";
-  v127 = v245;
+  null35 = v245;
   if (!v245)
   {
-    v127 = [MEMORY[0x1E695DFB0] null];
+    null35 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v180 = v127;
-  v274[34] = v127;
+  v180 = null35;
+  v274[34] = null35;
   v273[35] = @"brightness3bottomRightStimulusSignedResidualYaw";
-  v128 = v244;
+  null36 = v244;
   if (!v244)
   {
-    v128 = [MEMORY[0x1E695DFB0] null];
+    null36 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v179 = v128;
-  v274[35] = v128;
+  v179 = null36;
+  v274[35] = null36;
   v273[36] = @"brightness3bottomStimulusSignedResidualYaw";
-  v129 = v243;
+  null37 = v243;
   if (!v243)
   {
-    v129 = [MEMORY[0x1E695DFB0] null];
+    null37 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v178 = v129;
-  v274[36] = v129;
+  v178 = null37;
+  v274[36] = null37;
   v273[37] = @"brightness3bottomLeftStimulusSignedResidualYaw";
-  v130 = v242;
+  null38 = v242;
   if (!v242)
   {
-    v130 = [MEMORY[0x1E695DFB0] null];
+    null38 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v177 = v130;
-  v274[37] = v130;
+  v177 = null38;
+  v274[37] = null38;
   v273[38] = @"brightness3topLeftStimulusSignedResidualYaw";
-  v131 = v241;
+  null39 = v241;
   if (!v241)
   {
-    v131 = [MEMORY[0x1E695DFB0] null];
+    null39 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v176 = v131;
-  v274[38] = v131;
+  v176 = null39;
+  v274[38] = null39;
   v273[39] = @"centralStimulusSignedResidualPitch";
-  v132 = v240;
+  null40 = v240;
   if (!v240)
   {
-    v132 = [MEMORY[0x1E695DFB0] null];
+    null40 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v175 = v132;
-  v274[39] = v132;
+  v175 = null40;
+  v274[39] = null40;
   v273[40] = @"brightness1topStimulusSignedResidualPitch";
-  v133 = v239;
+  null41 = v239;
   if (!v239)
   {
-    v133 = [MEMORY[0x1E695DFB0] null];
+    null41 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v174 = v133;
-  v274[40] = v133;
+  v174 = null41;
+  v274[40] = null41;
   v273[41] = @"brightness1topRightStimulusSignedResidualPitch";
-  v134 = v238;
+  null42 = v238;
   if (!v238)
   {
-    v134 = [MEMORY[0x1E695DFB0] null];
+    null42 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v173 = v134;
-  v274[41] = v134;
+  v173 = null42;
+  v274[41] = null42;
   v273[42] = @"brightness1bottomRightStimulusSignedResidualPitch";
-  v135 = v237;
+  null43 = v237;
   if (!v237)
   {
-    v135 = [MEMORY[0x1E695DFB0] null];
+    null43 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v172 = v135;
-  v274[42] = v135;
+  v172 = null43;
+  v274[42] = null43;
   v273[43] = @"brightness1bottomStimulusSignedResidualPitch";
-  v136 = v236;
+  null44 = v236;
   if (!v236)
   {
-    v136 = [MEMORY[0x1E695DFB0] null];
+    null44 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v171 = v136;
-  v274[43] = v136;
+  v171 = null44;
+  v274[43] = null44;
   v273[44] = @"brightness1bottomLeftStimulusSignedResidualPitch";
-  v137 = v235;
+  null45 = v235;
   if (!v235)
   {
-    v137 = [MEMORY[0x1E695DFB0] null];
+    null45 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v170 = v137;
-  v274[44] = v137;
+  v170 = null45;
+  v274[44] = null45;
   v273[45] = @"brightness1topLeftStimulusSignedResidualPitch";
-  v138 = v234;
+  null46 = v234;
   if (!v234)
   {
-    v138 = [MEMORY[0x1E695DFB0] null];
+    null46 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v169 = v138;
-  v274[45] = v138;
+  v169 = null46;
+  v274[45] = null46;
   v273[46] = @"brightness2topStimulusSignedResidualPitch";
-  v139 = v233;
+  null47 = v233;
   if (!v233)
   {
-    v139 = [MEMORY[0x1E695DFB0] null];
+    null47 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v168 = v139;
-  v274[46] = v139;
+  v168 = null47;
+  v274[46] = null47;
   v273[47] = @"brightness2topRightStimulusSignedResidualPitch";
-  v140 = v232;
+  null48 = v232;
   if (!v232)
   {
-    v140 = [MEMORY[0x1E695DFB0] null];
+    null48 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v167 = v140;
-  v274[47] = v140;
+  v167 = null48;
+  v274[47] = null48;
   v273[48] = @"brightness2bottomRightStimulusSignedResidualPitch";
-  v141 = v231;
+  null49 = v231;
   if (!v231)
   {
-    v141 = [MEMORY[0x1E695DFB0] null];
+    null49 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v166 = v141;
-  v274[48] = v141;
+  v166 = null49;
+  v274[48] = null49;
   v273[49] = @"brightness2bottomStimulusSignedResidualPitch";
-  v142 = v230;
+  null50 = v230;
   if (!v230)
   {
-    v142 = [MEMORY[0x1E695DFB0] null];
+    null50 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v165 = v142;
-  v274[49] = v142;
+  v165 = null50;
+  v274[49] = null50;
   v273[50] = @"brightness2bottomLeftStimulusSignedResidualPitch";
-  v143 = v229;
+  null51 = v229;
   if (!v229)
   {
-    v143 = [MEMORY[0x1E695DFB0] null];
+    null51 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v164 = v143;
-  v274[50] = v143;
+  v164 = null51;
+  v274[50] = null51;
   v273[51] = @"brightness2topLeftStimulusSignedResidualPitch";
-  v144 = v228;
+  null52 = v228;
   if (!v228)
   {
-    v144 = [MEMORY[0x1E695DFB0] null];
+    null52 = [MEMORY[0x1E695DFB0] null];
   }
 
   v217 = v3;
-  v163 = v144;
-  v274[51] = v144;
+  v163 = null52;
+  v274[51] = null52;
   v273[52] = @"brightness3topStimulusSignedResidualPitch";
-  v145 = v227;
+  null53 = v227;
   if (!v227)
   {
-    v145 = [MEMORY[0x1E695DFB0] null];
+    null53 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v162 = v145;
-  v274[52] = v145;
+  v162 = null53;
+  v274[52] = null53;
   v273[53] = @"brightness3topRightStimulusSignedResidualPitch";
-  v146 = v226;
+  null54 = v226;
   if (!v226)
   {
-    v146 = [MEMORY[0x1E695DFB0] null];
+    null54 = [MEMORY[0x1E695DFB0] null];
   }
 
   v218 = v91;
-  v161 = v146;
-  v274[53] = v146;
+  v161 = null54;
+  v274[53] = null54;
   v273[54] = @"brightness3bottomRightStimulusSignedResidualPitch";
-  v147 = v225;
+  null55 = v225;
   if (!v225)
   {
-    v147 = [MEMORY[0x1E695DFB0] null];
+    null55 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v203 = v100;
-  v204 = v99;
-  v160 = v147;
-  v274[54] = v147;
+  v203 = null9;
+  v204 = null8;
+  v160 = null55;
+  v274[54] = null55;
   v273[55] = @"brightness3bottomStimulusSignedResidualPitch";
-  v148 = v224;
+  null56 = v224;
   if (!v224)
   {
-    v148 = [MEMORY[0x1E695DFB0] null];
+    null56 = [MEMORY[0x1E695DFB0] null];
   }
 
   v215 = v13;
   v216 = v10;
-  v158 = v148;
-  v274[55] = v148;
+  v158 = null56;
+  v274[55] = null56;
   v273[56] = @"brightness3bottomLeftStimulusSignedResidualPitch";
-  v149 = v223;
+  null57 = v223;
   if (!v223)
   {
-    v149 = [MEMORY[0x1E695DFB0] null];
+    null57 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v274[56] = v149;
+  v274[56] = null57;
   v273[57] = @"brightness3topLeftStimulusSignedResidualPitch";
-  v150 = v222;
+  null58 = v222;
   if (!v222)
   {
-    v150 = [MEMORY[0x1E695DFB0] null];
+    null58 = [MEMORY[0x1E695DFB0] null];
   }
 
   v151 = v7;
-  v274[57] = v150;
+  v274[57] = null58;
   v273[58] = @"rxuuid";
-  v152 = v221;
-  if (!v221)
+  null59 = rxuuid;
+  if (!rxuuid)
   {
-    v152 = [MEMORY[0x1E695DFB0] null];
+    null59 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v274[58] = v152;
+  v274[58] = null59;
   v273[59] = @"enrollmentReason";
-  v153 = v220;
+  null60 = v220;
   if (!v220)
   {
-    v153 = [MEMORY[0x1E695DFB0] null];
+    null60 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v274[59] = v153;
+  v274[59] = null60;
   v273[60] = @"enrollmentDeviceType";
-  v154 = v218;
+  null61 = v218;
   if (!v218)
   {
-    v154 = [MEMORY[0x1E695DFB0] null];
+    null61 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v274[60] = v154;
+  v274[60] = null61;
   v212 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v274 forKeys:v273 count:{61, v158}];
   if (!v218)
   {
@@ -2367,7 +2367,7 @@ LABEL_275:
     v155 = v105;
   }
 
-  if (!v221)
+  if (!rxuuid)
   {
 
     v155 = v105;
@@ -2659,7 +2659,7 @@ LABEL_275:
   {
   }
 
-  if (!v271)
+  if (!_enrollmentFailureReasonsJSONArray)
   {
   }
 
@@ -2735,7 +2735,7 @@ LABEL_426:
 
 LABEL_437:
 
-    if (v219)
+    if (userProfileId)
     {
       goto LABEL_428;
     }
@@ -2751,7 +2751,7 @@ LABEL_436:
   }
 
 LABEL_427:
-  if (v219)
+  if (userProfileId)
   {
     goto LABEL_428;
   }
@@ -2772,8 +2772,8 @@ LABEL_428:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMGazeEnrollmentSample *)self enrollmentFailureReasons];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  enrollmentFailureReasons = [(BMGazeEnrollmentSample *)self enrollmentFailureReasons];
+  v5 = [enrollmentFailureReasons countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2784,13 +2784,13 @@ LABEL_428:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(enrollmentFailureReasons);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [enrollmentFailureReasons countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -2801,18 +2801,18 @@ LABEL_428:
   return v3;
 }
 
-- (BMGazeEnrollmentSample)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMGazeEnrollmentSample)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v681[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"userProfileId"];
-  v547 = self;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"userProfileId"];
+  selfCopy = self;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v11 = objc_alloc(MEMORY[0x1E696ABC0]);
         v12 = *MEMORY[0x1E698F240];
@@ -2828,7 +2828,7 @@ LABEL_428:
         v16 = [v11 initWithDomain:v12 code:2 userInfo:v9];
         v8 = 0;
         v17 = 0;
-        *a4 = v16;
+        *error = v16;
         goto LABEL_617;
       }
 
@@ -2845,7 +2845,7 @@ LABEL_428:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"eyeSide"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"eyeSide"];
   v545 = v8;
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -2860,7 +2860,7 @@ LABEL_428:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v54 = objc_alloc(MEMORY[0x1E696ABC0]);
           v55 = *MEMORY[0x1E698F240];
@@ -2873,7 +2873,7 @@ LABEL_428:
           v546 = v57;
           v10 = 0;
           v17 = 0;
-          *a4 = [v54 initWithDomain:v58 code:2 userInfo:?];
+          *error = [v54 initWithDomain:v58 code:2 userInfo:?];
           goto LABEL_616;
         }
 
@@ -2892,7 +2892,7 @@ LABEL_428:
     v10 = 0;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"isOffline"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"isOffline"];
   v544 = v9;
   v546 = v19;
   if (v19 && (v20 = v19, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -2900,7 +2900,7 @@ LABEL_428:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
@@ -2913,7 +2913,7 @@ LABEL_428:
         v35 = [v34 initWithDomain:v32 code:2 userInfo:v33];
         v21 = 0;
         v17 = 0;
-        *a4 = v35;
+        *error = v35;
         goto LABEL_615;
       }
 
@@ -2930,14 +2930,14 @@ LABEL_428:
     v21 = 0;
   }
 
-  v22 = [v6 objectForKeyedSubscript:@"enrollmentResidual75thPercentile"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentResidual75thPercentile"];
   v543 = v22;
   if (v22 && (v23 = v22, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v36 = objc_alloc(MEMORY[0x1E696ABC0]);
         v536 = v21;
@@ -2953,7 +2953,7 @@ LABEL_428:
         v42 = [v36 initWithDomain:v41 code:2 userInfo:v40];
         v24 = 0;
         v17 = 0;
-        *a4 = v42;
+        *error = v42;
         v43 = v40;
         goto LABEL_614;
       }
@@ -2963,17 +2963,17 @@ LABEL_428:
       goto LABEL_615;
     }
 
-    v541 = a4;
+    errorCopy2 = error;
     v24 = v23;
   }
 
   else
   {
-    v541 = a4;
+    errorCopy2 = error;
     v24 = 0;
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"enrollmentResidual95thPercentile"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentResidual95thPercentile"];
   v537 = v7;
   v538 = v10;
   v540 = v24;
@@ -2982,7 +2982,7 @@ LABEL_428:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v541)
+      if (errorCopy2)
       {
         v44 = objc_alloc(MEMORY[0x1E696ABC0]);
         v45 = *MEMORY[0x1E698F240];
@@ -2994,7 +2994,7 @@ LABEL_428:
         v49 = v25;
         v539 = v47;
         v39 = 0;
-        *v541 = [v44 initWithDomain:v48 code:2 userInfo:v47];
+        *errorCopy2 = [v44 initWithDomain:v48 code:2 userInfo:v47];
         v23 = v543;
         v17 = 0;
         v43 = v49;
@@ -3016,7 +3016,7 @@ LABEL_428:
     v533 = 0;
   }
 
-  v26 = [v6 objectForKeyedSubscript:@"enrollmentResidualMedian"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentResidualMedian"];
   v539 = v26;
   v534 = v25;
   if (v26 && (v27 = v26, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -3024,7 +3024,7 @@ LABEL_428:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v541)
+      if (errorCopy2)
       {
         v50 = objc_alloc(MEMORY[0x1E696ABC0]);
         v51 = *MEMORY[0x1E698F240];
@@ -3037,7 +3037,7 @@ LABEL_428:
         v532 = v52;
         v46 = 0;
         v17 = 0;
-        *v541 = [v50 initWithDomain:v53 code:2 userInfo:?];
+        *errorCopy2 = [v50 initWithDomain:v53 code:2 userInfo:?];
         v39 = v533;
         v43 = v25;
         goto LABEL_612;
@@ -3059,7 +3059,7 @@ LABEL_428:
     v530 = 0;
   }
 
-  v28 = [v6 objectForKeyedSubscript:@"dominantEye"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"dominantEye"];
   v535 = v21;
   v532 = v28;
   if (v28 && (v29 = v28, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -3076,7 +3076,7 @@ LABEL_428:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v541)
+        if (errorCopy2)
         {
           v90 = objc_alloc(MEMORY[0x1E696ABC0]);
           v91 = *MEMORY[0x1E698F240];
@@ -3087,7 +3087,7 @@ LABEL_428:
           v93 = [v90 initWithDomain:v91 code:2 userInfo:?];
           v531 = 0;
           v17 = 0;
-          *v541 = v93;
+          *errorCopy2 = v93;
           v84 = v92;
           v43 = v25;
           v39 = v533;
@@ -3116,7 +3116,7 @@ LABEL_428:
     v531 = 0;
   }
 
-  v60 = [v6 objectForKeyedSubscript:@"monocularQuality"];
+  v60 = [dictionaryCopy objectForKeyedSubscript:@"monocularQuality"];
   v529 = v60;
   if (v60 && (v61 = v60, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -3132,7 +3132,7 @@ LABEL_428:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v541)
+        if (errorCopy2)
         {
           v94 = objc_alloc(MEMORY[0x1E696ABC0]);
           v95 = *MEMORY[0x1E698F240];
@@ -3143,7 +3143,7 @@ LABEL_428:
           v96 = [v94 initWithDomain:v95 code:2 userInfo:?];
           v84 = 0;
           v17 = 0;
-          *v541 = v96;
+          *errorCopy2 = v96;
           v21 = v535;
           v43 = v534;
           v39 = v533;
@@ -3175,9 +3175,9 @@ LABEL_428:
     v43 = v25;
   }
 
-  v63 = [v6 objectForKeyedSubscript:@"enrollmentFailureReasons"];
-  v64 = [MEMORY[0x1E695DFB0] null];
-  v65 = [v63 isEqual:v64];
+  v63 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentFailureReasons"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v65 = [v63 isEqual:null];
 
   if (v65)
   {
@@ -3192,7 +3192,7 @@ LABEL_428:
     {
       v21 = v30;
       obj = v63;
-      if (!v541)
+      if (!errorCopy2)
       {
         v17 = 0;
         v39 = v533;
@@ -3210,7 +3210,7 @@ LABEL_428:
       v89 = v87;
       v85 = v88;
       v17 = 0;
-      *v541 = [v86 initWithDomain:v89 code:2 userInfo:v88];
+      *errorCopy2 = [v86 initWithDomain:v89 code:2 userInfo:v88];
       goto LABEL_90;
     }
   }
@@ -3243,8 +3243,8 @@ LABEL_428:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v75 = v541;
-        if (v541)
+        v75 = errorCopy2;
+        if (errorCopy2)
         {
           v76 = objc_alloc(MEMORY[0x1E696ABC0]);
           v77 = *MEMORY[0x1E698F240];
@@ -3293,8 +3293,8 @@ LABEL_90:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v75 = v541;
-        if (v541)
+        v75 = errorCopy2;
+        if (errorCopy2)
         {
           v82 = objc_alloc(MEMORY[0x1E696ABC0]);
           v83 = *MEMORY[0x1E698F240];
@@ -3329,13 +3329,13 @@ LABEL_77:
 
 LABEL_79:
 
-  v74 = [v6 objectForKeyedSubscript:@"binocQuality"];
+  v74 = [dictionaryCopy objectForKeyedSubscript:@"binocQuality"];
   if (!v74 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v527 = 0;
     v24 = v540;
 LABEL_106:
-    v98 = [v6 objectForKeyedSubscript:@"fixationCount"];
+    v98 = [dictionaryCopy objectForKeyedSubscript:@"fixationCount"];
     v523 = v98;
     if (v98 && (v99 = v98, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -3346,7 +3346,7 @@ LABEL_106:
         goto LABEL_109;
       }
 
-      if (!v541)
+      if (!errorCopy2)
       {
         v526 = 0;
         v17 = 0;
@@ -3374,7 +3374,7 @@ LABEL_106:
       v522 = v120;
       v526 = 0;
       v17 = 0;
-      *v541 = [v121 initWithDomain:v115 code:2 userInfo:?];
+      *errorCopy2 = [v121 initWithDomain:v115 code:2 userInfo:?];
       v7 = v537;
     }
 
@@ -3382,14 +3382,14 @@ LABEL_106:
     {
       v526 = 0;
 LABEL_109:
-      v100 = [v6 objectForKeyedSubscript:@"fixationCountLowBrightness"];
+      v100 = [dictionaryCopy objectForKeyedSubscript:@"fixationCountLowBrightness"];
       v522 = v100;
       if (!v100 || (v101 = v100, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v521 = 0;
 LABEL_112:
-        v102 = v6;
-        v103 = [v6 objectForKeyedSubscript:@"fixationCountMediumBrightness"];
+        v102 = dictionaryCopy;
+        v103 = [dictionaryCopy objectForKeyedSubscript:@"fixationCountMediumBrightness"];
         if (!v103 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v518 = v103;
@@ -3421,7 +3421,7 @@ LABEL_115:
               goto LABEL_126;
             }
 
-            if (v541)
+            if (errorCopy2)
             {
               v135 = objc_alloc(MEMORY[0x1E696ABC0]);
               v136 = *MEMORY[0x1E698F240];
@@ -3436,7 +3436,7 @@ LABEL_115:
               v517 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v650 forKeys:&v649 count:1];
               v104 = 0;
               v17 = 0;
-              *v541 = [v135 initWithDomain:v136 code:2 userInfo:?];
+              *errorCopy2 = [v135 initWithDomain:v136 code:2 userInfo:?];
               goto LABEL_321;
             }
 
@@ -3466,7 +3466,7 @@ LABEL_126:
               goto LABEL_129;
             }
 
-            if (!v541)
+            if (!errorCopy2)
             {
               v140 = 0;
               v17 = 0;
@@ -3491,7 +3491,7 @@ LABEL_321:
             v515 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v648 forKeys:&v647 count:1];
             v516 = 0;
             v17 = 0;
-            *v541 = [v147 initWithDomain:v148 code:2 userInfo:?];
+            *errorCopy2 = [v147 initWithDomain:v148 code:2 userInfo:?];
           }
 
           else
@@ -3563,7 +3563,7 @@ LABEL_185:
                       }
 
                       v481 = v104;
-                      if (v541)
+                      if (errorCopy2)
                       {
                         v247 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v248 = *MEMORY[0x1E698F240];
@@ -3578,7 +3578,7 @@ LABEL_185:
                         v506 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v638 forKeys:&v637 count:1];
                         v174 = 0;
                         v17 = 0;
-                        *v541 = [v247 initWithDomain:v248 code:2 userInfo:?];
+                        *errorCopy2 = [v247 initWithDomain:v248 code:2 userInfo:?];
                         v39 = v533;
                         v46 = v530;
                         goto LABEL_353;
@@ -3626,7 +3626,7 @@ LABEL_186:
                           goto LABEL_189;
                         }
 
-                        if (v541)
+                        if (errorCopy2)
                         {
                           v220 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v221 = *MEMORY[0x1E698F240];
@@ -3641,7 +3641,7 @@ LABEL_186:
                           v226 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v636 forKeys:&v635 count:1];
                           v505 = 0;
                           v503 = 0;
-                          *v541 = [v220 initWithDomain:v221 code:2 userInfo:v226];
+                          *errorCopy2 = [v220 initWithDomain:v221 code:2 userInfo:v226];
                           v39 = v533;
                           v46 = v530;
                           v152 = v513;
@@ -3678,7 +3678,7 @@ LABEL_189:
                           goto LABEL_192;
                         }
 
-                        if (v541)
+                        if (errorCopy2)
                         {
                           v227 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v228 = *MEMORY[0x1E698F240];
@@ -3694,7 +3694,7 @@ LABEL_189:
                           v501 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v634 forKeys:&v633 count:1];
                           v225 = 0;
                           v503 = 0;
-                          *v541 = [v227 initWithDomain:v228 code:2 userInfo:?];
+                          *errorCopy2 = [v227 initWithDomain:v228 code:2 userInfo:?];
                           v39 = v533;
                           v46 = v530;
                           v152 = v513;
@@ -3729,7 +3729,7 @@ LABEL_192:
                         goto LABEL_195;
                       }
 
-                      if (!v541)
+                      if (!errorCopy2)
                       {
                         v500 = 0;
                         v503 = 0;
@@ -3756,7 +3756,7 @@ LABEL_192:
                       v497 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v632 forKeys:&v631 count:1];
                       v500 = 0;
                       v503 = 0;
-                      *v541 = [v232 initWithDomain:v233 code:2 userInfo:?];
+                      *errorCopy2 = [v232 initWithDomain:v233 code:2 userInfo:?];
                     }
 
                     else
@@ -3874,7 +3874,7 @@ LABEL_243:
                                                             goto LABEL_246;
                                                           }
 
-                                                          if (v541)
+                                                          if (errorCopy2)
                                                           {
                                                             v332 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                             v333 = *MEMORY[0x1E698F240];
@@ -3884,7 +3884,7 @@ LABEL_243:
                                                             v461 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v598 forKeys:&v597 count:1];
                                                             v462 = 0;
                                                             v503 = 0;
-                                                            *v541 = [v332 initWithDomain:v333 code:2 userInfo:?];
+                                                            *errorCopy2 = [v332 initWithDomain:v333 code:2 userInfo:?];
                                                             v331 = v214;
                                                             v39 = v533;
                                                             v46 = v530;
@@ -3919,7 +3919,7 @@ LABEL_246:
                                                           goto LABEL_249;
                                                         }
 
-                                                        if (!v541)
+                                                        if (!errorCopy2)
                                                         {
                                                           v460 = 0;
                                                           v503 = 0;
@@ -3940,7 +3940,7 @@ LABEL_246:
                                                         v459 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v596 forKeys:&v595 count:1];
                                                         v460 = 0;
                                                         v503 = 0;
-                                                        *v541 = [v334 initWithDomain:v335 code:2 userInfo:?];
+                                                        *errorCopy2 = [v334 initWithDomain:v335 code:2 userInfo:?];
                                                       }
 
                                                       else
@@ -3973,7 +3973,7 @@ LABEL_258:
                                                                   goto LABEL_261;
                                                                 }
 
-                                                                if (!v541)
+                                                                if (!errorCopy2)
                                                                 {
                                                                   v452 = 0;
                                                                   v503 = 0;
@@ -3995,7 +3995,7 @@ LABEL_258:
                                                                 v451 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v588 forKeys:&v587 count:1];
                                                                 v452 = 0;
                                                                 v503 = 0;
-                                                                *v541 = [v343 initWithDomain:v344 code:2 userInfo:?];
+                                                                *errorCopy2 = [v343 initWithDomain:v344 code:2 userInfo:?];
                                                               }
 
                                                               else
@@ -4049,7 +4049,7 @@ LABEL_282:
                                                                                   goto LABEL_285;
                                                                                 }
 
-                                                                                if (v541)
+                                                                                if (errorCopy2)
                                                                                 {
                                                                                   v361 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                   v362 = *MEMORY[0x1E698F240];
@@ -4059,7 +4059,7 @@ LABEL_282:
                                                                                   v436 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v572 forKeys:&v571 count:1];
                                                                                   v435 = 0;
                                                                                   v503 = 0;
-                                                                                  *v541 = [v361 initWithDomain:v362 code:2 userInfo:?];
+                                                                                  *errorCopy2 = [v361 initWithDomain:v362 code:2 userInfo:?];
                                                                                   goto LABEL_562;
                                                                                 }
 
@@ -4081,7 +4081,7 @@ LABEL_285:
                                                                                     goto LABEL_288;
                                                                                   }
 
-                                                                                  if (v541)
+                                                                                  if (errorCopy2)
                                                                                   {
                                                                                     v363 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                     v364 = *MEMORY[0x1E698F240];
@@ -4091,7 +4091,7 @@ LABEL_285:
                                                                                     v437 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v570 forKeys:&v569 count:1];
                                                                                     v434 = 0;
                                                                                     v503 = 0;
-                                                                                    *v541 = [v363 initWithDomain:v364 code:2 userInfo:?];
+                                                                                    *errorCopy2 = [v363 initWithDomain:v364 code:2 userInfo:?];
                                                                                     goto LABEL_561;
                                                                                   }
 
@@ -4113,7 +4113,7 @@ LABEL_288:
                                                                                       goto LABEL_291;
                                                                                     }
 
-                                                                                    if (v541)
+                                                                                    if (errorCopy2)
                                                                                     {
                                                                                       v365 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                       v366 = *MEMORY[0x1E698F240];
@@ -4123,7 +4123,7 @@ LABEL_288:
                                                                                       v433 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v568 forKeys:&v567 count:1];
                                                                                       v432 = 0;
                                                                                       v503 = 0;
-                                                                                      *v541 = [v365 initWithDomain:v366 code:2 userInfo:?];
+                                                                                      *errorCopy2 = [v365 initWithDomain:v366 code:2 userInfo:?];
                                                                                       goto LABEL_560;
                                                                                     }
 
@@ -4145,7 +4145,7 @@ LABEL_291:
                                                                                         goto LABEL_294;
                                                                                       }
 
-                                                                                      if (v541)
+                                                                                      if (errorCopy2)
                                                                                       {
                                                                                         v367 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                         v368 = *MEMORY[0x1E698F240];
@@ -4155,7 +4155,7 @@ LABEL_291:
                                                                                         v431 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v566 forKeys:&v565 count:1];
                                                                                         v430 = 0;
                                                                                         v503 = 0;
-                                                                                        *v541 = [v367 initWithDomain:v368 code:2 userInfo:?];
+                                                                                        *errorCopy2 = [v367 initWithDomain:v368 code:2 userInfo:?];
                                                                                         goto LABEL_559;
                                                                                       }
 
@@ -4177,7 +4177,7 @@ LABEL_294:
                                                                                           goto LABEL_297;
                                                                                         }
 
-                                                                                        if (v541)
+                                                                                        if (errorCopy2)
                                                                                         {
                                                                                           v369 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                           v370 = *MEMORY[0x1E698F240];
@@ -4187,7 +4187,7 @@ LABEL_294:
                                                                                           v429 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v564 forKeys:&v563 count:1];
                                                                                           v428 = 0;
                                                                                           v503 = 0;
-                                                                                          *v541 = [v369 initWithDomain:v370 code:2 userInfo:?];
+                                                                                          *errorCopy2 = [v369 initWithDomain:v370 code:2 userInfo:?];
                                                                                           goto LABEL_558;
                                                                                         }
 
@@ -4209,7 +4209,7 @@ LABEL_297:
                                                                                             goto LABEL_300;
                                                                                           }
 
-                                                                                          if (v541)
+                                                                                          if (errorCopy2)
                                                                                           {
                                                                                             v371 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                             v372 = *MEMORY[0x1E698F240];
@@ -4219,7 +4219,7 @@ LABEL_297:
                                                                                             v427 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v562 forKeys:&v561 count:1];
                                                                                             v426 = 0;
                                                                                             v503 = 0;
-                                                                                            *v541 = [v371 initWithDomain:v372 code:2 userInfo:?];
+                                                                                            *errorCopy2 = [v371 initWithDomain:v372 code:2 userInfo:?];
                                                                                             goto LABEL_557;
                                                                                           }
 
@@ -4241,7 +4241,7 @@ LABEL_300:
                                                                                               goto LABEL_303;
                                                                                             }
 
-                                                                                            if (v541)
+                                                                                            if (errorCopy2)
                                                                                             {
                                                                                               v373 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                               v374 = *MEMORY[0x1E698F240];
@@ -4251,7 +4251,7 @@ LABEL_300:
                                                                                               v425 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v560 forKeys:&v559 count:1];
                                                                                               v424 = 0;
                                                                                               v503 = 0;
-                                                                                              *v541 = [v373 initWithDomain:v374 code:2 userInfo:?];
+                                                                                              *errorCopy2 = [v373 initWithDomain:v374 code:2 userInfo:?];
                                                                                               goto LABEL_556;
                                                                                             }
 
@@ -4282,15 +4282,15 @@ LABEL_546:
 LABEL_553:
 
 LABEL_554:
-                                                                                                v542 = [v538 intValue];
-                                                                                                v504 = [v531 intValue];
-                                                                                                v379 = [v528 intValue];
-                                                                                                v380 = [v527 intValue];
-                                                                                                v381 = [v508 intValue];
-                                                                                                v382 = [v502 intValue];
-                                                                                                v383 = [v423 intValue];
-                                                                                                LODWORD(v422) = v380;
-                                                                                                v547 = objc_retainAutoreleasedReturnValue( -[BMGazeEnrollmentSample initWithUserProfileId:eyeSide:isOffline:enrollmentResidual75thPercentile:enrollmentResidual95thPercentile:enrollmentResidualMedian:dominantEye:monocularQuality:enrollmentFailureReasons:binocQuality:fixationCount:fixationCountLowBrightness:fixationCountMediumBrightness:fixationCountHighBrightness:stimulusCount:stimulusCountLowBrightness:stimulusCountMediumBrightness:stimulusCountHighBrightness:accessibilityMode:eyeboxStatus:centralStimulusSignedResidualYaw:brightness1topStimulusSignedResidualYaw:brightness1topRightStimulusSignedResidualYaw:brightness1bottomRightStimulusSignedResidualYaw:brightness1bottomStimulusSignedResidualYaw:brightness1bottomLeftStimulusSignedResidualYaw:brightness1topLeftStimulusSignedResidualYaw:brightness2topStimulusSignedResidualYaw:brightness2topRightStimulusSignedResidualYaw:brightness2bottomRightStimulusSignedResidualYaw:brightness2bottomStimulusSignedResidualYaw:brightness2bottomLeftStimulusSignedResidualYaw:brightness2topLeftStimulusSignedResidualYaw:brightness3topStimulusSignedResidualYaw:brightness3topRightStimulusSignedResidualYaw:brightness3bottomRightStimulusSignedResidualYaw:brightness3bottomStimulusSignedResidualYaw:brightness3bottomLeftStimulusSignedResidualYaw:brightness3topLeftStimulusSignedResidualYaw:centralStimulusSignedResidualPitch:brightness1topStimulusSignedResidualPitch:brightness1topRightStimulusSignedResidualPitch:brightness1bottomRightStimulusSignedResidualPitch:brightness1bottomStimulusSignedResidualPitch:brightness1bottomLeftStimulusSignedResidualPitch:brightness1topLeftStimulusSignedResidualPitch:brightness2topStimulusSignedResidualPitch:brightness2topRightStimulusSignedResidualPitch:brightness2bottomRightStimulusSignedResidualPitch:brightness2bottomStimulusSignedResidualPitch:brightness2bottomLeftStimulusSignedResidualPitch:brightness2topLeftStimulusSignedResidualPitch:brightness3topStimulusSignedResidualPitch:brightness3topRightStimulusSignedResidualPitch:brightness3bottomRightStimulusSignedResidualPitch:brightness3bottomStimulusSignedResidualPitch:brightness3bottomLeftStimulusSignedResidualPitch:brightness3topLeftStimulusSignedResidualPitch:rxuuid:enrollmentReason:enrollmentDeviceType:]( v547,  "initWithUserProfileId:eyeSide:isOffline:enrollmentResidual75thPercentile:enrollmentResidual95thPercentile:enrollmentResidualMedian:dominantEye:monocularQuality:enrollmentFailureReasons:binocQuality:fixationCount:fixationCountLowBrightness:fixationCountMediumBrightness:fixationCountHighBrightness:stimulusCount:stimulusCountLowBrightness:stimulusCountMediumBrightness:stimulusCountHighBrightness:accessibilityMode:eyeboxStatus:centralStimulusSignedResidualYaw:brightness1topStimulusSignedResidualYaw:brightness1topRightStimulusSignedResidualYaw:brightness1bottomRightStimulusSignedResidualYaw:brightness1bottomStimulusSignedResidualYaw:brightness1bottomLeftStimulusSignedResidualYaw:brightness1topLeftStimulusSignedResidualYaw:brightness2topStimulusSignedResidualYaw:brightness2topRightStimulusSignedResidualYaw:brightness2bottomRightStimulusSignedResidualYaw:brightness2bottomStimulusSignedResidualYaw:brightness2bottomLeftStimulusSignedResidualYaw:brightness2topLeftStimulusSignedResidualYaw:brightness3topStimulusSignedResidualYaw:brightness3topRightStimulusSignedResidualYaw:brightness3bottomRightStimulusSignedResidualYaw:brightness3bottomStimulusSignedResidualYaw:brightness3bottomLeftStimulusSignedResidualYaw:brightness3topLeftStimulusSignedResidualYaw:centralStimulusSignedResidualPitch:brightness1topStimulusSignedResidualPitch:brightness1topRightStimulusSignedResidualPitch:brightness1bottomRightStimulusSignedResidualPitch:brightness1bottomStimulusSignedResidualPitch:brightness1bottomLeftStimulusSignedResidualPitch:brightness1topLeftStimulusSignedResidualPitch:brightness2topStimulusSignedResidualPitch:brightness2topRightStimulusSignedResidualPitch:brightness2bottomRightStimulusSignedResidualPitch:brightness2bottomStimulusSignedResidualPitch:brightness2bottomLeftStimulusSignedResidualPitch:brightness2topLeftStimulusSignedResidualPitch:brightness3topStimulusSignedResidualPitch:brightness3topRightStimulusSignedResidualPitch:brightness3bottomRightStimulusSignedResidualPitch:brightness3bottomStimulusSignedResidualPitch:brightness3bottomLeftStimulusSignedResidualPitch:brightness3topLeftStimulusSignedResidualPitch:rxuuid:enrollmentReason:enrollmentDeviceType:",  v545,  v542,  v535,  v540,  v533,  v530,  __PAIR64__(v379, v504),  v549,  v422,  v526,  v521,  v519,  v480,  v516,  v513,  v514,  v511,  __PAIR64__(v382, v381),  v505,  v499,  v500,  v496,  v494,  v492,  v490,  v488,  v486,  v485,  v482,  v478,  v477,  v475,  v472,  v469,  v468,  v466,  v463,  v462,  v460,  v457,  v455,  v450,  v452,  v449,  v447,  v445,
+                                                                                                intValue = [v538 intValue];
+                                                                                                intValue2 = [v531 intValue];
+                                                                                                intValue3 = [v528 intValue];
+                                                                                                intValue4 = [v527 intValue];
+                                                                                                intValue5 = [v508 intValue];
+                                                                                                intValue6 = [v502 intValue];
+                                                                                                intValue7 = [v423 intValue];
+                                                                                                LODWORD(v422) = intValue4;
+                                                                                                selfCopy = objc_retainAutoreleasedReturnValue( -[BMGazeEnrollmentSample initWithUserProfileId:eyeSide:isOffline:enrollmentResidual75thPercentile:enrollmentResidual95thPercentile:enrollmentResidualMedian:dominantEye:monocularQuality:enrollmentFailureReasons:binocQuality:fixationCount:fixationCountLowBrightness:fixationCountMediumBrightness:fixationCountHighBrightness:stimulusCount:stimulusCountLowBrightness:stimulusCountMediumBrightness:stimulusCountHighBrightness:accessibilityMode:eyeboxStatus:centralStimulusSignedResidualYaw:brightness1topStimulusSignedResidualYaw:brightness1topRightStimulusSignedResidualYaw:brightness1bottomRightStimulusSignedResidualYaw:brightness1bottomStimulusSignedResidualYaw:brightness1bottomLeftStimulusSignedResidualYaw:brightness1topLeftStimulusSignedResidualYaw:brightness2topStimulusSignedResidualYaw:brightness2topRightStimulusSignedResidualYaw:brightness2bottomRightStimulusSignedResidualYaw:brightness2bottomStimulusSignedResidualYaw:brightness2bottomLeftStimulusSignedResidualYaw:brightness2topLeftStimulusSignedResidualYaw:brightness3topStimulusSignedResidualYaw:brightness3topRightStimulusSignedResidualYaw:brightness3bottomRightStimulusSignedResidualYaw:brightness3bottomStimulusSignedResidualYaw:brightness3bottomLeftStimulusSignedResidualYaw:brightness3topLeftStimulusSignedResidualYaw:centralStimulusSignedResidualPitch:brightness1topStimulusSignedResidualPitch:brightness1topRightStimulusSignedResidualPitch:brightness1bottomRightStimulusSignedResidualPitch:brightness1bottomStimulusSignedResidualPitch:brightness1bottomLeftStimulusSignedResidualPitch:brightness1topLeftStimulusSignedResidualPitch:brightness2topStimulusSignedResidualPitch:brightness2topRightStimulusSignedResidualPitch:brightness2bottomRightStimulusSignedResidualPitch:brightness2bottomStimulusSignedResidualPitch:brightness2bottomLeftStimulusSignedResidualPitch:brightness2topLeftStimulusSignedResidualPitch:brightness3topStimulusSignedResidualPitch:brightness3topRightStimulusSignedResidualPitch:brightness3bottomRightStimulusSignedResidualPitch:brightness3bottomStimulusSignedResidualPitch:brightness3bottomLeftStimulusSignedResidualPitch:brightness3topLeftStimulusSignedResidualPitch:rxuuid:enrollmentReason:enrollmentDeviceType:]( selfCopy,  "initWithUserProfileId:eyeSide:isOffline:enrollmentResidual75thPercentile:enrollmentResidual95thPercentile:enrollmentResidualMedian:dominantEye:monocularQuality:enrollmentFailureReasons:binocQuality:fixationCount:fixationCountLowBrightness:fixationCountMediumBrightness:fixationCountHighBrightness:stimulusCount:stimulusCountLowBrightness:stimulusCountMediumBrightness:stimulusCountHighBrightness:accessibilityMode:eyeboxStatus:centralStimulusSignedResidualYaw:brightness1topStimulusSignedResidualYaw:brightness1topRightStimulusSignedResidualYaw:brightness1bottomRightStimulusSignedResidualYaw:brightness1bottomStimulusSignedResidualYaw:brightness1bottomLeftStimulusSignedResidualYaw:brightness1topLeftStimulusSignedResidualYaw:brightness2topStimulusSignedResidualYaw:brightness2topRightStimulusSignedResidualYaw:brightness2bottomRightStimulusSignedResidualYaw:brightness2bottomStimulusSignedResidualYaw:brightness2bottomLeftStimulusSignedResidualYaw:brightness2topLeftStimulusSignedResidualYaw:brightness3topStimulusSignedResidualYaw:brightness3topRightStimulusSignedResidualYaw:brightness3bottomRightStimulusSignedResidualYaw:brightness3bottomStimulusSignedResidualYaw:brightness3bottomLeftStimulusSignedResidualYaw:brightness3topLeftStimulusSignedResidualYaw:centralStimulusSignedResidualPitch:brightness1topStimulusSignedResidualPitch:brightness1topRightStimulusSignedResidualPitch:brightness1bottomRightStimulusSignedResidualPitch:brightness1bottomStimulusSignedResidualPitch:brightness1bottomLeftStimulusSignedResidualPitch:brightness1topLeftStimulusSignedResidualPitch:brightness2topStimulusSignedResidualPitch:brightness2topRightStimulusSignedResidualPitch:brightness2bottomRightStimulusSignedResidualPitch:brightness2bottomStimulusSignedResidualPitch:brightness2bottomLeftStimulusSignedResidualPitch:brightness2topLeftStimulusSignedResidualPitch:brightness3topStimulusSignedResidualPitch:brightness3topRightStimulusSignedResidualPitch:brightness3bottomRightStimulusSignedResidualPitch:brightness3bottomStimulusSignedResidualPitch:brightness3bottomLeftStimulusSignedResidualPitch:brightness3topLeftStimulusSignedResidualPitch:rxuuid:enrollmentReason:enrollmentDeviceType:",  v545,  intValue,  v535,  v540,  v533,  v530,  __PAIR64__(intValue3, intValue2),  v549,  v422,  v526,  v521,  v519,  v480,  v516,  v513,  v514,  v511,  __PAIR64__(intValue6, intValue5),  v505,  v499,  v500,  v496,  v494,  v492,  v490,  v488,  v486,  v485,  v482,  v478,  v477,  v475,  v472,  v469,  v468,  v466,  v463,  v462,  v460,  v457,  v455,  v450,  v452,  v449,  v447,  v445,
                                                                                                            v443,
                                                                                                            v441,
                                                                                                            v439,
@@ -4302,8 +4302,8 @@ LABEL_554:
                                                                                                            v428,
                                                                                                            v426,
                                                                                                            v424,
-                                                                                                           __PAIR64__([v377 intValue], v383)));
-                                                                                                v503 = v547;
+                                                                                                           __PAIR64__([v377 intValue], intValue7)));
+                                                                                                v503 = selfCopy;
                                                                                               }
 
                                                                                               else
@@ -4317,7 +4317,7 @@ LABEL_554:
                                                                                                   goto LABEL_553;
                                                                                                 }
 
-                                                                                                if (v541)
+                                                                                                if (errorCopy2)
                                                                                                 {
                                                                                                   v388 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                                   v389 = *MEMORY[0x1E698F240];
@@ -4325,7 +4325,7 @@ LABEL_554:
                                                                                                   v390 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"enrollmentDeviceType"];
                                                                                                   v556 = v390;
                                                                                                   v391 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v556 forKeys:&v555 count:1];
-                                                                                                  *v541 = [v388 initWithDomain:v389 code:2 userInfo:v391];
+                                                                                                  *errorCopy2 = [v388 initWithDomain:v389 code:2 userInfo:v391];
                                                                                                 }
 
                                                                                                 v377 = 0;
@@ -4355,7 +4355,7 @@ LABEL_545:
                                                                                               goto LABEL_545;
                                                                                             }
 
-                                                                                            if (v541)
+                                                                                            if (errorCopy2)
                                                                                             {
                                                                                               v386 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                               v387 = *MEMORY[0x1E698F240];
@@ -4365,7 +4365,7 @@ LABEL_545:
                                                                                               v376 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v558 forKeys:&v557 count:1];
                                                                                               v423 = 0;
                                                                                               v503 = 0;
-                                                                                              *v541 = [v386 initWithDomain:v387 code:2 userInfo:?];
+                                                                                              *errorCopy2 = [v386 initWithDomain:v387 code:2 userInfo:?];
                                                                                               goto LABEL_555;
                                                                                             }
 
@@ -4476,7 +4476,7 @@ LABEL_595:
                                                                               goto LABEL_282;
                                                                             }
 
-                                                                            if (v541)
+                                                                            if (errorCopy2)
                                                                             {
                                                                               v358 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                               v359 = *MEMORY[0x1E698F240];
@@ -4486,7 +4486,7 @@ LABEL_595:
                                                                               v219 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v574 forKeys:&v573 count:1];
                                                                               v438 = 0;
                                                                               v503 = 0;
-                                                                              *v541 = [v358 initWithDomain:v359 code:2 userInfo:v219];
+                                                                              *errorCopy2 = [v358 initWithDomain:v359 code:2 userInfo:v219];
                                                                               goto LABEL_563;
                                                                             }
 
@@ -4505,7 +4505,7 @@ LABEL_536:
                                                                             goto LABEL_279;
                                                                           }
 
-                                                                          if (v541)
+                                                                          if (errorCopy2)
                                                                           {
                                                                             v355 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                             v356 = *MEMORY[0x1E698F240];
@@ -4515,7 +4515,7 @@ LABEL_536:
                                                                             v218 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v576 forKeys:&v575 count:1];
                                                                             v439 = 0;
                                                                             v503 = 0;
-                                                                            *v541 = [v355 initWithDomain:v356 code:2 userInfo:v218];
+                                                                            *errorCopy2 = [v355 initWithDomain:v356 code:2 userInfo:v218];
                                                                             goto LABEL_536;
                                                                           }
 
@@ -4539,7 +4539,7 @@ LABEL_532:
                                                                           goto LABEL_276;
                                                                         }
 
-                                                                        if (v541)
+                                                                        if (errorCopy2)
                                                                         {
                                                                           v353 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                           v354 = *MEMORY[0x1E698F240];
@@ -4549,7 +4549,7 @@ LABEL_532:
                                                                           v440 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v578 forKeys:&v577 count:1];
                                                                           v441 = 0;
                                                                           v503 = 0;
-                                                                          *v541 = [v353 initWithDomain:v354 code:2 userInfo:?];
+                                                                          *errorCopy2 = [v353 initWithDomain:v354 code:2 userInfo:?];
                                                                           goto LABEL_532;
                                                                         }
 
@@ -4573,7 +4573,7 @@ LABEL_526:
                                                                         goto LABEL_273;
                                                                       }
 
-                                                                      if (v541)
+                                                                      if (errorCopy2)
                                                                       {
                                                                         v351 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                         v352 = *MEMORY[0x1E698F240];
@@ -4583,7 +4583,7 @@ LABEL_526:
                                                                         v442 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v580 forKeys:&v579 count:1];
                                                                         v443 = 0;
                                                                         v503 = 0;
-                                                                        *v541 = [v351 initWithDomain:v352 code:2 userInfo:?];
+                                                                        *errorCopy2 = [v351 initWithDomain:v352 code:2 userInfo:?];
                                                                         goto LABEL_526;
                                                                       }
 
@@ -4607,7 +4607,7 @@ LABEL_520:
                                                                       goto LABEL_270;
                                                                     }
 
-                                                                    if (v541)
+                                                                    if (errorCopy2)
                                                                     {
                                                                       v349 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                       v350 = *MEMORY[0x1E698F240];
@@ -4617,7 +4617,7 @@ LABEL_520:
                                                                       v444 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v582 forKeys:&v581 count:1];
                                                                       v445 = 0;
                                                                       v503 = 0;
-                                                                      *v541 = [v349 initWithDomain:v350 code:2 userInfo:?];
+                                                                      *errorCopy2 = [v349 initWithDomain:v350 code:2 userInfo:?];
                                                                       goto LABEL_520;
                                                                     }
 
@@ -4641,7 +4641,7 @@ LABEL_514:
                                                                     goto LABEL_267;
                                                                   }
 
-                                                                  if (v541)
+                                                                  if (errorCopy2)
                                                                   {
                                                                     v347 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                     v348 = *MEMORY[0x1E698F240];
@@ -4651,7 +4651,7 @@ LABEL_514:
                                                                     v446 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v584 forKeys:&v583 count:1];
                                                                     v447 = 0;
                                                                     v503 = 0;
-                                                                    *v541 = [v347 initWithDomain:v348 code:2 userInfo:?];
+                                                                    *errorCopy2 = [v347 initWithDomain:v348 code:2 userInfo:?];
                                                                     goto LABEL_514;
                                                                   }
 
@@ -4675,7 +4675,7 @@ LABEL_508:
                                                                   goto LABEL_264;
                                                                 }
 
-                                                                if (v541)
+                                                                if (errorCopy2)
                                                                 {
                                                                   v345 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                   v346 = *MEMORY[0x1E698F240];
@@ -4685,7 +4685,7 @@ LABEL_508:
                                                                   v448 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v586 forKeys:&v585 count:1];
                                                                   v449 = 0;
                                                                   v503 = 0;
-                                                                  *v541 = [v345 initWithDomain:v346 code:2 userInfo:?];
+                                                                  *errorCopy2 = [v345 initWithDomain:v346 code:2 userInfo:?];
                                                                   goto LABEL_508;
                                                                 }
 
@@ -4710,7 +4710,7 @@ LABEL_508:
                                                               goto LABEL_258;
                                                             }
 
-                                                            if (v541)
+                                                            if (errorCopy2)
                                                             {
                                                               v341 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                               v342 = *MEMORY[0x1E698F240];
@@ -4720,7 +4720,7 @@ LABEL_508:
                                                               v453 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v590 forKeys:&v589 count:1];
                                                               v340 = 0;
                                                               v503 = 0;
-                                                              *v541 = [v341 initWithDomain:v342 code:2 userInfo:?];
+                                                              *errorCopy2 = [v341 initWithDomain:v342 code:2 userInfo:?];
                                                               v39 = v533;
                                                               v46 = v530;
                                                               v152 = v513;
@@ -4749,7 +4749,7 @@ LABEL_491:
                                                             goto LABEL_255;
                                                           }
 
-                                                          if (v541)
+                                                          if (errorCopy2)
                                                           {
                                                             v338 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                             v339 = *MEMORY[0x1E698F240];
@@ -4759,7 +4759,7 @@ LABEL_491:
                                                             v454 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v592 forKeys:&v591 count:1];
                                                             v455 = 0;
                                                             v503 = 0;
-                                                            *v541 = [v338 initWithDomain:v339 code:2 userInfo:?];
+                                                            *errorCopy2 = [v338 initWithDomain:v339 code:2 userInfo:?];
                                                             goto LABEL_491;
                                                           }
 
@@ -4782,7 +4782,7 @@ LABEL_485:
                                                           goto LABEL_252;
                                                         }
 
-                                                        if (v541)
+                                                        if (errorCopy2)
                                                         {
                                                           v336 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                           v337 = *MEMORY[0x1E698F240];
@@ -4792,7 +4792,7 @@ LABEL_485:
                                                           v456 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v594 forKeys:&v593 count:1];
                                                           v457 = 0;
                                                           v503 = 0;
-                                                          *v541 = [v336 initWithDomain:v337 code:2 userInfo:?];
+                                                          *errorCopy2 = [v336 initWithDomain:v337 code:2 userInfo:?];
                                                           goto LABEL_485;
                                                         }
 
@@ -4816,8 +4816,8 @@ LABEL_485:
                                                       goto LABEL_243;
                                                     }
 
-                                                    v327 = v541;
-                                                    if (v541)
+                                                    v327 = errorCopy2;
+                                                    if (errorCopy2)
                                                     {
                                                       v328 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                       v329 = *MEMORY[0x1E698F240];
@@ -4827,7 +4827,7 @@ LABEL_485:
                                                       v330 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v600 forKeys:&v599 count:1];
                                                       v463 = 0;
                                                       v503 = 0;
-                                                      *v541 = [v328 initWithDomain:v329 code:2 userInfo:v330];
+                                                      *errorCopy2 = [v328 initWithDomain:v329 code:2 userInfo:v330];
                                                       v331 = v330;
                                                       v39 = v533;
                                                       v46 = v530;
@@ -4854,7 +4854,7 @@ LABEL_463:
                                                     goto LABEL_240;
                                                   }
 
-                                                  if (v541)
+                                                  if (errorCopy2)
                                                   {
                                                     v322 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                     v323 = *MEMORY[0x1E698F240];
@@ -4869,7 +4869,7 @@ LABEL_463:
                                                     v465 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v602 forKeys:&v601 count:1];
                                                     v466 = 0;
                                                     v503 = 0;
-                                                    *v541 = [v322 initWithDomain:v323 code:2 userInfo:?];
+                                                    *errorCopy2 = [v322 initWithDomain:v323 code:2 userInfo:?];
                                                     v39 = v533;
                                                     v46 = v530;
                                                     goto LABEL_463;
@@ -4893,7 +4893,7 @@ LABEL_457:
                                                   goto LABEL_237;
                                                 }
 
-                                                if (v541)
+                                                if (errorCopy2)
                                                 {
                                                   v317 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                   v318 = *MEMORY[0x1E698F240];
@@ -4908,7 +4908,7 @@ LABEL_457:
                                                   v467 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v604 forKeys:&v603 count:1];
                                                   v468 = 0;
                                                   v503 = 0;
-                                                  *v541 = [v317 initWithDomain:v318 code:2 userInfo:?];
+                                                  *errorCopy2 = [v317 initWithDomain:v318 code:2 userInfo:?];
                                                   goto LABEL_457;
                                                 }
 
@@ -4931,7 +4931,7 @@ LABEL_451:
                                                 goto LABEL_234;
                                               }
 
-                                              if (v541)
+                                              if (errorCopy2)
                                               {
                                                 v312 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                 v313 = *MEMORY[0x1E698F240];
@@ -4946,7 +4946,7 @@ LABEL_451:
                                                 v470 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v606 forKeys:&v605 count:1];
                                                 v469 = 0;
                                                 v503 = 0;
-                                                *v541 = [v312 initWithDomain:v313 code:2 userInfo:?];
+                                                *errorCopy2 = [v312 initWithDomain:v313 code:2 userInfo:?];
                                                 goto LABEL_451;
                                               }
 
@@ -4969,7 +4969,7 @@ LABEL_445:
                                               goto LABEL_231;
                                             }
 
-                                            if (v541)
+                                            if (errorCopy2)
                                             {
                                               v306 = objc_alloc(MEMORY[0x1E696ABC0]);
                                               v307 = *MEMORY[0x1E698F240];
@@ -4984,7 +4984,7 @@ LABEL_445:
                                               v471 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v608 forKeys:&v607 count:1];
                                               v472 = 0;
                                               v503 = 0;
-                                              *v541 = [v306 initWithDomain:v307 code:2 userInfo:?];
+                                              *errorCopy2 = [v306 initWithDomain:v307 code:2 userInfo:?];
                                               goto LABEL_445;
                                             }
 
@@ -5008,7 +5008,7 @@ LABEL_439:
                                             goto LABEL_228;
                                           }
 
-                                          if (v541)
+                                          if (errorCopy2)
                                           {
                                             v301 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v302 = *MEMORY[0x1E698F240];
@@ -5023,7 +5023,7 @@ LABEL_439:
                                             v473 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v610 forKeys:&v609 count:1];
                                             v475 = 0;
                                             v503 = 0;
-                                            *v541 = [v301 initWithDomain:v302 code:2 userInfo:?];
+                                            *errorCopy2 = [v301 initWithDomain:v302 code:2 userInfo:?];
                                             goto LABEL_439;
                                           }
 
@@ -5048,7 +5048,7 @@ LABEL_433:
                                           goto LABEL_225;
                                         }
 
-                                        if (v541)
+                                        if (errorCopy2)
                                         {
                                           v294 = objc_alloc(MEMORY[0x1E696ABC0]);
                                           v295 = *MEMORY[0x1E698F240];
@@ -5063,7 +5063,7 @@ LABEL_433:
                                           v299 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v612 forKeys:&v611 count:1];
                                           v477 = 0;
                                           v503 = 0;
-                                          *v541 = [v294 initWithDomain:v295 code:2 userInfo:v299];
+                                          *errorCopy2 = [v294 initWithDomain:v295 code:2 userInfo:v299];
                                           v300 = v299;
                                           v39 = v533;
                                           v46 = v530;
@@ -5094,7 +5094,7 @@ LABEL_427:
                                         goto LABEL_222;
                                       }
 
-                                      if (v541)
+                                      if (errorCopy2)
                                       {
                                         v287 = objc_alloc(MEMORY[0x1E696ABC0]);
                                         v288 = *MEMORY[0x1E698F240];
@@ -5109,7 +5109,7 @@ LABEL_427:
                                         v292 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v614 forKeys:&v613 count:1];
                                         v478 = 0;
                                         v503 = 0;
-                                        *v541 = [v287 initWithDomain:v288 code:2 userInfo:v292];
+                                        *errorCopy2 = [v287 initWithDomain:v288 code:2 userInfo:v292];
                                         v293 = v292;
                                         v39 = v533;
                                         v46 = v530;
@@ -5139,7 +5139,7 @@ LABEL_421:
                                       goto LABEL_219;
                                     }
 
-                                    if (v541)
+                                    if (errorCopy2)
                                     {
                                       v282 = objc_alloc(MEMORY[0x1E696ABC0]);
                                       v283 = *MEMORY[0x1E698F240];
@@ -5154,7 +5154,7 @@ LABEL_421:
                                       v479 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v616 forKeys:&v615 count:1];
                                       v482 = 0;
                                       v503 = 0;
-                                      *v541 = [v282 initWithDomain:v283 code:2 userInfo:?];
+                                      *errorCopy2 = [v282 initWithDomain:v283 code:2 userInfo:?];
                                       goto LABEL_421;
                                     }
 
@@ -5178,7 +5178,7 @@ LABEL_415:
                                     goto LABEL_216;
                                   }
 
-                                  if (v541)
+                                  if (errorCopy2)
                                   {
                                     v277 = objc_alloc(MEMORY[0x1E696ABC0]);
                                     v278 = *MEMORY[0x1E698F240];
@@ -5193,7 +5193,7 @@ LABEL_415:
                                     v483 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v618 forKeys:&v617 count:1];
                                     v485 = 0;
                                     v503 = 0;
-                                    *v541 = [v277 initWithDomain:v278 code:2 userInfo:?];
+                                    *errorCopy2 = [v277 initWithDomain:v278 code:2 userInfo:?];
                                     goto LABEL_415;
                                   }
 
@@ -5217,7 +5217,7 @@ LABEL_409:
                                   goto LABEL_213;
                                 }
 
-                                if (v541)
+                                if (errorCopy2)
                                 {
                                   v272 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v273 = *MEMORY[0x1E698F240];
@@ -5232,7 +5232,7 @@ LABEL_409:
                                   v484 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v620 forKeys:&v619 count:1];
                                   v486 = 0;
                                   v503 = 0;
-                                  *v541 = [v272 initWithDomain:v273 code:2 userInfo:?];
+                                  *errorCopy2 = [v272 initWithDomain:v273 code:2 userInfo:?];
                                   goto LABEL_409;
                                 }
 
@@ -5256,7 +5256,7 @@ LABEL_403:
                                 goto LABEL_210;
                               }
 
-                              if (v541)
+                              if (errorCopy2)
                               {
                                 v267 = objc_alloc(MEMORY[0x1E696ABC0]);
                                 v268 = *MEMORY[0x1E698F240];
@@ -5271,7 +5271,7 @@ LABEL_403:
                                 v487 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v622 forKeys:&v621 count:1];
                                 v488 = 0;
                                 v503 = 0;
-                                *v541 = [v267 initWithDomain:v268 code:2 userInfo:?];
+                                *errorCopy2 = [v267 initWithDomain:v268 code:2 userInfo:?];
                                 goto LABEL_403;
                               }
 
@@ -5295,7 +5295,7 @@ LABEL_397:
                               goto LABEL_207;
                             }
 
-                            if (v541)
+                            if (errorCopy2)
                             {
                               v262 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v263 = *MEMORY[0x1E698F240];
@@ -5310,7 +5310,7 @@ LABEL_397:
                               v489 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v624 forKeys:&v623 count:1];
                               v490 = 0;
                               v503 = 0;
-                              *v541 = [v262 initWithDomain:v263 code:2 userInfo:?];
+                              *errorCopy2 = [v262 initWithDomain:v263 code:2 userInfo:?];
                               goto LABEL_397;
                             }
 
@@ -5334,7 +5334,7 @@ LABEL_391:
                             goto LABEL_204;
                           }
 
-                          if (v541)
+                          if (errorCopy2)
                           {
                             v257 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v258 = *MEMORY[0x1E698F240];
@@ -5349,7 +5349,7 @@ LABEL_391:
                             v491 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v626 forKeys:&v625 count:1];
                             v492 = 0;
                             v503 = 0;
-                            *v541 = [v257 initWithDomain:v258 code:2 userInfo:?];
+                            *errorCopy2 = [v257 initWithDomain:v258 code:2 userInfo:?];
                             goto LABEL_391;
                           }
 
@@ -5373,7 +5373,7 @@ LABEL_385:
                           goto LABEL_201;
                         }
 
-                        if (v541)
+                        if (errorCopy2)
                         {
                           v252 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v253 = *MEMORY[0x1E698F240];
@@ -5388,7 +5388,7 @@ LABEL_385:
                           v493 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v628 forKeys:&v627 count:1];
                           v494 = 0;
                           v503 = 0;
-                          *v541 = [v252 initWithDomain:v253 code:2 userInfo:?];
+                          *errorCopy2 = [v252 initWithDomain:v253 code:2 userInfo:?];
                           goto LABEL_385;
                         }
 
@@ -5412,7 +5412,7 @@ LABEL_379:
                         goto LABEL_198;
                       }
 
-                      if (v541)
+                      if (errorCopy2)
                       {
                         v237 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v238 = *MEMORY[0x1E698F240];
@@ -5427,7 +5427,7 @@ LABEL_379:
                         v495 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v630 forKeys:&v629 count:1];
                         v496 = 0;
                         v503 = 0;
-                        *v541 = [v237 initWithDomain:v238 code:2 userInfo:?];
+                        *errorCopy2 = [v237 initWithDomain:v238 code:2 userInfo:?];
                         goto LABEL_379;
                       }
 
@@ -5455,7 +5455,7 @@ LABEL_379:
                   }
 
                   v481 = v104;
-                  if (v541)
+                  if (errorCopy2)
                   {
                     v242 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v243 = *MEMORY[0x1E698F240];
@@ -5470,7 +5470,7 @@ LABEL_379:
                     v507 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v640 forKeys:&v639 count:1];
                     v508 = 0;
                     v17 = 0;
-                    *v541 = [v242 initWithDomain:v243 code:2 userInfo:?];
+                    *errorCopy2 = [v242 initWithDomain:v243 code:2 userInfo:?];
                     goto LABEL_377;
                   }
 
@@ -5493,7 +5493,7 @@ LABEL_371:
                   goto LABEL_138;
                 }
 
-                if (v541)
+                if (errorCopy2)
                 {
                   v168 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v169 = *MEMORY[0x1E698F240];
@@ -5508,7 +5508,7 @@ LABEL_371:
                   v509 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v642 forKeys:&v641 count:1];
                   v511 = 0;
                   v17 = 0;
-                  *v541 = [v168 initWithDomain:v169 code:2 userInfo:?];
+                  *errorCopy2 = [v168 initWithDomain:v169 code:2 userInfo:?];
                   v39 = v533;
                   v46 = v530;
                   goto LABEL_371;
@@ -5534,7 +5534,7 @@ LABEL_343:
                 goto LABEL_135;
               }
 
-              if (v541)
+              if (errorCopy2)
               {
                 v161 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v162 = *MEMORY[0x1E698F240];
@@ -5552,7 +5552,7 @@ LABEL_343:
                 v512 = v166;
                 v514 = 0;
                 v17 = 0;
-                *v541 = [v167 initWithDomain:v162 code:2 userInfo:?];
+                *errorCopy2 = [v167 initWithDomain:v162 code:2 userInfo:?];
                 v39 = v533;
                 v46 = v530;
                 v152 = v513;
@@ -5578,7 +5578,7 @@ LABEL_333:
               goto LABEL_132;
             }
 
-            if (v541)
+            if (errorCopy2)
             {
               v153 = objc_alloc(MEMORY[0x1E696ABC0]);
               v154 = *MEMORY[0x1E698F240];
@@ -5595,7 +5595,7 @@ LABEL_333:
               v160 = v158;
               v152 = 0;
               v17 = 0;
-              *v541 = [v159 initWithDomain:v154 code:2 userInfo:v158];
+              *errorCopy2 = [v159 initWithDomain:v154 code:2 userInfo:v158];
               v39 = v533;
               v46 = v530;
               goto LABEL_333;
@@ -5611,7 +5611,7 @@ LABEL_333:
           goto LABEL_600;
         }
 
-        if (v541)
+        if (errorCopy2)
         {
           v130 = objc_alloc(MEMORY[0x1E696ABC0]);
           v131 = *MEMORY[0x1E698F240];
@@ -5626,7 +5626,7 @@ LABEL_333:
           v520 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v652 forKeys:&v651 count:1];
           v519 = 0;
           v17 = 0;
-          *v541 = [v130 initWithDomain:v131 code:2 userInfo:?];
+          *errorCopy2 = [v130 initWithDomain:v131 code:2 userInfo:?];
           v39 = v533;
           v46 = v530;
           v84 = v528;
@@ -5642,7 +5642,7 @@ LABEL_333:
         v122 = v521;
 LABEL_604:
 
-        v6 = v102;
+        dictionaryCopy = v102;
         v21 = v535;
         v7 = v537;
 LABEL_605:
@@ -5661,9 +5661,9 @@ LABEL_607:
       }
 
       v7 = v537;
-      if (v541)
+      if (errorCopy2)
       {
-        v102 = v6;
+        v102 = dictionaryCopy;
         v123 = objc_alloc(MEMORY[0x1E696ABC0]);
         v124 = *MEMORY[0x1E698F240];
         v653 = *MEMORY[0x1E696A578];
@@ -5678,7 +5678,7 @@ LABEL_607:
         v129 = [v123 initWithDomain:v124 code:2 userInfo:v103];
         v122 = 0;
         v17 = 0;
-        *v541 = v129;
+        *errorCopy2 = v129;
         v39 = v533;
         v46 = v530;
         v84 = v528;
@@ -5716,7 +5716,7 @@ LABEL_105:
     goto LABEL_105;
   }
 
-  if (v541)
+  if (errorCopy2)
   {
     v141 = objc_alloc(MEMORY[0x1E696ABC0]);
     v142 = *MEMORY[0x1E698F240];
@@ -5730,7 +5730,7 @@ LABEL_105:
     v658 = v526;
     v524 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v658 forKeys:&v657 count:1];
     v527 = 0;
-    *v541 = [v141 initWithDomain:v142 code:2 userInfo:?];
+    *errorCopy2 = [v141 initWithDomain:v142 code:2 userInfo:?];
     v7 = v537;
     v17 = 0;
     v39 = v533;
@@ -5770,7 +5770,7 @@ LABEL_616:
   v8 = v545;
 LABEL_617:
 
-  self = v547;
+  self = selfCopy;
 LABEL_618:
 
   v384 = *MEMORY[0x1E69E9840];
@@ -5781,15 +5781,15 @@ LABEL_618:
 {
   v3 = objc_opt_new();
   [(BMGazeEnrollmentSample *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_userProfileId)
   {
     PBDataWriterWriteStringField();
@@ -6152,14 +6152,14 @@ LABEL_618:
   v68 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v9.receiver = self;
   v9.super_class = BMGazeEnrollmentSample;
   v5 = [(BMEventBase *)&v9 init];
   v6 = v5;
-  if (v5 && !BMGazeEnrollmentSampleReadFrom(v5, v4))
+  if (v5 && !BMGazeEnrollmentSampleReadFrom(v5, fromCopy))
   {
     v7 = 0;
   }
@@ -6181,8 +6181,8 @@ LABEL_618:
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v4 = [(BMGazeEnrollmentSample *)self enrollmentFailureReasons];
-  v5 = [v4 countByEnumeratingWithState:&v116 objects:v120 count:16];
+  enrollmentFailureReasons = [(BMGazeEnrollmentSample *)self enrollmentFailureReasons];
+  v5 = [enrollmentFailureReasons countByEnumeratingWithState:&v116 objects:v120 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6193,7 +6193,7 @@ LABEL_618:
       {
         if (*v117 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(enrollmentFailureReasons);
         }
 
         v9 = *(*(&v116 + 1) + 8 * i);
@@ -6206,7 +6206,7 @@ LABEL_618:
         [v3 appendString:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v116 objects:v120 count:16];
+      v6 = [enrollmentFailureReasons countByEnumeratingWithState:&v116 objects:v120 count:16];
     }
 
     while (v6);
@@ -6214,7 +6214,7 @@ LABEL_618:
 
   [v3 appendString:@"]"];
   v67 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v115 = [(BMGazeEnrollmentSample *)self userProfileId];
+  userProfileId = [(BMGazeEnrollmentSample *)self userProfileId];
   v114 = BMOasisAnalyticsGazeSampleEyeSideAsString([(BMGazeEnrollmentSample *)self eyeSide]);
   v113 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMGazeEnrollmentSample isOffline](self, "isOffline")}];
   v11 = MEMORY[0x1E696AD98];
@@ -6353,71 +6353,71 @@ LABEL_618:
   v53 = MEMORY[0x1E696AD98];
   [(BMGazeEnrollmentSample *)self brightness3topLeftStimulusSignedResidualPitch];
   v59 = [v53 numberWithFloat:?];
-  v54 = [(BMGazeEnrollmentSample *)self rxuuid];
+  rxuuid = [(BMGazeEnrollmentSample *)self rxuuid];
   v55 = BMGazeEnrollmentSampleEnrollmentReasonAsString([(BMGazeEnrollmentSample *)self enrollmentReason]);
   v58 = BMGazeEnrollmentSampleEnrollmentDeviceTypeAsString([(BMGazeEnrollmentSample *)self enrollmentDeviceType]);
-  v68 = [v67 initWithFormat:@"BMGazeEnrollmentSample with userProfileId: %@, eyeSide: %@, isOffline: %@, enrollmentResidual75thPercentile: %@, enrollmentResidual95thPercentile: %@, enrollmentResidualMedian: %@, dominantEye: %@, monocularQuality: %@, enrollmentFailureReasons: %@, binocQuality: %@, fixationCount: %@, fixationCountLowBrightness: %@, fixationCountMediumBrightness: %@, fixationCountHighBrightness: %@, stimulusCount: %@, stimulusCountLowBrightness: %@, stimulusCountMediumBrightness: %@, stimulusCountHighBrightness: %@, accessibilityMode: %@, eyeboxStatus: %@, centralStimulusSignedResidualYaw: %@, brightness1topStimulusSignedResidualYaw: %@, brightness1topRightStimulusSignedResidualYaw: %@, brightness1bottomRightStimulusSignedResidualYaw: %@, brightness1bottomStimulusSignedResidualYaw: %@, brightness1bottomLeftStimulusSignedResidualYaw: %@, brightness1topLeftStimulusSignedResidualYaw: %@, brightness2topStimulusSignedResidualYaw: %@, brightness2topRightStimulusSignedResidualYaw: %@, brightness2bottomRightStimulusSignedResidualYaw: %@, brightness2bottomStimulusSignedResidualYaw: %@, brightness2bottomLeftStimulusSignedResidualYaw: %@, brightness2topLeftStimulusSignedResidualYaw: %@, brightness3topStimulusSignedResidualYaw: %@, brightness3topRightStimulusSignedResidualYaw: %@, brightness3bottomRightStimulusSignedResidualYaw: %@, brightness3bottomStimulusSignedResidualYaw: %@, brightness3bottomLeftStimulusSignedResidualYaw: %@, brightness3topLeftStimulusSignedResidualYaw: %@, centralStimulusSignedResidualPitch: %@, brightness1topStimulusSignedResidualPitch: %@, brightness1topRightStimulusSignedResidualPitch: %@, brightness1bottomRightStimulusSignedResidualPitch: %@, brightness1bottomStimulusSignedResidualPitch: %@, brightness1bottomLeftStimulusSignedResidualPitch: %@, brightness1topLeftStimulusSignedResidualPitch: %@, brightness2topStimulusSignedResidualPitch: %@, brightness2topRightStimulusSignedResidualPitch: %@, brightness2bottomRightStimulusSignedResidualPitch: %@, brightness2bottomStimulusSignedResidualPitch: %@, brightness2bottomLeftStimulusSignedResidualPitch: %@, brightness2topLeftStimulusSignedResidualPitch: %@, brightness3topStimulusSignedResidualPitch: %@, brightness3topRightStimulusSignedResidualPitch: %@, brightness3bottomRightStimulusSignedResidualPitch: %@, brightness3bottomStimulusSignedResidualPitch: %@, brightness3bottomLeftStimulusSignedResidualPitch: %@, brightness3topLeftStimulusSignedResidualPitch: %@, rxuuid: %@, enrollmentReason: %@, enrollmentDeviceType: %@", v115, v114, v113, v112, v111, v110, v109, v108, v3, v107, v106, v105, v104, v103, v102, v101, v100, v99, v98, v97, v96, v95, v94, v90, v92, v93, v91, v85, v89, v83, v88, v87, v86, v84, v79, v82, v77, v81, v66, v80, v78, v76, v65, v75, v64, v74, v63, v73, v72, v71, v70, v69, v62, v61, v49, v60, v52, v59, v54, v55];
+  v68 = [v67 initWithFormat:@"BMGazeEnrollmentSample with userProfileId: %@, eyeSide: %@, isOffline: %@, enrollmentResidual75thPercentile: %@, enrollmentResidual95thPercentile: %@, enrollmentResidualMedian: %@, dominantEye: %@, monocularQuality: %@, enrollmentFailureReasons: %@, binocQuality: %@, fixationCount: %@, fixationCountLowBrightness: %@, fixationCountMediumBrightness: %@, fixationCountHighBrightness: %@, stimulusCount: %@, stimulusCountLowBrightness: %@, stimulusCountMediumBrightness: %@, stimulusCountHighBrightness: %@, accessibilityMode: %@, eyeboxStatus: %@, centralStimulusSignedResidualYaw: %@, brightness1topStimulusSignedResidualYaw: %@, brightness1topRightStimulusSignedResidualYaw: %@, brightness1bottomRightStimulusSignedResidualYaw: %@, brightness1bottomStimulusSignedResidualYaw: %@, brightness1bottomLeftStimulusSignedResidualYaw: %@, brightness1topLeftStimulusSignedResidualYaw: %@, brightness2topStimulusSignedResidualYaw: %@, brightness2topRightStimulusSignedResidualYaw: %@, brightness2bottomRightStimulusSignedResidualYaw: %@, brightness2bottomStimulusSignedResidualYaw: %@, brightness2bottomLeftStimulusSignedResidualYaw: %@, brightness2topLeftStimulusSignedResidualYaw: %@, brightness3topStimulusSignedResidualYaw: %@, brightness3topRightStimulusSignedResidualYaw: %@, brightness3bottomRightStimulusSignedResidualYaw: %@, brightness3bottomStimulusSignedResidualYaw: %@, brightness3bottomLeftStimulusSignedResidualYaw: %@, brightness3topLeftStimulusSignedResidualYaw: %@, centralStimulusSignedResidualPitch: %@, brightness1topStimulusSignedResidualPitch: %@, brightness1topRightStimulusSignedResidualPitch: %@, brightness1bottomRightStimulusSignedResidualPitch: %@, brightness1bottomStimulusSignedResidualPitch: %@, brightness1bottomLeftStimulusSignedResidualPitch: %@, brightness1topLeftStimulusSignedResidualPitch: %@, brightness2topStimulusSignedResidualPitch: %@, brightness2topRightStimulusSignedResidualPitch: %@, brightness2bottomRightStimulusSignedResidualPitch: %@, brightness2bottomStimulusSignedResidualPitch: %@, brightness2bottomLeftStimulusSignedResidualPitch: %@, brightness2topLeftStimulusSignedResidualPitch: %@, brightness3topStimulusSignedResidualPitch: %@, brightness3topRightStimulusSignedResidualPitch: %@, brightness3bottomRightStimulusSignedResidualPitch: %@, brightness3bottomStimulusSignedResidualPitch: %@, brightness3bottomLeftStimulusSignedResidualPitch: %@, brightness3topLeftStimulusSignedResidualPitch: %@, rxuuid: %@, enrollmentReason: %@, enrollmentDeviceType: %@", userProfileId, v114, v113, v112, v111, v110, v109, v108, v3, v107, v106, v105, v104, v103, v102, v101, v100, v99, v98, v97, v96, v95, v94, v90, v92, v93, v91, v85, v89, v83, v88, v87, v86, v84, v79, v82, v77, v81, v66, v80, v78, v76, v65, v75, v64, v74, v63, v73, v72, v71, v70, v69, v62, v61, v49, v60, v52, v59, rxuuid, v55];
 
   v56 = *MEMORY[0x1E69E9840];
 
   return v68;
 }
 
-- (BMGazeEnrollmentSample)initWithUserProfileId:(id)a3 eyeSide:(int)a4 isOffline:(id)a5 enrollmentResidual75thPercentile:(id)a6 enrollmentResidual95thPercentile:(id)a7 enrollmentResidualMedian:(id)a8 dominantEye:(int)a9 monocularQuality:(int)a10 enrollmentFailureReasons:(id)a11 binocQuality:(int)a12 fixationCount:(id)a13 fixationCountLowBrightness:(id)a14 fixationCountMediumBrightness:(id)a15 fixationCountHighBrightness:(id)a16 stimulusCount:(id)a17 stimulusCountLowBrightness:(id)a18 stimulusCountMediumBrightness:(id)a19 stimulusCountHighBrightness:(id)a20 accessibilityMode:(int)a21 eyeboxStatus:(int)a22 centralStimulusSignedResidualYaw:(id)a23 brightness1topStimulusSignedResidualYaw:(id)a24 brightness1topRightStimulusSignedResidualYaw:(id)a25 brightness1bottomRightStimulusSignedResidualYaw:(id)a26 brightness1bottomStimulusSignedResidualYaw:(id)a27 brightness1bottomLeftStimulusSignedResidualYaw:(id)a28 brightness1topLeftStimulusSignedResidualYaw:(id)a29 brightness2topStimulusSignedResidualYaw:(id)a30 brightness2topRightStimulusSignedResidualYaw:(id)a31 brightness2bottomRightStimulusSignedResidualYaw:(id)a32 brightness2bottomStimulusSignedResidualYaw:(id)a33 brightness2bottomLeftStimulusSignedResidualYaw:(id)a34 brightness2topLeftStimulusSignedResidualYaw:(id)a35 brightness3topStimulusSignedResidualYaw:(id)a36 brightness3topRightStimulusSignedResidualYaw:(id)a37 brightness3bottomRightStimulusSignedResidualYaw:(id)a38 brightness3bottomStimulusSignedResidualYaw:(id)a39 brightness3bottomLeftStimulusSignedResidualYaw:(id)a40 brightness3topLeftStimulusSignedResidualYaw:(id)a41 centralStimulusSignedResidualPitch:(id)a42 brightness1topStimulusSignedResidualPitch:(id)a43 brightness1topRightStimulusSignedResidualPitch:(id)a44 brightness1bottomRightStimulusSignedResidualPitch:(id)a45 brightness1bottomStimulusSignedResidualPitch:(id)a46 brightness1bottomLeftStimulusSignedResidualPitch:(id)a47 brightness1topLeftStimulusSignedResidualPitch:(id)a48 brightness2topStimulusSignedResidualPitch:(id)a49 brightness2topRightStimulusSignedResidualPitch:(id)a50 brightness2bottomRightStimulusSignedResidualPitch:(id)a51 brightness2bottomStimulusSignedResidualPitch:(id)a52 brightness2bottomLeftStimulusSignedResidualPitch:(id)a53 brightness2topLeftStimulusSignedResidualPitch:(id)a54 brightness3topStimulusSignedResidualPitch:(id)a55 brightness3topRightStimulusSignedResidualPitch:(id)a56 brightness3bottomRightStimulusSignedResidualPitch:(id)a57 brightness3bottomStimulusSignedResidualPitch:(id)a58 brightness3bottomLeftStimulusSignedResidualPitch:(id)a59 brightness3topLeftStimulusSignedResidualPitch:(id)a60 rxuuid:(id)a61 enrollmentReason:(int)a62 enrollmentDeviceType:(int)a63
+- (BMGazeEnrollmentSample)initWithUserProfileId:(id)id eyeSide:(int)side isOffline:(id)offline enrollmentResidual75thPercentile:(id)percentile enrollmentResidual95thPercentile:(id)residual95thPercentile enrollmentResidualMedian:(id)median dominantEye:(int)eye monocularQuality:(int)self0 enrollmentFailureReasons:(id)self1 binocQuality:(int)self2 fixationCount:(id)self3 fixationCountLowBrightness:(id)self4 fixationCountMediumBrightness:(id)self5 fixationCountHighBrightness:(id)self6 stimulusCount:(id)self7 stimulusCountLowBrightness:(id)self8 stimulusCountMediumBrightness:(id)self9 stimulusCountHighBrightness:(id)countHighBrightness accessibilityMode:(int)mode eyeboxStatus:(int)status centralStimulusSignedResidualYaw:(id)yaw brightness1topStimulusSignedResidualYaw:(id)residualYaw brightness1topRightStimulusSignedResidualYaw:(id)signedResidualYaw brightness1bottomRightStimulusSignedResidualYaw:(id)stimulusSignedResidualYaw brightness1bottomStimulusSignedResidualYaw:(id)brightness1bottomStimulusSignedResidualYaw brightness1bottomLeftStimulusSignedResidualYaw:(id)leftStimulusSignedResidualYaw brightness1topLeftStimulusSignedResidualYaw:(id)brightness1topLeftStimulusSignedResidualYaw brightness2topStimulusSignedResidualYaw:(id)id0 brightness2topRightStimulusSignedResidualYaw:(id)id1 brightness2bottomRightStimulusSignedResidualYaw:(id)id2 brightness2bottomStimulusSignedResidualYaw:(id)id3 brightness2bottomLeftStimulusSignedResidualYaw:(id)id4 brightness2topLeftStimulusSignedResidualYaw:(id)id5 brightness3topStimulusSignedResidualYaw:(id)id6 brightness3topRightStimulusSignedResidualYaw:(id)id7 brightness3bottomRightStimulusSignedResidualYaw:(id)id8 brightness3bottomStimulusSignedResidualYaw:(id)id9 brightness3bottomLeftStimulusSignedResidualYaw:(id)side0 brightness3topLeftStimulusSignedResidualYaw:(id)side1 centralStimulusSignedResidualPitch:(id)side2 brightness1topStimulusSignedResidualPitch:(id)side3 brightness1topRightStimulusSignedResidualPitch:(id)side4 brightness1bottomRightStimulusSignedResidualPitch:(id)side5 brightness1bottomStimulusSignedResidualPitch:(id)side6 brightness1bottomLeftStimulusSignedResidualPitch:(id)side7 brightness1topLeftStimulusSignedResidualPitch:(id)side8 brightness2topStimulusSignedResidualPitch:(id)side9 brightness2topRightStimulusSignedResidualPitch:(id)offline0 brightness2bottomRightStimulusSignedResidualPitch:(id)offline1 brightness2bottomStimulusSignedResidualPitch:(id)offline2 brightness2bottomLeftStimulusSignedResidualPitch:(id)offline3 brightness2topLeftStimulusSignedResidualPitch:(id)offline4 brightness3topStimulusSignedResidualPitch:(id)offline5 brightness3topRightStimulusSignedResidualPitch:(id)offline6 brightness3bottomRightStimulusSignedResidualPitch:(id)offline7 brightness3bottomStimulusSignedResidualPitch:(id)offline8 brightness3bottomLeftStimulusSignedResidualPitch:(id)offline9 brightness3topLeftStimulusSignedResidualPitch:(id)percentile0 rxuuid:(id)percentile1 enrollmentReason:(int)percentile2 enrollmentDeviceType:(int)percentile3
 {
-  v132 = a3;
-  v173 = a5;
-  v174 = a6;
-  v172 = a7;
-  v171 = a8;
-  v131 = a11;
-  v169 = a13;
-  v66 = a14;
-  v67 = a15;
-  v68 = a16;
-  v69 = a17;
-  v70 = a18;
-  v71 = a19;
-  v72 = a20;
-  v73 = a23;
-  v74 = a24;
-  v168 = a25;
-  v167 = a26;
-  v166 = a27;
-  v165 = a28;
-  v164 = a29;
-  v163 = a30;
-  v162 = a31;
-  v161 = a32;
-  v160 = a33;
-  v159 = a34;
-  v158 = a35;
-  v157 = a36;
-  v156 = a37;
-  v155 = a38;
-  v154 = a39;
-  v153 = a40;
-  v152 = a41;
-  v151 = a42;
-  v150 = a43;
-  v149 = a44;
-  v148 = a45;
-  v147 = a46;
-  v146 = a47;
-  v145 = a48;
-  v144 = a49;
-  v143 = a50;
-  v142 = a51;
-  v141 = a52;
-  v140 = a53;
-  v139 = a54;
-  v138 = a55;
-  v137 = a56;
-  v136 = a57;
-  v135 = a58;
-  v134 = a59;
-  v133 = a60;
-  v130 = a61;
+  idCopy = id;
+  offlineCopy = offline;
+  percentileCopy = percentile;
+  residual95thPercentileCopy = residual95thPercentile;
+  medianCopy = median;
+  reasonsCopy = reasons;
+  countCopy = count;
+  brightnessCopy = brightness;
+  mediumBrightnessCopy = mediumBrightness;
+  highBrightnessCopy = highBrightness;
+  stimulusCountCopy = stimulusCount;
+  lowBrightnessCopy = lowBrightness;
+  countMediumBrightnessCopy = countMediumBrightness;
+  countHighBrightnessCopy = countHighBrightness;
+  yawCopy = yaw;
+  residualYawCopy = residualYaw;
+  signedResidualYawCopy = signedResidualYaw;
+  stimulusSignedResidualYawCopy = stimulusSignedResidualYaw;
+  brightness1bottomStimulusSignedResidualYawCopy = brightness1bottomStimulusSignedResidualYaw;
+  leftStimulusSignedResidualYawCopy = leftStimulusSignedResidualYaw;
+  brightness1topLeftStimulusSignedResidualYawCopy = brightness1topLeftStimulusSignedResidualYaw;
+  brightness2topStimulusSignedResidualYawCopy = brightness2topStimulusSignedResidualYaw;
+  rightStimulusSignedResidualYawCopy = rightStimulusSignedResidualYaw;
+  brightness2bottomRightStimulusSignedResidualYawCopy = brightness2bottomRightStimulusSignedResidualYaw;
+  brightness2bottomStimulusSignedResidualYawCopy = brightness2bottomStimulusSignedResidualYaw;
+  brightness2bottomLeftStimulusSignedResidualYawCopy = brightness2bottomLeftStimulusSignedResidualYaw;
+  brightness2topLeftStimulusSignedResidualYawCopy = brightness2topLeftStimulusSignedResidualYaw;
+  brightness3topStimulusSignedResidualYawCopy = brightness3topStimulusSignedResidualYaw;
+  brightness3topRightStimulusSignedResidualYawCopy = brightness3topRightStimulusSignedResidualYaw;
+  brightness3bottomRightStimulusSignedResidualYawCopy = brightness3bottomRightStimulusSignedResidualYaw;
+  brightness3bottomStimulusSignedResidualYawCopy = brightness3bottomStimulusSignedResidualYaw;
+  brightness3bottomLeftStimulusSignedResidualYawCopy = brightness3bottomLeftStimulusSignedResidualYaw;
+  brightness3topLeftStimulusSignedResidualYawCopy = brightness3topLeftStimulusSignedResidualYaw;
+  pitchCopy = pitch;
+  residualPitchCopy = residualPitch;
+  signedResidualPitchCopy = signedResidualPitch;
+  stimulusSignedResidualPitchCopy = stimulusSignedResidualPitch;
+  brightness1bottomStimulusSignedResidualPitchCopy = brightness1bottomStimulusSignedResidualPitch;
+  leftStimulusSignedResidualPitchCopy = leftStimulusSignedResidualPitch;
+  brightness1topLeftStimulusSignedResidualPitchCopy = brightness1topLeftStimulusSignedResidualPitch;
+  brightness2topStimulusSignedResidualPitchCopy = brightness2topStimulusSignedResidualPitch;
+  rightStimulusSignedResidualPitchCopy = rightStimulusSignedResidualPitch;
+  brightness2bottomRightStimulusSignedResidualPitchCopy = brightness2bottomRightStimulusSignedResidualPitch;
+  brightness2bottomStimulusSignedResidualPitchCopy = brightness2bottomStimulusSignedResidualPitch;
+  brightness2bottomLeftStimulusSignedResidualPitchCopy = brightness2bottomLeftStimulusSignedResidualPitch;
+  brightness2topLeftStimulusSignedResidualPitchCopy = brightness2topLeftStimulusSignedResidualPitch;
+  brightness3topStimulusSignedResidualPitchCopy = brightness3topStimulusSignedResidualPitch;
+  brightness3topRightStimulusSignedResidualPitchCopy = brightness3topRightStimulusSignedResidualPitch;
+  brightness3bottomRightStimulusSignedResidualPitchCopy = brightness3bottomRightStimulusSignedResidualPitch;
+  brightness3bottomStimulusSignedResidualPitchCopy = brightness3bottomStimulusSignedResidualPitch;
+  brightness3bottomLeftStimulusSignedResidualPitchCopy = brightness3bottomLeftStimulusSignedResidualPitch;
+  brightness3topLeftStimulusSignedResidualPitchCopy = brightness3topLeftStimulusSignedResidualPitch;
+  rxuuidCopy = rxuuid;
   v175.receiver = self;
   v175.super_class = BMGazeEnrollmentSample;
   v75 = [(BMEventBase *)&v175 init];
@@ -6425,12 +6425,12 @@ LABEL_618:
   if (v75)
   {
     v75->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v75->_userProfileId, a3);
-    v75->_eyeSide = a4;
-    if (v173)
+    objc_storeStrong(&v75->_userProfileId, id);
+    v75->_eyeSide = side;
+    if (offlineCopy)
     {
       v75->_hasIsOffline = 1;
-      v75->_isOffline = [v173 BOOLValue];
+      v75->_isOffline = [offlineCopy BOOLValue];
     }
 
     else
@@ -6439,10 +6439,10 @@ LABEL_618:
       v75->_isOffline = 0;
     }
 
-    if (v174)
+    if (percentileCopy)
     {
       v75->_hasEnrollmentResidual75thPercentile = 1;
-      [v174 floatValue];
+      [percentileCopy floatValue];
     }
 
     else
@@ -6452,10 +6452,10 @@ LABEL_618:
     }
 
     v75->_enrollmentResidual75thPercentile = v76;
-    if (v172)
+    if (residual95thPercentileCopy)
     {
       v75->_hasEnrollmentResidual95thPercentile = 1;
-      [v172 floatValue];
+      [residual95thPercentileCopy floatValue];
     }
 
     else
@@ -6465,10 +6465,10 @@ LABEL_618:
     }
 
     v75->_enrollmentResidual95thPercentile = v77;
-    if (v171)
+    if (medianCopy)
     {
       v75->_hasEnrollmentResidualMedian = 1;
-      [v171 floatValue];
+      [medianCopy floatValue];
     }
 
     else
@@ -6478,15 +6478,15 @@ LABEL_618:
     }
 
     v75->_enrollmentResidualMedian = v78;
-    v75->_dominantEye = a9;
-    v75->_monocularQuality = a10;
-    objc_storeStrong(&v75->_enrollmentFailureReasons, a11);
-    v75->_binocQuality = a12;
-    v79 = v169;
-    if (v169)
+    v75->_dominantEye = eye;
+    v75->_monocularQuality = quality;
+    objc_storeStrong(&v75->_enrollmentFailureReasons, reasons);
+    v75->_binocQuality = binocQuality;
+    unsignedIntValue = countCopy;
+    if (countCopy)
     {
       v75->_hasFixationCount = 1;
-      v79 = [v169 unsignedIntValue];
+      unsignedIntValue = [countCopy unsignedIntValue];
     }
 
     else
@@ -6494,104 +6494,104 @@ LABEL_618:
       v75->_hasFixationCount = 0;
     }
 
-    v75->_fixationCount = v79;
-    if (v66)
+    v75->_fixationCount = unsignedIntValue;
+    if (brightnessCopy)
     {
       v75->_hasFixationCountLowBrightness = 1;
-      v80 = [v66 unsignedIntValue];
+      unsignedIntValue2 = [brightnessCopy unsignedIntValue];
     }
 
     else
     {
-      v80 = 0;
+      unsignedIntValue2 = 0;
       v75->_hasFixationCountLowBrightness = 0;
     }
 
-    v75->_fixationCountLowBrightness = v80;
-    if (v67)
+    v75->_fixationCountLowBrightness = unsignedIntValue2;
+    if (mediumBrightnessCopy)
     {
       v75->_hasFixationCountMediumBrightness = 1;
-      v81 = [v67 unsignedIntValue];
+      unsignedIntValue3 = [mediumBrightnessCopy unsignedIntValue];
     }
 
     else
     {
-      v81 = 0;
+      unsignedIntValue3 = 0;
       v75->_hasFixationCountMediumBrightness = 0;
     }
 
-    v75->_fixationCountMediumBrightness = v81;
-    if (v68)
+    v75->_fixationCountMediumBrightness = unsignedIntValue3;
+    if (highBrightnessCopy)
     {
       v75->_hasFixationCountHighBrightness = 1;
-      v82 = [v68 unsignedIntValue];
+      unsignedIntValue4 = [highBrightnessCopy unsignedIntValue];
     }
 
     else
     {
-      v82 = 0;
+      unsignedIntValue4 = 0;
       v75->_hasFixationCountHighBrightness = 0;
     }
 
-    v75->_fixationCountHighBrightness = v82;
-    if (v69)
+    v75->_fixationCountHighBrightness = unsignedIntValue4;
+    if (stimulusCountCopy)
     {
       v75->_hasStimulusCount = 1;
-      v83 = [v69 unsignedIntValue];
+      unsignedIntValue5 = [stimulusCountCopy unsignedIntValue];
     }
 
     else
     {
-      v83 = 0;
+      unsignedIntValue5 = 0;
       v75->_hasStimulusCount = 0;
     }
 
-    v75->_stimulusCount = v83;
-    if (v70)
+    v75->_stimulusCount = unsignedIntValue5;
+    if (lowBrightnessCopy)
     {
       v75->_hasStimulusCountLowBrightness = 1;
-      v84 = [v70 unsignedIntValue];
+      unsignedIntValue6 = [lowBrightnessCopy unsignedIntValue];
     }
 
     else
     {
-      v84 = 0;
+      unsignedIntValue6 = 0;
       v75->_hasStimulusCountLowBrightness = 0;
     }
 
-    v75->_stimulusCountLowBrightness = v84;
-    if (v71)
+    v75->_stimulusCountLowBrightness = unsignedIntValue6;
+    if (countMediumBrightnessCopy)
     {
       v75->_hasStimulusCountMediumBrightness = 1;
-      v85 = [v71 unsignedIntValue];
+      unsignedIntValue7 = [countMediumBrightnessCopy unsignedIntValue];
     }
 
     else
     {
-      v85 = 0;
+      unsignedIntValue7 = 0;
       v75->_hasStimulusCountMediumBrightness = 0;
     }
 
-    v75->_stimulusCountMediumBrightness = v85;
-    if (v72)
+    v75->_stimulusCountMediumBrightness = unsignedIntValue7;
+    if (countHighBrightnessCopy)
     {
       v75->_hasStimulusCountHighBrightness = 1;
-      v86 = [v72 unsignedIntValue];
+      unsignedIntValue8 = [countHighBrightnessCopy unsignedIntValue];
     }
 
     else
     {
-      v86 = 0;
+      unsignedIntValue8 = 0;
       v75->_hasStimulusCountHighBrightness = 0;
     }
 
-    v75->_stimulusCountHighBrightness = v86;
-    v75->_accessibilityMode = a21;
-    v75->_eyeboxStatus = a22;
-    if (v73)
+    v75->_stimulusCountHighBrightness = unsignedIntValue8;
+    v75->_accessibilityMode = mode;
+    v75->_eyeboxStatus = status;
+    if (yawCopy)
     {
       v75->_hasCentralStimulusSignedResidualYaw = 1;
-      [v73 floatValue];
+      [yawCopy floatValue];
     }
 
     else
@@ -6601,10 +6601,10 @@ LABEL_618:
     }
 
     v75->_centralStimulusSignedResidualYaw = v87;
-    if (v74)
+    if (residualYawCopy)
     {
       v75->_hasBrightness1topStimulusSignedResidualYaw = 1;
-      [v74 floatValue];
+      [residualYawCopy floatValue];
     }
 
     else
@@ -6614,10 +6614,10 @@ LABEL_618:
     }
 
     v75->_brightness1topStimulusSignedResidualYaw = v88;
-    if (v168)
+    if (signedResidualYawCopy)
     {
       v75->_hasBrightness1topRightStimulusSignedResidualYaw = 1;
-      [v168 floatValue];
+      [signedResidualYawCopy floatValue];
     }
 
     else
@@ -6627,10 +6627,10 @@ LABEL_618:
     }
 
     v75->_brightness1topRightStimulusSignedResidualYaw = v89;
-    if (v167)
+    if (stimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness1bottomRightStimulusSignedResidualYaw = 1;
-      [v167 floatValue];
+      [stimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6640,10 +6640,10 @@ LABEL_618:
     }
 
     v75->_brightness1bottomRightStimulusSignedResidualYaw = v90;
-    if (v166)
+    if (brightness1bottomStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness1bottomStimulusSignedResidualYaw = 1;
-      [v166 floatValue];
+      [brightness1bottomStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6653,10 +6653,10 @@ LABEL_618:
     }
 
     v75->_brightness1bottomStimulusSignedResidualYaw = v91;
-    if (v165)
+    if (leftStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness1bottomLeftStimulusSignedResidualYaw = 1;
-      [v165 floatValue];
+      [leftStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6666,10 +6666,10 @@ LABEL_618:
     }
 
     v75->_brightness1bottomLeftStimulusSignedResidualYaw = v92;
-    if (v164)
+    if (brightness1topLeftStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness1topLeftStimulusSignedResidualYaw = 1;
-      [v164 floatValue];
+      [brightness1topLeftStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6679,10 +6679,10 @@ LABEL_618:
     }
 
     v75->_brightness1topLeftStimulusSignedResidualYaw = v93;
-    if (v163)
+    if (brightness2topStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness2topStimulusSignedResidualYaw = 1;
-      [v163 floatValue];
+      [brightness2topStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6692,10 +6692,10 @@ LABEL_618:
     }
 
     v75->_brightness2topStimulusSignedResidualYaw = v94;
-    if (v162)
+    if (rightStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness2topRightStimulusSignedResidualYaw = 1;
-      [v162 floatValue];
+      [rightStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6705,10 +6705,10 @@ LABEL_618:
     }
 
     v75->_brightness2topRightStimulusSignedResidualYaw = v95;
-    if (v161)
+    if (brightness2bottomRightStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness2bottomRightStimulusSignedResidualYaw = 1;
-      [v161 floatValue];
+      [brightness2bottomRightStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6718,10 +6718,10 @@ LABEL_618:
     }
 
     v75->_brightness2bottomRightStimulusSignedResidualYaw = v96;
-    if (v160)
+    if (brightness2bottomStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness2bottomStimulusSignedResidualYaw = 1;
-      [v160 floatValue];
+      [brightness2bottomStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6731,10 +6731,10 @@ LABEL_618:
     }
 
     v75->_brightness2bottomStimulusSignedResidualYaw = v97;
-    if (v159)
+    if (brightness2bottomLeftStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness2bottomLeftStimulusSignedResidualYaw = 1;
-      [v159 floatValue];
+      [brightness2bottomLeftStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6744,10 +6744,10 @@ LABEL_618:
     }
 
     v75->_brightness2bottomLeftStimulusSignedResidualYaw = v98;
-    if (v158)
+    if (brightness2topLeftStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness2topLeftStimulusSignedResidualYaw = 1;
-      [v158 floatValue];
+      [brightness2topLeftStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6757,10 +6757,10 @@ LABEL_618:
     }
 
     v75->_brightness2topLeftStimulusSignedResidualYaw = v99;
-    if (v157)
+    if (brightness3topStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness3topStimulusSignedResidualYaw = 1;
-      [v157 floatValue];
+      [brightness3topStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6770,10 +6770,10 @@ LABEL_618:
     }
 
     v75->_brightness3topStimulusSignedResidualYaw = v100;
-    if (v156)
+    if (brightness3topRightStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness3topRightStimulusSignedResidualYaw = 1;
-      [v156 floatValue];
+      [brightness3topRightStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6783,10 +6783,10 @@ LABEL_618:
     }
 
     v75->_brightness3topRightStimulusSignedResidualYaw = v101;
-    if (v155)
+    if (brightness3bottomRightStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness3bottomRightStimulusSignedResidualYaw = 1;
-      [v155 floatValue];
+      [brightness3bottomRightStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6796,10 +6796,10 @@ LABEL_618:
     }
 
     v75->_brightness3bottomRightStimulusSignedResidualYaw = v102;
-    if (v154)
+    if (brightness3bottomStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness3bottomStimulusSignedResidualYaw = 1;
-      [v154 floatValue];
+      [brightness3bottomStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6809,10 +6809,10 @@ LABEL_618:
     }
 
     v75->_brightness3bottomStimulusSignedResidualYaw = v103;
-    if (v153)
+    if (brightness3bottomLeftStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness3bottomLeftStimulusSignedResidualYaw = 1;
-      [v153 floatValue];
+      [brightness3bottomLeftStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6822,10 +6822,10 @@ LABEL_618:
     }
 
     v75->_brightness3bottomLeftStimulusSignedResidualYaw = v104;
-    if (v152)
+    if (brightness3topLeftStimulusSignedResidualYawCopy)
     {
       v75->_hasBrightness3topLeftStimulusSignedResidualYaw = 1;
-      [v152 floatValue];
+      [brightness3topLeftStimulusSignedResidualYawCopy floatValue];
     }
 
     else
@@ -6835,10 +6835,10 @@ LABEL_618:
     }
 
     v75->_brightness3topLeftStimulusSignedResidualYaw = v105;
-    if (v151)
+    if (pitchCopy)
     {
       v75->_hasCentralStimulusSignedResidualPitch = 1;
-      [v151 floatValue];
+      [pitchCopy floatValue];
     }
 
     else
@@ -6848,10 +6848,10 @@ LABEL_618:
     }
 
     v75->_centralStimulusSignedResidualPitch = v106;
-    if (v150)
+    if (residualPitchCopy)
     {
       v75->_hasBrightness1topStimulusSignedResidualPitch = 1;
-      [v150 floatValue];
+      [residualPitchCopy floatValue];
     }
 
     else
@@ -6861,10 +6861,10 @@ LABEL_618:
     }
 
     v75->_brightness1topStimulusSignedResidualPitch = v107;
-    if (v149)
+    if (signedResidualPitchCopy)
     {
       v75->_hasBrightness1topRightStimulusSignedResidualPitch = 1;
-      [v149 floatValue];
+      [signedResidualPitchCopy floatValue];
     }
 
     else
@@ -6874,10 +6874,10 @@ LABEL_618:
     }
 
     v75->_brightness1topRightStimulusSignedResidualPitch = v108;
-    if (v148)
+    if (stimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness1bottomRightStimulusSignedResidualPitch = 1;
-      [v148 floatValue];
+      [stimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6887,10 +6887,10 @@ LABEL_618:
     }
 
     v75->_brightness1bottomRightStimulusSignedResidualPitch = v109;
-    if (v147)
+    if (brightness1bottomStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness1bottomStimulusSignedResidualPitch = 1;
-      [v147 floatValue];
+      [brightness1bottomStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6900,10 +6900,10 @@ LABEL_618:
     }
 
     v75->_brightness1bottomStimulusSignedResidualPitch = v110;
-    if (v146)
+    if (leftStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness1bottomLeftStimulusSignedResidualPitch = 1;
-      [v146 floatValue];
+      [leftStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6913,10 +6913,10 @@ LABEL_618:
     }
 
     v75->_brightness1bottomLeftStimulusSignedResidualPitch = v111;
-    if (v145)
+    if (brightness1topLeftStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness1topLeftStimulusSignedResidualPitch = 1;
-      [v145 floatValue];
+      [brightness1topLeftStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6926,10 +6926,10 @@ LABEL_618:
     }
 
     v75->_brightness1topLeftStimulusSignedResidualPitch = v112;
-    if (v144)
+    if (brightness2topStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness2topStimulusSignedResidualPitch = 1;
-      [v144 floatValue];
+      [brightness2topStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6939,10 +6939,10 @@ LABEL_618:
     }
 
     v75->_brightness2topStimulusSignedResidualPitch = v113;
-    if (v143)
+    if (rightStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness2topRightStimulusSignedResidualPitch = 1;
-      [v143 floatValue];
+      [rightStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6952,10 +6952,10 @@ LABEL_618:
     }
 
     v75->_brightness2topRightStimulusSignedResidualPitch = v114;
-    if (v142)
+    if (brightness2bottomRightStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness2bottomRightStimulusSignedResidualPitch = 1;
-      [v142 floatValue];
+      [brightness2bottomRightStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6965,10 +6965,10 @@ LABEL_618:
     }
 
     v75->_brightness2bottomRightStimulusSignedResidualPitch = v115;
-    if (v141)
+    if (brightness2bottomStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness2bottomStimulusSignedResidualPitch = 1;
-      [v141 floatValue];
+      [brightness2bottomStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6978,10 +6978,10 @@ LABEL_618:
     }
 
     v75->_brightness2bottomStimulusSignedResidualPitch = v116;
-    if (v140)
+    if (brightness2bottomLeftStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness2bottomLeftStimulusSignedResidualPitch = 1;
-      [v140 floatValue];
+      [brightness2bottomLeftStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -6991,10 +6991,10 @@ LABEL_618:
     }
 
     v75->_brightness2bottomLeftStimulusSignedResidualPitch = v117;
-    if (v139)
+    if (brightness2topLeftStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness2topLeftStimulusSignedResidualPitch = 1;
-      [v139 floatValue];
+      [brightness2topLeftStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -7004,10 +7004,10 @@ LABEL_618:
     }
 
     v75->_brightness2topLeftStimulusSignedResidualPitch = v118;
-    if (v138)
+    if (brightness3topStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness3topStimulusSignedResidualPitch = 1;
-      [v138 floatValue];
+      [brightness3topStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -7017,10 +7017,10 @@ LABEL_618:
     }
 
     v75->_brightness3topStimulusSignedResidualPitch = v119;
-    if (v137)
+    if (brightness3topRightStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness3topRightStimulusSignedResidualPitch = 1;
-      [v137 floatValue];
+      [brightness3topRightStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -7030,10 +7030,10 @@ LABEL_618:
     }
 
     v75->_brightness3topRightStimulusSignedResidualPitch = v120;
-    if (v136)
+    if (brightness3bottomRightStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness3bottomRightStimulusSignedResidualPitch = 1;
-      [v136 floatValue];
+      [brightness3bottomRightStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -7043,10 +7043,10 @@ LABEL_618:
     }
 
     v75->_brightness3bottomRightStimulusSignedResidualPitch = v121;
-    if (v135)
+    if (brightness3bottomStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness3bottomStimulusSignedResidualPitch = 1;
-      [v135 floatValue];
+      [brightness3bottomStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -7056,10 +7056,10 @@ LABEL_618:
     }
 
     v75->_brightness3bottomStimulusSignedResidualPitch = v122;
-    if (v134)
+    if (brightness3bottomLeftStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness3bottomLeftStimulusSignedResidualPitch = 1;
-      [v134 floatValue];
+      [brightness3bottomLeftStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -7069,10 +7069,10 @@ LABEL_618:
     }
 
     v75->_brightness3bottomLeftStimulusSignedResidualPitch = v123;
-    if (v133)
+    if (brightness3topLeftStimulusSignedResidualPitchCopy)
     {
       v75->_hasBrightness3topLeftStimulusSignedResidualPitch = 1;
-      [v133 floatValue];
+      [brightness3topLeftStimulusSignedResidualPitchCopy floatValue];
     }
 
     else
@@ -7082,9 +7082,9 @@ LABEL_618:
     }
 
     v75->_brightness3topLeftStimulusSignedResidualPitch = v124;
-    objc_storeStrong(&v75->_rxuuid, a61);
-    v75->_enrollmentReason = a62;
-    v75->_enrollmentDeviceType = a63;
+    objc_storeStrong(&v75->_rxuuid, rxuuid);
+    v75->_enrollmentReason = reason;
+    v75->_enrollmentDeviceType = type;
   }
 
   v125 = v75;
@@ -7365,9 +7365,9 @@ id __33__BMGazeEnrollmentSample_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -7375,8 +7375,8 @@ id __33__BMGazeEnrollmentSample_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMGazeEnrollmentSample alloc] initByReadFrom:v7];
     v4 = v8;
@@ -7389,21 +7389,21 @@ id __33__BMGazeEnrollmentSample_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BMGazeEnrollmentSample)initWithUserProfileId:(id)a3 eyeSide:(int)a4 isOffline:(id)a5 enrollmentResidual75thPercentile:(id)a6 enrollmentResidual95thPercentile:(id)a7 enrollmentResidualMedian:(id)a8 dominantEye:(int)a9 monocularQuality:(int)a10 enrollmentFailureReasons:(id)a11 binocQuality:(int)a12 fixationCount:(id)a13 fixationCountLowBrightness:(id)a14 fixationCountMediumBrightness:(id)a15 fixationCountHighBrightness:(id)a16 stimulusCount:(id)a17 stimulusCountLowBrightness:(id)a18 stimulusCountMediumBrightness:(id)a19 stimulusCountHighBrightness:(id)a20 accessibilityMode:(int)a21 eyeboxStatus:(int)a22 centralStimulusSignedResidualYaw:(id)a23 brightness1topStimulusSignedResidualYaw:(id)a24 brightness1topRightStimulusSignedResidualYaw:(id)a25 brightness1bottomRightStimulusSignedResidualYaw:(id)a26 brightness1bottomStimulusSignedResidualYaw:(id)a27 brightness1bottomLeftStimulusSignedResidualYaw:(id)a28 brightness1topLeftStimulusSignedResidualYaw:(id)a29 brightness2topStimulusSignedResidualYaw:(id)a30 brightness2topRightStimulusSignedResidualYaw:(id)a31 brightness2bottomRightStimulusSignedResidualYaw:(id)a32 brightness2bottomStimulusSignedResidualYaw:(id)a33 brightness2bottomLeftStimulusSignedResidualYaw:(id)a34 brightness2topLeftStimulusSignedResidualYaw:(id)a35 brightness3topStimulusSignedResidualYaw:(id)a36 brightness3topRightStimulusSignedResidualYaw:(id)a37 brightness3bottomRightStimulusSignedResidualYaw:(id)a38 brightness3bottomStimulusSignedResidualYaw:(id)a39 brightness3bottomLeftStimulusSignedResidualYaw:(id)a40 brightness3topLeftStimulusSignedResidualYaw:(id)a41 centralStimulusSignedResidualPitch:(id)a42 brightness1topStimulusSignedResidualPitch:(id)a43 brightness1topRightStimulusSignedResidualPitch:(id)a44 brightness1bottomRightStimulusSignedResidualPitch:(id)a45 brightness1bottomStimulusSignedResidualPitch:(id)a46 brightness1bottomLeftStimulusSignedResidualPitch:(id)a47 brightness1topLeftStimulusSignedResidualPitch:(id)a48 brightness2topStimulusSignedResidualPitch:(id)a49 brightness2topRightStimulusSignedResidualPitch:(id)a50 brightness2bottomRightStimulusSignedResidualPitch:(id)a51 brightness2bottomStimulusSignedResidualPitch:(id)a52 brightness2bottomLeftStimulusSignedResidualPitch:(id)a53 brightness2topLeftStimulusSignedResidualPitch:(id)a54 brightness3topStimulusSignedResidualPitch:(id)a55 brightness3topRightStimulusSignedResidualPitch:(id)a56 brightness3bottomRightStimulusSignedResidualPitch:(id)a57 brightness3bottomStimulusSignedResidualPitch:(id)a58 brightness3bottomLeftStimulusSignedResidualPitch:(id)a59 brightness3topLeftStimulusSignedResidualPitch:(id)a60 rxuuid:(id)a61 enrollmentReason:(int)a62
+- (BMGazeEnrollmentSample)initWithUserProfileId:(id)id eyeSide:(int)side isOffline:(id)offline enrollmentResidual75thPercentile:(id)percentile enrollmentResidual95thPercentile:(id)residual95thPercentile enrollmentResidualMedian:(id)median dominantEye:(int)eye monocularQuality:(int)self0 enrollmentFailureReasons:(id)self1 binocQuality:(int)self2 fixationCount:(id)self3 fixationCountLowBrightness:(id)self4 fixationCountMediumBrightness:(id)self5 fixationCountHighBrightness:(id)self6 stimulusCount:(id)self7 stimulusCountLowBrightness:(id)self8 stimulusCountMediumBrightness:(id)self9 stimulusCountHighBrightness:(id)countHighBrightness accessibilityMode:(int)mode eyeboxStatus:(int)status centralStimulusSignedResidualYaw:(id)yaw brightness1topStimulusSignedResidualYaw:(id)residualYaw brightness1topRightStimulusSignedResidualYaw:(id)signedResidualYaw brightness1bottomRightStimulusSignedResidualYaw:(id)stimulusSignedResidualYaw brightness1bottomStimulusSignedResidualYaw:(id)brightness1bottomStimulusSignedResidualYaw brightness1bottomLeftStimulusSignedResidualYaw:(id)leftStimulusSignedResidualYaw brightness1topLeftStimulusSignedResidualYaw:(id)brightness1topLeftStimulusSignedResidualYaw brightness2topStimulusSignedResidualYaw:(id)id0 brightness2topRightStimulusSignedResidualYaw:(id)id1 brightness2bottomRightStimulusSignedResidualYaw:(id)id2 brightness2bottomStimulusSignedResidualYaw:(id)id3 brightness2bottomLeftStimulusSignedResidualYaw:(id)id4 brightness2topLeftStimulusSignedResidualYaw:(id)id5 brightness3topStimulusSignedResidualYaw:(id)id6 brightness3topRightStimulusSignedResidualYaw:(id)id7 brightness3bottomRightStimulusSignedResidualYaw:(id)id8 brightness3bottomStimulusSignedResidualYaw:(id)id9 brightness3bottomLeftStimulusSignedResidualYaw:(id)side0 brightness3topLeftStimulusSignedResidualYaw:(id)side1 centralStimulusSignedResidualPitch:(id)side2 brightness1topStimulusSignedResidualPitch:(id)side3 brightness1topRightStimulusSignedResidualPitch:(id)side4 brightness1bottomRightStimulusSignedResidualPitch:(id)side5 brightness1bottomStimulusSignedResidualPitch:(id)side6 brightness1bottomLeftStimulusSignedResidualPitch:(id)side7 brightness1topLeftStimulusSignedResidualPitch:(id)side8 brightness2topStimulusSignedResidualPitch:(id)side9 brightness2topRightStimulusSignedResidualPitch:(id)offline0 brightness2bottomRightStimulusSignedResidualPitch:(id)offline1 brightness2bottomStimulusSignedResidualPitch:(id)offline2 brightness2bottomLeftStimulusSignedResidualPitch:(id)offline3 brightness2topLeftStimulusSignedResidualPitch:(id)offline4 brightness3topStimulusSignedResidualPitch:(id)offline5 brightness3topRightStimulusSignedResidualPitch:(id)offline6 brightness3bottomRightStimulusSignedResidualPitch:(id)offline7 brightness3bottomStimulusSignedResidualPitch:(id)offline8 brightness3bottomLeftStimulusSignedResidualPitch:(id)offline9 brightness3topLeftStimulusSignedResidualPitch:(id)percentile0 rxuuid:(id)percentile1 enrollmentReason:(int)percentile2
 {
-  LODWORD(v63) = a12;
-  return -[BMGazeEnrollmentSample initWithUserProfileId:eyeSide:isOffline:enrollmentResidual75thPercentile:enrollmentResidual95thPercentile:enrollmentResidualMedian:dominantEye:monocularQuality:enrollmentFailureReasons:binocQuality:fixationCount:fixationCountLowBrightness:fixationCountMediumBrightness:fixationCountHighBrightness:stimulusCount:stimulusCountLowBrightness:stimulusCountMediumBrightness:stimulusCountHighBrightness:accessibilityMode:eyeboxStatus:centralStimulusSignedResidualYaw:brightness1topStimulusSignedResidualYaw:brightness1topRightStimulusSignedResidualYaw:brightness1bottomRightStimulusSignedResidualYaw:brightness1bottomStimulusSignedResidualYaw:brightness1bottomLeftStimulusSignedResidualYaw:brightness1topLeftStimulusSignedResidualYaw:brightness2topStimulusSignedResidualYaw:brightness2topRightStimulusSignedResidualYaw:brightness2bottomRightStimulusSignedResidualYaw:brightness2bottomStimulusSignedResidualYaw:brightness2bottomLeftStimulusSignedResidualYaw:brightness2topLeftStimulusSignedResidualYaw:brightness3topStimulusSignedResidualYaw:brightness3topRightStimulusSignedResidualYaw:brightness3bottomRightStimulusSignedResidualYaw:brightness3bottomStimulusSignedResidualYaw:brightness3bottomLeftStimulusSignedResidualYaw:brightness3topLeftStimulusSignedResidualYaw:centralStimulusSignedResidualPitch:brightness1topStimulusSignedResidualPitch:brightness1topRightStimulusSignedResidualPitch:brightness1bottomRightStimulusSignedResidualPitch:brightness1bottomStimulusSignedResidualPitch:brightness1bottomLeftStimulusSignedResidualPitch:brightness1topLeftStimulusSignedResidualPitch:brightness2topStimulusSignedResidualPitch:brightness2topRightStimulusSignedResidualPitch:brightness2bottomRightStimulusSignedResidualPitch:brightness2bottomStimulusSignedResidualPitch:brightness2bottomLeftStimulusSignedResidualPitch:brightness2topLeftStimulusSignedResidualPitch:brightness3topStimulusSignedResidualPitch:brightness3topRightStimulusSignedResidualPitch:brightness3bottomRightStimulusSignedResidualPitch:brightness3bottomStimulusSignedResidualPitch:brightness3bottomLeftStimulusSignedResidualPitch:brightness3topLeftStimulusSignedResidualPitch:rxuuid:enrollmentReason:enrollmentDeviceType:]( self,  "initWithUserProfileId:eyeSide:isOffline:enrollmentResidual75thPercentile:enrollmentResidual95thPercentile:enrollmentResidualMedian:dominantEye:monocularQuality:enrollmentFailureReasons:binocQuality:fixationCount:fixationCountLowBrightness:fixationCountMediumBrightness:fixationCountHighBrightness:stimulusCount:stimulusCountLowBrightness:stimulusCountMediumBrightness:stimulusCountHighBrightness:accessibilityMode:eyeboxStatus:centralStimulusSignedResidualYaw:brightness1topStimulusSignedResidualYaw:brightness1topRightStimulusSignedResidualYaw:brightness1bottomRightStimulusSignedResidualYaw:brightness1bottomStimulusSignedResidualYaw:brightness1bottomLeftStimulusSignedResidualYaw:brightness1topLeftStimulusSignedResidualYaw:brightness2topStimulusSignedResidualYaw:brightness2topRightStimulusSignedResidualYaw:brightness2bottomRightStimulusSignedResidualYaw:brightness2bottomStimulusSignedResidualYaw:brightness2bottomLeftStimulusSignedResidualYaw:brightness2topLeftStimulusSignedResidualYaw:brightness3topStimulusSignedResidualYaw:brightness3topRightStimulusSignedResidualYaw:brightness3bottomRightStimulusSignedResidualYaw:brightness3bottomStimulusSignedResidualYaw:brightness3bottomLeftStimulusSignedResidualYaw:brightness3topLeftStimulusSignedResidualYaw:centralStimulusSignedResidualPitch:brightness1topStimulusSignedResidualPitch:brightness1topRightStimulusSignedResidualPitch:brightness1bottomRightStimulusSignedResidualPitch:brightness1bottomStimulusSignedResidualPitch:brightness1bottomLeftStimulusSignedResidualPitch:brightness1topLeftStimulusSignedResidualPitch:brightness2topStimulusSignedResidualPitch:brightness2topRightStimulusSignedResidualPitch:brightness2bottomRightStimulusSignedResidualPitch:brightness2bottomStimulusSignedResidualPitch:brightness2bottomLeftStimulusSignedResidualPitch:brightness2topLeftStimulusSignedResidualPitch:brightness3topStimulusSignedResidualPitch:brightness3topRightStimulusSignedResidualPitch:brightness3bottomRightStimulusSignedResidualPitch:brightness3bottomStimulusSignedResidualPitch:brightness3bottomLeftStimulusSignedResidualPitch:brightness3topLeftStimulusSignedResidualPitch:rxuuid:enrollmentReason:enrollmentDeviceType:",  a3,  a4,  a5,  a6,  a7,  a8,  __PAIR64__(a10, a9),  a11,  v63,  a13,  a14,  a15,  a16,  a17,  a18,  a19,  a20,  __PAIR64__(a22, a21),  a23,  a24,  a25,  a26,  a27,  a28,  a29,  a30,  a31,  a32,  a33,  a34,  a35,  a36,  a37,  a38,  a39,  a40,  a41,  a42,  a43,  a44,  a45,  a46,  a47,  a48,  a49,  a50,  a51,
-           a52,
-           a53,
-           a54,
-           a55,
-           a56,
-           a57,
-           a58,
-           a59,
-           a60,
-           a61,
-           a62);
+  LODWORD(v63) = binocQuality;
+  return -[BMGazeEnrollmentSample initWithUserProfileId:eyeSide:isOffline:enrollmentResidual75thPercentile:enrollmentResidual95thPercentile:enrollmentResidualMedian:dominantEye:monocularQuality:enrollmentFailureReasons:binocQuality:fixationCount:fixationCountLowBrightness:fixationCountMediumBrightness:fixationCountHighBrightness:stimulusCount:stimulusCountLowBrightness:stimulusCountMediumBrightness:stimulusCountHighBrightness:accessibilityMode:eyeboxStatus:centralStimulusSignedResidualYaw:brightness1topStimulusSignedResidualYaw:brightness1topRightStimulusSignedResidualYaw:brightness1bottomRightStimulusSignedResidualYaw:brightness1bottomStimulusSignedResidualYaw:brightness1bottomLeftStimulusSignedResidualYaw:brightness1topLeftStimulusSignedResidualYaw:brightness2topStimulusSignedResidualYaw:brightness2topRightStimulusSignedResidualYaw:brightness2bottomRightStimulusSignedResidualYaw:brightness2bottomStimulusSignedResidualYaw:brightness2bottomLeftStimulusSignedResidualYaw:brightness2topLeftStimulusSignedResidualYaw:brightness3topStimulusSignedResidualYaw:brightness3topRightStimulusSignedResidualYaw:brightness3bottomRightStimulusSignedResidualYaw:brightness3bottomStimulusSignedResidualYaw:brightness3bottomLeftStimulusSignedResidualYaw:brightness3topLeftStimulusSignedResidualYaw:centralStimulusSignedResidualPitch:brightness1topStimulusSignedResidualPitch:brightness1topRightStimulusSignedResidualPitch:brightness1bottomRightStimulusSignedResidualPitch:brightness1bottomStimulusSignedResidualPitch:brightness1bottomLeftStimulusSignedResidualPitch:brightness1topLeftStimulusSignedResidualPitch:brightness2topStimulusSignedResidualPitch:brightness2topRightStimulusSignedResidualPitch:brightness2bottomRightStimulusSignedResidualPitch:brightness2bottomStimulusSignedResidualPitch:brightness2bottomLeftStimulusSignedResidualPitch:brightness2topLeftStimulusSignedResidualPitch:brightness3topStimulusSignedResidualPitch:brightness3topRightStimulusSignedResidualPitch:brightness3bottomRightStimulusSignedResidualPitch:brightness3bottomStimulusSignedResidualPitch:brightness3bottomLeftStimulusSignedResidualPitch:brightness3topLeftStimulusSignedResidualPitch:rxuuid:enrollmentReason:enrollmentDeviceType:]( self,  "initWithUserProfileId:eyeSide:isOffline:enrollmentResidual75thPercentile:enrollmentResidual95thPercentile:enrollmentResidualMedian:dominantEye:monocularQuality:enrollmentFailureReasons:binocQuality:fixationCount:fixationCountLowBrightness:fixationCountMediumBrightness:fixationCountHighBrightness:stimulusCount:stimulusCountLowBrightness:stimulusCountMediumBrightness:stimulusCountHighBrightness:accessibilityMode:eyeboxStatus:centralStimulusSignedResidualYaw:brightness1topStimulusSignedResidualYaw:brightness1topRightStimulusSignedResidualYaw:brightness1bottomRightStimulusSignedResidualYaw:brightness1bottomStimulusSignedResidualYaw:brightness1bottomLeftStimulusSignedResidualYaw:brightness1topLeftStimulusSignedResidualYaw:brightness2topStimulusSignedResidualYaw:brightness2topRightStimulusSignedResidualYaw:brightness2bottomRightStimulusSignedResidualYaw:brightness2bottomStimulusSignedResidualYaw:brightness2bottomLeftStimulusSignedResidualYaw:brightness2topLeftStimulusSignedResidualYaw:brightness3topStimulusSignedResidualYaw:brightness3topRightStimulusSignedResidualYaw:brightness3bottomRightStimulusSignedResidualYaw:brightness3bottomStimulusSignedResidualYaw:brightness3bottomLeftStimulusSignedResidualYaw:brightness3topLeftStimulusSignedResidualYaw:centralStimulusSignedResidualPitch:brightness1topStimulusSignedResidualPitch:brightness1topRightStimulusSignedResidualPitch:brightness1bottomRightStimulusSignedResidualPitch:brightness1bottomStimulusSignedResidualPitch:brightness1bottomLeftStimulusSignedResidualPitch:brightness1topLeftStimulusSignedResidualPitch:brightness2topStimulusSignedResidualPitch:brightness2topRightStimulusSignedResidualPitch:brightness2bottomRightStimulusSignedResidualPitch:brightness2bottomStimulusSignedResidualPitch:brightness2bottomLeftStimulusSignedResidualPitch:brightness2topLeftStimulusSignedResidualPitch:brightness3topStimulusSignedResidualPitch:brightness3topRightStimulusSignedResidualPitch:brightness3bottomRightStimulusSignedResidualPitch:brightness3bottomStimulusSignedResidualPitch:brightness3bottomLeftStimulusSignedResidualPitch:brightness3topLeftStimulusSignedResidualPitch:rxuuid:enrollmentReason:enrollmentDeviceType:",  id,  side,  offline,  percentile,  residual95thPercentile,  median,  __PAIR64__(quality, eye),  reasons,  v63,  count,  brightness,  mediumBrightness,  highBrightness,  stimulusCount,  lowBrightness,  countMediumBrightness,  countHighBrightness,  __PAIR64__(status, mode),  yaw,  residualYaw,  signedResidualYaw,  stimulusSignedResidualYaw,  brightness1bottomStimulusSignedResidualYaw,  leftStimulusSignedResidualYaw,  brightness1topLeftStimulusSignedResidualYaw,  brightness2topStimulusSignedResidualYaw,  rightStimulusSignedResidualYaw,  brightness2bottomRightStimulusSignedResidualYaw,  brightness2bottomStimulusSignedResidualYaw,  brightness2bottomLeftStimulusSignedResidualYaw,  brightness2topLeftStimulusSignedResidualYaw,  brightness3topStimulusSignedResidualYaw,  brightness3topRightStimulusSignedResidualYaw,  brightness3bottomRightStimulusSignedResidualYaw,  brightness3bottomStimulusSignedResidualYaw,  brightness3bottomLeftStimulusSignedResidualYaw,  brightness3topLeftStimulusSignedResidualYaw,  pitch,  residualPitch,  signedResidualPitch,  stimulusSignedResidualPitch,  brightness1bottomStimulusSignedResidualPitch,  leftStimulusSignedResidualPitch,  brightness1topLeftStimulusSignedResidualPitch,  brightness2topStimulusSignedResidualPitch,  rightStimulusSignedResidualPitch,  brightness2bottomRightStimulusSignedResidualPitch,
+           brightness2bottomStimulusSignedResidualPitch,
+           brightness2bottomLeftStimulusSignedResidualPitch,
+           brightness2topLeftStimulusSignedResidualPitch,
+           brightness3topStimulusSignedResidualPitch,
+           brightness3topRightStimulusSignedResidualPitch,
+           brightness3bottomRightStimulusSignedResidualPitch,
+           brightness3bottomStimulusSignedResidualPitch,
+           brightness3bottomLeftStimulusSignedResidualPitch,
+           brightness3topLeftStimulusSignedResidualPitch,
+           rxuuid,
+           reason);
 }
 
 @end

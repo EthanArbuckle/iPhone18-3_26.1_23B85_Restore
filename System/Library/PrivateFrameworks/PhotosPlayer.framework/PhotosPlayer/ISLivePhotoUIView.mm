@@ -1,14 +1,14 @@
 @interface ISLivePhotoUIView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (ISLivePhotoUIView)initWithCoder:(id)a3;
-- (ISLivePhotoUIView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (ISLivePhotoUIView)initWithCoder:(id)coder;
+- (ISLivePhotoUIView)initWithFrame:(CGRect)frame;
 - (ISLivePhotoUIViewDelegate)delegate;
 - (void)_ISLivePhotoUIViewCommonInitialization;
-- (void)_dismissOverlayLabel:(int64_t)a3;
+- (void)_dismissOverlayLabel:(int64_t)label;
 - (void)_playerDidChangeHinting;
 - (void)_playerDidChangePlaybackStyle;
-- (void)_setPlaybackFilter:(id)a3;
+- (void)_setPlaybackFilter:(id)filter;
 - (void)_showOverlayLabel;
 - (void)_updateGestureRecognizerParameters;
 - (void)_updatePlaybackFilter;
@@ -17,11 +17,11 @@
 - (void)audioSessionDidChange;
 - (void)contentDidChange;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDelegate:(id)a3;
-- (void)setPlaybackFilterTouchActive:(BOOL)a3;
-- (void)setPlayer:(id)a3;
-- (void)setVitalityTransform:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
+- (void)setPlaybackFilterTouchActive:(BOOL)active;
+- (void)setPlayer:(id)player;
+- (void)setVitalityTransform:(id)transform;
 @end
 
 @implementation ISLivePhotoUIView
@@ -33,28 +33,28 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v5 = a4;
-  if (ISLivePhotoPlayerObservableContext != a5)
+  changeCopy = change;
+  if (ISLivePhotoPlayerObservableContext != context)
   {
     v7.receiver = self;
     v7.super_class = ISLivePhotoUIView;
-    [(ISBasePlayerUIView *)&v7 observable:a3 didChange:a4 context:?];
+    [(ISBasePlayerUIView *)&v7 observable:observable didChange:change context:?];
     return;
   }
 
   [(ISLivePhotoUIView *)self _showOverlayLabel];
-  if ((v5 & 8) == 0)
+  if ((changeCopy & 8) == 0)
   {
-    if ((v5 & 0x20) == 0)
+    if ((changeCopy & 0x20) == 0)
     {
       goto LABEL_5;
     }
 
 LABEL_8:
     [(ISLivePhotoUIView *)self _playerDidChangeHinting];
-    if ((v5 & 0x10) == 0)
+    if ((changeCopy & 0x10) == 0)
     {
       return;
     }
@@ -63,13 +63,13 @@ LABEL_8:
   }
 
   [(ISLivePhotoUIView *)self _playerDidChangePlaybackStyle];
-  if ((v5 & 0x20) != 0)
+  if ((changeCopy & 0x20) != 0)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
-  if ((v5 & 0x10) == 0)
+  if ((changeCopy & 0x10) == 0)
   {
     return;
   }
@@ -79,14 +79,14 @@ LABEL_9:
   [(ISLivePhotoUIView *)self _updateVideoTransform];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ISLivePhotoUIView *)self playbackGestureRecognizer];
-  if (v8 == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  playbackGestureRecognizer = [(ISLivePhotoUIView *)self playbackGestureRecognizer];
+  if (playbackGestureRecognizer == recognizerCopy)
   {
-    v9 = v6;
+    v9 = recognizerCopy;
   }
 
   else
@@ -98,57 +98,57 @@ LABEL_9:
 
   if (v10 && self->_delegateRespondsTo.extraMinimumTouchDuration)
   {
-    v11 = [(ISLivePhotoUIView *)self delegate];
-    [v11 livePhotoViewExtraMinimumTouchDuration:self touch:v7];
+    delegate = [(ISLivePhotoUIView *)self delegate];
+    [delegate livePhotoViewExtraMinimumTouchDuration:self touch:touchCopy];
     [v10 setExtraMinimumTouchDuration:?];
   }
 
   return 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   if (!self->_delegateRespondsTo.canBeginInteractivePlayback)
   {
     return 1;
   }
 
-  v3 = self;
-  v4 = a3;
-  v5 = [(ISLivePhotoUIView *)v3 delegate];
-  [v4 locationInView:v3];
+  selfCopy = self;
+  beginCopy = begin;
+  delegate = [(ISLivePhotoUIView *)selfCopy delegate];
+  [beginCopy locationInView:selfCopy];
   v7 = v6;
   v9 = v8;
 
-  LOBYTE(v3) = [v5 livePhotoView:v3 canBeginInteractivePlaybackAtPoint:{v7, v9}];
-  return v3;
+  LOBYTE(selfCopy) = [delegate livePhotoView:selfCopy canBeginInteractivePlaybackAtPoint:{v7, v9}];
+  return selfCopy;
 }
 
 - (void)_updateGestureRecognizerParameters
 {
-  v6 = [(ISLivePhotoUIView *)self playbackGestureRecognizer];
+  playbackGestureRecognizer = [(ISLivePhotoUIView *)self playbackGestureRecognizer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(ISBasePlayerUIView *)self player];
-    v4 = [v3 currentPlaybackStyle];
+    player = [(ISBasePlayerUIView *)self player];
+    currentPlaybackStyle = [player currentPlaybackStyle];
 
     v5 = 1.79769313e308;
-    if (v4 != 1)
+    if (currentPlaybackStyle != 1)
     {
       v5 = 10.0;
     }
 
-    [v6 setMaximumTouchMovement:v5];
+    [playbackGestureRecognizer setMaximumTouchMovement:v5];
   }
 }
 
 - (void)_playerDidChangeHinting
 {
-  v3 = [(ISBasePlayerUIView *)self player];
-  v4 = [v3 isHinting];
+  player = [(ISBasePlayerUIView *)self player];
+  isHinting = [player isHinting];
 
-  if (v4)
+  if (isHinting)
   {
     feedbackGenerator = self->_feedbackGenerator;
 
@@ -158,10 +158,10 @@ LABEL_9:
 
 - (void)_playerDidChangePlaybackStyle
 {
-  v3 = [(ISBasePlayerUIView *)self player];
-  v4 = [v3 currentPlaybackStyle];
+  player = [(ISBasePlayerUIView *)self player];
+  currentPlaybackStyle = [player currentPlaybackStyle];
 
-  if (v4 == 1)
+  if (currentPlaybackStyle == 1)
   {
     [(UIImpactFeedbackGenerator *)self->_feedbackGenerator impactOccurred];
   }
@@ -169,9 +169,9 @@ LABEL_9:
   [(ISLivePhotoUIView *)self _updateGestureRecognizerParameters];
 }
 
-- (void)_dismissOverlayLabel:(int64_t)a3
+- (void)_dismissOverlayLabel:(int64_t)label
 {
-  if ([(ISLivePhotoUIView *)self _overlayDismissalID]== a3)
+  if ([(ISLivePhotoUIView *)self _overlayDismissalID]== label)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
@@ -191,9 +191,9 @@ void __42__ISLivePhotoUIView__dismissOverlayLabel___block_invoke(uint64_t a1)
 - (void)_showOverlayLabel
 {
   v3 = +[ISPlayerSettings sharedInstance];
-  v4 = [v3 showStateOverlay];
+  showStateOverlay = [v3 showStateOverlay];
 
-  if (v4)
+  if (showStateOverlay)
   {
     if (!self->__overlayLabel)
     {
@@ -203,35 +203,35 @@ void __42__ISLivePhotoUIView__dismissOverlayLabel___block_invoke(uint64_t a1)
 
       [(UILabel *)self->__overlayLabel setAlpha:0.0];
       v7 = self->__overlayLabel;
-      v8 = [MEMORY[0x277D75348] whiteColor];
-      [(UILabel *)v7 setTextColor:v8];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)v7 setTextColor:whiteColor];
 
       v9 = self->__overlayLabel;
       v10 = [MEMORY[0x277D75348] colorWithWhite:0.2 alpha:0.5];
       [(UILabel *)v9 setBackgroundColor:v10];
 
-      v11 = [(UILabel *)self->__overlayLabel layer];
-      [v11 setCornerRadius:8.0];
+      layer = [(UILabel *)self->__overlayLabel layer];
+      [layer setCornerRadius:8.0];
 
-      v12 = [(UILabel *)self->__overlayLabel layer];
-      [v12 setMasksToBounds:1];
+      layer2 = [(UILabel *)self->__overlayLabel layer];
+      [layer2 setMasksToBounds:1];
 
       [(UILabel *)self->__overlayLabel setTextAlignment:1];
       [(ISLivePhotoUIView *)self addSubview:self->__overlayLabel];
     }
 
-    v13 = [(ISBasePlayerUIView *)self player];
-    if ([v13 isPlayingVitality])
+    player = [(ISBasePlayerUIView *)self player];
+    if ([player isPlayingVitality])
     {
       v14 = @"Vitality";
     }
 
-    else if ([v13 currentPlaybackStyle] == 2)
+    else if ([player currentPlaybackStyle] == 2)
     {
       v14 = @"Hint";
     }
 
-    else if ([v13 currentPlaybackStyle] == 1)
+    else if ([player currentPlaybackStyle] == 1)
     {
       v14 = @"Full";
     }
@@ -284,9 +284,9 @@ void __38__ISLivePhotoUIView__showOverlayLabel__block_invoke(uint64_t a1)
 
 - (void)_updatePlaybackFilter
 {
-  v3 = [(ISBasePlayerUIView *)self wrappedAudioSession];
+  wrappedAudioSession = [(ISBasePlayerUIView *)self wrappedAudioSession];
 
-  if (v3)
+  if (wrappedAudioSession)
   {
     v4 = objc_alloc_init(ISTouchLivePhotoPlaybackFilter);
   }
@@ -297,7 +297,7 @@ void __38__ISLivePhotoUIView__showOverlayLabel__block_invoke(uint64_t a1)
   }
 
   v6 = v4;
-  [(ISLivePhotoPlaybackFilter *)v4 setPlaybackDisabled:v3 == 0 forReason:@"ConfiguringAudioSession"];
+  [(ISLivePhotoPlaybackFilter *)v4 setPlaybackDisabled:wrappedAudioSession == 0 forReason:@"ConfiguringAudioSession"];
   v5 = +[ISPlayerSettings sharedInstance];
   -[ISLivePhotoPlaybackFilter setPlayIsSticky:](v6, "setPlayIsSticky:", [v5 playIsSticky]);
 
@@ -319,30 +319,30 @@ void __38__ISLivePhotoUIView__showOverlayLabel__block_invoke(uint64_t a1)
   [(ISLivePhotoUIView *)self _updatePlaybackFilter];
 }
 
-- (void)_setPlaybackFilter:(id)a3
+- (void)_setPlaybackFilter:(id)filter
 {
-  v5 = a3;
-  if (self->__playbackFilter != v5)
+  filterCopy = filter;
+  if (self->__playbackFilter != filterCopy)
   {
-    v7 = v5;
-    v6 = [(ISBasePlayerUIView *)self player];
-    [v6 removePlaybackFilter:self->__playbackFilter];
-    objc_storeStrong(&self->__playbackFilter, a3);
-    [v6 addPlaybackFilter:v7];
+    v7 = filterCopy;
+    player = [(ISBasePlayerUIView *)self player];
+    [player removePlaybackFilter:self->__playbackFilter];
+    objc_storeStrong(&self->__playbackFilter, filter);
+    [player addPlaybackFilter:v7];
 
-    v5 = v7;
+    filterCopy = v7;
   }
 }
 
 - (void)_updateVideoTransform
 {
-  v3 = [(ISBasePlayerUIView *)self player];
-  v4 = [v3 isPlayingVitality];
+  player = [(ISBasePlayerUIView *)self player];
+  isPlayingVitality = [player isPlayingVitality];
 
-  if (v4)
+  if (isPlayingVitality)
   {
-    v5 = [(ISLivePhotoUIView *)self vitalityTransform];
-    [(ISBasePlayerUIView *)self setVideoTransform:v5];
+    vitalityTransform = [(ISLivePhotoUIView *)self vitalityTransform];
+    [(ISBasePlayerUIView *)self setVideoTransform:vitalityTransform];
   }
 
   else
@@ -354,32 +354,32 @@ void __38__ISLivePhotoUIView__showOverlayLabel__block_invoke(uint64_t a1)
 
 - (void)_updatePlaybackFilterInput
 {
-  v8 = [(ISLivePhotoUIView *)self playbackGestureRecognizer];
-  [v8 distanceFromInitialPoint];
+  playbackGestureRecognizer = [(ISLivePhotoUIView *)self playbackGestureRecognizer];
+  [playbackGestureRecognizer distanceFromInitialPoint];
   v4 = v3;
-  v5 = ([v8 state] - 1) < 2;
-  v6 = [(ISLivePhotoUIView *)self _playbackFilter];
-  v7 = [v6 state];
+  v5 = ([playbackGestureRecognizer state] - 1) < 2;
+  _playbackFilter = [(ISLivePhotoUIView *)self _playbackFilter];
+  state = [_playbackFilter state];
 
-  if (v7 != 2 && v4 > 20.0)
+  if (state != 2 && v4 > 20.0)
   {
-    [v8 setEnabled:0];
-    [v8 setEnabled:1];
+    [playbackGestureRecognizer setEnabled:0];
+    [playbackGestureRecognizer setEnabled:1];
     v5 = 0;
   }
 
   [(ISLivePhotoUIView *)self setPlaybackFilterTouchActive:v5];
 }
 
-- (void)setPlaybackFilterTouchActive:(BOOL)a3
+- (void)setPlaybackFilterTouchActive:(BOOL)active
 {
-  v4 = [(ISLivePhotoUIView *)self _playbackFilter];
+  _playbackFilter = [(ISLivePhotoUIView *)self _playbackFilter];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__ISLivePhotoUIView_setPlaybackFilterTouchActive___block_invoke;
   v5[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v6 = a3;
-  [v4 performChanges:v5];
+  activeCopy = active;
+  [_playbackFilter performChanges:v5];
 }
 
 - (void)_ISLivePhotoUIViewCommonInitialization
@@ -404,29 +404,29 @@ void __38__ISLivePhotoUIView__showOverlayLabel__block_invoke(uint64_t a1)
   self->_feedbackGenerator = v6;
 }
 
-- (void)setVitalityTransform:(id)a3
+- (void)setVitalityTransform:(id)transform
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_vitalityTransform != v5)
+  transformCopy = transform;
+  v6 = transformCopy;
+  if (self->_vitalityTransform != transformCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = transformCopy;
+    transformCopy = [transformCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((transformCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_vitalityTransform, a3);
-      v5 = [(ISLivePhotoUIView *)self _updateVideoTransform];
+      objc_storeStrong(&self->_vitalityTransform, transform);
+      transformCopy = [(ISLivePhotoUIView *)self _updateVideoTransform];
       v6 = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](transformCopy, v6);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -440,42 +440,42 @@ void __38__ISLivePhotoUIView__showOverlayLabel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(ISBasePlayerUIView *)self player];
-  v6 = v5;
-  if (v5 != v4)
+  playerCopy = player;
+  player = [(ISBasePlayerUIView *)self player];
+  v6 = player;
+  if (player != playerCopy)
   {
-    [v5 unregisterChangeObserver:self context:ISLivePhotoPlayerObservableContext];
-    v7 = [(ISLivePhotoUIView *)self _playbackFilter];
-    [v6 removePlaybackFilter:v7];
+    [player unregisterChangeObserver:self context:ISLivePhotoPlayerObservableContext];
+    _playbackFilter = [(ISLivePhotoUIView *)self _playbackFilter];
+    [v6 removePlaybackFilter:_playbackFilter];
 
     v9.receiver = self;
     v9.super_class = ISLivePhotoUIView;
-    [(ISBasePlayerUIView *)&v9 setPlayer:v4];
-    [v4 registerChangeObserver:self context:ISLivePhotoPlayerObservableContext];
-    v8 = [(ISLivePhotoUIView *)self _playbackFilter];
-    [v4 addPlaybackFilter:v8];
+    [(ISBasePlayerUIView *)&v9 setPlayer:playerCopy];
+    [playerCopy registerChangeObserver:self context:ISLivePhotoPlayerObservableContext];
+    _playbackFilter2 = [(ISLivePhotoUIView *)self _playbackFilter];
+    [playerCopy addPlaybackFilter:_playbackFilter2];
   }
 }
 
 - (void)dealloc
 {
   [(ISLivePhotoUIView *)self setPlayer:0];
-  v3 = [(UIGestureRecognizer *)self->_playbackGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_playbackGestureRecognizer];
+  view = [(UIGestureRecognizer *)self->_playbackGestureRecognizer view];
+  [view removeGestureRecognizer:self->_playbackGestureRecognizer];
 
   v4.receiver = self;
   v4.super_class = ISLivePhotoUIView;
   [(ISLivePhotoUIView *)&v4 dealloc];
 }
 
-- (ISLivePhotoUIView)initWithCoder:(id)a3
+- (ISLivePhotoUIView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ISLivePhotoUIView;
-  v3 = [(ISBasePlayerUIView *)&v6 initWithCoder:a3];
+  v3 = [(ISBasePlayerUIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -485,11 +485,11 @@ void __38__ISLivePhotoUIView__showOverlayLabel__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (ISLivePhotoUIView)initWithFrame:(CGRect)a3
+- (ISLivePhotoUIView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ISLivePhotoUIView;
-  v3 = [(ISBasePlayerUIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ISBasePlayerUIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

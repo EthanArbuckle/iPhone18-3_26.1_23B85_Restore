@@ -1,28 +1,28 @@
 @interface HMDSyncOperationQueue
 + (id)logCategory;
 - (BOOL)isInMaximumTimeInterval;
-- (BOOL)processFiredTimer:(id)a3;
+- (BOOL)processFiredTimer:(id)timer;
 - (HMDSyncOperationManager)manager;
 - (NSArray)stagedOperations;
 - (NSArray)waitingOperations;
 - (NSString)description;
 - (id)allOperations;
-- (id)initName:(id)a3 syncManager:(id)a4 initialDelay:(double)a5 initialBackoff:(double)a6 hasBackoff:(BOOL)a7;
+- (id)initName:(id)name syncManager:(id)manager initialDelay:(double)delay initialBackoff:(double)backoff hasBackoff:(BOOL)hasBackoff;
 - (id)nextOperation;
 - (id)operationsToCancel;
 - (int64_t)count;
 - (int64_t)countTotal;
-- (void)_addOperation:(id)a3;
-- (void)_addStagedOperation:(id)a3;
-- (void)_addWaitingOperation:(id)a3;
+- (void)_addOperation:(id)operation;
+- (void)_addStagedOperation:(id)operation;
+- (void)_addWaitingOperation:(id)operation;
 - (void)_createBackoffTimer;
-- (void)_removeStagedOperation:(id)a3;
-- (void)_removeWaitingOperation:(id)a3;
-- (void)addOperation:(id)a3 withDelay:(double)a4;
+- (void)_removeStagedOperation:(id)operation;
+- (void)_removeWaitingOperation:(id)operation;
+- (void)addOperation:(id)operation withDelay:(double)delay;
 - (void)dropAllOperations;
-- (void)dropOperation:(id)a3;
+- (void)dropOperation:(id)operation;
 - (void)resetBackoffTimer;
-- (void)stageOperation:(id)a3;
+- (void)stageOperation:(id)operation;
 @end
 
 @implementation HMDSyncOperationQueue
@@ -41,8 +41,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(HMDSyncOperationQueue *)self waitingOperations];
-  v4 = [v3 copy];
+  waitingOperations = [(HMDSyncOperationQueue *)self waitingOperations];
+  v4 = [waitingOperations copy];
 
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
@@ -58,8 +58,8 @@
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 delayTimer];
-        [v9 cancel];
+        delayTimer = [v8 delayTimer];
+        [delayTimer cancel];
 
         [v8 setDelayTimer:0];
       }
@@ -70,35 +70,35 @@
     while (v5);
   }
 
-  v10 = [(HMDSyncOperationQueue *)self backoffTimer];
-  [v10 cancel];
+  backoffTimer = [(HMDSyncOperationQueue *)self backoffTimer];
+  [backoffTimer cancel];
 
   [(HMDSyncOperationQueue *)self setBackoffTimer:0];
-  v11 = [(HMDSyncOperationQueue *)self allOperations];
+  allOperations = [(HMDSyncOperationQueue *)self allOperations];
   os_unfair_lock_lock_with_options();
   [(NSMutableArray *)self->_stagedOperations removeAllObjects];
   [(NSMutableArray *)self->_waitingOperations removeAllObjects];
   os_unfair_lock_unlock(&self->_lock);
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return allOperations;
 }
 
 - (id)allOperations
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_lock_lock_with_options();
-  [v3 addObjectsFromArray:self->_stagedOperations];
-  [v3 addObjectsFromArray:self->_waitingOperations];
+  [array addObjectsFromArray:self->_stagedOperations];
+  [array addObjectsFromArray:self->_waitingOperations];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return array;
 }
 
 - (id)nextOperation
 {
-  v3 = [(HMDSyncOperationQueue *)self stagedOperations];
-  v4 = [v3 count];
+  stagedOperations = [(HMDSyncOperationQueue *)self stagedOperations];
+  v4 = [stagedOperations count];
 
   if (v4)
   {
@@ -106,8 +106,8 @@
     v5 = [(NSMutableArray *)self->_stagedOperations objectAtIndex:0];
     [(NSMutableArray *)self->_stagedOperations removeObjectAtIndex:0];
     os_unfair_lock_unlock(&self->_lock);
-    v6 = [(HMDSyncOperationQueue *)self backoffTimer];
-    [v6 resume];
+    backoffTimer = [(HMDSyncOperationQueue *)self backoffTimer];
+    [backoffTimer resume];
   }
 
   else
@@ -120,14 +120,14 @@
 
 - (BOOL)isInMaximumTimeInterval
 {
-  v3 = [(HMDSyncOperationQueue *)self backoffTimer];
-  if (v3)
+  backoffTimer = [(HMDSyncOperationQueue *)self backoffTimer];
+  if (backoffTimer)
   {
-    v4 = [(HMDSyncOperationQueue *)self backoffTimer];
-    [v4 timeInterval];
+    backoffTimer2 = [(HMDSyncOperationQueue *)self backoffTimer];
+    [backoffTimer2 timeInterval];
     v6 = v5;
-    v7 = [(HMDSyncOperationQueue *)self backoffTimer];
-    [v7 maximumTimeInterval];
+    backoffTimer3 = [(HMDSyncOperationQueue *)self backoffTimer];
+    [backoffTimer3 maximumTimeInterval];
     v9 = v6 >= v8;
   }
 
@@ -139,16 +139,16 @@
   return v9;
 }
 
-- (BOOL)processFiredTimer:(id)a3
+- (BOOL)processFiredTimer:(id)timer
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDSyncOperationQueue *)self backoffTimer];
+  timerCopy = timer;
+  backoffTimer = [(HMDSyncOperationQueue *)self backoffTimer];
 
-  if (v5 == v4)
+  if (backoffTimer == timerCopy)
   {
-    v20 = [(HMDSyncOperationQueue *)self backoffTimer];
-    [v20 cancel];
+    backoffTimer2 = [(HMDSyncOperationQueue *)self backoffTimer];
+    [backoffTimer2 cancel];
 
     if (![(HMDSyncOperationQueue *)self countTotal])
     {
@@ -164,8 +164,8 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [(HMDSyncOperationQueue *)self waitingOperations];
-    v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    waitingOperations = [(HMDSyncOperationQueue *)self waitingOperations];
+    v7 = [waitingOperations countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v7)
     {
       v8 = *v24;
@@ -175,12 +175,12 @@ LABEL_4:
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(waitingOperations);
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
-        v11 = [v10 delayTimer];
-        v12 = v11 == v4;
+        delayTimer = [v10 delayTimer];
+        v12 = delayTimer == timerCopy;
 
         if (v12)
         {
@@ -189,7 +189,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v7 = [waitingOperations countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -200,8 +200,8 @@ LABEL_4:
       }
 
       v14 = v10;
-      v15 = [v14 delayTimer];
-      [v15 cancel];
+      delayTimer2 = [v14 delayTimer];
+      [delayTimer2 cancel];
 
       [v14 setDelayTimer:0];
       if (!v14)
@@ -211,7 +211,7 @@ LABEL_4:
       }
 
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -225,11 +225,11 @@ LABEL_4:
 
       objc_autoreleasePoolPop(v16);
       os_unfair_lock_lock_with_options();
-      [(NSMutableArray *)v17->_waitingOperations removeObject:v14];
-      [(NSMutableArray *)v17->_stagedOperations addObject:v14];
-      os_unfair_lock_unlock(&v17->_lock);
+      [(NSMutableArray *)selfCopy->_waitingOperations removeObject:v14];
+      [(NSMutableArray *)selfCopy->_stagedOperations addObject:v14];
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v13 = 1;
-      v6 = v14;
+      waitingOperations = v14;
     }
 
     else
@@ -252,8 +252,8 @@ LABEL_20:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(HMDSyncOperationQueue *)self waitingOperations];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  waitingOperations = [(HMDSyncOperationQueue *)self waitingOperations];
+  v4 = [waitingOperations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -263,17 +263,17 @@ LABEL_20:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(waitingOperations);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
-        v8 = [v7 delayTimer];
-        [v8 cancel];
+        delayTimer = [v7 delayTimer];
+        [delayTimer cancel];
 
         [v7 setDelayTimer:0];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [waitingOperations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -286,18 +286,18 @@ LABEL_20:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dropOperation:(id)a3
+- (void)dropOperation:(id)operation
 {
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
-    v6 = v4;
+    v6 = operationCopy;
     os_unfair_lock_lock_with_options();
     if ([(NSMutableArray *)self->_waitingOperations containsObject:v6])
     {
       [(NSMutableArray *)self->_waitingOperations removeObject:v6];
-      v5 = [v6 delayTimer];
-      [v5 cancel];
+      delayTimer = [v6 delayTimer];
+      [delayTimer cancel];
 
       [v6 setDelayTimer:0];
     }
@@ -308,45 +308,45 @@ LABEL_20:
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v6;
+    operationCopy = v6;
   }
 }
 
-- (void)stageOperation:(id)a3
+- (void)stageOperation:(id)operation
 {
-  if (a3)
+  if (operation)
   {
     [(HMDSyncOperationQueue *)self _addOperation:?];
   }
 }
 
-- (void)addOperation:(id)a3 withDelay:(double)a4
+- (void)addOperation:(id)operation withDelay:(double)delay
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  operationCopy = operation;
+  if (operationCopy)
   {
-    v7 = [(HMDSyncOperationQueue *)self manager];
+    manager = [(HMDSyncOperationQueue *)self manager];
     if ([(HMDSyncOperationQueue *)self hasExponentialBackoff])
     {
       [(HMDSyncOperationQueue *)self initialDelay];
       v9 = v8;
-      v10 = [(HMDSyncOperationQueue *)self backoffTimer];
+      backoffTimer = [(HMDSyncOperationQueue *)self backoffTimer];
 
-      if (v10)
+      if (backoffTimer)
       {
-        v11 = [(HMDSyncOperationQueue *)self backoffTimer];
-        [v11 timeInterval];
+        backoffTimer2 = [(HMDSyncOperationQueue *)self backoffTimer];
+        [backoffTimer2 timeInterval];
         v9 = v12;
       }
 
-      if (v9 >= a4)
+      if (v9 >= delay)
       {
-        a4 = v9;
+        delay = v9;
       }
 
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -354,50 +354,50 @@ LABEL_20:
         v24 = 138543618;
         v25 = v16;
         v26 = 2048;
-        v27 = a4;
+        delayCopy = delay;
         _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@Current delay is %g", &v24, 0x16u);
       }
 
       objc_autoreleasePoolPop(v13);
-      if (a4 > 0.0)
+      if (delay > 0.0)
       {
-        v17 = [v7 timerFactory];
-        v18 = v17[2](a4);
-        [v6 setDelayTimer:v18];
+        timerFactory = [manager timerFactory];
+        v18 = timerFactory[2](delay);
+        [operationCopy setDelayTimer:v18];
 
-        v19 = [v6 delayTimer];
-        [v19 setDelegate:v7];
+        delayTimer = [operationCopy delayTimer];
+        [delayTimer setDelegate:manager];
       }
 
-      [(HMDSyncOperationQueue *)v14 _createBackoffTimer];
+      [(HMDSyncOperationQueue *)selfCopy _createBackoffTimer];
     }
 
-    else if (a4 > 0.0)
+    else if (delay > 0.0)
     {
-      v20 = [v7 timerFactory];
-      v21 = v20[2](a4);
-      [v6 setDelayTimer:v21];
+      timerFactory2 = [manager timerFactory];
+      v21 = timerFactory2[2](delay);
+      [operationCopy setDelayTimer:v21];
 
-      v22 = [v6 delayTimer];
-      [v22 setDelegate:v7];
+      delayTimer2 = [operationCopy delayTimer];
+      [delayTimer2 setDelegate:manager];
     }
 
-    [(HMDSyncOperationQueue *)self _addOperation:v6];
+    [(HMDSyncOperationQueue *)self _addOperation:operationCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addOperation:(id)a3
+- (void)_addOperation:(id)operation
 {
   v149 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   v136 = 0u;
   v137 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v5 = [(HMDSyncOperationQueue *)self stagedOperations];
-  v6 = [v5 countByEnumeratingWithState:&v136 objects:v148 count:16];
+  stagedOperations = [(HMDSyncOperationQueue *)self stagedOperations];
+  v6 = [stagedOperations countByEnumeratingWithState:&v136 objects:v148 count:16];
   if (v6)
   {
     v7 = v6;
@@ -408,24 +408,24 @@ LABEL_20:
       {
         if (*v137 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stagedOperations);
         }
 
         v10 = *(*(&v136 + 1) + 8 * i);
-        v11 = [v4 zoneName];
-        v12 = [v10 zoneName];
-        v13 = [v11 isEqualToString:v12];
+        zoneName = [operationCopy zoneName];
+        zoneName2 = [v10 zoneName];
+        v13 = [zoneName isEqualToString:zoneName2];
 
         if (v13)
         {
-          v14 = [v4 options];
-          v15 = [v14 isDelayRespected];
+          options = [operationCopy options];
+          isDelayRespected = [options isDelayRespected];
 
           v16 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy = self;
           v18 = HMFGetOSLogHandle();
           v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
-          if (!v15)
+          if (!isDelayRespected)
           {
             if (v19)
             {
@@ -436,18 +436,18 @@ LABEL_20:
             }
 
             objc_autoreleasePoolPop(v16);
-            v36 = [v4 options];
-            v37 = [v36 isCloudConflict];
+            options2 = [operationCopy options];
+            isCloudConflict = [options2 isCloudConflict];
 
-            if (v37)
+            if (isCloudConflict)
             {
-              v38 = [v4 options];
-              v39 = [v38 isCloudConflict];
-              v40 = [v10 options];
-              [v40 setCloudConflict:v39];
+              options3 = [operationCopy options];
+              isCloudConflict2 = [options3 isCloudConflict];
+              options4 = [v10 options];
+              [options4 setCloudConflict:isCloudConflict2];
             }
 
-            v41 = [v4 operationCompletions];
+            operationCompletions = [operationCopy operationCompletions];
             v42 = v10;
             goto LABEL_92;
           }
@@ -461,26 +461,26 @@ LABEL_20:
           }
 
           objc_autoreleasePoolPop(v16);
-          [(HMDSyncOperationQueue *)v17 _removeStagedOperation:v10];
-          v21 = [v10 options];
-          v22 = [v21 isCloudConflict];
+          [(HMDSyncOperationQueue *)selfCopy _removeStagedOperation:v10];
+          options5 = [v10 options];
+          isCloudConflict3 = [options5 isCloudConflict];
 
-          if (v22)
+          if (isCloudConflict3)
           {
-            v23 = [v10 options];
-            v24 = [v23 isCloudConflict];
-            v25 = [v4 options];
-            [v25 setCloudConflict:v24];
+            options6 = [v10 options];
+            isCloudConflict4 = [options6 isCloudConflict];
+            options7 = [operationCopy options];
+            [options7 setCloudConflict:isCloudConflict4];
           }
 
-          v26 = [v10 operationCompletions];
-          [v4 updateOperationCompletionsWithArray:v26];
+          operationCompletions2 = [v10 operationCompletions];
+          [operationCopy updateOperationCompletionsWithArray:operationCompletions2];
 
           goto LABEL_16;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v136 objects:v148 count:16];
+      v7 = [stagedOperations countByEnumeratingWithState:&v136 objects:v148 count:16];
       if (v7)
       {
         continue;
@@ -492,16 +492,16 @@ LABEL_20:
 
 LABEL_16:
 
-  v27 = [v4 delayTimer];
+  delayTimer = [operationCopy delayTimer];
 
-  if (!v27)
+  if (!delayTimer)
   {
     v130 = 0uLL;
     v131 = 0uLL;
     *(&v128 + 1) = 0;
     v129 = 0uLL;
-    v51 = [(HMDSyncOperationQueue *)self waitingOperations];
-    v52 = [v51 countByEnumeratingWithState:&v128 objects:v140 count:16];
+    waitingOperations = [(HMDSyncOperationQueue *)self waitingOperations];
+    v52 = [waitingOperations countByEnumeratingWithState:&v128 objects:v140 count:16];
     if (!v52)
     {
       goto LABEL_44;
@@ -515,42 +515,42 @@ LABEL_16:
       {
         if (*v129 != v54)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(waitingOperations);
         }
 
         v56 = *(*(&v128 + 1) + 8 * j);
-        v57 = [v4 zoneName];
-        v58 = [v56 zoneName];
-        v59 = [v57 isEqualToString:v58];
+        zoneName3 = [operationCopy zoneName];
+        zoneName4 = [v56 zoneName];
+        v59 = [zoneName3 isEqualToString:zoneName4];
 
         if (v59)
         {
           v60 = objc_autoreleasePoolPush();
-          v61 = self;
+          selfCopy2 = self;
           v62 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
           {
             v63 = HMFGetLogIdentifier();
-            v64 = [v56 zoneName];
+            zoneName5 = [v56 zoneName];
             *buf = 138543618;
             v142 = v63;
             v143 = 2112;
-            v144 = v64;
+            v144 = zoneName5;
             _os_log_impl(&dword_2531F8000, v62, OS_LOG_TYPE_INFO, "%{public}@Dropping scheduled operation, new operation being added directly to staged for %@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v60);
-          v5 = v56;
+          stagedOperations = v56;
 
-          if (v5)
+          if (stagedOperations)
           {
-            v65 = [v5 options];
-            v66 = [v65 isDelayRespected];
+            options8 = [stagedOperations options];
+            isDelayRespected2 = [options8 isDelayRespected];
 
-            if (v66)
+            if (isDelayRespected2)
             {
               v67 = objc_autoreleasePoolPush();
-              v68 = v61;
+              v68 = selfCopy2;
               v69 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
               {
@@ -562,36 +562,36 @@ LABEL_16:
 
               objc_autoreleasePoolPop(v67);
 LABEL_91:
-              v41 = [v4 operationCompletions];
-              v42 = v5;
+              operationCompletions = [operationCopy operationCompletions];
+              v42 = stagedOperations;
 LABEL_92:
-              [v42 updateOperationCompletionsWithArray:v41];
+              [v42 updateOperationCompletionsWithArray:operationCompletions];
               goto LABEL_93;
             }
 
-            v88 = [v5 delayTimer];
-            [v88 cancel];
+            delayTimer2 = [stagedOperations delayTimer];
+            [delayTimer2 cancel];
 
-            [v5 setDelayTimer:0];
-            [(HMDSyncOperationQueue *)v61 _removeWaitingOperation:v5];
-            v89 = [v5 options];
-            v90 = [v89 isCloudConflict];
+            [stagedOperations setDelayTimer:0];
+            [(HMDSyncOperationQueue *)selfCopy2 _removeWaitingOperation:stagedOperations];
+            options9 = [stagedOperations options];
+            isCloudConflict5 = [options9 isCloudConflict];
 
-            if (v90)
+            if (isCloudConflict5)
             {
-              v91 = [v5 options];
-              v92 = [v91 isCloudConflict];
-              v93 = [v4 options];
-              [v93 setCloudConflict:v92];
+              options10 = [stagedOperations options];
+              isCloudConflict6 = [options10 isCloudConflict];
+              options11 = [operationCopy options];
+              [options11 setCloudConflict:isCloudConflict6];
             }
 
-            v51 = [v5 operationCompletions];
-            [v4 updateOperationCompletionsWithArray:v51];
+            waitingOperations = [stagedOperations operationCompletions];
+            [operationCopy updateOperationCompletionsWithArray:waitingOperations];
 LABEL_66:
           }
 
           v94 = objc_autoreleasePoolPush();
-          v95 = self;
+          selfCopy3 = self;
           v96 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v96, OS_LOG_TYPE_INFO))
           {
@@ -599,21 +599,21 @@ LABEL_66:
             *buf = 138543618;
             v142 = v97;
             v143 = 2112;
-            v144 = v4;
+            v144 = operationCopy;
             _os_log_impl(&dword_2531F8000, v96, OS_LOG_TYPE_INFO, "%{public}@Schedule operation without delay %@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v94);
-          [(HMDSyncOperationQueue *)v95 _addStagedOperation:v4];
+          [(HMDSyncOperationQueue *)selfCopy3 _addStagedOperation:operationCopy];
           goto LABEL_94;
         }
       }
 
-      v53 = [v51 countByEnumeratingWithState:&v128 objects:v140 count:16];
+      v53 = [waitingOperations countByEnumeratingWithState:&v128 objects:v140 count:16];
       if (!v53)
       {
 LABEL_44:
-        v5 = 0;
+        stagedOperations = 0;
         goto LABEL_66;
       }
     }
@@ -623,9 +623,9 @@ LABEL_44:
   v135 = 0uLL;
   v132 = 0uLL;
   v133 = 0uLL;
-  v28 = [(HMDSyncOperationQueue *)self waitingOperations];
-  v5 = [v28 countByEnumeratingWithState:&v132 objects:v147 count:16];
-  if (!v5)
+  waitingOperations2 = [(HMDSyncOperationQueue *)self waitingOperations];
+  stagedOperations = [waitingOperations2 countByEnumeratingWithState:&v132 objects:v147 count:16];
+  if (!stagedOperations)
   {
     goto LABEL_80;
   }
@@ -633,37 +633,37 @@ LABEL_44:
   v29 = *v133;
   while (2)
   {
-    for (k = 0; k != v5; k = k + 1)
+    for (k = 0; k != stagedOperations; k = k + 1)
     {
       if (*v133 != v29)
       {
-        objc_enumerationMutation(v28);
+        objc_enumerationMutation(waitingOperations2);
       }
 
       v31 = *(*(&v132 + 1) + 8 * k);
-      v32 = [v4 zoneName];
-      v33 = [v31 zoneName];
-      v34 = [v32 isEqualToString:v33];
+      zoneName6 = [operationCopy zoneName];
+      zoneName7 = [v31 zoneName];
+      v34 = [zoneName6 isEqualToString:zoneName7];
 
       if (v34)
       {
-        v5 = v31;
+        stagedOperations = v31;
 
-        if (!v5)
+        if (!stagedOperations)
         {
           goto LABEL_81;
         }
 
-        v43 = [v4 options];
-        if ([v43 isDelayRespected])
+        options12 = [operationCopy options];
+        if ([options12 isDelayRespected])
         {
-          v44 = [v5 options];
-          v45 = [v44 isDelayRespected];
+          options13 = [stagedOperations options];
+          isDelayRespected3 = [options13 isDelayRespected];
 
-          if ((v45 & 1) == 0)
+          if ((isDelayRespected3 & 1) == 0)
           {
             v46 = objc_autoreleasePoolPush();
-            v47 = self;
+            selfCopy4 = self;
             v48 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
             {
@@ -685,20 +685,20 @@ LABEL_76:
         {
         }
 
-        v71 = [v4 options];
-        if ([v71 isDelayRespected])
+        options14 = [operationCopy options];
+        if ([options14 isDelayRespected])
         {
         }
 
         else
         {
-          v72 = [v5 options];
-          v73 = [v72 isDelayRespected];
+          options15 = [stagedOperations options];
+          isDelayRespected4 = [options15 isDelayRespected];
 
-          if (v73)
+          if (isDelayRespected4)
           {
             v46 = objc_autoreleasePoolPush();
-            v74 = self;
+            selfCopy5 = self;
             v48 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
             {
@@ -713,23 +713,23 @@ LABEL_76:
           }
         }
 
-        v77 = [v4 options];
-        if ([v77 isDelayRespected])
+        options16 = [operationCopy options];
+        if ([options16 isDelayRespected])
         {
-          v78 = [v5 options];
-          v79 = [v78 isDelayRespected];
+          options17 = [stagedOperations options];
+          isDelayRespected5 = [options17 isDelayRespected];
 
-          if (v79)
+          if (isDelayRespected5)
           {
-            v80 = [v5 delayTimer];
-            [v80 timeInterval];
+            delayTimer3 = [stagedOperations delayTimer];
+            [delayTimer3 timeInterval];
             v82 = v81;
-            v83 = [v4 delayTimer];
-            [v83 timeInterval];
+            delayTimer4 = [operationCopy delayTimer];
+            [delayTimer4 timeInterval];
             v85 = v84;
 
             v46 = objc_autoreleasePoolPush();
-            v86 = self;
+            selfCopy6 = self;
             v48 = HMFGetOSLogHandle();
             v87 = os_log_type_enabled(v48, OS_LOG_TYPE_INFO);
             if (v82 < v85)
@@ -746,24 +746,24 @@ LABEL_76:
 LABEL_77:
 
               objc_autoreleasePoolPop(v46);
-              v108 = [v5 delayTimer];
-              [v108 cancel];
+              delayTimer5 = [stagedOperations delayTimer];
+              [delayTimer5 cancel];
 
-              [v5 setDelayTimer:0];
-              [(HMDSyncOperationQueue *)self _removeWaitingOperation:v5];
-              v109 = [v5 options];
-              v110 = [v109 isCloudConflict];
+              [stagedOperations setDelayTimer:0];
+              [(HMDSyncOperationQueue *)self _removeWaitingOperation:stagedOperations];
+              options18 = [stagedOperations options];
+              isCloudConflict7 = [options18 isCloudConflict];
 
-              if (v110)
+              if (isCloudConflict7)
               {
-                v111 = [v5 options];
-                v112 = [v111 isCloudConflict];
-                v113 = [v4 options];
-                [v113 setCloudConflict:v112];
+                options19 = [stagedOperations options];
+                isCloudConflict8 = [options19 isCloudConflict];
+                options20 = [operationCopy options];
+                [options20 setCloudConflict:isCloudConflict8];
               }
 
-              v28 = [v5 operationCompletions];
-              [v4 updateOperationCompletionsWithArray:v28];
+              waitingOperations2 = [stagedOperations operationCompletions];
+              [operationCopy updateOperationCompletionsWithArray:waitingOperations2];
               goto LABEL_80;
             }
 
@@ -787,29 +787,29 @@ LABEL_88:
         {
         }
 
-        v28 = [v4 options];
-        if ([v28 isDelayRespected])
+        waitingOperations2 = [operationCopy options];
+        if ([waitingOperations2 isDelayRespected])
         {
           goto LABEL_80;
         }
 
-        v98 = [v5 options];
-        v99 = [v98 isDelayRespected];
+        options21 = [stagedOperations options];
+        isDelayRespected6 = [options21 isDelayRespected];
 
-        if (v99)
+        if (isDelayRespected6)
         {
           goto LABEL_81;
         }
 
-        v100 = [v5 delayTimer];
-        [v100 timeInterval];
+        delayTimer6 = [stagedOperations delayTimer];
+        [delayTimer6 timeInterval];
         v102 = v101;
-        v103 = [v4 delayTimer];
-        [v103 timeInterval];
+        delayTimer7 = [operationCopy delayTimer];
+        [delayTimer7 timeInterval];
         v105 = v104;
 
         v46 = objc_autoreleasePoolPush();
-        v106 = self;
+        selfCopy7 = self;
         v48 = HMFGetOSLogHandle();
         v107 = os_log_type_enabled(v48, OS_LOG_TYPE_INFO);
         if (v102 > v105)
@@ -838,23 +838,23 @@ LABEL_88:
 LABEL_89:
 
         objc_autoreleasePoolPop(v46);
-        v122 = [v4 options];
-        v123 = [v122 isCloudConflict];
+        options22 = [operationCopy options];
+        isCloudConflict9 = [options22 isCloudConflict];
 
-        if (v123)
+        if (isCloudConflict9)
         {
-          v124 = [v4 options];
-          v125 = [v124 isCloudConflict];
-          v126 = [v5 options];
-          [v126 setCloudConflict:v125];
+          options23 = [operationCopy options];
+          isCloudConflict10 = [options23 isCloudConflict];
+          options24 = [stagedOperations options];
+          [options24 setCloudConflict:isCloudConflict10];
         }
 
         goto LABEL_91;
       }
     }
 
-    v5 = [v28 countByEnumeratingWithState:&v132 objects:v147 count:16];
-    if (v5)
+    stagedOperations = [waitingOperations2 countByEnumeratingWithState:&v132 objects:v147 count:16];
+    if (stagedOperations)
     {
       continue;
     }
@@ -866,28 +866,28 @@ LABEL_80:
 
 LABEL_81:
   v114 = objc_autoreleasePoolPush();
-  v115 = self;
+  selfCopy8 = self;
   v116 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v116, OS_LOG_TYPE_INFO))
   {
     v117 = HMFGetLogIdentifier();
-    v118 = [v4 delayTimer];
-    [v118 timeInterval];
+    delayTimer8 = [operationCopy delayTimer];
+    [delayTimer8 timeInterval];
     v120 = v119;
-    v121 = [v5 zoneName];
+    zoneName8 = [stagedOperations zoneName];
     *buf = 138543874;
     v142 = v117;
     v143 = 2048;
     v144 = v120;
     v145 = 2112;
-    v146 = v121;
+    v146 = zoneName8;
     _os_log_impl(&dword_2531F8000, v116, OS_LOG_TYPE_INFO, "%{public}@Schedule operation with delay %g: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v114);
-  [(HMDSyncOperationQueue *)v115 _addWaitingOperation:v4];
-  v41 = [v4 delayTimer];
-  [v41 resume];
+  [(HMDSyncOperationQueue *)selfCopy8 _addWaitingOperation:operationCopy];
+  operationCompletions = [operationCopy delayTimer];
+  [operationCompletions resume];
 LABEL_93:
 
 LABEL_94:
@@ -896,8 +896,8 @@ LABEL_94:
 
 - (void)resetBackoffTimer
 {
-  v3 = [(HMDSyncOperationQueue *)self backoffTimer];
-  [v3 cancel];
+  backoffTimer = [(HMDSyncOperationQueue *)self backoffTimer];
+  [backoffTimer cancel];
 
   [(HMDSyncOperationQueue *)self setBackoffTimer:0];
 }
@@ -906,26 +906,26 @@ LABEL_94:
 {
   if ([(HMDSyncOperationQueue *)self hasExponentialBackoff])
   {
-    v3 = [(HMDSyncOperationQueue *)self backoffTimer];
+    backoffTimer = [(HMDSyncOperationQueue *)self backoffTimer];
 
-    if (!v3)
+    if (!backoffTimer)
     {
       v4 = objc_alloc(MEMORY[0x277D0F7B0]);
       [(HMDSyncOperationQueue *)self initialBackoff];
       v5 = [v4 initWithMinimumTimeInterval:cloudUploadTimerIntervalExponentialFactor maximumTimeInterval:1 exponentialFactor:? options:?];
       [(HMDSyncOperationQueue *)self setBackoffTimer:v5];
 
-      v7 = [(HMDSyncOperationQueue *)self backoffTimer];
-      v6 = [(HMDSyncOperationQueue *)self manager];
-      [v7 setDelegate:v6];
+      backoffTimer2 = [(HMDSyncOperationQueue *)self backoffTimer];
+      manager = [(HMDSyncOperationQueue *)self manager];
+      [backoffTimer2 setDelegate:manager];
     }
   }
 }
 
 - (int64_t)count
 {
-  v2 = [(HMDSyncOperationQueue *)self stagedOperations];
-  v3 = [v2 count];
+  stagedOperations = [(HMDSyncOperationQueue *)self stagedOperations];
+  v3 = [stagedOperations count];
 
   return v3;
 }
@@ -944,44 +944,44 @@ LABEL_94:
   os_unfair_lock_lock_with_options();
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDSyncOperationQueue *)self name];
+  name = [(HMDSyncOperationQueue *)self name];
   stagedOperations = self->_stagedOperations;
-  v7 = [v3 stringWithFormat:@"<%@ %@, Staged Operations = %@, Waiting Operations = %@>", v4, v5, stagedOperations, self->_waitingOperations];
+  v7 = [v3 stringWithFormat:@"<%@ %@, Staged Operations = %@, Waiting Operations = %@>", v4, name, stagedOperations, self->_waitingOperations];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (void)_removeWaitingOperation:(id)a3
+- (void)_removeWaitingOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_waitingOperations removeObject:v4];
+  [(NSMutableArray *)self->_waitingOperations removeObject:operationCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addWaitingOperation:(id)a3
+- (void)_addWaitingOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_waitingOperations addObject:v4];
+  [(NSMutableArray *)self->_waitingOperations addObject:operationCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_removeStagedOperation:(id)a3
+- (void)_removeStagedOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_stagedOperations removeObject:v4];
+  [(NSMutableArray *)self->_stagedOperations removeObject:operationCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addStagedOperation:(id)a3
+- (void)_addStagedOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_stagedOperations addObject:v4];
+  [(NSMutableArray *)self->_stagedOperations addObject:operationCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -1003,10 +1003,10 @@ LABEL_94:
   return v3;
 }
 
-- (id)initName:(id)a3 syncManager:(id)a4 initialDelay:(double)a5 initialBackoff:(double)a6 hasBackoff:(BOOL)a7
+- (id)initName:(id)name syncManager:(id)manager initialDelay:(double)delay initialBackoff:(double)backoff hasBackoff:(BOOL)hasBackoff
 {
-  v13 = a3;
-  v14 = a4;
+  nameCopy = name;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = HMDSyncOperationQueue;
   v15 = [(HMDSyncOperationQueue *)&v22 init];
@@ -1014,19 +1014,19 @@ LABEL_94:
   if (v15)
   {
     v15->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v15->_name, a3);
-    objc_storeWeak(&v16->_manager, v14);
-    v17 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v15->_name, name);
+    objc_storeWeak(&v16->_manager, managerCopy);
+    array = [MEMORY[0x277CBEB18] array];
     stagedOperations = v16->_stagedOperations;
-    v16->_stagedOperations = v17;
+    v16->_stagedOperations = array;
 
-    v19 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     waitingOperations = v16->_waitingOperations;
-    v16->_waitingOperations = v19;
+    v16->_waitingOperations = array2;
 
-    v16->_initialDelay = a5;
-    v16->_initialBackoff = a6;
-    v16->_hasExponentialBackoff = a7;
+    v16->_initialDelay = delay;
+    v16->_initialBackoff = backoff;
+    v16->_hasExponentialBackoff = hasBackoff;
   }
 
   return v16;

@@ -1,26 +1,26 @@
 @interface HDWorkoutMirroringManager
-- (HDWorkoutMirroringManager)initWithWorkoutManager:(id)a3;
+- (HDWorkoutMirroringManager)initWithWorkoutManager:(id)manager;
 - (id)activeSessionBundleIdentifier;
-- (void)_createServerWithData:(id)a3 completion:(id)a4;
+- (void)_createServerWithData:(id)data completion:(id)completion;
 - (void)dealloc;
-- (void)launchClientWithBundleIdentifier:(id)a3;
-- (void)rapportMessenger:(id)a3 didReceiveRequest:(id)a4 data:(id)a5 responseHandler:(id)a6;
-- (void)recoverMirroredWorkoutSessionWithCompletion:(id)a3;
-- (void)setActiveSessionBundleIdentifier:(id)a3;
+- (void)launchClientWithBundleIdentifier:(id)identifier;
+- (void)rapportMessenger:(id)messenger didReceiveRequest:(id)request data:(id)data responseHandler:(id)handler;
+- (void)recoverMirroredWorkoutSessionWithCompletion:(id)completion;
+- (void)setActiveSessionBundleIdentifier:(id)identifier;
 @end
 
 @implementation HDWorkoutMirroringManager
 
-- (HDWorkoutMirroringManager)initWithWorkoutManager:(id)a3
+- (HDWorkoutMirroringManager)initWithWorkoutManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = HDWorkoutMirroringManager;
   v5 = [(HDWorkoutMirroringManager *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_workoutManager, v4);
+    objc_storeWeak(&v5->_workoutManager, managerCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     assertionsByBundleIdentifier = v6->_assertionsByBundleIdentifier;
@@ -31,13 +31,13 @@
     v6->_analyticsCollector = v9;
 
     WeakRetained = objc_loadWeakRetained(&v6->_workoutManager);
-    v12 = [WeakRetained profile];
-    [v12 registerProfileReadyObserver:v6 queue:0];
+    profile = [WeakRetained profile];
+    [profile registerProfileReadyObserver:v6 queue:0];
 
     v13 = objc_loadWeakRetained(&v6->_workoutManager);
-    v14 = [v13 profile];
-    v15 = [v14 rapportMessenger];
-    [v15 addObserver:v6 forSchemaIdentifier:0];
+    profile2 = [v13 profile];
+    rapportMessenger = [profile2 rapportMessenger];
+    [rapportMessenger addObserver:v6 forSchemaIdentifier:0];
   }
 
   return v6;
@@ -51,8 +51,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(NSMutableDictionary *)self->_assertionsByBundleIdentifier allValues];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->_assertionsByBundleIdentifier allValues];
+  v4 = [allValues countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v4)
   {
     v6 = v4;
@@ -66,7 +66,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -82,7 +82,7 @@
             if (os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
             {
               *buf = v15;
-              v23 = self;
+              selfCopy = self;
               v24 = 2114;
               v25 = v12;
               _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Failed to invalidate existing background runtime assertion with error: %{public}@", buf, 0x16u);
@@ -91,7 +91,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v6);
@@ -104,16 +104,16 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActiveSessionBundleIdentifier:(id)a3
+- (void)setActiveSessionBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_workoutManager);
-  v6 = [WeakRetained profile];
-  v7 = HDMirroredWorkoutSessionKeyValueDomainWithProfile(v6);
+  profile = [WeakRetained profile];
+  v7 = HDMirroredWorkoutSessionKeyValueDomainWithProfile(profile);
 
   v14 = 0;
-  LOBYTE(WeakRetained) = [v7 setString:v4 forKey:@"active-session-bundle-id" error:&v14];
+  LOBYTE(WeakRetained) = [v7 setString:identifierCopy forKey:@"active-session-bundle-id" error:&v14];
 
   v8 = v14;
   if ((WeakRetained & 1) == 0)
@@ -140,8 +140,8 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_workoutManager);
-  v3 = [WeakRetained profile];
-  v4 = HDMirroredWorkoutSessionKeyValueDomainWithProfile(v3);
+  profile = [WeakRetained profile];
+  v4 = HDMirroredWorkoutSessionKeyValueDomainWithProfile(profile);
 
   v10 = 0;
   v5 = [v4 stringForKey:@"active-session-bundle-id" error:&v10];
@@ -163,29 +163,29 @@
   return v5;
 }
 
-- (void)rapportMessenger:(id)a3 didReceiveRequest:(id)a4 data:(id)a5 responseHandler:(id)a6
+- (void)rapportMessenger:(id)messenger didReceiveRequest:(id)request data:(id)data responseHandler:(id)handler
 {
   v90 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messengerCopy = messenger;
+  requestCopy = request;
+  dataCopy = data;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_workoutManager);
-  v15 = [WeakRetained currentWorkout];
+  currentWorkout = [WeakRetained currentWorkout];
 
-  if (v15)
+  if (currentWorkout)
   {
-    if (([v15 isMirroring] & 1) == 0)
+    if (([currentWorkout isMirroring] & 1) == 0)
     {
-      v16 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v17 = [v16 isAppleWatch];
+      mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+      isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-      if ((v17 & 1) == 0)
+      if ((isAppleWatch & 1) == 0)
       {
-        if (![v15 sessionType])
+        if (![currentWorkout sessionType])
         {
           v40 = [MEMORY[0x277CCA9B8] hk_error:8 description:@"Another session is in progress"];
-          v13[2](v13, 0, v40);
+          handlerCopy[2](handlerCopy, 0, v40);
 
           goto LABEL_37;
         }
@@ -197,21 +197,21 @@
           v51 = v18;
           v52 = objc_opt_class();
           v53 = v52;
-          v54 = [v11 name];
+          name = [requestCopy name];
           *buf = 138543874;
           v85 = v52;
           v86 = 2114;
-          v87 = v54;
+          v87 = name;
           v88 = 2114;
-          v89 = v15;
+          v89 = currentWorkout;
           _os_log_error_impl(&dword_228986000, v51, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Received mirroring request with identifier: %{public}@. The current workout is %{public}@", buf, 0x20u);
         }
       }
     }
   }
 
-  v19 = [v11 name];
-  v20 = [v19 isEqualToString:@"startMirroring"];
+  name2 = [requestCopy name];
+  v20 = [name2 isEqualToString:@"startMirroring"];
 
   if (v20)
   {
@@ -219,35 +219,35 @@
     v82[1] = 3221225472;
     v82[2] = __85__HDWorkoutMirroringManager_rapportMessenger_didReceiveRequest_data_responseHandler___block_invoke;
     v82[3] = &unk_27861A2B0;
-    v83 = v13;
-    [(HDWorkoutMirroringManager *)self _createServerWithData:v12 completion:v82];
+    v83 = handlerCopy;
+    [(HDWorkoutMirroringManager *)self _createServerWithData:dataCopy completion:v82];
     v21 = v83;
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v22 = [v11 name];
-  v23 = [v22 isEqualToString:@"recoverSession"];
+  name3 = [requestCopy name];
+  v23 = [name3 isEqualToString:@"recoverSession"];
 
   if (!v23)
   {
-    v27 = [[HDCodableWorkoutSessionSyncTransaction alloc] initWithData:v12];
+    v27 = [[HDCodableWorkoutSessionSyncTransaction alloc] initWithData:dataCopy];
     v28 = MEMORY[0x277CCAD78];
     v71 = v27;
-    v29 = [(HDCodableWorkoutSessionSyncTransaction *)v27 sessionUUID];
-    v30 = [v28 hk_UUIDWithData:v29];
+    sessionUUID = [(HDCodableWorkoutSessionSyncTransaction *)v27 sessionUUID];
+    v30 = [v28 hk_UUIDWithData:sessionUUID];
 
     if (v30)
     {
       v31 = objc_loadWeakRetained(&self->_workoutManager);
-      v32 = [v31 sessionServers];
-      v33 = [v32 objectForKeyedSubscript:v30];
+      sessionServers = [v31 sessionServers];
+      v33 = [sessionServers objectForKeyedSubscript:v30];
 
       if (v33)
       {
-        v34 = [v33 syncController];
-        [v34 rapportMessenger:v10 didReceiveRequest:v11 data:v12 responseHandler:v13];
+        syncController = [v33 syncController];
+        [syncController rapportMessenger:messengerCopy didReceiveRequest:requestCopy data:dataCopy responseHandler:handlerCopy];
       }
 
       else
@@ -259,43 +259,43 @@ LABEL_36:
           loga = v41;
           v62 = objc_opt_class();
           v70 = v62;
-          v63 = [v11 name];
+          name4 = [requestCopy name];
           *buf = 138543874;
           v85 = v62;
           v86 = 2114;
           v87 = v30;
           v88 = 2114;
-          v89 = v63;
+          v89 = name4;
           _os_log_error_impl(&dword_228986000, loga, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Session server %{public}@ doesn't exist to handle request %{public}@", buf, 0x20u);
         }
 
-        v42 = [MEMORY[0x277CCDD30] sharedBehavior];
-        v43 = [v42 isCompanionCapable];
+        mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+        isCompanionCapable = [mEMORY[0x277CCDD30]2 isCompanionCapable];
 
-        if (v43)
+        if (isCompanionCapable)
         {
           v74[0] = MEMORY[0x277D85DD0];
           v74[1] = 3221225472;
           v74[2] = __85__HDWorkoutMirroringManager_rapportMessenger_didReceiveRequest_data_responseHandler___block_invoke_314;
           v74[3] = &unk_27862E990;
-          v80 = v13;
+          v80 = handlerCopy;
           v75 = v30;
           v76 = 0;
-          v77 = v10;
-          v78 = v11;
-          v79 = v12;
+          v77 = messengerCopy;
+          v78 = requestCopy;
+          v79 = dataCopy;
           [(HDWorkoutMirroringManager *)self recoverMirroredWorkoutSessionWithCompletion:v74];
 
-          v34 = v80;
+          syncController = v80;
         }
 
         else
         {
           logb = objc_loadWeakRetained(&self->_workoutManager);
-          v44 = [logb profile];
+          profile = [logb profile];
           v73 = 0;
-          v45 = [HDWorkoutSessionServer sessionIdentifierForRecoveryInProfile:v44 error:&v73];
-          v34 = v73;
+          v45 = [HDWorkoutSessionServer sessionIdentifierForRecoveryInProfile:profile error:&v73];
+          syncController = v73;
 
           v46 = v45;
           _HKInitializeLogging();
@@ -309,13 +309,13 @@ LABEL_36:
             v86 = 2114;
             v87 = v46;
             v88 = 2114;
-            v89 = v34;
+            v89 = syncController;
             v66 = v65;
             _os_log_error_impl(&dword_228986000, v64, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Queried persisted session identifier: %{public}@, error: %{public}@", buf, 0x20u);
           }
 
           log = v46;
-          if (([v30 isEqual:v46]& 1) != 0 || v34)
+          if (([v30 isEqual:v46]& 1) != 0 || syncController)
           {
             v48 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Unable to complete mirrored workout session request (#3)."];
           }
@@ -327,7 +327,7 @@ LABEL_36:
 
           v49 = v48;
           v33 = 0;
-          v13[2](v13, 0, v48);
+          handlerCopy[2](handlerCopy, 0, v48);
         }
       }
     }
@@ -341,16 +341,16 @@ LABEL_36:
         v58 = v38;
         v59 = objc_opt_class();
         v60 = v59;
-        v61 = [v11 name];
+        name5 = [requestCopy name];
         *buf = 138543618;
         v85 = v59;
         v86 = 2114;
-        v87 = v61;
+        v87 = name5;
         _os_log_error_impl(&dword_228986000, v58, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Malformed incoming request %{public}@: session UUID is missing.", buf, 0x16u);
       }
 
       v39 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Unable to complete mirrored workout session request (#1)."];
-      v13[2](v13, 0, v39);
+      handlerCopy[2](handlerCopy, 0, v39);
     }
 
     v21 = v71;
@@ -358,21 +358,21 @@ LABEL_36:
   }
 
   v24 = objc_loadWeakRetained(&self->_workoutManager);
-  v25 = [v24 currentWorkout];
+  currentWorkout2 = [v24 currentWorkout];
 
-  if (v25)
+  if (currentWorkout2)
   {
-    v26 = [v25 syncController];
-    [v26 rapportMessenger:v10 didReceiveRequest:v11 data:v12 responseHandler:v13];
+    syncController2 = [currentWorkout2 syncController];
+    [syncController2 rapportMessenger:messengerCopy didReceiveRequest:requestCopy data:dataCopy responseHandler:handlerCopy];
   }
 
   else
   {
     v35 = objc_loadWeakRetained(&self->_workoutManager);
-    v36 = [v35 profile];
+    profile2 = [v35 profile];
     v81 = 0;
-    v72 = [HDWorkoutSessionServer sessionIdentifierForRecoveryInProfile:v36 error:&v81];
-    v26 = v81;
+    v72 = [HDWorkoutSessionServer sessionIdentifierForRecoveryInProfile:profile2 error:&v81];
+    syncController2 = v81;
 
     _HKInitializeLogging();
     v37 = *MEMORY[0x277CCC330];
@@ -385,12 +385,12 @@ LABEL_36:
       v86 = 2114;
       v87 = v72;
       v88 = 2114;
-      v89 = v26;
+      v89 = syncController2;
       v57 = v56;
       _os_log_error_impl(&dword_228986000, v55, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Queried persisted session identifier: %{public}@, error: %{public}@", buf, 0x20u);
     }
 
-    v13[2](v13, 0, v26);
+    handlerCopy[2](handlerCopy, 0, syncController2);
   }
 
 LABEL_37:
@@ -425,65 +425,65 @@ void __85__HDWorkoutMirroringManager_rapportMessenger_didReceiveRequest_data_res
 LABEL_6:
 }
 
-- (void)_createServerWithData:(id)a3 completion:(id)a4
+- (void)_createServerWithData:(id)data completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [[HDCodableWorkoutSessionSyncTransaction alloc] initWithData:v6];
+  v8 = [[HDCodableWorkoutSessionSyncTransaction alloc] initWithData:dataCopy];
   v9 = MEMORY[0x277CCAD78];
-  v10 = [(HDCodableWorkoutSessionSyncTransaction *)v8 sessionUUID];
-  v11 = [v9 hk_UUIDWithData:v10];
+  sessionUUID = [(HDCodableWorkoutSessionSyncTransaction *)v8 sessionUUID];
+  v11 = [v9 hk_UUIDWithData:sessionUUID];
 
   v12 = MEMORY[0x277CCDC38];
-  v13 = [(HDCodableWorkoutSessionSyncTransaction *)v8 configuration];
-  v14 = [v13 workoutConfiguration];
-  v15 = [v12 createWithCodable:v14];
+  configuration = [(HDCodableWorkoutSessionSyncTransaction *)v8 configuration];
+  workoutConfiguration = [configuration workoutConfiguration];
+  v15 = [v12 createWithCodable:workoutConfiguration];
 
-  v16 = [(HDCodableWorkoutSessionSyncTransaction *)v8 configuration];
-  v17 = [v16 sourceBundleIdentifier];
+  configuration2 = [(HDCodableWorkoutSessionSyncTransaction *)v8 configuration];
+  sourceBundleIdentifier = [configuration2 sourceBundleIdentifier];
 
-  if (v11 && v15 && v17)
+  if (v11 && v15 && sourceBundleIdentifier)
   {
     WeakRetained = objc_loadWeakRetained(&self->_workoutManager);
-    v19 = [WeakRetained sessionServers];
-    v20 = [v19 objectForKeyedSubscript:v11];
+    sessionServers = [WeakRetained sessionServers];
+    v20 = [sessionServers objectForKeyedSubscript:v11];
 
     if (v20)
     {
       os_unfair_lock_unlock(&self->_lock);
-      v7[2](v7, v20, 0);
+      completionCopy[2](completionCopy, v20, 0);
     }
 
     else
     {
       v45 = 0;
-      v23 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v17 allowPlaceholder:0 error:&v45];
+      v23 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:sourceBundleIdentifier allowPlaceholder:0 error:&v45];
       v24 = v45;
       v25 = v24;
       if (v23)
       {
         v44 = v24;
-        v26 = [v23 applicationState];
-        v27 = [v26 isInstalled];
+        applicationState = [v23 applicationState];
+        isInstalled = [applicationState isInstalled];
 
-        if (v27)
+        if (isInstalled)
         {
-          [(HDWorkoutMirroringManager *)self setActiveSessionBundleIdentifier:v17];
+          [(HDWorkoutMirroringManager *)self setActiveSessionBundleIdentifier:sourceBundleIdentifier];
           v28 = [HDMirroredWorkoutSessionServer alloc];
           v42 = objc_loadWeakRetained(&self->_workoutManager);
-          v29 = [v42 profile];
+          profile = [v42 profile];
           [(HDCodableWorkoutSessionSyncTransaction *)v8 globalState];
           v30 = v43 = v23;
-          v31 = [(HDMirroredWorkoutSessionServer *)v28 initWithProfile:v29 configuration:v15 sessionUUID:v11 globalState:v30 clientBundleIdentifier:v17];
+          v31 = [(HDMirroredWorkoutSessionServer *)v28 initWithProfile:profile configuration:v15 sessionUUID:v11 globalState:v30 clientBundleIdentifier:sourceBundleIdentifier];
 
           v32 = objc_loadWeakRetained(&self->_workoutManager);
           [v32 _didCreateMirroredSessionServer:v31];
 
           v23 = v43;
           os_unfair_lock_unlock(&self->_lock);
-          v7[2](v7, v31, 0);
+          completionCopy[2](completionCopy, v31, 0);
         }
 
         else
@@ -498,13 +498,13 @@ LABEL_6:
             *buf = 138543618;
             v47 = v40;
             v48 = 2114;
-            v49 = v17;
+            v49 = sourceBundleIdentifier;
             v41 = v40;
             _os_log_error_impl(&dword_228986000, v39, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Ignoring workout session mirroring request because the companion app %{public}@ is not installed.", buf, 0x16u);
           }
 
           v31 = [MEMORY[0x277CCA9B8] hk_error:552 description:@"Application is not installed on companion device."];
-          (v7)[2](v7, 0, v31);
+          (completionCopy)[2](completionCopy, 0, v31);
         }
 
         v25 = v44;
@@ -523,7 +523,7 @@ LABEL_6:
         }
 
         v31 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Failed to start mirroring workout session."];
-        (v7)[2](v7, 0, v31);
+        (completionCopy)[2](completionCopy, 0, v31);
       }
 
       v20 = 0;
@@ -540,42 +540,42 @@ LABEL_6:
       v35 = v21;
       v36 = objc_opt_class();
       v37 = v36;
-      v38 = [(HDCodableWorkoutSessionSyncTransaction *)v8 configuration];
+      configuration3 = [(HDCodableWorkoutSessionSyncTransaction *)v8 configuration];
       *buf = 138544130;
       v47 = v36;
       v48 = 2114;
       v49 = v11;
       v50 = 2114;
-      v51 = v38;
+      v51 = configuration3;
       v52 = 2114;
-      v53 = v6;
+      v53 = dataCopy;
       _os_log_error_impl(&dword_228986000, v35, OS_LOG_TYPE_ERROR, "[mirroring] %{public}@: Cannot start mirroring with invalid request. Session UUID: %{public}@, configuration: %{public}@, data: %{public}@", buf, 0x2Au);
     }
 
     v20 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Failed to start mirroring workout session."];
-    (v7)[2](v7, 0, v20);
+    (completionCopy)[2](completionCopy, 0, v20);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recoverMirroredWorkoutSessionWithCompletion:(id)a3
+- (void)recoverMirroredWorkoutSessionWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__HDWorkoutMirroringManager_recoverMirroredWorkoutSessionWithCompletion___block_invoke;
   aBlock[3] = &unk_27861A2B0;
-  v24 = v4;
+  v24 = completionCopy;
   v5 = _Block_copy(aBlock);
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v7 = [v6 isCompanionCapable];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isCompanionCapable = [mEMORY[0x277CCDD30] isCompanionCapable];
 
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC330];
   v9 = os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (isCompanionCapable)
   {
     if (v9)
     {
@@ -589,15 +589,15 @@ LABEL_6:
 
     v13 = [[HDRapportRequestIdentifier alloc] initWithSchemaIdentifier:0 name:@"recoverSession"];
     WeakRetained = objc_loadWeakRetained(&self->_workoutManager);
-    v15 = [WeakRetained profile];
-    v16 = [v15 rapportMessenger];
+    profile = [WeakRetained profile];
+    rapportMessenger = [profile rapportMessenger];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __73__HDWorkoutMirroringManager_recoverMirroredWorkoutSessionWithCompletion___block_invoke_337;
     v21[3] = &unk_27862E9B8;
     v21[4] = self;
     v22 = v5;
-    [v16 sendRequest:v13 data:0 completion:v21];
+    [rapportMessenger sendRequest:v13 data:0 completion:v21];
   }
 
   else
@@ -675,11 +675,11 @@ void __73__HDWorkoutMirroringManager_recoverMirroredWorkoutSessionWithCompletion
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)launchClientWithBundleIdentifier:(id)a3
+- (void)launchClientWithBundleIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = MEMORY[0x277D0AD78];
     v10 = *MEMORY[0x277D0ABF0];
@@ -690,7 +690,7 @@ void __73__HDWorkoutMirroringManager_recoverMirroredWorkoutSessionWithCompletion
     v8[2] = __62__HDWorkoutMirroringManager_launchClientWithBundleIdentifier___block_invoke;
     v8[3] = &unk_27862E9E0;
     v8[4] = self;
-    v9 = v4;
+    v9 = identifierCopy;
     [v5 hd_openApplication:v9 optionsDictionary:v6 completion:v8];
   }
 

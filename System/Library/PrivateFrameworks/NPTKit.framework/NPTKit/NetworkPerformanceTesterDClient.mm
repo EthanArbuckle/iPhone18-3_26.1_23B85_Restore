@@ -1,21 +1,21 @@
 @interface NetworkPerformanceTesterDClient
-- (void)getPrivilegedFileHandleForPacketCaptureWithCompletionHandler:(id)a3;
-- (void)getPrivilegedFileHandleForPath:(NSString *)a3 completionHandler:(id)a4;
-- (void)startLocalPerformanceTestWith:(id)a3 completionHandler:(id)a4;
-- (void)stopLocalPerformanceTest:(id)a3;
-- (void)testServiceWithArguments:(NSArray *)a3 completionHandler:(id)a4;
+- (void)getPrivilegedFileHandleForPacketCaptureWithCompletionHandler:(id)handler;
+- (void)getPrivilegedFileHandleForPath:(NSString *)path completionHandler:(id)handler;
+- (void)startLocalPerformanceTestWith:(id)with completionHandler:(id)handler;
+- (void)stopLocalPerformanceTest:(id)test;
+- (void)testServiceWithArguments:(NSArray *)arguments completionHandler:(id)handler;
 @end
 
 @implementation NetworkPerformanceTesterDClient
 
-- (void)testServiceWithArguments:(NSArray *)a3 completionHandler:(id)a4
+- (void)testServiceWithArguments:(NSArray *)arguments completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DE0D810, &qword_233476B08) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = arguments;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_233470D04();
@@ -30,19 +30,19 @@
   v14[3] = 0;
   v14[4] = &unk_233476E78;
   v14[5] = v13;
-  v15 = a3;
+  argumentsCopy = arguments;
 
   sub_233469230(0, 0, v9, &unk_233476E80, v14);
 }
 
-- (void)getPrivilegedFileHandleForPath:(NSString *)a3 completionHandler:(id)a4
+- (void)getPrivilegedFileHandleForPath:(NSString *)path completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DE0D810, &qword_233476B08) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = path;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_233470D04();
@@ -57,17 +57,17 @@
   v14[3] = 0;
   v14[4] = &unk_233476E58;
   v14[5] = v13;
-  v15 = a3;
+  pathCopy = path;
 
   sub_233469230(0, 0, v9, &unk_233476E60, v14);
 }
 
-- (void)getPrivilegedFileHandleForPacketCaptureWithCompletionHandler:(id)a3
+- (void)getPrivilegedFileHandleForPacketCaptureWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DE0D810, &qword_233476B08) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -87,9 +87,9 @@
   sub_233469230(0, 0, v7, &unk_233476E28, v12);
 }
 
-- (void)startLocalPerformanceTestWith:(id)a3 completionHandler:(id)a4
+- (void)startLocalPerformanceTestWith:(id)with completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = *self->server;
@@ -100,16 +100,16 @@
   v11[2] = sub_233467918;
   v11[3] = &block_descriptor_38;
   v9 = _Block_copy(v11);
-  v10 = a3;
+  withCopy = with;
 
-  [v8 startLocalPerformanceTestWith:v10 completionHandler:v9];
+  [v8 startLocalPerformanceTestWith:withCopy completionHandler:v9];
 
   _Block_release(v9);
 }
 
-- (void)stopLocalPerformanceTest:(id)a3
+- (void)stopLocalPerformanceTest:(id)test
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(test);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *self->server;

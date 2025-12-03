@@ -1,34 +1,34 @@
 @interface WOWorkoutHealthSchemaProvider
-+ (id)databaseEntitiesForProtectionClass:(int64_t)a3;
-+ (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
-+ (void)_addExternalConfigurationProviderColumnsWithMigrator:(id)a3;
-+ (void)_addManagedConfigurationsColumnsWithMigrator:(id)a3;
-+ (void)_addManagedProtoConfigurationsColumnsWithMigrator:(id)a3;
-+ (void)_addOccurrenceColumnsWithMigrator:(id)a3;
-+ (void)_addProtoConfigurationsColumnsWithMigrator:(id)a3;
-+ (void)_addSyncIdentityColumnWithMigrator:(id)a3;
-+ (void)_addSyncObjectColumnsWithMigrator:(id)a3;
-+ (void)_deleteRaceWorkoutConfigurationsWithMigrator:(id)a3;
-+ (void)_emptyMigrationToSchemaVersion2WithMigrator:(id)a3;
-+ (void)_emptyMigrationToSchemaVersion3WithMigrator:(id)a3;
-+ (void)_emptyMigrationToSchemaVersion4WithMigrator:(id)a3;
-+ (void)_emptyMigrationToSchemaVersion5WithMigrator:(id)a3;
-+ (void)_emptyMigrationToSchemaVersion6WithMigrator:(id)a3;
-+ (void)_emptyMigrationToSchemaVersion7WithMigrator:(id)a3;
-+ (void)_emptyMigrationToSchemaVersion8WithMigrator:(id)a3;
-+ (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
++ (id)databaseEntitiesForProtectionClass:(int64_t)class;
++ (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
++ (void)_addExternalConfigurationProviderColumnsWithMigrator:(id)migrator;
++ (void)_addManagedConfigurationsColumnsWithMigrator:(id)migrator;
++ (void)_addManagedProtoConfigurationsColumnsWithMigrator:(id)migrator;
++ (void)_addOccurrenceColumnsWithMigrator:(id)migrator;
++ (void)_addProtoConfigurationsColumnsWithMigrator:(id)migrator;
++ (void)_addSyncIdentityColumnWithMigrator:(id)migrator;
++ (void)_addSyncObjectColumnsWithMigrator:(id)migrator;
++ (void)_deleteRaceWorkoutConfigurationsWithMigrator:(id)migrator;
++ (void)_emptyMigrationToSchemaVersion2WithMigrator:(id)migrator;
++ (void)_emptyMigrationToSchemaVersion3WithMigrator:(id)migrator;
++ (void)_emptyMigrationToSchemaVersion4WithMigrator:(id)migrator;
++ (void)_emptyMigrationToSchemaVersion5WithMigrator:(id)migrator;
++ (void)_emptyMigrationToSchemaVersion6WithMigrator:(id)migrator;
++ (void)_emptyMigrationToSchemaVersion7WithMigrator:(id)migrator;
++ (void)_emptyMigrationToSchemaVersion8WithMigrator:(id)migrator;
++ (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation WOWorkoutHealthSchemaProvider
 
-+ (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
++ (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     return 8;
   }
 
-  if (a3 == 2)
+  if (class == 2)
   {
     return 8;
   }
@@ -36,9 +36,9 @@
   return v4;
 }
 
-+ (id)databaseEntitiesForProtectionClass:(int64_t)a3
++ (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     v5[0] = objc_opt_class();
     v5[1] = objc_opt_class();
@@ -46,7 +46,7 @@
     v4 = [NSArray arrayWithObjects:v5 count:3];
   }
 
-  else if (a3 == 2)
+  else if (class == 2)
   {
     v4 = &__NSArray0__struct;
   }
@@ -54,45 +54,45 @@
   return v4;
 }
 
-+ (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
++ (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v7 = a1;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  classCopy = class;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v5 == 1)
+  objc_storeStrong(&location, migrator);
+  if (classCopy == 1)
   {
-    [v7 _addSyncObjectColumnsWithMigrator:location];
-    [v7 _addSyncIdentityColumnWithMigrator:location];
-    [v7 _addManagedConfigurationsColumnsWithMigrator:location];
-    [v7 _addProtoConfigurationsColumnsWithMigrator:location];
-    [v7 _addManagedProtoConfigurationsColumnsWithMigrator:location];
-    [v7 _addExternalConfigurationProviderColumnsWithMigrator:location];
-    [v7 _addOccurrenceColumnsWithMigrator:location];
-    [v7 _deleteRaceWorkoutConfigurationsWithMigrator:location];
+    [selfCopy _addSyncObjectColumnsWithMigrator:location];
+    [selfCopy _addSyncIdentityColumnWithMigrator:location];
+    [selfCopy _addManagedConfigurationsColumnsWithMigrator:location];
+    [selfCopy _addProtoConfigurationsColumnsWithMigrator:location];
+    [selfCopy _addManagedProtoConfigurationsColumnsWithMigrator:location];
+    [selfCopy _addExternalConfigurationProviderColumnsWithMigrator:location];
+    [selfCopy _addOccurrenceColumnsWithMigrator:location];
+    [selfCopy _deleteRaceWorkoutConfigurationsWithMigrator:location];
   }
 
-  else if (v5 == 2)
+  else if (classCopy == 2)
   {
-    [v7 _emptyMigrationToSchemaVersion2WithMigrator:location];
-    [v7 _emptyMigrationToSchemaVersion3WithMigrator:location];
-    [v7 _emptyMigrationToSchemaVersion4WithMigrator:location];
-    [v7 _emptyMigrationToSchemaVersion5WithMigrator:location];
-    [v7 _emptyMigrationToSchemaVersion6WithMigrator:location];
-    [v7 _emptyMigrationToSchemaVersion7WithMigrator:location];
-    [v7 _emptyMigrationToSchemaVersion8WithMigrator:location];
+    [selfCopy _emptyMigrationToSchemaVersion2WithMigrator:location];
+    [selfCopy _emptyMigrationToSchemaVersion3WithMigrator:location];
+    [selfCopy _emptyMigrationToSchemaVersion4WithMigrator:location];
+    [selfCopy _emptyMigrationToSchemaVersion5WithMigrator:location];
+    [selfCopy _emptyMigrationToSchemaVersion6WithMigrator:location];
+    [selfCopy _emptyMigrationToSchemaVersion7WithMigrator:location];
+    [selfCopy _emptyMigrationToSchemaVersion8WithMigrator:location];
   }
 
   objc_storeStrong(&location, 0);
 }
 
-+ (void)_addSyncObjectColumnsWithMigrator:(id)a3
++ (void)_addSyncObjectColumnsWithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:2 foreignKeyStatus:1 handler:&__block_literal_global_0];
   objc_storeStrong(location, 0);
 }
@@ -147,12 +147,12 @@ int64_t __67__WOWorkoutHealthSchemaProvider__addSyncObjectColumnsWithMigrator___
   return v7;
 }
 
-+ (void)_emptyMigrationToSchemaVersion2WithMigrator:(id)a3
++ (void)_emptyMigrationToSchemaVersion2WithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:2 foreignKeyStatus:1 handler:&__block_literal_global_322];
   objc_storeStrong(location, 0);
 }
@@ -181,12 +181,12 @@ int64_t __77__WOWorkoutHealthSchemaProvider__emptyMigrationToSchemaVersion2WithM
   return 0;
 }
 
-+ (void)_addSyncIdentityColumnWithMigrator:(id)a3
++ (void)_addSyncIdentityColumnWithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:3 foreignKeyStatus:1 handler:&__block_literal_global_324];
   objc_storeStrong(location, 0);
 }
@@ -275,12 +275,12 @@ int64_t __68__WOWorkoutHealthSchemaProvider__addSyncIdentityColumnWithMigrator__
   return v37;
 }
 
-+ (void)_emptyMigrationToSchemaVersion3WithMigrator:(id)a3
++ (void)_emptyMigrationToSchemaVersion3WithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:3 foreignKeyStatus:1 handler:&__block_literal_global_337];
   objc_storeStrong(location, 0);
 }
@@ -309,12 +309,12 @@ int64_t __77__WOWorkoutHealthSchemaProvider__emptyMigrationToSchemaVersion3WithM
   return 0;
 }
 
-+ (void)_addManagedConfigurationsColumnsWithMigrator:(id)a3
++ (void)_addManagedConfigurationsColumnsWithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:4 foreignKeyStatus:1 handler:&__block_literal_global_339];
   objc_storeStrong(location, 0);
 }
@@ -339,12 +339,12 @@ int64_t __78__WOWorkoutHealthSchemaProvider__addManagedConfigurationsColumnsWith
   return v10;
 }
 
-+ (void)_emptyMigrationToSchemaVersion4WithMigrator:(id)a3
++ (void)_emptyMigrationToSchemaVersion4WithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:4 foreignKeyStatus:1 handler:&__block_literal_global_344];
   objc_storeStrong(location, 0);
 }
@@ -373,12 +373,12 @@ int64_t __77__WOWorkoutHealthSchemaProvider__emptyMigrationToSchemaVersion4WithM
   return 0;
 }
 
-+ (void)_addProtoConfigurationsColumnsWithMigrator:(id)a3
++ (void)_addProtoConfigurationsColumnsWithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:5 foreignKeyStatus:1 handler:&__block_literal_global_346];
   objc_storeStrong(location, 0);
 }
@@ -424,12 +424,12 @@ int64_t __76__WOWorkoutHealthSchemaProvider__addProtoConfigurationsColumnsWithMi
   return v7;
 }
 
-+ (void)_addManagedProtoConfigurationsColumnsWithMigrator:(id)a3
++ (void)_addManagedProtoConfigurationsColumnsWithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:5 foreignKeyStatus:1 handler:&__block_literal_global_354];
   objc_storeStrong(location, 0);
 }
@@ -475,12 +475,12 @@ int64_t __83__WOWorkoutHealthSchemaProvider__addManagedProtoConfigurationsColumn
   return v7;
 }
 
-+ (void)_emptyMigrationToSchemaVersion5WithMigrator:(id)a3
++ (void)_emptyMigrationToSchemaVersion5WithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:5 foreignKeyStatus:1 handler:&__block_literal_global_371];
   objc_storeStrong(location, 0);
 }
@@ -509,12 +509,12 @@ int64_t __77__WOWorkoutHealthSchemaProvider__emptyMigrationToSchemaVersion5WithM
   return 0;
 }
 
-+ (void)_addExternalConfigurationProviderColumnsWithMigrator:(id)a3
++ (void)_addExternalConfigurationProviderColumnsWithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:6 foreignKeyStatus:1 handler:&__block_literal_global_373];
   objc_storeStrong(location, 0);
 }
@@ -539,12 +539,12 @@ int64_t __86__WOWorkoutHealthSchemaProvider__addExternalConfigurationProviderCol
   return v10;
 }
 
-+ (void)_emptyMigrationToSchemaVersion6WithMigrator:(id)a3
++ (void)_emptyMigrationToSchemaVersion6WithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:6 foreignKeyStatus:1 handler:&__block_literal_global_378];
   objc_storeStrong(location, 0);
 }
@@ -573,12 +573,12 @@ int64_t __77__WOWorkoutHealthSchemaProvider__emptyMigrationToSchemaVersion6WithM
   return 0;
 }
 
-+ (void)_addOccurrenceColumnsWithMigrator:(id)a3
++ (void)_addOccurrenceColumnsWithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:7 foreignKeyStatus:1 handler:&__block_literal_global_380];
   objc_storeStrong(location, 0);
 }
@@ -624,12 +624,12 @@ int64_t __67__WOWorkoutHealthSchemaProvider__addOccurrenceColumnsWithMigrator___
   return v7;
 }
 
-+ (void)_emptyMigrationToSchemaVersion7WithMigrator:(id)a3
++ (void)_emptyMigrationToSchemaVersion7WithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:7 foreignKeyStatus:1 handler:&__block_literal_global_400];
   objc_storeStrong(location, 0);
 }
@@ -658,12 +658,12 @@ int64_t __77__WOWorkoutHealthSchemaProvider__emptyMigrationToSchemaVersion7WithM
   return 0;
 }
 
-+ (void)_deleteRaceWorkoutConfigurationsWithMigrator:(id)a3
++ (void)_deleteRaceWorkoutConfigurationsWithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:8 foreignKeyStatus:1 handler:&__block_literal_global_402];
   objc_storeStrong(location, 0);
 }
@@ -709,12 +709,12 @@ int64_t __78__WOWorkoutHealthSchemaProvider__deleteRaceWorkoutConfigurationsWith
   return v7;
 }
 
-+ (void)_emptyMigrationToSchemaVersion8WithMigrator:(id)a3
++ (void)_emptyMigrationToSchemaVersion8WithMigrator:(id)migrator
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migrator);
   [location[0] addMigrationForSchema:@"WorkoutHealthPlugin" toVersion:8 foreignKeyStatus:1 handler:&__block_literal_global_410];
   objc_storeStrong(location, 0);
 }

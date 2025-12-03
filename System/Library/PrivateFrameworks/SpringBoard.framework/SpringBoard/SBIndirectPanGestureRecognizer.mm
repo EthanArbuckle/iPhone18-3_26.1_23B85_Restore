@@ -1,69 +1,69 @@
 @interface SBIndirectPanGestureRecognizer
-- (BOOL)_hasTranslationReachedThreshold:(double)a3 withTranslation:(CGPoint)a4 forEdge:(unint64_t)a5;
-- (BOOL)_isPointOnRoundedCorner:(CGPoint)a3 corner:(unint64_t)a4 radius:(double)a5 inView:(id)a6;
-- (BOOL)_isPointerOnTopScreenCorner:(CGPoint)a3 radius:(double)a4;
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)_hasTranslationReachedThreshold:(double)threshold withTranslation:(CGPoint)translation forEdge:(unint64_t)edge;
+- (BOOL)_isPointOnRoundedCorner:(CGPoint)corner corner:(unint64_t)a4 radius:(double)radius inView:(id)view;
+- (BOOL)_isPointerOnTopScreenCorner:(CGPoint)corner radius:(double)radius;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
 - (BOOL)_wantsWatchdogEnabled;
-- (CGPoint)_centerOfCircleForRoundedCorner:(unint64_t)a3 radius:(double)a4 inView:(id)a5;
-- (CGPoint)_convertPoint:(CGPoint)a3 fromView:(id)a4 toView:(id)a5;
+- (CGPoint)_centerOfCircleForRoundedCorner:(unint64_t)corner radius:(double)radius inView:(id)view;
+- (CGPoint)_convertPoint:(CGPoint)point fromView:(id)view toView:(id)toView;
 - (CGPoint)_pointerModelLocation;
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3;
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration;
 - (CGPoint)lastKnownPoint;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)origin;
-- (CGPoint)translationInView:(id)a3;
+- (CGPoint)translationInView:(id)view;
 - (CGPoint)translationWithinHysteresisRange;
-- (CGPoint)velocityInView:(id)a3;
-- (SBIndirectPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 edges:(unint64_t)a5;
+- (CGPoint)velocityInView:(id)view;
+- (SBIndirectPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action edges:(unint64_t)edges;
 - (SBIndirectPanGestureRecognizerOrientationProviding)orientationProvider;
 - (UIEvent)currentHoverEvent;
 - (UITouch)currentTouch;
-- (double)hysteresisForInputType:(unint64_t)a3;
+- (double)hysteresisForInputType:(unint64_t)type;
 - (id)containerView;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)_effectiveOrientation;
-- (unint64_t)_axisForEdge:(unint64_t)a3;
-- (unint64_t)_edgeForPointerModelLocation:(CGPoint)a3 inView:(id)a4 inset:(double)a5;
-- (void)_hoverCancelled:(id)a3 withEvent:(id)a4;
-- (void)_hoverEntered:(id)a3 withEvent:(id)a4;
-- (void)_hoverExited:(id)a3 withEvent:(id)a4;
-- (void)_hoverMoved:(id)a3 withEvent:(id)a4;
+- (unint64_t)_axisForEdge:(unint64_t)edge;
+- (unint64_t)_edgeForPointerModelLocation:(CGPoint)location inView:(id)view inset:(double)inset;
+- (void)_hoverCancelled:(id)cancelled withEvent:(id)event;
+- (void)_hoverEntered:(id)entered withEvent:(id)event;
+- (void)_hoverExited:(id)exited withEvent:(id)event;
+- (void)_hoverMoved:(id)moved withEvent:(id)event;
 - (void)_mouseIdleTimerElapsed;
-- (void)_mouseIdleTimerFired:(id)a3;
+- (void)_mouseIdleTimerFired:(id)fired;
 - (void)_resetTranslationState;
 - (void)_resetWatchdogIfNecessary;
-- (void)_setUpIdleTimersIfNeededForEvent:(id)a3;
+- (void)_setUpIdleTimersIfNeededForEvent:(id)event;
 - (void)_startWatchdogTimerIfNecessary;
 - (void)_trackpadIdleTimerElapsed;
-- (void)_trackpadIdleTimerFired:(id)a3;
-- (void)_updateTranslationWithPointerEventAttributes:(id)a3 activeEdge:(unint64_t)a4;
+- (void)_trackpadIdleTimerFired:(id)fired;
+- (void)_updateTranslationWithPointerEventAttributes:(id)attributes activeEdge:(unint64_t)edge;
 - (void)_watchdogFired;
 - (void)dealloc;
-- (void)pointerClientControllerPointerVisibilityStateDidChange:(id)a3;
+- (void)pointerClientControllerPointerVisibilityStateDidChange:(id)change;
 - (void)reset;
-- (void)setHysteresis:(double)a3 forInputType:(unint64_t)a4;
-- (void)setState:(int64_t)a3;
-- (void)trackpadDidTouchUpWithEvent:(id)a3;
-- (void)updateTouchHistoryWithTouches:(id)a3;
+- (void)setHysteresis:(double)hysteresis forInputType:(unint64_t)type;
+- (void)setState:(int64_t)state;
+- (void)trackpadDidTouchUpWithEvent:(id)event;
+- (void)updateTouchHistoryWithTouches:(id)touches;
 @end
 
 @implementation SBIndirectPanGestureRecognizer
 
-- (SBIndirectPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 edges:(unint64_t)a5
+- (SBIndirectPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action edges:(unint64_t)edges
 {
-  v5 = self;
-  if (a5)
+  selfCopy = self;
+  if (edges)
   {
     v25.receiver = self;
     v25.super_class = SBIndirectPanGestureRecognizer;
-    v7 = [(SBIndirectPanGestureRecognizer *)&v25 initWithTarget:a3 action:a4];
+    v7 = [(SBIndirectPanGestureRecognizer *)&v25 initWithTarget:target action:action];
     v8 = v7;
     if (v7)
     {
-      v7->_edges = a5;
+      v7->_edges = edges;
       v7->_avoidActivatingForExternallyOwnedEdges = 1;
       v7->_shouldCancelAfterMovingAwayFromEdge = 1;
       v7->_shouldInvertXAxis = 0;
@@ -115,8 +115,8 @@
       v8->_pointerHiddenBeforeCurrentTouch = 0;
     }
 
-    v5 = v8;
-    v20 = v5;
+    selfCopy = v8;
+    v20 = selfCopy;
   }
 
   else
@@ -127,8 +127,8 @@
       [SBIndirectPanGestureRecognizer initWithTarget:v22 action:? edges:?];
     }
 
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:v5 file:@"SBIndirectPanGestureRecognizer.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"edges != UIRectEdgeNone"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"SBIndirectPanGestureRecognizer.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"edges != UIRectEdgeNone"}];
 
     v20 = 0;
   }
@@ -146,12 +146,12 @@
   [(SBIndirectPanGestureRecognizer *)&v3 dealloc];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = SBIndirectPanGestureRecognizer;
   [(SBIndirectPanGestureRecognizer *)&v5 setState:?];
-  if ((a3 - 1) <= 4)
+  if ((state - 1) <= 4)
   {
     [(SBIndirectPanGestureRecognizer *)self _resetWatchdogIfNecessary];
   }
@@ -194,9 +194,9 @@
   objc_storeWeak(&self->_currentTouch, 0);
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
-  v5 = [(SBIndirectPanGestureRecognizer *)self containerView:a3];
+  v5 = [(SBIndirectPanGestureRecognizer *)self containerView:touch];
   WeakRetained = objc_loadWeakRetained(&self->_currentTouch);
   v7 = objc_loadWeakRetained(&self->_currentHoverEvent);
   if (v7)
@@ -224,21 +224,21 @@
   return v9;
 }
 
-- (void)_hoverEntered:(id)a3 withEvent:(id)a4
+- (void)_hoverEntered:(id)entered withEvent:(id)event
 {
-  v12 = a3;
-  v6 = a4;
+  enteredCopy = entered;
+  eventCopy = event;
   [(BSAuditHistory *)self->_auditHistory addItemWithFormat:@"hoverEntered:withEvent:"];
   WeakRetained = objc_loadWeakRetained(&self->_currentHoverEvent);
   if (!WeakRetained)
   {
-    if ([v12 count] == 1)
+    if ([enteredCopy count] == 1)
     {
       [(SBIndirectPanGestureRecognizer *)self _resetTranslationState];
-      WeakRetained = v6;
+      WeakRetained = eventCopy;
       objc_storeWeak(&self->_currentHoverEvent, WeakRetained);
-      v8 = [v12 anyObject];
-      objc_storeWeak(&self->_currentTouch, v8);
+      anyObject = [enteredCopy anyObject];
+      objc_storeWeak(&self->_currentTouch, anyObject);
     }
 
     else
@@ -247,8 +247,8 @@
     }
   }
 
-  v9 = [WeakRetained allTouches];
-  [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:v9];
+  allTouches = [WeakRetained allTouches];
+  [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:allTouches];
 
   if (!self->_gestureStartLocation)
   {
@@ -258,12 +258,12 @@
     self->_gestureStartLocation = v10;
   }
 
-  [(SBIndirectPanGestureRecognizer *)self _setUpIdleTimersIfNeededForEvent:v6];
+  [(SBIndirectPanGestureRecognizer *)self _setUpIdleTimersIfNeededForEvent:eventCopy];
 }
 
-- (void)_hoverMoved:(id)a3 withEvent:(id)a4
+- (void)_hoverMoved:(id)moved withEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_currentTouch);
   v7 = objc_loadWeakRetained(&self->_currentHoverEvent);
   v8 = v7;
@@ -300,14 +300,14 @@
 
   if ([WeakRetained phase] == 6)
   {
-    v12 = [v8 allTouches];
-    [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:v12];
+    allTouches = [v8 allTouches];
+    [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:allTouches];
 
     [(SBIndirectPanGestureRecognizer *)self _pointerModelLocation];
     v14 = v13;
     v16 = v15;
-    v17 = [(SBIndirectPanGestureRecognizer *)self containerView];
-    if ((self->_edges & [(SBIndirectPanGestureRecognizer *)self _edgeForPointerModelLocation:v17 inView:v14 inset:v16, 30.0]) != 0 || (self->_edges & [(SBIndirectPanGestureRecognizer *)self _edgeForPointerModelLocation:v17 inView:v14 inset:v16, 100.0]) != 0)
+    containerView = [(SBIndirectPanGestureRecognizer *)self containerView];
+    if ((self->_edges & [(SBIndirectPanGestureRecognizer *)self _edgeForPointerModelLocation:containerView inView:v14 inset:v16, 30.0]) != 0 || (self->_edges & [(SBIndirectPanGestureRecognizer *)self _edgeForPointerModelLocation:containerView inView:v14 inset:v16, 100.0]) != 0)
     {
       if (self->_mouseEnteredNearEdgeRegionTimestamp == -1.79769313e308)
       {
@@ -322,33 +322,33 @@
       self->_gesturePassedThroughScreenCenterRegion = 1;
     }
 
-    v19 = [(SBIndirectPanGestureRecognizer *)self _edgeForPointerModelLocation:v17 inView:v14 inset:v16, 1.0];
+    v19 = [(SBIndirectPanGestureRecognizer *)self _edgeForPointerModelLocation:containerView inView:v14 inset:v16, 1.0];
     v59 = self->_edges & v19;
     if (v59 && self->_avoidActivatingForExternallyOwnedEdges)
     {
-      v20 = v5;
+      v20 = eventCopy;
       v21 = v8;
-      v22 = v17;
+      v22 = containerView;
       v23 = +[SBWorkspace mainWorkspace];
       [v23 universalControlServer];
       v25 = v24 = v19;
-      v26 = [v25 externalProcessActiveOnScreenEdges];
+      externalProcessActiveOnScreenEdges = [v25 externalProcessActiveOnScreenEdges];
 
       v19 = v24;
-      if ((v24 & ~v26) != 0)
+      if ((v24 & ~externalProcessActiveOnScreenEdges) != 0)
       {
         v57 = 0;
       }
 
       else
       {
-        [(BSAuditHistory *)self->_auditHistory addItemWithFormat:@"hoverMoved:withEvent: - externally controlled edges: %lu contains current edge: %lu", v26, v24];
+        [(BSAuditHistory *)self->_auditHistory addItemWithFormat:@"hoverMoved:withEvent: - externally controlled edges: %lu contains current edge: %lu", externalProcessActiveOnScreenEdges, v24];
         v57 = 1;
       }
 
-      v17 = v22;
+      containerView = v22;
       v8 = v21;
-      v5 = v20;
+      eventCopy = v20;
     }
 
     else
@@ -356,7 +356,7 @@
       v57 = 0;
     }
 
-    [v5 _hidEvent];
+    [eventCopy _hidEvent];
     v27 = SBPointerHIDSubEventFromEvent();
     if (!v27 || (BKSHIDEventGetPointerAttributes(), (v28 = objc_claimAutoreleasedReturnValue()) == 0))
     {
@@ -407,8 +407,8 @@
 
     if (v35)
     {
-      [(SBIndirectPanGestureRecognizer *)self _setUpIdleTimersIfNeededForEvent:v5];
-      if (!v59 && self->_shouldRequireGestureToStartAtEdge && !self->_gesturePassedThroughScreenCenterRegion && (self->_edges & [(SBIndirectPanGestureRecognizer *)self _edgeForPointerModelLocation:v17 inView:v14 inset:v16, 100.0]) == 0)
+      [(SBIndirectPanGestureRecognizer *)self _setUpIdleTimersIfNeededForEvent:eventCopy];
+      if (!v59 && self->_shouldRequireGestureToStartAtEdge && !self->_gesturePassedThroughScreenCenterRegion && (self->_edges & [(SBIndirectPanGestureRecognizer *)self _edgeForPointerModelLocation:containerView inView:v14 inset:v16, 100.0]) == 0)
       {
         self->_gesturePassedThroughScreenCenterRegion = 1;
       }
@@ -429,12 +429,12 @@
           {
             [(SBIndirectPanGestureRecognizer *)self setState:2];
             [(SBIndirectPanGestureRecognizer *)self _updateTranslationWithPointerEventAttributes:v29 activeEdge:v56];
-            v50 = [v8 allTouches];
-            [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:v50];
+            allTouches2 = [v8 allTouches];
+            [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:allTouches2];
 
             if (!(v58 & 1 | !self->_shouldActivateWithThresholdForMouse) || (v58 & self->_shouldActivateWithThresholdForTrackpad) == 1)
             {
-              [(SBIndirectPanGestureRecognizer *)self translationInView:v17];
+              [(SBIndirectPanGestureRecognizer *)self translationInView:containerView];
               if ([(SBIndirectPanGestureRecognizer *)self _hasTranslationReachedThreshold:v56 withTranslation:self->_activationRecognitionDistance forEdge:v51, v52])
               {
                 if (v58)
@@ -461,7 +461,7 @@
 
           _SBIndirectGestureLog(self, @"Moving to state Cancelled; pointer moved away from active edge");
           self->_endReason = 2;
-          v44 = self;
+          selfCopy3 = self;
           v45 = 4;
           goto LABEL_72;
         }
@@ -477,10 +477,10 @@
         self->_endReason = v37;
         _SBIndirectGestureLog(self, @"Pointer either moved away from active edge, or got touch up. Moving from Began to Ended");
 LABEL_71:
-        v44 = self;
+        selfCopy3 = self;
         v45 = 3;
 LABEL_72:
-        [(SBIndirectPanGestureRecognizer *)v44 setState:v45];
+        [(SBIndirectPanGestureRecognizer *)selfCopy3 setState:v45];
         goto LABEL_73;
       }
 
@@ -489,9 +489,9 @@ LABEL_72:
       v40 = v39 = v29;
       [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:v40];
 
-      v41 = [(SBIndirectPanGestureRecognizer *)self containerView];
-      v42 = [v41 _fbsDisplayConfiguration];
-      v43 = [v42 hardwareIdentifier];
+      containerView2 = [(SBIndirectPanGestureRecognizer *)self containerView];
+      _fbsDisplayConfiguration = [containerView2 _fbsDisplayConfiguration];
+      hardwareIdentifier = [_fbsDisplayConfiguration hardwareIdentifier];
 
       v29 = v39;
       BKSHIDServicesCancelTouchesOnDisplay();
@@ -537,17 +537,17 @@ LABEL_65:
     self->_lastKnownPoint.x = v14;
     self->_lastKnownPoint.y = v16;
     [(SBIndirectPanGestureRecognizer *)self _updateTranslationWithPointerEventAttributes:v29 activeEdge:v56];
-    v46 = [v8 allTouches];
-    [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:v46];
+    allTouches3 = [v8 allTouches];
+    [(SBIndirectPanGestureRecognizer *)self updateTouchHistoryWithTouches:allTouches3];
 
-    if (v17)
+    if (containerView)
     {
       if (self->_shouldRequireGestureToStartAtEdge)
       {
         if (v58)
         {
           [(NSValue *)self->_gestureStartLocation pointValue];
-          v47 = [SBIndirectPanGestureRecognizer _edgeForPointerModelLocation:"_edgeForPointerModelLocation:inView:inset:" inView:v17 inset:?];
+          v47 = [SBIndirectPanGestureRecognizer _edgeForPointerModelLocation:"_edgeForPointerModelLocation:inView:inset:" inView:containerView inset:?];
           if (self->_pointerHiddenBeforeCurrentTouch)
           {
             v48 = v29;
@@ -600,7 +600,7 @@ LABEL_102:
 
       self->_activatedEdge = v56;
       _SBIndirectGestureLog(self, @"Moving to state Began");
-      v44 = self;
+      selfCopy3 = self;
       v45 = 1;
       goto LABEL_72;
     }
@@ -614,9 +614,9 @@ LABEL_102:
 LABEL_74:
 }
 
-- (void)_hoverExited:(id)a3 withEvent:(id)a4
+- (void)_hoverExited:(id)exited withEvent:(id)event
 {
-  [(SBIndirectPanGestureRecognizer *)self _resetTranslationState:a3];
+  [(SBIndirectPanGestureRecognizer *)self _resetTranslationState:exited];
   if ([(SBIndirectPanGestureRecognizer *)self state]== 1)
   {
     v5 = 3;
@@ -635,9 +635,9 @@ LABEL_74:
   [(SBIndirectPanGestureRecognizer *)self setState:v5];
 }
 
-- (void)_hoverCancelled:(id)a3 withEvent:(id)a4
+- (void)_hoverCancelled:(id)cancelled withEvent:(id)event
 {
-  [(SBIndirectPanGestureRecognizer *)self _resetTranslationState:a3];
+  [(SBIndirectPanGestureRecognizer *)self _resetTranslationState:cancelled];
   if ([(SBIndirectPanGestureRecognizer *)self state]== 1)
   {
     v5 = 4;
@@ -656,10 +656,10 @@ LABEL_74:
   [(SBIndirectPanGestureRecognizer *)self setState:v5];
 }
 
-- (void)pointerClientControllerPointerVisibilityStateDidChange:(id)a3
+- (void)pointerClientControllerPointerVisibilityStateDidChange:(id)change
 {
-  v4 = [a3 pointerVisibilityState];
-  v5 = v4;
+  pointerVisibilityState = [change pointerVisibilityState];
+  v5 = pointerVisibilityState;
   if (self->_pointerVisibilityState)
   {
     v6 = 0;
@@ -667,7 +667,7 @@ LABEL_74:
 
   else
   {
-    v6 = v4 == 1;
+    v6 = pointerVisibilityState == 1;
   }
 
   if (v6)
@@ -675,10 +675,10 @@ LABEL_74:
     self->_pointerHiddenBeforeCurrentTouch = 1;
     self->_mouseEnteredNearEdgeRegionTimestamp = -1.79769313e308;
     self->_gesturePassedThroughScreenCenterRegion = 1;
-    v7 = [(SBIndirectPanGestureRecognizer *)self state];
-    if ((v7 - 1) >= 2)
+    state = [(SBIndirectPanGestureRecognizer *)self state];
+    if ((state - 1) >= 2)
     {
-      if (v7)
+      if (state)
       {
         goto LABEL_11;
       }
@@ -710,10 +710,10 @@ LABEL_11:
   _SBIndirectGestureLog(self, v11);
 }
 
-- (void)_setUpIdleTimersIfNeededForEvent:(id)a3
+- (void)_setUpIdleTimersIfNeededForEvent:(id)event
 {
-  v4 = a3;
-  [v4 _hidEvent];
+  eventCopy = event;
+  [eventCopy _hidEvent];
   if (SBPointerHIDSubEventFromEvent())
   {
     v5 = BKSHIDEventGetPointerAttributes();
@@ -741,8 +741,8 @@ LABEL_11:
       trackpadIdleTimer = self->_trackpadIdleTimer;
       self->_trackpadIdleTimer = v8;
 
-      v10 = [MEMORY[0x277CBEB88] mainRunLoop];
-      [v10 addTimer:self->_trackpadIdleTimer forMode:*MEMORY[0x277CBE738]];
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      [mainRunLoop addTimer:self->_trackpadIdleTimer forMode:*MEMORY[0x277CBE738]];
 LABEL_9:
 
       objc_destroyWeak(v7 + 4);
@@ -765,8 +765,8 @@ LABEL_9:
     mouseIdleTimer = self->_mouseIdleTimer;
     self->_mouseIdleTimer = v12;
 
-    v10 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v10 addTimer:self->_mouseIdleTimer forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop addTimer:self->_mouseIdleTimer forMode:*MEMORY[0x277CBE738]];
     goto LABEL_9;
   }
 }
@@ -785,12 +785,12 @@ void __67__SBIndirectPanGestureRecognizer__setUpIdleTimersIfNeededForEvent___blo
   [WeakRetained _trackpadIdleTimerFired:v3];
 }
 
-- (void)_mouseIdleTimerFired:(id)a3
+- (void)_mouseIdleTimerFired:(id)fired
 {
   BSContinuousMachTimeNow();
   v5 = v4 - self->_lastKnownMouseEventTimestamp;
-  v6 = [(SBIndirectPanGestureRecognizer *)self containerView];
-  [(SBIndirectPanGestureRecognizer *)self velocityInView:v6];
+  containerView = [(SBIndirectPanGestureRecognizer *)self containerView];
+  [(SBIndirectPanGestureRecognizer *)self velocityInView:containerView];
   v8 = v7;
   v10 = v9;
 
@@ -810,8 +810,8 @@ void __67__SBIndirectPanGestureRecognizer__setUpIdleTimersIfNeededForEvent___blo
 - (void)_mouseIdleTimerElapsed
 {
   _SBIndirectGestureLog(self, @"Mouse idle timer has elapsed");
-  v3 = [(SBIndirectPanGestureRecognizer *)self state];
-  if ((v3 - 1) < 2)
+  state = [(SBIndirectPanGestureRecognizer *)self state];
+  if ((state - 1) < 2)
   {
     self->_endReason = 5;
     v4 = @"Mouse idle timer: moving from Began or Changed to Cancelled";
@@ -822,7 +822,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!state)
   {
     v4 = @"Mouse idle timer: moving from Possible to Failed";
     v5 = 5;
@@ -839,7 +839,7 @@ LABEL_6:
   self->_pointerHiddenBeforeCurrentTouch = 0;
 }
 
-- (void)_trackpadIdleTimerFired:(id)a3
+- (void)_trackpadIdleTimerFired:(id)fired
 {
   BSContinuousMachTimeNow();
   v5 = v4 - self->_lastKnownTrackpadEventTimestamp;
@@ -858,8 +858,8 @@ LABEL_6:
 - (void)_trackpadIdleTimerElapsed
 {
   _SBIndirectGestureLog(self, @"Trackpad idle timer has elapsed");
-  v3 = [(SBIndirectPanGestureRecognizer *)self state];
-  if ((v3 - 1) < 2)
+  state = [(SBIndirectPanGestureRecognizer *)self state];
+  if ((state - 1) < 2)
   {
     self->_endReason = 6;
     v4 = @"Trackpad idle timer: moving from Began or Changed to Cancelled";
@@ -870,7 +870,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!state)
   {
     v4 = @"Trackpad idle timer: moving from Possible to Failed";
     v5 = 5;
@@ -887,7 +887,7 @@ LABEL_6:
   self->_pointerHiddenBeforeCurrentTouch = 0;
 }
 
-- (void)trackpadDidTouchUpWithEvent:(id)a3
+- (void)trackpadDidTouchUpWithEvent:(id)event
 {
   _SBIndirectGestureLog(self, @"Touch-up from the lifecycle monitor: Setting _gestureStartLocation to nil");
   self->_pausedUntilTouchedUpOrMovedAwayFromEdge = 0;
@@ -906,8 +906,8 @@ LABEL_6:
     {
       v3 = objc_alloc(MEMORY[0x277CF0B50]);
       v4 = MEMORY[0x277CCACA8];
-      v5 = [(SBIndirectPanGestureRecognizer *)self name];
-      v6 = [v4 stringWithFormat:@"Watchdog - %@", v5];
+      name = [(SBIndirectPanGestureRecognizer *)self name];
+      v6 = [v4 stringWithFormat:@"Watchdog - %@", name];
       v7 = [v3 initWithIdentifier:v6];
       watchdogTimer = self->_watchdogTimer;
       self->_watchdogTimer = v7;
@@ -930,8 +930,8 @@ LABEL_6:
       self->_auditHistory = v14;
 
       v16 = MEMORY[0x277CCACA8];
-      v17 = [(SBIndirectPanGestureRecognizer *)self name];
-      v18 = [v16 stringWithFormat:@"SpringBoard - SBIndirectPanGestureRecognizer - %p - %@", self, v17];
+      name2 = [(SBIndirectPanGestureRecognizer *)self name];
+      v18 = [v16 stringWithFormat:@"SpringBoard - SBIndirectPanGestureRecognizer - %p - %@", self, name2];
       objc_copyWeak(&v21, &location);
       v19 = BSLogAddStateCaptureBlockWithTitle();
       logCaptureHandle = self->_logCaptureHandle;
@@ -989,11 +989,11 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
 {
   OUTLINED_FUNCTION_3_1();
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [v3 name];
-  v5 = [v2 sb_stringForState];
+  name = [v3 name];
+  sb_stringForState = [v2 sb_stringForState];
   v6 = [v1 descriptionWithMultilinePrefix:0];
   OUTLINED_FUNCTION_1_32();
-  v10 = v5;
+  v10 = sb_stringForState;
   v11 = v7;
   v12 = v8;
   _os_log_error_impl(&dword_21ED4E000, v0, OS_LOG_TYPE_ERROR, "SBIndirectPanGestureRecognizer (%@, %@) – watchdog fired!! - %@", v9, 0x20u);
@@ -1001,31 +1001,31 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
 
 - (BOOL)_wantsWatchdogEnabled
 {
-  v3 = [(SBIndirectPanGestureRecognizer *)self name];
-  if ([v3 isEqualToString:@"indirectPresentCoverSheetGestureRecognizer"])
+  name = [(SBIndirectPanGestureRecognizer *)self name];
+  if ([name isEqualToString:@"indirectPresentCoverSheetGestureRecognizer"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SBIndirectPanGestureRecognizer *)self name];
-    v4 = [v5 isEqualToString:@"indirectPresentControlCenterGestureRecognizer"];
+    name2 = [(SBIndirectPanGestureRecognizer *)self name];
+    v4 = [name2 isEqualToString:@"indirectPresentControlCenterGestureRecognizer"];
   }
 
   return v4;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   p_origin = &self->_origin;
-  v5 = a3;
-  v6 = [(SBIndirectPanGestureRecognizer *)self containerView];
-  [(SBIndirectPanGestureRecognizer *)self _convertPoint:v6 fromView:v5 toView:p_origin->x, p_origin->y];
+  viewCopy = view;
+  containerView = [(SBIndirectPanGestureRecognizer *)self containerView];
+  [(SBIndirectPanGestureRecognizer *)self _convertPoint:containerView fromView:viewCopy toView:p_origin->x, p_origin->y];
   v8 = v7;
   v10 = v9;
 
-  [(SBIndirectPanGestureRecognizer *)self translationInView:v5];
+  [(SBIndirectPanGestureRecognizer *)self translationInView:viewCopy];
   v12 = v11;
   v14 = v13;
 
@@ -1036,17 +1036,17 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
   p_origin = &self->_origin;
-  v5 = a3;
-  v6 = [(SBIndirectPanGestureRecognizer *)self containerView];
-  [(SBIndirectPanGestureRecognizer *)self _convertPoint:v6 fromView:v5 toView:p_origin->x, p_origin->y];
+  viewCopy = view;
+  containerView = [(SBIndirectPanGestureRecognizer *)self containerView];
+  [(SBIndirectPanGestureRecognizer *)self _convertPoint:containerView fromView:viewCopy toView:p_origin->x, p_origin->y];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SBIndirectPanGestureRecognizer *)self containerView];
-  [(SBIndirectPanGestureRecognizer *)self _convertPoint:v11 fromView:v5 toView:self->_lastKnownPoint.x, self->_lastKnownPoint.y];
+  containerView2 = [(SBIndirectPanGestureRecognizer *)self containerView];
+  [(SBIndirectPanGestureRecognizer *)self _convertPoint:containerView2 fromView:viewCopy toView:self->_lastKnownPoint.x, self->_lastKnownPoint.y];
   v13 = v12;
   v15 = v14;
 
@@ -1067,13 +1067,13 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
   return result;
 }
 
-- (CGPoint)_convertPoint:(CGPoint)a3 fromView:(id)a4 toView:(id)a5
+- (CGPoint)_convertPoint:(CGPoint)point fromView:(id)view toView:(id)toView
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a5;
-  [a4 convertPoint:0 toView:{x, y}];
-  [v8 convertPoint:0 fromView:?];
+  y = point.y;
+  x = point.x;
+  toViewCopy = toView;
+  [view convertPoint:0 toView:{x, y}];
+  [toViewCopy convertPoint:0 fromView:?];
   v10 = v9;
   v12 = v11;
 
@@ -1086,24 +1086,24 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
 
 - (id)containerView
 {
-  v3 = [(SBIndirectPanGestureRecognizer *)self delegate];
-  v4 = [v3 viewForSystemGestureRecognizer:self];
+  delegate = [(SBIndirectPanGestureRecognizer *)self delegate];
+  v4 = [delegate viewForSystemGestureRecognizer:self];
 
   return v4;
 }
 
-- (void)setHysteresis:(double)a3 forInputType:(unint64_t)a4
+- (void)setHysteresis:(double)hysteresis forInputType:(unint64_t)type
 {
-  if (a3 >= 0.0)
+  if (hysteresis >= 0.0)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v5 = 448;
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         return;
       }
@@ -1111,7 +1111,7 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
       v5 = 440;
     }
 
-    *(&self->super.super.isa + v5) = a3;
+    *(&self->super.super.isa + v5) = hysteresis;
     return;
   }
 
@@ -1122,12 +1122,12 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
   }
 }
 
-- (double)hysteresisForInputType:(unint64_t)a3
+- (double)hysteresisForInputType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     result = 0.0;
-    if (a3 != 1)
+    if (type != 1)
     {
       return result;
     }
@@ -1143,15 +1143,15 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
   return *(&self->super.super.isa + *v4);
 }
 
-- (void)_updateTranslationWithPointerEventAttributes:(id)a3 activeEdge:(unint64_t)a4
+- (void)_updateTranslationWithPointerEventAttributes:(id)attributes activeEdge:(unint64_t)edge
 {
-  if (!a3)
+  if (!attributes)
   {
     return;
   }
 
-  v6 = a3;
-  v7 = SBPointerEventIsTrackpadEvent(v6);
+  attributesCopy = attributes;
+  v7 = SBPointerEventIsTrackpadEvent(attributesCopy);
   BSContinuousMachTimeNow();
   v9 = &OBJC_IVAR___SBIndirectPanGestureRecognizer__lastKnownMouseEventTimestamp;
   if (v7)
@@ -1160,23 +1160,23 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
   }
 
   *(&self->super.super.isa + *v9) = v8;
-  v10 = [(SBIndirectPanGestureRecognizer *)self containerView];
-  v37 = [v10 _screen];
+  containerView = [(SBIndirectPanGestureRecognizer *)self containerView];
+  _screen = [containerView _screen];
 
-  v11 = SBPointerEventAcceleratedRelativePositionForOrientation(v6, [(SBIndirectPanGestureRecognizer *)self _effectiveOrientation], v37);
+  v11 = SBPointerEventAcceleratedRelativePositionForOrientation(attributesCopy, [(SBIndirectPanGestureRecognizer *)self _effectiveOrientation], _screen);
   v13 = v12;
 
   v14 = v11 * 0.3;
   v15 = v13 * 0.3;
   if (self->_translationAdjustmentBlock && [(SBIndirectPanGestureRecognizer *)self state]>= 1)
   {
-    v16 = [(SBIndirectPanGestureRecognizer *)self containerView];
-    [(SBIndirectPanGestureRecognizer *)self translationInView:v16];
+    containerView2 = [(SBIndirectPanGestureRecognizer *)self containerView];
+    [(SBIndirectPanGestureRecognizer *)self translationInView:containerView2];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(SBIndirectPanGestureRecognizer *)self containerView];
-    [(SBIndirectPanGestureRecognizer *)self locationInView:v21];
+    containerView3 = [(SBIndirectPanGestureRecognizer *)self containerView];
+    [(SBIndirectPanGestureRecognizer *)self locationInView:containerView3];
     v23 = v22;
     v25 = v24;
 
@@ -1184,7 +1184,7 @@ __CFString *__64__SBIndirectPanGestureRecognizer__startWatchdogTimerIfNecessary_
     v15 = v26;
   }
 
-  v27 = [(SBIndirectPanGestureRecognizer *)self _axisForEdge:a4, v37];
+  v27 = [(SBIndirectPanGestureRecognizer *)self _axisForEdge:edge, _screen];
   if (v27 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     [SBIndirectPanGestureRecognizer _updateTranslationWithPointerEventAttributes:activeEdge:];
@@ -1276,7 +1276,7 @@ LABEL_17:
 
   else
   {
-    v9 = [(SBIndirectPanGestureRecognizer *)self containerView];
+    containerView = [(SBIndirectPanGestureRecognizer *)self containerView];
     _UISystemGestureLocationForTouchInView();
     v6 = v10;
     v8 = v11;
@@ -1295,28 +1295,28 @@ LABEL_17:
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained indirectPanEffectiveInterfaceOrientation];
+    indirectPanEffectiveInterfaceOrientation = [WeakRetained indirectPanEffectiveInterfaceOrientation];
   }
 
   else
   {
-    v4 = [SBApp activeInterfaceOrientation];
+    indirectPanEffectiveInterfaceOrientation = [SBApp activeInterfaceOrientation];
   }
 
-  v5 = v4;
+  v5 = indirectPanEffectiveInterfaceOrientation;
 
   return v5;
 }
 
-- (void)updateTouchHistoryWithTouches:(id)a3
+- (void)updateTouchHistoryWithTouches:(id)touches
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  touchesCopy = touches;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [touchesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1328,12 +1328,12 @@ LABEL_17:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
-        v10 = [(SBIndirectPanGestureRecognizer *)self containerView];
-        [(SBIndirectPanGestureRecognizer *)self locationInView:v10];
+        containerView = [(SBIndirectPanGestureRecognizer *)self containerView];
+        [(SBIndirectPanGestureRecognizer *)self locationInView:containerView];
         v12 = v11;
         v14 = v13;
 
@@ -1344,57 +1344,57 @@ LABEL_17:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [touchesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
   }
 }
 
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration
 {
-  [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:a3];
+  [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:duration];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
-  [(SBIndirectPanGestureRecognizer *)self averageTouchVelocityOverTimeDuration:a3, 0.0416666667];
+  [(SBIndirectPanGestureRecognizer *)self averageTouchVelocityOverTimeDuration:view, 0.0416666667];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIndirectPanGestureRecognizer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIndirectPanGestureRecognizer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBIndirectPanGestureRecognizer *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBIndirectPanGestureRecognizer *)self succinctDescriptionBuilder];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __72__SBIndirectPanGestureRecognizer_descriptionBuilderWithMultilinePrefix___block_invoke;
   v19[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v20 = v6;
-  v21 = self;
-  [v6 appendBodySectionWithName:@"configuration" multilinePrefix:v4 block:v19];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:@"configuration" multilinePrefix:prefixCopy block:v19];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __72__SBIndirectPanGestureRecognizer_descriptionBuilderWithMultilinePrefix___block_invoke_2;
   v16 = &unk_2783A92D8;
-  v17 = self;
+  selfCopy2 = self;
   v7 = v6;
   v18 = v7;
-  [v7 appendBodySectionWithName:@"state" multilinePrefix:v4 block:&v13];
+  [v7 appendBodySectionWithName:@"state" multilinePrefix:prefixCopy block:&v13];
 
   auditHistory = self->_auditHistory;
   if (auditHistory)
@@ -1454,45 +1454,45 @@ void __72__SBIndirectPanGestureRecognizer_descriptionBuilderWithMultilinePrefix_
 
 - (id)succinctDescription
 {
-  v2 = [(SBIndirectPanGestureRecognizer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIndirectPanGestureRecognizer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBIndirectPanGestureRecognizer *)self name];
-  [v3 appendString:v4 withName:@"name"];
+  name = [(SBIndirectPanGestureRecognizer *)self name];
+  [v3 appendString:name withName:@"name"];
 
-  v5 = [(UIGestureRecognizer *)self sb_stringForState];
-  [v3 appendString:v5 withName:@"state"];
+  sb_stringForState = [(UIGestureRecognizer *)self sb_stringForState];
+  [v3 appendString:sb_stringForState withName:@"state"];
 
   return v3;
 }
 
-- (unint64_t)_edgeForPointerModelLocation:(CGPoint)a3 inView:(id)a4 inset:(double)a5
+- (unint64_t)_edgeForPointerModelLocation:(CGPoint)location inView:(id)view inset:(double)inset
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 frame];
-  if (y >= v10 - a5)
+  y = location.y;
+  x = location.x;
+  [view frame];
+  if (y >= v10 - inset)
   {
     return 4;
   }
 
-  if (y <= a5)
+  if (y <= inset)
   {
     return 1;
   }
 
-  if (x <= a5)
+  if (x <= inset)
   {
     return 2;
   }
 
-  if (x >= v9 - a5)
+  if (x >= v9 - inset)
   {
     return 8;
   }
@@ -1500,28 +1500,28 @@ void __72__SBIndirectPanGestureRecognizer_descriptionBuilderWithMultilinePrefix_
   return [(SBIndirectPanGestureRecognizer *)self _isPointerOnTopScreenCorner:x radius:y, SBScreenDisplayCornerRadius()];
 }
 
-- (BOOL)_hasTranslationReachedThreshold:(double)a3 withTranslation:(CGPoint)a4 forEdge:(unint64_t)a5
+- (BOOL)_hasTranslationReachedThreshold:(double)threshold withTranslation:(CGPoint)translation forEdge:(unint64_t)edge
 {
   result = 0;
-  if (a5 > 3)
+  if (edge > 3)
   {
-    if (a5 == 4)
+    if (edge == 4)
     {
       shouldInvertYAxis = self->_shouldInvertYAxis;
-      v8 = a4.y <= -a3;
-      v10 = a4.y < a3;
+      v8 = translation.y <= -threshold;
+      v10 = translation.y < threshold;
     }
 
     else
     {
-      if (a5 != 8)
+      if (edge != 8)
       {
         return result;
       }
 
       shouldInvertYAxis = self->_shouldInvertXAxis;
-      v8 = a4.x <= -a3;
-      v10 = a4.x < a3;
+      v8 = translation.x <= -threshold;
+      v10 = translation.x < threshold;
     }
 
     v11 = !v10;
@@ -1529,23 +1529,23 @@ void __72__SBIndirectPanGestureRecognizer_descriptionBuilderWithMultilinePrefix_
 
   else
   {
-    if (a5 == 1)
+    if (edge == 1)
     {
       shouldInvertYAxis = self->_shouldInvertYAxis;
-      v8 = a4.y >= a3;
-      v9 = a4.y > -a3;
+      v8 = translation.y >= threshold;
+      v9 = translation.y > -threshold;
     }
 
     else
     {
-      if (a5 != 2)
+      if (edge != 2)
       {
         return result;
       }
 
       shouldInvertYAxis = self->_shouldInvertXAxis;
-      v8 = a4.x >= a3;
-      v9 = a4.x > -a3;
+      v8 = translation.x >= threshold;
+      v9 = translation.x > -threshold;
     }
 
     v11 = !v9;
@@ -1562,17 +1562,17 @@ void __72__SBIndirectPanGestureRecognizer_descriptionBuilderWithMultilinePrefix_
   }
 }
 
-- (unint64_t)_axisForEdge:(unint64_t)a3
+- (unint64_t)_axisForEdge:(unint64_t)edge
 {
   result = 1;
-  if (a3 <= 3)
+  if (edge <= 3)
   {
-    if (!a3)
+    if (!edge)
     {
       return 0;
     }
 
-    if (a3 != 1)
+    if (edge != 1)
     {
       return result;
     }
@@ -1580,12 +1580,12 @@ void __72__SBIndirectPanGestureRecognizer_descriptionBuilderWithMultilinePrefix_
     return 2;
   }
 
-  if (a3 == 15)
+  if (edge == 15)
   {
     return 3;
   }
 
-  if (a3 == 4)
+  if (edge == 4)
   {
     return 2;
   }
@@ -1593,23 +1593,23 @@ void __72__SBIndirectPanGestureRecognizer_descriptionBuilderWithMultilinePrefix_
   return result;
 }
 
-- (BOOL)_isPointerOnTopScreenCorner:(CGPoint)a3 radius:(double)a4
+- (BOOL)_isPointerOnTopScreenCorner:(CGPoint)corner radius:(double)radius
 {
-  if (a4 != 0.0)
+  if (radius != 0.0)
   {
-    y = a3.y;
-    x = a3.x;
-    v9 = [(SBIndirectPanGestureRecognizer *)self containerView];
-    [v9 bounds];
+    y = corner.y;
+    x = corner.x;
+    containerView = [(SBIndirectPanGestureRecognizer *)self containerView];
+    [containerView bounds];
     Width = CGRectGetWidth(v14);
-    if (x > a4 || y > a4)
+    if (x > radius || y > radius)
     {
-      if (x < Width - a4 || y > a4)
+      if (x < Width - radius || y > radius)
       {
-        v4 = 0;
+        radius = 0;
 LABEL_13:
 
-        return v4;
+        return radius;
       }
 
       v11 = 2;
@@ -1620,47 +1620,47 @@ LABEL_13:
       v11 = 1;
     }
 
-    v4 = [(SBIndirectPanGestureRecognizer *)self _isPointOnRoundedCorner:v11 corner:v9 radius:x inView:y, a4];
+    radius = [(SBIndirectPanGestureRecognizer *)self _isPointOnRoundedCorner:v11 corner:containerView radius:x inView:y, radius];
     goto LABEL_13;
   }
 
   return 0;
 }
 
-- (BOOL)_isPointOnRoundedCorner:(CGPoint)a3 corner:(unint64_t)a4 radius:(double)a5 inView:(id)a6
+- (BOOL)_isPointOnRoundedCorner:(CGPoint)corner corner:(unint64_t)a4 radius:(double)radius inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  [(SBIndirectPanGestureRecognizer *)self _centerOfCircleForRoundedCorner:a4 radius:a6 inView:a5];
-  return vabdd_f64(hypot(x - v9, y - v10), a5) <= 4.0;
+  y = corner.y;
+  x = corner.x;
+  [(SBIndirectPanGestureRecognizer *)self _centerOfCircleForRoundedCorner:a4 radius:view inView:radius];
+  return vabdd_f64(hypot(x - v9, y - v10), radius) <= 4.0;
 }
 
-- (CGPoint)_centerOfCircleForRoundedCorner:(unint64_t)a3 radius:(double)a4 inView:(id)a5
+- (CGPoint)_centerOfCircleForRoundedCorner:(unint64_t)corner radius:(double)radius inView:(id)view
 {
-  [a5 bounds];
+  [view bounds];
   v11 = v7;
   v12 = v8;
   v13 = v9;
   v14 = v10;
-  if (a3 > 3)
+  if (corner > 3)
   {
-    if (a3 == 4)
+    if (corner == 4)
     {
       Height = CGRectGetHeight(*&v7);
-      v15 = a4;
+      radiusCopy2 = radius;
     }
 
     else
     {
-      if (a3 != 8)
+      if (corner != 8)
       {
 LABEL_8:
-        v15 = *MEMORY[0x277CBF348];
-        a4 = *(MEMORY[0x277CBF348] + 8);
+        radiusCopy2 = *MEMORY[0x277CBF348];
+        radius = *(MEMORY[0x277CBF348] + 8);
         goto LABEL_12;
       }
 
-      v15 = CGRectGetWidth(*&v7) - a4;
+      radiusCopy2 = CGRectGetWidth(*&v7) - radius;
       v20.origin.x = v11;
       v20.origin.y = v12;
       v20.size.width = v13;
@@ -1668,26 +1668,26 @@ LABEL_8:
       Height = CGRectGetHeight(v20);
     }
 
-    a4 = Height - a4;
+    radius = Height - radius;
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (corner == 1)
   {
-    v15 = a4;
+    radiusCopy2 = radius;
     goto LABEL_12;
   }
 
-  if (a3 != 2)
+  if (corner != 2)
   {
     goto LABEL_8;
   }
 
-  v15 = CGRectGetWidth(*&v7) - a4;
+  radiusCopy2 = CGRectGetWidth(*&v7) - radius;
 LABEL_12:
-  v17 = v15;
-  v18 = a4;
-  result.y = v18;
+  v17 = radiusCopy2;
+  radiusCopy3 = radius;
+  result.y = radiusCopy3;
   result.x = v17;
   return result;
 }

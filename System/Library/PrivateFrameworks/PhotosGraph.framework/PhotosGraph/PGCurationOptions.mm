@@ -1,8 +1,8 @@
 @interface PGCurationOptions
 + (id)defaultOptions;
-- (PGCurationOptions)initWithDictionaryRepresentation:(id)a3;
-- (PGCurationOptions)initWithDuration:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PGCurationOptions)initWithDictionaryRepresentation:(id)representation;
+- (PGCurationOptions)initWithDuration:(unint64_t)duration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -36,11 +36,11 @@
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_shouldSkipClustering];
   [v3 setObject:v11 forKeyedSubscript:@"shouldSkipClustering"];
 
-  v12 = [(NSSet *)self->_uuidsOfRequiredAssets allObjects];
-  [v3 setObject:v12 forKeyedSubscript:@"uuidsOfRequiredAssets"];
+  allObjects = [(NSSet *)self->_uuidsOfRequiredAssets allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"uuidsOfRequiredAssets"];
 
-  v13 = [(NSSet *)self->_uuidsOfEligibleAssets allObjects];
-  [v3 setObject:v13 forKeyedSubscript:@"uuidsOfEligibleAssets"];
+  allObjects2 = [(NSSet *)self->_uuidsOfEligibleAssets allObjects];
+  [v3 setObject:allObjects2 forKeyedSubscript:@"uuidsOfEligibleAssets"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_focusOnPeople];
   [v3 setObject:v14 forKeyedSubscript:@"focusOnPeople"];
@@ -48,8 +48,8 @@
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_focusOnInterestingItems];
   [v3 setObject:v15 forKeyedSubscript:@"focusOnInterestingItems"];
 
-  v16 = [(NSSet *)self->_personLocalIdentifiersToFocus allObjects];
-  [v3 setObject:v16 forKeyedSubscript:@"personLocalIdentifiersToFocus"];
+  allObjects3 = [(NSSet *)self->_personLocalIdentifiersToFocus allObjects];
+  [v3 setObject:allObjects3 forKeyedSubscript:@"personLocalIdentifiersToFocus"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_useDurationBasedCuration];
   [v3 setObject:v17 forKeyedSubscript:@"useDurationBasedCuration"];
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 24) = self->_duration;
   *(v4 + 15) = self->_focusOnPeople;
   *(v4 + 16) = self->_focusOnInterestingItems;
@@ -132,78 +132,78 @@
   v8.receiver = self;
   v8.super_class = PGCurationOptions;
   v4 = [(PGCurationOptions *)&v8 description];
-  v5 = [(PGCurationOptions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  dictionaryRepresentation = [(PGCurationOptions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (PGCurationOptions)initWithDictionaryRepresentation:(id)a3
+- (PGCurationOptions)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v48.receiver = self;
   v48.super_class = PGCurationOptions;
   v5 = [(PGCurationOptions *)&v48 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"duration"];
+    v6 = [representationCopy objectForKeyedSubscript:@"duration"];
     v5->_duration = [v6 integerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"includesAllFaces"];
+    v7 = [representationCopy objectForKeyedSubscript:@"includesAllFaces"];
     v5->_includesAllFaces = [v7 BOOLValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"identicalDedupingEnabled"];
+    v8 = [representationCopy objectForKeyedSubscript:@"identicalDedupingEnabled"];
     v5->_identicalDedupingEnabled = [v8 BOOLValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"semanticalDedupingEnabled"];
+    v9 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingEnabled"];
     v5->_semanticalDedupingEnabled = [v9 BOOLValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"semanticalDedupingUsesAdaptiveSimilarStacking"];
+    v10 = [representationCopy objectForKeyedSubscript:@"semanticalDedupingUsesAdaptiveSimilarStacking"];
     v5->_semanticalDedupingUsesAdaptiveSimilarStacking = [v10 BOOLValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"movieDedupingEnabled"];
+    v11 = [representationCopy objectForKeyedSubscript:@"movieDedupingEnabled"];
     v5->_movieDedupingEnabled = [v11 BOOLValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"lastPassMovieAdditionEnabled"];
+    v12 = [representationCopy objectForKeyedSubscript:@"lastPassMovieAdditionEnabled"];
     v5->_lastPassMovieAdditionEnabled = [v12 BOOLValue];
 
-    v13 = [v4 objectForKeyedSubscript:@"shouldSkipClustering"];
+    v13 = [representationCopy objectForKeyedSubscript:@"shouldSkipClustering"];
     v5->_shouldSkipClustering = [v13 BOOLValue];
 
     v14 = MEMORY[0x277CBEB98];
-    v15 = [v4 objectForKeyedSubscript:@"uuidsOfRequiredAssets"];
+    v15 = [representationCopy objectForKeyedSubscript:@"uuidsOfRequiredAssets"];
     v16 = [v14 setWithArray:v15];
     uuidsOfRequiredAssets = v5->_uuidsOfRequiredAssets;
     v5->_uuidsOfRequiredAssets = v16;
 
     v18 = MEMORY[0x277CBEB98];
-    v19 = [v4 objectForKeyedSubscript:@"uuidsOfEligibleAssets"];
+    v19 = [representationCopy objectForKeyedSubscript:@"uuidsOfEligibleAssets"];
     v20 = [v18 setWithArray:v19];
     uuidsOfEligibleAssets = v5->_uuidsOfEligibleAssets;
     v5->_uuidsOfEligibleAssets = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"focusOnPeople"];
+    v22 = [representationCopy objectForKeyedSubscript:@"focusOnPeople"];
     v5->_focusOnPeople = [v22 BOOLValue];
 
-    v23 = [v4 objectForKeyedSubscript:@"focusOnInterestingItems"];
+    v23 = [representationCopy objectForKeyedSubscript:@"focusOnInterestingItems"];
     v5->_focusOnInterestingItems = [v23 BOOLValue];
 
     v24 = MEMORY[0x277CBEB98];
-    v25 = [v4 objectForKeyedSubscript:@"personLocalIdentifiersToFocus"];
+    v25 = [representationCopy objectForKeyedSubscript:@"personLocalIdentifiersToFocus"];
     v26 = [v24 setWithArray:v25];
     personLocalIdentifiersToFocus = v5->_personLocalIdentifiersToFocus;
     v5->_personLocalIdentifiersToFocus = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"useDurationBasedCuration"];
+    v28 = [representationCopy objectForKeyedSubscript:@"useDurationBasedCuration"];
     v5->_useDurationBasedCuration = [v28 BOOLValue];
 
-    v29 = [v4 objectForKeyedSubscript:@"failIfMinimumDurationNotReached"];
+    v29 = [representationCopy objectForKeyedSubscript:@"failIfMinimumDurationNotReached"];
     v5->_failIfMinimumDurationNotReached = [v29 BOOLValue];
 
-    v30 = [v4 objectForKeyedSubscript:@"skipCurationIfEligibleItemsFitTargetDuration"];
+    v30 = [representationCopy objectForKeyedSubscript:@"skipCurationIfEligibleItemsFitTargetDuration"];
     v5->_skipCurationIfEligibleItemsFitTargetDuration = [v30 BOOLValue];
 
-    v31 = [v4 objectForKeyedSubscript:@"defaultDurationOfStillPhoto"];
+    v31 = [representationCopy objectForKeyedSubscript:@"defaultDurationOfStillPhoto"];
     v32 = v31;
     if (v31)
     {
@@ -213,48 +213,48 @@
 
     else
     {
-      v34 = [v4 objectForKeyedSubscript:@"defaultDurationOfPhoto"];
+      v34 = [representationCopy objectForKeyedSubscript:@"defaultDurationOfPhoto"];
       [v34 doubleValue];
       v5->_defaultDurationOfStillPhoto = v35;
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"defaultDurationOfLivePhoto"];
+    v36 = [representationCopy objectForKeyedSubscript:@"defaultDurationOfLivePhoto"];
     [v36 doubleValue];
     v5->_defaultDurationOfLivePhoto = v37;
 
-    v38 = [v4 objectForKeyedSubscript:@"defaultDurationOfVideo"];
+    v38 = [representationCopy objectForKeyedSubscript:@"defaultDurationOfVideo"];
     [v38 doubleValue];
     v5->_defaultDurationOfVideo = v39;
 
-    v40 = [v4 objectForKeyedSubscript:@"minimumDuration"];
+    v40 = [representationCopy objectForKeyedSubscript:@"minimumDuration"];
     [v40 doubleValue];
     v5->_minimumDuration = v41;
 
-    v42 = [v4 objectForKeyedSubscript:@"targetDuration"];
+    v42 = [representationCopy objectForKeyedSubscript:@"targetDuration"];
     [v42 doubleValue];
     v5->_targetDuration = v43;
 
-    v44 = [v4 objectForKeyedSubscript:@"minimumNumberOfItems"];
+    v44 = [representationCopy objectForKeyedSubscript:@"minimumNumberOfItems"];
     v5->_minimumNumberOfItems = [v44 unsignedIntegerValue];
 
-    v45 = [v4 objectForKeyedSubscript:@"sharingFilter"];
+    v45 = [representationCopy objectForKeyedSubscript:@"sharingFilter"];
     v5->_sharingFilter = [v45 unsignedShortValue];
 
-    v46 = [v4 objectForKeyedSubscript:@"targetNumberOfItems"];
+    v46 = [representationCopy objectForKeyedSubscript:@"targetNumberOfItems"];
     v5->_targetNumberOfItems = [v46 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (PGCurationOptions)initWithDuration:(unint64_t)a3
+- (PGCurationOptions)initWithDuration:(unint64_t)duration
 {
   v5.receiver = self;
   v5.super_class = PGCurationOptions;
   result = [(PGCurationOptions *)&v5 init];
   if (result)
   {
-    result->_duration = a3;
+    result->_duration = duration;
     result->_identicalDedupingEnabled = 1;
     result->_semanticalDedupingUsesAdaptiveSimilarStacking = 1;
     result->_lastPassMovieAdditionEnabled = 1;
@@ -273,7 +273,7 @@
 
 + (id)defaultOptions
 {
-  v2 = [[a1 alloc] initWithDuration:2];
+  v2 = [[self alloc] initWithDuration:2];
 
   return v2;
 }

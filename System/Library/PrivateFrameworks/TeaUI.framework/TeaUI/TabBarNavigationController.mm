@@ -2,22 +2,22 @@
 - (NSArray)viewControllers;
 - (NSString)description;
 - (UITabBarItem)tabBarItem;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)setTabBarItem:(id)a3;
-- (void)setViewControllers:(id)a3;
-- (void)showViewController:(id)a3 sender:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)setTabBarItem:(id)item;
+- (void)setViewControllers:(id)controllers;
+- (void)showViewController:(id)controller sender:(id)sender;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TabBarNavigationController
 
 - (NSArray)viewControllers
 {
-  v2 = self;
+  selfCopy = self;
   TabBarNavigationController.viewControllers.getter();
 
   sub_1D7E194D0();
@@ -26,32 +26,32 @@
   return v3;
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
   sub_1D7E194D0();
   sub_1D8191314();
-  v4 = self;
+  selfCopy = self;
   TabBarNavigationController.viewControllers.setter();
 }
 
 - (UITabBarItem)tabBarItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabBarNavigationController.tabBarItem.getter();
 
   return v3;
 }
 
-- (void)setTabBarItem:(id)a3
+- (void)setTabBarItem:(id)item
 {
-  v5 = a3;
-  v6 = self;
-  TabBarNavigationController.tabBarItem.setter(a3);
+  itemCopy = item;
+  selfCopy = self;
+  TabBarNavigationController.tabBarItem.setter(item);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TabBarNavigationController.description.getter();
 
   v3 = sub_1D8190EE4();
@@ -61,28 +61,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TabBarNavigationController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  TabBarNavigationController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  TabBarNavigationController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  TabBarNavigationController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  TabBarNavigationController.viewDidAppear(_:)(appear);
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4
+- (void)showViewController:(id)controller sender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D8191F34();
     swift_unknownObjectRelease();
@@ -91,38 +91,38 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
-  TabBarNavigationController.show(_:sender:)(a3, v10);
+  TabBarNavigationController.show(_:sender:)(controller, v10);
 
   sub_1D7E7BAAC(v10);
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  TabBarNavigationController.navigationController(_:willShow:animated:)(v8, v9, a5);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  TabBarNavigationController.navigationController(_:willShow:animated:)(controllerCopy, viewControllerCopy, animated);
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v10 = self;
-  TabBarNavigationController.navigationController(_:didShow:animated:)(&v10->super.super.super, v9, 0);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  TabBarNavigationController.navigationController(_:didShow:animated:)(&selfCopy->super.super.super, v9, 0);
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  v14 = TabBarNavigationController.navigationController(_:animationControllerFor:from:to:)(v10, a4, v11, v12);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  selfCopy = self;
+  v14 = TabBarNavigationController.navigationController(_:animationControllerFor:from:to:)(controllerCopy, operation, viewControllerCopy, toViewControllerCopy);
 
   return v14;
 }

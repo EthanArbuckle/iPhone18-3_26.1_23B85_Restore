@@ -1,6 +1,6 @@
 @interface TranscriptTranslationSpeechController
 - (_TtC19PodcastsTranscripts37TranscriptTranslationSpeechController)init;
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance;
 @end
 
 @implementation TranscriptTranslationSpeechController
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  synthesizerCopy = synthesizer;
+  utteranceCopy = utterance;
+  selfCopy = self;
   sub_772C8();
 }
 

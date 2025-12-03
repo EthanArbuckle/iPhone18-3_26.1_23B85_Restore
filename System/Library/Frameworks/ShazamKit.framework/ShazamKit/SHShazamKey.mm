@@ -1,27 +1,27 @@
 @interface SHShazamKey
-- (BOOL)isShazamKeyValid:(id)a3;
-- (SHShazamKey)initWithKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isShazamKeyValid:(id)valid;
+- (SHShazamKey)initWithKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SHShazamKey
 
-- (SHShazamKey)initWithKey:(id)a3
+- (SHShazamKey)initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = SHShazamKey;
   v6 = [(SHShazamKey *)&v10 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    if (![(SHShazamKey *)v6 isShazamKeyValid:v5])
+    if (![(SHShazamKey *)v6 isShazamKeyValid:keyCopy])
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(p_isa + 1, a3);
+    objc_storeStrong(p_isa + 1, key);
   }
 
   v8 = p_isa;
@@ -30,17 +30,17 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isShazamKeyValid:(id)a3
+- (BOOL)isShazamKeyValid:(id)valid
 {
-  v3 = a3;
-  if ([v3 length])
+  validCopy = valid;
+  if ([validCopy length])
   {
-    v4 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v5 = [v4 invertedSet];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
 
-    if ([v3 rangeOfCharacterFromSet:v5] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([validCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v3, "longLongValue")}];
+      v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(validCopy, "longLongValue")}];
       v7 = [v6 unsignedIntegerValue] != -1;
     }
 
@@ -58,11 +58,11 @@ LABEL_6:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHShazamKey allocWithZone:?];
-  v6 = [(SHShazamKey *)self validatedKey];
-  v7 = [v6 copyWithZone:a3];
+  validatedKey = [(SHShazamKey *)self validatedKey];
+  v7 = [validatedKey copyWithZone:zone];
   v8 = [(SHShazamKey *)v5 initWithKey:v7];
 
   return v8;

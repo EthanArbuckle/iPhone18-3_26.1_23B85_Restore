@@ -1,28 +1,28 @@
 @interface DalvikSystemBlockGuard_BlockGuardPolicyException
-- (DalvikSystemBlockGuard_BlockGuardPolicyException)initWithInt:(int)a3 withInt:(int)a4;
-- (DalvikSystemBlockGuard_BlockGuardPolicyException)initWithInt:(int)a3 withInt:(int)a4 withNSString:(id)a5;
+- (DalvikSystemBlockGuard_BlockGuardPolicyException)initWithInt:(int)int withInt:(int)withInt;
+- (DalvikSystemBlockGuard_BlockGuardPolicyException)initWithInt:(int)int withInt:(int)withInt withNSString:(id)string;
 - (id)getMessage;
 - (void)dealloc;
 @end
 
 @implementation DalvikSystemBlockGuard_BlockGuardPolicyException
 
-- (DalvikSystemBlockGuard_BlockGuardPolicyException)initWithInt:(int)a3 withInt:(int)a4
+- (DalvikSystemBlockGuard_BlockGuardPolicyException)initWithInt:(int)int withInt:(int)withInt
 {
   JavaLangRuntimeException_init(self, a2);
-  *(&self->super.super.super.rawFrameCount + 1) = a3;
-  self->mPolicyState_ = a4;
+  *(&self->super.super.super.rawFrameCount + 1) = int;
+  self->mPolicyState_ = withInt;
   JreStrongAssign(&self->mMessage_, 0);
   [(JavaLangThrowable *)self fillInStackTrace];
   return self;
 }
 
-- (DalvikSystemBlockGuard_BlockGuardPolicyException)initWithInt:(int)a3 withInt:(int)a4 withNSString:(id)a5
+- (DalvikSystemBlockGuard_BlockGuardPolicyException)initWithInt:(int)int withInt:(int)withInt withNSString:(id)string
 {
   JavaLangRuntimeException_init(self, a2);
-  *(&self->super.super.super.rawFrameCount + 1) = a3;
-  self->mPolicyState_ = a4;
-  JreStrongAssign(&self->mMessage_, a5);
+  *(&self->super.super.super.rawFrameCount + 1) = int;
+  self->mPolicyState_ = withInt;
+  JreStrongAssign(&self->mMessage_, string);
   [(JavaLangThrowable *)self fillInStackTrace];
   return self;
 }

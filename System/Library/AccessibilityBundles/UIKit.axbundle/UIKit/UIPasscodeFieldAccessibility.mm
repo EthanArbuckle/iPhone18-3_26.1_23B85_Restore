@@ -1,40 +1,40 @@
 @interface UIPasscodeFieldAccessibility
 - (id)_accessibilityChildren;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityLabel;
-- (void)_accessibilitySetValue:(id)a3;
-- (void)setShowsOKButton:(BOOL)a3;
+- (void)_accessibilitySetValue:(id)value;
+- (void)setShowsOKButton:(BOOL)button;
 @end
 
 @implementation UIPasscodeFieldAccessibility
 
-- (void)setShowsOKButton:(BOOL)a3
+- (void)setShowsOKButton:(BOOL)button
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  buttonCopy = button;
   v3.receiver = self;
   v3.super_class = UIPasscodeFieldAccessibility;
-  [(UIPasscodeFieldAccessibility *)&v3 setShowsOKButton:a3];
-  [(UIPasscodeFieldAccessibility *)v6 _accessibilityRemoveValueForKey:*MEMORY[0x29EDC7620]];
+  [(UIPasscodeFieldAccessibility *)&v3 setShowsOKButton:button];
+  [(UIPasscodeFieldAccessibility *)selfCopy _accessibilityRemoveValueForKey:*MEMORY[0x29EDC7620]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
 - (id)_accessibilityChildren
 {
-  v19 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v18 = [objc_allocWithZone(MEMORY[0x29EDB8DE8]) init];
-    objc_initWeak(&location, v19);
-    v16 = [v19 _accessibilityValueForKey:@"TextElement"];
+    objc_initWeak(&location, selfCopy);
+    v16 = [selfCopy _accessibilityValueForKey:@"TextElement"];
     if (!v16)
     {
       v9 = objc_alloc(MEMORY[0x29EDC78F8]);
-      v8 = [v9 initWithAccessibilityContainer:v19];
+      v8 = [v9 initWithAccessibilityContainer:selfCopy];
       v16 = v8;
-      [v19 _accessibilitySetRetainedValue:v8 forKey:{@"TextElement", MEMORY[0x29EDC9740](0).n128_f64[0]}];
-      [v8 setAccessibilityDelegate:v19];
+      [selfCopy _accessibilitySetRetainedValue:v8 forKey:{@"TextElement", MEMORY[0x29EDC9740](0).n128_f64[0]}];
+      [v8 setAccessibilityDelegate:selfCopy];
       v10 = MEMORY[0x29EDCA5F8];
       v11 = -1073741824;
       v12 = 0;
@@ -47,13 +47,13 @@
     }
 
     [v18 addObject:v16];
-    v6 = [v19 safeValueForKey:@"showsOKButton"];
-    v7 = [v6 BOOLValue];
+    v6 = [selfCopy safeValueForKey:@"showsOKButton"];
+    bOOLValue = [v6 BOOLValue];
     *&v1 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-    if (v7)
+    if (bOOLValue)
     {
       v5 = v18;
-      v4 = [v19 safeValueForKey:{@"_okButton", v1}];
+      v4 = [selfCopy safeValueForKey:{@"_okButton", v1}];
       [v5 axSafelyAddObject:?];
       MEMORY[0x29EDC9740](v4);
     }
@@ -83,14 +83,14 @@ double __54__UIPasscodeFieldAccessibility__accessibilityChildren__block_invoke(u
   return v4;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v28 = a3;
-  v27 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v25 = [(UIPasscodeFieldAccessibility *)v27 _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
+  objc_storeStrong(location, event);
+  v25 = [(UIPasscodeFieldAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
   v17 = 0;
   v9 = 0;
   if ((v25 & 1) == 0)
@@ -100,7 +100,7 @@ double __54__UIPasscodeFieldAccessibility__accessibilityChildren__block_invoke(u
     v21 = 0;
     v22 = __64__UIPasscodeFieldAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v23 = &unk_29F30CEB0;
-    v24 = MEMORY[0x29EDC9748](v27);
+    v24 = MEMORY[0x29EDC9748](selfCopy);
     v18 = &v24;
     v17 = 1;
     v9 = (__64__UIPasscodeFieldAccessibility__accessibilityHitTest_withEvent___block_invoke)();
@@ -108,9 +108,9 @@ double __54__UIPasscodeFieldAccessibility__accessibilityChildren__block_invoke(u
 
   if (v9)
   {
-    [(UIPasscodeFieldAccessibility *)v27 _accessibilitySetBoolValue:1 forKey:?];
-    v16 = [(UIPasscodeFieldAccessibility *)v27 accessibilityHitTest:location[0] withEvent:v28.x, v28.y];
-    [(UIPasscodeFieldAccessibility *)v27 _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
+    [(UIPasscodeFieldAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+    v16 = [(UIPasscodeFieldAccessibility *)selfCopy accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
+    [(UIPasscodeFieldAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
     v29 = MEMORY[0x29EDC9748](v16);
     v15 = 1;
     objc_storeStrong(&v16, 0);
@@ -128,21 +128,21 @@ double __54__UIPasscodeFieldAccessibility__accessibilityChildren__block_invoke(u
 
   if (!v15)
   {
-    v8 = [(UIPasscodeFieldAccessibility *)v27 _accessibilityParentView];
+    _accessibilityParentView = [(UIPasscodeFieldAccessibility *)selfCopy _accessibilityParentView];
     UIAccessibilityPointForPoint();
     point.x = v4;
     point.y = v5;
-    MEMORY[0x29EDC9740](v8);
-    v13 = [(UIPasscodeFieldAccessibility *)v27 _accessibilityChildren];
-    if ([v13 count] != 2 || ((v12 = objc_msgSend(v13, "objectAtIndex:", 1), objc_msgSend(v12, "accessibilityFrame"), rect = v31, !CGRectContainsPoint(v31, point)) ? (v15 = 0) : (v29 = MEMORY[0x29EDC9748](v12), v15 = 1), objc_storeStrong(&v12, 0), !v15))
+    MEMORY[0x29EDC9740](_accessibilityParentView);
+    _accessibilityChildren = [(UIPasscodeFieldAccessibility *)selfCopy _accessibilityChildren];
+    if ([_accessibilityChildren count] != 2 || ((v12 = objc_msgSend(_accessibilityChildren, "objectAtIndex:", 1), objc_msgSend(v12, "accessibilityFrame"), rect = v31, !CGRectContainsPoint(v31, point)) ? (v15 = 0) : (v29 = MEMORY[0x29EDC9748](v12), v15 = 1), objc_storeStrong(&v12, 0), !v15))
     {
-      v10.receiver = v27;
+      v10.receiver = selfCopy;
       v10.super_class = UIPasscodeFieldAccessibility;
-      v29 = [(UIPasscodeFieldAccessibility *)&v10 _accessibilityHitTest:location[0] withEvent:v28.x, v28.y, v8];
+      v29 = [(UIPasscodeFieldAccessibility *)&v10 _accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y, _accessibilityParentView];
       v15 = 1;
     }
 
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&_accessibilityChildren, 0);
   }
 
   objc_storeStrong(location, 0);
@@ -239,16 +239,16 @@ void __64__UIPasscodeFieldAccessibility__accessibilityHitTest_withEvent___block_
   }
 }
 
-- (void)_accessibilitySetValue:(id)a3
+- (void)_accessibilitySetValue:(id)value
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UIPasscodeFieldAccessibility *)v4 setStringValue:location[0]];
+    [(UIPasscodeFieldAccessibility *)selfCopy setStringValue:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -256,11 +256,11 @@ void __64__UIPasscodeFieldAccessibility__accessibilityHitTest_withEvent___block_
 
 - (id)accessibilityLabel
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v6 = [(UIPasscodeFieldAccessibility *)self safeValueForKey:@"numberOfEntryFields"];
-  v14 = [v6 integerValue];
-  v7 = [(UIPasscodeFieldAccessibility *)v16 safeValueForKey:@"stringValue", MEMORY[0x29EDC9740](v6).n128_f64[0]];
+  integerValue = [v6 integerValue];
+  v7 = [(UIPasscodeFieldAccessibility *)selfCopy safeValueForKey:@"stringValue", MEMORY[0x29EDC9740](v6).n128_f64[0]];
   v11 = 0;
   v9 = 0;
   if ([v7 length])
@@ -290,7 +290,7 @@ void __64__UIPasscodeFieldAccessibility__accessibilityHitTest_withEvent___block_
 
   MEMORY[0x29EDC9740](v7);
   v8 = accessibilityLocalizedString(@"secure.password.field.numchars.required");
-  v4 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v8, v14];
+  v4 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v8, integerValue];
   v5 = __UIAXStringForVariables();
   MEMORY[0x29EDC9740](v4);
   objc_storeStrong(&v8, 0);

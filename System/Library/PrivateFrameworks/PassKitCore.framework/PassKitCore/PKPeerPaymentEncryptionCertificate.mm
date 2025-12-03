@@ -1,34 +1,34 @@
 @interface PKPeerPaymentEncryptionCertificate
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentEncryptionCertificate)initWithCoder:(id)a3;
-- (PKPeerPaymentEncryptionCertificate)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentEncryptionCertificate)initWithCoder:(id)coder;
+- (PKPeerPaymentEncryptionCertificate)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentEncryptionCertificate
 
-- (PKPeerPaymentEncryptionCertificate)initWithDictionary:(id)a3
+- (PKPeerPaymentEncryptionCertificate)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PKPeerPaymentEncryptionCertificate;
   v5 = [(PKPeerPaymentEncryptionCertificate *)&v17 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"destination"];
+    v6 = [dictionaryCopy PKStringForKey:@"destination"];
     v5->_destination = PKPeerPaymentEncryptionCertificateDestinationFromString(v6);
 
-    v7 = [v4 PKStringForKey:@"encryptionVersion"];
+    v7 = [dictionaryCopy PKStringForKey:@"encryptionVersion"];
     v5->_encryptionScheme = PKPrivacyEncryptionSchemeFromString(v7);
 
-    v8 = [v4 PKNumberForKey:@"certificatesVersion"];
+    v8 = [dictionaryCopy PKNumberForKey:@"certificatesVersion"];
     v5->_certificatesVersion = [v8 integerValue];
 
-    v9 = [v4 PKArrayContaining:objc_opt_class() forKey:@"encryptionCertificates"];
+    v9 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"encryptionCertificates"];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -54,21 +54,21 @@ void __57__PKPeerPaymentEncryptionCertificate_initWithDictionary___block_invoke(
   [*(a1 + 32) safelyAddObject:v5];
 }
 
-- (PKPeerPaymentEncryptionCertificate)initWithCoder:(id)a3
+- (PKPeerPaymentEncryptionCertificate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPeerPaymentEncryptionCertificate;
   v5 = [(PKPeerPaymentEncryptionCertificate *)&v12 init];
   if (v5)
   {
-    v5->_destination = [v4 decodeIntegerForKey:@"destination"];
-    v5->_encryptionScheme = [v4 decodeIntegerForKey:@"encryptionVersion"];
-    v5->_certificatesVersion = [v4 decodeIntegerForKey:@"certificatesVersion"];
+    v5->_destination = [coderCopy decodeIntegerForKey:@"destination"];
+    v5->_encryptionScheme = [coderCopy decodeIntegerForKey:@"encryptionVersion"];
+    v5->_certificatesVersion = [coderCopy decodeIntegerForKey:@"certificatesVersion"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"encryptionCertificates"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"encryptionCertificates"];
     encryptionCertificates = v5->_encryptionCertificates;
     v5->_encryptionCertificates = v9;
   }
@@ -76,21 +76,21 @@ void __57__PKPeerPaymentEncryptionCertificate_initWithDictionary___block_invoke(
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   destination = self->_destination;
-  v5 = a3;
-  [v5 encodeInteger:destination forKey:@"destination"];
-  [v5 encodeInteger:self->_encryptionScheme forKey:@"encryptionVersion"];
-  [v5 encodeInteger:self->_certificatesVersion forKey:@"certificatesVersion"];
-  [v5 encodeObject:self->_encryptionCertificates forKey:@"encryptionCertificates"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:destination forKey:@"destination"];
+  [coderCopy encodeInteger:self->_encryptionScheme forKey:@"encryptionVersion"];
+  [coderCopy encodeInteger:self->_certificatesVersion forKey:@"certificatesVersion"];
+  [coderCopy encodeObject:self->_encryptionCertificates forKey:@"encryptionCertificates"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_encryptionCertificates];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_encryptionCertificates];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_destination - v4 + 32 * v4;
   v6 = self->_encryptionScheme - v5 + 32 * v5;
   v7 = self->_certificatesVersion - v6 + 32 * v6;
@@ -98,9 +98,9 @@ void __57__PKPeerPaymentEncryptionCertificate_initWithDictionary___block_invoke(
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -108,7 +108,7 @@ void __57__PKPeerPaymentEncryptionCertificate_initWithDictionary___block_invoke(
   }
 
   encryptionCertificates = self->_encryptionCertificates;
-  v6 = v4[4];
+  v6 = equalCopy[4];
   if (encryptionCertificates && v6)
   {
     if (([(NSArray *)encryptionCertificates isEqual:?]& 1) == 0)
@@ -124,12 +124,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (self->_destination != v4[1] || self->_encryptionScheme != v4[2])
+  if (self->_destination != equalCopy[1] || self->_encryptionScheme != equalCopy[2])
   {
     goto LABEL_10;
   }
 
-  v7 = self->_certificatesVersion == v4[3];
+  v7 = self->_certificatesVersion == equalCopy[3];
 LABEL_11:
 
   return v7;
@@ -216,13 +216,13 @@ LABEL_11:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPeerPaymentEncryptionCertificate allocWithZone:](PKPeerPaymentEncryptionCertificate init];
   v5->_destination = self->_destination;
   v5->_encryptionScheme = self->_encryptionScheme;
   v5->_certificatesVersion = self->_certificatesVersion;
-  v6 = [(NSArray *)self->_encryptionCertificates copyWithZone:a3];
+  v6 = [(NSArray *)self->_encryptionCertificates copyWithZone:zone];
   encryptionCertificates = v5->_encryptionCertificates;
   v5->_encryptionCertificates = v6;
 

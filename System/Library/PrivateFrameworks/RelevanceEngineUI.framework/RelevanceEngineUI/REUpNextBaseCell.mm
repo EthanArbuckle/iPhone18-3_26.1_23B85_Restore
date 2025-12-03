@@ -1,27 +1,27 @@
 @interface REUpNextBaseCell
 + (id)_shadowImage;
 + (void)initialize;
-- (REUpNextBaseCell)initWithFrame:(CGRect)a3;
+- (REUpNextBaseCell)initWithFrame:(CGRect)frame;
 - (REUpNextCellDelegate)delegate;
 - (void)_updateColorOverlay;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)configureWithContent:(id)a3;
-- (void)didLongPress:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)configureWithContent:(id)content;
+- (void)didLongPress:(id)press;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContentBrightness:(double)a3 animated:(BOOL)a4;
-- (void)setContentImage:(id)a3 animated:(BOOL)a4;
-- (void)setForegroundTextColorToColor:(id)a3 shouldOverrideContentHeaderColor:(BOOL)a4;
-- (void)setHighlightBehavior:(unint64_t)a3;
-- (void)setHighlightInsets:(UIEdgeInsets)a3;
-- (void)setOverrideContentImage:(id)a3;
+- (void)setContentBrightness:(double)brightness animated:(BOOL)animated;
+- (void)setContentImage:(id)image animated:(BOOL)animated;
+- (void)setForegroundTextColorToColor:(id)color shouldOverrideContentHeaderColor:(BOOL)headerColor;
+- (void)setHighlightBehavior:(unint64_t)behavior;
+- (void)setHighlightInsets:(UIEdgeInsets)insets;
+- (void)setOverrideContentImage:(id)image;
 @end
 
 @implementation REUpNextBaseCell
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     kActiveLayout_0_5 = 0x4018000000000000;
   }
@@ -50,36 +50,36 @@ void __32__REUpNextBaseCell__shadowImage__block_invoke()
   _shadowImage_shadowImage = v2;
 }
 
-- (REUpNextBaseCell)initWithFrame:(CGRect)a3
+- (REUpNextBaseCell)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = REUpNextBaseCell;
-  v3 = [(REUpNextBaseCell *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(REUpNextBaseCell *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     v5 = *(v3 + 100);
-    *(v3 + 100) = v4;
+    *(v3 + 100) = whiteColor;
 
-    v6 = [objc_opt_class() _shadowImage];
-    [v6 size];
+    _shadowImage = [objc_opt_class() _shadowImage];
+    [_shadowImage size];
     *(v3 + 81) = v7;
     *(v3 + 82) = v8;
-    v9 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v6];
+    v9 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:_shadowImage];
     v10 = *(v3 + 83);
     *(v3 + 83) = v9;
 
-    v11 = [*(v3 + 83) layer];
-    [v11 setZPosition:-2.0];
+    layer = [*(v3 + 83) layer];
+    [layer setZPosition:-2.0];
 
-    v12 = [MEMORY[0x277CD9ED0] layer];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
     v13 = *(v3 + 84);
-    *(v3 + 84) = v12;
+    *(v3 + 84) = layer2;
 
     [*(v3 + 84) setAllowsGroupBlending:0];
     v14 = *(v3 + 84);
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     [v14 setContentsScale:?];
 
     v16 = objc_alloc(MEMORY[0x277D75D18]);
@@ -88,37 +88,37 @@ void __32__REUpNextBaseCell__shadowImage__block_invoke()
     *(v3 + 85) = v17;
 
     v19 = *(v3 + 85);
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [v19 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v19 setBackgroundColor:clearColor];
 
-    v21 = [*(v3 + 85) layer];
-    [v21 setZPosition:1.0];
+    layer3 = [*(v3 + 85) layer];
+    [layer3 setZPosition:1.0];
 
     *(v3 + 87) = 0;
     [v3 addSubview:*(v3 + 83)];
-    v22 = [v3 contentView];
-    v23 = [MEMORY[0x277D75348] clearColor];
-    [v22 setBackgroundColor:v23];
+    contentView = [v3 contentView];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [contentView setBackgroundColor:clearColor2];
 
-    v24 = [v3 contentView];
-    [v24 addSubview:*(v3 + 85)];
+    contentView2 = [v3 contentView];
+    [contentView2 addSubview:*(v3 + 85)];
 
-    v25 = [v3 layer];
-    [v25 addSublayer:*(v3 + 84)];
+    layer4 = [v3 layer];
+    [layer4 addSublayer:*(v3 + 84)];
 
     [*(v3 + 84) setZPosition:-2.0];
     v26 = *MEMORY[0x277CDA138];
     [*(v3 + 84) setCornerCurve:*MEMORY[0x277CDA138]];
     [*(v3 + 84) setCornerRadius:*&kActiveLayout_0_5];
     [*(v3 + 84) setMasksToBounds:1];
-    v27 = [*(v3 + 85) layer];
-    [v27 setCornerCurve:v26];
+    layer5 = [*(v3 + 85) layer];
+    [layer5 setCornerCurve:v26];
 
-    v28 = [*(v3 + 85) layer];
-    [v28 setCornerRadius:*&kActiveLayout_0_5];
+    layer6 = [*(v3 + 85) layer];
+    [layer6 setCornerRadius:*&kActiveLayout_0_5];
 
-    v29 = [*(v3 + 85) layer];
-    [v29 setMasksToBounds:1];
+    layer7 = [*(v3 + 85) layer];
+    [layer7 setMasksToBounds:1];
 
     *(v3 + 90) = 0;
     v30 = *(MEMORY[0x277D768C8] + 16);
@@ -136,29 +136,29 @@ void __32__REUpNextBaseCell__shadowImage__block_invoke()
   return v3;
 }
 
-- (void)didLongPress:(id)a3
+- (void)didLongPress:(id)press
 {
-  v4 = [(REUpNextBaseCell *)self delegate];
-  [v4 cellDidLongPress:self];
+  delegate = [(REUpNextBaseCell *)self delegate];
+  [delegate cellDidLongPress:self];
 }
 
-- (void)setHighlightBehavior:(unint64_t)a3
+- (void)setHighlightBehavior:(unint64_t)behavior
 {
-  if (self->_behavior == a3)
+  if (self->_behavior == behavior)
   {
     return;
   }
 
   v12 = v7;
   v13 = v3;
-  self->_behavior = a3;
-  if (!a3)
+  self->_behavior = behavior;
+  if (!behavior)
   {
     v10 = 0.0;
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (behavior == 1)
   {
     v10 = -1.0;
 LABEL_6:
@@ -169,15 +169,15 @@ LABEL_6:
   [(REUpNextBaseCell *)self _updateColorOverlay];
 }
 
-- (void)setHighlightInsets:(UIEdgeInsets)a3
+- (void)setHighlightInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_overlayInsets.top), vceqq_f64(v4, *&self->_overlayInsets.bottom)))) & 1) == 0)
   {
-    self->_overlayInsets = a3;
+    self->_overlayInsets = insets;
     [(REUpNextBaseCell *)self setNeedsLayout];
   }
 }
@@ -212,24 +212,24 @@ LABEL_6:
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)setContentBrightness:(double)a3 animated:(BOOL)a4
+- (void)setContentBrightness:(double)brightness animated:(BOOL)animated
 {
   contentBrightness = self->_contentBrightness;
-  v6 = a3;
-  if (vabds_f32(contentBrightness, v6) >= 0.00000011921)
+  brightnessCopy = brightness;
+  if (vabds_f32(contentBrightness, brightnessCopy) >= 0.00000011921)
   {
-    v7 = a4;
-    v9 = [MEMORY[0x277D75348] colorWithWhite:a3 alpha:1.0];
-    v10 = [v9 CGColor];
+    animatedCopy = animated;
+    v9 = [MEMORY[0x277D75348] colorWithWhite:brightness alpha:1.0];
+    cGColor = [v9 CGColor];
 
     v11 = [MEMORY[0x277D75348] colorWithWhite:self->_contentBrightness alpha:1.0];
-    v12 = [v11 CGColor];
+    cGColor2 = [v11 CGColor];
 
-    if (v7)
+    if (animatedCopy)
     {
       v13 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"contentsMultiplyColor"];
-      [v13 setToValue:v10];
-      [v13 setFromValue:v12];
+      [v13 setToValue:cGColor];
+      [v13 setFromValue:cGColor2];
       [v13 setDuration:0.5];
       v14 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
       [v13 setTimingFunction:v14];
@@ -240,22 +240,22 @@ LABEL_6:
 
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    [(CALayer *)self->_imageLayer setContentsMultiplyColor:v10];
+    [(CALayer *)self->_imageLayer setContentsMultiplyColor:cGColor];
     [MEMORY[0x277CD9FF0] commit];
-    self->_contentBrightness = a3;
+    self->_contentBrightness = brightness;
   }
 }
 
-- (void)setContentImage:(id)a3 animated:(BOOL)a4
+- (void)setContentImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_contentImage != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_contentImage != imageCopy)
   {
-    v10 = v7;
+    v10 = imageCopy;
     if (!self->_overrideContentImage)
     {
-      if (v4)
+      if (animatedCopy)
       {
         v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"contents"];
         [v8 setToValue:{-[UIImage CGImage](v10, "CGImage")}];
@@ -273,57 +273,57 @@ LABEL_6:
       [MEMORY[0x277CD9FF0] commit];
     }
 
-    objc_storeStrong(&self->_contentImage, a3);
-    v7 = v10;
+    objc_storeStrong(&self->_contentImage, image);
+    imageCopy = v10;
   }
 }
 
-- (void)setOverrideContentImage:(id)a3
+- (void)setOverrideContentImage:(id)image
 {
-  v5 = a3;
-  if (self->_overrideContentImage != v5)
+  imageCopy = image;
+  if (self->_overrideContentImage != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_overrideContentImage, a3);
+    v8 = imageCopy;
+    objc_storeStrong(&self->_overrideContentImage, image);
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
     imageLayer = self->_imageLayer;
     v7 = v8;
     [(CALayer *)imageLayer setContents:[(UIImage *)v8 CGImage]];
     [MEMORY[0x277CD9FF0] commit];
-    v5 = v8;
+    imageCopy = v8;
   }
 }
 
-- (void)configureWithContent:(id)a3
+- (void)configureWithContent:(id)content
 {
-  objc_storeStrong(&self->_content, a3);
-  v5 = a3;
-  v6 = [v5 tintColor];
+  objc_storeStrong(&self->_content, content);
+  contentCopy = content;
+  tintColor = [contentCopy tintColor];
 
-  [(REUpNextBaseCell *)self setTintColor:v6];
+  [(REUpNextBaseCell *)self setTintColor:tintColor];
 }
 
-- (void)setForegroundTextColorToColor:(id)a3 shouldOverrideContentHeaderColor:(BOOL)a4
+- (void)setForegroundTextColorToColor:(id)color shouldOverrideContentHeaderColor:(BOOL)headerColor
 {
-  v6 = [a3 copy];
+  v6 = [color copy];
   defaultTextColor = self->_defaultTextColor;
   self->_defaultTextColor = v6;
 
-  self->_shouldOverrideContentHeaderColor = a4;
+  self->_shouldOverrideContentHeaderColor = headerColor;
 
   [(REUpNextBaseCell *)self defaultTextColorDidChange];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v7.receiver = self;
   v7.super_class = REUpNextBaseCell;
-  [(REUpNextBaseCell *)&v7 applyLayoutAttributes:v4];
-  -[REUpNextBaseCell setHidden:](self, "setHidden:", [v4 isHidden]);
-  v5 = [MEMORY[0x277D75D18] _isInAnimationBlock];
-  if ((v5 & 1) == 0)
+  [(REUpNextBaseCell *)&v7 applyLayoutAttributes:attributesCopy];
+  -[REUpNextBaseCell setHidden:](self, "setHidden:", [attributesCopy isHidden]);
+  _isInAnimationBlock = [MEMORY[0x277D75D18] _isInAnimationBlock];
+  if ((_isInAnimationBlock & 1) == 0)
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -334,12 +334,12 @@ LABEL_6:
   if (!self->_overrideContentImage)
   {
     imageLayer = self->_imageLayer;
-    [v4 unitFrameOnScreen];
+    [attributesCopy unitFrameOnScreen];
     [(CALayer *)imageLayer setContentsRect:?];
   }
 
   [(UIImageView *)self->_shadowView setAlpha:1.0];
-  if ((v5 & 1) == 0)
+  if ((_isInAnimationBlock & 1) == 0)
   {
     [MEMORY[0x277CD9FF0] commit];
   }

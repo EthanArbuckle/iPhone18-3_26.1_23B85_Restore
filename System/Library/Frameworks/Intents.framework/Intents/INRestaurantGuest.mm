@@ -1,12 +1,12 @@
 @interface INRestaurantGuest
-- (BOOL)isEqual:(id)a3;
-- (INRestaurantGuest)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRestaurantGuest)initWithCoder:(id)coder;
 - (INRestaurantGuest)initWithNameComponents:(NSPersonNameComponents *)nameComponents phoneNumber:(NSString *)phoneNumber emailAddress:(NSString *)emailAddress;
-- (INRestaurantGuest)initWithPersonHandle:(id)a3 nameComponents:(id)a4 displayName:(id)a5 image:(id)a6 contactIdentifier:(id)a7 customIdentifier:(id)a8 isMe:(BOOL)a9;
+- (INRestaurantGuest)initWithPersonHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)customIdentifier isMe:(BOOL)me;
 - (id)_dictionaryRepresentation;
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 customIdentifier:(id)a9 relationship:(id)a10 aliases:(id)a11 suggestionType:(int64_t)a12 isMe:(BOOL)a13 scoredAlternatives:(id)a14 sourceAppBundleIdentifier:(id)a15 phonemeData:(id)a16;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)customIdentifier relationship:(id)self0 aliases:(id)self1 suggestionType:(int64_t)self2 isMe:(BOOL)self3 scoredAlternatives:(id)self4 sourceAppBundleIdentifier:(id)self5 phonemeData:(id)self6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRestaurantGuest
@@ -16,22 +16,22 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"phoneNumber";
   phoneNumber = self->_phoneNumber;
-  v4 = phoneNumber;
+  null = phoneNumber;
   if (!phoneNumber)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"emailAddress";
-  v11[0] = v4;
+  v11[0] = null;
   emailAddress = self->_emailAddress;
-  v6 = emailAddress;
+  null2 = emailAddress;
   if (!emailAddress)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (emailAddress)
   {
@@ -56,76 +56,76 @@ LABEL_7:
   return v7;
 }
 
-- (id)_initWithUserInput:(id)a3 personHandle:(id)a4 nameComponents:(id)a5 displayName:(id)a6 image:(id)a7 contactIdentifier:(id)a8 customIdentifier:(id)a9 relationship:(id)a10 aliases:(id)a11 suggestionType:(int64_t)a12 isMe:(BOOL)a13 scoredAlternatives:(id)a14 sourceAppBundleIdentifier:(id)a15 phonemeData:(id)a16
+- (id)_initWithUserInput:(id)input personHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)customIdentifier relationship:(id)self0 aliases:(id)self1 suggestionType:(int64_t)self2 isMe:(BOOL)self3 scoredAlternatives:(id)self4 sourceAppBundleIdentifier:(id)self5 phonemeData:(id)self6
 {
-  v18 = a4;
-  v19 = a5;
-  v20 = [v18 type];
-  if (v20 == 2)
+  handleCopy = handle;
+  componentsCopy = components;
+  type = [handleCopy type];
+  if (type == 2)
   {
-    v21 = [v18 value];
+    value = [handleCopy value];
   }
 
   else
   {
-    v21 = 0;
+    value = 0;
   }
 
-  if ([v18 type] == 1)
+  if ([handleCopy type] == 1)
   {
-    v22 = [v18 value];
-    v23 = [(INRestaurantGuest *)self initWithNameComponents:v19 phoneNumber:v21 emailAddress:v22];
+    value2 = [handleCopy value];
+    v23 = [(INRestaurantGuest *)self initWithNameComponents:componentsCopy phoneNumber:value emailAddress:value2];
   }
 
   else
   {
-    v23 = [(INRestaurantGuest *)self initWithNameComponents:v19 phoneNumber:v21 emailAddress:0];
+    v23 = [(INRestaurantGuest *)self initWithNameComponents:componentsCopy phoneNumber:value emailAddress:0];
   }
 
-  if (v20 == 2)
+  if (type == 2)
   {
   }
 
   return v23;
 }
 
-- (INRestaurantGuest)initWithPersonHandle:(id)a3 nameComponents:(id)a4 displayName:(id)a5 image:(id)a6 contactIdentifier:(id)a7 customIdentifier:(id)a8 isMe:(BOOL)a9
+- (INRestaurantGuest)initWithPersonHandle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)customIdentifier isMe:(BOOL)me
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [v11 type];
-  if (v13 == 2)
+  handleCopy = handle;
+  componentsCopy = components;
+  type = [handleCopy type];
+  if (type == 2)
   {
-    v14 = [v11 value];
+    value = [handleCopy value];
   }
 
   else
   {
-    v14 = 0;
+    value = 0;
   }
 
-  if ([v11 type] == 1)
+  if ([handleCopy type] == 1)
   {
-    v15 = [v11 value];
-    v16 = [(INRestaurantGuest *)self initWithNameComponents:v12 phoneNumber:v14 emailAddress:v15];
+    value2 = [handleCopy value];
+    v16 = [(INRestaurantGuest *)self initWithNameComponents:componentsCopy phoneNumber:value emailAddress:value2];
   }
 
   else
   {
-    v16 = [(INRestaurantGuest *)self initWithNameComponents:v12 phoneNumber:v14 emailAddress:0];
+    v16 = [(INRestaurantGuest *)self initWithNameComponents:componentsCopy phoneNumber:value emailAddress:0];
   }
 
-  if (v13 == 2)
+  if (type == 2)
   {
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
     goto LABEL_21;
@@ -138,12 +138,12 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  v6 = v5;
-  v7 = [(INRestaurantGuest *)v6 phoneNumber];
-  if (!v7)
+  v6 = equalCopy;
+  phoneNumber = [(INRestaurantGuest *)v6 phoneNumber];
+  if (!phoneNumber)
   {
-    v3 = [(INRestaurantGuest *)self phoneNumber];
-    if (!v3)
+    phoneNumber2 = [(INRestaurantGuest *)self phoneNumber];
+    if (!phoneNumber2)
     {
       v10 = 1;
 LABEL_10:
@@ -152,22 +152,22 @@ LABEL_10:
     }
   }
 
-  v8 = [(INRestaurantGuest *)v6 phoneNumber];
-  v9 = [(INRestaurantGuest *)self phoneNumber];
-  v10 = [v8 isEqualToString:v9];
+  phoneNumber3 = [(INRestaurantGuest *)v6 phoneNumber];
+  phoneNumber4 = [(INRestaurantGuest *)self phoneNumber];
+  v10 = [phoneNumber3 isEqualToString:phoneNumber4];
 
-  if (!v7)
+  if (!phoneNumber)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  v12 = [(INRestaurantGuest *)v6 emailAddress];
-  if (!v12)
+  emailAddress = [(INRestaurantGuest *)v6 emailAddress];
+  if (!emailAddress)
   {
-    v3 = [(INRestaurantGuest *)self emailAddress];
-    if (!v3)
+    phoneNumber2 = [(INRestaurantGuest *)self emailAddress];
+    if (!phoneNumber2)
     {
       v15 = 1;
 LABEL_16:
@@ -176,11 +176,11 @@ LABEL_16:
     }
   }
 
-  v13 = [(INRestaurantGuest *)v6 emailAddress];
-  v14 = [(INRestaurantGuest *)self emailAddress];
-  v15 = [v13 isEqualToString:v14];
+  emailAddress2 = [(INRestaurantGuest *)v6 emailAddress];
+  emailAddress3 = [(INRestaurantGuest *)self emailAddress];
+  v15 = [emailAddress2 isEqualToString:emailAddress3];
 
-  if (!v12)
+  if (!emailAddress)
   {
     goto LABEL_16;
   }
@@ -203,43 +203,43 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = INRestaurantGuest;
-  v4 = [(INPerson *)&v8 copyWithZone:a3];
-  v5 = [(INRestaurantGuest *)self phoneNumber];
-  [v4 setPhoneNumber:v5];
+  v4 = [(INPerson *)&v8 copyWithZone:zone];
+  phoneNumber = [(INRestaurantGuest *)self phoneNumber];
+  [v4 setPhoneNumber:phoneNumber];
 
-  v6 = [(INRestaurantGuest *)self emailAddress];
-  [v4 setEmailAddress:v6];
+  emailAddress = [(INRestaurantGuest *)self emailAddress];
+  [v4 setEmailAddress:emailAddress];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INRestaurantGuest;
-  v4 = a3;
-  [(INPerson *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_phoneNumber forKey:{@"phoneNumber", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_emailAddress forKey:@"emailAddress"];
+  coderCopy = coder;
+  [(INPerson *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_phoneNumber forKey:{@"phoneNumber", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_emailAddress forKey:@"emailAddress"];
 }
 
-- (INRestaurantGuest)initWithCoder:(id)a3
+- (INRestaurantGuest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = INRestaurantGuest;
-  v5 = [(INPerson *)&v11 initWithCoder:v4];
+  v5 = [(INPerson *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v8;
   }

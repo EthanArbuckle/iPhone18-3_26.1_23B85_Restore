@@ -5,7 +5,7 @@
 - (void)_didInvalidateIntrinsicContentSize;
 - (void)buttonShapesSettingDidChange;
 - (void)dealloc;
-- (void)setAccessibilityTraits:(unint64_t)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
 - (void)sizeToFit;
 @end
 
@@ -32,10 +32,10 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders34TTRIAccountsListsCellAccessoryView_gridView);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 intrinsicContentSize];
-    [(TTRIAccountsListsCellAccessoryView *)v3 frame];
-    [(TTRIAccountsListsCellAccessoryView *)v3 setFrame:?];
+    [(TTRIAccountsListsCellAccessoryView *)selfCopy frame];
+    [(TTRIAccountsListsCellAccessoryView *)selfCopy setFrame:?];
   }
 
   else
@@ -67,10 +67,10 @@
   ObjectType = swift_getObjectType();
   v6[3] = ObjectType;
   v6[0] = self;
-  v4 = self;
+  selfCopy = self;
   static UIAccessibility.removeButtonShapesStatusChangeObserver(_:)();
   sub_100004758(v6);
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(TTRIAccountsListsCellAccessoryView *)&v5 dealloc];
 }
@@ -93,7 +93,7 @@
 
 - (void)buttonShapesSettingDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004B2404();
 }
 
@@ -102,23 +102,23 @@
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
-  v3 = [(TTRIAccountsListsCellAccessoryView *)&v7 accessibilityTraits];
+  accessibilityTraits = [(TTRIAccountsListsCellAccessoryView *)&v7 accessibilityTraits];
   v4 = UIAccessibilityTraitHeader;
 
   v5 = -1;
-  if ((v4 & v3) != 0)
+  if ((v4 & accessibilityTraits) != 0)
   {
     v5 = ~v4;
   }
 
-  return v5 & v3;
+  return v5 & accessibilityTraits;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(TTRIAccountsListsCellAccessoryView *)&v4 setAccessibilityTraits:a3];
+  [(TTRIAccountsListsCellAccessoryView *)&v4 setAccessibilityTraits:traits];
 }
 
 @end

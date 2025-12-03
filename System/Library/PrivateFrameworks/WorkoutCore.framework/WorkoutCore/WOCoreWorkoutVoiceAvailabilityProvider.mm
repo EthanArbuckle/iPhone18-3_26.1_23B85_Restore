@@ -7,7 +7,7 @@
 
 - (BOOL)isFeatureSupported
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutVoiceAvailabilityProvider.isFeatureSupported()();
 
   return v3;

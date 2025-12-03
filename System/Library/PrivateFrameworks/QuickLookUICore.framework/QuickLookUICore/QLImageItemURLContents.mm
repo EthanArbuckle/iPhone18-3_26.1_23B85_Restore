@@ -1,30 +1,30 @@
 @interface QLImageItemURLContents
-+ (id)imageItemContentsWithImage:(id)a3 imageURL:(id)a4;
-- (QLImageItemURLContents)initWithCoder:(id)a3;
++ (id)imageItemContentsWithImage:(id)image imageURL:(id)l;
+- (QLImageItemURLContents)initWithCoder:(id)coder;
 @end
 
 @implementation QLImageItemURLContents
 
-+ (id)imageItemContentsWithImage:(id)a3 imageURL:(id)a4
++ (id)imageItemContentsWithImage:(id)image imageURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(QLImageItemContents *)[QLImageItemURLContents alloc] initWithImage:v6];
+  lCopy = l;
+  imageCopy = image;
+  v7 = [(QLImageItemContents *)[QLImageItemURLContents alloc] initWithImage:imageCopy];
 
-  [(QLImageItemURLContents *)v7 setImageURL:v5];
+  [(QLImageItemURLContents *)v7 setImageURL:lCopy];
 
   return v7;
 }
 
-- (QLImageItemURLContents)initWithCoder:(id)a3
+- (QLImageItemURLContents)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = QLImageItemURLContents;
-  v5 = [(QLImageItemContents *)&v9 initWithCoder:v4];
+  v5 = [(QLImageItemContents *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
     imageURL = v5->_imageURL;
     v5->_imageURL = v6;
   }

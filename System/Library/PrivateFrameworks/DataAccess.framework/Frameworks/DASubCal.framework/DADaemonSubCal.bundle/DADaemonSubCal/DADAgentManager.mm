@@ -1,35 +1,35 @@
 @interface DADAgentManager
-- (void)handleWebcalURL:(id)a3;
-- (void)subCalWebcalHandlerFinishedSetup:(id)a3;
+- (void)handleWebcalURL:(id)l;
+- (void)subCalWebcalHandlerFinishedSetup:(id)setup;
 @end
 
 @implementation DADAgentManager
 
-- (void)handleWebcalURL:(id)a3
+- (void)handleWebcalURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9 = objc_opt_new();
-  v5 = [(DADAgentManager *)self subCalHandlers];
+  subCalHandlers = [(DADAgentManager *)self subCalHandlers];
 
-  if (!v5)
+  if (!subCalHandlers)
   {
     v6 = objc_opt_new();
     [(DADAgentManager *)self setSubCalHandlers:v6];
   }
 
-  v7 = [(DADAgentManager *)self subCalHandlers];
-  [v7 addObject:v9];
+  subCalHandlers2 = [(DADAgentManager *)self subCalHandlers];
+  [subCalHandlers2 addObject:v9];
 
-  v8 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v9 handleWebcalURLString:v8 withConsumer:self];
+  [v9 handleWebcalURLString:absoluteString withConsumer:self];
 }
 
-- (void)subCalWebcalHandlerFinishedSetup:(id)a3
+- (void)subCalWebcalHandlerFinishedSetup:(id)setup
 {
-  v4 = a3;
-  v5 = [(DADAgentManager *)self subCalHandlers];
-  [v5 removeObject:v4];
+  setupCopy = setup;
+  subCalHandlers = [(DADAgentManager *)self subCalHandlers];
+  [subCalHandlers removeObject:setupCopy];
 }
 
 @end

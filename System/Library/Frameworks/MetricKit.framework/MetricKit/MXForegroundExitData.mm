@@ -1,55 +1,55 @@
 @interface MXForegroundExitData
-- (MXForegroundExitData)initWithCoder:(id)a3;
-- (MXForegroundExitData)initWithNormalAppExitCount:(id)a3 memoryResourceLimitExitCount:(id)a4 cpuResourceLimitExitCount:(id)a5 badAccessExitCount:(id)a6 abnormalExitCount:(id)a7 illegalInstructionExitCount:(id)a8 appWatchDogExitCount:(id)a9;
-- (MXForegroundExitData)initWithNormalAppExitCount:(unint64_t)a3 withMemoryResourceLimitExitCount:(unint64_t)a4 withCPUResourceLimitExitCount:(unint64_t)a5 withBadAccessExitCount:(unint64_t)a6 withAbnormalExitCount:(unint64_t)a7 withIllegalInstructionExitCount:(unint64_t)a8 withAppWatchDogExitCount:(unint64_t)a9;
+- (MXForegroundExitData)initWithCoder:(id)coder;
+- (MXForegroundExitData)initWithNormalAppExitCount:(id)count memoryResourceLimitExitCount:(id)exitCount cpuResourceLimitExitCount:(id)limitExitCount badAccessExitCount:(id)accessExitCount abnormalExitCount:(id)abnormalExitCount illegalInstructionExitCount:(id)instructionExitCount appWatchDogExitCount:(id)dogExitCount;
+- (MXForegroundExitData)initWithNormalAppExitCount:(unint64_t)count withMemoryResourceLimitExitCount:(unint64_t)exitCount withCPUResourceLimitExitCount:(unint64_t)limitExitCount withBadAccessExitCount:(unint64_t)accessExitCount withAbnormalExitCount:(unint64_t)abnormalExitCount withIllegalInstructionExitCount:(unint64_t)instructionExitCount withAppWatchDogExitCount:(unint64_t)dogExitCount;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXForegroundExitData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cumulativeNormalAppExitCount = self->_cumulativeNormalAppExitCount;
-  v5 = a3;
-  [v5 encodeInteger:cumulativeNormalAppExitCount forKey:@"cumulativeNormalAppExitCount"];
-  [v5 encodeInteger:self->_cumulativeMemoryResourceLimitExitCount forKey:@"cumulativeMemoryResourceLimitExitCount"];
-  [v5 encodeInteger:self->_cumulativeCPUResourceLimitExitCount forKey:@"cumulativeCPUResourceLimitExitCount"];
-  [v5 encodeInteger:self->_cumulativeBadAccessExitCount forKey:@"cumulativeBadAccessExitCount"];
-  [v5 encodeInteger:self->_cumulativeAbnormalExitCount forKey:@"cumulativeAbnormalExitCount"];
-  [v5 encodeInteger:self->_cumulativeIllegalInstructionExitCount forKey:@"cumulativeIllegalInstructionExitCount"];
-  [v5 encodeInteger:self->_cumulativeAppWatchdogExitCount forKey:@"cumulativeAppWatchdogExitCount"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:cumulativeNormalAppExitCount forKey:@"cumulativeNormalAppExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeMemoryResourceLimitExitCount forKey:@"cumulativeMemoryResourceLimitExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeCPUResourceLimitExitCount forKey:@"cumulativeCPUResourceLimitExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeBadAccessExitCount forKey:@"cumulativeBadAccessExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeAbnormalExitCount forKey:@"cumulativeAbnormalExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeIllegalInstructionExitCount forKey:@"cumulativeIllegalInstructionExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeAppWatchdogExitCount forKey:@"cumulativeAppWatchdogExitCount"];
 }
 
-- (MXForegroundExitData)initWithCoder:(id)a3
+- (MXForegroundExitData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MXForegroundExitData;
   v5 = [(MXForegroundExitData *)&v7 init];
   if (v5)
   {
-    v5->_cumulativeNormalAppExitCount = [v4 decodeIntegerForKey:@"cumulativeNormalAppExitCount"];
-    v5->_cumulativeMemoryResourceLimitExitCount = [v4 decodeIntegerForKey:@"cumulativeMemoryResourceLimitExitCount"];
-    v5->_cumulativeCPUResourceLimitExitCount = [v4 decodeIntegerForKey:@"cumulativeCPUResourceLimitExitCount"];
-    v5->_cumulativeBadAccessExitCount = [v4 decodeIntegerForKey:@"cumulativeBadAccessExitCount"];
-    v5->_cumulativeAbnormalExitCount = [v4 decodeIntegerForKey:@"cumulativeAbnormalExitCount"];
-    v5->_cumulativeIllegalInstructionExitCount = [v4 decodeIntegerForKey:@"cumulativeIllegalInstructionExitCount"];
-    v5->_cumulativeAppWatchdogExitCount = [v4 decodeIntegerForKey:@"cumulativeAppWatchdogExitCount"];
+    v5->_cumulativeNormalAppExitCount = [coderCopy decodeIntegerForKey:@"cumulativeNormalAppExitCount"];
+    v5->_cumulativeMemoryResourceLimitExitCount = [coderCopy decodeIntegerForKey:@"cumulativeMemoryResourceLimitExitCount"];
+    v5->_cumulativeCPUResourceLimitExitCount = [coderCopy decodeIntegerForKey:@"cumulativeCPUResourceLimitExitCount"];
+    v5->_cumulativeBadAccessExitCount = [coderCopy decodeIntegerForKey:@"cumulativeBadAccessExitCount"];
+    v5->_cumulativeAbnormalExitCount = [coderCopy decodeIntegerForKey:@"cumulativeAbnormalExitCount"];
+    v5->_cumulativeIllegalInstructionExitCount = [coderCopy decodeIntegerForKey:@"cumulativeIllegalInstructionExitCount"];
+    v5->_cumulativeAppWatchdogExitCount = [coderCopy decodeIntegerForKey:@"cumulativeAppWatchdogExitCount"];
   }
 
   return v5;
 }
 
-- (MXForegroundExitData)initWithNormalAppExitCount:(id)a3 memoryResourceLimitExitCount:(id)a4 cpuResourceLimitExitCount:(id)a5 badAccessExitCount:(id)a6 abnormalExitCount:(id)a7 illegalInstructionExitCount:(id)a8 appWatchDogExitCount:(id)a9
+- (MXForegroundExitData)initWithNormalAppExitCount:(id)count memoryResourceLimitExitCount:(id)exitCount cpuResourceLimitExitCount:(id)limitExitCount badAccessExitCount:(id)accessExitCount abnormalExitCount:(id)abnormalExitCount illegalInstructionExitCount:(id)instructionExitCount appWatchDogExitCount:(id)dogExitCount
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  countCopy = count;
+  exitCountCopy = exitCount;
+  limitExitCountCopy = limitExitCount;
+  accessExitCountCopy = accessExitCount;
+  abnormalExitCountCopy = abnormalExitCount;
+  instructionExitCountCopy = instructionExitCount;
+  dogExitCountCopy = dogExitCount;
   v25.receiver = self;
   v25.super_class = MXForegroundExitData;
   v22 = [(MXForegroundExitData *)&v25 init];
@@ -59,15 +59,15 @@
   }
 
   v23 = 0;
-  if (v15 && v16 && v17 && v18 && v19 && v20 && v21)
+  if (countCopy && exitCountCopy && limitExitCountCopy && accessExitCountCopy && abnormalExitCountCopy && instructionExitCountCopy && dogExitCountCopy)
   {
-    v22->_cumulativeNormalAppExitCount = [v15 unsignedIntegerValue];
-    v22->_cumulativeMemoryResourceLimitExitCount = [v16 unsignedIntegerValue];
-    v22->_cumulativeCPUResourceLimitExitCount = [v17 unsignedIntegerValue];
-    v22->_cumulativeBadAccessExitCount = [v18 unsignedIntegerValue];
-    v22->_cumulativeAbnormalExitCount = [v19 unsignedIntegerValue];
-    v22->_cumulativeIllegalInstructionExitCount = [v20 unsignedIntegerValue];
-    v22->_cumulativeAppWatchdogExitCount = [v21 unsignedIntegerValue];
+    v22->_cumulativeNormalAppExitCount = [countCopy unsignedIntegerValue];
+    v22->_cumulativeMemoryResourceLimitExitCount = [exitCountCopy unsignedIntegerValue];
+    v22->_cumulativeCPUResourceLimitExitCount = [limitExitCountCopy unsignedIntegerValue];
+    v22->_cumulativeBadAccessExitCount = [accessExitCountCopy unsignedIntegerValue];
+    v22->_cumulativeAbnormalExitCount = [abnormalExitCountCopy unsignedIntegerValue];
+    v22->_cumulativeIllegalInstructionExitCount = [instructionExitCountCopy unsignedIntegerValue];
+    v22->_cumulativeAppWatchdogExitCount = [dogExitCountCopy unsignedIntegerValue];
 LABEL_10:
     v23 = v22;
   }
@@ -75,20 +75,20 @@ LABEL_10:
   return v23;
 }
 
-- (MXForegroundExitData)initWithNormalAppExitCount:(unint64_t)a3 withMemoryResourceLimitExitCount:(unint64_t)a4 withCPUResourceLimitExitCount:(unint64_t)a5 withBadAccessExitCount:(unint64_t)a6 withAbnormalExitCount:(unint64_t)a7 withIllegalInstructionExitCount:(unint64_t)a8 withAppWatchDogExitCount:(unint64_t)a9
+- (MXForegroundExitData)initWithNormalAppExitCount:(unint64_t)count withMemoryResourceLimitExitCount:(unint64_t)exitCount withCPUResourceLimitExitCount:(unint64_t)limitExitCount withBadAccessExitCount:(unint64_t)accessExitCount withAbnormalExitCount:(unint64_t)abnormalExitCount withIllegalInstructionExitCount:(unint64_t)instructionExitCount withAppWatchDogExitCount:(unint64_t)dogExitCount
 {
   v16.receiver = self;
   v16.super_class = MXForegroundExitData;
   result = [(MXForegroundExitData *)&v16 init];
   if (result)
   {
-    result->_cumulativeNormalAppExitCount = a3;
-    result->_cumulativeMemoryResourceLimitExitCount = a4;
-    result->_cumulativeAppWatchdogExitCount = a9;
-    result->_cumulativeCPUResourceLimitExitCount = a5;
-    result->_cumulativeBadAccessExitCount = a6;
-    result->_cumulativeAbnormalExitCount = a7;
-    result->_cumulativeIllegalInstructionExitCount = a8;
+    result->_cumulativeNormalAppExitCount = count;
+    result->_cumulativeMemoryResourceLimitExitCount = exitCount;
+    result->_cumulativeAppWatchdogExitCount = dogExitCount;
+    result->_cumulativeCPUResourceLimitExitCount = limitExitCount;
+    result->_cumulativeBadAccessExitCount = accessExitCount;
+    result->_cumulativeAbnormalExitCount = abnormalExitCount;
+    result->_cumulativeIllegalInstructionExitCount = instructionExitCount;
   }
 
   return result;

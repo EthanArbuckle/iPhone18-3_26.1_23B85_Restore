@@ -7,16 +7,16 @@
 
 - (uint64_t)_wk_isTextInteractionLoupeGesture
 {
-  v1 = [a1 name];
+  name = [self name];
 
-  return [v1 isEqualToString:@"UITextInteractionNameInteractiveRefinement"];
+  return [name isEqualToString:@"UITextInteractionNameInteractiveRefinement"];
 }
 
 - (uint64_t)_wk_isTextInteractionTapGesture
 {
-  v1 = [a1 name];
+  name = [self name];
 
-  return [v1 isEqualToString:@"UITextInteractionNameSingleTap"];
+  return [name isEqualToString:@"UITextInteractionNameSingleTap"];
 }
 
 @end

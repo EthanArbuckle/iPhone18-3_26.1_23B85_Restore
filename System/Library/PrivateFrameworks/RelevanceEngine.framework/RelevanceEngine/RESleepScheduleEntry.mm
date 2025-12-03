@@ -1,12 +1,12 @@
 @interface RESleepScheduleEntry
-+ (id)sleepEntryForDatesWithCurrent:(id)a3 next:(id)a4 schedule:(id)a5;
++ (id)sleepEntryForDatesWithCurrent:(id)current next:(id)next schedule:(id)schedule;
 - (_TtC15RelevanceEngine20RESleepScheduleEntry)init;
-- (_TtC15RelevanceEngine20RESleepScheduleEntry)initWithWakeupTime:(id)a3 bedtime:(id)a4;
+- (_TtC15RelevanceEngine20RESleepScheduleEntry)initWithWakeupTime:(id)time bedtime:(id)bedtime;
 @end
 
 @implementation RESleepScheduleEntry
 
-- (_TtC15RelevanceEngine20RESleepScheduleEntry)initWithWakeupTime:(id)a3 bedtime:(id)a4
+- (_TtC15RelevanceEngine20RESleepScheduleEntry)initWithWakeupTime:(id)time bedtime:(id)bedtime
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D84EF08, &unk_2286B3F70);
   v8 = *(*(v7 - 8) + 64);
@@ -14,7 +14,7 @@
   v11 = &v24 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v9);
   v13 = &v24 - v12;
-  if (a3)
+  if (time)
   {
     sub_2286A087C();
     v14 = sub_2286A089C();
@@ -27,7 +27,7 @@
     (*(*(v15 - 8) + 56))(v13, 1, 1, v15);
   }
 
-  if (a4)
+  if (bedtime)
   {
     sub_2286A087C();
     v16 = 0;
@@ -60,7 +60,7 @@
   return v22;
 }
 
-+ (id)sleepEntryForDatesWithCurrent:(id)a3 next:(id)a4 schedule:(id)a5
++ (id)sleepEntryForDatesWithCurrent:(id)current next:(id)next schedule:(id)schedule
 {
   v6 = sub_2286A089C();
   v7 = *(v6 - 8);
@@ -71,8 +71,8 @@
   v13 = &v18 - v12;
   sub_2286A087C();
   sub_2286A087C();
-  v14 = a5;
-  v15 = _s15RelevanceEngine20RESleepScheduleEntryC05sleepE8ForDates7current4next8scheduleAC10Foundation4DateV_AJSo09HKSPSleepD0CtFZ_0(v13, v11, v14);
+  scheduleCopy = schedule;
+  v15 = _s15RelevanceEngine20RESleepScheduleEntryC05sleepE8ForDates7current4next8scheduleAC10Foundation4DateV_AJSo09HKSPSleepD0CtFZ_0(v13, v11, scheduleCopy);
 
   v16 = *(v7 + 8);
   v16(v11, v6);

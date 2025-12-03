@@ -1,8 +1,8 @@
 @interface THNavigationHistoryStepperController
 - (THNavigationHistoryStepperController)init;
 - (void)dealloc;
-- (void)jumpToNext:(id)a3;
-- (void)jumpToPrev:(id)a3;
+- (void)jumpToNext:(id)next;
+- (void)jumpToPrev:(id)prev;
 - (void)teardown;
 - (void)updateHistoryNavigation;
 @end
@@ -49,18 +49,18 @@
   [(NSNotificationCenter *)v3 removeObserver:self];
 }
 
-- (void)jumpToPrev:(id)a3
+- (void)jumpToPrev:(id)prev
 {
-  v3 = [(THNavigationHistoryStepperController *)self bookspotHistoryStack];
+  bookspotHistoryStack = [(THNavigationHistoryStepperController *)self bookspotHistoryStack];
 
-  [(THBookspotHistoryStack *)v3 gotoPrevBookspot];
+  [(THBookspotHistoryStack *)bookspotHistoryStack gotoPrevBookspot];
 }
 
-- (void)jumpToNext:(id)a3
+- (void)jumpToNext:(id)next
 {
-  v3 = [(THNavigationHistoryStepperController *)self bookspotHistoryStack];
+  bookspotHistoryStack = [(THNavigationHistoryStepperController *)self bookspotHistoryStack];
 
-  [(THBookspotHistoryStack *)v3 gotoNextBookspot];
+  [(THBookspotHistoryStack *)bookspotHistoryStack gotoNextBookspot];
 }
 
 - (void)updateHistoryNavigation
@@ -70,12 +70,12 @@
     return;
   }
 
-  v3 = [(THBookspotHistoryStack *)[(THNavigationHistoryStepperController *)self bookspotHistoryStack] prevBookspot];
-  v4 = [(THBookspotHistoryStack *)[(THNavigationHistoryStepperController *)self bookspotHistoryStack] nextBookspot];
-  v5 = v4;
-  if (v3)
+  prevBookspot = [(THBookspotHistoryStack *)[(THNavigationHistoryStepperController *)self bookspotHistoryStack] prevBookspot];
+  nextBookspot = [(THBookspotHistoryStack *)[(THNavigationHistoryStepperController *)self bookspotHistoryStack] nextBookspot];
+  v5 = nextBookspot;
+  if (prevBookspot)
   {
-    v6 = [(THBookPresentationPageIndexFormatter *)[(THNavigationHistoryStepperController *)self pageIndexFormatter] pageNumberStringForLocation:v3];
+    v6 = [(THBookPresentationPageIndexFormatter *)[(THNavigationHistoryStepperController *)self pageIndexFormatter] pageNumberStringForLocation:prevBookspot];
     if (v5)
     {
 LABEL_4:
@@ -87,7 +87,7 @@ LABEL_4:
   else
   {
     v6 = 0;
-    if (v4)
+    if (nextBookspot)
     {
       goto LABEL_4;
     }
@@ -95,7 +95,7 @@ LABEL_4:
 
   v7 = 0;
 LABEL_8:
-  if (v3)
+  if (prevBookspot)
   {
     v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"Back to page %@" value:&stru_471858 table:0], v6);
     if (v5)
@@ -119,20 +119,20 @@ LABEL_10:
 LABEL_13:
   [(THNavigationHistoryStepperController *)self chrome];
   v10 = objc_opt_respondsToSelector();
-  v11 = [(THNavigationHistoryStepperController *)self chrome];
+  chrome = [(THNavigationHistoryStepperController *)self chrome];
   if (v10)
   {
 
-    [THNavigationHistoryStepperChrome setPrevButtonTitle:v11 andPrevButtonEnable:"setPrevButtonTitle:andPrevButtonEnable:nextButtonTitle:andNextButtonEnabled:" nextButtonTitle:v8 andNextButtonEnabled:v3 != 0];
+    [THNavigationHistoryStepperChrome setPrevButtonTitle:chrome andPrevButtonEnable:"setPrevButtonTitle:andPrevButtonEnable:nextButtonTitle:andNextButtonEnabled:" nextButtonTitle:v8 andNextButtonEnabled:prevBookspot != 0];
   }
 
   else
   {
     v12 = v5 != 0;
-    [(THNavigationHistoryStepperChrome *)v11 setPrevButtonTitle:v8 andEnable:v3 != 0];
-    v13 = [(THNavigationHistoryStepperController *)self chrome];
+    [(THNavigationHistoryStepperChrome *)chrome setPrevButtonTitle:v8 andEnable:prevBookspot != 0];
+    chrome2 = [(THNavigationHistoryStepperController *)self chrome];
 
-    [(THNavigationHistoryStepperChrome *)v13 setNextButtonTitle:v9 andEnable:v12];
+    [(THNavigationHistoryStepperChrome *)chrome2 setNextButtonTitle:v9 andEnable:v12];
   }
 }
 

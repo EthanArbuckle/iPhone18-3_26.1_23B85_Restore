@@ -1,37 +1,37 @@
 @interface TUIStatsFeedViewController
-- (TUIStatsFeedViewController)initWithFeed:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_dismiss:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (TUIStatsFeedViewController)initWithFeed:(id)feed;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_dismiss:(id)_dismiss;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation TUIStatsFeedViewController
 
-- (TUIStatsFeedViewController)initWithFeed:(id)a3
+- (TUIStatsFeedViewController)initWithFeed:(id)feed
 {
-  v5 = a3;
+  feedCopy = feed;
   v11.receiver = self;
   v11.super_class = TUIStatsFeedViewController;
   v6 = [(TUIStatsFeedViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feed, a3);
+    objc_storeStrong(&v6->_feed, feed);
     v8 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:2 target:v7 action:"_dismiss:"];
-    v9 = [(TUIStatsFeedViewController *)v7 navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [(TUIStatsFeedViewController *)v7 navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
   }
 
   return v7;
 }
 
-- (void)_dismiss:(id)a3
+- (void)_dismiss:(id)_dismiss
 {
-  v3 = [(TUIStatsFeedViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(TUIStatsFeedViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)viewDidLoad
@@ -39,43 +39,43 @@
   v8.receiver = self;
   v8.super_class = TUIStatsFeedViewController;
   [(TUIStatsFeedViewController *)&v8 viewDidLoad];
-  v3 = [(TUIStatsFeedViewController *)self tableView];
+  tableView = [(TUIStatsFeedViewController *)self tableView];
   v4 = +[TUIStatsCell nib];
-  [v3 registerNib:v4 forCellReuseIdentifier:@"cell"];
+  [tableView registerNib:v4 forCellReuseIdentifier:@"cell"];
 
-  v5 = [(TUIStatsFeedViewController *)self tableView];
-  [v5 setRowHeight:UITableViewAutomaticDimension];
+  tableView2 = [(TUIStatsFeedViewController *)self tableView];
+  [tableView2 setRowHeight:UITableViewAutomaticDimension];
 
-  v6 = [(TUIStatsFeedViewController *)self tableView];
-  [v6 setEstimatedRowHeight:100.0];
+  tableView3 = [(TUIStatsFeedViewController *)self tableView];
+  [tableView3 setEstimatedRowHeight:100.0];
 
-  v7 = [(TUIStatsFeedViewController *)self tableView];
-  [v7 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"header"];
+  tableView4 = [(TUIStatsFeedViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"header"];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 == 2)
+    if (section == 2)
     {
-      v7 = [(TUIStatsFeed *)self->_feed passes];
+      passes = [(TUIStatsFeed *)self->_feed passes];
     }
 
     else
     {
-      if (a4 != 1)
+      if (section != 1)
       {
         v9 = 0;
         goto LABEL_9;
       }
 
-      v7 = [(TUIStatsFeed *)self->_feed currentEntriesUID];
+      passes = [(TUIStatsFeed *)self->_feed currentEntriesUID];
     }
 
-    v8 = v7;
-    v9 = [v7 count];
+    v8 = passes;
+    v9 = [passes count];
   }
 
   else
@@ -88,33 +88,33 @@ LABEL_9:
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(TUIStatsFeedViewController *)self tableView];
-  v6 = [v5 dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+  tableView = [(TUIStatsFeedViewController *)self tableView];
+  v6 = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
 
-  if (a4 <= 2)
+  if (section <= 2)
   {
-    v7 = off_25F730[a4];
-    v8 = [v6 textLabel];
-    [v8 setText:v7];
+    v7 = off_25F730[section];
+    textLabel = [v6 textLabel];
+    [textLabel setText:v7];
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"cell" forIndexPath:v6];
-  if (![v6 section])
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"cell" forIndexPath:pathCopy];
+  if (![pathCopy section])
   {
     v9 = objc_alloc_init(NSMutableString);
-    v20 = [(TUIStatsFeed *)self->_feed creationDate];
-    v21 = v20;
-    if (v20)
+    creationDate = [(TUIStatsFeed *)self->_feed creationDate];
+    v21 = creationDate;
+    if (creationDate)
     {
-      v22 = v20;
+      v22 = creationDate;
     }
 
     else
@@ -124,11 +124,11 @@ LABEL_9:
 
     [v9 appendFormat:@"creation: %@\n", v22];
 
-    v23 = [(TUIStatsFeed *)self->_feed initialResourcesRenderedDate];
-    v24 = v23;
-    if (v23)
+    initialResourcesRenderedDate = [(TUIStatsFeed *)self->_feed initialResourcesRenderedDate];
+    v24 = initialResourcesRenderedDate;
+    if (initialResourcesRenderedDate)
     {
-      v25 = v23;
+      v25 = initialResourcesRenderedDate;
     }
 
     else
@@ -138,11 +138,11 @@ LABEL_9:
 
     [v9 appendFormat:@"initialResourcesRenderedDate: %@\n", v25];
 
-    v26 = [(TUIStatsFeed *)self->_feed contentUpdateDate];
-    v27 = v26;
-    if (v26)
+    contentUpdateDate = [(TUIStatsFeed *)self->_feed contentUpdateDate];
+    v27 = contentUpdateDate;
+    if (contentUpdateDate)
     {
-      v28 = v26;
+      v28 = contentUpdateDate;
     }
 
     else
@@ -152,11 +152,11 @@ LABEL_9:
 
     [v9 appendFormat:@"contentUpdate: %@\n", v28];
 
-    v29 = [(TUIStatsFeed *)self->_feed initialContentReadyDate];
-    v30 = v29;
-    if (v29)
+    initialContentReadyDate = [(TUIStatsFeed *)self->_feed initialContentReadyDate];
+    v30 = initialContentReadyDate;
+    if (initialContentReadyDate)
     {
-      v31 = v29;
+      v31 = initialContentReadyDate;
     }
 
     else
@@ -166,11 +166,11 @@ LABEL_9:
 
     [v9 appendFormat:@"initialContentReady: %@\n", v31];
 
-    v32 = [(TUIStatsFeed *)self->_feed initialLayoutStartDate];
-    v33 = v32;
-    if (v32)
+    initialLayoutStartDate = [(TUIStatsFeed *)self->_feed initialLayoutStartDate];
+    v33 = initialLayoutStartDate;
+    if (initialLayoutStartDate)
     {
-      v34 = v32;
+      v34 = initialLayoutStartDate;
     }
 
     else
@@ -180,11 +180,11 @@ LABEL_9:
 
     [v9 appendFormat:@"initialLayoutStartDate: %@\n", v34];
 
-    v35 = [(TUIStatsFeed *)self->_feed allContentReadyDate];
-    v36 = v35;
-    if (v35)
+    allContentReadyDate = [(TUIStatsFeed *)self->_feed allContentReadyDate];
+    v36 = allContentReadyDate;
+    if (allContentReadyDate)
     {
-      v37 = v35;
+      v37 = allContentReadyDate;
     }
 
     else
@@ -194,11 +194,11 @@ LABEL_9:
 
     [v9 appendFormat:@"allContentReady: %@\n", v37];
 
-    v38 = [(TUIStatsFeed *)self->_feed dynamicUpdateDate];
-    v39 = v38;
-    if (v38)
+    dynamicUpdateDate = [(TUIStatsFeed *)self->_feed dynamicUpdateDate];
+    v39 = dynamicUpdateDate;
+    if (dynamicUpdateDate)
     {
-      v40 = v38;
+      v40 = dynamicUpdateDate;
     }
 
     else
@@ -208,11 +208,11 @@ LABEL_9:
 
     [v9 appendFormat:@"dynamicUpdate: %@\n", v40];
 
-    v41 = [(TUIStatsFeed *)self->_feed resourcesStartLoadingDate];
-    v42 = v41;
-    if (v41)
+    resourcesStartLoadingDate = [(TUIStatsFeed *)self->_feed resourcesStartLoadingDate];
+    v42 = resourcesStartLoadingDate;
+    if (resourcesStartLoadingDate)
     {
-      v43 = v41;
+      v43 = resourcesStartLoadingDate;
     }
 
     else
@@ -222,11 +222,11 @@ LABEL_9:
 
     [v9 appendFormat:@"resourcesStartLoadingDate: %@\n", v43];
 
-    v44 = [(TUIStatsFeed *)self->_feed resourcesLoadedDate];
-    v45 = v44;
-    if (v44)
+    resourcesLoadedDate = [(TUIStatsFeed *)self->_feed resourcesLoadedDate];
+    v45 = resourcesLoadedDate;
+    if (resourcesLoadedDate)
     {
-      v46 = v44;
+      v46 = resourcesLoadedDate;
     }
 
     else
@@ -236,11 +236,11 @@ LABEL_9:
 
     [v9 appendFormat:@"resourcesLoaded: %@\n", v46];
 
-    v47 = [(TUIStatsFeed *)self->_feed viewWillAppearDate];
-    v48 = v47;
-    if (v47)
+    viewWillAppearDate = [(TUIStatsFeed *)self->_feed viewWillAppearDate];
+    v48 = viewWillAppearDate;
+    if (viewWillAppearDate)
     {
-      v49 = v47;
+      v49 = viewWillAppearDate;
     }
 
     else
@@ -259,19 +259,19 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if ([v6 section] != &dword_0 + 1)
+  if ([pathCopy section] != &dword_0 + 1)
   {
-    if ([v6 section] != &dword_0 + 2)
+    if ([pathCopy section] != &dword_0 + 2)
     {
       goto LABEL_39;
     }
 
-    v52 = [(TUIStatsFeed *)self->_feed passes];
-    v53 = [v52 count];
-    v54 = ~[v6 row];
+    passes = [(TUIStatsFeed *)self->_feed passes];
+    v53 = [passes count];
+    v54 = ~[pathCopy row];
 
-    v55 = [(TUIStatsFeed *)self->_feed passes];
-    v9 = [v55 objectAtIndexedSubscript:&v53[v54]];
+    passes2 = [(TUIStatsFeed *)self->_feed passes];
+    v9 = [passes2 objectAtIndexedSubscript:&v53[v54]];
 
     [v9 elapsedTimeForPhase:0];
     v57 = v56 * 1000.0;
@@ -285,21 +285,21 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v8 = [(TUIStatsFeed *)self->_feed currentEntriesUID];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  currentEntriesUID = [(TUIStatsFeed *)self->_feed currentEntriesUID];
+  v9 = [currentEntriesUID objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [(TUIStatsFeed *)self->_feed entries];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  entries = [(TUIStatsFeed *)self->_feed entries];
+  v11 = [entries objectForKeyedSubscript:v9];
 
-  v12 = [v11 passes];
-  v13 = [v12 lastObject];
+  passes3 = [v11 passes];
+  lastObject = [passes3 lastObject];
 
   [v11 elapsedTimeForPhase:0];
   v15 = v14 * 1000.0;
-  v16 = [v13 url];
-  v17 = [v16 lastPathComponent];
-  v18 = TUIStatsReasonToString([v13 reason]);
-  v19 = [NSString stringWithFormat:@"%.3fms - %@ - %@\n\n", *&v15, v17, v18];
+  v16 = [lastObject url];
+  lastPathComponent = [v16 lastPathComponent];
+  v18 = TUIStatsReasonToString([lastObject reason]);
+  v19 = [NSString stringWithFormat:@"%.3fms - %@ - %@\n\n", *&v15, lastPathComponent, v18];
   [v7 setHeader:v19];
 
   [v7 setTimingProvider:0];
@@ -312,20 +312,20 @@ LABEL_39:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  if ([v11 section] == &dword_0 + 1)
+  pathCopy = path;
+  if ([pathCopy section] == &dword_0 + 1)
   {
-    v5 = [(TUIStatsFeed *)self->_feed currentEntriesUID];
-    v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v11, "row")}];
+    currentEntriesUID = [(TUIStatsFeed *)self->_feed currentEntriesUID];
+    v6 = [currentEntriesUID objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v7 = [(TUIStatsFeed *)self->_feed entries];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    entries = [(TUIStatsFeed *)self->_feed entries];
+    v8 = [entries objectForKeyedSubscript:v6];
     v9 = [TUIStatsViewControllerFactory newViewControllerWithFeedEntry:v8];
 
-    v10 = [(TUIStatsFeedViewController *)self navigationController];
-    [v10 pushViewController:v9 animated:1];
+    navigationController = [(TUIStatsFeedViewController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
   }
 }
 

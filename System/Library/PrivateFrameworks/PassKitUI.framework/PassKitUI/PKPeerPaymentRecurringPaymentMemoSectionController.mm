@@ -1,47 +1,47 @@
 @interface PKPeerPaymentRecurringPaymentMemoSectionController
 - (PKPeerPaymentRecurringPaymentMemo)recurringPaymentMemo;
-- (PKPeerPaymentRecurringPaymentMemoSectionController)initWithRecurringPaymentMemo:(id)a3 contact:(id)a4 delegate:(id)a5;
-- (id)cellRegistrationForItem:(id)a3;
+- (PKPeerPaymentRecurringPaymentMemoSectionController)initWithRecurringPaymentMemo:(id)memo contact:(id)contact delegate:(id)delegate;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_reloadItemWithMemo:(id)a3 animated:(BOOL)a4;
-- (void)_resetItemWithMemo:(id)a3 suggestedText:(id)a4;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_reloadItemWithMemo:(id)memo animated:(BOOL)animated;
+- (void)_resetItemWithMemo:(id)memo suggestedText:(id)text;
 - (void)memoIconWasTapped;
-- (void)memoTextWasUpdated:(id)a3;
+- (void)memoTextWasUpdated:(id)updated;
 - (void)requestBecomeFirstResponder;
-- (void)setIsEditable:(BOOL)a3;
-- (void)setMemoTextColor:(id)a3;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
-- (void)setRecurringPaymentMemo:(id)a3;
-- (void)setRecurringPaymentMemoWithTextSuggestion:(id)a3;
+- (void)setIsEditable:(BOOL)editable;
+- (void)setMemoTextColor:(id)color;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
+- (void)setRecurringPaymentMemo:(id)memo;
+- (void)setRecurringPaymentMemoWithTextSuggestion:(id)suggestion;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentMemoSectionController
 
-- (PKPeerPaymentRecurringPaymentMemoSectionController)initWithRecurringPaymentMemo:(id)a3 contact:(id)a4 delegate:(id)a5
+- (PKPeerPaymentRecurringPaymentMemoSectionController)initWithRecurringPaymentMemo:(id)memo contact:(id)contact delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memoCopy = memo;
+  contactCopy = contact;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = PKPeerPaymentRecurringPaymentMemoSectionController;
   v11 = [(PKPeerPaymentRecurringPaymentMemoSectionController *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
-    v13 = [MEMORY[0x1E69DC888] labelColor];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     memoTextColor = v12->_memoTextColor;
-    v12->_memoTextColor = v13;
+    v12->_memoTextColor = labelColor;
 
     v15 = PKLocalizedPeerPaymentRecurringString(&cfstr_DetailsMemoSec.isa);
     [(PKDynamicListSectionController *)v12 setHeaderText:v15];
 
-    v16 = [v9 givenName];
-    if ([v16 length])
+    givenName = [contactCopy givenName];
+    if ([givenName length])
     {
-      PKLocalizedPeerPaymentRecurringString(&cfstr_DetailsMemoSec_0.isa, &stru_1F3BD5BF0.isa, v16);
+      PKLocalizedPeerPaymentRecurringString(&cfstr_DetailsMemoSec_0.isa, &stru_1F3BD5BF0.isa, givenName);
     }
 
     else
@@ -51,28 +51,28 @@
     v17 = ;
     [(PKDynamicListSectionController *)v12 setFooterText:v17];
 
-    if (!v8)
+    if (!memoCopy)
     {
-      v8 = objc_alloc_init(MEMORY[0x1E69B8FE0]);
+      memoCopy = objc_alloc_init(MEMORY[0x1E69B8FE0]);
     }
 
-    v18 = [v8 copy];
+    v18 = [memoCopy copy];
     [(PKPeerPaymentRecurringPaymentMemoSectionController *)v12 _reloadItemWithMemo:v18 animated:0];
   }
 
   return v12;
 }
 
-- (void)_resetItemWithMemo:(id)a3 suggestedText:(id)a4
+- (void)_resetItemWithMemo:(id)memo suggestedText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  memoCopy = memo;
   v8 = [[PKPeerPaymentRecurringPaymentMemoRowItem alloc] initWithIdentifier:@"memo" isEditable:self->_isEditable titleColor:self->_memoTextColor];
   item = self->_item;
   self->_item = v8;
 
-  [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item setMemo:v7];
-  [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item setSuggestedText:v6];
+  [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item setMemo:memoCopy];
+  [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item setSuggestedText:textCopy];
 
   v10 = self->_item;
   overrideUserInterfaceStyle = self->_overrideUserInterfaceStyle;
@@ -80,83 +80,83 @@
   [(PKPeerPaymentRecurringPaymentMemoRowItem *)v10 setOverrideUserInterfaceStyle:overrideUserInterfaceStyle];
 }
 
-- (void)_reloadItemWithMemo:(id)a3 animated:(BOOL)a4
+- (void)_reloadItemWithMemo:(id)memo animated:(BOOL)animated
 {
-  v4 = a4;
-  [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _resetItemWithMemo:a3 suggestedText:0];
+  animatedCopy = animated;
+  [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _resetItemWithMemo:memo suggestedText:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained reloadDataAnimated:v4];
+  [WeakRetained reloadDataAnimated:animatedCopy];
 }
 
-- (void)setRecurringPaymentMemo:(id)a3
+- (void)setRecurringPaymentMemo:(id)memo
 {
-  v4 = [a3 copy];
+  v4 = [memo copy];
   [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _resetItemWithMemo:v4 suggestedText:0];
 }
 
-- (void)setRecurringPaymentMemoWithTextSuggestion:(id)a3
+- (void)setRecurringPaymentMemoWithTextSuggestion:(id)suggestion
 {
-  v7 = [a3 copy];
-  v4 = [v7 text];
-  v5 = [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item memo];
-  v6 = [v5 text];
-  [v7 setText:v6];
+  v7 = [suggestion copy];
+  text = [v7 text];
+  memo = [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item memo];
+  text2 = [memo text];
+  [v7 setText:text2];
 
-  [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _resetItemWithMemo:v7 suggestedText:v4];
+  [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _resetItemWithMemo:v7 suggestedText:text];
 }
 
 - (PKPeerPaymentRecurringPaymentMemo)recurringPaymentMemo
 {
-  v3 = [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item memo];
-  v4 = [v3 copy];
+  memo = [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item memo];
+  v4 = [memo copy];
 
-  v5 = [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item suggestedText];
-  v6 = [v4 text];
-  if ([v6 length])
+  suggestedText = [(PKPeerPaymentRecurringPaymentMemoRowItem *)self->_item suggestedText];
+  text = [v4 text];
+  if ([text length])
   {
   }
 
   else
   {
-    v7 = [v5 length];
+    v7 = [suggestedText length];
 
     if (v7)
     {
-      [v4 setText:v5];
+      [v4 setText:suggestedText];
     }
   }
 
   return v4;
 }
 
-- (void)setIsEditable:(BOOL)a3
+- (void)setIsEditable:(BOOL)editable
 {
-  if (self->_isEditable != a3)
+  if (self->_isEditable != editable)
   {
-    self->_isEditable = a3;
-    v5 = [(PKPeerPaymentRecurringPaymentMemoSectionController *)self recurringPaymentMemo];
-    [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _reloadItemWithMemo:v5 animated:1];
+    self->_isEditable = editable;
+    recurringPaymentMemo = [(PKPeerPaymentRecurringPaymentMemoSectionController *)self recurringPaymentMemo];
+    [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _reloadItemWithMemo:recurringPaymentMemo animated:1];
   }
 }
 
-- (void)setMemoTextColor:(id)a3
+- (void)setMemoTextColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_memoTextColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_memoTextColor, a3);
-    v5 = [(PKPeerPaymentRecurringPaymentMemoSectionController *)self recurringPaymentMemo];
-    [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _reloadItemWithMemo:v5 animated:1];
+    objc_storeStrong(&self->_memoTextColor, color);
+    recurringPaymentMemo = [(PKPeerPaymentRecurringPaymentMemoSectionController *)self recurringPaymentMemo];
+    [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _reloadItemWithMemo:recurringPaymentMemo animated:1];
   }
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
-  if (self->_overrideUserInterfaceStyle != a3)
+  if (self->_overrideUserInterfaceStyle != style)
   {
-    self->_overrideUserInterfaceStyle = a3;
-    v5 = [(PKPeerPaymentRecurringPaymentMemoSectionController *)self recurringPaymentMemo];
-    [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _reloadItemWithMemo:v5 animated:1];
+    self->_overrideUserInterfaceStyle = style;
+    recurringPaymentMemo = [(PKPeerPaymentRecurringPaymentMemoSectionController *)self recurringPaymentMemo];
+    [(PKPeerPaymentRecurringPaymentMemoSectionController *)self _reloadItemWithMemo:recurringPaymentMemo animated:1];
   }
 }
 
@@ -175,7 +175,7 @@
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
@@ -186,7 +186,7 @@
   return v5;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
   v4 = MEMORY[0x1E69DC800];
   v5 = objc_opt_class();
@@ -207,23 +207,23 @@ void __78__PKPeerPaymentRecurringPaymentMemoSectionController_cellRegistrationFo
   [v6 setDelegate:*(a1 + 32)];
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:2];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
-  v8 = [(PKDynamicListSectionController *)self headerText];
-  if (v8)
+  headerText = [(PKDynamicListSectionController *)self headerText];
+  if (headerText)
   {
   }
 
   else
   {
-    v9 = [(PKDynamicListSectionController *)self attributedHeaderText];
+    attributedHeaderText = [(PKDynamicListSectionController *)self attributedHeaderText];
 
-    if (!v9)
+    if (!attributedHeaderText)
     {
       goto LABEL_5;
     }
@@ -231,16 +231,16 @@ void __78__PKPeerPaymentRecurringPaymentMemoSectionController_cellRegistrationFo
 
   [v6 setHeaderMode:1];
 LABEL_5:
-  v10 = [(PKDynamicListSectionController *)self footerText];
-  if (v10)
+  footerText = [(PKDynamicListSectionController *)self footerText];
+  if (footerText)
   {
   }
 
   else
   {
-    v11 = [(PKDynamicListSectionController *)self attributedFooterText];
+    attributedFooterText = [(PKDynamicListSectionController *)self attributedFooterText];
 
-    if (!v11)
+    if (!attributedFooterText)
     {
       goto LABEL_9;
     }
@@ -248,7 +248,7 @@ LABEL_5:
 
   [v6 setFooterMode:1];
 LABEL_9:
-  v12 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  v12 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:environmentCopy];
 
   return v12;
 }
@@ -259,12 +259,12 @@ LABEL_9:
   [WeakRetained memoIconWasTapped];
 }
 
-- (void)memoTextWasUpdated:(id)a3
+- (void)memoTextWasUpdated:(id)updated
 {
   item = self->_item;
-  v4 = a3;
-  v5 = [(PKPeerPaymentRecurringPaymentMemoRowItem *)item memo];
-  [v5 setText:v4];
+  updatedCopy = updated;
+  memo = [(PKPeerPaymentRecurringPaymentMemoRowItem *)item memo];
+  [memo setText:updatedCopy];
 }
 
 @end

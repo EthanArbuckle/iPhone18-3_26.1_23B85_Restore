@@ -1,24 +1,24 @@
 @interface CDPUIInfoViewController
-- (CDPUIInfoViewController)initWithViewModel:(id)a3;
-- (void)_handleButton1Action:(id)a3;
-- (void)_handleButton2Action:(id)a3;
+- (CDPUIInfoViewController)initWithViewModel:(id)model;
+- (void)_handleButton1Action:(id)action;
+- (void)_handleButton2Action:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation CDPUIInfoViewController
 
-- (CDPUIInfoViewController)initWithViewModel:(id)a3
+- (CDPUIInfoViewController)initWithViewModel:(id)model
 {
-  v5 = a3;
-  v6 = [v5 title];
-  v7 = [v5 message];
+  modelCopy = model;
+  title = [modelCopy title];
+  message = [modelCopy message];
   v10.receiver = self;
   v10.super_class = CDPUIInfoViewController;
-  v8 = [(CDPUIInfoViewController *)&v10 initWithTitle:v6 detailText:v7 icon:0 contentLayout:3];
+  v8 = [(CDPUIInfoViewController *)&v10 initWithTitle:title detailText:message icon:0 contentLayout:3];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_viewModel, a3);
+    objc_storeStrong(&v8->_viewModel, model);
   }
 
   return v8;
@@ -29,53 +29,53 @@
   v12.receiver = self;
   v12.super_class = CDPUIInfoViewController;
   [(OBBaseWelcomeController *)&v12 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
-  [v3 addTarget:self action:sel__handleButton1Action_ forControlEvents:64];
-  v4 = [(CDPUIInfoViewModel *)self->_viewModel option1];
-  v5 = [v4 title];
-  [v3 setTitle:v5 forState:0];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton addTarget:self action:sel__handleButton1Action_ forControlEvents:64];
+  option1 = [(CDPUIInfoViewModel *)self->_viewModel option1];
+  title = [option1 title];
+  [boldButton setTitle:title forState:0];
 
-  v6 = [(CDPUIInfoViewController *)self buttonTray];
-  [v6 addButton:v3];
+  buttonTray = [(CDPUIInfoViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v7 = [(CDPUIInfoViewModel *)self->_viewModel option2];
+  option2 = [(CDPUIInfoViewModel *)self->_viewModel option2];
 
-  if (v7)
+  if (option2)
   {
-    v8 = [MEMORY[0x277D37650] linkButton];
-    [v8 addTarget:self action:sel__handleButton2Action_ forControlEvents:64];
-    v9 = [(CDPUIInfoViewModel *)self->_viewModel option2];
-    v10 = [v9 title];
-    [v8 setTitle:v10 forState:0];
+    linkButton = [MEMORY[0x277D37650] linkButton];
+    [linkButton addTarget:self action:sel__handleButton2Action_ forControlEvents:64];
+    option22 = [(CDPUIInfoViewModel *)self->_viewModel option2];
+    title2 = [option22 title];
+    [linkButton setTitle:title2 forState:0];
 
-    v11 = [(CDPUIInfoViewController *)self buttonTray];
-    [v11 addButton:v8];
+    buttonTray2 = [(CDPUIInfoViewController *)self buttonTray];
+    [buttonTray2 addButton:linkButton];
   }
 }
 
-- (void)_handleButton1Action:(id)a3
+- (void)_handleButton1Action:(id)action
 {
-  v4 = [(CDPUIInfoViewModel *)self->_viewModel option1];
-  v5 = [v4 escapeAction];
+  option1 = [(CDPUIInfoViewModel *)self->_viewModel option1];
+  escapeAction = [option1 escapeAction];
 
-  if (v5)
+  if (escapeAction)
   {
-    v7 = [(CDPUIInfoViewModel *)self->_viewModel option1];
-    v6 = [v7 escapeAction];
-    v6[2]();
+    option12 = [(CDPUIInfoViewModel *)self->_viewModel option1];
+    escapeAction2 = [option12 escapeAction];
+    escapeAction2[2]();
   }
 }
 
-- (void)_handleButton2Action:(id)a3
+- (void)_handleButton2Action:(id)action
 {
-  v4 = [(CDPUIInfoViewModel *)self->_viewModel option2];
-  v5 = [v4 escapeAction];
+  option2 = [(CDPUIInfoViewModel *)self->_viewModel option2];
+  escapeAction = [option2 escapeAction];
 
-  if (v5)
+  if (escapeAction)
   {
-    v7 = [(CDPUIInfoViewModel *)self->_viewModel option2];
-    v6 = [v7 escapeAction];
-    v6[2]();
+    option22 = [(CDPUIInfoViewModel *)self->_viewModel option2];
+    escapeAction2 = [option22 escapeAction];
+    escapeAction2[2]();
   }
 }
 

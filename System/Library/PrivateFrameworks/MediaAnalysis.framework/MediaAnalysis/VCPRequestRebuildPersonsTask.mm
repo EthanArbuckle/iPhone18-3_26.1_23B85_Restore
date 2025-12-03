@@ -1,27 +1,27 @@
 @interface VCPRequestRebuildPersonsTask
-+ (id)taskWithLocalIdentifiers:(id)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6;
++ (id)taskWithLocalIdentifiers:(id)identifiers andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (BOOL)isCanceled;
-- (VCPRequestRebuildPersonsTask)initWithLocalIdentifiers:(id)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6;
+- (VCPRequestRebuildPersonsTask)initWithLocalIdentifiers:(id)identifiers andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPRequestRebuildPersonsTask
 
-- (VCPRequestRebuildPersonsTask)initWithLocalIdentifiers:(id)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6
+- (VCPRequestRebuildPersonsTask)initWithLocalIdentifiers:(id)identifiers andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  replyCopy = reply;
   v18.receiver = self;
   v18.super_class = VCPRequestRebuildPersonsTask;
   v13 = [(VCPRequestRebuildPersonsTask *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_personLocalIdentifiers, a3);
-    objc_storeStrong(&v14->_photoLibraryURL, a4);
-    v15 = objc_retainBlock(v12);
+    objc_storeStrong(&v13->_personLocalIdentifiers, identifiers);
+    objc_storeStrong(&v14->_photoLibraryURL, l);
+    v15 = objc_retainBlock(replyCopy);
     reply = v14->_reply;
     v14->_reply = v15;
   }
@@ -29,13 +29,13 @@
   return v14;
 }
 
-+ (id)taskWithLocalIdentifiers:(id)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6
++ (id)taskWithLocalIdentifiers:(id)identifiers andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithLocalIdentifiers:v9 andPhotoLibraryURL:v10 andProgressHandler:v11 andReply:v12];
+  identifiersCopy = identifiers;
+  lCopy = l;
+  handlerCopy = handler;
+  replyCopy = reply;
+  v13 = [objc_alloc(objc_opt_class()) initWithLocalIdentifiers:identifiersCopy andPhotoLibraryURL:lCopy andProgressHandler:handlerCopy andReply:replyCopy];
 
   return v13;
 }

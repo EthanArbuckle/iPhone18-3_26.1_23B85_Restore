@@ -1,13 +1,13 @@
 @interface SGREMaterial
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)functionConstantInputs;
 - (NSData)SHA512Hash;
 - (NSDictionary)textures;
 - (NSString)debugHash;
 - (NSString)name;
 - (SGREMaterial)init;
-- (void)setFunctionConstantInputs:(id)a3;
-- (void)setTextures:(id)a3;
+- (void)setFunctionConstantInputs:(id)inputs;
+- (void)setTextures:(id)textures;
 @end
 
 @implementation SGREMaterial
@@ -35,7 +35,7 @@
   return v5.super.isa;
 }
 
-- (void)setFunctionConstantInputs:(id)a3
+- (void)setFunctionConstantInputs:(id)inputs
 {
   type metadata accessor for SGInput();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -56,7 +56,7 @@
   return v5.super.isa;
 }
 
-- (void)setTextures:(id)a3
+- (void)setTextures:(id)textures
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___SGREMaterial_textures;
@@ -74,7 +74,7 @@
   boxed_opaque_existential_0 = __swift_allocate_boxed_opaque_existential_0(v11);
   (*(*(v4 - 8) + 16))(boxed_opaque_existential_0, self + v3, v4);
   __swift_project_boxed_opaque_existential_1(v11, v12);
-  v6 = self;
+  selfCopy = self;
   dispatch thunk of ContiguousBytes.withUnsafeBytes<A>(_:)();
   __swift_destroy_boxed_opaque_existential_1Tm(v11);
   v7.super.isa = Data._bridgeToObjectiveC()().super.isa;
@@ -85,7 +85,7 @@
 
 - (NSString)debugHash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SHA512Digest.description.getter();
   v5 = specialized BidirectionalCollection.suffix(_:)(0x10uLL, v3, v4);
   v7 = v6;
@@ -120,11 +120,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -133,7 +133,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SGREMaterial.isEqual(_:)(v8);

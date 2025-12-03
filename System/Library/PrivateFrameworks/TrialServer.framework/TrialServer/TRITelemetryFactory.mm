@@ -1,32 +1,32 @@
 @interface TRITelemetryFactory
-+ (id)containerOriginTelemetryForTaskAttribution:(id)a3;
++ (id)containerOriginTelemetryForTaskAttribution:(id)attribution;
 @end
 
 @implementation TRITelemetryFactory
 
-+ (id)containerOriginTelemetryForTaskAttribution:(id)a3
++ (id)containerOriginTelemetryForTaskAttribution:(id)attribution
 {
-  v5 = a3;
-  if (!v5)
+  attributionCopy = attribution;
+  if (!attributionCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"TRITelemetryFactory.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITelemetryFactory.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
   }
 
   v6 = objc_opt_new();
-  v7 = [v5 teamIdentifier];
+  teamIdentifier = [attributionCopy teamIdentifier];
 
-  if (v7)
+  if (teamIdentifier)
   {
-    v8 = [v5 teamIdentifier];
-    [v6 setClientTeamId:v8];
+    teamIdentifier2 = [attributionCopy teamIdentifier];
+    [v6 setClientTeamId:teamIdentifier2];
   }
 
   v9 = objc_opt_new();
-  v10 = [v5 triCloudKitContainer];
-  if (v10 <= 2)
+  triCloudKitContainer = [attributionCopy triCloudKitContainer];
+  if (triCloudKitContainer <= 2)
   {
-    [v9 setCkContainer:v10];
+    [v9 setCkContainer:triCloudKitContainer];
   }
 
   v11 = +[TRICKServerEnvironmentReader currentEnvironment];

@@ -76,7 +76,7 @@
 
 - (BOOL)clsFaceInformationArePrefetched
 {
-  v1 = objc_getAssociatedObject(a1, "kCLSFaceInformationSummaryString");
+  v1 = objc_getAssociatedObject(self, "kCLSFaceInformationSummaryString");
   v2 = v1 != 0;
 
   return v2;
@@ -84,7 +84,7 @@
 
 - (BOOL)clsSceneClassificationsArePrefetched
 {
-  v1 = objc_getAssociatedObject(a1, "clsSceneClassifications");
+  v1 = objc_getAssociatedObject(self, "clsSceneClassifications");
   v2 = v1 != 0;
 
   return v2;
@@ -92,7 +92,7 @@
 
 - (BOOL)clsPeopleCountIsPrefetched
 {
-  v1 = objc_getAssociatedObject(a1, "clsPeopleCount");
+  v1 = objc_getAssociatedObject(self, "clsPeopleCount");
   v2 = v1 != 0;
 
   return v2;
@@ -100,7 +100,7 @@
 
 - (BOOL)clsPersonLocalIdentifiersArePrefetched
 {
-  v1 = objc_getAssociatedObject(a1, "clsPersonLocalIdentifiers");
+  v1 = objc_getAssociatedObject(self, "clsPersonLocalIdentifiers");
   v2 = v1 != 0;
 
   return v2;
@@ -110,29 +110,29 @@
 {
   v10 = a4;
   v11 = a5;
-  v12 = [a1 curationModel];
-  v13 = v12;
+  curationModel = [self curationModel];
+  v13 = curationModel;
   if (a3)
   {
-    v14 = [v11 userFeedbackCalculator];
-    v15 = [v13 isUtilityForMemoriesWithAsset:a1 userFeedbackCalculator:v14 blockSocialMediaImportedAssets:a6];
+    userFeedbackCalculator = [v11 userFeedbackCalculator];
+    v15 = [v13 isUtilityForMemoriesWithAsset:self userFeedbackCalculator:userFeedbackCalculator blockSocialMediaImportedAssets:a6];
   }
 
   else
   {
-    v15 = [v12 isUtilityWithAsset:a1];
+    v15 = [curationModel isUtilityWithAsset:self];
   }
 
-  v16 = v15 ^ [a1 clsIsUtility];
+  v16 = v15 ^ [self clsIsUtility];
   if (v16 == 1)
   {
-    [a1 clsCacheIsUtility:v15];
-    [a1 scoreInContext:v10];
+    [self clsCacheIsUtility:v15];
+    [self scoreInContext:v10];
     v18 = v17;
-    [a1 curationScore];
+    [self curationScore];
     if (v18 != v19)
     {
-      [a1 cacheCurationScore:v18];
+      [self cacheCurationScore:v18];
     }
   }
 
@@ -141,18 +141,18 @@
 
 - (uint64_t)clsIsTragicFailure
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isTragicFailureWithImageAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isTragicFailureWithImageAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsHasCustomPlaybackVariation
 {
-  result = [a1 isSubtype:8];
+  result = [self isSubtype:8];
   if (result)
   {
-    return [a1 playbackVariation] != 0;
+    return [self playbackVariation] != 0;
   }
 
   return result;
@@ -160,56 +160,56 @@
 
 - (uint64_t)clsInterestingAudioClassifications
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 interestingAudioClassificationsWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel interestingAudioClassificationsWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsHasInterestingAudioClassification
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 hasInterestingAudioClassificationWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel hasInterestingAudioClassificationWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsIsInterestingHDR
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isInterestingHDRWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isInterestingHDRWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsIsInterestingSDOF
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isInterestingSDOFWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isInterestingSDOFWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsIsInterestingPanorama
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isInterestingPanoramaWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isInterestingPanoramaWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsIsInterestingLivePhoto
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isInterestingLivePhotoWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isInterestingLivePhotoWithAsset:self];
 
   return v3;
 }
 
 - (double)clsAutoplaySuggestionScore
 {
-  v1 = [a1 mediaAnalysisProperties];
-  [v1 autoplaySuggestionScore];
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  [mediaAnalysisProperties autoplaySuggestionScore];
   v3 = v2;
 
   return v3;
@@ -217,8 +217,8 @@
 
 - (uint64_t)clsIsInterestingVideo
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isInterestingVideoWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isInterestingVideoWithAsset:self];
 
   return v3;
 }
@@ -226,8 +226,8 @@
 - (double)scoreInContext:()Curation
 {
   v4 = a3;
-  v5 = [a1 curationModel];
-  [v5 scoreWithAsset:a1 inContext:v4];
+  curationModel = [self curationModel];
+  [curationModel scoreWithAsset:self inContext:v4];
   v7 = v6;
 
   return v7;
@@ -236,12 +236,12 @@
 - (void)cacheCurationScore:()Curation
 {
   v2 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-  objc_setAssociatedObject(a1, "clsCurationScore", v2, 1);
+  objc_setAssociatedObject(self, "clsCurationScore", v2, 1);
 }
 
 - (double)clsContentScoreRecomputingIfNeeded:()Curation
 {
-  v5 = objc_getAssociatedObject(a1, "clsCurationScore");
+  v5 = objc_getAssociatedObject(self, "clsCurationScore");
   v6 = v5;
   if (v5)
   {
@@ -251,15 +251,15 @@
 
   else
   {
-    [a1 curationScore];
+    [self curationScore];
     v8 = v9;
     if (v9 == 0.0 && a3 != 0)
     {
-      v11 = [a1 curationModel];
-      [v11 scoreWithAsset:a1 inContext:0];
+      curationModel = [self curationModel];
+      [curationModel scoreWithAsset:self inContext:0];
       v8 = v12;
 
-      [a1 cacheCurationScore:v8];
+      [self cacheCurationScore:v8];
     }
   }
 
@@ -268,13 +268,13 @@
 
 - (double)cropScoreForTargetAspectRatio:()Curation forFaces:
 {
-  [a1 faceAreaMinX];
+  [self faceAreaMinX];
   v7 = v6;
-  [a1 faceAreaMinY];
+  [self faceAreaMinY];
   v9 = v8;
-  [a1 faceAreaMaxX];
+  [self faceAreaMaxX];
   v11 = v10;
-  [a1 faceAreaMaxY];
+  [self faceAreaMaxY];
   v12 = v11 - v7;
   v14 = v13 - v9;
   v32 = 0.0;
@@ -284,7 +284,7 @@
   v18 = v13 - v9;
   if ((a4 & 1) == 0)
   {
-    [a1 acceptableCropRect];
+    [self acceptableCropRect];
     v15 = v19;
     v16 = v20;
     v17 = v21;
@@ -292,43 +292,43 @@
   }
 
   v23 = MEMORY[0x1E69C06A0];
-  v24 = [a1 pixelWidth];
-  v25 = [a1 pixelHeight];
-  [a1 preferredCropRect];
-  [v23 bestCropRectV2ForAspectRatio:v24 withFocusRegion:v25 sourcePixelWidth:&v32 sourcePixelHeight:a2 sourcePreferredCropRectNormalized:0.0 sourceAcceptableCropRectNormalized:0.0 sourceFaceAreaRectNormalized:0.0 outputCropScore:{0.0, v26, v27, v28, v29, *&v15, *&v16, *&v17, *&v18, *&v7, 1.0 - (v9 + v14), *&v12, *&v14}];
+  pixelWidth = [self pixelWidth];
+  pixelHeight = [self pixelHeight];
+  [self preferredCropRect];
+  [v23 bestCropRectV2ForAspectRatio:pixelWidth withFocusRegion:pixelHeight sourcePixelWidth:&v32 sourcePixelHeight:a2 sourcePreferredCropRectNormalized:0.0 sourceAcceptableCropRectNormalized:0.0 sourceFaceAreaRectNormalized:0.0 outputCropScore:{0.0, v26, v27, v28, v29, *&v15, *&v16, *&v17, *&v18, *&v7, 1.0 - (v9 + v14), *&v12, *&v14}];
   return v32;
 }
 
 - (double)clsSquareCropScore
 {
   v2 = 0.0;
-  [a1 suggestedCropForTargetSize:&v2 withFocusRegion:1.0 andOutputCropScore:{1.0, 0.0, 0.0, 0.0, 0.0}];
+  [self suggestedCropForTargetSize:&v2 withFocusRegion:1.0 andOutputCropScore:{1.0, 0.0, 0.0, 0.0, 0.0}];
   return v2;
 }
 
 - (uint64_t)clsHasInterestingScenes
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 hasInterestingScenesWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel hasInterestingScenesWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsHasPoorResolution
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 hasPoorResolutionWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel hasPoorResolutionWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsAvoidIfPossibleAsKeyItemForMemories:()Curation allowGuestAsset:reason:
 {
-  if ((a4 & 1) != 0 || ![a1 clsIsGuestAsset])
+  if ((a4 & 1) != 0 || ![self clsIsGuestAsset])
   {
-    v9 = [a1 curationModel];
-    v10 = v9;
-    if (a3 && [v9 avoidIfPossibleForMemoryKeyAssetWithAsset:a1])
+    curationModel = [self curationModel];
+    v10 = curationModel;
+    if (a3 && [curationModel avoidIfPossibleForMemoryKeyAssetWithAsset:self])
     {
       if (a5)
       {
@@ -341,7 +341,7 @@
     else
     {
       memset(v13, 0, sizeof(v13));
-      v11 = [v10 avoidIfPossibleForKeyAssetWithAsset:a1 statistics:v13];
+      v11 = [v10 avoidIfPossibleForKeyAssetWithAsset:self statistics:v13];
       v8 = v11;
       if (a5 && v11)
       {
@@ -365,47 +365,47 @@
 
 - (uint64_t)clsIsInhabited
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isInhabitedWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isInhabitedWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsIsBlurry
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isBlurryWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isBlurryWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsSimilarityModelVersion
 {
-  v1 = [a1 curationModel];
-  v2 = [v1 similarityModelVersion];
+  curationModel = [self curationModel];
+  similarityModelVersion = [curationModel similarityModelVersion];
 
-  return v2;
+  return similarityModelVersion;
 }
 
 - (id)clsSceneprint
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "clsSceneprint");
+  v2 = objc_getAssociatedObject(self, "clsSceneprint");
   if (!v2)
   {
-    v5 = [a1 sceneprintProperties];
-    v6 = [v5 sceneprint];
+    sceneprintProperties = [self sceneprintProperties];
+    sceneprint = [sceneprintProperties sceneprint];
 
-    if (v6)
+    if (sceneprint)
     {
       v13 = 0;
-      v3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v13];
+      v3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:sceneprint error:&v13];
       v7 = v13;
       v8 = v7;
       if (v3)
       {
 
-        objc_setAssociatedObject(a1, "clsSceneprint", v3, 1);
+        objc_setAssociatedObject(self, "clsSceneprint", v3, 1);
 LABEL_13:
 
         goto LABEL_14;
@@ -413,9 +413,9 @@ LABEL_13:
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v12 = [a1 uuid];
+        uuid = [self uuid];
         *buf = 138412546;
-        v15 = v12;
+        v15 = uuid;
         v16 = 2112;
         v17 = v8;
         _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Error unarchiving sceneprint for asset %@: %@", buf, 0x16u);
@@ -424,23 +424,23 @@ LABEL_13:
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v9 = [a1 uuid];
+      uuid2 = [self uuid];
       *buf = 138412290;
-      v15 = v9;
+      v15 = uuid2;
       _os_log_debug_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Sceneprint not available for asset %@", buf, 0xCu);
     }
 
-    v10 = [MEMORY[0x1E695DFB0] null];
-    objc_setAssociatedObject(a1, "clsSceneprint", v10, 1);
+    null = [MEMORY[0x1E695DFB0] null];
+    objc_setAssociatedObject(self, "clsSceneprint", null, 1);
 
     v3 = 0;
     goto LABEL_13;
   }
 
   v3 = v2;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
-  if (v3 == v4)
+  if (v3 == null2)
   {
 
     v3 = 0;
@@ -454,29 +454,29 @@ LABEL_14:
 - (id)clsSceneClassifications
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "clsSceneClassifications");
-  if (!v2)
+  sceneClassifications = objc_getAssociatedObject(self, "clsSceneClassifications");
+  if (!sceneClassifications)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v4 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v5 = 134218242;
-      v6 = a1;
+      selfCopy = self;
       v7 = 2112;
-      v8 = v4;
+      v8 = localIdentifier;
       _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "clsSceneClassifications not prefetched for asset %p %@", &v5, 0x16u);
     }
 
-    v2 = [a1 sceneClassifications];
+    sceneClassifications = [self sceneClassifications];
   }
 
-  return v2;
+  return sceneClassifications;
 }
 
 - (double)clsFaceScore
 {
-  v1 = [a1 clsFaceInformationSummary];
-  [v1 averageFaceQuality];
+  clsFaceInformationSummary = [self clsFaceInformationSummary];
+  [clsFaceInformationSummary averageFaceQuality];
   v3 = v2;
 
   return v3;
@@ -484,28 +484,28 @@ LABEL_14:
 
 - (uint64_t)clsVideoFaceCount
 {
-  v2 = [a1 mediaAnalysisProperties];
-  if (v2)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  if (mediaAnalysisProperties)
   {
-    v3 = [a1 mediaAnalysisProperties];
-    v4 = [v3 faceCount];
+    mediaAnalysisProperties2 = [self mediaAnalysisProperties];
+    faceCount = [mediaAnalysisProperties2 faceCount];
   }
 
   else
   {
-    v4 = 0;
+    faceCount = 0;
   }
 
-  return v4;
+  return faceCount;
 }
 
 - (double)clsActivityScore
 {
-  v2 = [a1 mediaAnalysisProperties];
-  if (v2)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  if (mediaAnalysisProperties)
   {
-    v3 = [a1 mediaAnalysisProperties];
-    [v3 activityScore];
+    mediaAnalysisProperties2 = [self mediaAnalysisProperties];
+    [mediaAnalysisProperties2 activityScore];
     v5 = v4;
   }
 
@@ -519,11 +519,11 @@ LABEL_14:
 
 - (double)clsVideoScore
 {
-  v2 = [a1 mediaAnalysisProperties];
-  if (v2)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  if (mediaAnalysisProperties)
   {
-    v3 = [a1 mediaAnalysisProperties];
-    [v3 videoScore];
+    mediaAnalysisProperties2 = [self mediaAnalysisProperties];
+    [mediaAnalysisProperties2 videoScore];
     v5 = v4;
   }
 
@@ -537,11 +537,11 @@ LABEL_14:
 
 - (double)clsSharpnessScore
 {
-  v2 = [a1 mediaAnalysisProperties];
-  if (v2)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  if (mediaAnalysisProperties)
   {
-    v3 = [a1 mediaAnalysisProperties];
-    [v3 blurrinessScore];
+    mediaAnalysisProperties2 = [self mediaAnalysisProperties];
+    [mediaAnalysisProperties2 blurrinessScore];
     v5 = v4;
   }
 
@@ -555,11 +555,11 @@ LABEL_14:
 
 - (double)clsWallpaperScore
 {
-  v2 = [a1 mediaAnalysisProperties];
-  if (v2)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  if (mediaAnalysisProperties)
   {
-    v3 = [a1 mediaAnalysisProperties];
-    [v3 wallpaperScore];
+    mediaAnalysisProperties2 = [self mediaAnalysisProperties];
+    [mediaAnalysisProperties2 wallpaperScore];
     v5 = v4;
   }
 
@@ -573,11 +573,11 @@ LABEL_14:
 
 - (double)clsExposureScore
 {
-  v2 = [a1 mediaAnalysisProperties];
-  if (v2)
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  if (mediaAnalysisProperties)
   {
-    v3 = [a1 mediaAnalysisProperties];
-    [v3 exposureScore];
+    mediaAnalysisProperties2 = [self mediaAnalysisProperties];
+    [mediaAnalysisProperties2 exposureScore];
     v5 = v4;
   }
 
@@ -592,14 +592,14 @@ LABEL_14:
 - (id)clsProcessedSignals
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "kCLSProcessedSignalsString");
+  v2 = objc_getAssociatedObject(self, "kCLSProcessedSignalsString");
   if (!v2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
-    v4 = [a1 localIdentifier];
+    localIdentifier = [self localIdentifier];
     v5 = 134218242;
-    v6 = a1;
+    selfCopy = self;
     v7 = 2112;
-    v8 = v4;
+    v8 = localIdentifier;
     _os_log_fault_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "processedSignals not prefetched for asset %p %@", &v5, 0x16u);
   }
 
@@ -609,14 +609,14 @@ LABEL_14:
 - (id)clsFaceInformationSummary
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "kCLSFaceInformationSummaryString");
+  v2 = objc_getAssociatedObject(self, "kCLSFaceInformationSummaryString");
   if (!v2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
-    v4 = [a1 localIdentifier];
+    localIdentifier = [self localIdentifier];
     v5 = 134218242;
-    v6 = a1;
+    selfCopy = self;
     v7 = 2112;
-    v8 = v4;
+    v8 = localIdentifier;
     _os_log_fault_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "faceInformationSummary not prefetched for asset %p %@", &v5, 0x16u);
   }
 
@@ -626,46 +626,46 @@ LABEL_14:
 - (uint64_t)clsPeopleCount
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "clsPeopleCount");
+  v2 = objc_getAssociatedObject(self, "clsPeopleCount");
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v7 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v8 = 134218242;
-      v9 = a1;
+      selfCopy = self;
       v10 = 2112;
-      v11 = v7;
+      v11 = localIdentifier;
       _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "clsPeopleCount not prefetched for asset %p %@", &v8, 0x16u);
     }
 
-    v5 = [a1 clsUnprefetchedPersonLocalIdentifiers];
-    v4 = [v5 count];
+    clsUnprefetchedPersonLocalIdentifiers = [self clsUnprefetchedPersonLocalIdentifiers];
+    unsignedIntegerValue = [clsUnprefetchedPersonLocalIdentifiers count];
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)clsUnprefetchedPersonLocalIdentifiers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "clsPersonLocalIdentifiers");
+  v2 = objc_getAssociatedObject(self, "clsPersonLocalIdentifiers");
   if (!v2)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (([a1 clsIsScreenshotOrScreenRecording] & 1) == 0)
+    if (([self clsIsScreenshotOrScreenRecording] & 1) == 0)
     {
-      v4 = [a1 photoLibrary];
-      v5 = [v4 librarySpecificFetchOptions];
+      photoLibrary = [self photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      [v5 setPersonContext:1];
-      v6 = [MEMORY[0x1E6978980] fetchPersonsInAsset:a1 options:v5];
+      [librarySpecificFetchOptions setPersonContext:1];
+      v6 = [MEMORY[0x1E6978980] fetchPersonsInAsset:self options:librarySpecificFetchOptions];
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
@@ -684,10 +684,10 @@ LABEL_14:
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(*(&v16 + 1) + 8 * i) localIdentifier];
-            if (v11)
+            localIdentifier = [*(*(&v16 + 1) + 8 * i) localIdentifier];
+            if (localIdentifier)
             {
-              [v3 addObject:v11];
+              [v3 addObject:localIdentifier];
             }
           }
 
@@ -699,12 +699,12 @@ LABEL_14:
     }
 
     v2 = v3;
-    objc_setAssociatedObject(a1, "clsPersonLocalIdentifiers", v2, 1);
+    objc_setAssociatedObject(self, "clsPersonLocalIdentifiers", v2, 1);
     v12 = MEMORY[0x1E696AD98];
     v13 = [v2 count];
 
     v14 = [v12 numberWithUnsignedInteger:v13];
-    objc_setAssociatedObject(a1, "clsPeopleCount", v14, 1);
+    objc_setAssociatedObject(self, "clsPeopleCount", v14, 1);
   }
 
   return v2;
@@ -713,16 +713,16 @@ LABEL_14:
 - (id)clsConsolidatedPersonLocalIdentifiers
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "clsConsolidatedPersonLocalIdentifiers");
+  v2 = objc_getAssociatedObject(self, "clsConsolidatedPersonLocalIdentifiers");
   if (!v2)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v4 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v5 = 134218242;
-      v6 = a1;
+      selfCopy = self;
       v7 = 2112;
-      v8 = v4;
+      v8 = localIdentifier;
       _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "clsConsolidatedPersonLocalIdentifiers not prefetched for asset %p %@", &v5, 0x16u);
     }
 
@@ -735,50 +735,50 @@ LABEL_14:
 - (void)clsSetPersonLocalIdentifiers:()Curation
 {
   v4 = a3;
-  objc_setAssociatedObject(a1, "clsPersonLocalIdentifiers", v4, 1);
+  objc_setAssociatedObject(self, "clsPersonLocalIdentifiers", v4, 1);
   v5 = MEMORY[0x1E696AD98];
   v6 = [v4 count];
 
   v7 = [v5 numberWithUnsignedInteger:v6];
-  objc_setAssociatedObject(a1, "clsPeopleCount", v7, 1);
+  objc_setAssociatedObject(self, "clsPeopleCount", v7, 1);
 }
 
 - (id)clsPersonLocalIdentifiers
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "clsPersonLocalIdentifiers");
-  if (!v2)
+  clsUnprefetchedPersonLocalIdentifiers = objc_getAssociatedObject(self, "clsPersonLocalIdentifiers");
+  if (!clsUnprefetchedPersonLocalIdentifiers)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v4 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v5 = 134218242;
-      v6 = a1;
+      selfCopy = self;
       v7 = 2112;
-      v8 = v4;
+      v8 = localIdentifier;
       _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "clsPersonLocalIdentifiers not prefetched for asset %p %@", &v5, 0x16u);
     }
 
-    v2 = [a1 clsUnprefetchedPersonLocalIdentifiers];
+    clsUnprefetchedPersonLocalIdentifiers = [self clsUnprefetchedPersonLocalIdentifiers];
   }
 
-  return v2;
+  return clsUnprefetchedPersonLocalIdentifiers;
 }
 
 - (void)clsPetLocalIdentifiers
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, "clsPetLocalIdentifiers");
+  v2 = objc_getAssociatedObject(self, "clsPetLocalIdentifiers");
   v3 = v2;
   if (!v2)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v6 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v7 = 134218242;
-      v8 = a1;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v6;
+      v10 = localIdentifier;
       _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "clsPetLocalIdentifiers not prefetched for asset %p %@", &v7, 0x16u);
     }
 
@@ -792,17 +792,17 @@ LABEL_14:
 
 - (id)clsPersonAndPetLocalIdentifiers
 {
-  v2 = [a1 clsPersonLocalIdentifiers];
-  v3 = [a1 clsPetLocalIdentifiers];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  clsPersonLocalIdentifiers = [self clsPersonLocalIdentifiers];
+  clsPetLocalIdentifiers = [self clsPetLocalIdentifiers];
+  v4 = [clsPersonLocalIdentifiers arrayByAddingObjectsFromArray:clsPetLocalIdentifiers];
 
   return v4;
 }
 
 - (double)pl_gpsHorizontalAccuracy
 {
-  v1 = [a1 coarseLocationProperties];
-  [v1 gpsHorizontalAccuracy];
+  coarseLocationProperties = [self coarseLocationProperties];
+  [coarseLocationProperties gpsHorizontalAccuracy];
   v3 = v2;
 
   return v3;
@@ -810,15 +810,15 @@ LABEL_14:
 
 - (double)pl_coordinate
 {
-  v2 = [a1 location];
+  location = [self location];
 
-  if (!v2)
+  if (!location)
   {
     return *MEMORY[0x1E6985CC0];
   }
 
-  v3 = [a1 location];
-  [v3 coordinate];
+  location2 = [self location];
+  [location2 coordinate];
   v5 = v4;
 
   if (v5 == 0.0)
@@ -832,13 +832,13 @@ LABEL_14:
 - (void)clsCacheIconicSceneScore:()Curation
 {
   v2 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-  objc_setAssociatedObject(a1, "clsIconicSceneScore", v2, 1);
+  objc_setAssociatedObject(self, "clsIconicSceneScore", v2, 1);
 }
 
 - (double)clsIconicSceneScoreWithSceneGeography:()Curation
 {
   v4 = a3;
-  v5 = objc_getAssociatedObject(a1, "clsIconicSceneScore");
+  v5 = objc_getAssociatedObject(self, "clsIconicSceneScore");
   v6 = v5;
   if (v5)
   {
@@ -848,15 +848,15 @@ LABEL_14:
 
   else
   {
-    v9 = [a1 curationModel];
-    v10 = [v9 sceneModel];
-    v11 = [a1 clsSceneClassifications];
-    v12 = [v10 sceneIdentifiersFromSceneClassifications:v11 passingThresholdOfType:1];
+    curationModel = [self curationModel];
+    sceneModel = [curationModel sceneModel];
+    clsSceneClassifications = [self clsSceneClassifications];
+    v12 = [sceneModel sceneIdentifiersFromSceneClassifications:clsSceneClassifications passingThresholdOfType:1];
 
-    [a1 locationCoordinate];
+    [self locationCoordinate];
     [PNAssetCurationUtilities assetIconicScoreForSceneClassificationIdentifiers:"assetIconicScoreForSceneClassificationIdentifiers:assetLatitude:assetLongitude:sceneGeography:maxScenesCount:" assetLatitude:v12 assetLongitude:v4 sceneGeography:5 maxScenesCount:?];
     v8 = v13;
-    [a1 clsCacheIconicSceneScore:?];
+    [self clsCacheIconicSceneScore:?];
   }
 
   return v8;
@@ -864,8 +864,8 @@ LABEL_14:
 
 - (double)clsIconicScore
 {
-  v1 = [a1 iconicScoreProperties];
-  [v1 iconicScore];
+  iconicScoreProperties = [self iconicScoreProperties];
+  [iconicScoreProperties iconicScore];
   v3 = v2;
 
   return v3;
@@ -873,90 +873,90 @@ LABEL_14:
 
 - (uint64_t)clsIsFaceProcessed
 {
-  v2 = [a1 faceAnalysisVersion];
-  if (*MEMORY[0x1E69BE9E8] != v2)
+  faceAnalysisVersion = [self faceAnalysisVersion];
+  if (*MEMORY[0x1E69BE9E8] != faceAnalysisVersion)
   {
     return 1;
   }
 
-  v3 = [a1 faceAdjustmentVersion];
-  v4 = v3 != 0;
+  faceAdjustmentVersion = [self faceAdjustmentVersion];
+  v4 = faceAdjustmentVersion != 0;
 
   return v4;
 }
 
 - (BOOL)clsIsSceneProcessed
 {
-  v1 = [a1 sceneAnalysisProperties];
-  v2 = [v1 sceneAnalysisVersion];
-  v3 = *MEMORY[0x1E69BE9F0] != v2;
+  sceneAnalysisProperties = [self sceneAnalysisProperties];
+  sceneAnalysisVersion = [sceneAnalysisProperties sceneAnalysisVersion];
+  v3 = *MEMORY[0x1E69BE9F0] != sceneAnalysisVersion;
 
   return v3;
 }
 
 - (uint64_t)clsIsAestheticallyPrettyGood
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isAestheticallyPrettyGoodWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isAestheticallyPrettyGoodWithAsset:self];
 
   return v3;
 }
 
 - (uint64_t)clsIsScreenshotOrScreenRecording
 {
-  if ([a1 isSubtype:4])
+  if ([self isSubtype:4])
   {
     return 1;
   }
 
-  return [a1 isScreenRecording];
+  return [self isScreenRecording];
 }
 
 - (void)clsCacheIsUtility:()Curation
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, "clsIsUtility", v2, 1);
+  objc_setAssociatedObject(self, "clsIsUtility", v2, 1);
 }
 
 - (uint64_t)clsIsUtility
 {
-  v2 = objc_getAssociatedObject(a1, "clsIsUtility");
+  v2 = objc_getAssociatedObject(self, "clsIsUtility");
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v5 = [a1 curationModel];
-    v4 = [v5 isUtilityWithAsset:a1];
+    curationModel = [self curationModel];
+    bOOLValue = [curationModel isUtilityWithAsset:self];
 
-    [a1 clsCacheIsUtility:v4];
+    [self clsCacheIsUtility:bOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (uint64_t)clsIsNonMemorable
 {
-  v2 = [a1 curationModel];
-  v3 = [v2 isNonMemorableWithAsset:a1];
+  curationModel = [self curationModel];
+  v3 = [curationModel isNonMemorableWithAsset:self];
 
   return v3;
 }
 
 - (double)clsDuration
 {
-  [a1 duration];
+  [self duration];
   Seconds = v2;
-  if ([a1 isMediaSubtype:8])
+  if ([self isMediaSubtype:8])
   {
-    v4 = [a1 photoIrisProperties];
-    v5 = v4;
-    if (v4)
+    photoIrisProperties = [self photoIrisProperties];
+    v5 = photoIrisProperties;
+    if (photoIrisProperties)
     {
-      [v4 photoIrisVideoDuration];
+      [photoIrisProperties photoIrisVideoDuration];
     }
 
     else
@@ -972,31 +972,31 @@ LABEL_14:
 
 - (uint64_t)clsShareCount
 {
-  v1 = [a1 assetUserActivityProperties];
-  v2 = [v1 shareCount];
+  assetUserActivityProperties = [self assetUserActivityProperties];
+  shareCount = [assetUserActivityProperties shareCount];
 
-  return v2;
+  return shareCount;
 }
 
 - (uint64_t)clsPlayCount
 {
-  v1 = [a1 assetUserActivityProperties];
-  v2 = [v1 playCount];
+  assetUserActivityProperties = [self assetUserActivityProperties];
+  playCount = [assetUserActivityProperties playCount];
 
-  return v2;
+  return playCount;
 }
 
 - (uint64_t)clsViewCount
 {
-  v1 = [a1 assetUserActivityProperties];
-  v2 = [v1 viewCount];
+  assetUserActivityProperties = [self assetUserActivityProperties];
+  viewCount = [assetUserActivityProperties viewCount];
 
-  return v2;
+  return viewCount;
 }
 
 - (BOOL)hasCurationModel
 {
-  v1 = objc_getAssociatedObject(a1, "clsCurationModel");
+  v1 = objc_getAssociatedObject(self, "clsCurationModel");
   v2 = v1 != 0;
 
   return v2;
@@ -1004,7 +1004,7 @@ LABEL_14:
 
 - (id)curationModel
 {
-  v2 = objc_getAssociatedObject(a1, "clsCurationModel");
+  v2 = objc_getAssociatedObject(self, "clsCurationModel");
   if (!v2)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
@@ -1014,9 +1014,9 @@ LABEL_14:
     }
 
     v3 = objc_alloc_init(CLSCurationSession);
-    [a1 fetchPropertySetsIfNeeded];
-    v2 = [(CLSCurationSession *)v3 curationModelForAsset:a1];
-    [a1 setCurationModel:v2];
+    [self fetchPropertySetsIfNeeded];
+    v2 = [(CLSCurationSession *)v3 curationModelForAsset:self];
+    [self setCurationModel:v2];
   }
 
   return v2;
@@ -1027,16 +1027,16 @@ LABEL_14:
   v128 = *MEMORY[0x1E69E9840];
   v7 = a3;
   v83 = a5;
-  v8 = [v7 firstObject];
-  v9 = [v8 photoLibrary];
-  if (!v9)
+  firstObject = [v7 firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  if (!photoLibrary)
   {
     goto LABEL_68;
   }
 
   if ((a4 & 3) != 0)
   {
-    v98 = [v8 clsPeopleCountIsPrefetched] ^ 1;
+    v98 = [firstObject clsPeopleCountIsPrefetched] ^ 1;
     if ((a4 & 0x10) == 0)
     {
       goto LABEL_4;
@@ -1068,35 +1068,35 @@ LABEL_10:
     }
   }
 
-  v10 = [v8 canUseLocationCoordinateForLocation] ^ 1;
+  v10 = [firstObject canUseLocationCoordinateForLocation] ^ 1;
   if ((a4 & 4) == 0)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  v97 = [v8 clsSceneClassificationsArePrefetched] ^ 1;
+  v97 = [firstObject clsSceneClassificationsArePrefetched] ^ 1;
   if ((a4 & 8) == 0)
   {
     goto LABEL_10;
   }
 
 LABEL_6:
-  v99 = [v8 clsFaceInformationArePrefetched] ^ 1;
+  v99 = [firstObject clsFaceInformationArePrefetched] ^ 1;
 LABEL_11:
   if (((v98 | v10 | v97) & 1) != 0 || v99)
   {
     v93 = v10;
     if ((a4 & 0xC) != 0)
     {
-      v11 = [v7 firstObject];
-      v12 = [v11 hasCurationModel];
+      firstObject2 = [v7 firstObject];
+      hasCurationModel = [firstObject2 hasCurationModel];
 
-      if ((v12 & 1) == 0)
+      if ((hasCurationModel & 1) == 0)
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = [v83 curationSession];
-        [v14 prepareAssets:v7];
+        curationSession = [v83 curationSession];
+        [curationSession prepareAssets:v7];
 
         objc_autoreleasePoolPop(v13);
       }
@@ -1105,27 +1105,27 @@ LABEL_11:
     if ((v98 | v99))
     {
       contextb = objc_autoreleasePoolPush();
-      v15 = [v83 personUUIDByMergeCandidateUUID];
-      v16 = [v83 verifiedPersonUUIDs];
-      v17 = [v83 hiddenOrBlockedPersonUUIDs];
+      personUUIDByMergeCandidateUUID = [v83 personUUIDByMergeCandidateUUID];
+      verifiedPersonUUIDs = [v83 verifiedPersonUUIDs];
+      hiddenOrBlockedPersonUUIDs = [v83 hiddenOrBlockedPersonUUIDs];
       v18 = MEMORY[0x1E695DFD8];
-      v19 = [v15 allKeys];
-      v20 = [v18 setWithArray:v19];
+      allKeys = [personUUIDByMergeCandidateUUID allKeys];
+      v20 = [v18 setWithArray:allKeys];
 
       v21 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [v21 unionSet:v16];
-      v80 = v17;
-      [v21 unionSet:v17];
+      [v21 unionSet:verifiedPersonUUIDs];
+      v80 = hiddenOrBlockedPersonUUIDs;
+      [v21 unionSet:hiddenOrBlockedPersonUUIDs];
       [v21 unionSet:v20];
       v74 = v20;
-      v22 = [v16 setByAddingObjectsFromSet:v20];
+      v22 = [verifiedPersonUUIDs setByAddingObjectsFromSet:v20];
       v23 = [v7 _pl_map:&__block_literal_global_309];
-      v24 = [a1 _personUUIDsByAssetUUIDWithAssetUUIDs:v23 personUUIDs:v21 photoLibrary:v9];
-      v81 = v16;
-      v96 = [a1 _filterPersonUUIDs:v16 fromPersonUUIDsByAssetUUID:v24 personUUIDByMergeCandidateUUID:0];
-      v82 = v15;
-      v95 = [a1 _filterPersonUUIDs:v22 fromPersonUUIDsByAssetUUID:v24 personUUIDByMergeCandidateUUID:v15];
-      v94 = [a1 _petUUIDsByAssetUUIDWithAssetUUIDs:v23 photoLibrary:v9];
+      v24 = [self _personUUIDsByAssetUUIDWithAssetUUIDs:v23 personUUIDs:v21 photoLibrary:photoLibrary];
+      v81 = verifiedPersonUUIDs;
+      v96 = [self _filterPersonUUIDs:verifiedPersonUUIDs fromPersonUUIDsByAssetUUID:v24 personUUIDByMergeCandidateUUID:0];
+      v82 = personUUIDByMergeCandidateUUID;
+      v95 = [self _filterPersonUUIDs:v22 fromPersonUUIDsByAssetUUID:v24 personUUIDByMergeCandidateUUID:personUUIDByMergeCandidateUUID];
+      v94 = [self _petUUIDsByAssetUUIDWithAssetUUIDs:v23 photoLibrary:photoLibrary];
 
       objc_autoreleasePoolPop(contextb);
     }
@@ -1141,18 +1141,18 @@ LABEL_11:
       v82 = 0;
     }
 
-    v76 = v9;
+    v76 = photoLibrary;
     v77 = v7;
-    v75 = v8;
+    v75 = firstObject;
     if (v99)
     {
       v104 = objc_autoreleasePoolPush();
-      v25 = [v9 librarySpecificFetchOptions];
-      [v25 setIncludedDetectionTypes:&unk_1F46E5600];
-      [v25 setIncludeTorsoAndFaceDetectionData:1];
-      [v25 setWantsIncrementalChangeDetails:0];
-      v101 = v25;
-      v26 = [MEMORY[0x1E69787C8] fetchFacesGroupedByAssetLocalIdentifierForAssets:v7 options:v25];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+      [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F46E5600];
+      [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+      [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+      v101 = librarySpecificFetchOptions;
+      v26 = [MEMORY[0x1E69787C8] fetchFacesGroupedByAssetLocalIdentifierForAssets:v7 options:librarySpecificFetchOptions];
       v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v119 = 0u;
       v120 = 0u;
@@ -1183,8 +1183,8 @@ LABEL_11:
               {
                 v35 = objc_autoreleasePoolPush();
                 v36 = [v32 objectAtIndexedSubscript:v34];
-                v37 = [v36 uuid];
-                [v27 addObject:v37];
+                uuid = [v36 uuid];
+                [v27 addObject:uuid];
 
                 objc_autoreleasePoolPop(v35);
                 ++v34;
@@ -1246,13 +1246,13 @@ LABEL_11:
           }
 
           v40 = *(*(&v115 + 1) + 8 * v39);
-          v41 = [v40 uuid];
-          v42 = [v96 objectForKeyedSubscript:v41];
-          v43 = [v95 objectForKeyedSubscript:v41];
-          v44 = [v94 objectForKeyedSubscript:v41];
+          uuid2 = [v40 uuid];
+          v42 = [v96 objectForKeyedSubscript:uuid2];
+          v43 = [v95 objectForKeyedSubscript:uuid2];
+          v44 = [v94 objectForKeyedSubscript:uuid2];
           if (v98)
           {
-            [a1 _populateAsset:v40 withPersonUUIDs:v42 consolidatedPersonUUIDs:v43 petUUIDs:v44];
+            [self _populateAsset:v40 withPersonUUIDs:v42 consolidatedPersonUUIDs:v43 petUUIDs:v44];
           }
 
           if (v93)
@@ -1262,14 +1262,14 @@ LABEL_11:
 
           if (v97)
           {
-            v45 = [v40 localIdentifier];
-            v46 = [v84 objectForKeyedSubscript:v45];
+            localIdentifier = [v40 localIdentifier];
+            v46 = [v84 objectForKeyedSubscript:localIdentifier];
 
             v91 = v46;
             if (v46)
             {
               v89 = v44;
-              v90 = v41;
+              v90 = uuid2;
               v102 = v43;
               v105 = v42;
               contexta = v39;
@@ -1277,8 +1277,8 @@ LABEL_11:
               [v40 clsSetSceneClassifications:?];
               v47 = objc_alloc_init(MEMORY[0x1E695DF90]);
               v88 = v40;
-              v48 = [v40 curationModel];
-              v49 = [v48 sceneModel];
+              curationModel = [v40 curationModel];
+              sceneModel = [curationModel sceneModel];
 
               v113 = 0u;
               v114 = 0u;
@@ -1300,13 +1300,13 @@ LABEL_11:
                     }
 
                     v55 = *(*(&v111 + 1) + 8 * j);
-                    v56 = [v55 extendedSceneIdentifier];
-                    if (([v49 isResponsibleForSignalIdentifier:v56] & 1) == 0)
+                    extendedSceneIdentifier = [v55 extendedSceneIdentifier];
+                    if (([sceneModel isResponsibleForSignalIdentifier:extendedSceneIdentifier] & 1) == 0)
                     {
                       v57 = MEMORY[0x1E696AD98];
                       [v55 confidence];
                       v58 = [v57 numberWithDouble:?];
-                      v59 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v56];
+                      v59 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:extendedSceneIdentifier];
                       [v47 setObject:v58 forKeyedSubscript:v59];
                     }
                   }
@@ -1318,14 +1318,14 @@ LABEL_11:
               }
 
               v40 = v88;
-              v60 = [v88 curationModel];
-              v61 = [v60 processedSignalsFromSignals:v47];
+              curationModel2 = [v88 curationModel];
+              v61 = [curationModel2 processedSignalsFromSignals:v47];
 
               [v88 clsSetProcessedSignals:v61];
               v42 = v105;
               v39 = contexta;
               v44 = v89;
-              v41 = v90;
+              uuid2 = v90;
               v43 = v102;
               v62 = v87;
             }
@@ -1344,21 +1344,21 @@ LABEL_11:
           {
             if ([v40 faceAnalysisVersionWasFetched])
             {
-              v64 = [v83 userFeedbackCalculator];
+              userFeedbackCalculator = [v83 userFeedbackCalculator];
               [v40 localIdentifier];
               v65 = contextc = v39;
               [v79 objectForKeyedSubscript:v65];
               v106 = v42;
-              v67 = v66 = v41;
+              v67 = v66 = uuid2;
               [v67 fetchedObjects];
               v68 = v103 = v43;
 
-              v69 = [v40 curationModel];
-              v70 = [v40 clsIdentifier];
-              [v69 faceInformationSummaryWithFaces:v68 detectionTraitsByFaceLocalIdentifier:v78 verifiedPersonUUIDs:v81 hiddenPersonUUIDs:v80 personUUIDByMergeCandidateUUID:v82 userFeedbackCalculator:v64 assetUUID:v70];
+              curationModel3 = [v40 curationModel];
+              clsIdentifier = [v40 clsIdentifier];
+              [curationModel3 faceInformationSummaryWithFaces:v68 detectionTraitsByFaceLocalIdentifier:v78 verifiedPersonUUIDs:v81 hiddenPersonUUIDs:v80 personUUIDByMergeCandidateUUID:v82 userFeedbackCalculator:userFeedbackCalculator assetUUID:clsIdentifier];
               v72 = v71 = v44;
 
-              v41 = v66;
+              uuid2 = v66;
               v42 = v106;
 
               v39 = contextc;
@@ -1373,9 +1373,9 @@ LABEL_61:
 
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
-              v64 = [v40 uuid];
+              userFeedbackCalculator = [v40 uuid];
               *buf = 138412290;
-              v124 = v64;
+              v124 = userFeedbackCalculator;
               goto LABEL_61;
             }
           }
@@ -1393,9 +1393,9 @@ LABEL_63:
       while (v73);
     }
 
-    v9 = v76;
+    photoLibrary = v76;
     v7 = v77;
-    v8 = v75;
+    firstObject = v75;
   }
 
 LABEL_68:
@@ -1425,8 +1425,8 @@ LABEL_68:
         }
 
         v5 = *(*(&v36 + 1) + 8 * i);
-        v6 = [v5 localIdentifier];
-        v7 = [v26 objectForKeyedSubscript:v6];
+        localIdentifier = [v5 localIdentifier];
+        v7 = [v26 objectForKeyedSubscript:localIdentifier];
 
         if (v7)
         {
@@ -1435,8 +1435,8 @@ LABEL_68:
           [v5 clsSetSceneClassifications:?];
           v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
           v29 = v5;
-          v9 = [v5 curationModel];
-          v10 = [v9 sceneModel];
+          curationModel = [v5 curationModel];
+          sceneModel = [curationModel sceneModel];
 
           v34 = 0u;
           v35 = 0u;
@@ -1459,13 +1459,13 @@ LABEL_68:
                 }
 
                 v16 = *(*(&v32 + 1) + 8 * j);
-                v17 = [v16 extendedSceneIdentifier];
-                if (([v10 isResponsibleForSignalIdentifier:v17] & 1) == 0)
+                extendedSceneIdentifier = [v16 extendedSceneIdentifier];
+                if (([sceneModel isResponsibleForSignalIdentifier:extendedSceneIdentifier] & 1) == 0)
                 {
                   v18 = MEMORY[0x1E696AD98];
                   [v16 confidence];
                   v19 = [v18 numberWithDouble:?];
-                  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v17];
+                  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:extendedSceneIdentifier];
                   [v8 setObject:v19 forKeyedSubscript:v20];
                 }
               }
@@ -1476,8 +1476,8 @@ LABEL_68:
             while (v13);
           }
 
-          v21 = [v29 curationModel];
-          v22 = [v21 processedSignalsFromSignals:v8];
+          curationModel2 = [v29 curationModel];
+          v22 = [curationModel2 processedSignalsFromSignals:v8];
 
           [v29 clsSetProcessedSignals:v22];
           v7 = v30;
@@ -1506,8 +1506,8 @@ LABEL_68:
   if ([v8 count])
   {
     v10 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v11 = [v8 fetchedObjects];
-    v12 = [v10 initWithArray:v11 copyItems:0];
+    fetchedObjects = [v8 fetchedObjects];
+    v12 = [v10 initWithArray:fetchedObjects copyItems:0];
 
     if ((a4 & 4) != 0 && ([v8 fetchPropertySets], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "containsObject:", *MEMORY[0x1E6978CF0]), v13, (v14 & 1) == 0) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -1522,8 +1522,8 @@ LABEL_68:
     else if ((a4 & 8) != 0)
     {
 LABEL_6:
-      v15 = [v8 fetchPropertySets];
-      v16 = [v15 containsObject:*MEMORY[0x1E6978C48]];
+      fetchPropertySets = [v8 fetchPropertySets];
+      v16 = [fetchPropertySets containsObject:*MEMORY[0x1E6978C48]];
 
       if ((v16 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
       {
@@ -1532,7 +1532,7 @@ LABEL_6:
       }
     }
 
-    [a1 prefetchOnAssets:v12 options:a4 curationContext:v9];
+    [self prefetchOnAssets:v12 options:a4 curationContext:v9];
     goto LABEL_11;
   }
 
@@ -1635,19 +1635,19 @@ LABEL_11:
 + (id)verifiedPersonLocalIdentifiersByAssetUUIDWithAssets:()Curation
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([v4 count])
   {
-    v6 = [a1 _personUUIDsByAssetUUIDWithAssets:v4 personUUIDs:0];
+    v6 = [self _personUUIDsByAssetUUIDWithAssets:v4 personUUIDs:0];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __73__PHAsset_Curation__verifiedPersonLocalIdentifiersByAssetUUIDWithAssets___block_invoke;
     v8[3] = &unk_1E82A2300;
-    v9 = v5;
+    v9 = dictionary;
     [v6 enumerateKeysAndObjectsUsingBlock:v8];
   }
 
-  return v5;
+  return dictionary;
 }
 
 + (id)_petUUIDsByAssetUUIDWithAssetUUIDs:()Curation photoLibrary:
@@ -1656,9 +1656,9 @@ LABEL_11:
   v6 = a4;
   if ([v5 count])
   {
-    v7 = [v6 librarySpecificFetchOptions];
-    [v7 setIncludedDetectionTypes:&unk_1F46E55E8];
-    v8 = [MEMORY[0x1E6978980] fetchVerifiedPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v5 options:v7];
+    librarySpecificFetchOptions = [v6 librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F46E55E8];
+    v8 = [MEMORY[0x1E6978980] fetchVerifiedPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v5 options:librarySpecificFetchOptions];
   }
 
   else
@@ -1681,11 +1681,11 @@ LABEL_11:
 
   if (!v8)
   {
-    v10 = [v9 librarySpecificFetchOptions];
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"personForFace.type", 0xFFFFFFFFLL];
-    [v10 setInternalPredicate:v14];
+    librarySpecificFetchOptions = [v9 librarySpecificFetchOptions];
+    0xFFFFFFFFLL = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"personForFace.type", 0xFFFFFFFFLL];
+    [librarySpecificFetchOptions setInternalPredicate:0xFFFFFFFFLL];
 
-    v12 = [MEMORY[0x1E6978980] fetchVerifiedPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v7 options:v10];
+    v12 = [MEMORY[0x1E6978980] fetchVerifiedPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v7 options:librarySpecificFetchOptions];
     goto LABEL_7;
   }
 
@@ -1696,11 +1696,11 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v10 = [v9 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [v9 librarySpecificFetchOptions];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"personForFace.personUUID", v8];
-  [v10 setInternalPredicate:v11];
+  [librarySpecificFetchOptions setInternalPredicate:v11];
 
-  v12 = [MEMORY[0x1E6978980] fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v7 options:v10];
+  v12 = [MEMORY[0x1E6978980] fetchPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v7 options:librarySpecificFetchOptions];
 LABEL_7:
   v13 = v12;
 
@@ -1736,8 +1736,8 @@ LABEL_8:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) uuid];
-          [v8 addObject:v14];
+          uuid = [*(*(&v19 + 1) + 8 * i) uuid];
+          [v8 addObject:uuid];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1746,9 +1746,9 @@ LABEL_8:
       while (v11);
     }
 
-    v15 = [v9 firstObject];
-    v16 = [v15 photoLibrary];
-    v17 = [a1 _personUUIDsByAssetUUIDWithAssetUUIDs:v8 personUUIDs:v7 photoLibrary:v16];
+    firstObject = [v9 firstObject];
+    photoLibrary = [firstObject photoLibrary];
+    v17 = [self _personUUIDsByAssetUUIDWithAssetUUIDs:v8 personUUIDs:v7 photoLibrary:photoLibrary];
   }
 
   else

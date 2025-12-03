@@ -1,25 +1,25 @@
 @interface ICQInternetPrivacySheetPresenter
-+ (id)presenterWithIdentifier:(id)a3 viewModel:(id)a4;
++ (id)presenterWithIdentifier:(id)identifier viewModel:(id)model;
 - (void)present;
 @end
 
 @implementation ICQInternetPrivacySheetPresenter
 
-+ (id)presenterWithIdentifier:(id)a3 viewModel:(id)a4
++ (id)presenterWithIdentifier:(id)identifier viewModel:(id)model
 {
-  v5 = a4;
-  v6 = a3;
+  modelCopy = model;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  v8 = [[ICQInternetPrivacySheet alloc] initWithIdentifier:v6 viewModel:v5];
+  v8 = [[ICQInternetPrivacySheet alloc] initWithIdentifier:identifierCopy viewModel:modelCopy];
 
   [v7 setSheet:v8];
   v9 = objc_alloc(MEMORY[0x277D757A0]);
-  v10 = [v7 sheet];
-  v11 = [v9 initWithRootViewController:v10];
+  sheet = [v7 sheet];
+  v11 = [v9 initWithRootViewController:sheet];
   [v7 setNavigationController:v11];
 
-  v12 = [v7 navigationController];
-  [v12 setModalPresentationStyle:2];
+  navigationController = [v7 navigationController];
+  [navigationController setModalPresentationStyle:2];
 
   return v7;
 }

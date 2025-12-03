@@ -1,10 +1,10 @@
 @interface CSAudioPowerMeter
-- (CSAudioPowerMeter)initWithSampleRate:(float)a3;
-- (double)_linearToDB:(double)a3;
+- (CSAudioPowerMeter)initWithSampleRate:(float)rate;
+- (double)_linearToDB:(double)b;
 - (void)_reset;
-- (void)_savePeaks:(int)a3 averagePower:(int)a4 maxSample:(int)a5;
-- (void)_scaleDecayConstants:(int)a3;
-- (void)_zapgremlins:(double *)a3;
+- (void)_savePeaks:(int)peaks averagePower:(int)power maxSample:(int)sample;
+- (void)_scaleDecayConstants:(int)constants;
+- (void)_zapgremlins:(double *)_zapgremlins;
 @end
 
 @implementation CSAudioPowerMeter
@@ -22,21 +22,21 @@
   self->_instantaneousMode = 1;
 }
 
-- (void)_zapgremlins:(double *)a3
+- (void)_zapgremlins:(double *)_zapgremlins
 {
-  v3 = *a3;
-  v4 = fabs(*a3);
+  v3 = *_zapgremlins;
+  v4 = fabs(*_zapgremlins);
   if (v4 >= 1.0e15 || v4 <= 1.0e-15)
   {
     v3 = 0.0;
   }
 
-  *a3 = v3;
+  *_zapgremlins = v3;
 }
 
-- (double)_linearToDB:(double)a3
+- (double)_linearToDB:(double)b
 {
-  if (a3 <= 0.000001)
+  if (b <= 0.000001)
   {
     return -120.0;
   }
@@ -45,10 +45,10 @@
   return result;
 }
 
-- (void)_savePeaks:(int)a3 averagePower:(int)a4 maxSample:(int)a5
+- (void)_savePeaks:(int)peaks averagePower:(int)power maxSample:(int)sample
 {
-  v5 = vcvtd_n_f64_s32(a5, 0xFuLL);
-  self->_averagePowerI = a4;
+  v5 = vcvtd_n_f64_s32(sample, 0xFuLL);
+  self->_averagePowerI = power;
   instantaneousMode = self->_instantaneousMode;
   if (instantaneousMode)
   {
@@ -66,8 +66,8 @@
   }
 
   self->_peak = v7;
-  v9 = vcvtd_n_f64_s32(a4, 0x1EuLL);
-  v10 = self->_peakHoldCount + a3;
+  v9 = vcvtd_n_f64_s32(power, 0x1EuLL);
+  v10 = self->_peakHoldCount + peaks;
   self->_peakHoldCount = v10;
   maxPeak = self->_maxPeak;
   if (v10 >= (self->_sampleRate * 0.907029478))
@@ -101,18 +101,18 @@
   }
 }
 
-- (void)_scaleDecayConstants:(int)a3
+- (void)_scaleDecayConstants:(int)constants
 {
-  if (self->_previousBlockSize != a3)
+  if (self->_previousBlockSize != constants)
   {
-    v5 = a3;
-    self->_peakDecay = 1.0 - pow(self->_peakDecay1, a3);
-    self->_decay = 1.0 - pow(self->_decay1, v5);
-    self->_previousBlockSize = a3;
+    constantsCopy = constants;
+    self->_peakDecay = 1.0 - pow(self->_peakDecay1, constants);
+    self->_decay = 1.0 - pow(self->_decay1, constantsCopy);
+    self->_previousBlockSize = constants;
   }
 }
 
-- (CSAudioPowerMeter)initWithSampleRate:(float)a3
+- (CSAudioPowerMeter)initWithSampleRate:(float)rate
 {
   v7.receiver = self;
   v7.super_class = CSAudioPowerMeter;
@@ -121,7 +121,7 @@
   if (v4)
   {
     [(CSAudioPowerMeter *)v4 _reset];
-    v5->_sampleRate = a3;
+    v5->_sampleRate = rate;
   }
 
   return v5;

@@ -1,12 +1,12 @@
 @interface MTL4IndirectInstanceAccelerationStructureDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4BufferRange)instanceCountBuffer;
 - (MTL4BufferRange)instanceDescriptorBuffer;
 - (MTL4BufferRange)motionTransformBuffer;
 - (MTL4BufferRange)motionTransformCountBuffer;
 - (MTL4IndirectInstanceAccelerationStructureDescriptor)init;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -34,11 +34,11 @@
   [(MTL4IndirectInstanceAccelerationStructureDescriptor *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTL4IndirectInstanceAccelerationStructureDescriptor;
-  v4 = [(MTLAccelerationStructureDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTLAccelerationStructureDescriptor *)&v6 copyWithZone:zone];
   [v4 setInstanceDescriptorBuffer:{self->_instanceDescriptorBuffer.bufferAddress, self->_instanceDescriptorBuffer.length}];
   [v4 setMaxInstanceCount:self->_maxInstanceCount];
   [v4 setInstanceCountBuffer:{self->_instanceCountBuffer.bufferAddress, self->_instanceCountBuffer.length}];
@@ -53,9 +53,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -64,74 +64,74 @@
   v38 = v3;
   v39 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v37.receiver = self;
   v37.super_class = MTL4IndirectInstanceAccelerationStructureDescriptor;
-  v8 = [(MTLAccelerationStructureDescriptor *)&v37 isEqual:a3];
+  v8 = [(MTLAccelerationStructureDescriptor *)&v37 isEqual:equal];
   if (v8)
   {
-    v9 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorBuffer];
+    instanceDescriptorBuffer = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorBuffer];
     v11 = v10;
-    v13 = [a3 instanceDescriptorBuffer];
+    instanceDescriptorBuffer2 = [equal instanceDescriptorBuffer];
     LOBYTE(v8) = 0;
-    if (v9 == v13 && v11 == v12)
+    if (instanceDescriptorBuffer == instanceDescriptorBuffer2 && v11 == v12)
     {
-      v14 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorStride];
-      if (v14 != [a3 instanceDescriptorStride])
+      instanceDescriptorStride = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorStride];
+      if (instanceDescriptorStride != [equal instanceDescriptorStride])
       {
         goto LABEL_3;
       }
 
-      v15 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self maxInstanceCount];
-      if (v15 != [a3 maxInstanceCount])
+      maxInstanceCount = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self maxInstanceCount];
+      if (maxInstanceCount != [equal maxInstanceCount])
       {
         goto LABEL_3;
       }
 
-      v16 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceCountBuffer];
+      instanceCountBuffer = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceCountBuffer];
       v18 = v17;
-      v20 = [a3 instanceCountBuffer];
+      instanceCountBuffer2 = [equal instanceCountBuffer];
       LOBYTE(v8) = 0;
-      if (v16 != v20 || v18 != v19)
+      if (instanceCountBuffer != instanceCountBuffer2 || v18 != v19)
       {
         return v8;
       }
 
-      v21 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorType];
-      if (v21 != [a3 instanceDescriptorType])
+      instanceDescriptorType = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceDescriptorType];
+      if (instanceDescriptorType != [equal instanceDescriptorType])
       {
         goto LABEL_3;
       }
 
-      v22 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self motionTransformBuffer];
+      motionTransformBuffer = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self motionTransformBuffer];
       v24 = v23;
-      v26 = [a3 motionTransformBuffer];
+      motionTransformBuffer2 = [equal motionTransformBuffer];
       LOBYTE(v8) = 0;
-      if (v22 != v26 || v24 != v25)
+      if (motionTransformBuffer != motionTransformBuffer2 || v24 != v25)
       {
         return v8;
       }
 
-      v27 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self maxMotionTransformCount];
-      if (v27 != [a3 maxMotionTransformCount] || (v28 = -[MTL4IndirectInstanceAccelerationStructureDescriptor motionTransformType](self, "motionTransformType"), v28 != objc_msgSend(a3, "motionTransformType")) || (v29 = -[MTL4IndirectInstanceAccelerationStructureDescriptor motionTransformStride](self, "motionTransformStride"), v29 != objc_msgSend(a3, "motionTransformStride")))
+      maxMotionTransformCount = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self maxMotionTransformCount];
+      if (maxMotionTransformCount != [equal maxMotionTransformCount] || (v28 = -[MTL4IndirectInstanceAccelerationStructureDescriptor motionTransformType](self, "motionTransformType"), v28 != objc_msgSend(equal, "motionTransformType")) || (v29 = -[MTL4IndirectInstanceAccelerationStructureDescriptor motionTransformStride](self, "motionTransformStride"), v29 != objc_msgSend(equal, "motionTransformStride")))
       {
 LABEL_3:
         LOBYTE(v8) = 0;
         return v8;
       }
 
-      v30 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self motionTransformCountBuffer];
+      motionTransformCountBuffer = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self motionTransformCountBuffer];
       v32 = v31;
-      v34 = [a3 motionTransformCountBuffer];
+      motionTransformCountBuffer2 = [equal motionTransformCountBuffer];
       LOBYTE(v8) = 0;
-      if (v30 == v34 && v32 == v33)
+      if (motionTransformCountBuffer == motionTransformCountBuffer2 && v32 == v33)
       {
-        v35 = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceTransformationMatrixLayout];
-        LOBYTE(v8) = v35 == [a3 instanceTransformationMatrixLayout];
+        instanceTransformationMatrixLayout = [(MTL4IndirectInstanceAccelerationStructureDescriptor *)self instanceTransformationMatrixLayout];
+        LOBYTE(v8) = instanceTransformationMatrixLayout == [equal instanceTransformationMatrixLayout];
       }
     }
   }

@@ -1,30 +1,30 @@
 @interface VOTTVGestureRepeater
 - (SCRCThread)targetThread;
-- (VOTTVGestureRepeater)initWithThread:(id)a3;
+- (VOTTVGestureRepeater)initWithThread:(id)thread;
 - (VOTTVGestureRepeaterDelegate)delegate;
 - (int64_t)_currentGestureRepeaterEvent;
-- (int64_t)_repeatStateForEvent:(id)a3;
-- (void)_handleRepeaterTimerDidFire:(id)a3;
+- (int64_t)_repeatStateForEvent:(id)event;
+- (void)_handleRepeaterTimerDidFire:(id)fire;
 - (void)dealloc;
-- (void)updateWithEvent:(id)a3;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation VOTTVGestureRepeater
 
-- (VOTTVGestureRepeater)initWithThread:(id)a3
+- (VOTTVGestureRepeater)initWithThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   v17.receiver = self;
   v17.super_class = VOTTVGestureRepeater;
   v5 = [(VOTTVGestureRepeater *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    [(VOTTVGestureRepeater *)v5 setTargetThread:v4];
+    [(VOTTVGestureRepeater *)v5 setTargetThread:threadCopy];
     v6->_currentRepeatState = 4;
     v7 = objc_allocWithZone(SCRCTargetSelectorTimer);
-    v8 = [(VOTTVGestureRepeater *)v6 targetThread];
-    v9 = [v7 initWithTarget:v6 selector:"_handleRepeaterTimerDidFire:" thread:v8];
+    targetThread = [(VOTTVGestureRepeater *)v6 targetThread];
+    v9 = [v7 initWithTarget:v6 selector:"_handleRepeaterTimerDidFire:" thread:targetThread];
 
     [(VOTTVGestureRepeater *)v6 setRepeaterTimer:v9];
     v10 = +[NSNotificationCenter defaultCenter];
@@ -46,13 +46,13 @@
 {
   [(VOTTVGestureRepeater *)self setDelegate:0];
   [(VOTTVGestureRepeater *)self setTargetThread:0];
-  v3 = [(VOTTVGestureRepeater *)self repeaterTimer];
-  [v3 invalidate];
+  repeaterTimer = [(VOTTVGestureRepeater *)self repeaterTimer];
+  [repeaterTimer invalidate];
 
   [(VOTTVGestureRepeater *)self setRepeaterTimer:0];
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [(VOTTVGestureRepeater *)self selectButtonReceivedNotificationObserverToken];
-  [v4 removeObserver:v5];
+  selectButtonReceivedNotificationObserverToken = [(VOTTVGestureRepeater *)self selectButtonReceivedNotificationObserverToken];
+  [v4 removeObserver:selectButtonReceivedNotificationObserverToken];
 
   [(VOTTVGestureRepeater *)self setSelectButtonReceivedNotificationObserverToken:0];
   v6.receiver = self;
@@ -60,26 +60,26 @@
   [(VOTTVGestureRepeater *)&v6 dealloc];
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
-  v17 = a3;
-  v4 = [v17 command];
-  v5 = [v4 isEqualToString:kVOTEventCommandIdle];
+  eventCopy = event;
+  command = [eventCopy command];
+  v5 = [command isEqualToString:kVOTEventCommandIdle];
 
   if (v5)
   {
-    v6 = [(VOTTVGestureRepeater *)self repeaterTimer];
-    [v6 cancel];
+    repeaterTimer = [(VOTTVGestureRepeater *)self repeaterTimer];
+    [repeaterTimer cancel];
 
     *&self->_currentRepeatState = xmmword_10017E2E0;
     self->_isSendingFirstRepeatEvent = 1;
 LABEL_7:
-    v11 = v17;
+    v11 = eventCopy;
     goto LABEL_8;
   }
 
-  v7 = [v17 command];
-  v8 = [v7 isEqualToString:kVOTEventCommandTracking];
+  command2 = [eventCopy command];
+  v8 = [command2 isEqualToString:kVOTEventCommandTracking];
 
   if (!v8)
   {
@@ -87,11 +87,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9 = [(VOTTVGestureRepeater *)self _repeatStateForEvent:v17];
+  v9 = [(VOTTVGestureRepeater *)self _repeatStateForEvent:eventCopy];
   if (v9 == 5)
   {
-    v10 = [(VOTTVGestureRepeater *)self repeaterTimer];
-    [v10 cancel];
+    repeaterTimer2 = [(VOTTVGestureRepeater *)self repeaterTimer];
+    [repeaterTimer2 cancel];
 
     *&self->_currentRepeatState = xmmword_10017E2D0;
     goto LABEL_7;
@@ -99,7 +99,7 @@ LABEL_7:
 
   v12 = v9;
   v13 = v9 > 3;
-  v11 = v17;
+  v11 = eventCopy;
   if (!v13)
   {
     currentRepeatState = self->_currentRepeatState;
@@ -110,13 +110,13 @@ LABEL_7:
 
     else if (currentRepeatState != v12)
     {
-      v15 = [(VOTTVGestureRepeater *)self repeaterTimer];
-      [v15 cancel];
+      repeaterTimer3 = [(VOTTVGestureRepeater *)self repeaterTimer];
+      [repeaterTimer3 cancel];
 
       self->_currentRepeatState = v12;
       self->_currentRepeatCount = 0;
-      v16 = [(VOTTVGestureRepeater *)self repeaterTimer];
-      [v16 dispatchAfterDelay:0.5];
+      repeaterTimer4 = [(VOTTVGestureRepeater *)self repeaterTimer];
+      [repeaterTimer4 dispatchAfterDelay:0.5];
 
       goto LABEL_7;
     }
@@ -125,22 +125,22 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_handleRepeaterTimerDidFire:(id)a3
+- (void)_handleRepeaterTimerDidFire:(id)fire
 {
   if (self->_isSendingFirstRepeatEvent)
   {
-    v4 = [(VOTTVGestureRepeater *)self delegate];
-    [v4 gestureRepeaterWillSendFirstRepeaterEvent:self];
+    delegate = [(VOTTVGestureRepeater *)self delegate];
+    [delegate gestureRepeaterWillSendFirstRepeaterEvent:self];
 
     self->_isSendingFirstRepeatEvent = 0;
   }
 
-  v5 = [(VOTTVGestureRepeater *)self delegate];
-  [v5 gestureRepeater:self repeaterEventDidFire:{-[VOTTVGestureRepeater _currentGestureRepeaterEvent](self, "_currentGestureRepeaterEvent")}];
+  delegate2 = [(VOTTVGestureRepeater *)self delegate];
+  [delegate2 gestureRepeater:self repeaterEventDidFire:{-[VOTTVGestureRepeater _currentGestureRepeaterEvent](self, "_currentGestureRepeaterEvent")}];
 
-  v6 = [(VOTTVGestureRepeater *)self repeaterTimer];
+  repeaterTimer = [(VOTTVGestureRepeater *)self repeaterTimer];
   [(VOTTVGestureRepeater *)self _delayForCurrentRepeatCount];
-  [v6 dispatchAfterDelay:?];
+  [repeaterTimer dispatchAfterDelay:?];
 
   ++self->_currentRepeatCount;
 }
@@ -159,21 +159,21 @@ LABEL_8:
   }
 }
 
-- (int64_t)_repeatStateForEvent:(id)a3
+- (int64_t)_repeatStateForEvent:(id)event
 {
-  v3 = a3;
-  [v3 touchRawLocation];
+  eventCopy = event;
+  [eventCopy touchRawLocation];
   if (sqrt((v5 + -0.5) * (v5 + -0.5) + (v4 + -0.5) * (v4 + -0.5)) >= 0.34)
   {
-    v7 = [v3 tvTouchPadRegion];
-    if (v7 >= 4)
+    tvTouchPadRegion = [eventCopy tvTouchPadRegion];
+    if (tvTouchPadRegion >= 4)
     {
       v6 = 4;
     }
 
     else
     {
-      v6 = v7;
+      v6 = tvTouchPadRegion;
     }
   }
 

@@ -1,16 +1,16 @@
 @interface CRListItemMarker
-+ (id)_detectPredefinedListMarker:(id)a3 fromSet:(id)a4 markerType:(int64_t)a5;
++ (id)_detectPredefinedListMarker:(id)marker fromSet:(id)set markerType:(int64_t)type;
 + (id)bulletsSet;
 + (id)decorativeDecimalsSet;
 + (id)endOfMarkerSet;
 + (id)extendedMarkersSet;
 + (id)hyphensSet;
-+ (id)listItemMarkerForText:(id)a3 requiresAdjacentText:(BOOL)a4;
++ (id)listItemMarkerForText:(id)text requiresAdjacentText:(BOOL)adjacentText;
 + (id)nonMarkerNumericConstructSeparatorSet;
 + (id)startOfMarkerSet;
-- (BOOL)_canCompositeDecimalBeSucceededByCompositeDecimal:(id)a3;
-- (BOOL)canBeSucceededByMarker:(id)a3;
-- (CRListItemMarker)initWithType:(int64_t)a3 stringValue:(id)a4 range:(_NSRange)a5 itemizingComponentRange:(_NSRange)a6;
+- (BOOL)_canCompositeDecimalBeSucceededByCompositeDecimal:(id)decimal;
+- (BOOL)canBeSucceededByMarker:(id)marker;
+- (CRListItemMarker)initWithType:(int64_t)type stringValue:(id)value range:(_NSRange)range itemizingComponentRange:(_NSRange)componentRange;
 - (_NSRange)itemizingComponentRange;
 - (_NSRange)range;
 - (id)_valuesFromCompositeDecimal;
@@ -23,36 +23,36 @@
 
 @implementation CRListItemMarker
 
-- (CRListItemMarker)initWithType:(int64_t)a3 stringValue:(id)a4 range:(_NSRange)a5 itemizingComponentRange:(_NSRange)a6
+- (CRListItemMarker)initWithType:(int64_t)type stringValue:(id)value range:(_NSRange)range itemizingComponentRange:(_NSRange)componentRange
 {
-  length = a6.length;
-  location = a6.location;
-  v8 = a5.length;
-  v9 = a5.location;
-  v13 = a4;
+  length = componentRange.length;
+  location = componentRange.location;
+  v8 = range.length;
+  v9 = range.location;
+  valueCopy = value;
   v14 = [(CRListItemMarker *)self init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_stringValue, a4);
+    objc_storeStrong(&v14->_stringValue, value);
     v15->_range.length = v8;
     v15->_itemizingComponentRange.location = location;
     v15->_itemizingComponentRange.length = length;
-    v15->_type = a3;
+    v15->_type = type;
     v15->_range.location = v9;
   }
 
   return v15;
 }
 
-- (BOOL)canBeSucceededByMarker:(id)a3
+- (BOOL)canBeSucceededByMarker:(id)marker
 {
-  v4 = a3;
-  v5 = v4;
+  markerCopy = marker;
+  v5 = markerCopy;
   type = self->_type;
   if (!type)
   {
-    if (![v4 type])
+    if (![markerCopy type])
     {
 LABEL_7:
       v7 = 1;
@@ -81,15 +81,15 @@ LABEL_7:
 
     else
     {
-      v8 = [(CRListItemMarker *)self integerValue];
-      v9 = [v5 integerValue];
-      v10 = v9 == v8 + 1;
-      if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+      integerValue = [(CRListItemMarker *)self integerValue];
+      integerValue2 = [v5 integerValue];
+      v10 = integerValue2 == integerValue + 1;
+      if (integerValue2 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v10 = 0;
       }
 
-      v7 = v8 != 0x7FFFFFFFFFFFFFFFLL && v10;
+      v7 = integerValue != 0x7FFFFFFFFFFFFFFFLL && v10;
     }
   }
 
@@ -137,58 +137,58 @@ LABEL_19:
   }
 }
 
-+ (id)listItemMarkerForText:(id)a3 requiresAdjacentText:(BOOL)a4
++ (id)listItemMarkerForText:(id)text requiresAdjacentText:(BOOL)adjacentText
 {
   v111 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 bulletsSet];
-  v8 = [a1 _detectPredefinedListMarker:v6 fromSet:v7 markerType:1];
+  textCopy = text;
+  bulletsSet = [self bulletsSet];
+  v100 = [self _detectPredefinedListMarker:textCopy fromSet:bulletsSet markerType:1];
 
-  if (v8)
+  if (v100)
   {
     goto LABEL_119;
   }
 
-  v9 = [a1 hyphensSet];
-  v8 = [a1 _detectPredefinedListMarker:v6 fromSet:v9 markerType:2];
+  hyphensSet = [self hyphensSet];
+  v100 = [self _detectPredefinedListMarker:textCopy fromSet:hyphensSet markerType:2];
 
-  if (v8)
+  if (v100)
   {
     goto LABEL_119;
   }
 
-  v10 = [a1 decorativeDecimalsSet];
-  v8 = [a1 _detectPredefinedListMarker:v6 fromSet:v10 markerType:6];
+  decorativeDecimalsSet = [self decorativeDecimalsSet];
+  v100 = [self _detectPredefinedListMarker:textCopy fromSet:decorativeDecimalsSet markerType:6];
 
-  if (v8)
+  if (v100)
   {
     goto LABEL_119;
   }
 
-  v11 = [a1 extendedMarkersSet];
-  v8 = [a1 _detectPredefinedListMarker:v6 fromSet:v11 markerType:0];
+  extendedMarkersSet = [self extendedMarkersSet];
+  v100 = [self _detectPredefinedListMarker:textCopy fromSet:extendedMarkersSet markerType:0];
 
-  if (v8)
+  if (v100)
   {
     goto LABEL_119;
   }
 
   v12 = 0x1E696A000uLL;
-  v13 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v14 = [v6 componentsSeparatedByCharactersInSet:v13];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v14 = [textCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
   v15 = [v14 mutableCopy];
 
   [v15 removeObject:&stru_1F2BB4348];
-  v16 = [v15 firstObject];
+  firstObject = [v15 firstObject];
   v97 = v15;
-  if (![v16 length])
+  if (![firstObject length])
   {
     v102 = 0;
     v105 = 0;
     goto LABEL_47;
   }
 
-  v95 = a4;
+  adjacentTextCopy3 = adjacentText;
   v98 = 0;
   v101 = 0;
   v105 = 0;
@@ -200,7 +200,7 @@ LABEL_19:
   v21 = 1;
   while (1)
   {
-    v22 = [v16 characterAtIndex:v17];
+    v22 = [firstObject characterAtIndex:v17];
     if ((v22 - 58) >= 0xFFFFFFF6 && (v102 & 1) == 0)
     {
       if (v20 + 1 == v21)
@@ -307,7 +307,7 @@ LABEL_41:
     ++v17;
     v19 = v26;
     v18 = -v26;
-    if (v17 >= [v16 length])
+    if (v17 >= [firstObject length])
     {
       goto LABEL_42;
     }
@@ -323,7 +323,7 @@ LABEL_41:
 LABEL_42:
   if (v20 > 3)
   {
-    v8 = 0;
+    v100 = 0;
     v32 = v97;
     goto LABEL_118;
   }
@@ -337,23 +337,23 @@ LABEL_42:
   }
 
   v12 = 0x1E696A000uLL;
-  a4 = v95;
+  adjacentText = adjacentTextCopy3;
 LABEL_47:
-  v33 = [MEMORY[0x1E696AB08] letterCharacterSet];
-  v34 = [v16 rangeOfCharacterFromSet:v33];
+  letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+  v34 = [firstObject rangeOfCharacterFromSet:letterCharacterSet];
   v36 = v35;
 
   if (v34 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_48:
-    v8 = 0;
+    v100 = 0;
     goto LABEL_49;
   }
 
-  v37 = [v16 characterAtIndex:v34];
+  v37 = [firstObject characterAtIndex:v34];
   if ((v37 - 65) < 0x1A)
   {
-    v95 = a4;
+    adjacentTextCopy3 = adjacentText;
     v93 = 1;
     v38 = 4;
     goto LABEL_55;
@@ -365,7 +365,7 @@ LABEL_48:
     goto LABEL_117;
   }
 
-  v95 = a4;
+  adjacentTextCopy3 = adjacentText;
   v93 = 1;
   v38 = 3;
 LABEL_55:
@@ -378,9 +378,9 @@ LABEL_56:
     v40 = 0;
     do
     {
-      v41 = [v16 characterAtIndex:v40];
-      v42 = [a1 startOfMarkerSet];
-      LOBYTE(v41) = [v42 characterIsMember:v41];
+      v41 = [firstObject characterAtIndex:v40];
+      startOfMarkerSet = [self startOfMarkerSet];
+      LOBYTE(v41) = [startOfMarkerSet characterIsMember:v41];
 
       if ((v41 & 1) == 0)
       {
@@ -395,13 +395,13 @@ LABEL_56:
   }
 
   v43 = v19 + v36;
-  if (v43 >= [v16 length])
+  if (v43 >= [firstObject length])
   {
     v32 = v97;
     if ([v97 count] < 2)
     {
-      v50 = 0;
-      a1 = 0;
+      selfCopy = 0;
+      self = 0;
       v49 = 1;
     }
 
@@ -410,12 +410,12 @@ LABEL_56:
       v51 = [v97 objectAtIndexedSubscript:1];
       v52 = [v51 characterAtIndex:0];
 
-      v53 = [a1 endOfMarkerSet];
+      endOfMarkerSet = [self endOfMarkerSet];
       v54 = v52;
       v32 = v97;
-      LODWORD(a1) = [v53 characterIsMember:v54];
+      LODWORD(self) = [endOfMarkerSet characterIsMember:v54];
 
-      if (a1)
+      if (self)
       {
         v49 = 2;
       }
@@ -425,29 +425,29 @@ LABEL_56:
         v49 = 1;
       }
 
-      v50 = a1;
-      if (a1)
+      selfCopy = self;
+      if (self)
       {
         v43 += 2;
       }
 
-      a1 = a1;
+      self = self;
     }
 
 LABEL_77:
-    if (!v95 && ((v93 | v105 | v102) & v50 & 1) != 0)
+    if (!adjacentTextCopy3 && ((v93 | v105 | v102) & selfCopy & 1) != 0)
     {
       v55 = [CRListItemMarker alloc];
-      v56 = [v6 substringWithRange:{0, v43}];
-      v8 = [(CRListItemMarker *)v55 initWithType:v101 stringValue:v56 range:0 itemizingComponentRange:v43, v39, v36];
+      v56 = [textCopy substringWithRange:{0, v43}];
+      v100 = [(CRListItemMarker *)v55 initWithType:v101 stringValue:v56 range:0 itemizingComponentRange:v43, v39, v36];
 
 LABEL_49:
       v32 = v97;
       goto LABEL_118;
     }
 
-    v94 = [v16 length];
-    if (v43 < [v16 length])
+    v94 = [firstObject length];
+    if (v43 < [firstObject length])
     {
       v103 = v49;
       v57 = [v32 objectAtIndexedSubscript:v49 - 1];
@@ -463,8 +463,8 @@ LABEL_49:
 
     if ([v32 count] > v49)
     {
-      v99 = a1;
-      v91 = v50;
+      selfCopy2 = self;
+      v91 = selfCopy;
       v61 = v43;
       [v32 objectAtIndexedSubscript:v49];
       v63 = v62 = v49;
@@ -475,11 +475,11 @@ LABEL_49:
       {
         v103 = v62;
         v66 = [v64 objectAtIndexedSubscript:v62];
-        v58 = [v66 characterAtIndex:v99];
+        v58 = [v66 characterAtIndex:selfCopy2];
 
         v32 = v64;
         v43 = v61;
-        v50 = v91;
+        selfCopy = v91;
         if (vmaxv_u16(vcgt_u16(0x6000502BB00060, vadd_s16(vdup_n_s16(v58), 0xCFC028505400CED0))))
         {
           goto LABEL_91;
@@ -488,8 +488,8 @@ LABEL_49:
 LABEL_82:
         if ((v58 - 12448) >= 0x60u && (v58 & 0xFF00) != 0x1100 && (v58 & 0xFFE0) != 0xA960 && ((v58 - 19968) >> 9) >= 0x29u && ((v58 - 13312) >> 6) >= 0x67u)
         {
-          v59 = [*(v12 + 2824) uppercaseLetterCharacterSet];
-          v60 = [v59 characterIsMember:v58];
+          uppercaseLetterCharacterSet = [*(v12 + 2824) uppercaseLetterCharacterSet];
+          v60 = [uppercaseLetterCharacterSet characterIsMember:v58];
 
           v49 = v103;
           goto LABEL_103;
@@ -533,7 +533,7 @@ LABEL_91:
 
           ++v69;
           v32 = v97;
-          v8 = 0;
+          v100 = 0;
           --v67;
           if (v69 >= [v97 count])
           {
@@ -544,7 +544,7 @@ LABEL_91:
 
       v32 = v64;
       v43 = v61;
-      v50 = v91;
+      selfCopy = v91;
       v49 = v62;
     }
 
@@ -557,10 +557,10 @@ LABEL_103:
 
     v89 = v60;
     v104 = v49;
-    v92 = v50;
+    v92 = selfCopy;
     v96 = v43;
     v100 = v36;
-    v90 = v16;
+    v90 = firstObject;
     v108 = 0u;
     v109 = 0u;
     v106 = 0u;
@@ -571,8 +571,8 @@ LABEL_103:
     {
 LABEL_116:
 
-      v8 = 0;
-      v16 = v90;
+      v100 = 0;
+      firstObject = v90;
       goto LABEL_49;
     }
 
@@ -588,12 +588,12 @@ LABEL_109:
       }
 
       v77 = *(*(&v106 + 1) + 8 * v76);
-      v78 = [v72 firstObject];
+      firstObject2 = [v72 firstObject];
 
-      if (v77 != v78)
+      if (v77 != firstObject2)
       {
-        v79 = [*(v12 + 2824) letterCharacterSet];
-        v80 = [v77 _crContainsCharactersInSet:v79];
+        letterCharacterSet2 = [*(v12 + 2824) letterCharacterSet];
+        v80 = [v77 _crContainsCharactersInSet:letterCharacterSet2];
 
         if (v80)
         {
@@ -617,7 +617,7 @@ LABEL_109:
     if ([v82 length] < 3)
     {
 
-      v16 = v90;
+      firstObject = v90;
       if ((v105 & 1) == 0)
       {
         if (!v92)
@@ -634,7 +634,7 @@ LABEL_109:
       v83 = [v72 objectAtIndexedSubscript:v104 - 1];
       v84 = [v83 length];
 
-      v16 = v90;
+      firstObject = v90;
       if ((v105 & 1) == 0)
       {
         if (((v84 < 4) & v92) == 0)
@@ -643,12 +643,12 @@ LABEL_109:
         }
 
 LABEL_130:
-        v85 = [*(v12 + 2824) whitespaceCharacterSet];
-        v86 = [v6 _crCountConsecutiveCharactersAtIndex:v96 fromSet:v85];
+        whitespaceCharacterSet2 = [*(v12 + 2824) whitespaceCharacterSet];
+        v86 = [textCopy _crCountConsecutiveCharactersAtIndex:v96 fromSet:whitespaceCharacterSet2];
 
         v87 = [CRListItemMarker alloc];
-        v88 = [v6 substringWithRange:{0, v96}];
-        v8 = [(CRListItemMarker *)v87 initWithType:v101 stringValue:v88 range:0 itemizingComponentRange:v86 + v96, v39, v100];
+        v88 = [textCopy substringWithRange:{0, v96}];
+        v100 = [(CRListItemMarker *)v87 initWithType:v101 stringValue:v88 range:0 itemizingComponentRange:v86 + v96, v39, v100];
 
         goto LABEL_49;
       }
@@ -662,56 +662,56 @@ LABEL_130:
     goto LABEL_130;
   }
 
-  v44 = [v16 characterAtIndex:v43];
-  v45 = [a1 endOfMarkerSet];
-  v46 = [v45 characterIsMember:v44];
+  v44 = [firstObject characterAtIndex:v43];
+  endOfMarkerSet2 = [self endOfMarkerSet];
+  v46 = [endOfMarkerSet2 characterIsMember:v44];
 
   if (!v46)
   {
-    v50 = 0;
-    a1 = 0;
+    selfCopy = 0;
+    self = 0;
     v49 = 1;
 LABEL_76:
     v32 = v97;
     goto LABEL_77;
   }
 
-  v47 = [a1 nonMarkerNumericConstructSeparatorSet];
-  if (![v47 characterIsMember:v44])
+  nonMarkerNumericConstructSeparatorSet = [self nonMarkerNumericConstructSeparatorSet];
+  if (![nonMarkerNumericConstructSeparatorSet characterIsMember:v44])
   {
 
-    a1 = 0;
+    self = 0;
     ++v43;
     v49 = 1;
-    v50 = 1;
+    selfCopy = 1;
     goto LABEL_76;
   }
 
   ++v43;
-  v48 = [v16 length];
+  v48 = [firstObject length];
 
   v32 = v97;
-  if (v43 >= v48 || [v16 characterAtIndex:v43] - 58 < 0xFFFFFFF6)
+  if (v43 >= v48 || [firstObject characterAtIndex:v43] - 58 < 0xFFFFFFF6)
   {
-    a1 = 0;
+    self = 0;
     v49 = 1;
-    v50 = 1;
+    selfCopy = 1;
     goto LABEL_77;
   }
 
 LABEL_117:
-  v8 = 0;
+  v100 = 0;
 LABEL_118:
 
 LABEL_119:
 
-  return v8;
+  return v100;
 }
 
-+ (id)_detectPredefinedListMarker:(id)a3 fromSet:(id)a4 markerType:(int64_t)a5
++ (id)_detectPredefinedListMarker:(id)marker fromSet:(id)set markerType:(int64_t)type
 {
-  v7 = a3;
-  if ([v7 rangeOfCharacterFromSet:a4])
+  markerCopy = marker;
+  if ([markerCopy rangeOfCharacterFromSet:set])
   {
     v9 = 0;
   }
@@ -719,10 +719,10 @@ LABEL_119:
   else
   {
     v10 = v8;
-    v11 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v12 = [v7 _crCountConsecutiveCharactersAtIndex:v10 fromSet:v11];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v12 = [markerCopy _crCountConsecutiveCharactersAtIndex:v10 fromSet:whitespaceCharacterSet];
 
-    if (a5 == 6)
+    if (type == 6)
     {
       v13 = 0;
     }
@@ -733,8 +733,8 @@ LABEL_119:
     }
 
     v14 = [CRListItemMarker alloc];
-    v15 = [v7 substringWithRange:{0, v10}];
-    v9 = [(CRListItemMarker *)v14 initWithType:a5 stringValue:v15 range:0 itemizingComponentRange:v12 + v10, v13, a5 == 6];
+    v15 = [markerCopy substringWithRange:{0, v10}];
+    v9 = [(CRListItemMarker *)v14 initWithType:type stringValue:v15 range:0 itemizingComponentRange:v12 + v10, v13, type == 6];
   }
 
   return v9;
@@ -873,20 +873,20 @@ void __57__CRListItemMarker_nonMarkerNumericConstructSeparatorSet__block_invoke(
   qword_1ED960118 = v0;
 }
 
-- (BOOL)_canCompositeDecimalBeSucceededByCompositeDecimal:(id)a3
+- (BOOL)_canCompositeDecimalBeSucceededByCompositeDecimal:(id)decimal
 {
-  v4 = a3;
-  v5 = [(CRListItemMarker *)self _valuesFromCompositeDecimal];
-  v6 = [v4 _valuesFromCompositeDecimal];
-  v7 = v6;
+  decimalCopy = decimal;
+  _valuesFromCompositeDecimal = [(CRListItemMarker *)self _valuesFromCompositeDecimal];
+  _valuesFromCompositeDecimal2 = [decimalCopy _valuesFromCompositeDecimal];
+  v7 = _valuesFromCompositeDecimal2;
   v8 = 0;
-  if (!v5 || !v6)
+  if (!_valuesFromCompositeDecimal || !_valuesFromCompositeDecimal2)
   {
     goto LABEL_18;
   }
 
-  v9 = [v5 count];
-  if (v9 != [v7 count] || !objc_msgSend(v5, "count"))
+  v9 = [_valuesFromCompositeDecimal count];
+  if (v9 != [v7 count] || !objc_msgSend(_valuesFromCompositeDecimal, "count"))
   {
     v8 = 0;
     goto LABEL_18;
@@ -896,18 +896,18 @@ void __57__CRListItemMarker_nonMarkerNumericConstructSeparatorSet__block_invoke(
   v11 = 0;
   while (1)
   {
-    v12 = [v5 objectAtIndexedSubscript:v10];
-    v13 = [v12 integerValue];
+    v12 = [_valuesFromCompositeDecimal objectAtIndexedSubscript:v10];
+    integerValue = [v12 integerValue];
 
     v14 = [v7 objectAtIndexedSubscript:v10];
-    v15 = [v14 integerValue];
+    integerValue2 = [v14 integerValue];
 
-    if (v15 != v13 + 1)
+    if (integerValue2 != integerValue + 1)
     {
       if (v11)
       {
         v11 = 1;
-        if (v15 > 1)
+        if (integerValue2 > 1)
         {
           v17 = 0;
           v16 = 1;
@@ -920,7 +920,7 @@ void __57__CRListItemMarker_nonMarkerNumericConstructSeparatorSet__block_invoke(
         v11 = 0;
         v16 = 0;
         v17 = 0;
-        if (v15 != v13)
+        if (integerValue2 != integerValue)
         {
           goto LABEL_17;
         }
@@ -937,7 +937,7 @@ void __57__CRListItemMarker_nonMarkerNumericConstructSeparatorSet__block_invoke(
 
     v11 = 1;
 LABEL_13:
-    if (++v10 >= [v5 count])
+    if (++v10 >= [_valuesFromCompositeDecimal count])
     {
       v17 = 1;
       v16 = v11;
@@ -984,8 +984,8 @@ LABEL_18:
           v10 = *(*(&v14 + 1) + 8 * i);
           if ([v10 length])
           {
-            v11 = [v10 integerValue];
-            v12 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+            integerValue = [v10 integerValue];
+            v12 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
             [v4 addObject:v12];
           }
         }
@@ -1069,9 +1069,9 @@ LABEL_18:
   }
 
   v4 = [(NSString *)self->_stringValue substringWithRange:location, self->_itemizingComponentRange.length];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)_valueFromLowercaseLatin

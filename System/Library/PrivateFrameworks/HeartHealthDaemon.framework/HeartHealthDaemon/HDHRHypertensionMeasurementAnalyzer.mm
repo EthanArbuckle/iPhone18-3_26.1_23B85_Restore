@@ -1,12 +1,12 @@
 @interface HDHRHypertensionMeasurementAnalyzer
-- (BOOL)performAnalysisWithStartDate:(id)a3 endDate:(id)a4 databaseTransactionContext:(id)a5 error:(id *)a6;
+- (BOOL)performAnalysisWithStartDate:(id)date endDate:(id)endDate databaseTransactionContext:(id)context error:(id *)error;
 - (HDHRHypertensionMeasurementAnalyzer)init;
-- (HDHRHypertensionMeasurementAnalyzer)initWithProfile:(id)a3;
-- (HDHRHypertensionMeasurementAnalyzer)initWithProfile:(id)a3 analysisWindowInterval:(double)a4 keyValueDomain:(id)a5 analyticsEventSubmissionManager:(id)a6;
-- (id)_measurementsWithDateInterval:(void *)a3 error:;
-- (uint64_t)_analyzeMeasurementsWithDateInterval:(void *)a3 error:;
-- (uint64_t)_saveHypertensionEventSampleAndLastAnalysisDateAtomicallyWithDateInterval:(void *)a3 databaseTransactionContext:(uint64_t)a4 error:;
-- (uint64_t)_saveHypertensionEventSampleWithDateInterval:(uint64_t)a3 error:;
+- (HDHRHypertensionMeasurementAnalyzer)initWithProfile:(id)profile;
+- (HDHRHypertensionMeasurementAnalyzer)initWithProfile:(id)profile analysisWindowInterval:(double)interval keyValueDomain:(id)domain analyticsEventSubmissionManager:(id)manager;
+- (id)_measurementsWithDateInterval:(void *)interval error:;
+- (uint64_t)_analyzeMeasurementsWithDateInterval:(void *)interval error:;
+- (uint64_t)_saveHypertensionEventSampleAndLastAnalysisDateAtomicallyWithDateInterval:(void *)interval databaseTransactionContext:(uint64_t)context error:;
+- (uint64_t)_saveHypertensionEventSampleWithDateInterval:(uint64_t)interval error:;
 @end
 
 @implementation HDHRHypertensionMeasurementAnalyzer
@@ -21,51 +21,51 @@
   return 0;
 }
 
-- (HDHRHypertensionMeasurementAnalyzer)initWithProfile:(id)a3
+- (HDHRHypertensionMeasurementAnalyzer)initWithProfile:(id)profile
 {
   v4 = MEMORY[0x277CCCFE8];
-  v5 = a3;
+  profileCopy = profile;
   v6 = [v4 alloc];
-  v7 = [v6 initWithLoggingCategory:*MEMORY[0x277CCC2D0] healthDataSource:v5];
+  v7 = [v6 initWithLoggingCategory:*MEMORY[0x277CCC2D0] healthDataSource:profileCopy];
   v8 = HDHRHypertensionNotificationsAnalysisWindowIntervalRespectingOverride();
-  v9 = [MEMORY[0x277D10718] hdhr_hypertensionNotificationsSyncedDomainForProfile:v5];
-  v10 = [(HDHRHypertensionMeasurementAnalyzer *)self initWithProfile:v5 analysisWindowInterval:v9 keyValueDomain:v7 analyticsEventSubmissionManager:v8];
+  v9 = [MEMORY[0x277D10718] hdhr_hypertensionNotificationsSyncedDomainForProfile:profileCopy];
+  v10 = [(HDHRHypertensionMeasurementAnalyzer *)self initWithProfile:profileCopy analysisWindowInterval:v9 keyValueDomain:v7 analyticsEventSubmissionManager:v8];
 
   return v10;
 }
 
-- (HDHRHypertensionMeasurementAnalyzer)initWithProfile:(id)a3 analysisWindowInterval:(double)a4 keyValueDomain:(id)a5 analyticsEventSubmissionManager:(id)a6
+- (HDHRHypertensionMeasurementAnalyzer)initWithProfile:(id)profile analysisWindowInterval:(double)interval keyValueDomain:(id)domain analyticsEventSubmissionManager:(id)manager
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  profileCopy = profile;
+  domainCopy = domain;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = HDHRHypertensionMeasurementAnalyzer;
   v13 = [(HDHRHypertensionMeasurementAnalyzer *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_profile, v10);
-    v14->_analysisWindowInterval = a4;
+    objc_storeWeak(&v13->_profile, profileCopy);
+    v14->_analysisWindowInterval = interval;
     v15 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCBB0]];
     measurementsType = v14->_measurementsType;
     v14->_measurementsType = v15;
 
-    objc_storeStrong(&v14->_syncedKeyValueDomain, a5);
-    objc_storeStrong(&v14->_analyticsEventSubmissionManager, a6);
+    objc_storeStrong(&v14->_syncedKeyValueDomain, domain);
+    objc_storeStrong(&v14->_analyticsEventSubmissionManager, manager);
   }
 
   return v14;
 }
 
-- (BOOL)performAnalysisWithStartDate:(id)a3 endDate:(id)a4 databaseTransactionContext:(id)a5 error:(id *)a6
+- (BOOL)performAnalysisWithStartDate:(id)date endDate:(id)endDate databaseTransactionContext:(id)context error:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v59 = a5;
-  v58 = v10;
-  [v10 timeIntervalSinceDate:v9];
+  dateCopy = date;
+  endDateCopy = endDate;
+  contextCopy = context;
+  v58 = endDateCopy;
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   v12 = v11;
   analysisWindowInterval = self->_analysisWindowInterval;
   _HKInitializeLogging();
@@ -74,7 +74,7 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v67 = self;
+    selfCopy = self;
     v68 = 2048;
     v69 = (v12 / analysisWindowInterval);
     _os_log_impl(&dword_229486000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Analyzing %ld analysis window(s)", buf, 0x16u);
@@ -86,12 +86,12 @@
     if (v40)
     {
       v41 = v40;
-      if (a6)
+      if (error)
       {
         v42 = v40;
         v15 = 0;
         v40 = v41;
-        *a6 = v41;
+        *error = v41;
       }
 
       else
@@ -113,7 +113,7 @@
     goto LABEL_47;
   }
 
-  v62 = [v9 dateByAddingTimeInterval:self->_analysisWindowInterval];
+  v62 = [dateCopy dateByAddingTimeInterval:self->_analysisWindowInterval];
   v61 = HDHRHypertensionNotificationsAnalysisResultForceHypertensionOverride();
   v15 = 0;
   v16 = 1;
@@ -122,12 +122,12 @@
   {
     if (v16 != 1)
     {
-      v18 = [v9 dateByAddingTimeInterval:self->_analysisWindowInterval];
+      v18 = [dateCopy dateByAddingTimeInterval:self->_analysisWindowInterval];
 
       v19 = [v18 dateByAddingTimeInterval:self->_analysisWindowInterval];
 
       v62 = v19;
-      v9 = v18;
+      dateCopy = v18;
     }
 
     _HKInitializeLogging();
@@ -136,20 +136,20 @@
     {
       v21 = HRLogSensitiveClassName();
       *buf = 138543874;
-      v67 = v21;
+      selfCopy = v21;
       v68 = 2112;
-      v69 = v9;
+      v69 = dateCopy;
       v70 = 2112;
       v71 = v62;
       _os_log_impl(&dword_229486000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Analyzing hypertension measurements with startDate: %@, endDate: %@", buf, 0x20u);
     }
 
-    v22 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v62];
+    v22 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:v62];
     if (v61)
     {
-      v23 = [v61 BOOLValue];
+      bOOLValue = [v61 BOOLValue];
       v24 = MEMORY[0x277CBEC10];
-      if (v23)
+      if (bOOLValue)
       {
         goto LABEL_11;
       }
@@ -172,7 +172,7 @@
     {
 LABEL_11:
       v64 = 0;
-      v25 = [(HDHRHypertensionMeasurementAnalyzer *)self _saveHypertensionEventSampleAndLastAnalysisDateAtomicallyWithDateInterval:v22 databaseTransactionContext:v59 error:&v64];
+      v25 = [(HDHRHypertensionMeasurementAnalyzer *)self _saveHypertensionEventSampleAndLastAnalysisDateAtomicallyWithDateInterval:v22 databaseTransactionContext:contextCopy error:&v64];
       v26 = v64;
       if ((v25 & 1) == 0)
       {
@@ -190,7 +190,7 @@ LABEL_11:
           goto LABEL_43;
         }
 
-        if (!a6)
+        if (!error)
         {
           goto LABEL_42;
         }
@@ -198,7 +198,7 @@ LABEL_11:
 LABEL_33:
         v48 = v45;
         v49 = 0;
-        *a6 = v46;
+        *error = v46;
         goto LABEL_44;
       }
 
@@ -213,15 +213,15 @@ LABEL_15:
       v33 = HRLogSensitiveClassName();
       v34 = HKSensitiveLogItem();
       *buf = 138543618;
-      v67 = v33;
+      selfCopy = v33;
       v68 = 2114;
       v69 = v34;
       _os_log_impl(&dword_229486000, v32, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@", buf, 0x16u);
     }
 
-    v35 = [v22 endDate];
+    endDate = [v22 endDate];
     v63 = 0;
-    v36 = [(HDKeyValueDomain *)self->_syncedKeyValueDomain setDate:v35 forKey:*MEMORY[0x277D12F08] error:&v63];
+    v36 = [(HDKeyValueDomain *)self->_syncedKeyValueDomain setDate:endDate forKey:*MEMORY[0x277D12F08] error:&v63];
     v26 = v63;
 
     if ((v36 & 1) == 0)
@@ -237,7 +237,7 @@ LABEL_15:
       v46 = v45;
       if (v45)
       {
-        if (a6)
+        if (error)
         {
           goto LABEL_33;
         }
@@ -273,9 +273,9 @@ LABEL_18:
   {
     v56 = HRLogSensitiveClassName();
     *buf = 138544130;
-    v67 = v56;
+    selfCopy = v56;
     v68 = 2112;
-    v69 = v9;
+    v69 = dateCopy;
     v70 = 2112;
     v71 = v62;
     v72 = 2112;
@@ -285,10 +285,10 @@ LABEL_18:
 
   v51 = v30;
   v46 = v51;
-  if (a6)
+  if (error)
   {
     v52 = v51;
-    *a6 = v46;
+    *error = v46;
   }
 
   else
@@ -435,18 +435,18 @@ id __75__HDHRHypertensionMeasurementAnalyzer__measurementsWithDateInterval_error
   return v7;
 }
 
-- (uint64_t)_analyzeMeasurementsWithDateInterval:(void *)a3 error:
+- (uint64_t)_analyzeMeasurementsWithDateInterval:(void *)interval error:
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v14 = 0;
-    v6 = [(HDHRHypertensionMeasurementAnalyzer *)a1 _measurementsWithDateInterval:v5 error:&v14];
+    v6 = [(HDHRHypertensionMeasurementAnalyzer *)self _measurementsWithDateInterval:v5 error:&v14];
     v7 = v14;
     if (v6)
     {
-      a1 = [MEMORY[0x277D0FC70] analyzeMeasurements:v6 forDateInterval:v5];
+      self = [MEMORY[0x277D0FC70] analyzeMeasurements:v6 forDateInterval:v5];
     }
 
     else
@@ -466,10 +466,10 @@ id __75__HDHRHypertensionMeasurementAnalyzer__measurementsWithDateInterval_error
       v9 = v7;
       if (v9)
       {
-        if (a3)
+        if (interval)
         {
           v10 = v9;
-          *a3 = v9;
+          *interval = v9;
         }
 
         else
@@ -478,29 +478,29 @@ id __75__HDHRHypertensionMeasurementAnalyzer__measurementsWithDateInterval_error
         }
       }
 
-      a1 = MEMORY[0x277CBEC10];
+      self = MEMORY[0x277CBEC10];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (uint64_t)_saveHypertensionEventSampleAndLastAnalysisDateAtomicallyWithDateInterval:(void *)a3 databaseTransactionContext:(uint64_t)a4 error:
+- (uint64_t)_saveHypertensionEventSampleAndLastAnalysisDateAtomicallyWithDateInterval:(void *)interval databaseTransactionContext:(uint64_t)context error:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = [a3 copyForWritingProtectedData];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v10 = [WeakRetained database];
+    copyForWritingProtectedData = [interval copyForWritingProtectedData];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    database = [WeakRetained database];
     OUTLINED_FUNCTION_2_3();
     v13[1] = 3221225472;
     v13[2] = __146__HDHRHypertensionMeasurementAnalyzer__saveHypertensionEventSampleAndLastAnalysisDateAtomicallyWithDateInterval_databaseTransactionContext_error___block_invoke;
     v13[3] = &unk_278660F68;
-    v13[4] = a1;
+    v13[4] = self;
     v14 = v7;
-    v11 = [v10 performWithTransactionContext:v8 error:a4 block:v13];
+    v11 = [database performWithTransactionContext:copyForWritingProtectedData error:context block:v13];
   }
 
   else
@@ -511,26 +511,26 @@ id __75__HDHRHypertensionMeasurementAnalyzer__measurementsWithDateInterval_error
   return v11;
 }
 
-- (uint64_t)_saveHypertensionEventSampleWithDateInterval:(uint64_t)a3 error:
+- (uint64_t)_saveHypertensionEventSampleWithDateInterval:(uint64_t)interval error:
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x277CCD0C0];
     v6 = *MEMORY[0x277CCB9C8];
     v7 = a2;
     v8 = [v5 categoryTypeForIdentifier:v6];
     v9 = MEMORY[0x277CCD0B0];
-    v10 = [v7 startDate];
-    v11 = [v7 endDate];
+    startDate = [v7 startDate];
+    endDate = [v7 endDate];
 
-    v12 = [v9 categorySampleWithType:v8 value:0 startDate:v10 endDate:v11];
+    v12 = [v9 categorySampleWithType:v8 value:0 startDate:startDate endDate:endDate];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v14 = [WeakRetained dataManager];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    dataManager = [WeakRetained dataManager];
     v19[0] = v12;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v16 = [v14 insertDataObjects:v15 error:a3];
+    v16 = [dataManager insertDataObjects:v15 error:interval];
   }
 
   else
@@ -542,16 +542,16 @@ id __75__HDHRHypertensionMeasurementAnalyzer__measurementsWithDateInterval_error
   return v16;
 }
 
-- (id)_measurementsWithDateInterval:(void *)a3 error:
+- (id)_measurementsWithDateInterval:(void *)interval error:
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 24);
+    v5 = *(self + 24);
     v6 = HDSampleEntityPredicateForDateInterval();
     v7 = MEMORY[0x277D10848];
-    v8 = *(a1 + 24);
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    v8 = *(self + 24);
+    WeakRetained = objc_loadWeakRetained((self + 8));
     v10 = [v7 entityEnumeratorWithType:v8 profile:WeakRetained];
 
     [v10 setPredicate:v6];
@@ -583,10 +583,10 @@ id __75__HDHRHypertensionMeasurementAnalyzer__measurementsWithDateInterval_error
       v18 = v15;
       if (v18)
       {
-        if (a3)
+        if (interval)
         {
           v19 = v18;
-          *a3 = v18;
+          *interval = v18;
         }
 
         else

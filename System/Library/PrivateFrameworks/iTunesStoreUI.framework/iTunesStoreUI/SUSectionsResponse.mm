@@ -1,10 +1,10 @@
 @interface SUSectionsResponse
 + (id)lastCachedVersionIdentifier;
 + (id)sectionsCacheDirectory;
-+ (void)setLastCachedVersionIdentifier:(id)a3;
-- (BOOL)_loadArtworkFromCacheDirectory:(id)a3;
++ (void)setLastCachedVersionIdentifier:(id)identifier;
+- (BOOL)_loadArtworkFromCacheDirectory:(id)directory;
 - (BOOL)shouldResetUserOrdering;
-- (BOOL)writeToCacheDirectory:(id)a3 error:(id *)a4;
+- (BOOL)writeToCacheDirectory:(id)directory error:(id *)error;
 - (NSArray)allSections;
 - (NSArray)sections;
 - (NSDictionary)sectionsDictionary;
@@ -13,19 +13,19 @@
 - (NSString)versionString;
 - (SSItemImageCollection)moreListImageCollection;
 - (SUSectionsResponse)init;
-- (SUSectionsResponse)initWithClientInterface:(id)a3 cacheDirectory:(id)a4;
-- (SUSectionsResponse)initWithClientInterface:(id)a3 sectionsDictionary:(id)a4 responseType:(int64_t)a5;
-- (id)_newImageForIdentifier:(id)a3 variant:(id)a4 cacheDirectory:(id)a5;
-- (id)_newSectionsFromDictionary:(id)a3;
-- (void)_applyDefaultSearchFieldConfigurationsToSections:(id)a3;
-- (void)_dropImageKeysFromArray:(id)a3;
-- (void)_dropImageKeysFromDictionary:(id)a3;
-- (void)_loadButtonArtworkForSection:(id)a3 buttons:(id)a4 cachePath:(id)a5;
-- (void)_writeButtonImagesForSection:(id)a3 buttons:(id)a4 cachePath:(id)a5;
-- (void)_writeImage:(id)a3 toCachePath:(id)a4 forIdentifier:(id)a5 variant:(id)a6;
+- (SUSectionsResponse)initWithClientInterface:(id)interface cacheDirectory:(id)directory;
+- (SUSectionsResponse)initWithClientInterface:(id)interface sectionsDictionary:(id)dictionary responseType:(int64_t)type;
+- (id)_newImageForIdentifier:(id)identifier variant:(id)variant cacheDirectory:(id)directory;
+- (id)_newSectionsFromDictionary:(id)dictionary;
+- (void)_applyDefaultSearchFieldConfigurationsToSections:(id)sections;
+- (void)_dropImageKeysFromArray:(id)array;
+- (void)_dropImageKeysFromDictionary:(id)dictionary;
+- (void)_loadButtonArtworkForSection:(id)section buttons:(id)buttons cachePath:(id)path;
+- (void)_writeButtonImagesForSection:(id)section buttons:(id)buttons cachePath:(id)path;
+- (void)_writeImage:(id)image toCachePath:(id)path forIdentifier:(id)identifier variant:(id)variant;
 - (void)dealloc;
-- (void)setShouldResetUserOrdering:(BOOL)a3;
-- (void)setStoreFrontIdentifier:(id)a3;
+- (void)setShouldResetUserOrdering:(BOOL)ordering;
+- (void)setStoreFrontIdentifier:(id)identifier;
 @end
 
 @implementation SUSectionsResponse
@@ -37,12 +37,12 @@
   return [(SUSectionsResponse *)self initWithClientInterface:v3 sectionsDictionary:0 responseType:0];
 }
 
-- (SUSectionsResponse)initWithClientInterface:(id)a3 cacheDirectory:(id)a4
+- (SUSectionsResponse)initWithClientInterface:(id)interface cacheDirectory:(id)directory
 {
-  v7 = [a4 stringByAppendingPathComponent:@"Sections.plist"];
+  v7 = [directory stringByAppendingPathComponent:@"Sections.plist"];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v7];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = [(SUSectionsResponse *)self initWithClientInterface:a3 sectionsDictionary:v8 responseType:0], (self = v9) != 0) && (![(NSArray *)[(SUSectionsResponse *)v9 allSections] count]|| ![(SUSectionsResponse *)self _loadArtworkFromCacheDirectory:a4]))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = [(SUSectionsResponse *)self initWithClientInterface:interface sectionsDictionary:v8 responseType:0], (self = v9) != 0) && (![(NSArray *)[(SUSectionsResponse *)v9 allSections] count]|| ![(SUSectionsResponse *)self _loadArtworkFromCacheDirectory:directory]))
   {
 
     self = 0;
@@ -51,16 +51,16 @@
   return self;
 }
 
-- (SUSectionsResponse)initWithClientInterface:(id)a3 sectionsDictionary:(id)a4 responseType:(int64_t)a5
+- (SUSectionsResponse)initWithClientInterface:(id)interface sectionsDictionary:(id)dictionary responseType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = SUSectionsResponse;
   v8 = [(SUSectionsResponse *)&v10 init];
   if (v8)
   {
-    v8->_clientInterface = a3;
-    v8->_rawResponseDictionary = [a4 mutableCopy];
-    v8->_responseType = a5;
+    v8->_clientInterface = interface;
+    v8->_rawResponseDictionary = [dictionary mutableCopy];
+    v8->_responseType = type;
     v8->_sectionsCache = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
@@ -76,9 +76,9 @@
 
 + (id)lastCachedVersionIdentifier
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-  return [v2 stringForKey:@"SULastSectionsVersion:7.1"];
+  return [standardUserDefaults stringForKey:@"SULastSectionsVersion:7.1"];
 }
 
 + (id)sectionsCacheDirectory
@@ -95,19 +95,19 @@
   return result;
 }
 
-+ (void)setLastCachedVersionIdentifier:(id)a3
++ (void)setLastCachedVersionIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-  [v4 setObject:a3 forKey:@"SULastSectionsVersion:7.1"];
+  [standardUserDefaults setObject:identifier forKey:@"SULastSectionsVersion:7.1"];
 }
 
 - (NSArray)allSections
 {
   v3 = [objc_alloc(MEMORY[0x1E69D4990]) initWithDictionary:self->_rawResponseDictionary];
-  v4 = [v3 dictionaryByRemovingConditions];
+  dictionaryByRemovingConditions = [v3 dictionaryByRemovingConditions];
 
-  v5 = [(SUSectionsResponse *)self _newSectionsFromDictionary:v4];
+  v5 = [(SUSectionsResponse *)self _newSectionsFromDictionary:dictionaryByRemovingConditions];
 
   return v5;
 }
@@ -153,23 +153,23 @@
 - (NSDictionary)sectionsDictionary
 {
   v2 = [objc_alloc(MEMORY[0x1E69D4990]) initWithDictionary:self->_rawResponseDictionary];
-  v3 = [v2 dictionaryByEvaluatingConditions];
+  dictionaryByEvaluatingConditions = [v2 dictionaryByEvaluatingConditions];
 
-  return v3;
+  return dictionaryByEvaluatingConditions;
 }
 
-- (void)setShouldResetUserOrdering:(BOOL)a3
+- (void)setShouldResetUserOrdering:(BOOL)ordering
 {
-  v3 = a3;
+  orderingCopy = ordering;
 
-  self->_shouldResetUserOrdering = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v3];
+  self->_shouldResetUserOrdering = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:orderingCopy];
 }
 
-- (void)setStoreFrontIdentifier:(id)a3
+- (void)setStoreFrontIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     [(NSMutableDictionary *)self->_rawResponseDictionary setObject:v5 forKey:@"store-front-id"];
   }
 
@@ -236,26 +236,26 @@
   }
 }
 
-- (BOOL)writeToCacheDirectory:(id)a3 error:(id *)a4
+- (BOOL)writeToCacheDirectory:(id)directory error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   v35 = 0;
   v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:self->_rawResponseDictionary format:200 options:0 error:&v35];
-  if (v6 && (v7 = v6, v8 = [a3 stringByAppendingPathComponent:@"Sections.plist"], objc_msgSend(v7, "writeToFile:options:error:", v8, 0, &v35)))
+  if (v6 && (v7 = v6, v8 = [directory stringByAppendingPathComponent:@"Sections.plist"], objc_msgSend(v7, "writeToFile:options:error:", v8, 0, &v35)))
   {
-    v9 = [MEMORY[0x1E69D4938] sharedConfig];
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v11 &= 2u;
     }
@@ -288,12 +288,12 @@
     v29 = 0;
   }
 
-  v16 = [(SUSectionsResponse *)self allSections];
+  allSections = [(SUSectionsResponse *)self allSections];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v17 = [(NSArray *)v16 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v17 = [(NSArray *)allSections countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v17)
   {
     v18 = v17;
@@ -304,24 +304,24 @@
       {
         if (*v32 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allSections);
         }
 
         v21 = *(*(&v31 + 1) + 8 * i);
-        v22 = [v21 identifier];
-        if (v22)
+        identifier = [v21 identifier];
+        if (identifier)
         {
-          v23 = v22;
-          -[SUSectionsResponse _writeImage:toCachePath:forIdentifier:variant:](self, "_writeImage:toCachePath:forIdentifier:variant:", [v21 image], a3, v22, 0);
-          -[SUSectionsResponse _writeImage:toCachePath:forIdentifier:variant:](self, "_writeImage:toCachePath:forIdentifier:variant:", [v21 moreListImage], a3, v23, @"-More");
-          -[SUSectionsResponse _writeImage:toCachePath:forIdentifier:variant:](self, "_writeImage:toCachePath:forIdentifier:variant:", [v21 selectedImage], a3, v23, @"-Selected");
-          -[SUSectionsResponse _writeImage:toCachePath:forIdentifier:variant:](self, "_writeImage:toCachePath:forIdentifier:variant:", [v21 selectedMoreListImage], a3, v23, @"-MoreSelected");
-          -[SUSectionsResponse _writeButtonImagesForSection:buttons:cachePath:](self, "_writeButtonImagesForSection:buttons:cachePath:", v21, [v21 leftSectionButtons], a3);
-          -[SUSectionsResponse _writeButtonImagesForSection:buttons:cachePath:](self, "_writeButtonImagesForSection:buttons:cachePath:", v21, [v21 rightSectionButtons], a3);
+          v23 = identifier;
+          -[SUSectionsResponse _writeImage:toCachePath:forIdentifier:variant:](self, "_writeImage:toCachePath:forIdentifier:variant:", [v21 image], directory, identifier, 0);
+          -[SUSectionsResponse _writeImage:toCachePath:forIdentifier:variant:](self, "_writeImage:toCachePath:forIdentifier:variant:", [v21 moreListImage], directory, v23, @"-More");
+          -[SUSectionsResponse _writeImage:toCachePath:forIdentifier:variant:](self, "_writeImage:toCachePath:forIdentifier:variant:", [v21 selectedImage], directory, v23, @"-Selected");
+          -[SUSectionsResponse _writeImage:toCachePath:forIdentifier:variant:](self, "_writeImage:toCachePath:forIdentifier:variant:", [v21 selectedMoreListImage], directory, v23, @"-MoreSelected");
+          -[SUSectionsResponse _writeButtonImagesForSection:buttons:cachePath:](self, "_writeButtonImagesForSection:buttons:cachePath:", v21, [v21 leftSectionButtons], directory);
+          -[SUSectionsResponse _writeButtonImagesForSection:buttons:cachePath:](self, "_writeButtonImagesForSection:buttons:cachePath:", v21, [v21 rightSectionButtons], directory);
         }
       }
 
-      v18 = [(NSArray *)v16 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v18 = [(NSArray *)allSections countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v18);
@@ -330,24 +330,24 @@
   moreListImage = self->_moreListImage;
   if (moreListImage)
   {
-    [(SUSectionsResponse *)self _writeImage:moreListImage toCachePath:a3 forIdentifier:@"more" variant:0];
+    [(SUSectionsResponse *)self _writeImage:moreListImage toCachePath:directory forIdentifier:@"more" variant:0];
   }
 
   moreListSelectedImage = self->_moreListSelectedImage;
   if (moreListSelectedImage)
   {
-    [(SUSectionsResponse *)self _writeImage:moreListSelectedImage toCachePath:a3 forIdentifier:@"more" variant:@"-Selected"];
+    [(SUSectionsResponse *)self _writeImage:moreListSelectedImage toCachePath:directory forIdentifier:@"more" variant:@"-Selected"];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v35;
+    *error = v35;
   }
 
   return v29;
 }
 
-- (void)_applyDefaultSearchFieldConfigurationsToSections:(id)a3
+- (void)_applyDefaultSearchFieldConfigurationsToSections:(id)sections
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = [SUSearchFieldConfiguration defaultConfigurationWithClientInterface:self->_clientInterface];
@@ -356,7 +356,7 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [sections countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -367,7 +367,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(sections);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -389,23 +389,23 @@ LABEL_11:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [sections countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_dropImageKeysFromArray:(id)a3
+- (void)_dropImageKeysFromArray:(id)array
 {
-  v5 = [a3 count];
+  v5 = [array count];
   if (v5 >= 1)
   {
     v6 = v5;
     v7 = 0;
     while (1)
     {
-      v8 = [a3 objectAtIndex:v7];
+      v8 = [array objectAtIndex:v7];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -430,25 +430,25 @@ LABEL_8:
     v9 = [v8 mutableCopy];
     [(SUSectionsResponse *)self _dropImageKeysFromDictionary:v9];
 LABEL_7:
-    [a3 replaceObjectAtIndex:v7 withObject:v9];
+    [array replaceObjectAtIndex:v7 withObject:v9];
 
     goto LABEL_8;
   }
 }
 
-- (void)_dropImageKeysFromDictionary:(id)a3
+- (void)_dropImageKeysFromDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  [a3 removeObjectForKey:@"artwork-urls"];
-  [a3 removeObjectForKey:@"more-list-artwork"];
-  [a3 removeObjectForKey:@"image-url"];
-  [a3 removeObjectForKey:@"image-url@2x"];
-  v5 = [a3 allKeys];
+  [dictionary removeObjectForKey:@"artwork-urls"];
+  [dictionary removeObjectForKey:@"more-list-artwork"];
+  [dictionary removeObjectForKey:@"image-url"];
+  [dictionary removeObjectForKey:@"image-url@2x"];
+  allKeys = [dictionary allKeys];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -459,11 +459,11 @@ LABEL_7:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [a3 objectForKey:v10];
+        v11 = [dictionary objectForKey:v10];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -483,17 +483,17 @@ LABEL_7:
           [(SUSectionsResponse *)self _dropImageKeysFromArray:v12];
         }
 
-        [a3 setObject:v12 forKey:v10];
+        [dictionary setObject:v12 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)_loadArtworkFromCacheDirectory:(id)a3
+- (BOOL)_loadArtworkFromCacheDirectory:(id)directory
 {
   v35 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -517,15 +517,15 @@ LABEL_7:
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        if (v10)
+        identifier = [v9 identifier];
+        if (identifier)
         {
-          v11 = [(SUSectionsResponse *)self _newImageForIdentifier:v10 variant:&stru_1F41B3660 cacheDirectory:a3];
-          v12 = [(SUSectionsResponse *)self _newImageForIdentifier:v10 variant:@"-More" cacheDirectory:a3];
-          v13 = [(SUSectionsResponse *)self _newImageForIdentifier:v10 variant:@"-Selected" cacheDirectory:a3];
-          v10 = [(SUSectionsResponse *)self _newImageForIdentifier:v10 variant:@"-MoreSelected" cacheDirectory:a3];
-          -[SUSectionsResponse _loadButtonArtworkForSection:buttons:cachePath:](self, "_loadButtonArtworkForSection:buttons:cachePath:", v9, [v9 leftSectionButtons], a3);
-          -[SUSectionsResponse _loadButtonArtworkForSection:buttons:cachePath:](self, "_loadButtonArtworkForSection:buttons:cachePath:", v9, [v9 rightSectionButtons], a3);
+          v11 = [(SUSectionsResponse *)self _newImageForIdentifier:identifier variant:&stru_1F41B3660 cacheDirectory:directory];
+          v12 = [(SUSectionsResponse *)self _newImageForIdentifier:identifier variant:@"-More" cacheDirectory:directory];
+          v13 = [(SUSectionsResponse *)self _newImageForIdentifier:identifier variant:@"-Selected" cacheDirectory:directory];
+          identifier = [(SUSectionsResponse *)self _newImageForIdentifier:identifier variant:@"-MoreSelected" cacheDirectory:directory];
+          -[SUSectionsResponse _loadButtonArtworkForSection:buttons:cachePath:](self, "_loadButtonArtworkForSection:buttons:cachePath:", v9, [v9 leftSectionButtons], directory);
+          -[SUSectionsResponse _loadButtonArtworkForSection:buttons:cachePath:](self, "_loadButtonArtworkForSection:buttons:cachePath:", v9, [v9 rightSectionButtons], directory);
         }
 
         else
@@ -537,7 +537,7 @@ LABEL_7:
 
         [v9 setMoreListImage:v12];
         [v9 setSelectedImage:v13];
-        [v9 setSelectedMoreListImage:v10];
+        [v9 setSelectedMoreListImage:identifier];
 
         if (v11)
         {
@@ -546,19 +546,19 @@ LABEL_7:
 
         else
         {
-          v14 = [MEMORY[0x1E69D4938] sharedConfig];
-          v15 = [v14 shouldLog];
-          if ([v14 shouldLogToDisk])
+          mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+          if ([mEMORY[0x1E69D4938] shouldLogToDisk])
           {
-            v16 = v15 | 2;
+            v16 = shouldLog | 2;
           }
 
           else
           {
-            v16 = v15;
+            v16 = shouldLog;
           }
 
-          if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
+          if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
           {
             v16 &= 2u;
           }
@@ -598,21 +598,21 @@ LABEL_7:
     v24 = 1;
   }
 
-  self->_moreListImage = [(SUSectionsResponse *)self _newImageForIdentifier:@"more" variant:&stru_1F41B3660 cacheDirectory:a3, v22];
-  self->_moreListSelectedImage = [(SUSectionsResponse *)self _newImageForIdentifier:@"more" variant:@"-Selected" cacheDirectory:a3];
+  self->_moreListImage = [(SUSectionsResponse *)self _newImageForIdentifier:@"more" variant:&stru_1F41B3660 cacheDirectory:directory, v22];
+  self->_moreListSelectedImage = [(SUSectionsResponse *)self _newImageForIdentifier:@"more" variant:@"-Selected" cacheDirectory:directory];
   return v24 & 1;
 }
 
-- (void)_loadButtonArtworkForSection:(id)a3 buttons:(id)a4 cachePath:(id)a5
+- (void)_loadButtonArtworkForSection:(id)section buttons:(id)buttons cachePath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = [a3 identifier];
+  identifier = [section identifier];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a4;
-  v10 = [a4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  obj = buttons;
+  v10 = [buttons countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -628,8 +628,8 @@ LABEL_7:
 
         v14 = *(*(&v18 + 1) + 8 * i);
         v15 = [(SUSectionsResponse *)self _newVariantStringForButton:v14];
-        v16 = [(SUSectionsResponse *)self _newImageForIdentifier:v9 variant:v15 cacheDirectory:a5];
-        [a3 setSectionButtonImage:v16 forTag:{objc_msgSend(v14, "tag")}];
+        v16 = [(SUSectionsResponse *)self _newImageForIdentifier:identifier variant:v15 cacheDirectory:path];
+        [section setSectionButtonImage:v16 forTag:{objc_msgSend(v14, "tag")}];
       }
 
       v11 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -639,14 +639,14 @@ LABEL_7:
   }
 }
 
-- (id)_newImageForIdentifier:(id)a3 variant:(id)a4 cacheDirectory:(id)a5
+- (id)_newImageForIdentifier:(id)identifier variant:(id)variant cacheDirectory:(id)directory
 {
   [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
-  if (v8 != 2.0 || (v9 = [objc_msgSend(a3 stringByAppendingFormat:@"%@@2x", a4), "stringByAppendingPathExtension:", @"png"], (result = objc_msgSend(objc_alloc(MEMORY[0x1E69DCAB8]), "initWithContentsOfFile:", objc_msgSend(a5, "stringByAppendingPathComponent:", v9))) == 0))
+  if (v8 != 2.0 || (v9 = [objc_msgSend(identifier stringByAppendingFormat:@"%@@2x", variant), "stringByAppendingPathExtension:", @"png"], (result = objc_msgSend(objc_alloc(MEMORY[0x1E69DCAB8]), "initWithContentsOfFile:", objc_msgSend(directory, "stringByAppendingPathComponent:", v9))) == 0))
   {
-    v11 = [objc_msgSend(a3 stringByAppendingString:{a4), "stringByAppendingPathExtension:", @"png"}];
+    v11 = [objc_msgSend(identifier stringByAppendingString:{variant), "stringByAppendingPathExtension:", @"png"}];
     v12 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v13 = [a5 stringByAppendingPathComponent:v11];
+    v13 = [directory stringByAppendingPathComponent:v11];
 
     return [v12 initWithContentsOfFile:v13];
   }
@@ -654,11 +654,11 @@ LABEL_7:
   return result;
 }
 
-- (id)_newSectionsFromDictionary:(id)a3
+- (id)_newSectionsFromDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [a3 objectForKey:@"search-field"];
+  v6 = [dictionary objectForKey:@"search-field"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -670,7 +670,7 @@ LABEL_7:
     v21 = 0;
   }
 
-  v7 = [a3 objectForKey:@"tabs"];
+  v7 = [dictionary objectForKey:@"tabs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -747,15 +747,15 @@ LABEL_22:
   return v5;
 }
 
-- (void)_writeButtonImagesForSection:(id)a3 buttons:(id)a4 cachePath:(id)a5
+- (void)_writeButtonImagesForSection:(id)section buttons:(id)buttons cachePath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = [a3 identifier];
+  identifier = [section identifier];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [buttons countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -766,59 +766,59 @@ LABEL_22:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(buttons);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [a3 imageForSectionButtonWithTag:{objc_msgSend(v14, "tag")}];
+        v15 = [section imageForSectionButtonWithTag:{objc_msgSend(v14, "tag")}];
         if (v15)
         {
           v16 = v15;
           v17 = [(SUSectionsResponse *)self _newVariantStringForButton:v14];
-          [(SUSectionsResponse *)self _writeImage:v16 toCachePath:a5 forIdentifier:v9 variant:v17];
+          [(SUSectionsResponse *)self _writeImage:v16 toCachePath:path forIdentifier:identifier variant:v17];
         }
       }
 
-      v11 = [a4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [buttons countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)_writeImage:(id)a3 toCachePath:(id)a4 forIdentifier:(id)a5 variant:(id)a6
+- (void)_writeImage:(id)image toCachePath:(id)path forIdentifier:(id)identifier variant:(id)variant
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (image)
   {
-    v6 = a5;
-    if (a6)
+    identifierCopy = identifier;
+    if (variant)
     {
-      v6 = [a5 stringByAppendingString:a6];
+      identifierCopy = [identifier stringByAppendingString:variant];
     }
 
-    [a3 scale];
+    [image scale];
     if (v9 == 2.0)
     {
-      v6 = [v6 stringByAppendingString:@"@2x"];
+      identifierCopy = [identifierCopy stringByAppendingString:@"@2x"];
     }
 
-    v10 = [a4 stringByAppendingPathComponent:{objc_msgSend(v6, "stringByAppendingPathExtension:", @"png"}];
-    if ([(NSData *)UIImagePNGRepresentation(a3) writeToFile:v10 options:0 error:0])
+    v10 = [path stringByAppendingPathComponent:{objc_msgSend(identifierCopy, "stringByAppendingPathExtension:", @"png"}];
+    if ([(NSData *)UIImagePNGRepresentation(image) writeToFile:v10 options:0 error:0])
     {
-      v11 = [MEMORY[0x1E69D4938] sharedConfig];
-      v12 = [v11 shouldLog];
-      if ([v11 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
       {
         v13 &= 2u;
       }

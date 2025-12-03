@@ -1,34 +1,34 @@
 @interface PUWallpaperPosterShuffleGridViewController
 - (BOOL)_canAddMorePhotos;
-- (BOOL)photosContentController:(id)a3 pushViewController:(id)a4;
-- (BOOL)photosViewController:(id)a3 didPickAssetReference:(id)a4;
-- (CGRect)preferredCropForAsset:(id)a3 withAspectRatio:(double)a4;
-- (PUWallpaperPosterShuffleGridViewController)initWithCoder:(id)a3;
-- (PUWallpaperPosterShuffleGridViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PUWallpaperPosterShuffleGridViewController)initWithResourceManager:(id)a3 posterMedia:(id)a4;
+- (BOOL)photosContentController:(id)controller pushViewController:(id)viewController;
+- (BOOL)photosViewController:(id)controller didPickAssetReference:(id)reference;
+- (CGRect)preferredCropForAsset:(id)asset withAspectRatio:(double)ratio;
+- (PUWallpaperPosterShuffleGridViewController)initWithCoder:(id)coder;
+- (PUWallpaperPosterShuffleGridViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PUWallpaperPosterShuffleGridViewController)initWithResourceManager:(id)manager posterMedia:(id)media;
 - (PUWallpaperPosterShuffleGridViewControllerDelegate)delegate;
-- (UIEdgeInsets)maskPaddingForContentController:(id)a3;
-- (id)_fetchResultWithAssetsFetchedFromPosterMedia:(id)a3;
+- (UIEdgeInsets)maskPaddingForContentController:(id)controller;
+- (id)_fetchResultWithAssetsFetchedFromPosterMedia:(id)media;
 - (void)_createBarButtonItemsIfNeeded;
 - (void)_exitSelectMode;
-- (void)_finishWithSelectedPosterMedia:(id)a3;
-- (void)_handleAddPhotos:(id)a3;
-- (void)_handleDeselectAll:(id)a3;
-- (void)_handleEnterSelectMode:(id)a3;
-- (void)_handleRemovePhotos:(id)a3;
-- (void)_handleSelectAll:(id)a3;
+- (void)_finishWithSelectedPosterMedia:(id)media;
+- (void)_handleAddPhotos:(id)photos;
+- (void)_handleDeselectAll:(id)all;
+- (void)_handleEnterSelectMode:(id)mode;
+- (void)_handleRemovePhotos:(id)photos;
+- (void)_handleSelectAll:(id)all;
 - (void)_setNeedsUpdate;
 - (void)_updateBarItems;
 - (void)_updateDataSource;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
-- (void)setGridContentController:(id)a3;
-- (void)setGridViewModel:(id)a3;
-- (void)setPosterMedia:(id)a3;
-- (void)setTungstenLayout:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
+- (void)setGridContentController:(id)controller;
+- (void)setGridViewModel:(id)model;
+- (void)setPosterMedia:(id)media;
+- (void)setTungstenLayout:(id)layout;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -41,18 +41,18 @@
   return WeakRetained;
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v5 = a4;
+  pickingCopy = picking;
   [(PUWallpaperPosterShuffleGridViewController *)self dismissViewControllerAnimated:1 completion:0];
-  if ([v5 count])
+  if ([pickingCopy count])
   {
     v6 = objc_alloc(MEMORY[0x1E695DFB8]);
     v7 = PXMap();
     v8 = [v6 initWithArray:v7];
 
     v9 = objc_alloc(MEMORY[0x1E695DFB8]);
-    v10 = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
+    posterMedia = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
     v11 = PXMap();
     v12 = [v9 initWithArray:v11];
 
@@ -60,12 +60,12 @@
     [v13 minusOrderedSet:v8];
     if ([v13 count])
     {
-      v14 = [(PUWallpaperPosterShuffleGridViewController *)self photoLibrary];
-      v15 = [v14 librarySpecificFetchOptions];
+      photoLibrary = [(PUWallpaperPosterShuffleGridViewController *)self photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
       v16 = MEMORY[0x1E6978630];
-      v17 = [v13 array];
-      v18 = [v16 fetchAssetsWithLocalIdentifiers:v17 options:v15];
+      array = [v13 array];
+      v18 = [v16 fetchAssetsWithLocalIdentifiers:array options:librarySpecificFetchOptions];
       v19 = PXMap();
 
       v20 = [v8 mutableCopy];
@@ -120,14 +120,14 @@ id __70__PUWallpaperPosterShuffleGridViewController_picker_didFinishPicking___bl
   return v4;
 }
 
-- (CGRect)preferredCropForAsset:(id)a3 withAspectRatio:(double)a4
+- (CGRect)preferredCropForAsset:(id)asset withAspectRatio:(double)ratio
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = *MEMORY[0x1E69C48E0];
   v7 = *(MEMORY[0x1E69C48E0] + 8);
   v8 = *(MEMORY[0x1E69C48E0] + 16);
   v9 = *(MEMORY[0x1E69C48E0] + 24);
-  v10 = v5;
+  v10 = assetCopy;
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
     v11 = 0;
@@ -141,8 +141,8 @@ LABEL_9:
 
   if (v11)
   {
-    v12 = [(PUWallpaperPosterShuffleGridViewController *)self px_screen];
-    [v12 bounds];
+    px_screen = [(PUWallpaperPosterShuffleGridViewController *)self px_screen];
+    [px_screen bounds];
     v14 = v13;
     v16 = v15;
 
@@ -178,17 +178,17 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)photosViewController:(id)a3 didPickAssetReference:(id)a4
+- (BOOL)photosViewController:(id)controller didPickAssetReference:(id)reference
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 asset];
+  controllerCopy = controller;
+  referenceCopy = reference;
+  asset = [referenceCopy asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
-    v14 = v9;
-    v11 = PXFind();
+    posterMedia = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
+    v14 = asset;
+    posterMedia2 = PXFind();
   }
 
   else
@@ -196,16 +196,16 @@ LABEL_10:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:472 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:472 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v11 = [v9 posterMedia];
+    posterMedia2 = [asset posterMedia];
   }
 
-  [(PUWallpaperPosterShuffleGridViewController *)self _finishWithSelectedPosterMedia:v11];
+  [(PUWallpaperPosterShuffleGridViewController *)self _finishWithSelectedPosterMedia:posterMedia2];
 
   return 1;
 }
@@ -219,7 +219,7 @@ uint64_t __89__PUWallpaperPosterShuffleGridViewController_photosViewController_d
   return v5;
 }
 
-- (UIEdgeInsets)maskPaddingForContentController:(id)a3
+- (UIEdgeInsets)maskPaddingForContentController:(id)controller
 {
   v3 = *MEMORY[0x1E69C48A0];
   v4 = *(MEMORY[0x1E69C48A0] + 8);
@@ -232,53 +232,53 @@ uint64_t __89__PUWallpaperPosterShuffleGridViewController_photosViewController_d
   return result;
 }
 
-- (BOOL)photosContentController:(id)a3 pushViewController:(id)a4
+- (BOOL)photosContentController:(id)controller pushViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(PUWallpaperPosterShuffleGridViewController *)self navigationController];
+  viewControllerCopy = viewController;
+  navigationController = [(PUWallpaperPosterShuffleGridViewController *)self navigationController];
 
-  if (v6)
+  if (navigationController)
   {
-    v7 = [(PUWallpaperPosterShuffleGridViewController *)self navigationController];
-    [v7 pushViewController:v5 animated:1];
+    navigationController2 = [(PUWallpaperPosterShuffleGridViewController *)self navigationController];
+    [navigationController2 pushViewController:viewControllerCopy animated:1];
   }
 
-  return v6 != 0;
+  return navigationController != 0;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (GridViewModelObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (GridViewModelObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:424 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:424 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 6) != 0)
+  if ((changeCopy & 6) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PUWallpaperPosterShuffleGridViewController *)self _invalidateBarItems];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (id)_fetchResultWithAssetsFetchedFromPosterMedia:(id)a3
+- (id)_fetchResultWithAssetsFetchedFromPosterMedia:(id)media
 {
-  v4 = a3;
+  mediaCopy = media;
   v5 = PXMap();
-  v6 = [(PUWallpaperPosterShuffleGridViewController *)self photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  photoLibrary = [(PUWallpaperPosterShuffleGridViewController *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v8 = [MEMORY[0x1E6978630] fetchAssetsWithLocalIdentifiers:v5 options:v7];
-  v9 = [v8 fetchedObjects];
+  v8 = [MEMORY[0x1E6978630] fetchAssetsWithLocalIdentifiers:v5 options:librarySpecificFetchOptions];
+  fetchedObjects = [v8 fetchedObjects];
 
   v10 = objc_alloc(MEMORY[0x1E695DF20]);
   v11 = PXMap();
-  v12 = [v10 initWithObjects:v9 forKeys:v11];
+  v12 = [v10 initWithObjects:fetchedObjects forKeys:v11];
 
   v17 = v12;
   v13 = v12;
@@ -324,21 +324,21 @@ id __91__PUWallpaperPosterShuffleGridViewController__fetchResultWithAssetsFetche
 {
   v23[3] = *MEMORY[0x1E69E9840];
   [(PUWallpaperPosterShuffleGridViewController *)self _createBarButtonItemsIfNeeded];
-  v3 = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
-  v4 = [v3 selectionSnapshot];
-  v5 = [v3 isInSelectMode];
-  v6 = [v4 isAnyItemSelected];
-  v7 = [v4 areAllItemsSelected];
-  v8 = [v4 selectedIndexPaths];
-  v9 = [v8 count];
+  gridViewModel = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
+  selectionSnapshot = [gridViewModel selectionSnapshot];
+  isInSelectMode = [gridViewModel isInSelectMode];
+  isAnyItemSelected = [selectionSnapshot isAnyItemSelected];
+  areAllItemsSelected = [selectionSnapshot areAllItemsSelected];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v9 = [selectedIndexPaths count];
 
-  v10 = [v3 dataSourceManager];
-  v11 = [v10 dataSource];
-  v12 = [v11 totalNumberOfItems];
+  dataSourceManager = [gridViewModel dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  totalNumberOfItems = [dataSource totalNumberOfItems];
 
-  if (v5)
+  if (isInSelectMode)
   {
-    if (v6)
+    if (isAnyItemSelected)
     {
       v13 = PULocalizedString(@"REVIEW_COUNT_SELECTED_TITLE_TEXT");
       v21 = v9;
@@ -354,11 +354,11 @@ id __91__PUWallpaperPosterShuffleGridViewController__fetchResultWithAssetsFetche
     }
 
     p_selectAllBarButtonItem = &self->_selectAllBarButtonItem;
-    [(UIBarButtonItem *)self->_selectAllBarButtonItem setEnabled:v12 > 0, v21];
+    [(UIBarButtonItem *)self->_selectAllBarButtonItem setEnabled:totalNumberOfItems > 0, v21];
     v23[0] = *(&self->super.super.super.isa + *v15);
-    v17 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-    v23[1] = v17;
-    if (v7)
+    flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    v23[1] = flexibleSpaceItem;
+    if (areAllItemsSelected)
     {
       p_selectAllBarButtonItem = &self->_deselectAllBarButtonItem;
     }
@@ -371,19 +371,19 @@ id __91__PUWallpaperPosterShuffleGridViewController__fetchResultWithAssetsFetche
     v14 = PLLocalizedCountDescription();
     [(UIBarButtonItem *)self->_addPhotosBarButtonItem setEnabled:[(PUWallpaperPosterShuffleGridViewController *)self _canAddMorePhotos]];
     p_selectAllBarButtonItem = &self->_enterSelectModeBarButtonItem;
-    [(UIBarButtonItem *)self->_enterSelectModeBarButtonItem setEnabled:v12 > 0];
-    [(UIBarButtonItem *)self->_doneBarButtonItem setEnabled:v12 > 0];
+    [(UIBarButtonItem *)self->_enterSelectModeBarButtonItem setEnabled:totalNumberOfItems > 0];
+    [(UIBarButtonItem *)self->_doneBarButtonItem setEnabled:totalNumberOfItems > 0];
     v22[0] = self->_addPhotosBarButtonItem;
-    v17 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-    v22[1] = v17;
+    flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    v22[1] = flexibleSpaceItem;
     v18 = v22;
   }
 
   v18[2] = *p_selectAllBarButtonItem;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:? count:?];
 
-  v20 = [(PUWallpaperPosterShuffleGridViewController *)self navigationItem];
-  [v20 setRightBarButtonItem:self->_doneBarButtonItem];
+  navigationItem = [(PUWallpaperPosterShuffleGridViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:self->_doneBarButtonItem];
 
   [(PUWallpaperPosterShuffleGridViewController *)self setToolbarItems:v19 animated:1];
   [(PUWallpaperPosterShuffleGridViewController *)self setTitle:v14];
@@ -392,12 +392,12 @@ id __91__PUWallpaperPosterShuffleGridViewController__fetchResultWithAssetsFetche
 - (void)_updateDataSource
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
+  posterMedia = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
   v5 = MEMORY[0x1E6978650];
-  v6 = [(PUWallpaperPosterShuffleGridViewController *)self photoLibrary];
-  v7 = [v5 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:0 identifier:0 photoLibrary:v6];
+  photoLibrary = [(PUWallpaperPosterShuffleGridViewController *)self photoLibrary];
+  v7 = [v5 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:0 identifier:0 photoLibrary:photoLibrary];
 
-  v8 = [(PUWallpaperPosterShuffleGridViewController *)self _fetchResultWithAssetsFetchedFromPosterMedia:v4];
+  v8 = [(PUWallpaperPosterShuffleGridViewController *)self _fetchResultWithAssetsFetchedFromPosterMedia:posterMedia];
   v9 = objc_alloc(MEMORY[0x1E69C3A78]);
   v29[0] = v7;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
@@ -405,13 +405,13 @@ id __91__PUWallpaperPosterShuffleGridViewController__fetchResultWithAssetsFetche
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
   v12 = [v9 initWithAssetCollectionBySection:v10 assetsBySection:v11 curatedAssetsBySection:0 keyAssetsBySection:0 sectionContent:0];
 
-  v13 = [(PUWallpaperPosterShuffleGridViewController *)self gridContentController];
-  if (!v13)
+  gridContentController = [(PUWallpaperPosterShuffleGridViewController *)self gridContentController];
+  if (!gridContentController)
   {
-    v15 = [objc_alloc(MEMORY[0x1E69C3768]) initWithDataSource:v12];
+    dataSourceManager = [objc_alloc(MEMORY[0x1E69C3768]) initWithDataSource:v12];
     v16 = objc_alloc(MEMORY[0x1E69A2908]);
-    v17 = [(PUWallpaperPosterShuffleGridViewController *)self mediaProvider];
-    v18 = [v16 initWithDataSourceManager:v15 mediaProvider:v17 selectionManager:0 assetActionManager:0 assetCollectionActionManager:0];
+    mediaProvider = [(PUWallpaperPosterShuffleGridViewController *)self mediaProvider];
+    v18 = [v16 initWithDataSourceManager:dataSourceManager mediaProvider:mediaProvider selectionManager:0 assetActionManager:0 assetCollectionActionManager:0];
 
     [v18 setDelegate:self];
     [v18 setIsEmbedded:1];
@@ -428,22 +428,22 @@ id __91__PUWallpaperPosterShuffleGridViewController__fetchResultWithAssetsFetche
     [v18 setAllowedActions:*MEMORY[0x1E69A2940] & 0xFFFFFFFFFFFFFFFELL ^ 0x81];
     [v18 setAllowedBehaviors:0];
     v19 = objc_alloc(MEMORY[0x1E69A28F8]);
-    v20 = [(PUWallpaperPosterShuffleGridViewController *)self px_extendedTraitCollection];
-    v21 = [v19 initWithConfiguration:v18 traitCollection:v20];
+    px_extendedTraitCollection = [(PUWallpaperPosterShuffleGridViewController *)self px_extendedTraitCollection];
+    v21 = [v19 initWithConfiguration:v18 traitCollection:px_extendedTraitCollection];
     [(PUWallpaperPosterShuffleGridViewController *)self setGridContentController:v21];
 
     goto LABEL_6;
   }
 
-  v14 = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
-  v15 = [v14 dataSourceManager];
+  gridViewModel = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
+  dataSourceManager = [gridViewModel dataSourceManager];
 
-  if (!v15)
+  if (!dataSourceManager)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    [v22 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:343 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.gridViewModel.dataSourceManager", v24}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:343 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.gridViewModel.dataSourceManager", v24}];
 LABEL_9:
 
     goto LABEL_4;
@@ -452,52 +452,52 @@ LABEL_9:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = objc_opt_class();
     v24 = NSStringFromClass(v25);
-    v26 = [v15 px_descriptionForAssertionMessage];
-    v22 = v27;
-    [v27 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:343 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.gridViewModel.dataSourceManager", v24, v26}];
+    px_descriptionForAssertionMessage = [dataSourceManager px_descriptionForAssertionMessage];
+    currentHandler = currentHandler2;
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:343 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.gridViewModel.dataSourceManager", v24, px_descriptionForAssertionMessage}];
 
     goto LABEL_9;
   }
 
 LABEL_4:
-  [v15 setDataSource:v12 changeDetails:0];
+  [dataSourceManager setDataSource:v12 changeDetails:0];
 LABEL_6:
 }
 
 - (void)_setNeedsUpdate
 {
-  v2 = [(PUWallpaperPosterShuffleGridViewController *)self view];
-  [v2 setNeedsLayout];
+  view = [(PUWallpaperPosterShuffleGridViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)_handleDeselectAll:(id)a3
+- (void)_handleDeselectAll:(id)all
 {
-  v3 = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
-  [v3 performChanges:&__block_literal_global_331];
+  gridViewModel = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
+  [gridViewModel performChanges:&__block_literal_global_331];
 }
 
-- (void)_handleSelectAll:(id)a3
+- (void)_handleSelectAll:(id)all
 {
-  v3 = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
-  [v3 performChanges:&__block_literal_global_329];
+  gridViewModel = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
+  [gridViewModel performChanges:&__block_literal_global_329];
 }
 
-- (void)_handleEnterSelectMode:(id)a3
+- (void)_handleEnterSelectMode:(id)mode
 {
-  v3 = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
-  [v3 performChanges:&__block_literal_global_327];
+  gridViewModel = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
+  [gridViewModel performChanges:&__block_literal_global_327];
 }
 
-- (void)_handleRemovePhotos:(id)a3
+- (void)_handleRemovePhotos:(id)photos
 {
-  v5 = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
-  v6 = [v5 mutableCopy];
+  posterMedia = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
+  v6 = [posterMedia mutableCopy];
 
-  v7 = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
-  v8 = [v7 selectionSnapshot];
+  gridViewModel = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
+  selectionSnapshot = [gridViewModel selectionSnapshot];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -507,7 +507,7 @@ LABEL_6:
   v13 = a2;
   v11[4] = self;
   v9 = v6;
-  [v8 enumerateSelectedObjectsUsingBlock:v11];
+  [selectionSnapshot enumerateSelectedObjectsUsingBlock:v11];
   v10 = [v9 copy];
   [(PUWallpaperPosterShuffleGridViewController *)self setPosterMedia:v10];
 
@@ -626,24 +626,24 @@ uint64_t __66__PUWallpaperPosterShuffleGridViewController__handleRemovePhotos___
   return v5;
 }
 
-- (void)_handleAddPhotos:(id)a3
+- (void)_handleAddPhotos:(id)photos
 {
   v4 = objc_alloc(MEMORY[0x1E69790E0]);
-  v5 = [(PUWallpaperPosterShuffleGridViewController *)self photoLibrary];
-  v11 = [v4 initWithPhotoLibraryAndOnlyReturnsIdentifiers:v5];
+  photoLibrary = [(PUWallpaperPosterShuffleGridViewController *)self photoLibrary];
+  v11 = [v4 initWithPhotoLibraryAndOnlyReturnsIdentifiers:photoLibrary];
 
-  v6 = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
+  posterMedia = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
   v7 = PXMap();
   [v11 setPreselectedAssetIdentifiers:v7];
 
   [v11 setSelectionLimit:50];
-  v8 = [MEMORY[0x1E69790E8] imagesFilter];
-  [v11 setFilter:v8];
+  imagesFilter = [MEMORY[0x1E69790E8] imagesFilter];
+  [v11 setFilter:imagesFilter];
 
   [v11 setDisabledCapabilities:18];
   [v11 _setDisabledPrivateCapabilities:268];
-  v9 = [MEMORY[0x1E6979178] shuffleWallpaperSuggestionGroup];
-  [v11 set_suggestionGroup:v9];
+  shuffleWallpaperSuggestionGroup = [MEMORY[0x1E6979178] shuffleWallpaperSuggestionGroup];
+  [v11 set_suggestionGroup:shuffleWallpaperSuggestionGroup];
 
   v10 = [objc_alloc(MEMORY[0x1E69790F8]) initWithConfiguration:v11];
   [v10 setDelegate:self];
@@ -659,15 +659,15 @@ id __63__PUWallpaperPosterShuffleGridViewController__handleAddPhotos___block_inv
   return v4;
 }
 
-- (void)_finishWithSelectedPosterMedia:(id)a3
+- (void)_finishWithSelectedPosterMedia:(id)media
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
-  v6 = [(PUWallpaperPosterShuffleGridViewController *)self initialPosterMedia];
-  v8 = [v5 differenceFromOrderedSet:v6 withOptions:0 usingEquivalenceTest:&__block_literal_global_307];
+  mediaCopy = media;
+  posterMedia = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
+  initialPosterMedia = [(PUWallpaperPosterShuffleGridViewController *)self initialPosterMedia];
+  v8 = [posterMedia differenceFromOrderedSet:initialPosterMedia withOptions:0 usingEquivalenceTest:&__block_literal_global_307];
 
-  v7 = [(PUWallpaperPosterShuffleGridViewController *)self delegate];
-  [v7 wallpaperPosterShuffleGridViewController:self didFinishWithChange:v8 selectedPosterMedia:v4];
+  delegate = [(PUWallpaperPosterShuffleGridViewController *)self delegate];
+  [delegate wallpaperPosterShuffleGridViewController:self didFinishWithChange:v8 selectedPosterMedia:mediaCopy];
 }
 
 uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPosterMedia___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -682,14 +682,14 @@ uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPos
 
 - (void)_exitSelectMode
 {
-  v2 = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
-  [v2 performChanges:&__block_literal_global_12808];
+  gridViewModel = [(PUWallpaperPosterShuffleGridViewController *)self gridViewModel];
+  [gridViewModel performChanges:&__block_literal_global_12808];
 }
 
 - (BOOL)_canAddMorePhotos
 {
-  v2 = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
-  v3 = [v2 count] < 0x32;
+  posterMedia = [(PUWallpaperPosterShuffleGridViewController *)self posterMedia];
+  v3 = [posterMedia count] < 0x32;
 
   return v3;
 }
@@ -714,9 +714,9 @@ uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPos
     removePhotosBarButtonItem = self->_removePhotosBarButtonItem;
     self->_removePhotosBarButtonItem = v11;
 
-    v13 = [MEMORY[0x1E69DC708] px_localizedSelectBarButtonItem];
+    px_localizedSelectBarButtonItem = [MEMORY[0x1E69DC708] px_localizedSelectBarButtonItem];
     enterSelectModeBarButtonItem = self->_enterSelectModeBarButtonItem;
-    self->_enterSelectModeBarButtonItem = v13;
+    self->_enterSelectModeBarButtonItem = px_localizedSelectBarButtonItem;
 
     [(UIBarButtonItem *)self->_enterSelectModeBarButtonItem setTarget:self];
     [(UIBarButtonItem *)self->_enterSelectModeBarButtonItem setAction:sel__handleEnterSelectMode_];
@@ -724,15 +724,15 @@ uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPos
     exitSelectModeBarButtonItem = self->_exitSelectModeBarButtonItem;
     self->_exitSelectModeBarButtonItem = v15;
 
-    v17 = [MEMORY[0x1E69DC708] px_localizedSelectAllBarButtonItem];
+    px_localizedSelectAllBarButtonItem = [MEMORY[0x1E69DC708] px_localizedSelectAllBarButtonItem];
     selectAllBarButtonItem = self->_selectAllBarButtonItem;
-    self->_selectAllBarButtonItem = v17;
+    self->_selectAllBarButtonItem = px_localizedSelectAllBarButtonItem;
 
     [(UIBarButtonItem *)self->_selectAllBarButtonItem setTarget:self];
     [(UIBarButtonItem *)self->_selectAllBarButtonItem setAction:sel__handleSelectAll_];
-    v19 = [MEMORY[0x1E69DC708] px_localizedDeselectAllBarButtonItem];
+    px_localizedDeselectAllBarButtonItem = [MEMORY[0x1E69DC708] px_localizedDeselectAllBarButtonItem];
     deselectAllBarButtonItem = self->_deselectAllBarButtonItem;
-    self->_deselectAllBarButtonItem = v19;
+    self->_deselectAllBarButtonItem = px_localizedDeselectAllBarButtonItem;
 
     [(UIBarButtonItem *)self->_deselectAllBarButtonItem setTarget:self];
     v21 = self->_deselectAllBarButtonItem;
@@ -741,143 +741,143 @@ uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPos
   }
 }
 
-- (void)setGridViewModel:(id)a3
+- (void)setGridViewModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_gridViewModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_gridViewModel != modelCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = modelCopy;
+    modelCopy = [modelCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((modelCopy & 1) == 0)
     {
       [(PXPhotosViewModel *)self->_gridViewModel unregisterChangeObserver:self context:GridViewModelObservationContext];
-      objc_storeStrong(&self->_gridViewModel, a3);
+      objc_storeStrong(&self->_gridViewModel, model);
       [(PXPhotosViewModel *)self->_gridViewModel registerChangeObserver:self context:GridViewModelObservationContext];
-      v5 = [(PUWallpaperPosterShuffleGridViewController *)self _invalidateBarItems];
+      modelCopy = [(PUWallpaperPosterShuffleGridViewController *)self _invalidateBarItems];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](modelCopy, v6);
 }
 
-- (void)setTungstenLayout:(id)a3
+- (void)setTungstenLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   tungstenView = self->_tungstenView;
-  v16 = v4;
+  v16 = layoutCopy;
   if (!tungstenView)
   {
     v6 = objc_alloc(MEMORY[0x1E69DB590]);
-    v7 = [(PUWallpaperPosterShuffleGridViewController *)self view];
-    [v7 bounds];
+    view = [(PUWallpaperPosterShuffleGridViewController *)self view];
+    [view bounds];
     v8 = [v6 initWithFrame:?];
     v9 = self->_tungstenView;
     self->_tungstenView = v8;
 
     [(PXGView *)self->_tungstenView setAutoresizingMask:18];
     v10 = self->_tungstenView;
-    v11 = [(PUWallpaperPosterShuffleGridViewController *)self mediaProvider];
-    [(PXGView *)v10 registerAllTextureProvidersWithMediaProvider:v11];
+    mediaProvider = [(PUWallpaperPosterShuffleGridViewController *)self mediaProvider];
+    [(PXGView *)v10 registerAllTextureProvidersWithMediaProvider:mediaProvider];
 
-    v12 = [(PXGView *)self->_tungstenView scrollViewController];
-    v13 = [v12 scrollView];
+    scrollViewController = [(PXGView *)self->_tungstenView scrollViewController];
+    scrollView = [scrollViewController scrollView];
 
-    [(PUWallpaperPosterShuffleGridViewController *)self setContentScrollView:v13 forEdge:5];
-    v4 = v16;
+    [(PUWallpaperPosterShuffleGridViewController *)self setContentScrollView:scrollView forEdge:5];
+    layoutCopy = v16;
     tungstenView = self->_tungstenView;
   }
 
-  [(PXGView *)tungstenView setRootLayout:v4];
-  v14 = [(PXGView *)self->_tungstenView superview];
+  [(PXGView *)tungstenView setRootLayout:layoutCopy];
+  superview = [(PXGView *)self->_tungstenView superview];
 
-  if (!v14)
+  if (!superview)
   {
-    v15 = [(PUWallpaperPosterShuffleGridViewController *)self view];
-    [v15 addSubview:self->_tungstenView];
+    view2 = [(PUWallpaperPosterShuffleGridViewController *)self view];
+    [view2 addSubview:self->_tungstenView];
   }
 }
 
-- (void)setGridContentController:(id)a3
+- (void)setGridContentController:(id)controller
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_gridContentController != v5)
+  controllerCopy = controller;
+  v6 = controllerCopy;
+  if (self->_gridContentController != controllerCopy)
   {
-    v9 = v5;
-    v5 = [v5 isEqual:?];
+    v9 = controllerCopy;
+    controllerCopy = [controllerCopy isEqual:?];
     v6 = v9;
-    if ((v5 & 1) == 0)
+    if ((controllerCopy & 1) == 0)
     {
       [(PXPhotosContentController *)self->_gridContentController setDelegate:0];
-      objc_storeStrong(&self->_gridContentController, a3);
+      objc_storeStrong(&self->_gridContentController, controller);
       [(PXPhotosContentController *)self->_gridContentController setDelegate:self];
-      v7 = [(PXPhotosContentController *)self->_gridContentController layout];
-      [(PUWallpaperPosterShuffleGridViewController *)self setTungstenLayout:v7];
+      layout = [(PXPhotosContentController *)self->_gridContentController layout];
+      [(PUWallpaperPosterShuffleGridViewController *)self setTungstenLayout:layout];
 
-      v8 = [(PXPhotosContentController *)self->_gridContentController viewModel];
-      [(PUWallpaperPosterShuffleGridViewController *)self setGridViewModel:v8];
+      viewModel = [(PXPhotosContentController *)self->_gridContentController viewModel];
+      [(PUWallpaperPosterShuffleGridViewController *)self setGridViewModel:viewModel];
 
       v6 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](controllerCopy, v6);
 }
 
-- (void)setPosterMedia:(id)a3
+- (void)setPosterMedia:(id)media
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_posterMedia != v4)
+  mediaCopy = media;
+  v5 = mediaCopy;
+  if (self->_posterMedia != mediaCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = mediaCopy;
+    mediaCopy = [mediaCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((mediaCopy & 1) == 0)
     {
       v6 = [v8 copy];
       posterMedia = self->_posterMedia;
       self->_posterMedia = v6;
 
-      v4 = [(PUWallpaperPosterShuffleGridViewController *)self _invalidateDataSource];
+      mediaCopy = [(PUWallpaperPosterShuffleGridViewController *)self _invalidateDataSource];
       v5 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](mediaCopy, v5);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = PUWallpaperPosterShuffleGridViewController;
   [(PUWallpaperPosterShuffleGridViewController *)&v6 viewDidDisappear:?];
-  v5 = [(PUWallpaperPosterShuffleGridViewController *)self gridContentController];
-  [v5 contentViewDidDisappear:v3];
+  gridContentController = [(PUWallpaperPosterShuffleGridViewController *)self gridContentController];
+  [gridContentController contentViewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = PUWallpaperPosterShuffleGridViewController;
   [(PUWallpaperPosterShuffleGridViewController *)&v6 viewDidAppear:?];
-  v5 = [(PUWallpaperPosterShuffleGridViewController *)self gridContentController];
-  [v5 contentViewDidAppear:v3];
+  gridContentController = [(PUWallpaperPosterShuffleGridViewController *)self gridContentController];
+  [gridContentController contentViewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = PUWallpaperPosterShuffleGridViewController;
   [(PUWallpaperPosterShuffleGridViewController *)&v6 viewWillAppear:?];
-  v5 = [(PUWallpaperPosterShuffleGridViewController *)self gridContentController];
-  [v5 contentViewWillAppear:v3];
+  gridContentController = [(PUWallpaperPosterShuffleGridViewController *)self gridContentController];
+  [gridContentController contentViewWillAppear:appearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -888,11 +888,11 @@ uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPos
   [(PXUpdater *)self->_updater updateIfNeeded];
 }
 
-- (PUWallpaperPosterShuffleGridViewController)initWithResourceManager:(id)a3 posterMedia:(id)a4
+- (PUWallpaperPosterShuffleGridViewController)initWithResourceManager:(id)manager posterMedia:(id)media
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  mediaCopy = media;
   v31.receiver = self;
   v31.super_class = PUWallpaperPosterShuffleGridViewController;
   v8 = [(PUWallpaperPosterShuffleGridViewController *)&v31 initWithNibName:0 bundle:0];
@@ -900,20 +900,20 @@ uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPos
   if (v8)
   {
     [(PUWallpaperPosterShuffleGridViewController *)v8 setModalInPresentation:1];
-    v10 = [v6 assetDirectory];
+    assetDirectory = [managerCopy assetDirectory];
     posterMediaDirectory = v9->_posterMediaDirectory;
-    v9->_posterMediaDirectory = v10;
+    v9->_posterMediaDirectory = assetDirectory;
 
-    v12 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v7];
+    v12 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:mediaCopy];
     initialPosterMedia = v9->_initialPosterMedia;
     v9->_initialPosterMedia = v12;
 
     objc_storeStrong(&v9->_posterMedia, v9->_initialPosterMedia);
-    v14 = [v6 photoLibrary];
+    photoLibrary = [managerCopy photoLibrary];
     photoLibrary = v9->_photoLibrary;
-    v9->_photoLibrary = v14;
+    v9->_photoLibrary = photoLibrary;
 
-    v16 = [[PUWallpaperShuffleMediaProvider alloc] initWithResourceManager:v6];
+    v16 = [[PUWallpaperShuffleMediaProvider alloc] initWithResourceManager:managerCopy];
     v17 = objc_alloc(MEMORY[0x1E69C3638]);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
@@ -923,8 +923,8 @@ uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPos
     v21 = NSStringFromClass(v20);
     v32[1] = v21;
     v22 = MEMORY[0x1E69C3858];
-    v23 = [(PUWallpaperPosterShuffleGridViewController *)v9 photoLibrary];
-    v24 = [v22 mediaProviderWithLibrary:v23];
+    photoLibrary2 = [(PUWallpaperPosterShuffleGridViewController *)v9 photoLibrary];
+    v24 = [v22 mediaProviderWithLibrary:photoLibrary2];
     v33[1] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
     v26 = [v17 initWithMediaProvidersByAssetClassName:v25];
@@ -943,21 +943,21 @@ uint64_t __77__PUWallpaperPosterShuffleGridViewController__finishWithSelectedPos
   return v9;
 }
 
-- (PUWallpaperPosterShuffleGridViewController)initWithCoder:(id)a3
+- (PUWallpaperPosterShuffleGridViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:82 description:{@"%s is not available as initializer", "-[PUWallpaperPosterShuffleGridViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:82 description:{@"%s is not available as initializer", "-[PUWallpaperPosterShuffleGridViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PUWallpaperPosterShuffleGridViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUWallpaperPosterShuffleGridViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:78 description:{@"%s is not available as initializer", "-[PUWallpaperPosterShuffleGridViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterShuffleGridViewController.m" lineNumber:78 description:{@"%s is not available as initializer", "-[PUWallpaperPosterShuffleGridViewController initWithNibName:bundle:]"}];
 
   abort();
 }

@@ -1,14 +1,14 @@
 @interface SnapshottingContactViewController
-- (_TtC17DeviceDiscoveryUI33SnapshottingContactViewController)initWithCoder:(id)a3;
-- (_TtC17DeviceDiscoveryUI33SnapshottingContactViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)contactViewController:(id)a3 didDeleteContact:(id)a4;
+- (_TtC17DeviceDiscoveryUI33SnapshottingContactViewController)initWithCoder:(id)coder;
+- (_TtC17DeviceDiscoveryUI33SnapshottingContactViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)contactViewController:(id)controller didDeleteContact:(id)contact;
 - (void)didTapDone;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SnapshottingContactViewController
 
-- (_TtC17DeviceDiscoveryUI33SnapshottingContactViewController)initWithCoder:(id)a3
+- (_TtC17DeviceDiscoveryUI33SnapshottingContactViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17DeviceDiscoveryUI33SnapshottingContactViewController_phase) = 0;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC17DeviceDiscoveryUI33SnapshottingContactViewController_dismiss);
@@ -21,9 +21,9 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_238132EFC();
 }
 
@@ -33,7 +33,7 @@
   if (v2)
   {
     v3 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC17DeviceDiscoveryUI33SnapshottingContactViewController_dismiss);
-    v4 = self;
+    selfCopy = self;
     v5 = sub_238086B74(v2);
     v2(v5);
 
@@ -41,13 +41,13 @@
   }
 }
 
-- (void)contactViewController:(id)a3 didDeleteContact:(id)a4
+- (void)contactViewController:(id)controller didDeleteContact:(id)contact
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC17DeviceDiscoveryUI33SnapshottingContactViewController_dismiss);
   if (v4)
   {
     v5 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC17DeviceDiscoveryUI33SnapshottingContactViewController_dismiss);
-    v6 = self;
+    selfCopy = self;
     v7 = sub_238086B74(v4);
     v4(v7);
 
@@ -55,7 +55,7 @@
   }
 }
 
-- (_TtC17DeviceDiscoveryUI33SnapshottingContactViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17DeviceDiscoveryUI33SnapshottingContactViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

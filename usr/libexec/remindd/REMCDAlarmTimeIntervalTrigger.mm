@@ -16,7 +16,7 @@
 
 - (double)generateNonce
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDAlarmTimeIntervalTrigger.generateNonce()();
 
   return v3;

@@ -1,34 +1,34 @@
 @interface ActivationLockViewController
-- (ActivationLockViewController)initWithTokenChallengers:(id)a3 authenticator:(id)a4;
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5;
+- (ActivationLockViewController)initWithTokenChallengers:(id)challengers authenticator:(id)authenticator;
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response;
 - (StartPreflightNavigationCoordinator)coordinator;
 - (id)activeTokenChallenger;
 - (id)moveToNextLockedTokenChallenger;
 - (id)transitionTable;
 - (void)_setHandlerForNextButton;
 - (void)_setHandlerForSkipButton;
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4 actionTitle:(id)a5;
+- (void)_showAlertWithTitle:(id)title message:(id)message actionTitle:(id)actionTitle;
 - (void)_skipActivateTapped;
 - (void)_startActivateTapped;
 - (void)fetchPasswordScreen;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
 - (void)resetState;
 - (void)setupRemoteUIController;
-- (void)showUnknownErrorAlertWithCode:(int64_t)a3;
+- (void)showUnknownErrorAlertWithCode:(int64_t)code;
 - (void)showUserAuthErrorAlert;
-- (void)transitionToState:(int64_t)a3;
+- (void)transitionToState:(int64_t)state;
 - (void)viewDidLoad;
 @end
 
 @implementation ActivationLockViewController
 
-- (ActivationLockViewController)initWithTokenChallengers:(id)a3 authenticator:(id)a4
+- (ActivationLockViewController)initWithTokenChallengers:(id)challengers authenticator:(id)authenticator
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  challengersCopy = challengers;
+  authenticatorCopy = authenticator;
+  if (![challengersCopy count])
   {
     v27 = handleForCategory();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -46,7 +46,7 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v9 = v6;
+  v9 = challengersCopy;
   v10 = [v9 countByEnumeratingWithState:&v58 objects:v63 count:16];
   if (v10)
   {
@@ -62,9 +62,9 @@
         }
 
         v14 = *(*(&v58 + 1) + 8 * i);
-        v15 = [(ActivationLockViewController *)self localizedComponentMap];
-        v16 = [v14 localizedComponentsMap];
-        [v15 addEntriesFromDictionary:v16];
+        localizedComponentMap = [(ActivationLockViewController *)self localizedComponentMap];
+        localizedComponentsMap = [v14 localizedComponentsMap];
+        [localizedComponentMap addEntriesFromDictionary:localizedComponentsMap];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v58 objects:v63 count:16];
@@ -73,8 +73,8 @@
     while (v11);
   }
 
-  v17 = [(ActivationLockViewController *)self localizedComponentMap];
-  v18 = [v17 count];
+  localizedComponentMap2 = [(ActivationLockViewController *)self localizedComponentMap];
+  v18 = [localizedComponentMap2 count];
 
   if (v18 == 1)
   {
@@ -98,8 +98,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v54 + 1) + 8 * j) spcs];
-          [v19 addObjectsFromArray:v25];
+          spcs = [*(*(&v54 + 1) + 8 * j) spcs];
+          [v19 addObjectsFromArray:spcs];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v54 objects:v62 count:16];
@@ -126,8 +126,8 @@
     goto LABEL_31;
   }
 
-  v28 = [(ActivationLockViewController *)self localizedComponentMap];
-  v29 = [v28 count];
+  localizedComponentMap3 = [(ActivationLockViewController *)self localizedComponentMap];
+  v29 = [localizedComponentMap3 count];
 
   if (v29 < 2)
   {
@@ -138,13 +138,13 @@
     }
 
 LABEL_28:
-    v40 = 0;
+    selfCopy = 0;
     goto LABEL_34;
   }
 
-  v30 = [(ActivationLockViewController *)self localizedComponentMap];
-  v31 = [v30 allValues];
-  v32 = [v31 componentsJoinedByString:@"\n"];
+  localizedComponentMap4 = [(ActivationLockViewController *)self localizedComponentMap];
+  allValues = [localizedComponentMap4 allValues];
+  v32 = [allValues componentsJoinedByString:@"\n"];
 
   v33 = [v9 count];
   v34 = +[NSBundle mainBundle];
@@ -178,13 +178,13 @@ LABEL_31:
     v42 = +[OBBoldTrayButton boldButton];
     +[NSBundle mainBundle];
     v52 = v32;
-    v44 = v43 = v7;
+    v44 = v43 = authenticatorCopy;
     v45 = [v44 localizedStringForKey:@"START_ACTIVATION_BUTTON_TITLE" value:&stru_100018C40 table:@"StartPreflightPlugin-Release"];
     [v42 setTitle:v45 forState:0];
 
     [v42 addTarget:v41 action:"_startActivateTapped" forControlEvents:64];
-    v46 = [(ActivationLockViewController *)v41 buttonTray];
-    [v46 addButton:v42];
+    buttonTray = [(ActivationLockViewController *)v41 buttonTray];
+    [buttonTray addButton:v42];
 
     v47 = +[OBLinkTrayButton linkButton];
     v48 = +[NSBundle mainBundle];
@@ -192,23 +192,23 @@ LABEL_31:
     [v47 setTitle:v49 forState:0];
 
     [v47 addTarget:v41 action:"_skipActivateTapped" forControlEvents:64];
-    v50 = [(ActivationLockViewController *)v41 buttonTray];
-    [v50 addButton:v47];
+    buttonTray2 = [(ActivationLockViewController *)v41 buttonTray];
+    [buttonTray2 addButton:v47];
 
     [(ActivationLockViewController *)v41 setTokenChallengers:v9];
     [(ActivationLockViewController *)v41 setAuthenticator:v43];
     [(ActivationLockViewController *)v41 resetState];
 
-    v7 = v43;
+    authenticatorCopy = v43;
     v32 = v52;
   }
 
   self = v41;
 
-  v40 = self;
+  selfCopy = self;
 LABEL_34:
 
-  return v40;
+  return selfCopy;
 }
 
 - (void)viewDidLoad
@@ -224,15 +224,15 @@ LABEL_34:
   v5.receiver = self;
   v5.super_class = ActivationLockViewController;
   [(ActivationLockViewController *)&v5 viewDidLoad];
-  v4 = [(ActivationLockViewController *)self navigationController];
-  [v4 setDelegate:self];
+  navigationController = [(ActivationLockViewController *)self navigationController];
+  [navigationController setDelegate:self];
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = [v5 viewControllers];
-  v7 = [NSMutableArray arrayWithArray:v6];
+  controllerCopy = controller;
+  viewControllers = [controllerCopy viewControllers];
+  v7 = [NSMutableArray arrayWithArray:viewControllers];
 
   if ([v7 count] >= 2)
   {
@@ -254,7 +254,7 @@ LABEL_34:
         }
 
         [v7 removeObjectAtIndex:{objc_msgSend(v7, "count") - 2}];
-        [v5 setViewControllers:v7 animated:0];
+        [controllerCopy setViewControllers:v7 animated:0];
       }
     }
 
@@ -266,9 +266,9 @@ LABEL_34:
 
 - (id)activeTokenChallenger
 {
-  v3 = [(ActivationLockViewController *)self activeTokenChallengerIndex];
-  v4 = [(ActivationLockViewController *)self tokenChallengers];
-  if (v3 >= [v4 count])
+  activeTokenChallengerIndex = [(ActivationLockViewController *)self activeTokenChallengerIndex];
+  tokenChallengers = [(ActivationLockViewController *)self tokenChallengers];
+  if (activeTokenChallengerIndex >= [tokenChallengers count])
   {
 
     v7 = handleForCategory();
@@ -284,8 +284,8 @@ LABEL_34:
   {
     [(ActivationLockViewController *)self activeTokenChallengerIndex];
 
-    v5 = [(ActivationLockViewController *)self tokenChallengers];
-    v6 = [v5 objectAtIndexedSubscript:{-[ActivationLockViewController activeTokenChallengerIndex](self, "activeTokenChallengerIndex")}];
+    tokenChallengers2 = [(ActivationLockViewController *)self tokenChallengers];
+    v6 = [tokenChallengers2 objectAtIndexedSubscript:{-[ActivationLockViewController activeTokenChallengerIndex](self, "activeTokenChallengerIndex")}];
   }
 
   return v6;
@@ -297,33 +297,33 @@ LABEL_34:
   {
     v3 = [(ActivationLockViewController *)self activeTokenChallengerIndex]+ 1;
     [(ActivationLockViewController *)self setActiveTokenChallengerIndex:v3];
-    v4 = [(ActivationLockViewController *)self tokenChallengers];
-    v5 = [v4 count];
+    tokenChallengers = [(ActivationLockViewController *)self tokenChallengers];
+    v5 = [tokenChallengers count];
 
     if (v3 >= v5)
     {
-      v10 = 0;
+      activeTokenChallenger3 = 0;
       goto LABEL_7;
     }
 
-    v6 = [(ActivationLockViewController *)self activeTokenChallenger];
-    v7 = [v6 isTokenUnlocked];
+    activeTokenChallenger = [(ActivationLockViewController *)self activeTokenChallenger];
+    isTokenUnlocked = [activeTokenChallenger isTokenUnlocked];
   }
 
-  while ((v7 & 1) != 0);
+  while ((isTokenUnlocked & 1) != 0);
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ActivationLockViewController *)self activeTokenChallenger];
+    activeTokenChallenger2 = [(ActivationLockViewController *)self activeTokenChallenger];
     v12 = 138412290;
-    v13 = v9;
+    v13 = activeTokenChallenger2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Moved to next locked token: %@", &v12, 0xCu);
   }
 
-  v10 = [(ActivationLockViewController *)self activeTokenChallenger];
+  activeTokenChallenger3 = [(ActivationLockViewController *)self activeTokenChallenger];
 LABEL_7:
 
-  return v10;
+  return activeTokenChallenger3;
 }
 
 - (void)setupRemoteUIController
@@ -331,20 +331,20 @@ LABEL_7:
   v3 = objc_opt_new();
   [(ActivationLockViewController *)self setRemoteUIController:v3];
 
-  v4 = [(ActivationLockViewController *)self remoteUIController];
-  [v4 setDelegate:self];
+  remoteUIController = [(ActivationLockViewController *)self remoteUIController];
+  [remoteUIController setDelegate:self];
 
-  v5 = [(ActivationLockViewController *)self navigationController];
-  v6 = [(ActivationLockViewController *)self remoteUIController];
-  [v6 setHostViewController:v5];
+  navigationController = [(ActivationLockViewController *)self navigationController];
+  remoteUIController2 = [(ActivationLockViewController *)self remoteUIController];
+  [remoteUIController2 setHostViewController:navigationController];
 
   v7 = +[RUIStyle setupAssistantStyle];
-  v8 = [(ActivationLockViewController *)self remoteUIController];
-  [v8 setStyle:v7];
+  remoteUIController3 = [(ActivationLockViewController *)self remoteUIController];
+  [remoteUIController3 setStyle:v7];
 
-  v9 = [(ActivationLockViewController *)self remoteUIController];
-  v10 = [(ActivationLockViewController *)self localizedComponentMap];
-  [v9 registerPartsInfoViewWithComponentsMap:v10];
+  remoteUIController4 = [(ActivationLockViewController *)self remoteUIController];
+  localizedComponentMap = [(ActivationLockViewController *)self localizedComponentMap];
+  [remoteUIController4 registerPartsInfoViewWithComponentsMap:localizedComponentMap];
 
   [(ActivationLockViewController *)self _setHandlerForSkipButton];
 
@@ -368,13 +368,13 @@ LABEL_7:
 - (void)fetchPasswordScreen
 {
   [(ActivationLockViewController *)self transitionToState:1];
-  v3 = [(ActivationLockViewController *)self activeTokenChallenger];
+  activeTokenChallenger = [(ActivationLockViewController *)self activeTokenChallenger];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100002F04;
   v4[3] = &unk_1000187D0;
   v4[4] = self;
-  [v3 fetchPasswordWithCompletion:v4];
+  [activeTokenChallenger fetchPasswordWithCompletion:v4];
 }
 
 - (void)_skipActivateTapped
@@ -391,8 +391,8 @@ LABEL_7:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(ActivationLockViewController *)self tokenChallengers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  tokenChallengers = [(ActivationLockViewController *)self tokenChallengers];
+  v5 = [tokenChallengers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -404,7 +404,7 @@ LABEL_7:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tokenChallengers);
         }
 
         [*(*(&v9 + 1) + 8 * v8) setIsTokenUnlocked:1];
@@ -412,7 +412,7 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [tokenChallengers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -421,11 +421,11 @@ LABEL_7:
   [(ActivationLockViewController *)self transitionToState:5];
 }
 
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4 actionTitle:(id)a5
+- (void)_showAlertWithTitle:(id)title message:(id)message actionTitle:(id)actionTitle
 {
-  v8 = a5;
-  v10 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
-  v9 = [UIAlertAction actionWithTitle:v8 style:0 handler:0];
+  actionTitleCopy = actionTitle;
+  v10 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
+  v9 = [UIAlertAction actionWithTitle:actionTitleCopy style:0 handler:0];
 
   [v10 addAction:v9];
   [(ActivationLockViewController *)self presentViewController:v10 animated:1 completion:0];
@@ -440,7 +440,7 @@ LABEL_7:
   [(ActivationLockViewController *)self _showAlertWithTitle:v3 message:0 actionTitle:v5];
 }
 
-- (void)showUnknownErrorAlertWithCode:(int64_t)a3
+- (void)showUnknownErrorAlertWithCode:(int64_t)code
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -460,14 +460,14 @@ LABEL_7:
 - (void)_setHandlerForNextButton
 {
   objc_initWeak(&location, self);
-  v3 = [(ActivationLockViewController *)self remoteUIController];
+  remoteUIController = [(ActivationLockViewController *)self remoteUIController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100003574;
   v5[3] = &unk_100018888;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  v4 = [v3 setHandlerForElementsMatching:&stru_100018810 handler:v5];
+  v4 = [remoteUIController setHandlerForElementsMatching:&stru_100018810 handler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -487,12 +487,12 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a5)
+  controllerCopy = controller;
+  modelCopy = model;
+  v10 = modelCopy;
+  if (!signal)
   {
 LABEL_11:
     v18 = handleForCategory();
@@ -505,12 +505,12 @@ LABEL_11:
     goto LABEL_39;
   }
 
-  if (*a5 != 2)
+  if (*signal != 2)
   {
-    if (*a5 == 1)
+    if (*signal == 1)
     {
-      v11 = [v9 clientInfo];
-      v12 = [v11 objectForKeyedSubscript:@"status"];
+      clientInfo = [modelCopy clientInfo];
+      v12 = [clientInfo objectForKeyedSubscript:@"status"];
 
       v13 = handleForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -541,7 +541,7 @@ LABEL_38:
           }
 
           [(ActivationLockViewController *)self showUnknownErrorAlertWithCode:-303];
-          v24 = self;
+          selfCopy3 = self;
           v25 = 0;
           goto LABEL_37;
         }
@@ -550,13 +550,13 @@ LABEL_38:
         {
 LABEL_27:
 
-          v23 = [(ActivationLockViewController *)self activeTokenChallenger];
-          [v23 setIsTokenUnlocked:1];
+          activeTokenChallenger = [(ActivationLockViewController *)self activeTokenChallenger];
+          [activeTokenChallenger setIsTokenUnlocked:1];
 
-          v24 = self;
+          selfCopy3 = self;
           v25 = 5;
 LABEL_37:
-          [(ActivationLockViewController *)v24 transitionToState:v25, *v27];
+          [(ActivationLockViewController *)selfCopy3 transitionToState:v25, *v27];
           goto LABEL_38;
         }
 
@@ -590,7 +590,7 @@ LABEL_37:
           }
 
           [(ActivationLockViewController *)self showUnknownErrorAlertWithCode:-303];
-          v24 = self;
+          selfCopy3 = self;
           v25 = 2;
           goto LABEL_37;
         }
@@ -638,7 +638,7 @@ LABEL_37:
 LABEL_39:
 }
 
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response
 {
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -651,23 +651,23 @@ LABEL_39:
   return 0;
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  v7 = a4;
-  v8 = a5;
+  errorCopy = error;
+  requestCopy = request;
   v9 = handleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[ActivationLockViewController remoteUIController:didFinishLoadWithError:forRequest:]";
     v16 = 2112;
-    v17 = v7;
+    v17 = errorCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = requestCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: error: %@. request: %@", &v14, 0x20u);
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v10 = handleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -678,17 +678,17 @@ LABEL_39:
     if ([(ActivationLockViewController *)self state]== 4)
     {
       [(ActivationLockViewController *)self showUnknownErrorAlertWithCode:-103];
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2;
 LABEL_10:
-      [(ActivationLockViewController *)v11 transitionToState:v12];
+      [(ActivationLockViewController *)selfCopy2 transitionToState:v12];
       goto LABEL_14;
     }
 
     if ([(ActivationLockViewController *)self state]== 1)
     {
       [(ActivationLockViewController *)self showUnknownErrorAlertWithCode:-102];
-      v11 = self;
+      selfCopy2 = self;
       v12 = 0;
       goto LABEL_10;
     }
@@ -731,7 +731,7 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = [(ActivationLockViewController *)self state];
+    state = [(ActivationLockViewController *)self state];
     v10 = 2048;
     v11 = 0;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Reset state from %ld to %ld", &v8, 0x16u);
@@ -739,58 +739,58 @@ LABEL_14:
 
   [(ActivationLockViewController *)self setState:0];
   [(ActivationLockViewController *)self setActiveTokenChallengerIndex:-1];
-  v4 = [(ActivationLockViewController *)self moveToNextLockedTokenChallenger];
-  v5 = [(ActivationLockViewController *)self buttonTray];
-  [v5 showButtonsAvailable];
+  moveToNextLockedTokenChallenger = [(ActivationLockViewController *)self moveToNextLockedTokenChallenger];
+  buttonTray = [(ActivationLockViewController *)self buttonTray];
+  [buttonTray showButtonsAvailable];
 
-  v6 = [(ActivationLockViewController *)self navigationController];
-  v7 = [v6 popToViewController:self animated:1];
+  navigationController = [(ActivationLockViewController *)self navigationController];
+  v7 = [navigationController popToViewController:self animated:1];
 
   [(ActivationLockViewController *)self setRemoteUIController:0];
 }
 
-- (void)transitionToState:(int64_t)a3
+- (void)transitionToState:(int64_t)state
 {
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134218240;
-    v21 = [(ActivationLockViewController *)self state];
+    state = [(ActivationLockViewController *)self state];
     v22 = 2048;
-    v23 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Transitioning state from %ld to %ld", &v20, 0x16u);
   }
 
-  v6 = [(ActivationLockViewController *)self transitionTable];
+  transitionTable = [(ActivationLockViewController *)self transitionTable];
   v7 = [NSNumber numberWithInteger:[(ActivationLockViewController *)self state]];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [transitionTable objectForKeyedSubscript:v7];
 
-  if (v8 && (+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", a3), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 containsObject:v9], v9, (v10 & 1) != 0))
+  if (v8 && (+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", state), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 containsObject:v9], v9, (v10 & 1) != 0))
   {
-    [(ActivationLockViewController *)self setState:a3];
-    v11 = [(ActivationLockViewController *)self buttonTray];
-    if ((a3 | 4) == 5)
+    [(ActivationLockViewController *)self setState:state];
+    buttonTray = [(ActivationLockViewController *)self buttonTray];
+    if ((state | 4) == 5)
     {
-      [v11 showButtonsBusy];
+      [buttonTray showButtonsBusy];
       v12 = 1;
     }
 
     else
     {
-      [v11 showButtonsAvailable];
+      [buttonTray showButtonsAvailable];
       v12 = 0;
     }
 
-    v14 = [(ActivationLockViewController *)self remoteUIController];
-    v15 = [v14 displayedPages];
-    v16 = [v15 lastObject];
-    [v16 setLoading:v12];
+    remoteUIController = [(ActivationLockViewController *)self remoteUIController];
+    displayedPages = [remoteUIController displayedPages];
+    lastObject = [displayedPages lastObject];
+    [lastObject setLoading:v12];
 
-    if (a3 == 5)
+    if (state == 5)
     {
-      v17 = [(ActivationLockViewController *)self moveToNextLockedTokenChallenger];
+      moveToNextLockedTokenChallenger = [(ActivationLockViewController *)self moveToNextLockedTokenChallenger];
 
-      if (v17)
+      if (moveToNextLockedTokenChallenger)
       {
         [(ActivationLockViewController *)self fetchPasswordScreen];
       }
@@ -804,8 +804,8 @@ LABEL_14:
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "No more token left", &v20, 2u);
         }
 
-        v19 = [(ActivationLockViewController *)self coordinator];
-        [v19 moveToNextViewController];
+        coordinator = [(ActivationLockViewController *)self coordinator];
+        [coordinator moveToNextViewController];
       }
     }
   }

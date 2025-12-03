@@ -1,8 +1,8 @@
 @interface FlyoverBannerView
 - (CGSize)intrinsicContentSize;
-- (FlyoverBannerView)initWithDelegate:(id)a3;
+- (FlyoverBannerView)initWithDelegate:(id)delegate;
 - (FlyoverBannerViewDelegate)delegate;
-- (void)setLocationString:(id)a3;
+- (void)setLocationString:(id)string;
 - (void)stopButtonPressed;
 @end
 
@@ -17,36 +17,36 @@
 
 - (void)stopButtonPressed
 {
-  v3 = [(FlyoverBannerView *)self delegate];
-  [v3 stopFlyoverRequestedByBanner:self];
+  delegate = [(FlyoverBannerView *)self delegate];
+  [delegate stopFlyoverRequestedByBanner:self];
 }
 
-- (void)setLocationString:(id)a3
+- (void)setLocationString:(id)string
 {
-  v5 = a3;
-  objc_storeStrong(&self->_locationString, a3);
-  if ([v5 length])
+  stringCopy = string;
+  objc_storeStrong(&self->_locationString, string);
+  if ([stringCopy length])
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Flyover [banner title]" value:@"localized string not found" table:0];
-    v8 = [NSString stringWithFormat:@"%@ - %@", v7, v5];
+    stringCopy = [NSString stringWithFormat:@"%@ - %@", v7, stringCopy];
   }
 
   else
   {
     v6 = +[NSBundle mainBundle];
-    v8 = [v6 localizedStringForKey:@"Flyover [banner title]" value:@"localized string not found" table:0];
+    stringCopy = [v6 localizedStringForKey:@"Flyover [banner title]" value:@"localized string not found" table:0];
   }
 
-  v9 = [(FlyoverBannerView *)self textLabel];
+  textLabel = [(FlyoverBannerView *)self textLabel];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100F61D7C;
   v11[3] = &unk_101661A90;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [UIView transitionWithView:v9 duration:5242880 options:v11 animations:0 completion:0.300000012];
+  v12 = stringCopy;
+  v10 = stringCopy;
+  [UIView transitionWithView:textLabel duration:5242880 options:v11 animations:0 completion:0.300000012];
 }
 
 - (CGSize)intrinsicContentSize
@@ -58,23 +58,23 @@
   return result;
 }
 
-- (FlyoverBannerView)initWithDelegate:(id)a3
+- (FlyoverBannerView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v54.receiver = self;
   v54.super_class = FlyoverBannerView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(FlyoverBannerView *)&v54 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(FlyoverBannerView *)&v54 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    objc_storeWeak(&v8->_delegate, v4);
+    objc_storeWeak(&height->_delegate, delegateCopy);
     [(FlyoverBannerView *)v9 setAccessibilityIdentifier:@"FlyoverBannerView"];
     v10 = [UIVisualEffectView alloc];
     [UIBlurEffect effectWithStyle:2];
-    v11 = v53 = v4;
+    v11 = v53 = delegateCopy;
     v12 = [v10 initWithEffect:v11];
     effectView = v9->_effectView;
     v9->_effectView = v12;
@@ -109,48 +109,48 @@
     [(UIButton *)v9->_stopButton setImage:v52 forState:0];
     [(UIButton *)v9->_stopButton setAccessibilityIdentifier:@"FlyoverBannerEffectStopButton"];
     [(FlyoverBannerView *)v9 addSubview:v9->_stopButton];
-    v51 = [(UIVisualEffectView *)v9->_effectView centerXAnchor];
-    v50 = [(FlyoverBannerView *)v9 centerXAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    centerXAnchor = [(UIVisualEffectView *)v9->_effectView centerXAnchor];
+    centerXAnchor2 = [(FlyoverBannerView *)v9 centerXAnchor];
+    v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v55[0] = v49;
-    v48 = [(UIVisualEffectView *)v9->_effectView centerYAnchor];
-    v47 = [(FlyoverBannerView *)v9 centerYAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    centerYAnchor = [(UIVisualEffectView *)v9->_effectView centerYAnchor];
+    centerYAnchor2 = [(FlyoverBannerView *)v9 centerYAnchor];
+    v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v55[1] = v46;
-    v45 = [(UIVisualEffectView *)v9->_effectView heightAnchor];
-    v44 = [(FlyoverBannerView *)v9 heightAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    heightAnchor = [(UIVisualEffectView *)v9->_effectView heightAnchor];
+    heightAnchor2 = [(FlyoverBannerView *)v9 heightAnchor];
+    v43 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v55[2] = v43;
-    v42 = [(UIVisualEffectView *)v9->_effectView widthAnchor];
-    v41 = [(FlyoverBannerView *)v9 widthAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    widthAnchor = [(UIVisualEffectView *)v9->_effectView widthAnchor];
+    widthAnchor2 = [(FlyoverBannerView *)v9 widthAnchor];
+    v40 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v55[3] = v40;
-    v39 = [(UILabel *)v9->_textLabel leadingAnchor];
-    v38 = [(FlyoverBannerView *)v9 leadingAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38 constant:13.0];
+    leadingAnchor = [(UILabel *)v9->_textLabel leadingAnchor];
+    leadingAnchor2 = [(FlyoverBannerView *)v9 leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:13.0];
     v55[4] = v37;
-    v36 = [(UILabel *)v9->_textLabel centerYAnchor];
-    v35 = [(FlyoverBannerView *)v9 centerYAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    centerYAnchor3 = [(UILabel *)v9->_textLabel centerYAnchor];
+    centerYAnchor4 = [(FlyoverBannerView *)v9 centerYAnchor];
+    v34 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v55[5] = v34;
-    v33 = [(UIButton *)v9->_stopButton trailingAnchor];
-    v32 = [(FlyoverBannerView *)v9 trailingAnchor];
-    v22 = [v33 constraintEqualToAnchor:v32 constant:-6.0];
+    trailingAnchor = [(UIButton *)v9->_stopButton trailingAnchor];
+    trailingAnchor2 = [(FlyoverBannerView *)v9 trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-6.0];
     v55[6] = v22;
-    v23 = [(UIButton *)v9->_stopButton centerYAnchor];
-    v24 = [(FlyoverBannerView *)v9 centerYAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerYAnchor5 = [(UIButton *)v9->_stopButton centerYAnchor];
+    centerYAnchor6 = [(FlyoverBannerView *)v9 centerYAnchor];
+    v25 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v55[7] = v25;
-    v26 = [(UIButton *)v9->_stopButton heightAnchor];
-    v27 = [v26 constraintEqualToConstant:20.0];
+    heightAnchor3 = [(UIButton *)v9->_stopButton heightAnchor];
+    v27 = [heightAnchor3 constraintEqualToConstant:20.0];
     v55[8] = v27;
-    v28 = [(UIButton *)v9->_stopButton widthAnchor];
-    v29 = [v28 constraintEqualToConstant:20.0];
+    widthAnchor3 = [(UIButton *)v9->_stopButton widthAnchor];
+    v29 = [widthAnchor3 constraintEqualToConstant:20.0];
     v55[9] = v29;
     v30 = [NSArray arrayWithObjects:v55 count:10];
     [NSLayoutConstraint activateConstraints:v30];
 
-    v4 = v53;
+    delegateCopy = v53;
   }
 
   return v9;

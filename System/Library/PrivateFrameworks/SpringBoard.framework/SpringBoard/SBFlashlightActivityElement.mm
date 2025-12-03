@@ -1,52 +1,52 @@
 @interface SBFlashlightActivityElement
 - (SAActivityHosting)activityHost;
-- (SBFlashlightActivityElement)initWithFlashlightOn:(BOOL)a3;
+- (SBFlashlightActivityElement)initWithFlashlightOn:(BOOL)on;
 - (SBFlashlightActivityElementDelegate)delegate;
 - (int64_t)systemApertureLayoutCustomizingOptions;
 - (void)_handleExpandedLeadingButtonAction;
-- (void)setFlashlightOn:(BOOL)a3;
-- (void)setPreviewing:(BOOL)a3;
+- (void)setFlashlightOn:(BOOL)on;
+- (void)setPreviewing:(BOOL)previewing;
 @end
 
 @implementation SBFlashlightActivityElement
 
-- (SBFlashlightActivityElement)initWithFlashlightOn:(BOOL)a3
+- (SBFlashlightActivityElement)initWithFlashlightOn:(BOOL)on
 {
   v4.receiver = self;
   v4.super_class = SBFlashlightActivityElement;
-  return [(SBFlashlightElement *)&v4 initWithStyle:0 state:a3];
+  return [(SBFlashlightElement *)&v4 initWithStyle:0 state:on];
 }
 
-- (void)setFlashlightOn:(BOOL)a3
+- (void)setFlashlightOn:(BOOL)on
 {
-  if (self->_flashlightOn != a3)
+  if (self->_flashlightOn != on)
   {
-    self->_flashlightOn = a3;
-    [(SBFlashlightElement *)self setState:a3];
+    self->_flashlightOn = on;
+    [(SBFlashlightElement *)self setState:on];
   }
 }
 
 - (void)_handleExpandedLeadingButtonAction
 {
-  v3 = [(SBFlashlightActivityElement *)self delegate];
-  [v3 flashlightActivityElementRequestsTogglingFlashlight:self];
+  delegate = [(SBFlashlightActivityElement *)self delegate];
+  [delegate flashlightActivityElementRequestsTogglingFlashlight:self];
 
-  v4 = [(SBSystemApertureProvidedContentElement *)self layoutHost];
-  [v4 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
+  layoutHost = [(SBSystemApertureProvidedContentElement *)self layoutHost];
+  [layoutHost preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
 }
 
-- (void)setPreviewing:(BOOL)a3
+- (void)setPreviewing:(BOOL)previewing
 {
-  v3 = a3;
+  previewingCopy = previewing;
   v7.receiver = self;
   v7.super_class = SBFlashlightActivityElement;
-  if ([(SBSystemApertureProvidedContentElement *)&v7 isPreviewing]!= a3)
+  if ([(SBSystemApertureProvidedContentElement *)&v7 isPreviewing]!= previewing)
   {
     v6.receiver = self;
     v6.super_class = SBFlashlightActivityElement;
-    [(SBSystemApertureProvidedContentElement *)&v6 setPreviewing:v3];
-    v5 = [(SBSystemApertureProvidedContentElement *)self layoutHost];
-    [v5 preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
+    [(SBSystemApertureProvidedContentElement *)&v6 setPreviewing:previewingCopy];
+    layoutHost = [(SBSystemApertureProvidedContentElement *)self layoutHost];
+    [layoutHost preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
   }
 }
 
@@ -54,15 +54,15 @@
 {
   v5.receiver = self;
   v5.super_class = SBFlashlightActivityElement;
-  v3 = [(SBSystemApertureProvidedContentElement *)&v5 systemApertureLayoutCustomizingOptions];
+  systemApertureLayoutCustomizingOptions = [(SBSystemApertureProvidedContentElement *)&v5 systemApertureLayoutCustomizingOptions];
   if ([(SBSystemApertureProvidedContentElement *)self isPreviewing])
   {
-    return v3;
+    return systemApertureLayoutCustomizingOptions;
   }
 
   else
   {
-    return v3 | 2;
+    return systemApertureLayoutCustomizingOptions | 2;
   }
 }
 

@@ -1,12 +1,12 @@
 @interface HUHomeControlServiceManager
 + (id)sharedInstance;
-- (void)_launchServiceWithContext:(id)a3;
+- (void)_launchServiceWithContext:(id)context;
 - (void)_launchViewServiceSuspended;
-- (void)_presentAlertForError:(id)a3;
+- (void)_presentAlertForError:(id)error;
 - (void)dismissService;
-- (void)launchServiceSuspendedWithUserInfo:(id)a3;
-- (void)launchServiceWithContext:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)launchServiceSuspendedWithUserInfo:(id)info;
+- (void)launchServiceWithContext:(id)context;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation HUHomeControlServiceManager
@@ -30,16 +30,16 @@ void __45__HUHomeControlServiceManager_sharedInstance__block_invoke()
   _MergedGlobals_625 = v0;
 }
 
-- (void)launchServiceWithContext:(id)a3
+- (void)launchServiceWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 serviceType];
-  v6 = [v4 serviceType];
-  if (![v4 serviceType] || v5 == 1 || v6 == 2)
+  contextCopy = context;
+  serviceType = [contextCopy serviceType];
+  serviceType2 = [contextCopy serviceType];
+  if (![contextCopy serviceType] || serviceType == 1 || serviceType2 == 2)
   {
-    v8 = [v4 presentingViewController];
+    presentingViewController = [contextCopy presentingViewController];
     presentingViewController = self->_presentingViewController;
-    self->_presentingViewController = v8;
+    self->_presentingViewController = presentingViewController;
 
     objc_initWeak(location, self);
     v10 = MEMORY[0x277CF0B60];
@@ -55,9 +55,9 @@ void __45__HUHomeControlServiceManager_sharedInstance__block_invoke()
 
     v14 = [objc_alloc(MEMORY[0x277CF0B58]) initWithInfo:0 responder:v11];
     v15 = [MEMORY[0x277CBEB98] setWithObject:v14];
-    [v4 setActions:v15];
+    [contextCopy setActions:v15];
 
-    [(HUHomeControlServiceManager *)self _launchServiceWithContext:v4];
+    [(HUHomeControlServiceManager *)self _launchServiceWithContext:contextCopy];
     objc_destroyWeak(&v17);
     objc_destroyWeak(location);
   }
@@ -115,7 +115,7 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)launchServiceSuspendedWithUserInfo:(id)a3
+- (void)launchServiceSuspendedWithUserInfo:(id)info
 {
   [(HUHomeControlServiceManager *)self _launchViewServiceSuspended];
   v4 = [(HUHomeControlServiceManager *)self suspendedServiceClientCount]+ 1;
@@ -123,16 +123,16 @@ LABEL_9:
   [(HUHomeControlServiceManager *)self setSuspendedServiceClientCount:v4];
 }
 
-- (void)_launchServiceWithContext:(id)a3
+- (void)_launchServiceWithContext:(id)context
 {
-  v4 = a3;
-  v10 = [v4 userInfo];
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
   v5 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:@"com.apple.Home.HomeControlService" viewControllerClassName:@"HCSRemoteAlertServiceViewController"];
   v6 = objc_alloc_init(MEMORY[0x277D66BD0]);
-  [v6 setUserInfo:v10];
-  v7 = [v4 actions];
+  [v6 setUserInfo:userInfo];
+  actions = [contextCopy actions];
 
-  [v6 setActions:v7];
+  [v6 setActions:actions];
   v8 = [MEMORY[0x277D66BF0] newHandleWithDefinition:v5 configurationContext:v6];
   [v8 addObserver:self];
   v9 = objc_alloc_init(MEMORY[0x277D66BC0]);
@@ -142,15 +142,15 @@ LABEL_9:
 
 - (void)dismissService
 {
-  v3 = [(HUHomeControlServiceManager *)self remoteAlertHandle];
+  remoteAlertHandle = [(HUHomeControlServiceManager *)self remoteAlertHandle];
 
-  if (v3)
+  if (remoteAlertHandle)
   {
-    v4 = [(HUHomeControlServiceManager *)self remoteAlertHandle];
-    [v4 removeObserver:self];
+    remoteAlertHandle2 = [(HUHomeControlServiceManager *)self remoteAlertHandle];
+    [remoteAlertHandle2 removeObserver:self];
 
-    v5 = [(HUHomeControlServiceManager *)self remoteAlertHandle];
-    [v5 invalidate];
+    remoteAlertHandle3 = [(HUHomeControlServiceManager *)self remoteAlertHandle];
+    [remoteAlertHandle3 invalidate];
 
     [(HUHomeControlServiceManager *)self setRemoteAlertHandle:0];
 
@@ -162,8 +162,8 @@ LABEL_9:
     [(HUHomeControlServiceManager *)self setSuspendedServiceClientCount:[(HUHomeControlServiceManager *)self suspendedServiceClientCount]- 1];
     if (![(HUHomeControlServiceManager *)self suspendedServiceClientCount])
     {
-      v6 = [MEMORY[0x277D0AE18] sharedService];
-      [v6 terminateApplication:@"com.apple.Home.HomeControlService" forReason:5 andReport:0 withDescription:&stru_2823E0EE8];
+      mEMORY[0x277D0AE18] = [MEMORY[0x277D0AE18] sharedService];
+      [mEMORY[0x277D0AE18] terminateApplication:@"com.apple.Home.HomeControlService" forReason:5 andReport:0 withDescription:&stru_2823E0EE8];
     }
   }
 }
@@ -171,11 +171,11 @@ LABEL_9:
 - (void)_launchViewServiceSuspended
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D0AE18] sharedService];
+  mEMORY[0x277D0AE18] = [MEMORY[0x277D0AE18] sharedService];
   v4 = *MEMORY[0x277D0ABF0];
   v5[0] = MEMORY[0x277CBEC38];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:&v4 count:1];
-  [v2 openApplication:@"com.apple.Home.HomeControlService" options:v3 withResult:&__block_literal_global_20_2];
+  [mEMORY[0x277D0AE18] openApplication:@"com.apple.Home.HomeControlService" options:v3 withResult:&__block_literal_global_20_2];
 }
 
 void __58__HUHomeControlServiceManager__launchViewServiceSuspended__block_invoke(uint64_t a1, void *a2)
@@ -194,62 +194,62 @@ void __58__HUHomeControlServiceManager__launchViewServiceSuspended__block_invoke
   }
 }
 
-- (void)_presentAlertForError:(id)a3
+- (void)_presentAlertForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 localizedDescription];
-  v6 = [v4 code];
+  errorCopy = error;
+  localizedDescription = [errorCopy localizedDescription];
+  code = [errorCopy code];
 
-  if (v6 <= 90)
+  if (code <= 90)
   {
-    if (v6 > 87)
+    if (code > 87)
     {
-      if (v6 == 88)
+      if (code == 88)
       {
         v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_Ended_Title", @"HUDropIn_ErrorAlert_Ended_Title", 1);
-        HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_FailedDuringCall_Description", @"%@", v38, v39, v40, v41, v42, v43, v5);
+        HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_FailedDuringCall_Description", @"%@", v38, v39, v40, v41, v42, v43, localizedDescription);
       }
 
       else
       {
         v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_Ended_Title", @"HUDropIn_ErrorAlert_Ended_Title", 1);
-        if (v6 == 89)
+        if (code == 89)
         {
-          HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_FailedDuringCall_TryAgain_Description", @"%@", v7, v8, v9, v10, v11, v12, v5);
+          HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_FailedDuringCall_TryAgain_Description", @"%@", v7, v8, v9, v10, v11, v12, localizedDescription);
         }
 
         else
         {
-          HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_Ended_Description", @"%@", v7, v8, v9, v10, v11, v12, v5);
+          HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_Ended_Description", @"%@", v7, v8, v9, v10, v11, v12, localizedDescription);
         }
       }
 
       goto LABEL_25;
     }
 
-    if (v6 == 86)
+    if (code == 86)
     {
       v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_UnableToConnect_Title", @"HUDropIn_ErrorAlert_UnableToConnect_Title", 1);
-      HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_FailedToStart_Description", @"%@", v31, v32, v33, v34, v35, v36, v5);
+      HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_FailedToStart_Description", @"%@", v31, v32, v33, v34, v35, v36, localizedDescription);
       goto LABEL_25;
     }
 
-    if (v6 == 87)
+    if (code == 87)
     {
       v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_UnableToConnect_Title", @"HUDropIn_ErrorAlert_UnableToConnect_Title", 1);
-      HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_FailedToStart_TryAgain_Description", @"%@", v19, v20, v21, v22, v23, v24, v5);
+      HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_FailedToStart_TryAgain_Description", @"%@", v19, v20, v21, v22, v23, v24, localizedDescription);
       goto LABEL_25;
     }
 
     goto LABEL_24;
   }
 
-  if (v6 <= 92)
+  if (code <= 92)
   {
-    if (v6 != 91)
+    if (code != 91)
     {
       v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_AlreadyInProgress_Title", @"HUDropIn_ErrorAlert_AlreadyInProgress_Title", 1);
-      HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_AlreadyInProgress_Description", @"%@", v25, v26, v27, v28, v29, v30, v5);
+      HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_AlreadyInProgress_Description", @"%@", v25, v26, v27, v28, v29, v30, localizedDescription);
       goto LABEL_25;
     }
 
@@ -262,31 +262,31 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v6 == 93)
+  if (code == 93)
   {
     v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_UnableToConnect_Title", @"HUDropIn_ErrorAlert_UnableToConnect_Title", 1);
     v37 = @"HUDropIn_ErrorAlert_UserAccessNotAllowed_Description";
     goto LABEL_20;
   }
 
-  if (v6 != 94)
+  if (code != 94)
   {
-    if (v6 == 95)
+    if (code == 95)
     {
       v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_UnableToConnect_Title", @"HUDropIn_ErrorAlert_UnableToConnect_Title", 1);
-      HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_HostDevice_OnActiveCall_Description", @"%@", v13, v14, v15, v16, v17, v18, v5);
+      HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_HostDevice_OnActiveCall_Description", @"%@", v13, v14, v15, v16, v17, v18, localizedDescription);
       v44 = LABEL_25:;
       goto LABEL_26;
     }
 
 LABEL_24:
     v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_Ended_Title", @"HUDropIn_ErrorAlert_Ended_Title", 1);
-    HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_ThisDevice_OnActiveCall_Description", @"%@", v52, v53, v54, v55, v56, v57, v5);
+    HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_ThisDevice_OnActiveCall_Description", @"%@", v52, v53, v54, v55, v56, v57, localizedDescription);
     goto LABEL_25;
   }
 
   v63 = _HULocalizedStringWithDefaultValue(@"HUDropIn_ErrorAlert_OnActiveCall_Title", @"HUDropIn_ErrorAlert_OnActiveCall_Title", 1);
-  v51 = HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_ThisDevice_OnActiveCall_Description", @"%@", v45, v46, v47, v48, v49, v50, v5);
+  v51 = HULocalizedStringWithFormat(@"HUDropIn_ErrorAlert_ThisDevice_OnActiveCall_Description", @"%@", v45, v46, v47, v48, v49, v50, localizedDescription);
   if (!v51)
   {
     NSLog(&cfstr_CouldnTLocaliz_1.isa, 0);
@@ -299,20 +299,20 @@ LABEL_27:
   v61 = [v59 actionWithTitle:v60 style:0 handler:0];
   [v58 addAction:v61];
 
-  v62 = [(HUHomeControlServiceManager *)self presentingViewController];
-  [v62 presentViewController:v58 animated:1 completion:0];
+  presentingViewController = [(HUHomeControlServiceManager *)self presentingViewController];
+  [presentingViewController presentViewController:v58 animated:1 completion:0];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = [(HUHomeControlServiceManager *)self remoteAlertHandle];
-  v6 = [v5 isEqual:v4];
+  deactivateCopy = deactivate;
+  remoteAlertHandle = [(HUHomeControlServiceManager *)self remoteAlertHandle];
+  v6 = [remoteAlertHandle isEqual:deactivateCopy];
 
   if (v6)
   {
-    v7 = [(HUHomeControlServiceManager *)self remoteAlertHandle];
-    [v7 removeObserver:self];
+    remoteAlertHandle2 = [(HUHomeControlServiceManager *)self remoteAlertHandle];
+    [remoteAlertHandle2 removeObserver:self];
 
     [(HUHomeControlServiceManager *)self setRemoteAlertHandle:0];
   }

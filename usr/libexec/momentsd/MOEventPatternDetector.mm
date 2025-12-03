@@ -1,14 +1,14 @@
 @interface MOEventPatternDetector
-- (BOOL)configure:(id)a3;
+- (BOOL)configure:(id)configure;
 - (MOEventPatternDetector)init;
-- (MOEventPatternDetector)initWithPredicate:(id)a3 andFeatureExtractor:(id)a4 andFeatureTransformer:(id)a5 andAnomalyDetector:(id)a6 andRoutineDetector:(id)a7 andTrendDetector:(id)a8;
-- (id)processEvents:(id)a3;
-- (void)setAnomalyDetector:(id)a3;
-- (void)setFeatureExtractor:(id)a3;
-- (void)setFeatureTransformer:(id)a3;
-- (void)setPredicate:(id)a3;
-- (void)setRoutineDetector:(id)a3;
-- (void)setTrendDetector:(id)a3;
+- (MOEventPatternDetector)initWithPredicate:(id)predicate andFeatureExtractor:(id)extractor andFeatureTransformer:(id)transformer andAnomalyDetector:(id)detector andRoutineDetector:(id)routineDetector andTrendDetector:(id)trendDetector;
+- (id)processEvents:(id)events;
+- (void)setAnomalyDetector:(id)detector;
+- (void)setFeatureExtractor:(id)extractor;
+- (void)setFeatureTransformer:(id)transformer;
+- (void)setPredicate:(id)predicate;
+- (void)setRoutineDetector:(id)detector;
+- (void)setTrendDetector:(id)detector;
 @end
 
 @implementation MOEventPatternDetector
@@ -46,14 +46,14 @@
   return v2;
 }
 
-- (MOEventPatternDetector)initWithPredicate:(id)a3 andFeatureExtractor:(id)a4 andFeatureTransformer:(id)a5 andAnomalyDetector:(id)a6 andRoutineDetector:(id)a7 andTrendDetector:(id)a8
+- (MOEventPatternDetector)initWithPredicate:(id)predicate andFeatureExtractor:(id)extractor andFeatureTransformer:(id)transformer andAnomalyDetector:(id)detector andRoutineDetector:(id)routineDetector andTrendDetector:(id)trendDetector
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  predicateCopy = predicate;
+  extractorCopy = extractor;
+  transformerCopy = transformer;
+  detectorCopy = detector;
+  routineDetectorCopy = routineDetector;
+  trendDetectorCopy = trendDetector;
   v24.receiver = self;
   v24.super_class = MOEventPatternDetector;
   v20 = [(MOEventPatternDetector *)&v24 init];
@@ -63,62 +63,62 @@
     configuration = v20->_configuration;
     v20->_configuration = v21;
 
-    [(MOEventPatternDetector *)v20 setPredicate:v14];
-    [(MOEventPatternDetector *)v20 setFeatureExtractor:v15];
-    [(MOEventPatternDetector *)v20 setFeatureTransformer:v16];
-    [(MOEventPatternDetector *)v20 setAnomalyDetector:v17];
-    [(MOEventPatternDetector *)v20 setRoutineDetector:v18];
-    [(MOEventPatternDetector *)v20 setTrendDetector:v19];
+    [(MOEventPatternDetector *)v20 setPredicate:predicateCopy];
+    [(MOEventPatternDetector *)v20 setFeatureExtractor:extractorCopy];
+    [(MOEventPatternDetector *)v20 setFeatureTransformer:transformerCopy];
+    [(MOEventPatternDetector *)v20 setAnomalyDetector:detectorCopy];
+    [(MOEventPatternDetector *)v20 setRoutineDetector:routineDetectorCopy];
+    [(MOEventPatternDetector *)v20 setTrendDetector:trendDetectorCopy];
   }
 
   return v20;
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
-  objc_storeStrong(&self->_predicate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_predicate, predicate);
+  predicateCopy = predicate;
   [(MOEventPatternDetectorPredicate *)self->_predicate configure:self->_configuration];
 }
 
-- (void)setFeatureExtractor:(id)a3
+- (void)setFeatureExtractor:(id)extractor
 {
-  objc_storeStrong(&self->_featureExtractor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_featureExtractor, extractor);
+  extractorCopy = extractor;
   [(MOEventPatternDetectorFeatureExtractor *)self->_featureExtractor configure:self->_configuration];
 }
 
-- (void)setFeatureTransformer:(id)a3
+- (void)setFeatureTransformer:(id)transformer
 {
-  objc_storeStrong(&self->_featureTransformer, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_featureTransformer, transformer);
+  transformerCopy = transformer;
   [(MOEventPatternDetectorFeatureTransformer *)self->_featureTransformer configure:self->_configuration];
 }
 
-- (void)setAnomalyDetector:(id)a3
+- (void)setAnomalyDetector:(id)detector
 {
-  objc_storeStrong(&self->_anomalyDetector, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_anomalyDetector, detector);
+  detectorCopy = detector;
   [(MOEventPatternDetectorAnomalyDetector *)self->_anomalyDetector configure:self->_configuration];
 }
 
-- (void)setRoutineDetector:(id)a3
+- (void)setRoutineDetector:(id)detector
 {
-  objc_storeStrong(&self->_routineDetector, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_routineDetector, detector);
+  detectorCopy = detector;
   [(MOEventPatternDetectorRoutineDetector *)self->_routineDetector configure:self->_configuration];
 }
 
-- (void)setTrendDetector:(id)a3
+- (void)setTrendDetector:(id)detector
 {
-  objc_storeStrong(&self->_trendDetector, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_trendDetector, detector);
+  detectorCopy = detector;
   [(MOEventPatternDetectorTrendDetector *)self->_trendDetector configure:self->_configuration];
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v4 = [a3 copy];
+  v4 = [configure copy];
   configuration = self->_configuration;
   self->_configuration = v4;
 
@@ -130,9 +130,9 @@
   return v9 & v10 & [(MOEventPatternDetectorTrendDetector *)self->_trendDetector configure:self->_configuration];
 }
 
-- (id)processEvents:(id)a3
+- (id)processEvents:(id)events
 {
-  v5 = a3;
+  eventsCopy = events;
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -238,7 +238,7 @@
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Filtering relevant event subsets for %@", buf, 0xCu);
   }
 
-  v24 = [(MOEventPatternDetectorPredicate *)self->_predicate filterEvents:v5];
+  v24 = [(MOEventPatternDetectorPredicate *)self->_predicate filterEvents:eventsCopy];
   v25 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
@@ -274,9 +274,9 @@
       [v33 handleFailureInMethod:a2 object:self file:@"MOEventPatternDetector.m" lineNumber:172 description:{@"Wrong NSArray length resulting from transformFeaturesFromEvents:withFeatures:. (in %s:%d)", "-[MOEventPatternDetector processEvents:]", 172}];
     }
 
-    v34 = [v31 firstObject];
+    firstObject = [v31 firstObject];
 
-    if (!v34)
+    if (!firstObject)
     {
       v35 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -288,7 +288,7 @@
       [v36 handleFailureInMethod:a2 object:self file:@"MOEventPatternDetector.m" lineNumber:173 description:{@"eventsSubset undefined after transformFeaturesFromEvents:withFeatures:. (in %s:%d)", "-[MOEventPatternDetector processEvents:]", 173}];
     }
 
-    v37 = [v31 firstObject];
+    firstObject2 = [v31 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -304,9 +304,9 @@
       [v40 handleFailureInMethod:a2 object:self file:@"MOEventPatternDetector.m" lineNumber:174 description:{@"eventsSubset is not an NSArray after transformFeaturesFromEvents:withFeatures:. (in %s:%d)", "-[MOEventPatternDetector processEvents:]", 174}];
     }
 
-    v41 = [v31 lastObject];
+    lastObject = [v31 lastObject];
 
-    if (!v41)
+    if (!lastObject)
     {
       v42 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -318,7 +318,7 @@
       [v43 handleFailureInMethod:a2 object:self file:@"MOEventPatternDetector.m" lineNumber:175 description:{@"features undefined after transformFeaturesFromEvents:withFeatures:. (in %s:%d)", "-[MOEventPatternDetector processEvents:]", 175}];
     }
 
-    v44 = [v31 lastObject];
+    lastObject2 = [v31 lastObject];
     objc_opt_class();
     v45 = objc_opt_isKindOfClass();
 
@@ -334,12 +334,12 @@
       [v47 handleFailureInMethod:a2 object:self file:@"MOEventPatternDetector.m" lineNumber:176 description:{@"features is not an NSArray after transformFeaturesFromEvents:withFeatures:. (in %s:%d)", "-[MOEventPatternDetector processEvents:]", 176}];
     }
 
-    v48 = [v31 firstObject];
+    firstObject3 = [v31 firstObject];
 
-    v49 = [v31 lastObject];
+    lastObject3 = [v31 lastObject];
 
-    v50 = [v48 count];
-    if (v50 != [v49 count])
+    v50 = [firstObject3 count];
+    if (v50 != [lastObject3 count])
     {
       v51 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -351,8 +351,8 @@
       [v52 handleFailureInMethod:a2 object:self file:@"MOEventPatternDetector.m" lineNumber:179 description:{@"Mismatch between number of features and number of events after transformFeaturesFromEvents:withFeatures:. (in %s:%d)", "-[MOEventPatternDetector processEvents:]", 179}];
     }
 
-    v27 = v49;
-    v24 = v48;
+    v27 = lastObject3;
+    v24 = firstObject3;
   }
 
   v53 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
@@ -410,7 +410,7 @@
       v77 = [v63 count];
       v76 = [v55 count];
       v65 = v27;
-      v66 = v5;
+      v66 = eventsCopy;
       v67 = [v58 count];
       v68 = [v61 count];
       v69 = self->_patternDetectorName;
@@ -420,7 +420,7 @@
       v81 = v76;
       v82 = 2048;
       v83 = v67;
-      v5 = v66;
+      eventsCopy = v66;
       v27 = v65;
       v84 = 2048;
       v85 = v68;

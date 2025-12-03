@@ -3,22 +3,22 @@
 + (MusicKit_SoftLinking_MPMusicPlayerController)systemMusicPlayer;
 + (NSString)notificationUserInfoKeyContentItemIDs;
 - (MusicKit_SoftLinking_MPMusicPlayerItem)nowPlayingItem;
-- (id)_initWithUnderlyingPlayerController:(id)a3;
-- (id)itemsForContentItemIDs:(id)a3;
+- (id)_initWithUnderlyingPlayerController:(id)controller;
+- (id)itemsForContentItemIDs:(id)ds;
 - (int64_t)playbackState;
 - (int64_t)repeatMode;
 - (int64_t)shuffleMode;
-- (void)_handleNowPlayingItemDidChangeNotification:(id)a3;
-- (void)_handlePlaybackStateDidChangeNotification:(id)a3;
-- (void)_handleQueueDidChangeNotification:(id)a3;
-- (void)appendQueueDescriptor:(id)a3;
+- (void)_handleNowPlayingItemDidChangeNotification:(id)notification;
+- (void)_handlePlaybackStateDidChangeNotification:(id)notification;
+- (void)_handleQueueDidChangeNotification:(id)notification;
+- (void)appendQueueDescriptor:(id)descriptor;
 - (void)dealloc;
-- (void)performQueueTransaction:(id)a3;
-- (void)prependQueueDescriptor:(id)a3;
-- (void)setApplicationMusicPlayerTransitionType:(int64_t)a3 withDuration:(double)a4;
-- (void)setQueueWithDescriptor:(id)a3;
-- (void)setRepeatMode:(int64_t)a3;
-- (void)setShuffleMode:(int64_t)a3;
+- (void)performQueueTransaction:(id)transaction;
+- (void)prependQueueDescriptor:(id)descriptor;
+- (void)setApplicationMusicPlayerTransitionType:(int64_t)type withDuration:(double)duration;
+- (void)setQueueWithDescriptor:(id)descriptor;
+- (void)setRepeatMode:(int64_t)mode;
+- (void)setShuffleMode:(int64_t)mode;
 @end
 
 @implementation MusicKit_SoftLinking_MPMusicPlayerController
@@ -47,25 +47,25 @@
   return v3;
 }
 
-- (id)_initWithUnderlyingPlayerController:(id)a3
+- (id)_initWithUnderlyingPlayerController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = MusicKit_SoftLinking_MPMusicPlayerController;
   v6 = [(MusicKit_SoftLinking_MPMusicPlayerController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingPlayerController, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&v6->_underlyingPlayerController, controller);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = getMPMusicPlayerControllerNowPlayingItemDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleNowPlayingItemDidChangeNotification_ name:v9 object:v7->_underlyingPlayerController];
+    [defaultCenter addObserver:v7 selector:sel__handleNowPlayingItemDidChangeNotification_ name:v9 object:v7->_underlyingPlayerController];
 
     v10 = getMPMusicPlayerControllerPlaybackStateDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handlePlaybackStateDidChangeNotification_ name:v10 object:v7->_underlyingPlayerController];
+    [defaultCenter addObserver:v7 selector:sel__handlePlaybackStateDidChangeNotification_ name:v10 object:v7->_underlyingPlayerController];
 
     v11 = get_MPMusicPlayerControllerQueueDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleQueueDidChangeNotification_ name:v11 object:v7->_underlyingPlayerController];
+    [defaultCenter addObserver:v7 selector:sel__handleQueueDidChangeNotification_ name:v11 object:v7->_underlyingPlayerController];
   }
 
   return v7;
@@ -73,15 +73,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = getMPMusicPlayerControllerNowPlayingItemDidChangeNotification();
-  [v3 removeObserver:self name:v4 object:self->_underlyingPlayerController];
+  [defaultCenter removeObserver:self name:v4 object:self->_underlyingPlayerController];
 
   v5 = getMPMusicPlayerControllerPlaybackStateDidChangeNotification();
-  [v3 removeObserver:self name:v5 object:self->_underlyingPlayerController];
+  [defaultCenter removeObserver:self name:v5 object:self->_underlyingPlayerController];
 
   v6 = get_MPMusicPlayerControllerQueueDidChangeNotification();
-  [v3 removeObserver:self name:v6 object:self->_underlyingPlayerController];
+  [defaultCenter removeObserver:self name:v6 object:self->_underlyingPlayerController];
 
   v7.receiver = self;
   v7.super_class = MusicKit_SoftLinking_MPMusicPlayerController;
@@ -90,23 +90,23 @@
 
 - (MusicKit_SoftLinking_MPMusicPlayerItem)nowPlayingItem
 {
-  v2 = [(MPMusicPlayerController *)self->_underlyingPlayerController nowPlayingItem];
-  v3 = [MusicKit_SoftLinking_MPMusicPlayerItem playerItemForMediaItem:v2];
+  nowPlayingItem = [(MPMusicPlayerController *)self->_underlyingPlayerController nowPlayingItem];
+  v3 = [MusicKit_SoftLinking_MPMusicPlayerItem playerItemForMediaItem:nowPlayingItem];
 
   return v3;
 }
 
-- (id)itemsForContentItemIDs:(id)a3
+- (id)itemsForContentItemIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [(MPMusicPlayerController *)self->_underlyingPlayerController _mediaItemsForContentItemIDs:v4];
+  v6 = [(MPMusicPlayerController *)self->_underlyingPlayerController _mediaItemsForContentItemIDs:dsCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = dsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -141,34 +141,34 @@
   return v5;
 }
 
-- (void)setQueueWithDescriptor:(id)a3
+- (void)setQueueWithDescriptor:(id)descriptor
 {
-  v4 = [a3 _underlyingQueueDescriptor];
-  [(MPMusicPlayerController *)self->_underlyingPlayerController setQueueWithDescriptor:v4];
+  _underlyingQueueDescriptor = [descriptor _underlyingQueueDescriptor];
+  [(MPMusicPlayerController *)self->_underlyingPlayerController setQueueWithDescriptor:_underlyingQueueDescriptor];
 }
 
-- (void)prependQueueDescriptor:(id)a3
+- (void)prependQueueDescriptor:(id)descriptor
 {
-  v4 = [a3 _underlyingQueueDescriptor];
-  [(MPMusicPlayerController *)self->_underlyingPlayerController prependQueueDescriptor:v4];
+  _underlyingQueueDescriptor = [descriptor _underlyingQueueDescriptor];
+  [(MPMusicPlayerController *)self->_underlyingPlayerController prependQueueDescriptor:_underlyingQueueDescriptor];
 }
 
-- (void)appendQueueDescriptor:(id)a3
+- (void)appendQueueDescriptor:(id)descriptor
 {
-  v4 = [a3 _underlyingQueueDescriptor];
-  [(MPMusicPlayerController *)self->_underlyingPlayerController appendQueueDescriptor:v4];
+  _underlyingQueueDescriptor = [descriptor _underlyingQueueDescriptor];
+  [(MPMusicPlayerController *)self->_underlyingPlayerController appendQueueDescriptor:_underlyingQueueDescriptor];
 }
 
-- (void)performQueueTransaction:(id)a3
+- (void)performQueueTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   underlyingPlayerController = self->_underlyingPlayerController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__MusicKit_SoftLinking_MPMusicPlayerController_performQueueTransaction___block_invoke;
   v7[3] = &unk_278229FA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   [(MPMusicPlayerController *)underlyingPlayerController performQueueTransaction:v7 completionHandler:&__block_literal_global_25];
 }
 
@@ -194,14 +194,14 @@
   return result;
 }
 
-- (void)setRepeatMode:(int64_t)a3
+- (void)setRepeatMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 3)
+  if ((mode - 1) >= 3)
   {
-    a3 = 0;
+    mode = 0;
   }
 
-  [(MPMusicPlayerController *)self->_underlyingPlayerController setRepeatMode:a3];
+  [(MPMusicPlayerController *)self->_underlyingPlayerController setRepeatMode:mode];
 }
 
 - (int64_t)shuffleMode
@@ -215,28 +215,28 @@
   return result;
 }
 
-- (void)setShuffleMode:(int64_t)a3
+- (void)setShuffleMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 3)
+  if ((mode - 1) >= 3)
   {
-    a3 = 0;
+    mode = 0;
   }
 
-  [(MPMusicPlayerController *)self->_underlyingPlayerController setShuffleMode:a3];
+  [(MPMusicPlayerController *)self->_underlyingPlayerController setShuffleMode:mode];
 }
 
-- (void)setApplicationMusicPlayerTransitionType:(int64_t)a3 withDuration:(double)a4
+- (void)setApplicationMusicPlayerTransitionType:(int64_t)type withDuration:(double)duration
 {
   v6 = self->_underlyingPlayerController;
-  if (a3 == 1)
+  if (type == 1)
   {
     v7 = v6;
-    [(MPMusicPlayerController *)v6 _setApplicationMusicPlayerTransitionType:1 withDuration:a4];
+    [(MPMusicPlayerController *)v6 _setApplicationMusicPlayerTransitionType:1 withDuration:duration];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_6;
     }
@@ -277,34 +277,34 @@ LABEL_6:
   return v4;
 }
 
-- (void)_handleNowPlayingItemDidChangeNotification:(id)a3
+- (void)_handleNowPlayingItemDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPMusicPlayerControllerNowPlayingItemDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPMusicPlayerControllerNowPlayingItemDidChangeNotification" object:self userInfo:userInfo];
 }
 
-- (void)_handleQueueDidChangeNotification:(id)a3
+- (void)_handleQueueDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPMusicPlayerControllerPlaybackQueueDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPMusicPlayerControllerPlaybackQueueDidChangeNotification" object:self userInfo:userInfo];
 }
 
-- (void)_handlePlaybackStateDidChangeNotification:(id)a3
+- (void)_handlePlaybackStateDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPMusicPlayerControllerPlaybackStateDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPMusicPlayerControllerPlaybackStateDidChangeNotification" object:self userInfo:userInfo];
 }
 
 @end

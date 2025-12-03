@@ -1,5 +1,5 @@
 @interface _AFExperimentMutation
-- (_AFExperimentMutation)initWithBase:(id)a3;
+- (_AFExperimentMutation)initWithBase:(id)base;
 - (id)getConfigurationIdentifier;
 - (id)getConfigurationVersion;
 - (id)getDeploymentGroupIdentifier;
@@ -26,72 +26,72 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_deploymentGroupProperties;
+    deploymentGroupProperties = self->_deploymentGroupProperties;
   }
 
   else
   {
-    v2 = [(AFExperiment *)self->_base deploymentGroupProperties];
+    deploymentGroupProperties = [(AFExperiment *)self->_base deploymentGroupProperties];
   }
 
-  return v2;
+  return deploymentGroupProperties;
 }
 
 - (id)getDeploymentGroupIdentifier
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_deploymentGroupIdentifier;
+    deploymentGroupIdentifier = self->_deploymentGroupIdentifier;
   }
 
   else
   {
-    v2 = [(AFExperiment *)self->_base deploymentGroupIdentifier];
+    deploymentGroupIdentifier = [(AFExperiment *)self->_base deploymentGroupIdentifier];
   }
 
-  return v2;
+  return deploymentGroupIdentifier;
 }
 
 - (id)getConfigurationVersion
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_configurationVersion;
+    configurationVersion = self->_configurationVersion;
   }
 
   else
   {
-    v2 = [(AFExperiment *)self->_base configurationVersion];
+    configurationVersion = [(AFExperiment *)self->_base configurationVersion];
   }
 
-  return v2;
+  return configurationVersion;
 }
 
 - (id)getConfigurationIdentifier
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_configurationIdentifier;
+    configurationIdentifier = self->_configurationIdentifier;
   }
 
   else
   {
-    v2 = [(AFExperiment *)self->_base configurationIdentifier];
+    configurationIdentifier = [(AFExperiment *)self->_base configurationIdentifier];
   }
 
-  return v2;
+  return configurationIdentifier;
 }
 
-- (_AFExperimentMutation)initWithBase:(id)a3
+- (_AFExperimentMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFExperimentMutation;
   v6 = [(_AFExperimentMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

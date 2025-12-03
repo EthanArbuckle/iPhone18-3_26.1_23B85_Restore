@@ -1,42 +1,42 @@
 @interface TRAArbitrationInputs
-- (TRAArbitrationInputs)initWithInterfaceIdiomInputs:(id)a3 deviceOrientationInputs:(id)a4 keyboardInputs:(id)a5 ambientPresentationInputs:(id)a6;
-- (TRAArbitrationInputs)initWithInterfaceIdiomInputs:(id)a3 userInterfaceStyleInputs:(id)a4 deviceOrientationInputs:(id)a5 keyboardInputs:(id)a6 ambientPresentationInputs:(id)a7;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (TRAArbitrationInputs)initWithInterfaceIdiomInputs:(id)inputs deviceOrientationInputs:(id)orientationInputs keyboardInputs:(id)keyboardInputs ambientPresentationInputs:(id)presentationInputs;
+- (TRAArbitrationInputs)initWithInterfaceIdiomInputs:(id)inputs userInterfaceStyleInputs:(id)styleInputs deviceOrientationInputs:(id)orientationInputs keyboardInputs:(id)keyboardInputs ambientPresentationInputs:(id)presentationInputs;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAArbitrationInputs
 
-- (TRAArbitrationInputs)initWithInterfaceIdiomInputs:(id)a3 deviceOrientationInputs:(id)a4 keyboardInputs:(id)a5 ambientPresentationInputs:(id)a6
+- (TRAArbitrationInputs)initWithInterfaceIdiomInputs:(id)inputs deviceOrientationInputs:(id)orientationInputs keyboardInputs:(id)keyboardInputs ambientPresentationInputs:(id)presentationInputs
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  presentationInputsCopy = presentationInputs;
+  keyboardInputsCopy = keyboardInputs;
+  orientationInputsCopy = orientationInputs;
+  inputsCopy = inputs;
   v14 = [[TRAArbitrationUserInterfaceStyleInputs alloc] initWithUserInterfaceStyle:0];
-  v15 = [(TRAArbitrationInputs *)self initWithInterfaceIdiomInputs:v13 userInterfaceStyleInputs:v14 deviceOrientationInputs:v12 keyboardInputs:v11 ambientPresentationInputs:v10];
+  v15 = [(TRAArbitrationInputs *)self initWithInterfaceIdiomInputs:inputsCopy userInterfaceStyleInputs:v14 deviceOrientationInputs:orientationInputsCopy keyboardInputs:keyboardInputsCopy ambientPresentationInputs:presentationInputsCopy];
 
   return v15;
 }
 
-- (TRAArbitrationInputs)initWithInterfaceIdiomInputs:(id)a3 userInterfaceStyleInputs:(id)a4 deviceOrientationInputs:(id)a5 keyboardInputs:(id)a6 ambientPresentationInputs:(id)a7
+- (TRAArbitrationInputs)initWithInterfaceIdiomInputs:(id)inputs userInterfaceStyleInputs:(id)styleInputs deviceOrientationInputs:(id)orientationInputs keyboardInputs:(id)keyboardInputs ambientPresentationInputs:(id)presentationInputs
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  inputsCopy = inputs;
+  styleInputsCopy = styleInputs;
+  orientationInputsCopy = orientationInputs;
+  keyboardInputsCopy = keyboardInputs;
+  presentationInputsCopy = presentationInputs;
+  if (inputsCopy)
   {
-    if (v13)
+    if (styleInputsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [TRAArbitrationInputs initWithInterfaceIdiomInputs:userInterfaceStyleInputs:deviceOrientationInputs:keyboardInputs:ambientPresentationInputs:];
-    if (v14)
+    if (orientationInputsCopy)
     {
       goto LABEL_4;
     }
@@ -45,13 +45,13 @@ LABEL_8:
   }
 
   [TRAArbitrationInputs initWithInterfaceIdiomInputs:userInterfaceStyleInputs:deviceOrientationInputs:keyboardInputs:ambientPresentationInputs:];
-  if (!v13)
+  if (!styleInputsCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (orientationInputsCopy)
   {
     goto LABEL_4;
   }
@@ -64,23 +64,23 @@ LABEL_4:
   v17 = [(TRAArbitrationInputs *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [inputsCopy copy];
     interfaceIdiomInputs = v17->_interfaceIdiomInputs;
     v17->_interfaceIdiomInputs = v18;
 
-    v20 = [v13 copy];
+    v20 = [styleInputsCopy copy];
     userInterfaceStyleInputs = v17->_userInterfaceStyleInputs;
     v17->_userInterfaceStyleInputs = v20;
 
-    v22 = [v14 copy];
+    v22 = [orientationInputsCopy copy];
     deviceOrientationInputs = v17->_deviceOrientationInputs;
     v17->_deviceOrientationInputs = v22;
 
-    v24 = [v15 copy];
+    v24 = [keyboardInputsCopy copy];
     keyboardInputs = v17->_keyboardInputs;
     v17->_keyboardInputs = v24;
 
-    v26 = [v16 copy];
+    v26 = [presentationInputsCopy copy];
     ambientPresentationInputs = v17->_ambientPresentationInputs;
     v17->_ambientPresentationInputs = v26;
   }
@@ -90,10 +90,10 @@ LABEL_4:
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbitrationInputs *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbitrationInputs *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -105,7 +105,7 @@ LABEL_4:
   v7[3] = &unk_279DD48D0;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendBodySectionWithName:0 multilinePrefix:@"\t" block:v7];
   v5 = v4;
 
@@ -121,12 +121,12 @@ id __50__TRAArbitrationInputs_succinctDescriptionBuilder__block_invoke(uint64_t 
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 40) withName:@"ambientPresentationInputs"];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbitrationInputs *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbitrationInputs *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)initWithInterfaceIdiomInputs:userInterfaceStyleInputs:deviceOrientationInputs:keyboardInputs:ambientPresentationInputs:.cold.1()

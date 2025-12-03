@@ -1,24 +1,24 @@
 @interface CLIndoorLocation
 - ($146E4FC062DDF4A2C58C04BCAEC0B25D)diagnosticReport;
 - ($212FAF0442D7AE76F2FFFF4B46B9FEB9)location;
-- (CLIndoorLocation)initWithCoder:(id)a3;
+- (CLIndoorLocation)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDiagnosticReport:(id *)a3;
-- (void)setLocation:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDiagnosticReport:(id *)report;
+- (void)setLocation:(id *)location;
 @end
 
 @implementation CLIndoorLocation
 
-- (CLIndoorLocation)initWithCoder:(id)a3
+- (CLIndoorLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = CLIndoorLocation;
   v5 = [(CLIndoorLocation *)&v37 init];
   if (v5)
   {
-    sub_245A857BC(v4, v36);
+    sub_245A857BC(coderCopy, v36);
     v6 = v36[3];
     *(v5 + 200) = v36[2];
     *(v5 + 216) = v6;
@@ -33,20 +33,20 @@
     *(v5 + 280) = v9;
     *(v5 + 296) = v36[8];
     *(v5 + 308) = *(&v36[8] + 12);
-    sub_245A85850(v4, v36);
+    sub_245A85850(coderCopy, v36);
     memcpy(v5 + 328, v36, 0x230uLL);
     v10 = objc_opt_class();
-    v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v12, v13, v14, v10, @"locationId");
+    v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v12, v13, v14, v10, @"locationId");
     v16 = *(v5 + 2);
     *(v5 + 2) = v15;
 
     v17 = objc_opt_class();
-    v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v19, v20, v21, v17, @"locationDescription");
+    v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v19, v20, v21, v17, @"locationDescription");
     v23 = *(v5 + 3);
     *(v5 + 3) = v22;
 
-    v5[8] = objc_msgSend_decodeBoolForKey_(v4, v24, v25, v26, v27, @"gpsAssistance");
-    sub_245A858E4(v4, v36);
+    v5[8] = objc_msgSend_decodeBoolForKey_(coderCopy, v24, v25, v26, v27, @"gpsAssistance");
+    sub_245A858E4(coderCopy, v36);
     v28 = *&v36[8];
     v29 = v36[7];
     *(v5 + 8) = v36[6];
@@ -68,15 +68,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v25 = a3;
-  sub_245A39754(v25, v4, v5, v6);
-  sub_245A39740(v25, v7, v8, v9);
-  objc_msgSend_encodeObject_forKey_(v25, v10, v11, v12, v13, self->_locationId, @"locationId");
-  objc_msgSend_encodeObject_forKey_(v25, v14, v15, v16, v17, self->_locationDescription, @"locationDescription");
-  objc_msgSend_encodeBool_forKey_(v25, v18, v19, v20, v21, self->_requestsGpsAssistance, @"gpsAssistance");
-  sub_245A85978(v25, v22, v23, v24);
+  coderCopy = coder;
+  sub_245A39754(coderCopy, v4, v5, v6);
+  sub_245A39740(coderCopy, v7, v8, v9);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, v11, v12, v13, self->_locationId, @"locationId");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v15, v16, v17, self->_locationDescription, @"locationDescription");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v18, v19, v20, v21, self->_requestsGpsAssistance, @"gpsAssistance");
+  sub_245A85978(coderCopy, v22, v23, v24);
 }
 
 - (id)description
@@ -123,22 +123,22 @@
   return self;
 }
 
-- (void)setLocation:(id *)a3
+- (void)setLocation:(id *)location
 {
-  v3 = *&a3->var0;
-  *&self->_location.coordinate.longitude = *&a3->var1.var1;
+  v3 = *&location->var0;
+  *&self->_location.coordinate.longitude = *&location->var1.var1;
   *&self->_location.suitability = v3;
-  v4 = *&a3->var3;
-  v5 = *&a3->var5;
-  v6 = *&a3->var7;
-  *&self->_location.timestamp = *&a3->var9;
+  v4 = *&location->var3;
+  v5 = *&location->var5;
+  v6 = *&location->var7;
+  *&self->_location.timestamp = *&location->var9;
   *&self->_location.course = v6;
   *&self->_location.speed = v5;
   *&self->_location.altitude = v4;
-  v7 = *&a3->var11;
-  var13 = a3->var13;
-  v9 = *&a3->var14;
-  *&self->_location.integrity = *&a3->var16;
+  v7 = *&location->var11;
+  var13 = location->var13;
+  v9 = *&location->var14;
+  *&self->_location.integrity = *&location->var16;
   self->_location.rawCoordinate = var13;
   *&self->_location.rawCourse = v9;
   *&self->_location.lifespan = v7;
@@ -162,20 +162,20 @@
   return self;
 }
 
-- (void)setDiagnosticReport:(id *)a3
+- (void)setDiagnosticReport:(id *)report
 {
-  *&self->_diagnosticReport.yieldType = *&a3->var0;
-  v3 = *&a3->var2;
-  v4 = *&a3->var4;
-  v5 = *&a3->var7[1];
-  *&self->_diagnosticReport.prbOnFloors = *&a3->var6;
+  *&self->_diagnosticReport.yieldType = *&report->var0;
+  v3 = *&report->var2;
+  v4 = *&report->var4;
+  v5 = *&report->var7[1];
+  *&self->_diagnosticReport.prbOnFloors = *&report->var6;
   *&self->_diagnosticReport.prbOnFloor[1] = v5;
   *&self->_diagnosticReport.prbCoarseIndoorSaysIndoor = v3;
   *&self->_diagnosticReport.prbGpsSaysIndoor = v4;
-  v6 = *&a3->var7[3];
-  v7 = *&a3->var8;
-  v8 = *&a3->var10;
-  *&self->_diagnosticReport.pfYieldStatusBeforeCalculatePose = *&a3->var12;
+  v6 = *&report->var7[3];
+  v7 = *&report->var8;
+  v8 = *&report->var10;
+  *&self->_diagnosticReport.pfYieldStatusBeforeCalculatePose = *&report->var12;
   *&self->_diagnosticReport.prbInlier = v7;
   *&self->_diagnosticReport.prbInjectionOccupancyRetryLimitOk = v8;
   *&self->_diagnosticReport.prbOnFloor[3] = v6;

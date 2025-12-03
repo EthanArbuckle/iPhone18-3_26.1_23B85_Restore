@@ -1,14 +1,14 @@
 @interface AuthBrokerAgentXPCListenerDelegate
 - (AuthBrokerAgentXPCListenerDelegate)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)dealloc;
 @end
 
 @implementation AuthBrokerAgentXPCListenerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  [a4 setExportedInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &OBJC_PROTOCOL___AuthBrokerQuery)}];
+  [connection setExportedInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &OBJC_PROTOCOL___AuthBrokerQuery)}];
   if (self)
   {
     Property = objc_getProperty(self, v6, 16, 1);
@@ -19,15 +19,15 @@
     Property = 0;
   }
 
-  [a4 setExportedObject:Property];
+  [connection setExportedObject:Property];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = a4;
+    connectionCopy = connection;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Resuming newConnection %@", &v9, 0xCu);
   }
 
-  [a4 resume];
+  [connection resume];
   return 1;
 }
 

@@ -14,8 +14,8 @@
   v2 = sFallbackDefaultURLFromPrefs;
   if (!sFallbackDefaultURLFromPrefs)
   {
-    v3 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-    v4 = [v3 URLForKey:@"analyticsFallbackDefaultURL"];
+    mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+    v4 = [mEMORY[0x277D36180] URLForKey:@"analyticsFallbackDefaultURL"];
     v5 = [v4 copy];
     v6 = sFallbackDefaultURLFromPrefs;
     sFallbackDefaultURLFromPrefs = v5;
@@ -36,15 +36,15 @@
     return v2;
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[ICNAServerEnvironment setServerEnvironmentType:](v2, "setServerEnvironmentType:", [v3 integerForKey:@"analyticsInternalServerEnvironmentType"]);
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[ICNAServerEnvironment setServerEnvironmentType:](v2, "setServerEnvironmentType:", [standardUserDefaults integerForKey:@"analyticsInternalServerEnvironmentType"]);
 
-  v4 = [(ICNAServerEnvironment *)v2 serverEnvironmentType];
-  if (v4 <= 2)
+  serverEnvironmentType = [(ICNAServerEnvironment *)v2 serverEnvironmentType];
+  if (serverEnvironmentType <= 2)
   {
-    if (v4)
+    if (serverEnvironmentType)
     {
-      if (v4 == 1)
+      if (serverEnvironmentType == 1)
       {
         v10 = [MEMORY[0x277CBEBC0] URLWithString:@"https://devel.notes-analytics-events.newsapps.apple.com/analyticseventsv2/async"];
         [(ICNAServerEnvironment *)v2 setTargetURL:v10];
@@ -66,7 +66,7 @@
     goto LABEL_9;
   }
 
-  switch(v4)
+  switch(serverEnvironmentType)
   {
     case 3u:
       v9 = [MEMORY[0x277CBEBC0] URLWithString:@"https://test.notes-analytics-events.newsapps.apple.com/analyticseventsv2/async"];
@@ -84,8 +84,8 @@ LABEL_13:
       goto LABEL_13;
     case 5u:
 LABEL_9:
-      v7 = [(ICNAServerEnvironment *)v2 fallbackDefaultTargetURL];
-      [(ICNAServerEnvironment *)v2 setTargetURL:v7];
+      fallbackDefaultTargetURL = [(ICNAServerEnvironment *)v2 fallbackDefaultTargetURL];
+      [(ICNAServerEnvironment *)v2 setTargetURL:fallbackDefaultTargetURL];
 
       [(ICNAServerEnvironment *)v2 setAaEndPointTypeName:@"mobilenotes-production"];
       objc_initWeak(&location, v2);
@@ -153,17 +153,17 @@ void __29__ICNAServerEnvironment_init__block_invoke_2(uint64_t a1, void *a2, uin
 
 - (id)fallbackDefaultTargetURL
 {
-  v2 = [(ICNAServerEnvironment *)self targetURL];
-  if (!v2)
+  targetURL = [(ICNAServerEnvironment *)self targetURL];
+  if (!targetURL)
   {
-    v2 = [objc_opt_class() fallbackDefaultTargetURLFromPrefs];
-    if (!v2)
+    targetURL = [objc_opt_class() fallbackDefaultTargetURLFromPrefs];
+    if (!targetURL)
     {
-      v2 = [MEMORY[0x277CBEBC0] URLWithString:@"https://notes-analytics-events.apple.com/analyticseventsv2/async"];
+      targetURL = [MEMORY[0x277CBEBC0] URLWithString:@"https://notes-analytics-events.apple.com/analyticseventsv2/async"];
     }
   }
 
-  return v2;
+  return targetURL;
 }
 
 + (id)defaultAMSBag
@@ -172,7 +172,7 @@ void __29__ICNAServerEnvironment_init__block_invoke_2(uint64_t a1, void *a2, uin
   block[1] = 3221225472;
   block[2] = __38__ICNAServerEnvironment_defaultAMSBag__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultAMSBag_onceToken != -1)
   {
     dispatch_once(&defaultAMSBag_onceToken, block);
@@ -206,9 +206,9 @@ uint64_t __38__ICNAServerEnvironment_defaultAMSBag__block_invoke(uint64_t a1)
 - (void)init
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 targetURL];
+  targetURL = [self targetURL];
   v5 = 138412290;
-  v6 = v3;
+  v6 = targetURL;
   _os_log_debug_impl(&dword_25C6BF000, a2, OS_LOG_TYPE_DEBUG, "Analytics Server URL is %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];

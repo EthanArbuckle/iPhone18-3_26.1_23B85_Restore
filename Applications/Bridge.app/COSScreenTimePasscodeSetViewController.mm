@@ -4,7 +4,7 @@
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -29,14 +29,14 @@
   v23.receiver = self;
   v23.super_class = COSScreenTimePasscodeSetViewController;
   [(COSScreenTimePasscodeSetViewController *)&v23 viewDidLoad];
-  v3 = [(COSScreenTimePasscodeSetViewController *)self miniFlowDelegate];
-  v4 = [v3 familyMemberFirstName];
+  miniFlowDelegate = [(COSScreenTimePasscodeSetViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate familyMemberFirstName];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"SCREEN_TIME_HIGHLIGHT_COMM_RESTRICTIONS" value:&stru_10026E598 table:@"ScreenTimeSetupLocalizable"];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"SCREEN_TIME_HIGHLIGHT_COMM_RESTRICTIONS_BODY_%@" value:&stru_10026E598 table:@"ScreenTimeSetupLocalizable"];
-  v9 = [NSString stringWithFormat:v8, v4];
+  v9 = [NSString stringWithFormat:v8, familyMemberFirstName];
   v10 = [UIImage imageNamed:@"CommRestrictions"];
   [(COSScreenTimePasscodeSetViewController *)self addBulletedListItemWithTitle:v6 description:v9 image:v10];
 
@@ -44,7 +44,7 @@
   v12 = [v11 localizedStringForKey:@"SCREEN_TIME_HIGHLIGHT_DOWNTIME" value:&stru_10026E598 table:@"ScreenTimeSetupLocalizable"];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"SCREEN_TIME_HIGHLIGHT_DOWNTIME_BODY" value:&stru_10026E598 table:@"ScreenTimeSetupLocalizable"];
-  v15 = [NSString stringWithFormat:v14, v4];
+  v15 = [NSString stringWithFormat:v14, familyMemberFirstName];
   v16 = [UIImage imageNamed:@"Downtime"];
   [(COSScreenTimePasscodeSetViewController *)self addBulletedListItemWithTitle:v12 description:v15 image:v16];
 
@@ -52,7 +52,7 @@
   v18 = [v17 localizedStringForKey:@"SCREEN_TIME_HIGHLIGHT_CONTENT_AND_RESTRICTIONS" value:&stru_10026E598 table:@"ScreenTimeSetupLocalizable"];
   v19 = +[NSBundle mainBundle];
   v20 = [v19 localizedStringForKey:@"SCREEN_TIME_HIGHLIGHT_CONTENT_AND_RESTRICTIONS_BODY" value:&stru_10026E598 table:@"ScreenTimeSetupLocalizable"];
-  v21 = [NSString stringWithFormat:v20, v4];
+  v21 = [NSString stringWithFormat:v20, familyMemberFirstName];
   v22 = [UIImage imageNamed:@"ContentAndRestrictions"];
   [(COSScreenTimePasscodeSetViewController *)self addBulletedListItemWithTitle:v18 description:v21 image:v22];
 }
@@ -81,10 +81,10 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(COSScreenTimePasscodeSetViewController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(COSScreenTimePasscodeSetViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (STSMiniFlowControllerDelegate)miniFlowDelegate

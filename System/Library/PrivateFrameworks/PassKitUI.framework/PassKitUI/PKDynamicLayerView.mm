@@ -1,10 +1,10 @@
 @interface PKDynamicLayerView
-- (PKDynamicLayerView)initWithFrame:(CGRect)a3 pass:(id)a4 automaticallyLoadContent:(BOOL)a5;
-- (id)_configureMotionEffectGroupForCrossDissolveConfiguration:(id)a3;
-- (id)_dimmingLayerAnimationWithDuration:(double)a3;
+- (PKDynamicLayerView)initWithFrame:(CGRect)frame pass:(id)pass automaticallyLoadContent:(BOOL)content;
+- (id)_configureMotionEffectGroupForCrossDissolveConfiguration:(id)configuration;
+- (id)_dimmingLayerAnimationWithDuration:(double)duration;
 - (void)_addParallaxAndMotionEffects;
-- (void)_addRadialMaskEffectsToView:(id)a3;
-- (void)_configureDynamicViewsWithImageSet:(id)a3;
+- (void)_addRadialMaskEffectsToView:(id)view;
+- (void)_configureDynamicViewsWithImageSet:(id)set;
 - (void)_configureViews;
 - (void)_removeParallaxMotionEffect;
 - (void)_updateVisibility;
@@ -14,9 +14,9 @@
 - (void)layoutSubviews;
 - (void)loadContent;
 - (void)runTransactionEffect;
-- (void)setAutomaticallyLoadContent:(BOOL)a3;
-- (void)setMotionEnabled:(BOOL)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)setAutomaticallyLoadContent:(BOOL)content;
+- (void)setMotionEnabled:(BOOL)enabled;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation PKDynamicLayerView
@@ -36,13 +36,13 @@
 
 - (void)_configureViews
 {
-  v9 = [(PKPass *)self->_pass frontFaceImageSet];
+  frontFaceImageSet = [(PKPass *)self->_pass frontFaceImageSet];
   if (!self->_staticFallbackView)
   {
     v3 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [v9 dynamicLayerStaticFallbackImage];
-    v6 = [v4 imageWithPKImage:v5];
+    dynamicLayerStaticFallbackImage = [frontFaceImageSet dynamicLayerStaticFallbackImage];
+    v6 = [v4 imageWithPKImage:dynamicLayerStaticFallbackImage];
     v7 = [v3 initWithImage:v6];
     staticFallbackView = self->_staticFallbackView;
     self->_staticFallbackView = v7;
@@ -51,15 +51,15 @@
     [(PKDynamicLayerView *)self addSubview:self->_staticFallbackView];
   }
 
-  [(PKDynamicLayerView *)self _configureDynamicViewsWithImageSet:v9];
+  [(PKDynamicLayerView *)self _configureDynamicViewsWithImageSet:frontFaceImageSet];
   self->_loaded = 1;
   [(PKDynamicLayerView *)self _updateVisibility];
 }
 
 - (void)_updateVisibility
 {
-  v3 = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration isSupported];
-  v4 = v3 & !UIAccessibilityIsReduceMotionEnabled();
+  isSupported = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration isSupported];
+  v4 = isSupported & !UIAccessibilityIsReduceMotionEnabled();
   if (!self->_motionEnabled)
   {
     v4 = 0;
@@ -143,9 +143,9 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
 
 - (void)_addParallaxAndMotionEffects
 {
-  v3 = [(PKDynamicLayerView *)self window];
+  window = [(PKDynamicLayerView *)self window];
 
-  if (v3)
+  if (window)
   {
     if ([(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration parallaxEnabled])
     {
@@ -180,11 +180,11 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
 
     if (self->_crossDissolveConfiguration)
     {
-      v8 = [(UIImageView *)self->_backgroundParallaxCrossDissolveView maskView];
-      [(PKDynamicLayerView *)self _addRadialMaskEffectsToView:v8];
+      maskView = [(UIImageView *)self->_backgroundParallaxCrossDissolveView maskView];
+      [(PKDynamicLayerView *)self _addRadialMaskEffectsToView:maskView];
 
-      v9 = [(UIImageView *)self->_foregroundParallaxCrossDissolveView maskView];
-      [(PKDynamicLayerView *)self _addRadialMaskEffectsToView:v9];
+      maskView2 = [(UIImageView *)self->_foregroundParallaxCrossDissolveView maskView];
+      [(PKDynamicLayerView *)self _addRadialMaskEffectsToView:maskView2];
     }
   }
 }
@@ -194,9 +194,9 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   v4.receiver = self;
   v4.super_class = PKDynamicLayerView;
   [(PKDynamicLayerView *)&v4 didMoveToWindow];
-  v3 = [(PKDynamicLayerView *)self window];
+  window = [(PKDynamicLayerView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(PKDynamicLayerView *)self _updateVisibility];
   }
@@ -217,8 +217,8 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIImageView *)self->_staticFallbackView image];
-  [v11 size];
+  image = [(UIImageView *)self->_staticFallbackView image];
+  [image size];
 
   PKSizeAspectFit();
   staticFallbackView = self->_staticFallbackView;
@@ -252,10 +252,10 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(UIImageView *)self->_backgroundParallaxCrossDissolveView maskView];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  maskView = [(UIImageView *)self->_backgroundParallaxCrossDissolveView maskView];
+  [maskView setFrame:{v22, v24, v26, v28}];
   backgroundRadialGradientLayer = self->_backgroundRadialGradientLayer;
-  [v29 bounds];
+  [maskView bounds];
   [(CAGradientLayer *)backgroundRadialGradientLayer setFrame:?];
   [(UIImageView *)self->_foregroundParallaxCrossDissolveView bounds];
   PKFloatRoundToPixel();
@@ -264,10 +264,10 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  v39 = [(UIImageView *)self->_foregroundParallaxCrossDissolveView maskView];
-  [v39 setFrame:{v32, v34, v36, v38}];
+  maskView2 = [(UIImageView *)self->_foregroundParallaxCrossDissolveView maskView];
+  [maskView2 setFrame:{v32, v34, v36, v38}];
   foregroundRadialGradientLayer = self->_foregroundRadialGradientLayer;
-  [v39 bounds];
+  [maskView2 bounds];
   [(CAGradientLayer *)foregroundRadialGradientLayer setFrame:?];
   dimmingLayer = self->_dimmingLayer;
   if (dimmingLayer)
@@ -285,35 +285,35 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 }
 
-- (PKDynamicLayerView)initWithFrame:(CGRect)a3 pass:(id)a4 automaticallyLoadContent:(BOOL)a5
+- (PKDynamicLayerView)initWithFrame:(CGRect)frame pass:(id)pass automaticallyLoadContent:(BOOL)content
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a4;
+  passCopy = pass;
   v29.receiver = self;
   v29.super_class = PKDynamicLayerView;
-  v13 = [(PKDynamicLayerView *)&v29 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(PKDynamicLayerView *)&v29 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_pass, a4);
-    v15 = [(PKPass *)v14->_pass paymentPass];
-    v16 = [v15 dynamicLayerConfiguration];
+    objc_storeStrong(&height->_pass, pass);
+    paymentPass = [(PKPass *)v14->_pass paymentPass];
+    dynamicLayerConfiguration = [paymentPass dynamicLayerConfiguration];
     dynamicLayerConfiguration = v14->_dynamicLayerConfiguration;
-    v14->_dynamicLayerConfiguration = v16;
+    v14->_dynamicLayerConfiguration = dynamicLayerConfiguration;
 
-    v18 = [(PKDynamicLayerConfiguration *)v14->_dynamicLayerConfiguration transactionEffect];
+    transactionEffect = [(PKDynamicLayerConfiguration *)v14->_dynamicLayerConfiguration transactionEffect];
     transactionEffectConfiguration = v14->_transactionEffectConfiguration;
-    v14->_transactionEffectConfiguration = v18;
+    v14->_transactionEffectConfiguration = transactionEffect;
 
-    v20 = [(PKDynamicLayerConfiguration *)v14->_dynamicLayerConfiguration crossDissolve];
+    crossDissolve = [(PKDynamicLayerConfiguration *)v14->_dynamicLayerConfiguration crossDissolve];
     crossDissolveConfiguration = v14->_crossDissolveConfiguration;
-    v14->_crossDissolveConfiguration = v20;
+    v14->_crossDissolveConfiguration = crossDissolve;
 
-    v14->_automaticallyLoadContent = a5;
+    v14->_automaticallyLoadContent = content;
     v14->_loaded = 0;
     [(PKPass *)v14->_pass style];
     PKPassFrontFaceContentSize();
@@ -328,8 +328,8 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
       [(PKDynamicLayerView *)v14 loadContent];
     }
 
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 addObserver:v14 selector:sel__updateVisibility name:*MEMORY[0x1E69DD918] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__updateVisibility name:*MEMORY[0x1E69DD918] object:0];
 
     if (([(PKDynamicLayerConfiguration *)v14->_dynamicLayerConfiguration isSupported]& 1) == 0)
     {
@@ -337,11 +337,11 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v26 = *MEMORY[0x1E69BB880];
-        v27 = [(PKDynamicLayerConfiguration *)v14->_dynamicLayerConfiguration version];
+        version = [(PKDynamicLayerConfiguration *)v14->_dynamicLayerConfiguration version];
         *buf = 134218240;
         v31 = v26;
         v32 = 2048;
-        v33 = v27;
+        v33 = version;
         _os_log_impl(&dword_1BD026000, v25, OS_LOG_TYPE_DEFAULT, "Using static fallback asset for dynamic pass. Client supported dynamic layer configuration version: %lu pass's version: %lu", buf, 0x16u);
       }
     }
@@ -381,49 +381,49 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused == !a3)
+  if (self->_paused == !paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(PKDynamicLayerView *)self _updateVisibility];
   }
 }
 
-- (void)setAutomaticallyLoadContent:(BOOL)a3
+- (void)setAutomaticallyLoadContent:(BOOL)content
 {
-  if (self->_automaticallyLoadContent == !a3)
+  if (self->_automaticallyLoadContent == !content)
   {
-    self->_automaticallyLoadContent = a3;
+    self->_automaticallyLoadContent = content;
     [(PKDynamicLayerView *)self loadContent];
   }
 }
 
-- (void)setMotionEnabled:(BOOL)a3
+- (void)setMotionEnabled:(BOOL)enabled
 {
-  if (self->_motionEnabled == !a3)
+  if (self->_motionEnabled == !enabled)
   {
-    self->_motionEnabled = a3;
+    self->_motionEnabled = enabled;
     [(PKDynamicLayerView *)self _updateVisibility];
   }
 }
 
-- (void)_configureDynamicViewsWithImageSet:(id)a3
+- (void)_configureDynamicViewsWithImageSet:(id)set
 {
-  v83 = a3;
-  v4 = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration backgroundParallaxEmitter];
-  v5 = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration neutralEmitter];
-  v6 = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration foregroundParallaxEmitter];
-  v82 = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration staticOverlayEmitter];
+  setCopy = set;
+  backgroundParallaxEmitter = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration backgroundParallaxEmitter];
+  neutralEmitter = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration neutralEmitter];
+  foregroundParallaxEmitter = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration foregroundParallaxEmitter];
+  staticOverlayEmitter = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration staticOverlayEmitter];
   v7 = MEMORY[0x1E69DCAB8];
-  v8 = [v83 backgroundParallaxImage];
-  v9 = [v7 imageWithPKImage:v8];
+  backgroundParallaxImage = [setCopy backgroundParallaxImage];
+  v9 = [v7 imageWithPKImage:backgroundParallaxImage];
 
-  if (v4)
+  if (backgroundParallaxEmitter)
   {
     v10 = MEMORY[0x1E69DCAB8];
-    v11 = [v83 backgroundParallaxEmitterImage];
-    v12 = [v10 imageWithPKImage:v11];
+    backgroundParallaxEmitterImage = [setCopy backgroundParallaxEmitterImage];
+    v12 = [v10 imageWithPKImage:backgroundParallaxEmitterImage];
   }
 
   else
@@ -433,7 +433,7 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
 
   if (!self->_backgroundParallaxView)
   {
-    v13 = [[PKDynamicContentView alloc] initWithImage:v9 emitterImage:v12 dynamicLayerEmitterConfiguration:v4];
+    v13 = [[PKDynamicContentView alloc] initWithImage:v9 emitterImage:v12 dynamicLayerEmitterConfiguration:backgroundParallaxEmitter];
     backgroundParallaxView = self->_backgroundParallaxView;
     self->_backgroundParallaxView = v13;
 
@@ -441,17 +441,17 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 
   v78 = v12;
-  v81 = v4;
+  v81 = backgroundParallaxEmitter;
   v15 = MEMORY[0x1E69DCAB8];
-  v16 = [v83 backgroundParallaxCrossDissolveImage];
-  v17 = [v15 imageWithPKImage:v16];
+  backgroundParallaxCrossDissolveImage = [setCopy backgroundParallaxCrossDissolveImage];
+  v17 = [v15 imageWithPKImage:backgroundParallaxCrossDissolveImage];
 
   if (v9 && self->_backgroundParallaxView && v17 && !self->_backgroundParallaxCrossDissolveView && self->_crossDissolveConfiguration)
   {
     v18 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v19 = MEMORY[0x1E69DCAB8];
-    v20 = [v83 backgroundParallaxCrossDissolveImage];
-    v21 = [v19 imageWithPKImage:v20];
+    backgroundParallaxCrossDissolveImage2 = [setCopy backgroundParallaxCrossDissolveImage];
+    v21 = [v19 imageWithPKImage:backgroundParallaxCrossDissolveImage2];
     v22 = [v18 initWithImage:v21];
     backgroundParallaxCrossDissolveView = self->_backgroundParallaxCrossDissolveView;
     self->_backgroundParallaxCrossDissolveView = v22;
@@ -464,8 +464,8 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
       self->_backgroundRadialGradientLayer = v24;
 
       v26 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      v27 = [v26 layer];
-      [v27 addSublayer:self->_backgroundRadialGradientLayer];
+      layer = [v26 layer];
+      [layer addSublayer:self->_backgroundRadialGradientLayer];
 
       [(UIImageView *)self->_backgroundParallaxCrossDissolveView setMaskView:v26];
     }
@@ -474,14 +474,14 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 
   v28 = MEMORY[0x1E69DCAB8];
-  v29 = [v83 neutralImage];
-  v30 = [v28 imageWithPKImage:v29];
+  neutralImage = [setCopy neutralImage];
+  v30 = [v28 imageWithPKImage:neutralImage];
 
-  if (v5)
+  if (neutralEmitter)
   {
     v31 = MEMORY[0x1E69DCAB8];
-    v32 = [v83 neutralEmitterImage];
-    v33 = [v31 imageWithPKImage:v32];
+    neutralEmitterImage = [setCopy neutralEmitterImage];
+    v33 = [v31 imageWithPKImage:neutralEmitterImage];
   }
 
   else
@@ -491,7 +491,7 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
 
   if (!self->_neutralView)
   {
-    v34 = [[PKDynamicContentView alloc] initWithImage:v30 emitterImage:v33 dynamicLayerEmitterConfiguration:v5];
+    v34 = [[PKDynamicContentView alloc] initWithImage:v30 emitterImage:v33 dynamicLayerEmitterConfiguration:neutralEmitter];
     neutralView = self->_neutralView;
     self->_neutralView = v34;
 
@@ -499,17 +499,17 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 
   v79 = v9;
-  v80 = v5;
+  v80 = neutralEmitter;
   v36 = MEMORY[0x1E69DCAB8];
-  v37 = [v83 foregroundParallaxImage];
-  v38 = [v36 imageWithPKImage:v37];
+  foregroundParallaxImage = [setCopy foregroundParallaxImage];
+  v38 = [v36 imageWithPKImage:foregroundParallaxImage];
 
   v76 = v30;
-  if (v6)
+  if (foregroundParallaxEmitter)
   {
     v39 = MEMORY[0x1E69DCAB8];
-    v40 = [v83 foregroundParallaxEmitterImage];
-    v41 = [v39 imageWithPKImage:v40];
+    foregroundParallaxEmitterImage = [setCopy foregroundParallaxEmitterImage];
+    v41 = [v39 imageWithPKImage:foregroundParallaxEmitterImage];
   }
 
   else
@@ -520,7 +520,7 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   v77 = v17;
   if (!self->_foregroundParallaxView)
   {
-    v42 = [[PKDynamicContentView alloc] initWithImage:v38 emitterImage:v41 dynamicLayerEmitterConfiguration:v6];
+    v42 = [[PKDynamicContentView alloc] initWithImage:v38 emitterImage:v41 dynamicLayerEmitterConfiguration:foregroundParallaxEmitter];
     foregroundParallaxView = self->_foregroundParallaxView;
     self->_foregroundParallaxView = v42;
 
@@ -528,16 +528,16 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 
   v44 = MEMORY[0x1E69DCAB8];
-  v45 = [v83 foregroundParallaxCrossDissolveImage];
-  v46 = [v44 imageWithPKImage:v45];
+  foregroundParallaxCrossDissolveImage = [setCopy foregroundParallaxCrossDissolveImage];
+  v46 = [v44 imageWithPKImage:foregroundParallaxCrossDissolveImage];
 
   v47 = v33;
   if (v38 && self->_foregroundParallaxView && v46 && !self->_foregroundParallaxCrossDissolveView && self->_crossDissolveConfiguration)
   {
     v48 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v49 = MEMORY[0x1E69DCAB8];
-    v50 = [v83 foregroundParallaxCrossDissolveImage];
-    v51 = [v49 imageWithPKImage:v50];
+    foregroundParallaxCrossDissolveImage2 = [setCopy foregroundParallaxCrossDissolveImage];
+    v51 = [v49 imageWithPKImage:foregroundParallaxCrossDissolveImage2];
     v52 = [v48 initWithImage:v51];
     foregroundParallaxCrossDissolveView = self->_foregroundParallaxCrossDissolveView;
     self->_foregroundParallaxCrossDissolveView = v52;
@@ -550,8 +550,8 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
       self->_foregroundRadialGradientLayer = v54;
 
       v56 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      v57 = [v56 layer];
-      [v57 addSublayer:self->_foregroundRadialGradientLayer];
+      layer2 = [v56 layer];
+      [layer2 addSublayer:self->_foregroundRadialGradientLayer];
 
       [(UIImageView *)self->_foregroundParallaxCrossDissolveView setMaskView:v56];
     }
@@ -560,14 +560,14 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 
   v58 = MEMORY[0x1E69DCAB8];
-  v59 = [v83 staticOverlayImage];
-  v60 = [v58 imageWithPKImage:v59];
+  staticOverlayImage = [setCopy staticOverlayImage];
+  v60 = [v58 imageWithPKImage:staticOverlayImage];
 
-  if (v82)
+  if (staticOverlayEmitter)
   {
     v61 = MEMORY[0x1E69DCAB8];
-    v62 = [v83 staticOverlayEmitterImage];
-    v63 = [v61 imageWithPKImage:v62];
+    staticOverlayEmitterImage = [setCopy staticOverlayEmitterImage];
+    v63 = [v61 imageWithPKImage:staticOverlayEmitterImage];
   }
 
   else
@@ -577,7 +577,7 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
 
   if (!self->_staticOverlayView)
   {
-    v64 = [[PKDynamicContentView alloc] initWithImage:v60 emitterImage:v63 dynamicLayerEmitterConfiguration:v82];
+    v64 = [[PKDynamicContentView alloc] initWithImage:v60 emitterImage:v63 dynamicLayerEmitterConfiguration:staticOverlayEmitter];
     staticOverlayView = self->_staticOverlayView;
     self->_staticOverlayView = v64;
 
@@ -585,44 +585,44 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 
   v66 = MEMORY[0x1E69DCAB8];
-  v67 = [v83 transactionEffectEmitterImage];
-  v68 = [v66 imageWithPKImage:v67];
+  transactionEffectEmitterImage = [setCopy transactionEffectEmitterImage];
+  v68 = [v66 imageWithPKImage:transactionEffectEmitterImage];
   transactionEffectEmitterImage = self->_transactionEffectEmitterImage;
   self->_transactionEffectEmitterImage = v68;
 
-  v70 = [v83 transactionEffectEmitterShapeSVGData];
+  transactionEffectEmitterShapeSVGData = [setCopy transactionEffectEmitterShapeSVGData];
   transactionEffectShapeData = self->_transactionEffectShapeData;
-  self->_transactionEffectShapeData = v70;
+  self->_transactionEffectShapeData = transactionEffectEmitterShapeSVGData;
 
   if (!self->_dimmingLayer)
   {
-    v72 = [MEMORY[0x1E6979398] layer];
+    layer3 = [MEMORY[0x1E6979398] layer];
     dimmingLayer = self->_dimmingLayer;
-    self->_dimmingLayer = v72;
+    self->_dimmingLayer = layer3;
 
     v74 = [objc_alloc(MEMORY[0x1E69DC888]) initWithWhite:0.0 alpha:0.5];
     -[CALayer setBackgroundColor:](self->_dimmingLayer, "setBackgroundColor:", [v74 CGColor]);
     [(CALayer *)self->_dimmingLayer setOpacity:0.0];
-    v75 = [(PKDynamicLayerView *)self layer];
-    [v75 addSublayer:self->_dimmingLayer];
+    layer4 = [(PKDynamicLayerView *)self layer];
+    [layer4 addSublayer:self->_dimmingLayer];
   }
 }
 
-- (void)_addRadialMaskEffectsToView:(id)a3
+- (void)_addRadialMaskEffectsToView:(id)view
 {
-  v4 = a3;
-  v9 = v4;
+  viewCopy = view;
+  v9 = viewCopy;
   if (!self->_radialMaskEffects)
   {
     v5 = [(PKDynamicLayerView *)self _configureMotionEffectGroupForCrossDissolveConfiguration:self->_crossDissolveConfiguration];
     radialMaskEffects = self->_radialMaskEffects;
     self->_radialMaskEffects = v5;
 
-    v4 = v9;
+    viewCopy = v9;
   }
 
-  v7 = [v4 motionEffects];
-  v8 = [v7 count];
+  motionEffects = [viewCopy motionEffects];
+  v8 = [motionEffects count];
 
   if (!v8)
   {
@@ -630,17 +630,17 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
   }
 }
 
-- (id)_configureMotionEffectGroupForCrossDissolveConfiguration:(id)a3
+- (id)_configureMotionEffectGroupForCrossDissolveConfiguration:(id)configuration
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DCC98];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(v3);
   v6 = [objc_alloc(MEMORY[0x1E69DCB10]) initWithKeyPath:@"layer.transform.translation.x" type:0];
   v7 = [objc_alloc(MEMORY[0x1E69DCB10]) initWithKeyPath:@"layer.transform.translation.y" type:1];
-  v8 = [v4 intensity];
+  intensity = [configurationCopy intensity];
 
-  if (!v8)
+  if (!intensity)
   {
     [v6 setMinimumRelativeValue:&unk_1F3CC7880];
     [v6 setMaximumRelativeValue:&unk_1F3CC7898];
@@ -666,9 +666,9 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
       return;
     }
 
-    v3 = [MEMORY[0x1E6979368] layer];
+    layer = [MEMORY[0x1E6979368] layer];
     transactionEffectLayer = self->_transactionEffectLayer;
-    self->_transactionEffectLayer = v3;
+    self->_transactionEffectLayer = layer;
 
     v5 = [(PKDynamicLayerTransactionEffectConfiguration *)self->_transactionEffectConfiguration configureTransactionEffectEmitterLayer:self->_transactionEffectLayer withImage:[(UIImage *)self->_transactionEffectEmitterImage CGImage] andEmitterShapeData:self->_transactionEffectShapeData];
     if (v5)
@@ -682,8 +682,8 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
       [v5 pkui_setCompletionHandler:v11];
       [v5 duration];
       v6 = [(PKDynamicLayerView *)self _dimmingLayerAnimationWithDuration:?];
-      v7 = [(PKDynamicLayerView *)self layer];
-      [v7 addSublayer:self->_transactionEffectLayer];
+      layer2 = [(PKDynamicLayerView *)self layer];
+      [layer2 addSublayer:self->_transactionEffectLayer];
 
       [(CALayer *)self->_dimmingLayer addAnimation:v6 forKey:@"dimmingLayerFadeInFadeOut"];
       [(CAEmitterLayer *)self->_transactionEffectLayer addAnimation:v5 forKey:@"transactionEffectAnimation"];
@@ -705,11 +705,11 @@ void __49__PKDynamicLayerView__removeParallaxMotionEffect__block_invoke(uint64_t
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = *MEMORY[0x1E69BB880];
-      v9 = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration version];
+      version = [(PKDynamicLayerConfiguration *)self->_dynamicLayerConfiguration version];
       *location = 134218240;
       *&location[4] = v8;
       v14 = 2048;
-      v15 = v9;
+      v15 = version;
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Boop Effect unsupported. Client supported dynamic layer configuration version: %lu pass's version: %lu", location, 0x16u);
     }
   }
@@ -729,10 +729,10 @@ void __42__PKDynamicLayerView_runTransactionEffect__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_dimmingLayerAnimationWithDuration:(double)a3
+- (id)_dimmingLayerAnimationWithDuration:(double)duration
 {
   v4 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
-  [v4 setDuration:a3];
+  [v4 setDuration:duration];
   [v4 setKeyTimes:&unk_1F3CC8480];
   [v4 setValues:&unk_1F3CC8498];
 

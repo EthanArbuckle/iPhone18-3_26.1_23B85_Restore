@@ -1,21 +1,21 @@
 @interface OBComplexPasscodeInputView
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (OBComplexPasscodeInputView)initWithFrame:(CGRect)a3 numericOnly:(BOOL)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (OBComplexPasscodeInputView)initWithFrame:(CGRect)frame numericOnly:(BOOL)only;
 - (id)passcode;
-- (void)setPasscode:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPasscode:(id)passcode;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation OBComplexPasscodeInputView
 
-- (OBComplexPasscodeInputView)initWithFrame:(CGRect)a3 numericOnly:(BOOL)a4
+- (OBComplexPasscodeInputView)initWithFrame:(CGRect)frame numericOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v39[5] = *MEMORY[0x1E69E9840];
   v38.receiver = self;
   v38.super_class = OBComplexPasscodeInputView;
-  v5 = [(OBComplexPasscodeInputView *)&v38 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(OBComplexPasscodeInputView *)&v38 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DD0B0]);
@@ -26,58 +26,58 @@
     [(UITextField *)v5->_passcodeField setDelegate:v5];
     [(UITextField *)v5->_passcodeField setSecureTextEntry:1];
     [(UITextField *)v5->_passcodeField setReturnKeyType:4];
-    if (v4)
+    if (onlyCopy)
     {
       [(UITextField *)v5->_passcodeField setKeyboardType:4];
     }
 
-    v35 = [(UITextField *)v5->_passcodeField textInputTraits];
-    [v35 setDevicePasscodeEntry:1];
+    textInputTraits = [(UITextField *)v5->_passcodeField textInputTraits];
+    [textInputTraits setDevicePasscodeEntry:1];
     [(UITextField *)v5->_passcodeField setTextAlignment:1];
     v8 = v5->_passcodeField;
     v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(UITextField *)v8 setFont:v9];
 
-    v10 = [(UITextField *)v5->_passcodeField layer];
-    [v10 setBorderWidth:1.0];
+    layer = [(UITextField *)v5->_passcodeField layer];
+    [layer setBorderWidth:1.0];
 
-    v11 = [(OBComplexPasscodeInputView *)v5 traitCollection];
+    traitCollection = [(OBComplexPasscodeInputView *)v5 traitCollection];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __56__OBComplexPasscodeInputView_initWithFrame_numericOnly___block_invoke;
     v36[3] = &unk_1E7C15590;
     v12 = v5;
     v37 = v12;
-    [v11 performAsCurrentTraitCollection:v36];
+    [traitCollection performAsCurrentTraitCollection:v36];
 
-    v13 = [(UITextField *)v5->_passcodeField layer];
-    [v13 setCornerRadius:10.0];
+    layer2 = [(UITextField *)v5->_passcodeField layer];
+    [layer2 setCornerRadius:10.0];
 
     v14 = v5->_passcodeField;
-    v15 = [MEMORY[0x1E69DC888] labelColor];
-    [(UITextField *)v14 setTextColor:v15];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UITextField *)v14 setTextColor:labelColor];
 
     [(OBComplexPasscodeInputView *)v12 addSubview:v5->_passcodeField];
     v29 = MEMORY[0x1E696ACD8];
-    v34 = [(UITextField *)v5->_passcodeField heightAnchor];
+    heightAnchor = [(UITextField *)v5->_passcodeField heightAnchor];
     [(UITextField *)v5->_passcodeField intrinsicContentSize];
-    v33 = [v34 constraintEqualToConstant:v16 + v16];
+    v33 = [heightAnchor constraintEqualToConstant:v16 + v16];
     v39[0] = v33;
-    v32 = [(UITextField *)v5->_passcodeField leadingAnchor];
-    v31 = [(OBComplexPasscodeInputView *)v12 leadingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    leadingAnchor = [(UITextField *)v5->_passcodeField leadingAnchor];
+    leadingAnchor2 = [(OBComplexPasscodeInputView *)v12 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v39[1] = v30;
-    v28 = [(UITextField *)v5->_passcodeField trailingAnchor];
-    v17 = [(OBComplexPasscodeInputView *)v12 trailingAnchor];
-    v18 = [v28 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UITextField *)v5->_passcodeField trailingAnchor];
+    trailingAnchor2 = [(OBComplexPasscodeInputView *)v12 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v39[2] = v18;
-    v19 = [(UITextField *)v5->_passcodeField topAnchor];
-    v20 = [(OBComplexPasscodeInputView *)v12 topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    topAnchor = [(UITextField *)v5->_passcodeField topAnchor];
+    topAnchor2 = [(OBComplexPasscodeInputView *)v12 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v39[3] = v21;
-    v22 = [(UITextField *)v5->_passcodeField bottomAnchor];
-    v23 = [(OBComplexPasscodeInputView *)v12 bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    bottomAnchor = [(UITextField *)v5->_passcodeField bottomAnchor];
+    bottomAnchor2 = [(OBComplexPasscodeInputView *)v12 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v39[4] = v24;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:5];
     [v29 activateConstraints:v25];
@@ -94,72 +94,72 @@ void __56__OBComplexPasscodeInputView_initWithFrame_numericOnly___block_invoke(u
   [v2 setBorderColor:{objc_msgSend(v1, "CGColor")}];
 }
 
-- (void)setPasscode:(id)a3
+- (void)setPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [(OBComplexPasscodeInputView *)self passcodeField];
-  [v5 setText:v4];
+  passcodeCopy = passcode;
+  passcodeField = [(OBComplexPasscodeInputView *)self passcodeField];
+  [passcodeField setText:passcodeCopy];
 }
 
 - (id)passcode
 {
-  v2 = [(OBComplexPasscodeInputView *)self passcodeField];
-  v3 = [v2 text];
+  passcodeField = [(OBComplexPasscodeInputView *)self passcodeField];
+  text = [passcodeField text];
 
-  return v3;
+  return text;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = OBComplexPasscodeInputView;
-  [(OBComplexPasscodeInputView *)&v7 traitCollectionDidChange:a3];
-  v4 = [(OBComplexPasscodeInputView *)self passcodeField];
-  v5 = [v4 layer];
-  v6 = [MEMORY[0x1E69DC888] labelColor];
-  [v5 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+  [(OBComplexPasscodeInputView *)&v7 traitCollectionDidChange:change];
+  passcodeField = [(OBComplexPasscodeInputView *)self passcodeField];
+  layer = [passcodeField layer];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [layer setBorderColor:{objc_msgSend(labelColor, "CGColor")}];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(OBPasscodeInputView *)self delegate];
-  if (v11)
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  delegate = [(OBPasscodeInputView *)self delegate];
+  if (delegate)
   {
-    v12 = v11;
-    v13 = [(OBPasscodeInputView *)self delegate];
+    v12 = delegate;
+    delegate2 = [(OBPasscodeInputView *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [v9 text];
-      v16 = [v15 stringByReplacingCharactersInRange:location withString:{length, v10}];
+      text = [fieldCopy text];
+      v16 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
-      v17 = [(OBPasscodeInputView *)self delegate];
-      [v17 passcodeInput:self willChangeContents:v16];
+      delegate3 = [(OBPasscodeInputView *)self delegate];
+      [delegate3 passcodeInput:self willChangeContents:v16];
     }
   }
 
   return 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [(OBPasscodeInputView *)self delegate];
-  if (v4)
+  delegate = [(OBPasscodeInputView *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(OBPasscodeInputView *)self delegate];
+    v5 = delegate;
+    delegate2 = [(OBPasscodeInputView *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(OBPasscodeInputView *)self delegate];
-      v9 = [(OBComplexPasscodeInputView *)self passcode];
-      [v8 passcodeInput:self enteredPasscode:v9];
+      delegate3 = [(OBPasscodeInputView *)self delegate];
+      passcode = [(OBComplexPasscodeInputView *)self passcode];
+      [delegate3 passcodeInput:self enteredPasscode:passcode];
     }
   }
 

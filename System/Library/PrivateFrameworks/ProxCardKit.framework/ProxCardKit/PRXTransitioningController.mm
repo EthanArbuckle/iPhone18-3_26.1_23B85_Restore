@@ -1,54 +1,54 @@
 @interface PRXTransitioningController
 - (PRXPullDismissalProvider)pullDismissalProvider;
-- (PRXTransitioningController)initWithPullDismissalProvider:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)interactionControllerForDismissal:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (PRXTransitioningController)initWithPullDismissalProvider:(id)provider;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)interactionControllerForDismissal:(id)dismissal;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 @end
 
 @implementation PRXTransitioningController
 
-- (PRXTransitioningController)initWithPullDismissalProvider:(id)a3
+- (PRXTransitioningController)initWithPullDismissalProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = PRXTransitioningController;
   v5 = [(PRXTransitioningController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pullDismissalProvider, v4);
+    objc_storeWeak(&v5->_pullDismissalProvider, providerCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PRXCardSlideUpPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[PRXCardSlideUpPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   return v8;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_pullDismissalProvider);
-  v4 = [WeakRetained pullDismissalInteractionDriver];
-  v5 = [v4 animationController];
+  pullDismissalInteractionDriver = [WeakRetained pullDismissalInteractionDriver];
+  animationController = [pullDismissalInteractionDriver animationController];
 
-  return v5;
+  return animationController;
 }
 
-- (id)interactionControllerForDismissal:(id)a3
+- (id)interactionControllerForDismissal:(id)dismissal
 {
   WeakRetained = objc_loadWeakRetained(&self->_pullDismissalProvider);
-  v4 = [WeakRetained pullDismissalInteractionDriver];
-  v5 = [v4 interactionController];
+  pullDismissalInteractionDriver = [WeakRetained pullDismissalInteractionDriver];
+  interactionController = [pullDismissalInteractionDriver interactionController];
 
-  return v5;
+  return interactionController;
 }
 
 - (PRXPullDismissalProvider)pullDismissalProvider

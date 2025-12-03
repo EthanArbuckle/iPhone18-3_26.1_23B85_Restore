@@ -1,6 +1,6 @@
 @interface EventMonitorBlockEvent
 - (BOOL)hasOccurred;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 - (void)performAction;
 @end
@@ -34,13 +34,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = EventMonitorBlockEvent;
   v5 = [(EventMonitorEvent *)&v7 copyWithZone:?];
-  v5[4] = [self->_eventBlock copyWithZone:a3];
-  v5[5] = [self->_testBlock copyWithZone:a3];
+  v5[4] = [self->_eventBlock copyWithZone:zone];
+  v5[5] = [self->_testBlock copyWithZone:zone];
   return v5;
 }
 

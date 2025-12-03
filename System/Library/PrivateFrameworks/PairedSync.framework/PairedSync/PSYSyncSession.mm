@@ -1,23 +1,23 @@
 @interface PSYSyncSession
-- (BOOL)isEqual:(id)a3;
-- (PSYSyncSession)initWithCoder:(id)a3;
-- (PSYSyncSession)initWithPairingIdentifier:(id)a3 switchIndex:(int64_t)a4 sessionIdentifier:(id)a5 syncSessionType:(unint64_t)a6 supportsMigrationSync:(BOOL)a7 activities:(id)a8 state:(unint64_t)a9;
+- (BOOL)isEqual:(id)equal;
+- (PSYSyncSession)initWithCoder:(id)coder;
+- (PSYSyncSession)initWithPairingIdentifier:(id)identifier switchIndex:(int64_t)index sessionIdentifier:(id)sessionIdentifier syncSessionType:(unint64_t)type supportsMigrationSync:(BOOL)sync activities:(id)activities state:(unint64_t)state;
 - (double)sessionProgress;
 - (id)_deepCopy;
-- (id)activityForService:(id)a3;
+- (id)activityForService:(id)service;
 - (id)completedActivities;
 - (id)completedActivityLabelsSet;
 - (id)description;
 - (id)firstIncompleteActivity;
 - (id)incompleteActivities;
 - (id)runningActivities;
-- (id)syncSessionByReplacingActivity:(id)a3;
-- (id)syncSessionByUpdatingActivities:(id)a3;
-- (id)syncSessionByUpdatingSyncSessionState:(unint64_t)a3;
+- (id)syncSessionByReplacingActivity:(id)activity;
+- (id)syncSessionByUpdatingActivities:(id)activities;
+- (id)syncSessionByUpdatingSyncSessionState:(unint64_t)state;
 - (unint64_t)hash;
 - (unint64_t)syncSessionType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActivities:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActivities:(id)activities;
 @end
 
 @implementation PSYSyncSession
@@ -25,18 +25,18 @@
 - (id)_deepCopy
 {
   v3 = objc_alloc_init(objc_opt_class());
-  v4 = [(PSYSyncSession *)self pairingIdentifier];
-  [v3 setPairingIdentifier:v4];
+  pairingIdentifier = [(PSYSyncSession *)self pairingIdentifier];
+  [v3 setPairingIdentifier:pairingIdentifier];
 
   [v3 setSwitchIndex:{-[PSYSyncSession switchIndex](self, "switchIndex")}];
-  v5 = [(PSYSyncSession *)self sessionIdentifier];
-  [v3 setSessionIdentifier:v5];
+  sessionIdentifier = [(PSYSyncSession *)self sessionIdentifier];
+  [v3 setSessionIdentifier:sessionIdentifier];
 
   [v3 setSyncSessionType:{-[PSYSyncSession syncSessionType](self, "syncSessionType")}];
   [v3 setSupportsMigrationSync:{-[PSYSyncSession supportsMigrationSync](self, "supportsMigrationSync")}];
   v6 = objc_alloc(MEMORY[0x277CBEA60]);
-  v7 = [(PSYSyncSession *)self activities];
-  v8 = [v6 initWithArray:v7 copyItems:1];
+  activities = [(PSYSyncSession *)self activities];
+  v8 = [v6 initWithArray:activities copyItems:1];
   [v3 setActivities:v8];
 
   [v3 setSyncSessionState:{-[PSYSyncSession syncSessionState](self, "syncSessionState")}];
@@ -44,87 +44,87 @@
   return v3;
 }
 
-- (PSYSyncSession)initWithPairingIdentifier:(id)a3 switchIndex:(int64_t)a4 sessionIdentifier:(id)a5 syncSessionType:(unint64_t)a6 supportsMigrationSync:(BOOL)a7 activities:(id)a8 state:(unint64_t)a9
+- (PSYSyncSession)initWithPairingIdentifier:(id)identifier switchIndex:(int64_t)index sessionIdentifier:(id)sessionIdentifier syncSessionType:(unint64_t)type supportsMigrationSync:(BOOL)sync activities:(id)activities state:(unint64_t)state
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a8;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  activitiesCopy = activities;
   v24.receiver = self;
   v24.super_class = PSYSyncSession;
   v19 = [(PSYSyncSession *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_pairingIdentifier, a3);
-    v20->_switchIndex = a4;
-    objc_storeStrong(&v20->_sessionIdentifier, a5);
-    v20->_supportsMigrationSync = a7;
-    v20->_syncSessionType = a6;
-    v21 = [v18 copy];
+    objc_storeStrong(&v19->_pairingIdentifier, identifier);
+    v20->_switchIndex = index;
+    objc_storeStrong(&v20->_sessionIdentifier, sessionIdentifier);
+    v20->_supportsMigrationSync = sync;
+    v20->_syncSessionType = type;
+    v21 = [activitiesCopy copy];
     activities = v20->_activities;
     v20->_activities = v21;
 
-    v20->_syncSessionState = a9;
+    v20->_syncSessionState = state;
   }
 
   return v20;
 }
 
-- (PSYSyncSession)initWithCoder:(id)a3
+- (PSYSyncSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PSYSyncSession;
   v5 = [(PSYSyncSession *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairingIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairingIdentifier"];
     pairingIdentifier = v5->_pairingIdentifier;
     v5->_pairingIdentifier = v6;
 
-    v5->_switchIndex = [v4 decodeIntegerForKey:@"switchIndex"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v5->_switchIndex = [coderCopy decodeIntegerForKey:@"switchIndex"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v8;
 
-    v5->_syncSessionType = [v4 decodeIntegerForKey:@"syncSessionType"];
-    v5->_supportsMigrationSync = [v4 decodeBoolForKey:@"isMigrationSync"];
+    v5->_syncSessionType = [coderCopy decodeIntegerForKey:@"syncSessionType"];
+    v5->_supportsMigrationSync = [coderCopy decodeBoolForKey:@"isMigrationSync"];
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"activities"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"activities"];
 
     [(PSYSyncSession *)v5 setActivities:v13];
-    v5->_syncSessionState = [v4 decodeIntegerForKey:@"syncSessionState"];
+    v5->_syncSessionState = [coderCopy decodeIntegerForKey:@"syncSessionState"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pairingIdentifier = self->_pairingIdentifier;
-  v5 = a3;
-  [v5 encodeObject:pairingIdentifier forKey:@"pairingIdentifier"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
-  [v5 encodeInteger:self->_syncSessionType forKey:@"syncSessionType"];
-  [v5 encodeBool:self->_supportsMigrationSync forKey:@"isMigrationSync"];
-  [v5 encodeObject:self->_activities forKey:@"activities"];
-  [v5 encodeInteger:self->_syncSessionState forKey:@"syncSessionState"];
-  [v5 encodeInteger:self->_switchIndex forKey:@"switchIndex"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pairingIdentifier forKey:@"pairingIdentifier"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
+  [coderCopy encodeInteger:self->_syncSessionType forKey:@"syncSessionType"];
+  [coderCopy encodeBool:self->_supportsMigrationSync forKey:@"isMigrationSync"];
+  [coderCopy encodeObject:self->_activities forKey:@"activities"];
+  [coderCopy encodeInteger:self->_syncSessionState forKey:@"syncSessionState"];
+  [coderCopy encodeInteger:self->_switchIndex forKey:@"switchIndex"];
 }
 
-- (void)setActivities:(id)a3
+- (void)setActivities:(id)activities
 {
-  if (self->_activities != a3)
+  if (self->_activities != activities)
   {
-    v5 = a3;
-    v6 = [v5 copy];
+    activitiesCopy = activities;
+    v6 = [activitiesCopy copy];
     activities = self->_activities;
     self->_activities = v6;
 
-    v10 = [v5 valueForKeyPath:@"activityInfo.label"];
-    v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:v10];
+    v10 = [activitiesCopy valueForKeyPath:@"activityInfo.label"];
+    v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:activitiesCopy forKeys:v10];
 
     activityMap = self->_activityMap;
     self->_activityMap = v8;
@@ -138,8 +138,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PSYSyncSession *)self activities];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  activities = [(PSYSyncSession *)self activities];
+  v3 = [activities countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -149,7 +149,7 @@
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activities);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -160,7 +160,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [activities countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -180,13 +180,13 @@ LABEL_11:
 - (id)runningActivities
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PSYSyncSession *)self activities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  activities = [(PSYSyncSession *)self activities];
+  v5 = [activities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -197,17 +197,17 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activities);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 activityState] == 1)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [activities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -215,19 +215,19 @@ LABEL_11:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (id)incompleteActivities
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PSYSyncSession *)self activities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  activities = [(PSYSyncSession *)self activities];
+  v5 = [activities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -238,17 +238,17 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activities);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 activityState] != 2)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [activities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -256,19 +256,19 @@ LABEL_11:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (id)completedActivities
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PSYSyncSession *)self activities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  activities = [(PSYSyncSession *)self activities];
+  v5 = [activities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -279,17 +279,17 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activities);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 activityState] == 2)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [activities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -297,7 +297,7 @@ LABEL_11:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (id)completedActivityLabelsSet
@@ -308,8 +308,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(PSYSyncSession *)self activities];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  activities = [(PSYSyncSession *)self activities];
+  v5 = [activities countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -320,19 +320,19 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activities);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 activityState] == 2)
         {
-          v10 = [v9 activityInfo];
-          v11 = [v10 label];
-          [v3 addObject:v11];
+          activityInfo = [v9 activityInfo];
+          label = [activityInfo label];
+          [v3 addObject:label];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [activities countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -343,10 +343,10 @@ LABEL_11:
   return v3;
 }
 
-- (id)activityForService:(id)a3
+- (id)activityForService:(id)service
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -367,9 +367,9 @@ LABEL_3:
       }
 
       v10 = [(NSDictionary *)self->_activityMap objectForKeyedSubscript:*(*(&v16 + 1) + 8 * v9), v16];
-      v11 = [v10 activityInfo];
-      v12 = [v11 machServiceName];
-      v13 = [v12 isEqual:v4];
+      activityInfo = [v10 activityInfo];
+      machServiceName = [activityInfo machServiceName];
+      v13 = [machServiceName isEqual:serviceCopy];
 
       if (v13)
       {
@@ -400,16 +400,16 @@ LABEL_9:
   return v10;
 }
 
-- (id)syncSessionByUpdatingActivities:(id)a3
+- (id)syncSessionByUpdatingActivities:(id)activities
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
+  activitiesCopy = activities;
+  selfCopy = self;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [activitiesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -417,22 +417,22 @@ LABEL_9:
     do
     {
       v9 = 0;
-      v10 = v5;
+      v10 = selfCopy;
       do
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activitiesCopy);
         }
 
-        v5 = [(PSYSyncSession *)v10 syncSessionByReplacingActivity:*(*(&v13 + 1) + 8 * v9)];
+        selfCopy = [(PSYSyncSession *)v10 syncSessionByReplacingActivity:*(*(&v13 + 1) + 8 * v9)];
 
         ++v9;
-        v10 = v5;
+        v10 = selfCopy;
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [activitiesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -440,35 +440,35 @@ LABEL_9:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)syncSessionByReplacingActivity:(id)a3
+- (id)syncSessionByReplacingActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityInfo];
-  v6 = [v5 label];
+  activityCopy = activity;
+  activityInfo = [activityCopy activityInfo];
+  label = [activityInfo label];
 
   activities = self->_activities;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke;
   v21[3] = &unk_2799FB9E8;
-  v8 = v6;
+  v8 = label;
   v22 = v8;
   v9 = [(NSArray *)activities indexOfObjectPassingTest:v21];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v11 = v9;
     v12 = [(NSArray *)self->_activities objectAtIndexedSubscript:v9];
-    if ([v12 isEqual:v4])
+    if ([v12 isEqual:activityCopy])
     {
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -494,15 +494,15 @@ LABEL_9:
 
       v15 = v14;
       [(NSArray *)self->_activities getObjects:v14 range:0, v13];
-      v15[v11] = v4;
-      v10 = [(PSYSyncSession *)self _deepCopy];
+      v15[v11] = activityCopy;
+      selfCopy = [(PSYSyncSession *)self _deepCopy];
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:v13];
-      [(PSYSyncSession *)v10 setActivities:v16];
+      [(PSYSyncSession *)selfCopy setActivities:v16];
       free(v15);
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
 uint64_t __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke(uint64_t a1, void *a2)
@@ -514,26 +514,26 @@ uint64_t __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke(uint
   return v5;
 }
 
-- (id)syncSessionByUpdatingSyncSessionState:(unint64_t)a3
+- (id)syncSessionByUpdatingSyncSessionState:(unint64_t)state
 {
-  if (self->_syncSessionState == a3)
+  if (self->_syncSessionState == state)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = objc_alloc_init(objc_opt_class());
-    objc_storeStrong(&v4->_pairingIdentifier, self->_pairingIdentifier);
-    v4->_switchIndex = self->_switchIndex;
-    objc_storeStrong(&v4->_sessionIdentifier, self->_sessionIdentifier);
-    [(PSYSyncSession *)v4 setActivities:self->_activities];
-    v4->_syncSessionType = self->_syncSessionType;
-    v4->_supportsMigrationSync = self->_supportsMigrationSync;
-    v4->_syncSessionState = a3;
+    selfCopy = objc_alloc_init(objc_opt_class());
+    objc_storeStrong(&selfCopy->_pairingIdentifier, self->_pairingIdentifier);
+    selfCopy->_switchIndex = self->_switchIndex;
+    objc_storeStrong(&selfCopy->_sessionIdentifier, self->_sessionIdentifier);
+    [(PSYSyncSession *)selfCopy setActivities:self->_activities];
+    selfCopy->_syncSessionType = self->_syncSessionType;
+    selfCopy->_supportsMigrationSync = self->_supportsMigrationSync;
+    selfCopy->_syncSessionState = state;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -543,10 +543,10 @@ uint64_t __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke(uint
   return v4 ^ [(NSArray *)self->_activities hash]^ self->_switchIndex;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -556,7 +556,7 @@ uint64_t __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke(uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (v5->_syncSessionType == self->_syncSessionType && v5->_supportsMigrationSync == self->_supportsMigrationSync && v5->_syncSessionState == self->_syncSessionState && [(NSUUID *)v5->_pairingIdentifier isEqual:self->_pairingIdentifier]&& v6->_switchIndex == self->_switchIndex && [(NSUUID *)v6->_sessionIdentifier isEqual:self->_sessionIdentifier])
       {
@@ -651,12 +651,12 @@ uint64_t __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke(uint
 - (id)description
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NSUUID *)self->_pairingIdentifier UUIDString];
+  uUIDString = [(NSUUID *)self->_pairingIdentifier UUIDString];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:self->_switchIndex];
-  v8 = [(NSUUID *)self->_sessionIdentifier UUIDString];
+  uUIDString2 = [(NSUUID *)self->_sessionIdentifier UUIDString];
   v9 = NSStringfromPSYSyncSessionType(self->_syncSessionType);
   if (self->_supportsMigrationSync)
   {
@@ -680,7 +680,7 @@ uint64_t __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke(uint
   }
 
   [(PSYSyncSession *)self sessionProgress];
-  [v3 appendFormat:@"<%@ %p;\n\tpairingID=%@[%@] session=%@ type=%@ migration=%@ state='%@' progress=%1.3f activities:\n", v5, self, v6, v7, v8, v9, v10, v12, v13];
+  [string appendFormat:@"<%@ %p;\n\tpairingID=%@[%@] session=%@ type=%@ migration=%@ state='%@' progress=%1.3f activities:\n", v5, self, uUIDString, v7, uUIDString2, v9, v10, v12, v13];
 
   v40 = 0;
   v34 = [MEMORY[0x277D37B38] getDropoutCounter:&v40];
@@ -705,15 +705,15 @@ uint64_t __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke(uint
 
         v18 = *(*(&v36 + 1) + 8 * i);
         v19 = [@"\t" mutableCopy];
-        v20 = [v18 activityInfo];
-        v21 = [v20 label];
-        v22 = [v21 stringByReplacingOccurrencesOfString:@"com.apple.pairedsync." withString:&stru_286FBD918];
+        activityInfo = [v18 activityInfo];
+        label = [activityInfo label];
+        v22 = [label stringByReplacingOccurrencesOfString:@"com.apple.pairedsync." withString:&stru_286FBD918];
 
-        v23 = [v18 activityState];
+        activityState = [v18 activityState];
         v24 = &stru_286FBD918;
-        if (v23 <= 2)
+        if (activityState <= 2)
         {
-          v24 = off_2799FBA08[v23];
+          v24 = off_2799FBA08[activityState];
         }
 
         [v19 appendFormat:@"%@ '%@'", v22, v24];
@@ -741,8 +741,8 @@ uint64_t __49__PSYSyncSession_syncSessionByReplacingActivity___block_invoke(uint
 
         if ([v18 startDropoutCount])
         {
-          v26 = [v18 startDropoutCount];
-          v27 = ((v26 != v40) | v34 & 1) == 0;
+          startDropoutCount = [v18 startDropoutCount];
+          v27 = ((startDropoutCount != v40) | v34 & 1) == 0;
 LABEL_22:
           if (v27)
           {
@@ -767,17 +767,17 @@ LABEL_26:
 
         else if ([v18 activityState] == 2)
         {
-          v30 = [v18 error];
+          error = [v18 error];
 
-          if (v30)
+          if (error)
           {
-            v31 = [v18 error];
-            [v19 appendFormat:@"; error=%@", v31];
+            error2 = [v18 error];
+            [v19 appendFormat:@"; error=%@", error2];
           }
         }
 
-        [v3 appendString:v19];
-        [v3 appendString:@"\n"];
+        [string appendString:v19];
+        [string appendString:@"\n"];
       }
 
       v15 = [(NSArray *)obj countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -786,10 +786,10 @@ LABEL_26:
     while (v15);
   }
 
-  [v3 appendString:@">"];
+  [string appendString:@">"];
   v32 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
 - (unint64_t)syncSessionType

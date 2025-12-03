@@ -1,11 +1,11 @@
 @interface UICGColor
 - (BOOL)_isDeepColor;
-- (BOOL)getHue:(double *)a3 saturation:(double *)a4 brightness:(double *)a5 alpha:(double *)a6;
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6;
-- (BOOL)getWhite:(double *)a3 alpha:(double *)a4;
-- (BOOL)isEqual:(id)a3;
-- (UICGColor)colorWithAlphaComponent:(double)a3;
-- (UICGColor)initWithCGColor:(CGColor *)a3;
+- (BOOL)getHue:(double *)hue saturation:(double *)saturation brightness:(double *)brightness alpha:(double *)alpha;
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha;
+- (BOOL)getWhite:(double *)white alpha:(double *)alpha;
+- (BOOL)isEqual:(id)equal;
+- (UICGColor)colorWithAlphaComponent:(double)component;
+- (UICGColor)initWithCGColor:(CGColor *)color;
 - (id)colorSpaceName;
 - (id)description;
 - (unint64_t)hash;
@@ -81,37 +81,37 @@
   {
     v7.receiver = self;
     v7.super_class = UICGColor;
-    v5 = [(UIColor *)&v7 colorSpaceName];
+    colorSpaceName = [(UIColor *)&v7 colorSpaceName];
   }
 
   else
   {
-    v5 = off_1E710BD60[v4];
+    colorSpaceName = off_1E710BD60[v4];
   }
 
-  return v5;
+  return colorSpaceName;
 }
 
-- (UICGColor)initWithCGColor:(CGColor *)a3
+- (UICGColor)initWithCGColor:(CGColor *)color
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (color)
   {
     v6.receiver = self;
     v6.super_class = UICGColor;
-    v3 = [(UICGColor *)&v6 init];
-    if (v3)
+    selfCopy = [(UICGColor *)&v6 init];
+    if (selfCopy)
     {
-      v3->_cachedColor = CGColorRetain(a3);
+      selfCopy->_cachedColor = CGColorRetain(color);
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (UICGColor)colorWithAlphaComponent:(double)a3
+- (UICGColor)colorWithAlphaComponent:(double)component
 {
-  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->_cachedColor, a3);
+  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->_cachedColor, component);
   v4 = [UIColor colorWithCGColor:CopyWithAlpha];
   CGColorRelease(CopyWithAlpha);
 
@@ -138,8 +138,8 @@
 
 - (id)description
 {
-  v3 = [(UICGColor *)self colorSpaceName];
-  v4 = [v3 mutableCopy];
+  colorSpaceName = [(UICGColor *)self colorSpaceName];
+  v4 = [colorSpaceName mutableCopy];
 
   NumberOfComponents = CGColorGetNumberOfComponents(self->_cachedColor);
   Components = CGColorGetComponents(self->_cachedColor);
@@ -248,10 +248,10 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -259,22 +259,22 @@ LABEL_13:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ![(UIColor *)v4 _isDynamic])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ![(UIColor *)equalCopy _isDynamic])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       cachedColor = self->_cachedColor;
       if (isKindOfClass)
       {
-        v8 = v4->_cachedColor;
+        cGColor = equalCopy->_cachedColor;
       }
 
       else
       {
-        v8 = [(UICGColor *)v4 CGColor];
+        cGColor = [(UICGColor *)equalCopy CGColor];
       }
 
-      v5 = CGColorEqualToColor(cachedColor, v8);
+      v5 = CGColorEqualToColor(cachedColor, cGColor);
     }
 
     else
@@ -286,7 +286,7 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)getWhite:(double *)a3 alpha:(double *)a4
+- (BOOL)getWhite:(double *)white alpha:(double *)alpha
 {
   v15 = *MEMORY[0x1E69E9840];
   cachedColor = self->_cachedColor;
@@ -338,20 +338,20 @@ LABEL_13:
   Components = &v13;
 LABEL_11:
   v11 = *(Components + 1);
-  if (a3)
+  if (white)
   {
-    *a3 = *Components;
+    *white = *Components;
   }
 
-  if (a4)
+  if (alpha)
   {
-    *a4 = v11;
+    *alpha = v11;
   }
 
   return 1;
 }
 
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha
 {
   v21 = *MEMORY[0x1E69E9840];
   cachedColor = self->_cachedColor;
@@ -405,30 +405,30 @@ LABEL_11:
   v16 = *(Components + 1);
   v15 = *(Components + 2);
   v17 = *(Components + 3);
-  if (a3)
+  if (red)
   {
-    *a3 = *Components;
+    *red = *Components;
   }
 
-  if (a4)
+  if (green)
   {
-    *a4 = v16;
+    *green = v16;
   }
 
-  if (a5)
+  if (blue)
   {
-    *a5 = v15;
+    *blue = v15;
   }
 
-  if (a6)
+  if (alpha)
   {
-    *a6 = v17;
+    *alpha = v17;
   }
 
   return 1;
 }
 
-- (BOOL)getHue:(double *)a3 saturation:(double *)a4 brightness:(double *)a5 alpha:(double *)a6
+- (BOOL)getHue:(double *)hue saturation:(double *)saturation brightness:(double *)brightness alpha:(double *)alpha
 {
   v19 = 0;
   v20 = 0;
@@ -443,24 +443,24 @@ LABEL_11:
     v12.i64[0] = v19;
     v11.i64[0] = v20;
     _NXRGBToHSB(&v16, &v15, &v14, v11, v12, v18);
-    if (a3)
+    if (hue)
     {
-      *a3 = v16;
+      *hue = v16;
     }
 
-    if (a4)
+    if (saturation)
     {
-      *a4 = v15;
+      *saturation = v15;
     }
 
-    if (a5)
+    if (brightness)
     {
-      *a5 = v14;
+      *brightness = v14;
     }
 
-    if (a6)
+    if (alpha)
     {
-      *a6 = v17;
+      *alpha = v17;
     }
   }
 

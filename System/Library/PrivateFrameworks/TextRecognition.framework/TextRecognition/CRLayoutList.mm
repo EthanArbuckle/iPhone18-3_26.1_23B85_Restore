@@ -1,44 +1,44 @@
 @interface CRLayoutList
-+ (id)_groupGeometryInfoForGroup:(id)a3;
-+ (id)listsWithRegionGroups:(id)a3;
-- (CRLayoutList)initWithItems:(id)a3 layoutDirection:(unint64_t)a4;
++ (id)_groupGeometryInfoForGroup:(id)group;
++ (id)listsWithRegionGroups:(id)groups;
+- (CRLayoutList)initWithItems:(id)items layoutDirection:(unint64_t)direction;
 @end
 
 @implementation CRLayoutList
 
-- (CRLayoutList)initWithItems:(id)a3 layoutDirection:(unint64_t)a4
+- (CRLayoutList)initWithItems:(id)items layoutDirection:(unint64_t)direction
 {
-  v6 = a3;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = CRLayoutList;
   v7 = [(CRLayoutList *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CRLayoutList *)v7 setItems:v6];
-    v8->_layoutDirection = a4;
+    [(CRLayoutList *)v7 setItems:itemsCopy];
+    v8->_layoutDirection = direction;
   }
 
   return v8;
 }
 
-+ (id)listsWithRegionGroups:(id)a3
++ (id)listsWithRegionGroups:(id)groups
 {
   v134 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  groupsCopy = groups;
   v111 = objc_opt_new();
   v4 = objc_opt_new();
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
-  obj = v3;
+  obj = groupsCopy;
   v119 = [obj countByEnumeratingWithState:&v129 objects:v133 count:16];
   if (v119)
   {
     v5 = 0;
     v127 = 0;
-    v128 = 0;
+    layoutDirection = 0;
     v6 = 0;
     v125 = 0;
     v118 = 0;
@@ -60,15 +60,15 @@
         }
 
         v11 = *(*(&v129 + 1) + 8 * v10);
-        v12 = [a1 _groupGeometryInfoForGroup:v11];
-        v13 = [[CRLayoutListItem alloc] initWithGroup:v11];
-        if (!v128)
+        v12 = [self _groupGeometryInfoForGroup:v11];
+        lastObject2 = [[CRLayoutListItem alloc] initWithGroup:v11];
+        if (!layoutDirection)
         {
-          v128 = [v11 layoutDirection];
+          layoutDirection = [v11 layoutDirection];
         }
 
         v14 = [v4 count];
-        if (v13)
+        if (lastObject2)
         {
           v15 = 1;
         }
@@ -86,20 +86,20 @@
           goto LABEL_66;
         }
 
-        v17 = [(CRLayoutListItem *)v13 boundingQuad];
-        [v17 baselineAngle];
+        boundingQuad = [(CRLayoutListItem *)lastObject2 boundingQuad];
+        [boundingQuad baselineAngle];
         v19 = vabdd_f64(v18, v9);
 
         v20 = v6;
-        v21 = [v125 firstSubregion];
-        v22 = [v12 firstSubregion];
-        v23 = [v21 mutualGeometryInfoWith:v22];
+        firstSubregion = [v125 firstSubregion];
+        firstSubregion2 = [v12 firstSubregion];
+        v23 = [firstSubregion mutualGeometryInfoWith:firstSubregion2];
 
         v123 = v20;
-        v24 = [v20 lastSubregion];
+        lastSubregion = [v20 lastSubregion];
         v25 = v12;
-        v26 = [v12 firstSubregion];
-        v27 = [v24 mutualGeometryInfoWith:v26];
+        firstSubregion3 = [v12 firstSubregion];
+        v27 = [lastSubregion mutualGeometryInfoWith:firstSubregion3];
 
         [v23 leadingOffsetAlongBaseline];
         v29 = v28 / v7;
@@ -108,8 +108,8 @@
         v121 = v27;
         [v27 leadingOffsetAlongBaseline];
         v33 = v32;
-        v34 = [v125 firstSubregion];
-        [v34 estimatedLineHeight];
+        firstSubregion4 = [v125 firstSubregion];
+        [firstSubregion4 estimatedLineHeight];
         v36 = v33 / v35;
 
         v37 = fabs(v29);
@@ -130,7 +130,7 @@
           v39 = 1;
         }
 
-        if (v13)
+        if (lastObject2)
         {
           v113 = v19;
           v114 = v9;
@@ -144,37 +144,37 @@
 
           else
           {
-            v40 = [v118 firstSubregion];
+            firstSubregion5 = [v118 firstSubregion];
             v12 = v25;
-            v41 = [v25 firstSubregion];
-            v42 = [v40 mutualGeometryInfoWith:v41];
+            firstSubregion6 = [v25 firstSubregion];
+            v42 = [firstSubregion5 mutualGeometryInfoWith:firstSubregion6];
           }
 
           v64 = v7;
           v65 = fabs(v31 / v7);
           [v23 leadingOffsetAlongBaseline];
           v67 = v66;
-          v68 = [v12 firstSubregion];
-          [v68 estimatedLineHeight];
+          firstSubregion7 = [v12 firstSubregion];
+          [firstSubregion7 estimatedLineHeight];
           v70 = v69;
 
           [v42 leadingOffsetAlongBaseline];
           v122 = v71;
-          v72 = [v12 firstSubregion];
-          [v72 estimatedLineHeight];
+          firstSubregion8 = [v12 firstSubregion];
+          [firstSubregion8 estimatedLineHeight];
           v74 = v73;
 
           v77 = v65 >= v8 && v127 != 0 && v126 < 2;
-          v78 = [v120 lastObject];
-          v79 = [v78 canBeSucceededByListItem:v13];
+          lastObject = [v120 lastObject];
+          v79 = [lastObject canBeSucceededByListItem:lastObject2];
 
-          v80 = [v11 layoutDirection];
-          v81 = [v125 firstSubregion];
-          [v81 estimatedLineHeight];
+          layoutDirection2 = [v11 layoutDirection];
+          firstSubregion9 = [v125 firstSubregion];
+          [firstSubregion9 estimatedLineHeight];
           v83 = v82;
 
-          v84 = [v12 firstSubregion];
-          [v84 estimatedLineHeight];
+          firstSubregion10 = [v12 firstSubregion];
+          [firstSubregion10 estimatedLineHeight];
           v86 = v85;
 
           v87 = v86 / v83 > 1.5 || v83 / v86 > 1.5;
@@ -202,7 +202,7 @@ LABEL_53:
 
           LOBYTE(v16) = 0;
           v90 = v113 > 0.34906585 || v77;
-          v43 = v90 | (v87 || v88 || v89 > 4.0) | v79 ^ 1 | (v128 != v80);
+          v43 = v90 | (v87 || v88 || v89 > 4.0) | v79 ^ 1 | (layoutDirection != layoutDirection2);
           v9 = v114;
 LABEL_64:
 
@@ -215,24 +215,24 @@ LABEL_64:
         {
           v117 = v39;
           v44 = v37 < v8;
-          v45 = [v125 firstSubregion];
+          firstSubregion11 = [v125 firstSubregion];
           v12 = v25;
-          v46 = [v25 lastSubregion];
-          v42 = [v45 mutualGeometryInfoWith:v46];
+          lastSubregion2 = [v25 lastSubregion];
+          v42 = [firstSubregion11 mutualGeometryInfoWith:lastSubregion2];
 
           [v42 leadingOffsetAlongBaseline];
           v48 = v47;
-          v49 = [v125 firstSubregion];
-          [v49 estimatedLineHeight];
+          firstSubregion12 = [v125 firstSubregion];
+          [firstSubregion12 estimatedLineHeight];
           v51 = v48 / v50;
 
-          v52 = [v12 isCenterJustified];
-          v53 = [v12 firstSubregion];
-          [v53 estimatedLineHeight];
+          isCenterJustified = [v12 isCenterJustified];
+          firstSubregion13 = [v12 firstSubregion];
+          [firstSubregion13 estimatedLineHeight];
           v55 = v54;
 
-          v56 = [v123 lastSubregion];
-          [v56 estimatedLineHeight];
+          lastSubregion3 = [v123 lastSubregion];
+          [lastSubregion3 estimatedLineHeight];
           v58 = v57;
 
           v59 = v55 / v58 >= 0.5;
@@ -247,7 +247,7 @@ LABEL_64:
             v60 = 0;
           }
 
-          v61 = v44 & ~v52;
+          v61 = v44 & ~isCenterJustified;
           if (v19 > 0.34906585)
           {
             v61 = 0;
@@ -268,8 +268,8 @@ LABEL_64:
           {
             v63 = v12;
 
-            v13 = [v120 lastObject];
-            [(CRLayoutListItem *)v13 appendGroup:v11];
+            lastObject2 = [v120 lastObject];
+            [(CRLayoutListItem *)lastObject2 appendGroup:v11];
             [v120 removeLastObject];
             v43 = 0;
             v123 = v63;
@@ -278,14 +278,14 @@ LABEL_64:
           else
           {
             v43 = 0;
-            v13 = 0;
+            lastObject2 = 0;
           }
 
           goto LABEL_64;
         }
 
         v43 = 0;
-        v13 = 0;
+        lastObject2 = 0;
         v4 = v120;
         v12 = v25;
 LABEL_65:
@@ -295,7 +295,7 @@ LABEL_65:
 LABEL_66:
         v91 = [obj count];
         v92 = [v4 count];
-        if (v13)
+        if (lastObject2)
         {
           v93 = v5 == v91 - 1;
         }
@@ -317,7 +317,7 @@ LABEL_66:
           v96 = 0;
         }
 
-        if (v13)
+        if (lastObject2)
         {
           if (v96 & 1 | (v5 == 0))
           {
@@ -339,8 +339,8 @@ LABEL_66:
 
           v100 = v12;
 
-          v101 = [(CRLayoutListItem *)v13 boundingQuad];
-          [v101 baselineAngle];
+          boundingQuad2 = [(CRLayoutListItem *)lastObject2 boundingQuad];
+          [boundingQuad2 baselineAngle];
           v9 = v102;
 
           [v100 size];
@@ -351,7 +351,7 @@ LABEL_66:
 
           if ((v43 & 1) == 0)
           {
-            [v4 addObject:v13];
+            [v4 addObject:lastObject2];
           }
 
           v6 = v100;
@@ -364,19 +364,19 @@ LABEL_66:
             v104 = [CRLayoutList alloc];
             v105 = v6;
             v106 = [v4 copy];
-            v107 = [(CRLayoutList *)v104 initWithItems:v106 layoutDirection:v128];
+            v107 = [(CRLayoutList *)v104 initWithItems:v106 layoutDirection:layoutDirection];
 
             v6 = v105;
             [v111 addObject:v107];
           }
 
           [v4 removeAllObjects];
-          v128 = 0;
+          layoutDirection = 0;
         }
 
-        if (v13 != 0 && (v43 & 1) != 0)
+        if (lastObject2 != 0 && (v43 & 1) != 0)
         {
-          [v4 addObject:v13];
+          [v4 addObject:lastObject2];
         }
 
         ++v5;
@@ -403,20 +403,20 @@ LABEL_95:
   return v111;
 }
 
-+ (id)_groupGeometryInfoForGroup:(id)a3
++ (id)_groupGeometryInfoForGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 geometryInfo];
+    geometryInfo = [groupCopy geometryInfo];
   }
 
   else
   {
-    v4 = [[CRRegionGroupGeometryInfo alloc] initFromRegionGroup:v3];
+    geometryInfo = [[CRRegionGroupGeometryInfo alloc] initFromRegionGroup:groupCopy];
   }
 
-  v5 = v4;
+  v5 = geometryInfo;
 
   return v5;
 }

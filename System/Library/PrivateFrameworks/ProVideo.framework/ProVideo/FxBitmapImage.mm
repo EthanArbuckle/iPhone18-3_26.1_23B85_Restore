@@ -1,19 +1,19 @@
 @interface FxBitmapImage
-+ (id)bitmapWithData:(id)a3 bytesPerRow:(unint64_t)a4 size:(CGSize)a5 format:(int)a6 colorSpace:(CGColorSpace *)a7;
-+ (id)bitmapWithSize:(CGSize)a3 format:(int)a4 colorSpace:(CGColorSpace *)a5;
++ (id)bitmapWithData:(id)data bytesPerRow:(unint64_t)row size:(CGSize)size format:(int)format colorSpace:(CGColorSpace *)space;
++ (id)bitmapWithSize:(CGSize)size format:(int)format colorSpace:(CGColorSpace *)space;
 - (CGContext)cgContext;
 - (CGImage)cgImage;
 - (CGSize)size;
-- (FxBitmapImage)initWithData:(id)a3 bytesPerRow:(unint64_t)a4 size:(CGSize)a5 format:(int)a6 colorSpace:(CGColorSpace *)a7;
+- (FxBitmapImage)initWithData:(id)data bytesPerRow:(unint64_t)row size:(CGSize)size format:(int)format colorSpace:(CGColorSpace *)space;
 - (void)dealloc;
 @end
 
 @implementation FxBitmapImage
 
-- (FxBitmapImage)initWithData:(id)a3 bytesPerRow:(unint64_t)a4 size:(CGSize)a5 format:(int)a6 colorSpace:(CGColorSpace *)a7
+- (FxBitmapImage)initWithData:(id)data bytesPerRow:(unint64_t)row size:(CGSize)size format:(int)format colorSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v18.receiver = self;
   v18.super_class = FxBitmapImage;
   v13 = [(FxBitmapImage *)&v18 init];
@@ -23,14 +23,14 @@
     v13->_priv = v14;
     if (v14)
     {
-      v15 = a3;
+      dataCopy = data;
       priv = v13->_priv;
-      priv->var0 = v15;
-      priv->var1 = a4;
+      priv->var0 = dataCopy;
+      priv->var1 = row;
       priv->var2.width = width;
       priv->var2.height = height;
-      priv->var3 = a6;
-      v13->_priv->var4 = CGColorSpaceRetain(a7);
+      priv->var3 = format;
+      v13->_priv->var4 = CGColorSpaceRetain(space);
       v13->_priv->var7 = CGDataProviderCreateWithData(v13->_priv->var0, [(FxBitmapImage *)v13 bytes], (v13->_priv->var2.height * v13->_priv->var1), MyDataProviderReleaser);
       CGDataProviderRetain(v13->_priv->var7);
     }
@@ -77,23 +77,23 @@
   [(FxBitmapImage *)&v10 dealloc];
 }
 
-+ (id)bitmapWithData:(id)a3 bytesPerRow:(unint64_t)a4 size:(CGSize)a5 format:(int)a6 colorSpace:(CGColorSpace *)a7
++ (id)bitmapWithData:(id)data bytesPerRow:(unint64_t)row size:(CGSize)size format:(int)format colorSpace:(CGColorSpace *)space
 {
-  v7 = [objc_alloc(objc_opt_class()) initWithData:a3 bytesPerRow:a4 size:*&a6 format:a7 colorSpace:{a5.width, a5.height}];
+  v7 = [objc_alloc(objc_opt_class()) initWithData:data bytesPerRow:row size:*&format format:space colorSpace:{size.width, size.height}];
 
   return v7;
 }
 
-+ (id)bitmapWithSize:(CGSize)a3 format:(int)a4 colorSpace:(CGColorSpace *)a5
++ (id)bitmapWithSize:(CGSize)size format:(int)format colorSpace:(CGColorSpace *)space
 {
-  width = a3.width;
+  width = size.width;
   v6 = 16.0;
-  if (!a4)
+  if (!format)
   {
     v6 = 4.0;
   }
 
-  v7 = [objc_alloc(objc_opt_class()) initWithData:objc_msgSend(MEMORY[0x277CBEB28] bytesPerRow:"dataWithLength:" size:(a3.height * ((width * v6 + 7.0) & 0xFFFFFFFFFFFFFFF8))) format:(width * v6 + 7.0) & 0xFFFFFFFFFFFFFFF8 colorSpace:{*&a4, a5, width, a3.height}];
+  v7 = [objc_alloc(objc_opt_class()) initWithData:objc_msgSend(MEMORY[0x277CBEB28] bytesPerRow:"dataWithLength:" size:(size.height * ((width * v6 + 7.0) & 0xFFFFFFFFFFFFFFF8))) format:(width * v6 + 7.0) & 0xFFFFFFFFFFFFFFF8 colorSpace:{*&format, space, width, size.height}];
 
   return v7;
 }

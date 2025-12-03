@@ -20,9 +20,9 @@
 - (id)ad_error
 {
   v2 = AFSiriAceErrorDomain;
-  v3 = [(SACommandFailed *)self errorCode];
+  errorCode = [(SACommandFailed *)self errorCode];
 
-  return [NSError errorWithDomain:v2 code:v3 userInfo:0];
+  return [NSError errorWithDomain:v2 code:errorCode userInfo:0];
 }
 
 - (id)description
@@ -31,9 +31,9 @@
   v9.receiver = self;
   v9.super_class = SACommandFailed;
   v4 = [(SACommandFailed *)&v9 description];
-  v5 = [(SACommandFailed *)self errorCode];
-  v6 = [(SACommandFailed *)self reason];
-  v7 = [v3 initWithFormat:@"%@ errorCode: %ld reason: %@", v4, v5, v6];
+  errorCode = [(SACommandFailed *)self errorCode];
+  reason = [(SACommandFailed *)self reason];
+  v7 = [v3 initWithFormat:@"%@ errorCode: %ld reason: %@", v4, errorCode, reason];
 
   return v7;
 }

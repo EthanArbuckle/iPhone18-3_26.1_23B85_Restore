@@ -1,41 +1,41 @@
 @interface SVXServiceCommandHandlerUISayIt
-- (BOOL)shouldDependOnCommand:(id)a3;
-- (SVXServiceCommandHandlerUISayIt)initWithSpeechSynthesizer:(id)a3 module:(id)a4 instrumentationUtils:(id)a5 synthesisResultConverter:(id)a6 speechSynthesisUtils:(id)a7;
-- (SVXServiceCommandHandlerUISayIt)initWithSpeechSynthesizer:(id)a3 module:(id)a4 instrumentationUtils:(id)a5 synthesisResultConverter:(id)a6 speechSynthesisUtils:(id)a7 utteranceParserProvider:(id)a8 expressionParsingServiceProvider:(id)a9 parseableExpressionFactory:(id)a10 sayItChildTaskFactory:(id)a11 afUtilities:(id)a12;
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6;
-- (void)prepareToHandleCommand:(id)a3 completion:(id)a4;
+- (BOOL)shouldDependOnCommand:(id)command;
+- (SVXServiceCommandHandlerUISayIt)initWithSpeechSynthesizer:(id)synthesizer module:(id)module instrumentationUtils:(id)utils synthesisResultConverter:(id)converter speechSynthesisUtils:(id)synthesisUtils;
+- (SVXServiceCommandHandlerUISayIt)initWithSpeechSynthesizer:(id)synthesizer module:(id)module instrumentationUtils:(id)utils synthesisResultConverter:(id)converter speechSynthesisUtils:(id)synthesisUtils utteranceParserProvider:(id)provider expressionParsingServiceProvider:(id)serviceProvider parseableExpressionFactory:(id)self0 sayItChildTaskFactory:(id)self1 afUtilities:(id)self2;
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion;
+- (void)prepareToHandleCommand:(id)command completion:(id)completion;
 @end
 
 @implementation SVXServiceCommandHandlerUISayIt
 
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v42 = a6;
+  commandCopy = command;
+  contextCopy = context;
+  trackerCopy = tracker;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUISayIt.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUISayIt class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUISayIt.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUISayIt class]]"}];
   }
 
-  v14 = v11;
+  v14 = commandCopy;
   kdebug_trace();
   sayItChildTaskFactory = self->_sayItChildTaskFactory;
-  v16 = [(SVXModule *)self->_module preferences];
-  v43 = -[SVXSayItChildTaskProvider createWithCommand:taskTracker:listenAfterSpeakingDisabled:](sayItChildTaskFactory, "createWithCommand:taskTracker:listenAfterSpeakingDisabled:", v14, v13, [v16 listenAfterSpeakingDisabled]);
+  preferences = [(SVXModule *)self->_module preferences];
+  v43 = -[SVXSayItChildTaskProvider createWithCommand:taskTracker:listenAfterSpeakingDisabled:](sayItChildTaskFactory, "createWithCommand:taskTracker:listenAfterSpeakingDisabled:", v14, trackerCopy, [preferences listenAfterSpeakingDisabled]);
 
-  v17 = [v14 dialogIdentifier];
-  v18 = [(SVXAFUtilitiesWrapper *)self->_afUtilities af_IsInternalInstall];
+  dialogIdentifier = [v14 dialogIdentifier];
+  af_IsInternalInstall = [(SVXAFUtilitiesWrapper *)self->_afUtilities af_IsInternalInstall];
   v19 = 0;
-  if (v18)
+  if (af_IsInternalInstall)
   {
-    if (v17)
+    if (dialogIdentifier)
     {
-      v20 = v17;
+      v20 = dialogIdentifier;
     }
 
     else
@@ -49,21 +49,21 @@
   }
 
   v41 = v19;
-  v21 = v13;
+  v21 = trackerCopy;
   objc_opt_class();
-  v44 = v12;
-  v45 = v17;
+  v44 = contextCopy;
+  v45 = dialogIdentifier;
   if (objc_opt_isKindOfClass())
   {
-    v22 = v12;
+    message = contextCopy;
   }
 
   else
   {
-    v22 = [v14 message];
+    message = [v14 message];
   }
 
-  v23 = v22;
+  v23 = message;
   v24 = MEMORY[0x277CEF098];
   v25 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -76,8 +76,8 @@
   }
 
   speechSynthesisUtils = self->_speechSynthesisUtils;
-  v27 = [v14 audioData];
-  v28 = [(SVXSpeechSynthesisUtils *)speechSynthesisUtils createAudioFromUIAudioData:v27];
+  audioData = [v14 audioData];
+  v28 = [(SVXSpeechSynthesisUtils *)speechSynthesisUtils createAudioFromUIAudioData:audioData];
 
   v29 = *v24;
   if (os_log_type_enabled(*v24, OS_LOG_TYPE_INFO))
@@ -90,10 +90,10 @@
   }
 
   instrumentationUtils = self->_instrumentationUtils;
-  v31 = [v21 instrumentationContext];
-  v32 = [v21 context];
-  v33 = [v32 dialogPhase];
-  [(SVXInstrumentationUtilities *)instrumentationUtils emitUUFRSaid:v31 dialogIdentifier:v45 dialogPhase:v33];
+  instrumentationContext = [v21 instrumentationContext];
+  context = [v21 context];
+  dialogPhase = [context dialogPhase];
+  [(SVXInstrumentationUtilities *)instrumentationUtils emitUUFRSaid:instrumentationContext dialogIdentifier:v45 dialogPhase:dialogPhase];
 
   v34 = -[SVXSpeechSynthesisRequest initWithPriority:options:speakableText:speakableContext:localizationKey:presynthesizedAudio:streamID:]([SVXSpeechSynthesisRequest alloc], "initWithPriority:options:speakableText:speakableContext:localizationKey:presynthesizedAudio:streamID:", 2, [v14 canUseServerTTS], v23, 0, 0, v28, 0);
   speechSynthesizer = self->_speechSynthesizer;
@@ -109,10 +109,10 @@
   v46[3] = &unk_279C67D78;
   v47 = v52;
   v48 = v14;
-  v49 = self;
-  v50 = v42;
+  selfCopy = self;
+  v50 = completionCopy;
   v36 = v52;
-  v37 = v42;
+  v37 = completionCopy;
   v38 = v14;
   [(SVXSpeechSynthesizer *)speechSynthesizer enqueueRequest:v36 languageCode:0 voiceName:0 gender:0 audioSessionID:0 preparation:v51 finalization:v46 taskTracker:v43 analyticsContext:v41];
 
@@ -169,43 +169,43 @@ void __84__SVXServiceCommandHandlerUISayIt_handleCommand_withContext_taskTracker
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareToHandleCommand:(id)a3 completion:(id)a4
+- (void)prepareToHandleCommand:(id)command completion:(id)completion
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUISayIt.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUISayIt class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUISayIt.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUISayIt class]]"}];
   }
 
-  v9 = v7;
-  v10 = [v9 context];
+  v9 = commandCopy;
+  context = [v9 context];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 svx_isDeferredExpressionContextObject])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [context svx_isDeferredExpressionContextObject])
   {
     v11 = objc_alloc(MEMORY[0x277CBEAF8]);
-    v12 = [(SVXModule *)self->_module preferences];
-    v13 = [v12 languageCode];
-    v14 = [v11 initWithLocaleIdentifier:v13];
+    preferences = [(SVXModule *)self->_module preferences];
+    languageCode = [preferences languageCode];
+    v14 = [v11 initWithLocaleIdentifier:languageCode];
 
     v15 = [(SVXAFSpeakableUtteranceParserProvider *)self->_utteranceParserProvider getWithLocale:v14];
-    v16 = [v10 groupIdentifier];
-    v17 = [_SVXSpeakableNamespaceDomainOccurrenceProvider providerForDomain:v16];
+    groupIdentifier = [context groupIdentifier];
+    v17 = [_SVXSpeakableNamespaceDomainOccurrenceProvider providerForDomain:groupIdentifier];
 
     [v15 registerProvider:v17 forNamespace:*MEMORY[0x277CEF568]];
-    v18 = [v9 message];
+    message = [v9 message];
     v37 = 0;
-    v19 = [v15 parseStringWithFormat:v18 error:&v37];
+    v19 = [v15 parseStringWithFormat:message error:&v37];
     v20 = v37;
 
     if (v20 || ![v17 count])
     {
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
     }
 
@@ -216,11 +216,11 @@ void __84__SVXServiceCommandHandlerUISayIt_handleCommand_withContext_taskTracker
       v32 = [(_SVXRemoteExpressionParsingServiceProvider *)expressionParsingServiceProvider getWithAceHandler:v22];
 
       parseableExpressionFactory = self->_parseableExpressionFactory;
-      v24 = [MEMORY[0x277CCAD78] UUID];
-      v25 = [v24 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
       [v9 message];
       v26 = v33 = v14;
-      v27 = [(SVXSAUILParseableExpressionProvider *)parseableExpressionFactory createWithAceId:v25 context:v10 expressionString:v26];
+      v27 = [(SVXSAUILParseableExpressionProvider *)parseableExpressionFactory createWithAceId:uUIDString context:context expressionString:v26];
 
       v38[0] = v27;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
@@ -229,7 +229,7 @@ void __84__SVXServiceCommandHandlerUISayIt_handleCommand_withContext_taskTracker
       v34[2] = __69__SVXServiceCommandHandlerUISayIt_prepareToHandleCommand_completion___block_invoke;
       v34[3] = &unk_279C67720;
       v35 = v27;
-      v36 = v8;
+      v36 = completionCopy;
       v29 = v27;
       [v32 parseExpressions:v28 targetDevice:0 reply:v34];
 
@@ -237,9 +237,9 @@ void __84__SVXServiceCommandHandlerUISayIt_handleCommand_withContext_taskTracker
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -267,9 +267,9 @@ void __69__SVXServiceCommandHandlerUISayIt_prepareToHandleCommand_completion___b
   }
 }
 
-- (BOOL)shouldDependOnCommand:(id)a3
+- (BOOL)shouldDependOnCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -285,27 +285,27 @@ void __69__SVXServiceCommandHandlerUISayIt_prepareToHandleCommand_completion___b
   return isKindOfClass & 1;
 }
 
-- (SVXServiceCommandHandlerUISayIt)initWithSpeechSynthesizer:(id)a3 module:(id)a4 instrumentationUtils:(id)a5 synthesisResultConverter:(id)a6 speechSynthesisUtils:(id)a7 utteranceParserProvider:(id)a8 expressionParsingServiceProvider:(id)a9 parseableExpressionFactory:(id)a10 sayItChildTaskFactory:(id)a11 afUtilities:(id)a12
+- (SVXServiceCommandHandlerUISayIt)initWithSpeechSynthesizer:(id)synthesizer module:(id)module instrumentationUtils:(id)utils synthesisResultConverter:(id)converter speechSynthesisUtils:(id)synthesisUtils utteranceParserProvider:(id)provider expressionParsingServiceProvider:(id)serviceProvider parseableExpressionFactory:(id)self0 sayItChildTaskFactory:(id)self1 afUtilities:(id)self2
 {
-  v18 = a3;
-  v35 = a4;
-  v19 = a4;
-  v36 = a5;
-  v45 = a5;
-  v37 = a6;
-  v20 = a6;
-  v21 = self;
-  v44 = v20;
-  v43 = a7;
-  v38 = a8;
-  v42 = a8;
-  v41 = a9;
-  v40 = a10;
-  v39 = a11;
-  v22 = a12;
-  if (v18)
+  synthesizerCopy = synthesizer;
+  moduleCopy = module;
+  moduleCopy2 = module;
+  utilsCopy = utils;
+  utilsCopy2 = utils;
+  converterCopy = converter;
+  converterCopy2 = converter;
+  selfCopy = self;
+  v44 = converterCopy2;
+  synthesisUtilsCopy = synthesisUtils;
+  providerCopy = provider;
+  providerCopy2 = provider;
+  serviceProviderCopy = serviceProvider;
+  factoryCopy = factory;
+  taskFactoryCopy = taskFactory;
+  utilitiesCopy = utilities;
+  if (synthesizerCopy)
   {
-    if (v19)
+    if (moduleCopy2)
     {
       goto LABEL_3;
     }
@@ -313,38 +313,38 @@ void __69__SVXServiceCommandHandlerUISayIt_prepareToHandleCommand_completion___b
 
   else
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:v21 file:@"SVXServiceCommandHandlerUISayIt.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"speechSynthesizer != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"SVXServiceCommandHandlerUISayIt.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"speechSynthesizer != nil"}];
 
-    if (v19)
+    if (moduleCopy2)
     {
       goto LABEL_3;
     }
   }
 
-  v32 = [MEMORY[0x277CCA890] currentHandler];
-  [v32 handleFailureInMethod:a2 object:v21 file:@"SVXServiceCommandHandlerUISayIt.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"module != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"SVXServiceCommandHandlerUISayIt.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"module != nil"}];
 
 LABEL_3:
-  v46.receiver = v21;
+  v46.receiver = selfCopy;
   v46.super_class = SVXServiceCommandHandlerUISayIt;
   v23 = [(SVXServiceCommandHandlerUISayIt *)&v46 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_speechSynthesizer, a3);
-    objc_storeStrong(&v24->_module, v35);
-    objc_storeStrong(&v24->_instrumentationUtils, v36);
-    objc_storeStrong(&v24->_synthesisResultConverter, v37);
-    objc_storeStrong(&v24->_speechSynthesisUtils, a7);
-    objc_storeStrong(&v24->_utteranceParserProvider, v38);
-    objc_storeStrong(&v24->_expressionParsingServiceProvider, a9);
-    objc_storeStrong(&v24->_parseableExpressionFactory, a10);
-    objc_storeStrong(&v24->_sayItChildTaskFactory, a11);
-    objc_storeStrong(&v24->_afUtilities, a12);
+    objc_storeStrong(&v23->_speechSynthesizer, synthesizer);
+    objc_storeStrong(&v24->_module, moduleCopy);
+    objc_storeStrong(&v24->_instrumentationUtils, utilsCopy);
+    objc_storeStrong(&v24->_synthesisResultConverter, converterCopy);
+    objc_storeStrong(&v24->_speechSynthesisUtils, synthesisUtils);
+    objc_storeStrong(&v24->_utteranceParserProvider, providerCopy);
+    objc_storeStrong(&v24->_expressionParsingServiceProvider, serviceProvider);
+    objc_storeStrong(&v24->_parseableExpressionFactory, factory);
+    objc_storeStrong(&v24->_sayItChildTaskFactory, taskFactory);
+    objc_storeStrong(&v24->_afUtilities, utilities);
     v25 = objc_alloc(MEMORY[0x277CCACA8]);
-    v26 = [objc_opt_class() supportedCommandClass];
-    v27 = NSStringFromClass(v26);
+    supportedCommandClass = [objc_opt_class() supportedCommandClass];
+    v27 = NSStringFromClass(supportedCommandClass);
     v28 = [v25 initWithFormat:@"com.apple.SiriVOXService.service-command.%@", v27];
     identifier = v24->_identifier;
     v24->_identifier = v28;
@@ -353,19 +353,19 @@ LABEL_3:
   return v24;
 }
 
-- (SVXServiceCommandHandlerUISayIt)initWithSpeechSynthesizer:(id)a3 module:(id)a4 instrumentationUtils:(id)a5 synthesisResultConverter:(id)a6 speechSynthesisUtils:(id)a7
+- (SVXServiceCommandHandlerUISayIt)initWithSpeechSynthesizer:(id)synthesizer module:(id)module instrumentationUtils:(id)utils synthesisResultConverter:(id)converter speechSynthesisUtils:(id)synthesisUtils
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  synthesisUtilsCopy = synthesisUtils;
+  converterCopy = converter;
+  utilsCopy = utils;
+  moduleCopy = module;
+  synthesizerCopy = synthesizer;
   v22 = objc_alloc_init(SVXAFSpeakableUtteranceParserProvider);
   v16 = objc_alloc_init(_SVXRemoteExpressionParsingServiceProvider);
   v17 = objc_alloc_init(SVXSAUILParseableExpressionProvider);
   v18 = objc_alloc_init(SVXSayItChildTaskProvider);
   v19 = objc_alloc_init(SVXAFUtilitiesWrapper);
-  v20 = [(SVXServiceCommandHandlerUISayIt *)self initWithSpeechSynthesizer:v15 module:v14 instrumentationUtils:v13 synthesisResultConverter:v12 speechSynthesisUtils:v11 utteranceParserProvider:v22 expressionParsingServiceProvider:v16 parseableExpressionFactory:v17 sayItChildTaskFactory:v18 afUtilities:v19];
+  v20 = [(SVXServiceCommandHandlerUISayIt *)self initWithSpeechSynthesizer:synthesizerCopy module:moduleCopy instrumentationUtils:utilsCopy synthesisResultConverter:converterCopy speechSynthesisUtils:synthesisUtilsCopy utteranceParserProvider:v22 expressionParsingServiceProvider:v16 parseableExpressionFactory:v17 sayItChildTaskFactory:v18 afUtilities:v19];
 
   return v20;
 }

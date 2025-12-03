@@ -4,8 +4,8 @@
 - (id)_keypadImage;
 - (id)_linearFocusMovementSequences;
 - (id)_pressedImage;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)keyPressed:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)keyPressed:(id)pressed;
 - (void)layoutSubviews;
 @end
 
@@ -53,10 +53,10 @@
   self->_linearSequence = v14;
 }
 
-- (void)keyPressed:(id)a3
+- (void)keyPressed:(id)pressed
 {
-  v4 = [a3 state];
-  switch(v4)
+  state = [pressed state];
+  switch(state)
   {
     case 4:
 
@@ -124,11 +124,11 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PHStaticDialerPad *)self _keypadImage];
-  [v3 size];
+  _keypadImage = [(PHStaticDialerPad *)self _keypadImage];
+  [_keypadImage size];
   v5 = v4;
-  v6 = [(PHStaticDialerPad *)self _keypadImage];
-  [v6 size];
+  _keypadImage2 = [(PHStaticDialerPad *)self _keypadImage];
+  [_keypadImage2 size];
   v8 = v7;
 
   v9 = v5;
@@ -138,28 +138,28 @@
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   [(TPPhonePad *)self performTapActionCancelForHighlightedKey];
   v14.receiver = self;
   v14.super_class = PHStaticDialerPad;
-  [(PHStaticDialerPad *)&v14 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
+  [(PHStaticDialerPad *)&v14 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
 
-  v8 = [v6 nextFocusedItem];
-  if (v8 && (v9 = v8, [v6 nextFocusedItem], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, v9, (isKindOfClass & 1) != 0))
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  if (nextFocusedItem && (v9 = nextFocusedItem, [contextCopy nextFocusedItem], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, v9, (isKindOfClass & 1) != 0))
   {
-    v12 = [v6 nextFocusedItem];
-    v13 = [v12 keyIndex];
+    nextFocusedItem2 = [contextCopy nextFocusedItem];
+    keyIndex = [nextFocusedItem2 keyIndex];
   }
 
   else
   {
-    v13 = -1;
+    keyIndex = -1;
   }
 
-  [(TPPhonePad *)self highlightKeyAtIndex:v13];
+  [(TPPhonePad *)self highlightKeyAtIndex:keyIndex];
 }
 
 - (id)_linearFocusMovementSequences

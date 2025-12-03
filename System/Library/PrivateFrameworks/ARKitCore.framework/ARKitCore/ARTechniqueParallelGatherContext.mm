@@ -1,55 +1,55 @@
 @interface ARTechniqueParallelGatherContext
-- (ARTechniqueParallelGatherContext)initWithParentContext:(id)a3 previousContext:(id)a4 requiredTechniqueIndices:(id)a5 deterministicTechniqueIndices:(id)a6 techniques:(id)a7;
+- (ARTechniqueParallelGatherContext)initWithParentContext:(id)context previousContext:(id)previousContext requiredTechniqueIndices:(id)indices deterministicTechniqueIndices:(id)techniqueIndices techniques:(id)techniques;
 - (BOOL)deterministicResultsCaptured;
 - (BOOL)isComplete;
 - (id)_allGatheredDataByTechniqueIndex;
-- (id)addResultData:(id)a3 forTechniqueAtIndex:(unint64_t)a4;
+- (id)addResultData:(id)data forTechniqueAtIndex:(unint64_t)index;
 - (id)captureGatheredData;
 - (id)description;
 - (id)gatheredData;
-- (id)lateResultDataForTechniqueAtIndex:(unint64_t)a3;
-- (unint64_t)indexForTechnique:(id)a3;
+- (id)lateResultDataForTechniqueAtIndex:(unint64_t)index;
+- (unint64_t)indexForTechnique:(id)technique;
 - (void)clearPreviousContext;
 @end
 
 @implementation ARTechniqueParallelGatherContext
 
-- (ARTechniqueParallelGatherContext)initWithParentContext:(id)a3 previousContext:(id)a4 requiredTechniqueIndices:(id)a5 deterministicTechniqueIndices:(id)a6 techniques:(id)a7
+- (ARTechniqueParallelGatherContext)initWithParentContext:(id)context previousContext:(id)previousContext requiredTechniqueIndices:(id)indices deterministicTechniqueIndices:(id)techniqueIndices techniques:(id)techniques
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  previousContextCopy = previousContext;
+  indicesCopy = indices;
+  techniqueIndicesCopy = techniqueIndices;
+  techniquesCopy = techniques;
   v30.receiver = self;
   v30.super_class = ARTechniqueParallelGatherContext;
-  v17 = [(ARTechniqueGatherContext *)&v30 initWithParentContext:a3];
+  v17 = [(ARTechniqueGatherContext *)&v30 initWithParentContext:context];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_previousContext, a4);
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_previousContext, previousContext);
+    v19 = [indicesCopy copy];
     requiredTechniqueIndices = v18->_requiredTechniqueIndices;
     v18->_requiredTechniqueIndices = v19;
 
-    v21 = [v15 copy];
+    v21 = [techniqueIndicesCopy copy];
     deterministicTechniqueIndices = v18->_deterministicTechniqueIndices;
     v18->_deterministicTechniqueIndices = v21;
 
-    v18->_techniqueCount = [v16 count];
+    v18->_techniqueCount = [techniquesCopy count];
     v23 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v18->_techniqueCount];
     gatheredDataByTechniqueIndex = v18->_gatheredDataByTechniqueIndex;
     v18->_gatheredDataByTechniqueIndex = v23;
 
-    v25 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     techniquesByIndex = v18->_techniquesByIndex;
-    v18->_techniquesByIndex = v25;
+    v18->_techniquesByIndex = strongToWeakObjectsMapTable;
 
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __140__ARTechniqueParallelGatherContext_initWithParentContext_previousContext_requiredTechniqueIndices_deterministicTechniqueIndices_techniques___block_invoke;
     v28[3] = &unk_1E817D800;
     v29 = v18;
-    [v16 enumerateObjectsUsingBlock:v28];
+    [techniquesCopy enumerateObjectsUsingBlock:v28];
   }
 
   return v18;
@@ -67,14 +67,14 @@ void __140__ARTechniqueParallelGatherContext_initWithParentContext_previousConte
 - (id)gatheredData
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(ARTechniqueParallelGatherContext *)self _allGatheredDataByTechniqueIndex];
+  _allGatheredDataByTechniqueIndex = [(ARTechniqueParallelGatherContext *)self _allGatheredDataByTechniqueIndex];
   v3 = objc_opt_new();
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v2 allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [_allGatheredDataByTechniqueIndex allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -85,13 +85,13 @@ void __140__ARTechniqueParallelGatherContext_initWithParentContext_previousConte
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [v3 addObjectsFromArray:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -100,9 +100,9 @@ void __140__ARTechniqueParallelGatherContext_initWithParentContext_previousConte
   return v3;
 }
 
-- (unint64_t)indexForTechnique:(id)a3
+- (unint64_t)indexForTechnique:(id)technique
 {
-  v4 = a3;
+  techniqueCopy = technique;
   if (self->_techniqueCount)
   {
     v5 = 0;
@@ -112,7 +112,7 @@ void __140__ARTechniqueParallelGatherContext_initWithParentContext_previousConte
       v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
       v8 = [(NSMapTable *)techniquesByIndex objectForKey:v7];
 
-      if (v8 == v4)
+      if (v8 == techniqueCopy)
       {
         break;
       }
@@ -161,8 +161,8 @@ LABEL_5:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(NSMutableDictionary *)self->_gatheredDataByTechniqueIndex allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allKeys = [(NSMutableDictionary *)self->_gatheredDataByTechniqueIndex allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = *v11;
@@ -172,13 +172,13 @@ LABEL_5:
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           [v3 addIndex:{objc_msgSend(*(*(&v10 + 1) + 8 * i), "integerValue")}];
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v5);
@@ -204,8 +204,8 @@ LABEL_5:
   os_unfair_lock_unlock(&self->super._stateLock);
   if (v3)
   {
-    v5 = [(ARTechniqueParallelGatherContext *)v3 _allGatheredDataByTechniqueIndex];
-    v6 = [v5 mutableCopy];
+    _allGatheredDataByTechniqueIndex = [(ARTechniqueParallelGatherContext *)v3 _allGatheredDataByTechniqueIndex];
+    v6 = [_allGatheredDataByTechniqueIndex mutableCopy];
   }
 
   else
@@ -226,13 +226,13 @@ LABEL_5:
   v35 = [(NSMutableDictionary *)self->_gatheredDataByTechniqueIndex mutableCopy];
   v36 = self->_requiredTechniqueIndices;
   v32 = self->_techniquesByIndex;
-  v33 = self;
+  selfCopy = self;
   os_unfair_lock_unlock(&self->super._stateLock);
   v31 = v3;
   if (v3)
   {
-    v4 = [(ARTechniqueParallelGatherContext *)v3 _allGatheredDataByTechniqueIndex];
-    v5 = [v4 mutableCopy];
+    _allGatheredDataByTechniqueIndex = [(ARTechniqueParallelGatherContext *)v3 _allGatheredDataByTechniqueIndex];
+    v5 = [_allGatheredDataByTechniqueIndex mutableCopy];
   }
 
   else
@@ -284,16 +284,16 @@ LABEL_5:
               v15 = v14;
               v16 = objc_opt_class();
               v17 = NSStringFromClass(v16);
-              v18 = [v10 integerValue];
+              integerValue = [v10 integerValue];
               v19 = [(NSMapTable *)v32 objectForKey:v10];
-              v20 = [(ARTechniqueGatherContext *)v33 imageData];
-              [v20 timestamp];
+              imageData = [(ARTechniqueGatherContext *)selfCopy imageData];
+              [imageData timestamp];
               *buf = 138544386;
               v43 = v17;
               v44 = 2048;
-              v45 = v33;
+              v45 = selfCopy;
               v46 = 2048;
-              v47 = v18;
+              v47 = integerValue;
               v48 = 2112;
               v49 = v19;
               v50 = 2048;
@@ -301,8 +301,8 @@ LABEL_5:
               _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Technique %ld (%@) result data missed frame %f", buf, 0x34u);
             }
 
-            v22 = [(ARTechniqueGatherContext *)v33 imageData];
-            [v22 timestamp];
+            imageData2 = [(ARTechniqueGatherContext *)selfCopy imageData];
+            [imageData2 timestamp];
 
             [v10 integerValue];
             kdebug_trace();
@@ -310,13 +310,13 @@ LABEL_5:
             v24 = v23;
             if (v23)
             {
-              v25 = [v23 traceKey];
+              traceKey = [v23 traceKey];
               if (ARTechnique_Result_Drop_onceToken != -1)
               {
                 [ARTechniqueParallelGatherContext captureGatheredData];
               }
 
-              v26 = [ARTechnique_Result_Drop_keyToCode objectForKeyedSubscript:v25];
+              v26 = [ARTechnique_Result_Drop_keyToCode objectForKeyedSubscript:traceKey];
               [v26 intValue];
 
               kdebug_trace();
@@ -340,27 +340,27 @@ LABEL_5:
   }
 
   [(NSMutableDictionary *)v6 removeObjectsForKeys:v34];
-  os_unfair_lock_lock(&v33->super._stateLock);
-  gatheredDataByTechniqueIndex = v33->_gatheredDataByTechniqueIndex;
-  v33->_gatheredDataByTechniqueIndex = v6;
+  os_unfair_lock_lock(&selfCopy->super._stateLock);
+  gatheredDataByTechniqueIndex = selfCopy->_gatheredDataByTechniqueIndex;
+  selfCopy->_gatheredDataByTechniqueIndex = v6;
   v28 = v6;
 
-  v33->super._resultsCaptured = 1;
-  previousContext = v33->_previousContext;
-  v33->_previousContext = 0;
+  selfCopy->super._resultsCaptured = 1;
+  previousContext = selfCopy->_previousContext;
+  selfCopy->_previousContext = 0;
 
-  os_unfair_lock_unlock(&v33->super._stateLock);
+  os_unfair_lock_unlock(&selfCopy->super._stateLock);
 
   return v37;
 }
 
-- (id)addResultData:(id)a3 forTechniqueAtIndex:(unint64_t)a4
+- (id)addResultData:(id)data forTechniqueAtIndex:(unint64_t)index
 {
-  v6 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->super._stateLock);
   gatheredDataByTechniqueIndex = self->_gatheredDataByTechniqueIndex;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)gatheredDataByTechniqueIndex setObject:v6 forKeyedSubscript:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  [(NSMutableDictionary *)gatheredDataByTechniqueIndex setObject:dataCopy forKeyedSubscript:v8];
 
   if (self->super._resultsCaptured)
   {
@@ -374,23 +374,23 @@ LABEL_5:
       lateResultTechniqueIndices = self->_lateResultTechniqueIndices;
     }
 
-    [(NSMutableIndexSet *)lateResultTechniqueIndices addIndex:a4];
+    [(NSMutableIndexSet *)lateResultTechniqueIndices addIndex:index];
   }
 
   v12 = self->_previousContext;
   os_unfair_lock_unlock(&self->super._stateLock);
-  v13 = [(ARTechniqueParallelGatherContext *)v12 lateResultDataForTechniqueAtIndex:a4];
+  v13 = [(ARTechniqueParallelGatherContext *)v12 lateResultDataForTechniqueAtIndex:index];
 
   return v13;
 }
 
-- (id)lateResultDataForTechniqueAtIndex:(unint64_t)a3
+- (id)lateResultDataForTechniqueAtIndex:(unint64_t)index
 {
   os_unfair_lock_lock(&self->super._stateLock);
-  if ([(NSMutableIndexSet *)self->_lateResultTechniqueIndices containsIndex:a3])
+  if ([(NSMutableIndexSet *)self->_lateResultTechniqueIndices containsIndex:index])
   {
     gatheredDataByTechniqueIndex = self->_gatheredDataByTechniqueIndex;
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     v7 = [(NSMutableDictionary *)gatheredDataByTechniqueIndex objectForKeyedSubscript:v6];
 
     os_unfair_lock_unlock(&self->super._stateLock);
@@ -408,7 +408,7 @@ LABEL_5:
     os_unfair_lock_unlock(&self->super._stateLock);
   }
 
-  v7 = [(ARTechniqueParallelGatherContext *)v8 lateResultDataForTechniqueAtIndex:a3];
+  v7 = [(ARTechniqueParallelGatherContext *)v8 lateResultDataForTechniqueAtIndex:index];
 
 LABEL_6:
 
@@ -456,8 +456,8 @@ LABEL_6:
   }
 
   [v5 appendFormat:@"Is Complete: %@\r", v8];
-  v9 = [(ARTechniqueGatherContext *)self imageData];
-  [v9 timestamp];
+  imageData = [(ARTechniqueGatherContext *)self imageData];
+  [imageData timestamp];
   [v5 appendFormat:@"ImageData timestamp: %f\r", v10];
 
   os_unfair_lock_lock(&self->super._stateLock);

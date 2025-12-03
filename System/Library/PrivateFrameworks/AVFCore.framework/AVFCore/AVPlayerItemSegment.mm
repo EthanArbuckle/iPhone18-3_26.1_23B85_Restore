@@ -2,7 +2,7 @@
 - (AVPlayerInterstitialEvent)interstitialEvent;
 - (NSArray)loadedTimeRanges;
 - (NSDate)startDate;
-- (id)_initWithFigSegment:(OpaqueFigPlaybackItemSegment *)a3;
+- (id)_initWithFigSegment:(OpaqueFigPlaybackItemSegment *)segment;
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
@@ -10,16 +10,16 @@
 
 @implementation AVPlayerItemSegment
 
-- (id)_initWithFigSegment:(OpaqueFigPlaybackItemSegment *)a3
+- (id)_initWithFigSegment:(OpaqueFigPlaybackItemSegment *)segment
 {
   v7.receiver = self;
   v7.super_class = AVPlayerItemSegment;
   v4 = [(AVPlayerItemSegment *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (segment)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(segment);
     }
 
     else
@@ -63,7 +63,7 @@
 - (NSArray)loadedTimeRanges
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   LoadedTimeRanges = FigPlaybackItemSegmentGetLoadedTimeRanges();
   v12 = 0u;
   v13 = 0u;
@@ -88,7 +88,7 @@
         memset(&v11, 0, sizeof(v11));
         CMTimeRangeMakeFromDictionary(&v11, v8);
         v10 = v11;
-        -[NSArray addObject:](v2, "addObject:", [MEMORY[0x1E696B098] valueWithCMTimeRange:&v10]);
+        -[NSArray addObject:](array, "addObject:", [MEMORY[0x1E696B098] valueWithCMTimeRange:&v10]);
         ++v7;
       }
 
@@ -99,7 +99,7 @@
     while (v5);
   }
 
-  return v2;
+  return array;
 }
 
 - (NSDate)startDate

@@ -1,27 +1,27 @@
 @interface FAMessagesInviteConfigurationController
 + (BOOL)isAvailable;
 - (FAInviteControllerDelegate)delegate;
-- (FAMessagesInviteConfigurationController)initWithInviteContext:(id)a3 presentingController:(id)a4;
-- (FAMessagesInviteConfigurationController)initWithInviteContext:(id)a3 presentingController:(id)a4 familySuggestionHandle:(id)a5;
+- (FAMessagesInviteConfigurationController)initWithInviteContext:(id)context presentingController:(id)controller;
+- (FAMessagesInviteConfigurationController)initWithInviteContext:(id)context presentingController:(id)controller familySuggestionHandle:(id)handle;
 - (id)_messageComposeViewController;
-- (void)_presentInviteControllerWithCompletion:(id)a3;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)messageComposeViewController:(id)a3 shouldSendMessage:(id)a4 toRecipients:(id)a5 completion:(id)a6;
-- (void)presentWhenReadyWithCompletion:(id)a3;
+- (void)_presentInviteControllerWithCompletion:(id)completion;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)messageComposeViewController:(id)controller shouldSendMessage:(id)message toRecipients:(id)recipients completion:(id)completion;
+- (void)presentWhenReadyWithCompletion:(id)completion;
 @end
 
 @implementation FAMessagesInviteConfigurationController
 
-- (FAMessagesInviteConfigurationController)initWithInviteContext:(id)a3 presentingController:(id)a4
+- (FAMessagesInviteConfigurationController)initWithInviteContext:(id)context presentingController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   v9 = [(FAMessagesInviteConfigurationController *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_presentationContext, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_presentationContext, controller);
     v11 = objc_alloc_init(FAInviteRecipientEvaluator);
     inviteRecipientEvaluator = v10->_inviteRecipientEvaluator;
     v10->_inviteRecipientEvaluator = v11;
@@ -30,33 +30,33 @@
   return v10;
 }
 
-- (FAMessagesInviteConfigurationController)initWithInviteContext:(id)a3 presentingController:(id)a4 familySuggestionHandle:(id)a5
+- (FAMessagesInviteConfigurationController)initWithInviteContext:(id)context presentingController:(id)controller familySuggestionHandle:(id)handle
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  controllerCopy = controller;
+  handleCopy = handle;
   v12 = [(FAMessagesInviteConfigurationController *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_presentationContext, a4);
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_presentationContext, controller);
     v14 = objc_alloc_init(FAInviteRecipientEvaluator);
     inviteRecipientEvaluator = v13->_inviteRecipientEvaluator;
     v13->_inviteRecipientEvaluator = v14;
 
-    objc_storeStrong(&v13->_familySuggestionHandle, a5);
+    objc_storeStrong(&v13->_familySuggestionHandle, handle);
   }
 
   return v13;
 }
 
-- (void)presentWhenReadyWithCompletion:(id)a3
+- (void)presentWhenReadyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_linkMetadata)
   {
-    [(FAMessagesInviteConfigurationController *)self _presentInviteControllerWithCompletion:v4];
+    [(FAMessagesInviteConfigurationController *)self _presentInviteControllerWithCompletion:completionCopy];
   }
 
   else
@@ -67,7 +67,7 @@
     v6[2] = __74__FAMessagesInviteConfigurationController_presentWhenReadyWithCompletion___block_invoke;
     v6[3] = &unk_2782F2EB0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(FAInviteLinkMetadataProvider *)v5 loadMetatadataWithCompletion:v6];
   }
 }
@@ -107,9 +107,9 @@ void __74__FAMessagesInviteConfigurationController_presentWhenReadyWithCompletio
     self->_messageComposeViewController = v4;
 
     [(MFMessageComposeViewController *)self->_messageComposeViewController setMessageComposeDelegate:self];
-    v6 = [(FAInviteContext *)self->_context messageBubbleTitle];
+    messageBubbleTitle = [(FAInviteContext *)self->_context messageBubbleTitle];
 
-    if (v6)
+    if (messageBubbleTitle)
     {
       v7 = [objc_alloc(MEMORY[0x277CD6908]) initWithLinkMetadata:self->_linkMetadata];
       v8 = [objc_alloc(MEMORY[0x277CD6900]) initWithAlternateLayout:v7];
@@ -125,8 +125,8 @@ void __74__FAMessagesInviteConfigurationController_presentWhenReadyWithCompletio
       v13 = [(FAInviteContext *)self->_context buildInviteMessageBubbleURL:self->_familySuggestionHandle];
       [v12 setURL:v13];
 
-      v14 = [(FAInviteContext *)self->_context messageBubbleSubTitle];
-      [v12 setSummaryText:v14];
+      messageBubbleSubTitle = [(FAInviteContext *)self->_context messageBubbleSubTitle];
+      [v12 setSummaryText:messageBubbleSubTitle];
 
       [(MFMessageComposeViewController *)self->_messageComposeViewController setMessage:v12];
     }
@@ -134,18 +134,18 @@ void __74__FAMessagesInviteConfigurationController_presentWhenReadyWithCompletio
     else
     {
       v15 = self->_messageComposeViewController;
-      v16 = [(LPLinkMetadata *)self->_linkMetadata dataRepresentation];
-      v17 = [(FAInviteContext *)self->_context inviteURL];
-      [(MFMessageComposeViewController *)v15 addRichLinkData:v16 withWebpageURL:v17];
+      dataRepresentation = [(LPLinkMetadata *)self->_linkMetadata dataRepresentation];
+      inviteURL = [(FAInviteContext *)self->_context inviteURL];
+      [(MFMessageComposeViewController *)v15 addRichLinkData:dataRepresentation withWebpageURL:inviteURL];
     }
 
-    v18 = [(FAInviteContext *)self->_context invitees];
-    v19 = [v18 count];
+    invitees = [(FAInviteContext *)self->_context invitees];
+    v19 = [invitees count];
 
     if (v19)
     {
       v20 = self->_messageComposeViewController;
-      v21 = [(FAInviteContext *)self->_context invitees];
+      invitees2 = [(FAInviteContext *)self->_context invitees];
     }
 
     else
@@ -160,11 +160,11 @@ LABEL_10:
 
       v20 = self->_messageComposeViewController;
       familySuggestionHandle = self->_familySuggestionHandle;
-      v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&familySuggestionHandle count:1];
+      invitees2 = [MEMORY[0x277CBEA60] arrayWithObjects:&familySuggestionHandle count:1];
     }
 
-    v22 = v21;
-    [(MFMessageComposeViewController *)v20 setRecipients:v21];
+    v22 = invitees2;
+    [(MFMessageComposeViewController *)v20 setRecipients:invitees2];
 
     goto LABEL_10;
   }
@@ -191,10 +191,10 @@ LABEL_11:
   return result;
 }
 
-- (void)_presentInviteControllerWithCompletion:(id)a3
+- (void)_presentInviteControllerWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -203,17 +203,17 @@ LABEL_11:
     _os_log_impl(&dword_21BB35000, v5, OS_LOG_TYPE_DEFAULT, "_presentMessagesViewController - can send text: %d", buf, 8u);
   }
 
-  v6 = [(FAMessagesInviteConfigurationController *)self _messageComposeViewController];
-  if (v6 && (v7 = v6, v8 = +[FAMessagesInviteConfigurationController isAvailable], v7, v8))
+  _messageComposeViewController = [(FAMessagesInviteConfigurationController *)self _messageComposeViewController];
+  if (_messageComposeViewController && (v7 = _messageComposeViewController, v8 = +[FAMessagesInviteConfigurationController isAvailable], v7, v8))
   {
     presentationContext = self->_presentationContext;
-    v10 = [(FAMessagesInviteConfigurationController *)self _messageComposeViewController];
+    _messageComposeViewController2 = [(FAMessagesInviteConfigurationController *)self _messageComposeViewController];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __82__FAMessagesInviteConfigurationController__presentInviteControllerWithCompletion___block_invoke;
     v13[3] = &unk_2782F2ED8;
-    v14 = v4;
-    [(UIViewController *)presentationContext presentViewController:v10 animated:1 completion:v13];
+    v14 = completionCopy;
+    [(UIViewController *)presentationContext presentViewController:_messageComposeViewController2 animated:1 completion:v13];
   }
 
   else
@@ -225,9 +225,9 @@ LABEL_11:
       _os_log_impl(&dword_21BB35000, v11, OS_LOG_TYPE_DEFAULT, "Unable to present FAMessagesInViteConfigurationController", buf, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -245,10 +245,10 @@ uint64_t __82__FAMessagesInviteConfigurationController__presentInviteControllerW
   return result;
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -257,7 +257,7 @@ uint64_t __82__FAMessagesInviteConfigurationController__presentInviteControllerW
     *buf = 138412546;
     v22 = v9;
     v23 = 2048;
-    v24 = a4;
+    resultCopy = result;
     _os_log_impl(&dword_21BB35000, v7, OS_LOG_TYPE_DEFAULT, "%@ MFMessageComposeVC delegate callback - didFinishWithResult:%ld", buf, 0x16u);
   }
 
@@ -266,15 +266,15 @@ uint64_t __82__FAMessagesInviteConfigurationController__presentInviteControllerW
 
   if (v11)
   {
-    if (a4 == 1)
+    if (result == 1)
     {
       v12 = @"0";
     }
 
-    else if (a4)
+    else if (result)
     {
       v12 = @"0";
-      a4 = 2;
+      result = 2;
     }
 
     else
@@ -290,15 +290,15 @@ uint64_t __82__FAMessagesInviteConfigurationController__presentInviteControllerW
     v16[2] = __92__FAMessagesInviteConfigurationController_messageComposeViewController_didFinishWithResult___block_invoke;
     v16[3] = &unk_2782F2F00;
     v17 = v13;
-    v18 = a4;
+    resultCopy2 = result;
     v16[4] = self;
     v14 = v13;
-    [v6 dismissViewControllerAnimated:1 completion:v16];
+    [controllerCopy dismissViewControllerAnimated:1 completion:v16];
   }
 
   else
   {
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    [controllerCopy dismissViewControllerAnimated:1 completion:0];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -310,11 +310,11 @@ void __92__FAMessagesInviteConfigurationController_messageComposeViewController_
   [WeakRetained inviteController:a1[4] didFinishWithStatus:a1[6] recipients:*(a1[4] + 32) userInfo:a1[5] error:0];
 }
 
-- (void)messageComposeViewController:(id)a3 shouldSendMessage:(id)a4 toRecipients:(id)a5 completion:(id)a6
+- (void)messageComposeViewController:(id)controller shouldSendMessage:(id)message toRecipients:(id)recipients completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   v10 = _FALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -326,13 +326,13 @@ void __92__FAMessagesInviteConfigurationController_messageComposeViewController_
   }
 
   recipientAddresses = self->_recipientAddresses;
-  self->_recipientAddresses = v8;
-  v14 = v8;
+  self->_recipientAddresses = recipientsCopy;
+  v14 = recipientsCopy;
 
   inviteRecipientEvaluator = self->_inviteRecipientEvaluator;
   context = self->_context;
-  v17 = [(MFMessageComposeViewController *)self->_messageComposeViewController visibleViewController];
-  [(FAInviteRecipientEvaluator *)inviteRecipientEvaluator validateRecipients:v14 inviteContext:context presenter:v17 completion:v9];
+  visibleViewController = [(MFMessageComposeViewController *)self->_messageComposeViewController visibleViewController];
+  [(FAInviteRecipientEvaluator *)inviteRecipientEvaluator validateRecipients:v14 inviteContext:context presenter:visibleViewController completion:completionCopy];
 
   v18 = *MEMORY[0x277D85DE8];
 }

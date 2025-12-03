@@ -11,17 +11,17 @@
   v13 = a4;
   v14 = a5;
   v15 = a6;
-  v16 = [a1 typeIdentifier];
-  v17 = [v12 value];
-  v18 = v17;
-  if (v16 <= 11)
+  typeIdentifier = [self typeIdentifier];
+  value = [v12 value];
+  v18 = value;
+  if (typeIdentifier <= 11)
   {
-    if (v16)
+    if (typeIdentifier)
     {
-      if (v16 != 3)
+      if (typeIdentifier != 3)
       {
 LABEL_11:
-        if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v20 = objc_alloc(MEMORY[0x1E696E720]);
           if (v14)
@@ -37,8 +37,8 @@ LABEL_11:
           v22 = [v20 initWithLocalizedName:0 bundleIdentifier:v21 extensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:v15 supportedIntents:0 bundleURL:0 documentTypes:0];
           v23 = [MEMORY[0x1E6996C90] locationWithAppDescriptor:v22];
           v24 = MEMORY[0x1E6996D58];
-          v25 = [v18 wf_fileRepresentation];
-          v26 = [v24 itemWithFile:v25 origin:v23 disclosureLevel:a7];
+          wf_fileRepresentation = [v18 wf_fileRepresentation];
+          v26 = [v24 itemWithFile:wf_fileRepresentation origin:v23 disclosureLevel:a7];
         }
 
         else
@@ -49,7 +49,7 @@ LABEL_11:
         goto LABEL_40;
       }
 
-      if (v17)
+      if (value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -77,7 +77,7 @@ LABEL_11:
 
     else
     {
-      if (v17)
+      if (value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -107,9 +107,9 @@ LABEL_11:
 
   else
   {
-    if (v16 == 14)
+    if (typeIdentifier == 14)
     {
-      if (v17)
+      if (value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -135,12 +135,12 @@ LABEL_11:
 
     else
     {
-      if (v16 != 13)
+      if (typeIdentifier != 13)
       {
         goto LABEL_11;
       }
 
-      if (v17)
+      if (value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -175,31 +175,31 @@ LABEL_40:
 
 - (id)wf_contentItemClassWithAppBundleIdentifier:()ContentItem
 {
-  v1 = [a1 typeIdentifier];
+  typeIdentifier = [self typeIdentifier];
   v2 = 0x1E6996E50;
   v3 = 0x1E6996EF0uLL;
   v4 = 0x1E6996DA8uLL;
-  if (v1 != 14)
+  if (typeIdentifier != 14)
   {
     v4 = 0x1E6996E50uLL;
   }
 
-  if (v1 != 13)
+  if (typeIdentifier != 13)
   {
     v3 = v4;
   }
 
-  if (v1 == 3)
+  if (typeIdentifier == 3)
   {
     v2 = 0x1E6996D08;
   }
 
-  if (!v1)
+  if (!typeIdentifier)
   {
     v2 = 0x1E6996C88;
   }
 
-  if (v1 > 12)
+  if (typeIdentifier > 12)
   {
     v2 = v3;
   }

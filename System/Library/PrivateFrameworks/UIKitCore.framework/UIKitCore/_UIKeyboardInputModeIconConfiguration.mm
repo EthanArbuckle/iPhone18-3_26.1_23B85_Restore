@@ -1,6 +1,6 @@
 @interface _UIKeyboardInputModeIconConfiguration
 + (id)defaultConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (id)description;
 - (unint64_t)hash;
@@ -40,15 +40,15 @@
   v5 = [v3 appendInteger:self->_weight withName:@"fontWeight"];
   v6 = [v3 appendBool:self->_background withName:@"background"];
   v7 = [v3 appendFloat:@"scale" withName:self->_scaleFactor];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -58,7 +58,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(_UIKeyboardInputModeIconConfiguration *)v5 size];
       v7 = v6;
       v9 = v8;

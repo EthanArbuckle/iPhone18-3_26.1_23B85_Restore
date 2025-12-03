@@ -1,22 +1,22 @@
 @interface NAEndOfArticlePresentationOptions
 - (NAEndOfArticlePresentationOptions)init;
-- (NAEndOfArticlePresentationOptions)initWithSuppressMoreFromSection:(BOOL)a3 suppressMoreToReadSection:(BOOL)a4 suppressMoreFromIssueSection:(BOOL)a5 suppressRelatedSection:(BOOL)a6 suppressRecommendedReadsSection:(int64_t)a7 articleBackgroundColor:(id)a8 isIssueArticle:(BOOL)a9;
+- (NAEndOfArticlePresentationOptions)initWithSuppressMoreFromSection:(BOOL)section suppressMoreToReadSection:(BOOL)readSection suppressMoreFromIssueSection:(BOOL)issueSection suppressRelatedSection:(BOOL)relatedSection suppressRecommendedReadsSection:(int64_t)readsSection articleBackgroundColor:(id)color isIssueArticle:(BOOL)article;
 @end
 
 @implementation NAEndOfArticlePresentationOptions
 
-- (NAEndOfArticlePresentationOptions)initWithSuppressMoreFromSection:(BOOL)a3 suppressMoreToReadSection:(BOOL)a4 suppressMoreFromIssueSection:(BOOL)a5 suppressRelatedSection:(BOOL)a6 suppressRecommendedReadsSection:(int64_t)a7 articleBackgroundColor:(id)a8 isIssueArticle:(BOOL)a9
+- (NAEndOfArticlePresentationOptions)initWithSuppressMoreFromSection:(BOOL)section suppressMoreToReadSection:(BOOL)readSection suppressMoreFromIssueSection:(BOOL)issueSection suppressRelatedSection:(BOOL)relatedSection suppressRecommendedReadsSection:(int64_t)readsSection articleBackgroundColor:(id)color isIssueArticle:(BOOL)article
 {
-  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressMoreFromSection) = a3;
-  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressMoreToReadSection) = a4;
-  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressMoreFromIssueSection) = a5;
-  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressRelatedSection) = a6;
-  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressRecommendedReadsSection) = a7;
-  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_articleBackgroundColor) = a8;
-  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_isIssueArticle) = a9;
+  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressMoreFromSection) = section;
+  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressMoreToReadSection) = readSection;
+  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressMoreFromIssueSection) = issueSection;
+  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressRelatedSection) = relatedSection;
+  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_suppressRecommendedReadsSection) = readsSection;
+  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_articleBackgroundColor) = color;
+  *(&self->super.isa + OBJC_IVAR___NAEndOfArticlePresentationOptions_isIssueArticle) = article;
   v12.receiver = self;
   v12.super_class = type metadata accessor for EndOfArticlePresentationOptions();
-  v10 = a8;
+  colorCopy = color;
   return [(NAEndOfArticlePresentationOptions *)&v12 init];
 }
 

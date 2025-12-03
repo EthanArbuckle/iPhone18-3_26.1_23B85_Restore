@@ -1,14 +1,14 @@
 @interface AVCMediaStreamNegotiatorSettingsCoreDeviceScreenSharing
-- (AVCMediaStreamNegotiatorSettingsCoreDeviceScreenSharing)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsCoreDeviceScreenSharing)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 - (id)featureListString;
 - (void)featureListString;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsCoreDeviceScreenSharing
 
-- (AVCMediaStreamNegotiatorSettingsCoreDeviceScreenSharing)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsCoreDeviceScreenSharing)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
-  v6 = a4;
+  roleCopy = role;
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = AVCMediaStreamNegotiatorSettingsCoreDeviceScreenSharing;
@@ -18,12 +18,12 @@
     return v8;
   }
 
-  if (v6 != 1 || ![a3 objectForKey:@"AVCMediaStreamNegotiatorAccessNetworkType"])
+  if (roleCopy != 1 || ![options objectForKey:@"AVCMediaStreamNegotiatorAccessNetworkType"])
   {
     goto LABEL_6;
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorAccessNetworkType"];
+  v9 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorAccessNetworkType"];
   if (v9)
   {
     v8->super._accessNetworkType = [v9 intValue];
@@ -45,9 +45,9 @@ LABEL_6:
 
   v12 = @"cannot get accessNetworkType from Init options";
 LABEL_11:
-  if (a5)
+  if (error)
   {
-    *a5 = v12;
+    *error = v12;
   }
 
   return 0;
@@ -99,7 +99,7 @@ LABEL_7:
     }
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 @end

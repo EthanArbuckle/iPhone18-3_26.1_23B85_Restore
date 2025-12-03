@@ -1,27 +1,27 @@
 @interface HMAccessoryAccessCodeFetchResponse
-+ (id)responseWithValue:(id)a3 accessory:(id)a4;
-- (HMAccessoryAccessCodeFetchResponse)initWithAccessory:(id)a3 accessoryAccessCodes:(id)a4 error:(id)a5;
++ (id)responseWithValue:(id)value accessory:(id)accessory;
+- (HMAccessoryAccessCodeFetchResponse)initWithAccessory:(id)accessory accessoryAccessCodes:(id)codes error:(id)error;
 @end
 
 @implementation HMAccessoryAccessCodeFetchResponse
 
-- (HMAccessoryAccessCodeFetchResponse)initWithAccessory:(id)a3 accessoryAccessCodes:(id)a4 error:(id)a5
+- (HMAccessoryAccessCodeFetchResponse)initWithAccessory:(id)accessory accessoryAccessCodes:(id)codes error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  accessoryCopy = accessory;
+  codesCopy = codes;
+  errorCopy = error;
+  if (accessoryCopy)
   {
-    v12 = v11;
+    v12 = errorCopy;
     v20.receiver = self;
     v20.super_class = HMAccessoryAccessCodeFetchResponse;
     v13 = [(HMAccessoryAccessCodeFetchResponse *)&v20 init];
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_accessory, a3);
-      objc_storeStrong(&v14->_accessoryAccessCodes, a4);
-      objc_storeStrong(&v14->_error, a5);
+      objc_storeStrong(&v13->_accessory, accessory);
+      objc_storeStrong(&v14->_accessoryAccessCodes, codes);
+      objc_storeStrong(&v14->_error, error);
     }
 
     return v14;
@@ -34,23 +34,23 @@
   }
 }
 
-+ (id)responseWithValue:(id)a3 accessory:(id)a4
++ (id)responseWithValue:(id)value accessory:(id)accessory
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 accessoryAccessCodeValues];
+  accessoryCopy = accessory;
+  valueCopy = value;
+  accessoryAccessCodeValues = [valueCopy accessoryAccessCodeValues];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__HMAccessoryAccessCodeFetchResponse_responseWithValue_accessory___block_invoke;
   v14[3] = &unk_1E754B7B8;
-  v15 = v5;
-  v8 = v5;
-  v9 = [v7 na_map:v14];
+  v15 = accessoryCopy;
+  v8 = accessoryCopy;
+  v9 = [accessoryAccessCodeValues na_map:v14];
 
   v10 = [HMAccessoryAccessCodeFetchResponse alloc];
-  v11 = [v6 error];
+  error = [valueCopy error];
 
-  v12 = [(HMAccessoryAccessCodeFetchResponse *)v10 initWithAccessory:v8 accessoryAccessCodes:v9 error:v11];
+  v12 = [(HMAccessoryAccessCodeFetchResponse *)v10 initWithAccessory:v8 accessoryAccessCodes:v9 error:error];
 
   return v12;
 }

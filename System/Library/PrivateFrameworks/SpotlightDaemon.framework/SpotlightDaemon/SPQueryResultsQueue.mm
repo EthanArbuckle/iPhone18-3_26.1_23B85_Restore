@@ -1,18 +1,18 @@
 @interface SPQueryResultsQueue
-+ (id)findResultsQueueWithIdentifier:(id)a3;
-+ (id)sharedInstanceDispatchQueue:(id)a3;
-+ (id)sharedInstanceMaintenanceDispatchQueue:(id)a3;
-+ (void)startTrackingResultsQueue:(id)a3;
-+ (void)stopTrackingResultsQueueWithIdentifier:(id)a3;
++ (id)findResultsQueueWithIdentifier:(id)identifier;
++ (id)sharedInstanceDispatchQueue:(id)queue;
++ (id)sharedInstanceMaintenanceDispatchQueue:(id)queue;
++ (void)startTrackingResultsQueue:(id)queue;
++ (void)stopTrackingResultsQueueWithIdentifier:(id)identifier;
 - (BOOL)hasPausedResults;
-- (SPQueryResultsQueue)initWithIdentifier:(id)a3 dispatchQueue:(id)a4;
+- (SPQueryResultsQueue)initWithIdentifier:(id)identifier dispatchQueue:(id)queue;
 - (void)_processResults;
-- (void)_scheduleWakeupForced:(BOOL)a3;
+- (void)_scheduleWakeupForced:(BOOL)forced;
 - (void)_startTracking;
 - (void)_stopTracking;
-- (void)addJob:(id)a3;
+- (void)addJob:(id)job;
 - (void)cancel;
-- (void)cancelJob:(id)a3;
+- (void)cancelJob:(id)job;
 - (void)dealloc;
 - (void)pauseResults;
 - (void)resumeResults;
@@ -23,16 +23,16 @@
 
 - (void)_startTracking
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  tracked = v2->_tracked;
-  v2->_tracked = 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  tracked = selfCopy->_tracked;
+  selfCopy->_tracked = 1;
+  objc_sync_exit(selfCopy);
 
   if (!tracked)
   {
 
-    [SPQueryResultsQueue startTrackingResultsQueue:v2];
+    [SPQueryResultsQueue startTrackingResultsQueue:selfCopy];
   }
 }
 
@@ -261,10 +261,10 @@ LABEL_58:
 
 - (BOOL)hasPausedResults
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_pausedCount > 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_pausedCount > 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -273,20 +273,20 @@ LABEL_58:
 {
   if (!self->_shared)
   {
-    v2 = self;
-    objc_sync_enter(v2);
-    canceled = v2->_canceled;
-    v2->_canceled = 1;
-    objc_sync_exit(v2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    canceled = selfCopy->_canceled;
+    selfCopy->_canceled = 1;
+    objc_sync_exit(selfCopy);
 
     if (!canceled)
     {
-      dispatchQueue = v2->_dispatchQueue;
+      dispatchQueue = selfCopy->_dispatchQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __29__SPQueryResultsQueue_cancel__block_invoke;
       block[3] = &unk_278934050;
-      block[4] = v2;
+      block[4] = selfCopy;
       v5 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
       dispatch_async(dispatchQueue, v5);
     }
@@ -310,15 +310,15 @@ void __29__SPQueryResultsQueue_cancel__block_invoke(uint64_t a1)
 
 - (void)_stopTracking
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  tracked = v2->_tracked;
-  v2->_tracked = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  tracked = selfCopy->_tracked;
+  selfCopy->_tracked = 0;
+  objc_sync_exit(selfCopy);
 
   if (tracked)
   {
-    identifier = v2->_identifier;
+    identifier = selfCopy->_identifier;
 
     [SPQueryResultsQueue stopTrackingResultsQueueWithIdentifier:identifier];
   }
@@ -326,7 +326,7 @@ void __29__SPQueryResultsQueue_cancel__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  OUTLINED_FUNCTION_3(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_3(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0(&dword_231A35000, v1, v2, "Released query results queue, identifier:%@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -334,7 +334,7 @@ void __29__SPQueryResultsQueue_cancel__block_invoke(uint64_t a1)
 
 - (void)pauseResults
 {
-  OUTLINED_FUNCTION_3(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_3(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_4(&dword_231A35000, v1, v2, "Paused results, identifier:%@, count:%ld");
   v3 = *MEMORY[0x277D85DE8];
@@ -342,7 +342,7 @@ void __29__SPQueryResultsQueue_cancel__block_invoke(uint64_t a1)
 
 - (void)resumeResults
 {
-  OUTLINED_FUNCTION_3(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_3(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_4(&dword_231A35000, v1, v2, "Resumed results, identifier:%@, count:%ld");
   v3 = *MEMORY[0x277D85DE8];
@@ -356,20 +356,20 @@ void __36__SPQueryResultsQueue_resumeResults__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-+ (void)startTrackingResultsQueue:(id)a3
++ (void)startTrackingResultsQueue:(id)queue
 {
-  v3 = a3;
-  v6 = v3;
+  queueCopy = queue;
+  v6 = queueCopy;
   if (startTrackingResultsQueue__onceToken != -1)
   {
     +[SPQueryResultsQueue startTrackingResultsQueue:];
-    v3 = v6;
+    queueCopy = v6;
   }
 
-  v4 = [v3 identifier];
+  identifier = [queueCopy identifier];
   v5 = sResultsQueueMap;
   objc_sync_enter(v5);
-  [sResultsQueueMap setObject:v6 forKey:v4];
+  [sResultsQueueMap setObject:v6 forKey:identifier];
   objc_sync_exit(v5);
 }
 
@@ -380,9 +380,9 @@ uint64_t __49__SPQueryResultsQueue_startTrackingResultsQueue___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)stopTrackingResultsQueueWithIdentifier:(id)a3
++ (void)stopTrackingResultsQueueWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (!sResultsQueueMap)
   {
     +[SPQueryResultsQueue stopTrackingResultsQueueWithIdentifier:];
@@ -390,19 +390,19 @@ uint64_t __49__SPQueryResultsQueue_startTrackingResultsQueue___block_invoke()
 
   v3 = sResultsQueueMap;
   objc_sync_enter(v3);
-  [sResultsQueueMap removeObjectForKey:v4];
+  [sResultsQueueMap removeObjectForKey:identifierCopy];
   objc_sync_exit(v3);
 }
 
-+ (id)findResultsQueueWithIdentifier:(id)a3
++ (id)findResultsQueueWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (!sResultsQueueMap)
   {
     +[SPQueryResultsQueue findResultsQueueWithIdentifier:];
   }
 
-  v4 = v3;
+  v4 = identifierCopy;
   v5 = sResultsQueueMap;
   objc_sync_enter(v5);
   v6 = [sResultsQueueMap objectForKey:v4];
@@ -411,16 +411,16 @@ uint64_t __49__SPQueryResultsQueue_startTrackingResultsQueue___block_invoke()
   return v6;
 }
 
-+ (id)sharedInstanceDispatchQueue:(id)a3
++ (id)sharedInstanceDispatchQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SPQueryResultsQueue_sharedInstanceDispatchQueue___block_invoke;
   block[3] = &unk_278934050;
-  v10 = v3;
+  v10 = queueCopy;
   v4 = sharedInstanceDispatchQueue__onceToken;
-  v5 = v3;
+  v5 = queueCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedInstanceDispatchQueue__onceToken, block);
@@ -445,16 +445,16 @@ void __51__SPQueryResultsQueue_sharedInstanceDispatchQueue___block_invoke(uint64
   sharedInstanceDispatchQueue__sSharedInstance = v1;
 }
 
-+ (id)sharedInstanceMaintenanceDispatchQueue:(id)a3
++ (id)sharedInstanceMaintenanceDispatchQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SPQueryResultsQueue_sharedInstanceMaintenanceDispatchQueue___block_invoke;
   block[3] = &unk_278934050;
-  v10 = v3;
+  v10 = queueCopy;
   v4 = sharedInstanceMaintenanceDispatchQueue__onceToken;
-  v5 = v3;
+  v5 = queueCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedInstanceMaintenanceDispatchQueue__onceToken, block);
@@ -479,18 +479,18 @@ void __62__SPQueryResultsQueue_sharedInstanceMaintenanceDispatchQueue___block_in
   sharedInstanceMaintenanceDispatchQueue__sSharedInstance = v1;
 }
 
-- (SPQueryResultsQueue)initWithIdentifier:(id)a3 dispatchQueue:(id)a4
+- (SPQueryResultsQueue)initWithIdentifier:(id)identifier dispatchQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = SPQueryResultsQueue;
   v9 = [(SPQueryResultsQueue *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_dispatchQueue, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_dispatchQueue, queue);
     v10->_siResultsQueue = SIResultQueueCreate();
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     jobs = v10->_jobs;
@@ -501,32 +501,32 @@ void __62__SPQueryResultsQueue_sharedInstanceMaintenanceDispatchQueue___block_in
     v13 = logForCSLogCategoryQuery();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [(SPQueryResultsQueue *)v7 initWithIdentifier:v13 dispatchQueue:v14, v15, v16, v17, v18, v19];
+      [(SPQueryResultsQueue *)identifierCopy initWithIdentifier:v13 dispatchQueue:v14, v15, v16, v17, v18, v19];
     }
   }
 
   return v10;
 }
 
-- (void)addJob:(id)a3
+- (void)addJob:(id)job
 {
-  v7 = a3;
-  v4 = [v7 siJob];
-  v5 = [MEMORY[0x277CCAE60] valueWithPointer:v4];
+  jobCopy = job;
+  siJob = [jobCopy siJob];
+  v5 = [MEMORY[0x277CCAE60] valueWithPointer:siJob];
   v6 = self->_jobs;
   objc_sync_enter(v6);
-  [(NSMutableDictionary *)self->_jobs setObject:v7 forKey:v5];
-  [v7 setResultsQueue:self];
+  [(NSMutableDictionary *)self->_jobs setObject:jobCopy forKey:v5];
+  [jobCopy setResultsQueue:self];
   objc_sync_exit(v6);
 }
 
-- (void)cancelJob:(id)a3
+- (void)cancelJob:(id)job
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  jobCopy = job;
+  v5 = jobCopy;
+  if (jobCopy)
   {
-    v6 = [MEMORY[0x277CCAE60] valueWithPointer:{objc_msgSend(v4, "siJob")}];
+    v6 = [MEMORY[0x277CCAE60] valueWithPointer:{objc_msgSend(jobCopy, "siJob")}];
     v7 = self->_jobs;
     objc_sync_enter(v7);
     v8 = [(NSMutableDictionary *)self->_jobs objectForKey:v6];
@@ -535,8 +535,8 @@ void __62__SPQueryResultsQueue_sharedInstanceMaintenanceDispatchQueue___block_in
 
     if (v8)
     {
-      v9 = [v8 resultsHandler];
-      if (v9)
+      resultsHandler = [v8 resultsHandler];
+      if (resultsHandler)
       {
         [v8 setResultsHandler:0];
         dispatchQueue = self->_dispatchQueue;
@@ -544,7 +544,7 @@ void __62__SPQueryResultsQueue_sharedInstanceMaintenanceDispatchQueue___block_in
         v14 = 3221225472;
         v15 = __33__SPQueryResultsQueue_cancelJob___block_invoke;
         v16 = &unk_278934078;
-        v18 = v9;
+        v18 = resultsHandler;
         v17 = v8;
         v11 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &v13);
         dispatch_async(dispatchQueue, v11);
@@ -575,11 +575,11 @@ void __33__SPQueryResultsQueue_cancelJob___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_scheduleWakeupForced:(BOOL)a3
+- (void)_scheduleWakeupForced:(BOOL)forced
 {
-  v3 = a3;
+  forcedCopy = forced;
   v19 = *MEMORY[0x277D85DE8];
-  if (a3 || ![(SPQueryResultsQueue *)self hasPausedResults])
+  if (forced || ![(SPQueryResultsQueue *)self hasPausedResults])
   {
     v5 = self->_identifier;
     v6 = logForCSLogCategoryQuery();
@@ -587,7 +587,7 @@ void __33__SPQueryResultsQueue_cancelJob___block_invoke(uint64_t a1)
     {
       v10 = @"NO";
       canceled = self->_canceled;
-      if (v3)
+      if (forcedCopy)
       {
         v12 = @"YES";
       }
@@ -624,8 +624,8 @@ void __33__SPQueryResultsQueue_cancelJob___block_invoke(uint64_t a1)
 
 - (void)resumeResultsIfSystemInGoodState
 {
-  v3 = [(SPDASManager *)gDASManager context];
-  v4 = [v3 allowsDiscretionaryWorkForTask:@"indexing" withPriority:*MEMORY[0x277D06AA0] withParameters:0];
+  context = [(SPDASManager *)gDASManager context];
+  v4 = [context allowsDiscretionaryWorkForTask:@"indexing" withPriority:*MEMORY[0x277D06AA0] withParameters:0];
 
   if (v4)
   {

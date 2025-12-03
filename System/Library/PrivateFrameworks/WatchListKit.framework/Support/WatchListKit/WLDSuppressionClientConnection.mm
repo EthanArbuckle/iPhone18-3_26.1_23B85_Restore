@@ -1,25 +1,25 @@
 @interface WLDSuppressionClientConnection
 - (WLDClientConnectionDelegate)delegate;
-- (WLDSuppressionClientConnection)initWithConnection:(id)a3 clientIdentifier:(id)a4;
+- (WLDSuppressionClientConnection)initWithConnection:(id)connection clientIdentifier:(id)identifier;
 - (void)_didInvalidate;
-- (void)enableNotificationsFor:(id)a3 completion:(id)a4;
-- (void)suppressNotificationsFor:(id)a3 completion:(id)a4;
+- (void)enableNotificationsFor:(id)for completion:(id)completion;
+- (void)suppressNotificationsFor:(id)for completion:(id)completion;
 @end
 
 @implementation WLDSuppressionClientConnection
 
-- (WLDSuppressionClientConnection)initWithConnection:(id)a3 clientIdentifier:(id)a4
+- (WLDSuppressionClientConnection)initWithConnection:(id)connection clientIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = WLDSuppressionClientConnection;
   v9 = [(WLDSuppressionClientConnection *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_connection, connection);
+    v11 = [identifierCopy copy];
     clientIdentifier = v10->_clientIdentifier;
     v10->_clientIdentifier = v11;
 
@@ -55,38 +55,38 @@ void __70__WLDSuppressionClientConnection_initWithConnection_clientIdentifier___
   }
 }
 
-- (void)suppressNotificationsFor:(id)a3 completion:(id)a4
+- (void)suppressNotificationsFor:(id)for completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  forCopy = for;
+  completionCopy = completion;
   v7 = WLKSystemLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = forCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "WLDSuppressionClientConnection - Suppress sports notification for the event %@", &v9, 0xCu);
   }
 
   v8 = +[WLKSettingsStore sharedSettings];
-  [v8 setSportsNotificationSuppression:1 forEventID:v5];
-  v6[2](v6, 0);
+  [v8 setSportsNotificationSuppression:1 forEventID:forCopy];
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)enableNotificationsFor:(id)a3 completion:(id)a4
+- (void)enableNotificationsFor:(id)for completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  forCopy = for;
+  completionCopy = completion;
   v7 = WLKSystemLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = forCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "WLDSuppressionClientConnection - Enable sports notification for the event %@", &v9, 0xCu);
   }
 
   v8 = +[WLKSettingsStore sharedSettings];
-  [v8 setSportsNotificationSuppression:0 forEventID:v5];
-  v6[2](v6, 0);
+  [v8 setSportsNotificationSuppression:0 forEventID:forCopy];
+  completionCopy[2](completionCopy, 0);
 }
 
 - (void)_didInvalidate

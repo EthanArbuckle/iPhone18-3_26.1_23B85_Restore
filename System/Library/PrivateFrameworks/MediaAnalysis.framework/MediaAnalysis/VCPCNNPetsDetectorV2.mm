@@ -1,35 +1,35 @@
 @interface VCPCNNPetsDetectorV2
-+ (id)detector:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 revision:(int)a6;
-- (VCPCNNPetsDetectorV2)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 revision:(int)a6;
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6;
++ (id)detector:(int)detector forceCPU:(BOOL)u sharedModel:(BOOL)model revision:(int)revision;
+- (VCPCNNPetsDetectorV2)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model revision:(int)revision;
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth;
 - (id).cxx_construct;
-- (int)configForAspectRatio:(id)a3;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6;
-- (int)createModel:(int)a3 srcWidth:(int)a4;
-- (int)generatePetsBoxes:(id)a3;
-- (int)generatePetsRegions:(const void *)a3 boxes:(id)a4 maxNumRegions:(int)a5;
-- (int)petsDetection:(__CVBuffer *)a3 petsRegions:(id)a4 petsFaceRegions:(id)a5 cancel:(id)a6;
-- (int)retrieveBoxes:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 boxes:(id)a6 anchorBox:(float)a7[3][2];
-- (int64_t)getClosestAspectRatio:(id)a3;
+- (int)configForAspectRatio:(id)ratio;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width;
+- (int)createModel:(int)model srcWidth:(int)width;
+- (int)generatePetsBoxes:(id)boxes;
+- (int)generatePetsRegions:(const void *)regions boxes:(id)boxes maxNumRegions:(int)numRegions;
+- (int)petsDetection:(__CVBuffer *)detection petsRegions:(id)regions petsFaceRegions:(id)faceRegions cancel:(id)cancel;
+- (int)retrieveBoxes:(float *)boxes outHeight:(int)height outWidth:(int)width boxes:(id)a6 anchorBox:(float)box[3][2];
+- (int64_t)getClosestAspectRatio:(id)ratio;
 - (void)dealloc;
-- (void)nonMaxSuppression:(id)a3;
+- (void)nonMaxSuppression:(id)suppression;
 @end
 
 @implementation VCPCNNPetsDetectorV2
 
-+ (id)detector:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 revision:(int)a6
++ (id)detector:(int)detector forceCPU:(BOOL)u sharedModel:(BOOL)model revision:(int)revision
 {
-  v6 = *&a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = *&a3;
+  v6 = *&revision;
+  modelCopy = model;
+  uCopy = u;
+  v9 = *&detector;
   if (+[VCPCNNPetsDetectorV2 detector:forceCPU:sharedModel:revision:]::once != -1)
   {
     +[VCPCNNPetsDetectorV2 detector:forceCPU:sharedModel:revision:];
   }
 
-  v10 = [objc_alloc(+[VCPCNNPetsDetectorV2 detector:forceCPU:sharedModel:revision:]::analyzerClass) initWithMaxNumRegions:v9 forceCPU:v8 sharedModel:v7 revision:v6];
+  v10 = [objc_alloc(+[VCPCNNPetsDetectorV2 detector:forceCPU:sharedModel:revision:]::analyzerClass) initWithMaxNumRegions:v9 forceCPU:uCopy sharedModel:modelCopy revision:v6];
 
   return v10;
 }
@@ -41,14 +41,14 @@ uint64_t __63__VCPCNNPetsDetectorV2_detector_forceCPU_sharedModel_revision___blo
   return result;
 }
 
-- (VCPCNNPetsDetectorV2)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 revision:(int)a6
+- (VCPCNNPetsDetectorV2)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model revision:(int)revision
 {
-  v6 = a5;
-  v7 = a4;
+  modelCopy = model;
+  uCopy = u;
   v29 = *MEMORY[0x1E69E9840];
-  self->_maxNumRegions = a3;
+  self->_maxNumRegions = regions;
   self->_numClass = 4;
-  self->_revision = a6;
+  self->_revision = revision;
   outputNames = self->_outputNames;
   self->_outputNames = &unk_1F49BF100;
 
@@ -60,8 +60,8 @@ uint64_t __63__VCPCNNPetsDetectorV2_detector_forceCPU_sharedModel_revision___blo
     goto LABEL_6;
   }
 
-  v11 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v12 = [v11 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
@@ -70,14 +70,14 @@ uint64_t __63__VCPCNNPetsDetectorV2_detector_forceCPU_sharedModel_revision___blo
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "CNNPetsDetectorV2: Loading model %@", buf, 0xCu);
   }
 
-  v13 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_pets_detector_v2.espresso.net" relativeToURL:v12];
+  v13 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_pets_detector_v2.espresso.net" relativeToURL:resourceURL];
   v14 = [VCPCNNModelEspresso alloc];
   v15 = v10->_outputNames;
   v25[0] = @"forceCPU";
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:uCopy];
   v26[0] = v16;
   v25[1] = @"sharedContext";
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:modelCopy];
   v26[1] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
   v19 = [(VCPCNNModelEspresso *)v14 initWithParameters:v13 inputNames:0 outputNames:v15 properties:v18];
@@ -101,7 +101,7 @@ LABEL_6:
   return v22;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data
 {
   v6 = VCPSignPostLog();
   v7 = os_signpost_id_generate(v6);
@@ -114,19 +114,19 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "copyImageToRGBPetsDetectorV2CallFromSPI", "", buf, 2u);
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (a3)
+  if (image)
   {
     v12 = Height;
-    v13 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v13 = CVPixelBufferLockBaseAddress(image, 1uLL);
     *buf = v13;
     if (v13)
     {
@@ -139,14 +139,14 @@ LABEL_6:
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-      bzero(a4, 3 * 4 * Width * v12);
+      BaseAddress = CVPixelBufferGetBaseAddress(image);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+      bzero(data, 3 * 4 * Width * v12);
       if (v12 >= 1)
       {
         v18 = 0;
-        v19 = &a4[2 * v12 * Width];
-        v20 = &a4[v12 * Width];
+        v19 = &data[2 * v12 * Width];
+        v20 = &data[v12 * Width];
         v21 = 4 * Width;
         do
         {
@@ -159,7 +159,7 @@ LABEL_6:
               LOBYTE(v17) = BaseAddress[(v22 * 4) + 2];
               v24 = *&v17 / 255.0;
               *&v24 = v24;
-              a4[v22] = *&v24;
+              data[v22] = *&v24;
               LOBYTE(v24) = BaseAddress[(v22 * 4) + 1];
               v25 = *&v24 / 255.0;
               *&v25 = v25;
@@ -178,7 +178,7 @@ LABEL_6:
           ++v18;
           v19 = (v19 + v21);
           v20 = (v20 + v21);
-          a4 = (a4 + v21);
+          data = (data + v21);
         }
 
         while (v18 != v12);
@@ -219,10 +219,10 @@ LABEL_6:
   return v14;
 }
 
-- (int64_t)getClosestAspectRatio:(id)a3
+- (int64_t)getClosestAspectRatio:(id)ratio
 {
-  v3 = a3;
-  v4 = [&unk_1F49BF118 indexOfObject:v3 inSortedRange:0 options:objc_msgSend(&unk_1F49BF118 usingComparator:{"count"), 1280, &__block_literal_global_217}];
+  ratioCopy = ratio;
+  v4 = [&unk_1F49BF118 indexOfObject:ratioCopy inSortedRange:0 options:objc_msgSend(&unk_1F49BF118 usingComparator:{"count"), 1280, &__block_literal_global_217}];
   v5 = [&unk_1F49BF118 count];
   if (v4 >= (v5 - 1))
   {
@@ -234,9 +234,9 @@ LABEL_6:
     v6 = [&unk_1F49BF118 objectAtIndexedSubscript:v4];
     [v6 floatValue];
     v8 = v7;
-    [v3 floatValue];
+    [ratioCopy floatValue];
     v10 = v9;
-    [v3 floatValue];
+    [ratioCopy floatValue];
     v12 = v11;
     v13 = [&unk_1F49BF118 objectAtIndexedSubscript:v4 - 1];
     [v13 floatValue];
@@ -252,15 +252,15 @@ LABEL_6:
   return v4;
 }
 
-- (int)configForAspectRatio:(id)a3
+- (int)configForAspectRatio:(id)ratio
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  ratioCopy = ratio;
+  v5 = ratioCopy;
+  if (ratioCopy)
   {
     v6 = MEMORY[0x1E696AD98];
-    [v4 floatValue];
+    [ratioCopy floatValue];
     v8 = v7;
     [v5 floatValue];
     *&v9 = 1.0 / *&v9;
@@ -327,15 +327,15 @@ LABEL_6:
   return 0;
 }
 
-- (int)createModel:(int)a3 srcWidth:(int)a4
+- (int)createModel:(int)model srcWidth:(int)width
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (self->_srcWidth == a4 && self->_srcHeight == a3)
+  if (self->_srcWidth == width && self->_srcHeight == model)
   {
     return 0;
   }
 
-  *&v4 = a4 / a3;
+  *&v4 = width / model;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
   v8 = [(VCPCNNPetsDetectorV2 *)self configForAspectRatio:v9];
 
@@ -416,8 +416,8 @@ LABEL_22:
           }
 
           v8 = 0;
-          self->_srcWidth = a4;
-          self->_srcHeight = a3;
+          self->_srcWidth = width;
+          self->_srcHeight = model;
           return v8;
         }
       }
@@ -448,12 +448,12 @@ LABEL_22:
   [(VCPCNNPetsDetectorV2 *)&v4 dealloc];
 }
 
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth
 {
   modelEspresso = self->_modelEspresso;
   if (modelEspresso)
   {
-    [(VCPCNNModelEspresso *)modelEspresso inputBlob:*&a3];
+    [(VCPCNNModelEspresso *)modelEspresso inputBlob:*&buffer];
     v10 = v15;
   }
 
@@ -462,7 +462,7 @@ LABEL_22:
     v10 = 0;
   }
 
-  *a5 = v10;
+  *height = v10;
   v11 = self->_modelEspresso;
   if (v11)
   {
@@ -475,23 +475,23 @@ LABEL_22:
     v12 = 0;
   }
 
-  *a6 = v12;
+  *inputWidth = v12;
   return self->_inputData;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width
 {
-  if (!a3)
+  if (!input)
   {
     return -108;
   }
 
   cf = 0;
-  Scaler::Scale(&self->_scaler, a4, &cf, *&a6, *&a5, 1111970369);
+  Scaler::Scale(&self->_scaler, buffer, &cf, *&width, *&height, 1111970369);
   v9 = v8;
   if (!v8)
   {
-    v9 = [(VCPCNNPetsDetectorV2 *)self copyImage:cf toData:a3];
+    v9 = [(VCPCNNPetsDetectorV2 *)self copyImage:cf toData:input];
   }
 
   if (cf)
@@ -502,15 +502,15 @@ LABEL_22:
   return v9;
 }
 
-- (void)nonMaxSuppression:(id)a3
+- (void)nonMaxSuppression:(id)suppression
 {
-  v19 = a3;
-  v3 = [v19 count];
+  suppressionCopy = suppression;
+  v3 = [suppressionCopy count];
   if (v3)
   {
     for (i = 0; i != v3; ++i)
     {
-      v5 = [v19 objectAtIndexedSubscript:i];
+      v5 = [suppressionCopy objectAtIndexedSubscript:i];
       LODWORD(v6) = 1.0;
       [v5 setFlag:v6];
     }
@@ -519,7 +519,7 @@ LABEL_22:
     v8 = 1;
     do
     {
-      v9 = [v19 objectAtIndexedSubscript:v7];
+      v9 = [suppressionCopy objectAtIndexedSubscript:v7];
       [v9 flag];
       v11 = v10 == 1.0 && v3 > ++v7;
       v12 = v8;
@@ -527,7 +527,7 @@ LABEL_22:
       {
         do
         {
-          v13 = [v19 objectAtIndexedSubscript:v12];
+          v13 = [suppressionCopy objectAtIndexedSubscript:v12];
           [v13 flag];
           if (v14 == 1.0)
           {
@@ -561,7 +561,7 @@ LABEL_22:
   }
 }
 
-- (int)retrieveBoxes:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 boxes:(id)a6 anchorBox:(float)a7[3][2]
+- (int)retrieveBoxes:(float *)boxes outHeight:(int)height outWidth:(int)width boxes:(id)a6 anchorBox:(float)box[3][2]
 {
   v59 = a6;
   if ((atomic_load_explicit(&qword_1ED942860, memory_order_acquire) & 1) == 0)
@@ -569,23 +569,23 @@ LABEL_22:
     [VCPCNNPetsDetectorV2 retrieveBoxes:? outHeight:? outWidth:? boxes:? anchorBox:?];
   }
 
-  if (a4 >= 1)
+  if (height >= 1)
   {
     v51 = 0;
-    v9 = a5 * a4;
-    v55 = a5 * a4;
-    v53 = a4;
-    v54 = a5;
-    v62 = a5;
-    v49 = &a3[4 * a5 * a4];
+    v9 = width * height;
+    v55 = width * height;
+    heightCopy = height;
+    widthCopy = width;
+    widthCopy2 = width;
+    v49 = &boxes[4 * width * height];
     v50 = 0;
-    v46 = 4 * a5;
-    v47 = a4;
-    v48 = a5;
-    v52 = a5 * a4;
+    v46 = 4 * width;
+    heightCopy2 = height;
+    widthCopy3 = width;
+    v52 = width * height;
     do
     {
-      if (a5 >= 1)
+      if (width >= 1)
       {
         v10 = 0;
         v11 = v49;
@@ -614,7 +614,7 @@ LABEL_22:
           if (v16 > 0.45)
           {
             v19 = v15 * v9 * v12;
-            v20 = &a3[v19 + v10 + v50 * v62];
+            v20 = &boxes[v19 + v10 + v50 * widthCopy2];
             v21 = expf(-*v20);
             cnnInputWidth = self->_cnnInputWidth;
             v23 = &v20[v55];
@@ -622,7 +622,7 @@ LABEL_22:
             cnnInputHeight = self->_cnnInputHeight;
             v25 = &v23[v55];
             v26 = expf(-*v25);
-            v27 = &(*a7)[2 * v15];
+            v27 = &(*box)[2 * v15];
             v60 = *v27;
             v28 = expf(-v25[v55]);
             v29 = v27[1];
@@ -637,7 +637,7 @@ LABEL_22:
             {
               v31 = 0;
               LODWORD(v32) = 0;
-              v33 = &a3[4 * v55 + v13 + v19];
+              v33 = &boxes[4 * v55 + v13 + v19];
               v34 = -1.0;
               do
               {
@@ -661,9 +661,9 @@ LABEL_22:
             }
 
             v36 = [VCPBoundingBox alloc];
-            v37 = (v10 + (1.0 / (v21 + 1.0)) * 2.0 + -0.5) * cnnInputWidth / v54;
+            v37 = (v10 + (1.0 / (v21 + 1.0)) * 2.0 + -0.5) * cnnInputWidth / widthCopy;
             *&v37 = v37;
-            v38 = (v50 + (1.0 / (v24 + 1.0)) * 2.0 + -0.5) * cnnInputHeight / v53;
+            v38 = (v50 + (1.0 / (v24 + 1.0)) * 2.0 + -0.5) * cnnInputHeight / heightCopy;
             *&v38 = v38;
             v39 = ((1.0 / (v26 + 1.0)) + (1.0 / (v26 + 1.0)));
             v40 = v39 * v39 * v60;
@@ -696,64 +696,64 @@ LABEL_22:
           ++v13;
         }
 
-        while (v10 != v62);
+        while (v10 != widthCopy2);
       }
 
       v49 = (v49 + v46);
       ++v50;
-      a5 = v48;
-      v51 += v48;
+      width = widthCopy3;
+      v51 += widthCopy3;
     }
 
-    while (v50 != v47);
+    while (v50 != heightCopy2);
   }
 
   return 0;
 }
 
-- (int)generatePetsRegions:(const void *)a3 boxes:(id)a4 maxNumRegions:(int)a5
+- (int)generatePetsRegions:(const void *)regions boxes:(id)boxes maxNumRegions:(int)numRegions
 {
-  v8 = a4;
-  v9 = *a3;
-  if (*a3 != *(a3 + 1))
+  boxesCopy = boxes;
+  v9 = *regions;
+  if (*regions != *(regions + 1))
   {
     v10 = &kAnchorBoxes;
     do
     {
-      [(VCPCNNPetsDetectorV2 *)self retrieveBoxes:*v9 outHeight:*(v9 + 88) outWidth:*(v9 + 80) boxes:v8 anchorBox:v10];
+      [(VCPCNNPetsDetectorV2 *)self retrieveBoxes:*v9 outHeight:*(v9 + 88) outWidth:*(v9 + 80) boxes:boxesCopy anchorBox:v10];
       v9 += 168;
       v10 += 24;
     }
 
-    while (v9 != *(a3 + 1));
+    while (v9 != *(regions + 1));
   }
 
-  [v8 sortUsingComparator:&__block_literal_global_227];
-  [(VCPCNNPetsDetectorV2 *)self nonMaxSuppression:v8];
-  [v8 sortUsingComparator:&__block_literal_global_229];
-  while ([v8 count] > a5)
+  [boxesCopy sortUsingComparator:&__block_literal_global_227];
+  [(VCPCNNPetsDetectorV2 *)self nonMaxSuppression:boxesCopy];
+  [boxesCopy sortUsingComparator:&__block_literal_global_229];
+  while ([boxesCopy count] > numRegions)
   {
-    [v8 removeLastObject];
+    [boxesCopy removeLastObject];
   }
 
-  v11 = [v8 lastObject];
-  if (v11)
+  lastObject = [boxesCopy lastObject];
+  if (lastObject)
   {
     do
     {
-      [v11 flag];
+      [lastObject flag];
       if (v12 != 0.0)
       {
         break;
       }
 
-      [v8 removeLastObject];
-      v13 = [v8 lastObject];
+      [boxesCopy removeLastObject];
+      lastObject2 = [boxesCopy lastObject];
 
-      v11 = v13;
+      lastObject = lastObject2;
     }
 
-    while (v13);
+    while (lastObject2);
   }
 
   return 0;
@@ -836,9 +836,9 @@ uint64_t __64__VCPCNNPetsDetectorV2_generatePetsRegions_boxes_maxNumRegions___bl
   return v26;
 }
 
-- (int)generatePetsBoxes:(id)a3
+- (int)generatePetsBoxes:(id)boxes
 {
-  v4 = a3;
+  boxesCopy = boxes;
   v5 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];
   if (!v5)
   {
@@ -855,7 +855,7 @@ uint64_t __64__VCPCNNPetsDetectorV2_generatePetsRegions_boxes_maxNumRegions___bl
       v10 = 0;
     }
 
-    v5 = [(VCPCNNPetsDetectorV2 *)self generatePetsRegions:&__p boxes:v4 maxNumRegions:self->_maxNumRegions];
+    v5 = [(VCPCNNPetsDetectorV2 *)self generatePetsRegions:&__p boxes:boxesCopy maxNumRegions:self->_maxNumRegions];
     if (__p)
     {
       v9 = __p;
@@ -866,14 +866,14 @@ uint64_t __64__VCPCNNPetsDetectorV2_generatePetsRegions_boxes_maxNumRegions___bl
   return v5;
 }
 
-- (int)petsDetection:(__CVBuffer *)a3 petsRegions:(id)a4 petsFaceRegions:(id)a5 cancel:(id)a6
+- (int)petsDetection:(__CVBuffer *)detection petsRegions:(id)regions petsFaceRegions:(id)faceRegions cancel:(id)cancel
 {
   v59 = *MEMORY[0x1E69E9840];
-  v49 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12 && ((*(v12 + 2))(v12) & 1) != 0)
+  regionsCopy = regions;
+  faceRegionsCopy = faceRegions;
+  cancelCopy = cancel;
+  v13 = cancelCopy;
+  if (cancelCopy && ((*(cancelCopy + 2))(cancelCopy) & 1) != 0)
   {
     v14 = -128;
 LABEL_13:
@@ -882,8 +882,8 @@ LABEL_13:
   }
 
   context = objc_autoreleasePoolPush();
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(detection);
+  Height = CVPixelBufferGetHeight(detection);
   v17 = Height;
   v50 = 0;
   if (Height >= Width)
@@ -911,14 +911,14 @@ LABEL_11:
   }
 
   v19 = [(VCPCNNPetsDetectorV2 *)self getInputBuffer:v17 srcWidth:Width cnnInputHeight:&v50 cnnInputWidth:&v50 + 4];
-  v14 = [(VCPCNNPetsDetectorV2 *)self createInput:v19 withBuffer:a3 cnnInputHeight:v50 cnnInputWidth:HIDWORD(v50)];
+  v14 = [(VCPCNNPetsDetectorV2 *)self createInput:v19 withBuffer:detection cnnInputHeight:v50 cnnInputWidth:HIDWORD(v50)];
   if (v14)
   {
     goto LABEL_11;
   }
 
-  v22 = [MEMORY[0x1E695DF70] array];
-  v6 = [(VCPCNNPetsDetectorV2 *)self generatePetsBoxes:v22];
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [(VCPCNNPetsDetectorV2 *)self generatePetsBoxes:array];
   if (v6)
   {
     v20 = 1;
@@ -926,7 +926,7 @@ LABEL_11:
 
   else
   {
-    v47 = v22;
+    v47 = array;
     v24 = 0;
     *&v23 = 67109376;
     v46 = v23;
@@ -935,10 +935,10 @@ LABEL_11:
       v25 = [v47 objectAtIndexedSubscript:v24];
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v26 = [v25 classIndex];
+        classIndex = [v25 classIndex];
         [v25 confidence];
         *buf = v46;
-        v56 = v26;
+        v56 = classIndex;
         v57 = 2048;
         v58 = v27;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "CNNPetsDetectorV2: pet class index : %d, confidence = %f", buf, 0x12u);
@@ -979,7 +979,7 @@ LABEL_11:
           v43 = [MEMORY[0x1E696AD98] numberWithInt:v39];
           v52[2] = v43;
           v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:3];
-          [v11 addObject:v44];
+          [faceRegionsCopy addObject:v44];
         }
 
         else
@@ -1000,7 +1000,7 @@ LABEL_11:
           v43 = [MEMORY[0x1E696AD98] numberWithInt:v39];
           v54[2] = v43;
           v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:3];
-          [v49 addObject:v44];
+          [regionsCopy addObject:v44];
         }
       }
 
@@ -1008,7 +1008,7 @@ LABEL_11:
     }
 
     v20 = 0;
-    v22 = v47;
+    array = v47;
   }
 
   v14 = 0;

@@ -1,16 +1,16 @@
 @interface UIFont
 + (BOOL)fr_accessibilityFontSizesEnabled;
-+ (BOOL)fr_contentSizeCategoryIsGreaterThan:(id)a3;
++ (BOOL)fr_contentSizeCategoryIsGreaterThan:(id)than;
 + (BOOL)fr_isDefaultContentSizeCategory;
-+ (double)fr_notRoundedScaledValueForValue:(double)a3;
-+ (double)fr_preferredHeightForString:(id)a3 baseFontSize:(double)a4 maxFontSize:(double)a5 textStyle:(id)a6 constrainedToWidth:(double)a7;
-+ (double)fr_scaledValueForValue:(double)a3;
++ (double)fr_notRoundedScaledValueForValue:(double)value;
++ (double)fr_preferredHeightForString:(id)string baseFontSize:(double)size maxFontSize:(double)fontSize textStyle:(id)style constrainedToWidth:(double)width;
++ (double)fr_scaledValueForValue:(double)value;
 + (id)_fr_fontWeightLookup;
-+ (id)fr_appropriateValueForCurrentContentSizeCategoryUsingMap:(id)a3;
-+ (id)fr_fontWithName:(id)a3 size:(double)a4;
++ (id)fr_appropriateValueForCurrentContentSizeCategoryUsingMap:(id)map;
++ (id)fr_fontWithName:(id)name size:(double)size;
 + (id)fr_orderedContentSizeCategories;
-+ (id)fr_preferredFontForBaseFont:(id)a3;
-+ (id)fr_systemFontNameForWeight:(double)a3 condensed:(BOOL)a4;
++ (id)fr_preferredFontForBaseFont:(id)font;
++ (id)fr_systemFontNameForWeight:(double)weight condensed:(BOOL)condensed;
 @end
 
 @implementation UIFont
@@ -27,15 +27,15 @@
   return v3;
 }
 
-+ (id)fr_fontWithName:(id)a3 size:(double)a4
++ (id)fr_fontWithName:(id)name size:(double)size
 {
-  v6 = a3;
-  v7 = [a1 _fr_fontWeightLookup];
-  v8 = [v7 objectForKey:v6];
+  nameCopy = name;
+  _fr_fontWeightLookup = [self _fr_fontWeightLookup];
+  v8 = [_fr_fontWeightLookup objectForKey:nameCopy];
 
   if (!v8)
   {
-    v13 = [a1 fontWithName:v6 size:a4];
+    v13 = [self fontWithName:nameCopy size:size];
 
     if (v13)
     {
@@ -44,7 +44,7 @@
 
     else
     {
-      v14 = [a1 systemFontOfSize:a4];
+      v14 = [self systemFontOfSize:size];
     }
 
     v17 = v14;
@@ -52,7 +52,7 @@
     goto LABEL_23;
   }
 
-  v9 = [v6 hasPrefix:@"FRSystemFont-Condensed"];
+  v9 = [nameCopy hasPrefix:@"FRSystemFont-Condensed"];
 
   if (!v9)
   {
@@ -64,7 +64,7 @@
 
   if (v11)
   {
-    UIFontForLanguage = CTFontCreateUIFontForLanguage(0xA9u, a4, 0);
+    UIFontForLanguage = CTFontCreateUIFontForLanguage(0xA9u, size, 0);
     if (!UIFontForLanguage)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -74,7 +74,7 @@
 
 LABEL_21:
       [v8 doubleValue];
-      UIFontForLanguage = [a1 systemFontOfSize:a4 weight:v20];
+      UIFontForLanguage = [self systemFontOfSize:size weight:v20];
     }
   }
 
@@ -85,7 +85,7 @@ LABEL_21:
 
     if (v16)
     {
-      UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMenuItemCmdKeyFontType|0xA0, a4, 0);
+      UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMenuItemCmdKeyFontType|0xA0, size, 0);
       if (!UIFontForLanguage)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -112,7 +112,7 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      UIFontForLanguage = CTFontCreateUIFontForLanguage(0xB0u, a4, 0);
+      UIFontForLanguage = CTFontCreateUIFontForLanguage(0xB0u, size, 0);
       if (!UIFontForLanguage)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -131,49 +131,49 @@ LABEL_23:
   return v17;
 }
 
-+ (id)fr_systemFontNameForWeight:(double)a3 condensed:(BOOL)a4
++ (id)fr_systemFontNameForWeight:(double)weight condensed:(BOOL)condensed
 {
-  if (UIFontWeightUltraLight == a3)
+  if (UIFontWeightUltraLight == weight)
   {
     v4 = @"Ultralight";
   }
 
-  else if (UIFontWeightThin == a3)
+  else if (UIFontWeightThin == weight)
   {
     v4 = @"Thin";
   }
 
-  else if (UIFontWeightLight == a3)
+  else if (UIFontWeightLight == weight)
   {
     v4 = @"Light";
   }
 
-  else if (UIFontWeightRegular == a3)
+  else if (UIFontWeightRegular == weight)
   {
     v4 = @"Regular";
   }
 
-  else if (UIFontWeightMedium == a3)
+  else if (UIFontWeightMedium == weight)
   {
     v4 = @"Medium";
   }
 
-  else if (UIFontWeightSemibold == a3)
+  else if (UIFontWeightSemibold == weight)
   {
     v4 = @"Semibold";
   }
 
-  else if (UIFontWeightBold == a3)
+  else if (UIFontWeightBold == weight)
   {
     v4 = @"Bold";
   }
 
-  else if (UIFontWeightHeavy == a3)
+  else if (UIFontWeightHeavy == weight)
   {
     v4 = @"Heavy";
   }
 
-  else if (UIFontWeightBlack == a3)
+  else if (UIFontWeightBlack == weight)
   {
     v4 = @"Black";
   }
@@ -183,7 +183,7 @@ LABEL_23:
     v4 = 0;
   }
 
-  if (a4)
+  if (condensed)
   {
     v5 = @"-Condensed";
   }
@@ -193,16 +193,16 @@ LABEL_23:
     v5 = &stru_1000C67A8;
   }
 
-  return [a1 _fr_fontNameWithPrefix:@"FRSystemFont" midfix:v5 suffix:v4];
+  return [self _fr_fontNameWithPrefix:@"FRSystemFont" midfix:v5 suffix:v4];
 }
 
-+ (BOOL)fr_contentSizeCategoryIsGreaterThan:(id)a3
++ (BOOL)fr_contentSizeCategoryIsGreaterThan:(id)than
 {
-  v3 = a3;
+  thanCopy = than;
   v4 = +[UIContentSizeCategoryPreference system];
-  v5 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
 
-  v6 = UIContentSizeCategoryCompareToCategory(v5, v3);
+  v6 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, thanCopy);
   return v6 == NSOrderedDescending;
 }
 
@@ -221,20 +221,20 @@ LABEL_23:
   return v2;
 }
 
-+ (id)fr_appropriateValueForCurrentContentSizeCategoryUsingMap:(id)a3
++ (id)fr_appropriateValueForCurrentContentSizeCategoryUsingMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = +[UIContentSizeCategoryPreference system];
-  v6 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
 
-  v7 = [v4 objectForKeyedSubscript:UIContentSizeCategoryLarge];
+  v7 = [mapCopy objectForKeyedSubscript:UIContentSizeCategoryLarge];
 
   if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100069088();
   }
 
-  v8 = [v4 objectForKeyedSubscript:v6];
+  v8 = [mapCopy objectForKeyedSubscript:preferredContentSizeCategory];
   v9 = v8;
   if (v8)
   {
@@ -242,7 +242,7 @@ LABEL_23:
     goto LABEL_42;
   }
 
-  [a1 fr_orderedContentSizeCategories];
+  [self fr_orderedContentSizeCategories];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -263,12 +263,12 @@ LABEL_8:
       }
 
       v17 = *(*(&v40 + 1) + 8 * v16);
-      if ([v17 isEqualToString:v6])
+      if ([v17 isEqualToString:preferredContentSizeCategory])
       {
         break;
       }
 
-      v18 = [v4 objectForKeyedSubscript:v17];
+      v18 = [mapCopy objectForKeyedSubscript:v17];
 
       if (v18)
       {
@@ -300,8 +300,8 @@ LABEL_8:
   v36 = 0u;
   v37 = 0u;
   v35 = v11;
-  v20 = [v11 reverseObjectEnumerator];
-  v21 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  reverseObjectEnumerator = [v11 reverseObjectEnumerator];
+  v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v21)
   {
     v22 = v21;
@@ -313,16 +313,16 @@ LABEL_20:
     {
       if (*v37 != v24)
       {
-        objc_enumerationMutation(v20);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v26 = *(*(&v36 + 1) + 8 * v25);
-      if ([v26 isEqualToString:v6])
+      if ([v26 isEqualToString:preferredContentSizeCategory])
       {
         break;
       }
 
-      v27 = [v4 objectForKeyedSubscript:v26];
+      v27 = [mapCopy objectForKeyedSubscript:v26];
 
       if (v27)
       {
@@ -333,7 +333,7 @@ LABEL_20:
 
       if (v22 == ++v25)
       {
-        v22 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v22 = [reverseObjectEnumerator countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v22)
         {
           goto LABEL_20;
@@ -368,18 +368,18 @@ LABEL_20:
       goto LABEL_41;
     }
 
-    v33 = [v35 indexOfObject:v6];
+    v33 = [v35 indexOfObject:preferredContentSizeCategory];
     v34 = (v33 - [v35 indexOfObject:v14]);
     if (v34 >= [v35 indexOfObject:v23] - v33)
     {
 LABEL_35:
-      v30 = v4;
+      v30 = mapCopy;
       v31 = v23;
     }
 
     else
     {
-      v30 = v4;
+      v30 = mapCopy;
       v31 = v14;
     }
 
@@ -388,7 +388,7 @@ LABEL_35:
 
   else
   {
-    v10 = [v4 objectForKeyedSubscript:v14];
+    v10 = [mapCopy objectForKeyedSubscript:v14];
     v29 = v35;
   }
 
@@ -403,65 +403,65 @@ LABEL_42:
 + (BOOL)fr_accessibilityFontSizesEnabled
 {
   v2 = +[UIContentSizeCategoryPreference system];
-  v3 = [v2 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  LOBYTE(v2) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   return v2;
 }
 
 + (BOOL)fr_isDefaultContentSizeCategory
 {
   v2 = +[UIContentSizeCategoryPreference system];
-  v3 = [v2 preferredContentSizeCategory];
-  v4 = [v3 isEqualToString:UIContentSizeCategoryLarge];
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
+  v4 = [preferredContentSizeCategory isEqualToString:UIContentSizeCategoryLarge];
 
   return v4;
 }
 
-+ (id)fr_preferredFontForBaseFont:(id)a3
++ (id)fr_preferredFontForBaseFont:(id)font
 {
-  v3 = a3;
-  [v3 pointSize];
+  fontCopy = font;
+  [fontCopy pointSize];
   v5 = v4;
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   [v6 _scaledValueForValue:v5];
-  v8 = [v3 fontWithSize:round(v7)];
+  v8 = [fontCopy fontWithSize:round(v7)];
 
   return v8;
 }
 
-+ (double)fr_scaledValueForValue:(double)a3
++ (double)fr_scaledValueForValue:(double)value
 {
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v4 _scaledValueForValue:a3];
+  [v4 _scaledValueForValue:value];
   v6 = round(v5);
 
   return v6;
 }
 
-+ (double)fr_notRoundedScaledValueForValue:(double)a3
++ (double)fr_notRoundedScaledValueForValue:(double)value
 {
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v4 _scaledValueForValue:a3];
+  [v4 _scaledValueForValue:value];
   v6 = v5;
 
   return v6;
 }
 
-+ (double)fr_preferredHeightForString:(id)a3 baseFontSize:(double)a4 maxFontSize:(double)a5 textStyle:(id)a6 constrainedToWidth:(double)a7
++ (double)fr_preferredHeightForString:(id)string baseFontSize:(double)size maxFontSize:(double)fontSize textStyle:(id)style constrainedToWidth:(double)width
 {
-  v11 = a3;
-  v12 = [UIFont preferredFontForTextStyle:a6];
+  stringCopy = string;
+  v12 = [UIFont preferredFontForTextStyle:style];
   v13 = v12;
-  if (a4 > 0.0)
+  if (size > 0.0)
   {
-    [v12 _scaledValueForValue:a4];
-    if (v14 >= a5)
+    [v12 _scaledValueForValue:size];
+    if (fontSizeCopy >= fontSize)
     {
-      v14 = a5;
+      fontSizeCopy = fontSize;
     }
 
-    v15 = v14;
+    v15 = fontSizeCopy;
     v16 = [v13 fontWithSize:roundf(v15)];
 
     v13 = v16;
@@ -470,7 +470,7 @@ LABEL_42:
   v22 = NSFontAttributeName;
   v23 = v13;
   v17 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-  [v11 boundingRectWithSize:3 options:v17 attributes:0 context:{a7, 1.79769313e308}];
+  [stringCopy boundingRectWithSize:3 options:v17 attributes:0 context:{width, 1.79769313e308}];
   v19 = v18;
 
   v20 = v19;

@@ -1,11 +1,11 @@
 @interface PXActivityCoordinator
-+ (id)coordinatorForActivity:(id)a3;
++ (id)coordinatorForActivity:(id)activity;
 - (PXActivityCoordinator)init;
-- (PXActivityCoordinator)initWithActivityName:(id)a3;
+- (PXActivityCoordinator)initWithActivityName:(id)name;
 - (id)description;
 - (void)_update;
-- (void)registerItem:(id)a3;
-- (void)unregisterItem:(id)a3;
+- (void)registerItem:(id)item;
+- (void)unregisterItem:(id)item;
 @end
 
 @implementation PXActivityCoordinator
@@ -36,7 +36,7 @@
   v6 = v4;
   v14 = a2;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   [(NSMutableArray *)records enumerateObjectsUsingBlock:&v7];
   if (v16[3] >= 1)
   {
@@ -87,11 +87,11 @@ void __32__PXActivityCoordinator__update__block_invoke(uint64_t a1, void *a2, un
   }
 }
 
-- (void)unregisterItem:(id)a3
+- (void)unregisterItem:(id)item
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[PXActivityCoordinatorRecord alloc] initWithItem:v4];
+  itemCopy = item;
+  v5 = [[PXActivityCoordinatorRecord alloc] initWithItem:itemCopy];
   v6 = [(NSMutableArray *)self->_records indexOfObject:v5];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -100,9 +100,9 @@ void __32__PXActivityCoordinator__update__block_invoke(uint64_t a1, void *a2, un
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v4;
+      v12 = itemCopy;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ unregistering item %{public}@", &v9, 0x16u);
     }
 
@@ -111,11 +111,11 @@ void __32__PXActivityCoordinator__update__block_invoke(uint64_t a1, void *a2, un
   }
 }
 
-- (void)registerItem:(id)a3
+- (void)registerItem:(id)item
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[PXActivityCoordinatorRecord alloc] initWithItem:v4];
+  itemCopy = item;
+  v5 = [[PXActivityCoordinatorRecord alloc] initWithItem:itemCopy];
   records = self->_records;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -129,9 +129,9 @@ void __32__PXActivityCoordinator__update__block_invoke(uint64_t a1, void *a2, un
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = itemCopy;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ registering item %{public}@", buf, 0x16u);
     }
 
@@ -140,15 +140,15 @@ void __32__PXActivityCoordinator__update__block_invoke(uint64_t a1, void *a2, un
   }
 }
 
-- (PXActivityCoordinator)initWithActivityName:(id)a3
+- (PXActivityCoordinator)initWithActivityName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = PXActivityCoordinator;
   v5 = [(PXActivityCoordinator *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     activityName = v5->_activityName;
     v5->_activityName = v6;
 
@@ -162,25 +162,25 @@ void __32__PXActivityCoordinator__update__block_invoke(uint64_t a1, void *a2, un
 
 - (PXActivityCoordinator)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXActivityCoordinator.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXActivityCoordinator init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivityCoordinator.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXActivityCoordinator init]"}];
 
   abort();
 }
 
-+ (id)coordinatorForActivity:(id)a3
++ (id)coordinatorForActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   if (coordinatorForActivity__onceToken != -1)
   {
     dispatch_once(&coordinatorForActivity__onceToken, &__block_literal_global_217581);
   }
 
-  v4 = [coordinatorForActivity__coordinators objectForKeyedSubscript:v3];
+  v4 = [coordinatorForActivity__coordinators objectForKeyedSubscript:activityCopy];
   if (!v4)
   {
-    v4 = [[PXActivityCoordinator alloc] initWithActivityName:v3];
-    [coordinatorForActivity__coordinators setObject:v4 forKeyedSubscript:v3];
+    v4 = [[PXActivityCoordinator alloc] initWithActivityName:activityCopy];
+    [coordinatorForActivity__coordinators setObject:v4 forKeyedSubscript:activityCopy];
   }
 
   return v4;

@@ -1,11 +1,11 @@
 @interface TelemetryHelpers
-+ (void)emitFileResidentInfoWithAssetIdentifier:(id)a3 residentPages:(int64_t)a4 totalPages:(int64_t)a5;
++ (void)emitFileResidentInfoWithAssetIdentifier:(id)identifier residentPages:(int64_t)pages totalPages:(int64_t)totalPages;
 - (_TtC24TokenGenerationInference16TelemetryHelpers)init;
 @end
 
 @implementation TelemetryHelpers
 
-+ (void)emitFileResidentInfoWithAssetIdentifier:(id)a3 residentPages:(int64_t)a4 totalPages:(int64_t)a5
++ (void)emitFileResidentInfoWithAssetIdentifier:(id)identifier residentPages:(int64_t)pages totalPages:(int64_t)totalPages
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s27IntelligencePlatformLibrary39GenerativeFunctionsInstrumentationEventVSgMd);
   MEMORY[0x28223BE20](v7 - 8);
@@ -17,8 +17,8 @@
   EventReporter.init()();
   v15 = v10;
   v16 = v12;
-  v17 = a4;
-  v18 = a5;
+  pagesCopy = pages;
+  totalPagesCopy = totalPages;
   EventReporter.send(eventBuiltWithPresetsAnd:)();
 
   v13 = type metadata accessor for GenerativeFunctionsInstrumentationEvent();

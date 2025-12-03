@@ -1,45 +1,45 @@
 @interface NTKPrideStyleEditOption
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (int64_t)indexForStyle:(unint64_t)a3 forDevice:(id)a4;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (int64_t)indexForStyle:(unint64_t)style forDevice:(id)device;
+- (BOOL)optionExistsInDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKPrideStyleEditOption
 
-+ (int64_t)indexForStyle:(unint64_t)a3 forDevice:(id)a4
++ (int64_t)indexForStyle:(unint64_t)style forDevice:(id)device
 {
-  v5 = [a1 _orderedValuesForDevice:a4];
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [self _orderedValuesForDevice:device];
+  v6 = [NSNumber numberWithUnsignedInteger:style];
   v7 = [v5 indexOfObject:v6];
 
   return v7;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_247E0[a3];
+    return off_247E0[value];
   }
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [NTKPrideDigitalFaceBundle localizedStringForKey:off_247F8[a3] table:@"PrideDigital" comment:@"Style", v4];
+    v6 = [NTKPrideDigitalFaceBundle localizedStringForKey:off_247F8[value] table:@"PrideDigital" comment:@"Style", v4];
   }
 
   return v6;
@@ -57,19 +57,19 @@
   return v3;
 }
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 pdrDeviceVersion];
-  v6 = [(NTKPrideStyleEditOption *)self style];
-  if (v6 == 2)
+  deviceCopy = device;
+  pdrDeviceVersion = [deviceCopy pdrDeviceVersion];
+  style = [(NTKPrideStyleEditOption *)self style];
+  if (style == 2)
   {
-    v7 = [v4 supportsPDRCapability:3503302961];
+    v7 = [deviceCopy supportsPDRCapability:3503302961];
   }
 
   else
   {
-    v7 = v6 != 1 || v5 > 0x50200;
+    v7 = style != 1 || pdrDeviceVersion > 0x50200;
   }
 
   return v7;

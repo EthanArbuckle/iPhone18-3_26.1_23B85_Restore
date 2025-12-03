@@ -1,5 +1,5 @@
 @interface InstallAttributionDatabaseStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (id)storeDescriptor;
 @end
 
@@ -15,11 +15,11 @@
   return v5;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
-  if (a3)
+  if (schema)
   {
-    return sub_100252C84(a3, 19000, &stru_10051E8F0, 0);
+    return sub_100252C84(schema, 19000, &stru_10051E8F0, 0);
   }
 
   else

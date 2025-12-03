@@ -1,5 +1,5 @@
 @interface WFAddQuickReminderActionUIKitUserInterface
-- (WFAddQuickReminderActionUIKitUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4;
+- (WFAddQuickReminderActionUIKitUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution;
 - (WFPlatterConfiguration)platterConfiguration;
 @end
 
@@ -7,17 +7,17 @@
 
 - (WFPlatterConfiguration)platterConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23E35C360();
 
   return v3;
 }
 
-- (WFAddQuickReminderActionUIKitUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4
+- (WFAddQuickReminderActionUIKitUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_23E35C618(v5, a4);
+  typeCopy = type;
+  attributionCopy = attribution;
+  return sub_23E35C618(typeCopy, attribution);
 }
 
 @end

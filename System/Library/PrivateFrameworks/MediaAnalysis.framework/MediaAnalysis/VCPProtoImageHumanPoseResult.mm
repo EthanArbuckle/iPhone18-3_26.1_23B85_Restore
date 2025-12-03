@@ -1,35 +1,35 @@
 @interface VCPProtoImageHumanPoseResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)addKeypoints:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKeypoints:(id)keypoints;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoImageHumanPoseResult
 
-- (void)addKeypoints:(id)a3
+- (void)addKeypoints:(id)keypoints
 {
-  v4 = a3;
+  keypointsCopy = keypoints;
   keypoints = self->_keypoints;
-  v8 = v4;
+  v8 = keypointsCopy;
   if (!keypoints)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_keypoints;
     self->_keypoints = v6;
 
-    v4 = v8;
+    keypointsCopy = v8;
     keypoints = self->_keypoints;
   }
 
-  [(NSMutableArray *)keypoints addObject:v4];
+  [(NSMutableArray *)keypoints addObject:keypointsCopy];
 }
 
 - (id)description
@@ -38,8 +38,8 @@
   v8.receiver = self;
   v8.super_class = VCPProtoImageHumanPoseResult;
   v4 = [(VCPProtoImageHumanPoseResult *)&v8 description];
-  v5 = [(VCPProtoImageHumanPoseResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoImageHumanPoseResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -47,20 +47,20 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_confidence;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"confidence"];
+  [dictionary setObject:v5 forKey:@"confidence"];
 
   bounds = self->_bounds;
   if (bounds)
   {
-    v7 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"bounds"];
+    dictionaryRepresentation = [(VCPProtoBounds *)bounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"bounds"];
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_flags];
-  [v3 setObject:v8 forKey:@"flags"];
+  [dictionary setObject:v8 forKey:@"flags"];
 
   if ([(NSMutableArray *)self->_keypoints count])
   {
@@ -84,8 +84,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation2];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -94,16 +94,16 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"keypoints"];
+    [dictionary setObject:v9 forKey:@"keypoints"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteInt32Field();
@@ -139,34 +139,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  v8[4] = LODWORD(self->_confidence);
-  [v8 setBounds:self->_bounds];
-  v8[5] = self->_flags;
+  toCopy = to;
+  toCopy[4] = LODWORD(self->_confidence);
+  [toCopy setBounds:self->_bounds];
+  toCopy[5] = self->_flags;
   if ([(VCPProtoImageHumanPoseResult *)self keypointsCount])
   {
-    [v8 clearKeypoints];
-    v4 = [(VCPProtoImageHumanPoseResult *)self keypointsCount];
-    if (v4)
+    [toCopy clearKeypoints];
+    keypointsCount = [(VCPProtoImageHumanPoseResult *)self keypointsCount];
+    if (keypointsCount)
     {
-      v5 = v4;
+      v5 = keypointsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VCPProtoImageHumanPoseResult *)self keypointsAtIndex:i];
-        [v8 addKeypoints:v7];
+        [toCopy addKeypoints:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_confidence;
-  v6 = [(VCPProtoBounds *)self->_bounds copyWithZone:a3];
+  v6 = [(VCPProtoBounds *)self->_bounds copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -191,7 +191,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addKeypoints:v13];
 
         ++v12;
@@ -207,13 +207,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_confidence == *(v4 + 4) && ((bounds = self->_bounds, !(bounds | v4[1])) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")) && self->_flags == *(v4 + 5))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_confidence == *(equalCopy + 4) && ((bounds = self->_bounds, !(bounds | equalCopy[1])) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")) && self->_flags == *(equalCopy + 5))
   {
     keypoints = self->_keypoints;
-    if (keypoints | v4[3])
+    if (keypoints | equalCopy[3])
     {
       v7 = [(NSMutableArray *)keypoints isEqual:?];
     }
@@ -268,13 +268,13 @@
   return v12 ^ [(NSMutableArray *)self->_keypoints hash]^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_confidence = *(v4 + 4);
+  fromCopy = from;
+  self->_confidence = *(fromCopy + 4);
   bounds = self->_bounds;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (bounds)
   {
     if (v6)
@@ -288,12 +288,12 @@
     [(VCPProtoImageHumanPoseResult *)self setBounds:?];
   }
 
-  self->_flags = *(v4 + 5);
+  self->_flags = *(fromCopy + 5);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -318,11 +318,11 @@
   }
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"flags"];
-  v5 = [v3 objectForKeyedSubscript:@"attributes"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"flags"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v6 = [v5 objectForKeyedSubscript:@"humanConfidence"];
   v7 = [v5 objectForKeyedSubscript:@"humanBounds"];
   v8 = v7;
@@ -343,7 +343,7 @@
 
   else
   {
-    v11 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
     v12 = objc_alloc_init(VCPProtoImageHumanPoseResult);
     [v6 floatValue];
     [(VCPProtoImageHumanPoseResult *)v12 setConfidence:?];
@@ -351,7 +351,7 @@
     v13 = [VCPProtoBounds boundsWithCGRect:v16.origin.x, v16.origin.y, v16.size.width, v16.size.height];
     [(VCPProtoImageHumanPoseResult *)v12 setBounds:v13];
 
-    [(VCPProtoImageHumanPoseResult *)v12 setFlags:v11];
+    [(VCPProtoImageHumanPoseResult *)v12 setFlags:unsignedIntegerValue];
   }
 
   return v12;
@@ -367,8 +367,8 @@
   v4 = [v3 numberWithFloat:?];
   v12[0] = v4;
   v11[1] = @"humanBounds";
-  v5 = [(VCPProtoImageHumanPoseResult *)self bounds];
-  [v5 rectValue];
+  bounds = [(VCPProtoImageHumanPoseResult *)self bounds];
+  [bounds rectValue];
   v6 = NSStringFromRect(v16);
   v12[1] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];

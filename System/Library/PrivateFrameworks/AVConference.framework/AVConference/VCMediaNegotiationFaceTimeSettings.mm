@@ -1,45 +1,45 @@
 @interface VCMediaNegotiationFaceTimeSettings
 - (BOOL)SIPDisabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)secureMessagingRequired;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)capabilities;
 - (unsigned)mediaControlInfoFECFeedbackVersion;
 - (unsigned)mediaControlInfoSubVersion;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLinkProbingCapabilityVersion:(BOOL)a3;
-- (void)setHasMediaControlInfoSubVersion:(BOOL)a3;
-- (void)setHasOneToOneModeSupported:(BOOL)a3;
-- (void)setHasSwitches:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLinkProbingCapabilityVersion:(BOOL)version;
+- (void)setHasMediaControlInfoSubVersion:(BOOL)version;
+- (void)setHasOneToOneModeSupported:(BOOL)supported;
+- (void)setHasSwitches:(BOOL)switches;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationFaceTimeSettings
 
 - (BOOL)SIPDisabled
 {
-  v3 = [(VCMediaNegotiationFaceTimeSettings *)self hasCapabilities];
-  if (v3)
+  hasCapabilities = [(VCMediaNegotiationFaceTimeSettings *)self hasCapabilities];
+  if (hasCapabilities)
   {
     return (LOBYTE(self->_capabilities) >> 1) & 1;
   }
 
-  return v3;
+  return hasCapabilities;
 }
 
 - (BOOL)secureMessagingRequired
 {
-  v3 = [(VCMediaNegotiationFaceTimeSettings *)self hasCapabilities];
-  if (v3)
+  hasCapabilities = [(VCMediaNegotiationFaceTimeSettings *)self hasCapabilities];
+  if (hasCapabilities)
   {
-    LOBYTE(v3) = self->_capabilities & 1;
+    LOBYTE(hasCapabilities) = self->_capabilities & 1;
   }
 
-  return v3;
+  return hasCapabilities;
 }
 
 - (unsigned)mediaControlInfoFECFeedbackVersion
@@ -70,9 +70,9 @@
   }
 }
 
-- (void)setHasSwitches:(BOOL)a3
+- (void)setHasSwitches:(BOOL)switches
 {
-  if (a3)
+  if (switches)
   {
     v3 = 8;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasOneToOneModeSupported:(BOOL)a3
+- (void)setHasOneToOneModeSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 16;
   }
@@ -113,9 +113,9 @@
   }
 }
 
-- (void)setHasMediaControlInfoSubVersion:(BOOL)a3
+- (void)setHasMediaControlInfoSubVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -128,9 +128,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLinkProbingCapabilityVersion:(BOOL)a3
+- (void)setHasLinkProbingCapabilityVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -153,11 +153,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_capabilities), @"capabilities"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_capabilities), @"capabilities"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -176,7 +176,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_switches), @"switches"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_switches), @"switches"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -187,17 +187,17 @@ LABEL_4:
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_mediaControlInfoSubVersion), @"mediaControlInfoSubVersion"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_mediaControlInfoSubVersion), @"mediaControlInfoSubVersion"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_6;
   }
 
 LABEL_10:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_oneToOneModeSupported), @"oneToOneModeSupported"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_oneToOneModeSupported), @"oneToOneModeSupported"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -208,13 +208,13 @@ LABEL_5:
   if ((has & 2) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_linkProbingCapabilityVersion), @"linkProbingCapabilityVersion"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_linkProbingCapabilityVersion), @"linkProbingCapabilityVersion"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -277,13 +277,13 @@ LABEL_11:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_capabilities;
-    *(a3 + 28) |= 1u;
+    *(to + 2) = self->_capabilities;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -302,8 +302,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_switches;
-  *(a3 + 28) |= 8u;
+  *(to + 5) = self->_switches;
+  *(to + 28) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -317,8 +317,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 24) = self->_oneToOneModeSupported;
-  *(a3 + 28) |= 0x10u;
+  *(to + 24) = self->_oneToOneModeSupported;
+  *(to + 28) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -329,23 +329,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 3) = self->_linkProbingCapabilityVersion;
-    *(a3 + 28) |= 2u;
+    *(to + 3) = self->_linkProbingCapabilityVersion;
+    *(to + 28) |= 2u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 4) = self->_mediaControlInfoSubVersion;
-  *(a3 + 28) |= 4u;
+  *(to + 4) = self->_mediaControlInfoSubVersion;
+  *(to + 28) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -412,9 +412,9 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
@@ -422,33 +422,33 @@ LABEL_6:
 
   if (*&self->_has)
   {
-    if ((*(a3 + 28) & 1) == 0 || self->_capabilities != *(a3 + 2))
+    if ((*(equal + 28) & 1) == 0 || self->_capabilities != *(equal + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(a3 + 28))
+  else if (*(equal + 28))
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 28) & 8) == 0 || self->_switches != *(a3 + 5))
+    if ((*(equal + 28) & 8) == 0 || self->_switches != *(equal + 5))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(a3 + 28) & 8) != 0)
+  else if ((*(equal + 28) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(a3 + 28) & 0x10) == 0)
+    if ((*(equal + 28) & 0x10) == 0)
     {
       goto LABEL_14;
     }
@@ -458,14 +458,14 @@ LABEL_28:
     return v5;
   }
 
-  if ((*(a3 + 28) & 0x10) == 0)
+  if ((*(equal + 28) & 0x10) == 0)
   {
     goto LABEL_28;
   }
 
   if (self->_oneToOneModeSupported)
   {
-    if ((*(a3 + 24) & 1) == 0)
+    if ((*(equal + 24) & 1) == 0)
     {
       goto LABEL_28;
     }
@@ -473,7 +473,7 @@ LABEL_28:
     goto LABEL_14;
   }
 
-  if (*(a3 + 24))
+  if (*(equal + 24))
   {
     goto LABEL_28;
   }
@@ -481,21 +481,21 @@ LABEL_28:
 LABEL_14:
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 28) & 4) == 0 || self->_mediaControlInfoSubVersion != *(a3 + 4))
+    if ((*(equal + 28) & 4) == 0 || self->_mediaControlInfoSubVersion != *(equal + 4))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(a3 + 28) & 4) != 0)
+  else if ((*(equal + 28) & 4) != 0)
   {
     goto LABEL_28;
   }
 
-  LOBYTE(v5) = (*(a3 + 28) & 2) == 0;
+  LOBYTE(v5) = (*(equal + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 28) & 2) == 0 || self->_linkProbingCapabilityVersion != *(a3 + 3))
+    if ((*(equal + 28) & 2) == 0 || self->_linkProbingCapabilityVersion != *(equal + 3))
     {
       goto LABEL_28;
     }
@@ -574,14 +574,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_capabilities = *(a3 + 2);
+    self->_capabilities = *(from + 2);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -594,14 +594,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 8) == 0)
+  else if ((*(from + 28) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_switches = *(a3 + 5);
+  self->_switches = *(from + 5);
   *&self->_has |= 8u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x10) == 0)
   {
 LABEL_4:
@@ -614,9 +614,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_oneToOneModeSupported = *(a3 + 24);
+  self->_oneToOneModeSupported = *(from + 24);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -626,15 +626,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_linkProbingCapabilityVersion = *(a3 + 3);
+    self->_linkProbingCapabilityVersion = *(from + 3);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_10:
-  self->_mediaControlInfoSubVersion = *(a3 + 4);
+  self->_mediaControlInfoSubVersion = *(from + 4);
   *&self->_has |= 4u;
-  if ((*(a3 + 28) & 2) != 0)
+  if ((*(from + 28) & 2) != 0)
   {
     goto LABEL_11;
   }

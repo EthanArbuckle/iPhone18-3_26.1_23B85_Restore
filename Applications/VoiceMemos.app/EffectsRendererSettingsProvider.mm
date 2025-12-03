@@ -1,18 +1,18 @@
 @interface EffectsRendererSettingsProvider
 - (_TtC10VoiceMemos31EffectsRendererSettingsProvider)init;
-- (void)rendererSettingsFromRecordingWithId:(NSString *)a3 completionHandler:(id)a4;
+- (void)rendererSettingsFromRecordingWithId:(NSString *)id completionHandler:(id)handler;
 @end
 
 @implementation EffectsRendererSettingsProvider
 
-- (void)rendererSettingsFromRecordingWithId:(NSString *)a3 completionHandler:(id)a4
+- (void)rendererSettingsFromRecordingWithId:(NSString *)id completionHandler:(id)handler
 {
   v7 = sub_1000C773C(&unk_1002D1D90);
   __chkstk_darwin(v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = id;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -27,8 +27,8 @@
   v15[3] = 0;
   v15[4] = &unk_100243D40;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  idCopy = id;
+  selfCopy = self;
   sub_1001A8E50(0, 0, v10, &unk_100243540, v15);
 }
 

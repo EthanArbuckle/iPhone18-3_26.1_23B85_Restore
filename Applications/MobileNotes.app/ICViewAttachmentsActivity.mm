@@ -1,24 +1,24 @@
 @interface ICViewAttachmentsActivity
-- (ICViewAttachmentsActivity)initWithPresentingViewController:(id)a3 eventReporter:(id)a4;
+- (ICViewAttachmentsActivity)initWithPresentingViewController:(id)controller eventReporter:(id)reporter;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)performActivityUserInitiated:(BOOL)a3 completion:(id)a4;
+- (void)performActivityUserInitiated:(BOOL)initiated completion:(id)completion;
 @end
 
 @implementation ICViewAttachmentsActivity
 
-- (ICViewAttachmentsActivity)initWithPresentingViewController:(id)a3 eventReporter:(id)a4
+- (ICViewAttachmentsActivity)initWithPresentingViewController:(id)controller eventReporter:(id)reporter
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  reporterCopy = reporter;
   v11.receiver = self;
   v11.super_class = ICViewAttachmentsActivity;
   v8 = [(ICViewAttachmentsActivity *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_presentingViewController, v6);
-    objc_storeStrong(&v9->_eventReporter, a4);
+    objc_storeWeak(&v8->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v9->_eventReporter, reporter);
   }
 
   return v9;
@@ -32,10 +32,10 @@
   return v3;
 }
 
-- (void)performActivityUserInitiated:(BOOL)a3 completion:(id)a4
+- (void)performActivityUserInitiated:(BOOL)initiated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  initiatedCopy = initiated;
+  completionCopy = completion;
   if ((+[UIDevice ic_isVision]& 1) != 0)
   {
     v7 = [[ICBrowseAttachmentsCollectionController alloc] initWithAttachmentSection:1];
@@ -49,16 +49,16 @@
   v8 = v7;
   v9 = [[UINavigationController alloc] initWithRootViewController:v7];
   [v9 setModalPresentationStyle:{+[UIDevice ic_isVision](UIDevice, "ic_isVision") ^ 1}];
-  v10 = [(ICViewAttachmentsActivity *)self presentingViewController];
+  presentingViewController = [(ICViewAttachmentsActivity *)self presentingViewController];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100108958;
   v12[3] = &unk_10064A238;
   v12[4] = self;
-  v13 = v6;
-  v14 = v4;
-  v11 = v6;
-  [v10 presentViewController:v9 animated:v4 completion:v12];
+  v13 = completionCopy;
+  v14 = initiatedCopy;
+  v11 = completionCopy;
+  [presentingViewController presentViewController:v9 animated:initiatedCopy completion:v12];
 }
 
 - (UIViewController)presentingViewController

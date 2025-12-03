@@ -1,21 +1,21 @@
 @interface VideosExtrasTableView
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation VideosExtrasTableView
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VideosExtrasTableView *)self indexPathForSelectedRow];
+  eventCopy = event;
+  beganCopy = began;
+  indexPathForSelectedRow = [(VideosExtrasTableView *)self indexPathForSelectedRow];
   v10.receiver = self;
   v10.super_class = VideosExtrasTableView;
-  [(VideosExtrasTableView *)&v10 touchesBegan:v7 withEvent:v6];
+  [(VideosExtrasTableView *)&v10 touchesBegan:beganCopy withEvent:eventCopy];
 
-  if (v8)
+  if (indexPathForSelectedRow)
   {
-    v9 = [(VideosExtrasTableView *)self cellForRowAtIndexPath:v8];
+    v9 = [(VideosExtrasTableView *)self cellForRowAtIndexPath:indexPathForSelectedRow];
     [v9 setSelected:1 animated:0];
   }
 }

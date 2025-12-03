@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceVirtualCardSecurityCodeActivityRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceVirtualCardSecurityCodeActivityRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v10 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -29,7 +29,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v10 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -138,8 +138,8 @@ LABEL_30:
 
   [v13 setHTTPMethod:@"POST"];
   [v13 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  v15 = v14;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v15 = dictionary;
   action = self->_action;
   v17 = @"unknown";
   if (action == 1)
@@ -157,7 +157,7 @@ LABEL_30:
     v18 = v17;
   }
 
-  [v14 setObject:v18 forKey:@"action"];
+  [dictionary setObject:v18 forKey:@"action"];
   v19 = PKISO8601DateStringFromDate(self->_timestamp);
   [v15 setObject:v19 forKey:@"timestamp"];
 

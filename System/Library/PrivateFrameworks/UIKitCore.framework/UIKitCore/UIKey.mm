@@ -1,29 +1,29 @@
 @interface UIKey
-- (BOOL)equalsKeyCode:(int64_t)a3 modifiers:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (UIKey)initWithCoder:(id)a3;
-- (UIKey)initWithKeyboardEvent:(id)a3;
-- (id)_initWithKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)equalsKeyCode:(int64_t)code modifiers:(int64_t)modifiers;
+- (BOOL)isEqual:(id)equal;
+- (UIKey)initWithCoder:(id)coder;
+- (UIKey)initWithKeyboardEvent:(id)event;
+- (id)_initWithKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIKey
 
-- (UIKey)initWithKeyboardEvent:(id)a3
+- (UIKey)initWithKeyboardEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = UIKey;
   v5 = [(UIKey *)&v13 init];
   if (v5)
   {
-    v6 = [v4 _unmodifiedInput];
-    v7 = v6;
-    if (v6)
+    _unmodifiedInput = [eventCopy _unmodifiedInput];
+    v7 = _unmodifiedInput;
+    if (_unmodifiedInput)
     {
-      v8 = v6;
+      v8 = _unmodifiedInput;
     }
 
     else
@@ -33,11 +33,11 @@
 
     objc_storeStrong(&v5->_unmodifiedInput, v8);
 
-    v9 = [v4 _modifiedInput];
-    v10 = v9;
-    if (v9)
+    _modifiedInput = [eventCopy _modifiedInput];
+    v10 = _modifiedInput;
+    if (_modifiedInput)
     {
-      v11 = v9;
+      v11 = _modifiedInput;
     }
 
     else
@@ -47,80 +47,80 @@
 
     objc_storeStrong(&v5->_modifiedInput, v11);
 
-    v5->_modifierFlags = [v4 _modifierFlags];
-    v5->_keyCode = [v4 _keyCode];
+    v5->_modifierFlags = [eventCopy _modifierFlags];
+    v5->_keyCode = [eventCopy _keyCode];
   }
 
   return v5;
 }
 
-- (id)_initWithKey:(id)a3
+- (id)_initWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = UIKey;
   v5 = [(UIKey *)&v11 init];
   if (v5)
   {
-    v6 = [v4 unmodifiedInput];
+    unmodifiedInput = [keyCopy unmodifiedInput];
     unmodifiedInput = v5->_unmodifiedInput;
-    v5->_unmodifiedInput = v6;
+    v5->_unmodifiedInput = unmodifiedInput;
 
-    v8 = [v4 modifiedInput];
+    modifiedInput = [keyCopy modifiedInput];
     modifiedInput = v5->_modifiedInput;
-    v5->_modifiedInput = v8;
+    v5->_modifiedInput = modifiedInput;
 
-    v5->_modifierFlags = [v4 modifierFlags];
-    v5->_keyCode = [v4 keyCode];
+    v5->_modifierFlags = [keyCopy modifierFlags];
+    v5->_keyCode = [keyCopy keyCode];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 _initWithKey:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modifiedInput = self->_modifiedInput;
-  v5 = a3;
-  [v5 encodeObject:modifiedInput forKey:@"_modifiedInput"];
-  [v5 encodeObject:self->_unmodifiedInput forKey:@"_unmodifiedInput"];
-  [v5 encodeInteger:self->_modifierFlags forKey:@"_modifierFlags"];
-  [v5 encodeInteger:self->_keyCode forKey:@"_keyCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:modifiedInput forKey:@"_modifiedInput"];
+  [coderCopy encodeObject:self->_unmodifiedInput forKey:@"_unmodifiedInput"];
+  [coderCopy encodeInteger:self->_modifierFlags forKey:@"_modifierFlags"];
+  [coderCopy encodeInteger:self->_keyCode forKey:@"_keyCode"];
 }
 
-- (UIKey)initWithCoder:(id)a3
+- (UIKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = UIKey;
   v5 = [(UIKey *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"_modifiedInput"];
+    v6 = [coderCopy decodeObjectForKey:@"_modifiedInput"];
     modifiedInput = v5->_modifiedInput;
     v5->_modifiedInput = v6;
 
-    v8 = [v4 decodeObjectForKey:@"_unmodifiedInput"];
+    v8 = [coderCopy decodeObjectForKey:@"_unmodifiedInput"];
     unmodifiedInput = v5->_unmodifiedInput;
     v5->_unmodifiedInput = v8;
 
-    v5->_modifierFlags = [v4 decodeIntegerForKey:@"_modifierFlags"];
-    v5->_keyCode = [v4 decodeIntegerForKey:@"_keyCode"];
+    v5->_modifierFlags = [coderCopy decodeIntegerForKey:@"_modifierFlags"];
+    v5->_keyCode = [coderCopy decodeIntegerForKey:@"_keyCode"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -130,7 +130,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(UIKey *)v4 hash];
+      v5 = [(UIKey *)equalCopy hash];
       v6 = v5 == [(UIKey *)self hash];
     }
 
@@ -147,11 +147,11 @@
 {
   v11[4] = *MEMORY[0x1E69E9840];
   v10[0] = @"characters";
-  v3 = [(UIKey *)self characters];
-  v11[0] = v3;
+  characters = [(UIKey *)self characters];
+  v11[0] = characters;
   v10[1] = @"unmodified";
-  v4 = [(UIKey *)self charactersIgnoringModifiers];
-  v11[1] = v4;
+  charactersIgnoringModifiers = [(UIKey *)self charactersIgnoringModifiers];
+  v11[1] = charactersIgnoringModifiers;
   v10[2] = @"modifierFlags";
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_modifierFlags];
   v11[2] = v5;
@@ -164,14 +164,14 @@
   return v8;
 }
 
-- (BOOL)equalsKeyCode:(int64_t)a3 modifiers:(int64_t)a4
+- (BOOL)equalsKeyCode:(int64_t)code modifiers:(int64_t)modifiers
 {
-  if ([(UIKey *)self keyCode]!= a3)
+  if ([(UIKey *)self keyCode]!= code)
   {
     return 0;
   }
 
-  return [(UIKey *)self modifiersEqual:a4];
+  return [(UIKey *)self modifiersEqual:modifiers];
 }
 
 @end

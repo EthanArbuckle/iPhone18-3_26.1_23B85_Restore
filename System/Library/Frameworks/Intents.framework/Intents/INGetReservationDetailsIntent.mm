@@ -5,17 +5,17 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setReservationContainerReference:(id)a3;
-- (void)setReservationItemReferences:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setReservationContainerReference:(id)reference;
+- (void)setReservationItemReferences:(id)references;
 @end
 
 @implementation INGetReservationDetailsIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INGetReservationDetailsIntent *)self _typedBackingStore:a3];
+  v6 = [(INGetReservationDetailsIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"reservationContainerReference";
-  v3 = [(INGetReservationDetailsIntent *)self reservationContainerReference];
-  v4 = v3;
-  if (!v3)
+  reservationContainerReference = [(INGetReservationDetailsIntent *)self reservationContainerReference];
+  null = reservationContainerReference;
+  if (!reservationContainerReference)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"reservationItemReferences";
-  v11[0] = v4;
-  v5 = [(INGetReservationDetailsIntent *)self reservationItemReferences];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  reservationItemReferences = [(INGetReservationDetailsIntent *)self reservationItemReferences];
+  null2 = reservationItemReferences;
+  if (!reservationItemReferences)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!reservationItemReferences)
   {
   }
 
-  if (!v3)
+  if (!reservationContainerReference)
   {
   }
 
@@ -55,38 +55,38 @@
   return v7;
 }
 
-- (void)setReservationItemReferences:(id)a3
+- (void)setReservationItemReferences:(id)references
 {
-  v4 = a3;
-  v6 = [(INGetReservationDetailsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataStrings(v4);
+  referencesCopy = references;
+  _typedBackingStore = [(INGetReservationDetailsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataStrings(referencesCopy);
 
-  [v6 setReservationItemReferences:v5];
+  [_typedBackingStore setReservationItemReferences:v5];
 }
 
 - (NSArray)reservationItemReferences
 {
-  v2 = [(INGetReservationDetailsIntent *)self _typedBackingStore];
-  v3 = [v2 reservationItemReferences];
-  v4 = INIntentSlotValueTransformFromDataStrings(v3);
+  _typedBackingStore = [(INGetReservationDetailsIntent *)self _typedBackingStore];
+  reservationItemReferences = [_typedBackingStore reservationItemReferences];
+  v4 = INIntentSlotValueTransformFromDataStrings(reservationItemReferences);
 
   return v4;
 }
 
-- (void)setReservationContainerReference:(id)a3
+- (void)setReservationContainerReference:(id)reference
 {
-  v4 = a3;
-  v6 = [(INGetReservationDetailsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  referenceCopy = reference;
+  _typedBackingStore = [(INGetReservationDetailsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(referenceCopy);
 
-  [v6 setReservationContainerReference:v5];
+  [_typedBackingStore setReservationContainerReference:v5];
 }
 
 - (INSpeakableString)reservationContainerReference
 {
-  v2 = [(INGetReservationDetailsIntent *)self _typedBackingStore];
-  v3 = [v2 reservationContainerReference];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INGetReservationDetailsIntent *)self _typedBackingStore];
+  reservationContainerReference = [_typedBackingStore reservationContainerReference];
+  v4 = INIntentSlotValueTransformFromDataString(reservationContainerReference);
 
   return v4;
 }
@@ -108,28 +108,28 @@
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INGetReservationDetailsIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INGetReservationDetailsIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INGetReservationDetailsIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INGetReservationDetailsIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

@@ -1,28 +1,28 @@
 @interface ICNoteBaseUserActivityState
-- (ICNoteBaseUserActivityState)initWithNote:(id)a3;
-- (void)updateUserActivity:(id)a3;
+- (ICNoteBaseUserActivityState)initWithNote:(id)note;
+- (void)updateUserActivity:(id)activity;
 @end
 
 @implementation ICNoteBaseUserActivityState
 
-- (ICNoteBaseUserActivityState)initWithNote:(id)a3
+- (ICNoteBaseUserActivityState)initWithNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v11.receiver = self;
   v11.super_class = ICNoteBaseUserActivityState;
   v5 = [(ICNoteBaseUserActivityState *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (noteCopy)
     {
-      v6 = [v4 userActivityContentAttributeSet];
-      [(ICNoteBaseUserActivityState *)v5 setAttributeSet:v6];
+      userActivityContentAttributeSet = [noteCopy userActivityContentAttributeSet];
+      [(ICNoteBaseUserActivityState *)v5 setAttributeSet:userActivityContentAttributeSet];
 
-      v7 = [v4 searchIndexingIdentifier];
-      v8 = [(ICNoteBaseUserActivityState *)v5 attributeSet];
-      [v8 setRelatedUniqueIdentifier:v7];
+      searchIndexingIdentifier = [noteCopy searchIndexingIdentifier];
+      attributeSet = [(ICNoteBaseUserActivityState *)v5 attributeSet];
+      [attributeSet setRelatedUniqueIdentifier:searchIndexingIdentifier];
 
-      v9 = [MEMORY[0x277D36268] userActivityPersistentIdentifierForNote:v4];
+      v9 = [MEMORY[0x277D36268] userActivityPersistentIdentifierForNote:noteCopy];
       [(ICNoteBaseUserActivityState *)v5 setPersistentIdentifier:v9];
     }
 
@@ -35,18 +35,18 @@
   return v5;
 }
 
-- (void)updateUserActivity:(id)a3
+- (void)updateUserActivity:(id)activity
 {
-  v6 = a3;
-  v4 = [(ICNoteBaseUserActivityState *)self attributeSet];
-  [v6 setContentAttributeSet:v4];
+  activityCopy = activity;
+  attributeSet = [(ICNoteBaseUserActivityState *)self attributeSet];
+  [activityCopy setContentAttributeSet:attributeSet];
 
-  v5 = [(ICNoteBaseUserActivityState *)self persistentIdentifier];
-  [v6 setPersistentIdentifier:v5];
+  persistentIdentifier = [(ICNoteBaseUserActivityState *)self persistentIdentifier];
+  [activityCopy setPersistentIdentifier:persistentIdentifier];
 
-  [v6 setEligibleForHandoff:1];
-  [v6 setEligibleForSearch:1];
-  [v6 setEligibleForPublicIndexing:0];
+  [activityCopy setEligibleForHandoff:1];
+  [activityCopy setEligibleForSearch:1];
+  [activityCopy setEligibleForPublicIndexing:0];
 }
 
 @end

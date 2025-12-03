@@ -1,31 +1,31 @@
 @interface WFMediaRoutePickerParameter
 - (BOOL)shouldDefaultToLocalDeviceEndpoint;
 - (WFMediaRoutePicker)routePicker;
-- (WFMediaRoutePickerParameter)initWithDefinition:(id)a3;
-- (id)accessoryImageForPossibleState:(id)a3;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)localizedLabelForPossibleState:(id)a3;
-- (id)sortedStatesForAvailableRoutes:(id)a3;
+- (WFMediaRoutePickerParameter)initWithDefinition:(id)definition;
+- (id)accessoryImageForPossibleState:(id)state;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)localizedLabelForPossibleState:(id)state;
+- (id)sortedStatesForAvailableRoutes:(id)routes;
 - (int64_t)routeType;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
-- (void)routePickerDidUpdateAvailableRoutes:(id)a3;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
+- (void)routePickerDidUpdateAvailableRoutes:(id)routes;
 - (void)startDiscoveringRoutes;
 - (void)stopDiscoveringRoutes;
 @end
 
 @implementation WFMediaRoutePickerParameter
 
-- (void)routePickerDidUpdateAvailableRoutes:(id)a3
+- (void)routePickerDidUpdateAvailableRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__WFMediaRoutePickerParameter_routePickerDidUpdateAvailableRoutes___block_invoke;
   v6[3] = &unk_278C21508;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = routesCopy;
+  v5 = routesCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -48,26 +48,26 @@ void __67__WFMediaRoutePickerParameter_routePickerDidUpdateAvailableRoutes___blo
   }
 }
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 value];
-  v5 = [v4 isLocalDevice];
+  stateCopy = state;
+  value = [stateCopy value];
+  isLocalDevice = [value isLocalDevice];
 
-  if (v5)
+  if (isLocalDevice)
   {
     v6 = objc_alloc(MEMORY[0x277D79FC8]);
-    v7 = [getMPAVRoutingControllerClass() _currentDeviceRoutingIconImage];
-    v8 = [v6 initWithPlatformImage:v7];
+    _currentDeviceRoutingIconImage = [getMPAVRoutingControllerClass() _currentDeviceRoutingIconImage];
+    v8 = [v6 initWithPlatformImage:_currentDeviceRoutingIconImage];
   }
 
   else
   {
-    v7 = [v3 route];
-    if (v7)
+    _currentDeviceRoutingIconImage = [stateCopy route];
+    if (_currentDeviceRoutingIconImage)
     {
       v9 = objc_alloc(MEMORY[0x277D79FC8]);
-      v10 = [getMPAVRoutingControllerClass() _iconImageForRoute:v7];
+      v10 = [getMPAVRoutingControllerClass() _iconImageForRoute:_currentDeviceRoutingIconImage];
       v8 = [v9 initWithPlatformImage:v10];
     }
 
@@ -80,10 +80,10 @@ void __67__WFMediaRoutePickerParameter_routePickerDidUpdateAvailableRoutes___blo
   return v8;
 }
 
-- (id)sortedStatesForAvailableRoutes:(id)a3
+- (id)sortedStatesForAvailableRoutes:(id)routes
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  routesCopy = routes;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -96,7 +96,7 @@ void __67__WFMediaRoutePickerParameter_routePickerDidUpdateAvailableRoutes___blo
   v16[3] = &unk_278C1BEC8;
   v16[4] = self;
   v16[5] = &v17;
-  v5 = [v4 if_compactMap:v16];
+  v5 = [routesCopy if_compactMap:v16];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"value.routeName" ascending:1];
   v23[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
@@ -187,32 +187,32 @@ LABEL_9:
   return v8;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = [a4 value];
-  v5 = [v4 routeName];
+  value = [state value];
+  routeName = [value routeName];
 
-  return v5;
+  return routeName;
 }
 
 - (BOOL)shouldDefaultToLocalDeviceEndpoint
 {
-  v2 = [(WFMediaRoutePickerParameter *)self definition];
-  v3 = [v2 objectForKey:*MEMORY[0x277D7CE00]];
+  definition = [(WFMediaRoutePickerParameter *)self definition];
+  v3 = [definition objectForKey:*MEMORY[0x277D7CE00]];
   v4 = [v3 isEqualToString:@"Local"];
 
   return v4;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v10 = a5;
-  v6 = [(WFDynamicEnumerationParameter *)self possibleStates];
-  if (v6)
+  handlerCopy = handler;
+  possibleStates = [(WFDynamicEnumerationParameter *)self possibleStates];
+  if (possibleStates)
   {
     v7 = objc_alloc(MEMORY[0x277CD3E28]);
-    v8 = [(WFDynamicEnumerationParameter *)self possibleStates];
-    v9 = [v7 initWithItems:v8];
+    possibleStates2 = [(WFDynamicEnumerationParameter *)self possibleStates];
+    v9 = [v7 initWithItems:possibleStates2];
   }
 
   else
@@ -220,10 +220,10 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10[2](v10, v9, 0);
+  handlerCopy[2](handlerCopy, v9, 0);
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
   if ([(WFMediaRoutePickerParameter *)self shouldDefaultToLocalDeviceEndpoint])
   {
@@ -235,21 +235,21 @@ LABEL_9:
     v3 = 0;
   }
 
-  v4 = [v3 serializedRepresentation];
+  serializedRepresentation = [v3 serializedRepresentation];
 
-  return v4;
+  return serializedRepresentation;
 }
 
 - (void)stopDiscoveringRoutes
 {
-  v3 = [(WFMediaRoutePickerParameter *)self routePicker];
-  [v3 removeAvailableRoutesObserver:self];
+  routePicker = [(WFMediaRoutePickerParameter *)self routePicker];
+  [routePicker removeAvailableRoutesObserver:self];
 }
 
 - (void)startDiscoveringRoutes
 {
-  v3 = [(WFMediaRoutePickerParameter *)self routePicker];
-  [v3 addAvailableRoutesObserver:self];
+  routePicker = [(WFMediaRoutePickerParameter *)self routePicker];
+  [routePicker addAvailableRoutesObserver:self];
 }
 
 - (WFMediaRoutePicker)routePicker
@@ -267,19 +267,19 @@ LABEL_9:
   return routePicker;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v3 = [a3 value];
-  v4 = [v3 displayName];
+  value = [state value];
+  displayName = [value displayName];
 
-  return v4;
+  return displayName;
 }
 
 - (int64_t)routeType
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(WFMediaRoutePickerParameter *)self definition];
-  v3 = [v2 objectForKey:@"RouteType"];
+  definition = [(WFMediaRoutePickerParameter *)self definition];
+  v3 = [definition objectForKey:@"RouteType"];
   v4 = objc_opt_class();
   v5 = v3;
   if (v5 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -331,11 +331,11 @@ LABEL_9:
   return v9;
 }
 
-- (WFMediaRoutePickerParameter)initWithDefinition:(id)a3
+- (WFMediaRoutePickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFMediaRoutePickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

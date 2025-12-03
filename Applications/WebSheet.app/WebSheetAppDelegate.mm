@@ -1,18 +1,18 @@
 @interface WebSheetAppDelegate
-- (void)applicationDidFinishLaunching:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)handleCompleteNotificationWithRedirectURLtype:(int64_t)a3 result:(int64_t)a4;
+- (void)applicationDidFinishLaunching:(id)launching;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)handleCompleteNotificationWithRedirectURLtype:(int64_t)ltype result:(int64_t)result;
 - (void)handleDismissal;
-- (void)handleWebNavigationWithCompletionHandler:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)scrapeCredentialsUsingPOSTMessage:(id)a3 loginURL:(id)a4;
+- (void)handleWebNavigationWithCompletionHandler:(id)handler;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)scrapeCredentialsUsingPOSTMessage:(id)message loginURL:(id)l;
 @end
 
 @implementation WebSheetAppDelegate
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
-  NSLog(@"applicationDidFinishLaunching", a2, a3);
+  NSLog(@"applicationDidFinishLaunching", a2, launching);
   v4 = objc_alloc_init(WSWebSheetViewController);
   webSheetCont = self->_webSheetCont;
   self->_webSheetCont = v4;
@@ -28,7 +28,7 @@
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,7 +39,7 @@
   [(WSWebSheetViewController *)self->_webSheetCont dismissViewController:4];
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   if (self->_openWiFiPreferencesOnExit)
   {
@@ -49,22 +49,22 @@
   }
 
   [(WSWebSheetViewController *)self->_webSheetCont dismissViewController:4];
-  v6 = [(WebSheetAppDelegate *)self remotePresentationController];
-  [v6 dismissPresentationController:1];
+  remotePresentationController = [(WebSheetAppDelegate *)self remotePresentationController];
+  [remotePresentationController dismissPresentationController:1];
 }
 
-- (void)handleWebNavigationWithCompletionHandler:(id)a3
+- (void)handleWebNavigationWithCompletionHandler:(id)handler
 {
-  v10 = a3;
+  handlerCopy = handler;
   NSLog(@"handleWebNavigationWithCompletionHandler");
-  v4 = [(WebSheetAppDelegate *)self probeCompleteCompletionHandler];
+  probeCompleteCompletionHandler = [(WebSheetAppDelegate *)self probeCompleteCompletionHandler];
 
-  if (!v4)
+  if (!probeCompleteCompletionHandler)
   {
-    [(WebSheetAppDelegate *)self setProbeCompleteCompletionHandler:v10];
+    [(WebSheetAppDelegate *)self setProbeCompleteCompletionHandler:handlerCopy];
     NSLog(@"dispatching captive probe ...");
-    v5 = self;
-    v6 = [(WebSheetAppDelegate *)v5 interfaceName];
+    selfCopy = self;
+    interfaceName = [(WebSheetAppDelegate *)selfCopy interfaceName];
     v7 = CNProberCreate();
 
     if (v7)
@@ -85,41 +85,41 @@
 - (void)handleDismissal
 {
   NSLog(@"handleDismissal", a2);
-  v3 = [(WebSheetAppDelegate *)self remotePresentationController];
-  [v3 dismissPresentationController:1];
+  remotePresentationController = [(WebSheetAppDelegate *)self remotePresentationController];
+  [remotePresentationController dismissPresentationController:1];
 }
 
-- (void)handleCompleteNotificationWithRedirectURLtype:(int64_t)a3 result:(int64_t)a4
+- (void)handleCompleteNotificationWithRedirectURLtype:(int64_t)ltype result:(int64_t)result
 {
   if (self->_isCompleteNotificationHandled)
   {
-    NSLog(@"complete notification is already handled", a2, a3, a4);
+    NSLog(@"complete notification is already handled", a2, ltype, result);
   }
 
   else
   {
-    NSLog(@"handleCompleteNotificationWithRedirectURLtype, result: %ld, redireURLtype: %ld", a2, a4, a3);
-    if ((a3 - 1) < 3)
+    NSLog(@"handleCompleteNotificationWithRedirectURLtype, result: %ld, redireURLtype: %ld", a2, result, ltype);
+    if ((ltype - 1) < 3)
     {
-      v7 = a3;
+      ltypeCopy = ltype;
     }
 
     else
     {
-      v7 = 0;
+      ltypeCopy = 0;
     }
 
-    valuePtr = v7;
-    if ((a4 - 1) <= 6)
+    valuePtr = ltypeCopy;
+    if ((result - 1) <= 6)
     {
-      v8 = dword_100003BA8[a4 - 1];
+      v8 = dword_100003BA8[result - 1];
     }
 
     keys = kCNWebSheetOptionsRedirectURLType;
     values = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &valuePtr);
     CFDictionaryCreate(kCFAllocatorDefault, &keys, &values, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     CNWebsheetNotifyCompleteWithOptions();
-    if (a4 == 7)
+    if (result == 7)
     {
       v9 = +[UIApplication sharedApplication];
       [v9 setOpenWiFiPreferencesOnExit:1];
@@ -129,10 +129,10 @@
   }
 }
 
-- (void)scrapeCredentialsUsingPOSTMessage:(id)a3 loginURL:(id)a4
+- (void)scrapeCredentialsUsingPOSTMessage:(id)message loginURL:(id)l
 {
-  v6 = a4;
-  v8 = a3;
+  lCopy = l;
+  messageCopy = message;
   NSLog(@"scrapeCredentialsUsingPOSTMessage");
   interfaceName = self->_interfaceName;
   CNScrapeCredentials();

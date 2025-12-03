@@ -1,42 +1,42 @@
 @interface MOTime
-+ (id)buildSimpleMealTagIntervalsForDate:(id)a3;
-+ (id)buildSimpleTimeTagIntervalsForDate:(id)a3;
-+ (id)buildTimeTagIntervalsForDate:(id)a3;
-+ (id)dateFromDate:(id)a3 hour:(int64_t)a4;
-+ (id)dayOfWeekFromStartDate:(id)a3 endDate:(id)a4 timeZoneManager:(id)a5;
-+ (id)localTimeOfDate:(id)a3 timeZone:(id)a4;
-+ (id)timeFromStartDate:(id)a3 endDate:(id)a4 timeZoneManager:(id)a5;
-+ (id)timeOfDayPrefixFromStartDate:(id)a3 endDate:(id)a4;
-+ (id)timeStringFromTimeTag:(unint64_t)a3;
-+ (id)timeStringSingularToPluralForm:(id)a3;
-+ (unint64_t)dateReferenceTagFromStartDate:(id)a3 endDate:(id)a4;
-+ (unint64_t)dateReferenceTagFromStartDate:(id)a3 endDate:(id)a4 nowDate:(id)a5 timeZone:(id)a6;
-+ (unint64_t)dateReferenceTagFromStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5;
-+ (unint64_t)dayOfWeekTagFromDate:(id)a3;
-+ (unint64_t)dayOfWeekTagFromStartDate:(id)a3 endDate:(id)a4;
-+ (unint64_t)mealtagFromStartDate:(id)a3 endDate:(id)a4;
-+ (unint64_t)simpleTimetagFromStartDate:(id)a3 endDate:(id)a4;
-+ (unint64_t)timetagFromStartDate:(id)a3 endDate:(id)a4;
-+ (unint64_t)typeOfDayTagFromStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (MOTime)initWithCoder:(id)a3;
-- (MOTime)initWithIdentifier:(id)a3;
-- (MOTime)initWithIdentifier:(id)a3 timestamp:(double)a4 timeString:(id)a5 timeZone:(id)a6 timeTag:(unint64_t)a7;
-- (MOTime)initWithTimestamp:(double)a3 timeString:(id)a4 timeZone:(id)a5 timeTag:(unint64_t)a6;
++ (id)buildSimpleMealTagIntervalsForDate:(id)date;
++ (id)buildSimpleTimeTagIntervalsForDate:(id)date;
++ (id)buildTimeTagIntervalsForDate:(id)date;
++ (id)dateFromDate:(id)date hour:(int64_t)hour;
++ (id)dayOfWeekFromStartDate:(id)date endDate:(id)endDate timeZoneManager:(id)manager;
++ (id)localTimeOfDate:(id)date timeZone:(id)zone;
++ (id)timeFromStartDate:(id)date endDate:(id)endDate timeZoneManager:(id)manager;
++ (id)timeOfDayPrefixFromStartDate:(id)date endDate:(id)endDate;
++ (id)timeStringFromTimeTag:(unint64_t)tag;
++ (id)timeStringSingularToPluralForm:(id)form;
++ (unint64_t)dateReferenceTagFromStartDate:(id)date endDate:(id)endDate;
++ (unint64_t)dateReferenceTagFromStartDate:(id)date endDate:(id)endDate nowDate:(id)nowDate timeZone:(id)zone;
++ (unint64_t)dateReferenceTagFromStartDate:(id)date endDate:(id)endDate timeZone:(id)zone;
++ (unint64_t)dayOfWeekTagFromDate:(id)date;
++ (unint64_t)dayOfWeekTagFromStartDate:(id)date endDate:(id)endDate;
++ (unint64_t)mealtagFromStartDate:(id)date endDate:(id)endDate;
++ (unint64_t)simpleTimetagFromStartDate:(id)date endDate:(id)endDate;
++ (unint64_t)timetagFromStartDate:(id)date endDate:(id)endDate;
++ (unint64_t)typeOfDayTagFromStartDate:(id)date endDate:(id)endDate timeZone:(id)zone;
+- (BOOL)isEqual:(id)equal;
+- (MOTime)initWithCoder:(id)coder;
+- (MOTime)initWithIdentifier:(id)identifier;
+- (MOTime)initWithIdentifier:(id)identifier timestamp:(double)timestamp timeString:(id)string timeZone:(id)zone timeTag:(unint64_t)tag;
+- (MOTime)initWithTimestamp:(double)timestamp timeString:(id)string timeZone:(id)zone timeTag:(unint64_t)tag;
 - (id)date;
 - (id)description;
 - (id)localTime;
 - (id)timeZoneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOTime
 
-- (MOTime)initWithIdentifier:(id)a3
+- (MOTime)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v5 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -47,37 +47,37 @@
 
   v6 = +[NSDate date];
   [v6 timeIntervalSinceReferenceDate];
-  v7 = [(MOTime *)self initWithIdentifier:v4 timestamp:@"today" timeString:@"Unknown" timeZone:0 timeTag:?];
+  v7 = [(MOTime *)self initWithIdentifier:identifierCopy timestamp:@"today" timeString:@"Unknown" timeZone:0 timeTag:?];
 
   return v7;
 }
 
-- (MOTime)initWithTimestamp:(double)a3 timeString:(id)a4 timeZone:(id)a5 timeTag:(unint64_t)a6
+- (MOTime)initWithTimestamp:(double)timestamp timeString:(id)string timeZone:(id)zone timeTag:(unint64_t)tag
 {
-  v10 = a5;
-  v11 = a4;
+  zoneCopy = zone;
+  stringCopy = string;
   v12 = +[NSUUID UUID];
-  v13 = [(MOTime *)self initWithIdentifier:v12 timestamp:v11 timeString:v10 timeZone:a6 timeTag:a3];
+  v13 = [(MOTime *)self initWithIdentifier:v12 timestamp:stringCopy timeString:zoneCopy timeZone:tag timeTag:timestamp];
 
   return v13;
 }
 
-- (MOTime)initWithIdentifier:(id)a3 timestamp:(double)a4 timeString:(id)a5 timeZone:(id)a6 timeTag:(unint64_t)a7
+- (MOTime)initWithIdentifier:(id)identifier timestamp:(double)timestamp timeString:(id)string timeZone:(id)zone timeTag:(unint64_t)tag
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  stringCopy = string;
+  zoneCopy = zone;
   v19.receiver = self;
   v19.super_class = MOTime;
   v16 = [(MOTime *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_identifier, a3);
-    v17->_timestamp = a4;
-    objc_storeStrong(&v17->_timeString, a5);
-    objc_storeStrong(&v17->_timeZone, a6);
-    v17->_timeTag = a7;
+    objc_storeStrong(&v16->_identifier, identifier);
+    v17->_timestamp = timestamp;
+    objc_storeStrong(&v17->_timeString, string);
+    objc_storeStrong(&v17->_timeZone, zone);
+    v17->_timeTag = tag;
     v17->_dateReferenceTag = 0;
   }
 
@@ -86,12 +86,12 @@
 
 - (id)timeZoneObject
 {
-  v3 = [(MOTime *)self timeZone];
+  timeZone = [(MOTime *)self timeZone];
 
-  if (v3)
+  if (timeZone)
   {
-    v4 = [(MOTime *)self timeZone];
-    v5 = [NSTimeZone timeZoneWithName:v4];
+    timeZone2 = [(MOTime *)self timeZone];
+    v5 = [NSTimeZone timeZoneWithName:timeZone2];
   }
 
   else
@@ -114,8 +114,8 @@
   {
     [(MOTime *)self timestamp];
     v4 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-    v5 = [(MOTime *)self timeZoneObject];
-    v6 = [MOTime localTimeOfDate:v4 timeZone:v5];
+    timeZoneObject = [(MOTime *)self timeZoneObject];
+    v6 = [MOTime localTimeOfDate:v4 timeZone:timeZoneObject];
   }
 
   return v6;
@@ -138,31 +138,31 @@
   return v4;
 }
 
-+ (id)localTimeOfDate:(id)a3 timeZone:(id)a4
++ (id)localTimeOfDate:(id)date timeZone:(id)zone
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dateCopy = date;
+  zoneCopy = zone;
+  v7 = zoneCopy;
+  if (dateCopy)
   {
-    if (v6)
+    if (zoneCopy)
     {
       v8 = +[NSTimeZone systemTimeZone];
       if ([v8 isEqualToTimeZone:v7])
       {
-        v9 = v5;
+        v9 = dateCopy;
       }
 
       else
       {
-        v10 = [v7 secondsFromGMTForDate:v5];
-        v11 = v10 - [v8 secondsFromGMTForDate:v5];
-        v9 = [v5 dateByAddingTimeInterval:v11];
+        v10 = [v7 secondsFromGMTForDate:dateCopy];
+        v11 = v10 - [v8 secondsFromGMTForDate:dateCopy];
+        v9 = [dateCopy dateByAddingTimeInterval:v11];
         v12 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
           v14 = 138413314;
-          v15 = v5;
+          v15 = dateCopy;
           v16 = 2112;
           v17 = v7;
           v18 = 2112;
@@ -178,7 +178,7 @@
 
     else
     {
-      v9 = v5;
+      v9 = dateCopy;
     }
   }
 
@@ -190,24 +190,24 @@
   return v9;
 }
 
-+ (id)timeFromStartDate:(id)a3 endDate:(id)a4 timeZoneManager:(id)a5
++ (id)timeFromStartDate:(id)date endDate:(id)endDate timeZoneManager:(id)manager
 {
-  v6 = a3;
-  v7 = a5;
-  [v6 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  managerCopy = manager;
+  [dateCopy timeIntervalSinceReferenceDate];
   v9 = v8;
-  if (v7)
+  if (managerCopy)
   {
-    v10 = [v7 timeZoneAtDate:v6];
+    v10 = [managerCopy timeZoneAtDate:dateCopy];
     v11 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412802;
-      v17 = v6;
+      v17 = dateCopy;
       v18 = 2112;
       v19 = v10;
       v20 = 2112;
-      v21 = v7;
+      v21 = managerCopy;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "timeZone, date, %@, timeZone, %@, source, timeZoneManager, %@", &v16, 0x20u);
     }
   }
@@ -223,73 +223,73 @@
   }
 
   v12 = [MOTime alloc];
-  v13 = [v10 name];
-  v14 = [(MOTime *)v12 initWithTimestamp:0 timeString:v13 timeZone:0 timeTag:v9];
+  name = [v10 name];
+  v14 = [(MOTime *)v12 initWithTimestamp:0 timeString:name timeZone:0 timeTag:v9];
 
   return v14;
 }
 
-+ (id)dateFromDate:(id)a3 hour:(int64_t)a4
++ (id)dateFromDate:(id)date hour:(int64_t)hour
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 components:60 fromDate:v5];
+  v7 = [v6 components:60 fromDate:dateCopy];
 
-  [v7 setHour:a4];
+  [v7 setHour:hour];
   v8 = [v6 dateFromComponents:v7];
 
   return v8;
 }
 
-+ (id)buildTimeTagIntervalsForDate:(id)a3
++ (id)buildTimeTagIntervalsForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
   v5 = [MOTimeTagInterval alloc];
   v6 = [NSDateInterval alloc];
-  v7 = [MOTime dateFromDate:v3 hour:0];
+  v7 = [MOTime dateFromDate:dateCopy hour:0];
   v8 = [v6 initWithStartDate:v7 duration:10800.0];
   v9 = [(MOTimeTagInterval *)v5 initWithTimeTag:8 dateInterval:v8];
   [v4 addObject:v9];
 
   v10 = [MOTimeTagInterval alloc];
   v11 = [NSDateInterval alloc];
-  v12 = [MOTime dateFromDate:v3 hour:3];
+  v12 = [MOTime dateFromDate:dateCopy hour:3];
   v13 = [v11 initWithStartDate:v12 duration:21600.0];
   v14 = [(MOTimeTagInterval *)v10 initWithTimeTag:2 dateInterval:v13];
   [v4 addObject:v14];
 
   v15 = [MOTimeTagInterval alloc];
   v16 = [NSDateInterval alloc];
-  v17 = [MOTime dateFromDate:v3 hour:9];
+  v17 = [MOTime dateFromDate:dateCopy hour:9];
   v18 = [v16 initWithStartDate:v17 duration:10800.0];
   v19 = [(MOTimeTagInterval *)v15 initWithTimeTag:3 dateInterval:v18];
   [v4 addObject:v19];
 
   v20 = [MOTimeTagInterval alloc];
   v21 = [NSDateInterval alloc];
-  v22 = [MOTime dateFromDate:v3 hour:12];
+  v22 = [MOTime dateFromDate:dateCopy hour:12];
   v23 = [v21 initWithStartDate:v22 duration:10800.0];
   v24 = [(MOTimeTagInterval *)v20 initWithTimeTag:4 dateInterval:v23];
   [v4 addObject:v24];
 
   v25 = [MOTimeTagInterval alloc];
   v26 = [NSDateInterval alloc];
-  v27 = [MOTime dateFromDate:v3 hour:15];
+  v27 = [MOTime dateFromDate:dateCopy hour:15];
   v28 = [v26 initWithStartDate:v27 duration:10800.0];
   v29 = [(MOTimeTagInterval *)v25 initWithTimeTag:5 dateInterval:v28];
   [v4 addObject:v29];
 
   v30 = [MOTimeTagInterval alloc];
   v31 = [NSDateInterval alloc];
-  v32 = [MOTime dateFromDate:v3 hour:18];
+  v32 = [MOTime dateFromDate:dateCopy hour:18];
   v33 = [v31 initWithStartDate:v32 duration:10800.0];
   v34 = [(MOTimeTagInterval *)v30 initWithTimeTag:6 dateInterval:v33];
   [v4 addObject:v34];
 
   v35 = [MOTimeTagInterval alloc];
   v36 = [NSDateInterval alloc];
-  v37 = [MOTime dateFromDate:v3 hour:21];
+  v37 = [MOTime dateFromDate:dateCopy hour:21];
 
   v38 = [v36 initWithStartDate:v37 duration:10800.0];
   v39 = [(MOTimeTagInterval *)v35 initWithTimeTag:7 dateInterval:v38];
@@ -300,41 +300,41 @@
   return v40;
 }
 
-+ (id)buildSimpleTimeTagIntervalsForDate:(id)a3
++ (id)buildSimpleTimeTagIntervalsForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
   v5 = [MOTimeTagInterval alloc];
   v6 = [NSDateInterval alloc];
-  v7 = [MOTime dateFromDate:v3 hour:3];
+  v7 = [MOTime dateFromDate:dateCopy hour:3];
   v8 = [v6 initWithStartDate:v7 duration:32400.0];
   v9 = [(MOTimeTagInterval *)v5 initWithTimeTag:2 dateInterval:v8];
   [v4 addObject:v9];
 
   v10 = [MOTimeTagInterval alloc];
   v11 = [NSDateInterval alloc];
-  v12 = [MOTime dateFromDate:v3 hour:12];
+  v12 = [MOTime dateFromDate:dateCopy hour:12];
   v13 = [v11 initWithStartDate:v12 duration:21600.0];
   v14 = [(MOTimeTagInterval *)v10 initWithTimeTag:4 dateInterval:v13];
   [v4 addObject:v14];
 
   v15 = [MOTimeTagInterval alloc];
   v16 = [NSDateInterval alloc];
-  v17 = [MOTime dateFromDate:v3 hour:18];
+  v17 = [MOTime dateFromDate:dateCopy hour:18];
   v18 = [v16 initWithStartDate:v17 duration:10800.0];
   v19 = [(MOTimeTagInterval *)v15 initWithTimeTag:6 dateInterval:v18];
   [v4 addObject:v19];
 
   v20 = [MOTimeTagInterval alloc];
   v21 = [NSDateInterval alloc];
-  v22 = [MOTime dateFromDate:v3 hour:21];
+  v22 = [MOTime dateFromDate:dateCopy hour:21];
   v23 = [v21 initWithStartDate:v22 duration:21600.0];
   v24 = [(MOTimeTagInterval *)v20 initWithTimeTag:7 dateInterval:v23];
   [v4 addObject:v24];
 
   v25 = [MOTimeTagInterval alloc];
   v26 = [NSDateInterval alloc];
-  v27 = [MOTime dateFromDate:v3 hour:-3];
+  v27 = [MOTime dateFromDate:dateCopy hour:-3];
 
   v28 = [v26 initWithStartDate:v27 duration:21600.0];
   v29 = [(MOTimeTagInterval *)v25 initWithTimeTag:7 dateInterval:v28];
@@ -345,13 +345,13 @@
   return v30;
 }
 
-+ (unint64_t)timetagFromStartDate:(id)a3 endDate:(id)a4
++ (unint64_t)timetagFromStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6 || ([v5 isSameDayWithDate:v6] & 1) != 0 || (objc_msgSend(v6, "timeIntervalSinceDate:", v5), v7 <= 43200.0))
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (!endDateCopy || ([dateCopy isSameDayWithDate:endDateCopy] & 1) != 0 || (objc_msgSend(endDateCopy, "timeIntervalSinceDate:", dateCopy), v7 <= 43200.0))
   {
-    [MOTime buildTimeTagIntervalsForDate:v5];
+    [MOTime buildTimeTagIntervalsForDate:dateCopy];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -373,7 +373,7 @@ LABEL_9:
         }
 
         v15 = *(*(&v39 + 1) + 8 * v14);
-        [v15 overlapsScoreForStartDate:v5 endDate:{v6, v33}];
+        [v15 overlapsScoreForStartDate:dateCopy endDate:{endDateCopy, v33}];
         v17 = v16;
         if (v16 > 0.0)
         {
@@ -381,9 +381,9 @@ LABEL_9:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
             *buf = v33;
-            v45 = v5;
+            v45 = dateCopy;
             v46 = 2112;
-            v47 = v6;
+            v47 = endDateCopy;
             v48 = 2112;
             v49 = v15;
             v50 = 2048;
@@ -415,14 +415,14 @@ LABEL_9:
         goto LABEL_35;
       }
 
-      v29 = [v15 timetag];
+      timetag = [v15 timetag];
       v30 = +[MOTime timeStringFromTimeTag:](MOTime, "timeStringFromTimeTag:", [v15 timetag]);
       *buf = v33;
-      v45 = v5;
+      v45 = dateCopy;
       v46 = 2112;
-      v47 = v6;
+      v47 = endDateCopy;
       v48 = 2048;
-      v49 = v29;
+      v49 = timetag;
       v50 = 2112;
       v51 = *&v30;
     }
@@ -431,7 +431,7 @@ LABEL_9:
     {
 LABEL_19:
 
-      v19 = [MOTime buildSimpleTimeTagIntervalsForDate:v5];
+      v19 = [MOTime buildSimpleTimeTagIntervalsForDate:dateCopy];
 
       v37 = 0u;
       v38 = 0u;
@@ -442,7 +442,7 @@ LABEL_19:
       if (!v20)
       {
 LABEL_31:
-        v9 = 0;
+        timetag3 = 0;
 LABEL_36:
 
         goto LABEL_37;
@@ -462,7 +462,7 @@ LABEL_21:
         }
 
         v15 = *(*(&v35 + 1) + 8 * v24);
-        [v15 overlapsScoreForStartDate:v5 endDate:{v6, v34, v35}];
+        [v15 overlapsScoreForStartDate:dateCopy endDate:{endDateCopy, v34, v35}];
         v26 = v25;
         if (v25 > 0.0)
         {
@@ -470,9 +470,9 @@ LABEL_21:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
           {
             *buf = v34;
-            v45 = v5;
+            v45 = dateCopy;
             v46 = 2112;
-            v47 = v6;
+            v47 = endDateCopy;
             v48 = 2112;
             v49 = v15;
             v50 = 2048;
@@ -504,14 +504,14 @@ LABEL_21:
         goto LABEL_35;
       }
 
-      v32 = [v15 timetag];
+      timetag2 = [v15 timetag];
       v30 = +[MOTime timeStringFromTimeTag:](MOTime, "timeStringFromTimeTag:", [v15 timetag]);
       *buf = v34;
-      v45 = v5;
+      v45 = dateCopy;
       v46 = 2112;
-      v47 = v6;
+      v47 = endDateCopy;
       v48 = 2048;
-      v49 = v32;
+      v49 = timetag2;
       v50 = 2112;
       v51 = *&v30;
     }
@@ -519,7 +519,7 @@ LABEL_21:
     _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "timeOfDay, startDate, %@, endDate, %@, timetag, %lu(%@)", buf, 0x2Au);
 
 LABEL_35:
-    v9 = [v15 timetag];
+    timetag3 = [v15 timetag];
     goto LABEL_36;
   }
 
@@ -529,19 +529,19 @@ LABEL_35:
     +[MOTime timetagFromStartDate:endDate:];
   }
 
-  v9 = 0;
+  timetag3 = 0;
 LABEL_37:
 
-  return v9;
+  return timetag3;
 }
 
-+ (unint64_t)simpleTimetagFromStartDate:(id)a3 endDate:(id)a4
++ (unint64_t)simpleTimetagFromStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6 || ([v5 isSameDayWithDate:v6] & 1) != 0 || (objc_msgSend(v6, "timeIntervalSinceDate:", v5), v7 <= 43200.0))
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (!endDateCopy || ([dateCopy isSameDayWithDate:endDateCopy] & 1) != 0 || (objc_msgSend(endDateCopy, "timeIntervalSinceDate:", dateCopy), v7 <= 43200.0))
   {
-    [MOTime buildSimpleTimeTagIntervalsForDate:v5];
+    [MOTime buildSimpleTimeTagIntervalsForDate:dateCopy];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -563,7 +563,7 @@ LABEL_37:
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          [v15 overlapsScoreForStartDate:v5 endDate:{v6, v23, v24}];
+          [v15 overlapsScoreForStartDate:dateCopy endDate:{endDateCopy, v23, v24}];
           v17 = v16;
           if (v16 > 0.0)
           {
@@ -571,9 +571,9 @@ LABEL_37:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
             {
               *buf = v23;
-              v29 = v5;
+              v29 = dateCopy;
               v30 = 2112;
-              v31 = v6;
+              v31 = endDateCopy;
               v32 = 2112;
               v33 = v15;
               v34 = 2048;
@@ -587,20 +587,20 @@ LABEL_37:
             v19 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
-              v21 = [v15 timetag];
+              timetag = [v15 timetag];
               v22 = +[MOTime timeStringFromTimeTag:](MOTime, "timeStringFromTimeTag:", [v15 timetag]);
               *buf = v23;
-              v29 = v5;
+              v29 = dateCopy;
               v30 = 2112;
-              v31 = v6;
+              v31 = endDateCopy;
               v32 = 2048;
-              v33 = v21;
+              v33 = timetag;
               v34 = 2112;
               v35 = *&v22;
               _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "timeOfDay, startDate, %@, endDate, %@, timetag, %lu(%@)", buf, 0x2Au);
             }
 
-            v9 = [v15 timetag];
+            timetag2 = [v15 timetag];
             goto LABEL_23;
           }
         }
@@ -615,7 +615,7 @@ LABEL_37:
       }
     }
 
-    v9 = 0;
+    timetag2 = 0;
 LABEL_23:
   }
 
@@ -627,33 +627,33 @@ LABEL_23:
       +[MOTime timetagFromStartDate:endDate:];
     }
 
-    v9 = 0;
+    timetag2 = 0;
   }
 
-  return v9;
+  return timetag2;
 }
 
-+ (id)buildSimpleMealTagIntervalsForDate:(id)a3
++ (id)buildSimpleMealTagIntervalsForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
   v5 = [MOTimeTagInterval alloc];
   v6 = [NSDateInterval alloc];
-  v7 = [MOTime dateFromDate:v3 hour:6];
+  v7 = [MOTime dateFromDate:dateCopy hour:6];
   v8 = [v6 initWithStartDate:v7 duration:18000.0];
   v9 = [(MOTimeTagInterval *)v5 initWithTimeTag:2000 dateInterval:v8];
   [v4 addObject:v9];
 
   v10 = [MOTimeTagInterval alloc];
   v11 = [NSDateInterval alloc];
-  v12 = [MOTime dateFromDate:v3 hour:11];
+  v12 = [MOTime dateFromDate:dateCopy hour:11];
   v13 = [v11 initWithStartDate:v12 duration:10800.0];
   v14 = [(MOTimeTagInterval *)v10 initWithTimeTag:2001 dateInterval:v13];
   [v4 addObject:v14];
 
   v15 = [MOTimeTagInterval alloc];
   v16 = [NSDateInterval alloc];
-  v17 = [MOTime dateFromDate:v3 hour:17];
+  v17 = [MOTime dateFromDate:dateCopy hour:17];
 
   v18 = [v16 initWithStartDate:v17 duration:14400.0];
   v19 = [(MOTimeTagInterval *)v15 initWithTimeTag:2002 dateInterval:v18];
@@ -664,13 +664,13 @@ LABEL_23:
   return v20;
 }
 
-+ (unint64_t)mealtagFromStartDate:(id)a3 endDate:(id)a4
++ (unint64_t)mealtagFromStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6 || ([v5 isSameDayWithDate:v6] & 1) != 0 || (objc_msgSend(v6, "timeIntervalSinceDate:", v5), v7 <= 43200.0))
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (!endDateCopy || ([dateCopy isSameDayWithDate:endDateCopy] & 1) != 0 || (objc_msgSend(endDateCopy, "timeIntervalSinceDate:", dateCopy), v7 <= 43200.0))
   {
-    [MOTime buildSimpleMealTagIntervalsForDate:v5];
+    [MOTime buildSimpleMealTagIntervalsForDate:dateCopy];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -692,7 +692,7 @@ LABEL_23:
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          [v15 overlapsScoreForStartDate:v5 endDate:{v6, v23, v24}];
+          [v15 overlapsScoreForStartDate:dateCopy endDate:{endDateCopy, v23, v24}];
           v17 = v16;
           if (v16 > 0.0)
           {
@@ -700,9 +700,9 @@ LABEL_23:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
             {
               *buf = v23;
-              v29 = v5;
+              v29 = dateCopy;
               v30 = 2112;
-              v31 = v6;
+              v31 = endDateCopy;
               v32 = 2112;
               v33 = v15;
               v34 = 2048;
@@ -716,20 +716,20 @@ LABEL_23:
             v19 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
-              v21 = [v15 timetag];
+              timetag = [v15 timetag];
               v22 = +[MOTime timeStringFromTimeTag:](MOTime, "timeStringFromTimeTag:", [v15 timetag]);
               *buf = v23;
-              v29 = v5;
+              v29 = dateCopy;
               v30 = 2112;
-              v31 = v6;
+              v31 = endDateCopy;
               v32 = 2048;
-              v33 = v21;
+              v33 = timetag;
               v34 = 2112;
               v35 = *&v22;
               _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "mealType, startDate, %@, endDate, %@, timetag, %lu(%@)", buf, 0x2Au);
             }
 
-            v8 = [v15 timetag];
+            timetag2 = [v15 timetag];
             goto LABEL_21;
           }
         }
@@ -744,31 +744,31 @@ LABEL_23:
       }
     }
 
-    v8 = 0;
+    timetag2 = 0;
 LABEL_21:
   }
 
   else
   {
-    v8 = 0;
+    timetag2 = 0;
   }
 
-  return v8;
+  return timetag2;
 }
 
-+ (id)timeOfDayPrefixFromStartDate:(id)a3 endDate:(id)a4
++ (id)timeOfDayPrefixFromStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MOTime timetagFromStartDate:v5 endDate:v6];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v7 = [MOTime timetagFromStartDate:dateCopy endDate:endDateCopy];
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v18 = [MOTime timeStringFromTimeTag:v7];
     v19 = 138413058;
-    v20 = v5;
+    v20 = dateCopy;
     v21 = 2112;
-    v22 = v6;
+    v22 = endDateCopy;
     v23 = 2048;
     v24 = v7;
     v25 = 2112;
@@ -779,13 +779,13 @@ LABEL_21:
   v9 = [MOTime timeStringFromTimeTag:v7];
   if (v9)
   {
-    [v5 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v11 = v10;
     v12 = +[NSCalendar currentCalendar];
     v13 = [MOTime alloc];
-    v14 = [v12 timeZone];
-    v15 = [v14 name];
-    v16 = [(MOTime *)v13 initWithTimestamp:v9 timeString:v15 timeZone:v7 timeTag:v11];
+    timeZone = [v12 timeZone];
+    name = [timeZone name];
+    v16 = [(MOTime *)v13 initWithTimestamp:v9 timeString:name timeZone:v7 timeTag:v11];
   }
 
   else
@@ -796,13 +796,13 @@ LABEL_21:
   return v16;
 }
 
-+ (id)dayOfWeekFromStartDate:(id)a3 endDate:(id)a4 timeZoneManager:(id)a5
++ (id)dayOfWeekFromStartDate:(id)date endDate:(id)endDate timeZoneManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  managerCopy = manager;
+  v10 = managerCopy;
+  if (!managerCopy)
   {
     v11 = +[NSTimeZone systemTimeZone];
     v19 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
@@ -811,16 +811,16 @@ LABEL_21:
       +[MOTime dayOfWeekFromStartDate:endDate:timeZoneManager:];
     }
 
-    v18 = v8 != 0;
+    v18 = endDateCopy != 0;
     goto LABEL_13;
   }
 
-  v11 = [v9 timeZoneAtDate:v7];
+  v11 = [managerCopy timeZoneAtDate:dateCopy];
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v29 = 138412802;
-    v30 = v7;
+    v30 = dateCopy;
     v31 = 2112;
     v32 = v11;
     v33 = 2112;
@@ -828,32 +828,32 @@ LABEL_21:
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "timeZone, startDate, %@, timeZone, %@, source, timeZoneManager, %@", &v29, 0x20u);
   }
 
-  if (!v8)
+  if (!endDateCopy)
   {
     v18 = 0;
     goto LABEL_13;
   }
 
-  v13 = [v10 timeZoneAtDate:v7];
+  v13 = [v10 timeZoneAtDate:dateCopy];
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     +[MOTime dayOfWeekFromStartDate:endDate:timeZoneManager:];
   }
 
-  v15 = [v11 name];
-  v16 = [v13 name];
-  v17 = [v15 isEqualToString:v16];
+  name = [v11 name];
+  name2 = [v13 name];
+  v17 = [name isEqualToString:name2];
 
   if (v17)
   {
 
     v18 = 1;
 LABEL_13:
-    v13 = [MOTime localTimeOfDate:v7 timeZone:v11];
+    v13 = [MOTime localTimeOfDate:dateCopy timeZone:v11];
     if (v18)
     {
-      v20 = [MOTime localTimeOfDate:v8 timeZone:v11];
+      v20 = [MOTime localTimeOfDate:endDateCopy timeZone:v11];
     }
 
     else
@@ -865,11 +865,11 @@ LABEL_13:
     v22 = [MOTime timeStringFromTimeTag:v21];
     if (v22)
     {
-      [v7 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v24 = v23;
       v25 = [MOTime alloc];
-      v26 = [v11 name];
-      v27 = [(MOTime *)v25 initWithTimestamp:v22 timeString:v26 timeZone:v21 timeTag:v24];
+      name3 = [v11 name];
+      v27 = [(MOTime *)v25 initWithTimestamp:v22 timeString:name3 timeZone:v21 timeTag:v24];
     }
 
     else
@@ -892,35 +892,35 @@ LABEL_20:
   return v27;
 }
 
-+ (id)timeStringFromTimeTag:(unint64_t)a3
++ (id)timeStringFromTimeTag:(unint64_t)tag
 {
-  if (a3 <= 99)
+  if (tag <= 99)
   {
     v4 = @"night";
     v5 = @"midnight";
-    if (a3 != 8)
+    if (tag != 8)
     {
       v5 = 0;
     }
 
-    if (a3 != 7)
+    if (tag != 7)
     {
       v4 = v5;
     }
 
     v6 = @"preevening";
     v7 = @"evening";
-    if (a3 != 6)
+    if (tag != 6)
     {
       v7 = 0;
     }
 
-    if (a3 != 5)
+    if (tag != 5)
     {
       v6 = v7;
     }
 
-    if (a3 <= 6)
+    if (tag <= 6)
     {
       v4 = v6;
     }
@@ -928,29 +928,29 @@ LABEL_20:
     v8 = @"morning";
     v9 = @"prenoon";
     v10 = @"afternoon";
-    if (a3 != 4)
+    if (tag != 4)
     {
       v10 = 0;
     }
 
-    if (a3 != 3)
+    if (tag != 3)
     {
       v9 = v10;
     }
 
-    if (a3 != 2)
+    if (tag != 2)
     {
       v8 = v9;
     }
 
-    v11 = a3 <= 4;
+    v11 = tag <= 4;
   }
 
   else
   {
-    if (a3 <= 1999)
+    if (tag <= 1999)
     {
-      switch(a3)
+      switch(tag)
       {
         case 'd':
           result = @"today";
@@ -1007,12 +1007,12 @@ LABEL_20:
 
     v4 = @"dinner";
     v12 = @"weekend";
-    if (a3 != 10001)
+    if (tag != 10001)
     {
       v12 = 0;
     }
 
-    if (a3 == 10000)
+    if (tag == 10000)
     {
       v13 = @"weekday";
     }
@@ -1022,24 +1022,24 @@ LABEL_20:
       v13 = v12;
     }
 
-    if (a3 != 2002)
+    if (tag != 2002)
     {
       v4 = v13;
     }
 
     v8 = @"breakfast";
     v14 = @"lunch";
-    if (a3 != 2001)
+    if (tag != 2001)
     {
       v14 = 0;
     }
 
-    if (a3 != 2000)
+    if (tag != 2000)
     {
       v8 = v14;
     }
 
-    v11 = a3 <= 2001;
+    v11 = tag <= 2001;
   }
 
   if (v11)
@@ -1053,75 +1053,75 @@ LABEL_20:
   }
 }
 
-+ (id)timeStringSingularToPluralForm:(id)a3
++ (id)timeStringSingularToPluralForm:(id)form
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"morning"])
+  formCopy = form;
+  if ([formCopy isEqualToString:@"morning"])
   {
     v4 = @"mornings";
   }
 
-  else if ([v3 isEqualToString:@"afternoon"])
+  else if ([formCopy isEqualToString:@"afternoon"])
   {
     v4 = @"afternoons";
   }
 
-  else if ([v3 isEqualToString:@"evening"])
+  else if ([formCopy isEqualToString:@"evening"])
   {
     v4 = @"evenings";
   }
 
-  else if ([v3 isEqualToString:@"night"])
+  else if ([formCopy isEqualToString:@"night"])
   {
     v4 = @"nights";
   }
 
-  else if ([v3 isEqualToString:@"midnight"])
+  else if ([formCopy isEqualToString:@"midnight"])
   {
     v4 = @"midnights";
   }
 
-  else if ([v3 isEqualToString:@"Sunday"])
+  else if ([formCopy isEqualToString:@"Sunday"])
   {
     v4 = @"Sundays";
   }
 
-  else if ([v3 isEqualToString:@"Monday"])
+  else if ([formCopy isEqualToString:@"Monday"])
   {
     v4 = @"Mondays";
   }
 
-  else if ([v3 isEqualToString:@"Tuesday"])
+  else if ([formCopy isEqualToString:@"Tuesday"])
   {
     v4 = @"Tuesdays";
   }
 
-  else if ([v3 isEqualToString:@"Wednesday"])
+  else if ([formCopy isEqualToString:@"Wednesday"])
   {
     v4 = @"Wednesdays";
   }
 
-  else if ([v3 isEqualToString:@"Thursday"])
+  else if ([formCopy isEqualToString:@"Thursday"])
   {
     v4 = @"Thursdays";
   }
 
-  else if ([v3 isEqualToString:@"Friday"])
+  else if ([formCopy isEqualToString:@"Friday"])
   {
     v4 = @"Fridays";
   }
 
-  else if ([v3 isEqualToString:@"Saturday"])
+  else if ([formCopy isEqualToString:@"Saturday"])
   {
     v4 = @"Saturdays";
   }
 
-  else if ([v3 isEqualToString:@"weekday"])
+  else if ([formCopy isEqualToString:@"weekday"])
   {
     v4 = @"weekdays";
   }
 
-  else if ([v3 isEqualToString:@"weekend"])
+  else if ([formCopy isEqualToString:@"weekend"])
   {
     v4 = @"weekends";
   }
@@ -1134,42 +1134,42 @@ LABEL_20:
   return v4;
 }
 
-+ (unint64_t)typeOfDayTagFromStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5
++ (unint64_t)typeOfDayTagFromStartDate:(id)date endDate:(id)endDate timeZone:(id)zone
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
+  if (dateCopy)
   {
-    if (v8 && [v8 isBeforeDate:v7])
+    if (endDateCopy && [endDateCopy isBeforeDate:dateCopy])
     {
       v10 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        *&buf[4] = v7;
+        *&buf[4] = dateCopy;
         v29 = 2112;
-        v30 = v8;
+        v30 = endDateCopy;
         v31 = 2112;
-        v32 = v9;
+        v32 = zoneCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "typeOfDayTagFromStartDate, startDate, %@, endDate, %@, timeZone, %@, the timestamps are inverted.", buf, 0x20u);
       }
 
-      v8 = 0;
+      endDateCopy = 0;
     }
 
-    if (v9)
+    if (zoneCopy)
     {
-      v11 = [MOTime localTimeOfDate:v7 timeZone:v9];
+      v11 = [MOTime localTimeOfDate:dateCopy timeZone:zoneCopy];
 
-      if (!v8)
+      if (!endDateCopy)
       {
         goto LABEL_17;
       }
 
-      v12 = [MOTime localTimeOfDate:v8 timeZone:v9];
+      v12 = [MOTime localTimeOfDate:endDateCopy timeZone:zoneCopy];
 
-      v8 = v12;
+      endDateCopy = v12;
       if (!v12)
       {
         goto LABEL_17;
@@ -1178,14 +1178,14 @@ LABEL_20:
 
     else
     {
-      v11 = v7;
-      if (!v8)
+      v11 = dateCopy;
+      if (!endDateCopy)
       {
         goto LABEL_17;
       }
     }
 
-    if ([v8 isBeforeDate:v11])
+    if ([endDateCopy isBeforeDate:v11])
     {
       v14 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -1193,13 +1193,13 @@ LABEL_20:
         *buf = 138412802;
         *&buf[4] = v11;
         v29 = 2112;
-        v30 = v8;
+        v30 = endDateCopy;
         v31 = 2112;
-        v32 = v9;
+        v32 = zoneCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "typeOfDayTagFromStartDate, startDate, %@, endDate, %@, timeZone, %@, the timestamps are inverted after time zone shifting.", buf, 0x20u);
       }
 
-      v8 = 0;
+      endDateCopy = 0;
     }
 
 LABEL_17:
@@ -1209,7 +1209,7 @@ LABEL_17:
     v16 = [v15 rangeOfWeekendStartDate:&v27 interval:buf containingDate:v11];
     v17 = v27;
     v18 = v17;
-    if (!v8)
+    if (!endDateCopy)
     {
       if (v16)
       {
@@ -1232,7 +1232,7 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v19 = [[NSDateInterval alloc] initWithStartDate:v11 endDate:v8];
+    v19 = [[NSDateInterval alloc] initWithStartDate:v11 endDate:endDateCopy];
     [v19 duration];
     if (v20 == 0.0)
     {
@@ -1246,11 +1246,11 @@ LABEL_33:
     v22 = [v21 initWithStartDate:v18 duration:*buf];
     if ([v19 intersectsDateInterval:v22])
     {
-      v23 = [v19 startDate];
-      if ([v22 containsDate:v23])
+      startDate = [v19 startDate];
+      if ([v22 containsDate:startDate])
       {
-        v24 = [v19 endDate];
-        v25 = [v22 containsDate:v24];
+        endDate = [v19 endDate];
+        v25 = [v22 containsDate:endDate];
 
         if (v25)
         {
@@ -1278,33 +1278,33 @@ LABEL_35:
   return v13;
 }
 
-+ (unint64_t)dayOfWeekTagFromStartDate:(id)a3 endDate:(id)a4
++ (unint64_t)dayOfWeekTagFromStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6 && ![v5 isSameDayWithDate:v6])
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (endDateCopy && ![dateCopy isSameDayWithDate:endDateCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [MOTime dayOfWeekTagFromDate:v5];
+    v7 = [MOTime dayOfWeekTagFromDate:dateCopy];
   }
 
   return v7;
 }
 
-+ (unint64_t)dayOfWeekTagFromDate:(id)a3
++ (unint64_t)dayOfWeekTagFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
   [v4 setFirstWeekday:1];
-  v5 = [v4 components:512 fromDate:v3];
+  v5 = [v4 components:512 fromDate:dateCopy];
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(MOTime *)v3 dayOfWeekTagFromDate:v5, v6];
+    [(MOTime *)dateCopy dayOfWeekTagFromDate:v5, v6];
   }
 
   if ([v5 weekday] == 1)
@@ -1347,7 +1347,7 @@ LABEL_35:
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(MOTime *)v3 dayOfWeekTagFromDate:v5, v8];
+      [(MOTime *)dateCopy dayOfWeekTagFromDate:v5, v8];
     }
 
     v7 = 0;
@@ -1356,106 +1356,106 @@ LABEL_35:
   return v7;
 }
 
-+ (unint64_t)dateReferenceTagFromStartDate:(id)a3 endDate:(id)a4
++ (unint64_t)dateReferenceTagFromStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = +[NSDate date];
-  v8 = [MOTime dateReferenceTagFromStartDate:v6 endDate:v5 nowDate:v7 timeZone:0];
+  v8 = [MOTime dateReferenceTagFromStartDate:dateCopy endDate:endDateCopy nowDate:v7 timeZone:0];
 
   return v8;
 }
 
-+ (unint64_t)dateReferenceTagFromStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5
++ (unint64_t)dateReferenceTagFromStartDate:(id)date endDate:(id)endDate timeZone:(id)zone
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  dateCopy = date;
   v10 = +[NSDate date];
-  v11 = [MOTime dateReferenceTagFromStartDate:v9 endDate:v8 nowDate:v10 timeZone:v7];
+  v11 = [MOTime dateReferenceTagFromStartDate:dateCopy endDate:endDateCopy nowDate:v10 timeZone:zoneCopy];
 
   return v11;
 }
 
-+ (unint64_t)dateReferenceTagFromStartDate:(id)a3 endDate:(id)a4 nowDate:(id)a5 timeZone:(id)a6
++ (unint64_t)dateReferenceTagFromStartDate:(id)date endDate:(id)endDate nowDate:(id)nowDate timeZone:(id)zone
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v9 && v12)
+  dateCopy = date;
+  endDateCopy = endDate;
+  nowDateCopy = nowDate;
+  zoneCopy = zone;
+  v13 = zoneCopy;
+  if (dateCopy && zoneCopy)
   {
-    v14 = [MOTime localTimeOfDate:v9 timeZone:v12];
+    v14 = [MOTime localTimeOfDate:dateCopy timeZone:zoneCopy];
 
-    v9 = v14;
+    dateCopy = v14;
   }
 
-  if (v10 && v13)
+  if (endDateCopy && v13)
   {
-    v15 = [MOTime localTimeOfDate:v10 timeZone:v13];
+    v15 = [MOTime localTimeOfDate:endDateCopy timeZone:v13];
 
-    v10 = v15;
+    endDateCopy = v15;
   }
 
-  if ([v11 isBeforeDate:v9])
+  if ([nowDateCopy isBeforeDate:dateCopy])
   {
     goto LABEL_10;
   }
 
-  if (!v10)
+  if (!endDateCopy)
   {
-    if ([v11 isSameDayWithDate:v9])
+    if ([nowDateCopy isSameDayWithDate:dateCopy])
     {
 LABEL_22:
       v16 = 100;
       goto LABEL_11;
     }
 
-    if ([v11 isFollowingDayAfterDate:v9])
+    if ([nowDateCopy isFollowingDayAfterDate:dateCopy])
     {
 LABEL_25:
       v16 = 101;
       goto LABEL_11;
     }
 
-    if ([v11 isSameWeekWithDate:v9])
+    if ([nowDateCopy isSameWeekWithDate:dateCopy])
     {
 LABEL_30:
       v16 = 109;
       goto LABEL_11;
     }
 
-    if ([v11 isFollowingWeekAfterDate:v9])
+    if ([nowDateCopy isFollowingWeekAfterDate:dateCopy])
     {
 LABEL_33:
       v16 = 110;
       goto LABEL_11;
     }
 
-    if ([v11 isSameMonthWithDate:v9])
+    if ([nowDateCopy isSameMonthWithDate:dateCopy])
     {
 LABEL_38:
       v16 = 111;
       goto LABEL_11;
     }
 
-    if ([v11 isFollowingMonthAfterDate:v9])
+    if ([nowDateCopy isFollowingMonthAfterDate:dateCopy])
     {
 LABEL_41:
       v16 = 112;
       goto LABEL_11;
     }
 
-    if ([v11 isSameYearWithDate:v9])
+    if ([nowDateCopy isSameYearWithDate:dateCopy])
     {
 LABEL_46:
       v16 = 113;
       goto LABEL_11;
     }
 
-    v18 = v11;
-    v19 = v9;
+    v18 = nowDateCopy;
+    v19 = dateCopy;
 LABEL_49:
     if ([v18 isFollowingYearAfterDate:v19])
     {
@@ -1466,90 +1466,90 @@ LABEL_49:
     goto LABEL_10;
   }
 
-  if (([v11 isBeforeDate:v10] & 1) == 0)
+  if (([nowDateCopy isBeforeDate:endDateCopy] & 1) == 0)
   {
-    if ([v11 isSameDayWithDate:v9] && (objc_msgSend(v11, "isSameDayWithDate:", v10) & 1) != 0)
+    if ([nowDateCopy isSameDayWithDate:dateCopy] && (objc_msgSend(nowDateCopy, "isSameDayWithDate:", endDateCopy) & 1) != 0)
     {
       goto LABEL_22;
     }
 
-    if ([v11 isFollowingDayAfterDate:v9])
+    if ([nowDateCopy isFollowingDayAfterDate:dateCopy])
     {
-      if ([v11 isFollowingDayAfterDate:v10])
+      if ([nowDateCopy isFollowingDayAfterDate:endDateCopy])
       {
         goto LABEL_25;
       }
 
-      if (![v11 isSameWeekWithDate:v9])
+      if (![nowDateCopy isSameWeekWithDate:dateCopy])
       {
         goto LABEL_31;
       }
     }
 
-    else if (([v11 isSameWeekWithDate:v9] & 1) == 0)
+    else if (([nowDateCopy isSameWeekWithDate:dateCopy] & 1) == 0)
     {
       goto LABEL_31;
     }
 
-    if ([v11 isSameWeekWithDate:v10])
+    if ([nowDateCopy isSameWeekWithDate:endDateCopy])
     {
       goto LABEL_30;
     }
 
 LABEL_31:
-    if ([v11 isFollowingWeekAfterDate:v9])
+    if ([nowDateCopy isFollowingWeekAfterDate:dateCopy])
     {
-      if ([v11 isFollowingWeekAfterDate:v10])
+      if ([nowDateCopy isFollowingWeekAfterDate:endDateCopy])
       {
         goto LABEL_33;
       }
 
-      if (![v11 isSameMonthWithDate:v9])
+      if (![nowDateCopy isSameMonthWithDate:dateCopy])
       {
         goto LABEL_39;
       }
     }
 
-    else if (([v11 isSameMonthWithDate:v9] & 1) == 0)
+    else if (([nowDateCopy isSameMonthWithDate:dateCopy] & 1) == 0)
     {
       goto LABEL_39;
     }
 
-    if ([v11 isSameMonthWithDate:v10])
+    if ([nowDateCopy isSameMonthWithDate:endDateCopy])
     {
       goto LABEL_38;
     }
 
 LABEL_39:
-    if ([v11 isFollowingMonthAfterDate:v9])
+    if ([nowDateCopy isFollowingMonthAfterDate:dateCopy])
     {
-      if ([v11 isFollowingMonthAfterDate:v10])
+      if ([nowDateCopy isFollowingMonthAfterDate:endDateCopy])
       {
         goto LABEL_41;
       }
 
-      if ([v11 isSameYearWithDate:v9])
+      if ([nowDateCopy isSameYearWithDate:dateCopy])
       {
 LABEL_45:
-        if ([v11 isSameYearWithDate:v10])
+        if ([nowDateCopy isSameYearWithDate:endDateCopy])
         {
           goto LABEL_46;
         }
       }
     }
 
-    else if ([v11 isSameYearWithDate:v9])
+    else if ([nowDateCopy isSameYearWithDate:dateCopy])
     {
       goto LABEL_45;
     }
 
-    if (([v11 isFollowingYearAfterDate:v9] & 1) == 0)
+    if (([nowDateCopy isFollowingYearAfterDate:dateCopy] & 1) == 0)
     {
       goto LABEL_10;
     }
 
-    v18 = v11;
-    v19 = v10;
+    v18 = nowDateCopy;
+    v19 = endDateCopy;
     goto LABEL_49;
   }
 
@@ -1562,27 +1562,27 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(MOTime *)self identifier];
+  identifier = [(MOTime *)self identifier];
   [(MOTime *)self timestamp];
   v5 = v4;
-  v6 = [(MOTime *)self timeString];
-  v7 = [(MOTime *)self timeZone];
-  v8 = [(MOTime *)self localTime];
-  v9 = [NSString stringWithFormat:@"<MOTime identifier, %@, timestamp, %f, timeString, %@, timeZone, %@, localTime, %@, timeTag, %lu, dateReferenceTag, %lu>", v3, v5, v6, v7, v8, [(MOTime *)self timeTag], [(MOTime *)self dateReferenceTag]];
+  timeString = [(MOTime *)self timeString];
+  timeZone = [(MOTime *)self timeZone];
+  localTime = [(MOTime *)self localTime];
+  v9 = [NSString stringWithFormat:@"<MOTime identifier, %@, timestamp, %f, timeString, %@, timeZone, %@, localTime, %@, timeTag, %lu, dateReferenceTag, %lu>", identifier, v5, timeString, timeZone, localTime, [(MOTime *)self timeTag], [(MOTime *)self dateReferenceTag]];
 
   return v9;
 }
 
-- (MOTime)initWithCoder:(id)a3
+- (MOTime)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  [v4 decodeDoubleForKey:@"timestamp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  [coderCopy decodeDoubleForKey:@"timestamp"];
   v7 = v6;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeString"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
-  v10 = [v4 decodeInt64ForKey:@"timeTag"];
-  v11 = [v4 decodeInt64ForKey:@"dateReferenceTag"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeString"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+  v10 = [coderCopy decodeInt64ForKey:@"timeTag"];
+  v11 = [coderCopy decodeInt64ForKey:@"dateReferenceTag"];
 
   v12 = [(MOTime *)self initWithIdentifier:v5 timestamp:v8 timeString:v9 timeZone:v10 timeTag:v7];
   v13 = v12;
@@ -1594,51 +1594,51 @@ LABEL_11:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [v5 encodeObject:self->_timeString forKey:@"timeString"];
-  [v5 encodeObject:self->_timeZone forKey:@"timeZone"];
-  [v5 encodeInt64:self->_timeTag forKey:@"timeTag"];
-  [v5 encodeInt64:self->_dateReferenceTag forKey:@"dateReferenceTag"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeObject:self->_timeString forKey:@"timeString"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
+  [coderCopy encodeInt64:self->_timeTag forKey:@"timeTag"];
+  [coderCopy encodeInt64:self->_dateReferenceTag forKey:@"dateReferenceTag"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MOTime *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MOTime *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOTime *)self identifier];
-        if (v8 || ([(MOTime *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(MOTime *)self identifier];
+        if (identifier || ([(MOTime *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOTime *)self identifier];
-          v10 = [(MOTime *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(MOTime *)self identifier];
+          identifier3 = [(MOTime *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 

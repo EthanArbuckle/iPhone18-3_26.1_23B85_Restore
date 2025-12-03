@@ -1,9 +1,9 @@
 @interface UIInputSetHostView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int)textEffectsVisibilityLevel;
-- (unint64_t)_clipCornersOfView:(id)a3;
-- (void)_didChangeKeyplaneWithContext:(id)a3;
+- (unint64_t)_clipCornersOfView:(id)view;
+- (void)_didChangeKeyplaneWithContext:(id)context;
 - (void)_updateSafeAreaInsets;
 - (void)layoutIfNeeded;
 @end
@@ -20,13 +20,13 @@
   [(UIView *)self safeAreaInsets];
   if (v4 != v5)
   {
-    v6 = [(UIView *)self _rootInputWindowController];
-    v7 = [v6 bottomEdgeView];
+    _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+    bottomEdgeView = [_rootInputWindowController bottomEdgeView];
 
-    if (v7 == self)
+    if (bottomEdgeView == self)
     {
-      v8 = [(UIView *)self _rootInputWindowController];
-      [v8 updateSupportsDockViewController];
+      _rootInputWindowController2 = [(UIView *)self _rootInputWindowController];
+      [_rootInputWindowController2 updateSupportsDockViewController];
     }
   }
 }
@@ -51,22 +51,22 @@
 {
   if ([objc_opt_class() _notifyOnExplicitLayout])
   {
-    v3 = [(UIView *)self _rootInputWindowController];
-    [v3 _forcePreLayoutHostViewFrame];
+    _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+    [_rootInputWindowController _forcePreLayoutHostViewFrame];
   }
 
   if (+[UIKeyboard usesInputSystemUI])
   {
     v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v5 = [v4 remoteInputViewHost];
+    remoteInputViewHost = [v4 remoteInputViewHost];
 
-    v6 = [v5 inputViewSet];
-    v7 = [v6 hostedCustomInputView];
+    inputViewSet = [remoteInputViewHost inputViewSet];
+    hostedCustomInputView = [inputViewSet hostedCustomInputView];
 
-    if (v7)
+    if (hostedCustomInputView)
     {
-      v8 = [v5 inputViewWindow];
-      [v8 layoutIfNeeded];
+      inputViewWindow = [remoteInputViewHost inputViewWindow];
+      [inputViewWindow layoutIfNeeded];
     }
   }
 
@@ -75,21 +75,21 @@
   [(UIView *)&v9 layoutIfNeeded];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(UIView *)self _rootInputWindowController];
-  [v8 clearKeyboardSnapshot];
+  eventCopy = event;
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  [_rootInputWindowController clearKeyboardSnapshot];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(UIView *)self subviews];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  subviews = [(UIView *)self subviews];
+  v10 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -100,14 +100,14 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
         if ([v14 isUserInteractionEnabled])
         {
           [(UIView *)self convertPoint:v14 toView:x, y];
-          if ([v14 pointInside:v7 withEvent:?])
+          if ([v14 pointInside:eventCopy withEvent:?])
           {
             v15 = 1;
             goto LABEL_12;
@@ -115,7 +115,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         continue;
@@ -131,38 +131,38 @@ LABEL_12:
   return v15;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIView *)self _rootInputWindowController];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
   if (![objc_opt_class() _shouldHitTestInputViewFirst])
   {
-    v18 = [v8 placement];
-    v19 = [v18 isFloatingAssistantView];
+    placement = [_rootInputWindowController placement];
+    isFloatingAssistantView = [placement isFloatingAssistantView];
 
-    if (v19)
+    if (isFloatingAssistantView)
     {
-      v20 = [v8 inputViewSet];
-      v12 = [v20 assistantViewController];
+      inputViewSet = [_rootInputWindowController inputViewSet];
+      assistantViewController = [inputViewSet assistantViewController];
 
-      if (([v12 isInputAssistantItemEmpty] & 1) != 0 || (objc_msgSend(v8, "placement"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isCompactAssistantView"), v21, v22))
+      if (([assistantViewController isInputAssistantItemEmpty] & 1) != 0 || (objc_msgSend(_rootInputWindowController, "placement"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isCompactAssistantView"), v21, v22))
       {
-        v23 = [v12 view];
-        v24 = [v23 superview];
+        view = [assistantViewController view];
+        superview = [view superview];
 
-        v25 = [(UIView *)v24 superview];
+        v24Superview = [(UIView *)superview superview];
 
-        if (v25 == self)
+        if (v24Superview == self)
         {
-          [v12 barFrame];
+          [assistantViewController barFrame];
           v27 = v26;
           v29 = v28;
           v31 = v30;
           v33 = v32;
-          v34 = [v12 view];
-          [(UIView *)self convertRect:v34 fromView:v27, v29, v31, v33];
+          view2 = [assistantViewController view];
+          [(UIView *)self convertRect:view2 fromView:v27, v29, v31, v33];
           v36 = v35;
           v38 = v37;
           v40 = v39;
@@ -195,98 +195,98 @@ LABEL_12:
     }
 
 LABEL_16:
-    v12 = 0;
+    assistantViewController = 0;
 LABEL_17:
     v47.receiver = self;
     v47.super_class = UIInputSetHostView;
-    v17 = [(UIView *)&v47 hitTest:v7 withEvent:x, y];
+    v17 = [(UIView *)&v47 hitTest:eventCopy withEvent:x, y];
     goto LABEL_18;
   }
 
-  v9 = [v8 inputViewSet];
-  v10 = [v9 isInputViewPlaceholder];
+  inputViewSet2 = [_rootInputWindowController inputViewSet];
+  isInputViewPlaceholder = [inputViewSet2 isInputViewPlaceholder];
 
-  if (v10)
+  if (isInputViewPlaceholder)
   {
     goto LABEL_16;
   }
 
-  v11 = [v8 inputViewSet];
-  v12 = [v11 inputView];
+  inputViewSet3 = [_rootInputWindowController inputViewSet];
+  assistantViewController = [inputViewSet3 inputView];
 
-  if (+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") && ([v12 isDescendantOfView:self] & 1) == 0)
+  if (+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") && ([assistantViewController isDescendantOfView:self] & 1) == 0)
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  [(UIView *)self convertPoint:v12 toView:x, y];
-  if (!v12)
+  [(UIView *)self convertPoint:assistantViewController toView:x, y];
+  if (!assistantViewController)
   {
     goto LABEL_17;
   }
 
   v15 = v13;
   v16 = v14;
-  if (![v12 pointInside:v7 withEvent:?])
+  if (![assistantViewController pointInside:eventCopy withEvent:?])
   {
     goto LABEL_17;
   }
 
-  v17 = [v12 hitTest:v7 withEvent:{v15, v16}];
+  v17 = [assistantViewController hitTest:eventCopy withEvent:{v15, v16}];
 LABEL_18:
   v43 = v17;
   if (v17 == self)
   {
-    v44 = [(UIView *)self layer];
-    v45 = [v44 animationKeys];
-    if ([v45 count])
+    layer = [(UIView *)self layer];
+    animationKeys = [layer animationKeys];
+    if ([animationKeys count])
     {
-      v24 = v43;
+      superview = v43;
     }
 
     else
     {
-      v24 = 0;
+      superview = 0;
     }
   }
 
   else
   {
-    v24 = v17;
+    superview = v17;
   }
 
 LABEL_25:
 
-  return v24;
+  return superview;
 }
 
-- (void)_didChangeKeyplaneWithContext:(id)a3
+- (void)_didChangeKeyplaneWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 targetPlacement];
+  contextCopy = context;
+  targetPlacement = [contextCopy targetPlacement];
 
-  if (v4)
+  if (targetPlacement)
   {
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52__UIInputSetHostView__didChangeKeyplaneWithContext___block_invoke;
     v10[3] = &unk_1E7108360;
-    v11 = v3;
+    v11 = contextCopy;
     v6 = +[UIInputViewAnimationStyle animationStyleImmediate];
     [v5 performMultipleOperations:v10 withAnimationStyle:v6];
   }
 
-  if (([v3 updatePlacementOnly] & 1) == 0)
+  if (([contextCopy updatePlacementOnly] & 1) == 0)
   {
     v7 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __52__UIInputSetHostView__didChangeKeyplaneWithContext___block_invoke_2;
     v8[3] = &unk_1E7116330;
-    v9 = v3;
+    v9 = contextCopy;
     [v7 performOnControllers:v8];
   }
 }
@@ -299,16 +299,16 @@ void __52__UIInputSetHostView__didChangeKeyplaneWithContext___block_invoke(uint6
   [v3 setPlacement:v4];
 }
 
-- (unint64_t)_clipCornersOfView:(id)a3
+- (unint64_t)_clipCornersOfView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     return -1;
   }
 
-  v4 = a3;
-  v5 = [(UIView *)self _rootInputWindowController];
-  v6 = [v5 _clipCornersOfView:v4];
+  viewCopy = view;
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  v6 = [_rootInputWindowController _clipCornersOfView:viewCopy];
 
   return v6;
 }

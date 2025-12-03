@@ -1,31 +1,31 @@
 @interface VNDetectHumanRectanglesRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)upperBodyOnly;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 - (id)description;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision;
 - (void)setUpperBodyOnly:(BOOL)upperBodyOnly;
 @end
 
 @implementation VNDetectHumanRectanglesRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    v7 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:a3 error:0];
+    v7 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:revision error:0];
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
     v9 = objc_opt_class();
-    v10 = VNRequestRevisionString(v9, a3);
+    v10 = VNRequestRevisionString(v9, revision);
     v11 = NSStringFromClass(v7);
     v12 = [v8 initWithFormat:@"%@ is handled by %@", v10, v11];
 
-    *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v12];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:v12];
   }
 
   return 0;
@@ -43,27 +43,27 @@
   return v6;
 }
 
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision
 {
   v5.receiver = self;
   v5.super_class = VNDetectHumanRectanglesRequest;
-  [(VNRequest *)&v5 resolvedRevisionDidChangeFromRevision:a3];
+  [(VNRequest *)&v5 resolvedRevisionDidChangeFromRevision:revision];
   if ([(VNRequest *)self revision]<= 1)
   {
-    v4 = [(VNRequest *)self configuration];
-    [v4 setUpperBodyOnly:1];
+    configuration = [(VNRequest *)self configuration];
+    [configuration setUpperBodyOnly:1];
   }
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNDetectHumanRectanglesRequest *)self upperBodyOnly];
-  if (v5 == [v4 upperBodyOnly])
+  configurationCopy = configuration;
+  upperBodyOnly = [(VNDetectHumanRectanglesRequest *)self upperBodyOnly];
+  if (upperBodyOnly == [configurationCopy upperBodyOnly])
   {
     v8.receiver = self;
     v8.super_class = VNDetectHumanRectanglesRequest;
-    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -74,18 +74,18 @@
   return v6;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v5.receiver = self;
     v5.super_class = VNDetectHumanRectanglesRequest;
-    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VNDetectHumanRectanglesRequest *)self setUpperBodyOnly:[(VNDetectHumanRectanglesRequest *)v4 upperBodyOnly]];
+      [(VNDetectHumanRectanglesRequest *)self setUpperBodyOnly:[(VNDetectHumanRectanglesRequest *)requestCopy upperBodyOnly]];
     }
   }
 }
@@ -95,27 +95,27 @@
   v3 = upperBodyOnly;
   if ([VNDetectHumanRectanglesRequest revisionSupportsFullBodyDetection:[(VNRequest *)self resolvedRevision]])
   {
-    v5 = [(VNRequest *)self configuration];
-    [v5 setUpperBodyOnly:v3];
+    configuration = [(VNRequest *)self configuration];
+    [configuration setUpperBodyOnly:v3];
   }
 }
 
 - (BOOL)upperBodyOnly
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 upperBodyOnly];
+  configuration = [(VNRequest *)self configuration];
+  upperBodyOnly = [configuration upperBodyOnly];
 
-  return v3;
+  return upperBodyOnly;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 - 3737841664u >= 3 && a3 - 1 > 1)
+  if (revision - 3737841664u >= 3 && revision - 1 > 1)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-      *a4 = v4 = 0;
+      *error = v4 = 0;
     }
 
     else
@@ -133,32 +133,32 @@
   return v4;
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if ([a1 supportsAnyRevision:a4])
+  if ([self supportsAnyRevision:byRevision])
   {
     return 1;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___VNDetectHumanRectanglesRequest;
-  return objc_msgSendSuper2(&v8, sel_revision_mayAcceptResultsProducedByRevision_, a3, a4);
+  return objc_msgSendSuper2(&v8, sel_revision_mayAcceptResultsProducedByRevision_, revision, byRevision);
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 3)
+  if (revision - 3737841664u >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNDetectHumanRectanglesRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = off_1E77B4308[a3 - 3737841664u];
+    v5 = off_1E77B4308[revision - 3737841664u];
   }
 
   return v5;

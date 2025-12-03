@@ -1,14 +1,14 @@
 @interface PolarisSystemConfig
 - (PolarisSystemConfig)init;
-- (id)initFromPlistAtPath:(id)a3;
-- (id)strideConfigsForMode:(int64_t)a3;
+- (id)initFromPlistAtPath:(id)path;
+- (id)strideConfigsForMode:(int64_t)mode;
 @end
 
 @implementation PolarisSystemConfig
 
-- (id)initFromPlistAtPath:(id)a3
+- (id)initFromPlistAtPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v3 = sub_25EB6E268();
   }
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (id)strideConfigsForMode:(int64_t)a3
+- (id)strideConfigsForMode:(int64_t)mode
 {
-  v4 = self;
-  v5 = PolarisSystemConfig.strideConfigs(for:)(a3);
+  selfCopy = self;
+  v5 = PolarisSystemConfig.strideConfigs(for:)(mode);
 
   if (v5)
   {

@@ -1,27 +1,27 @@
 @interface PKBarcodePassDetailsNotificationSettingsSectionController
-+ (BOOL)canShowSectionforPass:(id)a3;
-+ (int64_t)_countOfRowsForPass:(id)a3;
++ (BOOL)canShowSectionforPass:(id)pass;
++ (int64_t)_countOfRowsForPass:(id)pass;
 - (BOOL)_shouldMapSection;
-- (PKBarcodePassDetailsNotificationSettingsSectionController)initWithPass:(id)a3 detailViewStyle:(int64_t)a4 delegate:(id)a5;
+- (PKBarcodePassDetailsNotificationSettingsSectionController)initWithPass:(id)pass detailViewStyle:(int64_t)style delegate:(id)delegate;
 - (PKBarcodePassDetailsNotificationSettingsSectionControllerDelegate)delegate;
-- (id)_cellForType:(int64_t)a3;
-- (id)_indexPathForRowType:(int64_t)a3;
-- (id)_settingsCellForRow:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (id)_cellForType:(int64_t)type;
+- (id)_indexPathForRowType:(int64_t)type;
+- (id)_settingsCellForRow:(unint64_t)row;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 - (int64_t)_countOfRows;
-- (unint64_t)_settingForRow:(unint64_t)a3;
-- (void)_passSettingsChanged:(id)a3;
+- (unint64_t)_settingForRow:(unint64_t)row;
+- (void)_passSettingsChanged:(id)changed;
 - (void)dealloc;
 - (void)pushSettingsFromViewToModel;
 @end
 
 @implementation PKBarcodePassDetailsNotificationSettingsSectionController
 
-- (PKBarcodePassDetailsNotificationSettingsSectionController)initWithPass:(id)a3 detailViewStyle:(int64_t)a4 delegate:(id)a5
+- (PKBarcodePassDetailsNotificationSettingsSectionController)initWithPass:(id)pass detailViewStyle:(int64_t)style delegate:(id)delegate
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  passCopy = pass;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = PKBarcodePassDetailsNotificationSettingsSectionController;
   v11 = [(PKBarcodePassDetailsNotificationSettingsSectionController *)&v18 init];
@@ -32,9 +32,9 @@
     allSectionIdentifiers = v11->_allSectionIdentifiers;
     v11->_allSectionIdentifiers = v12;
 
-    objc_storeStrong(&v11->_pass, a3);
-    v11->_detailViewStyle = a4;
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeStrong(&v11->_pass, pass);
+    v11->_detailViewStyle = style;
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     if ([(PKBarcodePassDetailsNotificationSettingsSectionController *)v11 _shouldMapSection])
     {
       v19 = @"BarcodePassNotificationsSectionIdentifier";
@@ -50,8 +50,8 @@
     v11->_sectionIdentifiers = v14;
 
     PKObservePassSettingsChanged();
-    v16 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v16 addObserver:v11 selector:sel__passSettingsChanged_ name:*MEMORY[0x1E69BBBF0] object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__passSettingsChanged_ name:*MEMORY[0x1E69BBBF0] object:0];
   }
 
   return v11;
@@ -60,20 +60,20 @@
 - (void)dealloc
 {
   PKUnregisterPassSettingsChangedObserver();
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKBarcodePassDetailsNotificationSettingsSectionController;
   [(PKBarcodePassDetailsNotificationSettingsSectionController *)&v4 dealloc];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v6 = a4;
+  pathCopy = path;
   if (PKEqualObjects())
   {
-    v7 = -[PKBarcodePassDetailsNotificationSettingsSectionController _settingsCellForRow:](self, "_settingsCellForRow:", [v6 row]);
+    v7 = -[PKBarcodePassDetailsNotificationSettingsSectionController _settingsCellForRow:](self, "_settingsCellForRow:", [pathCopy row]);
   }
 
   else
@@ -92,27 +92,27 @@
   return [v3 _countOfRowsForPass:pass];
 }
 
-- (id)_indexPathForRowType:(int64_t)a3
+- (id)_indexPathForRowType:(int64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained indexOfSectionIdentifier:@"BarcodePassNotificationsSectionIdentifier"];
 
-  if ([(PKBarcodePassDetailsNotificationSettingsSectionController *)self _countOfRows]<= a3)
+  if ([(PKBarcodePassDetailsNotificationSettingsSectionController *)self _countOfRows]<= type)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:v6];
+    v7 = [MEMORY[0x1E696AC88] indexPathForRow:type inSection:v6];
   }
 
   return v7;
 }
 
-- (id)_cellForType:(int64_t)a3
+- (id)_cellForType:(int64_t)type
 {
-  v4 = [(PKBarcodePassDetailsNotificationSettingsSectionController *)self _indexPathForRowType:a3];
+  v4 = [(PKBarcodePassDetailsNotificationSettingsSectionController *)self _indexPathForRowType:type];
   if (v4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -127,28 +127,28 @@
   return v6;
 }
 
-+ (BOOL)canShowSectionforPass:(id)a3
++ (BOOL)canShowSectionforPass:(id)pass
 {
-  v3 = a3;
-  if ([v3 isUpdatable])
+  passCopy = pass;
+  if ([passCopy isUpdatable])
   {
-    v4 = 1;
+    hasTimeOrLocationRelevancyInfo = 1;
   }
 
   else
   {
-    v4 = [v3 hasTimeOrLocationRelevancyInfo];
+    hasTimeOrLocationRelevancyInfo = [passCopy hasTimeOrLocationRelevancyInfo];
   }
 
-  return v4;
+  return hasTimeOrLocationRelevancyInfo;
 }
 
-+ (int64_t)_countOfRowsForPass:(id)a3
++ (int64_t)_countOfRowsForPass:(id)pass
 {
-  v3 = a3;
-  if ([v3 isUpdatable])
+  passCopy = pass;
+  if ([passCopy isUpdatable])
   {
-    if (([v3 settings] & 2) != 0)
+    if (([passCopy settings] & 2) != 0)
     {
       v4 = 2;
     }
@@ -164,7 +164,7 @@
     v4 = 0;
   }
 
-  v5 = v4 + [v3 hasTimeOrLocationRelevancyInfo];
+  v5 = v4 + [passCopy hasTimeOrLocationRelevancyInfo];
 
   return v5;
 }
@@ -177,13 +177,13 @@
   return [v3 canShowSectionforPass:pass];
 }
 
-- (unint64_t)_settingForRow:(unint64_t)a3
+- (unint64_t)_settingForRow:(unint64_t)row
 {
   if ([(PKPass *)self->_pass isUpdatable])
   {
-    v5 = [(PKPass *)self->_pass settings];
+    settings = [(PKPass *)self->_pass settings];
     v6 = 0;
-    if ((v5 & 2) != 0)
+    if ((settings & 2) != 0)
     {
       v7 = 1;
     }
@@ -193,7 +193,7 @@
       v7 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if ((v5 & 2) != 0)
+    if ((settings & 2) != 0)
     {
       v8 = 2;
     }
@@ -211,8 +211,8 @@
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v9 = [(PKPass *)self->_pass hasTimeOrLocationRelevancyInfo];
-  if (v9)
+  hasTimeOrLocationRelevancyInfo = [(PKPass *)self->_pass hasTimeOrLocationRelevancyInfo];
+  if (hasTimeOrLocationRelevancyInfo)
   {
     v10 = v8;
   }
@@ -222,28 +222,28 @@
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v8 + v9 <= a3)
+  if (v8 + hasTimeOrLocationRelevancyInfo <= row)
   {
     return 0;
   }
 
-  if (v6 == a3)
+  if (v6 == row)
   {
     return 2;
   }
 
-  if (v7 == a3)
+  if (v7 == row)
   {
     return 128;
   }
 
-  return v10 == a3;
+  return v10 == row;
 }
 
-- (id)_settingsCellForRow:(unint64_t)a3
+- (id)_settingsCellForRow:(unint64_t)row
 {
-  v4 = [(PKBarcodePassDetailsNotificationSettingsSectionController *)self _settingForRow:a3];
-  v5 = [(PKPass *)self->_pass settings];
+  v4 = [(PKBarcodePassDetailsNotificationSettingsSectionController *)self _settingForRow:row];
+  settings = [(PKPass *)self->_pass settings];
   switch(v4)
   {
     case 1uLL:
@@ -251,7 +251,7 @@
       v13 = PKLocalizedString(&cfstr_SettingsShowOn.isa);
       v8 = [(PKSettingTableCell *)v12 initWithTitle:v13 target:0 action:0];
 
-      [(PKSettingTableCell *)v8 setOn:v5 & 1];
+      [(PKSettingTableCell *)v8 setOn:settings & 1];
       v9 = MEMORY[0x1E69B9CD0];
       goto LABEL_7;
     case 0x80uLL:
@@ -259,7 +259,7 @@
       v11 = PKLocalizedString(&cfstr_SettingsShowNo.isa);
       v8 = [(PKSettingTableCell *)v10 initWithTitle:v11 target:0 action:0];
 
-      [(PKSettingTableCell *)v8 setOn:(v5 & 0x80) == 0];
+      [(PKSettingTableCell *)v8 setOn:(settings & 0x80) == 0];
       v9 = MEMORY[0x1E69B9438];
       goto LABEL_7;
     case 2uLL:
@@ -267,7 +267,7 @@
       v7 = PKLocalizedString(&cfstr_SettingsNotify.isa);
       v8 = [(PKSettingTableCell *)v6 initWithTitle:v7 target:0 action:0];
 
-      [(PKSettingTableCell *)v8 setOn:(v5 >> 1) & 1];
+      [(PKSettingTableCell *)v8 setOn:(settings >> 1) & 1];
       v9 = MEMORY[0x1E69B94D0];
 LABEL_7:
       [(PKSettingTableCell *)v8 setAccessibilityIdentifier:*v9];
@@ -284,13 +284,13 @@ LABEL_9:
 - (void)pushSettingsFromViewToModel
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPass *)self->_pass settings];
+  settings = [(PKPass *)self->_pass settings];
   v4 = [(PKBarcodePassDetailsNotificationSettingsSectionController *)self _cellForType:0];
   v5 = [(PKBarcodePassDetailsNotificationSettingsSectionController *)self _cellForType:1];
   v6 = [(PKBarcodePassDetailsNotificationSettingsSectionController *)self _cellForType:2];
   if (!v4)
   {
-    v7 = v3;
+    v7 = settings;
     if (!v5)
     {
       goto LABEL_9;
@@ -301,12 +301,12 @@ LABEL_9:
 
   if ([v4 isOn])
   {
-    v7 = v3 | 2;
+    v7 = settings | 2;
   }
 
   else
   {
-    v7 = v3 & 0xFFFFFFFFFFFFFFFDLL;
+    v7 = settings & 0xFFFFFFFFFFFFFFFDLL;
   }
 
   if (v5)
@@ -337,8 +337,8 @@ LABEL_9:
     }
   }
 
-  v8 = v7 ^ v3;
-  if (((v7 ^ v3) & 2) != 0)
+  v8 = v7 ^ settings;
+  if (((v7 ^ settings) & 2) != 0)
   {
     v9 = *MEMORY[0x1E69B9EF8];
     v18 = @"on";
@@ -366,28 +366,28 @@ LABEL_9:
   }
 }
 
-- (void)_passSettingsChanged:(id)a3
+- (void)_passSettingsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69BBC18]];
-  v7 = [(PKPass *)self->_pass uniqueID];
-  v8 = [v6 isEqual:v7];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69BBC18]];
+  uniqueID = [(PKPass *)self->_pass uniqueID];
+  v8 = [v6 isEqual:uniqueID];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKey:*MEMORY[0x1E69BBC10]];
+    userInfo2 = [changedCopy userInfo];
+    v10 = [userInfo2 objectForKey:*MEMORY[0x1E69BBC10]];
 
     if (v10)
     {
-      v11 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __82__PKBarcodePassDetailsNotificationSettingsSectionController__passSettingsChanged___block_invoke;
       v12[3] = &unk_1E80119C8;
       v12[4] = self;
-      v12[5] = v11;
+      v12[5] = unsignedIntegerValue;
       dispatch_async(MEMORY[0x1E69E96A0], v12);
     }
   }

@@ -1,13 +1,13 @@
 @interface MapsPieProgressLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - (MapsPieProgressLayer)init;
-- (MapsPieProgressLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (MapsPieProgressLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation MapsPieProgressLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   [(MapsPieProgressLayer *)self bounds];
   v15 = CGRectInset(v14, self->_borderLineWidth, self->_borderLineWidth);
@@ -22,38 +22,38 @@
   v16.size.width = width;
   v16.size.height = height;
   MidY = CGRectGetMidY(v16);
-  CGContextSetLineCap(a3, kCGLineCapButt);
-  CGContextSetLineJoin(a3, kCGLineJoinMiter);
-  CGContextSetLineWidth(a3, self->_borderLineWidth);
-  CGContextBeginPath(a3);
-  CGContextAddArc(a3, MidX, MidY, v9, -1.57079633, 4.71238898, 0);
-  CGContextSetStrokeColorWithColor(a3, [(UIColor *)self->_progressColor CGColor]);
-  CGContextStrokePath(a3);
-  CGContextSetLineWidth(a3, v9);
-  CGContextBeginPath(a3);
+  CGContextSetLineCap(context, kCGLineCapButt);
+  CGContextSetLineJoin(context, kCGLineJoinMiter);
+  CGContextSetLineWidth(context, self->_borderLineWidth);
+  CGContextBeginPath(context);
+  CGContextAddArc(context, MidX, MidY, v9, -1.57079633, 4.71238898, 0);
+  CGContextSetStrokeColorWithColor(context, [(UIColor *)self->_progressColor CGColor]);
+  CGContextStrokePath(context);
+  CGContextSetLineWidth(context, v9);
+  CGContextBeginPath(context);
   [(MapsPieProgressLayer *)self progress];
-  CGContextAddArc(a3, MidX, MidY, v9 * 0.5, -1.57079633, v12 * 6.28318531 + -1.57079633, 0);
-  CGContextSetStrokeColorWithColor(a3, [(UIColor *)self->_progressColor CGColor]);
+  CGContextAddArc(context, MidX, MidY, v9 * 0.5, -1.57079633, v12 * 6.28318531 + -1.57079633, 0);
+  CGContextSetStrokeColorWithColor(context, [(UIColor *)self->_progressColor CGColor]);
 
-  CGContextStrokePath(a3);
+  CGContextStrokePath(context);
 }
 
-- (MapsPieProgressLayer)initWithLayer:(id)a3
+- (MapsPieProgressLayer)initWithLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v11.receiver = self;
   v11.super_class = MapsPieProgressLayer;
-  v5 = [(MapsPieProgressLayer *)&v11 initWithLayer:v4];
+  v5 = [(MapsPieProgressLayer *)&v11 initWithLayer:layerCopy];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = layerCopy;
       -[MapsPieProgressLayer setNeedsDisplayOnBoundsChange:](v5, "setNeedsDisplayOnBoundsChange:", [v6 needsDisplayOnBoundsChange]);
       -[MapsPieProgressLayer setAllowsEdgeAntialiasing:](v5, "setAllowsEdgeAntialiasing:", [v6 allowsEdgeAntialiasing]);
-      v7 = [v6 progressColor];
-      [(MapsPieProgressLayer *)v5 setProgressColor:v7];
+      progressColor = [v6 progressColor];
+      [(MapsPieProgressLayer *)v5 setProgressColor:progressColor];
 
       [v6 borderLineWidth];
       [(MapsPieProgressLayer *)v5 setBorderLineWidth:?];
@@ -86,19 +86,19 @@
   return v3;
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"progress"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"borderLineWidth"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"progress"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"borderLineWidth"))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___MapsPieProgressLayer;
-    v5 = objc_msgSendSuper2(&v7, "needsDisplayForKey:", v4);
+    v5 = objc_msgSendSuper2(&v7, "needsDisplayForKey:", keyCopy);
   }
 
   return v5;

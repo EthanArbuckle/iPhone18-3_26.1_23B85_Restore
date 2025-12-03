@@ -1,17 +1,17 @@
 @interface HMDMediaBrowserDataSource
 - (HMDDevice)currentDevice;
 - (HMDMediaBrowserDataSource)init;
-- (id)performOperation:(id)a3;
+- (id)performOperation:(id)operation;
 @end
 
 @implementation HMDMediaBrowserDataSource
 
-- (id)performOperation:(id)a3
+- (id)performOperation:(id)operation
 {
   v3 = MEMORY[0x277D0F8F0];
-  v4 = a3;
-  v5 = [v3 defaultScheduler];
-  v6 = [v5 performOperation:v4];
+  operationCopy = operation;
+  defaultScheduler = [v3 defaultScheduler];
+  v6 = [defaultScheduler performOperation:operationCopy];
 
   return v6;
 }
@@ -19,9 +19,9 @@
 - (HMDDevice)currentDevice
 {
   v2 = +[HMDAppleAccountManager sharedManager];
-  v3 = [v2 device];
+  device = [v2 device];
 
-  return v3;
+  return device;
 }
 
 - (HMDMediaBrowserDataSource)init

@@ -1,34 +1,34 @@
 @interface MADAlphaSequenceWriter
-+ (id)transcodeSequenceData:(id)a3 maxDimension:(unint64_t)a4 outputWidth:(unint64_t *)a5 outputHeight:(unint64_t *)a6;
-+ (id)writerWithUniformTypeIdentifier:(id)a3 frameCount:(unint64_t)a4 crop:(CGRect *)a5;
++ (id)transcodeSequenceData:(id)data maxDimension:(unint64_t)dimension outputWidth:(unint64_t *)width outputHeight:(unint64_t *)height;
++ (id)writerWithUniformTypeIdentifier:(id)identifier frameCount:(unint64_t)count crop:(CGRect *)crop;
 @end
 
 @implementation MADAlphaSequenceWriter
 
-+ (id)writerWithUniformTypeIdentifier:(id)a3 frameCount:(unint64_t)a4 crop:(CGRect *)a5
++ (id)writerWithUniformTypeIdentifier:(id)identifier frameCount:(unint64_t)count crop:(CGRect *)crop
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 identifier];
-  v9 = [v8 isEqual:@"public.heics"];
+  identifierCopy = identifier;
+  identifier = [identifierCopy identifier];
+  v9 = [identifier isEqual:@"public.heics"];
 
   if (v9)
   {
-    v10 = [[MADHEICSAlphaSequenceWriter alloc] initWithFrameCount:a4 crop:a5];
+    v10 = [[MADHEICSAlphaSequenceWriter alloc] initWithFrameCount:count crop:crop];
 LABEL_8:
     v12 = v10;
     goto LABEL_9;
   }
 
-  if ([v7 isEqual:*MEMORY[0x1E6982F80]])
+  if ([identifierCopy isEqual:*MEMORY[0x1E6982F80]])
   {
     v11 = MADHEVCAlphaSequenceWriter;
 LABEL_7:
-    v10 = [[v11 alloc] initWithFrameCount:a4];
+    v10 = [[v11 alloc] initWithFrameCount:count];
     goto LABEL_8;
   }
 
-  if ([v7 isEqual:*MEMORY[0x1E6982F28]])
+  if ([identifierCopy isEqual:*MEMORY[0x1E6982F28]])
   {
     v11 = MADPNGAlphaSequenceWriter;
     goto LABEL_7;
@@ -37,7 +37,7 @@ LABEL_7:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = identifierCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Output type %@ not supported", &v14, 0xCu);
   }
 
@@ -47,7 +47,7 @@ LABEL_9:
   return v12;
 }
 
-+ (id)transcodeSequenceData:(id)a3 maxDimension:(unint64_t)a4 outputWidth:(unint64_t *)a5 outputHeight:(unint64_t *)a6
++ (id)transcodeSequenceData:(id)data maxDimension:(unint64_t)dimension outputWidth:(unint64_t *)width outputHeight:(unint64_t *)height
 {
   v11 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))

@@ -1,10 +1,10 @@
 @interface AMSURLSecurityPolicy
 + (AMSURLSecurityPolicy)defaultPolicy;
-- (AMSURLSecurityPolicy)initWithTrustMode:(int64_t)a3 pinnedCertificated:(id)a4;
-- (BOOL)_evaluateExtendedValidationWithTrust:(__SecTrust *)a3 forTask:(id)a4;
-- (BOOL)_evaluatePinnedCertificatesWithTrust:(__SecTrust *)a3 forTask:(id)a4;
+- (AMSURLSecurityPolicy)initWithTrustMode:(int64_t)mode pinnedCertificated:(id)certificated;
+- (BOOL)_evaluateExtendedValidationWithTrust:(__SecTrust *)trust forTask:(id)task;
+- (BOOL)_evaluatePinnedCertificatesWithTrust:(__SecTrust *)trust forTask:(id)task;
 - (BOOL)_shouldSkipValidation;
-- (BOOL)evaluateTrust:(__SecTrust *)a3 forTask:(id)a4;
+- (BOOL)evaluateTrust:(__SecTrust *)trust forTask:(id)task;
 @end
 
 @implementation AMSURLSecurityPolicy
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __37__AMSURLSecurityPolicy_defaultPolicy__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_158 != -1)
   {
     dispatch_once(&_MergedGlobals_158, block);
@@ -33,40 +33,40 @@ uint64_t __37__AMSURLSecurityPolicy_defaultPolicy__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (AMSURLSecurityPolicy)initWithTrustMode:(int64_t)a3 pinnedCertificated:(id)a4
+- (AMSURLSecurityPolicy)initWithTrustMode:(int64_t)mode pinnedCertificated:(id)certificated
 {
-  v7 = a4;
+  certificatedCopy = certificated;
   v11.receiver = self;
   v11.super_class = AMSURLSecurityPolicy;
   v8 = [(AMSURLSecurityPolicy *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_trustMode = a3;
-    objc_storeStrong(&v8->_pinnedCertificates, a4);
+    v8->_trustMode = mode;
+    objc_storeStrong(&v8->_pinnedCertificates, certificated);
   }
 
   return v9;
 }
 
-- (BOOL)evaluateTrust:(__SecTrust *)a3 forTask:(id)a4
+- (BOOL)evaluateTrust:(__SecTrust *)trust forTask:(id)task
 {
-  v6 = a4;
-  v7 = [(AMSURLSecurityPolicy *)self trustMode];
-  if (v7 == 2)
+  taskCopy = task;
+  trustMode = [(AMSURLSecurityPolicy *)self trustMode];
+  if (trustMode == 2)
   {
-    v8 = [(AMSURLSecurityPolicy *)self _evaluatePinnedCertificatesWithTrust:a3 forTask:v6];
+    v8 = [(AMSURLSecurityPolicy *)self _evaluatePinnedCertificatesWithTrust:trust forTask:taskCopy];
   }
 
   else
   {
-    if (v7 != 1)
+    if (trustMode != 1)
     {
       v9 = 1;
       goto LABEL_7;
     }
 
-    v8 = [(AMSURLSecurityPolicy *)self _evaluateExtendedValidationWithTrust:a3 forTask:v6];
+    v8 = [(AMSURLSecurityPolicy *)self _evaluateExtendedValidationWithTrust:trust forTask:taskCopy];
   }
 
   v9 = v8;
@@ -75,12 +75,12 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)_evaluateExtendedValidationWithTrust:(__SecTrust *)a3 forTask:(id)a4
+- (BOOL)_evaluateExtendedValidationWithTrust:(__SecTrust *)trust forTask:(id)task
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (trust)
   {
-    v6 = [AMSURLTaskInfo taskInfoForTask:a4];
+    v6 = [AMSURLTaskInfo taskInfoForTask:task];
     if ([(AMSURLSecurityPolicy *)self _shouldSkipValidation])
     {
       v7 = +[AMSLogConfig sharedURLLoadingConfig];
@@ -89,25 +89,25 @@ LABEL_7:
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v9 = objc_opt_class();
         v10 = v9;
-        v11 = [v6 properties];
-        v12 = [v11 logUUID];
+        properties = [v6 properties];
+        logUUID = [properties logUUID];
         *buf = 138543618;
         v32 = v9;
         v33 = 2114;
-        v34 = v12;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring extended validation (EV) for trust", buf, 0x16u);
+        v34 = logUUID;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring extended validation (EV) for trust", buf, 0x16u);
       }
 
       goto LABEL_8;
     }
 
     error = 0;
-    if (!SecTrustEvaluateWithError(a3, &error) || error)
+    if (!SecTrustEvaluateWithError(trust, &error) || error)
     {
       v18 = +[AMSLogConfig sharedURLLoadingConfig];
       if (!v18)
@@ -115,19 +115,19 @@ LABEL_7:
         v18 = +[AMSLogConfig sharedConfig];
       }
 
-      v19 = [v18 OSLogObject];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v18 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v20 = objc_opt_class();
-        v21 = [v6 properties];
-        v22 = [v21 logUUID];
+        properties2 = [v6 properties];
+        logUUID2 = [properties2 logUUID];
         *buf = 138543874;
         v32 = v20;
         v33 = 2114;
-        v34 = v22;
+        v34 = logUUID2;
         v35 = 2114;
         v36 = error;
-        _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid trust (EV) error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid trust (EV) error: %{public}@", buf, 0x20u);
       }
 
       if (error)
@@ -145,10 +145,10 @@ LABEL_7:
         v16 = CFDictionaryGetValue(v14, *MEMORY[0x1E697B348]);
         if (objc_opt_respondsToSelector())
         {
-          v17 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
           CFRelease(v15);
 
-          if (v17)
+          if (bOOLValue)
           {
 LABEL_8:
             v13 = 1;
@@ -170,18 +170,18 @@ LABEL_29:
         v23 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v23 OSLogObject];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v25 = objc_opt_class();
         v26 = v25;
-        v27 = [v6 properties];
-        v28 = [v27 logUUID];
+        properties3 = [v6 properties];
+        logUUID3 = [properties3 logUUID];
         *buf = 138543618;
         v32 = v25;
         v33 = 2114;
-        v34 = v28;
-        _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Trust failed extended validation (EV)", buf, 0x16u);
+        v34 = logUUID3;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Trust failed extended validation (EV)", buf, 0x16u);
       }
     }
 
@@ -192,12 +192,12 @@ LABEL_29:
   return 0;
 }
 
-- (BOOL)_evaluatePinnedCertificatesWithTrust:(__SecTrust *)a3 forTask:(id)a4
+- (BOOL)_evaluatePinnedCertificatesWithTrust:(__SecTrust *)trust forTask:(id)task
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (trust)
   {
-    v6 = [AMSURLTaskInfo taskInfoForTask:a4];
+    v6 = [AMSURLTaskInfo taskInfoForTask:task];
     if ([(AMSURLSecurityPolicy *)self _shouldSkipValidation])
     {
       v7 = +[AMSLogConfig sharedURLLoadingConfig];
@@ -206,18 +206,18 @@ LABEL_29:
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v9 = objc_opt_class();
         v10 = v9;
-        v11 = [v6 properties];
-        v12 = [v11 logUUID];
+        properties = [v6 properties];
+        logUUID = [properties logUUID];
         *buf = 138543618;
         v45 = v9;
         v46 = 2114;
-        v47 = v12;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring certificate pinning validation", buf, 0x16u);
+        v47 = logUUID;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring certificate pinning validation", buf, 0x16u);
       }
 
 LABEL_8:
@@ -232,8 +232,8 @@ LABEL_36:
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v14 = [(AMSURLSecurityPolicy *)self pinnedCertificates];
-    v15 = [v14 countByEnumeratingWithState:&v40 objects:v50 count:16];
+    pinnedCertificates = [(AMSURLSecurityPolicy *)self pinnedCertificates];
+    v15 = [pinnedCertificates countByEnumeratingWithState:&v40 objects:v50 count:16];
     if (v15)
     {
       v16 = v15;
@@ -244,22 +244,22 @@ LABEL_36:
         {
           if (*v41 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(pinnedCertificates);
           }
 
           v19 = SecCertificateCreateWithData(0, *(*(&v40 + 1) + 8 * i));
           [v7 addObject:v19];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v40 objects:v50 count:16];
+        v16 = [pinnedCertificates countByEnumeratingWithState:&v40 objects:v50 count:16];
       }
 
       while (v16);
     }
 
-    SecTrustSetAnchorCertificates(a3, v7);
+    SecTrustSetAnchorCertificates(trust, v7);
     error = 0;
-    if (!SecTrustEvaluateWithError(a3, &error) || error)
+    if (!SecTrustEvaluateWithError(trust, &error) || error)
     {
       v33 = +[AMSLogConfig sharedURLLoadingConfig];
       if (!v33)
@@ -267,19 +267,19 @@ LABEL_36:
         v33 = +[AMSLogConfig sharedConfig];
       }
 
-      v34 = [v33 OSLogObject];
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v33 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v35 = objc_opt_class();
-        v36 = [v6 properties];
-        v37 = [v36 logUUID];
+        properties2 = [v6 properties];
+        logUUID2 = [properties2 logUUID];
         *buf = 138543874;
         v45 = v35;
         v46 = 2114;
-        v47 = v37;
+        v47 = logUUID2;
         v48 = 2114;
         v49 = error;
-        _os_log_impl(&dword_192869000, v34, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid trust (pinned) error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid trust (pinned) error: %{public}@", buf, 0x20u);
       }
 
       if (error)
@@ -290,16 +290,16 @@ LABEL_36:
 
     else
     {
-      CertificateCount = SecTrustGetCertificateCount(a3);
+      CertificateCount = SecTrustGetCertificateCount(trust);
       if ((CertificateCount & 0x8000000000000000) == 0)
       {
         v21 = CertificateCount;
         do
         {
-          CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, v21);
+          CertificateAtIndex = SecTrustGetCertificateAtIndex(trust, v21);
           v23 = SecCertificateCopyData(CertificateAtIndex);
-          v24 = [(AMSURLSecurityPolicy *)self pinnedCertificates];
-          v25 = [v24 containsObject:v23];
+          pinnedCertificates2 = [(AMSURLSecurityPolicy *)self pinnedCertificates];
+          v25 = [pinnedCertificates2 containsObject:v23];
 
           if (v25)
           {
@@ -316,18 +316,18 @@ LABEL_36:
         v27 = +[AMSLogConfig sharedConfig];
       }
 
-      v28 = [v27 OSLogObject];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v27 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v29 = objc_opt_class();
         v30 = v29;
-        v31 = [v6 properties];
-        v32 = [v31 logUUID];
+        properties3 = [v6 properties];
+        logUUID3 = [properties3 logUUID];
         *buf = 138543618;
         v45 = v29;
         v46 = 2114;
-        v47 = v32;
-        _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Trust failed certificate pinning validation", buf, 0x16u);
+        v47 = logUUID3;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Trust failed certificate pinning validation", buf, 0x16u);
       }
     }
 

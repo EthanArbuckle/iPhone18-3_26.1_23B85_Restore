@@ -1,19 +1,19 @@
 @interface MCMContainerStagingPath
 + (Class)_containerClassPathClass;
-+ (id)stagingContainerPathForDestinationContainerPath:(id)a3 stagingPathIdentifier:(id)a4;
++ (id)stagingContainerPathForDestinationContainerPath:(id)path stagingPathIdentifier:(id)identifier;
 - (MCMContainerPath)destinationContainerPath;
-- (void)setDestinationContainerPath:(id)a3;
+- (void)setDestinationContainerPath:(id)path;
 @end
 
 @implementation MCMContainerStagingPath
 
-- (void)setDestinationContainerPath:(id)a3
+- (void)setDestinationContainerPath:(id)path
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_destinationContainerPath = &self->_destinationContainerPath;
 
-  objc_storeStrong(p_destinationContainerPath, a3);
+  objc_storeStrong(p_destinationContainerPath, path);
 }
 
 - (MCMContainerPath)destinationContainerPath
@@ -24,16 +24,16 @@
   return result;
 }
 
-+ (id)stagingContainerPathForDestinationContainerPath:(id)a3 stagingPathIdentifier:(id)a4
++ (id)stagingContainerPathForDestinationContainerPath:(id)path stagingPathIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 containerClassPath];
-  v8 = [v7 userIdentity];
-  v9 = +[MCMContainerPath containerPathForUserIdentity:containerClass:containerPathIdentifier:](MCMContainerStagingPath, "containerPathForUserIdentity:containerClass:containerPathIdentifier:", v8, [v7 containerClass], v5);
+  identifierCopy = identifier;
+  pathCopy = path;
+  containerClassPath = [pathCopy containerClassPath];
+  userIdentity = [containerClassPath userIdentity];
+  v9 = +[MCMContainerPath containerPathForUserIdentity:containerClass:containerPathIdentifier:](MCMContainerStagingPath, "containerPathForUserIdentity:containerClass:containerPathIdentifier:", userIdentity, [containerClassPath containerClass], identifierCopy);
 
-  [v9 setDestinationContainerPath:v6];
+  [v9 setDestinationContainerPath:pathCopy];
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;

@@ -1,43 +1,43 @@
 @interface SUSUIScheduleUpdateViewController
-+ (id)majorOSVersionStringForBuildVersion:(id)a3;
-- (SUSUIScheduleUpdateViewController)initWithDescriptor:(id)a3;
-- (id)buildSUSettingsAction:(unint64_t)a3;
++ (id)majorOSVersionStringForBuildVersion:(id)version;
+- (SUSUIScheduleUpdateViewController)initWithDescriptor:(id)descriptor;
+- (id)buildSUSettingsAction:(unint64_t)action;
 - (id)updateIcon;
-- (void)cancellationDialogRemindMeLaterButtonTapped:(id)a3;
-- (void)handleCancelButtonTapped:(id)a3;
-- (void)handleUpdateNowButtonTapped:(id)a3;
-- (void)handleUpdateTonightButtonTapped:(id)a3;
+- (void)cancellationDialogRemindMeLaterButtonTapped:(id)tapped;
+- (void)handleCancelButtonTapped:(id)tapped;
+- (void)handleUpdateNowButtonTapped:(id)tapped;
+- (void)handleUpdateTonightButtonTapped:(id)tapped;
 - (void)performUpdateNow;
 - (void)performUpdateTonight;
-- (void)remoteLaggardsUIHostingControllerWillCancelOperation:(id)a3 withCompletionBlock:(id)a4;
+- (void)remoteLaggardsUIHostingControllerWillCancelOperation:(id)operation withCompletionBlock:(id)block;
 @end
 
 @implementation SUSUIScheduleUpdateViewController
 
-- (SUSUIScheduleUpdateViewController)initWithDescriptor:(id)a3
+- (SUSUIScheduleUpdateViewController)initWithDescriptor:(id)descriptor
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v29->_descriptor, location[0]);
-  v13 = v29;
+  objc_storeStrong(location, descriptor);
+  objc_storeStrong(&selfCopy->_descriptor, location[0]);
+  v13 = selfCopy;
   v23 = +[NSBundle mainBundle];
   v22 = [NSBundle localizedStringForKey:v23 value:"localizedStringForKey:value:table:" table:@"SCHEDULE_UPDATE_SCREEN_TITLE"];
-  v21 = [location[0] productSystemName];
-  v20 = [location[0] productVersion];
+  productSystemName = [location[0] productSystemName];
+  productVersion = [location[0] productVersion];
   v19 = [SUSUIScheduleUpdateViewController majorOSVersionStringForBuildVersion:?];
-  v18 = [NSString stringWithFormat:v22, v21, v19];
+  v18 = [NSString stringWithFormat:v22, productSystemName, v19];
   v17 = +[NSBundle mainBundle];
   v16 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"SCHEDULE_UPDATE_DESCRIPTION"];
   v15 = [NSBundle localizedStringForKey:v17 value:"localizedStringForKey:value:table:" table:?];
-  v14 = [(SUSUIScheduleUpdateViewController *)v29 updateIcon];
-  v29 = 0;
+  updateIcon = [(SUSUIScheduleUpdateViewController *)selfCopy updateIcon];
+  selfCopy = 0;
   v27.receiver = v13;
   v27.super_class = SUSUIScheduleUpdateViewController;
   v24 = [(SUSUIScheduleUpdateViewController *)&v27 initWithTitle:v18 detailText:v15 icon:?];
-  v29 = v24;
-  objc_storeStrong(&v29, v24);
+  selfCopy = v24;
+  objc_storeStrong(&selfCopy, v24);
 
   if (v24)
   {
@@ -47,9 +47,9 @@
     v6 = [NSBundle localizedStringForKey:v7 value:"localizedStringForKey:value:table:" table:@"SCHEDULE_UPDATE_UPDATE_NOW_BUTTON"];
     [v5 setTitle:? forState:?];
 
-    [v26 addTarget:v29 action:"handleUpdateNowButtonTapped:" forControlEvents:?];
-    v8 = [(SUSUIScheduleUpdateViewController *)v29 buttonTray];
-    [v8 addButton:v26];
+    [v26 addTarget:selfCopy action:"handleUpdateNowButtonTapped:" forControlEvents:?];
+    buttonTray = [(SUSUIScheduleUpdateViewController *)selfCopy buttonTray];
+    [buttonTray addButton:v26];
 
     v25 = +[OBLinkTrayButton linkButton];
     v9 = v25;
@@ -57,27 +57,27 @@
     v10 = [(NSBundle *)v11 localizedStringForKey:@"SCHEDULE_UPDATE_UPDATE_TONIGHT_BUTTON" value:&stru_100018B80 table:@"SoftwareUpdateUIService"];
     [v9 setTitle:? forState:?];
 
-    [v25 addTarget:v29 action:"handleUpdateTonightButtonTapped:" forControlEvents:64];
-    v12 = [(SUSUIScheduleUpdateViewController *)v29 buttonTray];
-    [v12 addButton:v25];
+    [v25 addTarget:selfCopy action:"handleUpdateTonightButtonTapped:" forControlEvents:64];
+    buttonTray2 = [(SUSUIScheduleUpdateViewController *)selfCopy buttonTray];
+    [buttonTray2 addButton:v25];
 
-    [(SUSUIScheduleUpdateViewController *)v29 becomeFirstResponder];
+    [(SUSUIScheduleUpdateViewController *)selfCopy becomeFirstResponder];
     objc_storeStrong(&v25, 0);
     objc_storeStrong(&v26, 0);
   }
 
-  v4 = v29;
+  v4 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
-- (void)handleUpdateNowButtonTapped:(id)a3
+- (void)handleUpdateNowButtonTapped:(id)tapped
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   oslog = SUSUILogLaggardsUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -86,16 +86,16 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUSUIScheduleUpdateViewController *)v5 performUpdateNow];
+  [(SUSUIScheduleUpdateViewController *)selfCopy performUpdateNow];
   objc_storeStrong(location, 0);
 }
 
-- (void)handleUpdateTonightButtonTapped:(id)a3
+- (void)handleUpdateTonightButtonTapped:(id)tapped
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   oslog = SUSUILogLaggardsUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,16 +104,16 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUSUIScheduleUpdateViewController *)v5 performUpdateTonight];
+  [(SUSUIScheduleUpdateViewController *)selfCopy performUpdateTonight];
   objc_storeStrong(location, 0);
 }
 
-- (void)handleCancelButtonTapped:(id)a3
+- (void)handleCancelButtonTapped:(id)tapped
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   oslog = SUSUILogLaggardsUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -125,29 +125,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)cancellationDialogRemindMeLaterButtonTapped:(id)a3
+- (void)cancellationDialogRemindMeLaterButtonTapped:(id)tapped
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   objc_storeStrong(location, 0);
 }
 
 - (id)updateIcon
 {
-  v4 = [(SUDescriptor *)self->_descriptor documentation];
-  v5 = [v4 iconImage];
+  documentation = [(SUDescriptor *)self->_descriptor documentation];
+  iconImage = [documentation iconImage];
   v10 = 0;
   v8 = 0;
   v6 = 0;
-  if (v5)
+  if (iconImage)
   {
-    v11 = [(SUDescriptor *)self->_descriptor documentation];
+    documentation2 = [(SUDescriptor *)self->_descriptor documentation];
     v10 = 1;
-    v9 = [v11 iconImage];
+    iconImage2 = [documentation2 iconImage];
     v8 = 1;
-    v2 = v9;
+    v2 = iconImage2;
   }
 
   else
@@ -173,19 +173,19 @@
   return v13;
 }
 
-+ (id)majorOSVersionStringForBuildVersion:(id)a3
++ (id)majorOSVersionStringForBuildVersion:(id)version
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v8 = 0;
   if (location[0])
   {
     v7 = [location[0] componentsSeparatedByString:@"."];
-    v3 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     v4 = v8;
-    v8 = v3;
+    v8 = firstObject;
   }
 
   v6 = v8;
@@ -211,7 +211,7 @@
 
 - (void)performUpdateTonight
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = SUSUILogLaggardsUI();
   v8 = OS_LOG_TYPE_DEFAULT;
@@ -219,7 +219,7 @@
   {
     log = v9[0];
     type = v8;
-    v6 = [(SUSUIScheduleUpdateViewController *)v10 buildSUSettingsAction:1];
+    v6 = [(SUSUIScheduleUpdateViewController *)selfCopy buildSUSettingsAction:1];
     v7 = v6;
     sub_100006BC8(v11, "[SUSUIScheduleUpdateViewController performUpdateTonight]", v7);
     _os_log_impl(&_mh_execute_header, log, type, "%s: Opening the Software Update Settings pane with URL: %@", v11, 0x16u);
@@ -229,26 +229,26 @@
 
   objc_storeStrong(v9, 0);
   v3 = +[LSApplicationWorkspace defaultWorkspace];
-  v2 = [(SUSUIScheduleUpdateViewController *)v10 buildSUSettingsAction:2];
+  v2 = [(SUSUIScheduleUpdateViewController *)selfCopy buildSUSettingsAction:2];
   [v3 openSensitiveURL:? withOptions:?];
 
-  [(SUSUIScheduleUpdateViewController *)v10 dismissViewControllerAnimated:1 completion:0];
+  [(SUSUIScheduleUpdateViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)buildSUSettingsAction:(unint64_t)a3
+- (id)buildSUSettingsAction:(unint64_t)action
 {
   location[3] = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = action;
   location[0] = 0;
-  if (a3 == 1)
+  if (action == 1)
   {
     objc_storeStrong(location, @"SUSUIUpdateNowAction");
   }
 
   else
   {
-    if (a3 != 2)
+    if (action != 2)
     {
       v7 = 0;
       goto LABEL_7;
@@ -267,14 +267,14 @@ LABEL_7:
   return v3;
 }
 
-- (void)remoteLaggardsUIHostingControllerWillCancelOperation:(id)a3 withCompletionBlock:(id)a4
+- (void)remoteLaggardsUIHostingControllerWillCancelOperation:(id)operation withCompletionBlock:(id)block
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, block);
   v9 = +[NSBundle mainBundle];
   v8 = [NSBundle localizedStringForKey:v9 value:"localizedStringForKey:value:table:" table:@"SCHEDULE_UPDATE_CANCELLATION_TITLE"];
   v7 = +[NSBundle mainBundle];
@@ -300,13 +300,13 @@ LABEL_7:
   v17 = 3221225472;
   v18 = sub_100007400;
   v19 = &unk_100018A40;
-  v20 = v31;
+  v20 = selfCopy;
   v21[0] = v29;
   v13 = [UIAlertAction actionWithTitle:v14 style:0 handler:?];
   [(UIAlertController *)v12 addAction:?];
 
   [(UIAlertController *)v28 setPreferredAction:v27];
-  [(SUSUIScheduleUpdateViewController *)v31 presentViewController:v28 animated:1 completion:0];
+  [(SUSUIScheduleUpdateViewController *)selfCopy presentViewController:v28 animated:1 completion:0];
   objc_storeStrong(v21, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v27, 0);

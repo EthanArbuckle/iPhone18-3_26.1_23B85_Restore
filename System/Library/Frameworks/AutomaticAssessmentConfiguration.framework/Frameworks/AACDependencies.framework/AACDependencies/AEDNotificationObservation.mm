@@ -2,7 +2,7 @@
 - (void)dealloc;
 - (void)endObserving;
 - (void)invalidate;
-- (void)notificationDidFire:(id)a3;
+- (void)notificationDidFire:(id)fire;
 @end
 
 @implementation AEDNotificationObservation
@@ -40,13 +40,13 @@ void __50__AEDNotificationObservation_notificationDidFire___block_invoke(uint64_
 
 - (void)endObserving
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16);
-    v3 = *(a1 + 32);
-    v4 = *(a1 + 8);
+    v2 = *(self + 16);
+    v3 = *(self + 32);
+    v4 = *(self + 8);
     v5 = v2;
-    [v5 removeObserver:a1 name:v4 object:v3];
+    [v5 removeObserver:self name:v4 object:v3];
   }
 }
 
@@ -75,9 +75,9 @@ void __50__AEDNotificationObservation_notificationDidFire___block_invoke(uint64_
   objc_destroyWeak(&location);
 }
 
-- (void)notificationDidFire:(id)a3
+- (void)notificationDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   objc_initWeak(&location, self);
   if (self)
   {
@@ -95,8 +95,8 @@ void __50__AEDNotificationObservation_notificationDidFire___block_invoke(uint64_
   block[3] = &unk_278A0C468;
   v6 = queue;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = fireCopy;
+  v7 = fireCopy;
   dispatch_async(v6, block);
 
   objc_destroyWeak(&v10);

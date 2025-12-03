@@ -1,23 +1,23 @@
 @interface VCMediaNegotiatorBase
-+ (BOOL)featureListStringsRequiredForMediaType:(unsigned __int8)a3;
-+ (BOOL)isU1StreamGroup:(unsigned int)a3;
-+ (BOOL)selectBestVideoRuleForTransport:(unsigned __int8)a3 payload:(int)a4 encodingType:(unsigned __int8)a5 videoSettings:(id)a6 localVideoRuleCollection:(id)a7 remoteVideoRuleCollection:(id)a8;
-+ (BOOL)v1FeatureListStringsSupportedForMediaType:(unsigned __int8)a3;
-+ (id)getPreferredVideoPayloadList:(id)a3 localSupportedPayloads:(id)a4 mediaType:(unsigned __int8)a5;
-+ (id)negotiateVideoMaxResolutionWithEncodeRules:(id)a3 decodeRules:(id)a4 isEncoder:(BOOL)a5;
-+ (id)newNegotiatedAudioPayloadsWithLocalPayloads:(id)a3 remotePayloads:(id)a4;
-+ (id)preferredPayloadsForMediaType:(unsigned __int8)a3;
-+ (unsigned)featureListStringTypeForMediaType:(unsigned __int8)a3;
-+ (void)applyCellularPreferredRule:(id)a3;
-+ (void)setupNegotiatedAudioPayloads:(id)a3 negotiatedAudioSettings:(id)a4 primaryPayloadPreference:(id)a5;
++ (BOOL)featureListStringsRequiredForMediaType:(unsigned __int8)type;
++ (BOOL)isU1StreamGroup:(unsigned int)group;
++ (BOOL)selectBestVideoRuleForTransport:(unsigned __int8)transport payload:(int)payload encodingType:(unsigned __int8)type videoSettings:(id)settings localVideoRuleCollection:(id)collection remoteVideoRuleCollection:(id)ruleCollection;
++ (BOOL)v1FeatureListStringsSupportedForMediaType:(unsigned __int8)type;
++ (id)getPreferredVideoPayloadList:(id)list localSupportedPayloads:(id)payloads mediaType:(unsigned __int8)type;
++ (id)negotiateVideoMaxResolutionWithEncodeRules:(id)rules decodeRules:(id)decodeRules isEncoder:(BOOL)encoder;
++ (id)newNegotiatedAudioPayloadsWithLocalPayloads:(id)payloads remotePayloads:(id)remotePayloads;
++ (id)preferredPayloadsForMediaType:(unsigned __int8)type;
++ (unsigned)featureListStringTypeForMediaType:(unsigned __int8)type;
++ (void)applyCellularPreferredRule:(id)rule;
++ (void)setupNegotiatedAudioPayloads:(id)payloads negotiatedAudioSettings:(id)settings primaryPayloadPreference:(id)preference;
 - (BOOL)setUpU1MediaSettings;
-- (VCMediaNegotiatorBase)initWithLocalSettings:(id)a3;
+- (VCMediaNegotiatorBase)initWithLocalSettings:(id)settings;
 - (VCMediaNegotiatorResultsAudio)negotiatedAudioSettings;
 - (VCMediaNegotiatorResultsVideo)negotiatedScreenSettings;
 - (VCMediaNegotiatorResultsVideo)negotiatedVideoSettings;
-- (id)negotiatedResultsForGroupID:(unsigned int)a3;
-- (id)negotiatedResultsForGroupID:(unsigned int)a3 localU1Config:(id)a4 remoteU1Config:(id)a5;
-- (id)negotiatedStreamGroupConfigForGroupID:(unsigned int)a3 negotiatedStreamGroupConfigs:(id)a4;
+- (id)negotiatedResultsForGroupID:(unsigned int)d;
+- (id)negotiatedResultsForGroupID:(unsigned int)d localU1Config:(id)config remoteU1Config:(id)u1Config;
+- (id)negotiatedStreamGroupConfigForGroupID:(unsigned int)d negotiatedStreamGroupConfigs:(id)configs;
 - (void)dealloc;
 - (void)setUpU1MediaSettings;
 @end
@@ -79,7 +79,7 @@
   }
 }
 
-- (VCMediaNegotiatorBase)initWithLocalSettings:(id)a3
+- (VCMediaNegotiatorBase)initWithLocalSettings:(id)settings
 {
   v27 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -87,17 +87,17 @@
   v4 = [(VCMediaNegotiatorBase *)&v16 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_localSettings = v5;
-    v6 = [(VCMediaNegotiatorLocalConfiguration *)v5 mediaConfigurationForMediaType:1];
+    settingsCopy = settings;
+    v4->_localSettings = settingsCopy;
+    v6 = [(VCMediaNegotiatorLocalConfiguration *)settingsCopy mediaConfigurationForMediaType:1];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
       v8 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(VCMediaNegotiatorLocalConfiguration *)v4->_localSettings preferredAudioCodec];
-        v10 = [v6 allowAudioSwitching];
+        preferredAudioCodec = [(VCMediaNegotiatorLocalConfiguration *)v4->_localSettings preferredAudioCodec];
+        allowAudioSwitching = [v6 allowAudioSwitching];
         *buf = 136316162;
         v18 = v7;
         v19 = 2080;
@@ -105,9 +105,9 @@
         v21 = 1024;
         v22 = 70;
         v23 = 1024;
-        v24 = v9;
+        v24 = preferredAudioCodec;
         v25 = 1024;
-        v26 = v10;
+        v26 = allowAudioSwitching;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Local preferredAudioCodec=%u, allowAudioSwitching=%{BOOL}d", buf, 0x28u);
       }
     }
@@ -190,14 +190,14 @@
   return v2;
 }
 
-- (id)negotiatedStreamGroupConfigForGroupID:(unsigned int)a3 negotiatedStreamGroupConfigs:(id)a4
+- (id)negotiatedStreamGroupConfigForGroupID:(unsigned int)d negotiatedStreamGroupConfigs:(id)configs
 {
   v30 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  v6 = [configs countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -208,18 +208,18 @@ LABEL_3:
     {
       if (*v27 != v8)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(configs);
       }
 
       v10 = *(*(&v26 + 1) + 8 * v9);
-      if ([v10 groupID] == a3)
+      if ([v10 groupID] == d)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [a4 countByEnumeratingWithState:&v26 objects:v25 count:16];
+        v7 = [configs countByEnumeratingWithState:&v26 objects:v25 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -242,7 +242,7 @@ LABEL_3:
         v21 = 1024;
         v22 = 154;
         v23 = 2080;
-        v24 = FourccToCStr(a3);
+        v24 = FourccToCStr(d);
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Found one to one stream group for groupID=%s", &v17, 0x26u);
       }
     }
@@ -260,7 +260,7 @@ LABEL_14:
     v14 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v15 = FourccToCStr(a3);
+      v15 = FourccToCStr(d);
       v17 = 136315906;
       v18 = v13;
       v19 = 2080;
@@ -277,26 +277,26 @@ LABEL_14:
   return v10;
 }
 
-- (id)negotiatedResultsForGroupID:(unsigned int)a3
+- (id)negotiatedResultsForGroupID:(unsigned int)d
 {
-  v3 = -[NSMutableDictionary objectForKeyedSubscript:](self->_negotiatedU1MediaSettings, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCMediaNegotiatorMediaType_MediaTypeFromStreamGroupID(a3)]);
+  v3 = -[NSMutableDictionary objectForKeyedSubscript:](self->_negotiatedU1MediaSettings, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCMediaNegotiatorMediaType_MediaTypeFromStreamGroupID(d)]);
 
   return v3;
 }
 
-+ (BOOL)featureListStringsRequiredForMediaType:(unsigned __int8)a3
++ (BOOL)featureListStringsRequiredForMediaType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3 - 2;
-  if (a3 - 2) < 5 && ((0x1Bu >> v5))
+  v5 = type - 2;
+  if (type - 2) < 5 && ((0x1Bu >> v5))
   {
     v6 = 0xFu >> v5;
   }
 
   else
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -312,7 +312,7 @@ LABEL_14:
     {
       if (objc_opt_respondsToSelector())
       {
-        v7 = [a1 performSelector:sel_logPrefix];
+        v7 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -335,9 +335,9 @@ LABEL_14:
           v17 = 2112;
           v18 = v7;
           v19 = 2048;
-          v20 = a1;
+          selfCopy = self;
           v21 = 1024;
-          v22 = v3;
+          v22 = typeCopy;
           _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected mediaType=%hhu", &v11, 0x36u);
         }
       }
@@ -349,19 +349,19 @@ LABEL_14:
   return v6 & 1;
 }
 
-+ (BOOL)v1FeatureListStringsSupportedForMediaType:(unsigned __int8)a3
++ (BOOL)v1FeatureListStringsSupportedForMediaType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3 - 2;
-  if (a3 - 2) < 5 && ((0x1Bu >> v5))
+  v5 = type - 2;
+  if (type - 2) < 5 && ((0x1Bu >> v5))
   {
     v6 = 7u >> v5;
   }
 
   else
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -377,7 +377,7 @@ LABEL_14:
     {
       if (objc_opt_respondsToSelector())
       {
-        v7 = [a1 performSelector:sel_logPrefix];
+        v7 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -400,9 +400,9 @@ LABEL_14:
           v17 = 2112;
           v18 = v7;
           v19 = 2048;
-          v20 = a1;
+          selfCopy = self;
           v21 = 1024;
-          v22 = v3;
+          v22 = typeCopy;
           _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected mediaType=%hhu", &v11, 0x36u);
         }
       }
@@ -414,27 +414,27 @@ LABEL_14:
   return v6 & 1;
 }
 
-+ (unsigned)featureListStringTypeForMediaType:(unsigned __int8)a3
++ (unsigned)featureListStringTypeForMediaType:(unsigned __int8)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (type == 2)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 5)
+    typeCopy = type;
+    if (type == 5)
     {
       LOBYTE(v4) = 7;
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
-        if (objc_opt_class() == a1)
+        if (objc_opt_class() == self)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 3)
           {
@@ -453,7 +453,7 @@ LABEL_14:
         {
           if (objc_opt_respondsToSelector())
           {
-            v6 = [a1 performSelector:sel_logPrefix];
+            v6 = [self performSelector:sel_logPrefix];
           }
 
           else
@@ -480,9 +480,9 @@ LABEL_14:
             v16 = 2112;
             v17 = v6;
             v18 = 2048;
-            v19 = a1;
+            selfCopy = self;
             v20 = 1024;
-            v21 = v3;
+            v21 = typeCopy;
             _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected mediaType=%hhu", &v10, 0x36u);
           }
         }
@@ -498,23 +498,23 @@ LABEL_14:
   return v4;
 }
 
-+ (BOOL)isU1StreamGroup:(unsigned int)a3
++ (BOOL)isU1StreamGroup:(unsigned int)group
 {
   result = 1;
-  if (a3 > 1835623281)
+  if (group > 1835623281)
   {
-    if (a3 != 1835623282 && a3 != 1935897189)
+    if (group != 1835623282 && group != 1935897189)
     {
       v4 = 1937339233;
 LABEL_8:
-      if (a3 != v4)
+      if (group != v4)
       {
         return 0;
       }
     }
   }
 
-  else if (a3 != 1650745716 && a3 != 1667329381)
+  else if (group != 1650745716 && group != 1667329381)
   {
     v4 = 1718909044;
     goto LABEL_8;
@@ -523,9 +523,9 @@ LABEL_8:
   return result;
 }
 
-- (id)negotiatedResultsForGroupID:(unsigned int)a3 localU1Config:(id)a4 remoteU1Config:(id)a5
+- (id)negotiatedResultsForGroupID:(unsigned int)d localU1Config:(id)config remoteU1Config:(id)u1Config
 {
-  v7 = *&a3;
+  v7 = *&d;
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -549,12 +549,12 @@ LABEL_8:
   {
     if ([objc_opt_class() isAudioStreamGroup:v7])
     {
-      return [VCMediaNegotiatorStreamGroupU1Configuration negotiatedAudioSettingsForGroupID:v7 localU1Config:a4 remoteU1Config:a5];
+      return [VCMediaNegotiatorStreamGroupU1Configuration negotiatedAudioSettingsForGroupID:v7 localU1Config:config remoteU1Config:u1Config];
     }
 
     else
     {
-      return [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsForGroupID:v7 localU1Config:a4 remoteU1Config:a5];
+      return [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsForGroupID:v7 localU1Config:config remoteU1Config:u1Config];
     }
   }
 
@@ -565,11 +565,11 @@ LABEL_8:
   }
 }
 
-+ (id)preferredPayloadsForMediaType:(unsigned __int8)a3
++ (id)preferredPayloadsForMediaType:(unsigned __int8)type
 {
-  if (a3 - 2) < 5 && ((0x1Bu >> (a3 - 2)))
+  if (type - 2) < 5 && ((0x1Bu >> (type - 2)))
   {
-    return qword_1E85F3ED8[(a3 - 2)];
+    return qword_1E85F3ED8[(type - 2)];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -584,28 +584,28 @@ LABEL_8:
   return 0;
 }
 
-+ (id)getPreferredVideoPayloadList:(id)a3 localSupportedPayloads:(id)a4 mediaType:(unsigned __int8)a5
++ (id)getPreferredVideoPayloadList:(id)list localSupportedPayloads:(id)payloads mediaType:(unsigned __int8)type
 {
-  v5 = a5;
+  typeCopy = type;
   v33 = *MEMORY[0x1E69E9840];
   if (![+[VCDefaults forceHWI] sharedInstance]
   {
-    return [a1 preferredPayloadsForMediaType:v5];
+    return [self preferredPayloadsForMediaType:typeCopy];
   }
 
-  v9 = [+[VCDefaults sharedInstance](VCDefaults forceVideoPayload];
-  if (v9 == 128)
+  forceVideoPayload = [+[VCDefaults sharedInstance](VCDefaults forceVideoPayload];
+  if (forceVideoPayload == 128)
   {
     if (VRTraceGetErrorLogLevelForModule() < 5)
     {
-      return [a1 preferredPayloadsForMediaType:v5];
+      return [self preferredPayloadsForMediaType:typeCopy];
     }
 
     v10 = VRTraceErrorLogLevelToCSTR();
     v11 = *MEMORY[0x1E6986650];
     if (!os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      return [a1 preferredPayloadsForMediaType:v5];
+      return [self preferredPayloadsForMediaType:typeCopy];
     }
 
     *buf = 136315650;
@@ -619,22 +619,22 @@ LABEL_8:
     v14 = 28;
 LABEL_19:
     _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, v12, buf, v14);
-    return [a1 preferredPayloadsForMediaType:v5];
+    return [self preferredPayloadsForMediaType:typeCopy];
   }
 
-  v15 = v9;
-  if (([a3 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v9)}] & 1) == 0)
+  v15 = forceVideoPayload;
+  if (([list containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", forceVideoPayload)}] & 1) == 0)
   {
     if (VRTraceGetErrorLogLevelForModule() < 5)
     {
-      return [a1 preferredPayloadsForMediaType:v5];
+      return [self preferredPayloadsForMediaType:typeCopy];
     }
 
     v21 = VRTraceErrorLogLevelToCSTR();
     v22 = *MEMORY[0x1E6986650];
     if (!os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      return [a1 preferredPayloadsForMediaType:v5];
+      return [self preferredPayloadsForMediaType:typeCopy];
     }
 
     *buf = 136315906;
@@ -652,20 +652,20 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v16 = [a4 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v15)}];
+  v16 = [payloads containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v15)}];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if ((v16 & 1) == 0)
   {
     if (ErrorLogLevelForModule < 5)
     {
-      return [a1 preferredPayloadsForMediaType:v5];
+      return [self preferredPayloadsForMediaType:typeCopy];
     }
 
     v23 = VRTraceErrorLogLevelToCSTR();
     v22 = *MEMORY[0x1E6986650];
     if (!os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      return [a1 preferredPayloadsForMediaType:v5];
+      return [self preferredPayloadsForMediaType:typeCopy];
     }
 
     *buf = 136315906;
@@ -702,15 +702,15 @@ LABEL_18:
   return [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
 }
 
-+ (id)negotiateVideoMaxResolutionWithEncodeRules:(id)a3 decodeRules:(id)a4 isEncoder:(BOOL)a5
++ (id)negotiateVideoMaxResolutionWithEncodeRules:(id)rules decodeRules:(id)decodeRules isEncoder:(BOOL)encoder
 {
-  v21 = a5;
+  encoderCopy = encoder;
   v34 = *MEMORY[0x1E69E9840];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [a4 reverseObjectEnumerator];
+  obj = [decodeRules reverseObjectEnumerator];
   result = [obj countByEnumeratingWithState:&v30 objects:v29 count:16];
   if (result)
   {
@@ -731,8 +731,8 @@ LABEL_18:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v11 = [a3 reverseObjectEnumerator];
-        v12 = [v11 countByEnumeratingWithState:&v25 objects:v24 count:16];
+        reverseObjectEnumerator = [rules reverseObjectEnumerator];
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v25 objects:v24 count:16];
         if (v12)
         {
           v13 = v12;
@@ -743,7 +743,7 @@ LABEL_8:
           {
             if (*v26 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v16 = *(*(&v25 + 1) + 8 * v15);
@@ -756,7 +756,7 @@ LABEL_8:
             if (!v17)
             {
               [v10 fPref];
-              if (v21)
+              if (encoderCopy)
               {
                 v19 = v16;
               }
@@ -783,7 +783,7 @@ LABEL_8:
 
             if (v13 == ++v15)
             {
-              v13 = [v11 countByEnumeratingWithState:&v25 objects:v24 count:16];
+              v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v25 objects:v24 count:16];
               if (v13)
               {
                 goto LABEL_8;
@@ -813,11 +813,11 @@ LABEL_8:
   return result;
 }
 
-+ (BOOL)selectBestVideoRuleForTransport:(unsigned __int8)a3 payload:(int)a4 encodingType:(unsigned __int8)a5 videoSettings:(id)a6 localVideoRuleCollection:(id)a7 remoteVideoRuleCollection:(id)a8
++ (BOOL)selectBestVideoRuleForTransport:(unsigned __int8)transport payload:(int)payload encodingType:(unsigned __int8)type videoSettings:(id)settings localVideoRuleCollection:(id)collection remoteVideoRuleCollection:(id)ruleCollection
 {
-  v11 = a5;
-  v12 = *&a4;
-  v13 = a3;
+  typeCopy = type;
+  v12 = *&payload;
+  transportCopy = transport;
   v58 = *MEMORY[0x1E69E9840];
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (!v14)
@@ -827,7 +827,7 @@ LABEL_8:
     goto LABEL_32;
   }
 
-  v15 = [a7 getVideoRulesForTransport:v13 payload:v12 encodingType:v11];
+  v15 = [collection getVideoRulesForTransport:transportCopy payload:v12 encodingType:typeCopy];
   if (!v15)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -851,15 +851,15 @@ LABEL_8:
     v52 = 1024;
     v53 = v12;
     v54 = 1024;
-    v55 = v13;
+    v55 = transportCopy;
     v56 = 1024;
-    v57 = v11;
+    v57 = typeCopy;
     v36 = " [%s] %s:%d No local video rules for payload=%d transport=%d encoding=%d";
     goto LABEL_43;
   }
 
   v16 = v15;
-  if (v11 == 2)
+  if (typeCopy == 2)
   {
     v17 = 1;
   }
@@ -869,7 +869,7 @@ LABEL_8:
     v17 = 2;
   }
 
-  v18 = [a8 getVideoRulesForTransport:v13 payload:v12 encodingType:v17];
+  v18 = [ruleCollection getVideoRulesForTransport:transportCopy payload:v12 encodingType:v17];
   if (!v18)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -893,18 +893,18 @@ LABEL_8:
     v52 = 1024;
     v53 = v12;
     v54 = 1024;
-    v55 = v13;
+    v55 = transportCopy;
     v56 = 1024;
-    v57 = v11;
+    v57 = typeCopy;
     v36 = " [%s] %s:%d No remote video rules for payload=%d transport=%d encoding=%d";
     goto LABEL_43;
   }
 
   v19 = v18;
   p_cache = (VCAudioStreamSendGroup + 16);
-  if (v13 == 2)
+  if (transportCopy == 2)
   {
-    if (v11 == 1)
+    if (typeCopy == 1)
     {
       v44 = 0u;
       v45 = 0u;
@@ -915,7 +915,7 @@ LABEL_8:
       if (v21)
       {
         v23 = v21;
-        v39 = a6;
+        settingsCopy = settings;
         v40 = v12 | 0x200000000;
         v24 = *v43;
         do
@@ -928,7 +928,7 @@ LABEL_8:
             }
 
             v26 = *(*(&v42 + 1) + 8 * i);
-            if ([v19 containsObject:v26 matchingComparison:{sel_compare_, v39, v40}])
+            if ([v19 containsObject:v26 matchingComparison:{sel_compare_, settingsCopy, v40}])
             {
               [v14 addObject:v26];
             }
@@ -940,8 +940,8 @@ LABEL_8:
         while (v23);
         v22 = v14;
         v12 = v40;
-        v13 = HIDWORD(v40);
-        a6 = v39;
+        transportCopy = HIDWORD(v40);
+        settings = settingsCopy;
       }
     }
 
@@ -955,7 +955,7 @@ LABEL_8:
     v19 = v22;
   }
 
-  if (v11 == 1)
+  if (typeCopy == 1)
   {
     v27 = v16;
   }
@@ -965,7 +965,7 @@ LABEL_8:
     v27 = v19;
   }
 
-  if (v11 == 1)
+  if (typeCopy == 1)
   {
     v28 = v19;
   }
@@ -975,7 +975,7 @@ LABEL_8:
     v28 = v16;
   }
 
-  v29 = [p_cache + 433 negotiateVideoMaxResolutionWithEncodeRules:v27 decodeRules:v28 isEncoder:v11 == 1];
+  v29 = [p_cache + 433 negotiateVideoMaxResolutionWithEncodeRules:v27 decodeRules:v28 isEncoder:typeCopy == 1];
   if (!v29)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -999,9 +999,9 @@ LABEL_8:
     v52 = 1024;
     v53 = v12;
     v54 = 1024;
-    v55 = v13;
+    v55 = transportCopy;
     v56 = 1024;
-    v57 = v11;
+    v57 = typeCopy;
     v36 = " [%s] %s:%d No matching remote rules for payload=%d transport=%d encoding=%d";
 LABEL_43:
     _os_log_impl(&dword_1DB56E000, v35, OS_LOG_TYPE_DEFAULT, v36, buf, 0x2Eu);
@@ -1010,7 +1010,7 @@ LABEL_44:
     goto LABEL_32;
   }
 
-  [a6 addVideoRules:v29 transportType:v13 payload:v12 encodingType:v11];
+  [settings addVideoRules:v29 transportType:transportCopy payload:v12 encodingType:typeCopy];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v30 = VRTraceErrorLogLevelToCSTR();
@@ -1026,9 +1026,9 @@ LABEL_44:
       v52 = 1024;
       v53 = v12;
       v54 = 1024;
-      v55 = v13;
+      v55 = transportCopy;
       v56 = 1024;
-      v57 = v11;
+      v57 = typeCopy;
       _os_log_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Negotiated rules added for payloadType=%d, transportType=%d, encodingType=%d", buf, 0x2Eu);
     }
   }
@@ -1039,7 +1039,7 @@ LABEL_32:
   return v32;
 }
 
-+ (void)applyCellularPreferredRule:(id)a3
++ (void)applyCellularPreferredRule:(id)rule
 {
   v25 = *MEMORY[0x1E69E9840];
   v22[0] = xmmword_1DBD45910;
@@ -1051,7 +1051,7 @@ LABEL_32:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  v4 = [rule countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1064,7 +1064,7 @@ LABEL_32:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(rule);
         }
 
         v10 = 0;
@@ -1124,7 +1124,7 @@ LABEL_23:
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v5 = [rule countByEnumeratingWithState:&v18 objects:v17 count:16];
       if (!v5)
       {
 LABEL_26:
@@ -1140,11 +1140,11 @@ LABEL_26:
   }
 }
 
-+ (id)newNegotiatedAudioPayloadsWithLocalPayloads:(id)a3 remotePayloads:(id)a4
++ (id)newNegotiatedAudioPayloadsWithLocalPayloads:(id)payloads remotePayloads:(id)remotePayloads
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = [a3 mutableCopy];
-  [v6 intersectSet:a4];
+  v6 = [payloads mutableCopy];
+  [v6 intersectSet:remotePayloads];
   if (VRTraceGetErrorLogLevelForModule() < 7)
   {
     return v6;
@@ -1154,14 +1154,14 @@ LABEL_26:
   if (v6)
   {
     v7 = [objc_msgSend(v6 "description")];
-    if (a3)
+    if (payloads)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
     v8 = "<nil>";
-    if (a4)
+    if (remotePayloads)
     {
       goto LABEL_5;
     }
@@ -1170,17 +1170,17 @@ LABEL_7:
   }
 
   v7 = "<nil>";
-  if (!a3)
+  if (!payloads)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v8 = [objc_msgSend(a3 "description")];
-  if (a4)
+  v8 = [objc_msgSend(payloads "description")];
+  if (remotePayloads)
   {
 LABEL_5:
-    v9 = [objc_msgSend(a4 "description")];
+    v9 = [objc_msgSend(remotePayloads "description")];
     goto LABEL_9;
   }
 
@@ -1225,14 +1225,14 @@ LABEL_9:
   return v6;
 }
 
-+ (void)setupNegotiatedAudioPayloads:(id)a3 negotiatedAudioSettings:(id)a4 primaryPayloadPreference:(id)a5
++ (void)setupNegotiatedAudioPayloads:(id)payloads negotiatedAudioSettings:(id)settings primaryPayloadPreference:(id)preference
 {
   v24 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  v8 = [payloads countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1245,34 +1245,34 @@ LABEL_9:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(payloads);
         }
 
         v13 = *(*(&v20 + 1) + 8 * v12);
-        v14 = [v13 unsignedIntValue];
-        v15 = v14;
-        switch(v14)
+        unsignedIntValue = [v13 unsignedIntValue];
+        v15 = unsignedIntValue;
+        switch(unsignedIntValue)
         {
           case 0x71:
-            if (![a4 enableACC24ForU1])
+            if (![settings enableACC24ForU1])
             {
               goto LABEL_18;
             }
 
             break;
           case 0x14:
-            [a4 setRedPayload:20];
+            [settings setRedPayload:20];
             goto LABEL_18;
           case 0xD:
-            [a4 setDtxPayload:13];
+            [settings setDtxPayload:13];
             goto LABEL_18;
         }
 
-        v16 = [a5 indexOfObject:v13];
+        v16 = [preference indexOfObject:v13];
         if (v16 == 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_13:
-          [a4 addSecondaryPayload:v15];
+          [settings addSecondaryPayload:v15];
           goto LABEL_18;
         }
 
@@ -1284,9 +1284,9 @@ LABEL_13:
 
         if (v16 < v11)
         {
-          [a4 addSecondaryPayload:{objc_msgSend(a4, "primaryPayload")}];
+          [settings addSecondaryPayload:{objc_msgSend(settings, "primaryPayload")}];
 LABEL_17:
-          [a4 setPrimaryPayload:v15];
+          [settings setPrimaryPayload:v15];
           v11 = v17;
           goto LABEL_18;
         }
@@ -1301,7 +1301,7 @@ LABEL_18:
       }
 
       while (v9 != v12);
-      v18 = [a3 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v18 = [payloads countByEnumeratingWithState:&v20 objects:v19 count:16];
       v9 = v18;
     }
 

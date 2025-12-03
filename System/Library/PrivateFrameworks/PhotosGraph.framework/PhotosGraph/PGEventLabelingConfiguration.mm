@@ -2,9 +2,9 @@
 + (BOOL)isEventLabelingEnabled;
 + (BOOL)usePrimaryMeaningDomainForEventLabelingMeanings;
 + (NSString)bundlePath;
-- (BOOL)useEventLabelingToInferWithMeaningLabel:(id)a3;
+- (BOOL)useEventLabelingToInferWithMeaningLabel:(id)label;
 - (NSSet)meaningLabels;
-- (id)thresholdsBy:(id)a3;
+- (id)thresholdsBy:(id)by;
 @end
 
 @implementation PGEventLabelingConfiguration
@@ -18,17 +18,17 @@
   return v3;
 }
 
-- (id)thresholdsBy:(id)a3
+- (id)thresholdsBy:(id)by
 {
   v4 = sub_22F740E20();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = EventLabelingConfiguration.thresholds(by:)(v4, v6);
 
   return v8;
 }
 
-- (BOOL)useEventLabelingToInferWithMeaningLabel:(id)a3
+- (BOOL)useEventLabelingToInferWithMeaningLabel:(id)label
 {
   v4 = sub_22F740E20();
   v6 = v5;
@@ -37,12 +37,12 @@
   v12[4] = sub_22F350D8C();
   boxed_opaque_existential_1 = __swift_allocate_boxed_opaque_existential_1(v12);
   (*(*(v7 - 8) + 104))(boxed_opaque_existential_1, *MEMORY[0x277D3A810], v7);
-  v9 = self;
+  selfCopy = self;
   LOBYTE(v7) = sub_22F73FA20();
   __swift_destroy_boxed_opaque_existential_0(v12);
   if ((v7 & 1) != 0 && PFOSVariantHasInternalDiagnostics())
   {
-    v10 = sub_22F15E910(v4, v6, *(v9 + OBJC_IVAR___PGEventLabelingConfiguration_meaningLabels));
+    v10 = sub_22F15E910(v4, v6, *(selfCopy + OBJC_IVAR___PGEventLabelingConfiguration_meaningLabels));
   }
 
   else

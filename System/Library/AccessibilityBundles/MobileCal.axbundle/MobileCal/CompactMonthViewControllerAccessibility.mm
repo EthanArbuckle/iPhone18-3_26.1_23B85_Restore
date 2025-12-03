@@ -1,25 +1,25 @@
 @interface CompactMonthViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)showDate:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)showDate:(id)date animated:(BOOL)animated completionBlock:(id)block;
 @end
 
 @implementation CompactMonthViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CompactMonthWeekView"];
-  [v3 validateClass:@"CompactMonthViewController" isKindOfClass:@"InfiniteScrollViewController"];
-  [v3 validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"showDate: animated: completionBlock:" withFullSignature:{"v", "@", "B", "@?", 0}];
-  [v3 validateClass:@"CompactMonthWeekView" hasInstanceVariable:@"_today" withType:"CompactMonthWeekDayNumber"];
-  [v3 validateClass:@"InfiniteScrollViewController" hasInstanceVariable:@"_views" withType:"NSMutableArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CompactMonthWeekView"];
+  [validationsCopy validateClass:@"CompactMonthViewController" isKindOfClass:@"InfiniteScrollViewController"];
+  [validationsCopy validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"showDate: animated: completionBlock:" withFullSignature:{"v", "@", "B", "@?", 0}];
+  [validationsCopy validateClass:@"CompactMonthWeekView" hasInstanceVariable:@"_today" withType:"CompactMonthWeekDayNumber"];
+  [validationsCopy validateClass:@"InfiniteScrollViewController" hasInstanceVariable:@"_views" withType:"NSMutableArray"];
 }
 
-- (void)showDate:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)showDate:(id)date animated:(BOOL)animated completionBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = CompactMonthViewControllerAccessibility;
-  [(CompactMonthViewControllerAccessibility *)&v6 showDate:a3 animated:a4 completionBlock:a5];
+  [(CompactMonthViewControllerAccessibility *)&v6 showDate:date animated:animated completionBlock:block];
   if ([(CompactMonthViewControllerAccessibility *)self _accessibilityBoolValueForKey:@"_AXShouldFocusOnTodayStorageKey"])
   {
     AXPerformBlockOnMainThreadAfterDelay();

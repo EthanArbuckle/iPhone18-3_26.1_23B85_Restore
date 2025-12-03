@@ -1,17 +1,17 @@
 @interface DemotedApplication
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DemotedApplication
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     *(v5 + 6) = self->_accountID;
-    v7 = [(NSString *)self->_bundleID copyWithZone:a3];
+    v7 = [(NSString *)self->_bundleID copyWithZone:zone];
     objc_setProperty_nonatomic_copy(v6, v8, v7, 8);
 
     *(v6 + 7) = self->_downloaderID;
@@ -20,14 +20,14 @@
     *(v6 + 3) = self->_itemID;
     *(v6 + 72) = *&self->_purchaserID;
     *(v6 + 4) = self->_storeFrontID;
-    v9 = [(NSString *)self->_vendorID copyWithZone:a3];
+    v9 = [(NSString *)self->_vendorID copyWithZone:zone];
     objc_setProperty_nonatomic_copy(v6, v10, v9, 40);
   }
 
   else
   {
 
-    v9 = [(NSString *)self->_vendorID copyWithZone:a3];
+    v9 = [(NSString *)self->_vendorID copyWithZone:zone];
   }
 
   return v6;

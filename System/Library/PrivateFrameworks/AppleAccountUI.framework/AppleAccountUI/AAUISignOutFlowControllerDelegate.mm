@@ -1,27 +1,27 @@
 @interface AAUISignOutFlowControllerDelegate
 - (AAUISignOutFlowControllerDelegate)init;
-- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)a3;
-- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)a3 backupManagerStore:(id)a4;
-- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)a3 deviceLocatorUtilities:(id)a4 deviceLocatorService:(id)a5;
+- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)controller;
+- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)controller backupManagerStore:(id)store;
+- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)controller deviceLocatorUtilities:(id)utilities deviceLocatorService:(id)service;
 - (UIViewController)presentingViewController;
 - (id)_confirmTitleForDisableDeviceLocatorAlert;
 - (id)_messageForDisableDeviceLocatorAlert;
 - (id)_recoveryFactorController;
-- (void)_completedRestoreFromiCloud:(id)a3;
-- (void)_disableDeviceLocatorForAccount:(id)a3 inViewController:(id)a4 completion:(id)a5;
-- (void)_offerManateeRepairWithContext:(id)a3 completion:(id)a4;
-- (void)_performLastDeviceCheckForAccount:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)_presentLastDeviceAlertForAccount:(id)a3 withRecoveryFactors:(unint64_t)a4 withCompletion:(id)a5;
-- (void)recoveryFactorController:(id)a3 didFinishAddingRecoveryContactWithError:(id)a4;
-- (void)signOutController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)signOutControllerDidCancel:(id)a3;
-- (void)signOutFlowController:(id)a3 disableFindMyDeviceForAccount:(id)a4 completion:(id)a5;
-- (void)signOutFlowController:(id)a3 performWalrusValidationForAccount:(id)a4 completion:(id)a5;
-- (void)signOutFlowController:(id)a3 showAlertWithTitle:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)signOutFlowController:(id)a3 signOutAccount:(id)a4 completion:(id)a5;
-- (void)signOutFlowController:(id)a3 startSignOutForAccount:(id)a4 completion:(id)a5;
-- (void)signOutViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)welcomeFlowEndedWithResult:(id)a3;
+- (void)_completedRestoreFromiCloud:(id)cloud;
+- (void)_disableDeviceLocatorForAccount:(id)account inViewController:(id)controller completion:(id)completion;
+- (void)_offerManateeRepairWithContext:(id)context completion:(id)completion;
+- (void)_performLastDeviceCheckForAccount:(id)account withContext:(id)context completion:(id)completion;
+- (void)_presentLastDeviceAlertForAccount:(id)account withRecoveryFactors:(unint64_t)factors withCompletion:(id)completion;
+- (void)recoveryFactorController:(id)controller didFinishAddingRecoveryContactWithError:(id)error;
+- (void)signOutController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)signOutControllerDidCancel:(id)cancel;
+- (void)signOutFlowController:(id)controller disableFindMyDeviceForAccount:(id)account completion:(id)completion;
+- (void)signOutFlowController:(id)controller performWalrusValidationForAccount:(id)account completion:(id)completion;
+- (void)signOutFlowController:(id)controller showAlertWithTitle:(id)title message:(id)message completion:(id)completion;
+- (void)signOutFlowController:(id)controller signOutAccount:(id)account completion:(id)completion;
+- (void)signOutFlowController:(id)controller startSignOutForAccount:(id)account completion:(id)completion;
+- (void)signOutViewController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)welcomeFlowEndedWithResult:(id)result;
 @end
 
 @implementation AAUISignOutFlowControllerDelegate
@@ -42,17 +42,17 @@
     v2->_deviceLocatorUtilities = v5;
   }
 
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   telemetryFlowID = v2->_telemetryFlowID;
-  v2->_telemetryFlowID = v8;
+  v2->_telemetryFlowID = uUIDString;
 
   return v2;
 }
 
-- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)a3
+- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = AAUISignOutFlowControllerDelegate;
   v5 = [(AAUISignOutFlowControllerDelegate *)&v16 init];
@@ -62,15 +62,15 @@
     accountStore = v5->_accountStore;
     v5->_accountStore = v6;
 
-    objc_storeWeak(&v5->_presentingViewController, v4);
+    objc_storeWeak(&v5->_presentingViewController, controllerCopy);
     v8 = objc_alloc_init(MEMORY[0x1E69DCCD8]);
     navController = v5->_navController;
     v5->_navController = v8;
 
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     telemetryFlowID = v5->_telemetryFlowID;
-    v5->_telemetryFlowID = v11;
+    v5->_telemetryFlowID = uUIDString;
 
     v13 = objc_alloc_init(AAUIDeviceLocatorConfirmationUtilitiesWrapper);
     deviceLocatorUtilities = v5->_deviceLocatorUtilities;
@@ -80,53 +80,53 @@
   return v5;
 }
 
-- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)a3 deviceLocatorUtilities:(id)a4 deviceLocatorService:(id)a5
+- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)controller deviceLocatorUtilities:(id)utilities deviceLocatorService:(id)service
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AAUISignOutFlowControllerDelegate *)self initWithPresentingViewController:a3];
+  utilitiesCopy = utilities;
+  serviceCopy = service;
+  v11 = [(AAUISignOutFlowControllerDelegate *)self initWithPresentingViewController:controller];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_deviceLocatorUtilities, a4);
-    objc_storeStrong(&v12->_deviceLocatorService, a5);
+    objc_storeStrong(&v11->_deviceLocatorUtilities, utilities);
+    objc_storeStrong(&v12->_deviceLocatorService, service);
   }
 
   return v12;
 }
 
-- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)a3 backupManagerStore:(id)a4
+- (AAUISignOutFlowControllerDelegate)initWithPresentingViewController:(id)controller backupManagerStore:(id)store
 {
-  v7 = a4;
-  v8 = [(AAUISignOutFlowControllerDelegate *)self initWithPresentingViewController:a3];
+  storeCopy = store;
+  v8 = [(AAUISignOutFlowControllerDelegate *)self initWithPresentingViewController:controller];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_backupManager, a4);
+    objc_storeStrong(&v8->_backupManager, store);
   }
 
   return v9;
 }
 
-- (void)signOutFlowController:(id)a3 startSignOutForAccount:(id)a4 completion:(id)a5
+- (void)signOutFlowController:(id)controller startSignOutForAccount:(id)account completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  accountCopy = account;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
 
   if (WeakRetained)
   {
-    v10 = [objc_alloc(MEMORY[0x1E698B880]) initWithAccount:v7];
+    v10 = [objc_alloc(MEMORY[0x1E698B880]) initWithAccount:accountCopy];
     dataclassActionsStore = self->_dataclassActionsStore;
     self->_dataclassActionsStore = v10;
 
     v12 = [AAUISignOutOrEraseOfferFlow alloc];
     navController = self->_navController;
     v14 = objc_loadWeakRetained(&self->_presentingViewController);
-    v15 = [(AAUISignOutOrEraseOfferFlow *)v12 initWithNavController:navController presentingController:v14 account:v7 dataclassActionsStore:self->_dataclassActionsStore];
+    v15 = [(AAUISignOutOrEraseOfferFlow *)v12 initWithNavController:navController presentingController:v14 account:accountCopy dataclassActionsStore:self->_dataclassActionsStore];
 
     [(AAUISignOutOrEraseOfferFlow *)v15 beginFlowWithInvoker:self];
-    v16 = [v8 copy];
+    v16 = [completionCopy copy];
 
     pendingSignOutOfferFlowCompletion = self->_pendingSignOutOfferFlowCompletion;
     self->_pendingSignOutOfferFlowCompletion = v16;
@@ -141,15 +141,15 @@
     }
 
     v19 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4405];
-    (*(v8 + 2))(v8, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 }
 
-- (void)signOutFlowController:(id)a3 showAlertWithTitle:(id)a4 message:(id)a5 completion:(id)a6
+- (void)signOutFlowController:(id)controller showAlertWithTitle:(id)title message:(id)message completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
 
   if (WeakRetained)
@@ -162,28 +162,28 @@
     v18[1] = 3221225472;
     v18[2] = __97__AAUISignOutFlowControllerDelegate_signOutFlowController_showAlertWithTitle_message_completion___block_invoke;
     v18[3] = &unk_1E820B820;
-    v19 = v11;
-    v16 = [v15 alertWithTitle:v9 message:v10 buttonTitle:v14 actionHandler:v18];
+    v19 = completionCopy;
+    v16 = [v15 alertWithTitle:titleCopy message:messageCopy buttonTitle:v14 actionHandler:v18];
     v17 = objc_loadWeakRetained(&self->_presentingViewController);
     [v17 presentViewController:v16 animated:1 completion:0];
   }
 
   else
   {
-    (*(v11 + 2))(v11, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)signOutFlowController:(id)a3 disableFindMyDeviceForAccount:(id)a4 completion:(id)a5
+- (void)signOutFlowController:(id)controller disableFindMyDeviceForAccount:(id)account completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  accountCopy = account;
+  completionCopy = completion;
   v9 = _AAUILogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v7;
+    v16 = accountCopy;
     _os_log_impl(&dword_1C5355000, v9, OS_LOG_TYPE_DEFAULT, "Attempting to disableFindMyDevice for %@", buf, 0xCu);
   }
 
@@ -191,11 +191,11 @@
   v12[1] = 3221225472;
   v12[2] = __100__AAUISignOutFlowControllerDelegate_signOutFlowController_disableFindMyDeviceForAccount_completion___block_invoke;
   v12[3] = &unk_1E820C5D0;
-  v13 = v7;
-  v14 = v8;
+  v13 = accountCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v10 = v7;
-  v11 = v8;
+  v10 = accountCopy;
+  v11 = completionCopy;
   [(AAUISignOutFlowControllerDelegate *)self _completedRestoreFromiCloud:v12];
 }
 
@@ -369,28 +369,28 @@ void __100__AAUISignOutFlowControllerDelegate_signOutFlowController_disableFindM
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_disableDeviceLocatorForAccount:(id)a3 inViewController:(id)a4 completion:(id)a5
+- (void)_disableDeviceLocatorForAccount:(id)account inViewController:(id)controller completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
+  accountCopy = account;
   v11 = +[AAUIFeatureFlags isSignOutRedesignEnabled];
   v12 = objc_opt_new();
-  [v12 setAccount:v10];
+  [v12 setAccount:accountCopy];
 
-  v13 = [(AAUISignOutFlowControllerDelegate *)self _messageForDisableDeviceLocatorAlert];
-  [v12 setMessage:v13];
+  _messageForDisableDeviceLocatorAlert = [(AAUISignOutFlowControllerDelegate *)self _messageForDisableDeviceLocatorAlert];
+  [v12 setMessage:_messageForDisableDeviceLocatorAlert];
 
-  v14 = [(AAUISignOutFlowControllerDelegate *)self _confirmTitleForDisableDeviceLocatorAlert];
-  [v12 setButtonTitle:v14];
+  _confirmTitleForDisableDeviceLocatorAlert = [(AAUISignOutFlowControllerDelegate *)self _confirmTitleForDisableDeviceLocatorAlert];
+  [v12 setButtonTitle:_confirmTitleForDisableDeviceLocatorAlert];
 
-  [v12 setPresentingViewController:v9];
-  v15 = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
-  [v12 setTelemetryFlowID:v15];
+  [v12 setPresentingViewController:controllerCopy];
+  telemetryFlowID = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
+  [v12 setTelemetryFlowID:telemetryFlowID];
 
   [v12 setKeepAlertVisible:v11];
-  v16 = [(AAUISignOutFlowControllerDelegate *)self clientID];
-  [v12 setClientID:v16];
+  clientID = [(AAUISignOutFlowControllerDelegate *)self clientID];
+  [v12 setClientID:clientID];
 
   deviceLocatorUtilities = self->_deviceLocatorUtilities;
   v19[0] = MEMORY[0x1E69E9820];
@@ -398,8 +398,8 @@ void __100__AAUISignOutFlowControllerDelegate_signOutFlowController_disableFindM
   v19[2] = __97__AAUISignOutFlowControllerDelegate__disableDeviceLocatorForAccount_inViewController_completion___block_invoke;
   v19[3] = &unk_1E820D710;
   v19[4] = self;
-  v20 = v8;
-  v18 = v8;
+  v20 = completionCopy;
+  v18 = completionCopy;
   [(AAUIDeviceLocatorConfirmationUtilitiesProtocol *)deviceLocatorUtilities showDisableAlertForContext:v12 withCompletion:v19];
 }
 
@@ -508,25 +508,25 @@ void __97__AAUISignOutFlowControllerDelegate__disableDeviceLocatorForAccount_inV
   return v6;
 }
 
-- (void)signOutFlowController:(id)a3 signOutAccount:(id)a4 completion:(id)a5
+- (void)signOutFlowController:(id)controller signOutAccount:(id)account completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  accountCopy = account;
   if (+[AAUIFeatureFlags isSignOutRedesignEnabled])
   {
-    v9 = [[AAUISignOutDataclassActionSpinnerViewController alloc] initWithAccount:v8 dataclassActionsStore:self->_dataclassActionsStore];
+    v9 = [[AAUISignOutDataclassActionSpinnerViewController alloc] initWithAccount:accountCopy dataclassActionsStore:self->_dataclassActionsStore];
 
     [(AAUISignOutDataclassActionSpinnerViewController *)v9 setDelegate:self];
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v11 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(AAUISignOutDataclassActionSpinnerViewController *)v9 setModalPresentationStyle:2];
       [(AAUISignOutDataclassActionSpinnerViewController *)v9 setModalTransitionStyle:0];
     }
 
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(completionCopy);
     pendingSignOutCompletion = self->_pendingSignOutCompletion;
     self->_pendingSignOutCompletion = v12;
 
@@ -542,16 +542,16 @@ void __97__AAUISignOutFlowControllerDelegate__disableDeviceLocatorForAccount_inV
 
   else
   {
-    v15 = [[AAUISignOutController alloc] initWithAccount:v8];
+    v15 = [[AAUISignOutController alloc] initWithAccount:accountCopy];
 
-    v16 = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
-    [(AAUISignOutController *)v15 setTelemetryFlowID:v16];
+    telemetryFlowID = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
+    [(AAUISignOutController *)v15 setTelemetryFlowID:telemetryFlowID];
 
     [(AAUISignOutController *)v15 setDelegate:self];
-    v17 = [MEMORY[0x1E69DC938] currentDevice];
-    v18 = [v17 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v18 == 1)
+    if (userInterfaceIdiom2 == 1)
     {
       [(AAUISignOutController *)v15 setModalPresentationStyle:2];
       [(AAUISignOutController *)v15 setModalTransitionStyle:0];
@@ -564,7 +564,7 @@ void __97__AAUISignOutFlowControllerDelegate__disableDeviceLocatorForAccount_inV
     v20[3] = &unk_1E820D738;
     v20[4] = self;
     v21 = v15;
-    v22 = v7;
+    v22 = completionCopy;
     v19 = v15;
     [(AAUISignOutController *)v19 prepareInViewController:WeakRetained completion:v20];
   }
@@ -608,16 +608,16 @@ void __85__AAUISignOutFlowControllerDelegate_signOutFlowController_signOutAccoun
   [WeakRetained presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)signOutFlowController:(id)a3 performWalrusValidationForAccount:(id)a4 completion:(id)a5
+- (void)signOutFlowController:(id)controller performWalrusValidationForAccount:(id)account completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  accountCopy = account;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11 = MEMORY[0x1E6985DB0];
-  v12 = [v9 aida_alternateDSID];
-  v13 = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
-  v14 = [v11 analyticsEventWithName:*MEMORY[0x1E698BA10] altDSID:v12 flowID:v13];
+  aida_alternateDSID = [accountCopy aida_alternateDSID];
+  telemetryFlowID = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
+  v14 = [v11 analyticsEventWithName:*MEMORY[0x1E698BA10] altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
   v15 = objc_alloc_init(MEMORY[0x1E6997808]);
   v19[0] = MEMORY[0x1E69E9820];
@@ -627,11 +627,11 @@ void __85__AAUISignOutFlowControllerDelegate_signOutFlowController_signOutAccoun
   objc_copyWeak(&v24, &location);
   v16 = v14;
   v20 = v16;
-  v17 = v10;
+  v17 = completionCopy;
   v23 = v17;
-  v18 = v9;
+  v18 = accountCopy;
   v21 = v18;
-  v22 = self;
+  selfCopy = self;
   [v15 walrusStatusWithCompletion:v19];
 
   objc_destroyWeak(&v24);
@@ -766,11 +766,11 @@ void __104__AAUISignOutFlowControllerDelegate_signOutFlowController_performWalru
   }
 }
 
-- (void)_performLastDeviceCheckForAccount:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)_performLastDeviceCheckForAccount:(id)account withContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = _AAUILogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -783,9 +783,9 @@ void __104__AAUISignOutFlowControllerDelegate_signOutFlowController_performWalru
   v29 = 0;
   v12 = objc_alloc_init(MEMORY[0x1E6997800]);
   v13 = MEMORY[0x1E6985DB0];
-  v14 = [v8 aida_alternateDSID];
-  v15 = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
-  v16 = [v13 analyticsEventWithName:*MEMORY[0x1E698BA58] altDSID:v14 flowID:v15];
+  aida_alternateDSID = [accountCopy aida_alternateDSID];
+  telemetryFlowID = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
+  v16 = [v13 analyticsEventWithName:*MEMORY[0x1E698BA58] altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -793,13 +793,13 @@ void __104__AAUISignOutFlowControllerDelegate_signOutFlowController_performWalru
   v21[3] = &unk_1E820D800;
   v17 = v16;
   v22 = v17;
-  v18 = v9;
+  v18 = contextCopy;
   v23 = v18;
-  v24 = self;
+  selfCopy = self;
   v27 = v28;
-  v19 = v8;
+  v19 = accountCopy;
   v25 = v19;
-  v20 = v10;
+  v20 = completionCopy;
   v26 = v20;
   [v12 fetchEscrowRecordDevicesWithContext:v18 usingCache:0 completion:v21];
 
@@ -910,11 +910,11 @@ void __94__AAUISignOutFlowControllerDelegate__performLastDeviceCheckForAccount_w
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_presentLastDeviceAlertForAccount:(id)a3 withRecoveryFactors:(unint64_t)a4 withCompletion:(id)a5
+- (void)_presentLastDeviceAlertForAccount:(id)account withRecoveryFactors:(unint64_t)factors withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v63 = a5;
+  factorsCopy = factors;
+  accountCopy = account;
+  completionCopy = completion;
   v9 = _AAUILogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -923,16 +923,16 @@ void __94__AAUISignOutFlowControllerDelegate__performLastDeviceCheckForAccount_w
 
   v10 = MEMORY[0x1E6985DB0];
   v11 = *MEMORY[0x1E698BA60];
-  v12 = [v8 aida_alternateDSID];
-  v13 = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
-  v64 = [v10 analyticsEventWithName:v11 altDSID:v12 flowID:v13];
+  aida_alternateDSID = [accountCopy aida_alternateDSID];
+  telemetryFlowID = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
+  v64 = [v10 analyticsEventWithName:v11 altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
-  v72 = self;
+  selfCopy = self;
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v15 = (v6 & 4) == 0;
-  v62 = (v6 & 4) >> 2;
+  v15 = (factorsCopy & 4) == 0;
+  v62 = (factorsCopy & 4) >> 2;
   v16 = @"CONTACT";
-  if ((v6 & 4) != 0)
+  if ((factorsCopy & 4) != 0)
   {
     v16 = @"KEY";
   }
@@ -968,10 +968,10 @@ void __94__AAUISignOutFlowControllerDelegate__performLastDeviceCheckForAccount_w
 
   v28 = MEMORY[0x1E6985DB0];
   v29 = *MEMORY[0x1E698BA68];
-  v70 = v8;
-  v30 = [v8 aida_alternateDSID];
-  v31 = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
-  v32 = [v28 analyticsEventWithName:v29 altDSID:v30 flowID:v31];
+  v70 = accountCopy;
+  aida_alternateDSID2 = [accountCopy aida_alternateDSID];
+  telemetryFlowID2 = [(AAUISignOutFlowControllerDelegate *)self telemetryFlowID];
+  v32 = [v28 analyticsEventWithName:v29 altDSID:aida_alternateDSID2 flowID:telemetryFlowID2];
 
   v65 = v26;
   v66 = v24;
@@ -985,7 +985,7 @@ void __94__AAUISignOutFlowControllerDelegate__performLastDeviceCheckForAccount_w
   v85[3] = &unk_1E820D828;
   v37 = v32;
   v86 = v37;
-  v38 = v63;
+  v38 = completionCopy;
   v87 = v38;
   v39 = [v34 actionWithTitle:v36 style:2 handler:v85];
   [v33 addAction:v39];
@@ -999,7 +999,7 @@ void __94__AAUISignOutFlowControllerDelegate__performLastDeviceCheckForAccount_w
   v84 = v62;
   v41 = v37;
   v81 = v41;
-  v82 = self;
+  selfCopy2 = self;
   v42 = v38;
   v83 = v42;
   v43 = [v40 actionWithTitle:v71 style:0 handler:v80];
@@ -1014,7 +1014,7 @@ void __94__AAUISignOutFlowControllerDelegate__performLastDeviceCheckForAccount_w
   v76[3] = &unk_1E820D878;
   v47 = v41;
   v77 = v47;
-  v78 = self;
+  selfCopy3 = self;
   v48 = v42;
   v79 = v48;
   v49 = [v44 actionWithTitle:v46 style:0 handler:v76];
@@ -1036,21 +1036,21 @@ void __94__AAUISignOutFlowControllerDelegate__performLastDeviceCheckForAccount_w
   [v33 addAction:v55];
 
   [v14 addObject:*MEMORY[0x1E698BB28]];
-  v56 = [v14 aaf_arrayAsCommaSeperatedString];
-  [v64 setObject:v56 forKeyedSubscript:*MEMORY[0x1E6997818]];
+  aaf_arrayAsCommaSeperatedString = [v14 aaf_arrayAsCommaSeperatedString];
+  [v64 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:*MEMORY[0x1E6997818]];
 
-  v57 = [MEMORY[0x1E698B810] reporter];
-  [v57 sendEvent:v64];
+  reporter = [MEMORY[0x1E698B810] reporter];
+  [reporter sendEvent:v64];
 
   if (+[AAUIFeatureFlags isSignOutRedesignEnabled])
   {
-    v58 = [(UINavigationController *)v72->_navController topViewController];
+    topViewController = [(UINavigationController *)selfCopy->_navController topViewController];
 
     v59 = v70;
-    if (v58)
+    if (topViewController)
     {
-      v60 = [(UINavigationController *)v72->_navController topViewController];
-      [v60 presentViewController:v33 animated:1 completion:0];
+      topViewController2 = [(UINavigationController *)selfCopy->_navController topViewController];
+      [topViewController2 presentViewController:v33 animated:1 completion:0];
     }
 
     else
@@ -1061,15 +1061,15 @@ void __94__AAUISignOutFlowControllerDelegate__performLastDeviceCheckForAccount_w
         [AAUISignOutFlowControllerDelegate _presentLastDeviceAlertForAccount:withRecoveryFactors:withCompletion:];
       }
 
-      v60 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-21];
-      (*(v54 + 2))(v54, 0, v60);
+      topViewController2 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-21];
+      (*(v54 + 2))(v54, 0, topViewController2);
     }
   }
 
   else
   {
-    v60 = [(AAUISignOutFlowControllerDelegate *)v72 presentingViewController];
-    [v60 presentViewController:v33 animated:1 completion:0];
+    topViewController2 = [(AAUISignOutFlowControllerDelegate *)selfCopy presentingViewController];
+    [topViewController2 presentViewController:v33 animated:1 completion:0];
     v59 = v70;
   }
 }
@@ -1165,40 +1165,40 @@ void __106__AAUISignOutFlowControllerDelegate__presentLastDeviceAlertForAccount_
   (*(v3 + 16))(v3, 0, v4);
 }
 
-- (void)_offerManateeRepairWithContext:(id)a3 completion:(id)a4
+- (void)_offerManateeRepairWithContext:(id)context completion:(id)completion
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [v15 altDSID];
-  v8 = [AAUID2DEncryptionFlowContext contextWithType:5 altDSID:v7];
+  contextCopy = context;
+  completionCopy = completion;
+  altDSID = [contextCopy altDSID];
+  v8 = [AAUID2DEncryptionFlowContext contextWithType:5 altDSID:altDSID];
 
-  v9 = [v15 telemetryFlowID];
-  [v8 setTelemetryFlowID:v9];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  [v8 setTelemetryFlowID:telemetryFlowID];
 
   if (!+[AAUIFeatureFlags isSignOutRedesignEnabled])
   {
     v11 = [AAUIManateeStateValidator alloc];
-    v12 = [(AAUISignOutFlowControllerDelegate *)self presentingViewController];
+    presentingViewController = [(AAUISignOutFlowControllerDelegate *)self presentingViewController];
     goto LABEL_5;
   }
 
-  v10 = [(UINavigationController *)self->_navController topViewController];
+  topViewController = [(UINavigationController *)self->_navController topViewController];
 
-  if (v10)
+  if (topViewController)
   {
     v11 = [AAUIManateeStateValidator alloc];
-    v12 = [(UINavigationController *)self->_navController topViewController];
+    presentingViewController = [(UINavigationController *)self->_navController topViewController];
 LABEL_5:
-    v13 = v12;
-    v14 = [(AAUIManateeStateValidator *)v11 initWithFlowContext:v8 withPresentingViewController:v12];
+    v13 = presentingViewController;
+    v14 = [(AAUIManateeStateValidator *)v11 initWithFlowContext:v8 withPresentingViewController:presentingViewController];
 
     goto LABEL_6;
   }
 
   v14 = 0;
 LABEL_6:
-  [(AAUIManateeStateValidator *)v14 setContext:v15];
-  [(AAUIManateeStateValidator *)v14 verifyAndRepairManateeWithCompletion:v6];
+  [(AAUIManateeStateValidator *)v14 setContext:contextCopy];
+  [(AAUIManateeStateValidator *)v14 verifyAndRepairManateeWithCompletion:completionCopy];
 }
 
 - (id)_recoveryFactorController
@@ -1208,9 +1208,9 @@ LABEL_6:
   {
     if (+[AAUIFeatureFlags isSignOutRedesignEnabled])
     {
-      v4 = [(UINavigationController *)self->_navController topViewController];
+      topViewController = [(UINavigationController *)self->_navController topViewController];
 
-      if (!v4)
+      if (!topViewController)
       {
 LABEL_7:
         [(AAUIRecoveryFactorController *)self->_recoveryFactorController setDelegate:self];
@@ -1244,7 +1244,7 @@ LABEL_8:
   return recoveryFactorController;
 }
 
-- (void)signOutControllerDidCancel:(id)a3
+- (void)signOutControllerDidCancel:(id)cancel
 {
   pendingSignOutCompletion = self->_pendingSignOutCompletion;
   if (pendingSignOutCompletion)
@@ -1266,12 +1266,12 @@ LABEL_8:
   }
 }
 
-- (void)signOutController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5
+- (void)signOutController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error
 {
   pendingSignOutCompletion = self->_pendingSignOutCompletion;
   if (pendingSignOutCompletion)
   {
-    pendingSignOutCompletion[2](pendingSignOutCompletion, a4, a5);
+    pendingSignOutCompletion[2](pendingSignOutCompletion, success, error);
     v7 = self->_pendingSignOutCompletion;
     self->_pendingSignOutCompletion = 0;
   }
@@ -1286,12 +1286,12 @@ LABEL_8:
   }
 }
 
-- (void)signOutViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5
+- (void)signOutViewController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error
 {
   pendingSignOutCompletion = self->_pendingSignOutCompletion;
   if (pendingSignOutCompletion)
   {
-    pendingSignOutCompletion[2](pendingSignOutCompletion, a4, a5);
+    pendingSignOutCompletion[2](pendingSignOutCompletion, success, error);
     v7 = self->_pendingSignOutCompletion;
     self->_pendingSignOutCompletion = 0;
   }
@@ -1306,16 +1306,16 @@ LABEL_8:
   }
 }
 
-- (void)recoveryFactorController:(id)a3 didFinishAddingRecoveryContactWithError:(id)a4
+- (void)recoveryFactorController:(id)controller didFinishAddingRecoveryContactWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   pendingWalrusValidationCompletion = self->_pendingWalrusValidationCompletion;
   if (pendingWalrusValidationCompletion)
   {
-    if (v7)
+    if (errorCopy)
     {
-      pendingWalrusValidationCompletion[2](pendingWalrusValidationCompletion, 0, v7);
+      pendingWalrusValidationCompletion[2](pendingWalrusValidationCompletion, 0, errorCopy);
     }
 
     else
@@ -1366,10 +1366,10 @@ void __102__AAUISignOutFlowControllerDelegate_recoveryFactorController_didFinish
   }
 }
 
-- (void)_completedRestoreFromiCloud:(id)a3
+- (void)_completedRestoreFromiCloud:(id)cloud
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cloudCopy = cloud;
   v5 = _AAUISignpostLogSystem();
   v6 = _AAUISignpostCreate(v5);
   v8 = v7;
@@ -1406,8 +1406,8 @@ void __102__AAUISignOutFlowControllerDelegate_recoveryFactorController_didFinish
   v16[3] = &unk_1E820C648;
   v18 = v6;
   v19 = v8;
-  v17 = v4;
-  v15 = v4;
+  v17 = cloudCopy;
+  v15 = cloudCopy;
   [(AAUIMBManagerStore *)backupManager aaui_fetchiCloudRestoreIsCompleteWithCompletion:v16];
 }
 
@@ -1448,13 +1448,13 @@ void __65__AAUISignOutFlowControllerDelegate__completedRestoreFromiCloud___block
   (*(a1[4] + 16))();
 }
 
-- (void)welcomeFlowEndedWithResult:(id)a3
+- (void)welcomeFlowEndedWithResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
+  resultCopy = result;
+  v5 = resultCopy;
   if (self->_pendingSignOutOfferFlowCompletion)
   {
-    if ([v4 outcome])
+    if ([resultCopy outcome])
     {
       v6 = _AAUILogSystem();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

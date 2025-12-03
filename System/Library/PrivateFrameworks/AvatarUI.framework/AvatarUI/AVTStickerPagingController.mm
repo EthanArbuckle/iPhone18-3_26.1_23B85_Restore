@@ -1,87 +1,87 @@
 @interface AVTStickerPagingController
-+ (id)stickerCacheWithEnvironment:(id)a3;
++ (id)stickerCacheWithEnvironment:(id)environment;
 - (AVTAvatarPickerDelegate)avatarPickerDelegate;
 - (AVTPresenterDelegate)presenterDelegate;
 - (AVTStickerDisclosureValidationDelegate)disclosureValidationDelegate;
-- (AVTStickerPagingController)initWithRecordDataSource:(id)a3 recordImageProvider:(id)a4 stickerConfigurationProvider:(id)a5 taskScheduler:(id)a6 environment:(id)a7 allowsPeel:(BOOL)a8;
+- (AVTStickerPagingController)initWithRecordDataSource:(id)source recordImageProvider:(id)provider stickerConfigurationProvider:(id)configurationProvider taskScheduler:(id)scheduler environment:(id)environment allowsPeel:(BOOL)peel;
 - (AVTStickerPagingControllerDelegate)delegate;
 - (AVTStickerSelectionDelegate)stickerSelectionDelegate;
 - (AVTStickerSheetControllerProvider)stickerSheetControllerProvider;
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGPoint)endDraggingTargetContentOffset;
 - (CGPoint)pageContentOffset;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (UIEdgeInsets)pageContentInsets;
 - (UIView)view;
-- (id)avatarActionsViewController:(id)a3 recordUpdateForDeletingRecord:(id)a4;
-- (id)centeredPageWithOffset:(CGPoint)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)avatarActionsViewController:(id)controller recordUpdateForDeletingRecord:(id)record;
+- (id)centeredPageWithOffset:(CGPoint)offset;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)firstPageItemView;
-- (id)reloadSheetControllerForRecord:(id)a3;
-- (id)sheetControllerAtIndex:(int64_t)a3;
-- (id)sheetControllerForRecord:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)pageIndexForAvatarRecordIdentifier:(id)a3;
-- (void)avatarActionsViewControllerDidFinish:(id)a3;
-- (void)cancelPrefetchingDataForRecord:(id)a3;
+- (id)reloadSheetControllerForRecord:(id)record;
+- (id)sheetControllerAtIndex:(int64_t)index;
+- (id)sheetControllerForRecord:(id)record;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)pageIndexForAvatarRecordIdentifier:(id)identifier;
+- (void)avatarActionsViewControllerDidFinish:(id)finish;
+- (void)cancelPrefetchingDataForRecord:(id)record;
 - (void)clearStickerSelection;
-- (void)collectionView:(id)a3 cancelPrefetchingForItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)deletePageForRecord:(id)a3 atIndex:(int64_t)a4;
+- (void)collectionView:(id)view cancelPrefetchingForItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)deletePageForRecord:(id)record atIndex:(int64_t)index;
 - (void)didEndDisplaying;
-- (void)insertPageForRecord:(id)a3 atIndex:(int64_t)a4;
+- (void)insertPageForRecord:(id)record atIndex:(int64_t)index;
 - (void)loadView;
-- (void)notifyingContainerViewDidChangeSize:(CGSize)a3;
-- (void)notifyingContainerViewWillChangeSize:(CGSize)a3;
-- (void)prefetchDataForRecord:(id)a3;
+- (void)notifyingContainerViewDidChangeSize:(CGSize)size;
+- (void)notifyingContainerViewWillChangeSize:(CGSize)size;
+- (void)prefetchDataForRecord:(id)record;
 - (void)reloadData;
-- (void)reloadPageForRecord:(id)a3 atIndex:(int64_t)a4;
-- (void)scrollToAvatarWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)scrollToPageAtIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setPageContentInsets:(UIEdgeInsets)a3;
-- (void)setPageContentOffset:(CGPoint)a3;
-- (void)stickerSheetController:(id)a3 didFinishRenderingStickersForRecord:(id)a4;
-- (void)stickerSheetController:(id)a3 didInteractWithStickerItem:(id)a4 atIndex:(int64_t)a5 byPeeling:(BOOL)a6;
-- (void)stickerSheetController:(id)a3 didScrollToContentOffset:(CGPoint)a4;
-- (void)stickerSheetController:(id)a3 scrollView:(id)a4 willEndDraggingWithTargetContentOffset:(CGPoint *)a5;
-- (void)updateForEndingScrollWithTargetContentOffset:(CGPoint)a3;
+- (void)reloadPageForRecord:(id)record atIndex:(int64_t)index;
+- (void)scrollToAvatarWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)scrollToPageAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setPageContentInsets:(UIEdgeInsets)insets;
+- (void)setPageContentOffset:(CGPoint)offset;
+- (void)stickerSheetController:(id)controller didFinishRenderingStickersForRecord:(id)record;
+- (void)stickerSheetController:(id)controller didInteractWithStickerItem:(id)item atIndex:(int64_t)index byPeeling:(BOOL)peeling;
+- (void)stickerSheetController:(id)controller didScrollToContentOffset:(CGPoint)offset;
+- (void)stickerSheetController:(id)controller scrollView:(id)view willEndDraggingWithTargetContentOffset:(CGPoint *)offset;
+- (void)updateForEndingScrollWithTargetContentOffset:(CGPoint)offset;
 - (void)willEndDisplaying;
 - (void)willStartDisplaying;
-- (void)wrapAndPresentViewController:(id)a3 animated:(BOOL)a4;
+- (void)wrapAndPresentViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation AVTStickerPagingController
 
-+ (id)stickerCacheWithEnvironment:(id)a3
++ (id)stickerCacheWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (AVTUIStickersCaching())
   {
     if (AVTUIFlushStickersCache())
     {
-      v4 = [v3 stickerImageStoreLocation];
-      v5 = [v3 logger];
-      [AVTImageStore clearContentAtLocation:v4 logger:v5];
+      stickerImageStoreLocation = [environmentCopy stickerImageStoreLocation];
+      logger = [environmentCopy logger];
+      [AVTImageStore clearContentAtLocation:stickerImageStoreLocation logger:logger];
 
       AVTUISetFlushStickersCache();
     }
 
     v6 = [AVTInMemoryResourceCache alloc];
-    v7 = [v3 lockProvider];
-    v8 = [v3 logger];
-    v9 = [(AVTInMemoryResourceCache *)v6 initWithLockProvider:v7 totalCostLimit:980000 logger:v8];
+    lockProvider = [environmentCopy lockProvider];
+    logger2 = [environmentCopy logger];
+    v9 = [(AVTInMemoryResourceCache *)v6 initWithLockProvider:lockProvider totalCostLimit:980000 logger:logger2];
   }
 
   else
   {
-    v10 = [v3 stickerImageStoreLocation];
-    v11 = [v3 logger];
-    [AVTImageStore clearContentAtLocation:v10 logger:v11];
+    stickerImageStoreLocation2 = [environmentCopy stickerImageStoreLocation];
+    logger3 = [environmentCopy logger];
+    [AVTImageStore clearContentAtLocation:stickerImageStoreLocation2 logger:logger3];
 
     AVTUISetFlushStickersCache();
     v9 = objc_alloc_init(AVTPassThroughResourceCache);
@@ -90,47 +90,47 @@
   return v9;
 }
 
-- (AVTStickerPagingController)initWithRecordDataSource:(id)a3 recordImageProvider:(id)a4 stickerConfigurationProvider:(id)a5 taskScheduler:(id)a6 environment:(id)a7 allowsPeel:(BOOL)a8
+- (AVTStickerPagingController)initWithRecordDataSource:(id)source recordImageProvider:(id)provider stickerConfigurationProvider:(id)configurationProvider taskScheduler:(id)scheduler environment:(id)environment allowsPeel:(BOOL)peel
 {
-  v34 = a3;
-  v33 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  sourceCopy = source;
+  providerCopy = provider;
+  configurationProviderCopy = configurationProvider;
+  schedulerCopy = scheduler;
+  environmentCopy = environment;
   v35.receiver = self;
   v35.super_class = AVTStickerPagingController;
   v18 = [(AVTStickerPagingController *)&v35 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_dataSource, a3);
-    objc_storeStrong(&v19->_environment, a7);
-    v19->_allowsPeel = a8;
+    objc_storeStrong(&v18->_dataSource, source);
+    objc_storeStrong(&v19->_environment, environment);
+    v19->_allowsPeel = peel;
     v20 = [AVTUIStickerGeneratorPool alloc];
-    v21 = [v17 logger];
-    v22 = [(AVTUIStickerGeneratorPool *)v20 initWithMaxStickerGeneratorCount:2 logger:v21];
+    logger = [environmentCopy logger];
+    v22 = [(AVTUIStickerGeneratorPool *)v20 initWithMaxStickerGeneratorCount:2 logger:logger];
     stickerGeneratorPool = v19->_stickerGeneratorPool;
     v19->_stickerGeneratorPool = v22;
 
-    objc_storeStrong(&v19->_taskScheduler, a6);
-    v24 = [v17 backgroundRenderingQueue];
+    objc_storeStrong(&v19->_taskScheduler, scheduler);
+    backgroundRenderingQueue = [environmentCopy backgroundRenderingQueue];
     renderingQueue = v19->_renderingQueue;
-    v19->_renderingQueue = v24;
+    v19->_renderingQueue = backgroundRenderingQueue;
 
-    v26 = [v17 backgroundEncodingQueue];
+    backgroundEncodingQueue = [environmentCopy backgroundEncodingQueue];
     encodingQueue = v19->_encodingQueue;
-    v19->_encodingQueue = v26;
+    v19->_encodingQueue = backgroundEncodingQueue;
 
-    v28 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pageForRecords = v19->_pageForRecords;
-    v19->_pageForRecords = v28;
+    v19->_pageForRecords = dictionary;
 
-    v30 = [objc_opt_class() stickerCacheWithEnvironment:v17];
+    v30 = [objc_opt_class() stickerCacheWithEnvironment:environmentCopy];
     cache = v19->_cache;
     v19->_cache = v30;
 
-    objc_storeStrong(&v19->_imageProvider, a4);
-    objc_storeStrong(&v19->_stickerConfigurationProvider, a5);
+    objc_storeStrong(&v19->_imageProvider, provider);
+    objc_storeStrong(&v19->_stickerConfigurationProvider, configurationProvider);
   }
 
   return v19;
@@ -159,8 +159,8 @@
   [v12 setMinimumInteritemSpacing:0.0];
   [v12 setMinimumLineSpacing:0.0];
   v7 = [objc_alloc(MEMORY[0x1E69DC7F0]) initWithFrame:v12 collectionViewLayout:{v3, v4, v5, v6}];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
   [v7 setDataSource:self];
   [v7 setPrefetchDataSource:self];
@@ -182,61 +182,61 @@
   [(AVTStickerPagingController *)self reloadData];
 }
 
-- (void)setPageContentInsets:(UIEdgeInsets)a3
+- (void)setPageContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_pageContentInsets.top), vceqq_f64(v4, *&self->_pageContentInsets.bottom)))) & 1) == 0)
   {
-    self->_pageContentInsets = a3;
-    bottom = a3.bottom;
-    right = a3.right;
-    top = a3.top;
-    left = a3.left;
-    v6 = [(AVTStickerPagingController *)self collectionView];
-    [v6 contentOffset];
+    self->_pageContentInsets = insets;
+    bottom = insets.bottom;
+    right = insets.right;
+    top = insets.top;
+    left = insets.left;
+    collectionView = [(AVTStickerPagingController *)self collectionView];
+    [collectionView contentOffset];
     v13 = [(AVTStickerPagingController *)self centeredPageWithOffset:?];
 
-    v7 = [(AVTStickerPagingController *)self collectionView];
-    v8 = [v7 collectionViewLayout];
-    [v8 invalidateLayout];
+    collectionView2 = [(AVTStickerPagingController *)self collectionView];
+    collectionViewLayout = [collectionView2 collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
 
     [v13 setSectionInsets:{top, left, bottom, right}];
   }
 }
 
-- (void)prefetchDataForRecord:(id)a3
+- (void)prefetchDataForRecord:(id)record
 {
-  v3 = [(AVTStickerPagingController *)self sheetControllerForRecord:a3];
+  v3 = [(AVTStickerPagingController *)self sheetControllerForRecord:record];
   [v3 startAllSchedulerTasks];
 }
 
-- (void)cancelPrefetchingDataForRecord:(id)a3
+- (void)cancelPrefetchingDataForRecord:(id)record
 {
-  v4 = a3;
-  v6 = [(AVTStickerPagingController *)self taskScheduler];
-  v5 = [v4 identifier];
+  recordCopy = record;
+  taskScheduler = [(AVTStickerPagingController *)self taskScheduler];
+  identifier = [recordCopy identifier];
 
-  [v6 cancelStickerSheetTasksForAvatarRecordIdentifier:v5];
+  [taskScheduler cancelStickerSheetTasksForAvatarRecordIdentifier:identifier];
 }
 
 - (void)reloadData
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [(AVTStickerPagingController *)self setPageForRecords:v3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(AVTStickerPagingController *)self setPageForRecords:dictionary];
 
-  v4 = [(AVTStickerPagingController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (id)sheetControllerForRecord:(id)a3
+- (id)sheetControllerForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTStickerPagingController *)self pageForRecords];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKey:v6];
+  recordCopy = record;
+  pageForRecords = [(AVTStickerPagingController *)self pageForRecords];
+  identifier = [recordCopy identifier];
+  v7 = [pageForRecords objectForKey:identifier];
 
   if (v7)
   {
@@ -245,40 +245,40 @@
 
   else
   {
-    v9 = [(AVTStickerPagingController *)self stickerConfigurationProvider];
-    v10 = [v9 stickerConfigurationsForAvatarRecord:v4];
+    stickerConfigurationProvider = [(AVTStickerPagingController *)self stickerConfigurationProvider];
+    v10 = [stickerConfigurationProvider stickerConfigurationsForAvatarRecord:recordCopy];
 
-    v11 = [(AVTStickerPagingController *)self cache];
-    v12 = [(AVTStickerPagingController *)self renderingQueue];
-    v13 = [(AVTStickerPagingController *)self encodingQueue];
-    v14 = [(AVTStickerPagingController *)self stickerGeneratorPool];
-    v15 = [(AVTStickerPagingController *)self imageProvider];
-    v16 = [(AVTStickerPagingController *)self environment];
-    v17 = [AVTStickerSheetModel sheetModelForAvatarRecord:v4 withConfigurations:v10 cache:v11 taskScheduler:0 renderingQueue:v12 encodingQueue:v13 stickerGeneratorPool:v14 imageProvider:v15 environment:v16];
+    cache = [(AVTStickerPagingController *)self cache];
+    renderingQueue = [(AVTStickerPagingController *)self renderingQueue];
+    encodingQueue = [(AVTStickerPagingController *)self encodingQueue];
+    stickerGeneratorPool = [(AVTStickerPagingController *)self stickerGeneratorPool];
+    imageProvider = [(AVTStickerPagingController *)self imageProvider];
+    environment = [(AVTStickerPagingController *)self environment];
+    v17 = [AVTStickerSheetModel sheetModelForAvatarRecord:recordCopy withConfigurations:v10 cache:cache taskScheduler:0 renderingQueue:renderingQueue encodingQueue:encodingQueue stickerGeneratorPool:stickerGeneratorPool imageProvider:imageProvider environment:environment];
 
-    v18 = [(AVTStickerPagingController *)self stickerSheetControllerProvider];
+    stickerSheetControllerProvider = [(AVTStickerPagingController *)self stickerSheetControllerProvider];
 
-    if (v18)
+    if (stickerSheetControllerProvider)
     {
-      v19 = [(AVTStickerPagingController *)self stickerSheetControllerProvider];
-      v20 = [(AVTStickerPagingController *)self taskScheduler];
-      v21 = [v19 stickerSheetControllerForSelectedAvatar:v4 stickerSheetModel:v17 taskScheduler:v20];
+      stickerSheetControllerProvider2 = [(AVTStickerPagingController *)self stickerSheetControllerProvider];
+      taskScheduler = [(AVTStickerPagingController *)self taskScheduler];
+      v21 = [stickerSheetControllerProvider2 stickerSheetControllerForSelectedAvatar:recordCopy stickerSheetModel:v17 taskScheduler:taskScheduler];
     }
 
     else
     {
       v22 = [AVTStickerSheetController alloc];
-      v19 = [(AVTStickerPagingController *)self taskScheduler];
-      v21 = [(AVTStickerSheetController *)v22 initWithStickerSheetModel:v17 taskScheduler:v19 allowsPeel:[(AVTStickerPagingController *)self allowsPeel]];
+      stickerSheetControllerProvider2 = [(AVTStickerPagingController *)self taskScheduler];
+      v21 = [(AVTStickerSheetController *)v22 initWithStickerSheetModel:v17 taskScheduler:stickerSheetControllerProvider2 allowsPeel:[(AVTStickerPagingController *)self allowsPeel]];
     }
 
     [(AVTStickerSheetController *)v21 setDelegate:self];
-    v23 = [(AVTStickerPagingController *)self disclosureValidationDelegate];
-    [(AVTStickerSheetController *)v21 setDisclosureValidationDelegate:v23];
+    disclosureValidationDelegate = [(AVTStickerPagingController *)self disclosureValidationDelegate];
+    [(AVTStickerSheetController *)v21 setDisclosureValidationDelegate:disclosureValidationDelegate];
 
-    v24 = [(AVTStickerPagingController *)self pageForRecords];
-    v25 = [v4 identifier];
-    [v24 setObject:v21 forKey:v25];
+    pageForRecords2 = [(AVTStickerPagingController *)self pageForRecords];
+    identifier2 = [recordCopy identifier];
+    [pageForRecords2 setObject:v21 forKey:identifier2];
 
     v8 = v21;
   }
@@ -286,70 +286,70 @@
   return v8;
 }
 
-- (id)reloadSheetControllerForRecord:(id)a3
+- (id)reloadSheetControllerForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTStickerPagingController *)self pageForRecords];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKey:v6];
+  recordCopy = record;
+  pageForRecords = [(AVTStickerPagingController *)self pageForRecords];
+  identifier = [recordCopy identifier];
+  v7 = [pageForRecords objectForKey:identifier];
 
   if (v7)
   {
-    v8 = [(AVTStickerPagingController *)self pageForRecords];
-    v9 = [v4 identifier];
-    [v8 removeObjectForKey:v9];
+    pageForRecords2 = [(AVTStickerPagingController *)self pageForRecords];
+    identifier2 = [recordCopy identifier];
+    [pageForRecords2 removeObjectForKey:identifier2];
 
     [v7 sheetDidDisappear];
   }
 
-  v10 = [(AVTStickerPagingController *)self stickerGeneratorPool];
-  [v10 flushGeneratorForRecord:v4];
+  stickerGeneratorPool = [(AVTStickerPagingController *)self stickerGeneratorPool];
+  [stickerGeneratorPool flushGeneratorForRecord:recordCopy];
 
-  v11 = [(AVTStickerPagingController *)self sheetControllerForRecord:v4];
+  v11 = [(AVTStickerPagingController *)self sheetControllerForRecord:recordCopy];
 
   return v11;
 }
 
-- (id)sheetControllerAtIndex:(int64_t)a3
+- (id)sheetControllerAtIndex:(int64_t)index
 {
-  v5 = [(AVTStickerPagingController *)self dataSource];
-  v6 = [v5 recordAtIndex:a3];
+  dataSource = [(AVTStickerPagingController *)self dataSource];
+  v6 = [dataSource recordAtIndex:index];
 
   v7 = [(AVTStickerPagingController *)self sheetControllerForRecord:v6];
 
   return v7;
 }
 
-- (void)insertPageForRecord:(id)a3 atIndex:(int64_t)a4
+- (void)insertPageForRecord:(id)record atIndex:(int64_t)index
 {
-  v6 = [(AVTStickerPagingController *)self reloadSheetControllerForRecord:a3, a4];
-  [v6 setDelegate:self];
-  v5 = [(AVTStickerPagingController *)self collectionView];
-  [v5 reloadData];
+  index = [(AVTStickerPagingController *)self reloadSheetControllerForRecord:record, index];
+  [index setDelegate:self];
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)deletePageForRecord:(id)a3 atIndex:(int64_t)a4
+- (void)deletePageForRecord:(id)record atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(AVTStickerPagingController *)self pageForRecords];
-  v8 = [v6 identifier];
-  v9 = [v7 objectForKey:v8];
+  recordCopy = record;
+  pageForRecords = [(AVTStickerPagingController *)self pageForRecords];
+  identifier = [recordCopy identifier];
+  v9 = [pageForRecords objectForKey:identifier];
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AC88] indexPathForItem:a4 inSection:0];
-    v11 = [(AVTStickerPagingController *)self collectionView];
-    v12 = [v11 cellForItemAtIndexPath:v10];
+    v10 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
+    collectionView = [(AVTStickerPagingController *)self collectionView];
+    v12 = [collectionView cellForItemAtIndexPath:v10];
     [(AVTStickerPagingController *)self setLastDeletedCell:v12];
 
-    v13 = [(AVTStickerPagingController *)self stickerGeneratorPool];
-    [v13 flushGeneratorForRecord:v6];
+    stickerGeneratorPool = [(AVTStickerPagingController *)self stickerGeneratorPool];
+    [stickerGeneratorPool flushGeneratorForRecord:recordCopy];
 
-    v14 = [(AVTStickerPagingController *)self pageForRecords];
-    v15 = [v6 identifier];
-    [v14 removeObjectForKey:v15];
+    pageForRecords2 = [(AVTStickerPagingController *)self pageForRecords];
+    identifier2 = [recordCopy identifier];
+    [pageForRecords2 removeObjectForKey:identifier2];
 
-    v16 = [(AVTStickerPagingController *)self collectionView];
+    collectionView2 = [(AVTStickerPagingController *)self collectionView];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __58__AVTStickerPagingController_deletePageForRecord_atIndex___block_invoke;
@@ -362,7 +362,7 @@
     v18[3] = &unk_1E7F3AA80;
     v19 = v9;
     v17 = v10;
-    [v16 performBatchUpdates:v20 completion:v18];
+    [collectionView2 performBatchUpdates:v20 completion:v18];
   }
 }
 
@@ -375,97 +375,97 @@ void __58__AVTStickerPagingController_deletePageForRecord_atIndex___block_invoke
   [v2 deleteItemsAtIndexPaths:v3];
 }
 
-- (void)reloadPageForRecord:(id)a3 atIndex:(int64_t)a4
+- (void)reloadPageForRecord:(id)record atIndex:(int64_t)index
 {
-  v5 = [(AVTStickerPagingController *)self reloadSheetControllerForRecord:a3, a4];
-  v6 = [(AVTStickerPagingController *)self collectionView];
-  [v6 reloadData];
+  index = [(AVTStickerPagingController *)self reloadSheetControllerForRecord:record, index];
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)setPageContentOffset:(CGPoint)a3
+- (void)setPageContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != self->_pageContentOffset.x || a3.y != self->_pageContentOffset.y)
+  y = offset.y;
+  x = offset.x;
+  if (offset.x != self->_pageContentOffset.x || offset.y != self->_pageContentOffset.y)
   {
-    self->_pageContentOffset = a3;
+    self->_pageContentOffset = offset;
   }
 
-  v7 = [(AVTStickerPagingController *)self collectionView];
-  [v7 contentOffset];
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  [collectionView contentOffset];
   v8 = [(AVTStickerPagingController *)self centeredPageWithOffset:?];
 
   [v8 scrollToContentOffset:0 animated:{x, y}];
 }
 
-- (id)centeredPageWithOffset:(CGPoint)a3
+- (id)centeredPageWithOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AVTStickerPagingController *)self collectionView];
-  v7 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:v6 collectionView:x, y];
+  y = offset.y;
+  x = offset.x;
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  v7 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:collectionView collectionView:x, y];
 
   v8 = -[AVTStickerPagingController sheetControllerAtIndex:](self, "sheetControllerAtIndex:", [v7 item]);
 
   return v8;
 }
 
-- (void)scrollToAvatarWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)scrollToAvatarWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(AVTStickerPagingController *)self pageIndexForAvatarRecordIdentifier:a3];
+  animatedCopy = animated;
+  v6 = [(AVTStickerPagingController *)self pageIndexForAvatarRecordIdentifier:identifier];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    [(AVTStickerPagingController *)self scrollToPageAtIndex:v6 animated:v4];
+    [(AVTStickerPagingController *)self scrollToPageAtIndex:v6 animated:animatedCopy];
   }
 }
 
-- (void)scrollToPageAtIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)scrollToPageAtIndex:(int64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(AVTStickerPagingController *)self dataSource];
-  v8 = [v7 numberOfRecords];
+  animatedCopy = animated;
+  dataSource = [(AVTStickerPagingController *)self dataSource];
+  numberOfRecords = [dataSource numberOfRecords];
 
-  if (v8 > a3)
+  if (numberOfRecords > index)
   {
-    v13 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
-    v9 = [(AVTStickerPagingController *)self dataSource];
-    v10 = [v9 recordAtIndex:a3];
-    v11 = [v10 identifier];
-    [(AVTStickerPagingController *)self setFocusedPageRecordIdentifier:v11];
+    v13 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
+    dataSource2 = [(AVTStickerPagingController *)self dataSource];
+    v10 = [dataSource2 recordAtIndex:index];
+    identifier = [v10 identifier];
+    [(AVTStickerPagingController *)self setFocusedPageRecordIdentifier:identifier];
 
     if (v13)
     {
-      v12 = [(AVTStickerPagingController *)self collectionView];
-      [v12 scrollToItemAtIndexPath:v13 atScrollPosition:16 animated:v4];
+      collectionView = [(AVTStickerPagingController *)self collectionView];
+      [collectionView scrollToItemAtIndexPath:v13 atScrollPosition:16 animated:animatedCopy];
     }
   }
 }
 
-- (void)updateForEndingScrollWithTargetContentOffset:(CGPoint)a3
+- (void)updateForEndingScrollWithTargetContentOffset:(CGPoint)offset
 {
-  v8 = [(AVTStickerPagingController *)self centeredPageWithOffset:a3.x, a3.y];
-  v4 = [v8 avatarRecord];
-  v5 = [v4 identifier];
-  [(AVTStickerPagingController *)self setFocusedPageRecordIdentifier:v5];
+  v8 = [(AVTStickerPagingController *)self centeredPageWithOffset:offset.x, offset.y];
+  avatarRecord = [v8 avatarRecord];
+  identifier = [avatarRecord identifier];
+  [(AVTStickerPagingController *)self setFocusedPageRecordIdentifier:identifier];
 
-  v6 = [(AVTStickerPagingController *)self avatarPickerDelegate];
-  v7 = [v8 avatarRecord];
-  [v6 avatarPicker:self didSelectAvatarRecord:v7];
+  avatarPickerDelegate = [(AVTStickerPagingController *)self avatarPickerDelegate];
+  avatarRecord2 = [v8 avatarRecord];
+  [avatarPickerDelegate avatarPicker:self didSelectAvatarRecord:avatarRecord2];
 }
 
-- (int64_t)pageIndexForAvatarRecordIdentifier:(id)a3
+- (int64_t)pageIndexForAvatarRecordIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AVTStickerPagingController *)self dataSource];
+  identifierCopy = identifier;
+  dataSource = [(AVTStickerPagingController *)self dataSource];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___block_invoke;
   v9[3] = &unk_1E7F3B3B0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 indexOfRecordPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [dataSource indexOfRecordPassingTest:v9];
 
   return v7;
 }
@@ -478,26 +478,26 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
   return v4;
 }
 
-- (void)wrapAndPresentViewController:(id)a3 animated:(BOOL)a4
+- (void)wrapAndPresentViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = [AVTUIControllerPresentation presentationWithWrappingForController:a3, a4];
-  v5 = [(AVTStickerPagingController *)self presenterDelegate];
-  [v5 presentAvatarUIController:v6 animated:1];
+  animated = [AVTUIControllerPresentation presentationWithWrappingForController:controller, animated];
+  presenterDelegate = [(AVTStickerPagingController *)self presenterDelegate];
+  [presenterDelegate presentAvatarUIController:animated animated:1];
 }
 
 - (void)willStartDisplaying
 {
-  v2 = [(AVTStickerPagingController *)self collectionView];
-  [v2 reloadData];
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)willEndDisplaying
 {
-  v3 = [(AVTStickerPagingController *)self taskScheduler];
-  [v3 cancelAllTasks];
+  taskScheduler = [(AVTStickerPagingController *)self taskScheduler];
+  [taskScheduler cancelAllTasks];
 
-  v4 = [(AVTStickerPagingController *)self stickerGeneratorPool];
-  [v4 flush];
+  stickerGeneratorPool = [(AVTStickerPagingController *)self stickerGeneratorPool];
+  [stickerGeneratorPool flush];
 }
 
 - (void)didEndDisplaying
@@ -507,8 +507,8 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(AVTStickerPagingController *)self pageForRecords];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  pageForRecords = [(AVTStickerPagingController *)self pageForRecords];
+  v4 = [pageForRecords countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -520,19 +520,19 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pageForRecords);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(AVTStickerPagingController *)self pageForRecords];
-        v10 = [v9 objectForKey:v8];
+        pageForRecords2 = [(AVTStickerPagingController *)self pageForRecords];
+        v10 = [pageForRecords2 objectForKey:v8];
 
         [v10 sheetDidDisappear];
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [pageForRecords countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -541,88 +541,88 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
 
 - (id)firstPageItemView
 {
-  v3 = [(AVTStickerPagingController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  [collectionView contentOffset];
   v4 = [(AVTStickerPagingController *)self centeredPageWithOffset:?];
 
-  v5 = [v4 firstStickerView];
+  firstStickerView = [v4 firstStickerView];
 
-  return v5;
+  return firstStickerView;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(AVTStickerPagingController *)self dataSource:a3];
-  v5 = [v4 numberOfRecords];
+  v4 = [(AVTStickerPagingController *)self dataSource:view];
+  numberOfRecords = [v4 numberOfRecords];
 
-  return v5;
+  return numberOfRecords;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[AVTStickerPagingCollectionViewCell cellIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [v6 item];
-  v11 = [(AVTStickerPagingController *)self sheetControllerAtIndex:v10];
+  item = [pathCopy item];
+  v11 = [(AVTStickerPagingController *)self sheetControllerAtIndex:item];
   [(AVTStickerPagingController *)self pageContentInsets];
   [v11 setSectionInsets:?];
-  v12 = [v11 view];
-  [v9 setPageContentView:v12];
+  view = [v11 view];
+  [v9 setPageContentView:view];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = -[AVTStickerPagingController sheetControllerAtIndex:](self, "sheetControllerAtIndex:", [a5 item]);
+  v7 = -[AVTStickerPagingController sheetControllerAtIndex:](self, "sheetControllerAtIndex:", [path item]);
   [v7 sheetWillAppear];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(AVTStickerPagingController *)self selectedStickerIdentifier];
-    [v7 selectStickerWithIdentifier:v6];
+    selectedStickerIdentifier = [(AVTStickerPagingController *)self selectedStickerIdentifier];
+    [v7 selectStickerWithIdentifier:selectedStickerIdentifier];
   }
 
   [(AVTStickerPagingController *)self pageContentOffset];
   [v7 scrollToContentOffset:0 animated:?];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v13 = a5;
-  v7 = a4;
-  v8 = [(AVTStickerPagingController *)self lastDeletedCell];
+  pathCopy = path;
+  cellCopy = cell;
+  lastDeletedCell = [(AVTStickerPagingController *)self lastDeletedCell];
 
-  if (v8 == v7)
+  if (lastDeletedCell == cellCopy)
   {
     [(AVTStickerPagingController *)self setLastDeletedCell:0];
   }
 
   else
   {
-    v9 = [(AVTStickerPagingController *)self collectionView];
-    v10 = [v9 indexPathsForVisibleItems];
-    v11 = [v10 containsObject:v13];
+    collectionView = [(AVTStickerPagingController *)self collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+    v11 = [indexPathsForVisibleItems containsObject:pathCopy];
 
     if ((v11 & 1) == 0)
     {
-      v12 = -[AVTStickerPagingController sheetControllerAtIndex:](self, "sheetControllerAtIndex:", [v13 item]);
+      v12 = -[AVTStickerPagingController sheetControllerAtIndex:](self, "sheetControllerAtIndex:", [pathCopy item]);
       [v12 sheetDidDisappear];
     }
   }
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  pathsCopy = paths;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -634,34 +634,34 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(AVTStickerPagingController *)self dataSource];
-        v12 = [v11 recordAtIndex:{objc_msgSend(v10, "item")}];
+        dataSource = [(AVTStickerPagingController *)self dataSource];
+        v12 = [dataSource recordAtIndex:{objc_msgSend(v10, "item")}];
 
         [(AVTStickerPagingController *)self prefetchDataForRecord:v12];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)collectionView:(id)a3 cancelPrefetchingForItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view cancelPrefetchingForItemsAtIndexPaths:(id)paths
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  pathsCopy = paths;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -673,70 +673,70 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(AVTStickerPagingController *)self dataSource];
-        v12 = [v11 recordAtIndex:{objc_msgSend(v10, "item")}];
+        dataSource = [(AVTStickerPagingController *)self dataSource];
+        v12 = [dataSource recordAtIndex:{objc_msgSend(v10, "item")}];
 
         [(AVTStickerPagingController *)self cancelPrefetchingDataForRecord:v12];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  [(AVTStickerPagingController *)self setEndDraggingTargetContentOffset:a3, a5->x, a5->y];
-  x = a5->x;
-  y = a5->y;
+  [(AVTStickerPagingController *)self setEndDraggingTargetContentOffset:dragging, offset->x, offset->y];
+  x = offset->x;
+  y = offset->y;
 
   [(AVTStickerPagingController *)self updateForEndingScrollWithTargetContentOffset:x, y];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v7 = a3;
-  if (([v7 avtui_isMoving] & 1) != 0 || (-[AVTStickerPagingController endDraggingTargetContentOffset](self, "endDraggingTargetContentOffset"), v5 = v4, objc_msgSend(v7, "contentOffset"), v5 == v6))
+  deceleratingCopy = decelerating;
+  if (([deceleratingCopy avtui_isMoving] & 1) != 0 || (-[AVTStickerPagingController endDraggingTargetContentOffset](self, "endDraggingTargetContentOffset"), v5 = v4, objc_msgSend(deceleratingCopy, "contentOffset"), v5 == v6))
   {
-    [v7 contentOffset];
+    [deceleratingCopy contentOffset];
     [(AVTStickerPagingController *)self setEndDraggingTargetContentOffset:?];
   }
 
   else
   {
-    [v7 contentOffset];
+    [deceleratingCopy contentOffset];
     [(AVTStickerPagingController *)self updateForEndingScrollWithTargetContentOffset:?];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v7 = a3;
-  if (([v7 avtui_isMoving] & 1) != 0 || (-[AVTStickerPagingController endDraggingTargetContentOffset](self, "endDraggingTargetContentOffset"), v5 = v4, objc_msgSend(v7, "contentOffset"), v5 == v6))
+  animationCopy = animation;
+  if (([animationCopy avtui_isMoving] & 1) != 0 || (-[AVTStickerPagingController endDraggingTargetContentOffset](self, "endDraggingTargetContentOffset"), v5 = v4, objc_msgSend(animationCopy, "contentOffset"), v5 == v6))
   {
-    [v7 contentOffset];
+    [animationCopy contentOffset];
     [(AVTStickerPagingController *)self setEndDraggingTargetContentOffset:?];
   }
 
   else
   {
-    [v7 contentOffset];
+    [animationCopy contentOffset];
     [(AVTStickerPagingController *)self updateForEndingScrollWithTargetContentOffset:?];
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  [v5 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v7 = 0x4072C00000000000;
   if (v8 <= 0.0)
   {
@@ -748,7 +748,7 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
     v9 = 0x4072C00000000000;
     if (v6 > 0.0)
     {
-      [v5 bounds];
+      [viewCopy bounds];
       v7 = v10;
       v9 = v11;
     }
@@ -761,31 +761,31 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
   return result;
 }
 
-- (void)stickerSheetController:(id)a3 didScrollToContentOffset:(CGPoint)a4
+- (void)stickerSheetController:(id)controller didScrollToContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  self->_pageContentOffset = a4;
-  v7 = [(AVTStickerPagingController *)self delegate];
+  y = offset.y;
+  x = offset.x;
+  self->_pageContentOffset = offset;
+  delegate = [(AVTStickerPagingController *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(AVTStickerPagingController *)self delegate];
-    [v8 stickerPagingController:self pageDidScrollToOffset:{x, y}];
+    delegate2 = [(AVTStickerPagingController *)self delegate];
+    [delegate2 stickerPagingController:self pageDidScrollToOffset:{x, y}];
   }
 }
 
-- (void)stickerSheetController:(id)a3 scrollView:(id)a4 willEndDraggingWithTargetContentOffset:(CGPoint *)a5
+- (void)stickerSheetController:(id)controller scrollView:(id)view willEndDraggingWithTargetContentOffset:(CGPoint *)offset
 {
-  v7 = a4;
+  viewCopy = view;
   [(AVTStickerPagingController *)self pageContentInsets];
   v9 = v8;
-  [v7 contentOffset];
+  [viewCopy contentOffset];
   v11 = v10;
 
   if (v11 < v9)
   {
-    y = a5->y;
+    y = offset->y;
     if (y < v9)
     {
       v13 = y < v9 * 0.25;
@@ -795,50 +795,50 @@ uint64_t __65__AVTStickerPagingController_pageIndexForAvatarRecordIdentifier___b
         v14 = v9;
       }
 
-      a5->y = v14;
+      offset->y = v14;
     }
   }
 }
 
-- (void)stickerSheetController:(id)a3 didFinishRenderingStickersForRecord:(id)a4
+- (void)stickerSheetController:(id)controller didFinishRenderingStickersForRecord:(id)record
 {
-  v5 = a4;
-  v6 = [(AVTStickerPagingController *)self stickerGeneratorPool];
-  [v6 flushGeneratorForRecord:v5];
+  recordCopy = record;
+  stickerGeneratorPool = [(AVTStickerPagingController *)self stickerGeneratorPool];
+  [stickerGeneratorPool flushGeneratorForRecord:recordCopy];
 }
 
-- (void)stickerSheetController:(id)a3 didInteractWithStickerItem:(id)a4 atIndex:(int64_t)a5 byPeeling:(BOOL)a6
+- (void)stickerSheetController:(id)controller didInteractWithStickerItem:(id)item atIndex:(int64_t)index byPeeling:(BOOL)peeling
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 avatarRecord];
-  v12 = [(AVTStickerPagingController *)self stickerConfigurationProvider];
-  v13 = [v12 stickerConfigurationsForAvatarRecord:v11];
+  controllerCopy = controller;
+  itemCopy = item;
+  avatarRecord = [controllerCopy avatarRecord];
+  stickerConfigurationProvider = [(AVTStickerPagingController *)self stickerConfigurationProvider];
+  v13 = [stickerConfigurationProvider stickerConfigurationsForAvatarRecord:avatarRecord];
 
-  if ([v13 count] > a5)
+  if ([v13 count] > index)
   {
-    v14 = [v13 objectAtIndexedSubscript:a5];
+    v14 = [v13 objectAtIndexedSubscript:index];
     v15 = self->_environment;
-    v16 = [v14 name];
-    v17 = [v9 avatarRecord];
-    v18 = [(AVTUIEnvironment *)v15 usageTrackingSession];
-    [v18 didSelectStickerFromStickersApp:v16 withAvatar:v17];
+    name = [v14 name];
+    avatarRecord2 = [controllerCopy avatarRecord];
+    usageTrackingSession = [(AVTUIEnvironment *)v15 usageTrackingSession];
+    [usageTrackingSession didSelectStickerFromStickersApp:name withAvatar:avatarRecord2];
 
-    v19 = [v10 identifier];
-    [(AVTStickerPagingController *)self setSelectedStickerIdentifier:v19];
+    identifier = [itemCopy identifier];
+    [(AVTStickerPagingController *)self setSelectedStickerIdentifier:identifier];
 
-    v20 = [(AVTStickerPagingController *)self stickerSelectionDelegate];
-    [v20 didSelectStickerWithConfiguration:v14 avatar:v17];
+    stickerSelectionDelegate = [(AVTStickerPagingController *)self stickerSelectionDelegate];
+    [stickerSelectionDelegate didSelectStickerWithConfiguration:v14 avatar:avatarRecord2];
 
-    v21 = [(AVTAvatarRecordDataSource *)self->_dataSource internalRecordStore];
-    v22 = [v17 identifier];
+    internalRecordStore = [(AVTAvatarRecordDataSource *)self->_dataSource internalRecordStore];
+    identifier2 = [avatarRecord2 identifier];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __98__AVTStickerPagingController_stickerSheetController_didInteractWithStickerItem_atIndex_byPeeling___block_invoke;
     v24[3] = &unk_1E7F3B2E8;
     v25 = v15;
     v23 = v15;
-    [v21 didUseStickerWithAvatarIdentifier:v22 stickerIdentifier:v16 completionHandler:v24];
+    [internalRecordStore didUseStickerWithAvatarIdentifier:identifier2 stickerIdentifier:name completionHandler:v24];
   }
 }
 
@@ -855,81 +855,81 @@ void __98__AVTStickerPagingController_stickerSheetController_didInteractWithStic
   }
 }
 
-- (void)avatarActionsViewControllerDidFinish:(id)a3
+- (void)avatarActionsViewControllerDidFinish:(id)finish
 {
-  v3 = [(AVTStickerPagingController *)self presenterDelegate];
-  [v3 dismissAvatarUIControllerAnimated:1];
+  presenterDelegate = [(AVTStickerPagingController *)self presenterDelegate];
+  [presenterDelegate dismissAvatarUIControllerAnimated:1];
 }
 
-- (id)avatarActionsViewController:(id)a3 recordUpdateForDeletingRecord:(id)a4
+- (id)avatarActionsViewController:(id)controller recordUpdateForDeletingRecord:(id)record
 {
-  v5 = a4;
-  v6 = [(AVTStickerPagingController *)self dataSource];
-  v7 = [AVTAvatarActionsRecordUpdate recordUpdateForDeletingRecord:v5 withDataSource:v6];
+  recordCopy = record;
+  dataSource = [(AVTStickerPagingController *)self dataSource];
+  v7 = [AVTAvatarActionsRecordUpdate recordUpdateForDeletingRecord:recordCopy withDataSource:dataSource];
 
   if (v7)
   {
-    v8 = [v7 avatarRecord];
+    avatarRecord = [v7 avatarRecord];
 
-    if (v8)
+    if (avatarRecord)
     {
-      v9 = [v7 avatarRecord];
-      v10 = [v9 identifier];
-      [(AVTStickerPagingController *)self scrollToAvatarWithIdentifier:v10 animated:0];
+      avatarRecord2 = [v7 avatarRecord];
+      identifier = [avatarRecord2 identifier];
+      [(AVTStickerPagingController *)self scrollToAvatarWithIdentifier:identifier animated:0];
 
-      v11 = [(AVTStickerPagingController *)self avatarPickerDelegate];
-      v12 = [v7 avatarRecord];
-      [v11 avatarPicker:self didSelectAvatarRecord:v12];
+      avatarPickerDelegate = [(AVTStickerPagingController *)self avatarPickerDelegate];
+      avatarRecord3 = [v7 avatarRecord];
+      [avatarPickerDelegate avatarPicker:self didSelectAvatarRecord:avatarRecord3];
     }
   }
 
   return v7;
 }
 
-- (void)notifyingContainerViewWillChangeSize:(CGSize)a3
+- (void)notifyingContainerViewWillChangeSize:(CGSize)size
 {
-  [(AVTStickerPagingController *)self setIsResizing:1, a3.width, a3.height];
-  v4 = [(AVTStickerPagingController *)self view];
-  v5 = [(AVTStickerPagingController *)self collectionView];
-  [v5 center];
+  [(AVTStickerPagingController *)self setIsResizing:1, size.width, size.height];
+  view = [(AVTStickerPagingController *)self view];
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  [collectionView center];
   v7 = v6;
   v9 = v8;
-  v10 = [(AVTStickerPagingController *)self collectionView];
-  [v4 convertPoint:v10 toView:{v7, v9}];
+  collectionView2 = [(AVTStickerPagingController *)self collectionView];
+  [view convertPoint:collectionView2 toView:{v7, v9}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(AVTStickerPagingController *)self focusedPageRecordIdentifier];
+  focusedPageRecordIdentifier = [(AVTStickerPagingController *)self focusedPageRecordIdentifier];
 
-  if (!v15)
+  if (!focusedPageRecordIdentifier)
   {
-    v16 = [(AVTStickerPagingController *)self dataSource];
-    v17 = [(AVTStickerPagingController *)self collectionView];
-    v18 = [v17 indexPathForItemAtPoint:{v12, v14}];
-    v19 = [v16 recordAtIndex:{objc_msgSend(v18, "row")}];
+    dataSource = [(AVTStickerPagingController *)self dataSource];
+    collectionView3 = [(AVTStickerPagingController *)self collectionView];
+    v18 = [collectionView3 indexPathForItemAtPoint:{v12, v14}];
+    v19 = [dataSource recordAtIndex:{objc_msgSend(v18, "row")}];
 
-    v20 = [v19 identifier];
-    [(AVTStickerPagingController *)self setFocusedPageRecordIdentifier:v20];
+    identifier = [v19 identifier];
+    [(AVTStickerPagingController *)self setFocusedPageRecordIdentifier:identifier];
   }
 
-  v22 = [(AVTStickerPagingController *)self collectionView];
-  v21 = [v22 collectionViewLayout];
-  [v21 invalidateLayout];
+  collectionView4 = [(AVTStickerPagingController *)self collectionView];
+  collectionViewLayout = [collectionView4 collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)notifyingContainerViewDidChangeSize:(CGSize)a3
+- (void)notifyingContainerViewDidChangeSize:(CGSize)size
 {
-  if (a3.width > 0.0 && a3.height > 0.0)
+  if (size.width > 0.0 && size.height > 0.0)
   {
-    v5 = [(AVTStickerPagingController *)self collectionView];
-    [v5 layoutIfNeeded];
+    collectionView = [(AVTStickerPagingController *)self collectionView];
+    [collectionView layoutIfNeeded];
 
-    v6 = [(AVTStickerPagingController *)self focusedPageRecordIdentifier];
-    [(AVTStickerPagingController *)self scrollToAvatarWithIdentifier:v6 animated:0];
+    focusedPageRecordIdentifier = [(AVTStickerPagingController *)self focusedPageRecordIdentifier];
+    [(AVTStickerPagingController *)self scrollToAvatarWithIdentifier:focusedPageRecordIdentifier animated:0];
 
     [(AVTStickerPagingController *)self setIsResizing:0];
-    v7 = [(AVTStickerPagingController *)self collectionView];
-    [v7 contentOffset];
+    collectionView2 = [(AVTStickerPagingController *)self collectionView];
+    [collectionView2 contentOffset];
     v8 = [(AVTStickerPagingController *)self centeredPageWithOffset:?];
 
     [(AVTStickerPagingController *)self pageContentOffset];
@@ -937,19 +937,19 @@ void __98__AVTStickerPagingController_stickerSheetController_didInteractWithStic
   }
 }
 
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
   if ([(AVTStickerPagingController *)self isResizing])
   {
-    v8 = [(AVTStickerPagingController *)self focusedPageRecordIdentifier];
-    v9 = [(AVTStickerPagingController *)self pageIndexForAvatarRecordIdentifier:v8];
+    focusedPageRecordIdentifier = [(AVTStickerPagingController *)self focusedPageRecordIdentifier];
+    v9 = [(AVTStickerPagingController *)self pageIndexForAvatarRecordIdentifier:focusedPageRecordIdentifier];
 
-    v10 = [v7 collectionViewLayout];
+    collectionViewLayout = [viewCopy collectionViewLayout];
     v11 = [MEMORY[0x1E696AC88] indexPathForItem:v9 inSection:0];
-    [(AVTStickerPagingController *)self collectionView:v7 layout:v10 sizeForItemAtIndexPath:v11];
+    [(AVTStickerPagingController *)self collectionView:viewCopy layout:collectionViewLayout sizeForItemAtIndexPath:v11];
     v13 = v12;
 
     x = v13 * v9;
@@ -965,8 +965,8 @@ void __98__AVTStickerPagingController_stickerSheetController_didInteractWithStic
 - (void)clearStickerSelection
 {
   [(AVTStickerPagingController *)self setSelectedStickerIdentifier:0];
-  v3 = [(AVTStickerPagingController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(AVTStickerPagingController *)self collectionView];
+  [collectionView contentOffset];
   v4 = [(AVTStickerPagingController *)self centeredPageWithOffset:?];
 
   if (objc_opt_respondsToSelector())

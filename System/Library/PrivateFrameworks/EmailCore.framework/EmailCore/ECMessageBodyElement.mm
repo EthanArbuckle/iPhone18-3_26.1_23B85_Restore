@@ -3,10 +3,10 @@
 - (NSString)description;
 - (id)retainExternally;
 - (unint64_t)quoteLevel;
-- (unint64_t)valueForAttributes:(unint64_t)a3;
-- (void)_setValue:(unint64_t)a3 forAttributes:(unint64_t)a4;
+- (unint64_t)valueForAttributes:(unint64_t)attributes;
+- (void)_setValue:(unint64_t)value forAttributes:(unint64_t)attributes;
 - (void)dealloc;
-- (void)setNodes:(id)a3;
+- (void)setNodes:(id)nodes;
 @end
 
 @implementation ECMessageBodyElement
@@ -77,13 +77,13 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNodes:(id)a3
+- (void)setNodes:(id)nodes
 {
   nodes = self->_nodes;
-  if (nodes != a3)
+  if (nodes != nodes)
   {
 
-    self->_nodes = [a3 copy];
+    self->_nodes = [nodes copy];
   }
 
   self->_validAttributes = 0;
@@ -91,156 +91,156 @@
   self->_quoteLevel = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)_setValue:(unint64_t)a3 forAttributes:(unint64_t)a4
+- (void)_setValue:(unint64_t)value forAttributes:(unint64_t)attributes
 {
-  v4 = self->_attributes & ~a4 | a4 & a3;
-  self->_validAttributes |= a4;
+  v4 = self->_attributes & ~attributes | attributes & value;
+  self->_validAttributes |= attributes;
   self->_attributes = v4;
 }
 
-- (unint64_t)valueForAttributes:(unint64_t)a3
+- (unint64_t)valueForAttributes:(unint64_t)attributes
 {
-  if ((a3 & 7) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:7])
+  if ((attributes & 7) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:7])
   {
     v6 = [(ECMessageBodyParser *)[(ECMessageBodyElement *)self parser] newStringAccumulatorWithOptions:8 lengthLimit:0x7FFFFFFFFFFFFFFFLL];
     [v6 appendInnerTextWithConsumableNode:self];
-    v7 = [v6 accumulatedString];
-    if ([v7 length])
+    accumulatedString = [v6 accumulatedString];
+    if ([accumulatedString length])
     {
-      if (![v7 ec_isWhitespace])
+      if (![accumulatedString ec_isWhitespace])
       {
-        v8 = self;
+        selfCopy3 = self;
         v9 = 2;
         v10 = 7;
         goto LABEL_9;
       }
 
-      v8 = self;
+      selfCopy3 = self;
       v9 = 6;
     }
 
     else
     {
-      v8 = self;
+      selfCopy3 = self;
       v9 = 1;
     }
 
     v10 = 127;
 LABEL_9:
-    [(ECMessageBodyElement *)v8 _setValue:v9 forAttributes:v10];
+    [(ECMessageBodyElement *)selfCopy3 _setValue:v9 forAttributes:v10];
   }
 
-  if ((a3 & 8) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:8])
+  if ((attributes & 8) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:8])
   {
     v11 = [(ECMessageBodyParser *)[(ECMessageBodyElement *)self parser] newStringAccumulatorWithOptions:20 lengthLimit:0x7FFFFFFFFFFFFFFFLL];
     [v11 appendInnerTextWithConsumableNode:self];
     if ([objc_msgSend(v11 "accumulatedString")])
     {
-      v12 = self;
+      selfCopy5 = self;
       v13 = 10;
       v14 = 127;
     }
 
     else
     {
-      v12 = self;
+      selfCopy5 = self;
       v13 = 0;
       v14 = 8;
     }
 
-    [(ECMessageBodyElement *)v12 _setValue:v13 forAttributes:v14];
+    [(ECMessageBodyElement *)selfCopy5 _setValue:v13 forAttributes:v14];
   }
 
-  if ((a3 & 0x80) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:128])
+  if ((attributes & 0x80) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:128])
   {
     v15 = [(ECMessageBodyParser *)[(ECMessageBodyElement *)self parser] newStringAccumulatorWithOptions:20 lengthLimit:0x7FFFFFFFFFFFFFFFLL];
     [v15 appendInnerTextWithConsumableNode:self];
     if ([objc_msgSend(v15 "accumulatedString")])
     {
-      v16 = self;
+      selfCopy7 = self;
       v17 = 130;
       v18 = 131;
     }
 
     else
     {
-      v16 = self;
+      selfCopy7 = self;
       v17 = 0;
       v18 = 128;
     }
 
-    [(ECMessageBodyElement *)v16 _setValue:v17 forAttributes:v18];
+    [(ECMessageBodyElement *)selfCopy7 _setValue:v17 forAttributes:v18];
   }
 
-  if ((a3 & 0x10) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:16])
+  if ((attributes & 0x10) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:16])
   {
     v19 = [(ECMessageBodyParser *)[(ECMessageBodyElement *)self parser] newStringAccumulatorWithOptions:20 lengthLimit:0x7FFFFFFFFFFFFFFFLL];
     [v19 appendInnerTextWithConsumableNode:self];
     if ([objc_msgSend(v19 "accumulatedString")])
     {
-      v20 = self;
+      selfCopy9 = self;
       v21 = 18;
       v22 = 31;
     }
 
     else
     {
-      v20 = self;
+      selfCopy9 = self;
       v21 = 0;
       v22 = 16;
     }
 
-    [(ECMessageBodyElement *)v20 _setValue:v21 forAttributes:v22];
+    [(ECMessageBodyElement *)selfCopy9 _setValue:v21 forAttributes:v22];
   }
 
-  if ((a3 & 0x20) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:32])
+  if ((attributes & 0x20) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:32])
   {
     v23 = [(ECMessageBodyParser *)[(ECMessageBodyElement *)self parser] newStringAccumulatorWithOptions:20 lengthLimit:0x7FFFFFFFFFFFFFFFLL];
     [v23 appendInnerTextWithConsumableNode:self];
     if ([objc_msgSend(v23 "accumulatedString")])
     {
-      v24 = self;
+      selfCopy11 = self;
       v25 = 34;
       v26 = 63;
     }
 
     else
     {
-      v24 = self;
+      selfCopy11 = self;
       v25 = 0;
       v26 = 32;
     }
 
-    [(ECMessageBodyElement *)v24 _setValue:v25 forAttributes:v26];
+    [(ECMessageBodyElement *)selfCopy11 _setValue:v25 forAttributes:v26];
   }
 
-  if ((a3 & 0x40) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:64])
+  if ((attributes & 0x40) != 0 && ![(ECMessageBodyElement *)self _hasValueForAttributes:64])
   {
     v27 = [(ECMessageBodyParser *)[(ECMessageBodyElement *)self parser] newStringAccumulatorWithOptions:0 lengthLimit:0x7FFFFFFFFFFFFFFFLL];
     [v27 appendInnerTextWithConsumableNode:self];
     if ([objc_msgSend(v27 "accumulatedString")])
     {
-      v28 = self;
+      selfCopy13 = self;
       v29 = 66;
       v30 = 127;
     }
 
     else
     {
-      v28 = self;
+      selfCopy13 = self;
       v29 = 0;
       v30 = 64;
     }
 
-    [(ECMessageBodyElement *)v28 _setValue:v29 forAttributes:v30];
+    [(ECMessageBodyElement *)selfCopy13 _setValue:v29 forAttributes:v30];
   }
 
-  if (![(ECMessageBodyElement *)self _hasValueForAttributes:a3])
+  if (![(ECMessageBodyElement *)self _hasValueForAttributes:attributes])
   {
     [(ECMessageBodyElement *)a2 valueForAttributes:?];
   }
 
-  return self->_attributes & a3;
+  return self->_attributes & attributes;
 }
 
 - (unint64_t)quoteLevel
@@ -248,11 +248,11 @@ LABEL_9:
   result = self->_quoteLevel;
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(ECMessageBodyElement *)self nodes];
-    result = [(NSArray *)v4 count];
+    nodes = [(ECMessageBodyElement *)self nodes];
+    result = [(NSArray *)nodes count];
     if (result)
     {
-      result = [objc_loadWeak(&self->_parser) quoteLevelForBodyNode:{-[NSArray objectAtIndex:](v4, "objectAtIndex:", 0)}];
+      result = [objc_loadWeak(&self->_parser) quoteLevelForBodyNode:{-[NSArray objectAtIndex:](nodes, "objectAtIndex:", 0)}];
     }
 
     self->_quoteLevel = result;
@@ -269,27 +269,27 @@ LABEL_9:
   if (v2 == nodes)
   {
 
-    v4 = self;
+    selfCopy2 = self;
   }
 
   else
   {
 
-    v4 = self;
+    selfCopy2 = self;
     self->_nodes = v2;
   }
 
-  return v4;
+  return selfCopy2;
 }
 
 - (NSString)description
 {
   v3 = [[ECMessageBodyStringAccumulator alloc] initWithOptions:0 lengthLimit:81];
   [(ECMessageBodyStringAccumulator *)v3 appendInnerTextWithConsumableNode:self];
-  v4 = [(ECMessageBodyStringAccumulator *)v3 accumulatedString];
+  accumulatedString = [(ECMessageBodyStringAccumulator *)v3 accumulatedString];
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
-  v7 = [v5 stringWithFormat:@"<%@: %p; text=%@>", NSStringFromClass(v6), self, v4];
+  v7 = [v5 stringWithFormat:@"<%@: %p; text=%@>", NSStringFromClass(v6), self, accumulatedString];
 
   return v7;
 }

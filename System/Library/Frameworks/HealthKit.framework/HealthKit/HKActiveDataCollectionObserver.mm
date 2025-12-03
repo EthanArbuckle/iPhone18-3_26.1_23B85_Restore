@@ -1,23 +1,23 @@
 @interface HKActiveDataCollectionObserver
 + (id)clientInterface;
 + (id)serverInterface;
-- (HKActiveDataCollectionObserver)initWithHealthStore:(id)a3;
+- (HKActiveDataCollectionObserver)initWithHealthStore:(id)store;
 - (HKActiveDataCollectionObserverDelegate)delegate;
 - (NSArray)activelyCollectedTypes;
 - (id)exportedInterface;
 - (id)remoteInterface;
 - (void)_restartTaskServerIfNeeded;
-- (void)client_updatedCollectedTypes:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)subscribeForQuantityTypes:(id)a3;
-- (void)unsubscribeForQuantityTypes:(id)a3;
+- (void)client_updatedCollectedTypes:(id)types;
+- (void)setDelegate:(id)delegate;
+- (void)subscribeForQuantityTypes:(id)types;
+- (void)unsubscribeForQuantityTypes:(id)types;
 @end
 
 @implementation HKActiveDataCollectionObserver
 
-- (HKActiveDataCollectionObserver)initWithHealthStore:(id)a3
+- (HKActiveDataCollectionObserver)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = HKActiveDataCollectionObserver;
   v5 = [(HKActiveDataCollectionObserver *)&v15 init];
@@ -25,11 +25,11 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v6->_identifier;
-    v6->_identifier = v7;
+    v6->_identifier = uUID;
 
-    v9 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v4 taskIdentifier:@"HKActiveDataCollectionObserverTaskServerIdentifier" exportedObject:v6 taskUUID:v6->_identifier];
+    v9 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:storeCopy taskIdentifier:@"HKActiveDataCollectionObserverTaskServerIdentifier" exportedObject:v6 taskUUID:v6->_identifier];
     proxyProvider = v6->_proxyProvider;
     v6->_proxyProvider = v9;
 
@@ -62,27 +62,27 @@ void __54__HKActiveDataCollectionObserver_initWithHealthStore___block_invoke(uin
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)subscribeForQuantityTypes:(id)a3
+- (void)subscribeForQuantityTypes:(id)types
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   _HKInitializeLogging();
   v5 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = typesCopy;
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Subscribing to active collection of types %@", buf, 0x16u);
   }
 
@@ -91,14 +91,14 @@ void __54__HKActiveDataCollectionObserver_initWithHealthStore___block_invoke(uin
   v10[1] = 3221225472;
   v10[2] = __60__HKActiveDataCollectionObserver_subscribeForQuantityTypes___block_invoke;
   v10[3] = &unk_1E737A6B0;
-  v11 = v4;
-  v12 = self;
+  v11 = typesCopy;
+  selfCopy2 = self;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__HKActiveDataCollectionObserver_subscribeForQuantityTypes___block_invoke_2;
   v9[3] = &unk_1E7376898;
   v9[4] = self;
-  v7 = v4;
+  v7 = typesCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -137,18 +137,18 @@ void __60__HKActiveDataCollectionObserver_subscribeForQuantityTypes___block_invo
   }
 }
 
-- (void)unsubscribeForQuantityTypes:(id)a3
+- (void)unsubscribeForQuantityTypes:(id)types
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   _HKInitializeLogging();
   v5 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = typesCopy;
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Unsubscribing to active collection of types %@", buf, 0x16u);
   }
 
@@ -157,14 +157,14 @@ void __60__HKActiveDataCollectionObserver_subscribeForQuantityTypes___block_invo
   v10[1] = 3221225472;
   v10[2] = __62__HKActiveDataCollectionObserver_unsubscribeForQuantityTypes___block_invoke;
   v10[3] = &unk_1E737A6B0;
-  v11 = v4;
-  v12 = self;
+  v11 = typesCopy;
+  selfCopy2 = self;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__HKActiveDataCollectionObserver_unsubscribeForQuantityTypes___block_invoke_2;
   v9[3] = &unk_1E7376898;
   v9[4] = self;
-  v7 = v4;
+  v7 = typesCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v10 errorHandler:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -241,23 +241,23 @@ void __62__HKActiveDataCollectionObserver_unsubscribeForQuantityTypes___block_in
   return [v2 serverInterface];
 }
 
-- (void)client_updatedCollectedTypes:(id)a3
+- (void)client_updatedCollectedTypes:(id)types
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   _HKInitializeLogging();
   v5 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = typesCopy;
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Updated actively collected types: %@", &v12, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [v4 copy];
+  v6 = [typesCopy copy];
   activelyCollectedTypes = self->_activelyCollectedTypes;
   self->_activelyCollectedTypes = v6;
 
@@ -269,7 +269,7 @@ void __62__HKActiveDataCollectionObserver_unsubscribeForQuantityTypes___block_in
   if (!v9)
   {
     v10 = objc_loadWeakRetained(&v12);
-    [v10 activeDataCollectionObserver:self updatedCollectedTypes:v4];
+    [v10 activeDataCollectionObserver:self updatedCollectedTypes:typesCopy];
   }
 
   objc_destroyWeak(&v12);
@@ -286,14 +286,14 @@ void __62__HKActiveDataCollectionObserver_unsubscribeForQuantityTypes___block_in
 
 - (void)_restartTaskServerIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 24));
-    v2 = [*(a1 + 32) allObjects];
-    os_unfair_lock_unlock((a1 + 24));
-    if ([v2 count])
+    os_unfair_lock_lock((self + 24));
+    allObjects = [*(self + 32) allObjects];
+    os_unfair_lock_unlock((self + 24));
+    if ([allObjects count])
     {
-      [a1 subscribeForQuantityTypes:v2];
+      [self subscribeForQuantityTypes:allObjects];
     }
   }
 }

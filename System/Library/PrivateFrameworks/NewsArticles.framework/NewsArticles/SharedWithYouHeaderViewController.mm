@@ -1,13 +1,13 @@
 @interface SharedWithYouHeaderViewController
-- (_TtC12NewsArticles33SharedWithYouHeaderViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles33SharedWithYouHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)sectionItemHeightForSize:(CGSize)a3 traitCollection:(id)a4;
+- (_TtC12NewsArticles33SharedWithYouHeaderViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles33SharedWithYouHeaderViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)sectionItemHeightForSize:(CGSize)size traitCollection:(id)collection;
 - (void)viewDidLoad;
 @end
 
 @implementation SharedWithYouHeaderViewController
 
-- (_TtC12NewsArticles33SharedWithYouHeaderViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles33SharedWithYouHeaderViewController)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC12NewsArticles33SharedWithYouHeaderViewController_headerDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -22,11 +22,11 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(SharedWithYouHeaderViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 addSubview_];
+    v4 = view;
+    [view addSubview_];
   }
 
   else
@@ -35,18 +35,18 @@
   }
 }
 
-- (double)sectionItemHeightForSize:(CGSize)a3 traitCollection:(id)a4
+- (double)sectionItemHeightForSize:(CGSize)size traitCollection:(id)collection
 {
-  width = a3.width;
+  width = size.width;
   __swift_project_boxed_opaque_existential_1((&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles33SharedWithYouHeaderViewController_renderer), *(&self->super._view + OBJC_IVAR____TtC12NewsArticles33SharedWithYouHeaderViewController_renderer));
-  v7 = a4;
-  v8 = self;
-  sub_1D7CF182C(v8, width);
-  v9 = [(SharedWithYouHeaderViewController *)v8 view];
-  if (v9)
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1D7CF182C(selfCopy, width);
+  view = [(SharedWithYouHeaderViewController *)selfCopy view];
+  if (view)
   {
-    v11 = v9;
-    [v9 frame];
+    v11 = view;
+    [view frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -69,7 +69,7 @@
   return result;
 }
 
-- (_TtC12NewsArticles33SharedWithYouHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles33SharedWithYouHeaderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

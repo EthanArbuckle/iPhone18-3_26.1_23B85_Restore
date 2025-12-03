@@ -1,42 +1,42 @@
 @interface PKAccountDetails
-- (BOOL)isEqual:(id)a3;
-- (PKAccountDetails)initWithAppleBalanceDetails:(id)a3;
-- (PKAccountDetails)initWithCloudRecord:(id)a3 type:(unint64_t)a4;
-- (PKAccountDetails)initWithCoder:(id)a3;
-- (PKAccountDetails)initWithCreditDetails:(id)a3;
-- (PKAccountDetails)initWithDictionary:(id)a3 type:(unint64_t)a4;
-- (PKAccountDetails)initWithSavingsDetails:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountDetails)initWithAppleBalanceDetails:(id)details;
+- (PKAccountDetails)initWithCloudRecord:(id)record type:(unint64_t)type;
+- (PKAccountDetails)initWithCoder:(id)coder;
+- (PKAccountDetails)initWithCreditDetails:(id)details;
+- (PKAccountDetails)initWithDictionary:(id)dictionary type:(unint64_t)type;
+- (PKAccountDetails)initWithSavingsDetails:(id)details;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCloudRecord:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)ingestExtendedAccountDetails:(id)a3;
+- (void)encodeWithCloudRecord:(id)record codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)ingestExtendedAccountDetails:(id)details;
 @end
 
 @implementation PKAccountDetails
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_creditDetails];
-  [v3 safelyAddObject:self->_appleBalanceDetails];
-  [v3 safelyAddObject:self->_savingsDetails];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_creditDetails];
+  [array safelyAddObject:self->_appleBalanceDetails];
+  [array safelyAddObject:self->_savingsDetails];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
 
   return v5;
 }
 
-- (PKAccountDetails)initWithDictionary:(id)a3 type:(unint64_t)a4
+- (PKAccountDetails)initWithDictionary:(id)dictionary type:(unint64_t)type
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKAccountDetails;
   v7 = [(PKAccountDetails *)&v13 init];
   if (v7)
   {
-    switch(a4)
+    switch(type)
     {
       case 1uLL:
         v8 = off_1E79BF920;
@@ -52,11 +52,11 @@
         break;
       default:
 LABEL_9:
-        v7->_type = a4;
+        v7->_type = type;
         goto LABEL_10;
     }
 
-    v10 = [objc_alloc(*v8) initWithDictionary:v6];
+    v10 = [objc_alloc(*v8) initWithDictionary:dictionaryCopy];
     v11 = *(&v7->super.isa + v9);
     *(&v7->super.isa + v9) = v10;
 
@@ -68,125 +68,125 @@ LABEL_10:
   return v7;
 }
 
-- (PKAccountDetails)initWithCreditDetails:(id)a3
+- (PKAccountDetails)initWithCreditDetails:(id)details
 {
-  v5 = a3;
+  detailsCopy = details;
   v9.receiver = self;
   v9.super_class = PKAccountDetails;
   v6 = [(PKAccountDetails *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_creditDetails, a3);
+    objc_storeStrong(&v6->_creditDetails, details);
     v7->_type = 1;
   }
 
   return v7;
 }
 
-- (PKAccountDetails)initWithAppleBalanceDetails:(id)a3
+- (PKAccountDetails)initWithAppleBalanceDetails:(id)details
 {
-  v5 = a3;
+  detailsCopy = details;
   v9.receiver = self;
   v9.super_class = PKAccountDetails;
   v6 = [(PKAccountDetails *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appleBalanceDetails, a3);
+    objc_storeStrong(&v6->_appleBalanceDetails, details);
     v7->_type = 3;
   }
 
   return v7;
 }
 
-- (PKAccountDetails)initWithSavingsDetails:(id)a3
+- (PKAccountDetails)initWithSavingsDetails:(id)details
 {
-  v5 = a3;
+  detailsCopy = details;
   v9.receiver = self;
   v9.super_class = PKAccountDetails;
   v6 = [(PKAccountDetails *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_savingsDetails, a3);
+    objc_storeStrong(&v6->_savingsDetails, details);
     v7->_type = 4;
   }
 
   return v7;
 }
 
-- (PKAccountDetails)initWithCloudRecord:(id)a3 type:(unint64_t)a4
+- (PKAccountDetails)initWithCloudRecord:(id)record type:(unint64_t)type
 {
-  v6 = a3;
+  recordCopy = record;
   v11.receiver = self;
   v11.super_class = PKAccountDetails;
   v7 = [(PKAccountDetails *)&v11 init];
   if (v7)
   {
-    if (a4 == 3)
+    if (type == 3)
     {
-      v8 = [[PKAppleBalanceAccountDetails alloc] initWithCloudRecord:v6];
+      v8 = [[PKAppleBalanceAccountDetails alloc] initWithCloudRecord:recordCopy];
       appleBalanceDetails = v7->_appleBalanceDetails;
       v7->_appleBalanceDetails = v8;
     }
 
-    v7->_type = a4;
+    v7->_type = type;
   }
 
   return v7;
 }
 
-- (void)ingestExtendedAccountDetails:(id)a3
+- (void)ingestExtendedAccountDetails:(id)details
 {
   if (self->_type == 1)
   {
-    [(PKCreditAccountDetails *)self->_creditDetails ingestExtendedAccountDetails:a3];
+    [(PKCreditAccountDetails *)self->_creditDetails ingestExtendedAccountDetails:details];
   }
 }
 
-- (void)encodeWithCloudRecord:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudRecord:(id)record codingType:(unint64_t)type
 {
   if (self->_type == 3)
   {
-    [(PKAppleBalanceAccountDetails *)self->_appleBalanceDetails encodeWithCloudRecord:a3 codingType:a4];
+    [(PKAppleBalanceAccountDetails *)self->_appleBalanceDetails encodeWithCloudRecord:record codingType:type];
   }
 }
 
-- (PKAccountDetails)initWithCoder:(id)a3
+- (PKAccountDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKAccountDetails;
   v5 = [(PKAccountDetails *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creditDetails"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creditDetails"];
     creditDetails = v5->_creditDetails;
     v5->_creditDetails = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleBalanceDetails"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleBalanceDetails"];
     appleBalanceDetails = v5->_appleBalanceDetails;
     v5->_appleBalanceDetails = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"savingsDetails"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"savingsDetails"];
     savingsDetails = v5->_savingsDetails;
     v5->_savingsDetails = v10;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   creditDetails = self->_creditDetails;
-  v5 = a3;
-  [v5 encodeObject:creditDetails forKey:@"creditDetails"];
-  [v5 encodeObject:self->_appleBalanceDetails forKey:@"appleBalanceDetails"];
-  [v5 encodeObject:self->_savingsDetails forKey:@"savingsDetails"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:creditDetails forKey:@"creditDetails"];
+  [coderCopy encodeObject:self->_appleBalanceDetails forKey:@"appleBalanceDetails"];
+  [coderCopy encodeObject:self->_savingsDetails forKey:@"savingsDetails"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
 - (id)description
@@ -213,9 +213,9 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -223,7 +223,7 @@ LABEL_7:
   }
 
   creditDetails = self->_creditDetails;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (creditDetails && v6)
   {
     if (![(PKCreditAccountDetails *)creditDetails isEqual:?])
@@ -238,7 +238,7 @@ LABEL_7:
   }
 
   appleBalanceDetails = self->_appleBalanceDetails;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (appleBalanceDetails && v8)
   {
     if (![(PKAppleBalanceAccountDetails *)appleBalanceDetails isEqual:?])
@@ -253,7 +253,7 @@ LABEL_7:
   }
 
   savingsDetails = self->_savingsDetails;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (!savingsDetails || !v10)
   {
     if (savingsDetails == v10)
@@ -272,24 +272,24 @@ LABEL_17:
   }
 
 LABEL_15:
-  v11 = self->_type == v4[4];
+  v11 = self->_type == equalCopy[4];
 LABEL_18:
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(PKCreditAccountDetails *)self->_creditDetails copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(PKCreditAccountDetails *)self->_creditDetails copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(PKAppleBalanceAccountDetails *)self->_appleBalanceDetails copyWithZone:a3];
+  v8 = [(PKAppleBalanceAccountDetails *)self->_appleBalanceDetails copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(PKSavingsAccountDetails *)self->_savingsDetails copyWithZone:a3];
+  v10 = [(PKSavingsAccountDetails *)self->_savingsDetails copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 

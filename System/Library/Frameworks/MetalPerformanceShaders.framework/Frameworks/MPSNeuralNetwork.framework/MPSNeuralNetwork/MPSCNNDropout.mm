@@ -1,15 +1,15 @@
 @interface MPSCNNDropout
 - (MPSCNNDropout)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSCNNDropout)initWithDevice:(id)a3 keepProbability:(float)a4 state:(id)a5 maskStrideInPixels:(id *)a6;
 - (MPSCNNDropout)initWithDevice:(id)device keepProbability:(float)keepProbability seed:(NSUInteger)seed maskStrideInPixels:(MTLSize *)maskStrideInPixels;
+- (MPSCNNDropout)initWithDevice:(id)device keepProbability:(float)probability state:(id)state maskStrideInPixels:(id *)pixels;
 - (MPSCNNDropoutGradientState)resultStateBatchForSourceImage:(MPSImageBatch *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImageBatch *)destinationImage;
 - (MPSCNNDropoutGradientStateBatch)temporaryResultStateBatchForCommandBuffer:(id)commandBuffer sourceImage:(MPSImageBatch *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImageBatch *)destinationImage;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (id)exportRandomState;
-- (id)privateResultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5 commandBuffer:(id)a6 isTemporary:(BOOL)a7;
+- (id)privateResultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage commandBuffer:(id)buffer isTemporary:(BOOL)temporary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNDropout
@@ -58,11 +58,11 @@
   return result;
 }
 
-- (MPSCNNDropout)initWithDevice:(id)a3 keepProbability:(float)a4 state:(id)a5 maskStrideInPixels:(id *)a6
+- (MPSCNNDropout)initWithDevice:(id)device keepProbability:(float)probability state:(id)state maskStrideInPixels:(id *)pixels
 {
-  v26 = *a6;
+  v26 = *pixels;
   var0_high = HIDWORD(v26.var0);
-  result = objc_msgSend_initWithDevice_keepProbability_seed_maskStrideInPixels_(self, a2, a3, 0, &v26, v6, v7, v8, *&a4);
+  result = objc_msgSend_initWithDevice_keepProbability_seed_maskStrideInPixels_(self, a2, device, 0, &v26, v6, v7, v8, *&probability);
   if (result)
   {
     v14 = result;
@@ -70,10 +70,10 @@
     v15 = objc_alloc(MEMORY[0x277CD7280]);
     objc_msgSend_setDistributionType_(v15, v16, 127, v17, v18, v19, v20, v21);
     v22 = objc_alloc(MEMORY[0x277CD7288]);
-    v14->_parallelGenerator = objc_msgSend_initWithDevice_destinationDataType_state_distributionDescriptor_(v22, v23, a3, 8, *(a5 + 1), v15, v24, v25);
+    v14->_parallelGenerator = objc_msgSend_initWithDevice_destinationDataType_state_distributionDescriptor_(v22, v23, device, 8, *(state + 1), v15, v24, v25);
 
     result = v14;
-    *(v14->_parallelGenerator + *MEMORY[0x277CD7468]) = a4;
+    *(v14->_parallelGenerator + *MEMORY[0x277CD7468]) = probability;
   }
 
   return result;
@@ -122,27 +122,27 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v32.receiver = self;
   v32.super_class = MPSCNNDropout;
   [(MPSCNNKernel *)&v32 encodeWithCoder:?];
-  *&v5 = v4->_keepProbability;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSCNNDropoutKeepProbability", v7, v8, v9, v10, v11, v5);
-  objc_msgSend_encodeInt32_forKey_(a3, v12, LODWORD(v4->_seed), @"MPSCNNDropoutSeed", v13, v14, v15, v16);
-  v4 = (v4 + 344);
-  objc_msgSend_encodeInt64_forKey_(a3, v17, v4->super.super.super.isa, @"MPSCNNDropoutMaskStrideInPixelsWidth", v18, v19, v20, v21);
-  objc_msgSend_encodeInt64_forKey_(a3, v22, v4->super.super._options, @"MPSCNNDropoutMaskStrideInPixelsHeight", v23, v24, v25, v26);
-  objc_msgSend_encodeInt64_forKey_(a3, v27, v4->super.super._verbosityLevel, @"MPSCNNDropoutMaskStrideInPixelsDepth", v28, v29, v30, v31);
+  *&v5 = selfCopy->_keepProbability;
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSCNNDropoutKeepProbability", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeInt32_forKey_(coder, v12, LODWORD(selfCopy->_seed), @"MPSCNNDropoutSeed", v13, v14, v15, v16);
+  selfCopy = (selfCopy + 344);
+  objc_msgSend_encodeInt64_forKey_(coder, v17, selfCopy->super.super.super.isa, @"MPSCNNDropoutMaskStrideInPixelsWidth", v18, v19, v20, v21);
+  objc_msgSend_encodeInt64_forKey_(coder, v22, selfCopy->super.super._options, @"MPSCNNDropoutMaskStrideInPixelsHeight", v23, v24, v25, v26);
+  objc_msgSend_encodeInt64_forKey_(coder, v27, selfCopy->super.super._verbosityLevel, @"MPSCNNDropoutMaskStrideInPixelsDepth", v28, v29, v30, v31);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v20.receiver = self;
   v20.super_class = MPSCNNDropout;
-  result = [(MPSCNNKernel *)&v20 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v20 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 82) = LODWORD(self->_keepProbability);
@@ -162,7 +162,7 @@
 
     else
     {
-      v18 = objc_msgSend_copyWithZone_device_(parallelGenerator, v7, a3, v16, v8, v9, v10, v11);
+      v18 = objc_msgSend_copyWithZone_device_(parallelGenerator, v7, zone, v16, v8, v9, v10, v11);
     }
 
     v19 = v18;
@@ -206,18 +206,18 @@
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\tkeepProbability: %f\tseed: %lu", v6, v7, v8, v9, v10, v4, self->_keepProbability, self->_seed);
 }
 
-- (id)privateResultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5 commandBuffer:(id)a6 isTemporary:(BOOL)a7
+- (id)privateResultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage commandBuffer:(id)buffer isTemporary:(BOOL)temporary
 {
-  if (a4 && (*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0 && MTLReportFailureTypeEnabled())
+  if (states && (*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0 && MTLReportFailureTypeEnabled())
   {
     v70 = objc_opt_class();
     v71 = NSStringFromClass(v70);
     MTLReportFailure();
   }
 
-  v14 = objc_msgSend_width(a3, a2, a3, a4, a5, a6, a7, v7, v71);
-  v22 = objc_msgSend_height(a3, v15, v16, v17, v18, v19, v20, v21);
-  v30 = objc_msgSend_featureChannels(a3, v23, v24, v25, v26, v27, v28, v29);
+  v14 = objc_msgSend_width(image, a2, image, states, destinationImage, buffer, temporary, v7, v71);
+  v22 = objc_msgSend_height(image, v15, v16, v17, v18, v19, v20, v21);
+  v30 = objc_msgSend_featureChannels(image, v23, v24, v25, v26, v27, v28, v29);
   if (!self->_maskStrideInPixels.width)
   {
     v14 = 1;
@@ -238,10 +238,10 @@
     v37 = 1;
   }
 
-  if (a7)
+  if (temporary)
   {
-    v38 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSCNNDropoutGradientState, v31, a6, v32, v33, v34, v35, v36);
-    if (objc_msgSend_featureChannels(a3, v39, v40, v41, v42, v43, v44, v45) != 1)
+    v38 = objc_msgSend_temporaryStateWithCommandBuffer_(MPSCNNDropoutGradientState, v31, buffer, v32, v33, v34, v35, v36);
+    if (objc_msgSend_featureChannels(image, v39, v40, v41, v42, v43, v44, v45) != 1)
     {
       goto LABEL_12;
     }
@@ -256,7 +256,7 @@ LABEL_18:
 LABEL_19:
     v72.receiver = self;
     v72.super_class = MPSCNNDropout;
-    [(MPSCNNKernel *)&v72 copyToGradientState:v38 sourceImage:a3 sourceStates:a4 destinationImage:a5];
+    [(MPSCNNKernel *)&v72 copyToGradientState:v38 sourceImage:image sourceStates:states destinationImage:destinationImage];
     v68 = *&self->_maskStrideInPixels.width;
     *(v38 + 38) = self->_maskStrideInPixels.depth;
     *(v38 + 18) = v68;
@@ -270,13 +270,13 @@ LABEL_19:
 
   v54 = [MPSCNNDropoutGradientState alloc];
   v38 = objc_msgSend_initWithResource_(v54, v55, 0, v56, v57, v58, v59, v60);
-  if (objc_msgSend_featureChannels(a3, v61, v62, v63, v64, v65, v66, v67) == 1)
+  if (objc_msgSend_featureChannels(image, v61, v62, v63, v64, v65, v66, v67) == 1)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (objc_msgSend_featureChannels(a3, v46, v47, v48, v49, v50, v51, v52) == 2)
+  if (objc_msgSend_featureChannels(image, v46, v47, v48, v49, v50, v51, v52) == 2)
   {
     v53 = 30;
   }

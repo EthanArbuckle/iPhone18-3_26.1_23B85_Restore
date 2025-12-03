@@ -1,7 +1,7 @@
 @interface TSTTableNameSelection
 + (id)tableNameSelection;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSelection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSelection:(id)selection;
 @end
 
 @implementation TSTTableNameSelection
@@ -13,13 +13,13 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5, v7, v8))
   {
-    isEqualToSelection = objc_msgSend_isEqualToSelection_(self, v9, v4, v10, v11);
+    isEqualToSelection = objc_msgSend_isEqualToSelection_(self, v9, equalCopy, v10, v11);
   }
 
   else
@@ -30,14 +30,14 @@
   return isEqualToSelection;
 }
 
-- (BOOL)isEqualToSelection:(id)a3
+- (BOOL)isEqualToSelection:(id)selection
 {
-  if (a3 == self)
+  if (selection == self)
   {
     return 1;
   }
 
-  v3 = a3;
+  selectionCopy = selection;
   objc_opt_class();
   v4 = TSUDynamicCast();
 

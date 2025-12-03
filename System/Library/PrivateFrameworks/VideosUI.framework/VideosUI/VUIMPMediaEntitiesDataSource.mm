@@ -1,29 +1,29 @@
 @interface VUIMPMediaEntitiesDataSource
-- (VUIMPMediaEntitiesDataSource)initWithMediaLibrary:(id)a3 fetchRequest:(id)a4;
+- (VUIMPMediaEntitiesDataSource)initWithMediaLibrary:(id)library fetchRequest:(id)request;
 - (_NSRange)requestedRange;
-- (id)_getPurchaseHistoryIdsFromMediaEntities:(id)a3 inRange:(_NSRange)a4;
+- (id)_getPurchaseHistoryIdsFromMediaEntities:(id)entities inRange:(_NSRange)range;
 - (void)_fetchArtworkInfoIfNecessary;
-- (void)_loadImageUrlsByPurchaseHistoryIds:(id)a3;
+- (void)_loadImageUrlsByPurchaseHistoryIds:(id)ids;
 - (void)_notifyDelegateFetchDidComplete;
-- (void)controller:(id)a3 fetchRequests:(id)a4 didCompleteWithResult:(id)a5;
-- (void)controller:(id)a3 fetchRequests:(id)a4 didFailWithError:(id)a5;
+- (void)controller:(id)controller fetchRequests:(id)requests didCompleteWithResult:(id)result;
+- (void)controller:(id)controller fetchRequests:(id)requests didFailWithError:(id)error;
 - (void)dealloc;
-- (void)setShouldPauseAutoFetchingArtworkInfoDictionaries:(BOOL)a3;
+- (void)setShouldPauseAutoFetchingArtworkInfoDictionaries:(BOOL)dictionaries;
 - (void)startFetch;
 @end
 
 @implementation VUIMPMediaEntitiesDataSource
 
-- (VUIMPMediaEntitiesDataSource)initWithMediaLibrary:(id)a3 fetchRequest:(id)a4
+- (VUIMPMediaEntitiesDataSource)initWithMediaLibrary:(id)library fetchRequest:(id)request
 {
-  v7 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = VUIMPMediaEntitiesDataSource;
-  v8 = [(VUIMediaEntitiesDataSource *)&v11 initWithFetchRequest:a4];
+  v8 = [(VUIMediaEntitiesDataSource *)&v11 initWithFetchRequest:request];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mediaLibrary, a3);
+    objc_storeStrong(&v8->_mediaLibrary, library);
     v9->_requestedRange = xmmword_1E4296B90;
     v9->_inFlightArtworkRequests = 0;
   }
@@ -35,28 +35,28 @@
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = [VUIMediaEntitiesFetchController alloc];
-  v4 = [(VUIMPMediaEntitiesDataSource *)self mediaLibrary];
-  v5 = [(VUIMediaEntitiesDataSource *)self fetchRequest];
-  v12[0] = v5;
+  mediaLibrary = [(VUIMPMediaEntitiesDataSource *)self mediaLibrary];
+  fetchRequest = [(VUIMediaEntitiesDataSource *)self fetchRequest];
+  v12[0] = fetchRequest;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v7 = [(VUIMediaEntitiesFetchController *)v3 initWithMediaLibrary:v4 fetchRequests:v6];
+  v7 = [(VUIMediaEntitiesFetchController *)v3 initWithMediaLibrary:mediaLibrary fetchRequests:v6];
   [(VUIMPMediaEntitiesDataSource *)self setFetchController:v7];
 
-  v8 = [(VUIMPMediaEntitiesDataSource *)self fetchController];
-  [v8 setDelegate:self];
+  fetchController = [(VUIMPMediaEntitiesDataSource *)self fetchController];
+  [fetchController setDelegate:self];
 
   [(VUILibraryDataSource *)self setHasCompletedInitialFetch:0];
-  v9 = [(VUIMPMediaEntitiesDataSource *)self mediaLibrary];
-  v10 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:v9];
-  v11 = [(VUIMPMediaEntitiesDataSource *)self fetchController];
-  [v10 addFetchController:v11];
+  mediaLibrary2 = [(VUIMPMediaEntitiesDataSource *)self mediaLibrary];
+  v10 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:mediaLibrary2];
+  fetchController2 = [(VUIMPMediaEntitiesDataSource *)self fetchController];
+  [v10 addFetchController:fetchController2];
 }
 
-- (void)setShouldPauseAutoFetchingArtworkInfoDictionaries:(BOOL)a3
+- (void)setShouldPauseAutoFetchingArtworkInfoDictionaries:(BOOL)dictionaries
 {
   shouldPauseAutoFetchingArtworkInfoDictionaries = self->_shouldPauseAutoFetchingArtworkInfoDictionaries;
-  self->_shouldPauseAutoFetchingArtworkInfoDictionaries = a3;
-  if (shouldPauseAutoFetchingArtworkInfoDictionaries && !a3 && !self->_inFlightArtworkRequests)
+  self->_shouldPauseAutoFetchingArtworkInfoDictionaries = dictionaries;
+  if (shouldPauseAutoFetchingArtworkInfoDictionaries && !dictionaries && !self->_inFlightArtworkRequests)
   {
     [(VUIMPMediaEntitiesDataSource *)self _fetchArtworkInfoIfNecessary];
   }
@@ -64,17 +64,17 @@
 
 - (void)dealloc
 {
-  v3 = [(VUIMPMediaEntitiesDataSource *)self fetchController];
+  fetchController = [(VUIMPMediaEntitiesDataSource *)self fetchController];
 
-  if (v3)
+  if (fetchController)
   {
-    v4 = [(VUIMPMediaEntitiesDataSource *)self mediaLibrary];
-    v5 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:v4];
-    v6 = [(VUIMPMediaEntitiesDataSource *)self fetchController];
-    [v5 removeFetchController:v6];
+    mediaLibrary = [(VUIMPMediaEntitiesDataSource *)self mediaLibrary];
+    v5 = [VUIMediaLibraryFetchControllerQueue defaultQueueWithMediaLibrary:mediaLibrary];
+    fetchController2 = [(VUIMPMediaEntitiesDataSource *)self fetchController];
+    [v5 removeFetchController:fetchController2];
 
-    v7 = [(VUIMPMediaEntitiesDataSource *)self fetchController];
-    [v7 setDelegate:0];
+    fetchController3 = [(VUIMPMediaEntitiesDataSource *)self fetchController];
+    [fetchController3 setDelegate:0];
   }
 
   v8.receiver = self;
@@ -82,33 +82,33 @@
   [(VUIMPMediaEntitiesDataSource *)&v8 dealloc];
 }
 
-- (void)controller:(id)a3 fetchRequests:(id)a4 didCompleteWithResult:(id)a5
+- (void)controller:(id)controller fetchRequests:(id)requests didCompleteWithResult:(id)result
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  resultCopy = result;
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "[VUIMPMediaEntitiesDataSource %p] - Fetch completed successfully", buf, 0xCu);
   }
 
-  v8 = [v6 fetchResponses];
+  fetchResponses = [resultCopy fetchResponses];
 
-  if (v8)
+  if (fetchResponses)
   {
-    v9 = [v8 firstObject];
-    v10 = [v9 mediaEntities];
+    firstObject = [fetchResponses firstObject];
+    mediaEntities = [firstObject mediaEntities];
 
-    v11 = [v8 firstObject];
-    v12 = [v11 grouping];
+    firstObject2 = [fetchResponses firstObject];
+    grouping = [firstObject2 grouping];
   }
 
   else
   {
-    v12 = MEMORY[0x1E695E0F0];
-    v10 = MEMORY[0x1E695E0F0];
+    grouping = MEMORY[0x1E695E0F0];
+    mediaEntities = MEMORY[0x1E695E0F0];
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E695DFA0]);
@@ -118,37 +118,37 @@
   v20[3] = &unk_1E872EDB8;
   v14 = v13;
   v21 = v14;
-  [v10 enumerateObjectsUsingBlock:v20];
-  v15 = [v14 array];
+  [mediaEntities enumerateObjectsUsingBlock:v20];
+  array = [v14 array];
   if ([(VUIMediaEntitiesDataSource *)self shouldAutoFetchArtworkInfoDictionaries])
   {
-    v16 = [(VUIMPMediaEntitiesDataSource *)self mediaEntitiesSet];
+    mediaEntitiesSet = [(VUIMPMediaEntitiesDataSource *)self mediaEntitiesSet];
 
-    if (v16)
+    if (mediaEntitiesSet)
     {
       v17 = [v14 mutableCopy];
-      v18 = [(VUIMPMediaEntitiesDataSource *)self mediaEntitiesSet];
-      [v17 minusOrderedSet:v18];
+      mediaEntitiesSet2 = [(VUIMPMediaEntitiesDataSource *)self mediaEntitiesSet];
+      [v17 minusOrderedSet:mediaEntitiesSet2];
 
-      v19 = [v17 array];
+      array2 = [v17 array];
     }
 
     else
     {
-      v19 = v15;
+      array2 = array;
     }
   }
 
   else
   {
-    v19 = 0;
+    array2 = 0;
   }
 
   [(VUIMPMediaEntitiesDataSource *)self setMediaEntitiesSet:v14];
-  [(VUIMediaEntitiesDataSource *)self setMediaEntities:v15];
-  [(VUIMPMediaEntitiesDataSource *)self setMediaEntitiesToFetch:v19];
+  [(VUIMediaEntitiesDataSource *)self setMediaEntities:array];
+  [(VUIMPMediaEntitiesDataSource *)self setMediaEntitiesToFetch:array2];
   [(VUIMPMediaEntitiesDataSource *)self setRequestedRange:0x7FFFFFFFFFFFFFFFLL, 0];
-  [(VUIMediaEntitiesDataSource *)self setGrouping:v12];
+  [(VUIMediaEntitiesDataSource *)self setGrouping:grouping];
   [(VUIMPMediaEntitiesDataSource *)self _fetchArtworkInfoIfNecessary];
   [(VUILibraryDataSource *)self setHasCompletedInitialFetch:1];
   [(VUIMPMediaEntitiesDataSource *)self _notifyDelegateFetchDidComplete];
@@ -196,11 +196,11 @@ void __63__VUIMPMediaEntitiesDataSource__notifyDelegateFetchDidComplete__block_i
   }
 }
 
-- (void)controller:(id)a3 fetchRequests:(id)a4 didFailWithError:(id)a5
+- (void)controller:(id)controller fetchRequests:(id)requests didFailWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  requestsCopy = requests;
+  errorCopy = error;
   v11 = MEMORY[0x1E695E0F0];
   [(VUIMediaEntitiesDataSource *)self setMediaEntities:MEMORY[0x1E695E0F0]];
   [(VUIMediaEntitiesDataSource *)self setGrouping:v11];
@@ -269,20 +269,20 @@ void __74__VUIMPMediaEntitiesDataSource_controller_fetchRequests_didFailWithErro
   }
 }
 
-- (void)_loadImageUrlsByPurchaseHistoryIds:(id)a3
+- (void)_loadImageUrlsByPurchaseHistoryIds:(id)ids
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idsCopy = ids;
   objc_initWeak(&location, self);
   [(VUIMPMediaEntitiesDataSource *)self setInFlightArtworkRequests:[(VUIMPMediaEntitiesDataSource *)self inFlightArtworkRequests]+ 1];
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VUIMPMediaEntitiesDataSource *)self inFlightArtworkRequests];
+    inFlightArtworkRequests = [(VUIMPMediaEntitiesDataSource *)self inFlightArtworkRequests];
     *buf = 134218240;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = v6;
+    v14 = inFlightArtworkRequests;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "[VUIMPMediaEntitiesDataSource %p] - Begining to fetch artwork by purchase history ids number of request %ld", buf, 0x16u);
   }
 
@@ -293,7 +293,7 @@ void __74__VUIMPMediaEntitiesDataSource_controller_fetchRequests_didFailWithErro
   v8[3] = &unk_1E872EE08;
   v8[4] = self;
   objc_copyWeak(&v9, &location);
-  [v7 loadArtworkURLsForPurchaseHistoryIDs:v4 completionHandler:v8];
+  [v7 loadArtworkURLsForPurchaseHistoryIDs:idsCopy completionHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -374,25 +374,25 @@ void __67__VUIMPMediaEntitiesDataSource__loadImageUrlsByPurchaseHistoryIds___blo
   }
 }
 
-- (id)_getPurchaseHistoryIdsFromMediaEntities:(id)a3 inRange:(_NSRange)a4
+- (id)_getPurchaseHistoryIdsFromMediaEntities:(id)entities inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  entitiesCopy = entities;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = location + length;
-  if (location + length > [v6 count] - 1)
+  if (location + length > [entitiesCopy count] - 1)
   {
-    v8 = [v6 count] - 1;
+    v8 = [entitiesCopy count] - 1;
   }
 
   while (location <= v8)
   {
-    v9 = [v6 objectAtIndex:location];
-    v10 = [v9 purchaseHistoryID];
-    if (v10)
+    v9 = [entitiesCopy objectAtIndex:location];
+    purchaseHistoryID = [v9 purchaseHistoryID];
+    if (purchaseHistoryID)
     {
-      [v7 addObject:v10];
+      [v7 addObject:purchaseHistoryID];
     }
 
     ++location;

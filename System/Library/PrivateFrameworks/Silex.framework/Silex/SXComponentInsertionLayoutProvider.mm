@@ -1,30 +1,30 @@
 @interface SXComponentInsertionLayoutProvider
-- (CGRect)frameForComponent:(id)a3;
+- (CGRect)frameForComponent:(id)component;
 - (CGSize)documentSize;
 - (CGSize)viewportSize;
 - (SXColumnLayout)columnLayout;
-- (SXComponentInsertionLayoutProvider)initWithBlueprint:(id)a3 DOMObjectProvider:(id)a4 unitConverterFactory:(id)a5;
-- (id)layoutBlueprintForMarker:(id)a3;
-- (id)suggestedMarginForMarker:(id)a3;
-- (id)unitConverterForMarker:(id)a3;
+- (SXComponentInsertionLayoutProvider)initWithBlueprint:(id)blueprint DOMObjectProvider:(id)provider unitConverterFactory:(id)factory;
+- (id)layoutBlueprintForMarker:(id)marker;
+- (id)suggestedMarginForMarker:(id)marker;
+- (id)unitConverterForMarker:(id)marker;
 @end
 
 @implementation SXComponentInsertionLayoutProvider
 
-- (SXComponentInsertionLayoutProvider)initWithBlueprint:(id)a3 DOMObjectProvider:(id)a4 unitConverterFactory:(id)a5
+- (SXComponentInsertionLayoutProvider)initWithBlueprint:(id)blueprint DOMObjectProvider:(id)provider unitConverterFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  blueprintCopy = blueprint;
+  providerCopy = provider;
+  factoryCopy = factory;
   v15.receiver = self;
   v15.super_class = SXComponentInsertionLayoutProvider;
   v12 = [(SXComponentInsertionLayoutProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_layoutBlueprint, a3);
-    objc_storeStrong(&v13->_DOMObjectProvider, a4);
-    objc_storeStrong(&v13->_unitConverterFactory, a5);
+    objc_storeStrong(&v12->_layoutBlueprint, blueprint);
+    objc_storeStrong(&v13->_DOMObjectProvider, provider);
+    objc_storeStrong(&v13->_unitConverterFactory, factory);
   }
 
   return v13;
@@ -32,9 +32,9 @@
 
 - (CGSize)viewportSize
 {
-  v2 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
-  v3 = [v2 layoutOptions];
-  [v3 viewportSize];
+  layoutBlueprint = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
+  layoutOptions = [layoutBlueprint layoutOptions];
+  [layoutOptions viewportSize];
   v5 = v4;
   v7 = v6;
 
@@ -47,8 +47,8 @@
 
 - (CGSize)documentSize
 {
-  v2 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
-  [v2 blueprintSize];
+  layoutBlueprint = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
+  [layoutBlueprint blueprintSize];
   v4 = v3;
   v6 = v5;
 
@@ -61,20 +61,20 @@
 
 - (SXColumnLayout)columnLayout
 {
-  v2 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
-  v3 = [v2 layoutOptions];
-  v4 = [v3 columnLayout];
+  layoutBlueprint = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
+  layoutOptions = [layoutBlueprint layoutOptions];
+  columnLayout = [layoutOptions columnLayout];
 
-  return v4;
+  return columnLayout;
 }
 
-- (CGRect)frameForComponent:(id)a3
+- (CGRect)frameForComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
-  v6 = [v4 identifier];
+  componentCopy = component;
+  layoutBlueprint = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
+  identifier = [componentCopy identifier];
 
-  v7 = [v5 componentBlueprintForComponentIdentifier:v6 includeChildren:1];
+  v7 = [layoutBlueprint componentBlueprintForComponentIdentifier:identifier includeChildren:1];
   [v7 absoluteFrame];
   v9 = v8;
   v11 = v10;
@@ -92,21 +92,21 @@
   return result;
 }
 
-- (id)suggestedMarginForMarker:(id)a3
+- (id)suggestedMarginForMarker:(id)marker
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprintForMarker:v4];
-  v6 = [v4 componentAnchor];
+  markerCopy = marker;
+  v5 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprintForMarker:markerCopy];
+  componentAnchor = [markerCopy componentAnchor];
 
-  if (!v6)
+  if (!componentAnchor)
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v10 = [v5 componentIdentifiers];
-    v11 = [v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    componentIdentifiers = [v5 componentIdentifiers];
+    v11 = [componentIdentifiers countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (!v11)
     {
       v8 = 0;
@@ -115,7 +115,7 @@
       goto LABEL_20;
     }
 
-    v40 = self;
+    selfCopy = self;
     v8 = 0;
     v9 = 0;
     v12 = *v43;
@@ -127,64 +127,64 @@
       {
         if (*v43 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(componentIdentifiers);
         }
 
         v16 = [v5 componentBlueprintForComponentIdentifier:*(*(&v42 + 1) + 8 * i)];
-        [v4 approximateLocation];
+        [markerCopy approximateLocation];
         v18 = v17;
         [v16 absoluteFrame];
         v19 = v18 - CGRectGetMaxY(v48);
         if (v19 < v14 && v19 >= 0.0)
         {
-          v20 = [v16 component];
+          component = [v16 component];
 
-          v9 = v20;
+          v9 = component;
           v14 = v19;
         }
 
         [v16 absoluteFrame];
         MinY = CGRectGetMinY(v49);
-        [v4 approximateLocation];
+        [markerCopy approximateLocation];
         v23 = MinY - v22;
         if (v23 < v13 && v23 >= 0.0)
         {
-          v24 = [v16 component];
+          component2 = [v16 component];
 
-          v8 = v24;
+          v8 = component2;
           v13 = v23;
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v11 = [componentIdentifiers countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v11);
 
     if (v9)
     {
-      v25 = v40;
-      v26 = [(SXComponentInsertionLayoutProvider *)v40 DOMObjectProvider];
-      v27 = [v9 layout];
-      v11 = [v26 componentLayoutForIdentifier:v27];
+      v25 = selfCopy;
+      dOMObjectProvider = [(SXComponentInsertionLayoutProvider *)selfCopy DOMObjectProvider];
+      layout = [v9 layout];
+      v11 = [dOMObjectProvider componentLayoutForIdentifier:layout];
 
       if (v8)
       {
 LABEL_18:
-        v10 = [(SXComponentInsertionLayoutProvider *)v25 DOMObjectProvider];
-        v28 = [v8 layout];
-        v29 = [v10 componentLayoutForIdentifier:v28];
+        componentIdentifiers = [(SXComponentInsertionLayoutProvider *)v25 DOMObjectProvider];
+        layout2 = [v8 layout];
+        v29 = [componentIdentifiers componentLayoutForIdentifier:layout2];
 
 LABEL_20:
 LABEL_23:
         v41 = v11;
         v30 = [SXInsertEdgeSpacing alloc];
-        v31 = [v29 margin];
-        v32 = [v31 top];
+        margin = [v29 margin];
+        v32 = [margin top];
         v34 = v33;
-        v35 = [v11 margin];
-        v36 = [v35 bottom];
-        v7 = [(SXInsertEdgeSpacing *)v30 initWithTop:v32 bottom:v34, v36, v37];
+        margin2 = [v11 margin];
+        bottom = [margin2 bottom];
+        v7 = [(SXInsertEdgeSpacing *)v30 initWithTop:v32 bottom:v34, bottom, v37];
 
         goto LABEL_24;
       }
@@ -193,7 +193,7 @@ LABEL_23:
     else
     {
       v11 = 0;
-      v25 = v40;
+      v25 = selfCopy;
       if (v8)
       {
         goto LABEL_18;
@@ -213,30 +213,30 @@ LABEL_24:
   return v7;
 }
 
-- (id)unitConverterForMarker:(id)a3
+- (id)unitConverterForMarker:(id)marker
 {
-  v4 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprintForMarker:a3];
-  v5 = [(SXComponentInsertionLayoutProvider *)self unitConverterFactory];
+  v4 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprintForMarker:marker];
+  unitConverterFactory = [(SXComponentInsertionLayoutProvider *)self unitConverterFactory];
   [v4 blueprintSize];
   v7 = v6;
-  v8 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
-  v9 = [v8 layoutOptions];
-  v10 = [v5 createUnitConverterWithComponentWidth:v9 parentWidth:0.0 layoutOptions:v7];
+  layoutBlueprint = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
+  layoutOptions = [layoutBlueprint layoutOptions];
+  v10 = [unitConverterFactory createUnitConverterWithComponentWidth:layoutOptions parentWidth:0.0 layoutOptions:v7];
 
   return v10;
 }
 
-- (id)layoutBlueprintForMarker:(id)a3
+- (id)layoutBlueprintForMarker:(id)marker
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
+  markerCopy = marker;
+  layoutBlueprint = [(SXComponentInsertionLayoutProvider *)self layoutBlueprint];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 path];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  path = [markerCopy path];
+  v7 = [path countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -244,31 +244,31 @@ LABEL_24:
     do
     {
       v10 = 0;
-      v11 = v5;
+      v11 = layoutBlueprint;
       do
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(path);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v10) identifier];
-        v13 = [v11 componentBlueprintForComponentIdentifier:v12];
+        identifier = [*(*(&v15 + 1) + 8 * v10) identifier];
+        v13 = [v11 componentBlueprintForComponentIdentifier:identifier];
 
-        v5 = [v13 layoutBlueprint];
+        layoutBlueprint = [v13 layoutBlueprint];
 
         ++v10;
-        v11 = v5;
+        v11 = layoutBlueprint;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [path countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return layoutBlueprint;
 }
 
 @end

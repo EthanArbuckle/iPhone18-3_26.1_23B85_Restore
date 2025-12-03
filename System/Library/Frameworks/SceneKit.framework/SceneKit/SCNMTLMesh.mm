@@ -1,6 +1,6 @@
 @interface SCNMTLMesh
 - (id)description;
-- (uint64_t)bufferForAttribute:(uint64_t)a1;
+- (uint64_t)bufferForAttribute:(uint64_t)attribute;
 - (uint64_t)buffers;
 - (uint64_t)elements;
 - (uint64_t)setMutabilityTimestamp:(uint64_t)result;
@@ -16,9 +16,9 @@
 - (uint64_t)volatileStride;
 - (void)buildTessellationVertexDescriptorIfNeeded;
 - (void)dealloc;
-- (void)setBuffers:(void *)a1;
-- (void)setElements:(void *)a1;
-- (void)setVolatileBuffer:(void *)a1;
+- (void)setBuffers:(void *)buffers;
+- (void)setElements:(void *)elements;
+- (void)setVolatileBuffer:(void *)buffer;
 - (void)tessellationVertexDescriptor;
 - (void)tessellationVertexDescriptorHash;
 @end
@@ -197,21 +197,21 @@
   return result;
 }
 
-- (uint64_t)bufferForAttribute:(uint64_t)a1
+- (uint64_t)bufferForAttribute:(uint64_t)attribute
 {
-  if (!a1)
+  if (!attribute)
   {
     return 0;
   }
 
-  v3 = [objc_msgSend(objc_msgSend(*(a1 + 16) "attributes")];
+  v3 = [objc_msgSend(objc_msgSend(*(attribute + 16) "attributes")];
   v4 = v3 - 18;
   if (v3 < 18)
   {
     return 0;
   }
 
-  v5 = *(a1 + 48);
+  v5 = *(attribute + 48);
 
   return [v5 objectAtIndexedSubscript:v4];
 }
@@ -226,11 +226,11 @@
   return result;
 }
 
-- (void)setBuffers:(void *)a1
+- (void)setBuffers:(void *)buffers
 {
-  if (a1)
+  if (buffers)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 48);
+    objc_setProperty_nonatomic_copy(buffers, newValue, newValue, 48);
   }
 }
 
@@ -244,11 +244,11 @@
   return result;
 }
 
-- (void)setElements:(void *)a1
+- (void)setElements:(void *)elements
 {
-  if (a1)
+  if (elements)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 56);
+    objc_setProperty_nonatomic_copy(elements, newValue, newValue, 56);
   }
 }
 
@@ -262,11 +262,11 @@
   return result;
 }
 
-- (void)setVolatileBuffer:(void *)a1
+- (void)setVolatileBuffer:(void *)buffer
 {
-  if (a1)
+  if (buffer)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 72);
+    objc_setProperty_nonatomic(buffer, newValue, newValue, 72);
   }
 }
 

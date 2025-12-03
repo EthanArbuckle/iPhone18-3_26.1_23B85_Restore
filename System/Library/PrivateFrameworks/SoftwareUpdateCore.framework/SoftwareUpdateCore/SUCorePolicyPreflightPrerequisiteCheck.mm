@@ -1,11 +1,11 @@
 @interface SUCorePolicyPreflightPrerequisiteCheck
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUCorePolicyPreflightPrerequisiteCheck)init;
-- (SUCorePolicyPreflightPrerequisiteCheck)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCorePolicyPreflightPrerequisiteCheck)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCorePolicyPreflightPrerequisiteCheck
@@ -29,15 +29,15 @@
   return v3;
 }
 
-- (SUCorePolicyPreflightPrerequisiteCheck)initWithCoder:(id)a3
+- (SUCorePolicyPreflightPrerequisiteCheck)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUCorePolicyPreflightPrerequisiteCheck;
   v5 = [(SUCorePolicyPreflightPrerequisiteCheck *)&v9 init];
   if (v5)
   {
-    v5->_performPhase = [v4 decodeBoolForKey:@"PerformPhase"];
+    v5->_performPhase = [coderCopy decodeBoolForKey:@"PerformPhase"];
     additionalOptions = v5->_additionalOptions;
     v5->_additionalOptions = 0;
 
@@ -48,31 +48,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[SUCorePolicyPreflightPrerequisiteCheck performPhase](self forKey:{"performPhase"), @"PerformPhase"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SUCorePolicyPreflightPrerequisiteCheck performPhase](self forKey:{"performPhase"), @"PerformPhase"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setPerformPhase:{-[SUCorePolicyPreflightPrerequisiteCheck performPhase](self, "performPhase")}];
-  v6 = [(SUCorePolicyPreflightPrerequisiteCheck *)self basePreflightOptions];
-  v7 = [v6 copyWithZone:a3];
+  basePreflightOptions = [(SUCorePolicyPreflightPrerequisiteCheck *)self basePreflightOptions];
+  v7 = [basePreflightOptions copyWithZone:zone];
   [v5 setBasePreflightOptions:v7];
 
-  v8 = [(SUCorePolicyPreflightPrerequisiteCheck *)self additionalOptions];
-  v9 = [v8 copyWithZone:a3];
+  additionalOptions = [(SUCorePolicyPreflightPrerequisiteCheck *)self additionalOptions];
+  v9 = [additionalOptions copyWithZone:zone];
   [v5 setAdditionalOptions:v9];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -82,8 +82,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SUCorePolicyPreflightPrerequisiteCheck *)v4 performPhase];
-      v6 = v5 ^ [(SUCorePolicyPreflightPrerequisiteCheck *)self performPhase]^ 1;
+      performPhase = [(SUCorePolicyPreflightPrerequisiteCheck *)equalCopy performPhase];
+      v6 = performPhase ^ [(SUCorePolicyPreflightPrerequisiteCheck *)self performPhase]^ 1;
     }
 
     else
@@ -108,30 +108,30 @@
     v4 = @"NO";
   }
 
-  v5 = [(SUCorePolicyPreflightPrerequisiteCheck *)self basePreflightOptions];
-  if (v5)
+  basePreflightOptions = [(SUCorePolicyPreflightPrerequisiteCheck *)self basePreflightOptions];
+  if (basePreflightOptions)
   {
-    v6 = [(SUCorePolicyPreflightPrerequisiteCheck *)self basePreflightOptions];
+    basePreflightOptions2 = [(SUCorePolicyPreflightPrerequisiteCheck *)self basePreflightOptions];
   }
 
   else
   {
-    v6 = @"none";
+    basePreflightOptions2 = @"none";
   }
 
-  v7 = [(SUCorePolicyPreflightPrerequisiteCheck *)self additionalOptions];
-  if (v7)
+  additionalOptions = [(SUCorePolicyPreflightPrerequisiteCheck *)self additionalOptions];
+  if (additionalOptions)
   {
-    v8 = [(SUCorePolicyPreflightPrerequisiteCheck *)self additionalOptions];
-    v9 = [v3 stringWithFormat:@"SUCorePolicyPreflightPrerequisiteCheck(performPhase:%@|basePreflightOptions:%@|additionalOptions:%@)", v4, v6, v8];
+    additionalOptions2 = [(SUCorePolicyPreflightPrerequisiteCheck *)self additionalOptions];
+    v9 = [v3 stringWithFormat:@"SUCorePolicyPreflightPrerequisiteCheck(performPhase:%@|basePreflightOptions:%@|additionalOptions:%@)", v4, basePreflightOptions2, additionalOptions2];
   }
 
   else
   {
-    v9 = [v3 stringWithFormat:@"SUCorePolicyPreflightPrerequisiteCheck(performPhase:%@|basePreflightOptions:%@|additionalOptions:%@)", v4, v6, @"none"];
+    v9 = [v3 stringWithFormat:@"SUCorePolicyPreflightPrerequisiteCheck(performPhase:%@|basePreflightOptions:%@|additionalOptions:%@)", v4, basePreflightOptions2, @"none"];
   }
 
-  if (v5)
+  if (basePreflightOptions)
   {
   }
 
@@ -150,8 +150,8 @@
     v3 = &stru_28469CC48;
   }
 
-  v4 = [(SUCorePolicyPreflightPrerequisiteCheck *)self basePreflightOptions];
-  if (v4)
+  basePreflightOptions = [(SUCorePolicyPreflightPrerequisiteCheck *)self basePreflightOptions];
+  if (basePreflightOptions)
   {
     v5 = @"|withBasePreflightOptions";
   }
@@ -163,8 +163,8 @@
 
   v6 = [(__CFString *)v3 stringByAppendingString:v5];
 
-  v7 = [(SUCorePolicyPreflightPrerequisiteCheck *)self additionalOptions];
-  if (v7)
+  additionalOptions = [(SUCorePolicyPreflightPrerequisiteCheck *)self additionalOptions];
+  if (additionalOptions)
   {
     v8 = @"|withAdditionalOptions";
   }

@@ -17,12 +17,12 @@
       v9 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v4 archiverContext];
+        archiverContext = [v4 archiverContext];
         v11 = v4[2];
         v12 = objc_opt_class();
         v13 = v4[2];
         *buf = 138412802;
-        v25 = v10;
+        v25 = archiverContext;
         v26 = 2112;
         v27 = v12;
         v28 = 2112;
@@ -38,7 +38,7 @@
     _CPLArchiverFailure(v4, @"Incorrect string for NSUUID. Found %@: '%@'", v17, v18, v19, v20, v21, v22, v16);
   }
 
-  v6 = [a1 initWithUUIDString:v4[2]];
+  v6 = [self initWithUUIDString:v4[2]];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;

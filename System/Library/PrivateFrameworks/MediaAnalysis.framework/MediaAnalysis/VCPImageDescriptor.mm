@@ -1,29 +1,29 @@
 @interface VCPImageDescriptor
-+ (id)descriptorWithData:(id)a3;
-+ (id)descriptorWithImage:(__CVBuffer *)a3;
-- (VCPImageDescriptor)initWithData:(id)a3;
-- (VCPImageDescriptor)initWithImage:(__CVBuffer *)a3;
-- (int)computeDistance:(float *)a3 toDescriptor:(id)a4;
++ (id)descriptorWithData:(id)data;
++ (id)descriptorWithImage:(__CVBuffer *)image;
+- (VCPImageDescriptor)initWithData:(id)data;
+- (VCPImageDescriptor)initWithImage:(__CVBuffer *)image;
+- (int)computeDistance:(float *)distance toDescriptor:(id)descriptor;
 @end
 
 @implementation VCPImageDescriptor
 
-+ (id)descriptorWithImage:(__CVBuffer *)a3
++ (id)descriptorWithImage:(__CVBuffer *)image
 {
-  v3 = [[VCPImageDescriptor alloc] initWithImage:a3];
+  v3 = [[VCPImageDescriptor alloc] initWithImage:image];
 
   return v3;
 }
 
-+ (id)descriptorWithData:(id)a3
++ (id)descriptorWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[VCPImageDescriptor alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[VCPImageDescriptor alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-- (VCPImageDescriptor)initWithImage:(__CVBuffer *)a3
+- (VCPImageDescriptor)initWithImage:(__CVBuffer *)image
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v31.receiver = self;
@@ -33,7 +33,7 @@
   {
     context = objc_autoreleasePoolPush();
     v5 = objc_alloc(MEMORY[0x1E69845B8]);
-    v6 = [v5 initWithCVPixelBuffer:a3 options:MEMORY[0x1E695E0F8]];
+    v6 = [v5 initWithCVPixelBuffer:image options:MEMORY[0x1E695E0F8]];
     if (v6)
     {
       v7 = objc_alloc_init(MEMORY[0x1E6984488]);
@@ -44,8 +44,8 @@
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v11 = [v8 results];
-        v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        results = [v8 results];
+        v12 = [results countByEnumeratingWithState:&v27 objects:v32 count:16];
         if (v12)
         {
           v13 = 0;
@@ -60,18 +60,18 @@
             {
               if (*v28 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(results);
               }
 
-              v18 = [*(*(&v27 + 1) + 8 * v15) imageprint];
+              imageprint = [*(*(&v27 + 1) + 8 * v15) imageprint];
               imagePrint = v4->_imagePrint;
-              v4->_imagePrint = v18;
+              v4->_imagePrint = imageprint;
 
               ++v15;
             }
 
             while (v12 != v15);
-            v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
+            v12 = [results countByEnumeratingWithState:&v27 objects:v32 count:16];
           }
 
           while (v12);
@@ -132,19 +132,19 @@
   return v20;
 }
 
-- (VCPImageDescriptor)initWithData:(id)a3
+- (VCPImageDescriptor)initWithData:(id)data
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = VCPImageDescriptor;
   v5 = [(VCPImageDescriptor *)&v14 init];
   if (v5)
   {
-    if (v4)
+    if (dataCopy)
     {
       v13 = 0;
-      v6 = [objc_alloc(MEMORY[0x1E69845C0]) initWithState:v4 error:&v13];
+      v6 = [objc_alloc(MEMORY[0x1E69845C0]) initWithState:dataCopy error:&v13];
       v7 = v13;
       imagePrint = v5->_imagePrint;
       v5->_imagePrint = v6;
@@ -185,15 +185,15 @@
   return v10;
 }
 
-- (int)computeDistance:(float *)a3 toDescriptor:(id)a4
+- (int)computeDistance:(float *)distance toDescriptor:(id)descriptor
 {
-  v5 = [(VNImageprint *)self->_imagePrint distanceToImageprint:*(a4 + 1) error:0];
+  v5 = [(VNImageprint *)self->_imagePrint distanceToImageprint:*(descriptor + 1) error:0];
   v6 = v5;
   if (v5)
   {
     [v5 floatValue];
     v7 = 0;
-    *a3 = v8;
+    *distance = v8;
   }
 
   else

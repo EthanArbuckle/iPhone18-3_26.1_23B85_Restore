@@ -2,10 +2,10 @@
 + (id)descriptorForRequiredKeys;
 + (id)os_log;
 - (CNMessageToGroup)init;
-- (id)emailAddressForContact:(id)a3;
-- (id)messageUrlForContacts:(id)a3;
-- (id)messagingAddressForContact:(id)a3;
-- (id)santizeMessagingAddress:(id)a3;
+- (id)emailAddressForContact:(id)contact;
+- (id)messageUrlForContacts:(id)contacts;
+- (id)messagingAddressForContact:(id)contact;
+- (id)santizeMessagingAddress:(id)address;
 @end
 
 @implementation CNMessageToGroup
@@ -40,7 +40,7 @@ uint64_t __26__CNMessageToGroup_os_log__block_invoke()
   v8[2] = @"phoneNumbers";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
 
-  v5 = [a1 description];
+  v5 = [self description];
   v6 = [CNContact descriptorWithKeyDescriptors:v4 description:v5];
 
   return v6;
@@ -64,14 +64,14 @@ uint64_t __26__CNMessageToGroup_os_log__block_invoke()
   return v2;
 }
 
-- (id)messageUrlForContacts:(id)a3
+- (id)messageUrlForContacts:(id)contacts
 {
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __42__CNMessageToGroup_messageUrlForContacts___block_invoke;
   v16[3] = &unk_1E7412EB0;
   v16[4] = self;
-  v3 = [a3 _cn_map:v16];
+  v3 = [contacts _cn_map:v16];
   v4 = [v3 _cn_filter:*MEMORY[0x1E6996550]];
 
   if ([v4 count])
@@ -82,17 +82,17 @@ uint64_t __26__CNMessageToGroup_os_log__block_invoke()
     v13 = __42__CNMessageToGroup_messageUrlForContacts___block_invoke_8;
     v14 = &unk_1E74139A8;
     v15 = v5;
-    v6 = v5;
+    os_log = v5;
     [v4 enumerateObjectsUsingBlock:&v11];
-    v7 = [v6 _cn_stringByAddingPercentEscapesToEntireURL:v11];
+    v7 = [os_log _cn_stringByAddingPercentEscapesToEntireURL:v11];
     v8 = [MEMORY[0x1E696AF20] componentsWithString:v7];
     v9 = [v8 URL];
   }
 
   else
   {
-    v6 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNMessageToGroup messageUrlForContacts:];
     }
@@ -123,14 +123,14 @@ void __42__CNMessageToGroup_messageUrlForContacts___block_invoke_8(uint64_t a1, 
   [*(a1 + 32) appendString:v5];
 }
 
-- (id)emailAddressForContact:(id)a3
+- (id)emailAddressForContact:(id)contact
 {
-  v3 = [a3 emailAddresses];
-  v4 = [v3 _cn_firstObjectPassingTest:&__block_literal_global_16_0];
+  emailAddresses = [contact emailAddresses];
+  v4 = [emailAddresses _cn_firstObjectPassingTest:&__block_literal_global_16_0];
 
-  v5 = [v4 value];
+  value = [v4 value];
 
-  return v5;
+  return value;
 }
 
 uint64_t __43__CNMessageToGroup_emailAddressForContact___block_invoke(uint64_t a1, void *a2)
@@ -142,20 +142,20 @@ uint64_t __43__CNMessageToGroup_emailAddressForContact___block_invoke(uint64_t a
   return v4;
 }
 
-- (id)messagingAddressForContact:(id)a3
+- (id)messagingAddressForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNMessageToGroup *)self emailAddressForContact:v4];
-  v6 = [v4 phoneNumbers];
-  v7 = [v6 firstObject];
-  v8 = [v7 value];
-  v9 = [v8 stringValue];
+  contactCopy = contact;
+  v5 = [(CNMessageToGroup *)self emailAddressForContact:contactCopy];
+  phoneNumbers = [contactCopy phoneNumbers];
+  firstObject = [phoneNumbers firstObject];
+  value = [firstObject value];
+  stringValue = [value stringValue];
 
-  if (((*(*MEMORY[0x1E6996570] + 16))() & 1) != 0 || v9)
+  if (((*(*MEMORY[0x1E6996570] + 16))() & 1) != 0 || stringValue)
   {
-    if (v9)
+    if (stringValue)
     {
-      v12 = v9;
+      v12 = stringValue;
     }
 
     else
@@ -168,8 +168,8 @@ uint64_t __43__CNMessageToGroup_emailAddressForContact___block_invoke(uint64_t a
 
   else
   {
-    v10 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNMessageToGroup messagingAddressForContact:];
     }
@@ -180,50 +180,50 @@ uint64_t __43__CNMessageToGroup_emailAddressForContact___block_invoke(uint64_t a
   return v11;
 }
 
-- (id)santizeMessagingAddress:(id)a3
+- (id)santizeMessagingAddress:(id)address
 {
-  v3 = a3;
-  v4 = [getECEmailAddressClass[0]() emailAddressWithString:v3];
-  v5 = [v4 emailAddressValue];
-  v6 = v5;
-  if (v5)
+  addressCopy = address;
+  v4 = [getECEmailAddressClass[0]() emailAddressWithString:addressCopy];
+  emailAddressValue = [v4 emailAddressValue];
+  v6 = emailAddressValue;
+  if (emailAddressValue)
   {
-    v7 = [v5 displayName];
-    v8 = [v7 emailAddressValue];
+    displayName = [emailAddressValue displayName];
+    emailAddressValue2 = [displayName emailAddressValue];
 
-    if (v8 && ([v8 stringValue], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "simpleAddress"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqualToString:", v10), v10, v9, (v11 & 1) == 0))
+    if (emailAddressValue2 && ([emailAddressValue2 stringValue], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "simpleAddress"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqualToString:", v10), v10, v9, (v11 & 1) == 0))
     {
-      v12 = [v6 simpleAddress];
+      simpleAddress = [v6 simpleAddress];
     }
 
     else
     {
-      v12 = [v6 stringValue];
+      simpleAddress = [v6 stringValue];
     }
 
-    v13 = v12;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v13 = [v4 stringValue];
+    stringValue = [v4 stringValue];
   }
 
-  if (v13)
+  if (stringValue)
   {
-    v14 = v13;
+    v14 = stringValue;
   }
 
   else
   {
-    v15 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNMessageToGroup santizeMessagingAddress:];
     }
   }
 
-  return v13;
+  return stringValue;
 }
 
 @end

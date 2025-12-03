@@ -2,41 +2,41 @@
 - (BOOL)areFontsLocallyAvailable;
 - (BOOL)isDocumentLocallyAvailable;
 - (BOOL)isThumbnailAvailableInDocument;
-- (FRFlintDataProvider)initWithANFContent:(id)a3 headline:(id)a4 resourceManager:(id)a5 cloudContext:(id)a6 embedConfigurationManager:(id)a7;
-- (id)_loadAssetURLsWithCompletionBlock:(id)a3;
-- (id)_loadAssetsWithCompletionBlock:(id)a3;
-- (id)_loadFontsWithCompletionBlock:(id)a3;
-- (id)_loadJSONWithCompletionBlock:(id)a3;
-- (id)_loadLinkedContentWithCompletionBlock:(id)a3;
-- (id)_resourceIDFromResourceURL:(id)a3;
-- (id)fallbackResourceForImageRequest:(id)a3 originalResource:(id)a4;
-- (id)headlineForIdentifier:(id)a3;
-- (id)imageResourceResponseForFileURL:(id)a3 perserveColorSpace:(BOOL)a4 withSize:(CGSize)a5 andQuality:(unint64_t)a6;
-- (id)loadAssetURLsWithCompletionBlock:(id)a3;
-- (id)loadAssetsWithCompletionBlock:(id)a3;
-- (id)loadContextWithCompletionBlock:(id)a3;
-- (id)loadFontsWithCompletionBlock:(id)a3;
-- (id)loadImagesForImageRequest:(id)a3 completionBlock:(id)a4;
-- (id)loadJSONWithCompletionBlock:(id)a3;
-- (id)loadLinkedContentWithCompletionBlock:(id)a3;
-- (id)translateURL:(id)a3;
+- (FRFlintDataProvider)initWithANFContent:(id)content headline:(id)headline resourceManager:(id)manager cloudContext:(id)context embedConfigurationManager:(id)configurationManager;
+- (id)_loadAssetURLsWithCompletionBlock:(id)block;
+- (id)_loadAssetsWithCompletionBlock:(id)block;
+- (id)_loadFontsWithCompletionBlock:(id)block;
+- (id)_loadJSONWithCompletionBlock:(id)block;
+- (id)_loadLinkedContentWithCompletionBlock:(id)block;
+- (id)_resourceIDFromResourceURL:(id)l;
+- (id)fallbackResourceForImageRequest:(id)request originalResource:(id)resource;
+- (id)headlineForIdentifier:(id)identifier;
+- (id)imageResourceResponseForFileURL:(id)l perserveColorSpace:(BOOL)space withSize:(CGSize)size andQuality:(unint64_t)quality;
+- (id)loadAssetURLsWithCompletionBlock:(id)block;
+- (id)loadAssetsWithCompletionBlock:(id)block;
+- (id)loadContextWithCompletionBlock:(id)block;
+- (id)loadFontsWithCompletionBlock:(id)block;
+- (id)loadImagesForImageRequest:(id)request completionBlock:(id)block;
+- (id)loadJSONWithCompletionBlock:(id)block;
+- (id)loadLinkedContentWithCompletionBlock:(id)block;
+- (id)translateURL:(id)l;
 - (void)dealloc;
-- (void)fileURLForURL:(id)a3 onCompletion:(id)a4 onError:(id)a5;
+- (void)fileURLForURL:(id)l onCompletion:(id)completion onError:(id)error;
 - (void)initializeLoadingGroup;
 - (void)resetFailedDownloads;
-- (void)setCurrentRelativePriority:(int64_t)a3;
+- (void)setCurrentRelativePriority:(int64_t)priority;
 @end
 
 @implementation FRFlintDataProvider
 
-- (FRFlintDataProvider)initWithANFContent:(id)a3 headline:(id)a4 resourceManager:(id)a5 cloudContext:(id)a6 embedConfigurationManager:(id)a7
+- (FRFlintDataProvider)initWithANFContent:(id)content headline:(id)headline resourceManager:(id)manager cloudContext:(id)context embedConfigurationManager:(id)configurationManager
 {
-  v34 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v14 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  contentCopy = content;
+  headlineCopy = headline;
+  managerCopy = manager;
+  contextCopy = context;
+  configurationManagerCopy = configurationManager;
+  if (!managerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000708BC();
   }
@@ -47,13 +47,13 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_anfContent, a3);
-    objc_storeStrong(&v18->_headline, a4);
-    objc_storeStrong(&v18->_resourceManager, a5);
-    objc_storeStrong(&v18->_embedConfigurationManager, a7);
+    objc_storeStrong(&v17->_anfContent, content);
+    objc_storeStrong(&v18->_headline, headline);
+    objc_storeStrong(&v18->_resourceManager, manager);
+    objc_storeStrong(&v18->_embedConfigurationManager, configurationManager);
     v19 = [NUArticleResourceURLTranslator alloc];
-    v20 = [v15 appConfigurationManager];
-    v21 = [v19 initWithAppConfigurationManager:v20];
+    appConfigurationManager = [contextCopy appConfigurationManager];
+    v21 = [v19 initWithAppConfigurationManager:appConfigurationManager];
     resourceURLTranslator = v18->_resourceURLTranslator;
     v18->_resourceURLTranslator = v21;
 
@@ -79,7 +79,7 @@
     fontsToRegister = v18->_fontsToRegister;
     v18->_fontsToRegister = v31;
 
-    objc_storeStrong(&v18->_cloudContext, a6);
+    objc_storeStrong(&v18->_cloudContext, context);
     [(FRFlintDataProvider *)v18 initializeLoadingGroup];
   }
 
@@ -100,14 +100,14 @@
 
 - (void)dealloc
 {
-  v3 = [(FRFlintDataProvider *)self resourcesLock];
-  [v3 lock];
+  resourcesLock = [(FRFlintDataProvider *)self resourcesLock];
+  [resourcesLock lock];
 
-  v4 = [(FRFlintDataProvider *)self fontResources];
-  v5 = [v4 copy];
+  fontResources = [(FRFlintDataProvider *)self fontResources];
+  v5 = [fontResources copy];
 
-  v6 = [(FRFlintDataProvider *)self resourcesLock];
-  [v6 unlock];
+  resourcesLock2 = [(FRFlintDataProvider *)self resourcesLock];
+  [resourcesLock2 unlock];
 
   v17 = 0u;
   v18 = 0u;
@@ -133,8 +133,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 fileURL];
-          [FRFont unregisterFontWithURL:v13];
+          fileURL = [v12 fileURL];
+          [FRFont unregisterFontWithURL:fileURL];
         }
 
         v11 = v11 + 1;
@@ -152,9 +152,9 @@
   [(FRFlintDataProvider *)&v14 dealloc];
 }
 
-- (id)loadContextWithCompletionBlock:(id)a3
+- (id)loadContextWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[NSMutableArray array];
   v6 = dispatch_group_create();
   dispatch_group_enter(v6);
@@ -179,15 +179,15 @@
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(FRFlintDataProvider *)self embedConfigurationManager];
+    embedConfigurationManager = [(FRFlintDataProvider *)self embedConfigurationManager];
     *buf = 134218240;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2048;
-    v35 = v13;
+    v35 = embedConfigurationManager;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%p will fetch embed configuration from manager=%p", buf, 0x16u);
   }
 
-  v14 = [(FRFlintDataProvider *)self embedConfigurationManager];
+  embedConfigurationManager2 = [(FRFlintDataProvider *)self embedConfigurationManager];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100043F94;
@@ -195,14 +195,14 @@
   v26[4] = self;
   v15 = v9;
   v27 = v15;
-  [v14 fetchEmbedConfigurationWithCompletion:v26];
+  [embedConfigurationManager2 fetchEmbedConfigurationWithCompletion:v26];
 
   dispatch_group_enter(v15);
   v16 = FRArticleLog;
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v33 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%p will fetch linked content", buf, 0xCu);
   }
 
@@ -219,8 +219,8 @@
   block[2] = sub_1000440F4;
   block[3] = &unk_1000C1E48;
   block[4] = self;
-  v23 = v4;
-  v19 = v4;
+  v23 = blockCopy;
+  v19 = blockCopy;
   dispatch_group_notify(v17, &_dispatch_main_q, block);
   if (v8)
   {
@@ -237,52 +237,52 @@
   return v20;
 }
 
-- (id)loadJSONWithCompletionBlock:(id)a3
+- (id)loadJSONWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FRFlintDataProvider *)self loadingGroup];
-  v6 = [v5 loadJSONOnce];
-  v7 = [v6 executeWithCompletionHandler:v4];
+  blockCopy = block;
+  loadingGroup = [(FRFlintDataProvider *)self loadingGroup];
+  loadJSONOnce = [loadingGroup loadJSONOnce];
+  v7 = [loadJSONOnce executeWithCompletionHandler:blockCopy];
 
   return v7;
 }
 
-- (id)loadFontsWithCompletionBlock:(id)a3
+- (id)loadFontsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FRFlintDataProvider *)self loadingGroup];
-  v6 = [v5 loadFontsOnce];
+  blockCopy = block;
+  loadingGroup = [(FRFlintDataProvider *)self loadingGroup];
+  loadFontsOnce = [loadingGroup loadFontsOnce];
   v7 = FCDispatchQueueForQualityOfService();
-  v8 = [v6 executeWithCallbackQueue:v7 completionHandler:v4];
+  v8 = [loadFontsOnce executeWithCallbackQueue:v7 completionHandler:blockCopy];
 
   return v8;
 }
 
-- (id)loadAssetURLsWithCompletionBlock:(id)a3
+- (id)loadAssetURLsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FRFlintDataProvider *)self loadingGroup];
-  v6 = [v5 loadJSONOnce];
-  v7 = [v6 finishedExecuting];
+  blockCopy = block;
+  loadingGroup = [(FRFlintDataProvider *)self loadingGroup];
+  loadJSONOnce = [loadingGroup loadJSONOnce];
+  finishedExecuting = [loadJSONOnce finishedExecuting];
 
-  if (v7)
+  if (finishedExecuting)
   {
-    v8 = [v5 loadAssetURLsOnce];
-    v9 = [v8 executeWithCompletionHandler:v4];
+    loadAssetURLsOnce = [loadingGroup loadAssetURLsOnce];
+    v9 = [loadAssetURLsOnce executeWithCompletionHandler:blockCopy];
   }
 
   else
   {
-    dispatch_async(&_dispatch_main_q, v4);
+    dispatch_async(&_dispatch_main_q, blockCopy);
     v9 = 0;
   }
 
   return v9;
 }
 
-- (id)loadAssetsWithCompletionBlock:(id)a3
+- (id)loadAssetsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v16[0] = 0;
   v16[1] = v16;
@@ -295,7 +295,7 @@
   v12[2] = sub_10004452C;
   v12[3] = &unk_1000C4A88;
   objc_copyWeak(&v15, &location);
-  v5 = v4;
+  v5 = blockCopy;
   v13 = v5;
   v14 = v16;
   [(FRFlintDataProvider *)self loadAssetURLsWithCompletionBlock:v12];
@@ -315,12 +315,12 @@
   return v7;
 }
 
-- (id)loadLinkedContentWithCompletionBlock:(id)a3
+- (id)loadLinkedContentWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FRFlintDataProvider *)self loadingGroup];
-  v6 = [v5 loadLinkedContentOnce];
-  v7 = [v6 executeWithCompletionHandler:v4];
+  blockCopy = block;
+  loadingGroup = [(FRFlintDataProvider *)self loadingGroup];
+  loadLinkedContentOnce = [loadingGroup loadLinkedContentOnce];
+  v7 = [loadLinkedContentOnce executeWithCompletionHandler:blockCopy];
 
   return v7;
 }
@@ -328,64 +328,64 @@
 - (void)resetFailedDownloads
 {
   +[NSThread isMainThread];
-  v3 = [(FRFlintDataProvider *)self loadingGroup];
-  v4 = [v3 loadJSONOnce];
-  v5 = [v4 finishedExecutingWithFailure];
+  loadingGroup = [(FRFlintDataProvider *)self loadingGroup];
+  loadJSONOnce = [loadingGroup loadJSONOnce];
+  finishedExecutingWithFailure = [loadJSONOnce finishedExecutingWithFailure];
 
-  v6 = [v3 loadFontsOnce];
-  v7 = [v6 finishedExecutingWithFailure];
+  loadFontsOnce = [loadingGroup loadFontsOnce];
+  finishedExecutingWithFailure2 = [loadFontsOnce finishedExecutingWithFailure];
 
-  v8 = [v3 loadAssetURLsOnce];
-  v9 = [v8 finishedExecutingWithFailure];
+  loadAssetURLsOnce = [loadingGroup loadAssetURLsOnce];
+  finishedExecutingWithFailure3 = [loadAssetURLsOnce finishedExecutingWithFailure];
 
-  v10 = [v3 loadAssetsOnce];
-  v11 = [v10 finishedExecutingWithFailure];
+  loadAssetsOnce = [loadingGroup loadAssetsOnce];
+  finishedExecutingWithFailure4 = [loadAssetsOnce finishedExecutingWithFailure];
 
-  v12 = [v3 loadLinkedContentOnce];
-  v13 = [v12 finishedExecutingWithFailure];
+  loadLinkedContentOnce = [loadingGroup loadLinkedContentOnce];
+  finishedExecutingWithFailure5 = [loadLinkedContentOnce finishedExecutingWithFailure];
 
-  if ((v5 & 1) == 0 && (v7 & 1) == 0 && (v9 & 1) == 0 && !v11)
+  if ((finishedExecutingWithFailure & 1) == 0 && (finishedExecutingWithFailure2 & 1) == 0 && (finishedExecutingWithFailure3 & 1) == 0 && !finishedExecutingWithFailure4)
   {
     goto LABEL_17;
   }
 
-  v37 = v13;
+  v37 = finishedExecutingWithFailure5;
   v14 = FRArticleLog;
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [(FRFlintDataProvider *)self anfContent];
-    v17 = [v16 anfDocumentAssetHandles];
-    v18 = [v17 firstObject];
-    v19 = [v18 remoteURL];
+    anfContent = [(FRFlintDataProvider *)self anfContent];
+    anfDocumentAssetHandles = [anfContent anfDocumentAssetHandles];
+    firstObject = [anfDocumentAssetHandles firstObject];
+    remoteURL = [firstObject remoteURL];
     *buf = 134218242;
-    v40 = self;
+    selfCopy = self;
     v41 = 2112;
-    v42 = v19;
+    v42 = remoteURL;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%p retrying failed downloads for Flint article with JSON URL %@", buf, 0x16u);
   }
 
-  v20 = [v3 loadJSONOnce];
-  v38 = [v3 loadFontsOnce];
-  v21 = [v3 loadAssetURLsOnce];
-  v22 = [v3 loadAssetsOnce];
-  v23 = [v3 loadLinkedContentOnce];
-  if (v5)
+  loadJSONOnce2 = [loadingGroup loadJSONOnce];
+  loadFontsOnce2 = [loadingGroup loadFontsOnce];
+  loadAssetURLsOnce2 = [loadingGroup loadAssetURLsOnce];
+  loadAssetsOnce2 = [loadingGroup loadAssetsOnce];
+  loadLinkedContentOnce2 = [loadingGroup loadLinkedContentOnce];
+  if (finishedExecutingWithFailure)
   {
     v24 = [[FCAsyncOnceOperation alloc] initWithTarget:self selector:"_loadJSONWithCompletionBlock:"];
-    v25 = v20;
-    v26 = v5;
-    v27 = v9;
-    v28 = v22;
+    v25 = loadJSONOnce2;
+    v26 = finishedExecutingWithFailure;
+    v27 = finishedExecutingWithFailure3;
+    v28 = loadAssetsOnce2;
     v29 = v24;
 
     [(FRFlintDataProvider *)self setError:0];
     v30 = v29;
-    v22 = v28;
-    v9 = v27;
-    v5 = v26;
-    v20 = v30;
-    if (!v7)
+    loadAssetsOnce2 = v28;
+    finishedExecutingWithFailure3 = v27;
+    finishedExecutingWithFailure = v26;
+    loadJSONOnce2 = v30;
+    if (!finishedExecutingWithFailure2)
     {
       goto LABEL_12;
     }
@@ -393,12 +393,12 @@
     goto LABEL_11;
   }
 
-  if (v7)
+  if (finishedExecutingWithFailure2)
   {
 LABEL_11:
     v31 = [[FCAsyncOnceOperation alloc] initWithTarget:self selector:"_loadFontsWithCompletionBlock:"];
 
-    v38 = v31;
+    loadFontsOnce2 = v31;
   }
 
 LABEL_12:
@@ -406,58 +406,58 @@ LABEL_12:
   {
     v32 = [[FCAsyncOnceOperation alloc] initWithTarget:self selector:"_loadLinkedContentWithCompletionBlock:"];
 
-    v23 = v32;
+    loadLinkedContentOnce2 = v32;
   }
 
-  if ((v5 | v9))
+  if ((finishedExecutingWithFailure | finishedExecutingWithFailure3))
   {
     v33 = [[FCAsyncOnceOperation alloc] initWithTarget:self selector:"_loadAssetURLsWithCompletionBlock:"];
 
-    v21 = v33;
+    loadAssetURLsOnce2 = v33;
   }
 
   v34 = [[FCAsyncOnceOperation alloc] initWithTarget:self selector:"_loadAssetsWithCompletionBlock:"];
 
-  v35 = [(FRFlintDataProvider *)self relativePriority];
-  [v20 setRelativePriority:v35];
-  [v38 setRelativePriority:v35];
-  [v21 setRelativePriority:v35];
-  [v34 setRelativePriority:v35];
-  [v23 setRelativePriority:v35];
-  v36 = [[FRFlintDataLoadingGroup alloc] initWithLoadJSONOnce:v20 loadFontsOnce:v38 loadAssetURLsOnce:v21 loadAssetsOnce:v34 loadLinkedContentOnce:v23];
+  relativePriority = [(FRFlintDataProvider *)self relativePriority];
+  [loadJSONOnce2 setRelativePriority:relativePriority];
+  [loadFontsOnce2 setRelativePriority:relativePriority];
+  [loadAssetURLsOnce2 setRelativePriority:relativePriority];
+  [v34 setRelativePriority:relativePriority];
+  [loadLinkedContentOnce2 setRelativePriority:relativePriority];
+  v36 = [[FRFlintDataLoadingGroup alloc] initWithLoadJSONOnce:loadJSONOnce2 loadFontsOnce:loadFontsOnce2 loadAssetURLsOnce:loadAssetURLsOnce2 loadAssetsOnce:v34 loadLinkedContentOnce:loadLinkedContentOnce2];
   [(FRFlintDataProvider *)self setLoadingGroup:v36];
 
 LABEL_17:
 }
 
-- (void)setCurrentRelativePriority:(int64_t)a3
+- (void)setCurrentRelativePriority:(int64_t)priority
 {
   +[NSThread isMainThread];
-  [(FRFlintDataProvider *)self setRelativePriority:a3];
-  v5 = [(FRFlintDataProvider *)self loadingGroup];
-  v6 = [v5 loadJSONOnce];
-  [v6 setRelativePriority:a3];
+  [(FRFlintDataProvider *)self setRelativePriority:priority];
+  loadingGroup = [(FRFlintDataProvider *)self loadingGroup];
+  loadJSONOnce = [loadingGroup loadJSONOnce];
+  [loadJSONOnce setRelativePriority:priority];
 
-  v7 = [(FRFlintDataProvider *)self loadingGroup];
-  v8 = [v7 loadFontsOnce];
-  [v8 setRelativePriority:a3];
+  loadingGroup2 = [(FRFlintDataProvider *)self loadingGroup];
+  loadFontsOnce = [loadingGroup2 loadFontsOnce];
+  [loadFontsOnce setRelativePriority:priority];
 
-  v9 = [(FRFlintDataProvider *)self loadingGroup];
-  v10 = [v9 loadAssetURLsOnce];
-  [v10 setRelativePriority:a3];
+  loadingGroup3 = [(FRFlintDataProvider *)self loadingGroup];
+  loadAssetURLsOnce = [loadingGroup3 loadAssetURLsOnce];
+  [loadAssetURLsOnce setRelativePriority:priority];
 
-  v11 = [(FRFlintDataProvider *)self loadingGroup];
-  v12 = [v11 loadAssetsOnce];
-  [v12 setRelativePriority:a3];
+  loadingGroup4 = [(FRFlintDataProvider *)self loadingGroup];
+  loadAssetsOnce = [loadingGroup4 loadAssetsOnce];
+  [loadAssetsOnce setRelativePriority:priority];
 
-  v14 = [(FRFlintDataProvider *)self loadingGroup];
-  v13 = [v14 loadLinkedContentOnce];
-  [v13 setRelativePriority:a3];
+  loadingGroup5 = [(FRFlintDataProvider *)self loadingGroup];
+  loadLinkedContentOnce = [loadingGroup5 loadLinkedContentOnce];
+  [loadLinkedContentOnce setRelativePriority:priority];
 }
 
-- (id)_loadJSONWithCompletionBlock:(id)a3
+- (id)_loadJSONWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = FRArticleLog;
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -472,70 +472,70 @@ LABEL_17:
       v7 = @"download";
     }
 
-    v8 = [(FRFlintDataProvider *)self anfContent];
-    v9 = [v8 anfDocumentAssetHandles];
-    v10 = [v9 firstObject];
-    v11 = [v10 uniqueKey];
+    anfContent = [(FRFlintDataProvider *)self anfContent];
+    anfDocumentAssetHandles = [anfContent anfDocumentAssetHandles];
+    firstObject = [anfDocumentAssetHandles firstObject];
+    uniqueKey = [firstObject uniqueKey];
     *buf = 134218498;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
     v22 = v7;
     v23 = 2114;
-    v24 = v11;
+    v24 = uniqueKey;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%p will %{public}@ JSON %{public}@", buf, 0x20u);
   }
 
-  v12 = [(FRFlintDataProvider *)self anfContent];
-  v13 = [(FRFlintDataProvider *)self relativePriority];
+  anfContent2 = [(FRFlintDataProvider *)self anfContent];
+  relativePriority = [(FRFlintDataProvider *)self relativePriority];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100044DE4;
   v17[3] = &unk_1000C4AD8;
   v17[4] = self;
-  v18 = v4;
-  v14 = v4;
-  v15 = [v12 fetchANFDocumentDataProviderWithPriority:v13 completion:v17];
+  v18 = blockCopy;
+  v14 = blockCopy;
+  v15 = [anfContent2 fetchANFDocumentDataProviderWithPriority:relativePriority completion:v17];
 
   return v15;
 }
 
-- (id)_loadFontsWithCompletionBlock:(id)a3
+- (id)_loadFontsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = FRArticleLog;
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(FRFlintDataProvider *)self areFontsLocallyAvailable];
+    areFontsLocallyAvailable = [(FRFlintDataProvider *)self areFontsLocallyAvailable];
     v8 = @"download";
-    if (v7)
+    if (areFontsLocallyAvailable)
     {
       v8 = @"load cached";
     }
 
     *buf = 134218242;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2114;
     v26 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%p will %{public}@ fonts", buf, 0x16u);
   }
 
-  v9 = [(FRFlintDataProvider *)self anfContent];
-  v10 = [v9 fontResourceIDs];
+  anfContent = [(FRFlintDataProvider *)self anfContent];
+  fontResourceIDs = [anfContent fontResourceIDs];
 
-  if ([v10 count])
+  if ([fontResourceIDs count])
   {
-    v11 = [(FRFlintDataProvider *)self resourceManager];
-    v12 = [(FRFlintDataProvider *)self relativePriority];
+    resourceManager = [(FRFlintDataProvider *)self resourceManager];
+    relativePriority = [(FRFlintDataProvider *)self relativePriority];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100045510;
     v20[3] = &unk_1000C4B68;
     v20[4] = self;
-    v21 = v10;
-    v22 = v4;
-    v13 = v4;
-    v14 = [v11 fetchFontResourcesWithIdentifiers:v21 downloadAssets:1 relativePriority:v12 completionBlock:v20];
+    v21 = fontResourceIDs;
+    v22 = blockCopy;
+    v13 = blockCopy;
+    v14 = [resourceManager fetchFontResourcesWithIdentifiers:v21 downloadAssets:1 relativePriority:relativePriority completionBlock:v20];
   }
 
   else
@@ -544,7 +544,7 @@ LABEL_17:
     if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v24 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%p requires no fonts", buf, 0xCu);
     }
 
@@ -552,8 +552,8 @@ LABEL_17:
     v18[1] = 3221225472;
     v18[2] = sub_10004582C;
     v18[3] = &unk_1000C3098;
-    v19 = v4;
-    v16 = v4;
+    v19 = blockCopy;
+    v16 = blockCopy;
     dispatch_async(&_dispatch_main_q, v18);
 
     v14 = 0;
@@ -562,38 +562,38 @@ LABEL_17:
   return v14;
 }
 
-- (id)_loadAssetURLsWithCompletionBlock:(id)a3
+- (id)_loadAssetURLsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FRFlintDataProvider *)self context];
+  blockCopy = block;
+  context = [(FRFlintDataProvider *)self context];
 
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100070A28();
   }
 
-  v6 = [(FRFlintDataProvider *)self context];
+  context2 = [(FRFlintDataProvider *)self context];
 
   v7 = FRArticleLog;
-  if (v6)
+  if (context2)
   {
     if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%p will load asset URLs", buf, 0xCu);
     }
 
-    v8 = [(FRFlintDataProvider *)self resourceManager];
-    v9 = [(FRFlintDataProvider *)self requiredResourceIDs];
-    v10 = [(FRFlintDataProvider *)self relativePriority];
+    resourceManager = [(FRFlintDataProvider *)self resourceManager];
+    requiredResourceIDs = [(FRFlintDataProvider *)self requiredResourceIDs];
+    relativePriority = [(FRFlintDataProvider *)self relativePriority];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100045AE4;
     v20[3] = &unk_1000C4B90;
     v20[4] = self;
-    v21 = v4;
-    v11 = [v8 fetchResourcesWithIdentifiers:v9 downloadAssets:0 relativePriority:v10 callBackQueue:&_dispatch_main_q completionBlock:v20];
+    v21 = blockCopy;
+    v11 = [resourceManager fetchResourcesWithIdentifiers:requiredResourceIDs downloadAssets:0 relativePriority:relativePriority callBackQueue:&_dispatch_main_q completionBlock:v20];
   }
 
   else
@@ -607,7 +607,7 @@ LABEL_17:
     v16 = 3221225472;
     v17 = sub_100045D24;
     v18 = &unk_1000C3098;
-    v19 = v4;
+    v19 = blockCopy;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100045D38;
@@ -616,15 +616,15 @@ LABEL_17:
     dispatch_async(&_dispatch_main_q, v13);
 
     v11 = 0;
-    v8 = v19;
+    resourceManager = v19;
   }
 
   return v11;
 }
 
-- (id)_loadAssetsWithCompletionBlock:(id)a3
+- (id)_loadAssetsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -635,23 +635,23 @@ LABEL_17:
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%p will download assets", buf, 0xCu);
   }
 
-  v6 = [(FRFlintDataProvider *)self resourcesLock];
-  [v6 lock];
+  resourcesLock = [(FRFlintDataProvider *)self resourcesLock];
+  [resourcesLock lock];
 
-  v7 = [(FRFlintDataProvider *)self resourcesByID];
-  v8 = [v7 copy];
+  resourcesByID = [(FRFlintDataProvider *)self resourcesByID];
+  v8 = [resourcesByID copy];
   v9 = v22[5];
   v22[5] = v8;
 
-  v10 = [(FRFlintDataProvider *)self resourcesLock];
-  [v10 unlock];
+  resourcesLock2 = [(FRFlintDataProvider *)self resourcesLock];
+  [resourcesLock2 unlock];
 
-  v11 = [v22[5] allValues];
-  v12 = [v11 fc_arrayByTransformingWithBlock:&stru_1000C4BB0];
+  allValues = [v22[5] allValues];
+  v12 = [allValues fc_arrayByTransformingWithBlock:&stru_1000C4BB0];
 
   v13 = [[FCAssetsFetchOperation alloc] initWithAssetHandles:v12];
   [v13 setPurpose:FCOperationPurposeArticle];
@@ -666,7 +666,7 @@ LABEL_17:
   v18[3] = &unk_1000C4BF8;
   v20 = &v21;
   v18[4] = self;
-  v15 = v4;
+  v15 = blockCopy;
   v19 = v15;
   [v13 setFetchCompletionBlock:v18];
   v16 = +[NSOperationQueue fc_sharedConcurrentQueue];
@@ -677,20 +677,20 @@ LABEL_17:
   return v13;
 }
 
-- (id)_loadLinkedContentWithCompletionBlock:(id)a3
+- (id)_loadLinkedContentWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FRFlintDataProvider *)self headline];
-  v6 = [v5 linkedArticleIDs];
-  v7 = [v6 count];
+  blockCopy = block;
+  headline = [(FRFlintDataProvider *)self headline];
+  linkedArticleIDs = [headline linkedArticleIDs];
+  v7 = [linkedArticleIDs count];
 
   if (v7)
   {
     v8 = [FCArticleHeadlinesFetchOperation alloc];
-    v9 = [(FRFlintDataProvider *)self cloudContext];
-    v10 = [(FRFlintDataProvider *)self headline];
-    v11 = [v10 linkedArticleIDs];
-    v12 = [v8 initWithContext:v9 articleIDs:v11 ignoreCacheForArticleIDs:0];
+    cloudContext = [(FRFlintDataProvider *)self cloudContext];
+    headline2 = [(FRFlintDataProvider *)self headline];
+    linkedArticleIDs2 = [headline2 linkedArticleIDs];
+    v12 = [v8 initWithContext:cloudContext articleIDs:linkedArticleIDs2 ignoreCacheForArticleIDs:0];
 
     [v12 setQualityOfService:17];
     [v12 setRelativePriority:1];
@@ -701,7 +701,7 @@ LABEL_17:
     v17 = sub_1000465E4;
     v18 = &unk_1000C4C48;
     objc_copyWeak(&v20, &location);
-    v19 = v4;
+    v19 = blockCopy;
     [v12 setFetchCompletionBlock:&v15];
     v13 = [NSOperationQueue fc_sharedConcurrentQueue:v15];
     [v13 addOperation:v12];
@@ -716,48 +716,48 @@ LABEL_17:
     v22[1] = 3221225472;
     v22[2] = sub_100046540;
     v22[3] = &unk_1000C4C20;
-    v23 = v4;
+    v23 = blockCopy;
     v12 = sub_100046540(v22);
   }
 
   return v12;
 }
 
-- (id)_resourceIDFromResourceURL:(id)a3
+- (id)_resourceIDFromResourceURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"asset"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"asset"])
   {
-    v5 = [v3 host];
+    host = [lCopy host];
   }
 
   else
   {
-    v5 = 0;
+    host = 0;
   }
 
-  return v5;
+  return host;
 }
 
-- (void)fileURLForURL:(id)a3 onCompletion:(id)a4 onError:(id)a5
+- (void)fileURLForURL:(id)l onCompletion:(id)completion onError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FRFlintDataProvider *)self _resourceIDFromResourceURL:v8];
+  lCopy = l;
+  completionCopy = completion;
+  errorCopy = error;
+  v11 = [(FRFlintDataProvider *)self _resourceIDFromResourceURL:lCopy];
   objc_initWeak(&location, self);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100046A34;
   v16[3] = &unk_1000C4C98;
   objc_copyWeak(&v21, &location);
-  v12 = v10;
+  v12 = errorCopy;
   v19 = v12;
   v13 = v11;
   v17 = v13;
-  v18 = self;
-  v14 = v9;
+  selfCopy = self;
+  v14 = completionCopy;
   v20 = v14;
   v15 = [(FRFlintDataProvider *)self loadAssetURLsWithCompletionBlock:v16];
 
@@ -765,21 +765,21 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (id)translateURL:(id)a3
+- (id)translateURL:(id)l
 {
-  v4 = a3;
-  v5 = [(FRFlintDataProvider *)self resourceURLTranslator];
-  v6 = [v5 translateFileURLForURL:v4];
+  lCopy = l;
+  resourceURLTranslator = [(FRFlintDataProvider *)self resourceURLTranslator];
+  v6 = [resourceURLTranslator translateFileURLForURL:lCopy];
 
   return v6;
 }
 
-- (id)loadImagesForImageRequest:(id)a3 completionBlock:(id)a4
+- (id)loadImagesForImageRequest:(id)request completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  blockCopy = block;
   +[NSThread isMainThread];
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!requestCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100070B80();
   }
@@ -802,17 +802,17 @@ LABEL_17:
   v73[3] = &unk_1000C4CC0;
   v75 = v81;
   v76 = &v77;
-  v45 = v8;
+  v45 = blockCopy;
   v74 = v45;
   v46 = objc_retainBlock(v73);
-  v47 = [v7 qualities];
-  if (([v7 qualities] & 2) != 0)
+  qualities = [requestCopy qualities];
+  if (([requestCopy qualities] & 2) != 0)
   {
-    v11 = [(FRFlintDataProvider *)self thumbnailImage];
-    if (v11 || ([(FRFlintDataProvider *)self thumbnailAssetHandle], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    thumbnailImage = [(FRFlintDataProvider *)self thumbnailImage];
+    if (thumbnailImage || ([(FRFlintDataProvider *)self thumbnailAssetHandle], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [(FRFlintDataProvider *)self shouldReturnThumbnail];
-      if (v11)
+      shouldReturnThumbnail = [(FRFlintDataProvider *)self shouldReturnThumbnail];
+      if (thumbnailImage)
       {
 LABEL_12:
 
@@ -822,43 +822,43 @@ LABEL_12:
 
     else
     {
-      v10 = 0;
+      shouldReturnThumbnail = 0;
     }
 
     goto LABEL_12;
   }
 
-  v10 = 0;
+  shouldReturnThumbnail = 0;
 LABEL_13:
-  v12 = [v7 imageIdentifier];
-  v13 = [(FRFlintDataProvider *)self context];
-  v14 = [v13 documentController];
-  v15 = [v14 metadata];
-  v16 = [v15 thumbnailImageIdentifier];
-  v17 = [v12 isEqualToString:v16];
+  imageIdentifier = [requestCopy imageIdentifier];
+  context = [(FRFlintDataProvider *)self context];
+  documentController = [context documentController];
+  metadata = [documentController metadata];
+  thumbnailImageIdentifier = [metadata thumbnailImageIdentifier];
+  v17 = [imageIdentifier isEqualToString:thumbnailImageIdentifier];
 
-  v18 = [v7 URL];
+  v18 = [requestCopy URL];
   v19 = [(FRFlintDataProvider *)self _resourceIDFromResourceURL:v18];
 
-  v20 = [(FRFlintDataProvider *)self resourcesByID];
+  resourcesByID = [(FRFlintDataProvider *)self resourcesByID];
   v21 = v9;
-  v22 = [v20 objectForKey:v19];
+  v22 = [resourcesByID objectForKey:v19];
 
-  v23 = [v22 isOnDisk];
-  if (((v10 & v17 | v23) & 1) != 0 && (v78[3] & 1) == 0)
+  isOnDisk = [v22 isOnDisk];
+  if (((shouldReturnThumbnail & v17 | isOnDisk) & 1) != 0 && (v78[3] & 1) == 0)
   {
-    [v7 size];
+    [requestCopy size];
     v25 = v24;
     v27 = v26;
-    if (v23)
+    if (isOnDisk)
     {
-      v28 = [v22 fileURL];
+      fileURL = [v22 fileURL];
       v29 = 4;
     }
 
     else
     {
-      v28 = 0;
+      fileURL = 0;
       v29 = 2;
     }
 
@@ -871,15 +871,15 @@ LABEL_13:
         if ((v29 & 2) != 0)
         {
           v31 = objc_alloc_init(SXImageResourceResponse);
-          v33 = [(FRFlintDataProvider *)self thumbnailImage];
-          [v31 setImage:v33];
+          thumbnailImage2 = [(FRFlintDataProvider *)self thumbnailImage];
+          [v31 setImage:thumbnailImage2];
 
           [v31 setImageQuality:v29];
         }
 
         else
         {
-          v31 = -[FRFlintDataProvider imageResourceResponseForFileURL:perserveColorSpace:withSize:andQuality:](self, "imageResourceResponseForFileURL:perserveColorSpace:withSize:andQuality:", v28, [v7 preserveColorspace], v29, v25, v27);
+          v31 = -[FRFlintDataProvider imageResourceResponseForFileURL:perserveColorSpace:withSize:andQuality:](self, "imageResourceResponseForFileURL:perserveColorSpace:withSize:andQuality:", fileURL, [requestCopy preserveColorspace], v29, v25, v27);
         }
 
         if (v31)
@@ -887,12 +887,12 @@ LABEL_13:
           [v21 addObject:v31];
         }
 
-        v34 = [v7 loadingBlock];
+        loadingBlock = [requestCopy loadingBlock];
 
-        if (v34)
+        if (loadingBlock)
         {
-          v35 = [v7 loadingBlock];
-          (v35)[2](v35, v31);
+          loadingBlock2 = [requestCopy loadingBlock];
+          (loadingBlock2)[2](loadingBlock2, v31);
         }
       }
 
@@ -901,7 +901,7 @@ LABEL_13:
 
     else
     {
-      v32 = [(FRFlintDataProvider *)self operationQueue];
+      operationQueue = [(FRFlintDataProvider *)self operationQueue];
       v64[0] = _NSConcreteStackBlock;
       v64[1] = 3221225472;
       v64[2] = sub_1000474D0;
@@ -909,13 +909,13 @@ LABEL_13:
       v69 = &v77;
       v70 = v29;
       v64[4] = self;
-      v65 = v28;
-      v66 = v7;
+      v65 = fileURL;
+      v66 = requestCopy;
       v71 = v25;
       v72 = v27;
       v67 = v21;
       v68 = group;
-      [v32 addOperationWithBlock:v64];
+      [operationQueue addOperationWithBlock:v64];
     }
   }
 
@@ -926,14 +926,14 @@ LABEL_13:
   v52[2] = sub_100047724;
   v52[3] = &unk_1000C4D88;
   objc_copyWeak(&v60, &location);
-  v61 = (v47 & 4) != 0;
-  v62 = v23;
+  v61 = (qualities & 4) != 0;
+  v62 = isOnDisk;
   v36 = v19;
   v58 = &v77;
   v59 = v81;
   v53 = v36;
-  v54 = self;
-  v37 = v7;
+  selfCopy = self;
+  v37 = requestCopy;
   v55 = v37;
   v38 = v21;
   v56 = v38;
@@ -960,12 +960,12 @@ LABEL_13:
   return v43;
 }
 
-- (id)imageResourceResponseForFileURL:(id)a3 perserveColorSpace:(BOOL)a4 withSize:(CGSize)a5 andQuality:(unint64_t)a6
+- (id)imageResourceResponseForFileURL:(id)l perserveColorSpace:(BOOL)space withSize:(CGSize)size andQuality:(unint64_t)quality
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = [NSData dataWithContentsOfURL:v9];
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  v10 = [NSData dataWithContentsOfURL:lCopy];
   v11 = +[SXImageDecodingTools sharedInstance];
   v12 = [v11 dataIsAnimatedImage:v10];
 
@@ -987,46 +987,46 @@ LABEL_13:
     [v16 setImage:v15];
   }
 
-  [v16 setFileURL:v9];
+  [v16 setFileURL:lCopy];
 
-  [v16 setImageQuality:a6];
+  [v16 setImageQuality:quality];
 
   return v16;
 }
 
-- (id)fallbackResourceForImageRequest:(id)a3 originalResource:(id)a4
+- (id)fallbackResourceForImageRequest:(id)request originalResource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FRFlintDataProvider *)self cloudContext];
-  v9 = [v8 networkReachability];
-  v10 = [v9 isNetworkReachable];
+  requestCopy = request;
+  resourceCopy = resource;
+  cloudContext = [(FRFlintDataProvider *)self cloudContext];
+  networkReachability = [cloudContext networkReachability];
+  isNetworkReachable = [networkReachability isNetworkReachable];
 
-  if (v10)
+  if (isNetworkReachable)
   {
     v30 = _NSConcreteStackBlock;
     v31 = 3221225472;
     v32 = sub_1000480C0;
     v33 = &unk_1000C3B88;
-    v34 = v7;
+    v34 = resourceCopy;
     v11 = v34;
     v12 = v11;
   }
 
   else
   {
-    v13 = [(FRFlintDataProvider *)self context];
-    v14 = [v13 documentController];
-    v25 = v6;
-    v15 = [v6 imageIdentifier];
-    v11 = [v14 allResourcesForImageIdentifier:v15];
+    context = [(FRFlintDataProvider *)self context];
+    documentController = [context documentController];
+    v25 = requestCopy;
+    imageIdentifier = [requestCopy imageIdentifier];
+    v11 = [documentController allResourcesForImageIdentifier:imageIdentifier];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v16 = [v11 reverseObjectEnumerator];
-    v17 = [v16 countByEnumeratingWithState:&v26 objects:v35 count:16];
+    reverseObjectEnumerator = [v11 reverseObjectEnumerator];
+    v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1037,14 +1037,14 @@ LABEL_13:
         {
           if (*v27 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v21 = [*(*(&v26 + 1) + 8 * i) URL];
           v22 = [(FRFlintDataProvider *)self _resourceIDFromResourceURL:v21];
 
-          v23 = [(FRFlintDataProvider *)self resourceManager];
-          v12 = [v23 cachedResourceWithIdentifier:v22];
+          resourceManager = [(FRFlintDataProvider *)self resourceManager];
+          v12 = [resourceManager cachedResourceWithIdentifier:v22];
 
           if (v12 && ([v12 isOnDisk] & 1) != 0)
           {
@@ -1053,7 +1053,7 @@ LABEL_13:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v35 count:16];
         if (v18)
         {
           continue;
@@ -1063,9 +1063,9 @@ LABEL_13:
       }
     }
 
-    v12 = v7;
+    v12 = resourceCopy;
 LABEL_14:
-    v6 = v25;
+    requestCopy = v25;
   }
 
   return v12;
@@ -1073,27 +1073,27 @@ LABEL_14:
 
 - (BOOL)isDocumentLocallyAvailable
 {
-  v2 = [(FRFlintDataProvider *)self anfContent];
-  v3 = [v2 isANFDocumentCached];
+  anfContent = [(FRFlintDataProvider *)self anfContent];
+  isANFDocumentCached = [anfContent isANFDocumentCached];
 
-  return v3;
+  return isANFDocumentCached;
 }
 
 - (BOOL)areFontsLocallyAvailable
 {
-  v3 = [(FRFlintDataProvider *)self anfContent];
-  v4 = [v3 fontResourceIDs];
-  v5 = v4;
+  anfContent = [(FRFlintDataProvider *)self anfContent];
+  fontResourceIDs = [anfContent fontResourceIDs];
+  v5 = fontResourceIDs;
   v6 = &__NSArray0__struct;
-  if (v4)
+  if (fontResourceIDs)
   {
-    v6 = v4;
+    v6 = fontResourceIDs;
   }
 
   v7 = v6;
 
-  v8 = [(FRFlintDataProvider *)self resourceManager];
-  v9 = [v8 cachedResourcesWithIdentifiers:v7];
+  resourceManager = [(FRFlintDataProvider *)self resourceManager];
+  v9 = [resourceManager cachedResourcesWithIdentifiers:v7];
 
   v10 = [v9 count];
   v11 = [v7 count];
@@ -1113,33 +1113,33 @@ LABEL_14:
 
 - (BOOL)isThumbnailAvailableInDocument
 {
-  v2 = [(FRFlintDataProvider *)self context];
-  v3 = [v2 documentController];
-  v4 = [v3 componentIdentifierUsingThumbnail];
-  v5 = v4 != 0;
+  context = [(FRFlintDataProvider *)self context];
+  documentController = [context documentController];
+  componentIdentifierUsingThumbnail = [documentController componentIdentifierUsingThumbnail];
+  v5 = componentIdentifierUsingThumbnail != 0;
 
   return v5;
 }
 
-- (id)headlineForIdentifier:(id)a3
+- (id)headlineForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FRFlintDataProvider *)self headline];
-  v6 = [v5 articleID];
-  v7 = [v4 isEqual:v6];
+  identifierCopy = identifier;
+  headline = [(FRFlintDataProvider *)self headline];
+  articleID = [headline articleID];
+  v7 = [identifierCopy isEqual:articleID];
 
   if (v7)
   {
-    v8 = [(FRFlintDataProvider *)self headline];
+    headline2 = [(FRFlintDataProvider *)self headline];
   }
 
   else
   {
-    v9 = [(FRFlintDataProvider *)self linkedHeadlines];
-    v8 = [v9 objectForKey:v4];
+    linkedHeadlines = [(FRFlintDataProvider *)self linkedHeadlines];
+    headline2 = [linkedHeadlines objectForKey:identifierCopy];
   }
 
-  return v8;
+  return headline2;
 }
 
 @end

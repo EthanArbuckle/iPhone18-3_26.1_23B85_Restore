@@ -1,20 +1,20 @@
 @interface tma6b2eecc4252564f599b9a979e4e0602
 - (id)getGridX;
 - (id)getGridY;
-- (id)initProduct:(id)a3;
+- (id)initProduct:(id)product;
 - (int)compute2DGridTemps;
 - (void)resetVTFilterState;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tma6b2eecc4252564f599b9a979e4e0602
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tma6b2eecc4252564f599b9a979e4e0602;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -34,17 +34,17 @@
   self->_filteredTP3R_2DGrid = -1;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
-  v3 = a3;
-  v5 = [(tma6b2eecc4252564f599b9a979e4e0602 *)self gasGaugeBatteryTemperature];
+  loadCopy = load;
+  gasGaugeBatteryTemperature = [(tma6b2eecc4252564f599b9a979e4e0602 *)self gasGaugeBatteryTemperature];
   v81 = __PAIR64__(HIDWORD(qword_1000AB8E0), HIDWORD(qword_1000AB824));
   v7 = HIDWORD(qword_1000AB82C);
   v6 = qword_1000AB834;
   v79 = __PAIR64__(qword_1000AB82C, HIDWORD(qword_1000AB834));
   v9 = qword_1000AB8F4;
   v8 = HIDWORD(qword_1000AB8F4);
-  if (v3)
+  if (loadCopy)
   {
     [(tma6b2eecc4252564f599b9a979e4e0602 *)self resetVTFilterState:__PAIR64__(qword_1000AB82C];
   }
@@ -119,15 +119,15 @@
   *&v24 = v23;
   *&v23 = v22;
   [v21 calculateControlEffort:v23 trigger:v24];
-  sub_10000533C(55, (v5 * 0.5 + -80.17 + v80 * 0.49 + self->_filteredTempRearCameraDie * 0.01));
-  sub_10000533C(54, (v5 * 0.45 + 222.2 + SHIDWORD(v80) * 0.48));
-  sub_10000533C(57, (v5 * 0.3 + -31.18 + self->_filteredTP3R * 0.7));
-  sub_10000533C(60, (v5 * 0.7 + 109.92 + v81 * 0.22));
-  sub_10000533C(59, (v5 * 0.14 + 146.3 + self->_filteredBacklightCurrentLI2 * 1.19 + SHIDWORD(v81) * 0.83));
-  sub_10000533C(56, (v5 * 0.61 + -49.44 + self->_filteredTP3R * 0.38));
-  sub_10000533C(58, (v5 * 0.64 + -15.28 + self->_filteredTempRearCameraDieWithDefault * 0.32));
+  sub_10000533C(55, (gasGaugeBatteryTemperature * 0.5 + -80.17 + v80 * 0.49 + self->_filteredTempRearCameraDie * 0.01));
+  sub_10000533C(54, (gasGaugeBatteryTemperature * 0.45 + 222.2 + SHIDWORD(v80) * 0.48));
+  sub_10000533C(57, (gasGaugeBatteryTemperature * 0.3 + -31.18 + self->_filteredTP3R * 0.7));
+  sub_10000533C(60, (gasGaugeBatteryTemperature * 0.7 + 109.92 + v81 * 0.22));
+  sub_10000533C(59, (gasGaugeBatteryTemperature * 0.14 + 146.3 + self->_filteredBacklightCurrentLI2 * 1.19 + SHIDWORD(v81) * 0.83));
+  sub_10000533C(56, (gasGaugeBatteryTemperature * 0.61 + -49.44 + self->_filteredTP3R * 0.38));
+  sub_10000533C(58, (gasGaugeBatteryTemperature * 0.64 + -15.28 + self->_filteredTempRearCameraDieWithDefault * 0.32));
   sub_10000533C(62, (SHIDWORD(v81) * 0.88 + 330.2 + SHIDWORD(v80) * 0.08 + self->_filteredTempArc * 0.02));
-  sub_10000533C(63, v5);
+  sub_10000533C(63, gasGaugeBatteryTemperature);
   v25 = dword_1000AB8FC;
   v26 = [(CommonProduct *)self findComponent:19];
   v27 = v25 / 100.0;
@@ -172,15 +172,15 @@
   v56 = [(CommonProduct *)self findComponent:26];
   *&v57 = v55 / 100.0;
   [v56 calculateControlEffort:v57];
-  v58 = [(CommonProduct *)self getChargerState];
-  if (v58 - 10 > 0x3C)
+  getChargerState = [(CommonProduct *)self getChargerState];
+  if (getChargerState - 10 > 0x3C)
   {
     goto LABEL_26;
   }
 
-  if (((1 << (v58 - 10)) & 0x1004010000100000) == 0)
+  if (((1 << (getChargerState - 10)) & 0x1004010000100000) == 0)
   {
-    if (v58 == 10)
+    if (getChargerState == 10)
     {
       v69 = SHIDWORD(qword_1000AB904);
       v70 = [(CommonProduct *)self findComponent:28];
@@ -200,7 +200,7 @@ LABEL_28:
     }
 
 LABEL_26:
-    if (v58)
+    if (getChargerState)
     {
       return;
     }
@@ -263,7 +263,7 @@ LABEL_29:
 
 - (int)compute2DGridTemps
 {
-  v3 = [(tma6b2eecc4252564f599b9a979e4e0602 *)self gasGaugeBatteryTemperature];
+  gasGaugeBatteryTemperature = [(tma6b2eecc4252564f599b9a979e4e0602 *)self gasGaugeBatteryTemperature];
   v5 = HIDWORD(qword_1000AB824);
   v4 = qword_1000AB82C;
   v6 = qword_1000AB834;
@@ -276,24 +276,24 @@ LABEL_29:
   }
 
   self->_filteredTP3R_2DGrid = v6;
-  v10 = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000661D0, xmmword_1000661C0, v3), xmmword_1000661E0, v5), xmmword_1000661F0, v8)));
+  v10 = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000661D0, xmmword_1000661C0, gasGaugeBatteryTemperature), xmmword_1000661E0, v5), xmmword_1000661F0, v8)));
   *self->super.baseVT = v10;
-  *&self->super.baseVT[2] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066210, xmmword_100066200, v3), xmmword_100066220, v5), xmmword_100066230, v8)));
+  *&self->super.baseVT[2] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066210, xmmword_100066200, gasGaugeBatteryTemperature), xmmword_100066220, v5), xmmword_100066230, v8)));
   self->super.baseVT[4] = (v5 * 0.55 + -165.0 + v8 * 0.48);
-  *&self->super.baseVT[5] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066250, xmmword_100066240, v3), xmmword_100066260, v5), xmmword_100066270, v8)));
-  *&self->super.baseVT[7] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066290, xmmword_100066280, v3), xmmword_1000662A0, v5), xmmword_1000662B0, v8)));
+  *&self->super.baseVT[5] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066250, xmmword_100066240, gasGaugeBatteryTemperature), xmmword_100066260, v5), xmmword_100066270, v8)));
+  *&self->super.baseVT[7] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066290, xmmword_100066280, gasGaugeBatteryTemperature), xmmword_1000662A0, v5), xmmword_1000662B0, v8)));
   self->super.baseVT[9] = (v5 * 0.13 + -262.0 + v4 * 0.34 + v8 * 0.59);
-  *&self->super.baseVT[10] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000662C0, vdupq_n_s64(0x3FD1DB22D0E56042uLL), v3), xmmword_1000662D0, v5), xmmword_1000662E0, v8)));
-  *&self->super.baseVT[12] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066300, xmmword_1000662F0, v3), xmmword_100066310, v5), xmmword_100066320, v8)));
+  *&self->super.baseVT[10] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000662C0, vdupq_n_s64(0x3FD1DB22D0E56042uLL), gasGaugeBatteryTemperature), xmmword_1000662D0, v5), xmmword_1000662E0, v8)));
+  *&self->super.baseVT[12] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066300, xmmword_1000662F0, gasGaugeBatteryTemperature), xmmword_100066310, v5), xmmword_100066320, v8)));
   self->super.baseVT[14] = (v5 * 0.09 + -293.0 + self->_filteredTP3R_2DGrid * 0.29 + v8 * 0.71);
-  *&self->super.baseVT[15] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066340, xmmword_100066330, v3), xmmword_100066350, v8)));
-  *&self->super.baseVT[17] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066370, xmmword_100066360, v3), xmmword_100066380, v8)));
-  self->super.baseVT[19] = (v3 * 0.13 + -142.0 + v7 * 0.01 + v8 * 0.91);
-  self->super.baseVT[20] = (v3 * -0.148 + -208.0 + v8 * 1.23);
+  *&self->super.baseVT[15] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066340, xmmword_100066330, gasGaugeBatteryTemperature), xmmword_100066350, v8)));
+  *&self->super.baseVT[17] = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066370, xmmword_100066360, gasGaugeBatteryTemperature), xmmword_100066380, v8)));
+  self->super.baseVT[19] = (gasGaugeBatteryTemperature * 0.13 + -142.0 + v7 * 0.01 + v8 * 0.91);
+  self->super.baseVT[20] = (gasGaugeBatteryTemperature * -0.148 + -208.0 + v8 * 1.23);
   self->super.baseVT[21] = (self->_filteredTP3R_2DGrid * -0.02 + -92.1 + v8 * 1.07);
-  self->super.baseVT[22] = (v3 * -0.01 + -21.0 + v8 * 1.05);
-  self->super.baseVT[23] = (v3 * 0.07 + 13.1 + v5 * -0.05 + v8 * 1.02);
-  self->super.baseVT[24] = (v3 * -0.02 + -118.0 + v7 * -0.04 + v8 * 1.13);
+  self->super.baseVT[22] = (gasGaugeBatteryTemperature * -0.01 + -21.0 + v8 * 1.05);
+  self->super.baseVT[23] = (gasGaugeBatteryTemperature * 0.07 + 13.1 + v5 * -0.05 + v8 * 1.02);
+  self->super.baseVT[24] = (gasGaugeBatteryTemperature * -0.02 + -118.0 + v7 * -0.04 + v8 * 1.13);
   v11 = vdupq_lane_s32(v10, 0);
   v12 = 1;
   v13 = v11;

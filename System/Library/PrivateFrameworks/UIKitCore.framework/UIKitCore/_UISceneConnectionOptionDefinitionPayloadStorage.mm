@@ -1,7 +1,7 @@
 @interface _UISceneConnectionOptionDefinitionPayloadStorage
 - (_UISceneConnectionOptionDefinitionPayloadStorage)init;
 - (id)encodeAsBSActions;
-- (void)applyValuesFromOtherStorage:(id)a3;
+- (void)applyValuesFromOtherStorage:(id)storage;
 @end
 
 @implementation _UISceneConnectionOptionDefinitionPayloadStorage
@@ -14,16 +14,16 @@
   return [(_UISceneConnectionOptionDefinitionPayloadStorage *)&v4 init];
 }
 
-- (void)applyValuesFromOtherStorage:(id)a3
+- (void)applyValuesFromOtherStorage:(id)storage
 {
-  v4 = a3;
-  v5 = self;
-  sub_1891FC160(v4);
+  storageCopy = storage;
+  selfCopy = self;
+  sub_1891FC160(storageCopy);
 }
 
 - (id)encodeAsBSActions
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891FC2AC();
 
   sub_188A34624(0, &qword_1ED48FD98);

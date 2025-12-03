@@ -1,7 +1,7 @@
 @interface APProxyURLCredentialService
 - (APProxyURLCredentialService)init;
-- (id)_signedCredentialForUrl:(id)a3 userAgent:(id)a4 withPersistence:(unint64_t)a5;
-- (id)signedCredentialForRequest:(id)a3 withPersistence:(unint64_t)a4;
+- (id)_signedCredentialForUrl:(id)url userAgent:(id)agent withPersistence:(unint64_t)persistence;
+- (id)signedCredentialForRequest:(id)request withPersistence:(unint64_t)persistence;
 @end
 
 @implementation APProxyURLCredentialService
@@ -21,24 +21,24 @@
   return v2;
 }
 
-- (id)signedCredentialForRequest:(id)a3 withPersistence:(unint64_t)a4
+- (id)signedCredentialForRequest:(id)request withPersistence:(unint64_t)persistence
 {
-  v6 = a3;
-  v11 = objc_msgSend_URL(v6, v7, v8, v9, v10);
-  v15 = objc_msgSend_valueForHTTPHeaderField_(v6, v12, @"user-agent", v13, v14);
-  v17 = objc_msgSend_signedCredentialForUrl_userAgent_request_withPersistence_(self, v16, v11, v15, v6, a4);
+  requestCopy = request;
+  v11 = objc_msgSend_URL(requestCopy, v7, v8, v9, v10);
+  v15 = objc_msgSend_valueForHTTPHeaderField_(requestCopy, v12, @"user-agent", v13, v14);
+  v17 = objc_msgSend_signedCredentialForUrl_userAgent_request_withPersistence_(self, v16, v11, v15, requestCopy, persistence);
 
   return v17;
 }
 
-- (id)_signedCredentialForUrl:(id)a3 userAgent:(id)a4 withPersistence:(unint64_t)a5
+- (id)_signedCredentialForUrl:(id)url userAgent:(id)agent withPersistence:(unint64_t)persistence
 {
   v8 = MEMORY[0x277CCACA8];
-  v9 = a4;
-  v14 = objc_msgSend_absoluteString(a3, v10, v11, v12, v13);
+  agentCopy = agent;
+  v14 = objc_msgSend_absoluteString(url, v10, v11, v12, v13);
   v19 = objc_msgSend_date(MEMORY[0x277CBEAA8], v15, v16, v17, v18);
   objc_msgSend_timeIntervalSince1970(v19, v20, v21, v22, v23);
-  v28 = objc_msgSend_stringWithFormat_(v8, v24, @"%@_*##*_%@_*##*_%f", v25, v26, v9, v14, v27);
+  v28 = objc_msgSend_stringWithFormat_(v8, v24, @"%@_*##*_%@_*##*_%f", v25, v26, agentCopy, v14, v27);
 
   v33 = objc_msgSend_sha256hash(v28, v29, v30, v31, v32);
 
@@ -56,7 +56,7 @@
 
         if (objc_msgSend_length(v55, v56, v57, v58, v59))
         {
-          v61 = objc_msgSend_credentialWithUser_password_persistence_(MEMORY[0x277CBAB80], v60, v42, v55, a5);
+          v61 = objc_msgSend_credentialWithUser_password_persistence_(MEMORY[0x277CBAB80], v60, v42, v55, persistence);
         }
 
         else

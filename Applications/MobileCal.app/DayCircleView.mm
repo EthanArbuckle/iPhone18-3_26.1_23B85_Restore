@@ -1,17 +1,17 @@
 @interface DayCircleView
-- (DayCircleView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setColor:(id)a3;
-- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)a3;
+- (DayCircleView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setColor:(id)color;
+- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)circle;
 @end
 
 @implementation DayCircleView
 
-- (DayCircleView)initWithFrame:(CGRect)a3
+- (DayCircleView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = DayCircleView;
-  v3 = [(DayCircleView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DayCircleView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor systemBackgroundColor];
@@ -25,11 +25,11 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [(DayCircleView *)self color];
-  [v5 set];
+  color = [(DayCircleView *)self color];
+  [color set];
 
   if ([(DayCircleView *)self usesRoundedRectInsteadOfCircle])
   {
@@ -46,18 +46,18 @@
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
+  objc_storeStrong(&self->_color, color);
 
   [(DayCircleView *)self setNeedsDisplay];
 }
 
-- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)a3
+- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)circle
 {
-  if (self->_usesRoundedRectInsteadOfCircle != a3)
+  if (self->_usesRoundedRectInsteadOfCircle != circle)
   {
-    self->_usesRoundedRectInsteadOfCircle = a3;
+    self->_usesRoundedRectInsteadOfCircle = circle;
     [(DayCircleView *)self setNeedsDisplay];
   }
 }

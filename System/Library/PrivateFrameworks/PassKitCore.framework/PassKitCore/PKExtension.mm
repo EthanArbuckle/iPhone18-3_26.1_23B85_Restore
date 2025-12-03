@@ -1,47 +1,47 @@
 @interface PKExtension
 - (NSString)extensionPointIdentifier;
-- (PKExtension)initWithIdentifier:(id)a3 extension:(id)a4 provider:(id)a5;
+- (PKExtension)initWithIdentifier:(id)identifier extension:(id)extension provider:(id)provider;
 - (PKExtensionProvider)provider;
 - (id)description;
 - (int64_t)type;
-- (void)beginExtensionRequestWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)beginLocalExtensionServiceWithUserInteraction:(BOOL)a3 completion:(id)a4 timeout:(unint64_t)a5 timeoutHandler:(id)a6;
-- (void)completeLocalExtensionServiceWithCompletion:(id)a3;
-- (void)performTestExtensionServiceRequestWithCompletion:(id)a3;
+- (void)beginExtensionRequestWithOptions:(unint64_t)options completion:(id)completion;
+- (void)beginLocalExtensionServiceWithUserInteraction:(BOOL)interaction completion:(id)completion timeout:(unint64_t)timeout timeoutHandler:(id)handler;
+- (void)completeLocalExtensionServiceWithCompletion:(id)completion;
+- (void)performTestExtensionServiceRequestWithCompletion:(id)completion;
 @end
 
 @implementation PKExtension
 
-- (PKExtension)initWithIdentifier:(id)a3 extension:(id)a4 provider:(id)a5
+- (PKExtension)initWithIdentifier:(id)identifier extension:(id)extension provider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  extensionCopy = extension;
+  providerCopy = provider;
   v25.receiver = self;
   v25.super_class = PKExtension;
   v11 = [(PKExtension *)&v25 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    objc_storeWeak(&v11->_provider, v10);
-    objc_storeStrong(&v11->_extension, a4);
-    v14 = [(PKExtension *)v11 extension];
-    v15 = [v14 _plugIn];
-    v16 = [v15 containingUrl];
+    objc_storeWeak(&v11->_provider, providerCopy);
+    objc_storeStrong(&v11->_extension, extension);
+    extension = [(PKExtension *)v11 extension];
+    _plugIn = [extension _plugIn];
+    containingUrl = [_plugIn containingUrl];
 
-    if (v16)
+    if (containingUrl)
     {
-      v17 = [objc_alloc(MEMORY[0x1E69635F8]) initWithURL:v16 allowPlaceholder:1 error:0];
-      v18 = [v17 bundleIdentifier];
+      v17 = [objc_alloc(MEMORY[0x1E69635F8]) initWithURL:containingUrl allowPlaceholder:1 error:0];
+      bundleIdentifier = [v17 bundleIdentifier];
       containingAppBundleIdentifier = v11->_containingAppBundleIdentifier;
-      v11->_containingAppBundleIdentifier = v18;
+      v11->_containingAppBundleIdentifier = bundleIdentifier;
 
-      v20 = [v17 applicationIdentifier];
+      applicationIdentifier = [v17 applicationIdentifier];
       containingApplicationIdentifier = v11->_containingApplicationIdentifier;
-      v11->_containingApplicationIdentifier = v20;
+      v11->_containingApplicationIdentifier = applicationIdentifier;
     }
 
     v22 = dispatch_queue_create("com.apple.passkit.extension.timeout", 0);
@@ -54,16 +54,16 @@
 
 - (int64_t)type
 {
-  v2 = [(PKExtension *)self extensionPointIdentifier];
-  v3 = v2;
-  if (v2 == @"com.apple.PassKit.in-app-payment-ui")
+  extensionPointIdentifier = [(PKExtension *)self extensionPointIdentifier];
+  v3 = extensionPointIdentifier;
+  if (extensionPointIdentifier == @"com.apple.PassKit.in-app-payment-ui")
   {
     goto LABEL_15;
   }
 
-  if (v2 && @"com.apple.PassKit.in-app-payment-ui")
+  if (extensionPointIdentifier && @"com.apple.PassKit.in-app-payment-ui")
   {
-    v4 = [(__CFString *)v2 isEqualToString:@"com.apple.PassKit.in-app-payment-ui"];
+    v4 = [(__CFString *)extensionPointIdentifier isEqualToString:@"com.apple.PassKit.in-app-payment-ui"];
 
     if (v4)
     {
@@ -75,9 +75,9 @@
   {
   }
 
-  v2 = v3;
-  v5 = v2;
-  if (v2 == @"com.apple.PassKit.payment-information-event")
+  extensionPointIdentifier = v3;
+  v5 = extensionPointIdentifier;
+  if (extensionPointIdentifier == @"com.apple.PassKit.payment-information-event")
   {
 
     goto LABEL_14;
@@ -92,7 +92,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v6 = [(__CFString *)v2 isEqualToString:@"com.apple.PassKit.payment-information-event"];
+  v6 = [(__CFString *)extensionPointIdentifier isEqualToString:@"com.apple.PassKit.payment-information-event"];
 
   if (!v6)
   {
@@ -108,15 +108,15 @@ LABEL_17:
 
 - (NSString)extensionPointIdentifier
 {
-  v2 = [(PKExtension *)self extension];
-  v3 = [v2 extensionPointIdentifier];
+  extension = [(PKExtension *)self extension];
+  extensionPointIdentifier = [extension extensionPointIdentifier];
 
-  return v3;
+  return extensionPointIdentifier;
 }
 
-- (void)performTestExtensionServiceRequestWithCompletion:(id)a3
+- (void)performTestExtensionServiceRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -129,8 +129,8 @@ LABEL_17:
   v7[2] = __64__PKExtension_performTestExtensionServiceRequestWithCompletion___block_invoke;
   v7[3] = &unk_1E79D19C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(PKExtension *)self beginExtensionRequestWithCompletion:v7];
 }
 
@@ -206,11 +206,11 @@ void __64__PKExtension_performTestExtensionServiceRequestWithCompletion___block_
   }
 }
 
-- (void)beginLocalExtensionServiceWithUserInteraction:(BOOL)a3 completion:(id)a4 timeout:(unint64_t)a5 timeoutHandler:(id)a6
+- (void)beginLocalExtensionServiceWithUserInteraction:(BOOL)interaction completion:(id)completion timeout:(unint64_t)timeout timeoutHandler:(id)handler
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a6;
+  interactionCopy = interaction;
+  completionCopy = completion;
+  handlerCopy = handler;
   v12 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -223,7 +223,7 @@ void __64__PKExtension_performTestExtensionServiceRequestWithCompletion___block_
   _timer = v13;
 
   v15 = _timer;
-  v16 = dispatch_time(0, 1000000000 * a5);
+  v16 = dispatch_time(0, 1000000000 * timeout);
   dispatch_source_set_timer(v15, v16, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
   v17 = _timer;
   handler[0] = MEMORY[0x1E69E9820];
@@ -231,7 +231,7 @@ void __64__PKExtension_performTestExtensionServiceRequestWithCompletion___block_
   handler[2] = __95__PKExtension_beginLocalExtensionServiceWithUserInteraction_completion_timeout_timeoutHandler___block_invoke;
   handler[3] = &unk_1E79C4A40;
   handler[4] = self;
-  v18 = v11;
+  v18 = handlerCopy;
   v24 = v18;
   dispatch_source_set_event_handler(v17, handler);
   _extensionRunning = 1;
@@ -242,15 +242,15 @@ void __64__PKExtension_performTestExtensionServiceRequestWithCompletion___block_
     _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "starting request", buf, 2u);
   }
 
-  v19 = [(PKExtension *)self extension];
+  extension = [(PKExtension *)self extension];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __95__PKExtension_beginLocalExtensionServiceWithUserInteraction_completion_timeout_timeoutHandler___block_invoke_99;
   v21[3] = &unk_1E79D19E8;
   v21[4] = self;
-  v22 = v10;
-  v20 = v10;
-  [v19 beginExtensionRequestWithOptions:v8 inputItems:0 completion:v21];
+  v22 = completionCopy;
+  v20 = completionCopy;
+  [extension beginExtensionRequestWithOptions:interactionCopy inputItems:0 completion:v21];
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -356,17 +356,17 @@ void __95__PKExtension_beginLocalExtensionServiceWithUserInteraction_completion_
   }
 }
 
-- (void)completeLocalExtensionServiceWithCompletion:(id)a3
+- (void)completeLocalExtensionServiceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__PKExtension_completeLocalExtensionServiceWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -392,11 +392,11 @@ uint64_t __59__PKExtension_completeLocalExtensionServiceWithCompletion___block_i
   return result;
 }
 
-- (void)beginExtensionRequestWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)beginExtensionRequestWithOptions:(unint64_t)options completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (!self->_extension)
     {
@@ -407,7 +407,7 @@ uint64_t __59__PKExtension_completeLocalExtensionServiceWithCompletion___block_i
         _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKExtension can't begin extension request due to nil NSExtension", buf, 2u);
       }
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     *buf = 0;
@@ -421,35 +421,35 @@ uint64_t __59__PKExtension_completeLocalExtensionServiceWithCompletion___block_i
     v18 = 3221225472;
     v19 = __59__PKExtension_beginExtensionRequestWithOptions_completion___block_invoke;
     v20 = &unk_1E79D1A10;
-    v21 = self;
+    selfCopy = self;
     v10 = v8;
     v22 = v10;
     v24 = buf;
-    v11 = v6;
+    v11 = completionCopy;
     v23 = v11;
     dispatch_source_set_event_handler(v10, &v17);
     dispatch_resume(v10);
     v12 = [PKExtensionRequestHandler alloc];
-    v13 = [(PKExtensionRequestHandler *)v12 _initWithExtension:self->_extension extensionRequestOptions:a3, v17, v18, v19, v20, v21];
+    selfCopy = [(PKExtensionRequestHandler *)v12 _initWithExtension:self->_extension extensionRequestOptions:options, v17, v18, v19, v20, selfCopy];
     dispatch_source_cancel(v10);
     v14 = 0;
     atomic_compare_exchange_strong(v26 + 24, &v14, 1u);
     if (v14)
     {
-      [v13 invalidate];
+      [selfCopy invalidate];
     }
 
-    else if (v13 && ![v13 isInvalidated])
+    else if (selfCopy && ![selfCopy isInvalidated])
     {
       v16 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *v29 = 138412290;
-        v30 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "%@ successfully began extension request", v29, 0xCu);
       }
 
-      (v11)[2](v11, v13);
+      (v11)[2](v11, selfCopy);
     }
 
     else
@@ -458,7 +458,7 @@ uint64_t __59__PKExtension_completeLocalExtensionServiceWithCompletion___block_i
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *v29 = 138412290;
-        v30 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "%@ failed to begin extension request", v29, 0xCu);
       }
 

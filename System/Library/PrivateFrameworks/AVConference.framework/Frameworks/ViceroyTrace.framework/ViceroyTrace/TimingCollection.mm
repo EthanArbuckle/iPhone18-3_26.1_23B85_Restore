@@ -1,17 +1,17 @@
 @interface TimingCollection
-- (BOOL)hasKey:(int)a3;
-- (BOOL)isValidTimingForKey:(int)a3;
+- (BOOL)hasKey:(int)key;
+- (BOOL)isValidTimingForKey:(int)key;
 - (TimingCollection)init;
-- (double)timingForKey:(int)a3;
-- (double)totalTimeForKey:(int)a3;
+- (double)timingForKey:(int)key;
+- (double)totalTimeForKey:(int)key;
 - (id)description;
 - (void)dealloc;
-- (void)removeTimingForKey:(int)a3;
-- (void)setStartTime:(double)a3 forKey:(int)a4;
-- (void)setStopTime:(double)a3 forKey:(int)a4;
-- (void)setTiming:(double)a3 forKey:(int)a4;
-- (void)startTimingForKey:(int)a3;
-- (void)stopTimingForKey:(int)a3;
+- (void)removeTimingForKey:(int)key;
+- (void)setStartTime:(double)time forKey:(int)key;
+- (void)setStopTime:(double)time forKey:(int)key;
+- (void)setTiming:(double)timing forKey:(int)key;
+- (void)startTimingForKey:(int)key;
+- (void)stopTimingForKey:(int)key;
 @end
 
 @implementation TimingCollection
@@ -38,7 +38,7 @@
   [(TimingCollection *)&v3 dealloc];
 }
 
-- (void)startTimingForKey:(int)a3
+- (void)startTimingForKey:(int)key
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = micro();
@@ -48,7 +48,7 @@
   block[2] = __38__TimingCollection_startTimingForKey___block_invoke;
   block[3] = &unk_278BD5008;
   block[4] = self;
-  v11 = a3;
+  keyCopy = key;
   *&block[5] = v5;
   dispatch_async(queue, block);
   if (VRTraceGetErrorLogLevelForModule("") >= 8)
@@ -66,9 +66,9 @@
         v16 = 1024;
         v17 = 79;
         v18 = 2048;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 1024;
-        v21 = a3;
+        keyCopy3 = key;
         _os_log_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %p Started timing for key %d", buf, 0x2Cu);
       }
     }
@@ -82,9 +82,9 @@
       v16 = 1024;
       v17 = 79;
       v18 = 2048;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 1024;
-      v21 = a3;
+      keyCopy3 = key;
       _os_log_debug_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %p Started timing for key %d", buf, 0x2Cu);
     }
   }
@@ -111,16 +111,16 @@ uint64_t __38__TimingCollection_startTimingForKey___block_invoke(uint64_t a1)
   return [v3 setIsRunning:1];
 }
 
-- (void)setTiming:(double)a3 forKey:(int)a4
+- (void)setTiming:(double)timing forKey:(int)key
 {
   queue = self->queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__TimingCollection_setTiming_forKey___block_invoke;
   block[3] = &unk_278BD5008;
-  *&block[5] = a3;
+  *&block[5] = timing;
   block[4] = self;
-  v6 = a4;
+  keyCopy = key;
   dispatch_async(queue, block);
 }
 
@@ -133,7 +133,7 @@ void __37__TimingCollection_setTiming_forKey___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 8) setObject:v2 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABA8], "numberWithInt:", *(a1 + 48))}];
 }
 
-- (void)setStartTime:(double)a3 forKey:(int)a4
+- (void)setStartTime:(double)time forKey:(int)key
 {
   queue = self->queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -141,8 +141,8 @@ void __37__TimingCollection_setTiming_forKey___block_invoke(uint64_t a1)
   block[2] = __40__TimingCollection_setStartTime_forKey___block_invoke;
   block[3] = &unk_278BD5008;
   block[4] = self;
-  v6 = a4;
-  *&block[5] = a3;
+  keyCopy = key;
+  *&block[5] = time;
   dispatch_async(queue, block);
 }
 
@@ -161,7 +161,7 @@ uint64_t __40__TimingCollection_setStartTime_forKey___block_invoke(uint64_t a1)
   return [v2 setIsRunning:1];
 }
 
-- (void)setStopTime:(double)a3 forKey:(int)a4
+- (void)setStopTime:(double)time forKey:(int)key
 {
   queue = self->queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -169,8 +169,8 @@ uint64_t __40__TimingCollection_setStartTime_forKey___block_invoke(uint64_t a1)
   block[2] = __39__TimingCollection_setStopTime_forKey___block_invoke;
   block[3] = &unk_278BD5008;
   block[4] = self;
-  v6 = a4;
-  *&block[5] = a3;
+  keyCopy = key;
+  *&block[5] = time;
   dispatch_async(queue, block);
 }
 
@@ -197,7 +197,7 @@ void *__39__TimingCollection_setStopTime_forKey___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)stopTimingForKey:(int)a3
+- (void)stopTimingForKey:(int)key
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = micro();
@@ -207,7 +207,7 @@ void *__39__TimingCollection_setStopTime_forKey___block_invoke(uint64_t a1)
   block[2] = __37__TimingCollection_stopTimingForKey___block_invoke;
   block[3] = &unk_278BD5008;
   block[4] = self;
-  v11 = a3;
+  keyCopy = key;
   *&block[5] = v5;
   dispatch_async(queue, block);
   if (VRTraceGetErrorLogLevelForModule("") >= 8)
@@ -225,9 +225,9 @@ void *__39__TimingCollection_setStopTime_forKey___block_invoke(uint64_t a1)
         v16 = 1024;
         v17 = 136;
         v18 = 2048;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 1024;
-        v21 = a3;
+        keyCopy3 = key;
         _os_log_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %p Stopped timing for key %d", buf, 0x2Cu);
       }
     }
@@ -241,9 +241,9 @@ void *__39__TimingCollection_setStopTime_forKey___block_invoke(uint64_t a1)
       v16 = 1024;
       v17 = 136;
       v18 = 2048;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 1024;
-      v21 = a3;
+      keyCopy3 = key;
       _os_log_debug_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %p Stopped timing for key %d", buf, 0x2Cu);
     }
   }
@@ -274,7 +274,7 @@ void *__37__TimingCollection_stopTimingForKey___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isValidTimingForKey:(int)a3
+- (BOOL)isValidTimingForKey:(int)key
 {
   v8 = 0;
   v9 = &v8;
@@ -285,7 +285,7 @@ void *__37__TimingCollection_stopTimingForKey___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__TimingCollection_isValidTimingForKey___block_invoke;
   block[3] = &unk_278BD5408;
-  v7 = a3;
+  keyCopy = key;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(queue, block);
@@ -307,7 +307,7 @@ void __40__TimingCollection_isValidTimingForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (double)timingForKey:(int)a3
+- (double)timingForKey:(int)key
 {
   v8 = 0;
   v9 = &v8;
@@ -318,7 +318,7 @@ void __40__TimingCollection_isValidTimingForKey___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__TimingCollection_timingForKey___block_invoke;
   block[3] = &unk_278BD5408;
-  v7 = a3;
+  keyCopy = key;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(queue, block);
@@ -336,7 +336,7 @@ void __33__TimingCollection_timingForKey___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v3 - v4;
 }
 
-- (double)totalTimeForKey:(int)a3
+- (double)totalTimeForKey:(int)key
 {
   v8 = 0;
   v9 = &v8;
@@ -347,7 +347,7 @@ void __33__TimingCollection_timingForKey___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__TimingCollection_totalTimeForKey___block_invoke;
   block[3] = &unk_278BD5408;
-  v7 = a3;
+  keyCopy = key;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(queue, block);
@@ -363,7 +363,7 @@ void __36__TimingCollection_totalTimeForKey___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v2;
 }
 
-- (void)removeTimingForKey:(int)a3
+- (void)removeTimingForKey:(int)key
 {
   queue = self->queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -371,7 +371,7 @@ void __36__TimingCollection_totalTimeForKey___block_invoke(uint64_t a1)
   v4[2] = __39__TimingCollection_removeTimingForKey___block_invoke;
   v4[3] = &unk_278BD4D98;
   v4[4] = self;
-  v5 = a3;
+  keyCopy = key;
   dispatch_async(queue, v4);
 }
 
@@ -411,7 +411,7 @@ uint64_t __31__TimingCollection_description__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)hasKey:(int)a3
+- (BOOL)hasKey:(int)key
 {
   v8 = 0;
   v9 = &v8;
@@ -424,7 +424,7 @@ uint64_t __31__TimingCollection_description__block_invoke(uint64_t a1)
   block[3] = &unk_278BD4890;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  keyCopy = key;
   dispatch_sync(queue, block);
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);

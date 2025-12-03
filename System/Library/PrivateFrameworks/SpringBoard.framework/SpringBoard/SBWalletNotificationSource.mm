@@ -1,46 +1,46 @@
 @interface SBWalletNotificationSource
-- (SBWalletNotificationSource)initWithDispatcher:(id)a3;
-- (void)modifyNotificationRequestForCardItem:(id)a3;
-- (void)postNotificationRequestForCardItem:(id)a3;
-- (void)withdrawNotificationRequestForCardItem:(id)a3;
+- (SBWalletNotificationSource)initWithDispatcher:(id)dispatcher;
+- (void)modifyNotificationRequestForCardItem:(id)item;
+- (void)postNotificationRequestForCardItem:(id)item;
+- (void)withdrawNotificationRequestForCardItem:(id)item;
 @end
 
 @implementation SBWalletNotificationSource
 
-- (SBWalletNotificationSource)initWithDispatcher:(id)a3
+- (SBWalletNotificationSource)initWithDispatcher:(id)dispatcher
 {
-  v5 = a3;
+  dispatcherCopy = dispatcher;
   v9.receiver = self;
   v9.super_class = SBWalletNotificationSource;
   v6 = [(SBWalletNotificationSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatcher, a3);
+    objc_storeStrong(&v6->_dispatcher, dispatcher);
   }
 
   return v7;
 }
 
-- (void)postNotificationRequestForCardItem:(id)a3
+- (void)postNotificationRequestForCardItem:(id)item
 {
-  v5 = [MEMORY[0x277D77E48] notificationRequestWithCardItem:a3];
-  v4 = [(SBWalletNotificationSource *)self dispatcher];
-  [v4 postNotificationWithRequest:v5];
+  v5 = [MEMORY[0x277D77E48] notificationRequestWithCardItem:item];
+  dispatcher = [(SBWalletNotificationSource *)self dispatcher];
+  [dispatcher postNotificationWithRequest:v5];
 }
 
-- (void)modifyNotificationRequestForCardItem:(id)a3
+- (void)modifyNotificationRequestForCardItem:(id)item
 {
-  v5 = [MEMORY[0x277D77E48] notificationRequestWithCardItem:a3];
-  v4 = [(SBWalletNotificationSource *)self dispatcher];
-  [v4 modifyNotificationWithRequest:v5];
+  v5 = [MEMORY[0x277D77E48] notificationRequestWithCardItem:item];
+  dispatcher = [(SBWalletNotificationSource *)self dispatcher];
+  [dispatcher modifyNotificationWithRequest:v5];
 }
 
-- (void)withdrawNotificationRequestForCardItem:(id)a3
+- (void)withdrawNotificationRequestForCardItem:(id)item
 {
-  v5 = [MEMORY[0x277D77E48] notificationRequestWithCardItem:a3];
-  v4 = [(SBWalletNotificationSource *)self dispatcher];
-  [v4 withdrawNotificationWithRequest:v5];
+  v5 = [MEMORY[0x277D77E48] notificationRequestWithCardItem:item];
+  dispatcher = [(SBWalletNotificationSource *)self dispatcher];
+  [dispatcher withdrawNotificationWithRequest:v5];
 }
 
 @end

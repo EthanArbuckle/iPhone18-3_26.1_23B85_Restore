@@ -1,13 +1,13 @@
 @interface APMetricPurposeRegistry
-+ (id)metricRouteForPurpose:(int64_t)a3;
-+ (void)setMetricPurpose:(id)a3;
++ (id)metricRouteForPurpose:(int64_t)purpose;
++ (void)setMetricPurpose:(id)purpose;
 @end
 
 @implementation APMetricPurposeRegistry
 
-+ (id)metricRouteForPurpose:(int64_t)a3
++ (id)metricRouteForPurpose:(int64_t)purpose
 {
-  v3 = [NSNumber numberWithInteger:a3];
+  v3 = [NSNumber numberWithInteger:purpose];
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   v5 = [qword_1004E6E28 objectForKey:v3];
@@ -16,19 +16,19 @@
   return v5;
 }
 
-+ (void)setMetricPurpose:(id)a3
++ (void)setMetricPurpose:(id)purpose
 {
-  v6 = a3;
-  v3 = [v6 purpose];
+  purposeCopy = purpose;
+  purpose = [purposeCopy purpose];
   if (qword_1004E6E30 != -1)
   {
     sub_1003951AC();
   }
 
-  v4 = [NSNumber numberWithInteger:v3];
+  v4 = [NSNumber numberWithInteger:purpose];
   v5 = objc_opt_class();
   objc_sync_enter(v5);
-  [qword_1004E6E28 setObject:v6 forKey:v4];
+  [qword_1004E6E28 setObject:purposeCopy forKey:v4];
   objc_sync_exit(v5);
 }
 

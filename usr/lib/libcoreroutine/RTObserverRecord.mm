@@ -1,8 +1,8 @@
 @interface RTObserverRecord
-- (RTObserverRecord)initWithObserver:(id)a3 selector:(SEL)a4;
+- (RTObserverRecord)initWithObserver:(id)observer selector:(SEL)selector;
 - (SEL)selector;
 - (id)observer;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation RTObserverRecord
@@ -27,45 +27,45 @@
   }
 }
 
-- (RTObserverRecord)initWithObserver:(id)a3 selector:(SEL)a4
+- (RTObserverRecord)initWithObserver:(id)observer selector:(SEL)selector
 {
-  v6 = a3;
+  observerCopy = observer;
   v11.receiver = self;
   v11.super_class = RTObserverRecord;
   v7 = [(RTObserverRecord *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_observer, v6);
-    if (a4)
+    objc_storeWeak(&v7->_observer, observerCopy);
+    if (selector)
     {
-      v9 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v9 = 0;
+      selectorCopy = 0;
     }
 
-    v8->_selector = v9;
+    v8->_selector = selectorCopy;
   }
 
   return v8;
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

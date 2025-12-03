@@ -1,19 +1,19 @@
 @interface VANRDelegateBridge
-- (void)keywordSpotterDidDetectKeywordWithEvent:(id)a3;
-- (void)keywordSpotterDidStopWithSummaryWithJson:(id)a3 uuid:(id)a4 perfLogs:(id)a5;
-- (void)speechResultsWithResult:(id)a3;
+- (void)keywordSpotterDidDetectKeywordWithEvent:(id)event;
+- (void)keywordSpotterDidStopWithSummaryWithJson:(id)json uuid:(id)uuid perfLogs:(id)logs;
+- (void)speechResultsWithResult:(id)result;
 @end
 
 @implementation VANRDelegateBridge
 
-- (void)keywordSpotterDidDetectKeywordWithEvent:(id)a3
+- (void)keywordSpotterDidDetectKeywordWithEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
 
-  sub_2722ED2F0(v3);
+  sub_2722ED2F0(eventCopy);
 }
 
-- (void)keywordSpotterDidStopWithSummaryWithJson:(id)a3 uuid:(id)a4 perfLogs:(id)a5
+- (void)keywordSpotterDidStopWithSummaryWithJson:(id)json uuid:(id)uuid perfLogs:(id)logs
 {
   v7 = sub_272376E5C();
   v8 = *(v7 - 8);
@@ -23,7 +23,7 @@
   v12 = sub_27237782C();
   v14 = v13;
   sub_272376E3C();
-  if (a5)
+  if (logs)
   {
     v15 = sub_272377AFC();
   }
@@ -51,11 +51,11 @@
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)speechResultsWithResult:(id)a3
+- (void)speechResultsWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
 
-  sub_2723013BC(v3);
+  sub_2723013BC(resultCopy);
 }
 
 @end

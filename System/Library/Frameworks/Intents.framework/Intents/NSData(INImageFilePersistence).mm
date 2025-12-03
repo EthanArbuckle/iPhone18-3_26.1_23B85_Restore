@@ -12,9 +12,9 @@
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 filePath];
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v12 fileExistsAtPath:v11];
+    filePath = [v9 filePath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:filePath];
 
     v14 = INSiriLogContextIntents;
     v15 = os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO);
@@ -25,7 +25,7 @@
         *buf = 136315394;
         v29 = "[NSData(INImageFilePersistence) _in_writeDataToPathForImage:storeType:error:]";
         v30 = 2112;
-        v31 = v11;
+        v31 = filePath;
         v16 = "%s File already exists at path %@, overwriting";
         v17 = v14;
         v18 = 22;
@@ -41,15 +41,15 @@ LABEL_9:
       v30 = 2112;
       v31 = v8;
       v32 = 2112;
-      v33 = v11;
+      v33 = filePath;
       v16 = "%s Writing image %@ to new file path %@";
       v17 = v14;
       v18 = 32;
       goto LABEL_9;
     }
 
-    [a1 writeToFile:v11 options:1 error:a5];
-    v23 = _INImageFilePersistenceUpdateModifiedDateAtFilePath(v11);
+    [self writeToFile:filePath options:1 error:a5];
+    v23 = _INImageFilePersistenceUpdateModifiedDateAtFilePath(filePath);
     a5 = [v10 identifier];
     goto LABEL_11;
   }
@@ -62,8 +62,8 @@ LABEL_9:
   v19 = MEMORY[0x1E696ABC0];
   v26 = *MEMORY[0x1E696A578];
   v20 = MEMORY[0x1E696AEC0];
-  v11 = [v8 description];
-  v21 = [v20 stringWithFormat:@"No writable file configuration available for image: %@", v11];
+  filePath = [v8 description];
+  v21 = [v20 stringWithFormat:@"No writable file configuration available for image: %@", filePath];
   v27 = v21;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   *a5 = [v19 errorWithDomain:@"IntentsErrorDomain" code:6002 userInfo:v22];

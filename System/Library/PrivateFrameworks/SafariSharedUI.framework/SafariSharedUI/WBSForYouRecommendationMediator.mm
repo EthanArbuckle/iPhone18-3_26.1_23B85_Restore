@@ -1,44 +1,44 @@
 @interface WBSForYouRecommendationMediator
-+ (double)scoreForRecommendation:(id)a3 weightManager:(id)a4 simplifiedURLStringToLastVisitedDateMap:(id)a5;
-+ (id)_adjustedTopicsWithTopics:(id)a3;
-+ (id)_titleForRecommendationSource:(unint64_t)a3;
-+ (id)_titleForRecommendationTopicSource:(unint64_t)a3;
-+ (void)_rankRecommendationsInPlace:(id)a3 history:(id)a4 weightManager:(id)a5 suppressHistoryDeduplication:(BOOL)a6;
-- (WBSForYouRecommendationMediator)initWithContextClient:(id)a3 historyProvider:(id)a4;
++ (double)scoreForRecommendation:(id)recommendation weightManager:(id)manager simplifiedURLStringToLastVisitedDateMap:(id)map;
++ (id)_adjustedTopicsWithTopics:(id)topics;
++ (id)_titleForRecommendationSource:(unint64_t)source;
++ (id)_titleForRecommendationTopicSource:(unint64_t)source;
++ (void)_rankRecommendationsInPlace:(id)place history:(id)history weightManager:(id)manager suppressHistoryDeduplication:(BOOL)deduplication;
+- (WBSForYouRecommendationMediator)initWithContextClient:(id)client historyProvider:(id)provider;
 - (id)_dataSourceWeightManager;
-- (id)analyticsMetadataForRecommendation:(id)a3;
-- (id)recommendationFromDictionary:(id)a3;
+- (id)analyticsMetadataForRecommendation:(id)recommendation;
+- (id)recommendationFromDictionary:(id)dictionary;
 - (void)_beginListeningForHandoffActivity;
 - (void)_createAppSuggestionsManagerIfNecessary;
 - (void)_createPreferenceManagerIfNecessary;
-- (void)_didUpdateFoundInSuggestions:(id)a3;
+- (void)_didUpdateFoundInSuggestions:(id)suggestions;
 - (void)_endListeningForHandoffActivity;
-- (void)_fetchImagesForRecommendations:(id)a3 recommendationsDispatchGroup:(id)a4;
-- (void)_retrieveFoundInRecommendationsWithCompletionHandler:(id)a3;
-- (void)banURLsOfSameDomainAsURL:(id)a3 postingChangeNotificationWhenDone:(BOOL)a4;
-- (void)bestAppSuggestionChanged:(id)a3;
+- (void)_fetchImagesForRecommendations:(id)recommendations recommendationsDispatchGroup:(id)group;
+- (void)_retrieveFoundInRecommendationsWithCompletionHandler:(id)handler;
+- (void)banURLsOfSameDomainAsURL:(id)l postingChangeNotificationWhenDone:(BOOL)done;
+- (void)bestAppSuggestionChanged:(id)changed;
 - (void)dealloc;
-- (void)downvoteSource:(unint64_t)a3 postingChangeNotificationWhenDone:(BOOL)a4;
-- (void)obtainMessagesImagesWherePossibleForRecommendations:(id)a3 completionHandler:(id)a4;
-- (void)retrieveHandoffRecommendationWithCompletionHandler:(id)a3;
-- (void)updatedRecommendationsForTopics:(id)a3 withCompletionHandler:(id)a4;
-- (void)updatedTopicsWithCompletionHandler:(id)a3;
+- (void)downvoteSource:(unint64_t)source postingChangeNotificationWhenDone:(BOOL)done;
+- (void)obtainMessagesImagesWherePossibleForRecommendations:(id)recommendations completionHandler:(id)handler;
+- (void)retrieveHandoffRecommendationWithCompletionHandler:(id)handler;
+- (void)updatedRecommendationsForTopics:(id)topics withCompletionHandler:(id)handler;
+- (void)updatedTopicsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSForYouRecommendationMediator
 
-- (WBSForYouRecommendationMediator)initWithContextClient:(id)a3 historyProvider:(id)a4
+- (WBSForYouRecommendationMediator)initWithContextClient:(id)client historyProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  providerCopy = provider;
   v25.receiver = self;
   v25.super_class = WBSForYouRecommendationMediator;
   v9 = [(WBSForYouRecommendationMediator *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contextClient, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_contextClient, client);
+    v11 = _Block_copy(providerCopy);
     historyProvider = v10->_historyProvider;
     v10->_historyProvider = v11;
 
@@ -59,8 +59,8 @@
     foundInManager = v10->_foundInManager;
     v10->_foundInManager = v20;
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v10 selector:sel__didUpdateFoundInSuggestions_ name:@"WBSFoundInRecommendationManagerDidUpdateSuggestionsNotification" object:v10->_foundInManager];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__didUpdateFoundInSuggestions_ name:@"WBSFoundInRecommendationManagerDidUpdateSuggestionsNotification" object:v10->_foundInManager];
 
     [(WBSForYouRecommendationMediator *)v10 _beginListeningForHandoffActivity];
     v23 = v10;
@@ -72,23 +72,23 @@
 - (void)dealloc
 {
   [(WBSForYouRecommendationMediator *)self _endListeningForHandoffActivity];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WBSForYouRecommendationMediator;
   [(WBSForYouRecommendationMediator *)&v4 dealloc];
 }
 
-- (void)_didUpdateFoundInSuggestions:(id)a3
+- (void)_didUpdateFoundInSuggestions:(id)suggestions
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x1E69C92E0] object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69C92E0] object:self];
 }
 
-- (void)updatedTopicsWithCompletionHandler:(id)a3
+- (void)updatedTopicsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([MEMORY[0x1E69C9068] areLocalSiriSuggestionsEnabled])
   {
     if (!self->_topicManager)
@@ -106,7 +106,7 @@
     v32[2] = 0x3032000000;
     v32[3] = __Block_byref_object_copy__7;
     v32[4] = __Block_byref_object_dispose__7;
-    v33 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     dispatch_group_enter(v9);
     v30[0] = 0;
     v30[1] = v30;
@@ -144,7 +144,7 @@
     v17 = v13;
     [(WBSForYouTopicManager *)v12 portraitNamedEntitiesWithCompletionHandler:v16];
     v14 = MEMORY[0x1E69E96A0];
-    v15 = v4;
+    v15 = handlerCopy;
     WBSDispatchGroupNotifyWithTimeout();
 
     _Block_object_dispose(v21, 8);
@@ -155,7 +155,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -259,18 +259,18 @@ void __70__WBSForYouRecommendationMediator_updatedTopicsWithCompletionHandler___
   objc_sync_exit(v4);
 }
 
-- (void)banURLsOfSameDomainAsURL:(id)a3 postingChangeNotificationWhenDone:(BOOL)a4
+- (void)banURLsOfSameDomainAsURL:(id)l postingChangeNotificationWhenDone:(BOOL)done
 {
-  v6 = a3;
+  lCopy = l;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__WBSForYouRecommendationMediator_banURLsOfSameDomainAsURL_postingChangeNotificationWhenDone___block_invoke;
   block[3] = &unk_1E82834C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = lCopy;
+  doneCopy = done;
+  v8 = lCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -309,20 +309,20 @@ void __94__WBSForYouRecommendationMediator_banURLsOfSameDomainAsURL_postingChang
   if (!self->_perSitePreferenceManager)
   {
     v4 = [WBSForYouPerSitePreferenceManager alloc];
-    v7 = [MEMORY[0x1E69C8FC8] sharedStore];
-    v5 = [(WBSForYouPerSitePreferenceManager *)v4 initWithPerSitePreferencesStore:v7];
+    mEMORY[0x1E69C8FC8] = [MEMORY[0x1E69C8FC8] sharedStore];
+    v5 = [(WBSForYouPerSitePreferenceManager *)v4 initWithPerSitePreferencesStore:mEMORY[0x1E69C8FC8]];
     perSitePreferenceManager = self->_perSitePreferenceManager;
     self->_perSitePreferenceManager = v5;
   }
 }
 
-- (void)updatedRecommendationsForTopics:(id)a3 withCompletionHandler:(id)a4
+- (void)updatedRecommendationsForTopics:(id)topics withCompletionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  topicsCopy = topics;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = dispatch_group_create();
   v41[0] = 0;
   v41[1] = v41;
@@ -332,8 +332,8 @@ void __94__WBSForYouRecommendationMediator_banURLsOfSameDomainAsURL_postingChang
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v8 = [(WBSForYouRecommendationMediator *)self dataSources];
-  v9 = [v8 countByEnumeratingWithState:&v37 objects:v44 count:16];
+  dataSources = [(WBSForYouRecommendationMediator *)self dataSources];
+  v9 = [dataSources countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (v9)
   {
     v10 = *v38;
@@ -343,7 +343,7 @@ void __94__WBSForYouRecommendationMediator_banURLsOfSameDomainAsURL_postingChang
       {
         if (*v38 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dataSources);
         }
 
         v12 = *(*(&v37 + 1) + 8 * i);
@@ -352,18 +352,18 @@ void __94__WBSForYouRecommendationMediator_banURLsOfSameDomainAsURL_postingChang
         v31[1] = 3221225472;
         v31[2] = __89__WBSForYouRecommendationMediator_updatedRecommendationsForTopics_withCompletionHandler___block_invoke;
         v31[3] = &unk_1E8285270;
-        v13 = v6;
+        v13 = array;
         v35 = v41;
         v32 = v13;
         v33 = v12;
         objc_copyWeak(&v36, &location);
         v34 = v7;
-        [v12 recommendationsWithTopics:v18 withCompletionHandler:v31];
+        [v12 recommendationsWithTopics:topicsCopy withCompletionHandler:v31];
 
         objc_destroyWeak(&v36);
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v37 objects:v44 count:16];
+      v9 = [dataSources countByEnumeratingWithState:&v37 objects:v44 count:16];
     }
 
     while (v9);
@@ -386,7 +386,7 @@ void __94__WBSForYouRecommendationMediator_banURLsOfSameDomainAsURL_postingChang
   v21[2] = __89__WBSForYouRecommendationMediator_updatedRecommendationsForTopics_withCompletionHandler___block_invoke_24;
   v21[3] = &unk_1E8285298;
   v24 = buf;
-  v15 = v6;
+  v15 = array;
   v22 = v15;
   v25 = v41;
   objc_copyWeak(&v26, &location);
@@ -394,7 +394,7 @@ void __94__WBSForYouRecommendationMediator_banURLsOfSameDomainAsURL_postingChang
   v23 = v16;
   [(WBSForYouRecommendationMediator *)self _retrieveFoundInRecommendationsWithCompletionHandler:v21];
   v19 = v15;
-  v20 = v17;
+  v20 = handlerCopy;
   WBSDispatchGroupNotifyWithTimeout();
 
   objc_destroyWeak(&v26);
@@ -571,17 +571,17 @@ BOOL __89__WBSForYouRecommendationMediator_updatedRecommendationsForTopics_withC
   return v3;
 }
 
-- (void)obtainMessagesImagesWherePossibleForRecommendations:(id)a3 completionHandler:(id)a4
+- (void)obtainMessagesImagesWherePossibleForRecommendations:(id)recommendations completionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v33 = a4;
+  recommendationsCopy = recommendations;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = v6;
+  v8 = recommendationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v9)
   {
@@ -602,36 +602,36 @@ BOOL __89__WBSForYouRecommendationMediator_updatedRecommendationsForTopics_withC
 
         v14 = *(*(&v40 + 1) + 8 * v13);
         v15 = *(v12 + 2400);
-        v16 = [v14 bundleIdentifier];
-        LODWORD(v15) = [v15 isBundleIdentifierFromMessages:v16];
+        bundleIdentifier = [v14 bundleIdentifier];
+        LODWORD(v15) = [v15 isBundleIdentifierFromMessages:bundleIdentifier];
 
         if (v15)
         {
-          v17 = [v14 sourceID];
+          sourceID = [v14 sourceID];
 
-          if (v17)
+          if (sourceID)
           {
-            v18 = [v14 sourceID];
-            v19 = [v18 copy];
+            sourceID2 = [v14 sourceID];
+            v19 = [sourceID2 copy];
 
             v20 = [(NSCache *)self->_messagesMetadataCache objectForKey:v19];
             v21 = v20;
             if (v20)
             {
-              v22 = self;
+              selfCopy = self;
               v23 = v8;
               v24 = v7;
-              v25 = [v20 first];
-              v26 = [v14 title];
-              v27 = [v26 length];
+              first = [v20 first];
+              title = [v14 title];
+              v27 = [title length];
 
-              if (!v27 && v25)
+              if (!v27 && first)
               {
-                [v14 setTitle:v25];
+                [v14 setTitle:first];
               }
 
-              v28 = [v21 second];
-              v29 = imageValidForPresentation(v28);
+              second = [v21 second];
+              v29 = imageValidForPresentation(second);
 
               if (v29)
               {
@@ -640,7 +640,7 @@ BOOL __89__WBSForYouRecommendationMediator_updatedRecommendationsForTopics_withC
 
               v7 = v24;
               v8 = v23;
-              self = v22;
+              self = selfCopy;
               v11 = v34;
               v10 = v35;
               v12 = 0x1E8281000;
@@ -684,7 +684,7 @@ BOOL __89__WBSForYouRecommendationMediator_updatedRecommendationsForTopics_withC
     while (v10);
   }
 
-  v32 = v33;
+  v32 = handlerCopy;
   WBSDispatchGroupNotifyWithTimeout();
 }
 
@@ -739,16 +739,16 @@ uint64_t __105__WBSForYouRecommendationMediator_obtainMessagesImagesWherePossibl
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)_fetchImagesForRecommendations:(id)a3 recommendationsDispatchGroup:(id)a4
+- (void)_fetchImagesForRecommendations:(id)recommendations recommendationsDispatchGroup:(id)group
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  recommendationsCopy = recommendations;
+  groupCopy = group;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [recommendationsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -759,51 +759,51 @@ uint64_t __105__WBSForYouRecommendationMediator_obtainMessagesImagesWherePossibl
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recommendationsCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 contact];
-        if (v13)
+        contact = [v12 contact];
+        if (contact)
         {
 
 LABEL_8:
-          dispatch_group_enter(v7);
+          dispatch_group_enter(groupCopy);
           v15[0] = MEMORY[0x1E69E9820];
           v15[1] = 3221225472;
           v15[2] = __95__WBSForYouRecommendationMediator__fetchImagesForRecommendations_recommendationsDispatchGroup___block_invoke;
           v15[3] = &unk_1E8283080;
-          v16 = v7;
+          v16 = groupCopy;
           [(WBSForYouRecommendationMediator *)self fetchImageForRecommendation:v12 completionHandler:v15];
 
           continue;
         }
 
-        v14 = [v12 image];
+        image = [v12 image];
 
-        if (!v14)
+        if (!image)
         {
           goto LABEL_8;
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [recommendationsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_retrieveFoundInRecommendationsWithCompletionHandler:(id)a3
+- (void)_retrieveFoundInRecommendationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   foundInManager = self->_foundInManager;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__WBSForYouRecommendationMediator__retrieveFoundInRecommendationsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8285358;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSFoundInRecommendationManager *)foundInManager recentRecommendationsWithCompletionHandler:v7];
 }
 
@@ -818,37 +818,37 @@ uint64_t __88__WBSForYouRecommendationMediator__retrieveFoundInRecommendationsWi
   return result;
 }
 
-- (void)retrieveHandoffRecommendationWithCompletionHandler:(id)a3
+- (void)retrieveHandoffRecommendationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([MEMORY[0x1E69DF008] userActivityContinuationSupported])
   {
     [(WBSForYouRecommendationMediator *)self _createAppSuggestionsManagerIfNecessary];
-    v5 = [(UABestAppSuggestion *)self->_currentAppSuggestion uniqueIdentifier];
-    if (v5)
+    uniqueIdentifier = [(UABestAppSuggestion *)self->_currentAppSuggestion uniqueIdentifier];
+    if (uniqueIdentifier)
     {
-      v6 = [(UABestAppSuggestion *)self->_currentAppSuggestion originatingDeviceName];
+      originatingDeviceName = [(UABestAppSuggestion *)self->_currentAppSuggestion originatingDeviceName];
       v7 = MEMORY[0x1E69DEFF8];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __86__WBSForYouRecommendationMediator_retrieveHandoffRecommendationWithCompletionHandler___block_invoke;
       v10[3] = &unk_1E8285380;
-      v11 = v6;
-      v12 = v4;
+      v11 = originatingDeviceName;
+      v12 = handlerCopy;
       v10[4] = self;
-      v8 = v6;
-      v9 = [v7 fetchUserActivityWithUUID:v5 intervalToWaitForDocumentSynchronizationToComplete:v10 completionHandler:5.0];
+      v8 = originatingDeviceName;
+      v9 = [v7 fetchUserActivityWithUUID:uniqueIdentifier intervalToWaitForDocumentSynchronizationToComplete:v10 completionHandler:5.0];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -954,16 +954,16 @@ LABEL_18:
   [(UABestAppSuggestionManager *)appSuggestionManager invalidate];
 }
 
-- (void)downvoteSource:(unint64_t)a3 postingChangeNotificationWhenDone:(BOOL)a4
+- (void)downvoteSource:(unint64_t)source postingChangeNotificationWhenDone:(BOOL)done
 {
-  v4 = a4;
-  v7 = [(WBSForYouRecommendationMediator *)self _dataSourceWeightManager];
-  [v7 downvoteSource:a3];
+  doneCopy = done;
+  _dataSourceWeightManager = [(WBSForYouRecommendationMediator *)self _dataSourceWeightManager];
+  [_dataSourceWeightManager downvoteSource:source];
 
-  if (v4)
+  if (doneCopy)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:*MEMORY[0x1E69C92E0] object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x1E69C92E0] object:self];
   }
 }
 
@@ -973,8 +973,8 @@ LABEL_18:
   if (!dataSourceWeightManager)
   {
     v4 = [WBSForYouDataSourceWeightManager alloc];
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [(WBSForYouDataSourceWeightManager *)v4 initWithKeyValueStore:v5];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [(WBSForYouDataSourceWeightManager *)v4 initWithKeyValueStore:standardUserDefaults];
     v7 = self->_dataSourceWeightManager;
     self->_dataSourceWeightManager = v6;
 
@@ -986,9 +986,9 @@ LABEL_18:
   return v8;
 }
 
-- (void)bestAppSuggestionChanged:(id)a3
+- (void)bestAppSuggestionChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if ((WBSIsEqual() & 1) == 0)
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -996,7 +996,7 @@ LABEL_18:
     v5[2] = __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invoke;
     v5[3] = &unk_1E82834A0;
     v5[4] = self;
-    v6 = v4;
+    v6 = changedCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
@@ -1020,86 +1020,86 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
   [v4 postNotificationName:@"WBSForYouRecommendationMediatorDidUpdateHandoffApplicationNotification" object:*(a1 + 32)];
 }
 
-- (id)analyticsMetadataForRecommendation:(id)a3
+- (id)analyticsMetadataForRecommendation:(id)recommendation
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [objc_opt_class() _titleForRecommendationSource:{objc_msgSend(v3, "source")}];
-  [v4 setObject:v5 forKeyedSubscript:@"source"];
+  recommendationCopy = recommendation;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [objc_opt_class() _titleForRecommendationSource:{objc_msgSend(recommendationCopy, "source")}];
+  [dictionary setObject:v5 forKeyedSubscript:@"source"];
 
-  v6 = [v3 cachedScore];
-  [v4 setObject:v6 forKeyedSubscript:@"recommendationScore"];
+  cachedScore = [recommendationCopy cachedScore];
+  [dictionary setObject:cachedScore forKeyedSubscript:@"recommendationScore"];
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v3 lastSeenDate];
-  [v8 timeIntervalSinceNow];
+  lastSeenDate = [recommendationCopy lastSeenDate];
+  [lastSeenDate timeIntervalSinceNow];
   v10 = [v7 numberWithDouble:-v9];
-  [v4 setObject:v10 forKeyedSubscript:@"recency"];
+  [dictionary setObject:v10 forKeyedSubscript:@"recency"];
 
-  v11 = [v3 bundleIdentifier];
-  if ([v11 length])
+  bundleIdentifier = [recommendationCopy bundleIdentifier];
+  if ([bundleIdentifier length])
   {
-    v12 = [v3 bundleIdentifier];
-    [v4 setObject:v12 forKeyedSubscript:@"sourceBundleIdentifier"];
+    bundleIdentifier2 = [recommendationCopy bundleIdentifier];
+    [dictionary setObject:bundleIdentifier2 forKeyedSubscript:@"sourceBundleIdentifier"];
   }
 
   else
   {
-    [v4 setObject:@"unspecified" forKeyedSubscript:@"sourceBundleIdentifier"];
+    [dictionary setObject:@"unspecified" forKeyedSubscript:@"sourceBundleIdentifier"];
   }
 
-  v13 = [objc_opt_class() _titleForRecommendationTopicSource:{objc_msgSend(v3, "topicSource")}];
-  [v4 setObject:v13 forKeyedSubscript:@"topicSource"];
+  v13 = [objc_opt_class() _titleForRecommendationTopicSource:{objc_msgSend(recommendationCopy, "topicSource")}];
+  [dictionary setObject:v13 forKeyedSubscript:@"topicSource"];
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)_titleForRecommendationSource:(unint64_t)a3
++ (id)_titleForRecommendationSource:(unint64_t)source
 {
-  if (a3 > 7)
+  if (source > 7)
   {
     return @"unspecified";
   }
 
   else
   {
-    return off_1E82854A8[a3];
+    return off_1E82854A8[source];
   }
 }
 
-+ (id)_titleForRecommendationTopicSource:(unint64_t)a3
++ (id)_titleForRecommendationTopicSource:(unint64_t)source
 {
-  if (a3 > 4)
+  if (source > 4)
   {
     return @"unspecified";
   }
 
   else
   {
-    return off_1E82854E8[a3];
+    return off_1E82854E8[source];
   }
 }
 
-+ (double)scoreForRecommendation:(id)a3 weightManager:(id)a4 simplifiedURLStringToLastVisitedDateMap:(id)a5
++ (double)scoreForRecommendation:(id)recommendation weightManager:(id)manager simplifiedURLStringToLastVisitedDateMap:(id)map
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v8 weightForSource:{objc_msgSend(v9, "source")}];
+  mapCopy = map;
+  managerCopy = manager;
+  recommendationCopy = recommendation;
+  [managerCopy weightForSource:{objc_msgSend(recommendationCopy, "source")}];
   v11 = v10;
 
-  v12 = [v9 lastSeenDate];
+  lastSeenDate = [recommendationCopy lastSeenDate];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v14 = v13;
-  [v12 timeIntervalSinceReferenceDate];
+  [lastSeenDate timeIntervalSinceReferenceDate];
   v16 = v15;
-  v17 = [MEMORY[0x1E695DF00] distantPast];
-  v18 = [v12 isEqualToDate:v17];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v18 = [lastSeenDate isEqualToDate:distantPast];
 
-  v19 = [v9 pageURL];
-  v20 = [v19 safari_isTopLevelURL];
+  pageURL = [recommendationCopy pageURL];
+  safari_isTopLevelURL = [pageURL safari_isTopLevelURL];
 
-  if (v20)
+  if (safari_isTopLevelURL)
   {
     v21 = 0.75;
   }
@@ -1109,19 +1109,19 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
     v21 = 1.0;
   }
 
-  v22 = [v9 originalQueries];
-  v23 = [v22 count];
+  originalQueries = [recommendationCopy originalQueries];
+  v23 = [originalQueries count];
 
   if (v23 >= 2)
   {
     v21 = v21 * pow(1.1, (v23 - 1));
   }
 
-  v24 = [v9 simplifiedURLString];
+  simplifiedURLString = [recommendationCopy simplifiedURLString];
 
-  if ([v24 length])
+  if ([simplifiedURLString length])
   {
-    v25 = [v7 objectForKeyedSubscript:v24];
+    v25 = [mapCopy objectForKeyedSubscript:simplifiedURLString];
     v26 = v25;
     if (v25)
     {
@@ -1149,25 +1149,25 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
   return v31;
 }
 
-+ (void)_rankRecommendationsInPlace:(id)a3 history:(id)a4 weightManager:(id)a5 suppressHistoryDeduplication:(BOOL)a6
++ (void)_rankRecommendationsInPlace:(id)place history:(id)history weightManager:(id)manager suppressHistoryDeduplication:(BOOL)deduplication
 {
   v70 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v37 = a4;
-  v11 = a5;
-  v38 = v10;
-  if ([v10 count])
+  placeCopy = place;
+  historyCopy = history;
+  managerCopy = manager;
+  v38 = placeCopy;
+  if ([placeCopy count])
   {
-    v35 = a1;
-    v36 = v11;
-    v40 = [MEMORY[0x1E695DF90] dictionary];
-    if (!a6)
+    selfCopy = self;
+    v36 = managerCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (!deduplication)
     {
       v62 = 0u;
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v12 = v10;
+      v12 = placeCopy;
       v13 = [v12 countByEnumeratingWithState:&v60 objects:v69 count:16];
       if (v13)
       {
@@ -1181,11 +1181,11 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
               objc_enumerationMutation(v12);
             }
 
-            v16 = [*(*(&v60 + 1) + 8 * i) simplifiedURLString];
-            if ([v16 length])
+            simplifiedURLString = [*(*(&v60 + 1) + 8 * i) simplifiedURLString];
+            if ([simplifiedURLString length])
             {
-              v17 = [MEMORY[0x1E695DF00] distantPast];
-              [v40 setObject:v17 forKey:v16];
+              distantPast = [MEMORY[0x1E695DF00] distantPast];
+              [dictionary setObject:distantPast forKey:simplifiedURLString];
             }
           }
 
@@ -1199,9 +1199,9 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
       v58[1] = 3221225472;
       v58[2] = __114__WBSForYouRecommendationMediator__rankRecommendationsInPlace_history_weightManager_suppressHistoryDeduplication___block_invoke;
       v58[3] = &unk_1E82853A8;
-      v18 = v40;
+      v18 = dictionary;
       v59 = v18;
-      [v37 enumerateItemsUsingBlock:v58];
+      [historyCopy enumerateItemsUsingBlock:v58];
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v20 = v19;
       v55[0] = MEMORY[0x1E69E9820];
@@ -1215,7 +1215,7 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
 
     if ([v38 count] >= 2)
     {
-      v21 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
@@ -1235,11 +1235,11 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
             }
 
             v25 = *(*(&v51 + 1) + 8 * j);
-            v26 = [v25 pageURL];
-            v27 = [v21 objectForKeyedSubscript:v26];
+            pageURL = [v25 pageURL];
+            v27 = [dictionary2 objectForKeyedSubscript:pageURL];
             if (!v27 || ([v25 lastSeenDate], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "lastSeenDate"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "compare:", v29) == 1, v29, v28, v30))
             {
-              [v21 setObject:v25 forKeyedSubscript:v26];
+              [dictionary2 setObject:v25 forKeyedSubscript:pageURL];
             }
           }
 
@@ -1249,16 +1249,16 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
         while (v22);
       }
 
-      v31 = [v21 allValues];
-      [obj setArray:v31];
+      allValues = [dictionary2 allValues];
+      [obj setArray:allValues];
 
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __114__WBSForYouRecommendationMediator__rankRecommendationsInPlace_history_weightManager_suppressHistoryDeduplication___block_invoke_3;
       v46[3] = &unk_1E82853F8;
-      v49 = v35;
+      v49 = selfCopy;
       v47 = v36;
-      v48 = v40;
+      v48 = dictionary;
       v50 = 0x3F7BB0247985D58DLL;
       removeLinkRecommendationsPassingTestWithReductionReason(obj, @"old items", v46);
       [obj sortUsingComparator:&__block_literal_global_117];
@@ -1303,7 +1303,7 @@ void __60__WBSForYouRecommendationMediator_bestAppSuggestionChanged___block_invo
       _Block_object_dispose(&v42, 8);
     }
 
-    v11 = v36;
+    managerCopy = v36;
   }
 }
 
@@ -1410,19 +1410,19 @@ BOOL __114__WBSForYouRecommendationMediator__rankRecommendationsInPlace_history_
   return v4 > 3;
 }
 
-+ (id)_adjustedTopicsWithTopics:(id)a3
++ (id)_adjustedTopicsWithTopics:(id)topics
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] > 1)
+  topicsCopy = topics;
+  if ([topicsCopy count] > 1)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v3;
-    obj = v3;
+    v20 = topicsCopy;
+    obj = topicsCopy;
     v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (!v6)
     {
@@ -1441,13 +1441,13 @@ BOOL __114__WBSForYouRecommendationMediator__rankRecommendationsInPlace_history_
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 title];
-        v12 = [v5 objectForKeyedSubscript:v11];
+        title = [v10 title];
+        v12 = [dictionary objectForKeyedSubscript:title];
         if (v12)
         {
-          v13 = [v10 relevancyDate];
-          v14 = [v12 relevancyDate];
-          v15 = [v13 compare:v14];
+          relevancyDate = [v10 relevancyDate];
+          relevancyDate2 = [v12 relevancyDate];
+          v15 = [relevancyDate compare:relevancyDate2];
 
           if (v15 != 1)
           {
@@ -1457,7 +1457,7 @@ BOOL __114__WBSForYouRecommendationMediator__rankRecommendationsInPlace_history_
           [v10 setSource:4];
         }
 
-        [v5 setObject:v10 forKeyedSubscript:v11];
+        [dictionary setObject:v10 forKeyedSubscript:title];
 LABEL_12:
       }
 
@@ -1466,8 +1466,8 @@ LABEL_12:
       {
 LABEL_14:
 
-        v16 = [v5 allValues];
-        v17 = [v16 sortedArrayUsingComparator:&__block_literal_global_123];
+        allValues = [dictionary allValues];
+        v17 = [allValues sortedArrayUsingComparator:&__block_literal_global_123];
 
         if ([v17 count] <= 3)
         {
@@ -1479,7 +1479,7 @@ LABEL_14:
           v18 = 3;
         }
 
-        v3 = v20;
+        topicsCopy = v20;
         v4 = [v17 subarrayWithRange:{0, v18, v20}];
 
         goto LABEL_18;
@@ -1487,7 +1487,7 @@ LABEL_14:
     }
   }
 
-  v4 = v3;
+  v4 = topicsCopy;
 LABEL_18:
 
   return v4;
@@ -1503,35 +1503,35 @@ uint64_t __61__WBSForYouRecommendationMediator__adjustedTopicsWithTopics___block
   return v7;
 }
 
-- (id)recommendationFromDictionary:(id)a3
+- (id)recommendationFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 safari_stringForKey:@"title"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy safari_stringForKey:@"title"];
   if ([v5 length])
   {
-    v6 = [v4 safari_stringForKey:@"urlString"];
+    v6 = [dictionaryCopy safari_stringForKey:@"urlString"];
     if ([v6 length])
     {
       v7 = [MEMORY[0x1E695DFF8] URLWithString:v6];
-      if (v7 && ([v4 safari_numberForKey:@"source"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "integerValue"), v8, v9 <= 7) && (objc_msgSend(v4, "safari_numberForKey:", @"topic"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "integerValue"), v10, v11 <= 4))
+      if (v7 && ([dictionaryCopy safari_numberForKey:@"source"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "integerValue"), v8, v9 <= 7) && (objc_msgSend(dictionaryCopy, "safari_numberForKey:", @"topic"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "integerValue"), v10, v11 <= 4))
       {
         v14 = [WBSForYouLinkRecommendation alloc];
-        v15 = [MEMORY[0x1E695DF00] date];
-        v12 = [(WBSForYouLinkRecommendation *)v14 initWithTitle:v5 url:v7 lastSeenDate:v15 source:v9 topicSource:v11];
+        date = [MEMORY[0x1E695DF00] date];
+        v12 = [(WBSForYouLinkRecommendation *)v14 initWithTitle:v5 url:v7 lastSeenDate:date source:v9 topicSource:v11];
 
-        v16 = [v4 safari_stringForKey:@"secondarySourceIdentifier"];
+        v16 = [dictionaryCopy safari_stringForKey:@"secondarySourceIdentifier"];
         [(WBSForYouLinkRecommendation *)v12 setSecondarySourceIdentifier:v16];
 
-        v17 = [v4 safari_stringForKey:@"footnote"];
+        v17 = [dictionaryCopy safari_stringForKey:@"footnote"];
         [(WBSForYouLinkRecommendation *)v12 setFootnote:v17];
 
-        v18 = [v4 safari_stringForKey:@"bundleIdentifier"];
+        v18 = [dictionaryCopy safari_stringForKey:@"bundleIdentifier"];
         [(WBSForYouLinkRecommendation *)v12 setBundleIdentifier:v18];
 
-        v19 = [v4 safari_stringForKey:@"sourceID"];
+        v19 = [dictionaryCopy safari_stringForKey:@"sourceID"];
         [(WBSForYouLinkRecommendation *)v12 setSourceID:v19];
 
-        v20 = [v4 safari_stringForKey:@"imageURLString"];
+        v20 = [dictionaryCopy safari_stringForKey:@"imageURLString"];
         if ([v20 length])
         {
           v21 = [MEMORY[0x1E695DFF8] URLWithString:v20];
@@ -1548,11 +1548,11 @@ uint64_t __61__WBSForYouRecommendationMediator__adjustedTopicsWithTopics___block
           }
         }
 
-        v23 = [v4 safari_stringForKey:@"contactHandle"];
+        v23 = [dictionaryCopy safari_stringForKey:@"contactHandle"];
         if ([v23 length])
         {
-          v24 = [MEMORY[0x1E69C8F00] sharedContactStoreManager];
-          v25 = [v24 contactForHandle:v23 error:0];
+          mEMORY[0x1E69C8F00] = [MEMORY[0x1E69C8F00] sharedContactStoreManager];
+          v25 = [mEMORY[0x1E69C8F00] contactForHandle:v23 error:0];
 
           if (v25)
           {

@@ -1,6 +1,6 @@
 @interface LACBackgroundTaskResult
-- (BOOL)isEqual:(id)a3;
-- (LACBackgroundTaskResult)initWithValue:(id)a3 error:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LACBackgroundTaskResult)initWithValue:(id)value error:(id)error;
 - (id)description;
 @end
 
@@ -12,12 +12,12 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(LACBackgroundTaskResult *)self value];
-  v7 = [v5 stringWithFormat:@"value: %@", v6];
+  value = [(LACBackgroundTaskResult *)self value];
+  v7 = [v5 stringWithFormat:@"value: %@", value];
   v16[0] = v7;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(LACBackgroundTaskResult *)self error];
-  v10 = [v8 stringWithFormat:@"error: %@", v9];
+  error = [(LACBackgroundTaskResult *)self error];
+  v10 = [v8 stringWithFormat:@"error: %@", error];
   v16[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v12 = [v11 componentsJoinedByString:@" "];;
@@ -28,42 +28,42 @@
   return v13;
 }
 
-- (LACBackgroundTaskResult)initWithValue:(id)a3 error:(id)a4
+- (LACBackgroundTaskResult)initWithValue:(id)value error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = LACBackgroundTaskResult;
   v9 = [(LACBackgroundTaskResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_value, a3);
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v9->_value, value);
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 value];
-    v7 = [(LACBackgroundTaskResult *)self value];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    value = [v5 value];
+    value2 = [(LACBackgroundTaskResult *)self value];
+    v8 = value2;
+    if (value == value2)
     {
     }
 
     else
     {
-      v9 = [v5 value];
-      v10 = [(LACBackgroundTaskResult *)self value];
-      v11 = [v9 isEqual:v10];
+      value3 = [v5 value];
+      value4 = [(LACBackgroundTaskResult *)self value];
+      v11 = [value3 isEqual:value4];
 
       if (!v11)
       {
@@ -74,18 +74,18 @@ LABEL_11:
       }
     }
 
-    v13 = [v5 error];
-    v14 = [(LACBackgroundTaskResult *)self error];
-    if (v13 == v14)
+    error = [v5 error];
+    error2 = [(LACBackgroundTaskResult *)self error];
+    if (error == error2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [v5 error];
-      v16 = [(LACBackgroundTaskResult *)self error];
-      v12 = [v15 isEqual:v16];
+      error3 = [v5 error];
+      error4 = [(LACBackgroundTaskResult *)self error];
+      v12 = [error3 isEqual:error4];
     }
 
     goto LABEL_11;

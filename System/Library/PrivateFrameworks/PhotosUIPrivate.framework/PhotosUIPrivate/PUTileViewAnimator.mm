@@ -1,25 +1,25 @@
 @interface PUTileViewAnimator
 - (PUTileViewAnimator)init;
-- (void)_performAnimations:(id)a3 withOptions:(id)a4;
-- (void)animateTileController:(id)a3 toLayoutInfo:(id)a4 withOptions:(id)a5 completionHandler:(id)a6;
-- (void)prepareTileControllerForAnimation:(id)a3 withInitialLayoutInfo:(id)a4;
-- (void)transition:(id)a3 didComplete:(BOOL)a4;
+- (void)_performAnimations:(id)animations withOptions:(id)options;
+- (void)animateTileController:(id)controller toLayoutInfo:(id)info withOptions:(id)options completionHandler:(id)handler;
+- (void)prepareTileControllerForAnimation:(id)animation withInitialLayoutInfo:(id)info;
+- (void)transition:(id)transition didComplete:(BOOL)complete;
 @end
 
 @implementation PUTileViewAnimator
 
-- (void)transition:(id)a3 didComplete:(BOOL)a4
+- (void)transition:(id)transition didComplete:(BOOL)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  transitionCopy = transition;
   v19.receiver = self;
   v19.super_class = PUTileViewAnimator;
-  [(PUTileAnimator *)&v19 transition:v6 didComplete:v4];
-  if (v4)
+  [(PUTileAnimator *)&v19 transition:transitionCopy didComplete:completeCopy];
+  if (completeCopy)
   {
-    v7 = [(PUTileViewAnimator *)self _synchronizedAnimationGroupsByTransition];
-    v8 = [v7 objectForKey:v6];
+    _synchronizedAnimationGroupsByTransition = [(PUTileViewAnimator *)self _synchronizedAnimationGroupsByTransition];
+    v8 = [_synchronizedAnimationGroupsByTransition objectForKey:transitionCopy];
 
     v17 = 0u;
     v18 = 0u;
@@ -52,83 +52,83 @@
     }
   }
 
-  v14 = [(PUTileViewAnimator *)self _synchronizedAnimationGroupsByTransition];
-  [v14 removeObjectForKey:v6];
+  _synchronizedAnimationGroupsByTransition2 = [(PUTileViewAnimator *)self _synchronizedAnimationGroupsByTransition];
+  [_synchronizedAnimationGroupsByTransition2 removeObjectForKey:transitionCopy];
 }
 
-- (void)_performAnimations:(id)a3 withOptions:(id)a4
+- (void)_performAnimations:(id)animations withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUTileAnimator *)self currentTransition];
-  if (v8 && ([v7 isSynchronizedWithTransition] & 1) != 0)
+  animationsCopy = animations;
+  optionsCopy = options;
+  currentTransition = [(PUTileAnimator *)self currentTransition];
+  if (currentTransition && ([optionsCopy isSynchronizedWithTransition] & 1) != 0)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __53__PUTileViewAnimator__performAnimations_withOptions___block_invoke;
     v13[3] = &unk_1E7B80C88;
-    v14 = v6;
+    v14 = animationsCopy;
     v9 = [PUAnimationGroup animationGroupWithAnimations:v13];
     if (v9)
     {
-      v10 = [(PUTileViewAnimator *)self _synchronizedAnimationGroupsByTransition];
-      v11 = [v10 objectForKey:v8];
+      _synchronizedAnimationGroupsByTransition = [(PUTileViewAnimator *)self _synchronizedAnimationGroupsByTransition];
+      array = [_synchronizedAnimationGroupsByTransition objectForKey:currentTransition];
 
-      if (!v11)
+      if (!array)
       {
-        v11 = [MEMORY[0x1E695DF70] array];
-        v12 = [(PUTileViewAnimator *)self _synchronizedAnimationGroupsByTransition];
-        [v12 setObject:v11 forKey:v8];
+        array = [MEMORY[0x1E695DF70] array];
+        _synchronizedAnimationGroupsByTransition2 = [(PUTileViewAnimator *)self _synchronizedAnimationGroupsByTransition];
+        [_synchronizedAnimationGroupsByTransition2 setObject:array forKey:currentTransition];
       }
 
-      [v11 addObject:v9];
+      [array addObject:v9];
     }
   }
 
   else
   {
-    v6[2](v6);
+    animationsCopy[2](animationsCopy);
   }
 }
 
-- (void)animateTileController:(id)a3 toLayoutInfo:(id)a4 withOptions:(id)a5 completionHandler:(id)a6
+- (void)animateTileController:(id)controller toLayoutInfo:(id)info withOptions:(id)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v10;
+  controllerCopy = controller;
+  infoCopy = info;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v14 = controllerCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v57 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v57 handleFailureInMethod:a2 object:self file:@"PUTileViewAnimator.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"[tileController isKindOfClass:[PUTileViewController class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileViewAnimator.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"[tileController isKindOfClass:[PUTileViewController class]]"}];
   }
 
-  v15 = [v12 kind];
-  [v12 duration];
+  kind = [optionsCopy kind];
+  [optionsCopy duration];
   v17 = v16;
-  [v12 delay];
+  [optionsCopy delay];
   v19 = v18;
-  v20 = [v12 completionGroup];
-  v21 = [v12 shouldFadeOutSnapshotAfterCompletionGroup];
-  v22 = [v14 view];
+  completionGroup = [optionsCopy completionGroup];
+  shouldFadeOutSnapshotAfterCompletionGroup = [optionsCopy shouldFadeOutSnapshotAfterCompletionGroup];
+  view = [v14 view];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__PUTileViewAnimator_animateTileController_toLayoutInfo_withOptions_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7B80C38;
   v23 = v14;
   v125 = v23;
-  v24 = v11;
+  v24 = infoCopy;
   v126 = v24;
   v25 = _Block_copy(aBlock);
-  if ([v12 highFrameRateReason] && objc_msgSend(MEMORY[0x1E69C44C8], "highFramerateRequiresReasonAndRange"))
+  if ([optionsCopy highFrameRateReason] && objc_msgSend(MEMORY[0x1E69C44C8], "highFramerateRequiresReasonAndRange"))
   {
     v121[0] = MEMORY[0x1E69E9820];
     v121[1] = 3221225472;
     v121[2] = __87__PUTileViewAnimator_animateTileController_toLayoutInfo_withOptions_completionHandler___block_invoke_2;
     v121[3] = &unk_1E7B80B48;
-    v122 = v12;
+    v122 = optionsCopy;
     v123 = v25;
     v25 = _Block_copy(v121);
   }
@@ -137,26 +137,26 @@
   v116[1] = 3221225472;
   v116[2] = __87__PUTileViewAnimator_animateTileController_toLayoutInfo_withOptions_completionHandler___block_invoke_4;
   v116[3] = &unk_1E7B7E748;
-  v26 = v20;
+  v26 = completionGroup;
   v117 = v26;
-  v27 = v13;
+  v27 = handlerCopy;
   v119 = v27;
-  v120 = v21;
-  v28 = v22;
+  v120 = shouldFadeOutSnapshotAfterCompletionGroup;
+  v28 = view;
   v118 = v28;
   v29 = _Block_copy(v116);
   v58 = v27;
   v59 = v26;
-  if (v15 <= 1000)
+  if (kind <= 1000)
   {
-    if (v15)
+    if (kind)
     {
-      if (v15 != 1000)
+      if (kind != 1000)
       {
         goto LABEL_17;
       }
 
-      [v12 springDampingRatio];
+      [optionsCopy springDampingRatio];
       v34 = v33;
       v104[0] = MEMORY[0x1E69E9820];
       v104[1] = 3221225472;
@@ -181,7 +181,7 @@
       v99 = v25;
       v32 = _Block_copy(v97);
 
-      v31 = v105;
+      currentHandler2 = v105;
     }
 
     else
@@ -198,13 +198,13 @@
       v32 = _Block_copy(v110);
 
       v36 = 0;
-      v31 = v111;
+      currentHandler2 = v111;
     }
   }
 
   else
   {
-    switch(v15)
+    switch(kind)
     {
       case 1001:
         v93[0] = MEMORY[0x1E69E9820];
@@ -226,19 +226,19 @@
         v90 = v25;
         v32 = _Block_copy(v88);
 
-        v31 = v94;
+        currentHandler2 = v94;
         break;
       case 1002:
-        [v12 springMass];
+        [optionsCopy springMass];
         v39 = v38;
-        [v12 springStiffness];
+        [optionsCopy springStiffness];
         v41 = v40;
-        [v12 springDampingRatio];
+        [optionsCopy springDampingRatio];
         v43 = v42 + v42;
         PXFloatSqrt();
         v45 = v43 * v44;
-        v46 = [v12 springNumberOfOscillations];
-        [MEMORY[0x1E69DD250] pu_springOscillationRootAtIndex:v46 + 1 forMass:v39 stiffness:v41 damping:v45 initialVelocity:0.0];
+        springNumberOfOscillations = [optionsCopy springNumberOfOscillations];
+        [MEMORY[0x1E69DD250] pu_springOscillationRootAtIndex:springNumberOfOscillations + 1 forMass:v39 stiffness:v41 damping:v45 initialVelocity:0.0];
         v48 = v47;
         v80[0] = MEMORY[0x1E69E9820];
         v80[1] = 3221225472;
@@ -267,17 +267,17 @@
         v73 = v25;
         v32 = _Block_copy(v71);
 
-        v31 = v81;
+        currentHandler2 = v81;
         break;
       case 1003:
-        v30 = [v12 customViewAnimatorBlock];
+        customViewAnimatorBlock = [optionsCopy customViewAnimatorBlock];
         v68[0] = MEMORY[0x1E69E9820];
         v68[1] = 3221225472;
         v68[2] = __87__PUTileViewAnimator_animateTileController_toLayoutInfo_withOptions_completionHandler___block_invoke_15;
         v68[3] = &unk_1E7B7E888;
-        v69 = v30;
+        v69 = customViewAnimatorBlock;
         v70 = v25;
-        v31 = v30;
+        currentHandler2 = customViewAnimatorBlock;
         v32 = _Block_copy(v68);
 
 LABEL_18:
@@ -285,9 +285,9 @@ LABEL_18:
         break;
       default:
 LABEL_17:
-        v31 = [MEMORY[0x1E696AAA8] currentHandler];
-        v50 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
-        [v31 handleFailureInMethod:a2 object:self file:@"PUTileViewAnimator.m" lineNumber:167 description:{@"unknown animation kind %@", v50}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        v50 = [MEMORY[0x1E696AD98] numberWithInteger:kind];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTileViewAnimator.m" lineNumber:167 description:{@"unknown animation kind %@", v50}];
 
         v32 = 0;
         goto LABEL_18;
@@ -298,13 +298,13 @@ LABEL_17:
   v61[1] = 3221225472;
   v61[2] = __87__PUTileViewAnimator_animateTileController_toLayoutInfo_withOptions_completionHandler___block_invoke_16;
   v61[3] = &unk_1E7B7E900;
-  v62 = v12;
+  v62 = optionsCopy;
   v63 = v23;
   v64 = v24;
   v65 = v29;
   v66 = v36;
   v67 = v32;
-  v51 = v12;
+  v51 = optionsCopy;
   v52 = v29;
   v53 = v36;
   v54 = v23;
@@ -636,23 +636,23 @@ void __87__PUTileViewAnimator_animateTileController_toLayoutInfo_withOptions_com
   }
 }
 
-- (void)prepareTileControllerForAnimation:(id)a3 withInitialLayoutInfo:(id)a4
+- (void)prepareTileControllerForAnimation:(id)animation withInitialLayoutInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  animationCopy = animation;
+  infoCopy = info;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUTileViewAnimator.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[tileController isKindOfClass:[PUTileViewController class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileViewAnimator.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"[tileController isKindOfClass:[PUTileViewController class]]"}];
   }
 
-  v9 = v7;
+  v9 = animationCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUTileViewAnimator.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"[tileViewController isKindOfClass:[PUTileViewController class]]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTileViewAnimator.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"[tileViewController isKindOfClass:[PUTileViewController class]]"}];
   }
 
   [MEMORY[0x1E6979518] begin];
@@ -662,12 +662,12 @@ void __87__PUTileViewAnimator_animateTileController_toLayoutInfo_withOptions_com
   v15[1] = 3221225472;
   v15[2] = __78__PUTileViewAnimator_prepareTileControllerForAnimation_withInitialLayoutInfo___block_invoke;
   v15[3] = &unk_1E7B7FE10;
-  v16 = v8;
-  v17 = self;
+  v16 = infoCopy;
+  selfCopy = self;
   v18 = v9;
   v19 = a2;
   v11 = v9;
-  v12 = v8;
+  v12 = infoCopy;
   [v10 performWithoutAnimation:v15];
   [MEMORY[0x1E6979518] commit];
 }
@@ -694,9 +694,9 @@ uint64_t __78__PUTileViewAnimator_prepareTileControllerForAnimation_withInitialL
   v2 = [(PUTileViewAnimator *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     synchronizedAnimationGroupsByTransition = v2->__synchronizedAnimationGroupsByTransition;
-    v2->__synchronizedAnimationGroupsByTransition = v3;
+    v2->__synchronizedAnimationGroupsByTransition = weakToStrongObjectsMapTable;
   }
 
   return v2;

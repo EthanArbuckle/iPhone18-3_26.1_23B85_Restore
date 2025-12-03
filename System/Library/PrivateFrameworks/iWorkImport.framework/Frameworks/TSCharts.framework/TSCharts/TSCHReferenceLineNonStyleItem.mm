@@ -1,25 +1,25 @@
 @interface TSCHReferenceLineNonStyleItem
-- (BOOL)isEqual:(id)a3;
-- (TSCHReferenceLineNonStyleItem)initWithNonStyle:(id)a3 uuid:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSCHReferenceLineNonStyleItem)initWithNonStyle:(id)style uuid:(id)uuid;
 - (id)description;
-- (id)initFromUnarchiver:(id)a3 message:(const void *)a4;
-- (void)saveToArchiver:(id)a3 message:(void *)a4;
+- (id)initFromUnarchiver:(id)unarchiver message:(const void *)message;
+- (void)saveToArchiver:(id)archiver message:(void *)message;
 @end
 
 @implementation TSCHReferenceLineNonStyleItem
 
-- (TSCHReferenceLineNonStyleItem)initWithNonStyle:(id)a3 uuid:(id)a4
+- (TSCHReferenceLineNonStyleItem)initWithNonStyle:(id)style uuid:(id)uuid
 {
-  v7 = a3;
-  v8 = a4;
+  styleCopy = style;
+  uuidCopy = uuid;
   v18.receiver = self;
   v18.super_class = TSCHReferenceLineNonStyleItem;
   v9 = [(TSCHReferenceLineNonStyleItem *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_nonStyle, a3);
-    v15 = objc_msgSend_copy(v8, v11, v12, v13, v14);
+    objc_storeStrong(&v9->_nonStyle, style);
+    v15 = objc_msgSend_copy(uuidCopy, v11, v12, v13, v14);
     UUID = v10->_UUID;
     v10->_UUID = v15;
   }
@@ -50,16 +50,16 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v35 = 1;
   }
 
-  else if (v4 && (v6 = objc_opt_class(), (objc_msgSend_isMemberOfClass_(v5, v7, v8, v9, v10, v6) & 1) != 0))
+  else if (equalCopy && (v6 = objc_opt_class(), (objc_msgSend_isMemberOfClass_(v5, v7, v8, v9, v10, v6) & 1) != 0))
   {
     v11 = v5;
     v16 = objc_msgSend_uuid(self, v12, v13, v14, v15);
@@ -87,18 +87,18 @@
   return v35;
 }
 
-- (id)initFromUnarchiver:(id)a3 message:(const void *)a4
+- (id)initFromUnarchiver:(id)unarchiver message:(const void *)message
 {
-  v6 = a3;
+  unarchiverCopy = unarchiver;
   v25.receiver = self;
   v25.super_class = TSCHReferenceLineNonStyleItem;
   v7 = [(TSCHReferenceLineNonStyleItem *)&v25 init];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCAD78]);
-    if (*(a4 + 4))
+    if (*(message + 4))
     {
-      v13 = objc_msgSend_tsp_initWithMessage_(v8, v9, v10, v11, v12, *(a4 + 4));
+      v13 = objc_msgSend_tsp_initWithMessage_(v8, v9, v10, v11, v12, *(message + 4));
     }
 
     else
@@ -109,13 +109,13 @@
     UUID = v7->_UUID;
     v7->_UUID = v13;
 
-    v15 = *(a4 + 3);
+    v15 = *(message + 3);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_2761EA9B4;
     v23[3] = &unk_27A6B6A70;
     v24 = v7;
-    v16 = v6;
+    v16 = unarchiverCopy;
     v18 = objc_opt_class();
     if (v15)
     {
@@ -131,41 +131,41 @@
   return v7;
 }
 
-- (void)saveToArchiver:(id)a3 message:(void *)a4
+- (void)saveToArchiver:(id)archiver message:(void *)message
 {
-  v20 = a3;
+  archiverCopy = archiver;
   UUID = self->_UUID;
-  *(a4 + 4) |= 2u;
-  v11 = *(a4 + 4);
+  *(message + 4) |= 2u;
+  v11 = *(message + 4);
   if (!v11)
   {
-    v12 = *(a4 + 1);
+    v12 = *(message + 1);
     if (v12)
     {
       v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v11 = MEMORY[0x277C97B40](v12);
-    *(a4 + 4) = v11;
+    *(message + 4) = v11;
   }
 
   objc_msgSend_tsp_saveToMessage_(UUID, v6, v7, v8, v9, v11);
   nonStyle = self->_nonStyle;
-  *(a4 + 4) |= 1u;
-  v18 = *(a4 + 3);
+  *(message + 4) |= 1u;
+  v18 = *(message + 3);
   if (!v18)
   {
-    v19 = *(a4 + 1);
+    v19 = *(message + 1);
     if (v19)
     {
       v19 = *(v19 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v18 = MEMORY[0x277C97B90](v19);
-    *(a4 + 3) = v18;
+    *(message + 3) = v18;
   }
 
-  objc_msgSend_setStrongReference_message_(v20, v13, v14, v15, v16, nonStyle, v18);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v13, v14, v15, v16, nonStyle, v18);
 }
 
 @end

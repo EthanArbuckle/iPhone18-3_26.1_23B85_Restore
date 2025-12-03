@@ -1,12 +1,12 @@
 @interface WFContactField
-- (BOOL)text:(id)a3 containsMatchesForProperties:(id)a4;
-- (BOOL)text:(id)a3 containsMatchesForProperty:(int)a4;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)text:(id)text containsMatchesForProperties:(id)properties;
+- (BOOL)text:(id)text containsMatchesForProperty:(int)property;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (NSSet)supportedPersonProperties;
 - (NSString)placeholder;
 - (NSString)textContentType;
 - (UIButton)plusButton;
-- (WFContactField)initWithFrame:(CGRect)a3;
+- (WFContactField)initWithFrame:(CGRect)frame;
 - (WFContactFieldDelegate)delegate;
 - (WFContactTextView)textView;
 - (WFTextScrollView)scrollView;
@@ -16,28 +16,28 @@
 - (int64_t)keyboardAppearance;
 - (int64_t)keyboardType;
 - (int64_t)textAlignment;
-- (int64_t)tokenizeFreeTextFromRange:(_NSRange)a3 freeTextModificationBlock:(id *)a4;
-- (unint64_t)numberOfValuesForProperties:(id)a3 inContact:(id)a4;
-- (void)chooseMultivalueIndexIfNecessaryForContact:(id)a3 sender:(id)a4;
-- (void)deleteFreeText:(id)a3 replacementRange:(_NSRange)a4 newValue:(id)a5;
-- (void)insertContact:(id)a3;
+- (int64_t)tokenizeFreeTextFromRange:(_NSRange)range freeTextModificationBlock:(id *)block;
+- (unint64_t)numberOfValuesForProperties:(id)properties inContact:(id)contact;
+- (void)chooseMultivalueIndexIfNecessaryForContact:(id)contact sender:(id)sender;
+- (void)deleteFreeText:(id)text replacementRange:(_NSRange)range newValue:(id)value;
+- (void)insertContact:(id)contact;
 - (void)layoutSubviews;
-- (void)presentContactSelectionActionSheetForText:(id)a3 attributedText:(id)a4 replacementRange:(_NSRange)a5;
+- (void)presentContactSelectionActionSheetForText:(id)text attributedText:(id)attributedText replacementRange:(_NSRange)range;
 - (void)selectContact;
-- (void)setAllowsTextEntry:(BOOL)a3;
-- (void)setEntries:(id)a3;
-- (void)setKeyboardAppearance:(int64_t)a3;
-- (void)setKeyboardType:(int64_t)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setSupportedPersonProperties:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextContentType:(id)a3;
+- (void)setAllowsTextEntry:(BOOL)entry;
+- (void)setEntries:(id)entries;
+- (void)setKeyboardAppearance:(int64_t)appearance;
+- (void)setKeyboardType:(int64_t)type;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setSupportedPersonProperties:(id)properties;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextContentType:(id)type;
 - (void)showContactPicker;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewDidEndEditing:(id)editing;
 - (void)tintColorDidChange;
-- (void)tokenizeFreeText:(id)a3 replacementRange:(_NSRange)a4 newValue:(id)a5;
-- (void)updateContactsFromTextField:(BOOL)a3;
+- (void)tokenizeFreeText:(id)text replacementRange:(_NSRange)range newValue:(id)value;
+- (void)updateContactsFromTextField:(BOOL)field;
 - (void)updateEditableState;
 @end
 
@@ -86,9 +86,9 @@
   v5.receiver = self;
   v5.super_class = WFContactField;
   [(WFContactField *)&v5 tintColorDidChange];
-  v3 = [(WFContactField *)self typingAttributes];
-  v4 = [(WFContactField *)self textView];
-  [v4 setTypingAttributes:v3];
+  typingAttributes = [(WFContactField *)self typingAttributes];
+  textView = [(WFContactField *)self textView];
+  [textView setTypingAttributes:typingAttributes];
 }
 
 - (id)typingAttributes
@@ -98,21 +98,21 @@
   v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   v8[0] = v3;
   v7[1] = *MEMORY[0x277D740C0];
-  v4 = [(WFContactField *)self tintColor];
-  v8[1] = v4;
+  tintColor = [(WFContactField *)self tintColor];
+  v8[1] = tintColor;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v12 = [v10 rangeOfCharacterFromSet:v11 options:0];
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  textCopy = text;
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v12 = [textCopy rangeOfCharacterFromSet:newlineCharacterSet options:0];
 
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -130,32 +130,32 @@
 
     else
     {
-      [v9 resignFirstResponder];
+      [viewCopy resignFirstResponder];
     }
 
     goto LABEL_11;
   }
 
-  [v9 selectedRange];
+  [viewCopy selectedRange];
   v13 = MEMORY[0x277D74060];
-  if (!v14 && ![v10 length])
+  if (!v14 && ![textCopy length])
   {
     v29 = 0;
     v30 = &v29;
     v31 = 0x2020000000;
     LOBYTE(v32) = 0;
-    v15 = [v9 attributedText];
+    attributedText = [viewCopy attributedText];
     v16 = *v13;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __67__WFContactField_textView_shouldChangeTextInRange_replacementText___block_invoke;
     v35[3] = &unk_279EDBE58;
     v35[4] = &v29;
-    [v15 enumerateAttribute:v16 inRange:location options:length usingBlock:{0, v35}];
+    [attributedText enumerateAttribute:v16 inRange:location options:length usingBlock:{0, v35}];
 
     if (*(v30 + 24) == 1)
     {
-      [v9 setSelectedRange:{location, length}];
+      [viewCopy setSelectedRange:{location, length}];
       _Block_object_dispose(&v29, 8);
 LABEL_11:
       v20 = 0;
@@ -165,9 +165,9 @@ LABEL_11:
     _Block_object_dispose(&v29, 8);
   }
 
-  v21 = [(WFContactField *)self textView];
-  v22 = [v21 attributedText];
-  v23 = [v22 length];
+  textView = [(WFContactField *)self textView];
+  attributedText2 = [textView attributedText];
+  v23 = [attributedText2 length];
 
   v29 = 0;
   v30 = &v29;
@@ -175,17 +175,17 @@ LABEL_11:
   v33 = 0;
   v34 = 0;
   v32 = "";
-  v24 = [(WFContactField *)self textView];
-  v25 = [v24 attributedText];
+  textView2 = [(WFContactField *)self textView];
+  attributedText3 = [textView2 attributedText];
   v26 = *v13;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __67__WFContactField_textView_shouldChangeTextInRange_replacementText___block_invoke_2;
   v28[3] = &unk_279EDBE58;
   v28[4] = &v29;
-  [v25 enumerateAttribute:v26 inRange:0 options:v23 usingBlock:{0, v28}];
+  [attributedText3 enumerateAttribute:v26 inRange:0 options:v23 usingBlock:{0, v28}];
 
-  v20 = ![v10 length] || -[WFContactField allowsTextEntry](self, "allowsTextEntry") && location >= v30[5] + v30[4];
+  v20 = ![textCopy length] || -[WFContactField allowsTextEntry](self, "allowsTextEntry") && location >= v30[5] + v30[4];
   _Block_object_dispose(&v29, 8);
 LABEL_19:
 
@@ -214,33 +214,33 @@ uint64_t __67__WFContactField_textView_shouldChangeTextInRange_replacementText__
   return result;
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(WFContactField *)self textView];
-  [v5 updateTextAttachments];
+  selectionCopy = selection;
+  textView = [(WFContactField *)self textView];
+  [textView updateTextAttachments];
 
-  v6 = [v4 selectedRange];
+  selectedRange = [selectionCopy selectedRange];
   v8 = v7;
 
-  [(WFContactField *)self setSelectedRange:v6, v8];
+  [(WFContactField *)self setSelectedRange:selectedRange, v8];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = [(WFContactField *)self textView];
-  v5 = [v4 selectedRange];
+  textView = [(WFContactField *)self textView];
+  selectedRange = [textView selectedRange];
   v12 = 0;
-  v7 = [(WFContactField *)self tokenizeFreeTextFromRange:v5 freeTextModificationBlock:v6, &v12];
+  v7 = [(WFContactField *)self tokenizeFreeTextFromRange:selectedRange freeTextModificationBlock:v6, &v12];
   v8 = v12;
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13 = @"WFContactFieldTokenizationResultNotificationTokenizationResultKey";
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  [v9 postNotificationName:@"WFContactFieldTokenizationResultNotification" object:self userInfo:v11];
+  [defaultCenter postNotificationName:@"WFContactFieldTokenizationResultNotification" object:self userInfo:v11];
 
   if (v8)
   {
@@ -248,16 +248,16 @@ uint64_t __67__WFContactField_textView_shouldChangeTextInRange_replacementText__
   }
 }
 
-- (unint64_t)numberOfValuesForProperties:(id)a3 inContact:(id)a4
+- (unint64_t)numberOfValuesForProperties:(id)properties inContact:(id)contact
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  contactCopy = contact;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [propertiesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -269,10 +269,10 @@ uint64_t __67__WFContactField_textView_shouldChangeTextInRange_replacementText__
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(propertiesCopy);
         }
 
-        v12 = [v6 valueForPropertyID:{objc_msgSend(*(*(&v15 + 1) + 8 * i), "intValue")}];
+        v12 = [contactCopy valueForPropertyID:{objc_msgSend(*(*(&v15 + 1) + 8 * i), "intValue")}];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -287,7 +287,7 @@ uint64_t __67__WFContactField_textView_shouldChangeTextInRange_replacementText__
         v9 += v13;
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [propertiesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -301,16 +301,16 @@ uint64_t __67__WFContactField_textView_shouldChangeTextInRange_replacementText__
   return v9;
 }
 
-- (BOOL)text:(id)a3 containsMatchesForProperties:(id)a4
+- (BOOL)text:(id)text containsMatchesForProperties:(id)properties
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  textCopy = text;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  propertiesCopy = properties;
+  v8 = [propertiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -321,17 +321,17 @@ uint64_t __67__WFContactField_textView_shouldChangeTextInRange_replacementText__
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(propertiesCopy);
         }
 
-        if (-[WFContactField text:containsMatchesForProperty:](self, "text:containsMatchesForProperty:", v6, [*(*(&v14 + 1) + 8 * i) intValue]))
+        if (-[WFContactField text:containsMatchesForProperty:](self, "text:containsMatchesForProperty:", textCopy, [*(*(&v14 + 1) + 8 * i) intValue]))
         {
           v12 = 1;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [propertiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;
@@ -347,19 +347,19 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)text:(id)a3 containsMatchesForProperty:(int)a4
+- (BOOL)text:(id)text containsMatchesForProperty:(int)property
 {
-  v5 = a3;
-  switch(a4)
+  textCopy = text;
+  switch(property)
   {
     case 3:
-      v6 = [MEMORY[0x277CFC4B0] stringContainsPhoneNumbers:v5];
+      v6 = [MEMORY[0x277CFC4B0] stringContainsPhoneNumbers:textCopy];
       break;
     case 22:
-      v6 = [MEMORY[0x277CFC570] stringContainsURLs:v5];
+      v6 = [MEMORY[0x277CFC570] stringContainsURLs:textCopy];
       break;
     case 4:
-      v6 = [MEMORY[0x277CFC3B0] stringContainsEmailAddresses:v5];
+      v6 = [MEMORY[0x277CFC3B0] stringContainsEmailAddresses:textCopy];
       break;
     default:
       v7 = 0;
@@ -372,12 +372,12 @@ LABEL_9:
   return v7;
 }
 
-- (void)chooseMultivalueIndexIfNecessaryForContact:(id)a3 sender:(id)a4
+- (void)chooseMultivalueIndexIfNecessaryForContact:(id)contact sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFContactField *)self supportedPersonProperties];
-  v9 = [(WFContactField *)self numberOfValuesForProperties:v8 inContact:v6];
+  contactCopy = contact;
+  senderCopy = sender;
+  supportedPersonProperties = [(WFContactField *)self supportedPersonProperties];
+  v9 = [(WFContactField *)self numberOfValuesForProperties:supportedPersonProperties inContact:contactCopy];
 
   if (v9 > 1)
   {
@@ -385,28 +385,28 @@ LABEL_9:
     contactPicker = self->_contactPicker;
     self->_contactPicker = v10;
 
-    v12 = [(WFContactField *)self supportedPersonProperties];
-    [(WFContactPickerCoordinator *)self->_contactPicker setSupportedPersonProperties:v12];
+    supportedPersonProperties2 = [(WFContactField *)self supportedPersonProperties];
+    [(WFContactPickerCoordinator *)self->_contactPicker setSupportedPersonProperties:supportedPersonProperties2];
 
-    v13 = [(WFContactField *)self containingViewController];
-    [(WFContactPickerCoordinator *)self->_contactPicker setPresentingViewController:v13];
+    containingViewController = [(WFContactField *)self containingViewController];
+    [(WFContactPickerCoordinator *)self->_contactPicker setPresentingViewController:containingViewController];
 
     v14 = MEMORY[0x277D7D500];
-    v15 = [(WFContactField *)self plusButton];
-    v16 = [(WFContactField *)self plusButton];
-    [v16 bounds];
-    v17 = [v14 sourceWithView:v15 rect:?];
+    plusButton = [(WFContactField *)self plusButton];
+    plusButton2 = [(WFContactField *)self plusButton];
+    [plusButton2 bounds];
+    v17 = [v14 sourceWithView:plusButton rect:?];
     [(WFContactPickerCoordinator *)self->_contactPicker setPresentationSource:v17];
 
     objc_initWeak(&location, self);
     v18 = self->_contactPicker;
-    v19 = [v6 contact];
+    contact = [contactCopy contact];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __68__WFContactField_chooseMultivalueIndexIfNecessaryForContact_sender___block_invoke;
     v20[3] = &unk_279EDC260;
     objc_copyWeak(&v21, &location);
-    [(WFContactPickerCoordinator *)v18 presentHandlePickerForContact:v19 completionHandler:v20];
+    [(WFContactPickerCoordinator *)v18 presentHandlePickerForContact:contact completionHandler:v20];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -414,7 +414,7 @@ LABEL_9:
 
   else
   {
-    [(WFContactField *)self insertContact:v6];
+    [(WFContactField *)self insertContact:contactCopy];
   }
 }
 
@@ -430,28 +430,28 @@ void __68__WFContactField_chooseMultivalueIndexIfNecessaryForContact_sender___bl
   [WeakRetained setContactPicker:0];
 }
 
-- (void)presentContactSelectionActionSheetForText:(id)a3 attributedText:(id)a4 replacementRange:(_NSRange)a5
+- (void)presentContactSelectionActionSheetForText:(id)text attributedText:(id)attributedText replacementRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v88 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v64 = a4;
-  v10 = [(WFContactField *)self supportedPersonProperties];
-  v11 = [MEMORY[0x277CFC278] requiredKeysToFetch];
-  v12 = [MEMORY[0x277CBDC48] descriptorForRequiredKeys];
-  v13 = [v11 arrayByAddingObject:v12];
+  textCopy = text;
+  attributedTextCopy = attributedText;
+  supportedPersonProperties = [(WFContactField *)self supportedPersonProperties];
+  requiredKeysToFetch = [MEMORY[0x277CFC278] requiredKeysToFetch];
+  descriptorForRequiredKeys = [MEMORY[0x277CBDC48] descriptorForRequiredKeys];
+  v13 = [requiredKeysToFetch arrayByAddingObject:descriptorForRequiredKeys];
 
-  v14 = v9;
+  v14 = textCopy;
   v15 = v13;
   v16 = objc_opt_new();
-  v17 = [v16 contactsWithName:v9 keysToFetch:v13];
+  v17 = [v16 contactsWithName:textCopy keysToFetch:v13];
   v85[0] = MEMORY[0x277D85DD0];
   v85[1] = 3221225472;
   v85[2] = __92__WFContactField_presentContactSelectionActionSheetForText_attributedText_replacementRange___block_invoke;
   v85[3] = &unk_279EDBEA8;
   v85[4] = self;
-  v18 = v10;
+  v18 = supportedPersonProperties;
   v86 = v18;
   v19 = [v17 if_objectsPassingTest:v85];
 
@@ -485,8 +485,8 @@ LABEL_8:
 LABEL_9:
   v24 = [MEMORY[0x277CFC218] alertWithPreferredStyle:1];
   v25 = MEMORY[0x277D7D500];
-  v26 = [(WFContactField *)self plusButton];
-  v27 = [v25 sourceWithView:v26];
+  plusButton = [(WFContactField *)self plusButton];
+  v27 = [v25 sourceWithView:plusButton];
   [v24 setPresentationSource:v27];
 
   v28 = MEMORY[0x277CCACA8];
@@ -501,7 +501,7 @@ LABEL_9:
 
   v58 = v19;
   v59 = v18;
-  v56 = self;
+  selfCopy = self;
   if ([v19 count])
   {
     v62 = v24;
@@ -528,18 +528,18 @@ LABEL_9:
 
           v38 = *(*(&v81 + 1) + 8 * i);
           v39 = MEMORY[0x277CFC510];
-          v40 = [v38 formattedName];
+          formattedName = [v38 formattedName];
           v75[0] = MEMORY[0x277D85DD0];
           v75[1] = 3221225472;
           v75[2] = __92__WFContactField_presentContactSelectionActionSheetForText_attributedText_replacementRange___block_invoke_233;
           v75[3] = &unk_279EDBED0;
           v75[4] = self;
-          v76 = v64;
+          v76 = attributedTextCopy;
           v79 = v33;
           v80 = v20;
           v77 = v63;
           v78 = v38;
-          v41 = [v39 buttonWithTitle:v40 style:0 handler:v75];
+          v41 = [v39 buttonWithTitle:formattedName style:0 handler:v75];
           [v62 addButton:v41];
         }
 
@@ -551,7 +551,7 @@ LABEL_9:
 
     v21 = v33;
     v14 = v63;
-    v42 = v64;
+    v42 = attributedTextCopy;
     v43 = v62;
     v31 = 0x277CFC000;
   }
@@ -565,8 +565,8 @@ LABEL_9:
     v70[2] = __92__WFContactField_presentContactSelectionActionSheetForText_attributedText_replacementRange___block_invoke_2;
     v70[3] = &unk_279EDBE80;
     v70[4] = self;
-    v42 = v64;
-    v71 = v64;
+    v42 = attributedTextCopy;
+    v71 = attributedTextCopy;
     v73 = v21;
     v74 = v20;
     v72 = v14;
@@ -584,7 +584,7 @@ LABEL_9:
   v65[1] = 3221225472;
   v65[2] = __92__WFContactField_presentContactSelectionActionSheetForText_attributedText_replacementRange___block_invoke_3;
   v65[3] = &unk_279EDBE80;
-  v65[4] = v56;
+  v65[4] = selfCopy;
   v66 = v42;
   v68 = v21;
   v69 = v20;
@@ -594,7 +594,7 @@ LABEL_9:
   v53 = [v47 buttonWithTitle:v50 style:0 handler:v65];
   [v43 addButton:v53];
 
-  v54 = [(WFContactField *)v56 containingViewController];
+  containingViewController = [(WFContactField *)selfCopy containingViewController];
   v55 = WFUserInterfaceFromViewController();
   [v55 presentAlert:v43];
 }
@@ -620,61 +620,61 @@ uint64_t __92__WFContactField_presentContactSelectionActionSheetForText_attribut
   return [v2 deleteFreeText:v3 replacementRange:v4 newValue:{v6, v5}];
 }
 
-- (void)tokenizeFreeText:(id)a3 replacementRange:(_NSRange)a4 newValue:(id)a5
+- (void)tokenizeFreeText:(id)text replacementRange:(_NSRange)range newValue:(id)value
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = a3;
+  length = range.length;
+  location = range.location;
+  valueCopy = value;
+  textCopy = text;
   v19 = [(WFValueTextAttachment *)[WFContactTextAttachment alloc] initWithData:0 ofType:0];
-  [(WFValueTextAttachment *)v19 setStringValue:v9];
+  [(WFValueTextAttachment *)v19 setStringValue:valueCopy];
 
   v11 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v19];
-  [v10 replaceCharactersInRange:location withAttributedString:{length, v11}];
+  [textCopy replaceCharactersInRange:location withAttributedString:{length, v11}];
 
-  v12 = [(WFContactField *)self textView];
-  v13 = [v12 typingAttributes];
-  [v10 addAttributes:v13 range:{0, objc_msgSend(v10, "length")}];
+  textView = [(WFContactField *)self textView];
+  typingAttributes = [textView typingAttributes];
+  [textCopy addAttributes:typingAttributes range:{0, objc_msgSend(textCopy, "length")}];
 
-  v14 = [(WFContactField *)self textView];
-  [v14 setAttributedText:v10];
+  textView2 = [(WFContactField *)self textView];
+  [textView2 setAttributedText:textCopy];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v16 = *MEMORY[0x277D77218];
-  v17 = [(WFContactField *)self textView];
-  [v15 postNotificationName:v16 object:v17];
+  textView3 = [(WFContactField *)self textView];
+  [defaultCenter postNotificationName:v16 object:textView3];
 
-  v18 = [(WFContactField *)self textView];
-  [v18 updateTextAttachments];
+  textView4 = [(WFContactField *)self textView];
+  [textView4 updateTextAttachments];
 
   [(WFContactField *)self updateContactsFromTextField:0];
 }
 
-- (void)deleteFreeText:(id)a3 replacementRange:(_NSRange)a4 newValue:(id)a5
+- (void)deleteFreeText:(id)text replacementRange:(_NSRange)range newValue:(id)value
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  [v8 deleteCharactersInRange:{location, length}];
-  v9 = [(WFContactField *)self textView];
-  [v9 setAttributedText:v8];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  [textCopy deleteCharactersInRange:{location, length}];
+  textView = [(WFContactField *)self textView];
+  [textView setAttributedText:textCopy];
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v11 = *MEMORY[0x277D77218];
-  v12 = [(WFContactField *)self textView];
-  [v10 postNotificationName:v11 object:v12];
+  textView2 = [(WFContactField *)self textView];
+  [defaultCenter postNotificationName:v11 object:textView2];
 
-  v13 = [(WFContactField *)self textView];
-  [v13 updateTextAttachments];
+  textView3 = [(WFContactField *)self textView];
+  [textView3 updateTextAttachments];
 
   [(WFContactField *)self updateContactsFromTextField:0];
 }
 
-- (int64_t)tokenizeFreeTextFromRange:(_NSRange)a3 freeTextModificationBlock:(id *)a4
+- (int64_t)tokenizeFreeTextFromRange:(_NSRange)range freeTextModificationBlock:(id *)block
 {
-  v6 = [(WFContactField *)self textView:a3.location];
-  v7 = [v6 attributedText];
-  v8 = [v7 length];
+  v6 = [(WFContactField *)self textView:range.location];
+  attributedText = [v6 attributedText];
+  v8 = [attributedText length];
 
   v30 = 0;
   v31 = &v30;
@@ -682,19 +682,19 @@ uint64_t __92__WFContactField_presentContactSelectionActionSheetForText_attribut
   v34 = 0;
   v35 = 0;
   v33 = "";
-  v9 = [(WFContactField *)self textView];
-  v10 = [v9 attributedText];
+  textView = [(WFContactField *)self textView];
+  attributedText2 = [textView attributedText];
   v11 = *MEMORY[0x277D74060];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __70__WFContactField_tokenizeFreeTextFromRange_freeTextModificationBlock___block_invoke;
   v29[3] = &unk_279EDBE58;
   v29[4] = &v30;
-  [v10 enumerateAttribute:v11 inRange:0 options:v8 usingBlock:{0, v29}];
+  [attributedText2 enumerateAttribute:v11 inRange:0 options:v8 usingBlock:{0, v29}];
 
-  v12 = [(WFContactField *)self textView];
-  v13 = [v12 attributedText];
-  v14 = [v13 mutableCopy];
+  textView2 = [(WFContactField *)self textView];
+  attributedText3 = [textView2 attributedText];
+  v14 = [attributedText3 mutableCopy];
 
   v16 = v31[4];
   v15 = v31[5];
@@ -703,12 +703,12 @@ uint64_t __92__WFContactField_presentContactSelectionActionSheetForText_attribut
   if (v8 != v15 + v16)
   {
     v20 = [v14 attributedSubstringFromRange:{v15 + v16, v8 - (v15 + v16)}];
-    v21 = [v20 string];
+    string = [v20 string];
 
-    v22 = [(WFContactField *)self supportedPersonProperties];
-    if ((-[WFContactField allowsTextEntry](self, "allowsTextEntry") || ([MEMORY[0x277D75418] currentDevice], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "userInterfaceIdiom"), v23, v24 == 1)) && !-[WFContactField text:containsMatchesForProperties:](self, "text:containsMatchesForProperties:", v21, v22))
+    supportedPersonProperties = [(WFContactField *)self supportedPersonProperties];
+    if ((-[WFContactField allowsTextEntry](self, "allowsTextEntry") || ([MEMORY[0x277D75418] currentDevice], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "userInterfaceIdiom"), v23, v24 == 1)) && !-[WFContactField text:containsMatchesForProperties:](self, "text:containsMatchesForProperties:", string, supportedPersonProperties))
     {
-      if (!a4)
+      if (!block)
       {
         v19 = 2;
         goto LABEL_13;
@@ -720,7 +720,7 @@ uint64_t __92__WFContactField_presentContactSelectionActionSheetForText_attribut
       v28[2] = __70__WFContactField_tokenizeFreeTextFromRange_freeTextModificationBlock___block_invoke_2;
       v28[3] = &unk_279EDBE80;
       v28[4] = self;
-      v28[5] = v21;
+      v28[5] = string;
       v28[6] = v14;
       v28[7] = v17;
       v28[8] = v18;
@@ -729,7 +729,7 @@ uint64_t __92__WFContactField_presentContactSelectionActionSheetForText_attribut
 
     else
     {
-      if (!a4)
+      if (!block)
       {
         v19 = 1;
         goto LABEL_13;
@@ -744,11 +744,11 @@ uint64_t __92__WFContactField_presentContactSelectionActionSheetForText_attribut
       v27[5] = v14;
       v27[7] = v17;
       v27[8] = v18;
-      v27[6] = v21;
+      v27[6] = string;
       v19 = 1;
     }
 
-    *a4 = _Block_copy(v25);
+    *block = _Block_copy(v25);
 
 LABEL_13:
     goto LABEL_14;
@@ -776,39 +776,39 @@ uint64_t __70__WFContactField_tokenizeFreeTextFromRange_freeTextModificationBloc
   return result;
 }
 
-- (void)insertContact:(id)a3
+- (void)insertContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v22 = [(WFValueTextAttachment *)[WFContactTextAttachment alloc] initWithData:0 ofType:0];
-  [(WFContactTextAttachment *)v22 setValue:v4];
+  [(WFContactTextAttachment *)v22 setValue:contactCopy];
 
-  v5 = [(WFContactField *)self textView];
-  v6 = [v5 textStorage];
+  textView = [(WFContactField *)self textView];
+  textStorage = [textView textStorage];
   v7 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v22];
-  [v6 insertAttributedString:v7 atIndex:{-[WFContactField selectedRange](self, "selectedRange")}];
+  [textStorage insertAttributedString:v7 atIndex:{-[WFContactField selectedRange](self, "selectedRange")}];
 
-  v8 = [(WFContactField *)self textView];
-  v9 = [v8 textStorage];
-  v10 = [(WFContactField *)self textView];
-  v11 = [v10 typingAttributes];
-  [v9 addAttributes:v11 range:{-[WFContactField selectedRange](self, "selectedRange"), 1}];
+  textView2 = [(WFContactField *)self textView];
+  textStorage2 = [textView2 textStorage];
+  textView3 = [(WFContactField *)self textView];
+  typingAttributes = [textView3 typingAttributes];
+  [textStorage2 addAttributes:typingAttributes range:{-[WFContactField selectedRange](self, "selectedRange"), 1}];
 
-  v12 = [(WFContactField *)self selectedRange];
-  v13 = [(WFContactField *)self textView];
-  [v13 setSelectedRange:{v12 + 1, 0}];
+  selectedRange = [(WFContactField *)self selectedRange];
+  textView4 = [(WFContactField *)self textView];
+  [textView4 setSelectedRange:{selectedRange + 1, 0}];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v15 = *MEMORY[0x277D77218];
-  v16 = [(WFContactField *)self textView];
-  [v14 postNotificationName:v15 object:v16];
+  textView5 = [(WFContactField *)self textView];
+  [defaultCenter postNotificationName:v15 object:textView5];
 
-  v17 = [(WFContactField *)self scrollView];
-  v18 = [(WFContactField *)self textView];
-  v19 = [(WFContactField *)self textView];
-  v20 = [v19 selectedTextRange];
-  v21 = [v20 end];
-  [v18 caretRectForPosition:v21];
-  [v17 scrollRectToVisible:0 animated:?];
+  scrollView = [(WFContactField *)self scrollView];
+  textView6 = [(WFContactField *)self textView];
+  textView7 = [(WFContactField *)self textView];
+  selectedTextRange = [textView7 selectedTextRange];
+  v21 = [selectedTextRange end];
+  [textView6 caretRectForPosition:v21];
+  [scrollView scrollRectToVisible:0 animated:?];
 
   [(WFContactField *)self updateContactsFromTextField:0];
 }
@@ -819,17 +819,17 @@ uint64_t __70__WFContactField_tokenizeFreeTextFromRange_freeTextModificationBloc
   contactPicker = self->_contactPicker;
   self->_contactPicker = v3;
 
-  v5 = [(WFContactField *)self supportedPersonProperties];
-  [(WFContactPickerCoordinator *)self->_contactPicker setSupportedPersonProperties:v5];
+  supportedPersonProperties = [(WFContactField *)self supportedPersonProperties];
+  [(WFContactPickerCoordinator *)self->_contactPicker setSupportedPersonProperties:supportedPersonProperties];
 
-  v6 = [(WFContactField *)self containingViewController];
-  [(WFContactPickerCoordinator *)self->_contactPicker setPresentingViewController:v6];
+  containingViewController = [(WFContactField *)self containingViewController];
+  [(WFContactPickerCoordinator *)self->_contactPicker setPresentingViewController:containingViewController];
 
   v7 = MEMORY[0x277D7D500];
-  v8 = [(WFContactField *)self plusButton];
-  v9 = [(WFContactField *)self plusButton];
-  [v9 bounds];
-  v10 = [v7 sourceWithView:v8 rect:?];
+  plusButton = [(WFContactField *)self plusButton];
+  plusButton2 = [(WFContactField *)self plusButton];
+  [plusButton2 bounds];
+  v10 = [v7 sourceWithView:plusButton rect:?];
   [(WFContactPickerCoordinator *)self->_contactPicker setPresentationSource:v10];
 
   objc_initWeak(&location, self);
@@ -858,10 +858,10 @@ void __35__WFContactField_showContactPicker__block_invoke(uint64_t a1, void *a2)
 
 - (void)selectContact
 {
-  v3 = [(WFContactField *)self textView];
-  v4 = [v3 selectedRange];
+  textView = [(WFContactField *)self textView];
+  selectedRange = [textView selectedRange];
   v8 = 0;
-  v6 = [(WFContactField *)self tokenizeFreeTextFromRange:v4 freeTextModificationBlock:v5, &v8];
+  v6 = [(WFContactField *)self tokenizeFreeTextFromRange:selectedRange freeTextModificationBlock:v5, &v8];
   v7 = v8;
 
   if (v7)
@@ -877,13 +877,13 @@ void __35__WFContactField_showContactPicker__block_invoke(uint64_t a1, void *a2)
 
 - (id)containingViewController
 {
-  v3 = [(WFContactField *)self delegate];
+  delegate = [(WFContactField *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFContactField *)self delegate];
-    v6 = [v5 viewControllerContainingContactField:self];
+    delegate2 = [(WFContactField *)self delegate];
+    v6 = [delegate2 viewControllerContainingContactField:self];
   }
 
   else
@@ -894,19 +894,19 @@ void __35__WFContactField_showContactPicker__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)updateContactsFromTextField:(BOOL)a3
+- (void)updateContactsFromTextField:(BOOL)field
 {
-  v3 = a3;
-  v5 = [(WFContactField *)self textView];
-  v6 = [v5 attributedText];
-  v11 = WFContactEntriesFromAttributedString(v6);
+  fieldCopy = field;
+  textView = [(WFContactField *)self textView];
+  attributedText = [textView attributedText];
+  v11 = WFContactEntriesFromAttributedString(attributedText);
 
-  v7 = [(WFContactField *)self entries];
-  LOBYTE(v6) = [v11 isEqualToArray:v7];
+  entries = [(WFContactField *)self entries];
+  LOBYTE(attributedText) = [v11 isEqualToArray:entries];
 
-  if ((v6 & 1) == 0)
+  if ((attributedText & 1) == 0)
   {
-    if (v3)
+    if (fieldCopy)
     {
       v8 = [v11 copy];
       entries = self->_entries;
@@ -939,8 +939,8 @@ void __35__WFContactField_showContactPicker__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      v4 = [(WFContactField *)self entries];
-      v3 = [v4 count] != 0;
+      entries = [(WFContactField *)self entries];
+      v3 = [entries count] != 0;
     }
   }
 
@@ -949,120 +949,120 @@ void __35__WFContactField_showContactPicker__block_invoke(uint64_t a1, void *a2)
     v3 = 0;
   }
 
-  v5 = [(WFContactField *)self textView];
-  [v5 setEditable:v3];
+  textView = [(WFContactField *)self textView];
+  [textView setEditable:v3];
 
-  v6 = [(WFContactField *)self textView];
-  [v6 setSelectable:v3];
+  textView2 = [(WFContactField *)self textView];
+  [textView2 setSelectable:v3];
 
-  v7 = [(WFContactField *)self isEditable];
-  v8 = [(WFContactField *)self plusButton];
-  [v8 setEnabled:v7];
+  isEditable = [(WFContactField *)self isEditable];
+  plusButton = [(WFContactField *)self plusButton];
+  [plusButton setEnabled:isEditable];
 
-  v9 = [(WFContactField *)self scrollView];
-  [v9 setUserInteractionEnabled:v3];
+  scrollView = [(WFContactField *)self scrollView];
+  [scrollView setUserInteractionEnabled:v3];
 }
 
-- (void)setAllowsTextEntry:(BOOL)a3
+- (void)setAllowsTextEntry:(BOOL)entry
 {
-  v3 = a3;
-  self->_allowsTextEntry = a3;
+  entryCopy = entry;
+  self->_allowsTextEntry = entry;
   WeakRetained = objc_loadWeakRetained(&self->_textView);
-  [WeakRetained setAllowsTextEntry:v3];
+  [WeakRetained setAllowsTextEntry:entryCopy];
 
   [(WFContactField *)self updateEditableState];
 }
 
-- (void)setSupportedPersonProperties:(id)a3
+- (void)setSupportedPersonProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(WFContactField *)self textView];
-  [v5 setSupportedPersonProperties:v4];
+  propertiesCopy = properties;
+  textView = [(WFContactField *)self textView];
+  [textView setSupportedPersonProperties:propertiesCopy];
 }
 
 - (NSSet)supportedPersonProperties
 {
-  v2 = [(WFContactField *)self textView];
-  v3 = [v2 supportedPersonProperties];
+  textView = [(WFContactField *)self textView];
+  supportedPersonProperties = [textView supportedPersonProperties];
 
-  return v3;
+  return supportedPersonProperties;
 }
 
-- (void)setTextContentType:(id)a3
+- (void)setTextContentType:(id)type
 {
-  v4 = a3;
-  v5 = [(WFContactField *)self textView];
-  [v5 setTextContentType:v4];
+  typeCopy = type;
+  textView = [(WFContactField *)self textView];
+  [textView setTextContentType:typeCopy];
 }
 
 - (NSString)textContentType
 {
-  v2 = [(WFContactField *)self textView];
-  v3 = [v2 textContentType];
+  textView = [(WFContactField *)self textView];
+  textContentType = [textView textContentType];
 
-  return v3;
+  return textContentType;
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  v4 = [(WFContactField *)self textView];
-  [v4 setTextAlignment:a3];
+  textView = [(WFContactField *)self textView];
+  [textView setTextAlignment:alignment];
 }
 
 - (int64_t)textAlignment
 {
-  v2 = [(WFContactField *)self textView];
-  v3 = [v2 textAlignment];
+  textView = [(WFContactField *)self textView];
+  textAlignment = [textView textAlignment];
 
-  return v3;
+  return textAlignment;
 }
 
-- (void)setKeyboardAppearance:(int64_t)a3
+- (void)setKeyboardAppearance:(int64_t)appearance
 {
-  v4 = [(WFContactField *)self textView];
-  [v4 setKeyboardAppearance:a3];
+  textView = [(WFContactField *)self textView];
+  [textView setKeyboardAppearance:appearance];
 }
 
 - (int64_t)keyboardAppearance
 {
-  v2 = [(WFContactField *)self textView];
-  v3 = [v2 keyboardAppearance];
+  textView = [(WFContactField *)self textView];
+  keyboardAppearance = [textView keyboardAppearance];
 
-  return v3;
+  return keyboardAppearance;
 }
 
-- (void)setKeyboardType:(int64_t)a3
+- (void)setKeyboardType:(int64_t)type
 {
-  v4 = [(WFContactField *)self textView];
-  [v4 setKeyboardType:a3];
+  textView = [(WFContactField *)self textView];
+  [textView setKeyboardType:type];
 }
 
 - (int64_t)keyboardType
 {
-  v2 = [(WFContactField *)self textView];
-  v3 = [v2 keyboardType];
+  textView = [(WFContactField *)self textView];
+  keyboardType = [textView keyboardType];
 
-  return v3;
+  return keyboardType;
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [(WFContactField *)self textView];
-  [v5 setPlaceholder:v4];
+  placeholderCopy = placeholder;
+  textView = [(WFContactField *)self textView];
+  [textView setPlaceholder:placeholderCopy];
 }
 
 - (NSString)placeholder
 {
-  v2 = [(WFContactField *)self textView];
-  v3 = [v2 placeholder];
+  textView = [(WFContactField *)self textView];
+  placeholder = [textView placeholder];
 
-  return v3;
+  return placeholder;
 }
 
-- (void)setEntries:(id)a3
+- (void)setEntries:(id)entries
 {
-  v4 = [a3 copy];
+  v4 = [entries copy];
   v5 = v4;
   if (v4)
   {
@@ -1077,19 +1077,19 @@ void __35__WFContactField_showContactPicker__block_invoke(uint64_t a1, void *a2)
   objc_storeStrong(&self->_entries, v6);
 
   entries = self->_entries;
-  v8 = [(WFContactField *)self textView];
-  v9 = [v8 typingAttributes];
-  v10 = WFAttributedStringFromContactEntries(entries, v9, 1);
-  v11 = [(WFContactField *)self textView];
-  [v11 setAttributedText:v10];
+  textView = [(WFContactField *)self textView];
+  typingAttributes = [textView typingAttributes];
+  v10 = WFAttributedStringFromContactEntries(entries, typingAttributes, 1);
+  textView2 = [(WFContactField *)self textView];
+  [textView2 setAttributedText:v10];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13 = *MEMORY[0x277D77218];
-  v14 = [(WFContactField *)self textView];
-  [v12 postNotificationName:v13 object:v14];
+  textView3 = [(WFContactField *)self textView];
+  [defaultCenter postNotificationName:v13 object:textView3];
 
-  v15 = [(WFContactField *)self textView];
-  [v15 updateTextAttachments];
+  textView4 = [(WFContactField *)self textView];
+  [textView4 updateTextAttachments];
 
   [(WFContactField *)self updateEditableState];
 }
@@ -1099,11 +1099,11 @@ void __35__WFContactField_showContactPicker__block_invoke(uint64_t a1, void *a2)
   v16.receiver = self;
   v16.super_class = WFContactField;
   [(WFContactField *)&v16 layoutSubviews];
-  v3 = [MEMORY[0x277CFC248] sharedContext];
-  v4 = [v3 shouldReverseLayoutDirection];
+  mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
+  shouldReverseLayoutDirection = [mEMORY[0x277CFC248] shouldReverseLayoutDirection];
 
   v5 = 0.0;
-  if (v4)
+  if (shouldReverseLayoutDirection)
   {
     v6 = 35.0;
   }
@@ -1117,43 +1117,43 @@ void __35__WFContactField_showContactPicker__block_invoke(uint64_t a1, void *a2)
   v8 = v7 + -35.0;
   [(WFContactField *)self bounds];
   v10 = v9;
-  v11 = [(WFContactField *)self scrollView];
-  [v11 setFrame:{v6, 0.0, v8, v10}];
+  scrollView = [(WFContactField *)self scrollView];
+  [scrollView setFrame:{v6, 0.0, v8, v10}];
 
-  if ((v4 & 1) == 0)
+  if ((shouldReverseLayoutDirection & 1) == 0)
   {
-    v11 = [(WFContactField *)self scrollView];
-    [v11 bounds];
+    scrollView = [(WFContactField *)self scrollView];
+    [scrollView bounds];
     v5 = v12 + 5.0;
   }
 
   [(WFContactField *)self bounds];
   v14 = v13;
-  v15 = [(WFContactField *)self plusButton];
-  [v15 setFrame:{v5, 0.0, 30.0, v14}];
+  plusButton = [(WFContactField *)self plusButton];
+  [plusButton setFrame:{v5, 0.0, 30.0, v14}];
 
-  if ((v4 & 1) == 0)
+  if ((shouldReverseLayoutDirection & 1) == 0)
   {
   }
 }
 
-- (WFContactField)initWithFrame:(CGRect)a3
+- (WFContactField)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = WFContactField;
-  v3 = [(WFContactField *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFContactField *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(WFContactTextView);
-    v5 = [(WFContactField *)v3 typingAttributes];
-    [(WFContactTextView *)v4 setTypingAttributes:v5];
+    typingAttributes = [(WFContactField *)v3 typingAttributes];
+    [(WFContactTextView *)v4 setTypingAttributes:typingAttributes];
 
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(WFContactTextView *)v4 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WFContactTextView *)v4 setBackgroundColor:clearColor];
 
     [(WFContactTextView *)v4 setAutocapitalizationType:[(WFContactField *)v3 autocapitalizationType]];
-    v7 = [(WFContactTextView *)v4 textContainer];
-    [v7 setLineFragmentPadding:0.0];
+    textContainer = [(WFContactTextView *)v4 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     entries = v3->_entries;
     v3->_entries = MEMORY[0x277CBEBF8];

@@ -1,11 +1,11 @@
 @interface SWPerson
-- (SWPerson)initWithCoder:(id)a3;
+- (SWPerson)initWithCoder:(id)coder;
 - (SWPerson)initWithHandle:(NSString *)handle identity:(SWPersonIdentity *)identity displayName:(NSString *)displayName thumbnailImageData:(NSData *)thumbnailImageData;
 - (id)contact;
 - (id)displayName;
 - (id)handle;
 - (id)thumbnailImageData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWPerson
@@ -54,65 +54,65 @@ LABEL_12:
 
 - (id)handle
 {
-  v2 = [(SWPerson *)self slPerson];
-  v3 = [v2 handle];
+  slPerson = [(SWPerson *)self slPerson];
+  handle = [slPerson handle];
 
-  return v3;
+  return handle;
 }
 
 - (id)displayName
 {
-  v2 = [(SWPerson *)self slPerson];
-  v3 = [v2 displayName];
+  slPerson = [(SWPerson *)self slPerson];
+  displayName = [slPerson displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (id)contact
 {
-  v2 = [(SWPerson *)self slPerson];
-  v3 = [v2 contact];
+  slPerson = [(SWPerson *)self slPerson];
+  contact = [slPerson contact];
 
-  return v3;
+  return contact;
 }
 
 - (id)thumbnailImageData
 {
-  v3 = [(SWPerson *)self customThumbnailImageData];
+  customThumbnailImageData = [(SWPerson *)self customThumbnailImageData];
 
-  if (v3)
+  if (customThumbnailImageData)
   {
-    v4 = [(SWPerson *)self customThumbnailImageData];
+    customThumbnailImageData2 = [(SWPerson *)self customThumbnailImageData];
   }
 
   else
   {
-    v5 = [(SWPerson *)self slPerson];
-    v4 = [v5 thumbnailImageData];
+    slPerson = [(SWPerson *)self slPerson];
+    customThumbnailImageData2 = [slPerson thumbnailImageData];
   }
 
-  return v4;
+  return customThumbnailImageData2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWPerson *)self slPerson];
+  coderCopy = coder;
+  slPerson = [(SWPerson *)self slPerson];
   v6 = NSStringFromSelector(sel_slPerson);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:slPerson forKey:v6];
 
-  v7 = [(SWPerson *)self customThumbnailImageData];
+  customThumbnailImageData = [(SWPerson *)self customThumbnailImageData];
   v8 = NSStringFromSelector(sel_customThumbnailImageData);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:customThumbnailImageData forKey:v8];
 
-  v10 = [(SWPerson *)self identity];
+  identity = [(SWPerson *)self identity];
   v9 = NSStringFromSelector(sel_identity);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:identity forKey:v9];
 }
 
-- (SWPerson)initWithCoder:(id)a3
+- (SWPerson)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = SWPerson;
   v5 = [(SWPerson *)&v19 init];
@@ -120,19 +120,19 @@ LABEL_12:
   {
     SLPersonClass = getSLPersonClass();
     v7 = NSStringFromSelector(sel_slPerson);
-    v8 = [v4 decodeObjectOfClass:SLPersonClass forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:SLPersonClass forKey:v7];
     slPerson = v5->_slPerson;
     v5->_slPerson = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_customThumbnailImageData);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     customThumbnailImageData = v5->_customThumbnailImageData;
     v5->_customThumbnailImageData = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_identity);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     identity = v5->_identity;
     v5->_identity = v16;
   }

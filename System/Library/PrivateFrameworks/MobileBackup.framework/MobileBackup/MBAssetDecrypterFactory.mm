@@ -1,25 +1,25 @@
 @interface MBAssetDecrypterFactory
-+ (id)assetDecrypterWithTracker:(id)a3 device:(id)a4 error:(id *)a5;
++ (id)assetDecrypterWithTracker:(id)tracker device:(id)device error:(id *)error;
 @end
 
 @implementation MBAssetDecrypterFactory
 
-+ (id)assetDecrypterWithTracker:(id)a3 device:(id)a4 error:(id *)a5
++ (id)assetDecrypterWithTracker:(id)tracker device:(id)device error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  trackerCopy = tracker;
+  deviceCopy = device;
+  if (!trackerCopy)
   {
     __assert_rtn("+[MBAssetDecrypterFactory assetDecrypterWithTracker:device:error:]", "MBAssetDecrypter.m", 27, "tracker");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = deviceCopy;
+  if (!deviceCopy)
   {
     __assert_rtn("+[MBAssetDecrypterFactory assetDecrypterWithTracker:device:error:]", "MBAssetDecrypter.m", 28, "device");
   }
 
-  v9 = [[_AssetDecrypter alloc] _initWithTracker:v6 device:v7];
+  v9 = [[_AssetDecrypter alloc] _initWithTracker:trackerCopy device:deviceCopy];
 
   return v9;
 }

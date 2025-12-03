@@ -1,14 +1,14 @@
 @interface NTKTritiumDefaults
 + (id)sharedInstance;
 - (BOOL)allBundleIDsPrivateInTritium;
-- (BOOL)isBundleIdPrivateInTritium:(id)a3;
+- (BOOL)isBundleIdPrivateInTritium:(id)tritium;
 - (NTKTritiumDefaults)init;
 - (id)_privateBundleIDs;
 - (void)_observe;
 - (void)_synchronize;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAllBundleIDsPrivateInTritium:(BOOL)a3;
-- (void)setBundleIDs:(id)a3 privateInTritium:(BOOL)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAllBundleIDsPrivateInTritium:(BOOL)tritium;
+- (void)setBundleIDs:(id)ds privateInTritium:(BOOL)tritium;
 @end
 
 @implementation NTKTritiumDefaults
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __36__NTKTritiumDefaults_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_26 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_26, block);
@@ -54,9 +54,9 @@ void __36__NTKTritiumDefaults_sharedInstance__block_invoke(uint64_t a1)
     defaults = v3->_defaults;
     v3->_defaults = v6;
 
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v8;
+    v3->_observers = weakObjectsHashTable;
 
     [(NTKTritiumDefaults *)v3 _observe];
   }
@@ -66,8 +66,8 @@ void __36__NTKTritiumDefaults_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)_synchronize
 {
-  v2 = [(NTKTritiumDefaults *)self _domainAccessor];
-  v3 = [v2 synchronize];
+  _domainAccessor = [(NTKTritiumDefaults *)self _domainAccessor];
+  synchronize = [_domainAccessor synchronize];
 
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{@"NTKAllComplicationsPrivate", @"NTKSpecificComplicationsPrivate", 0}];
   v4 = objc_alloc_init(MEMORY[0x277D2BA60]);
@@ -77,8 +77,8 @@ void __36__NTKTritiumDefaults_sharedInstance__block_invoke(uint64_t a1)
 - (BOOL)allBundleIDsPrivateInTritium
 {
   v8 = 0;
-  v3 = [(NTKTritiumDefaults *)self _domainAccessor];
-  LOBYTE(v4) = [v3 BOOLForKey:@"NTKAllComplicationsPrivate" keyExistsAndHasValidFormat:&v8];
+  _domainAccessor = [(NTKTritiumDefaults *)self _domainAccessor];
+  LOBYTE(v4) = [_domainAccessor BOOLForKey:@"NTKAllComplicationsPrivate" keyExistsAndHasValidFormat:&v8];
 
   if ((v8 & 1) == 0)
   {
@@ -100,21 +100,21 @@ void __36__NTKTritiumDefaults_sharedInstance__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setAllBundleIDsPrivateInTritium:(BOOL)a3
+- (void)setAllBundleIDsPrivateInTritium:(BOOL)tritium
 {
-  v3 = a3;
-  v5 = [(NTKTritiumDefaults *)self _domainAccessor];
-  [v5 setBool:v3 forKey:@"NTKAllComplicationsPrivate"];
+  tritiumCopy = tritium;
+  _domainAccessor = [(NTKTritiumDefaults *)self _domainAccessor];
+  [_domainAccessor setBool:tritiumCopy forKey:@"NTKAllComplicationsPrivate"];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"com.apple.NanoTimeKit.NTKTritiumSettingsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.NanoTimeKit.NTKTritiumSettingsDidChangeNotification" object:0];
 
   [(NTKTritiumDefaults *)self _synchronize];
 }
 
-- (BOOL)isBundleIdPrivateInTritium:(id)a3
+- (BOOL)isBundleIdPrivateInTritium:(id)tritium
 {
-  v4 = a3;
+  tritiumCopy = tritium;
   if ([(NTKTritiumDefaults *)self allBundleIDsPrivateInTritium])
   {
     v5 = 1;
@@ -122,44 +122,44 @@ void __36__NTKTritiumDefaults_sharedInstance__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(NTKTritiumDefaults *)self _privateBundleIDs];
-    v5 = [v6 containsObject:v4];
+    _privateBundleIDs = [(NTKTritiumDefaults *)self _privateBundleIDs];
+    v5 = [_privateBundleIDs containsObject:tritiumCopy];
   }
 
   return v5;
 }
 
-- (void)setBundleIDs:(id)a3 privateInTritium:(BOOL)a4
+- (void)setBundleIDs:(id)ds privateInTritium:(BOOL)tritium
 {
-  v4 = a4;
+  tritiumCopy = tritium;
   v6 = MEMORY[0x277CBEB58];
-  v7 = a3;
-  v8 = [(NTKTritiumDefaults *)self _privateBundleIDs];
-  v12 = [v6 setWithArray:v8];
+  dsCopy = ds;
+  _privateBundleIDs = [(NTKTritiumDefaults *)self _privateBundleIDs];
+  v12 = [v6 setWithArray:_privateBundleIDs];
 
-  if (v4)
+  if (tritiumCopy)
   {
-    [v12 unionSet:v7];
+    [v12 unionSet:dsCopy];
   }
 
   else
   {
-    [v12 minusSet:v7];
+    [v12 minusSet:dsCopy];
   }
 
-  v9 = [(NTKTritiumDefaults *)self _domainAccessor];
-  v10 = [v12 allObjects];
-  [v9 setObject:v10 forKey:@"NTKSpecificComplicationsPrivate"];
+  _domainAccessor = [(NTKTritiumDefaults *)self _domainAccessor];
+  allObjects = [v12 allObjects];
+  [_domainAccessor setObject:allObjects forKey:@"NTKSpecificComplicationsPrivate"];
 
   [(NTKTritiumDefaults *)self _synchronize];
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 postNotificationName:@"com.apple.NanoTimeKit.NTKTritiumSettingsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.NanoTimeKit.NTKTritiumSettingsDidChangeNotification" object:0];
 }
 
 - (id)_privateBundleIDs
 {
-  v2 = [(NTKTritiumDefaults *)self _domainAccessor];
-  v3 = [v2 objectForKey:@"NTKSpecificComplicationsPrivate"];
+  _domainAccessor = [(NTKTritiumDefaults *)self _domainAccessor];
+  v3 = [_domainAccessor objectForKey:@"NTKSpecificComplicationsPrivate"];
 
   if (v3)
   {
@@ -182,7 +182,7 @@ void __36__NTKTritiumDefaults_sharedInstance__block_invoke(uint64_t a1)
   [(NSUserDefaults *)defaults addObserver:self forKeyPath:@"NTKAllComplicationsPrivate" options:0 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;

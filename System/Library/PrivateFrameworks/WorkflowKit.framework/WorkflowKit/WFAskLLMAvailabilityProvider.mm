@@ -14,7 +14,7 @@
 
 - (BOOL)isActionVisible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WFAskLLMAvailabilityProvider.isActionVisible()();
 
   return v3;

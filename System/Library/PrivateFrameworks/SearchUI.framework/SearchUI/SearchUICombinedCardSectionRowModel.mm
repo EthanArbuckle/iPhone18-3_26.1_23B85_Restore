@@ -1,12 +1,12 @@
 @interface SearchUICombinedCardSectionRowModel
 - (BOOL)isDraggable;
 - (NSArray)snippetUICardSections;
-- (SearchUICombinedCardSectionRowModel)initWithResult:(id)a3 cardSectionRowModels:(id)a4 cardSection:(id)a5 dataSourceIdentifier:(id)a6;
-- (SearchUICombinedCardSectionRowModel)initWithResult:(id)a3 cardSectionRowModels:(id)a4 dataSourceIdentifier:(id)a5;
+- (SearchUICombinedCardSectionRowModel)initWithResult:(id)result cardSectionRowModels:(id)models cardSection:(id)section dataSourceIdentifier:(id)identifier;
+- (SearchUICombinedCardSectionRowModel)initWithResult:(id)result cardSectionRowModels:(id)models dataSourceIdentifier:(id)identifier;
 - (id)backgroundColor;
 - (id)backgroundImage;
 - (id)cardSection;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dragSubtitle;
 - (id)dragText;
 - (id)dragTitle;
@@ -16,39 +16,39 @@
 - (id)punchouts;
 - (id)reuseIdentifier;
 - (int)separatorStyle;
-- (void)setIsTopHit:(BOOL)a3;
+- (void)setIsTopHit:(BOOL)hit;
 @end
 
 @implementation SearchUICombinedCardSectionRowModel
 
-- (SearchUICombinedCardSectionRowModel)initWithResult:(id)a3 cardSectionRowModels:(id)a4 dataSourceIdentifier:(id)a5
+- (SearchUICombinedCardSectionRowModel)initWithResult:(id)result cardSectionRowModels:(id)models dataSourceIdentifier:(id)identifier
 {
-  v8 = a4;
+  modelsCopy = models;
   v12.receiver = self;
   v12.super_class = SearchUICombinedCardSectionRowModel;
-  v9 = [(SearchUIRowModel *)&v12 initWithResult:a3 itemIdentifier:a5];
+  v9 = [(SearchUIRowModel *)&v12 initWithResult:result itemIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    [(SearchUICombinedCardSectionRowModel *)v9 setCardSectionRowModels:v8];
+    [(SearchUICombinedCardSectionRowModel *)v9 setCardSectionRowModels:modelsCopy];
   }
 
   return v10;
 }
 
-- (SearchUICombinedCardSectionRowModel)initWithResult:(id)a3 cardSectionRowModels:(id)a4 cardSection:(id)a5 dataSourceIdentifier:(id)a6
+- (SearchUICombinedCardSectionRowModel)initWithResult:(id)result cardSectionRowModels:(id)models cardSection:(id)section dataSourceIdentifier:(id)identifier
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  modelsCopy = models;
+  identifierCopy = identifier;
+  sectionCopy = section;
+  resultCopy = result;
   v16.receiver = self;
   v16.super_class = SearchUICombinedCardSectionRowModel;
-  v14 = -[SearchUIRowModel initWithResult:cardSection:queryId:itemIdentifier:](&v16, sel_initWithResult_cardSection_queryId_itemIdentifier_, v13, v12, [v13 queryId], v11);
+  v14 = -[SearchUIRowModel initWithResult:cardSection:queryId:itemIdentifier:](&v16, sel_initWithResult_cardSection_queryId_itemIdentifier_, resultCopy, sectionCopy, [resultCopy queryId], identifierCopy);
 
   if (v14)
   {
-    [(SearchUICombinedCardSectionRowModel *)v14 setCardSectionRowModels:v10];
+    [(SearchUICombinedCardSectionRowModel *)v14 setCardSectionRowModels:modelsCopy];
   }
 
   return v14;
@@ -61,32 +61,32 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v4)
+  cardSectionRowModels = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
+  nextCard2 = [cardSectionRowModels countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (nextCard2)
   {
     v5 = *v16;
     while (2)
     {
-      for (i = 0; i != v4; i = i + 1)
+      for (i = 0; i != nextCard2; i = i + 1)
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cardSectionRowModels);
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
-        v8 = [v7 nextCard];
+        nextCard = [v7 nextCard];
 
-        if (v8)
+        if (nextCard)
         {
-          v4 = [v7 nextCard];
+          nextCard2 = [v7 nextCard];
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v4)
+      nextCard2 = [cardSectionRowModels countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (nextCard2)
       {
         continue;
       }
@@ -97,17 +97,17 @@
 
 LABEL_11:
 
-  v9 = [(SearchUIRowModel *)self identifyingResult];
-  v10 = [v9 card];
-  v11 = v10;
-  if (v10)
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  card = [identifyingResult card];
+  v11 = card;
+  if (card)
   {
-    v12 = v10;
+    v12 = card;
   }
 
   else
   {
-    v12 = v4;
+    v12 = nextCard2;
   }
 
   v13 = v12;
@@ -117,11 +117,11 @@ LABEL_11:
 
 - (int)separatorStyle
 {
-  v2 = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
-  v3 = [v2 lastObject];
-  v4 = [v3 separatorStyle];
+  cardSectionRowModels = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
+  lastObject = [cardSectionRowModels lastObject];
+  separatorStyle = [lastObject separatorStyle];
 
-  return v4;
+  return separatorStyle;
 }
 
 - (NSArray)snippetUICardSections
@@ -134,33 +134,33 @@ LABEL_11:
 
 - (id)reuseIdentifier
 {
-  v3 = [(SearchUICombinedCardSectionRowModel *)self snippetUICardSections];
-  if ([v3 count])
+  snippetUICardSections = [(SearchUICombinedCardSectionRowModel *)self snippetUICardSections];
+  if ([snippetUICardSections count])
   {
-    v4 = @"SnippetUICombinedCell";
+    reuseIdentifier = @"SnippetUICombinedCell";
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SearchUICombinedCardSectionRowModel;
-    v4 = [(SearchUIRowModel *)&v6 reuseIdentifier];
+    reuseIdentifier = [(SearchUIRowModel *)&v6 reuseIdentifier];
   }
 
-  return v4;
+  return reuseIdentifier;
 }
 
 - (id)punchouts
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [v3 punchout];
-  if (v4)
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  punchout = [identifyingResult punchout];
+  if (punchout)
   {
-    v5 = v4;
-    v6 = [(SearchUIRowModel *)self identifyingResult];
-    v7 = [v6 punchout];
-    v23[0] = v7;
+    v5 = punchout;
+    identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+    punchout2 = [identifyingResult2 punchout];
+    v23[0] = punchout2;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
 
     if (v8)
@@ -177,8 +177,8 @@ LABEL_11:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  cardSectionRowModels = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
+  v10 = [cardSectionRowModels countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -190,21 +190,21 @@ LABEL_11:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(cardSectionRowModels);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 punchouts];
+        punchouts = [v14 punchouts];
 
-        if (v15)
+        if (punchouts)
         {
-          v16 = [v14 punchouts];
+          punchouts2 = [v14 punchouts];
 
-          v8 = v16;
+          v8 = punchouts2;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [cardSectionRowModels countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -227,32 +227,32 @@ LABEL_17:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  cardSectionRowModels = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
+  dragURL2 = [cardSectionRowModels countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (dragURL2)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != dragURL2; i = i + 1)
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(cardSectionRowModels);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 dragURL];
+        dragURL = [v6 dragURL];
 
-        if (v7)
+        if (dragURL)
         {
-          v3 = [v6 dragURL];
+          dragURL2 = [v6 dragURL];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      dragURL2 = [cardSectionRowModels countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (dragURL2)
       {
         continue;
       }
@@ -263,69 +263,69 @@ LABEL_17:
 
 LABEL_11:
 
-  return v3;
+  return dragURL2;
 }
 
 - (id)firstRowModel
 {
-  v2 = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
-  v3 = [v2 firstObject];
+  cardSectionRowModels = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
+  firstObject = [cardSectionRowModels firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)dragTitle
 {
-  v2 = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
-  v3 = [v2 dragTitle];
+  firstRowModel = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
+  dragTitle = [firstRowModel dragTitle];
 
-  return v3;
+  return dragTitle;
 }
 
 - (id)dragText
 {
-  v2 = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
-  v3 = [v2 dragText];
+  firstRowModel = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
+  dragText = [firstRowModel dragText];
 
-  return v3;
+  return dragText;
 }
 
 - (id)dragSubtitle
 {
-  v2 = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
-  v3 = [v2 dragSubtitle];
+  firstRowModel = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
+  dragSubtitle = [firstRowModel dragSubtitle];
 
-  return v3;
+  return dragSubtitle;
 }
 
 - (BOOL)isDraggable
 {
-  v2 = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
-  v3 = [v2 isDraggable];
+  firstRowModel = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
+  isDraggable = [firstRowModel isDraggable];
 
-  return v3;
+  return isDraggable;
 }
 
 - (id)cardSection
 {
   v8.receiver = self;
   v8.super_class = SearchUICombinedCardSectionRowModel;
-  v3 = [(SearchUIRowModel *)&v8 cardSection];
+  cardSection = [(SearchUIRowModel *)&v8 cardSection];
 
-  if (v3)
+  if (cardSection)
   {
     v7.receiver = self;
     v7.super_class = SearchUICombinedCardSectionRowModel;
-    v4 = [(SearchUIRowModel *)&v7 cardSection];
+    cardSection2 = [(SearchUIRowModel *)&v7 cardSection];
   }
 
   else
   {
-    v5 = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
-    v4 = [v5 cardSection];
+    firstRowModel = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
+    cardSection2 = [firstRowModel cardSection];
   }
 
-  return v4;
+  return cardSection2;
 }
 
 - (id)backgroundColor
@@ -334,76 +334,76 @@ LABEL_11:
   {
     v12.receiver = self;
     v12.super_class = SearchUICombinedCardSectionRowModel;
-    v3 = [(SearchUIRowModel *)&v12 cardSection];
+    cardSection = [(SearchUIRowModel *)&v12 cardSection];
 
-    if (!v3 || (v11.receiver = self, v11.super_class = SearchUICombinedCardSectionRowModel, [(SearchUIRowModel *)&v11 backgroundColor], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!cardSection || (v11.receiver = self, v11.super_class = SearchUICombinedCardSectionRowModel, [(SearchUIRowModel *)&v11 backgroundColor], (backgroundColor2 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v5 = [(SearchUIRowModel *)self identifyingResult];
-      v6 = [SearchUIUtilities cardForRenderingResult:v5];
-      v7 = [v6 backgroundColor];
-      v8 = v7;
-      if (v7)
+      identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+      v6 = [SearchUIUtilities cardForRenderingResult:identifyingResult];
+      backgroundColor = [v6 backgroundColor];
+      v8 = backgroundColor;
+      if (backgroundColor)
       {
-        v4 = v7;
+        backgroundColor2 = backgroundColor;
       }
 
       else
       {
-        v9 = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
-        v4 = [v9 backgroundColor];
+        firstRowModel = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
+        backgroundColor2 = [firstRowModel backgroundColor];
       }
     }
   }
 
   else
   {
-    v4 = 0;
+    backgroundColor2 = 0;
   }
 
-  return v4;
+  return backgroundColor2;
 }
 
 - (id)backgroundImage
 {
   v12.receiver = self;
   v12.super_class = SearchUICombinedCardSectionRowModel;
-  v3 = [(SearchUIRowModel *)&v12 cardSection];
+  cardSection = [(SearchUIRowModel *)&v12 cardSection];
 
-  if (!v3 || (v11.receiver = self, v11.super_class = SearchUICombinedCardSectionRowModel, [(SearchUIRowModel *)&v11 backgroundImage], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!cardSection || (v11.receiver = self, v11.super_class = SearchUICombinedCardSectionRowModel, [(SearchUIRowModel *)&v11 backgroundImage], (backgroundImage2 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(SearchUIRowModel *)self identifyingResult];
-    v6 = [SearchUIUtilities cardForRenderingResult:v5];
-    v7 = [v6 backgroundImage];
-    v8 = v7;
-    if (v7)
+    identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+    v6 = [SearchUIUtilities cardForRenderingResult:identifyingResult];
+    backgroundImage = [v6 backgroundImage];
+    v8 = backgroundImage;
+    if (backgroundImage)
     {
-      v4 = v7;
+      backgroundImage2 = backgroundImage;
     }
 
     else
     {
-      v9 = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
-      v4 = [v9 backgroundImage];
+      firstRowModel = [(SearchUICombinedCardSectionRowModel *)self firstRowModel];
+      backgroundImage2 = [firstRowModel backgroundImage];
     }
   }
 
-  return v4;
+  return backgroundImage2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SearchUICombinedCardSectionRowModel;
-  v4 = [(SearchUIRowModel *)&v7 copyWithZone:a3];
-  v5 = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
-  [v4 setCardSectionRowModels:v5];
+  v4 = [(SearchUIRowModel *)&v7 copyWithZone:zone];
+  cardSectionRowModels = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
+  [v4 setCardSectionRowModels:cardSectionRowModels];
 
   return v4;
 }
 
-- (void)setIsTopHit:(BOOL)a3
+- (void)setIsTopHit:(BOOL)hit
 {
-  v3 = a3;
+  hitCopy = hit;
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = SearchUICombinedCardSectionRowModel;
@@ -412,8 +412,8 @@ LABEL_11:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  cardSectionRowModels = [(SearchUICombinedCardSectionRowModel *)self cardSectionRowModels];
+  v6 = [cardSectionRowModels countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -425,14 +425,14 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cardSectionRowModels);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setIsTopHit:v3];
+        [*(*(&v10 + 1) + 8 * v9++) setIsTopHit:hitCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [cardSectionRowModels countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);

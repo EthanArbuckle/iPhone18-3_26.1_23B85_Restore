@@ -2,9 +2,9 @@
 + (NAIdentity)na_identity;
 + (id)defaultAccessControl;
 - (BOOL)accessSupportsPassword;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFMediaAccessControlDescriptor)init;
-- (HFMediaAccessControlDescriptor)initWithAccess:(unint64_t)a3 requiresPassword:(BOOL)a4 password:(id)a5;
+- (HFMediaAccessControlDescriptor)initWithAccess:(unint64_t)access requiresPassword:(BOOL)password password:(id)a5;
 - (NSString)description;
 - (unint64_t)hash;
 @end
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (HFMediaAccessControlDescriptor)initWithAccess:(unint64_t)a3 requiresPassword:(BOOL)a4 password:(id)a5
+- (HFMediaAccessControlDescriptor)initWithAccess:(unint64_t)access requiresPassword:(BOOL)password password:(id)a5
 {
   v8 = a5;
   v14.receiver = self;
@@ -27,8 +27,8 @@
   v10 = v9;
   if (v9)
   {
-    v9->_access = a3;
-    v9->_accessRequiresPassword = a4;
+    v9->_access = access;
+    v9->_accessRequiresPassword = password;
     v11 = [v8 copy];
     accessPassword = v10->_accessPassword;
     v10->_accessPassword = v11;
@@ -39,9 +39,9 @@
 
 - (HFMediaAccessControlDescriptor)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithAccess_requiresPassword_password_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFMediaAccessControlDescriptor.m" lineNumber:60 description:{@"%s is unavailable; use %@ instead", "-[HFMediaAccessControlDescriptor init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFMediaAccessControlDescriptor.m" lineNumber:60 description:{@"%s is unavailable; use %@ instead", "-[HFMediaAccessControlDescriptor init]", v5}];
 
   return 0;
 }
@@ -49,9 +49,9 @@
 - (BOOL)accessSupportsPassword
 {
   v3 = objc_opt_class();
-  v4 = [(HFMediaAccessControlDescriptor *)self access];
+  access = [(HFMediaAccessControlDescriptor *)self access];
 
-  return [v3 accessClassificationSupportsPassword:v4];
+  return [v3 accessClassificationSupportsPassword:access];
 }
 
 - (NSString)description
@@ -61,12 +61,12 @@
   [v3 appendString:v4 withName:@"access"];
 
   v5 = [v3 appendBool:-[HFMediaAccessControlDescriptor accessRequiresPassword](self withName:{"accessRequiresPassword"), @"accessRequiresPassword"}];
-  v6 = [(HFMediaAccessControlDescriptor *)self accessPassword];
-  [v3 appendString:v6 withName:@"accessPassword"];
+  accessPassword = [(HFMediaAccessControlDescriptor *)self accessPassword];
+  [v3 appendString:accessPassword withName:@"accessPassword"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 + (NAIdentity)na_identity
@@ -110,17 +110,17 @@ uint64_t __45__HFMediaAccessControlDescriptor_na_identity__block_invoke_5(uint64
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }

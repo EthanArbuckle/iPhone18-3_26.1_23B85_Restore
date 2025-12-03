@@ -1,9 +1,9 @@
 @interface EMFetchController
 + (id)remoteInterface;
-- (EMFetchController)initWithRemoteConnection:(id)a3;
+- (EMFetchController)initWithRemoteConnection:(id)connection;
 - (id)diagnosticInformation;
 - (void)performFetchForOTC;
-- (void)setSuppressedContexts:(id)a3;
+- (void)setSuppressedContexts:(id)contexts;
 @end
 
 @implementation EMFetchController
@@ -19,16 +19,16 @@
   return v5;
 }
 
-- (EMFetchController)initWithRemoteConnection:(id)a3
+- (EMFetchController)initWithRemoteConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = EMFetchController;
   v6 = [(EMFetchController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -36,9 +36,9 @@
 
 - (void)performFetchForOTC
 {
-  v3 = [(EMFetchController *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 performFetchForOTC];
+  connection = [(EMFetchController *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy performFetchForOTC];
 }
 
 id __50__EMFetchController_performFetchOfType_mailboxes___block_invoke(uint64_t a1, void *a2)
@@ -56,21 +56,21 @@ id __49__EMFetchController_performFetchOfType_accounts___block_invoke(uint64_t a
   return v3;
 }
 
-- (void)setSuppressedContexts:(id)a3
+- (void)setSuppressedContexts:(id)contexts
 {
-  v6 = a3;
-  v4 = [(EMFetchController *)self connection];
-  v5 = [v4 remoteObjectProxy];
-  [v5 setSuppressedContexts:v6];
+  contextsCopy = contexts;
+  connection = [(EMFetchController *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy setSuppressedContexts:contextsCopy];
 }
 
 - (id)diagnosticInformation
 {
-  v2 = [(EMFetchController *)self connection];
-  v3 = [v2 remoteObjectProxy];
-  v4 = [v3 diagnosticInformation];
+  connection = [(EMFetchController *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  diagnosticInformation = [remoteObjectProxy diagnosticInformation];
 
-  return v4;
+  return diagnosticInformation;
 }
 
 @end

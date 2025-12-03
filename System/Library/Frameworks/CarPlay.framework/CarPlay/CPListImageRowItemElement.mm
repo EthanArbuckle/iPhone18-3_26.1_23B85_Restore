@@ -1,24 +1,24 @@
 @interface CPListImageRowItemElement
 + (CGSize)maximumImageSize;
-+ (id)convertImage:(id)a3;
-+ (void)_setMaximumImageSize:(CGSize)a3;
++ (id)convertImage:(id)image;
++ (void)_setMaximumImageSize:(CGSize)size;
 - (CPListImageRowItem)rowItem;
-- (CPListImageRowItemElement)initWithCoder:(id)a3;
-- (CPListImageRowItemElement)initWithImage:(id)a3;
-- (CPListImageRowItemElement)initWithImageSet:(id)a3;
+- (CPListImageRowItemElement)initWithCoder:(id)coder;
+- (CPListImageRowItemElement)initWithImage:(id)image;
+- (CPListImageRowItemElement)initWithImageSet:(id)set;
 - (UIImage)image;
 - (void)_setNeedsUpdate;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImage:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImage:(id)image;
 @end
 
 @implementation CPListImageRowItemElement
 
-+ (void)_setMaximumImageSize:(CGSize)a3
++ (void)_setMaximumImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11 = *MEMORY[0x277D85DE8];
   v5 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -35,11 +35,11 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (CPListImageRowItemElement)initWithImage:(id)a3
+- (CPListImageRowItemElement)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_opt_class();
-  v6 = [v4 copy];
+  v6 = [imageCopy copy];
 
   v7 = [v5 convertImage:v6];
   v8 = [(CPListImageRowItemElement *)self initWithImageSet:v7];
@@ -47,20 +47,20 @@
   return v8;
 }
 
-- (CPListImageRowItemElement)initWithImageSet:(id)a3
+- (CPListImageRowItemElement)initWithImageSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v11.receiver = self;
   v11.super_class = CPListImageRowItemElement;
   v6 = [(CPListImageRowItemElement *)&v11 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v6->_identifier;
-    v6->_identifier = v8;
+    v6->_identifier = uUIDString;
 
-    objc_storeStrong(&v6->_image, a3);
+    objc_storeStrong(&v6->_image, set);
     v6->_enabled = 1;
   }
 
@@ -82,16 +82,16 @@
   return result;
 }
 
-+ (id)convertImage:(id)a3
++ (id)convertImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = [CPImageSet alloc];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__CPListImageRowItemElement_convertImage___block_invoke;
   v8[3] = &__block_descriptor_40_e26___UIImage_16__0__UIImage_8l;
-  v8[4] = a1;
-  v6 = [(CPImageSet *)v5 initWithImage:v4 treatmentBlock:v8];
+  v8[4] = self;
+  v6 = [(CPImageSet *)v5 initWithImage:imageCopy treatmentBlock:v8];
 
   return v6;
 }
@@ -108,17 +108,17 @@ id __42__CPListImageRowItemElement_convertImage___block_invoke(uint64_t a1, void
 
 - (UIImage)image
 {
-  v2 = [(CPListImageRowItemElement *)self imageSet];
-  v3 = [v2 image];
+  imageSet = [(CPListImageRowItemElement *)self imageSet];
+  image = [imageSet image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_opt_class();
-  v6 = [v4 copy];
+  v6 = [imageCopy copy];
 
   v7 = [v5 convertImage:v6];
   [(CPListImageRowItemElement *)self setImageSet:v7];
@@ -126,53 +126,53 @@ id __42__CPListImageRowItemElement_convertImage___block_invoke(uint64_t a1, void
   [(CPListImageRowItemElement *)self _setNeedsUpdate];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(CPListImageRowItemElement *)self _setNeedsUpdate];
   }
 }
 
 - (void)_setNeedsUpdate
 {
-  v2 = [(CPListImageRowItemElement *)self rowItem];
-  [v2 _setNeedsUpdate];
+  rowItem = [(CPListImageRowItemElement *)self rowItem];
+  [rowItem _setNeedsUpdate];
 }
 
-- (CPListImageRowItemElement)initWithCoder:(id)a3
+- (CPListImageRowItemElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPListImageRowItemElement;
   v5 = [(CPListImageRowItemElement *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemElementImageKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemElementImageKey"];
     image = v5->_image;
     v5->_image = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemElementIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemElementIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"kCPListImageRowItemElementIsEnabledKey"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"kCPListImageRowItemElementIsEnabledKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CPListImageRowItemElement *)self imageSet];
-  [v6 encodeObject:v4 forKey:@"kCPListImageRowItemElementImageKey"];
+  coderCopy = coder;
+  imageSet = [(CPListImageRowItemElement *)self imageSet];
+  [coderCopy encodeObject:imageSet forKey:@"kCPListImageRowItemElementImageKey"];
 
-  v5 = [(CPListImageRowItemElement *)self identifier];
-  [v6 encodeObject:v5 forKey:@"kCPListImageRowItemElementIdentifierKey"];
+  identifier = [(CPListImageRowItemElement *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPListImageRowItemElementIdentifierKey"];
 
-  [v6 encodeBool:-[CPListImageRowItemElement isEnabled](self forKey:{"isEnabled"), @"kCPListImageRowItemElementIsEnabledKey"}];
+  [coderCopy encodeBool:-[CPListImageRowItemElement isEnabled](self forKey:{"isEnabled"), @"kCPListImageRowItemElementIsEnabledKey"}];
 }
 
 - (CPListImageRowItem)rowItem

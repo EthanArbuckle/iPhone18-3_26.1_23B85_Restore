@@ -1,16 +1,16 @@
 @interface RadioRecentStationsGroup
-- (BOOL)isEqual:(id)a3;
-- (id)_copyWithRecentStationsGroupClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_copyWithRecentStationsGroupClass:(Class)class;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation RadioRecentStationsGroup
 
-- (id)_copyWithRecentStationsGroupClass:(Class)a3
+- (id)_copyWithRecentStationsGroupClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {
@@ -22,30 +22,30 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(RadioRecentStationsGroup *)self _copyWithRecentStationsGroupClass:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_9;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_active != v4->_active || (localizedTitle = self->_localizedTitle, localizedTitle != v4->_localizedTitle) && ![(NSString *)localizedTitle isEqualToString:?])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_active != equalCopy->_active || (localizedTitle = self->_localizedTitle, localizedTitle != equalCopy->_localizedTitle) && ![(NSString *)localizedTitle isEqualToString:?])
   {
     v7 = 0;
     goto LABEL_10;
   }
 
   stations = self->_stations;
-  if (stations == v4->_stations)
+  if (stations == equalCopy->_stations)
   {
 LABEL_9:
     v7 = 1;

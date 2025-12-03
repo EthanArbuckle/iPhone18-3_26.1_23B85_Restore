@@ -1,10 +1,10 @@
 @interface WiFiViewController
 - (WiFiViewController)init;
 - (WiFiViewControllerDelegate)delegate;
-- (void)_didTapCancelButton:(id)a3;
-- (void)_didTapContinueButton:(id)a3;
-- (void)_wifiNetworkJoinFinished:(id)a3;
-- (void)_wifiNetworkJoinStarted:(id)a3;
+- (void)_didTapCancelButton:(id)button;
+- (void)_didTapContinueButton:(id)button;
+- (void)_wifiNetworkJoinFinished:(id)finished;
+- (void)_wifiNetworkJoinStarted:(id)started;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
@@ -34,21 +34,21 @@
     v9 = +[OBBoldTrayButton boldButton];
     [(WiFiViewController *)v2 setContinueButton:v9];
 
-    v10 = [(WiFiViewController *)v2 continueButton];
-    [v10 setTitle:v4 forState:0];
+    continueButton = [(WiFiViewController *)v2 continueButton];
+    [continueButton setTitle:v4 forState:0];
 
-    v11 = [(WiFiViewController *)v2 continueButton];
-    [v11 addTarget:v2 action:"_didTapContinueButton:" forControlEvents:0x2000];
+    continueButton2 = [(WiFiViewController *)v2 continueButton];
+    [continueButton2 addTarget:v2 action:"_didTapContinueButton:" forControlEvents:0x2000];
 
-    v12 = [(WiFiViewController *)v2 buttonTray];
-    v13 = [(WiFiViewController *)v2 continueButton];
-    [v12 addButton:v13];
+    buttonTray = [(WiFiViewController *)v2 buttonTray];
+    continueButton3 = [(WiFiViewController *)v2 continueButton];
+    [buttonTray addButton:continueButton3];
 
     v14 = +[OBLinkTrayButton linkButton];
     [v14 setTitle:v6 forState:0];
     [v14 addTarget:v2 action:"_didTapCancelButton:" forControlEvents:0x2000];
-    v15 = [(WiFiViewController *)v2 buttonTray];
-    [v15 addButton:v14];
+    buttonTray2 = [(WiFiViewController *)v2 buttonTray];
+    [buttonTray2 addButton:v14];
   }
 
   return v2;
@@ -69,22 +69,22 @@
   v8.receiver = self;
   v8.super_class = WiFiViewController;
   [(WiFiViewController *)&v8 viewDidLoad];
-  v3 = [(WiFiViewController *)self tableView];
+  tableView = [(WiFiViewController *)self tableView];
   v4 = +[UIColor systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [tableView setBackgroundColor:v4];
 
   v5 = +[NetworkMonitor shared];
-  v6 = [v5 networkAvailable];
+  networkAvailable = [v5 networkAvailable];
 
-  v7 = [(WiFiViewController *)self continueButton];
-  [v7 setEnabled:v6];
+  continueButton = [(WiFiViewController *)self continueButton];
+  [continueButton setEnabled:networkAvailable];
 }
 
-- (void)_didTapContinueButton:(id)a3
+- (void)_didTapContinueButton:(id)button
 {
-  v4 = [(WiFiViewController *)self delegate];
+  delegate = [(WiFiViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     v5 = sub_100012608();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -94,16 +94,16 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Calling wifiViewControllerDelegateDidChooseNetwork on delegate.", &v7, 0xCu);
     }
 
-    v6 = [(WiFiViewController *)self delegate];
-    [v6 wifiViewControllerDelegateDidChooseNetwork:self];
+    delegate2 = [(WiFiViewController *)self delegate];
+    [delegate2 wifiViewControllerDelegateDidChooseNetwork:self];
   }
 }
 
-- (void)_didTapCancelButton:(id)a3
+- (void)_didTapCancelButton:(id)button
 {
-  v4 = [(WiFiViewController *)self delegate];
+  delegate = [(WiFiViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     v5 = sub_100012608();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -113,12 +113,12 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Calling delegate for cancel from wifi.", &v7, 0xCu);
     }
 
-    v6 = [(WiFiViewController *)self delegate];
-    [v6 wifiViewControllerDelegateDidCancel:self];
+    delegate2 = [(WiFiViewController *)self delegate];
+    [delegate2 wifiViewControllerDelegateDidCancel:self];
   }
 }
 
-- (void)_wifiNetworkJoinStarted:(id)a3
+- (void)_wifiNetworkJoinStarted:(id)started
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -136,7 +136,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_wifiNetworkJoinFinished:(id)a3
+- (void)_wifiNetworkJoinFinished:(id)finished
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

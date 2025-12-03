@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInCitizenship
-- (PKPaymentSetupFieldBuiltInCitizenship)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInCitizenship)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInCitizenship
 
-- (PKPaymentSetupFieldBuiltInCitizenship)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInCitizenship)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = PKPaymentSetupFieldBuiltInCitizenship;
-  v9 = [(PKPaymentSetupField *)&v12 initWithIdentifier:@"citizenship" type:a4];
+  v9 = [(PKPaymentSetupField *)&v12 initWithIdentifier:@"citizenship" type:type];
   if (v9)
   {
     v10 = PKLocalizedFeatureString(@"CITIZENSHIP", 2, 0, v4, v5, v6, v7, v8, v12.receiver);

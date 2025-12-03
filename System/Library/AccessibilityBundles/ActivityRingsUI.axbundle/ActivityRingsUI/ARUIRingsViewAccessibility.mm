@@ -1,5 +1,5 @@
 @interface ARUIRingsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
@@ -7,26 +7,26 @@
 
 @implementation ARUIRingsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ARUIRingsView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ARUIRingsView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(ARUIRingsViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(ARUIRingsViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v3)
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v4 = [(ARUIRingsViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v5 = [v4 BOOLValue];
+  isAccessibilityUserDefinedElement2 = [(ARUIRingsViewAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
@@ -36,8 +36,8 @@
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
   v4 = v3;
-  v5 = [v3 ringGroupControllers];
-  v6 = [v5 count];
+  ringGroupControllers = [v3 ringGroupControllers];
+  v6 = [ringGroupControllers count];
 
   if (v6)
   {
@@ -45,8 +45,8 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = [v4 ringGroupControllers];
-    v8 = [v7 countByEnumeratingWithState:&v30 objects:v36 count:16];
+    ringGroupControllers2 = [v4 ringGroupControllers];
+    v8 = [ringGroupControllers2 countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v8)
     {
       v9 = v8;
@@ -57,7 +57,7 @@
         {
           if (*v31 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(ringGroupControllers2);
           }
 
           v12 = *(*(&v30 + 1) + 8 * i);
@@ -70,19 +70,19 @@
           }
 
           v14 = v13;
-          v15 = [v13 _accessibilityLocalizedRingDescriptions];
-          [v2 axSafelyAddObjectsFromArray:v15];
+          _accessibilityLocalizedRingDescriptions = [v13 _accessibilityLocalizedRingDescriptions];
+          [v2 axSafelyAddObjectsFromArray:_accessibilityLocalizedRingDescriptions];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v30 objects:v36 count:16];
+        v9 = [ringGroupControllers2 countByEnumeratingWithState:&v30 objects:v36 count:16];
       }
 
       while (v9);
     }
   }
 
-  v16 = [v4 ringGroups];
-  v17 = [v16 count];
+  ringGroups = [v4 ringGroups];
+  v17 = [ringGroups count];
 
   if (v17)
   {
@@ -90,8 +90,8 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = [v4 ringGroups];
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v35 count:16];
+    ringGroups2 = [v4 ringGroups];
+    v19 = [ringGroups2 countByEnumeratingWithState:&v26 objects:v35 count:16];
     if (v19)
     {
       v20 = v19;
@@ -102,14 +102,14 @@
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(ringGroups2);
           }
 
-          v23 = [*(*(&v26 + 1) + 8 * j) accessibilityLabel];
-          [v2 axSafelyAddObject:v23];
+          accessibilityLabel = [*(*(&v26 + 1) + 8 * j) accessibilityLabel];
+          [v2 axSafelyAddObject:accessibilityLabel];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        v20 = [ringGroups2 countByEnumeratingWithState:&v26 objects:v35 count:16];
       }
 
       while (v20);

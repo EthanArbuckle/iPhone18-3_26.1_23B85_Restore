@@ -1,16 +1,16 @@
 @interface MPTCPHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
 - (MPTCPHandler)init;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (int)read:(id)read returnedValues:(id)values;
 - (void)_performUpdate;
-- (void)_setMPTCPAdvisoryCell:(int)a3;
-- (void)_setMPTCPAdvisoryWiFi:(int64_t)a3;
+- (void)_setMPTCPAdvisoryCell:(int)cell;
+- (void)_setMPTCPAdvisoryWiFi:(int64_t)fi;
 - (void)dealloc;
 - (void)handleSrcEvent;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)rnfWiFiEvent:(id)a3 withInfo:(id)a4;
-- (void)sendReply:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)rnfWiFiEvent:(id)event withInfo:(id)info;
+- (void)sendReply:(id)reply;
 - (void)setupSockFD;
 @end
 
@@ -26,7 +26,7 @@
   {
     [(MPTCPHandler *)v2 setSockfd:0xFFFFFFFFLL];
     [(MPTCPHandler *)v3 setSocksrc:0];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     *&v3->_kernelWifiAdvice = 0x200000002;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -34,7 +34,7 @@
     v19[3] = &unk_27898A690;
     v5 = v3;
     v20 = v5;
-    v6 = [v4 addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v19];
+    v6 = [defaultCenter addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v19];
     relayReadyObserver = v5->relayReadyObserver;
     v5->relayReadyObserver = v6;
 
@@ -44,7 +44,7 @@
     v17 = &unk_27898A690;
     v8 = v5;
     v18 = v8;
-    v9 = [v4 addObserverForName:@"fallbackRecommendation" object:0 queue:0 usingBlock:&v14];
+    v9 = [defaultCenter addObserverForName:@"fallbackRecommendation" object:0 queue:0 usingBlock:&v14];
     rnfWiFiObserver = v8->rnfWiFiObserver;
     v8->rnfWiFiObserver = v9;
 
@@ -149,23 +149,23 @@ void __20__MPTCPHandler_init__block_invoke_2_5(uint64_t a1)
     [(NetworkStateRelay *)cellRelay removeObserver:self forKeyPath:@"advisory"];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = v4;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v5 = defaultCenter;
   if (self->relayReadyObserver)
   {
-    [v4 removeObserver:?];
+    [defaultCenter removeObserver:?];
   }
 
   [v5 removeObserver:self->rnfWiFiObserver];
   if (([(MPTCPHandler *)self sockfd]& 0x80000000) == 0)
   {
     close([(MPTCPHandler *)self sockfd]);
-    v6 = [(MPTCPHandler *)self socksrc];
+    socksrc = [(MPTCPHandler *)self socksrc];
 
-    if (v6)
+    if (socksrc)
     {
-      v7 = [(MPTCPHandler *)self socksrc];
-      dispatch_source_cancel(v7);
+      socksrc2 = [(MPTCPHandler *)self socksrc];
+      dispatch_source_cancel(socksrc2);
 
       [(MPTCPHandler *)self setSocksrc:0];
     }
@@ -180,19 +180,19 @@ void __20__MPTCPHandler_init__block_invoke_2_5(uint64_t a1)
   [(MPTCPHandler *)&v9 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__MPTCPHandler_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_27898A328;
-  v13 = v9;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v9;
+  v13 = objectCopy;
+  v14 = pathCopy;
+  selfCopy = self;
+  v10 = pathCopy;
+  v11 = objectCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -299,22 +299,22 @@ LABEL_16:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rnfWiFiEvent:(id)a3 withInfo:(id)a4
+- (void)rnfWiFiEvent:(id)event withInfo:(id)info
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([a3 isEqualToString:@"fallbackRecommendation"])
+  infoCopy = info;
+  if ([event isEqualToString:@"fallbackRecommendation"])
   {
-    v7 = [v6 objectForKeyedSubscript:@"detail"];
-    v8 = [v7 integerValue];
+    v7 = [infoCopy objectForKeyedSubscript:@"detail"];
+    integerValue = [v7 integerValue];
 
-    self->_rnfAdvice = v8;
-    [(MPTCPHandler *)self _setMPTCPAdvisoryWiFi:v8];
+    self->_rnfAdvice = integerValue;
+    [(MPTCPHandler *)self _setMPTCPAdvisoryWiFi:integerValue];
     v9 = rnfLogHandle;
     if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = v8;
+      v12 = integerValue;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "MPTCP: Advising WiFi from RNF, advice = %ld", &v11, 0xCu);
     }
   }
@@ -322,16 +322,16 @@ LABEL_16:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendReply:(id)a3
+- (void)sendReply:(id)reply
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   if (([(MPTCPHandler *)self sockfd]& 0x80000000) == 0)
   {
     v15[1] = 0;
     v16 = 0;
     v15[0] = 0xFFFFLL;
-    [v4 getUUIDBytes:v15 + 4];
+    [replyCopy getUUIDBytes:v15 + 4];
     HIDWORD(v16) = [(NetworkStateRelay *)self->wifiRelay lastReportedRxSignalStrength];
     v5 = send([(MPTCPHandler *)self sockfd], v15, 0x18uLL, 0);
     if (v5 != 24)
@@ -531,46 +531,46 @@ void __30__MPTCPHandler_handleSrcEvent__block_invoke_19(uint64_t a1, void *a2, v
       v11 = rnfLogHandle;
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
       {
-        v10 = v11;
+        socksrc5 = v11;
         v12 = *__error();
         *buf = 67109120;
         v19 = v12;
-        _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_ERROR, "MPTCP: could not allocate kernel network advisory socket - error: %d", buf, 8u);
+        _os_log_impl(&dword_23255B000, socksrc5, OS_LOG_TYPE_ERROR, "MPTCP: could not allocate kernel network advisory socket - error: %d", buf, 8u);
         goto LABEL_9;
       }
     }
 
     else
     {
-      v3 = [(MPTCPHandler *)self socksrc];
+      socksrc = [(MPTCPHandler *)self socksrc];
 
-      if (v3)
+      if (socksrc)
       {
-        v4 = [(MPTCPHandler *)self socksrc];
-        dispatch_source_cancel(v4);
+        socksrc2 = [(MPTCPHandler *)self socksrc];
+        dispatch_source_cancel(socksrc2);
 
         [(MPTCPHandler *)self setSocksrc:0];
       }
 
-      v5 = [(MPTCPHandler *)self sockfd];
+      sockfd = [(MPTCPHandler *)self sockfd];
       v6 = MEMORY[0x277D85CD0];
-      v7 = dispatch_source_create(MEMORY[0x277D85D28], v5, 0, MEMORY[0x277D85CD0]);
+      v7 = dispatch_source_create(MEMORY[0x277D85D28], sockfd, 0, MEMORY[0x277D85CD0]);
       [(MPTCPHandler *)self setSocksrc:v7];
 
-      v8 = [(MPTCPHandler *)self socksrc];
+      socksrc3 = [(MPTCPHandler *)self socksrc];
 
-      if (v8)
+      if (socksrc3)
       {
-        v9 = [(MPTCPHandler *)self socksrc];
+        socksrc4 = [(MPTCPHandler *)self socksrc];
         handler[0] = MEMORY[0x277D85DD0];
         handler[1] = 3221225472;
         handler[2] = __27__MPTCPHandler_setupSockFD__block_invoke;
         handler[3] = &unk_27898A0C8;
         handler[4] = self;
-        dispatch_source_set_event_handler(v9, handler);
+        dispatch_source_set_event_handler(socksrc4, handler);
 
-        v10 = [(MPTCPHandler *)self socksrc];
-        dispatch_resume(v10);
+        socksrc5 = [(MPTCPHandler *)self socksrc];
+        dispatch_resume(socksrc5);
 LABEL_9:
 
         goto LABEL_13;
@@ -610,7 +610,7 @@ LABEL_13:
     {
       v11 = v10;
       *buf = 67109120;
-      v15 = [(MPTCPHandler *)self sockfd];
+      sockfd = [(MPTCPHandler *)self sockfd];
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "MPTCP: cannot perform update, sockfd %d", buf, 8u);
     }
   }
@@ -625,10 +625,10 @@ LABEL_13:
       if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
       {
         v7 = v6;
-        v8 = [(MPTCPHandler *)self sockfd];
+        sockfd2 = [(MPTCPHandler *)self sockfd];
         v9 = *__error();
         *buf = 67109632;
-        v15 = v8;
+        sockfd = sockfd2;
         v16 = 2048;
         v17 = v5;
         v18 = 1024;
@@ -641,13 +641,13 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setMPTCPAdvisoryWiFi:(int64_t)a3
+- (void)_setMPTCPAdvisoryWiFi:(int64_t)fi
 {
   v9 = *MEMORY[0x277D85DE8];
   rnfAdvice = self->_rnfAdvice;
-  if (rnfAdvice <= a3)
+  if (rnfAdvice <= fi)
   {
-    rnfAdvice = a3;
+    rnfAdvice = fi;
   }
 
   if (rnfAdvice == 2)
@@ -677,17 +677,17 @@ LABEL_13:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setMPTCPAdvisoryCell:(int)a3
+- (void)_setMPTCPAdvisoryCell:(int)cell
 {
   v8 = *MEMORY[0x277D85DE8];
-  if ((a3 - 3) > 4)
+  if ((cell - 3) > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = dword_232816A40[a3 - 3];
+    v4 = dword_232816A40[cell - 3];
   }
 
   v5 = rnfLogHandle;
@@ -713,7 +713,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __30__MPTCPHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_12 != -1)
   {
     dispatch_once(&sharedInstance_pred_12, block);
@@ -736,21 +736,21 @@ void __30__MPTCPHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[MPTCPHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

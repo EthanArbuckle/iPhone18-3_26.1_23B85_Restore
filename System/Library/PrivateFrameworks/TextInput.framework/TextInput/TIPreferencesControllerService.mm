@@ -1,25 +1,25 @@
 @interface TIPreferencesControllerService
 + (id)sharedPreferencesController;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TIPreferencesControllerService)init;
 - (void)dealloc;
 @end
 
 @implementation TIPreferencesControllerService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = objc_alloc_init(TIPreferencesControllerServiceHandler);
-  [v5 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
 
   v7 = +[TIPreferencesControllerClient serviceInterface];
-  [v5 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  v8 = [(TIPreferencesControllerService *)self dispatchQueue];
-  [v5 _setQueue:v8];
+  dispatchQueue = [(TIPreferencesControllerService *)self dispatchQueue];
+  [connectionCopy _setQueue:dispatchQueue];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = __61__TIPreferencesControllerService_sharedPreferencesController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPreferencesController_once_806 != -1)
   {
     dispatch_once(&sharedPreferencesController_once_806, block);

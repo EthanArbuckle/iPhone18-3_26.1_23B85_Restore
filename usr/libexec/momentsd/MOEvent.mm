@@ -1,8 +1,8 @@
 @interface MOEvent
-+ (id)FormatDate:(id)a3;
-+ (id)describeCategory:(unint64_t)a3;
-+ (id)describeProvider:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)FormatDate:(id)date;
++ (id)describeCategory:(unint64_t)category;
++ (id)describeProvider:(unint64_t)provider;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFitnessPlusSession;
 - (BOOL)isGComplete;
 - (BOOL)isHighConfidence;
@@ -11,9 +11,9 @@
 - (BOOL)itemIsPinned;
 - (CLLocation)workoutLocationStart;
 - (GEOAddressObject)geoAddressObject;
-- (MOEvent)initWithCoder:(id)a3;
-- (MOEvent)initWithEventIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 creationDate:(id)a6 provider:(unint64_t)a7 category:(unint64_t)a8;
-- (MOEvent)initWithEventMO:(id)a3;
+- (MOEvent)initWithCoder:(id)coder;
+- (MOEvent)initWithEventIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate creationDate:(id)creationDate provider:(unint64_t)provider category:(unint64_t)category;
+- (MOEvent)initWithEventMO:(id)o;
 - (MOEventExtendedAttributes)extendedAttributes;
 - (MOWeather)predominantWeather;
 - (NSArray)interactionContacts;
@@ -68,16 +68,16 @@
 - (double)duration;
 - (double)familiarityIndexLOI;
 - (double)placeNameConfidence;
-- (double)weightedDurationWithTimeZone:(id)a3 overnightStartDateHour:(double)a4 overnightDurationHours:(double)a5 overnightDurationWeight:(double)a6;
+- (double)weightedDurationWithTimeZone:(id)zone overnightStartDateHour:(double)hour overnightDurationHours:(double)hours overnightDurationWeight:(double)weight;
 - (id)bundleSourceType;
 - (id)copy;
 - (id)describeCategory;
 - (id)describeProvider;
 - (id)description;
-- (id)formatAddressWithFormatOption:(id)a3;
-- (id)formatAdministrativeAreaWithFormatOption:(id)a3;
-- (id)formatCountryWithFormatOption:(id)a3;
-- (id)formatLocalityWithFormatOption:(id)a3;
+- (id)formatAddressWithFormatOption:(id)option;
+- (id)formatAdministrativeAreaWithFormatOption:(id)option;
+- (id)formatCountryWithFormatOption:(id)option;
+- (id)formatLocalityWithFormatOption:(id)option;
 - (int64_t)gaPR;
 - (unint64_t)hash;
 - (unint64_t)itemShareDirection;
@@ -93,76 +93,76 @@
 - (unint64_t)placeUserType;
 - (unint64_t)suggestedEventCategory;
 - (unint64_t)timeAtHomeSubType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initSubEvent;
-- (void)setAddress:(id)a3;
-- (void)setCategoryMuid:(id)a3;
-- (void)setConfidenceScore:(double)a3;
-- (void)setContactClassificationMap:(id)a3;
-- (void)setDensityScanDuration:(id)a3;
-- (void)setDensityScore:(id)a3;
-- (void)setExtendedAttributes:(id)a3;
-- (void)setFamiliarityIndexLOI:(double)a3;
-- (void)setGaPR:(int64_t)a3;
-- (void)setGeoAddressObject:(id)a3;
-- (void)setInteractionContactScore:(id)a3;
-- (void)setInteractionContacts:(id)a3;
-- (void)setInteractionGroupName:(id)a3;
-- (void)setInteractionMechanisms:(id)a3;
-- (void)setInteractionScoredContact:(id)a3;
-- (void)setInteractions:(id)a3;
-- (void)setItemAttributionsCount:(id)a3;
-- (void)setItemRecipients:(id)a3;
-- (void)setItemSenders:(id)a3;
-- (void)setItemShareDirection:(unint64_t)a3;
-- (void)setItemSyndicationStatus:(unint64_t)a3;
-- (void)setItemURL:(id)a3;
-- (void)setLifeEventCategory:(unint64_t)a3;
-- (void)setLocation:(id)a3;
-- (void)setMediaAlbum:(id)a3;
-- (void)setMediaArtist:(id)a3;
-- (void)setMediaGenre:(id)a3;
-- (void)setMediaPlaySessions:(id)a3;
-- (void)setMediaPlayerBundleId:(id)a3;
-- (void)setMediaProductId:(id)a3;
-- (void)setMediaRepetitions:(id)a3;
-- (void)setMediaSumTimePlayed:(id)a3;
-- (void)setMediaTitle:(id)a3;
-- (void)setMediaType:(id)a3;
-- (void)setMode:(unint64_t)a3;
-- (void)setMotionStepCount:(id)a3;
-- (void)setMotionType:(unint64_t)a3;
-- (void)setPCount:(id)a3;
-- (void)setPatterns:(id)a3;
-- (void)setPhotoAsset:(id)a3;
-- (void)setPhotoMemoryAssets:(id)a3;
-- (void)setPhotoMemoryCategory:(unint64_t)a3;
-- (void)setPhotoMemoryTitle:(id)a3;
-- (void)setPhotoMomentSource:(unint64_t)a3;
-- (void)setPlaceDiscovery:(unint64_t)a3;
-- (void)setPlaceMapItem:(id)a3;
-- (void)setPlaceName:(id)a3;
-- (void)setPlaceNameConfidence:(double)a3;
-- (void)setPlaceSource:(unint64_t)a3;
-- (void)setPlaceType:(unint64_t)a3;
-- (void)setPlaceUserType:(unint64_t)a3;
-- (void)setPoiCategory:(id)a3;
-- (void)setPredominantWeather:(id)a3;
-- (void)setScoredTopics:(id)a3;
-- (void)setSuggestedEvent:(id)a3;
-- (void)setSuggestedEventCategory:(unint64_t)a3;
-- (void)setSuggestedEventIdentifier:(id)a3;
-- (void)setSuggestedEventTitle:(id)a3;
-- (void)setTimeAtHomeSubType:(unint64_t)a3;
-- (void)setTrends:(id)a3;
-- (void)setTripParts:(id)a3;
-- (void)setTripTitle:(id)a3;
-- (void)setWorkoutDuration:(id)a3;
-- (void)setWorkoutLocationRoute:(id)a3;
-- (void)setWorkoutLocationStart:(id)a3;
-- (void)setWorkoutTotalDistance:(id)a3;
-- (void)setWorkoutTotalEnergyBurned:(id)a3;
-- (void)setWorkoutType:(id)a3;
+- (void)setAddress:(id)address;
+- (void)setCategoryMuid:(id)muid;
+- (void)setConfidenceScore:(double)score;
+- (void)setContactClassificationMap:(id)map;
+- (void)setDensityScanDuration:(id)duration;
+- (void)setDensityScore:(id)score;
+- (void)setExtendedAttributes:(id)attributes;
+- (void)setFamiliarityIndexLOI:(double)i;
+- (void)setGaPR:(int64_t)r;
+- (void)setGeoAddressObject:(id)object;
+- (void)setInteractionContactScore:(id)score;
+- (void)setInteractionContacts:(id)contacts;
+- (void)setInteractionGroupName:(id)name;
+- (void)setInteractionMechanisms:(id)mechanisms;
+- (void)setInteractionScoredContact:(id)contact;
+- (void)setInteractions:(id)interactions;
+- (void)setItemAttributionsCount:(id)count;
+- (void)setItemRecipients:(id)recipients;
+- (void)setItemSenders:(id)senders;
+- (void)setItemShareDirection:(unint64_t)direction;
+- (void)setItemSyndicationStatus:(unint64_t)status;
+- (void)setItemURL:(id)l;
+- (void)setLifeEventCategory:(unint64_t)category;
+- (void)setLocation:(id)location;
+- (void)setMediaAlbum:(id)album;
+- (void)setMediaArtist:(id)artist;
+- (void)setMediaGenre:(id)genre;
+- (void)setMediaPlaySessions:(id)sessions;
+- (void)setMediaPlayerBundleId:(id)id;
+- (void)setMediaProductId:(id)id;
+- (void)setMediaRepetitions:(id)repetitions;
+- (void)setMediaSumTimePlayed:(id)played;
+- (void)setMediaTitle:(id)title;
+- (void)setMediaType:(id)type;
+- (void)setMode:(unint64_t)mode;
+- (void)setMotionStepCount:(id)count;
+- (void)setMotionType:(unint64_t)type;
+- (void)setPCount:(id)count;
+- (void)setPatterns:(id)patterns;
+- (void)setPhotoAsset:(id)asset;
+- (void)setPhotoMemoryAssets:(id)assets;
+- (void)setPhotoMemoryCategory:(unint64_t)category;
+- (void)setPhotoMemoryTitle:(id)title;
+- (void)setPhotoMomentSource:(unint64_t)source;
+- (void)setPlaceDiscovery:(unint64_t)discovery;
+- (void)setPlaceMapItem:(id)item;
+- (void)setPlaceName:(id)name;
+- (void)setPlaceNameConfidence:(double)confidence;
+- (void)setPlaceSource:(unint64_t)source;
+- (void)setPlaceType:(unint64_t)type;
+- (void)setPlaceUserType:(unint64_t)type;
+- (void)setPoiCategory:(id)category;
+- (void)setPredominantWeather:(id)weather;
+- (void)setScoredTopics:(id)topics;
+- (void)setSuggestedEvent:(id)event;
+- (void)setSuggestedEventCategory:(unint64_t)category;
+- (void)setSuggestedEventIdentifier:(id)identifier;
+- (void)setSuggestedEventTitle:(id)title;
+- (void)setTimeAtHomeSubType:(unint64_t)type;
+- (void)setTrends:(id)trends;
+- (void)setTripParts:(id)parts;
+- (void)setTripTitle:(id)title;
+- (void)setWorkoutDuration:(id)duration;
+- (void)setWorkoutLocationRoute:(id)route;
+- (void)setWorkoutLocationStart:(id)start;
+- (void)setWorkoutTotalDistance:(id)distance;
+- (void)setWorkoutTotalEnergyBurned:(id)burned;
+- (void)setWorkoutType:(id)type;
 @end
 
 @implementation MOEvent
@@ -181,9 +181,9 @@
 
 - (double)duration
 {
-  v3 = [(MOEvent *)self endDate];
-  v4 = [(MOEvent *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(MOEvent *)self endDate];
+  startDate = [(MOEvent *)self startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v6 = v5;
 
   return v6;
@@ -510,22 +510,22 @@ LABEL_3:
 
   v23 = analyticsEvent;
   v19 = [NSString alloc];
-  v17 = [(MOEvent *)self eventIdentifier];
-  v14 = [(MOEvent *)self identifierFromProvider];
-  v22 = [(MOEvent *)self startDate];
-  v15 = [MOEvent FormatDate:v22];
-  v21 = [(MOEvent *)self endDate];
-  v4 = [MOEvent FormatDate:v21];
-  v18 = [(MOEvent *)self creationDate];
-  v5 = [MOEvent FormatDate:v18];
-  v16 = [(MOEvent *)self sourceCreationDate];
-  v6 = [MOEvent FormatDate:v16];
-  v7 = [(MOEvent *)self expirationDate];
-  v8 = [MOEvent FormatDate:v7];
-  v9 = [(MOEvent *)self timeZone];
-  v10 = [(MOEvent *)self describeProvider];
-  v11 = [(MOEvent *)self describeCategory];
-  v20 = [v19 initWithFormat:@"<MOEvent eventIdentifier, %@, identifierFromProvider, %@, startDate, %@, endDate, %@, creationDate, %@, sourceCreationDate, %@, expirationDate, %@, timeZone, %@, provider, %@, category, %@, rehydrationFailCount, %lu, source app, %@, %@>", v17, v14, v15, v4, v5, v6, v8, v9, v10, v11, -[MOEvent rehydrationFailCount](self, "rehydrationFailCount"), self->_appBundle, v23];
+  eventIdentifier = [(MOEvent *)self eventIdentifier];
+  identifierFromProvider = [(MOEvent *)self identifierFromProvider];
+  startDate = [(MOEvent *)self startDate];
+  v15 = [MOEvent FormatDate:startDate];
+  endDate = [(MOEvent *)self endDate];
+  v4 = [MOEvent FormatDate:endDate];
+  creationDate = [(MOEvent *)self creationDate];
+  v5 = [MOEvent FormatDate:creationDate];
+  sourceCreationDate = [(MOEvent *)self sourceCreationDate];
+  v6 = [MOEvent FormatDate:sourceCreationDate];
+  expirationDate = [(MOEvent *)self expirationDate];
+  v8 = [MOEvent FormatDate:expirationDate];
+  timeZone = [(MOEvent *)self timeZone];
+  describeProvider = [(MOEvent *)self describeProvider];
+  describeCategory = [(MOEvent *)self describeCategory];
+  v20 = [v19 initWithFormat:@"<MOEvent eventIdentifier, %@, identifierFromProvider, %@, startDate, %@, endDate, %@, creationDate, %@, sourceCreationDate, %@, expirationDate, %@, timeZone, %@, provider, %@, category, %@, rehydrationFailCount, %lu, source app, %@, %@>", eventIdentifier, identifierFromProvider, v15, v4, v5, v6, v8, timeZone, describeProvider, describeCategory, -[MOEvent rehydrationFailCount](self, "rehydrationFailCount"), self->_appBundle, v23];
 
   return v20;
 }
@@ -545,16 +545,16 @@ LABEL_3:
 
 - (id)describeProvider
 {
-  v2 = [(MOEvent *)self provider];
+  provider = [(MOEvent *)self provider];
 
-  return [MOEvent describeProvider:v2];
+  return [MOEvent describeProvider:provider];
 }
 
 - (id)describeCategory
 {
-  v2 = [(MOEvent *)self category];
+  category = [(MOEvent *)self category];
 
-  return [MOEvent describeCategory:v2];
+  return [MOEvent describeCategory:category];
 }
 
 - (NSData)placeMapItem
@@ -569,14 +569,14 @@ LABEL_3:
   return routineEvent;
 }
 
-- (MOEvent)initWithEventIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 creationDate:(id)a6 provider:(unint64_t)a7 category:(unint64_t)a8
+- (MOEvent)initWithEventIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate creationDate:(id)creationDate provider:(unint64_t)provider category:(unint64_t)category
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = v19;
-  if (!v16)
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  creationDateCopy = creationDate;
+  v20 = creationDateCopy;
+  if (!identifierCopy)
   {
     v30 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -588,12 +588,12 @@ LABEL_3:
     v32 = v31;
     v33 = @"Invalid parameter not satisfying: eventIdentifier";
     v34 = a2;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 31;
     goto LABEL_20;
   }
 
-  if (!v17)
+  if (!dateCopy)
   {
     v37 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -605,12 +605,12 @@ LABEL_3:
     v32 = v31;
     v33 = @"Invalid parameter not satisfying: startDate";
     v34 = a2;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 32;
     goto LABEL_20;
   }
 
-  if (!v18)
+  if (!endDateCopy)
   {
     v38 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -622,12 +622,12 @@ LABEL_3:
     v32 = v31;
     v33 = @"Invalid parameter not satisfying: endDate";
     v34 = a2;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 33;
     goto LABEL_20;
   }
 
-  if (!v19)
+  if (!creationDateCopy)
   {
     v39 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -639,12 +639,12 @@ LABEL_3:
     v32 = v31;
     v33 = @"Invalid parameter not satisfying: creationDate";
     v34 = a2;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 34;
 LABEL_20:
-    [v31 handleFailureInMethod:v34 object:v35 file:@"MOEvent.m" lineNumber:v36 description:v33];
+    [v31 handleFailureInMethod:v34 object:selfCopy4 file:@"MOEvent.m" lineNumber:v36 description:v33];
 
-    v29 = 0;
+    selfCopy5 = 0;
     goto LABEL_21;
   }
 
@@ -654,12 +654,12 @@ LABEL_20:
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_eventIdentifier, a3);
-    v23 = [v17 copy];
+    objc_storeStrong(&v21->_eventIdentifier, identifier);
+    v23 = [dateCopy copy];
     startDate = v22->_startDate;
     v22->_startDate = v23;
 
-    v25 = [v18 copy];
+    v25 = [endDateCopy copy];
     endDate = v22->_endDate;
     v22->_endDate = v25;
 
@@ -667,16 +667,16 @@ LABEL_20:
     creationDate = v22->_creationDate;
     v22->_creationDate = v27;
 
-    v22->_provider = a7;
-    v22->_category = a8;
+    v22->_provider = provider;
+    v22->_category = category;
     [(MOEvent *)v22 initSubEvent];
   }
 
   self = v22;
-  v29 = self;
+  selfCopy5 = self;
 LABEL_21:
 
-  return v29;
+  return selfCopy5;
 }
 
 - (void)initSubEvent
@@ -713,31 +713,31 @@ LABEL_21:
   _objc_release_x1();
 }
 
-+ (id)describeProvider:(unint64_t)a3
++ (id)describeProvider:(unint64_t)provider
 {
-  if (a3 >= 0xD)
+  if (provider >= 0xD)
   {
-    v3 = [[NSString alloc] initWithFormat:@"Unknown (%lu)", a3];
+    provider = [[NSString alloc] initWithFormat:@"Unknown (%lu)", provider];
   }
 
   else
   {
-    v3 = off_100336510[a3];
+    provider = off_100336510[provider];
   }
 
-  return v3;
+  return provider;
 }
 
-+ (id)describeCategory:(unint64_t)a3
++ (id)describeCategory:(unint64_t)category
 {
-  if (a3 - 1 > 0x18)
+  if (category - 1 > 0x18)
   {
     return @"Unknown Category";
   }
 
   else
   {
-    return off_100336578[a3 - 1];
+    return off_100336578[category - 1];
   }
 }
 
@@ -1402,7 +1402,7 @@ LABEL_21:
   return result;
 }
 
-- (void)setPhotoMomentSource:(unint64_t)a3
+- (void)setPhotoMomentSource:(unint64_t)source
 {
   photoEvent = self->_photoEvent;
   if (!photoEvent)
@@ -1414,16 +1414,16 @@ LABEL_21:
     photoEvent = self->_photoEvent;
   }
 
-  [(MOEventPhoto *)photoEvent setPhotoMomentSource:a3];
+  [(MOEventPhoto *)photoEvent setPhotoMomentSource:source];
 }
 
-- (void)setExtendedAttributes:(id)a3
+- (void)setExtendedAttributes:(id)attributes
 {
-  v4 = a3;
-  if (v4)
+  attributesCopy = attributes;
+  if (attributesCopy)
   {
     photoEvent = self->_photoEvent;
-    v8 = v4;
+    v8 = attributesCopy;
     if (!photoEvent)
     {
       v6 = objc_alloc_init(MOEventPhoto);
@@ -1439,13 +1439,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPhotoAsset:(id)a3
+- (void)setPhotoAsset:(id)asset
 {
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
     photoEvent = self->_photoEvent;
-    v8 = v4;
+    v8 = assetCopy;
     if (!photoEvent)
     {
       v6 = objc_alloc_init(MOEventPhoto);
@@ -1461,13 +1461,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPhotoMemoryTitle:(id)a3
+- (void)setPhotoMemoryTitle:(id)title
 {
-  v4 = a3;
-  if (v4)
+  titleCopy = title;
+  if (titleCopy)
   {
     photoEvent = self->_photoEvent;
-    v8 = v4;
+    v8 = titleCopy;
     if (!photoEvent)
     {
       v6 = objc_alloc_init(MOEventPhoto);
@@ -1483,13 +1483,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPhotoMemoryAssets:(id)a3
+- (void)setPhotoMemoryAssets:(id)assets
 {
-  v4 = a3;
-  if (v4)
+  assetsCopy = assets;
+  if (assetsCopy)
   {
     photoEvent = self->_photoEvent;
-    v8 = v4;
+    v8 = assetsCopy;
     if (!photoEvent)
     {
       v6 = objc_alloc_init(MOEventPhoto);
@@ -1505,7 +1505,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPhotoMemoryCategory:(unint64_t)a3
+- (void)setPhotoMemoryCategory:(unint64_t)category
 {
   photoEvent = self->_photoEvent;
   if (!photoEvent)
@@ -1517,10 +1517,10 @@ LABEL_21:
     photoEvent = self->_photoEvent;
   }
 
-  [(MOEventPhoto *)photoEvent setPhotoMemoryCategory:a3];
+  [(MOEventPhoto *)photoEvent setPhotoMemoryCategory:category];
 }
 
-- (void)setTimeAtHomeSubType:(unint64_t)a3
+- (void)setTimeAtHomeSubType:(unint64_t)type
 {
   analyticsEvent = self->_analyticsEvent;
   if (!analyticsEvent)
@@ -1532,10 +1532,10 @@ LABEL_21:
     analyticsEvent = self->_analyticsEvent;
   }
 
-  [(MOEventAnalytics *)analyticsEvent setTimeAtHomeSubType:a3];
+  [(MOEventAnalytics *)analyticsEvent setTimeAtHomeSubType:type];
 }
 
-- (void)setPlaceType:(unint64_t)a3
+- (void)setPlaceType:(unint64_t)type
 {
   routineEvent = self->_routineEvent;
   if (!routineEvent)
@@ -1547,10 +1547,10 @@ LABEL_21:
     routineEvent = self->_routineEvent;
   }
 
-  [(MOEventRoutine *)routineEvent setPlaceType:a3];
+  [(MOEventRoutine *)routineEvent setPlaceType:type];
 }
 
-- (void)setPlaceUserType:(unint64_t)a3
+- (void)setPlaceUserType:(unint64_t)type
 {
   routineEvent = self->_routineEvent;
   if (!routineEvent)
@@ -1562,16 +1562,16 @@ LABEL_21:
     routineEvent = self->_routineEvent;
   }
 
-  [(MOEventRoutine *)routineEvent setPlaceUserType:a3];
+  [(MOEventRoutine *)routineEvent setPlaceUserType:type];
 }
 
-- (void)setPlaceName:(id)a3
+- (void)setPlaceName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     routineEvent = self->_routineEvent;
-    v8 = v4;
+    v8 = nameCopy;
     if (!routineEvent)
     {
       v6 = objc_alloc_init(MOEventRoutine);
@@ -1587,7 +1587,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPlaceNameConfidence:(double)a3
+- (void)setPlaceNameConfidence:(double)confidence
 {
   routineEvent = self->_routineEvent;
   if (!routineEvent)
@@ -1599,10 +1599,10 @@ LABEL_21:
     routineEvent = self->_routineEvent;
   }
 
-  [(MOEventRoutine *)routineEvent setPlaceNameConfidence:a3];
+  [(MOEventRoutine *)routineEvent setPlaceNameConfidence:confidence];
 }
 
-- (void)setPlaceDiscovery:(unint64_t)a3
+- (void)setPlaceDiscovery:(unint64_t)discovery
 {
   routineEvent = self->_routineEvent;
   if (!routineEvent)
@@ -1614,16 +1614,16 @@ LABEL_21:
     routineEvent = self->_routineEvent;
   }
 
-  [(MOEventRoutine *)routineEvent setPlaceDiscovery:a3];
+  [(MOEventRoutine *)routineEvent setPlaceDiscovery:discovery];
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
     routineEvent = self->_routineEvent;
-    v8 = v4;
+    v8 = locationCopy;
     if (!routineEvent)
     {
       v6 = objc_alloc_init(MOEventRoutine);
@@ -1639,13 +1639,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
     routineEvent = self->_routineEvent;
-    v8 = v4;
+    v8 = addressCopy;
     if (!routineEvent)
     {
       v6 = objc_alloc_init(MOEventRoutine);
@@ -1661,13 +1661,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setGeoAddressObject:(id)a3
+- (void)setGeoAddressObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     routineEvent = self->_routineEvent;
-    v8 = v4;
+    v8 = objectCopy;
     if (!routineEvent)
     {
       v6 = objc_alloc_init(MOEventRoutine);
@@ -1683,7 +1683,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
   routineEvent = self->_routineEvent;
   if (!routineEvent)
@@ -1695,16 +1695,16 @@ LABEL_21:
     routineEvent = self->_routineEvent;
   }
 
-  [(MOEventRoutine *)routineEvent setMode:a3];
+  [(MOEventRoutine *)routineEvent setMode:mode];
 }
 
-- (void)setPlaceMapItem:(id)a3
+- (void)setPlaceMapItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     routineEvent = self->_routineEvent;
-    v8 = v4;
+    v8 = itemCopy;
     if (!routineEvent)
     {
       v6 = objc_alloc_init(MOEventRoutine);
@@ -1720,13 +1720,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPoiCategory:(id)a3
+- (void)setPoiCategory:(id)category
 {
-  v4 = a3;
-  if (v4)
+  categoryCopy = category;
+  if (categoryCopy)
   {
     routineEvent = self->_routineEvent;
-    v8 = v4;
+    v8 = categoryCopy;
     if (!routineEvent)
     {
       v6 = objc_alloc_init(MOEventRoutine);
@@ -1742,13 +1742,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setCategoryMuid:(id)a3
+- (void)setCategoryMuid:(id)muid
 {
-  v4 = a3;
-  if (v4)
+  muidCopy = muid;
+  if (muidCopy)
   {
     routineEvent = self->_routineEvent;
-    v8 = v4;
+    v8 = muidCopy;
     if (!routineEvent)
     {
       v6 = objc_alloc_init(MOEventRoutine);
@@ -1764,7 +1764,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPlaceSource:(unint64_t)a3
+- (void)setPlaceSource:(unint64_t)source
 {
   routineEvent = self->_routineEvent;
   if (!routineEvent)
@@ -1776,10 +1776,10 @@ LABEL_21:
     routineEvent = self->_routineEvent;
   }
 
-  [(MOEventRoutine *)routineEvent setPlaceSource:a3];
+  [(MOEventRoutine *)routineEvent setPlaceSource:source];
 }
 
-- (void)setFamiliarityIndexLOI:(double)a3
+- (void)setFamiliarityIndexLOI:(double)i
 {
   routineEvent = self->_routineEvent;
   if (!routineEvent)
@@ -1791,16 +1791,16 @@ LABEL_21:
     routineEvent = self->_routineEvent;
   }
 
-  [(MOEventRoutine *)routineEvent setFamiliarityIndexLOI:a3];
+  [(MOEventRoutine *)routineEvent setFamiliarityIndexLOI:i];
 }
 
-- (void)setWorkoutType:(id)a3
+- (void)setWorkoutType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
     workoutEvent = self->_workoutEvent;
-    v8 = v4;
+    v8 = typeCopy;
     if (!workoutEvent)
     {
       v6 = objc_alloc_init(MOEventWorkout);
@@ -1816,13 +1816,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setWorkoutTotalDistance:(id)a3
+- (void)setWorkoutTotalDistance:(id)distance
 {
-  v4 = a3;
-  if (v4)
+  distanceCopy = distance;
+  if (distanceCopy)
   {
     workoutEvent = self->_workoutEvent;
-    v8 = v4;
+    v8 = distanceCopy;
     if (!workoutEvent)
     {
       v6 = objc_alloc_init(MOEventWorkout);
@@ -1838,13 +1838,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setWorkoutTotalEnergyBurned:(id)a3
+- (void)setWorkoutTotalEnergyBurned:(id)burned
 {
-  v4 = a3;
-  if (v4)
+  burnedCopy = burned;
+  if (burnedCopy)
   {
     workoutEvent = self->_workoutEvent;
-    v8 = v4;
+    v8 = burnedCopy;
     if (!workoutEvent)
     {
       v6 = objc_alloc_init(MOEventWorkout);
@@ -1860,13 +1860,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setWorkoutDuration:(id)a3
+- (void)setWorkoutDuration:(id)duration
 {
-  v4 = a3;
-  if (v4)
+  durationCopy = duration;
+  if (durationCopy)
   {
     workoutEvent = self->_workoutEvent;
-    v8 = v4;
+    v8 = durationCopy;
     if (!workoutEvent)
     {
       v6 = objc_alloc_init(MOEventWorkout);
@@ -1882,13 +1882,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setWorkoutLocationStart:(id)a3
+- (void)setWorkoutLocationStart:(id)start
 {
-  v4 = a3;
-  if (v4)
+  startCopy = start;
+  if (startCopy)
   {
     workoutEvent = self->_workoutEvent;
-    v8 = v4;
+    v8 = startCopy;
     if (!workoutEvent)
     {
       v6 = objc_alloc_init(MOEventWorkout);
@@ -1904,13 +1904,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setWorkoutLocationRoute:(id)a3
+- (void)setWorkoutLocationRoute:(id)route
 {
-  v4 = a3;
-  if (v4)
+  routeCopy = route;
+  if (routeCopy)
   {
     workoutEvent = self->_workoutEvent;
-    v8 = v4;
+    v8 = routeCopy;
     if (!workoutEvent)
     {
       v6 = objc_alloc_init(MOEventWorkout);
@@ -1926,13 +1926,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMotionStepCount:(id)a3
+- (void)setMotionStepCount:(id)count
 {
-  v4 = a3;
-  if (v4)
+  countCopy = count;
+  if (countCopy)
   {
     motionActivityEvent = self->_motionActivityEvent;
-    v8 = v4;
+    v8 = countCopy;
     if (!motionActivityEvent)
     {
       v6 = objc_alloc_init(MOEventMotionActivity);
@@ -1948,13 +1948,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setSuggestedEventTitle:(id)a3
+- (void)setSuggestedEventTitle:(id)title
 {
-  v4 = a3;
-  if (v4)
+  titleCopy = title;
+  if (titleCopy)
   {
     proactiveSuggestedEvent = self->_proactiveSuggestedEvent;
-    v8 = v4;
+    v8 = titleCopy;
     if (!proactiveSuggestedEvent)
     {
       v6 = objc_alloc_init(MOEventProactiveSuggested);
@@ -1970,13 +1970,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setSuggestedEventIdentifier:(id)a3
+- (void)setSuggestedEventIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     proactiveSuggestedEvent = self->_proactiveSuggestedEvent;
-    v8 = v4;
+    v8 = identifierCopy;
     if (!proactiveSuggestedEvent)
     {
       v6 = objc_alloc_init(MOEventProactiveSuggested);
@@ -1992,7 +1992,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setSuggestedEventCategory:(unint64_t)a3
+- (void)setSuggestedEventCategory:(unint64_t)category
 {
   proactiveSuggestedEvent = self->_proactiveSuggestedEvent;
   if (!proactiveSuggestedEvent)
@@ -2004,16 +2004,16 @@ LABEL_21:
     proactiveSuggestedEvent = self->_proactiveSuggestedEvent;
   }
 
-  [(MOEventProactiveSuggested *)proactiveSuggestedEvent setSuggestedEventCategory:a3];
+  [(MOEventProactiveSuggested *)proactiveSuggestedEvent setSuggestedEventCategory:category];
 }
 
-- (void)setSuggestedEvent:(id)a3
+- (void)setSuggestedEvent:(id)event
 {
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     proactiveSuggestedEvent = self->_proactiveSuggestedEvent;
-    v8 = v4;
+    v8 = eventCopy;
     if (!proactiveSuggestedEvent)
     {
       v6 = objc_alloc_init(MOEventProactiveSuggested);
@@ -2029,13 +2029,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setTripTitle:(id)a3
+- (void)setTripTitle:(id)title
 {
-  v4 = a3;
-  if (v4)
+  titleCopy = title;
+  if (titleCopy)
   {
     travelEvent = self->_travelEvent;
-    v8 = v4;
+    v8 = titleCopy;
     if (!travelEvent)
     {
       v6 = objc_alloc_init(MOEventTravel);
@@ -2051,13 +2051,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setTripParts:(id)a3
+- (void)setTripParts:(id)parts
 {
-  v4 = a3;
-  if (v4)
+  partsCopy = parts;
+  if (partsCopy)
   {
     travelEvent = self->_travelEvent;
-    v8 = v4;
+    v8 = partsCopy;
     if (!travelEvent)
     {
       v6 = objc_alloc_init(MOEventTravel);
@@ -2073,13 +2073,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaTitle:(id)a3
+- (void)setMediaTitle:(id)title
 {
-  v4 = a3;
-  if (v4)
+  titleCopy = title;
+  if (titleCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = titleCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2095,13 +2095,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaAlbum:(id)a3
+- (void)setMediaAlbum:(id)album
 {
-  v4 = a3;
-  if (v4)
+  albumCopy = album;
+  if (albumCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = albumCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2117,13 +2117,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaPlayerBundleId:(id)a3
+- (void)setMediaPlayerBundleId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = idCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2139,13 +2139,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaProductId:(id)a3
+- (void)setMediaProductId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = idCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2161,13 +2161,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaGenre:(id)a3
+- (void)setMediaGenre:(id)genre
 {
-  v4 = a3;
-  if (v4)
+  genreCopy = genre;
+  if (genreCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = genreCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2183,13 +2183,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaType:(id)a3
+- (void)setMediaType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = typeCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2205,13 +2205,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaArtist:(id)a3
+- (void)setMediaArtist:(id)artist
 {
-  v4 = a3;
-  if (v4)
+  artistCopy = artist;
+  if (artistCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = artistCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2227,13 +2227,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaRepetitions:(id)a3
+- (void)setMediaRepetitions:(id)repetitions
 {
-  v4 = a3;
-  if (v4)
+  repetitionsCopy = repetitions;
+  if (repetitionsCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = repetitionsCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2249,13 +2249,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaSumTimePlayed:(id)a3
+- (void)setMediaSumTimePlayed:(id)played
 {
-  v4 = a3;
-  if (v4)
+  playedCopy = played;
+  if (playedCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = playedCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2271,13 +2271,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMediaPlaySessions:(id)a3
+- (void)setMediaPlaySessions:(id)sessions
 {
-  v4 = a3;
-  if (v4)
+  sessionsCopy = sessions;
+  if (sessionsCopy)
   {
     mediaEvent = self->_mediaEvent;
-    v8 = v4;
+    v8 = sessionsCopy;
     if (!mediaEvent)
     {
       v6 = objc_alloc_init(MOEventMedia);
@@ -2293,13 +2293,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPredominantWeather:(id)a3
+- (void)setPredominantWeather:(id)weather
 {
-  v4 = a3;
-  if (v4)
+  weatherCopy = weather;
+  if (weatherCopy)
   {
     routineEvent = self->_routineEvent;
-    v8 = v4;
+    v8 = weatherCopy;
     if (!routineEvent)
     {
       v6 = objc_alloc_init(MOEventRoutine);
@@ -2315,13 +2315,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setItemURL:(id)a3
+- (void)setItemURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     sharedWithYouEvent = self->_sharedWithYouEvent;
-    v8 = v4;
+    v8 = lCopy;
     if (!sharedWithYouEvent)
     {
       v6 = objc_alloc_init(MOEventSharedWithYou);
@@ -2337,13 +2337,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setItemSenders:(id)a3
+- (void)setItemSenders:(id)senders
 {
-  v4 = a3;
-  if (v4)
+  sendersCopy = senders;
+  if (sendersCopy)
   {
     sharedWithYouEvent = self->_sharedWithYouEvent;
-    v8 = v4;
+    v8 = sendersCopy;
     if (!sharedWithYouEvent)
     {
       v6 = objc_alloc_init(MOEventSharedWithYou);
@@ -2359,13 +2359,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setItemRecipients:(id)a3
+- (void)setItemRecipients:(id)recipients
 {
-  v4 = a3;
-  if (v4)
+  recipientsCopy = recipients;
+  if (recipientsCopy)
   {
     sharedWithYouEvent = self->_sharedWithYouEvent;
-    v8 = v4;
+    v8 = recipientsCopy;
     if (!sharedWithYouEvent)
     {
       v6 = objc_alloc_init(MOEventSharedWithYou);
@@ -2381,7 +2381,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setItemShareDirection:(unint64_t)a3
+- (void)setItemShareDirection:(unint64_t)direction
 {
   sharedWithYouEvent = self->_sharedWithYouEvent;
   if (!sharedWithYouEvent)
@@ -2393,10 +2393,10 @@ LABEL_21:
     sharedWithYouEvent = self->_sharedWithYouEvent;
   }
 
-  [(MOEventSharedWithYou *)sharedWithYouEvent setItemShareDirection:a3];
+  [(MOEventSharedWithYou *)sharedWithYouEvent setItemShareDirection:direction];
 }
 
-- (void)setItemSyndicationStatus:(unint64_t)a3
+- (void)setItemSyndicationStatus:(unint64_t)status
 {
   sharedWithYouEvent = self->_sharedWithYouEvent;
   if (!sharedWithYouEvent)
@@ -2408,16 +2408,16 @@ LABEL_21:
     sharedWithYouEvent = self->_sharedWithYouEvent;
   }
 
-  [(MOEventSharedWithYou *)sharedWithYouEvent setItemSyndicationStatus:a3];
+  [(MOEventSharedWithYou *)sharedWithYouEvent setItemSyndicationStatus:status];
 }
 
-- (void)setItemAttributionsCount:(id)a3
+- (void)setItemAttributionsCount:(id)count
 {
-  v4 = a3;
-  if (v4)
+  countCopy = count;
+  if (countCopy)
   {
     sharedWithYouEvent = self->_sharedWithYouEvent;
-    v8 = v4;
+    v8 = countCopy;
     if (!sharedWithYouEvent)
     {
       v6 = objc_alloc_init(MOEventSharedWithYou);
@@ -2433,13 +2433,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setInteractionContactScore:(id)a3
+- (void)setInteractionContactScore:(id)score
 {
-  v4 = a3;
-  if (v4)
+  scoreCopy = score;
+  if (scoreCopy)
   {
     significantContactEvent = self->_significantContactEvent;
-    v8 = v4;
+    v8 = scoreCopy;
     if (!significantContactEvent)
     {
       v6 = objc_alloc_init(MOEventSignificantContact);
@@ -2455,13 +2455,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setInteractionScoredContact:(id)a3
+- (void)setInteractionScoredContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
     significantContactEvent = self->_significantContactEvent;
-    v8 = v4;
+    v8 = contactCopy;
     if (!significantContactEvent)
     {
       v6 = objc_alloc_init(MOEventSignificantContact);
@@ -2477,13 +2477,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setInteractionGroupName:(id)a3
+- (void)setInteractionGroupName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     significantContactEvent = self->_significantContactEvent;
-    v8 = v4;
+    v8 = nameCopy;
     if (!significantContactEvent)
     {
       v6 = objc_alloc_init(MOEventSignificantContact);
@@ -2499,13 +2499,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setInteractionContacts:(id)a3
+- (void)setInteractionContacts:(id)contacts
 {
-  v4 = a3;
-  if (v4)
+  contactsCopy = contacts;
+  if (contactsCopy)
   {
     significantContactEvent = self->_significantContactEvent;
-    v8 = v4;
+    v8 = contactsCopy;
     if (!significantContactEvent)
     {
       v6 = objc_alloc_init(MOEventSignificantContact);
@@ -2521,13 +2521,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setContactClassificationMap:(id)a3
+- (void)setContactClassificationMap:(id)map
 {
-  v4 = a3;
-  if (v4)
+  mapCopy = map;
+  if (mapCopy)
   {
     significantContactEvent = self->_significantContactEvent;
-    v8 = v4;
+    v8 = mapCopy;
     if (!significantContactEvent)
     {
       v6 = objc_alloc_init(MOEventSignificantContact);
@@ -2543,13 +2543,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setInteractionMechanisms:(id)a3
+- (void)setInteractionMechanisms:(id)mechanisms
 {
-  v4 = a3;
-  if (v4)
+  mechanismsCopy = mechanisms;
+  if (mechanismsCopy)
   {
     significantContactEvent = self->_significantContactEvent;
-    v8 = v4;
+    v8 = mechanismsCopy;
     if (!significantContactEvent)
     {
       v6 = objc_alloc_init(MOEventSignificantContact);
@@ -2565,13 +2565,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setInteractions:(id)a3
+- (void)setInteractions:(id)interactions
 {
-  v4 = a3;
-  if (v4)
+  interactionsCopy = interactions;
+  if (interactionsCopy)
   {
     significantContactEvent = self->_significantContactEvent;
-    v8 = v4;
+    v8 = interactionsCopy;
     if (!significantContactEvent)
     {
       v6 = objc_alloc_init(MOEventSignificantContact);
@@ -2587,7 +2587,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setGaPR:(int64_t)a3
+- (void)setGaPR:(int64_t)r
 {
   peopleDiscoveryEvent = self->_peopleDiscoveryEvent;
   if (!peopleDiscoveryEvent)
@@ -2599,16 +2599,16 @@ LABEL_21:
     peopleDiscoveryEvent = self->_peopleDiscoveryEvent;
   }
 
-  [(MOEventPeopleDiscovery *)peopleDiscoveryEvent setGaPR:a3];
+  [(MOEventPeopleDiscovery *)peopleDiscoveryEvent setGaPR:r];
 }
 
-- (void)setPCount:(id)a3
+- (void)setPCount:(id)count
 {
-  v4 = a3;
-  if (v4)
+  countCopy = count;
+  if (countCopy)
   {
     peopleDiscoveryEvent = self->_peopleDiscoveryEvent;
-    v8 = v4;
+    v8 = countCopy;
     if (!peopleDiscoveryEvent)
     {
       v6 = objc_alloc_init(MOEventPeopleDiscovery);
@@ -2624,13 +2624,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setDensityScore:(id)a3
+- (void)setDensityScore:(id)score
 {
-  v4 = a3;
-  if (v4)
+  scoreCopy = score;
+  if (scoreCopy)
   {
     peopleDiscoveryEvent = self->_peopleDiscoveryEvent;
-    v8 = v4;
+    v8 = scoreCopy;
     if (!peopleDiscoveryEvent)
     {
       v6 = objc_alloc_init(MOEventPeopleDiscovery);
@@ -2646,13 +2646,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setDensityScanDuration:(id)a3
+- (void)setDensityScanDuration:(id)duration
 {
-  v4 = a3;
-  if (v4)
+  durationCopy = duration;
+  if (durationCopy)
   {
     peopleDiscoveryEvent = self->_peopleDiscoveryEvent;
-    v8 = v4;
+    v8 = durationCopy;
     if (!peopleDiscoveryEvent)
     {
       v6 = objc_alloc_init(MOEventPeopleDiscovery);
@@ -2668,13 +2668,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setScoredTopics:(id)a3
+- (void)setScoredTopics:(id)topics
 {
-  v4 = a3;
-  if (v4)
+  topicsCopy = topics;
+  if (topicsCopy)
   {
     portraitEvent = self->_portraitEvent;
-    v8 = v4;
+    v8 = topicsCopy;
     if (!portraitEvent)
     {
       v6 = objc_alloc_init(MOEventPortrait);
@@ -2690,7 +2690,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setMotionType:(unint64_t)a3
+- (void)setMotionType:(unint64_t)type
 {
   motionActivityEvent = self->_motionActivityEvent;
   if (!motionActivityEvent)
@@ -2702,16 +2702,16 @@ LABEL_21:
     motionActivityEvent = self->_motionActivityEvent;
   }
 
-  [(MOEventMotionActivity *)motionActivityEvent setMotionType:a3];
+  [(MOEventMotionActivity *)motionActivityEvent setMotionType:type];
 }
 
-- (void)setTrends:(id)a3
+- (void)setTrends:(id)trends
 {
-  v4 = a3;
-  if (v4)
+  trendsCopy = trends;
+  if (trendsCopy)
   {
     analyticsEvent = self->_analyticsEvent;
-    v8 = v4;
+    v8 = trendsCopy;
     if (!analyticsEvent)
     {
       v6 = objc_alloc_init(MOEventAnalytics);
@@ -2727,13 +2727,13 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setPatterns:(id)a3
+- (void)setPatterns:(id)patterns
 {
-  v4 = a3;
-  if (v4)
+  patternsCopy = patterns;
+  if (patternsCopy)
   {
     analyticsEvent = self->_analyticsEvent;
-    v8 = v4;
+    v8 = patternsCopy;
     if (!analyticsEvent)
     {
       v6 = objc_alloc_init(MOEventAnalytics);
@@ -2749,7 +2749,7 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)setLifeEventCategory:(unint64_t)a3
+- (void)setLifeEventCategory:(unint64_t)category
 {
   lifeEventsEvent = self->_lifeEventsEvent;
   if (!lifeEventsEvent)
@@ -2761,10 +2761,10 @@ LABEL_21:
     lifeEventsEvent = self->_lifeEventsEvent;
   }
 
-  [(MOEventLifeEvents *)lifeEventsEvent setLifeEventCategory:a3];
+  [(MOEventLifeEvents *)lifeEventsEvent setLifeEventCategory:category];
 }
 
-- (void)setConfidenceScore:(double)a3
+- (void)setConfidenceScore:(double)score
 {
   lifeEventsEvent = self->_lifeEventsEvent;
   if (!lifeEventsEvent)
@@ -2776,18 +2776,18 @@ LABEL_21:
     lifeEventsEvent = self->_lifeEventsEvent;
   }
 
-  [(MOEventLifeEvents *)lifeEventsEvent setConfidenceScore:a3];
+  [(MOEventLifeEvents *)lifeEventsEvent setConfidenceScore:score];
 }
 
-+ (id)FormatDate:(id)a3
++ (id)FormatDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v3 = a3;
+    dateCopy = date;
     v4 = objc_alloc_init(NSDateFormatter);
     [v4 setDateStyle:4];
     [v4 setTimeStyle:3];
-    v5 = [v4 stringFromDate:v3];
+    v5 = [v4 stringFromDate:dateCopy];
   }
 
   else
@@ -2798,13 +2798,13 @@ LABEL_21:
   return v5;
 }
 
-- (MOEvent)initWithCoder:(id)a3
+- (MOEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   v9 = v8;
   if (v5)
   {
@@ -2818,143 +2818,143 @@ LABEL_21:
 
   if (v10 || v6 == 0 || v7 == 0)
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v14 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](self, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v5, v6, v7, v8, [v4 decodeIntegerForKey:@"provider"], objc_msgSend(v4, "decodeIntegerForKey:", @"category"));
+    v14 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](self, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v5, v6, v7, v8, [coderCopy decodeIntegerForKey:@"provider"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"category"));
     v15 = v14;
     if (v14)
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifierFromProvider"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifierFromProvider"];
       identifierFromProvider = v15->_identifierFromProvider;
       v15->_identifierFromProvider = v16;
 
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
       expirationDate = v15->_expirationDate;
       v15->_expirationDate = v18;
 
-      v15->_fromFirstParty = [v4 decodeBoolForKey:@"fromFirstParty"];
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceCreationDate"];
+      v15->_fromFirstParty = [coderCopy decodeBoolForKey:@"fromFirstParty"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceCreationDate"];
       sourceCreationDate = v15->_sourceCreationDate;
       v15->_sourceCreationDate = v20;
 
-      v15->_rehydrationFailCount = [v4 decodeIntegerForKey:@"rehydrationFailCount"];
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundle"];
+      v15->_rehydrationFailCount = [coderCopy decodeIntegerForKey:@"rehydrationFailCount"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundle"];
       appBundle = v15->_appBundle;
       v15->_appBundle = v22;
 
-      v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoEvent"];
+      v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoEvent"];
       photoEvent = v15->_photoEvent;
       v15->_photoEvent = v24;
 
-      v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routineEvent"];
+      v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routineEvent"];
       routineEvent = v15->_routineEvent;
       v15->_routineEvent = v26;
 
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workoutEvent"];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workoutEvent"];
       workoutEvent = v15->_workoutEvent;
       v15->_workoutEvent = v28;
 
-      v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proactiveSuggestedEvent"];
+      v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proactiveSuggestedEvent"];
       proactiveSuggestedEvent = v15->_proactiveSuggestedEvent;
       v15->_proactiveSuggestedEvent = v30;
 
-      v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"travelEvent"];
+      v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"travelEvent"];
       travelEvent = v15->_travelEvent;
       v15->_travelEvent = v32;
 
-      v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaEvent"];
+      v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaEvent"];
       mediaEvent = v15->_mediaEvent;
       v15->_mediaEvent = v34;
 
-      v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedWithYouEvent"];
+      v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedWithYouEvent"];
       sharedWithYouEvent = v15->_sharedWithYouEvent;
       v15->_sharedWithYouEvent = v36;
 
-      v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"significantContactEvent"];
+      v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"significantContactEvent"];
       significantContactEvent = v15->_significantContactEvent;
       v15->_significantContactEvent = v38;
 
-      v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peopleDiscoveryEvent"];
+      v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peopleDiscoveryEvent"];
       peopleDiscoveryEvent = v15->_peopleDiscoveryEvent;
       v15->_peopleDiscoveryEvent = v40;
 
-      v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"portraitEvent"];
+      v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"portraitEvent"];
       portraitEvent = v15->_portraitEvent;
       v15->_portraitEvent = v42;
 
-      v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"motionActivityEvent"];
+      v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"motionActivityEvent"];
       motionActivityEvent = v15->_motionActivityEvent;
       v15->_motionActivityEvent = v44;
 
-      v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"analyticsEvent"];
+      v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"analyticsEvent"];
       analyticsEvent = v15->_analyticsEvent;
       v15->_analyticsEvent = v46;
 
-      v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lifeEventsEvent"];
+      v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lifeEventsEvent"];
       lifeEventsEvent = v15->_lifeEventsEvent;
       v15->_lifeEventsEvent = v48;
 
-      v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stateOfMindEvent"];
+      v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateOfMindEvent"];
       stateOfMindEvent = v15->_stateOfMindEvent;
       v15->_stateOfMindEvent = v50;
 
-      v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"screenTimeEvent"];
+      v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"screenTimeEvent"];
       screenTimeEvent = v15->_screenTimeEvent;
       v15->_screenTimeEvent = v52;
 
-      v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteEvent"];
+      v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteEvent"];
       inviteEvent = v15->_inviteEvent;
       v15->_inviteEvent = v54;
     }
 
     self = v15;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventIdentifier = self->_eventIdentifier;
-  v5 = a3;
-  [v5 encodeObject:eventIdentifier forKey:@"eventIdentifier"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeInteger:self->_provider forKey:@"provider"];
-  [v5 encodeInteger:self->_category forKey:@"category"];
-  [v5 encodeObject:self->_identifierFromProvider forKey:@"identifierFromProvider"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeBool:self->_fromFirstParty forKey:@"fromFirstParty"];
-  [v5 encodeObject:self->_sourceCreationDate forKey:@"sourceCreationDate"];
-  [v5 encodeInteger:self->_rehydrationFailCount forKey:@"rehydrationFailCount"];
-  [v5 encodeObject:self->_appBundle forKey:@"appBundle"];
-  [v5 encodeObject:self->_photoEvent forKey:@"photoEvent"];
-  [v5 encodeObject:self->_routineEvent forKey:@"routineEvent"];
-  [v5 encodeObject:self->_workoutEvent forKey:@"workoutEvent"];
-  [v5 encodeObject:self->_proactiveSuggestedEvent forKey:@"proactiveSuggestedEvent"];
-  [v5 encodeObject:self->_travelEvent forKey:@"travelEvent"];
-  [v5 encodeObject:self->_mediaEvent forKey:@"mediaEvent"];
-  [v5 encodeObject:self->_sharedWithYouEvent forKey:@"sharedWithYouEvent"];
-  [v5 encodeObject:self->_significantContactEvent forKey:@"significantContactEvent"];
-  [v5 encodeObject:self->_peopleDiscoveryEvent forKey:@"peopleDiscoveryEvent"];
-  [v5 encodeObject:self->_portraitEvent forKey:@"portraitEvent"];
-  [v5 encodeObject:self->_motionActivityEvent forKey:@"motionActivityEvent"];
-  [v5 encodeObject:self->_analyticsEvent forKey:@"analyticsEvent"];
-  [v5 encodeObject:self->_lifeEventsEvent forKey:@"lifeEventsEvent"];
-  [v5 encodeObject:self->_stateOfMindEvent forKey:@"stateOfMindEvent"];
-  [v5 encodeObject:self->_screenTimeEvent forKey:@"screenTimeEvent"];
-  [v5 encodeObject:self->_inviteEvent forKey:@"inviteEvent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eventIdentifier forKey:@"eventIdentifier"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeInteger:self->_provider forKey:@"provider"];
+  [coderCopy encodeInteger:self->_category forKey:@"category"];
+  [coderCopy encodeObject:self->_identifierFromProvider forKey:@"identifierFromProvider"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeBool:self->_fromFirstParty forKey:@"fromFirstParty"];
+  [coderCopy encodeObject:self->_sourceCreationDate forKey:@"sourceCreationDate"];
+  [coderCopy encodeInteger:self->_rehydrationFailCount forKey:@"rehydrationFailCount"];
+  [coderCopy encodeObject:self->_appBundle forKey:@"appBundle"];
+  [coderCopy encodeObject:self->_photoEvent forKey:@"photoEvent"];
+  [coderCopy encodeObject:self->_routineEvent forKey:@"routineEvent"];
+  [coderCopy encodeObject:self->_workoutEvent forKey:@"workoutEvent"];
+  [coderCopy encodeObject:self->_proactiveSuggestedEvent forKey:@"proactiveSuggestedEvent"];
+  [coderCopy encodeObject:self->_travelEvent forKey:@"travelEvent"];
+  [coderCopy encodeObject:self->_mediaEvent forKey:@"mediaEvent"];
+  [coderCopy encodeObject:self->_sharedWithYouEvent forKey:@"sharedWithYouEvent"];
+  [coderCopy encodeObject:self->_significantContactEvent forKey:@"significantContactEvent"];
+  [coderCopy encodeObject:self->_peopleDiscoveryEvent forKey:@"peopleDiscoveryEvent"];
+  [coderCopy encodeObject:self->_portraitEvent forKey:@"portraitEvent"];
+  [coderCopy encodeObject:self->_motionActivityEvent forKey:@"motionActivityEvent"];
+  [coderCopy encodeObject:self->_analyticsEvent forKey:@"analyticsEvent"];
+  [coderCopy encodeObject:self->_lifeEventsEvent forKey:@"lifeEventsEvent"];
+  [coderCopy encodeObject:self->_stateOfMindEvent forKey:@"stateOfMindEvent"];
+  [coderCopy encodeObject:self->_screenTimeEvent forKey:@"screenTimeEvent"];
+  [coderCopy encodeObject:self->_inviteEvent forKey:@"inviteEvent"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MOEvent *)self eventIdentifier];
-  v3 = [v2 hash];
+  eventIdentifier = [(MOEvent *)self eventIdentifier];
+  v3 = [eventIdentifier hash];
 
   return v3;
 }
@@ -2962,11 +2962,11 @@ LABEL_21:
 - (id)copy
 {
   v3 = [MOEvent alloc];
-  v4 = [(MOEvent *)self eventIdentifier];
-  v5 = [(MOEvent *)self startDate];
-  v6 = [(MOEvent *)self endDate];
-  v7 = [(MOEvent *)self creationDate];
-  v8 = [(MOEvent *)v3 initWithEventIdentifier:v4 startDate:v5 endDate:v6 creationDate:v7 provider:[(MOEvent *)self provider] category:[(MOEvent *)self category]];
+  eventIdentifier = [(MOEvent *)self eventIdentifier];
+  startDate = [(MOEvent *)self startDate];
+  endDate = [(MOEvent *)self endDate];
+  creationDate = [(MOEvent *)self creationDate];
+  v8 = [(MOEvent *)v3 initWithEventIdentifier:eventIdentifier startDate:startDate endDate:endDate creationDate:creationDate provider:[(MOEvent *)self provider] category:[(MOEvent *)self category]];
 
   objc_storeStrong(&v8->_expirationDate, self->_expirationDate);
   objc_storeStrong(&v8->_sourceCreationDate, self->_sourceCreationDate);
@@ -3040,31 +3040,31 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOEvent *)self eventIdentifier];
-        if (v8 || ([(MOEvent *)v7 eventIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        eventIdentifier = [(MOEvent *)self eventIdentifier];
+        if (eventIdentifier || ([(MOEvent *)v7 eventIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOEvent *)self eventIdentifier];
-          v10 = [(MOEvent *)v7 eventIdentifier];
-          v11 = [v9 isEqual:v10];
+          eventIdentifier2 = [(MOEvent *)self eventIdentifier];
+          eventIdentifier3 = [(MOEvent *)v7 eventIdentifier];
+          v11 = [eventIdentifier2 isEqual:eventIdentifier3];
 
-          if (v8)
+          if (eventIdentifier)
           {
 LABEL_12:
 
@@ -3096,28 +3096,28 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v3 = [(MOEvent *)self placeUserType];
-  if (v3 != 1)
+  placeUserType = [(MOEvent *)self placeUserType];
+  if (placeUserType != 1)
   {
     if ([(MOEvent *)self placeUserType]== 2)
     {
-      LOBYTE(v3) = 1;
-      return v3;
+      LOBYTE(placeUserType) = 1;
+      return placeUserType;
     }
 
 LABEL_5:
-    LOBYTE(v3) = 0;
+    LOBYTE(placeUserType) = 0;
   }
 
-  return v3;
+  return placeUserType;
 }
 
-- (id)formatAddressWithFormatOption:(id)a3
+- (id)formatAddressWithFormatOption:(id)option
 {
   routineEvent = self->_routineEvent;
   if (routineEvent)
   {
-    v5 = [(MOEventRoutine *)routineEvent formatAddressWithFormatOption:a3];
+    v5 = [(MOEventRoutine *)routineEvent formatAddressWithFormatOption:option];
   }
 
   else
@@ -3137,12 +3137,12 @@ LABEL_5:
   return v5;
 }
 
-- (id)formatLocalityWithFormatOption:(id)a3
+- (id)formatLocalityWithFormatOption:(id)option
 {
   routineEvent = self->_routineEvent;
   if (routineEvent)
   {
-    v5 = [(MOEventRoutine *)routineEvent formatLocalityWithFormatOption:a3];
+    v5 = [(MOEventRoutine *)routineEvent formatLocalityWithFormatOption:option];
   }
 
   else
@@ -3162,12 +3162,12 @@ LABEL_5:
   return v5;
 }
 
-- (id)formatAdministrativeAreaWithFormatOption:(id)a3
+- (id)formatAdministrativeAreaWithFormatOption:(id)option
 {
   routineEvent = self->_routineEvent;
   if (routineEvent)
   {
-    v5 = [(MOEventRoutine *)routineEvent formatAdministrativeAreaWithFormatOption:a3];
+    v5 = [(MOEventRoutine *)routineEvent formatAdministrativeAreaWithFormatOption:option];
   }
 
   else
@@ -3187,12 +3187,12 @@ LABEL_5:
   return v5;
 }
 
-- (id)formatCountryWithFormatOption:(id)a3
+- (id)formatCountryWithFormatOption:(id)option
 {
   routineEvent = self->_routineEvent;
   if (routineEvent)
   {
-    v5 = [(MOEventRoutine *)routineEvent formatCountryWithFormatOption:a3];
+    v5 = [(MOEventRoutine *)routineEvent formatCountryWithFormatOption:option];
   }
 
   else
@@ -3228,25 +3228,25 @@ LABEL_5:
   return v3;
 }
 
-- (double)weightedDurationWithTimeZone:(id)a3 overnightStartDateHour:(double)a4 overnightDurationHours:(double)a5 overnightDurationWeight:(double)a6
+- (double)weightedDurationWithTimeZone:(id)zone overnightStartDateHour:(double)hour overnightDurationHours:(double)hours overnightDurationWeight:(double)weight
 {
-  v10 = a3;
-  v11 = [(MOEvent *)self endDate];
+  zoneCopy = zone;
+  endDate = [(MOEvent *)self endDate];
 
   v12 = 0.0;
-  if (v11)
+  if (endDate)
   {
-    v13 = [(MOEvent *)self startDate];
-    v14 = [(MOEvent *)self endDate];
-    v15 = [v13 isAfterDate:v14];
+    startDate = [(MOEvent *)self startDate];
+    endDate2 = [(MOEvent *)self endDate];
+    v15 = [startDate isAfterDate:endDate2];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(MOEvent *)self startDate];
-      v17 = [MOTime localTimeOfDate:v16 timeZone:v10];
+      startDate2 = [(MOEvent *)self startDate];
+      v17 = [MOTime localTimeOfDate:startDate2 timeZone:zoneCopy];
 
-      v18 = [(MOEvent *)self endDate];
-      v19 = [MOTime localTimeOfDate:v18 timeZone:v10];
+      endDate3 = [(MOEvent *)self endDate];
+      v19 = [MOTime localTimeOfDate:endDate3 timeZone:zoneCopy];
 
       if (([v17 isAfterDate:v19] & 1) == 0)
       {
@@ -3256,7 +3256,7 @@ LABEL_5:
 
         if ([v20 containsDate:v22])
         {
-          v23 = [MOTime dateFromDate:v17 hour:a4];
+          v23 = [MOTime dateFromDate:v17 hour:hour];
           v37 = v22;
           if ([v23 isBeforeDate:v17])
           {
@@ -3270,7 +3270,7 @@ LABEL_5:
           v27 = v25;
           if ([v25 isBeforeDate:v19])
           {
-            v28 = a5 * 3600.0;
+            v28 = hours * 3600.0;
             v29 = v25;
             do
             {
@@ -3292,7 +3292,7 @@ LABEL_5:
           }
 
           [(MOEvent *)self duration];
-          v12 = v34 + (a6 + -1.0) * v26;
+          v12 = v34 + (weight + -1.0) * v26;
 
           v22 = v37;
         }
@@ -3309,56 +3309,56 @@ LABEL_5:
   return v12;
 }
 
-- (MOEvent)initWithEventMO:(id)a3
+- (MOEvent)initWithEventMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = a3;
-    v5 = [v4 eventIdentifier];
-    v6 = [v4 startDate];
-    v7 = [v4 endDate];
-    v8 = [v4 creationDate];
-    v9 = [v4 provider];
-    v10 = [v9 unsignedIntegerValue];
-    v11 = [v4 category];
-    self = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](self, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v5, v6, v7, v8, v10, [v11 unsignedIntegerValue]);
+    oCopy = o;
+    eventIdentifier = [oCopy eventIdentifier];
+    startDate = [oCopy startDate];
+    endDate = [oCopy endDate];
+    creationDate = [oCopy creationDate];
+    provider = [oCopy provider];
+    unsignedIntegerValue = [provider unsignedIntegerValue];
+    category = [oCopy category];
+    self = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](self, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", eventIdentifier, startDate, endDate, creationDate, unsignedIntegerValue, [category unsignedIntegerValue]);
 
-    v12 = [v4 sourceCreationDate];
-    [(MOEvent *)self setSourceCreationDate:v12];
+    sourceCreationDate = [oCopy sourceCreationDate];
+    [(MOEvent *)self setSourceCreationDate:sourceCreationDate];
 
-    v13 = [v4 expirationDate];
-    [(MOEvent *)self setExpirationDate:v13];
+    expirationDate = [oCopy expirationDate];
+    [(MOEvent *)self setExpirationDate:expirationDate];
 
-    v14 = [v4 mode];
-    -[MOEvent setMode:](self, "setMode:", [v14 unsignedIntValue]);
+    mode = [oCopy mode];
+    -[MOEvent setMode:](self, "setMode:", [mode unsignedIntValue]);
 
-    -[MOEvent setIsInvalid:](self, "setIsInvalid:", [v4 isInvalid]);
-    -[MOEvent setIsHighConfidence:](self, "setIsHighConfidence:", [v4 isHighConfidence]);
-    v15 = [v4 identifierFromProvider];
-    [(MOEvent *)self setIdentifierFromProvider:v15];
+    -[MOEvent setIsInvalid:](self, "setIsInvalid:", [oCopy isInvalid]);
+    -[MOEvent setIsHighConfidence:](self, "setIsHighConfidence:", [oCopy isHighConfidence]);
+    identifierFromProvider = [oCopy identifierFromProvider];
+    [(MOEvent *)self setIdentifierFromProvider:identifierFromProvider];
 
-    v16 = [v4 trends];
-    [(MOEvent *)self setTrends:v16];
+    trends = [oCopy trends];
+    [(MOEvent *)self setTrends:trends];
 
-    v17 = [v4 patterns];
-    [(MOEvent *)self setPatterns:v17];
+    patterns = [oCopy patterns];
+    [(MOEvent *)self setPatterns:patterns];
 
-    -[MOEvent setIsGComplete:](self, "setIsGComplete:", [v4 isGatheringComplete]);
-    v18 = [v4 timeAtHomeSubType];
-    -[MOEvent setTimeAtHomeSubType:](self, "setTimeAtHomeSubType:", [v18 unsignedIntegerValue]);
+    -[MOEvent setIsGComplete:](self, "setIsGComplete:", [oCopy isGatheringComplete]);
+    timeAtHomeSubType = [oCopy timeAtHomeSubType];
+    -[MOEvent setTimeAtHomeSubType:](self, "setTimeAtHomeSubType:", [timeAtHomeSubType unsignedIntegerValue]);
 
-    v19 = [v4 rehydrationFailCount];
+    rehydrationFailCount = [oCopy rehydrationFailCount];
 
-    -[MOEvent setRehydrationFailCount:](self, "setRehydrationFailCount:", [v19 unsignedIntegerValue]);
-    v20 = self;
+    -[MOEvent setRehydrationFailCount:](self, "setRehydrationFailCount:", [rehydrationFailCount unsignedIntegerValue]);
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (void)initWithEventIdentifier:startDate:endDate:creationDate:provider:category:.cold.1()
